@@ -293,7 +293,7 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 	if stable == nil then return false end
 	for s in stable do
 		local so = s:object()
-		local so_id = so:clsid()
+		local so_id
 		local continue = true
 		local stime = s.level_time
 
@@ -307,9 +307,15 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 			continue = false
 		end
 
-		if continue and alife() ~= nil then
-			if alife():object(so:id()).online ~= true then
-				continue = false
+		if continue then
+                        if alife() == nil then
+				so_id = so:clsid()
+			else
+				if alife():object(so:id()).online then
+					so_id = so:clsid()
+				else
+					continue = false
+				end
 			end
 		end
 
@@ -317,7 +323,7 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 			continue = false
 		end
 
-		if (so_id == clsid.stalker or so_id == clsid.actor) then
+		if continue and (so_id == clsid.stalker or so_id == clsid.actor) then
 			if (so:squad() == self.npc:squad() and 
 			   so:group() == self.npc:group()) or
                            (device():time_global() - stime > self.time_reaction)
@@ -385,13 +391,6 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 		local vo_id = vo:clsid()
 		local continue = true
 
-		if (vo_id == clsid.stalker or vo_id == clsid.actor) then
-			if vo:squad() == self.npc:squad()
-			then
-				continue = false
-			end
-		end
-
 		if self.used[vo:id()] ~= nil then
 			continue = false
 		end
@@ -402,8 +401,21 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 			continue = false
 		end
 
-		if continue and alife() ~= nil then
-			if alife():object(vo:id()).online ~= true then
+		if continue then 
+			if alife() == nil then
+				vo_id = vo:clsid()
+			else    
+				if alife():object(vo:id()).online then
+					vo_id = vo:clsid()
+				else
+					continue = false
+				end
+			end
+		end
+
+		if continue and (vo_id == clsid.stalker or vo_id == clsid.actor) then
+			if vo:squad() == self.npc:squad()
+			then
 				continue = false
 			end
 		end
