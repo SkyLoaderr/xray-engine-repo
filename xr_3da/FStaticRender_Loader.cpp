@@ -177,10 +177,9 @@ void CRender::LoadLights(CStream *fs)
 
 struct b_portal
 {
-	WORD			sector_front;
-	WORD			sector_back;
-	DWORD			vert_count;
-	Fvector			vertices[6];
+	WORD				sector_front;
+	WORD				sector_back;
+	svector<Fvector,6>	vertices;
 };
 
 void CRender::LoadSectors(CStream* fs)
