@@ -104,7 +104,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemWeapon,CSE_ALifeItem)
 	};
 
 	EWeaponAddonStatus				m_scope_status;
-	EWeaponAddonStatus				m_silincer_status;				
+	EWeaponAddonStatus				m_silencer_status;				
 	EWeaponAddonStatus				m_grenade_launcher_status;
 
 	u32								timestamp;
