@@ -50,6 +50,7 @@ zmey_actions = stalker_ids.action_script + 10000
 zmey_action_guard_activity = zmey_actions + 100
 zmey_guard_base        = zmey_actions + 200
 zmey_robber_base       = zmey_actions + 300
+zmey_camper_base       = zmey_actions + 400
 
 -- Æåíÿ 
 jon_actions = zmey_actions + 1024
