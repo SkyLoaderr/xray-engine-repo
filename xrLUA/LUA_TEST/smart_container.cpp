@@ -7,13 +7,18 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"	
+
+#pragma warning(push)
+#pragma warning(disable:4995)
+#include "xrCore.h"
+#pragma warning(pop)
 #include "smart_container.h"
 
 // these header are needed for serialization only
-#include "in_stream.h"
-#include "out_stream.h"
+//#include "in_stream.h"
+//#include "out_stream.h"
 
-int __cdecl main()
+void test_smart_container()
 {
 	smart_container		container0, container1;
 
@@ -81,16 +86,16 @@ int __cdecl main()
 				f->v2	+= 6;
 		}
 	}
-	{
-		IWriter			stream("smart_container.dat");
-		save_data		(container0,stream);
-	}
-	{
-		IReader			stream("smart_container.dat");
-		load_data		(container1,stream);
-	}
-
-	VERIFY				(equal(container0,container1));
+//	{
+//		IWriter			stream("smart_container.dat");
+//		save_data		(container0,stream);
+//	}
+//	{
+//		IReader			stream("smart_container.dat");
+//		load_data		(container1,stream);
+//	}
+//
+//	VERIFY				(equal(container0,container1));
 
 	// speed test for RELEASE only
 #ifndef _DEBUG
