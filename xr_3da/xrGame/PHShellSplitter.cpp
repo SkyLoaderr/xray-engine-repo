@@ -67,7 +67,9 @@ void CPHShellSplitterHolder::PassEndSplitters(const CShellSplitInfo& spl_inf,CPH
 									//end elems have to be corrected 
 									//if grater then end elem in moving diapason
 	{
-		FRACTURE_I f_i=(*i_elem)->FracturesHolder()->m_fractures.begin(),f_e=(*i_elem)->FracturesHolder()->m_fractures.end();
+		CPHFracturesHolder	*fracturesHolder=(*i_elem)->FracturesHolder();
+		if(!fracturesHolder) continue;
+		FRACTURE_I f_i=fracturesHolder->m_fractures.begin(),f_e=fracturesHolder->m_fractures.end();
 		for(;f_i!=f_e;f_i++)
 		{
 			u16	&end_el_num=f_i->m_end_el_num;
@@ -83,8 +85,10 @@ void CPHShellSplitterHolder::PassEndSplitters(const CShellSplitInfo& spl_inf,CPH
 	
 	for(;i_joint!=e_joint;i_joint++)	
 	{
-		u16 &end_element	=		(*i_joint)->JointDestroyInfo()->m_end_element;
-		u16	&end_joint		=		(*i_joint)->JointDestroyInfo()->m_end_joint;
+		CPHJointDestroyInfo* jointDestroyInfo=(*i_joint)->JointDestroyInfo();
+		if(!jointDestroyInfo) continue;
+		u16 &end_element	=		jointDestroyInfo->m_end_element;
+		u16	&end_joint		=		jointDestroyInfo->m_end_joint;
 		if(end_element>spl_inf.m_end_el_num) end_element=end_element-shift_e;
 		if(end_joint>spl_inf.m_end_jt_num)		end_joint=end_joint-shift_j;
 	}
@@ -99,7 +103,9 @@ void CPHShellSplitterHolder::PassEndSplitters(const CShellSplitInfo& spl_inf,CPH
 	for(;i_elem!=e_elem;i_elem++)	
 
 	{
-		FRACTURE_I f_i=(*i_elem)->FracturesHolder()->m_fractures.begin(),f_e=(*i_elem)->FracturesHolder()->m_fractures.end();
+		CPHFracturesHolder	*fracturesHolder=(*i_elem)->FracturesHolder();
+		if(!fracturesHolder) continue;
+		FRACTURE_I f_i=fracturesHolder->m_fractures.begin(),f_e=fracturesHolder->m_fractures.end();
 		for(;f_i!=f_e;f_i++)
 		{
 			u16	&end_el_num=f_i->m_end_el_num;
@@ -117,8 +123,10 @@ void CPHShellSplitterHolder::PassEndSplitters(const CShellSplitInfo& spl_inf,CPH
 	e_joint=source_joints.begin()+spl_inf.m_end_jt_num;
 	for(;i_joint!=e_joint;i_joint++)	
 	{
-		u16 &end_element	=		(*i_joint)->JointDestroyInfo()->m_end_element;
-		u16	&end_joint		=		(*i_joint)->JointDestroyInfo()->m_end_joint;
+		CPHJointDestroyInfo* jointDestroyInfo=(*i_joint)->JointDestroyInfo();
+		if(!jointDestroyInfo) continue;
+		u16 &end_element	=		jointDestroyInfo->m_end_element;
+		u16	&end_joint		=		jointDestroyInfo->m_end_joint;
 		if(end_element>spl_inf.m_end_el_num) end_element=end_element-passed_shift_e;
 		if(end_joint>spl_inf.m_end_jt_num)		end_joint=end_joint-passed_shift_j;
 	}
@@ -128,7 +136,9 @@ void CPHShellSplitterHolder::PassEndSplitters(const CShellSplitInfo& spl_inf,CPH
 	for(;i_elem!=e_elem;i_elem++)	
 
 	{
-		FRACTURE_I f_i=(*i_elem)->FracturesHolder()->m_fractures.begin(),f_e=(*i_elem)->FracturesHolder()->m_fractures.end();
+		CPHFracturesHolder	*fracturesHolder=(*i_elem)->FracturesHolder();
+		if(!fracturesHolder) continue;
+		FRACTURE_I f_i=fracturesHolder->m_fractures.begin(),f_e=fracturesHolder->m_fractures.end();
 		for(;f_i!=f_e;f_i++)
 		{
 			u16	&end_el_num=f_i->m_end_el_num;
@@ -146,8 +156,10 @@ void CPHShellSplitterHolder::PassEndSplitters(const CShellSplitInfo& spl_inf,CPH
 	e_joint=source_joints.end();
 	for(;i_joint!=e_joint;i_joint++)	
 	{
-		u16 &end_element	=		(*i_joint)->JointDestroyInfo()->m_end_element;
-		u16	&end_joint		=		(*i_joint)->JointDestroyInfo()->m_end_joint;
+		CPHJointDestroyInfo* jointDestroyInfo=(*i_joint)->JointDestroyInfo();
+		if(!jointDestroyInfo) continue;
+		u16 &end_element	=		jointDestroyInfo->m_end_element;
+		u16	&end_joint		=		jointDestroyInfo->m_end_joint;
 		if(end_element>spl_inf.m_end_el_num) end_element=end_element-shift_e;
 		if(end_joint>spl_inf.m_end_jt_num)	 end_joint=end_joint-shift_j;
 	}
@@ -231,23 +243,27 @@ void CPHShellSplitterHolder::SplitElement(u16 aspl,PHSHELL_PAIR_VECTOR &out_shel
 {
 
 	new_elements.clear();
+	SPLITTER_I spl_i=(m_splitters.begin()+aspl);
+	CPHElement* E= m_pShell->elements[spl_i->m_element];
+	E->SplitProcess(new_elements);
 
 	
-	m_pShell->elements[(m_splitters.begin()+aspl)->m_element]->SplitProcess(new_elements);
-
-
 	ELEMENT_PAIR_RI i=new_elements.rbegin(),e=new_elements.rend();
 
 		for(;i!=e;i++)
 		{
 			out_shels.push_back(ElementSingleSplit(*i));
 		}
+
+		if(!E->FracturesHolder()) m_splitters.erase(spl_i);//delete splitter if the element no longer have fractures
+
 }
 
 void CPHShellSplitterHolder::SplitProcess(PHSHELL_PAIR_VECTOR &out_shels)
 {
 	//any split process must start from the end of the elment storage
 	//this based on that all childs in the bone hierarchy was added after their parrent
+
 	u16 i=u16(m_splitters.size()-1);
 	for(;i!=u16(-1);i--)
 	{
@@ -255,6 +271,7 @@ void CPHShellSplitterHolder::SplitProcess(PHSHELL_PAIR_VECTOR &out_shels)
 		{
 		case CPHShellSplitter::splJoint:
 				 out_shels.push_back(SplitJoint(i));
+
 			break;
 		case CPHShellSplitter::splElement:
 				SplitElement(i,out_shels);

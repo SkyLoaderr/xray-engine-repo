@@ -765,7 +765,7 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 		}
 		else
 		{
-
+			J->SetBreakable(id,joint_data.break_force,joint_data.break_torque);
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////
@@ -994,4 +994,5 @@ void CPHShell::SplitProcess(PHSHELL_PAIR_VECTOR &out_shels)
 {
 if(! m_spliter_holder) return;
 m_spliter_holder->SplitProcess(out_shels);
+if(!m_spliter_holder->m_splitters.size()) xr_delete(m_spliter_holder);
 }

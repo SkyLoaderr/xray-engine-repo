@@ -1265,6 +1265,7 @@ void CPHElement::PassEndGeoms(u16 from,u16 to,CPHElement* dest)
 void CPHElement::SplitProcess(ELEMENT_PAIR_VECTOR &new_elements)
 {
 	m_fratures_holder->SplitProcess(this,new_elements);
+	if(!m_fratures_holder->m_fractures.size()) xr_delete(m_fratures_holder);
 }
 
 void CPHElement::CreateSimulBase()

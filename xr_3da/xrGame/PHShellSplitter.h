@@ -25,7 +25,7 @@ private:
 
 class CPHShellSplitterHolder : public CPHObject			//call all Fractures and Breakable Joints Updates
 {
-
+friend class CPHShell;
 bool					m_has_breaks;
 bool					bActive;
 CPHShell*				m_pShell;								//purpose: to extract elements and joints corresponded splitters
