@@ -283,14 +283,14 @@ xr_motivator.storage[self.object:id()].follower = {
 	-- Bind other scripts
 	self.object:disable_talk()
 	
-	xr_reactions.add_to_binder(self.object)
+	--xr_reactions.add_to_binder(self.object)
 	xr_meet.add_to_binder(self.object)
 	xr_tradeseller.add_to_binder(self.object)
 	xr_kamp.add_to_binder(self.object)
 	xr_commander.add_to_binder(self.object)
 	xr_guard.add_to_binder(self.object)
-	xr_patrol.add_to_binder(self.object)
-	xr_follower.add_to_binder(self.object)
+	--xr_patrol.add_to_binder(self.object)
+	--xr_follower.add_to_binder(self.object)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function pda_call_back(recepient, who, msg, info_index)
