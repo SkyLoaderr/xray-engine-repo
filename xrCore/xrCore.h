@@ -205,9 +205,11 @@ class XRCORE_API xrCore
 {
 public:
 	string64	ApplicationName;
+	string_path	ApplicationPath;
 	string64	UserName;
 	string64	CompName;
 	string512	Params;
+
 public:
 	void		_initialize	(LPCSTR ApplicationName, LogCallback cb=0, BOOL init_fs=TRUE);
 	void		_destroy	();

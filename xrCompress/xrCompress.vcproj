@@ -119,7 +119,7 @@
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="odbc32.lib odbccp32.lib"
-				OutputFile="c:\t\xrCompress.exe"
+				OutputFile="$(OutDir)\xrCompress.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
 				GenerateDebugInformation="TRUE"
@@ -176,6 +176,9 @@
 			</File>
 			<File
 				RelativePath=".\xrCompress.cpp">
+			</File>
+			<File
+				RelativePath=".\xrCompressDifference.cpp">
 			</File>
 		</Filter>
 		<Filter

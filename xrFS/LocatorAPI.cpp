@@ -211,7 +211,6 @@ void CLocatorAPI::ProcessArchive(const char* _path)
 
 	// Read headers
 	IReader* hdr		= open_chunk(A.hSrcFile,1); R_ASSERT(hdr);
-//	IReader*	hdr		= A.vfs->open_chunk(1);
 	RStringVec	fv;
 	while (!hdr->eof())
 	{
@@ -222,27 +221,30 @@ void CLocatorAPI::ProcessArchive(const char* _path)
 		u32 ptr			= hdr->r_u32();
 		u32 size_real	= hdr->r_u32();
 		u32 size_compr	= hdr->r_u32();
-/*		if(ptr)
-			fv.push_back	(full);*/
+		//del
+//		if(ptr)
+//			fv.push_back	(full);
+
 		Register		(full,(u32)vfs,ptr,size_real,size_compr,0);
 	}
 	hdr->close			();
 
 	// Seek to zero for safety
 //	A.vfs->seek			(0);
-/*
-	for(RStringVecIt it=fv.begin();it!=fv.end();++it){
+
+//del
+/*	for(RStringVecIt it=fv.begin();it!=fv.end();++it){
 		if(!FS.path_exist("$s_dir$"))
 			continue;
 
-		IReader* ird = FS.r_open(**it);
+		IReader* ird = r_open(**it);
 		LPCSTR pth = **it + xr_strlen(base);
 		
-		IWriter* iwr = FS.w_open("$s_dir$",pth);//**it);
+		IWriter* iwr = w_open("$s_dir$",pth);//**it);
 
 		iwr->w(ird->pointer(),ird->length());
-		FS.w_close(iwr);
-		FS.r_close(ird);
+		w_close(iwr);
+		r_close(ird);
 	}
 */
 }
@@ -324,11 +326,7 @@ void CLocatorAPI::_initialize	(u32 flags, LPCSTR target_folder)
 	// append application path
 
 	if (m_Flags.is(flScanAppRoot)){
-        string_path		app_root,fn,dr,di;
-        GetModuleFileName(GetModuleHandle(MODULE_NAME),fn,sizeof(fn));
-        _splitpath		(fn,dr,di,0,0);
-        strconcat		(app_root,dr,di);                                       
-		append_path		("$app_root$",app_root,0,FALSE);
+		append_path		("$app_root$",Core.ApplicationPath,0,FALSE);
     }
 	if (m_Flags.is(flTargetFolderOnly)){
 		append_path		("$target_folder$",target_folder,0,TRUE);
