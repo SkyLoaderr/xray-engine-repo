@@ -157,7 +157,7 @@ bool DXTCompress(LPCSTR out_name, BYTE* raw_data, DWORD w, DWORD h, DWORD pitch,
     nvOpt.bDitherColor		= !!(fmt->flag&STextureParams::flDitherColor);
     nvOpt.bDitherEachMIPLevel=!!(fmt->flag&STextureParams::flDitherEachMIPLevel);
     nvOpt.bGreyScale		= !!(fmt->flag&STextureParams::flGreyScale);
-    nvOpt.TextureType		= dTextureType2D;
+	nvOpt.TextureType		= (fmt->flag&STextureParams::flCubeMap)?dTextureTypeCube:dTextureType2D;
     switch(fmt->fmt){
     case STextureParams::tfDXT1: 	nvOpt.TextureFormat = dDXT1; 	break;
     case STextureParams::tfADXT1: 	nvOpt.TextureFormat = dDXT1a; 	break;
@@ -178,7 +178,7 @@ bool DXTCompress(LPCSTR out_name, BYTE* raw_data, DWORD w, DWORD h, DWORD pitch,
     case STextureParams::dMIPFilterAdvanced: break;
 	}
 //-------------------
-
+ 
 	if ((fmt->flag&STextureParams::flGenerateMipMaps)&&((STextureParams::dMIPFilterAdvanced==fmt->mip_filter)||(fmt->flag&STextureParams::flFadeToColor)||(fmt->flag&STextureParams::flFadeToAlpha))){
 		nvOpt.MipMapType=dUseExistingMipMaps;
 
