@@ -48,3 +48,6 @@ chugai_scout_base      = chugai_actions + 30
 zmey_actions = stalker_ids.action_script + 10000
 zmey_action_guard_activity = zmey_actions + 1
 zmey_guard_base     = zmey_actions + 0
+
+-- Æåíÿ 
+jon_actions = zmey_actions + 1024
