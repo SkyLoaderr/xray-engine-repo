@@ -12,7 +12,6 @@
 #include "bone.h"
 #include "motion.h"
 #include "ui_main.h"
-#include "MgcCont3DBox.h"
 
 CObjectOGFCollectorPacked::CObjectOGFCollectorPacked(const Fbox &bb, int apx_vertices, int apx_faces)
 {
@@ -98,16 +97,6 @@ void CObjectOGFCollectorPacked::ComputeBounding()
 //        r_it->set			(v_it->P);
         m_Box.modify		(v_it->P);
     }
-/*
-    // compute OBB
-    if (split_verts.size()<3) { m_OBB.invalidate(); return; }
-    Mgc::Box3	BOX			= Mgc::ContOrientedBox(split_verts.size(), (const Mgc::Vector3*) split_verts.begin());
-    m_OBB.m_rotate.i.set	(BOX.Axis(0));
-    m_OBB.m_rotate.j.set	(BOX.Axis(1));
-    m_OBB.m_rotate.k.set	(BOX.Axis(2));
-    m_OBB.m_translate.set	(BOX.Center());
-    m_OBB.m_halfsize.set	(BOX.Extents()[0],BOX.Extents()[1],BOX.Extents()[2]);
-*/
 }
 //----------------------------------------------------
 

@@ -209,6 +209,11 @@ void ComputeOBB(Fobb &B, FvectorVec& V)
     B.m_rotate.i.set	(BOX.Axis(0));
     B.m_rotate.j.set	(BOX.Axis(1));
     B.m_rotate.k.set	(BOX.Axis(2));
+
+    // Normalize rotation matrix (были проблемы ContOrientedBox - выдает левую матрицу)
+    B.m_rotate.i.crossproduct(B.m_rotate.j,B.m_rotate.k);
+    B.m_rotate.j.crossproduct(B.m_rotate.k,B.m_rotate.i);
+
     B.m_translate.set	(BOX.Center());
     B.m_halfsize.set	(BOX.Extents()[0],BOX.Extents()[1],BOX.Extents()[2]);
 }

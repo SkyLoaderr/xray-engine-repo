@@ -8,6 +8,8 @@
 
 //------------------------------------------------------------------------------
 
+Fobb M_OBB;
+
 //------------------------------------------------------------------------------
 void __fastcall object_Normal_0(EScene::mapObject_Node *N){ (N->val)->Render( 0, false ); }
 void __fastcall object_Normal_1(EScene::mapObject_Node *N){ (N->val)->Render( 1, false ); }
@@ -142,6 +144,22 @@ void EScene::Render( const Fmatrix& camera )
     SceneMToolsIt s_it 	= scene_tools.begin();
     SceneMToolsIt s_end	= scene_tools.end();
     for (; s_it!=s_end; s_it++) (*s_it)->AfterRender();
+
+//    DU.DrawOBB(Fidentity,M_OBB,0xFF808080,0xFF000000);
+    Fmatrix mmm1,mmm2;
+    M_OBB.xform_get(mmm1);
+
+    mmm2=mmm1;
+    mmm2.i.crossproduct			(mmm2.j,mmm2.k);
+//		vRight.crossproduct		(vNormal,vDirection);
+    mmm2.j.crossproduct			(mmm2.k,mmm2.i);
+//		vNormal.crossproduct	(vDirection,vRight);
+    
+    Fvector xyz;
+    mmm2.getXYZ(xyz);
+    mmm2.setXYZ(xyz);
+    
+    RCache.dbg_DrawOBB(mmm1,M_OBB.m_halfsize,0xFF00FF00);
 }
 //------------------------------------------------------------------------------
 
