@@ -1,0 +1,214 @@
+[m_snork_attack_params]
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, bottom, top ) |	Test Dist
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;Bite
+stand_attack_0 =	  	0.30,		15,	      200,        0.0, 0.5, 0.5,	 -1.6, 1.6, -1.6, 1.6,					  3.2
+;Bite2
+stand_attack_1 =	  	0.30,		15,	      220,        0.0, 0.5, 0.5,	 -1.6, 1.6, -1.6, 1.6,					  3.2
+;Right Leg Attack
+stand_attack_2 =	  	0.30,		25,	      325,        0.0, 1.0, 2.0,	 -1.6, 1.6, -1.6, 1.6,					  3.2
+
+
+[m_snork_attack_effector]
+
+duality_h			= 0.05;0.01
+duality_v			= 0.02;0.01
+blur				= 0.01
+gray				= 0.5
+noise_intensity		= 0.0
+noise_grain			= 1
+noise_fps			= 30
+color_base			= 0.65,0.15,0.1
+color_gray			= 0.333,0.333,0.333
+color_add			= 0,0,0
+time				= 0.30
+time_attack			= 0.05				; fade in
+time_release	    = 0.15				; fade out
+
+; camera effects
+ce_time				= 0.35				; time 
+ce_amplitude		= 10				; head shake after hit
+ce_period_number	= 2.0				; camera shake times
+ce_power			= 2.5; 2.0			; power 
+
+[m_snork_step_params]			   
+;-------------------------------------------------------------------------------------------------------------
+;	anim			| Cycles | time1 | power1 | time2 | power2 | time3 | power3 | time4 | power4 |
+;-------------------------------------------------------------------------------------------------------------
+stand_walk_fwd_0 	=	  5,    0.01,   1,		 0.5,     0.7,    0.15,   1.0,     0.5,   1.0
+stand_walk_dmg_0	=  	  4,	0.2,    1,	     0.25,    0.7,    0.5,    1.0,     0.7,   1.0
+stand_run_fwd_0	 	=  	  6,	0.01,   1,	     0.05,    0.7,    0.2,    1.0,     0.2,   0.2
+stand_run_dmg_0		=	  4,	0.2,    1,	     0.25,    0.7,    0.7,    1.0,     0.7,   1.0
+stand_steal_0		=	  1,	0.2,    1,	     0.25,    0.7,    0.7,    1.0,     0.7,   1.0
+stand_drag_0		=	  1,	0.2,    1,	     0.25,    0.7,    0.7,    1.0,     0.7,   1.0
+
+[m_snork_e]
+GroupControlSection		= spawn_group
+$spawn				= "monsters\snork"					 ; option for Level Editor
+$npc					= on								 ; option for Level Editor
+$prefetch 				= 16
+Scheduled				= on								 ; option for ALife Simulator
+Human		     		= off								 ; option for ALife Simulator
+Health					= 400								 ; option for ALife Simulator
+MinSpeed				= 1.0								 ; option for ALife Simulator
+MaxSpeed				= 5.0								 ; option for ALife Simulator
+going_speed			= 4.5								 ; option for ALife Simulator
+search_speed			= 1.5						         ; option for ALife Simulator
+visual				= monsters\mutant_boar\mutant_boar
+MaxHealthValue		    	= 200								 ; range [0..200]
+DynamicObjectsCount		= 32
+
+cform					 = skeleton					; collision class
+class					 = AI_BOAR					; AI class
+
+bone_torso				= bip01_spine1 			; bone name
+bone_head				= bip01_head				; bone name
+bone_fire				= bip01_head				; bone name
+weapon_usage			= 0						; boolean
+
+ph_box0_center 			= 0.0,  0.9,  0.0
+ph_box0_size 			= 0.35, 0.9,  0.35
+ph_box1_center 			= 0.0,  0.6,  0.0
+ph_box1_size 			= 0.40, 0.6,  0.40
+ph_crash_speed_min		= 16
+ph_crash_speed_max		= 30
+ph_mass 				= 110.
+
+ph_skeleton_airr_lin_factor			= 1.0
+ph_skeleton_airr_ang_factor			= 1.0
+ph_skeleton_hinger_factor1			= 1
+ph_skeleton_ddelay	     			= 20
+ph_skel_fatal_impulse_factor		= 8.0
+ph_after_death_velocity_factor		= 1.35
+ph_skel_shot_up_factor				= .8f
+
+SoundThreshold						= 0.06             ; range [0..1]
+
+;Field of view, look and hear distance
+EyeFov								= 90
+eye_range							= 50	
+max_hear_dist						= 60
+
+; speed factors			linear | angular_real | angular_path | min	 |  max
+Velocity_Stand			= 0,		1.4,			1.4,		1,		1	
+Velocity_RunFwdNormal	= 7.0,		3.5,			3.5,		0.4,	1	
+Velocity_RunFwdDamaged	= 4.5,		3.0,			3.0,		0.2,	1
+Velocity_WalkFwdDamaged	= 1.3,		3.0,			3.0,		0.2,	2.0	
+Velocity_WalkFwdNormal	= 1.75,		2.5,			2.5,		0.02,	3.0	
+Velocity_Drag			= 1.0,		3.0,			3.0,		1,		1
+Velocity_Steal			= 1.5,		3.0,			3.0,		1,		1
+
+; acceleration
+Accel_Generic			= 1.5
+Accel_Calm				= 2.5
+Accel_Aggressive		= 10
+
+;attack parameters
+MinAttackDist			= 1.7	;0.5
+MaxAttackDist			= 2.5 ;2.9	;3.8
+as_min_dist				= 0.4
+as_step					= 0.5
+hit_type				= wound				; type of attack
+
+transparency_threshold  = 0.25
+
+
+DayTime_Begin			= 0			; эрўрыр фэ  фы  ьюэёЄЁр
+DayTime_End				= 21		; ъюэхЎ фэ  фы  ьюэёЄЁр
+Min_Satiety				= 0.4		; ьшэ. эюЁьр ёvЄюёЄш (ьхэ№°х - єцх уюыюфэvщ)
+Max_Satiety				= 1.0		; ьръё. эюЁьр ёvЄюёЄш (сюы№°х - юўхэ№ ёvЄvщ)
+
+distance_to_corpse		= 1.2		; фшёЄ. фю ЄЁєяр, яЁш ъюЄюЁющ юэ яхЁхїюфшЄ т ёюёЄю эшх хфv
+
+
+;                           fSearchRange,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
+selector_free_hunting    =      20.0,            20.0,                 1000.0,                 0.0,               10000.0,               1000.0,               10000.0,      
+;                           fSearchRange,fCoverFromEnemyWeight,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
+selector_cover           =      20.0,            -1000.0,                30.0,                 0.0,                  0.0,              100000.0,             100000.0,               1000.0,
+selector_hear_sound		 =      20.0,            1.0,				1000.0,              0.0,               0.0,              1000.0,               10000.0,      
+
+selector_getaway		 =      20.0,            20.0,                1000.0,             0.0,               10000.0,		  1000.0,				10000.0,      
+selector_approach		 =      20.0,            1.0,                 1000.0,             0.0,               0.0,              1000.0,				10000.0,      
+;							  fSearchRange,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
+selector_walk_around	 =      20.0,            6.0,                 1000.0,             4.0,               5000.0,					8.0,				5000.0,      
+
+terrain					 = 255,255,255,255,30,40
+
+;entity condition
+
+; entity condition
+satiety_v 				= 0.001				;0.01			;скорость уменьшения сытости со временем
+radiation_v 			= 0.00001		;0.004				;скорость уменьшения радиации
+satiety_power_v 		= 0.005		;0.01					;увеличение силы при уменьшении сытости 
+satiety_health_v 		= 0.001	;0.03						;увеличение здоровья при уменьшении сытости 
+satiety_critical 		= 0		;0.25						;критическое значения сытости (в процентах от 0..1) когда здоровье начианает уменьшаться
+radiation_health_v 		= 0.01	;0.006						;уменьшение здоровья при воздействии радиации
+bleeding_v 				= 0.05			;0.02				;потеря крови при максимальной ране
+wound_incarnation_v 	= 0.04	;0.001						;скорость заживания раны 
+morale_v				= 0.01								;скорость восстановления морали
+health_hit_part 		= 0.6		;0.8					;процент хита, уходящий на отнимание здоровья
+power_hit_part 			= 0.6		;0.9					;процент хита, уходящий на отнимание силы
+
+;Immunities 
+burn_immunity			= 0.8								;коэффициенты иммунитета 
+strike_immunity			= 0.8
+shock_immunity			= 0.8
+wound_immunity			= 0.80	;0.75	;1.0		
+radiation_immunity		= 0.01	;0.5
+telepatic_immunity		= 1.0
+chemical_burn_immunity	= 0.8
+explosion_immunity		= 0.8
+fire_wound_immunity		= 0.4
+
+;Health from which to play injured animation
+DamagedThreshold		= 0.2
+
+;Sleep Settings
+sleep_health			= 1.0		;1.5				;ъю¤ЇЇшЎшхэЄv ёъюЁюёЄхщ шчьхэхэш  ярЁрьхЄЁют тю тЁхь  ёэр
+sleep_power				= 1.0		;1.5
+sleep_satiety			= 1.0		;0.8
+sleep_radiation			= 1.0	;1.1
+
+;Eat settings
+eat_freq				=	5.0							; ўрёЄюЄр єъєёют т ёхъ
+eat_slice				=	0.01						; єтхышўхэшх ёvЄюёЄш яЁш 1 єъєёх
+eat_slice_weight		=	10.0						; єьхэ№°хэшх хфv є ЄЁєяр
+
+
+;Morale
+MoraleSuccessAttackQuant	= 0.3;
+MoraleDeathQuant			= -0.3;
+MoraleFearQuant				= -0.002
+MoraleRestoreQuant			= 0.001
+MoraleBroadcastDistance		= 10.0
+
+;Sounds
+sound_idle				= monsters\boar\boar_idle_			; idle_
+sound_eat				= monsters\boar\boar_eat_			; eat_
+sound_attack			= monsters\boar\boar_aggressive_	; attack_
+sound_attack_hit		= monsters\boar\attack_hit_
+sound_take_damage		= monsters\boar\boar_pain_			; hit_
+sound_die				= monsters\boar\boar_death_			; die_
+sound_bkgnd				= monsters\biting\def_
+sound_threaten			= monsters\boar\boar_aggressive_	; threaten_
+sound_landing			= monsters\boar\landing_
+sound_steal				= monsters\biting\def_
+sound_panic				= monsters\boar\boar_panic_			; hit_
+sound_growling			= monsters\biting\def_
+
+;Frequency of sounds to be played
+idle_sound_delay		= 28000
+eat_sound_delay			= 3000
+attack_sound_delay		= 4000
+
+material				= creatures\hoof
+DynamicObjectsCount		= 32
+
+squad_attack_algorithm	= 1
+attack_effector			= m_boar_attack_effector
+
+attack_params			= m_boar_attack_params
+step_params				= m_boar_step_params
+
+LegsCount				= 4
