@@ -355,7 +355,7 @@ void CSE_ALifeHumanAbstract::attach_available_ammo(CSE_ALifeItemWeapon *tpALifeI
 			else
 				children.push_back(l_tpALifeItemAmmo->ID);
 			l_dwCount++;
-			if (l_dwCount > MAX_AMMO_ATTACH_COUNT)
+			if (l_dwCount >= MAX_AMMO_ATTACH_COUNT)
 				break;
 		}
 	}
@@ -686,7 +686,7 @@ int  CSE_ALifeHumanAbstract::ifChooseFood(OBJECT_VECTOR *tpObjectVector)
 			else
 				children.push_back((*I)->ID);
 			l_dwCount++;
-			if (l_dwCount > MAX_ITEM_FOOD_COUNT)
+			if (l_dwCount >= MAX_ITEM_FOOD_COUNT)
 				break;
 		}
 	}
@@ -720,7 +720,7 @@ int  CSE_ALifeHumanAbstract::ifChooseMedikit(OBJECT_VECTOR *tpObjectVector)
 			else
 				children.push_back((*I)->ID);
 			l_dwCount++;
-			if (l_dwCount > MAX_ITEM_MEDIKIT_COUNT)
+			if (l_dwCount >= MAX_ITEM_MEDIKIT_COUNT)
 				break;
 		}
 	}
