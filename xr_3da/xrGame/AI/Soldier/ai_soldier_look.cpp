@@ -332,42 +332,58 @@ void CAI_Soldier::soundEvent(CObject* who, int eType, Fvector& Position, float p
 	#endif
 
 	power *= ffGetStartVolume(ESoundTypes(eType));
+							   
+	DWORD dwTime = Level().timeServer();
 	
-	if (who) {
-		if (this != who) {
-			CEntity *tpEntity = dynamic_cast<CEntity *>(who);
-			if (tpEntity && !bfCheckForVisibility(tpEntity)) {
-				CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster *>(who);
-				if (tpCustomMonster) {
-					for (int j=0; j<tpaDynamicObjects.size(); j++)
-						if (tpCustomMonster == tpaDynamicObjects[j].tpEntity)
-							break;
-					
-					if (j >= tpaDynamicObjects.size()) {
-						//
+	if (this != who) {
+		int j = tpaDynamicObjects.size();
+		CEntity *tpEntity = dynamic_cast<CEntity *>(who);
+		if (!tpEntity || !bfCheckForVisibility(tpEntity)) {
+			for ( j=0; j<tpaDynamicSounds.size(); j++)
+				if (who == tpaDynamicSounds[j].tpEntity) {
+					tpaDynamicSounds[j].eSoundType = ESoundTypes(eType);
+					tpaDynamicSounds[j].dwTime = dwTime;
+					tpaDynamicSounds[j].fPower = power;
+					tpaDynamicSounds[j].dwUpdateCount++;
+					tpaDynamicSounds[j].tSavedPosition = Position;
+					tpaDynamicSounds[j].tMySavedPosition = vPosition;
+					tpaDynamicSounds[j].tpEntity = tpEntity;
+				}
+			if (j >= tpaDynamicSounds.size()) {
+				if (tpaDynamicSounds.size() >= m_dwMaxDynamicSoundsCount)	{
+					DWORD dwBest = dwTime + 1, dwIndex = DWORD(-1);
+					for (int j=0; j<tpaDynamicSounds.size(); j++)
+						if (tpaDynamicSounds[j].dwTime < dwBest) {
+							dwIndex = j;
+							dwBest = tpaDynamicSounds[j].dwTime;
+						}
+					if (dwIndex < tpaDynamicSounds.size()) {
+						tpaDynamicSounds[dwIndex].eSoundType = ESoundTypes(eType);
+						tpaDynamicSounds[dwIndex].dwTime = dwTime;
+						tpaDynamicSounds[dwIndex].fPower = power;
+						tpaDynamicSounds[dwIndex].dwUpdateCount = 1;
+						tpaDynamicSounds[dwIndex].tSavedPosition = Position;
+						tpaDynamicSounds[dwIndex].tMySavedPosition = vPosition;
+						tpaDynamicSounds[dwIndex].tpEntity = tpEntity;
 					}
 				}
-			}
-			else {
-				CActor *tpActor = dynamic_cast<CActor *>(who);
-				if (tpActor) {
-					for (int j=0; j<tpaDynamicObjects.size(); j++)
-						if (tpActor == tpaDynamicObjects[j].tpEntity)
-							break;
-					
-					if (j >= tpaDynamicObjects.size()) {
-						//
-					}
+				else {
+					SDynamicSound tDynamicSound;
+					tDynamicSound.eSoundType = ESoundTypes(eType);
+					tDynamicSound.dwTime = dwTime;
+					tDynamicSound.fPower = power;
+					tDynamicSound.dwUpdateCount = 1;
+					tDynamicSound.tSavedPosition = Position;
+					tDynamicSound.tMySavedPosition = vPosition;
+					tDynamicSound.tpEntity = tpEntity;
+					tpaDynamicSounds.push_back(tDynamicSound);
 				}
 			}
 		}
 	}
-	else {
-		//
-	}
 	// computing total power of my own sounds for computing tha ability to hear the others
 	if (m_fSoundPower < power) {
 		m_fSoundPower = m_fStartPower = power;
-		m_dwSoundUpdate = Level().timeServer();
+		m_dwSoundUpdate = dwTime;
 	}
 }
