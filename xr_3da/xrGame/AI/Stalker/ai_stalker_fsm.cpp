@@ -233,7 +233,7 @@ void CAI_Stalker::Panic()
 	else
         vfSetParameters				(&m_tSelectorFreeHunting,0,true,eWeaponStateIdle,ePathTypeStraightDodge,eBodyStateStand,eMovementTypeRun,eStateTypeDanger,eLookTypeDirection);
 
-	if (bfIfHuman()) {
+	if (bfIfHuman(m_tSavedEnemy)) {
 		switch (m_tActionState) {
 			case eActionStateWatchGo : {
 				if (m_dwActionStartTime < Level().timeServer())
@@ -523,14 +523,14 @@ void CAI_Stalker::SearchEnemy()
 			}
 			bool bB = m_bStateChanged && !::Random.randI(2);
 			if (bB) {
-				Msg("Going to the position being anticipated");
-				SSearchPlace tSearchPlace;
-				tSearchPlace.dwSearched = 0;
-				tSearchPlace.dwNodeID = m_dwSavedEnemyNodeID;
-				tSearchPlace.fCost = 0;
-				tSearchPlace.dwGroup = Group.m_tpaSuspiciousGroups.size();
-				Group.m_tpaSuspiciousGroups.push_back(false);
-				Group.m_tpaSuspiciousNodes.push_back(tSearchPlace);
+				//Msg("Going to the position being anticipated");
+//				SSearchPlace tSearchPlace;
+//				tSearchPlace.dwSearched = 0;
+//				tSearchPlace.dwNodeID = m_dwSavedEnemyNodeID;
+//				tSearchPlace.fCost = 0;
+//				tSearchPlace.dwGroup = Group.m_tpaSuspiciousGroups.size();
+//				Group.m_tpaSuspiciousGroups.push_back(false);
+//				Group.m_tpaSuspiciousNodes.push_back(tSearchPlace);
 			}
 			if (bB || ((getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,m_tSavedEnemyPosition) != -1) && (bfIf_I_SeePosition(m_tSavedEnemyPosition))) || (AI_NodeID == m_dwSavedEnemyNodeID))
 				m_tActionState = eActionStateWatchGo;
@@ -953,7 +953,7 @@ void CAI_Stalker::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 		AI_Path.Nodes.clear();
 		AI_Path.TravelPath.clear();
 		m_tActionState = !::Random.randI(1) ? eActionStateWatch : eActionStateDontWatch;
-		m_dwActionStartTime = Level().timeServer() + ::Random.randI(10000,20000);
+		m_dwActionStartTime = Level().timeServer() + ::Random.randI(30000,50000);
 	}
 
 	AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
