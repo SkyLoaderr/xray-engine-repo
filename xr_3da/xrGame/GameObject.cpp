@@ -65,7 +65,6 @@ void CGameObject::init			()
 void CGameObject::Load(LPCSTR section)
 {
 	inherited::Load			(section);
-	CPrefetchManager::Load	(section);
 	ISpatial*		self				= smart_cast<ISpatial*> (this);
 	if (self)	{
 		// #pragma todo("to Dima: All objects are visible for AI ???")

@@ -7,7 +7,6 @@
 #pragma once
 
 #include "../xr_object.h"
-#include "prefetch_manager.h"
 #include "xrServer_Space.h"
 #include "alife_space.h"
 #include "UsableScriptObject.h"
@@ -43,7 +42,6 @@ class CScriptCallbackEx;
 
 class CGameObject : 
 	public CObject, 
-	public CPrefetchManager,
 	public CUsableScriptObject,
 	public CScriptBinder
 {
