@@ -5,7 +5,7 @@ const float							DSM_distance_1	= 15.f;
 const float							DSM_distance_2	= 100.f;
 const float							DSM_d_range		= 100.f;
 
-const u32							PSM_size		= 512;
+const u32							PSM_size		= 1024;
 const float							PSM_near_plane	= .05f;
 
 class CLight_Render_Direct
