@@ -35,9 +35,7 @@ void CAI_Chimera::vfValidatePosition(Fvector &tPosition, u32 dwNodeID)
 // «рение, слух, веро€тность победы, выгодность противника
 void CAI_Chimera::vfUpdateParameters()
 {
-	xr_vector<CObject*> Visible_Objects;
-	feel_vision_get(Visible_Objects);
-	UpdateMemory(Visible_Objects);
+	UpdateMemory();
 
 	//------------------------------------
 	// слух
@@ -58,7 +56,7 @@ void CAI_Chimera::vfUpdateParameters()
 	objVisible			&VisibleEnemies = Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
 
 	VisionElem ve;
-	if (GetEnemyFromMem(ve, Position())) {
+	if (GetEnemy(ve)) {
 		VisibleEnemies.insert(ve.obj);
 
 		// определить, видит ли мен€ враг

@@ -134,8 +134,8 @@ void CBitingRest::Replanning()
 		m_tAction = ACTION_TURN;
 		pMonster->r_torso_target.yaw = angle_normalize(pMonster->r_torso_target.yaw + PI_DIV_2);
 
-		dwMinRand = 800;
-		dwMaxRand = 900;
+		dwMinRand = 1200;
+		dwMaxRand = 1500;
 
 	}
 	
@@ -186,7 +186,7 @@ void CBitingAttack::Init()
 
 	// Получить врага
 	VisionElem ve;
-	if (!pMonster->GetEnemyFromMem(ve,pMonster->Position())) R_ASSERT(false);
+	if (!pMonster->GetEnemy(ve)) R_ASSERT(false);
 	pEnemy = ve.obj;
 
 	// Определение класса врага
@@ -209,6 +209,14 @@ void CBitingAttack::Init()
 
 void CBitingAttack::Run()
 {
+	// Если враг изменился, инициализировать состояние
+	VisionElem ve;
+	if (!pMonster->GetEnemy(ve)) R_ASSERT(false);
+	if (pEnemy != ve.obj) {
+		Reset();
+		Init();
+	}
+
 	// Выбор состояния
 	bool bAttackMelee = (m_tAction == ACTION_ATTACK_MELEE);
 
@@ -228,12 +236,8 @@ void CBitingAttack::Run()
 
 			break;
 		case ACTION_ATTACK_MELEE:		// атаковать вплотную
-			if (m_bAttackRat)
-
-				pMonster->Motion.m_tParams.SetParams(eMotionAttackRat,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-			else 
-				pMonster->Motion.m_tParams.SetParams(eMotionAttack,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);			
-				
+			if (m_bAttackRat) pMonster->Motion.m_tParams.SetParams(eMotionAttackRat,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+			else pMonster->Motion.m_tParams.SetParams(eMotionAttack,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);			
 			pMonster->Motion.m_tTurn.Clear();
 			break;
 	}
@@ -277,27 +281,31 @@ void CBitingEat::Init()
 
 	// Получить инфо о трупе
 	VisionElem ve;
-	if (!pMonster->GetCorpseFromMem(ve,pMonster->Position())) R_ASSERT(false);
+	if (!pMonster->GetCorpse(ve)) R_ASSERT(false);
 	pCorpse = ve.obj;
 
 	CAI_Rat	*tpRat = dynamic_cast<CAI_Rat *>(pCorpse);
 	m_fDistToCorpse = ((tpRat)? 1.0f : 1.5f);
 
-	SetInertia(27000);
 	// Test
 	Msg("_ Eat Init _");
-
 }
 
 void CBitingEat::Run()
 {
+	// Если новый труп, снова инициализировать состояние 
+	VisionElem ve;
+	if (!pMonster->GetEnemy(ve)) R_ASSERT(false);
+	if (pCorpse != ve.obj) {
+		Reset();
+		Init();
+	}
+	
 	bool bStartEating = (m_tAction == ACTION_RUN);
 
 	// Выбор состояния
-	if (pCorpse->Position().distance_to(pMonster->Position()) < m_fDistToCorpse) 
-		m_tAction = ACTION_EAT;
-	else 
-		m_tAction = ACTION_RUN;
+	if (pCorpse->Position().distance_to(pMonster->Position()) < m_fDistToCorpse) m_tAction = ACTION_EAT;
+	else m_tAction = ACTION_RUN;
 
 	bStartEating = bStartEating && (m_tAction == ACTION_EAT);
 	if (bStartEating) {	// если монстр подбежал к трупу, необходимо отыграть проверку трупа и лечь
@@ -309,11 +317,7 @@ void CBitingEat::Run()
 	// Выполнение состояния
 	switch (m_tAction) {
 		case ACTION_RUN:	// бежать к трупу
-//
-//			if (pMonster->m_tPathState != ePathStateBuilt) {
-//				pMonster->AI_Path.DestNode = pCorpse->AI_NodeID;
-//				pMonster->vfChoosePointAndBuildPath(0,&pCorpse->Position(), true, 0);
-//			}
+
 			pMonster->AI_Path.DestNode = pCorpse->AI_NodeID;
 			pMonster->vfChoosePointAndBuildPath(0,&pCorpse->Position(), true, 0);
 
@@ -363,7 +367,7 @@ void CBitingHide::Init()
 {
 	inherited::Init();
 
-	if (!pMonster->GetEnemyFromMem(m_tEnemy,pMonster->Position())) R_ASSERT(false);
+	if (!pMonster->GetEnemy(m_tEnemy)) R_ASSERT(false);
 
 	SetInertia(30000);
 
@@ -424,7 +428,7 @@ void CBitingDetour::Init()
 {
 	inherited::Init();
 
-	if (!pMonster->GetEnemyFromMem(m_tEnemy,pMonster->Position())) R_ASSERT(false);
+	if (!pMonster->GetEnemy(m_tEnemy)) R_ASSERT(false);
 	pMonster->m_tPathType = ePathTypeStraight;
 
 	SetInertia(10000);
@@ -438,7 +442,7 @@ void CBitingDetour::Run()
 	Msg("--- DETOUR ---");
 
 	VisionElem tempEnemy;
-	if (pMonster->GetEnemyFromMem(tempEnemy,pMonster->Position())) {
+	if (pMonster->GetEnemy(tempEnemy)) {
 		m_tEnemy = tempEnemy;
 		SetInertia(10000);
 	}
@@ -489,7 +493,7 @@ void CBitingPanic::Init()
 {
 	inherited::Init();
 
-	if (!pMonster->GetEnemyFromMem(m_tEnemy,pMonster->Position())) R_ASSERT(false);
+	if (!pMonster->GetEnemy(m_tEnemy)) R_ASSERT(false);
 	pMonster->m_tPathType = ePathTypeStraight;
 
 	SetInertia(30000);

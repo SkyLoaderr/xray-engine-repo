@@ -350,9 +350,6 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 
 	setEnabled				(E->s_flags.is(M_SPAWN_OBJECT_LOCAL));
 
-	setVisible					(TRUE);
-	setEnabled					(TRUE);
-
 	patch_frame				= 0;
 	patch_position.set		(Position());
 

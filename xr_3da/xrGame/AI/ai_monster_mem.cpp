@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "..\\CustomMonster.h"
 #include "ai_monster_mem.h"
+#include "..\\actor.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CSoundMemory implementation
@@ -101,7 +102,10 @@ void CSoundMemory::UpdateHearing(TTime dt)
 void CVisionMemory::Init(TTime mem_time) 
 {
 	MemoryTime			= mem_time;
-	EnemySelected.obj	= 0;
+	Selected.obj		= 0;
+	
+	pMonster = dynamic_cast<CCustomMonster *>(this);
+	if (!pMonster) R_ASSERT("Cannot dynamic_cast from CVisionMemory to CCustomMonster!");
 }
 void CVisionMemory::Deinit() 
 {
@@ -111,28 +115,30 @@ void CVisionMemory::Deinit()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Обработка видимой информации, обновление и классификация видимых объектов
-void CVisionMemory::UpdateVision(TTime dt, xr_vector<CObject*> &Visible_Objects) 
+// Заполняет массивы Objects и Enemies
+void CVisionMemory::UpdateVision(TTime dt) 
 {
 	CurrentTime	= dt;
-	
+
+	// получить список видимых объектов
+	xr_vector<CObject*> Visible_Objects;
+	xr_vector<CObject*>::iterator I, E;
+	pMonster->feel_vision_get(Visible_Objects);
+
+	I = Visible_Objects.begin();
+	E = Visible_Objects.end();
+
 	VisionElem ve;
 
-	xr_vector<CObject*>::iterator I, E;
-	I= Visible_Objects.begin();
-	E = Visible_Objects.end();
-	
 	for (; I!=E; I++) {
 
-		if ((*I)->CLS_ID!=CLSID_ENTITY)	continue;
-
 		CEntityAlive *pE = dynamic_cast<CEntityAlive *>(*I);
-		if (!pE) continue;
-		
+		if (!pE) R_ASSERT("Visible object is not of class CEntityAlive. Check feel_vision_isRelevant!");
+
 		ve.Set(pE,CurrentTime);
 
-		if (!pE->g_Alive()) {
-			AddObject(ve);
-		} else AddEnemy(ve);
+		if (!pE->g_Alive()) AddObject(ve);
+		else AddEnemy(ve);
 	}
 
 	// удалить старые объекты
@@ -142,15 +148,20 @@ void CVisionMemory::UpdateVision(TTime dt, xr_vector<CObject*> &Visible_Objects)
 			Objects.pop_back();
 		}
 	}
+	// удалить старых врагов и тех, расстояние до которых > 30м
 	for (i = 0; i<Enemies.size(); i++){
-		if ((Enemies[i].time < CurrentTime - MemoryTime) || (!Enemies[i].obj->g_Alive()))  {
-			//|| ((Enemies[i].obj->Position().distance_to(pM->Position()) > 30) && (Enemies[i].time != CurrentTime))){
+		if ((Enemies[i].time < CurrentTime - MemoryTime) || (!Enemies[i].obj->g_Alive()) || 
+			((Enemies[i].obj->Position().distance_to(pMonster->Position()) > 30) && (Enemies[i].time != CurrentTime))){
 			Enemies[i] = Enemies.back();
 			Enemies.pop_back();
 		}
 	}
 
-	if (EnemySelected.obj && ((EnemySelected.obj->CLS_ID !=CLSID_ENTITY) || !EnemySelected.obj->g_Alive())) EnemySelected.obj = 0;
+	// обновить Selected
+	if (IsEnemy()) SelectEnemy();
+	else if (IsObject()) SelectCorpse();
+	else Selected.obj = 0;
+
 }
  
 
@@ -159,7 +170,6 @@ void CVisionMemory::AddObject(const VisionElem &ve)
 	xr_vector<VisionElem>::iterator res;
 
 	res = std::find(Objects.begin(), Objects.end(), ve);
-	
 	if (res == Objects.end()) Objects.push_back(ve);
 	else *res = ve;
 }
@@ -169,15 +179,47 @@ void CVisionMemory::AddEnemy(const VisionElem &ve)
 	xr_vector<VisionElem>::iterator res;
 
 	res = std::find(Enemies.begin(), Enemies.end(), ve);
-
 	if (res == Enemies.end()) Enemies.push_back(ve);
 	else *res = ve;
 }
 
 
+void CVisionMemory::SelectEnemy()
+{
+	if (Selected.obj) {
+		// враг ещё живой?
+		if (!Selected.obj->g_Alive()) Selected.obj = 0;
+
+		// Выбранный враг давно исчез из поля зрения?
+		if (Selected.time + MemoryTime < CurrentTime) Selected.obj = 0;
+
+		// пришло время перевыбора врага
+		if (Selected.time + TIME_TO_RESELECT_ENEMY < CurrentTime) Selected.obj = 0;
+	}
+
+	// Необходимо выбрать другого врага?
+	if (!Selected.obj) {
+		Selected = GetNearestObject();
+		Selected.time = CurrentTime;
+	}
+}
+
+void CVisionMemory::SelectCorpse()
+{
+	Selected = GetNearestObject(OBJECT);
+}
+
+bool CVisionMemory::Get(VisionElem &ve)
+{
+	if (!Selected.obj) return false;
+	else ve = Selected;
+	return true;
+}
+
+
 // Выбрать ближайший объект к позиции pos
 // массив Enemies/Objects (в зависимости от obj_type) не должен быть пустым!
-VisionElem &CVisionMemory::GetNearestObject(const Fvector &pos, EObjectType obj_type)
+VisionElem &CVisionMemory::GetNearestObject(EObjectType obj_type)
 {
 	float		optimal_val;
 	float		cur_val;
@@ -187,10 +229,10 @@ VisionElem &CVisionMemory::GetNearestObject(const Fvector &pos, EObjectType obj_
 	if (obj_type == ENEMY) ObjectsVector = &Enemies;
 	else ObjectsVector = &Objects;
 	
-	optimal_val = 1000 * pos.distance_to((*ObjectsVector)[index].position) * (CurrentTime - (*ObjectsVector)[index].time + 1);
+	optimal_val = 1000 * pMonster->Position().distance_to((*ObjectsVector)[index].position) * (CurrentTime - (*ObjectsVector)[index].time + 1);
 
 	for (u32 i=1; i < ObjectsVector->size(); i++) {
-		cur_val = 1000 * pos.distance_to((*ObjectsVector)[i].position) * (CurrentTime - (*ObjectsVector)[i].time + 1);
+		cur_val = 1000 * pMonster->Position().distance_to((*ObjectsVector)[i].position) * (CurrentTime - (*ObjectsVector)[i].time + 1);
 
 		if ( cur_val < optimal_val){
 			optimal_val = cur_val;
@@ -201,43 +243,14 @@ VisionElem &CVisionMemory::GetNearestObject(const Fvector &pos, EObjectType obj_
 }
 
 
-bool CVisionMemory::GetEnemyFromMem(VisionElem &ve, Fvector &my_pos)
-{
-	// Выбранный враг давно исчез из поля зрения?
-	if (EnemySelected.time + MemoryTime < CurrentTime) EnemySelected.obj = 0;
-
-	// Необходимо выбрать другого врага?
-	if ((!EnemySelected.obj || (EnemySelected.obj && (EnemySelected.time + TIME_TO_RESELECT_ENEMY < CurrentTime))) && IsEnemy()) {
-		
-		EnemySelected = GetNearestObject(my_pos);
-		EnemySelected.time = CurrentTime;
-	}
-	
-	ve = EnemySelected;
-	
-	if (EnemySelected.obj) return true;
-	return false;
-}
-
-bool CVisionMemory::GetCorpseFromMem(VisionElem &ve, Fvector &my_pos)
-{
-	if (!IsObject()) {
-		ve.obj = 0;
-		return false;
-	} 
-	ve = GetNearestObject(my_pos,OBJECT);
-
-	return true;
-}
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CMonsterMemory implementation
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CMonsterMemory::UpdateMemory(xr_vector<CObject*> &Visible_Objects)
+void CMonsterMemory::UpdateMemory()
 {
 	TTime curtime = Level().timeServer();
 
-	UpdateVision(curtime, Visible_Objects);
+	UpdateVision(curtime);
 	UpdateHearing(curtime);
 }
 

@@ -193,7 +193,7 @@ void CChimeraAttack::Init()
 
 	// Получить врага
 	VisionElem ve;
-	if (!pMonster->GetEnemyFromMem(ve, pMonster->Position())) R_ASSERT(false);
+	if (!pMonster->GetEnemy(ve)) R_ASSERT(false);
 	pEnemy = ve.obj;
 
 	// Определение класса врага
@@ -284,7 +284,7 @@ void CChimeraEat::Init()
 
 	// Получить инфо о трупе
 	VisionElem ve;
-	if (!pMonster->GetCorpseFromMem(ve, pMonster->Position())) R_ASSERT(false);
+	if (!pMonster->GetCorpse(ve)) R_ASSERT(false);
 	pCorpse = ve.obj;
 
 	CAI_Rat	*tpRat = dynamic_cast<CAI_Rat *>(pCorpse);
@@ -362,7 +362,7 @@ void CChimeraHide::Init()
 {
 	inherited::Init();
 
-	if (!pMonster->GetEnemyFromMem(m_tEnemy, pMonster->Position())) R_ASSERT(false);
+	if (!pMonster->GetEnemy(m_tEnemy)) R_ASSERT(false);
 	pMonster->m_tSelectorCover.m_fMaxEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + pMonster->m_tSelectorCover.m_fSearchRange;
 	pMonster->m_tSelectorCover.m_fOptEnemyDistance = pMonster->m_tSelectorCover.m_fMaxEnemyDistance;
 	pMonster->m_tSelectorCover.m_fMinEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + 3.f;
@@ -420,7 +420,7 @@ void CChimeraDetour::Init()
 {
 	inherited::Init();
 
-	if (!pMonster->GetEnemyFromMem(m_tEnemy,pMonster->Position())) R_ASSERT(false);
+	if (!pMonster->GetEnemy(m_tEnemy)) R_ASSERT(false);
 	pMonster->m_tPathType = ePathTypeStraight;
 
 	SetInertia(10000);
@@ -434,7 +434,7 @@ void CChimeraDetour::Run()
 	Msg("--- DETOUR ---");
 
 	VisionElem tempEnemy;
-	if (pMonster->GetEnemyFromMem(tempEnemy, pMonster->Position())) {
+	if (pMonster->GetEnemy(tempEnemy)) {
 		m_tEnemy = tempEnemy;
 		SetInertia(10000);
 	}
@@ -485,7 +485,7 @@ void CChimeraPanic::Init()
 {
 	inherited::Init();
 
-	if (!pMonster->GetEnemyFromMem(m_tEnemy,pMonster->Position())) R_ASSERT(false);
+	if (!pMonster->GetEnemy(m_tEnemy)) R_ASSERT(false);
 	pMonster->m_tPathType = ePathTypeStraight;
 
 	SetInertia(30000);

@@ -45,197 +45,7 @@ void CAI_Biting::vfSetMotionActionParams(AI_Biting::EBodyState l_body_state, AI_
 void CAI_Biting::vfSetParameters(EPathType path_type,IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, Fvector *tpPoint, bool moveback, bool bSelectorPath)
 {
 
-	//*
-//	if (_CAction.Active()) {
-//
-//		r_torso_target.yaw = _CAction.it->yaw;
-//		m_fCurSpeed = _CAction.it->speed;
-//		r_torso_speed = _CAction.it->r_speed;
-//		_CAction.Cycle(m_dwCurrentUpdate);
-//		return;
-//	}
-//	//**
-//
-//
-//
-//	//bool bMoveLeft = false;
-	bool bPathBuilt = false;
-//	
-//	m_tPathType = path_type;
-//	vfChoosePointAndBuildPath(tpNodeEvaluator,tpDesiredPosition, bSearchNode, bSelectorPath);
-//	bPathBuilt = AI_Path.TravelPath.size() && ((AI_Path.TravelPath.size() - 1) > AI_Path.TravelStart);
-//	
-//	bool caActive = _CA.Active();
-//	if (caActive) {
-//		r_torso_speed			= 0;		// угловая скорость
-//		m_fCurSpeed				= 0.0f;			// скорость движения
-//
-//		return;
-//	}
-//	if (!caActive && (m_tActionAnim == eActionIdle) && (m_tPostureAnim == ePostureLie) && (m_tActionType!=eActionTypeLie)) {
-//		_CA.Set(ePostureLie,eActionStandUp);
-//	}
 
-
-	// инициализация скоростей
-	r_torso_speed			= PI_DIV_2;		// угловая скорость
-	m_fCurSpeed				= 1.0f;			// скорость движения
-
-
-	// если путь выбран
-	if (bPathBuilt) {
-
-		// тип положения тела
-		switch (m_tBodyState) {
-			case eBodyStateStand : 	// стоит
-				break;
-			case eBodyStateSit : 	// сидит
-				break;
-			case eBodyStateLie : 	// ползёт
-				m_fCurSpeed *= tempCrouchFactor;
-				break;
-			default : NODEFAULT;
-		}
-
-		// тип движения
-		switch (m_tMovementType) {
-
-			case eMovementTypeWalk : 	// идёт
-
-				// состояние
-				switch (m_tStateType) {
-					case eStateTypeDanger : // ходьба при опасности
-						m_fCurSpeed *= tempWalkFactor;
-						break;
-
-					case eStateTypeNormal : // обычная ходьба
-						m_fCurSpeed *= tempWalkFreeFactor;
-						break;
-
-					case eStateTypePanic : // передвижение при панике
-						VERIFY(false);
-						break;
-				}
-				break;
-
-			case eMovementTypeRun :		// бежит
-				// состояние
-				switch (m_tStateType) { 
-					case eStateTypeDanger :		// бег при опасности
-						m_fCurSpeed *= tempRunFactor;
-						break;
-
-					case eStateTypeNormal :		// обычный бег
-						m_fCurSpeed *= tempRunFreeFactor;
-						break;
-
-					case eStateTypePanic :		// бег при панике
-						m_fCurSpeed *= tempPanicFactor;
-						break;
-				}
-				break;
-			default : m_fCurSpeed = 0.f;
-		} // switch movement
-	
-		if (!tpPoint) {
-			(moveback) ? SetReversedDirectionLook() : SetDirectionLook();
-		}
-	
-	} // if
-	else {		// если пути нет
-		m_fCurSpeed		= 0.f;
-
-		if (m_tActionType != eActionTypeAttack && m_tActionType != eActionTypeLie && 
-			!(m_tStateType == eStateTypePanic && m_tActionType == eActionTypeStand) && 
-			!(m_tStateType == eStateTypeDanger && m_tActionType == eActionTypeTurn)) 
-			vfSetMotionActionParams(eBodyStateStand, eMovementTypeStand, 
-									eMovementDirectionNone, eStateTypeNormal, eActionTypeStand);
-	}
-
-	// смотреть в точку tpPoint
-	if (tpPoint) {
-		if (m_dwPointCheckLastTime + m_dwPointCheckInterval < m_dwCurrentUpdate) {
-			m_dwPointCheckLastTime = m_dwCurrentUpdate;
-
-			Fvector tTemp;
-			Fvector tTemp2;
-			float pitch;
-
-			Center		(tTemp2);
-
-			tTemp.sub	(*tpPoint,tTemp2);
-			tTemp.getHP	(r_torso_target.yaw,pitch);
-			r_torso_target.yaw *= -1;
-
-			r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
-		}
-	}
-
-	bool bMoveLeft, bMoveRight;
-	bMoveLeft = bMoveRight = false;
-	if (!getAI().bfTooSmallAngle(r_torso_target.yaw,r_torso_current.yaw,min_angle)) {
-		// we need to turn
-		if (angle_normalize_signed(angle_normalize_signed(r_torso_current.yaw) - angle_normalize_signed(r_torso_target.yaw)) > 0)
-			// turn left
-			bMoveLeft = true;
-		else
-			// turn right
-			bMoveRight = true;
-	}
-
-	// необходим поворот?
-	if (bMoveLeft || bMoveRight) {
-		if (m_tMovementType == eMovementTypeRun) { 	// поворот на бегу
-
-			r_torso_speed	= PI;
-			m_fCurSpeed		= PI;
-
-			if (!getAI().bfTooSmallAngle(r_torso_target.yaw,r_torso_current.yaw,min_angle * 2))
-				if (bMoveLeft) vfSetMotionActionParams(eBodyStateStand, eMovementTypeRun, eMovementDirectionLeft, eStateTypeNormal, eActionTypeTurn);
-				else vfSetMotionActionParams(eBodyStateStand, eMovementTypeRun, eMovementDirectionRight, eStateTypeNormal, eActionTypeTurn);
-			
-		} else if (m_tMovementType == eMovementTypeWalk) {				// поворот в ходьбе
-
-			if (m_tMovementDir == eMovementDirectionBack) {
-				m_fCurSpeed		= PI;
-				r_torso_speed	= PI_MUL_2;
-			} else {
-
-				m_fCurSpeed		= PI_DIV_4;
-				r_torso_speed	= PI_DIV_2;
-
-				if (!getAI().bfTooSmallAngle(r_torso_target.yaw,r_torso_current.yaw,min_angle * 2))
-					if (bMoveLeft) vfSetMotionActionParams(eBodyStateStand, eMovementTypeWalk, eMovementDirectionLeft, eStateTypeNormal, eActionTypeTurn);
-					else vfSetMotionActionParams(eBodyStateStand, eMovementTypeWalk, eMovementDirectionRight, eStateTypeNormal, eActionTypeTurn);
-			}
-		} else {				// поворот на месте
-				m_fCurSpeed		= 0;
-			
-			if (m_tActionType == eActionTypeTurn && m_tStateType == eStateTypeDanger) {
-				r_torso_speed	= 3 * PI_DIV_4;
-
-			} else {
-
-				m_fCurSpeed		= 0;
-				r_torso_speed	= PI_DIV_4;
-				
-				if (m_tActionType == eActionTypeAttack) {
-					r_torso_speed	= PI;
-					vfSetMotionActionParams(eBodyStateStand, eMovementTypeStand, eMovementDirectionLeft, eStateTypeDanger, eActionTypeTurn);
-
-				} else {
-					if (!getAI().bfTooSmallAngle(r_torso_target.yaw,r_torso_current.yaw,min_turning_angle))
-						if (bMoveLeft) vfSetMotionActionParams(eBodyStateStand, eMovementTypeStand, eMovementDirectionLeft, eStateTypeNormal, eActionTypeTurn);
-						else vfSetMotionActionParams(eBodyStateStand, eMovementTypeStand, eMovementDirectionLeft, eStateTypeNormal, eActionTypeTurn);		
-				}
-			}  
-		}
-	}
-
-	//vfAssignPitch();
-//	r_torso_target.pitch = PI_DIV_6;
-
-	r_target = r_torso_target;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -243,9 +53,13 @@ void CAI_Biting::vfSetParameters(EPathType path_type,IBaseAI_NodeEvaluator *tpNo
 // Зрение, слух, вероятность победы, выгодность противника
 void CAI_Biting::vfUpdateParameters()
 {
-	xr_vector<CObject*> Visible_Objects;
-	feel_vision_get(Visible_Objects);
-	UpdateMemory(Visible_Objects);
+	UpdateMemory();
+
+	VisionElem ve;
+	if (GetEnemy(ve)) {
+		Msg("I have an enemy!");
+	}
+	
 
 	//------------------------------------
 	// слух
@@ -265,8 +79,8 @@ void CAI_Biting::vfUpdateParameters()
 	// Зрение
 	objVisible			&VisibleEnemies = Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
 
-	VisionElem ve;
-	if (GetEnemyFromMem(ve,Position())) {
+	
+	if (GetEnemy(ve)) {
 		VisibleEnemies.insert(ve.obj);
 
 		// определить, видит ли меня враг

@@ -35,9 +35,6 @@ void CAI_Biting::Think()
 
 	vfUpdateParameters		();
 
-	VisionElem ve;
-	GetEnemyFromMem(ve,Position());
-
 #ifndef SILENCE
 	if (g_Alive())
 		Msg("%s : [A=%d][B=%d][C=%d][D=%d][E=%d][F=%d][H=%d][I=%d][J=%d][K=%d]",cName(),A,B,C,D,E,F,H,I,J,K);
@@ -54,6 +51,7 @@ void CAI_Biting::Think()
 	// J - A | B
 	// K - C | D | E | F 
 
+	VisionElem ve;
 
 	if (Motion.m_tSeq.Active())	{
 		Motion.m_tSeq.Cycle(m_dwCurrentUpdate);
@@ -80,7 +78,7 @@ void CAI_Biting::Think()
 		else if (A && !K && H)		SetState(stateDetour); // слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)
 		else if (B && !K && !H)		SetState(stateDetour); // слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)
 		else if (B && !K && H)		SetState(stateDetour); // слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
-		else if (GetCorpseFromMem(ve,Position()))	
+		else if (GetCorpse(ve) && ve.obj->m_fFood > 1)	
 									SetState(stateEat);
 		else						SetState(stateRest); 
 		//---
@@ -88,7 +86,7 @@ void CAI_Biting::Think()
 		CurrentState->Execute(m_dwCurrentUpdate);
 		
 		// проверяем на завершённость
-		if (CurrentState->CheckCompletion()) SetState(stateRest, true);
+		//if (CurrentState->CheckCompletion()) {SetState(stateRest, true);
 	}
 	
 	Motion.SetFrameParams(this);

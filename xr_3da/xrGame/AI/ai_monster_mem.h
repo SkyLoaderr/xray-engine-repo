@@ -8,8 +8,10 @@
 
 #define TIME_TO_RESELECT_ENEMY	3000
 
+#define DEFINE_THIS_CLASS_AS_POLYMORPHIC() virtual void __VirtualFunctionThatMakesClassPolymorphic() {}
 
 typedef u32 TTime;
+
 
 typedef enum {
 	WEAPON_SHOOTING = 0,
@@ -86,9 +88,12 @@ protected:
 	void UpdateHearing(TTime dt);
 };
 
+
+//---------------------------------------------------------------------------------------------------------
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CVisionMemory class
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//---------------------------------------------------------------------------------------------------------
 
 typedef struct tagVisionElem
 {
@@ -112,44 +117,56 @@ typedef struct tagVisionElem
 	}
 } VisionElem;
 
-
+/////////////////////////////////////////////////////////////////////////////////////////////
+// CVisionMemory class
 class CVisionMemory
 {
 	TTime					MemoryTime;				// время хранения визуальных объектов
 	TTime					CurrentTime;			// текущее время
 	
-	VisionElem				EnemySelected;
+	VisionElem				Selected;
 
 	xr_vector<VisionElem>	Objects;
 	xr_vector<VisionElem>	Enemies;
 
 	enum EObjectType {ENEMY, OBJECT};
 
-	
+	CCustomMonster			*pMonster;
+
 public:
-	IC bool IsRememberVisual() {return (IsEnemy() || IsObject());}
-	IC bool IsEnemy() {return (!Enemies.empty());}	 
-	IC bool IsObject() {return (!Objects.empty());}	 
+	IC	bool		IsEnemy() {return (!Enemies.empty());}	 
+	IC	bool		IsObject() {return (!Objects.empty());}	 
 
-	bool GetEnemyFromMem(VisionElem &ve, Fvector &my_pos);
-	bool GetCorpseFromMem(VisionElem &ve, Fvector &my_pos);
-	
+	IC	bool		GetEnemy(VisionElem &ve) {return Get(ve);} 	
+	IC	bool		GetCorpse(VisionElem &ve) {return Get(ve);}
+
 protected:
-	void Init(TTime mem_time);
-	void Deinit();
+		void		Init(TTime mem_time);
+		void		Deinit();
 
-	void UpdateVision(TTime dt, xr_vector<CObject*> &Visible_Objects);
+		// Заполняет массивы Objects и Enemies и Selected
+		void		UpdateVision(TTime dt);
+	
+	DEFINE_THIS_CLASS_AS_POLYMORPHIC();
 
 private:
-	void AddObject(const VisionElem &ve);
-	void AddEnemy(const VisionElem &ve);
-	VisionElem &GetNearestObject(const Fvector &pos, EObjectType obj_type = ENEMY);
+		void		AddObject(const VisionElem &ve);
+		void		AddEnemy(const VisionElem &ve);
+	
+		bool		Get(VisionElem &ve);
+
+		void		SelectEnemy();
+		void		SelectCorpse();
+
+		VisionElem	&GetNearestObject(EObjectType obj_type = ENEMY);
 };
 
-
+//---------------------------------------------------------------------------------------------------------
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CMonsterMemory class
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
+//---------------------------------------------------------------------------------------------------------
+
 class CMonsterMemory : public CSoundMemory, public CVisionMemory {
 public:
 	void InitMemory(TTime sound_mem, TTime vision_mem){
@@ -161,5 +178,5 @@ public:
 		CVisionMemory::Deinit();
 	}
 
-	void UpdateMemory(xr_vector<CObject*> &Visible_Objects);
+	void UpdateMemory();
 };

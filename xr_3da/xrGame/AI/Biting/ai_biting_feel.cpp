@@ -8,7 +8,7 @@
 
 #include "stdafx.h"
 #include "ai_biting.h"
-
+#include "..\\..\\actor.h"
 
 // Развернуть объект в направление движения
 void CAI_Biting::SetReversedDirectionLook()
@@ -92,7 +92,7 @@ void CAI_Biting::DoDamage(CEntity *pEntity)
 	if (!pEntity) return;
 
 	VisionElem ve;
-	if (!GetEnemyFromMem(ve,Position())) return;
+	if (!GetEnemy(ve)) return;
 
 	if ((ve.obj->CLS_ID == CLSID_ENTITY) && (ve.obj == pEntity)) {
 		Fvector tDirection;

@@ -77,7 +77,7 @@ void CAI_Chimera::DoDamage(CEntity *pEntity)
 	if (!pEntity) return;
 
 	VisionElem ve;
-	if (!GetEnemyFromMem(ve,Position())) return;
+	if (!GetEnemy(ve)) return;
 
 	if ((ve.obj->CLS_ID == CLSID_ENTITY) && (ve.obj == pEntity)) {
 		Fvector tDirection;

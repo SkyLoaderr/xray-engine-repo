@@ -32,7 +32,6 @@ class CAI_Biting : public CCustomMonster,
 		SND_VOICE_COUNT=2,
 	};
 
-
 public:
 
 	typedef	CCustomMonster inherited;
@@ -249,21 +248,18 @@ private:
 	// Extended FSM
 	CBitingMotion		Motion;
 	IState				*CurrentState;
-	CBitingRest				*stateRest;
-	CBitingAttack				*stateAttack;
-	CBitingEat				*stateEat;
-	CBitingHide				*stateHide;
-	CBitingDetour				*stateDetour;
-	CBitingPanic				*statePanic;
+	CBitingRest			*stateRest;
+	CBitingAttack		*stateAttack;
+	CBitingEat			*stateEat;
+	CBitingHide			*stateHide;
+	CBitingDetour		*stateDetour;
+	CBitingPanic		*statePanic;
 
 	friend	class CBitingMotion;
-	friend	class CMotionParams;
-	friend  class CMotionTurn;
-	friend  class CBitingAttack;
-	friend	class CMotionSequence;
 	
 	friend	class IState;
 	friend	class CBitingRest;
+	friend  class CBitingAttack;
 	friend	class CBitingEat;
 	friend	class CBitingHide;
 	friend	class CBitingDetour;

@@ -30,7 +30,7 @@ void CAI_Chimera::vfInitSelector(IBaseAI_NodeEvaluator &S, CSquad &Squad)
 
 
 	VisionElem ve;
-	GetEnemyFromMem(ve, Position());
+	GetEnemy(ve);
 
 	S.m_tEnemy			= ve.obj;
 	S.m_tEnemyPosition	= ve.position;

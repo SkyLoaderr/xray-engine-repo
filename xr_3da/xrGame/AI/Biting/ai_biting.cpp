@@ -99,12 +99,12 @@ void CAI_Biting::Init()
 	m_AttackInterval				= 500;
 	m_AttackLastPosition.set		(0,0,0);		
 
-	InitMemory(5000,10000);
+	InitMemory						(10000,10000);
 
 	m_dwAttackMeleeTime				= 0;
 	m_dwAttackActorMeleeTime		= 0;
 
-	Motion.Init();
+	Motion.Init						();
 
 }
 

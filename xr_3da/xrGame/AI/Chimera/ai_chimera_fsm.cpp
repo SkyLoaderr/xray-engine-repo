@@ -36,7 +36,7 @@ void CAI_Chimera::Think()
 	vfUpdateParameters		();
 
 	VisionElem ve;
-	GetEnemyFromMem(ve, Position());
+	GetEnemy(ve);
 
 #ifndef SILENCE
 	if (g_Alive())
