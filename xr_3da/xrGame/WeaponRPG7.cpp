@@ -377,13 +377,13 @@ void CWeaponRPG7Grenade::OnH_B_Independent() {
 	setEnabled					(true);
 	CObject*	E		= dynamic_cast<CObject*>(H_Parent());
 	R_ASSERT		(E);
-	svTransform.set(E->clXFORM());
+	svTransform.set(E->clXFORM()); svTransform.c.set(m_pos);
 	vPosition.set(svTransform.c);
 	if(m_pPhysicsShell) {
 		Fmatrix trans;
 		Level().Cameras.unaffected_Matrix(trans);
 		CWeaponRPG7 *l_pW = dynamic_cast<CWeaponRPG7*>(E);
-		Fmatrix l_p1, l_r; l_r.rotateY(M_PI*2.f); l_p1.mul(l_pW->GetHUDmode()?trans:svTransform, l_r); l_p1.c.set(*l_pW->m_pGrenadePoint);
+		Fmatrix l_p1, l_r; l_r.rotateY(M_PI*2.f); l_p1.mul(l_pW->GetHUDmode()?trans:svTransform, l_r); l_p1.c.set(m_pos/**l_pW->m_pGrenadePoint*/);
 		Fvector a_vel; a_vel.set(0, 0, 0);
 		m_pPhysicsShell->Activate(l_p1, m_vel, a_vel);
 		svTransform.set(m_pPhysicsShell->mXFORM);
