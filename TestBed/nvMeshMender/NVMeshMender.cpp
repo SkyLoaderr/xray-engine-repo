@@ -94,7 +94,9 @@ Comments:
 
 #ifdef _WIN32
 #  pragma warning (disable : 4786)
+#  pragma comment (lib,"nv_math.h")
 #endif
+
 
 #include "NVMeshMender.h"
 #include "nv_math.h"
