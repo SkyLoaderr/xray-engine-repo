@@ -302,15 +302,15 @@ notamd:
 
 	if (pinfo)
     {
-        memset(pinfo, 0, sizeof(_processor_info));
+        memset		(pinfo, 0, sizeof(_processor_info));
         pinfo->os_support = os_support;
         pinfo->feature = feature;
         pinfo->family = (dwStandard >> 8)&0xF;  // retriving family
         pinfo->model = (dwStandard >> 4)&0xF;   // retriving model
         pinfo->stepping = (dwStandard) & 0xF;   // retriving stepping
         Ident.cBuf[12] = 0;
-        strcpy(pinfo->v_name, Ident.cBuf);
-        map_mname(pinfo->family, pinfo->model, pinfo->v_name, pinfo->model_name);
+        strcpy		(pinfo->v_name, Ident.cBuf);
+        map_mname	(pinfo->family, pinfo->model, pinfo->v_name, pinfo->model_name);
     }
    return feature;
 }
