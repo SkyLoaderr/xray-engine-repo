@@ -642,14 +642,16 @@ void CSE_ALifeAnomalousZone::UPDATE_Write	(NET_Packet	&tNetPacket)
 void CSE_ALifeAnomalousZone::FillProps		(LPCSTR pref, PropItemVec& items)
 {
 	inherited1::FillProps			(pref,items);
-	PHelper().CreateFloat			(items,PrepareKey(pref,*s_name,"Radius"),							&m_fRadius,0.f,100.f);
+	PHelper().CreateFloat			(items,PrepareKey(pref,*s_name,"Radius"),								&m_fRadius,0.f,100.f);
+
 	for (u16 i=0; i<m_wItemCount; ++i)
-		PHelper().CreateFloat		(items,PrepareKey(pref,*s_name,"ALife\\Artefact Weights",			m_cppArtefactSections[i]), m_faWeights + i,0.f,1.f);
-	PHelper().CreateFloat			(items,PrepareKey(pref,*s_name,"ALife\\Artefact birth probability"),	&m_fBirthProbability,0.f,1.f);
-	PHelper().CreateU16				(items,PrepareKey(pref,*s_name,"ALife\\Artefact spawn places count"),	&m_wArtefactSpawnCount,32,256);
-	PHelper().CreateFloat			(items,PrepareKey(pref,*s_name,"ALife\\Min start power"),			&m_min_start_power);
-	PHelper().CreateFloat			(items,PrepareKey(pref,*s_name,"ALife\\Max start power"),			&m_max_start_power);
-	PHelper().CreateFloat			(items,PrepareKey(pref,*s_name,"ALife\\Power artefact factor"),		&m_power_artefact_factor);
+		PHelper().CreateFloat		(items,PrepareKey(pref,*s_name,"ALife\\Artefact Weights",				m_cppArtefactSections[i]), m_faWeights + i,0.f,1.f);
+
+	PHelper().CreateFloat			(items,PrepareKey(pref,*s_name,"ALife\\Artefact birth probability"),	&m_fBirthProbability,		0.f,1.f);
+	PHelper().CreateU16				(items,PrepareKey(pref,*s_name,"ALife\\Artefact spawn places count"),	&m_wArtefactSpawnCount,		32,	256);
+	PHelper().CreateFloat			(items,PrepareKey(pref,*s_name,"ALife\\Min start power"),				&m_min_start_power,			1.f,1000.f);
+	PHelper().CreateFloat			(items,PrepareKey(pref,*s_name,"ALife\\Max start power"),				&m_max_start_power,			1.f,1000.f);
+	PHelper().CreateFloat			(items,PrepareKey(pref,*s_name,"ALife\\Power artefact factor"),			&m_power_artefact_factor,	0.f,1000.f);
 }
 
 bool CSE_ALifeAnomalousZone::need_update	(CSE_ALifeDynamicObject *object)
