@@ -215,7 +215,7 @@ IC bool CAI_Soldier::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, F
 bool CAI_Soldier::bfCheckIfCanKillMember()
 {
 	Fvector tFireVector, tMyPosition = Position();
-	tFireVector.direct	(r_torso_current.yaw,r_torso_current.pitch);
+	tFireVector.setHP	(r_torso_current.yaw,r_torso_current.pitch);
 	
 	bool bCanKillMember = false;
 
@@ -233,7 +233,7 @@ bool CAI_Soldier::bfCheckIfCanKillMember()
 IC bool CAI_Soldier::bfCheckIfCanKillEnemy() 
 {
 	Fvector tMyLook;
-	tMyLook.direct	(r_torso_current.yaw + PI/6,r_torso_current.pitch);
+	tMyLook.setHP	(r_torso_current.yaw + PI/6,r_torso_current.pitch);
 	if (Enemy.Enemy) {
 		Fvector tFireVector, tMyPosition = Position(), tEnemyPosition = Enemy.Enemy->Position();
 		tFireVector.sub(tMyPosition,tEnemyPosition);

@@ -31,8 +31,7 @@ void __stdcall CCustomMonster::TorsoSpinCallback(CBoneInstance* B)
 
 	Fmatrix					spin;
 	spin.setXYZ				(0, M->NET_Last.o_torso.pitch, 0);
-	B->mTransform.mul_43	(spin);
-	//B->mTransform.mulB_43	(spin);
+	B->mTransform.mulB_43	(spin);
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -462,8 +461,7 @@ void CCustomMonster::OnRender()
 	{
 		CTravelNode&	N1 = AI_Path.TravelPath[I-1];	Fvector	P1; P1.set(N1.P); P1.y+=0.1f;
 		CTravelNode&	N2 = AI_Path.TravelPath[I];		Fvector	P2; P2.set(N2.P); P2.y+=0.1f;
-		//Device.Primitive.dbg_DrawLINE(Fidentity,P1,P2,D3DCOLOR_XRGB(0,255,0));
-		Device.Primitive.dbg_DrawLINE(precalc_identity,P1,P2,D3DCOLOR_XRGB(0,255,0));
+		Device.Primitive.dbg_DrawLINE(Fidentity,P1,P2,D3DCOLOR_XRGB(0,255,0));
 		Device.Primitive.dbg_DrawAABB(P1,.1f,.1f,.1f,D3DCOLOR_XRGB(0,0,255));
 	}
 	}
@@ -486,8 +484,7 @@ void CCustomMonster::OnRender()
 		Fvector P2;	P2.set(S.v2); P2.y+=0.1f;
 		Device.Primitive.dbg_DrawAABB(P1,.01f,.01f,.01f,D3DCOLOR_XRGB(255,255,255));
 		Device.Primitive.dbg_DrawAABB(P2,.01f,.01f,.01f,D3DCOLOR_XRGB(255,255,255));
-		Device.Primitive.dbg_DrawLINE(precalc_identity,P1,P2,D3DCOLOR_XRGB(255,255,255));
-		//Device.Primitive.dbg_DrawLINE(Fidentity,P1,P2,D3DCOLOR_XRGB(255,255,255));
+		Device.Primitive.dbg_DrawLINE(Fidentity,P1,P2,D3DCOLOR_XRGB(255,255,255));
 	}
 	}
 

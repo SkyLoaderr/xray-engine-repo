@@ -15,7 +15,7 @@ void __stdcall CAI_Soldier::HeadSpinCallback(CBoneInstance* B)
 	
 	Fmatrix				spin;
 	spin.setXYZ			(A->NET_Last.o_torso.yaw - A->r_current.yaw, A->r_current.pitch, 0);
-	B->mTransform.mul_43(spin);
+	B->mTransform.mulB_43(spin);
 }
 
 void __stdcall CAI_Soldier::SpineSpinCallback(CBoneInstance* B)
@@ -24,7 +24,7 @@ void __stdcall CAI_Soldier::SpineSpinCallback(CBoneInstance* B)
 	
 	Fmatrix				spin;
 	spin.setXYZ			(A->NET_Last.o_torso.yaw - A->r_spine_current.yaw, A->r_spine_current.pitch, 0);
-	B->mTransform.mul_43(spin);
+	B->mTransform.mulB_43(spin);
 }
 
 void CAI_Soldier::vfAssignBones(CInifile *ini, const char *section)
