@@ -387,3 +387,12 @@ void CBurer::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_objec
 	last_hit_frame = Device.dwFrame;
 }
 
+
+void CBurer::Die()
+{
+	inherited::Die( );
+
+	MotionMan.TA_Deactivate();
+	CTelekinesis::Deactivate();
+}
+

@@ -83,6 +83,7 @@ public:
 	virtual	void	shedule_Update		(u32 dt);
 	virtual void	UpdateCL			();
 	virtual void	Hit					(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type);
+	virtual void	Die					();
 
 	virtual void	StateSelector		();
 			void	ProcessTurn			();
