@@ -45,9 +45,6 @@ public:
 
 	virtual BOOL	UsedAI_Locations			() {return false;}
 
-	//virtual BOOL	renderable_ShadowGenerate	() { return TRUE;	}
-	//virtual BOOL	renderable_ShadowReceive	() { return TRUE;	}
-
 	virtual CEntity*cast_entity					() {return this;}
 
 			void	PlayParticles				();
