@@ -34,7 +34,7 @@ void	game_sv_Deathmatch::OnRoundStart			()
 	for (u32 i=0; i<teams.size(); ++i)
 	{
 		teams[i].score			= 0;
-		teams[i].num_targets		= 0;
+		teams[i].num_targets	= 0;
 	}
 
 	inherited::OnRoundStart	();
