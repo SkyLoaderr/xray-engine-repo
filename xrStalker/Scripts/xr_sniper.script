@@ -297,7 +297,7 @@ end
 function action_sniper_idle:state_walk			()
 	--Идем до конца маршрута, если остановились, то стоим некоторое время, а потом идем
 	if(self.state == LOOK) then
-	    if(device():time_globabl() > self.time_sight and self.object:body_turning() == true) then
+	    if(device():time_global() > self.time_sight and self.object:is_body_turning() == true) then
 	        self.object:set_mental_state    	(anim.danger)   --Целимся
 	    end
 	    if(device():time_global() > self.time) then     		--Начинаем идти
