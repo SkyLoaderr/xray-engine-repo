@@ -345,6 +345,7 @@ CPHElement::~CPHElement	()
 	Deactivate();
 	GEOM_I i_geom=m_geoms.begin(),e=m_geoms.end();
 	for(;i_geom!=e;++i_geom)xr_delete(*i_geom);
+	DeleteFracturesHolder();
 	m_geoms.clear();
 }
 
@@ -1293,9 +1294,11 @@ void CPHElement::SplitProcess(ELEMENT_PAIR_VECTOR &new_elements)
 {
 	m_fratures_holder->SplitProcess(this,new_elements);
 	if(!m_fratures_holder->m_fractures.size()) xr_delete(m_fratures_holder);
-	
 }
-
+void CPHElement::DeleteFracturesHolder()
+{
+	xr_delete(m_fratures_holder);
+}
 
 void CPHElement::CreateSimulBase()
 {

@@ -53,6 +53,13 @@ bool				PhDataUpdate	(CPHElement* element);										//collect joints and extern
 
 };
 
+IC	void sub_diapasones(u16 &from1,u16 &to1,const u16 &from0,const u16 &to0)
+{
+	if(from1==to1 || from0==to0 || to1<from0) return;
+	R_ASSERT(to1-from1>to0-from0);
+	to1-=(to0-from0);
+}
+
 class CShellSplitInfo 
 {
 friend class  CPHFracturesHolder;
@@ -60,6 +67,12 @@ friend class  CPHShellSplitterHolder;
 friend class CPHElement;
 IC bool HaveElements		()		{return m_end_el_num!=m_start_el_num;}
 IC bool HaveJoints			()		{return m_start_jt_num!=m_end_jt_num;}
+public:
+IC sub_diapasone(const CShellSplitInfo& sub)
+{
+	sub_diapasones(m_start_el_num,m_end_el_num,sub.m_start_el_num,sub.m_end_el_num);
+	sub_diapasones(m_start_jt_num,m_end_jt_num,sub.m_start_jt_num,sub.m_end_jt_num);
+}
 protected:
 	u16				m_start_el_num;
 	u16				m_end_el_num;

@@ -176,7 +176,8 @@ public:
 	void			RunSimulation							();																			//called anywhere ph state influent
 	void			RunSimulation							(const Fmatrix& start_from);
 	IC CPHFracturesHolder* FracturesHolder					(){return m_fratures_holder;}													//aux
-
+	IC const CPHFracturesHolder* constFracturesHolder		()const{return m_fratures_holder;}													//aux
+	void			DeleteFracturesHolder					();
 	float			get_volume								()	{calc_volume_data();return m_volume;};										//aux
 	void			SetTransform							(const Fmatrix& m0);															//called anywhere ph state influent
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////

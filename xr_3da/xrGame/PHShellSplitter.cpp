@@ -5,6 +5,10 @@
 #include "PHFracture.h"
 #include "PHJointDestroyInfo.h"
 #include "Geometry.h"
+
+
+
+
 CPHShellSplitterHolder::CPHShellSplitterHolder(CPHShell* shell)
 {
 	m_pShell=shell;
@@ -305,6 +309,23 @@ shell_root CPHShellSplitterHolder::ElementSingleSplit(const element_fracture &sp
 	return mk_pair(new_shell_last,split_elem.second.m_bone_id);
 
 }
+
+
+IC	void correct_diapasones(ELEMENT_PAIR_VECTOR& element_pairs)
+{
+	ELEMENT_PAIR_I i=new_elements.begin(),e=new_elements.end();
+
+	for(;i!=e;++i)
+	{
+		ELEMENT_PAIR_I j=i+1;
+		for(;j!=e;++j)
+		{
+			j->second.sub_diapasone(CShellSplitInfo(i->second));
+		}
+	}
+
+}
+
 void CPHShellSplitterHolder::SplitElement(u16 aspl,PHSHELL_PAIR_VECTOR &out_shels)
 {
  
@@ -313,6 +334,7 @@ void CPHShellSplitterHolder::SplitElement(u16 aspl,PHSHELL_PAIR_VECTOR &out_shel
 	CPHElement* E= m_pShell->elements[spl_i->m_element];
 	E->SplitProcess(new_elements);
 
+	correct_diapasones(new_elements);
 
 	ELEMENT_PAIR_I i=new_elements.begin(),e=new_elements.end();
 
