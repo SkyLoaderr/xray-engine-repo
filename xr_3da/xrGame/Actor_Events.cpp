@@ -40,10 +40,11 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			CWeapon* W	= dynamic_cast<CWeapon*>	(O);
 			if (W) 
 			{
-				R_ASSERT							(BE(Local(),W->Local()));	// remote can't take local
+				R_ASSERT							(BE(Local(),W->Local()));				// remote can't take local
+				R_ASSERT							(Weapons->isSlotEmpty(W->GetSlot()));
 				W->H_SetParent						(this);
 				Weapons->weapon_add					(W);
-				Weapons->ActivateWeaponID			(id);
+				Weapons->ActivateWeaponID			(W->GetSlot());
 				return;
 			}
 		}
