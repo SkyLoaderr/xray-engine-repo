@@ -39,7 +39,6 @@ protected:
 	CProject				m_project;
 	CMDIClientWnd			m_wndMDIClient;
 	CVariablesBar			m_wndLocals;
-	CWatchBar				m_wndWatches;
 	CScriptThreadsBar		m_wndThreads;
 	COutputWnd				m_consoleBar;
 	HACCEL					m_hAccelDebug, m_hAccelDebugBreak, m_hAccelNoProject;
@@ -55,6 +54,7 @@ protected:
 	BOOL			checkExistingFolder(CString str);
 // Operations
 public:
+	CWatchBar				m_wndWatches;
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CMainFrame)
@@ -81,6 +81,7 @@ public:
 	CProject*		GetProject() { return &m_project; };
 	CWorkspaceWnd*	GetWorkspaceWnd() { return &m_wndWorkspace; };
 	CCallStack*		GetCallStack() { return &m_wndCallStack; };
+//	CWatchBar*		GetWatches_(){return &m_wndWatches;);
 	BOOL			InitDockingWindows();
 	void			UpdateFrameTitleForDocument(LPCTSTR lpszDocName);
 	virtual			~CMainFrame();
@@ -123,6 +124,7 @@ protected:
 	afx_msg void OnUpdateDebugMenu(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateToolsOptions(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateSaveAllModified(CCmdUI* pCmdUI);
+
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

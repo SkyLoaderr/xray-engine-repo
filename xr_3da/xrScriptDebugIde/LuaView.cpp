@@ -26,6 +26,8 @@ BEGIN_MESSAGE_MAP(CLuaView, CView)
 	//{{AFX_MSG_MAP(CLuaView)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
+
+	ON_COMMAND(ID_ADD_WATCH, OnAddWatch)
 	ON_COMMAND(ID_EDIT_COPY, OnEditCopy)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_COPY, OnUpdateEditCopy)
 	ON_COMMAND(ID_EDIT_CUT, OnEditCut)
@@ -794,3 +796,32 @@ void CLuaView::OnBreakPointList()
 	
 }
 
+void CLuaView::OnActivateView(  BOOL bActivate,  CView* pActivateView,  CView* pDeactiveView )
+{
+	if(bActivate)
+		GetEditor()->GrabFocus();
+}
+
+
+void CLuaView::OnAddWatch() 
+{
+	CMenu mnu;
+	mnu.CreatePopupMenu();
+	CString sel = GetEditor()->GetSelText();
+	if(sel.GetLength()==0)
+		return;
+
+	mnu.AppendMenu(MF_STRING,1,"Add watch");
+
+	RECT rct;
+	GetWindowRect(&rct);
+	rct.left += GetEditor()->PointXFromPosition( GetEditor()->GetSelectionEnd() );
+	rct.top  += GetEditor()->PointYFromPosition( GetEditor()->GetSelectionEnd() );
+
+	::SetForegroundWindow(m_hWnd);	
+	int idx = mnu.TrackPopupMenuEx(TPM_RETURNCMD, rct.left, rct.top, this, NULL); 
+	if( 1 == idx ){ //add to watchBar
+		g_mainFrame->m_wndWatches.AddWatch(sel);
+	}
+
+}

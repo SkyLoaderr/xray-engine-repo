@@ -31,10 +31,11 @@ public:
 
 // Implementation
 public:
+	void AddWatch(CString& str);
 	void Redraw();
 	void UpdateRow(int iItem);
 	void AddEditItem(LVITEM& item);
-	void AddEmptyRow();
+	int AddEmptyRow();
 	void SetResult(int iItem, LPSTR str);
 
 	virtual ~CWatchList();

@@ -46,7 +46,7 @@ public:
 // Implementation
 public:
 	virtual void Serialize(CArchive& ar);
-
+	virtual void OnActivateView(  BOOL bActivate,  CView* pActivateView,  CView* pDeactiveView );
 	void ToggleBreakPoint(int nLine);
 	void CloseFrame();
 	void Activate();
@@ -117,6 +117,7 @@ protected:
 	afx_msg void OnCompleteWord();
 	afx_msg void OnNextBookMark();
 	afx_msg void OnToggleBookMark();
+	afx_msg void OnAddWatch();
 //}}AFX_MSG
 	afx_msg LRESULT OnFindReplaceCmd(WPARAM, LPARAM lParam);
 	DECLARE_MESSAGE_MAP()

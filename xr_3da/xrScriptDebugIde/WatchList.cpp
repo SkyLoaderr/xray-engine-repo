@@ -36,10 +36,11 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CWatchList message handlers
 
-void CWatchList::AddEmptyRow()
+int CWatchList::AddEmptyRow()
 {
 	int nItem = InsertItem(GetItemCount(), "");
 	SetItem(nItem, 0, LVIF_STATE, NULL, 0, LVIS_SELECTED, LVIS_SELECTED, 0);
+	return nItem;
 }
 
 BOOL CWatchList::PreCreateWindow(CREATESTRUCT& cs) 
@@ -68,7 +69,7 @@ void CWatchList::OnLButtonDblClk(UINT nFlags, CPoint point)
 }
 void CWatchList::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-	if(nChar != 0x000000ff )//del
+	if(!(nChar == 46 || nChar==110) )//del
 		return;
 
 
@@ -145,4 +146,12 @@ void CWatchList::SetResult(int iItem, LPSTR str)
 	if (!m_bEvalEnabled)
 		return;
 	SetItemText(iItem, 1, str);
+}
+
+void CWatchList::AddWatch(CString& str)
+{
+		INT_PTR i = m_exps.Add(str);
+		int row = AddEmptyRow();
+		SetItemText(row-1, 0, str);
+		UpdateRow(row-1);
 }

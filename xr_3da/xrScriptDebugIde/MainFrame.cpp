@@ -937,3 +937,15 @@ void ActivateXRAY()
 //		PostMessage(h,WM_ACTIVATE,WA_ACTIVE,NULL);
 	}
 }
+/*
+CMDIChildWnd* pActive=NULL;
+void CMainFrame::OnActivate(   UINT nState,   CWnd* pWndOther,   BOOL bMinimized )
+{
+	if(nState==WA_INACTIVE && pActive)
+		this->MDIActivate(pActive);
+	
+	if((nState==WA_ACTIVE)||(nState==WA_CLICKACTIVE))
+		pActive = this->MDIGetActive();
+}
+
+*/

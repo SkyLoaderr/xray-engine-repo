@@ -25,6 +25,8 @@ public:
 	//}}AFX_VIRTUAL
 
 // Generated message map functions
+	void AddWatch(CString& str){m_watches.AddWatch(str);};
+
 protected:
 	CWatchList m_watches;
 

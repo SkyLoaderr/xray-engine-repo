@@ -43,6 +43,7 @@ protected:
 	//{{AFX_MSG(CLuaFrame)
 		// NOTE - the ClassWizard will add and remove member functions here.
 		//    DO NOT EDIT what you see in these blocks of generated code!
+
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
