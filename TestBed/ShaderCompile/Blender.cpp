@@ -50,6 +50,7 @@ BOOL	CBlender::c_XForm()
 
 void	CBlender::Save(	CFS_Base& FS )
 {
+	FS.write	(&description,sizeof(description));
 	BP_W_MARKER ("General");
 	BP_WRITE	("Priority",		BPID_INTEGER,	oPriority);
 	BP_WRITE	("Strict sorting",	BPID_BOOL,		oStrictSorting);
@@ -60,6 +61,7 @@ void	CBlender::Save(	CFS_Base& FS )
 
 void	CBlender::Load(	CStream& FS )
 {
+	FS.Read		(&description,sizeof(description));
 	BP_R_MARKER	();
 	BP_READ		(BPID_INTEGER,	oPriority);
 	BP_READ		(BPID_BOOL,		oStrictSorting);
