@@ -9,7 +9,6 @@
 #include "stdafx.h"
 #include "ai_script_space.h"
 #include "ai_script_lua_extension.h"
-#include "ParticlesObject.h"
 #include "ai_script_classes.h"
 #include "ai_script_actions.h"
 #include "..\\cameramanager.h"
@@ -20,6 +19,11 @@
 #include "luabind\\out_value_policy.hpp"
 #include "luabind\\discard_result_policy.hpp"
 #include "luabind\\iterator_policy.hpp"
+#ifndef _XRAY_LUA_COMPILER_
+#include "ParticlesObject.h"
+#else
+#endif
+
 
 using namespace luabind;
 using namespace Script;
@@ -41,7 +45,11 @@ const CRenderDevice &get_device()
 
 const CCameraManager &get_camera_manager()
 {
+#ifndef _XRAY_LUA_COMPILER_
 	return		(Level().Cameras);
+#else
+	return		(*xr_new<CCameraManager>());
+#endif
 }
 
 void vfLuaErrorHandler(CLuaVirtualMachine *tpLuaVirtualMachine)
@@ -52,10 +60,12 @@ void vfLuaErrorHandler(CLuaVirtualMachine *tpLuaVirtualMachine)
 
 CLuaGameObject *get_object_by_name(LPCSTR caObjectName)
 {
+#ifndef _XRAY_LUA_COMPILER_
 	CGameObject		*l_tpGameObject	= dynamic_cast<CGameObject*>(Level().Objects.FindObjectByName(caObjectName));
 	if (l_tpGameObject)
 		return		(xr_new<CLuaGameObject>(l_tpGameObject));
 	else
+#endif
 		return		(0);
 }
 

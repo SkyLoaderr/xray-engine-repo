@@ -9,9 +9,16 @@
 #pragma once
 
 #include "ai_script_space.h"
-#include "ai\\stalker\\ai_stalker.h"
 #include "..\\effectorpp.h"
-#include "script_zone.h"
+
+#ifndef _XRAY_LUA_COMPILER_
+	#include "ai\\stalker\\ai_stalker.h"
+	#include "script_zone.h"
+#else
+	#include "ai_alife_space.h"
+	#include "empty_objects.h"
+#endif
+
 
 #define DECLARE_FUNCTION10(A,D)\
 	IC		D				A					() const\

@@ -9,9 +9,12 @@
 #include "stdafx.h"
 #include "ai_script_classes.h"
 #include "ai_script_actions.h"
-#include "Inventory.h"
-#include "weapon.h"
-#include "ParticlesObject.h"
+#ifndef _XRAY_LUA_COMPILER_
+	#include "Inventory.h"
+	#include "weapon.h"
+	#include "ParticlesObject.h"
+#else
+#endif
 
 void CLuaGameObject::Hit(CLuaHit &tLuaHit)
 {
