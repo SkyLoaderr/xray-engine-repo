@@ -130,7 +130,6 @@ function main()
 			wait(4000)			
 		break
 		end
-		break
 	end
 
 	while true do
@@ -139,7 +138,6 @@ function main()
 			wait(2000)			
 		break
 		end
-		break
 	end
 
 
