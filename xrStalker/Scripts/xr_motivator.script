@@ -14,7 +14,6 @@ class "action_base1" (action_base)
 function action_base1:__init(value) super(value)
 end
 
-
 ----------------------------------------------------------------------------------------------------------------------
 -- Evaluators
 ----------------------------------------------------------------------------------------------------------------------
@@ -149,28 +148,12 @@ xr_motivator.storage[self.object:id()].kamp =
         timer = { act1 = {begin = nil, time = 120},
                           act4 = {begin = nil, time = 60}}
     }
-    if char_ini:section_exist ("kamp") == true then
-        if char_ini:line_exist("kamp", "enabled") == true then
-                xr_motivator.storage[self.object:id()].kamp.enabled = char_ini:r_bool("kamp", "enabled")
-        end
-        if char_ini:line_exist("kamp", "center_point") == true then
-                xr_motivator.storage[self.object:id()].kamp.center_point = char_ini:r_string("kamp", "center_point")
-        else
-            xr_motivator.storage[self.object:id()].kamp.enabled = false
-        end
-        local i = 1
-        while char_ini:line_exist("kamp", "patrol_path_"..i) == true do
-            xr_motivator.storage[self.object:id()].kamp.patrol_path[i] = char_ini:r_string("kamp", "patrol_path_"..i)
-            i = i + 1
-        end
-    end
 -- Хранение часовых
 xr_motivator.storage[self.object:id()].guard = {
         enabled = false,
             path_main = nil,
             path_hideout = nil
     }
-    printf("_bp: npc = %s", self.object:name())
         if char_ini:section_exist ("guard") == true then
         printf("_bp: npc is guard = %s", self.object:name())
         if char_ini:line_exist("guard", "enabled") == true then
@@ -193,7 +176,6 @@ xr_motivator.storage[self.object:id()].camper = {
         enabled = false,
             path_main = nil
     }
-    printf("_bp: npc = %s", self.object:name())
         if char_ini:section_exist ("camper") == true then
         printf("_bp: npc is camper = %s", self.object:name())
         if char_ini:line_exist("camper", "enabled") == true then
@@ -210,7 +192,6 @@ xr_motivator.storage[self.object:id()].sleeper = {
         enabled = false,
             path_main = nil
     }
-    printf("_bp: npc = %s", self.object:name())
         if char_ini:section_exist ("sleeper") == true then
         printf("_bp: npc is sleeper = %s", self.object:name())
         if char_ini:line_exist("sleeper", "enabled") == true then
@@ -231,7 +212,6 @@ xr_motivator.storage[self.object:id()].robber = {
             teammate2 = nil,
 	    path_rob = nil
     }
-    printf("_bp: npc = %s", self.object:name())
         if char_ini:section_exist ("robber") == true then
         printf("_bp: npc is robber = %s", self.object:name())
         if char_ini:line_exist("robber", "enabled") == true then
@@ -259,7 +239,6 @@ xr_motivator.storage[self.object:id()].robber = {
 xr_motivator.storage[self.object:id()].talker = {
         enabled = false
     }
-    printf("_bp: npc = %s", self.object:name())
         if char_ini:section_exist ("talker") == true then
         printf("_bp: npc is talker = %s", self.object:name())
         if char_ini:line_exist("talker", "enabled") == true then
@@ -489,24 +468,33 @@ xr_motivator.storage[self.object:id()].reactions = {
 --	action:add_precondition			(world_property(properties["scripts"],		false))
 ]]--
 
+	-- общие скрипты
     xr_state.add_to_binder(self.object)
     xr_reactions.add_to_binder(self.object)
     xr_position.add_to_binder(self.object)
+    xr_meet.add_to_binder(self.object)
+
+	-- модели поведения
     xr_patrol.add_to_binder (self.object)
     xr_follower.add_to_binder (self.object)
     xr_report.AddScheme (self.object, stalker_ids.action_puzzle_solver)
-    xr_meet.add_to_binder(self.object)
     xr_kamp.add_to_binder(self.object)
     xr_commander.add_to_binder(self.object)
     xr_guard.add_to_binder(self.object)
     xr_camper2.add_to_binder(self.object)
     xr_sleeper.add_to_binder(self.object)
     xr_robbers.add_to_binder(self.object)
-    xr_talker.add_to_binder(self.object)
     xr_scout.add_to_binder(self.object)
+--    xr_talker.add_to_binder(self.object)
+
+	-- сюжетные скрипты
     xr_trivial.add_novice     (self.object)
     xr_trivial.add_novice2    (self.object)
     xr_trivial.add_novice3    (self.object)
+
+
+	-- включение схем
+	xr_kamp.set_kamp(self.object)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function pda_call_back(recepient, who, msg, info_index)
