@@ -26,10 +26,10 @@ public:
 	}
 	IC EFC_Visible	_box		(Fvector& C, Fvector& E, u32& mask)
 	{
-		Fvector		m,M;
-		m.sub		(C,E);
-		M.add		(C,E);
-		return F->testAABB		(m,M,mask);
+		Fvector		mM[2];
+		mM[0].sub	(C,E);
+		mM[1].add	(C,E);
+		return F->testAABB		(&mM[0].x,mask);
 	}
 	void			_prim		(DWORD prim)
 	{

@@ -60,7 +60,7 @@ static			u32			remap [8][6]	=
 EFC_Visible		CFrustum::AABB_OverlapPlane(const fplane& P, const float* mM) const
 {
 	// calc extreme pts (neg,pos) along normal axis (pos in dir of norm, etc.)
-	u32		id[]	= remap[P.aabb_overlap_id];
+	u32*	id		= remap[P.aabb_overlap_id];
 
 	Fvector			Neg;
 	Neg.set			(mM[id[3]],mM[id[4]],mM[id[5]]);
