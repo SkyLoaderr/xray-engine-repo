@@ -748,7 +748,7 @@ public:
 			return				(false);
 		int						x4,y4;
 		graph->unpack_xz		(graph->vertex(vertex_id),x4,y4);
-		return					(_sqr(x0 - x4) + _sqr(y0 - y4) <= max_range_sqr);
+		return					(u32(_sqr(x0 - x4) + _sqr(y0 - y4)) <= max_range_sqr);
 	}
 
 	IC		bool		is_limit_reached(const _iteration_type	iteration_count) const
