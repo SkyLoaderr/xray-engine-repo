@@ -7,33 +7,6 @@ local time_to_camper      = 20000              --—колько времени сидим в укрытии
 local time_camper_look      = 7000              --—колько пригл€дываемс€, когда кемперим и ползем по маршруту
 
 --возвращает некоторую точку пути у которой установлен бит
-function point_with_bit(patrol_path, bit, old_point)      --old_point - стара€ точка, которую не надо выбирать, параметр не об€зательный
-  local points = {}
-
-    for i = 0, patrol_path:count()-1 do
-      --ƒобовл€ем в таблицу точки с нужным битом
-      if( patrol_path:flag(i, bit)) then
-            --ƒобавл€ем точку если old_point == nil или нова€ точка не совпадает с old_point
-            if(old_point == nil) then
-             	table.insert(points, patrol_path:point(i))
-            elseif(old_point ~= i) then
-                table.insert(points, patrol_path:point(i))
-            end
-        end
-    end
-
-  	local number_point = table.getn(points)
-
-  	if(number_point == 0) then
-      	return nil
-    elseif(number_point == 1) then
-      	return points[1]
-    else
-      	return points[math.random(1, number_point)]
-    end
-end
-
---возвращает некоторую точку пути у которой установлен бит
 function point_with_bit_id(patrol_path, bit)
 
     for i = 0, patrol_path:count()-1 do
@@ -174,7 +147,7 @@ function action_sniper_idle:init_state_sit_down  ()
     	self.object:set_detail_path_type  	(move.line)
       	self.object:set_sight               (look.danger, nil, 0)
         self.object:set_item              	(object.activate, self.object:best_weapon())
-        self.object:set_desired_direction  	( this.point_with_bit(self.a.point_path, 2):sub(self.object:position()) )
+        self.object:set_desired_direction  	(point_with_bit(self.a.point_path, 2):sub(self.object:position()) )
     end
 
     self.object:set_mental_state            (anim.free)
@@ -271,7 +244,7 @@ function action_sniper_idle:move_callback(obj, action_type, index)
     if(index == self.prev_point) then return end
 
     self.object:set_movement_type  	(move.stand)
-    self.object:set_sight      		(look.fire_point, this.point_with_bit(self.a.point_path, 2), 0)
+    self.object:set_sight      		(look.fire_point, point_with_bit(self.a.point_path, 2), 0)
     self.state     	= LOOK
     self.time    	= device():time_global() + time_to_look
     self.time_sight = device():time_global() + 1000
@@ -489,7 +462,7 @@ function action_camper:move_callback(obj, action_type, index)
 	if(self.prev_point == index) then return end		--“ут только что останавливались
 
   	self.object:set_movement_type   (move.stand)
-    self.object:set_sight        	(look.fire_point, this.point_with_bit(self.a.point_path, 2), 0)
+    self.object:set_sight        	(look.fire_point, point_with_bit(self.a.point_path, 2), 0)
 
     self.time    	= device():time_global() + time_camper_look
   	self.state    	= LOOK
@@ -501,7 +474,7 @@ function action_camper:select_look_point()
   	for i = 3, 20 do
 
         if(self.a.point_path:flag(self.camper_point, i)) then
-          	self.look_point  = this.point_with_bit(self.a.point_path, i, self.camper_point)
+          	self.look_point  = point_with_bit(self.a.point_path, i, self.camper_point)
             return
         end
     end

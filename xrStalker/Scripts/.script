@@ -886,3 +886,30 @@ function object_type(obj)
 
     return type
 end
+
+--возвращает произвольную точку пути у которой установлен бит
+function point_with_bit(patrol_path, bit, old_point)      -- old_point - индекс точки, которую не надо выбирать,
+  local points = {}                                       -- параметр не обязательный( например текущей точки )
+
+    for i = 0, patrol_path:count()-1 do
+      --Добовляем в таблицу точки с нужным битом
+      if( patrol_path:flag(i, bit)) then
+            --Добавляем точку если old_point == nil или новая точка не совпадает с old_point
+            if(old_point == nil) then
+                table.insert(points, patrol_path:point(i))
+            elseif(old_point ~= i) then
+                table.insert(points, patrol_path:point(i))
+            end
+        end
+    end
+
+    local number_point = table.getn(points)
+
+    if(number_point == 0) then
+        return nil
+    elseif(number_point == 1) then
+        return points[1]
+    else
+        return points[math.random(1, number_point)]
+    end
+end
