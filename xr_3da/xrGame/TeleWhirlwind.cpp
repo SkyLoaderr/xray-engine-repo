@@ -78,7 +78,11 @@ bool		CTeleWhirlwindObject::		init(CTelekinesis* tele,CPhysicsShellHolder *obj, 
 				obj->m_pPhysicsShell->set_ApplyByGravity(TRUE);
 			}
 
-			if(object->ph_destroyable())b_destroyable=true;
+			if(object->ph_destroyable()&&object->ph_destroyable()->CanDestroy())
+							b_destroyable=true;
+			else
+							b_destroyable=false;
+
 			return result;
 }
 void		CTeleWhirlwindObject::		raise_update			()
@@ -99,13 +103,13 @@ void		CTeleWhirlwindObject::		release					()
 	float magnitude	= dir_inv.magnitude();
 	
 
-	// включить гравитацию
+	// включить гравитацию 
 	//Fvector zer;zer.set(0,0,0);
 	//object->m_pPhysicsShell->set_LinearVel(zer);
 	object->m_pPhysicsShell->set_ApplyByGravity(TRUE);
 /////////////////////////////////////
 	float impulse=0.f;
-	if(magnitude>0.1f)
+	if(magnitude>0.2f)
 	{
 		dir_inv.mul(1.f/magnitude);
 		impulse=throw_power/magnitude/magnitude;
@@ -166,7 +170,7 @@ void		CTeleWhirlwindObject::		raise					(float step)
 		{
 			float k=strength;//600.f;
 			float predict_v_eps=0.1f;
-			float mag_eps	   =.1f;
+			float mag_eps	   =.01f;
 
 			CPhysicsElement* E=	p->get_ElementByStoreOrder(element);
 			if(maxE->getMass()<E->getMass())	maxE=E;

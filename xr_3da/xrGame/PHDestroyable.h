@@ -17,9 +17,10 @@ public:
 										CPHDestroyable				()						;
 			void						Init						()						;
 			void						RespawnInit					()						;
-
+	
 			void						Destroy						(u16 parent_id=u16(-1))	;	
 			void						Load						(LPCSTR section)		;
+IC			bool						CanDestroy					()						{return m_flags.test(fl_destroyable)&&!m_flags.test(fl_destroyed);}
 };
 
 

@@ -13,7 +13,7 @@
 void CPHDestroyable::Destroy(u16 parent_id/*=u16(-1)*/)
 {
 	
-	if(!m_flags.test(fl_destroyable)||m_flags.test(fl_destroyed))return ;
+	if(!CanDestroy())return ;
 //////////send destroy to self //////////////////////////////////////////////////////////////////
 	CPhysicsShellHolder* obj=PPhysicsShellHolder();
 
