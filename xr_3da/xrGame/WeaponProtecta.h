@@ -24,7 +24,6 @@ private:
 	float			fTime;
 
 	ref_sound			sndShoot;
-	ref_sound			sndRicochet[SND_RIC_COUNT];
 
 	Fvector			vFirePoint;
 

@@ -273,6 +273,9 @@ CObject::SavedPosition CGameObject::ps_Element(u32 ID)
 
 void CGameObject::UpdateCL	()
 {
+	//обновить присоединенные партиклы
+	UpdateParticles	();
+
 	inherited::UpdateCL	();
 }
 

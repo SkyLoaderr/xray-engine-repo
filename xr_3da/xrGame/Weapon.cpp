@@ -143,7 +143,7 @@ void CWeapon::SoundCreate(ref_sound& dest, LPCSTR s_name, int iType, BOOL /**bCt
 	Debug.fatal	("Can't find ref_sound '%s' for weapon '%s'",name,GetName());
 }
 
-void CWeapon::SoundDestroy	(	ref_sound& dest)
+void CWeapon::SoundDestroy	(ref_sound& dest)
 {
 	dest.destroy			();
 }

@@ -11,28 +11,29 @@
 CGrenade::CGrenade(void) 
 {
 	m_pFake = NULL;
+	m_eSoundCheckout = ESoundTypes(SOUND_TYPE_WEAPON_RECHARGING);
 }
 
 CGrenade::~CGrenade(void) 
 {
+	inherited::SoundDestroy(sndCheckout);
 }
 
 void CGrenade::Load(LPCSTR section) 
 {
 	inherited::Load(section);
-
 	CExplosive::Load(section);
+
+	inherited::SoundCreate(sndCheckout, "checkout", m_eSoundCheckout);
 }
 
 BOOL CGrenade::net_Spawn(LPVOID DC) 
 {
-	CExplosive::net_Spawn(DC);
 	return inherited::net_Spawn	(DC);
 }
 
 void CGrenade::net_Destroy() 
 {
-	CExplosive::net_Destroy();
 	inherited::net_Destroy	();
 }
 

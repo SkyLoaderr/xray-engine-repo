@@ -24,7 +24,7 @@ CWeaponMagazined::CWeaponMagazined(LPCSTR name, ESoundTypes eSoundType) : CWeapo
 	m_eSoundShot		= ESoundTypes(SOUND_TYPE_WEAPON_SHOOTING | eSoundType);
 	m_eSoundEmptyClick	= ESoundTypes(SOUND_TYPE_WEAPON_EMPTY_CLICKING | eSoundType);
 	m_eSoundReload		= ESoundTypes(SOUND_TYPE_WEAPON_RECHARGING | eSoundType);
-	m_eSoundRicochet	= ESoundTypes(SOUND_TYPE_WEAPON_BULLET_RICOCHET | eSoundType);
+	
 	fTime				= 0;
 	m_queueSize = m_shotNum = 0;
 }
@@ -44,11 +44,6 @@ void CWeaponMagazined::net_Destroy()
 	SoundDestroy		(sndShot		);
 	SoundDestroy		(sndEmptyClick	);
 	SoundDestroy		(sndReload		);
-	SoundDestroy		(sndRicochet[0]	);
-	SoundDestroy		(sndRicochet[1]	);
-	SoundDestroy		(sndRicochet[2]	);
-	SoundDestroy		(sndRicochet[3]	);
-	SoundDestroy		(sndRicochet[4]	);
 }
 
 
@@ -62,11 +57,6 @@ void CWeaponMagazined::Load	(LPCSTR section)
 	SoundCreate			(sndShot,		"shoot"   ,m_eSoundShot);
 	SoundCreate			(sndEmptyClick,	"empty"   ,m_eSoundEmptyClick);
 	SoundCreate			(sndReload,		"reload"  ,m_eSoundReload);
-	SoundCreate			(sndRicochet[0],"ric1"    ,m_eSoundRicochet);
-	SoundCreate			(sndRicochet[1],"ric2"    ,m_eSoundRicochet);
-	SoundCreate			(sndRicochet[2],"ric3"    ,m_eSoundRicochet);
-	SoundCreate			(sndRicochet[3],"ric4"    ,m_eSoundRicochet);
-	SoundCreate			(sndRicochet[4],"ric5"    ,m_eSoundRicochet);
 	
 	// HUD :: Anims
 	R_ASSERT			(m_pHUD);
@@ -525,7 +515,6 @@ void CWeaponMagazined::OnShot		()
 void CWeaponMagazined::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::rq_result& R)
 {
 //	Device.Statistic.TEST3.Begin();
-	Sound->play_at_pos		(sndRicochet[Random.randI(SND_RIC_COUNT)], 0, vEnd,false);
 //	Device.Statistic.TEST3.End();
 	
 	if (!R.O) 

@@ -31,11 +31,6 @@ void CWeaponMagazinedWGrenade::Load	(LPCSTR section)
 	SoundCreate			(sndShotG,		"shoot"   ,m_eSoundShot);
 	//SoundCreate			(sndEmptyClick,	"empty"   ,m_eSoundEmptyClick);
 	SoundCreate			(sndReloadG,		"reload"  ,m_eSoundReload);
-	//SoundCreate			(sndRicochet[0],"ric1"    ,m_eSoundRicochet);
-	//SoundCreate			(sndRicochet[1],"ric2"    ,m_eSoundRicochet);
-	//SoundCreate			(sndRicochet[2],"ric3"    ,m_eSoundRicochet);
-	//SoundCreate			(sndRicochet[3],"ric4"    ,m_eSoundRicochet);
-	//SoundCreate			(sndRicochet[4],"ric5"    ,m_eSoundRicochet);
 	
 	m_sGrenadeFlameParticles = pSettings->r_string(section, "grenade_flame_particles");
 	

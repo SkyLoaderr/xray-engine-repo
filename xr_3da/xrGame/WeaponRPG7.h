@@ -48,8 +48,10 @@ public:
 	ref_str				pstrWallmark;
 	ref_shader			hWallmark;
 	float				fWallmarkSize;
-	ref_sound			sndRicochet[SND_RIC_COUNT], sndExplode;
-	ESoundTypes			m_eSoundRicochet, m_eSoundExplode;
+	
+	ref_sound			sndExplode;
+	ESoundTypes			m_eSoundExplode;
+
 	s32					m_engineTime, m_explodeTime, m_flashTime;
 	xr_vector<ref_str>	m_effects;
 	xr_vector<ref_str>	m_trailEffects;

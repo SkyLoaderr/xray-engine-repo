@@ -25,18 +25,14 @@ public:
 
 	virtual void Load(LPCSTR section);
 	
-	virtual BOOL net_Spawn(LPVOID DC);
-	virtual void net_Destroy();
+	virtual BOOL net_Spawn(LPVOID DC) = 0;
+	virtual void net_Destroy() = 0;
 
 	virtual void UpdateCL();
 
 	virtual void feel_touch_new(CObject* O);
 
 	virtual void Explode();
-	virtual void FragWallmark(const Fvector& vDir, 
-							  const Fvector &vEnd, 
-							  Collide::rq_result& R);
-
 	virtual void Destroy()	=	0;
 
 	void SoundCreate(ref_sound& dest, LPCSTR name, int iType, BOOL bCtrlFreq=FALSE);
@@ -48,7 +44,8 @@ public:
 	virtual	void Hit	(float P, Fvector &dir,	CObject* who, s16 element,
 						 Fvector position_in_object_space, float impulse, 
 						 ALife::EHitType hit_type = eHitTypeWound)	{inherited::Hit(P, dir, who, element, position_in_object_space,impulse,hit_type);}
-	virtual void renderable_Render() {inherited::renderable_Render();}
+	
+	virtual void renderable_Render() = 0;
 
 
 
@@ -71,18 +68,6 @@ protected:
 	//продолжительность взрыва
 	u32	m_expoldeTime;
 
-	//отметки на стенах
-	ref_str		pstrWallmark;
-	ref_shader	hWallmark;
-	float		fWallmarkSize;
-	
-	//эффекты и подсветка
-	xr_vector<ref_str>	m_effects;
-	IRender_Light*		m_pLight;
-	Fcolor m_lightColor;
-	f32 m_lightRange;
-	u32 m_lightTime;
-
 	//////////////////////////////////////////////
 	//для разлета осколков
 	float					tracerHeadSpeed;
@@ -91,6 +76,18 @@ protected:
 	float					tracerWidth;
 
 	//звуки
-	ref_sound	sndRicochet[SND_RIC_COUNT], sndExplode, sndCheckout;
-	ESoundTypes m_eSoundRicochet, m_eSoundExplode, m_eSoundCheckout;
+	ref_sound	sndExplode;
+	ESoundTypes m_eSoundExplode;
+
+	//отметки на стенах
+	float		fWallmarkSize;
+	
+	//эффекты и подсветка
+	ref_str m_sExplodeParticles;
+	
+	//подсветка
+	IRender_Light*		m_pLight;
+	Fcolor m_lightColor;
+	f32 m_lightRange;
+	u32 m_lightTime;
 };

@@ -48,11 +48,6 @@ CWeaponM134::CWeaponM134() : CWeapon("M134")
 	pSounds->Create(sndFireLoop,	TRUE,	"weapons\\m134_fire_loop"	,FALSE, SOUND_TYPE_WEAPON_SHOOTING_MACHINEGUN);
 	pSounds->Create(sndFireEnd,		TRUE,	"weapons\\m134_fire_end"	,FALSE, SOUND_TYPE_WEAPON_SHOOTING_MACHINEGUN);
 	pSounds->Create(sndServo,		TRUE,	"weapons\\m134_servo"		,TRUE,  SOUND_TYPE_WEAPON_CHANGING_MACHINEGUN);
-	pSounds->Create(sndRicochet[0],	TRUE,	"weapons\\generic_ric1"		,FALSE, SOUND_TYPE_WEAPON_BULLET_RICOCHET_MACHINEGUN);
-	pSounds->Create(sndRicochet[1],	TRUE,	"weapons\\generic_ric2"		,FALSE, SOUND_TYPE_WEAPON_BULLET_RICOCHET_MACHINEGUN);
-	pSounds->Create(sndRicochet[2],	TRUE,	"weapons\\generic_ric3"		,FALSE, SOUND_TYPE_WEAPON_BULLET_RICOCHET_MACHINEGUN);
-	pSounds->Create(sndRicochet[3],	TRUE,	"weapons\\generic_ric4"		,FALSE, SOUND_TYPE_WEAPON_BULLET_RICOCHET_MACHINEGUN);
-	pSounds->Create(sndRicochet[4],	TRUE,	"weapons\\generic_ric5"		,FALSE, SOUND_TYPE_WEAPON_BULLET_RICOCHET_MACHINEGUN);
 
 	fRotateSpeed	= 0;
 	fRotateAngle	= 0;
@@ -84,7 +79,6 @@ CWeaponM134::~CWeaponM134()
 	pSounds->Delete(sndFireLoop);
 	pSounds->Delete(sndFireEnd);
 	pSounds->Delete(sndServo);
-	for (int i=0; i<SND_RIC_COUNT; ++i) pSounds->Delete(sndRicochet[i]);
 }
 
 void CWeaponM134::Load	(LPCSTR section)
@@ -378,7 +372,6 @@ void CWeaponM134::Show			()
 void CWeaponM134::FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collide::rq_result& R) 
 {
 	inherited::FireShotmark		(vDir, vEnd, R);
-	pSounds->play_at_pos		(sndRicochet[Random.randI(SND_RIC_COUNT)], H_Root(), vEnd,false);
 
 	// particles
 	Fvector N,D;

@@ -37,7 +37,7 @@ CWeaponRPG7Grenade::CWeaponRPG7Grenade()
 	m_pos.set(0, 0, 0); m_vel.set(0, 0, 0);
 	m_pOwner = NULL;
 	m_eSoundExplode = ESoundTypes(SOUND_TYPE_WEAPON_SHOOTING);
-	m_eSoundRicochet = ESoundTypes(0/*SOUND_TYPE_WEAPON_BULLET_RICOCHET*/);
+	
 	m_pLight = ::Render->light_create();
 	m_pLight->set_shadow(true);
 	m_explodeTime = m_engineTime = m_flashTime = 0;
@@ -48,11 +48,6 @@ CWeaponRPG7Grenade::~CWeaponRPG7Grenade()
 	::Render->light_destroy(m_pLight);
 	xr_delete	(m_pPhysicsShell);
 	SoundDestroy(sndExplode);
-	SoundDestroy(sndRicochet[0]);
-	SoundDestroy(sndRicochet[1]);
-	SoundDestroy(sndRicochet[2]);
-	SoundDestroy(sndRicochet[3]);
-	SoundDestroy(sndRicochet[4]);
 }
 
 void __stdcall CWeaponRPG7Grenade::ObjectContactCallback(bool& do_colide,dContact& c) 
@@ -145,11 +140,6 @@ void CWeaponRPG7Grenade::Load(LPCSTR section)
 	m_lightTime = pSettings->r_u32(section,"light_time");
 
 	SoundCreate(sndExplode,		"explode", m_eSoundExplode);
-	SoundCreate(sndRicochet[0], "ric1", m_eSoundRicochet);
-	SoundCreate(sndRicochet[1], "ric2", m_eSoundRicochet);
-	SoundCreate(sndRicochet[2], "ric3", m_eSoundRicochet);
-	SoundCreate(sndRicochet[3], "ric4", m_eSoundRicochet);
-	SoundCreate(sndRicochet[4], "ric5", m_eSoundRicochet);
 	m_state = stInactive;
 }
 
@@ -432,7 +422,6 @@ void CWeaponRPG7Grenade::FragWallmark	(const Fvector& /**vDir/**/, const Fvector
 			);
 	}
 
-	Sound->play_at_pos(sndRicochet[Random.randI(SND_RIC_COUNT)], 0, vEnd,false);
 	
 	if (!R.O) 
 	{

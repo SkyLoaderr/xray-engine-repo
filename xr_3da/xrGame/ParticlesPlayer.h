@@ -28,6 +28,8 @@ public:
 	CParticlesPlayer			(void);
 	virtual ~CParticlesPlayer	(void);
 
+	
+	//функции, которые определ€ютс€ в порожденном объекте
 	virtual IRender_Sector*	Sector  () = 0;
 	virtual void PHGetLinearVell (Fvector& velocity) = 0;
 

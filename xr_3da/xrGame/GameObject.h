@@ -14,12 +14,14 @@ class CPHSynchronize;
 #include "level_graph.h"
 #include "ai_object_location.h"
 #include "prefetch_manager.h"
+#include "ParticlesPlayer.h"
 
 class CGameObject : 
 	public CObject, 
 	public CPhysicsRefObject,
 	virtual public CAI_ObjectLocation,
-	public CPrefetchManager
+	public CPrefetchManager,
+	public CParticlesPlayer
 
 {
 	typedef CObject inherited;
@@ -52,6 +54,10 @@ public:
 	virtual	void			Hit					(float P, Fvector &dir,	CObject* who, 
 												 s16 element,Fvector p_in_object_space, 
 												 float impulse, ALife::EHitType hit_type = eHitTypeWound);
+
+	//для наследования CParticlesPlayer
+	virtual IRender_Sector*	Sector				()		{return inherited::Sector();}
+	
 	//virtual void			OnH_A_Independent	();
 	virtual void			OnH_B_Chield		();
 	virtual void			OnH_B_Independent	();

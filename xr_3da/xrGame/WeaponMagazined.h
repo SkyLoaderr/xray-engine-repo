@@ -19,14 +19,12 @@ protected:
 	ref_sound		sndShot;
 	ref_sound		sndEmptyClick;
 	ref_sound		sndReload;
-	ref_sound		sndRicochet		[SND_RIC_COUNT];
 
 	ESoundTypes		m_eSoundShow;
 	ESoundTypes		m_eSoundHide;
 	ESoundTypes		m_eSoundShot;
 	ESoundTypes		m_eSoundEmptyClick;
 	ESoundTypes		m_eSoundReload;
-	ESoundTypes		m_eSoundRicochet;
 					
 	// HUD :: Animations
 	MotionSVec		mhud_idle;

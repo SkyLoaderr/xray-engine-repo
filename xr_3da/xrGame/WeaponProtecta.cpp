@@ -15,11 +15,6 @@
 CWeaponProtecta::CWeaponProtecta() : CWeapon("PROTECTA")
 {
 	pSounds->Create(sndShoot,		TRUE,	"weapons\\protecta_fire");
-	pSounds->Create(sndRicochet[0],	TRUE,	"weapons\\ric1");
-	pSounds->Create(sndRicochet[1],	TRUE,	"weapons\\ric2");
-	pSounds->Create(sndRicochet[2],	TRUE,	"weapons\\ric3");
-	pSounds->Create(sndRicochet[3],	TRUE,	"weapons\\ric4");
-	pSounds->Create(sndRicochet[4],	TRUE,	"weapons\\ric5");
 
 	iShotCount		= 0;
 
@@ -33,8 +28,6 @@ CWeaponProtecta::~CWeaponProtecta()
 {
 	// sounds
 	pSounds->Delete(sndShoot);
-	for (int i=0; i<SND_RIC_COUNT; ++i) pSounds->Delete(sndRicochet[i]);
-	
 	xr_delete			(m_pShootPS);
 }
 
@@ -174,7 +167,6 @@ void CWeaponProtecta::Update(float dt, BOOL bHUDView)
 					Fvector p1=p1_base, d=d_base;
 					bHit |=		FireTrace(p1,vLastFP,d);
 				}
-//				if (bHit)		pSounds->play_at_pos(sndRicochet[Random.randI(SND_RIC_COUNT)], vEnd,false);
 				--iAmmoElapsed;
 		 		if (iAmmoElapsed==0) { m_pParent->g_fireEnd(); break; }
 				m_pHUD->Shoot	();

@@ -38,7 +38,6 @@ private:
 	ref_sound				sndFireEnd;
 	ref_sound				sndFireLoop;
 	ref_sound				sndServo;
-	ref_sound				sndRicochet[SND_RIC_COUNT];
 
 	xr_vector<ref_shader>	hFlames;
 

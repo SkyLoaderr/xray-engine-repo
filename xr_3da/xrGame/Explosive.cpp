@@ -26,27 +26,16 @@ CExplosive::CExplosive(void)
 	m_fUpThrowFactor = 0.f;
 
 	m_eSoundExplode = ESoundTypes(SOUND_TYPE_WEAPON_SHOOTING);
-	m_eSoundRicochet = ESoundTypes(0);
-	m_eSoundCheckout = ESoundTypes(SOUND_TYPE_WEAPON_RECHARGING);
 
 	m_pLight = ::Render->light_create();
 	m_pLight->set_shadow(true);
-	hWallmark = 0;
 }
 
 CExplosive::~CExplosive(void) 
 {
-	hWallmark.destroy		();
-
 	::Render->light_destroy	(m_pLight);
 
 	SoundDestroy(sndExplode);
-	SoundDestroy(sndCheckout);
-	SoundDestroy(sndRicochet[0]);
-	SoundDestroy(sndRicochet[1]);
-	SoundDestroy(sndRicochet[2]);
-	SoundDestroy(sndRicochet[3]);
-	SoundDestroy(sndRicochet[4]);
 }
 
 void CExplosive::Load(LPCSTR section) 
@@ -59,25 +48,9 @@ void CExplosive::Load(LPCSTR section)
 
 	m_fUpThrowFactor = pSettings->r_float(section,"up_throw_factor");
 
-	LPCSTR	name = pSettings->r_string(section,"wm_name");
-	pstrWallmark = name;
 	fWallmarkSize = pSettings->r_float(section,"wm_size");
 
-	string256 m_effectsSTR;
-	strcpy(m_effectsSTR, pSettings->r_string(section,"effects"));
-	char* l_effectsSTR = m_effectsSTR; R_ASSERT(l_effectsSTR);
-	m_effects.clear(); m_effects.push_back(l_effectsSTR);
-	
-	while(*l_effectsSTR) 
-	{
-		if(*l_effectsSTR == ',') 
-		{
-			*l_effectsSTR = 0; ++l_effectsSTR;
-			while(*l_effectsSTR == ' ' || *l_effectsSTR == '\t') ++l_effectsSTR;
-			m_effects.push_back(l_effectsSTR);
-		}
-		++l_effectsSTR;
-	}
+	m_sExplodeParticles = pSettings->r_string(section,"explode_particles");
 
 	sscanf(pSettings->r_string(section,"light_color"), "%f,%f,%f", &m_lightColor.r, &m_lightColor.g, &m_lightColor.b);
 	m_lightRange	= pSettings->r_float(section,"light_range");
@@ -90,28 +63,8 @@ void CExplosive::Load(LPCSTR section)
 	tracerWidth			= pSettings->r_float		(section,"tracer_width"			);
 
 
-	SoundCreate(sndExplode, "explode", m_eSoundExplode);
-	SoundCreate(sndCheckout, "checkout", m_eSoundCheckout);
-	SoundCreate(sndRicochet[0], "ric1", m_eSoundRicochet);
-	SoundCreate(sndRicochet[1], "ric2", m_eSoundRicochet);
-	SoundCreate(sndRicochet[2], "ric3", m_eSoundRicochet);
-	SoundCreate(sndRicochet[3], "ric4", m_eSoundRicochet);
-	SoundCreate(sndRicochet[4], "ric5", m_eSoundRicochet);
-}
-
-BOOL CExplosive::net_Spawn(LPVOID DC) 
-{
-	if (0==pstrWallmark) 
-		hWallmark	= 0; 
-	else 
-		hWallmark.create		("effects\\wallmark",*pstrWallmark);
-	
-	return TRUE;
-}
-
-void CExplosive::net_Destroy() 
-{
-	hWallmark.destroy		();
+	ref_str snd_name = pSettings->r_string(section,"snd_explode");
+	SoundCreate(sndExplode, *snd_name, m_eSoundExplode);
 }
 
 /////////////////////////////////////////////////////////
@@ -126,13 +79,8 @@ void CExplosive::Explode()
 	
 	//показываем эффекты
 	CParticlesObject* pStaticPG; 
-	int l_c = (s32)m_effects.size();
-
-	for(s32 i = 0; i < l_c; ++i) 
-	{
-		pStaticPG = xr_new<CParticlesObject>(*m_effects[i],Sector()); 
-		pStaticPG->play_at_pos(Position());
-	}
+	pStaticPG = xr_new<CParticlesObject>(*m_sExplodeParticles,Sector()); 
+	pStaticPG->play_at_pos(Position());
 
 
 	
@@ -286,66 +234,6 @@ void CExplosive::Explode()
 	}	
 }
 
-void CExplosive::FragWallmark	(const Fvector& vDir, const Fvector &vEnd, Collide::rq_result& R) 
-{
-	if (!hWallmark)	return;
-	
-	if (R.O) 
-	{
-		if (R.O->CLS_ID==CLSID_ENTITY)
-		{
-#pragma todo("Oles to Yura: replace 'CPSObject' with 'CParticlesObject'")
-			/*
-			IRender_Sector* S	= R.O->Sector();
-			Fvector D;	D.invert(vDir);
-
-			LPCSTR ps_gibs		= "blood_1";//(Random.randI(5)==0)?"sparks_1":"stones";
-			CPSObject* PS		= xr_new<CPSObject> (ps_gibs,S,true);
-			PS->m_Emitter.m_ConeDirection.set(D);
-			PS->play_at_pos		(vEnd);
-//			*/
-		}
-	} 
-	else 
-	{
-		R_ASSERT(R.element >= 0);
-		::Render->add_Wallmark	(
-			hWallmark,
-			vEnd,
-			fWallmarkSize,
-			g_pGameLevel->ObjectSpace.GetStaticTris()+R.element,
-			g_pGameLevel->ObjectSpace.GetStaticVerts()
-			);
-	}
-
-	Sound->play_at_pos(sndRicochet[Random.randI(SND_RIC_COUNT)], 0, vEnd,false);
-	
-	if (!R.O) 
-	{
-/*		// particles
-		Fvector N,D;
-		CDB::TRI* pTri		= g_pGameLevel->ObjectSpace.GetStaticTris()+R.element;
-		N.mknormal			(pTri->V(0),pTri->V(1),pTri->V(2));
-		D.reflect			(vDir,N);
-		
-#pragma todo("Oles to Yura: replace 'CPSObject' with 'CParticlesObject'")
-	
-		IRender_Sector* S	= ::Render->getSector(pTri->sector);
-		
-		// smoke
-		LPCSTR ps_gibs		= (Random.randI(5)==0)?"sparks_1":"stones";
-		CPSObject* PS		= xr_new<CPSObject> (ps_gibs,S,true);
-		PS->m_Emitter.m_ConeDirection.set(D);
-		PS->play_at_pos		(vEnd);
-		
-		// stones
-		PS					= xr_new<CPSObject> ("stones",S,true);
-		PS->m_Emitter.m_ConeDirection.set(D);
-		PS->play_at_pos		(vEnd);
-		*/
-	}
-}
-
 void CExplosive::feel_touch_new(CObject* O) 
 {
 	CGameObject *pGameObject = dynamic_cast<CGameObject*>(O);
@@ -386,15 +274,7 @@ void CExplosive::SoundCreate(ref_sound& dest, LPCSTR s_name,
 						   int iType, BOOL /**bCtrlFreq/**/) 
 {
 	string256	name,temp;
-	strconcat	(name,"weapons\\",Name(),"_",s_name,".ogg");
-
-	if (FS.exist(temp,"$game_sounds$",name)) 
-	{
-		dest.create		(TRUE,name,iType);
-		return;
-	}
-
-	strconcat	(name,"weapons\\","generic_",s_name,".ogg");
+	strconcat	(name, s_name,".ogg");
 
 	if (FS.exist(temp,"$game_sounds$",name))	
 	{

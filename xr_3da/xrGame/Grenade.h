@@ -72,4 +72,8 @@ protected:
 
 	u64						LastCPhStep;
 	u64						LastAPhStep;
+
+	ref_sound sndCheckout;
+	ESoundTypes	m_eSoundCheckout;
+
 };
