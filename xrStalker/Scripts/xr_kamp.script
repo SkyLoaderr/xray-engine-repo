@@ -172,6 +172,7 @@ end
 function action_go_patrol:reset()
 	self.move_mgr:initialize(self.object)
 	local tt = math.random(table.getn(self.a.patrol_path))	
+	printf("%s %s", self.a.patrol_path[tt], self.a.path_look[tt])
 	self.move_mgr:reset(self.a.patrol_path[tt], 
 					utils.path_parse_waypoints(self.a.patrol_path[tt]),
 					self.a.path_look[tt],
@@ -250,8 +251,8 @@ function action_wait:execute()
 				actions[i] = 1
 				i = i + 1
 			end             	
-		end
-		actions[i] = 5  
+		end	
+		actions[i] = 5
 		local rr = math.random(table.getn(actions))
 		self.a.action = actions[rr]
 		self.a.last_action = self.a.action
