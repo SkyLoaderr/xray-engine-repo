@@ -11,7 +11,7 @@
 class ENGINE_API	CObject;
 class ENGINE_API	xrLIGHT;
 
-class ENGINE_API	CLightShadows  
+class ENGINE_API	CLightShadows  : public pureDeviceCreate, public pureDeviceDestroy
 {
 	friend class pred_casters;
 private:
@@ -29,14 +29,17 @@ private:
 	vector<caster>			casters;
 	vector<int>				id;
 	vector<xrLIGHT*>		lights;
-	CRT*					
+	CRT*					RT;
 private:
 public:
-	void					set_object	(CObject*	O);
-	void					add_element	(NODE*		N);
-	void					calculate	();
-	void					render		();
+	void					set_object		(CObject*	O);
+	void					add_element		(NODE*		N);
+	void					calculate		();
+	void					render			();
 
+	virtual	void			OnDeviceCreate	();
+	virtual	void			OnDeviceDestroy	();
+	
 	CLightShadows			();
 	~CLightShadows			();
 };

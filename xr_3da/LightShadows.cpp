@@ -10,6 +10,7 @@
 const	float	S_distance	= 32;
 const	float	S_level		= .1f;
 const	int		S_size		= 64;
+const	int		S_rt_size	= 512;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -18,11 +19,21 @@ const	int		S_size		= 64;
 CLightShadows::CLightShadows()
 {
 	current	= 0;
+	RT		= 0;
 }
 
 CLightShadows::~CLightShadows()
 {
-	
+}
+
+void CLightShadows::OnDeviceCreate	()
+{
+	RT	= Device.Shader._CreateRT	("$user$shadow",S_rt_size,S_rt_size);
+}
+
+void CLightShadows::OnDeviceDestroy	()
+{
+	Device.Shader._DeleteRT			(RT);
 }
 
 void CLightShadows::set_object	(CObject* O)
@@ -68,7 +79,7 @@ void CLightShadows::calculate	()
 	
 	// iterate on objects
 	int	slot_id		= 0;
-	int slot_line	= 512/S_size;
+	int slot_line	= S_rt_size/S_size;
 	int slot_max	= slot_line*slot_line;
 	for (int o_it=0; o_it<id.size(); o_it++)
 	{
