@@ -115,16 +115,6 @@
 
 	#define ONE_OVER_RAND_MAX	(1.0f / float(RAND_MAX))		//!<	Inverse of the max possible value returned by rand()
 
-	typedef int					(__stdcall* PROC)();			//!<	A standard procedure call.
-	typedef bool				(*ENUMERATION)(udword value, udword param, udword context);	//!< ICE standard enumeration call
-	typedef	void**				VTABLE;							//!<	A V-Table.
-
-	#undef		MIN
-	#undef		MAX
-	#define		MIN(a, b)       ((a) < (b) ? (a) : (b))			//!<	Returns the min value between a and b
-	#define		MAX(a, b)       ((a) > (b) ? (a) : (b))			//!<	Returns the max value between a and b
-	#define		MAXMAX(a,b,c)   ((a) > (b) ? MAX (a,c) : MAX (b,c))	//!<	Returns the max value between a, b and c
-
 	template<class T>	inline_ const T&	TMin	(const T& a, const T& b)	{ return b < a ? b : a;	}
 	template<class T>	inline_ const T&	TMax	(const T& a, const T& b)	{ return a < b ? b : a;	}
 	template<class T>	inline_ void		TSetMin	(T& a, const T& b)			{ if(a>b)	a = b;		}
