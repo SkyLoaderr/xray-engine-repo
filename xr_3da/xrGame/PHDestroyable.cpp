@@ -96,34 +96,43 @@ void CPHDestroyable::Destroy(u16 source_id/*=u16(-1)*/,LPCSTR section/*="ph_skel
 
 void CPHDestroyable::Load(CInifile* ini,LPCSTR section)
 {
-	CPhysicsShellHolder *shell_holder=PPhysicsShellHolder();
-	shared_str visual_name;
-	visual_name=shell_holder->cNameVisual();
-	if(ini->line_exist(section,"destroyed_vis_name"))
-	{
-		m_flags.set(fl_destroyable,TRUE);
-		m_destroyed_obj_visual_names.push_back(ini->r_string(section,"destroyed_vis_name"));
-		shell_holder->cNameVisual_set(m_destroyed_obj_visual_names[0]);
+		CPhysicsShellHolder *shell_holder=PPhysicsShellHolder();
+		shared_str visual_name;
+		visual_name=shell_holder->cNameVisual();
+		if(ini->line_exist(section,"destroyed_vis_name"))
+		{
+			m_flags.set(fl_destroyable,TRUE);
+			m_destroyed_obj_visual_names.push_back(ini->r_string(section,"destroyed_vis_name"));
+			shell_holder->cNameVisual_set(m_destroyed_obj_visual_names[0]);
 
-	}
-	else if(0==xr_strcmp(section,"destroyed"))
-	{
-		CInifile::Sect& data		= ini->r_section(section);
-		if(data.size()>0) m_flags.set(fl_destroyable,TRUE);
-		for (CInifile::SectIt I=data.begin(); I!=data.end(); I++){
-			CInifile::Item& item	= *I;
-			if(*item.first)
-			{
-				m_destroyed_obj_visual_names.push_back		(*item.first);
-				shell_holder->cNameVisual_set(*item.first);
+		}
+		else{
+			CInifile::Sect& data		= ini->r_section(section);
+			if(data.size()>0) m_flags.set(fl_destroyable,TRUE);
+			for (CInifile::SectIt I=data.begin(); I!=data.end(); I++){
+				CInifile::Item& item	= *I;
+				if(*item.first)
+				{
+					m_destroyed_obj_visual_names.push_back		(*item.first);
+					shell_holder->cNameVisual_set(*item.first);
+				}
 			}
 		}
-	}
-	shell_holder->cNameVisual_set(visual_name);
+		shell_holder->cNameVisual_set(visual_name);
 }
 void CPHDestroyable::Load(LPCSTR section)
 {
-	Load(pSettings,section);
+	CPhysicsShellHolder *shell_holder=PPhysicsShellHolder();
+	shared_str visual_name;
+	visual_name=shell_holder->cNameVisual();
+	if(pSettings->line_exist(section,"destroyed_vis_name"))
+	{
+		m_flags.set(fl_destroyable,TRUE);
+		m_destroyed_obj_visual_names.push_back(pSettings->r_string(section,"destroyed_vis_name"));
+		shell_holder->cNameVisual_set(m_destroyed_obj_visual_names[0]);
+
+	}
+	shell_holder->cNameVisual_set(visual_name);
 }
 
 void CPHDestroyable::Init()

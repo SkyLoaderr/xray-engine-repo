@@ -66,8 +66,8 @@ void	CPhysicObject::SpawnInitPhysics	(CSE_Abstract* D)
 }
 void CPhysicObject::net_Destroy()
 {
-	CPHSkeleton::RespawnInit();
 	inherited::net_Destroy();
+	CPHSkeleton::RespawnInit();
 }
 
 void CPhysicObject::net_Save(NET_Packet& P)

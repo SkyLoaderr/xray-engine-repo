@@ -38,8 +38,9 @@ void	CPhysicsSkeletonObject::SpawnInitPhysics	(CSE_Abstract	*D)
 
 void CPhysicsSkeletonObject::net_Destroy()
 {
-	CPHSkeleton::RespawnInit	();
+
 	inherited::net_Destroy		();
+	CPHSkeleton::RespawnInit	();
 	CKinematics* K=smart_cast<CKinematics*>	(Visual());
 	if(K)	K->CalculateBones	();
 }
