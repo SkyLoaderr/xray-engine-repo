@@ -7,7 +7,6 @@
 		<action>level_tasks.notify_new_task</action>
     </info_portion>
     <info_portion id="agroprom_military_case_have">
-    	<disable>agroprom_military_case</disable>
     </info_portion>
     <info_portion id="agroprom_military_case_done">
     </info_portion>
