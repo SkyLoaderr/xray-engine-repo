@@ -85,11 +85,11 @@ void CSoundMemoryManager::feel_sound_new(CObject *object, int sound_type, const 
 			hit_memory_manager->add_hit_object(_entity_alive);
 	}
 	
-	if (sound_power >= m_sound_threshold)
-		add_sound_object(object,sound_type,position,sound_power);
+//	if (sound_power >= m_sound_threshold)
+		add_sound_object	(object,sound_type,position,sound_power);
 
-	m_last_sound_time	= Level().timeServer();
-	m_sound_threshold	= _max(m_sound_threshold,sound_power);
+	m_last_sound_time		= Level().timeServer();
+	m_sound_threshold		= _max(m_sound_threshold,sound_power);
 }
 
 void CSoundMemoryManager::add_sound_object(const CObject *object, int sound_type, const Fvector &position, float sound_power)
