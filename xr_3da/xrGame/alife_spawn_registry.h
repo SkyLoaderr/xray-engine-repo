@@ -40,11 +40,12 @@ public:
 	virtual void							save						(IWriter &memory_stream);
 			void							load						(IReader &file_stream, LPCSTR game_name);
 			void							load						(LPCSTR spawn_name);
+			void							fill_redundant_spawns		(xr_vector<ALife::_SPAWN_ID> &spawns);
+			void							fill_new_spawns				(xr_vector<ALife::_SPAWN_ID> &spawns);
 	IC		const CALifeSpawnHeader			&header						() const;
 	IC		const SPAWN_GRAPH				&spawns						() const;
 	IC		void							assign_artefact_position	(CSE_ALifeAnomalousZone	*anomaly, CSE_ALifeDynamicObject *object);
 	IC		const ALife::ITEM_SET_MAP		&artefact_anomaly_map		() const;
-	IC		bool							valid_spawn_id				(ALife::_SPAWN_ID spawn_id) const;
 };
 
 #include "alife_spawn_registry_inline.h"

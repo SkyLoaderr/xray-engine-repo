@@ -389,35 +389,70 @@ void CALifeSurgeManager::setup_next_surge_time		()
 	time_manager().last_surge_time	(time_manager().game_time());
 }
 
-IC	bool CALifeSurgeManager::redundant				(CSE_ALifeDynamicObject *object) const
+IC	bool CALifeSurgeManager::redundant				(CSE_ALifeDynamicObject *object)
 {
-	return						(true);
+	xr_vector<ALife::_SPAWN_ID>::iterator	I = std::lower_bound(m_temp_spawns.begin(),m_temp_spawns.end(),object->m_tSpawnID);
+	if (I == m_temp_spawns.end())
+		return								(false);
+	return									(true);
+}
+
+void CALifeSurgeManager::fill_redundant_spawns		()
+{
+	m_temp_spawns.clear				();
+	spawns().fill_redundant_spawns	(m_temp_spawns);
+	std::sort						(m_temp_spawns.begin(),m_temp_spawns.end());
+}
+
+void CALifeSurgeManager::fill_redundant_objects		()
+{
+	m_temp_objects.clear			();
+
+	D_OBJECT_P_MAP::const_iterator	I = objects().objects().begin();
+	D_OBJECT_P_MAP::const_iterator	E = objects().objects().end();
+	for ( ; I != E; ++I) {
+		if (redundant((*I).second))
+			m_temp_objects.push_back((*I).second->ID);
+	}
+}
+
+void CALifeSurgeManager::release_redundant_objects	()
+{
+	ALife::OBJECT_IT				I = m_temp_objects.begin();
+	ALife::OBJECT_IT				E = m_temp_objects.end();
+	for ( ; I != E; ++I)
+		release						(objects().object(*I));
 }
 
 void CALifeSurgeManager::remove_redundant_objects	()
 {
-	m_temp.clear					();
-	D_OBJECT_P_MAP::const_iterator	I = objects().objects().begin();
-	D_OBJECT_P_MAP::const_iterator	E = objects().objects().end();
+	fill_redundant_spawns			();
+	fill_redundant_objects			();
+	release_redundant_objects		();
+}
+
+void CALifeSurgeManager::fill_new_spawns			()
+{
+	m_temp_spawns.clear				();
+	spawns().fill_new_spawns		();
+}
+
+void CALifeSurgeManager::spawn_new_spawns			()
+{
+	xr_vector<ALife::_SPAWN_ID>::const_iterator	I = m_temp_spawns.begin();
+	xr_vector<ALife::_SPAWN_ID>::const_iterator	E = m_temp_spawns.end();
 	for ( ; I != E; ++I) {
-		if (!spawns().valid_spawn_id((*I).second->m_tSpawnID))
-			continue;
-
-		if (redundant((*I).second))
-			m_temp.push_back		((*I).second->ID);
-	}
-
-	{
-		ALife::OBJECT_IT			I = m_temp.begin();
-		ALife::OBJECT_IT			E = m_temp.end();
-		for ( ; I != E; ++I)
-			release					(objects().object(*I));
+		CSE_ALifeDynamicObject	*object, *spawn = smart_cast<CSE_ALifeDynamicObject*>(spawns().spawns().vertex(*I)->data()->object());
+		VERIFY					(spawn);
+		create					(object,spawn,*I);
 	}
 }
 
 void CALifeSurgeManager::spawn_new_objects			()
 {
-	VERIFY						(graph().actor());
+	fill_new_spawns					();
+	spawn_new_spawns				();
+	VERIFY							(graph().actor());
 }
 
 void CALifeSurgeManager::surge						()

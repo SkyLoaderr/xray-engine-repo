@@ -36,8 +36,3 @@ IC	const ALife::ITEM_SET_MAP &CALifeSpawnRegistry::artefact_anomaly_map	() const
 {
 	return					(m_artefact_anomaly_map);
 }
-
-IC	bool CALifeSpawnRegistry::valid_spawn_id				(ALife::_SPAWN_ID spawn_id) const
-{
-	return					(!!m_spawns.vertex(spawn_id));
-}

@@ -20,13 +20,14 @@ protected:
 protected:
 	ALife::ORGANIZATION_ORDER_MAP	m_tpSoldArtefacts;
 	ALife::ITEM_COUNT_MAP			m_tpTraderItems;
-	ALife::OBJECT_VECTOR			m_temp;
+	xr_vector<ALife::_OBJECT_ID>	m_temp_objects;
+	xr_vector<ALife::_SPAWN_ID>		m_temp_spawns;
 
 public:
 	DWORD_VECTOR					m_tpTempPath;
 
 private:
-	IC		bool			redundant					(CSE_ALifeDynamicObject *object) const;
+	IC		bool			redundant					(CSE_ALifeDynamicObject *object);
 
 protected:
 			void			surge						();
@@ -44,6 +45,11 @@ protected:
 			void			update_organizations		();
 			void			setup_next_surge_time		();
 			float			distance					(const DWORD_VECTOR &path) const;
+			void			fill_redundant_spawns		();
+			void			fill_redundant_objects		();
+			void			release_redundant_objects	();
+			void			fill_new_spawns				();
+			void			spawn_new_spawns			();
 
 public:
 	IC						CALifeSurgeManager			(xrServer *server, LPCSTR section);

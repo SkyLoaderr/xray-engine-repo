@@ -161,3 +161,11 @@ void CALifeSpawnRegistry::build_spawn_anomalies	()
 		}
 	}
 }
+
+void CALifeSpawnRegistry::fill_redundant_spawns	(xr_vector<ALife::_SPAWN_ID> &spawns)
+{
+}
+
+void CALifeSpawnRegistry::fill_new_spawns		(xr_vector<ALife::_SPAWN_ID> &spawns)
+{
+}
