@@ -124,8 +124,8 @@ void CRender::Render		()
 		// level
 		Target.phase_scene						();
 		r_dsgraph_render_hud					();
-		r_dsgraph_render_graph					();
-		Details.Render							(Device.vCameraPosition);
+		r_dsgraph_render_graph					(0);
+		Details.Render							();
 		// mapSorted.traverseRL					(sorted_L1);
 		mapSorted.clear							();		// unsupported
 	}
@@ -158,7 +158,7 @@ void CRender::Render		()
 				RCache.set_xform_world					(Fidentity);
 				RCache.set_xform_view					(LR.L_view);
 				RCache.set_xform_project				(LR.L_project);
-				r_dsgraph_render_graph					();
+				r_dsgraph_render_graph					(0);
 			}
 
 			//******* Direct lighting+shadow		::: Accumulate
@@ -215,7 +215,7 @@ void CRender::Render		()
 					LR.compute_xfp_2						(pls_phase, L);
 
 					// rendering
-					if (mapNormal.size())
+					if (mapNormal[0].size())
 					{
 						Target.phase_smap_point				(pls_phase);
 						RCache.set_xform_world				(Fidentity);			// ???
