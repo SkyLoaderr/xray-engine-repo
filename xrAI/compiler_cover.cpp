@@ -20,7 +20,7 @@ IC bool RayPick(RAPID::XRCollide* DB, Fvector& P, Fvector& D, float r, RayCache&
 	}
 
 	// 2. Polygon doesn't pick - real database query
-	try { DB->RayPick(0,&LevelLight,P,D,r); } catch (...) { Msg("* ERROR: Failed to trace ray"); }
+	try { DB->RayPick(0,&Level,P,D,r); } catch (...) { Msg("* ERROR: Failed to trace ray"); }
 	if (0==DB->GetRayContactCount()) {
 		return false;
 	} else {
