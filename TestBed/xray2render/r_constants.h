@@ -56,7 +56,7 @@ struct	R_constant
 
 	IC BOOL					equal		(R_constant& C)
 	{
-		return (0==strcmp(name,C.name)) && (type==C.type) && (destination==C.destination) && ps.equal(C.ps) && vs.equal(C.vs) && samp.equal(C.samp);
+		return (0==strcmp(name,C.name)) && (type==C.type) && (destination==C.destination) && ps.equal(C.ps) && vs.equal(C.vs) && samp.equal(C.samp) && handler==C.handler;
 	}
 	IC BOOL					equal		(R_constant* C)
 	{
@@ -65,8 +65,9 @@ struct	R_constant
 };
 
 // Automatic constant setup
-struct	ENGINE_API			R_constant_setup
+class	ENGINE_API			R_constant_setup
 {
+public:
 	virtual void			setup		(R_constant* C)	= 0;
 };
 

@@ -246,11 +246,8 @@ void	CShaderManager::_DeletePS			(IDirect3DPixelShader9* &ps)
 	ps = NULL;
 }
 
-R_constant_table*	CShaderManager::_CreateConstantTable(R_constant_table* ps, R_constant_table* vs)
+R_constant_table*	CShaderManager::_CreateConstantTable(R_constant_table& C)
 {
-	R_constant_table	C;
-	C.merge				(ps);
-	C.merge				(vs);
 	if (C.empty())		return NULL;
 	for (u32 it=0; it<v_constant_tables.size(); it++)
 		if (v_constant_tables[it]->equal(C))	return v_constant_tables[it];

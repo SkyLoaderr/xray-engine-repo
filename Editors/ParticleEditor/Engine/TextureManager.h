@@ -95,7 +95,7 @@ public:
 	CConstant*						_CreateConstant		(LPCSTR Name);
 	void							_DeleteConstant		(CConstant* &C);
 
-	R_constant_table*				_CreateConstantTable(R_constant_table* ps, R_constant_table* vs);
+	R_constant_table*				_CreateConstantTable(R_constant_table& C);
 
 	CRT*							_CreateRT			(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f);
 	void							_DeleteRT			(CRT* &RT	);
