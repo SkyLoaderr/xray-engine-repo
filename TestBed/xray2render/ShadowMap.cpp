@@ -885,7 +885,16 @@ HRESULT CMyD3DApplication::RenderLight_Direct_smap	()
 
 	R_constant*	C							= s_Light_Direct_smap.constants.get("jitter");
 	Fvector J; float scale					= 1.f / SHADOW_MAP_SIZE;
-	cc.seta									(C,0,);
+	J.set(11,0,0);	J.sub(11); J.div(22); J.mul(scale);	cc.seta	(C,0,J.x,J.y,0,0);
+	J.set(19,3,0);	J.sub(11); J.div(22); J.mul(scale);	cc.seta	(C,1,J.x,J.y,0,0);
+	J.set(22,11,0); J.sub(11); J.div(22); J.mul(scale);	cc.seta	(C,2,J.x,J.y,0,0);
+	J.set(19,19,0); J.sub(11); J.div(22); J.mul(scale);	cc.seta	(C,3,J.x,J.y,0,0);
+
+	J.set(9,7,0);	J.sub(11); J.div(22); J.mul(scale);	cc.seta	(C,4,J.x,J.y,0,0);
+	J.set(15,9,0);	J.sub(11); J.div(22); J.mul(scale);	cc.seta	(C,5,J.x,J.y,0,0);
+	J.set(13,15,0); J.sub(11); J.div(22); J.mul(scale);	cc.seta	(C,6,J.x,J.y,0,0);
+	J.set(7,13,0);	J.sub(11); J.div(22); J.mul(scale);	cc.seta	(C,7,J.x,J.y,0,0);
+
 	cc.flush								(m_pd3dDevice);
 
 	// Blend mode - directional light comes first - means no blending
