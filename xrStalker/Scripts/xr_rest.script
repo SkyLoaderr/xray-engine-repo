@@ -118,6 +118,7 @@ function action_position:callback (mode, number)
     if self.on_position == true then return end
     if number == 1 then 
        self.on_position = true
+       self.object:set_movement_type (move.stand)
        self.object:set_item (object.deactivate, self.object:active_item ())
     end    
 end
@@ -178,9 +179,12 @@ function action_rest:execute ()
             self.object:clear_animations () 
             self.stage = 1
           end   
+          printf ("ENABLE BREAD 1")
           self.object:set_item (object.use, self.eat_object)
           self.time_to_eat = device ():time_global () + 30000
+          return
        end   
+       printf ("ENABLE BREAD 2")
        if device ():time_global () - self.time_to_eat > 0 then
           self.eat_enable = false
           self.stage = 0
@@ -195,10 +199,12 @@ function action_rest:execute ()
             self.object:clear_animations () 
             self.stage = 1
           end   
+          printf ("ENABLE VODKA 1")
           self.object:set_item (object.use, self.drink_object)
           self.time_to_eat = device ():time_global () + 20000
           return
        end   
+       printf ("ENABLE VODKA 2")
        if device ():time_global () - self.time_to_eat > 0 then
           self.object:set_item (object.deactivate, self.drink_object)
           self.drink_enable = false
@@ -211,6 +217,7 @@ function action_rest:execute ()
     --if xr_state.finish_state (self.object) ~= true then return end
 
     if self.rest_end_signalled == false then
+       printf ("ON SIGNAL !") 
        self.st.signals["rest_end"] = true
        self.rest_end_signalled = true
     end   
@@ -272,6 +279,7 @@ end
 function set_scheme (npc, ini, scheme, section, gulag_name)
 
 	local st = xr_logic.assign_storage_and_bind (npc, ini, scheme, section)
+	st.logic = xr_logic.cfg_get_switch_conditions (ini, section, npc)
 	st.path_rest = utils.cfg_get_string(ini, section, "path_rest", npc, true,  gulag_name)
     st.on_position = false	
 	st.path_walk_info = nil
