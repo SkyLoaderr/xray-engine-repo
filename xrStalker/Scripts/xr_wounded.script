@@ -260,7 +260,7 @@ function action_sit:execute ()
        self.a.sit = true
        local act = level.actor ()
        if act ~= nil and  act:alive () == true and self.object:relation (act) ~= game_object.enemy then
-          level.map_add_object_icon (self.object, "wounded", "Need a medikit !!! Help !!!", 0, 0)
+          level.map_add_object_icon (self.object, "wounded", "Need a medikit !!! Help !!!", 7, 2)
        end   
        if self.a.on_sit_info ~= nil then
           xr_logic.pick_section_from_condlist (level.actor (), self.object, self.a.on_sit_info.condlist)
