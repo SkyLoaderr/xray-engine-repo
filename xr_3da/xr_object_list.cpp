@@ -23,15 +23,14 @@ public:
 
 CObjectList::CObjectList	( )
 {
-	Device.seqDevCreate.Add		(this, REG_PRIORITY_LOW);
-	Device.seqDevDestroy.Add	(this, REG_PRIORITY_LOW);
 }
 
 CObjectList::~CObjectList	( )
 {
-	Device.seqDevCreate.Remove	(this);
-	Device.seqDevDestroy.Remove	(this);
-	R_ASSERT(objects.size()==0);
+	R_ASSERT(objects.empty()		);
+	R_ASSERT(destroy_queue.empty()	);
+	R_ASSERT(map_NETID.empty()		);
+	R_ASSERT(map_POOL.empty()		);
 }
 
 void CObjectList::Unload	( )
@@ -41,15 +40,6 @@ void CObjectList::Unload	( )
 		xr_delete	( pObject );
 	}
 	objects.clear();
-}
-
-CObject* CObjectList::LoadOne( LPCSTR Name )
-{
-	CLASS_ID CLS		= pSettings->ReadCLSID(Name,"class");
-	CObject* pObject	= (CObject*) NEW_INSTANCE(CLS);
-	pObject->Load		(Name);
-	objects.push_back	(pObject);
-	return				pObject;
 }
 
 CObject*	CObjectList::FindObjectByName	( LPCSTR name )
@@ -66,20 +56,6 @@ CObject*	CObjectList::FindObjectByCLS_ID	( CLASS_ID cls )
 	else					return NULL;
 }
 
-void CObjectList::DestroyObject	( CObject *pObject )
-{
-	if (0==pObject)			return;
-	net_Unregister			(pObject);
-	OBJ_IT it				= find(objects.begin(),objects.end(),pObject);
-	if (it!=objects.end())	objects.erase(it);
-	DEL_INSTANCE			(pObject);
-}
-
-void CObjectList::DestroyObject	( u32 ID )
-{
-	DestroyObject(net_Find(ID));
-}
-
 void CObjectList::SingleUpdate	(CObject* O)
 {
 	if (Device.dwFrame != O->dwFrame_UpdateCL)
@@ -87,7 +63,7 @@ void CObjectList::SingleUpdate	(CObject* O)
 		if (O->H_Parent())		SingleUpdate(O->H_Parent());
 		O->dwFrame_UpdateCL		= Device.dwFrame;
 		O->UpdateCL				();
-		if (O->getDestroy() && !O->shedule_Locked)								destroy_queue.push_back(O);
+		if (O->getDestroy() && !O->shedule_Locked)				destroy_queue.push_back(O);
 		if (O->H_Parent() && O->H_Parent()->getDestroy() && !O->shedule_Locked)	
 		{
 			// Push to destroy-queue if it isn't here already
@@ -128,6 +104,7 @@ void CObjectList::OnMove		()
 
 void CObjectList::net_Register	(CObject* O)
 {
+	R_ASSERT		(O);
 	map_NETID.insert(make_pair(O->ID(),O));
 }
 
@@ -194,23 +171,5 @@ void	CObjectList::SLS_Load			(IReader&	fs		)
 		if (0==O)		Msg("! SLS_Load: Invalid ID found. (Object not spawned up to this moment?)");
 		else			O->SLS_Load(fs);
 		ID ++;
-	}
-}
-
-void	CObjectList::OnDeviceCreate	()
-{
-	for (u32 i=0; i<objects.size(); i++) 
-	{
-		CObject *O			= objects[i];
-		O->OnDeviceCreate	();
-	}
-}
-
-void	CObjectList::OnDeviceDestroy()
-{
-	for (u32 i=0; i<objects.size(); i++) 
-	{
-		CObject *O			= objects[i];
-		O->OnDeviceDestroy	();
 	}
 }

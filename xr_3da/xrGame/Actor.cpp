@@ -855,8 +855,8 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 				}
 			}
 		}
-		m_bJumpKeyPressed	= TRUE;
-		m_fJumpTime			= s_fJumpTime;
+		m_bJumpKeyPressed	=	TRUE;
+		m_fJumpTime			=	s_fJumpTime;
 		mstate_real			&=~	(mcFall|mcJump);
 	}
 	if ((mstate_wf&mcJump)==0)	

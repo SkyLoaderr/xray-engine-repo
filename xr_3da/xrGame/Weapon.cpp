@@ -441,6 +441,7 @@ void CWeapon::OnH_B_Chield		()
 
 	if(Local()) OnStateSwitch(eShowing);
 
+	/*
 	if (Local() && (0xffff!=respawnPhantom)) 
 	{
 		NET_Packet		P;
@@ -448,18 +449,23 @@ void CWeapon::OnH_B_Chield		()
 		u_EventSend		(P);
 		respawnPhantom	= 0xffff;
 	}
+	*/
 }
 
 int CWeapon::Ammo_eject		()
 {
 	int		save = iAmmoCurrent+iAmmoElapsed; 
 	iAmmoCurrent = iAmmoElapsed = 0; 
+
+	/*
 	if (Local() && (0xffff!=respawnPhantom)) 
 	{
 		NET_Packet		P;
 		u_EventGen		(P,GE_RESPAWN,respawnPhantom);
 		u_EventSend		(P);
 	}
+	*/
+
 	return	save;  
 }
 

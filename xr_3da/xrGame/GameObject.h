@@ -17,7 +17,6 @@ public:
 	// AI connection
 	u32											AI_NodeID;
 	NodeCompressed*								AI_Node;
-	u32											respawnPhantom;
 	CPhysicsShell*								m_pPhysicsShell;
 
 	// Utilities

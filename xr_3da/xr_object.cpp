@@ -66,7 +66,6 @@ CObject::CObject		( )
 	FLAGS.storage				= 0;
 
 	pSector						= 0;
-	SectorMode					= EPM_AUTO;
 
 	Parent						= 0;
 
@@ -113,6 +112,8 @@ void CObject::Load				(LPCSTR section )
 	if (pSettings->LineExists(section,"visual")) cNameVisual_set	(pSettings->ReadSTRING(section,"visual"));
 	
 	setVisible					(true);
+
+	Msg							("! object size: %d",sizeof(*this));
 }
 
 BOOL CObject::net_Spawn			(LPVOID data)
@@ -208,7 +209,7 @@ void CObject::Update	( u32 T )
 	if (bUpdate)
 	{
 		// sector
-		if (SectorMode!=EPM_AT_LOAD)		Sector_Detect	();
+		Sector_Detect	();
 
 		// cfmodel 
 		if (cfModel && (0==H_Parent()))		cfModel->OnMove	();

@@ -91,8 +91,6 @@ void CCustomMonster::Load		(LPCSTR section)
 
 	vPosition.y			+= EPS_L;
 	
-	Movement.SetPosition(vPosition);
-	
 	m_current			= 0;
 
 	// Health & Armor
@@ -101,6 +99,8 @@ void CCustomMonster::Load		(LPCSTR section)
 	// Sheduler
 	shedule_Min			= 50;
 	shedule_Max			= 500; // 30 * NET_Latency / 4;
+
+	Msg					("! cmonster size: %d",sizeof(*this));
 }
 
 void CCustomMonster::g_WeaponBones	(int& L, int& R)

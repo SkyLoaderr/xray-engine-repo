@@ -116,6 +116,8 @@ void CEntity::Load		(LPCSTR section)
 	id_Group= -1; if (pSettings->LineExists(section,"group"))	id_Group	= pSettings->ReadINT	(section,"group");
 	
 	m_fMorale = 66.f;
+
+	Msg					("! entity size: %d",sizeof(*this));
 }
 
 BOOL CEntity::net_Spawn		(LPVOID DC)
@@ -196,6 +198,9 @@ void CEntityAlive::Load		(LPCSTR section)
 {
 	inherited::Load			(section);
 
+	m_fFood					= 100*pSettings->ReadFLOAT	(section,"ph_mass"			);
+
+	/*
 	// Movement: General
 	Movement.SetParent		(this);
 	Fbox	bb;
@@ -224,9 +229,10 @@ void CEntityAlive::Load		(LPCSTR section)
 	float	mass		= pSettings->ReadFLOAT	(section,"ph_mass"				);
 	Movement.SetCrashSpeeds	(cs_min,cs_max);
 	Movement.SetMass		(mass);
-	m_fFood				= mass*100;
+	*/
 
 	// Movement: Frictions
+	/*
 	float af, gf, wf;
 	af					= pSettings->ReadFLOAT	(section,"ph_friction_air"	);
 	gf					= pSettings->ReadFLOAT	(section,"ph_friction_ground");
@@ -235,6 +241,7 @@ void CEntityAlive::Load		(LPCSTR section)
 
 	// BOX activate
 	Movement.ActivateBox	(0);
+	*/
 }
 
 BOOL CEntityAlive::net_Spawn	(LPVOID DC)

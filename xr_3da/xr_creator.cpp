@@ -109,7 +109,7 @@ BOOL CCreator::Load(u32 dwNum)
 	// Objects
 	pApp->LoadTitle				("Loading entities...");
 	R_ASSERT					(Load_GameSpecific_Before());
-	// Objects.Load				(pLevel, "mobileobjects" );
+	Objects.Load				();
 	R_ASSERT					(Load_GameSpecific_After ());
 	
 	// Load Sounds

@@ -27,11 +27,11 @@ public:
 		LPSTR			Name;
 		Items			Data;
 
-		IC SectIt		begin()	{ return Data.begin();	}
-		IC SectIt		end()	{ return Data.end();	}
-		IC int			size()	{ return Data.size();	}
-		IC void			clear()	{ Data.clear();			}
-	    BOOL			LineExists(LPCSTR L, LPCSTR* val=0);
+		IC SectIt		begin()		{ return Data.begin();	}
+		IC SectIt		end()		{ return Data.end();	}
+		IC int			size()		{ return Data.size();	}
+		IC void			clear()		{ Data.clear();			}
+	    BOOL			LineExists	(LPCSTR L, LPCSTR* val=0);
 	};
 	typedef	std::vector<Sect>	Root;
 	typedef Root::iterator		RootIt;
@@ -52,8 +52,8 @@ public:
 
 	// factorisation
 	static CInifile*	Create	( LPCSTR szFileName, BOOL ReadOnly=TRUE);
-	static void			Destroy	(CInifile*);
-    static IC BOOL		IsBOOL	(LPCSTR B){ return (strcmp(B,"on")==0 || strcmp(B,"yes")==0 || strcmp(B,"true")==0 || strcmp(B,"1")==0);}
+	static void			Destroy	( CInifile*);
+    static IC BOOL		IsBOOL	( LPCSTR B)	{ return (strcmp(B,"on")==0 || strcmp(B,"yes")==0 || strcmp(B,"true")==0 || strcmp(B,"1")==0);}
 private:
 	LPSTR		fName;
 	Root		DATA;

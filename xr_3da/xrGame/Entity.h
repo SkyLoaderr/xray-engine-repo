@@ -10,10 +10,8 @@
 #include "gameobject.h"
 
 // refs
-class ENGINE_API CCameraBase;
-class ENGINE_API C3DSound;
-class CWeaponList;
-
+class	ENGINE_API CCameraBase;
+class	ENGINE_API C3DSound;
 class	ENGINE_API CMotionDef;
 class	ENGINE_API CKinematics;
 class	ENGINE_API CBoneInstance;
@@ -38,8 +36,8 @@ public:
 
 	struct SEntityState
 	{
-		u32	bJump	:1;
-		u32	bCrouch	:1;
+		u32		bJump	:1;
+		u32		bCrouch	:1;
 		float	fVelocity;
 	};
 	
@@ -98,8 +96,6 @@ class CEntityAlive			: public CEntity
 private:
 	typedef	CEntity			inherited;			
 public:
-	// movement
-	CMovementControl		Movement;
 	EVENT					m_tpEventSay;
 	bool					m_bMobility;
 	u32						m_dwDeathTime;

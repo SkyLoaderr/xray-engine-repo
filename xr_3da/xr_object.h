@@ -24,12 +24,10 @@ class	ENGINE_API						CObject :
 	public CController
 {
 public:
-	enum ESectorMode					{EPM_AT_LOAD, EPM_AUTO, EPM_NONE };
-	
 	struct SavedPosition
 	{
-		u32	dwTime;
-		Fvector	vPosition;
+		u32			dwTime;
+		Fvector		vPosition;
 	};
 	union ObjectFlags
 	{
@@ -46,7 +44,7 @@ public:
 	};
 private:
 	ObjectFlags							FLAGS;
-	u32								net_ID;
+	u32									net_ID;
 
 	// Some property variables
 	LPSTR								NameObject;
@@ -55,7 +53,6 @@ private:
 
 	// Visibility detection
 	CSector*							pSector;
-	ESectorMode							SectorMode;
 	CLightTrack*						pLights;
 protected:
 	// Geometric (transformation)
@@ -78,7 +75,7 @@ protected:
 	// Parentness
 	CObject*							Parent;
 public:
-	u32								dwFrame_UpdateCL;
+	u32									dwFrame_UpdateCL;
 
 	// Network
 	IC BOOL								Local				()					{ return FLAGS.net_Local;	}
@@ -178,8 +175,6 @@ public:
 	virtual void						OnH_A_Independent	();
 	
 	// Device dependance
-	virtual void						OnDeviceDestroy		();
-	virtual void						OnDeviceCreate		();
 	virtual void						OnEvent				(EVENT E, u32 P1, u32 P2) {};
 
 	virtual void						ForceTransform		(const Fmatrix& m)	{};

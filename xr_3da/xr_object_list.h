@@ -8,16 +8,16 @@ class ENGINE_API CObject;
 class ENGINE_API CInifile;
 class ENGINE_API NET_Packet;
 
-class	ENGINE_API 				CObjectList : 
-	pureDeviceCreate,
-	pureDeviceDestroy
+class	ENGINE_API 				CObjectList
 {
-public:
+private:
 	typedef vector<CObject*>::iterator	OBJ_IT;
-
+private:
+	multimap<CLASS_ID,CObject*>	map_POOL;
+	map<u32,CObject*>			map_NETID;
+public:
 	// data
 	vector<CObject*>			objects;
-	map<u32,CObject*>			map_NETID;
 	vector<CObject*>			destroy_queue;
 
 	// methods
@@ -27,28 +27,24 @@ public:
 	CObject*					FindObjectByName	( LPCSTR	name	);
 	CObject*					FindObjectByCLS_ID	( CLASS_ID	cls		);
 
+	void						Load				( );
 	void						Unload				( );
 
-	CObject*					LoadOne				( LPCSTR	name	);
+	CObject*					Create				( LPCSTR	name	);
+	void						Destroy				( CObject*	O		);
 
-	void						DestroyObject		( CObject*	O		);
-	void						DestroyObject		( u32		ID		);
+	void						SingleUpdate		( CObject*	O		);
+	void						Update				( );
 
-	void						SingleUpdate		(CObject*	O		);
-	void						OnMove				( );
+	void						net_Register		( CObject*	O		);
+	void						net_Unregister		( CObject*	O		);
 
-	void						net_Register		(CObject*	O		);
-	void						net_Unregister		(CObject*	O		);
-
-	void						net_Export			(NET_Packet* P		);
+	void						net_Export			( NET_Packet* P		);
 	void						net_Import			(NET_Packet* P		);
 	CObject*					net_Find			(u32 ID				);
 
 	void						SLS_Save			(IWriter&	fs		);
 	void						SLS_Load			(IReader&	fs		);
-
-	virtual void				OnDeviceCreate		();
-	virtual void				OnDeviceDestroy		();
 };
 
 #endif //__XR_OBJECT_LIST_H__
