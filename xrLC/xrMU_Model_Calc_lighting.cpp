@@ -194,6 +194,73 @@ void xrMU_Model::calc_lighting	()
 	clMsg					("model '%s' - REF_lighted.",m_name);
 }
 
+float	simple_optimize				(xr_vector<float>& A, xr_vector<float>& B, float& scale, float& bias)
+{
+	float	accum;
+	u32		it;
+
+
+	float	error	= flt_max;
+	float	elements= float(A.size());
+	u32		count	= 0;
+	clMsg	("---");
+	for (;;)
+	{
+		clMsg			("%d : %f",count,error);
+
+		count++;
+		if (count>64)	return error;
+
+		float	old_scale	= scale;
+		float	old_bias	= bias;
+
+		//1. scale
+		for (accum=0, it=0; it<A.size(); it++)
+			accum	+= (B[it]-bias)/A[it];
+		float	s	= accum	/ elements;
+
+		//2. bias
+		for (accum=0, it=0; it<A.size(); it++)
+			accum	+= B[it]-A[it]/scale;
+		float	b	= accum	/ elements;
+
+		// mix
+		float	conv	= float(count+11.f)*2.f;
+		scale			= ((conv-1)*scale+s)/conv;
+		bias			= ((conv-1)*bias +b)/conv;
+
+		// error
+		for (accum=0, it=0; it<A.size(); it++)
+			accum	+= _sqr(B[it] - (A[it]*scale + bias));
+		float	err	= _sqrt(accum)/elements;
+
+		if (err<error)	error = err;
+		else 
+		{
+			// exit
+			scale	= old_scale;
+			bias	= old_bias;
+			return	error;
+		}
+	}
+}
+
+void	o_test (int iA, int iB, int count, base_color* A, base_color* B, float& C, float& D)
+{
+	xr_vector<float>	_A,_B;
+	_A.resize			(count);
+	_B.resize			(count);
+	for (int it=0; it<count; it++)
+	{
+		base_color& _a	= A[it];	float*	f_a	= (float*)&_a;
+		base_color& _b	= B[it];	float*	f_b	= (float*)&_b;
+		_A[it]			= f_a[iA];
+		_B[it]			= f_b[iB];
+	}
+	C=1, D=0;
+	simple_optimize		(_A,_B,C,D);
+}
+
 void xrMU_Reference::calc_lighting	()
 {
 	static BOOL					bFirst	= TRUE;
@@ -204,6 +271,19 @@ void xrMU_Reference::calc_lighting	()
 	// A*C + D = B
 	// build data
 	{
+		float*	_s=(float*)&c_scale;
+		float*	_b=(float*)&c_bias;
+		for (u32 index=0; index<5; index++)
+			o_test	(4/*hemi*/,index,color.size(),&model->color.front(),&color.front(),_s[index],_b[index]);
+
+		clMsg				("	scale[%2.2f, %2.2f, %2.2f, %2.2f, %2.2f], bias[%2.2f, %2.2f, %2.2f, %2.2f, %2.2f]",
+								c_scale.rgb.x,c_scale.rgb.y,c_scale.rgb.z,c_scale.hemi,c_scale.sun,
+								c_bias.rgb.x,c_bias.rgb.y,c_bias.rgb.z,c_bias.hemi,c_bias.sun
+							);
+	}
+}
+
+		/*
 		xr_vector<xr_vector<REAL> >	A;	A.resize(color.size());
 		xr_vector<xr_vector<REAL> >	B;	B.resize(color.size());
 		xr_vector<REAL>					C;
@@ -238,12 +318,4 @@ void xrMU_Reference::calc_lighting	()
 		c_bias.rgb.z		= D[2];
 		c_bias.hemi			= D[3];
 		c_bias.sun			= D[4];
-
-		/*
-		clMsg				("scale[%2.2f, %2.2f, %2.2f], bias[%2.2f, %2.2f, %2.2f]",
-		c_scale.x,c_scale.y,c_scale.z,
-		c_bias.x,c_bias.y,c_bias.z
-		);
 		*/
-	}
-}
