@@ -35,19 +35,19 @@ u32					game_sv_GameState::get_it_2_id				(u32 it)
 	else				return C->ID;
 }
 
-string64*			game_sv_GameState::get_name_it				(u32 it)
+LPCSTR				game_sv_GameState::get_name_it				(u32 it)
 {
 	xrServer*		S	= Level().Server;
 	xrClientData*	C	= (xrClientData*)S->client_Get		(it);
 	if (0==C)			return 0;
-	else				return &C->Name;
+	else				return &C->Name[0];
 }
-string64*			game_sv_GameState::get_name_id				(u32 id)								// DPNID
+LPCSTR				game_sv_GameState::get_name_id				(u32 id)								// DPNID
 {
 	xrServer*		S	= Level().Server;
 	xrClientData*	C	= (xrClientData*)S->ID_to_client	(id);
 	if (0==C)			return 0;
-	else				return &C->Name;
+	else				return &C->Name[0];
 }
 
 u32					game_sv_GameState::get_count				()
@@ -129,7 +129,7 @@ void game_sv_GameState::net_Export_State						(NET_Packet& P, u32 to)
 	game_PlayerState*	Base	= get_id(to);
 	for (u32 p_it=0; p_it<p_count; p_it++)
 	{
-		string64*	p_name		=	get_name_it		(p_it);
+		LPCSTR		p_name		=	get_name_it		(p_it);
 		game_PlayerState* A		=	get_it			(p_it);
 		game_PlayerState copy	=	*A;
 		if (Base==A)	
@@ -138,7 +138,7 @@ void game_sv_GameState::net_Export_State						(NET_Packet& P, u32 to)
 		}
 
 		P.w_u32					(get_it_2_id	(p_it));
-		P.w_string				(*p_name);
+		P.w_string				(p_name);
 		P.w						(&copy,sizeof(game_PlayerState));
 	}
 	Unlock			();
