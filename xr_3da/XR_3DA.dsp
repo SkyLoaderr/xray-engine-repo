@@ -1807,6 +1807,10 @@ SOURCE=.\FLightsController.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\light.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\LightPPA.cpp
 # End Source File
 # Begin Source File
