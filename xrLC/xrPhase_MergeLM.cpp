@@ -76,6 +76,7 @@ void CBuild::xrPhase_MergeLM()
 
 	for (DWORD light_layer=0; light_layer<pBuild->lights.size(); light_layer++)
 	{
+		Status		("-= LM-Layer #%d =-",light_layer);
 		// **** Select all deflectors, which contain this light-layer
 		Layer.clear	();
 		b_light*	L_base	= pBuild->lights[light_layer].original;
@@ -155,8 +156,10 @@ void CBuild::xrPhase_MergeLM()
 			lmap->Save		();
 		}
 	}
-	
-	R_ASSERT(g_deflectors.empty());
-	g_deflectors = deflNew;
-	Msg	("%d lightmaps builded",g_deflectors.size());
+	Msg	("%d lightmaps builded",g_lightmaps.size());
+
+	// Cleanup deflectors
+	for (DWORD it=0; it<g_deflectors.size(); it++)
+		_DELETE(g_deflectors[it]);
+	g_deflectors.clear	();
 }
