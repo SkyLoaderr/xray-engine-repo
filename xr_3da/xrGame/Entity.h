@@ -127,8 +127,8 @@ public:
 	virtual void			OnEvent				( EVENT E, DWORD P1, DWORD P2	);
 	virtual void			OnEvent				( NET_Packet& P, u16 type		);
 
-	virtual BOOL			IsVisibleForAI		()	{return TRUE;}
-	virtual BOOL			IsVisibleForHUD		()	{return TRUE;}
+	virtual BOOL			IsVisibleForAI		()	{return g_Alive();	}
+	virtual BOOL			IsVisibleForHUD		()	{return g_Alive();	}
 };
 
 class CEntityAlive			: public CEntity

@@ -34,8 +34,8 @@
 		исчезать
 		
 	2. читы
-		sv_cheats
-		- shift
+		. sv_cheats
+		+ shift
 		- карта
 		
 	3. глук с питч

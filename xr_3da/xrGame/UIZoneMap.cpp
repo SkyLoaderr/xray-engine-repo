@@ -84,7 +84,9 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 		CSquad& S = Team.Squads[i];
 		for (DWORD j=0; j<S.Groups.size(); j++){
 			CGroup& G = S.Groups[j];
-			for (DWORD k=0; k<G.Members.size(); k++){
+			for (DWORD k=0; k<G.Members.size(); k++)
+			{
+
 				if (G.Members[k]->IsVisibleForHUD()){
 					ConvertToLocal(LM,G.Members[k]->Position(),P);
 					entity.Out	(P.x,P.y,COLOR_FRIEND,alLeft|alTop);
