@@ -102,6 +102,14 @@ void CObjectList::OnMove		()
 	// Destroy
 	if (!destroy_queue.empty()) 
 	{
+		// Info
+		for (OBJ_IT oit=objects.begin(); oit!=objects.end(); oit++)
+		{
+			for (int it = destroy_queue.size()-1; it>=0; it--)
+				(*oit)->net_Relcase	(destroy_queue[it]);
+		}
+
+		// Destroy
 		for (int it = destroy_queue.size()-1; it>=0; it--)
 		{
 			CObject*		O	= destroy_queue[it];

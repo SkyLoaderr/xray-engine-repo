@@ -85,7 +85,7 @@ public:
 	// Network
 	IC BOOL								Local				()					{ return FLAGS.net_Local;	}
 	IC BOOL								Remote				()					{ return !FLAGS.net_Local;	}
-	IC u32							ID					()					{ return net_ID;			}
+	IC u32								ID					()					{ return net_ID;			}
 	IC void								setID				(u32 _ID)			{ net_ID = _ID;				}
 	virtual BOOL						Ready				()					{ return FLAGS.net_Ready;	}
 	virtual float						shedule_Scale		()					{ return Device.vCameraPosition.distance_to(Position())/200.f; }
@@ -162,9 +162,10 @@ public:
 	virtual BOOL						net_Relevant		()				{ return FALSE; };	// relevant for export to server
 	virtual void						net_MigrateInactive	(NET_Packet& P)	{ FLAGS.net_Local = FALSE;		};
 	virtual void						net_MigrateActive	(NET_Packet& P)	{ FLAGS.net_Local = TRUE;		};
+	virtual void						net_Relcase			(CObject*	 O) { };				// destroy all links to another objects
 
 	// Position stack
-	IC u32							ps_Size				()				{ return PositionStack.size(); }
+	IC u32								ps_Size				()				{ return PositionStack.size(); }
 	virtual	SavedPosition				ps_Element			(u32 ID);
 
 	// HUD
