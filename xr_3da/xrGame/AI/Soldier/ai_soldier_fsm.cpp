@@ -657,14 +657,14 @@ void CAI_Soldier::PatrolUnderFire()
 			
 		SetLessCoverLook(AI_Node);
 		if (AI_Path.fSpeed)
-			vfSetMovementType(BODY_STATE_CROUCH,m_fMaxSpeed);
+			vfSetMovementType(BODY_STATE_STAND,m_fMaxSpeed);
 		else
-			vfSetMovementType(BODY_STATE_CROUCH,m_fMaxSpeed);
+			vfSetMovementType(BODY_STATE_STAND,m_fMaxSpeed);
 	}
 	else {
 		SetLessCoverLook(AI_Node);
 		AI_Path.TravelPath.clear();
-		vfSetMovementType(BODY_STATE_CROUCH,0);
+		vfSetMovementType(BODY_STATE_STAND,0);
 	}
 	/**/
 	

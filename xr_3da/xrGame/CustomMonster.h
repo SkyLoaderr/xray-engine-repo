@@ -134,6 +134,7 @@ public:
 	void				Exec_Look				( float dt );
 	virtual void		Exec_Movement			( float dt );
 	void				Exec_Visibility			( float dt );
+	void				Exec_Physics			( float dt );
 
 	void				BuildCamera				( );
 public:

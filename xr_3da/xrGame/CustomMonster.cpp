@@ -272,6 +272,13 @@ void CCustomMonster::net_Import(NET_Packet* P)
 	bEnabled				= TRUE;
 }
 
+void CCustomMonster::Exec_Physics( float dt )
+{
+	// Test nearest object
+	Fvector C; float R;		Movement.GetBoundingSphere	(C,R);
+	Level().ObjectSpace.TestNearestObject				(cfModel, C, R);
+}
+
 void CCustomMonster::Update	( DWORD DT )
 {
 	// Queue shrink
@@ -293,6 +300,7 @@ void CCustomMonster::Update	( DWORD DT )
 			Exec_Look		(dt);
 			Exec_Movement	(dt);
 			Exec_Visibility	(dt);
+			Exec_Physics	(dt);
 			
 			net_update			uNext;
 			uNext.dwTimeStamp	= Level().timeServer();
