@@ -10519,6 +10519,12 @@
 					Name="BuyWeaponWnd"
 					Filter="">
 					<File
+						RelativePath=".\ui\UIAutobuyIndication.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIAutobuyIndication.h">
+					</File>
+					<File
 						RelativePath=".\ui\UIBag.cpp">
 					</File>
 					<File
