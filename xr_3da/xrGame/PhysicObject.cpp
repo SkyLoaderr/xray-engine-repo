@@ -231,53 +231,12 @@ void CPhysicObject::Hit(float P,Fvector &dir, CObject* who,s16 element,
 	}
 }
 
-static BONE_P_MAP bone_map=BONE_P_MAP();
+
 void CPhysicObject::CreateSkeleton(CSE_ALifeObjectPhysic* po)
 {
 	if (!Visual()) return;
-
-	CKinematics* pKinematics=PKinematics(Visual());
-	m_pPhysicsShell		= P_create_Shell();
-
 	LPCSTR	fixed_bones=*po->fixed_bones;
-	if(fixed_bones)
-	{
-		bone_map					.clear();
-
-		int count =					_GetItemCount(fixed_bones);
-		for (int i=0 ;i<count; ++i) 
-		{
-			string64					fixed_bone							;
-			_GetItem					(fixed_bones,i,fixed_bone)			;
-			u16 fixed_bone_id=pKinematics->LL_BoneID(fixed_bone)			;
-			R_ASSERT2(BI_NONE!=fixed_bone_id,"wrong fixed bone")			;
-			bone_map.insert(mk_pair(fixed_bone_id,physicsBone()))			;
-		}
-		
-		
-
-		m_pPhysicsShell->build_FromKinematics(pKinematics,&bone_map);
-		
-
-
-		//m_pPhysicsShell->add_Joint(P_create_Joint(CPhysicsJoint::enumType::full_control,0,fixed_element));
-	}
-	else
-		m_pPhysicsShell->build_FromKinematics(pKinematics);
-
-	m_pPhysicsShell->set_PhysicsRefObject(this);
-	m_pPhysicsShell->mXFORM.set(XFORM());
-	m_pPhysicsShell->Activate(true,!po->flags.test(CSE_ALifeObjectPhysic::flActive));//,
-	//m_pPhysicsShell->SmoothElementsInertia(0.3f);
-	m_pPhysicsShell->SetAirResistance();//0.0014f,1.5f
-
-	BONE_P_PAIR_IT i=bone_map.begin(),e=bone_map.end();
-	for(;i!=e;i++)
-	{
-		CPhysicsElement* fixed_element=i->second.element;
-		R_ASSERT2(fixed_element,"fixed bone has no physics");
-		FixBody(fixed_element->get_body());
-	}
+	m_pPhysicsShell=P_build_Shell(this,!po->flags.test(CSE_ALifeObjectPhysic::flActive),fixed_bones);
 }
 
 void CPhysicObject::net_Export(NET_Packet& P)
