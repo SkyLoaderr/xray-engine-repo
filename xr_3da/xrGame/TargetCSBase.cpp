@@ -33,7 +33,7 @@ void CTargetCSBase::net_Destroy()
 
 void CTargetCSBase::OnDeviceCreate()
 {
-	CCF_Shape*	shape			= new CCF_Shape	(this);
+	CCF_Shape*	shape			= xr_new<CCF_Shape>	(this);
 	cfModel						= shape;
 	Fsphere S;	S.P.set			(0,0,0); S.R = radius;
 	shape->add_sphere			(S);

@@ -291,7 +291,7 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 */
 	}
 
-	//	Don't allow new velocity to go against original velocity unless told otherwise
+	//	Don't allow _new velocity to go against original velocity unless told otherwise
 	Fvector vel_dir;
 	final_vel.normalize_safe	();
 	vel_dir.normalize_safe		(vVelocity);

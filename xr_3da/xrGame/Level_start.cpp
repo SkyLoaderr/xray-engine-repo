@@ -24,7 +24,7 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 		pApp->Level_Set				(id);
 
 		// Connect
-		Server						= new xrServer;
+		Server						= xr_new<xrServer> ();
 		Server->Connect				(op_server);
 
 		// Analyze game and perform apropriate SERVER spawning

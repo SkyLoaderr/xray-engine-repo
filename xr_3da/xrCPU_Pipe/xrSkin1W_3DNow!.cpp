@@ -45,7 +45,7 @@ void __stdcall xrSkin1W_3DNow(	vertRender*		D,
 	mov			esi,S			; esi = S
 // ------------------------------------------------------------------
 	ALIGN		16				;
-	new_dot:					; new cycle iteration
+	new_dot:					; _new cycle iteration
 // ------------------------------------------------------------------
 // data prefetching
 // ------------------------------------------------------------------

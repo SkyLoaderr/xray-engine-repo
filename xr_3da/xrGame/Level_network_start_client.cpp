@@ -34,7 +34,7 @@ BOOL CLevel::net_Start_client	( LPCSTR options )
 
 		// Load level
 		R_ASSERT(Load						(level_id));
-		ph_world							= new CPHWorld;
+		ph_world							= xr_new<CPHWorld>();
 		ph_world->Create					();
 
 		// Waiting for connection/configuration completition

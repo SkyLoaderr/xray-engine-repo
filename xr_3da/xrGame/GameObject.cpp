@@ -132,7 +132,7 @@ void CGameObject::Sector_Detect	()
 		AI_Node						= O->AI_Node;
 		// Sector_Move	(O->Sector());
 	} else {
-		// We was moved - so find new AI-Node
+		// We was moved - so find _new AI-Node
 		if (AI_Node)
 		{
 			Fvector		Pos	= pVisual->bv_Position;

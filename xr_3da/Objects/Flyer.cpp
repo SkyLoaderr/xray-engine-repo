@@ -36,9 +36,9 @@ CFlyer::CFlyer() : inherited()
 	Movement.SetApplyGravity(FALSE);
 	Movement.SetFriction	(FRICTION_AIR,FRICTION_WALL,FRICTION_GROUND);
 
-	cameras[efcFrontView]	= new CCameraFirstEye	(this, pSettings, "heli_front_cam", true);
-	cameras[efcLookAt]		= new CCameraLook		(this, pSettings, "heli_look_cam", false);
-	cameras[efcFreeLook]	= new CCameraLook		(this, pSettings, "heli_free_cam", false);
+	cameras[efcFrontView]	= xr_new<CCameraFirstEye>	(this, pSettings, "heli_front_cam", true);
+	cameras[efcLookAt]		= xr_new<CCameraLook>		(this, pSettings, "heli_look_cam", false);
+	cameras[efcFreeLook]	= xr_new<CCameraLook>		(this, pSettings, "heli_free_cam", false);
 	cam_active				= efcFrontView;
 
 	eState		= fsWork;
@@ -239,7 +239,7 @@ void CFlyer::Update(u32 DT)
 	// Check ground-contact
 	if (Movement.gcontact_Was) {
 //		pCreator->Cameras.AddEffector(
-//			new CEffectorFall(Movement.gcontact_AnimAmount));
+//			xr_new<CEffectorFall> (Movement.gcontact_AnimAmount));
 //		Fvector D; D.set(0,0,0);
 //		Hit(Movement.gcontact_HealthLost,D);
 	}

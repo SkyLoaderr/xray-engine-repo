@@ -440,7 +440,7 @@ public:
 	virtual void Execute(LPCSTR args) {
 		Console.Hide	();
 		char fn[256]; strconcat(fn,args,".xrdemo");
-		pCreator->Cameras.AddEffector(new CDemoRecord(fn));
+		pCreator->Cameras.AddEffector(xr_new<CDemoRecord> (fn));
 	}
 };
 class CCC_DemoPlay : public CConsoleCommand
@@ -452,7 +452,7 @@ public:
 	  virtual void Execute(LPCSTR args) {
 		  Console.Hide();
 		  char fn[256]; strconcat(fn,args,".xrdemo");
-		  pCreator->Cameras.AddEffector(new CDemoPlay(fn,1.3f));
+		  pCreator->Cameras.AddEffector(xr_new<CDemoPlay> (fn,1.3f));
 	  }
 };
 
@@ -516,7 +516,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 		CMD4(CCC_Integer,			"ph_fps",				&psPhysicsFPS,	10,1000);
 		CMD4(CCC_Float,				"ph_squeeze_velocity",	&psHUD_FOV,		0,500);
 		}
-		GamePersistent		= new CGamePersistent();
+		GamePersistent		= xr_new<CGamePersistent> ();
 		break;
 	case DLL_PROCESS_DETACH:
 		xr_delete(GamePersistent);
@@ -562,42 +562,42 @@ extern "C" {
 		DLL_Pure*	P	= 0;
 		switch (cls)
 		{
-		case CLSID_LEVEL:				P = new CLevel();				break;
-		case CLSID_HUDMANAGER:			P = new CHUDManager();			break;
-		case CLSID_OBJECT_ACTOR:		P = new CActor();				break;
-		case CLSID_TARGET:				P = new CCustomTarget();		break;
-		case CLSID_SPECTATOR:			P = new CSpectator();			break;
+		case CLSID_LEVEL:				P = xr_new<CLevel>();				break;
+		case CLSID_HUDMANAGER:			P = xr_new<CHUDManager>();			break;
+		case CLSID_OBJECT_ACTOR:		P = xr_new<CActor>();				break;
+		case CLSID_TARGET:				P = xr_new<CCustomTarget()>;		break;
+		case CLSID_SPECTATOR:			P = xr_new<CSpectator()>;			break;
 
-		case CLSID_AI_RAT:				P = new CAI_Rat();				break;
-		case CLSID_AI_SOLDIER:			P =	new CAI_Soldier();			break;
-		case CLSID_AI_ZOMBIE:			P = new CAI_Zombie();			break;
-		case CLSID_AI_CROW:				P = new CAI_Crow();				break;
-		case CLSID_CAR_NIVA:			P = new CCar();					break;
+		case CLSID_AI_RAT:				P = xr_new<CAI_Rat()>;				break;
+		case CLSID_AI_SOLDIER:			P =	xr_new<CAI_Soldier>();			break;
+		case CLSID_AI_ZOMBIE:			P = xr_new<CAI_Zombie>();			break;
+		case CLSID_AI_CROW:				P = xr_new<CAI_Crow>();				break;
+		case CLSID_CAR_NIVA:			P = xr_new<CCar>();					break;
 
 		// Artifacts
-		case CLSID_AF_MERCURY_BALL:		P = new CMercuryBall();			break;
+		case CLSID_AF_MERCURY_BALL:		P = xr_new<CMercuryBall>();			break;
 
 		// Targets
-		case CLSID_TARGET_ASSAULT:		P = new CTargetAssault();		break;
-		case CLSID_TARGET_CS_BASE:		P = new CTargetCSBase();		break;
-		case CLSID_TARGET_CS_CASK:		P = new CTargetCSCask();		break;
-		case CLSID_TARGET_CS:			P = new CTargetCS();			break;
+		case CLSID_TARGET_ASSAULT:		P = xr_new<CTargetAssault>();		break;
+		case CLSID_TARGET_CS_BASE:		P = xr_new<CTargetCSBase>();		break;
+		case CLSID_TARGET_CS_CASK:		P = xr_new<CTargetCSCask>();		break;
+		case CLSID_TARGET_CS:			P = xr_new<CTargetCS>();			break;
+			
+		case CLSID_OBJECT_DUMMY:		P = xr_new<CDummyObject>();			break;
 
-		case CLSID_OBJECT_DUMMY:		P = new CDummyObject();			break;
-
-		case CLSID_OBJECT_W_FN2000:		P = new CWeaponFN2000();		break;
-		case CLSID_OBJECT_W_AK74:		P = new CWeaponAK74();			break;
-		case CLSID_OBJECT_W_LR300:		P = new CWeaponLR300();			break;
-		case CLSID_OBJECT_W_HPSA:		P = new CWeaponHPSA	();			break;
-		case CLSID_OBJECT_W_PM:			P = new CWeaponPM	();			break;
-		case CLSID_OBJECT_W_FORT:		P = new CWeaponFORT	();			break;
-		case CLSID_OBJECT_W_BINOCULAR:	P = new CWeaponBinoculars();	break;
-		case CLSID_OBJECT_W_SHOTGUN:	P = new CWeaponShotgun();		break;
-		case CLSID_OBJECT_W_SVD:		P = new CWeaponSVD();			break;
-		case CLSID_OBJECT_W_SVU:		P = new CWeaponSVU();			break;
+		case CLSID_OBJECT_W_FN2000:		P = xr_new<CWeaponFN2000>();		break;
+		case CLSID_OBJECT_W_AK74:		P = xr_new<CWeaponAK74>();			break;
+		case CLSID_OBJECT_W_LR300:		P = xr_new<CWeaponLR300>();			break;
+		case CLSID_OBJECT_W_HPSA:		P = xr_new<CWeaponHPSA>	();			break;
+		case CLSID_OBJECT_W_PM:			P = xr_new<CWeaponPM>	();			break;
+		case CLSID_OBJECT_W_FORT:		P = xr_new<CWeaponFORT>	();			break;
+		case CLSID_OBJECT_W_BINOCULAR:	P = xr_new<CWeaponBinoculars>();	break;
+		case CLSID_OBJECT_W_SHOTGUN:	P = xr_new<CWeaponShotgun>();		break;
+		case CLSID_OBJECT_W_SVD:		P = xr_new<CWeaponSVD>();			break;
+		case CLSID_OBJECT_W_SVU:		P = xr_new<CWeaponSVU>();			break;
 
 		// Zones
-		case CLSID_ZONE:				P = new CCustomZone();			break;
+		case CLSID_ZONE:				P = xr_new<CCustomZone>();			break;
 		}
 		R_ASSERT		(P);
 		P->SUB_CLS_ID	= cls;

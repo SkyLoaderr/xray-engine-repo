@@ -320,7 +320,7 @@ BOOL CLevel::Load_GameSpecific_Before()
 BOOL CLevel::Load_GameSpecific_After()
 {
 	// only for single...hmmm????
-	m_tpAI_DDD	= new CAI_DDD();
+	m_tpAI_DDD	= xr_new<CAI_DDD> ();
 	m_tpAI_DDD->vfLoad();
 
 	return TRUE;

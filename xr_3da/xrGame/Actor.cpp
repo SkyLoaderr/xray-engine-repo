@@ -49,9 +49,9 @@ CActor::CActor() : CEntityAlive()
 {
 	
 	// Cameras
-	cameras[eacFirstEye]	= new CCameraFirstEye	(this, pSettings, "actor_firsteye_cam", false);
-	cameras[eacLookAt]		= new CCameraLook		(this, pSettings, "actor_look_cam",		false);
-	cameras[eacFreeLook]	= new CCameraLook		(this, pSettings, "actor_free_cam",	false);
+	cameras[eacFirstEye]	= xr_new<CCameraFirstEye>	(this, pSettings, "actor_firsteye_cam", false);
+	cameras[eacLookAt]		= xr_new<CCameraLook>		(this, pSettings, "actor_look_cam",		false);
+	cameras[eacFreeLook]	= xr_new<CCameraLook>		(this, pSettings, "actor_free_cam",	false);
 
 	cam_active				= eacFirstEye;
 	fPrevCamPos				= 0;
@@ -111,7 +111,7 @@ void CActor::Load		(LPCSTR section )
 
 	ph_Movement.SetJumpUpVelocity(m_fJumpSpeed);
 
-	Weapons				= new CWeaponList(this);
+	Weapons				= xr_new<CWeaponList> (this);
 
 	// sounds
 	char buf[256];
@@ -417,7 +417,7 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 		Movement.SetVelocity				(correctV);
 
 		if (Local()) {
-			pCreator->Cameras.AddEffector		(new CEffectorFall(Movement.gcontact_Power));
+			pCreator->Cameras.AddEffector		(xr_new<CEffectorFall> (Movement.gcontact_Power));
 			Fvector D; D.set					(0,1,0);
 			if (Movement.gcontact_HealthLost)	Hit	(1.5f * Movement.gcontact_HealthLost,D,this,-1);
 		}
@@ -431,7 +431,7 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 //		::Sound->PlayAtPos						(sndLanding,this,Position());
 
 		if (Local()) {
-			pCreator->Cameras.AddEffector		(new CEffectorFall(ph_Movement.gcontact_Power));
+			pCreator->Cameras.AddEffector		(xr_new<CEffectorFall> (ph_Movement.gcontact_Power));
 			Fvector D; D.set					(0,1,0);
 			if (ph_Movement.gcontact_HealthLost)	Hit	(ph_Movement.gcontact_HealthLost,D,this,-1);
 		}
@@ -636,7 +636,7 @@ void CActor::Update	(u32 DT)
 	
 	if (IsMyCamera())		{
 		if (!pCamBobbing){ 
-			pCamBobbing = new CEffectorBobbing	();
+			pCamBobbing = xr_new<CEffectorBobbing>	();
 			Level().Cameras.AddEffector			(pCamBobbing);
 		}
 		pCamBobbing->SetState					(mstate_real);

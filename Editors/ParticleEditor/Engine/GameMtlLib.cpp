@@ -84,7 +84,7 @@ void CGameMtlLibrary::Load(LPCSTR name)
     if (OBJ){
         CStream* O   	= OBJ->OpenChunk(0);
         for (int count=1; O; count++) {
-        	SGameMtl* M	= new SGameMtl();
+        	SGameMtl* M	= xr_new<SGameMtl> ();
 	        M->Load		(*O);
         	materials.push_back(M);
     	    O->Close	();
@@ -97,7 +97,7 @@ void CGameMtlLibrary::Load(LPCSTR name)
     if (OBJ){
         CStream* O   	= OBJ->OpenChunk(0);
         for (int count=1; O; count++) {
-        	SGameMtlPair* M	= new SGameMtlPair(this);
+        	SGameMtlPair* M	= xr_new<SGameMtlPair> (this);
 	        M->Load		(*O);
         	material_pairs.push_back(M);
     	    O->Close	();

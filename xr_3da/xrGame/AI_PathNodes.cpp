@@ -374,7 +374,7 @@ void CPathNodes::BuildTravelLine(const Fvector& current_pos)
 			else		next.P.set(S.v2);
 		}
 
-		// record new point
+		// record _new point
 		if (!next.P.similar(TravelPath.back().P))	TravelPath.push_back(next);
 		current				= next;
 	}

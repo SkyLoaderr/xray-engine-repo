@@ -44,7 +44,7 @@ void CWeaponProtecta::Load(LPCSTR section){
 	inherited::Load(ini, section);
 	R_ASSERT(m_pHUD);
 	
-	m_pShootPS		= new CPSObject("protecta_smoke");
+	m_pShootPS		= xr_new<CPSObject> ("protecta_smoke");
 
 	vFirePoint		= ini->ReadVECTOR(section,"fire_point");
 	iShotCount		= ini->ReadINT(section,"shot_count");
@@ -252,12 +252,12 @@ void CWeaponProtecta::FireShotmark(const Fvector &vDir, const Fvector &vEnd, Col
 	CSector* S			= ::Render.getSector(pTri->sector);
 
 	// stones
-	CPSObject* PS		= new CPSObject("stones",S,true);
+	CPSObject* PS		= xr_new<CPSObject> ("stones",S,true);
 	PS->m_Emitter.m_ConeDirection.set(D);
 	PS->PlayAtPos		(vEnd);
 
 	// smoke
-	PS					= new CPSObject("smokepuffs_1",S,true);
+	PS					= xr_new<CPSObject> ("smokepuffs_1",S,true);
 	PS->m_Emitter.m_ConeDirection.set(D);
 	PS->PlayAtPos		(vEnd);
 }

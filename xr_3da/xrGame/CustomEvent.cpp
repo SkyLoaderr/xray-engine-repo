@@ -87,7 +87,7 @@ BOOL CCustomEvent::net_Spawn	( LPVOID DC )
 
 	// Read CFORM
 	{
-		CCF_Shape*	shape			= new CCF_Shape	(this);
+		CCF_Shape*	shape			= xr_new<CCF_Shape>	(this);
 		cfModel						= shape;
 		u8 count;	P.r_u8			(count);
 		while (count)	{

@@ -69,7 +69,7 @@ void CWeaponRail::OnMove()
 
 //			if (bLocal)
 //				pCreator->Cameras.AddEffector(
-//					new CEffectorRecoil(.20f),Recoil_TIME);
+//					xr_new<CEffectorRecoil> (.20f),Recoil_TIME);
 
 			Fvector p1,d;
 			m_pParent->g_fireParams(p1,d);

@@ -20,9 +20,9 @@ CCar::CCar(void)
 {
 	active_camera	= 0;
 	m_vCamDeltaHP.set(0.f,0.f,0.f);
-	camera[ectFirst]= new CCameraFirstEye	(this, pSettings, "car_firsteye_cam",	false); camera[ectFirst]->tag	= ectFirst;
-	camera[ectChase]= new CCameraLook		(this, pSettings, "car_look_cam",		false);	camera[ectChase]->tag	= ectChase;
-	camera[ectFree]	= new CCameraLook		(this, pSettings, "car_free_cam",		false);	camera[ectFree]->tag	= ectFree;
+	camera[ectFirst]= xr_new<CCameraFirstEye>	(this, pSettings, "car_firsteye_cam",	false); camera[ectFirst]->tag	= ectFirst;
+	camera[ectChase]= xr_new<CCameraLook>		(this, pSettings, "car_look_cam",		false);	camera[ectChase]->tag	= ectChase;
+	camera[ectFree]	= xr_new<CCameraLook>		(this, pSettings, "car_free_cam",		false);	camera[ectFree]->tag	= ectFree;
 	OnCameraChange(ectChase);
 	m_jeep.Create	(ph_world->GetSpace(),phWorld);
 	ph_world->AddObject((CPHObject*)this);

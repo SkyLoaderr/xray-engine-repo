@@ -126,8 +126,8 @@ u32	CSoundRender::CreateSound			(LPCSTR name, BOOL _3D, BOOL _Freq, BOOL bNotCli
 		return fnd;
 	}
 
-	// sound not found - create new
-	CSound *pSnd	= new CSound(_3D);
+	// sound not found - create _new_
+	CSound *pSnd	= xr_new<CSound> (_3D);
 	pSnd->Load		(name,_Freq);
 
 	// search for empty slot
@@ -167,7 +167,7 @@ CSound* CSoundRender::GetFreeSound	(u32 hSound)
 			return sounds[hSound][i];
 	}
 	// xr_free sound not found - create duplicate
-	CSound *pSnd = new CSound	(sounds[hSound].front()->_3D);
+	CSound *pSnd = xr_new<CSound>	(sounds[hSound].front()->_3D);
 	pSnd->Load						(sounds[hSound].front());
 	sounds[hSound].push_back		(pSnd);
 	return pSnd;

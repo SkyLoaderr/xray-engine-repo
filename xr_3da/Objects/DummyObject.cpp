@@ -66,7 +66,7 @@ BOOL CDummyObject::net_Spawn(LPVOID DC)
 	style					= E->s_style;
 	if (style&esAnimated)		{
 		// Load animator
-		s_animator				= new CObjectAnimator		();
+		s_animator				= xr_new<CObjectAnimator>	();
 		s_animator->Load		(E->s_Animation);
 		s_animator->PlayMotion	("idle",true);
 	}

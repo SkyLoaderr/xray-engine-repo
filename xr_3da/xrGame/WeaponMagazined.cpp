@@ -329,7 +329,7 @@ void CWeaponMagazined::OnShellDrop	()
 {
 	// shells
 	/*
-	CPSObject* PS				= new CPSObject("weapons\\shells_generic",H_Parent()->Sector(),true);
+	CPSObject* PS				= xr_new<CPSObject>("weapons\\shells_generic",H_Parent()->Sector(),true);
 	Fmatrix M;
 	M.setHPB(PS->m_Emitter.m_ConeHPB.x, PS->m_Emitter.m_ConeHPB.y, PS->m_Emitter.m_ConeHPB.z);
 	Fvector V; M.transform_dir(V,vLastFD);
@@ -347,7 +347,7 @@ void CWeaponMagazined::OnShot		()
 	if (hud_mode)	
 	{
 		CEffectorShot* S		= dynamic_cast<CEffectorShot*>	(Level().Cameras.GetEffector(cefShot)); 
-		if (!S)	S				= (CEffectorShot*)Level().Cameras.AddEffector(new CEffectorShot(camMaxAngle,camRelaxSpeed));
+		if (!S)	S				= (CEffectorShot*)Level().Cameras.AddEffector(xr_new<CEffectorShot> (camMaxAngle,camRelaxSpeed));
 		R_ASSERT				(S);
 		S->Shot					(camDispersion);
 	}
@@ -378,12 +378,12 @@ void CWeaponMagazined::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Col
 		
 		// smoke
 		LPCSTR ps_gibs		= (Random.randI(5)==0)?"sparks_1":"stones";
-		CPSObject* PS		= new CPSObject(ps_gibs,S,true);
+		CPSObject* PS		= xr_new<CPSObject> (ps_gibs,S,true);
 		PS->m_Emitter.m_ConeDirection.set(D);
 		PS->PlayAtPos		(vEnd);
 		
 		// stones
-		PS					= new CPSObject("stones",S,true);
+		PS					= xr_new<CPSObject> ("stones",S,true);
 		PS->m_Emitter.m_ConeDirection.set(D);
 		PS->PlayAtPos		(vEnd);
 	}

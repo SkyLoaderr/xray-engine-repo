@@ -14,10 +14,10 @@
 CHUDManager::CHUDManager()
 { 
 	Level().pHUD	= this;
-	pFontSmall		= new CGameFont("hud_font_small");
-	pFontMedium		= new CGameFont("hud_font_medium");
-	pFontDI			= new CGameFont("hud_font_di",CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
-	pFontBigDigit	= new CGameFont("hud_font_big_digit");
+	pFontSmall		= xr_new<CGameFont> ("hud_font_small");
+	pFontMedium		= xr_new<CGameFont> ("hud_font_medium");
+	pFontDI			= xr_new<CGameFont> ("hud_font_di",CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
+	pFontBigDigit	= xr_new<CGameFont> ("hud_font_big_digit");
 	pUI				= 0;
 	Device.seqDevCreate.Add	(this);
 	Device.seqDevDestroy.Add(this);
@@ -89,7 +89,7 @@ int CHUDManager::ClientToScreenY(int top, u32 align)
 void CHUDManager::Load()
 {
 	xr_delete			(pUI);
-	pUI				= new CUI(this);
+	pUI				= xr_new<CUI> (this);
 	pUI->Load		();
 }
 //--------------------------------------------------------------------
@@ -154,7 +154,7 @@ void CHUDManager::SetScale(float s){
 
 void CHUDManager::OnDeviceCreate()
 {
-	pUI				= new CUI(this);
+	pUI				= xr_new<CUI> (this);
 	
 	if (Device.dwWidth<UI_BASE_WIDTH)	SetScale(float(Device.dwWidth)/float(UI_BASE_WIDTH));
 	else								SetScale(1.f);

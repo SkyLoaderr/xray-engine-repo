@@ -91,7 +91,7 @@ void CCustomMonster::Load		(LPCSTR section)
 	
 	// weapons
 	if (pSettings->ReadINT(section,"weapon_usage")) {
-		Weapons					= new CWeaponList(this);
+		Weapons					= xr_new<CWeaponList>(this);
 		LPCSTR S1 = pSettings->ReadSTRING(section,"bone_torso_weapon"),S2 = pSettings->ReadSTRING(section,"bone_head_weapon");
 		Weapons->Init			(S1,S2);
 	}

@@ -12,7 +12,7 @@
 //////////////////////////////////////////////////////////////////////
 CDemoActor::CDemoActor()
 {
-	camera			= new CCameraFirstEye(this, pSettings, "actor_firsteye_cam", false);
+	camera			= xr_new<CCameraFirstEye> (this, pSettings, "actor_firsteye_cam", false);
 	animator		= 0;
 	attached		= 0;
 	music			= 0;

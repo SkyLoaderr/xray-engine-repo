@@ -318,7 +318,7 @@ void CWeaponM134::Update	(u32 T)
 				
 				if (hud_mode)	{
 					CEffectorShot*	S		= (CEffectorShot*)Level().Cameras.GetEffector(cefShot); 
-					if (!S)	S				= (CEffectorShot*)Level().Cameras.AddEffector(new CEffectorShot(camMaxAngle,camRelaxSpeed));
+					if (!S)	S				= (CEffectorShot*)Level().Cameras.AddEffector(xr_new<CEffectorShot>(camMaxAngle,camRelaxSpeed));
 					R_ASSERT(S); 
 					S->Shot					(camDispersion); 
 				}
@@ -396,12 +396,12 @@ void CWeaponM134::FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collid
 
 	// stones or sparks
 	LPCSTR ps_gibs		= (Random.randI(5)==0)?"sparks_1":"stones";
-	CPSObject* PS		= new CPSObject(ps_gibs,S,true);
+	CPSObject* PS		= xr_new<CPSObject> (ps_gibs,S,true);
 	PS->m_Emitter.m_ConeDirection.set(D);
 	PS->PlayAtPos		(vEnd);
 
 	// smoke
-	PS					= new CPSObject("smokepuffs_1",S,true);
+	PS					= xr_new<CPSObject> ("smokepuffs_1",S,true);
 	PS->m_Emitter.m_ConeDirection.set(D);
 	PS->PlayAtPos		(vEnd);
 }

@@ -542,19 +542,19 @@ void CXR_Menu::OnMousePress	(int btn)
 		{
 			switch (GetH()) {
 			case 0: // video
-				pOptions = new CXR_Options("m_video");
+				pOptions = xr_new<CXR_Options>("m_video");
 				break;
 			case 1: // audio
-				pOptions = new CXR_Options("m_audio");
+				pOptions = xr_new<CXR_Options>("m_audio");
 				break;
 			case 2: // effects
-				pOptions = new CXR_Options("m_effects");
+				pOptions = xr_new<CXR_Options>("m_effects");
 				break;
 			case 3: // controls
-				pOptions = new CXR_Options("m_controls");
+				pOptions = xr_new<CXR_Options>("m_controls");
 				break;
 			case 4: // debug
-				pOptions = new CXR_Options("m_debug");
+				pOptions = xr_new<CXR_Options>("m_debug");
 				break;
 			}
 			//pApp->xrSndManager->PlayStatic(SND_MENU_SELECT);

@@ -142,7 +142,7 @@ void CAI_Soldier::vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, C
 //			Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost,dwTimeDifference);
 //		else
 			Level().AI.q_Range_Bit(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
-		// if search has found new best node then 
+		// if search has found _new_ best node then 
 		if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
 			AI_Path.DestNode		= S.BestNode;
 			AI_Path.bNeedRebuild	= TRUE;
@@ -171,7 +171,7 @@ void CAI_Soldier::vfSearchForBetterPositionWTime(CAISelectorBase &S, CSquad &Squ
 	// selector evaluation function in the radius N meteres
 	float fOldCost;
 	Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
-	// if search has found new best node then 
+	// if search has found _new_ best node then 
 	//if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
 	if ((AI_Path.DestNode != S.BestNode) && (S.BestCost < (fOldCost - S.fLaziness))){
 		AI_Path.DestNode		= S.BestNode;
