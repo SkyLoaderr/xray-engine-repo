@@ -36,6 +36,15 @@ IC void	Reduce				(int& w, int& h, int& l, int& skip)
 	if (h<1)	h=1;
 }
 
+void				TW_Save	(IDirect3DTexture9* T, LPCSTR name, LPCSTR prefix, LPCSTR postfix)
+{
+	string256		fn;		strconcat	(fn,name,"_",prefix,"-",postfix);
+	for (int it=0; it<strlen(fn); it++)	if ('\\'==fn[it])	fn[it]	= '_';
+	string256		fn2;	strconcat	(fn2,"debug\\",fn,".dds");
+	Log						("* debug texture save: ",fn2);
+	R_CHK					(D3DXSaveTextureToFile	(fn2,D3DXIFF_DDS,T,0));
+}
+
 IDirect3DTexture9*	TW_LoadTextureFromTexture
 (
 	IDirect3DTexture9*		t_from,
@@ -161,7 +170,7 @@ IC	void	TW_Iterate_2OP
 }
 
 IC u32 it_gloss_rev		(u32 d, u32 s)	{	return	color_rgba	(
-	color_get_A(s)/2,	// gloss
+	color_get_A(s),		// gloss
 	color_get_B(d),
 	color_get_G(d),
 	color_get_R(d)		);
@@ -296,47 +305,52 @@ _BUMP:
 			D3DPOOL_SYSTEMMEM,			D3DX_DEFAULT,D3DX_DEFAULT,
 			0,&IMG,0,&T_height_gloss	));
 		FS.r_close				(S);
+		//TW_Save						(T_height_gloss,fname,"debug-0","original");
 
 		// Create HW-surface, compute normal map
 		IDirect3DTexture9*	T_normal_1	= 0;
 		R_CHK(D3DXCreateTexture		(HW.pDevice,IMG.Width,IMG.Height,D3DX_DEFAULT,0,D3DFMT_A8R8G8B8,D3DPOOL_SYSTEMMEM,&T_normal_1));
 		R_CHK(D3DXComputeNormalMap	(T_normal_1,T_height_gloss,0,0,D3DX_CHANNEL_RED,5.f));
+		//TW_Save						(T_normal_1,fname,"debug-1","normal");
 
 		// Transfer gloss-map
-		TW_Iterate_1OP		(T_normal_1,T_height_gloss,it_gloss_rev);
+		TW_Iterate_1OP				(T_normal_1,T_height_gloss,it_gloss_rev);
+		//TW_Save						(T_normal_1,fname,"debug-2","normal-G");
 
 		// Compress
 		fmt								= D3DFMT_DXT5;
 		IDirect3DTexture9*	T_normal_1C	= TW_LoadTextureFromTexture(T_normal_1,fmt,psTextureLOD,dwWidth,dwHeight);
+		//TW_Save						(T_normal_1C,fname,"debug-3","normal-G-C");
 		
 #if RENDER==R_R2
-		if (ps_r2_ls_flags.test(R2FLAG_PARALLAX))
-		{
-			// Decompress (back)
-			fmt								= D3DFMT_A8R8G8B8;
-			IDirect3DTexture9*	T_normal_1U	= TW_LoadTextureFromTexture(T_normal_1C,fmt,0,dwWidth,dwHeight);
+		// Decompress (back)
+		fmt								= D3DFMT_A8R8G8B8;
+		IDirect3DTexture9*	T_normal_1U	= TW_LoadTextureFromTexture(T_normal_1C,fmt,0,dwWidth,dwHeight);
+		// TW_Save						(T_normal_1U,fname,"debug-4","normal-G-CU");
 
-			// Calculate difference
-			IDirect3DTexture9*	T_normal_1D = 0;
-			R_CHK(D3DXCreateTexture(HW.pDevice,dwWidth,dwHeight,T_normal_1U->GetLevelCount(),0,D3DFMT_A8R8G8B8,D3DPOOL_SYSTEMMEM,&T_normal_1D));
-			TW_Iterate_2OP		(T_normal_1D,T_normal_1,T_normal_1U,it_difference);
+		// Calculate difference
+		IDirect3DTexture9*	T_normal_1D = 0;
+		R_CHK(D3DXCreateTexture(HW.pDevice,dwWidth,dwHeight,T_normal_1U->GetLevelCount(),0,D3DFMT_A8R8G8B8,D3DPOOL_SYSTEMMEM,&T_normal_1D));
+		TW_Iterate_2OP				(T_normal_1D,T_normal_1,T_normal_1U,it_difference);
+		// TW_Save						(T_normal_1D,fname,"debug-5","normal-G-diff");
 
-			// Reverse channels back + transfer heightmap
-			TW_Iterate_1OP		(T_normal_1D,T_height_gloss,it_height_rev);
+		// Reverse channels back + transfer heightmap
+		TW_Iterate_1OP				(T_normal_1D,T_height_gloss,it_height_rev);
+		// TW_Save						(T_normal_1D,fname,"debug-6","normal-G-diff-H");
 
-			// Compress
-			fmt								= D3DFMT_DXT5;
-			IDirect3DTexture9*	T_normal_2C	= TW_LoadTextureFromTexture(T_normal_1D,fmt,0,dwWidth,dwHeight);
-			_RELEASE						(T_normal_1U	);
-			_RELEASE						(T_normal_1D	);
+		// Compress
+		fmt								= D3DFMT_DXT5;
+		IDirect3DTexture9*	T_normal_2C	= TW_LoadTextureFromTexture(T_normal_1D,fmt,0,dwWidth,dwHeight);
+		// TW_Save						(T_normal_2C,fname,"debug-7","normal-G-diff-H-C");
+		_RELEASE					(T_normal_1U	);
+		_RELEASE					(T_normal_1D	);
 
-			// 
-			string256			fnameB;
-			strconcat			(fnameB,"$user$",fname,"_bumpX");
-			ref_texture			t_temp		= Device.Resources->_CreateTexture	(fnameB);
-			t_temp->surface_set	(T_normal_2C	);
-			_RELEASE			(T_normal_2C	);	// texture should keep reference to it by itself
-		}
+		// 
+		string256			fnameB;
+		strconcat			(fnameB,"$user$",fname,"X");
+		ref_texture			t_temp		= Device.Resources->_CreateTexture	(fnameB);
+		t_temp->surface_set	(T_normal_2C	);
+		_RELEASE			(T_normal_2C	);	// texture should keep reference to it by itself
 #endif
 
 		// release and return
@@ -375,33 +389,30 @@ _BUMP_from_base:
 		IDirect3DTexture9*	T_normal_1C	= TW_LoadTextureFromTexture(T_normal_1,fmt,psTextureLOD,dwWidth,dwHeight);
 
 #if RENDER==R_R2	
-		if (ps_r2_ls_flags.test(R2FLAG_PARALLAX))
-		{
-			// Decompress (back)
-			fmt								= D3DFMT_A8R8G8B8;
-			IDirect3DTexture9*	T_normal_1U	= TW_LoadTextureFromTexture(T_normal_1C,fmt,0,dwWidth,dwHeight);
+		// Decompress (back)
+		fmt								= D3DFMT_A8R8G8B8;
+		IDirect3DTexture9*	T_normal_1U	= TW_LoadTextureFromTexture(T_normal_1C,fmt,0,dwWidth,dwHeight);
 
-			// Calculate difference
-			IDirect3DTexture9*	T_normal_1D = 0;
-			R_CHK(D3DXCreateTexture(HW.pDevice,dwWidth,dwHeight,T_normal_1U->GetLevelCount(),0,D3DFMT_A8R8G8B8,D3DPOOL_SYSTEMMEM,&T_normal_1D));
-			TW_Iterate_2OP		(T_normal_1D,T_normal_1,T_normal_1U,it_difference);
+		// Calculate difference
+		IDirect3DTexture9*	T_normal_1D = 0;
+		R_CHK(D3DXCreateTexture(HW.pDevice,dwWidth,dwHeight,T_normal_1U->GetLevelCount(),0,D3DFMT_A8R8G8B8,D3DPOOL_SYSTEMMEM,&T_normal_1D));
+		TW_Iterate_2OP		(T_normal_1D,T_normal_1,T_normal_1U,it_difference);
 
-			// Reverse channels back + transfer heightmap
-			TW_Iterate_1OP		(T_normal_1D,T_base,it_height_rev_base);
+		// Reverse channels back + transfer heightmap
+		TW_Iterate_1OP		(T_normal_1D,T_base,it_height_rev_base);
 
-			// Compress
-			fmt								= D3DFMT_DXT5;
-			IDirect3DTexture9*	T_normal_2C	= TW_LoadTextureFromTexture(T_normal_1D,fmt,0,dwWidth,dwHeight);
-			_RELEASE						(T_normal_1U	);
-			_RELEASE						(T_normal_1D	);
+		// Compress
+		fmt								= D3DFMT_DXT5;
+		IDirect3DTexture9*	T_normal_2C	= TW_LoadTextureFromTexture(T_normal_1D,fmt,0,dwWidth,dwHeight);
+		_RELEASE						(T_normal_1U	);
+		_RELEASE						(T_normal_1D	);
 
-			// 
-			string256			fnameB;
-			strconcat			(fnameB,"$user$",fname,"_bumpX");
-			ref_texture			t_temp		= Device.Resources->_CreateTexture	(fnameB);
-			t_temp->surface_set	(T_normal_2C	);
-			_RELEASE			(T_normal_2C	);	// texture should keep reference to it by itself
-		}
+		// 
+		string256			fnameB;
+		strconcat			(fnameB,"$user$",fname,"_bumpX");
+		ref_texture			t_temp		= Device.Resources->_CreateTexture	(fnameB);
+		t_temp->surface_set	(T_normal_2C	);
+		_RELEASE			(T_normal_2C	);	// texture should keep reference to it by itself
 #endif
 		// T_normal_1C	- normal.gloss,		reversed
 		// T_normal_2C	- 2*error.height,	non-reversed
