@@ -164,7 +164,7 @@ void CGameFont::OnRender()
 		}
 
 		// Unlock and draw
-		u32 vCount = v-start;
+		u32 vCount = (u32)(v-start);
 		RCache.Vertex.Unlock		(vCount,pGeom.stride());
 		if (vCount)
 		{

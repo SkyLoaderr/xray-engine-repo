@@ -159,16 +159,16 @@ void	CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 		CBoneData* B= (*bones)[i];
 		if (!P||!P[0]) {
 			// no parent - this is root bone
-			R_ASSERT(BI_NONE==iRoot);
-			iRoot	= i;
+			R_ASSERT	(BI_NONE==iRoot);
+			iRoot		= i;
 			continue;
 		} else {
-			u16 ID	= LL_BoneID(P);
-			R_ASSERT(ID!=BI_NONE);
+			u16 ID		= LL_BoneID(P);
+			R_ASSERT	(ID!=BI_NONE);
 			(*bones)[ID]->children.push_back(B);
 		}
 	}
-	R_ASSERT(BI_NONE != iRoot);
+	R_ASSERT	(BI_NONE != iRoot);
 
 	// Free parents
     L_parents.clear();

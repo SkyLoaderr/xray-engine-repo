@@ -239,8 +239,8 @@ BOOL CCF_Skeleton::_RayTest( RayQuery& Q)
 	{
 		if (RAYvsOBB(*I,Q.start,Q.dir,Q.range)) 
 		{
-			bHIT = TRUE;
-			Q.element = I-model.begin();
+			bHIT		= TRUE;
+			Q.element	= u32	(I-model.begin());
 		}
 	}
 	return bHIT;
