@@ -132,7 +132,7 @@ function Defender:process ()
 	local enemy = nil
 	for a = 1, table.getn (self.monsters), 1 do
 	    local monster = self.monsters[a]
-	    if monster:alive () == true then
+	    if monster.npc:alive () == true then
 	       local tdist = distance_between (monster.npc, self.npc)
 	       if tdist < dist and self.npc:see (monster.npc) == true then
 	          dist = tdist
