@@ -7,6 +7,7 @@
 #include "..\xrLevel.h"
 #include "..\xr_object.h"
 #include "..\fbasicvisual.h"
+#include "..\IGame_Persistent.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -192,7 +193,9 @@ void CSector::load(IReader& fs)
 		count--;
 	}
 
-	// Assign visual
-	size	= fs.find_chunk(fsP_Root);	R_ASSERT(size==4);
-	m_root	= RImplementation.getVisual(fs.r_u32());
+	if	(!g_pGamePersistent->bDedicatedServer)	{
+		// Assign visual
+		size	= fs.find_chunk(fsP_Root);	R_ASSERT(size==4);
+		m_root	= RImplementation.getVisual(fs.r_u32());
+	}
 }
