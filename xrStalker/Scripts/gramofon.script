@@ -34,6 +34,11 @@ local siren2_3       = "\script_replics\\megafon\\alarm\\megafon_alarm_4"
 local siren2_4       = "\script_replics\\megafon\\alarm\\megafon_alarm_5"
 local siren2_5       = "\script_replics\\megafon\\alarm\\megafon_alarm_6"
 
+local commader1      = "\script_replics\\megafon\\comandir\\comandir_megafon_1"
+local commader2      = "\script_replics\\megafon\\comandir\\comandir_megafon_2"
+local commader3      = "\script_replics\\megafon\\comandir\\comandir_megafon_3"
+local commader4      = "\script_replics\\megafon\\comandir\\comandir_megafon_4"
+local commader5      = "\script_replics\\megafon\\comandir\\comandir_megafon_5"
 
 local siren_on2 = 2     --Не опасный
 local siren_on1 = 1		--Опасность
@@ -54,10 +59,10 @@ function m_gramofon:__init( obj_name )
     self.hours        = 0              --Время в часах прошлого update
     self.queue        = {}
     self.sounds       = {
-           		    sound_object( music1 ),
+           		    		sound_object( music1 ),
                             sound_object( music2 ),
                             sound_object( music3 ),
-			    sound_object( music4 ),
+			    			sound_object( music4 ),
                             sound_object( music5 ),
                             sound_object( music6 ),
                             sound_object( music7 ),
@@ -74,11 +79,18 @@ function m_gramofon:__init( obj_name )
                             sound_object( siren1_3 ),
                             sound_object( siren1_4 ),
                             sound_object( siren1_5 ),
+
                             sound_object( siren2_1 ),
                             sound_object( siren2_2 ),
                             sound_object( siren2_3 ),
                             sound_object( siren2_4 ),
                             sound_object( siren2_5 ),
+
+                            sound_object( commader1 ),
+                            sound_object( commader2 ),
+                            sound_object( commader3 ),
+                            sound_object( commader4 ),
+                            sound_object( commader5 )
                         }
 
 end
@@ -214,6 +226,16 @@ function m_gramofon:danger_siren()
     self:play_sound( self.sounds[ math.random( 15, 19 )], 3000 )
 end
 
+function m_gramofon:commander_speak(ind)
+	if(ind == nil) then
+    	ind = math.random(1, 5)
+    end
+
+    self:clear_music()
+	if(self.sounds[24 + ind]) then
+		self:play_sound (self.sounds[24 + ind], 1000)
+    end
+end
 
 function local_time()
   	local time  = game.time()/1000
