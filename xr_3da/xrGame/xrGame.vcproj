@@ -1244,6 +1244,16 @@
 						RelativePath="Spectator.h">
 					</File>
 				</Filter>
+				<Filter
+					Name="Zones"
+					Filter="">
+					<File
+						RelativePath="CustomZone.cpp">
+					</File>
+					<File
+						RelativePath="CustomZone.h">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Game Materials"

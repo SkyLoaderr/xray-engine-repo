@@ -345,10 +345,10 @@ xrSE_DECLARE_BEGIN(xrSE_Dog,xrSE_Enemy)
 							xrSE_Dog();				// constructor for variable initialization
 xrSE_DECLARE_END
 
-////***** Zone
-////xrSE_DECLARE_BEGIN(xrSE_Zone,xrServerEntity)
-//class xrSE_Zone : public xrSE_CFormed, public xrServerEntity { typedef __B inherited; public:
-//xrSE_DECLARE_END
+//***** Zone
+//xrSE_DECLARE_BEGIN(xrSE_Zone,xrServerEntity)
+class xrSE_Zone : public xrSE_CFormed, public xrServerEntity { typedef xrServerEntity inherited; public:
+xrSE_DECLARE_END
 
 // 
 #undef xrSE_EDITOR_METHODS

@@ -554,6 +554,8 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 #include "weaponsvu.h"
 #include "Spectator.h"
 
+#include "customzone.h"
+
 extern "C" {
 	DLL_API DLL_Pure*	__cdecl xrFactory_Create		(CLASS_ID cls)
 	{
@@ -593,6 +595,9 @@ extern "C" {
 		case CLSID_OBJECT_W_SHOTGUN:	P = new CWeaponShotgun();		break;
 		case CLSID_OBJECT_W_SVD:		P = new CWeaponSVD();			break;
 		case CLSID_OBJECT_W_SVU:		P = new CWeaponSVU();			break;
+
+		// Zones
+		case CLSID_ZONE:				P = new CCustomZone();			break;
 		}
 		R_ASSERT		(P);
 		P->SUB_CLS_ID	= cls;

@@ -996,33 +996,26 @@ void xrSE_Dog::FillProp(LPCSTR pref, PropItemVec& items)
 }
 #endif
 
-//// Zone
-//void xrSE_Zone::STATE_Read		(NET_Packet& P, u16 size)	{};
-//void xrSE_Zone::STATE_Write		(NET_Packet& P)				{};
-//void xrSE_Zone::UPDATE_Read		(NET_Packet& P)
-//{
-//	P.r_u32				(timestamp		);
-//	P.r_u8				(flags			);
-//	P.r_vec3			(o_Position		);
-//	P.r_angle8			(o_model		);
-//	P.r_angle8			(o_torso.yaw	);
-//	P.r_angle8			(o_torso.pitch	);
-//}
-//void xrSE_Zone::UPDATE_Write		(NET_Packet& P)
-//{
-//	P.w_u32				(timestamp		);
-//	P.w_u8				(flags			);
-//	P.w_vec3			(o_Position		);
-//	P.w_angle8			(o_model		);
-//	P.w_angle8			(o_torso.yaw	);
-//	P.w_angle8			(o_torso.pitch	);
-//}
-//#ifdef _EDITOR
-//void	xrSE_Zone::FillProp			(LPCSTR pref, PropItemVec& items)
-//{
-//  	//inherited::FillProp(pref,items);
-//}
-//#endif
+// Zone
+void xrSE_Zone::STATE_Read		(NET_Packet& P, u16 size)	{
+	// CForm
+	cform_read			(P);
+};
+void xrSE_Zone::STATE_Write		(NET_Packet& P)				{
+	// CForm
+	cform_write			(P);
+};
+void xrSE_Zone::UPDATE_Read		(NET_Packet& P)
+{
+}
+void xrSE_Zone::UPDATE_Write		(NET_Packet& P)
+{
+}
+#ifdef _EDITOR
+void	xrSE_Zone::FillProp			(LPCSTR pref, PropItemVec& items)
+{
+}
+#endif
 
 //--------------------------------------------------------------------
 xrServerEntity*	F_entity_Create		(LPCSTR name)
@@ -1045,6 +1038,9 @@ xrServerEntity*	F_entity_Create		(LPCSTR name)
 
 	// Artifacts
 	case CLSID_AF_MERCURY_BALL:		return new  xrSE_MercuryBall;
+
+	// Zones
+	case CLSID_ZONE:				return new  xrSE_Zone;
 
 	case CLSID_OBJECT_W_M134:		return new	xrSE_Weapon;
 	case CLSID_OBJECT_W_FN2000:		return new	xrSE_Weapon;
