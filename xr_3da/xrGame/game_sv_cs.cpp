@@ -379,7 +379,7 @@ void game_sv_CS::OnPlayerConnect	(u32 id_who)
 	spawn_end				(A,id_who);
 }
 
-void game_sv_CS::OnPlayerBuy		(u32 id_who, u32 eid_who, LPCSTR what)
+void game_sv_CS::OnPlayerBuy		(u32 id_who, u16 eid_who, LPCSTR what)
 {
 	__super::OnPlayerBuy	(id_who,eid_who,what);
 

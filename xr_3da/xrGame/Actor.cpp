@@ -26,7 +26,6 @@ const float		respawn_auto	= 7.f;
 #include "xr_weapon_list.h"
 
 #include "targetassault.h"
-
 #include "targetcs.h"
 
 static const float	s_fLandingTime1		= 0.1f;// через сколько снять флаг Landing1 (т.е. включить следующую анимацию)
