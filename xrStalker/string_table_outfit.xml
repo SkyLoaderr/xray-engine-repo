@@ -1,8 +1,56 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <string_table>
-	<string id="outfit">
-		<text>ARTEFACT</text>
+	<string id="outfit_bandit">
+		<text>OUTFIT</text>
+		<text ln="rus">Традиционная одежда бандита - кожанная курка со вшитыми кевларовыми элементами. 
+		Слегка усиливает противопулевую и осколочную защиту. Не защищает от пси-влияния.</text>
+	</string>
+
+	<string id="outfit_soldier">
+		<text>OUTFIT</text>
+		<text ln="rus">Стандартный комплект снаряжения солдата - легкий армейский бронежилет. 
+		Достаточно эффективно защищает от пистолетных пуль и осколков. Не защищает от пси-влияния.</text>
+	</string>
+
+	<string id="outfit_stalker">
+		<text>OUTFIT</text>
+		<text ln="rus">Производимый "народными умельцами" комбез сталкера. Легкий армейский бронежилет плюс 
+		накладные усиливающие кевларовые элементы. Достаточно эффективно защищает от пистолетных пуль и 
+		осколков. Прорезиненый брезент неплохо защищает от радиационной пыли и слабых аномалий. 
+		Не защищает от пси-влияния.</text>
+	</string>
+
+	<string id="outfit_svoboda_light">
+		<text>OUTFIT</text>
+		<text ln="rus">Производимый ремесленниками группировки "Свобода" облегченный комбез сталкера. 
+		Легкий армейский бронежилет плюс накладные усиливающие кевларовые элементы. 
+		Достаточно эффективно защищает от пистолетных пуль и осколков. Прорезиненый брезент неплохо 
+		защищает от радиационной пыли и слабых аномалий. Не защищает от пси-влияния.</text>
+	</string>
+
+	<string id="outfit_">
+		<text>OUTFIT</text>
+		<text ln="rus"></text>
+	</string>
+
+	<string id="outfit_">
+		<text>OUTFIT</text>
+		<text ln="rus"></text>
+	</string>
+
+	<string id="outfit_">
+		<text>OUTFIT</text>
+		<text ln="rus"></text>
+	</string>
+
+	<string id="outfit_">
+		<text>OUTFIT</text>
+		<text ln="rus"></text>
+	</string>
+
+	<string id="outfit_">
+		<text>OUTFIT</text>
 		<text ln="rus"></text>
 	</string>
 
