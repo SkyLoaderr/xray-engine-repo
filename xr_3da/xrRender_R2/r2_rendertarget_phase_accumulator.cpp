@@ -64,15 +64,8 @@ void	CRenderTarget::phase_accumulator()
 	RCache.set_Geometry			(g_combine);
 	RCache.set_Shader			(s_accum_direct_mask);
 
-	// Constants
-	Fvector		L_dir;
-	Device.mView.transform_dir	(L_dir,RImplementation.Lights.sun_dir);
-	L_dir.invert				();
-	L_dir.normalize				();
-	RCache.set_c				("light_direction",	L_dir.x,L_dir.y,L_dir.z,0.f);
-
 	// Calculate light-brightness
-	Fvector		L_clr;	
+	Fvector		L_clr;
 	L_clr.div					(RImplementation.Lights.sun_color, ps_r2_ls_dynamic_range);
 	float		L_max			= _max(_max(L_clr.x,L_clr.y),L_clr.z);
 	float		L_mag			= L_clr.magnitude()/_sqrt(3.f);
@@ -85,6 +78,14 @@ void	CRenderTarget::phase_accumulator()
 		float		L_clip			= ps_r2_ls_dclip / L_brightness;
 		A_clip						= _max(4,iFloor(L_clip));
 	}
+	// float		L_dir_scale		
+
+	// Constants
+	Fvector		L_dir;
+	Device.mView.transform_dir	(L_dir,RImplementation.Lights.sun_dir);
+	L_dir.invert				();
+	L_dir.normalize				();
+	RCache.set_c				("light_direction",	L_dir.x,L_dir.y,L_dir.z,0.f);
 
 	// Render
 	CHK_DX						(HW.pDevice->SetRenderState	( D3DRS_ALPHAREF,			A_clip	));

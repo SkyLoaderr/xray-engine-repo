@@ -41,6 +41,7 @@ extern float		ps_r2_ls_bloom_kernel;	// r2-only
 extern float		ps_r2_ls_dsm_kernel;	// r2-only
 extern float		ps_r2_ls_psm_kernel;	// r2-only
 extern float		ps_r2_ls_dclip;			// r2-only
+extern float		ps_r2_ls_hclip;			// r2-only
 
 extern void			xrRender_initconsole	();
 #endif
