@@ -51,7 +51,7 @@ void CHWCaps::Update()
 	if (strstr(Core.Params,"-novs"))	vertex.dwVersion=0;
 
 	//
-	bTableFog			=	BOOL	(caps.RasterCaps&D3DPRASTERCAPS_FOGTABLE);
+	bTableFog			=	FALSE;	//BOOL	(caps.RasterCaps&D3DPRASTERCAPS_FOGTABLE);
 
 	// Detect if stencil available
 	bStencil			=	FALSE;
