@@ -123,6 +123,10 @@ void CWallmarksEngine::RecurseTri(u32 t, Fmatrix &mView, CWallmarksEngine::wallm
 	
 	sPoly* P = sml_clipper.ClipPoly	(sml_poly_src, sml_poly_dest);
 	
+	//. todo
+	// uv_gen = mView * []
+	// UV = pos*uv_gen
+
 	if (P) {
 		// Create vertices and triangulate poly (tri-fan style triangulation)
 		FVF::LIT			V0,V1,V2;
