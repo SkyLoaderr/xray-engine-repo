@@ -28,6 +28,7 @@
 #define IDD_DIALOG1                     136
 #define IDD_DEBUG_DIALOG                137
 #define IDD_DIALOG_NEW_PROJECT          140
+#define IDR_MENU1                       142
 #define IDC_PROJECT_TYPES               1002
 #define IDC_OUTPUT_DIR                  1003
 #define IDC_PROJECT_NAME                1003
@@ -86,14 +87,24 @@
 #define ID_PROJECT_RUNPROJECT           32819
 #define IDR_TOOLS_OPTIONS               32824
 #define ID_VIEW_LUARUNTIME              32825
+#define ID_BUTTON32825                  32825
+#define ID_BUTTON32826                  32826
+#define ID_BUTTON32827                  32827
+#define ID_BUTTON32828                  32828
+#define ID_BUTTON32829                  32829
+#define ID_BUTTON32830                  32830
+#define ID_VSS_CHECKIN                  32832
+#define ID_VSS_UNDOCHECKOUT             32833
+#define ID_VSS_DIFFERENCE               32834
+#define ID_VSS_CHECKOUT                 32835
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        141
-#define _APS_NEXT_COMMAND_VALUE         32825
+#define _APS_NEXT_RESOURCE_VALUE        143
+#define _APS_NEXT_COMMAND_VALUE         32836
 #define _APS_NEXT_CONTROL_VALUE         1016
 #define _APS_NEXT_SYMED_VALUE           112
 #endif

@@ -9,6 +9,7 @@
 #include "LuaEditor.h"
 #include "MainFrame.h"
 #include "ScintillaView.h"
+#include "LuaView.h"
 
 #include "../xrGame/mslotutils.h"
 
@@ -44,11 +45,13 @@ CProjectFile::CProjectFile()
 	RemoveAllDebugLines();
 	RemoveAllBreakPoints();
 	m_bBreakPointsSaved = FALSE;
+	m_lua_view	= NULL;
 }
 
 CProjectFile::~CProjectFile()
 {
-
+	if(m_lua_view)
+		m_lua_view->m_pf = NULL;
 }
 
 void CProjectFile::RemoveAllDebugLines()

@@ -56,10 +56,25 @@ protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnItemexpanded(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnRclick(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnLclick(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnDblclk(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnKeydown(NMHDR* pNMHDR, LRESULT* pResult);
-	//}}AFX_MSG
+
+	afx_msg void OnVSSCheckIn();
+	afx_msg void OnVSSCheckOut();
+	afx_msg void OnVSSUndoCheckOut();
+	afx_msg void OnVSSDifference();
+
+//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
+	void VSSUpdateStatus(HTREEITEM);
+	long VSSGetStatus(HTREEITEM);
+	void VSSCheckIn(HTREEITEM);
+	void VSSCheckOut(HTREEITEM);
+	void VSSUndoCheckOut(HTREEITEM);
+	void VSSDifferences(HTREEITEM);
+	void Reload(HTREEITEM itm);
+	void Save(HTREEITEM itm);
 };
 
 /////////////////////////////////////////////////////////////////////////////

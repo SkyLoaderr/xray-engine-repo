@@ -8,6 +8,7 @@
 #include "MainFrame.h"
 #include "LuaDoc.h"
 #include "LuaView.h"
+#include "SSConnection.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -17,6 +18,9 @@ static char THIS_FILE[] = __FILE__;
 
 /////////////////////////////////////////////////////////////////////////////
 // CTreeViewFiles
+#define working_folder "$/xrStalker/Scripts/"
+CString str_WhoCheckedOut(IVSSItemPtr vss_item);
+
 
 IMPLEMENT_DYNCREATE(CTreeViewFiles, CTreeView)
 
@@ -34,13 +38,21 @@ BEGIN_MESSAGE_MAP(CTreeViewFiles, CTreeView)
 	ON_WM_CREATE()
 	ON_NOTIFY_REFLECT(TVN_ITEMEXPANDED, OnItemexpanded)
 	ON_NOTIFY_REFLECT(NM_RCLICK, OnRclick)
+	ON_NOTIFY_REFLECT(NM_CLICK, OnLclick)
 	ON_NOTIFY_REFLECT(NM_DBLCLK, OnDblclk)
 	ON_NOTIFY_REFLECT(TVN_KEYDOWN, OnKeydown)
+
 	//}}AFX_MSG_MAP
 	ON_COMMAND(ID_PROJECT_ADD_FILES,  OnProjectAddFiles)
 	ON_COMMAND(ID_PROJECT_RUNPROJECT, OnRunApplication)
 	ON_COMMAND(ID_PROJECT_DEBUGGING,  OnDebuggingOptions)
-	
+
+	ON_COMMAND(ID_VSS_CHECKIN,			OnVSSCheckIn)
+	ON_COMMAND(ID_VSS_CHECKOUT,			OnVSSCheckOut)
+	ON_COMMAND(ID_VSS_UNDOCHECKOUT,		OnVSSUndoCheckOut)
+	ON_COMMAND(ID_VSS_DIFFERENCE,		OnVSSDifference)
+
+
 	
 END_MESSAGE_MAP()
 
@@ -137,7 +149,6 @@ BOOL CTreeViewFiles::PreCreateWindow(CREATESTRUCT& cs)
 void CTreeViewFiles::OnItemexpanded(NMHDR* pNMHDR, LRESULT* pResult) 
 {
 	NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;
-	// TODO: Add your control notification handler code here
 	if ( pNMTreeView->itemNew.hItem == m_hFilesFolder )
 	{
 		if ( pNMTreeView->action==TVE_EXPAND )
@@ -146,12 +157,37 @@ void CTreeViewFiles::OnItemexpanded(NMHDR* pNMHDR, LRESULT* pResult)
 			m_pTree->SetItemImage(pNMTreeView->itemNew.hItem, 2, 2);
 	}
 
+	if ( pNMTreeView->itemNew.hItem == m_hFilesFolder && pNMTreeView->action==TVE_EXPAND )
+	{
+			HTREEITEM child =  m_pTree->GetChildItem(pNMTreeView->itemNew.hItem);
+						
+			while(child){
+				VSSUpdateStatus(child);
+
+				child = m_pTree->GetNextSiblingItem(child);
+			}
+	}
 	*pResult = 0;
+
 }
 
+void CTreeViewFiles::OnLclick(NMHDR* pNMHDR, LRESULT* pResult) 
+{
+	CPoint pt;
+	GetCursorPos(&pt);
+	m_pTree->ScreenToClient(&pt);
+	UINT nFlags;
+	HTREEITEM item = m_pTree->HitTest(pt, &nFlags);
+
+	if(m_pTree->GetParentItem(item) == m_hFilesFolder )
+		VSSUpdateStatus(item);
+}
 
 void CTreeViewFiles::OnRclick(NMHDR* pNMHDR, LRESULT* pResult) 
 {
+	HTREEITEM itm = m_pTree->GetSelectedItem();
+	long stat = VSSGetStatus(itm);
+
 	// TODO: Add your control notification handler code here
 	CPoint pt;
 	GetCursorPos(&pt);
@@ -160,26 +196,64 @@ void CTreeViewFiles::OnRclick(NMHDR* pNMHDR, LRESULT* pResult)
 	HTREEITEM item = m_pTree->HitTest(pt, &nFlags);
 	
 	HMENU hMenu = NULL;
-	if ( item == m_hRoot )
+	if ( item == m_hRoot ){
 		hMenu = LoadMenu(theApp.m_hInstance, MAKEINTRESOURCE(IDR_PROJECT_MENU));
 
-	if ( !hMenu )
-		return;
+		if ( !hMenu )
+			return;
 
-	HMENU hSubMenu = GetSubMenu(hMenu, 0);
-	if (!hSubMenu) 
-	{
+		HMENU hSubMenu = GetSubMenu(hMenu, 0);
+		if (!hSubMenu) 
+		{
+			DestroyMenu(hMenu);
+			return;
+		}
+
+		POINT mouse;
+		GetCursorPos(&mouse);
+		::SetForegroundWindow(m_hWnd);	
+		::TrackPopupMenu(hSubMenu, 0, mouse.x, mouse.y, 0, m_hWnd, NULL);
+
 		DestroyMenu(hMenu);
-		return;
 	}
 
-	POINT mouse;
-	GetCursorPos(&mouse);
-	::SetForegroundWindow(m_hWnd);	
-	::TrackPopupMenu(hSubMenu, 0, mouse.x, mouse.y, 0, m_hWnd, NULL);
+	if(m_pTree->GetParentItem(item) == m_hFilesFolder ){
+		hMenu = LoadMenu(theApp.m_hInstance, MAKEINTRESOURCE(IDR_MENU1));
+		if ( !hMenu )
+			return;
 
-	DestroyMenu(hMenu);
-	
+		HMENU hSubMenu = GetSubMenu(hMenu, 0);
+		if (!hSubMenu) 
+		{
+			DestroyMenu(hMenu);
+			return;
+		}
+
+	CMenu mnu;
+	mnu.Attach(hSubMenu);
+	HTREEITEM itm = m_pTree->GetSelectedItem();
+	long stat = VSSGetStatus(itm);
+	UINT mnu_itm;
+	mnu_itm = mnu.GetMenuItemID(0);
+	mnu.EnableMenuItem(mnu_itm,(stat==VSSFILE_CHECKEDOUT_ME)?MF_ENABLED : MF_GRAYED);
+
+
+	mnu_itm = mnu.GetMenuItemID(1);
+	mnu.EnableMenuItem(mnu_itm,((stat==VSSFILE_NOTCHECKEDOUT)||(stat==VSSFILE_CHECKEDOUT))?MF_ENABLED : MF_GRAYED );
+	mnu_itm = mnu.GetMenuItemID(2);
+	mnu.EnableMenuItem(mnu_itm,(stat==VSSFILE_CHECKEDOUT_ME)?MF_ENABLED : MF_GRAYED);
+	mnu_itm = mnu.GetMenuItemID(3);
+	mnu.EnableMenuItem(mnu_itm,(stat != -1)?MF_ENABLED : MF_GRAYED);
+
+		POINT mouse;
+		GetCursorPos(&mouse);
+		::SetForegroundWindow(m_hWnd);	
+//		::TrackPopupMenu(hSubMenu, 0, mouse.x, mouse.y, 0, m_hWnd, NULL);
+		mnu.TrackPopupMenu(/*hSubMenu,*/ 0, mouse.x, mouse.y, this, NULL);
+		
+		DestroyMenu(hMenu);
+
+	}
 	*pResult = 0;
 }
 
@@ -215,8 +289,11 @@ void CTreeViewFiles::OnDblclk(NMHDR* pNMHDR, LRESULT* pResult)
 	{
 		pPF->m_bBreakPointsSaved = FALSE;
 		CLuaView* pView = theApp.OpenProjectFilesView(pPF);
-		if(pView)
+		if(pView){
+			pPF->m_lua_view = pView;
 			pView->Activate();
+			VSSUpdateStatus(hItem);
+		}
 	}
 
 	*pResult = 0;
@@ -244,4 +321,204 @@ void CTreeViewFiles::OnKeydown(NMHDR* pNMHDR, LRESULT* pResult)
 void CTreeViewFiles::ExpandFiles()
 {
 	GetTreeCtrl().Expand(m_hRoot, TVE_EXPAND );
+}
+
+
+CString str_WhoCheckedOut(IVSSItemPtr vss_item)
+{
+	CString str_user(_T("None"));
+	IVSSCheckoutsPtr checkOuts;
+	vss_item->get_Checkouts(&checkOuts);
+
+	IVSSCheckoutPtr vss_checkOutItem;
+	checkOuts->get_Item(_variant_t(1L), &vss_checkOutItem);
+	CComBSTR str_userName;
+	vss_checkOutItem->get_Username(&str_userName);
+
+	long l_count;
+	checkOuts->get_Count(&l_count);
+	if (l_count == 1)
+	{
+		CW2A pszA( str_userName );
+		str_user.Format(_T("%s"), pszA);
+	}
+	else if (l_count > 1)
+	{
+		CW2A pszA( str_userName );
+		str_user.Format(_T("%s et.al."), pszA);
+	}
+	return str_user;
+}
+
+void CTreeViewFiles::VSSUpdateStatus(HTREEITEM itm)
+{
+	long stat = VSSGetStatus(itm);
+		switch (stat)
+		{
+		
+		case -1:
+		case VSSFILE_NOTCHECKEDOUT:{
+			
+			m_pTree->SetItemImage(itm, 4, 4);
+			DWORD_PTR pp = m_pTree->GetItemData(itm);
+			if(pp){
+				CProjectFile* pf = (CProjectFile*)pp;
+				if(pf->m_lua_view)
+					pf->m_lua_view->GetEditor()->SetReadOnly(TRUE);
+			}
+
+			}break;
+		case VSSFILE_CHECKEDOUT:
+			break;
+		case VSSFILE_CHECKEDOUT_ME :{
+			m_pTree->SetItemImage(itm, 0, 0);
+			DWORD_PTR pp = m_pTree->GetItemData(itm);
+			if(pp){
+				CProjectFile* pf = (CProjectFile*)pp;
+				if(pf->m_lua_view)
+					pf->m_lua_view->GetEditor()->SetReadOnly(FALSE);
+			}
+
+			}break;
+		default:
+			break;
+		}
+}
+
+long CTreeViewFiles::VSSGetStatus(HTREEITEM itm)
+{
+	CString str;
+	str = m_pTree->GetItemText(itm);
+
+	IVSSItemPtr vssItem;
+	CComBSTR file_name = working_folder+str;
+	theApp.m_ssConnection.p_GetSourcesafeDatabase()->get_VSSItem(file_name, FALSE, &vssItem);
+	long stat;
+	HRESULT hr;
+	CString str_temp;
+	if((hr = vssItem->get_IsCheckedOut(&stat)) == S_OK){
+		return stat;
+	}
+	return -1;
+}
+void CTreeViewFiles::OnVSSCheckIn(){
+	HTREEITEM hItem = m_pTree->GetSelectedItem();
+
+	Save(hItem);
+	VSSCheckIn(hItem);
+	VSSUpdateStatus(hItem);
+}
+
+void CTreeViewFiles::OnVSSCheckOut(){
+	HTREEITEM hItem = m_pTree->GetSelectedItem();
+	VSSCheckOut(hItem);
+	VSSUpdateStatus(hItem);
+}
+
+void CTreeViewFiles::OnVSSUndoCheckOut(){
+	HTREEITEM hItem = m_pTree->GetSelectedItem();
+	VSSUndoCheckOut(hItem);
+	VSSUpdateStatus(hItem);
+
+}
+void CTreeViewFiles::OnVSSDifference(){
+	HTREEITEM hItem = m_pTree->GetSelectedItem();
+	VSSCheckIn(hItem);
+}
+
+
+void CTreeViewFiles::VSSCheckIn(HTREEITEM itm){
+	CString str;
+	str = m_pTree->GetItemText(itm);
+
+	IVSSItemPtr vssItem;
+	CComBSTR file_name = working_folder+str;
+	theApp.m_ssConnection.p_GetSourcesafeDatabase()->get_VSSItem(file_name, FALSE, &vssItem);
+	long stat;
+
+	CComBSTR bstr_comment("no comment");
+	CComBSTR bstr_localSpec;
+/*	long flags =	VSSFLAG_CMPCHKSUM|VSSFLAG_DELNO|VSSFLAG_FORCEDIRYES|
+					VSSFLAG_KEEPNO|VSSFLAG_RECURSNO|VSSFLAG_UPDUNCH;
+	*/
+	Save(itm);
+	vssItem->get_LocalSpec(&bstr_localSpec);
+	vssItem->Checkin(bstr_comment, bstr_localSpec, 0);
+	if (!b_DisplayAnyError())
+	{
+		VSSUpdateStatus(itm);
+	}
+
+}
+
+void CTreeViewFiles::VSSCheckOut(HTREEITEM itm){
+	CString str;
+	str = m_pTree->GetItemText(itm);
+
+	IVSSItemPtr vssItem;
+	CComBSTR file_name = working_folder+str;
+	theApp.m_ssConnection.p_GetSourcesafeDatabase()->get_VSSItem(file_name, FALSE, &vssItem);
+	long stat;
+
+	CComBSTR bstr_comment("no comment");
+	CComBSTR bstr_localSpec;
+/*	long flags =	VSSFLAG_CMPCHKSUM|VSSFLAG_DELNO|VSSFLAG_FORCEDIRYES|
+					VSSFLAG_KEEPNO|VSSFLAG_RECURSNO|VSSFLAG_UPDUNCH;
+	*/
+	vssItem->get_LocalSpec(&bstr_localSpec);
+	vssItem->Checkout(bstr_comment, bstr_localSpec, 0);
+	if (!b_DisplayAnyError())
+	{
+		VSSUpdateStatus(itm);
+		Reload(itm);
+	}
+}
+
+void CTreeViewFiles::VSSUndoCheckOut(HTREEITEM itm){
+	CString str;
+	str = m_pTree->GetItemText(itm);
+
+	IVSSItemPtr vssItem;
+	CComBSTR file_name = working_folder+str;
+	theApp.m_ssConnection.p_GetSourcesafeDatabase()->get_VSSItem(file_name, FALSE, &vssItem);
+	long stat;
+
+	CComBSTR bstr_comment("no comment");
+	CComBSTR bstr_localSpec;
+/*	long flags =	VSSFLAG_CMPCHKSUM|VSSFLAG_DELNO|VSSFLAG_FORCEDIRYES|
+					VSSFLAG_KEEPNO|VSSFLAG_RECURSNO|VSSFLAG_UPDUNCH;
+	*/
+	vssItem->get_LocalSpec(&bstr_localSpec);
+	vssItem->UndoCheckout(bstr_localSpec, 0);
+	if (!b_DisplayAnyError())
+	{
+		VSSUpdateStatus(itm);
+		Reload(itm);
+	}
+}
+
+void CTreeViewFiles::VSSDifferences(HTREEITEM itm){
+}
+
+void  CTreeViewFiles::Save(HTREEITEM itm){
+	CProjectFile* pPF = (CProjectFile*)m_pTree->GetItemData(itm);
+	if ( pPF )
+	{
+		if(pPF->m_lua_view)
+			pPF->m_lua_view->_save();
+	}
+
+}
+
+void  CTreeViewFiles::Reload(HTREEITEM itm){
+
+	CProjectFile* pPF = (CProjectFile*)m_pTree->GetItemData(itm);
+	if ( pPF )
+	{
+		pPF->m_bBreakPointsSaved = FALSE;
+		CLuaView* pView = theApp.OpenProjectFilesView(pPF);
+		CFile fin;
+		if ( fin.Open(pPF->GetPathName(), CFile::modeRead) )
+			pView->GetEditor()->Load(&fin);
+	}
 }

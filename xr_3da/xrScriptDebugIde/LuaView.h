@@ -24,7 +24,8 @@ public:
 	CLuaDoc* GetDocument();
 	CLuaDoc* GetDoc(){return (CLuaDoc*)m_pDocument;};
 	CLuaEditor* GetEditor() { return &m_editor; };
-
+	void	_save();
+	CProjectFile* m_pf;
 // Operations
 public:
 
@@ -105,7 +106,6 @@ protected:
 	afx_msg void OnEditFind();
 	afx_msg void OnEditReplace();
 	afx_msg void OnUpdateFind(CCmdUI* pCmdUI);
-	
 	//}}AFX_MSG
 	afx_msg LRESULT OnFindReplaceCmd(WPARAM, LPARAM lParam);
 	DECLARE_MESSAGE_MAP()

@@ -49,7 +49,8 @@ BEGIN_MESSAGE_MAP(CLuaView, CView)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_GOTOLINE, OnUpdateGotoLineNumber)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_FIND, OnUpdateFind)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_REPLACE, OnUpdateFind)
-	
+
+
 	//}}AFX_MSG_MAP
 	ON_REGISTERED_MESSAGE(_ScintillaMsgFindReplace, OnFindReplaceCmd)
 END_MESSAGE_MAP()
@@ -66,10 +67,14 @@ CLuaView::CLuaView()
 	m_bWord = FALSE;
 	m_bFirstSearch = TRUE;
 	m_bRegularExpression = FALSE;
+	
+	m_pf = NULL;
 }
 
 CLuaView::~CLuaView()
 {
+	if(m_pf)
+		m_pf->m_lua_view = NULL;
 }
 
 CScintillaCtrl& CLuaView::GetCtrl()
@@ -161,6 +166,10 @@ BOOL CLuaView::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 
 	if (lpnmhdr->hwndFrom == m_editor.m_hWnd)
 	{
+		if(lpnmhdr->code == SCN_CHARADDED ){
+			int o = 0;
+		}
+
 		*pResult = OnSci((SCNotification*)lParam);
 		return TRUE;
 	}
@@ -717,4 +726,17 @@ LRESULT CLuaView::OnFindReplaceCmd(WPARAM /*wParam*/, LPARAM lParam)
 	ASSERT_VALID(this);
 
 	return 0;
+}
+
+void CLuaView::_save()
+{
+	if(m_pf){
+		CFile ff;
+		ff.Open(m_pf->GetPathName(), CFile::modeCreate |
+			CFile::modeWrite | CFile::shareExclusive);
+
+	CArchive saveArchive(&ff, CArchive::store | CArchive::bNoFlushOnDelete);
+	
+	Serialize(saveArchive);
+	}
 }

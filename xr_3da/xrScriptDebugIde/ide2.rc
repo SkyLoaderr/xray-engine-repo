@@ -152,6 +152,23 @@ LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
 
 /////////////////////////////////////////////////////////////////////////////
 //
+// Menu
+//
+
+IDR_MENU1 MENU 
+BEGIN
+    POPUP "vss_file_meun"
+    BEGIN
+        MENUITEM "CheckIn",                     ID_VSS_CHECKIN
+        MENUITEM "CheckOut",                    ID_VSS_CHECKOUT
+        MENUITEM "UndoCheckOut",                ID_VSS_UNDOCHECKOUT
+        MENUITEM "Difference",                  ID_VSS_DIFFERENCE
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
 // Dialog
 //
 
@@ -426,6 +443,16 @@ BEGIN
     BUTTON      ID_FILE_PRINT
     SEPARATOR
     BUTTON      ID_APP_ABOUT
+END
+
+IDB_IL_FILE TOOLBAR  16, 16
+BEGIN
+    BUTTON      ID_BUTTON32825
+    BUTTON      ID_BUTTON32826
+    BUTTON      ID_BUTTON32827
+    BUTTON      ID_BUTTON32828
+    BUTTON      ID_BUTTON32829
+    BUTTON      ID_BUTTON32830
 END
 
 

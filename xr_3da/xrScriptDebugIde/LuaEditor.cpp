@@ -46,8 +46,11 @@ CLuaEditor::~CLuaEditor()
 BEGIN_MESSAGE_MAP(CLuaEditor, CWnd)
 	//{{AFX_MSG_MAP(CLuaEditor)
 	ON_WM_MOUSEMOVE()
+
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
+
+
 
 
 /////////////////////////////////////////////////////////////////////////////

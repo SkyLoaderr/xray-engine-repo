@@ -35,6 +35,7 @@ public:
 	void		FillBreakPoints(CMailSlotMsg*);
 	BOOL		HasBreakPoint(){return m_breakPoints.GetSize();};
 	BOOL		m_bBreakPointsSaved;
+	CLuaView*	m_lua_view;
 protected:
 	CString							m_strPathName;
 	CMap<int, int, BOOL, BOOL>		m_breakPoints;

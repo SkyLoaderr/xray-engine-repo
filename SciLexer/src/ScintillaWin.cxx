@@ -1080,8 +1080,11 @@ int ScintillaWin::GetCtrlID() {
 void ScintillaWin::NotifyParent(SCNotification scn) {
 	scn.nmhdr.hwndFrom = MainHWND();
 	scn.nmhdr.idFrom = GetCtrlID();
-	::SendMessage(::GetParent(MainHWND()), WM_NOTIFY,
-	              GetCtrlID(), reinterpret_cast<LPARAM>(&scn));
+	int ctrlid = GetCtrlID();
+	HWND w = MainHWND();
+	HWND wp = ::GetParent(w);
+	::SendMessage(wp, WM_NOTIFY,
+	              ctrlid, reinterpret_cast<LPARAM>(&scn));
 }
 
 void ScintillaWin::NotifyDoubleClick(Point pt, bool shift) {

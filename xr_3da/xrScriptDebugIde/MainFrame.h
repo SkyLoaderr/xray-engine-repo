@@ -119,7 +119,7 @@ protected:
 
 	afx_msg void OnUpdateDebugMenu(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateToolsOptions(CCmdUI* pCmdUI);
-
+	afx_msg void OnSci_(NMHDR*, LRESULT*);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

@@ -14,11 +14,12 @@
 
 #include "resource.h"       // main symbols
 
+#include "SSConnection.h"
 
 class CLuaView;
 class CLuaDoc;
 class CProjectFile;
-
+//class CSSConnection;
 class CIdeApp : public CWinApp
 {
 public:
@@ -45,6 +46,9 @@ public:
 
 protected:
 	HMODULE m_hScintilla;
+public:
+	CSSConnection	m_ssConnection;
+
 };
 
 extern CIdeApp theApp;

@@ -8,7 +8,6 @@
 #include "LuaFrame.h"
 #include "LuaDoc.h"
 #include "LuaView.h"
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -114,6 +113,8 @@ BOOL CIdeApp::InitInstance()
 	
 	LoadIcon(IDR_MAINFRAME);
 
+//	m_ssConnection = new CSSConnection();
+	m_ssConnection.b_Connect("","","\\\\X-RAY\\VSS$\\srcsafe.ini");
 	return TRUE;
 }
 
@@ -125,7 +126,6 @@ int CIdeApp::ExitInstance()
 {
 	if ( m_hScintilla )
 		FreeLibrary(m_hScintilla);		
-
 	return CWinApp::ExitInstance();
 }
 
