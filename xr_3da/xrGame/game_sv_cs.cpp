@@ -121,29 +121,36 @@ void	game_sv_CS::OnTimelimitExceed	()
 	OnRoundEnd	("TIME_limit");
 }
 
-BOOL	game_sv_CS::OnTargetTouched	(u32 id_who, u32 eid_target)
+BOOL	game_sv_CS::OnTargetTouched	(u32 id_who, u32 eid_who, u32 eid_target)
 {
-	xrServer*		S	= Level().Server;
-	game_PlayerState*	ps_who	=	get_id	(id_who);
-	xrServerEntity*		e_entity	= S->ID_to_entity	((u16)eid_target);
-	xrSE_Target_CSBase *l_pCSBase =  dynamic_cast<xrSE_Target_CSBase*>(e_entity);
-	if(l_pCSBase) {
-		if(ps_who->team == -1) ps_who->team = l_pCSBase->g_team(); // @@@ WT : Пока не сделан респавн
+	xrServer*		S				=	Level().Server;
 
-		if(l_pCSBase->s_team == ps_who->team) {				// Если игрок пришел на свою базу
-			ps_who->flags |= GAME_PLAYER_FLAG_CS_ON_BASE;
-		} else ps_who->flags |= GAME_PLAYER_FLAG_CS_ON_ENEMY_BASE;
+	xrServerEntity*		e_who		=	S->ID_to_entity	((u16)eid_who);
+	if (dynamic_cast<xrSE_Actor*>(e_who))
+	{
+		game_PlayerState*	ps_who		=	get_id			(id_who);
+		xrServerEntity*		e_entity	=	S->ID_to_entity	((u16)eid_target);
+		xrSE_Target_CSBase *l_pCSBase	=	dynamic_cast<xrSE_Target_CSBase*>(e_entity);
+		if(l_pCSBase) {
+			if(ps_who->team == -1) ps_who->team = l_pCSBase->g_team(); // @@@ WT : Пока не сделан респавн
 
-		return false;
-	}
-	xrSE_Target_CS *l_pMBall =  dynamic_cast<xrSE_Target_CS*>(e_entity);
-	if(l_pMBall) {
-		if(ps_who->flags&GAME_PLAYER_FLAG_CS_HAS_ARTEFACT)		{ return false; }
-		if(ps_who->flags&GAME_PLAYER_FLAG_CS_ON_BASE)			{ return false; }
-		if(ps_who->flags&GAME_PLAYER_FLAG_CS_ON_BASE)			teams[ps_who->team].num_targets--;
-		else if(ps_who->flags&GAME_PLAYER_FLAG_CS_ON_ENEMY_BASE) teams[(ps_who->team+1)%2].num_targets--;
-		ps_who->flags |= GAME_PLAYER_FLAG_CS_HAS_ARTEFACT;
-		signal_Syncronize();
+			if(l_pCSBase->s_team == ps_who->team) {				// Если игрок пришел на свою базу
+				ps_who->flags |= GAME_PLAYER_FLAG_CS_ON_BASE;
+			} else ps_who->flags |= GAME_PLAYER_FLAG_CS_ON_ENEMY_BASE;
+
+			return false;
+		}
+		xrSE_Target_CS *l_pMBall =  dynamic_cast<xrSE_Target_CS*>(e_entity);
+		if(l_pMBall) {
+			if(ps_who->flags&GAME_PLAYER_FLAG_CS_HAS_ARTEFACT)		{ return false; }
+			if(ps_who->flags&GAME_PLAYER_FLAG_CS_ON_BASE)			{ return false; }
+			if(ps_who->flags&GAME_PLAYER_FLAG_CS_ON_BASE)			teams[ps_who->team].num_targets--;
+			else if(ps_who->flags&GAME_PLAYER_FLAG_CS_ON_ENEMY_BASE) teams[(ps_who->team+1)%2].num_targets--;
+			ps_who->flags |= GAME_PLAYER_FLAG_CS_HAS_ARTEFACT;
+			signal_Syncronize();
+		}
+	} else {
+
 	}
 	return TRUE;
 }
@@ -249,6 +256,10 @@ void game_sv_CS::OnPlayerBuy		(u32 id_who, u32 eid_who, LPCSTR what)
 	// cost
 	int cost				= get_option_i	(what,"cost",0);
 	R_ASSERT				(cost);
+
+	// weapons
+	vector<u16>* C			= get_children(id_who);
+
 	
 	// check if has money to pay
 	game_PlayerState*	ps_who	=	get_id	(id_who);

@@ -248,5 +248,5 @@ void				game_sv_GameState::spawn_end				(xrServerEntity* E, u32 id)
 	E->Spawn_Write					(P,TRUE);
 	P.r_begin						(skip_header);
 	Level().Server->Process_spawn	(P,id);
-	F_entity_Destroy	(E);
+	F_entity_Destroy				(E);
 }

@@ -10,6 +10,7 @@
 void CActor::feel_touch_new				(CObject* O)
 {
 	if (!g_Alive())		return;
+	if (Remote())		return;
 
 	NET_Packet	P;
 
@@ -88,6 +89,8 @@ void CActor::feel_touch_new				(CObject* O)
 
 void CActor::feel_touch_delete	(CObject* O)
 {
+	if (Remote())		return;
+
 	NET_Packet	P;
 
 	switch (GameID())
