@@ -1,0 +1,40 @@
+function printf(fmt,...)
+    log(string.format(fmt,unpack(arg)))
+end
+
+class "se_smart_terrain"				(cse_alife_smart_zone)
+
+function se_smart_terrain:update		()
+	log							("se_smart_terrain::update called!")
+	cse_alife_smart_zone.update	(self)
+end
+
+function se_smart_terrain:smart_touch	(monster)
+	log							("se_smart_terrain::smart_touch called!")
+	cse_alife_smart_zone.smart_touch	(self)
+end
+
+function se_smart_terrain:__init		(section) super(section)
+	log							("se_smart_terrain::se_smart_terrain called!")
+end
+
+function se_smart_terrain:__finalize	()
+	log							("se_smart_terrain::~se_smart_terrain called!")
+end
+
+function se_smart_terrain:STATE_Write	(packet)
+	log							("se_smart_terrain::STATE_Write called!")
+	cse_alife_smart_zone.STATE_Write	(self,packet)
+end
+
+function se_smart_terrain:STATE_Read	(packet, size)
+	log							("se_smart_terrain::STATE_Read called!")
+	cse_alife_smart_zone.STATE_Read	(self,packet,size)
+end
+
+function se_smart_terrain:FillProps	(pref,items)
+	log							("se_smart_terrain::FillProps called!")
+	cse_alife_smart_zone.FillProps	(self,pref,items)
+
+	local						prefix = pref .. "\\" .. self.section_name .. "\\smart terrain\\"
+end
