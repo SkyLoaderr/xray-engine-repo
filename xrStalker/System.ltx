@@ -565,6 +565,19 @@ ph_skeleton_ddelay	     =20
 ph_skel_fatal_impulse_factor = 1.
 damage			 = actor_damage
 
+;actor condition
+
+satiety_v = 0.004				;скорость уменьшения сытости со временем
+radiation_v = 0.004				;скорость уменьшения радиации
+satiety_power_v = 0.01			;увеличение силы при уменьшении сытости 
+satiety_health_v = 0.001		;увеличение здоровья при уменьшении сытости 
+radiation_health_v = 0.006		;уменьшение здоровья при воздействии радиации
+bleeding_v = 0.02				;потеря крови при максимальной ране
+wound_incarnation_v = 0.001     ;скорость заживания раны 
+accel_power = 0.0006			;влияния ускорения на отбирание сил
+jump_power = 0.05				;влияния прыжка на отбирание сил
+
+
 [actor_damage]
 ;bone_name		 = <hit_scale>,<fwd_damage_anim_index> 
 ;-1 - нет анимаций, четный номер - спереди, нечетный номер - сзади, УКАЗЫВАЕТСЯ ТОЛЬКО ПЕРЕДНИЙ!!! ЗАДНИЙ НА АВТОМАТЕ
