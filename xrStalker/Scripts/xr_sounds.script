@@ -16,7 +16,7 @@ function play_sound (obj, delay, theme, sub_theme, phrase_set, sub_phrase)
     end
     --printf ("Sub_theme %d", sub_theme)
     if phrase_set == nil or table.getn (themes[theme][sub_theme]) < phrase_set - 1 then
-       phrase_set = math.random (2, table.getn (themes[theme][sub_theme]))
+       phrase_set = math.random (1, table.getn (themes[theme][sub_theme]) - 1)
     end
     --printf ("Phrase_set %d", phrase_set)
     if sub_phrase == nil or this.get_num_subphrases (theme, sub_theme, phrase_set) < sub_phrase then
