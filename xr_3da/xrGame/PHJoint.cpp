@@ -592,7 +592,7 @@ void CPHJoint::Deactivate()
 }
 void CPHJoint::ReattachFirstElement(CPHElement* new_element)
 {
-	///Deactivate();
+	//Deactivate();
 	pFirst_element=(new_element);
 	//Activate();
 	dJointAttach(m_joint,pFirst_element->get_body(),pSecond_element->get_body());
