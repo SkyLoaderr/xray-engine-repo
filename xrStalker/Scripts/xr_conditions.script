@@ -138,6 +138,15 @@ function val_actor_in_cage(actor, npc)
 	return xr_logic.npc_in_zone(actor, db.zone_by_name["val_prisoner_cage_zone"])
 end
 
+function val_actor_has_key_to_underground(actor, npc)
+	if actor:object("val_key_to_underground") then
+		printf("_bp: xr_conditions: val_actor_has_key_to_underground: true")
+		return true
+	end
+	printf("_bp: xr_conditions: val_actor_has_key_to_underground: false")
+	return false
+end
+
 --[[
 function val_prisoner_in_cage(actor, npc)
 	local prisoner = utils.obj_by_sid(402)

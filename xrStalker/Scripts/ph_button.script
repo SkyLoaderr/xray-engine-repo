@@ -30,7 +30,7 @@ end
 
 function ph_button:try_switch()
 	local st = db.storage[self.object:id()]
-	if st.active_scheme and self.st.on_press then
+	if st.active_scheme and st.active_scheme == "ph_button" and self.st.on_press then
 		--if xr_logic.try_switch_to_another_section(obj, self.st, db.actor) then
 		if xr_logic.switch_to_section(self.object, self.st,
 		   xr_logic.pick_section_from_condlist(db.actor, self.object, self.st.on_press.condlist)) then

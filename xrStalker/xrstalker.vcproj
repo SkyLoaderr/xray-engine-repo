@@ -1102,6 +1102,9 @@
 				<File
 					RelativePath=".\Config\scripts\val_suicide_stalker.ltx">
 				</File>
+				<File
+					RelativePath=".\Config\scripts\val_underground_door.ltx">
+				</File>
 				<Filter
 					Name="Military"
 					Filter="">

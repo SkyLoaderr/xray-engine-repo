@@ -193,7 +193,24 @@ function action_door:close_door()
 	end
 end
 
+function action_door:try_switch()
+	printf("_bp: action_door: object '%s': try_switch", self.object:name())
+	local st = db.storage[self.object:id()]
+	if st.active_scheme and st.active_scheme == "ph_door" and self.st.on_use then
+		--if xr_logic.try_switch_to_another_section(obj, self.st, db.actor) then
+		if xr_logic.switch_to_section(self.object, self.st,
+		   xr_logic.pick_section_from_condlist(db.actor, self.object, self.st.on_use.condlist)) then
+			return true
+		end
+	end
+	return false
+end
+
 function action_door:door_callback(door, actor)
+	if self:try_switch() then
+		return
+	end
+
 	if self.st.locked then
 		if self.st.snd_open_start then
 			self:door_play_snd_from_set(self.st.snd_open_start)
@@ -237,5 +254,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.snd_open_start  = utils.cfg_get_string(ini, section, "snd_open_start", npc, false, "")
 	st.snd_close_start = utils.cfg_get_string(ini, section, "snd_close_start", npc, false, "")
 	st.snd_close_stop  = utils.cfg_get_string(ini, section, "snd_close_stop", npc, false, "")
+	
+	st.on_use    = xr_logic.cfg_get_condlist(ini, section, "on_use", npc)
 end
 
