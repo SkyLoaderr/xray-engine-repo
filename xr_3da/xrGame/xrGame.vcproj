@@ -6884,6 +6884,9 @@
 						<File
 							RelativePath=".\trigger.h">
 						</File>
+						<File
+							RelativePath=".\trigger_script.cpp">
+						</File>
 					</Filter>
 				</Filter>
 				<Filter
@@ -7967,6 +7970,9 @@
 						</File>
 						<File
 							RelativePath=".\xrServer_Objects_script.cpp">
+						</File>
+						<File
+							RelativePath=".\xrServer_Objects_script2.cpp">
 						</File>
 					</Filter>
 					<Filter

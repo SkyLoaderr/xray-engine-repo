@@ -419,17 +419,6 @@ add_to_type_list(CSE_ALifeTeamBaseZone)
 #define script_type_list save_type_list(CSE_ALifeTeamBaseZone)
 
 
-SERVER_ENTITY_DECLARE_BEGIN2(CSE_Trigger,CSE_Abstract,CSE_Visual)
-typedef CSE_Abstract	inherited1;
-typedef CSE_Visual		inherited2;
-u32								m_state;
-								CSE_Trigger			(LPCSTR caSection);
-virtual							~CSE_Trigger		();
-virtual CSE_Visual* __stdcall	visual					();
-SERVER_ENTITY_DECLARE_END
-//add_to_type_list(CSE_Trigger)
-//#define script_type_list save_type_list(CSE_Trigger)
-
 #pragma warning(pop)
 
 #endif

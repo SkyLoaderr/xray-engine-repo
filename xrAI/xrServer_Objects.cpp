@@ -512,3 +512,77 @@ void CSE_PHSkeleton::FillProps				(LPCSTR pref, PropItemVec& values)
 {
 
 }
+
+CSE_AbstractVisual::CSE_AbstractVisual(LPCSTR section):inherited1(section),inherited2(section)
+{
+}
+
+CSE_AbstractVisual::~CSE_AbstractVisual()
+{
+}
+
+void CSE_AbstractVisual::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
+{
+	visual_read					(tNetPacket);
+	tNetPacket.r_stringZ			(startup_animation);
+}
+
+void CSE_AbstractVisual::STATE_Write	(NET_Packet	&tNetPacket)
+{
+	visual_write				(tNetPacket);
+	tNetPacket.w_stringZ		(startup_animation);
+}
+
+void CSE_AbstractVisual::FillProps		(LPCSTR pref, PropItemVec& values)
+{
+	inherited1::FillProps			(pref,values);
+	inherited2::FillProps			(pref,values);
+}
+void CSE_AbstractVisual::UPDATE_Read	(NET_Packet	&tNetPacket)
+{
+}
+
+void CSE_AbstractVisual::UPDATE_Write	(NET_Packet	&tNetPacket)
+{
+}
+
+CSE_Visual* CSE_AbstractVisual::visual					()
+{
+	return this;
+}
+CSE_Trigger::CSE_Trigger			(LPCSTR section):CSE_AbstractVisual(section),m_state(0)
+{}
+
+CSE_Trigger::~CSE_Trigger	()
+{}
+void CSE_Trigger::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
+{
+	inherited::STATE_Read(tNetPacket,size);
+	m_state = tNetPacket.r_u32	();
+}
+
+void CSE_Trigger::STATE_Write	(NET_Packet	&tNetPacket)
+{
+	inherited::STATE_Write(tNetPacket);
+
+	tNetPacket.w_u32			(m_state);
+}
+
+void CSE_Trigger::UPDATE_Read	(NET_Packet	&tNetPacket)
+{
+	inherited::UPDATE_Read(tNetPacket);
+	m_state = tNetPacket.r_u32();
+}
+
+void CSE_Trigger::UPDATE_Write	(NET_Packet	&tNetPacket)
+{
+	inherited::UPDATE_Write(tNetPacket);
+	tNetPacket.w_u32(m_state);
+}
+
+void CSE_Trigger::FillProps		(LPCSTR pref, PropItemVec& values)
+{
+	inherited::FillProps			(pref,values);
+	PHelper().CreateU32		(values, PrepareKey(pref,*s_name,"InitialState"),			&m_state,			0, 10000);
+}
+
