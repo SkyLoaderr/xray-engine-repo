@@ -74,7 +74,7 @@ function action_guard_activity:simulate_callback_if_neccessary()
 end
 
 function action_guard_activity:reset_scheme()
-	utils.trace(this.script_name(), "xr_guard:reset_scheme called: self.object:name()='%s'", self.object:name())
+	utils.trace(script_name(), "xr_guard:reset_scheme called: self.object:name()='%s'", self.object:name())
 	self.last_seen_actor = nil
 
 	-- TODO: выбирать активный путь в зависимости от погоды (сделать выбор функцией)
@@ -104,7 +104,7 @@ function action_guard_activity:reset_scheme()
 	self.object:set_mental_state(anim.danger)
 	self.object:set_movement_type(move.run)
 	self.object:set_path_type(game_object.patrol_path)
-	utils.trace(this.script_name(), "xr_guard:reset_scheme: self.path_active='%s'", utils.to_str(self.path_active))
+	utils.trace(script_name(), "xr_guard:reset_scheme: self.path_active='%s'", utils.to_str(self.path_active))
 	self.object:set_patrol_path(self.path_active, patrol.start, patrol.continue, true)
 	--self.object:set_mental_state(anim.free)
 	--self.object:set_sight(look.search, nil, 0)
@@ -235,7 +235,7 @@ function action_guard_activity:look_at_waypoint(pt)
 end
 
 function action_guard_activity:pick_path()
-	utils.trace(this.script_name(), "action_guard_activity: pick_path(): self.path_main='%s', " ..
+	utils.trace(script_name(), "action_guard_activity: pick_path(): self.path_main='%s', " ..
 		"self.path_hideout='%s', path_camp='%s'",
 		utils.to_str(self.path_main), utils.to_str(self.path_hideout), utils.to_str(self.path_camp))
 	if self.last_seen_actor and self.path_camp then
@@ -489,7 +489,7 @@ end
 -- 31 - начиная с этой точки и дальше охранник побежит
 function set_guard(object, enable, path_main, path_hideout, running, search_light, path_camp, loudspeaker_name,
 	anim_set_1, anim_set_2, anim_set_3, sound_set_1, sound_set_2, sound_set_3, switch_to_guide_distance)
-	utils.trace(this.script_name(), "set_guard called: object:name()='%s', path_main='%s', path_hideout='%s', " ..
+	utils.trace(script_name(), "set_guard called: object:name()='%s', path_main='%s', path_hideout='%s', " ..
 		"running='%s', search_light='%s', path_camp='%s', loudspeaker='%s'",
 		utils.to_str(object:name()),
 		utils.to_str(path_main),
