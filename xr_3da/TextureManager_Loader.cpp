@@ -1,3 +1,4 @@
+// exxZERO Time Stamp AddIn. Document modified at : Thursday, March 07, 2002 18:45:51 , by user : Oles , from computer : OLES
 #include "stdafx.h"
 #include "fs.h"
 #include "blender.h"
@@ -50,7 +51,7 @@ void CShaderManager::xrShutDown()
 {
 	// Release blenders
 	{
-		for (map<LPSTR,CBlender*>::iterator I=blenders.begin(); I!=blenders.end(); I++)
+		for (map<LPSTR,CBlender*,str_pred>::iterator I=blenders.begin(); I!=blenders.end(); I++)
 		{
 			free	(I->first);
 			delete	I->second;
