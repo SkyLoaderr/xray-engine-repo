@@ -988,8 +988,11 @@ void CLocatorAPI::set_file_age(LPCSTR nm, u32 age)
     _utimbuf	tm;
     tm.actime	= age;
     tm.modtime	= age;
-    R_ASSERT3	(0==_utime(nm,&tm),"Can't set file age.",nm);
-    
+    int res 	= _utime(nm,&tm);
+    if (0!=res){
+    	Msg			("File: '%s' - error: '%s'",nm,_sys_errlist[errno]);
+    	R_ASSERT3	(0==res,"Can't set file age:",nm);
+    }    
     // update record
 	files_it I 		= file_find_it(nm);
     if (I!=files.end()){
