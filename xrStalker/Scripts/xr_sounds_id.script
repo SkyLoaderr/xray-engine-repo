@@ -21,9 +21,11 @@ stohe_meet_base     		= sound_stohe_base + 20
 stohe_reaction_base     	= sound_stohe_base + 30
 
 -- «мей
-sound_zmey_base    =   global_sounds + 3000
-zmey_guard_base     = sound_zmey_base + 0
-zmey_robber_base       = sound_zmey_base + 100
+sound_zmey_base             =   global_sounds + 3000
+zmey_guard_base             = sound_zmey_base + 0
+zmey_robber_base            = sound_zmey_base + 100
+zmey_camper_base            = sound_zmey_base + 200
+zmey_sleeper_base           = sound_zmey_base + 300
 
 -- „угай
 chugai_sounds          = global_sounds + 4000
