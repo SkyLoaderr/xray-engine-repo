@@ -177,18 +177,13 @@ void CSheduler::ProcessStep			()
 		u32	execTime				= eTimer.GetElapsed_ms		();
 		//void*	dbgaddr				= dynamic_cast<void*>		(T.Object);
 		CObject*	O				= dynamic_cast<CObject*>	(T.Object);
+		LPCSTR		N				= O?O->cName().c_str():"unknown";
 		VERIFY3						(T.Object->dbg_update_shedule == T.Object->dbg_startframe, "Broken sequence of calls to 'shedule_Update'", O?*O->cName():"unknown object" );
-		if (delta_ms> 3*dwUpdate)
-		{
-			CObject*	O			= dynamic_cast<CObject*> (T.Object);
-			if (O)					Msg	("! xrSheduler: failed to shedule object [%s] (%dms)",O->cName(),delta_ms);
-			else					Msg	("! xrSheduler: failed to shedule object [%s] (%dms)","unknown", delta_ms);
+		if (delta_ms> 3*dwUpdate)	{
+			Msg	("! xrSheduler: failed to shedule object [%s] (%dms)",			N, delta_ms	);
 		}
-		if (execTime> 10)
-		{
-			CObject*	O			= dynamic_cast<CObject*> (T.Object);
-			if (O)					Msg	("! xrSheduler: too much time consumed by object [%s] (%dms)",O->cName(),execTime);
-			else					Msg	("! xrSheduler: too much time consumed by object [%s] (%dms)","unknown", execTime);
+		if (execTime> 10)			{
+			Msg	("! xrSheduler: too much time consumed by object [%s] (%dms)",	N, execTime	);
 		}
 #endif
 
