@@ -10,6 +10,7 @@ typedef		xr_vector<CPHShellSplitter>::reverse_iterator	SPLITTER_RI;
 class CPHShellSplitter 
 {
 	friend	class CPHShellSplitterHolder;
+	friend	class CPHShell;
 public:
 	enum EType				  {splElement,splJoint};
 private:
@@ -18,7 +19,7 @@ private:
 	u16						   m_element;
 	u16						   m_joint;
 	CPHShellSplitter(CPHShellSplitter::EType type,u16 element,u16 joint);
-
+	CPHShellSplitter();
 };
 
 class CPHShellSplitterHolder : public CPHObject			//call all Fractures and Breakable Joints Updates

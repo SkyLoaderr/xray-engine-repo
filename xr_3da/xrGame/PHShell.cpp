@@ -5,6 +5,7 @@
 #include "Physics.h"
 #include "tri-colliderknoopc/dTriList.h"
 #include "PHShellSplitter.h"
+#include "PHFracture.h"
 ///////////////////////////////////////////////////////////////
 ///#pragma warning(disable:4995)
 //#include "..\ode\src\collision_kernel.h"
@@ -408,6 +409,13 @@ void CPHShell::build_FromKinematics(CKinematics* K,BONE_P_MAP* p_geting_map)
 	//Activate(true);
 
 }
+struct  SplitInfRec
+{
+bool				bActive;
+u16					cur_level;
+CPHShellSplitter	*splitter;
+CShellSplitInfo		*split_info;
+};
 void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix global_parent)
 {
 

@@ -326,7 +326,14 @@ void CPHShellSplitterHolder::AddSplitter(CPHShellSplitter::EType type,u16 elemen
 }
 CPHShellSplitter::CPHShellSplitter(CPHShellSplitter::EType type,u16 element,u16 joint)
 {
+	m_breaked=false;
 	m_type=type;
 	m_element=element;
 	m_joint=joint;
 }
+
+CPHShellSplitter::CPHShellSplitter()
+{
+	m_breaked=false;
+}
+
