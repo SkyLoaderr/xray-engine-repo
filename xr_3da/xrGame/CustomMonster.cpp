@@ -782,7 +782,7 @@ void CCustomMonster::ResetScriptData(void *P)
 {
 }
 
-static void __stdcall ScriptCallBack(CBlend* B)
+void ScriptCallBack(CBlend* B)
 {
 	CScriptMonster	*l_tpScriptMonster = dynamic_cast<CScriptMonster*> (static_cast<CObject*>(B->CallbackParam));
 	R_ASSERT		(l_tpScriptMonster);
