@@ -166,9 +166,9 @@ CEnvironment::CEnvironment	()
 #ifdef _EDITOR
 	ed_from_time			= 0.f;
 	ed_to_time				= day_tm;
-    ed_speed				= 12.f;
 #endif
-	fGameTime				= 0;
+	fGameTime				= 0.f;
+    fTimeFactor				= 12.f;
 }
 CEnvironment::~CEnvironment	()
 {
@@ -240,10 +240,18 @@ void CEnvironment::SetWeather(LPCSTR name)
         CurrentWeather		= &it->second;
         CurrentWeatherName	= *it->first;
     }else{
+#ifndef _EDITOR
+		Debug.fatal			("Empty weather name");
+#endif
+/*
 		CurrentWeather		= 0;
 		CurrentWeatherName	= 0;
 		CurrentA			= 0;
 		CurrentB			= 0;
+        eff_Rain->
+*/
+        unload				();
+        load				();
     }
 }
 
@@ -302,9 +310,19 @@ void CEnvironment::OnFrame()
 {
 #ifdef _EDITOR
 	if (!psDeviceFlags.is(rsEnvironment)) return;
-	fGameTime				+= Device.fTimeDelta*ed_speed;
-    if (fGameTime>ed_to_time)	fGameTime=fGameTime-ed_to_time+ed_from_time;
-    if (fGameTime<ed_from_time)	fGameTime=ed_from_time;
+	fGameTime				+= Device.fTimeDelta*fTimeFactor;
+    if (fsimilar(ed_to_time,day_tm)&&fsimilar(ed_from_time,0.f)){
+	    if (fGameTime>day_tm)	fGameTime-=day_tm;
+    }else{
+	    if (fGameTime>ed_to_time){	
+        	fGameTime=fGameTime-ed_to_time+ed_from_time;
+            CurrentA=CurrentB=0;
+        }
+    	if (fGameTime<ed_from_time){	
+        	fGameTime=ed_from_time;
+            CurrentA=CurrentB=0;
+        }
+    }
 #endif
 	SelectEnvs				(fGameTime);
     VERIFY					(CurrentA&&CurrentB);

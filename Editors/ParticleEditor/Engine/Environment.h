@@ -76,13 +76,13 @@ public:
 	CEffect_Thunderbolt*	eff_Thunderbolt;
 
 	float					fGameTime;
+	float					fTimeFactor;
 
     void					SelectEnvs			(float gt);
 #ifdef _EDITOR
 public:
 	float					ed_from_time;
 	float					ed_to_time;
-    float 					ed_speed;
 #endif
 
 
@@ -103,7 +103,8 @@ public:
 
     void					SetWeather			(LPCSTR name);
     LPCSTR					GetWeather			(){return CurrentWeatherName;}
-	void					SetGameTime			(float _t)	{ fGameTime = _t;	}
+
+	void					SetGameTime			(float game_time, float time_factor)	{ fGameTime = game_time;  fTimeFactor=time_factor;	}
 
     void					ED_Reload			();
 };

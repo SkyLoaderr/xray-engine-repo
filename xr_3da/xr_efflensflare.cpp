@@ -155,6 +155,7 @@ void CLensFlare::OnFrame(int id)
 	vSunDir.mul		(g_pGamePersistent->Environment.CurrentEnv.sun_dir,-1);
 
 	// color
+    float tf		= g_pGamePersistent->Environment.fTimeFactor;
     Fvector& c		= g_pGamePersistent->Environment.CurrentEnv.sun_color;
 	LightColor.set	(c.x,c.y,c.z,1.f);
 
@@ -164,15 +165,15 @@ void CLensFlare::OnFrame(int id)
     case lfsNone: m_State=lfsShow; m_Current=desc; break;
     case lfsIdle: if (desc!=m_Current) m_State=lfsHide; 	break;
     case lfsShow: 
-        m_StateBlend 	= m_Current?(m_StateBlend + m_Current->m_StateBlendUpSpeed * Device.fTimeDelta):1.f+EPS;
+        m_StateBlend 	= m_Current?(m_StateBlend + m_Current->m_StateBlendUpSpeed * Device.fTimeDelta * tf):1.f+EPS;
         if (m_StateBlend>=1.f) m_State=lfsIdle;
     break;
     case lfsHide: 
-        m_StateBlend 	= m_Current?(m_StateBlend - m_Current->m_StateBlendDnSpeed * Device.fTimeDelta):0.f-EPS;
+        m_StateBlend 	= m_Current?(m_StateBlend - m_Current->m_StateBlendDnSpeed * Device.fTimeDelta * tf):0.f-EPS;
         if (m_StateBlend<=0.f){ 	
             m_State		= lfsShow;
             m_Current	= desc;
-	        m_StateBlend= m_Current?m_Current->m_StateBlendUpSpeed * Device.fTimeDelta:0;
+	        m_StateBlend= m_Current?m_Current->m_StateBlendUpSpeed * Device.fTimeDelta * tf:0;
         }
     break;
     }
