@@ -14,6 +14,7 @@ stohe_evaluators = stalker_ids.property_script + 100
 stohe_tradeseller_base      = stohe_evaluators
 stohe_kamp_base        = stohe_evaluators + 20
 stohe_meet_base        = stohe_evaluators + 30
+stohe_reactions_base	= stohe_evaluators + 40
 
 --эвалуаторы Сидоровича
 sidor_evaluator                     =   stohe_evaluators    + 1024
