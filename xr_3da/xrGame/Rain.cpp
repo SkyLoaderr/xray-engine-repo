@@ -15,6 +15,7 @@ const float drop_angle		= 1.f;
 const float drop_speed_min	= 10.f;
 const float drop_speed_max	= 20.f;
 const int	max_particles	= 300;
+const int	particles_update= 50;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -148,6 +149,7 @@ void	CEffect_Rain::Hit		(Fvector& pos)
 	Particle*	P	= p_allocate();
 	if (0==P)	return;
 
+	P->dwNextUpdate				= Device.dwTimeGlobal+particles_update;
 	P->emitter.m_Position.set	(pos);
 	P->emitter.Play				();
 }
@@ -245,5 +247,34 @@ void	CEffect_Rain::Render	()
 		Device.Shader.set_Shader	(SH);
 		Device.Primitive.Draw		(VS,vCount,vCount/2,vOffset,Device.Streams_QuadIB);
 		HW.pDevice->SetRenderState	(D3DRS_CULLMODE,D3DCULL_CCW);
+	}
+	
+	// Particles
+	Particle*	P = particle_active;
+	while (P)	{
+		Particle*	next	= P->next;
+
+		// Update
+		if (Device.dwTimeGlobal>=P->dwNextUpdate)
+		{
+			P->visual->Update	(particles_update);
+			P->dwNextUpdate		+= particles_update;
+		}
+		
+		// Render
+		if (::Render.ViewBase.testSphereDirty(P->visual->bv_Position,P->visual->bv_Radius))
+			P->visual->Render	(1.f);
+
+		// Stop if needed
+		if (P->emitter.m_dwFlag&PS_EM_PLAY_ONCE)
+		{
+			if ((0==P->visual->ParticleCount())&&!P->emitter.IsPlaying()) 
+			{
+				P->visual->Stop	();
+				p_free			(P);
+			}
+		}
+		
+		P = next;
 	}
 }

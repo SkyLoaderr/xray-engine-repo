@@ -21,6 +21,7 @@ private:
 	struct	Particle
 	{
 		Particle		*next,*prev;
+		DWORD			dwNextUpdate;
 		CPSVisual*		visual;
 		PS::SEmitter	emitter;
 	};
