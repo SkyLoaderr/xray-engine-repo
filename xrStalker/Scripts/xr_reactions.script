@@ -96,10 +96,10 @@ function action_wait:initialize()
 		     sumidle = 4,
    		     rnd = 100,
 		     lastanim = nil,
-		 	anims = { "prisluh_8_2",
-				  "prisluh_8_3",
-				  "prisluh_8_4",
-				  "prisluh_8_6" }}
+		 	anims = { "prisluh_2_idle_2",
+				  "prisluh_2_idle_3",
+				  "prisluh_2_idle_4",
+				  "prisluh_2_idle_6" }}
 
 	xr_state.change_state(self.object, 0)
 	self.finish = false
@@ -232,7 +232,7 @@ function action_wait:set_prisluh(prisluh)
 	if prisluh == false then
 		-- действия по окончанию прислушивания
 		self.object:clear_animations()
-		self.object:add_animation("prisluh_8_7", true)
+		self.object:add_animation("prisluh_2_idle_7", true)
 		self.anim.begin = nil
 		return
 	end
@@ -242,8 +242,8 @@ function action_wait:set_prisluh(prisluh)
 			self.anim.begin = device():time_global()/1000
 			self.anim.idle = math.random(self.anim.maxidle) + self.anim.sumidle
 			self.object:clear_animations()
-			self.object:add_animation("prisluh_8_0", true)
-			self.object:add_animation("prisluh_8_1", true)
+			self.object:add_animation("prisluh_2_idle_0", true)
+			self.object:add_animation("prisluh_2_idle_1", true)
 		else
 			if device():time_global()/1000 - self.anim.begin > self.anim.idle then
 				if self.object:animation_count() <= 1 then
@@ -264,7 +264,7 @@ function action_wait:set_prisluh(prisluh)
 					-- дать анимацию Ж)
 					self.object:clear_animations()
 					self.object:add_animation(self.anim.anims[r], true)
-					self.object:add_animation("prisluh_8_1", true)
+					self.object:add_animation("prisluh_2_idle_1", true)
 				end
 				end
 			end
