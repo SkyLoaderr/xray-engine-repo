@@ -241,17 +241,20 @@ bool CGrenade::Useful() {
 	return m_destroyTime == 0xffffffff;
 }
 
-void CGrenade::OnEvent(NET_Packet& P, u16 type) {
+void CGrenade::OnEvent(NET_Packet& P, u16 type) 
+{
 	inherited::OnEvent(P,type);
 	u16 id;
-	P.r_u16(id);
-	CGrenade *l_pG = dynamic_cast<CGrenade*>(Level().Objects.net_Find(id));
-	if(l_pG) switch (type) {
+	switch (type){
 		case GE_OWNERSHIP_TAKE : {
+			P.r_u16(id);
+			CGrenade *l_pG = dynamic_cast<CGrenade*>(Level().Objects.net_Find(id));
 			m_pFake = l_pG;
 			l_pG->H_SetParent(this);
 		} break;
 		case GE_OWNERSHIP_REJECT : {
+			P.r_u16(id);
+			CGrenade *l_pG = dynamic_cast<CGrenade*>(Level().Objects.net_Find(id));
 			m_pFake = NULL;
 			l_pG->H_SetParent(0);
 		} break;

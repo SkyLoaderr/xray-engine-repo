@@ -218,14 +218,16 @@ void CWeaponRPG7::switch2_Fire	()
 void CWeaponRPG7::OnEvent(NET_Packet& P, u16 type) {
 	inherited::OnEvent(P,type);
 	u16 id;
-	P.r_u16(id);
-	CWeaponRPG7Grenade *l_pG = dynamic_cast<CWeaponRPG7Grenade*>(Level().Objects.net_Find(id));
-	if(l_pG) switch (type) {
+	switch (type) {
 		case GE_OWNERSHIP_TAKE : {
+			P.r_u16(id);
+			CWeaponRPG7Grenade *l_pG = dynamic_cast<CWeaponRPG7Grenade*>(Level().Objects.net_Find(id));
 			m_pGrenade = l_pG;
 			l_pG->H_SetParent(this);
 		} break;
 		case GE_OWNERSHIP_REJECT : {
+			P.r_u16(id);
+			CWeaponRPG7Grenade *l_pG = dynamic_cast<CWeaponRPG7Grenade*>(Level().Objects.net_Find(id));
 			m_pGrenade = NULL;
 			l_pG->H_SetParent(0);
 		} break;
