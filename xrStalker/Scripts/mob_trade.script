@@ -33,11 +33,8 @@ function mob_trade:start_trade(zone, obj)
 	trade.trading = true
 	trade.exchanged = false
 
-	local actor = level.actor()
-	if actor then
-		if xr_logic.try_switch_to_another_section(self.object, self.st, actor) then
-			return
-		end
+	if xr_logic.try_switch_to_another_section(self.object, self.st, db.actor) then
+		return
 	end
 end
 
@@ -47,11 +44,8 @@ function mob_trade:end_trade()
 	local trade = self:storage_trade_section()
 	trade.trading = false
 
-	local actor = level.actor()
-	if actor then
-		if xr_logic.try_switch_to_another_section(self.object, self.st, actor) then
-			return
-		end
+	if xr_logic.try_switch_to_another_section(self.object, self.st, db.actor) then
+		return
 	end
 end
 
@@ -61,11 +55,8 @@ function mob_trade:on_trade(obj, type)
 	local trade = self:storage_trade_section()
 	trade.exchanged = true
 
-	local actor = level.actor()
-	if actor then
-		if xr_logic.try_switch_to_another_section(self.object, self.st, actor) then
-			return
-		end
+	if xr_logic.try_switch_to_another_section(self.object, self.st, db.actor) then
+		return
 	end
 end
 
