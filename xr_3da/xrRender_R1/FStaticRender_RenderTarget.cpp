@@ -193,12 +193,14 @@ void CRenderTarget::Begin		()
 	if (!Perform())	
 	{
 		// Base RT
-		RCache.set_RT			(HW.pBaseRT,HW.pBaseZB);
+		RCache.set_RT			(HW.pBaseRT);
+		RCache.set_ZB			(HW.pBaseZB);
 		curWidth				= Device.dwWidth;
 		curHeight				= Device.dwHeight;
 	} else {
 		// Our 
-		RCache.set_RT			(RT->pRT,ZB);
+		RCache.set_RT			(RT->pRT);
+		RCache.set_ZB			(ZB);
 		curWidth				= rtWidth;
 		curHeight				= rtHeight;
 	}
@@ -207,7 +209,8 @@ void CRenderTarget::Begin		()
 
 void CRenderTarget::End		()
 {
-	RCache.set_RT				(HW.pBaseRT,HW.pBaseZB);
+	RCache.set_RT				(HW.pBaseRT);
+	RCache.set_ZB				(HW.pBaseZB);
 	curWidth					= Device.dwWidth;
 	curHeight					= Device.dwHeight;
 	

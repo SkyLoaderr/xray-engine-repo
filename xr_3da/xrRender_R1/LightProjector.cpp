@@ -127,7 +127,8 @@ void CLightProjector::calculate	()
 	if (receivers.empty())		return;
 	
 	Device.Statistic.RenderDUMP_Pcalc.Begin	();
-	RCache.set_RT		(RT_temp->pRT,HW.pTempZB);
+	RCache.set_RT				(RT_temp->pRT);
+	RCache.set_ZB				(HW.pTempZB);
 	CHK_DX(HW.pDevice->Clear	(0,0, D3DCLEAR_ZBUFFER | (HW.Caps.bStencil?D3DCLEAR_STENCIL:0), 0,1,0 ));
 	RCache.set_xform_world		(Fidentity);
 
@@ -219,7 +220,8 @@ void CLightProjector::calculate	()
 		RCache.Vertex.Unlock	(8,geom_Blur->vb_stride);
 		
 		// Actual rendering (pass0, temp2real)
-		RCache.set_RT			(RT->pRT,	0);
+		RCache.set_RT			(RT->pRT);
+		RCache.set_ZB			(NULL);
 		RCache.set_Shader		(sh_BlurTR	);
 		RCache.set_Geometry		(geom_Blur	);
 		RCache.Render			(D3DPT_TRIANGLELIST,Offset,0,4,0,2);

@@ -178,7 +178,7 @@ void CLightShadows::calculate	()
 			// setup rt+state(s) for first use
 			if (!bRTS)	{
 				bRTS						= TRUE;
-				RCache.set_RT				(0,RT_temp->pRT);
+				RCache.set_RT				(RT_temp->pRT);
 				RCache.set_ZB				(HW.pTempZB);
 				RCache.set_Shader			(sh_Texture);
 				HW.pDevice->Clear			(0,0,D3DCLEAR_TARGET,D3DCOLOR_XRGB(255,255,255),1,0);
@@ -287,7 +287,8 @@ void CLightShadows::calculate	()
 		RCache.Vertex.Unlock	(8,geom_Blur->vb_stride);
 		
 		// Actual rendering (pass0, temp2real)
-		RCache.set_RT			(RT->pRT,HW.pTempZB);
+		RCache.set_RT			(RT->pRT	);
+		RCache.set_ZB			(HW.pTempZB	);
 		RCache.set_Shader		(sh_BlurTR	);
 		RCache.set_Geometry		(geom_Blur	);
 		RCache.Render			(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
@@ -295,13 +296,13 @@ void CLightShadows::calculate	()
 		for (int it=0; it<ps_r1_SH_Blur; it++)	
 		{
 			// Actual rendering (pass1, real2temp)
-			RCache.set_RT			(RT_temp->pRT,HW.pTempZB);
+			RCache.set_RT			(RT_temp->pRT);
 			RCache.set_Shader		(sh_BlurRT	);
 			RCache.set_Geometry		(geom_Blur	);
 			RCache.Render			(D3DPT_TRIANGLELIST,Offset+4,0,4,0,2);
 			
 			// Actual rendering (pass2, temp2real)
-			RCache.set_RT			(RT->pRT,HW.pTempZB);
+			RCache.set_RT			(RT->pRT	);
 			RCache.set_Shader		(sh_BlurTR	);
 			RCache.set_Geometry		(geom_Blur	);
 			RCache.Render			(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
