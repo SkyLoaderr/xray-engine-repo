@@ -567,25 +567,38 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 
 		// Create and fill VB
 		TVERTEXbloom	*V;
+		D3DXVECTOR2		tc;
 		m_pd3dDevice->CreateVertexBuffer	(4 * sizeof(TVERTEXbloom), D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &m_pBloom_Combine_VB, NULL);
 		m_pBloom_Combine_VB->Lock			(0, 0, (void**)&V, 0);
-		pDstT[0].p	= D3DXVECTOR4(0+eps, _bh+eps,	0.001f, 1.0f);
-		pDstT[0].tu = 0.0f+thw;
-		pDstT[0].tv = 1.0f+thh;
+		tc					= D3DXVECTOR2(0.0f,1.0f)+one;
+		V[0].p				= D3DXVECTOR4(0+eps, _bh+eps,	0.001f, 1.0f);
+		V[0].tc0			= tc + offs[0];
+		V[0].tc1			= tc + offs[1];
+		V[0].tc2			= tc + offs[2];
+		V[0].tc3			= tc + offs[3];
 
-		pDstT[1].p	= D3DXVECTOR4(_w+eps, _h+eps,	0.001f, 1.0f);
-		pDstT[1].tu = 1.0f+thw;
-		pDstT[1].tv = 1.0f+thh;
+		tc					= D3DXVECTOR2(1.0f,1.0f)+one;
+		V[1].p				= D3DXVECTOR4(_bw+eps, _bh+eps,	0.001f, 1.0f);
+		V[1].tc0			= tc + offs[0];
+		V[1].tc1			= tc + offs[1];
+		V[1].tc2			= tc + offs[2];
+		V[1].tc3			= tc + offs[3];
 
-		pDstT[2].p	= D3DXVECTOR4(0+eps, 0+eps,		0.001f, 1.0f);
-		pDstT[2].tu = 0.0f+thw;
-		pDstT[2].tv = 0.0f+thh;
+		tc					= D3DXVECTOR2(0.0f,0.0f)+one;
+		V[2].p				= D3DXVECTOR4(0+eps, 0+eps,		0.001f, 1.0f);
+		V[2].tc0			= tc + offs[0];
+		V[2].tc1			= tc + offs[1];
+		V[2].tc2			= tc + offs[2];
+		V[2].tc3			= tc + offs[3];
 
-		pDstT[3].p	= D3DXVECTOR4(_w+eps, 0+eps,	0.001f, 1.0f);
-		pDstT[3].tu = 1.0f+thw;
-		pDstT[3].tv = 0.0f+thh;
+		tc					= D3DXVECTOR2(1.0f,0.0f)+one;
+		V[3].p				= D3DXVECTOR4(_bw+eps, 0+eps,	0.001f, 1.0f);
+		V[3].tc0			= tc + offs[0];
+		V[3].tc1			= tc + offs[1];
+		V[3].tc2			= tc + offs[2];
+		V[3].tc3			= tc + offs[3];
 
-		m_pQuadVB->Unlock					();
+		m_pBloom_Combine_VB->Unlock			();
 	}
 
 	// Full-screen-quad VB
