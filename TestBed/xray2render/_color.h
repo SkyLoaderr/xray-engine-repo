@@ -50,7 +50,7 @@ public:
 		r=dw.r; g=dw.g; b=dw.b; a = dw.a;	
 		return *this;
 	};
-	IC	u32		get( )	const	{ return color_rgba_f(r,g,b,a); }
+	ICF	u32		get( )	const	{ return color_rgba_f(r,g,b,a); }
 	IC	u32		get_windows	( ) const
 	{
 		BYTE _a, _r, _g, _b;

@@ -128,7 +128,7 @@ template <class T> struct _quaternion;
 
 
 // normalize angle (0..2PI)
-IC float		angle_normalize(float a)
+ICF float		angle_normalize(float a)
 {
 	float		div	 =	a/PI_MUL_2;
 	int			rnd  =	(div>0)?iFloor(div):iCeil(div);
@@ -138,7 +138,7 @@ IC float		angle_normalize(float a)
 }
 
 // -PI .. +PI
-IC float		angle_normalize_signed(float a)
+ICF float		angle_normalize_signed(float a)
 {
 	float angle = angle_normalize(a);
 	if (angle>PI) angle-=PI_MUL_2;
