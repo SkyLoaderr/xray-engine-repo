@@ -76,8 +76,8 @@ public:
 	Fvector					basis_tangent		[3];
 	Fvector					basis_binormal		[3];
 
-	u16					dwMaterial;			// index of material
-	u16					dwMaterialGame;		// unique-id of game material (must persist up to game-CForm saving)
+	u16						dwMaterial;			// index of material
+	u16						dwMaterialGame;		// unique-id of game material (must persist up to game-CForm saving)
 
 	struct					{
 		u8					bSplitted			:		1;
@@ -157,8 +157,8 @@ public:
 	void					CalcNormal2		();
 
 	//------------------------------//
-	void Failure					();
-	void Verify						();
+	void					Failure			();
+	void					Verify			();
 
 	// Does the face contains this vertex?
 	IC bool		VContains	(Vertex* pV)			{	return VIndex(pV)>=0;	};
