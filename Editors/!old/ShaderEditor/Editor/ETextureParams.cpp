@@ -200,10 +200,10 @@ void STextureParams::FillProp(LPCSTR base_name, PropItemVec& items, PropValue::T
 
         PHelper().CreateFlag32		(items, "Fade\\Enable Color",		&flags,				flFadeToColor);
 		PHelper().CreateFlag32		(items, "Fade\\Enabled Alpha",		&flags,				flFadeToAlpha);
-		PHelper().CreateU8			(items,	"Fade\\Delay",				&fade_delay,		0,255);
-		PHelper().CreateU32			(items, "Fade\\Amount",				&fade_amount,		0,100,0);
+		PHelper().CreateU8			(items,	"Fade\\Delay 'n' MIP",		&fade_delay,		0,255);
+		PHelper().CreateU32			(items, "Fade\\% of color to fade in",&fade_amount,		0,100,0);
         PHelper().CreateColor	   	(items, "Fade\\Color",				&fade_color			);
-		PHelper().CreateU8			(items,	"Fade\\Alpha",				&fade_color,		0,255);
+		PHelper().CreateU8			(items,	"Fade\\Alpha",				((u8*)&fade_color)+3,0,255);
 
         PHelper().CreateFlag32		(items, "Border\\Enabled Color",	&flags,				flColorBorder);
         PHelper().CreateFlag32		(items, "Border\\Enabled Alpha",	&flags,				flAlphaBorder);
