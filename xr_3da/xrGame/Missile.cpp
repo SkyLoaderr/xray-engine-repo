@@ -140,7 +140,7 @@ void CMissile::OnH_B_Independent()
 
 	m_pHUD->Hide();
 
-	if(!m_destroyTime) 
+	if(!m_destroyTime && Local()) 
 	{
 		NET_Packet			P;
 		u_EventGen			(P,GE_DESTROY,ID());
@@ -164,6 +164,7 @@ void CMissile::OnH_B_Independent()
 		Fvector l_up; 
 
 		CActor* ParentA = dynamic_cast<CActor*>	(Parent);
+		if (NULL == ParentA && Parent->H_Parent()) ParentA = dynamic_cast<CActor*>	(Parent->H_Parent());
 		if (ParentA)
 		{
 			Fvector P, D, N;
@@ -239,6 +240,12 @@ void CMissile::UpdateCL()
 		Position().set(m_pPhysicsShell->mXFORM.c);
 	} 
 	else if(H_Parent()) XFORM().set(H_Parent()->XFORM());
+
+	if (m_pHUD)
+	{
+		CSkeletonAnimated* pSA = PSkeletonAnimated(m_pHUD->Visual());
+		if (pSA) pSA->Update();
+	};
 }
 
 u32 CMissile::State() 
@@ -355,7 +362,7 @@ void CMissile::Destroy()
 {
 	NET_Packet			P;
 	u_EventGen			(P,GE_DESTROY,ID());
-	u_EventSend			(P);
+	if (Local()) u_EventSend			(P);
 }
 
 void CMissile::OnAnimationEnd() 

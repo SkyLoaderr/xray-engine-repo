@@ -10,6 +10,8 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 	u16			destination;
 	u32			MODE			= net_flags(TRUE,TRUE);
 
+	xrClientData *l_pC = ID_to_client(sender);
+
 	// correct timestamp with server-unique-time (note: direct message correction)
 	P.r_u32		(timestamp	);
 	/*
@@ -208,7 +210,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 		break;
 	case GE_GRENADE_EXPLODE:
 		{
-			SendBroadcast		(sender,P,MODE);
+			SendBroadcast		(0xffffffff,P,MODE);
 		}break;
 	default:
 		R_ASSERT2	(0,"Game Event not implemented!!!");

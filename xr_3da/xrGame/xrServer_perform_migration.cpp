@@ -3,6 +3,7 @@
 // Initiate migration
 void xrServer::PerformMigration(CSE_Abstract* E, xrClientData* from, xrClientData* to)
 {
+	return;
 	R_ASSERT	(from != to);
 	NET_Packet	P;
 
