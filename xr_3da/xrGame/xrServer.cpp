@@ -118,7 +118,7 @@ void xrServer::Update	()
 	{
 		// Initialize process and check for available bandwidth
 		xrClientData*	Client		= (xrClientData*) net_Players	[client];
-//		if (!Client->net_Ready)		continue;		
+		if (!Client->net_Ready)		continue;		
 		if (!HasBandwidth(Client))	continue;
 
 		// Send relevant entities to client
