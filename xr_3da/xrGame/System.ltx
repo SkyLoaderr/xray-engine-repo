@@ -83,7 +83,7 @@ position			= .35,.25,0
 
 [af_magnet]
 GroupControlSection	= spawn_group
-$spawn					= artifacts\magnet
+$spawn					= "artifacts\magnet"
 class				= ARTEFACT
 cform				= skeleton
 $prefetch 			= 64
@@ -138,7 +138,7 @@ visual              = weapon\bolt\wpn_bolt_hud.ogf
 [wpn_knife]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn              = weapons\Knife						; option for Level Editor
+$spawn              = "weapons\knife"					; option for Level Editor
 $npc                = off
 $prefetch 		    = 8
 scheduled           = off								; option for ALife Simulator
@@ -237,7 +237,7 @@ visual              = weapon\knife\wpn_knife_hud.ogf
 [grenade_f1]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn 				= weapons\grenades\f1
+$spawn 				= "weapons\grenades\f1"
 $prefetch			= 16
 class				= G_F1
 cform				= skeleton
@@ -285,7 +285,7 @@ visual              = weapon\grenade\wpn_f_1_hud.ogf
 [grenade_rgd5]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn 			= weapons\grenades\rgd5
+$spawn 			= "weapons\grenades\rgd5"
 class				= G_RGD5
 cform				= skeleton
 visual				= weapon\grenade\wpn_rgd_5.ogf
@@ -331,7 +331,7 @@ visual              = weapon\grenade\wpn_rgd_5_hud.ogf
 
 [zone_mosquito_bald]
 GroupControlSection	= spawn_group_zone
-$spawn 			= zone\Mosquito Bald
+$spawn 			= "zone\mosquito bald"
 $prefetch 		= 16
 class			= Z_MBALD
 hit_impulse_scale	= .1
@@ -344,7 +344,7 @@ BirthProbability = 0.9
 
 [zone_radioactive]
 GroupControlSection	= spawn_group_zone
-$spawn 			= zone\Radioactive
+$spawn 			= "zone\radioactive"
 $prefetch 		= 16
 class			= Z_RADIO
 hit_impulse_scale	= .001
@@ -357,7 +357,7 @@ BirthProbability = 0.9
 
 [zone_acid_fog]
 GroupControlSection	= spawn_group_zone
-$spawn 			= zone\Acid Fog
+$spawn 			= "zone\acid fog"
 $prefetch 		= 16
 class			= Z_ACIDF
 hit_impulse_scale	= .1
@@ -370,7 +370,7 @@ BirthProbability = 0.9
 
 [zone_witches_galantine]
 GroupControlSection	= spawn_group_zone
-$spawn 			= zone\Witches Galantine
+$spawn 			= "zone\witches galantine"
 $prefetch 		= 16
 class			= Z_GALANT
 hit_impulse_scale	= .1
@@ -383,7 +383,7 @@ BirthProbability = 0.9
 
 [zone_burning_fuzz]
 GroupControlSection	= spawn_group_zone
-$spawn 			= zone\Burning Fuzz
+$spawn 			= "zone\burning fuzz"
 $prefetch 		= 16
 class			= Z_BFUZZ
 hit_impulse_scale	= .1
@@ -396,7 +396,7 @@ BirthProbability = 0.9
 
 [zone_rusty_hair]
 GroupControlSection	= spawn_group_zone
-$spawn 			= zone\Rusty Hair
+$spawn 			= "zone\rusty hair"
 $prefetch 		= 16
 class			= Z_RUSTYH
 hit_impulse_scale	= .1
@@ -409,7 +409,7 @@ BirthProbability = 0.9
 
 [zone_dead]
 GroupControlSection	= spawn_group_zone
-$spawn 			= zone\Dead
+$spawn 			= "zone\dead"
 $prefetch 		= 16
 class			= Z_DEAD
 hit_impulse_scale	= .1
@@ -422,7 +422,7 @@ BirthProbability = 0.9
 
 [zone_mosquito_bald_weapon]
 GroupControlSection	= spawn_group_zone
-$spawn 			= zone\Mosquito Bald Weapon
+$spawn 			= "zone\mosquito bald weapon"
 $prefetch 		= 16
 class			= Z_MBALD
 hit_impulse_scale	= .1
@@ -435,7 +435,7 @@ BirthProbability = 0.9
 
 [zone_mincer]
 GroupControlSection	= spawn_group_zone
-$spawn 			= zone\Mincer
+$spawn 			= "zone\mincer"
 $prefetch 		= 16
 class			= Z_MINCER
 sound			= zone_mosquito_bald.wav
@@ -446,7 +446,7 @@ BirthProbability = 0.9
 
 [zone_x]
 GroupControlSection	= spawn_group_zone
-$spawn 			= zone\ZoneX
+$spawn 			= "zone\zone-x"
 $prefetch 		= 16
 class			= Z_MBALD
 hit_impulse_scale	= 0
@@ -459,7 +459,7 @@ BirthProbability = 0.9
 
 [zone_x1]
 GroupControlSection	= spawn_group_zone
-$spawn 			= zone\ZoneX1
+$spawn 			= "zone\zone-x1"
 $prefetch 		= 16
 class			= Z_MBALD
 hit_impulse_scale	= 0
@@ -472,7 +472,7 @@ BirthProbability = 0.9
 
 [zone_x2]
 GroupControlSection	= spawn_group_zone
-$spawn 			= zone\ZoneX2
+$spawn 			= "zone\zone-x2"
 $prefetch 		= 16
 class			= Z_MBALD
 hit_impulse_scale	= 0
@@ -485,7 +485,7 @@ BirthProbability = 0.9
 
 [zone_x3]
 GroupControlSection	= spawn_group_zone
-$spawn 			= zone\ZoneX3
+$spawn 			= "zone\zone-x3"
 $prefetch 		= 16
 class			= Z_MBALD
 hit_impulse_scale	= 0
@@ -499,7 +499,7 @@ BirthProbability = 0.9
 [detector_simple]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn 			= devices\detector
+$spawn 			= "devices\detector"
 $prefetch 		= 32
 class			= D_SIMDET
 cform                   = skeleton
@@ -526,7 +526,7 @@ class                   = SPECT
 
 [actor]
 GroupControlSection	= spawn_group
-$spawn 			= actor
+$spawn 			= "actor"
 $ed_icon		= ed\ed_actor
 $player 		= on
 cform                   = skeleton
@@ -622,21 +622,21 @@ class 			 = EVENT
 
 [m_mball]
 GroupControlSection	= spawn_group
-$spawn 			= temp\m_mball
+$spawn 			= "temp\m_mball"
 $npc			= on				; option for Level Editor
 $prefetch 		= 3
 cform                   = skeleton
 class   		= AF_MBALL
 
 [m_target_assault]
-$spawn 			 = temp\m_target_assault
+$spawn 			 = "temp\m_target_assault"
 $prefetch 		= 2
 cform                    = skeleton
 class                    = T_ASS
 visual                   = monsters\crow\crow.ogf
 
 [m_target_cs_base]
-$spawn 			 = temp\m_target_cs_base
+$spawn 			 = "temp\m_target_cs_base"
 $prefetch 		= 2
 class                    = T_CSBASE
 
@@ -3722,7 +3722,7 @@ tracer			= off
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [m_idol_e]
 GroupControlSection	= spawn_group
-$spawn 			     = physic\idol	; option for Level Editor
+$spawn 			     = "physics\idol"; option for Level Editor
 $npc			     = on			; option for Level Editor
 $prefetch 		     = 32
 Scheduled		     = on			; option for ALife Simulator
