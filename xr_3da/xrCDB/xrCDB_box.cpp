@@ -85,6 +85,7 @@ class box_collider
 public:
 	COLLIDER*		dest;
 	TRI*			tris;
+	Fvector*		verts;
 	
 	Fvector			b_min, b_max;
 	Point			center, extents;
