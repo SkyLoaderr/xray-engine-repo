@@ -36,10 +36,13 @@ ShaderElement*			CRender::rimp_select_sh_static	(IRender_Visual	*pVisual, float 
 {
 	return pVisual->hShader->E[RImplementation.phase]._get();
 }
+extern float					g_fSCREEN		;
 static class cl_parallax		: public R_constant_setup		{	virtual void setup	(R_constant* C)
 {
-	float			h			= ps_r2_df_parallaxh;
-	RCache.set_c	(C,h,-h/2,0.f,0.f);
+	float			h			=	ps_r2_df_parallax_h;
+	float			scale		=	g_fSCREEN / (1024.f*768.f);
+	float			r			=	ps_r2_df_parallax_range * scale;
+	RCache.set_c	(C,h,-h/2.f,1.f/range,1.f/range);
 }}	binder_parallax;
 
 //////////////////////////////////////////////////////////////////////////
