@@ -158,5 +158,7 @@ public:
 };
 
 IC CLevel& Level()				{ return *((CLevel*) pCreator); }
+class  CPHWorld;
+extern CPHWorld*				ph_world;
 
 #endif // !defined(AFX_LEVEL_H__38F63863_DB0C_494B_AFAB_C495876EC671__INCLUDED_)
