@@ -167,7 +167,7 @@ void CGameSpawnConstructor::build_root_spawns		()
 void CGameSpawnConstructor::verify_spawns			(ALife::_SPAWN_ID spawn_id)
 {
 	xr_vector<ALife::_SPAWN_ID>::iterator	J = std::find(m_temp0.begin(),m_temp0.end(),spawn_id);
-	R_ASSERT3								(J == m_temp0.end(),"RECURSIVE Spawn group chain found in spawn",m_spawn_graph->vertex(spawn_id)->data()->object().s_name_replace);
+	R_ASSERT3								(J == m_temp0.end(),"RECURSIVE Spawn group chain found in spawn",m_spawn_graph->vertex(spawn_id)->data()->object().name_replace());
 	m_temp0.push_back						(spawn_id);
 
 	SPAWN_GRAPH::CVertex					*vertex = m_spawn_graph->vertex(spawn_id);
@@ -196,7 +196,7 @@ void CGameSpawnConstructor::verify_level_changers	()
 	LEVEL_CHANGER_STORAGE::const_iterator	I = m_level_changers.begin();
 	LEVEL_CHANGER_STORAGE::const_iterator	E = m_level_changers.end();
 	for ( ; I != E; ++I)
-		Msg									("%s",(*I)->s_name_replace);
+		Msg									("%s",(*I)->name_replace());
 
 	VERIFY2									(m_level_changers.empty(),"Some of the level changers setup incorrectly");
 }
@@ -245,8 +245,8 @@ void CGameSpawnConstructor::add_story_object	(ALife::_STORY_ID id, CSE_ALifeDyna
 
 	ALife::STORY_P_PAIR_IT		I = m_story_objects.find(id);
 	if (I != m_story_objects.end()) {
-		Msg						("Object %s, story id %d",object->s_name_replace,object->m_story_id);
-		Msg						("Object %s, story id %d",(*I).second->s_name_replace,(*I).second->m_story_id);
+		Msg						("Object %s, story id %d",object->name_replace(),object->m_story_id);
+		Msg						("Object %s, story id %d",(*I).second->name_replace(),(*I).second->m_story_id);
 		VERIFY3					(I == m_story_objects.end(),"There are several objects which has the same unique story ID, level ",level_name);
 	}
 	

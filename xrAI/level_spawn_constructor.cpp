@@ -87,7 +87,7 @@ CSE_Abstract *CLevelSpawnConstructor::create_object						(IReader *chunk)
 	CSE_Abstract			*abstract = F_entity_Create(section_name);
 	if (!abstract) {
 		string256			temp;
-		sprintf				(temp,"Can't create entity '%s' !\n",abstract->s_name_replace);
+		sprintf				(temp,"Can't create entity '%s' !\n",abstract->name_replace());
 		R_ASSERT2			(abstract,temp);
 	}
 	abstract->Spawn_Read	(net_packet);
@@ -105,7 +105,7 @@ void CLevelSpawnConstructor::add_spawn_group					(CSE_Abstract			*abstract)
 {
 	CSE_SpawnGroup			*spawn_group = smart_cast<CSE_SpawnGroup*>(abstract);
 	R_ASSERT				(spawn_group);
-	m_spawn_groups.insert	(std::make_pair(spawn_group->s_name_replace,spawn_group));
+	m_spawn_groups.insert	(std::make_pair(spawn_group->name_replace(),spawn_group));
 	if (xr_strlen(spawn_group->m_spawn_control))
 		add_group_object	(spawn_group,spawn_group->m_spawn_control);
 	add_free_object			(abstract);
@@ -236,7 +236,7 @@ void CLevelSpawnConstructor::fill_spawn_groups					()
 		SPAWN_GROUPS::iterator					J = m_spawn_groups.find((*I).first);
 		if (J == m_spawn_groups.end())
 			clMsg								("! ERROR (spawn group not found!) : %s",*(*I).first);
-		R_ASSERT3								(J != m_spawn_groups.end(),"Specified group control not found!",(*(*I).second)[0]->s_name_replace);
+		R_ASSERT3								(J != m_spawn_groups.end(),"Specified group control not found!",(*(*I).second)[0]->name_replace());
 		
 		GROUP_OBJECTS::iterator					i = (*I).second->begin();
 		GROUP_OBJECTS::iterator					e = (*I).second->end();
@@ -290,7 +290,7 @@ void CLevelSpawnConstructor::correct_objects					()
 		VERIFY				(level_graph().valid_vertex_id(m_spawns[i]->m_tNodeID));
 		if (m_spawns[i]->used_ai_locations() && !level_graph().inside(level_graph().vertex(m_spawns[i]->m_tNodeID),m_spawns[i]->o_Position)) {
 			Fvector			new_position = level_graph().vertex_position(m_spawns[i]->m_tNodeID);
-			clMsg			("[%s][%s][%s] : position changed from [%f][%f][%f] -> [%f][%f][%f]",m_level.name(),*m_spawns[i]->s_name,m_spawns[i]->s_name_replace,VPUSH(m_spawns[i]->o_Position),VPUSH(new_position));
+			clMsg			("[%s][%s][%s] : position changed from [%f][%f][%f] -> [%f][%f][%f]",m_level.name(),*m_spawns[i]->s_name,m_spawns[i]->name_replace(),VPUSH(m_spawns[i]->o_Position),VPUSH(new_position));
 			m_spawns[i]->o_Position	= new_position;
 		}
 		u32 dwBest = cross_table().vertex(m_spawns[i]->m_tNodeID).game_vertex_id();
@@ -299,7 +299,7 @@ void CLevelSpawnConstructor::correct_objects					()
 		if (dwBest == u32(-1)) {
 			string4096 S1;
 			char *S = S1;
-			S += sprintf(S,"Can't find a corresponding GRAPH VERTEX for the spawn-point %s\n",m_spawns[i]->s_name_replace);
+			S += sprintf(S,"Can't find a corresponding GRAPH VERTEX for the spawn-point %s\n",m_spawns[i]->name_replace());
 			S += sprintf(S,"Level ID    : %d\n",m_level.id());
 			S += sprintf(S,"Spawn index : %d\n",i);
 			S += sprintf(S,"Spawn node  : %d\n",m_spawns[i]->m_tNodeID);
@@ -367,7 +367,7 @@ void CLevelSpawnConstructor::fill_level_changers				()
 		GRAPH_POINT_STORAGE::const_iterator I = m_graph_points.begin();
 		GRAPH_POINT_STORAGE::const_iterator E = m_graph_points.end();
 		for ( ; I != E; ++I)
-			if (!xr_strcmp(*level_changers()[i]->m_caLevelPointToChange,(*I)->s_name_replace)) {
+			if (!xr_strcmp(*level_changers()[i]->m_caLevelPointToChange,(*I)->name_replace())) {
 				bool ok = false;
 				for (u32 ii=0, nn = game_graph().header().vertex_count(); ii<nn; ++ii) {
 					if ((game_graph().vertex(ii)->level_id() != m_level.id()) || !game_graph().vertex(ii)->level_point().similar((*I)->o_Position,.001f))
@@ -390,7 +390,7 @@ void CLevelSpawnConstructor::fill_level_changers				()
 			}
 
 		if (!found) {
-			clMsg			("Graph point %s not found (level changer %s)",*level_changers()[i]->m_caLevelPointToChange,level_changers()[i]->s_name_replace);
+			clMsg			("Graph point %s not found (level changer %s)",*level_changers()[i]->m_caLevelPointToChange,level_changers()[i]->name_replace());
 			VERIFY			(false);
 		}
 	}
@@ -404,7 +404,7 @@ void CLevelSpawnConstructor::update_artefact_spawn_positions	()
 	for ( ; I != E; ++I) {
 		CSE_Abstract					*abstract = *I;
 		CSE_ALifeObject					*alife_object = smart_cast<CSE_ALifeObject*>(abstract);
-//		R_ASSERT3						(level_graph().valid_vertex_id(alife_object->m_tNodeID),"Invalid node for object ",alife_object->s_name_replace);
+//		R_ASSERT3						(level_graph().valid_vertex_id(alife_object->m_tNodeID),"Invalid node for object ",alife_object->name_replace());
 		R_ASSERT2						(alife_object,"Non-ALife object!");
 		VERIFY							(game_graph().vertex(alife_object->m_tGraphID)->level_id() == m_level.id());
 		alife_object->m_spawn_control	= "";
