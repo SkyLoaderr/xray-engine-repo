@@ -4,6 +4,7 @@
 
 #include "ui_toolscustom.h"
 #include "ui_main.h"
+#include "ResourceManager.h"
 
 bool CRenderDevice::MakeScreenshot(U32Vec& pixels, u32& width, u32& height)
 {
@@ -27,10 +28,10 @@ bool CRenderDevice::MakeScreenshot(U32Vec& pixels, u32& width, u32& height)
 	CHK_DX(HW.pDevice->SetRenderTarget(0,pRT));
 	CHK_DX(HW.pDevice->SetDepthStencilSurface(pZB));
 
-    Device.Begin();
-    Tools->Render			();
-//	UI->Redraw();
-    Device.End();
+	UI->PrepareRedraw	();
+    Device.Begin		();
+    Tools->Render		();
+    Device.End			();
 
 	// Create temp-surface
 	IDirect3DSurface9*	pFB;

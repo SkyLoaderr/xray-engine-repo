@@ -1,6 +1,6 @@
 object frmLog: TfrmLog
-  Left = 484
-  Top = 601
+  Left = -722
+  Top = 411
   Width = 400
   Height = 222
   BorderStyle = bsSizeToolWin

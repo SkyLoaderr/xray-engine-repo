@@ -216,12 +216,13 @@ bool CImageManager::MakeGameTexture(ETextureThumbnail* THM, LPCSTR game_name, u3
 //------------------------------------------------------------------------------
 // загружает 32-bit данные
 //------------------------------------------------------------------------------
-bool CImageManager::LoadTextureData(LPCSTR src_name, U32Vec& data, u32& w, u32& h)
+bool CImageManager::LoadTextureData(LPCSTR src_name, U32Vec& data, u32& w, u32& h, int* age)
 {
 	xr_string fn;
 	FS.update_path			(fn,_textures_,ChangeFileExt(src_name,".tga").c_str());
     u32 a;
     if (!Surface_Load(fn.c_str(),data,w,h,a)) return false;
+    if (age) *age			= FS.get_file_age(fn.c_str());
     return true;
 }
 
@@ -275,7 +276,7 @@ void CImageManager::SafeCopyLocalToServer(FS_QueryMap& files)
 // source_list - содержит список текстур с расширениями
 // sync_list - реально сохраненные файлы (после использования освободить)
 //------------------------------------------------------------------------------
-void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bForceGame, FS_QueryMap* source_list, AStringVec* sync_list, FS_QueryMap* modif_map)
+void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bForceGame, FS_QueryMap* source_list, AStringVec* sync_list, FS_QueryMap* modif_map, bool bForceBaseAge)
 {   
 	FS_QueryMap M_BASE;
 	FS_QueryMap M_THUM;
@@ -362,9 +363,16 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
             FS.update_path			    (tga_fn,_textures_,		EFS.ChangeFileExt(base_name,".tga").c_str());
             FS.update_path			    (thm_fn,_textures_,		EFS.ChangeFileExt(base_name,".thm").c_str());
             FS.update_path			    (dds_fn,_game_textures_,EFS.ChangeFileExt(base_name,".dds").c_str());
-            FS.set_file_age			    (tga_fn.c_str(),m_age);
-            FS.set_file_age			    (thm_fn.c_str(),m_age);
-            FS.set_file_age			    (dds_fn.c_str(),m_age);
+            if (bForceBaseAge){
+            	int age 				= it->second.modif;
+                FS.set_file_age			(tga_fn.c_str(),age);
+                FS.set_file_age			(thm_fn.c_str(),age);
+                FS.set_file_age			(dds_fn.c_str(),age);
+            }else{
+                FS.set_file_age			(tga_fn.c_str(),m_age);
+                FS.set_file_age			(thm_fn.c_str(),m_age);
+                FS.set_file_age			(dds_fn.c_str(),m_age);
+            }
         }
     }
 
@@ -441,7 +449,7 @@ void CImageManager::SynchronizeTexture(LPCSTR tex_name, int age)
     AStringVec modif;
     FS_QueryMap t_map;
     t_map.insert		(mk_pair(tex_name,FS_QueryItem(0,age,0)));
-    SynchronizeTextures	(true,true,true,&t_map,&modif);
+    SynchronizeTextures	(true,true,true,&t_map,&modif,0,age);
     RefreshTextures		(&modif);
 }
 //------------------------------------------------------------------------------
@@ -534,32 +542,6 @@ void CImageManager::CheckCompliance(FS_QueryMap& files, FS_QueryMap& compl)
 	UI->ProgressEnd(pb);
 }
 
-IC void SetCamera(float angle, const Fvector& C, float height, float radius, float dist)
-{
-    Fvector 	D;
-    Fvector 	hpb;
-    Fmatrix 	P;
-
-	hpb.set		(angle,0,0);
-	D.setHP		(hpb.x,hpb.y);
-    D.mul		(-dist);
-    D.add		(C);
-
-    float ta	= height/dist;
-    float asp 	= height/radius;
-	float fp	= dist+4.f*radius;
-    float np	= dist-4.f*radius; clamp(np,0.1f,fp);
-    Device.m_Camera.Set		(hpb,D);
-    P.build_projection_HAT	(ta,asp,np,fp);
-    RCache.set_xform_project(P);
-}
-
-IC void CopyLODImage(U32Vec& src, U32Vec& dest, u32 src_w, u32 src_h, int id, int pitch)
-{
-	for (u32 y=0; y<src_h; y++)
-    	CopyMemory(dest.begin()+y*pitch+id*src_w,src.begin()+y*src_w,src_w*sizeof(u32));
-}
-
 IC void GET(U32Vec& pixels, u32 w, u32 h, u32 x, u32 y, u32 ref, u32 &count, u32 &r, u32 &g, u32 &b)
 {
     // wrap pixels
@@ -624,96 +606,6 @@ void CImageManager::ApplyBorders(U32Vec& tgt_data, u32 w, u32 h)
         _ApplyBorders(tgt_data,w,h,ref);
     for (int t=0; t<int(tgt_data.size()); t++)
         tgt_data[t]=subst_alpha(tgt_data[t],color_get_A(border_pixels[t]));
-}
-
-#include "d3dutils.h"
-void CImageManager::CreateLODTexture(const Fbox& bb, U32Vec& tgt_data, u32 tgt_w, u32 tgt_h, int samples)
-{
-	U32Vec pixels;
-
-    Fvector C;
-    Fvector S;
-    bb.getradius				(S);
-    float R 					= _max(S.x,S.z);
-    bb.getcenter				(C);
-
-    Fmatrix save_projection		= Device.mProjection;
-    Fvector save_pos 			= Device.m_Camera.GetPosition();
-    Fvector save_hpb 			= Device.m_Camera.GetHPB();
-    float save_far		 		= Device.m_Camera._Zfar();
-	ECameraStyle save_style 	= Device.m_Camera.GetStyle();
-
-    float D		= 500.f;
-    u32 pitch 					= tgt_w*samples;
-
-    tgt_data.resize				(pitch*tgt_h);
-	Device.m_Camera.SetStyle	(csPlaneMove);
-    Device.m_Camera.SetDepth	(D*2,true);
-
-    // save render params
-    Flags32 old_flag			= psDeviceFlags;
-	u32 old_dwFillMode			= Device.dwFillMode;
-    u32 old_dwShadeMode			= Device.dwShadeMode;
-    // set render params
-
-    u32 cc						= 	EPrefs.scene_clear_color;
-    EPrefs.scene_clear_color 	= 	0x0000000;
-    psDeviceFlags.zero			();
-	psDeviceFlags.set			(rsFilterLinear,TRUE);
-	Device.dwFillMode			= D3DFILL_SOLID;
-    Device.dwShadeMode			= D3DSHADE_GOURAUD;
-
-    SetCamera(0,C,S.y,R,D);
-
-    for (int frame=0; frame<samples; frame++){
-    	float angle 			= frame*(PI_MUL_2/samples);
-	    SetCamera				(angle,C,S.y,R,D);
-	    Device.MakeScreenshot	(pixels,tgt_w,tgt_h);
-        // copy LOD to final
-		for (u32 y=0; y<tgt_h; y++)
-    		CopyMemory			(tgt_data.begin()+y*pitch+frame*tgt_w,pixels.begin()+y*tgt_w,tgt_w*sizeof(u32));
-    }
-
-    ApplyBorders				(tgt_data,pitch,tgt_h);
-
-    // flip data
-	for (u32 y=0; y<tgt_h/2; y++){
-		u32 y2 = tgt_h-y-1;
-		for (u32 x=0; x<pitch; x++){
-        	std::swap	(tgt_data[y*pitch+x],tgt_data[y2*pitch+x]);	
-		}
-	}
-        
-    // restore render params
-	Device.dwFillMode			= old_dwFillMode;
-    Device.dwShadeMode			= old_dwShadeMode;
-    psDeviceFlags 				= old_flag;
-    EPrefs.scene_clear_color 	= cc;
-
-	Device.m_Camera.SetStyle	(save_style);
-    RCache.set_xform_project	(save_projection);
-    Device.m_Camera.Set			(save_hpb,save_pos);
-    Device.m_Camera.Set			(save_hpb,save_pos);
-    Device.m_Camera.SetDepth	(save_far,false);
-}
-
-void CImageManager::CreateLODTexture(const Fbox& bbox, LPCSTR tex_name, u32 tgt_w, u32 tgt_h, int samples, int age)
-{
-    U32Vec 						new_pixels;
-
-	CreateLODTexture			(bbox,new_pixels,tgt_w,tgt_h,samples);
-
-    xr_string out_name;
-    FS.update_path				(out_name,_textures_,tex_name);
-
-    CImage* I 					= xr_new<CImage>();
-    I->Create					(tgt_w*samples,tgt_h,new_pixels.begin());
-    I->Vflip					();
-    I->SaveTGA					(out_name.c_str());
-    xr_delete					(I);
-    FS.set_file_age				(out_name.c_str(), age);
-
-    SynchronizeTexture			(tex_name,age);
 }
 
 BOOL CImageManager::CreateOBJThumbnail(LPCSTR tex_name, CEditableObject* obj, int age)

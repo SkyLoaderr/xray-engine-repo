@@ -350,11 +350,11 @@ bool TfrmEditLibrary::GenerateLOD(TElTreeItem* node)
             BOOL bLod 	= O->m_Flags.is(CEditableObject::eoUsingLOD);
             O->m_Flags.set(CEditableObject::eoUsingLOD,FALSE);
             xr_string tex_name;
-            tex_name 	= EFS.ChangeFileExt(nm,".tga");
-            string256 nm; strcpy(nm,tex_name.c_str()); _ChangeSymbol(nm,'\\','_');
-            tex_name 	= xr_string("lod_")+nm;
+            tex_name 	= EFS.ChangeFileExt(nm,"");
+            string256 tmp; strcpy(tmp,tex_name.c_str()); _ChangeSymbol(tmp,'\\','_');
+            tex_name 	= xr_string("lod_")+tmp;
             tex_name 	= ImageLib.UpdateFileName(tex_name);
-            ImageLib.CreateLODTexture(O->GetBox(), tex_name.c_str(),LOD_IMAGE_SIZE,LOD_IMAGE_SIZE,LOD_SAMPLE_COUNT,O->m_Version);
+            ImageLib.CreateLODTexture(O, tex_name.c_str(),LOD_IMAGE_SIZE,LOD_IMAGE_SIZE,LOD_SAMPLE_COUNT,O->m_Version);
             O->OnDeviceDestroy();
             O->m_Flags.set(CEditableObject::eoUsingLOD,bLod);
 			ELog.Msg(mtInformation,"LOD for object '%s' successfully created.",O->GetName());

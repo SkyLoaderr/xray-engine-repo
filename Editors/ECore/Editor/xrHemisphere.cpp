@@ -330,7 +330,7 @@ const double hemi_3[HEMI3_LIGHTS][3] =
 	{+0.3971,	-0.2885,	+0.0952},
 };
 
-void xrHemisphereBuild	(int quality, float energy, xrHemisphereIterator* iterator, LPVOID param)
+void ECORE_API xrHemisphereBuild	(int quality, float energy, xrHemisphereIterator* iterator, LPVOID param)
 {
     // SELECT table
     int		h_count, h_table[3];

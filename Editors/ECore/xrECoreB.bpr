@@ -84,7 +84,9 @@
       Intermediate\WmlWinSystem.obj Intermediate\WmlContBox3.obj 
       Intermediate\WmlQuaternion.obj Intermediate\WmlApprGaussPointsFit3.obj 
       Intermediate\WmlEigen.obj Intermediate\RAPIDMinBox.obj 
-      Intermediate\SkeletonMotions.obj Intermediate\tntQAVI.obj"/>
+      Intermediate\SkeletonMotions.obj Intermediate\tntQAVI.obj 
+      Intermediate\ImageManagerLOD.obj Intermediate\xrHemisphere.obj 
+      Intermediate\DeviceScreenshot.obj"/>
     <RESFILES value="resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -310,6 +312,9 @@
       <FILE FILENAME="WildMagic\RAPIDMinBox.cpp" FORMNAME="" UNITNAME="RAPIDMinBox" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Visuals\SkeletonMotions.cpp" FORMNAME="" UNITNAME="SkeletonMotions" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\tntQAVI.cpp" FORMNAME="" UNITNAME="tntQAVI" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\ImageManagerLOD.cpp" FORMNAME="" UNITNAME="ImageManagerLOD" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\xrHemisphere.cpp" FORMNAME="" UNITNAME="xrHemisphere" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\DeviceScreenshot.cpp" FORMNAME="" UNITNAME="DeviceScreenshot" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

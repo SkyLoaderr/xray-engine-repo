@@ -110,6 +110,7 @@ struct ECORE_API STextureParams{
         width			= 0;
         height			= 0;
         detail_scale	= 1;
+        bump_mode		= tbmNone;
 		material		= tmBlin_Phong;
         bump_virtual_height = 0.05f;
 	}

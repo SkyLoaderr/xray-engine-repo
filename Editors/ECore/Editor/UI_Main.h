@@ -70,7 +70,8 @@ protected:
 protected:
 	long m_StartTime;
 
-    void Redraw();
+    void PrepareRedraw	();
+    void Redraw			();
 protected:
     virtual void RealUpdateScene()=0;
     void D3D_CreateStateBlocks();

@@ -75,7 +75,28 @@ int	SceneBuilder::BuildObjectLOD(const Fmatrix& parent, CEditableObject* E, int 
     }
     b.lod.dwMaterial= mtl_idx;
     b.lod_name		= lod_name.c_str();
-
+    xr_string l_name= lod_name.c_str();
+    u32 w,h;     
+    int age;
+    if (!ImageLib.LoadTextureData(l_name.c_str(),b.data,w,h,&age)){
+    	Msg("!Can't find LOD texture: '%s'",l_name.c_str());
+    	return -2;
+    }
+    if (age!=E->Version()){
+    	Msg("!Invalid LOD texture version: '%s'",l_name.c_str());
+    	return -2;
+    }
+    l_name 			+= "_nm";
+    if (!ImageLib.LoadTextureData(l_name.c_str(),b.ndata,w,h,&age)){
+    	Msg("!Can't find LOD texture: '%s'",l_name.c_str());
+    	return -2;
+    }
+    if (age!=E->Version()){
+    	Msg("!Invalid LOD texture version: '%s'",l_name.c_str());
+    	return -2;
+    }
+//    b.data
+/*
     // make lod
     Fbox bb						= E->GetBox();
     E->m_Flags.set				(CEditableObject::eoUsingLOD,FALSE);
@@ -231,8 +252,8 @@ tH+=TT.Stop();
     // fill alpha to N-channel
     for (int px_idx=0; px_idx<int(b.ndata.size()); px_idx++)
         b.ndata[px_idx]				= subst_alpha(b.ndata[px_idx],hemi_temp[px_idx]);
-    
     UI->ProgressEnd(PB);
+*/    
     
     return l_lods.size()-1;
 }

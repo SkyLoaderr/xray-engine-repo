@@ -34,17 +34,17 @@ public:
 	int 		GetLocalNewTextures	(FS_QueryMap& files);
 	void		SafeCopyLocalToServer(FS_QueryMap& files);
 
-	void		SynchronizeTextures	(bool sync_thm, bool sync_game, bool bForceGame, FS_QueryMap* source_map, AStringVec* sync_list_without_extention, FS_QueryMap* modif_map=0);
+	void		SynchronizeTextures	(bool sync_thm, bool sync_game, bool bForceGame, FS_QueryMap* source_map, AStringVec* sync_list_without_extention, FS_QueryMap* modif_map=0, bool bForceBaseAge=false);
     void 		SynchronizeTexture	(LPCSTR tex_name, int age);
 //	void		ChangeFileAgeTo		(FS_QueryMap* source_map, int age);
 	// make/update routines
     bool		MakeGameTexture		(LPCSTR game_name, u32* data, u32 w, u32 h, STextureParams::ETFormat fmt, STextureParams::ETType, u32 flags=0);
     void		CreateTextureThumbnail(ETextureThumbnail* THM, const AnsiString& src_name, LPCSTR path=0, bool bSetDefParam=true);
     BOOL		CreateOBJThumbnail	(LPCSTR tex_name, CEditableObject* obj, int age);
-    void		CreateLODTexture	(const Fbox& bb, 	U32Vec& tgt_data, 	u32 tgt_w, u32 tgt_h, int samples);
-    void		CreateLODTexture	(const Fbox& bbox, 	LPCSTR tex_name, 	u32 tgt_w, u32 tgt_h, int samples, int age);
+    void		CreateLODTexture	(CEditableObject* object, U32Vec& lod_pixels, U32Vec& nm_pixels, u32 tgt_w, u32 tgt_h, int samples);
+    void		CreateLODTexture	(CEditableObject* object, LPCSTR tex_name, 	u32 tgt_w, u32 tgt_h, int samples, int age);
     void		CreateGameTexture	(LPCSTR src_name, ETextureThumbnail* thumb=0);
-    bool		LoadTextureData		(LPCSTR src_name, U32Vec& data, u32& w, u32& h);
+    bool		LoadTextureData		(LPCSTR src_name, U32Vec& data, u32& w, u32& h, int* age=0);
 
     // result 0-can't fit images, 1-ok, -1 can't load image 
     void		MergedTextureRemapUV(float& dest_u, float& dest_v, float src_u, float src_v, const Fvector2& offs, const Fvector2& scale, bool bRotate);

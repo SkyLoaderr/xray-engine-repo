@@ -289,7 +289,8 @@ void TUI::CheckWindowPos(TForm* form)
 #include "igame_persistent.h"
 #include "environment.h"
 
-void TUI::Redraw(){
+void TUI::PrepareRedraw()
+{
 	VERIFY(m_bReady);
 	if (m_Flags.is(flResize)){ 
     	Device.Resize	(m_D3DWindow->Width,m_D3DWindow->Height); m_Flags.set(flResize,FALSE);
@@ -336,6 +337,14 @@ void TUI::Redraw(){
     if (psDeviceFlags.is(rsLighting)) 	Device.SetRS(D3DRS_AMBIENT,0x00000000);
     else                				Device.SetRS(D3DRS_AMBIENT,0xFFFFFFFF);
 
+    Device.SetRS			(D3DRS_FILLMODE, Device.dwFillMode);
+    Device.SetRS			(D3DRS_SHADEMODE,Device.dwShadeMode);
+
+    RCache.set_xform_world	(Fidentity);
+}
+void TUI::Redraw()
+{
+	PrepareRedraw();
 //    try
     {
     	Device.Statistic.RenderDUMP_RT.Begin();
@@ -343,10 +352,8 @@ void TUI::Redraw(){
             Device.UpdateView		();
             Device.ResetMaterial	();
 
-            Device.SetRS			(D3DRS_FILLMODE, Device.dwFillMode);
-            Device.SetRS			(D3DRS_SHADEMODE,Device.dwShadeMode);
-
             Tools->RenderEnvironment	();
+
             //. temporary reset filter (уберется после того как Олесь сделает шейдеры)
             for (u32 k=0; k<HW.Caps.raster.dwStages; k++){
                 if( psDeviceFlags.is(rsFilterLinear)){
@@ -360,8 +367,6 @@ void TUI::Redraw(){
                 }
             }
 
-            RCache.set_xform_world	(Fidentity);
-        
             // draw grid
             if (psDeviceFlags.is(rsDrawGrid)){
                 DU.DrawGrid		();
