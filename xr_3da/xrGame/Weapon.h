@@ -143,7 +143,7 @@ public:
 		eHidden
 	};
 	// Events/States
-	u32					STATE;
+	u32						STATE;
 
 	virtual void			SwitchState			(u32 S);
 

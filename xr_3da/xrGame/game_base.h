@@ -23,20 +23,6 @@ enum
 
 enum
 {
-	GAME_PLAYER_WEAPON_KNIGHT			= 0,
-	GAME_PLAYER_WEAPON_PRIMARY			= 1,
-	GAME_PLAYER_WEAPON_SECONDARY		= 2,
-	GAME_PLAYER_WEAPON_SPECIAL_1		= 3,
-	GAME_PLAYER_WEAPON_SPECIAL_2		= 4,
-	GAME_PLAYER_WEAPON_BINOCULAR		= 5,
-
-	GAME_PLAYER_WEAPON_LAST,
-
-	GAME_PLAYER_WEAPON_FORCEDWORD		= u32(-1)
-};
-
-enum
-{
 	GAME_PHASE_INPROGRESS		= 0,
 	GAME_PHASE_PENDING,
 
@@ -52,8 +38,6 @@ struct	game_PlayerState
 	s16			money_total;
 	s16			money_for_round;
 	u16			flags;
-
-	u8			weapons	[GAME_PLAYER_WEAPON_LAST];
 
 	game_PlayerState();
 };
