@@ -156,6 +156,17 @@ sound_panic_monster	 = script_sound\help\soldier\soldier_help_
 immunities_sect				= stalker_immunities
 condition_sect				= stalker_condition
 
+;OBSOLETE
+burn_immunity 				= 1.0				;коэффициенты иммунитета 
+strike_immunity 			= 1.0
+shock_immunity 				= 1.0
+wound_immunity				= 1.0
+radiation_immunity 			= 1.0
+telepatic_immunity 			= 1.0
+chemical_burn_immunity 		= 1.0
+explosion_immunity 			= 1.0
+fire_wound_immunity  		= 1.0
+
 hit_power				= 10
 hit_type				= strike
 
@@ -315,6 +326,17 @@ sound_panic_monster	 = script_sound\help\soldier\soldier_help_
 immunities_sect				= stalker_immunities
 condition_sect				= stalker_condition
 
+;OBSOLETE
+burn_immunity 				= 1.0				;коэффициенты иммунитета 
+strike_immunity 			= 1.0
+shock_immunity 				= 1.0
+wound_immunity				= 1.0
+radiation_immunity 			= 1.0
+telepatic_immunity 			= 1.0
+chemical_burn_immunity 		= 1.0
+explosion_immunity 			= 1.0
+fire_wound_immunity  		= 1.0
+
 material				= creatures\human
 
 ;дисперсия во время ходьбы и бега
@@ -470,6 +492,16 @@ sound_panic_monster	 = script_sound\help\soldier\soldier_help_
 immunities_sect				= stalker_immunities
 condition_sect				= stalker_condition
 
+;OBSOLETE
+burn_immunity 				= 1.0				;коэффициенты иммунитета 
+strike_immunity 			= 1.0
+shock_immunity 				= 1.0
+wound_immunity				= 1.0
+radiation_immunity 			= 1.0
+telepatic_immunity 			= 1.0
+chemical_burn_immunity 		= 1.0
+explosion_immunity 			= 1.0
+fire_wound_immunity  		= 1.0
 
 hit_power				= 10
 hit_type				= strike
@@ -635,6 +667,17 @@ condition_sect				= stalker_condition
 hit_power				= 10
 hit_type				= strike
 
+;OBSOLETE
+burn_immunity 				= 1.0				;коэффициенты иммунитета 
+strike_immunity 			= 1.0
+shock_immunity 				= 1.0
+wound_immunity				= 1.0
+radiation_immunity 			= 1.0
+telepatic_immunity 			= 1.0
+chemical_burn_immunity 		= 1.0
+explosion_immunity 			= 1.0
+fire_wound_immunity  		= 1.0
+
 material				= creatures\human
 
 ;дисперсия во время ходьбы и бега
@@ -692,7 +735,7 @@ bip01_r_thigh	 	 = 0.1, 6, 0.5
 bip01_r_calf	 	 = 0.05, 6, 0.4
 bip01_r_foot	 	 = 0.02, 6, 0.3
 bip01_r_toe0	 	 = 0.0, 6, 0.2
-
+  
 [stalker_immunities]
 burn_immunity 				= 1.0				;коэффициенты иммунитета 
 strike_immunity 			= 1.0
@@ -711,12 +754,14 @@ satiety_power_v				= 0.0005				;увеличение силы при уменьшении сытости
 satiety_health_v			= 0.0001				;увеличение здоровья при уменьшении сытости 
 satiety_critical			= 0.0					;критическое значения сытости (в процентах от 0..1) когда здоровье начианает уменьшаться
 radiation_health_v			= 0.001					;уменьшение здоровья при воздействии радиации
-bleeding_v					= 0.001					;потеря крови при максимальной ране
-wound_incarnation_v			= 0.000006				;скорость заживания раны (процентов в от размера раны)
 morale_v					= 0.0001				;скорость восстановления морали 						
 health_hit_part				= 1.0					;процент хита, уходящий на отнимание здоровья
-power_hit_part				= 0.3					;процент хита, уходящий на отнимание силы
-sleep_health = 1.0		;1.5				;коэффициенты скоростей изменения параметров во время сна
-sleep_power = 1.0		;1.5
-sleep_satiety = 1.0		;0.8
-sleep_radiation = 1.0	;1.1
+power_hit_part				= 0.0					;процент хита, уходящий на отнимание силы
+sleep_health	= 1.0		;1.5				;коэффициенты скоростей изменения параметров во время сна
+sleep_power		= 1.0		;1.5
+sleep_satiety	= 1.0		;0.8
+sleep_radiation = 1.0		;1.1
+
+;открытые раны
+bleeding_v					= 1						;потеря крови при номинальной ране в секунду
+wound_incarnation_v			= 0.00017				;крутизна кривой заживления (какой процент раны заживет в игровую секунду)
