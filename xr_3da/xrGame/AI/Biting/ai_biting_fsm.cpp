@@ -168,8 +168,8 @@ void CAI_Biting::ForwardStraight()
 	WRITE_TO_LOG("Forward Straight");
 	
 	VisionElem ve;
-#pragma todo("MONSTER MEMORY REFACTORING...")
-//	if (!Mem.SelectEnemy(ve)) return;
+
+	if (!SelectEnemy(ve)) return;
 
 
 
@@ -437,13 +437,11 @@ void CAI_Biting::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 	
 	// проверка на видимость трупов
 	VisionElem ve;
-#pragma todo("MONSTER MEMORY REFACTORING...")
-	//Mem.SelectCorpse(ve);
+	SelectCorpse(ve);
 	
 	Fvector *tpDesiredPosition = 0;
 	
-#pragma todo("MONSTER MEMORY REFACTORING...")	
-//	if (Mem.SelectCorpse(ve)) 
+//	if (SelectCorpse(ve)) 
 //		if (ve.obj->m_fFood >= 0) bCorpseFound = true;
 
 	if (m_bStateChanged) {
@@ -599,8 +597,7 @@ void CAI_Biting::Think()
 	m_dwCurrentUpdate		= Level().timeServer();
 
 	// Обновление памяти монстра
-#pragma todo("MONSTER MEMORY REFACTORING...")
-	//Mem.UpdateMemory();
+	UpdateMemory();
 	
 
 	if (MotionSeq.Active())	{
@@ -608,12 +605,11 @@ void CAI_Biting::Think()
 	} else {
 	
 		VisionElem VE;
-#pragma todo("MONSTER MEMORY REFACTORING...")		
-//		if (Mem.SelectEnemy(VE)) {
-//			SetState(stateAttack);
-//		} else {	
-//			SetState(stateRest);
-//		}
+		if (SelectEnemy(VE)) {
+			SetState(stateAttack);
+		} else {	
+			SetState(stateRest);
+		}
 
 		CurrentState->Execute(true);
 		Motion.SetFrameParams(this);

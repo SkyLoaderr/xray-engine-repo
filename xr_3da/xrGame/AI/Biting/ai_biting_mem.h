@@ -5,8 +5,6 @@
 // MEMORY MANAGMENT
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //*********************************************************************************************************
-class CAI_Biting;
-
 
 #define TIME_TO_RESELECT_ENEMY	3000
 
@@ -86,7 +84,6 @@ protected:
 	void Deinit() {Sounds.clear();}
 
 	void UpdateHearing(TTime dt);
-	void ShowDbgInfo();
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -121,7 +118,7 @@ class CVisionMemory
 	TTime					MemoryTime;				// время хранения визуальных объектов
 	TTime					CurrentTime;			// текущее время
 	
-	VisionElem				EnemySelected;			
+	VisionElem				EnemySelected;
 
 	xr_vector<VisionElem>	Objects;
 	xr_vector<VisionElem>	Enemies;
@@ -137,13 +134,11 @@ public:
 	virtual bool SelectEnemy(VisionElem &ve);
 	bool SelectCorpse(VisionElem &ve);
 	
-	
 protected:
 	void Init(TTime mem_time);
 	void Deinit();
 
 	void UpdateVision(TTime dt);
-	void ShowDbgInfo();
 
 private:
 	void AddObject(const VisionElem &ve);
@@ -167,5 +162,4 @@ public:
 	}
 
 	void UpdateMemory();
-	void ShowDbgInfo();
 };

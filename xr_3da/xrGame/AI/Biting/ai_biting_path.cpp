@@ -28,9 +28,9 @@ void CAI_Biting::vfInitSelector(IBaseAI_NodeEvaluator &S, CSquad &Squad)
 	S.m_tpMyNode		= AI_Node;
 	S.m_tMyPosition		= Position();
 
-#pragma todo("MONSTER MEMORY REFACTORING...")
+
 	VisionElem ve;
-//	Mem.SelectEnemy(ve);
+	SelectEnemy(ve);
 
 	S.m_tEnemy			= ve.obj;
 	S.m_tEnemyPosition	= ve.position;

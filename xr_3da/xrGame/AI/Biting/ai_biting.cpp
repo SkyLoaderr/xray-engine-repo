@@ -98,10 +98,7 @@ void CAI_Biting::Init()
 
 	_CAction.Init();
 
-///	bCorpseFoundFirstTime			= true;
-//	m_dwEnemyMemoryTime				= 5000;  
-//	m_dwEnemyLastMemoryTime			= 0;
-//	Mem.Init(5000,10000,this);
+	InitMemory(5000,10000);
 
 	m_dwAttackMeleeTime				= 0;
 	m_dwAttackActorMeleeTime		= 0;
@@ -116,9 +113,7 @@ void CAI_Biting::Die()
 {
 	inherited::Die( );
 
-#pragma todo("Oles to Jim: CMonsterMemory - commented out")
-	// Mem.Deinit();
-
+	DeinitMemory();
 
 	Fvector	dir;
 	AI_Path.Direction(dir);

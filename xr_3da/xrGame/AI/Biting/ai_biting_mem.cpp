@@ -122,7 +122,7 @@ void CVisionMemory::UpdateVision(TTime dt)
 	Feel::Vision *pV = 0;
 	if (pB) {
 		pV = dynamic_cast<Feel::Vision *>(pB);
-		if (!pV) return; // ERROR
+		if (!pV) return; // In this case it's gonna be an error
 	}
 
 	pV->feel_vision_get(Visible_Objects);
@@ -160,7 +160,7 @@ void CVisionMemory::UpdateVision(TTime dt)
 		}
 	}
 
-	if ((EnemySelected.obj->CLS_ID !=CLSID_ENTITY) || (EnemySelected.obj && !EnemySelected.obj->g_Alive())) EnemySelected.obj = 0;
+	if (EnemySelected.obj && ((EnemySelected.obj->CLS_ID !=CLSID_ENTITY) || !EnemySelected.obj->g_Alive())) EnemySelected.obj = 0;
 }
  
 

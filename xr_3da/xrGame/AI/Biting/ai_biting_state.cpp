@@ -295,9 +295,8 @@ void CAttack::Init()
 	IState::Init();
 
 	// Получить врага
-#pragma todo("MONSTER MEMORY REFACTORING...")
 	VisionElem ve;
-//	if (!pData->Mem.SelectEnemy(ve)) R_ASSERT(false);
+	if (!pData->SelectEnemy(ve)) R_ASSERT(false);
 	pEnemy = ve.obj;
 
 	// Определение класса врага

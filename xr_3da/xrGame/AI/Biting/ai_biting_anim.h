@@ -16,11 +16,9 @@ namespace AI_Biting {
 	extern LPCSTR caGlobalNames		[];
 };
 
-
-#pragma todo("Oles to Jim: what does it mean? 'SelectAnimation(XFORM().k,XFORM().k,0)'")
 #define FORCE_ANIMATION_SELECT() {\
 	m_tpCurrentGlobalAnimation = 0; \
-	SelectAnimation(XFORM().k,XFORM().k,0);\
+	SelectAnimation(Direction(),Direction(),0);\
 }
 
 

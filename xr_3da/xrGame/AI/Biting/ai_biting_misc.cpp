@@ -244,22 +244,19 @@ void CAI_Biting::vfSetParameters(EPathType path_type,IBaseAI_NodeEvaluator *tpNo
 void CAI_Biting::vfUpdateParameters()
 {
 	
-	#pragma todo("MONSTER MEMORY REFACTORING...")
-	//Mem.UpdateMemory();
+	UpdateMemory();
 
 	//------------------------------------
 	// слух
 	A = B = false;
 	
 	SoundElem se;
-
-#pragma todo("Oles to Jim: CMonsterMemory - commented out")
-/*
-	if (Mem.IsRememberSound()) {
-		Mem.GetMostDangerousSound(se,A);
+	
+	if (IsRememberSound()) {
+		GetMostDangerousSound(se,A);
 		B = !A;
 	}
-*/
+
 
 	J = A | B;
 
@@ -267,9 +264,7 @@ void CAI_Biting::vfUpdateParameters()
 	// «рение
 
 	VisionElem ve;
-#pragma todo("MONSTER MEMORY REFACTORING...")
-//	if (Mem.SelectEnemy(ve)) {
-	if (true) {
+	if (SelectEnemy(ve)) {
 
 		// определить, видит ли мен€ враг
 		I = false;

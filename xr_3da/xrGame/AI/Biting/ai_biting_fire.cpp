@@ -148,9 +148,8 @@ bool CAI_Biting::AttackMelee(CObject *obj, bool bAttackRat)
 		Fmatrix MBoneLeft;
 		Fmatrix MBoneRight;
 
-#pragma todo("TRANSFORM REFACTORING...")
-//		MBoneLeft.mul(svTransform, PKinematics(Visual())->LL_GetInstance(m_iLeftFireBone).mTransform);
-//		MBoneRight.mul(svTransform, PKinematics(Visual())->LL_GetInstance(m_iRightFireBone).mTransform);
+		MBoneLeft.mul(XFORM(), PKinematics(Visual())->LL_GetInstance(m_iLeftFireBone).mTransform);
+		MBoneRight.mul(XFORM(), PKinematics(Visual())->LL_GetInstance(m_iRightFireBone).mTransform);
 
 		// получить BBox врага
 		Fvector vEnemyBoxCenter;
