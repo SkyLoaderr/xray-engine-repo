@@ -279,16 +279,19 @@ void	game_sv_TeamDeathmatch::OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, N
 		impulse = 0;
 	}
 	//---------------------------------------
-	if (ps_hitted->team != ps_hitter->team)
-	{
-	}
-	else
-	{
-		//---------------------------------------
-		//friendly fire case
+	if (ps_hitted != ps_hitter)
+	{	
+		if (ps_hitted->team != ps_hitter->team)
+		{
+		}
+		else
+		{
+			//---------------------------------------
+			//friendly fire case
 
-		power *= m_fFriendlyFireModifier;
-		impulse *= m_fFriendlyFireModifier;
+			power *= m_fFriendlyFireModifier;
+			impulse *= m_fFriendlyFireModifier;
+		};
 	};
 	//---------------------------------------
 	P.B.count	= PowRPos;	P.w_float(power);
