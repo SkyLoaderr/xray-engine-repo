@@ -9,6 +9,7 @@
 #ifdef _EDITOR
 	#include "scene.h"
 #else
+	#include "igame_level.h"
 	#include "xr_area.h"
 	#include "xr_object.h"
 #endif
@@ -34,8 +35,8 @@ CEffect_Rain::CEffect_Rain()
 	
 	Sound->create					(snd_Ambient,TRUE,"amb_rain");
 
-	destructor<IReader>	F			= FS.r_open("$game_meshes$","dm\\rain.dm");
-	DM_Drop							= ::Render->model_CreateDM		(F);
+	destructor<IReader>	F			(FS.r_open("$game_meshes$","dm\\rain.dm"));
+	DM_Drop							= ::Render->model_CreateDM		(&F());
 
 
 	//
