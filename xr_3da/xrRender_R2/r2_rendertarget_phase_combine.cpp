@@ -82,7 +82,7 @@ void	CRenderTarget::phase_combine	()
 	RCache.set_Stencil				(FALSE);
 
 	// ********************* Debug
-	if (0)
+	if (1)
 	{
 		u32		C					= D3DCOLOR_RGBA	(255,255,255,255);
 		float	_w					= float(Device.dwWidth)/2;
@@ -101,7 +101,7 @@ void	CRenderTarget::phase_combine	()
 		}
 
 		// Draw quater-screen quad textured with our direct-shadow-map-image
-		if (0) //.
+		if (1) //.
 		{
 			u32							IX=0,IY=1;
 			p0.set						(.5f/_w, .5f/_h);
@@ -122,7 +122,7 @@ void	CRenderTarget::phase_combine	()
 		}
 
 		// Draw quater-screen quad textured with our accumulator
-		if (0)
+		if (1)
 		{
 			u32							IX=1,IY=1;
 			p0.set						(.5f/_w, .5f/_h);
