@@ -26,6 +26,7 @@ protected:
 
 	Shader*			hWallmark;
 	Shader*			hUIIcon;
+	Shader*			hBulletTracer;
 	float			fWallmarkSize;
 
 	int				iAmmoLimit;

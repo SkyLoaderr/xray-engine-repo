@@ -32,16 +32,11 @@ CWeaponGroza::CWeaponGroza() : CWeapon("GROZA")
 	vLastFP.set		(0,0,0);
 	vLastFD.set		(0,0,0);
 	
-	// Bullet trace
-	sh_BulletTracer	= Device.Shader.Create	("bullet_tracer","bullet_tracer");
-
 	fTime			= 0;
 }
 
 CWeaponGroza::~CWeaponGroza()
 {
-	Device.Shader.Delete(sh_BulletTracer);
-
 	for (DWORD i=0; i<hFlames.size(); i++)
 		Device.Shader.Delete(hFlames[i]);
 
@@ -180,15 +175,18 @@ void CWeaponGroza::Update(float dt, BOOL bHUDView)
 			fTime-=dt;
 			Fvector p1, d;
 			m_pParent->g_fireParams(p1,d);
-				// bullet_trace
-				{
-					Fvector		b1,b2;
-					b1.direct	(p1,Device.vCameraRight,1.f);
-					b1.direct	(b1,d,3	);
-					b2.direct	(p1,d,30);
-					::Render.add_Line(b1,b2,.1f,D3DCOLOR_XRGB(255,0,0),sh_BulletTracer);
-				}
-
+			
+			// bullet_trace
+			{
+				UpdateFP	(bHUDView);
+				Fvector		b1,b2;
+//				b1.direct	(p1,Device.vCameraRight,1.f);
+//				b1.direct	(b1,d,3	);
+				b1.direct	(vLastFP,vLastFD,.0f);
+				b2.direct	(p1,d,30);
+				::Render.add_Line(b1,b2,.05f,D3DCOLOR_XRGB(255,0,0),hBulletTracer);
+			}
+			
 			while (fTime<0)
 			{
 				bFlame	= TRUE;

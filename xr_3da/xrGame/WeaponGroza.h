@@ -22,7 +22,6 @@ private:
 	// General
 	float			fTime;
 	BOOL			bFlame;
-	Shader*			sh_BulletTracer;
 
 	sound3D			sndFire;
 	sound3D			sndRicochet[SND_RIC_COUNT];

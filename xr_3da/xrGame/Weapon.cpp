@@ -24,6 +24,9 @@ CWeapon::CWeapon(LPCSTR name)
 	m_pHUD		= new CWeaponHUD();
 	m_WpnName	= strupr(strdup(name));
 	m_pContainer= 0;
+
+	// Bullet trace
+	hBulletTracer	= Device.Shader.Create	("bullet_tracer","bullet_tracer");
 }
 
 CWeapon::~CWeapon()
@@ -32,6 +35,7 @@ CWeapon::~CWeapon()
 	_DELETE		(pVisual);
 	_DELETE		(m_pHUD);
 	Device.Shader.Delete(hUIIcon);
+	Device.Shader.Delete(hBulletTracer);
 	if (hWallmark) Device.Shader.Delete(hWallmark);
 }
 
