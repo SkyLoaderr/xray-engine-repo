@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ai_monster_defs.h"
-#include "../../SkeletonAnimated.h"
+#include "../../../../SkeletonAnimated.h"
 
 class CCustomMonster;
 
