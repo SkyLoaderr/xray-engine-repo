@@ -114,17 +114,16 @@ void CAI_Soldier::Load(CInifile* ini, const char* section)
 		R_ASSERT(path_count && (path_count % 3 == 0));
 
 		path_count /= 3;
-		dwaPatrolNodes.resize(path_count);
-		tpaPatrolPoints.resize(path_count);
+		m_tpaPatrolPoints.resize(path_count);
 
 		for (int i=0; i<path_count; i++) {
-			sscanf(buf2,"%f,%f,%f",&(tpaPatrolPoints[i].x),&(tpaPatrolPoints[i].y),&(tpaPatrolPoints[i].z));
-			dwaPatrolNodes[i] = Level().AI.q_LoadSearch(tpaPatrolPoints[i]);
+			sscanf(buf2,"%f,%f,%f",&(m_tpaPatrolPoints[i].x),&(m_tpaPatrolPoints[i].y),&(m_tpaPatrolPoints[i].z));
 			for (int komas=0; komas<3; buf2++)
 				if (*buf2 == ',')
 					komas++;
 		}
 
+		m_dwStartPatrolNode = Level().AI.q_LoadSearch(m_tpaPatrolPoints[0]);
 		m_iCurrentPoint = 0;
 		AI_Path.bNeedRebuild = TRUE;
 		//vfCreateRealisticPath(tpaPatrolPoints, dwaPatrolNodes, tpaPatrolPath,3);
@@ -136,8 +135,8 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 	//R_ASSERT(fsimilar(_view.magnitude(),1));
 	//R_ASSERT(fsimilar(_move.magnitude(),1));
 
+	// choose motion animation
 	CMotionDef*	S=0;
-
 	if (iHealth<=0) {
 		if (m_bCrouched)
 			S = m_crouch_death;
@@ -1002,14 +1001,14 @@ void CAI_Soldier::FollowLeader()
 	}
 
 	if (Leader == this) {
-		if (tpaPatrolPoints.size())
+		if (m_tpaPatrolPoints.size())
 			eCurrentState = aiSoldierPatrolDetour;
 		else
 			eCurrentState = aiSoldierFreeHunting;
 		return;
 	}
 	else
-		if (tpaPatrolPoints.size())
+		if (m_tpaPatrolPoints.size())
 			eCurrentState = aiSoldierFollowLeaderPatrol;
 
 	vfInitSelector(SelectorFollowLeader,Squad,Leader);

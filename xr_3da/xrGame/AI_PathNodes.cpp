@@ -53,6 +53,7 @@ void	UnpackContour(PContour& C, DWORD ID)
 	C.v4.set(P0.x-st,P1.y,P1.z+st);	projectPoint(PL,C.v4);	// minX,maxZ
 }
 
+/**
 //******* Distance 2 node
 void	ClosestPointOnContour(Fvector& Dest, const Fvector& P, PContour& C)
 {
@@ -79,6 +80,119 @@ void	IntersectContours	(PSegment& Dest, PContour& C1, PContour& C2)
 
 	Dest.v2.set(Dest.v1);
 	Log("! AI_PathNodes: Can't find intersection segment");
+}
+/**/
+
+IC bool bfInsideContour(Fvector &tPoint, PContour &tContour)
+{
+	return((tContour.v1.x - EPS_L <= tPoint.x) && (tContour.v1.z - EPS_L <= tPoint.z) && (tContour.v3.x + EPS_L >= tPoint.x) && (tContour.v3.z + EPS_L >= tPoint.z));
+}
+
+IC bool bfSimilar(Fvector &tPoint0, Fvector &tPoint1)
+{
+	return((fabsf(tPoint0.x - tPoint1.x) < EPS_L) && (fabsf(tPoint0.z - tPoint1.z) < EPS_L));
+}
+
+IC void vfIntersectContours(PSegment &tSegment, PContour &tContour0, PContour &tContour1)
+{
+	bool bFound = false;
+	
+	if (bfInsideContour(tContour0.v1,tContour1)) {
+		tSegment.v1 = tContour0.v1;
+		bFound = true;
+	}
+
+	if (bfInsideContour(tContour0.v2,tContour1)) {
+		if (!bFound) {
+			tSegment.v1 = tContour0.v2;
+			bFound = true;
+		}
+		else {
+			tSegment.v2 = tContour0.v2;
+			return;
+		}
+	}
+	if (bfInsideContour(tContour0.v3,tContour1)) {
+		if (!bFound) {
+			tSegment.v1 = tContour0.v3;
+			bFound = true;
+		}
+		else {
+			tSegment.v2 = tContour0.v3;
+			return;
+		}
+	}
+	if (bfInsideContour(tContour0.v4,tContour1)) {
+		if (!bFound) {
+			tSegment.v1 = tContour0.v4;
+			bFound = true;
+		}
+		else {
+			tSegment.v2 = tContour0.v4;
+			return;
+		}
+	}
+	if (bFound) {
+		if (bfInsideContour(tContour1.v1,tContour0) && (!(bfSimilar(tSegment.v1,tContour1.v1)))) {
+			tSegment.v2 = tContour1.v1;
+			return;
+		}
+		if (bfInsideContour(tContour1.v2,tContour0) && (!(bfSimilar(tSegment.v1,tContour1.v2)))) {
+			tSegment.v2 = tContour1.v2;
+			return;
+		}
+		if (bfInsideContour(tContour1.v3,tContour0) && (!(bfSimilar(tSegment.v1,tContour1.v3)))) {
+			tSegment.v2 = tContour1.v3;
+			return;
+		}
+		if (bfInsideContour(tContour1.v4,tContour0) && (!(bfSimilar(tSegment.v1,tContour1.v4)))) {
+			tSegment.v2 = tContour1.v4;
+			return;
+		}
+	}
+	else {
+		if (bfInsideContour(tContour1.v1,tContour0)) {
+			tSegment.v1 = tContour1.v1;
+			bFound = true;
+		}
+		if (bfInsideContour(tContour1.v2,tContour0)) {
+			if (!bFound) {
+				tSegment.v1 = tContour1.v2;
+				bFound = true;
+			}
+			else {
+				tSegment.v2 = tContour1.v2;
+				return;
+			}
+		}
+		if (bfInsideContour(tContour1.v3,tContour0)) {
+			if (!bFound) {
+				tSegment.v1 = tContour1.v3;
+				bFound = true;
+			}
+			else {
+				tSegment.v2 = tContour1.v3;
+				return;
+			}
+		}
+		if (bfInsideContour(tContour1.v4,tContour0)) {
+			if (!bFound) {
+				tSegment.v1 = tContour1.v4;
+				bFound = true;
+			}
+			else {
+				tSegment.v2 = tContour1.v4;
+				return;
+			}
+		}
+	}
+
+	if (bFound) {
+		tSegment.v2 = tSegment.v1;
+		Log("! AI_PathNodes: segment has null length");
+	}
+	else
+		Log("! AI_PathNodes: Can't find intersection segment");
 }
 
 //******* 2D segments intersection
@@ -221,7 +335,7 @@ void CPathNodes::BuildTravelLine(const Fvector& current_pos)
 	{
 		PSegment				S;
 		UnpackContour		(Cnext,Nodes[I]);
-		IntersectContours	(S,Ccur,Cnext);
+		vfIntersectContours	(S,Ccur,Cnext);
 		Segments.push_back	(S);
 		Ccur				= Cnext;
 	}
