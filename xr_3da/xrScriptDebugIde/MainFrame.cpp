@@ -78,6 +78,7 @@ CMainFrame::CMainFrame()
 {
 	m_needAnswer = FALSE;
 	m_pMailSlotThread = NULL;
+
 	m_mailSlot = CreateMailSlotByName(IDE_MAIL_SLOT);
 	m_hAccelNoProject = ::LoadAccelerators(theApp.m_hInstance, MAKEINTRESOURCE(IDR_ACCEL_NO_PROJECT));
 	m_hAccelDebug = ::LoadAccelerators(theApp.m_hInstance, MAKEINTRESOURCE(IDR_ACCEL_DEBUG));
