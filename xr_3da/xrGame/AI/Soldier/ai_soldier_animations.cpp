@@ -54,10 +54,10 @@ void CAI_Soldier::vfLoadSounds()
 	pSounds->Create(sndRadio[1],TRUE,"monsters\\Soldier\\Radio\\vo2",0,SOUND_TYPE_MONSTER_TALKING_HUMAN);
 	pSounds->Create(sndRadio[2],TRUE,"monsters\\Soldier\\Radio\\vo3",0,SOUND_TYPE_MONSTER_TALKING_HUMAN);
 	pSounds->Create(sndRadio[3],TRUE,"monsters\\Soldier\\Radio\\R1",0,SOUND_TYPE_MONSTER_TALKING_HUMAN);
-	if (g_Squad() == MEGAPHONE_SQUAD) {
-		pSounds->Delete(sndRadio[0]);
-		pSounds->Create(sndRadio[0],TRUE,"monsters\\Soldier\\Radio\\megafon_1m",0,SOUND_TYPE_MONSTER_TALKING_HUMAN);
-	}
+//	if (g_Squad() == MEGAPHONE_SQUAD) {
+//		pSounds->Delete(sndRadio[0]);
+//		pSounds->Create(sndRadio[0],TRUE,"monsters\\Soldier\\Radio\\megafon_1m",0,SOUND_TYPE_MONSTER_TALKING_HUMAN);
+//	}
 	pSounds->Create(sndSteps[0],TRUE,"Actor\\StepL",0,SOUND_TYPE_MONSTER_WALKING_HUMAN);
 	pSounds->Create(sndSteps[1],TRUE,"Actor\\StepR",0,SOUND_TYPE_MONSTER_WALKING_HUMAN);
 }
@@ -299,6 +299,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 //				}
 //				break;
 //			}
+/**
 			case aiSoldierAttackFireAlone : {
 				if (m_bFiring)
 					switch (m_cBodyState) {
@@ -389,6 +390,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 				tpTorsoAnimation = tpLegsAnimation = 0;
 				break;
 			}
+/**/
 			default : {
 				// not moving
 				//if (speed < .1f) {
@@ -431,6 +433,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 								}
 						else
 							switch (eCurrentState) {
+								/**
 								case aiSoldierHurtAloneDefend : {
 									switch (m_cBodyState) {
 										case BODY_STATE_STAND : {
@@ -449,7 +452,9 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 									tpTorsoAnimation = tpLegsAnimation = 0;
 									break;
 								}
+								/**/
 								default : {
+									/**
 									if ((eCurrentState == aiSoldierHurtAloneDefend) && (!AI_Path.TravelPath.size() || (AI_Path.TravelPath.size() - 1 > AI_Path.TravelStart))) {
 										switch (m_cBodyState) {
 											case BODY_STATE_STAND : {
@@ -467,7 +472,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 										}
 										tpTorsoAnimation = tpLegsAnimation = 0;
 									}
-									else {
+									else /**/{
 										switch (m_cBodyState) {
 											case BODY_STATE_STAND : {
 												tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpaIdle[1];
@@ -519,6 +524,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 									}
 								}
 						else
+							/**
 							if ((eCurrentState == aiSoldierHurtAloneDefend) && (!AI_Path.TravelPath.size() || (AI_Path.TravelPath.size() - 1 > AI_Path.TravelStart))) {
 								switch (m_cBodyState) {
 									case BODY_STATE_STAND : {
@@ -536,7 +542,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 								}
 								tpTorsoAnimation = tpLegsAnimation = 0;
 							}
-							else {
+							else /**/{
 								switch (m_cBodyState) {
 									case BODY_STATE_STAND : {
 										tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpaIdle[1];

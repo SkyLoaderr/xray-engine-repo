@@ -21,54 +21,87 @@ class CAI_Soldier : public CCustomMonster
 		SND_DIE_COUNT=4,
 		SND_RADIO_COUNT=4,
 		SND_STEP_COUNT=2,
-		MEGAPHONE_SQUAD=31,
 	};
 
 	enum ESoldierStates 	{
-		/**
-		aiSoldierAttackRun = 0,
-		aiSoldierAttackFire,
-		aiSoldierDefend,
-		aiSoldierFindEnemy,
-		aiSoldierFollowLeader,
-		aiSoldierFreeHunting,
-		aiSoldierInjuring,
-		
-		aiSoldierSitting,
-
-		aiSoldierMoreDeadThanAlive,
-		
-		aiSoldierPatrolHurtAggressiveUnderFire,
-		aiSoldierPatrolHurtNonAggressiveUnderFire,
-		aiSoldierPatrolUnderFire,
-
-		aiSoldierPursuit,
-		aiSoldierRetreat,
-		aiSoldierUnderFire,
-		
-		aiSoldierJumping,
-		/**/
-		aiSoldierDie,
+		aiSoldierDie = 0,
+		aiSoldierTurnOver,
+		aiSoldierWaitForAnimation,
+		aiSoldierWaitForTime,
+		aiSoldierRecharge,
+		aiSoldierLookingOver,
 		aiSoldierPatrolReturnToRoute,
 		aiSoldierPatrolRoute,
 		aiSoldierFollowLeaderPatrol,
-		aiSoldierSenseSomethingAlone,
-		aiSoldierTurnOver,
-		aiSoldierLookingOver,
-		aiSoldierAttackFireAlone,
-		aiSoldierRecharge,
-		aiSoldierNoWeapon,
-		aiSoldierSteal,
-		aiSoldierWaitForAnimation,
-		aiSoldierWaitForTime,
-		aiSoldierAttackAim,
-		aiSoldierPointAtSmth,
-		aiSoldierPatrolHurt,
-		aiSoldierDefendFireAlone,
-		aiSoldierHurtAloneDefend,
-		aiSoldierPatrolDanger,
+		aiSoldierFight,
+		aiSoldierFightAlone,
+		aiSoldierFightGroup,
+		aiSoldierAttackAlone,
+		aiSoldierDefendAlone,
 		aiSoldierPursuitAlone,
-		aiSoldierAttackAloneRun,
+		aiSoldierFindAlone,
+		aiSoldierRetreatAlone,
+		aiSoldierHurtAlone,
+		aiSoldierAttackAloneNonFire,
+		aiSoldierAttackAloneFire,
+		aiSoldierDefendAloneNonFire,
+		aiSoldierDefendAloneFire,
+		aiSoldierPursuitAloneNonFire,
+		aiSoldierPursuitAloneFire,
+		aiSoldierFindAloneNonFire,
+		aiSoldierFindAloneFire,
+		aiSoldierRetreatAloneNonFire,
+		aiSoldierRetreatAloneFire,
+		aiSoldierRetreatAloneDialog,
+		aiSoldierAttackAloneNonFireFire,
+		aiSoldierAttackAloneNonFireRun,
+		aiSoldierAttackAloneNonFireSteal,
+		aiSoldierAttackAloneNonFireDialog,
+		aiSoldierAttackAloneFireFire,
+		aiSoldierAttackAloneFireRun,
+		aiSoldierAttackAloneFireSteal,
+		aiSoldierAttackAloneFireDialog,
+		aiSoldierDefendAloneNonFireFire,
+		aiSoldierDefendAloneNonFireRun,
+		aiSoldierDefendAloneNonFireSteal,
+		aiSoldierDefendAloneNonFireDialog,
+		aiSoldierDefendAloneFireFire,
+		aiSoldierDefendAloneFireRun,
+		aiSoldierDefendAloneFireSteal,
+		aiSoldierDefendAloneFireDialog,
+		aiSoldierAttackGroup,
+		aiSoldierDefendGroup,
+		aiSoldierPursuitGroup,
+		aiSoldierFindGroup,
+		aiSoldierRetreatGroup,
+		aiSoldierHurtGroup,
+		aiSoldierAttackGroupNonFire,
+		aiSoldierAttackGroupFire,
+		aiSoldierDefendGroupNonFire,
+		aiSoldierDefendGroupFire,
+		aiSoldierPursuitGroupNonFire,
+		aiSoldierPursuitGroupFire,
+		aiSoldierFindGroupNonFire,
+		aiSoldierFindGroupFire,
+		aiSoldierRetreatGroupNonFire,
+		aiSoldierRetreatGroupFire,
+		aiSoldierRetreatGroupDialog,
+		aiSoldierAttackGroupNonFireFire,
+		aiSoldierAttackGroupNonFireRun,
+		aiSoldierAttackGroupNonFireSteal,
+		aiSoldierAttackGroupNonFireDialog,
+		aiSoldierAttackGroupFireFire,
+		aiSoldierAttackGroupFireRun,
+		aiSoldierAttackGroupFireSteal,
+		aiSoldierAttackGroupFireDialog,
+		aiSoldierDefendGroupNonFireFire,
+		aiSoldierDefendGroupNonFireRun,
+		aiSoldierDefendGroupNonFireSteal,
+		aiSoldierDefendGroupNonFireDialog,
+		aiSoldierDefendGroupFireFire,
+		aiSoldierDefendGroupFireRun,
+		aiSoldierDefendGroupFireSteal,
+		aiSoldierDefendGroupFireDialog,
 	};
 	
 	enum EGestureStates {
@@ -111,11 +144,6 @@ class CAI_Soldier : public CCustomMonster
 		// normal animations
 		////////////////////////////////////////////////////////////////////////////
 
-/************************************************************************
-/**/
-
-/************************************************************************/
-		
 		// global animations
 		typedef struct tagSNormalGlobalAnimations{
 			CMotionDef* tpaDeath[5];
@@ -257,7 +285,6 @@ class CAI_Soldier : public CCustomMonster
 		float				m_fDistanceWent;
 		char				m_cStep;
 
-		
 		// head turns
 		static void __stdcall HeadSpinCallback(CBoneInstance*);
 		static void __stdcall SpineSpinCallback(CBoneInstance*);
@@ -368,53 +395,87 @@ class CAI_Soldier : public CCustomMonster
 		CSoldierSelectorUnderFireCover		SelectorUnderFireCover;
 		CSoldierSelectorUnderFireLine		SelectorUnderFireLine;
 
-		/**
-		void OnAttackRun();
-		void OnAttackFire();
-		
-		void OnDefend();
-		void OnFindEnemy();
-		void OnFollowLeader();
-		void OnFreeHunting();
-		void OnInjuring();
-		void OnMoreDeadThanAlive();
-
-		void OnSitting();
-
-		void OnPatrolHurtAggressiveUnderFire();
-		void OnPatrolHurtNonAggressiveUnderFire();
-		void OnPatrolUnderFire();
-		
-		void OnRetreat();
-		void OnUnderFire();
-		void OnJumping();
-		/**/
-		void Test();
 		void Die();
-		void OnWaitingForAnimation();
-		void OnWaitingForTime();
-		void OnPatrol();
-		void OnPatrolReturn();
-		void OnFollowLeaderPatrol();
-		void OnSenseSomethingAlone();
 		void OnTurnOver();
-		void OnLookingOver();
-		void OnAttackFireAlone();
+		void OnWaitForAnimation();
+		void OnWaitForTime();
 		void OnRecharge();
-		void OnNoWeapon();
-		void OnSteal();
+		void OnLookingOver();
+		void OnPatrolReturnToRoute();
+		void OnPatrolRoute();
+		void OnFollowLeaderPatrol();
+		void OnFight();
+		void OnFightAlone();
+		void OnFightGroup();
+		void OnAttackAlone();
+		void OnDefendAlone();
 		void OnPursuitAlone();
-		//void OnLyingDown();
-		//void OnStandingUp();
-		void OnAttackAim();
-		void OnPointAtSmth();
-		void OnPatrolHurt();
-		void OnDangerAlone();
-		void OnDefendFireAlone();
-		void OnHurtAloneDefend();
-		void OnAttackAloneRun();
+		void OnFindAlone();
+		void OnRetreatAlone();
+		void OnHurtAlone();
+		void OnAttackAloneNonFire();
+		void OnAttackAloneFire();
+		void OnDefendAloneNonFire();
+		void OnDefendAloneFire();
+		void OnPursuitAloneNonFire();
+		void OnPursuitAloneFire();
+		void OnFindAloneNonFire();
+		void OnFindAloneFire();
+		void OnRetreatAloneNonFire();
+		void OnRetreatAloneFire();
+		void OnRetreatAloneDialog();
+		void OnAttackAloneNonFireFire();
+		void OnAttackAloneNonFireRun();
+		void OnAttackAloneNonFireSteal();
+		void OnAttackAloneNonFireDialog();
+		void OnAttackAloneFireFire();
+		void OnAttackAloneFireRun();
+		void OnAttackAloneFireSteal();
+		void OnAttackAloneFireDialog();
+		void OnDefendAloneNonFireFire();
+		void OnDefendAloneNonFireRun();
+		void OnDefendAloneNonFireSteal();
+		void OnDefendAloneNonFireDialog();
+		void OnDefendAloneFireFire();
+		void OnDefendAloneFireRun();
+		void OnDefendAloneFireSteal();
+		void OnDefendAloneFireDialog();
+		void OnAttackGroup();
+		void OnDefendGroup();
+		void OnPursuitGroup();
+		void OnFindGroup();
+		void OnRetreatGroup();
+		void OnHurtGroup();
+		void OnAttackGroupNonFire();
+		void OnAttackGroupFire();
+		void OnDefendGroupNonFire();
+		void OnDefendGroupFire();
+		void OnPursuitGroupNonFire();
+		void OnPursuitGroupFire();
+		void OnFindGroupNonFire();
+		void OnFindGroupFire();
+		void OnRetreatGroupNonFire();
+		void OnRetreatGroupFire();
+		void OnRetreatGroupDialog();
+		void OnAttackGroupNonFireFire();
+		void OnAttackGroupNonFireRun();
+		void OnAttackGroupNonFireSteal();
+		void OnAttackGroupNonFireDialog();
+		void OnAttackGroupFireFire();
+		void OnAttackGroupFireRun();
+		void OnAttackGroupFireSteal();
+		void OnAttackGroupFireDialog();
+		void OnDefendGroupNonFireFire();
+		void OnDefendGroupNonFireRun();
+		void OnDefendGroupNonFireSteal();
+		void OnDefendGroupNonFireDialog();
+		void OnDefendGroupFireFire();
+		void OnDefendGroupFireRun();
+		void OnDefendGroupFireSteal();
+		void OnDefendGroupFireDialog();
 
 		// miscellanious funtions	
+		void Test();
 		void SelectSound(int &iIndex);
 		void vfUpdateSounds(DWORD dwTimeDelta);
 	IC  CGroup getGroup() {return Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];};
