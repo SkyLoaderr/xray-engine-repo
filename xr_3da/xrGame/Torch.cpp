@@ -36,7 +36,7 @@ void CTorch::Switch()
 	glow_render->set_active	(bActive);
 }
 
-void Switch	(bool light_on)
+void CTorch::Switch	(bool light_on)
 {
 	light_render->set_active(light_on);
 	glow_render->set_active	(light_on);
