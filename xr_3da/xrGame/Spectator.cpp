@@ -179,7 +179,7 @@ void CSpectator::cam_Update	(CActor* A)
 			point.set				(0.f,1.6f,0.f);
 			M.transform_tiny		(point);
 			M.getHPB				(y,p,r);
-			cam->Set				(y,p,r);
+			cam->Set				(-y,-p,-r);
 			cam->Update				(point,dangle);
 			}break;
 		}
