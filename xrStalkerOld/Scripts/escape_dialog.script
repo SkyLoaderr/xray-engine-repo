@@ -204,6 +204,9 @@ end
 function assault_actor_have_vodka(first_speaker, second_speaker)
 	return second_speaker:object("vodka") ~= nil
 end
+function assault_actor_dont_have_vodka(first_speaker, second_speaker)
+	return not this.assault_actor_have_vodka(first_speaker, second_speaker)
+end
 function transfer_vodka_to_assault(first_speaker, second_speaker)
 	local obj = first_speaker:object("vodka")
 	first_speaker:transfer_item (obj, second_speaker)

@@ -61,6 +61,9 @@ function proceed(actor)
 		actor:give_info_portion("escape_dynamite_have")
 		actor:set_task_state(task.completed, "esc_dinamit_to_volk", 2)
 	end
+	if actor:has_info("escape_factory_assault_say_hello") then
+		actor:set_task_state(task.completed, "esc_dinamit_to_volk", 1)
+	end
 
 	--' GARBAGE
 	if actor:has_info("garbage_meetstalker_start") and
