@@ -15,9 +15,9 @@ struct CNewsLoader : public object_loader::detail::CEmptyPredicate {
 	template <typename T1, typename T2>
 	IC	bool operator()	(T1 &data, const T2 &value, bool first) const {return(!first);}
 	template <typename T1, typename T2>
-	IC	void operator()	(std::pair<T1,T2> &data) const
+	IC	void after_load	(T1 &data, T2 &stream) const
 	{
-		const_cast<object_type_traits::remove_const<T1>::type&>(data.first) = data.second->m_news_id;
+		const_cast<object_type_traits::remove_const<typename T1::first_type>::type&>(data.first) = data.second->m_news_id;
 	}
 };
 
