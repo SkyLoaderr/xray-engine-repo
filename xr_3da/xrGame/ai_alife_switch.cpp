@@ -28,18 +28,19 @@ void CAI_ALife::vfSwitchObjectOnline(CALifeDynamicObject *tpALifeDynamicObject)
 	VERIFY							(!tpALifeDynamicObject->m_bOnline);
 	CALifeAbstractGroup				*tpALifeAbstractGroup = dynamic_cast<CALifeAbstractGroup*>(tpALifeDynamicObject);
 	if (tpALifeAbstractGroup) {
-		OBJECT_IT					I = tpALifeAbstractGroup->m_tpMembers.begin();
+		OBJECT_IT					I = tpALifeAbstractGroup->m_tpMembers.begin(), B = I;
 		OBJECT_IT					E = tpALifeAbstractGroup->m_tpMembers.end();
+		u32							N = E - I;
 		for ( ; I != E; I++) {
 			OBJECT_PAIR_IT			J = m_tObjectRegistry.find(*I);
 			VERIFY					(J != m_tObjectRegistry.end());
 			if (tpALifeAbstractGroup->m_bCreateSpawnPositions) {
-				Fvector tTemp;
-				tTemp.set(::Random.randF(0,.35f),0,::Random.randF(0,.35f));
-				(*J).second->o_Position.add(tpALifeDynamicObject->o_Position,tTemp);
+				//Fvector tTemp;
+				//tTemp.set(::Random.randF(0,.35f),0,::Random.randF(0,.35f));
+				//(*J).second->o_Position.add(tpALifeDynamicObject->o_Position,tTemp);
 				xrSE_Enemy				*tpEnemy = dynamic_cast<xrSE_Enemy*>((*J).second);
 				if (tpEnemy)
-					tpEnemy->o_torso.yaw = ::Random.randF(-PI,PI);
+					tpEnemy->o_torso.yaw = angle_normalize_signed((I - B)/N*PI_MUL_2);
 			}
 			vfCreateObject		((*J).second);
 		}
@@ -74,6 +75,7 @@ void CAI_ALife::vfSwitchObjectOffline(CALifeDynamicObject *tpALifeDynamicObject)
 
 void CAI_ALife::ProcessOnlineOfflineSwitches(CALifeDynamicObject *I)
 {
+	Msg("%s",I->s_name);
 	if (I->m_bOnline)
 		if (I->ID_Parent == 0xffff) {
 			if (I->m_dwLastSwitchTime) {
@@ -92,21 +94,26 @@ void CAI_ALife::ProcessOnlineOfflineSwitches(CALifeDynamicObject *I)
 						OBJECT_PAIR_IT			J = m_tObjectRegistry.find(tpALifeAbstractGroup->m_tpMembers[i]);
 						VERIFY					(J != m_tObjectRegistry.end());
 						xrSE_Enemy				*tpEnemy = dynamic_cast<xrSE_Enemy*>((*J).second);
-						if (tpEnemy && (tpEnemy->fHealth <= 0)) {
-							tpEnemy->m_bDirectControl = true;
-							tpALifeAbstractGroup->m_tpMembers.erase(tpALifeAbstractGroup->m_tpMembers.begin() + i);
-							CALifeScheduleRegistry::Update(tpEnemy);
-							i--;
-							N--;
-							continue;
-						}
-						if (m_tpActor->o_Position.distance_to(tpEnemy->o_Position) > m_fOnlineDistance)
-							dwCount++;
+						if (tpEnemy)
+							if (tpEnemy->fHealth <= 0) {
+								tpEnemy->m_bDirectControl = true;
+//								tpALifeAbstractGroup->m_tpMembers.erase(tpALifeAbstractGroup->m_tpMembers.begin() + i);
+//								CALifeScheduleRegistry::Update(tpEnemy);
+//								i--;
+//								N--;
+//								continue;
+							}
+							else
+								if (m_tpActor->o_Position.distance_to(tpEnemy->o_Position) > m_fOnlineDistance)
+									dwCount++;
 					}
-					if (tpALifeAbstractGroup->m_tpMembers.size())
-						if (dwCount == tpALifeAbstractGroup->m_tpMembers.size())
-							if (Device.dwTimeGlobal -  I->m_dwLastSwitchTime > m_dwSwitchDelay)
-								vfSwitchObjectOffline(I);
+					Msg("%d",dwCount);
+					if (tpALifeAbstractGroup->m_tpMembers.size() && (dwCount == tpALifeAbstractGroup->m_tpMembers.size())) {
+						if (Device.dwTimeGlobal -  I->m_dwLastSwitchTime > m_dwSwitchDelay)
+							vfSwitchObjectOffline(I);
+					}
+					else
+						I->m_dwLastSwitchTime = 0;
 				}
 			}
 			else

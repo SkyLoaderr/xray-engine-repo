@@ -621,7 +621,8 @@ void xrSE_Rat::STATE_Read(NET_Packet& P, u16 size)
 	// personal characteristics
 	P.r_float (fEyeFov);
 	P.r_float (fEyeRange);
-	P.r_float (fHealth);
+	if (m_wVersion <= 5)
+		P.r_float (fHealth);
 	P.r_float (fMinSpeed);
 	P.r_float (fMaxSpeed);
 	P.r_float (fAttackSpeed);
@@ -653,7 +654,6 @@ void xrSE_Rat::STATE_Write(NET_Packet& P)
 	// personal characteristics
 	P.w_float (fEyeFov);
 	P.w_float (fEyeRange);
-	P.w_float (fHealth);
 	P.w_float (fMinSpeed);
 	P.w_float (fMaxSpeed);
 	P.w_float (fAttackSpeed);
@@ -679,14 +679,13 @@ void xrSE_Rat::STATE_Write(NET_Packet& P)
 void xrSE_Rat::UPDATE_Read(NET_Packet& P)
 {
 	inherited::UPDATE_Read(P);
-	if (m_wVersion >= 2)
+	if ((m_wVersion >= 2) && (m_wVersion <= 5))
 		P.r_float (fHealth);
 }
 
 void xrSE_Rat::UPDATE_Write(NET_Packet& P)
 {
 	inherited::UPDATE_Write(P);
-	P.w_float (fHealth);
 }
 
 #ifdef _EDITOR
@@ -754,7 +753,8 @@ void xrSE_Zombie::STATE_Read(NET_Packet& P, u16 size)
 	// personal characteristics
 	P.r_float (fEyeFov);
 	P.r_float (fEyeRange);
-	P.r_float (fHealth);
+	if (m_wVersion <= 5)
+		P.r_float (fHealth);
 	P.r_float (fMinSpeed);
 	P.r_float (fMaxSpeed);
 	P.r_float (fAttackSpeed);
@@ -776,7 +776,6 @@ void xrSE_Zombie::STATE_Write(NET_Packet& P)
 	// personal characteristics
 	P.w_float (fEyeFov);
 	P.w_float (fEyeRange);
-	P.w_float (fHealth);
 	P.w_float (fMinSpeed);
 	P.w_float (fMaxSpeed);
 	P.w_float (fAttackSpeed);
@@ -864,7 +863,8 @@ void xrSE_Dog::STATE_Read(NET_Packet& P, u16 size)
 	// personal characteristics
 	P.r_float (fEyeFov);
 	P.r_float (fEyeRange);
-	P.r_float (fHealth);
+	if (m_wVersion <= 5)
+		P.r_float (fHealth);
 	P.r_float (fMinSpeed);
 	P.r_float (fMaxSpeed);
 	P.r_float (fAttackSpeed);
@@ -896,7 +896,6 @@ void xrSE_Dog::STATE_Write(NET_Packet& P)
 	// personal characteristics
 	P.w_float (fEyeFov);
 	P.w_float (fEyeRange);
-	P.w_float (fHealth);
 	P.w_float (fMinSpeed);
 	P.w_float (fMaxSpeed);
 	P.w_float (fAttackSpeed);

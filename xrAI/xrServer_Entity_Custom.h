@@ -4,7 +4,7 @@
 #include "xrMessages.h"
 #include "ai_alife_interfaces.h"
 
-#define SPAWN_VERSION	u16(5)
+#define SPAWN_VERSION	u16(6)
 
 class xrClientData;
 
