@@ -57,6 +57,7 @@ public:
 		u8					bProcessed			:		1;
 		u8					bDisableShadowCast	:		1;
 		u8					bOpaque				:		1;	// For ray-tracing speedup
+		u8					bLocked				:		1;	// For tesselation
 	}						flags;
 
 	virtual	Shader_xrLC&	Shader				( );

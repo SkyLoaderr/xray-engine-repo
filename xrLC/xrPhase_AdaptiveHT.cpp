@@ -18,7 +18,10 @@ void CBuild::xrPhase_AdaptiveHT	()
 
 	// clear split flag from all faces
 	for (u32 fit=0; fit<cnt_faces; fit++)
-		g_faces[fit]->flags.bSplitted	= false;
+	{
+		g_faces[fit]->flags.bSplitted		= false;
+		g_faces[fit]->flags.bLocked			= !g_faces[fit]->flags.bOpaque;
+	}
 
 	// main process
 	g_bUnregister		= FALSE;
@@ -105,15 +108,17 @@ void CBuild::xrPhase_AdaptiveHT	()
 			F2->dwMaterialGame	= AF->dwMaterialGame;
 			F2->SetVertices		(AF->v[idB],V,AF->v[id2]);
 			F2->AddChannel		(AF->tc.front().uv[idB],UV,AF->tc.front().uv[id2]);
-		}
 
-		// don't destroy old face (it can be used as occluder during ray-trace)
+			// don't destroy old face	(it can be used as occluder during ray-trace)
+			if (!AF->flags.bLocked)		FacePool.destroy	(AF);
+		}
+		V->normalFromAdj		();
 	}
 
 	// Cleanup
 	xr_delete			(RCAST_Model);
-	for (I=0; I<g_faces.size(); I++)	if (g_faces[I]->flags.bSplitted)		FacePool.destroy	(g_faces[I]);
-	for (I=0; I<g_vertices.size(); I++)	if (0==g_vertices[I]->adjacent.size())	VertexPool.destroy	(g_vertices[I]);
+	for (I=0; I<g_faces.size(); I++)	if (0==g_faces[I] || g_faces[I]->flags.bSplitted)	FacePool.destroy	(g_faces[I]);
+	for (I=0; I<g_vertices.size(); I++)	if (0==g_vertices[I]->adjacent.size())				VertexPool.destroy	(g_vertices[I]);
 	g_faces.erase		(std::remove(g_faces.begin(),g_faces.end(),(Face*)0),g_faces.end());
 	g_vertices.erase	(std::remove(g_vertices.begin(),g_vertices.end(),(Vertex*)0),g_vertices.end());
 	g_bUnregister		= true;
