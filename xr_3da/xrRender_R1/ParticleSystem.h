@@ -170,7 +170,7 @@ namespace PS
 
 			m_Animation.InitDefault();
 
-			m_Flags.set			(PS_RND_INIT_ANGLE);
+			m_Flags.assign		(PS_RND_INIT_ANGLE);
 
 			m_fLife		 		= 5.600000f;
 			m_fLifeVar 			= 0.100000f;

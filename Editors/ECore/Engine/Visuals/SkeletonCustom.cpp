@@ -341,7 +341,7 @@ void CKinematics::LL_SetBoneVisible(u16 bone_id, BOOL val, BOOL bRecursive)
 
 void CKinematics::LL_SetBonesVisible(u64 mask)
 {
-	visimask.set			(0);	
+	visimask.assign			(0);	
 	for (u32 b=0; b<bones->size(); b++){
     	u64 bm				= u64(1)<<b;
     	if (mask&bm){

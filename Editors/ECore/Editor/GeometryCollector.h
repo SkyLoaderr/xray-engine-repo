@@ -12,6 +12,7 @@ struct ECORE_API GCVertex{
 struct ECORE_API GCFace{
 	u32 				verts[3];
     bool				valid;
+    u32					dummy;
 };
 
 class ECORE_API VCPacked
@@ -59,10 +60,12 @@ public:
 
     xr_vector<GCFace>&	Faces		()	{ return faces;				}
 
-	void				add_face	(const Fvector& v0, const Fvector& v1, const Fvector& v2);
+	void				add_face	(const Fvector& v0, const Fvector& v1, const Fvector& v2, u32 dummy=0);
 
     GCFace*				getF		()	{ return &*faces.begin();	}
     size_t				getFS		()	{ return faces.size();		}
+
+    void				calc_adjacency(U32Vec& dest);
 };
 
 #endif

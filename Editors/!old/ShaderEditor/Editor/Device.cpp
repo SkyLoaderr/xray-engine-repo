@@ -19,7 +19,7 @@ extern int	rsDIB_Size;
 //---------------------------------------------------------------------------
 CRenderDevice::CRenderDevice()
 {
-	psDeviceFlags.set(rsStatistic|rsFilterLinear|rsFog|rsDrawGrid);
+	psDeviceFlags.assign(rsStatistic|rsFilterLinear|rsFog|rsDrawGrid);
 // dynamic buffer size
 	rsDVB_Size		= 2048;
 	rsDIB_Size		= 2048;

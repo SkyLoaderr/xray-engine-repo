@@ -55,13 +55,13 @@ class TUI_CustomTools;
             m_Start.set		(start);
             m_Direction.set	(dir);
             m_Dist			= dist;
-            m_Flags.set		(flags);
+            m_Flags.assign	(flags);
         	results.clear	();          
         }
         IC void	prepare_bq	(const Fbox& bbox, u32 flags)
         {
         	m_BB.set		(bbox);
-            m_Flags.set		(flags);
+            m_Flags.assign	(flags);
         	results.clear	();
         }
 		IC void append_mtx	(const Fmatrix& parent, CDB::RESULT* R)

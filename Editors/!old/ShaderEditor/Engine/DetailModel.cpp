@@ -80,7 +80,7 @@ void CDetail::Load		(IReader* S)
 	shader.create	(fnS,	fnT);
 
 	// Params
-	m_Flags.set		(S->r_u32	());
+	m_Flags.assign	(S->r_u32	());
 	m_fMinScale		= S->r_float();
 	m_fMaxScale		= S->r_float();
 	number_vertices	= S->r_u32	();

@@ -28,7 +28,7 @@ TUI::TUI()
 	m_CurrentRStart.set(0,0,0);
 	m_CurrentRNorm.set(0,0,0);
 
-	m_Flags.set(flResize);
+	m_Flags.assign(flResize);
 
 	m_Pivot.set( 0, 0, 0 );
 

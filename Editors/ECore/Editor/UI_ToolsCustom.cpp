@@ -25,7 +25,7 @@ CToolsCustom::CToolsCustom()
 {
     m_bReady			= false;
     m_Action			= etaSelect;
-    m_Settings.set		(etfNormalAlign|etfGSnap|etfOSnap|etfMTSnap|etfVSnap|etfASnap|etfMSnap);
+    m_Settings.assign	(etfNormalAlign|etfGSnap|etfOSnap|etfMTSnap|etfVSnap|etfASnap|etfMSnap);
     m_Axis				= etAxisZX;
     fFogness			= 0.9f;
     dwFogColor			= 0xffffffff;

@@ -361,7 +361,7 @@ bool CSMotion::Load(IReader& F)
         string64	temp_buf;
 		for(BoneMotionIt bm_it=bone_mots.begin(); bm_it!=bone_mots.end(); bm_it++){
         	bm_it->SetName	(itoa(int(bm_it-bone_mots.begin()),temp_buf,10));
-			bm_it->m_Flags.set((u8)F.r_u32());
+			bm_it->m_Flags.assign((u8)F.r_u32());
 			for (int ch=0; ch<ctMaxChannel; ch++){
 				bm_it->envs[ch] = xr_new<CEnvelope> ();
 				bm_it->envs[ch]->Load_1(F);
@@ -369,7 +369,7 @@ bool CSMotion::Load(IReader& F)
 		}
 	}else{
 		if (vers==0x0005){
-            m_Flags.set	((u8)F.r_u32());
+            m_Flags.assign	((u8)F.r_u32());
             m_BoneOrPart= u16(F.r_u32()&0xffff);
             fSpeed		= F.r_float();
             fAccrue		= F.r_float();
@@ -380,7 +380,7 @@ bool CSMotion::Load(IReader& F)
             for(BoneMotionIt bm_it=bone_mots.begin(); bm_it!=bone_mots.end(); bm_it++){
                 F.r_stringZ		(buf);
                 bm_it->SetName	(buf);
-                bm_it->m_Flags.set((u8)F.r_u32());
+                bm_it->m_Flags.assign((u8)F.r_u32());
                 for (int ch=0; ch<ctMaxChannel; ch++){
                     bm_it->envs[ch] = xr_new<CEnvelope> ();
                     bm_it->envs[ch]->Load_1(F);
@@ -388,7 +388,7 @@ bool CSMotion::Load(IReader& F)
             }
         }else{
             if (vers!=EOBJ_SMOTION_VERSION) return false;
-            m_Flags.set	(F.r_u8());
+            m_Flags.assign	(F.r_u8());
             m_BoneOrPart= F.r_u16();
             fSpeed		= F.r_float();
             fAccrue		= F.r_float();
@@ -399,7 +399,7 @@ bool CSMotion::Load(IReader& F)
             for(BoneMotionIt bm_it=bone_mots.begin(); bm_it!=bone_mots.end(); bm_it++){
                 F.r_stringZ		(buf);
                 bm_it->SetName	(buf);
-                bm_it->m_Flags.set(F.r_u8());
+                bm_it->m_Flags.assign(F.r_u8());
                 for (int ch=0; ch<ctMaxChannel; ch++){
                     bm_it->envs[ch] = xr_new<CEnvelope> ();
                     bm_it->envs[ch]->Load_2(F);

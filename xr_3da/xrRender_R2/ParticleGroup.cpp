@@ -51,7 +51,7 @@ BOOL CPGDef::Load(IReader& F)
         	F.r_stringZ		(it->m_OnDeadChildName);
             it->m_Time0 	= F.r_float();
             it->m_Time1 	= F.r_float();
-            it->m_Flags.set	(F.r_u32());
+            it->m_Flags.assign	(F.r_u32());
         }
     }else{  //. убрать через некоторое время
         R_ASSERT		(F.find_chunk(PGD_CHUNK_EFFECTS2));
@@ -61,7 +61,7 @@ BOOL CPGDef::Load(IReader& F)
             F.r_stringZ		(it->m_OnPlayChildName);
             it->m_Time0 	= F.r_float();
             it->m_Time1 	= F.r_float();
-            it->m_Flags.set	(F.r_u32());
+            it->m_Flags.assign	(F.r_u32());
         }
     }
     

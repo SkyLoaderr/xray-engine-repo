@@ -17,7 +17,7 @@ void SGameMtl::Load(IReader& fs)
     }
     
 	R_ASSERT(fs.find_chunk(GAMEMTL_CHUNK_FLAGS));
-    Flags.set				(fs.r_u32());
+    Flags.assign			(fs.r_u32());
 
 	R_ASSERT(fs.find_chunk(GAMEMTL_CHUNK_PHYSICS));
     fPHFriction				= fs.r_float();
@@ -125,7 +125,7 @@ void SGameMtlPair::Load(IReader& fs)
 	mtl1				= fs.r_u32();
 	ID					= fs.r_u32();
 	ID_parent			= fs.r_u32();
-	OwnProps.set		(fs.r_u32());
+	OwnProps.assign		(fs.r_u32());
 
 	R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_BREAKING));
 	fs.r_stringZ		(buf); 	BreakingSounds	= buf.size()?*buf:"";

@@ -129,7 +129,7 @@ struct EParticleAction
     
     EParticleAction	(PAPI::PActionEnum	_type)
     {
-    	flags.set	(flEnabled);
+    	flags.assign(flEnabled);
         type		= _type;
     }
 public:

@@ -26,8 +26,8 @@ CCustomObject::CCustomObject(LPVOID data, LPCSTR name)
     ParentTools	= 0;
     FName[0] 	= 0;
     if (name) 	strcpy(FName, name);
-    m_CO_Flags.set	(flVisible);
-    m_RT_Flags.set	(flRT_Valid);
+    m_CO_Flags.assign(flVisible);
+    m_RT_Flags.assign(flRT_Valid);
     m_pOwnerObject	= 0;
     ResetTransform	();
     m_RT_Flags.set	(flRT_UpdateTransform,TRUE); //.???? было FALSE, нужно когда создается 
@@ -42,8 +42,8 @@ CCustomObject::CCustomObject(CCustomObject* source)
 {
     ClassID 	= source->ClassID;
     Name		= source->Name;
-    m_CO_Flags.set	(flVisible);
-    m_RT_Flags.set	(flRT_Valid);
+    m_CO_Flags.assign	(flVisible);
+    m_RT_Flags.assign	(flRT_Valid);
     m_pOwnerObject	= 0;
     m_Motion		= NULL;
     m_MotionParams 	= NULL;
@@ -100,7 +100,7 @@ void CCustomObject::Lock( BOOL flag )
 bool CCustomObject::Load(IReader& F)
 {
     if (F.find_chunk(CUSTOMOBJECT_CHUNK_FLAGS)){
-        m_CO_Flags.set 	(F.r_u32());
+        m_CO_Flags.assign(F.r_u32());
     	
         R_ASSERT(F.find_chunk(CUSTOMOBJECT_CHUNK_NAME));
         F.r_stringZ		(FName);

@@ -192,7 +192,7 @@ bool EDetail::Load(IReader& F)
 	    m_fDensityFactor= F.r_float();
 
     if (F.find_chunk(DETOBJ_CHUNK_FLAGS))
-    	m_Flags.set		(F.r_u32());
+    	m_Flags.assign	(F.r_u32());
 
     // update object
     return 				Update(buf);

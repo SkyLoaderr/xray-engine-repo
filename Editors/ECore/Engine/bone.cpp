@@ -158,7 +158,7 @@ void CBone::LoadData(IReader& F)
     F.r				(&shape,sizeof(SBoneShape));
     
     if (F.find_chunk(BONE_CHUNK_FLAGS))
-	    IK_data.ik_flags.set(F.r_u32());
+	    IK_data.ik_flags.assign(F.r_u32());
 
 	R_ASSERT(F.find_chunk(BONE_CHUNK_IK_JOINT));
 	IK_data.type			= (EJointType)F.r_u32();
