@@ -690,6 +690,14 @@ SOURCE=.\tss_def.h
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=.\Blenders\Blender_BmmD.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Blenders\Blender_BmmD.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\Blenders\blender_complex2.cpp
 
 !IF  "$(CFG)" == "XR_3DA - Win32 Release"
