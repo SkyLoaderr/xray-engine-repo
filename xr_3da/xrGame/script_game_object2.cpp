@@ -32,6 +32,8 @@
 #include "memory_space.h"
 #include "actor.h"
 #include "../skeletonanimated.h"
+#include "../CameraBase.h"
+
 void CScriptGameObject::explode	(u32 level_time)
 {
 	CExplosive			*explosive = smart_cast<CExplosive*>(&object());
@@ -336,8 +338,9 @@ void CScriptGameObject::SetActorPosition			(Fvector pos)
 void CScriptGameObject::SetActorDirection		(float dir)
 {
 	CActor* actor = smart_cast<CActor*>(&object());
-	if(actor)
-		actor->XFORM().setXYZ(0,dir,0);
-	else
+	if(actor){
+		actor->cam_Active()->Set(dir,0,0);
+//		actor->XFORM().setXYZ(0,dir,0);
+	}else
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"ScriptGameObject : attempt to call SetActorDirection method for non-actor object");
 }
