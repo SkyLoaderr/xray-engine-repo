@@ -69,6 +69,11 @@ CWeapon::CWeapon(LPCSTR name)
 	m_fCurrentCartirdgeDisp = 1.f;
 
 	m_bShowAmmo = true;
+
+	m_strap_bone0			= 0;
+	m_strap_bone1			= 0;
+	m_StrapOffset.identity	();
+	m_strapped_mode			= false;
 }
 
 CWeapon::~CWeapon		()

@@ -330,7 +330,7 @@ void CPHSimpleCharacter::PhDataUpdate(dReal /**step/**/){
 	b_on_object=false;
 	b_death_pos=false;
 	m_contact_count=0;
-
+	m_friction_factor=0.f;
 
 	dMatrix3 R;
 	dRSetIdentity (R);
@@ -1043,8 +1043,7 @@ u16 CPHSimpleCharacter::RetriveContactBone()
 }
 
 ///////////////////////////////////////////////////////////////////
-const dReal def_spring_rate=0.5f;
-const dReal def_dumping_rate=20.1f;
+
 /////////////////////////////////////////////////////////////////
 void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * material_1,SGameMtl * material_2){
 
@@ -1199,12 +1198,12 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 
 
 	///m_friction_factor=(c->surface.mu<1.f&&!object) ? c->surface.mu : 1.f;
-	if(c->surface.mu<1.f&&!object && !b_side_contact)
-										m_friction_factor=c->surface.mu; 
-	else 
-										m_friction_factor=1.f;
-
-
+	float friction=1.f;
+	if(!object && !b_side_contact)
+	{
+		friction=c->surface.mu; 
+	}
+	if(m_friction_factor<friction)m_friction_factor=friction; 
 	++m_contact_count;
 
 	//if( !b_saved_contact_velocity)
@@ -1333,7 +1332,7 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 		//c->surface.soft_cfm*=spring_rate;//0.01f;
 		//c->surface.soft_erp*=dumping_rate;//10.f;
 		MulSprDmp(c->surface.soft_cfm,c->surface.soft_erp,spring_rate,dumping_rate);
-		c->surface.mu *= (1.f+b_clamb_jump*3.f);
+ 		c->surface.mu *= (1.f+b_clamb_jump*3.f)*m_friction_factor;
 	}
 
 

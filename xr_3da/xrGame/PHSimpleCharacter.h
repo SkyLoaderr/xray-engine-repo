@@ -171,3 +171,6 @@ public:
 	virtual		void		OnRender							()					;
 #endif
 };
+
+const dReal def_spring_rate=0.5f;
+const dReal def_dumping_rate=20.1f;

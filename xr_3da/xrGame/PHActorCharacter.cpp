@@ -22,7 +22,7 @@ CPHActorCharacter::~CPHActorCharacter(void)
 void CPHActorCharacter::Create(dVector3 sizes)
 {
 	if(b_exist) return;
-	m_restrictor=dCreateSphere(0,sizes[1]/2.f);
+	m_restrictor=dCreateCylinder(0,sizes[1]/2.f,sizes[1]);
 	dGeomSetPosition(m_restrictor,0.f,sizes[1]/2.f,0.f);
 	m_restrictor_transform=dCreateGeomTransform(0);
 	dGeomTransformSetCleanup(m_restrictor_transform,0);
@@ -122,5 +122,21 @@ void CPHActorCharacter::RestrictorCallBack (bool& do_colide,dContact& c,SGameMtl
 	{
 		do_colide=true;
 		A->movement_control()->MulFrictionFactor(0.1f);
+		S->movement_control()->MulFrictionFactor(100.f);
 	}
+}
+
+void CPHActorCharacter::InitContact(dContact* c,bool &do_collide,SGameMtl * material_1,SGameMtl *material_2 )
+{
+
+	bool b_restrictor=false;
+	if(c->geom.g1==m_restrictor_transform||c->geom.g2==m_restrictor_transform)
+	{
+		b_restrictor=true;
+		b_side_contact=true;
+		MulSprDmp(c->surface.soft_cfm,c->surface.soft_erp,def_spring_rate,def_dumping_rate);
+		c->surface.mu		=0.00f;
+	}
+	inherited::InitContact(c,do_collide,material_1,material_2);
+	if(b_restrictor&&do_collide) m_friction_factor*=0.1f;
 }

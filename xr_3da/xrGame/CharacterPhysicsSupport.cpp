@@ -89,6 +89,7 @@ void CCharacterPhysicsSupport::SpawnInitPhysics(CSE_Abstract* e)
 	{
 		m_PhysicMovementControl.CreateCharacter();
 		m_PhysicMovementControl.SetPhysicsRefObject(&m_EntityAlife);
+		//m_PhysicMovementControl.SetMaterial( )
 	}
 	else
 	{
