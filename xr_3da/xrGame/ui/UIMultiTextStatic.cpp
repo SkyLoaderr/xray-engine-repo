@@ -54,17 +54,7 @@ CUIMultiTextStatic::SinglePhrase * CUIMultiTextStatic::GetPhraseByIndex(u32 idx)
 	return &m_vPhrases[idx];
 }
 
-void CUIMultiTextStatic::SetCaption(float x, float y, LPCSTR str)
-{
-	if( !m_vPhrases.size() )
-		AddPhrase();
 
-	CUIMultiTextStatic::SinglePhrase * sp =GetPhraseByIndex(0);
-	sp->outX = x;
-	sp->outY = y;
-	sp->str  = str;
-
-}
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -95,4 +85,46 @@ void CUIMultiTextStatic::SPh::SetText(const char *fmt, ...)
 	va_end(Print);
 
 	str = buf.c_str();
+}
+
+
+void CUICaption::addCustomMessage(const ref_str& msg_name, float x, float y, 
+										  CGameFont *pFont, u32 color, LPCSTR def_str)
+{
+	R_ASSERT2( (m_indices.find(msg_name) == m_indices.end()),"message already defined !!!" );
+
+	SinglePhrase * sp = AddPhrase();
+	sp->outX = x;
+	sp->outY = y;
+	sp->effect.SetFont(pFont);
+	sp->effect.SetTextColor(color);
+	sp->SetText(def_str);
+
+	m_indices[msg_name] = m_vPhrases.size()-1;
+
+}
+
+EffectParams* CUICaption::customizeMessage(const ref_str& msg_name, const CUITextBanner::TextBannerStyles styleName)
+{
+	R_ASSERT2( (m_indices.find(msg_name) != m_indices.end()),"message not defined !!!" );
+	
+	SinglePhrase * sp = GetPhraseByIndex( m_indices[msg_name] );
+	sp->effect.PlayAnimation();
+	return sp->effect.SetStyleParams(styleName);
+	
+}
+
+void CUICaption::setCaption(const ref_str& msg_name, LPCSTR message_to_out, u32 color, bool replaceColor)
+{
+	R_ASSERT2( (m_indices.find(msg_name) != m_indices.end()),"message not defined !!!" );
+	SinglePhrase * sp = GetPhraseByIndex(m_indices[msg_name]);
+	sp->str = message_to_out;
+	if(replaceColor)
+		sp->effect.SetTextColor(color);
+}
+
+void CUICaption::Draw()
+{
+	inherited::Draw();
+	inherited::Update();
 }
