@@ -48,6 +48,8 @@ public:
     float vnew[3];
 };
 
+#define EDGE_BASE_ERROR 1.f
+
 class MxEdgeQSlim : public MxQSlim
 {
 private:

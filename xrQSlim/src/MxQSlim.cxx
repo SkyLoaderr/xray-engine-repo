@@ -305,6 +305,7 @@ void MxEdgeQSlim::apply_mesh_penalties(MxQSlimEdge *info)
 	if( nfailed )
 		bias += nfailed*meshing_penalty;
 
+	float _scale = 1.f;
 	if( compactness_ratio > 0.0 )
 	{
 		double c1_min=check_local_compactness(info->v1, info->v2, info->vnew);
@@ -321,8 +322,9 @@ void MxEdgeQSlim::apply_mesh_penalties(MxQSlimEdge *info)
 		//  NOTE: The prior heuristic was
 		//        if( ratio*cmin_before > cmin_after ) apply penalty;
 		//
-		if( c_min < compactness_ratio )
-			bias += (1-c_min);
+		if( c_min < compactness_ratio ) 
+			_scale += ((compactness_ratio-c_min)/compactness_ratio);
+		// bias += (1-c_min);
 	}
 
 #if USE_OLD_INVERSION_CHECK
@@ -332,7 +334,8 @@ void MxEdgeQSlim::apply_mesh_penalties(MxQSlimEdge *info)
 		bias += meshing_penalty;
 #endif
 
-	info->heap_key(float(base_error - bias));
+	info->heap_key( (base_error-EDGE_BASE_ERROR)*_scale - bias);
+//	info->heap_key(float(base_error - bias));
 }
 
 void MxEdgeQSlim::compute_target_placement(MxQSlimEdge *info)
@@ -579,6 +582,7 @@ bool MxEdgeQSlim::decimate(unsigned int target, float max_error)
 {
 	MxPairContraction local_conx;
 
+	max_error								+= EDGE_BASE_ERROR;
 	while( valid_faces > target )
 	{
 		MxHeapable *top						= heap.top();
