@@ -1504,7 +1504,7 @@ void	xrSE_DeviceTorch::FillProp		(LPCSTR pref, PropItemVec& values)
 //--------------------------------------------------------------------
 
 //***** Physic Object
-xrSE_PhysicObject::xrSE_PhysicObject(LPCSTR caSection) : xrServerEntity(caSection) 
+xrSE_PhysicObject::xrSE_PhysicObject(LPCSTR caSection) : CALifeObject(caSection) 
 {
 	type 		= epotBox;
 	mass 		= 10.f;
@@ -1515,6 +1515,8 @@ xrSE_PhysicObject::~xrSE_PhysicObject()
 }
 void xrSE_PhysicObject::STATE_Read		(NET_Packet& P, u16 size) 
 {
+	if (m_wVersion < 14)
+		inherited::STATE_Read	(P,size);
 	visual_read				(P);
 	P.r_u32					(type);
 	P.r_float				(mass);
@@ -1524,13 +1526,14 @@ void xrSE_PhysicObject::STATE_Read		(NET_Packet& P, u16 size)
 }
 void xrSE_PhysicObject::STATE_Write		(NET_Packet& P)
 {
+	inherited::STATE_Write	(P);
 	visual_write			(P);
 	P.w_u32					(type);
 	P.w_float				(mass);
 	P.w_string				(fixed_bone);
 }
-void xrSE_PhysicObject::UPDATE_Read		(NET_Packet& P)	{};
-void xrSE_PhysicObject::UPDATE_Write	(NET_Packet& P)	{};
+void xrSE_PhysicObject::UPDATE_Read		(NET_Packet& P)	{inherited::UPDATE_Read(P);};
+void xrSE_PhysicObject::UPDATE_Write	(NET_Packet& P)	{inherited::UPDATE_Write(P);};
 #ifdef _EDITOR
 xr_token po_types[]={
 	{ "Box",			epotBox			},

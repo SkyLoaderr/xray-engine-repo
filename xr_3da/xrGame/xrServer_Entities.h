@@ -129,7 +129,7 @@ enum EPOType {
     epotFreeChain,
     epotSkeleton
 };
-xrSE_DECLARE_BEGIN2(xrSE_PhysicObject,xrServerEntity,xrSE_Visualed)
+xrSE_DECLARE_BEGIN2(xrSE_PhysicObject,CALifeObject,xrSE_Visualed)
 	u32 							type;
 	f32 							mass;
     string32 						fixed_bone;
