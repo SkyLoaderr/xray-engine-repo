@@ -8,15 +8,8 @@
 // #pragma once
 
 #include "UIDialogWnd.h"
-#include "UIFrameWindow.h"
-#include "UIStatic.h"
 #include "UIButton.h"
-#include "UIInventoryUtilities.h"
-#include "xrXMLParser.h"
-#include "UIXmlInit.h"
 #include "UISkinWindow.h"
-
-using namespace InventoryUtilities;
 
 const u32			SKIN_TEX_HEIGHT			= 341;
 const u32			SKIN_TEX_WIDTH			= 128;

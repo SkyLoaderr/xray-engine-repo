@@ -6,7 +6,6 @@
 #include <dinput.h>
 #include "UISkinSelector.h"
 #include"../hudmanager.h"
-#include"../level.h"
 
 #include "../game_cl_deathmatch.h"
 
