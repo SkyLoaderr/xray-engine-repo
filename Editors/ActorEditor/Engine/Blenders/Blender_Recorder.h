@@ -100,7 +100,7 @@ public:
 	~CBlender_Compile	();
 	
 	void				_cpp_Compile		(ShaderElement* _SH);
-	ShaderElement* 		_lua_Compile		(LPCSTR name);
+	ShaderElement* 		_lua_Compile		(LPCSTR namesp, LPCSTR name);
 };
 #pragma pack(pop)
 

@@ -107,7 +107,7 @@ void	CResourceManager::LS_Load			()
 
 	class_<adopt_compiler>("_compiler")
 		.def(								constructor<const adopt_compiler&>())
-		.def("pass",						&adopt_compiler::_pass			)
+		.def("begin",						&adopt_compiler::_pass			)
 		.def("fog",							&adopt_compiler::_fog			)
 		.def("zb",							&adopt_compiler::_ZB			)
 		.def("blend",						&adopt_compiler::_blend			)
@@ -156,7 +156,6 @@ Shader*	CResourceManager::_lua_Create		(LPCSTR s_shader, LPCSTR s_textures)
 
 	// Prepare
 	_ParseList			(C.L_textures,	s_textures	);
-	string256			fname;
 
 	// Compile element	(LOD0 - HQ)
 	if (Script::bfIsObjectPresent(LSVM,s_shader,"normal_hq",LUA_TFUNCTION))
@@ -166,12 +165,12 @@ Shader*	CResourceManager::_lua_Create		(LPCSTR s_shader, LPCSTR s_textures)
 		C.detail_texture	= NULL;
 		C.detail_scaler		= NULL;
 		C.bDetail			= Device.Resources->_GetDetailTexture(C.L_textures[0],C.detail_texture,C.detail_scaler);
-		if (C.bDetail)		S.E[0]	= C._lua_Compile(strconcat(fname,s_shader,".normal_hq"));
-		else				S.E[0]	= C._lua_Compile(strconcat(fname,s_shader,".normal"));
+		if (C.bDetail)		S.E[0]	= C._lua_Compile(s_shader,"normal_hq");
+		else				S.E[0]	= C._lua_Compile(s_shader,"normal");
 	} else {
 		C.iElement			= 0;
 		C.bDetail			= FALSE;
-		S.E[0]				= C._lua_Compile		(strconcat(fname,s_shader,".normal"));
+		S.E[0]				= C._lua_Compile		(s_shader,"normal");
 	}
 
 	// Compile element	(LOD1)
@@ -179,7 +178,7 @@ Shader*	CResourceManager::_lua_Create		(LPCSTR s_shader, LPCSTR s_textures)
 	{
 		C.iElement			= 1;
 		C.bDetail			= FALSE;
-		S.E[1]				= C._lua_Compile(strconcat(fname,s_shader,".normal"));
+		S.E[1]				= C._lua_Compile(s_shader,"normal");
 	}
 
 	// Compile element
@@ -187,7 +186,7 @@ Shader*	CResourceManager::_lua_Create		(LPCSTR s_shader, LPCSTR s_textures)
 	{
 		C.iElement			= 2;
 		C.bDetail			= FALSE;
-		S.E[2]				= C._lua_Compile(strconcat(fname,s_shader,".l_point"));;
+		S.E[2]				= C._lua_Compile(s_shader,"l_point");;
 	}
 
 	// Compile element
@@ -195,7 +194,7 @@ Shader*	CResourceManager::_lua_Create		(LPCSTR s_shader, LPCSTR s_textures)
 	{
 		C.iElement			= 3;
 		C.bDetail			= FALSE;
-		S.E[3]				= C._lua_Compile(strconcat(fname,s_shader,".l_spot"));;
+		S.E[3]				= C._lua_Compile(s_shader,"l_spot");;
 	}
 
 	// Compile element
@@ -203,7 +202,7 @@ Shader*	CResourceManager::_lua_Create		(LPCSTR s_shader, LPCSTR s_textures)
 	{
 		C.iElement			= 4;
 		C.bDetail			= FALSE;
-		S.E[4]				= C._lua_Compile(strconcat(fname,s_shader,".l_special"));
+		S.E[4]				= C._lua_Compile(s_shader,"l_special");
 	}
 
 	// Search equal in shaders array
@@ -217,18 +216,21 @@ Shader*	CResourceManager::_lua_Create		(LPCSTR s_shader, LPCSTR s_textures)
 	return N;
 }
 
-ShaderElement*		CBlender_Compile::_lua_Compile	(LPCSTR name)
+ShaderElement*		CBlender_Compile::_lua_Compile	(LPCSTR namesp, LPCSTR name)
 {
 	ShaderElement		E;
 	SH =				&E;
 	RS.Invalidate		();
 
 	// Compile
-	adopt_compiler		ac			(this);
-	LPCSTR				t_0			= L_textures[0];
-	LPCSTR				t_1			= (L_textures.size() > 1) ? L_textures[1] : "null";
-	call_function<void>				(Device.Resources->LSVM,name/*,ac,t_0,t_1*/);
-	r_End							();
+	adopt_compiler		ac		(this);
+	LPCSTR				t_0		= L_textures[0];
+	LPCSTR				t_1		= (L_textures.size() > 1) ? L_textures[1] : "null";
+	lua_State*			LSVM	= Device.Resources->LSVM; 
+	object				shader	= get_globals(LSVM)[namesp];
+	functor<void>		element	= object_cast<functor<void> >(shader[name]);
+	element						();
+	r_End						();
 
 	return				Device.Resources->_CreateElement(E);
 }
