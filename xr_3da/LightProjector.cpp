@@ -43,21 +43,23 @@ void CLightProjector::OnDeviceCreate	()
 	RT_temp		= Device.Shader._CreateRT	(RTtemp,P_rt_size,P_rt_size);
 	sh_BlurTR	= Device.Shader.Create		("effects\\blur",			RTtemp2);
 	sh_BlurRT	= Device.Shader.Create		("effects\\blur",			RTname2);
-	vs_Blur		= Device.Streams.Create		(FVF::F_TL2uv, 8);
+	vs_Blur		= Device.Shader._CreateVS	(FVF::F_TL2uv);
 
 	// Debug
 	sh_Screen	= Device.Shader.Create		("effects\\screen_set",RTname);
-	vs_Screen	= Device.Streams.Create		(FVF::F_TL,4);
+	vs_Screen	= Device.Shader._CreateVS	(FVF::F_TL);
 }
 
 void CLightProjector::OnDeviceDestroy	()
 {
 	// Debug
 	Device.Shader.Delete					(sh_Screen	);
+	Device.Shader._DeleteVS					(vs_Screen	);
 	
 	// 
 	Device.Shader.Delete					(sh_BlurRT	);
 	Device.Shader.Delete					(sh_BlurTR	);
+	Device.Shader._DeleteVS					(vs_Screen	);
 	Device.Shader._DeleteRT					(RT_temp	);
 	Device.Shader._DeleteRT					(RT			);
 }
@@ -204,23 +206,26 @@ void CLightProjector::calculate	()
 		
 		// Fill VB
 		DWORD C						=	0xffffffff, Offset;
-		FVF::TL2uv* pv				=	(FVF::TL2uv*) vs_Blur->Lock(8,Offset);
-		pv->set						(0.f,	dim,	C, a0.x, a1.y, b0.x, b1.y);	pv++;
-		pv->set						(0.f,	0.f,	C, a0.x, a0.y, b0.x, b0.y);	pv++;
-		pv->set						(dim,	dim,	C, a1.x, a1.y, b1.x, b1.y);	pv++;
-		pv->set						(dim,	0.f,	C, a1.x, a0.y, b1.x, b0.y);	pv++;
+		FVF::TL2uv* pv				=	(FVF::TL2uv*) Device.Streams.Vertex.Lock	(8,vs_Blur->dwStride,Offset);
+		pv->set							(0.f,	dim,	C, a0.x, a1.y, b0.x, b1.y);	pv++;
+		pv->set							(0.f,	0.f,	C, a0.x, a0.y, b0.x, b0.y);	pv++;
+		pv->set							(dim,	dim,	C, a1.x, a1.y, b1.x, b1.y);	pv++;
+		pv->set							(dim,	0.f,	C, a1.x, a0.y, b1.x, b0.y);	pv++;
 		
-		pv->set						(0.f,	dim,	C, c0.x, c1.y, d0.x, d1.y);	pv++;
-		pv->set						(0.f,	0.f,	C, c0.x, c0.y, d0.x, d0.y);	pv++;
-		pv->set						(dim,	dim,	C, c1.x, c1.y, d1.x, d1.y);	pv++;
-		pv->set						(dim,	0.f,	C, c1.x, c0.y, d1.x, d0.y);	pv++;
-		vs_Blur->Unlock				(8);
+		pv->set							(0.f,	dim,	C, c0.x, c1.y, d0.x, d1.y);	pv++;
+		pv->set							(0.f,	0.f,	C, c0.x, c0.y, d0.x, d0.y);	pv++;
+		pv->set							(dim,	dim,	C, c1.x, c1.y, d1.x, d1.y);	pv++;
+		pv->set							(dim,	0.f,	C, c1.x, c0.y, d1.x, d0.y);	pv++;
+		Device.Streams.Vertex.Unlock	(8,vs_Blur->dwStride);
 		
 		// Actual rendering (pass0, temp2real)
-		Device.Shader.set_RT		(RT->pRT,	0);
-		Device.Shader.set_Shader	(sh_BlurTR	);
-		Device.Primitive.Draw		(vs_Blur,	4, 2, Offset,	Device.Streams_QuadIB);
-		
+		Device.Shader.set_RT			(RT->pRT,	0);
+		Device.Shader.set_Shader		(sh_BlurTR	);
+		Device.Primitive.setVertices	(vs_Blur->dwHandle,vs_Blur->dwStride,Device.Streams.Vertex.getBuffer());
+		Device.Primitive.setIndices		(Offset,Device.Streams_QuadIB);
+		Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
+		UPDATEC							(4,2,1);
+
 /*
 		for (int it=0; it<1; it++)	
 		{
@@ -257,6 +262,7 @@ void CLightProjector::render	()
 	boxes.clear();
 
 	// Debug
+	/*
 	{
 		// UV
 		Fvector2				p0,p1;
@@ -265,8 +271,8 @@ void CLightProjector::render	()
 		
 		// Fill vertex buffer
 		DWORD C			=	0xffffffff, Offset;
-		DWORD _w	=	P_rt_size/2, _h = P_rt_size/2;
-		FVF::TL* pv =	(FVF::TL*) vs_Screen->Lock(4,Offset);
+		DWORD _w		=	P_rt_size/2, _h = P_rt_size/2;
+		FVF::TL* pv		=	(FVF::TL*) vs_Screen->Lock(4,Offset);
 		pv->set(0,			float(_h),	.0001f,.9999f, C, p0.x, p1.y);	pv++;
 		pv->set(0,			0,			.0001f,.9999f, C, p0.x, p0.y);	pv++;
 		pv->set(float(_w),	float(_h),	.0001f,.9999f, C, p1.x, p1.y);	pv++;
@@ -277,4 +283,5 @@ void CLightProjector::render	()
 		Device.Shader.set_Shader(sh_Screen);
 		Device.Primitive.Draw	(vs_Screen,4,2,Offset,Device.Streams_QuadIB);
 	}
+	*/
 }

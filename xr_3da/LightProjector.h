@@ -32,9 +32,9 @@ private:
 	CRT*					RT_temp;
 	Shader*					sh_BlurTR;
 	Shader*					sh_BlurRT;
-	CVertexStream*			vs_Blur;
+	CVS*					vs_Blur;
 	Shader*					sh_Screen;
-	CVertexStream*			vs_Screen;
+	CVS*					vs_Screen;
 public:
 	void					set_object		(CObject*	O);
 	BOOL					shadowing		()			{ return current!=0; }
