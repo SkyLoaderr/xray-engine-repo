@@ -120,23 +120,30 @@ BOOL CCustomEvent::Spawn		( BOOL bLocal, int server_id, Fvector& o_pos, Fvector&
 			count--;
 		}
 	}
-
+	
 	return TRUE;
 }
 
 void CCustomEvent::Update (DWORD dt)
 {
 	if (!Contacted.empty()) {
-		for (DWORD i=0; i<Contacted.size(); i++) {
+		CCF_Shape* M = dynamic_cast<CCF_Shape*> CFORM(); R_ASSERT	(M);
+		for (DWORD i=0; i<Contacted.size(); i++) 
+		{
 			// Check if it is still contact us
-			CCF_Shape* M = (CCF_Shape*)CFORM(); R_ASSERT	(M);
-			if (!M->Contact(Contacted[i])) {
-				for (DWORD a=0; a<Actions.size(); a++)
-				{
-					if (DEF_ACTION.bOnce	= 
+			CObject* O = Contacted[i];
+			if (!M->Contact(O)) 
+			{
+				// Search if we have some action for this type of object
+				CLASS_ID cls = O->SUB_CLS_ID;
+				for (tActions_it it=Actions.begin(); it!=Actions.end(); it++) {
+					if ((it->type==1) && (it->CLS == cls) && (it->count))	{
+						if (it->count != 0xffff)	it->count -= 1;
+						Engine.Event.Signal(it->E,DWORD(it->P1),DWORD(O));
+					}
 				}
-				OnExit.Signal((DWORD)Contacted[i]);
 
+				// Erase it from list
 				Contacted.erase(Contacted.begin()+i);
 				i--;
 			}
@@ -150,7 +157,7 @@ void CCustomEvent::OnNear( CObject* O )
 	if (find(Contacted.begin(),Contacted.end(),O)!=Contacted.end()) return;
 	
 	// check if it is actually contacted
-	CCF_Shape* M = (CCF_Shape*)CFORM(); R_ASSERT(M);
+	CCF_Shape* M = dynamic_cast<CCF_Shape*>CFORM(); R_ASSERT(M);
 	if (M->Contact(O)) {
 		Contacted.push_back	(O);
 
