@@ -64,7 +64,7 @@ void CBitingExploreDNE::Run()
 	
 	switch (m_tAction) {
 	case ACTION_RUN_AWAY: // убегать на N метров от звука
-		WRITE_TO_LOG(" DNE : [RUN AWAY]");
+		LOG_EX(" DNE : [RUN AWAY]");
 
 		pMonster->Path_GetAwayFromPoint (0, m_tSound.position, m_fRunAwayDist, 2000);
 		pMonster->MotionMan.m_tAction = ACT_RUN;
@@ -85,7 +85,7 @@ void CBitingExploreDNE::Run()
 
 		break;
 	case ACTION_LOOK_BACK_POSITION:			// повернуться в сторону звука
-		WRITE_TO_LOG("DNE : [LOOK_BACK_POSITION]");
+		LOG_EX("DNE : [LOOK_BACK_POSITION]");
 		DO_ONCE_BEGIN(flag_once_1);
 			pMonster->AI_Path.TravelPath.clear();
 			pMonster->LookPosition(SavedPosition);
@@ -98,7 +98,7 @@ void CBitingExploreDNE::Run()
 		break;
 
 	case ACTION_LOOK_AROUND:
-		WRITE_TO_LOG("DNE : [LOOK_AROUND]");
+		LOG_EX("DNE : [LOOK_AROUND]");
 		
 		pMonster->MotionMan.m_tAction = ACT_LOOK_AROUND;
 		break;

@@ -28,12 +28,12 @@ void CBitingDetour::Init()
 	SetInertia(15000);
 	pMonster->SetMemoryTime(15000);
 
-	WRITE_TO_LOG(" DETOUR init!");
+	LOG_EX(" DETOUR init!");
 }
 
 void CBitingDetour::Run()
 {
-	WRITE_TO_LOG("--- DETOUR ---");
+	LOG_EX("--- DETOUR ---");
 
 	VisionElem tempEnemy;
 	if (pMonster->GetEnemy(tempEnemy)) m_tEnemy = tempEnemy;

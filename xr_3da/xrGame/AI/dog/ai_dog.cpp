@@ -47,6 +47,7 @@ void CAI_Dog::Init()
 void CAI_Dog::Load(LPCSTR section)
 {
 	inherited::Load	(section);
+	
 	CJumping::Load	(section);
 
 	//	CJumping::AddState(PSkeletonAnimated(Visual())->ID_Cycle_Safe("run_jump_0"), JT_CUSTOM,	true,	0.f, 0.f);
@@ -130,7 +131,6 @@ void CAI_Dog::Load(LPCSTR section)
 	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 600,	700,	center,		1.5f, inherited::_sd->m_fHitPower, 0.f, 0.f);
 
 	END_LOAD_SHARED_MOTION_DATA();
-
 }
 
 
@@ -191,9 +191,6 @@ BOOL CAI_Dog::net_Spawn (LPVOID DC)
 	Bones.AddBone(GetBoneInstance("bip01_spine1"), AXIS_Z); 
 	Bones.AddBone(GetBoneInstance("bip01_spine2"), AXIS_Z); 
 	Bones.AddBone(GetBoneInstance("bip01_head"), AXIS_X); 
-
-	
-	Msg("Memory used on animation load: [%u]", mem_used);
 
 	return TRUE;
 }

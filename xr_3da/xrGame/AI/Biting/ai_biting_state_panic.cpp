@@ -40,7 +40,7 @@ void CBitingPanic::Init()
 	pMonster->SetMemoryTime(15000);
 
 	// Test
-	WRITE_TO_LOG("_ Panic Init _");
+	LOG_EX("_ Panic Init _");
 }
 
 void CBitingPanic::Run()

@@ -34,17 +34,6 @@
 #define SOUND_ATTACK_HIT_MIN_DELAY 1000
 #define MORALE_NORMAL	0.5f
 
-// logging
-//#define SILENCE
-
-#undef	WRITE_TO_LOG
-#ifdef SILENCE
-#define WRITE_TO_LOG(s) ;
-#else
-#define WRITE_TO_LOG(s) {\
-	Msg("%s",s);\
-}
-#endif
 
 class CCharacterPhysicsSupport;
 
@@ -57,9 +46,6 @@ enum EBitingPathState {
 };
 
 typedef VisionElem SEnemy;
-
-extern u32		mem_used;
-
 
 class _biting_shared : public CSharedResource {
 public:

@@ -23,7 +23,7 @@ void CBitingHide::Init()
 	pMonster->SetMemoryTime(20000);
 
 	// Test
-	WRITE_TO_LOG("_ Hide Init _");
+	LOG_EX("_ Hide Init _");
 }
 
 void CBitingHide::Reset()

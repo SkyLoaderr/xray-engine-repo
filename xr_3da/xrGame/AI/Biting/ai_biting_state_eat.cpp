@@ -62,7 +62,7 @@ void CBitingEat::Init()
 	pMonster->flagEatNow = true;
 
 	// Test
-	WRITE_TO_LOG("_ Eat Init _");
+	LOG_EX("_ Eat Init _");
 }
 
 void CBitingEat::Run()

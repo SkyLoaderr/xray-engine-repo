@@ -48,13 +48,13 @@ void CBitingRest::Replanning()
 
 		bool bNormalSatiety = (pMonster->GetSatiety() > pMonster->_sd->m_fMinSatiety) && (pMonster->GetSatiety() < pMonster->_sd->m_fMaxSatiety); 
 		if (bNormalSatiety) {		// отдых
-			WRITE_TO_LOG("ACTION_SATIETY_GOOD");
+			LOG_EX("ACTION_SATIETY_GOOD");
 			m_tAction = ACTION_SATIETY_GOOD;
 
 			dwMinRand = pMonster->_sd->m_timeLieIdleMin;	 dwMaxRand = pMonster->_sd->m_timeLieIdleMax;
 
 		} else {					// бродит, ищет еду
-			WRITE_TO_LOG("ACTION_WALK");
+			LOG_EX("ACTION_WALK");
 			m_tAction = ACTION_WALK;
 
 			// ѕостроить путь обхода точек графа, поиск пищи
@@ -70,14 +70,14 @@ void CBitingRest::Replanning()
 		bool bSerenity = true;
 		if (bSerenity) { // спокоен, спит
 			// спать
-			WRITE_TO_LOG("ACTION_SLEEP");
+			LOG_EX("ACTION_SLEEP");
 			m_tAction = ACTION_SLEEP;
 
 			dwMinRand = pMonster->_sd->m_timeSleepMin; dwMaxRand = pMonster->_sd->m_timeSleepMax; 
 
 		} else {
 			// бродить (настороженно), часто осматриватьс€ по сторонам
-			WRITE_TO_LOG("ACTION_WALK_CIRCUMSPECTION");
+			LOG_EX("ACTION_WALK_CIRCUMSPECTION");
 
 			m_tAction = ACTION_WALK_CIRCUMSPECTION;
 

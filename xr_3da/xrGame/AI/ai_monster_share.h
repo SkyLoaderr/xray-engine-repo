@@ -1,30 +1,23 @@
 #pragma once
-#include "ai_monster_defs.h"
 
 // Singleton template definition 
 template <class T> class IShared {
 	static T*	_self;
 	static int	_refcount;
 public:
-
 					IShared	()	{}
 			virtual	~IShared()	{_self=NULL;}
 public:
 	static T*		Instance() {
-		if(!_self) {
-			_self=xr_new<T>(); 
-			OUTPUT("__DEEP SHARE::Creating Instance...");
-		} else OUTPUT("__DEEP SHARE::Instance already created, just return pointer");
+		if(!_self) _self=xr_new<T>(); 
 		_refcount++;
 		return _self;
 	}
 	void			FreeInst() {
-
 		if(--_refcount==0) {
 			IShared<T> *ptr = this;
-			OUTPUT_M("__DEEP SHARE:: Sub reference && Delete instance ptr = [%u]", *"*/ ptr /*"* );
 			xr_delete(ptr);
-		} else OUTPUT_M("__DEEP SHARE::Sub reference, do not delete instance; ptr = [%u]",*"*/ this /*"* );
+		} 
 	}
 };
 
@@ -37,7 +30,6 @@ template<class T_shared> class CSharedObj : public IShared<CSharedObj<T_shared> 
 	typedef typename xr_map<CLASS_ID, T_shared*>::iterator SHARED_DATA_MAP_IT;
 	
 public:
-
 				CSharedObj() {};
 				~CSharedObj() {};
 	
@@ -58,11 +50,7 @@ template<class T_shared> T_shared *CSharedObj<T_shared>::get_shared(CLASS_ID id)
 	if (shared_it == _shared_tab.end()) {
 		_data		= xr_new<T_shared>();
 		_shared_tab.insert(mk_pair(id, _data));
-		OUTPUT_M("__DEEP SHARE::Create data object with CLS_ID = %u", *"*/ id /*"*);
-	} else {
-		_data = shared_it->second;
-		OUTPUT("__DEEP SHARE::Do not create data object just return pointer");
-	}
+	} else _data = shared_it->second;
 
 	return _data;
 }
@@ -72,12 +60,7 @@ class CSharedResource {
 public:
 			CSharedResource	() {loaded = false;}
 
-	bool	IsLoaded		() {
-		if (loaded) {OUTPUT("__DEEP SHARE::Data already loaded,  do not load!!!");}
-		else {OUTPUT("__DEEP SHARE::Load Data");}
-
-		return loaded;
-	}
+	bool	IsLoaded		() {return loaded;}
 	void	SetLoad			(bool l = true) {loaded = l;}
 };
 

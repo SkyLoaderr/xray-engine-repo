@@ -11,8 +11,6 @@
 #include "..\\..\\PhysicsShell.h"
 #include "..\\..\\CharacterPhysicsSupport.h"
 
-u32		mem_used		= 0;
-
 CAI_Biting::CAI_Biting()
 {
 	Movement.AllocateCharacterObject(CPHMovementControl::CharacterType::ai);

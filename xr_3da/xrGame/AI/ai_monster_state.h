@@ -9,6 +9,7 @@
 #pragma once 
 
 #include "ai_monster_mem.h"
+#include "ai_monster_defs.h"
 
 #define DO_ONCE_BEGIN(flag)	if (!flag) {flag = true;  
 #define DO_ONCE_END()		}

@@ -69,7 +69,7 @@ void CBitingAttack::Init()
 	pMonster->AS_Start();
 
 	// Test
-	WRITE_TO_LOG("_ Attack Init _");
+	LOG_EX("_ Attack Init _");
 }
 
 void CBitingAttack::Run()
