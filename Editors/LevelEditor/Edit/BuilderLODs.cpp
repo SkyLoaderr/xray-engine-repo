@@ -15,8 +15,9 @@
 //------------------------------------------------------------------------------
 // lod build functions
 //------------------------------------------------------------------------------
-static const float 	LOD_CALC_SAMPLES 		= 3.f;
+static const float 	LOD_CALC_SAMPLES 		= 7.f;
 static const s32	LOD_CALC_SAMPLES_LIM 	= LOD_CALC_SAMPLES/2;
+static const s32	LOD_HEMI_SAMPLE 		= 2;
 
 DEFINE_VECTOR(Fvector4,Fvector4Vec,Fvector4It);
 DEFINE_VECTOR(Fvector4Vec,SampleVec,SampleIt);
@@ -135,9 +136,7 @@ int	SceneBuilder::BuildObjectLOD(const Fmatrix& parent, CEditableObject* E, int 
 
 				if (0==src_a)	continue;
                 
-//.				tgt_c			= 0x00000000;
                 FvectorVec		n_vec;
-
                 SampleVec		sample_pt_vec(iFloor(LOD_CALC_SAMPLES*LOD_CALC_SAMPLES));
 //.				FvectorVec		c_vec;
 				Fvector			start;
@@ -157,13 +156,13 @@ int	SceneBuilder::BuildObjectLOD(const Fmatrix& parent, CEditableObject* E, int 
                         if (PQ.r_count()){
                             PQ.r_sort();
                             Fvector N	= {0,0,0};
-//.							Fcolor C	= {0,0,0,0};
                             for (s32 k=PQ.r_count()-1; k>=0; k--){
                             	SPickQuery::SResult* R = PQ.r_begin()+k;
 								float a;
                             	if (!GetPointColor(R,a)) continue;
 								if (!fis_zero(a)){
-//									if ((iiH>-2)&&(iiH<2)&&(iiW>-2)&&(iiW<2))
+                                	if (((iiH==-LOD_HEMI_SAMPLE)||(iiH==+LOD_HEMI_SAMPLE)||(iiH==0))&&
+                                    	((iiW==-LOD_HEMI_SAMPLE)||(iiW==+LOD_HEMI_SAMPLE)||(iiW==0)))
                                     {
                                         Fvector pt; 	pt.mad(PQ.m_Start,PQ.m_Direction,R->range-EPS_L);
                                         sample_pt_vec[sample_pt_idx].push_back(Fvector4().set(pt.x,pt.y,pt.z,a));
@@ -240,10 +239,8 @@ tR+=TT1.Stop();
         }
     }
 
-    Msg("Normal: %3.2fsec, Hemi: %3.2f, PC: %3.2f, RP: %3.2f",tN,tH,tT,tR);
-//.	ImageLib.ApplyBorders		   	(b.data,	LOD_IMAGE_SIZE*LOD_SAMPLE_COUNT,LOD_IMAGE_SIZE);
+	Msg("Normal: %3.2fsec, Hemi: %3.2f, PC: %3.2f, RP: %3.2f",tN,tH,tT,tR);
 	ImageLib.ApplyBorders			(b.ndata,	LOD_IMAGE_SIZE*LOD_SAMPLE_COUNT,LOD_IMAGE_SIZE);
-
     // fill alpha to N-channel
     for (int px_idx=0; px_idx<int(b.ndata.size()); px_idx++)
         b.ndata[px_idx]				= subst_alpha(b.ndata[px_idx],hemi_temp[px_idx]);
