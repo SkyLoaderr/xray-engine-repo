@@ -234,9 +234,9 @@ void CLevelGraph::render()
 	CGameFont* F		= HUD().pFontDI;
 	F->SetSize			(.02f);
 	F->Out				(0.f,0.5f,"%f,%f,%f",VPUSH(P));
-	float				x,z;
-	unpack_xz			(Local,x,z);
-	F->Out				(0.f,0.55f,"%3d,%4d,%3d -> %d",	iFloor(x),iFloor(Local.y()),iFloor(z),u32(ID));
+//	float				x,z;
+//	unpack_xz			(Local,x,z);
+//	F->Out				(0.f,0.55f,"%3d,%4d,%3d -> %d",	iFloor(x),iFloor(Local.y()),iFloor(z),u32(ID));
 
 	svector<u32,128>	linked;
 	{
@@ -259,7 +259,7 @@ void CLevelGraph::render()
 	for (u32 Nid=0; Nid<header().vertex_count(); Nid++)
 	{
 		CLevelGraph::CVertex&	N	= *vertex(Nid);
-		Fvector			PC,P0,P1;
+		Fvector			PC,P0;//,P1;
 		PC				= vertex_position(N);
 
 		if (Device.vCameraPosition.distance_to(PC)>30) continue;
@@ -287,9 +287,9 @@ void CLevelGraph::render()
 			// create vertices
 			Fvector		v,v1,v2,v3,v4;
 			v.set(P0.x-st,P0.y,P0.z-st);	PL.intersectRayPoint(v,DUP,v1);	v1.mad(v1,PL.n,tt);	// minX,minZ
-			v.set(P1.x+st,P0.y,P0.z-st);	PL.intersectRayPoint(v,DUP,v2);	v2.mad(v2,PL.n,tt);	// maxX,minZ
-			v.set(P1.x+st,P1.y,P1.z+st);	PL.intersectRayPoint(v,DUP,v3);	v3.mad(v3,PL.n,tt);	// maxX,maxZ
-			v.set(P0.x-st,P1.y,P1.z+st);	PL.intersectRayPoint(v,DUP,v4);	v4.mad(v4,PL.n,tt);	// minX,maxZ
+			v.set(P0.x+st,P0.y,P0.z-st);	PL.intersectRayPoint(v,DUP,v2);	v2.mad(v2,PL.n,tt);	// maxX,minZ
+			v.set(P0.x+st,P0.y,P0.z+st);	PL.intersectRayPoint(v,DUP,v3);	v3.mad(v3,PL.n,tt);	// maxX,maxZ
+			v.set(P0.x-st,P0.y,P0.z+st);	PL.intersectRayPoint(v,DUP,v4);	v4.mad(v4,PL.n,tt);	// minX,maxZ
 
 			// render quad
 			RCache.dbg_DrawTRI	(Fidentity,v3,v2,v1,CT);
@@ -359,7 +359,6 @@ void CLevelGraph::draw_oriented_bounding_box(Fmatrix &T,	Fvector &half_dim, u32 
 
 void CLevelGraph::draw_travel_line() const
 {
-	return;
 	draw_dynamic_obstacles				();
 	if (!m_tpTravelLine.empty()) {
 		Fvector							P = m_tpTravelLine[0];
@@ -391,7 +390,7 @@ void CLevelGraph::draw_travel_line() const
 	}
 }
 
-void CLevelGraph::compute_travel_line(xr_vector<u32> &vertex_path, u32 start_vertex_id, u32 finish_vertex_id) const
+void CLevelGraph::compute_travel_line(xr_vector<u32> &/**vertex_path/**/, u32 /**start_vertex_id/**/, u32 /**finish_vertex_id/**/) const
 {
 //	Fvector						*tpDestinationPosition = &m_tFinishPoint;
 //
