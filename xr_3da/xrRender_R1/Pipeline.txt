@@ -1,3 +1,27 @@
+hw-cull:
+	1. divide into two parts:
+			untested(occluder), tested(occludee)
+			
+	render occluder geometry		-> create pending list
+	get results for previous frame	-> mark invisible nodes as "invisible"
+	render pending list				-> 
+	
+state:
+	visible			: 
+	verify/probe	: test real object
+	invisible		: test box
+
+
+new object entered	:
+
+
+
+
+
+
+
+
+
 
 lmapped									
 -------------------------------------------------------------------------------
