@@ -37,11 +37,6 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 
 	printf("move_mgr:reset(path_walk=%s, path_look=%s, team=%s)",
 		utils.to_str(path_walk), utils.to_str(path_look), utils.to_str(team))
-	self.object:set_node_evaluator   ()
-	self.object:set_path_evaluator   ()
-	self.object:set_desired_direction()
-	self.object:set_path_type        (game_object.level_path) -- чтобы сбросить инфу о предыдущем пути
-	self.object:set_detail_path_type (move.line)
 
 	self.patrol_walk = patrol(path_walk)
 	if not self.patrol_walk then
@@ -285,6 +280,14 @@ function move_mgr:no_need_to_rotate()
 	local y = yaw(self.object:direction(), utils.vector_copy_by_val(wayp_pos):sub(self.object:position()))
 
 	return y < 0.3
+end
+
+function move_mgr:reset_path_info()
+	self.object:set_node_evaluator   ()
+	self.object:set_path_evaluator   ()
+	self.object:set_desired_direction()
+	self.object:set_path_type        (game_object.level_path) -- чтобы сбросить инфу о предыдущем пути
+	self.object:set_detail_path_type (move.line)
 end
 
 function move_mgr:update(no_dialog_mgr_update)
