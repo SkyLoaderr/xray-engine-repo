@@ -65,7 +65,7 @@ void Startup()
 	}
 
 	// Main cycle
-	Sleep						(1000);
+	Sleep						(3000);
 	Device.Run					( );
 	_DELETE						( pApp			);
 	Engine.Event.Dump			( );
