@@ -97,6 +97,9 @@ class CBitingEat : public IState {
 	bool			Captured;
 	TTime			m_dwLastImpulse;
 
+	Fvector			cover_position;
+	u32				cover_vertex_id;
+
 public:
 					CBitingEat		(CAI_Biting *p);
 

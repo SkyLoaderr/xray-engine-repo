@@ -77,8 +77,8 @@ void CAI_Biting::FaceTarget(const Fvector &position)
 
 bool CAI_Biting::GetCorpseCover(Fvector &position, u32 &vertex_id) 
 {
-	m_corpse_cover_evaluator->setup(10.f,30.f);
-	CCoverPoint	 *point = ai().cover_manager().best_cover(Position(),20.f,*m_corpse_cover_evaluator);
+	m_corpse_cover_evaluator->setup(10.f,50.f);
+	CCoverPoint	 *point = ai().cover_manager().best_cover(Position(),30.f,*m_corpse_cover_evaluator);
 	if (!point) return false;
 	
 	position	= point->m_position;

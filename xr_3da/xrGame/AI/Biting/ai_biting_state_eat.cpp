@@ -69,6 +69,9 @@ void CBitingEat::Init()
 
 	Captured			= false;
 	m_dwLastImpulse		= 0;
+
+	cover_position		= Fvector().set(0.f,0.f,0.f);		
+	cover_vertex_id		= u32(-1);
 }
 
 void CBitingEat::Run()
@@ -220,6 +223,10 @@ void CBitingEat::Run()
 					// тащить труп
 					bDragging		= true;
 					m_tAction		= ACTION_DRAG;
+
+					if (!pMonster->GetCorpseCover(cover_position, cover_vertex_id)) {
+						cover_vertex_id = u32(-1);
+					}					
 				} 
 			} 
 		}
@@ -235,13 +242,20 @@ void CBitingEat::Run()
 		pMonster->MotionMan.m_tAction = ACT_DRAG; 
 		pMonster->MotionMan.SetSpecParams(ASP_MOVE_BKWD);
 		
-		pMonster->MoveAwayFromTarget	(pCorpse->Position());
+		if (cover_vertex_id != u32(-1)) {
+			pMonster->MoveToTarget(cover_position, cover_vertex_id);
+		} else {
+			pMonster->MoveAwayFromTarget	(pCorpse->Position());
+		}
+		
 		pMonster->MotionMan.accel_activate(eAT_Calm);
 
 		// если не может тащить
 		if (0 == pMonster->m_PhysicMovementControl->PHCapture()) m_tAction = ACTION_EAT; 
-
-		if ((saved_dist > m_fDistToDrag)) {
+		
+		if ((cover_vertex_id != u32(-1) && (pMonster->Position().distance_to(cover_position) < 2.f)) || 
+			((cover_vertex_id == u32(-1)) && (saved_dist > m_fDistToDrag))) {
+			
 			// бросить труп
 			pMonster->m_PhysicMovementControl->PHReleaseObject();
 
