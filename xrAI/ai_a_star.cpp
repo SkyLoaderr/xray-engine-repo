@@ -169,7 +169,7 @@ void vfFindTheShortestPath(TNode *taHeap, TIndexNode *tpaIndexes, u32 &dwAStarSt
 				u32 dwNode = tpaNodes[0];
 				Msg("%d",dwNode);
 				for (i=1; i<(int)tpaNodes.size(); i++) {
-					fDirectDistance = ffCheckPositionInDirection(dwNode,tPosition,tfGetNodeCenter(tpaNodes[i]),MAX_VALUE);
+					fDirectDistance = ffCheckPositionInDirection(dwNode,tPosition,tfGetNodeCenter(tpaNodes[i]),fMaxDistance);
 					Msg("%6.2f",fDirectDistance);
 					if (fDirectDistance == MAX_VALUE) {
 						if (fLastDirectDistance == 0) {

@@ -219,7 +219,7 @@ IC void vfIntersectContours(SSegment &tSegment, SContour &tContour0, SContour &t
 		Log("! AI_PathNodes: Can't find intersection segment");
 }
 
-float ffCheckPositionInDirection(u32 dwStartNode, Fvector tStartPosition, Fvector tFinishPosition, float fMaxDistance)
+float ffCheckPositionInDirection(u32 dwStartNode, Fvector tStartPosition, Fvector tFinishPosition, float fMaxDistance, bool bReturnValue)
 {
 	NodeCompressed *tpNode;
 	NodeLink *taLinks;
@@ -237,7 +237,10 @@ float ffCheckPositionInDirection(u32 dwStartNode, Fvector tStartPosition, Fvecto
 
 	while (!bfInsideNode(m_nodes_ptr[dwCurNode],tFinishPosition)) {
 		if (fCumulativeDistance > fMaxDistance)
-			return(fCumulativeDistance);
+			if (bReturnValue)
+				return(fCumulativeDistance);
+			else
+				return(MAX_VALUE);
 		UnpackContour(tCurContour,dwCurNode);
 		tpNode = Node(dwCurNode);
 		taLinks = (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
