@@ -243,37 +243,87 @@ void CSkeletonX_ST::Load(const char* N, IReader *data, u32 dwFlags)
 	_Load_hw						(*this);
 }
 #pragma pack(push,1)
-static	D3DVERTEXELEMENT9 dwDecl_1W	[] =
+s16	q_P		(float v)
 {
-	{ 0, 0,  D3DDECLTYPE_FLOAT3,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_POSITION,		0 },	// pos
-	{ 0, 12, D3DDECLTYPE_FLOAT3,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_NORMAL,		0 },	// norm
-	{ 0, 24, D3DDECLTYPE_FLOAT2,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,		0 },	// tc
-	{ 0, 32, D3DDECLTYPE_SHORT2,	D3DDECLMETHOD_DEFAULT,	D3DDECLUSAGE_BLENDINDICES,	0 },	// indices
+	int		_v	= clampr(iFloor(v*(32767.f/12.f)), -32768, 32767);
+	return	s16	(_v);
+}
+u8	q_N		(float v)
+{
+	int		_v	= clampr(iFloor(((v+1)*.5f)*255.f + .5f), 0, 255);
+	return	u8	(_v);
+}
+s16	q_tc	(float v)
+{
+	int		_v	= clampr(iFloor(v*(32767.f/16.f)), -32768, 32767);
+	return	s16	(_v);
+}
+
+static	D3DVERTEXELEMENT9 dwDecl_1W	[] =	// 16bytes
+{
+	{ 0, 0,		D3DDECLTYPE_SHORT4,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_POSITION,		0 },	// : P						: 2	: -12..+12
+	{ 0, 8,		D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_NORMAL,		0 },	// : N, w=index(RC, 0..1)	: 1	:  -1..+1
+	{ 0, 12,	D3DDECLTYPE_SHORT2,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,		0 },	// : tc						: 1	: -16..+16
 	D3DDECL_END()
 };
 struct	vertHW_1W
 {
-	Fvector3	P,N;
-	Fvector2	uv;
-	short		ids	[2];
+	s16			P	[4];
+	u8			N_I	[4];
+	s16			tc	[2];
+	void set(Fvector3& P, Fvector3& N, Fvector2& tc, int index)
+	{
+		P[0]	= q_P(P.x);
+		P[1]	= q_P(P.y);
+		P[2]	= q_P(P.z);
+		P[3]	= q_P(1);
+		N_I[0]	= q_N(N.x);
+		N_I[1]	= q_N(N.y);
+		N_I[2]	= q_N(N.z);
+		N_I[3]	= u8(index);
+		tc[0]	= q_tc(tc.x);
+		tc[1]	= q_tc(tc.y);
+	}
 };
-static	D3DVERTEXELEMENT9 dwDecl_2W	[] =
+static	D3DVERTEXELEMENT9 dwDecl_2W	[] =	// 32bytes
 {
-	{ 0, 0,  D3DDECLTYPE_FLOAT3,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_POSITION,		0 },	// pos0
-	{ 0, 12, D3DDECLTYPE_FLOAT3,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_POSITION,		1 },	// pos0
-	{ 0, 24, D3DDECLTYPE_FLOAT3,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_NORMAL,		0 },	// norm0
-	{ 0, 36, D3DDECLTYPE_FLOAT3,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_NORMAL,		1 },	// norm0
-	{ 0, 48, D3DDECLTYPE_FLOAT2,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,		0 },	// tc
-	{ 0, 56, D3DDECLTYPE_SHORT2,	D3DDECLMETHOD_DEFAULT,	D3DDECLUSAGE_BLENDINDICES,	0 },	// indices
-	{ 0, 60, D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT,	D3DDECLUSAGE_BLENDWEIGHT,	0 },	// weight
+	{ 0, 0,		D3DDECLTYPE_SHORT4,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_POSITION,		0 },	// : p0					: 2	: -12..+12
+	{ 0, 8,		D3DDECLTYPE_SHORT4,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_POSITION,		1 },	// : p1 				: 2	: -12..+12
+	{ 0, 16,	D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_NORMAL,		0 },	// : n0.xyz, w = weight	: 1	:  -1..+1, w=0..1
+	{ 0, 20,	D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_NORMAL,		1 },	// : n1					: 1	:  -1..+1
+	{ 0, 24,	D3DDECLTYPE_SHORT4,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,		0 },	// : xy(tc), zw(indices): 2	: -16..+16, zw[0..32767]
 	D3DDECL_END()
 };
 struct	vertHW_2W
 {
-	Fvector3	P0,P1,N0,N1;
-	Fvector2	uv;
-	short		ids	[2];
-	u32			weight;
+	s16			P0	[4];
+	s16			P1	[4];
+	u8			N0_w[4];
+	u8			N1	[4];
+	s16			tc_i[4];
+	void set(Fvector3& P0, Fvector3& P1, Fvector3& N0, Fvector3& N1, Fvector2& tc, int index0, int index1, float w)
+	{
+		P0[0]	= q_P(P0.x);
+		P0[1]	= q_P(P0.y);
+		P0[2]	= q_P(P0.z);
+		P0[3]	= q_P(1);
+		P1[0]	= q_P(P1.x);
+		P1[1]	= q_P(P1.y);
+		P1[2]	= q_P(P1.z);
+		P1[3]	= q_P(1);
+		N0_w[0]	= q_N(N0.x);
+		N0_w[1]	= q_N(N0.y);
+		N0_w[2]	= q_N(N0.z);
+		N0_w[3]	= u8(clampr(iFloor(w*255.f+.5f),0,255));
+		N1[0]	= q_N(N1.x);
+		N1[1]	= q_N(N1.y);
+		N1[2]	= q_N(N1.z);
+		N1[3]	= 0;
+		tc_i[0]	= q_tc(tc.x);
+		tc_i[1]	= q_tc(tc.y);
+		tc_i[2]	= s16(index0);
+		tc_i[3]	= s16(index1);
+	}
 };
 #pragma pack(pop)
 
@@ -319,11 +369,8 @@ void CSkeletonX::_Load_hw	(Fvisual& V)
 			vertHW_1W*		dst	= (vertHW_1W*)bytes;
 			vertBoned1W*	src = (vertBoned1W*)*Vertices1W;
 			for (u32 it=0; it<V.vCount; it++)	{
-				dst->P		= src->P;
-				dst->N		= src->N;
-				dst->uv.set	(src->u,src->v);
-				dst->ids[0]	= u16(src->matrix)*3;
-				dst->ids[1] = 0;
+				Fvector2	uv; uv.set(src->u,src->v);
+				dst->set	(src->P,src->N,uv,src->matrix*3);
 				dst++; src++;
 			}
 			V.pVertices->Unlock	();
@@ -342,15 +389,9 @@ void CSkeletonX::_Load_hw	(Fvisual& V)
 			vertHW_2W*		dst	= (vertHW_2W*)bytes;
 			vertBoned2W*	src = (vertBoned2W*)*Vertices2W;
 			for (u32 it=0; it<V.vCount; it++)	{
-				dst->P0		= src->P0;
-				dst->P1		= src->P1;
-				dst->N0		= src->N0;
-				dst->N1		= src->N1;
-				dst->uv.set	(src->u,src->v);
-				dst->ids[0]	= u16(src->matrix0)*3;
-				dst->ids[1] = u16(src->matrix1)*3;
-				dst->weight	= color_rgba_f(0,0,0,src->w);
-				dst++; src++;
+				Fvector2	uv; uv.set(src->u,src->v);
+				dst->set	(src->P0,src->P1,src->N0,src->N1,uv,int(src->matrix0)*3,int(src->matrix1)*3,src->w);
+				dst++;		src++;
 			}
 			V.pVertices->Unlock	();
 			V.hGeom.create		(dwDecl_2W, V.pVertices, V.pIndices);
