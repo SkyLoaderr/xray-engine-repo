@@ -9,6 +9,7 @@ local entered = false
 function on_enter (zone, obj)
     entered = true
     zone:clear_callback (true)
+    printf ("Entered ");    
 end
 
 function main ()
