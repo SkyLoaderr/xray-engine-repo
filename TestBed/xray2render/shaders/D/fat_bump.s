@@ -78,15 +78,15 @@ p2f 	p_main	( v2p_in IN )
   p2f OUT;
 
   // Transfer position and sample diffuse
-  OUT.Pe	= half4		(IN.Pe.x,IN.Pe.y,IN.Pe.z,0);
-  half4 D	= tex2D		(s_texture, IN.tc0);				// Diffuse map only
+  OUT.Pe	= half4		(IN.Pe.x,IN.Pe.y,IN.Pe.z,0);		// OUT: position
+  half4 D	= tex2D		(s_texture, IN.tc0);				// IN:  Diffuse map only
 
   // Sample normal and rotate it by matrix
-  half4 Nu	= tex2D		(s_nmap,	IN.tc0);				// Unsigned normal and gloss
+  half4 Nu	= tex2D		(s_nmap,	IN.tc0);				// IN:  Unsigned normal and gloss
+  OUT.C		= half4		(D.x,	D.y,	D.z,	Nu.w);		// OUT: rgb.gloss
   half3 Ns	= ((half3)Nu)*2 - half3(1,1,1);					// Signed normal
-  half3 Ne	= mul		(half3x3(IN.M1, IN.M2, IN.M3), Ns);
-  half3 NeN	= normalize	(Ne);								// texCUBE	(s_NCM,Ne);	
+  half3 Ne	= mul		(half3x3(IN.M1, IN.M2, IN.M3), Ns);	// Normal in eye-space : unnormalized
+  half3 NeN	= normalize	(Ne);								// Normal in eye-space : normalized		// texCUBE	(s_NCM,Ne);	
   OUT.Ne 	= half4		(NeN.x,	NeN.y,	NeN.z,	0);
-  OUT.C		= half4		(D.x,	D.y,	D.z,	Nu.w);
   return OUT;
 }
