@@ -1,3 +1,8 @@
+----------------------------------------------------------------------------------------------------
+-- FX Sound
+----------------------------------------------------------------------------------------------------
+-- Разработчик: Jim
+----------------------------------------------------------------------------------------------------
 
 class "fx_snd"
 
@@ -5,50 +10,69 @@ function fx_snd:__init(obj, storage)
 	self.object = obj
 	self.st		= storage
 	
-	self.loaded = false
-	
+	self.played	= true
 end
 
 function fx_snd:reset_scheme()
-	self.object:set_nonscript_usable(false)
+	printf("Fx Sound :: Reset Scheme")
+	self.cur_point	= 0
+	self.snd_obj	= sound_object(self.st.snd)
+	
+	self:set_positions()
+	
+	self.st.signals = {}
+	
+	self.complete	= false
 end
 
 function fx_snd:update(delta)
-	if not self.loaded then
-		self.loaded = true
 	
-		self.target	= debug_get_level_object(self.st.obj_name):position()
-		self.source = self.object:position()
-		
-		self.current = vector():set(self.source)
-		
-		self.snd_obj = sound_object(self.st.snd)
+	if xr_logic.try_switch_to_another_section(self.object, self.st, db.actor) then
+		return
 	end
-
-
+	
+	if self.complete then return end
+	
+	-- play sound
 	if not self.snd_obj:playing() then 
-		--self.snd_obj:play_at_pos(self.source,0,sound_object.looped)
 		self.snd_obj:play_at_pos(self.object, self.current)
-		printf("play...")
+	else 
+		self.snd_obj:set_position(self.current)	
 	end
 	
-	-- update current
-	local dir = vector():sub(self.target, self.source):normalize()
+	-- update current position
 	local target_pos = vector():set(self.current)
+	target_pos:mad(self.dir, self.st.velocity * delta / 1000)
 	
-	target_pos:mad(dir, 0.8)
+	if target_pos:distance_to(self.current) > self.current:distance_to(self.target) then
+		self.cur_point	= self:next_point()
+		self:set_positions()
+	else
+		self.current	= vector():set(target_pos)
+	end
 	
-	self.current = vector():set(target_pos)
+end
+
+function fx_snd:next_point()
+	if self.cur_point+1 < patrol(self.st.path):count() then
+		return self.cur_point+1
+	else
+		return 0
+	end
 	
-	if self.current:distance_to(self.target) < 2 then
-		printf("<<<<")
-		self.current = self.source	
+end
+
+function fx_snd:set_positions()
+	
+	if (self:next_point() == 0) then
+		self.complete = true
+		self.st.signals["completed"] = true
+		return
 	end
 
-	self.snd_obj:set_position(self.current)
-	
-	printf("update :: delta = [%u] pos = [%f,%f,%f]", delta, self.current.x,self.current.y,self.current.z)	
-	
+	self.current	= patrol(self.st.path):point(self.cur_point)
+	self.target		= patrol(self.st.path):point(self:next_point())
+	self.dir		= vector():sub(self.target, self.current):normalize()
 end
 
 ---------------------------------------------------------------------------------------------------------------------
@@ -66,8 +90,9 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 
 	st.logic    = xr_logic.cfg_get_switch_conditions(ini, section, npc)
 	
-	st.obj_name	= utils.cfg_get_string(ini, section, "object",	npc,	false, "")	
-	st.snd		= utils.cfg_get_string(ini, section, "sound",	npc,	false, "")
-	
+	st.path		= utils.cfg_get_string(ini, section, "path",		npc, false, "")
+	st.snd		= utils.cfg_get_string(ini, section, "sound",		npc, false, "")
+	st.velocity = utils.cfg_get_number(ini, section, "velocity",	npc, false, 3)
+		
 end
 
