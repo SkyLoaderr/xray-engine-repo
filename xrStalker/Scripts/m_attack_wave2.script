@@ -73,9 +73,15 @@ function Defender:find_enemy ()
 
 	if enemy ~= nil then
        printf ("Defender %s find enemy %s", self.npc:name (), enemy.npc:name ())	
+	   if distance_between (enemy.npc, self.npc) > 30 then enemy = nil end
 	end
 
 	return enemy		
+end
+
+function Defender:is_alive ()
+	if self.npc ~= nil and self.npc:alive () == true then return true end
+	return false
 end
 
 function Defender:prestate ()
@@ -180,12 +186,17 @@ function Monster:set_enemyes (enemyes)
 	self.targets = enemyes
 end
 
+function Monster:is_alive ()
+	if self.npc ~= nil and self.npc:alive () == true then return true end
+	return false
+end
+
 function Monster:find_enemy ()
 	if table.getn (self.targets) == 0 then return nil end	
 	local dist = 100000000
 	local enemy = nil
 	for a = 1, table.getn (self.targets), 1 do
-		if self.targets[a].npc:alive () == true and self.targets[a].available == true then
+		if self.targets[a]:is_alive () == true and self.targets[a].available == true then
 		   local tdist = distance_between (self.npc, self.targets[a].npc) 
 		   if tdist < dist and self.targets[a].attacker == nil and self.npc:see (self.targets[a].npc) then
 			  dist = tdist
@@ -197,6 +208,7 @@ function Monster:find_enemy ()
 	
 	if enemy ~= nil then
   	   printf ("Attacker %s find enemy %s", self.npc:name (), enemy.npc:name ())	
+	   if distance_between (enemy.npc, self.npc) > 30 then enemy = nil end
 	end
 	return enemy
 end
@@ -223,7 +235,7 @@ function Monster:process ()
     end	 
 
 	local enemy = nil
-	if self.target == nil or self.target.npc:alive () == false then enemy = self:find_enemy () end
+	if self.target == nil or self.target:is_alive () == false then enemy = self:find_enemy () end
 	if enemy == nil then return 
 	else
        if enemy ~= self.target then 
