@@ -98,9 +98,12 @@ template <typename TFullList> struct DynamicCast
 	}
 };
 
+#pragma optimize(push)
+#pragma optimize(off)
 void export_classes	(lua_State *L)
 {
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	Register<script_type_list>::_Register(L);
-#endif
+//#endif
 }
+#pragma optimize(pop)

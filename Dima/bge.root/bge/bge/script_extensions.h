@@ -25,9 +25,9 @@
 #include "lauxlib.h"
 #include "lualib.h"
 
-#ifndef _DEBUG
-#	define LUABIND_NO_ERROR_CHECKING
-#endif
+//#ifndef _DEBUG
+//#	define LUABIND_NO_ERROR_CHECKING
+//#endif
 
 #define LUABIND_NO_EXCEPTIONS
 #define LUABIND_DONT_COPY_STRINGS
