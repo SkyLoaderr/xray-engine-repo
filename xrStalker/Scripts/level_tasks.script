@@ -154,6 +154,7 @@ function proceed(actor)
 
 	if	actor:has_info("bar_bar_drunk_dolg_quest_start") and 
  		actor:dont_has_info("bar_bar_drunk_dolg_quest_finish") and
+ 		actor:dont_has_info("bar_bar_drunk_dolg_quest_gain") and
 		actor:object("bar_sniper_pda") ~= nil 
 	then		
 		actor:give_info_portion("bar_bar_drunk_dolg_quest_gain")
