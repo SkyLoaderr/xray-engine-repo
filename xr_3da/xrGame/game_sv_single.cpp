@@ -30,7 +30,7 @@ BOOL	game_sv_Single::OnTouch			(u16 eid_who, u16 eid_what)
 		CALifeItem			*tpALifeItem		= dynamic_cast<CALifeItem*>			(e_what);
 		CALifeDynamicObject *tpDynamicObject	= dynamic_cast<CALifeDynamicObject*>(e_who);
 		
-		if (tpTraderParams && tpALifeItem && tpDynamicObject)
+		if (tpTraderParams && tpALifeItem && tpDynamicObject && (m_tpALife->m_tObjectRegistry.find(e_who->ID) != m_tpALife->m_tObjectRegistry.end()) && (m_tpALife->m_tObjectRegistry.find(tpALifeItem->ID) != m_tpALife->m_tObjectRegistry.end()))
 			m_tpALife->vfAttachItem(*e_who,tpALifeItem,tpALifeItem->m_tGraphID,false);
 	}
 	return TRUE;
@@ -44,13 +44,14 @@ BOOL	game_sv_Single::OnDetach		(u16 eid_who, u16 eid_what)
 
 		CALifeItem *tpALifeItem = dynamic_cast<CALifeItem*>(e_what);
 		if (!tpALifeItem)
-			return FALSE;
+			return TRUE;
 
 		CALifeDynamicObject *tpDynamicObject = dynamic_cast<CALifeDynamicObject*>(e_who);
 		if (!tpDynamicObject)
-			return FALSE;
+			return TRUE;
 		
-		m_tpALife->vfDetachItem(*e_who,tpALifeItem,tpDynamicObject->m_tGraphID,false);
+		if ((m_tpALife->m_tObjectRegistry.find(e_who->ID) != m_tpALife->m_tObjectRegistry.end()) && (m_tpALife->m_tObjectRegistry.find(tpALifeItem->ID) != m_tpALife->m_tObjectRegistry.end()))
+			m_tpALife->vfDetachItem(*e_who,tpALifeItem,tpDynamicObject->m_tGraphID,false);
 	}
 	return					(TRUE);
 }
