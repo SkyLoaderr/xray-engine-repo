@@ -13,10 +13,10 @@ void	CBlender_accum_point::Compile(CBlender_Compile& C)
 	switch (C.iElement)
 	{
 	case 0:	// masking
-		C.r_Pass			("accum_point_mask",	"accum_point_mask",TRUE,FALSE);
-		C.r_Sampler_rtf		("s_position",		r2_RT_P);
-		C.r_Sampler_rtf		("s_normal",		r2_RT_N_H);
-		C.r_Sampler_rtf		("s_smap",			r2_RT_smap_p);
+		C.r_Pass			("accum_point_mask",	"null",		FALSE,FALSE);
+		C.r_Sampler_rtf		("s_position",			r2_RT_P);
+		C.r_Sampler_rtf		("s_normal",			r2_RT_N_H);
+		C.r_Sampler_rtf		("s_smap",				r2_RT_smap_p);
 		C.r_End				();
 		break;
 	case 1:	// lighting/shadowing - front/back
