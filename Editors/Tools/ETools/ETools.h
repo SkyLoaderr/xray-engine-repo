@@ -7,9 +7,14 @@
 #define ETOOLS_API __declspec( dllimport )
 #endif
 
-#include "D3DX_Wrapper.h"
-
 extern "C" {
+	// fast functions
+	namespace ETOOLS{
+		ETOOLS_API bool TestRayTri	(const Fvector& C, const Fvector& D, Fvector* p, float& u, float& v, float& range, bool bCull);
+		ETOOLS_API bool TestRayTri2	(const Fvector& C, const Fvector& D, Fvector** p, float& u, float& v, float& range, bool bCull);
+	};
+
+	// D3DX Wrapper
 	ETOOLS_API UINT WINAPI
 		D3DX_GetDriverLevel(
 		LPDIRECT3DDEVICE9		pDevice);
@@ -139,12 +144,6 @@ extern "C" {
 	ETOOLS_API const char*  WINAPI
 		DX_GetErrorDescription9(
 		HRESULT					hr);
-
-	// fast functions
-	namespace ETOOLS{
-		ETOOLS_API bool TestRayTri	(const Fvector& C, const Fvector& D, Fvector* p, float& u, float& v, float& range, bool bCull);
-		ETOOLS_API bool TestRayTri2	(const Fvector& C, const Fvector& D, Fvector** p, float& u, float& v, float& range, bool bCull);
-	};
 }
 
 #ifndef CREATEDX_EXPORTS

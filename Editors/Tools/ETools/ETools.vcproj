@@ -152,9 +152,6 @@
 			RelativePath=".\CreateDX.cpp">
 		</File>
 		<File
-			RelativePath=".\D3DX_Wrapper.h">
-		</File>
-		<File
 			RelativePath=".\ETools.cpp">
 		</File>
 		<File
