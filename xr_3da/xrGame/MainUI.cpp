@@ -176,7 +176,7 @@ void	CMainUI::OnFrame		(void)
 
 void CMainUI::OnDeviceCreate()
 {
-	if (Device.dwWidth<UI_BASE_WIDTH)	SetScale(float(Device.dwWidth)/float(UI_BASE_WIDTH));
+	if (Device.dwWidth!=UI_BASE_WIDTH)	SetScale(float(Device.dwWidth)/float(UI_BASE_WIDTH));
 	else								SetScale(1.f);
 }
 
@@ -199,12 +199,16 @@ void CMainUI::ClientToScreenScaled(Ivector2& dest, int left, int top, u32 align)
 
 int CMainUI::ClientToScreenScaledX(int left, u32 align)
 {
+	return iFloor(left*m_fDevScale);
+
 	if (align&alRight)	return iFloor(Device.dwWidth-UI_BASE_WIDTH*m_fDevScale + left*m_fDevScale);
 	else				return iFloor(left*m_fDevScale);
 }
 
 int CMainUI::ClientToScreenScaledY(int top, u32 align)
 {
+	return iFloor(top*m_fDevScale);
+
 	if (align&alBottom)	return iFloor(Device.dwHeight-UI_BASE_HEIGHT*m_fDevScale + top*m_fDevScale);
 	else				return iFloor(top*m_fDevScale);
 }
@@ -224,12 +228,16 @@ void CMainUI::ClientToScreen(Irect& r, u32 align)
 
 int CMainUI::ClientToScreenX(int left, u32 align)
 {
+	return left;
+
 	if (align&alRight)	return iFloor(Device.dwWidth-UI_BASE_WIDTH*m_fDevScale + left);
 	else				return left;
 }
 
 int CMainUI::ClientToScreenY(int top, u32 align)
 {
+	return top;
+
 	if (align&alBottom)	return iFloor(Device.dwHeight-UI_BASE_HEIGHT*m_fDevScale + top);
 	else				return top;
 }

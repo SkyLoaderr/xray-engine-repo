@@ -681,6 +681,8 @@ bool CUIXmlInit::InitTexture(CUIXml &xml_doc, const char *path, int index, CUISt
 
 int CUIXmlInit::ApplyAlignX(int coord, u32 align)
 {
+	return coord;
+/*
 	// Применить выравнивание, только при увеличенном разрешения
 	if (UI_BASE_WIDTH >= Device.dwWidth) return coord;
 
@@ -697,12 +699,15 @@ int CUIXmlInit::ApplyAlignX(int coord, u32 align)
 	}
 
 	return retVal;
+*/
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 int CUIXmlInit::ApplyAlignY(int coord, u32 align)
 {
+	return coord;
+/*
 	// Применить выравнивание, только при увеличенном разрешения
 	if (UI_BASE_HEIGHT >= Device.dwHeight) return coord;
 
@@ -719,6 +724,7 @@ int CUIXmlInit::ApplyAlignY(int coord, u32 align)
 	}
 
 	return retVal;
+*/
 }
 
 //////////////////////////////////////////////////////////////////////////
