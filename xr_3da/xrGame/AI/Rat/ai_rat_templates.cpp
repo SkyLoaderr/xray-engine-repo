@@ -221,6 +221,7 @@ bool CAI_Rat::bfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForward)
 	XFORM().setHPB	(m_tHPB.x,m_tHPB.y,m_tHPB.z);
 	Position()		= tSavedPosition;
 	Position().mad	(tDirection,m_fSpeed*m_fTimeUpdateDelta);
+	Msg				("[%f][%f][%f]",VPUSH(Position()));
 	r_target.yaw	= r_torso_target.yaw = -m_tHPB.x;
 
 //	Fvector tAcceleration;
