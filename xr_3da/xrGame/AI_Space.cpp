@@ -11,6 +11,7 @@
 #include "game_sv_single.h"
 #include "CustomMonster.h"
 #include "..\\net_client.h"
+#include "ai_alife.h"
 using namespace AI;
 
 CAI_Space *	tpAI_Space = 0;

@@ -26,7 +26,7 @@ void CSE_ALifeSpawnHeader::Load	(IReader	&tFileStream)
 	R_ASSERT2					(m_tSpawnVersion == XRAI_CURRENT_VERSION,"'game.spawn' version mismatch!");
 	m_dwSpawnCount				= tFileStream.r_u32();
 	m_dwLevelCount				= tFileStream.r_u32();
-};
+}
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeDiscovery
@@ -108,4 +108,37 @@ void CSE_ALifeDiscovery::Load	(IReader &tFileStream)
 		for ( ; I != E; I++)
 			(*I)->Load			(tFileStream);
 	}
-};
+}
+
+////////////////////////////////////////////////////////////////////////////
+// CSE_ALifeOrganization
+////////////////////////////////////////////////////////////////////////////
+CSE_ALifeOrganization::CSE_ALifeOrganization(LPCSTR caSection)
+{
+	LPCSTR						S;
+	string64					S1;
+	S							= pSettings->r_string	(caSection,"discoveries");
+	m_tpPossibleDiscoveries.resize(_GetItemCount(S));
+	LPCSTR_IT					B = m_tpPossibleDiscoveries.begin(), I = B;
+	LPCSTR_IT					E = m_tpPossibleDiscoveries.end();
+	for ( ; I != E; I++) {
+		_GetItem				(S,int(I - B),S1);
+		*I						= (char*)xr_malloc((strlen(S1) + 1)*sizeof(char));
+		strcpy					((char*)(*I),S1);
+	}
+	m_fJoinProbability			= pSettings->r_float	(caSection,"join_probability");
+	m_fLeftProbability			= pSettings->r_float	(caSection,"left_probability");
+}
+
+CSE_ALifeOrganization::~CSE_ALifeOrganization()
+{
+	free_malloc_vector			(m_tpPossibleDiscoveries);
+}
+
+void CSE_ALifeOrganization::Save(IWriter &tMemoryStream)
+{
+}
+
+void CSE_ALifeOrganization::Load(IReader &tFileStream)
+{
+}

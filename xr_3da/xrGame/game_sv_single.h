@@ -1,14 +1,15 @@
 #pragma once
 
 #include "game_sv_base.h"
-#include "ai_alife.h"
+
+class CSE_ALifeSimulator;
 
 class	game_sv_Single				: public game_sv_GameState
 {
 private:
 	typedef game_sv_GameState inherited;
 public:
-	CSE_ALifeSimulator						*m_tpALife;
+	CSE_ALifeSimulator				*m_tpALife;
 	xrServer						*m_tpServer;
 	bool							m_bALife;
 									game_sv_Single			(xrServer *tpServer) : game_sv_GameState()
@@ -18,10 +19,7 @@ public:
 		m_bALife					= false;
 	};
 
-	virtual							~game_sv_Single			()
-	{
-		xr_delete					(m_tpALife);
-	};
+	virtual							~game_sv_Single			();
 
 	virtual		void				Create					(LPCSTR options);
 	virtual		CSE_Abstract*		get_entity_from_eid		(u16 id);

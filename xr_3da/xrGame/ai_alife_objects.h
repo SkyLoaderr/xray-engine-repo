@@ -188,18 +188,13 @@ public:
 class CSE_ALifeOrganization : public IPureALifeLSObject {
 public:
 	LPCSTR							m_caOrganizationIdentifier;
-	//ARTEFACT_VECTOR					m_tpArtefacts;
+	LPCSTR_VECTOR					m_tpPossibleDiscoveries;
+	float							m_fJoinProbability;
+	float							m_fLeftProbability;
 
 
-									CSE_ALifeOrganization()
-	{
-	}
-
-	virtual void					Save				(IWriter &tMemoryStream)
-	{
-	}
-
-	virtual void					Load				(IReader &tFileStream)
-	{
-	}
+									CSE_ALifeOrganization(LPCSTR caSection);
+									~CSE_ALifeOrganization();
+	virtual void					Save				(IWriter &tMemoryStream);
+	virtual void					Load				(IReader &tFileStream);
 };

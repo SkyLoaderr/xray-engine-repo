@@ -1,5 +1,11 @@
 #include "stdafx.h"
 #include "game_sv_single.h"
+#include "ai_alife.h"
+
+game_sv_Single::~game_sv_Single			()
+{
+	xr_delete							(m_tpALife);
+}
 
 void	game_sv_Single::Create			(LPCSTR options)
 {

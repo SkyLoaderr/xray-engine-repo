@@ -26,6 +26,7 @@
 #include "..\fdemoplay.h"
 #include "a_star.h"
 #include "game_sv_single.h"
+#include "ai_alife.h"
 #include "HangingLamp.h"
 
 #include "trade.h"
