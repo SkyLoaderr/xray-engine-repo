@@ -55,6 +55,8 @@ void CLight::Construct(LPVOID data)
 	m_Range 		= 8.f;
     m_Cone			= PI_DIV_8;
 
+    m_VirtualSize	= 0.f;
+
     m_pAnimRef		= 0;
     m_LControl		= 0;
 
@@ -211,14 +213,21 @@ void __fastcall	CLight::OnNeedUpdate(PropValue* value)
 bool CLight::GetSummaryInfo(SSceneSummary* inf)
 {
     switch (m_Type){
-    case ltPointR1:		inf->light_point_cnt++; break;
-    case ltSpotR1:		inf->light_spot_cnt++; 	break;
+    case ltPointR1:		inf->light_pointR1_cnt++; break;
+    case ltPointR2:		inf->light_pointR2_cnt++; break;
+    case ltSpotR1:		inf->light_spotR1_cnt++; 	break;
+    case ltSpotR2:		inf->light_spotR2_cnt++; 	break;
     }
 
-    if (m_Flags.is(flAffectStatic))		inf->light_static_cnt++;
-    if (m_Flags.is(flAffectDynamic))	inf->light_dynamic_cnt++;
-    if (m_Flags.is(flProcedural))		inf->light_procedural_cnt++;
-    if (m_Flags.is(flBreaking))			inf->light_breakable_cnt++;
+    switch (m_Type){
+    case ltPointR1:
+    case ltSpotR1:
+        if (m_Flags.is(flAffectStatic))		inf->light_static_cnt++;
+        if (m_Flags.is(flAffectDynamic))	inf->light_dynamic_cnt++;
+        if (m_Flags.is(flProcedural))		inf->light_procedural_cnt++;
+        if (m_Flags.is(flBreaking))			inf->light_breakable_cnt++;
+        break;
+    }
 	return true;
 }
 //----------------------------------------------------

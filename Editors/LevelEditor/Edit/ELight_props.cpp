@@ -155,8 +155,14 @@ xr_token fuzzy_shape_types[]={
 	{ "Box",			CLight::SFuzzyData::fstBox		},
 	{ 0,				0				}
 };
-void CLight::FillPointProp(LPCSTR pref, PropItemVec& items)
+void CLight::FillPointR1Prop(LPCSTR pref, PropItemVec& items)
 {
+	// flags
+    PHelper.CreateFlag<Flags32>(items,	FHelper.PrepareKey(pref,"Usage\\LightMap"),	&m_Flags,	CLight::flAffectStatic);
+    PHelper.CreateFlag<Flags32>(items,	FHelper.PrepareKey(pref,"Usage\\Dynamic"),	&m_Flags,	CLight::flAffectDynamic);
+    PHelper.CreateFlag<Flags32>(items,	FHelper.PrepareKey(pref,"Usage\\Animated"),	&m_Flags,	CLight::flProcedural);
+//    PHelper.CreateFlag32	(items,	FHelper.PrepareKey(pref,"Flags\\Breakable"),&m_Flags,	CLight::flBreaking);
+
 	FillAttProp			(pref,items);
     PropValue* 			P=0;
     ButtonValue* 		B=0;
@@ -184,17 +190,38 @@ void CLight::FillPointProp(LPCSTR pref, PropItemVec& items)
 }
 //----------------------------------------------------
 
-void CLight::FillSpotProp(LPCSTR pref, PropItemVec& items)
+void CLight::FillSpotR1Prop(LPCSTR pref, PropItemVec& items)
 {
+	// flags
+    PHelper.CreateFlag<Flags32>(items,	FHelper.PrepareKey(pref,"Usage\\LightMap"),	&m_Flags,	CLight::flAffectStatic);
+    PHelper.CreateFlag<Flags32>(items,	FHelper.PrepareKey(pref,"Usage\\Dynamic"),	&m_Flags,	CLight::flAffectDynamic);
+    PHelper.CreateFlag<Flags32>(items,	FHelper.PrepareKey(pref,"Usage\\Animated"),	&m_Flags,	CLight::flProcedural);
+//    PHelper.CreateFlag32	(items,	FHelper.PrepareKey(pref,"Flags\\Breakable"),&m_Flags,	CLight::flBreaking);
+
 	FillAttProp				(pref,items);
-	PHelper.CreateAngle		(items,	FHelper.PrepareKey(pref, "Spot\\Cone Angle"),	&m_Cone,		0.1f,120.f,0.01f,2);
-	PHelper.CreateChoose	(items,	FHelper.PrepareKey(pref, "Spot\\Texture"),		&m_SpotAttTex, 	smTexture);
+	PHelper.CreateAngle		(items,	FHelper.PrepareKey(pref, "Spot R1\\Cone Angle"),	&m_Cone,		0.1f,deg2rad(150),0.01f,2);
+	PHelper.CreateChoose	(items,	FHelper.PrepareKey(pref, "Spot R1\\Texture"),		&m_SpotAttTex, 	smTexture);
+}
+//----------------------------------------------------
+
+void CLight::FillPointR2Prop(LPCSTR pref, PropItemVec& items)
+{
+}
+//----------------------------------------------------
+
+void CLight::FillSpotR2Prop(LPCSTR pref, PropItemVec& items)
+{
+	PHelper.CreateAngle		(items,	FHelper.PrepareKey(pref, "Spot R2\\Cone Angle"),	&m_Cone,		0.1f,deg2rad(150),0.01f,2);
+	PHelper.CreateChoose	(items,	FHelper.PrepareKey(pref, "Spot R2\\Texture"),		&m_SpotAttTex, 	smTexture);
+    PHelper.CreateFloat		(items,	FHelper.PrepareKey(pref, "Spot R2\\Virtual Size"),	&m_VirtualSize);
 }
 //----------------------------------------------------
 
 xr_token			token_light_type[ ]	=	{
-    { "Point",		CLight::ltPointR1		},
-    { "Spot",		CLight::ltSpotR1		},
+    { "Point R1",	CLight::ltPointR1		},
+    { "Spot R1",	CLight::ltSpotR1		},
+    { "Point R2",	CLight::ltPointR2		},
+    { "Spot R2",	CLight::ltSpotR2		},
     { 0,			0	  					}
 };
 
@@ -214,14 +241,11 @@ void CLight::FillProp(LPCSTR pref, PropItemVec& items)
     ESceneLightTools* lt	= dynamic_cast<ESceneLightTools*>(ParentTools); VERIFY(lt);
 	PHelper.CreateAToken<u32>(items,FHelper.PrepareKey(pref,"Light Control"),	&m_LControl, &lt->lcontrols);
 
-    PHelper.CreateFlag<Flags32>(items,	FHelper.PrepareKey(pref,"Usage\\LightMap"),	&m_Flags,	CLight::flAffectStatic);
-    PHelper.CreateFlag<Flags32>(items,	FHelper.PrepareKey(pref,"Usage\\Dynamic"),	&m_Flags,	CLight::flAffectDynamic);
-    PHelper.CreateFlag<Flags32>(items,	FHelper.PrepareKey(pref,"Usage\\Animated"),	&m_Flags,	CLight::flProcedural);
-//    PHelper.CreateFlag32	(items,	FHelper.PrepareKey(pref,"Flags\\Breakable"),&m_Flags,	CLight::flBreaking);
-
     switch(m_Type){
-    case ltPointR1:	 		FillPointProp	(pref, items);	break;
-    case ltSpotR1: 			FillSpotProp 	(pref, items);	break;
+    case ltPointR1:	 		FillPointR1Prop	(pref, items);	break;
+    case ltPointR2:	 		FillPointR2Prop	(pref, items);	break;
+    case ltSpotR1: 			FillSpotR1Prop 	(pref, items);	break;
+    case ltSpotR2: 			FillSpotR2Prop 	(pref, items);	break;
     default: THROW;
     }
     PHelper.CreateBOOL		(items,	FHelper.PrepareKey(pref,"Use In D3D"),		&m_UseInD3D);

@@ -23,8 +23,14 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	if ((_Command!=COMMAND_INITIALIZE)&&!m_bReady) return false;
 	string256 filebuffer;
 
-    bool bRes = true;
-
+    bool bRes 		= true;
+    
+    // execute BEFORE command
+    bool bPresent   = false;
+    bRes			= CommandBefore(bPresent,_Command,p1,p2);
+    if (bPresent)	return bRes;
+    
+    // execute main command
 	switch( _Command ){
 	case COMMAND_INITIALIZE:{
 		Engine.Initialize	();
@@ -200,7 +206,9 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     	SndLib->MuteSounds(p1);
     	break;
  	default:
-    	bRes = CommandExt(_Command,p1,p2);
+	    // execute AFTER command
+	    bRes	= CommandAfter(bPresent,_Command,p1,p2);
+	    if (!bPresent)	Debug.fatal("ERROR: Undefined command: %04d", _Command);
 	}
 
     RedrawScene();

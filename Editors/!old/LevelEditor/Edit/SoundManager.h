@@ -11,7 +11,7 @@ class CSoundManager{
 	void 		MakeGameSound		(ESoundThumbnail* THM, LPCSTR src_name, LPCSTR game_name);
 public:
 				CSoundManager		(){}
-				~CSoundManager		(){;}
+	virtual		~CSoundManager		(){;}
 
     BOOL __fastcall	RemoveSound		(LPCSTR fname, EItemType type);
 	void __fastcall RenameSound		(LPCSTR p0, LPCSTR p1, EItemType type);

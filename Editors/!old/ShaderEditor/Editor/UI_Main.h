@@ -100,7 +100,8 @@ public:
     // mouse sensetive
     float m_MouseSM, m_MouseSS, m_MouseSR;
 protected:
-    virtual bool	CommandExt				(int _Command, int p = 0, int p2 = 0)=0;
+    virtual bool	CommandBefore			(bool& present, int _Command, int p = 0, int p2 = 0)=0;
+    virtual bool	CommandAfter			(bool& present, int _Command, int p = 0, int p2 = 0)=0;
     virtual bool 	ApplyShortCutExt		(WORD Key, TShiftState Shift)=0;
     virtual bool 	ApplyGlobalShortCutExt	(WORD Key, TShiftState Shift)=0;
 

@@ -18,6 +18,7 @@ public:
 		flProcedural	= (1<<2),
         flBreaking 		= (1<<3),
         flPointFuzzy	= (1<<4),
+        flCastShadow	= (1<<5),
     };
     Flags32			m_Flags;
 
@@ -40,6 +41,8 @@ public:
     float	        m_Attenuation2;     /* Quadratic attenuation */
     float	        m_Cone;             /* Outer angle of spotlight cone */
 
+    float			m_VirtualSize;
+    
 	// build options
     BOOL 			m_UseInD3D;
 
@@ -142,8 +145,10 @@ public:
     
 	virtual void	FillProp		(LPCSTR pref, PropItemVec& items);
 	void			FillSunProp		(LPCSTR pref, PropItemVec& items);
-	void			FillPointProp	(LPCSTR pref, PropItemVec& items);
-	void			FillSpotProp	(LPCSTR pref, PropItemVec& items);
+	void			FillPointR1Prop	(LPCSTR pref, PropItemVec& items);
+	void			FillPointR2Prop	(LPCSTR pref, PropItemVec& items);
+	void			FillSpotR1Prop	(LPCSTR pref, PropItemVec& items);
+	void			FillSpotR2Prop	(LPCSTR pref, PropItemVec& items);
     void			FillAttProp		(LPCSTR pref, PropItemVec& items);
 	virtual bool 	GetSummaryInfo	(SSceneSummary* inf);
 

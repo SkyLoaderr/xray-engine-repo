@@ -38,7 +38,7 @@ bool CLight::Load(IReader& F)
 
 	CCustomObject::Load(F);
 
-    if (F.find_chunk(LIGHT_CHUNK_D3D_PARAMS)){
+    if (F.find_chunk(LIGHT_CHUNK_PARAMS)){
         m_Type			= (ELightType)F.r_u32();            
         F.r_fcolor		(m_Color);  	        
         m_Brightness   	= F.r_float();			
@@ -46,7 +46,8 @@ bool CLight::Load(IReader& F)
         m_Attenuation0	= F.r_float();			
         m_Attenuation1	= F.r_float();			
         m_Attenuation2	= F.r_float();			
-        m_Cone			= F.r_float();			
+        m_Cone			= F.r_float();
+        m_VirtualSize	= F.r_float();
     }else{
 	    R_ASSERT(F.find_chunk(LIGHT_CHUNK_D3D_PARAMS));
         Flight			d3d;
@@ -112,7 +113,7 @@ void CLight::Save(IWriter& F)
 	F.w_u16			(LIGHT_VERSION);
 	F.close_chunk	();
 
-	F.open_chunk	(LIGHT_CHUNK_D3D_PARAMS);
+	F.open_chunk	(LIGHT_CHUNK_PARAMS);
     F.w_u32		    (m_Type);     
     F.w_fcolor	    (m_Color);  
     F.w_float	    (m_Brightness);
@@ -121,6 +122,7 @@ void CLight::Save(IWriter& F)
     F.w_float	    (m_Attenuation1);
     F.w_float	    (m_Attenuation2);
     F.w_float	    (m_Cone);
+    F.w_float	    (m_VirtualSize);
 	F.close_chunk	();
 
     F.w_chunk		(LIGHT_CHUNK_USE_IN_D3D,&m_UseInD3D,sizeof(m_UseInD3D));
