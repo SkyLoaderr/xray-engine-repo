@@ -193,7 +193,8 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 class "patrol_binder" (object_binder)
 ----------------------------------------------------------------------------------------------------------------------
-function patrol_binder:__init (object) super(object)
+function patrol_binder:__init (obj) super(object)
+    self.npc = obj
 end
 ----------------------------------------------------------------------------------------------------------------------
 function patrol_binder:reinit ()
@@ -259,21 +260,21 @@ function patrol_binder:net_spawn	(server_object)
 	if (object_binder.net_spawn(self,server_object) == false) then
 	   return false
 	end
-	local group, command, member = str_split (self:object)
-    this.AddToCommand (group, command, member, self:object)
+	local name, group, command, member = str_split (self.npc:name ())
+    this.AddToCommand (group, command, member, self.npc)
     this.PrintTable ()
 	return true
 end
 ----------------------------------------------------------------------------------------------------------------------
 function patrol_binder:net_destroy	()
     printf ("NetDestroy called")
-	local group, command, member = str_split (self:object)
+	local name, group, command, member = str_split (self.npc:name ())
     this.RemoveFromCommand (group, command, member)
 	object_binder.net_destroy	(self)
 end
 ----------------------------------------------------------------------------------------------------------------------
 
 function AddToPatrol (npc, group, command, member)
-    npc:bind_object	(this.patrol_binder (obj))
+    npc:bind_object	(this.patrol_binder (npc))
 end
 
