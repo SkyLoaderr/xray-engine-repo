@@ -141,8 +141,7 @@ void CLightProjector::calculate	()
 		RCache.set_xform_view	(mView);
 
 		// combine and build frustum
-		Fmatrix		mCombine;
-		mCombine.mul			(mProject,mView);
+		Fmatrix		mCombine;	mCombine.mul	(mProject,mView);
 		
 		// Select slot, set viewport
 		int		s_x			=	o_it%P_o_line;
@@ -159,18 +158,18 @@ void CLightProjector::calculate	()
 		C.UVgen.mulA_43			(mTemp);
 
 		// Clear color to ambience
-		float	c_a					=	((CLightTrack*)C.O->renderable.ROS)->ambient;
-		int		c_i					=	iFloor(c_a)/2;
-		CHK_DX						(HW.pDevice->Clear(0,0, D3DCLEAR_TARGET, D3DCOLOR_RGBA(c_i,c_i,c_i,c_i), 1, 0 ));
+		float	c_a				=	((CLightTrack*)C.O->renderable.ROS)->ambient;
+		int		c_i				=	iFloor(c_a)/2;
+		CHK_DX					(HW.pDevice->Clear(0,0, D3DCLEAR_TARGET, D3DCOLOR_RGBA(c_i,c_i,c_i,c_i), 1, 0 ));
 		
 		// Build bbox and render
 		Fvector	min,max;
 		Fbox	BB;
-		min.set						(C.C.x-p_R,	C.C.y-(p_R+P_cam_range),	C.C.z-p_R);
-		max.set						(C.C.x+p_R,	C.C.y+0,					C.C.z+p_R);
-		BB.set						(min,max);
-		ISpatial*	spatial			= dynamic_cast<ISpatial*>(C.O);
-		if (spatial)				RImplementation.RenderBox	(spatial->spatial.sector,BB,2);
+		min.set					(C.C.x-p_R,	C.C.y-(p_R+P_cam_range),	C.C.z-p_R);
+		max.set					(C.C.x+p_R,	C.C.y+0,					C.C.z+p_R);
+		BB.set					(min,max);
+		ISpatial*	spatial		= dynamic_cast<ISpatial*>(C.O);
+		if (spatial)			RImplementation.RenderBox	(spatial->spatial.sector,BB,2);
 	}
 
 	// Blur
