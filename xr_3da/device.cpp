@@ -180,7 +180,7 @@ void CRenderDevice::Run			()
          }
         else
         {
-			if (bReady && bActive) {
+			if (bReady) {
 				FrameMove					( );
 
 				// Precache
@@ -209,10 +209,12 @@ void CRenderDevice::Run			()
 
 				Statistic.RenderTOTAL_Real.FrameStart	();
 				Statistic.RenderTOTAL_Real.Begin		();
-				if (Begin())				{
-					seqRender.Process						(rp_Render);
-					Statistic.Show							();
-					End										();
+				if (bActive)							{
+					if (Begin())				{
+						seqRender.Process					(rp_Render);
+						Statistic.Show						();
+						End									();
+					}
 				}
 				Statistic.RenderTOTAL_Real.End			();
 				Statistic.RenderTOTAL_Real.FrameEnd		();
