@@ -54,7 +54,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 		break;
 	case GE_TRANSFER_AMMO:
 		{
-			u16					from,to;
+			u16					from;
 			P.r_u16				(from);
 
 			CObject* Ofrom		= Level().Objects.net_Find	(from);
@@ -65,8 +65,6 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			if (0==Wto)			break;
 
 			// Test for locality
-			R_ASSERT			(BE(Local(),Wfrom->Local()));
-			R_ASSERT			(BE(Local(),Wto->Local()));
 			Wto->Ammo_add		(Wfrom->Ammo_eject());
 			Wfrom->setDestroy	(TRUE);
 		}

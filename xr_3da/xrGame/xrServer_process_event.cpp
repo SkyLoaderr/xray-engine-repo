@@ -86,13 +86,13 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			xrClientData*		c_parent	= e_parent->owner;
 			xrClientData*		c_entity	= e_entity->owner;
 			xrClientData*		c_from		= ID_to_client	(sender);
-			R_ASSERT			(c_src == c_parent);						// assure client ownership of event
+			R_ASSERT			(c_from == c_parent);						// assure client ownership of event
 
 			// Signal to everyone (including sender)
 			SendBroadcast		(0xffffffff,P,MODE);
 
 			// Perfrom real destroy
-			entity_Destroy		(e_dest);
+			entity_Destroy		(e_entity);
 			entities.erase		(id_entity);
 		}
 		break;
