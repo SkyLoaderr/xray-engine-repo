@@ -48,7 +48,6 @@ USEFORM("FrameObject.cpp", fraObject);
 USEFORM("FrameSector.cpp", fraSector);
 USEFORM("FramePortal.cpp", fraPortal);
 USEFORM("PropertiesLight.cpp", frmPropertiesLight);
-USEFORM("PropertiesObject.cpp", frmPropertiesObject);
 USEFORM("PropertiesSound.cpp", frmPropertiesSound);
 USEFORM("PropertiesGlow.cpp", frmPropertiesGlow);
 USEFORM("PropertiesSector.cpp", frmPropertiesSector);
@@ -63,8 +62,6 @@ USEFORM("PropertiesEvent.cpp", frmPropertiesEvent);
 USEFORM("LogForm.cpp", frmLog);
 USEUNIT("edit\EditObjectIO.cpp");
 USEUNIT("edit\EditObjectMotions.cpp");
-USEUNIT("PropertiesObjectMeshes.cpp");
-USEUNIT("PropertiesObjectInfo.cpp");
 USELIB("lib\xrProgressive.lib");
 USEFORM("FrameLight.cpp", fraLight); /* TFrame: File Type */
 USEFORM("OneEnvironment.cpp", frmOneEnvironment);
@@ -210,6 +207,7 @@ USEUNIT("Engine\SH_RT.cpp");
 USEOBJ("Intermediate\_math.obj");
 USEFORM("EditLightAnim.cpp", frmEditLightAnim);
 USEUNIT("edit\LightAnimLibrary.cpp");
+USEFORM("PropertiesEObject.cpp", frmPropertiesEObject);
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

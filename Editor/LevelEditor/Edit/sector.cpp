@@ -254,8 +254,9 @@ void CSector::CaptureInsideVolume(){
 		for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
 	        obj = (CSceneObject*)(*_F);
 	        if (obj->IsDynamic()) continue;
-	        EditMeshVec& M = obj->Meshes();
-            for(EditMeshIt m_def = M.begin();m_def!=M.end();m_def++){
+	        EditMeshVec* M = obj->Meshes();
+            R_ASSERT(M);
+            for(EditMeshIt m_def = M->begin();m_def!=M->end();m_def++){
                 obj->GetFullTransformToWorld(matrix);
                 Fbox bb;
 				(*m_def)->GetBox(bb);
@@ -281,8 +282,9 @@ void CSector::CaptureAllUnusedMeshes(){
 		UI.ProgressInc();
         obj = (CSceneObject*)(*_F);
         if (obj->IsDynamic()) continue;
-        EditMeshVec& M = obj->Meshes();
-        for(EditMeshIt m_def = M.begin(); m_def!=M.end();m_def++)
+        EditMeshVec* M = obj->Meshes();
+        R_ASSERT(M);
+        for(EditMeshIt m_def = M->begin(); m_def!=M->end();m_def++)
         	AddMesh(obj,*m_def);
     }
     UI.ProgressEnd();

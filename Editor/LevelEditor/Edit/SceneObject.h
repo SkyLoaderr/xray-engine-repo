@@ -27,17 +27,17 @@ public:
 	virtual void 	Select					(BOOL flag);
 	void 			Construct				();
 
-    IC bool			CheckVersion			()  {return (m_ObjVer==m_pRefs->m_ObjVer);}
+    IC bool			CheckVersion			()  {return m_pRefs?(m_ObjVer==m_pRefs->m_ObjVer):false;}
     // get object properties methods
-	IC bool 		RefCompare				(CEditableObject *to){return !!(m_pRefs==to); }
-	IC bool 		RefCompare				(LPCSTR ref){return strcmp(ref,m_pRefs->GetName())==0; }
+	IC bool 		RefCompare				(CEditableObject *to){return m_pRefs?!!(m_pRefs==to):false; }
+	IC bool 		RefCompare				(LPCSTR ref){return m_pRefs?(strcmp(ref,m_pRefs->GetName())==0):false; }
 	IC CEditableObject*	GetReference		()	{return m_pRefs; }
 	CEditableObject*SetReference			(LPCSTR ref_name);
-	IC EditMeshVec& Meshes					() {VERIFY(m_pRefs); return m_pRefs->Meshes();}
-    IC LPCSTR		GetRefName				() {VERIFY(m_pRefs); return m_pRefs->GetName();}
+	IC EditMeshVec* Meshes					() {return m_pRefs?&m_pRefs->Meshes():0;}
+    IC LPCSTR		GetRefName				() {return m_pRefs?m_pRefs->GetName():0;}
 
     // statistics methods
-	IC bool 		IsDynamic     			()	{return (m_pRefs->IsFlag(CEditableObject::eoDynamic)); }
+	IC bool 		IsDynamic     			()	{return (m_pRefs?m_pRefs->IsFlag(CEditableObject::eoDynamic):false); }
     int 			GetFaceCount			();
     void			GetFaceWorld			(CEditableMesh* M, int idx, Fvector* verts);
 	int 			GetVertexCount			();

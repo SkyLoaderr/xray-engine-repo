@@ -20,6 +20,7 @@
 #include "ExtBtn.hpp"
 #include "mxPlacemnt.hpp"
 #include <Menus.hpp>
+#include "PropertiesEObject.h"
 //---------------------------------------------------------------------------
 // refs
 class TObjectPreview;
@@ -50,9 +51,6 @@ __published:	// IDE-managed Components
           TShiftState Shift);
     void __fastcall ebPropertiesClick(TObject *Sender);
     void __fastcall tvObjectsDblClick(TObject *Sender);
-//    void __fastcall ebEditObjectClick(TObject *Sender);
-//    void __fastcall ebApplyEditClick(TObject *Sender);
-//    void __fastcall ebCancelEditClick(TObject *Sender);
     void __fastcall cbPreviewClick(TObject *Sender);
 	void __fastcall ebMakeThmClick(TObject *Sender);
 	void __fastcall tvObjectsKeyPress(TObject *Sender, char &Key);
@@ -64,23 +62,25 @@ __published:	// IDE-managed Components
 	void __fastcall FormCloseQuery(TObject *Sender, bool &CanClose);
 private:	// User declarations
     void InitObjects();
-    EImageThumbnail* m_Thm;
-	static TfrmEditLibrary *form;
-    CEditableObject* m_SelectedObject;
-	static AnsiString m_LastSelection;
-    static FileMap modif_map;
-    static bool bFinalExit;
-    static bool bExitResult;
+    EImageThumbnail* 		m_Thm;
+	static TfrmEditLibrary*	form;
+    CSceneObject* 			m_pEditObject;
+	static AnsiString 		m_LastSelection;
+    static FileMap 			modif_map;
+    static bool 			bFinalExit;
+    static bool 			bExitResult;
+    TfrmPropertiesEObject*  m_Props;
+    void					UpdateObjectProperties();
 public:		// User declarations
-    __fastcall TfrmEditLibrary(TComponent* Owner);
-    static bool FinalClose();
-    static void __fastcall OnRender();
-    static void __fastcall ZoomObject();
-    static void __fastcall OnModified();
-	static CEditableObject* __fastcall RayPick(const Fvector& start, const Fvector& direction, SRayPickInfo* pinf);
-    static void __fastcall ShowEditor();
-    static void __fastcall ResetSelected();
-    static void __fastcall RefreshSelected();
+    void __fastcall 		OnModified		();
+    __fastcall 				TfrmEditLibrary	(TComponent* Owner);
+    static bool 			FinalClose		();
+    static void __fastcall 	OnRender		();
+    static void __fastcall 	ZoomObject		();
+	static CSceneObject* __fastcall RayPick	(const Fvector& start, const Fvector& direction, SRayPickInfo* pinf);
+    static void __fastcall 	ShowEditor		();
+    static void __fastcall 	ResetSelected	();
+    static void __fastcall 	RefreshSelected	();
 };
 //---------------------------------------------------------------------------
 #endif

@@ -26,6 +26,7 @@ __fastcall TfrmEditLightAnim::TfrmEditLightAnim(TComponent* Owner)
     : TForm(Owner)
 {
     DEFINE_INI(fsStorage);
+    bFinalClose		= false;
     m_CurrentItem 	= 0;
 	bFreezeUpdate 	= false;
     iMoveKey        = -1;
@@ -69,24 +70,34 @@ void __fastcall TfrmEditLightAnim::FormClose(TObject *Sender, TCloseAction &Acti
 	Action = caFree;
 	Scene.unlock();
     UI.EndEState(esEditLightAnim);
+
+   	if (ebSave->Enabled&&!bFinalClose)
+    	LALib.Reload();
 }
 //---------------------------------------------------------------------------
-bool TfrmEditLightAnim::CloseEditLibrary(bool bReload){
+void __fastcall TfrmEditLightAnim::FormCloseQuery(TObject *Sender,
+      bool &CanClose)
+{
+	if (!bFinalClose) 	CanClose	= IsClose();
+    else                CanClose	= true;
+}
+//---------------------------------------------------------------------------
+bool TfrmEditLightAnim::IsClose(){
     if (ebSave->Enabled){
     	int res = ELog.DlgMsg(mtConfirmation, "Library was change. Do you want save?");
 		if (res==mrCancel) return false;
 		if (res==mrYes) ebSaveClick(0);
     }
-    if (bReload)
-    	LALib.Reload();
-
-    Close();
     return true;
 }
 //---------------------------------------------------------------------------
 bool TfrmEditLightAnim::FinalClose(){
 	if (!form) return true;
-	return form->CloseEditLibrary(false);
+	if (form->IsClose()){
+	    form->bFinalClose=true;
+		form->Close();
+        return true;
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -122,18 +133,6 @@ void __fastcall TfrmEditLightAnim::FormKeyDown(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
     if (Key==VK_ESCAPE) 	Close();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmEditLightAnim::ebCancelClick(TObject *Sender)
-{
-    CloseEditLibrary(ebSave->Enabled);
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmEditLightAnim::tvItemsDblClick(TObject *Sender)
-{
-//	ebPropertiesClick(Sender);
 }
 //---------------------------------------------------------------------------
 
@@ -201,8 +200,19 @@ void __fastcall TfrmEditLightAnim::ebAddAnimClick(TObject *Sender)
 
 void __fastcall TfrmEditLightAnim::ebDeleteAnimClick(TObject *Sender)
 {
-//
-    OnModified();
+	TElTreeItem* node = tvItems->Selected;
+    if (node){
+	    AnsiString name;
+		FOLDER::MakeName(node,0,name,false);
+        if (node->GetPrev()) 		tvItems->Selected = node->GetPrev();
+        else if (node->GetNext())	tvItems->Selected = node->GetNext();
+        else						tvItems->Selected = 0;
+		LALib.DeleteItem(name.c_str());
+        node->Delete();
+	    OnModified();
+    }else{
+    	ELog.DlgMsg(mtError,"Select item at first");
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -253,7 +263,7 @@ void __fastcall TfrmEditLightAnim::pbGMouseMove(TObject *Sender,
             TPoint pt(X,Y);
             pbG->ScreenToClient(pt);
             int new_key = iFloor(float(m_CurrentItem->iFrameCount)*float(X)/float(R.Width()));
-            if ((new_key!=iTgtMoveKey)&&(new_key<m_CurrentItem->iFrameCount)){
+            if ((new_key!=iTgtMoveKey)&&(new_key<m_CurrentItem->iFrameCount)&&(!m_CurrentItem->IsKey(new_key)||(new_key==iMoveKey))){
 				iTgtMoveKey = new_key;
             	pbG->Repaint();
             }
@@ -606,11 +616,15 @@ void __fastcall TfrmEditLightAnim::ebLastKeyClick(TObject *Sender)
 void __fastcall TfrmEditLightAnim::ebMoveKeyLeftClick(TObject *Sender)
 {
 	if ((sePointer->Value!=0)&&(m_CurrentItem->IsKey(sePointer->Value))){
-    	iTgtMoveKey = sePointer->Value;
-        sePointer->Value--;
-        m_CurrentItem->MoveKey(iTgtMoveKey,sePointer->Value);
-        pbG->Repaint();
-        OnModified();
+    	int f0, f1;
+    	f1 = f0 = sePointer->Value;
+        f1--;
+        if (f1>=0){
+	        m_CurrentItem->MoveKey(f0,f1);
+    	    sePointer->Value++;
+        	pbG->Repaint();
+	        OnModified();
+        }
     }
 }
 //---------------------------------------------------------------------------
@@ -618,11 +632,15 @@ void __fastcall TfrmEditLightAnim::ebMoveKeyLeftClick(TObject *Sender)
 void __fastcall TfrmEditLightAnim::ebMoveKeyRightClick(TObject *Sender)
 {
 	if ((sePointer->Value!=0)&&(m_CurrentItem->IsKey(sePointer->Value))){
-    	iTgtMoveKey = sePointer->Value;
-        sePointer->Value++;
-        m_CurrentItem->MoveKey(iTgtMoveKey,sePointer->Value);
-        pbG->Repaint();
-        OnModified();
+    	int f0, f1;
+    	f1 = f0 = sePointer->Value;
+        f1++;
+        if (f1<m_CurrentItem->iFrameCount){
+	        m_CurrentItem->MoveKey(f0,f1);
+    	    sePointer->Value++;
+        	pbG->Repaint();
+	        OnModified();
+        }
     }
 }
 //---------------------------------------------------------------------------
@@ -640,4 +658,5 @@ void __fastcall TfrmEditLightAnim::ebFirstFrameClick(TObject *Sender)
 	pbG->Repaint();
 }
 //---------------------------------------------------------------------------
+
 

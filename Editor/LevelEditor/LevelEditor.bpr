@@ -25,25 +25,23 @@
       intermediate\TopBar.obj intermediate\LeftBar.obj 
       intermediate\BottomBar.obj intermediate\FrameObject.obj 
       intermediate\FrameSector.obj intermediate\FramePortal.obj 
-      intermediate\PropertiesLight.obj intermediate\PropertiesObject.obj 
-      intermediate\PropertiesSound.obj intermediate\PropertiesGlow.obj 
-      intermediate\PropertiesSector.obj intermediate\PropertiesPortal.obj 
-      intermediate\SceneProperties.obj intermediate\ObjectList.obj 
-      intermediate\EditorPref.obj intermediate\Splash.obj intermediate\main.obj 
+      intermediate\PropertiesLight.obj intermediate\PropertiesSound.obj 
+      intermediate\PropertiesGlow.obj intermediate\PropertiesSector.obj 
+      intermediate\PropertiesPortal.obj intermediate\SceneProperties.obj 
+      intermediate\ObjectList.obj intermediate\EditorPref.obj 
+      intermediate\Splash.obj intermediate\main.obj 
       intermediate\PropertiesEvent.obj intermediate\LogForm.obj 
       intermediate\EditObjectIO.obj intermediate\EditObjectMotions.obj 
-      intermediate\PropertiesObjectMeshes.obj 
-      intermediate\PropertiesObjectInfo.obj intermediate\FrameLight.obj 
-      intermediate\OneEnvironment.obj intermediate\PSLibrary.obj 
-      intermediate\PropertiesPS.obj intermediate\PSObject.obj 
-      intermediate\xrParticlesLib.obj intermediate\ChoseForm.obj 
-      intermediate\_quaternion.obj intermediate\_compressed_normal.obj 
-      intermediate\ImageEditor.obj intermediate\FramePS.obj 
-      intermediate\previewimage.obj intermediate\FrameEmitter.obj 
-      intermediate\xr_trims.obj intermediate\PropertiesRPoint.obj 
-      intermediate\FrameRPoint.obj intermediate\interp.obj 
-      intermediate\Envelope.obj intermediate\motion.obj intermediate\bone.obj 
-      intermediate\clsid.obj intermediate\AITraffic.obj 
+      intermediate\FrameLight.obj intermediate\OneEnvironment.obj 
+      intermediate\PSLibrary.obj intermediate\PropertiesPS.obj 
+      intermediate\PSObject.obj intermediate\xrParticlesLib.obj 
+      intermediate\ChoseForm.obj intermediate\_quaternion.obj 
+      intermediate\_compressed_normal.obj intermediate\ImageEditor.obj 
+      intermediate\FramePS.obj intermediate\previewimage.obj 
+      intermediate\FrameEmitter.obj intermediate\xr_trims.obj 
+      intermediate\PropertiesRPoint.obj intermediate\FrameRPoint.obj 
+      intermediate\interp.obj intermediate\Envelope.obj intermediate\motion.obj 
+      intermediate\bone.obj intermediate\clsid.obj intermediate\AITraffic.obj 
       intermediate\FrameAITPoint.obj intermediate\DetailObjects.obj 
       intermediate\FrameDetObj.obj intermediate\xr_ini.obj 
       intermediate\ColorPicker.obj intermediate\Occluder.obj 
@@ -97,23 +95,24 @@
       intermediate\BodyInstance.obj intermediate\ExportSkeleton.obj 
       intermediate\Engine.obj intermediate\ModelPool.obj Intermediate\cpuid.obj 
       intermediate\SH_RT.obj Intermediate\_math.obj 
-      intermediate\EditLightAnim.obj intermediate\LightAnimLibrary.obj"/>
+      intermediate\EditLightAnim.obj intermediate\LightAnimLibrary.obj 
+      intermediate\PropertiesEObject.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES) EditLibrary.dfm NumericVector.dfm ShaderFunction.dfm 
       TopBar.dfm LeftBar.dfm BottomBar.dfm FrameObject.dfm FrameSector.dfm 
-      FramePortal.dfm PropertiesLight.dfm PropertiesObject.dfm 
-      PropertiesSound.dfm PropertiesGlow.dfm PropertiesSector.dfm 
-      PropertiesPortal.dfm SceneProperties.dfm ObjectList.dfm EditorPref.dfm 
-      Splash.dfm main.dfm PropertiesEvent.dfm LogForm.dfm FrameLight.dfm 
-      OneEnvironment.dfm PropertiesPS.dfm ChoseForm.dfm ImageEditor.dfm 
-      FramePS.dfm previewimage.dfm FrameEmitter.dfm PropertiesRPoint.dfm 
-      FrameRPoint.dfm FrameAITPoint.dfm FrameDetObj.dfm FrameOccluder.dfm 
-      PropertiesOccluder.dfm DOShuffle.dfm DOOneColor.dfm 
-      PropertiesDetailObject.dfm PropertiesList.dfm PropertiesSceneObject.dfm 
-      EventOneAction.dfm EditLightAnim.dfm"/>
+      FramePortal.dfm PropertiesLight.dfm PropertiesSound.dfm PropertiesGlow.dfm 
+      PropertiesSector.dfm PropertiesPortal.dfm SceneProperties.dfm 
+      ObjectList.dfm EditorPref.dfm Splash.dfm main.dfm PropertiesEvent.dfm 
+      LogForm.dfm FrameLight.dfm OneEnvironment.dfm PropertiesPS.dfm 
+      ChoseForm.dfm ImageEditor.dfm FramePS.dfm previewimage.dfm 
+      FrameEmitter.dfm PropertiesRPoint.dfm FrameRPoint.dfm FrameAITPoint.dfm 
+      FrameDetObj.dfm FrameOccluder.dfm PropertiesOccluder.dfm DOShuffle.dfm 
+      DOOneColor.dfm PropertiesDetailObject.dfm PropertiesList.dfm 
+      PropertiesSceneObject.dfm EventOneAction.dfm EditLightAnim.dfm 
+      PropertiesEObject.dfm"/>
     <LIBFILES value="lib\LWO.lib lib\cg32.lib lib\xrProgressive.lib lib\MagicFMd.lib 
       lib\DXT.lib lib\gauss.lib lib\DX\d3d8.lib lib\DX\d3dx8d.lib 
       lib\DX\dinput.lib lib\ETools.lib lib\FreeImage.lib lib\xrCDB.lib"/>
@@ -136,8 +135,8 @@
     <WARNINGS value="-w-par -w-8027"/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-IEngine\Animations -IEngine\Blenders 
-      -IR:\Borland\Components\Eldos\Code\Source\. 
+    <IDLCFLAGS value="-src_suffix cpp -D_EDITOR -D_LEVEL_EDITOR -D_DEBUG -IEngine\Animations 
+      -IEngine\Blenders -IR:\Borland\Components\Eldos\Code\Source\. 
       -Ir:\borland\components\alexmx\. -Ilib\DX -IR:\DirectX8.1\include\. 
       -Ic:\rad\Borland\CBuilder5\Bin\. -Ic:\rad\borland\CBuilder5\Projects\. 
       -I$(BCB)\include -I$(BCB)\include\vcl -Iengine -Iedit -IImport\LWO 
@@ -145,8 +144,7 @@
       -Ic:\rad\borland\components\extbtn\. -Ic:\rad\borland\components\multi\. 
       -Ic:\rad\borland\components\renderwindow\. 
       -IC:\RAD\borland\Components\RX\Units\. 
-      -I&quot;C:\RAD\borland\Components\ElTree\Code\Source\.&quot; -src_suffix cpp 
-      -D_EDITOR -D_LEVEL_EDITOR -D_DEBUG -no_tie -boa"/>
+      -I&quot;C:\RAD\borland\Components\ElTree\Code\Source\.&quot; -no_tie -boa"/>
     <CFLAG1 value="-Od -H=$(BCB)\lib\vcl50.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -r- -a4 -6 
       -b- -d -k -y -v -vi- -He -c -tW -tWM"/>
     <PFLAGS value="-N2intermediate -N0intermediate -$Y+ -$W -$Q -$O- -$C- -v -JPHNE -M"/>
@@ -284,7 +282,7 @@ Item0=!run\
 Item1=P:\Editor\!run
 
 [Debugging]
-DebugSourceDirs=c:\rad\borland\cbuilder5\source\vcl
+DebugSourceDirs=c:\rad\borland\cbuilder5\source\vcl;R:\Borland\Components\AlexMX\
 
 [Parameters]
 RunParams=

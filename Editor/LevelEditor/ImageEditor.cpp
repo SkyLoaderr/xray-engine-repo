@@ -148,9 +148,13 @@ void TfrmImageLib::InitItemsList(const char* nm)
 void __fastcall TfrmImageLib::FormKeyDown(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
-    if (Key==VK_ESCAPE) 		ebClose->Click();
+    if (Key==VK_ESCAPE){
+    	ebClose->Click();
+    	Key = 0; // :-) нужно для того чтобы AccessVoilation не вылазил по ESCAPE
+    }
 }
 //---------------------------------------------------------------------------
+
 
 void __fastcall TfrmImageLib::ebCloseClick(TObject *Sender)
 {
@@ -271,6 +275,14 @@ void __fastcall TfrmImageLib::fsStorageRestorePlacement(TObject *Sender)
 void __fastcall TfrmImageLib::fsStorageSavePlacement(TObject *Sender)
 {
 	ImageProps->SaveColumnWidth(fsStorage);
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TfrmImageLib::tvItemsKeyDown(TObject *Sender, WORD &Key,
+      TShiftState Shift)
+{
+//
 }
 //---------------------------------------------------------------------------
 

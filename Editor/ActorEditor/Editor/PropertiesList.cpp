@@ -17,6 +17,7 @@
 #include "ColorPicker.h"
 #include "ChoseForm.h"
 #include "FolderLib.h"
+#include "NumericVector.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "multi_edit"
@@ -66,7 +67,7 @@ LPCSTR 	TextValue::GetText(){
     if (OnDrawValue)OnDrawValue(this, &prop_draw_text);
     return prop_draw_text.c_str();
 }
-
+ 
 //---------------------------------------------------------------------------
 TElTreeItem* __fastcall TfrmProperties::BeginEditMode(LPCSTR section)
 {
@@ -103,7 +104,7 @@ void __fastcall TfrmProperties::BeginFillMode(const AnsiString& title, LPCSTR se
 void __fastcall TfrmProperties::EndFillMode(bool bFullExpand)
 {
 	iFillMode--;
-    bModified=false;
+    bModified=false;                                                      
 	if (bFullExpand) tvProperties->FullExpand();
     tvProperties->IsUpdating = false;
     tvProperties->Selected = FOLDER::FindItem(tvProperties,last_selected_item.c_str());
@@ -199,6 +200,7 @@ TElTreeItem* __fastcall TfrmProperties::AddItem(TElTreeItem* parent, DWORD type,
     case PROP_TOKEN2:
     case PROP_TOKEN3:
     case PROP_LIST:
+    case PROP_VECTOR:
     case PROP_FLOAT:
     case PROP_INTEGER:{		PropValue*  P=(PropValue*)value; TI->ColumnText->Add(P->GetText()); CS->Style = ElhsOwnerDraw; }break;
     case PROP_COLOR:		CS->Style = ElhsOwnerDraw; 							break;
@@ -255,6 +257,7 @@ void __fastcall TfrmProperties::tvPropertiesItemDraw(TObject *Sender,
         }break;
         case PROP_COLOR:{
 			Surface->Brush->Style = bsSolid;
+ 			Surface->Brush->Color = 0x00000000;
             Surface->FrameRect(R);
             R.Right	-=	1;
             R.Left 	+= 	1;
@@ -302,6 +305,11 @@ void __fastcall TfrmProperties::tvPropertiesItemDraw(TObject *Sender,
             	if (!edText->Visible) ShowLWText(R);
             }
         break;
+        case PROP_VECTOR:
+            R.Right-= 1;
+            R.Left += 1;
+            DrawText(Surface->Handle, ((PropValue*)Item->Data)->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
+        break;
         case PROP_INTEGER:
         case PROP_FLOAT:
         	if (seNumber->Tag!=(int)Item){
@@ -321,7 +329,7 @@ void __fastcall TfrmProperties::tvPropertiesMouseDown(TObject *Sender,
 {
 	CancelLWNumber();
 	CancelLWText();
-	TSTItemPart HS;
+	int HS;
 	TElTreeItem* item = tvProperties->GetItemAt(X,Y,0,HS);
   	if ((HS==1)&&(Button==mbLeft)){
     	DWORD type = (DWORD)item->Tag;
@@ -388,6 +396,7 @@ void __fastcall TfrmProperties::tvPropertiesMouseDown(TObject *Sender,
                 pmEnum->Items->Add(mi);
             }
         }break;
+        case PROP_VECTOR: 	VectorClick(item); 	break;
         case PROP_WAVE: 	CustomClick(item); 	break;
         case PROP_COLOR: 	ColorClick(item); 	break;
         case PROP_TEXTURE: 	TextureClick(item);	break;
@@ -517,6 +526,21 @@ void __fastcall TfrmProperties::ColorClick(TElTreeItem* item)
     LPDWORD color = (LPDWORD)item->Data;
     VERIFY(type==PROP_COLOR);
 	if (SelectColor(color)){
+    	item->RedrawItem(true);
+		Modified();
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmProperties::VectorClick(TElTreeItem* item)
+{
+	DWORD type = item->Tag;
+    VectorValue* V = (VectorValue*)item->Data;
+    VERIFY(type==PROP_VECTOR);
+    Fvector mn={V->lim_mn,V->lim_mn,V->lim_mn},mx={V->lim_mx,V->lim_mx,V->lim_mx},rs=*V->val;
+    POINT pt;
+    GetCursorPos(&pt);
+	if (NumericVectorRun(AnsiString(item->Text).c_str(),V->val,V->dec,&rs,&mn,&mx,(int*)&pt.x,(int*)&pt.y)){
     	item->RedrawItem(true);
 		Modified();
     }

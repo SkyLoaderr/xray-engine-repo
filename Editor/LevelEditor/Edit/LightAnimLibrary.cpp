@@ -144,13 +144,11 @@ int CLAItem::PrevKeyFrame(int frame)
 
 int CLAItem::NextKeyFrame(int frame)
 {
-    KeyPairIt A=Keys.lower_bound(frame);
+    KeyPairIt A=Keys.upper_bound(frame);
     if (A!=Keys.end()){
-    	KeyPairIt B=A; B++;
-        if (B!=Keys.end()) return B->first;
         return A->first;
     }else{
-    	return Keys.rend()->first;
+    	return Keys.rbegin()->first;
     }
 }
 
@@ -228,11 +226,17 @@ void ELightAnimLibrary::Reload()
 	Load();
 }
 
-CLAItem* ELightAnimLibrary::FindItem(LPCSTR name)
+ELightAnimLibrary::LAItemIt ELightAnimLibrary::FindItemI(LPCSTR name)
 {
 	for (LAItemIt it=Items.begin(); it!=Items.end(); it++)
-    	if (0==strcmp((*it)->cName,name)) return *it;
-    return 0;
+    	if (0==strcmp((*it)->cName,name)) return it;
+    return Items.end();
+}
+
+CLAItem* ELightAnimLibrary::FindItem(LPCSTR name)
+{
+	LAItemIt it=FindItemI(name);
+	return (it!=Items.end())?*it:0;
 }
 
 LPCSTR ELightAnimLibrary::GenerateName(LPSTR name, LPCSTR source)
@@ -261,6 +265,9 @@ CLAItem* ELightAnimLibrary::AppendItem(LPCSTR folder_name, CLAItem* parent)
 
 void ELightAnimLibrary::DeleteItem(LPCSTR name)
 {
+	LAItemIt it=FindItemI(name); R_ASSERT(it!=Items.end());
+    _DELETE(*it);
+	Items.erase(it);
 }
 
 void ELightAnimLibrary::RenameItem(LPCSTR old_full_name, LPCSTR new_name)

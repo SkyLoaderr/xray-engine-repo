@@ -71,12 +71,10 @@ __published:	// IDE-managed Components
 	TExtBtn *ebFirstFrame;
 	TExtBtn *ebLastFrame;
 	TMxLabel *lbCurFrame;
-    void __fastcall ebCancelClick(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);
     void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
-    void __fastcall tvItemsDblClick(TObject *Sender);
 	void __fastcall tvItemsKeyPress(TObject *Sender, char &Key);
 	void __fastcall tvItemsItemFocused(TObject *Sender);
 	void __fastcall ebAddAnimClick(TObject *Sender);
@@ -127,9 +125,11 @@ __published:	// IDE-managed Components
 	void __fastcall ebMoveKeyRightClick(TObject *Sender);
 	void __fastcall ebLastFrameClick(TObject *Sender);
 	void __fastcall ebFirstFrameClick(TObject *Sender);
+	void __fastcall FormCloseQuery(TObject *Sender, bool &CanClose);
 private:	// User declarations
     void InitItems();
-    bool CloseEditLibrary(bool bReload);
+    bool bFinalClose;
+    bool IsClose();
 	static TfrmEditLightAnim *form;
 	static AnsiString m_LastSelection;
     CLAItem* 		m_CurrentItem;

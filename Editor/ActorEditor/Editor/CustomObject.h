@@ -27,7 +27,7 @@ class CCustomObject {
 
 	LPSTR			GetName			(){return FName; }
 	void			SetName			(LPCSTR N){strcpy(FName,N); strlwr(FName); }
-protected:
+public:
     // orientation
     Fvector 		FPosition;
     Fvector 		FScale;
@@ -35,7 +35,7 @@ protected:
 	Fmatrix 		FTransform;
 protected:
     virtual Fvector& GetPosition	()	{ return FPosition; 	}
-    virtual Fvector& GetRotate		()	{ return FRotate; 	}
+    virtual Fvector& GetRotate		()	{ return FRotate; 		}
     virtual Fvector& GetScale		()	{ return FScale; 		}
 
     virtual void 	SetPosition		(Fvector& pos)	{ FPosition.set(pos);	UpdateTransform();}
@@ -68,6 +68,12 @@ public:
     virtual bool 	FrustumPick		(const CFrustum& frustum){ return false; };
     virtual bool 	SpherePick		(const Fvector& center, float radius){ return false; };
 
+    void			ResetTransform	(){
+    					FScale.set	(1,1,1);
+    					FRotate.set	(0,0,0);
+    					FPosition.set(0,0,0);
+						FTransform.identity();
+					}
     virtual void 	ResetAnimation	(bool upd_t=true){;}
     virtual void 	UpdateTransform	(bool bForced=false){m_bUpdateTransform=TRUE;if(bForced)OnUpdateTransform();}
 
@@ -102,10 +108,7 @@ public:
                         m_bLocked 	= false;
                         m_bValid	= false;
                         m_iGroupIndex= -1;
-    					FScale.set	(1,1,1);
-    					FRotate.set	(0,0,0);
-    					FPosition.set(0,0,0);
-						FTransform.identity();
+                        ResetTransform();
                         m_bUpdateTransform = FALSE;
                     }
 

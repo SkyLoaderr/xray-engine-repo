@@ -18,18 +18,19 @@
 class TfrmNumericVector : public TForm
 {
 __published:	// IDE-managed Components
-    TPanel *Panel1;
     TExtBtn *ebOk;
     TExtBtn *ebCancel;
     TPanel *paBottom;
-	TGroupBox *gbTitle;
+	TExtBtn *ebReset;
 	TLabel *RxLabel3;
+	TLabel *RxLabel1;
+	TLabel *RxLabel2;
 	TMultiObjSpinEdit *seX;
 	TMultiObjSpinEdit *seY;
 	TMultiObjSpinEdit *seZ;
-	TLabel *RxLabel1;
-	TLabel *RxLabel2;
-	TExtBtn *ebReset;
+	TBevel *Bevel1;
+	TBevel *Bevel2;
+	TBevel *Bevel3;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
     void __fastcall ebCancelClick(TObject *Sender);
@@ -42,9 +43,9 @@ private:	// User declarations
 	Fvector* reset_value;
 public:		// User declarations
     __fastcall TfrmNumericVector(TComponent* Owner);
-    int __fastcall Run(const char* title, Fvector* data, int decimal=3, Fvector* reset_value=0, Fvector* min=0, Fvector* max=0);
+    bool __fastcall Run(const char* title, Fvector* data, int decimal=3, Fvector* reset_value=0, Fvector* min=0, Fvector* max=0, int* X=0, int* Y=0);
 };
 //---------------------------------------------------------------------------
-int NumericVectorRun(const char* title, Fvector* data, int decimal=3, Fvector* reset_value=0, Fvector* min=0, Fvector* max=0);
+bool NumericVectorRun(const char* title, Fvector* data, int decimal=3, Fvector* reset_value=0, Fvector* min=0, Fvector* max=0, int* X=0, int* Y=0);
 //---------------------------------------------------------------------------
 #endif

@@ -77,6 +77,24 @@ public:
 		return draw_text.c_str();
     }
 };
+class VectorValue: public PropValue{
+public:
+	Fvector*			val;
+	float				lim_mn;
+    float				lim_mx;
+    float 				inc;
+    int 				dec;
+						VectorValue		(Fvector* value, float mn, float mx, float increment, int decimal, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):val(value),lim_mn(mn),lim_mx(mx),inc(increment),dec(decimal),PropValue(after,before,draw){};
+    virtual LPCSTR		GetText			()
+    {
+		Fvector draw_val 	= *val;
+        if (OnDrawValue)OnDrawValue(this, &draw_val);
+        static AnsiString draw_text;
+		AnsiString fmt; fmt.sprintf("{%%.%df, %%.%df, %%.%df}",dec,dec,dec);
+        draw_text.sprintf(fmt.c_str(),draw_val.x,draw_val.y,draw_val.z);
+		return draw_text.c_str();
+    }
+};
 class FlagValue: public PropValue{
 public:
 	DWORD*				val;
@@ -151,6 +169,7 @@ private:	// User declarations
 	void __fastcall SShaderEngineClick(TElTreeItem* item);
 	void __fastcall SShaderCompileClick(TElTreeItem* item);
 	void __fastcall ColorClick(TElTreeItem* item);
+	void __fastcall VectorClick(TElTreeItem* item);
 
 	Graphics::TBitmap* m_BMCheck;
 	Graphics::TBitmap* m_BMDot;
@@ -180,7 +199,7 @@ public:		// User declarations
 	static void 	DestroyProperties		(TfrmProperties*& props);
     void __fastcall ShowPropertiesModal		();
     void __fastcall ShowProperties			();
-    void __fastcall HideProperties			();
+    void __fastcall HideProperties			();                                   
     void __fastcall ClearProperties			();
     bool __fastcall IsModified				(){return bModified;}
     void __fastcall ResetModified			(){bModified = false;}
@@ -267,6 +286,12 @@ public:		// User declarations
         m_Params.push_back(V);
     	return V;
     }
+	VectorValue* 	MakeVectorValue			(LPVOID val, float mn=0.f, float mx=1.f, float inc=0.01f, int dec=2, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
+    {
+    	VectorValue* V=new VectorValue((Fvector*)val,mn,mx,inc,dec,after,before,draw);
+        m_Params.push_back(V);
+    	return V;
+    }
     void 			IsUpdating				(bool bVal)
     {
     	tvProperties->IsUpdating = bVal;
@@ -283,6 +308,7 @@ enum EProperties{
 	PROP_LIST,
 	PROP_INTEGER,
 	PROP_FLOAT,
+    PROP_VECTOR,
 	PROP_BOOL,
 	PROP_MARKER,
 	PROP_MARKER2,

@@ -1,11 +1,12 @@
 object frmNumericVector: TfrmNumericVector
-  Left = 316
-  Top = 177
-  BorderStyle = bsDialog
+  Left = 295
+  Top = 265
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsToolWindow
   Caption = 'Numeric'
-  ClientHeight = 70
-  ClientWidth = 183
-  Color = clBtnFace
+  ClientHeight = 57
+  ClientWidth = 158
+  Color = 10528425
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
@@ -14,107 +15,68 @@ object frmNumericVector: TfrmNumericVector
   FormStyle = fsStayOnTop
   KeyPreview = True
   OldCreateOrder = False
-  Position = poScreenCenter
+  Position = poDefault
   Scaled = False
   OnKeyDown = FormKeyDown
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
-  object Panel1: TPanel
-    Left = 0
-    Top = 0
-    Width = 123
-    Height = 70
-    Align = alClient
-    BevelOuter = bvNone
-    TabOrder = 0
-    object gbTitle: TGroupBox
-      Left = 0
-      Top = 0
-      Width = 123
-      Height = 70
-      Align = alClient
-      TabOrder = 0
-      object RxLabel3: TLabel
-        Left = 8
-        Top = 13
-        Width = 10
-        Height = 13
-        Caption = 'X:'
-      end
-      object RxLabel1: TLabel
-        Left = 8
-        Top = 31
-        Width = 10
-        Height = 13
-        Caption = 'Y:'
-      end
-      object RxLabel2: TLabel
-        Left = 8
-        Top = 49
-        Width = 10
-        Height = 13
-        Caption = 'Z:'
-      end
-      object seX: TMultiObjSpinEdit
-        Left = 23
-        Top = 11
-        Width = 83
-        Height = 18
-        LWSensitivity = 0.1
-        ButtonKind = bkLightWave
-        Decimal = 3
-        Increment = 0.1
-        ValueType = vtFloat
-        AutoSize = False
-        TabOrder = 0
-        OnChange = OnModified
-      end
-      object seY: TMultiObjSpinEdit
-        Left = 23
-        Top = 29
-        Width = 83
-        Height = 18
-        LWSensitivity = 0.1
-        ButtonKind = bkLightWave
-        Decimal = 3
-        Increment = 0.1
-        ValueType = vtFloat
-        AutoSize = False
-        TabOrder = 1
-        OnChange = OnModified
-      end
-      object seZ: TMultiObjSpinEdit
-        Left = 23
-        Top = 47
-        Width = 83
-        Height = 18
-        LWSensitivity = 0.1
-        ButtonKind = bkLightWave
-        Decimal = 3
-        Increment = 0.1
-        ValueType = vtFloat
-        AutoSize = False
-        TabOrder = 2
-        OnChange = OnModified
-      end
-    end
+  object RxLabel3: TLabel
+    Left = 3
+    Top = 3
+    Width = 10
+    Height = 13
+    Caption = 'X:'
+  end
+  object RxLabel1: TLabel
+    Left = 3
+    Top = 21
+    Width = 10
+    Height = 13
+    Caption = 'Y:'
+  end
+  object RxLabel2: TLabel
+    Left = 3
+    Top = 39
+    Width = 10
+    Height = 13
+    Caption = 'Z:'
+  end
+  object Bevel1: TBevel
+    Left = 14
+    Top = 2
+    Width = 84
+    Height = 16
+  end
+  object Bevel2: TBevel
+    Left = 14
+    Top = 20
+    Width = 84
+    Height = 16
+  end
+  object Bevel3: TBevel
+    Left = 14
+    Top = 38
+    Width = 84
+    Height = 16
   end
   object paBottom: TPanel
-    Left = 123
+    Left = 100
     Top = 0
-    Width = 60
-    Height = 70
+    Width = 58
+    Height = 57
     Align = alRight
     BevelOuter = bvNone
-    TabOrder = 1
+    Color = 10528425
+    TabOrder = 0
     object ebOk: TExtBtn
-      Left = 3
-      Top = 33
+      Left = 1
+      Top = 21
       Width = 56
-      Height = 18
+      Height = 17
       Align = alNone
       BevelShow = False
+      BtnColor = 10528425
       CloseButton = False
       Caption = 'Ok'
       Transparent = False
@@ -122,12 +84,13 @@ object frmNumericVector: TfrmNumericVector
       OnClick = ebOkClick
     end
     object ebCancel: TExtBtn
-      Left = 3
-      Top = 51
+      Left = 1
+      Top = 39
       Width = 56
-      Height = 18
+      Height = 17
       Align = alNone
       BevelShow = False
+      BtnColor = 10528425
       CloseButton = False
       Caption = 'Cancel'
       Transparent = False
@@ -135,17 +98,66 @@ object frmNumericVector: TfrmNumericVector
       OnClick = ebCancelClick
     end
     object ebReset: TExtBtn
-      Left = 3
-      Top = 5
+      Left = 1
+      Top = 1
       Width = 56
-      Height = 18
+      Height = 17
       Align = alNone
       BevelShow = False
+      BtnColor = 10528425
       CloseButton = False
       Caption = 'Reset'
       Transparent = False
       FlatAlwaysEdge = True
       OnClick = ebResetClick
     end
+  end
+  object seX: TMultiObjSpinEdit
+    Left = 15
+    Top = 4
+    Width = 82
+    Height = 13
+    LWSensitivity = 0.1
+    ButtonKind = bkLightWave
+    Decimal = 3
+    Increment = 0.1
+    ValueType = vtFloat
+    AutoSize = False
+    BorderStyle = bsNone
+    Color = 10526880
+    TabOrder = 1
+    OnChange = OnModified
+  end
+  object seY: TMultiObjSpinEdit
+    Left = 15
+    Top = 22
+    Width = 82
+    Height = 13
+    LWSensitivity = 0.1
+    ButtonKind = bkLightWave
+    Decimal = 3
+    Increment = 0.1
+    ValueType = vtFloat
+    AutoSize = False
+    BorderStyle = bsNone
+    Color = 10526880
+    TabOrder = 2
+    OnChange = OnModified
+  end
+  object seZ: TMultiObjSpinEdit
+    Left = 15
+    Top = 40
+    Width = 82
+    Height = 13
+    LWSensitivity = 0.1
+    ButtonKind = bkLightWave
+    Decimal = 3
+    Increment = 0.1
+    ValueType = vtFloat
+    AutoSize = False
+    BorderStyle = bsNone
+    Color = 10526880
+    TabOrder = 3
+    OnChange = OnModified
   end
 end

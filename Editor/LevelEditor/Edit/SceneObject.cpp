@@ -57,15 +57,15 @@ void CSceneObject::GetFaceWorld(CEditableMesh* M, int idx, Fvector* verts){
 }
 
 int CSceneObject::GetFaceCount(){
-	return m_pRefs->GetFaceCount();
+	return m_pRefs?m_pRefs->GetFaceCount():0;
 }
 
 int CSceneObject::GetSurfFaceCount(const char* surf_name){
-	return m_pRefs->GetSurfFaceCount(surf_name);
+	return m_pRefs?m_pRefs->GetSurfFaceCount(surf_name):0;
 }
 
 int CSceneObject::GetVertexCount(){
-	return m_pRefs->GetVertexCount();
+	return m_pRefs?m_pRefs->GetVertexCount():0;
 }
 
 void CSceneObject::OnUpdateTransform(){
@@ -76,11 +76,13 @@ void CSceneObject::OnUpdateTransform(){
 }
 
 bool CSceneObject::GetBox( Fbox& box ){
+	if (!m_pRefs) return false;
     box.transform(m_pRefs->GetBox(),_Transform());
 	return true;
 }
 
 bool __inline CSceneObject::IsRender(){
+	if (!m_pRefs) return false;
     bool bRes = Device.m_Frustum.testSphere(m_Center,m_fRadius);
     if(bRes&&fraBottomBar->miDrawObjectAnimPath->Checked) RenderAnimation();
     return bRes;
@@ -88,6 +90,7 @@ bool __inline CSceneObject::IsRender(){
 
 void CSceneObject::Render(int priority, bool strictB2F){
 	inherited::Render(priority,strictB2F);
+    if (!m_pRefs) return;
     Scene.TurnLightsForObject(this);
 	m_pRefs->Render(_Transform(), priority, strictB2F);
     if ((1==priority)&&(false==strictB2F)){
@@ -106,33 +109,40 @@ void CSceneObject::Render(int priority, bool strictB2F){
 }
 
 void CSceneObject::RenderSingle(){
+	if (!m_pRefs) return;
 	m_pRefs->RenderSingle(_Transform());
 }
 
 void CSceneObject::RenderAnimation(){
+	if (!m_pRefs) return;
 	m_pRefs->RenderAnimation(_Transform());
 }
 
 void CSceneObject::RenderBones(){
+	if (!m_pRefs) return;
 	m_pRefs->RenderBones(_Transform());
 }
 
 void CSceneObject::RenderEdge(CEditableMesh* mesh, DWORD color){
+	if (!m_pRefs) return;
     if (Device.m_Frustum.testSphere(m_Center,m_fRadius))
 		m_pRefs->RenderEdge(_Transform(), mesh, color);
 }
 
 void CSceneObject::RenderSelection(DWORD color){
+	if (!m_pRefs) return;
 	m_pRefs->RenderSelection(_Transform(),0,color);
 }
 
 bool CSceneObject::FrustumPick(const CFrustum& frustum){
+	if (!m_pRefs) return false;
     if(Device.m_Frustum.testSphere(m_Center,m_fRadius))
 		return m_pRefs->FrustumPick(frustum, _Transform());
     return false;
 }
 
 bool CSceneObject::SpherePick(const Fvector& center, float radius){
+	if (!m_pRefs) return false;
 	float R=radius+m_fRadius;
     float dist_sqr=center.distance_to_sqr(m_Center);
     if (dist_sqr<R*R) return true;
@@ -140,8 +150,9 @@ bool CSceneObject::SpherePick(const Fvector& center, float radius){
 }
 
 bool CSceneObject::RayPick(float& dist, Fvector& S, Fvector& D, SRayPickInfo* pinf){
+	if (!m_pRefs) return false;
     if (Device.m_Frustum.testSphere(m_Center,m_fRadius))
-		if (m_pRefs->RayPick(dist, S, D, _Transform(), pinf)){
+		if (m_pRefs&&m_pRefs->RayPick(dist, S, D, _Transform(), pinf)){
         	if (pinf) pinf->s_obj = this;
             return true;
         }
@@ -149,6 +160,7 @@ bool CSceneObject::RayPick(float& dist, Fvector& S, Fvector& D, SRayPickInfo* pi
 }
 
 bool CSceneObject::BoxPick(const Fbox& box, SBoxPickInfoVec& pinf){
+	if (!m_pRefs) return false;
 	return m_pRefs->BoxPick(this, box, _Transform(), pinf);
 }
 
@@ -178,11 +190,13 @@ void CSceneObject::GetFullTransformToLocal( Fmatrix& m ){
 
 void CSceneObject::OnFrame(){
 	inherited::OnFrame();
+	if (!m_pRefs) return;
 	if (m_pRefs) m_pRefs->OnFrame();
 }
 
 CEditableObject* CSceneObject::SetReference(LPCSTR ref_name)
 {
-	if (m_pRefs) Lib.RemoveEditObject(m_pRefs);
-	return (m_pRefs=Lib.CreateEditObject(ref_name));
+	Lib.RemoveEditObject(m_pRefs);
+	m_pRefs	= (ref_name&&ref_name[0])?Lib.CreateEditObject(ref_name):0;
+    return m_pRefs;
 }

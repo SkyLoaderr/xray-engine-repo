@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#pragma hdrstop
+#pragma hdrstop                    
 
 #include "PropertiesObject.h"
 #include "SceneClassList.h"
@@ -8,7 +8,7 @@
 #include "Texture.h"
 #include "ui_main.h"
 #include "scene.h"
-#include "main.h"
+#include "main.h"                            
 #include "motion.h"
 #include "EditLibrary.h"
 #include "ChoseForm.h"

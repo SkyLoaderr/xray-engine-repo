@@ -39,7 +39,7 @@ bool TUI::PickGround(Fvector& hitpoint, const Fvector& start, const Fvector& dir
                 float v = pinf.inf.v;
                 float w = 1-(u+v);
 				Fvector verts[3];
-				pinf.s_obj->GetFaceWorld(pinf.e_mesh,pinf.inf.id,verts);
+                pinf.s_obj->GetFaceWorld(pinf.e_mesh,pinf.inf.id,verts);
                 if ((w>u) && (w>v)) pn.set(verts[0]);
                 else if ((u>w) && (u>v)) pn.set(verts[1]);
                 else pn.set(verts[2]);

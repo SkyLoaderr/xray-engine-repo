@@ -6,10 +6,9 @@
 #include "EditLibrary.h"
 #include "Library.h"
 #include "UI_Main.h"
-#include "propertiesobject.h"
 #include "library.h"
 #include "ui_tools.h"
-#include "EditObject.h"
+#include "EditObject.h"                 
 #include "EditObject.h"
 #include "Main.h"
 #include "Scene.h"
@@ -21,6 +20,7 @@
 #include "ImageThumbnail.h"
 #include "DetailObjects.h"
 #include "xr_trims.h"
+#include "SceneObject.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ElTree"
@@ -44,7 +44,8 @@ __fastcall TfrmEditLibrary::TfrmEditLibrary(TComponent* Owner)
     : TForm(Owner)
 {
     DEFINE_INI(fsStorage);
-	m_SelectedObject = 0;
+	m_pEditObject = new CSceneObject();
+    m_Props = TfrmPropertiesEObject::CreateProperties();
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLibrary::ShowEditor()
@@ -56,46 +57,35 @@ void __fastcall TfrmEditLibrary::ShowEditor()
     form->Show();
 }
 //---------------------------------------------------------------------------
-CEditableObject* __fastcall TfrmEditLibrary::RayPick(const Fvector& start, const Fvector& direction, SRayPickInfo* pinf){
+CSceneObject* __fastcall TfrmEditLibrary::RayPick(const Fvector& start, const Fvector& direction, SRayPickInfo* pinf){
 	if (!form) return 0;
-	if (form->m_SelectedObject&&form->cbPreview->Checked){
+	if (form->cbPreview->Checked){
     	float dist=flt_max;
-    	form->m_SelectedObject->RayPick(dist,start,direction,Fidentity,pinf);
-        if (pinf&&pinf->e_mesh&&pinf->e_obj) TfrmPropertiesObject::OnPick(*pinf);
-        return form->m_SelectedObject;
+        if (form->m_pEditObject->RayPick(dist,start,direction,pinf)){
+        	R_ASSERT(pinf&&pinf->e_mesh&&pinf->e_obj);
+//S        	TfrmPropertiesObject::OnPick(*pinf);
+			pinf->s_obj=form->m_pEditObject;
+	        return form->m_pEditObject;
+        }
     }
     return 0;
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLibrary::OnRender(){
 	if (!form) return;
-	if (form->m_SelectedObject&&form->cbPreview->Checked){
-        form->m_SelectedObject->OnFrame();
-        // update transform matrix
-        Fmatrix	mTransform,mScale,mTranslate,mRotate;
-        mRotate.setHPB			(form->m_SelectedObject->t_vRotate.y, form->m_SelectedObject->t_vRotate.x, form->m_SelectedObject->t_vRotate.z);
-        mScale.scale			(form->m_SelectedObject->t_vScale);
-        mTranslate.translate	(form->m_SelectedObject->t_vPosition);
-        mTransform.mul			(mTranslate,mRotate);
-        mTransform.mulB			(mScale);
-        form->m_SelectedObject->RenderSingle(mTransform);
-//        if (fraBottomBar->miDrawObjectBones->Checked) form->m_SelectedObject->RenderBones(mTransform);
+	if (form->cbPreview->Checked){
+        form->m_pEditObject->OnFrame();
+        form->m_pEditObject->RenderSingle();
     }
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLibrary::ZoomObject(){
 	if (!form) return;
-	if (form->m_SelectedObject&&form->cbPreview->Checked){
-        Fmatrix	mTransform,mScale,mTranslate,mRotate;
-        mRotate.setHPB			(form->m_SelectedObject->t_vRotate.y, form->m_SelectedObject->t_vRotate.x, form->m_SelectedObject->t_vRotate.z);
-        mScale.scale			(form->m_SelectedObject->t_vScale);
-        mTranslate.translate	(form->m_SelectedObject->t_vPosition);
-        mTransform.mul			(mTranslate,mRotate);
-        mTransform.mulB			(mScale);
+	if (form->cbPreview->Checked){
         // get bbox&transform
-		Fbox& bb 				= form->m_SelectedObject->GetBox();
-        bb.transform			(mTransform);
-        Device.m_Camera.ZoomExtents(bb);
+		Fbox bb;
+        if (form->m_pEditObject->GetBox(bb))
+    	    Device.m_Camera.ZoomExtents(bb);
     }
 }
 //---------------------------------------------------------------------------
@@ -139,12 +129,14 @@ void __fastcall TfrmEditLibrary::FormClose(TObject *Sender, TCloseAction &Action
         	Lib.ReloadObject(it->first.c_str());
         UI.SetStatus("");
     }
-	Lib.RemoveEditObject(form->m_SelectedObject);
+    _DELETE(form->m_pEditObject);
+
+    TfrmPropertiesEObject::DestroyProperties(m_Props);
+
 	form = 0;
 	_DELETE(m_Thm);
 	Action = caFree;
 
-    TfrmPropertiesObject::HideProperties();
 	Scene.unlock();
 
     UI.EndEState(esEditLibrary);
@@ -176,7 +168,7 @@ bool TfrmEditLibrary::FinalClose(){
 void TfrmEditLibrary::OnModified(){
 	if (!form) return;
     form->ebSave->Enabled = true;
-    if (form->m_SelectedObject) modif_map.insert(make_pair(form->m_SelectedObject->GetName(),0));
+    if (form->m_pEditObject->GetReference()) modif_map.insert(make_pair(form->m_pEditObject->GetRefName(),0));
 }
 //---------------------------------------------------------------------------
 
@@ -206,21 +198,19 @@ void __fastcall TfrmEditLibrary::tvObjectsItemFocused(TObject *Sender)
             }
         }
 
-        if (cbPreview->Checked||TfrmPropertiesObject::Visible()){
-        	if (TfrmPropertiesObject::IsModified())
-            	modif_map.insert(make_pair(m_SelectedObject->GetName(),0));
-        	Lib.RemoveEditObject(m_SelectedObject);
-            m_SelectedObject = Lib.CreateEditObject(nm.c_str());
-            R_ASSERT(m_SelectedObject);
+        if (cbPreview->Checked||m_Props->Visible){
+        	if (m_Props->IsModified()&&m_pEditObject->GetReference())
+            	modif_map.insert(make_pair(m_pEditObject->GetRefName(),0));
+            m_pEditObject->SetReference(nm.c_str());
 //            ZoomObject();
 		    ebMakeThm->Enabled = true;
         }
+
         m_LastSelection = nm;
     }
     if (m_Thm&&m_Thm->Valid())	pbImagePaint(Sender);
     else                        pbImage->Repaint();
-	TfrmPropertiesObject::SetCurrent(m_SelectedObject);
-
+    UpdateObjectProperties();
     UI.RedrawScene();
 }
 
@@ -232,9 +222,7 @@ void __fastcall TfrmEditLibrary::cbPreviewClick(TObject *Sender)
     if (cbPreview->Checked&&node&&FOLDER::IsObject(node)){
 	    AnsiString name;
     	FOLDER::MakeName(node,0,name,false);
-		Lib.RemoveEditObject(m_SelectedObject);
-	    m_SelectedObject = Lib.CreateEditObject(name.c_str());
-    	R_ASSERT(m_SelectedObject);
+		m_pEditObject->SetReference(name.c_str());
 	    ebMakeThm->Enabled = true;
         ZoomObject();
     }
@@ -268,11 +256,9 @@ void __fastcall TfrmEditLibrary::ebPropertiesClick(TObject *Sender)
     if (node&&FOLDER::IsObject(node)){
 	    AnsiString name;
     	FOLDER::MakeName(node,0,name,false);
-		Lib.RemoveEditObject(m_SelectedObject);
-	    m_SelectedObject = Lib.CreateEditObject(name.c_str());
-    	R_ASSERT(m_SelectedObject);
-        TfrmPropertiesObject::SetCurrent(m_SelectedObject);
-        TfrmPropertiesObject::ShowProperties();
+		m_pEditObject->SetReference(name.c_str());
+        UpdateObjectProperties();
+        m_Props->ShowProperties();
     }else{
         ELog.DlgMsg(mtInformation,"Select object to edit.");
     }
@@ -332,19 +318,25 @@ void __fastcall TfrmEditLibrary::ebMakeThmClick(TObject *Sender)
 
 void __fastcall TfrmEditLibrary::ResetSelected()
 {
+//S
+/*
 	if (form){
 		Lib.RemoveEditObject(form->m_SelectedObject);
 	    TfrmPropertiesObject::HideProperties();
     }
+*/
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmEditLibrary::RefreshSelected()
 {
+//S
+/*
 	if (form){
 		Lib.RemoveEditObject(form->m_SelectedObject);
 		form->tvObjectsItemFocused(0);
     }
+*/
 }
 //---------------------------------------------------------------------------
 extern bool __fastcall LookupFunc(TElTreeItem* Item, void* SearchDetails);
@@ -477,6 +469,10 @@ void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void TfrmEditLibrary::UpdateObjectProperties()
+{
+	m_Props->UpdateProperties(m_pEditObject);
+}
 
 
 

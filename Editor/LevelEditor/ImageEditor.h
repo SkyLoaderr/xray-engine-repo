@@ -52,6 +52,8 @@ __published:	// IDE-managed Components
 	void __fastcall fsStorageRestorePlacement(TObject *Sender);
 	void __fastcall fsStorageSavePlacement(TObject *Sender);
 	void __fastcall FormCreate(TObject *Sender);
+	void __fastcall tvItemsKeyDown(TObject *Sender, WORD &Key,
+          TShiftState Shift);
 private:
 // list functions
     void InitItemsList(const char* nm=0);

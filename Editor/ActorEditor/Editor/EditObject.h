@@ -3,7 +3,7 @@
 //----------------------------------------------------
 #ifndef _INCDEF_Object_H_
 #define _INCDEF_Object_H_
-
+                                      
 #include "SceneClassList.h"
 //----------------------------------------------------
 struct 	SRayPickInfo;
@@ -106,7 +106,7 @@ DEFINE_VECTOR(SBonePart,BPVec,BPIt);
 class CEditableObject{
 	friend class CSceneObject;
 	friend class CEditableMesh;
-    friend class TfrmPropertiesObject;
+    friend class TfrmPropertiesEObject;
     friend class CSector;
     friend class TUI_ControlSectorAdd;
 	friend class ELibrary;

@@ -9,9 +9,9 @@
 #pragma resource "*.dfm"
 TfrmNumericVector *frmNumericVector=0;
 
-int NumericVectorRun(const char* title, Fvector* data, int decimal, Fvector* reset_value, Fvector* min, Fvector* max){
+bool NumericVectorRun(const char* title, Fvector* data, int decimal, Fvector* reset_value, Fvector* min, Fvector* max, int* X, int* Y){
 	frmNumericVector = new TfrmNumericVector(0);
-    int res = frmNumericVector->Run(title, data, decimal, reset_value, min, max);
+    bool res = frmNumericVector->Run(title, data, decimal, reset_value, min, max, X, Y);
     _DELETE(frmNumericVector);
     return res;
 }
@@ -62,7 +62,7 @@ void __fastcall TfrmNumericVector::ebCancelClick(TObject *Sender)
 //---------------------------------------------------------------------------
 
 //----------------------------------------------------
-int __fastcall TfrmNumericVector::Run(const char* title, Fvector* data, int decimal, Fvector* rv, Fvector* MN, Fvector* MX)
+bool __fastcall TfrmNumericVector::Run(const char* title, Fvector* data, int decimal, Fvector* rv, Fvector* MN, Fvector* MX, int* X, int* Y)
 {
 	frmNumericVector->Caption = title;
 
@@ -99,7 +99,10 @@ int __fastcall TfrmNumericVector::Run(const char* title, Fvector* data, int deci
 	    seZ->MaxValue = 0;
     }
 
-    return ShowModal();
+    if (X) Left = *X;
+    if (Y) Top = *Y;
+
+    return (ShowModal()==mrOk);
 }
 
 void __fastcall TfrmNumericVector::ebResetClick(TObject *Sender)
@@ -109,6 +112,7 @@ void __fastcall TfrmNumericVector::ebResetClick(TObject *Sender)
 	seZ->Value = reset_value->z;
 }
 //---------------------------------------------------------------------------
+
 
 
 

@@ -3,7 +3,7 @@
 #ifndef PropertiesObjectH
 #define PropertiesObjectH
 //---------------------------------------------------------------------------
-#include <Classes.hpp>
+#include <Classes.hpp>                     
 #include <Controls.hpp>
 #include <StdCtrls.hpp>
 #include <Forms.hpp>

@@ -34,6 +34,7 @@ class ELightAnimLibrary{
 public:
     DEFINE_VECTOR(CLAItem*,LAItemVec,LAItemIt);
     LAItemVec       Items;
+    LAItemIt		FindItemI			(LPCSTR name);
     CLAItem*		FindItem			(LPCSTR name);
 public:
 					ELightAnimLibrary	();
