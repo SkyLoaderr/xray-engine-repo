@@ -735,7 +735,11 @@ void CWeapon::OnEvent		(NET_Packet& P, u16 type)
 	switch (type)
 	{
 	case GE_ADD_AMMO:
-
+		{
+			u16 amount;
+			P.r_u16			(amount);
+			Ammo_add		(amount);
+		}
 		break;
 	}
 }
