@@ -114,11 +114,13 @@
             <phrase id="12">
                 <text>actor_help_wounded_12</text>
                 <precondition>dialogs.actor_have_bandage</precondition>
+                <action>dialogs.transfer_bandage</action>
                 <next>111</next>
             </phrase>
             <phrase id="11">
                 <text>actor_help_wounded_11</text>
-                <precondition>dialogs.actor_have_medikit</precondition>
+                <precondition>dialogs.actor_have_medkit</precondition>
+                <action>dialogs.transfer_medkit</action>
                 <next>111</next>
             </phrase>
         </phrase_list>

@@ -31,11 +31,23 @@ end
 function is_not_wounded(first_speaker, second_speaker)
 	return not this.is_wounded(first_speaker, second_speaker)
 end
-function actor_have_medikit(first_speaker, second_speaker)
+function actor_have_medkit(first_speaker, second_speaker)
 	return first_speaker:object("medkit") ~= nil
 end
 function actor_have_bandage(first_speaker, second_speaker)
 	return first_speaker:object("bandage") ~= nil
+end
+function transfer_medkit(first_speaker, second_speaker)
+	local obj = first_speaker:object("medkit")
+	if medkit ~= nil then
+		first_speaker:transfer_item(obj, second_speaker)
+	else
+end
+function transfer_bandage(first_speaker, second_speaker)
+	local obj = first_speaker:object("bandage")
+	if medkit ~= nil then
+		first_speaker:transfer_item(obj, second_speaker)
+	else
 end
 
 --'---------------------------------------------------------------------------------
