@@ -12,7 +12,6 @@
 #include "entity.h"
 
 #include "ai_space.h"
-#include "ai_commands.h"
 #include "AI/ai_monster_state.h"
 #include "AI/script/ai_script_monster.h"
 #include "ai_monster_space.h"

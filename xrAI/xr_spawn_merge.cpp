@@ -18,7 +18,7 @@
 #include "xrCrossTable.h"
 #include "net_utils.h"
 #include "ai_alife_templates.h"
-#include "graph_search_engine.h"
+#include "graph_engine.h"
 
 DEFINE_VECTOR(CSE_ALifeObject *,	ALIFE_OBJECT_P_VECTOR,	ALIFE_OBJECT_P_IT);
 
@@ -249,7 +249,7 @@ public:
 
 	void						vfGenerateArtefactSpawnPositions()
 	{
-		CGraphSearchEngine		search_engine(m_tpAI_Map->header().vertex_count());
+		CGraphEngine			search_engine(m_tpAI_Map->header().vertex_count());
 		m_tpLevelPoints.clear	();
 		xr_vector<u32>			l_tpaStack;
 		l_tpaStack.reserve		(1024);
@@ -261,7 +261,7 @@ public:
 			if (!l_tpALifeAnomalousZone)
 				continue;
 
-			search_engine.build_path(*m_tpAI_Map,l_tpALifeAnomalousZone->m_tNodeID,l_tpALifeAnomalousZone->m_tNodeID,&l_tpaStack,PathManagers::SFlooder<float,u32,u32>((float)l_tpALifeAnomalousZone->m_fRadius,u32(-1),u32(-1)));
+			search_engine.search(*m_tpAI_Map,l_tpALifeAnomalousZone->m_tNodeID,l_tpALifeAnomalousZone->m_tNodeID,&l_tpaStack,PathManagers::SFlooder<float,u32,u32>((float)l_tpALifeAnomalousZone->m_fRadius,u32(-1),u32(-1)));
 
 //			m_tpAI_Map->vfShallowGraphSearch(l_tpALifeAnomalousZone->o_Position,l_tpALifeAnomalousZone->m_tNodeID,l_tpALifeAnomalousZone->m_fRadius,l_tpaStack,m_tpAI_Map->q_mark_bit);
 

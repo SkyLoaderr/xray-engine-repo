@@ -49,8 +49,8 @@ class CGraphThread : public CThread
 	xr_vector<u32>							m_path;
 	xrCriticalSection						*m_tpCriticalSection;
 	const CLevelGraph						*m_graph;
-	CGraphSearchEngine						*m_graph_search_engine;
-	CGraphSearchEngine::CStraightLineParams	*m_parameters;
+	CGraphEngine							*m_graph_engine;
+	CGraphEngine::CStraightLineParams		*m_parameters;
 
 public:
 	CGraphThread(u32 ID, u32 dwStart, u32 dwEnd, float fMaxDistance, xrCriticalSection *tpCriticalSection, const CLevelGraph *graph) : CThread(ID)
@@ -61,13 +61,13 @@ public:
 		m_graph					= graph;
 		VERIFY					(m_graph);
 		m_path.reserve			(10000);
-		m_graph_search_engine	= xr_new<CGraphSearchEngine>(m_graph->header().vertex_count());
-		m_parameters			= xr_new<CGraphSearchEngine::CStraightLineParams>(Fvector().set(0,0,0),Fvector().set(0,0,0),fMaxDistance,u32(-1),u32(-1));
+		m_graph_engine			= xr_new<CGraphEngine>(m_graph->header().vertex_count());
+		m_parameters			= xr_new<CGraphEngine::CStraightLineParams>(Fvector().set(0,0,0),Fvector().set(0,0,0),fMaxDistance,u32(-1),u32(-1));
 	}
 
 	virtual ~CGraphThread()
 	{
-		xr_delete				(m_graph_search_engine);
+		xr_delete				(m_graph_engine);
 		xr_delete				(m_parameters);
 	}
 	
@@ -94,7 +94,7 @@ public:
 							VERIFY						(m_parameters);
 							m_parameters->m_start_point = tCurrentGraphVertex.tLocalPoint;
 							m_parameters->m_dest_point	= tNeighbourGraphVertex.tLocalPoint;
-							if (m_graph_search_engine->build_path(
+							if (m_graph_engine->search(
 								*m_graph,
 								tCurrentGraphVertex.tNodeID,
 								tNeighbourGraphVertex.tNodeID,
