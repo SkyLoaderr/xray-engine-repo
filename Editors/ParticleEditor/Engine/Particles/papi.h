@@ -52,7 +52,8 @@ extern "C"{
 		PDCone = 7, // Cone
 		PDBlob = 8, // Gaussian blob
 		PDDisc = 9, // Arbitrarily-oriented disc
-		PDRectangle = 10 // Rhombus-shaped planar region
+		PDRectangle = 10, // Rhombus-shaped planar region
+		domain_enum_force_dword = DWORD(-1)
 	};
 
 	// State setting calls
