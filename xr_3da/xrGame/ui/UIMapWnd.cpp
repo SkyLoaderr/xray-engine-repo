@@ -246,6 +246,15 @@ bool CUICustomMap::IsRectVisible(Irect r)
 	return !!map_visible_rect.intersected(r);
 }
 
+bool CUICustomMap::NeedShowPointer(Irect r)
+{
+	Irect map_visible_rect = GetClipperRect();
+	map_visible_rect.shrink(5,5);
+	Ivector2 pos = GetAbsolutePos();
+	r.add(pos.x,pos.y);
+
+	return !!map_visible_rect.intersected(r);
+}
 
 CUIGlobalMap::CUIGlobalMap(CUIMapWnd*	pMapWnd)
 {

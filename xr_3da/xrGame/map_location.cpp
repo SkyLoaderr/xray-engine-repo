@@ -135,8 +135,9 @@ void CMapLocation::UpdateSpot(CUICustomMap* map, CMapSpot* sp )
 		m_position_on_map =	map->ConvertRealToLocal(m_position_global);
 
 		sp->SetWndPos(m_position_on_map);
-		
-		if( map->IsRectVisible(sp->GetWndRect() ) ) {
+		Irect wnd_rect = sp->GetWndRect();
+
+		if( map->IsRectVisible(wnd_rect) ) {
 
 			//update heading if needed
 			if( sp->Heading() ){
@@ -149,8 +150,8 @@ void CMapLocation::UpdateSpot(CUICustomMap* map, CMapSpot* sp )
 			Irect clip_rect = map->GetClipperRect();
 			sp->SetClipRect( clip_rect );
 			map->AttachChild(sp);
-		}else
-		if( GetSpotPointer(sp) ){
+		}
+		if( GetSpotPointer(sp) && map->NeedShowPointer(wnd_rect)){
 			UpdateSpotPointer( map, GetSpotPointer(sp) );
 		}
 

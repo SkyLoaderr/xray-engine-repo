@@ -57,6 +57,7 @@ public:
 	virtual void	Update							();
 
 			bool	IsRectVisible					(Irect r);
+			bool	NeedShowPointer					(Irect r);
 protected:
 	virtual void	UpdateSpots						() {};
 };
