@@ -38,5 +38,9 @@
 		</text>
 		<text ln="rus">%credAK-74 %cblueописание на %cdefaultрусском бла бла бла</text>
 	</string>
+	<string id="escape_blockpost_case">
+		<text>Case from blockpost</text>
+		<text ln="rus">ящик с блокпоста.</text>
+	</string>
 </string_table>
 
