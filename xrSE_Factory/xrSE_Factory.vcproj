@@ -35,7 +35,7 @@
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
 				PrecompiledHeaderThrough="stdafx.h"
-				PrecompiledHeaderFile=".\Debug/xrGame.pch"
+				PrecompiledHeaderFile=".\Debug/xrSE_Factory.pch"
 				AssemblerListingLocation="Debug\"
 				ObjectFile="Debug\"
 				ProgramDataBaseFileName="$(OutDir)/$(TargetName).pdb"
@@ -99,7 +99,7 @@
 				OmitFramePointers="FALSE"
 				EnableFiberSafeOptimizations="TRUE"
 				OptimizeForProcessor="3"
-				PreprocessorDefinitions="MIXED,WIN32;NDEBUG;_WINDOWS;_USRDLL;XRGAME_EXPORTS;dSINGLE;MSVC"
+				PreprocessorDefinitions="MIXED,WIN32;NDEBUG;_WINDOWS;_USRDLL;XRSE_FACTORY_EXPORTS;dSINGLE;MSVC"
 				StringPooling="TRUE"
 				ExceptionHandling="FALSE"
 				RuntimeLibrary="2"
@@ -109,7 +109,7 @@
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
 				PrecompiledHeaderThrough="stdafx.h"
-				PrecompiledHeaderFile="$(IntDir)/$(TargetName).pch"
+				PrecompiledHeaderFile=".\Mixed/xrSE_Factory.pch"
 				AssemblerOutput="0"
 				AssemblerListingLocation="Mixed\"
 				ObjectFile="Mixed\"
@@ -127,16 +127,16 @@
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386 "
 				AdditionalDependencies="odbc32.lib odbccp32.lib x:\xr_3da.lib"
-				OutputFile="x:\xrGame.dll"
+				OutputFile="x:\xrSE_Factory.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/$(TargetName).pdb"
 				GenerateMapFile="TRUE"
-				MapFileName=".\Mixed/xrGame.map"
+				MapFileName=".\Mixed/xrSE_Factory.map"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="x:\xrGame.lib"
+				ImportLibrary="x:\xrSE_Factory.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"
@@ -144,7 +144,7 @@
 				MkTypLibCompatible="TRUE"
 				SuppressStartupBanner="TRUE"
 				TargetEnvironment="1"
-				TypeLibraryName="x:\xrGame.tlb"/>
+				TypeLibraryName="x:\xrSE_Factory.tlb"/>
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
