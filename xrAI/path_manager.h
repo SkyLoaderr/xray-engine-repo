@@ -182,12 +182,12 @@ template <
 {
 	typedef CSE_ALifeGraph _Graph;
 	typedef typename CPathManagerBase <
-				_Graph,
-				_DataStorage,
-				_dist_type,
-				_index_type,
-				_iteration_type
-			> inherited;
+		_Graph,
+		_DataStorage,
+		_dist_type,
+		_index_type,
+		_iteration_type
+	> inherited;
 protected:
 	_Graph::SGraphVertex	*goal_vertex;
 public:
@@ -197,14 +197,14 @@ public:
 	}
 
 	IC		void		setup			(
-		const _Graph			*_graph,
-		_DataStorage			*_data_storage,
-		xr_vector<_index_type>	*_path,
-		const _index_type		_start_node_index,
-		const _index_type		_goal_node_index,
-		const _index_type		_max_visited_node_count	= _index_type(u32(-1)),
-		const _dist_type		_max_range				= _dist_type(6000),
-		const _iteration_type	_max_iteration_count	= _iteration_type(u32(-1))
+			const _Graph			*_graph,
+			_DataStorage			*_data_storage,
+			xr_vector<_index_type>	*_path,
+			const _index_type		_start_node_index,
+			const _index_type		_goal_node_index,
+			const _index_type		_max_visited_node_count	= _index_type(u32(-1)),
+			const _dist_type		_max_range				= _dist_type(6000),
+			const _iteration_type	_max_iteration_count	= _iteration_type(u32(-1))
 		)
 	{
 		inherited::setup(
@@ -242,6 +242,104 @@ public:
 	{
 		VERIFY					(graph);
 		return					(true);
+	}
+
+	IC	bool		is_metric_euclidian()
+	{
+		return					(true);
+	}
+};
+
+template <
+	typename _cell_type,
+	u32		 rows,
+	u32		 columns,
+	typename _DataStorage,
+	typename _dist_type,
+	typename _index_type,
+	typename _iteration_type
+>	class CPathManager <
+		CTestTable<_cell_type,rows,columns>,
+		_DataStorage,
+		_dist_type,
+		_index_type,
+		_iteration_type
+	> : public CPathManagerBase <
+			CTestTable<_cell_type,rows,columns>,
+			_DataStorage,
+			_dist_type,
+			_index_type,
+			_iteration_type
+		>
+{
+	typedef CTestTable<_cell_type,rows,columns> _Graph;
+	typedef typename CPathManagerBase <
+		_Graph,
+		_DataStorage,
+		_dist_type,
+		_index_type,
+		_iteration_type
+	> inherited;
+protected:
+	int					_i,_j;
+public:
+
+	virtual				~CPathManager	()
+	{
+	}
+
+	IC		void		setup			(
+		const _Graph			*_graph,
+		_DataStorage			*_data_storage,
+		xr_vector<_index_type>	*_path,
+		const _index_type		_start_node_index,
+		const _index_type		_goal_node_index,
+		const _index_type		_max_visited_node_count	= _index_type(u32(-1)),
+		const _dist_type		_max_range				= _dist_type(6000),
+		const _iteration_type	_max_iteration_count	= _iteration_type(u32(-1))
+		)
+	{
+		inherited::setup(
+			_graph,
+			_data_storage,
+			_path,
+			_start_node_index,
+			_goal_node_index,
+			_max_visited_node_count,
+			_max_range,
+			_max_iteration_count
+			);
+		_i						= goal_node_index / (columns + 2);
+		_j						= goal_node_index % (columns + 2);
+	}
+
+	IC	_dist_type	evaluate		(const _index_type node_index1, const _index_type node_index2, const typename _Graph::const_iterator &i)
+	{
+		VERIFY					(graph);
+		return					(graph->get_edge_weight(node_index1,node_index2));
+	}
+
+	template <typename _T> _abs(const _T _1) {return(_1 < _T(0) ? _T(-_1) : _1);}
+
+	IC	_dist_type	estimate		(const _index_type node_index)
+	{
+		VERIFY					(graph);
+		int						i,j;
+		i						= node_index / (columns + 2);
+		j						= node_index % (columns + 2);
+		return					(_abs(_i - i - _j + j) + _abs(_i - i));
+	}
+
+	IC	bool		is_limit_reached(const _iteration_type	iteration_count) const
+	{
+		VERIFY					(data_storage);
+		return					(false);
+	}
+
+	IC	bool		is_accessible	(const _index_type node_index) const
+	{
+		VERIFY					(graph);
+		return					(graph->is_accessible(node_index));
 	}
 
 	IC	bool		is_metric_euclidian()

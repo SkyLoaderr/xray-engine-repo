@@ -1,0 +1,75 @@
+////////////////////////////////////////////////////////////////////////////
+//	Module 		: test_table.h
+//	Created 	: 21.03.2002
+//  Modified 	: 18.10.2003
+//	Author		: Dmitriy Iassenev
+//	Description : Test table
+////////////////////////////////////////////////////////////////////////////
+
+#pragma once
+
+template <
+	typename	_cell_type,
+	u32			rows,
+	u32			columns
+>
+class CTestTable {
+protected:
+	_cell_type			table[(rows+2)*(columns + 2)];
+	_cell_type			invalid_value;
+	_cell_type			valid_value;
+	u32					cur_node_index;
+public:
+	typedef	_cell_type const_iterator;
+
+						CTestTable		(LPCSTR, const _cell_type _invalid_value = _cell_type(-1), const _cell_type _valid_value = _cell_type(0))
+	{
+		invalid_value	= _invalid_value;
+		valid_value		= _valid_value;
+		for (u32 i=0; i < rows + 2; i++)
+			for (u32 j=0; j < columns + 2; j++) {
+				if (!i || !j || (i == rows + 1) || (j == columns + 1))
+					table[i*(rows + 2) + j] = invalid_value;
+				else
+					table[i*(rows + 2) + j] = valid_value;
+			}
+	}
+
+	virtual				~CTestTable		()
+	{
+	}
+
+	IC		void		begin			(const u32 node_index, const_iterator &begin, const_iterator &end)
+	{
+		begin					= 0;
+		end						= 4;
+		cur_node_index			= node_index;
+	}
+
+	IC		u32			get_edge_weight	(const u32 node_index1, const u32 node_index2) const
+	{
+		return					(1);
+	}
+
+	IC		u32			get_value		(const_iterator &i) const
+	{
+		switch (i) {
+			case 0 : return		(cur_node_index - rows - 2);
+			case 1 : return		(cur_node_index - 1);
+			case 2 : return		(cur_node_index + rows + 2);
+			case 3 : return		(cur_node_index + 1);
+			default: NODEFAULT;
+		}
+		return					(-1);
+	}
+
+	IC		bool		is_accessible	(const u32 node_index) const
+	{
+		return					(table[node_index] != invalid_value);
+	}
+
+	IC		u32			get_node_count	() const
+	{
+		return					((rows + 2)*(columns + 2));
+	}
+};

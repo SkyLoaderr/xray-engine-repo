@@ -531,6 +531,9 @@
 						<File
 							RelativePath=".\path_test_old.h">
 						</File>
+						<File
+							RelativePath=".\test_table.h">
+						</File>
 					</Filter>
 				</Filter>
 			</Filter>

@@ -84,7 +84,7 @@ protected:
 
 public:
 						CDataStorageSL	(const _index_type node_count, const _dist_type _max_distance = _dist_type(u32(-1))) :
-							inherited(node_count)
+							inherited(node_count + 2)
 	{
 		max_distance			= _max_distance;
 	}
@@ -221,7 +221,7 @@ protected:
 
 public:
 						CDataStorageUL	(const _index_type node_count, const _dist_type _max_distance = _dist_type(u32(-1))) :
-							inherited(node_count)
+							inherited(node_count + 2)
 	{
 		max_distance			= _max_distance;
 	}
@@ -370,7 +370,7 @@ protected:
 
 public:
 						CDataStorageDLSL(const _index_type node_count, const _dist_type _max_distance = _dist_type(u32(-1))) :
-							inherited(node_count)
+							inherited(node_count + 2)
 	{
 		max_distance			= _max_distance;
 		switch_factor			= 1;
@@ -531,7 +531,7 @@ protected:
 
 public:
 						CDataStorageDLUL(const _index_type node_count, const _dist_type _max_distance = _dist_type(u32(-1))) :
-							inherited(node_count)
+							inherited(node_count + 2)
 	{
 		max_distance			= _max_distance;
 	}

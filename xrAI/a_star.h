@@ -48,7 +48,7 @@ public:
 		data_storage.add_opened	(start);
 	}
 
-	IC		bool		step			(_DataStorage &data_storage, _PathManager &path_manager, const _Graph &graph)
+	IC		bool		step			(_DataStorage &data_storage, _PathManager &path_manager, _Graph &graph)
 	{
 		// get the best node, i.e. a node with the minimum 'f'
 		CGraphNode				&best = data_storage.get_best();
@@ -163,7 +163,7 @@ public:
 		return					(false);
 	}
 
-	IC		bool		find			(_DataStorage &data_storage, _PathManager &path_manager, const _Graph &graph)
+	IC		bool		find			(_DataStorage &data_storage, _PathManager &path_manager, _Graph &graph)
 	{
 		// initialize data structures with new search
 		init					(data_storage, path_manager);
