@@ -345,6 +345,13 @@ void __fastcall TfrmShaderProperties::seNumberExit(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfrmShaderProperties::seNumberLWChange(TObject *Sender,
+      int Val)
+{
+	ApplyLWNumber();
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfrmShaderProperties::seNumberKeyDown(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
@@ -666,4 +673,5 @@ void TfrmShaderProperties::Modified()
     Tools.Modified();
 	UI.Command(COMMAND_APPLY_CHANGES);
 }
+
 
