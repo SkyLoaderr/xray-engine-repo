@@ -4048,6 +4048,16 @@
 							<File
 								RelativePath=".\InventoryOwner.h">
 							</File>
+							<Filter
+								Name="character_info"
+								Filter="">
+								<File
+									RelativePath=".\character_info.cpp">
+								</File>
+								<File
+									RelativePath=".\character_info.h">
+								</File>
+							</Filter>
 						</Filter>
 						<Filter
 							Name="PhysicItem"
