@@ -96,6 +96,8 @@ void CGameObject::net_Destroy	()
 	if (!frame_check(m_dwFrameDestroy))
 		return;
 
+	VERIFY					(m_spawned);
+
 	xr_delete				(m_ini_file);
 
 	m_script_clsid			= -1;
@@ -166,10 +168,11 @@ void __stdcall VisualCallback(CKinematics *tpKinematics);
 
 BOOL CGameObject::net_Spawn		(LPVOID	DC)
 {
-	m_spawned						= true;
 	if (!frame_check(m_dwFrameSpawn))
 		return						(TRUE);
 
+	VERIFY							(!m_spawned);
+	m_spawned						= true;
 	CSE_Abstract*		E			= (CSE_Abstract*)DC;
 	VERIFY							(E);
 
