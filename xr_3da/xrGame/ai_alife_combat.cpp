@@ -312,8 +312,8 @@ void CSE_ALifeSimulator::vfFinishCombat(ECombatResult tCombatResult)
 			}
 		}
 		else {
-			m_tpaCombatGroups[i][0]->vfUpdateWeaponAmmo			();
-			CSE_ALifeMonsterAbstract	*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(m_tpaCombatGroups[i][0]);
+			m_tpaCombatObjects[i]->vfUpdateWeaponAmmo			();
+			CSE_ALifeMonsterAbstract							*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(m_tpaCombatObjects[i]);
 			if (l_tpALifeMonsterAbstract && (l_tpALifeMonsterAbstract->fHealth <= 0)) {
 				vfAppendItemList								(l_tpALifeMonsterAbstract->children,m_tpItemVector);
 				vfAssignDeathPosition							(l_tpALifeMonsterAbstract, l_tGraphID);

@@ -655,7 +655,8 @@ CSE_ALifeDynamicObject *CSE_ALifeHumanAbstract::tpfGetBestDetector()
 	CSE_ALifeAbstractGroup			*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(this);
 	if (l_tpALifeAbstractGroup) {
 		u32							l_dwBestValue = 0;
-		R_ASSERT					(l_tpALifeAbstractGroup->m_wCount);
+		if (!l_tpALifeAbstractGroup->m_wCount)
+			return					(0);
 		OBJECT_IT					I = l_tpALifeAbstractGroup->m_tpMembers.begin();
 		OBJECT_IT					E = l_tpALifeAbstractGroup->m_tpMembers.end();
 		for ( ; I != E; I++) {
