@@ -14,6 +14,7 @@
 	#include "xrLevel.h"
 #endif
 
+class CCoverPoint;
 
 class CLevelGraph {
 	friend class CRenumbererConverter;
@@ -169,12 +170,12 @@ public:
 	IC		void	nearest						(Fvector &destination, const Fvector &position, const SContour &contour) const;
 	IC		bool	intersect					(Fvector &destination, const Fvector &v1, const Fvector& v2, const Fvector& v3, const Fvector& v4) const;
 	IC		float	square						(float a1, float b1, float alpha = PI_DIV_2) const;
-	IC		float	compute_square				(float angle, float AOV, float b0, float b1, float b2, float b3) const;
+			float	compute_square				(float angle, float AOV, float b0, float b1, float b2, float b3) const;
 	IC		float	compute_square				(float angle, float AOV, const CVertex *vertex) const;
 	IC		float	compute_square				(float angle, float AOV, u32 dwNodeID) const;
 	IC		float	vertex_cover				(const CLevelGraph::CVertex *vertex) const;
 	IC		float	vertex_cover				(const u32 vertex_id) const;
-	IC		float	cover_in_direction			(float angle, float b0, float b1, float b2, float b3) const;
+			float	cover_in_direction			(float angle, float b0, float b1, float b2, float b3) const;
 	IC		float	cover_in_direction			(float angle, const CVertex *vertex) const;
 	IC		float	cover_in_direction			(float angle, u32 vertex_id) const;
 	IC		void	set_invalid_vertex			(u32 &vertex_id, CVertex **vertex = NULL) const;
@@ -249,17 +250,20 @@ private:
 	xr_vector<Fvector>	m_tpaTempPath;
 private:
 	STrajectoryPoint	start, dest;
+	CCoverPoint			*m_best_point;
 public:
 	xr_vector<BYTE>		q_mark;			// temporal usage mark for queries
 	xr_vector<u32>		q_stack;		// temporal usage stack for search enemy queries
 
 			void	render						();
 			void	set_start_point				();
+			void	set_dest_point				();
 			void	draw_oriented_bounding_box	(Fmatrix &T, Fvector &half_dim, u32 C,	u32 C1) const;
 			void	draw_travel_line			() const;
 			void	compute_travel_line			(xr_vector<u32> &path, u32 start_vertex_id, u32 finish_vertex_id) const;
 			void	build_detail_path			();
 			void	draw_dynamic_obstacles		() const;
+			void	select_cover_point			();
 #endif
 #endif
 };

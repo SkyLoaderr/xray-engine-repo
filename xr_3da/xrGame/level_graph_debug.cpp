@@ -159,7 +159,8 @@ void CLevelGraph::render()
 	if (!psHUD_Flags.test(HUD_DRAW))
 		return;
 
-	if (Level().CurrentEntity()) {
+	if (psAI_Flags.test(aiBrain) && Level().CurrentEntity()) {
+		float					half_size = ai().level_graph().header().cell_size()*.5f;
 		xr_vector<CCoverPoint*>	nearest;
 		nearest.reserve			(1000);
 		ai().cover_manager().covers().nearest(Level().CurrentEntity()->Position(),100.f,nearest);
@@ -168,10 +169,56 @@ void CLevelGraph::render()
 		for ( ; I != E; ++I) {
 			Fvector				position = (*I)->position();
 			position.y			+= 1.f;
-			RCache.dbg_DrawAABB(position,ai().level_graph().header().cell_size()*.5f-.01f,1.f,ai().level_graph().header().cell_size()*.5f-.01f,D3DCOLOR_XRGB(0*255,255,0*255));
+			RCache.dbg_DrawAABB	(position,half_size - .01f,1.f,ai().level_graph().header().cell_size()*.5f-.01f,D3DCOLOR_XRGB(0*255,255,0*255));
+			
+			CVertex				*v = vertex((*I)->level_vertex_id());
+			Fvector				direction;
+
+			for (u32 i=0; i<36; ++i) {
+				float				value = cover_in_direction(float(10*i)/180.f*PI,v);
+				direction.setHP		(float(10*i)/180.f*PI,0);
+				direction.normalize	();
+				direction.mul		(value*half_size);
+				direction.add		(position);
+				direction.y			= position.y;
+				RCache.dbg_DrawLINE(Fidentity,position,direction,D3DCOLOR_XRGB(0,0,255));
+			}
+
+			direction.set		(position.x - half_size*float(v->cover(0))/15.f,position.y,position.z);
+			RCache.dbg_DrawLINE(Fidentity,position,direction,D3DCOLOR_XRGB(255,0,0));
+			
+			direction.set		(position.x,position.y,position.z + half_size*float(v->cover(1))/15.f);
+			RCache.dbg_DrawLINE(Fidentity,position,direction,D3DCOLOR_XRGB(255,0,0));
+
+			direction.set		(position.x + half_size*float(v->cover(2))/15.f,position.y,position.z);
+			RCache.dbg_DrawLINE(Fidentity,position,direction,D3DCOLOR_XRGB(255,0,0));
+
+			direction.set		(position.x,position.y,position.z - half_size*float(v->cover(3))/15.f);
+			RCache.dbg_DrawLINE(Fidentity,position,direction,D3DCOLOR_XRGB(255,0,0));
+
+//			float				y,p;
+//			direction.sub		(v3d(dest.position),position);
+//			direction.getHP		(y,p);
 		}
 	}
 	
+	{
+		Fvector				position = v3d(dest.position);
+		position.y			= 1.f;
+		RCache.dbg_DrawAABB	(position,ai().level_graph().header().cell_size()*.5f-.01f,1.f,ai().level_graph().header().cell_size()*.5f-.01f,D3DCOLOR_XRGB(0*255,0*255,255));
+
+	}
+	{
+		Fvector				position = v3d(start.position);
+		position.y			= 1.f;
+		RCache.dbg_DrawAABB	(position,ai().level_graph().header().cell_size()*.5f-.01f,1.f,ai().level_graph().header().cell_size()*.5f-.01f,D3DCOLOR_XRGB(255,255,0*255));
+	}
+	if (m_best_point) {
+		Fvector				position = m_best_point->position();
+		position.y			+= 1.f;
+		RCache.dbg_DrawAABB(position,ai().level_graph().header().cell_size()*.5f-.01f,1.f,ai().level_graph().header().cell_size()*.5f-.01f,D3DCOLOR_XRGB(255,0*255,0*255));
+	}
+
 	if (psAI_Flags.test(aiBrain)) {
 		if (ai().get_level_graph()) {
 			if (!Level().CurrentEntity())
@@ -532,23 +579,25 @@ void CLevelGraph::draw_dynamic_obstacles() const
 
 void CLevelGraph::set_start_point	()
 {
-	CObject					*obj = Level().Objects.FindObjectByName("m_stalker_e0000");
-	CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(obj);
-	obj						= Level().Objects.FindObjectByName("localhost/dima/name=DIMA-AI");
-	CActor					*actor = dynamic_cast<CActor*>(obj);
-	if (!stalker || !actor)
-		return;
-
-	start.position			= v2d(stalker->Position());
-	start.direction.x		= -_sin(-stalker->m_body.current.yaw);
-	start.direction.y		= _cos(-stalker->m_body.current.yaw);
+	start.position			= v2d(Level().CurrentEntity()->Position());
 	start.vertex_id			= vertex(v3d(start.position));
-
-	dest.position			= v2d(actor->Position());
-	dest.direction.x		= -_sin(actor->r_model_yaw);
-	dest.direction.y		= _cos(actor->r_model_yaw);
-	dest.vertex_id			= vertex(v3d(dest.position));
-	
+//	CObject					*obj = Level().Objects.FindObjectByName("m_stalker_e0000");
+//	CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(obj);
+//	obj						= Level().Objects.FindObjectByName("localhost/dima/name=DIMA-AI");
+//	CActor					*actor = dynamic_cast<CActor*>(obj);
+//	if (!stalker || !actor)
+//		return;
+//
+//	start.position			= v2d(stalker->Position());
+//	start.direction.x		= -_sin(-stalker->m_body.current.yaw);
+//	start.direction.y		= _cos(-stalker->m_body.current.yaw);
+//	start.vertex_id			= vertex(v3d(start.position));
+//
+//	dest.position			= v2d(actor->Position());
+//	dest.direction.x		= -_sin(actor->r_model_yaw);
+//	dest.direction.y		= _cos(actor->r_model_yaw);
+//	dest.vertex_id			= vertex(v3d(dest.position));
+//	
 //	start.angular_velocity	= 1.f;
 //	start.linear_velocity	= 2.f;
 
@@ -1320,6 +1369,34 @@ void CLevelGraph::build_detail_path()
 #ifndef AI_COMPILER
 	Device.Statistic.TEST0.End				();
 #endif
+}
+
+void CLevelGraph::set_dest_point			()
+{
+	dest.position							= v2d(Level().CurrentEntity()->Position());
+}
+
+void CLevelGraph::select_cover_point		()
+{
+	Fvector									target = v3d(dest.position);
+	Fvector									position = v3d(start.position);
+	Fvector									direction;
+	float									y, p, best_value = flt_max;
+	xr_vector<CCoverPoint*>					nearest;
+
+	ai().cover_manager().covers().nearest	(position,50.f,nearest);
+	m_best_point							= 0;
+	xr_vector<CCoverPoint*>::const_iterator	I = nearest.begin();
+	xr_vector<CCoverPoint*>::const_iterator	E = nearest.end();
+	for ( ; I != E; ++I) {
+		direction.sub	(target,position);
+		direction.getHP	(y,p);
+		float			value = ai().level_graph().cover_in_direction(y,(*I)->level_vertex_id());
+		if (value < best_value) {
+			best_value		= value;
+			m_best_point	= *I;
+		}
+	}
 }
 
 #endif // AI_COMPILER

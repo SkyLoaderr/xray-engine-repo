@@ -90,34 +90,34 @@ void CLevel::IR_OnKeyboardPress(int key)
 		break;
 
 #ifdef DEBUG
-//	case DIK_F9:
-////		if (!Objects.FindObjectByName("m_stalker_e0000") || !Objects.FindObjectByName("localhost/dima"))
-////			return;
-//		if (!m_bSynchronization) {
-//			m_bSynchronization	= true;
-//			ai().level_graph().set_start_point();
-//			ai().level_graph().build_detail_path();
-//			m_bSynchronization	= false;
-//		}
-//		return;
-//	case DIK_F10:
-////		if (!Objects.FindObjectByName("m_stalker_e0000") || !Objects.FindObjectByName("localhost/dima"))
-////			return;
-//		if (!m_bSynchronization) {
-//			m_bSynchronization	= true;
-//			ai().level_graph().set_start_point();
-//			m_bSynchronization	= false;
-//		}
-//		return;
-//	case DIK_F11:
-////		if (!Objects.FindObjectByName("m_stalker_e0000") || !Objects.FindObjectByName("localhost/dima"))
-////			return;
-//		if (!m_bSynchronization) {
-//			m_bSynchronization	= true;
-//			ai().level_graph().build_detail_path();
-//			m_bSynchronization	= false;
-//		}
-//		return;
+	case DIK_F9:
+//		if (!Objects.FindObjectByName("m_stalker_e0000") || !Objects.FindObjectByName("localhost/dima"))
+//			return;
+		if (!m_bSynchronization) {
+			m_bSynchronization	= true;
+			ai().level_graph().select_cover_point();
+			m_bSynchronization	= false;
+		}
+		return;
+	case DIK_F10:
+//		if (!Objects.FindObjectByName("m_stalker_e0000") || !Objects.FindObjectByName("localhost/dima"))
+//			return;
+		if (!m_bSynchronization) {
+			m_bSynchronization	= true;
+			ai().level_graph().set_start_point();
+			m_bSynchronization	= false;
+		}
+		return;
+	case DIK_F11:
+//		if (!Objects.FindObjectByName("m_stalker_e0000") || !Objects.FindObjectByName("localhost/dima"))
+//			return;
+		if (!m_bSynchronization) {
+			m_bSynchronization	= true;
+			ai().level_graph().set_dest_point();
+			ai().level_graph().select_cover_point();
+			m_bSynchronization	= false;
+		}
+		return;
 #endif
 	}
 

@@ -18,6 +18,7 @@ CLevelGraph::CLevelGraph					(LPCSTR filename, u32 current_version)
 #ifndef AI_COMPILER
 #ifdef DEBUG
 	sh_debug.create				("debug\\ai_nodes","$null");
+	m_best_point				= 0;
 #endif
 	string256					file_name;
 	FS.update_path				(file_name,"$level$","level.ai");
