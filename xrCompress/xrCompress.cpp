@@ -126,38 +126,45 @@ void	Compress			(LPCSTR path, LPCSTR base)
 			// Compress into BaseFS
 			c_ptr				=	fs->tell();
 			c_size_real			=	src->length();
-			u32 c_size_max		=	rtc_csize		(src->length());
-			u8*	c_data			=	xr_alloc<u8>	(c_size_max);
-			t_compress.Start	();
-			{
-				// c_size_compressed	=	rtc_compress	(c_data,c_size_max,src->pointer(),c_size_real);
-				c_size_compressed	= c_size_max;
-				R_ASSERT			(LZO_E_OK == lzo1x_999_compress	((u8*)src->pointer(),c_size_real,c_data,&c_size_compressed,c_heap));
-			}
-			t_compress_total	+=	t_compress.GetElapsed_clk();
-
-			if ((c_size_compressed+16) >= c_size_real)
-			{
-				// Failed to compress - revert to VFS
-				filesVFS			++;
-				c_size_compressed	= c_size_real;
-				fs->w				(src->pointer(),c_size_real);
-				printf				("VFS (R)");
-			} else {
-				// Compressed OK - optimize
+			if (0!=c_size_real){
+				u32 c_size_max		=	rtc_csize		(src->length());
+				u8*	c_data			=	xr_alloc<u8>	(c_size_max);
+				t_compress.Start	();
 				{
-					u8*		c_out	= xr_alloc<u8>	(c_size_real);
-					u32		c_orig	= c_size_real;
-					R_ASSERT		(LZO_E_OK	== lzo1x_optimize	(c_data,c_size_compressed,c_out,&c_orig, NULL));
-					R_ASSERT		(c_orig		== c_size_real		);
-					xr_free			(c_out);
+					// c_size_compressed	=	rtc_compress	(c_data,c_size_max,src->pointer(),c_size_real);
+					c_size_compressed	= c_size_max;
+					R_ASSERT			(LZO_E_OK == lzo1x_999_compress	((u8*)src->pointer(),c_size_real,c_data,&c_size_compressed,c_heap));
 				}
-				fs->w				(c_data,c_size_compressed);
-				printf				("%3.1f%%",	100.f*float(c_size_compressed)/float(src->length()));
-			}
+				t_compress_total	+=	t_compress.GetElapsed_clk();
 
-			// cleanup
-			xr_free		(c_data);
+				if ((c_size_compressed+16) >= c_size_real)
+				{
+					// Failed to compress - revert to VFS
+					filesVFS			++;
+					c_size_compressed	= c_size_real;
+					fs->w				(src->pointer(),c_size_real);
+					printf				("VFS (R)");
+				} else {
+					// Compressed OK - optimize
+					{
+						u8*		c_out	= xr_alloc<u8>	(c_size_real);
+						u32		c_orig	= c_size_real;
+						R_ASSERT		(LZO_E_OK	== lzo1x_optimize	(c_data,c_size_compressed,c_out,&c_orig, NULL));
+						R_ASSERT		(c_orig		== c_size_real		);
+						xr_free			(c_out);
+					}
+					fs->w				(c_data,c_size_compressed);
+					printf				("%3.1f%%",	100.f*float(c_size_compressed)/float(src->length()));
+				}
+
+				// cleanup
+				xr_free		(c_data);
+			}else{
+				filesVFS				++;
+				c_size_compressed		= c_size_real;
+//				fs->w					(src->pointer(),c_size_real);
+				printf					("VFS (R)");
+			}
 		}
 	}
 
