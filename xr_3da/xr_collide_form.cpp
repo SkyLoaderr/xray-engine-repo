@@ -25,15 +25,16 @@ CCFModel::CCFModel( CObject* _owner )
 
 CCFModel::~CCFModel( )
 {
-	R_ASSERT(g_pGameLevel);
-	g_pGameLevel->ObjectSpace.Object_Unregister(owner);
+	if	(g_pGameLevel)	g_pGameLevel->ObjectSpace.Object_Unregister(owner);
 }
 
 void CCFModel::OnMove( )
 {
-	VERIFY	( g_pGameLevel );
-	VERIFY	( owner );
-	g_pGameLevel->ObjectSpace.Object_Move(owner);
+	if	(g_pGameLevel)	
+	{
+		R_ASSERT	( owner );
+		g_pGameLevel->ObjectSpace.Object_Move	(owner);
+	}
 }
 
 //----------------------------------------------------------------------------------
