@@ -141,6 +141,7 @@ void CModelPool::Destroy()
 	vector<ModelDef>::iterator	I;
 	for (I=Models.begin(); I!=Models.end(); I++) 
 	{
+		Msg					("----AAAAAAAAAAAAAAAAAAAAA---- %s",I->name);
 		I->model->Release();
 		_DELETE(I->model);
 	}
@@ -160,6 +161,7 @@ CModelPool::CModelPool()
 CModelPool::~CModelPool()
 {
 	Device.seqDevDestroy.Remove	(this);
+	Destroy						();
 }
 
 CVisual* CModelPool::Instance_Find(LPCSTR N)
