@@ -490,9 +490,7 @@ bool CUICarBodyWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 {
 	if( inherited::OnKeyboard(dik,keyboard_action) )return true;
 
-	if(keyboard_action==WINDOW_KEY_PRESSED){
-
-		if(key_binding[dik]==kUSE)
+	if(keyboard_action==WINDOW_KEY_PRESSED&&key_binding[dik]==kUSE)
 			GetHolder()->StartStopMenu(this,true);
 		
 }
