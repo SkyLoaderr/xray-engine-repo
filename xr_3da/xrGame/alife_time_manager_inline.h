@@ -42,7 +42,7 @@ IC	ALife::_TIME_ID	CALifeTimeManager::last_surge_time		() const
 
 IC	void CALifeTimeManager::next_surge_time					(ALife::_TIME_ID next_surge_time)
 {
-	m_next_surge_time			= next_surge_time;
+	m_next_surge_time			= next_surge_time + m_surge_interval;
 }
 
 IC	void CALifeTimeManager::last_surge_time					(ALife::_TIME_ID last_surge_time)
