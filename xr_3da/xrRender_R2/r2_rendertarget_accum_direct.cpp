@@ -3,7 +3,7 @@
 void CRenderTarget::accum_direct	(u32 dls_phase)
 {
 	// *** assume accumulator setted up ***
-	float			z_bias				= 0;	// dls_phase?0.006f:0.003f;
+	float			z_bias				= dls_phase?0.006f:0.003f;
 
 	// texture adjustment matrix
 	float			fTexelOffs			= (.5f / DSM_size);
