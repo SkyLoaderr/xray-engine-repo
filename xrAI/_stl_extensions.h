@@ -59,7 +59,11 @@ namespace std
 template	<typename T>									class	xr_vector		: public std::vector<T,xr_allocator_t<T> >								{ public: 
 	u32		size() const									{ return (u32)__super::size(); } 
 	void	clear()											{ erase(begin(),end());} 
-	void	clear_and_free()								{ __super::_Tidy(); }
+#ifdef _M_AMD64
+	void	clear_and_free()								{ __super::_clear();	}
+#else
+	void	clear_and_free()								{ __super::_Tidy();		}
+#endif
 	const_reference operator[](size_type _Pos) const		{ {VERIFY(_Pos<size());} return (*(begin() + _Pos)); }
 	reference operator[](size_type _Pos)					{ {VERIFY(_Pos<size());} return (*(begin() + _Pos)); }
 };
