@@ -42,6 +42,7 @@ extern float		ps_r2_ls_bloom_threshold;	// r2-only
 extern float		ps_r2_ls_dsm_kernel;		// r2-only
 extern float		ps_r2_ls_psm_kernel;		// r2-only
 extern float		ps_r2_ls_ssm_kernel;		// r2-only
+extern float		ps_r2_ls_spower;			// r2-only
 extern Flags32		ps_r2_ls_flags;				// r2-only
 
 enum
