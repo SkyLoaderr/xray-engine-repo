@@ -92,6 +92,7 @@ CUIMainIngameWnd::CUIMainIngameWnd()
 	// Quick infos
 	fuzzyShowInfo				= 0.f;
 	UIZoneMap					= xr_new<CUIZoneMap>();
+	m_pPickUpItem				= NULL;
 }
 
 //////////////////////////////////////////////////////////////////////////
