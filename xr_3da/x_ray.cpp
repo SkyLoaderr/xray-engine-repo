@@ -137,7 +137,7 @@ void CheckPrivilegySlowdown		( )
 	if	(bDima || bJim || bDandy || strstr(Core.Params,"-slowdown"))	{
 		Log			("! slowdown enabled for your pleasure :)");
 		_beginthread(slowdownthread,0,0);
-		_beginthread(slowdownthread,0,0);
+//		_beginthread(slowdownthread,0,0);
 //		_beginthread(slowdownthread,0,0);
 	}
 #endif
