@@ -145,10 +145,20 @@ void CUIWindow::OnMouse(int x, int y, EUIMessages mouse_action)
 {	
 	cursor_pos.x = x;
 	cursor_pos.y = y;
-
 	Irect	wndRect = GetWndRect();
+	bool cursor_on_window;
 
-	m_bCursorOverWindow = (x>=0 && x<GetWidth() && y>=0 && y<GetHeight());
+	cursor_on_window = (x>=0 && x<GetWidth() && y>=0 && y<GetHeight());
+	
+	// RECEIVE and LOST focus
+	if(m_bCursorOverWindow != cursor_on_window)
+		if(cursor_on_window)
+            OnFocusReceive();			
+		else
+			OnFocusLost();			
+	m_bCursorOverWindow = cursor_on_window;
+
+	// CLICK GENERATION
 
 	// DOUBLE CLICK GENERATION
 	if( (mouse_action == WINDOW_LBUTTON_DOWN) && m_bDoubleClickEnabled )
@@ -182,16 +192,16 @@ void CUIWindow::OnMouse(int x, int y, EUIMessages mouse_action)
 
 	// handle any action
 	switch (mouse_action){
-		case WINDOW_LBUTTON_DOWN:
-			OnMouseDown();
-			break;
-		case WINDOW_LBUTTON_DB_CLICK:
-			OnDbClick();
-			break;
 		case WINDOW_MOUSE_WHEEL_DOWN:
 			OnMouseScroll(WINDOW_MOUSE_WHEEL_DOWN); break;
 		case WINDOW_MOUSE_WHEEL_UP:
-			OnMouseScroll(WINDOW_MOUSE_WHEEL_UP); break;
+			OnMouseScroll(WINDOW_MOUSE_WHEEL_UP);	break;
+		case WINDOW_LBUTTON_DOWN:
+			OnMouseDown();							break;
+		case WINDOW_RBUTTON_DOWN:
+			OnMouseDown(/*left_button = */false);	break;
+		case WINDOW_LBUTTON_DB_CLICK:
+			OnDbClick();							break;
 		default:
             break;
 	}
@@ -226,11 +236,23 @@ void CUIWindow::OnMouseScroll(int iDirection){
 }
 
 void CUIWindow::OnDbClick(){
+	;
+}
+
+void CUIWindow::OnMouseDown(bool left_button){
 
 }
 
-void CUIWindow::OnMouseDown(){
+void CUIWindow::OnMouseUp(bool left_button){
 
+}
+
+void CUIWindow::OnFocusReceive(){
+	;
+}
+
+void CUIWindow::OnFocusLost(){
+	;
 }
 
 

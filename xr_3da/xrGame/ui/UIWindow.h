@@ -65,7 +65,10 @@ public:
 	virtual void OnMouse(int x, int y, EUIMessages mouse_action);
 	virtual void OnMouseScroll(int iDirection);
 	virtual void OnDbClick();
-	virtual void OnMouseDown();
+	virtual void OnMouseDown(bool left_button = true);
+	virtual void OnMouseUp(bool left_button = true);
+	virtual void OnFocusReceive();
+	virtual void OnFocusLost();
 
 	//захватить/освободить мышь окном
 	//сообщение посылается дочерним окном родительскому
