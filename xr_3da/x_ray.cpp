@@ -328,15 +328,15 @@ void CApplication::LoadTitle	(char *S, char *S2)
 	RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 
 	// Draw title
-	Log			(S,S2);
-	R_ASSERT	(pFontSystem);
-	pFontSystem->Clear();
-	pFontSystem->SetColor(color_rgba(192,192,192,255));
-	pFontSystem->SetAligment(CGameFont::alCenter);
+	Log							(S,S2);
+	R_ASSERT					(pFontSystem);
+	pFontSystem->Clear			();
+	pFontSystem->SetColor		(color_rgba(192,192,192,255));
+	pFontSystem->SetAligment	(CGameFont::alCenter);
 	char *F = "%s";
 	if (S2) F="%s%s";
-	pFontSystem->Out		(0.f,0.93f,F,S,S2);
-	pFontSystem->OnRender	();
+	pFontSystem->Out			(0.f,0.93f,F,S,S2);
+	pFontSystem->OnRender		();
 
 	Device.End	();
 }
