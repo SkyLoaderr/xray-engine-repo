@@ -32,16 +32,16 @@ CGameObject::~CGameObject		()
 	Device.seqRender.Remove	(this);
 #endif
 	*/
-	if (this == Level().CurrentEntity())	Level().SetEntity(0);
 }
 
 void CGameObject::net_Destroy	()
 {
 	setReady									(FALSE);
-	g_pGameLevel->Objects.net_Unregister			(this);
-	g_pGameLevel->ObjectSpace.Object_Unregister		(this);
+	g_pGameLevel->Objects.net_Unregister		(this);
+	g_pGameLevel->ObjectSpace.Object_Unregister	(this);
 	shedule_Unregister							();
 	Sector_Move									(0);
+	if (this == Level().CurrentEntity())		Level().SetEntity(0);
 }
 
 void CGameObject::OnEvent		(NET_Packet& P, u16 type)

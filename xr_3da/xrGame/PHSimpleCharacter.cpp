@@ -209,6 +209,7 @@ void CPHSimpleCharacter::Create(dVector3 sizes){
 void CPHSimpleCharacter::Destroy(){
 	if(!b_exist) return;
 	b_exist=false;
+	//if(ph_world)
 	ph_world->RemoveObject(m_ident);
 
 

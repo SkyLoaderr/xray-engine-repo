@@ -442,6 +442,7 @@ void CActor::net_Destroy	()
 	u32 it;
 	for (it=0; it<SND_HIT_COUNT; it++)	::Sound->destroy	(sndHit[it]);
 	for (it=0; it<SND_DIE_COUNT; it++)	::Sound->destroy	(sndDie[it]);
+	ph_Movement.DestroyCharacter();
 }
 
 void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element, float impulse)
