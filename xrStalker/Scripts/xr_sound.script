@@ -152,7 +152,7 @@ end
 --               rnd = 75, -- вероятность, с которой будет проигран звук, если пришло время (умолчание = 100)
 --            themes = { "weather", "state" }  -- список тем для разговора
 --  }
-function sound_update(npc, sound, target, now)
+function sound_update(npc, sound, now)
 	if sound.begin == nil or
 	   now or
 	   (device():time_global() - sound.begin) > sound.idle*1000 then
