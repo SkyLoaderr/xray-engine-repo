@@ -841,8 +841,11 @@ void CStalkerActionAimEnemy::initialize	()
 		CMemoryInfo			mem_object = m_object->memory(m_object->enemy());
 		if (mem_object.m_object && 
 			m_object->visible(m_object->enemy()) && 
-			(Level().timeServer() >= mem_object.m_last_level_time + 3000)) {// && !m_object->see(m_object->enemy(),m_object)) {
-			m_object->play	(eStalkerSoundAttack);
+			(Level().timeServer() >= mem_object.m_last_level_time + 3000)) {
+			if (m_object->see(m_object->enemy(),m_object))
+				m_object->play	(eStalkerSoundAttack);
+			else
+				m_object->play	(eStalkerSoundAlarm);
 		}
 	}
 	if (distance >= 50.f) {
@@ -1403,6 +1406,14 @@ void CStalkerActionGetEnemySeenModerate::finalize	()
 	inherited::finalize		();
 	m_object->set_sound_mask(eStalkerSoundMaskSurrender);
 	m_object->set_sound_mask(0);
+//	if (m_object->enemy()) {
+//		CMemoryInfo			mem_object = m_object->memory(m_object->enemy());
+//		if (mem_object.m_object && 
+//			m_object->visible(m_object->enemy()) && 
+//			(Level().timeServer() >= mem_object.m_last_level_time + 20000)) {// && !m_object->see(m_object->enemy(),m_object)) {
+//			m_object->play	(eStalkerSoundAlarm);
+//		}
+//	}
 	m_start_standing_time	= m_start_level_time;
 }
 
