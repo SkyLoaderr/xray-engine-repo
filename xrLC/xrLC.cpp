@@ -59,12 +59,14 @@ void Startup(LPSTR     lpCmdLine)
 	DWORD					dwStartupTime	= timeGetTime();
 	SetPriorityClass		(GetCurrentProcess(),IDLE_PRIORITY_CLASS);
 
+	/*
 	DWORD	dwMin			= 1800*(1024*1024);
 	DWORD	dwMax			= 1900*(1024*1024);
 	if (0==SetProcessWorkingSetSize(GetCurrentProcess(),dwMin,dwMax))
 	{
 		Msg("*** Failed to expand working set");
 	};
+	*/
 	
 	// Load project
 	name[0]=0;				sscanf(strstr(cmd,"-f")+2,"%s",name);
