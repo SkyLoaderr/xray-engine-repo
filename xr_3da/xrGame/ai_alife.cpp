@@ -317,11 +317,11 @@ bool CSE_ALifeSimulator::change_level	(NET_Packet &net_packet)
 	u32							m_safe_level_vertex_id = m_tpActor->m_tNodeID;
 	ALife::_GRAPH_ID			m_safe_graph_vertex_id = m_tpActor->m_tGraphID;
 	
-	net_packet.r_vec3			(m_tpActor->o_Angle);
 	net_packet.r				(&m_tpActor->m_tGraphID,sizeof(m_tpActor->m_tGraphID));
-	m_tpActor->m_tNodeID		= ai().game_graph().vertex(m_tpActor->m_tGraphID)->level_vertex_id();
-	m_tpActor->o_Position		= ai().game_graph().vertex(m_tpActor->m_tGraphID)->level_point();
-
+	net_packet.r				(&m_tpActor->m_tNodeID,sizeof(m_tpActor->m_tNodeID));
+	net_packet.r_vec3			(m_tpActor->o_Position);
+	net_packet.r_vec3			(m_tpActor->o_Angle);
+	
 	Save						();
 
 	m_tpActor->o_Angle			= m_safe_angles;

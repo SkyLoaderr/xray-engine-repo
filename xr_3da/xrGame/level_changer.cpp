@@ -81,7 +81,6 @@ void CLevelChanger::feel_touch_new	(CObject *tpObject)
 	if (l_tpActor) {
 		NET_Packet				net_packet;
 		net_packet.w_begin		(M_CHANGE_LEVEL);
-		net_packet.w_u32		(Level().timeServer());
 		net_packet.w			(&m_game_vertex_id,sizeof(m_game_vertex_id));
 		net_packet.w			(&m_level_vertex_id,sizeof(m_level_vertex_id));
 		net_packet.w_vec3		(m_position);
