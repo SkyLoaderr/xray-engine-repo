@@ -256,7 +256,7 @@ IC void projectPoint(const Fplane& PL, Fvector& P)
 
 
 //******* PContour unpacking
-void	UnpackContour(PContour& C, u32 ID)
+void	CAI_Biting::UnpackContour(PContour& C, u32 ID)
 {
 	CAI_Space&	AI			= getAI();
 	NodeCompressed* Node	= AI.Node(ID);
@@ -473,7 +473,7 @@ IC int lines_intersect(
 
 //******* pseudo 3D segments intersection
 const float corner_r = 0.05f;
-BOOL SegmentsIntersect(Fvector& dst, Fvector& v1, Fvector& v2, Fvector& v3, Fvector& v4)
+BOOL CAI_Biting::SegmentsIntersect(Fvector& dst, Fvector& v1, Fvector& v2, Fvector& v3, Fvector& v4)
 {
 	// corner check (v4 - end, v1-v2 - segm)
 	if (v4.similar(v1,corner_r))	{ dst.set(v1); return TRUE; }
@@ -596,6 +596,8 @@ void CAI_Biting::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluato
 	if (tpNodeEvaluator)
 		vfInitSelector			(*tpNodeEvaluator,Squad);
 
+	Fvector tempV;
+
 	switch (m_tPathState) {
 		case ePathStateSearchNode : 
 			if (tpNodeEvaluator && bSearchForNode)  // необходимо искать ноду?
@@ -623,7 +625,12 @@ void CAI_Biting::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluato
 			break;
 									
 		case ePathStateBuildTravelLine : 
-			vfBuildTravelLine(tpDestinationPosition);
+			
+			tempV = ((tpDestinationPosition) ?  *tpDestinationPosition : getAI().tfGetNodeCenter(AI_Path.Nodes.back()));
+			//getAI().bfCreateStraightPTN_Path(AI_NodeID,Position(),tempV,m_tpaTravelPath,m_tpaNodes, true);					
+
+			vfBuildTravelLine(tempV,Position());
+				
 			m_tPathState = ePathStateBuilt;
 			m_dwPathBuiltLastTime = m_dwCurrentUpdate;
 			break;
