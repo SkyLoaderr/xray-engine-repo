@@ -25,4 +25,5 @@
 #	define aiStats			(1<<12)
 #	define aiDestroy		(1<<13)
 #	define aiSerialize		(1<<14)
+#	define aiDialogs		(1<<15)
 #endif

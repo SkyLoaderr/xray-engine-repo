@@ -12,6 +12,7 @@
 #include "infoportion.h"
 #include "inventoryowner.h"
 #include "script_space.h"
+#include "ai_debug.h"
 
 CPhraseScript::CPhraseScript	()
 {
@@ -102,8 +103,11 @@ bool CPhraseScript::Precondition	(const CGameObject* pSpeakerGO, LPCSTR dialog_i
 {
 	bool predicate_result = true;
 
-	if(!CheckInfo(smart_cast<const CInventoryOwner*>(pSpeakerGO)))
+	if(!CheckInfo(smart_cast<const CInventoryOwner*>(pSpeakerGO))){
+		if (psAI_Flags.test(aiDialogs))
+			Msg("dialog [%s] phrase[%d] rejected by CheckInfo",dialog_id,phrase_num);
 		return false;
+	}
 
 	for(u32 i = 0; i<Preconditions().size(); i++)
 	{
@@ -112,7 +116,10 @@ bool CPhraseScript::Precondition	(const CGameObject* pSpeakerGO, LPCSTR dialog_i
 		bool functor_exists = ai().script_engine().functor(*Preconditions()[i] ,lua_function);
 		THROW3(functor_exists, "Cannot find precondition", *Preconditions()[i]);
 		predicate_result = lua_function	(pSpeakerGO->lua_game_object());
-		if(!predicate_result) break;
+		if(!predicate_result){
+			if (psAI_Flags.test(aiDialogs))
+				Msg("dialog [%s] phrase[%d] rejected by script predicate",dialog_id,phrase_num);
+		} break;
 	}
 	return predicate_result;
 }
@@ -135,9 +142,11 @@ bool CPhraseScript::Precondition	(const CGameObject* pSpeakerGO1, const CGameObj
 {
 	bool predicate_result = true;
 
-	if(!CheckInfo(smart_cast<const CInventoryOwner*>(pSpeakerGO1)))
+	if(!CheckInfo(smart_cast<const CInventoryOwner*>(pSpeakerGO1))){
+		if (psAI_Flags.test(aiDialogs))
+			Msg("dialog [%s] phrase[%d] rejected by CheckInfo",dialog_id,phrase_num);
 		return false;
-
+	}
 	for(u32 i = 0; i<Preconditions().size(); i++)
 	{
 		luabind::functor<bool>	lua_function;
@@ -145,7 +154,11 @@ bool CPhraseScript::Precondition	(const CGameObject* pSpeakerGO1, const CGameObj
 		bool functor_exists = ai().script_engine().functor(*Preconditions()[i] ,lua_function);
 		THROW3(functor_exists, "Cannot find phrase precondition", *Preconditions()[i]);
 		predicate_result = lua_function	(pSpeakerGO1->lua_game_object(), pSpeakerGO2->lua_game_object(), dialog_id, phrase_num);
-		if(!predicate_result) break;
+		if(!predicate_result){
+			if (psAI_Flags.test(aiDialogs))
+				Msg("dialog [%s] phrase[%d] rejected by script predicate",dialog_id,phrase_num);
+			break;
+		}
 	}
 	return predicate_result;
 }
