@@ -45,9 +45,11 @@
 
 
 	<info_portion id="actor_start_dialogs">
-		<dialog>actor_break_dialog</dialog>
-		<dialog>escape_trader_talk_about</dialog>
 		<dialog>escape_trader_jobs</dialog>
+		<dialog>escape_trader_talk_flame</dialog>		
+		<dialog>escape_trader_talk_about</dialog>
+		<dialog>escape_trader_talk_level</dialog>
+		<dialog>actor_break_dialog</dialog>
 	</info_portion>
 
 
