@@ -46,8 +46,10 @@ CEditableObject::CEditableObject(LPCSTR name)
 
     m_LODShader		= 0;
     
-    m_OwnerName		= "unknown";
+    m_CreateName	= "unknown";
     m_CreateTime	= 0;
+	m_ModifName		= "unknown";
+    m_ModifTime		= 0;
 }
 
 CEditableObject::~CEditableObject()
@@ -203,9 +205,11 @@ void CEditableObject::PrepareOGFDesc(ogf_desc& desc)
 {
 	string512		tmp;
 	desc.source_file	= m_LibName.c_str();
-    desc.creator_name	= strconcat(tmp,"\\\\",Core.CompName,"\\",Core.UserName);
-    desc.owner_name		= m_OwnerName.c_str();
+    desc.create_name	= m_CreateName.c_str();
     desc.create_time	= m_CreateTime;
+    desc.modif_name		= m_ModifName.c_str();
+    desc.modif_time		= m_ModifTime;
+    desc.build_name		= strconcat(tmp,"\\\\",Core.CompName,"\\",Core.UserName);
     ctime				(&desc.build_time);
 }
 

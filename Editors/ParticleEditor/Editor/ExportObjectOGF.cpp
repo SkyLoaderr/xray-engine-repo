@@ -390,11 +390,7 @@ bool CExportObjectOGF::Export(IWriter& F)
     ogf_desc		desc;
     m_Source->PrepareOGFDesc(desc);
     F.open_chunk	(OGF_DESC);
-	F.w_stringZ		(desc.source_file);
-    F.w_stringZ		(desc.creator_name);
-    F.w_stringZ		(desc.owner_name);
-    F.w				(&desc.create_time,sizeof(desc.create_time));
-    F.w				(&desc.build_time,sizeof(desc.build_time));
+    desc.Save		(F);
     F.close_chunk	();
 
     // OGF_CHILDREN

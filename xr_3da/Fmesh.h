@@ -57,10 +57,14 @@ const u16	xrOGF_SMParamsVersion	= 1;
 // OGF_DESC
 struct ogf_desc{
 	ref_str	source_file;
-    ref_str	creator_name;
-    ref_str	owner_name;
-    time_t	create_time;
+    ref_str	build_name;
     time_t	build_time;
+    ref_str	create_name;
+    time_t	create_time;
+    ref_str	modif_name;
+    time_t	modif_time;
+    void Load	(IReader& F);
+    void Save	(IWriter& F);
 };
 
 // OGF_HEADER

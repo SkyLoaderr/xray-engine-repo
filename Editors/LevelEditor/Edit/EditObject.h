@@ -160,8 +160,10 @@ class CEditableObject{
 	ref_geom 		vs_SkeletonGeom;
 #endif
 // desc
-	AnsiString		m_OwnerName;
+	AnsiString		m_CreateName;
     time_t			m_CreateTime;
+	AnsiString		m_ModifName;
+    time_t			m_ModifTime;
     
 // general
 	AnsiString		m_ClassScript;

@@ -151,8 +151,10 @@ void CEditableObject::Save(IWriter& F)
 //    Log("7: ",F.tell());
 
     F.open_chunk		(EOBJ_CHUNK_DESC);
-    F.w_stringZ			(m_OwnerName.c_str());
+    F.w_stringZ			(m_CreateName.c_str());
     F.w					(&m_CreateTime,sizeof(m_CreateTime));
+    F.w_stringZ			(m_ModifName.c_str());
+    F.w					(&m_ModifTime,sizeof(m_ModifTime));
     F.close_chunk		();
 
 	bOnModified		= false;
@@ -316,8 +318,10 @@ bool CEditableObject::Load(IReader& F)
 		}
 
 	    if (F.find_chunk	(EOBJ_CHUNK_DESC)){
-		    F.r_stringZ		(m_OwnerName);
+		    F.r_stringZ		(m_CreateName);
 		    F.r				(&m_CreateTime,sizeof(m_CreateTime));
+		    F.r_stringZ		(m_ModifName);
+		    F.r				(&m_ModifTime,sizeof(m_ModifTime));
     	}
 	
 		ResetSAnimation();
