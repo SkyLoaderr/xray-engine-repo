@@ -24,13 +24,13 @@ public:
 		_edge_weight_type,
 		_vertex_id_type,
 		_vertex_index_type
-	> CSGraphAbstract;
+	>											CSGraphAbstract;
 private:
-	CSGraphAbstract				*m_graph;
-	_vertex_id_type				m_current_vertex_id;
-	_vertex_id_type				m_dest_vertex_id;
-	xr_vector<_vertex_id_type>	m_path;
-	bool						m_actuality;
+	CSGraphAbstract								*m_graph;
+	_vertex_id_type								m_current_vertex_id;
+	_vertex_id_type								m_dest_vertex_id;
+	xr_vector<_vertex_id_type>					m_path;
+	bool										m_actuality;
 
 protected:
 	IC		void								set_current_vertex_id	(const _vertex_id_type dest_vertex_id);
