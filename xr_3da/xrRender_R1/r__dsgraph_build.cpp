@@ -218,6 +218,7 @@ void CRender::add_leafs_Dynamic(IRender_Visual *pVisual)
 			// Add all children, doesn't perform any tests
 			PS::CParticleGroup* pG = (PS::CParticleGroup*)pVisual;
 			for (PS::CParticleGroup::SItemVecIt i_it=pG->items.begin(); i_it!=pG->items.end(); i_it++){
+				#pragma todo("serious performance problem here")
 				xr_vector<IRender_Visual*>	visuals;
 				i_it->GetVisuals			(visuals);
 				for (xr_vector<IRender_Visual*>::iterator it=visuals.begin(); it!=visuals.end(); it++)
