@@ -22,7 +22,7 @@ protected:
             return fNumer <= 0.0f;
         }
     }
-	static bool 	intersect	(const Fvector& start, const Fvector& dir, const Fvector& extent, float& rfT0, float& rfT1) const
+	static bool 	intersect	(const Fvector& start, const Fvector& dir, const Fvector& extent, float& rfT0, float& rfT1)
 	{
 		float fSaveT0 = rfT0, fSaveT1 = rfT1;
 
