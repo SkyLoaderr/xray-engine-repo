@@ -12,6 +12,7 @@ private:
 	u32					curHeight;
 
 	ref_rt				RT;
+	ref_rt				RT_distort;
 	IDirect3DSurface9*	ZB;
 
 	ref_shader			s_postprocess;

@@ -37,10 +37,10 @@ public:
 	R_dsgraph::mapSorted_T										mapSorted;
 	R_dsgraph::mapHUD_T											mapHUD;
 	R_dsgraph::mapLOD_T											mapLOD;
+	R_dsgraph::mapSorted_T										mapDistort;
 
 #if RENDER==R_R2
 	R_dsgraph::mapSorted_T										mapEmissive;
-	R_dsgraph::mapSorted_T										mapDistort;
 #endif
 
 	// Runtime structures 

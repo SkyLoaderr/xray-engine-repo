@@ -25,6 +25,8 @@ public:
 		PHASE_POINT,
 		PHASE_SPOT
 	};
+
+	BOOL														b_distortion;
 public:
 	// Sector detection and visibility
 	CSector*													pLastSector;

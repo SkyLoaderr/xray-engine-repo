@@ -50,9 +50,9 @@ BOOL CRenderTarget::Create	()
 	Msg				("* SSample: %dx%d",rtWidth,rtHeight);
 
 	// Bufferts
-	RT.create		(RTname,rtWidth,rtHeight,HW.Caps.fTarget);
-	if ((rtHeight!=Device.dwHeight) || (rtWidth!=Device.dwWidth))
-	{
+	RT.create			(RTname,			rtWidth,rtHeight,HW.Caps.fTarget);
+	RT_distort.create	("$user$distort",	rtWidth,rtHeight,HW.Caps.fTarget);
+	if ((rtHeight!=Device.dwHeight) || (rtWidth!=Device.dwWidth))	{
 		R_CHK		(HW.pDevice->CreateDepthStencilSurface	(rtWidth,rtHeight,HW.Caps.fDepth,D3DMULTISAMPLE_NONE,0,TRUE,&ZB,NULL));
 	} else {
 		ZB			= HW.pBaseZB;
@@ -65,7 +65,7 @@ BOOL CRenderTarget::Create	()
 	// Shaders and stream
 	s_postprocess.create		("postprocess");
 	g_postprocess.create		(D3DFVF_XYZRHW|D3DFVF_DIFFUSE|D3DFVF_SPECULAR|D3DFVF_TEX3,RCache.Vertex.Buffer(),RCache.QuadIB);
-	return	RT->Valid	();
+	return	RT->Valid() && RT_distort->Valid();
 }
 
 CRenderTarget::~CRenderTarget	()
@@ -74,6 +74,7 @@ CRenderTarget::~CRenderTarget	()
 	_RELEASE					(ZB);
 	s_postprocess.destroy		();
 	g_postprocess.destroy		();
+	RT_distort.destroy			();
 	RT.destroy					();
 }
 
