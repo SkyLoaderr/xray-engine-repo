@@ -157,8 +157,8 @@ function main ()
                 update_action (stalker2, military2_1.script_name (), look (look.fire_point, fire2:point (1)))
                 ipoint = 1
              else   
-                update_action (stalker1, military2_1.script_name (), look (look.fire_point, fire1:point (0))
-                update_action (stalker2, military2_1.script_name (), look (look.fire_point, fire2:point (0))
+                update_action (stalker1, military2_1.script_name (), look (look.fire_point, fire1:point (0)))
+                update_action (stalker2, military2_1.script_name (), look (look.fire_point, fire2:point (0)))
                 ipoint = 0
              end    
              time = device():time_global ()
