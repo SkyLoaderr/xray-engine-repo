@@ -11,12 +11,9 @@
 #include "script_storage.h"
 #include "script_export_space.h"
 
-#pragma warning(push)
-#pragma warning(disable:4005)
-
 #ifdef XRGAME_EXPORTS
-	class CScriptProcessor;
-	class CScript;
+	class CScriptProcess;
+	class CScriptThread;
 	class CScriptDebugger;
 #endif
 
@@ -24,36 +21,18 @@ class CScriptEngine : public CScriptStorage {
 public:
 	typedef CScriptStorage inherited;
 #ifdef XRGAME_EXPORTS
-	typedef xr_map<LPCSTR,CScriptProcessor*,pred_str> CScriptProcessorStorage;
+	typedef xr_map<LPCSTR,CScriptProcess*,pred_str> CScriptProcessStorage;
 #endif
 
 protected:
 #ifdef XRGAME_EXPORTS
-	CScriptProcessorStorage		m_script_processors;
+	CScriptProcessStorage		m_script_processes;
 #endif
 	xr_deque<LPSTR>				m_load_queue;
 	CScriptStackTracker 		*m_current_thread;
 	int							m_stack_level;
 	bool						m_reload_modules;
 	ref_str						m_class_registrators;
-
-protected:
-#ifdef XRGAME_EXPORTS
-			void				export_fvector				();
-			void				export_fmatrix				();
-			void				export_game					();
-			void				export_level				();
-			void				export_device				();
-			void				export_particles			();
-			void				export_actions				();
-			void				export_object				();
-			void				export_effector				();
-			void				export_artifact_merger		();
-			void				export_memory_objects		();
-			void				export_action_management	();
-			void				export_motivation_management();
-#endif
-
 
 public:
 								CScriptEngine				();
@@ -66,9 +45,9 @@ public:
 			void				load_common_scripts			();
 			bool				load_file					(LPCSTR	caScriptName,	bool	bCall = true);
 #ifdef XRGAME_EXPORTS
-	IC		CScriptProcessor	*script_processor			(LPCSTR processor_name) const;
-	IC		void				add_script_processor		(LPCSTR processor_name, CScriptProcessor *script_processor);
-			void				remove_script_processor		(LPCSTR processor_name);
+	IC		CScriptProcess		*script_process				(LPCSTR process_name) const;
+	IC		void				add_script_process			(LPCSTR process_name, CScriptProcess *script_process);
+			void				remove_script_process		(LPCSTR process_name);
 #endif
 			void				add_file					(LPCSTR file_name);
 			void				process						();
@@ -93,8 +72,7 @@ public:
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CScriptEngine)
+#undef script_type_list
 #define script_type_list save_type_list(CScriptEngine)
-
-#pragma warning(pop)
 
 #include "script_engine_inline.h"

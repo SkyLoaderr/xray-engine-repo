@@ -18,7 +18,7 @@
 extern void export_classes	(lua_State *L);
 
 #ifdef XRGAME_EXPORTS
-#	include "ai_script_processor.h"
+#	include "script_process.h"
 #endif
 
 CScriptEngine::CScriptEngine	()
@@ -35,8 +35,8 @@ CScriptEngine::CScriptEngine	()
 CScriptEngine::~CScriptEngine			()
 {
 #ifdef XRGAME_EXPORTS
-	while (!m_script_processors.empty())
-		remove_script_processor(m_script_processors.begin()->first);
+	while (!m_script_processes.empty())
+		remove_script_process(m_script_processes.begin()->first);
 	flush_log				();
 #endif
 #ifdef USE_DEBUGGER
@@ -92,31 +92,11 @@ void CScriptEngine::export()
 
 	luabind::set_cast_failed_callback	(CScriptEngine::lua_cast_failed);
 	lua_atpanic							(lua(),CScriptEngine::lua_panic);
-
-#ifdef XRGAME_EXPORTS
-	export_fvector						();
-	export_fmatrix						();
-	export_game							();
-	export_level						();
-	export_device						();
-	export_particles					();
-#endif
+	
 	export_classes						(lua());
-#ifdef XRGAME_EXPORTS
-	export_actions						();
-	export_object						();
-	export_effector						();
-	export_artifact_merger				();
-	export_memory_objects				();
-	export_action_management			();
-	export_motivation_management		();
-#endif
 
-
-#ifdef XRGAME_EXPORTS
 	load_class_registrators				();
 	object_factory().register_script	();
-#endif
 
 #ifdef DEBUG
 #	ifdef USE_DEBUGGER
@@ -143,12 +123,12 @@ bool CScriptEngine::load_file(LPCSTR caScriptName, bool bCall)
 }
 
 #ifdef XRGAME_EXPORTS
-void CScriptEngine::remove_script_processor	(LPCSTR processor_name)
+void CScriptEngine::remove_script_process	(LPCSTR process_name)
 {
-	CScriptProcessorStorage::iterator	I = m_script_processors.find(processor_name);
-	if (I != m_script_processors.end()) {
+	CScriptProcessStorage::iterator	I = m_script_processes.find(process_name);
+	if (I != m_script_processes.end()) {
 		xr_delete						((*I).second);
-		m_script_processors.erase		(I);
+		m_script_processes.erase		(I);
 	}
 }
 #endif

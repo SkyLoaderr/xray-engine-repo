@@ -9,23 +9,23 @@
 #pragma once
 
 #ifdef XRGAME_EXPORTS
-IC	void CScriptEngine::add_script_processor		(LPCSTR processor_name, CScriptProcessor *script_processor)
+IC	void CScriptEngine::add_script_process		(LPCSTR process_name, CScriptProcess *script_process)
 {
-	CScriptProcessorStorage::const_iterator	I = m_script_processors.find(processor_name);
-	VERIFY									(I == m_script_processors.end());
-	m_script_processors.insert				(std::make_pair(processor_name,script_processor));
+	CScriptProcessStorage::const_iterator	I = m_script_processes.find(process_name);
+	VERIFY									(I == m_script_processes.end());
+	m_script_processes.insert				(std::make_pair(process_name,script_process));
 }
 
-CScriptProcessor *CScriptEngine::script_processor	(LPCSTR processor_name) const
+CScriptProcess *CScriptEngine::script_process	(LPCSTR process_name) const
 {
-	CScriptProcessorStorage::const_iterator	I = m_script_processors.find(processor_name);
-	if ((I != m_script_processors.end()))
+	CScriptProcessStorage::const_iterator	I = m_script_processes.find(process_name);
+	if ((I != m_script_processes.end()))
 		return								((*I).second);
 	return									(0);
 }
 #endif
 
-IC	void CScriptEngine::set_current_thread			(CScriptStackTracker *new_thread)
+IC	void CScriptEngine::set_current_thread		(CScriptStackTracker *new_thread)
 {
 #ifdef DEBUG
 	VERIFY									((!m_current_thread && new_thread) || (m_current_thread && !new_thread));

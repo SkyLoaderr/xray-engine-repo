@@ -7,6 +7,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+
 #define TL_FAST_COMPILATION
 #define SCRIPT_REGISTRATOR
 #include "script_export_space.h"

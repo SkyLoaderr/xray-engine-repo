@@ -8,7 +8,7 @@
 
 #include "stdafx.h"
 #include "script_motivation_action_manager_wrapper.h"
-#include "ai_script_classes.h"
+#include "script_game_object.h"
 
 CScriptMotivationActionManagerWrapper::~CScriptMotivationActionManagerWrapper	()
 {
@@ -19,7 +19,7 @@ void CScriptMotivationActionManagerWrapper::reinit			(_object_type *object, bool
 	call_member<void>				("reinit",object,clear_all);
 }
 
-void CScriptMotivationActionManagerWrapper::reinit_static	(CScriptMotivationActionManager *manager, CLuaGameObject *object, bool clear_all)
+void CScriptMotivationActionManagerWrapper::reinit_static	(CScriptMotivationActionManager *manager, CScriptGameObject *object, bool clear_all)
 {
 	manager->CScriptMotivationActionManager::reinit		(object,clear_all);
 }

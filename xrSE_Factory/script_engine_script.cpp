@@ -48,6 +48,33 @@ bool editor()
 #endif
 }
 
+#ifdef XRGAME_EXPORTS
+CRenderDevice *get_device()
+{
+	return		(&Device);
+}
+#endif
+
+int bit_and(int i, int j)
+{
+	return			(i & j);
+}
+
+int bit_or(int i, int j)
+{
+	return			(i | j);
+}
+
+int bit_xor(int i, int j)
+{
+	return			(i ^ j);
+}
+
+int bit_not(int i)
+{
+	return			(~i);
+}
+
 void CScriptEngine::script_register(lua_State *L)
 {
 	function	(L,	"log",							LuaLog);
@@ -55,4 +82,12 @@ void CScriptEngine::script_register(lua_State *L)
 	function	(L,	"module",						LoadScriptModule);
 	function	(L,	"verify_if_thread_is_running",	verify_if_thread_is_running);
 	function	(L,	"editor",						editor);
+	function	(L,	"bit_and",						bit_and);
+	function	(L,	"bit_or",					bit_or);
+	function	(L,	"bit_xor",					bit_xor);
+	function	(L,	"bit_not",					bit_not);
+
+#ifdef XRGAME_EXPORTS
+	function	(L,	"device",						get_device);
+#endif
 }

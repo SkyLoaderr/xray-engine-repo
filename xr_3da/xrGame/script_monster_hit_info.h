@@ -2,11 +2,11 @@
 
 #include "script_export_space.h"
 
-class CLuaGameObject;
+class CScriptGameObject;
 
 class CScriptMonsterHitInfo {
 public:
-	CLuaGameObject			*who;
+	CScriptGameObject			*who;
 	Fvector					direction;
 	int						time;		
 
@@ -18,7 +18,7 @@ public:
 		direction		= Fvector().set(0.f,0.f,1.f);
 	}
 
-	void set(CLuaGameObject *p_who, Fvector p_direction, int p_time) {
+	void set(CScriptGameObject *p_who, Fvector p_direction, int p_time) {
 		who			= p_who;
 		direction	= p_direction;
 		time		= p_time;

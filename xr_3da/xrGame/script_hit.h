@@ -11,14 +11,14 @@
 #include "alife_space.h"
 #include "script_export_space.h"
 
-class CLuaGameObject;
+class CScriptGameObject;
 
 class CScriptHit {
 public:
 	float				m_fPower; 
 	Fvector				m_tDirection;
 	ref_str				m_caBoneName;
-	CLuaGameObject		*m_tpDraftsman;
+	CScriptGameObject		*m_tpDraftsman;
 	float				m_fImpulse;
 	int					m_tHitType;
 
