@@ -96,7 +96,7 @@ function multiplayer_dialog:OnButton_find()
 end
 
 function multiplayer_dialog:OnButton_create()
-	local dlg = ui_multiplayer_create.multiplayer_find_create()
+	local dlg = ui_multiplayer_create.multiplayer_create()
 	level.start_stop_menu(dlg, true)	
 end
 
