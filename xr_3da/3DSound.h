@@ -16,18 +16,18 @@ public:
 private:
 	C3DSound**				owner;
 
-	float 					fVolume;
-	float					fBaseVolume;
+	float 					fVolume;				// USER
+	float					fBaseVolume;			// CLIPPING
 	float 					fRealVolume;
-	float					fTimeTotal;			// всего
-	float					fTimeRested;		// осталось
+	float					fTimeTotal;				// всего
+	float					fTimeRested;			// осталось
 
 	DWORD					dwStatus;
 
     LPDIRECTSOUNDBUFFER     pBuffer;
     LPDIRECTSOUND3DBUFFER   pBuffer3D;
 	LPKSPROPERTYSET			pExtensions;
-	F3dbuffer				ps;			// property sets for the 3d-buffer
+	F3dbuffer				ps;						// property sets for the 3d-buffer
 	BOOL					bNeedUpdate;
 
 	BOOL					bMustPlay;
@@ -59,6 +59,7 @@ public:
 
 	void					OnMove					(void);
 	void					Update					(void);
+	void					Update_Volume			(void);
 
 	C3DSound();
 	~C3DSound();

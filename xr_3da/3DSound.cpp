@@ -50,17 +50,31 @@ void C3DSound::Update()
 	if (bNeedUpdate) 
 	{
 		if (bCtrlFreq) pBuffer->SetFrequency(dwFreq);
-		fRealVolume = .9f*fRealVolume + .1f*fVolume;
-		pBuffer->SetVolume			( LONG((1-fRealVolume*psSoundVEffects*fBaseVolume)*float(DSBVOLUME_MIN)) );
+		fRealVolume = .9f*fRealVolume + .1f*(fVolume*psSoundVEffects*fBaseVolume);
 		pBuffer3D->SetAllParameters	( ps.d3d(), DS3D_DEFERRED );
 		bNeedUpdate = false;
 	}
 }
 
+// Update volume
+void C3DSound::Update_Volume()
+{
+	fRealVolume			= .9f*fRealVolume + .1f*(fVolume*psSoundVEffects*fBaseVolume);
+	float dist			= Device.vCameraPosition.distance_to(ps.vPosition);
+	float att			= ps.flMinDistance/(psSoundRolloff*dist);	clamp(att,0.f,1.f);
+	float volume		= fRealVolume*att;
+
+	int	hw_volume		= iFloor(float(DSBVOLUME_MIN)*(1-fRealVolume));
+	pBuffer->SetVolume	( hw_volume );
+}
+
 void C3DSound::OnMove()
 {
+	// Get status
 	DWORD old_Status	= dwStatus;
 	pBuffer->GetStatus	(&dwStatus);
+
+	// Logic
 	if ( dwStatus & DSBSTATUS_PLAYING ) 
 	{
 		Update();
