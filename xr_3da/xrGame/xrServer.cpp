@@ -60,7 +60,7 @@ void		xrServer::client_Destroy	(IClient* C)
 	// xrClientData*	D = (xrClientData*)C;
 	// xrServerEntity* E = D->owner;
 
-	_DELETE			(C);
+	xr_delete			(C);
 }
 
 //--------------------------------------------------------------------

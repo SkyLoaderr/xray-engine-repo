@@ -3,5 +3,5 @@
 void xrServer::Disconnect()
 {
 	IPureServer::Disconnect	();
-	_DELETE					(game);
+	xr_delete				(game);
 }

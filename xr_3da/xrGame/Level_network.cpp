@@ -8,7 +8,7 @@ void CLevel::net_Stop		()
 	if (Server)
 	{
 		Server->Disconnect	();
-		_DELETE				(Server);
+		xr_delete				(Server);
 	}
 }
 

@@ -58,7 +58,7 @@ CFlyer::~CFlyer()
 {
 //	Device.seqRender.Remove	(this);
 
-	for (int i=0; i<efcMaxCam; i++) _DELETE(cameras[i]);
+	for (int i=0; i<efcMaxCam; i++) xr_delete(cameras[i]);
 }
 
 void CFlyer::Load(LPCSTR section)

@@ -20,8 +20,8 @@ CDemoActor::CDemoActor()
 
 CDemoActor::~CDemoActor()
 {	
-	_DELETE			(animator);
-	_DELETE			(camera);
+	xr_delete		(animator);
+	xr_delete		(camera);
 	xr_free			(attached);
 }
 

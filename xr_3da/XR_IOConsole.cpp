@@ -55,7 +55,7 @@ void CConsole::Destroy	()
 	Execute						("cfg_save");
 
 	Device.seqDevDestroy.Remove	(this);
-	_DELETE						(pFont);
+	xr_delete						(pFont);
 
 	Commands.clear				();
 }

@@ -30,8 +30,8 @@ CUI::CUI(CHUDManager* p)
 CUI::~CUI()
 {
 	for (UIMsgIt it=messages.begin(); it!=messages.end(); it++)
-		_DELETE(*it);
-	_DELETE(pUIGame);
+		xr_delete(*it);
+	xr_delete(pUIGame);
 }
 //--------------------------------------------------------------------
 
@@ -83,7 +83,7 @@ void CUI::OnFrame()
 			SUIMessage* M = messages[i];
 			M->life_time-=Device.dwTimeDelta;
 			if (M->life_time<0){
-				_DELETE(messages[i]);
+				xr_delete(messages[i]);
 				messages.erase(i);
 				i--;
 				continue;
@@ -128,7 +128,7 @@ bool CUI::OnKeyboardRelease(int dik)
 void CUI::AddMessage(LPCSTR S, LPCSTR M, u32 C, float life_time)
 {
 	if (messages.size()==MAX_UIMESSAGES){ 
-		_DELETE(messages.front());
+		xr_delete(messages.front());
 		messages.erase(u32(0));
 	}
 	messages.push_back(new SUIMessage(S,M,C,life_time));

@@ -29,11 +29,11 @@ CHUDManager::~CHUDManager()
 {
 	Device.seqDevCreate.Remove(this);
 	Device.seqDevDestroy.Remove(this);
-	_DELETE			(pUI);
-	_DELETE			(pFontBigDigit);
-	_DELETE			(pFontSmall);
-	_DELETE			(pFontMedium);
-	_DELETE			(pFontDI);
+	xr_delete			(pUI);
+	xr_delete			(pFontBigDigit);
+	xr_delete			(pFontSmall);
+	xr_delete			(pFontMedium);
+	xr_delete			(pFontDI);
 }
 //--------------------------------------------------------------------
 void CHUDManager::ClientToScreenScaled(Irect& r, u32 align)
@@ -88,7 +88,7 @@ int CHUDManager::ClientToScreenY(int top, u32 align)
 
 void CHUDManager::Load()
 {
-	_DELETE			(pUI);
+	xr_delete			(pUI);
 	pUI				= new CUI(this);
 	pUI->Load		();
 }
@@ -164,7 +164,7 @@ void CHUDManager::OnDeviceCreate()
 
 void CHUDManager::OnDeviceDestroy()
 {
-	_DELETE		(pUI);
+	xr_delete		(pUI);
 }
 //--------------------------------------------------------------------
 void __cdecl CHUDManager::outMessage(u32 C, LPCSTR from, LPCSTR msg, ...)

@@ -22,7 +22,7 @@ CCreator::CCreator( )
 CCreator::~CCreator	( ) 
 {
 	DEL_INSTANCE				( pHUD		);
-	_DELETE						( pLevel	);
+	xr_delete						( pLevel	);
 	Engine.FS.Close				( LL_Stream	);
 
 	Sound->Delete				(Sounds_Ambience);

@@ -16,7 +16,7 @@ CStats::CStats()
 
 CStats::~CStats()
 {
-	_DELETE		(pFont);
+	xr_delete		(pFont);
 }
 
 #define QS if(psDeviceFlags&rsStatistic)
@@ -217,5 +217,5 @@ void CStats::OnDeviceCreate			()
 }
 void CStats::OnDeviceDestroy		()
 {
-	_DELETE	(pFont);
+	xr_delete	(pFont);
 }

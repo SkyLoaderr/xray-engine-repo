@@ -39,7 +39,7 @@ public:
 		xr_free			(caption);
 		xr_free			(title);
 		for (MIIt it=items.begin(); it!=items.end(); it++)
-			_DELETE		(*it);
+			xr_delete		(*it);
 	}
 	IC CUICustomMenu*	Owner				(){return m_Owner;}
 	void				SetTitle			(LPCSTR text)

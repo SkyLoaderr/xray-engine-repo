@@ -11,7 +11,7 @@ CInifile* CInifile::Create(const char* szFileName, BOOL ReadOnly)
 {	return new CInifile(szFileName,ReadOnly); }
 
 void CInifile::Destroy(CInifile* ini)
-{	_DELETE(ini); }
+{	xr_delete(ini); }
 
 //------------------------------------------------------------------------------
 //Тело функций Inifile

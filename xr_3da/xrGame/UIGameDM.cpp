@@ -18,8 +18,8 @@ CUIGameDM::CUIGameDM(CUI* parent):CUIGameCustom(parent)
 
 CUIGameDM::~CUIGameDM()
 {
-	_DELETE(pFragList);
-	_DELETE(pPlayerList);
+	xr_delete(pFragList);
+	xr_delete(pPlayerList);
 }
 //--------------------------------------------------------------------
 

@@ -104,7 +104,7 @@ void CWeaponRail::OnMove()
 	}
 	if (pTrail)
 	{
-		if (pTrail->isReadyForDestroy())	{_DELETE(pTrail);}
+		if (pTrail->isReadyForDestroy())	{xr_delete(pTrail);}
 		else								pTrail->Update();
 	}
 }
@@ -123,7 +123,7 @@ void CWeaponRail::SetRail(Fvector &p1, Fvector &d, Collide::ray_query& R, BOOL b
 	Fvector vStart,vEnd;
 	vStart.mad(p1,d,.2f);
 	vEnd.mad(p1,d,dist);
-	_DELETE(pTrail);
+	xr_delete(pTrail);
 
 	if (bWallmark) AddShotmark(d,vEnd,R);
 }

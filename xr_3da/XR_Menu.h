@@ -63,7 +63,7 @@ public:
 	virtual	void	OnMouseMove		(int dx, int dy);
 	virtual void	OnMousePress	(int btn);
 
-	void	HideOptions				(void)				{ _DELETE(pOptions); };
+	void	HideOptions				(void)				{ xr_delete(pOptions); };
 
 	CXR_Menu();
 	~CXR_Menu();

@@ -25,8 +25,8 @@ CDummyObject::~CDummyObject	()
 {
 	::Sound->Delete			(s_sound);
 	::Render->model_Delete	(s_particles);
-	_DELETE					(s_animator);
-	_DELETE					(m_pPhysicsShell);
+	xr_delete				(s_animator);
+	xr_delete				(m_pPhysicsShell);
 }
 
 void CDummyObject::Load		(LPCSTR section)

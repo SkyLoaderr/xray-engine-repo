@@ -84,8 +84,8 @@ CActor::CActor() : CEntityAlive()
 
 CActor::~CActor()
 {
-	_DELETE(Weapons);
-	for (int i=0; i<eacMaxCam; i++) _DELETE(cameras[i]);
+	xr_delete(Weapons);
+	for (int i=0; i<eacMaxCam; i++) xr_delete(cameras[i]);
 
 	// sounds 2D
 	::Sound->Delete(sndZoneHeart);

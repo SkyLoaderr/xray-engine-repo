@@ -113,7 +113,7 @@ void C2DSoundRender::DeleteSound(int& hSound) {
 		// all references destroyed - destroy sound as itself
 		for (u32 i=0; i<sounds[hSound].size(); i++)
 		{
-			_DELETE(sounds[hSound][i]);
+			xr_delete(sounds[hSound][i]);
 		}
 		sounds[hSound].clear();
 	}

@@ -29,7 +29,7 @@ CSpectator::CSpectator() : CGameObject()
 
 CSpectator::~CSpectator()
 {
-	for (int i=0; i<eacMaxCam; i++) _DELETE(cameras[i]);
+	for (int i=0; i<eacMaxCam; i++) xr_delete(cameras[i]);
 }
 
 void CSpectator::UpdateCL()

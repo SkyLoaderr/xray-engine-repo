@@ -72,7 +72,7 @@ CUICustomMenu::CUICustomMenu()
 }
 CUICustomMenu::~CUICustomMenu()
 {
-	_DELETE(menu_root);
+	xr_delete(menu_root);
 }
 
 void CUICustomMenu::Load(LPCSTR ini, LPCSTR start_sect, LPVOID owner, OnExecuteEvent exec)

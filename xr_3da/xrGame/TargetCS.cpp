@@ -10,7 +10,7 @@ CTargetCS::CTargetCS(void)
 CTargetCS::~CTargetCS(void)
 {
 	if(m_pPhysicsShell) m_pPhysicsShell->Deactivate();
-	_DELETE					(m_pPhysicsShell);
+	xr_delete					(m_pPhysicsShell);
 }
 
 BOOL CTargetCS::net_Spawn(LPVOID DC) {
@@ -88,7 +88,7 @@ void CTargetCS::OnDeviceCreate() {
 void CTargetCS::OnDeviceDestroy() {
 	inherited::OnDeviceDestroy	();
 	if(m_pPhysicsShell) m_pPhysicsShell->Deactivate();
-	_DELETE					(m_pPhysicsShell);
+	xr_delete					(m_pPhysicsShell);
 }
 
 void CTargetCS::UpdateCL		()

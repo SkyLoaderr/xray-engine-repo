@@ -48,8 +48,8 @@ CLevel::~CLevel()
 
 	if (ph_world)	ph_world->Destroy		();
 
-	_DELETE			(m_tpAI_DDD);
-	_DELETE			(ph_world);
+	xr_delete			(m_tpAI_DDD);
+	xr_delete			(ph_world);
 }
 
 // Game interface ////////////////////////////////////////////////////

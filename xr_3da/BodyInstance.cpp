@@ -452,16 +452,16 @@ void CKinematics::Release()
 	for (i=0; i<bones->size(); i++)
 	{
 		CBoneData* &B = (*bones)[i];
-		_DELETE(B);
+		xr_delete(B);
 	}
 
 	// destroy shared data
-	_DELETE(bones);
-	_DELETE(motion_map);
-	_DELETE(bone_map);
-	_DELETE(m_cycle);
-	_DELETE(m_fx);
-	_DELETE(partition);
+	xr_delete(bones);
+	xr_delete(motion_map);
+	xr_delete(bone_map);
+	xr_delete(m_cycle);
+	xr_delete(m_fx);
+	xr_delete(partition);
 }
 
 CKinematics::~CKinematics	()

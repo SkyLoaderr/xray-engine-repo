@@ -372,7 +372,7 @@ void	CShaderManager::ED_UpdateBlender	(LPCSTR Name, CBlender* data)
 	map<LPSTR,CBlender*,str_pred>::iterator I = blenders.find	(N);
 	if (I!=blenders.end())	{
 		R_ASSERT	(data->getDescription().CLS == I->second->getDescription().CLS);
-		_DELETE		(I->second);
+		xr_delete	(I->second);
 		I->second	= data;
 	} else {
 		blenders.insert	(make_pair(xr_strdup(Name),data));

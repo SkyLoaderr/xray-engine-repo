@@ -55,7 +55,7 @@ CCustomMonster::CCustomMonster()
 
 CCustomMonster::~CCustomMonster	()
 {
-	_DELETE		(Weapons);
+	xr_delete		(Weapons);
 }
 
 void CCustomMonster::OnDeviceCreate()

@@ -158,11 +158,11 @@ CXR_Menu::~CXR_Menu()
 	_RELEASE(pLightSurface);
 	_RELEASE(pCursorSurface);
 
-	_DELETE	(pOptions);
+	xr_delete	(pOptions);
 
 	// users
 	for (int i=0; i<Names.count; i++)
-		_DELETE(Names[i]);
+		xr_delete(Names[i]);
 
 	pConsole->Execute("i_visible on");
 

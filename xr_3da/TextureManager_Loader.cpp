@@ -36,7 +36,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 			if (T)	Device.Fatal	("Shader still referenced (%d). Texture: %s",S.dwReference,DBG_GetTextureName(T->front()));
 			else	Device.Fatal	("Shader still referenced (%d).",S.dwReference);
 		}
-		_DELETE(shaders[it]);
+		xr_delete(shaders[it]);
 	}
 	shaders.clear();
 
@@ -45,7 +45,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 	{
 		ShaderElement& S = *(elements[it]);
 		if (0!=S.dwReference)		Device.Fatal("Element still referenced.");
-		_DELETE(elements[it]);
+		xr_delete(elements[it]);
 	}
 	elements.clear();
 	
@@ -54,7 +54,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 	for (it=0; it<lst_textures.size(); it++)	{
 		if (0!=lst_textures[it]->dwReference)
 			Device.Fatal("Texture list still referenced: %s",DBG_GetTextureName(lst_textures[it]->front()));
-		_DELETE (lst_textures[it]);
+		xr_delete (lst_textures[it]);
 	}
 	lst_textures.clear	();
 	
@@ -62,7 +62,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 	for (it=0; it<lst_matrices.size(); it++)	{
 		if (0!=lst_matrices[it]->dwReference)
 			Device.Fatal("Matrix list still referenced: %s",DBG_GetMatrixName(lst_matrices[it]->front()));
-		_DELETE (lst_matrices[it]);
+		xr_delete (lst_matrices[it]);
 	}
 	lst_matrices.clear	();
 	
@@ -70,7 +70,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 	for (it=0; it<lst_constants.size(); it++)	{
 		if (0!=lst_constants[it]->dwReference)
 			Device.Fatal("Constant list still referenced: %s",DBG_GetConstantName(lst_constants[it]->front()));
-		_DELETE (lst_constants[it]);
+		xr_delete (lst_constants[it]);
 	}
 	lst_constants.clear	();
 	

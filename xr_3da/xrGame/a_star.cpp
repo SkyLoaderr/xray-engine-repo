@@ -38,11 +38,11 @@ CAStar::~CAStar()
 {
 	xr_free(m_tpHeap);
 	xr_free(m_tpIndexes);
-	_DELETE(m_tpMapPath);
-	_DELETE(m_tpLCDPath);
-	_DELETE(m_tpEnemyPath);
-	_DELETE(m_tpEnemyPositionPath);
-	_DELETE(m_tpGraphPath);
+	xr_delete(m_tpMapPath);
+	xr_delete(m_tpLCDPath);
+	xr_delete(m_tpEnemyPath);
+	xr_delete(m_tpEnemyPositionPath);
+	xr_delete(m_tpGraphPath);
 }
 
 //////////////////////////////////////////////////////////////////////////

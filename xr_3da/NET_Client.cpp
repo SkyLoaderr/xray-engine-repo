@@ -21,8 +21,8 @@ INetQueue::~INetQueue()
 {
 	cs.Enter		();
 	u32				it;
-	for				(it=0; it<unused.size(); it++)	_DELETE(unused[it]);
-	for				(it=0; it<ready.size(); it++)	_DELETE(ready[it]);
+	for				(it=0; it<unused.size(); it++)	xr_delete(unused[it]);
+	for				(it=0; it<ready.size(); it++)	xr_delete(ready[it]);
 	cs.Leave		();
 }
 NET_Packet*		INetQueue::Create	()

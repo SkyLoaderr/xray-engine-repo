@@ -154,7 +154,7 @@ public:
 	virtual 			~PropItem		()
     {
     	for (PropValueIt it=values.begin(); it!=values.end(); it++) 
-        	_DELETE		(*it);
+        	xr_delete		(*it);
     	xr_free			(key);
     };
     void				SetEvents		(TOnDrawEvent draw=0, TOnClick on_ext_click=0, TOnClick on_click=0)

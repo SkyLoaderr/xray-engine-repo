@@ -96,7 +96,7 @@ void CTexture::Load(LPCSTR cName)
 		// AVI
 		pAVI = new CAviPlayerCustom;
 		if (!pAVI->Load(fn)) {
-			_DELETE(pAVI);
+			xr_delete(pAVI);
 			Device.Fatal("Can't open video stream");
 		} else {
 			dwMemoryUsage	= pAVI->dwWidth*pAVI->dwHeight*4;
@@ -112,7 +112,7 @@ void CTexture::Load(LPCSTR cName)
 			{
 				Device.Fatal("Invalid video stream");
 				R_CHK	(hrr);
-				_DELETE	(pAVI);
+				xr_delete	(pAVI);
 				pSurface = 0;
 			}
 
@@ -230,7 +230,7 @@ void CTexture::Unload()
 		pSurface	= 0;
 	}
 	_RELEASE	(pSurface);
-	_DELETE		(pAVI);
+	xr_delete		(pAVI);
 }
 
 void CTexture::desc_update()

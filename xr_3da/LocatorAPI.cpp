@@ -251,5 +251,5 @@ CStream* CLocatorAPI::Open	(const char* F)
 
 void	CLocatorAPI::Close	(CStream* &fs)
 {
-	_DELETE	(fs);
+	xr_delete	(fs);
 }

@@ -31,9 +31,9 @@ CCar::CCar(void)
 
 CCar::~CCar(void)
 {
-	_DELETE				(camera[0]);
-	_DELETE				(camera[1]);
-	_DELETE				(camera[2]);
+	xr_delete			(camera[0]);
+	xr_delete			(camera[1]);
+	xr_delete			(camera[2]);
 	Sound->Delete		(snd_engine);
 	m_jeep.Destroy();
 

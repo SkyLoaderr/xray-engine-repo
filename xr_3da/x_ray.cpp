@@ -66,13 +66,13 @@ void Startup()
 	// Main cycle
 	Device.Run					( );
 
-	_DELETE						( pApp			);
+	xr_delete					( pApp			);
 	Engine.Event.Dump			( );
 
 	// Destroying
 	Sound->Destroy				( );
-	_DELETE						( pInput		);
-	_DELETE						( pSettings		);
+	xr_delete					( pInput		);
+	xr_delete					( pSettings		);
 
 	Console.Destroy				( );
 	Device.ShutDown				( );
@@ -155,7 +155,7 @@ CApplication::~CApplication()
 	Console.Hide				( );
 	// font
 	Device.seqRender.Remove		( pFontSystem		);
-	_DELETE						( pFontSystem		);
+	xr_delete						( pFontSystem		);
 
 	// events
 	Engine.Event.Handler_Detach	(eDisconnect,this);

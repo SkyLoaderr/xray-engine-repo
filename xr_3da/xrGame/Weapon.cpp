@@ -64,9 +64,9 @@ CWeapon::CWeapon(LPCSTR name)
 CWeapon::~CWeapon		()
 {
 	xr_free				(m_WpnName);
-	_DELETE				(pVisual);
-	_DELETE				(m_pHUD);
-	_DELETE				(m_pPhysicsShell);
+	xr_delete			(pVisual);
+	xr_delete			(m_pHUD);
+	xr_delete			(m_pPhysicsShell);
 	xr_free				(pstrWallmark);
 
 	Device.Shader.Delete(hUIIcon);

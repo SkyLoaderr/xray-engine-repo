@@ -28,7 +28,7 @@ public:
 		OBJECT_PAIR_IT it			= m_tObjectRegistry.begin();
 		OBJECT_PAIR_IT E			= m_tObjectRegistry.end();
 		for ( ; it != E; it++)
-			_DELETE((*it).second);
+			xr_delete((*it).second);
 		m_tObjectRegistry.clear();
 	};
 	
@@ -150,8 +150,8 @@ public:
 		EVENT_PAIR_IT it			= m_tEventRegistry.begin();
 		EVENT_PAIR_IT E				= m_tEventRegistry.end();
 		for ( ; it != E; it++) {
-			_DELETE((*it).second->m_tpMonsterGroup1);
-			_DELETE((*it).second->m_tpMonsterGroup2);
+			xr_delete((*it).second->m_tpMonsterGroup1);
+			xr_delete((*it).second->m_tpMonsterGroup2);
 		}
 		m_tEventRegistry.clear();
 	};

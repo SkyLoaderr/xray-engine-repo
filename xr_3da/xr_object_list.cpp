@@ -38,7 +38,7 @@ void CObjectList::Unload	( )
 {
 	for (u32 i=0; i<objects.size(); i++) {
 		CObject *pObject = objects[i];
-		_DELETE	( pObject );
+		xr_delete	( pObject );
 	}
 	objects.clear();
 }

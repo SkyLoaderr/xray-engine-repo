@@ -37,7 +37,7 @@ CWeaponProtecta::~CWeaponProtecta()
 	pSounds->Delete(sndShoot);
 	for (int i=0; i<SND_RIC_COUNT; i++) pSounds->Delete(sndRicochet[i]);
 	
-	_DELETE			(m_pShootPS);
+	xr_delete			(m_pShootPS);
 }
 
 void CWeaponProtecta::Load(LPCSTR section){

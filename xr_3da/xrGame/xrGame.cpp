@@ -519,7 +519,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 		GamePersistent		= new CGamePersistent();
 		break;
 	case DLL_PROCESS_DETACH:
-		_DELETE(GamePersistent);
+		xr_delete(GamePersistent);
 		break;
 	}
     return TRUE;
