@@ -76,7 +76,6 @@ void CLevel::OnMouseHold(int btn)
 
 void CLevel::OnMouseMove( int dx, int dy )
 {
-	if (pHUD->GetUI()->OnMouseMove(dx,dy)) return;
 	if (CurrentEntity())	CurrentEntity()->OnMouseMove(dx,dy);
 }
 

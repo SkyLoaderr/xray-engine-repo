@@ -25,10 +25,10 @@ CUIBuyMenu::~CUIBuyMenu	()
 }
 //--------------------------------------------------------------------
 
-void CUIBuyMenu::Load	()
+void CUIBuyMenu::Load	(LPCSTR ini)
 {
 	// check ini exist
-	menu_root			= UILoadMenu("cs.ltx",BuyItem);
+	menu_root			= UILoadMenu(ini,BuyItem);
 	menu_active			= menu_root;
 }
 //--------------------------------------------------------------------
@@ -52,7 +52,7 @@ void CUIBuyMenu::OnFrame()
 				(*it)->DrawItem(F,k,col);
 			if (0==col){
 				F->OutSkip(0.5f);
-				F->OutNext("%-2d. %-20s",0,"Exit");
+				F->OutNext("%-2d %-20s",0,"Exit");
 			}
 		}
 	}
@@ -65,15 +65,26 @@ void CUIBuyMenu::Render	()
 //--------------------------------------------------------------------
 void CUIBuyMenu::BuyItem(CCustomMenuItem* sender)
 {
-	//
-	Level().HUD()->GetUI()->ShowBuyMenu(FALSE);
+	CUIGameCustom* G	= Level().HUD()->GetUI()->UIGame();
+	if (G)				G->SetFlag(CUIGameCustom::flShowBuyMenu,FALSE);
+	// buy item
+/*
+	CEntity* E			= Level().GetCurrentEntity();
+	NET_Packet P;
+	E->u_EventGen		(P,GE_BUY,E->ID());
+	P.w_string			("wpn_ak74/cost=100");
+	E->u_EventSend		(P);
+*/
 }
 //--------------------------------------------------------------------
 bool CUIBuyMenu::OnKeyboardPress(int dik)
 {
 	int id = -1;
 	switch (dik){
-	case DIK_0: Level().HUD()->GetUI()->ShowBuyMenu(FALSE); break;
+	case DIK_0:{
+		CUIGameCustom* G	= Level().HUD()->GetUI()->UIGame();
+		if (G)				G->SetFlag(CUIGameCustom::flShowBuyMenu,FALSE);
+	}break;
 	case DIK_1: id=1; break;
 	case DIK_2: id=2; break;
 	case DIK_3: id=3; break;

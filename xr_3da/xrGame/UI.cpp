@@ -6,6 +6,8 @@
 #include "HUDManager.h"
 #include "Group.h"
 #include "xr_weapon_list.h"
+#include "UIGameCS.h"
+#include "UIGameDM.h"
 
 #define MSGS_OFFS 510
 
@@ -19,12 +21,7 @@ CUI::CUI(CHUDManager* p)
 	UISquad.Init	();
 
 	m_Parent		= p;
-	bShift			= FALSE;
-	bShowFragList	= FALSE;
-	bShowBuyMenu	= FALSE;
-	pUIBuyMenu		= 0;
-	pUIDMFragList	= 0;
-	pUIDMPlayerList	= 0;
+	pUIGame			= 0;
 
 	msgs_offs		= (float)m_Parent->ClientToScreenY(MSGS_OFFS,alLeft|alBottom);
 }
@@ -34,11 +31,7 @@ CUI::~CUI()
 {
 	for (UIMsgIt it=messages.begin(); it!=messages.end(); it++)
 		_DELETE(*it);
-	// cs
-	_DELETE(pUIBuyMenu);
-	// dm
-	_DELETE(pUIDMFragList);
-	_DELETE(pUIDMPlayerList);
+	_DELETE(pUIGame);
 }
 //--------------------------------------------------------------------
 
@@ -46,28 +39,12 @@ void CUI::Load()
 {
 	switch (GameID())
 	{
-	case GAME_CS:
-	case GAME_ASSAULT:
-		pUIBuyMenu	= new CUIBuyMenu	();
-		pUIBuyMenu->Load				();
-		break;
-	case GAME_DEATHMATCH:
-		pUIDMFragList	= new CUIDMFragList		();
-		pUIDMPlayerList	= new CUIDMPlayerList	();
-		pUIDMFragList->Init						();
-		pUIDMPlayerList->Init					();
-		break;
+	case GAME_CS:			pUIGame = new CUIGameCS();	break;
+	case GAME_ASSAULT:									break;
+	case GAME_DEATHMATCH:	pUIGame = new CUIGameDM();	break;
 	}
 }
 //--------------------------------------------------------------------
-
-void CUI::ShowBuyMenu(BOOL bShow)
-{
-	VERIFY		(pUIBuyMenu);
-	bShowBuyMenu=bShow;
-	if (bShow)	pUIBuyMenu->OnActivate();
-	else		pUIBuyMenu->OnDeactivate();
-}
 
 u32 ScaleAlpha(u32 val, float factor)
 {
@@ -97,37 +74,7 @@ void CUI::OnFrame()
 		CWeaponList* wpns = m_Actor->GetItemList();
 		if (wpns) UIWeapon.Out(wpns->ActiveWeapon());
 		// out GAME-style depend information
-		switch (GameID())
-		{
-			case GAME_SINGLE:		
-				break;
-			case GAME_DEATHMATCH:
-				switch (Game().phase){
-				case GAME_PHASE_PENDING: 
-					VERIFY				(pUIDMPlayerList);
-					pUIDMPlayerList->OnFrame();
-				break;
-				case GAME_PHASE_INPROGRESS:
-					if (bShowFragList){ 
-						VERIFY				(pUIDMFragList);
-						pUIDMFragList->OnFrame	();
-					}
-				break;
-				}
-				break;
-			case GAME_CTF:			
-				// time
-				break;
-			case GAME_ASSAULT:
-				break;
-			case GAME_CS:
-				if (bShowBuyMenu){
-					VERIFY				(bShowBuyMenu);
-					pUIBuyMenu->OnFrame	();
-				}
-				break;
-			default: THROW;
-		}
+		if (pUIGame) pUIGame->OnFrame	();
 	}
 
 	if (!messages.empty()){
@@ -158,88 +105,21 @@ bool CUI::Render()
 	UIHealth.Render();
 
 	// out GAME-style depend information
-	switch (GameID())
-	{
-	case GAME_SINGLE:		
-		break;
-	case GAME_DEATHMATCH:
-		switch (Game().phase){
-		case GAME_PHASE_PENDING: 
-			VERIFY				(pUIDMPlayerList);
-			pUIDMPlayerList->Render	();
-		break;
-		case GAME_PHASE_INPROGRESS:
-			if (bShowFragList){ 
-				VERIFY				(pUIDMFragList);
-				pUIDMFragList->Render	();
-			}
-		break;
-		}
-		break;
-	case GAME_CTF:			
-		// time
-		break;
-	case GAME_ASSAULT:
-		break;
-	case GAME_CS:
-		break;
-	default: THROW;
-	}
+	if (pUIGame) pUIGame->Render	();
 	return false;
 }
 //--------------------------------------------------------------------
-//--------------------------------------------------------------------
 bool CUI::OnKeyboardPress(int dik)
 {
-	// global
-	switch (GameID())
-	{
-	case GAME_ASSAULT:
-	case GAME_CS:		
-		if (bShowBuyMenu){
-			VERIFY(pUIBuyMenu);
-			if (pUIBuyMenu->OnKeyboardPress(dik)) return true;
-		}else{
-			switch (dik){
-			case DIK_B:			ShowBuyMenu	(!bShowBuyMenu);return true;
-			}
-		}
-	break;
-	case GAME_DEATHMATCH:
-		if (Game().phase==GAME_PHASE_INPROGRESS){
-			switch (dik){
-			case DIK_TAB:		ShowFragList(TRUE);	return true;
-			}
-		}
-	}
+	if (pUIGame&&pUIGame->OnKeyboardPress(dik)) return true;
 	return false;
 }
 //--------------------------------------------------------------------
 
 bool CUI::OnKeyboardRelease(int dik)
 {
-	if (bShowBuyMenu){
-		VERIFY(pUIBuyMenu);
-		return pUIBuyMenu->OnKeyboardRelease(dik);
-	}else{
-		if (Game().phase==GAME_PHASE_INPROGRESS){
-			switch (dik){
-			case DIK_TAB: ShowFragList	(FALSE);		break;
-			}
-		}
-	}
+	if (pUIGame&&pUIGame->OnKeyboardRelease(dik)) return true;
 	return false;
-}
-//--------------------------------------------------------------------
-
-bool CUI::OnMouseMove	(int dx, int dy)
-{
-	return false;
-//	float scale		= psMouseSens * psMouseSensScale/50.f;
-//	UICursor.vPos.x+=float(dx)*scale;
-//	UICursor.vPos.y+=float(dy)*scale*(3.f/4.f);
-//	clamp(UICursor.vPos.x,-1.f,1.f);
-//	clamp(UICursor.vPos.y,-1.f,1.f);
 }
 //--------------------------------------------------------------------
 

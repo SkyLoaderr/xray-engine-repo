@@ -1083,12 +1083,6 @@
 					RelativePath=".\UI.h">
 				</File>
 				<File
-					RelativePath="UIBuyMenu.cpp">
-				</File>
-				<File
-					RelativePath="UIBuyMenu.h">
-				</File>
-				<File
 					RelativePath=".\UICursor.cpp">
 				</File>
 				<File
@@ -1152,6 +1146,12 @@
 						RelativePath="UIFrameRect.h">
 					</File>
 					<File
+						RelativePath="UIGameCustom.cpp">
+					</File>
+					<File
+						RelativePath="UIGameCustom.h">
+					</File>
+					<File
 						RelativePath="UIListBox.cpp">
 					</File>
 					<File
@@ -1179,6 +1179,12 @@
 					<File
 						RelativePath="UIDMPlayerList.h">
 					</File>
+					<File
+						RelativePath="UIGameDM.cpp">
+					</File>
+					<File
+						RelativePath="UIGameDM.h">
+					</File>
 				</Filter>
 				<Filter
 					Name="CS"
@@ -1194,6 +1200,22 @@
 					</File>
 					<File
 						RelativePath="UICSPlayerList.h">
+					</File>
+					<File
+						RelativePath="UIGameCS.cpp">
+					</File>
+					<File
+						RelativePath="UIGameCS.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="Common"
+					Filter="">
+					<File
+						RelativePath="UIBuyMenu.cpp">
+					</File>
+					<File
+						RelativePath="UIBuyMenu.h">
 					</File>
 				</Filter>
 			</Filter>

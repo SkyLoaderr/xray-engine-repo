@@ -8,7 +8,7 @@ class CCustomMenuItem;
 class CUIBuyMenu{
 	CCustomMenuItem*	menu_root;	
 	CCustomMenuItem*	menu_active;
-
+	
 	static void 		BuyItem				(CCustomMenuItem* sender);
 	int					menu_offs;
 	int					menu_offs_col[2];
@@ -16,7 +16,7 @@ public:
 						CUIBuyMenu			();
 	virtual				~CUIBuyMenu			();
 
-	void				Load				();
+	void				Load				(LPCSTR ini);
 
 	void				Render				();
 	void				OnFrame				();

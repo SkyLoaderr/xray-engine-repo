@@ -12,7 +12,7 @@ CUIDMFragList::CUIDMFragList()
 
 void CUIDMFragList::Init()
 {
-	inherited::Init		("ui\\ui_hud_frame",150,150,500,500,alLeft|alTop);
+	inherited::Init		("ui\\ui_hud_frame",150,150,500,400,alLeft|alTop);
 }
 //--------------------------------------------------------------------
 IC bool	pred_player		(LPVOID v1, LPVOID v2)

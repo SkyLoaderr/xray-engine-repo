@@ -7,9 +7,7 @@
 #include "UIWeapon.h"
 #include "UIHealth.h"
 #include "UIGroup.h"
-#include "UIDMFragList.h"
-#include "UIDMPlayerList.h"
-#include "UIBuyMenu.h"
+#include "UIGameCustom.h"
 
 #define UI_BASE_WIDTH	800
 #define UI_BASE_HEIGHT	600
@@ -51,11 +49,7 @@ class CUI{
 	CUIHealth			UIHealth;
 	CUISquad			UISquad;
 
-	// deathmatch part
-	CUIDMFragList*		pUIDMFragList;
-	CUIDMPlayerList*	pUIDMPlayerList;
-	// cs part
-	CUIBuyMenu*			pUIBuyMenu;
+	CUIGameCustom*		pUIGame;
 
 	CHUDManager*		m_Parent;
 
@@ -63,11 +57,6 @@ class CUI{
 	float				msgs_offs;
 	float				menu_offs;
 	UIMsgSVec			messages;
-
-	// 
-	BOOL				bShift;
-	BOOL				bShowFragList;
-	BOOL				bShowBuyMenu;
 public:
 						CUI					(CHUDManager* p);
 	virtual				~CUI				();
@@ -79,18 +68,14 @@ public:
 
 	bool				OnKeyboardPress		(int dik);
 	bool				OnKeyboardRelease	(int dik);
-	bool				OnMouseMove			(int dx, int dy);
 
+	CUIGameCustom*		UIGame				(){return pUIGame;}
 	// --- depends on game type
 	// frag		(g_fraglimit)
 	// time		(g_timelimit)
 	// frag-list.....
 
 	void				AddMessage			(LPCSTR S, LPCSTR M, u32 C=0xffffffff, float life_time=LIFE_TIME);
-
-	// misc
-	void				ShowFragList		(BOOL bShow){bShowFragList=bShow;}
-	void				ShowBuyMenu			(BOOL bShow);
 };
 
 #endif // __XR_UI_H__

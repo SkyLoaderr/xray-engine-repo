@@ -12,7 +12,7 @@ CUICSPlayerList::CUICSPlayerList()
 
 void CUICSPlayerList::Init()
 {
-	inherited::Init		("ui\\ui_hud_frame",150,150,400,300,alLeft|alTop);
+	inherited::Init		("ui\\ui_hud_frame",150,150,500,400,alLeft|alTop);
 }
 //--------------------------------------------------------------------
 IC bool	pred_player		(LPVOID v1, LPVOID v2)
