@@ -88,7 +88,7 @@ BOOL CWeaponList::WeaponChange		(int idx)
 	// Stop current weapon
 	if (m_iActiveWeapon>=0)			m_Weapons[m_iActiveWeapon]->Hide	();
 
-	// Select new
+	// Select _new
 	m_iSelectedWeapon				= idx;
 	return true;
 }

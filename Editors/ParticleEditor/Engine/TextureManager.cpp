@@ -90,7 +90,7 @@ IDirect3DVertexDeclaration9*	CShaderManager::_CreateDecl	(D3DVERTEXELEMENT9* dcl
 		}
 	}
 
-	// Create new
+	// Create _new
 	SDeclaration* D			= xr_new<SDeclaration>();
 	D->dwReference			= 1;
 	u32 dcl_size			= D3DXGetDeclLength(dcl)+1;

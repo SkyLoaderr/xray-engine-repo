@@ -166,7 +166,7 @@ CSound* CSoundRender::GetFreeSound	(u32 hSound)
 		if (!sounds[hSound][i]->isPlaying())
 			return sounds[hSound][i];
 	}
-	// xr_free sound not found - create duplicate
+	// _free sound not found - create duplicate
 	CSound *pSnd = xr_new<CSound>	(sounds[hSound].front()->_3D);
 	pSnd->Load						(sounds[hSound].front());
 	sounds[hSound].push_back		(pSnd);
