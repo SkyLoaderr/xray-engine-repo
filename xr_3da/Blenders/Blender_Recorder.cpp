@@ -81,6 +81,12 @@ void	CBlender_Compile::PassEnd			()
 	SH->Passes.push_back	(_pass_);
 }
 
+void	CBlender_Compile::PassSET_PS		(LPCSTR name)
+{
+	strcpy	(pass_ps,name);
+	strlwr	(pass_ps);
+}
+
 void	CBlender_Compile::PassSET_VS		(LPCSTR name)
 {
 	strcpy	(pass_vs,name);

@@ -55,6 +55,7 @@ public:
 	void				PassSET_Blend_MUL	(BOOL bAref=FALSE, u32 ref=0)	{ PassSET_Blend	(TRUE, D3DBLEND_DESTCOLOR,D3DBLEND_ZERO,bAref,ref);			}
 	void				PassSET_Blend_MUL2X	(BOOL bAref=FALSE, u32 ref=0)	{ PassSET_Blend	(TRUE, D3DBLEND_DESTCOLOR,D3DBLEND_SRCCOLOR,bAref,ref);		}
 	void				PassSET_LightFog	(BOOL bLight, BOOL bFog);
+	void				PassSET_PS			(LPCSTR name);
 	void				PassSET_VS			(LPCSTR name);
 	void				PassEnd				();
 	void				PassTemplate_Detail	(LPCSTR T);
