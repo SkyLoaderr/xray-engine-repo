@@ -25,8 +25,8 @@ typedef const char*			pcstr;
 	typedef	int				BOOL;
 	typedef pstr			LPSTR;
 	typedef pcstr			LPCSTR;
-	#define TRUE			true;
-	#define FALSE			false;
+	#define TRUE			true
+	#define FALSE			false
 #endif
 
 // Type limits

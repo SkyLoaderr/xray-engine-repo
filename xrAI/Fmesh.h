@@ -71,7 +71,7 @@ struct ECORE_API ogf_desc{
 };
 
 // OGF_HEADER
-const BYTE	xrOGF_FormatVersion		= 3;
+const u8	xrOGF_FormatVersion		= 3;
 struct ogf_header {
 	u8		format_version;			// = xrOGF_FormatVersion
 	u8		type;					// MT

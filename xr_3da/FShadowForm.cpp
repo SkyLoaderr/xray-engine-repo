@@ -76,7 +76,7 @@ void FShadowForm::Load(IReader *data)
 	// Allocate memory for the hull (max size is dwNumInVertices+1 times the
 	// the storage space for a u32 and a ptr to a vertex
 	u32 dwElementSize	= sizeof(u32) + sizeof(COLORVERTEX*)+4;
-	pwCHI				= (u16*)(xr_alloc<BYTE>((dwNumVertices+1)*dwElementSize));
+	pwCHI				= (u16*)(xr_alloc<u8>((dwNumVertices+1)*dwElementSize));
 }
 
 //-----------------------------------------------------------------------------
