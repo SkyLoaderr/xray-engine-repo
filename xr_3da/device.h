@@ -30,6 +30,9 @@ private:
 	DWORD									Timer_MM_Delta;
 	CTimer									Timer;
 	CTimer									TimerGlobal;
+	
+	void									_Create		();
+	void									_Destroy	();
 public:
     HWND									m_hWnd;
 	LRESULT									MsgProc	(HWND,UINT,WPARAM,LPARAM);

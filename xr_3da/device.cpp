@@ -136,38 +136,8 @@ void CRenderDevice::End(void)
 	CHK_DX(HW.pDevice->Present( NULL, NULL, NULL, NULL ));
 }
 
-void CRenderDevice::Create	() {
-	if (bReady)	return;		// prevent double call
-	Log("Starting RENDER device...");
-
-	DWORD dwWindowStyle = HW.CreateDevice(m_hWnd,dwWidth,dwHeight);
-	fWidth_2	= float(dwWidth/2);
-	fHeight_2	= float(dwHeight/2);
-	fFOV		= 90.f;
-    {
-        // When moving from fullscreen to windowed mode, it is important to
-        // adjust the window size after recreating the device rather than
-        // beforehand to ensure that you get the window size you want.  For
-        // example, when switching from 640x480 fullscreen to windowed with
-        // a 1000x600 window on a 1024x768 desktop, it is impossible to set
-        // the window size to 1000x600 until after the display mode has
-        // changed to 1024x768, because windows cannot be larger than the
-        // desktop.
-        if( !(psDeviceFlags&rsFullscreen))
-        {
-		    RECT m_rcWindowBounds = {0, 0, dwWidth, dwHeight };
-			AdjustWindowRect( &m_rcWindowBounds, dwWindowStyle, FALSE );
-            SetWindowPos( m_hWnd, HWND_TOP,
-                          m_rcWindowBounds.left, m_rcWindowBounds.top,
-                          ( m_rcWindowBounds.right - m_rcWindowBounds.left ),
-                          ( m_rcWindowBounds.bottom - m_rcWindowBounds.top ),
-                          SWP_SHOWWINDOW|SWP_NOCOPYBITS|SWP_DRAWFRAME );
-        }
-    }
-
-    // Hide the cursor if necessary
-	ShowCursor		(FALSE);
-
+void CRenderDevice::_Create	()
+{
 	// after creation
 	bReady			= TRUE;
 
@@ -204,19 +174,19 @@ void CRenderDevice::Create	() {
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_CULLMODE,			D3DCULL_CCW			));
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_ALPHAFUNC,			D3DCMP_GREATER		));
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_LOCALVIEWER,		FALSE				));
-
+	
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_DIFFUSEMATERIALSOURCE, D3DMCS_MATERIAL	));
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_SPECULARMATERIALSOURCE,D3DMCS_MATERIAL	));
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_AMBIENTMATERIALSOURCE, D3DMCS_MATERIAL	));
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_EMISSIVEMATERIALSOURCE,D3DMCS_COLOR1	));
-
+	
 	if (psDeviceFlags&rsWireframe)	{ CHK_DX(HW.pDevice->SetRenderState( D3DRS_FILLMODE,			D3DFILL_WIREFRAME	)); }
 	else							{ CHK_DX(HW.pDevice->SetRenderState( D3DRS_FILLMODE,			D3DFILL_SOLID		)); }
 	if (psDeviceFlags&rsAntialias)	{ CHK_DX(HW.pDevice->SetRenderState( D3DRS_MULTISAMPLEANTIALIAS,TRUE				));	}
 	else							{ CHK_DX(HW.pDevice->SetRenderState( D3DRS_MULTISAMPLEANTIALIAS,FALSE				)); }
 	if (psDeviceFlags&rsNormalize)	{ CHK_DX(HW.pDevice->SetRenderState( D3DRS_NORMALIZENORMALS,	TRUE				)); }
 	else							{ CHK_DX(HW.pDevice->SetRenderState( D3DRS_NORMALIZENORMALS,	FALSE				)); }
-
+	
 	// ******************** Fog parameters
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGCOLOR,			0					));
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_RANGEFOGENABLE,	FALSE				));
@@ -227,20 +197,20 @@ void CRenderDevice::Create	() {
 		CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGTABLEMODE,	D3DFOG_NONE			));
 		CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGVERTEXMODE,	D3DFOG_LINEAR		));
 	}
-
+	
 	// Signal everyone - device created
 	Gamma.Update				();
 	Shader.OnDeviceCreate		();
 	seqDevCreate.Process		(rp_DeviceCreate);
 	Primitive.OnDeviceCreate	();
 	dwFrame						= 0;
-
+	
 	// Create TL-primitive
 	{
 		const DWORD dwTriCount = 4*1024;
 		const DWORD dwIdxCount = dwTriCount*2*3;
-		WORD	*Indices = 0;
-		DWORD	dwUsage=D3DUSAGE_WRITEONLY;
+		WORD	*Indices	= 0;
+		DWORD	dwUsage		= D3DUSAGE_WRITEONLY;
 		if (HW.Caps.vertex.bSoftware)	dwUsage|=D3DUSAGE_SOFTWAREPROCESSING;
 		R_CHK(HW.pDevice->CreateIndexBuffer(dwIdxCount*2,dwUsage,D3DFMT_INDEX16,D3DPOOL_DEFAULT,&Streams_QuadIB));
 		R_CHK(Streams_QuadIB->Lock(0,0,(BYTE**)&Indices,D3DLOCK_NOSYSLOCK));
@@ -264,6 +234,53 @@ void CRenderDevice::Create	() {
 	}
 }
 
+void CRenderDevice::Create	() 
+{
+	if (bReady)	return;		// prevent double call
+	Log("Starting RENDER device...");
+
+	DWORD dwWindowStyle = HW.CreateDevice(m_hWnd,dwWidth,dwHeight);
+	fWidth_2	= float(dwWidth/2);
+	fHeight_2	= float(dwHeight/2);
+	fFOV		= 90.f;
+    {
+        // When moving from fullscreen to windowed mode, it is important to
+        // adjust the window size after recreating the device rather than
+        // beforehand to ensure that you get the window size you want.  For
+        // example, when switching from 640x480 fullscreen to windowed with
+        // a 1000x600 window on a 1024x768 desktop, it is impossible to set
+        // the window size to 1000x600 until after the display mode has
+        // changed to 1024x768, because windows cannot be larger than the
+        // desktop.
+        if( !(psDeviceFlags&rsFullscreen))
+        {
+		    RECT m_rcWindowBounds = {0, 0, dwWidth, dwHeight };
+			AdjustWindowRect( &m_rcWindowBounds, dwWindowStyle, FALSE );
+            SetWindowPos( m_hWnd, HWND_TOP,
+                          m_rcWindowBounds.left, m_rcWindowBounds.top,
+                          ( m_rcWindowBounds.right - m_rcWindowBounds.left ),
+                          ( m_rcWindowBounds.bottom - m_rcWindowBounds.top ),
+                          SWP_SHOWWINDOW|SWP_NOCOPYBITS|SWP_DRAWFRAME );
+        }
+    }
+
+    // Hide the cursor if necessary
+	ShowCursor		(FALSE);
+
+	_Create			();
+}
+
+void CRenderDevice._Destroy	()
+{
+	// before destroy
+	bReady = FALSE;
+	Primitive.OnDeviceDestroy	();
+	seqDevDestroy.Process		(rp_DeviceDestroy);
+	Streams.OnDeviceDestroy		();
+	Shader.OnDeviceDestroy		();
+	_RELEASE					(Streams_QuadIB);
+}
+
 void CRenderDevice::Destroy	(void) {
 	if (!bReady) return;
 
@@ -272,16 +289,19 @@ void CRenderDevice::Destroy	(void) {
 	ShowCursor					(TRUE);
 	HW.Validate					();
 
-	// before destroy
-	bReady = FALSE;
-	Primitive.OnDeviceDestroy	();
-	seqDevDestroy.Process		(rp_DeviceDestroy);
-	Streams.OnDeviceDestroy		();
-	Shader.OnDeviceDestroy		();
-	
+	_Destroy					();
+
 	// real destroy
-	_RELEASE					(Streams_QuadIB);
 	HW.DestroyDevice			();
+}
+
+void CRenderDevice::Reset		()
+{
+	u32 tm_start	= TimerAsync();
+	_Destroy		();
+	_Create			();
+	u32 tm_end		= TimerAsync();
+	Msg				("*** RESET [%d ms]",tm_end-tm_start);
 }
 
 void __cdecl mt_Thread(void *ptr) {
