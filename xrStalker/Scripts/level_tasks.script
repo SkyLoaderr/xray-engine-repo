@@ -350,9 +350,9 @@ function process_map_spot(info_id)
 	elseif info_id == "bar_bar_hunter_quest_start" then
 		add_location(502, "bar_hunter_toz_location")
 
-	elseif info_id == "bar_bar_hunter_quest_find_rifle"
-		remove_location (502, "bar_hunter_toz_location")	
-		add_location (504, "bar_hunter_location")
+	elseif info_id == "bar_bar_hunter_quest_find_rifle" then
+		remove_location(502, "bar_hunter_toz_location")	
+		add_location(504, "bar_hunter_location")
 
 	elseif info_id == "bar_resque_research_start" then
 		add_location(503, "bar_ecolog_crush_location")
