@@ -15,5 +15,5 @@ function main ()
 		wait		();
 	end
 	
-    stalker:script	(false,stalker_test:name());
+    stalker:script	(false,stalker_test:script_name());
 end
