@@ -65,10 +65,36 @@ template	<>												class	xr_vector<bool>	: public std::vector<bool,xr_alloca
 	u32		size() const									{ return (u32)__super::size();	} 
 	void	clear()											{ erase(begin(),end());			} 
 };
+template	<typename T>									class	xr_deque 		: public std::deque<T,xr_allocator_t<T> >								{ public: 
+	typedef typename xr_allocator_t<T>						allocator_type;
+	typedef typename allocator_type::value_type				value_type;
+	typedef typename allocator_type::size_type				size_type;
+	u32		size() const									{return (u32)__super::size(); } 
+};
+template	<typename _Ty, class _C = xr_vector<_Ty> >		class	xr_stack		{ public:
+	typedef typename xr_allocator_t<_Ty>					allocator_type;
+	typedef typename allocator_type::value_type				value_type;
+	typedef typename allocator_type::size_type				size_type;
+
+	//explicit			stack(const allocator_type& _Al = allocator_type()) : c(_Al) {}
+	allocator_type		get_allocator() const					{return (c.get_allocator()); }
+	bool				empty() const							{return (c.empty()); }
+	u32					size() const							{return c.size(); } 
+	value_type&			top()									{return (c.back()); }
+	const value_type&	top() const								{return (c.back()); }
+	void				push(const value_type& _X)				{c.push_back(_X); }
+	void				pop()									{c.pop_back(); }
+	bool operator==		(const xr_stack<_Ty, _C>& _X) const		{return (c == _X.c); }
+	bool operator!=		(const xr_stack<_Ty, _C>& _X) const		{return (!(*this == _X)); }
+	bool operator<		(const xr_stack<_Ty, _C>& _X) const		{return (c < _X.c); }
+	bool operator>		(const xr_stack<_Ty, _C>& _X) const		{return (_X < *this); }
+	bool operator<=		(const xr_stack<_Ty, _C>& _X) const		{return (!(_X < *this)); }
+	bool operator>=		(const xr_stack<_Ty, _C>& _X) const		{return (!(*this < _X)); }
+protected:
+	_C c;
+};
 
 template	<typename T>									class	xr_list 		: public std::list<T,xr_allocator_t<T> >								{ public: u32 size() const {return (u32)__super::size(); } };
-template	<typename T>									class	xr_deque 		: public std::deque<T,xr_allocator_t<T> >								{ public: u32 size() const {return (u32)__super::size(); } };
-template	<typename T>									class	xr_stack 		: public std::stack<T,xr_deque<T> >										{ public: u32 size() const {return (u32)__super::size(); } };
 template	<typename K, class P=std::less<K> >				class	xr_set			: public std::set<K,P,xr_allocator_t<K> >								{ public: u32 size() const {return (u32)__super::size(); } };
 template	<typename K, class P=std::less<K> >				class	xr_multiset		: public std::multiset<K,P,xr_allocator_t<K> >							{ public: u32 size() const {return (u32)__super::size(); } };
 template	<typename K, class V, class P=std::less<K> >	class	xr_map 			: public std::map<K,V,P,xr_allocator_t<std::pair<const K,V> > >			{ public: u32 size() const {return (u32)__super::size(); } };

@@ -16,17 +16,24 @@
 #define fdRLE10	0x03ede5bdb     // 1/ln10
 
 // integer math on floats
-IC BOOL negative(const float &f)	{ return (*(LPDWORD(&f))&fdSGN);	}
-IC BOOL positive(const float &f)	{ return (*(LPDWORD(&f))&fdSGN)==0;	}
-IC void set_negative(float &f)	{ (*LPDWORD(&f)) |= fdSGN; }
-IC void set_positive(float &f)	{ (*LPDWORD(&f)) &= ~fdSGN;			}
+#ifdef	_M_AMD64
+	IC BOOL negative(const float f)		{ return f<0;	}
+	IC BOOL positive(const float f)		{ return f>=0;	}
+	IC void set_negative(float &f)		{ f = -fabsf(f); }
+	IC void set_positive(float &f)		{ f = fabsf(f);	}
+#else
+	IC BOOL negative(const float &f)	{ return (*(LPDWORD(&f))&fdSGN);	}
+	IC BOOL positive(const float &f)	{ return (*(LPDWORD(&f))&fdSGN)==0;	}
+	IC void set_negative(float &f)		{ (*LPDWORD(&f)) |= fdSGN; }
+	IC void set_positive(float &f)		{ (*LPDWORD(&f)) &= ~fdSGN;			}
+#endif
 
 /*
  * Here are a few nice tricks for 2's complement based machines
  * that I discovered a few months ago.
  */
 IC	int		btwLowestBitMask(int v)		{	return (v & -v);	}
-IC	u32		btwLowestBitMask(u32 x)	{   return x & ~(x-1);	}
+IC	u32		btwLowestBitMask(u32 x)		{   return x & ~(x-1);	}
 
 /* Ok, so now we are cooking on gass. Here we use this function for some */
 /* rather useful utility functions */

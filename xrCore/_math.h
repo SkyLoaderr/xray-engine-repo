@@ -29,13 +29,18 @@ namespace CPU {
 	XRCORE_API extern _processor_info	ID;
 
 #ifdef M_VISUAL
-	#pragma warning(disable:4035)
-	IC u64	GetCycleCount(void)
-	{
-		_asm    _emit 0x0F;
-		_asm    _emit 0x31;
-	}
-	#pragma warning(default:4035)
+	#ifndef _M_AMD64
+		#pragma warning(disable:4035)
+		IC u64	GetCycleCount(void)	{
+			_asm    _emit 0x0F;
+			_asm    _emit 0x31;
+		}
+		#pragma warning(default:4035)
+	#else
+		IC u64	GetCycleCount(void)	{
+			return __rdtsc();
+		}
+	#endif
 #endif
 
 #ifdef M_BORLAND
