@@ -112,16 +112,20 @@ void xrMergeGraphs()
 	string256						S1, S2;
 	SLevel							tLevel;
 	u32								dwOffset = 0;
-	u32								dwLevelID;
-	for (dwLevelID = 0; pSettings->LineExists("game_levels",itoa(dwLevelID,S1,10)); dwLevelID++) {
-		sscanf(pSettings->ReadSTRING("game_levels",itoa(dwLevelID,S1,10)),"%f,%f,%f,%s",&(tLevel.tOffset.x),&(tLevel.tOffset.y),&(tLevel.tOffset.z),S1);
-		Memory.mem_copy(tLevel.caLevelName,S1,strlen(S1) + 1);
-		strconcat(S2,"gamedata\\levels\\",S1);
-		strconcat(S1,S2,"\\level.graph");
-		tpGraphs.push_back(xr_new<CLevelGraph>(tLevel,S1,dwOffset,dwLevelID));
-		dwOffset += tpGraphs[tpGraphs.size() - 1]->m_tGraphHeader.dwVertexCount;
+	R_ASSERT						(pSettings->SectionExists("levels"));
+    LPCSTR N,V;
+    for (u32 k = 0; pSettings->ReadLINE("levels",k,&N,&V); k++) {
+		R_ASSERT					(pSettings->SectionExists(tLevel.caLevelName));
+		tLevel.tOffset				= pSettings->ReadVECTOR(N,"offset");
+		V							= pSettings->ReadSTRING(N,"name");
+		Memory.mem_copy				(tLevel.caLevelName,V,strlen(V) + 1);
+		Memory.mem_copy				(S1,V,strlen(V) + 1);
+		strconcat					(S2,"gamedata\\levels\\",S1);
+		strconcat					(S1,S2,"\\level.graph");
+		tpGraphs.push_back			(xr_new<CLevelGraph>(tLevel,S1,dwOffset,pSettings->ReadINT(N,"id")));
+		dwOffset					+= tpGraphs[tpGraphs.size() - 1]->m_tGraphHeader.dwVertexCount;
 		tGraphHeader.tpLevels.push_back(tLevel);
-	}
+    }
 	R_ASSERT(tpGraphs.size());
 	
 	// merge all the graphs, i.e. add connections between vertices from different graphs
