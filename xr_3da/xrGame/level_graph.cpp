@@ -60,7 +60,7 @@ u32	CLevelGraph::vertex		(const Fvector &position) const
 	u32						selected;
 	set_invalid_vertex		(selected);
 	for (u32 i=0; i<header().vertex_count(); ++i) {
-		CVertex				*_vertex = vertex(i);
+		const CVertex		*_vertex = vertex(i);
 		if (inside			(_vertex,_node_position)) {
 			float			dist = _abs(vertex_plane_y(_vertex) - position.y);
 			if (dist < min_dist) {
