@@ -26,7 +26,7 @@ public:
 	IC		void							update				(CALifeTask *tpTask);
 	IC		void							add					(CALifeTask *tpTask);
 	IC		void							remove				(const ALife::_TASK_ID &id, bool no_assert = false);
-	IC		CALifeTask					*task				(const ALife::_TASK_ID &id, bool no_assert = false) const;
+	IC		CALifeTask						*task				(const ALife::_TASK_ID &id, bool no_assert = false) const;
 	IC		const ALife::TASK_MAP			&tasks				() const;
 	IC		const ALife::OBJECT_TASK_MAP	&cross				() const;
 	IC		void							clear				();
