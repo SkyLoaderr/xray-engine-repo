@@ -33,6 +33,7 @@ sidor_act_follower_base = sidor_actions + 50
 sidor_act_report_leader = sidor_actions + 60
 sidor_act_report_soldier= sidor_actions + 70
 sidor_act_rest          = sidor_actions + 80
+sidor_act_bar           = sidor_actions + 90
 
 -- chugai
 chugai_actions         = sidor_actions  + 1024
