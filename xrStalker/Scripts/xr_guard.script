@@ -82,7 +82,6 @@ function action_guard_activity:initialize()
 	self.speedv = 0.22
 
 	self.object:set_callback(self, "waypoint_callback", game_object.movement)
-
 	self.reset_scheme()
 end
 function action_guard_activity:reset_scheme()
@@ -397,4 +396,3 @@ function set_guard(object, enable, path_main, path_hideout, search_light)
 	end
 	xr_motivator.checkStorage(object)
 end
-
