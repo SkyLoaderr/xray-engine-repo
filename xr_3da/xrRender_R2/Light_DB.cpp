@@ -116,3 +116,20 @@ void			CLight_DB::Destroy	(light* L)
 	xr_delete	(L);
 	Msg			("! xrRENDER: unregistered light destroyed");
 }
+
+void			CLight_DB::Activate		(light* L)
+{
+	set<light*>::iterator	it			= v_dynamic_inactive.find	(L);
+	R_ASSERT							(it!=v_dynamic_inactive.end());
+	v_dynamic_inactive.erase			(it);
+
+	v_dynamic_active.insert				(L);
+}
+void			CLight_DB::Deactivate	(light* L)
+{
+	set<light*>::iterator	it			= v_dynamic_active.find	(L);
+	R_ASSERT							(it!=v_dynamic_active.end());
+	v_dynamic_active.erase				(it);
+
+	v_dynamic_inactive.insert			(L);
+}
