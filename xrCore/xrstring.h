@@ -63,7 +63,7 @@ public:
 	char				operator[]	(size_t id)						{	return p_->value[id];							}
 
 	// misc func
-	u32					size		()								{	if (0==p_) return 0; else return p_->dwLength;	}
+	u32					size		()						const	{	if (0==p_) return 0; else return p_->dwLength;	}
 	void				swap		(ref_str & rhs)					{	str_value* tmp = p_; p_ = rhs.p_; rhs.p_ = tmp;	}
 	bool				equal		(const ref_str & rhs)	const	{	return (p_ == rhs.p_);							}
 };
