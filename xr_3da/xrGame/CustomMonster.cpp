@@ -788,7 +788,14 @@ void ScriptCallBack(CBlend* B)
 
 bool CCustomMonster::bfScriptAnimation()
 {
-	if (GetScriptControl() && GetCurrentAction() && !GetCurrentAction()->m_tAnimationAction.m_bCompleted && strlen(*GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay)) {
+	if (
+		GetScriptControl() && 
+		GetCurrentAction() && 
+		!GetCurrentAction()->m_tAnimationAction.m_bCompleted && 
+		*GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay && 
+		!GetCurrentAction()->m_tAnimationAction.m_bCompleted && 
+		strlen(*GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay)) {
+
 		CKinematics			&tVisualObject = *(PKinematics(Visual()));
 		CMotionDef			*l_tpMotionDef = tVisualObject.ID_Cycle_Safe(*GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay);
 		if (m_tpScriptAnimation != l_tpMotionDef)
