@@ -78,6 +78,8 @@ void game_cl_TeamDeathmatch::GetMapEntities(xr_vector<SZoneMapEntityData>& dst)
 		if(local_team == it->second.team){
 			u16 id = it->second.GameID;
 			CObject* pObject = Level().Objects.net_Find(id);
+			if (!pObject) continue;
+
 			VERIFY(pObject);
 			D.pos = pObject->Position();
 			dst.push_back(D);
