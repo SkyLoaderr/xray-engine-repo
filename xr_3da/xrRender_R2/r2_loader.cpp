@@ -39,17 +39,17 @@ void CRender::level_Load()
 		chunk->close();
 	}
 
-	// VB
 	if	(!g_pGamePersistent->bDedicatedServer)	{
+		// VB
 		pApp->LoadTitle		("Loading geometry...");
 		LoadBuffers			(fs);
-	}
 
-	// Visuals
-	pApp->LoadTitle		("Loading spatial-DB...");
-	chunk				= fs->open_chunk(fsL_VISUALS);
-	LoadVisuals			(chunk);
-	chunk->close		();
+		// Visuals
+		pApp->LoadTitle		("Loading spatial-DB...");
+		chunk				= fs->open_chunk(fsL_VISUALS);
+		LoadVisuals			(chunk);
+		chunk->close		();
+	}
 
 	// Sectors
 	pApp->LoadTitle		("Loading sectors & portals...");
