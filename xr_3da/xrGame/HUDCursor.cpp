@@ -84,7 +84,8 @@ void CHUDCursor::Render()
 		pApp->pFont->Size	(di_size*1.5f);
 		pApp->pFont->Out(PT.p.x,PT.p.y+di_size*2,"~%3.1f",dist);
 	}
-	if (RQ.O){ 
+	if (RQ.O && (psHUD_Flags&HUD_INFO))
+	{ 
 		CFontSmall* F = Level().HUD()->pSmallFont;
 		F->Color	(C);
 		F->Size		(0.02f);
