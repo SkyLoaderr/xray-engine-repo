@@ -49,9 +49,9 @@ void xrStripify		(std::vector<WORD> &indices, std::vector<WORD> &perturb, int iC
 	}
 
 	// Copy indices
-	PSGP.memCopy	(&*indices.begin(),xPGROUP->indices,indices.size()*sizeof(WORD));
+	PSGP.memCopy	(&*indices.begin(),xPGROUP[0].indices,indices.size()*sizeof(WORD));
 
 	// Release memory
-	x	xPGROUP;
-	delete[]	PGROUP;
+	xPGROUP.clear	();
+	PGROUP.clear	();
 }
