@@ -59,8 +59,6 @@ void CParticlesObject::Init(LPCSTR p_name, IRender_Sector* S, BOOL bAutoRemove)
 	shedule.t_max			= 50;
 	shedule_register		();
 
-	m_XFORM.identity		();
-
 	dwLastTime				= Device.dwTimeGlobal;
 }
 
@@ -132,7 +130,14 @@ void CParticlesObject::shedule_Update	(u32 _dt)
 	}
 
 	UpdateSpatial			();
-	// Msg	("update(%s): %3.1f,%3.1f,%3.1f,%3.1f",V->GetDefinition()->m_Name,VPUSH(spatial.center),spatial.radius);
+
+
+
+	//Msg	("update(%s): %3.1f,%3.1f,%3.1f,%3.1f",V->GetDefinition()->m_Name,VPUSH(spatial.center),spatial.radius);
+
+	//const Fmatrix& m = XFORM();
+	//Msg("%.3f %.3f %.3f", m.c.x, m.c.y, m.c.z);
+
 }
 
 void CParticlesObject::SetXFORM		(const Fmatrix& m)

@@ -9,7 +9,7 @@ extern const Fvector zero_vel;
 class CParticlesObject		:	public CPS_Instance
 {
 	typedef CPS_Instance	inherited;
-	Fmatrix				m_XFORM;
+
 	u32					dwLastTime;
 	void				Init				(LPCSTR p_name, IRender_Sector* S, BOOL bAutoRemove);
 	void				UpdateSpatial		();
@@ -26,6 +26,7 @@ public:
 
 	Fvector&			Position			();
 	void				SetXFORM			(const Fmatrix& m);
+	IC	Fmatrix&		XFORM				()	{return renderable.xform;}
 	void				UpdateParent		(const Fmatrix& m, const Fvector& vel);
 
 	void				play_at_pos			(const Fvector& pos, BOOL xform=FALSE);

@@ -507,12 +507,32 @@ void CCustomZone::PlayEntranceParticles(CGameObject* pObject)
 							::Random.randI(0,pObject->GetParticleBones().size());
 	
 	CParticlesObject* pParticles = NULL;
-	pParticles = CParticlesObject::Create(*m_sEntranceParticlesSmall,Sector());
+	//pParticles = CParticlesObject::Create(*particle_str,Sector());
+	pParticles = CParticlesObject::Create(*particle_str);
 	pParticles->Play();
-	
+
 	CParticlesPlayer::UpdateParticlesPosition(pObject, pParticles, 
 											(*it).index, (*it).offset, 
-											Fvector().set(0,1,0));
+											Fvector().set(0,1,0),
+											zero_vel, false);
+
+	CParticlesPlayer::UpdateParticlesPosition(pObject, pParticles, 
+											(*it).index, (*it).offset, 
+											Fvector().set(0,1,0),
+											zero_vel, true);
+
+
+	//Fmatrix m = Fmatrix().identity();
+	//m.c.set(-1.f,1.5f,-22.f);
+	//pParticles->SetXFORM(m);
+	
+	//pParticles->UpdateParent(pObject->XFORM(),zero_vel);
+	//pParticles->SetXFORM(pObject->XFORM());
+
+	//const Fmatrix& m = pParticles->XFORM();
+	//Msg("entrance particles");
+//	pObject->StartParticles(*particle_str, (*it).index, (*it).offset,
+//						     Fvector().set(0,1,0), (u16)ID(), true);
 }
 
 
@@ -528,7 +548,7 @@ void CCustomZone::PlayBulletParticles(Fvector& pos)
 	Fmatrix M;
 	M = XFORM();
 	M.c.set(pos);
-	
+
 	pParticles->UpdateParent(M,zero_vel);
 	pParticles->Play();
 }
