@@ -228,7 +228,7 @@ function action_single_patrol:execute ()
            self.object:set_mental_state  (self.mental_state)
            self.object:set_previous_point (self.waypoint)
            if patrol (self.object:patrol()):flag (self.waypoint, 0) == true and table.getn (xr_motivator.storage[self.object:id()].followers) ~= 0 then
-           	  self:speak (commander_snd, 2, 0)
+           	  self:speak (commander_snd, 3, 0)
            end   
         end   
     elseif self.stage == 2 then
@@ -445,10 +445,6 @@ function action_single_patrol:set_look_dir ()
     local size = table.getn (xr_motivator.storage[self.object:id()].followers)
     if size == 0 then return end
     
---    for a = 1, size, 1 do
---        xr_motivator.storage[self.object:id()].followers[a].look_dir = xr_motivator.storage[self.object:id()].followers[a].direction
---    end    
-    
     local side = false
     
     for a = 1, size, 1 do
@@ -474,9 +470,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 function action_single_patrol:speak (namespace, index, soldier)
 	if soldier == 0 then
-       self.object:set_sound_mask (-1)
-       self.object:set_sound_mask (0)
-       self.object:play_sound (namespace, 1, 0, 1, 0, index)
+	   xr_sounds.play_sound (self.object, 0, "commander_patrol", 1, 1, index)
        self:set_command (leader_speak)
     else   
        if table.getn (xr_motivator.storage[self.object:id()].followers) == 0 then return end   
@@ -676,18 +670,18 @@ function add_to_binder(obj, char_ini)
 	local operators		= {}
 	local properties	= {}
 
-    	obj:add_sound ("Scripts\\Patrol\\Commander1_", 20, snd_type.talk, 2, 1, commander_snd)
-    	obj:add_sound ("Scripts\\Patrol\\soldier_idle_", 20, snd_type.talk, 2, 1, soldiers_idle_snd)
-    	obj:add_sound ("script_replics\\soldier_1\\idle\\soldier_idle_", 20, snd_type.talk, 2, 1, soldiers_idle2_snd)
-    	obj:add_sound ("script_replics\\soldier_1\\replics\\soldier_replic_", 20, snd_type.talk, 2, 1, soldiers_replics_snd)
-    	obj:add_sound ("script_replics\\soldier_1\\hear_something\\soldier_hear_", 20, snd_type.talk, 2, 1, soldiers_hear_snd)
-    	obj:add_sound ("script_replics\\radio\\commander\\radio_start_", 30, snd_type.talk, 2, 1, radio_commander_start)
-    	obj:add_sound ("script_replics\\radio\\commander\\radio_reply_", 30, snd_type.talk, 2, 1, radio_commander_next)
-    	obj:add_sound ("script_replics\\radio\\commander\\radio_finish_", 30, snd_type.talk, 2, 1, radio_commander_end)
-    	obj:add_sound ("script_replics\\radio\\message\\radio_noise_", 30, snd_type.talk, 2, 1, radio_noise)
-    	obj:add_sound ("script_replics\\radio\\message\\radio_voice_", 30, snd_type.talk, 2, 1, radio_voice)
-    	obj:add_sound ("script_replics\\radio\\message\\radio_turn_on_", 30, snd_type.talk, 2, 1, radio_on)
-    	obj:add_sound ("script_replics\\radio\\message\\radio_turn_off_", 30, snd_type.talk, 2, 1, radio_off)
+--    	obj:add_sound ("Scripts\\Patrol\\Commander1_", 20, snd_type.talk, 2, 1, commander_snd)
+--    	obj:add_sound ("Scripts\\Patrol\\soldier_idle_", 20, snd_type.talk, 2, 1, soldiers_idle_snd)
+--    	obj:add_sound ("script_replics\\soldier_1\\idle\\soldier_idle_", 20, snd_type.talk, 2, 1, soldiers_idle2_snd)
+--    	obj:add_sound ("script_replics\\soldier_1\\replics\\soldier_replic_", 20, snd_type.talk, 2, 1, soldiers_replics_snd)
+--    	obj:add_sound ("script_replics\\soldier_1\\hear_something\\soldier_hear_", 20, snd_type.talk, 2, 1, soldiers_hear_snd)
+--    	obj:add_sound ("script_replics\\radio\\commander\\radio_start_", 30, snd_type.talk, 2, 1, radio_commander_start)
+--    	obj:add_sound ("script_replics\\radio\\commander\\radio_reply_", 30, snd_type.talk, 2, 1, radio_commander_next)
+--    	obj:add_sound ("script_replics\\radio\\commander\\radio_finish_", 30, snd_type.talk, 2, 1, radio_commander_end)
+--    	obj:add_sound ("script_replics\\radio\\message\\radio_noise_", 30, snd_type.talk, 2, 1, radio_noise)
+--    	obj:add_sound ("script_replics\\radio\\message\\radio_voice_", 30, snd_type.talk, 2, 1, radio_voice)
+--    	obj:add_sound ("script_replics\\radio\\message\\radio_turn_on_", 30, snd_type.talk, 2, 1, radio_on)
+--    	obj:add_sound ("script_replics\\radio\\message\\radio_turn_off_", 30, snd_type.talk, 2, 1, radio_off)
     
     	printf ("PATROL_EVA_BASE = %d", xr_evaluators_id.sidor_patrol_base_property)
     
