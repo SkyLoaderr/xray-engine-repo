@@ -841,7 +841,7 @@ void CStalkerActionAimEnemy::initialize	()
 		CMemoryInfo			mem_object = m_object->memory(m_object->enemy());
 		if (mem_object.m_object && 
 			m_object->visible(m_object->enemy()) && 
-			(Level().timeServer() >= mem_object.m_last_level_time + 3000)) {
+			(Level().timeServer() >= mem_object.m_last_level_time + 1000)) {
 			if (m_object->see(m_object->enemy(),m_object))
 				m_object->play	(eStalkerSoundAttack);
 			else
@@ -1522,6 +1522,17 @@ void CStalkerActionKillEnemyLostModerate::initialize	()
 {
 	inherited::initialize	();
 	m_object->set_sound_mask(u32(eStalkerSoundMaskNoHumming));
+	if (m_object->enemy() && !m_storage->property(eWorldPropertyFireEnough)) {
+		CMemoryInfo			mem_object = m_object->memory(m_object->enemy());
+		if (mem_object.m_object && 
+			m_object->visible(m_object->enemy()) && 
+			(Level().timeServer() >= mem_object.m_last_level_time + 1000)) {
+				if (m_object->see(m_object->enemy(),m_object))
+					m_object->play	(eStalkerSoundAttack);
+				else
+					m_object->play	(eStalkerSoundAlarm);
+			}
+	}
 }
 
 void CStalkerActionKillEnemyLostModerate::finalize	()
