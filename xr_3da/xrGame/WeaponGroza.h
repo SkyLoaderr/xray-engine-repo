@@ -56,6 +56,7 @@ public:
 	virtual void	SetDefaults		();
 	virtual void	FireStart		();
 	virtual void	FireEnd			();
+	virtual BOOL	HasOpticalAim	()				{ return TRUE; }
 
 	virtual void	Hide			();
 	virtual void	Show			();

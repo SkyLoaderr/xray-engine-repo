@@ -150,7 +150,7 @@ private:
 	void				g_SetAnimation			(DWORD mstate_rl);
 
 	void				cam_Set					(EActorCameras style);
-	void				cam_Update				(float dt);
+	void				cam_Update				(float dt, BOOL bZoom);
 
 	bool				HUDview					( ) { return IsFocused()&&(cam_active==eacFirstEye); }
 public:

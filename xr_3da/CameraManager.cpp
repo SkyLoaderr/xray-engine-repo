@@ -116,17 +116,8 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 	fFov						= fFov*dst + fFOV_Dest*src;
 	fFar						= fFar*dst + fFAR_Dest*src;
 	Device.mProject.build_projection(deg2rad(fFov*aspect), aspect, VIEWPORT_NEAR, fFar);
-/*
-	if(psDeviceFlags&rsStatistic)	{
-		pApp->pFont->Size	(0.018f);
-		pApp->pFont->Color	(D3DCOLOR_RGBA(0,255,255,255)); 
-		pApp->pFont->OutSet	(0,-1);
-		pApp->pFont->OutNext("Cam_P: %+4.4f,%+4.4f,%+4.4f",VPUSH(vPosition));
-		pApp->pFont->OutNext("Cam_D: %+4.4f,%+4.4f,%+4.4f",VPUSH(vDirection));
-		pApp->pFont->OutNext("Cam_N: %+4.4f,%+4.4f,%+4.4f",VPUSH(vNormal));
-	}
-*/
 }
+
 void CCameraManager::Dump()
 {
 	Fmatrix mInvCamera;

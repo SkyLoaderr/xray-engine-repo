@@ -447,7 +447,7 @@ void CActor::Update	(DWORD DT)
 			Level().Cameras.AddEffector(pCamBobbing);
 		}
 		pCamBobbing->SetState(mstate_real);
-		cam_Update	(dt);
+		cam_Update	(dt,FALSE);
 	} else {
 		if (pCamBobbing){ Level().Cameras.RemoveEffector(cefBobbing); pCamBobbing=0; }
 	}
