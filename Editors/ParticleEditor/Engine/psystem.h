@@ -70,7 +70,7 @@ namespace PAPI
 		enum{
 			BIRTH		= (1<<0),
 			DYING		= (1<<1),
-			ANIMATE_CCW	= (1<<1),
+			ANIMATE_CCW	= (1<<2),
 		};
 		pVector	pos;
 		pVector	posB;
