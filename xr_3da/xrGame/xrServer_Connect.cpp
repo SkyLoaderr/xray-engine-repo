@@ -1,7 +1,10 @@
 #include "stdafx.h"
-#include "game_sv_single.h"
 #include "..\xr_trims.h"
 #include "..\xr_tokens.h"
+
+#include "game_sv_single.h"
+#include "game_sv_deathmatch.h"
+#include "game_sv_cs.h"
 
 xr_token					game_type_token						[ ]={
 	{ "single",				GAME_SINGLE								},

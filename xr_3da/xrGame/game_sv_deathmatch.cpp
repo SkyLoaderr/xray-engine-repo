@@ -12,13 +12,8 @@ void	game_sv_Deathmatch::OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)
 		// By himself
 		ps_killer->kills			-=	1;
 	} else {
-		// Opponent killed - frag + money
-		ps_killer->money_for_round	+=	500;
+		// Opponent killed - frag 
 		ps_killer->kills			+=	1;
-
-		// Check if there is no opponents left
-		u32 alive					=	get_alive_count	(ps_killed->team);
-		if (0==alive)				OnTeamScore(ps_killer->team);
 	}
 	Unlock	();
 }

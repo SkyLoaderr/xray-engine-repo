@@ -86,7 +86,7 @@ void	game_sv_CS::OnPlayerKillPlayer	(u32 id_killer, u32 id_killed)
 void	game_sv_CS::OnTimeElapsed	()
 {
 	// Artifacts count
-	if ()
+	// if ()
 }
 
 void	game_sv_CS::OnTargetTouched	()
