@@ -57,7 +57,7 @@ void __fastcall mapMatrix_Render	(mapMatrixItems& N)
 	N.sorted.clear			();
 
 	// DIRECT:UNSORTED
-	vector<_MatrixItem>&	L		= N.unsorted;
+	vector<_MatrixItem>&	L			= N.unsorted;
 	_MatrixItem *it =L.begin(), *end	= L.end();
 	for (; it!=end; it++)
 	{
