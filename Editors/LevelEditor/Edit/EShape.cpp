@@ -318,28 +318,20 @@ void CEditShape::Render(int priority, bool strictB2F)
                 switch(it->type){
                 case cfSphere:{
                     Fsphere& S			= it->data.sphere;
-/*
                     Fmatrix B;
                     B.scale				(S.R,S.R,S.R);
                     B.translate_over	(S.P);
                     B.mulA				(_Transform());
                     RCache.set_xform_world(B);
                     Device.SetShader	(Device.m_WireShader);
-                    DU.DrawLineSphere	(zero,1.f,m_DrawEdgeColor,true);
-                    DU.DrawIdentSphere	(true,true,clr,clr);
-*/
-                    DU.DrawSphere		(_Transform(),S,clr,m_DrawEdgeColor,true,true);
+                    DU.DrawCross		(zero,S.R,S.R,S.R, S.R,S.R,S.R,m_DrawEdgeColor,false);
+                    DU.DrawIdentSphere	(true,true,clr,m_DrawEdgeColor);
                 }break;
                 case cfBox:
                     Fmatrix B			= it->data.box;
                     B.mulA				(_Transform());
                     RCache.set_xform_world(B);
-                    Device.SetShader	(Device.m_SelectionShader);
-                    DU.DrawIdentBox		(true,false,clr,m_DrawEdgeColor);
-                    Device.SetShader	(Device.m_WireShader);
-                    DU.DrawIdentBox		(false,true,clr,m_DrawEdgeColor);
-
-//                    DU.DrawBox			()
+                    DU.DrawIdentBox		(true,true,clr,m_DrawEdgeColor);
                 break;
                 }
             }
