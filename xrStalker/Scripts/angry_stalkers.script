@@ -61,8 +61,8 @@ function main()
 				cond	(cond.time_end, 100000000)
 			)
 
-	while guard01:action() and guard02:action() do
-		if guard01:see(actor) and distance_between(guard01,actor) <= 20 then
+	while true do
+		if guard01:see(actor) then
 			printf("see = true!")
 			flush()
 			prof_hmm_kto_eto:play_at_pos						(guard01,guard01:position(),0);
