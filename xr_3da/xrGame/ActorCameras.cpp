@@ -61,21 +61,15 @@ void CActor::cam_Update(float dt, float fFOV)
 	}
 
 
-	/*
-	CWeapon *pWeapon = dynamic_cast<CWeapon*>(inventory().GetActiveSlot() != NO_ACTIVE_SLOT ? 
-		inventory().m_slots[inventory().GetActiveSlot()].m_pIItem : NULL);
-
-	if(pWeapon) 
-	{
-		dangle = pWeapon->GetRecoilDeltaAngle();
-	}
-	*/
-
+	
 	CCameraBase* C						= cam_Active();
 
 	cameras[eacFirstEye]->Update		(point,dangle);
 	cameras[eacFirstEye]->f_fov			= fFOV;
 	EffectorManager().Update			(cameras[eacFirstEye]);
+
+	if(eacLookAt == cam_active)
+		EffectorManager().Update			(C);
 
 	if(eacFirstEye != cam_active)
 	{
@@ -86,7 +80,7 @@ void CActor::cam_Update(float dt, float fFOV)
 	if (Level().CurrentEntity() == this)
 	{
 		Level().Cameras.Update	(C);
-		if(eacFirstEye == cam_active)
+		if(eacFirstEye == cam_active && !Level().Cameras.GetEffector(cefDemo))
 			EffectorManager().ApplyDevice();
 	}
 
