@@ -8,30 +8,7 @@
 #include "ui_main.h"
 #include "PropertiesList.h"
 #include "PropertiesListHelper.h"
-
-void st_AnimParams::Set(float start_frame, float end_frame, float fps)
-{
-    min_t=start_frame/fps;
-    max_t=end_frame/fps;
-}
-
-void st_AnimParams::Set(CCustomMotion* M)
-{
-    Set((float)M->FrameStart(),(float)M->FrameEnd(),M->FPS());
-	t=min_t;
-//    bPlay=true;
-}
-void st_AnimParams::Update(float dt, float speed, bool loop)
-{
-	if (!bPlay) return;
-	t+=speed*dt;
-    if (t>max_t){
-#ifdef _EDITOR
-		if (loop) t=t-max_t+min_t; else
-#endif
-		t=max_t;
-	}
-}
+#include "bottombar.h"
 
 void __fastcall CCustomObject::OnMotionableChange(PropValue* sender)
 {
