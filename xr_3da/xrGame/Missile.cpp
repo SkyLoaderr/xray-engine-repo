@@ -160,8 +160,8 @@ void CMissile::OnH_B_Chield()
 
 void CMissile::spawn_fake_missile()
 {
-#ifdef DEBUG
-	Msg					("Spawning fake missile for object %s",cName());
+#ifdef _DEBUG
+//	Msg					("Spawning fake missile for object %s",cName());
 #endif
 	CSE_Abstract		*D	= F_entity_Create(cNameSect());
 	R_ASSERT			(D);
