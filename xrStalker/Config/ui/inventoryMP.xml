@@ -15,10 +15,7 @@
 	<!-- BACK BUTTON FOR BAG -->
 	<bag_back_btn x="199" y="0" width="67" height="32">
 			<texture_offset x="-26" y="0"/>
-			<texture_t>ui\ui_btn_mp_back_t</texture_t>
-			<texture_e>ui\ui_btn_mp_back_e</texture_e>
-			<texture_h>ui\ui_btn_mp_back_h</texture_h>
-			<texture_d>ui\ui_btn_mp_back_d</texture_d>
+			<texture>ui\ui_btn_mp_back</texture>			
 			<sound_t>weapons\generic_close</sound_t>
 	</bag_back_btn>
 
@@ -240,10 +237,7 @@
 	
 	<autobuy_button x="840" y="557" width="145" height="48">
 		<texture_offset x="-42" y="0"/>
-		<texture_e>ui\ui_btn_mp_avto_e</texture_e>
-		<texture_t>ui\ui_btn_mp_avto_t</texture_t>
-		<texture_h>ui\ui_btn_mp_avto_h</texture_h>
-		<texture_d>ui\ui_btn_mp_avto_d</texture_d>
+		<texture>ui\ui_btn_mp_avto</texture>
 		<text font="normal" r="156" g="122" b="46" align="c">Autobuy</text>
 		<text_h r="255" g="255" b="255"/>
 		<text_t r="255" g="255" b="255"/>
