@@ -632,7 +632,7 @@ void CUIBag::FillUpInfiniteItemsList(){
 	string16 item;
 	shared_str ssItem;
 	// Get infinite items list
-	if(!pSettings->section_exist("extended_settings"))
+	if(!pSettings->section_exist("multiplayer_extended_settings"))
 		return;
 
 	std::strcpy(itemsList, pSettings->r_string("extended_settings", "infinite_items"));
