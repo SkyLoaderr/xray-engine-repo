@@ -254,7 +254,11 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 				dwCurrentAniSlot = 4;
 				break;
 			}
-			default : NODEFAULT;
+			default : {
+#pragma todo("Dima to Dima : Return nodefault")
+				dwCurrentAniSlot = 1;
+				//NODEFAULT;
+			}
 		}
 
 	
