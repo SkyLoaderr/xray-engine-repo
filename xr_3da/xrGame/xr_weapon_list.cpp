@@ -71,8 +71,8 @@ BOOL CWeaponList::isWorking()
 
 bool CWeaponList::WeaponChange(int idx)
 {
-	if (idx==m_iActiveWeapon)										return false;
-	if ((idx<0) || (idx>=m_Weapons.size()) || (0==m_Weapons[idx]))	return false;
+	if (idx==m_iActiveWeapon)											return false;
+	if ((idx<0) || (idx>=int(m_Weapons.size())) || (0==m_Weapons[idx]))	return false;
 
 	FireEnd		();
 	m_iActiveWeapon	= idx;

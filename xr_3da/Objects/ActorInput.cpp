@@ -5,7 +5,6 @@
 #include "..\xr_creator.h"
 #include "..\CameraBase.h"
 
-
 void CActor::OnKeyboardPress(int cmd){
 	if (Remote() || !bAlive)	return;
 
@@ -33,7 +32,7 @@ void CActor::OnKeyboardPress(int cmd){
 	case kWPN_7:	
 	case kWPN_8:	
 	case kWPN_9:	
-		g_wpn_Set	(cmd-kWPN_1);			
+		Weapons->ActivateWeaponID(cmd-kWPN_1);			
 		break;
 	}
 }

@@ -739,22 +739,3 @@ void CActor::OnHUDDraw(CCustomHUD* hud)
 
 	HUD->pHUDFont->Out(400,320,buf);
 }
-
-void CActor::g_wpn_Set(DWORD id)
-{
-	Msg("CActor::g_wpn_Set(%d), %s",id,Local()?"LOCAL":"REMOTE");
-	switch (id)
-	{
-	case 0: Weapons->ActivateWeapon(CLSID_OBJECT_W_M134);		break; 
-	case 1: Weapons->ActivateWeapon(CLSID_OBJECT_W_GROZA);		break; 
-	case 2: Weapons->ActivateWeapon(CLSID_OBJECT_W_PROTECTA);	break; 
-	}
-	
-	if (Local()) {
-		NET_Packet	P;
-		P.w_begin	(M_WPN_SET);
-		P.w_u8		(u8(net_ID));
-		P.w_u8		(u8(id));
-		Level().Send(P,net_flags(TRUE));
-	}
-}

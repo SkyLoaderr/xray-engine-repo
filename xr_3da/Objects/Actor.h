@@ -175,7 +175,6 @@ public:
 	virtual void		g_cl_fireStart			( );
 	virtual void		g_sv_fireStart			(NET_Packet* P);
 	virtual void		g_fireEnd				( );
-	virtual void		g_wpn_Set				(DWORD id);
 
 	// Network
 	virtual void		net_Export				(NET_Packet* P);				// export to server
