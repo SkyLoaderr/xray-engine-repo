@@ -58,19 +58,19 @@ function stalker_zombe_action:execute ()
     end
 
 
-    if( self.a.stand and self.object:active_sound_count() == 0 ) then
+    if( self.a.stand and self.object:animation_count() == 0 ) then
         --Если остановились и проиграли до конца звук, то снова идем
-        printf( "eeeennnnnnddddd" )
         self.a.stand = false
         self.object:set_movement_type( move.walk )
     end
 end
 ---------------------------------------------------------------------------------------------------------------------
 function stalker_zombe_action:speak()
-    if( math.random() > 1.5 ) then
+    if( math.random() < 0.5 ) then
     	self.object:play_sound( stand_speak, 1, 0, 1, 0, math.random( 0, 6 ) )
     else
         self.object:set_movement_type ( move.stand )
+        self.object:add_animation( "prisluh_9_0", true )
         self.object:add_animation( "prisluh_9_2", true )
 		self.object:play_sound( stand_speak, 3000, 1000, 1, 0, math.random( 0, 6 ) )
         self.a.stand = true
@@ -161,7 +161,6 @@ function stalker_novice_action:initialize ()
 		self:state_walk( "init" )
     else
 		self:state_sit_down( "init" )
-		printf( "2" )
     end
 end
 ---------------------------------------------------------------------------------------------------------------------
@@ -172,7 +171,6 @@ function stalker_novice_action:execute ()
 		self:state_walk()
         if( device():time_global() > self.a.time + time_walk ) then
 			self:state_sit_down( "init" )            	--Init state sit down
-			printf( "1" )
         end
     else
         self:state_sit_down()
@@ -220,14 +218,13 @@ function stalker_novice_action:state_walk( param )
 
 	if( device():time_global() > self.speak_time ) then
     --Произносим фразу
-        self.object:play_sound( walk_speak, 1, 0, 1, 0, math.random( 0, 0 ) )
+        self.object:play_sound( walk_speak + math.random( 0, 1 ), 1, 0, 1, 0, 0  )
         self.speak_time = device():time_global() + (math.random()+0.5) * novice_speak      --Когда произнесу следующую фразу
 	end
 end
 ---------------------------------------------------------------------------------------------------------------------
 function stalker_novice_action:state_sit_down( param )
 	if( param )	then                        --Init state sit
-    	printf( "Init state sit_down === %s", param )
         self.a.curState  = sit_down
         self.object:set_dest_level_vertex_id( self.a.rest_w:level_vertex_id( self.a.index ) )
         self.object:set_path_type 			( game_object.level_path )
@@ -245,7 +242,6 @@ function stalker_novice_action:state_sit_down( param )
         	self.object:set_movement_type    ( move.stand )
             self.object:set_item             ( object.deactivate, self.object:best_weapon() )
         	xr_state.change_state( self.object, 1 )
-            printf( "excanhe state" )
         else
         	--Идем в точку сидения
 	        self.object:set_mental_state        ( anim.free )
@@ -291,7 +287,7 @@ function add_novice(obj)
 --    xr_motivator.storage[obj:id()].novice = st
 
     obj:add_sound ( "script_replics\\stalker_1\\newbie\\newbie_where_artifacts_1", 20, snd_type.talk, 2, 1, walk_speak )
---    obj:add_sound ( "script_replics\\stalker_1\\newbie\\newbie_no_luck_2", 20, snd_type.talk, 2, 1, stand_speak )
+    obj:add_sound ( "script_replics\\stalker_1\\newbie\\newbie_no_luck_2", 20, snd_type.talk, 2, 1, walk_speak + 1 )
 
     properties["state_end"]     = xr_evaluators_id.state_change
     properties[ "work" ]              = xr_evaluators_id.jon_stalker_novice
@@ -341,7 +337,6 @@ function stalker_novice2_action:execute ()
             	self:action( "init" )
             else
             	self.a.time = device():time_global() + 10000
-                printf( "Daleko" )
             end
         else
         	self:walk()
@@ -382,12 +377,10 @@ function stalker_novice2_action:walk( param )
     --То смотрит вдоль патрульного пути,  то на артефакт
     if( device():time_global() > self.time ) then
     	if( self.look == 1 ) then
-            printf( "look to point" )
             self.object:set_sight       ( look.point, patrol( self.a.path ):point(0), 0 )
             self.look = 2
             self.time = device():time_global() + math.random( 1500, 3000 )
         elseif( self.object:position():distance_to( patrol( self.a.path ):point(0) ) < 30 ) then
-            printf( "lool to path" )
             self.object:set_sight       ( look.path_dir, nil, 0 )
             self.look = 1
         	self.time = device():time_global() + math.random( 2000, 6000 )
@@ -397,21 +390,10 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 function stalker_novice2_action:action( param )
 	if( param ) then
-		printf( "init lookkk" )
     	self.a.curState		= 2
-		self.a.time 		= device():time_global() + 10000
+		self.a.time 		= device():time_global() + 4000
         self.object:set_sight           ( look.point, patrol( self.a.path ):point( 0 ), 0 )
         self.object:set_movement_type   ( move.stand )
-    end
-
-	printf( "yaw == %f", yaw( self.object:direction(), patrol( self.a.path ):point( 0 ) : sub( self.object:position() ) ) )
-	if( yaw( self.object:direction(), patrol( self.a.path ):point( 0 ) : sub( self.object:position() ) ) < 0.3 ) then
-    	printf( "yaw oK" )
-    end
-
-    if( self.a.curState == 2 and                                     --Угол до точки, куда надо повернуть меньше 0.1
-       yaw( self.object:direction(), patrol( self.a.path ):point( 0 ) : sub( self.object:position() ) ) < 0.3 ) then
-		printf( "Ok" )
     end
 
   	if( self.a.curState == 2 and                                     --Угол до точки, куда надо повернуть меньше 0.1
