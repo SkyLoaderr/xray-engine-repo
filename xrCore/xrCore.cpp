@@ -30,9 +30,12 @@ void xrCore::_initialize	(const char* _ApplicationName)
 	strlwr					(Params);
 	strcpy					(ApplicationName,_ApplicationName);
 
-	// User Name
-	DWORD	sz_user				= sizeof(UserName);
-	GetUserName					(UserName,&sz_user);
+	// User/Comp Name
+	DWORD	sz_user			= sizeof(UserName);
+	GetUserName				(UserName,&sz_user);
+
+	DWORD	sz_comp			= sizeof(CompName);
+	GetComputerName			(CompName,&sz_comp);
 
 	// Mathematics & PSI detection
 	InitMath				();

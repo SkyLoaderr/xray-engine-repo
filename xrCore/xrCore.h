@@ -177,6 +177,7 @@ class XRCORE_API xrCore
 public:
 	string64	ApplicationName;
 	string64	UserName;
+	string64	CompName;
 	string512	Params;
 public:
 	void		_initialize	(const char* ApplicationName);
