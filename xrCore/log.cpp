@@ -147,5 +147,7 @@ void CreateLog(LogCallback cb)
 void CloseLog(void)
 {
 	FlushLog		();
-	LogFile.clear	();
+    for (u32 it=0; it<LogFile.size(); it++)
+        xr_free		(LogFile[it]);
+ 	LogFile.clear	();
 }

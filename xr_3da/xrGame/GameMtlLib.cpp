@@ -64,6 +64,10 @@ void SGameMtl::Load(IReader& fs)
 
 void CGameMtlLibrary::Load(LPCSTR name)
 {
+   	R_ASSERT			(material_pairs_rt.empty());
+    R_ASSERT			(material_pairs.empty());
+    R_ASSERT			(materials.empty());
+    		
 	destructor<IReader>	F(FS.r_open(name));
     IReader& fs			= F();
 

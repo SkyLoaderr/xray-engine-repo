@@ -62,6 +62,7 @@ bool CSHSoundEnvTools::OnCreate()
 
 void CSHSoundEnvTools::OnDestroy()
 {
+	m_Library.Unload	();
     m_bModified 		= FALSE;
     xr_delete			(m_PreviewSnd);
 }

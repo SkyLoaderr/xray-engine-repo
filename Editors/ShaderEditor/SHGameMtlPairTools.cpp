@@ -41,7 +41,6 @@ void CSHGameMtlPairTools::OnDestroy()
 
 void CSHGameMtlPairTools::Reload()
 {
-    Load();
 	// mtl
 	ViewClearItemList();
     ResetCurrentItem();
@@ -74,10 +73,9 @@ void CSHGameMtlPairTools::Load()
     m_bLockUpdate		= TRUE;
 
     if (FS.exist(fn.c_str())){
-    	GMLib.Load(fn.c_str());
-
+    	GMLib.Unload	();
+    	GMLib.Load		(fn.c_str());
         FillItemList	();
-
         ResetCurrentItem();
     }else{
     	ELog.DlgMsg(mtInformation,"Can't find file '%s'",fn.c_str());

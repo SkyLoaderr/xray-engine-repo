@@ -113,6 +113,8 @@ void CShaderTools::OnDestroy()
     Device.seqDevDestroy.Remove(this);
 	for (ToolsPairIt it=m_Tools.begin(); it!=m_Tools.end(); it++)
     	it->second->OnDestroy();
+
+	UnregisterTools		();
 }
 
 void CShaderTools::Render()
@@ -251,4 +253,9 @@ void CShaderTools::RegisterTools()
     }
 }
 
+void CShaderTools::UnregisterTools()
+{
+	for (ToolsPairIt it=m_Tools.begin(); it!=m_Tools.end(); it++)
+    	xr_delete(it->second);
+}
 

@@ -156,6 +156,7 @@ void CSoundRender_Environment::save			(IWriter* fs)
 //////////////////////////////////////////////////////////////////////////
 void	SoundEnvironment_LIB::Load	(LPCSTR name)
 {
+	R_ASSERT			(library.empty());
 	IReader* F			= FS.r_open(name);
 	IReader* C;
 	library.reserve		(256);
@@ -164,6 +165,7 @@ void	SoundEnvironment_LIB::Load	(LPCSTR name)
 		CSoundRender_Environment*	E	= xr_new<CSoundRender_Environment>	();
 		E->load							(C);
 		library.push_back				(E);
+        C->close		();
 	}
 	FS.r_close			(F);
 }

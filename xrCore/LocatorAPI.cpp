@@ -142,7 +142,8 @@ void CLocatorAPI::Register		(LPCSTR name, u32 vfs, u32 ptr, u32 size_real, u32 s
 			desc.size_real		= 0;
 			desc.size_compressed= 0;
             desc.modif			= u32(-1);
-			files.insert		(desc); 
+            std::pair<files_it,bool> I = files.insert(desc); 
+            R_ASSERT(I.second);
 		}
 		strcpy(temp,folder);
 		if (strlen(temp))		temp[strlen(temp)-1]=0;
@@ -313,20 +314,24 @@ void CLocatorAPI::_destroy		()
     ClearEventNotification		();
 #endif
 
-	Log				("ShutDown: File System...");
 	for				(files_it I=files.begin(); I!=files.end(); I++)
 	{
 		char* str	= LPSTR(I->name);
 		xr_free		(str);
 	}
 	files.clear		();
-	for		(PathPairIt p_it=pathes.begin(); p_it!=pathes.end(); p_it++)
+	for				(PathPairIt p_it=pathes.begin(); p_it!=pathes.end(); p_it++)
     {
 		char* str	= LPSTR(p_it->first);
 		xr_free		(str);
 		xr_delete	(p_it->second);
     }
 	pathes.clear	();
+	for				(archives_it a_it=archives.begin(); a_it!=archives.end(); a_it++)
+    {
+    	xr_delete	(a_it->vfs);
+    }
+    archives.clear	();
 }
 
 const CLocatorAPI::file* CLocatorAPI::exist			(const char* F)

@@ -442,6 +442,8 @@ CMatrix*	CResourceManager::_CreateMatrix	(LPCSTR Name)
 	R_ASSERT(Name && Name[0]);
 	if (0==stricmp(Name,"$null"))	return NULL;
 
+    Log("Create M:",Name);
+
 	LPSTR N = LPSTR(Name);
 	xr_map<LPSTR,CMatrix*,str_pred>::iterator I = m_matrices.find	(N);
 	if (I!=m_matrices.end())	return I->second;
@@ -457,6 +459,7 @@ void	CResourceManager::_DeleteMatrix		(const CMatrix* M)
 {
 	if (0==(M->dwFlags&xr_resource::RF_REGISTERED))	return;
 	LPSTR N					= LPSTR		(M->cName);
+    Log("Delete M:",N);
 	map_Matrix::iterator I	= m_matrices.find	(N);
 	if (I!=m_matrices.end())	{
 		m_matrices.erase(I);

@@ -61,6 +61,7 @@ void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb, LPCSTR root_p
 
 void xrCore::_destroy		()
 {
-	FS._destroy				();
 	CloseLog				();
+	FS._destroy				();
+	xr_delete				(xr_FS);
 }

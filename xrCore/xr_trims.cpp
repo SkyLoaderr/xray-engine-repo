@@ -18,12 +18,15 @@ LPSTR _TrimLeft( LPSTR str )
 
 LPSTR _TrimRight( LPSTR str )
 {
-	size_t	num = strlen( str ) - 1;
-	while ( (num > 0)&&(isspace(u8(str[num]))))
-	{
-		num--;
-	}
-	str[num+1] = 0;
+	size_t	num = strlen( str );
+    if (num>0){
+     	num-=1;
+        while ( (num > 0)&&(isspace(u8(str[num]))))
+        {
+            num--;
+        }
+        str[num+1] = 0;
+    }
 	return str;
 }
 

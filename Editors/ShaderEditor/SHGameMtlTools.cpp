@@ -69,9 +69,10 @@ void CSHGameMtlTools::Load()
     m_bLockUpdate		= TRUE;
 
     if (FS.exist(fn.c_str())){
-    	GMLib.Load(fn.c_str());
-        FillItemList		();
-        ResetCurrentItem	();
+    	GMLib.Unload	();
+    	GMLib.Load		(fn.c_str());
+        FillItemList	();
+        ResetCurrentItem();
     }else{
     	ELog.DlgMsg(mtInformation,"Can't find file '%s'",fn.c_str());
     }

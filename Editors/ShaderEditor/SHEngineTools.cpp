@@ -308,7 +308,7 @@ void CSHEngineTools::Load()
             fs->close();
 			FillItemList		();
         }
-
+        FS.r_close				(F);
         UpdateRefCounters		();
         ResetCurrentItem		();
     }else{
@@ -801,8 +801,8 @@ void CSHEngineTools::UpdateObjectShader()
     CEditableObject* E = m_PreviewObject->GetReference();
 	if (E&&!m_bCustomEditObject){
     	CSurface* surf = *E->FirstSurface(); R_ASSERT(surf);
-        string512 tex; strcpy(tex,surf->_Texture());
-        for (int i=0; i<7; i++){ strcat(tex,","); strcat(tex,surf->_Texture());}
+//        string512 tex; strcpy(tex,surf->_Texture());
+//        for (int i=0; i<7; i++){ strcat(tex,","); strcat(tex,surf->_Texture());}
         if (m_CurrentBlender)	surf->SetShader(m_CurrentBlender->getName());
         else					surf->SetShader("editor\\wire");
         UI.RedrawScene();

@@ -24,8 +24,15 @@ void CPSLibrary::OnCreate()
 void CPSLibrary::OnDestroy()
 {
 	OnDeviceDestroy	();
+
     m_PSs.clear		();
+
+	for (PS::PEDIt e_it = m_PEDs.begin(); e_it!=m_PEDs.end(); e_it++)
+		xr_delete	(*e_it);
 	m_PEDs.clear	();
+
+	for (PS::PGDIt g_it = m_PGDs.begin(); g_it!=m_PGDs.end(); g_it++)
+		xr_delete	(*g_it);
 	m_PGDs.clear	();
 }
 

@@ -31,6 +31,7 @@ class CShaderTools: public pureDeviceCreate, public pureDeviceDestroy
     EAction 			m_Action;
 
     void				RegisterTools		();
+    void				UnregisterTools		();
 public:
     TProperties*		m_ItemProps;
     TProperties*		m_PreviewProps;

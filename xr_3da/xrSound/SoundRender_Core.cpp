@@ -125,6 +125,14 @@ void CSoundRender_Core::_destroy	()
 {
 	env_unload					();
 
+	CSoundRender_Target*	T	= 0;
+	for (u32 tit=0; tit<s_targets.size(); tit++)
+	{
+		T							= s_targets[tit];
+		T->_destroy					();
+        xr_delete					(T);
+	}
+    
 	_RELEASE		( pExtensions	);
 	_RELEASE		( pListener		);
 	_RELEASE		( pBuffer		);
