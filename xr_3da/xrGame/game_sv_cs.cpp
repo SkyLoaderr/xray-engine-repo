@@ -382,6 +382,11 @@ void game_sv_CS::OnPlayerBuy		(u32 id_who, u16 eid_who, LPCSTR what)
 				if		(0==iAmmoMagCount)	return;
 				int		a_cost			= iAmmoMagCount*cost;
 
+				// check if has money to pay
+				game_PlayerState*	ps_who	=	get_id	(id_who);
+				if(ps_who->money_total < cost)	return;
+				ps_who->money_total		= ps_who->money_total - s16(a_cost);
+
 				// Event
 				NET_Packet			P;
 				u_EventGen			(P, GE_ADD_AMMO, W->ID);	   
