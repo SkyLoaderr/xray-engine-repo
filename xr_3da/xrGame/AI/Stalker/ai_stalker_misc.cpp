@@ -26,7 +26,7 @@ void CAI_Stalker::vfBuildPathToDestinationPoint(CAISelectorBase *S, bool bCanStr
 	}
 
 	if (S)
-		getAI().m_tpAStar->ffFindOptimalPath(AI_NodeID,AI_Path.DestNode,AI_Path,S->m_dwEnemyNode,S->fOptEnemyDistance);
+		getAI().m_tpAStar->ffFindOptimalPath(AI_NodeID,AI_Path.DestNode,AI_Path,S->m_dwEnemyNode,30.f);
 	else
 		getAI().m_tpAStar->ffFindMinimalPath(AI_NodeID,AI_Path.DestNode,AI_Path);
 	
@@ -215,12 +215,12 @@ void CAI_Stalker::vfInitSelector(CAISelectorBase &S, CSquad &Squad, CEntity* &Le
 	//	S.taMembers.push_back(S.m_tLeader);
 }
 
-void CAI_Stalker::vfChoosePointAndBuildPath(CAISelectorBase &tSelector, bool bCanStraighten)
+void CAI_Stalker::vfChoosePointAndBuildPath(CAISelectorBase &tSelector, bool bCanStraighten, bool bWalkAround)
 {
 	INIT_SQUAD_AND_LEADER;
 	
 	if (AI_Path.bNeedRebuild)
-		vfBuildPathToDestinationPoint	(0,bCanStraighten);
+		vfBuildPathToDestinationPoint	(bWalkAround ? &tSelector : 0,bCanStraighten);
 	else {
 		//vfInitSelector					(tSelector,Squad,Leader);
 		vfSearchForBetterPosition		(tSelector,Squad,Leader);
@@ -389,11 +389,11 @@ void CAI_Stalker::vfSetMovementType(EBodyState tBodyState, EMovementType tMoveme
 			break;
 		}
 		case eLookTypeSearch : {
-			SetLessCoverLook(AI_Node);
+			SetLessCoverLook(AI_Node,true);
 			break;
 		}
 		case eLookTypeDanger : {
-			SetLessCoverLook(AI_Node,PI);
+			SetLessCoverLook(AI_Node,PI,true);
 			break;
 		}
 		case eLookTypePoint : {

@@ -91,7 +91,7 @@ float CAStar::ffFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::NodePath& R
 	m_tAIMapDataE.dwEnemyNode				= dwEnemyNode;
 	m_tAIMapDataE.fEnemyDistance			= fOptimalEnemyDistance;
 	m_tAIMapDataE.fEnemyView				= fEnemyViewWeight;
-	m_tpEnemyPath->vfFindOptimalPath		(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,m_tAIMapDataE,dwStartNode,dwGoalNode,1000.f,fDistance,Result.Nodes,bUseMarks);
+	m_tpEnemyPath->vfFindOptimalPath		(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,m_tAIMapDataE,dwStartNode,dwGoalNode,1000000.f,fDistance,Result.Nodes,bUseMarks);
 	return									(fDistance);
 }
 

@@ -227,7 +227,7 @@ private:
 			void			vfBuildPathToDestinationPoint	(CAISelectorBase *S, bool bCanStraighten = false, Fvector *tpDestinationPosition = 0);
 			void			vfSearchForBetterPosition		(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
 			void			vfInitSelector					(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
-			void			vfChoosePointAndBuildPath		(CAISelectorBase &tSelector, bool bCanStraighten = false);
+			void			vfChoosePointAndBuildPath		(CAISelectorBase &tSelector, bool bCanStraighten = false, bool bWalkAround = false);
 			// animations
 			void			vfAssignGlobalAnimation			(CMotionDef *&tpGlobalAnimation);
 			void			vfAssignTorsoAnimation			(CMotionDef *&tpGlobalAnimation);
@@ -240,10 +240,8 @@ private:
 			// look
 			bool			bfCheckForVisibility			(CEntity* tpEntity);
 			void			SetDirectionLook				();
-			void			SetLook							(Fvector tPosition);
-			void			SetLessCoverLook				();
-			void			SetLessCoverLook				(NodeCompressed *tpNode);
-			void			SetLessCoverLook				(NodeCompressed *tpNode, float fMaxHeadTurnAngle);
+			void			SetLessCoverLook				(NodeCompressed *tpNode, bool bDifferenceLook);
+			void			SetLessCoverLook				(NodeCompressed *tpNode, float fMaxHeadTurnAngle, bool bDifferenceLook);
 			void			vfValidateAngleDependency		(float x1, float &x2, float x3);
 			// movement and look
 			void			vfSetMovementType				(EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType);
