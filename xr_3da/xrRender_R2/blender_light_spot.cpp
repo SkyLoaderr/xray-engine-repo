@@ -14,7 +14,7 @@ void	CBlender_accum_spot::Compile(CBlender_Compile& C)
 	switch (C.iElement)
 	{
 	case 0:	// masking
-		C.r_Pass			("accum_mask",		"null",				false,	TRUE,FALSE);
+		C.r_Pass			("accum_mask",		"dumb",				false,	TRUE,FALSE);
 		C.r_Sampler_rtf		("s_position",		r2_RT_P);
 		C.r_Sampler_rtf		("s_normal",		r2_RT_N);
 		if (b_HW_smap)		C.r_Sampler_clf		("s_smap",r2_RT_smap_d_depth);
