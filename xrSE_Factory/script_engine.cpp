@@ -74,6 +74,150 @@ void lua_cast_failed(CLuaVirtualMachine *L, LUABIND_TYPE_INFO info)
 	Debug.fatal				("LUA error: cannot cast lua value to %s",info->name());
 }
 
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+
+#ifndef BOOST_NO_STRINGSTREAM
+#	include <sstream>
+#else
+#	include <strstream>
+#endif
+
+std::string to_string(luabind::object const& o)
+{
+	using namespace luabind;
+	if (o.type() == LUA_TSTRING) return object_cast<std::string>(o);
+	lua_State* L = o.lua_state();
+	LUABIND_CHECK_STACK(L);
+
+#ifdef BOOST_NO_STRINGSTREAM
+	std::strstream s;
+#else
+	std::stringstream s;
+#endif
+
+	if (o.type() == LUA_TNUMBER)
+	{
+		s << object_cast<float>(o);
+		return s.str();
+	}
+
+	s << "<" << lua_typename(L, o.type()) << ">";
+#ifdef BOOST_NO_STRINGSTREAM
+	s << std::ends;
+#endif
+	return s.str();
+}
+
+std::string member_to_string(luabind::object const& e, LPCSTR function_signature)
+{
+#if !defined(LUABIND_NO_ERROR_CHECKING)
+	using namespace luabind;
+	lua_State* L = e.lua_state();
+	LUABIND_CHECK_STACK(L);
+
+	if (e.type() == LUA_TFUNCTION)
+	{
+		e.pushvalue();
+		detail::stack_pop p(L, 1);
+
+		{
+			if (lua_getupvalue(L, -1, 3) == 0) return to_string(e);
+			detail::stack_pop p2(L, 1);
+			if (lua_touserdata(L, -1) != reinterpret_cast<void*>(0x1337)) return to_string(e);
+		}
+
+#ifdef BOOST_NO_STRINGSTREAM
+		std::strstream s;
+#else
+		std::stringstream s;
+#endif
+		{
+			lua_getupvalue(L, -1, 2);
+			detail::stack_pop p2(L, 1);
+		}
+
+		{
+			lua_getupvalue(L, -1, 1);
+			detail::stack_pop p2(L, 1);
+			detail::method_rep* m = static_cast<detail::method_rep*>(lua_touserdata(L, -1));
+
+			for (std::vector<detail::overload_rep>::const_iterator i = m->overloads().begin();
+				i != m->overloads().end(); ++i)
+			{
+				std::string str;
+				i->get_signature(L, str);
+				if (i != m->overloads().begin())
+					s << "\n";
+				s << function_signature << str;
+			}
+		}
+#ifdef BOOST_NO_STRINGSTREAM
+		s << std::ends;
+#endif
+		return s.str();
+	}
+
+	return to_string(e);
+#else
+	return "";
+#endif
+}
+
+void print_class(lua_State *L, luabind::detail::class_rep *crep)
+{
+	std::string			S;
+	{
+		S				= (crep->get_class_type() != luabind::detail::class_rep::cpp_class) ? "LUA class " : "C++ class ";
+		S.append		(crep->name());
+		typedef std::vector<luabind::detail::class_rep::base_info> BASES;
+		const BASES &bases = crep->bases();
+		BASES::const_iterator	I = bases.begin(), B = I;
+		BASES::const_iterator	E = bases.end();
+		if (B != E)
+			S.append	(" : ");
+		for ( ; I != E; ++I) {
+			if (I != B)
+				S.append(",");
+			S.append	((*I).base->name());
+		}
+		Msg				("%s {",S.c_str());
+	}
+	{
+		typedef std::map<const char*, luabind::detail::class_rep::callback, luabind::detail::ltstr> PROPERTIES;
+		const PROPERTIES &properties = crep->properties();
+		PROPERTIES::const_iterator	I = properties.begin(), B = I;
+		PROPERTIES::const_iterator	E = properties.end();
+		for ( ; I != E; ++I)
+			Msg			("    property %s",(*I).first);
+	}
+	crep->get_table	(L);
+	luabind::object	table(L);
+	table.set		();
+	if (!crep->properties().empty() && (table.begin() != table.end()))
+		Msg			(" ");
+	for (luabind::object::iterator i = table.begin(); i != table.end(); ++i) {
+		luabind::object	object = *i;
+		std::string	S;
+		S			= "    function ";
+		S.append	(to_string(i.key()).c_str());
+		Msg			("%s",member_to_string(object,S.c_str()).c_str());
+	}
+	Msg				("}\n");
+}
+
+void print_help(lua_State *L)
+{
+	Msg				("\n\nList of the classes exported to LUA\n");
+	luabind::detail::class_registry::get_registry(L)->iterate_classes(L,&print_class);
+	Msg				("\nEn of list of the classes exported to LUA\n");
+}
+
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+
 void CScriptEngine::script_export()
 {
 	luabind::open						(lua());

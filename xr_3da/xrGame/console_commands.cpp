@@ -845,6 +845,16 @@ public:
 	  }
 };
 
+extern void print_help(lua_State *L);
+
+struct CCC_LuaHelp : public IConsole_Command {
+	CCC_LuaHelp(LPCSTR N) : IConsole_Command(N)  { };
+
+	virtual void Execute(LPCSTR args) {
+		print_help(ai().script_engine().lua());
+	}
+};
+
 void CCC_RegisterCommands()
 {
 	// game
@@ -956,6 +966,7 @@ void CCC_RegisterCommands()
 	CMD3(CCC_String,	"net_name",				psNET_Name,			32						);
 	CMD3(CCC_Mask,		"net_dump_size",		&psNET_Flags,		NETFLAG_DBG_DUMPSIZE	);
 	CMD1(CCC_Dbg_NumObjects,	"net_dbg_objects"				);
+	CMD1(CCC_LuaHelp,	"lua_help");
 
 	//Recon params
 	CMD4(CCC_Float,		"recon_min_dist",		&g_fMinReconDist,	1.0f, 50.0f);
