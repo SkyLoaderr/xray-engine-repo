@@ -160,6 +160,7 @@ void CWeapon::FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collide::r
 void CWeapon::Update		(float dt, BOOL bHUDView)
 {
 	fireDispersion_Current	-= fireDispersion_Dec*dt;
+	clamp				(fireDispersion_Current,0.f,1.f);
 }
 
 BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
@@ -168,8 +169,9 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 
 	// direct it by dispersion factor
 	fireDispersion_Current	+= fireDispersion_Inc;
+	clamp				(fireDispersion_Current,0.f,1.f);
 	Fvector				dir;
-	dir.random_dir		(D,fireDispersion,Random);
+	dir.random_dir		(D,fireDispersion*fireDispersion_Current,Random);
 
 	// ...and trace line
 	m_pParent->bEnabled = false;
