@@ -39,7 +39,7 @@ BOOL CHangingLamp::net_Spawn(LPVOID DC)
 
 	// set bone id
 	light_bone_idx			= lamp->spot_bone[0]?PKinematics(pVisual)->LL_BoneID(lamp->spot_bone):-1;
-	clr.set					(lamp->color);
+	clr.set					(0xffffffff);//lamp->color);
 	clr.mul_rgb				(lamp->spot_brightness);
 	fBrightness				= lamp->spot_brightness;
 	light_render->set_range	(lamp->spot_range);
@@ -53,7 +53,7 @@ BOOL CHangingLamp::net_Spawn(LPVOID DC)
 	PKinematics(pVisual)->Calculate();
 	lanim					= LALib.FindItem(lamp->color_animator);
 
-	if (lamp->flags.is(xrSE_HangingLamp::flPhysic)) CreateBody(lamp->mass);
+	if (lamp->flags.is(xrSE_HangingLamp::flPhysic))		CreateBody(lamp->mass);
 
 	setVisible(true);
 	setEnabled(true);
@@ -90,6 +90,13 @@ void CHangingLamp::UpdateCL	()
 		if (lanim){
 			int frame;
 			u32 clr			= lanim->Calculate(Device.fTimeGlobal,frame); // возвращает в формате BGR
+			Fcolor			fclr;
+			fclr.set		(color_get_B(clr),color_get_G(clr),color_get_R(clr),1);
+			fclr.mul_rgb	(fBrightness/255.f);
+			light_render->set_color(fclr);
+		}
+		if (0){
+			u32 clr			= 0xffffffff;
 			Fcolor			fclr;
 			fclr.set		(color_get_B(clr),color_get_G(clr),color_get_R(clr),1);
 			fclr.mul_rgb	(fBrightness/255.f);
@@ -159,5 +166,5 @@ void CHangingLamp::CreateBody(float mass)
 	AddElement			(0,PKinematics(pVisual)->LL_BoneRoot());
 	m_pPhysicsShell->mXFORM.set(svTransform);
 	m_pPhysicsShell->SetAirResistance(0.001f, 0.02f);
-	m_pPhysicsShell->setMass(mass);
+//	m_pPhysicsShell->setMass(mass);
 }
