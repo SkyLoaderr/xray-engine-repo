@@ -10,10 +10,10 @@
 #include "../character_info.h"
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
+#include "../Level.h"
 
 #define CONTACT_LOST	"The contact has been lost."
 #define WAIT_FOR_REPLY	"Waiting for reply."
-
 
 #define PDA_DIALOG_XML "pda_dialog.xml"
 #define PDA_DIALOG_CHAR_XML	"pda_dialog_character.xml"
@@ -27,21 +27,28 @@ CUIPdaDialogWnd::~CUIPdaDialogWnd()
 
 void CUIPdaDialogWnd::Init(int x, int y, int width, int height)
 {
-	CUIXml uiXml;
+	CUIXml		uiXml;
 	bool xml_result =uiXml.Init("$game_data$",PDA_DIALOG_XML);
 	R_ASSERT2(xml_result, "xml file not found");
-	CUIXmlInit xml_init;
-
+	CUIXmlInit	xml_init;
 
 	// Декоративное оформление
 	AttachChild(&UICharIconFrame);
 	xml_init.InitFrameWindow(uiXml, "chicon_frame_window", 0, &UICharIconFrame);
+	UICharIconFrame.AttachChild(&UICharIconHeader);
+	xml_init.InitFrameLine(uiXml, "chicon_frame_line", 0, &UICharIconHeader);
 
 	AttachChild(&UIPhrasesFrame);
 	xml_init.InitFrameWindow(uiXml, "ph_frame_window", 0, &UIPhrasesFrame);
+	UIPhrasesFrame.AttachChild(&UIPhrasesHeader);
+	xml_init.InitFrameLine(uiXml, "ph_frame_line", 0, &UIPhrasesHeader);
+	UIPhrasesHeader.UITitleText.SetText(ALL_PDA_HEADER_PREFIX);
 
 	AttachChild(&UIMsglogFrame);
 	xml_init.InitFrameWindow(uiXml, "msglog_frame_window", 0, &UIMsglogFrame);
+	UIMsglogFrame.AttachChild(&UIMsglogHeader);
+	xml_init.InitFrameLine(uiXml, "msglog_frame_line", 0, &UIMsglogHeader);
+	UIMsglogHeader.UITitleText.SetText(UICharacterInfo.UIName.GetText());
 
 	UIMsglogFrame.AttachChild(&UILogListWnd);
 	UILogListWnd.SetMessageTarget(this);

@@ -167,7 +167,7 @@ protected:
 		xr_vector<float>	m_fAdditionalInfo;
 	};
 
-	CUIFrameWindow		UIBagWnd;
+	CUIStatic			UIBagWnd;
 	CUIStatic			UIDescWnd;
 	CUIStatic			UIPersonalWnd;
 

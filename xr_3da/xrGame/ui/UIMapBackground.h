@@ -23,7 +23,7 @@ public:
 	virtual void Update();
 	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = NULL);
 
-	typedef enum{MAPSPOT_FOCUS_RECEIVED, MAPSPOT_FOCUS_LOST} E_MESSAGE;
+	typedef enum{MAPSPOT_FOCUS_RECEIVED, MAPSPOT_FOCUS_LOST, MAP_MOVED} E_MESSAGE;
 
 
 	void ConvertToLocal(const Fvector& src, Ivector2& dest);
@@ -72,6 +72,9 @@ public:
 	Fvector GetActivePos() const { return m_vActivePos; }
 	void SetActivePos(const Fvector &vNewPos) { m_vActivePos = vNewPos; }
 
+	// Двигаем карту
+	void MoveMap(const int deltaX, const int deltaY);
+
 protected:
 	void DrawFogOfWar();
 	void DrawFogOfWarCell(int x, int y);
@@ -85,8 +88,11 @@ protected:
 
 	CUIMapSpot m_fogOfWarCell;
 
+public:
 	//для перетаскивания карты при помощи мыши
 	virtual void OnMouse(int x, int y, E_MOUSEACTION mouse_action);
+
+protected:
 	int m_iOldMouseX;
 	int m_iOldMouseY;
 	POINT m_previousPos;

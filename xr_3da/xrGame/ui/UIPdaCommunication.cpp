@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "UIPdaCommunication.h"
 #include "../Pda.h"
+#include "UIPdaWnd.h"
 
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
@@ -261,6 +262,15 @@ void CUIPdaCommunication::InitPdaDialog()
 
 	UpdateMessageLog();
 	UpdateMsgButtons();
+
+	std::string		buf;
+	string128		buf2;
+	buf = UIPdaDialogWnd.UICharacterInfo.UIName.GetText();
+	if (buf.size() > 6) buf.erase(0, 6);
+//	strcpy(buf, UIPdaDialogWnd.UICharacterInfo.UIName.GetText());
+	UIPdaDialogWnd.UICharIconHeader.UITitleText.SetText(buf.c_str());
+	strconcat(buf2, ALL_PDA_HEADER_PREFIX, PDA_CONTACTS_HEADER_SUFFIX, " / ", buf.c_str());
+	UIPdaDialogWnd.UIMsglogHeader.UITitleText.SetText(buf2);
 }
 
 //заполнить окно логами сообщений с текущим контактом

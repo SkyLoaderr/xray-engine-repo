@@ -49,7 +49,7 @@ protected:
 	void AddObjectSpot(CGameObject* pGameObject);
 
 	//элементы интерфейса
-//	CUIFrameWindow	UIMainMapFrame;
+	CUIFrameWindow	UIMainMapFrame;
 
 //	CUIStatic UIStaticTop;
 //	CUIStatic UIStaticBottom;
@@ -67,7 +67,10 @@ protected:
 	//информация о пресонаже
 	CUICharacterInfo UICharacterInfo;
 
-	CUIMapBackground UIMapBackground;
+	// Карта и скроллбары
+	CUIMapBackground	UIMapBackground;
+	CUIScrollBar		UIMapBgndV, UIMapBgndH;
+
 
 	//подложка для карты
 	CUIStaticItem	landscape;

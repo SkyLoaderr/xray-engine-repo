@@ -4,6 +4,7 @@
 
 #include "uiwindow.h"
 #include "uistatic.h"
+#include "UIFrameWindow.h"
 
 #include "..\InventoryOwner.h"
 
@@ -30,4 +31,6 @@ public:
 	CUIStatic UICommunity;
 	CUIStatic UIText;
 	CUIStatic UIRelation;
+
+	CUIFrameWindow	UIMask;
 };

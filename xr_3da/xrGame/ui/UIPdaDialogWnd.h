@@ -12,8 +12,6 @@
 #include "UIListWnd.h"
 #include "UICharacterInfo.h"
 
-
-
 class CUIPdaDialogWnd: public CUIWindow  
 {
 private:
@@ -59,6 +57,9 @@ public:
 	CUIFrameWindow		UIMsglogFrame;
 	CUIFrameWindow		UICharIconFrame;
 	CUIFrameWindow		UIPhrasesFrame;
+	CUIFrameLineWnd		UIMsglogHeader;
+	CUIFrameLineWnd		UICharIconHeader;
+	CUIFrameLineWnd		UIPhrasesHeader;
 
 	//информация о персонаже
 	CUIWindow		 UICharacterWindow;

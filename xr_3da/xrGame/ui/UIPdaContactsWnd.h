@@ -11,7 +11,9 @@
 #include "UIEditBox.h"
 #include "UIListWnd.h"
 #include "UIFrameWindow.h"
+#include "UIFrameLineWnd.h"
 
+extern const char * const PDA_CONTACTS_HEADER_SUFFIX;
 
 class CPda;
 
@@ -50,4 +52,6 @@ protected:
 
 	// Фрейм для обрамоения контактов
 	CUIFrameWindow		UIFrameContacts;
+	// Заголовок
+	CUIFrameLineWnd		UIHeader;
 };

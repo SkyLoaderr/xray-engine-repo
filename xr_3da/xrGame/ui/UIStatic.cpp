@@ -28,6 +28,8 @@ CUIStatic:: CUIStatic()
 	m_iTextOffsetY = 0;
 
 	m_dwFontColor = 0xFFFFFFFF;
+
+	m_pMask = NULL;
 }
 
  CUIStatic::~ CUIStatic()
@@ -78,6 +80,8 @@ void  CUIStatic::Draw()
 			m_UIStaticItem.Render();
 	}
 
+	// draw mask rect
+	if (m_pMask) m_pMask->Draw();
 	inherited::Draw();
 
 	// Вывод текста
@@ -510,4 +514,19 @@ Irect CUIStatic::GetClipRect()
 		r.set(0, 0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
 
 	return r;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIStatic::SetMask(CUIFrameWindow *pMask)
+{
+	m_pMask = pMask;
+
+	if (m_pMask)
+	{
+		RECT r = GetAbsoluteRect();
+		m_pMask->SetWndRect(r.left, r.top, r.right, r.bottom);
+		m_pMask->SetWidth(r.right - r.left);
+		m_pMask->SetHeight(r.bottom - r.top);
+	}
 }

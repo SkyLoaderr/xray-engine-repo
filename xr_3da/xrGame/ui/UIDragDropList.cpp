@@ -34,6 +34,8 @@ CUIDragDropList::CUIDragDropList()
 	m_DragDropItemsList.clear();
 
 	m_bScrollBarEnabled = true;
+
+	m_fItemsScale = 1.0f;
 }
 
 CUIDragDropList::~CUIDragDropList()
@@ -168,6 +170,10 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 
 		//элемени чужой, надо взять его себе, 
 		//но только если он в нашей области
+
+		int newW, newH;
+		int deltaW, deltaH;
+
 		if( it == m_ChildWndList.end())
 		{
 			RECT rect = GetAbsoluteRect();
@@ -225,9 +231,19 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 						pItem->GetParent()->SetCapture(pItem, false);
 						//((CUIDragDropList*)pItem->GetParent())->DetachChild(pItem);
 						pItem->GetParent()->DetachChild(pItem);
-
 						AttachChild(pItem);
 						pItem->BringAllToTop(); 
+
+						pItem->SetTextureScale(m_fItemsScale);
+						newW	= static_cast<int>(pItem->GetGridWidth() * m_fItemsScale * INV_GRID_WIDTH);
+						newH	= static_cast<int>(pItem->GetGridHeight() * m_fItemsScale * INV_GRID_HEIGHT);
+						deltaW	= (pItem->GetWndRect().right - pItem->GetWndRect().left - newW) / 2;
+						deltaH	= (pItem->GetWndRect().bottom - pItem->GetWndRect().top - newH) / 2;
+
+						pItem->SetWidth(newW);
+						pItem->SetHeight(newH);
+						pItem->MoveWindow(pItem->GetWndRect().left + deltaW, pItem->GetWndRect().top + deltaH);
+
 					}
 					else
 					{
@@ -249,6 +265,17 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			OnCustomPlacement();
 			PlaceItemInGrid(pItem);
 			OffCustomPlacement();
+
+			pItem->SetTextureScale(m_fItemsScale);
+			newW	= static_cast<int>(pItem->GetGridWidth() * m_fItemsScale * INV_GRID_WIDTH);
+			newH	= static_cast<int>(pItem->GetGridHeight() * m_fItemsScale * INV_GRID_HEIGHT);
+			deltaW	= (pItem->GetWndRect().right - pItem->GetWndRect().left - newW) / 2;
+			deltaH	= (pItem->GetWndRect().bottom - pItem->GetWndRect().top - newH) / 2;
+
+			pItem->SetWidth(newW);
+			pItem->SetHeight(newH);
+			pItem->MoveWindow(pItem->GetWndRect().left + deltaW, pItem->GetWndRect().top + deltaH);
+
 			pItem->GetParent()->SetCapture(pItem, false);
 			// Просигнализировать о том, что если это был костюм, то надо его опять спрятать
 			pItem->GetMessageTarget()->SendMessage(pItem ,CUIOutfitSlot::OUTFIT_RETURNED_BACK, NULL);
@@ -619,4 +646,13 @@ bool CUIDragDropList::CanPlaceItem(CUIDragDropItem *pDDItem)
 {
 	int a, b;
 	return CanPlaceItemInGrid(pDDItem, a, b);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIDragDropList::SetItemsScale(float fItemsScale)
+{
+	R_ASSERT(fItemsScale > 0);
+
+	m_fItemsScale = fItemsScale;
 }

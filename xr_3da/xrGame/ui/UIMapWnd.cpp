@@ -29,6 +29,10 @@ using namespace InventoryUtilities;
 //x1 - лево, x2 - право, 
 //z1 - низ , z2 - верх
 
+const char * const	PDA_MAP_XML			= "map.xml";
+const				SCROLLBARS_SHIFT	= 5;
+const				VSCROLLBAR_STEP		= 20; // В пикселях
+const				HSCROLLBAR_STEP		= 20; // В пикселях
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -68,17 +72,17 @@ void CUIMapWnd::Init()
 {
 	CUIXmlInit xml_init;
 	CUIXml uiXml;
-	uiXml.Init("$game_data$","map.xml");
+	uiXml.Init("$game_data$", PDA_MAP_XML);
 
-	inherited::Init(0, 0, Device.dwWidth, Device.dwHeight);
+	inherited::Init(0, 0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
 
 //	AttachChild(&UIStaticTop);
 //	UIStaticTop.Init("ui\\ui_top_background", 0,0,1024,128);
 //	AttachChild(&UIStaticBottom);
 //	UIStaticBottom.Init("ui\\ui_bottom_background", 0,Device.dwHeight-32,1024,32);
 
-//	AttachChild(&UIMainMapFrame);
-//	xml_init.InitFrameWindow(uiXml, "frame_window", 0, &UIMainMapFrame);
+	AttachChild(&UIMainMapFrame);
+	xml_init.InitFrameWindow(uiXml, "frame_window", 0, &UIMainMapFrame);
 //	UIMainMapFrame.AttachChild(&UIPDAHeader);
 //	xml_init.InitStatic(uiXml, "static", 0, &UIPDAHeader);
 
@@ -103,15 +107,25 @@ void CUIMapWnd::Init()
 
 	UIStaticInfo.AttachChild(&UICharacterInfo);
 	UICharacterInfo.Init(0,0, UIStaticInfo.GetWidth(), UIStaticInfo.GetHeight(), "map_character.xml");
-
 	
-	AttachChild(&UIMapBackground);
+	UIMainMapFrame.AttachChild(&UIMapBackground);
 	xml_init.InitWindow(uiXml, "window", 0, &UIMapBackground);
+	UIMapBackground.SetMessageTarget(this);
 	UIMapBackground.Show(true);
 	UIMapBackground.Enable(true);
 	
 	m_iMapWidth = UIMapBackground.GetWidth();
 	m_iMapHeight = UIMapBackground.GetHeight();
+
+	RECT r = UIMapBackground.GetWndRect();
+
+	UIMainMapFrame.AttachChild(&UIMapBgndV);
+	UIMapBgndV.Init(r.right + SCROLLBARS_SHIFT, r.top, r.bottom - r.top, false);
+	UIMapBgndV.SetMessageTarget(this);
+
+	UIMainMapFrame.AttachChild(&UIMapBgndH);
+	UIMapBgndH.Init(r.left, r.bottom + SCROLLBARS_SHIFT, r.right - r.left, true);
+	UIMapBgndH.SetMessageTarget(this);
 
 	//Элементы автоматического добавления
 	xml_init.InitAutoStatic(uiXml, "auto_static", this);
@@ -146,6 +160,27 @@ void CUIMapWnd::InitMap()
 
 
 	UIMapBackground.InitMapBackground();
+	Fvector2	dest;
+	UIMapBackground.ConvertFromLocalToMap(HSCROLLBAR_STEP, VSCROLLBAR_STEP, dest);
+
+	// Настраиваем скроллбоксы
+	if (UIMapBackground.m_fMapHeightMeters > UIMapBackground.m_fMapViewHeightMeters)
+	{
+		UIMapBgndV.Show(true);
+		UIMapBgndV.SetRange(0, static_cast<s16>(iCeil((UIMapBackground.m_fMapHeightMeters - UIMapBackground.m_fMapViewHeightMeters) / dest.y)));
+	}
+	else
+		UIMapBgndV.Show(false);
+
+	if (UIMapBackground.m_fMapWidthMeters > UIMapBackground.m_fMapViewWidthMeters)
+	{
+		UIMapBgndH.Show(true);
+		UIMapBgndH.SetRange(0, static_cast<s16>(iCeil((UIMapBackground.m_fMapWidthMeters - UIMapBackground.m_fMapViewWidthMeters) / dest.x)));
+	}
+	else
+		UIMapBgndH.Show(false);
+
+	SendMessage(&UIMapBackground, CUIMapBackground::MAP_MOVED, NULL);
 
 	///убрать все интерактивные отметки на карте 
 	RemoveAllSpots();
@@ -325,6 +360,36 @@ void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 		{
 			UIStaticInfo.Show(false);
 		}
+	}
+
+	if (&UIMapBgndV == pWnd)
+	{
+		if (CUIScrollBar::VSCROLL == msg)
+		{
+			static u16 prevScrollPos = 0;
+			UIMapBackground.MoveMap(0, -VSCROLLBAR_STEP * (UIMapBgndV.GetScrollPos() - prevScrollPos));
+			prevScrollPos = UIMapBgndV.GetScrollPos();
+		}
+	}
+
+	if (&UIMapBgndH == pWnd)
+	{
+		if (CUIScrollBar::HSCROLL == msg)
+		{
+			static u16 prevScrollPos = 0;
+			UIMapBackground.MoveMap(-HSCROLLBAR_STEP * (UIMapBgndV.GetScrollPos() - prevScrollPos), 0);
+			prevScrollPos = UIMapBgndH.GetScrollPos();
+		}
+	}
+
+	if (&UIMapBackground == pWnd && CUIMapBackground::MAP_MOVED == msg)
+	{
+		Fvector2	dest;
+		UIMapBackground.ConvertFromLocalToMap(HSCROLLBAR_STEP, VSCROLLBAR_STEP, dest);
+		if (UIMapBgndV.IsShown())
+			UIMapBgndV.SetScrollPos(static_cast<s16>(UIMapBgndV.GetMaxRange() - iCeil((UIMapBackground.m_fMapHeightMeters - UIMapBackground.m_fMapViewHeightMeters - UIMapBackground.m_fMapY) / dest.y)));
+		if (UIMapBgndH.IsShown())
+			UIMapBgndH.SetScrollPos(static_cast<s16>(UIMapBgndH.GetMaxRange() - iCeil((UIMapBackground.m_fMapWidthMeters - UIMapBackground.m_fMapViewWidthMeters - UIMapBackground.m_fMapX) / dest.x)));
 	}
 	inherited::SendMessage(pWnd, msg, pData);
 }

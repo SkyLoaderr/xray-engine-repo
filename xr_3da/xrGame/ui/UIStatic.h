@@ -11,12 +11,11 @@
 #include "uiwindow.h"
 #include "uistring.h"
 
-
 #include "../uistaticitem.h"
-
 
 #define RGB_ALPHA(a, r, g ,b)  ((u32) (((u8) (b) | ((u16) (g) << 8)) | (((u32) (u8) (r)) << 16)) | (((u32) (u8) (a)) << 24)) 
 
+class CUIFrameWindow;
 
 class CUIStatic : public CUIWindow  
 {
@@ -82,6 +81,9 @@ public:
 
 	Irect GetClipRect();
 
+	// Работа с маской
+	void SetMask(CUIFrameWindow *pMask);
+
 protected:
 	bool m_bClipper;
 	//растягивание текстуры в видимую область
@@ -131,7 +133,9 @@ protected:
 	int word_width;
 
 	CGameFont::EAligment m_eTextAlign;
-	
+
+    // Для вывода текстуры с обрезанием по маске используем CUIFrameWindow
+	CUIFrameWindow	*m_pMask;
 };
 
 #endif // _UI_STATIC_H_

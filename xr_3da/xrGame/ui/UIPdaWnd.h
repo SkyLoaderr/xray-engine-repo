@@ -12,8 +12,11 @@
 #include "UIMapWnd.h"
 #include "UITaskWnd.h"
 #include "UIDiaryWnd.h"
+#include "UIFrameLineWnd.h"
 
 class CInventoryOwner;
+
+extern const char * const ALL_PDA_HEADER_PREFIX;
 
 ///////////////////////////////////////
 // Подложка и основные кнопки PDA
@@ -63,7 +66,8 @@ protected:
 	//элементы декоративного интерфейса
 	CUIStatic			UIStaticTop;
 	CUIStatic			UIStaticBottom;
-	CUIFrameWindow		UIMainButtonsBackground;
+	CUIFrameLineWnd		UIMainButtonsBackground;
+	CUIFrameLineWnd		UITimerBackground;
 
 //	//верхушка PDA для кнопочек переключения режима
 //	CUIStatic			UIPDAHeader;

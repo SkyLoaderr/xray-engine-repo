@@ -27,12 +27,14 @@ using namespace InventoryUtilities;
 
 #define MAX_ITEMS	70
 
-const u32	cDetached			= 0xffffffff;
-const u32	cAttached			= 0xff00ff00;
-const u32	cRed				= 0xffff0000;
-const u32	cWhite				= cDetached;
-const u8	uIndicatorWidth		= 17;
-const u8	uIndicatorHeight	= 27;
+const u32			cDetached			= 0xffffffff;
+const u32			cAttached			= 0xff00ff00;
+const u32			cRed				= 0xffff0000;
+const u32			cWhite				= cDetached;
+const u8			uIndicatorWidth		= 17;
+const u8			uIndicatorHeight	= 27;
+const float			SECTION_ICON_SCALE	= 0.8f;
+const char * const	BUY_WND_XML_NAME	= "inventoryMP_new2.xml";
 
 int			g_iOkAccelerator, g_iCancelAccelerator;
 
@@ -75,7 +77,7 @@ void CUIBuyWeaponWnd::Init(char *strSectionName)
 	m_StrSectionName = strSectionName;
 
 	CUIXml uiXml;
-	bool xml_result = uiXml.Init("$game_data$","inventoryMP_new.xml");
+	bool xml_result = uiXml.Init("$game_data$", BUY_WND_XML_NAME);
 	R_ASSERT2(xml_result, "xml file not found");
 
 	inherited::DetachAll();
@@ -85,13 +87,13 @@ void CUIBuyWeaponWnd::Init(char *strSectionName)
 	CUIWindow::Init(0,0, UI_BASE_WIDTH, UI_BASE_WIDTH);
 
 	AttachChild(&UIStaticTop);
-	UIStaticTop.Init("ui\\ui_inv_quick_slots", 0,0,UI_BASE_WIDTH,128);
+	xml_init.InitStatic(uiXml, "slots_static", 0, &UIStaticTop);
 
 	AttachChild(&UIStaticBelt);
 	xml_init.InitStatic(uiXml, "static", 0, &UIStaticBelt);
 
 	AttachChild(&UIBagWnd);
-	xml_init.InitFrameWindow(uiXml, "frame_window", 0, &UIBagWnd);
+	xml_init.InitStatic(uiXml, "bag_background_static", 0, &UIBagWnd);
 
 	////////////////////////////////////////
 	//окно с описанием активной вещи
@@ -166,6 +168,8 @@ void CUIBuyWeaponWnd::Init(char *strSectionName)
 		// всеми подокнами, то запоминаем адрес this, как парента в MessageTarget'e
 		pNewDDList->SetMessageTarget(this);
 		m_WeaponSubBags.push_back(pNewDDList);
+		// Устанавливаем скейл для элементов этого листа
+		pNewDDList->SetItemsScale(SECTION_ICON_SCALE);
 
 		xml_init.InitDragDropList(uiXml, "dragdrop_list", 1, pNewDDList);
 	}
@@ -533,6 +537,18 @@ bool CUIBuyWeaponWnd::BagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 		DetachChild(pDDItemMP);
 	pDDItemMP->GetOwner()->AttachChild(pDDItemMP);
 
+	// Применяем скейл
+	pDDItemMP->SetTextureScale(pDDItemMP->GetOwner()->GetItemsScale());
+	int newW	= static_cast<int>(pDDItemMP->GetGridWidth() * pDDItemMP->GetOwner()->GetItemsScale() * INV_GRID_WIDTH);
+	int newH	= static_cast<int>(pDDItemMP->GetGridHeight() * pDDItemMP->GetOwner()->GetItemsScale() * INV_GRID_HEIGHT);
+	int deltaW	= (pDDItemMP->GetWndRect().right - pDDItemMP->GetWndRect().left - newW) / 2;
+	int deltaH	= (pDDItemMP->GetWndRect().bottom - pDDItemMP->GetWndRect().top - newH) / 2;
+
+	pDDItemMP->SetWidth(newW);
+	pDDItemMP->SetHeight(newH);
+	pDDItemMP->MoveWindow(pDDItemMP->GetWndRect().left + deltaW, pDDItemMP->GetWndRect().top + deltaH);
+
+
 	// И прибавляем к деньгам стоимость вещи.
 	if (pDDItemMP->m_bAlreadyPaid)
 	{
@@ -601,6 +617,17 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 
 //		SetCurrentItem(pInvItem);
 		m_pCurrentDragDropItem = (CUIDragDropItemMP*)pWnd;
+
+		// Cкейлим и увеличиваем текстуру
+		m_pCurrentDragDropItem->SetTextureScale(1.0f);
+		int w		= static_cast<int>(m_pCurrentDragDropItem->GetGridWidth() * INV_GRID_WIDTH);
+		int h		= static_cast<int>(m_pCurrentDragDropItem->GetGridHeight() * INV_GRID_HEIGHT) ;
+		int deltaW	= (m_pCurrentDragDropItem->GetWndRect().right - m_pCurrentDragDropItem->GetWndRect().left - w) / 2;
+		int deltaH	= (m_pCurrentDragDropItem->GetWndRect().bottom - m_pCurrentDragDropItem->GetWndRect().top - h) / 2;
+		m_pCurrentDragDropItem->SetWidth(w);
+		m_pCurrentDragDropItem->SetHeight(h);
+		m_pCurrentDragDropItem->MoveWindow(m_pCurrentDragDropItem->GetWndRect().left + deltaW, 
+										   m_pCurrentDragDropItem->GetWndRect().top + deltaH);
 	}
 	else if(msg == CUIDragDropItem::ITEM_DB_CLICK)
 	{
@@ -636,6 +663,7 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 								DetachChild(m_pCurrentDragDropItem);
 							((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->
 								AttachChild(m_pCurrentDragDropItem);
+							SendMessage(m_pCurrentDragDropItem, CUIDragDropItem::ITEM_DROP, NULL);
 						}
 			}
 		}
@@ -1071,6 +1099,7 @@ void CUIBuyWeaponWnd::FillWpnSubBag(const u32 slotNum)
 
 		UIDragDropItem.CUIStatic::Init(0,0, 50,50);
 		UIDragDropItem.SetShader(GetEquipmentIconsShader());
+		UIDragDropItem.SetTextureScale(SECTION_ICON_SCALE);
 
 		//properties used by inventory menu
 		int m_iGridWidth	= pSettings->r_u32(wpnSectStorage[slotNum][j].c_str(), "inv_grid_width");
@@ -1089,6 +1118,8 @@ void CUIBuyWeaponWnd::FillWpnSubBag(const u32 slotNum)
 		UIDragDropItem.SetSlot(m_slot);
 		UIDragDropItem.SetSectionGroupID(slotNum);
 		UIDragDropItem.SetPosInSectionsGroup(static_cast<u32>(j));
+
+		UIDragDropItem.SetFont(HUD().pFontLetterica16Russian);
 
 		// Читаем стоимость оружия
 		if(pSettings->line_exist(wpnSectStorage[slotNum][j].c_str(), "cost"))
@@ -1212,6 +1243,8 @@ void CUIBuyWeaponWnd::InitAddonsInfo(CUIDragDropItemMP &DDItemMP, const std::str
 
 			UIDragDropItem.SetCost(cost);
 
+			UIDragDropItem.SetFont(HUD().pFontLetterica16Russian);
+
 			UIDragDropItem.GetUIStaticItem().SetOriginalRect(
 				iXPos		* INV_GRID_WIDTH,
 				iYPos		* INV_GRID_HEIGHT,
@@ -1265,11 +1298,14 @@ bool CUIBuyWeaponWnd::SlotToSection(const u32 SlotNum)
 	if (!UITopList[SlotNum].GetDragDropItemsList().empty())
 	{
 		CUIDragDropItemMP *pDDItemMP = dynamic_cast<CUIDragDropItemMP*>(*UITopList[SlotNum].GetDragDropItemsList().begin());
-		// Берем текущее оружие в слоте...
+		// Берем текущее оружие в слоте
 		pDDItemMP->MoveOnNextDrop();
-		// ...убираем все аддоны...
+		// убираем все аддоны
 		pDDItemMP->AttachDetachAllAddons(false);
-		// ...и посылаем ему сообщение переместиться в сумку
+		// делаем вещь текущей
+//		m_pCurrentDragDropItem = pDDItemMP;
+
+		// и посылаем ему сообщение переместиться в сумку
 		m_WeaponSubBags[pDDItemMP->GetSectionGroupID()]->SendMessage(pDDItemMP, 
 									CUIDragDropItem::ITEM_DROP, NULL);
 	}
@@ -1515,7 +1551,7 @@ bool CUIBuyWeaponWnd::OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action)
 				MenuLevelUp();
 		}
 		break;
-	// Второй уровень - выбор конкретного орцжия в данной группе
+	// Второй уровень - выбор конкретного оружия в данной группе
 	case mlWpnSubType:
 
 		// Быстрая проверка на возможность дальнейшего плодотворного сотрудничетва
@@ -1609,6 +1645,7 @@ void WpnDrawIndex(CUIDragDropItem *pDDItem)
 //		float(rect.bottom - pDDItemMP->GetFont()->CurrentHeight()- 2),
 //		"%d", pDDItemMP->GetPosInSectionsGroup() + 1);
 
+	pDDItemMP->GetFont()->SetColor(0xffffffff);
 	HUD().OutText(pDDItem->GetFont(), pDDItemMP->GetClipRect(), float(left), 
 		float(bottom - pDDItemMP->GetFont()->CurrentHeight()),
 		"%d", pDDItemMP->GetPosInSectionsGroup() + 1);

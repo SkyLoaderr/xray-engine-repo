@@ -195,6 +195,7 @@ void  CHUDManager::RenderUI()
 		pFontGraffiti50Russian->OnRender(); 
 		pFontLetterica16Russian->OnRender();
 		pFontLetterica18Russian->OnRender();
+		pFontLetterica25->OnRender();
 
 		//render UI cursor
 		if(pUI && pUI->GetCursor() && pUI->GetCursor()->IsVisible())

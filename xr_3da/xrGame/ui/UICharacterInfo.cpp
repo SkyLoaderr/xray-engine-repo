@@ -92,6 +92,12 @@ void CUICharacterInfo::Init(int x, int y, int width, int height, const char* xml
 		UIRelation.Show(false);
 		UIRelation.Enable(false);
 	}
+
+	if(uiXml.NavigateToNode("mask_frame_window", 0))
+	{
+		xml_init.InitFrameWindow(uiXml, "mask_frame_window", 0, &UIMask);
+		UIIcon.SetMask(&UIMask);
+	}
 }
 
 void CUICharacterInfo::InitCharacter(CInventoryOwner* pInvOwner)

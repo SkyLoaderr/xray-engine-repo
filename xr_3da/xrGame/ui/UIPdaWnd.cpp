@@ -13,7 +13,9 @@
 #include "../HUDManager.h"
 #include "../level.h"
 
-#define PDA_XML "pda_new.xml"
+#define PDA_XML "pda.xml"
+
+const char * const ALL_PDA_HEADER_PREFIX = "#root 15/FD-665#68";
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -28,7 +30,7 @@ CUIPdaWnd::CUIPdaWnd()
 //	m_pInvOwner = NULL;
 //	m_pPda = NULL;
 
-	m_pActiveDialog = &UIPdaCommunication;
+//	m_pActiveDialog = NULL;
 	SetFont(HUD().pFontMedium);
 }
 
@@ -57,7 +59,12 @@ void CUIPdaWnd::Init()
 
 	// Main buttons background
 	AttachChild(&UIMainButtonsBackground);
-	xml_init.InitFrameWindow(uiXml, "mbbackground_frame_window", 0, &UIMainButtonsBackground);
+	xml_init.InitFrameLine(uiXml, "mbbackground_frame_line", 0, &UIMainButtonsBackground);
+
+	// Timer background
+	AttachChild(&UITimerBackground);
+	xml_init.InitFrameLine(uiXml, "timer_frame_line", 0, &UITimerBackground);
+
 
  	// Tab control
 	AttachChild(&UITabControl);
@@ -79,6 +86,9 @@ void CUIPdaWnd::Init()
 	UIMainPdaFrame.AttachChild(&UIDiaryWnd);
 	UIDiaryWnd.Init();
 	UIDiaryWnd.SetMessageTarget(this);
+
+	m_pActiveDialog = &UIPdaCommunication;
+	UITabControl.SetNewActiveTab(1);
 }
 
 void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
@@ -87,7 +97,8 @@ void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 	{
 		if (CUITabControl::TAB_CHANGED == msg)
 		{
-			m_pActiveDialog->Hide();
+			if (m_pActiveDialog)
+				m_pActiveDialog->Hide();
 
 			// Add custom dialogs here
 			switch (UITabControl.GetActiveIndex()) 

@@ -12,7 +12,8 @@
 
 #define PDA_CONTACT_HEIGHT 70
 
-const char * const PDA_CONTACTS_XML	= "pda_contacts.xml";
+const char * const PDA_CONTACTS_XML					= "pda_contacts.xml";
+const char * const PDA_CONTACTS_HEADER_SUFFIX		= " / Contacts";
 
 
 CUIPdaContactsWnd::CUIPdaContactsWnd()
@@ -40,16 +41,24 @@ void CUIPdaContactsWnd::Init(int x, int y, int width, int height)
 {
 	inherited::Init(x, y, width, height);
 
-	CUIXml uiXml;
+	CUIXml		uiXml;
 	bool xml_result =uiXml.Init("$game_data$", PDA_CONTACTS_XML);
 	R_ASSERT2(xml_result, "xml file not found");
-	CUIXmlInit xml_init;
+
+	CUIXmlInit	xml_init;
+	string128	buf;
 
 	AttachChild(&UIFrameContacts);
 	xml_init.InitFrameWindow(uiXml, "contacts_frame_window", 0, &UIFrameContacts);
 
-	AttachChild(&UIListWnd);
+	UIFrameContacts.AttachChild(&UIHeader);
+	xml_init.InitFrameLine(uiXml, "cntd_frame_line", 0, &UIHeader);
+	strconcat(buf, ALL_PDA_HEADER_PREFIX, PDA_CONTACTS_HEADER_SUFFIX);
+	UIHeader.UITitleText.SetText(buf);
+
+	UIFrameContacts.AttachChild(&UIListWnd);
 	xml_init.InitListWnd(uiXml, "list", 0, &UIListWnd);
+	UIListWnd.SetMessageTarget(this);
 	UIListWnd.EnableActiveBackground(true);
 	UIListWnd.EnableScrollBar(true);
 }

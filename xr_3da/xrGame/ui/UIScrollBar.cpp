@@ -12,7 +12,7 @@
 #define SCROLLBAR_BACKGROUND_HORZ	"ui\\ui_scb_back"
 #define SCROLLBAR_BACKGROUND_VERT	"ui\\ui_scb_back_v"
 
-
+const u32	MIN_SCROLLBOX_LENGTH	= 20;
 
 CUIScrollBar::CUIScrollBar(void)
 {
@@ -114,7 +114,6 @@ void CUIScrollBar::UpdateScrollBar()
 									scrollbar_unit*float(m_iPageSize)
 									+.5f));
 
-		
 		m_ScrollBox.MoveWindow(m_ScrollBox.GetWndRect().left,
 								(int)( SCROLLBAR_HEIGHT+
 								(GetHeight()-2*SCROLLBAR_HEIGHT)*

@@ -390,21 +390,8 @@ void CUIMapBackground::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 		{
 			deltaX = x - m_iOldMouseX;
 			deltaY = y - m_iOldMouseY;
-				
-			Fvector2 dest;
-			ConvertFromLocalToMap(deltaX, deltaY, dest);
-
-			m_fMapX -= dest.x;
-			m_fMapY -= dest.y;
-
-			if(m_fMapX<0) m_fMapX = 0;
-			if(m_fMapX>m_fMapWidthMeters - m_fMapViewWidthMeters) 
-						m_fMapX = m_fMapWidthMeters - m_fMapViewWidthMeters;
-
-			if(m_fMapY<0) m_fMapY = 0;
-			if(m_fMapY>m_fMapHeightMeters - m_fMapViewHeightMeters) 
-						m_fMapY = m_fMapHeightMeters - m_fMapViewHeightMeters;
-
+			MoveMap(deltaX, deltaY);
+			GetMessageTarget()->SendMessage(this, MAP_MOVED, NULL);
 		}
 	}
 	else if(m_eButtonState == BUTTON_UP)
@@ -471,6 +458,25 @@ void CUIMapBackground::UpdateActivePos()
 		- m_fMapViewWidthMeters/2.f;
 	m_fMapY = m_fMapHeightMeters - (m_vActivePos.z - m_fMapBottomMeters)
 		- m_fMapViewHeightMeters/2.f;
+
+	if(m_fMapX<0) m_fMapX = 0;
+	if(m_fMapX>m_fMapWidthMeters - m_fMapViewWidthMeters) 
+		m_fMapX = m_fMapWidthMeters - m_fMapViewWidthMeters;
+
+	if(m_fMapY<0) m_fMapY = 0;
+	if(m_fMapY>m_fMapHeightMeters - m_fMapViewHeightMeters) 
+		m_fMapY = m_fMapHeightMeters - m_fMapViewHeightMeters;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIMapBackground::MoveMap(const int deltaX, const int deltaY)
+{
+	Fvector2 dest;
+	ConvertFromLocalToMap(deltaX, deltaY, dest);
+
+	m_fMapX -= dest.x;
+	m_fMapY -= dest.y;
 
 	if(m_fMapX<0) m_fMapX = 0;
 	if(m_fMapX>m_fMapWidthMeters - m_fMapViewWidthMeters) 

@@ -83,6 +83,9 @@ public:
 
 	bool CanPlaceItem(CUIDragDropItem *pDDItem);
 
+	void SetItemsScale(float fItemsScale);
+	float GetItemsScale() const { return m_fItemsScale; }
+
 protected:
 	//полоса прокрутки
 	CUIScrollBar m_ScrollBar;
@@ -134,6 +137,9 @@ protected:
 
 	//список эл-тов DrapDrop присоединенных в данный момент к списку
 	DRAG_DROP_LIST m_DragDropItemsList;
+
+	// Для возможности изменения размера лежащих на листе элементов, запомним скейл
+	float		m_fItemsScale;
 };
 
 #endif //_UI_DRAG_DROP_LIST_H_
