@@ -4,8 +4,8 @@
 void CDetailManager::cache_Initialize	()
 {
 	// Centroid
-	cache_cx			= 1000;
-	cache_cz			= 1000;
+	cache_cx			= 0;
+	cache_cz			= 0;
 
 	// Initialize cache-grid
 	Slot*	slt = cache_pool;
