@@ -178,31 +178,31 @@ function load_job(sj, gname, type, squad, groups)
 
 	-- Гулаг нехороших сталкеров ветеранов на Дикой территории
 	if type == "bar_evil_veterans" then
-		t = { section = "logic1@bar_evil_veterans_patrol", 
+		t = { section = "logic@bar_evil_veterans_patrol", 
 			idle = 0,
 			prior = 10, state = {0,1}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		    
-		t = { section = "logic2@bar_evil_veterans_walker1", 
+		t = { section = "logic@bar_evil_veterans_walker1", 
 			idle = 0,
 			prior = 7, state = {0}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic3@bar_evil_veterans_kamp1", 
+		t = { section = "logic@bar_evil_veterans_kamp1", 
 			idle = 0,
 			prior = 7, state = {1}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		    
-		t = { section = "logic2@bar_evil_veterans_walker2", 
+		t = { section = "logic@bar_evil_veterans_walker2", 
 			idle = 0,
 			prior = 7, state = {0}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic3@bar_evil_veterans_kamp2", 
+		t = { section = "logic@bar_evil_veterans_kamp2", 
 			idle = 0,
 			prior = 7, state = {1}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = ""
