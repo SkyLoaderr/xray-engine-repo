@@ -319,7 +319,7 @@ CGraphMerger::CGraphMerger(LPCSTR name)
 		Memory.mem_copy				(tLevel.caLevelName,V,(u32)xr_strlen(V) + 1);
 		Memory.mem_copy				(S1,V,(u32)xr_strlen(V) + 1);
 		strconcat					(S2,name,S1);
-		strconcat					(S1,S2,"/");//level.graph");
+		strconcat					(S1,S2,"\\");//level.graph");
 		tLevel.tLevelID				= Ini->r_s32(N,"id");
 		::CLevelGameGraph			*tpLevelGraph = xr_new<::CLevelGameGraph>(tLevel,S1,dwOffset,tLevel.id(), Ini);
 		dwOffset					+= tpLevelGraph->m_tpGraph->header().vertex_count();
