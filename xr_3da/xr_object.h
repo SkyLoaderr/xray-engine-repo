@@ -43,6 +43,7 @@ public:
 			u32	bDestroy		:	1;
 			u32	net_Local		:	1;
 			u32	net_Ready		:	1;
+			u32 net_SV_Update	:	1;
 		};
 		u32	storage;
 	};
@@ -126,6 +127,8 @@ public:
 	IC BOOL								getDestroy			()					{ return FLAGS.bDestroy;			}
 	IC void								setLocal			(BOOL _local)		{ FLAGS.net_Local = _local?1:0;		}
 	IC BOOL								getLocal			()					{ return FLAGS.net_Local;			}
+	IC void								setSVU				(BOOL _svu)			{ FLAGS.net_SV_Update	= _svu?1:0;	}
+	IC BOOL								getSVU				()					{ return FLAGS.net_SV_Update;		}
 	IC void								setReady			(BOOL _ready)		{ FLAGS.net_Ready = _ready?1:0;		}
 	IC BOOL								getReady			()					{ return FLAGS.net_Ready;			}
 
