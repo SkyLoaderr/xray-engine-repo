@@ -10,6 +10,7 @@
 #include "xrSE_Factory.h"
 #include "ai_space.h"
 #include "script_engine.h"
+#include "object_factory.h"
 
 extern CSE_Abstract *F_entity_Create	(LPCSTR section);
 
@@ -32,6 +33,7 @@ BOOL APIENTRY DllMain				(HANDLE module_handle, DWORD call_reason, LPVOID reserv
 			break;
 		}
 		case DLL_PROCESS_DETACH: {
+			xr_delete					(g_object_factory);
 			Core._destroy				();
 			break;
 		}
