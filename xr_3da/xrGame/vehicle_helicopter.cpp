@@ -104,8 +104,8 @@ void CVehicleHelicopter::UpdateCL			()
 
 void CVehicleHelicopter::shedule_Update(u32 DT)
 {
-	if (!getEnabled())	return;
 	inherited::shedule_Update	(DT);
+	if (!getEnabled())	return;
 
 	Fvector				center;
 	float				radius;		

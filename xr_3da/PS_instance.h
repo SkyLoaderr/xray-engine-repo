@@ -14,16 +14,16 @@ protected:
 	int					m_iLifeTime;
 	BOOL				m_bAutoRemove;
 public:
-	CPS_Instance		();
-	virtual				~CPS_Instance	();
+	CPS_Instance			();
+	virtual					~CPS_Instance		();
 
-	IC BOOL				PSI_alive		()						{	return m_iLifeTime>0;				}
-	IC BOOL				PSI_IsAutomatic	()						{	return m_bAutoRemove;				}
-	IC void				PSI_SetLifeTime	(float life_time)		{	m_iLifeTime=iFloor(life_time*1000);	}
+	IC BOOL					PSI_alive			()						{	return m_iLifeTime>0;				}
+	IC BOOL					PSI_IsAutomatic		()						{	return m_bAutoRemove;				}
+	IC void					PSI_SetLifeTime		(float life_time)		{	m_iLifeTime=iFloor(life_time*1000);	}
 
-	void				PSI_destroy		();
+	void					PSI_destroy			();
 
-	virtual void			Play			()	=0;
+	virtual void			Play				()	=0;
 
 	virtual void			shedule_Update		(u32 dt);
 	virtual	IRenderable*	dcast_Renderable	()				{ return this;	}

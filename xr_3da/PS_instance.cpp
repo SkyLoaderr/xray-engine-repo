@@ -28,6 +28,7 @@ CPS_Instance::~CPS_Instance			()
 //----------------------------------------------------
 void CPS_Instance::shedule_Update	(u32 dt)
 {
+	ISheduled::shedule_Update		();
 	m_iLifeTime						-= dt;
 
 	// remove???

@@ -118,6 +118,8 @@ void CSE_ALifeSimulator::vfProcessUpdates()
 
 void CSE_ALifeSimulator::shedule_Update			(u32 dt)
 {
+	ISheduled::shedule_Update			(dt);
+
 	Device.Statistic.TEST3.Begin		();
 	if (!m_bLoaded) {
 		Device.Statistic.TEST3.End		();

@@ -133,8 +133,9 @@ BOOL CCustomEvent::net_Spawn	( LPVOID DC )
 	return TRUE;
 }
 
-void CCustomEvent::shedule_Update (u32 dt)
+void CCustomEvent::shedule_Update	(u32 dt)
 {
+	inherited::shedule_Update		(dt);
 	if (Remote())	return;
 	
 	if (!Contacted.empty()) {
