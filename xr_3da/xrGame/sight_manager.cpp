@@ -257,7 +257,7 @@ void CSightManager::Exec_Look		(float dt)
 	float				h = -body.current.yaw;
 	float				_sh = _sin(h), _ch = _cos(h);
 	m.i.set				( _ch,	0.f,	_sh);
-	m.j.set				( 0.f,	1.f,	_sh);
+	m.j.set				( 0.f,	1.f,	0.f);
 	m.k.set				(-_sh,	0.f,	_ch);
 	m._14_				= 0.f;
 	m._24_				= 0.f;
