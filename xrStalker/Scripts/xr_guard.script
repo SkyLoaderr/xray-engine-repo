@@ -523,6 +523,7 @@ function set_guard(object, enable, path_main, path_hideout, running, search_ligh
 	st.sound_set_2 = utils.conf_get_string(char_ini, "guard", "sound_set_2", sound_set_2, object, false)
 	st.sound_set_3 = utils.conf_get_string(char_ini, "guard", "sound_set_3", sound_set_3, object, false)
 	st.switch_to_guide_distance = utils.conf_get_number(char_ini, "guard", "switch_to_guide_distance",
+		switch_to_guide_distance, object, false)
 	st.switch_to_robber_guard_distance = utils.conf_get_number(char_ini, "guard", "switch_to_robber_guard_distance",
 		switch_to_robber_guard_distance, object, false)
 
