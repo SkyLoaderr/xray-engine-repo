@@ -6,8 +6,8 @@
 	<info_portion id="escape_novice_need_weapon">
 		<location >
 			<level></level>
-			<x>0</x>
-			<y>0</y>
+			<x>-200</x>
+			<y>-150</y>
 			<icon name="Novice" x="2" y="2" width="1" height="1"></icon>
 			<text>Novice need weapon</text>
 		</location>
@@ -19,6 +19,9 @@
 
 	<info_portion id="escape_factory_bandits_dead">
 	</info_portion>
+
+
+
 
 	<info_portion id="actor_start">
 		<location >
