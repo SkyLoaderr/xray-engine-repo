@@ -220,7 +220,7 @@ xr_motivator.storage[self.object:id()].talker = {
 xr_motivator.storage[self.object:id()].meet = {
         enabled = false,
         actor = nil,
-	noweap = false, -- игнорируем наличие оружия у актора
+    noweap = false, -- игнорируем наличие оружия у актора
         distance = 15, -- расстояние, в пределах которого мы реагируем
         shoot_distance = 5 -- расстояние, в пределах которого мы стреляем
     }
@@ -372,6 +372,13 @@ xr_motivator.storage[self.object:id()].commander = {
         --way_outside
         --near_door_index
 }
+-- Настройка бандитов на заводе (escape)
+xr_motivator.storage[self.object:id()].escape_factory_bandit = {
+        enabled  = false
+}
+    if( char_ini:section_exist ("escape_factory_bandit") ) then
+        xr_motivator.storage[self.object:id()].escape_factory_bandit.enabled = true
+    end
 -- Настройка схемы реакции
 xr_motivator.storage[self.object:id()].reactions = {
         enabled = true,
@@ -474,22 +481,23 @@ xr_motivator.storage[self.object:id()].reactions = {
     xr_trivial.add_novice     (self.object)
     xr_trivial.add_novice2    (self.object)
     xr_trivial.add_novice3    (self.object)
+    escape_factory_bandits.add_to_binder(self.object)
 
     --Привязка к организации
     if char_ini:section_exist ("fraction") == true then
         if char_ini:line_exist("fraction", "name") == true then
             xr_gulag.addMember(char_ini:r_string("fraction", "name"), self.object)
-	    xr_gulag.add_to_binder(self.object)
+        xr_gulag.add_to_binder(self.object)
         end
     else
         -- включение схем
-	xr_talker.set_talker(self.object)
+    xr_talker.set_talker(self.object)
         xr_kamp.set_kamp(self.object)
         xr_guard.set_guard(self.object)
-	xr_sleeper.set_sleeper(self.object)
+    xr_sleeper.set_sleeper(self.object)
         xr_patrol.set_patrol (self.object)
         xr_follower.set_follower (self.object)
-	xr_commander.set_commander(self.object)
+    xr_commander.set_commander(self.object)
     end
 end
 ----------------------------------------------------------------------------------------------------------------------

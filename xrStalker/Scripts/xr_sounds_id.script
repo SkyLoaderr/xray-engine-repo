@@ -46,11 +46,13 @@ ambush_group_idle      = chugai_sounds + 3
 ambush_idle            = chugai_sounds + 4
 
 chugai_commander_base  = chugai_sounds + 20
+chugai_military_commander_base     = chugai_sounds + 30
+chugai_escape_factory_bandits_base = chugai_sounds + 40
 
 -- Jon
 jon_sounds              = global_sounds + 5000
 
 zombe_walk_speak        = jon_sounds + 0
 zombe_stand_speak       = jon_sounds + 1
-novice_speak			= jon_sounds + 10
+novice_speak            = jon_sounds + 10
 

@@ -16,6 +16,11 @@ function init    (obj)
        return
     end
 
+    if string.find( obj:name(), "factory_bandit_" ) then
+        xr_motivator.AddToMotivator( obj )
+        return
+    end
+
     local name, command, group, member = str_split (obj:name ())
     if name == "patrol" then
        xr_motivator.AddToMotivator(obj)
@@ -35,7 +40,7 @@ function init    (obj)
        xr_swat.AddSwat  (obj)
     elseif name == "trivial" then
        if( command == "novice" or command == "novice2" or command == "novice3" ) then
-   	   	  xr_motivator.AddToMotivator( obj )
+          xr_motivator.AddToMotivator( obj )
        else
           xr_trivial.bind_object( obj, command )
        end

@@ -3,21 +3,21 @@
 ----------------------------------------------------------------------------------------------------------------------
 
 -- Глобальные
-global_actions 	= stalker_ids.action_script
-action_script	= stalker_ids.action_script + 1
+global_actions  = stalker_ids.action_script
+action_script   = stalker_ids.action_script + 1
 
 -- Стохе
 stohe_actions = stalker_ids.action_script + 100
 
-stohe_tradeseller_init    	= stohe_actions + 1
+stohe_tradeseller_init      = stohe_actions + 1
 
-stohe_tradeseller_base     	= stohe_actions + 10
-stohe_kamp_base      		= stohe_actions + 20
-stohe_meet_base      		= stohe_actions + 30
-stohe_reactions_base 		= stohe_actions + 40
-stohe_state_base		= stohe_actions + 50
-stohe_position			= stohe_actions + 60
-stohe_gulag_base		= stohe_actions + 70
+stohe_tradeseller_base      = stohe_actions + 10
+stohe_kamp_base             = stohe_actions + 20
+stohe_meet_base             = stohe_actions + 30
+stohe_reactions_base        = stohe_actions + 40
+stohe_state_base        = stohe_actions + 50
+stohe_position          = stohe_actions + 60
+stohe_gulag_base        = stohe_actions + 70
 
 --Sidorovich
 sidor_actions = stohe_actions + 1024
@@ -45,8 +45,9 @@ ambush_toilet          = chugai_actions + 5
 chugai_act_tutor       = chugai_actions + 10
 
 commander_commander    = chugai_actions + 20
-
 chugai_scout_base      = chugai_actions + 30
+chugai_military_commander_base     = chugai_actions + 40
+chugai_escape_factory_bandits_base = chugai_actions + 50
 
 -- Змей
 zmey_actions = stalker_ids.action_script + 10000
@@ -61,7 +62,7 @@ zmey_talker_base       = zmey_actions + 600
 jon_actions = zmey_actions + 1024
 
 jon_stalker_zombe      = jon_actions + 0
-jon_stalker_novice	   = jon_actions + 1
+jon_stalker_novice     = jon_actions + 1
 jon_stalker_novice2    = jon_actions + 2
 jon_stalker_novice3    = jon_actions + 3
-jon_stalker_attack	   = jon_actions + 4
+jon_stalker_attack     = jon_actions + 4

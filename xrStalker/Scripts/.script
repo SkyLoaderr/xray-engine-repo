@@ -31,6 +31,8 @@ module ("xr_scout")
 module ("xr_trivial")
 module ("xr_report")
 
+module ("escape_factory_bandits")
+
 function printf(fmt,...)
     log(string.format(fmt,unpack(arg)))
 end
@@ -275,7 +277,7 @@ function distance_between(obj1, obj2)
 end
 
 --------------------------------------------------
--- іласс LUA реализуі	ий Finite State Machine
+-- іласс LUA реализуі   ий Finite State Machine
 -- для управления персонажами
 --------------------------------------------------
 class 'FSM'
@@ -286,10 +288,10 @@ function FSM:__init(script_name, npc_obj)
     self.npc = npc_obj
     -- строка - имя скрипта, которvй запускает игру
     self.script_name = script_name
-    -- матрица, задаі	ая граф переходов состояний
+    -- матрица, задаі   ая граф переходов состояний
     -- реализуется как двумерная таблица
     self.transition_matrix = {[0] = {}}
-    -- номер теку	его состояния
+    -- номер теку   его состояния
     self.current_state = 0
 
     -- флаг того, что машина вклічена
@@ -686,35 +688,35 @@ function is_object_online (object_id)
     if sim == nil then return true end
     local obj = sim:object (object_id)
     if obj == nil then return false end
-	return obj.online
+    return obj.online
 end
 
 -- Їа®ўҐапҐв ®аг¦ЁҐ «Ё нв® (ЇҐаҐ¤ ў вм clsid)
 function isWeapon(id)
-	if id == clsid.wpn_vintorez then return true
-	elseif id == clsid.wpn_fn2000 then return true
-	elseif id == clsid.wpn_ak74 then return true
-	elseif id == clsid.wpn_lr300 then return true
-	elseif id == clsid.wpn_hpsa then return true
-	elseif id == clsid.wpn_pm then return true
-	elseif id == clsid.wpn_fort then return true
-	elseif id == clsid.wpn_binocular then return true
-	elseif id == clsid.wpn_shotgun then return true
-	elseif id == clsid.wpn_svd then return true
-	elseif id == clsid.wpn_svu then return true
-	elseif id == clsid.wpn_rpg7 then return true
-	elseif id == clsid.wpn_val then return true
-	elseif id == clsid.wpn_vintorez then return true
-	elseif id == clsid.wpn_walther then return true
-	elseif id == clsid.wpn_usp45 then return true
-	elseif id == clsid.wpn_groza then return true
-	elseif id == clsid.wpn_knife then return true
-	elseif id == clsid.wpn_grenade_launcher then return true
-	elseif id == clsid.obj_explosive then return true
-	elseif id == clsid.wpn_grenade_f1 then return true
-	elseif id == clsid.wpn_grenade_rpg7 then return true
-	elseif id == clsid.wpn_grenade_rgd5 then return true
-	elseif id == clsid.wpn_grenade_fake then return true
+    if id == clsid.wpn_vintorez then return true
+    elseif id == clsid.wpn_fn2000 then return true
+    elseif id == clsid.wpn_ak74 then return true
+    elseif id == clsid.wpn_lr300 then return true
+    elseif id == clsid.wpn_hpsa then return true
+    elseif id == clsid.wpn_pm then return true
+    elseif id == clsid.wpn_fort then return true
+    elseif id == clsid.wpn_binocular then return true
+    elseif id == clsid.wpn_shotgun then return true
+    elseif id == clsid.wpn_svd then return true
+    elseif id == clsid.wpn_svu then return true
+    elseif id == clsid.wpn_rpg7 then return true
+    elseif id == clsid.wpn_val then return true
+    elseif id == clsid.wpn_vintorez then return true
+    elseif id == clsid.wpn_walther then return true
+    elseif id == clsid.wpn_usp45 then return true
+    elseif id == clsid.wpn_groza then return true
+    elseif id == clsid.wpn_knife then return true
+    elseif id == clsid.wpn_grenade_launcher then return true
+    elseif id == clsid.obj_explosive then return true
+    elseif id == clsid.wpn_grenade_f1 then return true
+    elseif id == clsid.wpn_grenade_rpg7 then return true
+    elseif id == clsid.wpn_grenade_rgd5 then return true
+    elseif id == clsid.wpn_grenade_fake then return true
         else return false end
 end
 
