@@ -48,7 +48,6 @@ void Startup(LPSTR     lpCmdLine)
 	if (strstr(cmd,"-f")==0)							{ Help(); return; }
 	if (strstr(cmd,"-o"))								bModifyOptions = TRUE;
 	
-
 	// Give a LOG-thread a chance to startup
 	//_set_sbh_threshold(1920);
 	InitCommonControls	();
@@ -59,6 +58,10 @@ void Startup(LPSTR     lpCmdLine)
 	InitMath				();
 	DWORD					dwStartupTime	= timeGetTime();
 	SetPriorityClass		(GetCurrentProcess(),IDLE_PRIORITY_CLASS);
+	if (0==SetProcessWorkingSetSize(GetCurrentProcess(),1900*(1024*1024),1900*(1024*1024)))
+	{
+		Msg("*** Failed to expand working set");
+	};
 	
 	// Load project
 	name[0]=0;				sscanf(strstr(cmd,"-f")+2,"%s",name);
