@@ -59,8 +59,7 @@ function main()
 	
 	while true do
 		
-		action_one			(monster)
-		callback_var		= 0
+		execute_action		(monster)
 
 		while monster:action() do 
 			
@@ -70,7 +69,7 @@ function main()
 				monster:script	( false,	script_name() )
 				monster:script	( true,		script_name() )
 				
-				execute_action	(monster)
+				
 			end
 
 			wait() 
