@@ -1,45 +1,48 @@
 
 
 function dump_time(t)
-	printf(t:dateToString(game.CTime.DateToDay))
+/*	printf(t:dateToString(game.CTime.DateToDay))
 	printf(t:dateToString(game.CTime.DateToMonth))
 	printf(t:dateToString(game.CTime.DateToYear))
 	
 	printf(t:timeToString(game.CTime.TimeToHours))
 	printf(t:timeToString(game.CTime.TimeToMinutes))
 	printf(t:timeToString(game.CTime.TimeToSeconds))
-	
+*/	
 	printf(t:timeToString(game.CTime.TimeToMilisecs))
-	
 	printf("")
 end
 
 
 function main_()
 	
-	local dt = game.CTime()
-	dt:setHMSms(3,4,5,67)
+	local dt = game.get_game_time()
 	dump_time(dt)
 	
-	local dt2 = game.CTime(dt)
+	local dt2 = game.CTime()
+	dt2:setHMS(2,3,4)
 	dump_time(dt2)
 	dump_time(dt)
+	local s  = dt2:diffSec(dt)
 	
-	if dt==dt2 then 
-		printf("equal")
-	else
-		printf("not equal")
+	if dt>dt2 then
+		printf("dt>dt2")
 	end
 
-	dt2:setHMSms(13,4,5,67)
-	dump_time(dt2)
-	dump_time(dt) 
-
-	if dt==dt2 then 
-		printf("equal")
-	else
-		printf("not equal")
+	if dt>=dt2 then
+		printf("dt>=dt2")
 	end
 
+	if dt<dt2 then
+		printf("dt<dt2")
+	end
+
+	if dt<=dt2 then
+		printf("dt<=dt2")
+	end
+
+	if dt==dt2 then
+		printf("dt==dt2")
+	end
 
 end
