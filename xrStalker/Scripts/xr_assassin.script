@@ -6,7 +6,7 @@ local state_standing = 2
 ---------------------------------------------------------------------------------------------------------------------
 class "evaluator_need_assassin" (property_evaluator)
 
-function evaluator_need_assassin:__init(storage) super()
+function evaluator_need_assassin:__init(storage, name) super(nil, name)
   	self.st = storage
 end
 
@@ -161,7 +161,7 @@ function add_to_binder(npc, char_ini)
 	 	operators["action_assassin_2"] = xr_actions_id.zmey_assassin_base + 2
 
 	   	-- // evaluators
-		manager:add_evaluator(properties["need_assassin"], this.evaluator_need_assassin(xr_motivator.storage[npc:id()].assassin))
+		manager:add_evaluator(properties["need_assassin"], this.evaluator_need_assassin(xr_motivator.storage[npc:id()].assassin), "assassin_need_assassin")
 
 		local new_action = this.action_assassin_activity(npc, "action_assassin_activity", xr_motivator.storage[npc:id()].assassin)
 		new_action:add_precondition(world_property(stalker_ids.property_alive, true))
