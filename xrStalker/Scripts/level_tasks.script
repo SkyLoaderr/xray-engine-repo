@@ -361,7 +361,14 @@ function process_map_spot(info_id)
 	elseif info_id == "mil_sniper_job_failed" then
 	       remove_location (1004, "mil_sniper_location") 
         		   
-	-- end of military       
+	-- end of military
+
+	-- radar
+    elseif info_id == "bar_radar_turn_off_start" then
+           add_location(1000, "rad_aerials_location")
+    elseif info_id == "bar_radar_turn_off_done" then
+           remove_location (1000, "rad_aerials_location")
+	
 	end
 end
 
