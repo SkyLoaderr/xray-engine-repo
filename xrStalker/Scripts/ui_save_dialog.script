@@ -162,7 +162,7 @@ function save_dialog:AddItemToList(item)
 	local color = GetARGB(255,0,255,255)
 	local parse = false
 	
-	list_box:AddText(item, shift, color, GetFontDI(), parse)
+	list_box:AddText(item, shift, GetARGB(255,0,255,255), GetFontDI(), parse)
 	
 end
 
