@@ -100,15 +100,15 @@ SOURCE=.\icon1.ico
 # End Source File
 # Begin Source File
 
-SOURCE=.\logo.bmp
-# End Source File
-# Begin Source File
-
 SOURCE=.\resource.h
 # End Source File
 # Begin Source File
 
 SOURCE=.\resource.rc
+# End Source File
+# Begin Source File
+
+SOURCE=.\StartUp_Logo.bmp
 # End Source File
 # End Group
 # Begin Group "StackTracer"
@@ -2197,10 +2197,6 @@ SOURCE=.\features.txt
 # Begin Source File
 
 SOURCE=.\plan_last_month.txt
-# End Source File
-# Begin Source File
-
-SOURCE=.\StartUp_Logo.bmp
 # End Source File
 # Begin Source File
 
