@@ -108,17 +108,9 @@ void CAI_Stalker::SetDirectionLook()
 		if (tWatchDirection.magnitude() > EPS_L) {
 			tWatchDirection.normalize();
 			mk_rotation(tWatchDirection,r_torso_target);
-
-//			r_torso_target.yaw += m_fAddAngle;
-//			while (r_torso_target.yaw > PI_MUL_2)
-//				r_torso_target.yaw -= PI_MUL_2;
-			//ASSIGN_SPINE_BONE;
-			//q_look.o_look_speed=PI_DIV_4;
 		}
 	}
 	r_target.yaw = r_torso_target.yaw;
-	//r_target.pitch = 0;
-	//r_torso_target.pitch = 0;
 }
 
 void CAI_Stalker::SetLook(Fvector tPosition)
@@ -128,8 +120,6 @@ void CAI_Stalker::SetLook(Fvector tPosition)
 	if (tWatchDirection.magnitude() > EPS_L) {
 		tWatchDirection.normalize();
 		mk_rotation(tWatchDirection,r_torso_target);
-		//ASSIGN_SPINE_BONE;
-		//q_look.o_look_speed=PI_DIV_4;
 	}
 	r_target.yaw = r_torso_target.yaw;
 }
@@ -160,7 +150,6 @@ void CAI_Stalker::SetLessCoverLook(NodeCompressed *tpNode, float fMaxHeadTurnAng
 			}
 			
 			r_target.yaw = fBestAngle;
-//			r_torso_target.yaw = fBestAngle;
 		}
 	}
 }

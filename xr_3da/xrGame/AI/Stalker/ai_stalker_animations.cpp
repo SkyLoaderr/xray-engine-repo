@@ -19,7 +19,7 @@ static const float p_head_factor		= 0.1f;
 
 float faTurnAngles			[] = {
 	0.f,
-	PI,
+	-3.1415f,
 	PI_DIV_6,
 	0.f,
 };
@@ -113,8 +113,8 @@ void __stdcall CAI_Stalker::HeadCallback(CBoneInstance *B)
 			pitch_factor	= p_head_factor;
 		}
 	}
-	float					yaw		= yaw_factor * angle_normalize(-(A->r_current.yaw - A->r_torso_current.yaw));
-	float					pitch	= pitch_factor * angle_normalize(A->r_current.pitch - A->r_torso_current.pitch);
+	float					yaw		= yaw_factor * angle_normalize_signed(-(A->r_current.yaw - A->r_torso_current.yaw));
+	float					pitch	= pitch_factor * angle_normalize_signed(A->r_current.pitch - A->r_torso_current.pitch);
 	spin.setXYZ				(pitch, yaw, 0);
 	B->mTransform.mulA_43	(spin);
 	B->mTransform.c			= c;
@@ -142,8 +142,8 @@ void __stdcall CAI_Stalker::ShoulderCallback(CBoneInstance *B)
 			pitch_factor	= p_shoulder_factor;
 		}
 	}
-	float					yaw		= yaw_factor * angle_normalize(-(A->r_current.yaw - A->r_torso_current.yaw));
-	float					pitch	= pitch_factor * angle_normalize(A->r_current.pitch - A->r_torso_current.pitch);
+	float					yaw		= yaw_factor * angle_normalize_signed(-(A->r_current.yaw - A->r_torso_current.yaw));
+	float					pitch	= pitch_factor * angle_normalize_signed(A->r_current.pitch - A->r_torso_current.pitch);
 	spin.setXYZ				(pitch, yaw, 0);
 	B->mTransform.mulA_43	(spin);
 	B->mTransform.c			= c;
@@ -171,8 +171,8 @@ void __stdcall CAI_Stalker::SpinCallback(CBoneInstance *B)
 			pitch_factor	= p_spin_factor;
 		}
 	}
-	float					yaw		= yaw_factor * angle_normalize(-(A->r_current.yaw - A->r_torso_current.yaw));
-	float					pitch	= pitch_factor * angle_normalize(A->r_current.pitch - A->r_torso_current.pitch);
+	float					yaw		= yaw_factor * angle_normalize_signed(-(A->r_current.yaw - A->r_torso_current.yaw));
+	float					pitch	= pitch_factor * angle_normalize_signed(A->r_current.pitch - A->r_torso_current.pitch);
 	spin.setXYZ				(pitch, yaw, 0);
 	B->mTransform.mulA_43	(spin);
 	B->mTransform.c			= c;
@@ -243,7 +243,7 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 		return;
 	
 	tDirection.getHP		(yaw,pitch);
-	yaw						= angle_normalize(-yaw);
+	yaw						= angle_normalize_signed(-yaw);
 	// moving
 	if (getAI().bfTooSmallAngle(yaw,r_current.yaw,MAX_HEAD_TURN_ANGLE)) {
 		// moving forward
@@ -303,19 +303,19 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 					m_tDesirableDirection	= eMovementDirectionBack;
 				}
 				else
-					if ((Level().timeServer() - m_dwDirectionStartTime) > 0*m_dwAnimationSwitchInterval) {
+					if ((Level().timeServer() - m_dwDirectionStartTime) > m_dwAnimationSwitchInterval) {
 						m_dwDirectionStartTime	= Level().timeServer();
 						m_tMovementDirection	= eMovementDirectionBack;
-						Msg						("Back");
 					}
 		}
 	}
 	
 	Msg("Trying %s\nMoving %s",caMovementActionNames[m_tDesirableDirection],caMovementActionNames[m_tMovementDirection]);
 	tpLegsAnimation			= m_tAnims.A[m_tBodyState]->m_tMoves.A[m_tMovementType]->A[m_tMovementDirection]->A[0];
-	r_target.yaw			= angle_normalize(r_target.yaw + r_torso_target.yaw);
-	r_torso_target.yaw		= angle_normalize(yaw + faTurnAngles[m_tMovementDirection]);
-	r_target.yaw			= angle_normalize(r_target.yaw - r_torso_target.yaw);
+	r_target.yaw			= angle_normalize_signed(r_target.yaw + r_torso_target.yaw);
+	r_torso_target.yaw		= angle_normalize_signed(yaw + faTurnAngles[m_tMovementDirection]);
+	r_target.yaw			= angle_normalize_signed(r_target.yaw - r_torso_target.yaw);
+	Msg("[TT=%7.2f][TC=%7.2f][T=%7.2f][C=%7.2f]",r_torso_target.yaw,r_torso_current.yaw,r_target.yaw,r_current.yaw);
 }
 
 void CAI_Stalker::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
