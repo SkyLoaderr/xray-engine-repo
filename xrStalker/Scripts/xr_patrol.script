@@ -220,7 +220,6 @@ function action_single_patrol:process_radio ()
           else
              self.object:play_sound (self.phrases[self.current_phrase].namespace, 1, 0, 1, 0, self.phrases[self.current_phrase].phrase)
              self.current_phrase = self.current_phrase + 1
-             printf ("CURRENT PHRASE = %d", self.current_phrase)
           end   
        return false
        end
