@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "cl_intersect.h"
 #include "SoundRender_Core.h"
 #include "SoundRender_Emitter.h"
 #include "SoundRender_Target.h"
@@ -81,14 +82,14 @@ BOOL	CSoundRender_Core::get_occlusion(Fvector& P, float R, Fvector* occ)
 		if (_range>0 && _range<range) return TRUE;
 
 	// 2. Polygon doesn't picked up - real database query
-	DB.ray_options			(CDB::OPT_ONLYNEAREST);
-	DB.ray_query			(pGeometry,base,dir,range);
-	if (0==DB.r_count()) {
+	geom_DB.ray_options			(CDB::OPT_ONLYNEAREST);
+	geom_DB.ray_query			(geom_MODEL,base,dir,range);
+	if (0==geom_DB.r_count()) {
 		return FALSE;
 	} else {
 		// cache polygon
-		const CDB::RESULT*	R = DB.r_begin();
-		const CDB::TRI&		T = pGeometry->get_tris() [ R->id ];
+		const CDB::RESULT*	R = geom_DB.r_begin();
+		const CDB::TRI&		T = geom_MODEL->get_tris() [ R->id ];
 		occ[0].set	(*T.verts[0]);
 		occ[1].set	(*T.verts[1]);
 		occ[2].set	(*T.verts[2]);
