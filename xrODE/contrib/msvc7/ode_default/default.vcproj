@@ -305,6 +305,9 @@
 				RelativePath="..\..\..\ode\src\obstack.h">
 			</File>
 			<File
+				RelativePath="..\..\..\include\ode\odecpp_collision.h">
+			</File>
+			<File
 				RelativePath="..\..\..\ode\src\stack.h">
 			</File>
 			<File
