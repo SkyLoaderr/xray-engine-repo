@@ -10,7 +10,10 @@ end
 function Test1:set_value (v)
 
     self.value = v
-    printf ("Test1 value = %d", v)
+end
+
+function Test1:print ()
+    printf ("Test1 value = %d", self.value)
 end
 
 
@@ -20,22 +23,22 @@ function Test2:__init () super ("Test1")
 
 end
 
+function Test2:print ()
+    s_test.Test1:print ()
+    printf ("Test2 value = %d", self.value)
+end
+
 function Test2:set_value (v)
-    
     self.value = v
-    printf ("Test2 value = %d", v)
-    s_test.Test1:set_value (v)
 end    
 
     
 
 
 function main ()
-
-    local cl = s_test.Test1 ()
-    cl:set_value (10)
-    
+   
     local cl2 = s_test.Test2 ()
     cl2:set_value (20)
+    cl:print ()
     
 end
