@@ -1,11 +1,6 @@
 #include "stdafx.h"
 #include "game_sv_cs.h"
 
-game_sv_CS::game_sv_CS()
-{
-	round	= -1;
-}
-
 void	game_sv_CS::Create			(LPCSTR options)
 {
 	timelimit	= get_option_i		(options,"timelimit",0)*60000;	// in (ms)
@@ -14,7 +9,6 @@ void	game_sv_CS::Create			(LPCSTR options)
 void	game_sv_CS::OnRoundStart	()
 {
 	__super::OnRoundStart	();
-	round	++;
 	if (0==round)	
 	{
 		// give $1000 to everybody

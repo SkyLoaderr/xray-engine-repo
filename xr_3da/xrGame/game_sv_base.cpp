@@ -160,6 +160,7 @@ void game_sv_GameState::net_Export_Update						(NET_Packet& P, u32 id_to, u32 id
 void game_sv_GameState::OnRoundStart			()
 {
 	switch_Phase	(GAME_PHASE_INPROGRESS);
+	round			++;
 
 	// clear "ready" flag
 	Lock	();
