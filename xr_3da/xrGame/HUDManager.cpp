@@ -217,9 +217,10 @@ collide::rq_result&	CHUDManager::GetCurrentRayQuery	()
 	return m_pHUDCursor->RQ;
 }
 
+BOOL	g_bDynamicCrosshair = TRUE;
 void CHUDManager::SetCrosshairDisp	(float disp)
-{
-	m_pHUDCursor->HUDCrosshair.SetDispersion(disp);
+{	
+	m_pHUDCursor->HUDCrosshair.SetDispersion(g_bDynamicCrosshair ? disp : 0.f);
 }
 
 void  CHUDManager::ShowCrosshair	(bool show)

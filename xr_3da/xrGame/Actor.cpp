@@ -355,6 +355,11 @@ void CActor::Load	(LPCSTR section )
 	invincibility_fire_shield_1st	= READ_IF_EXISTS(pSettings,r_string,section,"Invincibility_Shield_1st",0);
 	invincibility_fire_shield_3rd	= READ_IF_EXISTS(pSettings,r_string,section,"Invincibility_Shield_3rd",0);
 
+	m_spawn_effect						= NULL;
+	if (pSettings->line_exist(section,"spawn_effect"))
+	{
+		m_spawn_effect			= pSettings->r_string(section,"spawn_effect");
+	};	
 	//-----------------------------------------
 	m_AutoPickUp_AABB				= READ_IF_EXISTS(pSettings,r_fvector3,section,"AutoPickUp_AABB",Fvector().set(0.02f, 0.02f, 0.02f));
 	m_AutoPickUp_AABB_Offset		= READ_IF_EXISTS(pSettings,r_fvector3,section,"AutoPickUp_AABB_offs",Fvector().set(0, 0, 0));

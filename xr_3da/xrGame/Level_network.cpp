@@ -21,13 +21,14 @@ void CLevel::net_Stop		()
 	}
 }
 
+BOOL	g_bCalculatePing = FALSE;
 void CLevel::ClientSend	()
 {
 	if (GameID() == GAME_SINGLE || OnClient())
 	{
 		if (!net_HasBandwidth()) return;
 	};
-	SendPingMessage();
+	if (g_bCalculatePing) SendPingMessage();
 
 	NET_Packet				P;
 	u32						start	= 0;
