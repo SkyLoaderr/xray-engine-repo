@@ -1245,9 +1245,9 @@ void CAI_Soldier::UnderFire()
 									break;
 								}
 							
-						if ((!bCanKillMember) && (Weapons->ActiveWeapon()->GetAmmoElapsed()))
-							q_action.setup(AI::AIC_Action::FireBegin);
-						else
+						//if ((!bCanKillMember) && (Weapons->ActiveWeapon()->GetAmmoElapsed()))
+						//	q_action.setup(AI::AIC_Action::FireBegin);
+						//else
 							q_action.setup(AI::AIC_Action::FireEnd);
 						m_fCurSpeed = m_fMaxSpeed;
 					}
