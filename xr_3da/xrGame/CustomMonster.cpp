@@ -757,8 +757,6 @@ void CCustomMonster::renderable_Render()
 void CCustomMonster::Hit(float P, Fvector &dir,CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type)
 {
 	inherited::Hit			(P,dir,who,element,position_in_object_space,impulse, hit_type);
-#pragma todo("Dima to Kostia : Please check if this is correct")
-//	CMovementManager::Hit	(P,dir,who,element,position_in_object_space,impulse, hit_type);
 }
 
 void CCustomMonster::OnEvent(NET_Packet& P, u16 type)
