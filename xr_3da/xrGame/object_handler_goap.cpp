@@ -20,6 +20,7 @@
 #include "object_property_evaluator_ammo.h"
 #include "object_property_evaluator_empty.h"
 #include "object_property_evaluator_ready.h"
+#include "object_property_evaluator_item_id.h"
 #include "object_action_command.h"
 #include "object_action_show.h"
 #include "object_action_hide.h"
@@ -69,9 +70,11 @@ void CObjectHandlerGOAP::reinit			(CAI_Stalker *object)
 	CInventoryOwner::reinit		();
 	m_aimed1					= false;
 	m_aimed2					= false;
+	add_evaluator				(eWorldPropertyCurItemID,	xr_new<CObjectPropertyEvaluatorItemID>(m_object));
 	add_evaluator				(eWorldPropertyNoItemsIdle,	xr_new<CObjectPropertyEvaluatorConst>(m_object,m_object,false));
 	CSObjectActionBase			*action = xr_new<CSObjectActionBase>(m_object,m_object);
-	action->add_effect			(CWorldProperty(eWorldPropertyNoItemsIdle,true));
+	action->add_condition		(CWorldProperty(eWorldPropertyCurItemID,	0xffff));
+	action->add_effect			(CWorldProperty(eWorldPropertyNoItemsIdle,	true));
 	add_operator				(eWorldOperatorNoItemsIdle,action);
 	set_goal					(eObjectActionIdle);
 	set_current_action			(eWorldOperatorNoItemsIdle);
@@ -331,12 +334,16 @@ void CObjectHandlerGOAP::add_operators		(CWeapon *weapon)
 	// show
 	action				= xr_new<CObjectActionShow>(weapon,m_object);
 	add_condition		(action,id,eWorldPropertyHidden,	true);
+	add_condition		(action,id,eWorldPropertyCurItemID,	0xffff);
+	add_effect			(action,id,eWorldPropertyCurItemID,	id);
 	add_effect			(action,id,eWorldPropertyHidden,	false);
 	add_operator		(uid(id,eWorldOperatorShow),		action);
 
 	// hide
 	action				= xr_new<CObjectActionHide>(weapon,m_object);
 	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_condition		(action,id,eWorldPropertyCurItemID,	id);
+	add_effect			(action,id,eWorldPropertyCurItemID,	0xffff);
 	add_effect			(action,id,eWorldPropertyHidden,	true);
 	add_effect			(action,id,eWorldPropertyAimed1,	false);
 	add_effect			(action,id,eWorldPropertyAimed2,	false);

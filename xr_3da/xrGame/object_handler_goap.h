@@ -55,6 +55,7 @@ public:
 		eWorldPropertyDropped,
 		eWorldPropertyQueueWait1,
 		eWorldPropertyQueueWait2,
+		eWorldPropertyCurItemID,
 		eWorldPropertyNoItemsIdle	= (eWorldPropertyIdle << 16) | u16(-1),
 		eWorldPropertyDummy			= u32(-1),
 	};

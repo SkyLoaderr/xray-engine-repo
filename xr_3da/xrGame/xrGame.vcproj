@@ -611,6 +611,16 @@
 									RelativePath=".\object_property_evaluator_ready.h">
 								</File>
 							</Filter>
+							<Filter
+								Name="item_id"
+								Filter="">
+								<File
+									RelativePath=".\object_property_evaluator_item_id.cpp">
+								</File>
+								<File
+									RelativePath=".\object_property_evaluator_item_id.h">
+								</File>
+							</Filter>
 						</Filter>
 					</Filter>
 				</Filter>
