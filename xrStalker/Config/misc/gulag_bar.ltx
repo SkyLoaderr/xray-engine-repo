@@ -409,13 +409,12 @@ path_look = alarm_3_look
 
 
 
-
 ;*******************************************************************
 ; Свобода, атакующая ученных
 ;*******************************************************************
 
 [logic@bar_freedom_attack_sniper_1]
-active = camper@bar_freedom_attack_sniper_1
+active = {-bar_freedom_attack_ecolog} camper@bar_freedom_attack_sniper_1, camper1@bar_freedom_attack_sniper_1
 
 [camper@bar_freedom_attack_sniper_1]
 path_walk = camper_1_walk
@@ -428,7 +427,7 @@ path_look = acamper_1_look
 no_retreat = true
 
 [logic@bar_freedom_attack_sniper_2]
-active = camper@bar_freedom_attack_sniper_2
+active = {-bar_freedom_attack_ecolog} camper@bar_freedom_attack_sniper_2, camper1@bar_freedom_attack_sniper_2
 
 [camper@bar_freedom_attack_sniper_2]
 path_walk = camper_2_walk
@@ -441,7 +440,7 @@ path_look = acamper_2_look
 no_retreat = true
 
 [logic@bar_freedom_attack_sniper_3]
-active = camper@bar_freedom_attack_sniper_3
+active = {-bar_freedom_attack_ecolog} camper@bar_freedom_attack_sniper_3, camper1@bar_freedom_attack_sniper_3
 
 [camper@bar_freedom_attack_sniper_3]
 path_walk = camper_3_walk
@@ -454,7 +453,7 @@ path_look = acamper_3_look
 no_retreat = true
 
 [logic@bar_freedom_attack_sniper_4]
-active = camper@bar_freedom_attack_sniper_4
+active = {-bar_freedom_attack_ecolog} camper@bar_freedom_attack_sniper_4, camper1@bar_freedom_attack_sniper_4
 
 [camper@bar_freedom_attack_sniper_4]
 path_walk = camper_4_walk
@@ -468,7 +467,7 @@ no_retreat = true
 
 
 [logic@bar_freedom_attack_guard_1]
-active = camper@bar_freedom_attack_guard_1
+active = {-bar_freedom_attack_ecolog} camper@bar_freedom_attack_guard_1, camper1@bar_freedom_attack_guard_1
 
 [camper@bar_freedom_attack_guard_1]
 path_walk = guard_1_walk
@@ -481,7 +480,7 @@ path_look = aguard_1_look
 no_retreat = true
 
 [logic@bar_freedom_attack_guard_2]
-active = camper@bar_freedom_attack_guard_2
+active = {-bar_freedom_attack_ecolog} camper@bar_freedom_attack_guard_2, camper1@bar_freedom_attack_guard_2
 
 [camper@bar_freedom_attack_guard_2]
 path_walk = guard_2_walk
@@ -494,7 +493,7 @@ path_look = aguard_2_look
 no_retreat = true
 
 [logic@bar_freedom_attack_commander]
-active = camper@bar_freedom_attack_commander
+active = {-bar_freedom_attack_ecolog} camper@bar_freedom_attack_commander, camper1@bar_freedom_attack_commander
 
 [camper@bar_freedom_attack_commander]
 path_walk = commandir_walk
