@@ -18,7 +18,7 @@ public:
 					CUIHealth		();
 	void			Init			();
 	void			Render			();
-	void			Out				(int _health, int _armor);
+	void			Out				(float _health, float _armor);
 };
 
 #endif //__XR_UIHEALTH_H__

@@ -80,7 +80,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			R_ASSERT			(c_src == c_from);		// assure client ownership of event
 
 			// Signal just to destination (тому, кто повредился)
-			SendTo				(c_dest->ID,P,net_flags(TRUE,TRUE));
+			SendBroadcast		(0xffffffff,P,net_flags(TRUE,TRUE));
 		}
 		break;
 	case GE_DIE:
@@ -97,6 +97,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			R_ASSERT			(c_dest == c_from);		// assure client ownership of event
 
 			// 
+			SendBroadcast		(0xffffffff,P,net_flags(TRUE,TRUE));
 		}
 		break;
 	default:

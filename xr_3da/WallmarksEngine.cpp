@@ -171,7 +171,6 @@ void CWallmarksEngine::BuildMatrix	(Fmatrix &mView, float invsz, const Fvector& 
 
 void CWallmarksEngine::AddWallmark	(CDB::TRI* pTri, const Fvector &contact_point, Shader* hShader, float sz)
 {
-/*
 	// calc face normal
 	Fvector	N;
 	N.mknormal			(*pTri->verts[0],*pTri->verts[1],*pTri->verts[2]);
@@ -219,7 +218,6 @@ void CWallmarksEngine::AddWallmark	(CDB::TRI* pTri, const Fvector &contact_point
 
 	// no similar - register new
 	marks.push_back			(W);
-*/
 }
 
 extern float ssaLIMIT;
