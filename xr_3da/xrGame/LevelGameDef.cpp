@@ -9,11 +9,11 @@ xr_token rpoint_type[]={
 	{ 0,				0	}
 };
 
-xr_token rpoint_gametype[]={
-	{ "Any game",		rptGameAny				},
-	{ "Deathmatch",		rptGameDeathmatch		},
-	{ "TeamDeathmatch",	rptGameTeamDeathmatch	},
-	{ "ArtefactHunt",	rptGameArtefactHunt		},
+xr_token rpoint_game_type[]={
+	{ "Any game",		rpgtGameAny				},
+	{ "Deathmatch",		rpgtGameDeathmatch		},
+	{ "TeamDeathmatch",	rpgtGameTeamDeathmatch	},
+	{ "ArtefactHunt",	rpgtGameArtefactHunt	},
 	{ 0,				0	}
 };
  
