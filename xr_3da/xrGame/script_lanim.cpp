@@ -29,7 +29,7 @@ public:
 		VERIFY				(item);
 		return item->Length_ms();
 	}
-	Fcolor	calculate		(CLAItem* item, float T)
+	Fcolor	calculate		(float T)
 	{
 		int frame;
 		VERIFY				(item);
