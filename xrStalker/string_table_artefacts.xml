@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding="windows-1251"?>
+
+<string_table>
+	<string id="escape_steal_blockpost_case">
+		<text>Steal the case from blockpost</text>
+		<text ln="rus">Украсть ящик с блокпоста.</text>
+	</string>
+
+</string_table>
