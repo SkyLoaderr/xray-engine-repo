@@ -67,8 +67,10 @@ void	light::set_position	(const Fvector& P)
 { 
 	if (position.similar(P))	return;
 
-	position.set(P);			
-	CSector* S	= (CSector*)	RImplementation.detectSector(position);
+	position.set	(P);			
+	CSector* S		= (CSector*)	RImplementation.detectSector(position);
+
+	// Initial search
 	Fvector	 _P		= position;
 	u32		 cnt	= 0;
 	while (0==S && cnt<32) 
@@ -78,6 +80,11 @@ void	light::set_position	(const Fvector& P)
 		S		=	(CSector*) RImplementation.detectSector(position);
 	}
 
-	if (0==S && sector)			return;
-	sector		= S;
+	if (0==S && sector)			return;	// Search failed? - keep old sector
+	if (sector==S)				return;	// Sector doesn't changed? - keep old sector
+
+	// Sector changed
+	sector->lightRemove	(this);
+	sector	= S;
+	sector->lightAdd	(this);
 }
