@@ -292,6 +292,7 @@ void CAI_Biting::UpdateCL()
 	SetText();
 	inherited::UpdateCL();
 
+	// Проверка состояния анимации (атака)
 	TTime cur_time = Level().timeServer();
 	
 	VisionElem ve;
@@ -316,8 +317,8 @@ void CAI_Biting::UpdateCL()
 			if (Level().ObjectSpace.RayPick(m_tAttack.TraceFrom, Direction(), m_tAttack.dist, l_rq)) {
 				if ((l_rq.O == obj) && (l_rq.range < m_tAttack.dist)) {
 					// аттаковать
-					Msg("-- ATTACK_NOW CurTime [%i], LastAttack [%i]",cur_time, m_tAttack.LastAttack);
-
+					//Msg("-- ATTACK_NOW CurTime [%i], LastAttack [%i]",cur_time, m_tAttack.LastAttack);
+					DoDamage(ve.obj);
 					m_tAttack.LastAttack = cur_time;
 				}
 			}

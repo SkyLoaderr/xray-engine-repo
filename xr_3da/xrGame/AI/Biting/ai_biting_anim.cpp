@@ -88,7 +88,8 @@ void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, flo
 			m_tpCurrentGlobalAnimation = m_tAnimations.A[i1].A[i2].A[i3];
 			CurrentBlend = PKinematics(Visual())->PlayCycle(m_tpCurrentGlobalAnimation,TRUE,vfPlayCallBack,this);
 
-			if (i2 == 9 || i2 == 10) FillAttackStructure(i3, m_dwCurrentUpdate);
+			if (i2 == 9) FillAttackStructure(i3, m_dwCurrentUpdate);
+			else if (i2 == 10) FillAttackStructure(4, m_dwCurrentUpdate); // атака крыс
 			else m_tAttack.time_started = 0;
 
 		}

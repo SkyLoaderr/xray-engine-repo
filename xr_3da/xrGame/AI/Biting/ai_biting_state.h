@@ -13,7 +13,7 @@
 class CAI_Biting;
 
 
-const float m_cfBitingStandTurnRSpeed	=	PI_DIV_3;
+const float m_cfBitingStandTurnRSpeed	=	PI_DIV_4;
 
 const float m_cfBitingWalkSpeed			=	1.7f;
 const float m_cfBitingWalkTurningSpeed	=	1.0f;
@@ -67,14 +67,14 @@ class CBitingRest : public IState {
 	typedef IState inherited;
 
 public:
-	CBitingRest(CAI_Biting *p);
+					CBitingRest		(CAI_Biting *p);
 
-	virtual void Reset();
+	virtual void	Reset			();
 
-	virtual TTime UnlockState(TTime cur_time);
+	virtual TTime	UnlockState		(TTime cur_time);
 private:
-	virtual void Run();
-	void Replanning();
+	virtual void	Run();
+			void	Replanning();
 };
 
 

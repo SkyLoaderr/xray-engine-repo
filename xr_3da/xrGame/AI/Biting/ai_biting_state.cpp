@@ -75,7 +75,7 @@ void CBitingRest::Run()
 	// FSM 2-го уровня
 	switch (m_tAction) {
 		case ACTION_WALK:		// обход точек графа
-			pMonster->vfChoosePointAndBuildPath(0,0, false, 0);
+			pMonster->vfChoosePointAndBuildPath(0,0, false, 0,2000);
 
 			pMonster->Motion.m_tParams.SetParams(eMotionWalkFwd,m_cfBitingWalkSpeed,m_cfBitingWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 			pMonster->Motion.m_tTurn.Set(eMotionWalkTurnLeft, eMotionWalkTurnRight,m_cfBitingWalkTurningSpeed,m_cfBitingWalkTurnRSpeed,m_cfBitingWalkMinAngle);
@@ -277,7 +277,7 @@ void CBitingAttack::Run()
 			pMonster->Motion.m_tTurn.Set(eMotionFastTurnLeft, eMotionFastTurnLeft, 0, m_cfBitingAttackFastRSpeed,m_cfBitingRunAttackMinAngle);
 
 			if (pMonster->AttackMelee(pEnemy,false)) {
-				pMonster->DoDamage(pEnemy);
+				//pMonster->DoDamage(pEnemy);
 				nDoDamage++; 
 			}
 
@@ -361,7 +361,7 @@ void CBitingEat::Run()
 		case ACTION_RUN:	// бежать к трупу
 
 			pMonster->AI_Path.DestNode = pCorpse->AI_NodeID;
-			pMonster->vfChoosePointAndBuildPath(0,&pCorpse->Position(), true, 0);
+			pMonster->vfChoosePointAndBuildPath(0,&pCorpse->Position(), true, 0,2000);
 
 			pMonster->Motion.m_tParams.SetParams(eMotionRun,m_cfBitingRunAttackSpeed,m_cfBitingRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 			pMonster->Motion.m_tTurn.Set(eMotionRunTurnLeft,eMotionRunTurnRight, m_cfBitingRunAttackTurnSpeed,m_cfBitingRunAttackTurnRSpeed,m_cfBitingRunAttackMinAngle);
@@ -429,7 +429,7 @@ void CBitingHide::Run()
 	pMonster->m_tSelectorCover.m_fOptEnemyDistance = pMonster->m_tSelectorCover.m_fMaxEnemyDistance;
 	pMonster->m_tSelectorCover.m_fMinEnemyDistance = EnemyPos.distance_to(pMonster->Position()) + 3.f;
 
-	pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorCover, 0, true, 0);
+	pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorCover, 0, true, 0,2000);
 
 	// Установить параметры движения
 	pMonster->Motion.m_tParams.SetParams	(eMotionWalkFwd,m_cfBitingWalkSpeed,m_cfBitingWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
@@ -486,7 +486,7 @@ void CBitingDetour::Run()
 	pMonster->m_tSelectorCover.m_fOptEnemyDistance = 15;
 	pMonster->m_tSelectorCover.m_fMinEnemyDistance = m_tEnemy.obj->Position().distance_to(pMonster->Position()) + 3.f;
 	
-	pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorCover, 0, true, 0);
+	pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorCover, 0, true, 0, 2000);
 
 	// Установить параметры движения
 	pMonster->Motion.m_tParams.SetParams	(eMotionWalkFwd,m_cfBitingWalkSpeed,m_cfBitingWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
@@ -525,7 +525,7 @@ void CBitingPanic::Init()
 	if (!pMonster->GetEnemy(m_tEnemy)) R_ASSERT(false);
 	pMonster->SaveEnemy();
 
-	SetInertia(30000);
+	SetInertia(15000);
 
 	// Test
 	Msg("_ Panic Init _");
@@ -534,17 +534,12 @@ void CBitingPanic::Init()
 
 void CBitingPanic::Run()
 {
-	VisionElem tempEnemy;
-	if (pMonster->GetEnemy(tempEnemy)) {
-		m_tEnemy = tempEnemy;
-		SetInertia(20000);
-	}
 
 	pMonster->m_tSelectorFreeHunting.m_fMaxEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + pMonster->m_tSelectorFreeHunting.m_fSearchRange;
 	pMonster->m_tSelectorFreeHunting.m_fOptEnemyDistance = pMonster->m_tSelectorFreeHunting.m_fMaxEnemyDistance;
 	pMonster->m_tSelectorFreeHunting.m_fMinEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + 3.f;
 
-	pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorFreeHunting, 0, true, 0);
+	pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorFreeHunting, 0, true, 0,2000);
 
 	pMonster->Motion.m_tParams.SetParams(eMotionRun,m_cfBitingRunAttackSpeed,m_cfBitingRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 	pMonster->Motion.m_tTurn.Set(eMotionRunTurnLeft,eMotionRunTurnRight, m_cfBitingRunAttackTurnSpeed,m_cfBitingRunAttackTurnRSpeed,m_cfBitingRunAttackMinAngle);
@@ -606,7 +601,7 @@ void CBitingExploreDNE::Run()
 	pMonster->m_tSelectorFreeHunting.m_fOptEnemyDistance = pMonster->m_tSelectorFreeHunting.m_fMaxEnemyDistance;
 	pMonster->m_tSelectorFreeHunting.m_fMinEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + 3.f;
 
-	pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorFreeHunting, 0, true, 0);
+	pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorFreeHunting, 0, true, 0,1000);
 
 	pMonster->Motion.m_tParams.SetParams(eMotionRun,m_cfBitingRunAttackSpeed,m_cfBitingRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 	pMonster->Motion.m_tTurn.Set(eMotionRunTurnLeft,eMotionRunTurnRight, m_cfBitingRunAttackTurnSpeed,m_cfBitingRunAttackTurnRSpeed,m_cfBitingRunAttackMinAngle);
@@ -667,7 +662,7 @@ void CBitingExploreDE::Run()
 		pMonster->m_tSelectorCover.m_fOptEnemyDistance = pMonster->m_tSelectorCover.m_fMaxEnemyDistance;
 		pMonster->m_tSelectorCover.m_fMinEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + 3.f;
 
-		pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorCover, 0, true, 0);
+		pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorCover, 0, true, 0,2000);
 
 		// Установить параметры движения
 		pMonster->Motion.m_tParams.SetParams	(eMotionWalkFwd,m_cfBitingWalkSpeed,m_cfBitingWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
@@ -715,13 +710,12 @@ void CBitingExploreNDE::Init()
 
 void CBitingExploreNDE::Run()
 {
-	pMonster->vfChoosePointAndBuildPath(0, &m_tEnemy.position, false, 0);
+	pMonster->vfChoosePointAndBuildPath(0, &m_tEnemy.position, false, 0, 2000);
 
 	// Установить параметры движения
 	pMonster->Motion.m_tParams.SetParams	(eMotionWalkFwd,m_cfBitingWalkSpeed,m_cfBitingWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 	pMonster->Motion.m_tTurn.Set			(eMotionWalkTurnLeft, eMotionWalkTurnRight,m_cfBitingWalkTurningSpeed,m_cfBitingWalkTurnRSpeed,m_cfBitingWalkMinAngle);
 }
-
 
 
 

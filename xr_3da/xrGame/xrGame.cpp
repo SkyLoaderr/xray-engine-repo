@@ -588,8 +588,11 @@ public:
 			int id = 0;
 			sscanf(param2 ,"%d",&id);
 			pActor->m_trade->pPartner.inv_owner->m_trade->SellItem(id);
-		} 
-
+		} else if (strcmp(param1,"help") == 0) {
+			Msg("	show_all");		Msg("	show_items");		Msg("	show_my_items"); 
+			Msg("	show_money");	Msg("	show_your_money");	Msg("	show_artifact_prices");
+			Msg("	sell");			Msg("	buy");			
+		}
 	}
 };
 
