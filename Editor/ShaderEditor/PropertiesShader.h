@@ -35,32 +35,27 @@
 #include "ElStatBar.hpp"
 #include "ExtBtn.hpp"
 #include <ExtCtrls.hpp>
+#include "multi_edit.hpp"
 //---------------------------------------------------------------------------
 class TfrmShaderProperties : public TForm
 {
 __published:	// IDE-managed Components
 	TElTree *tvProperties;
-	TElTreeInplaceFloatSpinEdit *InplaceFloat;
-	TElTreeInplaceSpinEdit *InplaceNumber;
 	TMxPopupMenu *pmEnum;
 	TFormStorage *fsStorage;
 	TPanel *Panel1;
+	TMultiObjSpinEdit *seNumber;
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall FormShow(TObject *Sender);
-	void __fastcall InplaceNumberBeforeOperation(TObject *Sender,
-          bool &DefaultConversion);
-	void __fastcall InplaceFloatBeforeOperation(TObject *Sender,
-          bool &DefaultConversion);
 	void __fastcall tvPropertiesClick(TObject *Sender);
 	void __fastcall tvPropertiesItemDraw(TObject *Sender, TElTreeItem *Item,
           TCanvas *Surface, TRect &R, int SectionIndex);
 	void __fastcall tvPropertiesMouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
-	void __fastcall InplaceFloatValidateResult(TObject *Sender,
-          bool &InputValid);
-	void __fastcall InplaceNumberValidateResult(TObject *Sender,
-          bool &InputValid);
 	void __fastcall ebPropertiesApplyClick(TObject *Sender);
+	void __fastcall seNumberExit(TObject *Sender);
+	void __fastcall seNumberKeyDown(TObject *Sender, WORD &Key,
+          TShiftState Shift);
 private:	// User declarations
     void Modified();
     static bool m_bModified;
@@ -73,6 +68,12 @@ private:	// User declarations
 	void __fastcall AddMatrix(TElTreeItem* parent, LPSTR name);
 	void __fastcall RemoveMatrix(TElTreeItem* parent);
 	void __fastcall AddConstant(TElTreeItem* parent, LPSTR name);
+
+	// LW style inpl editor
+    void HideLWNumber();
+    void PrepareLWNumber(TElTreeItem* node);
+    void ShowLWNumber(TRect& R);
+    void ApplyLWNumber();
 public:		// User declarations
 	__fastcall TfrmShaderProperties		        (TComponent* Owner);
     static void __fastcall ShowProperties();

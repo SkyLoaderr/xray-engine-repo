@@ -19,6 +19,7 @@
 #pragma link "ElStatBar"
 #pragma link "ExtBtn"
 #pragma link "ELVCLUtils"
+#pragma link "multi_edit"
 #pragma resource "*.dfm"
 
 #define TSTRING_COUNT 	4
@@ -55,6 +56,8 @@ __fastcall TfrmShaderProperties::TfrmShaderProperties(TComponent* Owner)
 	DEFINE_INI(fsStorage);
 	m_BMEllipsis = new Graphics::TBitmap();
 	m_BMEllipsis->LoadFromResourceName((DWORD)HInstance,"ELLIPSIS");
+    seNumber->Parent = tvProperties;
+    seNumber->Hide();
 }
 //---------------------------------------------------------------------------
 
@@ -80,11 +83,6 @@ void __fastcall TfrmShaderProperties::FormClose(TObject *Sender,
 
 void __fastcall TfrmShaderProperties::FormShow(TObject *Sender)
 {
-    InplaceFloat->Editor->Color		= TColor(0x00A0A0A0);
-    InplaceFloat->Editor->BorderStyle= bsNone;
-    InplaceNumber->Editor->Color 	= TColor(0x00A0A0A0);
-    InplaceNumber->Editor->BorderStyle= bsNone;
-
 	InitProperties();
 }
 //---------------------------------------------------------------------------
@@ -176,73 +174,17 @@ TElTreeItem* __fastcall TfrmShaderProperties::AddItem(TElTreeItem* parent, DWORD
         else AddConstant(TI,(LPSTR)value);
     break;
     case BPID_TEXTURE:	CS->CellType = sftUndef;    TI->ColumnText->Add (AnsiString((LPSTR)value));					break;
-    case BPID_INTEGER:	CS->CellType = sftNumber;	TI->ColumnText->Add	(AnsiString(((BP_Integer*)value)->value));	break;
-    case BPID_FLOAT:	CS->CellType = sftFloating; TI->ColumnText->Add	(AnsiString(double(iFloor(double(((BP_Float*)value)->value)*10000))/10000)); break;
-    case BPID_FLOAT2:	CS->CellType = sftFloating; TI->ColumnText->Add	(AnsiString(double(iFloor(double(*(float*)value)*10000))/10000));  break;
-    case BPID_BOOL: 	CS->CellType = sftUndef;    TI->ColumnText->Add	(BOOLString[((BP_BOOL*)value)->value]); CS->Style = ElhsOwnerDraw; break;
+    case BPID_INTEGER:	CS->CellType = sftUndef;	TI->ColumnText->Add	(AnsiString(((BP_Integer*)value)->value));	CS->Style = ElhsOwnerDraw; break;
+    case BPID_FLOAT:	CS->CellType = sftUndef; 	TI->ColumnText->Add	(AnsiString(((BP_Float*)value)->value)); 	CS->Style = ElhsOwnerDraw; break;
+    case BPID_FLOAT2:	CS->CellType = sftUndef; 	TI->ColumnText->Add	(AnsiString(*(float*)value));  				CS->Style = ElhsOwnerDraw; break;
+    case BPID_BOOL: 	CS->CellType = sftUndef;    TI->ColumnText->Add	(BOOLString[((BP_BOOL*)value)->value]); 	CS->Style = ElhsOwnerDraw; break;
     case BPID_TOKEN:	CS->CellType = sftUndef; 	TI->ColumnText->Add	(GetToken((BP_TOKEN*)value,((BP_TOKEN*)value)->IDselected));	break;
 	default: THROW2("BPID_????");
     }
     return TI;
 }
 //---------------------------------------------------------------------------
-void __fastcall TfrmShaderProperties::InplaceFloatValidateResult(
-      TObject *Sender, bool &InputValid)
-{
-	TElFloatSpinEdit* E = InplaceFloat->Editor;
-	if (BPID_FLOAT2==InplaceFloat->Item->Tag){
-	    if (!fsimilar(*(float*)InplaceFloat->Item->Data,E->Value)){
-		    *(float*)InplaceFloat->Item->Data = E->Value;
-            Modified();
-	    }
-	}else if (BPID_FLOAT==InplaceFloat->Item->Tag){
-	    if (!fsimilar(((BP_Float*)InplaceFloat->Item->Data)->value,E->Value)){
-		    ((BP_Float*)InplaceFloat->Item->Data)->value = E->Value;
-            Modified();
-	    }
-    }
-}
-//---------------------------------------------------------------------------
-void __fastcall TfrmShaderProperties::InplaceFloatBeforeOperation(
-      TObject *Sender, bool &DefaultConversion)
-{
-	TElFloatSpinEdit* E = InplaceFloat->Editor;
-	if (BPID_FLOAT2==InplaceFloat->Item->Tag){
-        E->MinValue = 0.;
-        E->MaxValue = 1.;
-        E->Increment= 0.01;
-        E->LargeIncrement = E->Increment*10;
-    }else if (BPID_FLOAT==InplaceFloat->Item->Tag){
-        BP_Float* P = (BP_Float*)InplaceFloat->Item->Data;
-        E->MinValue = P->min;
-        E->MaxValue = P->max;
-        E->Increment= (P->max-P->min)/1000.;
-        E->LargeIncrement = E->Increment*10;
-    }
-}
-//---------------------------------------------------------------------------
 
-void __fastcall TfrmShaderProperties::InplaceNumberValidateResult(
-      TObject *Sender, bool &InputValid)
-{
-	TElSpinEdit* E = InplaceNumber->Editor;
-    if (*(int*)InplaceNumber->Item->Data != E->Value){
-	    *(int*)InplaceNumber->Item->Data = E->Value;
-		Modified();
-    }
-}
-//---------------------------------------------------------------------------
-void __fastcall TfrmShaderProperties::InplaceNumberBeforeOperation(
-      TObject *Sender, bool &DefaultConversion)
-{
-	TElSpinEdit* E = InplaceNumber->Editor;
-    BP_Integer* P = (BP_Integer*)InplaceNumber->Item->Data;
-    E->MinValue = P->min;
-    E->MaxValue = P->max;
-    E->Increment= 1;
-    E->LargeIncrement = E->Increment*10;
-}
-//---------------------------------------------------------------------------
 void __fastcall TfrmShaderProperties::tvPropertiesClick(TObject *Sender)
 {
 	int HS;
@@ -286,13 +228,132 @@ void __fastcall TfrmShaderProperties::tvPropertiesItemDraw(TObject *Sender,
             R.Right += 	10;
             DrawArrow	(Surface, eadDown, R, clWindowText, true);
         break;
+        case BPID_INTEGER:
+        case BPID_FLOAT:
+        case BPID_FLOAT2:
+        	if (seNumber->Tag!=(int)Item){
+	            R.Right-=10;
+    	        R.Left += 1;
+    			DrawText(Surface->Handle, AnsiString(Item->ColumnText->Strings[0]).c_str(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
+            }else{
+            	if (!seNumber->Visible) ShowLWNumber(R);
+            }
+        break;
         };
   	}
+}
+//---------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------
+// LW style inplace editor
+//---------------------------------------------------------------------------
+void TfrmShaderProperties::HideLWNumber()
+{
+    seNumber->Tag	= 0;
+    seNumber->Hide	();
+}
+//---------------------------------------------------------------------------
+void TfrmShaderProperties::PrepareLWNumber(TElTreeItem* item)
+{
+	DWORD type 		= item->Tag;
+    switch (type){
+    case BPID_FLOAT2:{
+        float* V 			= (float*)item->Data; VERIFY(V);
+        seNumber->MinValue 	= 0.;
+        seNumber->MaxValue	= 1.;
+        seNumber->Increment	= 0.01;
+        seNumber->LWSensitivity=seNumber->Increment/100;
+	    seNumber->Decimal  	= 2;
+    	seNumber->ValueType	= vtFloat;
+	    seNumber->Value 	= *V;
+    }break;
+    case BPID_FLOAT:{
+        BP_Float* V 		= (BP_Float*)item->Data; VERIFY(V);
+        seNumber->MinValue 	= V->min;
+        seNumber->MaxValue 	= V->max;
+        seNumber->Increment	= (V->max-V->min)/100.;
+        seNumber->LWSensitivity=seNumber->Increment/100;
+	    seNumber->Decimal  	= 2;
+    	seNumber->ValueType	= vtFloat;
+	    seNumber->Value 	= V->value;
+    }break;
+    case BPID_INTEGER:{
+    	BP_Integer* V 		= (BP_Integer*)item->Data; VERIFY(V);
+		seNumber->MinValue 	= V->min;
+        seNumber->MaxValue 	= V->max;
+	    seNumber->Increment	= 1;
+        seNumber->LWSensitivity=0.01f;
+	    seNumber->Decimal  	= 0;
+    	seNumber->ValueType	= vtInt;
+	    seNumber->Value 	= V->value;
+    }break;
+    }
+    seNumber->Tag 	= (int)item;
+    tvProperties->Refresh();
+}
+void TfrmShaderProperties::ShowLWNumber(TRect& R)
+{
+    seNumber->Left 	= R.Left;
+    seNumber->Top  	= R.Top+18;
+    seNumber->Width	= R.Right-R.Left+2;
+    seNumber->Height= R.Bottom-R.Top+3;
+    seNumber->Show();
+    seNumber->SetFocus();
+}
+
+void TfrmShaderProperties::ApplyLWNumber()
+{
+	TElTreeItem* item = (TElTreeItem*)seNumber->Tag;
+    if (item){
+		DWORD type = item->Tag;
+	    switch (type){
+		case BPID_FLOAT2:{
+	    	if (!fsimilar(*(float*)item->Data,seNumber->Value)){
+		    	*(float*)item->Data = seNumber->Value;
+	            Modified();
+		    }
+            item->ColumnText->Strings[0] = seNumber->Text;
+        }break;
+		case BPID_FLOAT:{
+		    if (!fsimilar(((BP_Float*)item->Data)->value,seNumber->Value)){
+			    ((BP_Float*)item->Data)->value = seNumber->Value;
+	            Modified();
+		    }
+            item->ColumnText->Strings[0] = seNumber->Text;
+    	}break;
+		case BPID_INTEGER:{
+    		if (*(int*)item->Data != seNumber->Value){
+	    		*(int*)item->Data = seNumber->Value;
+	            Modified();
+	    	}
+            item->ColumnText->Strings[0] = seNumber->Text;
+        }break;
+        }
+    }
+}
+
+void __fastcall TfrmShaderProperties::seNumberExit(TObject *Sender)
+{
+	ApplyLWNumber();
+	HideLWNumber();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmShaderProperties::seNumberKeyDown(TObject *Sender, WORD &Key,
+      TShiftState Shift)
+{
+	if (VK_RETURN==Key){
+		ApplyLWNumber();
+		HideLWNumber();
+    }else if (VK_ESCAPE==Key){
+		HideLWNumber();
+    }
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmShaderProperties::tvPropertiesMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
+	HideLWNumber();
 	int HS;
 	TElTreeItem* item = tvProperties->GetItemAt(X,Y,0,HS);
   	if ((HS==1)&&(Button==mbLeft)){
@@ -358,6 +419,11 @@ void __fastcall TfrmShaderProperties::tvPropertiesMouseDown(TObject *Sender,
                 pmEnum->Items->Add(mi);
             }
         }break;
+        case BPID_INTEGER:
+        case BPID_FLOAT:
+        case BPID_FLOAT2:
+        	PrepareLWNumber(item);
+        break;
         };
         switch(type){
         case BPID_CONSTANT:
