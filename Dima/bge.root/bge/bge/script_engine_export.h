@@ -11,3 +11,4 @@
 #include "script_engine.h"
 #include "console_ui.h"
 #include "othello_classic_board.h"
+#include "othello_bit_board.h"
