@@ -114,6 +114,8 @@ class CMyD3DApplication : public CD3DApplication
 
 	D3DXMATRIX						dm_world2view2projection;
 
+	D3DXMATRIX						dm_model2world2view2projection_light;
+
 	// Shaders
 	R_shader						s_Scene2fat;
 	R_shader						s_Scene2smap_direct;
@@ -571,24 +573,17 @@ HRESULT CMyD3DApplication::RenderShadowMap()
     m_pd3dDevice->Clear						(0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0xFFFFFFFF, 1.0f, 0L);
 	m_pd3dDevice->SetRenderState			(D3DRS_CULLMODE, D3DCULL_CW);
 
-	// Set shadow map shader
-	m_pd3dDevice->SetPixelShader			(m_pShadowMapPS);
-	m_pd3dDevice->SetVertexShader			(m_pShadowMapVS);
+	// Shader and params
+	m_pd3dDevice->SetPixelShader			(s_Scene2fat.ps);
+	m_pd3dDevice->SetVertexShader			(s_Scene2fat.vs);
 	m_pd3dDevice->SetVertexDeclaration		(m_pDeclVert);
-
-	D3DXVECTOR4	vRange						= D3DXVECTOR4	(1.0f / DEPTH_RANGE, 0.0f, 0.0f, 0.0f);
-	m_pd3dDevice->SetVertexShaderConstantF	(12, vRange, 1);
+	cc.set									(s_Scene2fat.constants.get("m_model2view2projection"),	*((Fmatrix*)&dm_model2world2view2projection_light));
+	cc.flush								(m_pd3dDevice);
 
 	// Render model
-	m_pd3dDevice->SetVertexShaderConstantF	(0, m_matShadowModelMVP, 4);
 	m_pd3dDevice->SetStreamSource			(0, m_pModelVB, 0, sizeof(VERTEX));
 	m_pd3dDevice->SetIndices				(m_pModelIB);
 	m_pd3dDevice->DrawIndexedPrimitive		(D3DPT_TRIANGLELIST, 0, 0, m_dwModelNumVerts, 0, m_dwModelNumFaces);
-
-	//Render floor
-	m_pd3dDevice->SetVertexShaderConstantF	(0, m_matShadowFloorMVP, 4);
-	m_pd3dDevice->SetStreamSource			(0, m_pFloorVB, 0, sizeof(VERTEX));
-	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
 
 	// Restore old render target
 	m_pd3dDevice->SetRenderTarget			(0, pOldBackBuffer);
