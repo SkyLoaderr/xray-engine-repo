@@ -126,7 +126,7 @@ TEMPLATE_SPECIALIZATION
 void CGameLocationSelector::Load(LPCSTR caSection)
 {
 	m_vertex_types.clear				();
-	LPCSTR								S = pSettings->r_string(section,"terrain");
+	LPCSTR								S = pSettings->r_string(caSection,"terrain");
 	u32									N = _GetItemCount(S);
 	R_ASSERT							(!(N % (LOCATION_TYPE_COUNT + 2)) && N);
 	ALife::STerrainPlace				l_terrain_location;
