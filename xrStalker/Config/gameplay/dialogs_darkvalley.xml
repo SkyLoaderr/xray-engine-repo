@@ -18,11 +18,6 @@
                 <action>dialogs.break_dialog</action>
                 <give_info>val_monolith_actor_detected</give_info>
             </phrase>
-            <phrase id="4">
-                <text>val_monolith_guard_password_4</text>
-                <action>dialogs.break_dialog</action>
-                <give_info>val_monolith_actor_detected</give_info>
-            </phrase>
             <phrase id="5">
                 <text>val_monolith_guard_password_5</text>
                 <action>dialogs.break_dialog</action>
