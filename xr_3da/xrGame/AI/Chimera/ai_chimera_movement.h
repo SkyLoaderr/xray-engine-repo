@@ -2,19 +2,19 @@
 
 #include "../../movement_manager.h"
 #include "../ai_monster_share.h"
+#include "../ai_monster_defs.h"
 
 
 struct _chimera_movement_shared : public CSharedResource {
-	float	m_fsTurnNormalAngular;
-	float	m_fsWalkFwdNormal;
-	float	m_fsWalkFwdDamaged;
-	float	m_fsWalkBkwdNormal;
-	float	m_fsWalkAngular;
-	float	m_fsRunFwdNormal;
-	float	m_fsRunFwdDamaged;
-	float	m_fsRunAngular;
-	float	m_fsDrag;
-	float	m_fsSteal;
+	// float speed factors
+	SVelocityParam			m_fsVelocityNone;
+	SVelocityParam			m_fsVelocityStandTurn;
+	SVelocityParam			m_fsVelocityWalkFwdNormal;
+	SVelocityParam			m_fsVelocityWalkFwdDamaged;
+	SVelocityParam			m_fsVelocityRunFwdNormal;
+	SVelocityParam			m_fsVelocityRunFwdDamaged;
+	SVelocityParam 			m_fsVelocityDrag;
+	SVelocityParam 			m_fsVelocitySteal;
 };
 
 enum EMovementParameters {

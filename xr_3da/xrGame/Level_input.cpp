@@ -14,8 +14,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 //	if (pHUD->IsUIActive())			
 	if (pHUD->GetUI()->OnKeyboardPress(key)) return;
 
-	switch (key) 
-	{
+	switch (key) {
 #ifdef DEBUG
 	case DIK_RETURN:
 		bDebug	= !bDebug;
@@ -81,6 +80,15 @@ void CLevel::IR_OnKeyboardPress(int key)
 		}
 		return;
 	}
+
+	case DIK_DIVIDE:
+		Level().SetGameTimeFactor(1.f);	
+		break;
+	
+	case DIK_MULTIPLY:
+		Level().SetGameTimeFactor(1000.f);
+		break;
+
 #ifdef DEBUG
 //	case DIK_F9:
 ////		if (!Objects.FindObjectByName("m_stalker_e0000") || !Objects.FindObjectByName("localhost/dima"))
@@ -129,16 +137,20 @@ void CLevel::IR_OnKeyboardPress(int key)
 	CObject			*obj		= Level().Objects.FindObjectByName("chimera");
 	CAI_Chimera		*monster	= dynamic_cast<CAI_Chimera *>(obj);
 
+	Fvector pos;
+	pos = Level().CurrentEntity()->Position();
+	pos.y+=3.f;
+
 	if (monster) {
 		switch (key) {
 		case DIK_1:
 			monster->TTelekinesis::Activate();
 			break;
 		case DIK_2:
-			monster->TTelekinesis::Throw(Level().CurrentEntity()->Position());			
+			monster->TTelekinesis::Deactivate();
 			break;
 		case DIK_3:
-			monster->TTelekinesis::Deactivate();
+			monster->TTelekinesis::Throw(pos);						
 			break;
 		}
 	}

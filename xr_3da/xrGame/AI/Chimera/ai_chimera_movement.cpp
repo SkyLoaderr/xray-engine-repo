@@ -21,13 +21,12 @@ void CChimeraMovementManager::Load	(LPCSTR section)
 	
 	inherited_shared::load_shared	(SUB_CLS_ID, section);
 
-	m_movement_params.insert		(std::make_pair(eVelocityParameterStand,		STravelParams(0.f,						_sd->m_fsTurnNormalAngular	)));
-	m_movement_params.insert		(std::make_pair(eVelocityParameterWalk,			STravelParams(_sd->m_fsWalkFwdNormal,	_sd->m_fsWalkAngular		)));
-	m_movement_params.insert		(std::make_pair(eVelocityParameterRun,			STravelParams(_sd->m_fsRunFwdNormal,	_sd->m_fsRunAngular			)));
-	m_movement_params.insert		(std::make_pair(eVelocityParameterWalkDamaged,	STravelParams(_sd->m_fsWalkFwdDamaged,	_sd->m_fsWalkAngular		)));
-	m_movement_params.insert		(std::make_pair(eVelocityParameterRunDamaged,	STravelParams(_sd->m_fsRunFwdDamaged,	_sd->m_fsRunAngular			)));
-
-
+	
+	m_movement_params.insert(std::make_pair(eVelocityParameterStand,		STravelParams(_sd->m_fsVelocityStandTurn.velocity.linear,		_sd->m_fsVelocityStandTurn.velocity.angular)));
+	m_movement_params.insert(std::make_pair(eVelocityParameterWalk,			STravelParams(_sd->m_fsVelocityWalkFwdNormal.velocity.linear,	_sd->m_fsVelocityWalkFwdNormal.velocity.angular)));
+	m_movement_params.insert(std::make_pair(eVelocityParameterRun,			STravelParams(_sd->m_fsVelocityRunFwdNormal.velocity.linear,	_sd->m_fsVelocityRunFwdNormal.velocity.angular)));
+	m_movement_params.insert(std::make_pair(eVelocityParameterWalkDamaged,	STravelParams(_sd->m_fsVelocityWalkFwdDamaged.velocity.linear,	_sd->m_fsVelocityWalkFwdDamaged.velocity.angular)));
+	m_movement_params.insert(std::make_pair(eVelocityParameterRunDamaged,	STravelParams(_sd->m_fsVelocityRunFwdDamaged.velocity.linear,	_sd->m_fsVelocityRunFwdDamaged.velocity.angular)));
 }
 
 void CChimeraMovementManager::reinit()
@@ -42,16 +41,14 @@ void CChimeraMovementManager::reload(LPCSTR section)
 
 void CChimeraMovementManager::load_shared(LPCSTR section)
 {
-	_sd->m_fsTurnNormalAngular	= pSettings->r_float(section,"TurnNormalAngular");
-	_sd->m_fsWalkFwdNormal		= pSettings->r_float(section,"WalkFwdNormal");
-	_sd->m_fsWalkFwdDamaged		= pSettings->r_float(section,"WalkFwdDamaged");
-	_sd->m_fsWalkBkwdNormal		= pSettings->r_float(section,"WalkBkwdNormal");
-	_sd->m_fsWalkAngular		= pSettings->r_float(section,"WalkAngular");
-	_sd->m_fsRunFwdNormal		= pSettings->r_float(section,"RunFwdNormal");
-	_sd->m_fsRunFwdDamaged		= pSettings->r_float(section,"RunFwdDamaged");
-	_sd->m_fsRunAngular			= pSettings->r_float(section,"RunAngular");
-	_sd->m_fsDrag				= pSettings->r_float(section,"Drag");
-	_sd->m_fsSteal				= pSettings->r_float(section,"Steal");
+	_sd->m_fsVelocityStandTurn.Load		(section,"Velocity_Stand");
+	_sd->m_fsVelocityWalkFwdNormal.Load (section,"Velocity_WalkFwdNormal");
+	_sd->m_fsVelocityWalkFwdDamaged.Load(section,"Velocity_WalkFwdDamaged");
+	_sd->m_fsVelocityRunFwdNormal.Load	(section,"Velocity_RunFwdNormal");
+	_sd->m_fsVelocityRunFwdDamaged.Load (section,"Velocity_RunFwdDamaged");
+	_sd->m_fsVelocityDrag.Load			(section,"Velocity_Drag");
+	_sd->m_fsVelocitySteal.Load			(section,"Velocity_Steal");
+
 }
 
 

@@ -12,15 +12,17 @@ enum ETelekineticState {
 class CTelekineticObject {
 public:
 	ETelekineticState	state;
-	CEntityAlive		*pE;
-	Fvector				start_pos;
+	CGameObject			*obj;
+	float				start_y;
 	u32					time_state_started;
+	u32					last_time_updated;
 
-	CTelekineticObject set(CEntityAlive *new_obj, ETelekineticState	new_state) {
+	CTelekineticObject set(CGameObject *new_obj, ETelekineticState	new_state) {
 		state				= new_state;
-		pE					= new_obj;
-		start_pos			= pE->Position();
+		obj					= new_obj;
+		start_y				= obj->Position().y;
 		time_state_started	= Level().timeServer();
+		last_time_updated	= 0;
 		return	*this;
 	}
 };
@@ -32,24 +34,33 @@ class CTelekinesis {
 	bool							active;
 
 	CMonster						*monster;
+	
+	u32								max_time_keep;
+	float							height;
+	float							strength;
+
 
 public:
-	CTelekinesis	();
-	virtual	~CTelekinesis	();
+			CTelekinesis		();
+	virtual	~CTelekinesis		();
 
-	void	Activate	();
-	void	Deactivate	();
-	bool	IsActive	() {return active;}
-
-	void	Throw		(const Fvector &target);
+	void	InitExtern			(CMonster *pM, float s, float h, u32 keep_time);
 	
-	void	Update		(float dt);
+	void	Activate			();
+	void	Deactivate			();
+	bool	IsActive			() {return active;}
+
+	void	Throw				(const Fvector &target);
+	
+	void	UpdateCL			(float dt);
+	void	UpdateSched			();
 
 private:
-	void	Raise		(CEntityAlive *pE);
-	void	Keep		(CEntityAlive *pE);
-	void	Release		(CEntityAlive *pE);
-	void	Throw		(CEntityAlive *pE, const Fvector &target);
+	void	Raise				(CTelekineticObject &obj, float power);
+	void	Keep				(CTelekineticObject &obj);
+	void	Release				(CTelekineticObject &obj);
+	void	Throw				(CTelekineticObject &obj, const Fvector &target);
+
 };
 
 
