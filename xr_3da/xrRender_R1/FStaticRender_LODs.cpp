@@ -65,12 +65,15 @@ void CRender::flush_LODs()
 		dot	= Ldir.dotproduct			(facets[6].N); if (dot>best_dot) { best_id=6; best_dot=dot; }
 		dot	= Ldir.dotproduct			(facets[7].N); if (dot>best_dot) { best_id=7; best_dot=dot; }
 
+#pragma todo("Smooth transitions")
+#pragma todo("5-coloring")
+
 		// Fill VB
 		FLOD::_face&	F				= facets[best_id];
-		_P.add(F.v[3].v,shift);	V->set	(_P,color(F.v[3].c,uA),F.v[3].t.x,F.v[3].t.y); V++;	// 3
-		_P.add(F.v[0].v,shift);	V->set	(_P,color(F.v[0].c,uA),F.v[0].t.x,F.v[0].t.y); V++;	// 0
-		_P.add(F.v[2].v,shift);	V->set	(_P,color(F.v[2].c,uA),F.v[2].t.x,F.v[2].t.y); V++;	// 2
-		_P.add(F.v[1].v,shift);	V->set	(_P,color(F.v[1].c,uA),F.v[1].t.x,F.v[1].t.y); V++;	// 1
+		_P.add(F.v[3].v,shift);	V->set	(_P,color(F.v[3].c_rgb_hemi,uA),F.v[3].t.x,F.v[3].t.y); V++;	// 3
+		_P.add(F.v[0].v,shift);	V->set	(_P,color(F.v[0].c_rgb_hemi,uA),F.v[0].t.x,F.v[0].t.y); V++;	// 0
+		_P.add(F.v[2].v,shift);	V->set	(_P,color(F.v[2].c_rgb_hemi,uA),F.v[2].t.x,F.v[2].t.y); V++;	// 2
+		_P.add(F.v[1].v,shift);	V->set	(_P,color(F.v[1].c_rgb_hemi,uA),F.v[1].t.x,F.v[1].t.y); V++;	// 1
 	}
 	vecGroups.push_back				(cur_count);
 	RCache.Vertex.Unlock			(lstLODs.size()*4,firstV->hGeom->vb_stride);
