@@ -33,9 +33,7 @@ class CAI_Zombie : public CCustomMonster
 			aiZombieAttackFire,
 			aiZombieAttackRun,
 			aiZombieUnderFire,
-			aiZombieRetreat,
 			aiZombiePursuit,
-			aiZombieFreeRecoil,
 			aiZombieReturnHome,
 		};
 
@@ -151,18 +149,6 @@ class CAI_Zombie : public CCustomMonster
 		Fvector				m_tOldPosition;
 		bool				m_bNoWay;
 
-		// Morale
-		float				m_fMoraleSuccessAttackQuant;
-		float				m_fMoraleDeathQuant;
-		float				m_fMoraleFearQuant;
-		float				m_fMoraleRestoreQuant;
-		u32					m_dwMoraleRestoreTimeInterval;
-		u32					m_dwMoraleLastUpdateTime;
-		float				m_fMoraleMinValue;
-		float				m_fMoraleMaxValue;
-		float				m_fMoraleNormalValue;
-		float				m_fMoraleDeathDistance;
-
 		// active
 		float				m_fChangeActiveStateProbability;
 		u32					m_dwActiveCountPercent;
@@ -170,8 +156,6 @@ class CAI_Zombie : public CCustomMonster
 		u32					m_dwActiveScheduleMax;
 		u32					m_dwPassiveScheduleMin;
 		u32					m_dwPassiveScheduleMax;
-		u32					m_dwStandingCountPercent;
-		bool				m_bStanding;
 		bool				m_bActive;
 
 		// attack parameters
@@ -179,10 +163,6 @@ class CAI_Zombie : public CCustomMonster
 		float				m_fAttackAngle;
 		float				m_fMaxPursuitRadius;
 		float				m_fMaxHomeRadius;
-
-		// DDD
-		u32					m_dwActionRefreshRate;
-		float				m_fAttackSuccessProbability;
 
 		// former constants
 		u32					m_dwLostMemoryTime;
@@ -249,7 +229,6 @@ class CAI_Zombie : public CCustomMonster
 				Group.m_dwActiveCount++;
 				shedule_Min	= m_dwActiveScheduleMin;
 				shedule_Max	= m_dwActiveScheduleMax;
-				vfRemoveStandingMember();
 			}
 			//Msg("* Group : alive[%2d], active[%2d]",Group.m_dwAliveCount,Group.m_dwActiveCount);
 		};
@@ -268,25 +247,6 @@ class CAI_Zombie : public CCustomMonster
 			//Msg("* Group : alive[%2d], active[%2d]",Group.m_dwAliveCount,Group.m_dwActiveCount);
 		};
 		
-		IC void vfAddStandingMember()
-		{
-			CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-			if ((Group.m_dwAliveCount*m_dwStandingCountPercent/100 >= Group.m_dwStandingCount) && (!m_bStanding)) {
-				Group.m_dwStandingCount++;
-				m_bStanding = true;
-			}
-		};
-		
-		IC void vfRemoveStandingMember()
-		{
-			CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-			if (m_bStanding) {
-				R_ASSERT(Group.m_dwStandingCount > 0);
-				Group.m_dwStandingCount--;
-				m_bStanding = false;
-			}
-		};
-
 		IC bool bfCheckIfSoundFrightful()
 		{
 			return(((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_BULLET_RICOCHET) == SOUND_TYPE_WEAPON_BULLET_RICOCHET) || ((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING));
@@ -295,9 +255,7 @@ class CAI_Zombie : public CCustomMonster
 		//////////////////////////
 		// MISCELLANIOUS FUNCTIONS
 		//////////////////////////
-		void	vfUpdateMoraleBroadcast(float fValue, float fRadius);
 		void	vfComputeNextDirectionPosition();
-		void	vfUpdateMorale();
 		void	vfComputeNewPosition();
 		void	vfLoadSounds();
 		void	vfLoadAnimations();
@@ -317,9 +275,7 @@ class CAI_Zombie : public CCustomMonster
 		void	AttackRun();
 		void	Turn();
 		void	UnderFire();
-		void	Retreat();
 		void	Pursuit();
-		void	FreeRecoil();
 		void	ReturnHome();
 	public:
 					   CAI_Zombie();

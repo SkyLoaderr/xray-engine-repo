@@ -35,8 +35,6 @@ CAI_Zombie::CAI_Zombie()
 	m_tLastSound.dwTime		= 0;
 	m_tLastSound.eSoundType	= SOUND_TYPE_NO_SOUND;
 	m_bNoWay				= false;
-	m_dwMoraleLastUpdateTime = 0;
-	m_bStanding				= false;
 	m_bActive				= false;
 	m_dwStartAttackTime		= 0;
 	q_look.o_look_speed		= PI;
@@ -65,11 +63,8 @@ void CAI_Zombie::Die()
 	
 	pSounds->PlayAtPos(m_tpaSoundDie[Random.randI(SND_DIE_COUNT)],this,vPosition);
 
-	vfUpdateMoraleBroadcast(m_fMoraleDeathQuant,m_fMoraleDeathDistance);
-	
 	CGroup &Group = Level().get_group(g_Team(),g_Squad(),g_Group());
 	vfRemoveActiveMember();
-	vfRemoveStandingMember();
 	Group.m_dwAliveCount--;
 	eCurrentState = aiZombieDie;
 }
@@ -102,7 +97,6 @@ void CAI_Zombie::Load(LPCSTR section)
 	m_dwPassiveScheduleMin			= pSettings->ReadINT   (section,"PassiveScheduleMin");
 	m_dwPassiveScheduleMax			= pSettings->ReadINT   (section,"PassiveScheduleMax");
 	m_dwActiveCountPercent			= pSettings->ReadINT   (section,"ActiveCountPercent");
-	m_dwStandingCountPercent		= pSettings->ReadINT   (section,"StandingCountPercent");
 
 	// eye shift
 	m_tEyeShift.y					= pSettings->ReadFLOAT (section,"EyeYShift");
@@ -121,10 +115,6 @@ void CAI_Zombie::Load(LPCSTR section)
 	m_fAngleSpeed					= pSettings->ReadFLOAT (section,"AngleSpeed");
 	m_fSafeGoalChangeDelta	 		= pSettings->ReadFLOAT (section,"GoalChangeDelta");
 	m_tGoalVariation	  			= pSettings->ReadVECTOR(section,"GoalVariation");
-
-	m_fMoraleDeathDistance	 		= pSettings->ReadFLOAT (section,"DeathDistance");
-
-	m_dwActionRefreshRate	 		= pSettings->ReadINT   (section,"ActionRefreshRate");
 
 	m_fMaxHealthValue	 			= pSettings->ReadFLOAT (section,"MaxHealthValue");
 
@@ -151,21 +141,11 @@ BOOL CAI_Zombie::net_Spawn	(LPVOID DC)
 	m_fAttackSpeed					= tpSE_Zombie->fAttackSpeed;
 	m_fMaxPursuitRadius				= tpSE_Zombie->fMaxPursuitRadius;
 	m_fMaxHomeRadius				= tpSE_Zombie->fMaxHomeRadius;
-	// morale
-	m_fMoraleSuccessAttackQuant		= tpSE_Zombie->fMoraleSuccessAttackQuant;
-	m_fMoraleDeathQuant				= tpSE_Zombie->fMoraleDeathQuant;
-	m_fMoraleFearQuant				= tpSE_Zombie->fMoraleFearQuant;
-	m_fMoraleRestoreQuant			= tpSE_Zombie->fMoraleRestoreQuant;
-	m_dwMoraleRestoreTimeInterval	= tpSE_Zombie->u16MoraleRestoreTimeInterval;
-	m_fMoraleMinValue				= tpSE_Zombie->fMoraleMinValue;
-	m_fMoraleMaxValue				= tpSE_Zombie->fMoraleMaxValue;
-	m_fMoraleNormalValue			= tpSE_Zombie->fMoraleNormalValue;
 	// attack
 	m_fHitPower						= tpSE_Zombie->fHitPower;
 	m_dwHitInterval					= tpSE_Zombie->u16HitInterval;
 	m_fAttackDistance				= tpSE_Zombie->fAttackDistance;
 	m_fAttackAngle					= tpSE_Zombie->fAttackAngle/180.f*PI;
-	m_fAttackSuccessProbability		= tpSE_Zombie->fAttackSuccessProbability;
 	//////////////////////////////////////////////////////////////////////////
 
 	m_fCurSpeed						= m_fMaxSpeed;

@@ -670,28 +670,18 @@ xrSE_Zombie::xrSE_Zombie()
 	strcat(caModel,"monsters\\zombie\\zombie_1");
 	// personal charactersitics
 	fEyeFov							= 120;
-	fEyeRange						= 10;
-	fHealth							= 5;
-	fMinSpeed						= .5;
-	fMaxSpeed						= 1.5;
-	fAttackSpeed					= 4.0;
+	fEyeRange						= 30;
+	fHealth							= 200;
+	fMinSpeed						= 1.5;
+	fMaxSpeed						= 1.75;
+	fAttackSpeed					= 2.0;
 	fMaxPursuitRadius				= 100;
-	fMaxHomeRadius					= 10;
-	// morale
-	fMoraleSuccessAttackQuant		= 20;
-	fMoraleDeathQuant				= -10;
-	fMoraleFearQuant				= -20;
-	fMoraleRestoreQuant				=  10;
-	u16MoraleRestoreTimeInterval	= 3000;
-	fMoraleMinValue					= 0;
-	fMoraleMaxValue					= 100;
-	fMoraleNormalValue				= 66;
+	fMaxHomeRadius					= 30;
 	// attack
-	fHitPower						= 10.0;
-	u16HitInterval					= 1500;
-	fAttackDistance					= 0.7f;
-	fAttackAngle					= 45;
-	fAttackSuccessProbability		= 0.5f;
+	fHitPower						= 20.0;
+	u16HitInterval					= 1000;
+	fAttackDistance					= 1.0f;
+	fAttackAngle					= 15;
 }
 
 void xrSE_Zombie::STATE_Read(NET_Packet& P, u16 size)
@@ -709,21 +699,11 @@ void xrSE_Zombie::STATE_Read(NET_Packet& P, u16 size)
 	P.r_float (fAttackSpeed);
 	P.r_float (fMaxPursuitRadius);
 	P.r_float (fMaxHomeRadius);
-	// morale
-	P.r_float (fMoraleSuccessAttackQuant);
-	P.r_float (fMoraleDeathQuant);
-	P.r_float (fMoraleFearQuant);
-	P.r_float (fMoraleRestoreQuant);
-	P.r_u16   (u16MoraleRestoreTimeInterval);
-	P.r_float (fMoraleMinValue);
-	P.r_float (fMoraleMaxValue);
-	P.r_float (fMoraleNormalValue);
 	// attack
 	P.r_float (fHitPower);
 	P.r_u16   (u16HitInterval);
 	P.r_float (fAttackDistance);
 	P.r_float (fAttackAngle);
-	P.r_float (fAttackSuccessProbability);
 }
 
 void xrSE_Zombie::STATE_Write(NET_Packet& P)
@@ -741,21 +721,11 @@ void xrSE_Zombie::STATE_Write(NET_Packet& P)
 	P.w_float (fAttackSpeed);
 	P.w_float (fMaxPursuitRadius);
 	P.w_float (fMaxHomeRadius);
-	// morale
-	P.w_float (fMoraleSuccessAttackQuant);
-	P.w_float (fMoraleDeathQuant);
-	P.w_float (fMoraleFearQuant);
-	P.w_float (fMoraleRestoreQuant);
-	P.w_u16   (u16MoraleRestoreTimeInterval);
-	P.w_float (fMoraleMinValue);
-	P.w_float (fMoraleMaxValue);
-	P.w_float (fMoraleNormalValue);
 	// attack
 	P.w_float (fHitPower);
 	P.w_u16   (u16HitInterval);
 	P.w_float (fAttackDistance);
 	P.w_float (fAttackAngle);
-	P.w_float (fAttackSuccessProbability);
 }
 
 void xrSE_Zombie::UPDATE_Read(NET_Packet& P)
@@ -783,21 +753,11 @@ void xrSE_Zombie::FillProp(LPCSTR pref, PropValueVec& values)
    	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Attack speed",			&fAttackSpeed,					PHelper.CreateFloat(0,10,0.1));
    	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Pursuit distance",		&fMaxPursuitRadius,				PHelper.CreateFloat(0,300,10));
    	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Home distance",		&fMaxHomeRadius,				PHelper.CreateFloat(0,300,10));
-	// morale
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Morale")),	"Success attack quant",	&fMoraleSuccessAttackQuant,		PHelper.CreateFloat(-100,100,5));
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Morale")),	"Death quant",			&fMoraleDeathQuant,				PHelper.CreateFloat(-100,100,5));
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Morale")),	"Fear quant",			&fMoraleFearQuant,				PHelper.CreateFloat(-100,100,5));
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Morale")),	"Restore quant",		&fMoraleRestoreQuant,			PHelper.CreateFloat(-100,100,5));
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Morale")),	"Restore time interval",&u16MoraleRestoreTimeInterval,	PHelper.CreateU16  (0,65535,500));
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Morale")),	"Minimum value",		&fMoraleMinValue,				PHelper.CreateFloat(-100,100,5));
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Morale")),	"Maximum value",		&fMoraleMaxValue,				PHelper.CreateFloat(-100,100,5));
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Morale")),	"Normal value",			&fMoraleNormalValue,			PHelper.CreateFloat(-100,100,5));
 	// attack
 	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack")),	"Hit power",			&fHitPower,						PHelper.CreateFloat(0,200,5));
 	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack")),	"Hit interval",			&u16HitInterval,				PHelper.CreateU16  (0,65535,500));
 	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack")),	"Distance",				&fAttackDistance,				PHelper.CreateFloat(0,300,10));
 	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack")),	"Maximum angle",		&fAttackAngle,					PHelper.CreateFloat(0,180,10));
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack")),	"Success probability",	&fAttackSuccessProbability,		PHelper.CreateFloat(0,100,1));
 }
 #endif
 

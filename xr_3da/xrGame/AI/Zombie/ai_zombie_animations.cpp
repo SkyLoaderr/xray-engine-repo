@@ -90,10 +90,7 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 						tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpTurnLeft;
 				else
 					if (m_fSpeed < 0.2f) {
-						if (m_bStanding)
-							tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaIdle[1];
-						else
-							tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaIdle[0];
+						tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaIdle[0];
 					}
 					else
 						if (_abs(m_fSpeed - m_fAttackSpeed) < EPS_L)
@@ -111,10 +108,7 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 						tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpTurnRight;
 				else
 					if (m_fSpeed < 0.2f) {
-						if (m_bStanding)
-							tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaIdle[1];
-						else
-							tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaIdle[0];
+						tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaIdle[0];
 					}
 					else
 						if (_abs(m_fSpeed - m_fAttackSpeed) < EPS_L)

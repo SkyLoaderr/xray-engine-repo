@@ -39,7 +39,6 @@
 
 void CAI_Zombie::Think()
 {
-	vfUpdateMorale();
 	bStopThinking = false;
 	do {
 		m_ePreviousState = eCurrentState;
@@ -72,16 +71,8 @@ void CAI_Zombie::Think()
 				UnderFire();
 				break;
 			}
-			case aiZombieRetreat : {
-				Retreat();
-				break;
-			}
 			case aiZombiePursuit : {
 				Pursuit();
-				break;
-			}
-			case aiZombieFreeRecoil : {
-				FreeRecoil();
 				break;
 			}
 			case aiZombieReturnHome : {
@@ -180,15 +171,15 @@ void CAI_Zombie::FreeHuntingActive()
 			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieAttackRun)
 	}
 
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(m_fMorale < m_fMoraleNormalValue,aiZombieUnderFire);
+//	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(m_fMorale < m_fMoraleNormalValue,aiZombieUnderFire);
 	
-	if ((m_tLastSound.dwTime >= m_dwLastUpdateTime) && ((!m_tLastSound.tpEntity) || (m_tLastSound.tpEntity->g_Team() != g_Team())) && (!m_Enemy.Enemy)) {
-		if (m_tLastSound.tpEntity)
-			m_tSavedEnemy = m_tLastSound.tpEntity;
-		m_tSavedEnemyPosition = m_tLastSound.tSavedPosition;
-		m_dwLostEnemyTime = Level().timeServer();
-		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieFreeRecoil);
-	}
+//	if ((m_tLastSound.dwTime >= m_dwLastUpdateTime) && ((!m_tLastSound.tpEntity) || (m_tLastSound.tpEntity->g_Team() != g_Team())) && (!m_Enemy.Enemy)) {
+//		if (m_tLastSound.tpEntity)
+//			m_tSavedEnemy = m_tLastSound.tpEntity;
+//		m_tSavedEnemyPosition = m_tLastSound.tSavedPosition;
+//		m_dwLostEnemyTime = Level().timeServer();
+//		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieFreeRecoil);
+//	}
     m_tSpawnPosition.set(m_tSafeSpawnPosition);
 	m_fGoalChangeDelta		= m_fSafeGoalChangeDelta;
 	m_tVarGoal.set			(m_tGoalVariation);
@@ -287,11 +278,11 @@ void CAI_Zombie::FreeHuntingPassive()
 		return;
 	}
 
-	if (m_fMorale < m_fMoraleNormalValue) {
-		vfAddActiveMember(true);
-		bStopThinking = false;
-		return;
-	}
+//	if (m_fMorale < m_fMoraleNormalValue) {
+//		vfAddActiveMember(true);
+//		bStopThinking = false;
+//		return;
+//	}
 	
 	if ((m_tLastSound.dwTime >= m_dwLastUpdateTime) && ((!m_tLastSound.tpEntity) || (m_tLastSound.tpEntity->g_Team() != g_Team()))) {
 		vfAddActiveMember(true);
@@ -303,7 +294,6 @@ void CAI_Zombie::FreeHuntingPassive()
 
 	UpdateTransform();
 
-	vfAddStandingMember();
 	vfAddActiveMember();
 
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
@@ -337,9 +327,9 @@ void CAI_Zombie::UnderFire()
 			tTemp.mul(m_fUnderFireDistance);
 			m_tSpawnPosition.add(vPosition,tTemp);
 		}
-		if (m_fMorale >= m_fMoraleNormalValue - EPS_L) {
-			GO_TO_PREV_STATE;
-		}
+		//if (m_fMorale >= m_fMoraleNormalValue - EPS_L) {
+		//	GO_TO_PREV_STATE;
+		//}
 	}
 
 	m_tGoalDir = m_tSpawnPosition;
@@ -374,10 +364,6 @@ void CAI_Zombie::AttackFire()
 	
 	SelectEnemy(m_Enemy);
 	
-	EZombieStates eState = EZombieStates(dwfChooseAction(m_dwActionRefreshRate,m_fAttackSuccessProbability,g_Team(),g_Squad(),g_Group(),eCurrentState,eCurrentState,aiZombieRetreat));
-	if (eState != eCurrentState)
-		GO_TO_NEW_STATE_THIS_UPDATE(eState);
-
 	if (m_Enemy.Enemy)
 		m_dwLostEnemyTime = Level().timeServer();
 
@@ -423,11 +409,6 @@ void CAI_Zombie::AttackRun()
 		m_dwLostEnemyTime = Level().timeServer();
 
 	SelectEnemy(m_Enemy);
-
-	EZombieStates eState = EZombieStates(dwfChooseAction(m_dwActionRefreshRate,m_fAttackSuccessProbability,g_Team(),g_Squad(),g_Group(),eCurrentState,eCurrentState,aiZombieRetreat));
-	if (eState != eCurrentState) {
-		GO_TO_NEW_STATE_THIS_UPDATE(eState);
-	}
 
 	if (!(m_Enemy.Enemy) && m_tSavedEnemy && (Level().timeServer() - m_dwLostEnemyTime < m_dwLostMemoryTime))
 		m_Enemy.Enemy = m_tSavedEnemy;
@@ -499,59 +480,6 @@ void CAI_Zombie::AttackRun()
 		m_fSafeSpeed = m_fSpeed = m_fAttackSpeed;
 }
 
-void CAI_Zombie::Retreat()
-{
-	WRITE_TO_LOG("Retreat");
-
-	bStopThinking = true;
-	
-	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiZombieDie)
-
-	SelectEnemy(m_Enemy);
-
-	if (m_Enemy.Enemy) {
-		vfSaveEnemy();
-		EZombieStates eState = EZombieStates(dwfChooseAction(m_dwActionRefreshRate,m_fAttackSuccessProbability,g_Team(),g_Squad(),g_Group(),aiZombieAttackRun,aiZombieAttackRun,aiZombieRetreat));
-		if (eState != eCurrentState)
-			GO_TO_NEW_STATE_THIS_UPDATE(eState);
-		m_dwLostEnemyTime = Level().timeServer();
-		
-		INIT_SQUAD_AND_LEADER;
-		
-		Fvector tTemp;
-		tTemp.sub(vPosition,m_Enemy.Enemy->Position());
-		tTemp.normalize_safe();
-		tTemp.mul(m_fRetreatDistance);
-		m_tSpawnPosition.add(vPosition,tTemp);
-	}
-	else
-		if ((Level().timeServer() - m_dwLostEnemyTime > m_dwRetreatTime) && ((m_tLastSound.dwTime < m_dwLastUpdateTime) || !m_tLastSound.tpEntity || (m_tLastSound.tpEntity->g_Team() == g_Team()) || (!bfCheckIfSoundFrightful()))) {
-			GO_TO_PREV_STATE;
-		}
-
-	m_tGoalDir = m_tSpawnPosition;
-	
-	vfUpdateTime(m_fTimeUpdateDelta);
-	vfComputeNewPosition();
-	SetDirectionLook();
-
-	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
-		m_fSpeed = .1f;
-		if (m_bNoWay) {
-			float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
-			r_torso_target.yaw = r_torso_current.yaw + fAngle;
-			r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
-			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieTurn);
-		}
-	}
-	else {
-		m_fSafeSpeed = m_fSpeed = m_fAttackSpeed;
-	}
-
-	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-	vfSetFire(false,Group);
-}
-
 void CAI_Zombie::Pursuit()
 {
 	WRITE_TO_LOG("Pursuit something");
@@ -565,17 +493,17 @@ void CAI_Zombie::Pursuit()
 
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(m_Enemy.Enemy,aiZombieAttackRun);
 
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE((m_fMorale < m_fMoraleNormalValue),aiZombieUnderFire);
+	//CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE((m_fMorale < m_fMoraleNormalValue),aiZombieUnderFire);
 
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(Level().timeServer() - m_dwLostEnemyTime >= m_dwLostMemoryTime);
 	
-	if ((m_tLastSound.dwTime >= m_dwLastUpdateTime) && ((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_BULLET_RICOCHET) == SOUND_TYPE_WEAPON_BULLET_RICOCHET)) {
-		if (m_tLastSound.tpEntity)
-			m_tSavedEnemy = m_tLastSound.tpEntity;
-		m_tSavedEnemyPosition = m_tLastSound.tSavedPosition;
-		m_dwLostEnemyTime = Level().timeServer();
-		GO_TO_NEW_STATE_THIS_UPDATE(aiZombieFreeRecoil);
-	}
+//	if ((m_tLastSound.dwTime >= m_dwLastUpdateTime) && ((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_BULLET_RICOCHET) == SOUND_TYPE_WEAPON_BULLET_RICOCHET)) {
+//		if (m_tLastSound.tpEntity)
+//			m_tSavedEnemy = m_tLastSound.tpEntity;
+//		m_tSavedEnemyPosition = m_tLastSound.tSavedPosition;
+//		m_dwLostEnemyTime = Level().timeServer();
+//		GO_TO_NEW_STATE_THIS_UPDATE(aiZombieFreeRecoil);
+//	}
 
 	m_tGoalDir.set(m_tSavedEnemyPosition);
 	
@@ -618,58 +546,6 @@ void CAI_Zombie::Pursuit()
 			m_fSafeSpeed = m_fSpeed;
 		}
 	
-	vfSetFire(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
-}
-
-void CAI_Zombie::FreeRecoil()
-{
-	WRITE_TO_LOG("Free hunting : Recoil from something");
-
-	CHECK_IF_SWITCH_TO_NEW_STATE(!g_Alive(),aiZombieDie)
-	
-	SelectEnemy(m_Enemy);
-		
-	if (m_Enemy.Enemy)
-		m_dwLostEnemyTime = Level().timeServer();
-
-	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(m_Enemy.Enemy);
-
-	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(m_fMorale < m_fMoraleNormalValue);
-
-	if ((m_tLastSound.dwTime >= m_dwLastUpdateTime) && ((!m_tLastSound.tpEntity) || (m_tLastSound.tpEntity->g_Team() != g_Team()))) {
-		m_dwLostEnemyTime = Level().timeServer();
-		Fvector tTemp;
-		tTemp.setHP(r_torso_current.yaw,r_torso_current.pitch);
-		tTemp.normalize_safe();
-		tTemp.mul(m_fUnderFireDistance);
-		m_tSavedEnemyPosition = m_tLastSound.tSavedPosition;
-		m_tSpawnPosition.add(vPosition,tTemp);
-	}
-	
-	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(Level().timeServer() - m_dwLostEnemyTime >= m_dwLostRecoilTime,aiZombiePursuit);
-	
-	m_tGoalDir.set(m_tSpawnPosition);
-	
-	m_fSafeSpeed = m_fSpeed = m_fMaxSpeed;
-	
-	vfUpdateTime(m_fTimeUpdateDelta);
-
-	vfComputeNewPosition();
-
-	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
-		m_fSpeed = .1f;
-		if (m_bNoWay) {
-			float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
-			r_torso_target.yaw = r_torso_current.yaw + fAngle;
-			r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
-			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieTurn);
-		}
-	}
-	else 
-		m_fSafeSpeed = m_fSpeed = m_fMaxSpeed;
-
-	SetDirectionLook();
-
 	vfSetFire(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
 }
 
