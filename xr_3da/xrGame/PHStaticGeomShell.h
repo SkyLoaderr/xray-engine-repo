@@ -8,14 +8,14 @@ class CPHStaticGeomShell:
 	public CPHObject
 {
 			void			get_spatial_params	();	
-virtual		void			Activate			(){}
+virtual		void			activate			(){}
 virtual		dGeomID			dSpacedGeom			(){return dSpacedGeometry();}
 virtual		void			PhDataUpdate		(dReal step){}
 virtual		void			PhTune				(dReal step){}
 virtual		void			InitContact			(dContact* c,bool& do_collide){}
 public:
 			void			Activate			(const Fmatrix& form);
-			void			Deativate			();
+			void			Deactivate			();
 							CPHStaticGeomShell	();
 };
 #endif

@@ -264,6 +264,8 @@ if(spl_inf.m_end_jt_num!=u16(-1))
 }
 
 static ELEMENT_PAIR_VECTOR new_elements;
+DEFINE_VECTOR(Fmatrix,TRANSFORM_VECTOR,TRANSFORM_I)
+static TRANSFORM_VECTOR bones_bind_forms;
 shell_root CPHShellSplitterHolder::ElementSingleSplit(const element_fracture &split_elem,const CPHElement* source_element)
 {
 
@@ -285,10 +287,10 @@ shell_root CPHShellSplitterHolder::ElementSingleSplit(const element_fracture &sp
 			CPHJoint* joint=(*i);
 			if(joint->PFirst_element()==source_element)
 			{
-				//CKinematics* K = m_pShell->PKinematics();
+				CKinematics* K = m_pShell->PKinematics();
 				dVector3 safe_pos1, safe_pos2;
 				dQuaternion safe_q1, safe_q2;
-				CPhysicsElement* el1=joint->PFirst_element(),*el2=joint->PSecond_element();
+				CPhysicsElement* el1=dynamic_cast<CPHElement*>(split_elem.first),*el2=joint->PSecond_element();
 				dBodyID body1=el1->get_body(), body2=el2->get_body();
 				Memory.mem_copy(safe_pos1,dBodyGetPosition(body1),sizeof(dVector3));
 				Memory.mem_copy(safe_pos2,dBodyGetPosition(body2),sizeof(dVector3));
@@ -296,9 +298,18 @@ shell_root CPHShellSplitterHolder::ElementSingleSplit(const element_fracture &sp
 				Memory.mem_copy(safe_q1,dBodyGetQuaternion(body1),sizeof(dQuaternion));
 				Memory.mem_copy(safe_q2,dBodyGetQuaternion(body2),sizeof(dQuaternion));
 				
-				//el1->SetTransform(K->accel)
+				//m_pShell->PlaceBindToElForms();
 				
+				K->LL_GetBindTransform(bones_bind_forms);
+				el1->SetTransform(bones_bind_forms[el1->m_SelfID]);
+				el2->SetTransform(bones_bind_forms[el2->m_SelfID]);
 				joint->ReattachFirstElement(split_elem.first);
+
+				Memory.mem_copy(const_cast<dReal*>(dBodyGetPosition(body1)),safe_pos1,sizeof(dVector3));
+				Memory.mem_copy(const_cast<dReal*>(dBodyGetPosition(body2)),safe_pos2,sizeof(dVector3));
+
+				Memory.mem_copy(const_cast<dReal*>(dBodyGetQuaternion(body1)),safe_q1,sizeof(dQuaternion));
+				Memory.mem_copy(const_cast<dReal*>(dBodyGetQuaternion(body2)),safe_q2,sizeof(dQuaternion));
 
 				dBodySetPosition(body1,safe_pos1[0],safe_pos1[1],safe_pos1[2]);
 				dBodySetPosition(body2,safe_pos2[0],safe_pos2[1],safe_pos2[2]);

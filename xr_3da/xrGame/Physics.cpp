@@ -57,6 +57,9 @@ dWorldID	phWorld;
 dJointGroupID ContactGroup;
 CBlockAllocator<dJointFeedback,128>			ContactFeedBacks;
 CBlockAllocator<CPHContactBodyEffector,128> ContactEffectors;
+#ifdef DRAW_CONTACTS
+CONTACT_VECTOR Contacts;
+#endif
 ///////////////////////////////////////////////////////////
 class SApplyBodyEffectorPred
 {
@@ -228,6 +231,9 @@ IC static bool CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup)
 		if	(do_collide)
 		{
 			collided=true;
+			#ifdef DRAW_CONTACTS
+			Contacts.push_back(c);
+			#endif
 			dJointID contact_joint	= dJointCreateContact(phWorld, jointGroup, &c);
 			dJointAttach			(contact_joint, dGeomGetBody(g1), dGeomGetBody(g2));
 		}
@@ -236,7 +242,7 @@ IC static bool CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup)
 }
 void NearCallback(CPHObject* obj1,CPHObject* obj2, dGeomID o1, dGeomID o2)
 {	
-	if(CollideIntoGroup(o1,o2,ContactGroup) && obj2 &&!obj2->IsActive())obj2->EnableObject();
+	if(CollideIntoGroup(o1,o2,ContactGroup) && obj2 &&!obj2->is_active())obj2->EnableObject();
 }
 void CollideStatic(dGeomID o2)
 {
@@ -653,6 +659,11 @@ float E_NlS(dBodyID body,dReal* norm,float norm_sign)
 	return mass.mass*prg*prg/2;
 }
 
-
+void ApplyGravityAccel(dBodyID body,const dReal* accel)
+{
+	dMass m;
+	dBodyGetMass(body,&m);
+	dBodyAddForce(body,accel[0]*m.mass,accel[1]*m.mass,accel[2]*m.mass);
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////

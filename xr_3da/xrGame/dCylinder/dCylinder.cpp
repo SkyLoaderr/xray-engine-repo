@@ -1020,7 +1020,7 @@ if (*code == 6) {
 
 
 	dReal A1,A3,centerDepth,Q1,Q3;
-	centerDepth=*depth-radius1*(c_sin);
+	centerDepth=*depth-radius1*(factor);
 	Q1=(dDOT(R2+1,R1+0));Q3=(dDOT(R2+1,R1+2));
 
 

@@ -47,7 +47,7 @@ void CBurer::reinit()
 	inherited::reinit			();
 	CStateManagerBurer::reinit	(this);	
 	
-	TTelekinesis::InitExtern	(this, 3.f, 1.5f, 10000);
+	TTelekinesis::InitExtern	(this, 3.f, 10.5f, 10000);
 }
 
 void CBurer::Load(LPCSTR section)
@@ -94,21 +94,24 @@ void CBurer::Load(LPCSTR section)
 
 void CBurer::StateSelector()
 {	
-	IState *state = 0;
+//	IState *state = 0;
+//
+//	if (EnemyMan.get_enemy()) {
+//		switch (EnemyMan.get_danger_type()) {
+//			case eVeryStrong:				state = statePanic; break;
+//			case eStrong:		
+//			case eNormal:
+//			case eWeak:						state = stateAttack; break;
+//		}
+//	} else if (hear_dangerous_sound || hear_interesting_sound) {
+//		if (hear_dangerous_sound)			state = stateExploreNDE;		
+//		if (hear_interesting_sound)			state = stateExploreNDE;	
+//	} else									state = stateRest; 
+//
+//	SetState(state); 
+	
+	SetState(stateNull);
 
-	if (EnemyMan.get_enemy()) {
-		switch (EnemyMan.get_danger_type()) {
-			case eVeryStrong:				state = statePanic; break;
-			case eStrong:		
-			case eNormal:
-			case eWeak:						state = stateAttack; break;
-		}
-	} else if (hear_dangerous_sound || hear_interesting_sound) {
-		if (hear_dangerous_sound)			state = stateExploreNDE;		
-		if (hear_interesting_sound)			state = stateExploreNDE;	
-	} else									state = stateRest; 
-
-	SetState(state); 
 }
 
 void CBurer::ProcessTurn()
@@ -156,3 +159,8 @@ void CBurer::PhDataUpdate(dReal step)
 	TTelekinesis::UpdateCL(step);	
 }
 
+void CBurer::PhTune(dReal step)
+{
+	TTelekinesis::PhTune(step);	
+
+}

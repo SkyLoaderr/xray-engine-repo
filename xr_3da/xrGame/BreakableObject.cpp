@@ -132,7 +132,7 @@ void CBreakableObject::CreateUnbroken()
 void CBreakableObject::DestroyUnbroken()
 {
 	if(!m_pUnbrokenObject) return;
-	m_pUnbrokenObject->Deativate();
+	m_pUnbrokenObject->Deactivate();
 	xr_delete(m_pUnbrokenObject);
 }
 

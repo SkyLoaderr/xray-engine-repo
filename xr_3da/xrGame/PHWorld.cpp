@@ -3,6 +3,9 @@
 #include "PHWorld.h"
 #include "tri-colliderknoopc/dTriList.h"
 #include "PhysicsCommon.h"
+#ifdef DRAW_CONTACTS
+#include "ExtendedGeom.h"
+#endif
 //////////////////////////////////////////////////////////////
 //////////////CPHMesh///////////////////////////////////////////
 ///////////////////////////////////////////////////////////
@@ -29,11 +32,34 @@ void CPHMesh ::Destroy(){
 #ifdef PH_PLAIN
 dGeomID plane;
 #endif
-void CPHWorld::Render()
-{
-	if (!bDebug)	return;
 
+#ifdef DRAW_CONTACTS 
+
+void CPHWorld::OnRender()
+{
+	CONTACT_I i=Contacts.begin(),e=Contacts.end();
+	for(;i!=e;i++)
+	{
+		dContact& c=*i;
+		int geom_class;
+		if(dGeomGetBody(c.geom.g1))
+		{
+			geom_class=dGeomGetClass(retrieveGeom(c.geom.g1));
+		}
+		else
+		{
+			geom_class=dGeomGetClass(retrieveGeom(c.geom.g2));
+		}
+		bool is_cyl=geom_class==dCylinderClassUser;
+		RCache.dbg_DrawAABB			(*((Fvector*)c.geom.pos),.01f,.01f,.01f,D3DCOLOR_XRGB(255*is_cyl,0,255*!is_cyl));
+		Fvector dir;
+		dir.set(c.geom.normal[0],c.geom.normal[1],c.geom.normal[2]);
+		dir.mul(c.geom.depth*100.f);
+		dir.add(*((Fvector*)c.geom.pos));
+		RCache.dbg_DrawLINE(Fidentity,*((Fvector*)c.geom.pos),dir,D3DCOLOR_XRGB(255*is_cyl,0,255*!is_cyl));
+	}
 }
+#endif
 CPHWorld::CPHWorld()
 {
 	disable_count=0;
@@ -126,7 +152,9 @@ void CPHWorld::Step()
 
 	++m_steps_num;
 
-
+#ifdef DRAW_CONTACTS
+	Contacts.clear();
+#endif
 
 	Device.Statistic.ph_collision.Begin	();
 	//dSpaceCollide		(Space, 0, &NearCallback); 

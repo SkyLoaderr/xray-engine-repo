@@ -72,7 +72,7 @@ void CPHCharacter::get_State(SPHNetState& state)
 		state.enabled=false;
 		return;
 	}
-	state.enabled=CPHObject::IsActive();//!!dBodyIsEnabled(m_body);
+	state.enabled=CPHObject::is_active();//!!dBodyIsEnabled(m_body);
 }
 void CPHCharacter::set_State(const SPHNetState& state)
 {
@@ -99,14 +99,14 @@ void CPHCharacter::set_State(const SPHNetState& state)
 void CPHCharacter::Disable()
 {
 
-	CPHObject::Deactivate();
+	CPHObject::deactivate();
 	dBodyDisable(m_body);
 
 }
 
 void CPHCharacter::Enable()
 {
-	CPHObject::Activate();
+	CPHObject::activate();
 	if(m_body)dBodyEnable(m_body);
 
 }

@@ -44,7 +44,7 @@ void CPHCapture::PhDataUpdate(dReal /**step/**/)
 void CPHCapture::PhTune(dReal /**step/**/)
 {
 	if(b_failed) return;
-	bool act_capturer=m_character->CPHObject::IsActive();
+	bool act_capturer=m_character->CPHObject::is_active();
 	bool act_taget=m_taget_object->PPhysicsShell()->isEnabled();
 	b_disabled=!act_capturer&&!act_taget;
 	switch(e_state) 
@@ -175,7 +175,7 @@ void CPHCapture::PullingUpdate()
 
 void CPHCapture::CapturedUpdate()
 {
-	if(m_character->CPHObject::IsActive())
+	if(m_character->CPHObject::is_active())
 	{
 		m_taget_element->Enable();
 	}

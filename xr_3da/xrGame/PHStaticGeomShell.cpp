@@ -15,7 +15,7 @@ void CPHStaticGeomShell::Activate(const Fmatrix& form)
 	spatial_register();
 }
 
-void CPHStaticGeomShell::Deativate()
+void CPHStaticGeomShell::Deactivate()
 {
 	spatial_unregister();
 	destroy();

@@ -43,9 +43,9 @@ public:
 
 
 						CPHObject		()										;
-virtual		void		Activate		()										;
-		IC	bool		IsActive		()										{return b_activated;}
-			void		Deactivate		()										;
+virtual		void		activate		()										;
+		IC	bool		is_active		()										{return b_activated;}
+			void		deactivate		()										;
 virtual		void		Collide			()										;
 
 

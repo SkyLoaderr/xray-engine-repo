@@ -145,6 +145,7 @@ public:																																				//
 	virtual void			applyForce						(const Fvector& dir, float val);															//aux
 	virtual void			applyForce						(float x,float y,float z);																//called anywhere ph state influent
 	virtual void			applyImpulse					(const Fvector& dir, float val);														//aux
+	virtual void			applyGravityAccel				(const Fvector& accel);
 	virtual void			getForce						(Fvector& force);
 	virtual void			getTorque						(Fvector& torque);
 	virtual void			get_LinearVel					(Fvector& velocity);															//aux

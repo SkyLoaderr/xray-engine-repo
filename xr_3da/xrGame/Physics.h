@@ -17,6 +17,7 @@
 void	BodyCutForce			(dBodyID body,float l_limit,float w_limit)					;
 void	dBodyAngAccelFromTorqu	(const dBodyID body, dReal* ang_accel, const dReal* torque)	;
 float	E_NlS					(dBodyID body,dReal* norm,float norm_sign)					;
+void	ApplyGravityAccel		(dBodyID body,const dReal* accel);
 void	FixBody					(dBodyID body)												;
 void	FixBody					(dBodyID body,float ext_param,float mass_param)				;
 void	dMassSub				(dMass *a,const dMass *b)									;
@@ -59,6 +60,11 @@ void SaveContacts(CPHObject* obj1,CPHObject* obj2,dGeomID o1, dGeomID o2,dJointG
 class CPHElement;
 class CPHShell;
 extern dJointGroupID ContactGroup;
+
+#ifdef DRAW_CONTACTS
+DEFINE_VECTOR(dContact,CONTACT_VECTOR,CONTACT_I);
+extern CONTACT_VECTOR Contacts;
+#endif
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 #endif PHYSICS_H

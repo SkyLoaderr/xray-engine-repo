@@ -698,7 +698,7 @@ void CPHElement::StataticRootBonesCallBack(CBoneInstance* B)
 		if(push_untill<Device.dwTimeGlobal) unset_Pushout();
 
 
-	if( !m_shell->IsActive() && !bUpdate) return;
+	if( !m_shell->is_active() && !bUpdate) return;
 
 	{
 		InterpolateGlobalTransform(&mXFORM);
@@ -765,7 +765,7 @@ void CPHElement::BonesCallBack(CBoneInstance* B)
 		VERIFY(_valid(m_shell->mXFORM));
 	}
 
-	if( !m_shell->IsActive() && !bUpdate) return;
+	if( !m_shell->is_active() && !bUpdate) return;
 	
 	{
 		InterpolateGlobalTransform(&mXFORM);
@@ -1247,3 +1247,9 @@ void CPHElement::set_ApplyByGravity(bool flag)
 	dBodySetGravityMode(m_body,flag);
 }
 
+void CPHElement::applyGravityAccel				(const Fvector& accel)
+{
+	if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
+	m_shell->EnableObject();
+	ApplyGravityAccel(m_body,(const dReal*)(&accel));
+}

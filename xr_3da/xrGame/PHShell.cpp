@@ -53,12 +53,12 @@ CPHShell::CPHShell()
 
 void CPHShell::EnableObject()
 {
-	CPHObject::Activate();
+	CPHObject::activate();
 	if(m_spliter_holder)m_spliter_holder->Activate();
 }
 void CPHShell::DisableObject()
 {
-	CPHObject::Deactivate();
+	CPHObject::deactivate();
 	if(m_spliter_holder)m_spliter_holder->Deactivate();
 }
 
@@ -692,6 +692,7 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 							J->SetLimits(joint_data.limits[1].limit.x,joint_data.limits[1].limit.y,2);
 							J->SetAxisSDfactors(joint_data.limits[1].spring_factor,joint_data.limits[1].damping_factor,2);
 						}
+						J->SetForceAndVelocity(joint_data.friction);
 						break;
 					}
 				case jtWheel:
@@ -1099,6 +1100,18 @@ void CPHShell::set_ApplyByGravity(bool flag)
 		(*i)->set_ApplyByGravity(flag);
 }
 
+void CPHShell::applyGravityAccel(const Fvector& accel)
+{
+	ELEMENT_I i,e;
+	Fvector a;
+	a.set(accel);
+	a.mul((float)elements.size());
+	i=elements.begin(); e=elements.end();
+	for( ;i!=e;++i)
+		(*i)->applyGravityAccel(a);
+	EnableObject();
+}
+
 void CPHShell::PlaceBindToElForms()
 {
 	Flags64 mask;
@@ -1135,4 +1148,20 @@ void CPHShell::PlaceBindToElFormsRecursive(Fmatrix parent,u16 id,u16 element,Fla
 	for (vecBonesIt it=bone_data.children.begin(); it!=bone_data.children.end(); ++it)
 		PlaceBindToElFormsRecursive(mXFORM,(*it)->SelfID,element,mask);
 
+}
+
+void CPHShell::BonesBindCalculate(u16 id_from)
+{
+	BonesBindCalculateRecursive(Fidentity,0);
+}
+void CPHShell::BonesBindCalculateRecursive(Fmatrix parent,u16 id)
+{
+
+	CBoneInstance& bone_instance=m_pKinematics->LL_GetBoneInstance(id);
+	CBoneData& bone_data= m_pKinematics->LL_GetData(u16(id));
+
+	bone_instance.mTransform.mul(parent,bone_data.bind_transform);
+	
+	for (vecBonesIt it=bone_data.children.begin(); it!=bone_data.children.end(); ++it)
+		BonesBindCalculateRecursive(bone_instance.mTransform,(*it)->SelfID);
 }

@@ -48,7 +48,11 @@ element_fracture CPHFracturesHolder::SplitFromEnd(CPHElement* element,u16 fractu
 	Fmatrix current_transtform;
 	element->GetGlobalTransformDynamic(&current_transtform);
 	InitNewElement(new_element,shift_pivot,density);
+	Fmatrix shell_form;
+	element->PHShell()->GetGlobalTransformDynamic(&shell_form);
+	current_transtform.mulA(shell_form);
 	new_element->SetTransform(current_transtform);
+
 
 	dBodyID new_element_body=new_element->get_body();
 	dBodyAddForce(new_element_body,fract_i->m_pos_in_element[0],

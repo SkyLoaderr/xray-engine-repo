@@ -249,7 +249,10 @@ void CLevel::OnRender()
 	//отрисовать интерфей пользователя
 	HUD().RenderUI();
 
-//	ph_world->Render	();
+#ifdef DRAW_CONTACTS
+	ph_world->OnRender	();
+#endif
+
 #ifdef DEBUG
 	if (ai().get_level_graph() && (bDebug || psAI_Flags.test(aiMotion)))
 		ai().level_graph().render();

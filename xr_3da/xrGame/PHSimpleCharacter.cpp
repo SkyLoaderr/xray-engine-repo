@@ -236,14 +236,14 @@ void CPHSimpleCharacter::Create(dVector3 sizes){
 		dGeomUserDataSetObjectContactCallback(m_wheel,m_object_contact_callback);
 		//dGeomUserDataSetObjectContactCallback(m_cap,m_object_contact_callback);
 	}
-	CPHObject::Activate();
+	CPHObject::activate();
 	spatial_register();
 }
 void CPHSimpleCharacter::Destroy(){
 	if(!b_exist) return;
 	b_exist=false;
 	//if(ph_world)
-	CPHObject::Deactivate();
+	CPHObject::deactivate();
 	spatial_unregister();
 
 
@@ -303,7 +303,7 @@ void		CPHSimpleCharacter::ApplyImpulse(const Fvector& dir,const dReal P)
 	if(!b_exist) return;
 	//if(!dBodyIsEnabled(m_body)) dBodyEnable(m_body);
 	Enable();
-	b_lose_ground=true;
+	b_lose_control=true;
 	b_external_impulse=true;
 	dBodyAddForce(m_body,dir.x*P/fixed_step,dir.y*P/fixed_step,dir.z*P/fixed_step);
 }

@@ -94,6 +94,7 @@ public:
 		(*elements.begin())->applyImpulse			( dir, val);
 		EnableObject();
 	};
+	virtual void			applyGravityAccel		(const Fvector& accel);
 	virtual void			set_JointResistance		(float force)
 	{
 		JOINT_I i;
@@ -131,7 +132,7 @@ public:
 	virtual CPhysicsElement*	get_Element				  (ref_str bone_name);
 	virtual CPhysicsElement*	NearestToPoint			  (const Fvector& point);
 	virtual void				Enable					  ();
-	virtual bool				isEnabled				  (){return CPHObject::IsActive();}
+	virtual bool				isEnabled				  (){return CPHObject::is_active();}
 
 
 	virtual	void				PhDataUpdate				(dReal step);
@@ -147,6 +148,7 @@ public:
 	virtual void				preBuild_FromKinematics		(CKinematics* K,BONE_P_MAP* p_geting_map);
 	virtual void                ZeroCallbacks				();
 	virtual void				ResetCallbacks				(u16 id,Flags64 &mask);
+			void				PlaceBindToElForms			();
 	virtual void				SetCallbacks				(BoneCallbackFun* callback);
 	virtual void				EnabledCallbacks			(BOOL val);
 	virtual void				set_DisableParams			(const SAllDDOParams& params);
@@ -187,8 +189,10 @@ private:
 	void AddSplitter			  			(CPHShellSplitter::EType type,u16 element,u16 joint,u16 position)				;
 	/////////////////////////////////////////
 	void AddElementRecursive				(CPhysicsElement* root_e, u16 id,Fmatrix global_parent,u16 element_number)		;
-	void PlaceBindToElForms					();
+
 	void PlaceBindToElFormsRecursive		(Fmatrix parent,u16 id,u16 element,Flags64 &mask);
+	void BonesBindCalculate					(u16 id_from=0);
+	void BonesBindCalculateRecursive		(Fmatrix parent,u16 id);
 	void ZeroCallbacksRecursive				(u16 id)																		;
 	void SetCallbacksRecursive				(u16 id,u16 element)															;
 	void ResetCallbacksRecursive			(u16 id,u16 element,Flags64 &mask)												;

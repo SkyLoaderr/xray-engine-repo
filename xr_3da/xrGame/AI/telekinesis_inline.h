@@ -39,7 +39,6 @@ void CTelekinesis<CMonster>::Activate()
 	for (u32 i = 0; i < tpNearest.size(); i++) {
 		CGameObject *obj = dynamic_cast<CGameObject *>(tpNearest[i]);
 		if (!obj || !obj->m_pPhysicsShell) continue;
-
 		objects.push_back(CTelekineticObject().set(obj,TS_Raise));
 		obj->m_pPhysicsShell->set_ApplyByGravity(FALSE);
 
@@ -71,9 +70,11 @@ void CTelekinesis<CMonster>::Raise(CTelekineticObject &obj, float power)
 {
 	Fvector dir;
 	dir.set(0.f,1.0f,0.f);
-	obj.obj->m_pPhysicsShell->applyImpulse(dir, 2.0f * obj.obj->m_pPhysicsShell->getMass());
+	dir.mul(0.5f/fixed_step);
+	obj.obj->m_pPhysicsShell->applyGravityAccel(dir);	
+	//obj.obj->m_pPhysicsShell->applyImpulse(dir, 2.0f * obj.obj->m_pPhysicsShell->getMass());
 
-	VelocityCorrection(obj.obj->m_pPhysicsShell, 0.0005f);
+	//VelocityCorrection(obj.obj->m_pPhysicsShell, 1.5f);
 }
 
 #define KEEP_IMPULSE_UPDATE 200
@@ -97,8 +98,8 @@ void CTelekinesis<CMonster>::Keep(CTelekineticObject &obj)
 		dir.normalize_safe();
 	}
 	
-	// hit
-	obj.obj->m_pPhysicsShell->applyImpulse	(dir, 0.5f * obj.obj->m_pPhysicsShell->getMass());	
+	dir.mul(0.5f/fixed_step);
+	obj.obj->m_pPhysicsShell->applyGravityAccel(dir);	
 	VelocityCorrection						(obj.obj->m_pPhysicsShell, 0.0005f);
 
 	obj.last_time_updated = Level().timeServer();
@@ -210,5 +211,18 @@ void CTelekinesis<CMonster>::VelocityCorrection(CPhysicsShell *pShell, float max
 		vel.mul(max_val);
 		pShell->set_LinearVel(vel);
 		//Msg("New Vel Set = [%f,%f,%f] mag = [%f]", VPUSH(vel), vel.magnitude());
+	}
+}
+
+template <typename CMonster>
+void  CTelekinesis<CMonster>::PhTune(dReal step)
+{
+	for (u32 i = 0; i < objects.size(); i++) {
+		switch (objects[i].state) {
+		case TS_Raise:	
+		case TS_Keep:	objects[i].obj->m_pPhysicsShell->Enable();
+				
+		case TS_None:	break;
+		}
 	}
 }

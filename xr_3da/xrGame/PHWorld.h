@@ -1,6 +1,9 @@
 #ifndef PH_WORLD_H
 #define PH_WORLD_H
 
+//#define DRAW_CONTACTS
+
+
 class CPHMesh {
 	dGeomID Geom;
 public:
@@ -13,6 +16,9 @@ public:
 ////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
 class CPHWorld	: public pureFrame
+#ifdef DRAW_CONTACTS
+, public pureRender
+#endif
 {
 	double						m_start_time												;
 	u32							m_delay														;
@@ -59,9 +65,10 @@ IC	dSpaceID					GetSpace						()			{return Space;}	;
 	void						RemoveFreezedObject				(PH_OBJECT_I i)				;
 	bool 						IsFreezed						()							;
 	u32							CalcNumSteps			(u32 dTime)							;
-	void 						Render							()							;
 
-
+#ifdef DRAW_CONTACTS
+	virtual void 				OnRender						()							;
+#endif
 	virtual void				OnFrame							()							;
 
 

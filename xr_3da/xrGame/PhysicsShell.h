@@ -60,6 +60,7 @@ public:
 	virtual void			applyForce				(const Fvector& dir, float val)							= 0;
 	virtual void			applyForce				(float x,float y,float z)								= 0;
 	virtual void			applyImpulse			(const Fvector& dir, float val)							= 0;
+	virtual void			applyGravityAccel		(const Fvector& accel)									= 0;
 	virtual void			SetAirResistance		(float linear=default_k_l, float angular=default_k_w)	= 0;
 	virtual void			GetAirResistance		(float	&linear, float &angular)						= 0;
 	virtual void			set_DynamicLimits		(float l_limit=default_l_limit,float w_limit=default_w_limit)= 0;

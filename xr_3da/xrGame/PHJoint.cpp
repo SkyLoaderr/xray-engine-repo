@@ -592,11 +592,11 @@ void CPHJoint::Deactivate()
 }
 void CPHJoint::ReattachFirstElement(CPHElement* new_element)
 {
-	//Deactivate();
+	Deactivate();
 	pFirst_element=(new_element);
-	//Activate();
-	dJointAttach(m_joint,pFirst_element->get_body(),pSecond_element->get_body());
-	if(m_joint1)dJointAttach(m_joint1,pFirst_element->get_body(),pSecond_element->get_body());
+	Activate();
+	//dJointAttach(m_joint,pFirst_element->get_body(),pSecond_element->get_body());
+	//if(m_joint1)dJointAttach(m_joint1,pFirst_element->get_body(),pSecond_element->get_body());
 }
 void CPHJoint::SetForceAndVelocity		(const float force,const float velocity,const int axis_num)
 {

@@ -12,7 +12,7 @@ DEFINE_VECTOR(ISpatial*,qResultVec,qResultIt)
 	spatial.type|=STYPE_PHYSIC;
 }
 
-void CPHObject::Activate()
+void CPHObject::activate()
 {
 	if(b_activated)return;
 	if(b_freezed)	{UnFreeze();return;}
@@ -23,10 +23,10 @@ void CPHObject::Activate()
 
 void CPHObject::EnableObject()
 {
-	Activate();
+	activate();
 }
 
-void CPHObject::Deactivate()
+void CPHObject::deactivate()
 {
 	if(!b_activated)return;
 	ph_world->RemoveObject(PH_OBJECT_I(this));

@@ -54,6 +54,7 @@ public:
 	void	Throw				(const Fvector &target);
 	
 	void	UpdateCL			(float dt);
+	void	PhTune				(dReal step);
 	void	UpdateSched			();
 
 private:
