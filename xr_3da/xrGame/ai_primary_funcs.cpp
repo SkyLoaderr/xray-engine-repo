@@ -770,6 +770,29 @@ float CWeaponAmmoCount::ffGetValue()
 	}
 }
 
+u32	 CWeaponAmmoCount::dwfGetDiscreteValue(u32 dwDiscretizationValue)
+{
+	float fTemp = ffGetValue();
+	if (fTemp <= m_fMinResultValue)
+		return(0);
+	else
+		if (fTemp >= m_fMaxResultValue)
+			return(dwDiscretizationValue - 1);
+		else {
+			CSE_ALifeItemWeapon	*l_tpALifeItemWeapon = dynamic_cast<CSE_ALifeItemWeapon*>(getAI().m_tpCurrentALifeObject);
+			if (l_tpALifeItemWeapon && l_tpALifeItemWeapon->m_caAmmoSections) {
+				string32		S;
+				_GetItem		(l_tpALifeItemWeapon->m_caAmmoSections,0,S);
+				u32				l_dwBoxSize = pSettings->r_s32(S,"box_size");
+				if (fTemp <= 3*l_dwBoxSize)
+					return(iFloor(1*float(dwDiscretizationValue)/10 + .5f));
+				return(iFloor(2*float(dwDiscretizationValue)/10 + .5f));
+			}
+			else
+				return(dwDiscretizationValue - 1);
+		}
+}
+
 float CEnemyAnomalyType::ffGetValue()
 {
 	if (bfCheckForCachedResult())

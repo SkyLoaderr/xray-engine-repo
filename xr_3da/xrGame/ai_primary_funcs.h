@@ -451,12 +451,13 @@ public:
 	CWeaponAmmoCount()
 	{
 		m_fMinResultValue = 0.0;
-		m_fMaxResultValue = 100.0;
+		m_fMaxResultValue = 10.0;
 		strcat(m_caName,"WeaponAmmoCount");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
 
 	virtual float	ffGetValue();
+	virtual u32		dwfGetDiscreteValue(u32 dwDiscretizationValue = 1);
 };
 
 class CEnemyAnomalyType : public CBaseFunction {
