@@ -39,7 +39,8 @@ transform is the identity.
 
 extern "C" void dBodyAddTorque (dBodyID, dReal fx, dReal fy, dReal fz);
 extern "C" void dBodyAddForce (dBodyID, dReal fx, dReal fy, dReal fz);
-
+const dReal min_stop_err				=					M_PI*0.1f;
+const dReal stop_early_reaction			=					M_PI*0.00f;
 //****************************************************************************
 // utility
 
@@ -446,14 +447,16 @@ dReal dxJointLimitMotor::get (int num)
 
 int dxJointLimitMotor::testRotationalLimit (dReal angle)
 {
-  if (angle <= lostop) {
+  if (angle <= (lostop+stop_early_reaction)) {//
     limit = 1;
-    limit_err = angle - lostop;
+    limit_err = angle - lostop+min_stop_err;
+	if(limit_err>REAL(0.))limit_err=REAL(0.);
     return 1;
   }
-  else if (angle >= histop) {
+  else if (angle >= (histop-stop_early_reaction)) {//
     limit = 2;
-    limit_err = angle - histop;
+    limit_err = angle - histop-min_stop_err;
+	if(limit_err<REAL(0.))limit_err=REAL(0.);
     return 1;
   }
   else {
@@ -559,21 +562,21 @@ int dxJointLimitMotor::addLimot (dxJoint *joint,
 	}
       }
     }
-	const dReal min_stop_err=M_PI*0.1f;
+
     if (limit) {
-	  dReal l_limit_error;
-	  if(limit==1) 
-	  {
-		  l_limit_error=limit_err+min_stop_err;
-		  if(l_limit_error>0.f) l_limit_error=0.f;
-	  }
-	  else
-	  {
-		  l_limit_error=limit_err-min_stop_err;
-		  if(l_limit_error<0.f) l_limit_error=0.f;
-	  }
+	  //dReal l_limit_error;
+	  //if(limit==1) 
+	  //{
+		 // l_limit_error=limit_err+min_stop_err;
+		 // if(l_limit_error>0.f) l_limit_error=0.f;
+	  //}
+	  //else
+	  //{
+		 // l_limit_error=limit_err-min_stop_err;
+		 // if(l_limit_error<0.f) l_limit_error=0.f;
+	  //}
       dReal k = info->fps * stop_erp;
-      info->c[row] = -k * l_limit_error;
+      info->c[row] = -k * limit_err;
       info->cfm[row] = stop_cfm;
 
       if (lostop == histop) {
