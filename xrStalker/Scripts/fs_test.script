@@ -1,11 +1,55 @@
 
 function main()
 
-	local fs_list = FS_file_list_ex("$screenshots$",FS.FS_ListFiles,"*.*")
+	local fs_list = getFS():file_list_open_ex("$game_saves$",FS.FS_ListFiles,"*.*")
 	local sz = fs_list:Size()
 	
+	printf("---not sorted")
 	for it=0,sz-1 do
 	local fl = fs_list:GetAt(it)
 		printf("file name=%s; file_size=%d;file_modif=%s",fl:NameFull(),fl:Size(),fl:Modif() )
 	end
+	
+	printf("---eSortByNameUp")
+	fs_list:Sort(FS:eSortByNameUp)
+	for it=0,sz-1 do
+	local fl = fs_list:GetAt(it)
+		printf("file name=%s; file_size=%d;file_modif=%s",fl:NameFull(),fl:Size(),fl:Modif() )
+	end
+
+	printf("---eSortByNameDown")
+	fs_list:Sort(FS:eSortByNameDown)
+	for it=0,sz-1 do
+	local fl = fs_list:GetAt(it)
+		printf("file name=%s; file_size=%d;file_modif=%s",fl:NameFull(),fl:Size(),fl:Modif() )
+	end
+
+	printf("---eSortBySizeUp")
+	fs_list:Sort(FS:eSortBySizeUp)
+	for it=0,sz-1 do
+	local fl = fs_list:GetAt(it)
+		printf("file name=%s; file_size=%d;file_modif=%s",fl:NameFull(),fl:Size(),fl:Modif() )
+	end
+
+	printf("---eSortBySizeDown")
+	fs_list:Sort(FS:eSortBySizeDown)
+	for it=0,sz-1 do
+	local fl = fs_list:GetAt(it)
+		printf("file name=%s; file_size=%d;file_modif=%s",fl:NameFull(),fl:Size(),fl:Modif() )
+	end
+
+	printf("---eSortByModifUp")
+	fs_list:Sort(FS:eSortByModifUp)
+	for it=0,sz-1 do
+	local fl = fs_list:GetAt(it)
+		printf("file name=%s; file_size=%d;file_modif=%s",fl:NameFull(),fl:Size(),fl:Modif() )
+	end
+	
+	printf("---eSortByModifDown")
+	fs_list:Sort(FS:eSortByModifDown)
+	for it=0,sz-1 do
+	local fl = fs_list:GetAt(it)
+		printf("file name=%s; file_size=%d;file_modif=%s",fl:NameFull(),fl:Size(),fl:Modif() )
+	end
+	
 end
