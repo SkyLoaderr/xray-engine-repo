@@ -86,6 +86,9 @@
 		<dialog>job_box02</dialog>
 	</info_portion>
 
+	<info_portion id="trader_start5">
+	</info_portion>
+
 	<info_portion id="job_box_finished">
 	<disable>trader_start2</disable>
 	</info_portion>
