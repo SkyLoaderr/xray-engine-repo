@@ -117,7 +117,7 @@ public:
 																							(SecondSpeaker()==dialog_manager && SecondIsSpeaking());}
 	CPhraseDialogManager* OurPartner	(CPhraseDialogManager* dialog_manager) const;
 		
-	bool				GetDialogType	(EDialogType type)	const {return !!data()->m_eDialogType.is((u16)type);}
+	bool				GetDialogType	(EDialogType type)	const {return !!data()->m_eDialogType.test((u16)type);}
 
 protected:
 	//идентификатор диалога
