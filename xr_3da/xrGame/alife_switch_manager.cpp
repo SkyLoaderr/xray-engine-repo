@@ -120,7 +120,7 @@ void CALifeSwitchManager::add_online(CSE_ALifeDynamicObject *object, bool update
 void CALifeSwitchManager::remove_online(CSE_ALifeDynamicObject *object, bool update_registries)
 {
 	object->m_bOnline	= false;
-
+	//Msg("perform destroy from remove online [%d]",object->ID);
 	server().Perform_destroy		(object,net_flags(TRUE,TRUE));
 	_OBJECT_ID						l_tObjectID = object->ID;
 	object->ID						= server().PerformIDgen(l_tObjectID);
@@ -264,8 +264,12 @@ void CALifeSwitchManager::switch_offline(CSE_ALifeDynamicObject *object)
 		scheduled().add		(object);
 		graph().add			(object,object->m_tGraphID,false);
 	}
-	else
+	//else {
+	//	if (!xr_strcmp(object->name(),"bolt")) {
+	//		object = object;
+	//	}
 		remove_online		(object);
+	}
 }
 
 // switch object offline and check if it is a group of monsters then separate dead monsters from the group

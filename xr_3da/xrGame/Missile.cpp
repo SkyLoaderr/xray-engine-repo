@@ -11,6 +11,14 @@
 #include "../skeletoncustom.h"
 #include "ai_object_location.h"
 
+//#define MSG1(msg)		\
+//if(H_Parent())\
+//	Msg		("Object [%d][%s] parrent [%s] parent id [%d] [%s] ",ID(),*cName(),*(H_Parent()->cName()),H_Parent()->ID(),msg);\
+//else\
+//	Msg		("Object [%d][%s] parrent [%s] [%s] ",ID(),*cName(),"no parrent",msg);
+
+#define MSG1(msg)			
+
 #define PLAYING_ANIM_TIME 10000
 
 CMissile::CMissile(void) 
@@ -98,13 +106,16 @@ BOOL CMissile::net_Spawn(CSE_Abstract* DC)
 	m_throw_matrix.identity();
 	///////////////////////////////////
 
-//	Msg		("Object [%d][%s][%s] is spawned",ID(),*cName(),*cNameSect());
+	//Msg		("Object [%d][%s][%s] is spawned",ID(),*cName(),*cNameSect());
+	MSG1("is spawened");
 	return l_res;
 }
 
 void CMissile::net_Destroy() 
 {
-//	Msg		("Object [%d][%s][%s] is destroyed",ID(),*cName(),*cNameSect());
+	//Msg		("Object [%d][%s][%s] is destroyed",ID(),*cName(),*cNameSect());
+	MSG1("is destroyed");
+	//Msg("time [%f]", Device.fTimeGlobal);
 	inherited::net_Destroy();
 	m_fake_missile = 0;
 }
@@ -156,7 +167,10 @@ void CMissile::spawn_fake_missile()
 //	// Destroy
 //	F_entity_Destroy	(D);
 	if (!getDestroy())
+	{
+		MSG1("spawn fake");
 		Level().spawn_item	(*cNameSect(),Position(),ai_location().level_vertex_id(),ID());
+	}
 }
 
 void CMissile::OnH_A_Chield() 
@@ -183,6 +197,7 @@ void CMissile::OnH_B_Independent()
 	{
 		NET_Packet			P;
 		u_EventGen			(P,GE_DESTROY,ID());
+		MSG1("ge destroy i OnH_B_Independent");
 //		Msg					("ge_destroy: [%d] - %s",ID(),*cName());
 		u_EventSend			(P);
 		return;
@@ -247,21 +262,21 @@ u32 CMissile::State(u32 state)
 			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimShow), FALSE, this);
 			
 			//Msg("------------------");
-			//Msg("Missile show begin");
+			MSG1("Missile show begin");
 		} break;
 	case MS_IDLE:
 		{
 			m_bPending = false;
 			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimIdle));
 			
-			//Msg("Missile idle begin");
+			MSG1("Missile idle begin");
 		} break;
 	case MS_HIDING:
 		{
 			m_bPending = true;
 			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimHide), true, this);
 
-			//Msg("Missile hide begin");
+			MSG1("Missile hide begin");
 		} break;
 	case MS_HIDDEN:
 		{
@@ -269,7 +284,7 @@ u32 CMissile::State(u32 state)
 			setVisible(false);
 			setEnabled(false);
 		
-			//Msg("Missile hidden");
+			MSG1("Missile hidden");
 		} break;
 	case MS_THREATEN:
 		{
@@ -277,13 +292,13 @@ u32 CMissile::State(u32 state)
 			m_fThrowForce = m_fMinForce;
 			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimThrowBegin), true, this);
 
-			//Msg("Missile throw begin");
+			MSG1("Missile throw begin");
 		} break;
 	case MS_READY:
 		{
 			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimThrowIdle), true, this);
 
-			//Msg("Missile throw idle");
+			MSG1("Missile throw idle");
 		} break;
 	case MS_THROW:
 		{
@@ -291,21 +306,21 @@ u32 CMissile::State(u32 state)
 			m_throw = false;
 			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimThrowAct), true, this);
 
-			//Msg("Missile throw act");
+			MSG1("Missile throw act");
 		} break;
 	case MS_END:
 		{
 			m_bPending = true;
 			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimThrowEnd), true, this);
 
-			//Msg("Missile throw finish");
+			MSG1("Missile throw finish");
 		} break;
 	case MS_PLAYING:
 		{
 			PlaySound(sndPlaying,Position());
 			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimPlaying), true, this);
 
-			//Msg("Missile playing");
+			MSG1("Missile playing");
 		} break;
 	}
 	return State();
@@ -324,18 +339,20 @@ void CMissile::OnAnimationEnd()
 	{
 	case MS_HIDING:
 		{
+			MSG1("MS_HIDING");
 			setVisible(FALSE);
 			OnStateSwitch(MS_HIDDEN);
 		} break;
 	case MS_SHOWING:
 		{
 			//Msg("Missile show end");
-
+			MSG1("MS_SHOWING");
 			setVisible(TRUE);
 			OnStateSwitch(MS_IDLE);
 		} break;
 	case MS_THREATEN:
 		{
+			MSG1("MS_THREATEN");
 			if(m_throw) 
 				SwitchState(MS_THROW); 
 			else 
@@ -343,15 +360,18 @@ void CMissile::OnAnimationEnd()
 		} break;
 	case MS_THROW:
 		{
+			MSG1("MS_THROW");
 			Throw();
 			OnStateSwitch(MS_END);
 		} break;
 	case MS_END:
 		{
+			MSG1("MS_END");
 			OnStateSwitch(MS_SHOWING);
 		} break;
 	case MS_PLAYING:
 		{
+			MSG1("MS_PLAYING");
 			OnStateSwitch(MS_IDLE);
 		} break;
 	}
@@ -423,6 +443,7 @@ void CMissile::Hide()
 void CMissile::setup_throw_params()
 {
 	CActor* pActor = smart_cast<CActor*>(H_Parent());
+	MSG1("setup throw pars");
 	if(pActor)// && pActor->HUDview())
 	{
 //		UpdateFP();
@@ -448,7 +469,7 @@ void CMissile::setup_throw_params()
 void CMissile::Throw() 
 {
 	VERIFY								(smart_cast<CEntity*>(H_Parent()));
-	
+	MSG1								("throw");
 	//Fvector								throw_point, throw_direction;
 	//entity->g_fireParams				(throw_point,throw_direction);
 	setup_throw_params					();
@@ -478,18 +499,31 @@ void CMissile::OnEvent(NET_Packet& P, u16 type)
 			CMissile		*missile = smart_cast<CMissile*>(Level().Objects.net_Find(id));			
 			m_fake_missile	= missile;
 			missile->H_SetParent(this);
+			MSG1("take");
+			//Msg("id [%d]",id);
 			break;
 		} 
 		case GE_OWNERSHIP_REJECT : {
 			P.r_u16			(id);
+			MSG1("regect");
+			//Msg("id [%d]",id);
 			if (m_fake_missile && (id == m_fake_missile->ID()))
 				m_fake_missile	= NULL;
+			else
+			{
+				MSG1("!no fake missile!");
+			}
 			CMissile		*missile = smart_cast<CMissile*>(Level().Objects.net_Find(id));
 			if (!missile)
+			{
+				MSG1("!no found fake missile!");
 				break;
+			}
 			missile->H_SetParent(0);
 			break;
 		}
+		case GE_DESTROY:
+			MSG1("event destroy");
 	}
 }
 
@@ -498,6 +532,8 @@ void CMissile::Destroy()
 	NET_Packet			P;
 	u_EventGen			(P,GE_DESTROY,ID());
 //	Msg					("ge_destroy: [%d] - %s",ID(),*cName());
+	MSG1("ge_destroy Destroy");
+	//Msg("time [%f]", Device.fTimeGlobal);
 	if (Local()) u_EventSend			(P);
 }
 
@@ -588,8 +624,12 @@ void  CMissile::UpdateFP()
 
 void CMissile::activate_physic_shell()
 {
+	
+	MSG1("start activ shell");
+
 	if (!smart_cast<CMissile*>(H_Parent())) {
 		inherited::activate_physic_shell();
+		MSG1("go active inherited");
 		return;
 	}
 	
@@ -611,6 +651,9 @@ void CMissile::activate_physic_shell()
 	//m_pPhysicsShell->AddTracedGeom();
 	m_pPhysicsShell->SetAllGeomTraced();
 	smart_cast<CKinematics*>(Visual())->CalculateBones();
+	MSG1("end self activ shell");
+	//Msg("time [%f]", Device.fTimeGlobal);
+	//Msg("pos [%f],[%f],[%f]",m_throw_matrix.c.x,m_throw_matrix.c.y,m_throw_matrix.c.z);
 }
 
 void CMissile::create_physic_shell	()

@@ -588,7 +588,7 @@ void CGameObject::DestroyObject()
 
 	NET_Packet			P;
 	u_EventGen			(P,GE_DESTROY,ID());
-//	Msg					("DestroyObject: ge_destroy: [%d] - %s",ID(),*cName());
+	//Msg					("DestroyObject: ge_destroy: [%d] - %s",ID(),*cName());
 	if (Local())		u_EventSend		(P);
 }
 
@@ -621,14 +621,14 @@ void CGameObject::on_reguested_spawn	(CObject *object)
 u32	CGameObject::ef_creature_type		() const
 {
 	string16	temp; CLSID2TEXT(CLS_ID,temp);
-	R_ASSERT3	(false,"Invalid creature type request, virtual function is not properly overloaded!",temp);
+	R_ASSERT3	(false,"Invalid creature type request, virtual function is not properly overridden!",temp);
 	return		(u32(-1));
 }
 
 u32	CGameObject::ef_equipment_type		() const
 {
 	string16	temp; CLSID2TEXT(CLS_ID,temp);
-	R_ASSERT3	(false,"Invalid equipment type request, virtual function is not properly overloaded!",temp);
+	R_ASSERT3	(false,"Invalid equipment type request, virtual function is not properly overridden!",temp);
 	return		(u32(-1));
 //	return		(6);
 }
@@ -636,7 +636,7 @@ u32	CGameObject::ef_equipment_type		() const
 u32	CGameObject::ef_main_weapon_type	() const
 {
 	string16	temp; CLSID2TEXT(CLS_ID,temp);
-	R_ASSERT3	(false,"Invalid main weapon type request, virtual function is not properly overloaded!",temp);
+	R_ASSERT3	(false,"Invalid main weapon type request, virtual function is not properly overridden!",temp);
 	return		(u32(-1));
 //	return		(5);
 }
@@ -644,14 +644,14 @@ u32	CGameObject::ef_main_weapon_type	() const
 u32	CGameObject::ef_anomaly_type		() const
 {
 	string16	temp; CLSID2TEXT(CLS_ID,temp);
-	R_ASSERT3	(false,"Invalid anomaly type request, virtual function is not properly overloaded!",temp);
+	R_ASSERT3	(false,"Invalid anomaly type request, virtual function is not properly overridden!",temp);
 	return		(u32(-1));
 }
 
 u32	CGameObject::ef_weapon_type			() const
 {
 	string16	temp; CLSID2TEXT(CLS_ID,temp);
-	R_ASSERT3	(false,"Invalid weapon type request, virtual function is not properly overloaded!",temp);
+	R_ASSERT3	(false,"Invalid weapon type request, virtual function is not properly overridden!",temp);
 	return		(u32(-1));
 //	return		(u32(0));
 }
@@ -659,7 +659,7 @@ u32	CGameObject::ef_weapon_type			() const
 u32	CGameObject::ef_detector_type		() const
 {
 	string16	temp; CLSID2TEXT(CLS_ID,temp);
-	R_ASSERT3	(false,"Invalid detector type request, virtual function is not properly overloaded!",temp);
+	R_ASSERT3	(false,"Invalid detector type request, virtual function is not properly overridden!",temp);
 	return		(u32(-1));
 }
 

@@ -210,3 +210,8 @@ void CInventoryItemObject::modify_holder_params	(float &range, float &fov) const
 {
 	CInventoryItem::modify_holder_params		(range,fov);
 }
+
+u32	 CInventoryItemObject::ef_weapon_type		() const
+{
+	return								(0);
+}

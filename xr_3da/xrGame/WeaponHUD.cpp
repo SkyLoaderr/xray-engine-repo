@@ -174,7 +174,12 @@ void CWeaponHUD::StopCurrentAnim	()
 {
 	m_dwAnimEndTime = 0;
 	m_bStopAtEndAnimIsRunning = false;
-
+	
+	//Msg("stop anim ,callback item [%s],id [%d]",
+	//	m_pCallbackItem ? (*m_pCallbackItem->object().cName()): "no callback item",
+	//	m_pCallbackItem ? (m_pCallbackItem->object().ID()): 0
+	//	);
+	
 	if(m_pCallbackItem)
 	{
 		m_pCallbackItem->OnAnimationEnd();
