@@ -1,0 +1,367 @@
+local zone_name		= "script_zone"
+local path_pause 	= 10000						// Пауза между монстрома бегущими в одном забеге по одному пути
+local group_pause 	= 30000						// Пауза между набегами
+
+local ways	= {	
+				"way1",
+				"way2",
+				"way3",
+				"way4"
+			}
+				
+local monster1	=
+			{
+				"boar1",
+				"boar2",
+				"boar3",
+				"boar4",
+				"boar5",
+				"boar6",
+				"boar7",
+				"boar8",
+				"boar9"
+			}
+
+local monster2	=
+			{
+				"dog1",
+				"dog2",
+				"dog3",
+				"dog4",
+				"dog5",
+				"dog6",
+				"dog7",
+				"dog8",
+				"dog9"
+			}
+			
+local monster3	=
+			{
+				"zombie1",
+				"zombie2",
+				"zombie3",
+				"zombie4",
+				"zombie5",
+				"zombie6",
+				"zombie7",
+				"zombie8"
+			}
+
+local g_monsters 		= { monster1, monster2, monster3 }
+local g_monsters_id 	= {}
+local i					= 10
+
+function main()
+	
+	while(monster_on_line() == false) do
+		printf("wait monster...")
+		wait()
+	end
+	
+	printf("start print")
+	Print(g_monsters_id)
+	local GarbageTroop = GarbageRaidManager(ways, g_monsters_id, zone_name)
+	
+	GarbageTroop:Initialize()
+	
+	while(true) do
+		GarbageTroop:Update()
+		wait()
+	end
+end
+
+
+function monster_on_line()
+	// Данная функция ждет пока все монстры g_monsters окажутся в онлайне, 
+	// потом берет их id.
+	
+	local npc	= nil
+	local sim	= alife()
+	
+	for i = 1, table.getn(g_monsters) do
+		for j = 1, table.getn(g_monsters[i]) do
+			if(level.object(g_monsters[i][j]) == nil) then
+				// Какой-то объект еще в офлайне
+				return false
+			end
+		end
+	end
+	
+	for i = 1, table.getn(g_monsters) do
+		
+		table.insert(g_monsters_id, {})
+		
+		for j = 1, table.getn(g_monsters[i]) do
+			npc		= level.object(g_monsters[i][j])
+			if(npc == nil) then return false end 	// Этого по идее не может быть
+			table.insert(g_monsters_id[i], npc:id())
+
+			//In offline
+			if(sim) then
+				sim:set_switch_online	(npc:id(), false)
+				sim:set_switch_offline	(npc:id(), true)
+				sim:set_interactive		(npc:id(), false)
+			end
+		end
+	end
+	
+	return true
+end
+
+
+function Print(t)
+	for i = 1, table.getn(t) do
+		for j = 1,table.getn(t[i]) do
+			printf("id = %d", t[i][j])
+		end
+	end
+end
+//----------------------------------------------------------------------------------------
+// Менеджер толпы
+//----------------------------------------------------------------------------------------
+class "GarbageRaidManager"
+function GarbageRaidManager:__init(_ways, _g_monsters_id, _zone_name)
+	self.ways		= _ways
+	self.monstrs	= _g_monsters_id
+	self.zone_name	= _zone_name
+	self.zone		= nil
+	self.time		= 0
+	self.index		= 1					// индекс группы, которыя была отправленна
+	self.enter		= false
+	self.start		= false
+	self.run		= false				// Все ли монстры бегут
+	self.runs		= {}
+end
+
+function GarbageRaidManager:Initialize()
+	self.zone		= level.object(self.zone_name)
+	self.time		= device():time_global()
+	self.zone:set_callback(self, "on_exit", false)
+	self.zone:set_callback(self, "on_enter", true)
+end
+
+function GarbageRaidManager:Update()
+	if(self.start == false) then return end
+	
+	if(self.run == false and device():time_global() > self.time) then
+
+		//Запускаем следующую группу монстров
+		self:run_monster()
+		self.time	= device():time_global() + group_pause
+		//self.run	= true
+	end
+	
+	if(table.getn(self.runs) > 0) then
+		for i = table.getn(self.runs), 1, -1 do
+			
+			// Update monsters
+			if(self.runs[i]) then
+				
+				self.runs[i]:update()
+
+				if(self.runs[i]:completed()) then
+					
+					// Remove finished monsters
+					self.runs[i]:finalize()
+					table.remove(self.runs, i)
+				end
+			
+			else
+				table.remove(self.runs, i)
+			end
+		end
+	end
+end
+
+function GarbageRaidManager:run_monster()
+	if(self.monstrs[self.index] == nil) then
+		// Если всех уже запустили, то больше ничего не запускаем
+		self.run	= true
+		return
+	end
+	
+	self.start_time	= 0						// Время, через которое будет стартовать монстр
+	self.path_index = 1
+	
+	for i = 1, table.getn(self.monstrs[self.index]) do
+		
+		// Тут сначала надо вытянуть из офлайна и запретить пропадать в offline
+		self.sim		= alife()
+		if(self.sim) then
+			self.sim:set_switch_online(self.monstrs[self.index][i], true)
+			self.sim:set_switch_offline(self.monstrs[self.index][i], false)
+		end
+		
+		table.insert(self.runs, CGarbageRunMonster(self.monstrs[self.index][i], self.ways[self.path_index], self.start_time))
+		self.path_index	= self.path_index + 1
+		self.runs[table.getn(self.runs)]:initialize()
+		
+		if(self.path_index > table.getn(self.ways)) then
+			// Если закончились пути, по которы будут бежать монстры, то следующую партию запускаем через время
+			self.path_index	= 1
+			self.start_time	= self.start_time + path_pause
+		end
+	end
+	
+	self.index	= self.index + 1		// Увеличиваем индекс группы, которая должна бежать следующей
+end
+
+function GarbageRaidManager:on_enter(zone, obj)
+	//if(level.actor() and level.actor():id() == obj:id()) then
+	//	self.enter	= true
+		printf("Actor enter")
+	//end
+end
+
+function GarbageRaidManager:on_exit(zone, obj)
+	printf("callback")
+	if(level.actor() and level.actor():id() == obj:id()) then
+		self.enter	= false
+		self.start	= true
+		self.time	= device():time_global()
+		printf("Actor exit")
+		self.zone:clear_callback(true)
+		self.zone:clear_callback(false)
+	end
+end
+
+function GarbageRaidManager:Finalize()
+end
+
+//----------------------------------------------------------------------------------------
+// Бегущий до конца маршрута монстр. А там он просто отпускается
+//----------------------------------------------------------------------------------------
+local run		= 1
+//local  
+
+class "CGarbageRunMonster"
+function CGarbageRunMonster:__init(_id, _way, _start_time)
+	self.id			= _id
+	self.way		= patrol(_way)
+	self.start_time	= device():time_global() + _start_time
+	self.object		= nil
+	self.started	= false
+	self.end_work	= false
+	self.attacked	= false
+	self.hit		= nil							// Временная переменная
+end
+
+function CGarbageRunMonster:initialize()
+	if(self.object == nil) then
+		self.object = level.object_by_id(self.id)
+		if(self.object == nil) then return end
+	end
+	
+	if(self.object:get_script()) then
+		assert(true)
+	end
+
+	self.object:script(true, script_name())
+	action(self.object, anim(anim.stand_idle, 0), cond(cond.time_end, 100000))
+end
+
+function CGarbageRunMonster:update()
+	
+	// На всякий случай, чтоб не вывалилось
+	if(self.object == nil) then
+		self.object = level.object_by_id(self.id)
+		if(self.object) then
+			if(self.object:get_script()) then
+				assert(true)
+			end
+
+			self.object:script(true, script_name())
+			action(self.object, anim(anim.stand_idle, 0), cond(cond.time_end, 100000))
+		else
+			return 
+		end
+	end
+		
+	if(self.object:alive() == false) then
+		self.end_work	= true
+		return
+	end
+	
+	if(device():time_global() < self.start_time) then
+		//Еще рано запускатся.
+		return
+	end
+	
+	if(self.started) then
+		// Уже начали бежать
+		if(self.object:position():distance_to(self.way:point(self.way:count() - 1)) < 1) then
+			self.end_work	= true
+		end
+		self:actions()
+	else
+		// Еще не начали бежать
+		reset_action(self.object, script_name())
+		action(self.object, move(move.run_fwd, self.way), sound(sound.attack), cond(cond.move_end))
+		self.started	= true
+	end
+end
+
+function CGarbageRunMonster:actions()
+	// В этой функции указываем действия монcтру
+	self.hit	= self.object:get_monster_hit_info()
+	
+	if(self.hit.time ~= 0 and self.hit.who ~= nil) then
+		if(self.hit.who:alive()) then
+			// Обидчик, который нанес хит, до сих пор жив
+			if(self.attacked == false) then
+				//Если до этого не атаковали, то делаем reset_action()
+				reset_action(self.object, script_name())
+			end
+			
+			if(self.object:action() == nil) then
+				action(self.object, act(act.attack, self.hit.who), cond(cond.time_end, 30000))
+			end
+			
+			self.attacked	= true
+		else
+			// hit is, but enemy is dead
+			if(self.attacked) then
+				reset_action(self.object, script_name())
+				self.attacked	= false
+			end
+		end
+	else
+		// not hit
+		if(self.attacked) then
+			reset_action(self.object, script_name())
+			self.attacked	= false
+		end
+	end
+	
+	if(self.attacked == false) then
+		//Если не атакуем, то надо бежать
+		if(self.object:action() == nil) then
+			action(self.object, move(move.run_fwd, self.way), sound(sound.attack), cond(cond.move_end))
+		end
+	end
+	
+	self.hit	= nil				// на всякий случай
+end 
+
+function CGarbageRunMonster:completed()
+	return self.end_work
+end 
+
+function CGarbageRunMonster:finalize()
+	
+	printf("finalize %d", self.id)
+	if(self.object:get_script()) then
+		self.object:script(false, script_name())
+	end
+	
+	self.sim	= alife()
+	
+	if(self.sim) then
+		printf("simulator is")
+		self.sim:set_switch_online	(self.id, true)
+		self.sim:set_switch_offline	(self.id, true)
+		self.sim:set_interactive	(self.id, true)
+	end
+	
+	self.sim	= nil
+end 
