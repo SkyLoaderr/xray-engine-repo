@@ -152,7 +152,7 @@ void	light::spatial_move			()
 #endif
 }
 
-vis_data&	get_homdata				()
+vis_data&	light::get_homdata		()
 {
 	// commit vis-data
 	hom.sphere.set	(spatial.center,spatial.radius);
