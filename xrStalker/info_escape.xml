@@ -97,5 +97,45 @@
         <disable>escape_need_agroprom_documents</disable>
         <disable>agroprom_take_agroprom_documents</disable>
     </info_portion>
+
+
+
+<!-- OTHER LEVELS SECTION-->
+    <info_portion id="garbage_find_stalker">
+        <location>
+            <level>l02_garbage</level>
+            <x>-118</x>
+            <y>263</y>
+			<icon x="0" y="1" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
+            <text>Встретьтесь с сталкером.</text>
+        </location>   
+        <task>garbage_meet_stalker</task>
+    </info_portion>
+    <info_portion id="garbage_find_dead_stalker">
+		<disable>garbage_find_stalker</disable>
+    </info_portion>
+
+    <info_portion id="agroprom_meet_gunslinger_band">
+        <location>
+            <level>l03_agroprom</level>
+            <x>-18</x>
+            <y>18</y>
+			<icon x="5" y="4" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
+            <text>Встретьтесь с группировкой Стрелка.</text>
+        </location>   
+		<task>agroprom_meet_gunslinger_band</task>    
+    </info_portion>
+    <info_portion id="agroprom_find_gunslinger_band">
+        <location>
+            <level>l03_agroprom</level>
+            <x>-47</x>
+            <y>-37</y>
+			<icon x="4" y="4" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
+            <text>Найдите тайник группировки Стрелка.</text>
+        </location>   
+		<task>agroprom_find_gunslinger_hide</task>
+		<disable>agroprom_meet_gunslinger_band</disable>
+    </info_portion>
+
     
 </game_information_portions>

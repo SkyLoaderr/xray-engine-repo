@@ -34,6 +34,25 @@ function main()
        		end       	
        	end
 
+       	if actor ~= nil then
+       		if actor:has_info("garbage_find_stalker") and
+       		   actor:object("garbage_letter") ~= nil
+       		then
+       			actor:give_info_portion("garbage_find_dead_stalker")
+				actor:set_task_state(task.fail, "garbage_meet_stalker", 0)
+				actor:give_info_portion("agroprom_meet_gunslinger_band")
+       		end       	
+       	end
+
+       	if actor ~= nil then
+       		if actor:has_info("agroprom_meet_gunslinger_band") and
+       		   actor:object("agroprom_notebook") ~= nil
+       		then
+       			actor:give_info_portion("agroprom_find_gunslinger_band")
+				actor:set_task_state(task.fail, "agroprom_meet_gunslinger_band", 0)
+       		end       	
+       	end
+
 		wait()
 	end
 end

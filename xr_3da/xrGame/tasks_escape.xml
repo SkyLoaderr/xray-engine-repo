@@ -68,5 +68,19 @@
 			<text>Отнесите документы бармену в баре сталкеров.</text>
 		</objective>
 	</game_task>
+
+	<game_task id="agroprom_meet_gunslinger_band">
+		<title>Встретиться с группировкой Стрелка.</title>
+		<objective>
+			<text>Вам стало известно, что оставшаяся часть группировки Стрелка обитает на заводе возле НИИ "Агропром". Может быть они выведут вас на Стрелка.</text>
+		</objective>
+	</game_task>
+
+	<game_task id="agroprom_find_gunslinger_hide">
+		<title>Найти тайник группировки Стрелка.</title>
+		<objective>
+			<text>Найдите и обыщите тайник группировки Стрелка. Там может быть информация о том, где найти самого Стрелка.</text>
+		</objective>
+	</game_task>
 	
 </game_tasks_data>
