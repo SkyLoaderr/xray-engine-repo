@@ -24,8 +24,9 @@ class	ENGINE_API	CRender_target
 public:
 	virtual	void					set_blur	(float f)	= 0;
 	virtual	void					set_gray	(float f)	= 0;
-	virtual u32					get_width	()			= 0;
-	virtual u32					get_height	()			= 0;
+	virtual void					set_noise	(float f)	= 0;
+	virtual u32						get_width	()			= 0;
+	virtual u32						get_height	()			= 0;
 };
 
 // definition (Renderer)
@@ -51,7 +52,7 @@ public:
 	virtual CSector*				getSector				(int id)			= 0;
 	virtual CSector*				getSectorActive			()					= 0;
 	virtual CVisual*				getVisual				(int id)			= 0;
-	virtual u32					getFVF					(int id)			= 0;
+	virtual u32						getFVF					(int id)			= 0;
 	virtual IDirect3DVertexBuffer8*	getVB					(int id)			= 0;
 	virtual IDirect3DIndexBuffer8*	getIB					(int id)			= 0;
 	virtual CSector*				detectSector			(Fvector& P)		= 0;

@@ -15,6 +15,7 @@ CRenderTarget::CRenderTarget()
 
 	param_blur		= 0;
 	param_gray		= 0;
+	param_noise		= 0;
 }
 
 BOOL CRenderTarget::Create	()
@@ -46,6 +47,7 @@ BOOL CRenderTarget::Create	()
 	pShaderSet					= Device.Shader.Create			("effects\\screen_set",		RTname);
 	pShaderGray					= Device.Shader.Create			("effects\\screen_gray",	RTname);
 	pShaderBlend				= Device.Shader.Create			("effects\\screen_blend",	RTname);
+	pShaderNoise				= Device.Shader.Create			("effects\\screen_noise",	"fx\\fx_noise");
 	return	RT->Valid	();
 }
 
@@ -58,11 +60,51 @@ void CRenderTarget::OnDeviceCreate	()
 void CRenderTarget::OnDeviceDestroy	()
 {
 	_RELEASE					(ZB);
+	Device.Shader.Delete		(pShaderNoise);
 	Device.Shader.Delete		(pShaderBlend);
 	Device.Shader.Delete		(pShaderGray);
 	Device.Shader.Delete		(pShaderSet);
 	Device.Shader._DeleteRT		(RT);
 	Device.Shader._DeleteVS		(pVS);
+}
+
+void CRenderTarget::e_render_noise	()
+{
+	Device.Shader.set_Shader		(pShaderNoise);
+
+	CTexture*	T					= Device.Shader.get_ActiveTexture	(0);
+	u32			tw					= T->get_Width	();
+	u32			th					= T->get_Height	();
+	u32			shift_w				= ::Random.randI(tw);
+	u32			shift_h				= ::Random.randI(th);
+	float		start_u				= (float(shift_w)+.5f)/(tw);
+	float		start_v				= (float(shift_h)+.5f)/(th);
+	u32			_w					= Device.dwWidth;
+	u32			_h					= Device.dwHeight;
+	u32			cnt_w				= _w / tw;
+	u32			cnt_h				= _h / th;
+	float		end_u				= start_u + float(cnt_w) + 1;
+	float		end_v				= start_v + float(cnt_h) + 1;
+
+	Fvector2	p0,p1;
+	p0.set		(start_u,	start_v	);
+	p1.set		(end_u,		end_v	);
+
+	DWORD		Cgray				= D3DCOLOR_RGBA	(127,127,127,0);
+
+	// 
+	u32			Offset;
+	FVF::TL* pv			= (FVF::TL*) Device.Streams.Vertex.Lock	(12,pVS->dwStride,Offset);
+	pv->set(0,			float(_h),	.0001f,.9999f, Cgray, p0.x, p1.y);	pv++;
+	pv->set(0,			0,			.0001f,.9999f, Cgray, p0.x, p0.y);	pv++;
+	pv->set(float(_w),	float(_h),	.0001f,.9999f, Cgray, p1.x, p1.y);	pv++;
+	pv->set(float(_w),	0,			.0001f,.9999f, Cgray, p1.x, p0.y);	pv++;
+	Device.Streams.Vertex.Unlock	(4,pVS->dwStride);
+
+	// Draw Noise
+	Device.Primitive.setVertices	(pVS->dwHandle,pVS->dwStride,Device.Streams.Vertex.Buffer());
+	Device.Primitive.setIndices		(Offset+0,Device.Streams.QuadIB);
+	Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
 }
 
 BOOL CRenderTarget::Perform		()
@@ -97,15 +139,15 @@ void CRenderTarget::End		()
 	
 	// Draw full-screen quad textured with our scene image
 	u32	Offset;
-	u32	Cgray		= D3DCOLOR_RGBA	(90,90,90,0);
+	u32	Cgray			= D3DCOLOR_RGBA	(90,90,90,0);
 	int		A			= iFloor		((1-param_gray)*255.f); clamp(A,0,255);
-	u32	Calpha		= D3DCOLOR_RGBA	(255,255,255,A);
+	u32	Calpha			= D3DCOLOR_RGBA	(255,255,255,A);
 	float	tw			= float(rtWidth);
 	float	th			= float(rtHeight);
 	float	_w			= float(Device.dwWidth);
 	float	_h			= float(Device.dwHeight);
-	u32	xW			= 64;
-	u32	xH			= 64;
+	u32	xW				= 64;
+	u32	xH				= 64;
 	
 	// UV
 	Fvector2			shift,p0,p1;
