@@ -91,10 +91,11 @@ void	light::set_cone			(float angle)		{
 	cone						= angle;
 	spatial_move				();
 }
-void	light::set_direction	(const Fvector& D)	{ 
-	if (fsimilar(1.f, direction.dotproduct(D)))	return;
-	direction.normalize			(D);
-	spatial_move				();
+void	light::set_rotation		(const Fvector& D, const Fvector& R)	{ 
+	Fvector	old_D		= direction;
+	direction.normalize	(D);
+	right.normalize		(R);
+	if (!fsimilar(1.f, old_D.dotproduct(D)))	spatial_move	();
 }
 
 void	light::spatial_move			()
