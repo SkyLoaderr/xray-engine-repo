@@ -732,4 +732,12 @@ void CActor::wpn_Set(DWORD id)
 	case 2: Weapons->ActivateWeapon(CLSID_OBJECT_W_GROZA);		break; 
 	case 3: Weapons->ActivateWeapon(CLSID_OBJECT_W_PROTECTA);	break; 
 	}
+	
+	if (Local()) {
+		NET_Packet	P;
+		P.w_begin	(M_WPN_SET);
+		P.w_u8		(u8(net_ID));
+		P.w_u8		(u8(id));
+		Level().Send(P,net_flags(TRUE));
+	}
 }

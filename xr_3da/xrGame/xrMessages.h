@@ -8,6 +8,9 @@ enum {
 	M_FIRE_BEGIN,
 	M_FIRE_END,
 	M_FIRE_HIT,
+	
+	M_WPN_SET,
+	
 	M_DIE,
 	M_CHAT,
 
