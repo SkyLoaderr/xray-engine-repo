@@ -3,7 +3,7 @@
 #include "..\fbasicvisual.h"
 #include "..\xr_object.h"
 #include "..\CustomHUD.h"
-
+ 
 CRender										RImplementation;
 
 // 
