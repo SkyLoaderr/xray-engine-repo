@@ -110,31 +110,82 @@ cost				= 0
 [bolt_hud]
 shell_point			= 0.0, 0.0, 0.0
 fire_point          = 0.05, 0.0, 0.1
-;fire_bone           = wpn_knife_0
 fire_bone           = bolt_0
 
 orientation         = 0,0,0
 position            = 0,0,0
-;visual              = weapon\knife\wpn_knife_hud.ogf
 visual              = weapon\bolt\wpn_bolt_hud.ogf
 
-[knife]
-class				= W_KNIFE
+[wpn_knife]
+$spawn              = weapons\Knife						; option for Level Editor
+$npc                = off
+$prefetch 		    = 8
+scheduled           = off								; option for ALife Simulator
 cform				= skeleton
+
+class				= W_KNIFE
+
 visual				= weapon\knife\wpn_knife.ogf
 inv_name			= Knife
-$prefetch 			= 16
-inv_name_short		= 
-inv_weight			= .0
-slot				= 5
+
+inv_name_short		= Knife
+inv_weight			= 1
+slot				= 2
 hud					= knife_hud
 force_min			= 25
 force_max			= 100
 force_grow_speed	= 25
 
-cost				= 0
+cost				= 1000
 
-[knife_hud]
+; Random add :)
+cam_relax_speed          = 5.0
+cam_dispersion           = 0.9
+cam_max_angle		     = 7
+
+fire_dispersion          = 0.5
+fire_dispersion_add      = 5.3
+fire_dispersion_relax    = 0.6
+fire_dispersion_base	 = 0.5
+disp_vel_factor		     = 0.9
+disp_crouch_factor	     = 0.75
+disp_jump_factor	     = 7
+
+direction                = 0, 0, 1
+shell_point		         = 0.0, 0.0, 0.0
+fire_point               = 0.0, 0.1, 0.4
+flame_div                = 7
+flame_length             = .3
+flame_size               = 0.07
+flame			         = ShotFlame1, ShotFlame2, ShotFlame3
+rpm_empty_click 	     = 200
+
+; ttc
+hit_power                = 40 		;//WAS "60"!!!
+hit_impulse		         = 60
+fire_distance            = 600
+rpm                      = 600
+; end ttc
+
+normal                   = 0, 1, 0
+position                 = -0.05, 0.03, 0.055
+orientation              = -3.5, -6.7, -5
+startup_ammo             = 1000
+wm_size                  = 0.05
+tracer_head_speed	     = 300
+tracer_trail_scale	     = 0.75
+tracer_start_length	     = 1
+tracer_width		     = 0.07
+light_color		         = 0.17,0.13,0.12
+light_range		         = 3.0
+light_var_color		     = 0.05
+light_var_range		     = 0.1
+light_time 		         = 0.2
+max_zoom_factor		     = 20.f
+
+ph_mass			         = 4
+
+[wpn_knife_hud]
 shell_point			= 0.0, 0.0, 0.0
 fire_point          = 0.05, 0.0, 0.1
 fire_bone           = wpn_knife_0
