@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir "x:\game\"
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "XRCDB_EXPORTS" /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /G6 /Gz /MD /W3 /GR- /GX- /O2 /Ob2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "XRCDB_EXPORTS" /FR /Yu"stdafx.h" /FD /c
+# ADD CPP /nologo /G6 /Gz /MD /W3 /O2 /Ob2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "XRCDB_EXPORTS" /FR /Yu"stdafx.h" /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
@@ -68,7 +68,7 @@ LINK32=link.exe
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir "x:\game\"
 # ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "XRCDB_EXPORTS" /Yu"stdafx.h" /FD /GZ /c
-# ADD CPP /nologo /G6 /Gz /MDd /W3 /Gm /Gi /GR- /GX- /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "XRCDB_EXPORTS" /Yu"stdafx.h" /FD /GZ /c
+# ADD CPP /nologo /G6 /Gz /MDd /W3 /Gm /Gi /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "XRCDB_EXPORTS" /Yu"stdafx.h" /FD /GZ /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x409 /d "_DEBUG"
@@ -314,158 +314,6 @@ SOURCE=.\xrCDB_ray.cpp
 # Begin Group "Opcode"
 
 # PROP Default_Filter ""
-# Begin Group "API"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\OPC_Model.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\OPC_Model.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\OPC_Settings.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\Opcode.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Opcode.h
-# End Source File
-# End Group
-# Begin Group "Trees"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\OPC_AABBTree.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\OPC_AABBTree.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\OPC_BVTCache.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\OPC_Common.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\OPC_Common.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\OPC_OptimizedTree.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\OPC_OptimizedTree.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\OPC_TreeBuilders.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\OPC_TreeBuilders.h
-# End Source File
-# End Group
-# Begin Group "Overlap tests"
-
-# PROP Default_Filter ""
-# End Group
-# Begin Group "ICE"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\IceAABB.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\IceAABB.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\IceBoundingSphere.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\IceContainer.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\IceContainer.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\IceFPU.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\IceHPoint.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\IceMatrix3x3.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\IceMatrix3x3.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\IceMatrix4x4.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\IceMatrix4x4.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\IceMemoryMacros.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\IcePlane.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\IcePoint.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\IcePoint.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\IceRandom.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\IceRay.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\IceTriangle.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\IceTriangle.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\IceTypes.h
-# End Source File
-# End Group
 # End Group
 # End Target
 # End Project
