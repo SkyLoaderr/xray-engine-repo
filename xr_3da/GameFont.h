@@ -17,7 +17,7 @@ class ENGINE_API CGameFont: public pureDeviceDestroy, public pureDeviceCreate
 	LPSTR					cTexture;
 protected:
 	Fvector2				vHalfPixel;
-	Fvector2				vUVSize;	
+	Fvector2				vTS;
 
 	u32						dwCurrentColor;
 	float					fCurrentSize;
@@ -25,60 +25,52 @@ protected:
 	Fvector2				vInterval;
 
 	int						CharMap[256];
-	Fvector					WFMap[256];
-	int						iNumber;
+	Fvector 				TCMap[256];
+	float					fHeight;
 	vector<String>			strings;
 
 	Shader*					pShader;
 	CVS*					VS;
 
 	u32						uFlags;
-	float					fScale;
+//A	float					fScale;
 public:
 	enum{
 		fsGradient			= (1<<0),
 		fsDeviceIndependent	= (1<<1),
-		fsVariableWidth		= (1<<2),
-		fsPreloadedTC		= (1<<3),
-		fsValidTS			= (1<<4),
+		fsValid 			= (1<<2),
+
 		fsForceDWORD		= (-1)
 	};
 protected:
-	IC	float				ConvertX		(float x)	{return (uFlags&fsDeviceIndependent)?Device._x2real(x):x*fScale;}
-	IC	float				ConvertY		(float y)	{return (uFlags&fsDeviceIndependent)?Device._y2real(y):y*fScale;}
-	IC	float				ConvertSize		(float sz)	{return (uFlags&fsDeviceIndependent)?sz*Device.dwWidth:sz*fScale;}
-	IC	float				GetCurrentSize	()			{return (uFlags&fsDeviceIndependent)?2*fCurrentSize:fCurrentSize*fScale;}
+	IC	float				ConvertX		(float x)	{return (uFlags&fsDeviceIndependent)?Device._x2real(x):x;}
+	IC	float				ConvertY		(float y)	{return (uFlags&fsDeviceIndependent)?Device._y2real(y):y;}
+//	IC	float				ConvertSize		(float sz)	{return (uFlags&fsDeviceIndependent)?Device.dwWidth:sz;}
 public:
-							CGameFont		(LPCSTR shader, LPCSTR texture, int iCPL=16, u32 flags=0);
+							CGameFont		(LPCSTR shader, LPCSTR texture, u32 flags=0);
 							~CGameFont		();
 
 	IC void					Color			(u32 C)	{dwCurrentColor=C;};
 	IC void					Size			(float S)	{fCurrentSize=S;};
-	IC void					Scale			(float S)	{fScale=S;};
 	IC void					Interval		(float x, float y) {vInterval.set(x,y);};
 	IC void					Add				(float _x, float _y, char *s, u32 _c=0xffffffff, float _size=0.01f);
 	IC float				SizeOf			(char *s)	
 	{ 
-		if (uFlags&fsVariableWidth){
-			int		len			= strlen(s);
-			float	X			= 0;
-			if (len) {
-				for (int j=0; j<len; j++) {
-					float cw	= WFMap[s[j]].z;
-					X			+=cw;
-				}
+		int		len			= strlen(s);
+		float	X			= 0;
+		if (len) {
+			for (int j=0; j<len; j++) {
+				float cw	= TCMap[s[j]].z;
+				X			+=cw;
 			}
-			return X*fCurrentSize*vInterval.x; 
-		}else{
-			return fCurrentSize*vInterval.x*float(strlen(s)); 
 		}
+		return X*fCurrentSize*vInterval.x; 
 	}
-	IC float				GetScale		()			{return fScale;}
 	void					OutSet			(float x, float y)	{fCurrentX=x; fCurrentY=y;}
 	void __cdecl            OutNext			(char *fmt, ...);
 	void __cdecl            OutPrev			(char *fmt, ...);
 	void __cdecl 			Out				(float _x, float _y, char *fmt, ...);
-	IC void					OutSkip			(float val=1.f)		{fCurrentY += val*GetCurrentSize()*vInterval.y;}
+	IC void					OutSkip			(float val=1.f)		{fCurrentY += val*fCurrentSize*vInterval.y;}
 	
 	virtual void			OnRender		();
 	virtual void			OnDeviceCreate	();

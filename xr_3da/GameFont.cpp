@@ -8,50 +8,36 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 #define MAX_CHARS	1024
-CGameFont::CGameFont(LPCSTR shader, LPCSTR texture, int iCPL, u32 flags)
+CGameFont::CGameFont(LPCSTR shader, LPCSTR texture, u32 flags)
 {
-	fScale						= 1.f;
 	uFlags						= flags;
 	cShader						= xr_strdup(shader);
 	cTexture					= xr_strdup(texture);
-	iNumber						= iCPL;
 	pShader						= 0;
 	Device.seqDevCreate.Add		(this);
 	Device.seqDevDestroy.Add	(this);
-	vUVSize.set					(1.f/float(iNumber),1.f/float(iNumber));
-	for (int i=0; i<256; i++){	CharMap[i] = i; WFMap[i].set(1.f,1.f,1.f);}
+	for (int i=0; i<256; i++)	CharMap[i] = i;
 	strings.reserve				(128);
 
-//A	Size						(float(tsize)/float(iCPL));
 	// check ini exist
 	string256 fn,buf;
 	strcpy(buf,texture); if (strext(buf)) *strext(buf)=0;
 #ifdef M_BORLAND
-	if (Engine.FS.Exist(fn,Engine.FS.m_GameTextures.m_Path,buf,	".ini")){
+	R_ASSERT(Engine.FS.Exist(fn,Engine.FS.m_GameTextures.m_Path,buf,".ini"));
 #else
-	if (Engine.FS.Exist(fn,Path.Textures,buf,".ini")){
+	R_ASSERT(Engine.FS.Exist(fn,Path.Textures,buf,".ini"));
 #endif
-		CInifile* ini			= CInifile::Create(fn);
-		if (ini->SectionExists("char widths")){
-			for (int i=0; i<256; i++)
-				WFMap[i].z		= ini->ReadFLOAT("char widths",itoa(i,buf,10));
-			vInterval.set		(1.f,1.f);
-			uFlags				|= fsVariableWidth;
-		}else if (ini->SectionExists("symbol_coords")){
-			for (int i=0; i<256; i++){
-				sprintf			(buf,"%3s",i);
-				Fvector4 v		= ini->ReadVECTOR4("symbol_coords",buf);
-				WFMap[i].z		= (v[2]-v[0]);
-			}
-			vInterval.set		(1.f,1.f);
-			uFlags				|= (fsVariableWidth|fsPreloadedTC);
-		}else THROW;
-		CInifile::Destroy		(ini);
-	}else{
-		if (uFlags&fsDeviceIndependent)	vInterval.set	(0.65f,1.f);
-		else							vInterval.set	(0.75f,1.f);
-		uFlags					&=~fsVariableWidth;
+	CInifile* ini				= CInifile::Create(fn);
+	for (int i=0; i<256; i++){
+		buf[0]					= 0;
+		sprintf					(buf,"%03d",i);
+		Fvector v				= ini->ReadVECTOR("symbol_coords",buf);
+		TCMap[i].set			(v.x,v.y,v[2]-v[0]);
 	}
+	fHeight						= ini->ReadFLOAT("symbol_coords","height");
+	if (!(uFlags&fsDeviceIndependent)) Size(fHeight);
+	vInterval.set				(1.f,1.f);
+	CInifile::Destroy			(ini);
 
 	OnDeviceCreate				();
 }
@@ -90,13 +76,17 @@ void CGameFont::OnRender()
 {
 	if (pShader) Device.Shader.set_Shader	(pShader);
 
-	if (!(uFlags&fsValidTS)){
+	if (!(uFlags&fsValid)){
 		CTexture* T		= Device.Shader.get_ActiveTexture(0);
-		Ivector2		ts;
-		ts.set			((int)T->get_Width(),(int)T->get_Height());
-		vHalfPixel.set	(0.5f/float(ts.x),0.5f/float(ts.y));
-		uFlags			|= fsValidTS;
-		for (int i=0; i<256; i++) WFMap[i].z	/= fCurrentSize;
+		vTS.set			((int)T->get_Width(),(int)T->get_Height());
+		vHalfPixel.set	(0.5f/float(vTS.x),0.5f/float(vTS.y));
+		for (int i=0; i<256; i++){ 
+			TCMap[i].x	/= vTS.x;
+			TCMap[i].y	/= vTS.y;
+			TCMap[i].z	/= vTS.x;
+		}
+		fHeight			/= vTS.y;
+		uFlags			|= fsValid;
 	}
 
 	for (u32 i=0; i<strings.size(); ) 
@@ -127,7 +117,7 @@ void CGameFont::OnRender()
 			if (len) {
 				float	X	= float			(iFloor(ConvertX(PS.x)));
 				float	Y	= float			(iFloor(ConvertY(PS.y)));
-				float	S	= ConvertSize	(PS.size);
+				float	S	= (uFlags&fsDeviceIndependent)?PS.size*Device.dwWidth:PS.size;
 				float	Y2	= Y+S; 
 
 				u32	clr,clr2; 
@@ -145,20 +135,15 @@ void CGameFont::OnRender()
 				float	tu,tv;
 				for (int j=0; j<len; j++) {
 					int c		= CharMap	[PS.string[j]];
-					Fvector& l	= WFMap		[PS.string[j]];
-					float scw	= S*l.z;
-					if (c>=0){
-						if (uFlags&fsPreloadedTC){
-							tu	= l.x*vUVSize.x+vHalfPixel.x;
-							tv	= l.y*vUVSize.y+vHalfPixel.y;
-						}else{
-							tu	= (c%iNumber)*vUVSize.x+vHalfPixel.x;
-							tv	= (c/iNumber)*vUVSize.y+vHalfPixel.y;
-						}
-						v->set(X,		Y2,	clr2,tu,				tv+vUVSize.y);	v++;
-						v->set(X,		Y,	clr, tu,				tv);			v++;
-						v->set(X+scw,	Y2,	clr2,tu+vUVSize.x*l.z,	tv+vUVSize.y);	v++;
-						v->set(X+scw,	Y,	clr, tu+vUVSize.x*l.z,	tv);			v++;
+					Fvector& l	= TCMap		[PS.string[j]];
+					float scw	= S*l.z*vTS.x;
+					if ((c>=0)&&!fis_zero(l.z)){
+						tu		= l.x+vHalfPixel.x;
+						tv		= l.y+vHalfPixel.y;
+						v->set	(X,		Y2,	clr2,tu,		tv+fHeight);	v++;
+						v->set	(X,		Y,	clr, tu,		tv);			v++;
+						v->set	(X+scw,	Y2,	clr2,tu+l.z,	tv+fHeight);	v++;
+						v->set	(X+scw,	Y,	clr, tu+l.z,	tv);			v++;
 					}
 					X			+=scw*vInterval.x;
 				}
@@ -234,7 +219,7 @@ void __cdecl CGameFont::OutNext(char *fmt,...)
 	va_end(p);
 
 	strings.push_back(rs);
-	fCurrentY += GetCurrentSize()*vInterval.y;
+	fCurrentY += fCurrentSize*vInterval.y;
 }
 
 void __cdecl CGameFont::OutPrev(char *fmt,...)
@@ -258,5 +243,5 @@ void __cdecl CGameFont::OutPrev(char *fmt,...)
 	va_end(p);
 
 	strings.push_back(rs);
-	fCurrentY -= GetCurrentSize()*vInterval.y;
+	fCurrentY -= fCurrentSize*vInterval.y;
 }
