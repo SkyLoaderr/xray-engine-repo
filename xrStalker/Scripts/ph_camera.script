@@ -13,7 +13,7 @@ function action_camera_activity:__init(obj, storage)
 	self.object = obj
 	self.st     = storage
 
-	self.path = nil
+	self.path   = nil
 	self.num_wp = 0  -- количество вейпоинтов, между которыми будем двигать камеру
 	self.cur_wp = -1 -- текущий вейпоинт, к которому мы двигаемся
 	self.move_direction = 1 -- направление движения по вейпоинтам: 1 - вперед, (-1) - назад
@@ -57,6 +57,7 @@ function action_camera_activity:update(delta)
 		
 		self.cur_wp = self.cur_wp + self.move_direction
 		
+		printf("_hr: action_camera_activity:update: cur_wp = %d", self.cur_wp)
 		action(self.object, look(self.path:point(self.cur_wp), self.st.speed_h, self.st.speed_v),
 							cond(cond.look_end))
 	end
