@@ -31,12 +31,23 @@ function enable_scripts(npc, ini)
 	xr_motivator.storage[npc_id]["gulag_name"] = ""
 
 	if ini:section_exist("logic") then
-		local active_section = utils.cfg_get_string(ini, "logic", "active", npc, true, "")
+		local cfg_filename = utils.cfg_get_string(ini, "logic", "cfg", npc, false, "")
+		local actual_ini
+		if cfg_filename then
+			printf("enable_scripts: object '%s' has external configuration file '%s'", npc:name(), cfg_filename)
+			actual_ini = ini_file(cfg_filename)
+		else
+			actual_ini = ini
+		end
+		if actual_ini:line_count("logic") == 0 then
+			utils.abort("file '%s' does not exist or is empty, or has no section 'logic'", cfg_filename)
+		end
+		local active_section = utils.cfg_get_string(actual_ini, "logic", "active", npc, true, "")
 		if active_section == "nil" then
 			printf("WARNING: object '%s': active section is 'nil'", npc:name())
 		else
 			xr_motivator.storage[npc_id]["stype"] = stypes[utils.get_scheme_by_section(active_section)]
-			activate_by_section(npc, ini, active_section)
+			activate_by_section(npc, actual_ini, active_section)
 		end
 	else
 		--utils.abort("object '%s': unable to find section 'logic'", npc:name())
