@@ -48,7 +48,7 @@ void CTargetCSCask::OnEvent(NET_Packet& P, u16 type)
 			if(l_pBall) {
 				// R_ASSERT(BE(Local(),l_pBall->Local()));	// remote can't eject local
 				l_pBall->H_SetParent(0);
-				m_targets.pop_back();
+				m_targets.pop_front();
 				return;
 			}
 		} break;
@@ -63,5 +63,6 @@ void CTargetCSCask::OnDeviceCreate() {
 
 void CTargetCSCask::OnVisible() {
 	inherited::OnVisible();
-	for(u32 i = 0; i < m_targets.size(); i++) m_targets[i]->OnVisible();
+	list<CTargetCS*>::iterator l_it = m_targets.begin();
+	while(l_it != m_targets.end()) { (*l_it)->OnVisible(); l_it++; }
 }

@@ -11,5 +11,5 @@ public:
 	virtual void OnDeviceCreate();
 	virtual void OnVisible();
 
-	vector<CTargetCS*> m_targets;
+	list<CTargetCS*> m_targets;
 };
