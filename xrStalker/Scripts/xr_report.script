@@ -311,7 +311,6 @@ function action_report_leader:execute ()
           self.object:add_animation ("chest_2", false)
           self.object:add_animation ("chest_3", false)
           self.stage = 2
-          printf ("STAGE = 2")
        else
           if self.object:animation_count () == 1 then
              self.object:add_animation ("chest_1", false)

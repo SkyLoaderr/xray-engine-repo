@@ -139,6 +139,7 @@ function load_common (obj, sounds_base)
               }
               }
     sounds_base = sounds_base + table.getn (themes["commander_radio"][1])
+    
     themes["commander_agroprom"] = 
               {
               {
@@ -150,6 +151,7 @@ function load_common (obj, sounds_base)
               obj:add_sound ("script_replics\\radio\\commander\\radio_commander_", 30, snd_type.talk, 2, 1, sounds_base + 4)
               }
               }
-    sounds_base = sounds_base + table.getn (themes["commander_agroprom"][1])          
+    sounds_base = sounds_base + table.getn (themes["commander_agroprom"][1])        
+      
     return sounds_base                             
 end
