@@ -213,6 +213,7 @@ public:
     CEditableObject*	CurrentObject		(){return m_pEditObject;}
     void				SetCurrentMotion	(LPCSTR name);
     CSMotion*			GetCurrentMotion	();       
+	void				FillObjectProperties(PropItemVec& items, LPCSTR pref, ListItem* sender);
 	void				FillSurfaceProperties(PropItemVec& items, LPCSTR pref, ListItem* sender);
 	void				FillMotionProperties(PropItemVec& items, LPCSTR pref, ListItem* sender);
     void				FillBoneProperties	(PropItemVec& items, LPCSTR pref, ListItem* sender);

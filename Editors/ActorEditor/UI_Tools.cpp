@@ -565,7 +565,7 @@ void __fastcall CActorTools::MouseMove(TShiftState Shift)
                         (*b_it)->ShapeRotate(rot);
                 }else{
                     for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++)
-                        (*b_it)->BoneRotate(rot);
+                        (*b_it)->BoneRotate(m_RotateVector,amount);
                 }
             }
         }break;

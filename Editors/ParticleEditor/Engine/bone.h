@@ -90,6 +90,7 @@ class CBone
 	Fvector			mot_rotate;		// HPB format
 	float			mot_length;
 
+    Fmatrix			mot_transform;
     Fmatrix			last_transform;
     Fmatrix			last_i_transform;
 	int				parent_idx;
@@ -121,6 +122,7 @@ public:
     const Fvector&  Offset			(){return mot_offset;}
     const Fvector&  Rotate			(){return mot_rotate;}
     float			Length			(){return mot_length;}
+    IC Fmatrix&		MTransform		(){return mot_transform;}
     IC Fmatrix&		LTransform		(){return last_transform;}
     IC Fmatrix&		LITransform		(){return last_i_transform;}
     IC int&			ParentIndex		(){return parent_idx;}
@@ -151,7 +153,7 @@ public:
 	void			ShapeRotate		(const Fvector& amount);
 	void			ShapeMove		(const Fvector& amount);
 
-	void			BoneRotate		(const Fvector& amount);
+	void			BoneRotate		(const Fvector& axis, float angle);
 
 	bool 			Pick			(float& dist, const Fvector& S, const Fvector& D, const Fmatrix& parent);
 

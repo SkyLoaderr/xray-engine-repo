@@ -94,21 +94,21 @@ void CEditableObject::CalculateAnimation(bool bGenInvMat)
         Flags8 flags; flags.zero();
         if (m_ActiveSMotion) flags = m_ActiveSMotion->GetMotionFlags(b_it-m_Bones.begin());
 //        else if (bGenInvMat) flag = m_SMotions[0]->GetMotionFlag(b_it-m_Bones.begin());
-        Fmatrix M,R;
+        Fmatrix& M = (*b_it)->MTransform();
+        Fmatrix& L = (*b_it)->LTransform();
         Fmatrix& parent = ((*b_it)->ParentIndex()>-1)?m_Bones[(*b_it)->ParentIndex()]->LTransform():Fidentity;
         const Fvector& r = (*b_it)->Rotate();
         if (flags.is(st_BoneMotion::flWorldOrient)){
-	        R.setHPB(-r.x,-r.y,-r.z);
-            M.identity();
-    	    M.c.set((*b_it)->Offset());
-			M.mulA(parent);
-            M.i.set(R.i);
-            M.j.set(R.j);
-            M.k.set(R.k);
+	        M.setHPB(-r.x,-r.y,-r.z);
+            M.c.set((*b_it)->Offset());
+			L.mul(parent,M);
+            L.i.set(M.i);
+            L.j.set(M.j);
+            L.k.set(M.k);
         }else{
             M.setHPB(-r.x,-r.y,-r.z);
             M.c.set((*b_it)->Offset());
-            M.mulA(parent);
+            L.mul(parent,M);
         }
 /*
         {
@@ -129,7 +129,6 @@ void CEditableObject::CalculateAnimation(bool bGenInvMat)
 	        }
         }
 */
-        (*b_it)->LTransform().set(M);
         if (bGenInvMat) (*b_it)->LITransform().invert((*b_it)->LTransform());
     }
 }
