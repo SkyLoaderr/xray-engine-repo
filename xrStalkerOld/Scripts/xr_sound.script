@@ -171,8 +171,8 @@ function load_sound(obj)
 	theme["seq_novice_camp_guards"] = load_theme("seq_novice_camp_guards", true)
 	theme["novice_camp_guards"] = load_theme("novice_camp_guards")
 
-	theme["volk_greet1"] = load_theme("volk_greet1")
-	theme["volk_greet2"] = load_theme("volk_greet2")
+	theme["esc_volk_greet1"] = load_theme("volk_greet1")
+	theme["esc_volk_greet2"] = load_theme("volk_greet2")
 
 	-- radio for military stalkers
 	theme["military_radio"] = load_theme ("military_radio")
