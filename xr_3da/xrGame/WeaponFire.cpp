@@ -315,7 +315,7 @@ void CWeapon::AddShotEffector		()
 /*	if(!hud_mode) return;
 */
 
-	CActor* pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+	CActor* pActor = dynamic_cast<CActor*>(H_Parent());
 	if(pActor)
 	{
 		CEffectorShot* S		= dynamic_cast<CEffectorShot*>	(pActor->EffectorManager().GetEffector(cefShot)); 
@@ -331,9 +331,27 @@ void  CWeapon::RemoveShotEffector	()
 
 /*	if (Local()) 
 		Level().Cameras.RemoveEffector	(cefShot);*/
-	CActor* pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+	CActor* pActor = dynamic_cast<CActor*>(H_Parent());
    	if(pActor)
-	{
 		pActor->EffectorManager().RemoveEffector	(cefShot);
+}
+
+const Fvector& CWeapon::GetRecoilDeltaAngle()
+{
+	CActor* pActor		= dynamic_cast<CActor*>(H_Parent());
+	
+	CEffectorShot* S = NULL;
+	if(pActor)
+		S = dynamic_cast<CEffectorShot*>(pActor->EffectorManager().GetEffector(cefShot)); 
+	
+	if(S)
+	{
+		S->GetDeltaAngle(m_vRecoilDeltaAngle);
+		return m_vRecoilDeltaAngle;
+	}
+	else
+	{
+		m_vRecoilDeltaAngle.set(0.f,0.f,0.f);
+		return m_vRecoilDeltaAngle;
 	}
 }

@@ -333,7 +333,7 @@ public:
 	CWeaponRecoil*		m_pWeaponRecoil;
 	Fvector				m_vRecoilDeltaAngle;
 	
-	const Fvector&		GetRecoilDeltaAngle() {return m_vRecoilDeltaAngle;}
+	const Fvector&		GetRecoilDeltaAngle();
 
 	//////////////////////////////////
 	// партикловая система

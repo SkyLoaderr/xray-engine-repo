@@ -19,8 +19,9 @@ public:
 	CEffectorShot			(float max_angle, float relax_time);
 	virtual ~CEffectorShot	();
 	virtual	BOOL	Process	(Fvector &delta_p, Fvector &delta_d, Fvector &delta_n, float& fFov, float& fFar, float& fAspect);
-
 	void	Shot			(float angle);
+
+	void	GetDeltaAngle	(Fvector& delta_angle);
 };
 
 #endif // !defined(AFX_EFFECTORSHOT_H__B8CC6918_45D6_485D_8BB4_5A94CEEEFC2E__INCLUDED_)

@@ -624,12 +624,6 @@ void CWeapon::UpdateCL		()
 	fireDispersion_Current	-=	fireDispersion_Dec*dt;
 	clamp					(fireDispersion_Current,0.f,1.f);
 
-	//просчитать эффект отдачи
-	if(m_pWeaponRecoil)
-	{
-		m_pWeaponRecoil->Process(m_vRecoilDeltaAngle);
-	}
-	
 	//подсветка от выстрела
 	if (m_bShotLight && light_time>0)		
 	{

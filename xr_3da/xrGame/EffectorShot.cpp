@@ -52,3 +52,11 @@ BOOL CEffectorShot::Process		(Fvector &p, Fvector &d, Fvector &n, float& fFov, f
 	}
 	return TRUE;
 }
+
+
+void  CEffectorShot::GetDeltaAngle	(Fvector &delta_angle)
+{
+	delta_angle.x = -fAngleCurrent;
+	delta_angle.y = 0.f;
+	delta_angle.z = 0.f;
+}

@@ -71,16 +71,17 @@ void CActor::cam_Update(float dt, float fFOV)
 	}
 	*/
 
-		
-	CCameraBase* C				= cam_Active();
-	C->Update					(point,dangle);
-	C->f_fov					= fFOV;
+	CCameraBase* C						= cam_Active();
 
-	/*cameras[eacFirstEye]*/
+	cameras[eacFirstEye]->Update		(point,dangle);
+	cameras[eacFirstEye]->f_fov			= fFOV;
+	EffectorManager().Update			(cameras[eacFirstEye]);
 
-	cameras[eacFirstEye]->Update			(point,dangle);
-	cameras[eacFirstEye]->f_fov					= fFOV;
-	EffectorManager().Update	(cameras[eacFirstEye]);
+	if(eacFirstEye != cam_active)
+	{
+		C->Update					(point,dangle);
+		C->f_fov					= fFOV;
+	}
 
 	if (Level().CurrentEntity() == this)
 	{
