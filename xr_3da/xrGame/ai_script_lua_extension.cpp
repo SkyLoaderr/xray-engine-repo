@@ -45,12 +45,17 @@ double get_time()
 	return((double)Level().GetGameTime());
 }
 
+void LuaLog(LPCSTR S)
+{
+	Msg			("* [LUA] %s",S);
+}
+
 void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 {
 	open			(tpLuaVirtualMachine);
 
 	lua_register	(tpLuaVirtualMachine,	"wait",							ifSuspendThread);
-	function		(tpLuaVirtualMachine,	"log",	(void (*) (LPCSTR))		(Log));
+	function		(tpLuaVirtualMachine,	"log",	(void (*) (LPCSTR))		(LuaLog));
 
 	module(tpLuaVirtualMachine)
 	[
