@@ -1,27 +1,9 @@
 #include "stdafx.h"
 #include "fstaticrender.h"
 
-const float DE_Speed=0.5f;
-
-// Adds dynamic Light - return handle
-int CLightDB_Static::Add(xrLIGHT &L)
-{
-	LightsDynamic.push_back	(L);
-	Enabled.push_back		(FALSE);
-	Distance.push_back		(0);
-	return LightsDynamic.size()-1;
-}
-// Removes dynamic Light
-void CLightDB_Static::Remove(int handle)
-{
-	for (DWORD j=handle+Lights.size(); j<Enabled.size(); j++) Disable(j);
-	LightsDynamic.erase	(LightsDynamic.begin()+handle);
-	Enabled.erase		(handle+Lights.size()+Enabled.begin());
-	Distance.erase		(handle+Lights.size()+Distance.begin());
-}
-
 // Disables all lights
-void CLightDB_Static::UnselectAll(void) {
+void CLightDB_Static::UnselectAll	(void) 
+{
 	vecI_it it;
 	for (it=Selected.begin(); it!=Selected.end(); it++)
 		Disable(*it);
@@ -29,7 +11,7 @@ void CLightDB_Static::UnselectAll(void) {
 }
 
 // for dynamic
-void	CLightDB_Static::SelectDynamic(Fvector &pos, float fRadius)
+void	CLightDB_Static::Select		(Fvector &pos, float fRadius)
 {
 	// for all dynamic objects we apply not only dynamic but static lights too.
 	for (vecI_it it=Selected.begin(); it!=Selected.end(); it++)
@@ -43,25 +25,22 @@ void	CLightDB_Static::SelectDynamic(Fvector &pos, float fRadius)
 			else										Disable(num);
 		}
 	}
-	for (it=SelectedDynamic.begin(); it!=SelectedDynamic.end(); it++)
+}
+void	CLightDB_Static::Select		(Fvector &pos, float fRadius, vector<xrLIGHT*> dest)
+{
+	// for all dynamic objects we apply not only dynamic but static lights too.
+	for (vecI_it it=Selected.begin(); it!=Selected.end(); it++)
 	{
-		int		num	= *it;
-		xrLIGHT &L	= LightsDynamic[num-Lights.size()];
-		float	R	= fRadius+L.range;
-		if (pos.distance_to_sqr(L.position) < R*R)	Enable(num);
-		else										Disable(num);
-	}
-	for (it = SelectedProcedural.begin(); it!=SelectedProcedural.end(); it++)
-	{
-		int		num = *it;
-		xrLIGHT &L	= Lights[num];
-		float	R	= fRadius+L.range;
-		if (pos.distance_to_sqr(L.position) < R*R)	Enable	(num);
-		else										Disable	(num);
+		xrLIGHT &L	= Lights[*it];
+		if (L.type == D3DLIGHT_DIRECTIONAL)				dest.push_back(&L);
+		else {
+			float	R	= fRadius+L.range;
+			if (pos.distance_to_sqr(L.position) < R*R)	dest.push_back(&L);
+		}
 	}
 }
 
-void CLightDB_Static::Load(CStream *fs) 
+void CLightDB_Static::Load			(CStream *fs) 
 {
 	DWORD size	= fs->Length();
 	DWORD count	= size/sizeof(xrLIGHT);
@@ -82,7 +61,7 @@ void CLightDB_Static::Load(CStream *fs)
 	Log("* Total number of light sources on level: ",count);
 }
 
-void CLightDB_Static::Unload(void)
+void CLightDB_Static::Unload		(void)
 {
 	for (DWORD i=0; i<Lights.size(); i++) Disable(i);
 

@@ -10,7 +10,8 @@ DEF_VECTOR(vecI,int);
 
 class ENGINE_API CStream;
 
-class ENGINE_API CLightDB_Static {
+class ENGINE_API CLightDB_Static 
+{
 	friend BOOL __forceinline lights_compare(int a, int b);
 
 	vector<xrLIGHT>	Lights;			// -- Lights itself
@@ -37,7 +38,8 @@ public:
 
 	void	UnselectAll		(void);			// Disables all lights
 
-	void	SelectDynamic	(Fvector &pos, float fRadius);
+	void	Select			(Fvector &pos, float fRadius, vector<xrLIGHT*>	dest);
+	void	Select			(Fvector &pos, float fRadius);
 
 	void	Load			(CStream *fs);
 	void	Unload			(void);
