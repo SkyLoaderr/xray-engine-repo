@@ -1,12 +1,8 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "x_ray.h"
-#include "GameFont.h"
+#include "..\GameFont.h"
 #include "CameraLook.h"
-#include "xr_object.h"
-#include "xr_creator.h"
-#include "xr_area.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

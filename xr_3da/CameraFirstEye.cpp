@@ -1,10 +1,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "x_ray.h"
 #include "CameraFirstEye.h"
-#include "xr_object.h"
-#include "xr_creator.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

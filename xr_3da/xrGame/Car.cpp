@@ -2,8 +2,7 @@
 #include "..\PGObject.h"
 #include "car.h"
 #include "hudmanager.h"
-#include "..\camerabase.h"
-#include "..\cameralook.h"
+#include "cameralook.h"
 #include "camerafirsteye.h"
 #include "Actor.h"
 

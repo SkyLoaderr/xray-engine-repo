@@ -4,7 +4,7 @@
 #include "..\fmesh.h"
 #include "..\fcached.h"
 #include "..\flod.h"
-#include "..\ftreevisual.h"
+#include "ftreevisual.h"
 
 using namespace SceneGraph;
 

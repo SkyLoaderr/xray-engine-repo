@@ -8,7 +8,7 @@
 
 #include "gameobject.h"
 #include "PhysicsShell.h"
-#include "..\psruntime.h"
+#include "..\ParticleSystem.h"
 
 // refs
 class ENGINE_API		CObjectAnimator;

@@ -3,6 +3,7 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#include "CameraBase.h"
 #include "CameraManager.h"
 #include "Effector.h"
 #include "EffectorPP.h"
@@ -12,9 +13,9 @@
 #include "gamefont.h"
 #include "render.h"
 
-float psCamInert		= 0.7f;
-float psCamSlideInert	= 0.25f;
-SPPInfo g_gefPP = { 0, 0, { 0, 0 }, { 0, 0, { 0, 0, 0, 0 } } };
+float	psCamInert		= 0.7f;
+float	psCamSlideInert	= 0.25f;
+SPPInfo g_gefPP			= { 0, 0, { 0, 0 }, { 0, 0, { 0, 0, 0, 0 } } };
 
 void SPPInfo::normalize() 
 {

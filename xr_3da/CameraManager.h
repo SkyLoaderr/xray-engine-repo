@@ -104,7 +104,7 @@ public:
 	~CCameraManager();
 };
 
-extern float psCamInert;
-extern float psCamSlideInert;
+ENGINE_API extern float psCamInert;
+ENGINE_API extern float psCamSlideInert;
 
 #endif // !defined(AFX_CAMERAMANAGER_H__B11F8AE2_1213_11D4_B4E3_4854E82A090D__INCLUDED_)

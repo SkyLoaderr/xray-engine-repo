@@ -289,10 +289,6 @@ extern Flags32		psEnvFlags;
 
 void CCC_Register()
 {
-	// Input
-	extern void CCC_RegisterInput();
-	CCC_RegisterInput	();
-
 	// General
 	CMD1(CCC_Help,		"help"					);
 	CMD1(CCC_Quit,		"quit"					);

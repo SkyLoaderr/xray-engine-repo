@@ -1,10 +1,9 @@
 #include "stdafx.h"
-#include "x_ray.h"
-#include "xr_creator.h"
+
+#include "..\xr_ioconsole.h"
+#include "..\xr_input.h"
+#include "..\xr_ioc_cmd.h"
 #include "xr_level_controller.h"
-#include "xr_ioconsole.h"
-#include "xr_input.h"
-#include "xr_ioc_cmd.h"
  
 //************************************************ Input
 int key_binding			[ 2048	];
