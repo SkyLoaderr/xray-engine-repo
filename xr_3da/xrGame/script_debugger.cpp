@@ -166,11 +166,12 @@ void CScriptDebugger::Write(const char* szMsg)
 
 void CScriptDebugger::LineHook(const char *szFile, int nLine)
 {
+	CheckNewMessages();
 	if ( m_nMode == DMOD_STOP )
 		Break();
 
 	if (
-		_SendMessage(DMSG_HAS_BREAKPOINT, (WPARAM)szFile, (LPARAM)nLine) ||
+//		_SendMessage(DMSG_HAS_BREAKPOINT, (WPARAM)szFile, (LPARAM)nLine) ||
 			m_nMode==DMOD_STEP_INTO	|| 
 			m_nMode==DMOD_BREAK ||
 		(m_nMode==DMOD_STEP_OVER && m_nLevel<=0) || 
@@ -282,6 +283,15 @@ void CScriptDebugger::Eval(const char* strCode, char* res)
 	m_lua.Eval(strCodeFull, res);
 }
 
+void CScriptDebugger::CheckNewMessages()
+{
+	CMailSlotMsg msg;
+	int msgType;
+	while(CheckMailslotMessage(m_mailSlot,msg)){
+		TranslateIdeMessage(&msg);
+	};
+
+}
 
 LRESULT CScriptDebugger::WaitForReply(UINT nMsg)
 {
@@ -302,9 +312,7 @@ LRESULT CScriptDebugger::WaitForReply(UINT nMsg)
 			return res;
 		}break;
 	case DMSG_SHOW_IDE:{
-			int res;
-			msg.r_int(res);
-			return TranslateIdeMessage(res);
+			return TranslateIdeMessage(&msg);
 	}break;
 	case DMSG_GET_STACKTRACE_LEVEL:{
 			int res;
@@ -317,9 +325,21 @@ LRESULT CScriptDebugger::WaitForReply(UINT nMsg)
 
 }
 
-int CScriptDebugger::TranslateIdeMessage (UINT msg)
+int CScriptDebugger::TranslateIdeMessage (CMailSlotMsg* msg)
 {
-	switch(msg) {
+	int nType;
+	msg->r_int(nType);
+	switch(nType) {
+	case DMSG_DEBUG_GO:
+		m_nMode = DMOD_NONE;
+		return DMOD_BREAK;
+		break;
+
+	case DMSG_DEBUG_BREAK:
+		m_nMode = DMOD_BREAK;
+		return DMOD_BREAK;
+		break;
+
 	case DMSG_DEBUG_STEP_INTO:
 		return DMOD_STEP_INTO;
 		break;
@@ -350,26 +370,3 @@ int CScriptDebugger::TranslateIdeMessage (UINT msg)
 		return DMOD_NONE;
 	}
 }
-/*
-void CScriptDebugger::CreateIde()
-{
-    STARTUPINFO si;
-    PROCESS_INFORMATION pi;
-
-    ZeroMemory( &si, sizeof(si) );
-    si.cb = sizeof(si);
-    ZeroMemory( &pi, sizeof(pi) );
-
-    // Start the child process. 
-    BOOL r = CreateProcess( NULL, // No module name (use command line). 
-        "luaIDE.exe", // Command line. 
-        NULL,             // Process handle not inheritable. 
-        NULL,             // Thread handle not inheritable. 
-        FALSE,            // Set handle inheritance to FALSE. 
-        0,                // No creation flags. 
-        NULL,             // Use parent's environment block. 
-        NULL,             // Use parent's starting directory. 
-        &si,              // Pointer to STARTUPINFO structure.
-        &pi ) ;            // Pointer to PROCESS_INFORMATION structure.
-}
-*/

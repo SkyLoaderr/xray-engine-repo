@@ -20,7 +20,7 @@ public:
 	CScriptDeduggerIDE(){};
 	~CScriptDeduggerIDE(){};
 };*/
-
+class CMailSlotMsg;
 struct lua_State;
 
 #define DMOD_NONE					0
@@ -74,9 +74,10 @@ public:
 	static LRESULT			_SendMessage(UINT message, WPARAM wParam, LPARAM lParam);
 
 protected:
+	void			CheckNewMessages	();
 	LRESULT			DebugMessage		(UINT nMsg, WPARAM wParam, LPARAM lParam);
 	LRESULT			WaitForReply		(UINT nMsg);
-	int				TranslateIdeMessage (UINT);
+	int				TranslateIdeMessage (CMailSlotMsg*);
 
 	UINT			StartDebugger		();	
 
