@@ -70,6 +70,8 @@ void CHWCaps::Update()
 	}
 
 	// Scissoring
+	if (caps.RasterCaps & D3DPRASTERCAPS_SCISSORTEST)	bScissor	= TRUE;
+	else												bScissor	= FALSE;
 
 	// Stencil relative caps
     u32 dwStencilCaps = caps.StencilCaps;
