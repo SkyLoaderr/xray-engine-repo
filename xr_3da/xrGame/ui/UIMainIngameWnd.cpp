@@ -537,27 +537,24 @@ void CUIMainIngameWnd::Update()
 	}
 
 	// weapon
-		
 	for(int i=0; i<UIPdaMsgListWnd.GetSize(); i++)
 	{
 		CUIPdaMsgListItem* pItem = dynamic_cast<CUIPdaMsgListItem*>(UIPdaMsgListWnd.GetItem(i));
 		R_ASSERT(pItem);
-		int* pShowTime = (int*)pItem->GetData();
+		int show_time = pItem->GetValue();
 		
-		if(*pShowTime>0)
+		if(show_time>0)
 		{
 			// Плавное исчезновение надписи
-			float fAlphaFactor = static_cast<float>(m_iFade_mSec - *pShowTime) / m_iFade_mSec;
+			float fAlphaFactor = static_cast<float>(m_iFade_mSec - show_time) / m_iFade_mSec;
 			if (fAlphaFactor < 0) fAlphaFactor = 0;
 			pItem->UIMsgText.SetTextColor(subst_alpha(pItem->UIMsgText.GetTextColor(), u8(iFloor(255.f * (1 - fAlphaFactor)))));
 
-			*pShowTime -= Device.dwTimeDelta;
+			show_time -= Device.dwTimeDelta;
+			pItem->SetValue(show_time);
 		}
 		else
-		{
-			xr_delete(pShowTime);
 			UIPdaMsgListWnd.RemoveItem(i);
-		}
 	}
 
 	// Check for new news
@@ -840,9 +837,7 @@ void CUIMainIngameWnd::ReceivePdaMessage(CInventoryOwner* pSender, EPdaMsg msg, 
 	UIPdaMsgListWnd.ScrollToBegin();
 
 	pItem->InitCharacter(dynamic_cast<CInventoryOwner*>(pSender));
-	int* pShowTime = xr_new<int>();
-	*pShowTime = m_dwMaxShowTime;
-	pItem->SetData(pShowTime);
+	pItem->SetValue(m_dwMaxShowTime);
 
 
 	UIPdaMsgListWnd.Show(true);	
@@ -868,9 +863,7 @@ void CUIMainIngameWnd::AddGameMessage	(CInventoryOwner* pSender, LPCSTR TextMess
 	UIPdaMsgListWnd.AddItem(pItem, true); 
 	UIPdaMsgListWnd.ScrollToBegin();
 
-	int* pShowTime = xr_new<int>();
-	*pShowTime = m_dwMaxShowTime;
-	pItem->SetData(pShowTime);
+	pItem->SetValue(m_dwMaxShowTime);
 
 	UIPdaMsgListWnd.Show(true);	
 
@@ -966,9 +959,7 @@ void CUIMainIngameWnd::OnNewsReceived(const CALifeNews &newsItem)
 		UIPdaMsgListWnd.ScrollToBegin();
 
 		pItem->InitCharacter(dynamic_cast<CInventoryOwner*>(Level().CurrentEntity()));
-		int* pShowTime = xr_new<int>();
-		*pShowTime = m_dwMaxShowTime;
-		pItem->SetData(pShowTime);
+		pItem->SetValue(m_dwMaxShowTime);
 
 		UIPdaMsgListWnd.Show(true);	
 
