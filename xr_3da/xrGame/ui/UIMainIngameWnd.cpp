@@ -1116,6 +1116,7 @@ void CUIMainIngameWnd::SetFlashIconState(EFlashingIcons type, bool enable)
 	R_ASSERT2(icon != m_FlashingIcons.end(), "Flashin icon with this type not existed");
 
 	icon->second.second = enable ? 0 : -1;
+	if(!enable) icon->second.first->Show(false);
 }
 
 //////////////////////////////////////////////////////////////////////////
