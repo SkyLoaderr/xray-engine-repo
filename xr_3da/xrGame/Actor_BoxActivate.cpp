@@ -39,7 +39,7 @@ struct STestFootCallbackPars
 };
 
 
-float 	STestFootCallbackPars::calback_friction_factor					=	0.7f	;
+float 	STestFootCallbackPars::calback_friction_factor					=	0.0f	;
 float 	STestFootCallbackPars::depth_to_use_force						=	0.3f	;
 float 	STestFootCallbackPars::callback_force_factor					=	10.f	;
 float 	STestFootCallbackPars::depth_to_change_softness_pars			=	0.01f	;
