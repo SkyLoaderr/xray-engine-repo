@@ -82,7 +82,7 @@ MODEL::~MODEL()
 	}
 }
 
-DWORD	MODEL::build(Fvector* V, int Vcnt, TRI* T, int Tcnt, BOOL bPrivateHeap)
+u32	MODEL::build(Fvector* V, int Vcnt, TRI* T, int Tcnt, BOOL bPrivateHeap)
 {
 	if (bPrivateHeap)
 	{
@@ -149,7 +149,7 @@ DWORD	MODEL::build(Fvector* V, int Vcnt, TRI* T, int Tcnt, BOOL bPrivateHeap)
 	return err_ok;
 }
 
-DWORD MODEL::memory()
+u32 MODEL::memory()
 {
 	DWORD V = verts_count*sizeof(Fvector);
 	DWORD T = tris_count *sizeof(TRI);
@@ -201,7 +201,7 @@ extern "C" {
 	{
 		delete (MODEL*)P;
 	}
-	DWORD		__cdecl		cdb_model_build		(CDB::MODEL *m_def, Fvector* V, int Vcnt, CDB::TRI* T, int Tcnt)
+	u32			__cdecl		cdb_model_build		(CDB::MODEL *m_def, Fvector* V, int Vcnt, CDB::TRI* T, int Tcnt)
 	{
 		return m_def->build(V,Vcnt,T,Tcnt);
 	}
