@@ -49,7 +49,7 @@ void CStateChimeraTestAbstract::execute()
 	
 	//object->CMonsterMovement::set_target_point			(pos, node);
 	object->CMonsterMovement::set_retreat_from_point	(pos);
-	object->CMonsterMovement::set_rebuild_time			(50000);
+	object->CMonsterMovement::set_rebuild_time			(5000);
 	object->CMonsterMovement::set_distance_to_end		(3.f);
 	object->CMonsterMovement::set_use_covers			();
 	object->CMonsterMovement::set_cover_params			(5.f, 30.f, 1.f, 30.f);

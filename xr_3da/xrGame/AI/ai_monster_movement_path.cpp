@@ -258,7 +258,7 @@ bool CMonsterMovement::check_build_conditions()
 	}
 
 	// если путь ещё не построен - выход
-	//if (!CDetailPathManager::actual() && (time_path_built() < m_last_time_path_update)) return;
+	if (!CDetailPathManager::actual() && (time_path_built() < m_last_time_path_update)) return false;
 
 	return true;
 }

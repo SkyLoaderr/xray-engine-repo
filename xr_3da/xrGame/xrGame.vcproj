@@ -2141,6 +2141,12 @@
 									<File
 										RelativePath=".\ai\ai_monster_jump.h">
 									</File>
+									<File
+										RelativePath=".\ai\jump_ability.cpp">
+									</File>
+									<File
+										RelativePath=".\ai\jump_ability.h">
+									</File>
 								</Filter>
 								<Filter
 									Name="Scan"

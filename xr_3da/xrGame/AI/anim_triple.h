@@ -17,24 +17,21 @@ class CAnimTriple {
 	bool				m_active;
 
 public:
-						CAnimTriple		();
-						~CAnimTriple	();
+						CAnimTriple			();
+	virtual 			~CAnimTriple		();
 
-	void				init_external	(CMotionDef *m_def1, CMotionDef *m_def2, CMotionDef *m_def3);
+	virtual void		init_external		(CMotionDef *m_def1, CMotionDef *m_def2, CMotionDef *m_def3);
 	
-	void				activate		();
-	void				deactivate		();
+	virtual void		activate			();
+	virtual void		deactivate			();
 
-	bool				is_active		() {return m_active;}
+	virtual bool		is_active			() {return m_active;}
 
 	// завершилась анимация, необходимо выбрать новую
-	bool				prepare_animation(CMotionDef **m);
+	virtual bool		prepare_animation	(CMotionDef **m);
 
 	// завершить фиксированную анимацию (вторую) и перейти к финальной
-	void				pointbreak		();
-
-private:
-	void				switch_state	();
+	virtual void		pointbreak			();
 
 };
 
