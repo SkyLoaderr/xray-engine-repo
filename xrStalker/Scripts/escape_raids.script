@@ -125,7 +125,7 @@ end
 -------------------------------------------------------------------------------------------
 function wait_for_start ()
    
-    if xr_gulag.needRaid ("blockpost") == false then return end
+    if xr_gulag.needRaid ("escape_blockpost") == false then return end
     
     local raid_moved = false
     for a = 1, table.getn (patrols), 1 do
@@ -137,7 +137,7 @@ function wait_for_start ()
            end
            if raid_moved == false then
               escape_raid_heli.activate ()
-              xr_gulag.startRaid ("blockpost")
+              xr_gulag.startRaid ("escape_blockpost")
               raid_moved = true
            end   
            patrols[a].on_patrol = true
