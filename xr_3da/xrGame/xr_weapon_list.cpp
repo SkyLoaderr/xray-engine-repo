@@ -112,7 +112,7 @@ void CWeaponList::weapon_die		()
 			P.w_u16						(u16(W->ID()));
 			m_pParent->u_EventSend		(P);
 		} else {
-			m_pParent->u_EventGen		(P,GE_DESTROY,m_pParent->ID());
+			m_pParent->u_EventGen		(P,GE_DESTROY,W->ID());
 			m_pParent->u_EventSend		(P);
 		}
 	}
