@@ -48,6 +48,7 @@ protected:
 	IC			void	make_inactual				();
 	IC	virtual	void	before_search				(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id);
 	IC	virtual	void	after_search				();
+	IC	virtual	bool	check_vertex				(const _vertex_id_type vertex_id) const;
 
 public:
 	IC					CAbstractPathManager		();

@@ -66,7 +66,7 @@ void CALifeSurgeManager::surge		()
 	update_tasks						();
 	assign_stalker_customers			();
 
-	time_manager().next_surge_time		(time_manager().last_surge_time() + u64(52)*u64(7*24*3600*1000)); // a week in milliseconds
+	time_manager().next_surge_time		(time_manager().last_surge_time());
 
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
@@ -135,11 +135,13 @@ void CALifeSurgeManager::generate_anomalies()
 		R_ASSERT2				(l_tpALifeAnomalousZone,"Anomalous zones are grouped with incompatible objects!");
 		CSE_ALifeAnomalousZone	*l_tpSpawnAnomalousZone = smart_cast<CSE_ALifeAnomalousZone*>(*j);
 		R_ASSERT2				(l_tpSpawnAnomalousZone,"Anomalous zones are grouped with incompatible objects!");
+
 #pragma todo("Dima to Dima : Correct anomalous zones power")
-		l_tpALifeAnomalousZone->m_maxPower = l_tpALifeAnomalousZone->m_fStartPower = randF(50,150);
+		l_tpALifeAnomalousZone->m_maxPower = l_tpALifeAnomalousZone->m_fStartPower = randF(l_tpALifeAnomalousZone->m_min_start_power,l_tpALifeAnomalousZone->m_max_start_power);
+		u32						jj = iFloor(l_tpALifeAnomalousZone->m_maxPower/l_tpALifeAnomalousZone->m_power_artefact_factor);
 
 		// proceed random artefacts generation for the active zone
-		for (u32 ii=0, jj=iFloor(l_tpALifeAnomalousZone->m_maxPower/80); ii<jj; ++ii) {
+		for (u32 ii=0; ii<jj; ++ii) {
 			fProbability		= randF(1.f);
 			fSum				= 0;
 			for (u16 p=0; p<l_tpSpawnAnomalousZone->m_wItemCount; ++p) {

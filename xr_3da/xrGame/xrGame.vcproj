@@ -5179,6 +5179,22 @@
 							</File>
 						</Filter>
 					</Filter>
+					<Filter
+						Name="ClientSpawnManager"
+						Filter="">
+						<File
+							RelativePath=".\client_spawn_manager.cpp">
+						</File>
+						<File
+							RelativePath=".\client_spawn_manager.h">
+						</File>
+						<File
+							RelativePath=".\client_spawn_manager_inline.h">
+						</File>
+						<File
+							RelativePath=".\client_spawn_manager_script.cpp">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="Cameras"

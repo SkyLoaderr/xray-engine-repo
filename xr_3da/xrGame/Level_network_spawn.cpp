@@ -7,6 +7,7 @@
 
 #include "ai_space.h"
 #include "game_level_cross_table.h"
+#include "client_spawn_manager.h"
 
 void CLevel::g_cl_Spawn		(LPCSTR name, u8 rp, u16 flags)
 {
@@ -58,6 +59,7 @@ void CLevel::g_sv_Spawn		(CSE_Abstract* E)
 		Objects.Destroy			(O);
 		Msg						("! Failed to spawn entity '%s'",E->s_name);
 	} else {
+		client_spawn_manager().callback(O);
 		//Msg			("--spawn--SPAWN: %f ms",1000.f*T.GetAsync());
 		if ((E->s_flags.is(M_SPAWN_OBJECT_LOCAL)) && (E->s_flags.is(M_SPAWN_OBJECT_ASPLAYER)))	{
 			SetEntity		(	O	);

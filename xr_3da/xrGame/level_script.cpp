@@ -13,6 +13,7 @@
 #include "script_game_object.h"
 #include "patrol_path_storage.h"
 #include "xrServer.h"
+#include "client_spawn_manager.h"
 
 using namespace luabind;
 
@@ -121,6 +122,11 @@ LPCSTR get_name()
 	return		(*Level().name());
 }
 
+CClientSpawnManager	&get_client_spawn_manager()
+{
+	return		(Level().client_spawn_manager());
+}
+
 void CLevel::script_register(lua_State *L)
 {
 	module(L,"level")
@@ -140,6 +146,8 @@ void CLevel::script_register(lua_State *L)
 		def("patrol_path_exists",				patrol_path_exists),
 		def("vertex_position",					vertex_position),
 		def("name",								get_name),
+
+		def("client_spawn_manager",				get_client_spawn_manager),
 
 		def("map_add_object_icon",				map_add_object_icon),
 		def("map_remove_object_icon",			map_remove_object_icon)

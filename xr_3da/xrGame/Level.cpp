@@ -40,6 +40,8 @@
 #include "space_restriction_manager.h"
 #include "seniority_hierarchy_holder.h"
 #include "space_restrictor.h"
+#include "client_spawn_manager.h"
+
 #include "ClimableObject.h"
 CPHWorld*	ph_world = 0;
 float		g_cl_lvInterp = 0;
@@ -92,6 +94,8 @@ CLevel::CLevel():IPureClient(Device.GetTimerGlobal())
 
 	m_seniority_hierarchy_holder= xr_new<CSeniorityHierarchyHolder>();
 
+	m_client_spawn_manager		= xr_new<CClientSpawnManager>();
+
 #ifdef DEBUG
 	m_bSynchronization			= false;
 #endif	
@@ -140,6 +144,8 @@ CLevel::~CLevel()
 	xr_delete					(m_space_restriction_manager);
 
 	xr_delete					(m_seniority_hierarchy_holder);
+	
+	xr_delete					(m_client_spawn_manager);
 	
 	ai().script_engine().remove_script_process("level");
 

@@ -80,4 +80,5 @@
 #	include "script_task.h"
 #	include "script_string_table.h"
 #	include "script_reader.h"
+#	include "client_spawn_manager.h"
 #endif

@@ -20,6 +20,7 @@ class	CSE_Abstract;
 class	CPatrolPathStorage;
 class	CSpaceRestrictionManager;
 class	CSeniorityHierarchyHolder;
+class	CClientSpawnManager;
 class	CGameObject;
 
 DEFINE_VECTOR (SMapLocation*, LOCATIONS_PTR_VECTOR, LOCATIONS_PTR_VECTOR_IT);
@@ -46,8 +47,10 @@ protected:
 	CSpaceRestrictionManager	*m_space_restriction_manager;
 	// seniority hierarchy holder
 	CSeniorityHierarchyHolder	*m_seniority_hierarchy_holder;
+	// client spawn_manager
+	CClientSpawnManager			*m_client_spawn_manager;
 	// level name
-	shared_str						m_name;
+	shared_str					m_name;
 	// Local events
 	EVENT						eChangeRP;
 	EVENT						eDemoPlay;
@@ -166,6 +169,7 @@ public:
 	
 	IC CSpaceRestrictionManager	&space_restriction_manager	();
 	IC CSeniorityHierarchyHolder &seniority_holder			();
+	IC CClientSpawnManager		&client_spawn_manager		();
 
 	// C/D
 	CLevel();
@@ -245,6 +249,12 @@ IC CSeniorityHierarchyHolder &CLevel::seniority_holder()
 {
 	VERIFY				(m_seniority_hierarchy_holder);
 	return				(*m_seniority_hierarchy_holder);
+}
+
+IC CClientSpawnManager &CLevel::client_spawn_manager()
+{
+	VERIFY				(m_client_spawn_manager);
+	return				(*m_client_spawn_manager);
 }
 
 IC	shared_str	CLevel::name	() const

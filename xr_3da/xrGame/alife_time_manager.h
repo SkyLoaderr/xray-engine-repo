@@ -19,6 +19,7 @@ private:
 	float							m_time_factor;
 	float							m_normal_time_factor;
 	u32								m_start_time;
+	u64								m_surge_interval;
 
 private:
 	ALife::_TIME_ID					m_start_game_time;

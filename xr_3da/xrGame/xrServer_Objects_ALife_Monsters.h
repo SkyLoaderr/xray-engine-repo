@@ -106,6 +106,9 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeAnomalousZone,CSE_ALifeCustomZone,CSE_ALif
 	u16								m_wArtefactSpawnCount;
 	u32								m_dwStartIndex;
 	float							m_fStartPower;
+	float							m_min_start_power;
+	float							m_max_start_power;
+	float							m_power_artefact_factor;
 
 									CSE_ALifeAnomalousZone	(LPCSTR caSection);
 	virtual							~CSE_ALifeAnomalousZone	();

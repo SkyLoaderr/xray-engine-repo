@@ -70,5 +70,11 @@ IC	void CLevelManagerTemplate::after_search			()
 		m_restricted_object->remove_border();
 }
 
+TEMPLATE_SPECIALIZATION
+IC	bool CLevelManagerTemplate::check_vertex			(const _vertex_id_type vertex_id) const
+{
+	return						(inherited::check_vertex(vertex_id) && (!m_restricted_object || m_restricted_object->accessible(vertex_id)));
+}
+
 #undef TEMPLATE_SPECIALIZATION
 #undef CLevelManagerTemplate

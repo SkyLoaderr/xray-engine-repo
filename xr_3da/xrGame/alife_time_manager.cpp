@@ -29,6 +29,7 @@ void CALifeTimeManager::init			(LPCSTR section)
 	m_normal_time_factor		= pSettings->r_float(section,"normal_time_factor");
 	m_game_time					= m_start_game_time;
 	m_start_time				= Device.TimerAsync();
+	m_surge_interval			= generate_time(0,0,0,pSettings->r_u32(section,"surge_interval"),0,0);
 }
 
 void CALifeTimeManager::save			(IWriter	&memory_stream)
