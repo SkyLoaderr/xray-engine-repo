@@ -829,42 +829,42 @@ function loadJob(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 0, state = {0},
 			squad = squad, group = groups[1],
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "agr_factory_restrictor"
 		}
 		table.insert(sj, t)		
 		t = { section = "walker2@agr_factory",
 			idle = 0,
 			prior = 0, state = {0},
 			squad = squad, group = groups[1],
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "agr_factory_restrictor"
 		}
 		table.insert(sj, t)		
 		t = { section = "walker3@agr_factory",
 			idle = 0,
 			prior = 0, state = {0},
 			squad = squad, group = groups[1],
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "agr_factory_restrictor"
 		}
 		table.insert(sj, t)		
 		t = { section = "walker4@agr_factory",
 			idle = 0,
 			prior = 0, state = {0},
 			squad = squad, group = groups[1],
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "agr_factory_restrictor"
 		}
 		table.insert(sj, t)		
 		t = { section = "walker5@agr_factory",
 			idle = 0,
 			prior = 0, state = {0},
 			squad = squad, group = groups[1],
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "agr_factory_restrictor"
 		}
 		table.insert(sj, t)		
 		t = { section = "walker6@agr_factory",
 			idle = 0,
 			prior = 0, state = {0},
 			squad = squad, group = groups[1],
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "agr_factory_restrictor"
 		}
 		table.insert(sj, t)
 	end
