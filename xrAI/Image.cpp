@@ -173,11 +173,11 @@ struct TGAHeader
 
 void CImage::LoadTGA(LPCSTR name)
 {
-	destructor<CStream*>	TGA(Engine.FS.Open(name));
+	destructor<CStream>	TGA(Engine.FS.Open(name));
 	TGAHeader	hdr;
 	BOOL		hflip, vflip;
 
-	TGA.Read(&hdr,sizeof(TGAHeader));
+	TGA().Read(&hdr,sizeof(TGAHeader));
 
 #ifdef ENGINE_BUILD
 	if (!((hdr.imgtype==2)||(hdr.imgtype==10)))			Device.Fatal("Invalid texture format (%s)",name);
@@ -209,13 +209,13 @@ void CImage::LoadTGA(LPCSTR name)
         if( 0 == ( hdr.desc & 0x0010 ) ) dwOffset = (hdr.height-y-1)*hdr.width;
         for( int x=0; x<hdr.width; ){
             if( hdr.imgtype == 10 ){
-                BYTE PacketInfo; TGA.Read(&PacketInfo,1);
+                BYTE PacketInfo; TGA().Read(&PacketInfo,1);
                 WORD PacketType = 0x80 & PacketInfo;
                 WORD PixelCount = ( 0x007f & PacketInfo ) + 1;
                 if( PacketType ){
                     pixel = 0xffffffff;
-                    if(hdr.pixsize==32) TGA.Read(&pixel,4);
-                    else                TGA.Read(&pixel,3);
+                    if(hdr.pixsize==32) TGA().Read(&pixel,4);
+                    else                TGA().Read(&pixel,3);
                     while( PixelCount-- ){
                     	*(ptr+dwOffset+x)=pixel;
                         x++;
@@ -223,16 +223,16 @@ void CImage::LoadTGA(LPCSTR name)
                 }else{
                     while( PixelCount-- ){
                         pixel = 0xffffffff;
-                        if(hdr.pixsize==32) TGA.Read(&pixel,4);
-                        else                TGA.Read(&pixel,3);
+                        if(hdr.pixsize==32) TGA().Read(&pixel,4);
+                        else                TGA().Read(&pixel,3);
                     	*(ptr+dwOffset+x)=pixel;
                         x++;
                     }
                 }
             }else{
                 pixel = 0xffffffff;
-                if(hdr.pixsize==32) TGA.Read(&pixel,4);
-                else                TGA.Read(&pixel,3);
+                if(hdr.pixsize==32) TGA().Read(&pixel,4);
+                else                TGA().Read(&pixel,3);
 				*(ptr+dwOffset+x)	=pixel;
                 x++;
             }

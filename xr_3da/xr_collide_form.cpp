@@ -64,14 +64,14 @@ BOOL CCF_Polygonal::LoadModel( CInifile* ini, const char *section )
 	// Actual load
 	CStream*			f	= Engine.FS.Open(full_path);
 	hdrCFORM			H;
-	f.Read				(&H,sizeof(hdrCFORM));
+	f->Read				(&H,sizeof(hdrCFORM));
 	R_ASSERT			(CFORM_CURRENT_VERSION==H.version);
 
 	H.aabb.getcenter	(Sphere.P);
 	Sphere.R			 = H.aabb.getradius	();
 	s_box.set			(H.aabb);
 
-	Fvector*	verts	= (Fvector*)f.Pointer();
+	Fvector*	verts	= (Fvector*)f->Pointer();
 	RAPID::tri*	tris	= (RAPID::tri*)(verts+H.vertcount);
 	model.BuildModel	( verts, H.vertcount, tris, H.facecount );
 	Msg("* CFORM memory usage: %dK",model.MemoryUsage()/1024);
