@@ -248,7 +248,7 @@ void CAI_Space::Render()
 				Device.mFullTransform.transform	(S,T);
 				F->SetSize	(0.05f/sqrtf(_abs(S.w)));
 				F->SetColor(0xffffffff);
-				F->Out		(S.x,-S.y,"~%d",Nid);
+				//F->Out		(S.x,-S.y,"~%d",Nid);
 			}
 		}
 	}
