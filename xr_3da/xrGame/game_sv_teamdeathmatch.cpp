@@ -147,7 +147,6 @@ void game_sv_TeamDeathmatch::OnPlayerChangeTeam(ClientID id_who, s16 team)
 /////////////////////////////////////////////////////////
 	ps_who->team = team;
 	
-	ClearPlayerItems(ps_who);
 	SetPlayersDefItems(ps_who);
 }
 
@@ -161,6 +160,8 @@ void	game_sv_TeamDeathmatch::OnPlayerKillPlayer		(ClientID id_killer, ClientID i
 		ps_killed->setFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD);
 		ps_killed->deaths				+=	1;
 		ps_killed->DeathTime			= Device.dwTimeGlobal;
+
+		SetPlayersDefItems		(ps_killed);
 	};
 
 	signal_Syncronize();
@@ -212,8 +213,6 @@ void	game_sv_TeamDeathmatch::OnPlayerKillPlayer		(ClientID id_killer, ClientID i
 
 	ps_killed->lasthitter			= 0;
 	ps_killed->lasthitweapon		= 0;
-	ClearPlayerItems		(ps_killed);
-	SetPlayersDefItems		(ps_killed);
 }
 
 bool game_sv_TeamDeathmatch::checkForFragLimit()
