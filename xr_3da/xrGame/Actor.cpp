@@ -417,7 +417,7 @@ void CActor::Die	( )
 	mstate_real		&=		~mcAnyMove;
 	ph_Movement.GetDeathPosition(vPosition);
 	ph_Movement.DestroyCharacter();
-//	create_Skeleton();
+	create_Skeleton();
 }
 
 void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
@@ -440,7 +440,7 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 		else
 		{if(bDeathInit)
 		{
-			create_Skeleton();
+			//create_Skeleton();
 		//	create_Skeleton1();
 			bDeathInit=false;
 			return;
@@ -516,7 +516,11 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 		if (Local()) {
 			pCreator->Cameras.AddEffector		(xr_new<CEffectorFall> (ph_Movement.gcontact_Power));
 			Fvector D; D.set					(0,1,0);
-			if (ph_Movement.gcontact_HealthLost)	Hit	(ph_Movement.gcontact_HealthLost,D,this,-1,0);
+			if (ph_Movement.gcontact_HealthLost)	{
+				Hit	(ph_Movement.gcontact_HealthLost,D,this,-1,0);
+				if(g_Alive()<=0)
+					ph_Movement.GetDeathPosition(vPosition);
+			}
 		}
 	}	
 }
@@ -1268,6 +1272,7 @@ void CActor::create_Skeleton(){
 	CPhysicsElement* root=parent;
 
 	//spine
+	/*
 	id=M->LL_BoneID("bip01_spine");
 	element=P_create_Element				();
 	element->mXFORM.set(m1);
@@ -1288,6 +1293,7 @@ void CActor::create_Skeleton(){
 	
 	
 	parent=element;
+	*/
 	id=M->LL_BoneID("bip01_spine1");
 	element=P_create_Element				();
 	element->mXFORM.set(m1);
@@ -1299,7 +1305,7 @@ void CActor::create_Skeleton(){
 	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
 	joint->SetAnchorVsSecondElement(0,0,0);
 	joint->SetAxisVsSecondElement(1,0,0,0);
-	joint->SetLimits(-M_PI/3.f,M_PI/3.f,0);//
+	joint->SetLimits(-M_PI/4.f,M_PI/4.f,0);//
 	m_phSkeleton->add_Joint(joint);
 	element->SetMaterial(material);
 
@@ -1313,10 +1319,27 @@ void CActor::create_Skeleton(){
 	element->setMass(density);
 	element->set_ParentElement(parent);
 	m_phSkeleton->add_Element(element);
+	/*
 	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
 	joint->SetAnchorVsSecondElement(0,0,0);
 	joint->SetAxisVsSecondElement(0,1,0,0);
 	joint->SetLimits(-M_PI/4.f,M_PI/3.f,0);
+	*/
+	
+	joint=P_create_Joint(CPhysicsJoint::full_control,parent,element);
+	joint->SetAnchorVsSecondElement(0,0,0);
+	joint->SetAxisVsSecondElement(0,1,0,2);
+	joint->SetAxisVsSecondElement(0,0,1,1);
+	joint->SetAxisVsSecondElement(1,0,0,0);
+
+	joint->SetLimits(-M_PI/5.f,M_PI/5.f,0);
+	joint->SetLimits(0.f,0.f,1);
+	joint->SetLimits(-M_PI/3.f,M_PI/3.f,2);
+	
+	//joint->SetLimits(0.1f,0.f,0);
+	//joint->SetLimits(0.f,0.f,1);
+	//joint->SetLimits(0.f,0.f,2);
+
 	m_phSkeleton->add_Joint(joint);
 	element->SetMaterial(material);
 
@@ -1337,6 +1360,7 @@ void CActor::create_Skeleton(){
 	element->SetMaterial(material);
 
 	parent=root1;
+	
 	id=M->LL_BoneID("bip01_l_clavicle");
 	element=P_create_Element				();
 	element->mXFORM.set(m2);
@@ -1346,14 +1370,15 @@ void CActor::create_Skeleton(){
 	element->setMass(density);
 	element->set_ParentElement(parent);
 	m_phSkeleton->add_Element(element);
-	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
+	joint=P_create_Joint(CPhysicsJoint::welding,parent,element);
 	joint->SetAnchorVsSecondElement(0,0,0);//box.m_halfsize.y box.m_halfsize.x*2.f
 	joint->SetAxisVsSecondElement(1,0,0,0);
 	joint->SetLimits(-M_PI/4.f,M_PI/3.f,0);
 	m_phSkeleton->add_Joint(joint);
 	element->SetMaterial(material);
 
-	parent=element;
+	//parent=element;
+	
 	id=M->LL_BoneID("bip01_l_upperarm");
 	element=P_create_Element				();
 	element->mXFORM.set(m2);
@@ -1362,10 +1387,14 @@ void CActor::create_Skeleton(){
 	element->setMass(density);
 	element->set_ParentElement(parent);
 	m_phSkeleton->add_Element(element);
-	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
+	joint=P_create_Joint(CPhysicsJoint::full_control,parent,element);
 	joint->SetAnchorVsSecondElement(0,0,0);
 	joint->SetAxisVsSecondElement(0,0,1,0);
 	joint->SetLimits(-M_PI/3.f,M_PI/2.2f,0);
+	//joint->SetLimits(0.f,0.f,0);
+	joint->SetAxisVsSecondElement(0,1,0,2);
+	joint->SetLimits(-M_PI/4.f,M_PI/3.f,2);
+	joint->SetLimits(0.f,0.f,1);
 	m_phSkeleton->add_Joint(joint);
 	element->SetMaterial(material);
 
@@ -1411,14 +1440,14 @@ void CActor::create_Skeleton(){
 	element->setMass(density);
 	element->set_ParentElement(parent);
 	m_phSkeleton->add_Element(element);
-	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
+	joint=P_create_Joint(CPhysicsJoint::welding,parent,element);
 	joint->SetAnchorVsSecondElement(0,0,0);
 	joint->SetAxisVsSecondElement(1,0,0,0);
 	joint->SetLimits(-M_PI/3.f,M_PI/4.f,0);
 	m_phSkeleton->add_Joint(joint);
 	element->SetMaterial(material);
 
-	parent=element;
+	//parent=element;
 	id=M->LL_BoneID("bip01_r_upperarm");
 	element=P_create_Element				();
 	element->mXFORM.set(m4);
@@ -1427,10 +1456,13 @@ void CActor::create_Skeleton(){
 	element->setMass(density);
 	element->set_ParentElement(parent);
 	m_phSkeleton->add_Element(element);
-	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
+	joint=P_create_Joint(CPhysicsJoint::full_control,parent,element);
 	joint->SetAnchorVsSecondElement(0,0,0);
 	joint->SetAxisVsSecondElement(0,0,1,0);
 	joint->SetLimits(-M_PI/2.2f,M_PI/3.f,0);
+	joint->SetAxisVsSecondElement(0,1,0,2);
+	joint->SetLimits(-M_PI/4.f,M_PI/3.f,2);
+	joint->SetLimits(0.f,0.f,1);
 	m_phSkeleton->add_Joint(joint);
 	element->SetMaterial(material);
 
@@ -1475,9 +1507,13 @@ void CActor::create_Skeleton(){
 	element->setMass(density);
 	element->set_ParentElement(parent);
 	m_phSkeleton->add_Element(element);
-	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
+	joint=P_create_Joint(CPhysicsJoint::full_control,parent,element);
 	joint->SetAnchorVsSecondElement(0,0,0);
 	joint->SetAxisVsSecondElement(0,0,1,0);
+	joint->SetAxisVsSecondElement(0,1,0,2);
+	joint->SetLimits(-M_PI*1.f/6.f,M_PI*1.f/2.f,2);
+	joint->SetLimits(0.f,0.f,1);
+	//joint->SetLimits(0,M_PI*1/3.5f,0);
 	joint->SetLimits(-M_PI*1/3.5f,0,0);
 	m_phSkeleton->add_Joint(joint);
 	element->SetMaterial("materials\\skel1");
@@ -1523,9 +1559,12 @@ void CActor::create_Skeleton(){
 	element->setMass(density);
 	element->set_ParentElement(parent);
 	m_phSkeleton->add_Element(element);
-	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
+	joint=P_create_Joint(CPhysicsJoint::full_control,parent,element);
 	joint->SetAnchorVsSecondElement(0,0,0);
 	joint->SetAxisVsSecondElement(0,0,1,0);
+	joint->SetAxisVsSecondElement(0,1,0,2);
+	joint->SetLimits(-M_PI*1.f/6.f,M_PI*1.f/2.f,2);
+	joint->SetLimits(0.f,0.f,1);
 	joint->SetLimits(0,M_PI*1/3.5f,0);
 	m_phSkeleton->add_Joint(joint);
 	element->SetMaterial("materials\\skel1");
@@ -1566,7 +1605,9 @@ void CActor::create_Skeleton(){
 	//set shell start position
 	Fmatrix m;
 	m.set(mRotate);
-	ph_Movement.GetDeathPosition(m.c);
+	m.c.set(vPosition);
+	//ph_Movement.GetDeathPosition(m.c);
+	//m.c.y-=0.4f;
 	m_phSkeleton->mXFORM.set(m);
 	m_phSkeleton->SetAirResistance(0.002f*skel_airr_lin_factor,
 								   0.3f*skel_airr_ang_factor);

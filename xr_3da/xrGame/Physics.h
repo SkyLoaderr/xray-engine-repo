@@ -201,6 +201,7 @@ class CPHElement:  public CPhysicsElement {
 	dBodyID m_body;
 	dGeomID m_group;
 	Fmatrix m_m0,m_m2;
+	Fmatrix fixed_position;
 ///////////////////////////////
 
 	CPHElement* m_parent_element;
@@ -225,6 +226,7 @@ UINT dis_count_f;
 UINT dis_count_f1;
 dReal k_w;
 dReal k_l;//1.8f;
+bool attached;
 public:
 
 /////////////////////////////////////////////////////////////////////////////
@@ -292,6 +294,7 @@ public:
 		ul_material=GMLib.GetMaterialIdx("materials\\box_default");
 		k_w=0.05f;
 		k_l=0.0002f;//1.8f;
+		attached=false;
 	};
 		//CPHElement(){ m_space=ph_world->GetSpace();};
 		virtual ~CPHElement	();
@@ -299,8 +302,9 @@ public:
 //////////////////////////////////////////////////////////////////////
 class CPHJoint: public CPhysicsJoint{
 
-
+CPHShell*   pShell;
 dJointID m_joint;
+dJointID m_joint1;
 enum eVs {
 vs_first,
 vs_second,
@@ -325,8 +329,8 @@ SPHAxis(){
 	zero=0.f;
 	//erp=ERP(world_spring/5.f,world_damping*5.f);
 	//cfm=CFM(world_spring/5.f,world_damping*5.f);
-	erp=0.8f;
-	cfm=0.00001f;
+	erp=0.6f;
+	cfm=0.000001f;
 	direction.set(0,0,1);
 	vs=vs_first;
 	}
@@ -343,6 +347,7 @@ void CreateShoulder2();
 void CreateCarWeel();
 void CreateWelding();
 void CreateUniversalHinge();
+void CreateFullControl();
 
 	virtual void SetAnchor					(const Fvector& position){SetAnchor(position.x,position.y,position.z);}	
 	virtual void SetAnchorVsFirstElement	(const Fvector& position){SetAnchorVsFirstElement(position.x,position.y,position.z);}
@@ -370,6 +375,7 @@ public:
 						axes.clear();
 
 						};
+	void SetShell					(CPHShell* p)			 {pShell=p;}
 	void Activate();
 	void Deactivate();
 };
@@ -419,6 +425,8 @@ public:
 		elements.push_back(ph_element);
 
 	};
+	virtual void remove_Element(CPhysicsElement* E){
+	}
 
 	virtual void			SetAirResistance		(dReal linear=0.0002f, dReal angular=0.05f){
 														vector<CPHElement*>::iterator i;
@@ -428,6 +436,7 @@ public:
 
 	virtual	void			add_Joint				(CPhysicsJoint* J)					{
 																						joints.push_back((CPHJoint*)J);
+																						dynamic_cast<CPHJoint*>(J)->SetShell(this);
 																						};
 	virtual void			applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val)	;
 
@@ -459,6 +468,7 @@ public:
 	void CreateSpace()
 	{
 		if(!m_space) m_space=dSimpleSpaceCreate(ph_world->GetSpace());
+		//dSpaceSetCleanup (m_space, 0);
 	}
 
 	void SetTransform(Fmatrix m);

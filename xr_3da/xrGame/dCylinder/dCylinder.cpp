@@ -448,6 +448,7 @@ TEST(p[0]*Ax[0]+p[1]*Ax[1]+p[2]*Ax[2],(_sin*radius+_cos*hlz+boxProj),Ax[0],Ax[1]
 	  if(*code>7) dMULTIPLY0_331 (normal,R1,normalC);
 	  else {normal[0] =normalC[0];normal[1] = normalC[1];normal[2] = normalC[2];}
   }
+
   if (invert_normal) {
     normal[0] = -normal[0];
     normal[1] = -normal[1];
@@ -1021,7 +1022,7 @@ dNormalize3(Ax);
 	cos1/=factor;
 	cos3/=factor;
     for (i=0; i<3; i++) pa[i] += cos1 * cylRadius * R[i*4];
-    sign = (dDOT14(normal,R+1) > 0) ? REAL(1.0) : REAL(-1.0);
+    sign = (dDOT14(Ax,R+1) > 0) ? REAL(1.0) : REAL(-1.0);
     for (i=0; i<3; i++) pa[i] += sign * hl * R[i*4+1];
     for (i=0; i<3; i++) pa[i] += cos3 * cylRadius  * R[i*4+2];
 
@@ -1295,7 +1296,7 @@ dxGeom *dCreateCylinder (dSpaceID space, dReal r, dReal lz)
 
 void dGeomCylinderSetParams (dGeomID g, dReal radius, dReal length)
 {
-  dUASSERT (g && dGeomGetClass(g) == dCCylinderClass,"argument not a ccylinder");
+  dUASSERT (g && dGeomGetClass(g) == dCylinderClassUser ,"argument not a cylinder");
   dAASSERT (radius > 0 && length > 0);
   dxCylinder *c = (dxCylinder*) dGeomGetClassData(g);
   c->radius = radius;

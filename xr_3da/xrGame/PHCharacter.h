@@ -111,7 +111,7 @@ Fvector			IPosition									() {
 Fvector			DeathPosition								(){
 																Fvector pos;
 																pos.x=m_death_position[0];
-																pos.y=m_death_position[1];
+																pos.y=m_death_position[1]-m_radius;
 																pos.z=m_death_position[2];
 																return pos;
 																}

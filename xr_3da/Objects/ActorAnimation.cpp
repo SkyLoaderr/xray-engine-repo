@@ -166,7 +166,7 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 			//ST=&m_crouch;
 		
 			//PKinematics	(pVisual)->PlayCycle(ST->death,false);
-			PKinematics	(pVisual)->PlayCycle(ST->death);
+			//PKinematics	(pVisual)->PlayCycle(ST->death);
 			///////////////////////////
 			//Render->model_Delete			(pVisual);
 			//pVisual = Render->model_Create  ("box_bone");

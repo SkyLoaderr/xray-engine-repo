@@ -48,6 +48,7 @@ enum enumType{
 	ball,
 	hinge,
 	hinge2,
+	full_control,
 	universal_hinge,
 	shoulder1,
 	shoulder2,
@@ -63,6 +64,8 @@ enumType eType;
 bool bActive;
 public:
 //	CPhysicsJoint(CPhysicsElement* first,CPhysicsElement* second,enumType type){pFirst_element=first; pSecond_element=second; eType=type;bActive=false;}
+
+
 	virtual ~CPhysicsJoint	()																{};
 
 	virtual void SetAnchor					(const Fvector& position)						=0;

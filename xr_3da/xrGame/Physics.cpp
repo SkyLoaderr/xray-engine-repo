@@ -2,6 +2,7 @@
 #include "PHDynamicData.h"
 #include "Physics.h"
 #include "tri-colliderknoopc/dTriList.h"
+//#include "c:\sdk\odeLast\ode\ode\src\collision_kernel.h"
 //#include "dRay/include/dRay.h"
 #include "ExtendedGeom.h"
 union dInfBytes dInfinityValue = {{0,0,0x80,0x7f}};
@@ -999,18 +1000,34 @@ dBodyEnable(m_body);
 
 void CPHElement::			destroy	(){
 	vector<dGeomID>::iterator i;
+
+
 	for(i=m_geoms.begin();i!=m_geoms.end();i++){
 	dGeomDestroyUserData(*i);
 	dGeomDestroy(*i);
 	}
 	for(i=m_trans.begin();i!=m_trans.end();i++){
 	dGeomDestroyUserData(*i);
-	dGeomDestroy(*i);
+
 	
+	//if(!attached)
+	dGeomDestroy(*i);
+
 	}
+
+
+	if(m_body && !attached)
+		{
+		dBodyDestroy(m_body);
+		m_body=NULL;
+		}
+
+
+
+
 	if(m_spheras_data.size()+m_boxes_data.size()>1)
 	dGeomDestroy(m_group);
-	dBodyDestroy(m_body);
+
 	m_geoms.clear();
 	m_trans.clear();
 }
@@ -1141,6 +1158,7 @@ void		CPHElement::Start(){
 }
 
 void		CPHElement::Deactivate(){
+	if(!bActive) return;
 	destroy();
 	bActive=false;
 	bActivating=false;
@@ -1185,6 +1203,7 @@ void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disa
 		
 		mXFORM.set(m0);
 		m_space=dSimpleSpaceCreate(ph_world->GetSpace());
+		//dSpaceSetCleanup (m_space, 0);
 		for(i=elements.begin();i!=elements.end();i++){
 														//(*i)->Start();
 														//(*i)->SetTransform(m0);
@@ -1235,6 +1254,7 @@ void CPHElement::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool di
 	m_body_interpolation.SetBody(m_body);
 	//previous_f[0]=dInfinity;
 	if(disable) dBodyDisable(m_body);
+	bActive=true;
 }
 
 void CPHShell::Deactivate(){
@@ -1268,7 +1288,11 @@ void CPHElement::PhDataUpdate(dReal step){
 //m_body_interpolation.UpdatePositions();
 //m_body_interpolation.UpdateRotations();
 //return;
-
+	if(attached) {
+		m_body_interpolation.UpdatePositions();
+		m_body_interpolation.UpdateRotations();
+		return;
+	}
 
 	if( !dBodyIsEnabled(m_body)) {
 					if(previous_p[0]!=dInfinity) previous_p[0]=dInfinity;
@@ -1583,7 +1607,7 @@ void CPHElement::CallBack(CBoneInstance* B){
 	return;
 	}
 	
-
+	//if(attached) return;
 //	Fmatrix bone,inv_shell;
 //	InterpolateGlobalTransform(&bone);
 //	inv_shell.set(m_shell->mXFORM);
@@ -1624,15 +1648,38 @@ void CPHElement::InterpolateGlobalTransform(Fmatrix* m){
 
 void CPHElement::DynamicAttach(CPHElement* E)
 {
-	const dReal* p1=dBodyGetPosition(m_body);
+	dVector3 p1;
+	dMatrix3 R1;
+	Memory.mem_copy(p1,dBodyGetPosition(m_body),sizeof(dVector3));
 	const dReal* p2=dBodyGetPosition(E->m_body);
-	const dReal* R1=dBodyGetRotation(m_body);
+	Memory.mem_copy( R1,dBodyGetRotation(m_body),sizeof(dMatrix3));
 	const dReal* R2=dBodyGetRotation(E->m_body);
 	dVector3 pp={p2[0]-p1[0],p2[1]-p1[1],p2[2]-p1[2]};
 	dMatrix3 RR;
-	dMULTIPLY0_333(RR,R2,R1);
+	dMULTIPLY1_333(RR,R1,R2);
+	dVector3 ppr;
+	dMULTIPLY1_331(ppr,R1,pp);
 	vector<dGeomID>::iterator i;
-	for(i=E->m_geoms.begin();i!=E->m_geoms.end();i++){
+	Fmatrix RfRf;
+	PHDynamicData::DMXPStoFMX(RR,ppr,RfRf);
+	E->m_inverse_local_transform.mulA(RfRf);
+	//E->fixed_position.set(RfRf);
+	for(i=E->m_trans.begin();i!=E->m_trans.end();i++){
+		dGeomID geom=dGeomTransformGetGeom(*i);
+		const dReal* pos=dGeomGetPosition(geom);
+		const dReal* rot=dGeomGetRotation(geom);
+		dMatrix3 rr;
+		dMULTIPLY0_333(rr,RR,rot);
+
+		dGeomSetRotation(geom,rr);
+		dGeomSetPosition(geom,pos[0]+ppr[0],pos[1]+ppr[1],pos[2]+ppr[2]);
+
+		dGeomSetBody(*i,m_body);
+		dBodySetPosition(m_body,p1[0],p1[1],p1[2]);
+		dBodySetRotation(m_body,R1);
+
+		}
+	for(i=E->m_geoms.begin();i!=E->m_geoms.end();i++)
 		if(dGeomGetBody(*i)){
 		dGeomID trans=dCreateGeomTransform(0);
 		dGeomSetBody((*i),0);
@@ -1641,22 +1688,22 @@ void CPHElement::DynamicAttach(CPHElement* E)
 		dGeomTransformSetGeom(trans,(*i));
 		dGeomTransformSetInfo(trans,1);
 		dGeomSetBody(trans,m_body);
+		dBodySetPosition(m_body,p1[0],p1[1],p1[2]);
+		dBodySetRotation(m_body,R1);
 		E->m_trans.push_back(trans);
 		}
-		for(i=E->m_trans.begin();i!=E->m_trans.end();i++){
-		dGeomID geom=dGeomTransformGetGeom(*i);
-		const dReal* pos=dGeomGetPosition(geom);
-		const dReal* rot=dGeomGetRotation(geom);
-		dMatrix3 rr;
-		dMULTIPLY1_333(rr,rot,RR);
-		dGeomSetPosition(geom,pos[0]+pp[0],pos[1]+pp[1],pos[2]+pp[2]);
-		dGeomSetRotation(geom,rr);
-		dGeomSetBody(*i,m_body);
 
-		}
+
+
+		dMass m1,m2;
+		dBodyGetMass(E->m_body,&m1);
+		dBodyGetMass(m_body,&m2);
+		dMassAdd(&m1,&m2);
+		dBodySetMass(m_body,&m1);
 		dBodyDestroy(E->m_body);
 		E->m_body=m_body;
-	}
+		E->m_body_interpolation.SetBody(m_body);
+		E->attached=true;
 	//E->m_body;
 
 }
@@ -1855,9 +1902,200 @@ void CPHJoint::CreateUniversalHinge()
 
 void CPHJoint::CreateWelding()
 {
-	
+dynamic_cast<CPHElement*>(pFirst_element)
+->DynamicAttach(dynamic_cast<CPHElement*>(pSecond_element));
 
 }
+
+void CPHJoint::CreateFullControl()
+{
+	m_joint=dJointCreateBall(phWorld,0);
+	m_joint1=dJointCreateAMotor(phWorld,0);
+	
+Fvector pos;
+Fmatrix first_matrix,second_matrix;
+Fvector axis;
+CPHElement* first=dynamic_cast<CPHElement*>(pFirst_element);
+CPHElement* second=dynamic_cast<CPHElement*>(pSecond_element);
+first->InterpolateGlobalTransform(&first_matrix);
+second->InterpolateGlobalTransform(&second_matrix);
+
+switch(vs_anchor){
+case vs_first :first_matrix.transform_tiny(pos,anchor); break;
+case vs_second:second_matrix.transform_tiny(pos,anchor); break;
+case vs_global:					
+default:pos.set(anchor);	
+}
+//////////////////////////////////////
+
+
+
+//dJointSetAMotorMode (m_joint1, dAMotorUser);
+dJointSetAMotorMode (m_joint1, dAMotorEuler);
+dJointSetAMotorNumAxes (m_joint1, 3);
+
+dJointAttach(m_joint,first->get_body(),second->get_body());
+dJointSetBallAnchor(m_joint,pos.x,pos.y,pos.z);
+
+dJointAttach(m_joint1,first->get_body(),second->get_body());
+
+/////////////////////////////////////////////
+
+Fmatrix first_matrix_inv;
+first_matrix_inv.set(first_matrix);
+first_matrix_inv.invert();
+Fmatrix rotate;
+rotate.mul(first_matrix_inv,second_matrix);
+/////////////////////////////////////////////
+float shift_angle;
+float lo;
+float hi;
+//////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////
+switch(axes[0].vs){
+
+case vs_first :first_matrix.transform_dir(axis,axes[0].direction);	break;
+case vs_second:second_matrix.transform_dir(axis,axes[0].direction); break;
+case vs_global:
+default:		axis.set(axes[0].direction);							
+}
+
+
+
+axis_angleA(rotate,axes[0].direction,shift_angle);
+
+shift_angle-=axes[0].zero;
+
+if(shift_angle>M_PI) shift_angle-=2.f*M_PI;
+if(shift_angle<-M_PI) shift_angle+=2.f*M_PI;
+
+lo=axes[0].low+shift_angle;
+hi=axes[0].high+shift_angle;
+if(lo<-M_PI){ 
+			hi-=(lo+M_PI);
+			lo=-M_PI;
+			}
+if(lo>0.f) {
+			hi-=lo;
+			lo=0.f;
+			}
+if(hi>M_PI) {
+			lo-=(hi-M_PI);
+			hi=M_PI;
+			}
+if(hi<0.f) {
+			lo-=hi;
+			hi=0.f;
+			}
+
+
+
+
+
+dJointSetAMotorAxis (m_joint1, 0, 1, axis.x, axis.y, axis.z);
+//dJointSetAMotorAxis (m_joint1, 0, 1, axes[0].direction.x, axes[0].direction.y, axes[0].direction.z);
+
+dJointSetAMotorParam(m_joint1,dParamLoStop ,lo);
+dJointSetAMotorParam(m_joint1,dParamHiStop ,hi);
+//dJointSetAMotorParam(m_joint1,dParamFMax ,0.f);
+//dJointSetAMotorParam(m_joint1,dParamVel ,0.f);
+
+//dJointSetAMotorAngle (m_joint1, 0, 0.0f);
+
+switch(axes[1].vs){
+
+case vs_first :first_matrix.transform_dir(axis,axes[1].direction);	break;
+case vs_second:second_matrix.transform_dir(axis,axes[1].direction); break;
+case vs_global:
+default:		axis.set(axes[1].direction);							
+}
+
+
+
+axis_angleA(rotate,axes[1].direction,shift_angle);
+
+shift_angle-=axes[1].zero;
+
+if(shift_angle>M_PI) shift_angle-=2.f*M_PI;
+if(shift_angle<-M_PI) shift_angle+=2.f*M_PI;
+
+
+
+
+
+lo=axes[1].low+shift_angle;
+hi=axes[1].high+shift_angle;
+if(lo<-M_PI){ 
+			hi-=(lo+M_PI);
+			lo=-M_PI;
+			}
+if(lo>0.f) {
+			hi-=lo;
+			lo=0.f;
+			}
+if(hi>M_PI) {
+			lo-=(hi-M_PI);
+			hi=M_PI;
+			}
+if(hi<0.f) {
+			lo-=hi;
+			hi=0.f;
+			}
+
+//dJointSetAMotorAxis (m_joint1, 1, 2, axis.x, axis.y, axis.z);
+dJointSetAMotorAngle (m_joint1, 1, 0.f);
+dJointSetAMotorParam(m_joint1,dParamLoStop2 ,lo);
+dJointSetAMotorParam(m_joint1,dParamHiStop2 ,hi);	
+//////////////////////////////////////////////////////////////////
+switch(axes[2].vs){
+
+case vs_first :first_matrix.transform_dir(axis,axes[2].direction);	break;
+case vs_second:second_matrix.transform_dir(axis,axes[2].direction); break;
+case vs_global:
+default:		axis.set(axes[2].direction);							
+}
+
+
+
+axis_angleA(rotate,axes[2].direction,shift_angle);
+
+shift_angle-=axes[2].zero;
+
+if(shift_angle>M_PI) shift_angle-=2.f*M_PI;
+if(shift_angle<-M_PI) shift_angle+=2.f*M_PI;
+
+
+
+
+
+lo=axes[2].low+shift_angle;
+hi=axes[2].high+shift_angle;
+if(lo<-M_PI){ 
+			hi-=(lo+M_PI);
+			lo=-M_PI;
+			}
+if(lo>0.f) {
+			hi-=lo;
+			lo=0.f;
+			}
+if(hi>M_PI) {
+			lo-=(hi-M_PI);
+			hi=M_PI;
+			}
+if(hi<0.f) {
+			lo-=hi;
+			hi=0.f;
+			}
+
+dJointSetAMotorAxis (m_joint1, 2, 2, axis.x, axis.y, axis.z);
+dJointSetAMotorAngle (m_joint1, 2, 0.f);
+dJointSetAMotorParam(m_joint1,dParamLoStop3 ,lo);
+dJointSetAMotorParam(m_joint1,dParamHiStop3 ,hi);	
+
+
+}
+
+
 void CPHJoint::SetAnchor(const float x,const float y,const float z)
 {
 vs_anchor=vs_global;
@@ -1898,6 +2136,9 @@ void CPHJoint::SetAxis(const float x,const float y,const float z,const int axis_
 	case car_wheel:	
 								if(ax>1) ax=1;
 														break;
+	case full_control:
+								if(ax>2) ax=2;
+														break;
 	}
 			axes[ax].vs=vs_global;
 			axes[ax].direction.set(x,y,z);
@@ -1923,6 +2164,9 @@ void CPHJoint::SetAxisVsFirstElement(const float x,const float y,const float z,c
 	case car_wheel:	
 								if(ax>1) ax=1;
 														break;
+	case full_control:
+								if(ax>2) ax=2;
+														break;
 	}
 			axes[ax].vs=vs_first;
 			axes[ax].direction.set(x,y,z);
@@ -1933,7 +2177,9 @@ void CPHJoint::SetAxisVsSecondElement(const float x,const float y,const float z,
 	int ax=axis_num;
 
 	switch(eType){
-	case ball:					return;						break;
+	case ball:					
+	case welding:
+								return;						break;
 	case hinge:					ax=0;
 															break;
 	case hinge2:
@@ -1947,6 +2193,9 @@ void CPHJoint::SetAxisVsSecondElement(const float x,const float y,const float z,
 														
 	case car_wheel:	
 								if(ax>1) ax=1;
+														break;
+	case full_control:
+								if(ax>2) ax=2;
 														break;
 	}
 			axes[ax].vs=vs_second;
@@ -1975,6 +2224,9 @@ void CPHJoint::SetLimits(const float low, const float high, const int axis_num)
 														
 	case car_wheel:	
 								if(ax>1) ax=1;
+														break;
+	case full_control:
+								if(ax>2) ax=2;
 														break;
 	}
 
@@ -2015,8 +2267,9 @@ pFirst_element=first;
 pSecond_element=second; 
 eType=type;
 bActive=false;
-SPHAxis axis,axis2;
+SPHAxis axis,axis2,axis3;
 axis2.set_direction(1,0,0);
+axis3.direction.crossproduct(axis.direction,axis3.direction);
 vs_anchor=vs_first;
 
 	switch(eType){
@@ -2037,6 +2290,10 @@ vs_anchor=vs_first;
 								axes.push_back(axis);
 								axes.push_back(axis2);	
 														break;
+	case full_control:
+								axes.push_back(axis);
+								axes.push_back(axis2);	
+								axes.push_back(axis3);
 	}
 
 }
@@ -2061,6 +2318,7 @@ if(bActive) return;
 	case shoulder2:				CreateShoulder2();		break;
 	case car_wheel:				CreateCarWeel();		break;
 	case welding:				CreateWelding();		break;
+	case full_control:			CreateFullControl();	break;
 	}
 	bActive=true;
 }
@@ -2068,8 +2326,22 @@ if(bActive) return;
 void CPHJoint::Deactivate()
 {
 if(!bActive) return;
-if(eType!=welding)
-		dJointDestroy(m_joint);
+	switch(eType){
+	case welding:				; break;
+	case ball:					;
+	case hinge:					;
+	case hinge2:				;
+	case universal_hinge:		;
+	case shoulder1:				;
+	case shoulder2:				;
+	case car_wheel:				dJointDestroy(m_joint); 
+								break;
+	
+	case full_control:			dJointDestroy(m_joint);
+								dJointDestroy(m_joint1);
+								break;
+	}
+		
 bActive=false;
 }
 
