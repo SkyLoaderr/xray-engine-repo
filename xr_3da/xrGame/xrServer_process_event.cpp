@@ -10,6 +10,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 
 	// correct timestamp with server-unique-time (note: direct message correction)
 	P.r_u32		(timestamp	);
+	/*
 	xrClientData*	c_sender	= ID_to_client	(sender);
 	if (c_sender)
 	{
@@ -17,6 +18,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 		timestamp					= (timestamp+sv_timestamp)/2;								// approximate timestamp with both client and server time
 		CopyMemory	(&P.B.data[P.r_pos-4], &timestamp, 4);
 	}
+	*/
 
 	// read generic info
 	P.r_u16		(type		);
