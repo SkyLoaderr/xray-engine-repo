@@ -292,7 +292,7 @@ void CWeaponMagazined::ReloadMagazine()
 	VERIFY((u32)iAmmoElapsed == m_magazine.size());
 
 	//нет патронов для перезарядки
-	if(!m_pAmmo) return;
+	if(!m_pAmmo || !m_pInventory) return;
 
 	//разрядить магазин, если загружаем патронами другого типа
 	if(!l_lockType && !m_magazine.empty() && 
