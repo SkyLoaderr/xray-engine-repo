@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <map_spots>
 
+#include ui\map_spots_escape.xml
 <!-- quest locations -->
 	<tutorial_artefact_location hint="tutorial_artefact" store="1">
 		<level_map spot="tutorial_artefact_spot" pointer="quest_pointer"></level_map>
