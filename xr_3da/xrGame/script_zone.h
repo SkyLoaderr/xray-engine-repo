@@ -30,5 +30,7 @@ public:
 	virtual void	feel_touch_delete	(CObject* O);
 			void	set_callback		(luabind::functor<void> tpZoneCallback, bool bOnEnter);
 			void	clear_callback		(bool bOnEnter);
-			void	OnRender			();
+#ifdef DEBUG
+	virtual	void	OnRender			();
+#endif
 };
