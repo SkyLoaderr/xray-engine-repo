@@ -259,6 +259,7 @@ CBlend*	CKinematics::LL_PlayCycle(int part, int motion, BOOL  bMixing,	float ble
 	CBoneData*	Bone;
 	for (int i=0; i<int(P.bones.size()); i++)
 	{
+		int id = P.bones[i];
 		Bone	= (*bones)[P.bones[i]];
 		Bone->Motion_Start_IM	(this,B);
 	}
@@ -632,7 +633,7 @@ void CKinematics::Load(const char* N, CStream *data, DWORD dwFlags)
 			MP->RstringZ(buf);
 			PART.Name			= _strlwr(strdup(buf));
 			PART.bones.resize	(MP->Rword());
-			MP->Read			(PART.bones.begin(),PART.bones.size()*sizeof(WORD));
+			MP->Read			(PART.bones.begin(),PART.bones.size()*sizeof(int));
 		}
 
 		m_cycle = new mdef;
