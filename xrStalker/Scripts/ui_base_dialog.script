@@ -39,9 +39,9 @@ function base_dialog:InitControls(txt_caption)
 	self.main_rect.y = (self.screen.height - self.main_rect.height)/2
 	-----------------------------------------------------------------
 	self.left_align_x   = indent
-	self.right_align_x  = main_rect.width - indent
+	self.right_align_x  = self.main_rect.width - indent
 	self.top_aling_y    = indent
-	self.bottom_align_y = main_rect.height - indent
+	self.bottom_align_y = self.main_rect.height - indent
 	------------------------------------------------------------------
 	
 	-- button template
