@@ -1,13 +1,13 @@
 fraction = {}
 
 class "fract"
-function fract:__init(name)
+function fract:__init(name, char_ini)
 	self.name = name
 
 	self.state = 0 		-- состояние схемы. 0 - дефолтовое. 1 и дальше - различные особые состояния, например тревога для блокпоста
 	self.stateBegin = nil
 
-	self.checkTime = 10000 	-- время между проверками постов
+	self.checkTime = 60*60*1000 	-- 1 игровой час
 	self.checkBegin = nil
 
 	self.casualities = 0  	-- потери на блокпосте
@@ -15,11 +15,33 @@ function fract:__init(name)
 	self.Object = {}        -- список ресурсов
 	self.Job = {}           -- список заданий
 	self.States = {}	-- список состояний
+	self.Guest = {}		-- список гостей, находящихся на территории группировки
 
 	self:loadJob(name)
 	self:loadStates(name)
 
-	self.music = gramofon.m_gramofon("blockpost_rupor")
+	if self.name == "blockpost" then
+		self.music = gramofon.m_gramofon("blockpost_rupor")
+	end
+
+	-- инициализация территории
+        if char_ini:line_exist("fraction", "zone") == true then
+	        self.territory = get_level_object(char_ini:r_string("fraction", "zone"))
+        end
+
+	if self.territory ~= nil then
+        	self.territory:set_callback (self.zone_enter, true)
+        	self.territory:set_callback (self.zone_exit, false)
+	end
+
+end
+function fract:zone_enter(zone, obj)
+	printf("ENTER")
+	-- нужно определить свой это или чужой. Если чужой - добавить его в список гостей
+end
+function fract:zone_exit(zone, obj)
+	printf("EXIT")
+	-- нужно удалить чудака из списка гостей, если он там есть.
 end
 function fract:addObject(npc)
 	if self.Object[npc:id()] == nil then
@@ -39,14 +61,16 @@ function fract:calculate() -- просчет лагеря
 			end
 		end
 		
-		if device():time_global() - self.stateBegin > timeout then
+		if game.time() - self.stateBegin > timeout then
 			self.state = 0
 		        self.music:event(0)
 		end
 	end
 	
 	-- матюгальник
-	self.music:update()
+	if self.music ~= nil then
+		self.music:update()
+	end
 
 	-- убирание мертвых сталкеров	
 	local tt = {}
@@ -84,13 +108,13 @@ function fract:calculate() -- просчет лагеря
 	-- такую проверку нужно делать раз в какое то время
 	local order = false
 	if self.checkBegin == nil or
-	   device():time_global() - self.checkBegin > self.checkTime then
+	   game.time() - self.checkBegin > self.checkTime then
 		order = true
 	end
 
 	-- и затем итерировать на этой таблице при выдаче работы
 	if order then
-		self.checkBegin = device():time_global()
+		self.checkBegin = game.time()
 		for k,v in self.Object do
 			self:setJob(v)
 		end
@@ -140,7 +164,7 @@ function fract:loadJob(name) -- загружает список заданий
 		t = { name = "patrol",
 			object = nil,
 			begin = nil, 
-			idle = 600000,	-- раз в какое время запускается работа
+			idle = 6*60*60*1000,	-- раз в какое время запускается работа
 			prior = 8,
 			state = { 0, 1, 2}, -- в каких состояниях это задание существует
 			patrol_path = "blockpost_patrol_0",
@@ -149,7 +173,7 @@ function fract:loadJob(name) -- загружает список заданий
 		t = { name = "follower",
 			object = nil,
 			begin = nil, 
-			idle = 600000,	-- раз в какое время запускается работа
+			idle = 6*60*60*1000,	-- раз в какое время запускается работа
 			prior = 7,
 			state = { 0, 1, 2}, -- в каких состояниях это задание существует
 			leader_name = nil,
@@ -158,7 +182,7 @@ function fract:loadJob(name) -- загружает список заданий
 		t = { name = "follower",
 			object = nil,
 			begin = nil, 
-			idle = 600000,	-- раз в какое время запускается работа
+			idle = 6*60*60*1000,	-- раз в какое время запускается работа
 			prior = 7,
 			state = { 0, 1, 2}, -- в каких состояниях это задание существует
 			leader_name = nil,
@@ -324,7 +348,7 @@ function fract:setJob(npc) -- выбирает для данного npc наиболее приоритетное зад
 		-- проверка что данное задание не занято
 		if v.object ~= nil then ena = false end
 
-		if v.begin ~= nil and device():time_global() - v.begin < v.idle then
+		if v.begin ~= nil and game.time() - v.begin < v.idle then
 			ena = false
 		end
 		
@@ -359,24 +383,24 @@ function fract:setJob(npc) -- выбирает для данного npc наиболее приоритетное зад
 		--устанавливаем данные для текущей работы	
 		if t.name == "guard" then
 			t.object = npc:id()
-			t.begin = device():time_global()
+			t.begin = game.time()
 		        xr_guard.set_guard(npc, true, t.path_main, t.path_hideout, t.running, t.search_light)
 		end
 		if t.name == "sleeper" then
 			t.object = npc:id()
-			t.begin = device():time_global()
+			t.begin = game.time()
 		        xr_sleeper.set_sleeper(npc, true, t.path_main)			
 		end
 		if t.name == "patrol" then
 			t.object = npc:id()
-			t.begin = device():time_global()
+			t.begin = game.time()
 		        xr_patrol.set_patrol(npc, true, t.patrol_path, t.escape_path)			
 		end
 		if t.name == "follower" then
 			local nn = self:nameStalkerOnJob("patrol")
 			if nn ~= nil then
 				t.object = npc:id()
-				t.begin = device():time_global()
+				t.begin = game.time()
 			        xr_follower.set_follower(npc, true, nn, t.escape_path)			
 			end
 		end
@@ -439,10 +463,10 @@ end
 function fract:loadStates(name) -- загружает список заданий
 	if name == "blockpost" then
 		local t = { id = 1,  -- состояние тревоги
-			    timeout = 300000 }
+			    timeout = 1*60*60*1000 }
 		table.insert(self.States, t)			
 		t = { id = 2,  -- состояние тревоги (стырили ящик)
-			    timeout = 400000 }
+			    timeout = 1*60*60*1000 }
 		table.insert(self.States, t)			
 	end
 end
@@ -450,7 +474,7 @@ function fract:setState(id)
 	-- проверка что это состояние возможно
 	for k,v in self.States do
 		if v.id == id then	
-			self.stateBegin = device():time_global()	
+			self.stateBegin = game.time()	
 			self.state = id
 		        self.music:event(id)
 			self:calculate()
@@ -564,9 +588,9 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 -- Function
 ----------------------------------------------------------------------------------------------------------------------
-function addMember(name, npc)
+function addMember(name, npc, char_ini)
 	if xr_gulag.fraction[name] == nil then
-		xr_gulag.fraction[name] = xr_gulag.fract(name)
+		xr_gulag.fraction[name] = xr_gulag.fract(name, char_ini)
 	end
 	xr_gulag.fraction[name]:addObject(npc)
 	xr_gulag.fraction[name]:calculate()
