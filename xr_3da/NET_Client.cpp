@@ -6,6 +6,8 @@
 INetQueue::INetQueue()		
 {
 	free.reserve	(128);
+	for (int i=0; i<16; i++)
+		free.push_back	(new NET_Packet());
 }
 INetQueue::~INetQueue()
 {
