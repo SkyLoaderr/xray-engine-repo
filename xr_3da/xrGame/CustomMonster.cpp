@@ -51,7 +51,7 @@ CCustomMonster::CCustomMonster()
 
 	Weapons				= 0;
 	tWatchDirection = Direction();
-	m_bCrouched = false;
+	m_cCrouched = 0;
 	r_torso_speed = PI;
 }
 

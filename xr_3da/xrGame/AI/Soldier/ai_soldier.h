@@ -27,13 +27,18 @@ class CAI_Soldier : public CCustomMonster
 		aiSoldierDie,
 		aiSoldierFindEnemy,
 		aiSoldierFollowLeader,
-		aiSoldierFollowLeaderPatrol,
 		aiSoldierFreeHunting,
 		aiSoldierInjuring,
 		aiSoldierJumping,
 		aiSoldierMoreDeadThanAlive,
 		aiSoldierNoWeapon,
-		aiSoldierPatrolDetour,
+		
+		aiSoldierPatrolReturnToRoute,
+		aiSoldierPatrolRoute,
+		aiSoldierFollowLeaderPatrol,
+		aiSoldierPatrolHurt,
+		aiSoldierPatrolUnderFire,
+
 		aiSoldierPursuit,
 		aiSoldierReload,
 		aiSoldierRetreat,
@@ -219,6 +224,7 @@ typedef struct tagSSoldierAnimations{
 		// hit data
 		DWORD			dwHitTime;
 		Fvector			tHitDir;
+		Fvector			tHitPosition;
 		
 		// sense data
 		DWORD			dwSenseTime;
@@ -257,6 +263,7 @@ typedef struct tagSSoldierAnimations{
 		
 		// finite state machine
 		stack<ESoldierStates>	tStateStack;
+		bool					m_bStateChanged;
 		
 		CSoldierSelectorAttack				SelectorAttack;
 		CSoldierSelectorDefend				SelectorDefend;
@@ -279,13 +286,18 @@ typedef struct tagSSoldierAnimations{
 		void Defend();
 		void FindEnemy();
 		void FollowLeader();
-		void FollowLeaderPatrol();
 		void FreeHunting();
 		void Injuring();
 		void Jumping();
 		void MoreDeadThanAlive();
 		void NoWeapon();
+		
 		void Patrol();
+		void PatrolReturn();
+		void PatrolHurt();
+		void PatrolUnderFire();
+		void FollowLeaderPatrol();
+		
 		void Pursuit();
 		void Reload();
 		void Retreat();
@@ -294,6 +306,7 @@ typedef struct tagSSoldierAnimations{
 
 		// miscellanious funtions	
 
+		bool bfCheckForVisibility(CEntity* tpEntity);
 		void vfLoadSounds();
 		void vfLoadSelectors(CInifile *ini, const char *section);
 		void vfAssignBones(CInifile *ini, const char *section);
@@ -302,6 +315,7 @@ typedef struct tagSSoldierAnimations{
 	IC	bool bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);
 		bool bfCheckPath(AI::Path &Path);
 		void SetLessCoverLook(NodeCompressed *tNode);
+		void SetDirectionLook();
 		void SetSmartLook(NodeCompressed *tNode, Fvector &tEnemyDirection);
 		void vfInitSelector(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
 		void vfBuildPathToDestinationPoint(CSoldierSelectorAttack *S);

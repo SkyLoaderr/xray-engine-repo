@@ -88,7 +88,7 @@ public:
 	SAnimState 			m_crouch_walk;
 	SAnimState 			m_crouch_run;
 
-	bool				m_bCrouched; 
+	char				m_cCrouched; 
 	
 	float				m_fTimeUpdateDelta;
 	//float				m_fTorsoAngle;
@@ -168,8 +168,8 @@ public:
 	// HUD
 	virtual void		OnHUDDraw				(CCustomHUD* hud);
 	virtual bool		bfExecMovement			(){return(false);};
- IC			void		Squat(){m_bCrouched = true;};
- IC			void		StandUp(){m_bCrouched = false;};
+ IC			void		Squat(){if (m_cCrouched == 0) m_cCrouched=1;};
+ IC			void		StandUp(){if (m_cCrouched == 1) m_cCrouched=0;};
 	
 public:
 	//typedef BOOL (*QualifierFunction)(CObject*, void*);

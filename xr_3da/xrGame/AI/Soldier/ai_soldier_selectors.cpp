@@ -406,28 +406,12 @@ float CSoldierSelectorUnderFire::Estimate(NodeCompressed* tNode, float fDistance
 	CHECK_RESULT;
 	vfAddTotalCoverCost();
 	CHECK_RESULT;
-	vfAddDeviationFromPreviousDirectionCost();
+	//vfAddDeviationFromPreviousDirectionCost();
+	//CHECK_RESULT;
+	vfAddDistanceToEnemyCost();
 	CHECK_RESULT;
-	/**
-	if (m_tLeader) {
-		vfAddDistanceToLeaderCost();
-		CHECK_RESULT;
-		vfAddCoverFromLeaderCost();
-		CHECK_RESULT;
-		if (taMemberPositions.size()) {
-			if (m_iAliveMemberCount) {
-				for ( m_iCurrentMember=0 ; m_iCurrentMember<taMemberPositions.size(); m_iCurrentMember++) {
-					vfAssignMemberPositionAndNode();
-					vfComputeMemberDirection();
-					vfAddDistanceToMemberCost();
-					vfAddCoverFromMemberCost();
-				}
-			}
-		}
-	}
-	/**/
-	// checking for epsilon
-	//vfCheckForEpsilon(bStop);
-	// returning a value
+	vfAddCoverFromEnemyCost();
+	
+	CHECK_RESULT;
 	return(m_fResult);
 }

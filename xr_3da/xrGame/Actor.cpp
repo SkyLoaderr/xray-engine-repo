@@ -265,6 +265,7 @@ void CActor::HitSignal(int perc, Fvector& vLocalDir, CEntity* who)
 	// hit marker
 	if (net_Local && (who!=this))	
 	{
+		Msg("%s",who->cName());
 		int id = -1;
 		float x = fabsf(vLocalDir.x);
 		float z = fabsf(vLocalDir.z);

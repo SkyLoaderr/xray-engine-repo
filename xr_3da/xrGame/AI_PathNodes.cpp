@@ -83,6 +83,7 @@ void	IntersectContours	(PSegment& Dest, PContour& C1, PContour& C2)
 }
 /**/
 
+/**/
 IC bool bfInsideContour(Fvector &tPoint, PContour &tContour)
 {
 	return((tContour.v1.x - EPS_L <= tPoint.x) && (tContour.v1.z - EPS_L <= tPoint.z) && (tContour.v3.x + EPS_L >= tPoint.x) && (tContour.v3.z + EPS_L >= tPoint.z));
@@ -194,6 +195,7 @@ IC void vfIntersectContours(PSegment &tSegment, PContour &tContour0, PContour &t
 	else
 		Log("! AI_PathNodes: Can't find intersection segment");
 }
+/**/
 
 //******* 2D segments intersection
 #define	LI_NONE				0
@@ -435,7 +437,7 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 
 void CPathNodes::Direction(Fvector& dest)
 {
-	if (TravelPath.empty())	
+	if (TravelPath.size() < 2)	
 	{
 		dest.set	(0,0,1);
 		return;

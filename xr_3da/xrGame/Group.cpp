@@ -15,6 +15,7 @@ CGroup::CGroup()
 	m_bLeaderViewsEnemy = false;
 	m_dwLeaderChangeCount = 0;
 	m_tLastHitDirection.set(1,0,0);
+	m_tHitPosition.set(1,0,0);
 	m_dwLastHitTime = 0;
 	m_dwFiring = 0;
 }

@@ -386,7 +386,7 @@ void CAISelectorBase::vfAddDeviationFromMemberViewCost()
 void CAISelectorBase::vfAddDeviationFromPreviousDirectionCost()
 {
 	Fvector tTempDirection;
-	tTempDirection.sub(m_tCurrentPosition,m_tMyPosition);
+	tTempDirection.sub(m_tMyPosition,m_tCurrentPosition);
 	vfNormalizeSafe(tTempDirection);
 	float fAlpha = tTempDirection.dotproduct(m_tDirection);
 	clamp(fAlpha,-0.99999f,0.99999f);

@@ -44,6 +44,7 @@ public:
 	bool						m_bLeaderViewsEnemy;
 	DWORD						m_dwLeaderChangeCount;
 	Fvector						m_tLastHitDirection;
+	Fvector						m_tHitPosition;
 	DWORD						m_dwLastHitTime;
 	DWORD						m_dwFiring;
 	// Constructor
