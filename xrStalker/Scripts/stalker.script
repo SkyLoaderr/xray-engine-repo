@@ -1,3 +1,4 @@
+--[[
 --///////////////////////////////////////////////////
 --///////////////////////////////////////////////////
 --///////////////////////////////////////////////////
@@ -86,7 +87,7 @@ end
 function action_alive:finalize()
 	action_base.finalize	(self)
 end
-
+]]
 --///////////////////////////////////////////////////
 --///////////////////////////////////////////////////
 --///////////////////////////////////////////////////
@@ -96,6 +97,7 @@ function stalker_script:__init		(object) super(object)
 end
 
 function stalker_script:reinit		()
+--[[
 	local					motivations	= {}
 	local					operatorts	= {}
 	local					properties	= {}
@@ -146,6 +148,7 @@ function stalker_script:reinit		()
 	action:add_condition	(properties["solved"],		false)
 	action:add_effect		(properties["solved"],		true)
 	manager:add_action		(operators["free"],			action)
+]]
 end
 
 function stalker_script:reload		(section)
@@ -169,5 +172,5 @@ end
 function init		(obj)
 	printf			("stalker.init is called with %s!",obj:name())
 	return
-	obj:set_object	(stalker.stalker_script(obj))
+--	obj:set_object	(stalker.stalker_script(obj))
 end
