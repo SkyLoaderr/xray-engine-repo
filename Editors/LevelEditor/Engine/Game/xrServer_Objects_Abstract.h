@@ -99,6 +99,7 @@ public:
 	virtual ISE_Shape*  __stdcall	shape			() = 0;
 	virtual CSE_Visual* __stdcall	visual			() = 0;
 	virtual CSE_Motion* __stdcall	motion			() = 0;
+	virtual bool		__stdcall	validate		() = 0;
 };
 
 #pragma warning(pop)

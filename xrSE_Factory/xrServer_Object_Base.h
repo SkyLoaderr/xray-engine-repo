@@ -122,6 +122,7 @@ public:
 	virtual CSE_Visual* __stdcall	visual			();
 	virtual ISE_Shape*  __stdcall	shape			();
 	virtual CSE_Motion* __stdcall	motion			();
+	virtual bool		__stdcall	validate		();
 	//
 
 	IC		const Fvector			&Position		() const					{return o_Position;};
