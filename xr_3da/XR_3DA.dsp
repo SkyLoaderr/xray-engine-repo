@@ -669,22 +669,6 @@ SOURCE=.\xr_effgamma.h
 # Begin Group "Blender"
 
 # PROP Default_Filter ""
-# Begin Group "Compiling"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\tss.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\tss_def.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\tss_def.h
-# End Source File
-# End Group
 # Begin Group "Templates"
 
 # PROP Default_Filter ""
@@ -836,6 +820,18 @@ SOURCE=.\Blenders\Blender_Recorder.cpp
 # Begin Source File
 
 SOURCE=.\Blenders\Blender_Recorder.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\tss.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\tss_def.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\tss_def.h
 # End Source File
 # End Group
 # Begin Group "Textures"
