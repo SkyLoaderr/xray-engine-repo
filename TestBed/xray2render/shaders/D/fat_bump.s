@@ -10,8 +10,8 @@ struct 	a2v
 struct 	v2p_out
 {
   float4 HPos: 		POSITION;	// Clip-space position 	(for rasterization)
-  float3 Pe: 		TEXCOORD0;	// Eye-space position 	(for lighting)
-  float2 tc0: 		TEXCOORD1;	// Texture coordinates 	(for sampling diffuse+normal map)
+  float2 tc0: 		TEXCOORD0;	// Texture coordinates 	(for sampling diffuse+normal map)
+  float3 Pe: 		TEXCOORD1;	// Eye-space position 	(for lighting)
   float3 M1:		TEXCOORD2;	// nmap 2 eye - 1
   float3 M2:		TEXCOORD3;	// nmap 2 eye - 2
   float3 M3:		TEXCOORD4;	// nmap 2 eye - 3
@@ -19,8 +19,8 @@ struct 	v2p_out
 
 struct 	v2p_in
 {
-  float3 Pe: 		TEXCOORD0;	// Eye-space position 	(for lighting)
-  float2 tc0: 		TEXCOORD1;	// Texture coordinates 	(for sampling diffuse+normal map)
+  float2 tc0: 		TEXCOORD0;	// Texture coordinates 	(for sampling diffuse+normal map)
+  float3 Pe: 		TEXCOORD1;	// Eye-space position 	(for lighting)
   float3 M1:		TEXCOORD2;	// nmap 2 eye - 1
   float3 M2:		TEXCOORD3;	// nmap 2 eye - 2
   float3 M3:		TEXCOORD4;	// nmap 2 eye - 3
