@@ -1,30 +1,38 @@
-<?xml version='1.0' encoding="windows-1251"?>
-
+<?xml version="1.0" encoding="windows-1251" ?>
 <game_dialogs>
-	<dialog id="escape_talk_about_agroprom">
-	<precondition>dialogs.level_agroprom</precondition>
-	<phrase_list>
-	   	<phrase id="0">
-			<text>escape_talk_about_agroprom_0</text>
-			<next>1</next>
-		</phrase>                                                                                               
-	   	<phrase id="10">
-			<text>escape_talk_about_agroprom_10</text>
-		</phrase>	
-	   	<phrase id="1">
-			<text>escape_talk_about_agroprom_1</text>
-			<next>2</next>
-			<next>10</next>
-		</phrase>
-	   	<phrase id="2">
-			<text>escape_talk_about_agroprom_2</text>
-			<next>21</next>
-		</phrase>                                                                                               
-	   	<phrase id="21">
-			<text>escape_talk_about_agroprom_21</text>
-		</phrase>                                                                                               		
-	</phrase_list>
-	</dialog>
-    
+    <dialog id="escape_talk_about_agroprom">
+        <precondition>dialogs.level_agroprom</precondition>
+        <phrase_list>
+            <phrase id="10">
+                <text>escape_talk_about_agroprom_10</text>
+            </phrase>
+            <phrase id="2">
+                <text>escape_talk_about_agroprom_2</text>
+                <next>21</next>
+            </phrase>
+            <phrase id="21">
+                <text>escape_talk_about_agroprom_21</text>
+            </phrase>
+            <phrase id="0">
+                <text>escape_talk_about_agroprom_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>escape_talk_about_agroprom_1</text>
+                <next>2</next>
+                <next>10</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="agr_factory_stalkers">
+        <phrase_list>
+            <phrase id="0">
+                <text>agr_factory_stalkers_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>agr_factory_stalkers_1</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
 </game_dialogs>
-
