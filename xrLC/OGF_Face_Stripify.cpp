@@ -78,8 +78,8 @@ void OGF::Stripify	()
 		vecOGF_V temp_list = x_vertices;
 		for(u32 i=0; i<temp_list.size(); i++)
 			x_vertices[i]=temp_list[permute[i]];
-	} catch (...) {
-		clMsg("ERROR: [fast-vert] Stripifying failed. Dump below.");
+	} catch (...)	{
+		clMsg		("ERROR: [fast-vert] Stripifying failed. Dump below.");
 	}
 
 	// normal verts
@@ -99,7 +99,7 @@ void OGF::Stripify	()
 		vecOGF_V temp_list = vertices;
 		for(u32 i=0; i<temp_list.size(); i++)
 			vertices[i]=temp_list[permute[i]];
-	} catch (...) {
+	} catch (...)	{
 		clMsg		("ERROR: [slow-vert] Stripifying failed. Dump below.");
 		DumpFaces	();
 	}
