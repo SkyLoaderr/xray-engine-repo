@@ -190,7 +190,7 @@ void CAI_Zombie::FreeHunting()
 //		tSavedEnemyPosition.add(vPosition);
 //	}
 
-	GoToPointViaSubnodes(tSavedEnemyPosition);
+	//GoToPointViaSubnodes(tSavedEnemyPosition);
 
 	if (!m_bStateChanged)
 		SetDirectionLook();
