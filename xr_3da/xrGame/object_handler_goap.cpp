@@ -387,6 +387,9 @@ void CObjectHandlerGOAP::add_operators		(CWeapon *weapon)
 	add_effect			(action,id,eWorldPropertySwitch1,	false);
 	add_effect			(action,id,eWorldPropertySwitch2,	true);
 	add_operator		(uid(id,eWorldOperatorSwitch2),		action);
+
+	get_operator(uid(id,eWorldOperatorAim1))->set_inertia_time(1000);
+	get_operator(uid(id,eWorldOperatorAim2))->set_inertia_time(1000);
 }
 
 void CObjectHandlerGOAP::add_evaluators		(CMissile *missile)
