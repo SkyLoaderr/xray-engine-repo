@@ -38,6 +38,7 @@ enum	EKeyBinding
 	kWPN_FIRE		,
 	kWPN_RELOAD		,
 	kWPN_ZOOM		,
+	kWPN_AMMO		,
 
 	kUSE			,
 	kDROP			,
