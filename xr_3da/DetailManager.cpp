@@ -8,6 +8,7 @@
 #include "DetailManager.h"
 #include "fstaticrender.h"
 #include "xr_creator.h"
+#include "cl_intersect.h"
 
 float		psDetailDensity		= 0.15f;
 
@@ -322,11 +323,13 @@ void CDetailManager::UpdateCache	(int limit)
 		D.type			= stReady;
 		
 		// Select polygons
-		XRC.BBoxMode		(0); // BBOX_TRITEST
-		XRC.BBoxCollide		(precalc_identity,pCreator->ObjectSpace.GetStaticModel(),precalc_identity,D.BB);
-		DWORD	triCount	= XRC.GetBBoxContactCount();
+		Fvector		bC,bD;
+		D.BB.get_CD			(bC,bD);
+		XRC.box_options		(0); // BBOX_TRITEST
+		XRC.box_query		(pCreator->ObjectSpace.GetStaticModel(),bC,bD);
+		DWORD	triCount	= XRC.r_count	();
 		if (0==triCount)	continue;
-		RAPID::tri* tris	= pCreator->ObjectSpace.GetStaticTris();
+		CDB::TRI* tris		= pCreator->ObjectSpace.GetStaticTris();
 
 		// Build shading table
 		float		alpha255	[dm_obj_in_slot][4];
@@ -386,8 +389,8 @@ void CDetailManager::UpdateCache	(int limit)
 				float		r_u,r_v,r_range;
 				for (DWORD tid=0; tid<triCount; tid++)
 				{
-					RAPID::tri&	T		= tris[XRC.BBoxContact[tid].id];
-					if (RAPID::TestRayTri(Item.P,dir,T.verts,r_u,r_v,r_range,TRUE))
+					CDB::TRI&	T		= tris[XRC.r_begin()[tid].id];
+					if (CDB::TestRayTri(Item.P,dir,T.verts,r_u,r_v,r_range,TRUE))
 					{
 						if (r_range>=0)	{
 							float y_test	= Item.P.y - r_range;

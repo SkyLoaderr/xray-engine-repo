@@ -22,7 +22,6 @@
 // refs
 class ENGINE_API CStream;
 class ENGINE_API FCached;
-namespace RAPID { class ENGINE_API Model; };
 
 // defs
 const int max_patches = 512;
