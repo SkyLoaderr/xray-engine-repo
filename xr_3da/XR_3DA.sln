@@ -10,20 +10,21 @@ EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
 		SccNumberOfProjects = 5
-		SccProjectUniqueName0 = XR_3DA.vcproj
 		SccLocalPath0 = .
 		CanCheckoutShared = true
-		SccProjectUniqueName1 = xrCPU_Pipe\\xrCPU_Pipe.vcproj
-		SccProjectName1 = \u0022$/xr_3da/xrCPU_Pipe\u0022,\u0020ZTDAAAAA
-		SccLocalPath1 = xrCPU_Pipe
-		CanCheckoutShared = true
-		SccProjectUniqueName2 = xrGame\\xrGame.vcproj
-		SccProjectName2 = \u0022$/xr_3da/xrGame\u0022,\u0020LSDAAAAA
-		SccLocalPath2 = xrGame
-		CanCheckoutShared = true
-		SccLocalPath3 = .
-		CanCheckoutShared = true
 		SolutionUniqueID = {6F8E4AE3-CB8E-4760-8086-796FE333A467}
+		SccProjectUniqueName1 = XR_3DA.vcproj
+		SccProjectName1 = \u0022$/XR_3DA\u0022,\u0020WABAAAAA
+		SccLocalPath1 = .
+		CanCheckoutShared = true
+		SccProjectUniqueName2 = xrCPU_Pipe\\xrCPU_Pipe.vcproj
+		SccProjectName2 = \u0022$/xr_3da/xrCPU_Pipe\u0022,\u0020ZTDAAAAA
+		SccLocalPath2 = xrCPU_Pipe
+		CanCheckoutShared = true
+		SccProjectUniqueName3 = xrGame\\xrGame.vcproj
+		SccProjectName3 = \u0022$/xr_3da/xrGame\u0022,\u0020LSDAAAAA
+		SccLocalPath3 = xrGame
+		CanCheckoutShared = true
 		SccProjectUniqueName4 = ..\\xrSound\\xrSound.vcproj
 		SccProjectName4 = \u0022$/xr_3da/xrSound\u0022,\u0020OJJAAAAA
 		SccLocalPath4 = ..\\xrSound
@@ -36,8 +37,8 @@ Global
 	EndGlobalSection
 	GlobalSection(ProjectDependencies) = postSolution
 		{CA0649DD-D089-423A-981C-46B57A884EB9}.0 = {2578C6D8-660D-48AE-9322-7422F8664F06}
-		{200652A6-043E-4634-8837-87983B3BD5E0}.0 = {2578C6D8-660D-48AE-9322-7422F8664F06}
-		{200652A6-043E-4634-8837-87983B3BD5E0}.1 = {CA0649DD-D089-423A-981C-46B57A884EB9}
+		{200652A6-043E-4634-8837-87983B3BD5E0}.0 = {CA0649DD-D089-423A-981C-46B57A884EB9}
+		{200652A6-043E-4634-8837-87983B3BD5E0}.1 = {2578C6D8-660D-48AE-9322-7422F8664F06}
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
 		{2578C6D8-660D-48AE-9322-7422F8664F06}.Debug.ActiveCfg = Debug|Win32
