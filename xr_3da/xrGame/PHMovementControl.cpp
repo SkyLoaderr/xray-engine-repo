@@ -794,6 +794,17 @@ void CPHMovementControl::GetJumpMinVelParam(Fvector &min_vel,float &time,JumpTyp
 		type=jtCurved;
 	}
 }
+
+float CPHMovementControl::JumpMinVelTime(const Fvector &end_point)
+{
+	Fvector start_point,transference;
+	start_point.set(dynamic_cast<CGameObject*>(m_character->PhysicsRefObject())->Position());
+	transference.x=end_point.x-start_point.x;
+	transference.y=end_point.y-start_point.y;
+	transference.z=end_point.z-start_point.z;
+	return _sqrt(2.f*transference.magnitude()/world_gravity);
+}
+
 void CPHMovementControl::GetJumpParam(Fvector &velocity, JumpType &type,const Fvector &end_point, float time)
 {
 	Fvector start_point;

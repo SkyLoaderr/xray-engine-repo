@@ -32,6 +32,7 @@ bool				JumpState(){return (m_character&&m_character->b_exist&&m_character->IsEn
 ///
 void				GetJumpMinVelParam(Fvector &min_vel,float &time,JumpType &type,const Fvector &end_point); //returns vector of minimum velocity
 																									  //in min_vel and correspondent jump time in time
+float				JumpMinVelTime(const Fvector &end_point);
 void				GetJumpParam(Fvector &velocity, JumpType &type,const Fvector &end_point, float time);
 bool				b_exect_position;
 public:
