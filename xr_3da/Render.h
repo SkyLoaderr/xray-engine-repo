@@ -130,7 +130,7 @@ public:
 	virtual D3DVERTEXELEMENT9*		getVB_Format			(int id)									= 0;
 	virtual IDirect3DVertexBuffer9*	getVB					(int id)									= 0;
 	virtual IDirect3DIndexBuffer9*	getIB					(int id)									= 0;
-	virtual IRender_Sector*			detectSector			(Fvector& P)								= 0;
+	virtual IRender_Sector*			detectSector			(const Fvector& P)								= 0;
 	virtual IRender_Target*			getTarget				()											= 0;
 
 	// Main 

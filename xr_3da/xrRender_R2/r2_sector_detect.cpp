@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "r2.h"
 
-IRender_Sector* CRender::detectSector(Fvector& P)
+IRender_Sector* CRender::detectSector(const Fvector& P)
 {
 	IRender_Sector*	S	= NULL;	
 	Fvector			dir; 

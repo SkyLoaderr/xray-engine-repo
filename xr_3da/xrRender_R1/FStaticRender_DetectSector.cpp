@@ -1,6 +1,6 @@
 #include "stdafx.h"
  
-IRender_Sector* CRender::detectSector(Fvector& P)
+IRender_Sector* CRender::detectSector(const Fvector& P)
 {
 	Sectors_xrc.ray_options	(CDB::OPT_ONLYNEAREST);
 	Fvector dir; dir.set(0,-1,0);
