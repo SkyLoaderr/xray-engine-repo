@@ -973,7 +973,7 @@ function save_logic(obj, packet)
 	
 	local activation_time = db.storage[npc_id].activation_time
 	if not activation_time then
-		activation_time = nil
+		activation_time = 0
 	end
  	packet:w_s32(activation_time - cur_tm)
 end
