@@ -416,14 +416,21 @@ void CLightShadows::render	()
 				A.push_back			(VERTS[t.verts[1]]);
 				A.push_back			(VERTS[t.verts[2]]);
 
-				// Calc plane
-				Fplane		P;
-				P.build				(A[0],A[1],A[2]);
+				// Calc plane, throw away degenerate tris and invisible to light polygons
+				Fplane				P;	float mag = 0;
+				Fvector				t1,t2,n;
+				t1.sub				(A[0],A[1]);
+				t2.sub				(A[0],A[2]);
+				n.crossproduct		(t1,t2);
+				mag	= n.square_magnitude();
+				if (mag<EPS_S)						continue;
+				n.mul				(1.f/_sqrt(mag));
+				P.build_unit_normal	(A[0],n);
 				if (P.classify(S.L->position)<0)	continue;
 
 				// Clip polygon
 				sPoly*		clip	= F.ClipPoly(A,B);
-				if (0==clip)		continue;
+				if (0==clip)						continue;
 
 				// Triangulate poly 
 				for (u32 v=2; v<clip->size(); v++)	{
