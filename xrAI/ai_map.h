@@ -20,7 +20,7 @@ typedef struct tagSSegment {
 
 class CAI_Map {
 private:
-	CVirtualFileReader*			vfs;			// virtual file
+	IReader*					vfs;			// virtual file
 	BYTE*						m_nodes;		// virtual nodes DATA array
 	NodeCompressed**			m_nodes_ptr;	// pointers to node's data
 public:
