@@ -19,6 +19,8 @@ class CObject;
 class IRender_Visual;
 class FHierrarhyVisual;
 class CBlend;
+class CKinematics;
+class CSkeletonAnimated;
 
 typedef class_exporter<DLL_Pure>	DLL_PureScript;
 add_to_type_list(DLL_PureScript)

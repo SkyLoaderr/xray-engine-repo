@@ -10,6 +10,7 @@
 
 #include "alife_space.h"
 
+class CSE_Abstract;
 class CGameObject;
 
 namespace RestrictionSpace {

@@ -10,6 +10,7 @@
 #include "script_space_forward.h"
 #include "character_info_defs.h"
 
+class CSE_Abstract;
 class CScriptCallback;
 class CInventory;
 class CInventoryItem;

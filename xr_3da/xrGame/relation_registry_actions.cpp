@@ -173,15 +173,18 @@ void RELATION_REGISTRY::Action (CEntityAlive* from, CEntityAlive* to, ERelationA
 				CHARACTER_GOODWILL community_goodwill = (CHARACTER_GOODWILL)(CHARACTER_COMMUNITY::sympathy(stalker->Community())*
 					(float)(delta_goodwill+community_member_kill_goodwill));
 
+				//сталкер при нападении на членов своей же группировки отношения не меняют
+				//(считается, что такое нападение всегда случайно)
+				bool stalker_kills_team_mate = stalker_from && (stalker_from->Community() == stalker->Community());
 
-				if(delta_goodwill)
+				if(delta_goodwill && !stalker_kills_team_mate)
 				{
 					//изменить отношение ко всем членам группы (если такая есть)
 					//убитого, кроме него самого
 					CGroupHierarchyHolder& group = Level().seniority_holder().team(stalker->g_Team()).squad(stalker->g_Squad()).group(stalker->g_Group());
 					for(std::size_t i = 0;  i < group.members().size(); i++)
 						if(stalker->ID() != group.members()[i]->ID())
-							ChangeGoodwill(group.members()[i]->ID(), actor->ID(), delta_goodwill);
+							ChangeGoodwill(group.members()[i]->ID(), from->ID(), delta_goodwill);
 				}
 
 				if(community_goodwill)

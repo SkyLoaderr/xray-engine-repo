@@ -8,6 +8,7 @@
 
 #pragma once
 
+class CSE_Abstract;
 class CScriptBinderObject;
 class NET_Packet;
 

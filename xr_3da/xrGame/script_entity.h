@@ -11,6 +11,7 @@
 #include "script_callback.h"
 #include "script_entity_space.h"
 
+class CSE_Abstract;
 class CGameObject;
 class CScriptEntityAction;
 class CEntity;
