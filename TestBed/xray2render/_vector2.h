@@ -87,6 +87,23 @@ public:
         // assert:  0 <= i < 2; x and y are packed into 2*sizeof(float) bytes
         return (T&) *(&x + i);
     }
+
+	IC SelfRef 	normalize		(void)						{ return norm();	 	}
+	IC SelfRef 	normalize_safe	(void)						{ return norm_safe();	}
+	IC float 	cross_product	(const Self &p) const		{ return x*p.y - y*p.x; }
+	IC float 	getH			(void) const
+	{
+        if (fis_zero(x))
+			if (fis_zero(y))
+				return		(0.f);
+			else
+				return		((x > 0.0f) ? -PI_DIV_2 : PI_DIV_2);
+		else
+			if (y < 0.f)
+				return		(-(atanf(x/y) - PI));
+			else
+				return		(-atanf(x/y));
+	}
 };
 
 typedef _vector2<float>		Fvector2;
