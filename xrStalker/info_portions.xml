@@ -17,6 +17,15 @@
 		<dialog>stalker_talk_about</dialog>
 	</info_portion>
 
+	<info_portion id="actor_start02">
+		<location >
+			<level>0</level>
+			<object>quest_case_02</object>
+			<icon name="ƒипломат" x="2" y="8" width="1" height="1"></icon>
+			<text>”кради научный \nчемоданчик с блокпоста,\nтак чтобы никто не заметил...</text>
+		</location>
+	</info_portion>
+
 	<info_portion id="trader_start1">
 		<location >
 			<level>0</level>
