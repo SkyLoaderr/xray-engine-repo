@@ -155,6 +155,10 @@ float CPersonalCreatureTypeFunction::ffGetValue()
 			m_fLastValue = 21;
 			break;
 		}
+		case CLSID_AI_BOAR : {
+			m_fLastValue = 22;
+			break;
+		}
 		case CLSID_AI_TRADER: break;
 
 		default : NODEFAULT;
@@ -331,6 +335,9 @@ float CPersonalWeaponTypeFunction::ffGetValue()
 			break;
 		}
 		case CLSID_AI_TRADER: 
+			break;
+		case CLSID_AI_BOAR: 
+			m_fLastValue =  2;
 			break;
 		case CLSID_Z_MBALD : {
 			m_fLastValue =  13;
@@ -884,6 +891,7 @@ float CDetectorType::ffGetValue()
 		case CLSID_AI_FRACTURE			: 
 		case CLSID_AI_DOG_RED			:
 		case CLSID_AI_DOG_BLACK			: 
+		case CLSID_AI_BOAR				: 
 		case CLSID_DETECTOR_SIMPLE		: {
 			m_fLastValue		=  2;
 			break;
