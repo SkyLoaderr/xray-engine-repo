@@ -49,9 +49,10 @@ void occRasterizer::i_order	(float* A, float* B, float* C)
 /* Find the closest min/max pixels of a point
 Use min biasing 
 */
+/*
 inline float minPixel(const float pt_val)
 {
-	float center = float(int(pt_val)) + 0.5f;
+	float center = float(int(pt_val)) + 1.0f;
 	// if pt is beyond center, pixel is the next , else current
 	// next pixel = right/above
 	return ( (pt_val > center) ? center + 1.0f: center );
@@ -59,10 +60,20 @@ inline float minPixel(const float pt_val)
 
 inline float maxPixel(const float pt_val)
 {
-	float center = float(int(pt_val)) + 0.5f;
+	float center = float(int(pt_val)) + 1.0f;
 	// if pt is before/at center, pixel is previous, else current
 	// prev pixel = left/below
 	return ( (pt_val <= center) ? center - 1.0f: center );
+}
+*/
+
+float minPixel(float v)
+{
+	return ceilf(v);
+}
+float maxPixel(float v)
+{
+	return floorf(v);
 }
 
 /* Rasterize a scan line between given X point values, corresponding Z values
