@@ -26,6 +26,12 @@ public:
 			int			r_token				(LPCSTR S, LPCSTR L, const CScriptTokenList &token_list);
 			LPCSTR		r_string_wb			(LPCSTR S, LPCSTR L);
 			LPCSTR		update				(LPCSTR file_name);
+			u32			line_count			(LPCSTR S);
+			LPCSTR		r_string			(LPCSTR S, LPCSTR L);
+			u32			r_u32				(LPCSTR S, LPCSTR L);
+			int			r_s32				(LPCSTR S, LPCSTR L);
+			float		r_float				(LPCSTR S, LPCSTR L);
+			Fvector		r_fvector3			(LPCSTR S, LPCSTR L);
 			DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CScriptIniFile)
