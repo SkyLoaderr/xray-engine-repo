@@ -19,32 +19,40 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ETools", "ETools\ETools.vcp
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrHemisphere", "..\xrHemisphere\xrHemisphere.vcproj", "{42FF4BC0-FA01-4EC8-AC08-00F403A5FF3A}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 6
-		SccProjectUniqueName0 = DXT\\DXT.vcproj
-		SccProjectName0 = \u0022$/Editors/Tools/DXT\u0022,\u0020DDFAAAAA
-		SccLocalPath0 = DXT
-		CanCheckoutShared = true
-		SccProjectUniqueName1 = LWO\\LWO.vcproj
-		SccProjectName1 = \u0022$/Editors/Tools/LWO\u0022,\u0020CDFAAAAA
-		SccLocalPath1 = LWO
-		CanCheckoutShared = true
-		SccProjectUniqueName2 = Gauss\\Gauss.vcproj
-		SccProjectName2 = \u0022$/Editors/Tools/gauss\u0022,\u0020BDFAAAAA
-		SccLocalPath2 = Gauss
-		CanCheckoutShared = true
-		SccProjectUniqueName3 = xrProgressive\\xrProgressive.vcproj
-		SccProjectName3 = \u0022$/xrProgressive\u0022,\u0020LCCAAAAA
-		SccLocalPath3 = xrProgressive
-		CanCheckoutShared = true
-		SccProjectUniqueName4 = ETools\\ETools.vcproj
-		SccProjectName4 = \u0022$/Editors/Tools/ETools\u0022,\u0020ADFAAAAA
-		SccLocalPath4 = ETools
-		CanCheckoutShared = true
-		SccLocalPath5 = .
+		SccNumberOfProjects = 7
+		SccLocalPath0 = .
 		CanCheckoutShared = true
 		SolutionUniqueID = {1BF9F5C6-7510-4138-8A8D-ED28E6DAB22F}
+		SccProjectUniqueName1 = DXT\\DXT.vcproj
+		SccProjectName1 = \u0022$/Editors/Tools/DXT\u0022,\u0020DDFAAAAA
+		SccLocalPath1 = DXT
+		CanCheckoutShared = true
+		SccProjectUniqueName2 = LWO\\LWO.vcproj
+		SccProjectName2 = \u0022$/Editors/Tools/LWO\u0022,\u0020CDFAAAAA
+		SccLocalPath2 = LWO
+		CanCheckoutShared = true
+		SccProjectUniqueName3 = Gauss\\Gauss.vcproj
+		SccProjectName3 = \u0022$/Editors/Tools/gauss\u0022,\u0020BDFAAAAA
+		SccLocalPath3 = Gauss
+		CanCheckoutShared = true
+		SccProjectUniqueName4 = xrProgressive\\xrProgressive.vcproj
+		SccProjectName4 = \u0022$/xrProgressive\u0022,\u0020LCCAAAAA
+		SccLocalPath4 = xrProgressive
+		CanCheckoutShared = true
+		SccProjectUniqueName5 = ETools\\ETools.vcproj
+		SccProjectName5 = \u0022$/Editors/Tools/ETools\u0022,\u0020ADFAAAAA
+		SccLocalPath5 = ETools
+		CanCheckoutShared = true
+		SccProjectUniqueName6 = ..\\xrHemisphere\\xrHemisphere.vcproj
+		SccProjectName6 = \u0022$/xrLC/xrHemisphere\u0022,\u0020BGFAAAAA
+		SccLocalPath6 = ..\\xrHemisphere
+		CanCheckoutShared = true
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -71,6 +79,10 @@ Global
 		{65CBB9D0-FBC6-41A4-8316-F5E9B5D7FB33}.Debug.Build.0 = Debug|Win32
 		{65CBB9D0-FBC6-41A4-8316-F5E9B5D7FB33}.Release.ActiveCfg = Release|Win32
 		{65CBB9D0-FBC6-41A4-8316-F5E9B5D7FB33}.Release.Build.0 = Release|Win32
+		{42FF4BC0-FA01-4EC8-AC08-00F403A5FF3A}.Debug.ActiveCfg = Debug|Win32
+		{42FF4BC0-FA01-4EC8-AC08-00F403A5FF3A}.Debug.Build.0 = Debug|Win32
+		{42FF4BC0-FA01-4EC8-AC08-00F403A5FF3A}.Release.ActiveCfg = Release|Win32
+		{42FF4BC0-FA01-4EC8-AC08-00F403A5FF3A}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection
