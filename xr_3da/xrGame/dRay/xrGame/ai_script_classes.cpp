@@ -22,6 +22,9 @@
 #include "script_ini_file.h"
 #include "xrmessages.h"
 
+#include "AI_PhraseDialogManager.h"
+#include "character_info.h"
+
 void CLuaGameObject::Hit(CLuaHit &tLuaHit)
 {
 	NET_Packet		P;
@@ -131,6 +134,47 @@ bool CLuaGameObject::IsTalkEnabled()
 	if(!pInventoryOwner) return false;
 	return pInventoryOwner->IsTalkEnabled();
 }
+
+
+//передаче вещи из своего инвентаря в инвентарь партнера
+void CLuaGameObject::TransferItem(CLuaGameObject* pItem, CLuaGameObject* pForWho)
+{
+	CInventoryItem* pIItem = dynamic_cast<CInventoryItem*>(pItem->m_tpGameObject);
+	VERIFY(pIItem);
+
+	// выбросить у себя 
+	NET_Packet						P;
+	CGameObject::u_EventGen			(P,GE_OWNERSHIP_REJECT, m_tpGameObject->ID());
+	P.w_u16							(pIItem->ID());
+	CGameObject::u_EventSend		(P);
+
+	// отдать партнеру
+	CGameObject::u_EventGen			(P,GE_OWNERSHIP_TAKE, pForWho->m_tpGameObject->ID());
+	P.w_u16							(pIItem->ID());
+	CGameObject::u_EventSend		(P);
+}
+
+
+void CLuaGameObject::SetGoodwill(int goodwill, CLuaGameObject* pWhoToSet)
+{
+	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
+	VERIFY(pInventoryOwner);
+	pInventoryOwner->CharacterInfo().SetGoodwill(pWhoToSet->m_tpGameObject->ID(), goodwill);
+}
+
+void CLuaGameObject::SetRelation(ALife::ERelationType relation, CLuaGameObject* pWhoToSet)
+{
+	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
+	VERIFY(pInventoryOwner);
+	pInventoryOwner->CharacterInfo().SetRelationType(pWhoToSet->m_tpGameObject->ID(), relation);
+}
+void CLuaGameObject::SetStartDialog(LPCSTR dialog_id)
+{
+	CAI_PhraseDialogManager* pDialogManager = dynamic_cast<CAI_PhraseDialogManager*>(m_tpGameObject);
+	if(!pDialogManager) return;
+	pDialogManager->SetStartDialog(dialog_id);
+}
+
 
 
 

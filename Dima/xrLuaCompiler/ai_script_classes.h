@@ -290,6 +290,11 @@ public:
 	void EnableTalk();	
 	void DisableTalk();
 	bool IsTalkEnabled();
+
+	void TransferItem(CLuaGameObject* pItem, CLuaGameObject* pForWho);
+	void SetGoodwill(int goodwill, CLuaGameObject* pWhoToSet);
+	void SetRelation(ALife::ERelationType relation, CLuaGameObject* pWhoToSet);
+	void SetStartDialog(LPCSTR dialog_id);
 	
 	u32				GetInventoryObjectCount() const;
 

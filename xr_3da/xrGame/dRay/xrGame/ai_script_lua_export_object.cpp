@@ -243,6 +243,12 @@ void CScriptEngine::export_object()
 			.def("disable_talk",				&CLuaGameObject::DisableTalk)
 			.def("is_talk_enabled",				&CLuaGameObject::IsTalkEnabled)
 
+			.def("transfer_item",				&CLuaGameObject::TransferItem)
+			.def("set_goodwill",				&CLuaGameObject::SetGoodwill)
+			.def("set_relation",				&CLuaGameObject::SetRelation)
+			.def("set_start_dialog",			&CLuaGameObject::SetStartDialog)
+
+
 			.enum_("CLSIDS")
 			[
 				value("no_pda_msg",				int(ePdaMsgMax))
