@@ -73,8 +73,8 @@ void CAI_Rat::HitSignal(float amount, Fvector& vLocalDir, CObject* who)
 
 float CAI_Rat::EnemyHeuristics(CEntity* E)
 {
-	if (E->g_Team()  == g_Team())	
-		return flt_max;		// don't attack our team
+//	if (E->g_Team()  == g_Team())	
+//		return flt_max;		// don't attack our team
 	
 	if (!E->g_Alive()) {
 		CEntityAlive *tpEntityAlive = dynamic_cast<CEntityAlive *>(E);
