@@ -327,13 +327,13 @@ void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E
 	for ( i=0, n=VisibleEnemies.size(); i<n; i++) {
 		if (!(getAI().m_tpCurrentEnemy  = dynamic_cast<CEntityAlive*>(VisibleEnemies[i].key)))
 			continue;
-		if (H = !!getAI().pfExpediency.dwfGetDiscreteValue(2))
+		if ((E || F || G) && (H = !!getAI().pfExpediency.dwfGetDiscreteValue(2)))
 			break;
 		else
 			if (ifFindHurtIndex(getAI().m_tpCurrentEnemy) != -1)
 				H = true;
 	}
-	H = true;
+	//H = true;
 	
 	// is there any items to pick up?
 	L = false;

@@ -325,7 +325,7 @@ void CAI_Stalker::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluat
 			break;
 		}
 		case ePathStateBuildNodePath : {
-			if (!AI_Path.Nodes.size() || (AI_Path.Nodes[AI_Path.Nodes.size() - 1] != AI_Path.DestNode))
+			if (AI_Path.Nodes.empty() || (AI_Path.Nodes[AI_Path.Nodes.size() - 1] != AI_Path.DestNode) || AI_Path.TravelPath.empty())
 				vfBuildPathToDestinationPoint(tpNodeEvaluator);
 			else
 				if ((AI_Path.DestNode == AI_NodeID) && tpDestinationPosition) {
@@ -366,7 +366,7 @@ void CAI_Stalker::vfChooseNextGraphPoint()
 					m_tCurGP		= m_tNextGP;
 					m_tNextGP		= (_GRAPH_ID)tpaEdges[i].dwVertexNumber;
 					m_dwTimeToChange= Level().timeServer() + ::Random.randI(m_tpaTerrain[j].dwMinTime,m_tpaTerrain[j].dwMaxTime);
-					m_dwTimeToChange= 0;
+					//m_dwTimeToChange= 0;
 					return;
 				}
 		}
@@ -381,7 +381,7 @@ void CAI_Stalker::vfChooseNextGraphPoint()
 						m_tCurGP	= m_tNextGP;
 						m_tNextGP	= (_GRAPH_ID)tpaEdges[i].dwVertexNumber;
 						m_dwTimeToChange	= Level().timeServer() + ::Random.randI(m_tpaTerrain[j].dwMinTime,m_tpaTerrain[j].dwMaxTime);
-						m_dwTimeToChange= 0;
+						//m_dwTimeToChange= 0;
 						return;
 					}
 					iBranches++;

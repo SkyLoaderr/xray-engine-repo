@@ -51,17 +51,7 @@ void CAI_Stalker::BackCover(bool bFire)
 
 	if (m_tActionState == eActionStateRun) {
 		bool bTurn = (m_dwActionStartTime - Level().timeServer()) < 1000;
-		vfSetParameters				(
-			&m_tSelectorCover,
-			0,
-			true,
-			eWeaponStateIdle,
-			ePathTypeDodgeCriteria,
-			eBodyStateStand,
-			m_tSavedEnemyPosition.distance_to(vPosition) > 0.f ? eMovementTypeRun : eMovementTypeWalk,
-			eStateTypeDanger,
-			bTurn ? eLookTypeFirePoint : eLookTypeDirection,
-			m_tSavedEnemyPosition);
+		vfSetParameters				(&m_tSelectorCover,0,true,eWeaponStateIdle,ePathTypeDodgeCriteria,eBodyStateStand,m_tSavedEnemyPosition.distance_to(vPosition) > 0.f ? eMovementTypeRun : eMovementTypeWalk,eStateTypeDanger,bTurn ? eLookTypeFirePoint : eLookTypeDirection,m_tSavedEnemyPosition);
 		if (Level().timeServer() >= m_dwActionStartTime) {
 			m_tActionState = eActionStateStand;
 			m_dwActionStartTime = Level().timeServer() + ::Random.randI(4000,7000);
@@ -74,17 +64,7 @@ void CAI_Stalker::BackCover(bool bFire)
 		else
 			tPoint					= m_tSavedEnemyPosition;
 		m_dwRandomFactor			= 50;
-		vfSetParameters				(
-			&m_tSelectorCover,
-			0,
-			true,
-			bFire ? eWeaponStatePrimaryFire : eWeaponStateIdle,
-			ePathTypeDodgeCriteria,
-			eBodyStateCrouch,
-			eMovementTypeStand,
-			eStateTypeDanger,
-			eLookTypeFirePoint,
-			tPoint);
+		vfSetParameters				(&m_tSelectorCover,0,true,bFire ? eWeaponStatePrimaryFire : eWeaponStateIdle,ePathTypeDodgeCriteria,eBodyStateCrouch,eMovementTypeStand,eStateTypeDanger,eLookTypeFirePoint,tPoint);
 		if (!m_tEnemy.Enemy && getAI().bfTooSmallAngle(r_torso_current.yaw, r_torso_target.yaw,PI_DIV_6) && bfCheckIfCanKillTarget(this,m_tSavedEnemyPosition,-r_torso_current.yaw,-r_torso_current.pitch,ffGetFov()/180.f*PI)) {
 			Camp(bFire);
 			return;
@@ -117,17 +97,7 @@ void CAI_Stalker::ForwardStraight()
 		m_tSelectorFreeHunting.m_fOptEnemyDistance = 6.f;//tpWeapon->m_fMinRadius + 3.f;
 	}
 
-	vfSetParameters				(
-		&m_tSelectorFreeHunting,
-		0,
-		true,
-		eWeaponStatePrimaryFire,
-		fDistance > 15.f ? ePathTypeStraightDodge : ePathTypeCriteria,
-		eBodyStateStand,
-		m_tEnemy.Enemy->Position().distance_to(vPosition) > 15.f ? eMovementTypeRun : eMovementTypeWalk,
-		eStateTypeDanger,
-		eLookTypeFirePoint,
-		tPoint);
+	vfSetParameters				(&m_tSelectorFreeHunting,0,true,eWeaponStatePrimaryFire,fDistance > 15.f ? ePathTypeStraightDodge : ePathTypeCriteria,eBodyStateStand,m_tEnemy.Enemy->Position().distance_to(vPosition) > 15.f ? eMovementTypeRun : eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,tPoint);
 }
 
 void CAI_Stalker::Camp(bool bWeapon)
@@ -140,17 +110,7 @@ void CAI_Stalker::Camp(bool bWeapon)
 
 	if (vPosition.distance_to(m_tpaDynamicObjects[iIndex].tMySavedPosition) > .1f) {
 		AI_Path.DestNode		= m_tpaDynamicObjects[iIndex].dwMyNodeID;
-		vfSetParameters			(
-			0,
-			&(m_tpaDynamicObjects[iIndex].tMySavedPosition),
-			true,
-			eWeaponStateIdle,
-			ePathTypeStraight,
-			eBodyStateCrouch,
-			eMovementTypeWalk,
-			eStateTypeDanger,
-			eLookTypeFirePoint,
-			m_tpaDynamicObjects[iIndex].tSavedPosition);
+		vfSetParameters			(0,&(m_tpaDynamicObjects[iIndex].tMySavedPosition),true,eWeaponStateIdle,ePathTypeStraight,eBodyStateCrouch,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,m_tpaDynamicObjects[iIndex].tSavedPosition);
 	}
 	else {
 		float fDistanceToCover = getAI().ffFindFarthestNodeInDirection(AI_NodeID,vPosition,m_tpaDynamicObjects[iIndex].tSavedPosition,AI_Path.DestNode);
@@ -193,16 +153,7 @@ void CAI_Stalker::Panic()
 	}
 
 	m_dwRandomFactor			= 50;
-	vfSetParameters				(
-		&m_tSelectorFreeHunting,
-		0,
-		true,
-		eWeaponStateIdle,
-		ePathTypeStraightDodge,
-		eBodyStateStand,
-		eMovementTypeRun,
-		eStateTypePanic,
-		eLookTypeDirection);
+	vfSetParameters				(&m_tSelectorFreeHunting,0,true,eWeaponStateIdle,ePathTypeStraightDodge,eBodyStateStand,eMovementTypeRun,eStateTypePanic,eLookTypeDirection);
 }
 
 void CAI_Stalker::Hide()
@@ -220,77 +171,61 @@ void CAI_Stalker::Hide()
 	
 	Fvector						tPoint;
 	m_tEnemy.Enemy->clCenter	(tPoint);
-	vfSetParameters				(
-		&m_tSelectorCover,
-		0,
-		true,
-		eWeaponStateIdle,
-		ePathTypeStraight,
-		eBodyStateStand,
-		eMovementTypeWalk,
-		eStateTypeDanger,
-		eLookTypeFirePoint,
-		tPoint);
+	vfSetParameters				(&m_tSelectorCover,0,true,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,tPoint);
 }
 
 void CAI_Stalker::Detour()
 {
 	WRITE_TO_LOG("Detour");
-	vfUpdateSearchPosition();
 
 	if (m_bStateChanged) {
-		m_tActionState = eActionStateWatch;
+		m_tActionState = eActionStateWatchLook;
 		m_dwActionStartTime = Level().timeServer();
 	}
-	INIT_SQUAD_AND_LEADER;
-	vfInitSelector(m_tSelectorFreeHunting,Squad,Leader);
-	if (m_tEnemy.Enemy) {
-		m_dwActionStartTime						   = Level().timeServer() + 20000;
-		
-		m_tSelectorFreeHunting.m_fMaxEnemyDistance = m_tEnemy.Enemy->Position().distance_to(vPosition) + m_tSelectorFreeHunting.m_fSearchRange;
-		m_tSelectorFreeHunting.m_fOptEnemyDistance = 15;//vPosition.distance_to(m_tEnemy.Enemy->Position());
-		m_tSelectorFreeHunting.m_fMinEnemyDistance = m_tEnemy.Enemy->Position().distance_to(vPosition) + 3.f;
-
-		AI_Path.DestNode			= getAI().m_tpaGraph[m_tNextGP].tNodeID;
-		Fvector						tPoint;
-		m_tEnemy.Enemy->clCenter	(tPoint);
-		vfSetParameters				(
-			&m_tSelectorFreeHunting,
-			0,
-			false,
-			eWeaponStateIdle,
-			ePathTypeCriteria,
-			eBodyStateStand,
-			eMovementTypeWalk,
-			eStateTypeDanger,
-			eLookTypePoint,
-			tPoint);
-	}
+	
+	Fvector tPoint;
+	if (m_tEnemy.Enemy)
+		m_tEnemy.Enemy->clCenter(tPoint);
 	else
-		if (Level().timeServer() < m_dwActionStartTime) {
-			m_tSelectorFreeHunting.m_fMaxEnemyDistance = m_tSavedEnemyPosition.distance_to(vPosition) + m_tSelectorFreeHunting.m_fSearchRange;
-			m_tSelectorFreeHunting.m_fOptEnemyDistance = 15;//vPosition.distance_to(m_tEnemy.Enemy->Position());
-			m_tSelectorFreeHunting.m_fMinEnemyDistance = m_tSavedEnemyPosition.distance_to(vPosition) + 3.f;
+		tPoint = m_tSavedEnemyPosition;
+	m_tSelectorFreeHunting.m_fMaxEnemyDistance = m_tSavedEnemyPosition.distance_to(vPosition) + m_tSelectorFreeHunting.m_fSearchRange;
+	m_tSelectorFreeHunting.m_fOptEnemyDistance = 15;
+	m_tSelectorFreeHunting.m_fMinEnemyDistance = m_tSavedEnemyPosition.distance_to(vPosition) + 3.f;
 
-			AI_Path.DestNode			= getAI().m_tpaGraph[m_tNextGP].tNodeID;
-			Fvector						tPoint = m_tSavedEnemyPosition;
-			vfSetParameters				(
-				&m_tSelectorFreeHunting,
-				0,
-				false,
-				eWeaponStateIdle,
-				ePathTypeCriteria,
-				eBodyStateStand,
-				eMovementTypeWalk,
-				eStateTypeDanger,
-				eLookTypePoint,
-				tPoint);
+	u32 dwDelay1, dwDelay2;
+	float f;
+	if (C)	f =100.f;
+	if (D)	f =80.f;
+	if (E)	f =60.f;
+	if (F)	f =40.f;
+	if (G)	f =20.f;
+	
+	float fDistance = min(vPosition.distance_to(m_tSavedEnemyPosition),f);
+	dwDelay1 = iFloor((fDistance / f) * 20000);
+	dwDelay2 = 20000 - dwDelay1;
+	switch (m_tActionState) {
+		case eActionStateWatchGo : {
+			WRITE_TO_LOG			("WatchGo : Detour");
+			AccomplishTask			((F || G) ? 0 : &m_tSelectorFreeHunting);
+			if ((Level().timeServer() - m_dwActionStartTime > dwDelay1) && (getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,tPoint) != u32(-1))) {
+				m_tActionState		= eActionStateWatchLook;
+				m_dwActionStartTime = Level().timeServer();
+			}
+			break;
 		}
-		else {
+		case eActionStateWatchLook : {
+			WRITE_TO_LOG			("WatchLook : Detour");
 			vfUpdateSearchPosition	();
 			AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
-			vfSetParameters(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeNormal,eLookTypeSearch);
+			vfSetParameters			((F || G) ? 0 : &m_tSelectorFreeHunting,0,false,eWeaponStateIdle,(F || G) ? ePathTypeStraight : ePathTypeCriteria,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypePoint,tPoint);
+			if ((Level().timeServer() - m_dwActionStartTime > dwDelay2) || (getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,tPoint) == u32(-1))) {
+				m_tActionState		= eActionStateWatchGo;
+				m_dwActionStartTime = Level().timeServer();
+			}
+			break;
 		}
+		default : NODEFAULT;
+	}
 }
 
 void CAI_Stalker::ForwardCover()
@@ -327,17 +262,7 @@ void CAI_Stalker::ForwardCover()
 				m_inventory.Action(kWPN_FIRE, CMD_START);
 				m_inventory.Action(kWPN_FIRE, CMD_STOP);
 			}
-			vfSetParameters				(
-				&m_tSelectorCover,
-				0,
-				true,
-				eWeaponStatePrimaryFire,
-				ePathTypeDodgeCriteria,
-				eBodyStateStand,
-				eMovementTypeRun,
-				eStateTypeDanger,
-				eLookTypeFirePoint,
-				tPoint);
+			vfSetParameters				(&m_tSelectorCover,0,true,eWeaponStatePrimaryFire,ePathTypeDodgeCriteria,eBodyStateStand,eMovementTypeRun,eStateTypeDanger,eLookTypeFirePoint,tPoint);
 			if ((m_bIfSearchFailed && (AI_Path.fSpeed < EPS_L)) || (Level().timeServer() - m_dwActionStartTime > 2000)) {
 				m_dwActionStartTime = Level().timeServer();
 				m_tActionState = eActionStateStand;
@@ -352,17 +277,7 @@ void CAI_Stalker::ForwardCover()
 			m_tSelectorCover.m_fMaxEnemyDistance = max(fDistance - 1.f,m_tSelectorCover.m_fOptEnemyDistance + 3.f);
 			m_tSelectorCover.m_fMinEnemyDistance = max(fDistance - m_tSelectorCover.m_fSearchRange,m_tSelectorCover.m_fOptEnemyDistance - 3.f);
 
-			vfSetParameters				(
-				&m_tSelectorCover,
-				0,
-				true,
-				eWeaponStatePrimaryFire,
-				ePathTypeDodgeCriteria,
-				eBodyStateCrouch,
-				eMovementTypeStand,
-				eStateTypeDanger,
-				eLookTypeFirePoint,
-				tPoint);
+			vfSetParameters				(&m_tSelectorCover,0,true,eWeaponStatePrimaryFire,ePathTypeDodgeCriteria,eBodyStateCrouch,eMovementTypeStand,eStateTypeDanger,eLookTypeFirePoint,tPoint);
 			
 			if (!tpWeapon || (tpWeapon->STATE != CWeapon::eFire) && !tpWeapon->GetAmmoElapsed() && (!m_bIfSearchFailed || (!AI_Path.TravelPath.empty() && AI_Path.TravelPath.size() > AI_Path.TravelStart + 1))) {
 				m_tActionState			= eActionStateRun;
@@ -387,17 +302,7 @@ void CAI_Stalker::SearchEnemy()
 		m_tSelectorFreeHunting.m_fMaxEnemyDistance = m_tSavedEnemyPosition.distance_to(vPosition) - 3.f;
 		m_tSelectorFreeHunting.m_fMinEnemyDistance = max(m_tSelectorFreeHunting.m_fMaxEnemyDistance - m_tSelectorFreeHunting.m_fSearchRange,0.f);
 		m_tSelectorFreeHunting.m_fOptEnemyDistance = m_tSelectorFreeHunting.m_fMinEnemyDistance;
-		vfSetParameters				(
-			&m_tSelectorFreeHunting,
-			&m_tSavedEnemyPosition,
-			true,
-			eWeaponStateIdle,
-			ePathTypeStraight,
-			eBodyStateStand,
-			eMovementTypeWalk,
-			eStateTypeDanger,
-			eLookTypeFirePoint,
-			m_tSavedEnemyPosition);
+		vfSetParameters				(&m_tSelectorFreeHunting,&m_tSavedEnemyPosition,true,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,m_tSavedEnemyPosition);
 	}
 //	else {
 //		vfChooseSuspiciousNode(m_tSelectorFreeHunting);
@@ -448,6 +353,7 @@ void CAI_Stalker::ExploreDNE()
 		case eActionStateWatchLook : {
 			WRITE_TO_LOG			("WatchLook : Exploring danger non-expedient sound");
 			vfUpdateSearchPosition	();
+			AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
 			vfSetParameters			(0,0,false,eWeaponStateIdle,ePathTypeCriteria,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypePoint,tPoint);
 			if ((Level().timeServer() - m_dwActionStartTime > 5000) || (getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,tPoint) == u32(-1))) {
 				m_tActionState		= eActionStateWatchGo;
@@ -506,6 +412,7 @@ void CAI_Stalker::ExploreDE()
 		case eActionStateWatchLook : {
 			WRITE_TO_LOG			("WatchLook : Exploring danger non-expedient sound");
 			vfUpdateSearchPosition	();
+			AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
 			vfSetParameters			(0,0,false,eWeaponStateIdle,ePathTypeCriteria,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypePoint,tPoint);
 			if ((Level().timeServer() - m_dwActionStartTime > 6000) || (getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,tPoint) == u32(-1))) {
 				m_tActionState		= eActionStateWatchGo;
@@ -564,6 +471,7 @@ void CAI_Stalker::ExploreNDE()
 		case eActionStateWatchLook : {
 			WRITE_TO_LOG			("WatchLook : Exploring non-danger expedient sound");
 			vfUpdateSearchPosition	();
+			AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
 			vfSetParameters			(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypePoint,tPoint);
 			if ((Level().timeServer() - m_dwActionStartTime > 4000) || (getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,tPoint) == u32(-1))) {
 				m_tActionState = eActionStateWatchGo;
@@ -618,6 +526,7 @@ void CAI_Stalker::ExploreNDNE()
 		case eActionStateWatchLook : {
 			WRITE_TO_LOG			("WatchLook : Exploring non-danger non-expedient sound");
 			vfUpdateSearchPosition	();
+			AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
 			vfSetParameters(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypePoint,tPoint);
 			if ((Level().timeServer() - m_dwActionStartTime > 3000) || (getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,tPoint) == u32(-1))) {
 				m_tActionState = eActionStateWatchGo;
