@@ -904,10 +904,10 @@ float CCar::EnginePower()
 	float rpm=EngineDriveSpeed();
 	if(rpm>m_min_rpm)
 	{
-		if(rpm<m_max_rpm)
+		///if(rpm<m_max_rpm)
 			return Parabola(rpm);
-		else
-			return Parabola(m_max_rpm);
+		//else
+		//	return Parabola(m_max_rpm);
 	}
 	else	return m_power_on_min_rpm;
 
