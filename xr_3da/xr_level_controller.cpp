@@ -48,7 +48,8 @@ _keybind  keybind[] = {
 	{ "wpn_prev",		kWPN_PREV	},
 	{ "wpn_fire",		kWPN_FIRE	},
 	{ "wpn_zoom",		kWPN_ZOOM	},
-
+	{ "wpn_reload",		kWPN_RELOAD	},
+	
 	{ "use",			kUSE		},	
 	{ "scores",			kSCORES		},	
 	{ "chat",			kCHAT		},	

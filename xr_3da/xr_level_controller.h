@@ -33,6 +33,7 @@ enum	EKeyBinding
 	kWPN_NEXT		,
 	kWPN_PREV		,
 	kWPN_FIRE		,
+	kWPN_RELOAD		,
 	kWPN_ZOOM		,
 
 	kUSE			,

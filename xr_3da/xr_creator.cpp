@@ -128,7 +128,7 @@ BOOL CCreator::Load(DWORD dwNum)
 		for (CInifile::SectIt I=S.begin(); I!=S.end(); I++) {
 			Fvector				pos;
 			string128			fname;
-			sscanf				( I->second,"%s,%f,%f,%f",fname,&pos.x,&pos.y,&pos.z);
+			sscanf				( I->second,"%[^,],%f,%f,%f",fname,&pos.x,&pos.y,&pos.z);
 			Sounds.push_back	(sound3D());
 			pSounds->Create3D	(Sounds.back(),fname);
 			pSounds->Play3DAtPos(Sounds.back(),pos,true);

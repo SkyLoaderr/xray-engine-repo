@@ -40,6 +40,7 @@ public:
 	BOOL			ActivateWeapon		(CLASS_ID cls);
 	BOOL			ActivateWeaponID	(int id);
 	void			Zoom				(BOOL bZoom);
+	void			Reload				();
 	IC BOOL			isZoomed			()	{ return m_bZoomed; }
 
 	BOOL			TakeItem			(CLASS_ID cls, int iAmmoCount);
