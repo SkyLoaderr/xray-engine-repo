@@ -45,7 +45,7 @@ void CLight_DB::Load			(IReader *fs)
 			Flight		Ldata;
 			light*		L				= xr_new<light>		();
 			L->flags.bStatic			= true;
-			L->flags.bShadow			= true;
+			L->flags.bShadow			= false;
 			L->flags.bActive			= true;
 			F->r						(&L->controller,4);
 			F->r						(&Ldata,sizeof(Flight));
