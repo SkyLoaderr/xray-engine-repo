@@ -29,7 +29,7 @@ void	CRenderTarget::phase_accumulator()
 	if (dwAccumulatorClearMark==Device.dwFrame)	return;
 	dwAccumulatorClearMark				= Device.dwFrame;
 	dwLightMarkerID						= 5;	// start from 5, increment in 2 units
-	CHK_DX(HW.pDevice->Clear			( 0L, NULL, D3DCLEAR_TARGET, 0x00, 1.0f, 0L));
+	// CHK_DX(HW.pDevice->Clear			( 0L, NULL, D3DCLEAR_TARGET, 0x00, 1.0f, 0L));
 
 	// Stencil	- draw only where stencil >= 0x1
 	// Stencil	- increment value if both (stencil,aref) pass
