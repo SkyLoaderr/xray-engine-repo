@@ -93,7 +93,7 @@ function add_to_binder( npc, ini, scheme, section, storage )
 end
 
 function set_scheme( npc, ini, scheme, section )
-	printf( "DEBUG: set_scheme: scheme='%s' section='%s'", scheme, section )
+	printf( "DEBUG: set_scheme: scheme='%s' section='%s'", scheme, utils.to_str(section) )
 
 	local a = xr_logic.assign_storage_and_bind( npc, ini, scheme, section )
 

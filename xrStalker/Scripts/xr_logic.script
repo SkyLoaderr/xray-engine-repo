@@ -185,25 +185,25 @@ function enable_scripts(npc, ini, stype)
 				xr_death.set_death_checker(npc, actual_ini, "death", death_section)
 			end
             
-            -- wounded
+			-- wounded
 			local wounded_section = utils.cfg_get_string (actual_ini, "logic", "wounded", npc, false, "")
 			printf("_bp: npc='%s': wounded section: %s", npc:name(), if_then_else(wounded_section ~= nil, "found",
 				"not_found"))
 			xr_wounded.set_wounded (npc, actual_ini, "wounded", wounded_section)
 
-		    local rest_section = utils.cfg_get_string(actual_ini, "logic", "rest", npc, false, "")
-		    if rest ~= nil then
-		       xr_rest.set_scheme (npc, actual_ini, "rest", rest_section)
-		    end   
+			local rest_section = utils.cfg_get_string(actual_ini, "logic", "rest", npc, false, "")
+			if rest_section ~= nil then
+				xr_rest.set_scheme (npc, actual_ini, "rest", rest_section)
+			end   
 
 			local heli_hunter_section = utils.cfg_get_string(actual_ini, "logic", "heli_hunter", npc, false, "")
 			printf("_bp: npc='%s': heli_hunter section: %s", npc:name(), if_then_else(heli_hunter_section ~= nil, "found",
 				"not_found"))
-			if heli_hunter_section then
+			--if heli_hunter_section then
 				xr_heli_hunter.set_scheme(npc, actual_ini, "heli_hunter", heli_hunter_section)
-			end
+			--end
 		end
-	
+
 		local active_section = utils.cfg_get_string(actual_ini, "logic", "active", npc, true, "")
 		if active_section == "nil" then
 			printf("WARNING: object '%s': active section is 'nil'", npc:name())
