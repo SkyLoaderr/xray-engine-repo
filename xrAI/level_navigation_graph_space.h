@@ -46,21 +46,6 @@ namespace LevelNavigationGraph {
 			u32			m_all_dirs;
 		};
 		union {
-			struct {
-				u32		m_right_id;
-				u32		m_down_id;
-			};
-			u32			m_dirs_id[2];
-		};
-		union {
-			struct {
-				u16		m_computed_right;
-				u16		m_computed_down;
-			};
-			u16			m_computed_dirs[2];
-			u32			m_all_computed_dirs;
-		};
-		union {
 			typedef u8	_use_type;
 
 			struct {
@@ -69,19 +54,12 @@ namespace LevelNavigationGraph {
 			};
 			u32			m_data;
 		};
+		u32				m_down_left;
 
-		CCellVertexEx	() :
+		ICF CCellVertexEx	() :
 			m_data		(0),
 			m_all_dirs	(0),
-			m_all_computed_dirs(0)
-		{
-		}
-
-		CCellVertexEx	(u32 vertex_id, u32 mark, u32 use) :
-			m_mark		(mark),
-			m_use		(use),
-			m_all_dirs	(0),
-			m_all_computed_dirs(0)
+			m_down_left	(0)
 		{
 		}
 	};

@@ -116,6 +116,8 @@ private:
 private:
 	CROSS_TABLE					m_cross;
 	CROSS_PTABLE				m_temp;
+	CROSS_PTABLE				m_temp1;
+	xr_vector<u32>				m_counter;							
 
 #ifdef DEBUG
 private:
@@ -144,8 +146,11 @@ protected:
 	IC		u32					vertex_id				(const CCellVertex *vertex) const;
 	IC		u32					vertex_id				(const CROSS_TABLE::const_iterator &vertex) const;
 	IC		u32					vertex_id				(const CROSS_PTABLE::const_iterator &vertex) const;
+	ICF		bool				check_left				(u32 vertex_id, u32 left_vertex_id) const;
 	IC		void				fill_cell				(u32 start_vertex_id, u32 link);
+	IC		void				fill_cell				(u32 start_vertex_id);
 	IC		void				fill_cells				();
+	IC		void				fast_sort				();
 	IC		void				update_cell				(u32 start_vertex_id, u32 link);
 	IC		void				update_cells			(u32 vertex_id, u32 right, u32 down);
 	IC		void				select_sector			(CCellVertex *v, u32 &right, u32 &down, u32 max_square);
