@@ -974,7 +974,8 @@ void CWeapon::SwitchState(u32 S)
 {
 	NEXT_STATE		= S;	// Very-very important line of code!!! :)
 
-	if (CHudItem::object().Local() && !CHudItem::object().getDestroy()/* && (S!=NEXT_STATE)*/)	
+	if (CHudItem::object().Local() && !CHudItem::object().getDestroy()/* && (S!=NEXT_STATE)*/ 
+		&& m_pInventory)	
 	{
 		// !!! Just single entry for given state !!!
 		NET_Packet		P;

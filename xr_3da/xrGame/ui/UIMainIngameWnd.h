@@ -100,7 +100,7 @@ protected:
 	CUIStatic			UIStaticArmor;
 	CUIStatic			UIStaticMapBack;
 	CUIStatic			UIStaticBattery;
-	//CUIStatic			UIStaticPower;    // delete me ! :P
+	CUIStatic			UIStaticPower;    // delete me ! :P
 
 
 	// —татик контрол дл€ отображени€ подсказок действий при наведении прицела на объект
@@ -112,7 +112,7 @@ protected:
 	CUIProgressBar		UIBatteryBar;
 	CUICarPanel			UICarPanel;
 	CUIMotionIcon		UIMotionIcon;
-	//CUIProgressBar		UIPowerBar;    // delete me ! :P
+	CUIProgressBar		UIPowerBar;    // delete me ! :P
 	CUIZoneMap			UIZoneMap;
 
 	//иконка, показывающа€ количество активных PDA
