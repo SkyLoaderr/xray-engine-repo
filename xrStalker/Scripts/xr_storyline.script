@@ -16,17 +16,8 @@ function set_storyline(object, char_ini)
     end
     --' Новичок, которого грабанули
     xr_motivator.storage[object:id()].novice3 = {
-                path     = nil,    
-                enemy_path = nil,  
-                enabled  = false
         }
     if char_ini:section_exist ("novice3") == true then
-		if( char_ini:line_exist("novice3", "path") == true ) then
-			xr_motivator.storage[object:id()].novice3.path   = char_ini:r_string("novice3", "path")
-		end
-		if( char_ini:line_exist("novice3", "enemy_path") == true ) then
-			xr_motivator.storage[object:id()].novice3.enemy_path  = patrol(char_ini:r_string("novice3", "enemy_path") )
-		end
 		xr_motivator.storage[object:id()].novice3.enabled = true
 		object:set_start_dialog("loser_hello_dialog")
 		xr_trivial.add_novice3    (object)
@@ -152,13 +143,13 @@ function set_storyline(object, char_ini)
     end
 
     --' алкоголики в баре :)
-	--xr_motivator.storage[object:id ()].bar = {
-		--enabled = false,
-		--meat = false,
-		--interlocutor = nil,
-		--talking = false,
-		--pose = nil
-	--}
-	--bar_stalker.add_to_binder (object, char_ini)
+	xr_motivator.storage[object:id ()].bar = {
+		enabled = false,
+		meat = false,
+		interlocutor = nil,
+		talking = false,
+		pose = nil
+	}
+	bar_stalker.add_to_binder (object, char_ini)
 
 end
