@@ -1,4 +1,4 @@
-// xrCompress.cpp : Defines the entry point for the console application.
+F// xrCompress.cpp : Defines the entry point for the console application.
 //
 
 #include "stdafx.h"
@@ -14,6 +14,8 @@ u32						filesTOTAL=0,filesSKIP=0,filesVFS=0,filesALIAS=0;
 CTimer					t_compress;
 u64						t_compress_total;
 u8*						c_heap	= NULL;
+
+string64 root_pth;
 
 struct file_comparer{
 	char* m_c;
@@ -36,7 +38,7 @@ struct file_comparer{
 		if(m_fs){
 			if(!m_file_age/*!m_crc32*/){
 				string_path pth;
-				m_fs->update_path(pth,"$target_folder$",m_c);
+				m_fs->update_path(pth,root_pth,m_c);
 				m_file_age = m_fs->get_file_age(pth);
 				/*
 				m_freader	= m_fs->r_open(pth);
@@ -87,9 +89,11 @@ BOOL	testVFS			(LPCSTR path)
 	string256			p_ext;
 	_splitpath			(path, 0, 0, p_name, p_ext );
 	
-	if (0==stricmp(p_name,"level") && 0==stricmp(p_ext,"."))	return TRUE;
-	if (0==stricmp(p_name,"level") && 0==stricmp(p_ext,".ai"))	return TRUE;
-	if (0==stricmp(p_ext,".ogg"))								return TRUE;
+	if (0==stricmp(p_name,"level") && (0==stricmp(p_ext,".") || 0==p_ext[0]) )	return TRUE;
+	if (0==stricmp(p_name,"level") && 0==stricmp(p_ext,".ai"))					return TRUE;
+	if (0==stricmp(p_name,"level") && 0==stricmp(p_ext,".gct"))					return TRUE;
+	if (0==stricmp(p_ext,".ogg"))												return TRUE;
+	if (0==stricmp(p_name,"game") && 0==stricmp(p_ext,".graph"))				return TRUE;
 	return FALSE;
 }
 
@@ -232,7 +236,6 @@ void	Compress			(LPCSTR path, LPCSTR base)
 }
 
 CLocatorAPI* FS_orig = NULL;//				= xr_new<CLocatorAPI>	();
-
 int __cdecl main	(int argc, char* argv[])
 {
 	Core._initialize("xrCompress",0,FALSE);
@@ -254,6 +257,23 @@ int __cdecl main	(int argc, char* argv[])
 		FS_orig->_initialize(CLocatorAPI::flTargetFolderOnly,c_orig);
 		list_orig	= FS_orig->file_list_open	("$target_folder$",FS_ListFiles);
 		fl_list_orig	= FS_orig->file_list_open	("$target_folder$",FS_ListFolders);
+		strcat(root_pth,"$target_folder$");
+	}
+
+	if(strstr(params,"-dpack")){
+		bDiff = true;
+		string64				c_orig;
+/*		int cnt = sscanf					(strstr(params,"-diffpack ")+10,"%[^ ] ",c_orig);
+		if(1!=cnt){
+			printf("ERROR: u must pass folder name as parameter near [-diff].\n");
+			return 3;
+		}
+*/
+		FS_orig = xr_new<CLocatorAPI>	();
+		FS_orig->_initialize(0);
+		list_orig	= FS_orig->file_list_open	("$game_data$",FS_ListFiles);
+		fl_list_orig	= FS_orig->file_list_open	("$game_data$",FS_ListFolders);
+		strcat(root_pth,"$game_data$");
 	}
 
 	
