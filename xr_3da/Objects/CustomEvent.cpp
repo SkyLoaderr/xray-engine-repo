@@ -132,9 +132,35 @@ BOOL CCustomEvent::Spawn		( BOOL bLocal, int server_id, Fvector& o_pos, Fvector&
 	inherited::Spawn			(bLocal,server_id,o_pos,o_angle,P,flags);
 
 	// Read CFORM
-	cfModel						= new CCF_EventBox(this);
-	pCreator->ObjectSpace.Object_Register(this);
+	CCF_Shape*	shape			= new CCF_Shape	(this);
+	cfModel						= shape;
+	u8 count;	P.r_u8			(count);
+	while (count)	{
+		u8 type; P.r_u8	(type);
+		switch (type)	{
+		case 0:
+			{
+				Fsphere data;
+				P.r					(&data,sizeof(data));
+				shape->add_sphere	(data);
+			}
+			break;
+		case 1:
+			{
+				Fmatrix data;
+				P.r_matrix			(data);
+				shape->add_sphere	(data);
+			}
+			break;
+		}
+		count--;
+	}
+	pCreator->ObjectSpace.Object_Register		(this);
 	cfModel->OnMove				();
+
+	// Read actions
+
+
 	return TRUE;
 }
 
