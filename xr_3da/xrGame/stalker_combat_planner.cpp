@@ -260,8 +260,8 @@ void CStalkerCombatPlanner::add_actions			()
 	add_condition			(action,eWorldPropertyEnemyDetoured,true);
 	add_condition			(action,eWorldPropertyPanic,		false);
 	add_effect				(action,eWorldPropertyPureEnemy,	false);
-	action->set_inertia_time(120000);
 	add_operator			(eWorldOperatorSearchEnemy,			action);
+	action->set_inertia_time(120000);
 
 	action					= xr_new<CStalkerActionPostCombatWait>	(&m_last_cover,m_object,"post_combat_wait");
 	add_condition			(action,eWorldPropertyPureEnemy,	false);
