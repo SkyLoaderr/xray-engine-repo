@@ -68,13 +68,8 @@ void CUIWindow::Draw()
 	}
 }
 
-
-//
-// обновление окна перед прорисовкой
-//
 void CUIWindow::Update()
 {
-	//перерисовать дочерние окна
 	for(WINDOW_LIST_it it = m_ChildWndList.begin(); m_ChildWndList.end()!=it; ++it)
 	{
 		if((*it)->IsShown())
@@ -82,8 +77,6 @@ void CUIWindow::Update()
 	}
 }
 
-
-//присоединить дочернее окно
 void CUIWindow::AttachChild(CUIWindow* pChild)
 {
 	if(!pChild) return;
@@ -150,41 +143,39 @@ Irect CUIWindow::GetAbsoluteRect()
 
 void CUIWindow::OnMouse(int x, int y, EUIMessages mouse_action)
 {	
-	//определить DoubleClick
+	cursor_pos.x = x;
+	cursor_pos.y = y;
 
-	if(mouse_action == WINDOW_LBUTTON_DOWN && IsDBClickEnabled())
+	Irect	wndRect = GetWndRect();
+
+	m_bCursorOverWindow = (x>=0 && x<GetWidth() && y>=0 && y<GetHeight());
+
+	// DOUBLE CLICK GENERATION
+	if( (mouse_action == WINDOW_LBUTTON_DOWN) && m_bDoubleClickEnabled )
 	{
 		u32 dwCurTime = Device.TimerAsync();
 		if(dwCurTime - m_dwLastClickTime < DOUBLE_CLICK_TIME)
             mouse_action = WINDOW_LBUTTON_DB_CLICK;
 
 		m_dwLastClickTime = dwCurTime;
-	}	
-
-	cursor_pos.x = x;
-	cursor_pos.y = y;
+	}
 
 	if(GetParent()== NULL) //вызов из главного окна у которого нет предков
 	{
-		Irect	l_tRect = GetWndRect();
-		if(!l_tRect.in(cursor_pos) /*PtInRect(&l_tRect, cursor_pos)*/ )
-			return;
-
+		if(!wndRect.in(cursor_pos))
+            return;
 		//получить координаты относительно окна
-		cursor_pos.x -= GetWndRect().left;
-		cursor_pos.y -= GetWndRect().top;
+		cursor_pos.x -= wndRect.left;
+		cursor_pos.y -= wndRect.top;
 	}
-
 
 
 	//если есть дочернее окно,захватившее мышь, то
 	//сообщение направляем ему сразу
 	if(m_pMouseCapturer)
 	{
-		m_pMouseCapturer->OnMouse(cursor_pos.x - 
-								m_pMouseCapturer->GetWndRect().left, 
-								  cursor_pos.y - 
-								m_pMouseCapturer->GetWndRect().top, 
+		m_pMouseCapturer->OnMouse(cursor_pos.x - m_pMouseCapturer->GetWndRect().left, 
+								  cursor_pos.y - m_pMouseCapturer->GetWndRect().top, 
 								  mouse_action);
 		return;
 	}
@@ -192,6 +183,7 @@ void CUIWindow::OnMouse(int x, int y, EUIMessages mouse_action)
 	// handle any action
 	switch (mouse_action){
 		case WINDOW_LBUTTON_DOWN:
+			OnMouseDown();
 			break;
 		case WINDOW_LBUTTON_DB_CLICK:
 			OnDbClick();
@@ -207,8 +199,8 @@ void CUIWindow::OnMouse(int x, int y, EUIMessages mouse_action)
 
 	for(u16 i=0; i<m_ChildWndList.size(); ++i, ++it)
 	{
-		Irect l_tRect = (*it)->GetWndRect();
-		if (l_tRect.in(cursor_pos)/*PtInRect(&l_tRect, cursor_pos)*/ )
+		Irect wndRect = (*it)->GetWndRect();
+		if (wndRect.in(cursor_pos) )
 		{
 			if((*it)->IsEnabled())
 			{
@@ -226,7 +218,11 @@ void CUIWindow::OnMouse(int x, int y, EUIMessages mouse_action)
 }
 
 void CUIWindow::OnDbClick(){
-    // overload this function to handle DbClick event
+
+}
+
+void CUIWindow::OnMouseDown(){
+
 }
 
 
