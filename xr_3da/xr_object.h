@@ -109,11 +109,11 @@ public:
 	virtual		IRenderable*			dcast_Renderable	()					{ return this;						}
 
 	// Name management
-	IC shared_str							cName				()			const	{ return NameObject;				}
+	IC shared_str						cName				()			const	{ return NameObject;				}
 	void								cName_set			(shared_str N);
-	IC shared_str							cNameSect			()			const	{ return NameSection;				}
+	IC shared_str						cNameSect			()			const	{ return NameSection;				}
 	void								cNameSect_set		(shared_str N);
-	IC shared_str							cNameVisual			()			const	{ return NameVisual;				}
+	IC shared_str						cNameVisual			()			const	{ return NameVisual;				}
 	void								cNameVisual_set		(shared_str N);
 	
 	// Properties

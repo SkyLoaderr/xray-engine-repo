@@ -81,6 +81,7 @@ public:
 	void		OnDeviceCreate		(void);
 	void		OnDeviceDestroy		(void);
 public:
+	xr_vector		<shared_str>	errors;
 	CRegistrator	<pureStats>		seqStats;
 public:
 					CStats			();

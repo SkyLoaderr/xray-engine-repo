@@ -242,16 +242,23 @@ void CStats::Show()
 		if (Physics.result>5.f)			F.OutNext	("Physics    > 5ms: %3.1f",	Physics.result);	
 
 		//////////////////////////////////////////////////////////////////////////
+		// process PURE STATS
+		F.SetSize			(f_base_size);
+		seqStats.Process	(rp_Stats);
+		pFont->OnRender		();
+	}
+
+	// Show errors
+	if (errors.size())
+	{
+		CGameFont&	F = *((CGameFont*)pFont);
+		F.SetColor	(color_rgba(255,16,16,255));
 		F.SetSize	(f_base_size);
+		F.OutSet	(200,0);
+		for (u32 it=0; it<errors.size(); it++)
+			F.OutNext("%s",errors[it].c_str());
 		F.OnRender	();
 	}
-
-	// process PURE STATS
-	{
-		seqStats.Process				(rp_Stats);
-		pFont->OnRender					();
-	}
-
 	{
 		EngineTOTAL.FrameStart		();	
 		Sheduler.FrameStart			();	
@@ -307,6 +314,11 @@ void CStats::Show()
 	dwSND_Played = dwSND_Allocated = 0;
 }
 
+void	__stdcall LogCallback		(LPCSTR string)
+{
+	if (string && '!'==string[0] && ' '==string[1])
+		Device.Statistic.errors.push_back	(shared_str(string));
+}
 void CStats::OnDeviceCreate			()
 {
 	pFont	= xr_new<CGameFont>		("stat_font");
@@ -320,6 +332,9 @@ void CStats::OnDeviceCreate			()
 	eval_line_1 = pSettings->r_string_wb("evaluation","line1");
 	eval_line_2 = pSettings->r_string_wb("evaluation","line2");
 	eval_line_3 = pSettings->r_string_wb("evaluation","line3");
+
+	// 
+	SetLogCB	(LogCallback);
 }
 
 void CStats::OnDeviceDestroy		()
