@@ -1,5 +1,5 @@
-local time_walk 	= 60000
-local time_rest 	= 20000
+local time_walk 	= 20000
+local time_rest 	= 3         --Сколько анимаций сидения сидим
 
 local time_to_speak = 20000     --Через какое время примерно зомби произносит фразы
 
@@ -31,7 +31,7 @@ function stalker_zombe_action:initialize ()
     self.a.time      = device():time_global() + time_to_speak
     self.a.stand     = false                     --Стоим или идем, служит для того, чтоб запомнить, что стоим и говорим.
 
-	self.object:clear_animations	()    
+	self.object:clear_animations	()
 	self.object:set_detail_path_type( move.line )
     self.object:set_movement_type   ( move.walk )
     self.object:set_body_state      ( move.standing )
@@ -136,28 +136,33 @@ end
 --------------------------=====================---------------------------------
 
 local walk  	= 1
-local go_sit 	= 2
 local sit_down  = 3
-local stand_up  = 4
 
 ---------------------------------------------------------------------------------------------------------------------
 -- Actions
 ---------------------------------------------------------------------------------------------------------------------
+--Либо сталкер ходит и ищет что-нибудь, либо сидит и отдыхает
 class "stalker_novice_action" (action_base)
 function stalker_novice_action:__init (name, storage) super (nil, name)
-    self.a 		  = storage
+    self.a 		  	= storage
+    self.a.curState = walk
+    self.a.time     = device():time_global()
+    self.count      = 0
+
 end
 ---------------------------------------------------------------------------------------------------------------------
 function stalker_novice_action:initialize ()
     action_base.initialize          ( self )
-
-    self.a.curState = walk
-    self.a.time     = device():time_global()
-	self:state_walk( "init" )
+	if( self.a.curState == walk ) then
+		self:state_walk( "init" )
+    else
+		self:state_sit_down( "init" )
+    end
 end
 ---------------------------------------------------------------------------------------------------------------------
 function stalker_novice_action:execute ()
     action_base.execute             ( self )
+
     if( self.a.curState == walk ) then
 		self:state_walk()
         if( device():time_global() > self.a.time + time_walk ) then
@@ -165,12 +170,9 @@ function stalker_novice_action:execute ()
         end
     else
         self:state_sit_down()
-		--Условие перехода в состояние walk
-        if( self.a.curState == stand_up ) then
-        	if( self.object:animation_count() == 0 ) then
-                self.a.time = device():time_global()
-           		self:state_walk( "init" )
-            end
+        if( self.count > time_rest ) then
+        	self.a.index = math.random( 1, self.a.rest_w:count() - 1 )              --Выбераем точку, в которой потом будем сидеть.
+            self:state_walk( "init" )                   --Init state sit down
         end
     end
 end
@@ -178,8 +180,16 @@ end
 function stalker_novice_action:state_walk( param )
 	if( param ) then                        --Init state walk
         printf( "init state walk" )
+        self.a.curState = walk
+        self.count   = 0
+		self.a.time = device():time_global()
 
-		self.object:clear_animations()        
+        if( xr_motivator.storage[self.object:id()].state.body_state ~= 0 ) then
+            xr_state.change_state( self.object, 0 )
+            return
+        end
+        printf( "Walk" )
+        self.object:clear_animations()
 		self.object:set_desired_direction()
         self.object:set_detail_path_type ( move.line )
 	    self.object:set_movement_type    ( move.walk )
@@ -190,7 +200,6 @@ function stalker_novice_action:state_walk( param )
 	    self.object:set_sight            ( look.path_dir, nil, 0 )
 	    self.object:set_item             ( object.idle, self.object:best_weapon() )
 
-        self.a.curState = walk
         return
     end
 
@@ -198,54 +207,40 @@ function stalker_novice_action:state_walk( param )
     if( device():time_global() > self.a.time + 3000 ) then
         --Первые 3 секунды идем просто, потом начинаем что-то искать
         self.object:set_sight       ( look.search, nil, 0 )
-    else
-		self.object:set_sight       ( look.path_dir, nil, 0 )
     end
     self.object:set_item            ( object.idle, self.object:best_weapon() )
 end
 ---------------------------------------------------------------------------------------------------------------------
 function stalker_novice_action:state_sit_down( param )
 	if( param )	then                        --Init state sit
-    	printf( "Init state sit_down" )
-        self.a.index = math.random( 1, patrol( self.a.rest):count() - 1 )
-        self.object:set_dest_level_vertex_id( patrol( self.a.rest ):level_vertex_id( self.a.index ) )
+    	printf( "Init state sit_down === %s", param )
+        self.a.curState  = sit_down
+        self.object:set_dest_level_vertex_id( self.a.rest_w:level_vertex_id( self.a.index ) )
         self.object:set_path_type 			( game_object.level_path )
-		self.object:set_desired_direction	( patrol( self.a.rest ):point( 0 ):sub( patrol( self.a.rest ):point( self.a.index ) ) )
+		self.object:set_desired_direction	( self.a.rest_w:point( 0 ):sub( self.a.rest_w:point( self.a.index ) ) )   --Отдыхаем в направлении нулевой точкки
         self.object:set_sight				( look.danger, nil, 0 )
-        self.a.curState     = go_sit
     end
 
-    --Идем к точке сидения
-    if( self.a.curState == go_sit ) then
-        self.object:set_mental_state        ( anim.free )
-        self.object:set_path_type           ( game_object.level_path )
-        self.object:set_movement_type       ( move.walk )
-
-        if( self.object:level_vertex_id() == patrol( self.a.rest ):level_vertex_id( self.a.index ) ) then
-			--Дошли
-            self.a.curState = sit_down
-            self.object:add_animation( "stalker_1_down", true )
-			self.object:add_animation( "stalker_1_2",    true )
-            self.object:set_movement_type	( move.stand )
-            self.object:set_item	 ( object.deactivate, self.object:best_weapon() )
-            self.a.time     = device():time_global()
-        end
-    end
-
-    --Сидим
-    if( self.a.curState == sit_down ) then
+    if( xr_motivator.storage[self.object:id()].state.body_state == 1 ) then           --Уже сидим
         if( self.object:animation_count() <= 1 ) then
-			self.object:add_animation( "stalker_1_2", 	true )
+            printf( "Sidimmmmm" )
             self.object:add_animation( "stalker_1_2",   true )
-            self.object:add_animation( "stalker_1_2",   true )
+            self.count = self.count + 1
         end
-        --Сидим уже больше, чем отведенно время на отдых, тогда начинаем вставать
-        if( device():time_global() > self.a.time + time_rest ) then
-            self.object:clear_animations()
-            self.a.curState = stand_up
-            self.object:add_animation( "stalker_1_up", true )
-        end
+    else
+    	if( self.object:level_vertex_id() == self.a.rest_w:level_vertex_id( self.a.index ) ) then -- Находимся на той ноде, на которой собрались посидеть
+        	self.object:set_movement_type    ( move.stand )
+            self.object:set_item             ( object.deactivate, self.object:best_weapon() )
+        	xr_state.change_state( self.object, 1 )
+            printf( "excanhe state" )
+        else
+        	--Идем в точку сидения
+	        self.object:set_mental_state        ( anim.free )
+	        self.object:set_path_type           ( game_object.level_path )
+	        self.object:set_movement_type       ( move.walk )
+		end
     end
+
 end
 ---------------------------------------------------------------------------------------------------------------------
 function stalker_novice_action:finalize ()
@@ -275,14 +270,14 @@ function add_novice(obj)
 --			st.path = char_ini:r_string("novice", "path")
 --        end
 --        if( char_ini:line_exist("novice", "rest") == true ) then
---            st.rest = char_ini:r_string("novice", "rest")
+--            st.rest_w = patrol( char_ini:r_string("novice", "rest") )
 --        end
 --    end
 --
 --    xr_motivator.storage[obj:id()] = { novice = {} }
 --    xr_motivator.storage[obj:id()].novice = st
 
-
+    properties["state_end"]     = xr_evaluators_id.state_change
     properties[ "work" ]              = xr_evaluators_id.jon_stalker_novice
     operators [ "stalker_novice" ]    = xr_actions_id.jon_stalker_novice
 
@@ -292,6 +287,7 @@ function add_novice(obj)
     local action = this.stalker_novice_action ( "stalker_novice_action", xr_motivator.storage[obj:id()].novice )
     action:add_precondition         ( world_property ( stalker_ids.property_alive,   true ) )
     action:add_precondition         ( world_property ( stalker_ids.property_enemy,   false ) )
+    action:add_precondition         ( world_property ( properties["state_end"],   	 true ) )
     action:add_precondition         ( world_property ( properties[ "work" ],         true ) )
     action:add_effect               ( world_property ( properties[ "work" ],         false ) )
     manager:add_action              ( operators[ "stalker_novice" ], action)
