@@ -246,21 +246,29 @@ void CRenderDevice::Run			()
 
 void CRenderDevice::FrameMove()
 {
-	dwFrame++;
+	dwFrame			++;
 
-	// Timer
-	float fPreviousFrameTime = Timer.GetElapsed_sec(); Timer.Start();	// previous frame
-	fTimeDelta = 0.1f * fTimeDelta + 0.9f*fPreviousFrameTime;	// smooth random system activity - worst case ~7% error
-	if (fTimeDelta>.06666f) fTimeDelta=.06666f;					// limit to 15fps minimum
+	if (psDeviceFlags.test(rsConstantFPS))	{
+		// 20ms = 50fps
+		fTimeDelta		=	0.020f;			
+		fTimeGlobal		+=	0.020f;
+		dwTimeDelta		=	20;
+		dwTimeGlobal	+=	20;
+	} else {
+		// Timer
+		float fPreviousFrameTime = Timer.GetElapsed_sec(); Timer.Start();	// previous frame
+		fTimeDelta = 0.1f * fTimeDelta + 0.9f*fPreviousFrameTime;			// smooth random system activity - worst case ~7% error
+		if (fTimeDelta>.06666f) fTimeDelta=.06666f;							// limit to 15fps minimum
 
-	u64	qTime		= TimerGlobal.GetElapsed_clk();
-	fTimeGlobal		= float(qTime)*CPU::cycles2seconds;
+		u64	qTime		= TimerGlobal.GetElapsed_clk();
+		fTimeGlobal		= float(qTime)*CPU::cycles2seconds;
 
-	dwTimeGlobal	= u32((qTime*u64(1000))/CPU::cycles_per_second);
-	dwTimeDelta		= iFloor(fTimeDelta*1000.f+0.5f);
+		dwTimeGlobal	= u32((qTime*u64(1000))/CPU::cycles_per_second);
+		dwTimeDelta		= iFloor(fTimeDelta*1000.f+0.5f);
+	}
 
 	// Frame move
 	Statistic.EngineTOTAL.Begin	();
-	seqFrame.Process(rp_Frame);
+	seqFrame.Process			(rp_Frame);
 	Statistic.EngineTOTAL.End	();
 }
