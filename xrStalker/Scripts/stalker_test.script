@@ -1,52 +1,21 @@
 function main()
     actor				= get_actor()
     stalker				= get_level_object ("m_stalker_e0000")
-    f1					= get_level_object ("grenade_f0000")
     
     stalker:script		(true,stalker_test:script_name());
     
-    wait				(1000)
-    
     action				(
 		stalker,
 		look			(look.fire_point,actor),
 		anim			(anim.danger),
-		move			(move.standing,move.walk,move.line,actor),
-		cond			(cond.time_end,10000)
+		move			(move.standing,move.walk,move.line,patrol("way0001")),
+		cond			(cond.move_end)
     )
     
-    action				(
-		stalker,
-		look			(look.fire_point,actor),
-		anim			(anim.danger),
-		move			(move.standing,move.walk,move.line,patrol("way0000")),
-		cond			(cond.time_end,10000)
-    )
-    
-	if (stalker:get_script()) then
-		printf			("stalker is under script control")
-	else
-		printf			("stalker is free")
-	end
-	
 	while stalker:action() do
 		printf			("%s",stalker:best_weapon():name())
 		wait			()
     end
     
-    f1:explode			(device():time_global() + 10000)
-    
-	if (stalker:get_script()) then
-		printf			("stalker is under script control")
-	else
-		printf			("stalker is free")
-	end
-		
     stalker:script		(false,stalker_test:script_name());
-    
-	if (stalker:get_script()) then
-		printf			("stalker is under script control")
-	else
-		printf			("stalker is free")
-	end
 end
