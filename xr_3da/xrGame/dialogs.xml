@@ -98,11 +98,12 @@
 				<next>1</next>
 			</phrase>
 			<phrase id="1">
-				<text>Есть несколько заданий: \nЯщик с блокпоста \nвыкрасть кое-что с Агропрома \nи лично для меня эээ... секретная работенка</text>
+				<text>Есть несколько заданий: \nЯщик с блокпоста \nвыкрасть кое-что с Агропрома \nи лично для меня эээ... секретная работенка\nНу а по ходу можешь притаранить пару-тройку артефактов</text>
 				<next>2</next>
 				<next>3</next>
 				<next>4</next>
 				<next>14</next>
+				<next>15</next>
 			</phrase>
 			<phrase id="2">
 				<dont_has_info>trader_start2</dont_has_info>
@@ -165,6 +166,17 @@
 			<phrase id="14">
 				<text>Что-то я передумал работать.</text>
 				<next>13</next>
+			</phrase>
+			<phrase id="15">
+				<text>Что-то за артефакты?.</text>
+				<next>16</next>
+			</phrase>
+			<phrase id="15">
+				<text>Что-то за артефакты?.</text>
+				<next>16</next>
+			</phrase>
+			<phrase id="16">
+				<text>Мне тут просили достать, плачу вдвое обычного.</text>
 			</phrase>
 
 		</phrase_list>
