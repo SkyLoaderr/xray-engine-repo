@@ -87,10 +87,10 @@ public:
 	// -------------------------------------
 
 	// добавить анимацию перехода (A - Animation, S - Position)
-	void		AddTransition			(EMotionAnim from,	EMotionAnim to, EMotionAnim trans, bool chain);
-	void		AddTransition			(EMotionAnim from,	EPState to,		EMotionAnim trans, bool chain);
-	void		AddTransition			(EPState from,		EMotionAnim to, EMotionAnim trans, bool chain);
-	void		AddTransition			(EPState from,		EPState to,		EMotionAnim trans, bool chain);
+	void		AddTransition			(EMotionAnim from,	EMotionAnim to, EMotionAnim trans, bool chain, bool skip_aggressive = false);
+	void		AddTransition			(EMotionAnim from,	EPState to,		EMotionAnim trans, bool chain, bool skip_aggressive = false);
+	void		AddTransition			(EPState from,		EMotionAnim to, EMotionAnim trans, bool chain, bool skip_aggressive = false);
+	void		AddTransition			(EPState from,		EPState to,		EMotionAnim trans, bool chain, bool skip_aggressive = false);
 
 	// -------------------------------------
 

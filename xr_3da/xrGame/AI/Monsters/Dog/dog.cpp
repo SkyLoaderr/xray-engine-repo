@@ -83,10 +83,10 @@ void CAI_Dog::Load(LPCSTR section)
 		// define transitions
 		// order : 1. [anim -> anim]	2. [anim->state]	3. [state -> anim]		4. [state -> state]
 		MotionMan.AddTransition(eAnimLieIdle,	eAnimSleep,	eAnimLieToSleep,	false);
-		MotionMan.AddTransition(eAnimSleep,		PS_STAND,	eAnimSleepStandUp,	false);
+		MotionMan.AddTransition(eAnimSleep,		PS_STAND,	eAnimSleepStandUp,	false, SKIP_IF_AGGRESSIVE);
 		MotionMan.AddTransition(PS_SIT,		PS_LIE,		eAnimSitLieDown,		false);
 		MotionMan.AddTransition(PS_STAND,	PS_SIT,		eAnimStandSitDown,		false);
-		MotionMan.AddTransition(PS_SIT,		PS_STAND,	eAnimSitStandUp,		false);
+		MotionMan.AddTransition(PS_SIT,		PS_STAND,	eAnimSitStandUp,		false, SKIP_IF_AGGRESSIVE);
 		
 		// todo: stand -> lie
 

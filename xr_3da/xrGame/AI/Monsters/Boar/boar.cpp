@@ -61,7 +61,7 @@ void CAI_Boar::Load(LPCSTR section)
 		MotionMan.AddTransition(eAnimStandLieDown,	eAnimSleep,		eAnimLieToSleep,		false);										
 		MotionMan.AddTransition(PS_STAND,			eAnimSleep,		eAnimStandLieDown,		true);
 		MotionMan.AddTransition(PS_STAND,			PS_LIE,			eAnimStandLieDown,		false);
-		MotionMan.AddTransition(PS_LIE,				PS_STAND,		eAnimLieStandUp,		false);
+		MotionMan.AddTransition(PS_LIE,				PS_STAND,		eAnimLieStandUp,		false, SKIP_IF_AGGRESSIVE);
 
 
 		// define links from Action to animations

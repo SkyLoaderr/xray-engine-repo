@@ -72,7 +72,7 @@ void CAI_Flesh::Load(LPCSTR section)
 
 		// define transitions
 		MotionMan.AddTransition(PS_STAND,	PS_LIE,		eAnimStandLieDown,		false);
-		MotionMan.AddTransition(PS_LIE,		PS_STAND,	eAnimLieStandUp,		false);
+		MotionMan.AddTransition(PS_LIE,		PS_STAND,	eAnimLieStandUp,		false, SKIP_IF_AGGRESSIVE);
 
 		// define links from Action to animations
 		MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle,	eAnimStandTurnLeft, eAnimStandTurnRight, PI_DIV_6/10);

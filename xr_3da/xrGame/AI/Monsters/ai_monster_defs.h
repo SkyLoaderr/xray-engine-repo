@@ -271,6 +271,8 @@ struct SAnimItem {
 	} fxs;
 };
 
+#define SKIP_IF_AGGRESSIVE	true
+
 // описание перехода
 struct STransition {
 
@@ -282,6 +284,7 @@ struct STransition {
 
 	EMotionAnim		anim_transition;
 	bool			chain;
+	bool			skip_if_aggressive;
 };
 
 // элемент движения

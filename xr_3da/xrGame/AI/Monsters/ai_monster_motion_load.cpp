@@ -40,7 +40,7 @@ void CMotionManager::AddAnim(EMotionAnim ma, LPCSTR tn, int s_id, SVelocityParam
 }
 
 // Shared
-void CMotionManager::AddTransition(EMotionAnim from, EMotionAnim to, EMotionAnim trans, bool chain)
+void CMotionManager::AddTransition(EMotionAnim from, EMotionAnim to, EMotionAnim trans, bool chain, bool skip_aggressive)
 {
 	STransition new_item;
 
@@ -53,11 +53,13 @@ void CMotionManager::AddTransition(EMotionAnim from, EMotionAnim to, EMotionAnim
 	new_item.anim_transition	= trans;
 	new_item.chain				= chain;
 
+	new_item.skip_if_aggressive	= skip_aggressive;
+
 	get_sd()->m_tTransitions.push_back(new_item);
 }
 
 // Shared
-void CMotionManager::AddTransition(EMotionAnim from, EPState to, EMotionAnim trans, bool chain)
+void CMotionManager::AddTransition(EMotionAnim from, EPState to, EMotionAnim trans, bool chain, bool skip_aggressive)
 {
 	STransition new_item;
 
@@ -69,12 +71,13 @@ void CMotionManager::AddTransition(EMotionAnim from, EPState to, EMotionAnim tra
 
 	new_item.anim_transition	= trans;
 	new_item.chain				= chain;
+	new_item.skip_if_aggressive	= skip_aggressive;
 
 	get_sd()->m_tTransitions.push_back(new_item);
 }
 
 // Shared
-void CMotionManager::AddTransition(EPState from, EMotionAnim to, EMotionAnim trans, bool chain)
+void CMotionManager::AddTransition(EPState from, EMotionAnim to, EMotionAnim trans, bool chain, bool skip_aggressive)
 {
 	STransition new_item;
 
@@ -87,12 +90,13 @@ void CMotionManager::AddTransition(EPState from, EMotionAnim to, EMotionAnim tra
 
 	new_item.anim_transition	= trans;
 	new_item.chain				= chain;
+	new_item.skip_if_aggressive	= skip_aggressive;
 
 	get_sd()->m_tTransitions.push_back(new_item);
 }
 
 // Shared
-void CMotionManager::AddTransition(EPState from, EPState to, EMotionAnim trans, bool chain)
+void CMotionManager::AddTransition(EPState from, EPState to, EMotionAnim trans, bool chain, bool skip_aggressive)
 {
 	STransition new_item;
 
@@ -104,6 +108,7 @@ void CMotionManager::AddTransition(EPState from, EPState to, EMotionAnim trans, 
 
 	new_item.anim_transition	= trans;
 	new_item.chain				= chain;
+	new_item.skip_if_aggressive	= skip_aggressive;
 
 	get_sd()->m_tTransitions.push_back(new_item);
 }

@@ -143,7 +143,6 @@ bool CMotionManager::PrepareAnimation()
 // проверить существует ли переход из анимации from в to
 void CMotionManager::CheckTransition(EMotionAnim from, EMotionAnim to)
 {
-	if (pMonster->m_bAggressive) return;
 	
 	// поиск соответствующего перехода
 	bool		b_activated	= false;
@@ -160,6 +159,8 @@ void CMotionManager::CheckTransition(EMotionAnim from, EMotionAnim to)
 		bool target_is_good = ((I->target.state_used) ? (I->target.state == state_to) : (I->target.anim == to));
 
 		if (from_is_good && target_is_good) {
+
+			if (I->skip_if_aggressive && pMonster->m_bAggressive) return;
 
 			// переход годится
 			Seq_Add(I->anim_transition);
