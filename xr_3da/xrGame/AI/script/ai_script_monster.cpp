@@ -44,19 +44,13 @@ void CScriptMonster::Init()
 	m_tHitCallback.m_lua_object			= 0;
 	m_tHitCallback.m_method_name		= "";
 
-	m_caScriptName						= "";
-	m_bScriptControl					= false;
-	
-	m_tpScriptAnimation					= 0;
-	m_tpCurrentEntityAction				= 0;
-	m_tpNextAnimation					= 0;
+	ResetScriptData						();
 }
 
 void CScriptMonster::ResetScriptData(void *pointer)
 {
 	m_caScriptName						= "";
 	m_bScriptControl					= false;
-
 	m_tpScriptAnimation					= 0;
 	m_tpCurrentEntityAction				= 0;
 	m_tpNextAnimation					= 0;
@@ -418,7 +412,13 @@ bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 		case CMovementAction::eGoalTypePathPosition : {
 			l_tpMovementManager->set_path_type(CMovementManager::ePathTypeLevelPath);
 			l_tpMovementManager->set_dest_position(l_tMovementAction.m_tDestinationPosition);
-			l_tpMovementManager->set_level_dest_vertex(ai().level_graph().vertex(l_tpMovementManager->level_vertex_id(),l_tMovementAction.m_tDestinationPosition,true));
+			
+			u32					vertex_id = ai().level_graph().check_position_in_direction(level_vertex_id(),Position(),l_tMovementAction.m_tDestinationPosition);
+			if (!ai().level_graph().valid_vertex_id(vertex_id))
+				vertex_id		= ai().level_graph().vertex(vertex_id,l_tMovementAction.m_tDestinationPosition);
+			VERIFY				(ai().level_graph().valid_vertex_id(vertex_id));
+			l_tpMovementManager->CLevelPathManager::set_dest_vertex(vertex_id);
+			
 			l_tpMovementManager->CLevelLocationSelector::set_evaluator(0);
 			break;
 		}

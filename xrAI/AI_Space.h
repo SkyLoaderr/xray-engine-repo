@@ -14,6 +14,7 @@ class CLevelGraph;
 class CGraphEngine;
 class CEF_Storage;
 class CSE_ALifeSimulator;
+struct lua_State;
 
 class CAI_Space {
 	CGameGraph				*m_game_graph;
@@ -23,6 +24,7 @@ class CAI_Space {
 	CEF_Storage				*m_ef_storage;
 	CSE_ALifeSimulator		*m_alife_simulator;
 	IWriter					*m_lua_output;
+	lua_State				*m_lua_virtual_machine;
 
 			void						unload			();
 	IC		void						set_alife		(CSE_ALifeSimulator *alife_simulator);
@@ -42,6 +44,7 @@ public:
 	IC		const CSE_ALifeSimulator	&alife			() const;
 	IC		const CSE_ALifeSimulator	*get_alife		() const;
 	IC		IWriter						&lua_output		() const;
+	IC		lua_State					*lua			() const;
 #ifdef DEBUG
 			void						validate		(const u32			level_id) const;
 //	xr_vector<u32>						m_visited_nodes;

@@ -17,9 +17,15 @@ CScriptZone::CScriptZone		()
 
 CScriptZone::~CScriptZone		()
 {
-#pragma todo("Dima to Dima : Memory leak is here, change object destruction sequence")
-//	xr_delete					(m_tpOnEnter);
-//	xr_delete					(m_tpOnExit);
+	xr_delete				(m_tpOnEnter);
+	xr_delete				(m_tpOnExit);
+}
+
+void CScriptZone::reinit		()
+{
+	inherited::reinit		();
+	xr_delete				(m_tpOnEnter);
+	xr_delete				(m_tpOnExit);
 }
 
 void CScriptZone::spatial_register()
@@ -124,9 +130,9 @@ void CScriptZone::set_callback(const luabind::functor<void> &tpZoneCallback, boo
 void CScriptZone::clear_callback(bool bOnEnter)
 {
 	if (bOnEnter)
-		m_tpOnEnter				= 0;
+		xr_delete				(m_tpOnEnter);
 	else
-		m_tpOnExit				= 0;
+		xr_delete				(m_tpOnExit);
 }
 
 #ifdef DEBUG

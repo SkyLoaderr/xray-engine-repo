@@ -2967,20 +2967,38 @@
 					<Filter
 						Name="Zones"
 						Filter="">
-						<File
-							RelativePath="CustomZone.cpp">
-						</File>
-						<File
-							RelativePath="CustomZone.h">
-						</File>
 						<Filter
-							Name="MosquitoBald"
+							Name="AcidFog"
+							Filter="">
+						</Filter>
+						<Filter
+							Name="CustomZone"
 							Filter="">
 							<File
-								RelativePath="MosquitoBald.cpp">
+								RelativePath="CustomZone.cpp">
 							</File>
 							<File
-								RelativePath="MosquitoBald.h">
+								RelativePath="CustomZone.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="FryUpZone"
+							Filter="">
+							<File
+								RelativePath=".\FryupZone.cpp">
+							</File>
+							<File
+								RelativePath=".\FryupZone.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="LevelChanger"
+							Filter="">
+							<File
+								RelativePath=".\level_changer.cpp">
+							</File>
+							<File
+								RelativePath=".\level_changer.h">
 							</File>
 						</Filter>
 						<Filter
@@ -2994,17 +3012,13 @@
 							</File>
 						</Filter>
 						<Filter
-							Name="AcidFog"
-							Filter="">
-						</Filter>
-						<Filter
-							Name="LevelChanger"
+							Name="MosquitoBald"
 							Filter="">
 							<File
-								RelativePath=".\level_changer.cpp">
+								RelativePath="MosquitoBald.cpp">
 							</File>
 							<File
-								RelativePath=".\level_changer.h">
+								RelativePath="MosquitoBald.h">
 							</File>
 						</Filter>
 						<Filter
@@ -3025,16 +3039,6 @@
 							</File>
 							<File
 								RelativePath=".\script_zone.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="FryUpZone"
-							Filter="">
-							<File
-								RelativePath=".\FryupZone.cpp">
-							</File>
-							<File
-								RelativePath=".\FryupZone.h">
 							</File>
 						</Filter>
 					</Filter>

@@ -22,6 +22,7 @@ public:
 
 					CScriptZone			();
 	virtual			~CScriptZone		();
+	virtual void	reinit				();
 	virtual BOOL	net_Spawn			(LPVOID DC);
 	virtual void	spatial_register	();
 	virtual void	spatial_move		();

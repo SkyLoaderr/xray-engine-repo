@@ -58,7 +58,7 @@ class CLuaEffectorWrapper : public CLuaEffector {
 public:
 	luabind::object		m_tLuaBindObject;
 
-					CLuaEffectorWrapper	(luabind::object tLuaBindObject, int iType, float fTime) : CLuaEffector(iType, fTime), m_tLuaBindObject(tLuaBindObject)
+					CLuaEffectorWrapper	(const luabind::object &tLuaBindObject, int iType, float fTime) : CLuaEffector(iType, fTime), m_tLuaBindObject(tLuaBindObject)
 	{
 	}
 

@@ -74,3 +74,9 @@ IC	IWriter						&CAI_Space::lua_output		() const
 	VERIFY			(m_lua_output);
 	return			(*m_lua_output);
 }
+
+IC	lua_State					*CAI_Space::lua				() const
+{
+	VERIFY			(m_lua_virtual_machine);
+	return			(m_lua_virtual_machine);
+}

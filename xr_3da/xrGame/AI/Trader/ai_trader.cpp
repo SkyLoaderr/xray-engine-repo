@@ -16,7 +16,7 @@
 
 CAI_Trader::CAI_Trader()
 {
-	m_bPlaying						= false;
+	m_bPlaying					= false;
 
 	InitTrade();
 	Init();
@@ -27,11 +27,9 @@ CAI_Trader::CAI_Trader()
 
 CAI_Trader::~CAI_Trader()
 {
-	//xr_delete(m_trade);
-
-	if (m_tpOnStart)	xr_delete(m_tpOnStart);
-	if (m_tpOnStop)		xr_delete(m_tpOnStop);
-	if (m_tpOnTrade)	xr_delete(m_tpOnTrade);
+	xr_delete					(m_tpOnStart);
+	xr_delete					(m_tpOnStop);
+	xr_delete					(m_tpOnTrade);
 }
 
 void CAI_Trader::Load(LPCSTR section)
@@ -315,6 +313,10 @@ void CAI_Trader::reinit	()
 	CEntityAlive::reinit	();
 	CInventoryOwner::reinit	();
 	CScriptMonster::reinit	();
+
+	xr_delete				(m_tpOnStart);
+	xr_delete				(m_tpOnStop);
+	xr_delete				(m_tpOnTrade);
 }
 
 void CAI_Trader::reload	(LPCSTR section)
@@ -328,17 +330,17 @@ void CAI_Trader::reload	(LPCSTR section)
 void CAI_Trader::set_callback(const luabind::functor<void> &tpTradeCallback, bool bOnStart)
 {
 	if (bOnStart) {
-		xr_delete		(m_tpOnStart);
-		if (tpTradeCallback.is_valid())	 m_tpOnStart	= xr_new<luabind::functor<void> >(tpTradeCallback);
+		xr_delete(m_tpOnStart);
+		if (tpTradeCallback.is_valid()) m_tpOnStart	= xr_new<luabind::functor<void> >(tpTradeCallback);
 	} else {
-		xr_delete				(m_tpOnStop);
+		xr_delete(m_tpOnStop);
 		if (tpTradeCallback.is_valid()) m_tpOnStop		= xr_new<luabind::functor<void> >(tpTradeCallback);
 	}
 }
 
 void CAI_Trader::clear_callback(bool bOnStart)
 {
-	(bOnStart) ? m_tpOnStart = 0 : m_tpOnStop = 0;
+	xr_delete((bOnStart) ? m_tpOnStart : m_tpOnStop);
 }
 
 void CAI_Trader::OnStartTrade()
@@ -360,7 +362,7 @@ void CAI_Trader::set_trade_callback(const luabind::functor<void> &tpTradeCallbac
 
 void CAI_Trader::clear_trade_callback()
 {
-	m_tpOnTrade = 0;
+	xr_delete(m_tpOnTrade);
 }
 
 void CAI_Trader::OnTradeAction(CGameObject *O, bool bSell)

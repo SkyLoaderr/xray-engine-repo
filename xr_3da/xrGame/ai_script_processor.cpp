@@ -17,27 +17,7 @@ DEFINE_VECTOR(LPSTR,LPSTR_VECTOR,LPSTR_IT);
 CScriptProcessor::CScriptProcessor(LPCSTR caCaption, LPCSTR caScriptString)
 {
 	Msg				("* Initializing %s script processor",caCaption);
-
-	m_tpLuaVirtualMachine = lua_open();
-	if (!m_tpLuaVirtualMachine) {
-		Msg			("! ERROR : Cannot initialize script virtual machine!");
-		return;
-	}
-	// initialize lua standard library functions 
-	luaopen_base	(m_tpLuaVirtualMachine); 
-	luaopen_table	(m_tpLuaVirtualMachine);
-	luaopen_string	(m_tpLuaVirtualMachine);
-	luaopen_math	(m_tpLuaVirtualMachine);
-#ifdef DEBUG
-	luaopen_debug	(m_tpLuaVirtualMachine);
-//	lua_pop			(m_tpLuaVirtualMachine,5);
-#else
-//	lua_pop			(m_tpLuaVirtualMachine,4);
-#endif
-	lua_setgcthreshold	(m_tpLuaVirtualMachine,64);
-
-	Script::vfExportToLua(m_tpLuaVirtualMachine);
-
+	m_tpLuaVirtualMachine = ai().lua();
 	u32				N = _GetItemCount(caScriptString);
 	string256		I;
 	for (u32 i=0; i<N; ++i)
@@ -50,7 +30,6 @@ CScriptProcessor::~CScriptProcessor()
 	SCRIPT_IT		E = m_tpScripts.end();
 	for ( ; I != E; ++I)
 		xr_delete	(*I);
-	lua_close		(m_tpLuaVirtualMachine);
 }
 
 void CScriptProcessor::RunScripts()
