@@ -282,14 +282,12 @@ public:
 	}
 };
 
-DEFINE_VECTOR(_OBJECT_ID,_OBJECT_IDVec,_OBJECT_IDIt);
-
 class CALifeHuman : public CALifeMonster {
 public:
 	typedef	CALifeMonster inherited;
 	
-	_OBJECT_IDVec					m_tpItemIDs;
 	PERSONAL_EVENT_VECTOR			m_tpEvents;
+	OBJECT_VECTOR					m_tpItemIDs;
 	TASK_VECTOR						m_tpTaskIDs;
 
 	virtual	void					Save(CFS_Memory &tMemoryStream)
@@ -354,17 +352,17 @@ public:
 		m_tpTaskIDs.clear();
 	}
 };
-//
-//class CRemovePredicate {
-//	EVENT_MAP	*m_tpMap;
-//public:
-//	CRemovePredicate(EVENT_MAP &tpMap)
-//	{
-//		m_tpMap = &tpMap;
-//	};
-//
-//	operator < (const SPersonalEvent &tPersonalEvent)
-//	{
-//		return(m_tpMap->find(tPersonalEvent.tEventID) != m_tpMap->end());
-//	};
-//};
+
+class CRemovePredicate {
+	EVENT_MAP	*m_tpMap;
+public:
+	CRemovePredicate(EVENT_MAP &tpMap)
+	{
+		m_tpMap = &tpMap;
+	};
+
+	IC bool operator()(const SPersonalEvent &tPersonalEvent)  const
+	{
+		return(m_tpMap->find(tPersonalEvent.tEventID) == m_tpMap->end());
+	};
+};

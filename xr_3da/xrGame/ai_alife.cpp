@@ -423,8 +423,8 @@ void CAI_ALife::vfCheckForTheBattle(CALifeMonster	*tpALifeMonster)
 
 void CAI_ALife::vfCheckForDeletedEvents(CALifeHuman	*tpALifeHuman)
 {
-//	EVENT_PAIR_IT it = remove_if(tpALifeHuman->m_tpEvents.begin(),tpALifeHuman->m_tpEvents.end(),CRemovePredicate(m_tEventRegistry.m_tpMap));
-//	m_tEventRegistry.m_tpMap.erase(it,m_tEventRegistry.m_tpMap.end());
+	PERSONAL_EVENT_IT it = remove_if(tpALifeHuman->m_tpEvents.begin(),tpALifeHuman->m_tpEvents.end(),CRemovePredicate(m_tEventRegistry.m_tpMap));
+	tpALifeHuman->m_tpEvents.erase(it,tpALifeHuman->m_tpEvents.end());
 }
 
 void CAI_ALife::vfCheckForItems(CALifeHuman	*tpALifeHuman)
