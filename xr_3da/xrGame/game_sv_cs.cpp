@@ -172,15 +172,33 @@ BOOL	game_sv_CS::OnTouch			(u16 eid_who, u16 eid_what)
 			return true;
 		}
 
-		xrSE_Target_CS *l_pCSCask =  dynamic_cast<xrSE_Target_CSCask*>(e_what);
+		xrSE_Target_CSCask *l_pCSCask =  dynamic_cast<xrSE_Target_CSCask*>(e_what);
 		if(l_pCSCask) {
 			// Ѕочка
+			// ≈сли игрок на своей базе и у него есть м€ч
 			if((ps_who->flags&GAME_PLAYER_FLAG_CS_HAS_ARTEFACT) && (ps_who->flags&GAME_PLAYER_FLAG_CS_ON_BASE))		{
+				l_pMBall = NULL;									// ќтбираем у игрока м€ч
+				vector<u16>&	C			=	A->children;
+				for (u32 it=0; it<C.size(); it++) {
+					xrServerEntity* Et = S->ID_to_entity(C[it]);
+					if(l_pMBall =  dynamic_cast<xrSE_Target_CS*>(Et)) break;
+				}
+				R_ASSERT(l_pMBall);
+				S->Perform_transfer(l_pMBall, A, l_pCSCask);		//  ладем м€ч в бочку
 				ps_who->flags &= ~GAME_PLAYER_FLAG_CS_HAS_ARTEFACT;
 				teams[ps_who->team].num_targets++;
 				return false;
 			}
+			// ≈сли игрок на чужой базе и у него нет м€ча
 			if(!(ps_who->flags&GAME_PLAYER_FLAG_CS_HAS_ARTEFACT) && (ps_who->flags&GAME_PLAYER_FLAG_CS_ON_ENEMY_BASE))		{
+				l_pMBall = NULL;									// ƒостаем м€ч из бочки
+				vector<u16>&	C			=	l_pCSCask->children;
+				for (u32 it=0; it<C.size(); it++) {
+					xrServerEntity* Et = S->ID_to_entity(C[it]);
+					if(l_pMBall =  dynamic_cast<xrSE_Target_CS*>(Et)) break;
+				}
+				R_ASSERT(l_pMBall);
+				S->Perform_transfer(l_pMBall, A, l_pCSCask);		// ќтдаем игроку
 				ps_who->flags |= GAME_PLAYER_FLAG_CS_HAS_ARTEFACT;
 				teams[(ps_who->team+1)%2].num_targets--;
 				return false;
