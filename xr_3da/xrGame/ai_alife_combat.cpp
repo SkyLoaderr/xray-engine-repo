@@ -163,6 +163,12 @@ bool CSE_ALifeSimulator::bfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSche
 #endif
 	}
 
+	if (m_tCombatType == eCombatTypeMonsterAnomaly)
+		m_tCombatType = eCombatTypeAnomalyMonster;
+	else
+		if (m_tCombatType == eCombatTypeAnomalyMonster)
+			m_tCombatType = eCombatTypeMonsterAnomaly;
+
 	if (bfCheckObjectDetection(tpALifeSchedulable2,tpALifeSchedulable1)) {
 		if (!iCombatGroupIndex)
 			bMutualDetection		= true;
@@ -178,6 +184,12 @@ bool CSE_ALifeSimulator::bfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSche
 		Msg							("[LSS] %s didn't detect %s",tpALifeSchedulable2->s_name_replace,tpALifeSchedulable1->s_name_replace);
 #endif
 	}
+
+	if (m_tCombatType == eCombatTypeMonsterAnomaly)
+		m_tCombatType = eCombatTypeAnomalyMonster;
+	else
+		if (m_tCombatType == eCombatTypeAnomalyMonster)
+			m_tCombatType = eCombatTypeMonsterAnomaly;
 
 	if (iCombatGroupIndex < 0) {
 #ifdef OFFLINE_LOG
