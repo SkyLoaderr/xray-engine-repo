@@ -118,7 +118,6 @@ class "pp_linear_lerp" (effector)
 
 function pp_linear_lerp:__init(effector_type,start_time,life_time,start_power,dest_power) super(effector_type,start_time)
 	self.start_time = start_time
-	printf			("Fucken params  : %d,%d",start_time,life_time)
 	self.stop_time	= start_time + life_time
 	self.min_power	= start_power
 	self.max_power	= dest_power
