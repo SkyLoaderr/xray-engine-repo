@@ -93,6 +93,7 @@ void CSoundRender_Core::update	( const Fvector& P, const Fvector& D, const Fvect
 	// Update listener
 	if (pListener)
 	{
+		//static	Fvector		last_pos		= {0,0,0};
 		clamp								(dt,EPS_S,1.f/10.f);
 		Listener.vVelocity.sub				(P, Listener.vPosition );
 		Listener.vVelocity.div				(dt);
@@ -100,6 +101,8 @@ void CSoundRender_Core::update	( const Fvector& P, const Fvector& D, const Fvect
 		Listener.vVelocity.set				(0,0,0);
 		
 		Listener.vPosition.set				(P);
+		//last_pos							= P;
+
 		Listener.vOrientFront.set			(D);
 		Listener.vOrientTop.set				(N);
 		Listener.fDopplerFactor				= psSoundDoppler;

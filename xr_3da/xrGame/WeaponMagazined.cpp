@@ -468,7 +468,7 @@ void CWeaponMagazined::OnShot		()
 {
 	// Sound
 	UpdateFP();
-	Sound->play_at_pos			(sndShot,H_Root(),vLastFP);
+	sndShot.play_at_pos			(H_Root(),vLastFP);
 
 	// Camera
 	if (hud_mode)	
@@ -480,10 +480,10 @@ void CWeaponMagazined::OnShot		()
 	}
 	
 	// Animation
-	PlayAnimShoot();
-		
+	PlayAnimShoot		();
+	
 	// Shell Drop
-	OnShellDrop					();
+	OnShellDrop			();
 	
 	// Огонь из ствола
 	StartFlameParticles	();
