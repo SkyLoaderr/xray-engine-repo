@@ -112,6 +112,7 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 	if(!CanAccelerate()&&isAccelerated(mstate_real))
 	{
 		mstate_real				^=mcAccel; // toggle accel
+		mstate_real				^=mcSprint;// toogle sprint
 	};
 
 	if (this == Level().CurrentControlEntity())
