@@ -36,7 +36,7 @@ void CRender::Render	()
 	}
 	Device.Statistic.RenderDUMP.End			();
 
-	if (1)
+	if (ps_r2_ls_flags.test(R2FLAG_SUN))
 	{
 		for (u32 dls_phase=0; dls_phase<2; dls_phase++)
 		{

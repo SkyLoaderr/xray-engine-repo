@@ -29,4 +29,20 @@ void	CRenderTarget::phase_accumulator()
 	if (dwAccumulatorClearMark==Device.dwFrame)	return;
 	dwAccumulatorClearMark				= Device.dwFrame;
 	phase_accumulator_init				();
+
+	// Restore targets
+	RCache.set_RT						(rt_Accumulator->pRT,	0);
+	RCache.set_RT						(NULL,					1);
+	RCache.set_RT						(NULL,					2);
+	RCache.set_ZB						(HW.pBaseZB);
+
+	// Stencil	- draw only where stencil >= 0x1
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILENABLE,		TRUE				));
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFUNC,		D3DCMP_LESSEQUAL	));
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILREF,			0x01				));
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILMASK,		0xff				));
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILWRITEMASK,	0x00				));
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFAIL,		D3DSTENCILOP_KEEP	));
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILPASS,		D3DSTENCILOP_KEEP	));
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILZFAIL,		D3DSTENCILOP_KEEP	));
 }
