@@ -1030,14 +1030,12 @@
 								Name="VCCLCompilerTool"/>
 						</FileConfiguration>
 						<FileConfiguration
-							Name="Mixed|Win32"
-							ExcludedFromBuild="TRUE">
+							Name="Mixed|Win32">
 							<Tool
 								Name="VCCLCompilerTool"/>
 						</FileConfiguration>
 						<FileConfiguration
-							Name="Release|Win32"
-							ExcludedFromBuild="TRUE">
+							Name="Release|Win32">
 							<Tool
 								Name="VCCLCompilerTool"/>
 						</FileConfiguration>
