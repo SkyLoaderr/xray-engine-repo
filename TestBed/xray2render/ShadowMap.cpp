@@ -21,7 +21,8 @@ enum COMBINE_MODE
 #define SHADOW_MAP_SIZE		1024
 #define OUT_WIDTH			800
 #define OUT_HEIGHT			600
-#define OVERLAY_SIZE		256
+#define OVERLAY_WIDTH		400
+#define OVERLAY_HEIGHT		300
 #define DEPTH_RANGE			4.0f
 
 // 2D
@@ -310,8 +311,8 @@ HRESULT CMyD3DApplication::Render		()
 		RenderOverlay				();
 
 		// Output statistics
-		m_pFont->DrawText			(OVERLAY_SIZE + 12,  0, D3DCOLOR_ARGB(255,255,255,0), m_strFrameStats);
-		m_pFont->DrawText			(OVERLAY_SIZE + 12, 20, D3DCOLOR_ARGB(255,255,255,0), m_strDeviceStats);
+		m_pFont->DrawText			(OVERLAY_WIDTH + 12,  0, D3DCOLOR_ARGB(255,255,255,0), m_strFrameStats);
+		m_pFont->DrawText			(OVERLAY_WIDTH + 12, 20, D3DCOLOR_ARGB(255,255,255,0), m_strDeviceStats);
 
 		// End the scene.
 		m_pd3dDevice->EndScene		();
@@ -541,16 +542,16 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 	// Create overlay VB
 	m_pd3dDevice->CreateVertexBuffer(4 * sizeof(TVERTEX), D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &m_pOverlayVB, NULL);
 	m_pOverlayVB->Lock(0, 0, (void**)&pDstT, 0);
-	pDstT[0].p = D3DXVECTOR4(4.5f, 4.5f + OVERLAY_SIZE, 0.0f, 1.0f);
+	pDstT[0].p = D3DXVECTOR4(4.5f, 4.5f + OVERLAY_HEIGHT, 0.0f, 1.0f);
 	pDstT[0].tu = 0.0f;
 	pDstT[0].tv = 1.0f;
-	pDstT[1].p = D3DXVECTOR4(4.5f + OVERLAY_SIZE, 4.5f + OVERLAY_SIZE, 0.0f, 1.0f);
+	pDstT[1].p = D3DXVECTOR4(4.5f + OVERLAY_WIDTH, 4.5f + OVERLAY_HEIGHT, 0.0f, 1.0f);
 	pDstT[1].tu = 1.0f;
 	pDstT[1].tv = 1.0f;
 	pDstT[2].p = D3DXVECTOR4(4.5f, 4.5f, 0.0f, 1.0f);
 	pDstT[2].tu = 0.0f;
 	pDstT[2].tv = 0.0f;
-	pDstT[3].p = D3DXVECTOR4(4.5f + OVERLAY_SIZE, 4.5f, 0.0f, 1.0f);
+	pDstT[3].p = D3DXVECTOR4(4.5f + OVERLAY_WIDTH, 4.5f, 0.0f, 1.0f);
 	pDstT[3].tu = 1.0f;
 	pDstT[3].tv = 0.0f;
 	m_pOverlayVB->Unlock();
