@@ -58,14 +58,23 @@ bool CAI_Soldier::bfCheckIfCanKillMember()
 
 void CAI_Soldier::g_fireParams(Fvector &fire_pos, Fvector &fire_dir)
 {
-	//Weapons->GetFireParams(fire_pos, fire_dir);
 	if (Weapons->ActiveWeapon()) {
 		fire_pos.set(Weapons->ActiveWeapon()->Position());
-		fire_dir.set(eye_matrix.k);
-		SRotation sRotation;
-		mk_rotation(fire_dir,sRotation);
-		sRotation.yaw += 0*PI/180;
-		fire_dir.setHP(-sRotation.yaw,-sRotation.pitch*0);
+		/**
+		if ((tSavedEnemy) && (tSavedEnemy->g_Health() > 0)) {
+			Fvector fTemp;
+			fTemp.sub(tSavedEnemy->Position(),fire_pos);
+			fTemp.normalize_safe();
+			fire_dir.set(fTemp);
+		}
+		else
+			fire_dir.set(eye_matrix.k);
+		/**/
+			//fire_dir.set(eye_matrix.k);
+			//fire_dir.set(tWatchDirection);
+		/**/
+		fire_dir.setHP(-r_torso_current.yaw,-r_torso_current.pitch);
+		/**/
 	}
 }
 

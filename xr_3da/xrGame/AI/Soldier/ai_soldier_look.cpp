@@ -14,6 +14,8 @@
 #define	MAX_HEAD_TURN_ANGLE				(PI/3.f)
 #define MIN_SPINE_TURN_ANGLE			PI_DIV_6
 #define EYE_WEAPON_DELTA				(0*PI/30.f)
+#define WEAPON_DISTANCE					(.0925f)
+#define SQUARE_WEAPON_DISTANCE			(WEAPON_DISTANCE*WEAPON_DISTANCE)
 
 bool CAI_Soldier::bfCheckForVisibility(CEntity* tpEntity)
 {
@@ -96,7 +98,7 @@ void CAI_Soldier::SetLook(Fvector tPosition)
 {
 	Fvector tCurrentPosition = vPosition;
 	tWatchDirection.sub(tPosition,tCurrentPosition);
-	if (tWatchDirection.square_magnitude() > EPS_L) {
+	if (tWatchDirection.magnitude() > EPS_L) {
 		tWatchDirection.normalize();
 		mk_rotation(tWatchDirection,r_torso_target);
 		r_target.yaw = r_torso_target.yaw;
@@ -196,12 +198,24 @@ void CAI_Soldier::SetSmartLook(NodeCompressed *tNode, Fvector &tEnemyDirection)
 void CAI_Soldier::vfAimAtEnemy()
 {
 	Fvector	pos1, pos2;
+	if (!Enemy.Enemy)
+		return;
 	Enemy.Enemy->svCenter(pos1);
 	svCenter(pos2);
 	tWatchDirection.sub(pos1,pos2);
 	mk_rotation(tWatchDirection,r_torso_target);
 	r_target.yaw = r_torso_target.yaw;
-	r_torso_target.yaw -= 0*PI_DIV_6/2;
+	// turning model a bit more for precise weapon shooting
+	if (tWatchDirection.magnitude() > EPS_L) {
+		m_fAddWeaponAngle = SQUARE_WEAPON_DISTANCE/tWatchDirection.magnitude();
+		clamp(m_fAddWeaponAngle,-.99999f,+.99999f);
+		m_fAddWeaponAngle = asinf(m_fAddWeaponAngle);
+	}
+	else
+		m_fAddWeaponAngle = 0;
+	
+	r_torso_target.yaw -= m_fAddWeaponAngle - 0*PI/180;
+
 	ASSIGN_SPINE_BONE;
 	//r_torso_target.yaw = r_torso_target.yaw - 2*PI_DIV_6;//EYE_WEAPON_DELTA;
 	//q_look.o_look_speed=_FB_look_speed;

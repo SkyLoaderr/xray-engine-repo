@@ -862,8 +862,7 @@
 						Name="Debug|Win32"
 						ExcludedFromBuild="TRUE">
 						<Tool
-							Name="VCCLCompilerTool"
-							CallingConvention="2"/>
+							Name="VCCLCompilerTool"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Mixed|Win32"
@@ -882,61 +881,6 @@
 					RelativePath="tri-colliderKNoOPC\dcTriListCollider.h"/>
 				<File
 					RelativePath="tri-colliderKNoOPC\dxTriList.h"/>
-			</Filter>
-			<Filter
-				Name="dRay"
-				Filter="">
-				<File
-					RelativePath="dRay\dRay.cpp">
-					<FileConfiguration
-						Name="Debug|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							CallingConvention="2"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="dRay\Include\dRay.h">
-				</File>
-				<File
-					RelativePath="dRay\dRay_Box.cpp">
-					<FileConfiguration
-						Name="Debug|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							CallingConvention="2"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="dRay\dRay_CCylinder.cpp">
-					<FileConfiguration
-						Name="Debug|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							CallingConvention="2"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="dRay\dRay_Plane.cpp">
-					<FileConfiguration
-						Name="Debug|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							CallingConvention="2"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="dRay\dRay_Sphere.cpp">
-					<FileConfiguration
-						Name="Debug|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							CallingConvention="2"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="dRay\dxRay.h">
-				</File>
 			</Filter>
 		</Filter>
 		<File

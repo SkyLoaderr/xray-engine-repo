@@ -710,8 +710,8 @@ void CAI_Soldier::OnRecharge()
 
 	CHECK_IF_GO_TO_PREV_STATE((Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() == Weapons->ActiveWeapon()->GetAmmoMagSize()))
 	
-	//CHECK_IF_SWITCH_TO_NEW_STATE((Weapons->ActiveWeapon()) && (!(Weapons->ActiveWeapon()->GetAmmoCurrent())),aiSoldierNoWeapon)
-	CHECK_IF_GO_TO_PREV_STATE((Weapons->ActiveWeapon()) && (!(Weapons->ActiveWeapon()->GetAmmoCurrent())))
+	CHECK_IF_SWITCH_TO_NEW_STATE((Weapons->ActiveWeapon()) && (!(Weapons->ActiveWeapon()->GetAmmoCurrent())),aiSoldierNoWeapon)
+	//CHECK_IF_GO_TO_PREV_STATE((Weapons->ActiveWeapon()) && (!(Weapons->ActiveWeapon()->GetAmmoCurrent())))
 	
 	SelectEnemy(Enemy);
 
@@ -725,12 +725,14 @@ void CAI_Soldier::OnRecharge()
 	
 	vfInitSelector(SelectorReload,Squad,Leader);
 
+	/**
 	if (Enemy.Enemy) {
 		if (AI_Path.bNeedRebuild)
 			vfBuildPathToDestinationPoint(0);
 		else
 			vfSearchForBetterPosition(SelectorReload,Squad,Leader);
 	}
+	/**/
 	
 	SetDirectionLook();
 	
@@ -799,7 +801,7 @@ void CAI_Soldier::OnLookingOver()
 	
 //	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime),aiSoldierPatrolUnderFire)
 	
-	/**
+	/**/
 	for (int i=0; i<tpaDynamicSounds.size(); i++)
 		if (tpaDynamicSounds[i].dwTime > m_dwLastUpdate) {
 			SelectSound(m_iSoundIndex);
@@ -808,24 +810,11 @@ void CAI_Soldier::OnLookingOver()
 		}
 	/**/
 
-	if (Enemy.Enemy)
-		Msg("Visiblity : %d",bfCheckForEntityVisibility(Enemy.Enemy));
-	else
-		Msg("No enemies");
-
-	if (AI_Path.TravelPath.size() == 0) {
-		CTravelNode tTravelNode;
-		tTravelNode.floating = FALSE;
-		tTravelNode.P.set(vPosition);
-		AI_Path.TravelPath.push_back(tTravelNode);
-		tTravelNode.P.set(vPosition.x,vPosition.y,vPosition.z + 1);
-		AI_Path.TravelPath.push_back(tTravelNode);
-		AI_Path.TravelStart = 0;
-	}
-	
 	SET_LOOK_FIRE_MOVEMENT(false, BODY_STATE_STAND,m_fMinSpeed)
 
-	//SetLessCoverLook(AI_Node);
+	r_torso_target.yaw = r_torso_target.yaw + PI - PI/180;
+	r_torso_target.pitch = -PI_DIV_4*0;
+	r_torso_speed = PI_DIV_4;
 }
 
 void CAI_Soldier::OnPatrolReturn()
@@ -1295,7 +1284,7 @@ void CAI_Soldier::OnAttackFireAlone()
 	
 	CHECK_IF_SWITCH_TO_NEW_STATE((Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() == 0),aiSoldierRecharge)
 
-	CHECK_IF_SWITCH_TO_NEW_STATE(!bfCheckForEntityVisibility(Enemy.Enemy) && (vPosition.distance_to(Enemy.Enemy->Position()) > 5.f),aiSoldierSteal);
+	//CHECK_IF_SWITCH_TO_NEW_STATE(!bfCheckForEntityVisibility(Enemy.Enemy) && (vPosition.distance_to(Enemy.Enemy->Position()) > 5.f),aiSoldierSteal);
 
 	AI_Path.TravelPath.clear();
 	
@@ -1360,7 +1349,7 @@ void CAI_Soldier::OnSteal()
 	
 	vfSetFire(false,Group);
 	
-	vfSetMovementType(BODY_STATE_STAND,m_fMaxSpeed);
+	vfSetMovementType(BODY_STATE_STAND,m_fMinSpeed);
 }
 
 void CAI_Soldier::Think()

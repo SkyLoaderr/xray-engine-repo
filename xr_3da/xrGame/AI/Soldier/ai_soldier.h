@@ -283,6 +283,7 @@ class CAI_Soldier : public CCustomMonster
 		bool			m_bFiring;
 		DWORD			m_dwStartFireAmmo;
 		DWORD			m_dwNoFireTime;
+		float			m_fAddWeaponAngle;
 		
 		// fire  constants
 		DWORD			m_dwFireRandomMin;
