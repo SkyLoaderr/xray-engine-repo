@@ -164,24 +164,24 @@ void CAI_Stalker::Load				(LPCSTR section)
 
 	// skeleton physics
 	m_pPhysics_support->in_Load		(section);
-	
-	if (pSettings->line_exist(section,"State"))
-		m_demo_mode					= pSettings->r_u32(section,"State") != u32(-1);
+	m_demo_mode						= false;
 }
 
 BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 {
+	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
+	CSE_ALifeHumanStalker			*tpHuman = smart_cast<CSE_ALifeHumanStalker*>(e);
+	R_ASSERT						(tpHuman);
+	m_demo_mode						= !!tpHuman->m_demo_mode;
+
 	if (!inherited::net_Spawn(DC) || 
 		!CObjectHandler::net_Spawn(DC) ||
 		!CStalkerMovementManager::net_Spawn(DC)
 		)
 		return						(FALSE);
 
-	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
 	m_pPhysics_support->in_NetSpawn	(e);
 	
-	CSE_ALifeHumanAbstract			*tpHuman = smart_cast<CSE_ALifeHumanAbstract*>(e);
-	R_ASSERT						(tpHuman);
 	m_dwMoney						= tpHuman->m_dwMoney;
 
 	animation_manager().reload		(this);
