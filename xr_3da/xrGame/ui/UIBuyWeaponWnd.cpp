@@ -2015,6 +2015,24 @@ void CUIBuyWeaponWnd::SetMoneyAmount(int moneyAmount)
 
 //////////////////////////////////////////////////////////////////////////
 
+bool CUIBuyWeaponWnd::CanBuyAllItems()
+{
+	for (int i = 0; i < MP_SLOTS_NUM; ++i)
+	{
+		for (DRAG_DROP_LIST_it it = UITopList[i].GetDragDropItemsList().begin();
+			 it != UITopList[i].GetDragDropItemsList().end(); ++it)
+		{
+			if (cUnableToBuy == (*it)->GetColor())
+				return false;
+		}
+	}
+
+	return true;
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+
 int CUIBuyWeaponWnd::GetMoneyAmount() const
 {
 	if (!m_bIgnoreMoney)
