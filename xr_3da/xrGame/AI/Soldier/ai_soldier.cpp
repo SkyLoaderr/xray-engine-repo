@@ -127,7 +127,7 @@ void CAI_Soldier::Load(CInifile* ini, const char* section)
 
 		m_iCurrentPoint = 0;
 		AI_Path.bNeedRebuild = TRUE;
-		vfCreateRealisticPath(tpaPatrolPoints, dwaPatrolNodes, tpaPatrolPath,3);
+		//vfCreateRealisticPath(tpaPatrolPoints, dwaPatrolNodes, tpaPatrolPath,3);
 	}
 }
 
@@ -197,7 +197,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 					S = AState->back;
 		}
 	}
-	if (S!=m_current){ 
+	if (S!=m_current) { 
 		m_current = S;
 		if (S) PKinematics(pVisual)->PlayCycle(S);
 	}

@@ -390,10 +390,6 @@ void CAI_Soldier::vfCreateRealisticPath(vector<Fvector> &tpaPoints, vector<DWORD
 			tTravelNode.floating = FALSE;
 			tpaPath.push_back(tTravelNode);
 		}
-		else
-			if (iCurrentPatrolPoint == 2) {
-				iCurrentPatrolPoint = iCurrentPatrolPoint;
-			}
 
 		dwCurNode = dwStartNode;
 		tPrevPoint = tStartPoint;
@@ -418,11 +414,6 @@ void CAI_Soldier::vfCreateRealisticPath(vector<Fvector> &tpaPoints, vector<DWORD
 					break;
 				}
 			}
-/*
-			if (i>=iCount) {
-				i=i;
-			}
-*/
 			R_ASSERT(i<iCount);
 		}
 		while (dwCurNode != dwFinishNode);
@@ -454,6 +445,7 @@ void CAI_Soldier::vfCreateRealisticPath(vector<Fvector> &tpaPoints, vector<DWORD
 				//tCurrentPosition = tPrevPoint;
 				tCurrentPosition.sub(tCircleCentre);
 				tCurrentPosition.normalize();
+				clamp(tCurrentPosition.x,-0.9999999f,0.9999999f);
 				if (tCurrentPosition.z > 0)
 					fAlpha = acosf(tCurrentPosition.x);
 				else
@@ -596,10 +588,10 @@ void CAI_Soldier::FollowLeaderPatrol()
 		return;
 	}
 
-	if (Leader == this) {
+	//if (Leader == this) {
 		eCurrentState = aiSoldierPatrolDetour;
 		return;
-	}
+	//}
 
 	SetLessCoverLook(AI_Node);
 	
@@ -734,10 +726,12 @@ void CAI_Soldier::Patrol()
 		}
 	}
 	else
-		if (!(AI_Path.fSpeed)) {
+		if ((!(AI_Path.fSpeed)) || (AI_Path.TravelStart == AI_Path.TravelPath.size() - 1)) {
 			
-			m_iCurrentPoint = m_iCurrentPoint == dwaPatrolNodes.size() - 1 ? 0 : m_iCurrentPoint + 1;
+			m_iCurrentPoint = 0;
 			
+			vfCreateRealisticPath(tpaPatrolPoints, dwaPatrolNodes, tpaPatrolPath,::Random.randF(2,4));
+
 			AI_Path.TravelPath.resize(tpaPatrolPath.size());
 
 			for (int i=0; i<tpaPatrolPath.size(); i++)
