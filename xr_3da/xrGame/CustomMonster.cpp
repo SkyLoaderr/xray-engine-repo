@@ -104,8 +104,8 @@ void CCustomMonster::Load		(LPCSTR section)
 	m_iHealth = pSettings->ReadINT(section,"health");
 
 	// Sheduler
-	dwMinUpdate	= 25;
-	dwMaxUpdate	= 3 * NET_Latency / 4;
+	dwMinUpdate	= 50;
+	dwMaxUpdate	= 1000; // 30 * NET_Latency / 4;
 
 	//
 }

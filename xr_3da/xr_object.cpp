@@ -72,8 +72,6 @@ CObject::CObject		( )
 
 	NameObject					= 0;
 	NameSection					= 0;
-	dwMinUpdate					= 20;
-	dwMaxUpdate					= 500;
 
 	net_Ready					= FALSE;
 	

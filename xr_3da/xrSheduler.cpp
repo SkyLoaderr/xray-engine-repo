@@ -8,7 +8,7 @@ ENGINE_API float	psUpdateFar	= 200.f;
 CSheduled::CSheduled()	
 {
 	dwMinUpdate	= 20;
-	dwMaxUpdate	= 500;
+	dwMaxUpdate	= 1000;
 	dwTimeStamp = 0;
 	pCreator->Objects.sheduled.Register(this);
 }
