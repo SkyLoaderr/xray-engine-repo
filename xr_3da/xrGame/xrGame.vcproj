@@ -2397,6 +2397,12 @@
 									RelativePath=".\ai\Monsters\States\state_hide_from_point_inline.h">
 								</File>
 								<File
+									RelativePath=".\ai\Monsters\States\state_move_around_point.h">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\States\state_move_around_point_inline.h">
+								</File>
+								<File
 									RelativePath=".\ai\Monsters\States\state_move_to_point.h">
 								</File>
 								<File
@@ -8389,9 +8395,6 @@
 				</File>
 				<File
 					RelativePath=".\m_stalker.ltx">
-				</File>
-				<File
-					RelativePath=".\M_Zombie.ltx">
 				</File>
 				<File
 					RelativePath=".\M_Zombie.ltx">

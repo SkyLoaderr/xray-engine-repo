@@ -143,7 +143,7 @@ void	CInventoryOwner::save	(NET_Packet &output_packet)
 	else
 		output_packet.w_u8((u8)inventory().GetActiveSlot());
 
-	output_packet.w_u16((u16)CharacterInfo().m_iStartDialog);
+	output_packet.w_s16((s16)CharacterInfo().m_iStartDialog);
 }
 void	CInventoryOwner::load	(IReader &input_packet)
 {
@@ -153,7 +153,7 @@ void	CInventoryOwner::load	(IReader &input_packet)
 	else
 		inventory().SetActiveSlot(active_slot);
 
-	CharacterInfo().m_iStartDialog = input_packet.r_u16();
+	CharacterInfo().m_iStartDialog = input_packet.r_s16();
 }
 
 
