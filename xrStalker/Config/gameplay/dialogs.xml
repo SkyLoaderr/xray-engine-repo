@@ -21,7 +21,7 @@
 	</phrase_list>
     </dialog>
     
-	<dialog id="general_pda_talk" pda="1">
+	<dialog id="general_pda_talk" pda="1" actor="0">
 	<precondition>dialogs.is_bad_relation</precondition>
 	<phrase_list>
 	   	<phrase id="0">

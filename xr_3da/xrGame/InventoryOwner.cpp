@@ -115,7 +115,8 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 
 
 		CAI_PhraseDialogManager* dialog_manager = smart_cast<CAI_PhraseDialogManager*>(this);
-		if(dialog_manager && CharacterInfo().StartDialog() != NO_PHRASE_DIALOG)
+		if(dialog_manager && dialog_manager->GetStartDialog() == NULL &&
+			CharacterInfo().StartDialog() != NO_PHRASE_DIALOG)
 		{
 			PHRASE_DIALOG_ID dialog_id = CPhraseDialog::IndexToId(CharacterInfo().StartDialog());
 			dialog_manager->SetStartDialog(dialog_id);

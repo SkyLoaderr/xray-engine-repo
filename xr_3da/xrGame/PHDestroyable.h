@@ -2,6 +2,7 @@
 #define PH_DESTROYABLE
 
 class CPhysicsShellHolder;
+class CSE_Abstract;
 
 class CPHDestroyable
 {

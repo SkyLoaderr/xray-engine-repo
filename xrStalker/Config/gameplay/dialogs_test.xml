@@ -9,14 +9,13 @@
             </phrase>
             <phrase id="1">
                 <next>2</next>
+                <next>3</next>
             </phrase>
             <phrase id="2">
 				<text>Fraza1</text>
-                <next>3</next>
             </phrase>
             <phrase id="3">
 				<text>Fraza2</text>
-                <next>4</next>
             </phrase>
         </phrase_list>
     </dialog>
