@@ -81,6 +81,29 @@
 		<actor_dialog>escape_lager_hlam_talk_people</actor_dialog>
 	</specific_character>
 
+	<specific_character id="stalker_esc_tutorial_wounded" team_default = "1">
+		<name>Неизвестный новичок</name>
+		<icon x="24" y="2"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Просто сталкер.</bio>
+
+		<class>stalker_esc_tutorial_wounded</class>
+		<community>stranger</community>
+		
+		<rank>20</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\novice\green_stalker_1</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pb \n
+			ammo_9x18_fmj = 1 \n
+			device_torch \n
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>tutorial_wounded_give_medkit</actor_dialog>
+	</specific_character>
 <!---------------------------STALKER NOVICE----------------------->
 	<specific_character id="stalker_novice_default1" team_default = "1">
 		<name>Неизвестный новичок</name>

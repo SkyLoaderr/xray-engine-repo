@@ -204,4 +204,9 @@
 	<character id="stalker_escape_fox">
 		<class>stalker_esc_fox</class>
 	</character>	
+
+	<character id="stalker_escape_tutorial_wounded">
+		<class>stalker_esc_tutorial_wounded</class>
+	</character>	
+	
 </xml>

@@ -489,18 +489,6 @@
     <string id="escape_trader_talk_level_51">
         <text>От ты нудный. Ну ферма как ферма. Свиньи там еще до перестройки передохли.</text>
     </string>
-    <string id="tutorial_wounded_0">
-        <text>Брат, поделись аптечкой, помираю!</text>
-    </string>
-    <string id="tutorial_wounded_1">
-        <text>Конечно, об чем речь.</text>
-    </string>
-    <string id="tutorial_wounded_11">
-        <text>Спасибо, брат! Обратись к Волку в лагере около торговца, ты можешь быть ему полезен.</text>
-    </string>
-    <string id="tutorial_wounded_3">
-        <text>Не, нету.</text>
-    </string>
     <string id="tutorial_wounded_give_medkit_0">
         <text>Ты как, живой?</text>
     </string>

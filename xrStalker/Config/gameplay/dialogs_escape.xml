@@ -535,65 +535,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="tutorial_wounded">
-        <precondition>escape_dialog.wounded_need_help</precondition>
-        <phrase_list>
-            <phrase id="11">
-                <text>tutorial_wounded_11</text>
-            </phrase>
-            <phrase id="3">
-                <text>tutorial_wounded_3</text>
-                <action>dialogs.break_dialog</action>
-            </phrase>
-            <phrase id="1">
-                <text>tutorial_wounded_1</text>
-                <precondition>dialogs.medikit_yes</precondition>
-                <action>dialogs.transfer_medikit2</action>
-                <give_info>tutorial_wounded_help</give_info>
-                <next>11</next>
-            </phrase>
-            <phrase id="0">
-                <text>tutorial_wounded_0</text>
-                <next>1</next>
-                <next>3</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="tutorial_wounded_give_medkit">
-        <phrase_list>
-            <phrase id="3">
-                <text>tutorial_wounded_give_medkit_3</text>
-                <next>31</next>
-            </phrase>
-            <phrase id="31">
-                <text>tutorial_wounded_give_medkit_31</text>
-            </phrase>
-            <phrase id="4">
-                <text>tutorial_wounded_give_medkit_4</text>
-                <next>41</next>
-            </phrase>
-            <phrase id="41">
-                <text>tutorial_wounded_give_medkit_41</text>
-            </phrase>
-            <phrase id="1">
-                <text>tutorial_wounded_give_medkit_1</text>
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
-            </phrase>
-            <phrase id="2">
-                <text>tutorial_wounded_give_medkit_2</text>
-                <next>21</next>
-            </phrase>
-            <phrase id="21">
-                <text>tutorial_wounded_give_medkit_21</text>
-            </phrase>
-            <phrase id="0">
-                <text>tutorial_wounded_give_medkit_0</text>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="escape_trader_talk_info">
         <phrase_list>
             <phrase id="1">
@@ -934,25 +875,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="escape_factory_assault_hello">
-        <phrase_list>
-            <phrase id="3">
-                <text>escape_factory_assault_hello_3</text>
-            </phrase>
-            <phrase id="2">
-                <text>escape_factory_assault_hello_2</text>
-            </phrase>
-            <phrase id="1">
-                <text></text>
-                <next>2</next>
-                <next>3</next>
-            </phrase>
-            <phrase id="0">
-                <text></text>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="escape_trader_done_artefact" priority="9">
         <precondition>escape_dialog.have_artefact_from_fleshes</precondition>
         <dont_has_info>escape_artefact_done</dont_has_info>
@@ -971,7 +893,7 @@
     </dialog>
     <dialog id="escape_trader_done_gift">
         <has_info>escape_stalker_give</has_info>
-        <precondition>escape_dialog.have_fox_info</precondition>        
+        <precondition>escape_dialog.have_fox_info</precondition>
         <phrase_list>
             <phrase id="11">
                 <text>escape_trader_done_gift_11</text>
@@ -992,6 +914,63 @@
                 <text>escape_trader_done_gift_0</text>
                 <action>escape_dialog.give_fox_info</action>
                 <give_info>escape_stalker_done</give_info>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="escape_factory_assault_hello">
+        <phrase_list>
+            <phrase id="3">
+                <text>escape_factory_assault_hello_3</text>
+            </phrase>
+            <phrase id="2">
+                <text>escape_factory_assault_hello_2</text>
+            </phrase>
+            <phrase id="1">
+                <text></text>
+                <next>2</next>
+                <next>3</next>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="tutorial_wounded_give_medkit">
+        <phrase_list>
+            <phrase id="41">
+                <text>tutorial_wounded_give_medkit_41</text>
+            </phrase>
+            <phrase id="4">
+                <text>tutorial_wounded_give_medkit_4</text>
+                <next>41</next>
+            </phrase>
+            <phrase id="21">
+                <text>tutorial_wounded_give_medkit_21</text>
+            </phrase>
+            <phrase id="31">
+                <text>tutorial_wounded_give_medkit_31</text>
+            </phrase>
+            <phrase id="3">
+                <text>tutorial_wounded_give_medkit_3</text>
+                <next>31</next>
+            </phrase>
+            <phrase id="2">
+                <text>tutorial_wounded_give_medkit_2</text>
+                <precondition>dialogs.medikit_yes</precondition>
+                <action>dialogs.transfer_medikit2</action>
+                <give_info>tutorial_wounded_help</give_info>
+                <next>21</next>
+            </phrase>
+            <phrase id="1">
+                <text>tutorial_wounded_give_medkit_1</text>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+            </phrase>
+            <phrase id="0">
+                <text>tutorial_wounded_give_medkit_0</text>
                 <next>1</next>
             </phrase>
         </phrase_list>
