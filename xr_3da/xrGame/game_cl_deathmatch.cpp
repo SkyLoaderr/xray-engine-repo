@@ -7,6 +7,8 @@
 #include "level.h"
 #include "xr_level_controller.h"
 #include "clsid_game.h"
+#include "actor.h"
+#include "ui/UIMainIngameWnd.h"
 
 #define	TEAM0_MENU		"deathmatch_team0"
 
@@ -342,7 +344,7 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 				string16	tmp;
 				_itoa(P->money_for_round, tmp, 10);
 				shared_str PMoney(tmp);
-				HUD().GetUI()->UIMainIngameWnd.ChangeTotalMoneyIndicator(PMoney);
+				HUD().GetUI()->UIMainIngameWnd->ChangeTotalMoneyIndicator(PMoney);
 
 				if (P->money_for_round != m_iCurrentPlayersMoney)
 				{
@@ -354,7 +356,7 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 
 					PMoney._set(tmp);
 
-					HUD().GetUI()->UIMainIngameWnd.DisplayMoneyChange(PMoney);
+					HUD().GetUI()->UIMainIngameWnd->DisplayMoneyChange(PMoney);
 
 					m_iCurrentPlayersMoney = P->money_for_round;
 				};

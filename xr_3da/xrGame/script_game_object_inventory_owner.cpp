@@ -27,6 +27,7 @@
 #include "movement_manager.h"
 #include "actorcondition.h"
 #include "level_navigation_graph.h"
+#include "ui/UIMainIngameWnd.h"
 
 bool CScriptGameObject::GiveInfoPortion(LPCSTR info_id)
 {
@@ -48,7 +49,7 @@ bool CScriptGameObject::DisableInfoPortion(LPCSTR info_id)
 void  CScriptGameObject::SetNewsShowTime	(LPCSTR news, int show_time)
 {
 	if(HUD().GetUI())
-		HUD().GetUI()->UIMainIngameWnd.SetDelayForPdaMessage(CStringTable().IndexById(news), show_time);
+		HUD().GetUI()->UIMainIngameWnd->SetDelayForPdaMessage(CStringTable().IndexById(news), show_time);
 }
 bool  CScriptGameObject::GiveGameNews		(LPCSTR news, LPCSTR texture_name, int x1, int y1, int x2, int y2, u32 delay)
 {

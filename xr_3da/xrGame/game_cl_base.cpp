@@ -6,6 +6,7 @@
 #include "script_engine.h"
 #include "script_space.h"
 #include "xr_Level_controller.h"
+#include "ui/UIMainIngameWnd.h"
 
 game_cl_GameState::game_cl_GameState()
 {
@@ -240,7 +241,7 @@ ClientID game_cl_GameState::GetClientIDByOrderID	(u32 idx)
 void game_cl_GameState::CommonMessageOut (LPCSTR msg)
 {
 	if (!HUD().GetUI()) return;
-	HUD().GetUI()->UIMainIngameWnd.AddGameMessage(msg, -1, 60000);
+	HUD().GetUI()->UIMainIngameWnd->AddGameMessage(msg, -1, 60000);
 }
 
 float game_cl_GameState::shedule_Scale		()

@@ -10,15 +10,15 @@
 #include "actor.h"
 #include "level.h"
 #include "game_cl_base.h"
-
+#include "ui/UIMainIngameWnd.h"
 
 #define MSGS_OFFS 510
 
 //--------------------------------------------------------------------
 CUI::CUI(CHUDManager* p)
 {
-
-	UIMainIngameWnd.Init();
+	UIMainIngameWnd	= xr_new<CUIMainIngameWnd>	();
+	UIMainIngameWnd->Init						();
 
 	m_Parent		= p;
 	pUIGame			= 0;
@@ -35,7 +35,7 @@ CUI::~CUI()
 	for (UIMsgIt it=messages.begin(); messages.end() != it; ++it)
 		xr_delete(*it);
 	xr_delete(pUIGame);
-
+	xr_delete(UIMainIngameWnd);
 }
 
 //--------------------------------------------------------------------
@@ -67,12 +67,11 @@ void CUI::UIOnFrame()
 		//update windows
 		if(m_bShowIndicators)
 		{
-			UIMainIngameWnd.SetFont(m_Parent->Font().pFontMedium);
-			UIMainIngameWnd.Update();
+			UIMainIngameWnd->SetFont(m_Parent->Font().pFontMedium);
+			UIMainIngameWnd->Update	();
 		}
-			
-
 	}
+
 	// out GAME-style depend information
 	if (pUIGame) pUIGame->OnFrame	();
 
@@ -116,9 +115,9 @@ bool CUI::Render()
 	{
 		//Draw main window and its children
 		if(m_bShowIndicators)
-			UIMainIngameWnd.Draw();
+			UIMainIngameWnd->Draw();
 		else
-			UIMainIngameWnd.DrawPdaMessages();
+			UIMainIngameWnd->DrawPdaMessages();
 		//render cursor only when it visible
 		if(GetUICursor()->IsVisible())
             GetUICursor()->Render();
@@ -140,7 +139,7 @@ bool	CUI::IR_OnMouseWheel			(int direction)
 //--------------------------------------------------------------------
 bool CUI::IR_OnKeyboardPress(int dik)
 {
-	if(UIMainIngameWnd.OnKeyboardPress(dik))
+	if(UIMainIngameWnd->OnKeyboardPress(dik))
 		return true;
 
 	if ( MainInputReceiver()&&MainInputReceiver()->IR_OnKeyboardPress(dik)) 

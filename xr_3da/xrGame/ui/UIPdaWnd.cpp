@@ -10,6 +10,7 @@
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
 #include "UIJobItem.h"
+#include "UIInventoryUtilities.h"
 
 #include "../HUDManager.h"
 #include "../level.h"

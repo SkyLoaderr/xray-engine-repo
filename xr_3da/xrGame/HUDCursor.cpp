@@ -21,6 +21,9 @@
 #include "character_info.h"
 
 #include "string_table.h"
+#include "entity_alive.h"
+
+#include "inventory_item.h"
 
 #define C_ON_ENEMY		D3DCOLOR_XRGB(0xff,0,0)
 #define C_ON_NEUTRAL	D3DCOLOR_XRGB(0xff,0xff,0xff)
@@ -111,9 +114,10 @@ void CHUDCursor::CursorOnFrame ()
 
 }
 
+extern ENGINE_API BOOL g_bRendering; 
 void CHUDCursor::Render()
 {
-	VERIFY(g_bRendering);
+	VERIFY		(g_bRendering);
 	Fvector		p1,p2,dir;
 
 	CObject*	O		= Level().CurrentEntity();

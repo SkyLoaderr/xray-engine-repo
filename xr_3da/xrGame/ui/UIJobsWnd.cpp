@@ -10,13 +10,15 @@
 #include "UIXmlInit.h"
 #include "UIPdaWnd.h"
 #include "UIJobItem.h"
-#include "../GameTask.h"
 #include "UIStatsWnd.h"
+#include "UIInventoryUtilities.h"
 
+#include "../GameTask.h"
 #include "../Level.h"
 #include "../HUDManager.h"
 #include "../string_table.h"
 #include "../alife_registry_wrappers.h"
+#include "../actor.h"
 
 //////////////////////////////////////////////////////////////////////////
 

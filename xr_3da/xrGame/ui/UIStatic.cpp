@@ -5,6 +5,8 @@
 
 #include "stdafx.h"
 #include "uistatic.h"
+#include "uixmlinit.h"
+#include "uiframewindow.h"
 #include "../HUDManager.h"
 #include "../../LightAnimLibrary.h"
 
@@ -519,11 +521,10 @@ void CUIStatic::SetMask(CUIFrameWindow *pMask)
 
 	if (m_pMask)
 	{
-		AttachChild(m_pMask);
-		Irect r		= GetWndRect();
-
-		m_pMask->SetWidth(r.right - r.left);
-		m_pMask->SetHeight(r.bottom - r.top);
+		AttachChild			(m_pMask);
+		Irect r				= GetWndRect();
+		m_pMask->SetWidth	(r.right - r.left);
+		m_pMask->SetHeight	(r.bottom - r.top);
 	}
 }
 

@@ -16,6 +16,7 @@
 #include "../level.h"
 #include "../string_table.h"
 #include "../alife_registry_wrappers.h"
+#include "../actor.h"
 
 //////////////////////////////////////////////////////////////////////////
 

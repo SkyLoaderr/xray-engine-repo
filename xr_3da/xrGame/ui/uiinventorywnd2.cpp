@@ -17,6 +17,8 @@
 #include "../string_table.h"
 #include "../actorcondition.h"
 #include "../actor_defs.h"
+#include "../actor.h"
+#include "UIMainIngameWnd.h"
 
 using namespace InventoryUtilities;
 
@@ -319,7 +321,7 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		if(GameID() != GAME_SINGLE)
 			return;
 
-		EActorSleep result = pActor->conditions().GoSleep(*reinterpret_cast<u32*>(pData));
+		ACTOR_DEFS::EActorSleep result = pActor->conditions().GoSleep(*reinterpret_cast<u32*>(pData));
 		LPCSTR sleep_msg = NULL;
 		switch(result)
 		{
@@ -332,7 +334,7 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		}
 
 		if(sleep_msg)
-			HUD().GetUI()->UIMainIngameWnd.AddInfoMessage(sleep_msg);
+			HUD().GetUI()->UIMainIngameWnd->AddInfoMessage(sleep_msg);
 
 		Game().StartStopMenu(this,true);
 	}

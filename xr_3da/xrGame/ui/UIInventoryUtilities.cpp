@@ -16,9 +16,11 @@
 #include "../date_time.h"
 #include "../string_table.h"
 #include "../Inventory.h"
+#include "../InventoryOwner.h"
 
 #include "../InfoPortion.h"
 #include "../game_base_space.h"
+#include "../actor.h"
 
 //////////////////////////////////////////////////////////////////////////
 

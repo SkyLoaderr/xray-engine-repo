@@ -2,7 +2,7 @@
 
 #include "UICursor.h"
 
-#include "ui\UIMainIngameWnd.h"
+//#include "ui\UIMainIngameWnd.h"
 #include "UIDialogHolder.h"
 
 #define UI_BASE_WIDTH	1024
@@ -12,7 +12,7 @@
 class CHUDManager;
 class CWeapon;
 class CUIGameCustom;
-//class CUIDialogWnd;
+class CUIMainIngameWnd;
 
 #define MAX_GROUPS		10
 #define MAX_UIMESSAGES	7
@@ -61,8 +61,7 @@ class CUI			: public CDialogHolder //ISheduled
 
 public:
 	CHUDManager*			m_Parent;
-
-	CUIMainIngameWnd		UIMainIngameWnd;
+	CUIMainIngameWnd*		UIMainIngameWnd;
 public:
 							CUI						(CHUDManager* p);
 	virtual					~CUI					();

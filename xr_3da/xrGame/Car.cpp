@@ -329,17 +329,16 @@ void	CCar::UpdateCL				( )
 		}
 		if(Owner()->IsMyCamera()) 
 			cam_Update	(Device.fTimeDelta);
-		HUD().GetUI()->UIMainIngameWnd.CarPanel().SetSpeed(lin_vel.magnitude()/1000.f*3600.f/100.f);
-		HUD().GetUI()->UIMainIngameWnd.CarPanel().SetRPM(m_current_rpm/m_max_rpm/2.f);
+		HUD().GetUI()->UIMainIngameWnd->CarPanel()->SetSpeed(lin_vel.magnitude()/1000.f*3600.f/100.f);
+		HUD().GetUI()->UIMainIngameWnd->CarPanel()->SetRPM(m_current_rpm/m_max_rpm/2.f);
 	}
 
-	UpdateExhausts();
-	m_lights.Update();
+	UpdateExhausts	();
+	m_lights.Update	();
 }
 void	CCar::renderable_Render				( )
 {
 	inherited::renderable_Render			();
-	
 }
 
 void	CCar::net_Export			(NET_Packet& P)
@@ -420,7 +419,7 @@ void CCar::detach_Actor()
 	Unclutch();
 	ResetKeys();
 	m_current_rpm=m_min_rpm;
-	HUD().GetUI()->UIMainIngameWnd.CarPanel().Show(false);
+	HUD().GetUI()->UIMainIngameWnd->CarPanel().Show(false);
 	///Break();
 	//H_SetParent(NULL);
 }
@@ -447,8 +446,8 @@ bool CCar::attach_Actor(CActor* actor)
 	VisualUpdate();
 	
 
-	HUD().GetUI()->UIMainIngameWnd.CarPanel().Show(true);
-	HUD().GetUI()->UIMainIngameWnd.CarPanel().SetCarHealth(fEntityHealth/100.f);
+	HUD().GetUI()->UIMainIngameWnd->CarPanel().Show(true);
+	HUD().GetUI()->UIMainIngameWnd->CarPanel().SetCarHealth(fEntityHealth/100.f);
 	//HUD().GetUI()->UIMainIngameWnd.ShowBattery(true);
 	//CBoneData&	bone_data=K->LL_GetData(id);
 	//Fmatrix driver_pos_tranform;

@@ -9,6 +9,8 @@
 #include "profiler.h"
 #include "MainUI.h"
 #include "UICursor.h"
+#include "game_base_space.h"
+#include "level.h"
 
 #ifndef _EDITOR
 #	include "ai_debug.h"

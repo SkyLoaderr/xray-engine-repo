@@ -198,8 +198,7 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 				break;
 			case idJobsCurrent:
 				//сбростить флажок необходимости прочтения PDA
-				HUD().GetUI()->UIMainIngameWnd.SetFlashIconState(CUIMainIngameWnd::efiPdaTask, false);
-
+				HUD().GetUI()->UIMainIngameWnd->SetFlashIconState(CUIMainIngameWnd::efiPdaTask, false);
 				UIJobsWnd.SetFilter(eTaskStateInProgress);
 				m_pActiveSubdialog = &UIJobsWnd;
 				ArticleCaption(*stbl(m_pActiveSubdialog->WindowName()));

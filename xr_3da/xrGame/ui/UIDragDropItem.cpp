@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "UIDragDropItem.h"
 #include "../HUDManager.h"
+#include "uidragdroplist.h"
 
 
 //////////////////////////////////////////////////////////////////////

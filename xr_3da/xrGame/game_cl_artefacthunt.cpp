@@ -7,6 +7,8 @@
 #include "clsid_game.h"
 #include "map_manager.h"
 #include "LevelGameDef.h"
+#include "actor.h"
+#include "ui/UIMainIngameWnd.h"
 
 #define TEAM0_MENU		"artefacthunt_team0"
 #define	TEAM1_MENU		"artefacthunt_team1"

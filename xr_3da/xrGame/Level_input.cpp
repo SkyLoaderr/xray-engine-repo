@@ -17,12 +17,13 @@
 #include "xrServer.h"
 #include "autosave_manager.h"
 #include "ai/monsters/bloodsucker/bloodsucker.h"
+#include "actor.h"
+#include "huditem.h"
 
 void CLevel::IR_OnMouseWheel( int direction )
 {
 	if (pHUD->GetUI()->IR_OnMouseWheel(direction)) return;
 	if ( Game().IR_OnMouseWheel(direction) ) return;
-
 }
 
 // Обработка нажатия клавиш

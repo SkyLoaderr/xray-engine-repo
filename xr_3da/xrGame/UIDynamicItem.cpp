@@ -38,10 +38,10 @@ void CUIDynamicItem::Out(int left, int top, u32 color, float angle)
 	++item_cnt;
 }
 
-
+extern ENGINE_API BOOL g_bRendering; 
 void CUIDynamicItem::Render	()
 {
-	VERIFY(g_bRendering);
+	VERIFY			(g_bRendering);
 	if (!item_cnt)	return;
 
 	// установить обязательно перед вызовом CustomItem::Render() !!!

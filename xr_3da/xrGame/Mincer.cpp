@@ -7,6 +7,8 @@
 #include "CustomZone.h"
 #include "PHDestroyable.h"
 #include "clsid_game.h"
+#include "entity_alive.h"
+#include "PHDestroyableNotificate.h"
 
 CMincer::CMincer(void) 
 {

@@ -9,6 +9,7 @@
 #include "CustomZone.h"
 #include "../igame_persistent.h"
 #include "clsid_game.h"
+#include "Actor.h"
 
 #define DELAYED_ROUND_TIME	7000
 

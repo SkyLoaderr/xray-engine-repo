@@ -66,6 +66,10 @@
 
 #include "material_manager.h"
 #include "IColisiondamageInfo.h"
+
+#include "ui/UIMainIngameWnd.h"
+#include "ui/UIMotionIcon.h"
+
 const u32		patch_frames	= 50;
 const float		respawn_delay	= 1.f;
 const float		respawn_auto	= 7.f;
@@ -1397,7 +1401,6 @@ void CActor::UpdateMotionIcon(u32 mstate_rl)
 			motion_icon.ShowState(CUIMotionIcon::stNormal);
 	}
 }
-
 
 CPHDestroyable*	CActor::ph_destroyable	()
 {

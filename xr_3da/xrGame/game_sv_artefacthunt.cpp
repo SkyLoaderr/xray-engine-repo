@@ -5,6 +5,7 @@
 #include "xrserver.h"
 #include "Level.h"
 #include "LevelGameDef.h"
+#include "Actor.h"
 
 void	game_sv_ArtefactHunt::Create					(shared_str& options)
 {

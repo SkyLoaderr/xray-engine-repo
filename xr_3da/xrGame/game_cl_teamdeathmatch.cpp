@@ -7,6 +7,7 @@
 #include "xr_level_controller.h"
 #include "clsid_game.h"
 #include "map_manager.h"
+#include "actor.h"
 
 #define	TEAM0_MENU		"teamdeathmatch_team0"
 #define	TEAM1_MENU		"teamdeathmatch_team1"

@@ -29,6 +29,8 @@
 
 #include "map_manager.h"
 
+#include "ui/UIMainIngameWnd.h"
+
 //static LPCSTR	m_sMapSpotAnimEnemy = NULL;
 //static LPCSTR	m_sMapSpotAnimNeutral = NULL;
 //static LPCSTR	m_sMapSpotAnimFriend = NULL;
@@ -141,7 +143,7 @@ void CActor::AddGameTask			 (const CInfoPortion* info_portion) const
 	//установить флажок необходимости прочтения тасков в PDA
 	if(old_size != task_vector.size())
 		if(HUD().GetUI())
-			HUD().GetUI()->UIMainIngameWnd.SetFlashIconState(CUIMainIngameWnd::efiPdaTask, true);
+			HUD().GetUI()->UIMainIngameWnd->SetFlashIconState(CUIMainIngameWnd::efiPdaTask, true);
 
 	if( HUD().GetUI() ){
 		CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());

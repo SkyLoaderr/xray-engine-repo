@@ -6,8 +6,11 @@
 #include "uiiteminfo.h"
 #include "../string_table.h"
 #include "../HUDManager.h"
+#include "../Inventory_Item.h"
+#include "UIInventoryUtilities.h"
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
+#include "../PhysicsShellHolder.h"
 
 //////////////////////////////////////////////////////////////////////////
 

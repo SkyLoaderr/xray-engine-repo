@@ -6,7 +6,7 @@
 #include "level.h"
 #include "map_manager.h"
 #include "night_vision_effector.h"
-
+#include "actor.h"
 
 ZONE_INFO::ZONE_INFO	()
 {

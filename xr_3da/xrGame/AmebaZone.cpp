@@ -2,9 +2,11 @@
 #include "CustomZone.h"
 #include "ZoneVisual.h"
 #include "PHObject.h"
+#include "PHMovementControl.h"
 #include "AmebaZone.h"
 #include "hudmanager.h"
 #include "level.h"
+#include "entity_alive.h"
 
 CAmebaZone::CAmebaZone()
 {

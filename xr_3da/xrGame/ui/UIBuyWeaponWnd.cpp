@@ -16,6 +16,7 @@
 #include "../InfoPortion.h"
 #include "../game_cl_Deathmatch.h"
 #include "../string_table.h"
+#include "../actor.h"
 
 using namespace InventoryUtilities;
 

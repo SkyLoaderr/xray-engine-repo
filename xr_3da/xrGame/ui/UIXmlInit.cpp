@@ -23,6 +23,8 @@
 #include "UITextBanner.h"
 #include "UIMultiTextStatic.h"
 #include "UIAnimatedStatic.h"
+#include "uixmlinit.h"
+#include "uiartefactpanel.h"
 
 #define HEADER_FONT_NAME		"header"
 #define ARIAL_FONT_NAME			"arial"

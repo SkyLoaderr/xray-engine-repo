@@ -17,6 +17,7 @@
 #include "../game_news.h"
 #include "../actor.h"
 #include "../alife_registry_wrappers.h"
+#include "UIInventoryUtilities.h"
 
 const char * const	NEWS_XML			= "news.xml";
 
