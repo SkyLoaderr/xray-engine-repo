@@ -20,6 +20,7 @@ void CRender::level_Load()
 	L_DB						= xr_new<CLightDB_Static>	();
 	L_Glows						= xr_new<CGlowManager>		();
 	Wallmarks					= xr_new<CWallmarksEngine>	();
+	Details						= xr_new<CDetailManager>	();
 
 	rmFar						();
 	rmNormal					();
@@ -108,6 +109,7 @@ void CRender::level_Unload()
 	IB.clear					();
 
 	//*** Components
+	xr_delete					(Details);
 	xr_delete					(Wallmarks);
 	xr_delete					(L_Glows);
 	xr_delete					(L_DB);
