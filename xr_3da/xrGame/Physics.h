@@ -307,7 +307,7 @@ public:
 		m_parent_element=NULL;
 		m_shell=NULL;
 		m_group=NULL;
-		ul_material=GMLib.GetMaterialIdx("materials\\box_default");
+		ul_material=GMLib.GetMaterialIdx("objects\\box_default");
 		k_w=0.05f;
 		k_l=0.0002f;//1.8f;
 		attached=false;
