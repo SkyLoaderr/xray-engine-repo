@@ -72,7 +72,6 @@ void dithermap( int levels, double gamma, int rgbmap[][3], int divN[256], int mo
     make_square( N, divN, modN, magic );
 }
 
-
 /*****************************************************************
  * TAG( bwdithermap )
  * 
@@ -100,23 +99,9 @@ void dithermap( int levels, double gamma, int rgbmap[][3], int divN[256], int mo
  *	On a 1-bit display, use
  *	    divN[val] > magic[col][row] ? 1 : 0
  */
-void bwdithermap	(int levels, double gamma, int bwmap[], int divN[256], int modN[256], int magic[16][16] )
+void bwdithermap	(int levels, int divN[256], int modN[256], int magic[16][16] )
 {
-    double N;
-    register int i;
-    int gammamap[256];
-    
-    for ( i = 0; i < 256; i++ )
-		gammamap[i] = (int)(0.5 + 255 * pow( i / 255.0, 1.0/gamma ));
-
-    N = 255.0 / (levels - 1);    /* Get size of each step */
-
-    /* 
-     * Set up the color map entries.
-     */
-    for(i = 0; i < levels; i++)
-		bwmap[i] = gammamap[(int)(0.5 + i * N)];
-
+    float N = 255.0f / (levels - 1);    /* Get size of each step */
 
     make_square( N, divN, modN, magic );
 }
@@ -151,8 +136,8 @@ void make_square( double N, int divN[256], int modN[256], int magic[16][16])
 
     for ( i = 0; i < 256; i++ )
     {
-	divN[i] = (int)(i / N);
-	modN[i] = i - (int)(N * divN[i]);
+		divN[i] = (int)(i / N);
+		modN[i] = i - (int)(N * divN[i]);
     }
     modN[255] = 0;		/* always */
 
@@ -175,83 +160,28 @@ void make_square( double N, int divN[256], int modN[256], int magic[16][16])
 			      (magic4x4[k][l] / 16.) * magicfact);
 }
 
-
-/*****************************************************************
- * TAG( dithergb )
- * 
- * Return dithered RGB value.
- * Inputs:
- * 	x:		X location on screen of this pixel.
- *	y:		Y location on screen of this pixel.
- *	r, g, b:	Color at this pixel (0 - 255 range).
- *	levels:		Number of levels in this map.
- *	divN, modN:	From dithermap.
- *	magic:		Magic square from dithermap.
- * Outputs:
- * 	Returns color map index for dithered pixelv value.
- * Assumptions:
- * 	divN, modN, magic were set up properly.
- * Algorithm:
- * 	see "Note:" in dithermap comment.
- */
-int dithergb( int x, int y, int r, int g, int b, int levels, int divN[256], int modN[256], int magic[16][16])
-{
-    int col = x % 16, row = y % 16;
-
-    return DMAP(r, col, row) +
-	DMAP(g, col, row) * levels +
-	    DMAP(b, col, row) * levels*levels;
-}
-
-
-/*****************************************************************
- * TAG( ditherbw )
- * 
- * Return dithered black & white value.
- * Inputs:
- * 	x:		X location on screen of this pixel.
- *	y:		Y location on screen of this pixel.
- *	val:		Intensity at this pixel (0 - 255 range).
- *	divN, modN:	From dithermap.
- *	magic:		Magic square from dithermap.
- * Outputs:
- * 	Returns color map index for dithered pixel value.
- * Assumptions:
- * 	divN, modN, magic were set up properly.
- * Algorithm:
- * 	see "Note:" in bwdithermap comment.
- */
-
-int ditherbw( int x, int y, int val, int divN[256], int modN[256], int magic[16][16] )
-{
-    int col = x % 16, row = y % 16;
-
-    return DMAP(val, col, row);
-}
-
 void main(int argc, char* argv[])
 {
-	CImage tex;
-	tex.LoadTGA("x:\\dbg\\in.tga");
+	CImage		tex;
+	tex.LoadTGA	("x:\\dbg\\logo.tga");
 	
-	int			bwmap[2];
 	int			divN [256];
 	int			modN [256];
 	int			magic[16][16];
-	bwdithermap	(2,1,bwmap,divN,modN,magic);
+	bwdithermap	(2,divN,modN,magic);
 
 	for (DWORD y=0; y<tex.dwHeight; y++)
 	{
 		for (DWORD x=0; x<tex.dwWidth; x++)
 		{
 			DWORD c		= tex.GetPixel(x,y);
-			DWORD val	= c&255;
+			int val		= c&255;
 
-		    int row		= y % 16; int col = x % 16;
- 			int new_c	= divN[val] > magic[col][row] ? 255 : 0;
+		    int row		= y % 16; 
+			int col		= x % 16;
+ 			int new_c	= val > magic[col][row] ? 255 : 0;
 			
 			tex.PutPixel(x,y,RGB(new_c,new_c,new_c));
-			// ditherbw(x,y,c&255,divN,modN,magic);
 		}
 	}
 	
