@@ -140,7 +140,7 @@ void	CSoundRender_Core::statistic			(CSound_stats&  dest)
 	cache.stats_clear	();
 }
 
-float CSoundRender_Core::get_occlusion_to( const Fvector& hear_pt, Fvector& snd_pt, float dispersion )
+float CSoundRender_Core::get_occlusion_to( const Fvector& hear_pt, const Fvector& snd_pt, float dispersion )
 {
 	float occ_value			= 1.f;
 
