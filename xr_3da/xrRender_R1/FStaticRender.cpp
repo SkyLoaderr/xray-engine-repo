@@ -364,6 +364,7 @@ void	CRender::Render		()
 	Wallmarks->Render							();				// wallmarks has priority as normal geometry
 	r_pmask										(true,false);	// disable priority "1"
 	L_Dynamic->render							();				// addititional light sources
+	r_pmask										(true,true);	// enable priority "0" and "1"
 	L_Shadows->render							();				// ... and shadows
 	r_dsgraph_render_graph						(1);			// normal level, secondary priority
 	r_dsgraph_render_lods						();				// lods
