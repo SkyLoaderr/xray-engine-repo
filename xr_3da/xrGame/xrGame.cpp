@@ -656,6 +656,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 #include "weaponvintorez.h"
 #include "weaponwalther.h"
 #include "weaponusp45.h"
+#include "weapongroza.h"
 #include "bolt.h"
 #include "torch.h"
 #include "f1.h"
@@ -718,6 +719,7 @@ extern "C" {
 		case CLSID_OBJECT_W_VINTOREZ:	P = xr_new<CWeaponVintorez>();		break;
 		case CLSID_OBJECT_W_WALTHER:	P = xr_new<CWeaponWalther>();		break;
 		case CLSID_OBJECT_W_USP45:		P = xr_new<CWeaponUSP45>();			break;
+		case CLSID_OBJECT_W_GROZA:		P = xr_new<CWeaponGroza>();			break;
 
 		// Inventory
 		case CLSID_IITEM_BOLT:			P = xr_new<CBolt>();				break;

@@ -1500,6 +1500,7 @@ xrServerEntity*	F_entity_Create		(LPCSTR caSection)
 	case CLSID_OBJECT_W_VINTOREZ:	return xr_new<xrSE_Weapon>			(caSection);
 	case CLSID_OBJECT_W_WALTHER:	return xr_new<xrSE_Weapon>			(caSection);
 	case CLSID_OBJECT_W_USP45:		return xr_new<xrSE_Weapon>			(caSection);
+	case CLSID_OBJECT_W_GROZA:		return xr_new<xrSE_Weapon>			(caSection);
 }
 	return 0;
 }

@@ -1128,6 +1128,16 @@
 								RelativePath="WeaponUSP45.h">
 							</File>
 						</Filter>
+						<Filter
+							Name="Weapon Groza"
+							Filter="">
+							<File
+								RelativePath="WeaponGroza.cpp">
+							</File>
+							<File
+								RelativePath="WeaponGroza.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="Target"
