@@ -11,7 +11,7 @@ function main ()
 
     action (niva, move (move.on + move.up + move.fwd, 20.1), object ("right_light", object.activate),
             object ("left_light", object.activate), cond (cond.time_end, 8200))
-    action (niva, move (move.right + move.on + move.fwd, 20.1), cond (cond.time_end, 652))
+    action (niva, move (move.right + move.on + move.fwd, 20.1), cond (cond.time_end, 660))
     action (niva, move (move.on + move.up + move.fwd, 20.1), cond (cond.time_end, 14600))
 
     while niva:action () do wait () end
