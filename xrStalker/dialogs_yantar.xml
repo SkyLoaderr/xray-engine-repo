@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding="windows-1251"?>
+
+<game_dialogs>
+
+    <dialog id="dark_laboratory_scientist_dialog">
+        <phrase_list>
+            <phrase id="0">
+                <text>Много я всего интересного знаю. Поведал бы и тебе. Но для этого тебе надо немного поработать.</text>
+                <next>1</next>
+                <next>2</next>
+            </phrase>
+            <phrase id="1">
+                <text>Ну расскажи хоть что нибудь. Ты не знаешь дорогу на север зоны?</text>
+                <next>3</next>
+            </phrase>
+            <phrase id="2">
+                <text>Я и сам все знаю, обойдусь без твоей помощи.</text>
+                <next>4</next>
+            </phrase>
+            <phrase id="3">
+                <text>Я тебе же сказал, что ничего не расскажу. А эта тема мне и самому интересна.</text>
+                <next>5</next>
+            </phrase>
+            <phrase id="4">
+                <text>Ну как хочешь.</text>
+                <next>5</next>
+            </phrase>
+            <phrase id="5">
+	            <text>Good by.</text>
+                <next>6</next>
+            </phrase>
+            <phrase id="6">
+                <action>dialogs.break_dialog</action>
+            </phrase>
+        </phrase_list>
+    </dialog>
+
+
+</game_dialogs>
