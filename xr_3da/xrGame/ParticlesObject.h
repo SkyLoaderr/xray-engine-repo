@@ -6,6 +6,7 @@
 class CParticlesObject		:	public CPS_Instance
 {
 	typedef CPS_Instance	inherited;
+	u32					dwLastTime;
 public:
 						CParticlesObject	(LPCSTR p_name, IRender_Sector* S=0, BOOL bAutoRemove=true);
 						CParticlesObject	(LPCSTR p_name, BOOL bAutoRemove);

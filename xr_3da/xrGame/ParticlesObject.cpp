@@ -42,6 +42,8 @@ void CParticlesObject::Init(LPCSTR p_name, IRender_Sector* S, BOOL bAutoRemove)
 	shedule.t_min			= 20;
 	shedule.t_max			= 50;
 	shedule_register		();
+
+	dwLastTime				= Device.dwTimeGlobal;
 }
 
 //----------------------------------------------------
@@ -51,26 +53,26 @@ CParticlesObject::~CParticlesObject()
 
 LPCSTR CParticlesObject::dbg_ref_name()
 {
-	IParticleCustom* V	= dynamic_cast<IParticleCustom*>(renderable.visual); R_ASSERT(V);
+	IParticleCustom* V	= dynamic_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
 	return V->Name();
 	
 }
 //----------------------------------------------------
 void CParticlesObject::Play()
 {
-	IParticleCustom* V	= dynamic_cast<IParticleCustom*>(renderable.visual); R_ASSERT(V);
+	IParticleCustom* V	= dynamic_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
 	V->Play			();
 }
 
 void CParticlesObject::Stop()
 {
-	IParticleCustom* V	= dynamic_cast<IParticleCustom*>(renderable.visual); R_ASSERT(V);
+	IParticleCustom* V	= dynamic_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
 	V->Stop			();
 }
 
 void CParticlesObject::play_at_pos(const Fvector& pos)
 {
-	IParticleCustom* V	= dynamic_cast<IParticleCustom*>(renderable.visual); R_ASSERT(V);
+	IParticleCustom* V	= dynamic_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
 	Fmatrix m; m.identity(); m.c.set(pos); 
 	Fvector vel={0,0,0};
 	V->UpdateParent	(m,vel);
@@ -82,8 +84,9 @@ void CParticlesObject::shedule_Update	(u32 dt)
 	inherited::shedule_Update	(dt);
 
 	// visual
-	IParticleCustom* V	= dynamic_cast<IParticleCustom*>(renderable.visual); R_ASSERT(V);
+	IParticleCustom* V	= dynamic_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
 	V->OnFrame			(dt);
+	dwLastTime			= Device.dwTimeGlobal;
 
 	// spatial	(+ workaround occasional bug inside particle-system)
 	if (_valid(renderable.visual->vis.sphere))
@@ -105,13 +108,13 @@ void CParticlesObject::shedule_Update	(u32 dt)
 static const Fvector zero_vel		= {0.f,0.f,0.f};
 void CParticlesObject::SetTransform		(const Fmatrix& m)
 {
-	IParticleCustom* V	= dynamic_cast<IParticleCustom*>(renderable.visual); R_ASSERT(V);
+	IParticleCustom* V	= dynamic_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
 	V->UpdateParent		(m,zero_vel);
 }
 
 void CParticlesObject::UpdateParent		(const Fmatrix& m, const Fvector& vel)
 {
-	IParticleCustom* V	= dynamic_cast<IParticleCustom*>(renderable.visual); R_ASSERT(V);
+	IParticleCustom* V	= dynamic_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
 	V->UpdateParent		(m,vel);
 }
 
@@ -122,6 +125,12 @@ Fvector& CParticlesObject::Position		()
 
 void CParticlesObject::renderable_Render	()
 {
+	u32 dt							= Device.dwTimeGlobal - dwLastTime;
+	if (dt)							{
+		IParticleCustom* V	= dynamic_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
+		V->OnFrame			(dt);
+		dwLastTime			= Device.dwTimeGlobal;
+	}
 	::Render->set_Transform			(&Fidentity);
 	::Render->add_Visual			(renderable.visual);
 }
