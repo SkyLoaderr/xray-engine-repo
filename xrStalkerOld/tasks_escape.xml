@@ -154,5 +154,13 @@
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 	</game_task>
+
+	<game_task id="agroprom_find_stalker_ghost">
+		<title>agroprom_find_stalker_ghost</title>
+		<objective>
+			<text>agroprom_find_stalker_ghost_0</text>
+			<icon x="350" y="50" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+	</game_task>
 	
 </game_tasks_data>

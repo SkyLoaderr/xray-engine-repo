@@ -8,7 +8,7 @@
 			<level>l03_agroprom</level>
 			<object>200</object>
 			<icon big_icon="1" name="" x="5" y="1" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
-			<text>Добыдть военные документы</text>
+			<text>Добыть военные документы</text>
 		</location>    
     </info_portion>
     <info_portion id="agroprom_military_case_have">
@@ -31,15 +31,27 @@
     	<disable>agr_krot_band</disable>
     </info_portion>
 
-    <info_portion id="agroprom_find_gunslinger_hide">
+    <info_portion id="agr_find_gunslinger_hide">
 		<task>agroprom_find_gunslinger_hide</task>
+		<location>
+			<level>l03_agroprom</level>
+			<object>201</object>
+			<icon big_icon="1" name="" x="4" y="4" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
+			<text>Тайник Стрелка</text>
+		</location>
+    </info_portion>
+    <info_portion id="agr_find_gunslinger_hide_done">
+    	<disable>agr_find_gunslinger_hide</disable>
     </info_portion>
 
 
     <info_portion id="agroprom_find_stalker_ghost">
+    	<task>agroprom_find_stalker_ghost</task>
+    </info_portion>
+    <info_portion id="agroprom_find_stalker_ghost_done">
+    	<disable>agroprom_find_stalker_ghost</disable>
     </info_portion>
 
-	
 	<!-- infoportions для ситуации на заводе на агропроме -->
 	<info_portion id="agr_factory_combat_start">
 	</info_portion>
