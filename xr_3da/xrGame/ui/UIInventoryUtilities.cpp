@@ -25,17 +25,18 @@
 #include "UIMainIngameWnd.h"
 //////////////////////////////////////////////////////////////////////////
 
-#define EQUIPMENT_ICONS "ui\\ui_icon_equipment"
-#define CHAR_ICONS		"ui\\ui_icons_npc"
-#define MAP_ICONS		"ui\\ui_icons_map"
-#define MP_CHAR_ICONS	"ui\\ui_models_multiplayer"
+#define BUY_MENU_TEXTURE "ui\\ui_mp_buy_meny"
+#define EQUIPMENT_ICONS  "ui\\ui_icon_equipment"
+#define CHAR_ICONS		 "ui\\ui_icons_npc"
+#define MAP_ICONS		 "ui\\ui_icons_map"
+#define MP_CHAR_ICONS	 "ui\\ui_models_multiplayer"
 
 const LPCSTR relationsLtxSection	= "game_relations";
 const LPCSTR ratingField			= "rating_names";
 const LPCSTR reputationgField		= "reputation_names";
 const LPCSTR goodwillField		= "goodwill_names";
 
-
+static ref_shader	g_BuyMenuShader			= NULL;
 static ref_shader	g_EquipmentIconsShader	= NULL;
 static ref_shader	g_CharIconsShader		= NULL;
 static ref_shader	g_MapIconsShader		= NULL;
@@ -200,6 +201,17 @@ bool InventoryUtilities::FreeRoom_inBelt	(TIItemContainer& item_list, PIItem _it
 	return true;
 }
 
+/////////////////////////////////////////////////////////////
+
+ref_shader& InventoryUtilities::GetBuyMenuShader()
+{	
+	if(!g_BuyMenuShader)
+	{
+		g_BuyMenuShader.create("hud\\default", BUY_MENU_TEXTURE);
+	}
+
+	return g_BuyMenuShader;
+}
 //////////////////////////////////////////////////////////////////////////
 
 ref_shader& InventoryUtilities::GetEquipmentIconsShader()

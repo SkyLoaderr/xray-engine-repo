@@ -47,7 +47,8 @@ void AmmoDrawProc(CUIDragDropItem* pItem);
 //для надписей на иконках с едой
 void FoodDrawProc(CUIDragDropItem* pItem);
 
-
+// get shader for BuyWeaponWnd
+ref_shader&	GetBuyMenuShader();
 //получить shader на иконки инвенторя
 ref_shader& GetEquipmentIconsShader();
 //shader на иконки персонажей
