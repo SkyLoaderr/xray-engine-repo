@@ -24,7 +24,7 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 	for ( i=0; i<(int)N; i++)
 		tpaTo[i] = tpaFrom[i] = 0;
 	
-	for ( i=0; i<(int)N; i++) {
+	for ( i=0; i<(int)tpPatrolPath.tpaWayLinks.size(); i++) {
 		tpaTo[tpPatrolPath.tpaWayLinks[i].wTo]++;
 		tpaFrom[tpPatrolPath.tpaWayLinks[i].wFrom]++;
 	}
@@ -58,10 +58,10 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 		}
 		
 		if ((tpaTo[i] == 1) && (tpaFrom[i] == 1)) {
-			if (!dwOneCount)
+			if ((!dwOneCount) && (!dwZeroOne) && (!dwOneZero))
 				iStartPoint = i;
 			else
-				if (dwOneCount == 1)
+				if ((dwOneCount == 1) && (!dwZeroOne) && (!dwOneZero))
 					iFinishPoint = i;
 			dwOneCount++;
 		}
@@ -116,6 +116,10 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 	AI.vfCreateFastRealisticPath(tpaPoints,tpPatrolPath.tpaWayPoints[tpPatrolPath.tpaWayPointIndexes[0]].dwNodeID,tpaDeviations,tpPatrolPath.tpaVectors[0],tpaNodes,tpPatrolPath.dwType & PATH_LOOPED);
 
 	// creating variations
+	if (!tpPatrolPath.tpaVectors[0].size()) {
+		Msg("Patrol path %s was not built - there are not enough nodes to build all the straight lines",sName);
+		THROW;
+	}
 	tpPatrolPath.tpaVectors[1].resize(tpPatrolPath.tpaVectors[0].size());
 	tpPatrolPath.tpaVectors[2].resize(tpPatrolPath.tpaVectors[0].size());
 			

@@ -229,4 +229,5 @@
 	extern float ffGetCoverInDirection(float fAngle, NodeCompressed *tpNode);
 	extern float ffGetCoverInDirection(float fAngle, DWORD dwNodeID);
 	extern SRotation tfGetOrientation(CEntity *tpEntity);
+	extern int   ifFindNearestPatrolPoint(vector<Fvector> &tpaVector, const Fvector &tPosition);
 #endif

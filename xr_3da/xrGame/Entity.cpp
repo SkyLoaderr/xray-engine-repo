@@ -152,6 +152,7 @@ BOOL CEntity::net_Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o
 	
 	Engine.Sheduler.Unregister	(this);
 	Engine.Sheduler.Register	(this);
+	//Engine.Sheduler.RegisterRT	(this);
 
 	return				TRUE;
 }

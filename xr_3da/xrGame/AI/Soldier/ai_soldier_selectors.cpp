@@ -257,13 +257,14 @@ CSoldierSelectorPatrol::CSoldierSelectorPatrol()
 
 float CSoldierSelectorPatrol::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
 {
-	// initialization
+//	// initialization
 	m_tpCurrentNode = tNode;
 	m_fDistance = fDistance;
 	vfInit();
-	// computations
-	vfAddDistanceToEnemyCost();
-	return(m_fResult);
+//	// computations
+//	vfAddDistanceToEnemyCost();
+//	return(m_fResult);
+	return(m_tEnemyPosition.distance_to(m_tCurrentPosition)*1000.f);
 }
 
 CSoldierSelectorPursuit::CSoldierSelectorPursuit()

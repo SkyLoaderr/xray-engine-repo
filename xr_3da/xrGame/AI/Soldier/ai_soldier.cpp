@@ -65,6 +65,9 @@ CAI_Soldier::CAI_Soldier()
 	m_iCurrentSuspiciousNodeIndex = -1;
 	m_dwLoopCount = 0;
 	m_tpaNodeStack.clear();
+	m_iCurrentPatrolIndex = -1;
+	m_bPatrolPathInverted = false;
+	m_bWaitingForMembers = false;
 //	if (!bStarted) {
 //		bStarted = true;
 //		u64 uTime = 0;
@@ -286,6 +289,7 @@ void CAI_Soldier::OnEvent(EVENT E, DWORD P1, DWORD P2)
 				
 				m_tpPath = 0;
 				CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster *>(Leader);
+				m_dwLoopCount = 0;
 				if (tpCustomMonster && (tpCustomMonster->m_tpPath))
 					m_tpPath = tpCustomMonster->m_tpPath;
 				else {
@@ -300,8 +304,13 @@ void CAI_Soldier::OnEvent(EVENT E, DWORD P1, DWORD P2)
 						for (int i=0, iCount = 1; buf2[i]; i++)
 							if (buf2[i] == ',')
 								iCount++;
-						if (iCount == 1)
+						if (iCount == 1) {
 							m_tpPath = &(Level().m_PatrolPaths[buf2]);
+							if (!m_tpPath) {
+								Msg("Cannot find specified path (%s)",buf2);
+								THROW;
+							}
+						}
 						else {
 							iCount = ::Random.randI(0,iCount);
 							for (int i=0, iCountX = 0; buf2[i]; i++) {
@@ -312,8 +321,12 @@ void CAI_Soldier::OnEvent(EVENT E, DWORD P1, DWORD P2)
 											buf2[i] = 0;
 											break;
 										}
-									buf += j;
+									buf2 += j;
 									m_tpPath = &(Level().m_PatrolPaths[buf2]);
+									if (!m_tpPath) {
+										Msg("Cannot find specified path (%s)",buf2);
+										THROW;
+									}
 									break;
 								}
 								if (buf2[i] == ',')
@@ -321,6 +334,10 @@ void CAI_Soldier::OnEvent(EVENT E, DWORD P1, DWORD P2)
 							}
 						}
 					}
+				}
+				if (!m_tpPath) {
+					Msg("Cannot find specified path");
+					THROW;
 				}
 			}
 		}

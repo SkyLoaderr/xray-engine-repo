@@ -429,6 +429,9 @@ class CAI_Soldier : public CCustomMonster
 		DWORD					m_dwLoopCount;
 		float					m_fMinPatrolDistance;
 		float					m_fMaxPatrolDistance;
+		int						m_iCurrentPatrolIndex;
+		bool					m_bPatrolPathInverted;
+		bool					m_bWaitingForMembers;
 
 		// finite state machine
 		stack<ESoldierStates>	tStateStack;
