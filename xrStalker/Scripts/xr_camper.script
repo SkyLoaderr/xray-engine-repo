@@ -64,13 +64,8 @@ function action_patrol:initialize()
 	self.object:set_path_evaluator()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()    
-	self.init = false
 	
-	xr_state.change_state(self.object, 0)
-	if xr_state.finish_state(self.object) == true then
-		self.init = true
-		self:reset_scheme()
-	end	
+	self:reset_scheme()
 end
 function action_patrol:reset_scheme()
 	self.move_mgr:initialize()
@@ -82,12 +77,11 @@ function action_patrol:reset_scheme()
 end
 function action_patrol:execute()
 	action_base.execute (self)
-	if xr_state.finish_state(self.object) == true then
-		self.move_mgr:update()
-		if self.move_mgr:arrived_to_first_waypoint() then
-			if xr_logic.try_switch_to_another_section (self.object, self.a, db.actor) then
-				return
-			end
+	
+	self.move_mgr:update()
+	if self.move_mgr:arrived_to_first_waypoint() then
+		if xr_logic.try_switch_to_another_section (self.object, self.a, db.actor) then
+			return
 		end
 	end
 end
@@ -95,9 +89,7 @@ function action_patrol:process_point(mode, number)
 	return false
 end
 function action_patrol:finalize()
-	if self.init == true then
-		self.move_mgr:finalize()
-	end
+	self.move_mgr:finalize()
 	action_base.finalize (self)
 end
 
@@ -110,11 +102,7 @@ function action_kill:__init (npc_name,action_name,storage) super (nil,action_nam
     self.enemy = nil
 end
 function action_kill:initialize ()
-    action_base.initialize(self)
-    self.object:clear_animations()
-    self.object:set_movement_type       (move.stand)
-    self.object:set_mental_state		(anim.danger)
-    self.object:set_body_state			(move.crouch)
+    action_base.initialize(self)    
 end
 function action_kill:execute ()
 	action_base.execute(self)
@@ -138,20 +126,20 @@ function action_kill:execute ()
 	end
 
 	if self.enemy ~= nil then 
-		self.object:set_sight(look.direction, self.enemy:position():sub(self.object:position()), true)	
 		printf("_bp: %d: see_enemy?", device():time_global())
 		if self.object:see(self.enemy) == true then
 			printf("_bp: YES")
-			xr_state.anim_update(nil, self.object)
+			state_mgr.set_state(self.object, "threat", nil, nil, {look_object = self.enemy})
 			self.object:set_item(object.fire1, self.object:best_weapon())
 		else
 			printf("_bp: NO")
-			xr_state.anim_update("hide", self.object)
-			self.object:set_item(object.idle, self.object:best_weapon())
+			state_mgr.set_state(self.object, "hide")
+			self.object:set_item(object.activate, self.object:best_weapon())
 		end
 	end
 end
 function action_kill:finalize ()
+	state_mgr.set_state(self.object, "idle")
     action_base.finalize(self)
 end
 
@@ -172,11 +160,7 @@ function action_retreat:initialize()
 		then
 			printf("RETREAT")
 			self.object:set_dest_level_vertex_id(path_walk:level_vertex_id(point))
-			self.object:set_path_type(game_object.level_path)
-			self.object:set_sight(look.direction, self.object:best_enemy():position():sub(self.object:position()), true)
-			self.object:set_body_state(move.crouch)
-			self.object:set_mental_state(anim.danger)
-			self.object:set_movement_type(move.walk)
+			state_mgr.set_state(self.object, "sneak")
 		else
 			printf("ERROR: RETREAT NODE NOT ACCESIBLE")
 		end
@@ -187,12 +171,11 @@ function action_retreat:execute()
 	action_base.execute(self)
 
 	if self.object:best_enemy() then
-		self.object:set_sight(look.direction, self.object:best_enemy():position():sub(self.object:position()), true)	
-
+		state_mgr.set_state(self.object, "sneak", nil, nil, self.object:best_enemy())
 		if self.object:see(self.object:best_enemy()) == true then
 			self.object:set_item(object.fire1, self.object:best_weapon())
 		else
-			self.object:set_item(object.idle, self.object:best_weapon())
+			self.object:set_item(object.activate, self.object:best_weapon())
 		end
 	end
 	
