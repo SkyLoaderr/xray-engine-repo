@@ -39,6 +39,7 @@ function action_go_position:initialize()
 	xr_state.change_state(self.object, 0)
 	self.object:set_item(object.idle, self.object:best_weapon())
 	if xr_state.finish_state(self.object) == true then
+		self.object:clear_animations()
 		self.object:set_mental_state(anim.free)
 		self.object:set_sight(look.path_dir, nil, 0)
 		self.object:set_movement_type(move.walk)
