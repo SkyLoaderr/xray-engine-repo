@@ -99,6 +99,7 @@ void CUIStatsWnd::RemoveItemFrom(const u32 beg_pos, const char *strCaption)
 	if (CUIStatsListItem *pSLItem = FindFrom(beg_pos, strCaption))
 	{
 		UIStatsList.RemoveItem(pSLItem->GetIndex());
+		UIStatsList.UpdateScrollBar();
 	}
 }
 

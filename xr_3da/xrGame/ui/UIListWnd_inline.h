@@ -185,7 +185,5 @@ bool CUIListWnd::AddItem(Element* pItem, int insertBeforeIdx)
 	m_ScrollBar.SetScrollPos(s16(m_iFirstShownIndex));
 	m_ScrollBar.Refresh();
 
-	UpdateScrollBar();
-
 	return true;
 }
