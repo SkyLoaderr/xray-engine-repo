@@ -141,6 +141,8 @@ private:
 
 	virtual	bool			bfAssignSound			(CScriptEntityAction *tpEntityAction);
 
+	virtual	ALife::ERelationType tfGetRelationType	(const CEntityAlive *tpEntityAlive) const;
+
 	//////////////////////////////////////////////////////////////////////////
 	//генерируемые задания
 public:

@@ -19,6 +19,8 @@
 #include "../../../skeletonanimated.h"
 #include "../../alife_artefact_order.h"
 
+#include "../../relation_registry.h"
+
 CAI_Trader::CAI_Trader()
 {
 	InitTrade();
@@ -545,4 +547,20 @@ void CAI_Trader::SyncArtefactsWithServer	()
     CSE_ALifeTrader					*l_tpTrader = smart_cast<CSE_ALifeTrader*>(e);
 	delete_data						(l_tpTrader->m_tpOrderedArtefacts);
 	clone							(m_tpOrderedArtefacts, l_tpTrader->m_tpOrderedArtefacts);
+}
+
+
+ALife::ERelationType  CAI_Trader::tfGetRelationType	(const CEntityAlive *tpEntityAlive) const
+{
+	const CInventoryOwner* pOtherIO = smart_cast<const CInventoryOwner*>(tpEntityAlive);
+
+	ALife::ERelationType relation = ALife::eRelationTypeDummy;
+
+	if(pOtherIO)
+		relation = RELATION_REGISTRY().GetRelationType(static_cast<const CInventoryOwner*>(this), pOtherIO);
+
+	if(ALife::eRelationTypeDummy != relation)
+		return relation;
+	else
+		return inherited::tfGetRelationType(tpEntityAlive);
 }

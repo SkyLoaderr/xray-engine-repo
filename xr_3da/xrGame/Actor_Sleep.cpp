@@ -37,6 +37,8 @@ EActorSleep CActor::CanSleepHere()
 	//спать нельзя
 	if(!result || RQ.O)	
 		return easNotSolidGround;
+/*	
+	//проверка на твердость материала на котором мы стоим 
 	else
 	{
 		CDB::TRI*	pTri	= Level().ObjectSpace.GetStaticTris() + RQ.element;
@@ -44,7 +46,7 @@ EActorSleep CActor::CanSleepHere()
 		SGameMtl* mtl	= GMLib.GetMaterialByIdx(hit_material_idx);
 		if(mtl->fPHSpring < MIN_SPRING_TO_SLEEP) 
 			return easNotSolidGround;
-	}
+	}*/
 
 	//проверить нет ли в радиусе врагов
 	if (!Level().autosave_manager().ready_for_autosave())

@@ -164,7 +164,8 @@ void CCustomZone::Load(LPCSTR section)
 	if(pSettings->line_exist(section,"idle_big_particles")) 
 		m_sIdleObjectParticlesSmall = pSettings->r_string(section,"idle_small_particles");
 
-	m_effector.Load(pSettings->r_string(section,"postprocess"));
+	if(pSettings->line_exist(section,"postprocess")) 
+		m_effector.Load(pSettings->r_string(section,"postprocess"));
 
 
 
