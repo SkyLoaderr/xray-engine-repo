@@ -10,6 +10,7 @@
 #include "ui/UIChatLog.h"
 #include "clsid_game.h"
 #include <dinput.h>
+#include "UIGameCustom.h"
 
 game_cl_mp::game_cl_mp()
 {
