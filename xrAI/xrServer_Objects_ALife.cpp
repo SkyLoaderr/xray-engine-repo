@@ -411,6 +411,7 @@ void CSE_ALifeObject::FillProp				(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp				(pref, items);
 	PHelper.CreateFloat				(items,	FHelper.PrepareKey(pref,s_name,"ALife\\Probability"),		&m_fProbability,	0,100);
+//.	PHelper.CreateSceneItem			(items, FHelper.PrepareKey(pref,s_name,"ALife\\Group control"),	&m_caGroupControl,  OBJCLASS_SPAWNPOINT, pSettings->r_string(s_name,"GroupControlSection"));
 	if (m_flags.is(flUseSwitches)) {
 		PHelper.CreateFlag<Flags32>	(items,	FHelper.PrepareKey(pref,s_name,"ALife\\Can switch online"),	&m_flags,			flSwitchOnline);
 		PHelper.CreateFlag<Flags32>	(items,	FHelper.PrepareKey(pref,s_name,"ALife\\Can switch offline"),&m_flags,			flSwitchOffline);
