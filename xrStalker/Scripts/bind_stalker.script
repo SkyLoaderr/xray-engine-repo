@@ -34,6 +34,8 @@ function actor_binder:net_destroy()
 	self.object:set_callback(callback.on_item_drop, nil)
 	self.object:set_callback(callback.actor_sleep, nil)
 
+	db.storage[self.object:id()] = nil
+
 	object_binder.net_destroy(self)
 end
 ----------------------------------------------------------------------------------------------------------------------

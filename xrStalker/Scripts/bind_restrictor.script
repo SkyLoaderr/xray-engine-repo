@@ -62,6 +62,8 @@ function restrictor_binder:net_destroy()
 
 	updatable_binders[self.object:id()] = nil
 
+	db.storage[self.object:id()] = nil
+
 	object_binder.net_destroy(self)
 end
 

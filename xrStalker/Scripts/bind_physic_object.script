@@ -90,6 +90,8 @@ function generic_physics_binder:net_destroy()
 	--end
 	db.del_sl(self.object)
 
+	db.storage[self.object:id()] = nil
+
 	object_binder.net_destroy(self)
 end
 
