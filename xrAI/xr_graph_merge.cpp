@@ -285,7 +285,7 @@ void xrMergeGraphs(LPCSTR name)
 		for ( ; I != E; I++) {
 			F.w_stringZ	((*I).caLevelName);
 			F.w_fvector3((*I).tOffset);
-			F.w_u32		((*I).dwLevelID);
+//			F.w_u32		((*I).dwLevelID);
 		}
 	}
 
