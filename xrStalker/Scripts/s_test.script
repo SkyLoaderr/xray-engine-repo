@@ -14,6 +14,7 @@ function main ()
 --	while true do wait () end	
 
 	local stalker = get_level_object ("stalker")
+	printf( "Live %i", stalker:alive())	
 	local torch = get_level_object ("torch")
 	stalker:script (true, s_test.script_name ())
 	action (stalker, object (torch, object.activate), cond (cond.time_end, time_infinite))
