@@ -12,6 +12,7 @@
 #include "portal.h"
 #include "detailmanager.h"
 #include "modelpool.h"
+#include "wallmarksengine.h"
 
 #include "smap_allocator.h"
 #include "light_db.h"
