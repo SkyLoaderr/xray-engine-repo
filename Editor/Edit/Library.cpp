@@ -9,7 +9,6 @@
 #include "Library.h"
 #include "EditObject.h"
 #include "SceneClassList.h"
-#include "Scene.h"
 #include "FileSystem.h"
 
 //----------------------------------------------------
@@ -159,7 +158,6 @@ void ELibrary::UnloadMeshes(){
 }
 //----------------------------------------------------
 void ELibrary::ReloadLibrary(){
-    VERIFY(!Scene->ObjCount());
     Clear();
     Init();
 }
