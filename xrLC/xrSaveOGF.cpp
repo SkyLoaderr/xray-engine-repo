@@ -66,7 +66,7 @@ void CBuild::SaveTREE(CFS_Base &fs)
 
 	Status				("Geometry : vertices ...");
 	MFS.clear			();
-	fs.open_chunk		(fsL_VBUFFERS | CFS_CompressMark);
+	fs.open_chunk		(fsL_VBUFFERS_DX9 | CFS_CompressMark);
 	g_VB.Save			(MFS);
 	fs.write_compressed	(MFS.pointer(),MFS.size());
 	fs.close_chunk		();
