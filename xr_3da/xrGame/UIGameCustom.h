@@ -8,6 +8,7 @@
 
 // refs
 class CUI;
+class CTeamBaseZone;
 
 
 class CUIGameCustom
@@ -40,6 +41,13 @@ public:
 
 	virtual void		OnBuyMenu_Ok			()	{};
 	virtual void		OnBuyMenu_Cancel		()	{};
+
+	virtual void		OnSkinMenu_Ok			()	{};
+	virtual void		OnSkinMenu_Cancel		()	{};
+
+	virtual void		OnObjectEnterTeamBase	(CObject *tpObject, CTeamBaseZone* pTeamBaseZone)	{};
+	virtual void		OnObjectLeaveTeamBase	(CObject *tpObject, CTeamBaseZone* pTeamBaseZone)	{};
+
 	virtual void		OnTeamSelect			(int Result)	{};
 	virtual bool		CanBeReady				()	{ return true; };
 

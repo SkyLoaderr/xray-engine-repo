@@ -9,6 +9,8 @@
 #include "stdafx.h"
 #include "team_base_zone.h"
 #include "xrserver_objects_alife_monsters.h"
+#include "Actor.h"
+#include "HUDManager.h"
 
 CTeamBaseZone::CTeamBaseZone		()
 {
@@ -58,6 +60,8 @@ BOOL CTeamBaseZone::net_Spawn	(LPVOID DC)
 		}
 	}
 
+	m_Team = l_tpALifeScriptZone->m_team;
+
 	BOOL						bOk = inherited::net_Spawn(DC);
 	if (bOk) {
 		l_pShape->ComputeBounds	();
@@ -81,14 +85,18 @@ void CTeamBaseZone::UpdateCL	()
 
 void CTeamBaseZone::feel_touch_new	(CObject *tpObject)
 {
+	HUD().GetUI()->UIGame()->OnObjectEnterTeamBase(tpObject, this);
 }
 
 void CTeamBaseZone::feel_touch_delete	(CObject *tpObject)
 {
+	HUD().GetUI()->UIGame()->OnObjectLeaveTeamBase(tpObject, this);
 }
 
 BOOL CTeamBaseZone::feel_touch_contact	(CObject* O)
 {
+	CActor*	pActor = dynamic_cast<CActor*>(O);
+	if (!pActor) return (FALSE);
 	return						(TRUE);
 }
 

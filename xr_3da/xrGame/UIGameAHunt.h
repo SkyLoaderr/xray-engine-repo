@@ -38,6 +38,12 @@ public:
 
 	virtual	void		Init				();
 
+	virtual void		OnFrame				();
+
+	virtual void		OnObjectEnterTeamBase	(CObject *tpObject, CTeamBaseZone* pTeamBaseZone);
+	virtual void		OnObjectLeaveTeamBase	(CObject *tpObject, CTeamBaseZone* pTeamBaseZone);
+
+
 /*
 	virtual void		Render				();
 	virtual void		OnFrame				();

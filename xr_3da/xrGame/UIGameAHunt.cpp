@@ -5,6 +5,7 @@
 #include "UIAHuntFragList.h"
 
 #include "hudmanager.h"
+#include "team_base_zone.h"
 
 #define MSGS_OFFS 510
 
@@ -14,6 +15,7 @@
 //--------------------------------------------------------------------
 CUIGameAHunt::CUIGameAHunt(CUI* parent):CUIGameTDM(parent)
 {
+	m_bBuyEnabled = FALSE;
 }
 //--------------------------------------------------------------------
 void		CUIGameAHunt::Init				()
@@ -82,3 +84,39 @@ void		CUIGameAHunt::Init				()
 CUIGameAHunt::~CUIGameAHunt()
 {
 }
+///-------------------------------------------------------------------
+void		CUIGameAHunt::OnObjectEnterTeamBase	(CObject *tpObject, CTeamBaseZone* pTeamBaseZone)
+{
+	CActor* pActor = dynamic_cast<CActor*> (tpObject);
+	if (tpObject == Level().CurrentEntity() && pActor->g_Team() == pTeamBaseZone->GetZoneTeam())
+	{
+		m_bBuyEnabled = TRUE;
+	};
+};
+
+void		CUIGameAHunt::OnObjectLeaveTeamBase	(CObject *tpObject, CTeamBaseZone* pTeamBaseZone)
+{
+	CActor* pActor = dynamic_cast<CActor*> (tpObject);
+	if (tpObject == Level().CurrentEntity() && pActor->g_Team() == pTeamBaseZone->GetZoneTeam())
+	{
+		m_bBuyEnabled = FALSE;
+	};
+};
+//--------------------------------------------------------------------
+void			CUIGameAHunt::OnFrame()
+{
+	inherited::OnFrame();	
+
+	if (m_bBuyEnabled)
+	{
+		if (Game().phase != GAME_PHASE_PENDING)
+		{
+			CActor* pCurActor = dynamic_cast<CActor*> (Level().CurrentEntity());
+			if (pCurActor)
+			{
+				HUD().pFontDI->SetColor		(0xffffff00);
+				HUD().pFontDI->Out			(0.f,0.9f,"Press B to access Buy Menu");
+			};
+		};
+	}
+};

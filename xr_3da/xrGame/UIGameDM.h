@@ -35,6 +35,8 @@ protected:
 	CUIBuyWeaponWnd*		pBuyMenuTeam0;
 	CUIBuyWeaponWnd*		pCurBuyMenu;
 
+	BOOL				m_bBuyEnabled;
+
 	CUISkinSelectorWnd*		pSkinMenuTeam0;
 	CUISkinSelectorWnd*		pCurSkinMenu;
 

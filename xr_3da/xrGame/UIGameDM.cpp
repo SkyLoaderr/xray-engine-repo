@@ -20,6 +20,8 @@ CUIGameDM::CUIGameDM(CUI* parent):CUIGameCustom(parent)
 
 	pSkinMenuTeam0	= NULL;
 	pCurSkinMenu	= NULL;
+
+	m_bBuyEnabled	= TRUE;
 }
 //--------------------------------------------------------------------
 void	CUIGameDM::Init				()
@@ -158,6 +160,8 @@ bool CUIGameDM::IR_OnKeyboardPress(int dik)
 			}break;
 		case DIK_B:
 			{
+				if (!m_bBuyEnabled) break;
+
 				SetCurrentBuyMenu	();
 
 				StartStopMenu(pCurBuyMenu);

@@ -13,7 +13,7 @@
 
 class CTeamBaseZone : public CGameObject, public Feel::Touch {
 protected:
-
+	u8		m_Team;
 public:
 	typedef	CGameObject	inherited;
 
@@ -29,6 +29,8 @@ public:
 	virtual void	feel_touch_new		(CObject* O);
 	virtual void	feel_touch_delete	(CObject* O);
 	virtual BOOL	feel_touch_contact	(CObject* O);
+
+	virtual u8		GetZoneTeam			()	{ return m_Team; };
 #ifdef DEBUG
 	virtual	void	OnRender			();
 #endif
