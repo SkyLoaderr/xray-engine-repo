@@ -24,7 +24,7 @@ void CActor::OnKeyboardPress(int cmd)
 	case kCAM_3:	cam_Set			(eacFreeLook);	break;
 
 	case kWPN_FIRE:	g_cl_fireStart();				break;
-	case kWPN_ZOOM:	pCreator->Environment.Zoom(TRUE);break;
+	case kWPN_ZOOM:	Weapons->Zoom(TRUE);			break;
 	case kWPN_1:	
 	case kWPN_2:	
 	case kWPN_3:	
@@ -52,7 +52,7 @@ void CActor::OnKeyboardRelease(int cmd){
 	case kCROUCH:	mstate_wishful &=~mcCrouch;		break;
 
 	case kWPN_FIRE:	g_fireEnd();					break;
-	case kWPN_ZOOM:	pCreator->Environment.Zoom(FALSE);break;
+	case kWPN_ZOOM:	Weapons->Zoom(FALSE);			break;
 	}
 }
 

@@ -351,11 +351,6 @@ void CActor::net_update::lerp(CActor::net_update& A, CActor::net_update& B, floa
 
 void CActor::Update	(DWORD DT)
 {
-//	if (pInput && pInput->iGetAsyncKeyState(DIK_RSHIFT)){ 
-//		Die();
-//		__asm	int 3;
-//	}
-
 	if (!bEnabled)	return;
 
 	float	dt		= float(DT)/1000.f;
@@ -447,7 +442,7 @@ void CActor::Update	(DWORD DT)
 			Level().Cameras.AddEffector(pCamBobbing);
 		}
 		pCamBobbing->SetState(mstate_real);
-		cam_Update	(dt,FALSE);
+		cam_Update	(dt,Weapons->isZoomed());
 	} else {
 		if (pCamBobbing){ Level().Cameras.RemoveEffector(cefBobbing); pCamBobbing=0; }
 	}
