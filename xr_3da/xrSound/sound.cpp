@@ -4,15 +4,27 @@
 #include "SoundRender_CoreA.h"
 #include "SoundRender_CoreD.h"
 
-BOOL APIENTRY DllMain( HANDLE hModule, DWORD  ul_reason_for_call, LPVOID lpReserved)
+void CSound_manager_interface::_create		(u64 window)
 {
-	switch (ul_reason_for_call)
+	if (strstr( Core.Params,"-openal"))
 	{
-	case DLL_PROCESS_ATTACH:
-	case DLL_THREAD_ATTACH:
-	case DLL_THREAD_DETACH:
-	case DLL_PROCESS_DETACH:
-		break;
+		SoundRenderA	= xr_new<CSoundRender_CoreA>();
+		SoundRender		= SoundRenderA;
+		Sound			= SoundRender;
+	}else{
+		SoundRenderD	= xr_new<CSoundRender_CoreD>();
+		SoundRender		= SoundRenderD;
+		Sound			= SoundRender;
 	}
-	return TRUE;
+	if (strstr			( Core.Params,"-nosound")){
+		SoundRender->bPresent = FALSE;
+		return;
+	}
+	Sound->_initialize	(window);
 }
+
+void CSound_manager_interface::_destroy	()
+{
+	Sound->_clear		();
+}
+
