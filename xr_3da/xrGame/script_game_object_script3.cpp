@@ -181,7 +181,8 @@ class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject
 		.def("character_community",			&CScriptGameObject::CharacterCommunity)
 		.def("set_character_community",		&CScriptGameObject::SetCharacterCommunity)
 
-		.def("actor_relation_flags",		&CScriptGameObject::get_actor_relation_flags)
+		.def("get_actor_relation_flags",	&CScriptGameObject::get_actor_relation_flags)
+		.def("set_actor_relation_flags",	&CScriptGameObject::set_actor_relation_flags)
 		.def("snd_character_profile_sect",	&CScriptGameObject::snd_character_profile_sect)
 
 		.def("set_character_pda_info",		&CScriptGameObject::set_character_pda_info)

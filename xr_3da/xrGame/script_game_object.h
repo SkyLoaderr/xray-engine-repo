@@ -311,8 +311,9 @@ public:
 			void				ClearInfoCallback	();
 
 			//////////////////////////////////////////////////////////////////////////
-			Flags32				get_actor_relation_flags () const;
-			LPCSTR				snd_character_profile_sect () const;
+			Flags32				get_actor_relation_flags	()			const;
+			void 				set_actor_relation_flags	(Flags32);
+			LPCSTR				snd_character_profile_sect	()			const;
 
 			//////////////////////////////////////////////////////////////////////////
 			MemorySpace::CMemoryInfo *memory		(const CScriptGameObject &lua_game_object);

@@ -225,6 +225,13 @@ Flags32 CScriptGameObject::get_actor_relation_flags () const
 	return stalker->m_actor_relation_flags;
 }
 
+void CScriptGameObject::set_actor_relation_flags (Flags32 flags)
+{
+	CAI_Stalker* stalker = smart_cast<CAI_Stalker*>(object());
+	VERIFY(stalker);
+	stalker->m_actor_relation_flags = flags;
+}
+
 void  CScriptGameObject::set_node_evaluator		(CAbstractVertexEvaluator *node_evaluator)
 {
 	CAI_Stalker					*stalker = smart_cast<CAI_Stalker*>(object());
