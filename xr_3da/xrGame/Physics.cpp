@@ -932,7 +932,7 @@ void CPHElement::SetTransform(const Fmatrix &m0){
 	Fvector mc;
 	mc.set(m_mass_center);
 	m0.transform_tiny(mc);
-	dBodySetPosition(m_body,mc.x,mc.y+160.0f,mc.z);
+	dBodySetPosition(m_body,mc.x,mc.y+0.0f,mc.z);
 	Fmatrix33 m33;
 	m33.set(m0);
 	dMatrix3 R;
