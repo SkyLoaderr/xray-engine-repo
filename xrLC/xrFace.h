@@ -23,7 +23,7 @@ public:
 	void					select		(xr_vector<R_Light>& dest, xr_vector<R_Light>& src, Fvector& P, float R);
 	void					select		(base_lighting& from, Fvector& P, float R);
 };
-class base_color
+class base_color_c
 {
 public:
 	Fvector					rgb;		// - all static lighting
@@ -38,6 +38,16 @@ public:
 	void					scale		(int samples)								{	mul	(1.f/float(samples));					};
 	void					max			(base_color& s)								{ 	rgb.max(s.rgb); hemi=_max(hemi,s.hemi); sun=_max(sun,s.sun); };
 	void					lerp		(base_color& A, base_color& B, float s)		{ 	rgb.lerp(A.rgb,B.rgb,s); float is=1-s;  hemi=is*A.hemi+s*B.hemi; sun=is*A.sun+s*B.sun; };
+};
+class base_color
+{
+public:
+	fixed16<16>				r;
+	fixed16<16>				g;
+	fixed16<16>				b;
+	fixed16<16>				h;
+	fixed16<16>				s;
+	fixed16<16>				tmp;
 };
 IC	u8	u8_clr				(float a)	{ s32 _a = iFloor(a*255.f); clamp(_a,0,255); return u8(_a);		};
 
