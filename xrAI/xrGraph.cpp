@@ -62,7 +62,7 @@ void vfLoadGraphPoints(LPCSTR name)
 		P.r_begin							(ID);
 		R_ASSERT							(M_SPAWN==ID);
 		P.r_stringZ							(fName);
-		CSE_Abstract						*E = create_object(fName);
+		CSE_Abstract						*E = create_entity(fName);
 		R_ASSERT2							(E,"Can't create entity.");
 		E->Spawn_Read						(P);
 		CSE_ALifeGraphPoint						*tpGraphPoint = dynamic_cast<CSE_ALifeGraphPoint*>(E);
@@ -80,7 +80,7 @@ void vfLoadGraphPoints(LPCSTR name)
 			tpaGraph.push_back					(tDynamicGraphVertex);
 			i++;
 		}
-		destroy_object						(E);
+		destroy_entity						(E);
 		if (i % 100 == 0)
 			Status							("Vertices read : %d",i);
 	}
@@ -405,7 +405,6 @@ void xrBuildGraph(LPCSTR name)
 	CThreadManager		tThreadManager;		// multithreading
 	xrCriticalSection	tCriticalSection;	// thread synchronization
 	CLevelGraph			*tpAI_Map;
-	//pSettings			= xr_new<CInifile>(SYSTEM_LTX);
 
 	Msg("Building Level %s",name);
 

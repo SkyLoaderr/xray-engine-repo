@@ -30,12 +30,7 @@
 #include <io.h>
 #include <stdio.h>
 
-class CSE_Abstract;
-
-extern "C" {
-	__declspec(dllimport) CSE_Abstract *create_object(LPCSTR section);
-	__declspec(dllimport) void destroy_object(CSE_Abstract *&);
-};
+#include "xrSE_Factory_import_export.h"
 // TODO: reference additional headers your program requires here
 
 //{{AFX_INSERT_LOCATION}}

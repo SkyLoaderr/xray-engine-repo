@@ -13,7 +13,7 @@
 #include "xrServer_Space.h"
 #include "xrCDB.h"
 #include "ShapeData.h"
-#ifdef XRSE_FACTORY_EXPORTS
+#ifndef XRGAME_EXPORTS
 #	include "Sound.h"
 #endif
 #include "xrEProps.h"

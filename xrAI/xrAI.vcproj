@@ -280,9 +280,6 @@
 				RelativePath=".\FastDelegate.h">
 			</File>
 			<File
-				RelativePath=".\import_export.h">
-			</File>
-			<File
 				RelativePath=".\StdAfx.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -317,6 +314,9 @@
 			</File>
 			<File
 				RelativePath="xrAI.h">
+			</File>
+			<File
+				RelativePath=".\xrSE_Factory_import_export.h">
 			</File>
 			<File
 				RelativePath=".\xrShaderTypes.h">
@@ -1237,9 +1237,6 @@
 					RelativePath=".\alife_event_personal_inline.h">
 				</File>
 				<File
-					RelativePath=".\alife_interfaces.h">
-				</File>
-				<File
 					RelativePath=".\alife_space.h">
 				</File>
 				<File
@@ -1291,6 +1288,9 @@
 					RelativePath=".\object_destroyer.h">
 				</File>
 				<File
+					RelativePath=".\object_interfaces.h">
+				</File>
+				<File
 					RelativePath=".\object_loader.h">
 				</File>
 				<File
@@ -1319,6 +1319,9 @@
 				</File>
 				<File
 					RelativePath=".\script_export_space.h">
+				</File>
+				<File
+					RelativePath=".\ShapeData.h">
 				</File>
 				<File
 					RelativePath=".\Sound.h">

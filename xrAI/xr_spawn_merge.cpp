@@ -104,7 +104,7 @@ public:
 			string64			s_name;
 			P.r_stringZ			(s_name);
 			// create server entity
-			CSE_Abstract		*E = create_object(s_name);
+			CSE_Abstract		*E = create_entity(s_name);
 			if (!E) {
 				string4096		S;
 				sprintf			(S,"Can't create entity '%s' !\n",E->s_name_replace);
@@ -147,7 +147,7 @@ public:
 					else {
 						CSE_ALifeGraphPoint	*graph_point = dynamic_cast<CSE_ALifeGraphPoint*>(E);
 						if (!graph_point)
-							destroy_object(E);
+							destroy_entity(E);
 						else
                             m_graph_points.push_back	(graph_point);
 					}
@@ -156,7 +156,7 @@ public:
 			else {
 				CSE_ALifeGraphPoint	*graph_point = dynamic_cast<CSE_ALifeGraphPoint*>(E);
 				if (!graph_point)
-					destroy_object(E);
+					destroy_entity(E);
 				else
                     m_graph_points.push_back	(graph_point);
 			}

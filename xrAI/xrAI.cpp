@@ -48,30 +48,12 @@ static const char* h_str =
 void Help()
 {	MessageBox(0,h_str,"Command line options",MB_OK|MB_ICONINFORMATION); }
 
-char SYSTEM_LTX[256];
 char INI_FILE[256];
 
 extern  HWND logWindow;
 
-//#define TEST_FOR_BORLAND
-
-#ifdef TEST_FOR_BORLAND
-#	include "import_export.h"
-	extern "C" {
-		__declspec(dllimport) CTestInterface *create_test_object();
-		__declspec(dllimport) void			 destroy_test_object(CTestInterface *&);
-	}
-#endif
-
 void Startup(LPSTR     lpCmdLine)
 {
-#ifdef TEST_FOR_BORLAND
-	CTestInterface		*test = create_test_object();
-	test->test_test0	();
-	test->test_test1	();
-	destroy_test_object	(test);
-#endif
-
 	char cmd[512],name[256];
 	BOOL bModifyOptions		= FALSE;
 
@@ -112,11 +94,8 @@ void Startup(LPSTR     lpCmdLine)
 
 	u32				dwStartupTime	= timeGetTime();
 	
-	FS.update_path		(SYSTEM_LTX,"$game_data$","system.ltx");
 	FS.update_path		(INI_FILE,"$game_data$","game.ltx");
 	
-	pSettings			= xr_new<CInifile>(SYSTEM_LTX);
-
 	if (strstr(cmd,"-f"))
 		xrCompiler			(prjName,!!strstr(cmd,"-draft"));
 	else
@@ -174,10 +153,6 @@ int APIENTRY WinMain(HINSTANCE hInstance,
                      LPSTR     lpCmdLine,
                      int       nCmdShow)
 {
-	// Initialize debugging
-// 	Core._initialize		("xrAI",NULL);
-
 	Startup					(lpCmdLine);
-	
-	return 0;
+	return					(0);
 }

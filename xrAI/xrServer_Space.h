@@ -47,9 +47,11 @@ DEFINE_VECTOR	(float,						FLOAT_VECTOR,					FLOAT_IT);
 DEFINE_VECTOR	(LPSTR,						LPSTR_VECTOR,					LPSTR_IT);
 DEFINE_VECTOR	(Fvector,					FVECTOR_VECTOR,					FVECTOR_IT);
 
+#ifdef XRGAME_EXPORTS
 template <class T> void	F_entity_Destroy	(T *&P)
 {
 	xr_delete	(P);
 };
+#endif
 
 #endif
