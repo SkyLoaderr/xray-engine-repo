@@ -66,8 +66,8 @@ public:
 	virtual	CSkeletonAnimated*	dcast_PSkeletonAnimated	()				{ return 0;	}
 	virtual IParticleCustom*	dcast_ParticleCustom	()				{ return 0;	}
 
-	IRender_Visual			();
-	virtual ~IRender_Visual();
+	IRender_Visual				();
+	virtual ~IRender_Visual		();
 };
 
 #endif // !defined(AFX_FBASICVISUAL_H__2DCBE980_AF27_11D3_B4E3_4854E82A090D__INCLUDED_)
