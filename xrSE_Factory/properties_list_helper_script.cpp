@@ -122,9 +122,9 @@ void CScriptPropertiesListHelper::script_register(lua_State *L)
 		class_<VectorValue>	("vector_value"),
 		class_<ColorValue>	("color_value"),
 		class_<RTextValue>	("text_value"),
-		class_<Flags8Value>	("flags8_value"),
-		class_<Flags16Value>("flags16_value"),
-		class_<Flags32Value>("flags32_value"),
+		class_<Flag8Value>	("flag8_value"),
+		class_<Flag16Value>	("flag16_value"),
+		class_<Flag32Value>	("flag32_value"),
 
 		class_<CScriptPropertiesListHelper>("properties_list_helper")
 			.def("create_s8", (S8Value *(CScriptPropertiesListHelper::*)(PropItemVec&, LPCSTR,  s8*))					(&CScriptPropertiesListHelper::CreateS8))
