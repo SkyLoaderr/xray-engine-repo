@@ -71,8 +71,9 @@ void CUIPdaWnd::Init()
 	UITaskWnd.Init();
 	
 	// Oкно новостей
-	UIMainPdaFrame.AttachChild(&UINewsWnd);
-	UINewsWnd.Init();
+	UIMainPdaFrame.AttachChild(&UIDiaryWnd);
+	UIDiaryWnd.Init();
+	UIDiaryWnd.SetMessageTarget(this);
 }
 
 void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
@@ -93,7 +94,7 @@ void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 				m_pActiveDialog = dynamic_cast<CUIDialogWnd*>(&UIMapWnd);
 				break;
 			case 2:
-				m_pActiveDialog = dynamic_cast<CUIDialogWnd*>(&UINewsWnd);
+				m_pActiveDialog = dynamic_cast<CUIDialogWnd*>(&UIDiaryWnd);
 				break;
 			case 3:
 				m_pActiveDialog = dynamic_cast<CUIDialogWnd*>(&UITaskWnd);
@@ -102,6 +103,11 @@ void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 			m_pActiveDialog->Reset();
 			m_pActiveDialog->Show();
 		}
+	}
+	// Сменить точку центрирования карты. Новые координаты поступают в pData
+	else if (PDA_MAP_SET_ACTIVE_POINT == msg)
+	{
+		UIMapWnd.SetActivePoint(*reinterpret_cast<Fvector*>(pData));
 	}
 	else
 	{
@@ -115,3 +121,17 @@ void CUIPdaWnd::Show()
 	inherited::Show();
 	m_pActiveDialog->Show();
 }
+
+void CUIPdaWnd::ChangeActiveTab(E_PDA_TABS tabNewTab)
+{
+	UITabControl.SetNewActiveTab(tabNewTab);
+}
+
+void CUIPdaWnd::FocusOnMap(const int x, const int y, const int z)
+{
+	Fvector a;
+	a.set(static_cast<float>(x), static_cast<float>(y), static_cast<float>(z));
+	SendMessage(this, CUIPdaWnd::PDA_MAP_SET_ACTIVE_POINT, &a);
+	ChangeActiveTab(CUIPdaWnd::TAB_MAP);
+}
+

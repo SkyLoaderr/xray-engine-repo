@@ -35,6 +35,9 @@ public:
 	virtual void Draw();
 	virtual void Update();
 
+	// Установить новую позицию на карте, по кторой она будет отцентрована
+	void SetActivePoint(const Fvector &vNewPoint);
+
 protected:
 
 	void DrawMap();

@@ -62,6 +62,16 @@ public:
 	MAP_SPOT_VECTOR m_vMapSpots;
 	CUIMapSpot* m_pActiveMapSpot;
 
+	// Центровать карту по координатам
+	void UpdateActivePos();
+	// флажек на то, что не надо при следующем показе карты центрировать ее на игроке, так как 
+	// поступило требование показать определенную точку на карте
+	bool m_bNoActorFocus;
+
+	// Устанавливаем/читаем активную позицию на карте
+	Fvector GetActivePos() const { return m_vActivePos; }
+	void SetActivePos(const Fvector &vNewPos) { m_vActivePos = vNewPos; }
+
 protected:
 	void DrawFogOfWar();
 	void DrawFogOfWarCell(int x, int y);
@@ -69,15 +79,18 @@ protected:
 	//обновления иконок на карте
 	void UpdateMapSpots();
 	void UpdateActorPos();
+
 	//подложка для карты
 	CUIStaticItem landscape;
 
 	CUIMapSpot m_fogOfWarCell;
-
 
 	//для перетаскивания карты при помощи мыши
 	virtual void OnMouse(int x, int y, E_MOUSEACTION mouse_action);
 	int m_iOldMouseX;
 	int m_iOldMouseY;
 	POINT m_previousPos;
+
+	// Точка на карте по которой идет центрирование
+	Fvector m_vActivePos;
 };

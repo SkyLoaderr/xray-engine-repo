@@ -62,6 +62,8 @@ public:
 	virtual bool IsHighlightText();
 	// принудительна€ подсветка
 	virtual void HighlightItem(bool bHighlight) { m_bCursorOverButton = bHighlight; }
+	// ÷вет подсветки
+	virtual void SetHighlightColor(const u32 uColor) { m_HighlightColor = uColor; }
 
 	//состо€ни€ в которых находитс€ кнопка
 	typedef enum{BUTTON_NORMAL, //кнопка никак не затрагиваетс€
@@ -93,6 +95,9 @@ protected:
 	//смещение кнопки при нажатии
 	int m_iPushOffsetX;
 	int m_iPushOffsetY;
+
+	// ÷вет подсветки
+	u32 m_HighlightColor;
 };
 
 #endif // _UI_BUTTON_H_

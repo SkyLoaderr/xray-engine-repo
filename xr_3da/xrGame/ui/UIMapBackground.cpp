@@ -32,6 +32,7 @@ CUIMapBackground::CUIMapBackground()
 {
 	Show(false);
 	Enable(false);
+	m_bNoActorFocus = false;
 }
 
 CUIMapBackground::~CUIMapBackground()
@@ -88,7 +89,14 @@ void CUIMapBackground::InitMapBackground()
 	m_fMapTopMeters = m_LevelBox.z2;
 	m_fMapBottomMeters = m_LevelBox.z1;
 
-	UpdateActorPos();
+	if (!m_bNoActorFocus)
+		UpdateActorPos();
+	else
+	{
+		UpdateActivePos();
+		m_bNoActorFocus = false;
+	}
+	
 	UpdateMapSpots();
 
 	m_pActiveMapSpot = NULL;
@@ -450,17 +458,25 @@ void CUIMapBackground::UpdateActorPos()
 	//был по центру
 	CEntityAlive *pActor = dynamic_cast<CEntityAlive*>(Level().CurrentEntity());
 	if(!pActor) return;
+	m_vActivePos = pActor->Position();
+	UpdateActivePos();
+}
 
-	m_fMapX = pActor->Position().x - m_fMapLeftMeters 
-					- m_fMapViewWidthMeters/2.f;
-	m_fMapY = m_fMapHeightMeters - (pActor->Position().z - m_fMapBottomMeters)
-					- m_fMapViewHeightMeters/2.f;
-	
+// Центрируем карту по заданной активной точке
+void CUIMapBackground::UpdateActivePos()
+{
+	//установить положение карты, так чтобы заданая точка 
+	//была по центру
+	m_fMapX = m_vActivePos.x - m_fMapLeftMeters 
+		- m_fMapViewWidthMeters/2.f;
+	m_fMapY = m_fMapHeightMeters - (m_vActivePos.z - m_fMapBottomMeters)
+		- m_fMapViewHeightMeters/2.f;
+
 	if(m_fMapX<0) m_fMapX = 0;
 	if(m_fMapX>m_fMapWidthMeters - m_fMapViewWidthMeters) 
-						m_fMapX = m_fMapWidthMeters - m_fMapViewWidthMeters;
+		m_fMapX = m_fMapWidthMeters - m_fMapViewWidthMeters;
 
 	if(m_fMapY<0) m_fMapY = 0;
 	if(m_fMapY>m_fMapHeightMeters - m_fMapViewHeightMeters) 
-						m_fMapY = m_fMapHeightMeters - m_fMapViewHeightMeters;
+		m_fMapY = m_fMapHeightMeters - m_fMapViewHeightMeters;
 }

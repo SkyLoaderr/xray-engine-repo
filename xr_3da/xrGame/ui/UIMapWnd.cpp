@@ -131,7 +131,6 @@ void CUIMapWnd::InitMap()
 		UIMapBackground.m_LevelBox.z1 = -131.66000f;
 		UIMapBackground.m_LevelBox.x2 = 196.33000f;
 		UIMapBackground.m_LevelBox.z2 = 508.32999f;
-
 	}
 
 	m_fWorldMapWidth = UIMapBackground.m_LevelBox.x2 - UIMapBackground.m_LevelBox.x1;
@@ -252,9 +251,6 @@ void CUIMapWnd::InitMap()
 	UIMapBackground.m_vMapSpots.push_back(map_spot);
 	UIMapBackground.AttachChild(map_spot);
 
-
-
-
 	//информация о выбранном объекте
 	UIStaticInfo.Show(false);
 	UICharacterInfo.Show(false);
@@ -359,4 +355,10 @@ void CUIMapWnd::ConvertToLocal(const Fvector& src, Ivector2& dest)
 //прорисовка карты и объектов на ней
 void CUIMapWnd::DrawMap()
 {
+}
+
+void CUIMapWnd::SetActivePoint(const Fvector &vNewPoint)
+{
+	UIMapBackground.SetActivePos(vNewPoint);
+	UIMapBackground.m_bNoActorFocus = true;
 }

@@ -31,6 +31,8 @@ CUIButton:: CUIButton()
     m_iPushOffsetY = PUSH_OFFSET_DOWN;
 
 	SetTextAlign(CGameFont::alCenter);
+
+	m_HighlightColor = 0xFF999999;
 }
 
  CUIButton::~ CUIButton()
@@ -263,7 +265,7 @@ void  CUIButton::Update()
 
 	if(IsHighlightText() && m_str && xr_strlen(m_str)>0)
 	{
-			GetFont()->SetColor(0xFF999999);
+			GetFont()->SetColor(m_HighlightColor);
 			GetFont()->Out((float)rect.left + right_offset + 1 +m_iTextOffsetX, 
 					   (float)rect.top + down_offset + 1  +m_iTextOffsetY,
 					    m_str);

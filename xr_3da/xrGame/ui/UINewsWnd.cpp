@@ -9,74 +9,51 @@
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
 #include "UIString.h"
+#include "UIPdaWnd.h"
+#include "UIInteractiveListItem.h"
 
-const char * const JOBS_XML = "jobs.xml";
-
-//-----------------------------------------------------------------------------/
-//	Default constructor
-//-----------------------------------------------------------------------------/
+//=============================================================================
+//  CUINewsWnd class
+//=============================================================================
 CUINewsWnd::CUINewsWnd()
 {
-	Hide();
+	
 }
 
-//-----------------------------------------------------------------------------/
-//  Destructor
-//-----------------------------------------------------------------------------/
 CUINewsWnd::~CUINewsWnd()
 {
 
 }
 
-void CUINewsWnd::Init()
+void CUINewsWnd::Init(CUIXml &uiXml, CUIWindow *pNewParent)
 {
-	CUIXml uiXml;
-	uiXml.Init("$game_data$", JOBS_XML);
 	CUIXmlInit xml_init;
 
-	inherited::Init(0,0, Device.dwWidth, Device.dwHeight);
+//	inherited::Init(0,0, Device.dwWidth, Device.dwHeight);
 
-	// Заголовок
-	AttachChild(&UIStaticCaption);
-	xml_init.InitStatic(uiXml, "static", 0, &UIStaticCaption);
-	UIStaticCaption.SetText("NEWS");
-	UIStaticCaption.SetTextX(10);
-	UIStaticCaption.SetTextY(10);
-	UIStaticCaption.SetTextColor(0xffffffff);
-	UIStaticCaption.Show(true);
+	// Заголовок 1
+	AttachChild(&UIStaticCaptionMain);
+	xml_init.InitStatic(uiXml, "static", 0, &UIStaticCaptionMain);
 
-	// Табконтрол поддиалогов
-	AttachChild(&UITabControl);
-	xml_init.InitTabControl(uiXml, "tab", 0, &UITabControl);
-//	UITabControl.Show(true);
+	// Заголовок 2
+	AttachChild(&UIStaticCaptionCenter);
+	xml_init.InitStatic(uiXml, "static", 1, &UIStaticCaptionCenter);
 
 	// Список для вывода информации
 	AttachChild(&UIListWnd);
 	xml_init.InitListWnd(uiXml, "list", 0, &UIListWnd);
 	UIListWnd.EnableScrollBar(true);
-//	UIListWnd.Show(true);
+	//	UIListWnd.Show(true);
 
 	//Элементы автоматического добавления
-	xml_init.InitAutoStatic(uiXml, "auto_static", this);
+//	xml_init.InitAutoStatic(uiXml, "auto_static", this);
 }
 
-void CUINewsWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
+void CUINewsWnd::SendMessage(CUIWindow *pWnd, s16 msg, void* pData)
 {
-	if (pWnd == &UITabControl)
+	if (dynamic_cast<CUIInteractiveListItem*>(pWnd) && 
+		CUIInteractiveListItem::INTERACTIVE_ITEM_CLICK == msg)
 	{
-		CUIString str;
-		str.SetText("Hello from Haiti!");
-		UIListWnd.AddParsedItem(str, 0, 0xffffffff);
+		GetMessageTarget()->SendMessage(this, CUIInteractiveListItem::INTERACTIVE_ITEM_CLICK, pData);
 	}
-	inherited::SendMessage(pWnd, msg, pData);
-}
-
-void CUINewsWnd::Draw()
-{
-	inherited::Draw();
-}
-
-void CUINewsWnd::Update()
-{
-	inherited::Update();
 }

@@ -11,7 +11,7 @@
 #include "UIPdaCommunication.h"
 #include "UIMapWnd.h"
 #include "UITaskWnd.h"
-#include "UINewsWnd.h"
+#include "UIDiaryWnd.h"
 
 class CInventoryOwner;
 
@@ -35,6 +35,16 @@ public:
 //	virtual void Update();
 		
 	virtual void Show();
+	
+	// Специфичные для родительского окна PDA сообщения:
+	// Смена точки центрирования карты
+	typedef enum { PDA_MAP_SET_ACTIVE_POINT = 8010 } E_MESSAGE;
+	// Список закладок
+	typedef enum { TAB_PDACOMM, TAB_MAP, TAB_TASK, TAB_NEWS } E_PDA_TABS;
+	// Принудительно сменить активную закладку
+	void ChangeActiveTab(E_PDA_TABS tabNewTab);
+	// Переключиться на карту и сфокусироваться на заданной точке
+	void FocusOnMap(const int x, const int y, const int z);
 
 protected:
 	// Бэкграунд
@@ -47,7 +57,7 @@ protected:
 	CUIPdaCommunication	UIPdaCommunication;
 	CUIMapWnd			UIMapWnd;
 	CUITaskWnd			UITaskWnd;
-	CUINewsWnd			UINewsWnd;
+	CUIDiaryWnd			UIDiaryWnd;
 
 	//элементы декоративного интерфейса
 	CUIStatic			UIStaticTop;

@@ -5737,6 +5737,24 @@
 					<File
 						RelativePath=".\ui\UIDiaryWnd.h">
 					</File>
+					<File
+						RelativePath=".\ui\UIJobsWnd.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIJobsWnd.h">
+					</File>
+					<File
+						RelativePath=".\ui\UINewsWnd.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UINewsWnd.h">
+					</File>
+					<File
+						RelativePath=".\ui\UINotesWnd.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UINotesWnd.h">
+					</File>
 				</Filter>
 				<Filter
 					Name="MainIngame"
@@ -5764,16 +5782,6 @@
 					</File>
 					<File
 						RelativePath=".\UIZoneMap.h">
-					</File>
-				</Filter>
-				<Filter
-					Name="NewsWnd"
-					Filter="">
-					<File
-						RelativePath=".\ui\UINewsWnd.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UINewsWnd.h">
 					</File>
 				</Filter>
 				<Filter
@@ -5835,6 +5843,12 @@
 				<Filter
 					Name="ListBox"
 					Filter="">
+					<File
+						RelativePath=".\ui\UIInteractiveListItem.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIInteractiveListItem.h">
+					</File>
 					<File
 						RelativePath=".\ui\UIListItem.cpp">
 					</File>
