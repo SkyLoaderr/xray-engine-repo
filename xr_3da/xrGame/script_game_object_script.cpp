@@ -275,7 +275,7 @@ void CScriptGameObject::script_register(lua_State *L)
 			.def("heli_goto_stay_point",        (void (CScriptGameObject::*)(float))(CScriptGameObject::heli_goto_stay_point))
 			.def("heli_goto_stay_point",        (void (CScriptGameObject::*)(Fvector&,float))(CScriptGameObject::heli_goto_stay_point))
 			.def("heli_go_patrol",				&CScriptGameObject::heli_go_patrol)
-			.def("heli_go_to_point",			&CScriptGameObject::heli_go_to_point)
+			.def("heli_go_to_point",			&CScriptGameObject::heli_go_to_point),
 
 //		class_<CObject>("base_client_class")
 //			.def(								constructor<>()),
@@ -292,8 +292,9 @@ void CScriptGameObject::script_register(lua_State *L)
 //		class_<CGameObject>("game_object_class")
 //			.def(								constructor<>()),
 
-//		class_<CAttachableItem,DLL_Pure>("attachable_item")
-		,class_<CAttachableItem>("attachable_item")
+		class_<DLL_Pure>("dll_pure"),
+
+		class_<CAttachableItem,DLL_Pure>("attachable_item")
 			.def(								constructor<>())
 	];
 }
