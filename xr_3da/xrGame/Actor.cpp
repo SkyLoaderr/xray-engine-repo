@@ -224,6 +224,8 @@ void CActor::Load(CInifile* ini, const char* section )
 
 BOOL CActor::Spawn		( BOOL bLocal, int sid, int team, int squad, int group, Fvector4& o_pos )
 {
+	Msg("ACTOR: %f,%f,%f",o_pos.x,o_pos.y,o_pos.z);
+
 	if (!inherited::Spawn(bLocal,sid,team,squad,group,o_pos))	return FALSE;
 	r_model_yaw			= o_pos.w;
 	cameras[cam_active]->Set(o_pos.w,0,0);		// set's camera orientation

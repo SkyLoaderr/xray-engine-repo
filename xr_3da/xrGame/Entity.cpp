@@ -151,6 +151,8 @@ BOOL CEntity::Spawn		(BOOL bLocal, int server_id, int team, int squad, int group
 	id_Group			= group;
 	iHealth				= 100;
 	iArmor				= 0;
+	Movement.SetPosition(o_pos.x,o_pos.y,o_pos.z);
+	Movement.SetVelocity(0,0,0);
 
 	return				TRUE;
 }

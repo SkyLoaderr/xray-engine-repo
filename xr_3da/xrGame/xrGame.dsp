@@ -152,14 +152,6 @@ SOURCE=.\MovementControl.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\ObjectAnimator.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\ObjectAnimator.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\SoundHelper.h
 # End Source File
 # End Group
