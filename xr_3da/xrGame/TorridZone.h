@@ -9,10 +9,11 @@ private:
 	typedef	CCustomZone	inherited;
 	CObjectAnimator		*m_animator;
 public:
-
-	virtual void UpdateCL();
-	virtual void shedule_Update(u32 dt);
-	BOOL net_Spawn(LPVOID DC);
+						CTorridZone			();
+	virtual				~CTorridZone		();
+	virtual void		UpdateCL			();
+	virtual void		shedule_Update		(u32 dt);
+	BOOL				net_Spawn			(LPVOID DC);
 /*	virtual void Load(LPCSTR section);
 	virtual void Postprocess(f32 val);
 	virtual bool EnableEffector() {return true;}

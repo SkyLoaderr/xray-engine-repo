@@ -3,6 +3,16 @@
 #include "../objectanimator.h"
 #include "xrServer_Objects_ALife_Monsters.h"
 
+CTorridZone::CTorridZone()
+{
+	m_animator			= xr_new<CObjectAnimator>();
+}
+
+CTorridZone::~CTorridZone()
+{
+	xr_delete			(m_animator);
+}
+
 BOOL CTorridZone::net_Spawn(LPVOID DC)
 {
 	if (!inherited::net_Spawn(DC))
@@ -29,6 +39,8 @@ void CTorridZone::UpdateCL()
 {
 	inherited::UpdateCL();
 	m_animator->OnFrame	();
+	XFORM().set	(m_animator->XFORM());
+
 }
 
 

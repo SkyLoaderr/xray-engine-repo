@@ -371,6 +371,10 @@ void CCustomZone::UpdateCL()
 		m_effector.Update(Level().CurrentEntity()->Position().distance_to(Position()));
 
 	UpdateBlowoutLight	();
+
+	if (m_pIdleParticles)
+		m_pIdleParticles->UpdateParent(XFORM(),zero_vel);
+
 }
 
 void CCustomZone::shedule_Update(u32 dt)
