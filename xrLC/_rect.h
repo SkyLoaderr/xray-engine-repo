@@ -56,9 +56,9 @@ public:
 
 
 
-	IC BOOL intersected(const SelfRef b){return !(x1>b.x2 || x2<b.x1 || y1>b.y2 ||  y2<b.y1);}
+	IC BOOL intersected(SelfCRef b) const {return !(x1>b.x2 || x2<b.x1 || y1>b.y2 ||  y2<b.y1);}
 
-	IC BOOL intersection(const SelfRef b, SelfRef result){
+	IC BOOL intersection(SelfCRef b, SelfRef result)const{
 		if (!intersected(b0,b1))
 			return	(FALSE);
 
