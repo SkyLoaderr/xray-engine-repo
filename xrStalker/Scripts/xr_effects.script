@@ -123,7 +123,7 @@ function val_bs_victim_dead(actor, npc)
 	h.power = 1000
 	h.direction = patrol("val_bs_hit_direction"):point(0):sub(npc:position())
 	h.bone = "bip01_legs"
-	h.draftsman = bpc
+	h.draftsman = npc
 	h.impulse = 1000
 	h.type = hit.wound
 	npc:hit(h)
