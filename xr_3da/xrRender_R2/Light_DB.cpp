@@ -78,7 +78,7 @@ void CLight_DB::Load			(IReader *fs)
 
 		F->close			();
 	}
-	R_ASSERT2(sun,"Where is sun?");
+	R_ASSERT2(sun_original && sun_adapted,"Where is sun?");
 
 	// fake spot
 	/*
@@ -102,8 +102,8 @@ void			CLight_DB::Unload	()
 {
 	for	(u32 it=0; it<v_static.size(); it++)	Destroy(v_static[it]);
 	v_static.clear			();
-	Destroy					(sun);
-	Destroy					(sun_base);
+	Destroy					(sun_original	);
+	Destroy					(sun_adapted	);
 }
 
 light*			CLight_DB::Create	()
@@ -144,21 +144,22 @@ void			CLight_DB::add_light		(light* L)
 void			CLight_DB::Update			()
 {
 	// set sun params
-	if (sun)
+	if (sun_original && sun_adapted)
 	{
 		CEnvDescriptor&	E			= g_pGamePersistent->Environment.CurrentEnv;
-		Fvector						P,Pbase,Dbase;
-		Dbase.set(0,-1,0).add		(E.sun_dir).normalize	();
-		Pbase.mad					(Device.vCameraPosition,Dbase,		-500.f);
-		P.mad						(Device.vCameraPosition,E.sun_dir,	-500.f);
-		sun->set_rotation			(E.sun_dir,sun->right);
-		sun_base->set_rotation		(Dbase,sun->right);
-		sun->set_color				(E.sun_color.x,E.sun_color.y,E.sun_color.z);
-		sun_base->set_color			(E.sun_color.x,E.sun_color.y,E.sun_color.z);
-		sun->set_position			(P);
-		sun_base->set_position		(P);
-		sun->set_range				(600.f);
-		sun_base->set_range			(600.f);
+		Fvector						OD,OP,AD,AP;
+		OD.set						(E.sun_dir).normalize	();
+		OP.mad						(Device.vCameraPosition,OD,-500.f);
+		AD.set(0,-1,0).add			(E.sun_dir).normalize	();
+		AP.mad						(Device.vCameraPosition,AD,-500.f);
+		sun_original->set_rotation	(OD,sun_original->right	);
+		sun_original->set_position	(OP);
+		sun_original->set_color		(E.sun_color.x,E.sun_color.y,E.sun_color.z);
+		sun_original->set_range		(600.f);
+		sun_adapted->set_rotation	(AD,sun_adapted->right	);
+		sun_adapted->set_position	(AP		);
+		sun_adapted->set_color		(2,2,2	);	//.
+		sun_adapted->set_range		(600.f	);
 	}
 
 	// Clear selection
