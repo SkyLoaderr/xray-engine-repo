@@ -125,5 +125,15 @@ void CPhysicObject::CreateBody() {
 
 void CPhysicObject::Hit(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space, float impulse)
 {
-	if(m_pPhysicsShell) m_pPhysicsShell->applyImpulseTrace(p_in_object_space,dir,impulse,element);
+	if(m_pPhysicsShell){
+		switch(m_type) {
+		case epotBox :
+			inherited::Hit(P,dir,who,element,p_in_object_space,impulse);
+		break;
+		case epotFixedChain :
+			m_pPhysicsShell->applyImpulseTrace(p_in_object_space,dir,impulse,element);
+		break;
+		default : NODEFAULT;
+		}
+	}
 }
