@@ -22,7 +22,7 @@ XRXMLPARSER_API CUIXml::CUIXml()
 	// internal caches before checking for memory leaks.
 	
 	//CkSettings::disableStringCaching();
-
+	m_root				= xr_new<XML_NODE>();
 }
 
 XRXMLPARSER_API CUIXml::~CUIXml()
@@ -32,14 +32,14 @@ XRXMLPARSER_API CUIXml::~CUIXml()
 
 	//CkSettings::cleanupMemory();
 
-
+	xr_delete			(m_root);
 }
 
 
 //инициализация и загрузка XML файла
 bool CUIXml::Init(LPCSTR path, const char* xml_filename)
 {
-	//if(!m_root.LoadXmlFile(xml_filename))
+	//if(!m_root->LoadXmlFile(xml_filename))
 	//	return false;
 
 	IReader *F = FS.r_open(path, xml_filename);
@@ -48,7 +48,7 @@ bool CUIXml::Init(LPCSTR path, const char* xml_filename)
 	CMemoryWriter W;
 	W.w(F->pointer(),F->length());
 	W.w_stringZ("");
-	if(!m_root.LoadXml((const char*)W.pointer()))
+	if(!m_root->LoadXml((const char*)W.pointer()))
 		return false;
 		
 	F->close();
@@ -92,6 +92,7 @@ XML_NODE* CUIXml::NavigateToNode(XML_NODE* start_node,
 			{
 				node_parent = node;
 				node = node_parent->GetChildWithTag(token);
+				node->Clear();
 				xr_delete(node_parent);
 			}
 
@@ -259,10 +260,10 @@ int CUIXml::GetNodesNum(const char *path, int index, const char* tag_name)
 	{
 		node = NavigateToNode(path, index);
 
-		if(node==NULL) node = &m_root;
+		if(node==NULL) node = m_root;
 	}
 	else
-		node = &m_root;
+		node = m_root;
 	
 	if(node == NULL) return 0;
 	int result =  node->NumChildrenHavingTag(tag_name);
@@ -294,6 +295,6 @@ XML_NODE* CUIXml::SearchForAttribute(XML_NODE* start_node,
 									const char *attrib, 
 									const char *attrib_value_pattern)
 {
-	return m_root.SearchForAttribute(start_node, tag_name, 
+	return m_root->SearchForAttribute(start_node, tag_name, 
 									 attrib, attrib_value_pattern);
 }
