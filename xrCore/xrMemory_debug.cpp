@@ -38,7 +38,6 @@ void	xrMemory::dbg_unregister	(void* _p)
 
 	// unregister entry
 	if (u32(-1)==_found)	{ 
-		__asm int 3;	
 		Debug.fatal			("Memory allocation error"); 
 	} else	{
 		u8*			_ptr	= (u8*)	debug_info[_found]._p;
