@@ -25,7 +25,7 @@ public:
 					CUIJobItem				(int leftOffest = 0);
 	void			Init					(int x, int y, int width, int height);
 	void			SetPicture				(LPCSTR texName, const Irect &originalRect, u32 color);
-	void			ScalePictureXY			(float x, float y) { UIPicture.SetTextureScaleXY(UIPicture.GetTextureScaleX()*x, UIPicture.GetTextureScaleY()*y); }
+	void			ScalePictureXY			(float x, float y);
 	void			SetCaption				(LPCSTR caption);
 	void			SetDescription			(LPCSTR description);
 	void			SetAdditionalMaterialID	(int id) { m_id = id; UIAdditionalMaterials.Show(true); }

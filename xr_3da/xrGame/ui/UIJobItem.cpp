@@ -70,8 +70,9 @@ void CUIJobItem::SetPicture(LPCSTR texName, const Irect &originalRect, u32 color
 
 	UIPicture.SetOriginalRect(originalRect.x1, originalRect.y1, originalRect.x2, originalRect.y2);
 	UIPicture.ClipperOn();
-	Irect r = UIPicture.GetWndRect();
-
+//.	Irect r = UIPicture.GetWndRect();
+	UIPicture.SetStretchTexture(true);
+/*
 	float mx = 1.0f;
 	float my = 1.0f;
 	if (r.right - r.left < originalRect.x2 || r.bottom - r.top < originalRect.y2)
@@ -86,6 +87,7 @@ void CUIJobItem::SetPicture(LPCSTR texName, const Irect &originalRect, u32 color
 	clamp<int>(offX, 0, r.right - r.left);
 	clamp<int>(offY, 0, r.bottom - r.top);
 	UIPicture.SetTextureOffset(offX, offY);
+*/
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -114,4 +116,14 @@ void CUIJobItem::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		if(bEncHasArticle)
 			GetTop()->SendMessage(this, static_cast<s16>(articleTypeMsg), NULL);
 	}
+}
+void CUIJobItem::ScalePictureXY			(float x, float y) 
+{ 
+	int oldH = UIPicture.GetHeight();
+	UIPicture.SetWidth( iFloor(float(UIPicture.GetWidth())*x) );
+	UIPicture.SetHeight( iFloor(float(UIPicture.GetHeight())*y) );
+
+	int newH = UIPicture.GetHeight();
+
+	UIPicture.MoveWndDelta(0, iFloor(float(oldH-newH)/2.0f) );
 }
