@@ -77,7 +77,7 @@ void	CLightTrack::ltrack	(IRenderable* O)
 	// Select nearest lights
 	Fvector					bb_size	=	{fRadius,fRadius,fRadius};
 	g_SpatialSpace->q_box				(0,STYPE_LIGHTSOURCE,pos,bb_size);
-	g_SpatialSpace->q_result.push_back	(RImplementation.L_DB->sun_base);
+	add									(RImplementation.L_DB->sun_base);
 
 	// Process selected lights
 	for (u32 o_it=0; o_it<g_SpatialSpace->q_result.size(); o_it++)
@@ -85,39 +85,33 @@ void	CLightTrack::ltrack	(IRenderable* O)
 		ISpatial*	spatial		= g_SpatialSpace->q_result[o_it];
 		light*		source		= dynamic_cast<light*>	(spatial);
 		if (0==source)			continue;
-		if (source->flags.type	== IRender_Light::DIRECT)		add		(source);
-		else {
-			float	R	= fRadius+source->range;
-			if (pos.distance_to_sqr(source->position) < R*R)	add		(source);
-			else												remove	(source);
-		}
+		float	R				= fRadius+source->range;
+		if (pos.distance_to(source->position) < R)	add		(source);
+		else										remove	(source);
 	}
 	
 	// Trace visibility
 	lights.clear	();
 	xr_vector<CLightTrack::Item>::iterator I	= track.begin(), E=track.end();
-	float R										= fRadius*.5f;
+	float traceR								= fRadius*.5f;
 	for (; I!=E; I++)
 	{
 		float		amount	= 0;
 		light*		xrL		= I->source;
 		Fvector&	LP		= xrL->position;
 
-		for (int it=0; it<1; it++)
-		{
-			// Random point inside range
-			Fvector			P;
-			P.random_dir	();
-			P.mad			(pos,P,R);
-			
-			// Direction/range	
-			Fvector	D;	
-			D.sub			(P,LP);
-			float	f		= D.magnitude();
-			D.div			(f);
-			if (g_pGameLevel->ObjectSpace.RayTest(LP,D,f,false,&I->cache))	amount -=	lt_dec;
-			else															amount +=	lt_inc;
-		}
+		// Random point inside range
+		Fvector				P;
+		P.random_dir		();
+		P.mad				(pos,P,traceR);
+		
+		// Direction/range	
+		Fvector	D;	
+		D.sub				(P,LP);
+		float	f			= D.magnitude();
+		D.div				(f);
+		if (g_pGameLevel->ObjectSpace.RayTest(LP,D,f,false,&I->cache))	amount -=	lt_dec;
+		else															amount +=	lt_inc;
 		
 		I->test			+= amount * dt;
 		clamp			(I->test,-.5f,1.f);
