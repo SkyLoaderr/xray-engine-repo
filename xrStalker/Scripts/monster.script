@@ -8,7 +8,7 @@ function main()
 
 	action(                                                                                                       
     	flesh,                                                                                                      
-		anim("stand_eat_0"),
+		move(move.act_eat,actor),
     	cond(cond.time_end,30000) 
 	)                                                                                                             
 
