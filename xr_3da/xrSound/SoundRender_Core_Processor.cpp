@@ -35,6 +35,8 @@ void CSoundRender_Core::update	( const Fvector& P, const Fvector& D, const Fvect
 
 	// Get currently rendering emitters
 	s_targets_defer.clear	();
+	s_targets_pu			++;
+	u32 PU					= s_targets_pu%s_targets.size();
 	for (it=0; it<s_targets.size(); it++)
 	{
 		CSoundRender_Target*	T	= s_targets	[it];
@@ -42,7 +44,10 @@ void CSoundRender_Core::update	( const Fvector& P, const Fvector& D, const Fvect
 		{
 			// Has emmitter, maybe just not started rendering
 			if		(T->get_Rendering())	
-				T->update	();
+			{
+				if	(PU == it)	T->fill_parameters	();
+				T->update		();
+			}
 			else 	
 				s_targets_defer.push_back		(T);
 		}

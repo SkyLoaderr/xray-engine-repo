@@ -156,7 +156,7 @@ void	CSoundRender_Target::update			()
 {
 	R_ASSERT		(pEmitter);
 
-	fill_parameters	();
+	// fill_parameters	();
 
 	// Analyze if we really need more data to stream them ahead
 	u32				cursor_write;

@@ -34,6 +34,7 @@ CSoundRender_Core::CSoundRender_Core	()
 	geom_ENV					= NULL;
 	s_environment				= NULL;
 	Handler						= NULL;
+	s_targets_pu				= 0;
 }
 
 CSoundRender_Core::~CSoundRender_Core()
