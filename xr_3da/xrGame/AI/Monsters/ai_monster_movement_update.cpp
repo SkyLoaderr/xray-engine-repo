@@ -1,17 +1,14 @@
 #include "stdafx.h"
 #include "ai_monster_movement.h"
 #include "BaseMonster/base_monster.h"
+#include "critical_action_info.h"
 
 //////////////////////////////////////////////////////////////////////////
 // Init Movement
 void CMonsterMovement::Update_Initialize()
 {
-	if (m_special) {
-		if (!CDetailPathManager::completed(Position())) return;
+	if (m_object->CriticalActionInfo->is_path_locked()) return;
 
-		stop_special();
-	}
-	
 	CLevelLocationSelector::set_evaluator			(0);
 	CDetailPathManager::set_path_type				(eDetailPathTypeSmooth);
 	b_try_min_time									= true;
@@ -27,12 +24,12 @@ void CMonsterMovement::Update_Initialize()
 // Update Movement
 void CMonsterMovement::Update_Execute()
 {	
-	if (m_special) return;
+	if (m_object->CriticalActionInfo->is_path_locked()) return;
 
 	CDetailPathManager::set_try_min_time			(b_try_min_time); 
 	CDetailPathManager::set_use_dest_orientation	(b_use_dest_orient);
 	enable_movement									(b_enable_movement);
-
+	
 	update_target_point								();
 	update_path										();
 }

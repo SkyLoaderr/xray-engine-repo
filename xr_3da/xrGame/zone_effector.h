@@ -10,7 +10,7 @@ class CZoneEffectPP : public CEffectorPP {
 	float		factor;
 
 public:
-					CZoneEffectPP	(const SPPInfo &ppi);
+					CZoneEffectPP	(const SPPInfo &ppi, EEffectorPPType type);
 	virtual			~CZoneEffectPP	();
 	
 			void	Update			(float new_factor) {factor = new_factor;}

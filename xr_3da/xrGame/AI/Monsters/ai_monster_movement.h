@@ -143,9 +143,15 @@ public:
 
 	//////////////////////////////////////////////////////////////////////////
 	// special path
-		bool		m_special;
 		bool		build_special			(const Fvector &target, u32 node, u32 vel_mask, bool linear = true);
-		void		stop_special			();
+	//////////////////////////////////////////////////////////////////////////
+	// service methods
+	
+		float		get_path_angle			();
+
+		bool		is_path_built			();
+
+		void		set_velocity_from_path	();
 };
 
 #include "ai_monster_movement_inline.h"

@@ -54,8 +54,6 @@ void CMonsterMovement::reinit()
 	m_velocity_angular				= 0.f;
 
 	initialize_movement				();
-
-	m_special						= false;
 }
 
 void CMonsterMovement::InitExternal(CBaseMonster *pM)
@@ -84,7 +82,7 @@ void CMonsterMovement::InitSelector(CAbstractVertexEvaluator &S, Fvector target_
 
 bool CMonsterMovement::IsMoveAlongPathFinished()
 {
-	return CDetailPathManager::completed(Position());
+	return (CDetailPathManager::completed(Position()));
 }
 
 bool CMonsterMovement::IsMovingOnPath()
@@ -151,12 +149,6 @@ void CMonsterMovement::SetSelectorPathParams()
 
 void CMonsterMovement::update_velocity()
 {
-	if (m_special) {
-		const CDetailPathManager::STravelParams &current_velocity = CDetailPathManager::velocity(CDetailPathManager::path()[curr_travel_point_index()].velocity);
-		set_desirable_speed	(_abs(current_velocity.linear_velocity));
-		return;
-	}
-
 	// Обновить линейную скорость движения
 	float t_accel = ((m_velocity_linear.target < m_velocity_linear.current) ? 
 										m_object->MotionMan.accel_get(eAV_Braking) :
@@ -181,7 +173,8 @@ void CMonsterMovement::set_dest_direction(const Fvector &dir)
 
 void CMonsterMovement::stop_now()
 {
-	CMovementManager::enable_movement	(false);
+	enable_movement						(false);
+	disable_path						();
 	m_object->m_velocity_linear.target	= 0.f;
 	m_object->m_velocity_linear.current = 0.f;
 }
@@ -189,14 +182,15 @@ void CMonsterMovement::stop_now()
 //////////////////////////////////////////////////////////////////////////
 // Special Build Path
 //////////////////////////////////////////////////////////////////////////
-#define MAX_STAGES_COUNT 6
-
 bool CMonsterMovement::build_special(const Fvector &target, u32 node, u32 vel_mask, bool linear)
 {
 	if (node == u32(-1)) {
-		if (!position_in_direction(target, node)) {
-			return false;
-		}
+		// нода в прямой видимости?
+		CRestrictedObject::add_border(Position(), target);
+		node = ai().level_graph().check_position_in_direction(level_vertex_id(),Position(),target);
+		CRestrictedObject::remove_border();
+		
+		if (!ai().level_graph().valid_vertex_id(node) || !accessible(node)) return false;
 	}
 	
 	enable_movement									(true);
@@ -214,36 +208,59 @@ bool CMonsterMovement::build_special(const Fvector &target, u32 node, u32 vel_ma
 	set_dest_position								(target);
 	set_level_dest_vertex							(node);
 	
+	set_build_path_at_once							();
+	update_path										();	
 	
-	u32 cur_time			= Level().timeServer();
-	bool b_continue_build	= true;
-	
-	u8	stages_count		= 0;
+	if (is_path_built())							return true;
 
-	do {
-		update_path							();
-		
-		if (CDetailPathManager::actual() || 
-			(time_path_built() >= cur_time) || 
-			CDetailPathManager::failed() || 
-			CMovementManager::path_completed())		b_continue_build = false;
-
-		stages_count++;
-		VERIFY(stages_count < MAX_STAGES_COUNT);
-	} while (b_continue_build);
-
-	if (!CMovementManager::path_completed()) {
-		m_special = true;	
-		return true;
-	}
-	
 	enable_movement									(false);
 	return false;
 }
 
-void CMonsterMovement::stop_special()
+//////////////////////////////////////////////////////////////////////////
+
+float CMonsterMovement::get_path_angle()
 {
-	m_special = false;	
+	if (CDetailPathManager::path().size() < 3) return 0.f;
+
+	Fvector		dir;
+	float		h1,h2,p;
+
+	dir.sub		(CDetailPathManager::path()[1].position, CDetailPathManager::path()[0].position);
+	dir.getHP	(h1,p);
+	dir.sub		(CDetailPathManager::path()[CDetailPathManager::path().size() - 1].position, CDetailPathManager::path()[0].position);
+	dir.getHP	(h2,p);
+
+	return	(angle_difference(h1,h2));
 }
 
-//////////////////////////////////////////////////////////////////////////
+bool CMonsterMovement::is_path_built()
+{
+	return (!CMovementManager::path_completed() && (CDetailPathManager::time_path_built() >= Level().timeServer()));
+}
+
+void CMonsterMovement::set_velocity_from_path() 
+{
+	if (!IsMovingOnPath()) return;
+	
+	u32 cur_point_velocity_index	= CDetailPathManager::path()[curr_travel_point_index()].velocity;
+	u32 next_point_velocity_index	= u32(-1);
+
+	if (CDetailPathManager::path().size() > curr_travel_point_index() + 1) 
+		next_point_velocity_index = CDetailPathManager::path()[curr_travel_point_index() + 1].velocity;
+
+	const CDetailPathManager::STravelParams &current_velocity	= CDetailPathManager::velocity(cur_point_velocity_index);
+	if (fis_zero(current_velocity.linear_velocity) && (next_point_velocity_index != u32(-1))) {
+		const CDetailPathManager::STravelParams &next_velocity	= CDetailPathManager::velocity(next_point_velocity_index);
+		m_velocity_linear.target	= _abs(next_velocity.linear_velocity);
+		m_velocity_angular			= next_velocity.real_angular_velocity;
+	} else {
+		m_velocity_linear.target	= _abs(current_velocity.linear_velocity);
+		m_velocity_angular			= current_velocity.real_angular_velocity;
+	}
+
+	if (fis_zero(m_velocity_linear.target)) stop_linear();
+}
+
+
+

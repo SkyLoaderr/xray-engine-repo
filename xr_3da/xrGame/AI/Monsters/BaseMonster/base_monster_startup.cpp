@@ -5,6 +5,7 @@
 #include "../ai_monster_squad_manager.h"
 #include "../../../hudmanager.h"
 #include "../../../../skeletonanimated.h"
+#include "../critical_action_info.h"
 
 void CBaseMonster::reload	(LPCSTR section)
 {
@@ -13,8 +14,6 @@ void CBaseMonster::reload	(LPCSTR section)
 
 	CCustomMonster::reload		(section);
 	CMonsterMovement::reload	(section);
-
-	//LoadFootBones	();
 
 	CSoundPlayer::add(pSettings->r_string(section,"sound_idle"),		16,		SOUND_TYPE_MONSTER_TALKING,		7,	u32(1 << 31) | 3,	MonsterSpace::eMonsterSoundIdle, 		"bip01_head");
 	CSoundPlayer::add(pSettings->r_string(section,"sound_eat"),			16,		SOUND_TYPE_MONSTER_TALKING,		6,	u32(1 << 31) | 2,	MonsterSpace::eMonsterSoundEat,			"bip01_head");
@@ -49,6 +48,7 @@ void CBaseMonster::reinit()
 	CorpseMan.reinit					();
 
 	StateMan->reinit					();
+	CriticalActionInfo->reinit			();
 
 	flagEatNow						= false;
 	m_bDamaged						= false;
@@ -80,13 +80,10 @@ void CBaseMonster::Load(LPCSTR section)
 
 	m_pPhysics_support				->in_Load(section);
 
-//	m_fGoingSpeed					= pSettings->r_float	(section, "going_speed");
 	m_dwHealth						= pSettings->r_u32		(section,"Health");
-
 	fEntityHealth					= (float)m_dwHealth;
 
 	inherited_shared::load_shared	(SUB_CLS_ID, section);
-
 	m_fCurMinAttackDist				= get_sd()->m_fMinAttackDist;
 
 //	HUD().GetUI()->UIMainIngameWnd.AddMonsterClawsEffect	("monster", "controller\\controller_blood_01");

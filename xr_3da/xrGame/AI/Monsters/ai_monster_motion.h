@@ -66,6 +66,8 @@ public:
 	EAction					m_tAction;
 	CMotionDef				*m_tpCurAnim;
 
+	float					m_prev_character_velocity;
+
 public:
 
 				CMotionManager			();
@@ -234,6 +236,7 @@ public:
 
 		bool	IsCriticalAction		();
 
+		void	CheckVelocityBounce		();
 public:
 		
 		// информация о текущей анимации

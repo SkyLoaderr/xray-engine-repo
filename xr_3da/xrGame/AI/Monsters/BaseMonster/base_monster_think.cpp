@@ -4,6 +4,7 @@
 #include "../ai_monster_squad.h"
 #include "../ai_monster_squad_manager.h"
 #include "../profiler.h"
+#include "../critical_action_info.h"
 
 void CBaseMonster::Think()
 {
@@ -31,32 +32,15 @@ void CBaseMonster::Think()
 
 	// Запустить FSM
 	START_PROFILE("AI/Base Monster/Think/FSM");
-	if (MotionMan.IsCriticalAction()) disable_path();
-	else {
-		StateMan->update				();		
-		TranslateActionToPathParams		();
-		
-		//if (!UpdateStateManager()) {
-		//	StateSelector				();
-		//	CurrentState->Execute		(m_current_update);
-		//	squad_notify				();
-		//}
-		//
-		// TranslateActionToPathParams		();
-
-		//StateMan->update				();
-		//squad_notify					();	
-		
-		//TranslateActionToPathParams		();
-	}
-	STOP_PROFILE;
-
+	update_fsm();
+	STOP_PROFILE;	
+	
 	// Построить путь
 	START_PROFILE("AI/Base Monster/Think/Build Path");
 	CMonsterMovement::Update_Execute		();
 	STOP_PROFILE;
 
-	// Обновить анимации
+	// Обновить анимации в соответствие с путем и action
 	MotionMan.UpdateScheduled				();
 
 	// установить текущую скорость
@@ -82,4 +66,25 @@ void CBaseMonster::Think()
 //	
 //	squad->UpdateGoal(this, goal);
 //}
+
+void CBaseMonster::update_fsm()
+{
+	if (CriticalActionInfo->is_fsm_locked()) return;
+
+	StateMan->update				();		
+	TranslateActionToPathParams		();
+
+	//if (!UpdateStateManager()) {
+	//	StateSelector				();
+	//	CurrentState->Execute		(m_current_update);
+	//	squad_notify				();
+	//}
+	//
+
+	//StateMan->update				();
+	//squad_notify					();	
+
+	//TranslateActionToPathParams		();
+
+}
 

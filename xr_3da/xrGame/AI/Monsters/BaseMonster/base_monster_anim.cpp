@@ -20,11 +20,11 @@ static void __stdcall vfPlayEndCallBack(CBlend* B)
 // Установка анимации
 void CBaseMonster::SelectAnimation(const Fvector &/**_view/**/, const Fvector &/**_move/**/, float /**speed/**/)
 {
+	
 	SCurrentAnimationInfo &info = MotionMan.cur_anim_info();
 	
 	if (MotionMan.PrepareAnimation()) {
 		info.blend		= MotionMan.m_tpCurAnim->PlayCycle(smart_cast<CSkeletonAnimated*>(Visual()), bone_part, TRUE, vfPlayEndCallBack, this);
-		Msg("Time = [%u], anim_name = [%s]", Level().timeServer(), smart_cast<CSkeletonAnimated*>(Visual())->LL_MotionDefName_dbg(info.blend->motionID));
 	}
 
 	// установить скорость текущей анимации

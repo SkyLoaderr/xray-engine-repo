@@ -5,7 +5,7 @@
 typedef fastdelegate::FastDelegate1<IEventData*> typeEvent;
 
 class CMonsterEventManager {
-	DEFINE_VECTOR	(typeEvent*,	EVENT_VECTOR, EVENT_VECTOR_IT);
+	DEFINE_VECTOR	(typeEvent,		EVENT_VECTOR, EVENT_VECTOR_IT);
 	DEFINE_MAP		(EEventType,	EVENT_VECTOR, EVENT_MAP, EVENT_MAP_IT);
 
 	EVENT_MAP		m_event_storage;
@@ -13,7 +13,9 @@ public:
 				CMonsterEventManager	();
 				~CMonsterEventManager	();
 
-	typeEvent	*get_binder				(EEventType);
+	void		add_delegate			(EEventType event, typeEvent delegate);
+	void		remove_delegate			(EEventType event, typeEvent delegate);
+	
 	void		raise					(EEventType, IEventData *data = 0);
 
 private:

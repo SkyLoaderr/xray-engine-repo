@@ -4,6 +4,7 @@
 #include "../../PHMovementControl.h"
 #include "ai_monster_utils.h"
 #include "ai_monster_jump.h"
+#include "custom_events.h"
 
 //////////////////////////////////////////////////////////////////////////
 // m_tAction processing
@@ -145,12 +146,42 @@ void CMotionManager::FrameUpdate()
 	} else m_cur_anim.speed.current = -1.f;
 
 	if (!seq_playing && !TA_IsActive() && (!pJumping || (pJumping && !pJumping->IsActive()))) {
-		Update				();	
-		// ValidateAnimation();
+		Update();
 	} else {
-		pMonster->disable_path();
+		pMonster->disable_path();	
 	}
+
+	// raise event on velocity bounce
+	CheckVelocityBounce();
 }
+
+#define VELOCITY_BOUNCE_THRESHOLD 1.5f
+
+
+void CMotionManager::CheckVelocityBounce()
+{
+	Fvector		temp_vec;
+	pMonster->m_PhysicMovementControl->GetCharacterVelocity(temp_vec);
+	float		prev_speed	= m_prev_character_velocity;
+	float		cur_speed	= temp_vec.magnitude();
+	
+	// prepare 
+	if (fis_zero(prev_speed))	prev_speed	= 0.01f;
+	if (fis_zero(cur_speed))	cur_speed	= 0.01f;
+
+	float ratio = ((prev_speed > cur_speed) ? (prev_speed / cur_speed) : (cur_speed / prev_speed));
+	
+	if (ratio > VELOCITY_BOUNCE_THRESHOLD) {
+		if (prev_speed > cur_speed) ratio = -ratio;
+		
+		// prepare event
+		CEventVelocityBounce		event(ratio);
+		pMonster->EventMan.raise	(eventVelocityBounce, &event);
+
+	}
+	m_prev_character_velocity = cur_speed;
+}
+
 
 void CMotionManager::ScheduledInit()
 {

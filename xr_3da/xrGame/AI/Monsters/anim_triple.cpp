@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "anim_triple.h"
+#include "monster_event_manager.h"
+#include "custom_events.h"
 
 char *dbg_states[] = {
 	"eStatePrepare", 
@@ -11,44 +13,60 @@ char *dbg_states[] = {
 
 CAnimTriple::CAnimTriple()
 {
-	cur_state	= eStateNone;
-	m_active	= false;
+	m_current_state	= eStateNone;
+	m_active		= false;
+	m_event_man		= 0;
 }
 CAnimTriple::~CAnimTriple()
 {
 
 }
 
-void CAnimTriple::init_external(CMotionDef *m_def1, CMotionDef *m_def2, CMotionDef *m_def3)
+void CAnimTriple::reinit_external(CMonsterEventManager *man, CMotionDef *m_def1, CMotionDef *m_def2, CMotionDef *m_def3, bool b_execute_once)
 {
-	pool[0] = m_def1;
-	pool[1]	= m_def2;
-	pool[2]	= m_def3;
+	pool[0]			= m_def1;
+	pool[1]			= m_def2;
+	pool[2]			= m_def3;
+
+	m_event_man		= man;
+	m_execute_once	= b_execute_once;
 }
 
 void CAnimTriple::activate()
 {
 	if (is_active()) deactivate();
 
-	cur_state	= eStatePrepare;
-	m_active	= true;
+	m_current_state		= eStatePrepare;
+	m_previous_state	= eStateNone;
+	m_active			= true;
 }
 
 void CAnimTriple::deactivate()
 {
-	cur_state	= eStateNone;
-	m_active	= false;
+	m_current_state	= eStateNone;
+	m_active		= false;
 }
 
 bool CAnimTriple::prepare_animation(CMotionDef **m)
 {
-	if (cur_state == eStateNone) {
+	if (m_current_state == eStateNone) {
 		deactivate();
 		return false;
 	}
+	if (!is_active()) return false;
+
+	if ((m_current_state == eStateExecute) && m_execute_once && (m_previous_state == eStateExecute)) return false;
 	
-	if (is_active()) *m = pool[cur_state];
-	if (cur_state != eStateExecute) cur_state = EStateAnimTriple(cur_state + 1);
+	*m = pool[m_current_state];
+	
+	// raise event
+	if ((m_current_state != eStateExecute) || ((m_current_state == eStateExecute) && (m_previous_state != eStateExecute))) {
+		CEventTAPrepareAnimation	event(m_current_state);
+		m_event_man->raise			(eventTAChange, &event);
+	}
+	
+	m_previous_state = m_current_state;
+	if (m_current_state != eStateExecute) m_current_state = EStateAnimTriple(m_current_state + 1);
 	
 	return true;
 }
@@ -56,7 +74,7 @@ bool CAnimTriple::prepare_animation(CMotionDef **m)
 
 void CAnimTriple::pointbreak()
 {
-	cur_state = eStateFinalize;
+	m_current_state = eStateFinalize;
 }
 
 

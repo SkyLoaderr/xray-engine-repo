@@ -13,6 +13,9 @@
 
 #include "chimera_state_threaten.h"
 
+#include "../states/state_look_point.h"
+
+
 CStateManagerChimera::CStateManagerChimera(CChimera *obj) : inherited(obj)
 {
 	//add_state(
@@ -51,6 +54,7 @@ CStateManagerChimera::CStateManagerChimera(CChimera *obj) : inherited(obj)
 	add_state(eStateDangerousSound,		xr_new<CStateMonsterHearDangerousSound<CChimera> >		(obj));
 	add_state(eStateHitted,				xr_new<CStateMonsterHitted<CChimera> >					(obj));
 
+	add_state(eStateFindEnemy,			xr_new<CStateMonsterLookToPoint<CChimera> >			(obj));
 
 //	add_state(
 //		eStateThreaten, xr_new<CStateChimeraThreaten<CChimera> > (
@@ -95,21 +99,31 @@ void CStateManagerChimera::execute()
 	} else {
 		bool can_eat = false;
 		if (corpse) {
-
 			if (prev_substate == eStateEat) {
-				if (!get_state_current()->check_completion()) can_eat = true;
+				if (!get_state_current()->check_completion())				can_eat = true;
+			} else {
+				if (object->GetSatiety() < object->get_sd()->m_fMinSatiety) can_eat = true;
 			}
-
-			if ((prev_substate != eStateEat) && (object->GetSatiety() < object->get_sd()->m_fMinSatiety)) 
-				can_eat = true;		
 		}
 
-		if (can_eat) state_id = eStateEat;
-		else state_id = eStateRest;
+		if (can_eat)	state_id = eStateEat;
+		else			state_id = eStateRest;
 	}
 
 
+	state_id = eStateFindEnemy;
+
 	select_state(state_id); 
+
+
+	CState<CChimera> *state = get_state_current();
+	if (current_substate == eStateFindEnemy) {
+		SStateDataLookToPoint data;
+		data.point				= Level().CurrentEntity()->Position();
+		data.action.action		= ACT_STAND_IDLE;
+		state->fill_data_with(&data, sizeof(SStateDataLookToPoint));
+	}
+
 
 	// выполнить текущее состояние
 	get_state_current()->execute();

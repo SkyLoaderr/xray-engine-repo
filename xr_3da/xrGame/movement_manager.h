@@ -101,6 +101,7 @@ private:
 	u32										m_refresh_rate;
 	u32										m_last_update;
 	bool									m_extrapolate_path;
+	bool									m_build_at_once;
 
 private:
 	IC		void	time_start				();
@@ -130,6 +131,7 @@ public:
 	IC		void	set_path_type			(EPathType path_type);
 	IC		void	set_game_dest_vertex	(const ALife::_GRAPH_ID game_vertex_id);
 	IC		void	set_level_dest_vertex	(const u32 level_vertex_id);
+	IC		void	set_build_path_at_once	();
 	IC		void	enable_movement			(bool enabled);
 	IC		EPathType path_type				() const;
 	IC		ALife::_GRAPH_ID game_dest_vertex_id	() const;

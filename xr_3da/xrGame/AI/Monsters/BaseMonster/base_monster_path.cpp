@@ -50,15 +50,7 @@ void CBaseMonster::LookPosition(Fvector to_point, float angular_speed)
 
 void CBaseMonster::FaceTarget(const CEntity *entity) 
 {
-	float yaw, pitch;
-	Fvector dir;
-	
-	dir.sub(entity->Position(), Position());
-	dir.getHP(yaw,pitch);
-	yaw *= -1;
-	yaw = angle_normalize(yaw);
-	m_body.target.yaw = yaw;
-
+	FaceTarget(entity->Position());
 }
 
 void CBaseMonster::FaceTarget(const Fvector &position) 

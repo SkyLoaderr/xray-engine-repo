@@ -257,7 +257,7 @@ void CController::reload(LPCSTR section)
 	def3 = smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("sit_stand_up_attack_0");
 	VERIFY(def3);
 
-	anim_triple_control.init_external	(def1, def2, def3);
+	anim_triple_control.reinit_external	(&EventMan, def1, def2, def3);
 
 	CJumping::AddState(smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("jump_glide_0"), JT_GLIDE, false,	0.f, inherited::get_sd()->m_fsVelocityRunFwdNormal.velocity.angular_real);
 }

@@ -71,7 +71,7 @@ IC	void CMovementManager::time_start()
 
 IC	bool CMovementManager::time_over() const
 {
-	return					(CPU::GetCycleCount() - m_start_time >= m_time_work);
+	return					(!m_build_at_once && (CPU::GetCycleCount() - m_start_time >= m_time_work));
 }
 
 IC	void CMovementManager::enable_movement(bool enabled)
@@ -181,4 +181,9 @@ IC	void CMovementManager::extrapolate_path		(bool value)
 IC	bool CMovementManager::extrapolate_path		() const
 {
 	return					(m_extrapolate_path);
+}
+
+IC	void CMovementManager::set_build_path_at_once()
+{
+	m_build_at_once			= true;
 }

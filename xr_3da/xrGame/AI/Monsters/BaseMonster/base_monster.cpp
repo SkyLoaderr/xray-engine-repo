@@ -18,7 +18,7 @@
 #include "../../../group_hierarchy_holder.h"
 #include "../../../phdestroyable.h"
 #include "../../../../skeletoncustom.h"
-
+#include "../critical_action_info.h"
 
 CBaseMonster::CBaseMonster()
 {
@@ -62,6 +62,8 @@ CBaseMonster::CBaseMonster()
 	StateMan						= 0;
 
 	CStepManager::init_external		(this);
+	
+	CriticalActionInfo				= xr_new<CCriticalActionInfo>();
 }
 
 CBaseMonster::~CBaseMonster()
@@ -74,7 +76,8 @@ CBaseMonster::~CBaseMonster()
 	xr_delete(m_corpse_cover_evaluator);
 	xr_delete(m_enemy_cover_evaluator);
 	xr_delete(m_cover_evaluator_close_point);
-
+	
+	xr_delete(CriticalActionInfo);
 }
 
 

@@ -14,7 +14,7 @@
 #include "game_cl_base.h"
 #include "stalker_movement_manager.h"
 
-#include "ai/monsters/snork/snork.h"
+#include "ai/monsters/chimera/chimera.h"
 #include "Inventory.h"
 #include "WeaponHUD.h"
 #include "xrServer.h"
@@ -208,14 +208,14 @@ void CLevel::IR_OnKeyboardPress(int key)
 
 	CObject *obj = Level().Objects.FindObjectByName("monster");
 	if (obj) {
-		CSnork *monster = smart_cast<CSnork*>(obj);
+		CChimera *monster = smart_cast<CChimera*>(obj);
 
 		switch (key) {
 		case DIK_1:
-			monster->test();
+			monster->SetUpperState();
 			break;
 		case DIK_2:
-			monster->test2();
+			monster->SetUpperState(false);
 			break;
 		}
 	}

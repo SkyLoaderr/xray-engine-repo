@@ -32,6 +32,7 @@ class CMonsterCorpseCoverEvaluator;
 class CCoverEvaluatorFarFromEnemy;
 class CCoverEvaluatorCloseToEnemy;
 class CMonsterEventManager;
+class CCriticalActionInfo;
 
 class CBaseMonster : public CCustomMonster, 
 				   virtual public CMonsterMovement,
@@ -76,6 +77,7 @@ protected:
 		eVelocityParamsSteal			= eVelocityParameterStand		| eVelocityParameterSteal,
 		eVelocityParamsInvisible		= eVelocityParameterInvisible	| eVelocityParamsRun,
 
+		eVelocityParameterCustom		= u32(1) <<	 12,
 	};
 
 public:
@@ -125,6 +127,8 @@ public:
 	virtual	void			reinit							();
 	virtual void			reload							(LPCSTR section);
 
+	virtual void			init							() {}
+
 	virtual void			feel_sound_new					(CObject* who, int eType, const Fvector &Position, float power);
 	virtual BOOL			feel_vision_isRelevant			(CObject* O);
 	virtual BOOL			feel_touch_on_contact			(CObject* O);
@@ -146,10 +150,8 @@ public:
 	virtual	void			SetAttackEffector				();
 	
 	virtual float			get_custom_pitch_speed			(float def_speed);
-
-			void			init							() {}
-
 	virtual void			load_shared						(LPCSTR section);
+	virtual void			update_fsm						();
 
 	// ---------------------------------------------------------------------------------
 	// Process scripts
@@ -169,6 +171,9 @@ public:
 	virtual int				get_enemy_strength				();
 	
 	virtual void			SetScriptControl				(const bool bScriptControl, shared_str caSciptName);
+
+	//----------------------------------------------------------------------------------
+
 
 	virtual void			Exec_Look						( float dt );
 
@@ -207,6 +212,7 @@ public:
 	// Other
 			void			vfUpdateParameters				();
 			void			HitEntity						(const CEntity *pEntity, float fDamage, float impulse, Fvector &dir);
+	virtual	void			HitEntityInJump					(const CEntity *pEntity) {}
 
 	// Other 
 			void			SetDirectionLook				(bool bReversed = false);
@@ -324,6 +330,8 @@ public:
 IC	void					set_action			(EAction action);
 	void					set_state_sound		(u32 type, bool once = false);
 
+
+	CCriticalActionInfo		*CriticalActionInfo;
 
 #ifdef DEBUG
 	CMonsterDebug	*HDebug;

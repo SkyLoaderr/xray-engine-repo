@@ -63,6 +63,7 @@ void CMovementManager::reinit		()
 	m_old_desirable_speed					= 0.f;
 	m_refresh_rate							= 0;
 	m_last_update							= Level().timeServer();
+	m_build_at_once							= false;
 
 	enable_movement							(true);
 	CGameLocationSelector::reinit			(&ai().game_graph());
@@ -181,6 +182,7 @@ void CMovementManager::update_path	()
 	if (accessible(Position()))
 		verify_detail_path		();
 
+	m_build_at_once				= false;
 }
 
 void CMovementManager::verify_detail_path	()

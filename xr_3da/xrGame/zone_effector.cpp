@@ -1,15 +1,15 @@
 #include "stdafx.h"
 #include "zone_effector.h"
 #include "level.h"
+#include "clsid_game.h"
+#include "../xr_object.h"
 
 ////////////////////////////////////////////////////////////////////////////////////
 // CZoneEffectPP
 ////////////////////////////////////////////////////////////////////////////////////
 
-#define ZONE_EFFECTOR_TYPE_ID	4
-
-CZoneEffectPP::CZoneEffectPP(const SPPInfo &ppi) :
-	CEffectorPP(EEffectorPPType(ZONE_EFFECTOR_TYPE_ID), flt_max, false)
+CZoneEffectPP::CZoneEffectPP(const SPPInfo &ppi, EEffectorPPType type) :
+	CEffectorPP(type, flt_max, false)
 {
 	state = ppi;
 	factor = 0.1f;
@@ -25,28 +25,28 @@ BOOL CZoneEffectPP::Process(SPPInfo& pp)
 
 	SPPInfo	def;
 
-	pp.duality.h		+= def.duality.h		+ (state.duality.h			- def.duality.h)		* factor; 			
-	pp.duality.v		+= def.duality.v		+ (state.duality.v			- def.duality.v)		* factor;
-	pp.gray				+= def.gray				+ (state.gray				- def.gray)				* factor;
-	pp.blur				+= def.blur				+ (state.blur				- def.blur)				* factor;
-	pp.noise.intensity	+= def.noise.intensity	+ (state.noise.intensity	- def.noise.intensity)	* factor;
-	pp.noise.grain		+= def.noise.grain		+ (state.noise.grain		- def.noise.grain)		* factor;
-	pp.noise.fps		+= def.noise.fps		+ (state.noise.fps			- def.noise.fps)		* factor;	
+	pp.duality.h		= def.duality.h			+ (state.duality.h			- def.duality.h)		* factor; 			
+	pp.duality.v		= def.duality.v			+ (state.duality.v			- def.duality.v)		* factor;
+	pp.gray				= def.gray				+ (state.gray				- def.gray)				* factor;
+	pp.blur				= def.blur				+ (state.blur				- def.blur)				* factor;
+	pp.noise.intensity	= def.noise.intensity	+ (state.noise.intensity	- def.noise.intensity)	* factor;
+	pp.noise.grain		= def.noise.grain		+ (state.noise.grain		- def.noise.grain)		* factor;
+	pp.noise.fps		= def.noise.fps			+ (state.noise.fps			- def.noise.fps)		* factor;	
 	VERIFY(!fis_zero(pp.noise.fps));
-
-	pp.color_base.set	(
+	
+	pp.color_base.set(
 		def.color_base.r	+ (state.color_base.r - def.color_base.r) * factor, 
 		def.color_base.g	+ (state.color_base.g - def.color_base.g) * factor, 
 		def.color_base.b	+ (state.color_base.b - def.color_base.b) * factor
 	);
-
-	pp.color_gray.set	(
+	
+	pp.color_gray.set(
 		def.color_gray.r	+ (state.color_gray.r - def.color_gray.r) * factor, 
 		def.color_gray.g	+ (state.color_gray.g - def.color_gray.g) * factor, 
 		def.color_gray.b	+ (state.color_gray.b - def.color_gray.b) * factor
 	);
 
-	pp.color_add.set	(
+	pp.color_add.set(
 		def.color_add.r	+ (state.color_add.r - def.color_add.r) * factor, 
 		def.color_add.g	+ (state.color_add.g - def.color_add.g) * factor, 
 		def.color_add.b	+ (state.color_add.b - def.color_add.b) * factor
@@ -99,7 +99,7 @@ void CZoneEffector::Load(LPCSTR section)
 
 void CZoneEffector::Activate()
 {
-	p_effector = xr_new<CZoneEffectPP>(state);
+	p_effector = xr_new<CZoneEffectPP>(state, EEffectorPPType( u32(u64(this) & u32(-1)) ));
 	Level().Cameras.AddEffector(p_effector);
 }
 
@@ -114,23 +114,22 @@ void CZoneEffector::Stop()
 void CZoneEffector::Update(float dist)
 {
 	// count r_min && r_max
-/*	float min_r = radius * r_min_perc;
+	float min_r = radius * r_min_perc;
 	float max_r = radius * r_max_perc;
 
-	bool CreateEffector = (Level().CurrentEntity() && Level().CurrentEntity()->SUB_CLS_ID == CLSID_OBJECT_ACTOR);
+	bool camera_on_actor = (Level().CurrentEntity() && (Level().CurrentEntity()->SUB_CLS_ID == CLSID_OBJECT_ACTOR));
 	
 	if (p_effector) {
-		if (dist > max_r || !CreateEffector) Stop();
-	} else 
-		if (dist < max_r && CreateEffector) Activate();
+		if ((dist > max_r) || !camera_on_actor)	Stop();
+	} else {
+		if ((dist < max_r) && camera_on_actor)	Activate();
+	}
 	
 	if (p_effector) {
 		float f = (max_r - dist) / (max_r - min_r);
 		clamp(f,0.01f,1.0f);
 		p_effector->Update(f);
 	}
-
-	*/
 }
 
 void CZoneEffector::SetParam(u32 type, float val)

@@ -21,7 +21,7 @@ public:
 
 	virtual void	CheckSpecParams		(u32 spec_params);
 
-			void	SetUpperState		(bool state = true) {b_upper_state = state;}
+	IC		void	SetUpperState		(bool state = true) {b_upper_state = state;}
 
 };
 

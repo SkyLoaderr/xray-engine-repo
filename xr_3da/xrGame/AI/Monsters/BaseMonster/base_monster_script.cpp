@@ -280,6 +280,8 @@ CEntity *CBaseMonster::GetCurrentCorpse()
 
 void CBaseMonster::TranslateActionToPathParams()
 {
+	if (!CMonsterMovement::b_enable_movement) return;
+	
 	bool bEnablePath = true;
 	u32 vel_mask = 0;
 	u32 des_mask = 0;

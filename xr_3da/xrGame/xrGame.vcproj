@@ -2250,6 +2250,16 @@
 									RelativePath=".\ai\Monsters\ai_monster_debug.h">
 								</File>
 							</Filter>
+							<Filter
+								Name="Critical Action Info"
+								Filter="">
+								<File
+									RelativePath=".\ai\Monsters\critical_action_info.cpp">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\critical_action_info.h">
+								</File>
+							</Filter>
 						</Filter>
 					</Filter>
 					<Filter

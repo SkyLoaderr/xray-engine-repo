@@ -8,6 +8,8 @@ enum EEventType {
 	eventParticlesStart,
 	eventParticlesEnd,
 	eventStep,
+	eventTAChange,
+	eventVelocityBounce,
 };
 
 class IEventData {};

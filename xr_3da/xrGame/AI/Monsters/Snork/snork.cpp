@@ -5,16 +5,9 @@
 
 CSnork::CSnork() 
 {
-	StateMan = xr_new<CStateManagerSnork>(this);
-
-	EventMan.get_binder(eventAnimationStart)->bind	(this, &CSnork::on_test_1);
-	EventMan.get_binder(eventAnimationStart)->bind	(this, &CSnork::on_test_2);
-	EventMan.get_binder(eventAnimationStart)->bind	(this, &CSnork::on_test_3);
-	EventMan.get_binder(eventAnimationStart)->bind	(this, &CSnork::on_test_2);
-
-	EventMan.get_binder(eventSoundStart)->bind	(this, &CSnork::on_test_1);
-	EventMan.get_binder(eventSoundStart)->bind	(this, &CSnork::on_test_2);
-
+	StateMan = xr_new<CStateManagerSnork>	(this);
+	
+	CJumpingAbility::init_external			(this);
 }
 
 CSnork::~CSnork()
@@ -24,14 +17,23 @@ CSnork::~CSnork()
 
 void CSnork::Load(LPCSTR section)
 {
-	inherited::Load	(section);
+	inherited::Load			(section);
+	CJumpingAbility::load	(section);
 
 	MotionMan.accel_load			(section);
 
+	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimStandIdle,	eAnimStandDamaged);
+	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimRun,		eAnimRunDamaged);
+	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimWalkFwd,	eAnimWalkDamaged);
+
 	if (MotionMan.start_load_shared(SUB_CLS_ID)) {
 		MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND);
+		MotionMan.AddAnim(eAnimStandDamaged,	"stand_idle_damaged_",	-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND);
+		MotionMan.AddAnim(eAnimWalkDamaged,		"stand_walk_damaged_",	-1,	&inherited::get_sd()->m_fsVelocityWalkFwdDamaged,	PS_STAND);
+		MotionMan.AddAnim(eAnimRunDamaged,		"stand_run_damaged_",	-1,	&inherited::get_sd()->m_fsVelocityRunFwdDamaged,	PS_STAND);
 		MotionMan.AddAnim(eAnimStandTurnLeft,	"stand_turn_ls_",		-1, &inherited::get_sd()->m_fsVelocityStandTurn,		PS_STAND);
 		MotionMan.AddAnim(eAnimStandTurnRight,	"stand_turn_rs_",		-1, &inherited::get_sd()->m_fsVelocityStandTurn,		PS_STAND);
+		MotionMan.AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1,	&inherited::get_sd()->m_fsVelocityWalkFwdNormal,	PS_STAND);
 		MotionMan.AddAnim(eAnimRun,				"stand_run_",			-1,	&inherited::get_sd()->m_fsVelocityRunFwdNormal,		PS_STAND);
 		MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		-1, &inherited::get_sd()->m_fsVelocityStandTurn,		PS_STAND);
 		MotionMan.AddAnim(eAnimDie,				"stand_die_",			0,  &inherited::get_sd()->m_fsVelocityNone,				PS_STAND);
@@ -40,11 +42,12 @@ void CSnork::Load(LPCSTR section)
 		MotionMan.AddAnim(eAnimEat,				"stand_eat_",			-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND);
 		MotionMan.AddAnim(eAnimCheckCorpse,		"stand_check_corpse_",	-1,	&inherited::get_sd()->m_fsVelocityNone,				PS_STAND);
 
+
 		MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle);
 		MotionMan.LinkAction(ACT_SIT_IDLE,		eAnimStandIdle);
 		MotionMan.LinkAction(ACT_LIE_IDLE,		eAnimStandIdle);
-		MotionMan.LinkAction(ACT_WALK_FWD,		eAnimRun);
-		MotionMan.LinkAction(ACT_WALK_BKWD,		eAnimRun);
+		MotionMan.LinkAction(ACT_WALK_FWD,		eAnimWalkFwd);
+		MotionMan.LinkAction(ACT_WALK_BKWD,		eAnimWalkFwd);
 		MotionMan.LinkAction(ACT_RUN,			eAnimRun);
 		MotionMan.LinkAction(ACT_EAT,			eAnimEat);
 		MotionMan.LinkAction(ACT_SLEEP,			eAnimStandIdle);
@@ -64,6 +67,8 @@ void CSnork::Load(LPCSTR section)
 	MotionMan.accel_chain_test		();
 #endif
 
+	m_fsVelocityJumpOne.Load(section, "Velocity_Jump_Stand");
+	m_fsVelocityJumpTwo.Load(section, "Velocity_Jump_Forward");
 }
 
 void CSnork::reinit()
@@ -75,9 +80,12 @@ void CSnork::reinit()
 
 	def1 = pSkel->ID_Cycle_Safe("stand_attack_2_0");	VERIFY(def1);
 	def2 = pSkel->ID_Cycle_Safe("stand_attack_2_1");	VERIFY(def2);
-	def3 = pSkel->ID_Cycle_Safe("stand_run_0");			VERIFY(def3);
+	def3 = pSkel->ID_Cycle_Safe("stand_somersault_0");	VERIFY(def3);
 	
-	CJumpingAbility::init_external(this, def1, def2, def3);
+	CJumpingAbility::reinit(def1, def2, def3);
+	
+	m_movement_params.insert(std::make_pair(eVelocityParameterJumpOne,	STravelParams(m_fsVelocityJumpOne.velocity.linear,	m_fsVelocityJumpOne.velocity.angular_path, m_fsVelocityJumpOne.velocity.angular_real)));
+	m_movement_params.insert(std::make_pair(eVelocityParameterJumpTwo,	STravelParams(m_fsVelocityJumpTwo.velocity.linear,	m_fsVelocityJumpTwo.velocity.angular_path, m_fsVelocityJumpTwo.velocity.angular_real)));
 }
 
 void CSnork::UpdateCL()
@@ -86,11 +94,13 @@ void CSnork::UpdateCL()
 	CJumpingAbility::update_frame();
 }
 
-void CSnork::test()
+void CSnork::try_to_jump()
 {
-	//CJumpingAbility::jump(CJumpingAbility::get_target(Level().CurrentEntity()), eVelocityParameterRunNormal);
+	CObject *target = const_cast<CEntityAlive *>(EnemyMan.get_enemy());
+	if (!target || !EnemyMan.see_enemy_now()) return;
 
-	EventMan.raise(eventSoundStart);
+	if (CJumpingAbility::can_jump(target))
+		CJumpingAbility::jump(target, eVelocityParamsJump);
 }
 
 void CSnork::CheckSpecParams(u32 spec_params)
@@ -106,32 +116,9 @@ void CSnork::CheckSpecParams(u32 spec_params)
 	}
 }
 
-void CSnork::test2()
+void CSnork::HitEntityInJump(const CEntity *pEntity)
 {
-	//Fvector target_position;
-	//Fvector dir;
-	//dir.set(Direction());
-	//dir.invert();
-	//target_position.mad(Position(), dir, 5.f);
-	//
-	//bool ret_val = CMonsterMovement::build_special(target_position, u32(-1), eVelocityParameterRunNormal);
-	//if (!ret_val) Msg("SPECIAL FAILED!!!");
-	//else Msg("SPECIAL PATH BUILT!!!");
-
-	EventMan.raise(eventAnimationStart);
+	SAAParam params;
+	MotionMan.AA_GetParams	(params, "stand_attack_2_1");
+	HitEntity				(pEntity, params.hit_power, params.impulse, params.impulse_dir);
 }
-
-void CSnork::on_test_1(IEventData *data)
-{
-	Msg("DELEGATE test1");
-}
-void CSnork::on_test_2(IEventData *data)
-{	
-	Msg("DELEGATE test2");
-}
-void CSnork::on_test_3(IEventData *data)
-{
-	Msg("DELEGATE test3");
-}
-
-

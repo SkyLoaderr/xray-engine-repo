@@ -1,30 +1,22 @@
 #pragma once 
-#include "event_handler.h"
+#include "monster_event_manager_defs.h"
 
-//class CEventSoundStart : public CEvent {
-//public:
-//	u32	m_time;	
-//public:	
-//	CEventSoundStart() : CEvent(eventSoundStart) {}
-//};
+//////////////////////////////////////////////////////////////////////////
 
-//class CStepEffector : public IEventListener {
-//public:
-//	bool	proper_event		(const CEvent *event) {
-//		if (event->get_type() == eventSoundStart) return true;
-//		return false;
-//	}
-//
-//	void	process_event		(const CEvent *event) {
-//		// do smth				
-//		const CEventSoundStart *p_event = (const CEventSoundStart *)event;	
-//		
-//		p_event->m_time = 0;
-//	}
-//	
-//};
+struct CEventTAPrepareAnimation : public IEventData {
+	u32		m_current_state;
+	
+	IC		CEventTAPrepareAnimation(u32 state) : m_current_state(state) {}
+	
+};
 
-///class 
+//////////////////////////////////////////////////////////////////////////
 
+struct CEventVelocityBounce : public IEventData {
+	float	m_ratio;
 
+	IC		CEventVelocityBounce(float ratio) : m_ratio(ratio) {}
 
+};
+
+//////////////////////////////////////////////////////////////////////////

@@ -2,10 +2,18 @@
 #include "../BaseMonster/base_monster.h"
 #include "../jump_ability.h"
 
-FASTDELEGATEDECLARE(CSnork);
-
 class CSnork :	public CBaseMonster, public CJumpingAbility {
 	typedef		CBaseMonster		inherited;
+
+	enum EMovementParametersSnork {
+		eVelocityParameterJumpOne		= eVelocityParameterCustom << 1,
+		eVelocityParameterJumpTwo		= eVelocityParameterCustom << 2,
+
+		eVelocityParamsJump				= eVelocityParameterJumpOne | eVelocityParameterJumpTwo,
+	};
+
+	SVelocityParam	m_fsVelocityJumpOne;
+	SVelocityParam	m_fsVelocityJumpTwo;
 
 public:
 					CSnork				();
@@ -15,13 +23,9 @@ public:
 	virtual void	reinit				();				
 	virtual void	UpdateCL			();
 	virtual void	CheckSpecParams		(u32 spec_params);
-			void	test				();
-			void	test2				();
+			
+			void	try_to_jump			();
 
-
-
-	DEFINE_DELEGATE	on_test_1			(IEventData *data);
-	DEFINE_DELEGATE	on_test_2			(IEventData *data);
-	DEFINE_DELEGATE	on_test_3			(IEventData *data);
+	virtual void	HitEntityInJump		(const CEntity *pEntity);
 
 };

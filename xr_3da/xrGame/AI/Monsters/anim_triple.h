@@ -8,21 +8,25 @@ enum EStateAnimTriple {
 };
 
 class CMotionDef;
+class CMonsterEventManager;
 
 class CAnimTriple {
-	EStateAnimTriple	cur_state;
-
-	typedef CMotionDef* MOTION_PTR;
+	EStateAnimTriple		m_current_state;
+	EStateAnimTriple		m_previous_state;
 	
-	MOTION_PTR			pool[3];
+	typedef CMotionDef*		MOTION_PTR;
+	MOTION_PTR				pool[3];
 
-	bool				m_active;
+	bool					m_active;
+	CMonsterEventManager	*m_event_man;
+
+	bool					m_execute_once;
 
 public:
 						CAnimTriple			();
 	virtual 			~CAnimTriple		();
 
-	virtual void		init_external		(CMotionDef *m_def1, CMotionDef *m_def2, CMotionDef *m_def3);
+	virtual void		reinit_external		(CMonsterEventManager *man, CMotionDef *m_def1, CMotionDef *m_def2, CMotionDef *m_def3, bool b_execute_once = true);
 	
 	virtual void		activate			();
 	virtual void		deactivate			();
@@ -35,7 +39,7 @@ public:
 	// завершить фиксированную анимацию (вторую) и перейти к финальной
 	virtual void		pointbreak			();
 
-	EStateAnimTriple	get_state			(){return cur_state;}
+	EStateAnimTriple	get_state			(){return m_current_state;}
 
 };
 

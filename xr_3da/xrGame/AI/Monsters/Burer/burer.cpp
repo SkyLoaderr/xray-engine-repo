@@ -44,13 +44,13 @@ void CBurer::reload(LPCSTR section)
 	def1 = pSkel->ID_Cycle_Safe("stand_gravi_0");	VERIFY(def1);
 	def2 = pSkel->ID_Cycle_Safe("stand_gravi_1");	VERIFY(def2);
 	def3 = pSkel->ID_Cycle_Safe("stand_gravi_2");	VERIFY(def3);
-	anim_triple_gravi.init_external	(def1, def2, def3);
+	anim_triple_gravi.reinit_external	(&EventMan, def1, def2, def3);
 	
 	// Load triple tele animations
 	def1 = pSkel->ID_Cycle_Safe("stand_tele_0");	VERIFY(def1);
 	def2 = pSkel->ID_Cycle_Safe("stand_tele_1");	VERIFY(def2);
 	def3 = pSkel->ID_Cycle_Safe("stand_tele_2");	VERIFY(def3);
-	anim_triple_tele.init_external	(def1, def2, def3);
+	anim_triple_tele.reinit_external	(&EventMan, def1, def2, def3);
 
 }
 
