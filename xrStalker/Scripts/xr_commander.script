@@ -190,12 +190,12 @@ function action_commander:execute()
             repeat
                 if not self.drunk then
                     self.act = random_choice_weighted{
-                                   [walk_inside]  = 40,
-                                   [walk_outside] = 20,
+                                   [walk_inside]  = 30,
+                                   [walk_outside] = 10,
                                    [look_map]     = 10,
-                                   [look_outside] = 10,
-                                   [radio_talk]   = 20,
-                                   [drink_vodka]  = 10 }
+                                   [look_outside] = 15,
+                                   [radio_talk]   = 10,
+                                   [drink_vodka]  = 25 }
                 else
                     self.act = random_choice_weighted{
                                    [walk_inside]  = 60,
