@@ -20,12 +20,11 @@ CHOM::CHOM()
 CHOM::~CHOM()
 {
 }
-
 /*
 void CHOM::Load(CStream* S)
 {
 	// Load tris and merge them
-	RAPID::Collector	collector;
+	CDB::Collector	collector;
 	struct poly			{ Fvector	v1,v2,v3; } POLY;
 	
 }
