@@ -216,7 +216,7 @@ void CCustomMonster::net_Import(NET_Packet& P)
 	net_update				N;
 
 	u8 flags;
-	P.r_advance				(sizeof(float) + sizeof(u16));
+//	P.r_advance				(sizeof(float) + sizeof(u16));
 	P.r_u32					(N.dwTimeStamp);
 	P.r_u8					(flags);
 	P.r_vec3				(N.p_pos);

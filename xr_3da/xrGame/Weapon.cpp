@@ -363,6 +363,7 @@ void CWeapon::net_Export	(NET_Packet& P)
 	u8 flags				=	u8(IsUpdating()? M_UPDATE_WEAPON_wfVisible:0);
 	flags					|=	u8(IsWorking() ? M_UPDATE_WEAPON_wfWorking:0);
 
+	CGameObject::net_Export(P);
 	P.w_u32					(Level().timeServer());
 	P.w_u8					(flags);
 
@@ -382,7 +383,7 @@ void CWeapon::net_Import	(NET_Packet& P)
 {
 	net_update				N;
 
-	P.r_advance				(sizeof(float) + sizeof(u16));
+	CGameObject::net_Import(P);
 	P.r_u32					(N.dwTimeStamp);
 	P.r_u8					(N.flags);
 

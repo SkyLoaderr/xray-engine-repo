@@ -175,6 +175,7 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 	VERIFY				(Weapons);
 
 	u8					flags=0;
+	CGameObject::net_Export(P);
 	P.w_u32				(Level().timeServer());
 	P.w_u8				(flags);
 	P.w_vec3			(vPosition);
@@ -197,14 +198,12 @@ void CActor::net_Import		(NET_Packet& P)					// import from server
 	// import
 	if (Level().game.type != GAME_SINGLE)
 		R_ASSERT				(Remote());
-	else
-		R_ASSERT				(Local());
 
 	net_update			N;
 
 	u8	flags;
 	u16	tmp;
-	P.r_advance			(sizeof(float) + sizeof(u16));
+	CGameObject::net_Import(P);
 	P.r_u32				(N.dwTimeStamp	);
 	P.r_u8				(flags			);
 	P.r_vec3			(N.p_pos		);

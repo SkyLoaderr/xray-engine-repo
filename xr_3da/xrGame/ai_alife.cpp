@@ -285,6 +285,7 @@ void CAI_ALife::vfCreateObject(CALifeObject *tpALifeObject)
 	tpALifeObject->UPDATE_Write		(P);
 	P.r_begin						(ID);
 	R_ASSERT						(M_UPDATE==ID);
+	P.r_advance						(21);
 	Level().Server->Process_update	(P,0);
 }
 
@@ -337,18 +338,11 @@ void CAI_ALife::vfSwitchObjectOffline(CALifeObject *tpALifeObject)
 void CAI_ALife::vfUpdateOfflineObject(CALifeObject *tpALifeObject)
 {
 	NET_Packet						P;
-	_GRAPH_ID						tDummy = 0;
-	float							fDummy = 0.0f;
 	u16								ID;
 	CObject							*tpObject = Level().Objects.net_Find(tpALifeObject->ID);
 	if (!tpObject)
 		return;
-	if (tpObject->SUB_CLS_ID == CLSID_OBJECT_W_AK74) {
-		tpObject = tpObject;
-	}
 	P.w_begin						(M_UPDATE);
-	P.w								(&tDummy,sizeof(tDummy));
-	P.w_float						(fDummy);
 	tpObject->net_Export			(P);
 	P.r_begin						(ID);
 	tpALifeObject->UPDATE_Read		(P);
@@ -358,19 +352,12 @@ void CAI_ALife::vfUpdateOnlineObject(CALifeObject *tpALifeObject)
 {
 	NET_Packet						P;
 	u16								ID;
-//	_GRAPH_ID						tDummy;
-//	float							fDummy;
 	P.w_begin						(M_UPDATE);
 	tpALifeObject->UPDATE_Write		(P);
 	CObject							*tpObject = tpObject = Level().Objects.net_Find(tpALifeObject->ID);
 	if (!tpObject)
 		return;
-	if (tpObject->SUB_CLS_ID == CLSID_OBJECT_W_AK74) {
-		tpObject = tpObject;
-	}
 	P.r_begin						(ID);
-//	P.r								(&tDummy,sizeof(tDummy));
-//	P.r_float						(fDummy);
 	tpObject->net_Import			(P);
 }
 
