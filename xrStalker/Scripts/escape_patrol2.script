@@ -51,14 +51,14 @@ function on_enter (zone, obj)
 end
 --------------------------------------------------------------------------------------              
 function check_zone ()
-    printf ("Check zone called")
+    --printf ("Check zone called")
     for a = 1, table.getn (units), 1 do
         local npc = level.object_by_id (units[a].id)
         if npc ~= nil then
            if npc:alive () == false then units[a].in_zone = true end
         end   
         if units[a].in_zone == false then 
-           printf ("Object out of zone") 
+           --printf ("Object out of zone") 
            return false 
         end
     end    
