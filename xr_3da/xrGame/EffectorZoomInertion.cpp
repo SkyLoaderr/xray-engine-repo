@@ -16,6 +16,7 @@ CEffectorZoomInertion::CEffectorZoomInertion	() : CCameraEffector(eCEZoom,100000
 {
 	Load();
 	SetRndSeed(timeGetTime());
+	m_dwTimePassed = 0;
 }
 
 CEffectorZoomInertion::~CEffectorZoomInertion	()
