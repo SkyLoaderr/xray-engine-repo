@@ -102,14 +102,8 @@ public:
 	}
 
 	// REF-counting
-	IC  void		ref_add			(DWORD ID)
-	{
-		if (vfs)	q_mark[ID] += 1;
-	}
-	IC	void		ref_dec			(DWORD ID)
-	{
-		if (vfs)	q_mark[ID] -= 1;
-	}
+	IC  void		ref_add			(DWORD ID)	{	if (vfs)	q_mark[ID] += 1; 	}
+	IC	void		ref_dec			(DWORD ID)  {	if (vfs)	q_mark[ID] -= 1;	}
 
 	// Utilities
 	float			u_SqrDistance2Node	(const Fvector& P, const NodeCompressed* Node);

@@ -78,7 +78,7 @@ void CAI_Space::Load(LPCSTR name)
 	}
 
 	// special query tables
-	q_mark.assign		(m_header.count,false);
+	q_mark.assign		(m_header.count,0);
 
 	// for a* search
 	vfLoadSearch();
