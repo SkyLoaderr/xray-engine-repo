@@ -29,7 +29,7 @@ end
 function base_dialog:InitControls(caption)
 	-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< INIT DATA 
 	self.indent = 18	
-	self.button_indent = -1 --7	
+	self.button_indent = -1 
 	self.screen    = {x = 0, y = 0, width = 1024, height = 768}
 	
 	-- rect of main window
