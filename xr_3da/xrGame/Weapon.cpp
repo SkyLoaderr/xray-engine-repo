@@ -738,14 +738,14 @@ void CWeapon::OnEvent		(NET_Packet& P, u16 type)
 	inherited::OnEvent		(P,type);
 	switch (type)
 	{
-	case GE_WPN_STATECHANGE:
+	case GE_WPN_STATE_CHANGE:
 		{
 			u8				S;
 			P.r_u8			(S);
 			OnStateSwitch	(u32(S));
 		}
 		break;
-	case GE_ADD_AMMO:
+	case GE_WPN_AMMO_ADD:
 		{
 			u16 amount;
 			P.r_u16			(amount);
