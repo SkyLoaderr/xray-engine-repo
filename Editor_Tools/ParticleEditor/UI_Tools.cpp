@@ -12,6 +12,7 @@
 #include "PSLibrary.h"
 #include "PropertiesPSDef.h"
 #include "xr_trims.h"
+#include "library.h"
 
 //------------------------------------------------------------------------------
 CParticleTools Tools;
@@ -19,6 +20,7 @@ CParticleTools Tools;
 
 CParticleTools::CParticleTools()
 {
+	m_EditObject		= 0;
 	m_TestObject 		= 0;
     m_LibPS				= 0;
     m_PSProps			= 0;
@@ -50,6 +52,7 @@ void CParticleTools::OnCreate(){
 void CParticleTools::OnDestroy(){
 	VERIFY(m_bReady);
     m_bReady			= false;
+	Lib.RemoveEditObject(m_EditObject);
 	_DELETE(m_TestObject);
     m_LibPS				= 0;
     m_PSProps->HideProperties();
@@ -77,31 +80,39 @@ void CParticleTools::Modified(){
 //---------------------------------------------------------------------------
 
 void CParticleTools::Render(){
-	VERIFY(m_bReady);
+	if (!m_bReady) return;
 	if (m_TestObject)
     	m_TestObject->RenderSingle();
+	if (m_EditObject)
+    	m_EditObject->RenderSingle(precalc_identity);
 }
 
 void CParticleTools::Update(){
-	VERIFY(m_bReady);
+	if (!m_bReady) return;
 	if (m_TestObject){
     	m_TestObject->RTL_Update(Device.fTimeDelta);
         if (m_TestObject->IsPlaying())	fraLeftBar->lbCurState->Caption = "generate&&playing";
         else 							fraLeftBar->lbCurState->Caption = m_TestObject->ParticleCount()?"playing":"stopped";
         fraLeftBar->lbParticleCount->Caption 	= m_TestObject->ParticleCount();
     }
+	if (m_EditObject)
+    	m_EditObject->RTL_Update(Device.fTimeDelta);
 }
 
 void CParticleTools::ZoomObject(){
 	VERIFY(m_bReady);
-	if (m_TestObject){
-		Fbox BB;
-        m_TestObject->GetBox(BB);
-        Device.m_Camera.ZoomExtents(BB);
-    }else{
-		Fbox BB;
-        BB.set(-5,-5,-5,5,5,5);
-        Device.m_Camera.ZoomExtents(BB);
+    if (m_EditObject){
+        Device.m_Camera.ZoomExtents(m_EditObject->GetBox());
+	}else{
+    	if (m_TestObject){
+			Fbox BB;
+	        m_TestObject->GetBox(BB);
+    	    Device.m_Camera.ZoomExtents(BB);
+        }else{
+			Fbox BB;
+    	    BB.set(-5,-5,-5,5,5,5);
+        	Device.m_Camera.ZoomExtents(BB);
+        }
     }
 }
 
@@ -143,21 +154,15 @@ void CParticleTools::OnDeviceDestroy(){
 }
 
 void CParticleTools::SelectPreviewObject(int p){
-/*    LPCSTR fn;
-    switch(p){
-        case 0: fn="editor\\ShaderTest_Plane"; 	break;
-        case 1: fn="editor\\ShaderTest_Box"; 	break;
-        case 2: fn="editor\\ShaderTest_Sphere"; break;
-        case 3: fn="editor\\ShaderTest_Teapot";	break;
-        case -1: fn=m_EditObject?m_EditObject->GetName():""; fn=TfrmChoseItem::SelectObject(false,true,0,fn); if (!fn) return; break;
-        default: THROW2("Failed select test object.");
-    }
-    m_EditObject = Lib.GetEditObject(fn);
+    LPCSTR fn=m_EditObject?m_EditObject->GetName():"";
+    fn=TfrmChoseItem::SelectObject(false,0,fn);
+    if (!fn) return;
+    Lib.RemoveEditObject(m_EditObject);
+    m_EditObject = Lib.CreateEditObject(fn);
     if (!m_EditObject)
-        ELog.DlgMsg(mtError,"Object '%s.object' can't find in object library. Preview disabled.",fn);
+        ELog.DlgMsg(mtError,"Object '%s' can't find in object library.",fn);
 	ZoomObject();
     UI.RedrawScene();
-*/
 }
 
 void CParticleTools::ResetPreviewObject(){
@@ -303,4 +308,9 @@ void CParticleTools::StopCurrentPS()
 	VERIFY(m_bReady);
 	if (m_TestObject) m_TestObject->Stop();
 }
+
+void CParticleTools::OnShowHint(AStringVec& SS)
+{
+}
+
 

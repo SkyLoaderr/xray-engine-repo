@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 659
+  Height = 565
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 212
-    Height = 659
+    Height = 565
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -150,7 +150,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 69
       Width = 210
-      Height = 197
+      Height = 103
       Align = alClient
       ParentShowHint = False
       ShowHint = True
@@ -171,13 +171,13 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 14
         Width = 208
-        Height = 166
+        Height = 72
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
         object Bevel2: TBevel
           Left = 0
-          Top = 164
+          Top = 70
           Width = 208
           Height = 2
           Align = alBottom
@@ -193,7 +193,7 @@ object fraLeftBar: TfraLeftBar
           Left = 0
           Top = 36
           Width = 208
-          Height = 128
+          Height = 34
           Cursor = crDefault
           LeftPosition = 0
           DragCursor = crDrag
@@ -218,7 +218,7 @@ object fraLeftBar: TfraLeftBar
           GradientSteps = 64
           HeaderHeight = 19
           HeaderHotTrack = False
-          HeaderSections.Data = {F5FFFFFF00000000}
+          HeaderSections.Data = {F4FFFFFF00000000}
           HeaderFont.Charset = DEFAULT_CHARSET
           HeaderFont.Color = clWindowText
           HeaderFont.Height = -11
@@ -387,7 +387,7 @@ object fraLeftBar: TfraLeftBar
       end
       object paAction: TPanel
         Left = 1
-        Top = 180
+        Top = 86
         Width = 208
         Height = 16
         Align = alBottom
@@ -417,7 +417,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paProperties: TPanel
       Left = 1
-      Top = 308
+      Top = 214
       Width = 210
       Height = 350
       Hint = 'Scene commands'
@@ -473,7 +473,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paCurrentPS: TPanel
       Left = 1
-      Top = 266
+      Top = 172
       Width = 210
       Height = 42
       Hint = 'Scene commands'
@@ -708,28 +708,6 @@ object fraLeftBar: TfraLeftBar
     Style = msOwnerDraw
     Left = 117
     Top = 18
-    object Plane1: TMenuItem
-      Caption = 'Plane'
-      OnClick = PreviewClick
-    end
-    object Box1: TMenuItem
-      Tag = 1
-      Caption = 'Box'
-      OnClick = PreviewClick
-    end
-    object Ball1: TMenuItem
-      Tag = 2
-      Caption = 'Ball'
-      OnClick = PreviewClick
-    end
-    object Teapot1: TMenuItem
-      Tag = 3
-      Caption = 'Teapot'
-      OnClick = PreviewClick
-    end
-    object N3: TMenuItem
-      Caption = '-'
-    end
     object Custom1: TMenuItem
       Tag = -1
       Caption = 'Custom...'

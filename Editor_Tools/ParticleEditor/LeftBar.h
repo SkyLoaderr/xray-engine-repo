@@ -36,15 +36,10 @@ __published:	// IDE-managed Components
 	TMenuItem *Save1;
 	TMenuItem *Reload1;
 	TMxPopupMenu *pmPreviewObject;
-	TMenuItem *Plane1;
 	TPanel *paParticles;
 	TLabel *Label1;
 	TExtBtn *ExtBtn3;
-	TMenuItem *Box1;
-	TMenuItem *Ball1;
-	TMenuItem *Teapot1;
 	TMenuItem *Custom1;
-	TMenuItem *N3;
 	TMxPopupMenu *pmShaderList;
 	TMenuItem *ExpandAll1;
 	TMenuItem *CollapseAll1;

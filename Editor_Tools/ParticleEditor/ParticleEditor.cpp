@@ -37,7 +37,6 @@ USEUNIT("engine\Envelope.cpp");
 USEUNIT("engine\motion.cpp");
 USEUNIT("engine\bone.cpp");
 USEUNIT("engine\clsid.cpp");
-USELIB("lib\CreateDX.lib");
 USEUNIT("engine\cl_raypick.cpp");
 USEUNIT("engine\cl_build.cpp");
 USEUNIT("engine\cl_collector.cpp");
@@ -113,6 +112,7 @@ USEUNIT("PropertiesPSDef.cpp");
 USEFORM("Editor\FrameEmitter.cpp", fraEmitter); /* TFrame: File Type */
 USEUNIT("Editor\TLSPRITE.CPP");
 USEUNIT("Editor\CustomObject.cpp");
+USELIB("Lib\ETools.lib");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

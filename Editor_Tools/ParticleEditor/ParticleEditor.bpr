@@ -59,8 +59,8 @@
       LeftBar.dfm LogForm.dfm Editor\ChoseForm.dfm Editor\ShaderFunction.dfm 
       Editor\FrameEmitter.dfm"/>
     <LIBFILES value="lib\LWO.lib lib\cg32.lib lib\xrProgressive.lib lib\MagicFMd.lib 
-      lib\DXT.lib lib\CreateDX.lib lib\d3d8.lib lib\d3dx8d.lib lib\dinput.lib 
-      Lib\FreeImage.lib"/>
+      lib\DXT.lib lib\d3d8.lib lib\d3dx8d.lib lib\dinput.lib Lib\FreeImage.lib 
+      Lib\ETools.lib"/>
     <LIBRARIES value="elpackB5.lib dclusr50.lib VCLX50.lib bcbsmp50.lib Vcl50.lib"/>
     <SPARELIBS value="Vcl50.lib bcbsmp50.lib VCLX50.lib dclusr50.lib elpackB5.lib"/>
     <PACKAGES value="Vcl50.bpi Vclx50.bpi bcbsmp50.bpi TeeUI50.bpi Tee50.bpi Vclbde50.bpi 

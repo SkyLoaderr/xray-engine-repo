@@ -8,9 +8,11 @@
 class CPSObject;
 class SDef;
 class TfrmPropertiesPSDef;
+class CEditableObject;
 
 class CParticleTools: public pureDeviceCreate, public pureDeviceDestroy
 {
+	CEditableObject*	m_EditObject;
     CPSObject*  		m_TestObject;
     PS::SDef* 			m_LibPS;
     PS::SDef			m_EditPS;
@@ -58,6 +60,8 @@ public:
 
     void				SelectPreviewObject	(int p);
     void				ResetPreviewObject	();
+
+    void				OnShowHint			(AStringVec& SS);
 
     bool __fastcall 	MouseStart  		(TShiftState Shift){return false;}
     bool __fastcall 	MouseEnd    		(TShiftState Shift){return false;}

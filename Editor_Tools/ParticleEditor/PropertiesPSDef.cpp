@@ -212,7 +212,7 @@ void __fastcall TfrmPropertiesPSDef::FormClose(TObject *Sender,
 void __fastcall TfrmPropertiesPSDef::ebSelectShaderClick(TObject *Sender)
 {
 	if (!m_PS) return;
-	LPCSTR S = TfrmChoseItem::SelectShader(true,0,m_PS->m_ShaderName[0]?m_PS->m_ShaderName:0);
+	LPCSTR S = TfrmChoseItem::SelectShader(m_PS->m_ShaderName[0]?m_PS->m_ShaderName:0);
     if (S){
     	lbShader->Caption=S;
         ApplyObjectsInfo();
