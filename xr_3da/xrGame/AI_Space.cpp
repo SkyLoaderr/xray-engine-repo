@@ -39,7 +39,11 @@ CAI_Space::~CAI_Space				()
 	unload					();
 	xr_delete				(m_ef_storage);
 	xr_delete				(m_game_graph);
-	xr_delete				(m_script_engine);
+	try {
+		xr_delete			(m_script_engine);
+	}
+	catch(...) {
+	}
 	xr_delete				(m_cover_manager);
 	xr_delete				(m_graph_engine);
 }

@@ -145,7 +145,7 @@ function motivator_binder:update(delta)
 	end
 
 	--' Проверка врагов
-	if true then 
+	if false then 
 		be = self.object:best_enemy()
 		if be ~= nil then
 			printf("ENEMYCHECK: %s[%s, %s, %s] -> %s[%s, %s, %s]",
@@ -156,7 +156,8 @@ function motivator_binder:update(delta)
 				be:name(), 
 				be:team(), 
 				be:squad(), 
-				be:group())
+				be:group()
+			)
 		end
 	end
 end

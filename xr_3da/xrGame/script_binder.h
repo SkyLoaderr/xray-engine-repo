@@ -19,6 +19,7 @@ public:
 								CScriptBinder	();
 	virtual						~CScriptBinder	();
 			void				init			();
+			void				clear			();
 	virtual void				reinit			();
 	virtual void				Load			(LPCSTR section);
 	virtual void				reload			(LPCSTR section);

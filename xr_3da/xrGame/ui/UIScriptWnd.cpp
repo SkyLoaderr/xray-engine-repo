@@ -30,7 +30,11 @@ UIScriptWnd::UIScriptWnd():inherited()
 
 UIScriptWnd::~UIScriptWnd()
 {
-	 delete_data(m_callbacks);
+	try {
+		delete_data(m_callbacks);
+	}
+	catch(...) {
+	}
 }
 void UIScriptWnd::Register			(CUIWindow* pChild)
 {
