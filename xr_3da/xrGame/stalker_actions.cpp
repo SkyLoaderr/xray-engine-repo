@@ -9,7 +9,7 @@
 #include "stdafx.h"
 #include "stalker_actions.h"
 #include "ai/stalker/ai_stalker.h"
-#include "action_manager_stalker.h"
+#include "motivation_action_manager_stalker.h"
 
 //////////////////////////////////////////////////////////////////////////
 // CStalkerActionBase
@@ -42,7 +42,7 @@ void CStalkerActionDead::execute		()
 {
 	inherited::execute		();
 	m_object->CMovementManager::enable_movement(false);
-	set_property			(CActionManagerStalker::eWorldPropertyDead,true);
+	set_property			(CMotivationActionManagerStalker::eWorldPropertyDead,true);
 }
 
 //////////////////////////////////////////////////////////////////////////
