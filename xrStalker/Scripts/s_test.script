@@ -26,6 +26,7 @@ function evaluator_first_meet:evaluate()
 	local					meet = 0
 	if self:func() == true then
 		meet				= 1
+	end
 	printf					("See[%d],Dist[%f],First[%s]",self.object0:see(self.object1),self.object0:position():distance_to(self.object1:position()),meet)
 	
 	if 
