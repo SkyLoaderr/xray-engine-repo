@@ -54,13 +54,6 @@ CBuild::CBuild(b_transfer * L)
 	Progress(p_total+=p_cost);
 	Msg("%d vertices processed.",g_vertices.size());
 
-	/*
-	Msg("[%f,%f,%f]-[%f,%f,%f]",
-		scene_bb.min.x,scene_bb.min.y,scene_bb.min.z,
-		scene_bb.max.x,scene_bb.max.y,scene_bb.max.z
-		);
-	*/
-
 	//*******
 	Status	("Faces...");
 	for (i=0; i<L->face_count; i++)
@@ -185,16 +178,6 @@ CBuild::CBuild(b_transfer * L)
 CBuild::~CBuild()
 {
 	Phase("Cleanup");
-
-	/*
-	// remove faces if any
-	Status("Faces...");
-	while (!g_faces.empty()) delete g_faces.back();
-
-	// remove vertices if any
-	Status("Vertices...");
-	while (!g_vertices.empty()) delete g_vertices.back();
-	*/
 }
  
 extern int	RegisterTexture	(string &T);
@@ -244,6 +227,10 @@ void CBuild::Run()
 	BuildRapid		();
 
 	FPU::m24r();
+	Phase	("Soften lights...");
+	SoftenLights();
+
+	FPU::m24r();
 	Phase	("Resolving materials...");
 	ResolveMaterials();
 	
@@ -254,10 +241,6 @@ void CBuild::Run()
 	FPU::m24r();
 	Phase	("Merging lightmaps...");
 	MergeLM		();
-
-	FPU::m24r();
-	Phase	("Soften lights...");
-	SoftenLights();
 
 	FPU::m24r();
 	Phase	("Implicit lighting...");
