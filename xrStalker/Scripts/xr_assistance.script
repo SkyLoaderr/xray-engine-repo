@@ -5,7 +5,7 @@
 --------------------------------------------------------------------------------
 --' ASSISTANCE
 class "evaluator_assistance" (property_evaluator)
-function evaluator_assistance:__init(storage) super()
+function evaluator_assistance:__init(storage) super(nil, name)
 	self.a = storage
 end
 function evaluator_assistance:evaluate()
@@ -166,7 +166,7 @@ function add_to_binder(npc, char_ini)
 	operators["action_assistance"]      = xr_actions_id.assistance + 1
 	operators["action_change_position"] = xr_actions_id.assistance + 2
 
-	manager:add_evaluator (properties["need_assistance"],		evaluator_assistance		(xr_motivator.storage[npc:id()].assistance))
+	manager:add_evaluator (properties["need_assistance"],		evaluator_assistance		(xr_motivator.storage[npc:id()].assistance, "assistance_assistance"))
 
 	local action = action_assistance(npc, "action_assistance", xr_motivator.storage[npc:id()].assistance)
 	action:add_precondition (world_property(stalker_ids.property_alive,			true))
