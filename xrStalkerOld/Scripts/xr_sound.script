@@ -48,7 +48,8 @@ snd_files = {
 	trade_yes_stalker              = "characters_voice\\human_01\\talk\\trade\\yes\\stalker\\yes_",
 	trade_no_stalker               = "characters_voice\\human_01\\talk\\trade\\no\\stalker\\no_",
 
-	novice_camp_guards             = "characters_voice\\human_01\\scenario\\guard_novice_camp\\guard_novice_camp_tutorial_",
+	novice_camp_guards             = "characters_voice\\human_01\\scenario\\guard_novice_camp\\guard_novice_camp_stop_tutorial_",
+	seq_novice_camp_guards         = "characters_voice\\human_01\\scenario\\guard_novice_camp\\guard_novice_camp_tutorial_",
 	
 	military_radio                 = "characters_voice\\human_01\\scenario\\radio\\radio_voice_"
 }
@@ -164,8 +165,8 @@ function load_sound(obj)
 
 	------------------------------------------------------------------------------------------------
 	-- лагерь новичков на эскейп
+	theme["seq_novice_camp_guards"] = load_theme("seq_novice_camp_guards", true)
 	theme["novice_camp_guards"] = load_theme("novice_camp_guards")
-	theme["seq_novice_camp_guards"] = load_theme("novice_camp_guards", true)
 	
 	-- radio for military stalkers
 	theme["military_radio"] = load_theme ("military_radio")
