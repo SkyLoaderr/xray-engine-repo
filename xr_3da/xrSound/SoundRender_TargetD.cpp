@@ -3,12 +3,12 @@
 
 #ifndef _OPENAL
 
-#include "soundrender_targetD.h"
 #include "soundrender.h"
 #include "soundrender_coreD.h"
+#include "soundrender_targetD.h"
 #include "soundrender_emitter.h"
 
-CSoundRender_TargetD::CSoundRender_TargetD():CSoundRender_Target()
+CSoundRender_TargetD::CSoundRender_TargetD()
 {
 	pBuffer_base	= NULL;
 	pBuffer			= NULL;
@@ -17,16 +17,27 @@ CSoundRender_TargetD::CSoundRender_TargetD():CSoundRender_Target()
 	cache_hw_volume	= DSBVOLUME_MIN;
 	cache_hw_freq	= 11025;
 
+	pEmitter		= 0;
 	pos_write		= 0;
+	rendering		= FALSE;
 }
 
 CSoundRender_TargetD::~CSoundRender_TargetD()
 {
 }
 
-void	CSoundRender_TargetD::_initialize	()
+void	CSoundRender_TargetD::_initialize		()
 {
-	inherited::_initialize();
+	// Calc format
+	WAVEFORMATEX			wfx_primary;
+	SoundRenderD.pBuffer->GetFormat(&wfx_primary,sizeof(wfx_primary),0);
+	wfx.wFormatTag			= WAVE_FORMAT_PCM;
+	wfx.nChannels			= 1;
+	wfx.nSamplesPerSec		= wfx_primary.nSamplesPerSec;
+	wfx.wBitsPerSample		= 16;
+	wfx.nBlockAlign			= wfx.nChannels * wfx.wBitsPerSample / 8;
+	wfx.nAvgBytesPerSec		= wfx.nSamplesPerSec * wfx.nBlockAlign;
+	wfx.cbSize				= 0;
 
 	// Calc storage
 	buf_size				= sdef_target_size*wfx.nAvgBytesPerSec/1000;
@@ -40,6 +51,7 @@ void	CSoundRender_TargetD::_initialize	()
 		DSBCAPS_CTRLFREQUENCY | 
 		DSBCAPS_CTRLVOLUME |
 		DSBCAPS_GETCURRENTPOSITION2 |
+		//.        DSBCAPS_CTRLPOSITIONNOTIFY | //!
 		(psSoundFlags.test(ssHardware) 	? 0 				: (DSBCAPS_LOCSOFTWARE));
 	dsBD.dwBufferBytes		= buf_size;
 	dsBD.dwReserved			= 0;
@@ -53,13 +65,21 @@ void	CSoundRender_TargetD::_initialize	()
 	case sq_HIGH:		dsBD.guid3DAlgorithm = DS3DALG_HRTF_FULL;			break;
 	default:			Debug.fatal("Unknown 3D-ref_sound algorithm");		break;
 	}
-    if (psSoundFlags.test(ssHardware)) 
-    	dsBD.guid3DAlgorithm = DS3DALG_HRTF_FULL;
+	if (psSoundFlags.test(ssHardware)) 
+		dsBD.guid3DAlgorithm = DS3DALG_HRTF_FULL;
 
 	// Create
 	bDX7				= FALSE;
 	R_CHK	(SoundRenderD.pDevice->CreateSoundBuffer(&dsBD, &pBuffer_base, NULL));
 	R_CHK	(pBuffer_base->QueryInterface(IID_IDirectSoundBuffer8,(void **)&pBuffer));
+	/*
+	if		(FAILED(pBuffer_base->QueryInterface(IID_IDirectSoundBuffer8,(void **)&pBuffer)))	{
+	Msg					("! WARNING: Can't use DX8 interface for sound control. Reverting to DX7 one.");
+	pBuffer				= (IDirectSoundBuffer8*)pBuffer_base;
+	pBuffer_base->AddRef();
+	bDX7				= TRUE;
+	}
+	*/
 	R_CHK	(pBuffer->QueryInterface(IID_IDirectSound3DBuffer8,	(void **)&pControl));
 	R_ASSERT(pBuffer_base && pBuffer && pControl);
 
@@ -78,40 +98,19 @@ void	CSoundRender_TargetD::_destroy		()
 
 void	CSoundRender_TargetD::start			(CSoundRender_Emitter* E)
 {
-    inherited::start(E);
+	R_ASSERT		(E);
+
+	// *** Initial buffer startup ***
+	// 1. Fill parameters
+	// 4. Load 2 blocks of data (as much as possible)
+	// 5. Deferred-play-signal (emitter-exist, rendering-false)
+	pEmitter		= E;
+	pos_write		= 0;
+	rendering		= FALSE;
 }
 
 void	CSoundRender_TargetD::render			()
 {
-	fill_block		();
-	fill_block		();
-
-    R_CHK			(pBuffer->SetCurrentPosition	(0));
-	HRESULT _hr		= pBuffer->Play(0,0,DSBPLAY_LOOPING);
-	if (DSERR_BUFFERLOST==_hr)	{
-		R_CHK(pBuffer->Restore());
-		R_CHK(pBuffer->Play(0,0,DSBPLAY_LOOPING));
-	}else{
-		R_CHK		(_hr);
-	}
-    inherited::render();
-}
-
-void	CSoundRender_TargetD::stop			()
-{
-	if (rendering){
-		R_CHK		(pBuffer->Stop());
-		R_CHK		(pControl->SetMode(DS3DMODE_DISABLE,DS3D_DEFERRED));
-	}
-    inherited::stop	();
-}
-
-void	CSoundRender_TargetD::rewind			()
-{
-	inherited::rewind();
-
-	R_CHK			(pBuffer->Stop	());
-	pos_write		= 0;
 	fill_block		();
 	fill_block		();
 
@@ -123,6 +122,44 @@ void	CSoundRender_TargetD::rewind			()
 	}else{
 		R_CHK		(_hr);
 	}
+	rendering		= TRUE;
+}
+
+void	CSoundRender_TargetD::stop			()
+{
+	if (rendering)
+	{
+		R_CHK			(pBuffer->Stop());
+		R_CHK			(pControl->SetMode(DS3DMODE_DISABLE,DS3D_DEFERRED));
+	}
+	pEmitter		= NULL;
+	rendering		= FALSE;
+}
+
+void	CSoundRender_TargetD::rewind			()
+{
+	R_ASSERT		(rendering);
+
+	R_CHK			(pBuffer->Stop	());
+	pos_write		= 0;
+	fill_block		();
+	fill_block		();
+	R_CHK			(pBuffer->SetCurrentPosition	(0));
+	HRESULT _hr		= pBuffer->Play(0,0,DSBPLAY_LOOPING);
+	if (DSERR_BUFFERLOST==_hr)	{
+		R_CHK(pBuffer->Restore());
+		R_CHK(pBuffer->Play(0,0,DSBPLAY_LOOPING));
+	}else{
+		R_CHK		(_hr);
+	}
+
+	// .
+	/*
+	u32		pos_2_play	= pos_write%buf_size;
+	fill_parameters		();
+	fill_block			();
+	R_CHK	(pBuffer->SetCurrentPosition	(pos_2_play));
+	*/
 }
 
 u32		CSoundRender_TargetD::calc_interval	(u32 ptr)
@@ -134,45 +171,67 @@ u32		CSoundRender_TargetD::calc_interval	(u32 ptr)
 
 void	CSoundRender_TargetD::update			()
 {
-	inherited::update();
+	R_ASSERT		(pEmitter);
+
+	// fill_parameters	();
 
 	// Analyze if we really need more data to stream them ahead
 	u32				cursor_write;
 	R_CHK			(pBuffer->GetCurrentPosition(0,LPDWORD(&cursor_write)));
+
 	u32				r_write		= calc_interval(pos_write);
-	u32				r_cursor	= (calc_interval(cursor_write)+1)%sdef_target_count;
-	if (r_write==r_cursor)	fill_block	();
-//	Msg				("write: 0x%8x",cursor_write);
+	u32				r_cursor	= (calc_interval(cursor_write)+1)%3;
+	if (r_write==r_cursor)		fill_block	();
 }
 
 void	CSoundRender_TargetD::fill_parameters()
 {
-	inherited::fill_parameters();
+	VERIFY			(pEmitter);
 
 	// 1. Set 3D params (including mode)
 	{
 		Fvector&			p_pos	= pEmitter->p_source.position;
+		/*
+		DS3DBUFFER					buf;
+		buf.dwSize					= sizeof(DS3DBUFFER);
+		buf.vPosition.x				= p_pos.x;
+		buf.vPosition.y				= p_pos.y;
+		buf.vPosition.z				= p_pos.z;
+		buf.vVelocity.x				= 0;
+		buf.vVelocity.y				= 0;
+		buf.vVelocity.z				= 0;
+		buf.vConeOrientation.x		= 0;
+		buf.vConeOrientation.y		= 0;
+		buf.vConeOrientation.z		= 1;
+		buf.dwInsideConeAngle		= DS3D_DEFAULTCONEANGLE;
+		buf.dwOutsideConeAngle		= DS3D_DEFAULTCONEANGLE;
+		buf.lConeOutsideVolume		= DS3D_DEFAULTCONEOUTSIDEVOLUME;
+		buf.flMinDistance			= pEmitter->p_source.min_distance;
+		buf.flMaxDistance			= pEmitter->p_source.max_distance;
+		buf.dwMode					= pEmitter->b2D ? DS3DMODE_DISABLE : DS3DMODE_NORMAL;
+		R_CHK(pControl->SetAllParameters(&buf,DS3D_DEFERRED));
+		*/
 		R_CHK(pControl->SetMode			(pEmitter->b2D ? DS3DMODE_DISABLE : DS3DMODE_NORMAL,DS3D_DEFERRED));
 		R_CHK(pControl->SetMinDistance	(pEmitter->p_source.min_distance,	DS3D_DEFERRED));
 		R_CHK(pControl->SetMaxDistance	(pEmitter->p_source.max_distance,	DS3D_DEFERRED));
 		R_CHK(pControl->SetPosition		(p_pos.x,p_pos.y,p_pos.z,			DS3D_DEFERRED));
 	}
-	
+
 	// 2. Set 2D params (volume, freq) + position(rewind)
 	{
 		float	_volume				= pEmitter->smooth_volume;				clamp	(_volume,EPS_S,1.f);
 		s32		hw_volume			= iFloor	(7000.f*logf(_volume)/5.f);	clamp	(hw_volume,DSBVOLUME_MIN,DSBVOLUME_MAX);
 		if (_abs(hw_volume-cache_hw_volume)>50)
 		{
-			cache_hw_volume			= hw_volume;
-			R_CHK(pBuffer->SetVolume(hw_volume));
+			cache_hw_volume				= hw_volume;
+			R_CHK(pBuffer->SetVolume	( hw_volume	));
 		}
 
 		float	_freq				= pEmitter->p_source.freq;
 		s32		hw_freq				= iFloor	(_freq * float(wfx.nSamplesPerSec) + EPS);
 		if (_abs(hw_freq-cache_hw_freq)>50)	{
-			cache_hw_freq			= hw_freq;
-			s32		hw_freq_set		= hw_freq;
+			cache_hw_freq				= hw_freq;
+			s32		hw_freq_set			= hw_freq;
 			clamp	(hw_freq_set,s32(SoundRenderD.dsCaps.dwMinSecondarySampleRate),s32(SoundRenderD.dsCaps.dwMaxSecondarySampleRate));
 			R_CHK	(pBuffer->SetFrequency	( hw_freq_set	));
 		}
@@ -185,17 +244,15 @@ void	CSoundRender_TargetD::fill_block		()
 	if (0==pEmitter)					return;
 
 	// Obtain memory address of write block. This will be in two parts if the block wraps around.
-    LPVOID			ptr1, ptr2;
-    u32				bytes1,bytes2;
-    R_CHK			(pBuffer->Lock(pos_write, buf_block, &ptr1, LPDWORD(&bytes1), &ptr2, LPDWORD(&bytes2), 0));
+	LPVOID			ptr1, ptr2;
+	u32				bytes1,bytes2;
+	R_CHK			(pBuffer->Lock(pos_write%buf_size, buf_block, &ptr1, LPDWORD(&bytes1), &ptr2, LPDWORD(&bytes2), 0));
 	R_ASSERT		(0==ptr2 && 0==bytes2);
 
 	// Copy data (and clear the end)
 	pEmitter->fill_block(ptr1,buf_block);
-	pos_write		+= buf_block;
-    pos_write		%= buf_size;
+	pos_write		+=	buf_block;
 
 	R_CHK			(pBuffer->Unlock(ptr1, bytes1, ptr2, bytes2));
 }
-
 #endif
