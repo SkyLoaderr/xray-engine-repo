@@ -26,7 +26,7 @@ uniform sampler2D 	s_normal;
 uniform sampler2D 	s_diffuse;
 uniform sampler1D 	s_power;
 uniform sampler2D 	s_shadowmap;
-uniform half4 		light_direction;
+uniform half3 		light_direction;
 uniform half4 		light_color;
 uniform half4x4		light_xform;
 uniform half4		jitter[6];
@@ -86,17 +86,17 @@ p2f 	p_main	( v2p_in IN )
   half	 shadow	= (sA.x + sA.y + sA.z)/12;
   
   // Normal, vector2eye, vector2light
-  half3 N		= half3	(_N.x,_N.y,_N.z);
+  half3 N		= half3		(_N.x,_N.y,_N.z);
   half3 V 		= -normalize(half3(_P.x,_P.y,_P.z));
   half3 L 		= -half3	(light_direction.x,light_direction.y,light_direction.z);
 
   // Diffuse = (L • N)
-  half	l_D 	= shadow*saturate	(dot	(L, N));
+  half	l_D 	= saturate	(dot	(L, N));
 
   // Specular = (H • N)^m
-  half	l_S 	= shadow*tex1D		(s_power,	saturate(dot(normalize(L + V), N)));
+  half	l_S 	= tex1D		(s_power,	saturate(dot(normalize(L + V), N)));
   
   // Final color
-  OUT.C 		= light_color *		half4(l_D,l_D,l_D,l_S);
+  OUT.C 		= shadow*light_color *		half4(l_D,l_D,l_D,l_S);
   return OUT;
 }
