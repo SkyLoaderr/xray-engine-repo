@@ -23,11 +23,11 @@ class CSE_ALifeCreatureAbstract;
 class CGameSpawnConstructor {
 	friend class CSpawnMerger;
 public:
-	typedef SpawnConstructorSpace::LEVEL_POINT_STORAGE							LEVEL_POINT_STORAGE;
-	typedef SpawnConstructorSpace::LEVEL_CHANGER_STORAGE						LEVEL_CHANGER_STORAGE;
-	typedef CGraphAbstract<CServerEntityWrapper*,float,ALife::_SPAWN_ID,u32>	SPAWN_GRAPH;
-	typedef xr_vector<CLevelSpawnConstructor*>									LEVEL_SPAWN_STORAGE;
-	typedef xr_set<CLevelInfo>													LEVEL_INFO_STORAGE;
+	typedef SpawnConstructorSpace::LEVEL_POINT_STORAGE						LEVEL_POINT_STORAGE;
+	typedef SpawnConstructorSpace::LEVEL_CHANGER_STORAGE					LEVEL_CHANGER_STORAGE;
+	typedef CGraphAbstract<CServerEntityWrapper*,float,ALife::_SPAWN_ID>	SPAWN_GRAPH;
+	typedef xr_vector<CLevelSpawnConstructor*>								LEVEL_SPAWN_STORAGE;
+	typedef xr_set<CLevelInfo>												LEVEL_INFO_STORAGE;
 
 private:
 	struct CSpawnHeader {

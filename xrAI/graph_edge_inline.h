@@ -1,65 +1,53 @@
 ////////////////////////////////////////////////////////////////////////////
 //	Module 		: graph_edge_inline.h
 //	Created 	: 14.01.2004
-//  Modified 	: 27.09.2004
+//  Modified 	: 19.02.2005
 //	Author		: Dmitriy Iassenev
-//	Description : Graph edge class inline functions
+//	Description : Graph edge class template inline functions
 ////////////////////////////////////////////////////////////////////////////
 
 #pragma once
 
 #define TEMPLATE_SPECIALIZATION template <\
-	typename _Data,\
 	typename _edge_weight_type,\
-	typename _vertex_id_type,\
-	typename _vertex_index_type\
+	typename _vertex_type\
 >
 
-#define CSGraphEdge CGraphEdge<_Data,_edge_weight_type,_vertex_id_type,_vertex_index_type>
+#define CSGraphEdge CEdge<_edge_weight_type,_vertex_type>
 
 TEMPLATE_SPECIALIZATION
-IC	CSGraphEdge::CGraphEdge												(
-	const _edge_weight_type weight, 
-	const _vertex_id_type vertex_id, 
-	const _vertex_index_type vertex_index
-) :
-	m_weight		(weight),
-	m_vertex_id		(vertex_id),
-	m_vertex_index	(vertex_index)
+IC	CSGraphEdge::CEdge			(const _edge_weight_type &weight, _vertex_type *vertex)
 {
+	m_weight		= weight;
+	VERIFY			(vertex);
+	m_vertex		= vertex;
 }
 
 TEMPLATE_SPECIALIZATION
-IC	typename CSGraphEdge::_edge_weight_type CSGraphEdge::weight			() const
+IC	typename const CSGraphEdge::_edge_weight_type &CSGraphEdge::weight	() const
 {
 	return			(m_weight);
 }
 
 TEMPLATE_SPECIALIZATION
-IC	typename CSGraphEdge::_vertex_id_type CSGraphEdge::vertex_id		() const
+IC	typename CSGraphEdge::_vertex_type *CSGraphEdge::vertex				() const
 {
-	return			(m_vertex_id);
+	return			(m_vertex);
 }
 
 TEMPLATE_SPECIALIZATION
-IC	typename CSGraphEdge::_vertex_index_type CSGraphEdge::vertex_index	() const
+IC	bool CSGraphEdge::operator==	(const _vertex_id_type &vertex_id) const
 {
-	return			(m_vertex_index);
+	return			(vertex()->vertex_id() == vertex_id);
 }
 
 TEMPLATE_SPECIALIZATION
-IC	bool CSGraphEdge::operator==										(const _vertex_index_type &index) const
-{
-	return			(vertex_index() == index);
-}
-
-TEMPLATE_SPECIALIZATION
-IC	bool CSGraphEdge::operator==										(const CGraphEdge &obj) const
+IC	bool CSGraphEdge::operator==	(const CEdge &obj) const
 {
 	if (weight() != obj.weight())
 		return		(false);
 
-	return			(vertex_id() == obj.vertex_id());
+	return			(vertex()->vertex_id() == obj.vertex()->vertex_id());
 }
 
 #undef TEMPLATE_SPECIALIZATION

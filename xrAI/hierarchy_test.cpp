@@ -61,11 +61,11 @@ struct CSector : public IPureSerializeObject<IReader,IWriter> {
 	}
 };
 
-typedef CGraphAbstract<CSector,float,u32,u32>	CSectorGraph;
-typedef xr_vector<CCellVertex>					VERTEX_VECTOR;
-typedef xr_vector<VERTEX_VECTOR>				VERTEX_VECTOR1;
-typedef xr_vector<VERTEX_VECTOR1>				VERTEX_VECTOR2;
-typedef xr_vector<CCellVertex*>					CROSS_VECTOR;
+typedef CGraphAbstract<CSector,float,u32>	CSectorGraph;
+typedef xr_vector<CCellVertex>				VERTEX_VECTOR;
+typedef xr_vector<VERTEX_VECTOR>			VERTEX_VECTOR1;
+typedef xr_vector<VERTEX_VECTOR1>			VERTEX_VECTOR2;
+typedef xr_vector<CCellVertex*>				CROSS_VECTOR;
 
 IC	CCellVertex &get_vertex_by_group_id(VERTEX_VECTOR &vertices, u32 group_id)
 {
@@ -365,7 +365,7 @@ IC	void build_convex_hierarchy(const CLevelGraph &level_graph, CSectorGraph &sec
 	CSectorGraph::const_vertex_iterator	I = sector_graph.vertices().begin();
 	CSectorGraph::const_vertex_iterator	E = sector_graph.vertices().end();
 	for ( ; I != E; ++I) {
-		VERIFY						(!(*I)->edges().empty());
+		VERIFY						(!(*I).second->edges().empty());
 	}
 	
 	f								= CPU::GetCycleCount();
@@ -378,31 +378,34 @@ void test_hierarchy		(LPCSTR name)
 {
 	CLevelGraph					*level_graph = xr_new<CLevelGraph>(name);
 	CSectorGraph				*sector_graph = xr_new<CSectorGraph>();
+#if 1
 	SetPriorityClass			(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
 	SetThreadPriority			(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
 	Sleep						(1);
+#endif
 	
 	s							= CPU::GetCycleCount();
-//	for (u32 i=0; i<TEST_COUNT; ++i) 
+	for (u32 i=0; i<TEST_COUNT; ++i) 
 	{
 		build_convex_hierarchy	(*level_graph,*sector_graph);
 		f						= CPU::GetCycleCount();
 		Msg						("Destroy time %f",CPU::cycles2seconds*float(f - s));
 	}
 	f							= CPU::GetCycleCount();
-	SetThreadPriority			(GetCurrentThread(),THREAD_PRIORITY_NORMAL);
-	SetPriorityClass			(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
 
-	Msg							("Total time %f (%d tests : %f)",CPU::cycles2seconds*float(f - s),TEST_COUNT,CPU::cycles2microsec*float(f - s)/float(TEST_COUNT));
+	Msg							("Total time %f (%d test(s) : %f)",CPU::cycles2seconds*float(f - s),TEST_COUNT,CPU::cycles2microsec*float(f - s)/float(TEST_COUNT));
 
-#if 0
+#if 1
 	CMemoryWriter				stream;
 	save_data					(sector_graph,stream);
 	stream.save_to				("x:\\sector_graph.dat");
 	f							= CPU::GetCycleCount();
 	Msg							("Save time %f",CPU::cycles2seconds*float(f - s));
 
-	CSectorGraph				*test0, *test1;
+	CSectorGraph				*test0;
+#if 0
+	CSectorGraph				*test1;
+#endif
 	
 	{
 		IReader					*reader = FS.r_open("x:\\sector_graph.dat");
@@ -413,6 +416,15 @@ void test_hierarchy		(LPCSTR name)
 	Msg							("Load1 time %f",CPU::cycles2seconds*float(f - s));
 
 	{
+		IReader					*reader = FS.r_open("x:\\sector_graph.dat");
+		load_data				(test0,*reader);
+		FS.r_close				(reader);
+	}
+	f							= CPU::GetCycleCount();
+	Msg							("Load1 cached time %f",CPU::cycles2seconds*float(f - s));
+
+#if 0
+	{
 		IReader					*reader = FS.r_open("x:\\sector_graph.dat.save");
 		load_data				(test1,*reader);
 		FS.r_close				(reader);
@@ -420,10 +432,20 @@ void test_hierarchy		(LPCSTR name)
 	f							= CPU::GetCycleCount();
 	Msg							("Load2 time %f",CPU::cycles2seconds*float(f - s));
 
+	{
+		IReader					*reader = FS.r_open("x:\\sector_graph.dat.save");
+		load_data				(test1,*reader);
+		FS.r_close				(reader);
+	}
+	f							= CPU::GetCycleCount();
+	Msg							("Load2 cached time %f",CPU::cycles2seconds*float(f - s));
+#endif
+
 	Msg							("sector_graph and loaded graph are %s",equal(sector_graph,test0) ? "EQUAL" : "NOT EQUAL");
 	f							= CPU::GetCycleCount();
 	Msg							("Compare1 time %f",CPU::cycles2seconds*float(f - s));
 
+#if 0
 	Msg							("sector_graph and old loaded graph are %s",equal(sector_graph,test1) ? "EQUAL" : "NOT EQUAL");
 	f							= CPU::GetCycleCount();
 	Msg							("Compare2 time %f",CPU::cycles2seconds*float(f - s));
@@ -431,14 +453,17 @@ void test_hierarchy		(LPCSTR name)
 	Msg							("new loaded graph and old loaded graph are %s",equal(test0,test1) ? "EQUAL" : "NOT EQUAL");
 	f							= CPU::GetCycleCount();
 	Msg							("Compare3 time %f",CPU::cycles2seconds*float(f - s));
+#endif
 	
 	xr_delete					(test0);
 	f							= CPU::GetCycleCount();
 	Msg							("Destroy1 time %f",CPU::cycles2seconds*float(f - s));
 	
+#if 0
 	xr_delete					(test1);
 	f							= CPU::GetCycleCount();
 	Msg							("Destroy2 time %f",CPU::cycles2seconds*float(f - s));
+#endif
 #endif
 	
 	xr_delete					(level_graph);
@@ -448,4 +473,7 @@ void test_hierarchy		(LPCSTR name)
 	xr_delete					(sector_graph);
 	f							= CPU::GetCycleCount();
 	Msg							("Destroy sector graph time %f",CPU::cycles2seconds*float(f - s));
+
+	SetThreadPriority			(GetCurrentThread(),THREAD_PRIORITY_NORMAL);
+	SetPriorityClass			(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
 }
