@@ -4,6 +4,7 @@
 #include "xrThread.h"
 #include "detailformat.h"
 #include "xrhemisphere.h"
+#include "cl_intersect.h"
 
 //-----------------------------------------------------------------
 #define LT_DIRECT		0
@@ -65,9 +66,9 @@ void xrLoad(LPCSTR name)
 		R_ASSERT			(CFORM_CURRENT_VERSION==H.version);
 		
 		Fvector*	verts	= (Fvector*)FS.Pointer();
-		CDB::TRI*	tris	= (CDB::tri*)(verts+H.vertcount);
-		Level.BuildModel	( verts, H.vertcount, tris, H.facecount );
-		Msg("* Level CFORM: %dK",Level.MemoryUsage()/1024);
+		CDB::TRI*	tris	= (CDB::TRI*)(verts+H.vertcount);
+		Level.build			( verts, H.vertcount, tris, H.facecount );
+		Msg("* Level CFORM: %dK",Level.memory()/1024);
 		
 		LevelBB.set			(H.aabb);
 	}
@@ -205,12 +206,12 @@ void xrLoad(LPCSTR name)
 }
 
 //-----------------------------------------------------------------------------------------------------------------
-const int	LIGHT_Count			=5;
-const int	LIGHT_Total			=(2*LIGHT_Count+1)*(2*LIGHT_Count+1);
+const int	LIGHT_Count			=	5;
+const int	LIGHT_Total			=	(2*LIGHT_Count+1)*(2*LIGHT_Count+1);
 
-typedef	svector<R_Light*,1024>	LSelection;
+typedef	svector<R_Light*,4*1024>	LSelection;
 
-IC bool RayPick(CDB::XRCollide& DB, Fvector& P, Fvector& D, float r, R_Light& L)
+IC bool RayPick(CDB::COLLIDER& DB, Fvector& P, Fvector& D, float r, R_Light& L)
 {
 	// 1. Check cached polygon
 	float _u,_v,range;
@@ -220,23 +221,26 @@ IC bool RayPick(CDB::XRCollide& DB, Fvector& P, Fvector& D, float r, R_Light& L)
 	}
 
 	// 2. Polygon doesn't pick - real database query
-	DB.RayPick(0,&Level,P,D,r);
-	if (0==DB.GetRayContactCount()) {
+	// DB.RayPick(0,&Level,P,D,r);
+	DB.ray_query	(&Level,P,D,r);
+	
+	if (0==DB.r_count()) {
 		return false;
 	} else {
 		// cache polygon
-		CDB::raypick_info&	rpinf	= DB.RayContact[0];
-		L.tri[0].set	(rpinf.p[0]);
-		L.tri[1].set	(rpinf.p[1]);
-		L.tri[2].set	(rpinf.p[2]);
+		CDB::RESULT&	rpinf	= *DB.r_begin();
+		CDB::TRI&		T		= Level.get_tris()[rpinf.id];
+		L.tri[0].set	(*T.verts[0]);
+		L.tri[1].set	(*T.verts[1]);
+		L.tri[2].set	(*T.verts[2]);
 		return true;
 	}
 }
 
-float LightPoint(CDB::XRCollide& DB, Fvector &P, Fvector &N, LSelection& SEL)
+float LightPoint(CDB::COLLIDER& DB, Fvector &P, Fvector &N, LSelection& SEL)
 {
 	Fvector		Ldir,Pnew;
-	Pnew.direct(P,N,0.05f);
+	Pnew.mad	(P,N,0.05f);
 
 	R_Light	**IT = SEL.begin(), **E = SEL.end();
 
@@ -284,8 +288,8 @@ public:
 	}
 	virtual void		Execute()
 	{
-		CDB::XRCollide DB;
-		DB.RayMode		(RAY_ONLYFIRST|RAY_CULL);
+		CDB::COLLIDER	DB;
+		DB.ray_options	(CDB::OPT_ONLYFIRST|CDB::OPT_CULL);
 
 		vector<R_Light>	Lights = g_lights;
 
