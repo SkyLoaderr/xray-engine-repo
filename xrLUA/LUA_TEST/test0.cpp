@@ -43,239 +43,6 @@ using namespace std;
 
 extern lua_State	*L;
 
-struct A {
-	int m_aaa;
-					A			()
-	{
-		m_aaa		= -1;
-		printf		("A constructor is called!\n");
-	}
-
-	virtual			~A			()
-	{
-		printf		("A virtual destructor is called!\n");
-	}
-
-	virtual	void	a_virtual	()
-	{
-		printf		("A virtual function a() is called!\n");
-	}
-
-	A&				set			(int aaa)
-	{
-		m_aaa		= aaa;
-		return		(*this);
-	}
-
-	int				get			()
-	{
-		return		(m_aaa);
-	}
-};
-
-namespace luabind {
-	A* get_pointer(boost::shared_ptr<A>& p) 
-	{ 
-		return p.get(); 
-	}
-
-	boost::shared_ptr<const A>* 
-		get_const_holder(boost::shared_ptr<A>*)
-	{
-		return 0;
-	}
-}
-
-struct A_wrapper : public A, public wrap_base {
-public:
-					A_wrapper	()
-	{
-	}
-
-	virtual			~A_wrapper	()
-	{
-		printf		("A_wrapper virtual destructor is called!\n");
-	}
-
-	virtual	void	a_virtual	()
-	{
-		call_member<void>("a");
-	}
-
-	static	void	a_static	(A *a)
-	{
-		a->A::a_virtual();
-	}
-};
-
-struct B : public A {
-					B			()
-	{
-		printf		("B constructor is called!\n");
-	}
-
-	virtual			~B			()
-	{
-		printf		("B virtual destructor is called!\n");
-	}
-
-	virtual	void	a_virtual	()
-	{
-		printf		("B virtual function a() is called!\n");
-		A::a_virtual();
-	}
-
-	virtual	void	b_virtual	()
-	{
-		printf		("B virtual function b() is called!\n");
-	}
-};
-
-struct B_wrapper : public B, public wrap_base {
-public:
-	virtual			~B_wrapper	()
-	{
-		printf		("B_wrapper virtual destructor is called!\n");
-	}
-
-	virtual	void	a_virtual	()
-	{
-		call_member<void>("a");
-	}
-
-	static	void	a_static	(B *b)
-	{
-		b->B::a_virtual();
-	}
-
-	virtual	void	b_virtual	()
-	{
-		call_member<void>("b");
-	}
-
-	static	void	b_static	(B *b)
-	{
-		b->B::b_virtual();
-	}
-};
-
-struct C : public B
-{
-					C			()
-	{
-		printf		("C constructor is called!\n");
-	}
-
-	virtual			~C			()
-	{
-		printf		("C virtual destructor is called!\n");
-	}
-
-	virtual	void	a_virtual	()
-	{
-		printf		("C virtual function a() is called!\n");
-		B::a_virtual();
-	}
-
-	virtual	void	b_virtual	()
-	{
-		printf		("C virtual function b() is called!\n");
-		B::b_virtual();
-	}
-
-	virtual	void	c_virtual	()
-	{
-		printf		("C virtual function c() is called!\n");
-	}
-};
-
-struct C_wrapper : public C, public wrap_base {
-public:
-	virtual			~C_wrapper	()
-	{
-		printf		("C_wrapper virtual destructor is called!\n");
-	}
-
-	virtual	void	a_virtual	()
-	{
-		call_member<void>("a");
-	}
-
-	static	void	a_static	(C *c)
-	{
-		c->C::a_virtual();
-	}
-
-	virtual	void	b_virtual	()
-	{
-		call_member<void>("b");
-	}
-
-	static	void	b_static	(C *c)
-	{
-		c->C::b_virtual();
-	}
-
-	virtual	void	c_virtual	()
-	{
-		call_member<void>("c");
-	}
-
-	static	void	c_static	(C *c)
-	{
-		c->C::c_virtual();
-	}
-};
-
-
-//#define USE_BOOST_SHARED_PTR
-
-struct M {
-protected:
-#ifndef USE_BOOST_SHARED_PTR
-	typedef C*						pointer;
-#else
-	typedef boost::shared_ptr<C>	pointer;
-#endif
-	vector<pointer>					m_objects;
-
-public:
-
-	virtual			~M			()
-	{
-#ifndef USE_BOOST_SHARED_PTR
-		vector<pointer>::iterator	I = m_objects.begin();
-		vector<pointer>::iterator	E = m_objects.end();
-		for ( ; I != E; ++I)
-			delete	*I;
-#endif
-	}
-
-			void	update		()
-	{
-		vector<pointer>::iterator	I = m_objects.begin();
-		vector<pointer>::iterator	E = m_objects.end();
-		for ( ; I != E; ++I) {
-			(*I)->a_virtual		();
-			(*I)->b_virtual		();
-			(*I)->c_virtual		();
-		}
-	}
-
-			void	add			(pointer c)
-	{
-		m_objects.push_back		(c);
-	}
-};
-
-M *m;
-
-M &getM()
-{
-	if (!m)m = new M();
-	return		(*m);
-}
-
 lua_Debug	stack_levels[64];
 int			curr_stack_level = 0;
 
@@ -512,6 +279,245 @@ int resume_thread(lua_State *L)
 	return			(lua_pcall(L,1,0,err_func));
 }
 
+
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+struct A {
+	int m_aaa;
+					A			()
+	{
+		m_aaa		= -1;
+		printf		("A constructor is called!\n");
+	}
+
+	virtual			~A			()
+	{
+		printf		("A virtual destructor is called!\n");
+	}
+
+	virtual	void	a_virtual	()
+	{
+		printf		("A virtual function a() is called!\n");
+	}
+
+	A&				set			(int aaa)
+	{
+		m_aaa		= aaa;
+		return		(*this);
+	}
+
+	int				get			()
+	{
+		return		(m_aaa);
+	}
+};
+
+namespace luabind {
+	A* get_pointer(boost::shared_ptr<A>& p) 
+	{ 
+		return p.get(); 
+	}
+
+	boost::shared_ptr<const A>* 
+		get_const_holder(boost::shared_ptr<A>*)
+	{
+		return 0;
+	}
+}
+
+struct A_wrapper : public A, public wrap_base {
+public:
+					A_wrapper	()
+	{
+	}
+
+	virtual			~A_wrapper	()
+	{
+		printf		("A_wrapper virtual destructor is called!\n");
+	}
+
+	virtual	void	a_virtual	()
+	{
+		call_member<void>("a");
+	}
+
+	static	void	a_static	(A *a)
+	{
+		a->A::a_virtual();
+	}
+};
+
+struct B : public A {
+					B			()
+	{
+		printf		("B constructor is called!\n");
+	}
+
+	virtual			~B			()
+	{
+		printf		("B virtual destructor is called!\n");
+	}
+
+	virtual	void	a_virtual	()
+	{
+		printf		("B virtual function a() is called!\n");
+		A::a_virtual();
+	}
+
+	virtual	void	b_virtual	()
+	{
+		printf		("B virtual function b() is called!\n");
+	}
+};
+
+struct B_wrapper : public B, public wrap_base {
+public:
+	virtual			~B_wrapper	()
+	{
+		printf		("B_wrapper virtual destructor is called!\n");
+	}
+
+	virtual	void	a_virtual	()
+	{
+		call_member<void>("a");
+	}
+
+	static	void	a_static	(B *b)
+	{
+		b->B::a_virtual();
+	}
+
+	virtual	void	b_virtual	()
+	{
+		call_member<void>("b");
+	}
+
+	static	void	b_static	(B *b)
+	{
+		b->B::b_virtual();
+	}
+};
+
+struct C : public B
+{
+					C			()
+	{
+		printf		("C constructor is called!\n");
+	}
+
+	virtual			~C			()
+	{
+		printf		("C virtual destructor is called!\n");
+	}
+
+	virtual	void	a_virtual	()
+	{
+		printf		("C virtual function a() is called!\n");
+		B::a_virtual();
+	}
+
+	virtual	void	b_virtual	()
+	{
+		printf		("C virtual function b() is called!\n");
+		B::b_virtual();
+	}
+
+	virtual	void	c_virtual	()
+	{
+		printf		("C virtual function c() is called!\n");
+	}
+};
+
+struct C_wrapper : public C, public wrap_base {
+public:
+	virtual			~C_wrapper	()
+	{
+		printf		("C_wrapper virtual destructor is called!\n");
+	}
+
+	virtual	void	a_virtual	()
+	{
+		call_member<void>("a");
+	}
+
+	static	void	a_static	(C *c)
+	{
+		c->C::a_virtual();
+	}
+
+	virtual	void	b_virtual	()
+	{
+		call_member<void>("b");
+	}
+
+	static	void	b_static	(C *c)
+	{
+		c->C::b_virtual();
+	}
+
+	virtual	void	c_virtual	()
+	{
+		call_member<void>("c");
+	}
+
+	static	void	c_static	(C *c)
+	{
+		c->C::c_virtual();
+	}
+};
+
+
+//#define USE_BOOST_SHARED_PTR
+
+struct M {
+protected:
+#ifndef USE_BOOST_SHARED_PTR
+	typedef C*						pointer;
+#else
+	typedef boost::shared_ptr<C>	pointer;
+#endif
+	vector<pointer>					m_objects;
+
+public:
+
+	virtual			~M			()
+	{
+#ifndef USE_BOOST_SHARED_PTR
+		vector<pointer>::iterator	I = m_objects.begin();
+		vector<pointer>::iterator	E = m_objects.end();
+		for ( ; I != E; ++I)
+			delete	*I;
+#endif
+	}
+
+			void	update		()
+	{
+		vector<pointer>::iterator	I = m_objects.begin();
+		vector<pointer>::iterator	E = m_objects.end();
+		for ( ; I != E; ++I) {
+			(*I)->a_virtual		();
+			(*I)->b_virtual		();
+			(*I)->c_virtual		();
+		}
+	}
+
+			void	add			(pointer c)
+	{
+		m_objects.push_back		(c);
+	}
+};
+
+M *m;
+
+M &getM()
+{
+	if (!m)m = new M();
+	return		(*m);
+}
+
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+
 A* g_a = 0;
 
 void set_a(A *a)
@@ -534,18 +540,42 @@ struct BB {
 	virtual ~BB(){}
 };
 
+struct UU {
+	virtual void uu()
+	{
+	}
+};
+
+struct UU_wrapper : public UU, public wrap_base {
+	virtual void uu()
+	{
+		call_member<void>("uu");
+	}
+
+	static void uu_static(UU *ptr)
+	{
+		ptr->UU::uu();
+	}
+};
+
 struct CC {
 	AA		a;
 	BB		b;
+	UU		*u;
 
-	void setup(AA aa)
+	void setup(AA &aa)
 	{
 		a	= aa;
 	}
 
-	void setup(BB bb)
+	void setup(BB &bb)
 	{
 		b	= bb;
+	}
+
+	void setup(UU *uu)
+	{
+		u	= uu;
 	}
 };
 
@@ -555,11 +585,30 @@ CC *getCC()
 	return	(&cc);
 }
 
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+xr_vector<LPCSTR>	strs;
+const xr_vector<LPCSTR> &get_strs()
+{
+	return			(strs);
+}
+
 void test0()
 {
 	string4096		SSS;
 	strcpy			(SSS,"");
 	g_ca_stdout		= SSS;
+
+	strs.push_back	("string0");
+	strs.push_back	("string1");
+	strs.push_back	("string2");
+	strs.push_back	("string3");
+	strs.push_back	("string4");
+	strs.push_back	("string5");
+	strs.push_back	("string6");
+	strs.push_back	("string7");
+	strs.push_back	("string8");
+	strs.push_back	("string9");
 
 	L				= lua_open();
 
@@ -604,8 +653,8 @@ void test0()
 
 		class_<A,A_wrapper>("A")
 			.def(				constructor<>())
-			.def("set",			&A::set,	return_reference_to(_1))
-			.def("get",			&A::get)
+//			.def("set",			&A::set,	return_reference_to(_1))
+//			.def("get",			&A::get)
 			.def("a",			&A::a_virtual, &A_wrapper::a_static),
 
 		class_<B,B_wrapper,A>("B")
@@ -630,16 +679,23 @@ void test0()
 			.def(				constructor<>())
 			.def_readwrite("bb",&BB::bb),
 
+		class_<UU,UU_wrapper>("UU")
+			.def(				constructor<>())
+			.def("uu",	&UU::uu, &UU_wrapper::uu_static),
+
 		class_<CC>("CC")
-			.def("setup",		(void (CC::*)(AA))(&CC::setup))
-			.def("setup",		(void (CC::*)(BB))(&CC::setup)),
+			.def("setup",		(void (CC::*)(AA&))(CC::setup))
+			.def("setup",		(void (CC::*)(BB&))(CC::setup))
+			.def("setup",		(void (CC::*)(UU*))(CC::setup), adopt(_2)),
 
 		def("getCC",			 &getCC),
 		def("getM",				 &getM),
 		def("c_bug",			 &c_bug),
 		def("print_error_stack", &print_error_stack),
 		def("set_a",			 &set_a, adopt(_1)),
-		def("get_a",			 &get_a)
+		def("get_a",			 &get_a),
+//		def("strs",				 &strs, return_stl_iterator)
+		def("get_strs",			 &get_strs, return_stl_iterator)
 //		def("lua_resume", &lua_resume),
 //		def("lua_debug", &lua_debug)
 	];
@@ -653,10 +709,12 @@ void test0()
 //	lua_dostring			(L,"thread_test.bug()");
 
 	printf			("top : %d\n",lua_gettop(L));
-	for (int i=0; i<1+0*10000; ++i)
+	for (int i=0; i<0+0*10000; ++i)
 	{
 		printf			("Starting thread %d\n",i);
 		lua_State		*t = lua_newthread(L);
+		int				thread_reference = luaL_ref(L,LUA_REGISTRYINDEX);
+
 		lua_sethook		(t,hook,LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKCOUNT, 1);
 		LPCSTR			s = "thread_test.main()";
 		int				err = luaL_loadbuffer	(t,s,xr_strlen(s),"@_thread_main");
@@ -675,7 +733,7 @@ void test0()
 			if (err) {
 				lua_bind_error(t);
 				curr_stack_level = 0;
-				lua_settop(t,0);
+//				lua_settop(t,0);
 				break;
 			}
 			Sleep		(1);
@@ -683,17 +741,22 @@ void test0()
 		while (t->ci->state & CI_YIELD);
 //		while (true);
 		
-		bool			ok = false;
-		for (int i=1, n=lua_gettop(L); i<=n; ++i)
-			if ((lua_type(L,i) == LUA_TTHREAD) && (lua_tothread(L,i) == t)) {
-				lua_remove(L,i);
-				ok		= true;
-				break;
-			}
-		VERIFY			(ok);
+//		bool			ok = false;
+//		for (int i=1, n=lua_gettop(L); i<=n; ++i)
+//			if ((lua_type(L,i) == LUA_TTHREAD) && (lua_tothread(L,i) == t)) {
+//				lua_remove(L,i);
+//				ok		= true;
+//				break;
+//			}
+//		VERIFY			(ok);
+		xr_delete			(g_a);
+		lua_setgcthreshold	(L,0);
+		luaL_unref		(L,LUA_REGISTRYINDEX,thread_reference);
 		printf			("top : %d\n",lua_gettop(L));
 	}
 
+//	xr_delete			(g_a);
+	lua_setgcthreshold	(L,0);
 	lua_dofile		(L,"x:\\adopt_test.script");
 
 	if (xr_strlen(SSS)) {
