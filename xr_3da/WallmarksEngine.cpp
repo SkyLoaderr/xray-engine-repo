@@ -139,9 +139,9 @@ void CWallmarksEngine::AddWallmark	(RAPID::tri* pTri, const Fvector &contact_poi
 
 	sml_processed.clear();
 
+	// Calc sphere
 	if (W.verts.size()<3) marks.pop_back();
 	else {
-		// Calc sphere
 		Fbox bb; bb.invalidate();
 
 		CWallmark::Vertex* I=W.verts.begin	();
@@ -149,6 +149,20 @@ void CWallmarksEngine::AddWallmark	(RAPID::tri* pTri, const Fvector &contact_poi
 		for (; I!=E; I++)	bb.modify(I->P);
 
 		bb.getsphere(W.S.P,W.S.R);
+	}
+
+	// Search if similar wallmark exists
+	for (deque<CWallmark>::iterator it=marks.begin(); it!=marks.end(); it++)
+	{
+		CWallmark& wm = *it;
+		if (wm.hShader != hShader)	continue;
+
+		if (wm.S.P.similar(W.S.P,0.01f))	{
+			// replace
+			*it				= W;
+			marks.pop_back	();
+			break;
+		}
 	}
 }
 
