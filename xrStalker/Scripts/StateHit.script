@@ -7,11 +7,6 @@ function CStateHit:__init(_data, _mem)
 	self.memory		= _mem
 	self.hit_time	= 0
 	self.hit_id		= -1
-	if(self.data) then 
-		printf("DAta is %s", self.data.scr_name)
-	else
-		printf("DAta is null")
-	end
 end
 
 function CStateHit:initialize()
@@ -34,6 +29,7 @@ function CStateHit:hit_changed()
 	if(self.memory.hit.time > self.hit_time + time_update) then
 		self.hit_time	= self.memory.hit.time
 		self.hit_id		= self.memory.hit.who:id()
+		
 		return true
 	end
 	
@@ -70,6 +66,7 @@ function CStateHitLook:execute()
 	
 	if(self.data.npc:action() == nil) then
 		if(self.angry) then
+			
 			//Если далеко от позиции, то подходим, в противном случаее осматривеамся и кружимся рядом
 			if(self.data.npc:position():distance_to(self.position) > 3) then		
 				action(self.data.npc, move(move.run_fwd, self.memory.hit.who:position(), 1, move.force),
@@ -98,5 +95,86 @@ function CStateHitLook:hit_changed()
 		return true
 	end
 	
+	return false
+end
+
+
+//-----------------------------------------------------------------------------------------
+// Реакция зомби на хит
+//-----------------------------------------------------------------------------------------
+
+class "CStateZombieHit" (CStateHit)
+function CStateZombieHit:__init(_data, _mem) super(_data, _mem)
+end
+
+function CStateZombieHit:set_data(_data, _mem)
+	self.data	= _data
+	self.memory = _mem
+end
+
+function CStateZombieHit:initialize()
+	this.CStateHit.initialize(self)
+	
+	self.turned = false
+end
+
+function CStateZombieHit:execute()
+	if(self:hit_changed()) then
+		reset_action(self.data.npc, self.data.scr_name)
+		self.turned	= false
+	end
+	
+	if(self.data.npc:action() == nil) then
+		if(self.turned) then
+			
+			// Уже повернулись, теперь делаем что-то
+			if(self:select_point()) then
+				
+				action(self.data.npc, move(move.run_fwd, level.vertex_position(self.point)),
+												sound(sound.attack), cond(cond.move_end))
+			
+			else
+			
+				action(self.data.npc, anim(anim.look_around, 0), cond(cond.time_end, 4000))
+			
+			end
+
+		else
+			// Поворачиваемя к гаду
+			action(self.data.npc, look(look.point, self.memory.hit.who:position()),
+										anim(anim.turn, 0), cond(cond.look_end))
+			self.turned	= true
+		end
+		
+	end
+end
+
+function CStateZombieHit:select_point()
+	self.direction = self.data.npc:direction()
+	
+	// Выбираем точку, куда будем идти
+	for i = 1, 5 do 
+		self.point = level.vertex_in_direction( self.data.npc:level_vertex_id(),
+												vector_rotate_y(self.direction, math.random(-90, 90)),
+												20
+												)
+
+		if(self.data.npc:position():distance_to(level.vertex_position(self.point)) > 3) then
+			return true
+		end
+	end
+
+	for i = 1, 5 do 
+		self.point = level.vertex_in_direction( self.data.npc:level_vertex_id(),
+												vector_rotate_y(self.direction, math.random(-180, 180)),
+												20
+												)
+
+		if(self.data.npc:position():distance_to(level.vertex_position(self.point)) > 3) then
+			return true
+		end
+	end
+
+	// Не нашли точку, куда сможем пойти
 	return false
 end

@@ -17,6 +17,8 @@ function CStateWalk:initialize()
 	if(self.path == nil) then															// Если когда создавли, не передали путь, то читаем из custom data
 		self.path	= self.data.npc:spawn_ini():r_string("monster", "walk_path")
 	end
+	
+	assert(self.path ~= nil)			// Нет пути, что-то не то
 end
 
 function CStateWalk:execute()
@@ -39,8 +41,13 @@ local time_to_look	= 4000
 local time_to_walk	= 10000
 
 class "CStateWalkPatrol" (CStateWalk)
-function CStateWalkPatrol:__init(_data, _mem) super(_data, _mem)
+function CStateWalkPatrol:__init(_data, _mem, _path) super(_data, _mem, _path)
 	self.index	= 0
+end
+
+function CStateWalkPatrol:set_data(_data, _mem)			// это не правильно, но по другому ни как
+	self.data	= _data
+	self.memory = _mem
 end
 
 function CStateWalkPatrol:initialize()

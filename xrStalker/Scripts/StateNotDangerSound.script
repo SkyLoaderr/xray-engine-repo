@@ -20,7 +20,7 @@ function CStateNotDangerSound:execute()
 	end
 	
 	if(self.data.npc:action() == nil) then
-		action(self.data.npc, move(move.walk_fwd, self.memory.sound.position, 0.5), sound(sound.idle), cond(cond.move_end))
+		action(self.data.npc, move(move.walk_fwd, self.memory.sound.position, 1.5), sound(sound.idle), cond(cond.move_end))
 		action(self.data.npc, anim(anim.look_around, 0), sound(sound.idle), cond(cond.time_end, 30000))
 	end		
 end

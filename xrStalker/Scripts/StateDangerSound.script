@@ -23,8 +23,6 @@ function CStateDangerSound:execute()
 	end
 	
 	if(self.data.npc:action() == nil) then
-		if(self.data.npc == nil) then printf("nil1") end
-		if(level.actor() == nil) then printf("nil2") end
 		action(self.data.npc, act(act.panic, level.actor()), cond(cond.time_end, 30000))
 	end
 end

@@ -9,6 +9,7 @@ class "CStorage"
 function CStorage:__init()
 	self.data	= {}			// Данные, которые хранятся
 	self.use	= {}			// Данные, которые испольлует npc
+	self.n  	= 0				// Количесвто используемых елементов
 end
 
 function CStorage:insert(_data)
@@ -18,8 +19,10 @@ end
 function CStorage:get_data(npc_id)
 	assert(table.getn(self.data) >= 0)				// Попытка вызвать get_date() без проверки empty()
 	
-	self.index		 = if_then_else(table.getn(self.data) > 1, table.getn(self.data), 1)
-	self.use[npc_id] = self.data[self.index]
+	self.index		 	= if_then_else(table.getn(self.data) > 1, table.getn(self.data), 1)
+	//table.insert(self.use, npc_id, self.data[self.index])
+	self.use[npc_id] 	= self.data[self.index]
+	self.n				= self.n + 1
 	table.remove(self.data, self.index)
 	
 	return self.use[npc_id]
@@ -30,7 +33,8 @@ function CStorage:release_data(npc_id)
 
 	table.insert(self.data, self.use[npc_id])
 	table.remove(self.use, npc_id)
-	
+	self.n 	= self.n - 1 
+	assert(self.n >= 0)
 	printf("Release data")
 end
 
@@ -39,7 +43,7 @@ function CStorage:empty()
 end
 
 function CStorage:use_count()
-	return table.getn(self.use)
+	return self.n
 end
 
 function CStorage:data_count()

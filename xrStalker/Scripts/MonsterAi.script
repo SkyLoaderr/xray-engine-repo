@@ -357,8 +357,10 @@ function courage_monster(clsid_monster)
 	
 	if(clsid_monster == clsid.zombie or
 		clsid_monster == clsid.controller or
-		clsid_monster == clsid.clsid.bloodsucker or
-		clsid_monster == clsid.boar
+		clsid_monster == clsid.bloodsucker or
+		clsid_monster == clsid.boar or
+		clsid_monster == clsid.dog_red or
+        clsid_monster == clsid.dog_black 
 	   ) then
 		return true
 	end

@@ -98,3 +98,41 @@ function CStateRestBind:set_data(_data, _mem)
 	self.stateEat:set_data(_data, _mem)
 	self.stateWalk:set_data(_data, _mem)
 end
+
+//-----------------------------------------------------------------------------------------
+//  —осто€ние отдыха, в котором монстр только спит в указанной точке
+//-----------------------------------------------------------------------------------------
+
+class "CStateRestSleep"
+function CStateRestSleep:__init(_data, _mem, _sleep_point)
+	self.data			= _data
+	self.memory			= _mem
+	self.sleep_point	= _sleep_point
+end
+
+function CStateRestSleep:set_data(_data, _mem)			// это не правильно, но по другому ни как
+	self.data	= _data
+	self.memory = _mem
+end
+
+function CStateRestSleep:initialize()
+	reset_action(self.data.npc, self.data.scr_name)
+end
+
+function CStateRestSleep:execute()
+	if(self.data.npc:action() == nil) then
+		assert(self.sleep_point ~= nil)
+		
+		action(self.data.npc, move(move.walk_fwd, self.sleep_point), sound(sound.idle), cond(cond.move_end))
+		action(self.data.npc, anim(anim.stand_idle, 0), cond(cond.time_end, 300))
+		action(self.data.npc, anim(anim.lie_idle, 0), cond(cond.time_end, 2000))
+		action(self.data.npc, anim(anim.sleep, 0), cond(cond.time_end, 6000000))
+	end
+end
+
+function CStateRestSleep:id()
+	return s_rest
+end
+
+function CStateRestSleep:finalize()
+end
