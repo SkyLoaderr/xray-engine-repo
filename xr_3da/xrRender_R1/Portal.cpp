@@ -44,7 +44,7 @@ void	CPortal::Setup	(Fvector* V, int vcnt, CSector* face, CSector* back)
 	P.build	(poly[0],N);
 	FPU::m24r();
 
-	R_ASSERT(_abs(1-P.n.magnitude())<EPS_S);
+	R_ASSERT(_abs(1-P.n.magnitude())<EPS);
 }
 
 //

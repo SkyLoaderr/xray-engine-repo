@@ -305,6 +305,11 @@ void CAI_Stalker::net_Destroy()
 	m_inventory.Clear		();
 }
 
+IC BOOL    f_valid         (const float f)
+{
+	return _finite(f) && !_isnan(f);
+}
+
 void CAI_Stalker::net_Export		(NET_Packet& P)
 {
 	R_ASSERT						(Local());
@@ -317,8 +322,12 @@ void CAI_Stalker::net_Export		(NET_Packet& P)
 	P.w_u32							(N.dwTimeStamp);
 	P.w_u8							(0);
 	P.w_vec3						(N.p_pos);
+#pragma todo ("AlexMX to Dima: v N.o_model polnoe govno.")
+	if (!f_valid(N.o_model))		N.o_model = 0.f;
 	P.w_angle8						(N.o_model);
+	if (!f_valid(N.o_torso.yaw))	N.o_torso.yaw = 0.f;
 	P.w_angle8						(N.o_torso.yaw);
+	if (!f_valid(N.o_torso.pitch))	N.o_torso.pitch = 0.f;
 	P.w_angle8						(N.o_torso.pitch);
 
 	P.w_float						(m_inventory.TotalWeight());
