@@ -55,7 +55,7 @@ M_SPAWN
 			u8				count;
 
 			element {
-				u8			type;	// 0=Sphere, 1=Box
+				u8			type;			// 0=Sphere, 1=Box
 
 				sphere {
 					Fsphere		def;

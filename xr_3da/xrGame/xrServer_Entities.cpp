@@ -130,19 +130,55 @@ public:
 	};
 	struct shape_def
 	{
-		int			type;
+		u8			type;
 		shape_data	data;
 	};
 	vector<shape_def>	shapes;
 public:
-	void					cform_read			(NET_Packet& P);
-	void					cform_write			(NET_Packet& P);
+	void					cform_read			(NET_Packet& P)
+	{
+		shapes.clear();
+		u8	count;	P.r_u8(count);
+		while (count) {
+			shape_def	S;
+			P.r_u8		(S.type);
+			switch (S.type)
+			{
+			case 0:	P.r			(&S.data.sphere,sizeof(S.data.sphere));	break;
+			case 1:	P.r_matrix	(&S.data.box);							break;
+			}
+			shapes.push_back	(S);
+			count--;
+		}
+		
+	}
+	void					cform_write			(NET_Packet& P)
+	{
+		P.w_u8	(u8(shapes.size()));
+		for (u32 i=0; i<shapes.size(); i++)
+		{
+			shape_def&	S	= shapes[i];
+			P.w_u8	(S.type);
+			switch (S.type)
+			{
+			case 0:	P.w			(&S.data.sphere,sizeof(S.data.sphere));	break;
+			case 1:	P.w_matrix	(&S.data.box);							break;
+			}
+		}
+	}
 };
 
 class xrSE_Event : public xrSE_CFormed, public xrServerEntity
 {
 public:	// actions
-	s
+	struct tAction
+	{
+		u8		type;
+		u16		count;
+		u64		cls;
+		LPCSTR	event;
+	};
+	vector<tAction>	Actions;
 public:	
 	
 };
