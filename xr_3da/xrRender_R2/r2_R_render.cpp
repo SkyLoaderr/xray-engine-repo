@@ -138,6 +138,7 @@ void CRender::Render		()
 
 	//******* Occlusion testing of volume-limited light-sources
 	Target.phase_occq							();
+	CHK_DX										(q_sync_point->Issue(D3DISSUE_END));
 	LP_normal.clear								();
 	LP_pending.clear							();
 	{
@@ -223,10 +224,25 @@ void CRender::Render		()
 		Lights_LastFrame.clear	();
 	}
 
-	// Lighting and sync-point
+	// Lighting, non dependant on OCCQ
 	Target.phase_accumulator			();
 	HOM.Disable							();
 	render_lights						(LP_normal);
+	
+	// Sync-Point
+	{
+		CTimer	T;							T.Start	();
+		BOOL	result						= FALSE;
+		while	((hr=q_sync_point->GetData	(&result,sizeof(result),D3DGETDATA_FLUSH))==S_FALSE) {
+			Sleep(0);
+			if (T.GetElapsed_ms() > 500)	{
+				result	= FALSE;
+				break;
+			}
+		}
+	}
+	
+	// Lighting, dependant on OCCQ
 	render_lights						(LP_pending);
 
 	// Postprocess
