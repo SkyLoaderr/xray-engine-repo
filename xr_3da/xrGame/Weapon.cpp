@@ -408,6 +408,7 @@ void CWeapon::net_Destroy	()
 	//удалить объекты партиклов
 	StopFlameParticles	();
 	StopFlameParticles2	();
+	StopLight			();
 
 	while (m_magazine.size()) m_magazine.pop();
 }

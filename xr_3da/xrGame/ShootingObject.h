@@ -111,8 +111,9 @@ protected:
 	void					Light_Render		(const Fvector& P);
 
 	virtual	void			LoadLights			(LPCSTR section, LPCSTR prefix);
-	virtual void			RenderLight();
-	virtual void			UpdateLight();
+	virtual void			RenderLight			();
+	virtual void			UpdateLight			();
+	virtual void			StopLight			();
 	
 //////////////////////////////////////////////////////////////////////////
 // партикловая система

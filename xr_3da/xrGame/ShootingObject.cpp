@@ -308,9 +308,13 @@ void CShootingObject::UpdateLight()
 	if (m_bShotLight && light_time>0)		
 	{
 		light_time -= Device.fTimeDelta;
-		if (light_time<=0)
-			light_render->set_active(false);
+		if (light_time<=0) StopLight();
 	}
+}
+
+void CShootingObject::StopLight			()
+{
+	light_render->set_active(false);
 }
 
 void CShootingObject::RenderLight()
