@@ -253,7 +253,6 @@ void CStats::Show()
 	{
 		CGameFont&	F = *((CGameFont*)pFont);
 		F.SetColor	(color_rgba(255,16,16,255));
-		F.SetSize	(f_base_size);
 		F.OutSet	(200,0);
 		for (u32 it=0; it<errors.size(); it++)
 			F.OutNext("%s",errors[it].c_str());
@@ -314,7 +313,7 @@ void CStats::Show()
 	dwSND_Played = dwSND_Allocated = 0;
 }
 
-void	__stdcall LogCallback		(LPCSTR string)
+void	__stdcall _LogCallback		(LPCSTR string)
 {
 	if (string && '!'==string[0] && ' '==string[1])
 		Device.Statistic.errors.push_back	(shared_str(string));
@@ -334,7 +333,7 @@ void CStats::OnDeviceCreate			()
 	eval_line_3 = pSettings->r_string_wb("evaluation","line3");
 
 	// 
-	SetLogCB	(LogCallback);
+	SetLogCB	(_LogCallback);
 }
 
 void CStats::OnDeviceDestroy		()
