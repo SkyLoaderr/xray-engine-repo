@@ -4942,6 +4942,16 @@
 							RelativePath=".\script_reader_script.cpp">
 						</File>
 					</Filter>
+					<Filter
+						Name="ScriptFS"
+						Filter="">
+						<File
+							RelativePath=".\fs_registrator.h">
+						</File>
+						<File
+							RelativePath=".\fs_registrator_script.cpp">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="ScriptDebugger"
