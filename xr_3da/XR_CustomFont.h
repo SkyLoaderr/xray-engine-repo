@@ -2,7 +2,10 @@
 #define AFX_XR_CUSTOMFONT_H__6CFEF2C0_D4F5_11D3_B4E3_4854E82A090D__INCLUDED_
 #pragma once
 
-class ENGINE_API CFontBase  : public pureRender
+class ENGINE_API CFontBase
+#ifdef ENGINE_BUILD
+	:public pureRender
+#endif
 {
 	struct String {
 		char	string[128];
