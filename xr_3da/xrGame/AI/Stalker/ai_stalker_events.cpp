@@ -16,7 +16,8 @@
 
 void CAI_Stalker::OnEvent		(NET_Packet& P, u16 type)
 {
-	inherited::OnEvent		(P,type);
+	inherited::OnEvent			(P,type);
+	CInventoryOwner::OnEvent	(P,type);
 
 	switch (type)
 	{

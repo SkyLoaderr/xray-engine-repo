@@ -22,12 +22,16 @@ public:
 					CInventoryOwner				();
 	virtual			~CInventoryOwner			();
 
+	//////////////////////////////////////////////////////////////////////////
+	// общие функции
+
 	virtual BOOL	net_Spawn					(LPVOID DC);
 	virtual void	net_Destroy					();
 			void	Init						();
 	virtual void	Load						(LPCSTR section);
 	virtual void	reinit						();
 	virtual void	reload						(LPCSTR section);
+	virtual void	OnEvent						(NET_Packet& P, u16 type);
 
 	//обновление
 	virtual void	UpdateInventoryOwner		(u32 deltaT);
@@ -47,8 +51,8 @@ public:
 	virtual void SendPdaMessage(u16 who, EPdaMsg msg, INFO_ID info_index);
 
 
-	CInventory	*m_inventory;									// инвентарь
-	CInventory	*m_trade_storage;								// склад 
+	CInventory	*m_inventory;			// инвентарь
+	CInventory	*m_trade_storage;		// склад для торговли
 
 	
 	////////////////////////////////////
@@ -59,40 +63,61 @@ public:
 	CTrade* GetTrade();
 
 	//для включения разговора
-	virtual bool OfferTalk(CInventoryOwner* talk_partner);
-	void StartTalk(CInventoryOwner* talk_partner);
-	void StopTalk();
-	bool IsTalking();
+	virtual bool OfferTalk		(CInventoryOwner* talk_partner);
+	virtual void StartTalk		(CInventoryOwner* talk_partner);
+	virtual void StopTalk		();
+	virtual bool IsTalking		();
 	
-	void EnableTalk()		{m_bAllowTalk = true;}
-	void DisableTalk()		{m_bAllowTalk = false;}
-	bool IsTalkEnabled()	{ return m_bAllowTalk;}
+	virtual void EnableTalk		()		{m_bAllowTalk = true;}
+	virtual void DisableTalk	()		{m_bAllowTalk = false;}
+	virtual bool IsTalkEnabled	()		{ return m_bAllowTalk;}
 
-	CInventoryOwner* GetTalkPartner() {return m_pTalkPartner;}
+	CInventoryOwner* GetTalkPartner()	{return m_pTalkPartner;}
+protected:
+	// торговля
+	CTrade*				m_pTrade;
+	bool				m_bTalking; 
+	CInventoryOwner*	m_pTalkPartner;
+
+	bool				m_bAllowTalk;
+
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// сюжетная информация
+public:
 	//персонаж получил новую порцию информации
-	virtual void OnReceiveInfo(INFO_ID info_index);
+	virtual void OnReceiveInfo	(INFO_ID info_index);
 	//убрать информацию
-	virtual void OnDisableInfo(INFO_ID info_index);
+	virtual void OnDisableInfo	(INFO_ID info_index);
 	//передать/удалить информацию через сервер
-	virtual void TransferInfo(INFO_ID info_index, bool add_info) const;
+	virtual void TransferInfo	(INFO_ID info_index, bool add_info) const;
 	//есть ли информация у персонажа
-	virtual bool HasInfo(INFO_ID info_index) const;
-	
+	virtual bool HasInfo		(INFO_ID info_index) const;
+
+	//возвращает существующий вектор из реестра, или добавляет новый
+	KNOWN_INFO_VECTOR&			KnownInfo		();
+	//возвращает NULL, если вектора с информацией не добавлено
+	const KNOWN_INFO_VECTOR*	KnownInfoPtr	() const;
+protected:
+
+#ifdef _DEBUG
+	//для отладки без alife simulator
+	KNOWN_INFO_VECTOR m_KnowInfoWithoutAlife;
+#endif	
+
+	//////////////////////////////////////////////////////////////////////////
+	// инвентарь 
+public:
 	const CInventory &inventory() const {return(*m_inventory);}
-	CInventory &inventory() {return(*m_inventory);}
+	CInventory		 &inventory()		{return(*m_inventory);}
 
 	//возвращает текуший разброс стрельбы (в радианах) с учетом движения
 	virtual float GetWeaponAccuracy			() const;
 	//максимальный переносимы вес
 	virtual float MaxCarryWeight			() const;
-protected:
-	// торговля
-	CTrade				*m_pTrade;
-	bool				m_bTalking; 
-	CInventoryOwner		*m_pTalkPartner;
 
-	bool				m_bAllowTalk;
-
+	//////////////////////////////////////////////////////////////////////////
 	//игровые характеристики персонажа
 public:
 	virtual CCharacterInfo& CharacterInfo	() const {VERIFY(m_pCharacterInfo); return *m_pCharacterInfo;}

@@ -8,6 +8,7 @@
 
 #pragma once
 
+
 #undef	STATIC_CHECK
 #include <typelist.h>
 #include <hierarchygenerators.h>

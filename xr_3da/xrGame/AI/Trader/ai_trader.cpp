@@ -263,7 +263,8 @@ void CAI_Trader::net_Import		(NET_Packet& P)
 
 void CAI_Trader::OnEvent		(NET_Packet& P, u16 type)
 {
-	inherited::OnEvent		(P,type);
+	inherited::OnEvent			(P,type);
+	CInventoryOwner::OnEvent	(P,type);
 
 	u16 id;
 	CObject* Obj;

@@ -356,26 +356,9 @@ void CPda::OnEvent(NET_Packet& P, u16 type)
 			//отправить сообщение владельцу, только если мы включены
 			if(IsActive())
 			{
-				GetOriginalOwner()->ReceivePdaMessage(id, (EPdaMsg)msg, 
-														 (INFO_ID)info_index);
+				GetOriginalOwner()->ReceivePdaMessage(id, (EPdaMsg)msg, (INFO_ID)info_index);
 				AddMessageToLog(id, (EPdaMsg)msg, (INFO_ID)info_index, true);
 			}
-		}
-		break;
-	case GE_INFO_TRANSFER:
-		{
-			u16				id;
-			s32				info_index;
-			u8				add_info;
-	
-			P.r_u16			(id);				//отправитель
-			P.r_s32			(info_index);		//номер полученной информации
-			P.r_u8			(add_info);			//добавление или убирание информации
-
-			if(add_info)
-				OnReceiveInfo	((INFO_ID)info_index);
-			else
-				OnRemoveInfo	((INFO_ID)info_index);
 		}
 		break;
 	}
@@ -408,65 +391,4 @@ bool CPda::WaitForReply(u32 pda_ID)
 	else
 		return false;
 
-}
-
-
-///////////////////////////////////////
-// сохранение и передача информации при
-// помощи PDA
-
-//знаем ли о инф-ции с заданным номером
-bool CPda::IsKnowAbout(INFO_ID info_index)
-{
-	KNOWN_INFO_VECTOR_IT it = std::find(m_KnownInfo.begin(), m_KnownInfo.end(), info_index);
-	//нам уже известна эта информация
-	if(m_KnownInfo.end() != it) return true;
-	return false;
-}
-
-//передача информации другому PDA
-bool CPda::TransferInfoToID(u32 pda_ID, INFO_ID info_index)
-{
-	//if(!IsKnowAbout(info_index)) return false;
-
-	//создать и отправить пакет
-	NET_Packet		P;
-	u_EventGen		(P,GE_INFO_TRANSFER,pda_ID);
-	P.w_u16			(u16(ID()));				//отправитель
-	P.w_s32			(info_index);				//сообщение
-	P.w_u8			(1);						//сообщение
-	u_EventSend		(P);
-
-	return true;
-}
-
-//получение новой порции информации
-void CPda::OnReceiveInfo(INFO_ID info_index)
-{
-	KNOWN_INFO_VECTOR_IT it = std::find(m_KnownInfo.begin(), m_KnownInfo.end(),  info_index);
-
-	//нам уже известна эта информация
-	if(m_KnownInfo.end() != it) return;
-
-	m_KnownInfo.push_back(info_index);
-
-	//оповестить владельца PDA
-	GetOriginalOwner()->OnReceiveInfo(info_index);
-}
-
-void CPda::OnRemoveInfo(INFO_ID info_index)
-{
-	KNOWN_INFO_VECTOR_IT it = std::find(m_KnownInfo.begin(), m_KnownInfo.end(),  info_index);
-	if(m_KnownInfo.end() == it) return;
-	m_KnownInfo.erase(it);
-
-	//оповестить владельца PDA
-	GetOriginalOwner()->OnDisableInfo(info_index);
-}
-
-void  CPda::RemoveInfo(INFO_ID info_index)
-{
-	KNOWN_INFO_VECTOR_IT it = std::find(m_KnownInfo.begin(), m_KnownInfo.end(),  info_index);
-	if(m_KnownInfo.end() == it) return;
-	m_KnownInfo.erase(it);
 }

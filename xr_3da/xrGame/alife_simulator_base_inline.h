@@ -104,13 +104,13 @@ IC	const CALifeStoryRegistry			&CALifeSimulatorBase::story_objects			() const
 	return						(*m_story_objects);
 }
 
-IC	const CALifeRegistryContainer		&CALifeSimulatorBase::registry				() const
-{
-	VERIFY						(initialized());
-	VERIFY						(m_registry_container);
-	return						(*m_registry_container);
-}
-
+//IC	const CALifeRegistryContainer		&CALifeSimulatorBase::registry				() const
+//{
+//	VERIFY						(initialized());
+//	VERIFY						(m_registry_container);
+//	return						(*m_registry_container);
+//}
+//
 IC	CALifeSimulatorHeader				&CALifeSimulatorBase::header				()
 {
 	VERIFY						(initialized());
@@ -202,7 +202,7 @@ IC	CALifeStoryRegistry					&CALifeSimulatorBase::story_objects			()
 	return						(*m_story_objects);
 }
 
-IC	CALifeRegistryContainer		&CALifeSimulatorBase::registry						()
+IC	CALifeRegistryContainer		&CALifeSimulatorBase::registry						() const
 {
 	VERIFY						(initialized());
 	VERIFY						(m_registry_container);

@@ -62,13 +62,11 @@ void CInfoDocument::OnH_A_Chield()
 	//объекту, который поднял документ
 	CInventoryOwner* pInvOwner = dynamic_cast<CInventoryOwner*>(H_Parent());
 	if(!pInvOwner) return;
-
-	//создать и отправить пакет о получении новой информации
-	u32 pda_ID		= pInvOwner->GetPDA()->ID();
 	
+	//создать и отправить пакет о получении новой информации
 	NET_Packet		P;
-	u_EventGen		(P,GE_INFO_TRANSFER,pda_ID);
-	P.w_u16			(u16(ID()));				//отправитель
+	u_EventGen		(P,GE_INFO_TRANSFER, H_Parent()->ID());
+	P.w_u16			(ID());						//отправитель
 	P.w_s32			(m_iInfoIndex);				//сообщение
 	P.w_u8			(1);						//добавление сообщения
 	u_EventSend		(P);

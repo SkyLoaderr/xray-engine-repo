@@ -11,7 +11,10 @@
 #define APPARATUS_SLOT		4
 #define BOLT_SLOT			5
 #define OUTFIT_SLOT			6
-#define PDA_SLOT			7 
+#define PDA_SLOT			7
+
+#define RUCK_HEIGHT			280
+#define RUCK_WIDTH			7
 
 class CInventoryItem;
 class CInventory;

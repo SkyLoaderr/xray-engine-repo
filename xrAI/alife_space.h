@@ -29,8 +29,6 @@
 #define SAVE_EXTENSION				".sav"
 #define SPAWN_NAME					"game.spawn"
 // inventory rukzak size
-#define RUCK_HEIGHT					8
-#define RUCK_WIDTH					7
 #define MAX_ITEM_VOLUME				100
 #define INVALID_STORY_ID			ALife::_STORY_ID(-1)
 

@@ -842,7 +842,7 @@ void CActor::shedule_Update	(u32 DT)
 		{
 			Fvector pos;
 			pos.set(Position());
-			pos.y += 1.7f;
+			pos.y += ACTOR_HEIGHT;
 			m_HeavyBreathSnd.play_at_pos(this, pos, sm_Looped | sm_2D);
 			m_bHeavyBreathSndPlaying = true;
 		}
@@ -850,7 +850,7 @@ void CActor::shedule_Update	(u32 DT)
 		{
 			Fvector pos;
 			pos.set(Position());
-			pos.y += 1.7f;
+			pos.y += ACTOR_HEIGHT;
 			m_HeavyBreathSnd.set_position(pos);
 		}
 	} 

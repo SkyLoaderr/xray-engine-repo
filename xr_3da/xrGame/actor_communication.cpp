@@ -94,8 +94,8 @@ void   CActor::UpdateAvailableDialogs	(CPhraseDialogManager* partner)
 {
 	m_AvailableDialogs.clear();
 
-	for(KNOWN_INFO_VECTOR::const_iterator it = GetPDA()->KnownInfo().begin();
-							   GetPDA()->KnownInfo().end() != it; ++it)
+	for(KNOWN_INFO_VECTOR::const_iterator it = CInventoryOwner::KnownInfo().begin();
+								CInventoryOwner::KnownInfo().end() != it; ++it)
 	{
 		//подгрузить кусочек информации с которым мы работаем
 		CInfoPortion info_portion;

@@ -4952,6 +4952,9 @@
 							Name="InventoryOwner"
 							Filter="">
 							<File
+								RelativePath=".\inventory_owner_info.cpp">
+							</File>
+							<File
 								RelativePath=".\inventory_owner_inline.h">
 							</File>
 							<File

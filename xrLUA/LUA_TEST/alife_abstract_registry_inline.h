@@ -63,7 +63,7 @@ IC	void CSALifeAbstractRegistry::remove			(const _index_type &index, bool no_ass
 }
 
 TEMPLATE_SPECIALIZATION
-IC	_data_type *CSALifeAbstractRegistry::object	(const _index_type &index, bool no_assert) const
+IC	_data_type *CSALifeAbstractRegistry::object	(const _index_type &index, bool no_assert)
 {
 	iterator		I = m_objects.find(index);
 	if (I == objects().end()) {

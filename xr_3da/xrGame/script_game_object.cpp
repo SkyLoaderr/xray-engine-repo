@@ -48,7 +48,6 @@ bool CScriptGameObject::GiveInfoPortion(LPCSTR info_index)
 {
 	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
 	if(!pInventoryOwner) return false;
-	if(!pInventoryOwner->GetPDA()) return false;
 	pInventoryOwner->TransferInfo(CInfoPortion::StrToID(info_index), true);
 	return			true;
 }
@@ -57,7 +56,6 @@ bool CScriptGameObject::DisableInfoPortion(LPCSTR info_index)
 {
 	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
 	if(!pInventoryOwner) return false;
-	if(!pInventoryOwner->GetPDA()) return false;
 	pInventoryOwner->TransferInfo(CInfoPortion::StrToID(info_index), false);
 	return true;
 }

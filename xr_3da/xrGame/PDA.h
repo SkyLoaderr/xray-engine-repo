@@ -20,8 +20,6 @@ class CInventoryOwner;
 class CPda;
 
 DEF_LIST (PDA_LIST, CPda*);
-DEFINE_VECTOR(INFO_ID, KNOWN_INFO_VECTOR, KNOWN_INFO_VECTOR_IT);
-
 
 class CPda :
 	public CInventoryItem,
@@ -87,29 +85,13 @@ public:
 	DEFINE_MAP (u32, PDA_MESSAGE_LIST, PDA_LOG_MAP, PDA_LOG_PAIR_IT);
 	PDA_LOG_MAP m_mapPdaLog;
 
-	
-	///////////////////////////////////////
-	// сохранение и передача информации при
-	// помощи PDA
 
-	//знаем ли о инф-ции с заданным номером
-	bool IsKnowAbout(INFO_ID info_index);
-	//передача информации другому PDA
-	bool TransferInfoToID(u32 pda_ID, INFO_ID info_index);
-	//событие получения новой порции информации
-	void OnReceiveInfo(INFO_ID info_index);
-	//событие удаления порции информации
-	void OnRemoveInfo(INFO_ID info_index);
 	//получить последнее сообщение из лога  (false - если лог пуст)
 	bool GetLastMessageFromLog(u32 pda_ID,  SPdaMessage& pda_message);
 
-	//свединия об известной информации (info_portions)
-	const KNOWN_INFO_VECTOR& KnownInfo() {return m_KnownInfo;}
 	void					 RemoveInfo(INFO_ID info_index);
 
 protected:
-	KNOWN_INFO_VECTOR m_KnownInfo;
-
 	//поступление нового сообщения на PDA
 	bool m_bNewMessage;
 

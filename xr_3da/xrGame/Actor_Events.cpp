@@ -22,7 +22,8 @@ IC BOOL BE	(BOOL A, BOOL B)
 
 void CActor::OnEvent		(NET_Packet& P, u16 type)
 {
-	inherited::OnEvent		(P,type);
+	inherited::OnEvent			(P,type);
+	CInventoryOwner::OnEvent	(P,type);
 
 	u16 id;
 	switch (type)

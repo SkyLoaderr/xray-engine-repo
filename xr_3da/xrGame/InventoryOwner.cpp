@@ -5,17 +5,22 @@
 
 
 #include "stdafx.h"
+
+
 #include "InventoryOwner.h"
+
 #include "entity_alive.h"
 #include "pda.h"
 #include "actor.h"
 #include "trade.h"
+
 #include "inventory.h"
 #include "xrserver_objects_alife_items.h"
+
 #include "character_info.h"
 #include "script_game_object.h"
 
-#include "ai_space.h"
+
 #include "script_engine.h"
 #include "AI_PhraseDialogManager.h"
 
@@ -74,6 +79,11 @@ void CInventoryOwner::reinit				()
 
 	m_pPdaCallback.clear		();
 	m_pInfoCallback.clear		();
+
+#ifdef _DEBUG
+	m_KnowInfoWithoutAlife.clear();
+#endif	
+
 }
 
 BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
@@ -129,6 +139,7 @@ void CInventoryOwner::net_Destroy()
 	m_pInfoCallback.clear();
 }
 
+
 void CInventoryOwner::UpdateInventoryOwner(u32 deltaT)
 {
 	inventory().Update();
@@ -179,9 +190,8 @@ void CInventoryOwner::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_ID info_index
 	if(msg == ePdaMsgInfo)
 	{
 		//переслать себе же полученную информацию
-		GetPDA()->TransferInfoToID(GetPDA()->ID(), info_index);
+		TransferInfo(info_index, true);
 	}
-
 
 
 	//Запустить скриптовый callback
@@ -206,48 +216,6 @@ void CInventoryOwner::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_ID info_index
 }
 
 
-void CInventoryOwner::OnReceiveInfo(INFO_ID info_index)
-{
-	//Запустить скриптовый callback
-	CGameObject* pThisGameObject = dynamic_cast<CGameObject*>(this);
-	VERIFY(pThisGameObject);
-
-	SCRIPT_CALLBACK_EXECUTE_2(m_pInfoCallback, pThisGameObject->lua_game_object(), info_index);
-
-	CInfoPortion info_portion;
-	info_portion.Load(info_index);
-
-	//запустить скриптовые функции
-	info_portion.RunScriptActions(pThisGameObject);
-
-	//выкинуть те info portions которые стали неактуальными
-	for(u32 i=0; i<info_portion.DisableInfos().size(); i++)
-		TransferInfo(info_portion.DisableInfos()[i], false);
-}
-
-void CInventoryOwner::OnDisableInfo(INFO_ID info_index)
-{
-	GetPDA()->OnRemoveInfo(info_index);
-}
-
-void CInventoryOwner::TransferInfo(INFO_ID info_index, bool add_info) const
-{
-	VERIFY(GetPDA());
-
-	//отправляем от нашему PDA пакет информации с номером
-	NET_Packet		P;
-	CGameObject::u_EventGen(P, GE_INFO_TRANSFER, GetPDA()->ID());
-	P.w_u16			(GetPDA()->ID());						//отправитель
-	P.w_s32			(info_index);							//сообщение
-	P.w_u8			(add_info?1:0);							//добавить/удалить информацию
-	CGameObject::u_EventSend(P);
-}
-
-bool CInventoryOwner::HasInfo(INFO_ID info_index) const
-{
-	VERIFY(GetPDA());
-	return GetPDA()->IsKnowAbout(info_index);
-}
 
 //who - id PDA которому отправляем сообщение
 void CInventoryOwner::SendPdaMessage(u16 who, EPdaMsg msg, INFO_ID info_index)

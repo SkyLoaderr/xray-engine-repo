@@ -69,10 +69,10 @@ protected:
 	IC		CALifeOrganizationRegistry			&organizations				();
 	IC		CALifeNewsRegistry					&news						();
 	IC		CALifeStoryRegistry					&story_objects				();
-	IC		CALifeRegistryContainer				&registry					();
 public:
 	IC		CALifeGraphRegistry					&graph						();
 	IC		CALifeTimeManager					&time_manager				();
+	IC		CALifeRegistryContainer				&registry					() const;
 
 public:
 												CALifeSimulatorBase			(xrServer *server, LPCSTR section);
@@ -91,12 +91,12 @@ public:
 	IC		const CALifeOrganizationRegistry	&organizations				() const;
 	IC		const CALifeNewsRegistry			&news						() const;
 	IC		const CALifeStoryRegistry			&story_objects				() const;
-	IC		const CALifeRegistryContainer		&registry					() const;
+//	IC		const CALifeRegistryContainer		&registry					() const;
 	IC		CRandom32							&random						();
 	IC		xrServer							&server						() const;
 	IC		const CALifeTimeManager				&time_manager				() const;
 	template <typename T>
-	IC		T &registry(T*t)
+	IC		T &registry(T*t) const
 	{
 		return	(registry()(t));
 	}

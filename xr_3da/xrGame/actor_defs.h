@@ -3,6 +3,9 @@
 
 #pragma once
 
+
+#define ACTOR_HEIGHT 1.75f
+
 namespace ACTOR_DEFS 
 {
 

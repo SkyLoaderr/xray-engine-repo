@@ -536,7 +536,9 @@ bool CSE_ALifeHumanAbstract::bfCanGetItem(CSE_ALifeInventoryItem *tpALifeInvento
 {
 	if (tpALifeInventoryItem && ((m_fCumulativeItemMass + tpALifeInventoryItem->m_fMass > m_fMaxItemMass) || (m_iCumulativeItemVolume + tpALifeInventoryItem->m_iVolume > MAX_ITEM_VOLUME)))
 		return		(false);
-	
+	return			(true);
+
+	/*
 	alife().m_tpTempItemBuffer.resize(children.size() + (tpALifeInventoryItem ? 1 : 0));
 	
 	{
@@ -585,6 +587,7 @@ bool CSE_ALifeHumanAbstract::bfCanGetItem(CSE_ALifeInventoryItem *tpALifeInvento
 			return	(false);
 	}
 	return			(true);
+	*/
 }
 
 void CSE_ALifeHumanAbstract::vfChooseGroup(CSE_ALifeGroupAbstract *tpALifeGroupAbstract)
