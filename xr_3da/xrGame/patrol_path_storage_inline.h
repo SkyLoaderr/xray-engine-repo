@@ -21,7 +21,7 @@ IC	const CPatrolPath *CPatrolPathStorage::path	(shared_str patrol_name, bool no_
 {
 	const_iterator	I = patrol_paths().find(patrol_name);
 	if (I == patrol_paths().end()) {
-		R_ASSERT3	(no_assert,"There is no patrol path",*patrol_name);
+		THROW3		(no_assert,"There is no patrol path",*patrol_name);
 		return		(0);
 	}
 	return			((*I).second);
