@@ -31,3 +31,4 @@ public:
 	IC		graph_vertex	(const _vertex_id_type &vertex_id, size_t *edge_count);
 };
 
+#include "graph_vertex_no_data_inline.h"
