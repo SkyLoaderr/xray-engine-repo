@@ -13,6 +13,7 @@
 //--------------------------------------------------------------------
 CHUDManager::CHUDManager()
 { 
+#pragma todo("Yura, what is this and why? Oles.")
 	Level().pHUD	= this;
 	pFontSmall		= xr_new<CGameFont> ("hud_font_small");
 	pFontMedium		= xr_new<CGameFont> ("hud_font_medium");
