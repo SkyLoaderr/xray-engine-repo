@@ -4,8 +4,8 @@
 
 
 
-#include "..\\inventory.h"
-#include "..\\UIStaticItem.h"
+#include "../inventory.h"
+#include "../UIStaticItem.h"
 
 
 #define INV_GRID_WIDTH	50
