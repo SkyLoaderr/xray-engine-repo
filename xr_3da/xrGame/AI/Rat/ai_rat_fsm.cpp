@@ -138,16 +138,7 @@ void CAI_Rat::FreeHunting()
 			m_dwLostEnemyTime = Level().timeServer();
 			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatAttackRun);
 		}
-		if ((m_tLastSound.eSoundType != SOUND_TYPE_NO_SOUND) && ((m_tLastSound.tpEntity->g_Team() != g_Team()) || ((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING))) {
-			m_dwLastRangeSearch = Level().timeServer();
-			Fvector tTemp;
-			tTemp.setHP(r_torso_current.yaw,r_torso_current.pitch);
-			tTemp.normalize_safe();
-			tTemp.mul(UNDER_FIRE_DISTANCE);
-			m_tSpawnPosition.add(vPosition,tTemp);
-			m_fGoalChangeTime = 0;
-			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatUnderFire);
-		}
+		CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(((m_tLastSound.eSoundType != SOUND_TYPE_NO_SOUND) && ((m_tLastSound.tpEntity->g_Team() != g_Team()) || ((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING))),aiRatUnderFire);
 	}
     m_tSpawnPosition.set(m_tSafeSpawnPosition);
 	m_fGoalChangeDelta		= 10.f;
@@ -161,6 +152,8 @@ void CAI_Rat::FreeHunting()
 
 	if (m_fSpeed > EPS_L)
 		vfComputeNewPosition();
+	else
+		UpdateTransform();
 
 	SetDirectionLook();
 
@@ -237,23 +230,17 @@ void CAI_Rat::UnderFire()
 			tTemp.normalize_safe();
 			tTemp.mul(UNDER_FIRE_DISTANCE);
 			m_tSpawnPosition.add(vPosition,tTemp);
-			m_fGoalChangeTime = 0;
 			float fDistance = m_tLastSound.tpEntity->Position().distance_to(vPosition);
 			if (fDistance <= m_fMoraleMaxUESDistance)
 				m_fMorale += m_fMoraleUESDecreaseQuant*(1.f - fDistance/m_fMoraleMaxUESDistance);
 		}
-
 		if (Level().timeServer() - m_dwLastRangeSearch > UNDER_FIRE_TIME) {
 			m_tSafeSpawnPosition.set(Level().Teams[g_Team()].Squads[g_Squad()].Leader->Position());
 			GO_TO_PREV_STATE;
 		}
 	}
 
-	m_fGoalChangeDelta		= 10.f;
-	m_tVarGoal.set			(10.0,0.0,20.0);
-	m_fASpeed				= .2f;
-	
-	bfCheckIfGoalChanged();
+	m_tGoalDir = m_tSpawnPosition;
 	
 	vfUpdateTime(m_fTimeUpdateDelta);
 
@@ -262,7 +249,10 @@ void CAI_Rat::UnderFire()
 	else 
 		m_fSafeSpeed = m_fSpeed = m_fMaxSpeed;
 
-	vfComputeNewPosition();
+	//if (m_fSpeed > EPS_L)
+		vfComputeNewPosition();
+	//else
+	//	UpdateTransform();
 
 	SetDirectionLook();
 
@@ -280,6 +270,9 @@ void CAI_Rat::AttackFire()
 	ERatStates eState = ERatStates(dwfChooseAction(ACTION_REFRESH_RATE,MIN_PROBABILITY,g_Team(),g_Squad(),g_Group(),eCurrentState,eCurrentState,aiRatRetreat));
 	if (eState != eCurrentState)
 		GO_TO_NEW_STATE_THIS_UPDATE(eState);
+
+	if (m_Enemy.Enemy)
+		m_dwLostEnemyTime = Level().timeServer();
 
 	//if (!(m_Enemy.Enemy) && m_tSavedEnemy && (Level().timeServer() - m_dwLostEnemyTime < LOST_MEMORY_TIME))
 	//	m_Enemy.Enemy = m_tSavedEnemy;
@@ -321,15 +314,15 @@ void CAI_Rat::AttackRun()
 
 	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiRatDie)
 	
+	if (m_Enemy.Enemy)
+		m_dwLostEnemyTime = Level().timeServer();
+
 	SelectEnemy(m_Enemy);
 
 	ERatStates eState = ERatStates(dwfChooseAction(ACTION_REFRESH_RATE,MIN_PROBABILITY,g_Team(),g_Squad(),g_Group(),eCurrentState,eCurrentState,aiRatRetreat));
 	if (eState != eCurrentState) {
 		GO_TO_NEW_STATE_THIS_UPDATE(eState);
 	}
-
-	if (m_Enemy.Enemy)
-		m_dwLostEnemyTime = Level().timeServer();
 
 	if (!(m_Enemy.Enemy) && m_tSavedEnemy && (Level().timeServer() - m_dwLostEnemyTime < LOST_MEMORY_TIME))
 		m_Enemy.Enemy = m_tSavedEnemy;
@@ -375,6 +368,7 @@ void CAI_Rat::AttackRun()
 	if (m_Enemy.Enemy->Position().distance_to(vPosition) <= ATTACK_DISTANCE) {
 		vfAimAtEnemy();
 		r_torso_target.pitch = 0;
+		UpdateTransform();
 	}
 	else {
 		vfComputeNextDirectionPosition();
@@ -415,7 +409,7 @@ void CAI_Rat::Retreat()
 		tTemp.sub(vPosition,m_Enemy.Enemy->Position());
 		tTemp.normalize_safe();
 		tTemp.mul(RETREAT_DISTANCE);
-		m_tSafeSpawnPosition.add(vPosition,tTemp);
+		m_tSpawnPosition.add(vPosition,tTemp);
 	}
 	else
 		if ((Level().timeServer() - m_dwLostEnemyTime > RETREAT_TIME) && ((m_tLastSound.dwTime > m_dwLastUpdateTime) || (m_tLastSound.tpEntity && ((m_tLastSound.tpEntity->g_Team() == g_Team()) || ((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_SHOOTING) != SOUND_TYPE_WEAPON_SHOOTING))))) {
@@ -423,19 +417,15 @@ void CAI_Rat::Retreat()
 			GO_TO_PREV_STATE;
 		}
 
-	m_tSpawnPosition.set(m_tSafeSpawnPosition);
-	m_fGoalChangeDelta		= 2.f;
-	m_tVarGoal.set			(10.0,0.0,20.0);
-	m_fASpeed				= .2f;
-	
-	bfCheckIfGoalChanged();
+	m_tGoalDir = m_tSpawnPosition;
 	
 	if ((!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8)) || m_bNoWay) {
 		m_fSpeed = 0.f;
-		m_fASpeed = .1f;
+		m_fASpeed = .2f;
 		m_fGoalChangeDelta		= 10.f;
 		vfUpdateTime(m_fTimeUpdateDelta);
-		//vfComputeNewPosition();
+//		UpdateTransform();
+		vfComputeNewPosition();
 	}
 	else {
 		if (m_fSpeed < EPS_L)
@@ -449,4 +439,3 @@ void CAI_Rat::Retreat()
 
 	AI_Path.TravelPath.clear();
 }
-
