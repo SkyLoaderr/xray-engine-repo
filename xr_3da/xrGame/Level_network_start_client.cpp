@@ -57,6 +57,7 @@ BOOL CLevel::net_Start_client	( LPCSTR name_of_server )
 	}
 	Device.Shader.DeferredLoad	(FALSE);
 	Device.Shader.DeferredUpload();
+	Device.PreCache				(1000);
 
 	pApp->LoadEnd	(); 
 	return FALSE;
