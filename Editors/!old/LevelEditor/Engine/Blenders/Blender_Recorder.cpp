@@ -60,7 +60,7 @@ void	CBlender_Compile::_cpp_Compile	(ShaderElement* _SH)
 	BT->Compile		(*this);
 }
 
-void	CBlender_Compile::SetParams		(int iPriority, bool bStrictB2F, bool bLighting, bool bPixelShader)
+void	CBlender_Compile::SetParams		(int iPriority, bool bStrictB2F)
 {
 	SH->Flags.iPriority		= iPriority;
 	SH->Flags.bStrictB2F	= bStrictB2F;

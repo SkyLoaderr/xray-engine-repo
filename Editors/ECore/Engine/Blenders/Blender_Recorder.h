@@ -44,7 +44,7 @@ private:
 public:
 	CSimulator&			R()					{ return RS; }
 	
-	void				SetParams			(int iPriority, bool bStrictB2F, bool bLighting, bool bPixelShader);
+	void				SetParams			(int iPriority, bool bStrictB2F);
 	void				SetMapping			();
 
 	// R1-compiler
