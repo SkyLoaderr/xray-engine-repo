@@ -64,12 +64,12 @@ void xrDebug::backend(const char* reason, const char *file, int line)
 	dlgFile		= file;
 	sprintf		(dlgLine,"%d",line);
 	INT_PTR res	= DialogBox
-				(
-				GetModuleHandle(NULL),
-				MAKEINTRESOURCE(IDD_STOP),
-				NULL,
-				DialogProc 
-				);
+		(
+		GetModuleHandle(NULL),
+		MAKEINTRESOURCE(IDD_STOP),
+		NULL,
+		DialogProc 
+		);
 
 	switch (res) 
 	{
@@ -217,40 +217,36 @@ LONG UnhandledFilter	( struct _EXCEPTION_POINTERS *pExceptionInfo )
 			strcat		( szDumpPath, t_stemp				);
 			strcat		( szDumpPath, ".crash"				);
 
-			// ask the user if they want to save a dump file
-			if (::MessageBox( NULL, "Would you like to save a crash-report file?", Core.ApplicationName, MB_YESNO )==IDYES)
+			// create the file
+			HANDLE hFile = ::CreateFile( szDumpPath, GENERIC_WRITE, FILE_SHARE_WRITE, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL );
+
+			if (hFile!=INVALID_HANDLE_VALUE)
 			{
-				// create the file
-				HANDLE hFile = ::CreateFile( szDumpPath, GENERIC_WRITE, FILE_SHARE_WRITE, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL );
+				_MINIDUMP_EXCEPTION_INFORMATION ExInfo;
 
-				if (hFile!=INVALID_HANDLE_VALUE)
+				ExInfo.ThreadId				= ::GetCurrentThreadId();
+				ExInfo.ExceptionPointers	= pExceptionInfo;
+				ExInfo.ClientPointers		= NULL;
+
+				// write the dump
+				BOOL bOK = pDump( GetCurrentProcess(), GetCurrentProcessId(), hFile, MiniDumpNormal, &ExInfo, NULL, NULL );
+				if (bOK)
 				{
-					_MINIDUMP_EXCEPTION_INFORMATION ExInfo;
-
-					ExInfo.ThreadId				= ::GetCurrentThreadId();
-					ExInfo.ExceptionPointers	= pExceptionInfo;
-					ExInfo.ClientPointers		= NULL;
-
-					// write the dump
-					BOOL bOK = pDump( GetCurrentProcess(), GetCurrentProcessId(), hFile, MiniDumpNormal, &ExInfo, NULL, NULL );
-					if (bOK)
-					{
-						sprintf( szScratch, "Saved dump file to '%s'", szDumpPath );
-						szResult = szScratch;
-						retval = EXCEPTION_EXECUTE_HANDLER;
-					}
-					else
-					{
-						sprintf( szScratch, "Failed to save dump file to '%s' (error %d)", szDumpPath, GetLastError() );
-						szResult = szScratch;
-					}
-					::CloseHandle(hFile);
+					sprintf( szScratch, "Saved dump file to '%s'", szDumpPath );
+					szResult = szScratch;
+					retval = EXCEPTION_EXECUTE_HANDLER;
 				}
 				else
 				{
-					sprintf( szScratch, "Failed to create dump file '%s' (error %d)", szDumpPath, GetLastError() );
+					sprintf( szScratch, "Failed to save dump file to '%s' (error %d)", szDumpPath, GetLastError() );
 					szResult = szScratch;
 				}
+				::CloseHandle(hFile);
+			}
+			else
+			{
+				sprintf( szScratch, "Failed to create dump file '%s' (error %d)", szDumpPath, GetLastError() );
+				szResult = szScratch;
 			}
 		}
 		else
