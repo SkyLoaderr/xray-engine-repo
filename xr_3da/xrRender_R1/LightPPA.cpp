@@ -159,8 +159,8 @@ void CLightR_Manager::render_spot	()
 		Fmatrix		L_texgen;		L_texgen.mul	(m_TexelAdjust,L_combine);
 
 		//		2. Set global light-params to be used by shading
-		RImplementation.r1_dlight_light	= L;
-		RImplementation.r1_dlight_tcgen	= L_texgen;
+		RImplementation.r1_dlight_light		= L;
+		RImplementation.r1_dlight_tcgen		= L_texgen;
 
 		//		3. Calculate visibility for light + build soring tree
 		RImplementation.r_pmask						(true,false);
