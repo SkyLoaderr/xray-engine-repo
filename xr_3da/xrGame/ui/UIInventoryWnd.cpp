@@ -334,17 +334,20 @@ void CUIInventoryWnd::InitInventory()
 
 
 			CWeaponAmmo* pWeaponAmmo  = dynamic_cast<CWeaponAmmo*>((*it));
-			UIDragDropItem.SetCustomUpdate(AmmoUpdateProc);
 
 			//!!! Временно не отображаем патроны в инвентаре !!!
-			if(pWeaponAmmo && Game().type != GAME_SINGLE)	
-				continue;
+			if(pWeaponAmmo)
+			{
+				UIDragDropItem.SetCustomUpdate(AmmoUpdateProc);
+				if (Game().type != GAME_SINGLE)	
+					continue;
+			}
 
 			CEatableItem* pEatableItem = dynamic_cast<CEatableItem*>((*it));
 			if(pEatableItem) UIDragDropItem.SetCustomUpdate(FoodUpdateProc);
 
 			UIBeltList.AttachChild(&UIDragDropItem);
-			UIDragDropItem.SetData((*it));
+			UIDragDropItem.SetData(*it);
 			UIDragDropItem.Show(true);
 
 			++m_iUsedItems;
@@ -376,11 +379,14 @@ void CUIInventoryWnd::InitInventory()
 								(*it)->GetGridHeight()*INV_GRID_HEIGHT);
 				
 			CWeaponAmmo* pWeaponAmmo  = dynamic_cast<CWeaponAmmo*>((*it));
-			UIDragDropItem.SetCustomUpdate(AmmoUpdateProc);
 
 			//!!! Временно не отображаем патроны в инвентаре !!!
-			if(pWeaponAmmo && Game().type != GAME_SINGLE)	
-				continue;
+			if(pWeaponAmmo)
+			{
+				UIDragDropItem.SetCustomUpdate(AmmoUpdateProc);
+				if (Game().type != GAME_SINGLE)	
+					continue;
+			}
 
 			CEatableItem* pEatableItem = dynamic_cast<CEatableItem*>((*it));
 			if(pEatableItem) UIDragDropItem.SetCustomUpdate(FoodUpdateProc);
