@@ -561,4 +561,3 @@ float CEnemyDistanceToGraphPoint::ffGetValue()
 		return				(3);
 	return					(4);
 }
-CLS_IDCLS_IDCLS_ID

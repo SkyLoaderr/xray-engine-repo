@@ -1005,4 +1005,4 @@ void  CInventory::AddAvailableItems(TIItemList& items_container) const
 		if(m_slots[OUTFIT_SLOT].m_pIItem)
 			items_container.push_back(m_slots[OUTFIT_SLOT].m_pIItem);
 	}		
-}CLS_ID
+}
