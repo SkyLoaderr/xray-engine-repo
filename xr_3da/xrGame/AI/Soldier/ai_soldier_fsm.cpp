@@ -588,7 +588,6 @@ void CAI_Soldier::FollowLeaderPatrol()
 	
 	if ((!(AI_Path.fSpeed)) || (AI_Path.TravelPath.empty()) || (AI_Path.TravelPath[AI_Path.TravelStart].P.distance_to(AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P) <= .5f)) {
 		CAI_Soldier *SoldierLeader = dynamic_cast<CAI_Soldier *>(Leader);
-		/**/
 		if (!m_bLooped) {
 			Fvector tTemp1 = m_tpaPatrolPoints[m_tpaPatrolPoints.size() - 2];
 			tTemp1.sub(m_tpaPatrolPoints[m_tpaPatrolPoints.size() - 1]);
@@ -596,8 +595,6 @@ void CAI_Soldier::FollowLeaderPatrol()
 			SRotation sRot;
 			mk_rotation(tTemp1,sRot);
 			if (!((fabsf(r_torso_target.yaw - sRot.yaw) < PI_DIV_6) || ((fabsf(fabsf(r_torso_target.yaw - sRot.yaw) - PI_MUL_2) < PI_DIV_6)))) {
-			//if ((fabsf(sRot.yaw - r_torso_target.yaw) >= PI_DIV_6) && (((fabsf(sRot.yaw - r_torso_target.yaw) - PI_MUL_2) <= -PI_DIV_6))) {
-			//if (fabsf(sRot.yaw - r_torso_target.yaw) >= PI_DIV_6) {
 				AI_Path.TravelStart = AI_Path.TravelPath.size() - 1;
 				r_torso_target.yaw = sRot.yaw > PI ? sRot.yaw - 2*PI : sRot.yaw;
 				r_spine_target.yaw = r_torso_target.yaw; 
@@ -605,7 +602,7 @@ void CAI_Soldier::FollowLeaderPatrol()
 				SWITCH_TO_NEW_STATE(aiSoldierTurnOver);
 			}
 		}
-		/**/
+		
 		if ((dwCurTime - SoldierLeader->m_dwLastRangeSearch < 3000) && (SoldierLeader->AI_Path.fSpeed > EPS_L)) {
 			m_dwLoopCount = SoldierLeader->m_dwLoopCount;
 			
@@ -723,7 +720,6 @@ void CAI_Soldier::Patrol()
 	
 	CHECK_IF_SWITCH_TO_NEW_STATE(m_bStateChanged,aiSoldierPatrolReturnToRoute)
 	
-	//if ((!(AI_Path.fSpeed)) || (AI_Path.TravelStart >= AI_Path.TravelPath.size() - 4) || (AI_Path.TravelPath.empty())) {
 	if ((!(AI_Path.fSpeed)) || (AI_Path.TravelPath.empty()) || (AI_Path.TravelPath[AI_Path.TravelStart].P.distance_to(AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P) <= .5f)) {
 		
 		AI_Path.TravelPath.clear();
@@ -734,12 +730,10 @@ void CAI_Soldier::Patrol()
 		if (m_bStateChanged)
 			m_dwLoopCount = 0;
 		
-		// wait for other soldiers
 		for (int i=0; i<Group.Members.size(); i++)
 			if (((CCustomMonster*)(Group.Members[i]))->AI_Path.fSpeed > EPS_L)
 				return;
 
-		/**/
 		if (!m_bLooped) {
 			Fvector tTemp1 = m_tpaPatrolPoints[m_tpaPatrolPoints.size() - 2];
 			tTemp1.sub(m_tpaPatrolPoints[m_tpaPatrolPoints.size() - 1]);
@@ -747,9 +741,6 @@ void CAI_Soldier::Patrol()
 			SRotation sRot;
 			mk_rotation(tTemp1,sRot);
 			if (!((fabsf(r_torso_target.yaw - sRot.yaw) < PI_DIV_6) || ((fabsf(fabsf(r_torso_target.yaw - sRot.yaw) - PI_MUL_2) < PI_DIV_6)))) {
-			//if ((fabsf(sRot.yaw - r_torso_target.yaw) >= PI_DIV_6) && (((fabsf(sRot.yaw - r_torso_target.yaw) - PI_MUL_2) <= -PI_DIV_6))) {
-			//if ((fabsf(sRot.yaw - r_torso_target.yaw) >= PI_DIV_6) || ((fabsf(fabsf(sRot.yaw - r_torso_target.yaw) - PI_MUL_2) >= PI_DIV_6))) {
-			//if (fabsf(sRot.yaw - r_torso_target.yaw) >= PI_DIV_6) {
 				AI_Path.TravelStart = AI_Path.TravelPath.size() - 1;
 				r_torso_target.yaw = sRot.yaw > PI ? sRot.yaw - PI_MUL_2 : sRot.yaw;
 				r_spine_target.yaw = r_torso_target.yaw; 
@@ -757,7 +748,6 @@ void CAI_Soldier::Patrol()
 				SWITCH_TO_NEW_STATE(aiSoldierTurnOver);
 			}
 		}
-		/**/
 
 		m_dwLastRangeSearch = dwCurTime;
 		

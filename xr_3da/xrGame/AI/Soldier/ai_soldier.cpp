@@ -122,6 +122,7 @@ void CAI_Soldier::Load(CInifile* ini, const char* section)
 	m_fCrouchVisibilityMultiplier = ini->ReadFLOAT(section,"CrouchVisibilityMultiplier");
 	m_fLieVisibilityMultiplier = ini->ReadFLOAT(section,"LieVisibilityMultiplier");
 	m_fVisibilityThreshold = ini->ReadFLOAT(section,"VisibilityThreshold");
+	m_fLateralMutliplier = ini->ReadFLOAT(section,"LateralMultiplier");
 	
 	//fire
 	m_dwFireRandomMin = ini->ReadINT(section,"FireRandomMin");

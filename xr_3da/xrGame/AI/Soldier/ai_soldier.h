@@ -323,6 +323,7 @@ class CAI_Soldier : public CCustomMonster
 		float			m_fCrouchVisibilityMultiplier;
 		float			m_fLieVisibilityMultiplier;
 		float			m_fVisibilityThreshold;
+		float			m_fLateralMutliplier;
 		
 		// firing
 		bool			m_bFiring;
