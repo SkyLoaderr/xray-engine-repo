@@ -713,6 +713,28 @@ function load_job_monolith_base(sj, gname, type, squad, groups)
 		            end
 	}
 	table.insert(sj, t)
+
+	t = { section = "logic@val_monolith_base_kamp1_normal2",
+		idle = 0,
+		prior = 1, state = { state_normal },
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "val_monolith_base_restrictor",
+		predicate = function(obj) 
+		            	return obj:profile_name() == "monolit_regular"
+		            end
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_monolith_base_kamp1_normal3",
+		idle = 0,
+		prior = 1, state = { state_normal },
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "val_monolith_base_restrictor",
+		predicate = function(obj) 
+		            	return obj:profile_name() == "monolit_regular"
+		            end
+	}
+	table.insert(sj, t)
 end
 
 function load_states(gname, type)
