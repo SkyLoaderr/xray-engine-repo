@@ -505,9 +505,6 @@
 				RelativePath=".\abstract_registry.cpp">
 			</File>
 			<File
-				RelativePath=".\alife_interfaces.h">
-			</File>
-			<File
 				RelativePath=".\broker_test.cpp">
 			</File>
 			<File
@@ -524,6 +521,9 @@
 			</File>
 			<File
 				RelativePath=".\object_destroyer.h">
+			</File>
+			<File
+				RelativePath=".\object_interfaces.h">
 			</File>
 			<File
 				RelativePath=".\object_loader.h">
