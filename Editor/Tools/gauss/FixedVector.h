@@ -1,7 +1,6 @@
 #ifndef FixedVectorH
 #define FixedVectorH
 #pragma once
-#pragma pack(push,8)
 
 template <class T, const int dim>
 class svector 
@@ -60,5 +59,5 @@ public:
 		return TRUE;
 	}
 };
-#pragma pack(pop)
+
 #endif
