@@ -53,10 +53,6 @@ end
 --------------------------------------------------------------------------------------------------------
 -- Dialog & InfoPortions Function
 --------------------------------------------------------------------------------------------------------
-function break_dialog(first_speaker, second_speaker)
-		first_speaker:stop_talk()
-end
-
 function give_kalash_to_loser(first_speaker, second_speaker)
 	local weap = first_speaker:object("wpn_ak74")
 	first_speaker:transfer_item (weap, second_speaker)
@@ -82,4 +78,45 @@ end
 
 function set_dialog_thank(first_speaker, second_speaker)
 	first_speaker:set_start_dialog("escape_novice_thank_actor")
+end
+
+
+-- Trader
+function have_blockpost_case(first_speaker, second_speaker)
+	return( first_speaker:object("quest_case_01") ~= nil )
+end
+function give_blockpost_case(first_speaker, second_speaker)
+	local case = first_speaker:object("quest_case_01")
+	first_speaker:transfer_item (case, second_speaker)
+	second_speaker:transfer_money (500, first_speaker)
+end
+function trader_need_blockpost_box(first_speaker, second_speaker)
+	local actor = level.actor()
+       	if actor ~= nil and
+	   actor:dont_has_info("escape_need_blockpost_case") and
+	   actor:dont_has_info("escape_have_blockpost_case")
+	then
+		return true
+	end
+	return false
+end
+function trader_alredy_give_job(first_speaker, second_speaker)
+	local actor = level.actor()
+       	if actor ~= nil and
+	   actor:has_info("escape_need_blockpost_case") and
+	   actor:dont_has_info("escape_have_blockpost_case")
+	then
+		return true
+	end
+	return false
+end
+function trader_dont_has_job(first_speaker, second_speaker)
+	local actor = level.actor()
+       	if actor ~= nil and
+	   (actor:has_info("escape_need_blockpost_case") or
+	   actor:has_info("escape_have_blockpost_case"))
+	then
+		return true
+	end
+	return false
 end
