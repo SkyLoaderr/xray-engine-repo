@@ -122,7 +122,7 @@ void	test_rtc	()
 		u8*			p_in			= xr_alloc<u8>	(in_size);
 		u8*			p_in_tst		= xr_alloc<u8>	(in_size);
 		u8*			p_out			= xr_alloc<u8>	(out_size_max);
-		for (u32 git=0; git<in_size; git++)			p_in[git] = (u8)::Random.randI	(16);	// garbage
+		for (u32 git=0; git<in_size; git++)			p_in[git] = (u8)::Random.randI	(8);	// garbage
 
 		bytes		+= in_size;
 
@@ -144,8 +144,8 @@ void	test_rtc	()
 	}
 	tC.FrameEnd		();
 	tD.FrameEnd		();
-	Msg	("* compression:   %f K/ms",(float(bytes)/tC.result)/1024.f);
-	Msg	("* decompression: %f K/ms",(float(bytes)/tD.result)/1024.f);
+	Msg				("* compression:   %f K/ms",(float(bytes)/tC.result)/1024.f);
+	Msg				("* decompression: %f K/ms",(float(bytes)/tD.result)/1024.f);
 }
 
 int APIENTRY WinMain(HINSTANCE hInstance,
