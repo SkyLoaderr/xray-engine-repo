@@ -1,22 +1,22 @@
 #include "stdafx.h"
 #include "pseudo_gigant.h"
-#include "../../ai_monster_utils.h"
-#include "step_effector.h"
+#include "../ai_monster_utils.h"
+#include "pseudo_gigant_step_effector.h"
 #include "../../../actor.h"
 #include "../../../ActorEffector.h"
 
 CPseudoGigant::CPseudoGigant()
 {
-	stateRest			= xr_new<CBitingRest>(this);
-	stateAttack			= xr_new<CBitingAttack>		(this);
-	stateEat			= xr_new<CBitingEat>		(this);
-	stateHide			= xr_new<CBitingHide>		(this);
-	stateDetour			= xr_new<CBitingDetour>		(this);
-	statePanic			= xr_new<CBitingPanic>		(this);
-	stateExploreNDE		= xr_new<CBitingExploreNDE>	(this);
-	stateExploreDNE		= xr_new<CBitingRunAway>	(this);
-	stateNull			= xr_new<CBitingNull>		();
-	stateControlled		= xr_new<CBitingControlled>	(this);
+	stateRest			= xr_new<CBaseMonsterRest>(this);
+	stateAttack			= xr_new<CBaseMonsterAttack>		(this);
+	stateEat			= xr_new<CBaseMonsterEat>		(this);
+	stateHide			= xr_new<CBaseMonsterHide>		(this);
+	stateDetour			= xr_new<CBaseMonsterDetour>		(this);
+	statePanic			= xr_new<CBaseMonsterPanic>		(this);
+	stateExploreNDE		= xr_new<CBaseMonsterExploreNDE>	(this);
+	stateExploreDNE		= xr_new<CBaseMonsterRunAway>	(this);
+	stateNull			= xr_new<CBaseMonsterNull>		();
+	stateControlled		= xr_new<CBaseMonsterControlled>	(this);
 
 	CurrentState		= stateRest;
 	CurrentState->Reset	();

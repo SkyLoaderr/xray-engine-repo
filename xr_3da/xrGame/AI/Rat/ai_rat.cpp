@@ -387,6 +387,24 @@ void CAI_Rat::UpdateCL			()
 		CreateSkeleton			();
 }
 
+void CAI_Rat::UpdatePositionAnimation()
+{
+	Fmatrix						l_tSavedTransform = XFORM();
+	vfComputeNewPosition		(m_bCanAdjustSpeed,m_bStraightForward);
+
+	float						y,p,b;
+	XFORM().getHPB				(y,p,b);
+	NET_Last.p_pos				= Position();
+	NET_Last.o_model			= -y;
+	NET_Last.o_torso.yaw		= -y;
+	NET_Last.o_torso.pitch		= -p;
+	XFORM()						= l_tSavedTransform;
+
+	if (!bfScriptAnimation())
+		SelectAnimation		(XFORM().k,Fvector().set(1,0,0),m_fSpeed);
+}
+
+
 void CAI_Rat::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type /*= ALife::eHitTypeWound*/){
 	inherited::Hit				(P,dir,who,element,p_in_object_space,impulse, hit_type);
 	if (!m_pPhysicsShell) {

@@ -9,7 +9,7 @@
 #include "../states/monster_state_hear_danger_sound.h"
 #include "../states/monster_state_hitted.h"
 
-#include "../../ai_monster_debug.h"
+#include "../ai_monster_debug.h"
 
 CStateManagerFracture::CStateManagerFracture(CFracture *obj) : inherited(obj)
 {

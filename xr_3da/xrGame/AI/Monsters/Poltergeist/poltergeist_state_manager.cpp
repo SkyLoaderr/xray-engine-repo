@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "poltergeist.h"
 #include "poltergeist_state_manager.h"
-#include "../../ai_monster_utils.h"
+#include "../ai_monster_utils.h"
 #include "../states/monster_state_rest.h"
 #include "../states/monster_state_eat.h"
 #include "../states/monster_state_attack.h"
@@ -10,7 +10,7 @@
 #include "../states/monster_state_hear_int_sound.h"
 #include "../states/monster_state_hear_danger_sound.h"
 #include "../states/monster_state_hitted.h"
-#include "../../ai_monster_debug.h"
+#include "../ai_monster_debug.h"
 
 CStateManagerPoltergeist::CStateManagerPoltergeist(CPoltergeist *obj) : inherited(obj)
 {

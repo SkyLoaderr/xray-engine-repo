@@ -1,11 +1,11 @@
 #pragma once
-#include "../../biting/ai_biting.h"
+#include "../../monsters/BaseMonster/base_monster.h"
 
 class CStateManagerSnork;
 
-class CSnork :	public CAI_Biting {
+class CSnork :	public CBaseMonster {
 
-	typedef		CAI_Biting		inherited;
+	typedef		CBaseMonster		inherited;
 
 	CStateManagerSnork		*StateMan;
 

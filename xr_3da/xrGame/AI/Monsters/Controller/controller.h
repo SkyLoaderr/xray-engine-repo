@@ -1,17 +1,17 @@
 #pragma once
-#include "../../biting/ai_biting.h"
-#include "../../anim_triple.h"
-#include "../../ai_monster_jump.h"
+#include "../BaseMonster/base_monster.h"
+#include "../anim_triple.h"
+#include "../ai_monster_jump.h"
 #include "../../../UIStaticItem.h"
 #include "controller_psy_aura.h"
 
 class CStateManagerController;
 
-class CController : public CAI_Biting, 
+class CController : public CBaseMonster, 
 					public CJumping,
 					public CPsyAuraController {
 
-	typedef		CAI_Biting	inherited;
+	typedef		CBaseMonster	inherited;
 
 	CStateManagerController	*StateMan;
 

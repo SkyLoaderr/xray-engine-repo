@@ -1,15 +1,15 @@
 #pragma once
-#include "../../biting/ai_biting.h"
-#include "../../ai_monster_bones.h"
-#include "../../anim_triple.h"
+#include "../BaseMonster/base_monster.h"
+#include "../ai_monster_bones.h"
+#include "../anim_triple.h"
 
 class CStateManagerZombie;
 
 #define FAKE_DEATH_TYPES_COUNT	3
 
-class CZombie :	public CAI_Biting {
+class CZombie :	public CBaseMonster {
 	
-	typedef		CAI_Biting		inherited;
+	typedef		CBaseMonster		inherited;
 
 	CStateManagerZombie *StateMan;
 

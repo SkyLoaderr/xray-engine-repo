@@ -1,10 +1,10 @@
 #pragma once
-#include "../../biting/ai_biting.h"
+#include "../../monsters/BaseMonster/base_monster.h"
 
 class CStateManagerFracture;
 
-class CFracture : public CAI_Biting {
-	typedef		CAI_Biting		inherited;
+class CFracture : public CBaseMonster {
+	typedef		CBaseMonster		inherited;
 	
 	CStateManagerFracture	*StateMan;
 

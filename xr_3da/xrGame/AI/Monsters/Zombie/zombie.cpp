@@ -2,7 +2,7 @@
 #include "zombie.h"
 #include "zombie_state_manager.h"
 #include "../../../profiler.h"
-#include "../../ai_monster_debug.h"
+#include "../ai_monster_debug.h"
 
 CZombie::CZombie()
 {

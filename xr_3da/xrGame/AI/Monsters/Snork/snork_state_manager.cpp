@@ -1,11 +1,11 @@
 #include "stdafx.h"
 #include "snork.h"
 #include "snork_state_manager.h"
-#include "../../ai_monster_squad.h"
-#include "../../ai_monster_squad_manager.h"
-#include "../../ai_monster_utils.h"
+#include "../ai_monster_squad.h"
+#include "../ai_monster_squad_manager.h"
+#include "../ai_monster_utils.h"
 #include "../states/monster_state_rest.h"
-#include "../../ai_monster_debug.h"
+#include "../ai_monster_debug.h"
 
 CStateManagerSnork::CStateManagerSnork(CSnork *obj) : inherited(obj)
 {

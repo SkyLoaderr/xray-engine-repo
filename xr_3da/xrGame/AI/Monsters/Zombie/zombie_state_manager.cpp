@@ -1,9 +1,9 @@
 #include "stdafx.h"
 #include "zombie.h"
 #include "zombie_state_manager.h"
-#include "../../ai_monster_squad.h"
-#include "../../ai_monster_squad_manager.h"
-#include "../../ai_monster_utils.h"
+#include "../ai_monster_squad.h"
+#include "../ai_monster_squad_manager.h"
+#include "../ai_monster_utils.h"
 #include "../states/monster_state_rest.h"
 #include "../states/monster_state_attack.h"
 #include "../states/monster_state_eat.h"
@@ -11,7 +11,7 @@
 #include "zombie_state_attack_run.h"
 #include "../states/monster_state_squad_rest.h"
 #include "../states/monster_state_squad_rest_follow.h"
-#include "../../ai_monster_debug.h"
+#include "../ai_monster_debug.h"
 
 CStateManagerZombie::CStateManagerZombie(CZombie *obj) : inherited(obj)
 {

@@ -1,16 +1,16 @@
 #pragma once
-#include "../../biting/ai_biting.h"
-#include "../../telekinesis.h"
-#include "../../energy_holder.h"
+#include "../BaseMonster/base_monster.h"
+#include "../telekinesis.h"
+#include "../energy_holder.h"
 
 class CPhysicsShellHolder;
 class CStateManagerPoltergeist;
 
-class CPoltergeist :	public CAI_Biting ,
+class CPoltergeist :	public CBaseMonster ,
 						public CTelekinesis,
 						public CEnergyHolder {
 	
-	typedef		CAI_Biting		inherited;
+	typedef		CBaseMonster		inherited;
 	typedef		CEnergyHolder	Energy;
 
 	CParticlesObject	*m_particles_object;

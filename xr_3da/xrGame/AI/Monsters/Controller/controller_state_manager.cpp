@@ -1,14 +1,14 @@
 #include "stdafx.h"
 #include "controller.h"
 #include "controller_state_manager.h"
-#include "../../controlled_entity.h"
+#include "../controlled_entity.h"
 
 #include "../../../phmovementcontrol.h"
 #include "../../../PhysicsShell.h"
 #include "../../../PHCharacter.h"
 #include "../../../phcapture.h"
 
-#include "../../ai_monster_debug.h"
+#include "../ai_monster_debug.h"
 
 #include "../states/monster_state_rest.h"
 #include "../states/monster_state_rest_sleep.h"

@@ -1,12 +1,12 @@
 #include "stdafx.h"
 #include "controller.h"
-#include "../../ai_monster_utils.h"
+#include "../ai_monster_utils.h"
 #include "controller_state_manager.h"
-#include "../../controlled_entity.h"
-#include "../../ai_monster_debug.h"
+#include "../controlled_entity.h"
+#include "../ai_monster_debug.h"
 #include "../../../actor.h"
 #include "../../../ActorEffector.h"
-#include "../../ai_monster_effector.h"
+#include "../ai_monster_effector.h"
 #include "../../../hudmanager.h"
 #include "../../../ui.h"
 
@@ -212,7 +212,7 @@ void CController::CheckSpecParams(u32 spec_params)
 void CController::InitThink()
 {
 	for	(u32 i=0; i<m_controlled_objects.size(); i++) {	
-		CAI_Biting *base = smart_cast<CAI_Biting*>(m_controlled_objects[i]);
+		CBaseMonster *base = smart_cast<CBaseMonster*>(m_controlled_objects[i]);
 		if (!base) continue;
 		if (base->EnemyMan.get_enemy()) 
 			EnemyMemory.add_enemy  (base->EnemyMan.get_enemy(), 

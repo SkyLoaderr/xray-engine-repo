@@ -3,8 +3,8 @@
 #include "poltergeist_state_manager.h"
 #include "../../../PHMovementControl.h"
 #include "../../../PhysicsShellHolder.h"
-#include "../../ai_monster_debug.h"
-#include "../../ai_monster_utils.h"
+#include "../ai_monster_debug.h"
+#include "../ai_monster_utils.h"
 
 
 #define HEIGHT_CHANGE_VELOCITY	0.5f

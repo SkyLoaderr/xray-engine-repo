@@ -177,6 +177,11 @@ public:
 		return					(m_head.current);
 	};
 
+	virtual	const MonsterSpace::SBoneRotation &head_orientation	() const {
+			return CStalkerMovementManager::head_orientation();
+	}
+
+
 	virtual bool				use_model_pitch					() const;
 
 	//////////////////////////////////////////////////////////////////////////
@@ -212,6 +217,8 @@ public:
 			void				dbg_animation			(LPCSTR caption, CMotionDef *animation);
 
 	virtual BOOL				feel_touch_on_contact	(CObject* O);
+
+
 };
 
 #include "ai_stalker_inline.h"

@@ -1,11 +1,11 @@
 #pragma once
-#include "../../biting/ai_biting.h"
-#include "../../controlled_entity.h"
+#include "../BaseMonster/base_monster.h"
+#include "../controlled_entity.h"
 
-class CPseudoGigant : public CAI_Biting,
+class CPseudoGigant : public CBaseMonster,
 					  public CControlledEntity<CPseudoGigant> {
 	
-	typedef		CAI_Biting	inherited;
+	typedef		CBaseMonster	inherited;
 	typedef		CControlledEntity<CPseudoGigant>	controlled;
 
 	// step_effector

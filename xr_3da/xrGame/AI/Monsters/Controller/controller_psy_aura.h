@@ -1,5 +1,5 @@
 #pragma once
-#include "../../psy_aura.h"
+#include "../psy_aura.h"
 #include "../../../pp_effector_distance.h"
 
 class CActor;
