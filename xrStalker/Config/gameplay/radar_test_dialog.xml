@@ -9,9 +9,6 @@
     </dialog>
     <dialog id="radar_test_dialog">
         <phrase_list>
-            <phrase id="102">
-                <text>radar_test_dialog_102</text>
-            </phrase>
             <phrase id="1">
                 <text>radar_test_dialog_1</text>
                 <next>20</next>
@@ -29,16 +26,6 @@
                 <text>radar_test_dialog_101</text>
                 <next>130</next>
             </phrase>
-            <phrase id="130">
-                <text>radar_test_dialog_130</text>
-            </phrase>
-            <phrase id="1100">
-                <text>radar_test_dialog_1100</text>
-            </phrase>
-            <phrase id="1000">
-                <text>radar_test_dialog_1000</text>
-                <next>1100</next>
-            </phrase>
             <phrase id="2">
                 <text>radar_test_dialog_2</text>
                 <next>30</next>
@@ -48,28 +35,62 @@
                 <next>2</next>
                 <next>22</next>
             </phrase>
+            <phrase id="1101">
+                <text>radar_test_dialog_1101</text>
+            </phrase>
+            <phrase id="1000">
+                <text>radar_test_dialog_1000</text>
+                <next>1100</next>
+            </phrase>
+            <phrase id="1100">
+                <text>radar_test_dialog_1100</text>
+                <action>dialogs.break_dialog</action>
+                <next>1101</next>
+            </phrase>
+            <phrase id="102">
+                <text>radar_test_dialog_102</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="130">
+                <text>radar_test_dialog_130</text>
+            </phrase>
+            <phrase id="40">
+                <text>radar_test_dialog_40</text>
+                <next>4</next>
+            </phrase>
+            <phrase id="3">
+                <text>radar_test_dialog_3</text>
+                <next>40</next>
+            </phrase>
+            <phrase id="5">
+                <text>radar_test_dialog_5</text>
+                <next>50</next>
+            </phrase>
             <phrase id="22">
                 <text>radar_test_dialog_22</text>
                 <next>33</next>
             </phrase>
             <phrase id="33">
                 <text>radar_test_dialog_33</text>
+                <next>23</next>
             </phrase>
-            <phrase id="40">
-                <text>radar_test_dialog_40</text>
-                <next>4</next>
-            </phrase>
-            <phrase id="4">
-                <text>radar_test_dialog_4</text>
-            </phrase>
-            <phrase id="3">
-                <text>radar_test_dialog_3</text>
-                <next>40</next>
+            <phrase id="23">
+                <text>radar_test_dialog_23</text>
+                <next>34</next>
             </phrase>
             <phrase id="30">
                 <text>radar_test_dialog_30</text>
                 <next>3</next>
                 <next>5</next>
+            </phrase>
+            <phrase id="34">
+                <text>radar_test_dialog_34</text>
+                <next>24</next>
+                <next>25</next>
+            </phrase>
+            <phrase id="24">
+                <text>radar_test_dialog_24</text>
+                <next>35</next>
             </phrase>
             <phrase id="0">
                 <text>radar_test_dialog_0</text>
@@ -77,12 +98,27 @@
                 <next>100</next>
                 <next>1000</next>
             </phrase>
-            <phrase id="5">
-                <text>radar_test_dialog_5</text>
-                <next>50</next>
-            </phrase>
             <phrase id="50">
                 <text>radar_test_dialog_50</text>
+            </phrase>
+            <phrase id="4">
+                <text>radar_test_dialog_4</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="26">
+                <text>radar_test_dialog_26</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="35">
+                <text>radar_test_dialog_35</text>
+                <next>26</next>
+            </phrase>
+            <phrase id="25">
+                <text>radar_test_dialog_25</text>
+                <next>36</next>
+            </phrase>
+            <phrase id="36">
+                <text>radar_test_dialog_36</text>
             </phrase>
         </phrase_list>
     </dialog>

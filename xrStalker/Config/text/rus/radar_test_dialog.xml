@@ -24,6 +24,9 @@
     <string id="radar_test_dialog_1100">
         <text>Нюхни САМ ЗНАЕШЬ ЧЕГО!</text>
     </string>
+    <string id="radar_test_dialog_1101">
+        <text>text in default</text>
+    </string>
     <string id="radar_test_dialog_120">
         <text>Ого! Да я слышал! Неужели тот самый легендарный Стрелок! Не может быть! Не думал что увижу тебя живым! Живая легенда Зоны! \nКакое совпадение я и моя банда так же идем искать Монолит! Может объеденим усилия?</text>
     </string>
@@ -39,6 +42,18 @@
     <string id="radar_test_dialog_22">
         <text>Нет, сам найду Монолит! Спасибо за предложение! </text>
     </string>
+    <string id="radar_test_dialog_23">
+        <text>Давай о какой услуге идет речь?</text>
+    </string>
+    <string id="radar_test_dialog_24">
+        <text>Хорошо! Ну а если они погибли? </text>
+    </string>
+    <string id="radar_test_dialog_25">
+        <text>Нет меня это не интересует!</text>
+    </string>
+    <string id="radar_test_dialog_26">
+        <text>Договорились!</text>
+    </string>
     <string id="radar_test_dialog_3">
         <text>Да подходит! Хорошо, я найду для тебя твоих ребят!</text>
     </string>
@@ -47,6 +62,15 @@
     </string>
     <string id="radar_test_dialog_33">
         <text>Очень жаль! Тогда может я могу тебя попросить об услуге?</text>
+    </string>
+    <string id="radar_test_dialog_34">
+        <text>Я послал пару своих ребят посмотреть, что же творится на Припяти, но они пропали, их задача была разведать происходящее на Припяти и вернутся доложить мне. Прошли уже целые сутки! А их до сих пор нет, а ведь они мои лучшие ребята, Бревно и Лом зову их так. Надешь их я тебе заплачу 1000! Как по рукам?</text>
+    </string>
+    <string id="radar_test_dialog_35">
+        <text>Принеси их ПДА и получишь 1000! </text>
+    </string>
+    <string id="radar_test_dialog_36">
+        <text>Жаль! Желаю тебе удачи!</text>
     </string>
     <string id="radar_test_dialog_4">
         <text>Спасибо брателло я найду для тебя Бревно и Лома!</text>
