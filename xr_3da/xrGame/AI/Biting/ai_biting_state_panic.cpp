@@ -30,12 +30,6 @@ void CBitingPanic::Run()
 {
 	if (pMonster->m_tEnemy.obj != m_tEnemy.obj) Init();
 	else m_tEnemy = pMonster->m_tEnemy;
-	
-	Fvector dir;
-	dir.sub(pMonster->Position(), m_tEnemy.position);
-	dir.normalize();
-	Fvector target_pos;
-	target_pos.mad(pMonster->Position(), dir, 20);
 
 	switch (m_tAction) {
 		
@@ -46,7 +40,8 @@ void CBitingPanic::Run()
 			LOG_EX("PANIC:: Run away");
 			pMonster->MotionMan.m_tAction	= ACT_RUN;
 
-			pMonster->Path_ApproachPoint	(target_pos);	
+			pMonster->Path_GetAwayFromPoint	(m_tEnemy.position,20);	
+			pMonster->SetSelectorPathParams ();
 
 			// если не видел врага > 8 сек 
 			if (m_tEnemy.time + 8000 < m_dwCurrentTime) {

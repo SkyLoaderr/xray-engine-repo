@@ -32,18 +32,14 @@ void CAI_Biting::InitSelector(PathManagers::CAbstractVertexEvaluator &S, Fvector
 // high level 
 void CAI_Biting::Path_GetAwayFromPoint(Fvector position, float dist)
 {
-//	Fvector target_pos;
-//	Fvector dir;
-//	dir.sub(Position(), position);
-//	if (fsimilar(dir.square_magnitude(),0.f)) dir.set(0.f,0.f,1.f);
-//	dir.normalize();	
-//	target_pos.mad(position,dir,dist);
-//	
-
-	CLevelLocationSelector::set_evaluator(m_tSelectorGetAway);
-	InitSelector(*m_tSelectorGetAway, position);
-
-	CLevelLocationSelector::set_query_interval(3000);	
+	Fvector target_pos;
+	Fvector dir;
+	dir.sub(Position(), position);
+	if (fsimilar(dir.square_magnitude(),0.f)) dir.set(0.f,0.f,1.f);
+	dir.normalize();
+	target_pos.mad(Position(),dir,dist);
+	
+	Path_ApproachPoint(target_pos);
 }
 
 void CAI_Biting::Path_ApproachPoint(Fvector position)

@@ -227,6 +227,7 @@ void CVisionMemory::UpdateVision(TTime dt)
 		xr_set<const CEntityAlive *>::const_iterator	I = pMonster->enemies().begin();
 		xr_set<const CEntityAlive *>::const_iterator	E = pMonster->enemies().end();
 		for ( ; I != E; ++I) {
+			if (!pMonster->CMemoryManager::visible(*I)) continue;
 			ve.Set	(*I,timeCurrent);
 			AddEnemy(ve);
 		}

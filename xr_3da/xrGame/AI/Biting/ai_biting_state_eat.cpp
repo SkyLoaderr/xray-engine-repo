@@ -170,15 +170,12 @@ void CBitingEat::Run()
 
 		break;
 	
-	case ACTION_GET_HIDE:
+	case ACTION_GET_HIDE: {
 		
 		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;		
 
-
-		if (IS_NEED_REBUILD()) {
-			pMonster->SetPathParams(pMonster->level_vertex_id(),pMonster->Position()); 
-			pMonster->Path_GetAwayFromPoint(pCorpse->Position(), 20);
-		}	
+		pMonster->Path_GetAwayFromPoint	(pCorpse->Position(), 20);
+		pMonster->SetSelectorPathParams ();
 
 		if (cur_dist > 10.f || (IS_NEED_REBUILD() && (cur_dist > 3.f))) {
 			m_tAction = ACTION_LITTLE_REST;
@@ -186,6 +183,7 @@ void CBitingEat::Run()
 			bRestAfterLunch	= true;
 			m_dwTimeStartRest = m_dwCurrentTime;
 		}
+						  }
 		break;
 	case ACTION_LITTLE_REST:
 		pMonster->enable_movement	(false);
@@ -236,10 +234,8 @@ void CBitingEat::Run()
 		pMonster->MotionMan.m_tAction = ACT_DRAG; 
 		pMonster->MotionMan.SetSpecParams(ASP_MOVE_BKWD);
 		
-		if (IS_NEED_REBUILD()) {
-			pMonster->SetPathParams(pMonster->level_vertex_id(),pMonster->Position()); 
-			pMonster->Path_GetAwayFromPoint(pCorpse->Position(), 20);
-		}	
+		pMonster->Path_GetAwayFromPoint	(pCorpse->Position(), 20);
+		pMonster->SetSelectorPathParams ();
 
 		// если не может тащить
 		if (0 == pMonster->m_PhysicMovementControl.PHCapture()) m_tAction = ACTION_EAT; 
