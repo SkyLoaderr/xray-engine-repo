@@ -304,6 +304,9 @@
 			Name="smart_container"
 			Filter="">
 			<File
+				RelativePath=".\id_generator_test.cpp">
+			</File>
+			<File
 				RelativePath=".\slipch_test.cpp">
 			</File>
 			<File
