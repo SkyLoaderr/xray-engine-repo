@@ -158,14 +158,7 @@ float  CTorch::NightVisionBattery ()
 void CTorch::Switch()
 {
 	bool bActive			= !light_render->get_active();
-	light_render->set_active(bActive);
-	glow_render->set_active	(bActive);
-
-	if(*light_trace_bone)
-	{
-		CKinematics* pVisual = smart_cast<CKinematics*>(Visual()); VERIFY(pVisual);
-		pVisual->LL_SetBoneVisible(pVisual->LL_BoneID(light_trace_bone),bActive,TRUE);
-	}
+	Switch(bActive);
 }
 
 void CTorch::Switch	(bool light_on)
@@ -272,11 +265,12 @@ void CTorch::UpdateCL	()
 
 						
 			CActor* actor = smart_cast<CActor*>(H_Parent());
+			M.mul						(XFORM(),BI.mTransform);
 
 			if(actor)
 			{
-				light_render->set_position	(actor->cam_FirstEye()->vPosition);
-				glow_render->set_position	(actor->cam_FirstEye()->vPosition);
+				light_render->set_position	(M.c);
+				glow_render->set_position	(M.c);
 				light_render->set_rotation	(actor->cam_FirstEye()->vDirection,
 											actor->cam_FirstEye()->vNormal);
 				glow_render->set_direction	(actor->cam_FirstEye()->vDirection);
@@ -284,7 +278,6 @@ void CTorch::UpdateCL	()
 			}
 			else
 			{
-				M.mul						(XFORM(),BI.mTransform);
 				light_render->set_position	(M.c);
 				light_render->set_rotation	(M.k,M.i);
 				glow_render->set_position	(M.c);
