@@ -349,9 +349,15 @@ BOOL CInventoryItem::net_Spawn			(LPVOID DC)
 	m_bInInterpolation = false;
 	m_bInterpolate	= false;
 
+	m_useful_for_NPC				= true;
 	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
+	CSE_ALifeObject					*alife_object = dynamic_cast<CSE_ALifeObject*>(e);
+	R_ASSERT						(alife_object);
+	m_useful_for_NPC				= !!alife_object->m_flags.test(CSE_ALifeObject::flUsefulForAI);
+
 	CSE_ALifeInventoryItem			*pSE_InventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(e);
 	if(!pSE_InventoryItem) return res;
+
 	
 	m_fCondition = pSE_InventoryItem->m_fCondition;
 

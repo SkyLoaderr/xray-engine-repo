@@ -571,7 +571,7 @@ void CStalkerActionGetReadyToKillVeryAggressive::execute	()
 	if (m_object->enemy()) {
 		Fvector							temp = m_object->enemy()->Position();
 		temp.y							+= 1.8f;
-		m_object->CSightManager::setup	(SightManager::eSightTypePosition,&temp,0);
+		m_object->CSightManager::setup	(SightManager::eSightTypePosition,&temp);
 	}
 	else {
 		CMemoryInfo						mem_object = m_object->memory(m_object->enemy());

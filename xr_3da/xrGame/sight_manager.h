@@ -39,7 +39,12 @@ public:
 	IC		void	GetDirectionAnglesByPrevPositions	(float &yaw, float &pitch);
 			void	GetDirectionAngles					(float &yaw, float &pitch);
 	IC		bool	use_torso_look						() const;
-			void	setup								(const SightManager::ESightType &sight_type, const Fvector *vector3d = 0, u32 interval = u32(-1));
+	template <typename T1, typename T2, typename T3>
+	IC		void	setup								(T1 _1, T2 _2, T3 _3);
+	template <typename T1, typename T2>
+	IC		void	setup								(T1 _1, T2 _2);
+	template <typename T1>
+	IC		void	setup								(T1 _1);
 			void	setup								(const CSightAction &sight_action);
 	virtual void	update								(u32 time_delta);
 	IC		bool	enabled								() const;

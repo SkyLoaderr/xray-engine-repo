@@ -8,22 +8,27 @@
 
 #pragma once
 
-IC	u64	CInventoryItem::InventoryMask		() const
+IC	u64	CInventoryItem::InventoryMask			() const
 {
 	return				(m_inventory_mask);
 }
 
-IC	int	CInventoryItem::GetVolume			() const
+IC	int	CInventoryItem::GetVolume				() const
 {
 	return				(m_iGridWidth*m_iGridHeight);
 }
 
-IC	int	CInventoryItem::GetHeight			() const
+IC	int	CInventoryItem::GetHeight				() const
 {
 	return				(m_iGridHeight);
 }
 
-IC	int	CInventoryItem::GetWidth			() const
+IC	int	CInventoryItem::GetWidth				() const
 {
 	return				(m_iGridWidth);
+}
+
+IC	bool CInventoryItem::useful_for_NPC			() const
+{
+	return				(m_useful_for_NPC);
 }

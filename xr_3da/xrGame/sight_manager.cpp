@@ -215,11 +215,6 @@ void CSightManager::Exec_Look		(float dt)
 //	Msg								("%6d : %f, %f",Level().timeServer(),((m_object->head_orientation().current.yaw)),((m_object->head_orientation().target.yaw)));
 }
 
-void CSightManager::setup			(const SightManager::ESightType &sight_type, const Fvector *vector3d, u32 interval)
-{
-	setup							(CSightAction(sight_type,vector3d));
-}
-
 void CSightManager::setup			(const CSightAction &sight_action)
 {
 	if (m_actions.size() > 1)

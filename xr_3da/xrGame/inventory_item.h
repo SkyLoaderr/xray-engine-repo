@@ -183,6 +183,9 @@ private:
 	u32				m_dwFrameDestroy;
 	u32				m_dwFrameClient;
 
+protected:
+	bool			m_useful_for_NPC;
+
 public:
 	virtual void	BuildInventoryMask		(const CInventory *inventory);
 	IC		u64		InventoryMask			() const;
@@ -199,6 +202,7 @@ public:
 	virtual const CInventoryItem *can_kill	(const xr_vector<const CGameObject*> &items) const;
 	virtual CInventoryItem *can_make_killing(const CInventory *inventory) const;
 	virtual bool	ready_to_kill			() const;
+	IC		bool	useful_for_NPC			() const;
 };
 
 #include "inventory_item_inline.h"

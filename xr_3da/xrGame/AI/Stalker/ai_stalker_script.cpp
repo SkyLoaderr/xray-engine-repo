@@ -76,7 +76,7 @@ bool CAI_Stalker::bfAssignMovement(CScriptEntityAction *tpEntityAction)
 	set_body_state					(l_tMovementAction.m_tBodyState);
 	set_movement_type				(l_tMovementAction.m_tMovementType);
 	set_mental_state				(l_tAnimationAction.m_tMentalState);
-	setup							(l_tWatchAction.m_tWatchType,&l_tWatchAction.m_tWatchVector,0);
+	setup							(l_tWatchAction.m_tWatchType,&l_tWatchAction.m_tWatchVector);
 	CStalkerMovementManager::update	(Device.dwTimeDelta);
 	CSightManager::update			(Device.dwTimeDelta);
 

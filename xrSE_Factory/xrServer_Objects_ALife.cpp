@@ -226,8 +226,8 @@ void CSE_ALifeObject::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 			);
 #pragma warning(pop)
 
-		if (ini.section_exist("alife") && ini.line_exist("alife","interactive"))
-			m_flags.set			(flInteractive,ini.r_bool("alife","interactive"));
+//		if (ini.section_exist("alife") && ini.line_exist("alife","interactive"))
+//			m_flags.set			(flInteractive,ini.r_bool("alife","interactive"));
 	}
 }
 
@@ -303,7 +303,11 @@ bool CSE_ALifeObject::can_save				() const
 
 bool CSE_ALifeObject::interactive			() const
 {
-	return						(!!m_flags.is(flInteractive));
+	return						(
+		!!m_flags.is(flInteractive) &&
+		!!m_flags.is(flVisibleForAI) &&
+		!!m_flags.is(flUsefulForAI)
+	);
 }
 
 void CSE_ALifeObject::can_switch_online		(bool value)

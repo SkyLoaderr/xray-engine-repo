@@ -72,6 +72,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeObject,CSE_Abstract,CRandom)
 		flSwitchOffline	= u32(1) << 2,
 		flInteractive	= u32(1) << 3,
 		flVisibleForAI	= u32(1) << 4,
+		flUsefulForAI	= u32(1) << 5,
 	};
 
 public:

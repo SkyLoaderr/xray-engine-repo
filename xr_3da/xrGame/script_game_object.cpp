@@ -498,13 +498,67 @@ void CScriptGameObject::set_sound_mask	(u32 sound_mask)
 		sound_player->set_sound_mask(sound_mask);
 }
 
-void CScriptGameObject::set_sight		(SightManager::ESightType tLookType, const Fvector	*tPointToLook, u32 dwLookOverDelay)
+void CScriptGameObject::set_sight		(SightManager::ESightType sight_type, const Fvector *vector3d, u32 dwLookOverDelay)
 {
 	CSightManager				*sight_manager = dynamic_cast<CSightManager*>(m_tpGameObject);
 	if (!sight_manager)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSightManager : cannot access class member set_sight!");
 	else
-		sight_manager->setup	(tLookType,tPointToLook,dwLookOverDelay);
+		sight_manager->setup	(sight_type,vector3d);
+}
+
+void CScriptGameObject::set_sight		(SightManager::ESightType sight_type, bool torso_look, bool path)
+{
+	CSightManager				*sight_manager = dynamic_cast<CSightManager*>(m_tpGameObject);
+	if (!sight_manager)
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSightManager : cannot access class member set_sight!");
+	else
+		sight_manager->setup	(sight_type,torso_look,path);
+}
+
+void CScriptGameObject::set_sight		(SightManager::ESightType sight_type, const Fvector &vector3d, bool torso_look = false)
+{
+	CSightManager				*sight_manager = dynamic_cast<CSightManager*>(m_tpGameObject);
+	if (!sight_manager)
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSightManager : cannot access class member set_sight!");
+	else
+		sight_manager->setup	(sight_type,vector3d,torso_look);
+}
+
+void CScriptGameObject::set_sight		(SightManager::ESightType sight_type, const Fvector *vector3d)
+{
+	CSightManager				*sight_manager = dynamic_cast<CSightManager*>(m_tpGameObject);
+	if (!sight_manager)
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSightManager : cannot access class member set_sight!");
+	else
+		sight_manager->setup	(sight_type,vector3d);
+}
+
+void CScriptGameObject::set_sight		(CScriptGameObject *object_to_look, bool torso_look)
+{
+	CSightManager				*sight_manager = dynamic_cast<CSightManager*>(m_tpGameObject);
+	if (!sight_manager)
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSightManager : cannot access class member set_sight!");
+	else
+		sight_manager->setup	(object_to_look->m_tpGameObject,torso_look);
+}
+
+void CScriptGameObject::set_sight		(CScriptGameObject *object_to_look, bool torso_look, LPCSTR bone_name)
+{
+	CSightManager				*sight_manager = dynamic_cast<CSightManager*>(m_tpGameObject);
+	if (!sight_manager)
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSightManager : cannot access class member set_sight!");
+	else
+		sight_manager->setup	(object_to_look->m_tpGameObject,torso_look,bone_name);
+}
+
+void CScriptGameObject::set_sight		(const CMemoryInfo *memory_object, bool	torso_look)
+{
+	CSightManager				*sight_manager = dynamic_cast<CSightManager*>(m_tpGameObject);
+	if (!sight_manager)
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSightManager : cannot access class member set_sight!");
+	else
+		sight_manager->setup	(memory_object,torso_look);
 }
 
 u32 CScriptGameObject::GetRank		()

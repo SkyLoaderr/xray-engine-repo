@@ -196,7 +196,13 @@ void CScriptGameObject::script_register(lua_State *L)
 			.def("visibility_threshold",		&CScriptGameObject::visibility_threshold)
 
 			// sight manager
-			.def("set_sight",					&CScriptGameObject::set_sight)
+			.def("set_sight",					(void (CScriptGameObject::*)(SightManager::ESightType sight_type, const Fvector *vector3d, u32 dwLookOverDelay))(CScriptGameObject::set_sight))
+			.def("set_sight",					(void (CScriptGameObject::*)(SightManager::ESightType sight_type, bool torso_look, bool path))(CScriptGameObject::set_sight))
+			.def("set_sight",					(void (CScriptGameObject::*)(SightManager::ESightType sight_type, const Fvector &vector3d, bool torso_look))(CScriptGameObject::set_sight))
+			.def("set_sight",					(void (CScriptGameObject::*)(SightManager::ESightType sight_type, const Fvector *vector3d))(CScriptGameObject::set_sight))
+			.def("set_sight",					(void (CScriptGameObject::*)(CScriptGameObject *object_to_look, bool torso_look))(CScriptGameObject::set_sight))
+			.def("set_sight",					(void (CScriptGameObject::*)(CScriptGameObject *object_to_look, bool torso_look, LPCSTR bone_name))(CScriptGameObject::set_sight))
+			.def("set_sight",					(void (CScriptGameObject::*)(const CMemoryInfo *memory_object, bool	torso_look))(CScriptGameObject::set_sight))
 
 			// object handler
 			.def("set_item",					(void (CScriptGameObject::*)(MonsterSpace::EObjectAction ))(CScriptGameObject::set_item))

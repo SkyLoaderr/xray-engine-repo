@@ -155,7 +155,10 @@ void CSE_ALifeInventoryItem::UPDATE_Read	(NET_Packet &tNetPacket)
 #ifdef _EDITOR
 void CSE_ALifeInventoryItem::FillProp		(LPCSTR pref, PropItemVec& values)
 {
-	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref, base()->s_name, "Item condition"), &m_fCondition, 0.f, 1.f);
+	PHelper.CreateFloat				(values, FHelper.PrepareKey(pref, base()->s_name, "Item condition"), &m_fCondition, 0.f, 1.f);
+	CSE_ALifeObject					*alife_object = dynamic_cast<CSE_ALifeObject*>(base());
+	R_ASSERT2						(alife_object);
+	PHelper.CreateFlag32			(items,	FHelper.PrepareKey(pref,s_name,"ALife\\Useful for AI"),		&alife_object->m_flags,			flUsefulForAI);
 }
 #endif
 
