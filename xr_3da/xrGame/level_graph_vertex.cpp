@@ -252,67 +252,7 @@ float CLevelGraph::find_farthest_node_in_direction(u32 start_vertex_id, const Fv
 
 bool CLevelGraph::create_straight_PTN_path(u32 start_vertex_id, const Fvector &start_point, const Fvector &finish_point, xr_vector<Fvector> &tpaOutputPoints, xr_vector<u32> &tpaOutputNodes, bool bAddFirstPoint, bool bClearPath) const
 {
-	TIMER_START			(CreateStraightPath)
-	SContour				_contour;
-	const_iterator			I,E;
-	int						saved_index, iPrevIndex = -1, iNextNode;
-	Fvector					temp_point = start_point;
-	float					fDistance = start_point.distance_to_xz(finish_point), fCurDistance = 0.f;
-	u32						dwCurNode = start_vertex_id;
-
-	if (bClearPath) {
-		tpaOutputPoints.clear	();
-		tpaOutputNodes.clear	();
-	}
-	if (bAddFirstPoint) {
-		tpaOutputPoints.push_back(start_point);
-		tpaOutputNodes.push_back(start_vertex_id);
-	}
-
-	while (!inside(vertex(dwCurNode),finish_point) && (fCurDistance < (fDistance + EPS_L))) {
-		begin				(dwCurNode,I,E);
-		saved_index			= -1;
-		contour				(_contour,dwCurNode);
-		for ( ; I != E; ++I) {
-			iNextNode = value(dwCurNode,I);
-			if (valid_vertex_id(iNextNode) && (iPrevIndex != iNextNode))
-				choose_point(start_point,finish_point,_contour, iNextNode,temp_point,saved_index);
-		}
-
-		if (saved_index > -1) {
-			fCurDistance		= start_point.distance_to_xz(temp_point);
-			SContour			tNextContour;
-			SSegment			tNextSegment;
-			Fvector				tIntersectPoint;
-			contour				(tNextContour,saved_index);
-			intersect			(tNextSegment,tNextContour,_contour);
-			u32					dwIntersect = intersect(start_point.x,start_point.z,finish_point.x,finish_point.z,tNextSegment.v1.x,tNextSegment.v1.z,tNextSegment.v2.x,tNextSegment.v2.z,&tIntersectPoint.x,&tIntersectPoint.z);
-			VERIFY				(dwIntersect);
-			tIntersectPoint.y	= vertex_plane_y(vertex(dwCurNode),tIntersectPoint.x,tIntersectPoint.z);
-
-			tpaOutputPoints.push_back(tIntersectPoint);
-			tpaOutputNodes.push_back(saved_index);
-
-			iPrevIndex			= dwCurNode;
-			dwCurNode			= saved_index;
-		}
-		else {
-			TIMER_STOP			(CreateStraightPath)
-			return(false);
-		}
-	}
-
-	if (inside(vertex(dwCurNode),finish_point)) {
-		tpaOutputPoints.push_back(finish_point);
-		tpaOutputPoints.back().y = vertex_plane_y(dwCurNode,finish_point.x,finish_point.z);
-		tpaOutputNodes.push_back(dwCurNode);
-		TIMER_STOP			(CreateStraightPath)
-		return(true);
-	}
-	else {
-		TIMER_STOP			(CreateStraightPath)
-		return(false);
-	}
+	return					(create_straight_PTN_path(start_vertex_id,v2d(start_point),v2d(finish_point),tpaOutputPoints,tpaOutputNodes,bAddFirstPoint,bClearPath));
 }
 
 #ifndef AI_COMPILER

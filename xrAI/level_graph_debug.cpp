@@ -484,25 +484,6 @@ void CLevelGraph::draw_dynamic_obstacles() const
 //	}
 }
 
-IC  Fvector v3d(const Fvector2 &vector2d)
-{
-	return			(Fvector().set(vector2d.x,0.f,vector2d.y));
-}
-
-IC  Fvector2 v2d(const Fvector &vector3d)
-{
-	return			(Fvector2().set(vector3d.x,vector3d.z));
-}
-
-void write_trajectory_point(const CLevelGraph::STrajectoryPoint point, LPCSTR point_desc)
-{
-	Msg						("\n%s",point_desc);
-	Msg						("%f",point.angular_velocity);
-	Msg						("%f",point.linear_velocity);
-	Msg						("[%f][%f][%f]",VPUSH(v3d(point.position)));
-	Msg						("[%f][%f][%f]",VPUSH(v3d(point.direction)));
-}
-
 void CLevelGraph::set_start_point	()
 {
 	CObject					*obj = Level().Objects.FindObjectByName("m_stalker_e0000");
@@ -540,8 +521,8 @@ void CLevelGraph::set_start_point	()
 //	dest.direction.set		(-0.100624f,-0.994924f);
 //	dest.vertex_id			= vertex(v3d(dest.position));
 
-	write_trajectory_point	(start,"start");
-	write_trajectory_point	(dest,"dest");
+//	write_trajectory_point	(start,"start");
+//	write_trajectory_point	(dest,"dest");
 }
 
 IC	void adjust_point(
@@ -823,7 +804,7 @@ IC	bool build_line_trajectory(
 	VERIFY					(level_graph.valid_vertex_id(vertex_id));
 	if (level_graph.inside(vertex_id,dest.point)) {
 		if (path) {
-			Fvector			t = v3d(dest.point);
+			Fvector			t = level_graph.v3d(dest.point);
 			t.y				= level_graph.vertex_plane_y(vertex_id,dest.point.x,dest.point.y);
 			path->push_back	(t);
 		}

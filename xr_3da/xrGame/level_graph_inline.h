@@ -382,3 +382,14 @@ IC	const u32 CLevelGraph::vertex_id(const CLevelGraph::CVertex *vertex) const
 	VERIFY		(valid_vertex_id(u32(vertex - m_nodes)));
 	return		(u32(vertex - m_nodes));
 }
+
+IC  Fvector CLevelGraph::v3d(const Fvector2 &vector2d) const
+{
+	return			(Fvector().set(vector2d.x,0.f,vector2d.y));
+}
+
+IC  Fvector2 CLevelGraph::v2d(const Fvector &vector3d) const
+{
+	return			(Fvector2().set(vector3d.x,vector3d.z));
+}
+
