@@ -221,6 +221,18 @@ void CActor::Load		(LPCSTR section )
 
 	// sheduler
 	dwMinUpdate			= dwMaxUpdate = 1;
+
+	// patch : ZoneAreas
+	if (Level().pLevel->SectionExists("zone_areas"))
+	{
+		CInifile::Sect&		S = Level().pLevel->ReadSection("zone_areas");
+		for (CInifile::SectIt I = S.begin(); I!=S.end(); I++)
+		{
+			Fvector4 a;
+			sscanf				(I->second,"%f,%f,%f,%f",&a.x,&a.y,&a.z,&a.w);
+			zone_areas.push_back(a);
+		}
+	}
 }
 
 BOOL CActor::Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
@@ -409,17 +421,22 @@ void CActor::Update	(DWORD DT)
 {
 	if (!bEnabled)	return;
 
+	// patch
 	if (patch_frame<patch_frames)	{
 		vPosition.set		(patch_position);
 		patch_frame			+= 1;
 	}
 
-/*
 	// zone test
-	Fvector z_P			= {1.803f, -0.012f, -22.089f};
-	float	z_R			= 15.f;
+	float z_amount		= 0;
+	for (int za=0; za<zone_areas.size(); za++)
+	{
+		Fvector	P; 
+		P.set			(zone_areas[za].x,zone_areas[za].y,zone_areas[za].z);
+		float D			= 1-(Position().distance_to(P)/zone_areas[za].w);
+		z_amount		= _max(D,z_amount);
+	}
 
-	float	z_amount	= 1-(Position().distance_to(z_P)/z_R);
 	if (z_amount>EPS)	ZoneEffect	(z_amount);
 	else				{
 		cam_shift		= 0.f;
@@ -427,7 +444,7 @@ void CActor::Update	(DWORD DT)
 		if (sndZoneHeart.feedback)		sndZoneHeart.feedback->Stop		();
 		if (sndZoneDetector.feedback)	sndZoneDetector.feedback->Stop	();
 	}
-*/
+
 	cam_shift		= 0.f;
 	cam_gray		= 0.f;
 

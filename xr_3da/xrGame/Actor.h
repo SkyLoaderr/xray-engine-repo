@@ -60,9 +60,9 @@ protected:
 	sound					sndHit[SND_HIT_COUNT];
 	sound					sndDie[SND_DIE_COUNT];
 
-	struct				SActorState
+	struct					SActorState
 	{
-		struct			SAnimState
+		struct				SAnimState
 		{
 			CMotionDef*		legs_fwd;
 			CMotionDef*		legs_back;
@@ -124,6 +124,9 @@ private:
 	float					cam_shift;				// for zone-effects
 	float					fPrevCamPos;
 	CEffectorBobbing*		pCamBobbing;
+
+	// 
+	vector<Fvector4>		zone_areas;
 
 //------------------------------
 	struct				net_update 		
