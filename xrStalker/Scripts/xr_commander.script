@@ -191,11 +191,11 @@ function action_commander:execute()
                 if not self.drunk then
                     self.act = random_choice_weighted{
                                    [walk_inside]  = 30,
-                                   [walk_outside] = 10,
+                                   [walk_outside] = 15,
                                    [look_map]     = 10,
-                                   [look_outside] = 20,
+                                   [look_outside] = 25,
                                    [radio_talk]   = 10,
-                                   [drink_vodka]  = 20 }
+                                   [drink_vodka]  = 10 }
                 else
                     self.act = random_choice_weighted{
                                    [walk_inside]  = 60,
@@ -215,6 +215,15 @@ function action_commander:execute()
         if self.act == walk_inside and self.last_act ~= walk_inside then
             self.looked_at_box = false
             self.last_inside_point = nil
+        end
+        
+        if self.act == look_map     or
+           self.act == sleep        or
+           self.act == look_outside or
+           self.act == drink_vodka  or
+           self.act == look_outside or
+           self.act == walk_inside  then
+            self.object:play_sound( random_choice( snd_drunk, snd_walking, snd_singing ), 1, 0 )
         end
 --        printf( "decision: act=%d last_act=%d", self.act, self.last_act or -1 )
     end
@@ -317,7 +326,7 @@ function action_commander:exec_walk_inside()
 
             local rnd = math.random( 100 )
 
-            if self.drunk then
+--[[            if self.drunk then
                 if rnd < 60 then
                     self.object:play_sound( snd_drunk, 1, 0 )
                 elseif rnd < 90 then
@@ -329,8 +338,8 @@ function action_commander:exec_walk_inside()
                 elseif rnd < 60 then
                     self.object:play_sound( snd_singing, 1, 0 )
                 end
-            end
-
+            end]]
+            
             self.object:clear_animations()
 
             printf( "[commander] : walk_inside" )
@@ -338,48 +347,53 @@ function action_commander:exec_walk_inside()
     end
 end
 
-function action_commander:exec_look_box()
-    if not self.box then
-        self.box = level.object( "blockpost_box" )
-    end
+function action_commander:actor_has_box()
+    local actor = level.actor()
+    return actor and actor:object( "quest_case_01" )
+end
 
-    if self.box then
+function action_commander:exec_look_box()
+--    if self.box then
         if self.time_end then
             if self.time_end <= device():time_global() then
-                if not self.object:see( self.box ) then
+--                if not self.object:see( self.box ) then
 --                if self.object:position():distance_to_sqr( self.box:position() ) > 25 then
+                if self.object:position():distance_to_sqr( self.box:position() ) > 25 or self:actor_has_box() then
                     printf( "[commander] : ящик украли! “ревога!!!" )
-                    self.act     = box_alarm
-                    self.pos     = nil
-                    self.sub_act = nil
+                    self.act       = box_alarm
+                    self.box_alarm = true
                 else
                     printf( "[commander] : ящик на месте" )
-                    self:add_inside_animations( 1 )
+                    --self:add_inside_animations( 1 )
                     --self.act = walk_inside
                     self.act = self.act_before_box
-                    self.pos     = nil
-                    self.sub_act = nil
                 end
 
                 self.look_at_box   = false
                 self.looked_at_box = true
 
                 self.time_end = nil
+                self.pos     = nil
+                self.sub_act = nil
             end
         else
             self:stop()
---            self.object:set_sight( look.point, self.a.way:point( self.a.way:index( "box" ) ):add( vector():set( 0, 1.5, 0 ) ), 0 )
+            self.object:set_sight( look.point, self.a.way:point( self.a.way:index( "box" ) ):add( vector():set( 0, 1.5, 0 ) ), 0 )
 --            self.object:set_sight( look.point, self.a.way:point( self.a.way:index( "box" ) ), 0 )
-            self.object:set_sight( look.point, self.box:position(), 0 )
+--            self.object:set_sight( look.point, self.box:position(), 0 )
             self.object:set_mental_state( anim.free )
 
             self.time_end = device():time_global() + 3000
         end
-    else
-        self.look_at_box = false
-        self.act = walk_inside
-        self:add_inside_animations( 2 )
-    end
+--[[    else
+        --self.look_at_box = false
+        --self.act = walk_inside
+        --self:add_inside_animations( 2 )
+        self.time_end = nil
+        self.pos      = nil
+        self.sub_act  = nil
+        self.act      = self.act_before_box
+    end]]
 end
 
 function action_commander:exec_box_alarm()
@@ -408,7 +422,6 @@ function action_commander:exec_box_alarm()
                 end
 
                 xr_gulag.setFractionState( "blockpost", 2 )
-                self.box_alarm = true
 
                 self.sub_act = true
             end
@@ -574,7 +587,7 @@ function action_commander:exec_radio_talk()
     end
 end
 
-function action_commander:radio ()
+function action_commander:radio()
     self.object:add_animation ("raciya_komandir_0", true)
     self.object:add_animation ("raciya_komandir_1", true)
     self.object:add_animation ("raciya_komandir_2", true)
@@ -825,14 +838,20 @@ function action_commander:move_callback( obj, action_type, index )
             end
         end
     else
-        self.object:play_sound( snd_walking, 1, 0 )
+        self.object:play_sound( random_choice( snd_walking, snd_drunk ), 1, 0 )
     end
 end
 
 function action_commander:zone_callback( zone, obj )
-    if not self.box_alarm and obj:id() == self.object:id() then
-        self.act_before_box = self.act
-        self.act = look_box
+    if not self.box_alarm and obj:id() == self.object:id() and self.act ~= look_box then
+        if not self.box then
+            self.box = level.object( "blockpost_box" )
+        end
+
+        if self.box then
+            self.act_before_box = self.act
+            self.act = look_box
+        end
     end
 end
 
