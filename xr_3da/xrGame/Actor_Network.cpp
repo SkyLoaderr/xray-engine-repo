@@ -840,9 +840,9 @@ void	CActor::OnChangeVisual()
 	//-------------------------------------------------------------------------------
 	SetCallbacks		();
 	//-------------------------------------------------------------------------------
-//	m_current_head = 0;
-//	m_current_legs = 0;
-//	m_current_torso = 0;
+	m_current_head = 0;
+	m_current_legs = 0;
+	m_current_torso = 0;
 };
 
 void	CActor::ChangeVisual			( shared_str NewVisual )
