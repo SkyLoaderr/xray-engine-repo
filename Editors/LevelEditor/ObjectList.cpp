@@ -242,7 +242,7 @@ void __fastcall TfrmObjectList::tvItemsKeyPress(TObject *Sender,
 {
 	TElTreeItem* node = tvItems->Items->LookForItemEx(tvItems->Selected,-1,false,false,false,&Key,LookupFunc);
     if (!node) node = tvItems->Items->LookForItemEx(0,-1,false,false,false,&Key,LookupFunc);
-    FHelper.RestoreSelection(tvItems,node);
+    FHelper.RestoreSelection(tvItems,node,false);
 }
 //---------------------------------------------------------------------------
 

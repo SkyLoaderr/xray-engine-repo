@@ -72,7 +72,7 @@ void TfrmPropertiesEObject::FillSurfProps()
     PropItemVec values;
     if (S->GetReference()){
     	CEditableObject* 	O = S->GetReference();
-        O->FillSurfacesProps("Surfaces",values);
+//        O->FillSurfacesProps("Surfaces",values);
         for (SurfaceIt it=O->FirstSurface(); it!=O->LastSurface(); it++){
         	AnsiString	pref = AnsiString("Surfaces\\")+(*it)->_Name();
         	O->FillSurfaceProps(*it,pref.c_str(),values);
@@ -153,7 +153,7 @@ void __fastcall TfrmPropertiesEObject::OnPick(const SRayPickInfo& pinf)
 	if (ebDropper->Down&&m_pEditObject){
         CSurface* surf=pinf.e_mesh->GetSurfaceByFaceID(pinf.inf.id);
         AnsiString s_name = AnsiString("Surfaces\\")+AnsiString(surf->_Name());
-        FHelper.RestoreSelection(m_SurfProp->tvProperties,s_name.c_str());
+        FHelper.RestoreSelection(m_SurfProp->tvProperties,s_name,false);
     }
 }
 //---------------------------------------------------------------------------

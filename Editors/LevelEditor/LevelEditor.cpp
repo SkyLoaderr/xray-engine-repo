@@ -36,6 +36,7 @@ USEFORM("TextForm.cpp", frmText);
 USEFORM("PropertiesWayPoint.cpp", frmPropertiesWayPoint);
 USEFORM("FrameShape.cpp", fraShape); /* TFrame: File Type */
 USEFORM("FrameAIMap.cpp", fraAIMap); /* TFrame: File Type */
+USEFORM("edit\ItemList.cpp", ItemList);
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"
@@ -49,7 +50,7 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
         frmSplash->Show				();
         frmSplash->Repaint			();
 
-        frmSplash->SetStatus		("Initializing");
+        frmSplash->SetStatus		("Core initializing...");
 
     	Core._initialize			(_EDITOR_FILE_NAME_,ELogCallback);
         TfrmLog::CreateLog			();

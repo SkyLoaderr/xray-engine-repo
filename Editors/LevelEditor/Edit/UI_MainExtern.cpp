@@ -519,6 +519,7 @@ bool __fastcall TUI::ApplyShortCutExt(WORD Key, TShiftState Shift)
             else if (Key=='2')			COMMAND1(COMMAND_CHANGE_TARGET, etPS)          
             else if (Key=='3')  		COMMAND1(COMMAND_CHANGE_TARGET, etDO)          
             else if (Key=='4')			COMMAND1(COMMAND_CHANGE_TARGET,	etAIMap)		
+            else if (Key=='W')			COMMAND0(COMMAND_SHOW_OBJECTLIST)              
         }
     }else{
         if (Shift.Contains(ssAlt)){
@@ -535,7 +536,6 @@ bool __fastcall TUI::ApplyShortCutExt(WORD Key, TShiftState Shift)
             else if (Key=='9')  		COMMAND1(COMMAND_CHANGE_TARGET, etSector)      
             else if (Key=='0')  		COMMAND1(COMMAND_CHANGE_TARGET, etPortal)      
             // simple press
-            else if (Key=='W')			COMMAND0(COMMAND_SHOW_OBJECTLIST)              
             else if (Key==VK_DELETE)	COMMAND0(COMMAND_DELETE_SELECTION)             
             else if (Key==VK_RETURN)	COMMAND0(COMMAND_SHOW_PROPERTIES)              
             else if (Key==VK_OEM_MINUS)	COMMAND1(COMMAND_HIDE_SEL, FALSE)              

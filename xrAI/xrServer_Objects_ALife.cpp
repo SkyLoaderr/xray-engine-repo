@@ -367,8 +367,8 @@ void CSE_ALifeObject::UPDATE_Read			(NET_Packet &tNetPacket)
 void CSE_ALifeObject::FillProp				(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp			(pref, items);
-	PHelper.CreateFLOAT			(items,	PHelper.PrepareKey(pref, "ALife\\Probability"),			&m_fProbability,	0,100);
-	PHelper.Create...			(items,PHelper.PrepareKey(pref,s_name,"ALife\\Group control"),	&m_caGroupControl,  pSettings->r_string("GroupControlSection"));
+	PHelper.CreateFloat			(items,	PHelper.PrepareKey(pref, "ALife\\Probability"),			&m_fProbability,	0,100);
+	PHelper.CreateList			(items, PHelper.PrepareKey(pref,s_name,"ALife\\Group control"),	&m_caGroupControl,  sizeof(m_caGroupControl), pSettings->r_string("GroupControlSection"));
 }
 #endif
 
@@ -595,7 +595,7 @@ void CSE_ALifeAnomalousZone::FillProp		(LPCSTR pref, PropItemVec& items)
     PHelper.CreateU32			(items,PHelper.PrepareKey(pref,s_name,"Period"),							&m_period,20,10000);
     PHelper.CreateFloat			(items,PHelper.PrepareKey(pref,s_name,"Radius"),							&m_fRadius,0.f,100.f);
 	for (u16 i=0; i<m_wItemCount; i++)
-		PHelper.CreateFLOAT		(items,PHelper.PrepareKey(pref,s_name,"ALife\\Artefact Weights",			m_cppArtefactSections[i]), m_faWeights + i,0.f,1.f);
+		PHelper.CreateFloat		(items,PHelper.PrepareKey(pref,s_name,"ALife\\Artefact Weights",			m_cppArtefactSections[i]), m_faWeights + i,0.f,1.f);
 	PHelper.CreateFloat			(items,PHelper.PrepareKey(pref,s_name,"ALife\\Artefact birth probability"),	&m_fBirthProbability,0.f,1.f);
 	PHelper.CreateU16			(items,PHelper.PrepareKey(pref,s_name,"ALife\\Artefact spawn places count"),&m_wArtefactSpawnCount,32,256);
 }

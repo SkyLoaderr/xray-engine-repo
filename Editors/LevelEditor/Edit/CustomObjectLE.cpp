@@ -196,9 +196,9 @@ void CCustomObject::Scale( Fvector& amount )
     PScale		= s;
 }
 
-void __fastcall CCustomObject::OnObjectNameAfterEdit(PropValue* sender, LPVOID edit_val)
+void __fastcall CCustomObject::OnObjectNameAfterEdit(PropItem* sender, LPVOID edit_val)
 {
-	TextValue* V = (TextValue*)sender;
+	TextValue* V = (TextValue*)sender->GetFrontValue();
 	AnsiString* new_name = (AnsiString*)edit_val;
 	if (Scene.FindObjectByName(new_name->c_str(),0)) *new_name = V->GetValue();
     else *new_name = new_name->LowerCase();
@@ -207,7 +207,7 @@ void __fastcall CCustomObject::OnObjectNameAfterEdit(PropValue* sender, LPVOID e
 void CCustomObject::FillProp(LPCSTR pref, PropItemVec& items)
 {
     PropValue* V = PHelper.CreateText(items,PHelper.PrepareKey(pref, "Name"),FName,sizeof(FName));
-    V->OnAfterEditEvent = OnObjectNameAfterEdit;
+    V->Owner()->OnAfterEditEvent = OnObjectNameAfterEdit;
     if (V->Owner()->m_Flags.is(PropItem::flMixed)) V->Owner()->m_Flags.set(PropItem::flDisabled,TRUE);
 }
 //----------------------------------------------------

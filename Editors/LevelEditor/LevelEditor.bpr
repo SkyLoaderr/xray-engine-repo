@@ -119,7 +119,9 @@
       intermediate\xrServer_Factory.obj intermediate\xrServer_Objects.obj 
       intermediate\xrServer_Objects_ALife.obj 
       intermediate\xrServer_Objects_ALife_Items.obj 
-      intermediate\EditObjectProps.obj"/>
+      intermediate\EditObjectProps.obj intermediate\du_cylinder.obj 
+      intermediate\ItemListTypes.obj intermediate\ItemList.obj 
+      intermediate\ItemListHelper.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -132,7 +134,7 @@
       FrameEmitter.dfm FrameRPoint.dfm FrameWayPoint.dfm FrameDetObj.dfm 
       DOShuffle.dfm DOOneColor.dfm PropertiesDetailObject.dfm PropertiesList.dfm 
       EditLightAnim.dfm PropertiesEObject.dfm FrameGroup.dfm TextForm.dfm 
-      PropertiesWayPoint.dfm FrameShape.dfm FrameAIMap.dfm"/>
+      PropertiesWayPoint.dfm FrameShape.dfm FrameAIMap.dfm edit\ItemList.dfm"/>
     <LIBFILES value=""/>
     <LIBRARIES value="elpackB6.lib editor.lib bcbsmp.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib bcbsmp.lib vclx.lib editor.lib elpackB6.lib"/>
@@ -410,6 +412,10 @@
       <FILE FILENAME="Engine\Game\xrServer_Objects_ALife.cpp" FORMNAME="" UNITNAME="xrServer_Objects_ALife.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Game\xrServer_Objects_ALife_Items.cpp" FORMNAME="" UNITNAME="xrServer_Objects_ALife_Items.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\EditObjectProps.cpp" FORMNAME="" UNITNAME="EditObjectProps" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\du_cylinder.cpp" FORMNAME="" UNITNAME="du_cylinder" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\ItemListTypes.cpp" FORMNAME="" UNITNAME="ItemListTypes.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\ItemList.cpp" FORMNAME="ItemList" UNITNAME="ItemList" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\ItemListHelper.cpp" FORMNAME="" UNITNAME="ItemListHelper.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

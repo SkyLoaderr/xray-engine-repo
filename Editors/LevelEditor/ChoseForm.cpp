@@ -513,7 +513,7 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
                 m_Snd.set_position	(Device.m_Camera.GetPosition());
                 AnsiString temp; 		
                 CSoundRender_Source* src= (CSoundRender_Source*)m_Snd.handle;
-                if (src) temp.sprintf	("Size: %.2f Kb\nTime: %.2f sec",float(file->size)/1024.f,float(src->dwTimeTotal)/1000.f);
+                if (src) temp.sprintf	("Size: %.2f Kb\nTime: %.2f sec",float(file->size_real)/1024.f,float(src->dwTimeTotal)/1000.f);
                 lbInfo->Caption			= temp;
             }else						pbImage->Repaint();
 			lbItemName->Caption 	= "\""+Item->Text+"\"";

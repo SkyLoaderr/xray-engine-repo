@@ -57,7 +57,7 @@ void __fastcall TfrmEditLightAnim::FormShow(TObject *Sender)
     UI.BeginEState(esEditLightAnim);
 
     if (!m_LastSelection.IsEmpty()){
-    	TElTreeItem *node=FHelper.FindObject(tvItems,m_LastSelection.c_str());
+    	TElTreeItem *node=FHelper.FindObject(tvItems,m_LastSelection);
 	    if (node){
     	    tvItems->Selected = node;
         	tvItems->EnsureVisible(node);
@@ -464,14 +464,14 @@ void __fastcall TfrmEditLightAnim::InplaceTextEditValidateResult(
             if (FHelper.IsObject(item)){
                 FHelper.MakeName(item,0,full_name,false);
                 string256 new_nm;
-                FHelper.ReplacePart(full_name.c_str(),new_text.c_str(),node->Level,new_nm);
+                FHelper.ReplacePart(full_name,new_text,node->Level,new_nm);
                 LALib.RenameItem(full_name.c_str(),new_nm);
             }
         }
     }else if (FHelper.IsObject(node)){
         FHelper.MakeName(node,0,full_name,false);
         string256 new_nm;
-        FHelper.ReplacePart(full_name.c_str(),new_text.c_str(),node->Level,new_nm);
+        FHelper.ReplacePart(full_name,new_text.c_str(),node->Level,new_nm);
 		LALib.RenameItem(full_name.c_str(),new_nm);
     }
     tvItems->Selected=node;
@@ -486,7 +486,7 @@ void __fastcall TfrmEditLightAnim::CreateFolder1Click(TObject *Sender)
     FHelper.MakeName(tvItems->Selected,0,start_folder,true);
     FHelper.GenerateFolderName(tvItems,tvItems->Selected,folder);
     folder = start_folder+folder;
-	TElTreeItem* node = FHelper.AppendFolder(tvItems,folder.c_str());
+	TElTreeItem* node = FHelper.AppendFolder(tvItems,folder);
     if (tvItems->Selected) tvItems->Selected->Expand(false);
     tvItems->EditItem(node,-1);
 	OnModified();

@@ -96,7 +96,7 @@ bool __fastcall TUI_Tools::MouseEnd(TShiftState Shift)
 //---------------------------------------------------------------------------
 void __fastcall TUI_Tools::OnObjectsUpdate()
 {
-	UpdateProperties();
+	UpdateProperties(false);
     if(pCurTools&&pCurTools->pCurControl) return pCurTools->OnObjectsUpdate();
 }
 //---------------------------------------------------------------------------
@@ -278,7 +278,7 @@ void TUI_Tools::ShowProperties()
         case OBJCLASS_WAY:   		TfrmPropertiesWayPoint::Run(&lst,bChange);	break;
         default:
             m_Props->ShowProperties	();
-            UpdateProperties		();
+            UpdateProperties		(false);
         }
         if (bChange) Scene.UndoSave();
         UI.RedrawScene();

@@ -231,7 +231,6 @@ public:
         V->Owner()->tag					= tag;
         return V;					
     }
-
 	void 				DrawThumbnail	(TCanvas *Surface, TRect &R, LPCSTR fname);
 };
 //---------------------------------------------------------------------------

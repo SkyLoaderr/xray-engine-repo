@@ -521,7 +521,7 @@ void TUI::Idle()
     SndLib.OnFrame();
     // tools on frame
     if (m_Flags.is(flUpdateScene)){
-        Tools.UpdateProperties	();
+        Tools.UpdateProperties	(false);
         RealUpdateScene			();
     }
     if (m_Flags.is(flRedraw)){

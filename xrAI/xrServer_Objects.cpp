@@ -154,7 +154,7 @@ void CSE_Shape::cform_write					(NET_Packet	&tNetPacket)
 ////////////////////////////////////////////////////////////////////////////
 void CSE_Visual::set_visual					(LPCSTR name)
 {
-	strcpy						(visual_name,name);
+	strcpy						(visual_name,name); if (strext(visual_name)) *strext(visual_name) = 0;
 #ifdef _EDITOR
 	OnChangeVisual				(0);
 #endif

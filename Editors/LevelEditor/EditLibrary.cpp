@@ -118,7 +118,7 @@ void __fastcall TfrmEditLibrary::FormShow(TObject *Sender)
 	Device.LightEnable(1,true);
 
     if (!m_LastSelection.IsEmpty())
-    	FHelper.RestoreSelection(tvObjects,m_LastSelection.c_str());
+    	FHelper.RestoreSelection(tvObjects,m_LastSelection,false);
 	// check window position
 	UI.CheckWindowPos(this);
 }
@@ -258,7 +258,7 @@ void TfrmEditLibrary::InitObjects()
     FS_QueryPairIt it=lst.begin();
     FS_QueryPairIt _E=lst.end();
     for(; it!=_E; it++)
-        FHelper.AppendObject(tvObjects,it->first.c_str());
+        FHelper.AppendObject(tvObjects,it->first);
 	tvObjects->IsUpdating		= false;
 }
 //---------------------------------------------------------------------------
@@ -397,7 +397,7 @@ extern bool __fastcall LookupFunc(TElTreeItem* Item, void* SearchDetails);
 void __fastcall TfrmEditLibrary::tvObjectsKeyPress(TObject *Sender, char &Key){
 	TElTreeItem* node = tvObjects->Items->LookForItemEx(tvObjects->Selected,-1,false,false,false,&Key,LookupFunc);
     if (!node) node = tvObjects->Items->LookForItemEx(0,-1,false,false,false,&Key,LookupFunc);
-    FHelper.RestoreSelection(tvObjects,node);
+    FHelper.RestoreSelection(tvObjects,node,false);
 }
 //---------------------------------------------------------------------------
 
@@ -469,7 +469,7 @@ void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
         if (bNeedUpdate){
 			Lib.RefreshLibrary();
 			InitObjects();
-	    	FHelper.RestoreSelection(tvObjects,m_LastSelection.c_str());
+	    	FHelper.RestoreSelection(tvObjects,m_LastSelection,false);
         }
         // refresh selected
 //		RefreshSelected();

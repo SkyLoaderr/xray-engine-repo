@@ -135,7 +135,7 @@ public:
 	void 					InitTimer		();
 	// Mode control
 	IC u32	 				TimerAsync		(void)
-    { u64 qTime = TimerGlobal.GetElapsed(); return u32((qTime*u64(1000))/CPU::cycles_per_second); }
+    { return TimerGlobal.GetElapsed_ms();}
 	IC u32	 				TimerAsyncMM	(void)
     { return TimerAsync()+Timer_MM_Delta; }
 public:

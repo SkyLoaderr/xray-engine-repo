@@ -135,7 +135,7 @@ public:
 
     void			ShowProperties	();
     void			HideProperties	();
-    void			UpdateProperties(){m_Flags.set(flUpdateProperties|flUpdateObjectList,TRUE);}
+    void			UpdateProperties(bool bForced){m_Flags.set(flUpdateProperties|flUpdateObjectList,TRUE); if (bForced) OnFrame();}
     void			RefreshProperties();
 };
 extern TUI_Tools Tools;

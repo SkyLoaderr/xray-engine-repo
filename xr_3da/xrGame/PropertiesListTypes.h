@@ -73,6 +73,7 @@ typedef void 	__fastcall (__closure *TOnPropItemFocused)	(PropItem* sender);
 class PropValue{
 	friend class		CPropHelper;
     friend class		PropItem;
+protected:
 	PropItem*			m_Owner;
 	// base events
 public:
@@ -513,12 +514,19 @@ public:
 class ListValue: public PropValue{
 	AnsiString			init_value;
 	LPSTR				value;
-public:
+public:                                   
 	AStringVec 			items;
 						ListValue		(LPSTR val, AStringVec* _items):value(val),init_value(*val),items(*_items){};
 						ListValue		(LPSTR val, u32 cnt, LPCSTR* _items):value(val),init_value(*val){items.resize(cnt); int i=0; for (AStringIt it=items.begin(); it!=items.end(); it++,i++) *it=_items[i]; };
 	virtual LPCSTR		GetText			(TOnDrawTextEvent OnDrawText);
-	virtual bool		Equal			(PropValue* prop){return (0==strcmp(value,((ListValue*)prop)->value));}
+	virtual bool		Equal			(PropValue* prop)
+    {
+    	AStringIt s_it	= items.begin();
+    	AStringIt d_it	= ((ListValue*)prop)->items.begin();
+    	for (; s_it!=items.end(); s_it++,d_it++)
+        	if ((*s_it)!=(*d_it)) {m_Owner->m_Flags.set(PropItem::flDisabled,TRUE); return false;}
+    	return (0==strcmp(value,((ListValue*)prop)->value));
+    }
     virtual bool		ApplyValue		(LPVOID val)
     {
         if (0!=strcmp((LPCSTR)val,value)){
