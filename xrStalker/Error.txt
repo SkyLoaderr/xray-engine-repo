@@ -1,7 +1,5 @@
-1. LEVEL monstry_test на свинье на полупрозрачной текстуре черная тень
-2. O(1) AI node search
-3. Повреждения не увеличиваются при попадании в голову на истукане m_stalker_demo
-4. Громкость звука ударов физических объектов не зависит от силы удара
+1. O(1) AI node search
+2. Громкость звука ударов физических объектов не зависит от силы удара
 
 ; legend
 ; -D - from Dima
@@ -22,9 +20,9 @@ To OLES :
 +J	актер не видим для сталкеров и монстров
 +К	старые партиклы тоже не рисуются
 -K	трасеры не рисуются
--S	после взрыва ручной гранаты обьекты (в том числе актер) становятся невидимыми при FLAGS::bVisible=1
++S	после взрыва ручной гранаты обьекты (в том числе актер) становятся невидимыми при FLAGS::bVisible=1
 -A	актер закрывает собой флары (выключить Enable CFModel у Актера)
--J  освещение монстров (химера, плоть) (level - практически на любом (e.g. labaratory_1)) 
++J  освещение монстров (химера, плоть) (level - практически на любом (e.g. labaratory_1)) 
 
 To WT:
 -O	(-WT) когда выбрасываешь оружие, оно исчезает (level - cs_test)
@@ -41,12 +39,12 @@ To WT:
 -K	(-WT)	после взрыва гранаты исчезает тело убитого сталкера
 
 To AlexMX:
--O	ocasional invalid radius and/or center after update of particle system
++O	ocasional invalid radius and/or center after update of particle system
 	(pure garbage: #INF, #QNAN, #DEN)
 	(cs_test/single)
--O	ocasional memory corruption inside particle system (on destructor, probably?)
++O	ocasional memory corruption inside particle system (on destructor, probably?)
 	(game00/single/alife)
--D	зоны глючат постоянно из-за партикловой-хрени! (game00/single/alife)
++D	зоны глючат постоянно из-за партикловой-хрени! (game00/single/alife)
 
 To Dima:
--K	сталкеры перемещаются быстрее отыгрываемой анимации 
++K	сталкеры перемещаются быстрее отыгрываемой анимации 
