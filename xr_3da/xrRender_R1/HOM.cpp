@@ -120,8 +120,8 @@ public:
 public:
 	pred_fb		(occTri* _t, Fvector& _c) : m_pTris(_t), camera(_c)	{}
 	bool		operator()		(CDB::RESULT& _1, CDB::RESULT& _2)	{
-		occTri&	t0	= m_pTris	[_1->id];
-		occTri&	t1	= m_pTris	[_2->id];
+		occTri&	t0	= m_pTris	[_1.id];
+		occTri&	t1	= m_pTris	[_2.id];
 		return	camera.distance_to_sqr(t0.center) < camera.distance_to_sqr(t1.center);
 	}
 };
