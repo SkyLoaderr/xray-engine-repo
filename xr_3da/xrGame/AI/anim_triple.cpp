@@ -1,9 +1,18 @@
 #include "stdafx.h"
 #include "anim_triple.h"
 
+char *dbg_states[] = {
+	"eStatePrepare", 
+	"eStateExecute", 
+	"eStateFinalize", 
+	"eStateNone"
+};
+
+
 CAnimTriple::CAnimTriple()
 {
 	cur_state	= eStateNone;
+	m_active	= false;
 }
 CAnimTriple::~CAnimTriple()
 {
@@ -21,28 +30,37 @@ void CAnimTriple::activate()
 {
 	if (is_active()) deactivate();
 
-	cur_state = eStatePrepare;
+	cur_state	= eStatePrepare;
+	m_active	= true;
+	Msg("Triple Activate: state = [eStatestart]");
 }
 
 void CAnimTriple::deactivate()
 {
-	cur_state = eStateNone;
+	cur_state	= eStateNone;
+	m_active	= false;
+	Msg("Triple Deactivate: state = [%s]", dbg_states[cur_state]);
 }
 
 bool CAnimTriple::prepare_animation(CMotionDef **m)
 {
-	if (is_active()) {
-		*m = pool[cur_state];
-		if (cur_state != eStateExecute) cur_state = EStateAnimTriple(cur_state + 1);
-		return true;
+	if (cur_state == eStateNone) {
+		deactivate();
+		return false;
 	}
-
-	return false;
+	
+	if (is_active()) *m = pool[cur_state];
+	if (cur_state != eStateExecute) cur_state = EStateAnimTriple(cur_state + 1);
+	return true;
 }
 
 
 void CAnimTriple::pointbreak()
 {
 	cur_state = eStateFinalize;
+
+	Msg("Triple Pointbreak: state = [%s]", dbg_states[cur_state]);
 }
+
+
 

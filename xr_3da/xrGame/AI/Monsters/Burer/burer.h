@@ -14,6 +14,8 @@ class CBurer :	public CAI_Biting,
 public:
 	typedef		CTelekinesis				TTelekinesis;
 
+	xr_vector<CGameObject *>			tele_objects;
+
 public:
 					CBurer				();
 	virtual			~CBurer				();	
@@ -43,5 +45,6 @@ private:
 
 public:
 	CAnimTriple		anim_triple_gravi;
+	CAnimTriple		anim_triple_tele;
 };
 

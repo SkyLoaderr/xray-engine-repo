@@ -8,11 +8,22 @@ class CBurerAttack : public IState {
 	CBurer	*pMonster;
 
 	enum {
+		
+		ACTION_RUN,
 		ACTION_MELEE,
-		ACTION_TELE,
+		
+		ACTION_TELE_STARTED,
+		ACTION_TELE_CONTINUE,
+		ACTION_TELE_FIRE,
+
 		ACTION_GRAVI_STARTED,
 		ACTION_GRAVI_CONTINUE,
 		ACTION_GRAVI_FIRE,
+		
+		ACTION_WAIT_TRIPLE_END,
+
+		ACTION_RUN_AROUND,
+		ACTION_FACE_ENEMY,
 
 		ACTION_DEFAULT,
 	} m_tAction, m_tPrevAction;
@@ -22,6 +33,13 @@ class CBurerAttack : public IState {
 	TTime time_next_gravi_available;
 	TTime time_gravi_started;
 
+	TTime LastTimeRebuild;
+	TTime m_dwFaceEnemyLastTime;
+
+	Fvector selected_random_point;
+
+	TTime run_around_time_started;
+
 public:	
 					CBurerAttack		(CBurer *p);
 
@@ -30,20 +48,14 @@ public:
 
 private:
 		// Checking			
+			bool	CheckTele			();
 			bool	CheckGravi			();
-			bool	CheckGraviFire		();
 	
 		// Executing
-			void	Execute_Telekinetic		();
-			void	Execute_Gravi			();
-			void	Execute_Gravi_Fire		();
-			void	Execute_Melee			();
+			void	Execute_Tele		();
+			void	Execute_Gravi		();
 
-		// Updating state
-			
-			void	update					();
 		
 		// additional stuff
-			u32		get_number_available_objects(xr_vector<CObject*> &tpObjects);
 			void	find_tele_objects		();
 };

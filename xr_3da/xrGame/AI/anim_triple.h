@@ -4,7 +4,6 @@ enum EStateAnimTriple {
 	eStatePrepare,
 	eStateExecute,
 	eStateFinalize,
-
 	eStateNone
 };
 
@@ -15,6 +14,8 @@ class CAnimTriple {
 	
 	MOTION_PTR			pool[3];
 
+	bool				m_active;
+
 public:
 						CAnimTriple		();
 						~CAnimTriple	();
@@ -24,7 +25,7 @@ public:
 	void				activate		();
 	void				deactivate		();
 
-	bool				is_active		() {return (cur_state != eStateNone);}
+	bool				is_active		() {return m_active;}
 
 	// завершилась анимация, необходимо выбрать новую
 	bool				prepare_animation(CMotionDef **m);
@@ -34,5 +35,6 @@ public:
 
 private:
 	void				switch_state	();
+
 };
 
