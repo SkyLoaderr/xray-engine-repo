@@ -150,8 +150,12 @@ void ESceneGroupTools::SaveSelectedObject()
             xr_string fn;
             if (EFS.GetSaveName(_groups_,fn)){
                 IWriter* W 	= FS.w_open(fn.c_str());
-                obj->Save	(*W);
-                FS.w_close	(W);
+                if (W){
+	                obj->Save	(*W);
+    	            FS.w_close	(W);
+                }else{
+			        ELog.DlgMsg	(mtError,"Access denied.");
+                }
             }                                 	
         }
     }else{

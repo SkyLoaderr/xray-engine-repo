@@ -149,7 +149,7 @@ void SSceneSummary::OnFileClick(PropValue* sender, bool& bModif, bool& bSafe)
 }
 void SSceneSummary::ExportSummaryInfo(LPCSTR fn)
 {
-	IWriter* F 				= FS.w_open(fn);
+	IWriter* F 				= FS.w_open(fn);  R_ASSERT(F);
     string256				tmp;
     // textures
     u32 total_mem_usage		= 0; 

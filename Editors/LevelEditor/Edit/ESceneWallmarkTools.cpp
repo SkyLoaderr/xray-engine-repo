@@ -389,7 +389,7 @@ bool ESceneWallmarkTools::Export(LPCSTR path)
 	RefiningSlots		();
     
     AnsiString fn		= AnsiString(path)+"level.wallmarks";
-	IWriter*	F		= FS.w_open(fn.c_str());
+	IWriter*	F		= FS.w_open(fn.c_str()); R_ASSERT(F);
                              
     F->open_chunk		(1);
     F->w_u32			(marks.size());

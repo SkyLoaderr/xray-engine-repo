@@ -48,8 +48,8 @@ bool SceneBuilder::BuildHOMModel()
     BOOL bValid = !!F.chunk_size();
     F.close_chunk();
     if (bValid){
-	    xr_string hom_name = MakeLevelPath("level.hom");
-	    F.save_to(hom_name.c_str());
+	    xr_string hom_name 	= MakeLevelPath("level.hom");
+	    bValid 				= F.save_to(hom_name.c_str());
     }
 	return bValid;
 }
@@ -104,8 +104,8 @@ bool SceneBuilder::BuildSOMModel()
     BOOL bValid = !!F.chunk_size()&&bResult;
     F.close_chunk();
     if (bValid){
-	    xr_string som_name = MakeLevelPath("level.som");
-	    F.save_to(som_name.c_str());
+	    xr_string som_name 	= MakeLevelPath("level.som");
+	    bValid				= F.save_to(som_name.c_str());
     }
 	return bValid;
 }

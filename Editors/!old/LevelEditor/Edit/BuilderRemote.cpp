@@ -101,14 +101,16 @@ public:
         // flush text
         AnsiString txt_name = AnsiString(fn)+".txt";
         IWriter* F	= FS.w_open(txt_name.c_str());
-        F->w_string	(AnsiString().sprintf("Map size X x Z:            [%d x %d]",bb_sx,bb_sz).c_str());
-        F->w_string	(AnsiString().sprintf("Max static vertex per m^2: %d",max_svert).c_str());
-        F->w_string	(AnsiString().sprintf("Total static vertices:     %d",total_svert).c_str());
-        F->w_string	(AnsiString().sprintf("Max mu vertex per m^2:     %d",max_muvert).c_str());
-        F->w_string	(AnsiString().sprintf("Total mu vertices:         %d",total_muvert).c_str());
-        FS.w_close	(F);
-
-        return true;
+        if (F){
+            F->w_string	(AnsiString().sprintf("Map size X x Z:            [%d x %d]",bb_sx,bb_sz).c_str());
+            F->w_string	(AnsiString().sprintf("Max static vertex per m^2: %d",max_svert).c_str());
+            F->w_string	(AnsiString().sprintf("Total static vertices:     %d",total_svert).c_str());
+            F->w_string	(AnsiString().sprintf("Max mu vertex per m^2:     %d",max_muvert).c_str());
+            F->w_string	(AnsiString().sprintf("Total mu vertices:         %d",total_muvert).c_str());
+            FS.w_close	(F);
+	        return true;
+        }
+        return false;
     }
 };
 
@@ -116,89 +118,90 @@ void SceneBuilder::SaveBuild()
 {
     xr_string fn	= MakeLevelPath("build.prj");
 	IWriter* F		= FS.w_open(fn.c_str());
-    
-    F->open_chunk	(EB_Version);
-    F->w_u32   		(XRCL_CURRENT_VERSION);
-    F->close_chunk	();
+    if (F){
+        F->open_chunk	(EB_Version);
+        F->w_u32   		(XRCL_CURRENT_VERSION);
+        F->close_chunk	();
 
-    F->open_chunk	(EB_Parameters);
-    F->w	  		(&Scene->m_LevelOp.m_BuildParams,sizeof(b_params));
-    F->close_chunk	();
+        F->open_chunk	(EB_Parameters);
+        F->w	  		(&Scene->m_LevelOp.m_BuildParams,sizeof(b_params));
+        F->close_chunk	();
 
-    F->open_chunk	(EB_Vertices);
-    F->w		  	(l_verts,sizeof(b_vertex)*l_vert_it); 	//. l_vert_cnt
-    F->close_chunk	();
+        F->open_chunk	(EB_Vertices);
+        F->w		  	(l_verts,sizeof(b_vertex)*l_vert_it); 	//. l_vert_cnt
+        F->close_chunk	();
 
-    F->open_chunk	(EB_Faces);
-    F->w		  	(l_faces,sizeof(b_face)*l_face_it); 	//. l_face_cnt
-    F->close_chunk	();
+        F->open_chunk	(EB_Faces);
+        F->w		  	(l_faces,sizeof(b_face)*l_face_it); 	//. l_face_cnt
+        F->close_chunk	();
 
-    F->open_chunk	(EB_Materials);
-    F->w	   		(l_materials.begin(),sizeof(b_material)*l_materials.size());
-    F->close_chunk	();
+        F->open_chunk	(EB_Materials);
+        F->w	   		(l_materials.begin(),sizeof(b_material)*l_materials.size());
+        F->close_chunk	();
 
-    F->open_chunk	(EB_Shaders_Render);
-    F->w			(l_shaders.begin(),sizeof(b_shader)*l_shaders.size());
-    F->close_chunk	();
+        F->open_chunk	(EB_Shaders_Render);
+        F->w			(l_shaders.begin(),sizeof(b_shader)*l_shaders.size());
+        F->close_chunk	();
 
-    F->open_chunk	(EB_Shaders_Compile);
-    F->w			(l_shaders_xrlc.begin(),sizeof(b_shader)*l_shaders_xrlc.size());
-    F->close_chunk	();
+        F->open_chunk	(EB_Shaders_Compile);
+        F->w			(l_shaders_xrlc.begin(),sizeof(b_shader)*l_shaders_xrlc.size());
+        F->close_chunk	();
 
-    F->open_chunk	(EB_Textures);
-    F->w			(l_textures.begin(),sizeof(b_texture)*l_textures.size());
-    F->close_chunk	();
+        F->open_chunk	(EB_Textures);
+        F->w			(l_textures.begin(),sizeof(b_texture)*l_textures.size());
+        F->close_chunk	();
 
-    F->open_chunk 	(EB_Glows);
-    F->w			(l_glows.begin(),sizeof(b_glow)*l_glows.size());
-    F->close_chunk	();
+        F->open_chunk 	(EB_Glows);
+        F->w			(l_glows.begin(),sizeof(b_glow)*l_glows.size());
+        F->close_chunk	();
 
-    F->open_chunk	(EB_Portals);
-    F->w			(l_portals.begin(),sizeof(b_portal)*l_portals.size());
-    F->close_chunk	();
+        F->open_chunk	(EB_Portals);
+        F->w			(l_portals.begin(),sizeof(b_portal)*l_portals.size());
+        F->close_chunk	();
 
-    F->open_chunk	(EB_Light_control);
-    for (xr_vector<sb_light_control>::iterator lc_it=l_light_control.begin(); lc_it!=l_light_control.end(); lc_it++){
-    	F->w		(lc_it->name,sizeof(lc_it->name));
-    	F->w_u32 	(lc_it->data.size());
-    	F->w	 	(lc_it->data.begin(),sizeof(u32)*lc_it->data.size());
+        F->open_chunk	(EB_Light_control);
+        for (xr_vector<sb_light_control>::iterator lc_it=l_light_control.begin(); lc_it!=l_light_control.end(); lc_it++){
+            F->w		(lc_it->name,sizeof(lc_it->name));
+            F->w_u32 	(lc_it->data.size());
+            F->w	 	(lc_it->data.begin(),sizeof(u32)*lc_it->data.size());
+        }
+        F->close_chunk	();
+
+        F->open_chunk	(EB_Light_static);
+        F->w		 	(l_light_static.begin(),sizeof(b_light_static)*l_light_static.size());
+        F->close_chunk	();
+
+        F->open_chunk	(EB_Light_dynamic);
+        F->w		  	(l_light_dynamic.begin(),sizeof(b_light_dynamic)*l_light_dynamic.size());
+        F->close_chunk	();
+
+        F->open_chunk	(EB_LOD_models);
+        for (int k=0; k<(int)l_lods.size(); k++)
+            F->w	  	(&l_lods[k].lod,sizeof(b_lod));
+        F->close_chunk	();
+
+        F->open_chunk	(EB_MU_models);
+        for (k=0; k<(int)l_mu_models.size(); k++){
+            b_mu_model&	m= l_mu_models[k];
+            // name
+            F->w_stringZ(m.name);
+            // vertices
+            F->w_u32	(m.vert_cnt);
+            F->w		(m.verts,sizeof(b_vertex)*m.vert_cnt);
+            // faces
+            F->w_u32	(m.face_cnt);
+            F->w		(m.faces,sizeof(b_face)*m.face_cnt);
+            // lod_id
+            F->w_u16	(m.lod_id);
+        }
+        F->close_chunk	();
+
+        F->open_chunk	(EB_MU_refs);
+        F->w			(l_mu_refs.begin(),sizeof(b_mu_reference)*l_mu_refs.size());
+        F->close_chunk	();
+
+        FS.w_close		(F);
     }
-    F->close_chunk	();
-
-    F->open_chunk	(EB_Light_static);
-    F->w		 	(l_light_static.begin(),sizeof(b_light_static)*l_light_static.size());
-    F->close_chunk	();
-
-    F->open_chunk	(EB_Light_dynamic);
-    F->w		  	(l_light_dynamic.begin(),sizeof(b_light_dynamic)*l_light_dynamic.size());
-    F->close_chunk	();
-
-    F->open_chunk	(EB_LOD_models);
-    for (int k=0; k<(int)l_lods.size(); k++)
-	    F->w	  	(&l_lods[k].lod,sizeof(b_lod));
-    F->close_chunk	();
-
-    F->open_chunk	(EB_MU_models);
-    for (k=0; k<(int)l_mu_models.size(); k++){
-    	b_mu_model&	m= l_mu_models[k];
-        // name
-        F->w_stringZ(m.name);
-        // vertices
-        F->w_u32	(m.vert_cnt);
-	    F->w		(m.verts,sizeof(b_vertex)*m.vert_cnt);
-        // faces
-        F->w_u32	(m.face_cnt);
-	    F->w		(m.faces,sizeof(b_face)*m.face_cnt);
-        // lod_id
-        F->w_u16	(m.lod_id);
-    }
-    F->close_chunk	();
-
-    F->open_chunk	(EB_MU_refs);
-	F->w			(l_mu_refs.begin(),sizeof(b_mu_reference)*l_mu_refs.size());
-    F->close_chunk	();
-
-    FS.w_close		(F);
 }
 
 int SceneBuilder::CalculateSector(const Fvector& P, float R)

@@ -177,8 +177,10 @@ void EDetailManager::OnObjectRemove(CCustomObject* O)
 void EDetailManager::ExportColorIndices(LPCSTR fname)
 {
 	IWriter* F 	= FS.w_open(fname);
-    SaveColorIndices(*F);
-    FS.w_close	(F);
+    if (F){
+	    SaveColorIndices(*F);
+    	FS.w_close	(F);
+    }
 }
 
 bool EDetailManager::ImportColorIndices(LPCSTR fname)
@@ -467,7 +469,7 @@ bool EDetailManager::Export(LPCSTR path)
 
         F.w_chunk		(DETMGR_CHUNK_HEADER,&dtH,sizeof(DetailHeader));
 
-    	F.save_to(fn.c_str());
+    	bRes 			= F.save_to(fn.c_str());
     }
 
     pb->Inc();

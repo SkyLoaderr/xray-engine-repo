@@ -108,10 +108,10 @@ void EScene::Save(LPCSTR initial, LPCSTR map_name, bool bUndo)
 	if (!bUndo) EFS.UnlockFile		(0,full_name.c_str(),false);
     if (!bUndo) EFS.MarkFile		(full_name.c_str(),true);
 
-    IWriter* F		= FS.w_open		(full_name.c_str());
+    IWriter* F		= FS.w_open		(full_name.c_str()); R_ASSERT(F);
 
     F->open_chunk	(CHUNK_VERSION);
-    F->w_u32			(CURRENT_FILE_VERSION);
+    F->w_u32		(CURRENT_FILE_VERSION);
     F->close_chunk	();
 
     F->open_chunk	(CHUNK_LEVELOP);
@@ -338,7 +338,7 @@ void EScene::SaveSelection( EObjClass classfilter, LPCSTR initial, LPCSTR fname 
     if (initial)	FS.update_path	(full_name,initial,fname);
     else			full_name 		= fname;
 
-    IWriter* F		= FS.w_open(full_name.c_str());
+    IWriter* F		= FS.w_open(full_name.c_str());  R_ASSERT(F);
 
     F->open_chunk	(CHUNK_VERSION);
     F->w_u32	   	(CURRENT_FILE_VERSION);
@@ -532,7 +532,7 @@ void EScene::LoadCompilerError(LPCSTR fn)
 
 void EScene::SaveCompilerError(LPCSTR fn)
 {
-	IWriter*		fs	= FS.w_open(fn);
+	IWriter*		fs	= FS.w_open(fn);  R_ASSERT(fs);
 	IWriter&		err = *fs;
 
 	// t-junction
