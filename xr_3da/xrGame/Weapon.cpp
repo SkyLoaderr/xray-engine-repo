@@ -813,7 +813,9 @@ int CWeapon::GetAmmoCurrent() const
 
 float CWeapon::GetConditionMisfireProbability() const
 {
-	return misfireProbability*(1.f-GetCondition());
+	float mis = misfireProbability+powf(1.f-GetCondition(), 3.f);
+	clamp(mis,0.0f,0.99f);
+	return mis;
 }
 
 BOOL CWeapon::CheckForMisfire()
