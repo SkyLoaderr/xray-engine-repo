@@ -2833,7 +2833,7 @@ impair			= 1.15
 buck_shot		= 0
 tracer			= off
 
-fake_grenade_name = wpn_fake_missile
+fake_grenade_name = wpn_fake_missile1
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Fake Missiles and Grenades
@@ -2841,6 +2841,43 @@ fake_grenade_name = wpn_fake_missile
 
 
 [wpn_fake_missile]
+visual                  = munition\vog25p.ogf
+cform                    = skeleton
+class                    = G_FAKE
+
+inv_weight				= 0
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+
+cost					 = 100
+
+blast				= 3000
+blast_r				= 15
+frags				= 0
+frags_r				= 50
+frag_hit			= 50
+
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.05
+
+;trail				= weapons\rpg_trail_01, weapons\rpg_trail_02
+
+effects				= explosions\explosion-031 
+light_color		         = 0.17,0.13,0.12
+light_range		         = 1.0
+light_time 		         = 200
+
+
+ph_mass			 = 5
+;engine_f			= 530
+;engine_u			= 90
+
+
+[wpn_fake_missile1]
 visual                  = munition\vog25p.ogf
 cform                    = skeleton
 class                    = G_FAKE
