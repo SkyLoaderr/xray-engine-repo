@@ -124,8 +124,8 @@ void	CBuild::xrPhase_UVmap()
 void CBuild::mem_CompactSubdivs()
 {
 	// Memory compact
-	CTimer	dwT(false);	dwT.Start();
-	vecFace		temp;
+	CTimer	dwT;	dwT.Start();
+	vecFace			temp;
 	for (int SP = 0; SP<int(g_XSplit.size()); SP++) 
 	{
 		temp.clear			();

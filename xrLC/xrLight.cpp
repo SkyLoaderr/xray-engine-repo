@@ -75,7 +75,7 @@ void CBuild::Light()
 		Status			("Lighting...");
 		CThreadManager	threads;
 		const	u32	thNUM	= 6;
-		CTimer	start_time(false);	start_time.Start();				
+		CTimer	start_time;	start_time.Start();				
 		for				(int L=0; L<thNUM; L++)	threads.start(xr_new<CLMThread> (L));
 		threads.wait	(500);
 		clMsg			("%f seconds",start_time.GetElapsed_sec());
@@ -232,7 +232,7 @@ void CBuild::LightVertex	()
 	Status				("Calculating...");
 	CThreadManager		Threads;
 	VLT.init			();
-	CTimer	start_time(false);	start_time.Start();				
+	CTimer	start_time;	start_time.Start();				
 	for (u32 thID=0; thID<NUM_THREADS; thID++)	Threads.start(xr_new<CVertexLightThread>(thID));
 	Threads.wait		();
 	clMsg				("%f seconds",start_time.GetElapsed_sec());
