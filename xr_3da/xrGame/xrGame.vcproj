@@ -9073,12 +9073,6 @@
 							RelativePath=".\ui\UIListItemEx.h">
 						</File>
 						<File
-							RelativePath=".\ui\UIListItemPair.cpp">
-						</File>
-						<File
-							RelativePath=".\ui\UIListItemPair.h">
-						</File>
-						<File
 							RelativePath=".\ui\UIListWndEx.cpp">
 						</File>
 						<File
@@ -9086,6 +9080,26 @@
 						</File>
 						<File
 							RelativePath=".\ui\UIListWndEx_script.cpp">
+						</File>
+					</Filter>
+					<Filter
+						Name="Multiplayer_list_item"
+						Filter="">
+						<File
+							RelativePath=".\ui\UIListItemMP.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIListItemMP.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="Save_Load_list_item"
+						Filter="">
+						<File
+							RelativePath=".\ui\UIListItemPair.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIListItemPair.h">
 						</File>
 					</Filter>
 				</Filter>

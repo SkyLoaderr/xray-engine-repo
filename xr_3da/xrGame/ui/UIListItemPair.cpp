@@ -105,10 +105,6 @@ void CUIListItemPair::Draw(){
 	//m_staticDateTime.Init
 	m_staticDateTime.SetWndRect(maxFileNameLength + indent, (height - dateTimeHeight)/2 , maxDateTimeLength, height);
 
-	// delete some characters from end (if it nessesary)
-	// to fit text length to static rect
-	m_staticFileName.PerformTextLengthLimit();	
-
 	m_staticFileName.Draw();
 	m_staticDateTime.Draw();
 }
