@@ -139,11 +139,16 @@ void CPhysicObject::CreateBody(CSE_ALifeObjectPhysic* po) {
 		} break;
 	
 	}
+	CKinematics* pKinematics=PKinematics(Visual());
 	m_pPhysicsShell->mXFORM.set(XFORM());
 	m_pPhysicsShell->SetAirResistance(0.001f, 0.02f);
-	SAllDDOParams disable_params;
-	disable_params.Load(PKinematics(Visual())->LL_UserData());
-	m_pPhysicsShell->set_DisableParams(disable_params);
+	if(pKinematics)
+	{
+
+		SAllDDOParams disable_params;
+		disable_params.Load(pKinematics->LL_UserData());
+		m_pPhysicsShell->set_DisableParams(disable_params);
+	}
 	//m_pPhysicsShell->SetAirResistance(0.002f, 0.3f);
 }
 
