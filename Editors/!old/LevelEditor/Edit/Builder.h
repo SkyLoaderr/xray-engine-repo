@@ -33,7 +33,7 @@ struct sb_light_control						// controller or "layer", 30fps
 struct e_b_lod{        
 	b_lod				lod;
     U32Vec				data;
-    shared_str		   	tex_name;
+    shared_str		   	lod_name;
 };
 
 class SceneBuilder{

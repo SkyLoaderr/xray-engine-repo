@@ -811,12 +811,6 @@ int	SceneBuilder::BuildObjectLOD(const Fmatrix& parent, CEditableObject* E, int 
 	if (!E->m_Flags.is(CEditableObject::eoUsingLOD)) return -1;
     std::string lod_name = E->GetLODTextureName();
 
-	std::string fname = lod_name+".tga";
-    if (!FS.exist(_textures_,fname.c_str())){
-		ELog.DlgMsg(mtError,"Can't find object LOD texture: %s",fname.c_str());
-    	return -2;
-    }
-
     b_material 		mtl;
     mtl.surfidx		= BuildTexture		(LEVEL_LODS_TEX_NAME);
     mtl.shader      = BuildShader		(E->GetLODShaderName());
@@ -842,7 +836,7 @@ int	SceneBuilder::BuildObjectLOD(const Fmatrix& parent, CEditableObject* E, int 
         }
     }
     b.lod.dwMaterial= mtl_idx;
-    b.tex_name		= fname.c_str();
+    b.lod_name		= lod_name.c_str();
 
     // make lod
     E->m_Flags.set				(CEditableObject::eoUsingLOD,FALSE);
@@ -987,7 +981,7 @@ BOOL SceneBuilder::CompileStatic()
         for (int k=0; k<(int)l_lods.size(); k++){
             images.push_back(SSimpleImage());
             SSimpleImage& I	= images.back();
-            I.name			= l_lods[k].tex_name;
+            I.name			= l_lods[k].lod_name;
             I.data			= l_lods[k].data;
             I.w				= LOD_IMAGE_SIZE*LOD_SAMPLE_COUNT;
             I.h				= LOD_IMAGE_SIZE;
