@@ -10,10 +10,11 @@
 
 IC	void CALifeScheduleRegistry::update		()
 {
-	u32							count = objects().empty() ? 0 : inherited::update(CUpdatePredicate());
+//	u32							count = 
+		objects().empty() ? 0 : inherited::update(CUpdatePredicate());
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
-		Msg						("[LSS][SU][%d : %d]",count, objects().size());
+//		Msg						("[LSS][SU][%d : %d]",count, objects().size());
 	}
 #endif
 }

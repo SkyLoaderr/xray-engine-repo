@@ -76,7 +76,7 @@ void CALifeSwitchManager::add_online(CSE_ALifeDynamicObject *object, bool update
 
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
-		Msg							("[LSS] Spawning object [%s][%s][%d]",object->name_replace(),object->s_name,object->ID);
+		Msg							("[LSS] Spawning object [%s][%s][%d]",object->name_replace(),*object->s_name,object->ID);
 	}
 #endif
 
@@ -97,7 +97,7 @@ void CALifeSwitchManager::add_online(CSE_ALifeDynamicObject *object, bool update
 
 #ifdef DEBUG
 			if (psAI_Flags.test(aiALife)) {
-				Msg					("[LSS] Spawning item [%s][%s][%d]",l_tpALifeInventoryItem->base()->name_replace(),l_tpALifeInventoryItem->base()->s_name,l_tpALifeDynamicObject->ID);
+				Msg					("[LSS] Spawning item [%s][%s][%d]",l_tpALifeInventoryItem->base()->name_replace(),*l_tpALifeInventoryItem->base()->s_name,l_tpALifeDynamicObject->ID);
 			}
 #endif
 
@@ -128,7 +128,7 @@ void CALifeSwitchManager::remove_online(CSE_ALifeDynamicObject *object, bool upd
 
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
-		Msg							("[LSS] Destroying object [%s][%s][%d]",object->name_replace(),object->s_name,object->ID);
+		Msg							("[LSS] Destroying object [%s][%s][%d]",object->name_replace(),*object->s_name,object->ID);
 	}
 #endif
 
@@ -139,7 +139,7 @@ void CALifeSwitchManager::remove_online(CSE_ALifeDynamicObject *object, bool upd
 			if (!dynamic_object) {
 				CSE_Abstract		*abstract = server().ID_to_entity(object->children[i]);
 				VERIFY				(abstract);
-				Msg					("ERROR : [%s][%s]",object->s_name,object->name_replace());
+				Msg					("ERROR : [%s][%s]",*object->s_name,object->name_replace());
 				R_ASSERT3			(false,*abstract->s_name,abstract->name_replace());
 			}
 			VERIFY					(dynamic_object);
@@ -147,7 +147,7 @@ void CALifeSwitchManager::remove_online(CSE_ALifeDynamicObject *object, bool upd
 			VERIFY2					(l_tpALifeInventoryItem,"Non inventory item object has parent?!");
 #ifdef DEBUG
 			if (psAI_Flags.test(aiALife)) {
-				Msg					("[LSS] Destroying item [%s][%s][%d]",l_tpALifeInventoryItem->base()->name_replace(),l_tpALifeInventoryItem->base()->s_name,l_tpALifeInventoryItem->base()->ID);
+				Msg					("[LSS] Destroying item [%s][%s][%d]",l_tpALifeInventoryItem->base()->name_replace(),*l_tpALifeInventoryItem->base()->s_name,l_tpALifeInventoryItem->base()->ID);
 			}
 #endif
 			_OBJECT_ID				l_tObjectID = l_tpALifeInventoryItem->base()->ID;

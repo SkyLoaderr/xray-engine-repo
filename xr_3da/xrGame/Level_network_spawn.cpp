@@ -39,7 +39,7 @@ void CLevel::g_sv_Spawn		(CSE_Abstract* E)
 //	CTimer		T(false);
 
 #ifdef DEBUG
-	//Msg					("* CLIENT: Spawn: %s, ID=%d", E->s_name, E->ID);
+	//Msg					("* CLIENT: Spawn: %s, ID=%d", *E->s_name, E->ID);
 #endif
 
 	// Optimization for single-player only	- minimize traffic between client and server
@@ -57,7 +57,7 @@ void CLevel::g_sv_Spawn		(CSE_Abstract* E)
 		O->net_Destroy			( );
 		client_spawn_manager().clear(O->ID());
 		Objects.Destroy			(O);
-		Msg						("! Failed to spawn entity '%s'",E->s_name);
+		Msg						("! Failed to spawn entity '%s'",*E->s_name);
 	} else {
 		client_spawn_manager().callback(O);
 		//Msg			("--spawn--SPAWN: %f ms",1000.f*T.GetAsync());

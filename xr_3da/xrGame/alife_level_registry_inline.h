@@ -50,7 +50,7 @@ IC	void CALifeLevelRegistry::update			(const _update_predicate &predicate)
 	m_first_update		= true;
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
-		Msg				("[LSS][OOS][%d : %d]",object_count, objects().size());
+//		Msg				("[LSS][OOS][%d : %d]",object_count, objects().size());
 	}
 #endif
 }

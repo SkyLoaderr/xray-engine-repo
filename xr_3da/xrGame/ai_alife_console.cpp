@@ -88,7 +88,7 @@ void CSE_ALifeSimulator::vfListObjects()
 	for (int i=0; I != E; ++I, ++i) {
 		Memory.mem_copy(tString,&((*I).second->m_tClassID),sizeof((*I).second->m_tClassID));
 		tString[sizeof((*I).second->m_tClassID)] = 0;
-		Msg("* %4d : %8s[ID=%4d][MDL=%10s][GID=%4d][UPD=%d]",i,tString,(*I).first,(*I).second->s_name,(*I).second->m_tGraphID,(*I).second->m_tTimeID);
+		Msg("* %4d : %8s[ID=%4d][MDL=%10s][GID=%4d][UPD=%d]",i,tString,(*I).first,*(*I).second->s_name,(*I).second->m_tGraphID,(*I).second->m_tTimeID);
 	}
 	Msg("Total %d objects",i);
 }
@@ -166,8 +166,8 @@ void CSE_ALifeSimulator::vfObjectInfo(_OBJECT_ID	tObjectID)
 	
 	CSE_ALifeDynamicObject	*tpALifeDynamicObject = (*I).second;
 	string64		tString;
-	Memory.mem_copy	(tString,tpALifeDynamicObject->s_name,sizeof(tpALifeDynamicObject->s_name));
-	Msg("* Class ID      : %s[%I64u]",tString,tpALifeDynamicObject->s_name);
+	Memory.mem_copy	(tString,*tpALifeDynamicObject->s_name,sizeof(tpALifeDynamicObject->s_name));
+	Msg("* Class ID      : %s[%I64u]",tString,*tpALifeDynamicObject->s_name);
 	Msg("* ObjectID      : %d",tpALifeDynamicObject->ID);
 	Msg("* Spawn ID      : %d",tpALifeDynamicObject->m_tSpawnID);
 	Msg("* Graph ID      : %d",tpALifeDynamicObject->m_tGraphID);
