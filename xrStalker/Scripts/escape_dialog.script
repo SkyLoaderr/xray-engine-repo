@@ -18,6 +18,11 @@ function haveTOZ(first_speaker, second_speaker)
 	return( first_speaker:object("wpn_toz34") ~= nil )
 end
 
+function novice_gane_job(first_speaker, second_speaker)
+	return actor:dont_has_info("escape_novice_has_weapon") and
+		   actor:dont_has_info("escape_novice_need_weapon")	
+end
+
 function bandits_dead(first_speaker, second_speaker)
     return(first_speaker:has_info("escape_factory_bandits_dead"))
 end
