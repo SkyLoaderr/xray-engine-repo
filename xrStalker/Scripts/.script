@@ -120,7 +120,7 @@ function pp_linear_lerp:__init(effector_type,start_power,dest_power,life_time) s
 	printf			("01")
 	self.start_time = device():time_global()
 	printf			("02")
-	self.stop_time	= device():time_global() + life_time
+	self.stop_time	= self.start_time + 4000 -- life_time
 	printf			("03")
 	self.min_power	= start_power
 	printf			("04")
