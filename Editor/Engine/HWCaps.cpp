@@ -9,16 +9,27 @@ void CHWCaps::Update()
 	D3DCAPS8 caps;
 	HW.pDevice->GetDeviceCaps(&caps);
 
-	bSoftware		= (caps.DevCaps & D3DDEVCAPS_HWTRANSFORMANDLIGHT)==0;
-	bIndexedBlend	= (caps.VertexProcessingCaps&D3DVTXPCAPS_NO_VSDT_UBYTE4)!=0;
+	// ***************** GEOMETRY
+	vertex.dwVersion	= (caps.VertexShaderVersion&(0xf << 8ul))>>4 | (caps.VertexShaderVersion&0xf);
+	vertex.bSoftware	= (caps.DevCaps & D3DDEVCAPS_HWTRANSFORMANDLIGHT)==0;
+	vertex.bPointSprites= FALSE;
+	vertex.bNPatches	= (caps.DevCaps & D3DDEVCAPS_NPATCHES)!=0;
+	vertex.bMPS			= (caps.VertexProcessingCaps&D3DVTXPCAPS_NO_VSDT_UBYTE4)!=0;
 
-	dwNumBlendStages = _MIN(caps.MaxTextureBlendStages,caps.MaxSimultaneousTextures);
+	// ***************** PIXEL processing
+	pixel.dwVersion		= (caps.PixelShaderVersion&(0xf << 8ul))>>4 | (caps.PixelShaderVersion&0xf);
+	pixel.dwStages		= caps.MaxSimultaneousTextures;
+	pixel.bNonPow2		= (caps.TextureCaps & D3DPTEXTURECAPS_NONPOW2CONDITIONAL)!=0;
+	pixel.bCubemap		= (caps.TextureCaps & D3DPTEXTURECAPS_CUBEMAP)!=0;
+	pixel.op_DP3		= (caps.TextureOpCaps & D3DTEXOPCAPS_DOTPRODUCT3)!=0;
+	pixel.op_LERP		= (caps.TextureOpCaps & D3DTEXOPCAPS_LERP)!=0;
+	pixel.op_MAD		= (caps.TextureOpCaps & D3DTEXOPCAPS_MULTIPLYADD)!=0;
+	pixel.op_reg_TEMP	= (caps.PrimitiveMiscCaps & D3DPMISCCAPS_TSSARGTEMP)!=0;
 
-	bTableFog	=	BOOL	(caps.RasterCaps&D3DPRASTERCAPS_FOGTABLE);
-	bWFog		=	BOOL	(caps.RasterCaps&D3DPRASTERCAPS_WFOG);
-	bStencil	=	FALSE;
+	bTableFog			=	BOOL	(caps.RasterCaps&D3DPRASTERCAPS_FOGTABLE);
 
 	// Detect if stencil available
+	bStencil			=	FALSE;
 	IDirect3DSurface8*	surfZS=0;
 	D3DSURFACE_DESC		surfDESC;
 	CHK_DX		(HW.pDevice->GetDepthStencilSurface(&surfZS));
@@ -49,9 +60,7 @@ void CHWCaps::Update()
         soDec=(dwStencilCaps & D3DSTENCILCAPS_DECRSAT)? D3DSTENCILOP_DECRSAT:D3DSTENCILOP_DECR;
 	    dwMaxStencilValue=(1<<8)-1;
     }
-	bPointSpritesHW	= FALSE;
 
 	// FORCE (overwrite) flags
 	if (bForceVertexFog)		bTableFog			=	false;
-	if (bForceMultipass)		dwNumBlendStages	=	1;
 }

@@ -2,10 +2,18 @@
 #define _HW_CAPS_
 #pragma once
 
-struct _version
-{	WORD v1,v2,v3,v4; };
+#define	CAP_VERSION(a,b)	(((a)<<4) | (b))
+
 class ENGINE_API CHWCaps {
 public:
+	struct		caps_Geometry
+	{
+		DWORD	dwVersion	: 8;
+		DWORD	bSoftware	: 1;
+		DWORD	bPointSprites:1;
+		DWORD	bMPS		: 1;		// matrix-palette-skinning
+		DWORD	bNPatches	: 1;
+	};
 	struct		caps_Texturing
 	{
 		DWORD	dwVersion	: 8;		// pixel shader version
@@ -16,14 +24,6 @@ public:
 		DWORD	op_LERP		: 1;
 		DWORD	op_MAD		: 1;
 		DWORD	op_reg_TEMP : 1;
-	};
-	struct		caps_Geometry
-	{
-		DWORD	dwVersion	: 8;
-		DWORD	bSoftware	: 1;
-		DWORD	bPointSprites:1;
-		DWORD	bMPS		: 1;		// matrix-palette-skinning
-		DWORD	bNPatches	: 1;
 	};
 public:
 	// force flags
@@ -39,8 +39,8 @@ public:
 	DWORD			dwRefreshRate;
 	
 	// caps itself
-	caps_Texturing	pixel;
 	caps_Geometry	vertex;
+	caps_Texturing	pixel;
 	
 	BOOL			bStencil;			// stencil buffer present
 	BOOL			bTableFog;			// 
