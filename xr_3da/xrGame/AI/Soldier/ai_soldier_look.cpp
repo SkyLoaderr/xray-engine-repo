@@ -75,7 +75,6 @@ void CAI_Soldier::SetDirectionLook()
 			mk_rotation(tWatchDirection,r_torso_target);
 			r_target.yaw = r_torso_target.yaw;
 			ASSIGN_SPINE_BONE;
-			//r_target.yaw += PI_DIV_6;
 			q_look.o_look_speed=PI_DIV_4;
 		}
 	}
@@ -128,7 +127,7 @@ float ffCalcSquare(float fAngle, float fAngleOfView, float _b0, float _b1, float
 							return(fSquare);
 }
 
-void CAI_Soldier::SetLessCoverLook(NodeCompressed *tNode)
+void CAI_Soldier::SetLessCoverLook(NodeCompressed *tNode, bool bSpine)
 {
 	int i = ps_Size();
 	if (i > 1) {
@@ -149,7 +148,9 @@ void CAI_Soldier::SetLessCoverLook(NodeCompressed *tNode)
 			}
 			
 			r_target.yaw = fBestAngle;
-			ASSIGN_SPINE_BONE;
+			if (bSpine) {
+				ASSIGN_SPINE_BONE;
+			}
 			q_look.o_look_speed = PI_DIV_4;
 			//r_torso_speed = _FB_look_speed;//(r_torso_target.yaw - r_torso_current.yaw);
 			//r_target.yaw += PI_DIV_6;

@@ -14,6 +14,7 @@
 #include "..\render.h"
 #include "..\xr_level_controller.h"
 #include "HUDmanager.h"
+#include "WayPointDef.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -259,6 +260,78 @@ BOOL CLevel::Load_GameSpecific_Before()
 		sscanf(sVal,"%f,%f,%f,%d,%f",&pos.x,&pos.y,&pos.z,&team,&pos.w); pos.y += 0.1f;
 		Level().get_team(team).RespawnPoints.push_back(pos);
 	}
+	
+/*
+- chunk WAY_PATH_CHUNK
+	- chunk #0
+    	chunk WAYOBJECT_CHUNK_VERSION
+        	word (version)
+		chunk WAYOBJECT_CHUNK_NAME
+        	stringZ (Name)
+        chunk WAY_CHUNK_TYPE
+        	dword EWayType (type)
+        chunk WAY_CHUNK_POINTS
+            word (count)
+            for (i=0; i<count; i++){
+            	Fvector (pos)
+                dword	(flags)
+            }
+        chunk WAY_CHUNK_LINKS
+            word (count)
+            for (i=0; i<count; i++){
+            	word 	(from)
+				word 	(to)
+            }
+    ...
+    - chunk #n
+- chunk WAY_JUMP_CHUNK
+	-//-
+- chunk WAY_TRAFFIC_CHUNK
+	-//-
+- chunk WAY_CUSTOM_CHUNK
+	-//-
+*/
+	FILE_NAME	fn_game;
+	if (Engine.FS.Exist(fn_game, Path.Current, "level.game"))
+	{
+		CStream *F = Engine.FS.Open(fn_game);
+		CStream *O = F->OpenChunk(WAY_PATH_CHUNK);
+		if (O) {
+			int chunk = 0;
+			for (CStream *OBJ = O->OpenChunk(chunk++); OBJ; OBJ = O->OpenChunk(chunk++)) {
+				R_ASSERT(OBJ->FindChunk(WAYOBJECT_CHUNK_VERSION));
+				DWORD dw = OBJ->Rword();
+				R_ASSERT(dw == WAYOBJECT_VERSION);
+				
+				R_ASSERT(OBJ->FindChunk(WAYOBJECT_CHUNK_NAME));
+				string64 s64;
+				OBJ->RstringZ(s64);
+				
+				R_ASSERT(OBJ->FindChunk(WAYOBJECT_CHUNK_TYPE));
+				DWORD type = OBJ->Rdword();
+				
+				R_ASSERT(OBJ->FindChunk(WAYOBJECT_CHUNK_POINTS));
+				DWORD dwCount = OBJ->Rword();
+				for (int i=0; i<dwCount; i++){
+					Fvector pos;
+					OBJ->Rvector(pos);
+					DWORD flags = OBJ->Rdword();
+				}
+				
+				R_ASSERT(OBJ->FindChunk(WAYOBJECT_CHUNK_LINKS));
+				DWORD dwCountL = OBJ->Rword();
+				for ( i=0; i<dwCountL; i++){
+					DWORD from = OBJ->Rword();
+					DWORD to   = OBJ->Rword();
+				}
+				OBJ->Close();
+			}
+			O->Close();
+		}
+		Engine.FS.Close(F);
+	}
+
+
 	return TRUE;
 }
 

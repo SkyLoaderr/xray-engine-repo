@@ -124,9 +124,10 @@ class CAI_Soldier : public CCustomMonster
 		#define MIN_SPINE_TURN_ANGLE			PI_DIV_6
 		
 		#define ASSIGN_SPINE_BONE {\
-			r_target.yaw -= PI_DIV_6;\
-			if (fabsf(r_torso_target.yaw - r_target.yaw) < MIN_SPINE_TURN_ANGLE)\
+			if (fabsf(r_torso_target.yaw - r_target.yaw) < MIN_SPINE_TURN_ANGLE) {\
 				r_spine_target.yaw = r_target.yaw;\
+				r_target.yaw -= PI_DIV_6;\
+			}\
 			else\
 				r_target.yaw = r_spine_target.yaw =  (r_torso_target.yaw + r_target.yaw)/2;\
 		}
@@ -619,7 +620,7 @@ class CAI_Soldier : public CCustomMonster
 		void vfLoadAnimations();
 		bool bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);
 		bool bfCheckPath(AI::Path &Path);
-		void SetLessCoverLook(NodeCompressed *tNode);
+		void SetLessCoverLook(NodeCompressed *tNode, bool bSpine = true);
 		void SetDirectionLook();
 		void SetSmartLook(NodeCompressed *tNode, Fvector &tEnemyDirection);
 		void vfInitSelector(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);

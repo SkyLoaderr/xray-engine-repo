@@ -139,6 +139,10 @@ SOURCE=.\StdAfx.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\WayPointDef.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\xrGame.cpp
 # End Source File
 # End Group
