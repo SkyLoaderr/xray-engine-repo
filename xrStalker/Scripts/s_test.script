@@ -40,7 +40,7 @@ end
 -- define class action patrol
 class "action_patrol"		(action_base)
 
-function action_patrol:__init(obj_name,patrol_path,name) super(object,name)
+function action_patrol:__init(obj_name,patrol_path,name) super(get_level_object(obj_name),name)
 	self.object				= get_level_object(obj_name)
 	self.name				= name
 	self.patrol_path		= patrol_path
@@ -73,7 +73,7 @@ end
 -- define class action patrol hi
 class "action_patrol_hi"	(action_base)
 
-function action_patrol_hi:__init(obj_name,name,func) super(object,name)
+function action_patrol_hi:__init(obj_name,name,func) super(get_level_object(obj_name),name)
 	self.object				= get_level_object(obj_name)
 	self.func				= func
 	self.name				= name
