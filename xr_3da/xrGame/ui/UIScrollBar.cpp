@@ -160,20 +160,12 @@ void CUIScrollBar::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 				//горизонтальный
 				ClampByViewRect		();
 				SetPosScrollFromView(m_ScrollBox.GetWndPos().x,m_ScrollBox.GetWidth(),SCROLLBAR_WIDTH);
-				if(m_iScrollPos+m_iPageSize>m_iMaxPos) 
-					m_iScrollPos = m_iMaxPos - m_iPageSize +1;
-				if(m_iScrollPos<m_iMinPos) 
-					m_iScrollPos = m_iMinPos;
 				if (GetMessageTarget())
 					GetMessageTarget()->SendMessage(this, SCROLLBAR_HSCROLL);
 			}else{
 				//вертикальный
 				ClampByViewRect		();
 				SetPosScrollFromView(m_ScrollBox.GetWndPos().y,m_ScrollBox.GetHeight(),SCROLLBAR_HEIGHT);
-				if(m_iScrollPos+m_iPageSize>=m_iMaxPos)
-                    m_iScrollPos = m_iMaxPos - m_iPageSize + 1;
-				if(m_iScrollPos<m_iMinPos) 
-					m_iScrollPos = m_iMinPos;
 				if (GetMessageTarget())
 					GetMessageTarget()->SendMessage(this, SCROLLBAR_VSCROLL);
 			}
