@@ -3210,6 +3210,12 @@
 									<File
 										RelativePath=".\WeaponFire.cpp">
 									</File>
+									<File
+										RelativePath=".\WeaponRecoil.cpp">
+									</File>
+									<File
+										RelativePath=".\WeaponRecoil.h">
+									</File>
 								</Filter>
 								<Filter
 									Name="Ammo"
