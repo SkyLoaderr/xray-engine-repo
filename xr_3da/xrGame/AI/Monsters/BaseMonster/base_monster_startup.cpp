@@ -3,6 +3,8 @@
 #include "../../../CharacterPhysicsSupport.h"
 #include "../../../phmovementcontrol.h"
 #include "../ai_monster_squad_manager.h"
+#include "../../../hudmanager.h"
+
 
 void CBaseMonster::reload	(LPCSTR section)
 {
@@ -85,6 +87,8 @@ void CBaseMonster::Load(LPCSTR section)
 	inherited_shared::load_shared	(SUB_CLS_ID, section);
 
 	m_fCurMinAttackDist				= get_sd()->m_fMinAttackDist;
+
+//	HUD().GetUI()->UIMainIngameWnd.AddMonsterClawsEffect	("monster", "controller\\controller_blood_01");
 }
 
 void CBaseMonster::load_shared(LPCSTR section)

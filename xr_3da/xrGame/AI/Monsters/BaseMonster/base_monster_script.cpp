@@ -36,6 +36,18 @@ bool CBaseMonster::bfAssignMovement (CScriptEntityAction *tpEntityAction)
 	
 	force_real_speed = (l_tMovementAction.m_tSpeedParam == eSP_ForceSpeed);
 
+	switch (l_tMovementAction.m_tGoalType) {
+		
+		case CScriptMovementAction::eGoalTypeObject : {
+			CGameObject		*l_tpGameObject = smart_cast<CGameObject*>(l_tMovementAction.m_tpObjectToGo);
+			CMonsterMovement::set_target_point	(l_tpGameObject->Position(), l_tpGameObject->level_vertex_id());
+			break;
+													  }
+		case CScriptMovementAction::eGoalTypePathPosition :
+		case CScriptMovementAction::eGoalTypeNoPathPosition :
+			CMonsterMovement::set_target_point	(l_tMovementAction.m_tDestinationPosition);
+			break;
+	}
 	return			(true);		
 }
 

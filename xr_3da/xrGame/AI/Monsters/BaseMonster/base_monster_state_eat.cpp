@@ -100,8 +100,6 @@ void CBaseMonsterEat::Run()
 	Fvector		approach_pos;
 	u32			approach_vertex_id;
 	
-	bool bNeedRebuild = false; 
-
 	switch (m_tAction) {
 	/**********************************/
 	case ACTION_CORPSE_APPROACH_RUN:	// бежать к трупу
@@ -118,14 +116,8 @@ void CBaseMonsterEat::Run()
 		}
 		R_ASSERT(ai().level_graph().inside(approach_vertex_id,approach_pos));
 	
-		if (IS_NEED_REBUILD()) bNeedRebuild = true;
-		if (pMonster->CMovementManager::level_dest_vertex_id() != approach_vertex_id) bNeedRebuild = true;
-		
-		if (bNeedRebuild) {
-			pMonster->CMonsterMovement::set_target_point		(approach_pos,approach_vertex_id);
-			pMonster->CMonsterMovement::set_generic_parameters	();
-		}
-
+		pMonster->CMonsterMovement::set_target_point		(approach_pos,approach_vertex_id);
+		pMonster->CMonsterMovement::set_generic_parameters	();
 
 		if (cur_dist < DIST_SLOW_APPROACH_TO_CORPSE) m_tAction = ACTION_CORPSE_APPROACH_WALK;
 

@@ -62,7 +62,6 @@ void CBaseMonsterExploreNDE::Run()
 	case ACTION_LOOK_AROUND:
 		LOG_EX("nde: LOOK_AROUND");
 		pMonster->MotionMan.m_tAction = ACT_LOOK_AROUND;
-		pMonster->disable_path();
 		break;
 	}
 
