@@ -1,9 +1,9 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_a_star_nodes.h
+//	Module 		: ai_a_star_templates.h
 //	Created 	: 16.12.2002
 //  Modified 	: 16.12.2002
 //	Author		: Dmitriy Iassenev
-//	Description : Node classes for A* algortihm
+//	Description : Node classes definitions for A* algortihm
 ////////////////////////////////////////////////////////////////////////////
 
 #pragma once

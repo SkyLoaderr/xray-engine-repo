@@ -111,7 +111,7 @@ public:
 		tpOpenedList->tpOpenedNext = tpTemp;
 		tpTemp->iIndex = dwStartNode;
 		tpTemp->g = 0.0;
-		tpTemp->h = tTemplateNode.ffAnticipate(dwStartNode,dwGoalNode);
+		tpTemp->h = tTemplateNode.ffAnticipate(dwStartNode);
 		tpTemp->tpOpenedPrev = tpOpenedList;
 		tpTemp->ucOpenCloseMask = 1;
 		tpTemp->f = tpTemp->g + tpTemp->h;
@@ -216,7 +216,6 @@ public:
 				else {
 					tpTemp2 = tpIndexes[iNodeIndex].tpNode = tpHeap + dwHeap++;
 					tpTemp2->tpNext = tpTemp2->tpForward = tpTemp2->tpOpenedNext = tpTemp2->tpOpenedPrev = 0;
-					//*(u32 *)(tpTemp2) = 0;
 					tpIndexes[iNodeIndex].dwTime = dwAStarStaticCounter;
 
 					tpTemp2->iIndex = iNodeIndex;
@@ -224,7 +223,7 @@ public:
 					tpTemp2->g = tpBestNode->g + tTemplateNode.ffEvaluate(iBestIndex,iNodeIndex);
 
 					// put that node to the opened list if wasn't found there and in the closed one
-					tpTemp2->h = tTemplateNode.ffAnticipate(dwGoalNode,iNodeIndex);
+					tpTemp2->h = tTemplateNode.ffAnticipate();
 					tpTemp2->f = tpTemp2->g + tpTemp2->h;
 					
 					tpTemp  = tpOpenedList;

@@ -9,7 +9,7 @@
 //#include "virtualvector.h"
 #include "..\xrLevel.h"
 #include "ai_a_star_search.h"
-//#include "ai_a_star_nodes.h"
+//#include "ai_a_star_templates.h"
 
 namespace AI {
 	typedef struct tagSGraphEdge {
@@ -66,9 +66,38 @@ typedef struct tagSAIMapData {
 	u32			dwFinishNode;
 } SAIMapData;
 
+typedef struct tagSAIMapDataL {
+	CAI_Space	*tpAI_Space;
+	u32			dwFinishNode;
+	float		fLight;
+	float		fCover;
+	float		fDistance;
+} SAIMapDataL;
+
+typedef struct tagSAIMapDataE {
+	CAI_Space	*tpAI_Space;
+	u32			dwFinishNode;
+	u32			dwEnemyNode;
+	float		fLight;
+	float		fCover;
+	float		fDistance;
+	float		fEnemyDistance;
+	float		fEnemyView;
+} SAIMapDataE;
+
 class CAIMapTemplateNode {
 public:
 	SAIMapData	tData;
+	float		x1;
+	float		y1;
+	float		z1;
+	float		x2;
+	float		y2;
+	float		z2;
+	float		x3;
+	float		y3;
+	float		z3;
+	u32			m_dwLastBestNode;
 	typedef		NodeLink* iterator;
 	IC void		begin				(u32 dwNode, iterator &tStart, iterator &tEnd);
 	IC u32		get_value			(iterator &tIterator);
@@ -81,9 +110,10 @@ public:
 class CAIGraphTemplateNode {
 public:
 	SAIMapData	tData;
+	u32			m_dwLastBestNode;
 	typedef		AI::SGraphEdge* iterator;
-	IC void		begin				(u32 dwNode, iterator &tStart, iterator &tEnd);
-	IC u32		get_value			(iterator &tIterator)
+	IC void		begin					(u32 dwNode, iterator &tStart, iterator &tEnd);
+	IC u32		get_value				(iterator &tIterator)
 	{
 		return(tIterator->dwVertexNumber);
 	}
@@ -95,63 +125,41 @@ public:
 
 class CAIMapShortestPathNode : public CAIMapTemplateNode {
 public:
-	CAIMapShortestPathNode(SAIMapData &tAIMapData)
-	{
-		tData = tAIMapData;
-	}
-	IC float	ffEvaluate			(u32 dwStartNode, u32 dwFinishNode);
-	IC float	ffAnticipate		(u32 dwStartNode, u32 dwFinishNode) {return(ffEvaluate(dwStartNode,dwFinishNode));};
+				CAIMapShortestPathNode	(SAIMapData &tAIMapData);
+	IC float	ffEvaluate				(u32 dwStartNode, u32 dwFinishNode);
+	IC float	ffAnticipate			(u32 dwStartNode);
+	IC float	ffAnticipate			();
 };
 
 class CAIMapLCDPathNode : public CAIMapTemplateNode {
-private:
-	float	
-		m_fCriteriaLightWeight,
-		m_fCriteriaCoverWeight,
-		m_fCriteriaDistanceWeight;
-
 public:
-	CAIMapLCDPathNode(SAIMapData &tAIMapData)
-	{
-		tData = tAIMapData;
-		m_fCriteriaLightWeight = 5.f;
-		m_fCriteriaCoverWeight = 10.f;
-		m_fCriteriaDistanceWeight = 40.f;
-	}
-	IC float	ffEvaluate			(u32 dwStartNode, u32 dwFinishNode);
-	IC float	ffAnticipate		(u32 dwStartNode, u32 dwFinishNode) {return(ffEvaluate(dwStartNode,dwFinishNode));};
+	SAIMapDataL	tData;
+	float		m_fSum;
+				CAIMapLCDPathNode		(SAIMapDataL &tAIMapData);
+	IC float	ffEvaluate				(u32 dwStartNode, u32 dwFinishNode);
+	IC float	ffAnticipate			(u32 dwStartNode);
+	IC float	ffAnticipate			();
 };
 
 class CAIMapEnemyPathNode : public CAIMapTemplateNode {
-private:
-	float	
-		m_fCriteriaEnemyViewWeight,
-		m_fCriteriaLightWeight,
-		m_fCriteriaCoverWeight,
-		m_fCriteriaDistanceWeight,
-		m_fOptimalEnemyDistance;
 public:
-	CAIMapEnemyPathNode(SAIMapData &tAIMapData)
-	{
-		tData = tAIMapData;
-		m_fCriteriaLightWeight = 5.f;
-		m_fCriteriaCoverWeight = 10.f;
-		m_fCriteriaDistanceWeight = 40.f;
-		m_fCriteriaEnemyViewWeight = 100.f;
-		m_fOptimalEnemyDistance = 40.f;
-	}
-	IC float	ffEvaluate			(u32 dwStartNode, u32 dwFinishNode);
-	IC float	ffAnticipate		(u32 dwStartNode, u32 dwFinishNode) {return(ffEvaluate(dwStartNode,dwFinishNode));};
+	float		x4;
+	float		y4;
+	float		z4;
+	SAIMapDataE	tData;
+	float		m_fSum;
+				CAIMapEnemyPathNode		(SAIMapDataE &tAIMapData);
+	IC float	ffEvaluate				(u32 dwStartNode, u32 dwFinishNode);
+	IC float	ffAnticipate			(u32 dwStartNode);
+	IC float	ffAnticipate			();
 };
 
 class CAIGraphShortestPathNode : public CAIGraphTemplateNode {
 public:
-	CAIGraphShortestPathNode(SAIMapData &tAIMapData)
-	{
-		tData = tAIMapData;
-	}
-	IC float	ffEvaluate			(u32 dwStartNode, u32 dwFinishNode);
-	IC float	ffAnticipate		(u32 dwStartNode, u32 dwFinishNode);
+				CAIGraphShortestPathNode(SAIMapData &tAIMapData);
+	IC float	ffEvaluate				(u32 dwStartNode, u32 dwFinishNode);
+	IC float	ffAnticipate			(u32 dwStartNode);
+	IC float	ffAnticipate			();
 };
 
 class CAI_Space	: public pureDeviceCreate, pureDeviceDestroy

@@ -1571,6 +1571,9 @@
 				RelativePath="ai_a_star_search.h">
 			</File>
 			<File
+				RelativePath="ai_a_star_templates.h">
+			</File>
+			<File
 				RelativePath="ai_misc.cpp">
 			</File>
 		</Filter>

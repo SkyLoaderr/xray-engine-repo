@@ -338,136 +338,256 @@ int	CAI_Space::q_LoadSearch(const Fvector& pos)
 	return selected;
 }
 
-//#define MAP_AVAILABLE_CELL		'.'
-//#define MAP_UNAVAILABLE_CELL	'x'
-//#define ABC_SIZE				62
-//
-//void CAI_Space::vfCreate2DMap(char *caFile0, char *caFile1, char *caFile2)
-//{
-//	// finding _min and max values
-//	s16 sMinX = 30000, sMaxX = -30000, sMinZ = 30000, sMaxZ = -30000;
-//	for (int i=1; i<(int)m_header.count; i++) {
-//		NodeCompressed *tpNode = m_nodes_ptr[i];
-//		if (tpNode->p0.x < sMinX)
-//			sMinX = tpNode->p0.x;
-//		if (tpNode->p0.x > sMaxX)
-//			sMaxX = tpNode->p0.x;
-//		if (tpNode->p0.z < sMinZ)
-//			sMinZ = tpNode->p0.z;
-//		if (tpNode->p0.z > sMaxZ)
-//			sMaxZ = tpNode->p0.z;
-//		if (tpNode->p1.x < sMinX)
-//			sMinX = tpNode->p1.x;
-//		if (tpNode->p1.x > sMaxX)
-//			sMaxX = tpNode->p1.x;
-//		if (tpNode->p1.z < sMinZ)
-//			sMinZ = tpNode->p1.z;
-//		if (tpNode->p1.z > sMaxZ)
-//			sMaxZ = tpNode->p1.z;
+//////////////////////////////////////////////////////////////////////////
+// CAIMapTemplateNode
+//////////////////////////////////////////////////////////////////////////
+
+IC void CAIMapTemplateNode::begin(u32 dwNode, CAIMapTemplateNode::iterator &tIterator, CAIMapTemplateNode::iterator &tEnd)
+{
+	tEnd = (tIterator = (NodeLink *)((BYTE *)tData.tpAI_Space->Node(dwNode) + sizeof(NodeCompressed))) + tData.tpAI_Space->Node(dwNode)->links;
+}
+
+IC u32 CAIMapTemplateNode::get_value(CAIMapTemplateNode::iterator &tIterator)
+{
+	return(tData.tpAI_Space->UnpackLink(*tIterator));
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CAIGraphTemplateNode
+//////////////////////////////////////////////////////////////////////////
+
+IC void CAIGraphTemplateNode::begin(u32 dwNode, CAIGraphTemplateNode::iterator &tIterator, CAIGraphTemplateNode::iterator &tEnd)
+{
+	tIterator = (AI::SGraphEdge *)((BYTE *)tData.tpAI_Space->m_tpaGraph + tData.tpAI_Space->m_tpaGraph[dwNode].dwEdgeOffset);
+	tEnd = tIterator + tData.tpAI_Space->m_tpaGraph[dwNode].dwNeighbourCount;
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CAIMapShortestPathNode
+//////////////////////////////////////////////////////////////////////////
+
+CAIMapShortestPathNode::CAIMapShortestPathNode(SAIMapData &tAIMapData)
+{
+	tData					= tAIMapData;
+	m_dwLastBestNode		= u32(-1);
+	NodeCompressed &tNode1	= *tData.tpAI_Space->Node(tData.dwFinishNode);
+	x3						= (float)(tNode1.p1.x) + (float)(tNode1.p0.x);
+	y3						= (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
+	z3						= (float)(tNode1.p1.z) + (float)(tNode1.p0.z);
+}
+
+IC float CAIMapShortestPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode)
+{
+	if (m_dwLastBestNode != dwStartNode) {
+		NodeCompressed &tNode0 = *tData.tpAI_Space->Node(dwStartNode), &tNode1 = *tData.tpAI_Space->Node(dwFinishNode);
+		
+		x1 = (float)(tNode0.p1.x) + (float)(tNode0.p0.x);
+		y1 = (float)(tNode0.p1.y) + (float)(tNode0.p0.y);
+		z1 = (float)(tNode0.p1.z) + (float)(tNode0.p0.z);
+		
+		x2 = (float)(tNode1.p1.x) + (float)(tNode1.p0.x);
+		y2 = (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
+		z2 = (float)(tNode1.p1.z) + (float)(tNode1.p0.z);
+
+		return(_sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + tData.tpAI_Space->m_fYSize2*_sqr(y2 - y1))));
+	}
+	else {
+		NodeCompressed &tNode1 = *tData.tpAI_Space->Node(dwFinishNode);
+
+		x2 = (float)(tNode1.p1.x) + (float)(tNode1.p0.x);
+		y2 = (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
+		z2 = (float)(tNode1.p1.z) + (float)(tNode1.p0.z);
+
+		return(_sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + tData.tpAI_Space->m_fYSize2*_sqr(y2 - y1))));
+	}
+}
+
+IC float CAIMapShortestPathNode::ffAnticipate(u32 dwStartNode)
+{
+	NodeCompressed &tNode0 = *tData.tpAI_Space->Node(dwStartNode);
+	
+	x2 = (float)(tNode0.p1.x) + (float)(tNode0.p0.x);
+	y2 = (float)(tNode0.p1.y) + (float)(tNode0.p0.y);
+	z2 = (float)(tNode0.p1.z) + (float)(tNode0.p0.z);
+	
+	return(_sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x3 - x2) + _sqr(z3 - z2)) + tData.tpAI_Space->m_fYSize2*_sqr(y3 - y2))));
+}
+
+IC float CAIMapShortestPathNode::ffAnticipate()
+{
+	return(_sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x3 - x2) + _sqr(z3 - z2)) + tData.tpAI_Space->m_fYSize2*_sqr(y3 - y2))));
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CAIMapLCDPathNode
+//////////////////////////////////////////////////////////////////////////
+
+CAIMapLCDPathNode::CAIMapLCDPathNode(SAIMapDataL &tAIMapData)
+{
+	tData					= tAIMapData;
+	m_dwLastBestNode		= u32(-1);
+	NodeCompressed &tNode1	= *tData.tpAI_Space->Node(tData.dwFinishNode);
+	x3						= (float)(tNode1.p1.x) + (float)(tNode1.p0.x);
+	y3						= (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
+	z3						= (float)(tNode1.p1.z) + (float)(tNode1.p0.z);
+	float fCover			= 1/(EPS_L + (float)(tNode1.cover[0])/255.f + (float)(tNode1.cover[1])/255.f + (float)(tNode1.cover[2])/255.f  + (float)(tNode1.cover[3])/255.f);
+	float fLight			= (float)(tNode1.light)/255.f;
+	m_fSum					= fCover + fLight;
+}
+
+IC float CAIMapLCDPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode)
+{
+	if (m_dwLastBestNode != dwStartNode) {
+		NodeCompressed &tNode0 = *tData.tpAI_Space->Node(dwStartNode), &tNode1 = *tData.tpAI_Space->Node(dwFinishNode);
+
+		x1 = (float)(tNode0.p1.x) + (float)(tNode0.p0.x);
+		y1 = (float)(tNode0.p1.y) + (float)(tNode0.p0.y);
+		z1 = (float)(tNode0.p1.z) + (float)(tNode0.p0.z);
+		
+		x2 = (float)(tNode1.p1.x) + (float)(tNode1.p0.x);
+		y2 = (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
+		z2 = (float)(tNode1.p1.z) + (float)(tNode1.p0.z);
+
+		float fCover = 1/(EPS_L + (float)(tNode1.cover[0])/255.f + (float)(tNode1.cover[1])/255.f + (float)(tNode1.cover[2])/255.f  + (float)(tNode1.cover[3])/255.f);
+
+		float fLight = (float)(tNode1.light)/255.f;
+		
+		return(fLight*tData.fLight + fCover*tData.fCover + tData.fDistance*_sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + tData.tpAI_Space->m_fYSize2*_sqr(y2 - y1))));
+	}
+	else {
+		NodeCompressed &tNode1 = *tData.tpAI_Space->Node(dwFinishNode);
+
+		x2 = (float)(tNode1.p1.x) + (float)(tNode1.p0.x);
+		y2 = (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
+		z2 = (float)(tNode1.p1.z) + (float)(tNode1.p0.z);
+
+		float fCover = 1/(EPS_L + (float)(tNode1.cover[0])/255.f + (float)(tNode1.cover[1])/255.f + (float)(tNode1.cover[2])/255.f  + (float)(tNode1.cover[3])/255.f);
+
+		float fLight = (float)(tNode1.light)/255.f;
+		
+		return(fLight*tData.fLight + fCover*tData.fCover + tData.fDistance*_sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + tData.tpAI_Space->m_fYSize2*_sqr(y2 - y1))));
+	}
+}
+
+IC float CAIMapLCDPathNode::ffAnticipate(u32 dwStartNode)
+{
+	NodeCompressed &tNode0 = *tData.tpAI_Space->Node(dwStartNode);
+
+	x2 = (float)(tNode0.p1.x) + (float)(tNode0.p0.x);
+	y2 = (float)(tNode0.p1.y) + (float)(tNode0.p0.y);
+	z2 = (float)(tNode0.p1.z) + (float)(tNode0.p0.z);
+	
+	return(m_fSum + tData.fDistance*_sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x2 - x3) + _sqr(z2 - z3)) + tData.tpAI_Space->m_fYSize2*_sqr(y2 - y3))));
+}
+
+IC float CAIMapLCDPathNode::ffAnticipate()
+{
+	return(m_fSum + tData.fDistance*_sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x2 - x3) + _sqr(z2 - z3)) + tData.tpAI_Space->m_fYSize2*_sqr(y2 - y3))));
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CAIMapEnemyPathNode
+//////////////////////////////////////////////////////////////////////////
+
+CAIMapEnemyPathNode::CAIMapEnemyPathNode(SAIMapDataE &tAIMapData)
+{
+	tData					= tAIMapData;
+	m_dwLastBestNode		= u32(-1);
+	{
+		NodeCompressed &tNode1	= *tData.tpAI_Space->Node(tData.dwEnemyNode);
+		x4						= (float)(tNode1.p1.x) + (float)(tNode1.p0.x);
+		y4						= (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
+		z4						= (float)(tNode1.p1.z) + (float)(tNode1.p0.z);
+	}
+	NodeCompressed &tNode1	= *tData.tpAI_Space->Node(tData.dwFinishNode);
+	x3						= (float)(tNode1.p1.x) + (float)(tNode1.p0.x);
+	y3						= (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
+	z3						= (float)(tNode1.p1.z) + (float)(tNode1.p0.z);
+	float fCover			= 1/(EPS_L + (float)(tNode1.cover[0])/255.f + (float)(tNode1.cover[1])/255.f + (float)(tNode1.cover[2])/255.f  + (float)(tNode1.cover[3])/255.f);
+	float fLight			= (float)(tNode1.light)/255.f;
+	m_fSum					= fCover + fLight + tData.fEnemyView*(_sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x4 - x1) + _sqr(z4 - z1)) + tData.tpAI_Space->m_fYSize2*_sqr(y4 - y1))) - tData.fEnemyDistance);
+}
+
+IC float CAIMapEnemyPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode)
+{
+	if (m_dwLastBestNode != dwStartNode) {
+		NodeCompressed &tNode0 = *tData.tpAI_Space->Node(dwStartNode), &tNode1 = *tData.tpAI_Space->Node(dwFinishNode);
+		
+		x1 = (float)(tNode0.p1.x) + (float)(tNode0.p0.x);
+		y1 = (float)(tNode0.p1.y) + (float)(tNode0.p0.y);
+		z1 = (float)(tNode0.p1.z) + (float)(tNode0.p0.z);
+		
+		x2 = (float)(tNode1.p1.x) + (float)(tNode1.p0.x);
+		y2 = (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
+		z2 = (float)(tNode1.p1.z) + (float)(tNode1.p0.z);
+
+		float fCover = 1.f/(EPS_L + (float)(tNode1.cover[0])/255.f + (float)(tNode1.cover[1])/255.f + (float)(tNode1.cover[2])/255.f  + (float)(tNode1.cover[3])/255.f);
+
+		float fLight = (float)(tNode1.light)/255.f;
+		
+		return(tData.fEnemyView*(_sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x4 - x1) + _sqr(z4 - z1)) + tData.tpAI_Space->m_fYSize2*_sqr(y4 - y1))) - tData.fEnemyDistance) + fLight*tData.fLight + fCover*tData.fCover + tData.fDistance*(float)sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + tData.tpAI_Space->m_fYSize2*_sqr(y2 - y1))));
+	}
+	else {
+		NodeCompressed &tNode1 = *tData.tpAI_Space->Node(dwFinishNode);
+		
+		x2 = (float)(tNode1.p1.x) + (float)(tNode1.p0.x);
+		y2 = (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
+		z2 = (float)(tNode1.p1.z) + (float)(tNode1.p0.z);
+
+		float fCover = 1.f/(EPS_L + (float)(tNode1.cover[0])/255.f + (float)(tNode1.cover[1])/255.f + (float)(tNode1.cover[2])/255.f  + (float)(tNode1.cover[3])/255.f);
+
+		float fLight = (float)(tNode1.light)/255.f;
+		
+		return(tData.fEnemyView*(_sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x4 - x1) + _sqr(z4 - z1)) + tData.tpAI_Space->m_fYSize2*_sqr(y4 - y1))) - tData.fEnemyDistance) + fLight*tData.fLight + fCover*tData.fCover + tData.fDistance*(float)sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + tData.tpAI_Space->m_fYSize2*_sqr(y2 - y1))));
+	}
+}
+
+IC float CAIMapEnemyPathNode::ffAnticipate(u32 dwStartNode)
+{
+	NodeCompressed &tNode0 = *tData.tpAI_Space->Node(dwStartNode);
+	
+	x2 = (float)(tNode0.p1.x) + (float)(tNode0.p0.x);
+	y2 = (float)(tNode0.p1.y) + (float)(tNode0.p0.y);
+	z2 = (float)(tNode0.p1.z) + (float)(tNode0.p0.z);
+	
+	return(m_fSum + tData.fDistance*(float)sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x2 - x3) + _sqr(z2 - z3)) + tData.tpAI_Space->m_fYSize2*_sqr(y2 - y3))));
+}		   
+		   
+IC float CAIMapEnemyPathNode::ffAnticipate()
+{		   
+	return(m_fSum + tData.fDistance*(float)sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x2 - x3) + _sqr(z2 - z3)) + tData.tpAI_Space->m_fYSize2*_sqr(y2 - y3))));
+}
+
+//	{
+//		tData						= tAIMapData;
+//		m_dwLastBestNode			= u32(-1);
+//		m_fCriteriaLightWeight		= 5.f;
+//		m_fCriteriaCoverWeight		= 10.f;
+//		m_fCriteriaDistanceWeight	= 40.f;
+//		m_fCriteriaEnemyViewWeight	= 100.f;
+//		m_fOptimalEnemyDistance		= 40.f;
 //	}
-//	
-//	// allocating memory
-//	int M = sMaxX - sMinX + 1;
-//	int N = sMaxZ - sMinZ + 1;
-//	unsigned char **tppMap;
-//	tppMap = (unsigned char **)xr_malloc(sizeof(char *)*N);
-//	memset(tppMap,0,sizeof(unsigned char *)*N);
-//	for (int i=0; i<N; i++) {
-//		tppMap[i] = (unsigned char *)xr_malloc(sizeof(unsigned char)*M);
-//		memset(tppMap[i],MAP_UNAVAILABLE_CELL,sizeof(unsigned char)*M);
-//	}
-//
-//	// generating mini-nodes
-//	for (int i=1; i<(int)m_header.count; i++) {
-//		NodeCompressed *tpNode = m_nodes_ptr[i];
-//		Fvector tVector;
-//		UnpackPosition(tVector,tpNode->p0);
-//		if ((tVector.y < 1.5f) || (_min(tpNode->cover[0],_min(tpNode->cover[1],_min(tpNode->cover[2],tpNode->cover[3]))) > 200))
-//			for (s16 j = tpNode->p0.z - sMinZ; j<tpNode->p1.z - sMinZ + 1; j++)
-//				memset(tppMap[j] + sMaxX - tpNode->p1.x, MAP_AVAILABLE_CELL, tpNode->p1.x - tpNode->p0.x + 1);
-//	}
-//	
-//	// saving mini-nodes
-//	FILE *fOutput = fopen(caFile0,"wb");
-//	for (int i=0; i<N; i++) {
-//		fwrite(tppMap[i],sizeof(unsigned char),M,fOutput);
-//		fprintf(fOutput,"\n");
-//	}
-//	fclose(fOutput);
-//	
-//	// initializing node alphabet
-//	char caABC[ABC_SIZE] = {'0','1','2','3','4','5','6','7','8','9',
-//					'a','b','c','d','e','f','g','h','i','j',
-//					'k','l','m','n','o','p','q','r','s','t',
-//					'u','v','w','x','y','z','A','B','C','D',
-//					'E','F','G','H','I','J','K','L','M','N',
-//					'O','P','Q','R','S','T','U','V','W','X',
-//					'Y','Z'};
-//	
-//	// converting mini-nodes
-//	for (int i=0; i<N; i++)
-//		for (int j=0; j<M; j++)
-//			if (tppMap[i][j] == MAP_AVAILABLE_CELL)
-//				tppMap[i][j] = 0;
-//			else
-//				tppMap[i][j] = 255;
-//	
-//	// building izo-mini-nodes
-//	for (unsigned char ucStart = 0; ucStart < ABC_SIZE; ucStart++) {
-//		bool bOk = true;
-//		unsigned char ucValue = ucStart ? ucStart : (unsigned char)255;
-//		for (int i=0; i<N; i++)
-//			for (int j=0; j<M; j++)
-//				if (tppMap[i][j] == 0) {
-//					if ((i > 0) && (tppMap[i - 1][j] == ucValue)) {
-//						tppMap[i][j] = ucStart + 1;
-//						bOk = false;
-//						continue;
-//					}
-//					
-//					if ((i < N) && (tppMap[i + 1][j] == ucValue)) {
-//						tppMap[i][j] = ucStart + 1;
-//						bOk = false;
-//						continue;
-//					}
-//					
-//					if ((j > 0) && (tppMap[i][j - 1] == ucValue)) {
-//						tppMap[i][j] = ucStart + 1;
-//						bOk = false;
-//						continue;
-//					}
-//					
-//					if ((j < M) && (tppMap[i][j + 1] == ucValue)) {
-//						tppMap[i][j] = ucStart + 1;
-//						bOk = false;
-//						continue;
-//					}
-//				}
-//		if (bOk)
-//			break;
-//	}
-//	
-//	// converting izo-mini-nodes
-//	for (int i=0; i<N; i++)
-//		for (int j=0; j<M; j++)
-//			if (tppMap[i][j] < ABC_SIZE)
-//				tppMap[i][j] = caABC[tppMap[i][j]];
-//			else
-//				if (tppMap[i][j] == 255)
-//					tppMap[i][j] = '.';
-//				else
-//					tppMap[i][j] = '0';
-//
-//	// saving izo-mini-nodes
-//	fOutput = fopen(caFile1,"wb");
-//	for (int i=0; i<N; i++) {
-//		fwrite(tppMap[i],sizeof(unsigned char),M,fOutput);
-//		fprintf(fOutput,"\n");
-//	}
-//	fclose(fOutput);
-//	
-//	// freeing resources
-//	for (int i=0; i<N; i++)
-//		_FREE(tppMap[i]);
-//	_FREE(tppMap);
-//}
+//////////////////////////////////////////////////////////////////////////
+// CAIGraphShortestPathNode
+//////////////////////////////////////////////////////////////////////////
+
+CAIGraphShortestPathNode::CAIGraphShortestPathNode(SAIMapData &tAIMapData)
+{
+	tData = tAIMapData;
+	m_dwLastBestNode = u32(-1);
+}
+
+IC float CAIGraphShortestPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode)
+{
+	return(((AI::SGraphEdge *)((BYTE *)tData.tpAI_Space->m_tpaGraph + tData.tpAI_Space->m_tpaGraph[dwStartNode].dwEdgeOffset) + (m_dwLastBestNode = dwFinishNode))->fPathDistance);
+}
+
+IC float CAIGraphShortestPathNode::ffAnticipate(u32 dwStartNode)
+{
+	return(tData.tpAI_Space->m_tpaGraph[dwStartNode].tPoint.distance_to(tData.tpAI_Space->m_tpaGraph[tData.dwFinishNode].tPoint));
+}
+
+IC float CAIGraphShortestPathNode::ffAnticipate()
+{
+	return(tData.tpAI_Space->m_tpaGraph[m_dwLastBestNode].tPoint.distance_to(tData.tpAI_Space->m_tpaGraph[tData.dwFinishNode].tPoint));
+}
