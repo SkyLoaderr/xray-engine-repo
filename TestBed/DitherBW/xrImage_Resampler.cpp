@@ -208,7 +208,7 @@ struct CLIST
 
 DWORD	CC	(double a)
 {
-	int	p	= iFloor(float(a));
+	int	p		= iFloor(float(a));
 	if	(p<0)	return 0; else if (p>255) return 255;
 	return p;
 }

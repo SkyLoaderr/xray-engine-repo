@@ -75,10 +75,10 @@ class	pred_remove { public: IC bool	operator() (CDeflector* D) { { if (0==D) ret
 // O(n*n) sorting
 void	dumb_sort	(vecDefl& L)
 {
-	for (int n1=0; n1<L.size(); n1++)
+	for (int n1=0; n1<int(L.size()); n1++)
 	{
 		Progress(float(n1)/float(L.size()));
-		for (int n2=1; n2<L.size(); n2++)
+		for (int n2=1; n2<int(L.size()); n2++)
 			if (compare2_defl(L[n2],L[n2-1]))	swap(L[n2],L[n2-1]);
 	}
 }
@@ -186,6 +186,8 @@ void CBuild::xrPhase_MergeLM()
 	Msg	("%d lightmaps builded",g_lightmaps.size());
 
 	// Cleanup deflectors
+	Progress	(1.f);
+	Status		("Destroying deflectors...");
 	for (DWORD it=0; it<g_deflectors.size(); it++)
 		_DELETE(g_deflectors[it]);
 	g_deflectors.clear	();

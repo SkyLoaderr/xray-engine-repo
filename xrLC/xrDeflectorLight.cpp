@@ -436,12 +436,12 @@ VOID CDeflector::Light(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H)
 	{
 		Msg("* ERROR: CDeflector::Light - sphere calc");
 	}
-	
+
 	// Iterate on layers
 	for (b_LightLayer* layer=pBuild->lights.begin(); layer!=pBuild->lights.end(); layer++)
 	{
 		// Convert lights to local form
-		{
+		try {
 			LightsSelected->clear	();
 			R_Light*	L			= layer->lights.begin();
 			for (; L!=layer->lights.end(); L++)
@@ -452,8 +452,11 @@ VOID CDeflector::Light(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H)
 				}
 				LightsSelected->push_back(*L);
 			}
+			if ((layer!=pBuild->lights.begin()) && LightsSelected->empty())	continue;
+		} catch (...)
+		{
+			Msg("* ERROR: CDeflector::Light - LocalSelect (L:%d)",layer-pBuild->lights.begin());
 		}
-		if ((layer!=pBuild->lights.begin()) && LightsSelected->empty())	continue;
 
 		// Register new layer
 		layers.push_back	(Layer());
@@ -462,93 +465,103 @@ VOID CDeflector::Light(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H)
 		b_texture& lm		= layer_data.lm;
 		lm.dwWidth			= dwWidth;
 		lm.dwHeight			= dwHeight;
-		
+
 		// Calculate and fill borders
 		L_Calculate			(DB,LightsSelected,H);
 		for (DWORD ref=254; ref>0; ref--) if (!ApplyBorders(lm,ref)) break;
-		
+
 		// Compression
-		DWORD	w,h;
-		if (compress_Zero(lm,rms_zero))	return;		// already with borders
-		else if (compress_RMS(lm,rms_shrink,w,h))	
+		try {
+			DWORD	w,h;
+			if (compress_Zero(lm,rms_zero))	return;		// already with borders
+			else if (compress_RMS(lm,rms_shrink,w,h))	
+			{
+				// Reacalculate lightmap at lower resolution
+				lm.dwWidth	= w;
+				lm.dwHeight	= h;
+				_FREE		(lm.pSurface);
+				L_Calculate	(DB,LightsSelected,H);
+			}
+		} catch (...)
 		{
-			// Reacalculate lightmap at lower resolution
-			lm.dwWidth	= w;
-			lm.dwHeight	= h;
-			_FREE		(lm.pSurface);
-			L_Calculate	(DB,LightsSelected,H);
+			Msg("* ERROR: CDeflector::Light - Compression (L:%d)", layer-pBuild->lights.begin());
 		}
-		
+
 		// Expand with borders
-		if (lm.dwWidth==1)	
-		{
-			// Horizontal ZERO - vertical line
-			b_texture		T;
-			T.dwWidth		= 2*BORDER;
-			T.dwHeight		= lm.dwHeight+2*BORDER;
-			DWORD size		= T.dwWidth*T.dwHeight*4;
-			T.pSurface		= LPDWORD(malloc(size));
-			ZeroMemory		(T.pSurface,size);
-			
-			// Transfer
-			for (DWORD y=0; y<T.dwHeight; y++)
+		try {
+			if (lm.dwWidth==1)	
 			{
-				int		py			= int(y)-BORDER;
-				clamp	(py,0,int(lm.dwHeight-1));
-				DWORD	C			= lm.pSurface[py];
-				T.pSurface[y*2+0]	= C;
-				T.pSurface[y*2+1]	= C;
-			}
-			
-			// Exchange
-			_FREE			(lm.pSurface);
-			T.dwWidth		= 0;
-			T.dwHeight		= lm.dwHeight;
-			lm				= T;
-		} else if (lm.dwHeight==1) 
-		{
-			// Vertical ZERO - horizontal line
-			b_texture		T;
-			T.dwWidth		= lm.dwWidth+2*BORDER;
-			T.dwHeight		= 2*BORDER;
-			DWORD size		= T.dwWidth*T.dwHeight*4;
-			T.pSurface		= LPDWORD(malloc(size));
-			ZeroMemory		(T.pSurface,size);
-			
-			// Transfer
-			for (DWORD x=0; x<T.dwWidth; x++)
+				// Horizontal ZERO - vertical line
+				b_texture		T;
+				T.dwWidth		= 2*BORDER;
+				T.dwHeight		= lm.dwHeight+2*BORDER;
+				DWORD size		= T.dwWidth*T.dwHeight*4;
+				T.pSurface		= LPDWORD(malloc(size));
+				ZeroMemory		(T.pSurface,size);
+
+				// Transfer
+				for (DWORD y=0; y<T.dwHeight; y++)
+				{
+					int		py			= int(y)-BORDER;
+					clamp	(py,0,int(lm.dwHeight-1));
+					DWORD	C			= lm.pSurface[py];
+					T.pSurface[y*2+0]	= C;
+					T.pSurface[y*2+1]	= C;
+				}
+
+				// Exchange
+				_FREE			(lm.pSurface);
+				T.dwWidth		= 0;
+				T.dwHeight		= lm.dwHeight;
+				lm				= T;
+			} else if (lm.dwHeight==1) 
 			{
-				int		px			= int(x)-BORDER;
-				clamp	(px,0,int(lm.dwWidth-1));
-				DWORD	C			= lm.pSurface[px];
-				T.pSurface[0*T.dwWidth+x]	= C;
-				T.pSurface[1*T.dwWidth+x]	= C;
+				// Vertical ZERO - horizontal line
+				b_texture		T;
+				T.dwWidth		= lm.dwWidth+2*BORDER;
+				T.dwHeight		= 2*BORDER;
+				DWORD size		= T.dwWidth*T.dwHeight*4;
+				T.pSurface		= LPDWORD(malloc(size));
+				ZeroMemory		(T.pSurface,size);
+
+				// Transfer
+				for (DWORD x=0; x<T.dwWidth; x++)
+				{
+					int		px			= int(x)-BORDER;
+					clamp	(px,0,int(lm.dwWidth-1));
+					DWORD	C			= lm.pSurface[px];
+					T.pSurface[0*T.dwWidth+x]	= C;
+					T.pSurface[1*T.dwWidth+x]	= C;
+				}
+
+				// Exchange
+				_FREE			(lm.pSurface);
+				T.dwWidth		= lm.dwWidth;
+				T.dwHeight		= 0;
+				lm				= T;
+			} else {
+				// Generic blit
+				b_texture		lm_old	= lm;
+				b_texture		lm_new;
+				lm_new.dwWidth	= (lm_old.dwWidth+2*BORDER);
+				lm_new.dwHeight	= (lm_old.dwHeight+2*BORDER);
+				DWORD size		= lm_new.dwWidth*lm_new.dwHeight*4;
+				lm_new.pSurface	= LPDWORD(malloc(size));
+				ZeroMemory		(lm_new.pSurface,size);
+				blit			(lm_new.pSurface,lm_new.dwWidth,lm_new.dwHeight,lm_old.pSurface,lm_old.dwWidth,lm_old.dwHeight,BORDER,BORDER,255-BORDER);
+				_FREE			(lm_old.pSurface);
+				lm				= lm_new;
+				ApplyBorders	(lm,254);
+				ApplyBorders	(lm,253);
+				ApplyBorders	(lm,252);
+				ApplyBorders	(lm,251);
+				for	(ref=250; ref>0; ref--) if (!ApplyBorders(lm,ref)) break;
+				lm.dwWidth		= lm_old.dwWidth;
+				lm.dwHeight		= lm_old.dwHeight;
 			}
-			
-			// Exchange
-			_FREE			(lm.pSurface);
-			T.dwWidth		= lm.dwWidth;
-			T.dwHeight		= 0;
-			lm				= T;
-		} else {
-			// Generic blit
-			b_texture		lm_old	= lm;
-			b_texture		lm_new;
-			lm_new.dwWidth	= (lm_old.dwWidth+2*BORDER);
-			lm_new.dwHeight	= (lm_old.dwHeight+2*BORDER);
-			DWORD size		= lm_new.dwWidth*lm_new.dwHeight*4;
-			lm_new.pSurface	= LPDWORD(malloc(size));
-			ZeroMemory		(lm_new.pSurface,size);
-			blit			(lm_new.pSurface,lm_new.dwWidth,lm_new.dwHeight,lm_old.pSurface,lm_old.dwWidth,lm_old.dwHeight,BORDER,BORDER,255-BORDER);
-			_FREE			(lm_old.pSurface);
-			lm				= lm_new;
-			ApplyBorders	(lm,254);
-			ApplyBorders	(lm,253);
-			ApplyBorders	(lm,252);
-			ApplyBorders	(lm,251);
-			for	(ref=250; ref>0; ref--) if (!ApplyBorders(lm,ref)) break;
-			lm.dwWidth		= lm_old.dwWidth;
-			lm.dwHeight		= lm_old.dwHeight;
+		} catch (...)
+		{
+			Msg("* ERROR: CDeflector::Light - BorderExpansion (L:%d)", layer-pBuild->lights.begin());
 		}
 
 		// Test if layer really needed 
