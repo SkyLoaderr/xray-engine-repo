@@ -18,6 +18,7 @@
 #include "KeyBar.h"
 #include "main.h"
 #include "folderlib.h"
+#include "SkeletonAnimated.h"
 
 CActorTools*&	ATools=(CActorTools*)Tools;
 //------------------------------------------------------------------------------
@@ -205,7 +206,6 @@ void CActorTools::SelectPreviewObject(bool bClear){
 
 void CActorTools::GetStatTime(float& a, float& b, float& c)
 {
-/*
 	if (m_RenderObject.IsRenderable()&&fraLeftBar->ebRenderEngineStyle->Down&&m_RenderObject.m_pBlend){
     	a = 0;
 		b = m_RenderObject.m_pBlend->timeTotal/m_RenderObject.m_pBlend->speed;
@@ -216,7 +216,7 @@ void CActorTools::GetStatTime(float& a, float& b, float& c)
         }
     }else{
     	if (fraLeftBar->ebRenderEditorStyle->Down&&m_pEditObject&&m_pEditObject->GetActiveSMotion()){
-			st_AnimParam& P=m_pEditObject->m_SMParam;
+			SAnimParams& P=m_pEditObject->m_SMParam;
 		    a = P.min_t;
     		b = P.max_t;
             c = P.t;
@@ -226,7 +226,6 @@ void CActorTools::GetStatTime(float& a, float& b, float& c)
             c = 0;
         }
     }
-*/
 }
 //---------------------------------------------------------------------------
 
