@@ -39,6 +39,10 @@ typedef int			CHARACTER_ATTITUDE;
 #define NO_ATTITUDE	CHARACTER_ATTITUDE(-1)
 
 
+typedef shared_str				CHARACTER_CLASS;
+#define NO_CHARACTER_CLASS		NULL
+
+
 //структура, описывающая отношение одного персонажа к другому
 struct SRelation
 {

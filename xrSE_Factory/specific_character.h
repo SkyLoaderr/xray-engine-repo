@@ -7,11 +7,16 @@
 
 
 #include "character_info_defs.h"
+#include "shared_data.h"
+#include "xml_str_id_loader.h"
+
+
+#ifdef XRGAME_EXPORTS
+
 #include "PhraseDialogDefs.h"
 #include "character_community.h"
 
-#include "shared_data.h"
-#include "xml_str_id_loader.h"
+#endif
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -19,6 +24,9 @@
 //////////////////////////////////////////////////////////////////////////
 struct SSpecificCharacterData : CSharedResource
 {
+
+#ifdef  XRGAME_EXPORTS
+
 	SSpecificCharacterData ();
 	virtual ~SSpecificCharacterData ();
 
@@ -26,11 +34,16 @@ struct SSpecificCharacterData : CSharedResource
 	std::string m_sGameName;
 	//текст с биографией персонажа (линк на string table)
 	std::string m_sBioText;
-	//имя модели
-	std::string m_sVisual;
 	//строка содержащая предметы, которые нужно проспавнить 
 	std::string m_sSupplySpawn;
 
+#endif
+
+	//имя модели
+	std::string m_sVisual;
+
+#ifdef  XRGAME_EXPORTS
+	
 	//начальный диалог
 	PHRASE_DIALOG_INDEX m_iStartDialog;
 	//диалоги актера, которые будут доступны только при встрече с данным персонажем
@@ -43,10 +56,18 @@ struct SSpecificCharacterData : CSharedResource
 
 	//команда 
 	CHARACTER_COMMUNITY			m_Community;
+
+#endif
+	
 	//ранг
 	CHARACTER_RANK				m_Rank;
 	//репутация
 	CHARACTER_REPUTATION		m_Reputation;
+
+	//классы персонажа (военные-ветераны, ученые и т.д.)
+	//к которым он принадлежит
+	xr_vector<CHARACTER_CLASS>	m_Classes;
+
 
 	//указание на то что персонаж не предназначен для случайного выбора
 	//и задается только через явное указание ID
@@ -93,20 +114,24 @@ protected:
 	SPECIFIC_CHARACTER_INDEX m_iOwnIndex;
 public:
 
+#ifdef  XRGAME_EXPORTS
 	LPCSTR						Name		() const ;
 	LPCSTR						Bio			() const ;
 	const CHARACTER_COMMUNITY&	Community	() const ;
 	CHARACTER_RANK				Rank		() const ;
 	CHARACTER_REPUTATION		Reputation	() const ;
+#endif
 
 	LPCSTR					Visual		() const ;
+
+#ifdef  XRGAME_EXPORTS
 	LPCSTR					SupplySpawn	() const ;
 	
-
 	int		TradeIconX	() const	 {return data()->m_iIconX;}
 	int		TradeIconY	() const	 {return data()->m_iIconY;}
 	int		MapIconX	() const 	 {return data()->m_iMapIconX;}
 	int		MapIconY	() const	 {return data()->m_iMapIconY;}
+#endif
 };
 
 

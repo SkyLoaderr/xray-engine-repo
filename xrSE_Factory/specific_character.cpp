@@ -7,7 +7,11 @@
 #include "specific_character.h"
 #include "PhraseDialog.h"
 
+
 //////////////////////////////////////////////////////////////////////////
+
+#ifdef  XRGAME_EXPORTS
+
 SSpecificCharacterData::SSpecificCharacterData()
 {
 	m_sGameName.clear();
@@ -33,7 +37,7 @@ SSpecificCharacterData::~SSpecificCharacterData()
 {
 }
 
-
+#endif
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -106,6 +110,8 @@ void CSpecificCharacter::load_shared	(LPCSTR)
 	
 	/////////////////////////////////////////////////
 
+#ifdef  XRGAME_EXPORTS
+
 	LPCSTR start_dialog = uiXml.Read("start_dialog", 0, NULL);
 	if(start_dialog)
 		data()->m_iStartDialog	= CPhraseDialog::IdToIndex(start_dialog);
@@ -128,11 +134,15 @@ void CSpecificCharacter::load_shared	(LPCSTR)
 	//игровое имя персонажа
 	data()->m_sGameName		= uiXml.Read("name", 0, "");
 	data()->m_sBioText		= uiXml.Read("bio", 0, "");
+
+#endif
+
 	data()->m_sVisual		= uiXml.Read("visual", 0, "");
 	
+
+#ifdef  XRGAME_EXPORTS
 	data()->m_sSupplySpawn	= uiXml.Read("supplies", 0, "");
 	
-
 	if(!data()->m_sSupplySpawn.empty())
 	{
 		std::string &str = data()->m_sSupplySpawn;
@@ -145,14 +155,46 @@ void CSpecificCharacter::load_shared	(LPCSTR)
 		}
 	}
 
-	data()->m_Community.set((CHARACTER_COMMUNITY_ID)uiXml.Read("team", 0, *NO_COMMUNITY_ID));
-	R_ASSERT3(data()->m_Community.index() != NO_COMMUNITY_INDEX, "not all fields fulfiled for specific character", *IndexToId(m_iOwnIndex));
+#endif
+
+	data()->m_Classes.clear();
+	int classes_num = uiXml.GetNodesNum (uiXml.GetLocalRoot(), "class");
+	for(int i=0; i<classes_num; i++)
+	{
+		LPCSTR char_class = uiXml.Read	("class", 0, "");
+		if(char_class)
+		{
+			char* buf_str = xr_strdup(char_class);
+			xr_strlwr(buf_str);
+			data()->m_Classes.push_back(buf_str);
+			xr_free(buf_str);
+		}
+	}
+
+
+#ifdef  XRGAME_EXPORTS
+
+	LPCSTR team = uiXml.Read("community", 0, NULL);
+	R_ASSERT3(team != NULL, "'community' field not fulfiled for specific character", *IndexToId(m_iOwnIndex));
+	
+	char* buf_str = xr_strdup(team);
+	xr_strlwr(buf_str);
+	data()->m_Community.set(buf_str);
+	xr_free(buf_str);
+	
+	if(data()->m_Community.index() == NO_COMMUNITY_INDEX)
+		Debug.fatal("wrong 'community' '%s' in specific character %s ", team, *IndexToId(m_iOwnIndex));
+
 	data()->m_Rank			= uiXml.ReadInt("rank", 0, NO_RANK);
-	R_ASSERT3(data()->m_Rank != NO_RANK, "not all fields fulfiled for specific character", *IndexToId(m_iOwnIndex));
+	R_ASSERT3(data()->m_Rank != NO_RANK, "'rank' field not fulfiled for specific character", *IndexToId(m_iOwnIndex));
 	data()->m_Reputation	= uiXml.ReadInt("reputation", 0, NO_REPUTATION);
-	R_ASSERT3(data()->m_Reputation != NO_REPUTATION, "not all fields fulfiled for specific character", *IndexToId(m_iOwnIndex));
+	R_ASSERT3(data()->m_Reputation != NO_REPUTATION, "'reputation' field not fulfiled for specific character", *IndexToId(m_iOwnIndex));
+
+#endif
 }
 
+
+#ifdef  XRGAME_EXPORTS
 
 LPCSTR CSpecificCharacter::Name() const 
 {
@@ -164,13 +206,23 @@ LPCSTR CSpecificCharacter::Bio() const
 	return	data()->m_sBioText.c_str();
 }
 
-CHARACTER_RANK CSpecificCharacter::Rank() const 
-{
-	return	data()->m_Rank;
-}
 const CHARACTER_COMMUNITY& CSpecificCharacter::Community() const 
 {
 	return	data()->m_Community;
+}
+
+LPCSTR CSpecificCharacter::SupplySpawn	() const 
+{
+	return data()->m_sSupplySpawn.c_str();
+}
+
+
+#endif
+
+
+CHARACTER_RANK CSpecificCharacter::Rank() const 
+{
+	return	data()->m_Rank;
 }
 
 CHARACTER_REPUTATION	 CSpecificCharacter::Reputation	() const 
@@ -181,8 +233,4 @@ CHARACTER_REPUTATION	 CSpecificCharacter::Reputation	() const
 LPCSTR CSpecificCharacter::Visual		() const 
 {
 	return data()->m_sVisual.c_str();
-}
-LPCSTR CSpecificCharacter::SupplySpawn	() const 
-{
-	return data()->m_sSupplySpawn.c_str();
 }
