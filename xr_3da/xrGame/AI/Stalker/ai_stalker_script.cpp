@@ -92,9 +92,6 @@ bool CAI_Stalker::bfAssignMovement(CEntityAction *tpEntityAction)
 		0
 	);
 
-//	if (l_tMovementAction.m_tGoalType == CMovementAction::eGoalTypeNoPathPosition)
-//		m_fCurSpeed	= l_tMovementAction.m_fSpeed;
-
 	return			(true);
 }
 
@@ -330,7 +327,7 @@ bool CAI_Stalker::bfAssignAnimation(CEntityAction *tpEntityAction)
 
 	if (xr_strlen(tpEntityAction->m_tAnimationAction.m_caAnimationToPlay)) {
 #ifdef _DEBUG
-		Msg				("%6d Assigning animation : %s",Level().timeServer(),*tpEntityAction->m_tAnimationAction.m_caAnimationToPlay);
+//		Msg				("%6d Assigning animation : %s",Level().timeServer(),*tpEntityAction->m_tAnimationAction.m_caAnimationToPlay);
 #endif
 		m_tpCurrentTorsoAnimation = m_tpCurrentLegsAnimation = 0;
 	}
