@@ -9,7 +9,7 @@ function main ()
 	stalker2:script (true, military3_2.script_name ())
 	stalker3:script (true, military3_2.script_name ())
 	
-    wait (15000)
+    wait (60000)
 
 	action (stalker1, anim ("sidya_kurit_2"), cond (cond.anim_end)) --look (look.direction, stalker3)
 	action (stalker3, anim ("spit_ 0"), look (look.direction, stalker1), cond (cond.time_end, time_infinite))

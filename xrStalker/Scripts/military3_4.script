@@ -17,7 +17,7 @@ function main ()
 
 	while true do
 		  if hero:action () == nil then	
-  		     if game.time () - time > 20000 then break end
+  		     if game.time () - time > 60000 then break end
 		     reset_action (hero, military3_4.script_name ())
 		     action (hero, anim ("raciya_idle"), cond (cond.anim_end))
 		  end
