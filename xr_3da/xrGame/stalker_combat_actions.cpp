@@ -509,7 +509,7 @@ void CStalkerActionLookOut::execute		()
 	u32									level_vertex_id = mem_object.m_object_params.m_level_vertex_id;
 
 	if (!m_object->accessible(mem_object.m_object_params.m_position))
-		level_vertex_id = m_object->accessible_nearest(mem_object.m_object_params.m_position,desired_position);
+		level_vertex_id					= m_object->accessible_nearest(mem_object.m_object_params.m_position,desired_position);
 
 	m_object->set_level_dest_vertex		(level_vertex_id);
 	m_object->set_desired_position		(&desired_position);
