@@ -482,7 +482,7 @@ IC	void CLevelNavigationGraph::update_cell		(u32 start_vertex_id, u32 link)
 			break;
 
 		CCellVertex			*cell = &m_cross[vertex_id];
-		m_temp.erase		(m_temp.find(cell));
+		m_temp.erase		(cell);
 		cell->m_dirs[index]	= (u16)i;
 		m_temp.insert		(cell);
 		if (!link)
@@ -538,14 +538,14 @@ IC	void CLevelNavigationGraph::select_sector	(CCellVertex *v, u32 &right, u32 &d
 	}
 }
 
-IC	bool CLevelNavigationGraph::select_sector	(u32 &vertex_id, u32 &right, u32 &down)
+IC	void CLevelNavigationGraph::select_sector	(u32 &vertex_id, u32 &right, u32 &down)
 {
 	u32						max_square = 0, current_right, current_down;
 	CROSS_PTABLE::iterator	I = m_temp.begin();
 	CROSS_PTABLE::iterator	E = m_temp.end();
 	for ( ; I != E; ++I) {
 		if (u32((*I)->m_right)*u32((*I)->m_down) <= max_square)
-			return			(true);
+			return;
 
 		select_sector		(*I,current_right,current_down,max_square);
 
@@ -557,7 +557,6 @@ IC	bool CLevelNavigationGraph::select_sector	(u32 &vertex_id, u32 &right, u32 &d
 		max_square			= right*down;
 		vertex_id			= this->vertex_id(I);
 	}
-	return					(!!max_square);
 }
 
 IC	void CLevelNavigationGraph::build_sector	(u32 vertex_id, u32 _right, u32 _down, u32 group_id)
@@ -574,7 +573,7 @@ IC	void CLevelNavigationGraph::build_sector	(u32 vertex_id, u32 _right, u32 _dow
 		for (down_id = right_id, j=0; j<_down; down_id = vertex(down_id)->link(2), ++j) {
 			cell				= &m_cross[down_id];
 
-			m_temp.erase		(m_temp.find(cell));
+			m_temp.erase		(cell);
 			VERIFY				(!cell->m_mark);
 			cell->m_mark		= group_id;
 			cell->m_use			|= mask;
@@ -616,7 +615,8 @@ IC	void CLevelNavigationGraph::generate_sectors()
 	Progress				(0.f);
 #	endif
 #endif
-	while (select_sector(id,right,down)) {
+	while (!m_temp.empty()) {
+		select_sector		(id,right,down);
 		build_sector		(id,right,down,++group_id);
 #ifdef AI_COMPILER
 #	ifdef DEBUG
