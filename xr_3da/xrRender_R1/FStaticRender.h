@@ -140,7 +140,7 @@ public:
 	virtual CVisual*				model_Create			(LPCSTR name, IReader* data);
 	virtual CVisual*				model_Duplicate			(CVisual*	V);
 	virtual void					model_Delete			(CVisual* &	V);
-	virtual void 					model_Delete			(IRender_DetailModel* F);
+	virtual void 					model_Delete			(IRender_DetailModel* & F);
 	
 	// Occlusion culling
 	virtual BOOL					occ_visible				(vis_data&	V);

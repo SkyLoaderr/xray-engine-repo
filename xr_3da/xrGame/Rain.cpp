@@ -43,14 +43,14 @@ CEffect_Rain::~CEffect_Rain()
 
 	Sound->destroy					(snd_Ambient);
 
-	Device.seqDevCreate.Remove	(this);
-	Device.seqDevDestroy.Remove	(this);
+	Device.seqDevCreate.Remove		(this);
+	Device.seqDevDestroy.Remove		(this);
 
 	// Cleanup
-	OnDeviceDestroy		();
-	Device.Shader.Delete(SH_Rain);
-	p_destroy			();
-	DM_Drop.Unload		();
+	OnDeviceDestroy					();
+	Device.Shader.Delete			(SH_Rain);
+	p_destroy						();
+	::Render->model_Delete			(DM_Drop);
 }
 
 void	CEffect_Rain::OnDeviceCreate	()
@@ -58,7 +58,7 @@ void	CEffect_Rain::OnDeviceCreate	()
 	REQ_CREATE			();
 
 	IReader*	 fs		= FS.r_open("$game_meshes$","dm\\rain.dm");
-	DM_Drop.Load		(fs);
+	DM_Drop				= ::Render->model_CreateDM		(fs);
 	FS.r_close			(fs);
 
 	SH_Rain				= Device.Shader.Create		("effects\\rain","fx\\rain");
