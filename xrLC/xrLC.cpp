@@ -60,6 +60,7 @@ void Startup(LPSTR     lpCmdLine)
 	// Faster FPU 
 	InitMath			();
 	DWORD				dwStartupTime	= timeGetTime();
+	SetPriorityClass	(GetCurrentProcess(),IDLE_PRIORITY_CLASS);
 	
 	// Load project
 	name[0]=0;			sscanf(strstr(cmd,"-f")+2,"%s",name);
