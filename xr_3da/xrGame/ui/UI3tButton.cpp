@@ -9,15 +9,15 @@
 
 #include "StdAfx.h"
 #include "UI3tButton.h"
-#include "../Level.h"
-#include "../HUDManager.h"
+#include "../MainUI.h"
 
 CUI3tButton::CUI3tButton(){
-	this->m_psiCurrentState = NULL;
 	this->m_bTextureEnable = false;
 	this->m_bUseDisabledTextColor = true;
 	this->m_dwDisabledTextColor = 0xFFAAAAAA;
 	this->m_dwEnabledTextColor  = 0xFFFFFFFF;
+
+	AttachChild(&m_background);
 }
 
 CUI3tButton::~CUI3tButton(){
@@ -29,6 +29,7 @@ void CUI3tButton::Init(int x, int y, int width, int height){
 	m_ePressMode = NORMAL_PRESS;
 	m_bButtonClicked = false;
 	m_bCursorOverWindow = false;
+	m_background.Init(0, 0, width, height);
 
     CUIWindow::Init(x, y, width, height);
 }
@@ -61,30 +62,20 @@ void CUI3tButton::InitTexture(LPCSTR tex_name){
 	strcpy(tex_touched, tex_name);
 	strcat(tex_touched, "_t");
 
-	RECT absRect = this->GetAbsoluteRect();
-
-	this->m_siEnabledState.Init (tex_enabled,  "hud\\default", absRect.left, absRect.top, alNone);
-	this->m_siDisabledState.Init(tex_disabled, "hud\\default", absRect.left, absRect.top, alNone);
-	this->m_siTouchedState.Init (tex_touched,  "hud\\default", absRect.left, absRect.top, alNone);
-
-	this->m_psiCurrentState = &this->m_siEnabledState;
-	this->m_bTextureEnable = true;
+	this->InitTexture(tex_enabled, tex_disabled, tex_touched);		
 }
 
 void CUI3tButton::InitTexture(LPCSTR tex_enabled, LPCSTR tex_disabled, LPCSTR tex_touched){
-	RECT rect = this->GetAbsoluteRect();
-	this->m_siEnabledState.Init (tex_enabled,  "hud\\default", rect.left, rect.top, alNone);
-	this->m_siDisabledState.Init(tex_disabled, "hud\\default", rect.left, rect.top, alNone);
-	this->m_siTouchedState.Init (tex_touched,  "hud\\default", rect.left, rect.top, alNone);
-
-	this->m_psiCurrentState = &this->m_siEnabledState;
+	m_background.InitEnabledState(tex_enabled);
+	m_background.InitDisabledState(tex_disabled);
+	m_background.InitTouchedState(tex_touched);	
 	this->m_bTextureEnable = true;
 }
 
 void CUI3tButton::SetColor(u32 color_enabled, u32 color_disabled, u32 color_touched){
-	this->m_siEnabledState.SetColor(color_enabled);
-	this->m_siDisabledState.SetColor(color_disabled);
-	this->m_siTouchedState.SetColor(color_touched);
+	;
+	;
+	;
 }
 
 void CUI3tButton::SetTextColor(u32 color){
@@ -96,33 +87,20 @@ void CUI3tButton::SetDisabledTextColor(u32 color){
 }
 
 void CUI3tButton::Draw(){
-    RECT rect = GetAbsoluteRect();
+	RECT rect = GetAbsoluteRect();
 
-	if(m_psiCurrentState && m_bTextureEnable)//m_bAvailableTexture && m_bTextureEnable)
-	{		
-		if (this->m_psiCurrentState->GetShader())
-		{
-			switch (this->m_eButtonState)
-			{		
-			case CUIButton::BUTTON_PUSHED :
-				this->m_psiCurrentState = &this->m_siTouchedState;
-				break;
-			default :
-				this->m_psiCurrentState = &this->m_siEnabledState;
-				break;
-			}
+	if(m_bTextureEnable)
+	{
+		if (!m_bIsEnabled)
+			m_background.SetState(CUI_IB_Static::S_Disabled);
+		else if (CUIButton::BUTTON_PUSHED == m_eButtonState)
+			m_background.SetState(CUI_IB_Static::S_Touched);
+		else if (this->IsHighlightText())
+			m_background.SetState(CUI_IB_Static::S_Highlighted);		
+		else
+			m_background.SetState(CUI_IB_Static::S_Enabled);
 
-			if (!this->m_bIsEnabled)
-				this->m_psiCurrentState = &this->m_siDisabledState;
-
-			m_UIStaticItem.SetPos(rect.left, rect.top);
-			this->m_psiCurrentState->SetPos(rect.left, rect.top);
-
-			if(m_bStretchTexture)
-				m_psiCurrentState->Render(0, 0, rect.right-rect.left, rect.bottom-rect.top);
-			else
-				m_psiCurrentState->Render();
-		}
+		m_background.Draw();
 	}	
 
 	if (GetFont())

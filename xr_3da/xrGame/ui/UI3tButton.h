@@ -9,6 +9,7 @@
 
 #pragma once
 #include "UIButton.h"
+#include "UIInteractiveBackground.h"
 
 class CUI3tButton : public CUIButton {
 public:
@@ -30,12 +31,8 @@ public:
 	//virtual void Enable(bool bEnable);	
 	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = 0);
 
-private:
-	// textures
-	CUIStaticItem* m_psiCurrentState;
-	CUIStaticItem  m_siEnabledState;
-	CUIStaticItem  m_siDisabledState;
-	CUIStaticItem  m_siTouchedState;
+private:	
+	CUI_IB_Static  m_background;
 
     // text color
 	bool m_bUseDisabledTextColor;
