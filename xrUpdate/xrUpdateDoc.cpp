@@ -33,11 +33,14 @@ CxrUpdateDoc::CxrUpdateDoc()
 
 CxrUpdateDoc::~CxrUpdateDoc()
 {
-	xr_delete(m_task);
 }
 
 BOOL CxrUpdateDoc::OnNewDocument()
 {
+	if (!CDocument::OnNewDocument())
+		return FALSE;
+	m_task =	CTaskFacrory::create_task(eTaskRoot);
+	m_task->set_name("new_task");
 	return TRUE;
 
 /*	
@@ -55,35 +58,26 @@ BOOL CxrUpdateDoc::OnNewDocument()
 void CxrUpdateDoc::Serialize(CArchive& ar)
 {
 	if (ar.IsStoring())
-	{
-		// TODO: add storing code here
+	{// TODO: add storing code here
 	}
 	else
-	{
-		// TODO: add loading code here
+	{// TODO: add loading code here
 	}
 }
 
 
-// CxrUpdateDoc diagnostics
-
-#ifdef _DEBUG
-void CxrUpdateDoc::AssertValid() const
+void CxrUpdateDoc::OnCloseDocument()
 {
-	CDocument::AssertValid();
+	if(m_task)
+		xr_delete(m_task);
+	CDocument::OnCloseDocument();
 }
-
-void CxrUpdateDoc::Dump(CDumpContext& dc) const
-{
-	CDocument::Dump(dc);
-}
-#endif //_DEBUG
-
-
-// CxrUpdateDoc commands
 
 BOOL CxrUpdateDoc::OnOpenDocument(LPCTSTR lpszPathName)
 {
+	if(m_task)
+		xr_delete(m_task);
+
 	if (!CDocument::OnOpenDocument(lpszPathName))
 		return FALSE;
 
@@ -105,6 +99,5 @@ BOOL CxrUpdateDoc::OnSaveDocument(LPCTSTR lpszPathName)
 
 BOOL CxrUpdateDoc::SaveModified()
 {
-
 	return CDocument::SaveModified();
 }

@@ -25,10 +25,6 @@ public:
 // Implementation
 public:
 	virtual ~CxrUpdateDoc();
-#ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
-#endif
 
 protected:
 
@@ -38,6 +34,7 @@ protected:
 public:
 	virtual BOOL OnOpenDocument(LPCTSTR lpszPathName);
 	virtual BOOL OnSaveDocument(LPCTSTR lpszPathName);
+	virtual void OnCloseDocument();
 protected:
 	virtual BOOL SaveModified();
 };

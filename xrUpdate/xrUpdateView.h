@@ -40,10 +40,6 @@ protected:
 // Implementation
 public:
 	virtual ~CxrUpdateView();
-#ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
-#endif
 
 protected:
 	CTask*					m_active_task;
@@ -89,8 +85,5 @@ public:
 	CString m_task_type_static;
 };
 
-#ifndef _DEBUG  // debug version in xrUpdateView.cpp
 inline CxrUpdateDoc* CxrUpdateView::GetDocument() const
    { return reinterpret_cast<CxrUpdateDoc*>(m_pDocument); }
-#endif
-

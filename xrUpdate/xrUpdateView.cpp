@@ -125,26 +125,15 @@ void CxrUpdateView::OnInitialUpdate()
 
 // CxrUpdateView diagnostics
 
-#ifdef _DEBUG
-void CxrUpdateView::AssertValid() const
+
+void deleteItemRecurs(CTreeCtrl* tree, HTREEITEM itm, BOOL del_this)
 {
-	CFormView::AssertValid();
+	while(HTREEITEM i = tree->GetNextItem(itm,TVGN_CHILD)){
+		deleteItemRecurs(tree,i,TRUE);
+	}
+	if(del_this)
+		tree->DeleteItem(itm);
 }
-
-void CxrUpdateView::Dump(CDumpContext& dc) const
-{
-	CFormView::Dump(dc);
-}
-
-CxrUpdateDoc* CxrUpdateView::GetDocument() const // non-debug version is inline
-{
-	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CxrUpdateDoc)));
-	return (CxrUpdateDoc*)m_pDocument;
-}
-#endif //_DEBUG
-
-
-// CxrUpdateView message handlers
 
 void CxrUpdateView::OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pHint*/)
 {
@@ -162,12 +151,30 @@ void CxrUpdateView::OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pH
 */
 
 //	FillTaskTree(t,m_root);
+
+//	m_tree_ctrl.DeleteAllItems();
+
+//	deleteItemRecurs(&m_tree_ctrl, TVI_ROOT, FALSE);
+
+
+    m_tree_ctrl.SetRedraw(FALSE);
+	if (m_tree_ctrl.GetCount() > 0)
+		 if (!m_tree_ctrl.DeleteAllItems())
+                        {
+                            m_tree_ctrl.SetRedraw(TRUE); // for safety
+                        }
+
+
 	FillTaskTree(t,TVI_ROOT);
+
+	m_tree_ctrl.SetRedraw(TRUE);
+//	GetDocument()->SetModifiedFlag(TRUE);
 }
 
-
+//8-067-441-52-07 саша гулова
 HTREEITEM CxrUpdateView::FillTaskTree(CTask* t, HTREEITEM parent)
 {
+    m_tree_ctrl.SetRedraw(FALSE);
 	TV_INSERTSTRUCT itm;
 	itm.hParent = parent;
 	itm.hInsertAfter = TVI_LAST;
@@ -189,6 +196,8 @@ HTREEITEM CxrUpdateView::FillTaskTree(CTask* t, HTREEITEM parent)
 
 	SortItems(tree_itm);
 	return tree_itm;
+
+	m_tree_ctrl.SetRedraw(TRUE);
 }
 
 
@@ -343,19 +352,15 @@ void CxrUpdateView::TryAddNewTask(int t)
 	if(!t_parent)
 		return;
 
-//	CSectionQueryDlg dlg;
 	string128 new_name;
 	strconcat(new_name, "new_",*typeToStr((ETaskType)t) );
-//	dlg.m_task_name = new_name;
-//	if(dlg.DoModal()){
-		
-		CTask* task_new = CTaskFacrory::create_task( (ETaskType)t );
 
-		task_new->set_name(new_name);
-		t_parent->add_sub_task(task_new);
-		HTREEITEM itm = FillTaskTree(task_new, hItem);
-		m_tree_ctrl.SelectItem(itm);
-//	}
+	CTask* task_new = CTaskFacrory::create_task( (ETaskType)t );
+
+	task_new->set_name(new_name);
+	t_parent->add_sub_task(task_new);
+	HTREEITEM itm = FillTaskTree(task_new, hItem);
+	m_tree_ctrl.SelectItem(itm);
 }
 
 void CxrUpdateView::OnEnChangeEditTaskName()

@@ -24,7 +24,9 @@ ETaskType strToType(LPCSTR str)
 		return eTaskRunExecutable;
 	if(0==strcmp(xr_strlwr(s),"batch_execute"))
 		return eTaskBatchExecute;
-
+	if(0==strcmp(xr_strlwr(s),"root"))
+		return eTaskRoot;
+	
 	return eTaskUnknown;
 }
 shared_str typeToStr(ETaskType t)
@@ -39,6 +41,8 @@ shared_str typeToStr(ETaskType t)
 		return "execute";
 	if(t==eTaskBatchExecute)
 		return "batch_execute";
+	if(t==eTaskRoot)
+		return "root";
 	return "unknown";
 }
 
@@ -493,6 +497,9 @@ CTask*	CTaskFacrory::create_task(ETaskType t)
 		}break;
 		case eTaskBatchExecute:{
 			return xr_new<CTaskBatchExecute>();
+		}break;
+		case eTaskRoot:{
+			return xr_new<CTaskRoot>();
 		}break;
 		case eTaskUnknown:{
 			R_ASSERT("unknown task type");

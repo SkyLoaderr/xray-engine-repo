@@ -3,6 +3,7 @@
 
 enum ETaskType{
 	eTaskUnknown		=1,
+	eTaskRoot,
 	eTaskCopyFiles,
 	eTaskCopyFolder,
 	eTaskDelete,
@@ -48,6 +49,12 @@ public:
 	virtual void	run					();
 	CTask*			copy				();
 	BOOL			section_exist		(LPCSTR s);
+};
+class CTaskRoot :public CTask
+{
+public:
+					CTaskRoot			()										{m_type=eTaskRoot;};
+	virtual			~CTaskRoot			()										{};
 };
 
 class CTaskCopyFiles :public CTask
