@@ -10,6 +10,8 @@
 
 #define sqrtf(a) sqrt(a)
 
+#define smart_cast dynamic_cast
+
 #ifndef O_SEQUENTIAL
 #define O_SEQUENTIAL 0
 #endif

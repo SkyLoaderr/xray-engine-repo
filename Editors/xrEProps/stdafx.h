@@ -8,6 +8,8 @@
 
 #include <xrCore.h>
 
+#define smart_cast dynamic_cast
+
 //refs
 namespace CDB{
 	class MODEL;
