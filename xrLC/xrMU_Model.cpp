@@ -64,6 +64,12 @@ void			xrMU_Model::_face::VReplace		(_vertex* what, _vertex* to)
 	if (v[1]==what) { v[1]=to; what->prep_remove(this); to->prep_add(this); }
 	if (v[2]==what) { v[2]=to; what->prep_remove(this); to->prep_add(this); }
 }
+void			xrMU_Model::_face::VReplace_NoRemove(_vertex* what, _vertex* to)
+{
+	if (v[0]==what) { v[0]=to; to->prep_add(this); }
+	if (v[1]==what) { v[1]=to; to->prep_add(this); }
+	if (v[2]==what) { v[2]=to; to->prep_add(this); }
+}
 int				xrMU_Model::_face::VIndex		(_vertex* pV)
 {
 	if (v[0]==pV) return 0;
