@@ -81,10 +81,7 @@ void	CBuild::xrPhase_UVmap()
 				}
 			}
 			if (msF) {
-				DWORD M1	= mem_Usage();
 				g_deflectors.push_back	(new CDeflector);
-				DWORD M2	= mem_Usage();
-				Msg("defl: %d",M2-M1);
 				
 				// Start recursion from this face
 				affected				= 1;
