@@ -160,14 +160,14 @@ void CObject::net_Destroy	()
 	net_Ready									= FALSE;
 	pCreator->Objects.net_Unregister			(this);
 	pCreator->ObjectSpace.Object_Unregister		(this);
-	if (pSector)		pSector->objectRemove	(this);
+	Sector_Move									(0);
 }
 
 void CObject::OnDeviceDestroy	()
 {
-	if (pVisual)				Render->model_Delete	(pVisual);
-	_DELETE						(pLights);
-	if (pSector)				pSector->objectRemove	(this);
+	if (pVisual)								Render->model_Delete	(pVisual);
+	_DELETE										(pLights);
+	Sector_Move									(0);
 }
 
 void CObject::OnDeviceCreate	()
@@ -244,19 +244,20 @@ void CObject::Sector_Detect	()
 		Fvector		Pos;
 		pVisual->bv_BBox.getcenter(Pos);
 		Pos.add		(vPosition);
+		Pos.y		=	_max(Pos.y,vPosition.y);
 		Pos.y		+=	EPS_L;
 		P			=	Render->detectSector(Pos);
-		Sector_Move	(P);
+		if (P)		Sector_Move	(P);
 	}
 }
 
 void CObject::Sector_Move	(CSector* P)
 {
 	// Update
-	if (P && P!=pSector) {
+	if (P!=pSector) {
 		if (pSector)	pSector->objectRemove	(this);
-		pSector = P;
-		if (pSector)	pSector->objectAdd		(this);
+		pSector			= P;
+		if (P)			pSector->objectAdd		(this);
 	}
 }
 
@@ -278,7 +279,7 @@ CObject* CObject::H_SetParent	(CObject* O)
 	{
 		// Become chield
 		pCreator->ObjectSpace.Object_Unregister	(this);
-		if (pSector) pSector->objectRemove		(this);
+		Sector_Move								(0);
 	} else {
 		// Become independent
 		pCreator->ObjectSpace.Object_Register	(this);

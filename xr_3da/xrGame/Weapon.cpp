@@ -246,9 +246,6 @@ void CWeapon::Load		(LPCSTR section)
 
 	inherited::Load		(section);
 
-	SectorMode			= EPM_AT_LOAD;
-	if (pSector)		pSector->objectRemove	(this);
-
 	Fvector				pos,ypr;
 	pos					= pSettings->ReadVECTOR(section,"position");
 	ypr					= pSettings->ReadVECTOR(section,"orientation");

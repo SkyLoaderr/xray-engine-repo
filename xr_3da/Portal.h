@@ -76,7 +76,9 @@ public:
 
 	// Entity management
 	void					objectAdd		(CObject* O)
-	{	Objects.push_back	(O); }
+	{	
+		Objects.push_back	(O); 
+	}
 	void					objectRemove	(CObject* O)
 	{
 		vector<CObject*>::iterator I = find(Objects.begin(),Objects.end(),O);
