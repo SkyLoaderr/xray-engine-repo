@@ -23,7 +23,7 @@ void CActionPlannerAction<CScriptGameObject>::script_register(lua_State *L)
 {
 	module(L)
 	[
-		class_<CScriptActionPlannerAction,CScriptActionPlannerActionWrapper,bases<CScriptActionPlanner,CScriptActionPlannerAction> >("planner_action")
+		class_<CScriptActionPlannerAction,CScriptActionPlannerActionWrapper,bases<CScriptActionPlanner,CScriptActionBase> >("planner_action")
 			.def(								constructor<>())
 			.def(								constructor<CScriptGameObject*>())
 			.def(								constructor<CScriptGameObject*,LPCSTR>())
