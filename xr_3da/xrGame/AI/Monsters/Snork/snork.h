@@ -7,8 +7,6 @@ class CSnork :	public CBaseMonster {
 
 	typedef		CBaseMonster		inherited;
 
-	CStateManagerSnork		*StateMan;
-
 public:
 					CSnork				();
 	virtual			~CSnork				();	

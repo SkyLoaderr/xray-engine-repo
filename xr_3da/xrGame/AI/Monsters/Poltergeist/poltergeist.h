@@ -21,8 +21,6 @@ class CPoltergeist :	public CBaseMonster ,
 	LPCSTR				m_particles_hidden;
 	LPCSTR				m_particles_hide;
 
-	CStateManagerPoltergeist *StateMan;
-
 	bool				m_disable_hide;
 
 public:
