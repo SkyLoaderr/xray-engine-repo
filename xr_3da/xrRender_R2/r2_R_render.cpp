@@ -79,8 +79,8 @@ void CRender::Render	()
 	// Point lighting (shadowed)
 	{
 		HOM.Disable								();
-		vector&	Lvec	= Lights.v_selected_shadowed;
-		for	(u32 pid=0; pid<L.size(); pid++)
+		vector<light*>&	Lvec	= Lights.v_selected_shadowed;
+		for	(u32 pid=0; pid<Lvec.size(); pid++)
 		{
 			light*	L	= Lvec[pid];
 
@@ -91,20 +91,23 @@ void CRender::Render	()
 				phase									= PHASE_SMAP_P;
 
 				// calculate
-				LR_Direct.compute_xfp					(pls_phase);
+				LR_Direct.compute_xfp_1					(pls_phase, L);
 				render_smap_direct						(LR_Direct.L_combine);
+				LR_Direct.compute_xfp_2					(pls_phase, L);
 
 				// rendering
 				Target.phase_smap_point					(pls_phase);
 				RCache.set_xform_world					(Fidentity);			// ???
 				RCache.set_xform_view					(LR_Direct.L_view);
 				RCache.set_xform_project				(LR_Direct.L_project);
+				Fvector p; RCache.xforms.m_wv.transform_tiny(p, L->sphere.P);
+				Binders.l_position.P.set				(p.x,p.y,p.z,0);
 				render_scenegraph						();
 			}
 
 			// Render light
 			Target.phase_accumulator		();
-			Target.accum_point				(L);
+			Target.accum_point_shadow		(L);
 		}
 	}
 

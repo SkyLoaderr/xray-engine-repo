@@ -1,5 +1,7 @@
 #pragma once
 
+class light;
+
 class CRenderTarget		: public IRender_Target
 {
 private:
@@ -65,6 +67,8 @@ public:
 	void				phase_accumulator	();
 	void				shadow_direct		(u32 dls_phase);
 	void				accum_direct		();
+	void				accum_point_shadow	(light* L);
+	void				accum_point_unshadow(light* L);
 	void				phase_combine		();
 
 	virtual void		eff_load			(LPCSTR n)		{};
