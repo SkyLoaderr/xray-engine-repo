@@ -445,6 +445,31 @@ bool CInventory::Action(s32 cmd, u32 flags)
 	return false;
 }
 
+/*
+bool RemoveInvItem(PIItem pItem)
+{
+	if(pIItem->m_drop)
+	{
+		pIItem->m_drop = false;
+		if(pIItem->H_Parent())
+		{
+			NET_Packet P;
+			pIItem->u_EventGen(P, GE_OWNERSHIP_REJECT, 
+				pIItem->H_Parent()->ID());
+			P.w_u16(u16(pIItem->ID()));
+			pIItem->u_EventSend(P);
+			return false;
+		}
+		else 
+		{
+			drop_count = Drop(pIItem) ? drop_count + 1 : drop_count;
+			return true;
+		}
+	}
+	return false;
+}
+*/
+
 void CInventory::Update() 
 {
 	bool bActiveSlotVisible;
@@ -474,8 +499,7 @@ void CInventory::Update()
 	
 	//проверить рюкзак и пояс, есть ли вещи, которые нужно выкинуть
 	u32		drop_count = 0;
-	for(int i = 0; i < 2; ++i)
-	{
+	for		(int i = 0; i < 2; ++i)	{
 		TIItemList &list = i?m_ruck:m_belt;
 		PPIItem it = list.begin();
 	
@@ -485,8 +509,7 @@ void CInventory::Update()
 			if(pIItem->m_drop)
 			{
 				pIItem->m_drop = false;
-				if(pIItem->H_Parent())
-				{
+				if(pIItem->H_Parent())	{
 					NET_Packet P;
 					pIItem->u_EventGen(P, GE_OWNERSHIP_REJECT, 
 										  pIItem->H_Parent()->ID());
@@ -494,19 +517,17 @@ void CInventory::Update()
 					pIItem->u_EventSend(P);
 				}
 				else 
-					drop_count = Drop(pIItem) ? drop_count + 1 : drop_count;
+					drop_tasks.push_back(pIItem);
 			}
 			++it;
 		}
 	}
 
 	//проверить слоты
-	for(i=0; i<(int)m_slots.size(); ++i)
-	{
+	for(i=0; i<(int)m_slots.size(); ++i)	{
 		PIItem pIItem = m_slots[i].m_pIItem;
 
-		if(pIItem && pIItem->m_drop)
-		{
+		if(pIItem && pIItem->m_drop)	{
 			pIItem->m_drop = false;			 
 			
 			if(pIItem->H_Parent())
@@ -517,9 +538,13 @@ void CInventory::Update()
 				P.w_u16(u16(pIItem->ID()));
 				pIItem->u_EventSend(P);
 			}
-			else 
-				drop_count = Drop(pIItem) ? drop_count + 1 : drop_count;
+			else
+				drop_tasks.push_back	(pIItem);
 		}
+	}
+	while	(drop_tasks.size())	{
+		drop_count			= Drop(drop_tasks.back()) ? drop_count + 1 : drop_count;
+		drop_tasks.pop_back	();
 	}
 
 	if (drop_count)

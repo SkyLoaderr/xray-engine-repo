@@ -169,7 +169,8 @@ protected:
 
 
 	//буфферный список
-	TIItemList l_subs; 
+	TIItemList			l_subs; 
+	xr_vector<PIItem>	drop_tasks;
 
 	void		SendActionEvent		(s32 cmd, u32 flags);
 
