@@ -87,7 +87,7 @@ void CDeflector::L_Direct	(HASH& H)
 					vector<UVtri*>&	space	= H.query(P.u,P.v);
 					
 					// World space
-					Fvector wP,B;
+					Fvector wP,wN,B;
 					C[J].set	(0,0,0,0);
 					for (UVtri** it=space.begin(); it!=space.end(); it++)
 					{
@@ -98,11 +98,9 @@ void CDeflector::L_Direct	(HASH& H)
 							Vertex	*V2 = F->v[1];
 							Vertex	*V3 = F->v[2];
 							wP.from_bary(V1->P,V2->P,V3->P,B);
-							//			wN.from_bary(V1->N,V2->N,V3->N,B);
-							//			wN.direct	(wN,F->N,0.5f);
-							//			wN	= F->N;
-							//			wN.normalize();
-							LightPoint	(&DB, C[J], wP, F->N, LightsSelected.begin(), LightsSelected.end());
+							if (F->Shader().flags.bLIGHT_Sharp)	{ wN.set(F->N); }
+							else								{ wN.from_bary(V1->N,V2->N,V3->N,B); wN.normalize(); }
+							LightPoint	(&DB, C[J], wP, wN, LightsSelected.begin(), LightsSelected.end());
 							Fcount		+= 1;
 							break;
 						}
