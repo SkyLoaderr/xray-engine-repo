@@ -11,7 +11,7 @@ end
 
 function se_smart_terrain:smart_touch	(monster)
 	log							("se_smart_terrain::smart_touch called!")
-	cse_alife_smart_zone.smart_touch	(self)
+	cse_alife_smart_zone.smart_touch	(self,monster)
 end
 
 function se_smart_terrain:detect_probability	()
