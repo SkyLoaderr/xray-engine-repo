@@ -171,26 +171,32 @@ struct ENGINE_API SDef: public SParams{
 
         m_DefaultEmitter.InitDefault();
     }
-	void			SetName(const char* N)
+	bool			SetName(const char* N)
 	{
 		// Name
 		VERIFY(strlen(N)<64);
-		VERIFY(0==strchr(N,'.'));
-		strcpy(m_Name,N);
-		strlwr(m_Name);
 
-		// Computer
-		const DWORD comp = MAX_COMPUTERNAME_LENGTH + 1;
-		char	buf	[comp];
-		DWORD	sz = comp;
-		GetComputerName(buf,&sz);
-		if (sz > 63) sz=63;
-		buf[sz] = 0;
-		strcpy(m_Computer,buf);
-		strlwr(m_Computer);
+		sh_name new_name;
+		strcpy(new_name,N);
+		strlwr(new_name);
+		if (strcmp(m_Name,new_name)!=0){
+			strcpy(m_Name,new_name);
 
-		// Time
-		_tzset(); time( (long*)&m_dwCreationTime );
+			// Computer
+			const DWORD comp = MAX_COMPUTERNAME_LENGTH + 1;
+			char	buf	[comp];
+			DWORD	sz = comp;
+			GetComputerName(buf,&sz);
+			if (sz > 63) sz=63;
+			buf[sz] = 0;
+			strcpy(m_Computer,buf);
+			strlwr(m_Computer);
+	
+			// Time
+			_tzset(); time( (long*)&m_dwCreationTime );
+			return true;
+		}
+		return false;
 	};
     void			SetFolder(const char* fld){
 		VERIFY(strlen(fld)<64);
