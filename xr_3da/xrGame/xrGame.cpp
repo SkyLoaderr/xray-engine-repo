@@ -181,6 +181,9 @@ public:
 				tpGame->m_tALife.vfListObjects();
 				tpGame->m_tALife.vfListEvents();
 				tpGame->m_tALife.vfListTasks();
+				tpGame->m_tALife.vfListLocations();
+				tpGame->m_tALife.vfListTerrain();
+				tpGame->m_tALife.vfListSpawnPoints();
 			}
 			else
 				Log("!ALife simulation cannot be saved!");
