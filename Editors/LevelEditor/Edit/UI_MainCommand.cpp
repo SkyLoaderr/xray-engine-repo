@@ -225,6 +225,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 				// unlock
     	        Engine.FS.UnlockFile(0,m_LastFileName);
                 // set new name
+                Engine.FS.LockFile(0,filebuffer);
 				strcpy(m_LastFileName,filebuffer);
 			    bRes = Command(COMMAND_UPDATE_CAPTION);
 	            EndEState();
