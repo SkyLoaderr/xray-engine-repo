@@ -68,8 +68,7 @@ IC	void CScriptEngine::parse_script_namespace(LPCSTR function_to_call, LPSTR nam
 	}
 }
 
-template <typename _result_type>
-IC	bool CScriptEngine::functor(LPCSTR function_to_call, luabind::functor<_result_type> &lua_function)
+IC	bool CScriptEngine::function_object(LPCSTR function_to_call, luabind::object &object)
 {
 	if (!xr_strlen(function_to_call))
 		return				(false);
@@ -80,11 +79,22 @@ IC	bool CScriptEngine::functor(LPCSTR function_to_call, luabind::functor<_result
 	add_file				(name_space);
 	process					();
 
-	if	(!object(name_space,function,LUA_TFUNCTION))
+	if	(!this->object(name_space,function,LUA_TFUNCTION))
 		return				(false);
 
-	luabind::object			lua_namespace	= ai().script_engine().name_space(name_space);
-	lua_function			= luabind::object_cast<luabind::functor<_result_type> >(lua_namespace[function]);
+	luabind::object			lua_namespace	= this->name_space(name_space);
+	object					= lua_namespace[function];
+	return					(true);
+}
+
+template <typename _result_type>
+IC	bool CScriptEngine::functor(LPCSTR function_to_call, luabind::functor<_result_type> &lua_function)
+{
+	luabind::object			object;
+	if (!function_object(function_to_call,object))
+		return				(false);
+
+	lua_function			= luabind::object_cast<luabind::functor<_result_type> >(object);
 
 	return					(true);
 }
@@ -115,15 +125,15 @@ IC	void CScriptEngine::initialize_return_passed_object	()
 	if (!initialized) {
 		initialized		= true;
 		lua_dostring	(lua(),"function return_passed_object(obj) return obj end");
+		R_ASSERT		(function_object("return_passed_object",m_return_passed_object_functor));
 	}
 }
 
 template <typename T>
 T	CScriptEngine::get_value_from_object(luabind::object object)
 {
-	initialize_return_passed_object();
-	luabind::functor<T>	f;
-	R_ASSERT			(functor("return_passed_object",f));
-	return				(f(object));
+	initialize_return_passed_object	();
+	luabind::functor<T>				f = luabind::object_cast<luabind::functor<T> >(m_return_passed_object_functor);
+	return							(f(object));
 }
 

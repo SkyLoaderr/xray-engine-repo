@@ -35,6 +35,7 @@ protected:
 	int							m_stack_level;
 	bool						m_reload_modules;
 	ref_str						m_class_registrators;
+	luabind::object				m_return_passed_object_functor;
 
 public:
 								CScriptEngine				();
@@ -59,6 +60,7 @@ public:
 	IC		CScriptStackTracker	&script_stack_tracker		();
 	IC		void				reload_modules				(bool flag);
 
+	IC		bool				function_object				(LPCSTR function_to_call, luabind::object &object);
 	template <typename _result_type>
 	IC		bool				functor						(LPCSTR function_to_call, luabind::functor<_result_type> &lua_function);
 			void				register_script_classes		();
