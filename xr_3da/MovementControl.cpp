@@ -101,6 +101,39 @@ void Integrate(float& v, float &s, float& a, float dt, float f)
 	s += (v0 + v)*Qdiv2;
 }
 
+float Integrate1D_to	(float& v, float &s, float& a, float dt, float f, float s_desired)
+{
+	float	Q		= 1.f/float(psPhysicsFPS);
+	int		steps	= iFloor(dt/Q);	// note: round-towards-zero
+	float	v0		= v;
+	float	QmulF	= Q*f;
+	float	Qdiv2	= Q*0.5f;
+	for (int i=0; i<steps; i++) 
+	{
+		// velocity
+		v0 = v;
+		v += a*Q - (v0 + a*Q)*QmulF;
+
+		// motion
+		s += (v0 + v)*Qdiv2;
+
+		if	(s>s_desired)	return v0;
+	}
+	Q = dt-float(steps)*Q;
+	QmulF	= Q*f;
+	Qdiv2	= Q*0.5f;
+
+	// velocity
+	v0 = v;
+	v += a*Q - (v0 + a*Q)*QmulF;
+
+	// motion
+	s += (v0 + v)*Qdiv2;
+
+	if (s>s_desired)	return v0;
+	else				return v;
+}
+
 void Integrate(Fvector& v, Fvector &s, Fvector& a, float dt, float f)
 {
 	float	Q		= 1.f/float(psPhysicsFPS);
@@ -165,7 +198,6 @@ void CMovementControl::CalcMaximumVelocity(Fvector& v, Fvector& a, float frictio
 void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, float dt, bool bLight)
 {
 	Fvector motion,vAccel;
-	Fvector vOldVelocity	= vVelocity;
 	float	fOldFriction	= fFriction;
 	float	fOldActVelocity	= fActualVelocity;
 
@@ -277,20 +309,16 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 		gcontact_HealthLost = 0;
 		if (s_res<s_calc)	
 		{
-			float		dt_x	= s_calc > EPS_S ? dt*(s_res/s_calc) : 0;
-			float		dummy_s = 0;
-			float		a		= vAccel.magnitude();
-			Integrate	(fOldActVelocity,dummy_s,a,dt_x,fOldFriction);
+			float		dt_x			= s_calc > EPS_S ? dt*(s_res/s_calc) : 0;
+			float		dummy_s			= 0;
+			float		a				= vAccel.magnitude();
+			float		contact_speed	= Integrate1D_to	(fOldActVelocity,dummy_s,a,dt_x,fOldFriction,s_res);
 			// s_res, dummy_s ???
-//			Integrate	(vOldVelocity,dummy,,dt_x,fOldFriction);
-
-			// now vOldVelocity - average velocity at contact time
-			float		contact_speed	= fOldActVelocity;
 
 			// contact with ground
-			gcontact_Power	= contact_speed/fMaxCrashSpeed;
+			gcontact_Power				= contact_speed/fMaxCrashSpeed;
 
-			gcontact_HealthLost = 0;
+			gcontact_HealthLost			= 0;
 			if (contact_speed>fMinCrashSpeed) 
 			{
 				//float k=10000.f/(B-A);
