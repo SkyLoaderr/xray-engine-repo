@@ -139,7 +139,17 @@ void CPHWorld::Create()
 	else								Device.seqFrame.Add		(this,REG_PRIORITY_LOW);
 
 	phWorld = dWorldCreate();
-	Space = dHashSpaceCreate(0);
+	//Space = dHashSpaceCreate(0);
+	
+	//dVector3 extensions={2048,256,2048};
+	Fbox	level_box		=	Level().ObjectSpace.GetBoundingVolume();
+	Fvector level_size,level_center;
+	level_box				.	getsize		(level_size);
+	level_box				.	getcenter	(level_center);
+	dVector3 extensions		=	{ level_size.x ,256.f,level_size.z};
+	dVector3 center			=	{level_center.x,0.f,level_center.z};
+	Space=dQuadTreeSpaceCreate (0, center,extensions, 8);
+
 	dSpaceSetCleanup(Space,0);
 #ifdef ODE_SLOW_SOLVER
 #else
@@ -229,14 +239,14 @@ void CPHWorld::Step()
 
 	dWorldStepFast1	(phWorld,	fixed_step,	phIterations/*+Random.randI(0,phIterationCycle)*/);
 #endif
-	Device.Statistic.ph_core.End		();
+	
 
 	for(iter=m_objects.begin();m_objects.end() != iter;++iter)
 		(*iter)->PhDataUpdate(fixed_step);
 	dJointGroupEmpty(ContactGroup);//this is to be called after PhDataUpdate!!!-the order is critical!!!
 	ContactFeedBacks.empty();
 	ContactEffectors.empty();
-
+	Device.Statistic.ph_core.End		();
 
 
 
