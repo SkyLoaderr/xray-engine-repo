@@ -12,6 +12,9 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 	P.r_u16		(type);
 	P.r_u16		(destination);
 
+	xrServerEntity*	receiver	= ID_to_entity	(destination);
+	if (receiver)	receiver->OnEvent(P,type,timestamp,sender);
+
 	switch		(type)
 	{
 	case GEG_PLAYER_READY:
