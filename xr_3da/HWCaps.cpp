@@ -7,7 +7,7 @@
 void CHWCaps::Update()
 {
 	D3DCAPS9 caps;
-	HW.pDevice->GetDeviceCaps(&caps);
+	HW.pDevice->GetDeviceCaps	(&caps);
 
 	// ***************** GEOMETRY
 	geometry_major				= u16 ( (u32(caps.VertexShaderVersion)&(0xf << 8ul))>>8 );
@@ -17,6 +17,7 @@ void CHWCaps::Update()
 	geometry.bNPatches			= (caps.DevCaps & D3DDEVCAPS_NPATCHES)!=0;
 	geometry.bMPS				= (caps.DeclTypes & D3DDTCAPS_UBYTE4)!=0;
 	geometry.dwRegisters		= (caps.MaxVertexShaderConst);
+	geometry.dwInstructions		= 256;
 	geometry.dwClipPlanes		= _min(caps.MaxUserClipPlanes,15);
 
 	// ***************** PIXEL processing
@@ -27,6 +28,7 @@ void CHWCaps::Update()
 	raster.bCubemap				= (caps.TextureCaps & D3DPTEXTURECAPS_CUBEMAP)!=0;
 	raster.dwMRT_count			= (caps.NumSimultaneousRTs);
 	raster.b_MRT_mixdepth		= (caps.PrimitiveMiscCaps & D3DPMISCCAPS_MRTINDEPENDENTBITDEPTHS)!=0;
+	raster.dwInstructions		= (caps.PS20Caps.NumInstructionSlots);
 
 	// ***************** Info
 	Msg							("* GPU shading: vs(%x/%d.%d/%d), ps(%x/%d.%d/%d)",

@@ -9,6 +9,7 @@ public:
 	struct		caps_Geometry
 	{
 		u32	dwRegisters		: 16;
+		u32 dwInstructions	: 16;
 		u32	bSoftware		: 1;
 		u32	bPointSprites	: 1;
 		u32	bMPS			: 1;		// matrix-palette-skinning
@@ -19,6 +20,7 @@ public:
 	struct		caps_Raster
 	{
 		u32	dwRegisters		: 16;
+		u32 dwInstructions	: 16;
 		u32	dwStages		: 4;		// number of tex-stages
 		u32	dwMRT_count		: 4;
 		u32 b_MRT_mixdepth	: 1;

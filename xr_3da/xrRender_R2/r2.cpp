@@ -57,10 +57,10 @@ void					CRender::create					()
 	if (strstr(Core.Params,"-r4xx"))	{
 		o.mrtmixdepth	= FALSE;
 		o.HW_smap		= FALSE;
-		//o.fp16_filter	= FALSE;
+		o.fp16_filter	= FALSE;
 		o.fp16_blend	= FALSE;
 	}
-	VERIFY2				(o.mrt&&o.fp16_filter,"Hardware doesn't meet minimum feature-level");
+	VERIFY2				(o.mrt,"Hardware doesn't meet minimum feature-level");
 
 	// nvstencil on NV40 and up
 	o.nvstencil			= FALSE;
