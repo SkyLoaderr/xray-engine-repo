@@ -16,7 +16,7 @@ protected:
 	typedef CGraphEngine::_solver_condition_type	_condition_type;
 	typedef CGraphEngine::_solver_value_type		_value_type;
 
-protected:
+public:
 	_object_type		*m_object;
 	CPropertyStorage	*m_storage;
 

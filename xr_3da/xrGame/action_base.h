@@ -31,14 +31,16 @@ protected:
 		eActionStateDummy			= u32(-1),
 	};
 
-protected:
+public:
 	_object_type				*m_object;
+	CPropertyStorage			*m_storage;
+
+protected:
 	u32							m_start_level_time;
 	ALife::_TIME_ID				m_start_game_time;
 	u32							m_inertia_time;
 	bool						m_log;
 	LPCSTR						m_action_name;
-	CPropertyStorage			*m_storage;
 
 protected:
 #ifdef LOG_ACTION

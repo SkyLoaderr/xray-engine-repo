@@ -43,6 +43,8 @@ public:
 protected:
 	bool					m_initialized;
 	_action_id_type			m_current_action_id;
+
+public:
 	_object_type			*m_object;
 	CPropertyStorage		m_storage;
 

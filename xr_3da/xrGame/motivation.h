@@ -10,7 +10,7 @@
 
 template <typename _object_type>
 class CMotivation {
-protected:
+public:
 	_object_type	*m_object;
 
 public:

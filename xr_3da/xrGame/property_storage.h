@@ -16,7 +16,7 @@ public:
 	typedef CGraphEngine::_solver_value_type		_value_type;
 	typedef CGraphEngine::CSolverConditionStorage	CConditionStorage;
 
-protected:
+public:
 	CConditionStorage			m_storage;
 
 public:

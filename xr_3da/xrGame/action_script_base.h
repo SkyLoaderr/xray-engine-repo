@@ -16,7 +16,7 @@ class CActionScriptBase : public CActionBase<CLuaGameObject> {
 protected:
 	typedef CActionBase<CLuaGameObject>	inherited;
 
-protected:
+public:
 	_object_type			*m_object;
 
 public:

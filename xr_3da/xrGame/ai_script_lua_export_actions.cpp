@@ -33,6 +33,11 @@ void Script::vfExportActionManagement(CLuaVirtualMachine *tpLuaVirtualMachine)
 {
 	module(tpLuaVirtualMachine)
 	[
+		class_<CPropertyStorage>("property_storage")
+			.def(								constructor<>())
+			.def("set_property",				&CPropertyStorage::set_property)
+			.def("property",					&CPropertyStorage::property),
+
 		class_<CScriptWorldProperty>("world_property")
 			.def(								constructor<CScriptWorldProperty::_condition_type, CScriptWorldProperty::_value_type>())
 			.def("condition",					&CScriptWorldProperty::condition)
@@ -52,12 +57,16 @@ void Script::vfExportActionManagement(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def(const_self == CScriptWorldState()),
 
 		class_<CScriptPropertyEvaluator,CPropertyEvaluatorWrapper>("property_evaluator")
+			.def_readonly("object",				&CScriptPropertyEvaluator::m_object)
+			.def_readonly("storage",			&CScriptPropertyEvaluator::m_storage)
 			.def(								constructor<>())
 			.def(								constructor<CLuaGameObject*>())
 			.def("reinit",						&CPropertyEvaluatorWrapper::reinit_static)
 			.def("evaluate",					&CPropertyEvaluatorWrapper::evaluate_static),
 
 		class_<CScriptAction,CScriptActionWrapper>("action_base")
+			.def_readonly("object",				&CScriptAction::m_object)
+			.def_readonly("storage",			&CScriptAction::m_storage)
 			.def(								constructor<>())
 			.def(								constructor<CLuaGameObject*>())
 			.def(								constructor<CLuaGameObject*,LPCSTR>())
@@ -72,6 +81,8 @@ void Script::vfExportActionManagement(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("weight",						&CScriptActionWrapper::weight_static),
 
 		class_<CScriptActionPlanner,CScriptActionPlannerWrapper>("action_planner")
+			.def_readonly("object",				&CScriptActionPlanner::m_object)
+			.def_readonly("storage",			&CScriptActionPlanner::m_storage)
 			.def(								constructor<>())
 			.def("reinit",						&CScriptActionPlannerWrapper::reinit_static)
 			.def("update",						&CScriptActionPlannerWrapper::update_static)
@@ -85,7 +96,7 @@ void Script::vfExportActionManagement(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("current_action",				&CScriptActionPlanner::current_action)
 			.def("initialized",					&CScriptActionPlanner::initialized)
 			.def("set_goal_world_state",		(void (CScriptActionPlanner::*)(const CScriptActionPlanner::CState &))(CScriptActionPlanner::add_condition))
-			
+
 	];
 }
 
@@ -94,6 +105,7 @@ void Script::vfExportMotivationManagement(CLuaVirtualMachine *tpLuaVirtualMachin
 	module(tpLuaVirtualMachine)
 	[
 		class_<CScriptMotivation,CScriptMotivationWrapper>("motivation")
+			.def_readonly("object",				&CScriptMotivation::m_object)
 			.def(								constructor<>())
 			.def("reinit",						&CScriptMotivationWrapper::reinit_static)
 			.def("load",						&CScriptMotivationWrapper::Load_static)
@@ -103,7 +115,6 @@ void Script::vfExportMotivationManagement(CLuaVirtualMachine *tpLuaVirtualMachin
 		class_<CScriptMotivationAction,CScriptMotivationActionWrapper>("motivation_action")
 			.def(								constructor<const CScriptWorldState &>())
 			.def("goal",						&CScriptMotivationAction::goal),
-
 
 		class_<CScriptMotivationManager,CScriptMotivationManagerWrapper>("motivation_manager")
 			.def(								constructor<>())
