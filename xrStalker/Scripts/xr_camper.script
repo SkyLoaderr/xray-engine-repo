@@ -105,7 +105,6 @@ function action_patrol:execute()
 		end
 	end
 
-	
 	self.move_mgr:update()
 	if self.move_mgr:arrived_to_first_waypoint() then
 		if xr_logic.try_switch_to_another_section (self.object, self.a, db.actor) then

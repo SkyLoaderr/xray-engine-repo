@@ -23,18 +23,15 @@ function action_tip:update(delta)
 	local actor = db.actor
 
 	if self.object:inside(actor:position()) then
-		printf("inside!!!")
 		--print_table(self.st.conditions)	
 		--printf("condlist %s", utils.to_str(xr_logic.pick_section_from_condlist(actor, nil, self.st.conditions.condlist)))
 		if self.st.conditions == nil or
 		   xr_logic.pick_section_from_condlist(actor, nil, self.st.conditions.condlist) ~= nil
 		then
-			printf("conds!!!")
 			if self.st.type == "tips" then
-				printf("send_tip!!! %s", self.st.info)
-				news_manager.send_tip( actor, self.st.info, nil, self.st.sender )
+				news_manager.send_tip( actor, self.st.info, self.st.timeout, self.st.sender )
 			elseif self.st.type == "news" then
-				news_manager.send_news( actor, self.st.info )
+				news_manager.send_news( actor, self.st.info, self.st.timeout )
 			end
 		end
 	end
@@ -61,6 +58,7 @@ function set_scheme(obj, ini, scheme, section, gulag_name)
 	st.info   = utils.cfg_get_string( ini, section, "name",   obj, true,  "", "" )
 	st.type   = utils.cfg_get_string( ini, section, "type",   obj, false, "", "news" )
 	st.sender = utils.cfg_get_string( ini, section, "sender", obj, false, "", nil )
+	st.timeout = utils.cfg_get_string( ini, section, "timeout", obj, false, "", nil )
 
 	st.conditions = xr_logic.cfg_get_condlist( ini, section, "cond", obj )
 end
