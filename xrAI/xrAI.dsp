@@ -350,6 +350,26 @@ SOURCE=.\xr_trims.cpp
 SOURCE=.\xr_trims.h
 # End Source File
 # End Group
+# Begin Group "CDB"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\cl_collector.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\cl_collector.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\cl_intersect.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\xrCDB.h
+# End Source File
+# End Group
 # Begin Source File
 
 SOURCE=.\communicate.h
