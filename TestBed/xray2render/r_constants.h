@@ -53,7 +53,7 @@ struct	R_constant
 	}
 };
 
-class	R_constant_table
+class	ENGINE_API R_constant_table
 {
 private:
 	typedef svector<R_constant*,32>		c_table;

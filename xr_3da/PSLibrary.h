@@ -7,7 +7,7 @@
 #include				"PSRuntime.h"
 DEFINE_VECTOR			(PS::SDef_RT, PSList, PSIt);
 
-class CPSLibrary
+class ENGINE_API CPSLibrary
 {
     PSList				m_PSs;
 public:

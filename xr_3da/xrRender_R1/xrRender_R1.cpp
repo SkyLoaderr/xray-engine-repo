@@ -5,7 +5,7 @@
 #include "..\xr_ioconsole.h"
 #include "..\xr_ioc_cmd.h"
 
-#pragma comment(lib,"x:\\xr3DA")
+#pragma comment(lib,"x:\\xr_3DA")
 
 extern float		psDetail_w_rot1;
 extern float		psDetail_w_rot2;
