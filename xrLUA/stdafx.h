@@ -30,4 +30,12 @@
 #pragma comment( lib, "x:\\xrCore.lib"	)
 #endif
 
+#ifndef DEBUG
+#define LUABIND_NO_ERROR_CHECKING
+#endif
+#define LUABIND_NO_EXCEPTIONS
+#define LUABIND_DONT_COPY_STRINGS
+#define BOOST_THROW_EXCEPTION_HPP_INCLUDED
+namespace boost {	void __stdcall throw_exception(const std::exception &A);	};
+
 #endif //stdafxH
