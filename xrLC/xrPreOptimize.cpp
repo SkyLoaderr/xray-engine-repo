@@ -6,6 +6,7 @@ const int	 HDIM_Y = 24;
 const int	 HDIM_Z = 56;
 
 extern bool			g_bUnregister;
+extern volatile u32	dwInvalidFaces;
 
 IC bool				FaceEqual(Face& F1, Face& F2)
 {
@@ -18,8 +19,6 @@ IC bool				FaceEqual(Face& F1, Face& F2)
 	if ((F1.v[1]==F2.v[0]) && (F1.v[2]==F2.v[1]) && (F1.v[0]==F2.v[2])) return true;
 	return false;
 }
-
-extern u32 dwInvalidFaces;
 
 void CBuild::PreOptimize()
 {
@@ -113,19 +112,19 @@ void CBuild::PreOptimize()
 	}
 	
 	Status("Removing degenerated/duplicated faces...");
-	g_bUnregister = false;
+	g_bUnregister	= false;
 	for (it=0; it<(int)g_faces.size(); it++)
 	{
 		R_ASSERT		(it>=0 && it<(int)g_faces.size());
-		Face* F		= g_faces[it];
+		Face* F			= g_faces[it];
 		if ( F->isDegenerated()) {
 			FacePool.destroy	(g_faces[it]);
 			Fremoved			++;
 		} else {
-			// Check for duplicate
+			// Check validity
 			F->Verify			( );
 		}
-		Progress(float(it)/float(g_faces.size()));
+		Progress	(float(it)/float(g_faces.size()));
 	}
 	if (dwInvalidFaces)	
 	{

@@ -145,6 +145,7 @@ VOID CDeflector::OA_Export()
 
 	// Correct normal
 	//  (semi-proportional to pixel density)
+	FPU::m64r		();
 	N.set			(0,0,0);
 	float density	= 0;
 	float fcount	= 0;
@@ -153,7 +154,7 @@ VOID CDeflector::OA_Export()
 		Face	*F = it->owner;
 		Fvector	SN;
 		SN.set	(F->N);
-		SN.mul	(F->CalcArea());
+		SN.mul	(1+EPS*F->CalcArea());
 		N.add	(SN);
 
 		density	+= F->Shader().lm_density;

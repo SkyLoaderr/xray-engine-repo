@@ -61,7 +61,7 @@ const int	idx2edge	[3][3]  = {
 	{ 2,  1, -1}
 };
 
-u32				dwInvalidFaces	= 0;
+volatile u32	dwInvalidFaces	= 0;
 
 extern CBuild*	pBuild;
 
@@ -163,7 +163,7 @@ void	Face::Failure		()
 void	Face::Verify		()
 {
 	// 1st :: area
-	if	(CalcArea()<EPS)	{ Failure(); return; }
+	if	(CalcArea()<EPS_S)	{ Failure(); return; }
 
 	// 2nd :: TC0
 	Fvector2*	tc			= getTC0();

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 b_params				g_params;
-extern u32				dwInvalidFaces;
+extern volatile u32		dwInvalidFaces;
 
 template <class T>
 void transfer(const char *name, xr_vector<T> &dest, IReader& F, u32 chunk)
