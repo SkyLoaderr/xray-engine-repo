@@ -138,7 +138,7 @@ void CDetailManager::hw_Render()
 	float	tm_rot1		= PI_MUL_2*Device.fTimeGlobal/psDetail_w_rot1;
 	float	tm_rot2		= PI_MUL_2*Device.fTimeGlobal/psDetail_w_rot2;
 	dir1.set			(sinf(tm_rot1),0,cosf(tm_rot1));	dir1.normalize		();
-	dir2.set			(sinf(tm_rot1),0,cosf(tm_rot1));	dir1.normalize		();
+	dir2.set			(sinf(tm_rot2),0,cosf(tm_rot2));	dir1.normalize		();
 
 	CVS_Constants& VSC	=	Device.Shader.VSC;
 	float scale			=	1.f/float(quant);

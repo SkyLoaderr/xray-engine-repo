@@ -337,8 +337,8 @@ void CCC_Register()
 	CMD4(CCC_Float,		"rs_ssa_discard",		&ssaDISCARD,		1,  16		);
 	CMD4(CCC_Float,		"rs_ssa_dontsort",		&ssaDONTSORT,		16, 128		);
 	CMD4(CCC_Float,		"rs_detail_density",	&psDetailDensity,	.05f,0.3f	);
-	CMD4(CCC_Float,		"rs_detail_w_rot1",		&psDetail_w_rot,	1.f,180.f	);
-	CMD4(CCC_Float,		"rs_detail_w_rot2",		&psDetail_w_rot,	1.f,180.f	);
+	CMD4(CCC_Float,		"rs_detail_w_rot1",		&psDetail_w_rot1,	1.f,180.f	);
+	CMD4(CCC_Float,		"rs_detail_w_rot2",		&psDetail_w_rot2,	1.f,180.f	);
 	CMD4(CCC_Float,		"rs_detail_w_speed",	&psDetail_w_speed,	1.f,4.f		);
 	CMD4(CCC_Float,		"rs_detail_l_ambient",	&psDetail_l_ambient,.5f,.95f	);
 	CMD4(CCC_Float,		"rs_detail_l_aniso",	&psDetail_l_aniso,	.1f,.5f		);
