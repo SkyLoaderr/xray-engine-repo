@@ -230,7 +230,7 @@ bool TUI::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
         else if (Key=='G')   			{Command(COMMAND_TOGGLE_GRID);          bExec=true;}
         else if (Key=='F')				{Command(COMMAND_TOGGLE_SAFE_RECT);     bExec=true;}
     }
-    if ((Key==VK_OEM_3)||(Key==VK_SHIFT)){Command(COMMAND_RENDER_FOCUS);        bExec=true;}
+    if (Key==VK_OEM_3)					{Command(COMMAND_RENDER_FOCUS);        bExec=true;}
     return bExec;
 }
 //---------------------------------------------------------------------------
