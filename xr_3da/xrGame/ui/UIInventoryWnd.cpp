@@ -129,8 +129,8 @@ void CUIInventoryWnd::Init()
 	UIPersonalWnd.AttachChild(&UIProgressBarSatiety);
 	xml_init.InitProgressBar(uiXml, "progress_bar", 1, &UIProgressBarSatiety);
 
-	UIPersonalWnd.AttachChild(&UIProgressBarPower);
-	xml_init.InitProgressBar(uiXml, "progress_bar", 2, &UIProgressBarPower);
+	UIPersonalWnd.AttachChild(&UIProgressBarPsyHealth);
+	xml_init.InitProgressBar(uiXml, "progress_bar", 2, &UIProgressBarPsyHealth);
 
 	UIPersonalWnd.AttachChild(&UIProgressBarRadiation);
 	xml_init.InitProgressBar(uiXml, "progress_bar", 3, &UIProgressBarRadiation);
@@ -251,7 +251,7 @@ void CUIInventoryWnd::Update()
 	{
 		UIProgressBarHealth.SetProgressPos(s16(pEntityAlive->conditions().GetHealth()*1000));
 		UIProgressBarSatiety.SetProgressPos(s16(pEntityAlive->conditions().GetSatiety()*1000));
-		UIProgressBarPower.SetProgressPos(s16(pEntityAlive->conditions().GetPower()*1000));
+		UIProgressBarPsyHealth.SetProgressPos(s16(pEntityAlive->conditions().GetPsyHealth()*1000));
 		UIProgressBarRadiation.SetProgressPos(s16(pEntityAlive->conditions().GetRadiation()*1000));
 
 		

@@ -111,7 +111,7 @@ protected:
 
 	CUIProgressBar		UIProgressBarHealth;
 	CUIProgressBar		UIProgressBarSatiety;
-	CUIProgressBar		UIProgressBarPower;
+	CUIProgressBar		UIProgressBarPsyHealth;
 	CUIProgressBar		UIProgressBarRadiation;
 
 	//pop-up меню вызываемое по нажатию правой кнопки
