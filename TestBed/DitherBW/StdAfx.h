@@ -31,6 +31,9 @@ typedef float Fcolor[4];
 #define VERIFY(a)
 #define Log(a,b)
 #define IC __forceinline
+#define PI_DIV_2 1.5707963267948966192313216916398f
+#include "_types.h"
+#include "_bitwise.h"
 #include "fs.h"
 #include "image.h"
 

@@ -82,6 +82,14 @@ LINK32=link.exe
 # Name "DitherBW - Win32 Debug"
 # Begin Source File
 
+SOURCE=.\_bitwise.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\_types.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\DitherBW.cpp
 # End Source File
 # Begin Source File

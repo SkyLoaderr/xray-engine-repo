@@ -34,9 +34,11 @@ void CImage::Hflip()
 
 IC BYTE ClampColor(float a) 
 {
-	clamp(a,0.f,255.f);
-    return BYTE(a);
+	int c = iFloor(a);
+	if (c<0) c=0; else if (c>255) c=255;
+    return BYTE(c);
 }
+
 void CImage::Contrast(float _fc)
 {
 	R_ASSERT(pData);
