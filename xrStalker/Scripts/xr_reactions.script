@@ -375,7 +375,7 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 			-- заносим раздражитель в память
 			if self.arhive[so:id()] == nil then
 				self.arhive[so:id()] = {visibility = self.descr.visibility,
-							name = vo:name(),
+							name = so:name(),
 							sound_kat = self.descr.sound_kat,
 							sound_power = self.descr.sound_power,
 							object_type = self.descr.object_type,
