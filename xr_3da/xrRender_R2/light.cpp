@@ -133,7 +133,7 @@ void	light::spatial_move			()
 		break;
 		*/
 	}
-	ISpatial::spatial_move		();
+	ISpatial::spatial_move			();
 
 #if RENDER==R_R2
 	if (flags.bActive) gi_generate	();
