@@ -71,5 +71,7 @@ void	CRenderTarget::phase_accumulator()
 	RCache.set_c				("light_direction",	L_dir.x,L_dir.y,L_dir.z,0.f);
 
 	// Render
+	CHK_DX						(HW.pDevice->SetRenderState	( D3DRS_COLORWRITEENABLE,	0	));
 	RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
+	CHK_DX						(HW.pDevice->SetRenderState	( D3DRS_COLORWRITEENABLE,	D3DCOLORWRITEENABLE_RED | D3DCOLORWRITEENABLE_GREEN | D3DCOLORWRITEENABLE_BLUE | D3DCOLORWRITEENABLE_ALPHA ));
 }
