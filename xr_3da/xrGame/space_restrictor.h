@@ -10,9 +10,42 @@
 
 #include "gameobject.h"
 
+//#define PRECOMPUTED_INSIDE
+
 class CSpaceRestrictor : public CGameObject {
 private:
-	typedef CGameObject inherited;
+	typedef CGameObject			inherited;
+
+private:
+	enum {
+		PLANE_COUNT = 6,
+	};
+
+private:
+	typedef Fplane				CPlanesArray[PLANE_COUNT];
+
+private:
+	struct CPlanes {
+		CPlanesArray			m_planes;
+	};
+
+private:
+	typedef xr_vector<Fsphere>	SPHERES;
+	typedef xr_vector<CPlanes>	BOXES;
+
+#ifdef PRECOMPUTED_INSIDE
+private:
+	mutable bool	m_actuality;
+	mutable SPHERES	m_spheres;
+	mutable BOXES	m_boxes;
+#endif
+
+#ifdef PRECOMPUTED_INSIDE
+private:
+	IC		void	actual				(bool value) const;
+	IC		void	prepare				() const;
+	IC		bool	prepared_inside		(const Fvector &position, float radius) const;
+#endif
 
 public:
 	IC				CSpaceRestrictor	();
@@ -22,6 +55,10 @@ public:
 	virtual void	Center				(Fvector &C) const;
 	virtual float	Radius				() const;
 	virtual BOOL	UsedAI_Locations	();
+#ifdef PRECOMPUTED_INSIDE
+	virtual void	spatial_move		();
+	IC		bool	actual				() const;
+#endif
 #ifdef DEBUG
 	virtual void	OnRender			();
 #endif

@@ -30,6 +30,8 @@ float CSpaceRestrictor::Radius		() const
 
 BOOL CSpaceRestrictor::net_Spawn	(CSE_Abstract* data)
 {
+	actual							(false);
+
 	CSE_Abstract					*abstract = (CSE_Abstract*)data;
 	CSE_ALifeSpaceRestrictor		*se_shape = smart_cast<CSE_ALifeSpaceRestrictor*>(abstract);
 	R_ASSERT						(se_shape);
@@ -131,8 +133,34 @@ bool CCF_Shape_inside				(const CCF_Shape *self, const Fvector &position, float 
 
 bool CSpaceRestrictor::inside	(const Fvector &position, float radius) const
 {
+#ifndef PRECOMPUTED_INSIDE
 	return		(CCF_Shape_inside((CCF_Shape*)collidable.model,position,radius));
+#else
+	if (!actual())
+		prepare	();
+#if 0//def _DEBUG
+	bool		value0 = prepared_inside(position, radius);
+	bool		value1 = CCF_Shape_inside((CCF_Shape*)collidable.model,position,radius);
+	VERIFY		(value0 == value1);
+	return		(value0);
+#else
+	return		(prepared_inside(position, radius));
+#endif
+#endif
 }
+
+BOOL CSpaceRestrictor::UsedAI_Locations	()
+{
+	return		(FALSE);
+}
+
+#ifdef PRECOMPUTED_INSIDE
+void CSpaceRestrictor::spatial_move		()
+{
+	actual		(false);
+	Msg			("%6d : %s CSpaceRestrictor::spatial_move() called",Device.dwTimeGlobal,*cName());
+}
+#endif
 
 #ifdef DEBUG
 
@@ -183,8 +211,3 @@ void CSpaceRestrictor::OnRender	()
 	}
 }
 #endif
-
-BOOL CSpaceRestrictor::UsedAI_Locations	()
-{
-	return	(FALSE);
-}
