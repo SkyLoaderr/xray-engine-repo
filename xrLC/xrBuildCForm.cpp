@@ -52,7 +52,7 @@ void CBuild::BuildCForm	()
 	vecFace*	cfFaces		= xr_new<vecFace>	();
 	vecVertex*	cfVertices	= xr_new<vecVertex>	();
 	{
-		xr_vector<bool>	cfVertexMarks;
+		xr_vector<bool>			cfVertexMarks;
 		cfVertexMarks.assign	(g_vertices.size(),false);
 
 		Status("Sorting...");
@@ -103,8 +103,10 @@ void CBuild::BuildCForm	()
 			);
 		Progress(p_total+=p_cost);		// progress
 	}
-	if (bCriticalErrCnt)
-		clMsg("MultipleEdges: %d faces",bCriticalErrCnt);
+	if (bCriticalErrCnt) {
+		err_save	();
+		clMsg		("MultipleEdges: %d faces",bCriticalErrCnt);
+	}
 	xr_delete		(cfFaces);
 	xr_delete		(cfVertices);
 
