@@ -13,14 +13,14 @@ void xrServer::SLS_Save	(CFS_Base& FS)
 
 		// Spawn
 		E->Spawn_Write		(P,TRUE);
-		FS.Wword			(P.B.count);
+		FS.Wword			(u16(P.B.count));
 		FS.write			(P.B.data,P.B.count);
 
 		// Update
 		P.w_begin			(M_UPDATE);
 		P.w_u16				(E->ID);
 		E->UPDATE_Write		(P);
-		FS.Wword			(P.B.count);
+		FS.Wword			(u16(P.B.count));
 		FS.write			(P.B.data,P.B.count);
 
 		FS.close_chunk		();

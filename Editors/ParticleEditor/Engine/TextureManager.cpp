@@ -155,10 +155,13 @@ CVS*	CShaderManager::_CreateVS	(DWORD FVF)
 }
 void	CShaderManager::_DeleteVS	(CVS* &VS)
 {
-	R_ASSERT		(VS);
-	VS->dwReference	--;
-	VS = 0;
+	if (VS)	
+	{
+		VS->dwReference	--;
+		VS = 0;
+	}
 }
+
 LPCSTR	CShaderManager::DBG_GetVSName(CVS* T)
 {
 	R_ASSERT(T);

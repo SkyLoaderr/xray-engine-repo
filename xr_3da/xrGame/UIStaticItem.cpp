@@ -10,6 +10,7 @@ CUIStaticItem::CUIStaticItem()
 {    
 	dwColor		= 0xffffffff;
 	hShader		= 0;
+	hVS			= 0;
 }
 //--------------------------------------------------------------------
 
