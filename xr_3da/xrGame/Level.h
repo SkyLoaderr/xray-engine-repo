@@ -71,7 +71,7 @@ public:
 	CEffect_Rain				eff_Rain;
 
 	// sounds
-	xr_vector<ref_sound*>			static_Sounds;
+	xr_vector<ref_sound*>		static_Sounds;
 
 	// startup options
 	LPSTR						m_caServerOptions;

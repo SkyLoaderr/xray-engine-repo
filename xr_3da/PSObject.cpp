@@ -16,8 +16,14 @@ CPSObject::CPSObject	(LPCSTR ps_name, IRender_Sector* S, BOOL bAutoRemove)
 	renderable.visual	= Render->model_CreatePS	(ps_name,&m_Emitter);
 	VERIFY				(renderable.visual);
 
-	// registry
-	spatial.sector		= S;
+	// spatial
+	spatial.type			= 0;
+	spatial.sector			= S;
+
+	// sheduled
+	shedule.t_min			= 20;
+	shedule.t_max			= 50;
+	shedule_register		();
 }
 
 //----------------------------------------------------
@@ -27,11 +33,24 @@ CPSObject::~CPSObject	()
 
 void CPSObject::shedule_Update		(u32 dt)
 {
+	inherited::shedule_Update	(dt);
+
+	// visual
 	CPSVisual* V	= (CPSVisual*)	renderable.visual;
 	V->Update		(dt);
 	if (m_Emitter.m_Flags.is(PS_EM_PLAY_ONCE))
 	{
 		if ((0==V->ParticleCount())&&!m_Emitter.IsPlaying()) Stop();
+	}
+
+	// spatial
+	spatial.center		= V->vis.sphere.P;
+	spatial.radius		= V->vis.sphere.R;
+	if (0==spatial.type)	{
+		spatial.type		= STYPE_RENDERABLE;
+		spatial_register	();
+	} else {
+		spatial_move		();
 	}
 }
 
