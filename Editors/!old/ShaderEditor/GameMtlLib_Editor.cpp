@@ -247,11 +247,11 @@ void SGameMtlPair::FillProp(PropItemVec& items)
     propCollideParticles= PHelper.CreateChoose	(items,	"Collide Particles",&CollideParticles, 	smParticles);
     propCollideMarks	= PHelper.CreateChoose	(items,	"Collide Marks",	&CollideMarks,		smTexture);
 
-    propBreakingSounds->Owner()->m_Flags.set	(SetMask(show_CB,OwnProps,flBreakingSounds));
-    propStepSounds->Owner()->m_Flags.set		(SetMask(show_CB,OwnProps,flStepSounds));
-    propCollideSounds->Owner()->m_Flags.set		(SetMask(show_CB,OwnProps,flCollideSounds));
-    propCollideParticles->Owner()->m_Flags.set	(SetMask(show_CB,OwnProps,flCollideParticles));
-    propCollideMarks->Owner()->m_Flags.set		(SetMask(show_CB,OwnProps,flCollideMarks));
+    propBreakingSounds->Owner()->m_Flags.assign	(SetMask(show_CB,OwnProps,flBreakingSounds));
+    propStepSounds->Owner()->m_Flags.assign		(SetMask(show_CB,OwnProps,flStepSounds));
+    propCollideSounds->Owner()->m_Flags.assign	(SetMask(show_CB,OwnProps,flCollideSounds));
+    propCollideParticles->Owner()->m_Flags.assign(SetMask(show_CB,OwnProps,flCollideParticles));
+    propCollideMarks->Owner()->m_Flags.assign	(SetMask(show_CB,OwnProps,flCollideMarks));
 
     propBreakingSounds->OnChangeEvent			= OnChange;
     propStepSounds->OnChangeEvent				= OnChange;
@@ -464,7 +464,7 @@ void SGameMtlPair::Load(IReader& fs)
     mtl1				= fs.r_u32();
     ID					= fs.r_u32();
     ID_parent			= fs.r_u32();
-    OwnProps.set		(fs.r_u32());
+    OwnProps.assign		(fs.r_u32());
 
     R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_BREAKING));
     fs.r_stringZ			(buf); 	BreakingSounds	= *buf;

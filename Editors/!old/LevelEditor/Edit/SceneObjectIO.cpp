@@ -54,7 +54,7 @@ bool CSceneObject::Load(IReader& F)
 
         // flags
         if (F.find_chunk(SCENEOBJ_CHUNK_FLAGS)){
-        	m_Flags.set(F.r_u32());
+        	m_Flags.assign(F.r_u32());
         }
 
         if (!bRes) break;

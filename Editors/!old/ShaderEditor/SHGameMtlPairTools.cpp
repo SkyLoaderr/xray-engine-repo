@@ -121,14 +121,14 @@ void CSHGameMtlPairTools::OnActivate()
     Ext.m_Items->OnModifiedEvent= Modified;
     inherited::OnActivate		();
     m_StoreFlags				= Ext.m_Items->m_Flags.flags;
-    Ext.m_Items->m_Flags.set	(TItemList::ilFolderStore);
+    Ext.m_Items->m_Flags.assign	(TItemList::ilFolderStore);
 }
 //---------------------------------------------------------------------------
 
 void CSHGameMtlPairTools::OnDeactivate()
 {
     inherited::OnDeactivate		();
-    Ext.m_Items->m_Flags.set	(m_StoreFlags);
+    Ext.m_Items->m_Flags.assign	(m_StoreFlags);
 }
 
 void CSHGameMtlPairTools::SetCurrentItem(LPCSTR name, bool bView)
