@@ -298,8 +298,9 @@ void CCC_Register()
 	CMD2(CCC_Float,		"snd_volume_eff",		&psSoundVEffects);
 	CMD2(CCC_Float,		"snd_volume_music",		&psSoundVMusic);
 	CMD2(CCC_Float,		"snd_volume_master",	&psSoundVMaster);
-	CMD3(CCC_Token,		"snd_freq",				&psSoundFreq,	snd_freq_token);
-	CMD3(CCC_Token,		"snd_model",			&psSoundModel,	snd_model_token);
+	CMD4(CCC_Float,		"snd_occlusionscale",	&psSoundOcclusionScale, 0.f,1.f	);
+	CMD3(CCC_Token,		"snd_freq",				&psSoundFreq,	snd_freq_token	);
+	CMD3(CCC_Token,		"snd_model",			&psSoundModel,	snd_model_token	);
 	CMD1(CCC_SND_Restart,"snd_restart"			);
 	CMD3(CCC_Mask,		"snd_wavetracing",		&psSoundFlags,	ssWaveTrace);
 	CMD4(CCC_Integer,	"snd_relaxtime",		&psSoundRelaxTime,1,10);
