@@ -97,7 +97,7 @@ function SinglePatrol:process ()
 	  end
     end		
 
-	if math.random (1, 100) > self.probability then return end
+	if math.random (1, 100) <= self.probability then return end
 
     reset_action (self.npc, self.script_name)
 
