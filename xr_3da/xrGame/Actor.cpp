@@ -1280,37 +1280,43 @@ void CActor::spawn_supplies			()
 }
 
 float max_depth=0.f;
+ObjectContactCallbackFun* saved_callback=0;
 void __stdcall TestDepthCallback (bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2)
 {
-	float& depth=c.geom.depth;
-	if(depth>max_depth)
-			max_depth=depth;
-	c.surface.mu*=0.2f;
-	if(depth>0.02)
+	if(saved_callback)saved_callback(do_colide,c,material_1,material_2);
+	if(do_colide)
 	{
-		float force = 100.f *world_gravity;
-		dBodyID b1=dGeomGetBody(c.geom.g1);
-		dBodyID b2=dGeomGetBody(c.geom.g2);
-		if(b1)dBodyAddForce(b1,c.geom.normal[0]*force,c.geom.normal[1]*force,c.geom.normal[2]*force);
-		if(b2)dBodyAddForce(b2,-c.geom.normal[0]*force,-c.geom.normal[1]*force,-c.geom.normal[2]*force);
-		  dxGeomUserData* ud1=retrieveGeomUserData(c.geom.g1);
-		  dxGeomUserData* ud2=retrieveGeomUserData(c.geom.g2);
+		float& depth=c.geom.depth;
+		if(depth>max_depth)
+				max_depth=depth;
+		c.surface.mu*=0.2f;
+		if(depth>0.02)
+		{
+			float force = 100.f *world_gravity;
+			dBodyID b1=dGeomGetBody(c.geom.g1);
+			dBodyID b2=dGeomGetBody(c.geom.g2);
+			if(b1)dBodyAddForce(b1,c.geom.normal[0]*force,c.geom.normal[1]*force,c.geom.normal[2]*force);
+			if(b2)dBodyAddForce(b2,-c.geom.normal[0]*force,-c.geom.normal[1]*force,-c.geom.normal[2]*force);
+			dxGeomUserData* ud1=retrieveGeomUserData(c.geom.g1);
+			dxGeomUserData* ud2=retrieveGeomUserData(c.geom.g2);
 
-			  if(ud1)
-			  {
-				  CPhysicsShell* phsl=ud1->ph_ref_object->PPhysicsShell();
-				  if(phsl) phsl->Enable();
-			  }
+				if(ud1)
+				{
+					CPhysicsShell* phsl=ud1->ph_ref_object->PPhysicsShell();
+					if(phsl) phsl->Enable();
+				}
 
-			  if(ud2)
-			  {
-				  CPhysicsShell* phsl=ud2->ph_ref_object->PPhysicsShell();
-				  if(phsl) phsl->Enable();
-			  }
+				if(ud2)
+				{
+					CPhysicsShell* phsl=ud2->ph_ref_object->PPhysicsShell();
+					if(phsl) phsl->Enable();
+				}
 
-		
-		do_colide=false;
+			
+			do_colide=false;
+		}
 	}
+	
 }
 bool CActor:: ActivateBox(DWORD id)
 {
@@ -1347,7 +1353,7 @@ bool CActor:: ActivateBox(DWORD id)
 	ph_world->Freeze();
 	m_PhysicMovementControl->UnFreeze();
 	
-	ObjectContactCallbackFun* saved_callback=m_PhysicMovementControl->ObjectContactCallback();
+	saved_callback=m_PhysicMovementControl->ObjectContactCallback();
 	m_PhysicMovementControl->SetOjectContactCallback(TestDepthCallback);
 	max_depth=0.f;
 	bool ret=false;
@@ -1364,6 +1370,7 @@ bool CActor:: ActivateBox(DWORD id)
 	if(!ret)m_PhysicMovementControl->ActivateBox(old_id);
 	ph_world->UnFreeze();
 	m_PhysicMovementControl->SetOjectContactCallback(saved_callback);
+	saved_callback=0;
 	return ret;
 }
 

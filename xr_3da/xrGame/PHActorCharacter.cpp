@@ -92,15 +92,17 @@ void CPHActorCharacter::RestrictorCallBack (bool& do_colide,dContact& c,SGameMtl
 	
 	if(!(o1&&o2))return;
 	
-	CGameObject*					go1		= static_cast<CGameObject*>(o1);
-	CGameObject*					go2		= static_cast<CGameObject*>(o2);
+	CGameObject					*go1		= static_cast<CGameObject*>(o1);
+	CGameObject					*go2		= static_cast<CGameObject*>(o2);
+	CAI_Stalker					*S			= NULL;
 	if(go1->cast_actor())
 	{
-		if(smart_cast<CAI_Stalker*>(go2))do_colide=true;
+		 S=smart_cast<CAI_Stalker*>(go2);
 	}
 	else
 	{
-		if(smart_cast<CAI_Stalker*>(go1))do_colide=true;
+		 S=smart_cast<CAI_Stalker*>(go1);
 	}
-	
+
+	if(S&&S->g_Alive())	do_colide=true;
 }
