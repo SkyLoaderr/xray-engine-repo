@@ -1,6 +1,7 @@
 actor = nil
 
 function main()
+--[[
 	while true do
 		if actor == nil then
 			actor = level.actor()
@@ -34,7 +35,6 @@ function main()
        	end
 
        	if actor ~= nil then   
---       		printf("!!!")
        		if actor:has_info("garbage_find_stalker") then
        			printf("[SL] has info")
        		end
@@ -63,4 +63,5 @@ function main()
 
 		wait()
 	end
+	]]
 end
