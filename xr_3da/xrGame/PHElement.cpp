@@ -71,24 +71,24 @@ void CPHElement::			add_Box		(const Fobb&		V)
 
 void CPHElement::			build_Geom	(CODEGeom& geom)
 {
-		
-		geom.build(m_mass_center);
-		geom.set_body(m_body);
-		geom.set_material(ul_material);
-		if(contact_callback)geom.set_contact_cb(contact_callback);
-		if(object_contact_callback)geom.set_obj_contact_cb(object_contact_callback);
-		if(m_phys_ref_object) geom.set_ref_object(m_phys_ref_object);
-		if(m_group)
-		{
-			geom.add_to_space((dSpaceID)m_group);
-		}
+
+	geom.build(m_mass_center);
+	geom.set_body(m_body);
+	geom.set_material(ul_material);
+	if(contact_callback)geom.set_contact_cb(contact_callback);
+	if(object_contact_callback)geom.set_obj_contact_cb(object_contact_callback);
+	if(m_phys_ref_object) geom.set_ref_object(m_phys_ref_object);
+	if(m_group)
+	{
+		geom.add_to_space((dSpaceID)m_group);
+	}
 }
 
 void CPHElement::build_Geom(u16 i)
 {
-CODEGeom& geom=*m_geoms[i];
-build_Geom(geom);
-geom.element_position()=i;
+	CODEGeom& geom=*m_geoms[i];
+	build_Geom(geom);
+	geom.element_position()=i;
 }
 
 void CPHElement::			add_Sphere	(const Fsphere&	V)
@@ -242,7 +242,7 @@ dMass CPHElement::recursive_mass_summ(u16 start_geom,FRACTURE_I cur_fracture)
 	start_geom=cur_fracture->m_start_geom_num;
 	++cur_fracture;
 	if(m_fratures_holder->m_fractures.end() != cur_fracture)
-				cur_fracture->SetMassParts(m_mass,recursive_mass_summ(start_geom,cur_fracture));
+		cur_fracture->SetMassParts(m_mass,recursive_mass_summ(start_geom,cur_fracture));
 	return end_mass;
 }
 void		CPHElement::	setDensity		(float M)
@@ -424,10 +424,10 @@ void CPHElement::Update(){
 
 	m_body_interpolation.InterpolateRotation(mXFORM);	
 	m_body_interpolation.InterpolatePosition(mXFORM.c);
-	
-	
+
+
 	mXFORM.mulB(m_inverse_local_transform);
-	
+
 	if(push_untill)//temp_for_push_out||(!temp_for_push_out&&object_contact_callback)
 		if(push_untill<Device.dwTimeGlobal) unset_Pushout();
 	VERIFY2(_valid(mXFORM),"invalid position in update");
@@ -437,7 +437,7 @@ void CPHElement::PhTune(dReal step)
 {
 	if(!bActive) return;
 	CPHContactBodyEffector* contact_effector=
-						(CPHContactBodyEffector*) dBodyGetData(m_body);
+		(CPHContactBodyEffector*) dBodyGetData(m_body);
 	if(contact_effector)contact_effector->Apply();
 
 }
@@ -452,44 +452,44 @@ void CPHElement::PhDataUpdate(dReal step){
 	}
 
 
-//////////////////////////////////base pointers/////////////////////////////////////////////////
+	//////////////////////////////////base pointers/////////////////////////////////////////////////
 	const dReal* linear_velocity	=	dBodyGetLinearVel(m_body)	;
 	const dReal* angular_velocity	=	dBodyGetAngularVel(m_body)	;
 
-	
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////scale velocity///////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////scale velocity///////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 
 	dBodySetLinearVel(
-						m_body,
-						linear_velocity[0]			/m_l_scale		,
-						linear_velocity[1]			/m_l_scale		,
-						linear_velocity[2]			/m_l_scale
-					 );
+		m_body,
+		linear_velocity[0]			/m_l_scale		,
+		linear_velocity[1]			/m_l_scale		,
+		linear_velocity[2]			/m_l_scale
+		);
 	dBodySetAngularVel(
-						m_body,
-						angular_velocity[0]			/m_w_scale		,
-						angular_velocity[1]			/m_w_scale		,
-						angular_velocity[2]			/m_w_scale
-						);
+		m_body,
+		angular_velocity[0]			/m_w_scale		,
+		angular_velocity[1]			/m_w_scale		,
+		angular_velocity[2]			/m_w_scale
+		);
 
 
-///////////////////scale changes values directly so get base values after it/////////////////////////
-/////////////////////////////base values////////////////////////////////////////////////////////////
+	///////////////////scale changes values directly so get base values after it/////////////////////////
+	/////////////////////////////base values////////////////////////////////////////////////////////////
 	dReal linear_velocity_smag	=		dDOT(linear_velocity,linear_velocity);
 	dReal linear_velocity_mag		=	_sqrt(linear_velocity_smag);
-	
+
 	dReal angular_velocity_smag	=	dDOT(angular_velocity,angular_velocity);
 	dReal angular_velocity_mag	=	_sqrt(angular_velocity_smag);
-	
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////limit velocity & secure /////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////limit velocity & secure /////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 	////////////////limit linear vel////////////////////////////////////////////////////////////////////////////////////////
-	
+
 
 	if(!dV_valid(linear_velocity))
 	{
@@ -498,17 +498,17 @@ void CPHElement::PhDataUpdate(dReal step){
 		linear_velocity_mag =0.f;
 	}
 	else if(linear_velocity_mag>m_l_limit)
-	     {
-			dReal f=linear_velocity_mag/m_l_limit;
-			linear_velocity_mag=m_l_limit;
-			linear_velocity_smag=m_l_limit*m_l_limit;
-			dBodySetLinearVel(
-				m_body,
-				linear_velocity[0]/f,
-				linear_velocity[1]/f,
-				linear_velocity[2]/f
-				);
-		 }
+	{
+		dReal f=linear_velocity_mag/m_l_limit;
+		linear_velocity_mag=m_l_limit;
+		linear_velocity_smag=m_l_limit*m_l_limit;
+		dBodySetLinearVel(
+			m_body,
+			linear_velocity[0]/f,
+			linear_velocity[1]/f,
+			linear_velocity[2]/f
+			);
+	}
 
 	////////////////secure position///////////////////////////////////////////////////////////////////////////////////
 	const dReal* position=dBodyGetPosition(m_body);
@@ -537,10 +537,10 @@ void CPHElement::PhDataUpdate(dReal step){
 		angular_velocity_mag=m_w_limit;
 		angular_velocity_smag=m_w_limit*m_w_limit;
 		dBodySetAngularVel(
-							m_body,
-							angular_velocity[0]/f,
-							angular_velocity[1]/f,
-							angular_velocity[2]/f);
+			m_body,
+			angular_velocity[0]/f,
+			angular_velocity[1]/f,
+			angular_velocity[2]/f);
 	}
 
 	////////////////secure rotation////////////////////////////////////////////////////////////////////////////////////////
@@ -568,12 +568,12 @@ void CPHElement::PhDataUpdate(dReal step){
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	if(!fis_zero(k_w))
-			dBodyAddTorque(
-							m_body,
-							-angular_velocity[0]*k_w,
-							-angular_velocity[1]*k_w,
-							-angular_velocity[2]*k_w
-							);
+		dBodyAddTorque(
+		m_body,
+		-angular_velocity[0]*k_w,
+		-angular_velocity[1]*k_w,
+		-angular_velocity[2]*k_w
+		);
 
 	dMass mass;
 	dBodyGetMass(m_body,&mass);
@@ -581,16 +581,16 @@ void CPHElement::PhDataUpdate(dReal step){
 	if(l_air>mass.mass/fixed_step) l_air=mass.mass/fixed_step;//validate
 
 	if(!fis_zero(l_air))
-			dBodyAddForce(
-							m_body,
-							-linear_velocity[0]*l_air,
-							-linear_velocity[1]*l_air,
-							-linear_velocity[2]*l_air
-							);
+		dBodyAddForce(
+		m_body,
+		-linear_velocity[0]*l_air,
+		-linear_velocity[1]*l_air,
+		-linear_velocity[2]*l_air
+		);
 
-VERIFY2(dV_valid(dBodyGetPosition(m_body)),"invalid body position");
-VERIFY2(dM_valid(dBodyGetRotation(m_body)),"invalid body rotation");
-UpdateInterpolation				();
+	VERIFY2(dV_valid(dBodyGetPosition(m_body)),"invalid body position");
+	VERIFY2(dM_valid(dBodyGetRotation(m_body)),"invalid body rotation");
+	UpdateInterpolation				();
 
 }
 
@@ -615,10 +615,10 @@ void CPHElement::Disable(){
 			SaveContacts(ph_world->GetMeshGeom(),(*m_geoms.begin())->geometry_transform(),m_saved_contacts);
 		b_contacts_saved=true;
 	}
-//	dBodySetForce(m_body,0.f,0.f,0.f);
-//	dBodySetTorque(m_body,0.f,0.f,0.f);
-//	dBodySetLinearVel(m_body,0.f,0.f,0.f);
-//	dBodySetAngularVel(m_body,0.f,0.f,0.f);
+	//	dBodySetForce(m_body,0.f,0.f,0.f);
+	//	dBodySetTorque(m_body,0.f,0.f,0.f);
+	//	dBodySetLinearVel(m_body,0.f,0.f,0.f);
+	//	dBodySetAngularVel(m_body,0.f,0.f,0.f);
 	dBodyDisable(m_body);
 }
 
@@ -627,7 +627,7 @@ void CPHElement::ReEnable(){
 
 	dJointGroupEmpty(m_saved_contacts);
 	b_contacts_saved=false;
-	
+
 }
 
 void	CPHElement::Freeze()
@@ -649,7 +649,7 @@ void	CPHElement::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, fl
 	val/=fixed_step;
 	Fvector body_pos;
 	body_pos.sub(pos,m_inverse_local_transform.c);
-	
+
 	Fvector impulse;
 	impulse.set(dir);
 	impulse.mul(val);
@@ -659,7 +659,7 @@ void	CPHElement::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, fl
 		impulse.add(*((Fvector*)dBodyGetPosition(m_body)));
 		m_fratures_holder->AddImpact(impulse,body_pos,m_shell->BoneIdToRootGeom(id));
 	}
-	
+
 	BodyCutForce(m_body,m_l_limit,m_w_limit);
 }
 
@@ -712,7 +712,7 @@ void CPHElement::build(bool disable){
 	build();
 	//	if(place_current_forms)
 	{
-	
+
 		SetTransform(mXFORM);
 	}
 
@@ -787,7 +787,7 @@ void CPHElement::CallBack(CBoneInstance* B){
 	}
 	Fmatrix parent;
 	if(bActivating){
-	if(ph_world->GetSpace()->lock_count) return;
+		if(ph_world->GetSpace()->lock_count) return;
 		if(!m_parent_element)
 		{	
 			m_shell->Activate();
@@ -889,11 +889,11 @@ void CPHElement::CallBack1(CBoneInstance* B)
 
 	if(!m_parent_element)
 	{
-			VERIFY(dBodyStateValide(m_body));
-			m_shell->InterpolateGlobalTransform(&(m_shell->mXFORM));
-			VERIFY(_valid(m_shell->mXFORM));
+		VERIFY(dBodyStateValide(m_body));
+		m_shell->InterpolateGlobalTransform(&(m_shell->mXFORM));
+		VERIFY(_valid(m_shell->mXFORM));
 	}
-	
+
 	if( !dBodyIsEnabled(m_body) && !bUpdate) return;
 
 	{
@@ -910,9 +910,9 @@ void CPHElement::CallBack1(CBoneInstance* B)
 	//	InterpolateGlobalTransform(&m_shell->mXFORM);
 	//	mXFORM.identity();
 	//	B->mTransform.set(mXFORM);
-		//parent.set(B->mTransform);
-		//parent.invert();
-		//m_shell->mXFORM.mulB(parent);
+	//parent.set(B->mTransform);
+	//parent.invert();
+	//m_shell->mXFORM.mulB(parent);
 
 	//}
 
@@ -1240,7 +1240,7 @@ void CPHElement::get_Extensions(const Fvector& axis,float center_prg,float& lo_e
 		if(lo_ext>temp_lo_ext)lo_ext=temp_lo_ext;
 		if(hi_ext<temp_hi_ext)hi_ext=temp_hi_ext;
 	}
-	
+
 }
 
 const Fvector& CPHElement::mass_Center()
@@ -1326,8 +1326,8 @@ void CPHElement::ResetMass(float density)
 	Fvector tmp,shift_mc;
 
 	tmp.set(m_mass_center);
-	
-	
+
+
 	setDensity(density);
 	dBodySetMass(m_body,&m_mass);
 	m_inverse_local_transform.c.set(m_mass_center);
@@ -1365,7 +1365,7 @@ void CPHElement::ReInitDynamics(const Fmatrix &shift_pivot,float density)
 void CPHElement::PresetActive()
 {
 	if(bActive) return;
-	
+
 	CBoneInstance& B=m_shell->PKinematics()->LL_GetBoneInstance(m_SelfID);
 	mXFORM.set(B.mTransform);
 	m_start_time=Device.fTimeGlobal;
