@@ -29,9 +29,11 @@ public:
 
 	struct STravelPathPoint {
 		Fvector				position;
+		Fvector				direction;
 		Fvector				xyz;
 		u32					velocity;
 		float				angularVelocity;
+		bool				clockwise;
 		u32					time;
 	};
 
@@ -114,8 +116,10 @@ protected:
 	xr_vector<SWayPoint>			m_keyTrajectory;
 	int								m_currKeyIdx;
 
+	Fvector							m_lastDir;
+	Fvector							m_lastXYZ;
+
 //	Fvector							m_lastPos;
-//	Fvector							m_lastXYZ;
 //	Fvector							m_destXYZ;
 
 	CHelicopter*					m_pHelicopter;

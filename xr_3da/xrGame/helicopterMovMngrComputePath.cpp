@@ -257,8 +257,10 @@ CHelicopterMovementManager::build_trajectory(
 	STravelPathPoint lastAdded;
 	if (!build_circle_trajectory(start, path, velocity1, lastAdded, true))
 		return			(false);
+
 	if (!build_line_trajectory(lastAdded, dest, path, velocity2, lastAdded))
 		return			(false);
+
 	if (!build_circle_trajectory(dest, path, velocity3, lastAdded, false))
 		return			(false);
 	return				(true);
@@ -369,19 +371,30 @@ CHelicopterMovementManager::build_circle_trajectory(
 		t.position.y		= 0.0f;
 		t.angularVelocity	= position.angular_velocity;
 		
-		if(angle<0.0f)
-			t.angularVelocity *= -1.0f;
+//		if(angle<0.0f)
+//			t.angularVelocity *= -1.0f;
 
 		t.velocity			= m_velocity;
 
+
+		temp			= sin_apb(sinb,cosb,sini,cosi);
+		cosi			= cos_apb(sinb,cosb,sini,cosi);
+		sini			= temp;
+		
+
+		Fvector last_dir,new_dir,cp;
+		last_dir.sub(v3d(position.center), curr_pos);
+		new_dir.sub(v3d(position.center), t.position);
+		cp.crossproduct(last_dir, new_dir);
+
+		(cp.y>0.0f)?t.clockwise = true:t.clockwise=false;
+		(fromCenter)?t.clockwise=t.clockwise:t.clockwise=!t.clockwise;
+		
 		if (path) {
 			path->push_back	(t);
 			lastAddedPoint = t;
 		}
 
-		temp			= sin_apb(sinb,cosb,sini,cosi);
-		cosi			= cos_apb(sinb,cosb,sini,cosi);
-		sini			= temp;
 		curr_pos		= t.position;
 	}
 
@@ -413,6 +426,7 @@ bool CHelicopterMovementManager::build_line_trajectory(
 	{
 		lastAddedPoint.position.add(v);
 		lastAddedPoint.angularVelocity	= 0.0f;
+		lastAddedPoint.clockwise		= true;
 		lastAddedPoint.velocity			= m_velocity;
 
 		path->push_back(lastAddedPoint);
@@ -465,7 +479,7 @@ CHelicopterMovementManager::build_smooth_path (int startKeyIdx, bool bClearOld)
 	if (compute_path(start,dest,&m_path,m_startParams,finish_params,straight_line_index,straight_line_index_negative)) 
 	{
 		for(pathIt It = m_path.begin(); It!=m_path.end(); ++It)
-			(*It).position.y = 20.0f;
+			(*It).position.y = 3.0f;
 
 		m_failed						= false;
 
@@ -497,8 +511,12 @@ CHelicopterMovementManager::build_smooth_path (int startKeyIdx, bool bClearOld)
 			(*E).time = t;
 
 
+			
+			(*B).direction.sub(e_p, b_p);
+
 			Fvector dir;
 			float d = dir.sub(e_p, b_p).magnitude();
+
 			if(d>EPS)
 			{
 				float h,p;
@@ -506,6 +524,7 @@ CHelicopterMovementManager::build_smooth_path (int startKeyIdx, bool bClearOld)
 				b_xyz.y = h;
 				b_xyz.x = m_velocity*PITCH_K;
 				b_xyz.z = computeB( (*B).angularVelocity );
+				
 			}else
 				b_xyz = prev_xyz;
 		
@@ -526,7 +545,9 @@ CHelicopterMovementManager::init_build(int startKeyIdx,
 	u32 idxP1,idxP2;
 	idxP1 = startKeyIdx;
 
-	m_useDestOrientation = true;
+//	m_useDestOrientation = true;
+	m_useDestOrientation = false;
+
 	m_cyclePath = true;
 
 	if( startKeyIdx >= m_keyTrajectory.size()-1 )
@@ -548,7 +569,15 @@ CHelicopterMovementManager::init_build(int startKeyIdx,
 //	m_movementParams.insert(std::make_pair(2, STravelParams(5.0f, PI_MUL_4)));
 
 	start.position						= v2d(m_keyTrajectory[idxP1].position);
-	start.direction						= v2d(m_keyTrajectory[idxP1].direction);
+//	start.direction						= v2d(m_keyTrajectory[idxP1].direction);
+//	start.direction						= v2d(m_lastDir);
+
+	if(m_path.size())
+	{
+		start.direction		= v2d(m_path[m_path.size()-2].direction);
+	}else
+		start.direction		= v2d(m_lastDir);
+	
 	
 
 	validate_vertex_position			(start);

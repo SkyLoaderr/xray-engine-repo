@@ -50,6 +50,27 @@ CHelicopter::net_Spawn(LPVOID	DC)
 	VERIFY				(heli);
 
 	R_ASSERT			(Visual()&&PKinematics(Visual()));
+	CKinematics* K		= PKinematics(Visual());
+	CInifile* pUserData	= K->LL_UserData();
+	int id;
+
+	LPCSTR s = pUserData->r_string("helicopter_definition","hit_section");
+
+	if( pUserData->section_exist(s) )
+	{
+		int lc = pUserData->line_count(s);
+		LPCSTR name;
+		LPCSTR value;
+		s16 boneID;
+		for (int i=0 ;i<lc; ++i) 
+		{
+			pUserData->r_line( s, i, &name, &value);
+			boneID=K->LL_BoneID(name);
+			m_hitBones.insert( std::make_pair(boneID, atof(value)) );
+		}
+	}
+	
+
 	CSkeletonAnimated	*A= PSkeletonAnimated(Visual());
 	if (A) {
 		A->PlayCycle	(*heli->startup_animation);
@@ -57,6 +78,7 @@ CHelicopter::net_Spawn(LPVOID	DC)
 	}
 	m_engine_sound.create(TRUE,*heli->engine_sound);
 	m_engine_sound.play_at_pos(0,XFORM().c,sm_Looped);
+
 
 	setVisible			(true);
 	setEnabled			(true);
@@ -105,3 +127,21 @@ CHelicopter::shedule_Update(u32	time_delta)
 	m_movementMngr.shedule_Update(time_delta);
 }
 
+void		
+CHelicopter::Hit(	float P, 
+					Fvector &dir, 
+					CObject* who, 
+					s16 element, 
+					Fvector position_in_bone_space, 
+					float impulse,  
+					ALife::EHitType hit_type/* = ALife::eHitTypeWound*/)
+{
+
+	bonesIt It = m_hitBones.find(element);
+	if(It != m_hitBones.end())
+	{
+	}
+/*	else
+		CEntity::Hit(P,dir,who,element,position_in_bone_space,impulse,hit_type );
+*/
+}
