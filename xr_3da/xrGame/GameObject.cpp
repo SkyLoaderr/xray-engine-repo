@@ -231,7 +231,10 @@ void CGameObject::validate_ai_locations			(bool decrement_reference)
 	if (!UsedAI_Locations() || !ai().get_level_graph())
 		return;
 
-	u32		l_dwNewLevelVertexID	= ai().level_graph().vertex(level_vertex_id(),Position());
+#ifdef _DEBUG
+	Msg								("%6d Searching for node for object %s",Level().timeServer(),cName());
+#endif
+	u32								l_dwNewLevelVertexID = ai().level_graph().vertex(level_vertex_id(),Position());
 
 	if (decrement_reference && (level_vertex_id() == l_dwNewLevelVertexID))
 		return;

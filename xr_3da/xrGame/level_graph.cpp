@@ -90,11 +90,14 @@ u32 CLevelGraph::vertex		(u32 current_node_id, const Fvector& position) const
 #ifndef AI_COMPILER
 	Device.Statistic.AI_Node.Begin	();
 
-	u32					id;
+	u32						id;
 
 	if (!valid_vertex_id(current_node_id)) {
 		// so, we do not have a correct current node
 		// performing very slow full search
+#ifdef _DEBUG
+		Msg					("%6d Full search (%d,[%f][%f][%f])",Level().timeServer(),current_node_id,VPUSH(position));
+#endif
 		id					= vertex(position);
 		VERIFY				(valid_vertex_id(id));
 		Device.Statistic.AI_Node.End();
@@ -107,49 +110,61 @@ u32 CLevelGraph::vertex		(u32 current_node_id, const Fvector& position) const
 		// there is no node for the current position
 		// try to search the nearest one iteratively
 
-		SContour				contour;
-		Fvector					point;
-		u32						best_vertex_id = current_node_id;
+#ifdef _DEBUG
+		Msg					("%6d Neighbour search (%d,[%f][%f][%f])",Level().timeServer(),current_node_id,VPUSH(position));
+#endif
+		SContour			contour;
+		Fvector				point;
+		u32					best_vertex_id = current_node_id;
 		ai().level_graph().contour(contour,current_node_id);
 		ai().level_graph().nearest(point,position,contour);
-		float					best_distance_sqr = position.distance_to_sqr(point);
-		const_iterator			i,e;
-		begin					(current_node_id,i,e);
+		float				best_distance_sqr = position.distance_to_sqr(point);
+		const_iterator		i,e;
+		begin				(current_node_id,i,e);
 		for ( ; i != e; ++i) {
-			u32					level_vertex_id = value(current_node_id,i);
+			u32				level_vertex_id = value(current_node_id,i);
 			if (!valid_vertex_id(level_vertex_id))
 				continue;
 
 			ai().level_graph().contour(contour,level_vertex_id);
 			ai().level_graph().nearest(point,position,contour);
-			float				distance_sqr = position.distance_to_sqr(point);
+			float			distance_sqr = position.distance_to_sqr(point);
 			if (best_distance_sqr > distance_sqr) {
-				best_distance_sqr = distance_sqr;
-				best_vertex_id	= level_vertex_id;
+				best_distance_sqr	= distance_sqr;
+				best_vertex_id		= level_vertex_id;
 			}
 		}
 
 		Device.Statistic.AI_Node.End();
-		return					(best_vertex_id);
+		return				(best_vertex_id);
 	}
 
 	if (inside(vertex(current_node_id),position)) {
 		// so, our node corresponds to the position
+#ifdef _DEBUG
+		Msg					("%6d No search (%d,[%f][%f][%f])",Level().timeServer(),current_node_id,VPUSH(position));
+#endif
 		Device.Statistic.AI_Node.End();
-		return			(current_node_id);
+		return				(current_node_id);
 	}
 
 	// so, our position is inside the level graph bounding box
 	// so, there is a node which corresponds with x and z to the position
 	// try to search it with straight line via nodes
-	id					= check_position_in_direction(current_node_id,vertex_position(current_node_id),position);
+	id						= check_position_in_direction(current_node_id,vertex_position(current_node_id),position);
 	if (valid_vertex_id(id) && inside(vertex(id),position)) {
+#ifdef _DEBUG
+		Msg					("%6d Direction search (%d,[%f][%f][%f])",Level().timeServer(),current_node_id,VPUSH(position));
+#endif
 		Device.Statistic.AI_Node.End();
-		return			(id);
+		return				(id);
 	}
 
 	// so, there is no straight line via nodes
 	// try to search it with straight line
+#ifdef _DEBUG
+	Msg						("%6d A* search (%d,[%f][%f][%f])",Level().timeServer(),current_node_id,VPUSH(position));
+#endif
 	CGraphEngine::CPositionParameters	position_params(position,1.f);
 	bool					search_result = ai().graph_engine().search(*this,current_node_id,current_node_id,0,position_params);
 	if (!search_result)
