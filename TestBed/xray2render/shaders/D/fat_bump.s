@@ -2,7 +2,7 @@ struct 	a2v
 {
   float4 Position: 	POSITION;	// Object-space position
   float3 N: 		NORMAL;		// Object-space normal
-  float2 TexCoords: TEXCOORD0;	// Texture coordinates
+  float2 tc0:		TEXCOORD0;	// Texture coordinates
   float3 T:			TEXCOORD1;	// tangent
   float3 B:			TEXCOORD2;	// binormal
 };
@@ -11,7 +11,7 @@ struct 	v2p_out
 {
   float4 HPos: 		POSITION;	// Clip-space position 	(for rasterization)
   float4 Pe: 		TEXCOORD0;	// Eye-space position 	(for lighting)
-  float2 Tex0: 		TEXCOORD1;	// Texture coordinates 	(for sampling diffuse+normal map)
+  float2 tc0: 		TEXCOORD1;	// Texture coordinates 	(for sampling diffuse+normal map)
   float3 M1:		TEXCOORD2;	// nmap 2 eye - 1
   float3 M2:		TEXCOORD3;	// nmap 2 eye - 2
   float3 M3:		TEXCOORD4;	// nmap 2 eye - 3
@@ -20,7 +20,7 @@ struct 	v2p_out
 struct 	v2p_in
 {
   float4 Pe: 		TEXCOORD0;	// Eye-space position 	(for lighting)
-  float2 Tex0: 		TEXCOORD1;	// Texture coordinates 	(for sampling diffuse+normal map)
+  float2 tc0: 		TEXCOORD1;	// Texture coordinates 	(for sampling diffuse+normal map)
   float3 M1:		TEXCOORD2;	// nmap 2 eye - 1
   float3 M2:		TEXCOORD3;	// nmap 2 eye - 2
   float3 M3:		TEXCOORD4;	// nmap 2 eye - 3
