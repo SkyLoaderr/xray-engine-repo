@@ -1376,7 +1376,7 @@ void CStalkerActionGetReadyToKillModerate::execute	()
 	if (m_object->enemy() && m_object->visible_now(m_object->enemy()))
 		m_object->CSightManager::setup		(CSightAction(m_object->enemy(),true));
 	else
-		m_object->CSightManager::setup		(CSightAction(SightManager::eSightTypeFirePosition,m_object->memory(m_object->enemy()).m_object_params.m_position,true));
+		m_object->CSightManager::setup		(CSightAction(SightManager::eSightTypePosition,m_object->memory(m_object->enemy()).m_object_params.m_position,true));
 
 	if (!dynamic_cast<CMissile*>(m_object->best_weapon()))
 		m_object->CObjectHandler::set_goal	(eObjectActionAimReady1,m_object->best_weapon());
