@@ -4,6 +4,8 @@
 #include "cl_intersect.h"
 #include "scene.h"
 #include "ESceneAIMapTools.h"
+#include "editobject.h"
+#include "editmesh.h"
 
 struct cl_tri 
 {
@@ -492,13 +494,24 @@ void ESceneAIMapTools::MotionSimulate(Fvector& result, Fvector& start, Fvector& 
                                  
 	// Get the data for the triangles in question and scale to ellipsoid space
 	int tri_count			= PQ.r_count();
-	clContactedT.resize		(tri_count);
+    clContactedT.clear		();
+//.	clContactedT.resize		(tri_count);
+	
 	if (tri_count) {
 		Fvector vel_dir;
 		vel_dir.normalize_safe	(Lvelocity);
 		for (int i_t=0; i_t<tri_count; i_t++){
-			cl_tri& T			= clContactedT[i_t];
-			Fvector* V			= (PQ.r_begin()+i_t)->verts;
+            SPickQuery::SResult* R = PQ.r_begin()+i_t;
+            if (R->e_obj&&R->e_mesh){
+                CSurface* surf		= R->e_mesh->GetSurfaceByFaceID(R->tag);
+                SGameMtl* mtl 		= GMLib.GetMaterialByID(surf->_GameMtl());
+                if (mtl->Flags.is(SGameMtl::flPassable))continue;
+                Shader_xrLC* c_sh	= Device.ShaderXRLC.Get(surf->_ShaderXRLCName());
+                if (!c_sh->flags.bCollision) 			continue;
+            }
+            clContactedT.push_back(cl_tri());
+			cl_tri& T			= clContactedT.back();
+			Fvector* V			= R->verts;
 
 			T.p[0].mul			(V[0],xf);
 			T.p[1].mul			(V[1],xf);

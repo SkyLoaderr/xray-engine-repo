@@ -53,9 +53,19 @@ BOOL ESceneAIMapTools::CreateNode(Fvector& vAt, SAINode& N, bool bIC)
 	static xr_vector<tri> tris;	tris.reserve(RCAST_MaxTris);	tris.clear();
 	for (DWORD i=0; i<dwCount; i++)
 	{
+    	SPickQuery::SResult* R = PQ.r_begin()+i;
+        
+        if (R->e_obj&&R->e_mesh){
+            CSurface* surf		= R->e_mesh->GetSurfaceByFaceID(R->tag);
+            SGameMtl* mtl 		= GMLib.GetMaterialByID(surf->_GameMtl());
+            if (mtl->Flags.is(SGameMtl::flPassable))continue;
+            Shader_xrLC* c_sh	= Device.ShaderXRLC.Get(surf->_ShaderXRLCName());
+            if (!c_sh->flags.bCollision) 			continue;
+        }
+    
     	tris.push_back	(tri());
 		tri&		D = tris.back();
-		Fvector*	V = (PQ.r_begin()+i)->verts;   
+		Fvector*	V = R->verts;   
 
 		D.v[0]		= &V[0];
 		D.v[1]		= &V[1];
@@ -581,11 +591,18 @@ bool ESceneAIMapTools::GenerateMap()
 		        pb->Inc(AnsiString().sprintf("%s [%s]",S->Name,(*m_it)->GetName()).c_str());
             	SurfFaces&	_sfaces = (*m_it)->GetSurfFaces();
                 for (SurfFacesPairIt sp_it=_sfaces.begin(); sp_it!=_sfaces.end(); sp_it++){
-                    IntVec& face_lst = sp_it->second;
+                	CSurface* surf		= sp_it->first;
+                    // test passable
+			        SGameMtl* mtl 		= GMLib.GetMaterialByID(surf->_GameMtl());
+                    if (mtl->Flags.is(SGameMtl::flPassable))continue;
+                    Shader_xrLC* c_sh	= Device.ShaderXRLC.Get(surf->_ShaderXRLCName());
+                    if (!c_sh->flags.bCollision) 			continue;
+                    // collect tris
+                    IntVec& face_lst 	= sp_it->second;
                     for (IntIt it=face_lst.begin(); it!=face_lst.end(); it++){
 			        	E->GetFaceWorld	(S->_Transform(),*m_it,*it,verts);
 						CL->add_face_D(verts[0],verts[1],verts[2], *it);
-                        if (sp_it->first->m_Flags.is(CSurface::sf2Sided))
+                        if (surf->m_Flags.is(CSurface::sf2Sided))
 							CL->add_face_D(verts[2],verts[1],verts[0], *it);
                     }
                 }

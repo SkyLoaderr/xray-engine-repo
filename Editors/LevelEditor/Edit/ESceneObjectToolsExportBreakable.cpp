@@ -17,7 +17,7 @@
 #include "ResourceManager.h"
 
 //----------------------------------------------------
-IC bool build_mesh(const Fmatrix& parent, CEditableMesh* mesh, CGeomPartExtractor* extractor, u32 game_mtl_mask)
+IC bool build_mesh(const Fmatrix& parent, CEditableMesh* mesh, CGeomPartExtractor* extractor, u32 game_mtl_mask, BOOL ignore_shader)
 {
 	bool bResult 			= true;
     // fill faces
@@ -39,7 +39,7 @@ IC bool build_mesh(const Fmatrix& parent, CEditableMesh* mesh, CGeomPartExtracto
         if (!M->Flags.is(game_mtl_mask)) continue;
 
         // check engine shader compatibility
-        {
+        if (!ignore_shader){
             IBlender* 		B = Device.Resources->_FindBlender(surf->_ShaderName()); 
             if (TRUE==B->canBeLMAPped()){ 
                 ELog.Msg	(mtError,"Object '%s', surface '%s' contain static engine shader - '%s'. Export interrupted.",mesh->Parent()->m_LibName.c_str(),surf->_Name(),surf->_ShaderName());
@@ -57,9 +57,9 @@ IC bool build_mesh(const Fmatrix& parent, CEditableMesh* mesh, CGeomPartExtracto
             parent.transform_tiny	(v[0],pts[face.pv[0].pindex]);
             parent.transform_tiny	(v[1],pts[face.pv[1].pindex]);
             parent.transform_tiny	(v[2],pts[face.pv[2].pindex]);
-            parent.transform_dir	(n[0],pn[*f_it*3+0]);
-            parent.transform_dir	(n[1],pn[*f_it*3+1]);
-            parent.transform_dir	(n[2],pn[*f_it*3+2]);
+            parent.transform_dir	(n[0],pn[*f_it*3+0]); n[0].normalize();
+            parent.transform_dir	(n[1],pn[*f_it*3+1]); n[1].normalize();
+            parent.transform_dir	(n[2],pn[*f_it*3+2]); n[2].normalize();
             const Fvector2*	uv[3];
             mesh->GetFaceTC			(*f_it,uv);
             extractor->AppendFace	(surf,v,n,uv);
@@ -91,7 +91,7 @@ bool ESceneObjectTools::ExportBreakableObjects(SExportStreams& F)
                 CEditableObject *O 	= obj->GetReference();
                 const Fmatrix& T 	= obj->_Transform();
                 for(EditMeshIt M=O->FirstMesh();M!=O->LastMesh();M++)
-                    if (!build_mesh	(T,*M,extractor,SGameMtl::flBreakable)){bResult=false;break;}
+                    if (!build_mesh	(T,*M,extractor,SGameMtl::flBreakable,FALSE)){bResult=false;break;}
             }
         }
 	    UI->ProgressEnd(pb);
@@ -148,27 +148,21 @@ bool ESceneObjectTools::ExportBreakableObjects(SExportStreams& F)
 }
 //----------------------------------------------------
 
-IC BOOL OrientToNorm(const Fvector& normal, Fmatrix33& form, Fvector& hs)
+IC BOOL OrientToNorm(Fvector& local_norm, Fmatrix33& form, Fvector& hs)
 {
     Fvector * ax_pointer= (Fvector*)&form;
-    float dot 		= ax_pointer[0].dotproduct(normal);
-    float max_dot	= _abs(dot);
-    float min_size	= hs.x;
-    int max_ax_i=0,min_size_i=0;
-    for(int i=1;3>i;++i){
-    	dot			= ax_pointer[i].dotproduct(normal);
-        float dot_pr= _abs(dot);
-        if(max_dot<dot_pr){
-            max_ax_i=i;max_dot=dot_pr;
-        }
-        if(min_size>hs[i]){
-            min_size_i=i;min_size=hs[i];
-        }
+    int 	max_proj=0,min_size=0;
+    for (u32 k=1; k<3; k++){
+    	if (_abs(local_norm[k])>_abs(local_norm[max_proj])) 
+        	max_proj=k;
+        if (hs[k]<hs[min_size])
+        	min_size=k; 
     }
-    if(min_size_i!=max_ax_i) return FALSE;
-    if(ax_pointer[max_ax_i].dotproduct(normal)<0.f){
-        ax_pointer[max_ax_i].invert();
-        ax_pointer[(max_ax_i+1)%3].invert();
+    if (min_size!=max_proj) return FALSE;
+    if (local_norm[max_proj]<0.f){
+    	local_norm.invert();
+        ax_pointer[max_proj].invert();
+        ax_pointer[(max_proj+1)%3].invert();
     }
     return TRUE;
 }
@@ -195,7 +189,7 @@ bool ESceneObjectTools::ExportClimableObjects(SExportStreams& F)
                 CEditableObject *O 	= obj->GetReference();
                 const Fmatrix& T 	= obj->_Transform();
                 for(EditMeshIt M=O->FirstMesh();M!=O->LastMesh();M++)
-                    if (!build_mesh	(T,*M,extractor,SGameMtl::flClimable)){bResult=false;break;}
+                    if (!build_mesh	(T,*M,extractor,SGameMtl::flClimable,TRUE)){bResult=false;break;}
             }
         }
 	    UI->ProgressEnd(pb);
@@ -221,10 +215,10 @@ bool ESceneObjectTools::ExportClimableObjects(SExportStreams& F)
                 }
                 FS.w_close			(W);
 */
-				Fvector obj_normal	= {0,0,0};
+				Fvector local_normal	= {0,0,0};
                 for (SBFaceVecIt it=P->m_Faces.begin(); it!=P->m_Faces.end(); it++)
-                	for (u32 k=0; k<3; k++) obj_normal.add	((*it)->n[k]);
-                obj_normal.normalize_safe		();
+                	for (u32 k=0; k<3; k++) local_normal.add	((*it)->n[k]);
+                local_normal.normalize_safe		();
                 
                 // export spawn object
                 {
@@ -242,15 +236,10 @@ bool ESceneObjectTools::ExportClimableObjects(SExportStreams& F)
                     							(P->m_BBox.max.y-P->m_BBox.min.y)*0.5f,
                                                 (P->m_BBox.max.z-P->m_BBox.min.z)*0.5f);
                     m_Shape->assign_shapes		(&shape,1);
-                    // set visual (empty)
-//.					m_Visual->set_visual		(sn.c_str(),false);
 					// orientate object
-	          		OrientToNorm				(obj_normal,P->m_OBB.m_rotate,P->m_OBB.m_halfsize);
-                    Scene->m_CompilerErrors.AppendOBB	(P->m_OBB);
-//	          		if (!OrientToNorm(obj_normal,P->m_OBB.m_rotate,P->m_OBB.m_halfsize)){
-//                    	ELog.DlgMsg(mtError,"Invalid climable object found. [%3.2f, %3.2f, %3.2f]",VPUSH(P->m_RefOffset));
-//					}else
-                    {
+	          		if (!OrientToNorm(local_normal,P->m_OBB.m_rotate,P->m_OBB.m_halfsize)){
+                    	ELog.DlgMsg(mtError,"Invalid climable object found. [%3.2f, %3.2f, %3.2f]",VPUSH(P->m_RefOffset));
+					}else{
                         Fmatrix M; M.set			(P->m_OBB.m_rotate.i,P->m_OBB.m_rotate.j,P->m_OBB.m_rotate.k,P->m_OBB.m_translate);
                         M.getXYZ					(P->m_RefRotate); // не i потому что в движке так
                         m_Data->position().set		(P->m_RefOffset); 
@@ -262,6 +251,10 @@ bool ESceneObjectTools::ExportClimableObjects(SExportStreams& F)
                         F.spawn.stream.open_chunk	(F.spawn.chunk++);
                         F.spawn.stream.w			(Packet.B.data,Packet.B.count);
                         F.spawn.stream.close_chunk	();
+
+                        Scene->m_CompilerErrors.AppendOBB	(P->m_OBB);
+                        M.transform_dir				(local_normal);
+                        Scene->m_CompilerErrors.AppendEdge	(P->m_RefOffset,Fvector().mad(P->m_RefOffset,local_normal,1.f));
                     }
                     destroy_entity				(m_Data);
                 }
