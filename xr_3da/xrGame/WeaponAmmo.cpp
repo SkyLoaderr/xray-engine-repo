@@ -164,7 +164,7 @@ bool CWeaponAmmo::Get(CCartridge &cartridge)
 	cartridge.m_buckShot = m_buckShot;
 	cartridge.m_impair = m_impair;
 	cartridge.fWallmarkSize = fWallmarkSize;
-	if (!psActorFlags.test(AF_UNLIMITEDAMMO) || !m_bCanBeUnlimited)
+	if (!psActorFlags.test(AF_UNLIMITEDAMMO) || !m_bCanBeUnlimited || ai().get_alife())
 		--m_boxCurr;
 	return true;
 }
