@@ -334,7 +334,6 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 	setVisible						(true);
 	setEnabled						(true);
 
-	/*
 	// Physics (Box)
 	Fobb								obb;
 	Visual()->bv_BBox.get_CD			(obb.m_translate,obb.m_halfsize);
@@ -353,7 +352,6 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 	m_pPhysicsShell->Activate			(svXFORM(),0,svXFORM());
 	m_pPhysicsShell->mDesired.identity	();
 	m_pPhysicsShell->fDesiredStrength	= 0.f;
-	*/
 
 	return bResult;
 }
@@ -419,12 +417,10 @@ void CWeapon::Update		(DWORD dT)
 	if (light_time>0)		light_time -= dt;
 
 	// svMatrix
-	/*
 	if (0==H_Parent())		{
 		svTransform.set		(m_pPhysicsShell->mXFORM);
 		vPosition.set		(svTransform.c);
 	}
-	*/
   
 	// Inherited
 	inherited::Update		(dT);
@@ -437,7 +433,7 @@ void CWeapon::OnH_B_Independent	()
 	setEnabled					(true);
 	hud_mode					= FALSE;
 	UpdateXForm					();
-	// m_pPhysicsShell->Activate	(svXFORM(),0,svXFORM());
+	m_pPhysicsShell->Activate	(svXFORM(),0,svXFORM());
 }
 
 void CWeapon::OnH_B_Chield		()
@@ -445,7 +441,7 @@ void CWeapon::OnH_B_Chield		()
 	inherited::OnH_B_Chield		();
 	setVisible					(false);
 	setEnabled					(false);
-	// m_pPhysicsShell->Deactivate	();
+	m_pPhysicsShell->Deactivate	();
 
 	if (Local() && (0xffff!=respawnPhantom)) 
 	{
@@ -485,12 +481,10 @@ void CWeapon::UpdateCL		()
 {
 	inherited::UpdateCL		();
 
-	/*
 	if (0==H_Parent())		{
 		m_pPhysicsShell->Update	();
 		clTransform.set			(m_pPhysicsShell->mXFORM);
 	}
-	*/
 
 	if (Remote() && NET.size())
 	{
