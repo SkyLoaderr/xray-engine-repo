@@ -11,6 +11,7 @@ FS_Defs		Path_ExternalBuild =
 	"GameData\\cforms\\",
 	"GameData\\meshes\\",
 	"ScreenShots\\",
+	"GameData\\shaders\\",
 	""
 };
 FS_Defs		Path_InternalBuild =
@@ -22,6 +23,7 @@ FS_Defs		Path_InternalBuild =
 	"\\\\x-ray\\StalkerGameData$\\cforms\\",
 	"\\\\x-ray\\StalkerGameData$\\meshes\\",
 	"ScreenShots\\",
+	"\\\\x-ray\\StalkerGameData$\\shaders\\",
 	""
 };
 FS_Defs		Path;

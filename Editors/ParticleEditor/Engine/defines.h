@@ -12,6 +12,7 @@ struct ENGINE_API			FS_Defs
 	const char*				CForms;
 	const char*				Meshes;
 	const char*				SShot;
+	const char*				Shaders;
 	string256				Current;
 };
 extern ENGINE_API FS_Defs	Path;

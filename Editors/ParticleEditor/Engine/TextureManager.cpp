@@ -144,7 +144,7 @@ SVS*	CShaderManager::_CreateVS		(LPCSTR name)
 		LPD3DXSHADER_CONSTANTTABLE	pConstants	= NULL;
 		HRESULT						_hr			= S_OK;
 		string64					cname;
-		strconcat					(cname, "GameData\\shaders\\", name, ".vs");
+		strconcat					(cname, Path.Shaders, name, ".vs");
 		LPCSTR						target		= NULL;
 
 		if (HW.Caps.vertex.dwVersion>=CAP_VERSION(3,0))			target="vs_3_0";
@@ -212,7 +212,7 @@ SPS*	CShaderManager::_CreatePS			(LPCSTR name)
 		LPD3DXSHADER_CONSTANTTABLE	pConstants	= NULL;
 		HRESULT						_hr			= S_OK;
 		string64					cname;
-		strconcat					(cname, "GameData\\shaders\\", name, ".ps");
+		strconcat					(cname, Path.Shaders, name, ".ps");
 
 		// pixel
 		IReader*					fs			= Engine.FS.Open(cname);
