@@ -1,6 +1,9 @@
 #ifndef SceneCustomMToolsH
 #define SceneCustomMToolsH
 
+// refs
+struct SSceneSummary;
+
 class ESceneCustomMTools
 {
 	EObjClass 		FClassID;
@@ -9,7 +12,7 @@ public:
 public:
 					ESceneCustomMTools		(){;}
 	virtual			~ESceneCustomMTools		(){;}
-
+                                               
     // snap 
 	virtual ObjectList& GetSnapList				()=0;
     virtual void		UpdateSnapList			()=0;
@@ -45,6 +48,9 @@ public:
 
     // properties
     virtual void		FillProp          		(LPCSTR pref, PropItemVec& items)=0;
+
+    // utils
+	virtual bool 		GetSummaryInfo			(SSceneSummary* inf)=0;
 };
 
 typedef xr_map<EObjClass,ESceneCustomMTools*> 	SceneToolsMap;
