@@ -40,7 +40,7 @@
 	<list x="15" y="325" width="525" height="420" item_height = "70"></list>
 
 	<!-- PDA Message List-->
-	<info_list x="512" y="615" width="525" height="120" item_height = "20" fade="2000">
+	<info_list x="512" y="250" width="525" height="120" item_height = "20" fade="2000">
 		<font font="letterica25" r="255" g="0" b="0"/>
 	</info_list>
 
