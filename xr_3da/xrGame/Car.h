@@ -123,6 +123,7 @@ public:
 	{
 		u16					bone_id;
 		Fmatrix				transform;
+		//Fvector				velocity;
 		CParticlesObject*	p_pgobject;
 		CPhysicsElement*	pelement;
 		CCar*				pcar;

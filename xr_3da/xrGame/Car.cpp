@@ -372,7 +372,11 @@ void CCar::ParseDefinitions()
 
 	m_torque_rpm		=		ini->r_float("car_definition","max_torque_rpm");
 	m_torque_rpm		*=		(1.f/60.f*2.f*M_PI);//
-
+	if(ini->line_exist("car_definition","exhaust_particles"))
+	{
+		m_exhaust_particles =ini->r_string("car_definition","exhaust_particles");
+	}
+			
 	b_auto_switch_transmission= !!ini->r_bool("car_definition","auto_transmission");
 	m_auto_switch_rpm.set(ini->r_fvector2("car_definition","auto_transmission_rpm"));
 	m_auto_switch_rpm.mul((1.f/60.f*2.f*M_PI));
@@ -1123,9 +1127,10 @@ void CCar::SExhaust::Init()
 	//element_transform.invert();
 	//transform.mulA(element_transform);
 	p_pgobject=xr_new<CParticlesObject>(*pcar->m_exhaust_particles,pcar->Sector(),false);
+	Fvector zero_vector;
+	zero_vector.set(0.f,0.f,0.f);
+	p_pgobject->UpdateParent(pcar->XFORM(), zero_vector );
 	
-	Fvector zero_vel = {0.f,0.f,0.f};
-	p_pgobject->UpdateParent(pcar->XFORM(), zero_vel);
 }
 
 void CCar::SExhaust::Update()
@@ -1137,7 +1142,9 @@ void CCar::SExhaust::Update()
 	Fvector	 res_vel;
 	dBodyGetPointVel(pelement->get_body(),global_transform.c.x,global_transform.c.y,global_transform.c.z,res);
 	Memory.mem_copy (&res_vel,res,sizeof(Fvector));
-	res_vel.invert();
+	//velocity.mul(0.95f);
+	//res_vel.mul(0.05f);
+	//velocity.add(res_vel);
 	p_pgobject->UpdateParent(global_transform,res_vel);
 }
 
