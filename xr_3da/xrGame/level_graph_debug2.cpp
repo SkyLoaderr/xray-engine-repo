@@ -1282,8 +1282,8 @@ void CLevelGraph::on_render3	()
 
 void CLevelGraph::on_render5	()
 {
-	xr_vector<CObject*>::iterator	I	= 0;
-	xr_vector<CObject*>::iterator	E	= Level().Objects.o_count();
+	u32	I	= 0;
+	u32 E	= Level().Objects.o_count	();
 	for ( ; I < E; ++I) {
 		CObject*		_O				= Level().Objects.o_get_by_iterator(I);
 		CTeamBaseZone	*team_base_zone = smart_cast<CTeamBaseZone*>(_O);
@@ -1352,8 +1352,8 @@ void CLevelGraph::on_render5	()
 
 void CLevelGraph::on_render6	()
 {
-	xr_vector<CObject*>::iterator	I	= 0;
-	xr_vector<CObject*>::iterator	E	= Level().Objects.o_count();
+	u32	I	= 0;
+	u32 E	= Level().Objects.o_count	();
 	for ( ; I < E; ++I) {
 		CObject*		_O				= Level().Objects.o_get_by_iterator(I);
 		CCustomMonster *tpCustomMonster = smart_cast<CCustomMonster*>(_O);
