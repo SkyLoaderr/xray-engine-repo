@@ -7,7 +7,7 @@ module("game_last_charselect_dlg")
 module("game_last_header_wnd")
 --include
 module("ui_save_dialog")
-module("ui_laod_dialog")
+module("ui_load_dialog")
 
 class "game_cl_LastStanding" (game_cl_mp_script)
 

@@ -5,7 +5,7 @@
 -- Author:      Serhiy Vynnychenko (narrator@gsc-game.kiev.ua)
 -- Version:     0.1
 
-class "laod_dialog" (CUIScriptWnd)
+class "load_dialog" (CUIScriptWnd)
 
 function load_dialog:__init() super()
 	self:SetFont(GetFontMedium())
