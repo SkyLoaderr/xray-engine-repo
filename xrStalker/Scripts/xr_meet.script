@@ -334,22 +334,22 @@ function action_contact:execute ()
 
 	if isWeapon(weap_id) then
 		if isWeapon(ww_id) == false then
-			self.object:set_mental_state(anim.danger)
-			self.object:clear_animations()
-			self.object:disable_talk()
+			self.object:set_item(object.idle, self.object:best_weapon())			
 		end
+		self.object:set_mental_state(anim.danger)
+		self.object:clear_animations()
+		self.object:disable_talk()
+
       		pos.y = pos.y + 1
       		self.object:set_sight(look.fire_point, pos, 0)
 
 		-- если актер ближе какого-то радиуса - открывать огонь
 		if self.object:position():distance_to(self.a.actor:position()) < self.a.shoot_distance then
-			self.object:set_relation(game_object.enemy, self.a.actor)
-
 			if self.object:active_sound_count() == 0 then
 				globals.set_sound(self.object, self.sound_f, false)
 			end
+			self.object:set_relation(game_object.enemy, self.a.actor)
 		else
-     			self.object:set_item(object.idle, self.object:best_weapon())
 			-- Звуки
 			if self.object:active_sound_count() == 0 then
 				globals.set_sound(self.object, self.sound_e, false)
