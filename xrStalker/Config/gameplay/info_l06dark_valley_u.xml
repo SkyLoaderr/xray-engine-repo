@@ -6,6 +6,10 @@
 <info_portion id="dar_codelock1_unlock"></info_portion>
 <info_portion id="dar_codelock2_unlock"></info_portion>
 
+<!-- Игрок нашел документы -->
+<info_portion id="dar_actor_got_docs"></info_portion>
+
+
 <!-- Игрок нашел флешку с паролем -->
 <info_portion id="dar_password_info1">
 	<article>dar_password_info1</article>

@@ -190,17 +190,34 @@ function proceed(actor)
 	if actor:dont_has_info("dar_document3") and
 	   actor:object("dar_document3") then
 		actor:give_info_portion("dar_document3") 
+		
+		if actor:dont_has_info("dar_actor_got_docs") then
+			actor:give_info_portion("dar_actor_got_docs") 
+		end
+		
 	end
 	
 	if actor:dont_has_info("dar_document4") and
 	   actor:object("dar_document4") then
 		actor:give_info_portion("dar_document4") 
+
+		if actor:dont_has_info("dar_actor_got_docs") then
+			actor:give_info_portion("dar_actor_got_docs") 
+		end
+
 	end
 
 	if actor:dont_has_info("dar_document5") and
 	   actor:object("dar_document5") then
 		actor:give_info_portion("dar_document5") 
+		
+		if actor:dont_has_info("dar_actor_got_docs") then
+			actor:give_info_portion("dar_actor_got_docs") 
+		end
+		
 	end
+	
+	---------------------------------------------------
 	
 end
 
