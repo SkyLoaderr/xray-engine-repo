@@ -82,10 +82,12 @@ DWORD CHW::CreateDevice		(HWND m_hWnd,DWORD &dwWidth,DWORD &dwHeight)
 	// Select width/height
 	dwWidth	= psCurrentMode;
 	switch (dwWidth) {
+	case 512:	dwHeight = 384;		break;
 	case 640:	dwHeight = 480;		break;
 	case 800:	dwHeight = 600;		break;
 	case 1024:	dwHeight = 768;		break;
 	case 1280:	dwHeight = 1024;	break;
+	case 1600:	dwHeight = 1200;	break;
 	default:	dwWidth  = 640; dwHeight = 480; break;
 	}
 
