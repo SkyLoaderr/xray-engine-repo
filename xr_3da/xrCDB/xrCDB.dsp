@@ -286,6 +286,15 @@ SOURCE=.\xrCDB_box.cpp
 # Begin Source File
 
 SOURCE=.\xrCDB_frustum.cpp
+
+!IF  "$(CFG)" == "xrCDB - Win32 Release"
+
+# ADD CPP /FAs
+
+!ELSEIF  "$(CFG)" == "xrCDB - Win32 Debug"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
