@@ -107,7 +107,7 @@ public:
 	}
 };
 
-#define	NUM_THREADS	8
+#define	NUM_THREADS	4
 void CDeflector::L_Direct(float progress)
 {
 	// Main raytracing cycle
@@ -115,32 +115,13 @@ void CDeflector::L_Direct(float progress)
 		FillMemory(lm.pSurface,lm.dwHeight*lm.dwWidth*4,0xff);
 		return;
 	}
-	
-	// Start threads
-	DirectThread*	THP	[NUM_THREADS];
-	DWORD	stride		= lm.dwHeight/NUM_THREADS;
+
+	// Start threads, wait, continue --- perform all the work
+	CThreadManager			Threads;
+	DWORD	range			= lm.dwHeight;
+	DWORD	stride			= range / NUM_THREADS;
+	DWORD	last			= range - stride*(NUM_THREADS-1);
 	for (DWORD thID=0; thID<NUM_THREADS; thID++)
-		THP[thID]	= new DirectThread(thID,this,thID*stride,thID*stride+stride);
-	
-	// Wait for completition
-	for (;;)
-	{
-		Sleep(500);
-		
-		float	sumProgress=0;
-		DWORD	sumComplete=0;
-		for (DWORD ID=0; ID<NUM_THREADS; ID++)
-		{
-			sumProgress += THP[ID]->thProgress;
-			sumComplete	+= THP[ID]->thCompleted?1:0;
-		}
-		
-		float P = sumProgress/float(NUM_THREADS);
-		Progress(progress+P/float(g_deflectors.size()));
-		if (sumComplete == NUM_THREADS)	break;
-	}
-	
-	// Delete threads
-	for (thID=0; thID<NUM_THREADS; thID++)
-		_DELETE(THP[thID]);
+		Threads.start(new DirectThread(thID, this, thID*stride,thID*stride+((thID==(NUM_THREADS-1))?last:stride)));
+	Threads.wait			();
 }
