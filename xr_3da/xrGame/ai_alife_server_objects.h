@@ -73,7 +73,7 @@ public:
 	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
 	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
 #ifdef _EDITOR
-	virtual void					FillProp(LPCSTR pref, PropItemVec& items)æ
+	virtual void					FillProp(LPCSTR pref, PropItemVec& items);
 #endif
 };
 
