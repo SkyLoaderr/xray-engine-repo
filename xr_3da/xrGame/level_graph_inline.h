@@ -462,6 +462,10 @@ IC	bool	CLevelGraph::create_straight_path	(u32 start_vertex_id, const Fvector2 &
 				float			dist = _sqr(temp.x - dest.x) + _sqr(temp.y - dest.y);
 				if (dist > cur_sqr)
 					continue;
+
+				if (!is_accessible(next_vertex_id))
+					return		(false);
+
 				cur_sqr			= dist;
 
 				Fvector2		next1, next2;
@@ -514,8 +518,6 @@ IC	bool	CLevelGraph::create_straight_path	(u32 start_vertex_id, const Fvector2 &
 				tpaOutputPoints.push_back(path_node);
 
 				if (box.contains(dest)) {
-					if (!is_accessible(next_vertex_id))
-						return	(false);
 					tIntersectPoint = v3d(dest);
 					if (bAssignY)
 						tIntersectPoint.y = vertex_plane_y(vertex(cur_vertex_id),tIntersectPoint.x,tIntersectPoint.z);
@@ -524,8 +526,6 @@ IC	bool	CLevelGraph::create_straight_path	(u32 start_vertex_id, const Fvector2 &
 					tpaOutputPoints.push_back(path_node);
 					return		(true);
 				}
-				if (!is_accessible(next_vertex_id))
-					return		(false);
 				found			= true;
 				prev_vertex_id	= cur_vertex_id;
 				cur_vertex_id	= next_vertex_id;
