@@ -307,8 +307,8 @@ void occRasterizer::rasterize	(occTri* T)
 	b[0] = T->raster[1].x; b[1] = T->raster[1].y; b[2] = T->raster[1].z;
 	c[0] = T->raster[2].x; c[1] = T->raster[2].y; c[2] = T->raster[2].z;
 	
-	i_order				(a, b, c);			// Order the vertices by Y
-	if (b[1]-floorf(b[1])>0.5f)	
+	i_order				(a, b, c);		// Order the vertices by Y
+	if (b[1]-iFloor(b[1])>0.5f)	
 	{
 		i_section_b1	(a, b, c, T);	// Rasterise First Section
 		i_section_t0	(a, b, c, T);	// Rasterise Second Section
