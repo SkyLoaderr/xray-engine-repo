@@ -1,7 +1,7 @@
 [wpn_sig220]
 GroupControlSection			= spawn_group
 discovery_dependency 		= 
-$spawn                   	= "weapons\beretta"					; option for Level Editor
+$spawn                   	= "weapons\sig220"					; option for Level Editor
 $npc			 			= on		; option for Level Editor
 $prefetch 					= 8
 scheduled         		   	= off              ; option for ALife Simulator
@@ -9,7 +9,7 @@ cform             		    = skeleton
 class                    	= W_FORT
 min_radius               	= 0
 max_radius               	= 50
-description					= enc_weapons1_wpn-beretta
+description					= enc_weapons1_wpn-sig220
 
 ef_weapon_type				= 5
 
@@ -29,8 +29,8 @@ slot 			 			= 1
 animation_slot				= 1									; type of the animation that will be used
 
 
-inv_name					= Beretta
-inv_name_short				= Beretta
+inv_name					= Sig220
+inv_name_short				= Sig200
 inv_weight					= 1.0	;.5
 
 inv_grid_width				= 2
@@ -71,7 +71,7 @@ rpm_empty_click 	 		= 200
 ;-----------------------------------------------------------------------------------
 hud                      	= wpn_sig220_hud
 ;hud                      	= wpn_FORT_hud
-visual                   	= weapons\beretta92fs\wpn_beretta92fs.ogf
+visual                   	= weapons\sig220\wpn_sig220.ogf
 
 normal                   	= 0, 1, 0
 position                 	= -0.021, -0.085, 0.0
@@ -159,7 +159,7 @@ fire_bone                	= wpn_body
 orientation              	= 0,0,0
 position                 	= 0,0,0
 ;visual                   	=weapons\fort\wpn_fort.ogf
-visual                   	= weapons\beretta92FS\wpn_beretta92fs_hud.ogf 
+visual                   	= weapons\sig220\wpn_sig220_hud.ogf 
 
 ;anim_holster				= holster
 ;anim_idle					= idle
@@ -173,17 +173,17 @@ visual                   	= weapons\beretta92FS\wpn_beretta92fs_hud.ogf
 ;anim_close					= holster
 ;anim_idle_aim				= idle_aim
 
-anim_holster				= holster
+anim_holster				= idle
 anim_idle					= idle
-anim_empty					= empty
-anim_reload					= reload_full
-anim_reload_empty			= reload
-anim_draw					= draw
-anim_draw_empty				= draw_empty
-anim_shoot					= shoot
-anim_shot_last				= shoot_last
+anim_empty					= idle
+anim_reload					= idle
+anim_reload_empty			= idle
+anim_draw					= idle
+anim_draw_empty				= idle
+anim_shoot					= idle
+anim_shot_last				= idle
 anim_close					= idle
-anim_idle_aim				= idle_aim
+anim_idle_aim				= idle
 
 ;смещения HUD для режима приближения
 zoom_offset			= -0.231000,0.078200,-0.021500
