@@ -924,9 +924,6 @@
 							Name="GameLocationSelector"
 							Filter="">
 							<File
-								RelativePath=".\game_location_selector.cpp">
-							</File>
-							<File
 								RelativePath=".\game_location_selector.h">
 							</File>
 							<File
