@@ -198,12 +198,11 @@ void CWallmarksEngine::AddWallmark	(CDB::TRI* pTri, const Fvector &contact_point
 	BuildMatrix			(mView,1/sz,contact_point);
 	mRot.rotateZ		(::Random.randF(0,PI_MUL_2));
 	mView.mulA_43		(mRot);
-	F.CreateFromMatrix	(mView,FRUSTUM_P_LRTB);
+	sml_clipper.CreateFromMatrix	(mView,FRUSTUM_P_LRTB);
 
 	// create wallmark
 	wallmark* W			= wm_allocate(hShader);
-	RecurseTri			(0,mView,*W,F);
-	sml_processed.clear	();
+	RecurseTri			(0,mView,*W);
 
 	// calc sphere
 	if (W->verts.size()<3) { wm_destroy(W); return; }
