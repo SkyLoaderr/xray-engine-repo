@@ -83,6 +83,7 @@ public:
 //
 #define xrSE_DECLARE_BEGIN(__A,__B)	class __A : public __B	{ typedef __B inherited; public:
 #define xrSE_DECLARE_BEGIN2(__A,__B,__C) class __A : public __B, public __C	{ typedef __B inherited; public:
+#define xrSE_DECLARE_BEGIN3(__A,__B,__C,__D) class __A : public __B, public __C, public __D	{ typedef __B inherited; public:
 
 //
 #define	xrSE_DECLARE_END \
@@ -266,7 +267,7 @@ xrSE_DECLARE_BEGIN(xrSE_Spectator,xrServerEntity)
 xrSE_DECLARE_END
 
 //***** Actor
-xrSE_DECLARE_BEGIN2(xrSE_Actor,xrSE_Teamed,CALifeTraderParams)
+xrSE_DECLARE_BEGIN3(xrSE_Actor,xrSE_Teamed,CALifeTraderParams,xrSE_Visualed)
 	u32								timestamp;
 	u8								flags;
 	u16								mstate;
@@ -276,7 +277,6 @@ xrSE_DECLARE_BEGIN2(xrSE_Actor,xrSE_Teamed,CALifeTraderParams)
 	Fvector							velocity;
 	float							fArmor;
 	u8								weapon;
-	string64						caModel;
 									xrSE_Actor		(LPCSTR caSection);
 xrSE_DECLARE_END
 
@@ -408,10 +408,7 @@ public:
 	virtual void					UPDATE_Read	(NET_Packet &tNetPacket);
 };
 
-xrSE_DECLARE_BEGIN(xrSE_Rat,CALifeMonsterAbstract)
-	// model
-	string64						caModel;
-	
+xrSE_DECLARE_BEGIN2(xrSE_Rat,CALifeMonsterAbstract,xrSE_Visualed)
 	// Personal characteristics:
 	float							fEyeFov;
 	float							fEyeRange;
@@ -439,10 +436,7 @@ xrSE_DECLARE_BEGIN(xrSE_Rat,CALifeMonsterAbstract)
 									xrSE_Rat	(LPCSTR caSection);				// constructor for variable initialization
 xrSE_DECLARE_END
 
-xrSE_DECLARE_BEGIN(xrSE_Zombie,CALifeMonsterAbstract)
-	// model
-	string64						caModel;
-	
+xrSE_DECLARE_BEGIN2(xrSE_Zombie,CALifeMonsterAbstract,xrSE_Visualed)
 	// Personal characteristics:
 	float							fEyeFov;
 	float							fEyeRange;
@@ -460,10 +454,7 @@ xrSE_DECLARE_BEGIN(xrSE_Zombie,CALifeMonsterAbstract)
 									xrSE_Zombie	(LPCSTR caSection);				// constructor for variable initialization
 xrSE_DECLARE_END
 
-xrSE_DECLARE_BEGIN(xrSE_Dog,CALifeMonsterAbstract)
-	// model
-	string64						caModel;
-	
+xrSE_DECLARE_BEGIN2(xrSE_Dog,CALifeMonsterAbstract,xrSE_Visualed)
 	// Personal characteristics:
 	float							fEyeFov;
 	float							fEyeRange;
@@ -491,11 +482,7 @@ xrSE_DECLARE_BEGIN(xrSE_Dog,CALifeMonsterAbstract)
 									xrSE_Dog	(LPCSTR caSection);				// constructor for variable initialization
 xrSE_DECLARE_END
 
-xrSE_DECLARE_BEGIN2(xrSE_Human,CALifeMonsterAbstract,CALifeTraderParams)
-	// model
-	string64						caModel;
-	
-	// Personal characteristics:
+xrSE_DECLARE_BEGIN3(xrSE_Human,CALifeMonsterAbstract,CALifeTraderParams,xrSE_Visualed)
 									xrSE_Human	(LPCSTR caSection);
 xrSE_DECLARE_END
 
@@ -535,9 +522,7 @@ public:
 xrSE_DECLARE_END
 
 
-xrSE_DECLARE_BEGIN(xrSE_Biting,CALifeMonsterAbstract)
-	// model
-	string64						caModel;
+xrSE_DECLARE_BEGIN2(xrSE_Biting,CALifeMonsterAbstract,xrSE_Visualed)
 									xrSE_Biting	(LPCSTR caSection);				// constructor for variable initialization
 xrSE_DECLARE_END
 

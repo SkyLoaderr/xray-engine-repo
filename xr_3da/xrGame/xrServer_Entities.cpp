@@ -465,8 +465,8 @@ void xrSE_Spectator::FillProp		(LPCSTR pref, PropItemVec& items)
 //***** Actor
 xrSE_Actor::xrSE_Actor				(LPCSTR caSection) : xrSE_Teamed(caSection), CALifeTraderParams(caSection)
 {
-	caModel[0]						= 0;
-	strcat(caModel,"actors\\Different_stalkers\\stalker_hood_multiplayer.ogf");
+	visual_name[0]					= 0;
+	strcat							(visual_name,"actors\\Different_stalkers\\stalker_hood_multiplayer.ogf");
 }
 
 void xrSE_Actor::STATE_Read			(NET_Packet& P, u16 size)
@@ -474,14 +474,17 @@ void xrSE_Actor::STATE_Read			(NET_Packet& P, u16 size)
 	inherited::STATE_Read(P,size);
 	CALifeTraderParams::STATE_Read(P,size);
 	if (m_wVersion >= 3)
-		P.r_string(caModel);
+		if (m_wVersion <= 16)
+			P.r_string(visual_name);
+		else
+			visual_read(P);
 };
 
 void xrSE_Actor::STATE_Write		(NET_Packet& P)
 {
 	inherited::STATE_Write(P);
 	CALifeTraderParams::STATE_Write(P);
-	P.w_string(caModel);
+	visual_write(P);
 };
 
 void xrSE_Actor::UPDATE_Read		(NET_Packet& P)
@@ -520,8 +523,8 @@ void xrSE_Actor::UPDATE_Write		(NET_Packet& P)
 void	xrSE_Actor::FillProp			(LPCSTR pref, PropItemVec& items)
 {
   	inherited::FillProp					(pref,items);
-	// model
-    PHelper.CreateGameObject			(items, PHelper.PrepareKey(pref,s_name,"Model"),caModel,sizeof(caModel));
+	CALifeTraderParams::FillProp		(pref,items);
+	xrSE_Visualed::FillProp				(pref,items);
 }
 #endif
 
@@ -537,8 +540,6 @@ void xrSE_Enemy::UPDATE_Read		(NET_Packet& P)
 	P.r_angle8			(o_model		);
 	P.r_angle8			(o_torso.yaw	);
 	P.r_angle8			(o_torso.pitch	);
-//	if ((m_wVersion >= 5) && (m_wVersion <= 8))
-//		P.r_float		(fHealth);
 }
 void xrSE_Enemy::UPDATE_Write		(NET_Packet& P)
 {
@@ -763,14 +764,12 @@ void CALifeMonsterAbstract::UPDATE_Write(NET_Packet &tNetPacket)
 void CALifeMonsterAbstract::UPDATE_Read(NET_Packet &tNetPacket)
 {
 	inherited::UPDATE_Read		(tNetPacket);
-//	if (m_wVersion >= 7) {
-		tNetPacket.r				(&m_tNextGraphID,			sizeof(m_tNextGraphID));
-		tNetPacket.r				(&m_tPrevGraphID,			sizeof(m_tPrevGraphID));
-		tNetPacket.r				(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
-		tNetPacket.r				(&m_fCurSpeed,				sizeof(m_fCurSpeed));
-		tNetPacket.r				(&m_fDistanceFromPoint,		sizeof(m_fDistanceFromPoint));
-		tNetPacket.r				(&m_fDistanceToPoint,		sizeof(m_fDistanceToPoint));
-//	}
+	tNetPacket.r				(&m_tNextGraphID,			sizeof(m_tNextGraphID));
+	tNetPacket.r				(&m_tPrevGraphID,			sizeof(m_tPrevGraphID));
+	tNetPacket.r				(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
+	tNetPacket.r				(&m_fCurSpeed,				sizeof(m_fCurSpeed));
+	tNetPacket.r				(&m_fDistanceFromPoint,		sizeof(m_fDistanceFromPoint));
+	tNetPacket.r				(&m_fDistanceToPoint,		sizeof(m_fDistanceToPoint));
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -779,8 +778,8 @@ void CALifeMonsterAbstract::UPDATE_Read(NET_Packet &tNetPacket)
 
 xrSE_Rat::xrSE_Rat(LPCSTR caSection) : CALifeMonsterAbstract(caSection)
 {
-	caModel[0]						= 0;
-	strcat(caModel,"monsters\\rat\\rat_1");
+	visual_name[0]					= 0;
+	strcat							(visual_name,"monsters\\rat\\rat_1");
 	// personal charactersitics
 	fEyeFov							= 120;
 	fEyeRange						= 10;
@@ -812,7 +811,10 @@ void xrSE_Rat::STATE_Read(NET_Packet& P, u16 size)
 	// inherited properties
 	inherited::STATE_Read(P,size);
 	// model
-	P.r_string(caModel);
+	if (m_wVersion <= 16)
+		P.r_string(visual_name);
+	else
+		visual_read(P);
 	// personal characteristics
 	P.r_float (fEyeFov);
 	P.r_float (fEyeRange);
@@ -845,7 +847,7 @@ void xrSE_Rat::STATE_Write(NET_Packet& P)
 	// inherited properties
 	inherited::STATE_Write(P);
 	// model
-	P.w_string(caModel);
+	visual_write(P);
 	// personal characteristics
 	P.w_float (fEyeFov);
 	P.w_float (fEyeRange);
@@ -874,8 +876,6 @@ void xrSE_Rat::STATE_Write(NET_Packet& P)
 void xrSE_Rat::UPDATE_Read(NET_Packet& P)
 {
 	inherited::UPDATE_Read(P);
-//	if ((m_wVersion >= 2) && (m_wVersion <= 5))
-//		P.r_float (fHealth);
 }
 
 void xrSE_Rat::UPDATE_Write(NET_Packet& P)
@@ -888,7 +888,7 @@ void xrSE_Rat::FillProp(LPCSTR pref, PropItemVec& items)
 {
    	inherited::FillProp(pref, items);
 	// model
-    PHelper.CreateGameObject(	items, PHelper.PrepareKey(pref,s_name,"Model"								),caModel,							sizeof(caModel));
+	xrSE_Visualed::FillProp(pref, items);
 	// personal characteristics
    	PHelper.CreateFloat(		items, PHelper.PrepareKey(pref,s_name,"Personal",	"Field of view" 		),&fEyeFov,							0,170,10);
    	PHelper.CreateFloat(		items, PHelper.PrepareKey(pref,s_name,"Personal",	"Eye range" 			),&fEyeRange,						0,300,10);
@@ -921,8 +921,8 @@ void xrSE_Rat::FillProp(LPCSTR pref, PropItemVec& items)
 
 xrSE_Zombie::xrSE_Zombie(LPCSTR caSection) : CALifeMonsterAbstract(caSection)
 {
-	caModel[0]						= 0;
-	strcat(caModel,"monsters\\zombie\\zombie_1");
+	visual_name[0]					= 0;
+	strcat							(visual_name,"monsters\\zombie\\zombie_1");
 	// personal charactersitics
 	fEyeFov							= 120;
 	fEyeRange						= 30;
@@ -944,7 +944,10 @@ void xrSE_Zombie::STATE_Read(NET_Packet& P, u16 size)
 	// inherited properties
 	inherited::STATE_Read(P,size);
 	// model
-	P.r_string(caModel);
+	if (m_wVersion <= 16)
+		P.r_string(visual_name);
+	else
+		visual_read(P);
 	// personal characteristics
 	P.r_float (fEyeFov);
 	P.r_float (fEyeRange);
@@ -967,7 +970,7 @@ void xrSE_Zombie::STATE_Write(NET_Packet& P)
 	// inherited properties
 	inherited::STATE_Write(P);
 	// model
-	P.w_string(caModel);
+	visual_write(P);
 	// personal characteristics
 	P.w_float (fEyeFov);
 	P.w_float (fEyeRange);
@@ -998,7 +1001,7 @@ void xrSE_Zombie::FillProp(LPCSTR pref, PropItemVec& items)
 {
    	inherited::FillProp(pref, items);
 	// model
-    PHelper.CreateGameObject(	items, PHelper.PrepareKey(pref,s_name,"Model"								),caModel,							sizeof(caModel));
+	xrSE_Visualed::FillProp(pref, items);
 	// personal characteristics
 	PHelper.CreateFloat(		items, PHelper.PrepareKey(pref,s_name,"Personal",	"Field of view" 		),&fEyeFov,							0,170,10);
    	PHelper.CreateFloat(		items, PHelper.PrepareKey(pref,s_name,"Personal",	"Eye range" 			),&fEyeRange,						0,300,10);
@@ -1021,8 +1024,8 @@ void xrSE_Zombie::FillProp(LPCSTR pref, PropItemVec& items)
 
 xrSE_Dog::xrSE_Dog(LPCSTR caSection) : CALifeMonsterAbstract(caSection)
 {
-	caModel[0]						= 0;
-	strcat(caModel,"monsters\\dog\\dog_1");
+	visual_name[0]					= 0;
+	strcat							(visual_name,"monsters\\dog\\dog_1");
 	// personal charactersitics
 	fEyeFov							= 120;
 	fEyeRange						= 10;
@@ -1054,7 +1057,10 @@ void xrSE_Dog::STATE_Read(NET_Packet& P, u16 size)
 	// inherited properties
 	inherited::STATE_Read(P,size);
 	// model
-	P.r_string(caModel);
+	if (m_wVersion <= 16)
+		P.r_string(visual_name);
+	else
+		visual_read(P);
 	// personal characteristics
 	P.r_float (fEyeFov);
 	P.r_float (fEyeRange);
@@ -1087,7 +1093,7 @@ void xrSE_Dog::STATE_Write(NET_Packet& P)
 	// inherited properties
 	inherited::STATE_Write(P);
 	// model
-	P.w_string(caModel);
+	visual_write(P);
 	// personal characteristics
 	P.w_float (fEyeFov);
 	P.w_float (fEyeRange);
@@ -1128,7 +1134,7 @@ void xrSE_Dog::FillProp(LPCSTR pref, PropItemVec& items)
 {
    	inherited::FillProp(pref, items);
 	// model
-    PHelper.CreateGameObject(	items, PHelper.PrepareKey(pref,s_name,"Model"								),caModel,							sizeof(caModel));
+	xrSE_Visualed::FillProp(pref, items);
 	// personal characteristics
    	PHelper.CreateFloat(		items, PHelper.PrepareKey(pref,s_name,"Personal",	"Field of view" 		),&fEyeFov,							0,170,10);
    	PHelper.CreateFloat(		items, PHelper.PrepareKey(pref,s_name,"Personal",	"Eye range" 			),&fEyeRange,						0,300,10);
@@ -1161,9 +1167,8 @@ void xrSE_Dog::FillProp(LPCSTR pref, PropItemVec& items)
 
 xrSE_Biting::xrSE_Biting(LPCSTR caSection) : CALifeMonsterAbstract(caSection)
 {
-	caModel[0]						= 0;
 	LPCSTR	S						= pSettings->r_string(caSection,"visual");
-	Memory.mem_copy					(caModel,S,(strlen(S) + 1)*sizeof(char));
+	Memory.mem_copy					(visual_name,S,(strlen(S) + 1)*sizeof(char));
 }
 
 void xrSE_Biting::STATE_Read(NET_Packet& P, u16 size)
@@ -1171,7 +1176,10 @@ void xrSE_Biting::STATE_Read(NET_Packet& P, u16 size)
 	// inherited properties
 	inherited::STATE_Read(P,size);
 	// model
-	P.r_string(caModel);
+	if (m_wVersion <= 16)
+		P.r_string(visual_name);
+	else
+		visual_read(P);
 }
 
 void xrSE_Biting::STATE_Write(NET_Packet& P)
@@ -1179,7 +1187,7 @@ void xrSE_Biting::STATE_Write(NET_Packet& P)
 	// inherited properties
 	inherited::STATE_Write(P);
 	// model
-	P.w_string(caModel);
+	visual_write(P);
 }
 
 void xrSE_Biting::UPDATE_Read(NET_Packet& P)
@@ -1198,7 +1206,7 @@ void xrSE_Biting::FillProp(LPCSTR pref, PropItemVec& items)
 {
    	inherited::FillProp(pref, items);
 	// model
-    PHelper.CreateGameObject(items,PHelper.PrepareKey(pref,s_name,"Model"),caModel,sizeof(caModel));
+	xrSE_Visualed::FillProp(pref, items);
 }	
 #endif
 
@@ -1349,8 +1357,8 @@ void xrGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
 
 xrSE_Human::xrSE_Human(LPCSTR caSection) : CALifeMonsterAbstract(caSection), CALifeTraderParams(caSection)
 {
-	caModel[0]						= 0;
-	strcat(caModel,"actors\\Different_stalkers\\stalker_no_hood_singleplayer");
+	visual_name[0]					= 0;
+	strcat							(visual_name,"actors\\Different_stalkers\\stalker_no_hood_singleplayer");
 	// personal charactersitics
 	fHealth							= 100;
 }
@@ -1361,7 +1369,10 @@ void xrSE_Human::STATE_Read(NET_Packet& P, u16 size)
 	inherited::STATE_Read(P,size);
 	CALifeTraderParams::STATE_Read(P,size);
 	// model
-	P.r_string(caModel);
+	if (m_wVersion <= 16)
+		P.r_string(visual_name);
+	else
+		visual_read(P);
 	// personal characteristics
 	if (m_wVersion <= 8)
 		P.r_float (fHealth);
@@ -1373,15 +1384,13 @@ void xrSE_Human::STATE_Write(NET_Packet& P)
 	inherited::STATE_Write(P);
 	CALifeTraderParams::STATE_Write(P);
 	// model
-	P.w_string(caModel);
+	visual_write(P);
 }
 
 void xrSE_Human::UPDATE_Read(NET_Packet& P)
 {
 	inherited::UPDATE_Read(P);
 	CALifeTraderParams::UPDATE_Read(P);
-//	if ((m_wVersion >= 2) && (m_wVersion <= 5))
-//		P.r_float (fHealth);
 }
 
 void xrSE_Human::UPDATE_Write(NET_Packet& P)
@@ -1395,7 +1404,7 @@ void xrSE_Human::FillProp(LPCSTR pref, PropItemVec& items)
 {
    	inherited::FillProp(pref, items);
 	// model
-    PHelper.CreateGameObject(	items, PHelper.PrepareKey(pref,s_name,"Model"								),caModel,							sizeof(caModel));
+	xrSE_Visualed::FillProp(pref, items);
 }	
 #endif
 

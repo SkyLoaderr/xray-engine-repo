@@ -171,7 +171,7 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 	//////////////////////////////////////////////////////////////////////////
 	xrSE_Rat						*tpSE_Rat = (xrSE_Rat *)DC;
 	// model
-	cNameVisual_set					(tpSE_Rat->caModel);
+	cNameVisual_set					(tpSE_Rat->visual_name);
 	if (!inherited::net_Spawn(DC))
 		return(FALSE);
 	// personal characteristics
@@ -213,6 +213,7 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 	m_tStateStack.push				(m_eCurrentState = aiRatFreeHuntingActive);
 	vfAddActiveMember				(true);
 	m_bStateChanged					= true;
+	m_tCurGP						= m_tNextGP = getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
 
 	r_torso_current					= r_current;
 	r_torso_target					= r_target;
@@ -240,7 +241,7 @@ void CAI_Rat::net_Export(NET_Packet& P)
 	// export last known packet
 	R_ASSERT				(!NET.empty());
 	net_update& N			= NET.back();
-	P.w_float_q16		(fHealth,-1000,1000);
+	P.w_float_q16			(fHealth,-1000,1000);
 	P.w_u32					(N.dwTimeStamp);
 	P.w_u8					(0);
 	P.w_vec3				(N.p_pos);

@@ -230,7 +230,7 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 
 	xrSE_Human						*tpHuman = (xrSE_Human*)(DC);
 	R_ASSERT						(tpHuman);
-	cNameVisual_set					(tpHuman->caModel);
+	cNameVisual_set					(tpHuman->visual_name);
 	
 	r_current.yaw = r_target.yaw = r_torso_current.yaw = r_torso_target.yaw	= -tpHuman->o_Angle.y;
 	r_torso_current.pitch			= r_torso_target.pitch	= 0;

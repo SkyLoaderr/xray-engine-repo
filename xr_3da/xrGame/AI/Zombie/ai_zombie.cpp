@@ -129,7 +129,7 @@ BOOL CAI_Zombie::net_Spawn	(LPVOID DC)
 	//////////////////////////////////////////////////////////////////////////
 	xrSE_Zombie *tpSE_Zombie = (xrSE_Zombie *)DC;
 	// model
-	cNameVisual_set					(tpSE_Zombie->caModel);
+	cNameVisual_set					(tpSE_Zombie->visual_name);
 	// personal characteristics
 	r_torso_current.yaw				= r_torso_target.yaw	= -tpSE_Zombie->o_Angle.y;
 	r_torso_current.pitch			= r_torso_target.pitch	= 0;
