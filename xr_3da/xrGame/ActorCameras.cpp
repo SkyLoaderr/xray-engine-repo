@@ -198,14 +198,20 @@ void CActor::cam_Update(float dt, float fFOV)
 		dangle.z			= (PI_DIV_2-((PI+valid_angle)/2));
 	}
 
-	// soft crouch
-	float dS				= point.y-fPrevCamPos;
-	if (_abs(dS)>EPS_L){
-		point.y				= 0.7f*fPrevCamPos+0.3f*point.y;
+	float flCurrentPlayerY	= xform.c.y;
+
+	// Smooth out stair step ups
+	if ((m_PhysicMovementControl->Environment()==peOnGround) && (flCurrentPlayerY-fPrevCamPos>0)){
+		fPrevCamPos			+= dt*1.5f;
+		if (fPrevCamPos > flCurrentPlayerY)
+			fPrevCamPos		= flCurrentPlayerY;
+		if (flCurrentPlayerY-fPrevCamPos>0.2f)
+			fPrevCamPos		= flCurrentPlayerY-0.2f;
+		point.y				+= fPrevCamPos-flCurrentPlayerY;
+	}else{
+		fPrevCamPos			= flCurrentPlayerY;
 	}
-	
-	// save previous position of camera
-	fPrevCamPos				= point.y;
+
 	// calc point
 	xform.transform_tiny	(point);
 
