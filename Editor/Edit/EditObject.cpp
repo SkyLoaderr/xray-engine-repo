@@ -10,12 +10,10 @@
 #include "EditMesh.h"
 #include "Shader.h"
 #include "xrShader.h"
-#include "Scene.h"
 #include "D3DUtils.h"
 #include "bottombar.h"
 #include "motion.h"
 #include "bone.h"
-#include "library.h"
 
 //----------------------------------------------------
 ERenderPriority	st_Surface::RenderPriority(){
