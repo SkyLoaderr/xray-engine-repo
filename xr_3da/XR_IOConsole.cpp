@@ -301,7 +301,8 @@ void CConsole::OnPressKey(int dik, BOOL bHold)
 	default:
 		break;
 	}
-	if (xr_strlen(editor)>=MAX_LEN) editor[MAX_LEN-1]=0;
+	u32	clip	= MAX_LEN-8;
+	if	(xr_strlen(editor)>=clip) editor[clip-1]=0;
 	bRepeat		= false;
 	rep_time	= 0;
 }
