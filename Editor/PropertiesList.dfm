@@ -17,7 +17,6 @@ object frmProperties: TfrmProperties
   ParentBiDiMode = False
   Scaled = False
   OnClose = FormClose
-  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object tvProperties: TElTree
@@ -55,16 +54,16 @@ object frmProperties: TfrmProperties
     HeaderHeight = 19
     HeaderHotTrack = False
     HeaderSections.Data = {
-      F5FFFFFF02000000701A5E0400000000FFFFFFFF00000100010000007D000000
-      32000000102700000000000014B2950400000000000000000000000000000100
-      0000000000000000000100000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000090000000040000004B65790001000000
-      000000000000000000701A5E0400000000FFFFFFFF0000010101000000590000
+      F4FFFFFF02000000CC850E0C00000000FFFFFFFF00000100010020207D000000
+      32000000102700000000000014B2950400000000000000000000000000000120
+      000000000000000000010000000000006164202330783030303030335C000000
+      370000002F000000202020202020202020202020202020202020202020202020
+      5468726561642023307830303030303390000000040000004B65790001000000
+      000000000000000000CC850E0C00000000FFFFFFFF0000010101002020590000
       00320000001027000000000000ECB69504010000000000000000000000000001
-      0000000000000000000001000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000900000000600000056616C75650001
+      20000000000000000000010000000000006164202330783030303030335C0000
+      00370000002F0000002020202020202020202020202020202020202020202020
+      2054687265616420233078303030303033900000000600000056616C75650001
       000000000000000000000000}
     HeaderFont.Charset = DEFAULT_CHARSET
     HeaderFont.Color = clWindowText
@@ -137,23 +136,24 @@ object frmProperties: TfrmProperties
     OnClick = tvPropertiesClick
     OnMouseDown = tvPropertiesMouseDown
   end
-  object InplaceFloat: TElTreeInplaceFloatSpinEdit
-    Tree = tvProperties
-    Types = [sftFloating]
-    DefaultValueAsText = '0'
-    OnBeforeOperation = InplaceFloatBeforeOperation
-    OnValidateResult = InplaceFloatValidateResult
-    Left = 40
-    Top = 152
-  end
-  object InplaceNumber: TElTreeInplaceSpinEdit
-    Tree = tvProperties
-    Types = [sftNumber]
-    DefaultValueAsText = '0'
-    OnBeforeOperation = InplaceNumberBeforeOperation
-    OnValidateResult = InplaceNumberValidateResult
-    Left = 72
-    Top = 152
+  object seNumber: TMultiObjSpinEdit
+    Left = 0
+    Top = 16
+    Width = 76
+    Height = 20
+    LWSensitivity = 0.01
+    ButtonKind = bkLightWave
+    ButtonWidth = 16
+    ValueType = vtFloat
+    AutoSize = False
+    BorderStyle = bsNone
+    Color = 10526880
+    Ctl3D = True
+    ParentCtl3D = False
+    TabOrder = 1
+    Visible = False
+    OnExit = seNumberExit
+    OnKeyDown = seNumberKeyDown
   end
   object pmEnum: TMxPopupMenu
     Alignment = paCenter
@@ -167,7 +167,7 @@ object frmProperties: TfrmProperties
     SepLColor = 13158600
     LeftMargin = 10
     Style = msOwnerDraw
-    Left = 104
+    Left = 40
     Top = 152
   end
   object fsStorage: TFormStorage

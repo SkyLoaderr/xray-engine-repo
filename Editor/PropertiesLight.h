@@ -69,7 +69,6 @@ __published:	// IDE-managed Components
 	TMxLabel *MxLabel1;
 	TEdit *edName;
 	TPanel *Panel1;
-	TExtBtn *ebAdjustScene;
 	TExtBtn *ExtBtn1;
 	TExtBtn *ebOk;
 	TExtBtn *ebCancel;

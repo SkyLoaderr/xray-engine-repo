@@ -35,6 +35,7 @@
 #include "ElStatBar.hpp"
 #include "ExtBtn.hpp"
 #include <ExtCtrls.hpp>
+#include "multi_edit.hpp"
 
 #ifdef _LEVEL_EDITOR
  #include "CustomObject.h"
@@ -48,35 +49,31 @@ struct IParam{
 struct FParam{
 	float lim_mn;
     float lim_mx;
-    FParam(float mn, float mx):lim_mn(mn),lim_mx(mx){;}
+    float inc;
+    float dec;
+    FParam(float mn, float mx):lim_mn(mn),lim_mx(mx),inc(0.01f),dec(2){;}
+    FParam(float mn, float mx, float decimal, float increment):lim_mn(mn),lim_mx(mx),inc(increment),dec(decimal){;}
 };
 //---------------------------------------------------------------------------
 class TfrmProperties : public TForm
 {
 __published:	// IDE-managed Components
 	TElTree *tvProperties;
-	TElTreeInplaceFloatSpinEdit *InplaceFloat;
-	TElTreeInplaceSpinEdit *InplaceNumber;
 	TMxPopupMenu *pmEnum;
 	TFormStorage *fsStorage;
 	TElTreeInplaceEdit *InplaceText;
+	TMultiObjSpinEdit *seNumber;
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
-	void __fastcall FormShow(TObject *Sender);
-	void __fastcall InplaceNumberBeforeOperation(TObject *Sender,
-          bool &DefaultConversion);
-	void __fastcall InplaceFloatBeforeOperation(TObject *Sender,
-          bool &DefaultConversion);
 	void __fastcall tvPropertiesClick(TObject *Sender);
 	void __fastcall tvPropertiesItemDraw(TObject *Sender, TElTreeItem *Item,
           TCanvas *Surface, TRect &R, int SectionIndex);
 	void __fastcall tvPropertiesMouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
-	void __fastcall InplaceFloatValidateResult(TObject *Sender,
-          bool &InputValid);
-	void __fastcall InplaceNumberValidateResult(TObject *Sender,
-          bool &InputValid);
 	void __fastcall InplaceTextValidateResult(TObject *Sender,
           bool &InputValid);
+	void __fastcall seNumberExit(TObject *Sender);
+	void __fastcall seNumberKeyDown(TObject *Sender, WORD &Key,
+          TShiftState Shift);
 private:	// User declarations
     void __fastcall PMItemClick(TObject *Sender);
 	void __fastcall CustomClick(TElTreeItem* item);
@@ -86,6 +83,11 @@ private:	// User declarations
 	Graphics::TBitmap* m_BMEllipsis;
     bool bModified;
     bool bFillMode;
+	// LW style inpl editor
+    void HideLWNumber();
+    void PrepareLWNumber(TElTreeItem* node);
+    void ShowLWNumber(TRect& R);
+    void ApplyLWNumber();
 public:		// User declarations
 	__fastcall TfrmProperties		        (TComponent* Owner);
 #ifdef _LEVEL_EDITOR
@@ -99,7 +101,8 @@ public:		// User declarations
     bool __fastcall IsModified				(){return bModified;}
 
     void __fastcall BeginFillMode			(const AnsiString& title="Properties");
-    void __fastcall EndFillMode				();
+    void __fastcall FillFromStream			(CFS_Memory& stream, DWORD advance);
+    void __fastcall EndFillMode				(bool bFullExpand=true);
 	TElTreeItem* __fastcall AddItem			(TElTreeItem* parent, DWORD type, LPCSTR key, LPDWORD value=0, LPDWORD param=0);
     static FParam*	MakeFParam				(float mn, float mx){ return new FParam(mn,mx); }
     static IParam*	MakeIParam				(float mn, float mx){ return new IParam(mn,mx); }

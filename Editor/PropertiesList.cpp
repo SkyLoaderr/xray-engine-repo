@@ -13,7 +13,8 @@
 #include "ChoseForm.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma resource "*.dfm"               
+#pragma link "multi_edit"
+#pragma resource "*.dfm"
 
 const LPSTR BOOLString[2]={"False","True"};
 
@@ -26,11 +27,11 @@ void __fastcall TfrmProperties::BeginFillMode(const AnsiString& title)
     Caption = title;
 }
 //---------------------------------------------------------------------------
-void __fastcall TfrmProperties::EndFillMode()
+void __fastcall TfrmProperties::EndFillMode(bool bFullExpand)
 {
 	bFillMode=false;
     bModified=false;
-	tvProperties->FullExpand();
+	if (bFullExpand) tvProperties->FullExpand();
     tvProperties->IsUpdating = false;
 };
 //---------------------------------------------------------------------------
@@ -50,6 +51,8 @@ __fastcall TfrmProperties::TfrmProperties(TComponent* Owner)
     DEFINE_INI(fsStorage);
 	m_BMEllipsis = new Graphics::TBitmap();
 	m_BMEllipsis->LoadFromResourceName((DWORD)HInstance,"ELLIPSIS");
+    seNumber->Parent = tvProperties;
+    seNumber->Hide();
 }
 //---------------------------------------------------------------------------
 
@@ -95,16 +98,6 @@ void __fastcall TfrmProperties::FormClose(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmProperties::FormShow(TObject *Sender)
-{
-    InplaceFloat->Editor->Color		= TColor(0x00A0A0A0);
-    InplaceFloat->Editor->BorderStyle= bsNone;
-    InplaceNumber->Editor->Color 	= TColor(0x00A0A0A0);
-    InplaceNumber->Editor->BorderStyle= bsNone;
-}
-//---------------------------------------------------------------------------
-
-
 LPCSTR GetToken2(xr_token* token_list, int id)
 {
 	for(int i=0; token_list[i].name; i++)
@@ -128,8 +121,8 @@ TElTreeItem* __fastcall TfrmProperties::AddItem(TElTreeItem* parent, DWORD type,
     case PROP_FLAG:		CS->CellType = sftUndef;	TI->ColumnText->AddObject(BOOLString[!!((*value)&(DWORD)param)],(TObject*)param);	CS->Style = ElhsOwnerDraw; break;
     case PROP_TOKEN:	CS->CellType = sftUndef;	TI->ColumnText->AddObject(GetToken2((xr_token*)param,*value),(TObject*)param);	CS->Style = ElhsOwnerDraw; break;
     case PROP_MARKER:	CS->CellType = sftUndef;	break;
-    case PROP_FLOAT:	CS->CellType = sftFloating; TI->ColumnText->AddObject(AnsiString(double(iFloor(double(*(float*)value)*10000))/10000),(TObject*)param); break;
-    case PROP_INTEGER:	CS->CellType = sftNumber; 	TI->ColumnText->AddObject(AnsiString(*((int*)value)),(TObject*)param);  break;
+    case PROP_FLOAT:	CS->CellType = sftFloating; TI->ColumnText->AddObject(AnsiString(double(iFloor(double(*(float*)value)*10000))/10000),(TObject*)param); CS->Style = ElhsOwnerDraw; break;
+    case PROP_INTEGER:	CS->CellType = sftNumber; 	TI->ColumnText->AddObject(AnsiString(*((int*)value)),(TObject*)param); CS->Style = ElhsOwnerDraw; break;
     case PROP_TEXT:		CS->CellType = sftText; 	TI->ColumnText->Add((LPSTR)value);  break;
     case PROP_COLOR:	CS->CellType = sftUndef; 	CS->Style = ElhsOwnerDraw; break;
     case PROP_TEXTURE:	CS->CellType = sftUndef; 	TI->ColumnText->Add((LPSTR)value);  CS->Style = ElhsOwnerDraw; break;
@@ -139,64 +132,7 @@ TElTreeItem* __fastcall TfrmProperties::AddItem(TElTreeItem* parent, DWORD type,
     return TI;
 }
 //---------------------------------------------------------------------------
-void __fastcall TfrmProperties::InplaceFloatValidateResult(
-      TObject *Sender, bool &InputValid)
-{
-	TElFloatSpinEdit* E = InplaceFloat->Editor;
-	if (PROP_FLOAT==InplaceFloat->Item->Tag){
-	    if (!fsimilar(*(float*)InplaceFloat->Item->Data,E->Value)){
-		    *(float*)InplaceFloat->Item->Data = E->Value;
-            bModified = true;
-	    }
-	}
-}
-//---------------------------------------------------------------------------
-void __fastcall TfrmProperties::InplaceFloatBeforeOperation(
-      TObject *Sender, bool &DefaultConversion)
-{
-	TElFloatSpinEdit* E = InplaceFloat->Editor;
-	FParam* P = (FParam*)InplaceFloat->Item->ColumnText->Objects[0];
-	VERIFY(PROP_FLOAT==InplaceFloat->Item->Tag);
-    if (P){
-        E->MinValue = P->lim_mn;
-        E->MaxValue = P->lim_mx;
-    }else{
-        E->MinValue = 0.;
-        E->MaxValue = 0.;
-    }
-    E->Increment= 0.01;
-    E->LargeIncrement = E->Increment*10;
-}
-//---------------------------------------------------------------------------
 
-void __fastcall TfrmProperties::InplaceNumberValidateResult(TObject *Sender, bool &InputValid)
-{
-	TElSpinEdit* E = InplaceNumber->Editor;
-	if (PROP_INTEGER==InplaceNumber->Item->Tag){
-	    if (*(int*)InplaceNumber->Item->Data != E->Value){
-		    *(int*)InplaceNumber->Item->Data = E->Value;
-            bModified = true;
-	    }
-    }
-}
-//---------------------------------------------------------------------------
-void __fastcall TfrmProperties::InplaceNumberBeforeOperation(
-      TObject *Sender, bool &DefaultConversion)
-{
-	TElSpinEdit* E = InplaceNumber->Editor;
-	IParam* P = (IParam*)InplaceNumber->Item->ColumnText->Objects[0];
-	VERIFY(PROP_INTEGER==InplaceFloat->Item->Tag);
-    if (P){
-        E->MinValue = P->lim_mn;
-        E->MaxValue = P->lim_mx;
-    }else{
-        E->MinValue = 0.;
-        E->MaxValue = 0.;
-    }
-    E->Increment= 1;
-    E->LargeIncrement = E->Increment*10;
-}
-//---------------------------------------------------------------------------
 void __fastcall TfrmProperties::tvPropertiesClick(TObject *Sender)
 {
 	int HS;
@@ -248,6 +184,16 @@ void __fastcall TfrmProperties::tvPropertiesItemDraw(TObject *Sender,
             R.Right += 	10;
             DrawArrow	(Surface, eadDown, R, clWindowText, true);
         break;
+        case PROP_INTEGER:
+        case PROP_FLOAT:
+        	if (seNumber->Tag!=(int)Item){
+	            R.Right-=10;
+    	        R.Left += 1;
+    			DrawText(Surface->Handle, AnsiString(Item->ColumnText->Strings[0]).c_str(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
+            }else{
+            	if (!seNumber->Visible) ShowLWNumber(R);
+            }
+        break;
         };
   	}
 }
@@ -255,6 +201,7 @@ void __fastcall TfrmProperties::tvPropertiesItemDraw(TObject *Sender,
 void __fastcall TfrmProperties::tvPropertiesMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
+	HideLWNumber();
 	int HS;
 	TElTreeItem* item = tvProperties->GetItemAt(X,Y,0,HS);
   	if ((HS==1)&&(Button==mbLeft)){
@@ -293,6 +240,10 @@ void __fastcall TfrmProperties::tvPropertiesMouseDown(TObject *Sender,
         case PROP_COLOR: 	ColorClick(item); 	break;
         case PROP_TEXTURE: 	TextureClick(item);	break;
         case PROP_SHADER: 	ShaderClick(item); 	break;
+        case PROP_INTEGER:
+        case PROP_FLOAT:
+        	PrepareLWNumber(item);
+        break;
         };
         switch(type){
         case PROP_TOKEN:
@@ -405,4 +356,143 @@ void __fastcall TfrmProperties::InplaceTextValidateResult(TObject *Sender,
 	}
 }
 //---------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------
+// LW style inplace editor
+//---------------------------------------------------------------------------
+void TfrmProperties::HideLWNumber()
+{
+    seNumber->Tag	= 0;
+    seNumber->Hide	();
+}
+//---------------------------------------------------------------------------
+void TfrmProperties::PrepareLWNumber(TElTreeItem* item)
+{
+	DWORD type 		= item->Tag;
+    switch (type){
+    case PROP_INTEGER:{
+        IParam* P = (IParam*)item->ColumnText->Objects[0];
+        if (P){
+            seNumber->MinValue = P->lim_mn;
+            seNumber->MaxValue = P->lim_mx;
+        }else{
+            seNumber->MinValue = 0.;
+            seNumber->MaxValue = 0.;
+        }
+	    seNumber->Increment=1;
+	    seNumber->Decimal=0;
+    	seNumber->ValueType=vtInt;
+	    seNumber->Value = *(int*)item->Data;
+    }break;
+    case PROP_FLOAT:{
+        FParam* P = (FParam*)item->ColumnText->Objects[0];
+        if (P){
+            seNumber->MinValue = P->lim_mn;
+            seNumber->MaxValue = P->lim_mx;
+		    seNumber->Increment= P->inc;
+		    seNumber->Decimal  = P->dec;
+        }else{
+            seNumber->MinValue = 0.;
+            seNumber->MaxValue = 0.;
+		    seNumber->Increment= 0.01f;
+		    seNumber->Decimal  = 2;
+        }
+    	seNumber->ValueType=vtFloat;
+	    seNumber->Value = *(float*)item->Data;
+    }break;
+    }
+    seNumber->Tag 	= (int)item;
+    tvProperties->Refresh();
+}
+void TfrmProperties::ShowLWNumber(TRect& R)
+{
+    seNumber->Left 	= R.Left;
+    seNumber->Top  	= R.Top+18;
+    seNumber->Width	= R.Right-R.Left+2;
+    seNumber->Height= R.Bottom-R.Top+3;
+    seNumber->Show();
+    seNumber->SetFocus();
+}
+
+void TfrmProperties::ApplyLWNumber()
+{
+	TElTreeItem* item = (TElTreeItem*)seNumber->Tag;
+    if (item){
+		DWORD type = item->Tag;
+	    switch (type){
+    	case PROP_INTEGER:
+            if (*(int*)item->Data != seNumber->Value){
+                *(int*)item->Data = seNumber->Value;
+                bModified = true;
+            }
+            item->ColumnText->Strings[0] = AnsiString(int(seNumber->Value));
+        break;
+	    case PROP_FLOAT:{
+		    if (!fsimilar(*(float*)item->Data,seNumber->Value)){
+	            *(float*)item->Data = seNumber->Value;
+        	    bModified = true;
+		    }
+         	AnsiString p;
+            p.sprintf("%.4f",float(seNumber->Value));
+            item->ColumnText->Strings[0] = p;
+        }break;
+    	}
+    }
+}
+
+void __fastcall TfrmProperties::seNumberExit(TObject *Sender)
+{
+	ApplyLWNumber();
+	HideLWNumber();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmProperties::seNumberKeyDown(TObject *Sender, WORD &Key,
+      TShiftState Shift)
+{
+	if (VK_RETURN==Key){
+		ApplyLWNumber();
+		HideLWNumber();
+    }else if (VK_ESCAPE==Key){
+		HideLWNumber();
+    }
+}
+//---------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+// Stream
+//------------------------------------------------------------------------------
+void __fastcall TfrmProperties::FillFromStream(CFS_Memory& stream, DWORD advance)
+{
+    CStream data(stream.pointer(), stream.size());
+    data.Advance(advance);
+    DWORD type;
+    char key[255];
+    TElTreeItem* M=0;
+    TElTreeItem* node;
+/*
+    while (!data.Eof()){
+        int sz=0;
+        type = data.Rdword();
+        data.RstringZ(key);
+        switch(type){
+        case BPID_MARKER:	break;
+        case BPID_TOKEN: 	sz=sizeof(BP_TOKEN)+sizeof(BP_TOKEN::Item)*(((BP_TOKEN*)data.Pointer())->Count); break;
+        case BPID_MATRIX:	sz=sizeof(string64);	break;
+        case BPID_CONSTANT:	sz=sizeof(string64); 	break;
+        case BPID_TEXTURE: 	sz=sizeof(string64); 	break;
+        case BPID_INTEGER: 	sz=sizeof(BP_Integer);	break;
+        case BPID_FLOAT: 	sz=sizeof(BP_Float); 	break;
+        case BPID_BOOL: 	sz=sizeof(BP_BOOL); 	break;
+        default: THROW2("BPID_????");
+        }
+        if (type==BPID_MARKER) M = 0;
+        node = form->AddItem(M,type,key,(LPDWORD)data.Pointer());
+        if (type==BPID_MARKER) M = node;
+        data.Advance(sz);
+    }
+*/
+}
+//---------------------------------------------------------------------------
+
 

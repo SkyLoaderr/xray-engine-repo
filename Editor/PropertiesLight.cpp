@@ -302,8 +302,10 @@ void __fastcall TfrmPropertiesLight::tbBrightnessChange(TObject *Sender)
 void __fastcall TfrmPropertiesLight::FormKeyDown(TObject *Sender,
       WORD &Key, TShiftState Shift)
 {
-    if (Key==VK_ESCAPE) ebCancel->Click();
-    if (Key==VK_RETURN) ebOk->Click();
+	if (!m_Props->tvProperties->Focused()){
+	    if (Key==VK_ESCAPE) ebCancel->Click();
+    	if (Key==VK_RETURN) ebOk->Click();
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -361,10 +363,11 @@ void __fastcall TfrmPropertiesLight::cbTargetLMClick(TObject *Sender)
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPropertiesLight::cbTargetAnimatedClick(TObject *Sender){
-	ebAdjustScene->Visible 		= cbTargetAnimated->Checked;
+//	ebAdjustScene->Visible 		= cbTargetAnimated->Checked;
     if (cbTargetAnimated->Checked) cbTargetLM->Checked = false;
 }
 //---------------------------------------------------------------------------
+
 
 
 
