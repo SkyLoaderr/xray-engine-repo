@@ -55,24 +55,24 @@ public:
 		Fvector2	tc	[3];
 		Fvector		N;
 	public:
-		virtual Fvector2*		getTC0				( ) { return tc; };
+		virtual Fvector2*	getTC0				( ) { return tc; };
 
-		bool			VContains			( _vertex* pV);					// Does the face contains this vertex?
-		void			VReplace			( _vertex* what, _vertex* to);	// Replace ONE vertex by ANOTHER
-		void			VReplace_NoRemove	( _vertex* what, _vertex* to);
-		int				VIndex				( _vertex* pV);
-		void			VSet				( int idx, _vertex* V);
-		void			VSet				( _vertex *V1, _vertex *V2, _vertex *V3);
-		BOOL			isDegenerated		( );
-		BOOL			isEqual				( _face& F );
-		float			EdgeLen				( int edge);
-		void			EdgeVerts			( int e, _vertex** A, _vertex** B);
-		void			CalcNormal			( );
-		void			CalcNormal2			( );
-		float			CalcArea			( );
-		float			CalcMaxEdge			( );
-		void			CalcCenter			( Fvector &C );
-		BOOL			RenderEqualTo		( Face *F );
+		bool				VContains			( _vertex* pV);					// Does the face contains this vertex?
+		void				VReplace			( _vertex* what, _vertex* to);	// Replace ONE vertex by ANOTHER
+		void				VReplace_NoRemove	( _vertex* what, _vertex* to);
+		int					VIndex				( _vertex* pV);
+		void				VSet				( int idx, _vertex* V);
+		void				VSet				( _vertex *V1, _vertex *V2, _vertex *V3);
+		BOOL				isDegenerated		( );
+		BOOL				isEqual				( _face& F );
+		float				EdgeLen				( int edge);
+		void				EdgeVerts			( int e, _vertex** A, _vertex** B);
+		void				CalcNormal			( );
+		void				CalcNormal2			( );
+		float				CalcArea			( );
+		float				CalcMaxEdge			( );
+		void				CalcCenter			( Fvector &C );
+		BOOL				RenderEqualTo		( Face *F );
 
 		_face()				{ };
 		virtual ~_face()	{ };
