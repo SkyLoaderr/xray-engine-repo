@@ -107,6 +107,9 @@ CEnvDescriptor::CEnvDescriptor()
 {
 }
 
+#define	C_CHECK(C)	if (C.x<0 || C.x>2 || C.y<0 || C.y>2 || C.z<0 || C.z>2)	{ Msg("! Invalid '%s' in env-section '%s'",#C,S);}
+
+
 void CEnvDescriptor::load	(LPCSTR exec_tm, LPCSTR S, CEnvironment* parent)
 {
 	Ivector3 tm				={0,0,0};
@@ -135,6 +138,14 @@ void CEnvDescriptor::load	(LPCSTR exec_tm, LPCSTR S, CEnvironment* parent)
     thunderbolt				= pSettings->r_bool		(S,"thunderbolt");
 	bolt_period				= thunderbolt?pSettings->r_float	(S,"bolt_period"):0.f;
 	bolt_duration			= thunderbolt?pSettings->r_float	(S,"bolt_duration"):0.f;
+
+	C_CHECK					(sky_color	);
+	C_CHECK					(fog_color	);
+	C_CHECK					(rain_color	);
+	C_CHECK					(ambient	);
+	C_CHECK					(lmap_color	);
+	C_CHECK					(hemi_color	);
+	C_CHECK					(sun_color	);
 }
 void CEnvDescriptor::unload	()
 {
