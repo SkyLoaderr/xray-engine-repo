@@ -6,7 +6,7 @@ function main ()
 
     hero:script (true, military4.script_name ())
     niva:script (true, military4.script_name ())
-    action (hero, move (move.standing, move.stand), anim ("mashina_0"), cond (cond.time_end, 1000000))
+    action (hero, anim ("mashina_0"), cond (cond.time_end, 1000000))
 
     wait (5000)
 
@@ -24,13 +24,12 @@ function main ()
     reset_action (hero, military4.script_name ())
     niva:script (false, military4.script_name ())
 
-    local pos = path:point (0)
-    printf ("Position X : %f, Y : %f, Z : %f", pos.x, pos.y, pos.z)
-    action (hero, move (move.standing, move.stand), anim ("mashina_1"), cond (cond.anim_end))
-    action (hero, move (move.standing, move.walk, move.line, pos, 5000), anim ("mashina_2"), cond (cond.anim_end))
-    action (hero, move (move.standing, move.stand), anim ("mashina_3"), cond (cond.anim_end))
-    action (hero, move (move.standing, move.stand), anim ("mashina_4"), cond (cond.anim_end))
-    action (hero, move (move.standing, move.stand), anim ("mashina_5"), cond (cond.anim_end))
+	local pos = path:point (0) 
+    action (hero, anim ("mashina_1"), cond (cond.anim_end))
+    action (hero, move (pos, 1.5), anim ("mashina_2"), cond (cond.anim_end))
+    action (hero, anim ("mashina_3"), cond (cond.anim_end))
+    action (hero, anim ("mashina_4"), cond (cond.anim_end))
+    action (hero, anim ("mashina_5"), cond (cond.anim_end))
 
     while niva:action () or hero:action () do wait () end
 
