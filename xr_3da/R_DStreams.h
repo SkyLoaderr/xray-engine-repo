@@ -15,6 +15,9 @@ private :
 	u32							mSize;			// size in bytes
 	u32							mPosition;		// position in bytes
 	u32							mDiscardID;		// ID of discard - usually for caching
+#ifdef DEBUG
+	u32							dbg_lock;
+#endif
 private:
 	void						_clear			()
 	{
@@ -22,6 +25,7 @@ private:
 		mSize		= 0;
 		mPosition	= 0;
 		mDiscardID	= 0;
+		dbg_lock	= 0;
 	}
 public:
 	void						Create			();
@@ -31,47 +35,8 @@ public:
 	IC u32						DiscardID()		{ return mDiscardID;	}
 	IC void						Flush()			{ mPosition=mSize;		}
 
-	IC void*					Lock			( u32 vl_Count, u32 Stride, u32& vOffset )
-	{
-		PGO					(Msg("PGO:VB_LOCK:%d",vl_Count));
-		// Ensure there is enough space in the VB for this data
-		u32	bytes_need		= vl_Count*Stride;
-		R_ASSERT			((bytes_need<=mSize) && vl_Count);
-
-		// Vertex-local info
-		u32 vl_mSize		= mSize/Stride;
-		u32 vl_mPosition	= mPosition/Stride + 1;
-
-		// Check if there is need to flush and perform lock
-		BYTE* pData			= 0;
-		if ((vl_Count+vl_mPosition) >= vl_mSize)
-		{
-			// FLUSH-LOCK
-			mPosition			= 0;
-			vOffset				= 0;
-			mDiscardID			++;
-
-			pVB->Lock			( mPosition, bytes_need, (void**)&pData, LOCKFLAGS_FLUSH);
-		} else {
-			// APPEND-LOCK
-			mPosition			= vl_mPosition*Stride;
-			vOffset				= vl_mPosition;
-
-			pVB->Lock			( mPosition, bytes_need, (void**)&pData, LOCKFLAGS_APPEND);
-		}
-		VERIFY				( pData );
-
-		return LPVOID		( pData );
-	}
-
-	IC void						Unlock			( u32 Count, u32 Stride)
-	{
-		PGO					(Msg("PGO:VB_UNLOCK:%d",Count));
-		mPosition			+=	Count*Stride;
-
-		VERIFY				(pVB);
-		pVB->Unlock			();
-	}
+	void*						Lock			( u32 vl_Count, u32 Stride, u32& vOffset );
+	void						Unlock			( u32 Count, u32 Stride);
 
 	_VertexStream()			{ _clear();				};
 	~_VertexStream()		{ Destroy();			};
