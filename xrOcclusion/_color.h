@@ -196,8 +196,11 @@ public:
 		return r*r + g*g + b*b;
 	}
 	// magnitude
-	IC	T	magnitude_rgb(void) 		const	{
+	IC	T	magnitude_rgb	(void) 		const	{
 		return _sqrt(magnitude_sqr_rgb());
+	}
+	IC	T	intensity		(void) 		const	{
+		return (r + g + b)/3.f;
 	}
 
 	// Normalize

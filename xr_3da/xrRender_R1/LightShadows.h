@@ -28,6 +28,7 @@ private:
 		Fvector				C;
 		Fmatrix				M;
 		light*				L;
+		float				E;
 	};
 	struct	tess_tri
 	{

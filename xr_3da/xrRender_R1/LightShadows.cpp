@@ -203,7 +203,7 @@ void CLightShadows::calculate	()
 			float		Lrange	= L.source->range;
 			if (L.source->flags.type==IRender_Light::DIRECT)
 			{
-				Msg			(" -direct- : %f",L.energy);
+				// Msg		(" -direct- : %f",L.energy);
 				Lpos.mul	(L.source->direction,-100);
 				Lpos.add	(C.C);
 				Lrange		= 120;
@@ -247,7 +247,7 @@ void CLightShadows::calculate	()
 			RCache.set_xform_view	(mView);
 			
 			// combine and build frustum
-			Fmatrix		mCombine,mCombineR;
+			Fmatrix					mCombine,mCombineR;
 			mCombine.mul			(mProject,mView);
 			mCombineR.mul			(mProjectR,mView);
 			
@@ -272,6 +272,7 @@ void CLightShadows::calculate	()
 			shadows.back().C	=	C.C;
 			shadows.back().M	=	mCombineR;
 			shadows.back().L	=	L.source;
+			shadows.back().E	=	L.energy;
 			slot_id	++;
 		}
 	}
@@ -324,14 +325,14 @@ void CLightShadows::render	()
 	Fvector	View		= Device.vCameraPosition;
 	
 	// Render shadows
-	RCache.set_Shader	(sh_World);
+	RCache.set_Shader			(sh_World);
 	int batch					= 0;
-	u32 Offset				= 0;
+	u32 Offset					= 0;
 	FVF::LIT* pv				= (FVF::LIT*) RCache.Vertex.Lock(batch_size*3,geom_World->vb_stride,Offset);
 	for (u32 s_it=0; s_it<shadows.size(); s_it++)
 	{
 		shadow&		S			=	shadows[s_it];
-		float		Le			=	S.L->color.magnitude_rgb();
+		float		Le			=	S.L->color.intensity()*S.E;
 		int			s_x			=	S.slot%slot_line;
 		int			s_y			=	S.slot/slot_line;
 		Fvector2	t_scale, t_offset;
