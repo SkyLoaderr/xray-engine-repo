@@ -406,6 +406,9 @@ end
 ------------
 function action_stand:finalize ()
     self.object:set_item (object.use, self.object:object ("medikit"))
+    if self.a.on_medikit_info ~= nil then
+       xr_logic.pick_section_from_condlist (level.actor (), self.object, self.a.on_medikit_info.condlist)
+    end 
     self.object:restore_default_start_dialog ()
     action_base.finalize (self)
     xr_meet.override_meet (self.object, false)
@@ -483,6 +486,7 @@ function add_to_binder (object, char_ini)
     xr_motivator.storage[object:id()].wounded.on_medikit = xr_logic.cfg_get_condlist (char_ini, "wounded", "on_medikit", object)
 	xr_motivator.storage[object:id()].wounded.dialog  = utils.cfg_get_string (char_ini, "wounded", "dialog", object, false, "")
     xr_motivator.storage[object:id()].wounded.on_sit_info = xr_logic.cfg_get_condlist (char_ini, "wounded", "on_sit", object)
+    xr_motivator.storage[object:id()].wounded.on_medikit_info = xr_logic.cfg_get_condlist (char_ini, "wounded", "on_medikit", object)
     
     properties["enable"]        =   xr_evaluators_id.sidor_wounded_base + 0
     properties["wound"]         =   xr_evaluators_id.sidor_wounded_base + 1
