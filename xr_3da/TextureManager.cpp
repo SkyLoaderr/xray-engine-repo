@@ -7,8 +7,8 @@
 
 #include "TextureManager.h"
 #include "tss.h"
-#include "blender.h"
-#include "blender_recorder.h"
+#include "blenders\blender.h"
+#include "blenders\blender_recorder.h"
 
 DWORD		CShaderManager::_CreateCode		(SimulatorStates& code)
 {

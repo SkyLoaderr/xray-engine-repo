@@ -2,7 +2,7 @@
 #pragma hdrstop
 
 #include "fs.h"
-#include "blender.h"
+#include "blenders\blender.h"
 
 void CShaderManager::xrStartUp()
 {
