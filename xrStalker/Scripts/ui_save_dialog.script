@@ -106,12 +106,11 @@ function save_dialog:InitCallBacks()
 end
 
 function save_dialog:OnButton_ok_clicked()
-	
+	self.m_game_cl:StopMenu(self,true)
 end
 
 function save_dialog:OnButton_cancel_clicked()
-	
-
+	self.m_game_cl:StopMenu(self,true)
 end
 
 function save_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
