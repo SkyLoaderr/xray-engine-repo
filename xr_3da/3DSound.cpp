@@ -255,12 +255,14 @@ void CSound::SetFrequency	(u32 freq)
 	clamp				(dwFreq,u32(DSBFREQUENCY_MIN),u32(DSBFREQUENCY_MAX));
 	bNeedUpdate			= true;
 }
+
 void CSound::SetFrequencyScale(float S)
 {
 	dwFreq				= iFloor(float(dwFreqBase)*S);
 	clamp				(dwFreq,u32(DSBFREQUENCY_MIN),u32(DSBFREQUENCY_MAX));
 	bNeedUpdate			= true;
 }
+
 void CSound::SetMinMax		(float min, float max)
 {
 	ps.flMinDistance	= min;
