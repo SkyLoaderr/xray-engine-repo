@@ -156,7 +156,7 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 		// Shader + constants
 		float circle				= ps_r2_ls_ssm_kernel / DSM_size;
 		Fvector4 J; float scale		= circle/11.f;
-		R_constant* _C				= RCache.get_c			("jitter");
+		R_constant* _C				= RCache.get_c			("J_spot");
 		if (_C)
 		{
 			// Radial jitter (12 samples)

@@ -17,7 +17,7 @@ void CRenderTarget::accum_point_shadow	(light* L)
 	Device.mView.transform_tiny		(L_pos,L->position);
 
 	// Xforms
-	Fmatrix mW;
+	Fmatrix		mW;
 	mW.scale						(L_R,L_R,L_R);
 	mW.translate_over				(L->position);
 	RCache.set_xform_world			(mW);
@@ -70,8 +70,7 @@ void CRenderTarget::accum_point_shadow	(light* L)
 	float	_h						= float(Device.dwHeight);
 	float	o_w						= (.5f / _w);
 	float	o_h						= (.5f / _h);
-	Fmatrix			m_TexelAdjust		= 
-	{
+	Fmatrix			m_TexelAdjust	= {
 		0.5f,				0.0f,				0.0f,			0.0f,
 		0.0f,				-0.5f,				0.0f,			0.0f,
 		0.0f,				0.0f,				1.0f,			0.0f,
@@ -84,7 +83,7 @@ void CRenderTarget::accum_point_shadow	(light* L)
 	RCache.set_c					("Ldynamic_pos",	L_pos.x,L_pos.y,L_pos.z,1/L_R);
 	RCache.set_c					("Ldynamic_color",	L_clr.x,L_clr.y,L_clr.z,L_spec);
 	RCache.set_c					("m_tex",			m_Tex);
-	R_constant* _C					= RCache.get_c		("jitter");
+	R_constant* _C					= RCache.get_c		("J_point");
 	if (_C)
 	{
 		Fvector4	J;
