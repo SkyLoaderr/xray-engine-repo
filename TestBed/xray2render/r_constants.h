@@ -31,6 +31,8 @@ class	R_constant
 
 	R_constant_load			ps;
 	R_constant_load			vs;
+
+	void					parse		();
 };
 
 template <class T, u32 limit>

@@ -210,6 +210,10 @@
 				RelativePath=".\shaders\showmap.psh">
 			</File>
 		</Filter>
+		<Filter
+			Name="xray-shared"
+			Filter="">
+		</Filter>
 		<File
 			RelativePath=".\ShadowMap.cpp">
 		</File>
