@@ -229,7 +229,7 @@ void CLevelGraph::render()
 	CPosition			Local;
 	vertex_position		(Local,P);
 
-	u32 ID				= O->m_dwLevelVertexID;
+	u32 ID				= O->level_vertex_id();
 
 	CGameFont* F		= HUD().pFontDI;
 	F->SetSize			(.02f);

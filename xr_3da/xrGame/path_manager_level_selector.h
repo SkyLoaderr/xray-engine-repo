@@ -98,13 +98,13 @@ namespace PathManagers {
 
 		// myself
 		CEntity*        m_tMe;
-		CLevelGraph::CVertex *m_tpMyNode;
+		const CLevelGraph::CVertex *m_tpMyNode;
 		Fvector			m_tMyPosition;
 		Fvector			m_tDirection;
 
 		//enemy
 		CEntity*        m_tEnemy;
-		CLevelGraph::CVertex *m_tpEnemyNode;
+		const CLevelGraph::CVertex *m_tpEnemyNode;
 		u32				m_dwEnemyNode;
 		Fvector			m_tEnemyPosition;
 		Fvector			m_tEnemyDirection;
@@ -121,13 +121,13 @@ namespace PathManagers {
 
 		// postion being tested
 		float			m_fDistance;
-		CLevelGraph::CVertex *m_tpCurrentNode;
+		const CLevelGraph::CVertex *m_tpCurrentNode;
 		Fvector			m_tCurrentPosition;
 
 		// members
 		int				m_iAliveMemberCount;
 		int				m_iCurrentMember;
-		CLevelGraph::CVertex *m_tpCurrentMemberNode;
+		const CLevelGraph::CVertex *m_tpCurrentMemberNode;
 		Fvector			m_tCurrentMemberPosition;
 		Fvector			m_tCurrentMemberDirection;
 

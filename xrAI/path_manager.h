@@ -187,7 +187,7 @@ public:
 			_goal_node_index,
 			parameters
 		);
-		goal_vertex				= &graph->vertex(goal_node_index);
+		goal_vertex				= graph->vertex(goal_node_index);
 	}
 
 	IC	_dist_type	evaluate		(const _index_type node_index1, const _index_type node_index2, const _Graph::const_iterator &i) const

@@ -18,32 +18,32 @@ IC CGameGraph::CGameGraph		(LPCSTR file_name)
 	string256					file_name;
 	FS.update_path				(file_name,"$game_data$",GRAPH_NAME);
 #endif	
-	m_tpGraphVFS					= FS.r_open(file_name);
-	m_tGraphHeader.dwVersion		= m_tpGraphVFS->r_u32();
-	m_tGraphHeader.dwLevelCount		= m_tpGraphVFS->r_u32();
-	m_tGraphHeader.dwVertexCount	= m_tpGraphVFS->r_u32();
-	m_tGraphHeader.dwEdgeCount		= m_tpGraphVFS->r_u32();
-	m_tGraphHeader.dwDeathPointCount= m_tpGraphVFS->r_u32();
-	m_tGraphHeader.tpLevels.clear	();
+	m_reader					= FS.r_open(file_name);
+	m_header.dwVersion			= m_reader->r_u32();
+	m_header.dwLevelCount		= m_reader->r_u32();
+	m_header.dwVertexCount		= m_reader->r_u32();
+	m_header.dwEdgeCount		= m_reader->r_u32();
+	m_header.dwDeathPointCount	= m_reader->r_u32();
+	m_header.tpLevels.clear		();
 	for (u32 i=0; i<header().level_count(); ++i) {
 		ALife::SLevel			l_tLevel;
-		m_tpGraphVFS->r_stringZ	(l_tLevel.caLevelName);
-		m_tpGraphVFS->r_fvector3(l_tLevel.tOffset);
-		m_tpGraphVFS->r			(&l_tLevel.tLevelID,sizeof(l_tLevel.tLevelID));
-		m_tGraphHeader.tpLevels.insert(mk_pair(l_tLevel.tLevelID,l_tLevel));
+		m_reader->r_stringZ		(l_tLevel.caLevelName);
+		m_reader->r_fvector3	(l_tLevel.tOffset);
+		m_reader->r				(&l_tLevel.tLevelID,sizeof(l_tLevel.tLevelID));
+		m_header.tpLevels.insert(mk_pair(l_tLevel.tLevelID,l_tLevel));
 	}
 	R_ASSERT2					(header().version() == XRAI_CURRENT_VERSION,"Graph version mismatch!");
-	m_tpaGraph					= (CVertex*)m_tpGraphVFS->pointer();
+	m_nodes						= (CVertex*)m_reader->pointer();
 }
 
 IC CGameGraph::~CGameGraph			()
 {
-	xr_delete					(m_tpGraphVFS);
+	xr_delete					(m_reader);
 }
 
 IC const CGameGraph::CHeader &CGameGraph::header() const
 {
-	return						(m_tGraphHeader);
+	return						(m_header);
 }
 
 IC	bool CGameGraph::mask		(svector<ALife::_LOCATION_ID,LOCATION_TYPE_COUNT> &M, const ALife::_LOCATION_ID E[LOCATION_TYPE_COUNT]) const
@@ -85,7 +85,7 @@ IC	bool CGameGraph::valid_vertex_id(const u32 vertex_id) const
 
 IC	void CGameGraph::begin		(const u32 vertex_id, const_iterator &start, const_iterator &end) const
 {
-	end							= (start = (const CEdge *)((BYTE *)m_tpaGraph + vertex(ALife::_GRAPH_ID(vertex_id)).edge_offset())) + vertex(ALife::_GRAPH_ID(vertex_id)).edge_count();
+	end							= (start = (const CEdge *)((BYTE *)m_nodes + vertex(ALife::_GRAPH_ID(vertex_id))->edge_offset())) + vertex(ALife::_GRAPH_ID(vertex_id))->edge_count();
 }
 
 IC	u32	 CGameGraph::value		(const u32 /**vertex_id/**/, const_iterator &i) const
@@ -93,19 +93,14 @@ IC	u32	 CGameGraph::value		(const u32 /**vertex_id/**/, const_iterator &i) const
 	return						(i->vertex_id());
 }
 
-IC	u32	 CGameGraph::node_count	() const
-{
-	return						(header().vertex_count());
-}
-
 IC	float CGameGraph::edge_weight(const_iterator i) const
 {
 	return						(i->distance());
 }
 
-IC	const CGameGraph::CVertex &CGameGraph::vertex(const u32 vertex_id) const
+IC	const CGameGraph::CVertex *CGameGraph::vertex(const u32 vertex_id) const
 {
-	return						(m_tpaGraph[vertex_id]);
+	return						(m_nodes + vertex_id);
 }
 
 IC	u32 CGameGraph::CHeader::version() const
@@ -195,11 +190,17 @@ IC	float CGameGraph::CEdge::distance() const
 
 IC	void CGameGraph::begin_spawn(u32 vertex_id, const_spawn_iterator &start, const_spawn_iterator &end) const
 {
-	end = (start = (const_spawn_iterator)((u8*)m_tpaGraph + vertex(vertex_id).dwPointOffset) + vertex(vertex_id).death_point_count());
+	end = (start = (const_spawn_iterator)((u8*)m_nodes + vertex(vertex_id)->dwPointOffset) + vertex(vertex_id)->death_point_count());
 }
 
 IC	void CGameGraph::set_invalid_vertex(ALife::_GRAPH_ID &vertex_id) const
 {
 	vertex_id	= ALife::_GRAPH_ID(-1);
 	VERIFY		(!valid_vertex_id(vertex_id));
+}
+
+IC	const ALife::_GRAPH_ID CGameGraph::vertex_id(const CGameGraph::CVertex *vertex) const
+{
+	VERIFY		(valid_vertex_id(ALife::_GRAPH_ID(vertex - m_nodes)));
+	return		(ALife::_GRAPH_ID(vertex - m_nodes));
 }

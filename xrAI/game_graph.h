@@ -92,9 +92,9 @@ public:
 #endif
 
 protected:
-	CHeader							m_tGraphHeader;	// graph header
-	IReader							*m_tpGraphVFS;	// virtual file
-	CVertex							*m_tpaGraph;
+	CHeader							m_header;	// graph header
+	IReader							*m_reader;	// virtual file
+	CVertex							*m_nodes;
 
 public:
 #ifndef AI_COMPILER
@@ -112,10 +112,10 @@ public:
 	IC		void					begin			(const u32 vertex_id, const_iterator &start, const_iterator &end) const;
 	IC		void					begin_spawn		(const u32 vertex_id, const_spawn_iterator &start, const_spawn_iterator &end) const;
 	IC		u32						value			(const u32 vertex_id, const_iterator &i) const;
-	IC		u32						node_count		() const;
 	IC		float					edge_weight		(const_iterator i) const;
-	IC		const CVertex			&vertex			(u32 vertex_id) const;
+	IC		const CVertex			*vertex			(u32 vertex_id) const;
 	IC		void					set_invalid_vertex(ALife::_GRAPH_ID &vertex_id) const;
+	IC		const ALife::_GRAPH_ID	vertex_id		(const CVertex *vertex) const;
 };
 
 #include "game_graph_inline.h"
