@@ -99,7 +99,7 @@ bool CUIGameDM::IR_OnKeyboardPress(int dik)
 			m_pUserMenu = pFragList;
 			pFragList->Show();
 			*/
-			SetFlag		(flShowFragList,TRUE);
+			SetFlag		(flShowFragList,TRUE);	
 			return true;
 		}
 	}
@@ -119,7 +119,7 @@ bool CUIGameDM::IR_OnKeyboardRelease(int dik)
 			pFragList->Hide();
 			m_pUserMenu = NULL;			
 			*/
-			SetFlag		(flShowFragList,FALSE);
+			SetFlag		(flShowFragList,FALSE);	
 			return true;
 		}
 	}
