@@ -52,7 +52,7 @@ void main(int argc, char* argv[])
 	bwdithermap	(2,magic);
 
 	DWORD		p0=255;
-	DWORD		p1=0;
+	DWORD		p1=255;
 	DWORD		p2=0;
 	DWORD		p3=0;
 
