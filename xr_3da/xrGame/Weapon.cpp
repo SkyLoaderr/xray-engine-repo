@@ -92,7 +92,7 @@ void CWeapon::Load(CInifile* ini, const char* section)
 
 	iHitPower		= ini->ReadINT		(section,"hit_power"		);
 
-	light_base.SetColor	(.5f,.3f,.0f);
+	light_base.SetColor	(.4f,.2f,.05f);
 	light_base.SetRange	(3.f);
 
 	bVisible		= FALSE;
