@@ -17,6 +17,7 @@ load_scheme("xr_walker", "walker")
 load_scheme("xr_sleeper", "sleeper")
 load_scheme("xr_kamp", "kamp")
 load_scheme("xr_comm_ptr", "patrol")
+load_scheme("xr_follower", "follower")
 
 
 ----------------------------------------------------------------------
@@ -69,7 +70,7 @@ module ("xr_camper")
 module ("xr_sleeper")
 module ("xr_commander")
 --module ("xr_comm_ptr")
-module ("xr_follower")
+--module ("xr_follower")
 module ("xr_ambush")
 module ("xr_waiter")
 module ("xr_wounded")
