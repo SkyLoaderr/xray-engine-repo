@@ -35,7 +35,7 @@ CExplosive::~CExplosive(void)
 {
 	::Render->light_destroy	(m_pLight);
 
-	SoundDestroy(sndExplode);
+	sndExplode.destroy();
 }
 
 void CExplosive::Load(LPCSTR section) 
@@ -64,7 +64,7 @@ void CExplosive::Load(LPCSTR section)
 
 
 	ref_str snd_name = pSettings->r_string(section,"snd_explode");
-	SoundCreate(sndExplode, *snd_name, m_eSoundExplode);
+	sndExplode.create(TRUE,*snd_name, m_eSoundExplode);
 }
 
 /////////////////////////////////////////////////////////
@@ -268,23 +268,4 @@ void CExplosive::UpdateCL()
 //		else m_pLight->set_range(0);
 	} 
 	else m_pLight->set_active(false);
-}
-
-void CExplosive::SoundCreate(ref_sound& dest, LPCSTR s_name, 
-						   int iType, BOOL /**bCtrlFreq/**/) 
-{
-	string256	name,temp;
-	strconcat	(name, s_name,".ogg");
-
-	if (FS.exist(temp,"$game_sounds$",name))	
-	{
-		dest.create		(TRUE,name,iType);
-		return;
-	}
-	Debug.fatal	("Can't find sound '%s' for weapon '%s'", name, Name());
-}
-
-void CExplosive::SoundDestroy(ref_sound& dest) 
-{
-	dest.destroy();
 }

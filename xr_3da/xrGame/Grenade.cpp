@@ -24,7 +24,8 @@ void CGrenade::Load(LPCSTR section)
 	inherited::Load(section);
 	CExplosive::Load(section);
 
-	inherited::SoundCreate(sndCheckout, "checkout", m_eSoundCheckout);
+	ref_str snd_name = pSettings->r_string(section,"snd_checkout");
+	sndCheckout.create(TRUE,*snd_name, m_eSoundCheckout);
 }
 
 BOOL CGrenade::net_Spawn(LPVOID DC) 

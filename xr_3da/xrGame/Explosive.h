@@ -35,9 +35,6 @@ public:
 	virtual void Explode();
 	virtual void Destroy()	=	0;
 
-	void SoundCreate(ref_sound& dest, LPCSTR name, int iType, BOOL bCtrlFreq=FALSE);
-	void SoundDestroy(ref_sound& dest);
-
 	virtual void OnH_B_Chield		() {inherited::OnH_B_Chield();}
 	virtual void OnH_B_Independent	() {inherited::OnH_B_Independent();}
 	virtual void OnEvent (NET_Packet& P, u16 type) {inherited::OnEvent( P, type);}
