@@ -677,24 +677,15 @@ public:
 class CCC_ALifeSave : public IConsole_Command {
 public:
 	CCC_ALifeSave(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
-	virtual void Execute(LPCSTR /**args/**/) {
-		NET_Packet					net_packet;
-		net_packet.w_begin			(M_SAVE_GAME);
-		net_packet.w_u32			(Level().timeServer());
-		net_packet.w_string			("quick_save");
-		Level().Send				(net_packet,net_flags(TRUE));
-	}
-};
-
-class CCC_ALifeSaveTo : public IConsole_Command {
-public:
-	CCC_ALifeSaveTo(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
 	virtual void Execute(LPCSTR args) {
 		string256	S;
 		S[0]		= 0;
 		sscanf		(args ,"%s",S);
 		if (!xr_strlen(S)) {
-			Log("* Specify file name!");
+			NET_Packet			net_packet;
+			net_packet.w_begin	(M_SAVE_GAME);
+			net_packet.w_string	("quick_save");
+			Level().Send		(net_packet,net_flags(TRUE));
 			return;
 		}
 
@@ -933,9 +924,8 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 		// alife
 		CMD1(CCC_ALifePath,			"al_path"				);		// build path
 		CMD1(CCC_ALifeSave,			"save"					);		// save game
-		CMD1(CCC_ALifeSaveTo,		"save_to"				);		// save game to ...
 		CMD1(CCC_ALifeReload,		"reload"				);		// reload game
-		CMD1(CCC_ALifeLoadFrom,		"load_from"				);		// load game from ...
+		CMD1(CCC_ALifeLoadFrom,		"load"				);		// load game from ...
 		CMD1(CCC_FlushLog,			"flush"					);		// flush log
 		CMD1(CCC_ALifeTimeFactor,	"al_time_factor"		);		// set time factor
 		CMD1(CCC_ALifeSwitchDistance,"al_switch_distance"	);		// set switch distance

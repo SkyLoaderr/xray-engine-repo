@@ -119,10 +119,6 @@ void CAI_Rat::SelectAnimation(const Fvector& /**_view/**/, const Fvector& /**_mo
 							else
 								tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tWalk.fwd;
 	
-	if (tpGlobalAnimation != m_tpCurrentGlobalAnimation) { 
-		m_tpCurrentGlobalAnimation = tpGlobalAnimation;
-		if (tpGlobalAnimation) {
-			m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tpGlobalAnimation);
-		}
-	}
+	if (tpGlobalAnimation != m_tpCurrentGlobalAnimation)
+		m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(m_tpCurrentGlobalAnimation = tpGlobalAnimation);
 }
