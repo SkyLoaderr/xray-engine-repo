@@ -119,7 +119,7 @@ void	OGF::Save_Normal_PM		(CFS_Base &fs, ogf_header& H, DWORD FVF, BOOL bColors,
 	fs.close_chunk	();
 	
 	// Faces
-	fs.open_chunk	(OGF_INDICES);
+	fs.open_chunk	(OGF_ICONTAINER);
 	fs.Wdword		(faces.size()*3);
 	for (itOGF_F F=faces.begin(); F!=faces.end(); F++)	fs.write(F,3*sizeof(WORD));
 	fs.close_chunk	();

@@ -96,7 +96,7 @@ public:
 		DWORD size				= end-begin;
 
 		// 
-		for	(int ID=0; ID<data.size(); ID++)
+		for	(DWORD ID=0; ID<data.size(); ID++)
 		{
 			if ((data[ID].size()+size) < 65535)	
 			{
@@ -118,7 +118,7 @@ public:
 		for (DWORD i=0; i<data.size(); i++)
 		{
 			fs.Wdword	(data[i].size());
-			fs.write	(data[i].begin(),data[i].end,data[i].size()*2);
+			fs.write	(data[i].begin(),data[i].size()*2);
 		}
 		data.clear	();
 	}
