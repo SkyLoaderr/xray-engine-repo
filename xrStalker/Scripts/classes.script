@@ -79,7 +79,7 @@ function SinglePatrol:callback (obj, action_type, index)
 
   	local ptr = patrol (obj:patrol ())
 
-	printf ("Path : %s, index : %d", obj:patrol (), index)
+	printf ("Path : %s, index : %d", obj:patrol (), index) 
 
 	if index < 0 then return end
 	--обработаем развилку
