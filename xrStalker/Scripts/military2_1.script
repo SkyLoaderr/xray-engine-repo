@@ -107,15 +107,7 @@ function main ()
     action (stalker3, anim ("prisluh"), cond (cond.anim_end	))
 	action (stalker3, anim ("prisluh_v_torso_idle_2"), sound ("scripts\\Rolik\\Stalker3_2", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false),
 			cond (cond.sound_end))
-
-	while stalker3:action () do wait () end
-
-	reset_action (stalker3, military2_1.script_name ())
 	action (stalker3, anim ("after_prisluh"), cond (cond.anim_end))
-	while stalker3:action () do wait () end
-
-	--last
-	reset_action (stalker3, military2_1.script_name ())
 	action (stalker3, anim ("after_prisluh"), object (torch, object.deactivate), cond (cond.object_end))
     action (stalker3, move (move.standing, move.walk, move.line, testway),  object (weapon, object.deactivate), anim (anim.danger), look (look.path_dir), cond (cond.move_end))
 
