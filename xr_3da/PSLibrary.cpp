@@ -26,15 +26,23 @@ void CPSLibrary::OnCreate()
     }else{
     	Msg("Can't find file: '%s'",fn);
     }
+	for (PS::PSIt s_it = m_PSs.begin(); s_it!=m_PSs.end(); s_it++)
+		if (s_it->m_ShaderName[0]&&s_it->m_TextureName[0])	
+			s_it->m_CachedShader.create(s_it->m_ShaderName,s_it->m_TextureName);
+	for (PS::PEDIt e_it = m_PEDs.begin(); e_it!=m_PEDs.end(); e_it++)
+    	(*e_it)->CreateShader();
 }
  
 void CPSLibrary::OnDestroy()
 {
-	OnDeviceDestroy	();
+	for (PS::PSIt s_it = m_PSs.begin(); s_it!=m_PSs.end(); s_it++)
+		s_it->m_CachedShader.destroy	();
+	for (PS::PEDIt e_it = m_PEDs.begin(); e_it!=m_PEDs.end(); e_it++)
+    	(*e_it)->DestroyShader();
 
     m_PSs.clear		();
 
-	for (PS::PEDIt e_it = m_PEDs.begin(); e_it!=m_PEDs.end(); e_it++)
+	for (e_it = m_PEDs.begin(); e_it!=m_PEDs.end(); e_it++)
 		xr_delete	(*e_it);
 	m_PEDs.clear	();
 
@@ -42,24 +50,8 @@ void CPSLibrary::OnDestroy()
 		xr_delete	(*g_it);
 	m_PGDs.clear	();
 }
-
 //----------------------------------------------------
-void CPSLibrary::OnDeviceCreate			()
-{
-	for (PS::PSIt s_it = m_PSs.begin(); s_it!=m_PSs.end(); s_it++)
-		if (s_it->m_ShaderName[0]&&s_it->m_TextureName[0])	
-			s_it->m_CachedShader.create(s_it->m_ShaderName,s_it->m_TextureName);
-	for (PS::PEDIt e_it = m_PEDs.begin(); e_it!=m_PEDs.end(); e_it++)
-    	(*e_it)->CreateShader();
-}
 
-void CPSLibrary::OnDeviceDestroy		()
-{
-	for (PS::PSIt s_it = m_PSs.begin(); s_it!=m_PSs.end(); s_it++)
-		s_it->m_CachedShader.destroy	();
-	for (PS::PEDIt e_it = m_PEDs.begin(); e_it!=m_PEDs.end(); e_it++)
-    	(*e_it)->DestroyShader();
-}
 PS::SDef* CPSLibrary::FindPS			(LPCSTR Name)
 {
 #ifdef _EDITOR
@@ -216,10 +208,8 @@ bool CPSLibrary::Load(const char* nm)
 //----------------------------------------------------
 void CPSLibrary::Reload()
 {
-	OnDeviceDestroy();
 	OnDestroy();
     OnCreate();
-	OnDeviceCreate();  
 	Msg( "PS Library was succesfully reloaded." );
 }
 //----------------------------------------------------

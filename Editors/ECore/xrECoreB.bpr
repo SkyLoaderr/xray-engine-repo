@@ -100,12 +100,12 @@
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-I..\LevelEditor\Edit -IEditor -IEngine -IEngine\Visuals -IEngine\Blenders 
+    <IDLCFLAGS value="-src_suffix cpp -D_EDITOR -D_ECOREB -D_DEBUG -I..\LevelEditor\Edit 
+      -IEditor -IEngine -IEngine\Visuals -IEngine\Blenders 
       -IR:\SDK\DirectX9.0_beta3\include -I$(BCB)\include -I$(BCB)\include\vcl 
       -IP:\MagicFM_Borland\Sdk\Include -IR:\Borland\Components6\AlexMX 
       -IR:\Borland\Components6\ElPack\Code\Source 
-      -IR:\Borland\CBuilder6\Include\Mfc -IP:\xrCore -IP:\Editors\xrEProps 
-      -src_suffix cpp -D_EDITOR -D_ECOREB -D_DEBUG -boa"/>
+      -IR:\Borland\CBuilder6\Include\Mfc -IP:\xrCore -IP:\Editors\xrEProps -boa"/>
     <CFLAG1 value="-WD -Od -H=intermediate\pch.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -r- -ps 
       -a4 -6 -b- -k -y -v -vi- -tWD -tWM -c"/>
     <PFLAGS value="-N2Intermediate -N0Intermediate -$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
@@ -341,7 +341,7 @@ RunParams=
 Launcher=
 UseLauncher=0
 DebugCWD=
-HostApplication=x:\LevelEditor.exe
+HostApplication=x:\ParticleEditor.exe
 RemoteHost=
 RemotePath=
 RemoteLauncher=

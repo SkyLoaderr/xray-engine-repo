@@ -8,7 +8,7 @@
 #include "ParticleEffect.h"
 #include "ParticleGroup.h"
 
-class CPSLibrary{
+class ECORE_API CPSLibrary{
     PS::PSVec			m_PSs;
 
     PS::PEDVec			m_PEDs;
@@ -54,9 +54,6 @@ public:
 
     void				Reload			();
     void				Save			();
-
-	void				OnDeviceCreate	();
-	void				OnDeviceDestroy	();
 };
 
 #define PSLIB_FILENAME 			"particles.xr"

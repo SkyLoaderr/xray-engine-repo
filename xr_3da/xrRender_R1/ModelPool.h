@@ -11,7 +11,7 @@ namespace PS	{
 };
 
 // defs
-class CModelPool
+class ECORE_API CModelPool
 {
 private:
 	friend class CRender;

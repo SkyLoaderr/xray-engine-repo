@@ -58,6 +58,6 @@ public:
     LAItemVec&		Objects				(){return Items;}
 };
 
-extern ENGINE_API ELightAnimLibrary LALib;
+extern ECORE_API ELightAnimLibrary LALib;
 
 #endif

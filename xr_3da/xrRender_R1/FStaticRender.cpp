@@ -66,14 +66,12 @@ void					CRender::create					()
 	L_Dynamic					= xr_new<CLightR_Manager>	();
 
 	PSLibrary.OnCreate			();
-	PSLibrary.OnDeviceCreate	();
 }
 void					CRender::destroy				()
 {
 	xr_delete					(L_Dynamic);
 	xr_delete					(Models);
 
-	PSLibrary.OnDeviceDestroy	();
 	PSLibrary.OnDestroy			();
 }
 void					CRender::reset_begin			()

@@ -21,7 +21,7 @@ const	u32		CULL_NONE			= D3DCULL_NONE;
 
 class ENGINE_API CBackend
 {
-public:
+public:            
 	// Dynamic geometry streams
 	_VertexStream					Vertex;
 	_IndexStream					Index;

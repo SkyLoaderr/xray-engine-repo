@@ -29,19 +29,21 @@ CToolsCustom::CToolsCustom()
     m_Axis				= etAxisZX;
     fFogness			= 0.9f;
     dwFogColor			= 0xffffffff;
+
+    Device.seqDevCreate.Add(this);
+    Device.seqDevDestroy.Add(this);
 }
 //---------------------------------------------------------------------------
 
 CToolsCustom::~CToolsCustom()        
 {
+    Device.seqDevCreate.Remove(this);
+    Device.seqDevDestroy.Remove(this);
 }
 //---------------------------------------------------------------------------
 
 bool CToolsCustom::OnCreate()
 {
-    Device.seqDevCreate.Add(this);
-    Device.seqDevDestroy.Add(this);
-
     m_bReady 		= true;
 
 	SetAction		(etaSelect);
@@ -53,9 +55,6 @@ void CToolsCustom::OnDestroy()
 {
 	VERIFY(m_bReady);
     m_bReady			= false;
-
-    Device.seqDevCreate.Remove(this);
-    Device.seqDevDestroy.Remove(this);
 }
 //---------------------------------------------------------------------------
 

@@ -36,14 +36,10 @@ void					CRender::OnDeviceCreate			()
 {
 	Models						= xr_new<CModelPool>	();
     Models->Logging				(FALSE);
-
-	PSLibrary.OnDeviceCreate	();
 }
 void					CRender::OnDeviceDestroy		()
 {
 	xr_delete					(Models);
-
-	PSLibrary.OnDeviceDestroy	();
 }
 
 ref_shader	CRender::getShader	(int id){ return 0; }//VERIFY(id<int(Shaders.size()));	return Shaders[id];	}
