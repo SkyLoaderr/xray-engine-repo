@@ -502,4 +502,33 @@
 	</specific_character>
 
 
+<!-- ******************* ARENA ********************** -->
+
+	<specific_character id="bar_arena_manager" team_default = "1">
+		<name>Арни</name>
+		<icon x="16" y="14"></icon>
+		<map_icon x="1" y="6"></map_icon>
+		<bio>Контрабандист со стажем. Долгое время промышлял в Африке и Южной Америке. 
+		Облетевшие весь мир истории о чернобыльских мутантах привели его на Украину. За 
+		короткий промежуток времени сумел вывезти из запретной зоны несколько сотен чучел 
+		мутантов. В промежутках между «работой» в Зоне – преуспевающий торговец. Любит 
+		костюмы от Армани и галстуки от Версаче, но стволы предпочитает советские.</bio>
+
+		<class>bar_arena_manager</class>
+		<community>stalker</community>
+		
+		<rank>70</rank>
+		<reputation>90</reputation>
+
+		<visual>actors\neytral\stalker_neytral_balon_6</visual>
+		<supplies>
+			[spawn] \n
+			wpn_spas12 \n
+			ammo_12x70_buck = 1 \n
+		</supplies>
+				
+		<start_dialog>bar_ecolog_crush_professor_start</start_dialog>
+		<actor_dialog>bar_ecolog_crush_professor_give_quest_dp</actor_dialog>
+	</specific_character>
+
 </xml>
