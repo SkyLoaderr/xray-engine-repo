@@ -13,6 +13,8 @@
 #include "..\\ai_monsters_misc.h"
 #include "..\\..\\CustomMonster.h"
 #include "..\\..\\group.h"
+#include "..\\..\\xr_weapon_list.h"
+#include "..\\..\\actor.h"
 
 class CAI_Soldier : public CCustomMonster
 {
@@ -530,6 +532,43 @@ class CAI_Soldier : public CCustomMonster
 			vfSetFire(a,Group);
 			vfSetMovementType(c,d);
 		}
+	IC	bool bfAmIDead()		{return(g_Health() <= 0);}
+	IC	bool bfAmIHurt()		{return(dwHitTime > 0);}
+	IC  bool bfDoesEnemyExist()	{return(Enemy.Enemy != 0);}
+	IC  bool bfIsEnemyVisible()	{return(Enemy.bVisible);}
+	IC  bool bfFireEnemy(CEntity *tpEntity)		
+		{
+			CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster *>(tpEntity);
+			if (tpCustomMonster)
+				if (tpCustomMonster->tpfGetWeapons())
+					return(true);
+				else
+					return(false);
+			else {
+				CActor *tpActor = dynamic_cast<CActor *>(tpEntity);
+				if (tpActor)
+					return(true);
+				else
+					return(false);
+			}
+		}
+	IC	bool bfTooFarToEnemy(CEntity *tpEntity, float fDistance)
+		{
+			return(tpEntity->Position().distance_to(vPosition) > fDistance);
+		}
+	IC	bool bfNeedRecharge()
+		{
+			return(Weapons && Weapons->getAmmoCurrent());
+		}
+	IC	bool bfNoAmmo()
+		{
+			return(Weapons && Weapons->getAmmoElapsed());
+		}
+	IC	bool bfTooBigAngle(float fAngle0, float fAngle1, float fDelta)
+		{
+			return(fabsf(fAngle0 - fAngle1) < fDelta) || ((fabsf(fabsf(fAngle0 - fAngle1) - PI_MUL_2) < fDelta));
+		}
+
 
 	public:
 		bool		  m_bActionStarted;

@@ -9,7 +9,6 @@
 #include "stdafx.h"
 #include "ai_soldier.h"
 #include "..\\..\\xr_weapon_list.h"
-#include "..\\..\\actor.h"
 #include "..\\..\\hudmanager.h"
 
 #define	FIRE_SAFETY_ANGLE				PI/10
@@ -239,12 +238,12 @@ bool CAI_Soldier::bfCheckForDanger()
 {
 	DWORD dwCurTime = Level().timeServer();
 
-	if (dwCurTime - dwHitTime < HIT_REACTION_TIME)
+	if ((dwHitTime) && (dwCurTime - dwHitTime < HIT_REACTION_TIME))
 		return(true);
 	
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 	
-	if (dwCurTime - Group.m_dwLastHitTime < HIT_REACTION_TIME)
+	if ((Group.m_dwLastHitTime) && (dwCurTime - Group.m_dwLastHitTime < HIT_REACTION_TIME))
 		return(true);
 
 	SelectSound(m_iSoundIndex);

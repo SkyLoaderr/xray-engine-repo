@@ -9,7 +9,6 @@
 #include "stdafx.h"
 #include "ai_soldier.h"
 #include "..\\..\\xr_weapon_list.h"
-#include "..\\..\\actor.h"
 
 #define	MAX_HEAD_TURN_ANGLE				(2.f*PI_DIV_6)
 #define MIN_SPINE_TURN_ANGLE			PI_DIV_6
