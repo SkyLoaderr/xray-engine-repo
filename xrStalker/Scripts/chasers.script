@@ -67,7 +67,7 @@ function main ()
           
           
           if scr_monster == nil then
-             local distance = 100
+             local distance = 1000000
              for a = 1, table.getn (monsters), 1 do
                  if monsters[a] ~= nil and monsters[a]:alive () == true then
                     local t = distance_between (actor, monsters[a])
