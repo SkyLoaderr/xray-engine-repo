@@ -391,48 +391,48 @@ void OGF::MakeProgressive	(float metric_limit)
 		if (0==VR)				{
 			progressive_clear	()		;
 			clMsg				("* mesh simplification failed");
-		}
+		} else {
+			// Convert
+			/*
+			VIPM_Result*	VR		= VIPM_Convert		(u32(30),1.f,1);
+			VERIFY			(VR->swr_records.size()>0)	;
+			*/
 
-		// Convert
-		/*
-		VIPM_Result*	VR		= VIPM_Convert		(u32(30),1.f,1);
-		VERIFY			(VR->swr_records.size()>0)	;
-		*/
+			// test metric
+			u32		_full	=	vertices.size	()		;
+			u32		_remove	=	VR->swr_records.size()	;
+			u32		_simple	=	_full - _remove			;
+			float	_metric	=	float(_remove)/float(_full);
+			clMsg	("X mesh simplified from [%4dv] to [%4dv], nf[%4d]",_full,_simple,VR ? VR->indices.size()/3 : 0);
 
-		// test metric
-		u32		_full	=	vertices.size	()		;
-		u32		_remove	=	VR->swr_records.size()	;
-		u32		_simple	=	_full - _remove			;
-		float	_metric	=	float(_remove)/float(_full);
-		clMsg	("X mesh simplified from [%4dv] to [%4dv], nf[%4d]",_full,_simple,VR->indices.size()/3);
+			// OK
+			vec_XV					vertices_saved;
+			vecOGF_F				faces_saved;
 
-		// OK
-		vec_XV					vertices_saved;
-		vecOGF_F				faces_saved;
+			// Permute vertices
+			vertices_saved			= x_vertices;
+			for(u32 i=0; i<x_vertices.size(); i++)
+				x_vertices[VR->permute_verts[i]]=vertices_saved[i];
 
-		// Permute vertices
-		vertices_saved			= x_vertices;
-		for(u32 i=0; i<x_vertices.size(); i++)
-			x_vertices[VR->permute_verts[i]]=vertices_saved[i];
+			// Fill indices
+			faces_saved				= x_faces;
+			x_faces.resize			(VR->indices.size()/3);
+			for (u32 f_idx=0; f_idx<x_faces.size(); f_idx++){
+				x_faces[f_idx].v[0]	= VR->indices[f_idx*3+0];
+				x_faces[f_idx].v[1]	= VR->indices[f_idx*3+1];
+				x_faces[f_idx].v[2]	= VR->indices[f_idx*3+2];
+			}
 
-		// Fill indices
-		faces_saved				= x_faces;
-		x_faces.resize			(VR->indices.size()/3);
-		for (u32 f_idx=0; f_idx<x_faces.size(); f_idx++){
-			x_faces[f_idx].v[0]	= VR->indices[f_idx*3+0];
-			x_faces[f_idx].v[1]	= VR->indices[f_idx*3+1];
-			x_faces[f_idx].v[2]	= VR->indices[f_idx*3+2];
-		}
-
-		// Fill SWR
-		x_SWI.count				= VR->swr_records.size();
-		x_SWI.sw				= xr_alloc<FSlideWindow>(x_SWI.count);
-		for (u32 swr_idx=0; swr_idx!=x_SWI.count; swr_idx++){
-			FSlideWindow& dst	= x_SWI.sw[swr_idx];
-			VIPM_SWR& src		= VR->swr_records[swr_idx];
-			dst.num_tris		= src.num_tris;
-			dst.num_verts		= src.num_verts;
-			dst.offset			= src.offset;
+			// Fill SWR
+			x_SWI.count				= VR->swr_records.size();
+			x_SWI.sw				= xr_alloc<FSlideWindow>(x_SWI.count);
+			for (u32 swr_idx=0; swr_idx!=x_SWI.count; swr_idx++){
+				FSlideWindow& dst	= x_SWI.sw[swr_idx];
+				VIPM_SWR& src		= VR->swr_records[swr_idx];
+				dst.num_tris		= src.num_tris;
+				dst.num_verts		= src.num_verts;
+				dst.offset			= src.offset;
+			}
 		}
 
 		// cleanup
