@@ -75,19 +75,13 @@ protected:
 	typedef CVertexManagerHashFixed<
 				u32,
 				_solver_index_type,
-				65536,
-				1024*1024
+				256,
+				4096
 			>												CSolverVertexManager;
 #endif
 	typedef CVertexAllocatorFixed<65536>					CVertexAllocator;
-	typedef CVertexAllocatorFixed<1024*1024>				CSolverVertexAllocator;
+	typedef CVertexAllocatorFixed<4096>						CSolverVertexAllocator;
 
-//	typedef CDijkstra<
-//		_dist_type,
-//		CPriorityQueue,
-//		CVertexManager,
-//		CVertexAllocator
-//	>														CAlgorithm;
 	typedef CAStar<
 		_dist_type,
 		CPriorityQueue,
@@ -114,6 +108,7 @@ public:
 
 	IC				CGraphEngine			(u32 max_vertex_count);
 	virtual			~CGraphEngine			();
+	IC		const CSolverAlgorithm &solver_algorithm() const;
 
 	template <
 		typename _Graph,
@@ -139,65 +134,6 @@ public:
 				_Parameters				&parameters
 			);
 
-//	template <typename _Parameters>
-//	IC		bool	search					(
-//				const CProblemSolver<
-//					u32,
-//					u32,
-//					u32
-//				>						&graph, 
-//				const CProblemSolver<
-//					u32,
-//					u32,
-//					u32
-//				>::_index_type			&start_node,
-//				const CProblemSolver<
-//					u32,
-//					u32,
-//					u32
-//				>::_index_type			&dest_node, 
-//				xr_vector<
-//					CProblemSolver<
-//						u32,
-//						u32,
-//						u32
-//					>::_edge_type
-//				>						*node_path,
-//				const _Parameters		&parameters
-//			);
-
-//	template <
-//		typename _condition_type,
-//		typename _value_type,
-//		typename _operator_id_type,
-//		typename _Parameters
-//	>
-//	IC		bool	search					(
-//				const CProblemSolver<
-//					_condition_type,
-//					_value_type,
-//					_operator_id_type
-//				>						&graph, 
-//				const typename CProblemSolver<
-//					_condition_type,
-//					_value_type,
-//					_operator_id_type
-//				>::_index_type			&start_node,
-//				const typename CProblemSolver<
-//					_condition_type,
-//					_value_type,
-//					_operator_id_type
-//				>::_index_type			&dest_node, 
-//				xr_vector<
-//					typename CProblemSolver<
-//						_condition_type,
-//						_value_type,
-//						_operator_id_type
-//					>::_edge_type
-//				>						*node_path,
-//				const _Parameters		&parameters
-//			);
-//
 	template <typename _Parameters>
 	IC		bool	search					(
 		const CSProblemSolver			&graph, 
@@ -206,11 +142,6 @@ public:
 		xr_vector<_solver_edge_type>	*node_path,
 		const _Parameters				&parameters
 	);
-
-	IC		const CSolverAlgorithm &solver_algorithm() const
-	{
-		return				(*m_solver_algorithm);
-	}
 };
 
 #include "graph_engine_inline.h"

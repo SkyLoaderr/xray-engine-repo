@@ -22,6 +22,11 @@ IC	CGraphEngine::~CGraphEngine			()
 	xr_delete			(m_solver_algorithm);
 }
 
+IC	const CGraphEngine::CSolverAlgorithm &CGraphEngine::solver_algorithm() const
+{
+	return				(*m_solver_algorithm);
+}
+
 template <
 	typename _Graph,
 	typename _Parameters
