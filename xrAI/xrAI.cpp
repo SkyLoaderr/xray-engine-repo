@@ -110,9 +110,9 @@ void Startup(LPSTR     lpCmdLine)
 				}
 				else
 					if (strstr(cmd,"-t")) {
-						//path_test			(prjName);
-						//test_smooth_path	(prjName);
-						//test_hierarchy	(prjName);
+//						path_test			(prjName);
+//						test_smooth_path	(prjName);
+//						test_hierarchy		(prjName);
 						test_goap			();
 					}
 					else
