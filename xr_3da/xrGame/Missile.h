@@ -1,5 +1,6 @@
 #pragma once
 #include "HudItem.h"
+#include "Level.h"
 
 class CWeaponHUD;
 
@@ -68,6 +69,7 @@ protected:
 
 	u32 m_state;
 	bool m_throw;
+	bool m_constpower;
 
 	//время уничтожения
 	u32 m_dwDestroyTime;
@@ -82,7 +84,7 @@ protected:
 
 	//параметры броска
 	float m_fThrowForce;
-	float m_fMinForce, m_fMaxForce, m_fForceGrowSpeed;
+	float m_fMinForce, m_fConstForce, m_fMaxForce, m_fForceGrowSpeed;
 
 	//относительная точка и направление вылета гранаты
 	Fvector m_vThrowPoint;
@@ -110,8 +112,8 @@ public:
 	virtual void	activate_physic_shell	();
 	virtual void	setup_physic_shell		();
 	virtual void	create_physic_shell		();
-	IC		void	set_destroy_time		(u32 destroy_time)
+	IC		void	set_destroy_time		(u32 delta_destroy_time)
 	{
-		m_dwDestroyTime		= destroy_time;
+		m_dwDestroyTime		= delta_destroy_time + Level().timeServer();
 	}
 };

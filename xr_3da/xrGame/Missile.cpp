@@ -18,6 +18,8 @@ CMissile::CMissile(void)
 	m_throw_direction.set(0.0f, 1.0f, 0.0f);
 	m_throw_matrix.identity();
 	///////////////////////////////////
+	m_throw = false;
+	m_constpower = false;
 }
 
 CMissile::~CMissile(void) 
@@ -42,6 +44,7 @@ void CMissile::Load(LPCSTR section)
 	inherited::Load		(section);
 
 	m_fMinForce			= pSettings->r_float(section,"force_min");
+	m_fConstForce		= pSettings->r_float(section,"force_const");
 	m_fMaxForce			= pSettings->r_float(section,"force_max");
 	m_fForceGrowSpeed	= pSettings->r_float(section,"force_grow_speed");
 
@@ -189,28 +192,27 @@ void CMissile::UpdateCL()
 		else 
 		{
 			CActor	*actor = smart_cast<CActor*>(H_Parent());
-			if (actor) {
+			if (actor) {				
 				m_fThrowForce		+= (m_fForceGrowSpeed * Device.dwTimeDelta) * .001f;
 				if (m_fThrowForce > m_fMaxForce)
-					m_fThrowForce = m_fMaxForce;
+					m_fThrowForce = m_fMaxForce;				
 			}
 		}
-	}
-	
+	}	
 }
 void CMissile::shedule_Update(u32 dt)
 {
 	inherited::shedule_Update(dt);
 	if(!H_Parent() && getVisible() && m_pPhysicsShell) 
 	{
-		if(m_dwDestroyTime <= Device.dwTimeDelta) 
+		if(m_dwDestroyTime <= Level().timeServer()) 
 		{
 			m_dwDestroyTime = 0xffffffff;
 			VERIFY	(!m_pInventory);
 			Destroy	();
 			return;
 		}
-		if (m_dwDestroyTime < 0xffffffff) m_dwDestroyTime -= Device.dwTimeDelta;
+//		if (m_dwDestroyTime < 0xffffffff) m_dwDestroyTime -= Device.dwTimeDelta;
 	} 
 }
 
@@ -439,8 +441,8 @@ void CMissile::Throw()
 	
 	m_fake_missile->m_throw_direction	= m_throw_direction;
 	m_fake_missile->m_throw_matrix		= m_throw_matrix;
-	
-	m_fake_missile->m_fThrowForce		= m_fThrowForce; 
+		
+	m_fake_missile->m_fThrowForce		= m_constpower ? m_fConstForce : m_fThrowForce; 
 	m_fThrowForce						= m_fMinForce;
 	
 	if (Local()) {
@@ -493,6 +495,29 @@ bool CMissile::Action(s32 cmd, u32 flags)
 	{
 	case kWPN_FIRE:
 		{
+			m_constpower = true;			
+			if(flags&CMD_START) 
+			{
+				m_throw = false;
+				if(State() == MS_IDLE) 
+					SwitchState(MS_THREATEN);
+				else if(State() == MS_READY)
+				{
+					m_throw = true; 
+				}
+
+			} 
+			else if(State() == MS_READY || State() == MS_THREATEN
+				|| State() == MS_IDLE) 
+			{
+				m_throw = true; 
+				if(State() == MS_READY) SwitchState(MS_THROW);
+			}
+			return true;
+		}break;
+	case kWPN_ZOOM:
+		{
+			m_constpower = false;
         	if(flags&CMD_START) 
 			{
 				m_throw = false;
@@ -510,8 +535,8 @@ bool CMissile::Action(s32 cmd, u32 flags)
 				m_throw = true; 
 				if(State() == MS_READY) SwitchState(MS_THROW);
 			}
-		}
-        return true;
+			return true;
+		}break;
 	}
 	return false;
 }

@@ -130,7 +130,8 @@ void CGrenade::Throw()
 	VERIFY						(pGrenade);
 	
 	if (pGrenade) {
-		pGrenade->m_dwDestroyTime = m_dwDestroyTimeMax;
+//		pGrenade->m_dwDestroyTime = m_dwDestroyTimeMax + Level().timeServer();
+		pGrenade->set_destroy_time(m_dwDestroyTimeMax);
 		//установить ID того кто кинул гранату
 		pGrenade->m_iCurrentParentID = H_Parent()->ID();
 	}
