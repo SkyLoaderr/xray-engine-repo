@@ -53,12 +53,14 @@ public:
 	static CInifile*	Create	( LPCSTR szFileName, BOOL ReadOnly=TRUE);
 	static void			Destroy	(CInifile*);
 private:
-	LPSTR						fName;
-	Root						DATA;
-	BOOL 						bReadOnly;
+	LPSTR		fName;
+	Root		DATA;
+	BOOL		bReadOnly;
+    BOOL		bSaveAtEnd;
 public:
-	CInifile					( LPCSTR szFileName, BOOL ReadOnly=TRUE);
-	virtual ~CInifile			( );
+				CInifile		( LPCSTR szFileName, BOOL ReadOnly=TRUE, BOOL bLoadAtStart=TRUE, BOOL SaveAtEnd=TRUE);
+	virtual 	~CInifile		( );
+    void		SaveAs          ( LPCSTR new_fname=0 );
 
 	LPCSTR		cName			( ) { return fName; };
 

@@ -102,7 +102,7 @@ void	CShaderManager::OnDeviceCreate	(LPCSTR shName)
 	cache.Invalidate	();
 
 #ifdef _EDITOR
-	if (!FS.Exist(shName)) return;
+	if (!Engine.FS.Exist(shName)) return;
 #endif
 	CCompressedStream		FS(shName,		"shENGINE");
 	char					name	[256];

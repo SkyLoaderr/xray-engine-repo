@@ -3,9 +3,13 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "fvisual.h"
-#include "fstaticrender.h"
 #include "fmesh.h"
+#ifndef _EDITOR
+	#include "fstaticrender.h"
+#endif
 
 FBasicVisual*	Fvisual::CreateInstance(void)
 {	return new Fvisual;	}
@@ -38,7 +42,9 @@ void Fvisual::Load(const char* N, CStream *data, DWORD dwFlags)
 			DWORD ID		= data->Rdword();
 			dwVertStart		= data->Rdword();
 			dwVertCount		= data->Rdword();
+#ifndef _EDITOR
 			P.VB_Attach		(::Render.FVF[ID],::Render.VB[ID]);
+#endif
 		} else {
 			R_ASSERT(data->FindChunk(OGF_VERTICES));
 			

@@ -52,149 +52,96 @@ ENGINE_API void _decorate(LPSTR dest, LPCSTR src)
 	*dest = 0;
 }
 
-CInifile::CInifile( LPCSTR szFileName, BOOL ReadOnly)
+CInifile::CInifile( LPCSTR szFileName, BOOL ReadOnly, BOOL bLoad, BOOL SaveAtEnd )
 {
-	fName		= strdup(szFileName);
+	fName		= szFileName?strdup(szFileName):0;
     bReadOnly	= ReadOnly;
+    bSaveAtEnd	= SaveAtEnd;
 
-#ifdef ENGINE_BUILD
-	if (!Engine.FS.Exist(szFileName))
-	{
-		R_ASSERT(!ReadOnly);
-		return;
-	}
-#endif
-#ifdef _EDITOR
-	if (!FS.Exist(szFileName))
-	{
-		R_ASSERT(!ReadOnly);
-		return;
-	}
-#endif
+    if (bLoad){
+    	R_ASSERT(szFileName&&szFileName[0]);
+	    if (!Engine.FS.Exist(szFileName))
+    	{
+        	R_ASSERT(!ReadOnly);
+	        return;
+    	}
+		destructor<CStream>	file(Engine.FS.Open(szFileName));
 
-#ifdef _EDITOR
-	destructor<CStream>	file(new CFileStream(szFileName));
-#else
-	destructor<CStream>	file(Engine.FS.Open(szFileName));
-#endif
+        Sect	Current;	Current.Name = 0;
+        char	str			[1024];
+        char	str2		[1024];
 
-	Sect	Current;	Current.Name = 0;
-	char	str			[1024];
-	char	str2		[1024];
+        while (!file().Eof())
+        {
+            file().Rstring	(str);
+            _Trim			(str);
+            LPSTR semi		= strchr(str,';');
+            LPSTR comment	= 0;
+            if (semi) {
+                *semi		= 0;
+                comment		= strdup(semi+1);
+            }
 
-	while (!file().Eof())
-	{
-		file().Rstring	(str);
-		_Trim			(str);
-		LPSTR semi		= strchr(str,';');
-		LPSTR comment	= 0;
-		if (semi) {
-			*semi		= 0;
-			comment		= strdup(semi+1);
-		}
+            if (str[0] && (str[0]=='['))
+            {
+                _FREE(comment);
+                if (Current.Name && Current.Name[0])
+                {
+                    RootIt I		= std::lower_bound(DATA.begin(),DATA.end(),Current,sect_pred());
+                    DATA.insert		(I,Current);
+                    Current.clear	();
+                }
+                int L = strlen(str); str[L-1] = 0;
+                Current.Name = strlwr(strdup(str+1));
+            } else {
+                if (0==Current.Name)	{
+                    _FREE(comment);
+                } else {
+                    char*		name	= str;
+                    char*		t		= strchr(name,'=');
+                    if (t)		{
+                        *t		= 0;
+                        _Trim	(name);
+                        _parse	(str2,++t);
+                    } else {
+                        str2[0]	= 0;
+                    }
 
-		if (str[0] && (str[0]=='['))
-		{
-			_FREE(comment);
-			if (Current.Name && Current.Name[0]) 
-			{
-				RootIt I		= std::lower_bound(DATA.begin(),DATA.end(),Current,sect_pred());
-				DATA.insert		(I,Current);
-				Current.clear	();
-			}
-			int L = strlen(str); str[L-1] = 0;
-			Current.Name = strlwr(strdup(str+1));
-		} else {
-			if (0==Current.Name)	{
-				_FREE(comment);
-			} else {
-				char*		name	= str;
-				char*		t		= strchr(name,'=');
-				if (t)		{
-					*t		= 0;
-					_Trim	(name);
-					_parse	(str2,++t);
-				} else {
-					str2[0]	= 0;
-				}
-				
-				Item		I;
-				I.first		= (name[0]?strdup(name):NULL);
-				I.second	= (str2[0]?strdup(str2):NULL);
-				I.comment	= comment;
-				
-				if (bReadOnly) {
-					if (I.first) {
-						_FREE(I.comment);
-						SectIt	it	= std::lower_bound(Current.begin(),Current.end(),I,item_pred());
-						Current.Data.insert(it,I);
-					} else {
-						_FREE(I.second);
-						_FREE(I.comment);
-					}
-				} else {
-					if (I.first || I.second || I.comment) {
-						SectIt	it	= std::lower_bound(Current.begin(),Current.end(),I,item_pred());
-						Current.Data.insert(it,I);
-					}
-				}
-			}
-		}
-	}
-	if (Current.Name && Current.Name[0]) 
-	{
-		RootIt I		= std::lower_bound(DATA.begin(),DATA.end(),Current,sect_pred());
-		DATA.insert		(I,Current);
-		Current.clear	();
-	}
+                    Item		I;
+                    I.first		= (name[0]?strdup(name):NULL);
+                    I.second	= (str2[0]?strdup(str2):NULL);
+                    I.comment	= comment;
+
+                    if (bReadOnly) {
+                        if (I.first) {
+                            _FREE(I.comment);
+                            SectIt	it	= std::lower_bound(Current.begin(),Current.end(),I,item_pred());
+                            Current.Data.insert(it,I);
+                        } else {
+                            _FREE(I.second);
+                            _FREE(I.comment);
+                        }
+                    } else {
+                        if (I.first || I.second || I.comment) {
+                            SectIt	it	= std::lower_bound(Current.begin(),Current.end(),I,item_pred());
+                            Current.Data.insert(it,I);
+                        }
+                    }
+                }
+            }
+        }
+        if (Current.Name && Current.Name[0])
+        {
+            RootIt I		= std::lower_bound(DATA.begin(),DATA.end(),Current,sect_pred());
+            DATA.insert		(I,Current);
+            Current.clear	();
+        }
+    }
 }
 
 CInifile::~CInifile( )
 {
-	// save if needed
-	if (!bReadOnly)
-	{
-        CFS_Memory	F;
-		char		temp[512],val[512];
-        for (RootIt r_it=DATA.begin(); r_it!=DATA.end(); r_it++)
-		{
-        	sprintf		(temp,"[%s]",r_it->Name);
-            F.Wstring	(temp);
-            for (SectIt s_it=r_it->begin(); s_it!=r_it->end(); s_it++)
-			{
-				Item&	I = *s_it;
-				if (I.first) {
-					if (I.second) {
-						_decorate	(val,I.second);
-						if (I.comment) {
-							// name, value and comment
-							sprintf	(temp,"%-24s = %-32s ;%s",I.first,val,I.comment);
-						} else {
-							// only name and value
-							sprintf	(temp,"%-24s = %-32s",I.first,val);
-						}
-					} else {
-						if (I.comment) {
-							// name and comment
-							sprintf(temp,"%-24s   ;%s",I.first,I.comment);
-						} else {
-							// only name
-							sprintf(temp,"%-24s",I.first);
-						}
-					}
-				} else {
-					// no name, so no value
-					if (I.comment)	sprintf		(temp,";%s",I.comment);
-					else			temp[0] = 0;
-				}
-				_TrimRight			(temp);
-                if (temp[0])		F.Wstring	(temp);
-            }
-            F.Wstring		(" ");
-        }
-        F.SaveTo			(fName,0);
-    }
-
+ 	if (!bReadOnly&&bSaveAtEnd) SaveAs();
 	// release memory
 	_FREE(fName);
 
@@ -208,6 +155,55 @@ CInifile::~CInifile( )
 			_FREE(I->comment);
 		}
 	}
+}
+
+void	CInifile::SaveAs( LPCSTR new_fname )
+{
+	// save if needed
+    if (new_fname&&new_fname[0]){
+        _FREE(fName);
+        fName		= strdup(new_fname);
+    }
+    R_ASSERT(fName&&fName[0]);
+    CFS_Memory	F;
+    char		temp[512],val[512];
+    for (RootIt r_it=DATA.begin(); r_it!=DATA.end(); r_it++)
+    {
+        sprintf		(temp,"[%s]",r_it->Name);
+        F.Wstring	(temp);
+        for (SectIt s_it=r_it->begin(); s_it!=r_it->end(); s_it++)
+        {
+            Item&	I = *s_it;
+            if (I.first) {
+                if (I.second) {
+                    _decorate	(val,I.second);
+                    if (I.comment) {
+                        // name, value and comment
+                        sprintf	(temp,"%-24s = %-32s ;%s",I.first,val,I.comment);
+                    } else {
+                        // only name and value
+                        sprintf	(temp,"%-24s = %-32s",I.first,val);
+                    }
+                } else {
+                    if (I.comment) {
+                        // name and comment
+                        sprintf(temp,"%-24s   ;%s",I.first,I.comment);
+                    } else {
+                        // only name
+                        sprintf(temp,"%-24s",I.first);
+                    }
+                }
+            } else {
+                // no name, so no value
+                if (I.comment)	sprintf		(temp,";%s",I.comment);
+                else			temp[0] = 0;
+            }
+            _TrimRight			(temp);
+            if (temp[0])		F.Wstring	(temp);
+        }
+        F.Wstring		(" ");
+    }
+    F.SaveTo			(fName,0);
 }
 
 BOOL	CInifile::SectionExists( LPCSTR S )
@@ -242,11 +238,11 @@ CInifile::Sect& CInifile::ReadSection( LPCSTR S )
 	else												Device.Fatal("Can't open section '%s'",S);
 #else
 	#ifdef _EDITOR
-	if (I!=DATA.end() && strcmp(I->Name,section)==0)	return *I;
-	else												Device.Fatal("Can't open section '%s'",S);
+		if (I!=DATA.end() && strcmp(I->Name,section)==0)	return *I;
+		else												Device.Fatal("Can't open section '%s'",S);
 	#else
-	R_ASSERT(I!=DATA.end() && strcmp(I->Name,section)==0);
-	return *I;
+		R_ASSERT(I!=DATA.end() && strcmp(I->Name,section)==0);
+		return *I;
 	#endif
 #endif
 }

@@ -1,4 +1,6 @@
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "BodyInstance.h"
 
 extern int	psSkeletonUpdate;
@@ -39,8 +41,8 @@ typedef D3DXQUATERNION* PQ;
 typedef D3DXMATRIX*		PM;
 void CBoneData::Calculate(CKinematics* K, Fmatrix *parent)
 {
-	_declspec(align(64))	static CKey				R[MAX_BLENDED];
-	_declspec(align(64))	static ConsistantKey	S[MAX_BLENDED];
+	ALIGN(64)	static CKey				R[MAX_BLENDED];
+	ALIGN(64)	static ConsistantKey	S[MAX_BLENDED];
 
 	// Calculate all keys
 	CKey*	D = R;
@@ -116,6 +118,7 @@ void CKinematics::Calculate(BOOL bLight)
 
 	// Calculate bones
 	Device.Statistic.Animation.Begin();
+#ifndef _EDITOR
 	if (CPU::ID.feature&_CPU_FEATURE_3DNOW) {
 		CBoneInstance*	I	= bone_instances;
 		CBoneInstance*	E	= bone_instances+bones->size();
@@ -130,6 +133,7 @@ repeat:
 			jnz			repeat;
 		};
 	}
+#endif    
 	(*bones)[iRoot]->Calculate		(this,&precalc_identity);
 	Device.Statistic.Animation.End	();
 

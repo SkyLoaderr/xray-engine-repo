@@ -1,6 +1,13 @@
 #include "stdafx.h"
+#pragma hdrstop
+
+#ifdef _EDITOR
+	#include "skeletonX.h"
+ 	#include "bodyinstance.h"
+#else
 #include "..\skeletonX.h"
-#include "..\bodyinstance.h"
+ 	#include "..\bodyinstance.h"
+#endif
 
 void __stdcall xrSkin1W_x86(	vertRender* D,
 								vertBoned1W* S,

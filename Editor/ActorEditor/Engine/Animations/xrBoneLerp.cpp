@@ -1,5 +1,11 @@
 #include "stdafx.h"
-#include "..\bodyinstance.h"
+#pragma hdrstop
+
+#ifdef _EDITOR
+ 	#include "bodyinstance.h"
+#else
+ 	#include "..\bodyinstance.h"
+#endif
 
 IC float myasin(const float x)
 {
@@ -70,5 +76,5 @@ void __stdcall xrBoneLerp_x86	(CKey* D, CKeyQ* K1, CKeyQ* K2, float delta)
 	Q2.w		= float(K2->w)*KEY_QuantI;
 
 	D->Q.slerp	(Q1,Q2,delta);
-	D->T.lerp	(K1->T,K2->T,delta);
+	D->T.lerp	(K1->t,K2->t,delta);
 }

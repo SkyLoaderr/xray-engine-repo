@@ -428,8 +428,8 @@ ENGINE_API IDirect3DTexture8*	TWLoader2D(
 	char fname[_MAX_PATH];
 	strcpy(fname,fRName); if (strext(fname)) *strext(fname)=0;
 #ifdef M_BORLAND
-	if (FS.Exist(fn,FS.m_GameTextures.m_Path,fname,	".dds"))	goto _DDS;
-	if (FS.Exist(fn,FS.m_GameTextures.m_Path,fname,	".tga"))	goto _TGA;
+	if (Engine.FS.Exist(fn,Engine.FS.m_GameTextures.m_Path,fname,	".dds"))	goto _DDS;
+	if (Engine.FS.Exist(fn,Engine.FS.m_GameTextures.m_Path,fname,	".tga"))	goto _TGA;
 	ELog.Msg(mtError,"Can't find texture '%s'",fname);
 #else
 	if (Engine.FS.Exist(fn,Path.Current,fname,	".dds"))	goto _DDS;
@@ -445,11 +445,7 @@ _DDS:
 	{
 		D3DXIMAGE_INFO IMG;
 		
-#ifdef _EDITOR
-		CStream* S	= new CFileStream(fn);
-#else
 		CStream* S	= Engine.FS.Open	(fn);
-#endif
 		R_ASSERT	(S);
 		R_CHK(D3DXGetImageInfoFromFileInMemory	(S->Pointer(),S->Length(),&IMG));
 		R_CHK(D3DXCreateTextureFromFileInMemoryEx(
@@ -472,11 +468,8 @@ _DDS:
 		dwHeight	= IMG.Height;
 		fmt			= IMG.Format;
 
-#ifdef _EDITOR
-		_DELETE(S);
-#else
 		Engine.FS.Close(S);
-#endif
+
 		return		pTexture;
 	}
 

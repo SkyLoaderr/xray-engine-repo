@@ -80,7 +80,7 @@ void CTexture::Load(LPCSTR cName)
 #ifndef M_BORLAND
 	if (Engine.FS.Exist(fn,Path.Textures,cName,".avi"))
 #else
-	if (FS.Exist(fn,FS.m_GameTextures.m_Path,cName,".avi"))
+	if (Engine.FS.Exist(fn,Engine.FS.m_GameTextures.m_Path,cName,".avi"))
 #endif
 	{
 		// AVI
@@ -109,7 +109,7 @@ void CTexture::Load(LPCSTR cName)
 #ifndef M_BORLAND
     if (Engine.FS.Exist(fn,Path.Textures,cName,".seq"))
 #else
-    if (FS.Exist(fn,FS.m_GameTextures.m_Path,cName,".seq"))
+    if (Engine.FS.Exist(fn,Engine.FS.m_GameTextures.m_Path,cName,".seq"))
 #endif
 	{
 		// Sequence

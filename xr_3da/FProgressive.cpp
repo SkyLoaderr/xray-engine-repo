@@ -3,9 +3,14 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "FProgressive.h"
 #include "fmesh.h"
-#include "fstaticrender.h"
+
+#ifndef _EDITOR
+	#include "fstaticrender.h"
+#endif
 
 FBasicVisual*	FProgressive::CreateInstance(void)
 {	return new FProgressive;	}
@@ -49,10 +54,12 @@ void FProgressive::Load		(const char* N, CStream *data, DWORD dwFlags)
 		DWORD dwVertStart=0;
 		if (ONE->FindChunk(OGF_VCONTAINER)) 
 		{
+#ifndef _EDITOR
 			DWORD ID		= ONE->Rdword();
 			dwVertStart		= ONE->Rdword();
 			LOD.dwVertCount	= ONE->Rdword();
 			LOD.P.VB_Attach	(::Render.FVF[ID],::Render.VB[ID]);
+#endif
 		} else {
 			R_ASSERT(ONE->FindChunk(OGF_VERTICES));
 			

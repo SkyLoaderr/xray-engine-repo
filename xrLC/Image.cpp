@@ -173,20 +173,14 @@ struct TGAHeader
 
 void CImage::LoadTGA(LPCSTR name)
 {
-#ifdef _EDITOR
-	destructor<CStream>	TGA(new CFileStream(name));
-#else
 	destructor<CStream>	TGA(Engine.FS.Open(name));
-#endif
+
 	TGAHeader	hdr;
 	BOOL		hflip, vflip;
 
 	TGA().Read(&hdr,sizeof(TGAHeader));
 
-#ifdef ENGINE_BUILD
-	if (!((hdr.imgtype==2)||(hdr.imgtype==10)))			Device.Fatal("Invalid texture format (%s)",name);
-#endif
-	R_ASSERT((hdr.imgtype==2)||(hdr.imgtype==10));		// Uncompressed
+	if (!((hdr.imgtype==2)||(hdr.imgtype==10)))	Device.Fatal("Unsupported texture format (%s)",name);
 	R_ASSERT((hdr.pixsize==24) || (hdr.pixsize==32));	// 24bpp/32bpp
 	R_ASSERT(btwIsPow2(hdr.width));
 	R_ASSERT(btwIsPow2(hdr.height));

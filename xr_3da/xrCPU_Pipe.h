@@ -1,3 +1,6 @@
+#ifndef xrCPU_PipeH
+#define xrCPU_PipeH
+
 #pragma once
 
 // Forward references
@@ -50,4 +53,4 @@ struct xrDispatchTable
 // Binder
 // NOTE: Engine calls function named "_xrBindPSGP"
 typedef void	__cdecl	xrBinder	(xrDispatchTable* T);
-
+#endif

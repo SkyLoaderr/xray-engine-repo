@@ -3,6 +3,8 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "FProgressiveFixedVisual.h"
 #include "fmesh.h"
 

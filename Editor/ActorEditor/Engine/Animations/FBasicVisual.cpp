@@ -3,9 +3,13 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "FBasicVisual.h"
 #include "fmesh.h"
-#include "xr_creator.h"
+#ifndef _EDITOR
+	#include "xr_creator.h"
+#endif
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -76,7 +80,9 @@ void FBasicVisual::Load(const char* N, CStream *data, DWORD dwFlags)
 	if (data->FindChunk(OGF_TEXTURE_L)) {
 		DWORD T = data->Rdword();
 		DWORD S = data->Rdword();
+#ifndef _EDITOR
 		hShader = pCreator->LL_CreateShader(S,T,-1,-1);
+#endif
 	} else {
 		if (data->FindChunk(OGF_TEXTURE)) {
 			FILE_NAME fnT,fnS;
@@ -98,3 +104,4 @@ void	FBasicVisual::Copy(FBasicVisual *pFrom)
 	PCOPY(bv_Radius);
 	PCOPY(bv_BBox);
 }
+
