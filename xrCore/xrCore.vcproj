@@ -1,63 +1,39 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="7.10"
 	Name="xrCore"
 	ProjectGUID="{A0F7D1FB-59A7-4717-A7E4-96F37E91998E}"
 	SccProjectName="SAK"
 	SccAuxPath="SAK"
 	SccLocalPath="SAK"
 	SccProvider="SAK"
-	Keyword="Win32Proj"
-	>
+	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
-			Name="Win32"
-		/>
-		<Platform
-			Name="Win64 (AMD64)"
-		/>
+			Name="Win32"/>
 	</Platforms>
-	<ToolFiles>
-	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="x:\"
 			IntermediateDirectory=".\Debug"
 			ConfigurationType="2"
-			UseOfATL="0"
-			CharacterSet="2"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
+			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				EnableIntrinsicFunctions="FALSE"
 				FavorSizeOrSpeed="0"
 				EnableFiberSafeOptimizations="TRUE"
+				OptimizeForProcessor="2"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;XRCORE_EXPORTS"
 				StringPooling="FALSE"
 				MinimalRebuild="TRUE"
-				ExceptionHandling="0"
+				ExceptionHandling="FALSE"
 				BasicRuntimeChecks="3"
 				SmallerTypeCheck="TRUE"
 				RuntimeLibrary="3"
-				BufferSecurityCheck="TRUE"
 				EnableFunctionLevelLinking="TRUE"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
@@ -69,17 +45,9 @@
 				SuppressStartupBanner="TRUE"
 				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="3"
-				CallingConvention="2"
-			/>
+				CallingConvention="2"/>
 			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
+				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="TRUE"
@@ -93,90 +61,65 @@
 				MapExports="FALSE"
 				SubSystem="2"
 				ImportLibrary="$(OutDir)/xrCore.lib"
-				TargetMachine="0"
-			/>
+				TargetMachine="0"/>
 			<Tool
-				Name="VCALinkTool"
-			/>
+				Name="VCMIDLTool"/>
 			<Tool
-				Name="VCManifestTool"
-			/>
+				Name="VCPostBuildEventTool"/>
 			<Tool
-				Name="VCXDCMakeTool"
-			/>
+				Name="VCPreBuildEventTool"/>
 			<Tool
-				Name="VCBscMakeTool"
-			/>
+				Name="VCPreLinkEventTool"/>
 			<Tool
-				Name="VCAppVerifierTool"
-			/>
+				Name="VCResourceCompilerTool"/>
 			<Tool
-				Name="VCWebDeploymentTool"
-			/>
+				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
-				Name="VCPostBuildEventTool"
-			/>
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="x:\"
 			IntermediateDirectory="Release"
 			ConfigurationType="2"
-			UseOfATL="0"
 			CharacterSet="2"
-			WholeProgramOptimization="1"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
+			WholeProgramOptimization="TRUE">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="3"
+				GlobalOptimizations="TRUE"
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="TRUE"
+				ImproveFloatingPointConsistency="FALSE"
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="TRUE"
 				EnableFiberSafeOptimizations="TRUE"
+				OptimizeForProcessor="3"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;XRCORE_EXPORTS"
 				StringPooling="TRUE"
-				ExceptionHandling="0"
+				ExceptionHandling="FALSE"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="FALSE"
 				EnableFunctionLevelLinking="FALSE"
 				EnableEnhancedInstructionSet="0"
-				FloatingPointModel="2"
 				TreatWChar_tAsBuiltInType="FALSE"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
-				AssemblerOutput="0"
+				AssemblerOutput="4"
 				ProgramDataBaseFileName="$(OutDir)/$(TargetName).pdb"
 				BrowseInformation="0"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="3"
-				CallingConvention="2"
-			/>
+				CallingConvention="2"/>
 			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
+				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)/xrCore.dll"
@@ -188,69 +131,52 @@
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				ImportLibrary="$(OutDir)/xrCore.lib"
-				TargetMachine="0"
-			/>
+				TargetMachine="0"/>
 			<Tool
-				Name="VCALinkTool"
-			/>
+				Name="VCMIDLTool"/>
 			<Tool
-				Name="VCManifestTool"
-			/>
+				Name="VCPostBuildEventTool"/>
 			<Tool
-				Name="VCXDCMakeTool"
-			/>
+				Name="VCPreBuildEventTool"/>
 			<Tool
-				Name="VCBscMakeTool"
-			/>
+				Name="VCPreLinkEventTool"/>
 			<Tool
-				Name="VCAppVerifierTool"
-			/>
+				Name="VCResourceCompilerTool"/>
 			<Tool
-				Name="VCWebDeploymentTool"
-			/>
+				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
-				Name="VCPostBuildEventTool"
-			/>
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 		<Configuration
 			Name="Mixed|Win32"
 			OutputDirectory="x:\"
 			IntermediateDirectory="Mixed"
 			ConfigurationType="2"
-			UseOfATL="0"
 			CharacterSet="2"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
+			WholeProgramOptimization="FALSE">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="3"
+				GlobalOptimizations="TRUE"
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="TRUE"
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="FALSE"
 				EnableFiberSafeOptimizations="TRUE"
+				OptimizeForProcessor="3"
 				PreprocessorDefinitions="MIXED,WIN32;NDEBUG;_WINDOWS;_USRDLL;XRCORE_EXPORTS"
 				StringPooling="TRUE"
-				ExceptionHandling="0"
+				ExceptionHandling="FALSE"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="FALSE"
 				EnableFunctionLevelLinking="FALSE"
 				EnableEnhancedInstructionSet="0"
-				FloatingPointModel="2"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
 				PrecompiledHeaderFile="$(IntDir)/$(TargetName).pch"
@@ -262,17 +188,9 @@
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="3"
-				CallingConvention="2"
-			/>
+				CallingConvention="2"/>
 			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
+				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)/xrCore.dll"
@@ -283,308 +201,27 @@
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				ImportLibrary="$(OutDir)/xrCore.lib"
-				TargetMachine="0"
-			/>
+				TargetMachine="0"/>
 			<Tool
-				Name="VCALinkTool"
-			/>
+				Name="VCMIDLTool"/>
 			<Tool
-				Name="VCManifestTool"
-			/>
+				Name="VCPostBuildEventTool"/>
 			<Tool
-				Name="VCXDCMakeTool"
-			/>
+				Name="VCPreBuildEventTool"/>
 			<Tool
-				Name="VCBscMakeTool"
-			/>
+				Name="VCPreLinkEventTool"/>
 			<Tool
-				Name="VCAppVerifierTool"
-			/>
+				Name="VCResourceCompilerTool"/>
 			<Tool
-				Name="VCWebDeploymentTool"
-			/>
+				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
-			Name="Debug|Win64 (AMD64)"
-			OutputDirectory="$(SolutionDir)amd64\$(ConfigurationName)"
-			IntermediateDirectory="amd64\$(ConfigurationName)"
-			ConfigurationType="2"
-			UseOfATL="0"
-			CharacterSet="2"
-			>
+				Name="VCXMLDataGeneratorTool"/>
 			<Tool
-				Name="VCPreBuildEventTool"
-			/>
+				Name="VCWebDeploymentTool"/>
 			<Tool
-				Name="VCCustomBuildTool"
-			/>
+				Name="VCManagedWrapperGeneratorTool"/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-				TargetEnvironment="3"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
-				EnableIntrinsicFunctions="FALSE"
-				FavorSizeOrSpeed="0"
-				EnableFiberSafeOptimizations="TRUE"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;XRCORE_EXPORTS"
-				StringPooling="FALSE"
-				MinimalRebuild="TRUE"
-				ExceptionHandling="0"
-				BasicRuntimeChecks="3"
-				SmallerTypeCheck="TRUE"
-				RuntimeLibrary="3"
-				EnableFunctionLevelLinking="TRUE"
-				RuntimeTypeInfo="TRUE"
-				UsePrecompiledHeader="3"
-				AssemblerListingLocation="Debug\"
-				ObjectFile="Debug\"
-				ProgramDataBaseFileName="$(OutDir)/$(TargetName).pdb"
-				BrowseInformation="0"
-				WarningLevel="4"
-				SuppressStartupBanner="TRUE"
-				Detect64BitPortabilityProblems="TRUE"
-				DebugInformationFormat="3"
-				CallingConvention="2"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLinkerTool"
-				IgnoreImportLibrary="TRUE"
-				OutputFile="$(OutDir)/xrCore.dll"
-				LinkIncremental="2"
-				SuppressStartupBanner="TRUE"
-				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/$(TargetName).pdb"
-				GenerateMapFile="TRUE"
-				MapFileName="x:\xrCore.map"
-				MapExports="FALSE"
-				SubSystem="2"
-				ImportLibrary="$(OutDir)/xrCore.lib"
-				TargetMachine="17"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
-			Name="Release|Win64 (AMD64)"
-			OutputDirectory="$(SolutionDir)amd64\$(ConfigurationName)"
-			IntermediateDirectory="amd64\$(ConfigurationName)"
-			ConfigurationType="2"
-			UseOfATL="0"
-			CharacterSet="2"
-			WholeProgramOptimization="1"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-				TargetEnvironment="3"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="3"
-				InlineFunctionExpansion="2"
-				EnableIntrinsicFunctions="TRUE"
-				FavorSizeOrSpeed="1"
-				OmitFramePointers="TRUE"
-				EnableFiberSafeOptimizations="TRUE"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;XRCORE_EXPORTS"
-				StringPooling="TRUE"
-				ExceptionHandling="0"
-				RuntimeLibrary="2"
-				BufferSecurityCheck="FALSE"
-				EnableFunctionLevelLinking="FALSE"
-				EnableEnhancedInstructionSet="0"
-				FloatingPointModel="2"
-				TreatWChar_tAsBuiltInType="FALSE"
-				RuntimeTypeInfo="TRUE"
-				UsePrecompiledHeader="3"
-				AssemblerOutput="0"
-				ProgramDataBaseFileName="$(OutDir)/$(TargetName).pdb"
-				BrowseInformation="0"
-				WarningLevel="4"
-				Detect64BitPortabilityProblems="TRUE"
-				DebugInformationFormat="3"
-				CallingConvention="2"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/xrCore.dll"
-				LinkIncremental="1"
-				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/$(TargetName).pdb"
-				GenerateMapFile="FALSE"
-				SubSystem="0"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				ImportLibrary="$(OutDir)/xrCore.lib"
-				TargetMachine="17"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
-			Name="Mixed|Win64 (AMD64)"
-			OutputDirectory="$(SolutionDir)amd64\$(ConfigurationName)"
-			IntermediateDirectory="amd64\$(ConfigurationName)"
-			ConfigurationType="2"
-			UseOfATL="0"
-			CharacterSet="2"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-				TargetEnvironment="3"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="3"
-				InlineFunctionExpansion="2"
-				EnableIntrinsicFunctions="TRUE"
-				FavorSizeOrSpeed="1"
-				OmitFramePointers="FALSE"
-				EnableFiberSafeOptimizations="TRUE"
-				PreprocessorDefinitions="MIXED,WIN32;NDEBUG;_WINDOWS;_USRDLL;XRCORE_EXPORTS"
-				StringPooling="TRUE"
-				ExceptionHandling="0"
-				RuntimeLibrary="2"
-				BufferSecurityCheck="FALSE"
-				EnableFunctionLevelLinking="FALSE"
-				EnableEnhancedInstructionSet="0"
-				FloatingPointModel="2"
-				RuntimeTypeInfo="TRUE"
-				UsePrecompiledHeader="3"
-				PrecompiledHeaderFile="$(IntDir)/$(TargetName).pch"
-				AssemblerOutput="0"
-				AssemblerListingLocation="Mixed\"
-				ObjectFile="Mixed\"
-				ProgramDataBaseFileName="$(OutDir)/$(TargetName).pdb"
-				BrowseInformation="0"
-				WarningLevel="4"
-				Detect64BitPortabilityProblems="TRUE"
-				DebugInformationFormat="3"
-				CallingConvention="2"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/xrCore.dll"
-				LinkIncremental="1"
-				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/$(TargetName).pdb"
-				SubSystem="2"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				ImportLibrary="$(OutDir)/xrCore.lib"
-				TargetMachine="17"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 	</Configurations>
 	<References>
@@ -592,294 +229,209 @@
 	<Files>
 		<Filter
 			Name="Kernel"
-			>
+			Filter="">
 			<File
-				RelativePath=".\FTimer.cpp"
-				>
+				RelativePath=".\FTimer.cpp">
 			</File>
 			<File
-				RelativePath="FTimer.h"
-				>
+				RelativePath="FTimer.h">
 			</File>
 			<File
-				RelativePath="resource.h"
-				>
+				RelativePath="resource.h">
 			</File>
 			<File
-				RelativePath="stdafx.cpp"
-				>
+				RelativePath="stdafx.cpp">
 				<FileConfiguration
-					Name="Debug|Win32"
-					>
+					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
+						UsePrecompiledHeader="1"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32"
-					>
+					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
+						UsePrecompiledHeader="1"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Mixed|Win32"
-					>
+					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win64 (AMD64)"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win64 (AMD64)"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Mixed|Win64 (AMD64)"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
+						UsePrecompiledHeader="1"/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="stdafx.h"
-				>
+				RelativePath="stdafx.h">
 			</File>
 			<File
-				RelativePath="xrCore.cpp"
-				>
+				RelativePath="xrCore.cpp">
 			</File>
 			<File
-				RelativePath="xrCore.h"
-				>
+				RelativePath="xrCore.h">
 			</File>
 			<File
-				RelativePath="xrCore.rc"
-				>
+				RelativePath="xrCore.rc">
 			</File>
 		</Filter>
 		<Filter
 			Name="Math"
-			>
+			Filter="">
 			<File
-				RelativePath="_bitwise.h"
-				>
+				RelativePath="_bitwise.h">
 			</File>
 			<File
-				RelativePath="_color.h"
-				>
+				RelativePath="_color.h">
 			</File>
 			<File
-				RelativePath="_compressed_normal.cpp"
-				>
+				RelativePath="_compressed_normal.cpp">
 			</File>
 			<File
-				RelativePath="_compressed_normal.h"
-				>
+				RelativePath="_compressed_normal.h">
 			</File>
 			<File
-				RelativePath=".\_cylinder.h"
-				>
+				RelativePath=".\_cylinder.h">
 			</File>
 			<File
-				RelativePath="_fbox.h"
-				>
+				RelativePath="_fbox.h">
 			</File>
 			<File
-				RelativePath="_fbox2.h"
-				>
+				RelativePath="_fbox2.h">
 			</File>
 			<File
-				RelativePath="_flags.h"
-				>
+				RelativePath="_flags.h">
 			</File>
 			<File
-				RelativePath="_math.cpp"
-				>
+				RelativePath="_math.cpp">
 			</File>
 			<File
-				RelativePath="_math.h"
-				>
+				RelativePath="_math.h">
 			</File>
 			<File
-				RelativePath="_matrix.h"
-				>
+				RelativePath="_matrix.h">
 			</File>
 			<File
-				RelativePath="_matrix33.h"
-				>
+				RelativePath="_matrix33.h">
 			</File>
 			<File
-				RelativePath="_obb.h"
-				>
+				RelativePath="_obb.h">
 			</File>
 			<File
-				RelativePath="_plane.h"
-				>
+				RelativePath="_plane.h">
 			</File>
 			<File
-				RelativePath="_quaternion.h"
-				>
+				RelativePath="_quaternion.h">
 			</File>
 			<File
-				RelativePath="_random.h"
-				>
+				RelativePath="_random.h">
 			</File>
 			<File
-				RelativePath="_rect.h"
-				>
+				RelativePath="_rect.h">
 			</File>
 			<File
-				RelativePath="_sphere.cpp"
-				>
+				RelativePath="_sphere.cpp">
 			</File>
 			<File
-				RelativePath="_sphere.h"
-				>
+				RelativePath="_sphere.h">
 			</File>
 			<File
-				RelativePath="_types.h"
-				>
+				RelativePath="_types.h">
 			</File>
 			<File
-				RelativePath="_vector2.h"
-				>
+				RelativePath="_vector2.h">
 			</File>
 			<File
-				RelativePath="_vector3d.h"
-				>
+				RelativePath="_vector3d.h">
 			</File>
 			<File
-				RelativePath="_vector4.h"
-				>
+				RelativePath="_vector4.h">
 			</File>
 			<File
-				RelativePath="vector.h"
-				>
+				RelativePath="vector.h">
 			</File>
 			<Filter
 				Name="CPU"
-				>
+				Filter="">
 				<File
-					RelativePath="cpuid.cpp"
-					>
+					RelativePath="cpuid.cpp">
 				</File>
 				<File
-					RelativePath="cpuid.h"
-					>
+					RelativePath="cpuid.h">
 				</File>
 			</Filter>
 			<Filter
 				Name="STLext"
-				>
+				Filter="">
 				<File
-					RelativePath="FixedMap.h"
-					>
+					RelativePath="FixedMap.h">
 				</File>
 				<File
-					RelativePath="FixedSet.h"
-					>
+					RelativePath="FixedSet.h">
 				</File>
 				<File
-					RelativePath="FixedVector.h"
-					>
+					RelativePath="FixedVector.h">
 				</File>
 				<File
-					RelativePath="xrPool.h"
-					>
+					RelativePath="xrPool.h">
 				</File>
 			</Filter>
 			<Filter
 				Name="Extensions"
-				>
+				Filter="">
 				<File
-					RelativePath=".\_std_extensions.cpp"
-					>
+					RelativePath=".\_std_extensions.cpp">
 				</File>
 				<File
-					RelativePath="_std_extensions.h"
-					>
+					RelativePath="_std_extensions.h">
 				</File>
 				<File
-					RelativePath="_stl_extensions.h"
-					>
+					RelativePath="_stl_extensions.h">
 				</File>
 				<File
-					RelativePath=".\_type_traits.h"
-					>
+					RelativePath=".\_type_traits.h">
 				</File>
 				<File
-					RelativePath="clsid.cpp"
-					>
+					RelativePath="clsid.cpp">
 				</File>
 				<File
-					RelativePath="clsid.h"
-					>
+					RelativePath="clsid.h">
 				</File>
 				<File
-					RelativePath=".\fastdelegate.h"
-					>
+					RelativePath=".\fastdelegate.h">
 				</File>
 				<File
-					RelativePath="xr_trims.cpp"
-					>
+					RelativePath="xr_trims.cpp">
 				</File>
 				<File
-					RelativePath="xr_trims.h"
-					>
+					RelativePath="xr_trims.h">
 				</File>
 			</Filter>
 		</Filter>
 		<Filter
 			Name="FS"
-			>
+			Filter="">
 			<File
-				RelativePath="FileSystem.cpp"
-				>
+				RelativePath="FileSystem.cpp">
 			</File>
 			<File
-				RelativePath="FileSystem.h"
-				>
+				RelativePath="FileSystem.h">
 			</File>
 			<File
-				RelativePath="FileSystem_borland.cpp"
-				>
+				RelativePath="FileSystem_borland.cpp">
 			</File>
 			<File
-				RelativePath="FS.cpp"
-				>
+				RelativePath="FS.cpp">
 			</File>
 			<File
-				RelativePath="FS.h"
-				>
+				RelativePath="FS.h">
 			</File>
 			<File
-				RelativePath="FS_internal.h"
-				>
+				RelativePath="FS_internal.h">
 			</File>
 			<File
-				RelativePath="LocatorAPI.cpp"
-				>
+				RelativePath="LocatorAPI.cpp">
 			</File>
 			<File
-				RelativePath="LocatorAPI.h"
-				>
+				RelativePath="LocatorAPI.h">
 			</File>
 			<File
 				RelativePath=".\LocatorAPI_Notifications.cpp">
@@ -891,275 +443,170 @@
 				RelativePath="log.cpp">
 			</File>
 			<File
-				RelativePath="log.h"
-				>
+				RelativePath="log.h">
 			</File>
 			<File
-				RelativePath="Xr_ini.cpp"
-				>
+				RelativePath="Xr_ini.cpp">
 			</File>
 			<File
-				RelativePath="xr_ini.h"
-				>
+				RelativePath="xr_ini.h">
 			</File>
 		</Filter>
 		<Filter
 			Name="Memory manager"
-			>
+			Filter="">
 			<File
-				RelativePath="xrMemory.cpp"
-				>
+				RelativePath="xrMemory.cpp">
 			</File>
 			<File
-				RelativePath="xrMemory.h"
-				>
+				RelativePath="xrMemory.h">
 			</File>
 			<File
-				RelativePath="xrMemory_align.cpp"
-				>
+				RelativePath="xrMemory_align.cpp">
 			</File>
 			<File
-				RelativePath="xrMemory_align.h"
-				>
+				RelativePath="xrMemory_align.h">
 			</File>
 			<File
-				RelativePath=".\xrMemory_debug.cpp"
-				>
+				RelativePath=".\xrMemory_debug.cpp">
 			</File>
 			<File
-				RelativePath="xrMemory_POOL.cpp"
-				>
+				RelativePath="xrMemory_POOL.cpp">
 			</File>
 			<File
-				RelativePath="xrMEMORY_POOL.h"
-				>
+				RelativePath="xrMEMORY_POOL.h">
 			</File>
 			<File
-				RelativePath="xrMemory_pso.h"
-				>
+				RelativePath="xrMemory_pso.h">
 			</File>
 			<File
-				RelativePath="xrMemory_pso_Copy.cpp"
-				>
+				RelativePath="xrMemory_pso_Copy.cpp">
 				<FileConfiguration
-					Name="Release|Win32"
-					>
+					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						AssemblerOutput="4"
-					/>
+						AssemblerOutput="4"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Mixed|Win32"
-					>
+					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						AssemblerOutput="4"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win64 (AMD64)"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AssemblerOutput="4"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Mixed|Win64 (AMD64)"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AssemblerOutput="4"
-					/>
+						AssemblerOutput="4"/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="xrMemory_pso_Fill.cpp"
-				>
+				RelativePath="xrMemory_pso_Fill.cpp">
 				<FileConfiguration
-					Name="Release|Win32"
-					>
+					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						AssemblerOutput="4"
-					/>
+						AssemblerOutput="4"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Mixed|Win32"
-					>
+					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						AssemblerOutput="4"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win64 (AMD64)"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AssemblerOutput="4"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Mixed|Win64 (AMD64)"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AssemblerOutput="4"
-					/>
+						AssemblerOutput="4"/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="xrMemory_pso_Fill32.cpp"
-				>
+				RelativePath="xrMemory_pso_Fill32.cpp">
 				<FileConfiguration
-					Name="Release|Win32"
-					>
+					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						AssemblerOutput="4"
-					/>
+						AssemblerOutput="4"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Mixed|Win32"
-					>
+					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						AssemblerOutput="4"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win64 (AMD64)"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AssemblerOutput="4"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Mixed|Win64 (AMD64)"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AssemblerOutput="4"
-					/>
+						AssemblerOutput="4"/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="xrMemory_subst_borland.cpp"
-				>
+				RelativePath="xrMemory_subst_borland.cpp">
 			</File>
 			<File
-				RelativePath="xrMemory_subst_borland.h"
-				>
+				RelativePath="xrMemory_subst_borland.h">
 			</File>
 			<File
-				RelativePath="xrMemory_subst_msvc.cpp"
-				>
+				RelativePath="xrMemory_subst_msvc.cpp">
 			</File>
 			<File
-				RelativePath="xrMemory_subst_msvc.h"
-				>
+				RelativePath="xrMemory_subst_msvc.h">
 			</File>
 		</Filter>
 		<Filter
 			Name="Debug core"
-			>
+			Filter="">
 			<File
-				RelativePath="xrDebug.cpp"
-				>
+				RelativePath="xrDebug.cpp">
 			</File>
 			<File
-				RelativePath="xrDebug.h"
-				>
+				RelativePath="xrDebug.h">
 			</File>
 			<File
-				RelativePath="xrDebug_macros.h"
-				>
+				RelativePath="xrDebug_macros.h">
 			</File>
 		</Filter>
 		<Filter
 			Name="Compression"
-			>
+			Filter="">
 			<File
-				RelativePath="LzHuf.cpp"
-				>
+				RelativePath="LzHuf.cpp">
 			</File>
 			<File
-				RelativePath="lzhuf.h"
-				>
+				RelativePath="lzhuf.h">
 			</File>
 			<File
-				RelativePath=".\rt_compressor.cpp"
-				>
+				RelativePath=".\rt_compressor.cpp">
 			</File>
 			<File
-				RelativePath=".\rt_compressor.h"
-				>
+				RelativePath=".\rt_compressor.h">
 			</File>
 			<File
-				RelativePath=".\rt_lzo.cpp"
-				>
+				RelativePath=".\rt_lzo.cpp">
 				<FileConfiguration
-					Name="Mixed|Win32"
-					>
+					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						AssemblerOutput="4"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Mixed|Win64 (AMD64)"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AssemblerOutput="4"
-					/>
+						AssemblerOutput="4"/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\rt_lzo.h"
-				>
+				RelativePath=".\rt_lzo.h">
 			</File>
 			<File
-				RelativePath=".\rt_lzo_config.h"
-				>
+				RelativePath=".\rt_lzo_config.h">
 			</File>
 		</Filter>
 		<Filter
 			Name="shared memory/string library"
-			>
+			Filter="">
 			<File
-				RelativePath=".\crc32.cpp"
-				>
+				RelativePath=".\crc32.cpp">
 			</File>
 			<File
-				RelativePath=".\xrsharedmem.cpp"
-				>
+				RelativePath=".\xrsharedmem.cpp">
 			</File>
 			<File
-				RelativePath=".\xrsharedmem.h"
-				>
+				RelativePath=".\xrsharedmem.h">
 			</File>
 			<File
-				RelativePath=".\xrstring.cpp"
-				>
+				RelativePath=".\xrstring.cpp">
 			</File>
 			<File
-				RelativePath=".\xrstring.h"
-				>
+				RelativePath=".\xrstring.h">
 			</File>
 		</Filter>
 		<File
-			RelativePath="xrSyncronize.h"
-			>
+			RelativePath="xrSyncronize.h">
 		</File>
 	</Files>
 	<Globals>
 		<Global
 			Name="DevPartner_IsInstrumented"
-			Value="1"
-		/>
+			Value="1"/>
 	</Globals>
 </VisualStudioProject>

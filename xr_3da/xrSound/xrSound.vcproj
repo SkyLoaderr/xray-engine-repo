@@ -1,63 +1,39 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="7.10"
 	Name="xrSound"
 	ProjectGUID="{CCCA7859-EB86-493E-9B53-C4235F45B3C5}"
 	SccProjectName="SAK"
 	SccAuxPath="SAK"
 	SccLocalPath="SAK"
 	SccProvider="SAK"
-	Keyword="Win32Proj"
-	>
+	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
-			Name="Win32"
-		/>
-		<Platform
-			Name="Win64 (AMD64)"
-		/>
+			Name="Win32"/>
 	</Platforms>
-	<ToolFiles>
-	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="x:\"
 			IntermediateDirectory=".\Debug"
 			ConfigurationType="2"
-			UseOfATL="0"
-			CharacterSet="2"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
+			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				EnableIntrinsicFunctions="FALSE"
 				FavorSizeOrSpeed="0"
 				EnableFiberSafeOptimizations="TRUE"
+				OptimizeForProcessor="3"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;XRSOUND_EXPORTS"
 				StringPooling="FALSE"
 				MinimalRebuild="TRUE"
-				ExceptionHandling="0"
+				ExceptionHandling="FALSE"
 				BasicRuntimeChecks="3"
 				SmallerTypeCheck="TRUE"
 				RuntimeLibrary="3"
-				BufferSecurityCheck="TRUE"
 				EnableFunctionLevelLinking="TRUE"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
@@ -69,17 +45,9 @@
 				SuppressStartupBanner="TRUE"
 				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="3"
-				CallingConvention="2"
-			/>
+				CallingConvention="2"/>
 			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
+				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="TRUE"
@@ -93,70 +61,52 @@
 				MapExports="FALSE"
 				SubSystem="2"
 				ImportLibrary="$(OutDir)/xrSound.lib"
-				TargetMachine="1"
-			/>
+				TargetMachine="1"/>
 			<Tool
-				Name="VCALinkTool"
-			/>
+				Name="VCMIDLTool"/>
 			<Tool
-				Name="VCManifestTool"
-			/>
+				Name="VCPostBuildEventTool"/>
 			<Tool
-				Name="VCXDCMakeTool"
-			/>
+				Name="VCPreBuildEventTool"/>
 			<Tool
-				Name="VCBscMakeTool"
-			/>
+				Name="VCPreLinkEventTool"/>
 			<Tool
-				Name="VCAppVerifierTool"
-			/>
+				Name="VCResourceCompilerTool"/>
 			<Tool
-				Name="VCWebDeploymentTool"
-			/>
+				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
-				Name="VCPostBuildEventTool"
-			/>
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="x:\"
 			IntermediateDirectory="Release"
 			ConfigurationType="2"
-			UseOfATL="0"
 			CharacterSet="2"
-			WholeProgramOptimization="1"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
+			WholeProgramOptimization="TRUE">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="3"
+				GlobalOptimizations="TRUE"
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="TRUE"
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="TRUE"
 				EnableFiberSafeOptimizations="TRUE"
+				OptimizeForProcessor="3"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;XRSOUND_EXPORTS"
 				StringPooling="TRUE"
-				ExceptionHandling="0"
+				ExceptionHandling="FALSE"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="FALSE"
 				EnableFunctionLevelLinking="FALSE"
 				EnableEnhancedInstructionSet="0"
-				FloatingPointModel="2"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
 				AssemblerOutput="0"
@@ -166,17 +116,9 @@
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="3"
-				CallingConvention="2"
-			/>
+				CallingConvention="2"/>
 			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
+				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)/xrSound.dll"
@@ -188,69 +130,52 @@
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				ImportLibrary="$(OutDir)/xrSound.lib"
-				TargetMachine="1"
-			/>
+				TargetMachine="1"/>
 			<Tool
-				Name="VCALinkTool"
-			/>
+				Name="VCMIDLTool"/>
 			<Tool
-				Name="VCManifestTool"
-			/>
+				Name="VCPostBuildEventTool"/>
 			<Tool
-				Name="VCXDCMakeTool"
-			/>
+				Name="VCPreBuildEventTool"/>
 			<Tool
-				Name="VCBscMakeTool"
-			/>
+				Name="VCPreLinkEventTool"/>
 			<Tool
-				Name="VCAppVerifierTool"
-			/>
+				Name="VCResourceCompilerTool"/>
 			<Tool
-				Name="VCWebDeploymentTool"
-			/>
+				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
-				Name="VCPostBuildEventTool"
-			/>
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 		<Configuration
 			Name="Mixed|Win32"
 			OutputDirectory="x:\"
 			IntermediateDirectory="Mixed"
 			ConfigurationType="2"
-			UseOfATL="0"
 			CharacterSet="2"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
+			WholeProgramOptimization="FALSE">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="3"
+				GlobalOptimizations="TRUE"
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="TRUE"
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="FALSE"
 				EnableFiberSafeOptimizations="TRUE"
+				OptimizeForProcessor="3"
 				PreprocessorDefinitions="MIXED,WIN32;NDEBUG;_WINDOWS;_USRDLL;XRSOUND_EXPORTS"
 				StringPooling="TRUE"
-				ExceptionHandling="0"
+				ExceptionHandling="FALSE"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="FALSE"
 				EnableFunctionLevelLinking="FALSE"
 				EnableEnhancedInstructionSet="0"
-				FloatingPointModel="2"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
 				PrecompiledHeaderFile="$(IntDir)/$(TargetName).pch"
@@ -262,17 +187,9 @@
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="3"
-				CallingConvention="2"
-			/>
+				CallingConvention="2"/>
 			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
+				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)/xrSound.dll"
@@ -283,308 +200,27 @@
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				ImportLibrary="$(OutDir)/xrSound.lib"
-				TargetMachine="0"
-			/>
+				TargetMachine="0"/>
 			<Tool
-				Name="VCALinkTool"
-			/>
+				Name="VCMIDLTool"/>
 			<Tool
-				Name="VCManifestTool"
-			/>
+				Name="VCPostBuildEventTool"/>
 			<Tool
-				Name="VCXDCMakeTool"
-			/>
+				Name="VCPreBuildEventTool"/>
 			<Tool
-				Name="VCBscMakeTool"
-			/>
+				Name="VCPreLinkEventTool"/>
 			<Tool
-				Name="VCAppVerifierTool"
-			/>
+				Name="VCResourceCompilerTool"/>
 			<Tool
-				Name="VCWebDeploymentTool"
-			/>
+				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
-			Name="Debug|Win64 (AMD64)"
-			OutputDirectory="$(SolutionDir)amd64\$(ConfigurationName)"
-			IntermediateDirectory="amd64\$(ConfigurationName)"
-			ConfigurationType="2"
-			UseOfATL="0"
-			CharacterSet="2"
-			>
+				Name="VCXMLDataGeneratorTool"/>
 			<Tool
-				Name="VCPreBuildEventTool"
-			/>
+				Name="VCWebDeploymentTool"/>
 			<Tool
-				Name="VCCustomBuildTool"
-			/>
+				Name="VCManagedWrapperGeneratorTool"/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-				TargetEnvironment="3"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
-				EnableIntrinsicFunctions="FALSE"
-				FavorSizeOrSpeed="0"
-				EnableFiberSafeOptimizations="TRUE"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;XRSOUND_EXPORTS"
-				StringPooling="FALSE"
-				MinimalRebuild="TRUE"
-				ExceptionHandling="0"
-				BasicRuntimeChecks="3"
-				SmallerTypeCheck="TRUE"
-				RuntimeLibrary="3"
-				EnableFunctionLevelLinking="TRUE"
-				RuntimeTypeInfo="TRUE"
-				UsePrecompiledHeader="3"
-				AssemblerListingLocation="Debug\"
-				ObjectFile="Debug\"
-				ProgramDataBaseFileName="$(OutDir)/$(TargetName).pdb"
-				BrowseInformation="0"
-				WarningLevel="4"
-				SuppressStartupBanner="TRUE"
-				Detect64BitPortabilityProblems="TRUE"
-				DebugInformationFormat="3"
-				CallingConvention="2"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLinkerTool"
-				IgnoreImportLibrary="TRUE"
-				OutputFile="$(OutDir)/xrSound.dll"
-				LinkIncremental="2"
-				SuppressStartupBanner="TRUE"
-				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/$(TargetName).pdb"
-				GenerateMapFile="TRUE"
-				MapFileName="x:\xrSound.map"
-				MapExports="FALSE"
-				SubSystem="2"
-				ImportLibrary="$(OutDir)/xrSound.lib"
-				TargetMachine="17"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
-			Name="Release|Win64 (AMD64)"
-			OutputDirectory="$(SolutionDir)amd64\$(ConfigurationName)"
-			IntermediateDirectory="amd64\$(ConfigurationName)"
-			ConfigurationType="2"
-			UseOfATL="0"
-			CharacterSet="2"
-			WholeProgramOptimization="1"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-				TargetEnvironment="3"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="3"
-				InlineFunctionExpansion="2"
-				EnableIntrinsicFunctions="TRUE"
-				FavorSizeOrSpeed="1"
-				OmitFramePointers="TRUE"
-				EnableFiberSafeOptimizations="TRUE"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;XRSOUND_EXPORTS"
-				StringPooling="TRUE"
-				ExceptionHandling="0"
-				RuntimeLibrary="2"
-				BufferSecurityCheck="FALSE"
-				EnableFunctionLevelLinking="FALSE"
-				EnableEnhancedInstructionSet="0"
-				FloatingPointModel="2"
-				RuntimeTypeInfo="TRUE"
-				UsePrecompiledHeader="3"
-				AssemblerOutput="0"
-				AssemblerListingLocation="$(IntDir)/"
-				ProgramDataBaseFileName="$(OutDir)/$(TargetName).pdb"
-				BrowseInformation="0"
-				WarningLevel="4"
-				Detect64BitPortabilityProblems="TRUE"
-				DebugInformationFormat="3"
-				CallingConvention="2"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/xrSound.dll"
-				LinkIncremental="1"
-				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/$(TargetName).pdb"
-				GenerateMapFile="FALSE"
-				SubSystem="0"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				ImportLibrary="$(OutDir)/xrSound.lib"
-				TargetMachine="17"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
-			Name="Mixed|Win64 (AMD64)"
-			OutputDirectory="$(SolutionDir)amd64\$(ConfigurationName)"
-			IntermediateDirectory="amd64\$(ConfigurationName)"
-			ConfigurationType="2"
-			UseOfATL="0"
-			CharacterSet="2"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-				TargetEnvironment="3"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="3"
-				InlineFunctionExpansion="2"
-				EnableIntrinsicFunctions="TRUE"
-				FavorSizeOrSpeed="1"
-				OmitFramePointers="FALSE"
-				EnableFiberSafeOptimizations="TRUE"
-				PreprocessorDefinitions="MIXED,WIN32;NDEBUG;_WINDOWS;_USRDLL;XRSOUND_EXPORTS"
-				StringPooling="TRUE"
-				ExceptionHandling="0"
-				RuntimeLibrary="2"
-				BufferSecurityCheck="FALSE"
-				EnableFunctionLevelLinking="FALSE"
-				EnableEnhancedInstructionSet="0"
-				FloatingPointModel="2"
-				RuntimeTypeInfo="TRUE"
-				UsePrecompiledHeader="3"
-				PrecompiledHeaderFile="$(IntDir)/$(TargetName).pch"
-				AssemblerOutput="0"
-				AssemblerListingLocation="Mixed\"
-				ObjectFile="Mixed\"
-				ProgramDataBaseFileName="$(OutDir)/$(TargetName).pdb"
-				BrowseInformation="0"
-				WarningLevel="4"
-				Detect64BitPortabilityProblems="TRUE"
-				DebugInformationFormat="3"
-				CallingConvention="2"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/xrSound.dll"
-				LinkIncremental="1"
-				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/$(TargetName).pdb"
-				SubSystem="2"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				ImportLibrary="$(OutDir)/xrSound.lib"
-				TargetMachine="17"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 	</Configurations>
 	<References>
@@ -592,377 +228,264 @@
 	<Files>
 		<Filter
 			Name="Kernel"
-			>
+			Filter="">
 			<File
-				RelativePath="cl_intersect.h"
-				>
+				RelativePath="cl_intersect.h">
 			</File>
 			<File
-				RelativePath="guids.cpp"
-				>
+				RelativePath="guids.cpp">
 				<FileConfiguration
-					Name="Debug|Win32"
-					>
+					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"
-					/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32"
-					>
+					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"
-					/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Mixed|Win32"
-					>
+					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win64 (AMD64)"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win64 (AMD64)"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Mixed|Win64 (AMD64)"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"
-					/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\sound.cpp"
-				>
+				RelativePath=".\sound.cpp">
 			</File>
 			<File
-				RelativePath="Sound.h"
-				>
+				RelativePath="Sound.h">
 			</File>
 			<File
-				RelativePath="SoundRender.h"
-				>
+				RelativePath="SoundRender.h">
 			</File>
 			<File
-				RelativePath="stdafx.cpp"
-				>
+				RelativePath="stdafx.cpp">
 				<FileConfiguration
-					Name="Debug|Win32"
-					>
+					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
+						UsePrecompiledHeader="1"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32"
-					>
+					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
+						UsePrecompiledHeader="1"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Mixed|Win32"
-					>
+					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win64 (AMD64)"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win64 (AMD64)"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Mixed|Win64 (AMD64)"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
+						UsePrecompiledHeader="1"/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="stdafx.h"
-				>
+				RelativePath="stdafx.h">
 			</File>
 			<File
-				RelativePath="xrCDB.h"
-				>
+				RelativePath="xrCDB.h">
 			</File>
 			<File
-				RelativePath="xrLevel.h"
-				>
+				RelativePath="xrLevel.h">
 			</File>
 		</Filter>
 		<Filter
 			Name="Core"
-			>
+			Filter="">
 			<File
-				RelativePath="SoundRender_Core.cpp"
-				>
+				RelativePath="SoundRender_Core.cpp">
 			</File>
 			<File
-				RelativePath="SoundRender_Core.h"
-				>
+				RelativePath="SoundRender_Core.h">
 			</File>
 			<File
-				RelativePath="SoundRender_Core_Processor.cpp"
-				>
+				RelativePath="SoundRender_Core_Processor.cpp">
 			</File>
 			<File
-				RelativePath="SoundRender_Core_SourceManager.cpp"
-				>
+				RelativePath="SoundRender_Core_SourceManager.cpp">
 			</File>
 			<File
-				RelativePath="SoundRender_Core_StartStop.cpp"
-				>
+				RelativePath="SoundRender_Core_StartStop.cpp">
 			</File>
 			<File
-				RelativePath=".\SoundRender_CoreA.cpp"
-				>
+				RelativePath=".\SoundRender_CoreA.cpp">
 			</File>
 			<File
-				RelativePath=".\SoundRender_CoreA.h"
-				>
+				RelativePath=".\SoundRender_CoreA.h">
 			</File>
 			<File
-				RelativePath=".\SoundRender_CoreD.cpp"
-				>
+				RelativePath=".\SoundRender_CoreD.cpp">
 			</File>
 			<File
-				RelativePath=".\SoundRender_CoreD.h"
-				>
+				RelativePath=".\SoundRender_CoreD.h">
 			</File>
 		</Filter>
 		<Filter
 			Name="Emitter"
-			>
+			Filter="">
 			<File
-				RelativePath="SoundRender_Emitter.cpp"
-				>
+				RelativePath="SoundRender_Emitter.cpp">
 			</File>
 			<File
-				RelativePath="SoundRender_Emitter.h"
-				>
+				RelativePath="SoundRender_Emitter.h">
 			</File>
 			<File
-				RelativePath="SoundRender_Emitter_FSM.cpp"
-				>
+				RelativePath="SoundRender_Emitter_FSM.cpp">
 			</File>
 			<File
-				RelativePath="SoundRender_Emitter_StartStop.cpp"
-				>
+				RelativePath="SoundRender_Emitter_StartStop.cpp">
 			</File>
 			<File
-				RelativePath="SoundRender_Emitter_streamer.cpp"
-				>
+				RelativePath="SoundRender_Emitter_streamer.cpp">
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						GlobalOptimizations="TRUE"
+						InlineFunctionExpansion="2"/>
+				</FileConfiguration>
 			</File>
 		</Filter>
 		<Filter
 			Name="Source"
-			>
+			Filter="">
 			<File
-				RelativePath="SoundRender_Source.cpp"
-				>
+				RelativePath="SoundRender_Source.cpp">
 			</File>
 			<File
-				RelativePath="SoundRender_Source.h"
-				>
+				RelativePath="SoundRender_Source.h">
 			</File>
 			<File
-				RelativePath="SoundRender_Source_loader.cpp"
-				>
+				RelativePath="SoundRender_Source_loader.cpp">
 			</File>
 		</Filter>
 		<Filter
 			Name="Target"
-			>
+			Filter="">
 			<File
-				RelativePath="SoundRender_Target.cpp"
-				>
+				RelativePath="SoundRender_Target.cpp">
 			</File>
 			<File
-				RelativePath="SoundRender_Target.h"
-				>
+				RelativePath="SoundRender_Target.h">
 			</File>
 			<File
-				RelativePath=".\SoundRender_TargetA.cpp"
-				>
+				RelativePath=".\SoundRender_TargetA.cpp">
 			</File>
 			<File
-				RelativePath=".\SoundRender_TargetA.h"
-				>
+				RelativePath=".\SoundRender_TargetA.h">
 			</File>
 			<File
-				RelativePath=".\SoundRender_TargetD.cpp"
-				>
+				RelativePath=".\SoundRender_TargetD.cpp">
 			</File>
 			<File
-				RelativePath=".\SoundRender_TargetD.h"
-				>
+				RelativePath=".\SoundRender_TargetD.h">
 			</File>
 		</Filter>
 		<Filter
 			Name="Environment"
-			>
+			Filter="">
 			<File
-				RelativePath="SoundRender_Environment.cpp"
-				>
+				RelativePath="SoundRender_Environment.cpp">
 			</File>
 			<File
-				RelativePath="SoundRender_Environment.h"
-				>
+				RelativePath="SoundRender_Environment.h">
 			</File>
 		</Filter>
 		<Filter
 			Name="Misc (or old)"
-			>
+			Filter="">
 			<File
-				RelativePath="MusicStream.cpp"
-				>
+				RelativePath="MusicStream.cpp">
 				<FileConfiguration
 					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE"
-					>
+					ExcludedFromBuild="TRUE">
 					<Tool
-						Name="VCCLCompilerTool"
-					/>
+						Name="VCCLCompilerTool"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32"
-					ExcludedFromBuild="TRUE"
-					>
+					ExcludedFromBuild="TRUE">
 					<Tool
-						Name="VCCLCompilerTool"
-					/>
+						Name="VCCLCompilerTool"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32"
-					ExcludedFromBuild="TRUE"
-					>
+					ExcludedFromBuild="TRUE">
 					<Tool
-						Name="VCCLCompilerTool"
-					/>
+						Name="VCCLCompilerTool"/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="MusicStream.h"
-				>
+				RelativePath="MusicStream.h">
 			</File>
 			<File
-				RelativePath="xr_cda.cpp"
-				>
+				RelativePath="xr_cda.cpp">
 				<FileConfiguration
 					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE"
-					>
+					ExcludedFromBuild="TRUE">
 					<Tool
-						Name="VCCLCompilerTool"
-					/>
+						Name="VCCLCompilerTool"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32"
-					ExcludedFromBuild="TRUE"
-					>
+					ExcludedFromBuild="TRUE">
 					<Tool
-						Name="VCCLCompilerTool"
-					/>
+						Name="VCCLCompilerTool"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32"
-					ExcludedFromBuild="TRUE"
-					>
+					ExcludedFromBuild="TRUE">
 					<Tool
-						Name="VCCLCompilerTool"
-					/>
+						Name="VCCLCompilerTool"/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="xr_cda.h"
-				>
+				RelativePath="xr_cda.h">
 			</File>
 			<File
-				RelativePath="xr_streamsnd.cpp"
-				>
+				RelativePath="xr_streamsnd.cpp">
 				<FileConfiguration
 					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE"
-					>
+					ExcludedFromBuild="TRUE">
 					<Tool
-						Name="VCCLCompilerTool"
-					/>
+						Name="VCCLCompilerTool"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32"
-					ExcludedFromBuild="TRUE"
-					>
+					ExcludedFromBuild="TRUE">
 					<Tool
-						Name="VCCLCompilerTool"
-					/>
+						Name="VCCLCompilerTool"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32"
-					ExcludedFromBuild="TRUE"
-					>
+					ExcludedFromBuild="TRUE">
 					<Tool
-						Name="VCCLCompilerTool"
-					/>
+						Name="VCCLCompilerTool"/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="xr_streamsnd.h"
-				>
+				RelativePath="xr_streamsnd.h">
 			</File>
 		</Filter>
 		<Filter
 			Name="Cache"
-			>
+			Filter="">
 			<File
-				RelativePath=".\SoundRender_Cache.cpp"
-				>
+				RelativePath=".\SoundRender_Cache.cpp">
 			</File>
 			<File
-				RelativePath=".\SoundRender_Cache.h"
-				>
+				RelativePath=".\SoundRender_Cache.h">
 			</File>
 		</Filter>
 	</Files>
 	<Globals>
 		<Global
 			Name="DevPartner_IsInstrumented"
-			Value="1"
-		/>
+			Value="1"/>
 	</Globals>
 </VisualStudioProject>
