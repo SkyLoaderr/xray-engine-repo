@@ -46,7 +46,7 @@ CObject*	CObjectList::FindObjectByCLS_ID	( CLASS_ID cls )
 
 void CObjectList::SingleUpdate	(CObject* O)
 {
-	if (Device.dwFrame != O->dwFrame_UpdateCL)
+	if (O->processing_enabled() && (Device.dwFrame != O->dwFrame_UpdateCL))
 	{
 		if (O->H_Parent())		SingleUpdate(O->H_Parent());
 		O->dwFrame_UpdateCL		= Device.dwFrame;

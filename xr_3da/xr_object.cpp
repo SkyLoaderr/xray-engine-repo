@@ -151,6 +151,8 @@ BOOL CObject::net_Spawn			(LPVOID data)
 	}
 	spatial_register			();
 	shedule_register			();
+	Props.bActiveCounter		= 0;	// reinitialize processing flag
+	processing_activate			();
 
 	return TRUE;
 }
@@ -159,7 +161,7 @@ void CObject::net_Destroy		()
 {
 	shedule_unregister			();
 	spatial_unregister			();
-	Props.bDestroy				= 1;
+	setDestroy					(true);
 }
 
 // Updates
