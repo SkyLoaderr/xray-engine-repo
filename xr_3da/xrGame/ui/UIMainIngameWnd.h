@@ -4,8 +4,6 @@
 
 #pragma once
 
-
-
 #include "UIStatic.h"
 #include "UIButton.h"
 #include "UIFrameWindow.h"
@@ -22,7 +20,7 @@
 
 //для режима настройки HUD
 extern int				g_bHudAdjustMode;
-
+extern float			g_fHudAdjustValue;
 
 class CUIMainIngameWnd: public CUIWindow  
 {
@@ -52,6 +50,9 @@ protected:
 	CUIStatic	UIStaticRadiationMedium;
 	CUIStatic	UIStaticRadiationHigh;
 	CUIStatic	UIStaticWound;
+	// Статик контрол для отображения подсказок действий при наведении прицела на объект
+	// Кнопка потому, что в статике еще нет функции выравнивания текста
+	CUIButton	UIStaticQuickHelp;
 	
 	CUIStatic	UITextWound;
 
@@ -85,4 +86,15 @@ protected:
 	int			m_iWeaponIconY;
 	int			m_iWeaponIconWidth;
 	int			m_iWeaponIconHeight;
+
+	// Добавлено для поддержки fadein/fadeout реалтаймовых подсказок
+	float					fuzzyShowInfo;
+	// Отображение подсказок при наведении прицела на объект
+	// Эта процедура почти полная копия куска процедуры CHUDCursor::Render().
+	// Возможно, необходимо сделать таки 1 процедуру отрисовки.
+	void RenderQuickInfos();
+
+	// ассоциативный массив с типсами. Выбор пал на map, так как заполнение произойдет 1 раз,
+	// а поиск будет производиться часто.
+	std::map<int, ref_str>	m_strTips;
 };

@@ -14,6 +14,7 @@
 #include "../HUDManager.h"
 #include "../PDA.h"
 #include "../UIStaticItem.h"
+#include "../WeaponHUD.h"
 
 #include "UIInventoryUtilities.h"
 
@@ -23,7 +24,8 @@ using namespace InventoryUtilities;
 
 
 //hud adjust mode
-int g_bHudAdjustMode = FALSE;
+int				g_bHudAdjustMode	= 0;
+float			g_fHudAdjustValue		= 0.0f;
 
 
 #define RADIATION_ABSENT 0.25f
@@ -33,20 +35,33 @@ int g_bHudAdjustMode = FALSE;
 
 #define DEFAULT_MAP_SCALE 1.f
 
+//-----------------------------------------------------------------------------/
+//  Fade and color parameters
+//-----------------------------------------------------------------------------/
+#define C_SIZE		0.025f
+#define NEAR_LIM	0.5f
+
+#define SHOW_INFO_SPEED	0.5f
+#define HIDE_INFO_SPEED	10.f
+#define C_ON_ENEMY	D3DCOLOR_XRGB(0xff,0,0)
+#define C_DEFAULT	D3DCOLOR_XRGB(0xff,0xff,0xff)
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
 CUIMainIngameWnd::CUIMainIngameWnd()
 {
-	m_pActor = NULL;
-	m_pWeapon = NULL;
+	m_pActor			= NULL;
+	m_pWeapon			= NULL;
 
-	m_dwMaxShowTime = 20000;
-	m_dwMsgShowingTime = 0;
+	m_dwMaxShowTime		= 20000;
+	m_dwMsgShowingTime	= 0;
 
-	m_bShowHudInfo = true;
+	m_bShowHudInfo		= true;
 	m_bShowHudCrosshair = false;
+	// Quick infos
+	fuzzyShowInfo		= 0.f;
 }
 
 CUIMainIngameWnd::~CUIMainIngameWnd()
@@ -130,6 +145,27 @@ void CUIMainIngameWnd::Init()
 
 	m_dwMsgShowingTime = 0;
 	m_dwMaxShowTime = pSettings->r_s32("pda_maingame","max_show_time");
+
+	// Подсказки, которые возникают при наведении прицела на объект
+	AttachChild(&UIStaticQuickHelp);
+	xml_init.InitStatic(uiXml, "quick_info", 0, &UIStaticQuickHelp);
+	UIStaticQuickHelp.SetTextColor(0xffffffff);
+	UIStaticQuickHelp.SetTextAlign(CGameFont::alCenter);
+
+	// читаем типсы их xml файла
+	int tabsCount = uiXml.GetNodesNum("quick_info", 0, "tip");
+
+	XML_NODE* tab_node = uiXml.NavigateToNode("quick_info", 0);
+	uiXml.SetLocalRoot(tab_node);
+
+	std::pair<int, ref_str> tmpTip;
+
+	for (int i = 0; i < tabsCount; ++i)
+	{
+		tmpTip.first	= uiXml.ReadAttribInt("tip", i, "id");
+		tmpTip.second	= uiXml.Read("tip", i, NULL);
+		m_strTips.insert(tmpTip);
+	}
 }
 
 void CUIMainIngameWnd::Draw()
@@ -179,6 +215,7 @@ void CUIMainIngameWnd::Draw()
 			m_bShowHudCrosshair = false;
 			psHUD_Flags.set(HUD_CROSSHAIR, TRUE);
 		}
+		RenderQuickInfos();
 	}
 }
 
@@ -348,6 +385,96 @@ void CUIMainIngameWnd::Update()
 
 bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 {
+	// поддержка режима adjust hud mode
+
+	if (m_pWeapon && g_bHudAdjustMode)
+	{
+		CWeaponHUD *pWpnHud = m_pWeapon->GetHUD();
+		if (!pWpnHud) return false;
+
+		Fvector tmpV;
+		tmpV = pWpnHud->ZoomOffset();
+		bool flag = false;
+
+		switch (dik)
+		{
+			// Rotate +y
+		case DIK_K:
+			pWpnHud->SetZoomRotateX(pWpnHud->ZoomRotateX() + g_fHudAdjustValue);
+			flag = true;
+			break;
+			// Rotate -y
+		case DIK_I:
+			pWpnHud->SetZoomRotateX(pWpnHud->ZoomRotateX() - g_fHudAdjustValue);
+			flag = true;
+			break;
+			// Rotate +x
+		case DIK_L:
+			pWpnHud->SetZoomRotateY(pWpnHud->ZoomRotateY() + g_fHudAdjustValue);
+			flag = true;
+			break;
+			// Rotate -x
+		case DIK_J:
+			pWpnHud->SetZoomRotateY(pWpnHud->ZoomRotateY() - g_fHudAdjustValue);
+			flag = true;
+			break;
+			// Shift +x
+		case DIK_W:
+			tmpV.y = pWpnHud->ZoomOffset().y + g_fHudAdjustValue;
+			flag = true;
+			break;
+			// Shift -y
+		case DIK_S:
+			tmpV.y = pWpnHud->ZoomOffset().y - g_fHudAdjustValue;
+			flag = true;
+			break;
+			// Shift +x
+		case DIK_D:
+			tmpV.x = pWpnHud->ZoomOffset().x + g_fHudAdjustValue;
+			flag = true;
+			break;
+			// Shift -x
+		case DIK_A:
+			tmpV.x = pWpnHud->ZoomOffset().x - g_fHudAdjustValue;
+			flag = true;
+			break;
+			// Shift +z
+		case DIK_Q:
+			tmpV.z = pWpnHud->ZoomOffset().z + g_fHudAdjustValue;
+			flag = true;
+			break;
+			// Shift -z
+		case DIK_E:
+			tmpV.z = pWpnHud->ZoomOffset().z - g_fHudAdjustValue;
+			flag = true;
+			break;
+			// output coordinate info to the console
+		case DIK_P:
+			string256 tmpStr;
+			sprintf(tmpStr, "%s",
+					*m_pWeapon->cNameSect());
+			Log(tmpStr);
+			sprintf(tmpStr, "zoom_offset\t\t\t= %f,%f,%f",
+					pWpnHud->ZoomOffset().x,
+					pWpnHud->ZoomOffset().y,
+					pWpnHud->ZoomOffset().z);
+			Log(tmpStr);
+			sprintf(tmpStr, "zoom_rotate_x\t\t= %f",
+				pWpnHud->ZoomRotateX());
+			Log(tmpStr);
+			sprintf(tmpStr, "zoom_rotate_y\t\t= %f",
+				pWpnHud->ZoomRotateY());
+			Log(tmpStr);
+			flag = true;
+			break;
+		}
+
+		if (tmpV.x || tmpV.y)
+			pWpnHud->SetZoomOffset(tmpV);
+
+		if (flag) return true;
+	}
+
 	if(Level().IR_GetKeyState(DIK_LSHIFT) || Level().IR_GetKeyState(DIK_RSHIFT))
 	{
 		switch(dik)
@@ -376,9 +503,9 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 			break;
 		}
 	}
+	
 	return false;
 }
-
 
 void CUIMainIngameWnd::HideAll()
 {
@@ -415,4 +542,31 @@ void CUIMainIngameWnd::ReceivePdaMessage(CInventoryOwner* pSender, EPdaMsg msg, 
 	}
 
 	m_dwMsgShowingTime = m_dwMaxShowTime;
+}
+
+void CUIMainIngameWnd::RenderQuickInfos()
+{
+	static string256	text;
+	static const u32	C = 0xffffffff;
+
+	CGameObject *pObject = m_pActor->ObjectWeLookingAt();
+
+	UIStaticQuickHelp.SetTextColor(0x00000000);
+
+	if (pObject)
+	{
+		if (fuzzyShowInfo>0.5f)
+		{
+			UIStaticQuickHelp.SetTextColor(subst_alpha(C,u8(iFloor(255.f*(fuzzyShowInfo-0.5f)*2.f))));
+			strconcat(text, *pObject->cName(), ": ");
+			strconcat(text, text, *m_strTips[0]);
+			UIStaticQuickHelp.SetText(text);
+		}
+		fuzzyShowInfo += SHOW_INFO_SPEED*Device.fTimeDelta;
+	}
+	else
+	{
+		fuzzyShowInfo -= HIDE_INFO_SPEED*Device.fTimeDelta;
+	}
+	clamp(fuzzyShowInfo,0.f,1.f);
 }
