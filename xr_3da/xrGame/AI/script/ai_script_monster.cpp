@@ -98,7 +98,8 @@ void CScriptMonster::vfUpdateParticles()
 {
 	CParticleAction	&l_tParticleAction = GetCurrentAction()->m_tParticleAction;
 	LPCSTR			l_caBoneName = *l_tParticleAction.m_caBoneName;
-	if (strlen(l_caBoneName)) {
+
+	if (l_caBoneName && strlen(l_caBoneName)) {
 		CParticlesObject	*l_tpParticlesObject = l_tParticleAction.m_tpParticleSystem;
 		l_tpParticlesObject->UpdateParent(GetUpdatedMatrix(l_caBoneName,l_tParticleAction.m_tParticlePosition,l_tParticleAction.m_tParticleAngles),l_tParticleAction.m_tParticleVelocity);
 	}
@@ -108,7 +109,7 @@ void CScriptMonster::vfUpdateSounds()
 {
 	CSoundAction	&l_tSoundAction = GetCurrentAction()->m_tSoundAction;
 	LPCSTR			l_caBoneName	= *l_tSoundAction.m_caBoneName;
-	if (strlen(l_caBoneName) && l_tSoundAction.m_tpSound && l_tSoundAction.m_tpSound->feedback)
+	if (l_caBoneName && strlen(l_caBoneName) && l_tSoundAction.m_tpSound && l_tSoundAction.m_tpSound->feedback)
 		l_tSoundAction.m_tpSound->feedback->set_position(GetUpdatedMatrix(l_caBoneName,l_tSoundAction.m_tSoundPosition,Fvector().set(0,0,0)).c);
 }
 
