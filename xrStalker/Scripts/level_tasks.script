@@ -34,7 +34,14 @@ function main()
        	end
 
        	if actor ~= nil then   
-       		printf("!!!")	    		
+       		printf("!!!")
+       		if actor:has_info("garbage_find_stalker") then
+       			printf("[SL] has info")
+       		end
+       		if actor:object("garbage_letter") ~= nil then
+       			printf("[SL] has letter")
+       		end
+       		
 			if actor:has_info("garbage_find_stalker") and
        			actor:object("garbage_letter") ~= nil
        		then
