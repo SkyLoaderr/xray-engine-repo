@@ -11,6 +11,7 @@ private:
 public:
 					CWeaponHPSA		();
 	virtual			~CWeaponHPSA	();
+	virtual	void	OnShot			(BOOL bHUDView);
 };
 
 #endif //__XR_WEAPON_AK74_H__

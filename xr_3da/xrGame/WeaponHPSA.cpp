@@ -12,3 +12,7 @@ CWeaponHPSA::~CWeaponHPSA()
 {
 }
 
+void CWeaponHPSA::OnShot(BOOL bHUDView)
+{
+	FireEnd		();
+}
