@@ -94,43 +94,4 @@ void Face::CacheOpacity()
 	b_texture&	T		= pBuild->textures		[M.surfidx];
 	if (T.bHasAlpha)	bOpaque = FALSE;
 	else				bOpaque = TRUE;
-
-	/*
-	bOpaque	= true;
-
-	SH_ShaderDef&	SH							= Shader();
-	if (!SH.C.bCastShadow)						return;
-	if (0==SH.Passes_Count)						return;
-	
-	SH_PassDef&		Pass						= SH.Passes[0];
-	if (!Pass.Flags.bABlend)					return;
-	if (0==Pass.Stages_Count)					return;
-	
-	SH_StageDef&	Stage						= Pass.Stages[0];
-	if (Stage.tcs!=SH_StageDef::tcsGeometry)	return;
-	//if (Stage.tcm!=0)							return;				// Incorrect for trees
-	
-	b_material& M = pBuild->materials			[dwMaterial];
-	if (0==M.dwTexCount)						return;
-	
-	b_texture&	T  = pBuild->textures			[M.surfidx[0]];
-	if (!T.bHasAlpha)							return;
-	
-	if (strcmp(Stage.Tname,"$lmap")==0)
-	{
-		// first stage - lightmap - use second stage if available
-		if (Pass.Stages_Count<2)					return;
-		
-		SH_StageDef&	StageX						= Pass.Stages[1];
-		if (StageX.tcs!=SH_StageDef::tcsGeometry)	return;
-		// if (StageX.tcm!=0)						return;			// Incorrect for trees
-		if (strcmp(StageX.Tname,"$base0")!=0)		return;
-		if (strcmp(StageX.Gname,"$base0")!=0)		return;
-	} else {
-		if (strcmp(Stage.Tname,"$base0")!=0)		return;
-		if (strcmp(Stage.Gname,"$base0")!=0)		return;
-	}
-
-	bOpaque	= false;
-	*/
 }
