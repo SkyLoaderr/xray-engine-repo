@@ -862,6 +862,7 @@ void CSE_ALifeCreatureAbstract::UPDATE_Write(NET_Packet &tNetPacket)
 	tNetPacket.w_angle8			(o_model		);
 	tNetPacket.w_angle8			(o_torso.yaw	);
 	tNetPacket.w_angle8			(o_torso.pitch	);
+	tNetPacket.w_angle8			(o_torso.roll	);
 	tNetPacket.w_u8				(s_team);
 	tNetPacket.w_u8				(s_squad);
 	tNetPacket.w_u8				(s_group);
@@ -879,6 +880,7 @@ void CSE_ALifeCreatureAbstract::UPDATE_Read	(NET_Packet &tNetPacket)
 	tNetPacket.r_angle8			(o_model		);
 	tNetPacket.r_angle8			(o_torso.yaw	);
 	tNetPacket.r_angle8			(o_torso.pitch	);
+	tNetPacket.r_angle8			(o_torso.roll	);
 	tNetPacket.r_u8				(s_team);
 	tNetPacket.r_u8				(s_squad);
 	tNetPacket.r_u8				(s_group);

@@ -329,6 +329,7 @@ void CAI_Stalker::net_Export		(NET_Packet& P)
 	P.w_angle8						(N.o_model);
 	P.w_angle8						(N.o_torso.yaw);
 	P.w_angle8						(N.o_torso.pitch);
+	P.w_angle8						(N.o_torso.roll);
 	P.w_u8							(u8(g_Team()));
 	P.w_u8							(u8(g_Squad()));
 	P.w_u8							(u8(g_Group()));
@@ -378,6 +379,7 @@ void CAI_Stalker::net_Import		(NET_Packet& P)
 	P.r_angle8						(N.o_model);
 	P.r_angle8						(N.o_torso.yaw);
 	P.r_angle8						(N.o_torso.pitch);
+	P.r_angle8						(N.o_torso.roll	);
 	id_Team							= P.r_u8();
 	id_Squad						= P.r_u8();
 	id_Group						= P.r_u8();

@@ -44,7 +44,7 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 	P.w_angle8			(r_model_yaw);
 	P.w_angle8			(unaffected_r_torso.yaw	);//(r_torso.yaw);
 	P.w_angle8			(unaffected_r_torso.pitch);//(r_torso.pitch);
-//.	P.w_angle8			(unaffected_r_torso.roll);//(r_torso.roll);
+	P.w_angle8			(unaffected_r_torso.roll);//(r_torso.roll);
 	P.w_u8				(u8(g_Team()));
 	P.w_u8				(u8(g_Squad()));
 	P.w_u8				(u8(g_Group()));
@@ -308,7 +308,7 @@ void		CActor::net_Import_Base				( NET_Packet& P)
 	P.r_angle8			(N.o_model		);
 	P.r_angle8			(N.o_torso.yaw	);
 	P.r_angle8			(N.o_torso.pitch);
-//.	P.r_angle8			(N.o_torso.roll	);
+	P.r_angle8			(N.o_torso.roll	);
 	id_Team				= P.r_u8();
 	id_Squad			= P.r_u8();
 	id_Group			= P.r_u8();
@@ -476,6 +476,7 @@ void CActor::net_ImportInput	(NET_Packet &P)
 
 	P.r_float			(NI.cam_yaw);
 	P.r_float			(NI.cam_pitch);
+	P.r_float			(NI.cam_roll);
 	//-----------------------------------
 	NetInput_Apply(&NI);
 };
@@ -498,6 +499,7 @@ void CActor::NetInput_Save()
 	NI.cam_mode				= u8(cam_active);
 	NI.cam_yaw				= cam_Active()->yaw;
 	NI.cam_pitch			= cam_Active()->pitch;
+	NI.cam_roll				= unaffected_r_torso.roll;	
 
 	if (!NET_InputStack.empty() && NET_InputStack.back().m_dwTimeStamp == NI.m_dwTimeStamp)
 		NET_InputStack.pop_back();
@@ -531,6 +533,7 @@ void	CActor::NetInput_Send()
 //	NP.w_u8			(NI.cam_mode	);
 	NP.w_float		(NI.cam_yaw		);
 	NP.w_float		(NI.cam_pitch	);
+	NP.w_float		(NI.cam_roll	);
 
 //	if (Level().net_HasBandwidth()) 
 	u32 DeviceTime = Device.dwTimeGlobal;
@@ -545,7 +548,6 @@ void CActor::NetInput_Apply			(net_input* pNI)
 {
 	cam_Active()->yaw	= pNI->cam_yaw;
 	cam_Active()->pitch = pNI->cam_pitch;
-	cam_Active()->roll	= pNI->cam_roll;
 
 	unaffected_r_torso.yaw		= -pNI->cam_yaw;
 	unaffected_r_torso.pitch	= pNI->cam_pitch;
@@ -704,6 +706,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	//--------------------------------------------------------------
 	m_iCurWeaponNextState = 0;
 	m_bCurWeaponHidden = false;
+//	m_iCurWeaponHideState = 0;
 	//--------------------------------------------------------------
 	//добавить отметки на карте, которые актер помнит в info_portions
 	if(m_known_info_registry->registry().objects_ptr())

@@ -65,17 +65,19 @@ void CActor::cam_Update(float dt, float fFOV)
 	// apply inertion
 	switch (cam_active){
 	case eacFirstEye:
-		if (!fis_zero(r_torso.roll)){
-			float radius		= point.y*0.5f;
-			float alpha			= r_torso.roll/2.f;
-			point.x				= radius*_sin(alpha);
-			point.y				= radius+radius*_cos(alpha);
-			dangle.z			= (PI_DIV_2-((PI+alpha)/2));
-		}
 		break;
 	case eacLookAt: 		break;
 	case eacFreeLook: 		break;
 	}
+	if (!fis_zero(r_torso.roll))
+	{
+		float radius		= point.y*0.5f;
+		float alpha			= r_torso.roll/2.f;
+		point.x				= radius*_sin(alpha);
+		point.y				= radius+radius*_cos(alpha);
+		dangle.z			= (PI_DIV_2-((PI+alpha)/2));
+	}
+
 	XFORM().transform_tiny		(point);
 
 
