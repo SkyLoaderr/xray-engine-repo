@@ -35,10 +35,24 @@ void __fastcall render_Cached(CList<FCached*>& cache)
 		for (DWORD I=Start; I!=End; I++)
 		{
 			FCached& V	=	*(cache[I]);
-			PSGP.transfer	(
-				verts,	V.pVertices,V.vCount,Stride,
-				indices,V.pIndices,	V.iCount,iOffset,
-				0);
+			
+			// Transfer vertices
+			CopyMemory	(verts,V.pVertices,V.vCount*Stride);
+			
+			// Transfer indices (in 32bit lines)
+			VERIFY	(iOffset<65535);
+			{
+				DWORD	iCount	= V.iCount;
+				DWORD	item	= (iOffset<<16) | iOffset;
+				DWORD	count	= iCount/2;
+				LPDWORD	sit		= LPDWORD(V.pIndices);
+				LPDWORD	send	= sit+count;
+				LPDWORD	dit		= LPDWORD(indices);
+				for		(; sit!=send; dit++,sit++)	*dit=*sit+item;
+				if		(iCount&1)	indices[iCount-1] = V.pIndices[iCount-1]+WORD(iOffset);
+			}
+
+			// Increment counters
 			verts		+=	V.vCount*Stride;
 			indices		+=	V.iCount;
 			iOffset		+=	V.vCount;
