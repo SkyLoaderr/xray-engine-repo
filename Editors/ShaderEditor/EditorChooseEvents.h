@@ -2,6 +2,7 @@
 #define EditorChooseEventsH
 
 #include "ChooseTypes.h"
+//#include "LevelGameDef.h"
 
 void __fastcall FillEntity(ChooseItemVec& items)
 {
@@ -103,7 +104,7 @@ void __fastcall FillLAnim(ChooseItemVec& items)
     LAItemVec& lst 					= LALib.Objects();
     LAItemIt it						= lst.begin();
     LAItemIt _E						= lst.end();
-    for (; it!=_E; it++)			items.push_back(SChooseItem((*it)->cName,""));
+    for (; it!=_E; it++)			items.push_back(SChooseItem(*(*it)->cName,""));
 }
 //---------------------------------------------------------------------------
 void __fastcall FillEShader(ChooseItemVec& items)

@@ -145,7 +145,7 @@ void TfrmEditLightAnim::InitItems()
 {
 	ListItemsVec items;
     for (LAItemIt it=LALib.Items.begin(); it!=LALib.Items.end(); it++)
-    	LHelper.CreateItem(items,(*it)->cName,0,0,0);
+    	LHelper.CreateItem(items,*(*it)->cName,0,0,0);
     m_Items->AssignItems(items,false,true);
 }
 //---------------------------------------------------------------------------
@@ -188,7 +188,7 @@ void TfrmEditLightAnim::SetCurrentItem(CLAItem* I, ListItem* owner)
     PropItemVec items;
 	if (m_CurrentItem){
         PropValue* V=0;                                              
-        PHelper.CreateName		(items, "Name",			m_CurrentItem->cName,		sizeof(m_CurrentItem->cName), owner);
+        PHelper.CreateRName		(items, "Name",			&m_CurrentItem->cName,		owner);
         PHelper.CreateFloat		(items,	"FPS",			&m_CurrentItem->fFPS,		0.1f,1000,1.f,1);
         V=PHelper.CreateS32		(items,	"Frame Count",	&m_CurrentItem->iFrameCount,1,100000,1);
         V->Owner()->OnAfterEditEvent = OnFrameCountAfterEdit;
@@ -206,7 +206,7 @@ void __fastcall TfrmEditLightAnim::ebAddAnimClick(TObject *Sender)
     if (item) 					FHelper.MakeName(item,0,folder,true);
     CLAItem* I 					= LALib.AppendItem(folder.c_str(),0);
     InitItems					();
-    m_Items->SelectItem			(I->cName,true,false,true);
+    m_Items->SelectItem			(*I->cName,true,false,true);
     OnModified					();
 }
 //---------------------------------------------------------------------------
