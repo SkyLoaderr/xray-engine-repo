@@ -687,7 +687,7 @@ void CAI_Soldier::OnTurnOver()
 		GO_TO_PREV_STATE
 	}
 
-	vfSetFire(m_bFiring,Group);
+	vfSetFire(m_bFiring = false,Group);
 
 	if (!AI_Path.TravelPath.empty())
 		AI_Path.TravelStart = AI_Path.TravelPath.size() - 1;
@@ -1202,8 +1202,7 @@ void CAI_Soldier::OnSenseSomethingAlone()
 				ASSIGN_SPINE_BONE;
 			}
 			
-			if (fabsf(r_torso_target.yaw - r_torso_current.yaw) > PI_DIV_6)
-				SWITCH_TO_NEW_STATE(aiSoldierTurnOver);
+			CHECK_IF_SWITCH_TO_NEW_STATE(fabsf(r_torso_target.yaw - r_torso_current.yaw) > PI_DIV_6,aiSoldierTurnOver)
 
 			vfInitSelector(SelectorPatrol,Squad,Leader);
 	
@@ -1265,6 +1264,8 @@ void CAI_Soldier::OnAttackFireAlone()
 	
 	//CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime) && (m_cBodyState != BODY_STATE_LIE),aiSoldierLyingDown)
 	
+	CHECK_IF_SWITCH_TO_NEW_STATE(m_bStateChanged && (m_ePreviousState != eCurrentState),aiSoldierPointAtSmth);	
+	
 	if (!(Enemy.Enemy)) {
 		vfSetFire(false,getGroup());
 		CHECK_IF_GO_TO_PREV_STATE(((tSavedEnemy) && (tSavedEnemy->g_Health() <= 0)) || (!tSavedEnemy))
@@ -1284,16 +1285,21 @@ void CAI_Soldier::OnAttackFireAlone()
 	
 	CHECK_IF_SWITCH_TO_NEW_STATE((Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() == 0),aiSoldierRecharge)
 
+	if (!m_bFiring)
+		vfAimAtEnemy();
+	
+	CHECK_IF_SWITCH_TO_NEW_STATE(fabsf(r_torso_target.yaw - r_torso_current.yaw) > PI_DIV_6,aiSoldierTurnOver)
+	
 	//CHECK_IF_SWITCH_TO_NEW_STATE(!bfCheckForEntityVisibility(Enemy.Enemy) && (vPosition.distance_to(Enemy.Enemy->Position()) > 5.f),aiSoldierSteal);
 
 	AI_Path.TravelPath.clear();
 	
 	vfSaveEnemy();
 
-	if (!m_bFiring)
-		vfAimAtEnemy();
-	
-	vfSetFire(true,Group);
+	if (fabsf(r_torso_target.yaw - r_torso_current.yaw) < PI/30.f)
+		vfSetFire(true,Group);
+	else
+		vfSetFire(false,Group);
 	
 	if (m_cBodyState != BODY_STATE_STAND)
 		vfSetMovementType(m_cBodyState,0);

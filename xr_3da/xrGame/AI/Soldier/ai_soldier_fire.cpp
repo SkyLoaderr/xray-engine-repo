@@ -72,12 +72,13 @@ void CAI_Soldier::g_fireParams(Fvector &fire_pos, Fvector &fire_dir)
 		/**/
 			//fire_dir.set(eye_matrix.k);
 			//fire_dir.set(tWatchDirection);
-		/**/
+		/**
 		if (r_torso_current.yaw > PI)
 			fire_dir.setHP(-r_torso_current.yaw + m_fAddWeaponAngle,-r_torso_current.pitch);
 		else
 			fire_dir.setHP(-r_torso_current.yaw,-r_torso_current.pitch);
 		/**/
+		fire_dir.setHP(-r_torso_current.yaw,-r_torso_current.pitch);
 	}
 }
 
@@ -124,11 +125,11 @@ void CAI_Soldier::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
 	}
 	
 	// Play hit-sound
-	sound& S	= sndHit[Random.randI(SND_HIT_COUNT)];
+	sound3D& S	= sndHit[Random.randI(SND_HIT_COUNT)];
 	
 	if (S.feedback)			
 		return;
-	pSounds->PlayAtPos	(S,this,vPosition);
+	pSounds->Play3DAtPos	(S,this,vPosition);
 }
 
 void CAI_Soldier::SelectEnemy(SEnemySelected& S)

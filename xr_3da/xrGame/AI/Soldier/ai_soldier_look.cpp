@@ -14,7 +14,7 @@
 #define	MAX_HEAD_TURN_ANGLE				(PI/3.f)
 #define MIN_SPINE_TURN_ANGLE			PI_DIV_6
 #define EYE_WEAPON_DELTA				(0*PI/30.f)
-#define WEAPON_DISTANCE					(.30f)
+#define WEAPON_DISTANCE					(.35f)
 #define SQUARE_WEAPON_DISTANCE			(WEAPON_DISTANCE*WEAPON_DISTANCE)
 
 bool CAI_Soldier::bfCheckForVisibility(CEntity* tpEntity)
@@ -457,7 +457,11 @@ void CAI_Soldier::vfAimAtEnemy()
 	r_target.yaw = r_torso_target.yaw;
 	// turning model a bit more for precise weapon shooting
 	if (fDistance > EPS_L) {
-		m_fAddWeaponAngle = WEAPON_DISTANCE/fDistance;
+		m_fAddWeaponAngle = r_torso_target.yaw;
+		if (m_fAddWeaponAngle > PI - EPS_L)
+			m_fAddWeaponAngle -= PI_MUL_2;
+		
+		m_fAddWeaponAngle = (WEAPON_DISTANCE + .15f*fabsf(PI - m_fAddWeaponAngle)/PI)/fDistance;
 		clamp(m_fAddWeaponAngle,-.99999f,+.99999f);
 		m_fAddWeaponAngle = asinf(m_fAddWeaponAngle);
 	}
