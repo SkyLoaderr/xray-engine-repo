@@ -214,6 +214,7 @@ public:
 			tVertex.dwEdgeOffset	= dwOffset;
 			tVertex.tDeathPointCount = (*I).tDeathPointCount;
 			tVertex.dwPointOffset	= dwPointOffset;
+			tVertex.tNeighbourCount = (*I).tNeighbourCount;
 			tMemoryStream.w			(&tVertex,sizeof(tVertex));
 
 			dwOffset				+= (tVertex.tNeighbourCount = (*I).tNeighbourCount)*sizeof(SGraphEdge);

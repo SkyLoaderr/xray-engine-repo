@@ -144,7 +144,7 @@ void CAI_Space::Render()
 {
 	if (psAI_Flags.test(aiBrain)) {
 		if (bfCheckIfGraphLoaded()) {
-			Fvector tCameraPosition = Device.vCameraPosition;
+			Fvector tCameraPosition = Level().CurrentEntity()->Position();
 			CGameFont* F		= HUD().pFontDI;
 			for (int i=0; i<(int)GraphHeader().dwVertexCount; i++) {
 				Fvector t1 = m_tpaGraph[i].tGlobalPoint;
