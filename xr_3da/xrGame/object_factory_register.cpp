@@ -135,8 +135,6 @@
 #	define ADD(a,b,c,d) add<b>(c,d)
 #endif
 
-struct CUnknownClass {};
-
 void CObjectFactory::register_classes	()
 {
 #ifndef NO_XR_GAME
