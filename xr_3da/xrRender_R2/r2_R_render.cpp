@@ -2,7 +2,14 @@
 #include "..\fbasicvisual.h"
 #include "..\customhud.h"
 
-void CRender::Render	()
+IC	bool	pred_sp_sort	(ISpatial* _1, ISpatial* _2)
+{
+	float	d1		= _1->spatial.center.distance_to_sqr(Device.vCameraPosition);
+	float	d2		= _2->spatial.center.distance_to_sqr(Device.vCameraPosition);
+	return	d1<d2;
+}
+
+void CRender::Render		()
 {
 	//******* Main calc
 	Device.Statistic.RenderCALC.Begin		();
@@ -17,9 +24,79 @@ void CRender::Render	()
 		HOM.Render								(ViewBase);
 
 		// Calculate sector(s) and their objects
-		set_Object								(0);
-		if (0!=pLastSector) pLastSector->Render	(ViewBase);
-		g_pGameLevel->pHUD->Render_Last				();
+		if (pLastSector)
+		{
+			// Traverse sector/portal structure
+			PortalTraverser.traverse	
+				(
+				pLastSector,
+				ViewBase,
+				Device.vCameraPosition,
+				Device.mFullTransform,
+				CPortalTraverser::VQ_HOM + CPortalTraverser::VQ_SSA
+				);
+
+			// Determine visibility for static geometry hierrarhy
+			for (u32 s_it=0; s_it<PortalTraverser.r_sectors.size(); s_it++)
+			{
+				CSector*	sector		= (CSector*)PortalTraverser.r_sectors[s_it];
+				IRender_Visual*	root	= sector->root();
+				for (u32 v_it=0; v_it<sector->r_frustums.size(); v_it++)
+				{
+					set_Frustum			(&(sector->r_frustums[v_it]));
+					add_Geometry		(root);
+				}
+			}
+
+			// Traverse object database
+			g_SpatialSpace.q_frustum
+				(
+				ISpatial_DB::O_ORDERED,
+				STYPE_RENDERABLE + STYPE_LIGHTSOURCE,
+				ViewBase
+				);
+
+			// (almost)Exact sorting order (front-to-back)
+			xr_vector<ISpatial*>& lstRenderables	= g_SpatialSpace.q_result;
+			std::sort								(lstRenderables.begin(),lstRenderables.end(),pred_sp_sort);
+
+			// Determine visibility for dynamic part of scene
+			set_Object							(0);
+			g_pGameLevel->pHUD->Render_First	( );
+			for (u32 o_it=0; o_it<lstRenderables.size(); o_it++)
+			{
+				ISpatial*	spatial		= lstRenderables[o_it];
+				CSector*	sector		= (CSector*)spatial->spatial.sector;
+				if	(0==sector)										continue;	// disassociated from S/P structure
+				if	(PortalTraverser.i_marker != sector->r_marker)	continue;	// inactive (untouched) sector
+				for (u32 v_it=0; v_it<sector->r_frustums.size(); v_it++)
+				{
+					CFrustum&	view	= sector->r_frustums[v_it];
+					if (view.testSphere_dirty(spatial->spatial.center,spatial->spatial.radius))
+					{
+						if (spatial->spatial.type & STYPE_RENDERABLE)
+						{
+							// renderable
+							IRenderable*	renderable		= dynamic_cast<IRenderable*>(spatial);
+							VERIFY							(renderable);
+							set_Object						(renderable);
+							renderable->renderable_Render	();
+							set_Object						(0);
+						}
+						else 
+						{
+						}
+					}
+				}
+			}
+			g_pGameLevel->pHUD->Render_Last						();	
+		}
+		else
+		{
+			set_Object											(0);
+			g_pGameLevel->pHUD->Render_First					();	
+			g_pGameLevel->pHUD->Render_Last						();	
+		}
 	}
 	Device.Statistic.RenderCALC.End				();
 

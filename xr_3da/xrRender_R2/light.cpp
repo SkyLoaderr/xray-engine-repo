@@ -48,20 +48,18 @@ void light::set_texture		(LPCSTR name)
 	s_spot_s				= Device.Shader.Create_B(RImplementation.Target.b_accum_spot_s,strconcat(temp,"r2\\accum_spot_s_",name),name);
 }
 
-void light::set_active(bool a)
+void light::set_active		(bool a)
 {
 	if (a)
 	{
 		if (flags.bActive)					return;
 		flags.bActive						= true;
-		RImplementation.Lights.Activate		(this);
 		spatial_register					();
 	}
 	else
 	{
 		if (!flags.bActive)					return;
 		flags.bActive						= false;
-		RImplementation.Lights.Deactivate	(this);
 		spatial_unregister					();
 	}
 }

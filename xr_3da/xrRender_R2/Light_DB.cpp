@@ -44,16 +44,6 @@ void CLight_DB::Load			(IReader *fs)
 				sun_dir.y			+= -1.f;
 				sun_dir.normalize	();
 				sun_color.set		(Ldata.diffuse.r,Ldata.diffuse.g,Ldata.diffuse.b);
-				/*
-				sun_tm_next			=	0;
-				sun_dir_base		=	sun_dir;
-				sun_dir_0			=	sun_dir;
-				sun_dir_1			=	sun_dir;
-
-				sun_color_base		=	sun_color;
-				sun_color_0			=	sun_color;
-				sun_color_1			=	sun_color;
-				*/
 			}
 			else
 			{
@@ -70,7 +60,7 @@ void CLight_DB::Load			(IReader *fs)
 	// Msg	("* Layers/Lights : %d / %d",v_static_controls.size(),v_static.size());
 }
 
-void CLight_DB::Unload		()
+void			CLight_DB::Unload	()
 {
 	for	(u32 it=0; it<v_static.size(); it++)	xr_delete(v_static[it]);
 	v_static.clear			();
@@ -82,71 +72,15 @@ light*			CLight_DB::Create	()
 	L->flags.bStatic			= false;
 	L->flags.bActive			= false;
 	L->flags.bShadow			= true;
-	v_dynamic_inactive.insert	(L);
 	return						L;
 }
 
 void			CLight_DB::Destroy	(light* L)
 {
-	xr_set<light*>::iterator	it;
-
-	//
-	it = v_dynamic_active.find	(L);
-	if (it!=v_dynamic_active.end())	
-	{
-		v_dynamic_active.erase	(it);
-		xr_delete		(L);
-		return;
-	}
-
-	// 
-	it = v_dynamic_inactive.find	(L);
-	if (it!=v_dynamic_inactive.end())	
-	{
-		v_dynamic_inactive.erase(it);
-		xr_delete	(L);
-		return;
-	}
-
-	// ???
 	xr_delete	(L);
-	Msg			("! xrRENDER: unregistered light destroyed");
 }
 
-void			CLight_DB::Activate		(light* L)
-{
-	xr_set<light*>::iterator	it		= v_dynamic_inactive.find	(L);
-	R_ASSERT							(it!=v_dynamic_inactive.end());
-	v_dynamic_inactive.erase			(it);
-
-	v_dynamic_active.insert				(L);
-}
-void			CLight_DB::Deactivate	(light* L)
-{
-	xr_set<light*>::iterator	it		= v_dynamic_active.find	(L);
-	R_ASSERT							(it!=v_dynamic_active.end());
-	v_dynamic_active.erase				(it);
-
-	v_dynamic_inactive.insert			(L);
-}
-
-void			CLight_DB::add_sector_lights(xr_vector<WORD> &L)
-{
-	for (xr_vector<WORD>::iterator I=L.begin(); I!=L.end(); I++)
-	{
-		WORD ID		= *I;
-		light*  T	= v_static[ID];
-		if ((0==T) || (T->dwFrame==Device.dwFrame)) continue;
-		
-		if (RImplementation.View->testSphere_dirty	(T->position, T->range))
-		{
-			T->dwFrame				=Device.dwFrame;
-			if (T->flags.bShadow)	v_selected_shadowed.push_back	(T);
-			else					v_selected_unshadowed.push_back	(T);
-		}
-	}
-}
-void			CLight_DB::add_sector_dlight(light* L)
+void			CLight_DB::add_light		(light* L)
 {
 	if (Device.dwFrame==L->dwFrame)	return;
 	L->dwFrame	=	Device.dwFrame;
@@ -161,7 +95,8 @@ void			CLight_DB::add_sector_dlight(light* L)
 	}
 	else	v_selected_unshadowed.push_back	(L);
 }
-void			CLight_DB::Update()
+
+void			CLight_DB::Update			()
 {
 	// Clear selection
 	v_selected_shadowed.clear	();

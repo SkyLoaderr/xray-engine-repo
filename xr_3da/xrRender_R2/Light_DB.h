@@ -9,20 +9,14 @@ public:
 	Fvector3				sun_color;
 private:
 	xr_vector<light*>		v_static;
-	xr_set<light*>			v_dynamic_active;
-	xr_set<light*>			v_dynamic_inactive;
 public:
 	xr_vector<light*>		v_selected_shadowed;
 	xr_vector<light*>		v_selected_unshadowed;
 public:
-	void					add_sector_lights	(xr_vector<WORD> &	L);
-	void					add_sector_dlight	(light*			L);
+	void					add_light			(light*		L);
 
-	void					Load				(IReader* fs);
+	void					Load				(IReader*	fs);
 	void					Unload				();
-
-	void					Activate			(light* L);
-	void					Deactivate			(light* L);
 
 	light*					Create				();
 	void					Destroy				(light*);
