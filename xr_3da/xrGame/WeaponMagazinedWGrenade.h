@@ -43,9 +43,9 @@ public:
 	EState			m_state;
 
 	LPSTR			pstrWallmark;
-	Shader*			hWallmark;
+	ref_shader		hWallmark;
 	float			fWallmarkSize;
-	ref_sound			sndRicochet[SND_RIC_COUNT], sndExplode;
+	ref_sound		sndRicochet[SND_RIC_COUNT], sndExplode;
 	ESoundTypes		m_eSoundRicochet, m_eSoundExplode;
 	s32				m_engineTime, m_explodeTime, m_flashTime;
 	char			m_effectsSTR[255];

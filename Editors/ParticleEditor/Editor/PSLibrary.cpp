@@ -39,9 +39,9 @@ void CPSLibrary::OnDeviceCreate	()
 void CPSLibrary::OnDeviceDestroy()
 {
 	for (PS::PSIt s_it = m_PSs.begin(); s_it!=m_PSs.end(); s_it++)
-		Device.Shader.Delete(s_it->m_CachedShader);
+		s_it->m_CachedShader.destroy();
 	for (PS::PEIt g_it = m_PEs.begin(); g_it!=m_PEs.end(); g_it++)
-		Device.Shader.Delete((*g_it)->m_CachedShader);
+		(*g_it)->m_CachedShader.destroy();
 }
 
 PS::SDef* CPSLibrary::FindPS(LPCSTR Name)
@@ -80,12 +80,12 @@ void CPSLibrary::Remove(const char* nm)
 {
     PS::SDef* sh = FindPS(nm);
     if (sh){ 
-    	Device.Shader.Delete(sh->m_CachedShader);
+    	sh->m_CachedShader.destroy();
     	m_PSs.erase(sh);
     }else{
     	PS::PEIt it = FindPEIt(nm);
         if (it!=m_PEs.end()){
-	    	Device.Shader.Delete((*it)->m_CachedShader);
+	    	(*it)->m_CachedShader.destroy();
 	       	m_PEs.erase	(it);
         	xr_delete	(*it);
         }

@@ -41,7 +41,7 @@ protected:
 	Fvector					vShellPoint;
 
 	// Media :: flames
-	svector<Shader*,8>		hFlames;
+	svector<ref_shader,8>	hFlames;
 	int						iFlameDiv;
 	float					fFlameLength;
 	float					fFlameSize;
@@ -55,8 +55,8 @@ protected:
 	int						iSlotBinding;
 
 	LPSTR					pstrWallmark;
-	Shader*					hWallmark;
-	Shader*					hUIIcon;
+	ref_shader				hWallmark;
+	ref_shader				hUIIcon;
 	float					fWallmarkSize;
 									
 	////int						iAmmoLimit;			// maximum ammo we can have
@@ -133,8 +133,8 @@ protected:
 	// Utilities
 	void					SoundCreate			(ref_sound&		dest, LPCSTR name, int iType=0, BOOL bCtrlFreq=FALSE);
 	void					SoundDestroy		(ref_sound&		dest);
-	void					ShaderCreate		(Shader*	&dest, LPCSTR S, LPCSTR T);
-	void					ShaderDestroy		(Shader*	&dest);
+	void					ShaderCreate		(ref_shader&	dest, LPCSTR S, LPCSTR T);
+	void					ShaderDestroy		(ref_shader&	dest);
 
 public:
 	enum EState
@@ -204,10 +204,10 @@ public:
 
 	// @@@ WT: Subject to delete
 	IC int					GetAmmoLimit		()				{	return 0/*iAmmoLimit*/;						}
-	int					GetAmmoCurrent		();//				{	return /*m_pAmmo?m_pAmmo->m_boxSize:*/0;	}
+	int						GetAmmoCurrent		();//				{	return /*m_pAmmo?m_pAmmo->m_boxSize:*/0;	}
 	//
 
-	IC Shader*				GetUIIcon			()				{	return hUIIcon;								}
+	IC ref_shader			GetUIIcon			()				{	return hUIIcon;								}
 	IC void					SetHUDmode			(BOOL H)		{	hud_mode = H;								}
 	IC BOOL					GetHUDmode			()				{	return hud_mode;							}
 	IC int					GetSlot				()				{	return iSlotBinding;						}

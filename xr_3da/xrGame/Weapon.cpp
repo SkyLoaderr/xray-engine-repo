@@ -118,22 +118,22 @@ void CWeapon::SoundDestroy	(	ref_sound& dest)
 	dest.destroy			();
 }
 
-void CWeapon::ShaderCreate	(Shader* &dest, LPCSTR S, LPCSTR T)
+void CWeapon::ShaderCreate	(ref_shader &dest, LPCSTR S, LPCSTR T)
 {
-	if (dest)	return;
+	if (dest())	return;
 	string256	name,temp;
 
 	// test 'WEAPONS' folder 
 	strconcat	(name,"weapons\\",GetName(),"\\",T);
 	if (FS.exist(temp,"$game_textures$",name,".dds"))	
 	{
-		dest = Device.Shader.Create(S,name); 
+		dest.create(S,name); 
 		return;
 	}
 	strconcat	(name,"weapons\\generic\\",T);
 	if (FS.exist(temp,"$game_textures$",name,".dds"))	
 	{
-		dest = Device.Shader.Create(S,name);
+		dest.create(S,name); 
 		return;
 	}
 
@@ -141,22 +141,21 @@ void CWeapon::ShaderCreate	(Shader* &dest, LPCSTR S, LPCSTR T)
 	strconcat	(name,"ui\\ui_hud_wpn_",GetName());
 	if (FS.exist(temp,"$game_textures$",name,".dds"))	
 	{
-		dest = Device.Shader.Create(S,name);
+		dest.create(S,name); 
 		return;
 	}
 	strcpy		(name,"ui\\ui_hud_wpn_generic");
 	if (FS.exist(temp,"$game_textures$",name,".dds"))	
 	{
-		dest = Device.Shader.Create(S,name);
+		dest.create(S,name); 
 		return;
 	}
 	Debug.fatal	("Can't find texture '%s' for weapon '%s'",T,GetName());
 }
 
-void CWeapon::ShaderDestroy	(Shader* &dest)
+void CWeapon::ShaderDestroy	(ref_shader &dest)
 {
-	if (0==dest)	return;
-	Device.Shader.Delete	(dest);
+	dest.destroy			();
 }
 
 float CWeapon::GetPrecision	()

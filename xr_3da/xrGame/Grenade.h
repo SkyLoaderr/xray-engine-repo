@@ -41,7 +41,7 @@ public:
 	xr_list<CGameObject*> m_blasted;
 
 	LPSTR pstrWallmark;
-	Shader* hWallmark;
+	ref_shader hWallmark;
 	float fWallmarkSize;
 	ref_sound sndRicochet[SND_RIC_COUNT], sndExplode, sndCheckout;
 	ESoundTypes m_eSoundRicochet, m_eSoundExplode, m_eSoundCheckout;

@@ -75,7 +75,7 @@ public:
     int					m_ActionCount;
     PAPI::PAHeader*		m_ActionList;
 
-	Shader*				m_CachedShader;
+	ref_shader			m_CachedShader;
 #ifdef _PARTICLE_EDITOR
 public:
 	AnsiString			m_SourceText;

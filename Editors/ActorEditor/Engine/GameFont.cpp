@@ -72,13 +72,13 @@ void CGameFont::Initialize		(LPCSTR cShader, LPCSTR cTexture, u32 flags)
 CGameFont::~CGameFont()
 {
 	// Shading
-	Device.Shader.Delete		(pShader	);
-	Device.Shader.DeleteGeom	(pGeom		);
+	pShader.destroy		();
+	pGeom.destroy		();
 }
 
 void CGameFont::OnRender()
 {
-	if (pShader) RCache.set_Shader	(pShader);
+	if (pShader()) RCache.set_Shader	(pShader);
 
 	if (!(uFlags&fsValid))
 	{
@@ -114,7 +114,7 @@ void CGameFont::OnRender()
 
 		// lock AGP memory
 		u32	vOffset;
-		FVF::TL* v		= (FVF::TL*)RCache.Vertex.Lock	(length*4,pGeom->vb_stride,vOffset);
+		FVF::TL* v		= (FVF::TL*)RCache.Vertex.Lock	(length*4,pGeom.stride(),vOffset);
 		FVF::TL* start	= v;
 
 		// fill vertices
@@ -167,7 +167,7 @@ void CGameFont::OnRender()
 
 		// Unlock and draw
 		u32 vCount = v-start;
-		RCache.Vertex.Unlock		(vCount,pGeom->vb_stride);
+		RCache.Vertex.Unlock		(vCount,pGeom.stride());
 		if (vCount)
 		{
 			RCache.set_Geometry		(pGeom);

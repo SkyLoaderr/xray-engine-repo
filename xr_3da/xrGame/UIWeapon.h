@@ -13,7 +13,7 @@ class CUIWeapon
 
 	CUIStaticItem	back;
 	CUIStaticItem	weapon;
-	Shader*			cur_shader;
+	ref_shader		cur_shader;
 public:
 					CUIWeapon		();
 					~CUIWeapon		();

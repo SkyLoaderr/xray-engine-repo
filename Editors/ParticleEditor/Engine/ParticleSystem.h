@@ -145,7 +145,7 @@ struct ENGINE_API 	SParams
 
 struct ENGINE_API SDef: public SParams
 {
-	Shader*				m_CachedShader;
+	ref_shader			m_CachedShader;
     u8					m_Reserved[60];
 	string64			m_Computer;
     string64			m_ShaderName;

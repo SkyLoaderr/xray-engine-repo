@@ -38,8 +38,8 @@ protected:
 	float					fTCHeight;
 	xr_vector<String>		strings;
 
-	Shader*					pShader;
-	SGeometry*				pGeom;
+	ref_shader				pShader;
+	ref_geom				pGeom;
 
 	u32						uFlags;
 public:

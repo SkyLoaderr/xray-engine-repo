@@ -361,9 +361,8 @@ void CWeaponMagazined::MediaLOAD		()
 	string256		name;
 	for (u32 i=0; i<scnt; i++)
 	{
-		Shader* SH			= 0;
-		ShaderCreate		(SH,"effects\\flame",_GetItem(S,i,name));
-		hFlames.push_back	(SH);
+		hFlames.push_back	(ref_shader());
+		ShaderCreate		(hFlames.back(),"effects\\flame",_GetItem(S,i,name));
 	}
 }
 

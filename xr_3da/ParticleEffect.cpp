@@ -299,7 +299,7 @@ BOOL CParticleEffect::Compile(CPEDef* def)
 		if (m_Def->m_Flags.is(CPEDef::dfTimeLimit))
 			m_ElapsedLimit 		= m_Def->m_TimeLimit;
     }
-	hShader 					= def?def->m_CachedShader:0;
+	if (def)	hShader			= def->m_CachedShader();
 	return TRUE;
 }
 
