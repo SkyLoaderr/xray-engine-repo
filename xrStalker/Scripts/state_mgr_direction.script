@@ -14,12 +14,14 @@ function eva_state_mgr_direction:evaluate()
 	   self.object:see(self.st.look_object) == true
 	then
 		self.target_position = self.st.look_object:position()
+--		printf("changed for object")
 	end
 		
 	if self.target_position == nil and
 	   self.st.look_position ~= nil
 	then
 		self.target_position = self.st.look_position
+--		printf("changed for position")
 	end
 
 	if self.target_position == nil then
@@ -29,7 +31,10 @@ function eva_state_mgr_direction:evaluate()
 	
 	if self.target_position ~= nil then
 		local dir = self.object:position():sub(self.target_position)
---		printf("%s", utils.angle_diff(dir, self.object:head_orientation()))
+--		printf("pos: %s %s %s", self.target_position.x, self.target_position.y, self.target_position.z)
+--		printf("lpos: %s %s %s", self.st.look_position.x, self.st.look_position.y, self.st.look_position.z)
+--		printf("head: %s", utils.angle_diff(dir, self.object:head_orientation()))
+--		printf("body: %s", utils.angle_diff(dir, self.object:direction()))
 		if utils.angle_diff(dir, self.object:head_orientation()) > 5 then
 			return false
 		else
@@ -78,7 +83,8 @@ function act_state_mgr_direction_turn:execute()
 	then
 		self.target_position = self.st.look_position
 	end
-	self.object:set_sight(look.direction, self.target_position:sub(self.object:position()), true)
+	self.object:set_sight(look.direction, utils.vector_copy_by_val(self.target_position):sub(self.object:position()), true)
+	--self.object:set_sight(look.point, self.target_position, 0)
 
 end
 function act_state_mgr_direction_turn:finalize()
