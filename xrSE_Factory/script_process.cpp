@@ -13,6 +13,8 @@
 #include "script_thread.h"
 #include "ai_space.h"
 
+string4096			g_ca_stdout;
+
 #ifdef USE_DEBUGGER
 #	include "script_debugger.h"
 #endif
@@ -89,28 +91,24 @@ void CScriptProcess::update()
 	run_strings			();
 	if (m_tpScripts.empty())	return;
 
-	// prepare output
-	LPSTR	   _save	= g_ca_stdout;
-	string4096 _; _	[0] = 0;
-	g_ca_stdout			= _;
-	g_ca_stdout[0]		= 0;
-
 	// update script
+	g_ca_stdout[0]		= 0;
 	u32		_id			= (++m_iterator)%m_tpScripts.size();
 	if (!m_tpScripts[_id]->Update()) {
 			xr_delete			(m_tpScripts[_id]);
 			m_tpScripts.erase	(m_tpScripts.begin() + _id);
 			--m_iterator;		// try to avoid skipping
 	}
-	if (xr_strlen(_))
-		ai().script_engine().script_log(ScriptStorage::eLuaMessageTypeInfo,"%s",_);
+	if (g_ca_stdout[0])
+	{
+		fputc							(0,stderr);
+		ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeInfo,"%s",g_ca_stdout);
+		fflush							(stderr);
+	}
 
 #ifdef _DEBUG
 	lua_setgcthreshold	(ai().script_engine().lua(),0);
 #endif
-
-	// restore output
-	g_ca_stdout			= _save;
 }
 
 void CScriptProcess::add_script	(LPCSTR	script_name)
