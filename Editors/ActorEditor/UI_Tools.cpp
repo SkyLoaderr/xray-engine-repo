@@ -260,7 +260,7 @@ void CActorTools::OnFrame(){
     }
 }
 
-void CActorTools::ZoomObject(){
+void CActorTools::ZoomObject(bool bSelOnly){
 	VERIFY(m_bReady);
     if (m_pEditObject)
         Device.m_Camera.ZoomExtents(m_pEditObject->GetBox());

@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------
-#ifndef UIToolsH
-#define UIToolsH
+#ifndef UI_ToolsH
+#define UI_ToolsH
 
 #include "eltree.hpp"
 #include "mxplacemnt.hpp"
@@ -150,9 +150,13 @@ public:
     void				PauseMotion			();
     bool				RenameMotion		(LPCSTR old_name, LPCSTR new_name);
 
-    void				ZoomObject			();
+    void				ZoomObject			(bool bSelOnly);
     void				ChangeAction		(EAction action);
     void				MakePreview			();
+
+	void				SetNumPosition		(CCustomObject* p1){;}
+	void				SetNumRotation		(CCustomObject* p1){;}
+	void				SetNumScale			(CCustomObject* p1){;}
 
     bool				Load				(LPCSTR name);
     bool				Save				(LPCSTR name);
@@ -185,6 +189,9 @@ public:
     void 				SelectPreviewObject	(bool bClear);
     void				SetPreviewObjectPrefs();
 
+    void				ShowProperties		();
+    void				UpdateProperties	();
+    
 	void				GetStatTime			(float& a, float& b, float& c);
 };
 extern CActorTools	Tools;

@@ -6,24 +6,25 @@
 #include "topbar.h"
 #include "leftbar.h"
 #include "bottombar.h"
-#include "EditLibrary.h"
-#include "EditLightAnim.h"
+//#include "EditLibrary.h"
+//#include "EditLightAnim.h"
 #include "LightAnimLibrary.h"
-#include "ObjectList.h"
+//#include "ObjectList.h"
 #include "EditorPref.h"
 #include "main.h"
 #include "EditorPref.h"
 #include "ImageEditor.h"
 #include "d3dutils.h"
 
-#include "builder.h"
+//#include "builder.h"
 
-#include "Scene.h"
+//#include "Scene.h"
 #include "PSLibrary.h"
 #include "Library.h"
-#include "UI_Tools.h"
-#include "folderlib.h"
+//#include "UI_Tools.h"
+//#include "folderlib.h"
 #include "ui_main.h"
+#include "ui_MainCommand.h"
 
 bool TUI::Command( int _Command, int p1, int p2 ){
 	if ((_Command!=COMMAND_INITIALIZE)&&!m_bReady) return false;
@@ -41,14 +42,14 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 		//----------------
         if (UI.OnCreate()){
             Tools.OnCreate	();
-            Scene.OnCreate	();
+//S            Scene.OnCreate	();
             PSLib.OnCreate	();
             Lib.OnCreate	();
             LALib.OnCreate	();
 
 		    Command			(COMMAND_CLEAR);
 			Command			(COMMAND_RENDER_FOCUS);
-			Command			(COMMAND_CHANGE_TARGET, etObject);
+//S			Command			(COMMAND_CHANGE_TARGET, etObject);
 			Command			(COMMAND_CHANGE_ACTION, eaSelect);
         }else{
         	bRes = false;
@@ -56,7 +57,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     	}break;
 	case COMMAND_DESTROY:
 		Command				(COMMAND_CLEAR);
-		Scene.OnDestroy		();
+//S		Scene.OnDestroy		();
         LALib.OnDestroy		();
     	PSLib.OnDestroy		();
 		Lib.OnDestroy		();
@@ -76,10 +77,10 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	    frmEditorPreferences->Run();
         break;
 	case COMMAND_CHANGE_TARGET:
-	  	Tools.ChangeTarget(p1);
+//S	  	Tools.ChangeTarget(p1);
         break;
 	case COMMAND_CHANGE_ACTION:
-		Tools.ChangeAction(p1);
+		Tools.ChangeAction((EAction)p1);
         break;
     case COMMAND_IMAGE_EDITOR:
     	TfrmImageLib::EditImageLib(AnsiString("Image Editor"));
@@ -109,7 +110,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     	Device.Shader.Evict();
     	break;
     case COMMAND_CHECK_MODIFIED:
-    	bRes = Scene.IsModified();
+//S    	bRes = Scene.IsModified();
 		break;
 	case COMMAND_EXIT:
     	bRes = Tools.IfModified();
