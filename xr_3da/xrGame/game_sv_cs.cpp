@@ -25,9 +25,10 @@ void	game_sv_CS::OnRoundStart	()
 		u32 cnt = get_count();
 		l_memAr.resize(cnt);
 		for(u32 it = 0; it < cnt; it++) {
+			if(get_it(it)->flags&GAME_PLAYER_FLAG_VERY_VERY_DEAD) continue;
 			u32 l_chunk = 0;
 			CFS_Memory &l_mem = l_memAr[it];
-			vector<u16>* l_pCilds = get_children(get_it_2_id(it));//&l_pActor->children; if(!l_pCilds) continue;
+			vector<u16>* l_pCilds = get_children(get_it_2_id(it));
 			for(u32 cit = 0; cit < l_pCilds->size(); cit++) {
 				xrSE_Weapon *l_pWeapon = dynamic_cast<xrSE_Weapon*>(l_pServer->ID_to_entity((*l_pCilds)[cit]));
 				if(!l_pWeapon) continue;
@@ -38,7 +39,8 @@ void	game_sv_CS::OnRoundStart	()
 				l_mem.open_chunk(l_chunk++); l_mem.write(l_packet.B.data, l_packet.B.count); l_mem.close_chunk();
 			}
 		}
-	} else {
+	}
+	{
 		string256 fn;
 		if (Engine.FS.Exist(fn,Path.GameData,"game_cs.ltx")) {
 			CInifile* ini = CInifile::Create(fn);
@@ -73,6 +75,7 @@ void	game_sv_CS::OnRoundStart	()
 			u32 cnt = get_count();
 			l_memAr.resize(cnt);
 			for(u32 it = 0; it < cnt; it++) {
+				if(!(get_it(it)->flags&GAME_PLAYER_FLAG_VERY_VERY_DEAD) && (round!=-1)) continue;
 				u32 l_chunk = 0;
 				CFS_Memory &l_mem = l_memAr[it];
 				if(W_prim) {
