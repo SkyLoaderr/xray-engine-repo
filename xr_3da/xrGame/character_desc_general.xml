@@ -12,6 +12,13 @@
 		<team>Stalker</team>
 		<rank>50</rank>
 		<reputation>50</reputation>
+
+		<visual>actors\soldier\soldier_bandana</visual>
+		<supplies>
+		[spawn] \n
+		wpn_svu \n
+		ammo_7.62x54_7h1 = 1 \n
+		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
@@ -31,6 +38,13 @@
 		<team>Stalker</team>
 		<rank>80</rank>
 		<reputation>70</reputation>
+
+		<visual>actors\soldier\soldier_bandana_1</visual>
+		<supplies>
+		[spawn] \n
+		wpn_svu \n
+		ammo_7.62x54_7h1 = 1 \n
+		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
@@ -49,13 +63,12 @@
 		<team>Stalker</team>
 		<rank>40</rank>
 		<reputation>60</reputation>
-		
-		<visual>actors\bandit\stalker_bandit_1</visual>
+
+		<visual>actors\soldier\soldier_bandana_2</visual>
 		<supplies>
 		[spawn] \n
 		wpn_svu \n
-		ammo_7.62x54_7h1 = 5 \n
-		ammo_7.62x54_ap = 5 \n
+		ammo_7.62x54_7h1 = 1 \n
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
@@ -76,6 +89,13 @@
 		<team>Stalker</team>
 		<rank>60</rank>
 		<reputation>70</reputation>
+
+		<visual>actors\soldier\soldier_bandana_3</visual>
+		<supplies>
+		[spawn] \n
+		wpn_svu \n
+		ammo_7.62x54_7h1 = 1 \n
+		</supplies>
 				
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
@@ -96,6 +116,13 @@
 		<team>Stalker</team>
 		<rank>80</rank>
 		<reputation>25</reputation>
+
+		<visual>actors\soldier\soldier_bandana_4</visual>
+		<supplies>
+		[spawn] \n
+		wpn_svu \n
+		ammo_7.62x54_7h1 = 1 \n
+		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
@@ -113,6 +140,13 @@
 		<team>Stalker</team>
 		<rank>60</rank>
 		<reputation>10</reputation>
+
+		<visual>actors\soldier\soldier_bandana_5</visual>
+		<supplies>
+		[spawn] \n
+		wpn_svu \n
+		ammo_7.62x54_7h1 = 1 \n
+		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
@@ -132,6 +166,13 @@
 		<team>Stalker</team>
 		<rank>50</rank>
 		<reputation>80</reputation>
+
+		<visual>actors\soldier\soldier_bandana_6</visual>
+		<supplies>
+		[spawn] \n
+		wpn_svu \n
+		ammo_7.62x54_7h1 = 1 \n
+		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
@@ -151,6 +192,13 @@
 		<team>Stalker</team>
 		<rank>70</rank>
 		<reputation>90</reputation>
+
+		<visual>actors\soldier\soldier_beret</visual>
+		<supplies>
+		[spawn] \n
+		wpn_svu \n
+		ammo_7.62x54_7h1 = 1 \n
+		</supplies>	
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
@@ -172,6 +220,13 @@
 		<team>Stalker</team>
 		<rank>30</rank>
 		<reputation>40</reputation>
+
+		<visual>actors\soldier\soldier_beret_1</visual>
+		<supplies>
+		[spawn] \n
+		wpn_svu \n
+		ammo_7.62x54_7h1 = 1 \n
+		</supplies>	
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
@@ -192,6 +247,13 @@
 		<team>Stalker</team>
 		<rank>20</rank>
 		<reputation>10</reputation>
+
+		<visual>actors\soldier\soldier_beret_2</visual>
+		<supplies>
+		[spawn] \n
+		wpn_svu \n
+		ammo_7.62x54_7h1 = 1 \n
+		</supplies>	
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
@@ -213,6 +275,13 @@
 		<team>Stalker</team>
 		<rank>70</rank>
 		<reputation>10</reputation>
+
+		<visual>actors\soldier\soldier_beret_3</visual>
+		<supplies>
+		[spawn] \n
+		wpn_svu \n
+		ammo_7.62x54_7h1 = 1 \n
+		</supplies>	
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
@@ -232,6 +301,13 @@
 		<team>Stalker</team>
 		<rank>60</rank>
 		<reputation>20</reputation>
+
+		<visual>actors\soldier\soldier_beret_4</visual>
+		<supplies>
+		[spawn] \n
+		wpn_svu \n
+		ammo_7.62x54_7h1 = 1 \n
+		</supplies>	
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
