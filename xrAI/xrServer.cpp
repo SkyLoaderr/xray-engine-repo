@@ -197,7 +197,7 @@ void			xrServer::SendTo_LL			(DPNID ID, void* data, u32 size, u32 dwFlags, u32 d
 		// optimize local traffic
 		Level().OnMessage		(data,size);
 	} else {
-		IPureServer::SendTo_LL(ID,data,size,dwFlags,dwTimeout);
+		IPureServer::SendTo_LL	(ID,data,size,dwFlags,dwTimeout);
 	}
 }
 
