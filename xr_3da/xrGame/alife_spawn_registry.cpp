@@ -23,7 +23,7 @@ CALifeSpawnRegistry::~CALifeSpawnRegistry	()
 
 void CALifeSpawnRegistry::save	(IWriter &memory_stream)
 {
-	Msg							("* Saving spawn extra info...");
+	Msg							("* Saving spawns...");
 	memory_stream.open_chunk	(SPAWN_CHUNK_DATA);
 	
 	memory_stream.open_chunk	(0);
