@@ -85,12 +85,15 @@ void CWeapon::Load(CInifile* ini, const char* section)
 	camRelax		= ini->ReadFLOAT	(section,"cam_relax"		);
 	camDispersion	= ini->ReadFLOAT	(section,"cam_dispersion"	); camDispersion = deg2rad(camDispersion);
 
+	// tracer
 	tracerHeadSpeed	= ini->ReadFLOAT	(section,"tracer_head_speed"	);
 	tracerTrailCoeff= ini->ReadFLOAT	(section,"tracer_trail_scale"	);
 	tracerStartLength= ini->ReadFLOAT	(section,"tracer_start_length"	);
 	tracerWidth		= ini->ReadFLOAT	(section,"tracer_width"			);
 
-	light_base.SetColor	(ini->ReadCOLOR	(section,"light_color"		));
+	// light
+	Fvector clr		= ini->ReadVECTOR	(section,"light_color"		);
+	light_base.SetColor	(clr.x,clr.y,clr.z);
 	light_base.SetRange	(ini->ReadFLOAT	(section,"light_range"		));
 	light_var_color	= ini->ReadFLOAT	(section,"light_var_color"	);
 	light_var_range	= ini->ReadFLOAT	(section,"light_var_range"	);
