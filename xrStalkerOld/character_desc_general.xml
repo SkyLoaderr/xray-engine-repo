@@ -42,6 +42,10 @@
 		<rank>70</rank>
 		<reputation>50</reputation>
 		<visual>actors\barman\barman</visual>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
 	<specific_character id="doctor_izgoy" no_random = "1">
@@ -58,6 +62,10 @@
 		<rank>80</rank>
 		<reputation>0</reputation>
 		<visual>actors\izgoy\izgoy</visual>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 	
 	<specific_character id="actor" no_random = "1">
@@ -89,5 +97,9 @@
 		<community>stalker</community>
 		<rank>0</rank>
 		<reputation>0</reputation>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 </xml>
