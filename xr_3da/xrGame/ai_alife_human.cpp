@@ -133,7 +133,7 @@ CSE_ALifeItemWeapon	*CSE_ALifeHumanAbstract::tpfGetBestWeapon(EHitType &tHitType
 			continue;
 
 		l_tpALifeItemWeapon->m_dwAmmoAvailable = get_available_ammo_count(l_tpALifeItemWeapon);
-		if (l_tpALifeItemWeapon->m_dwAmmoAvailable) {
+		if (l_tpALifeItemWeapon->m_dwAmmoAvailable || (l_tpALifeItemWeapon->m_dwSlot == 0) || (l_tpALifeItemWeapon->m_dwSlot == 3)) {
 			u32					l_dwCurrentBestWeapon = u32(-1); 
 			switch (l_tpALifeItemWeapon->m_tClassID) {
 				case CLSID_OBJECT_W_RPG7:
@@ -163,7 +163,10 @@ CSE_ALifeItemWeapon	*CSE_ALifeHumanAbstract::tpfGetBestWeapon(EHitType &tHitType
 					l_dwCurrentBestWeapon = 5;
 					break;
 				}
-				default						: NODEFAULT;
+				case CLSID_OBJECT_W_KNIFE: {
+					l_dwCurrentBestWeapon = 1;
+					break;
+				}
 			}
 			if (l_dwCurrentBestWeapon > l_dwBestWeapon) {
 				l_dwBestWeapon = l_dwCurrentBestWeapon;
@@ -180,44 +183,72 @@ CSE_ALifeItemWeapon	*CSE_ALifeHumanAbstract::tpfGetBestWeapon(EHitType &tHitType
 
 bool CSE_ALifeHumanAbstract::bfPerformAttack()
 {
-#pragma todo("Knife and some other weapons need no ammo!")
-	R_ASSERT2					(m_tpCurrentBestWeapon->m_dwAmmoAvailable,"No ammo for the selected weapon!");
-	m_tpCurrentBestWeapon->m_dwAmmoAvailable--;
-	if (m_tpCurrentBestWeapon->m_dwAmmoAvailable)
-		return					(true);
-	
-	for (int i=0, n=children.size() ; i<n; i++) {
-		CSE_ALifeItemAmmo		*l_tpALifeItemAmmo = dynamic_cast<CSE_ALifeItemAmmo*>(m_tpALife->tpfGetObjectByID(children[i]));
-		if (l_tpALifeItemAmmo && strstr(m_tpCurrentBestWeapon->m_caAmmoSections,l_tpALifeItemAmmo->s_name) && l_tpALifeItemAmmo->a_elapsed) {
-			m_tpALife->vfReleaseObject(l_tpALifeItemAmmo,true);
-			children.erase		(children.begin() + i);
-			i--;
-			n--;
+	switch (m_tpCurrentBestWeapon->m_dwSlot) {
+		case 0 :
+			return						(true);
+		case 3 : {
+			bool						l_bOk = false;
+			OBJECT_IT					I = children.begin();
+			OBJECT_IT					E = children.end();
+			for ( ; I != E; I++)
+				if (*I == m_tpCurrentBestWeapon->ID) {
+					l_bOk				= true;
+					m_tpALife->vfReleaseObject(m_tpALife->tpfGetObjectByID(*I),true);
+					children.erase		(I);
+					break;
+				}
+			R_ASSERT2					(l_bOk,"Cannot find specified weapon in the inventory");
+			return						(false);
+		}
+		default : {
+			R_ASSERT2					(m_tpCurrentBestWeapon->m_dwAmmoAvailable,"No ammo for the selected weapon!");
+			m_tpCurrentBestWeapon->m_dwAmmoAvailable--;
+			if (m_tpCurrentBestWeapon->m_dwAmmoAvailable)
+				return					(true);
+
+			for (int i=0, n=children.size() ; i<n; i++) {
+				CSE_ALifeItemAmmo		*l_tpALifeItemAmmo = dynamic_cast<CSE_ALifeItemAmmo*>(m_tpALife->tpfGetObjectByID(children[i]));
+				if (l_tpALifeItemAmmo && strstr(m_tpCurrentBestWeapon->m_caAmmoSections,l_tpALifeItemAmmo->s_name) && l_tpALifeItemAmmo->a_elapsed) {
+					m_tpALife->vfReleaseObject(l_tpALifeItemAmmo,true);
+					children.erase		(children.begin() + i);
+					i--;
+					n--;
+				}
+			}
+			m_tpCurrentBestWeapon		= 0;
+			return						(false);
 		}
 	}
-	m_tpCurrentBestWeapon		= 0;
-	return						(false);
 }
 
 void CSE_ALifeHumanAbstract::vfUpdateWeaponAmmo()
 {
 	if (!m_tpCurrentBestWeapon)
 		return;
-	for (int i=0, n=children.size() ; i<n; i++) {
-		CSE_ALifeItemAmmo		*l_tpALifeItemAmmo = dynamic_cast<CSE_ALifeItemAmmo*>(m_tpALife->tpfGetObjectByID(children[i]));
-		if (l_tpALifeItemAmmo && strstr(m_tpCurrentBestWeapon->m_caAmmoSections,l_tpALifeItemAmmo->s_name)) {
-			if (m_tpCurrentBestWeapon->m_dwAmmoAvailable > l_tpALifeItemAmmo->a_elapsed) {
-				m_tpCurrentBestWeapon->m_dwAmmoAvailable	-= l_tpALifeItemAmmo->a_elapsed;
-				continue;
+
+	switch (m_tpCurrentBestWeapon->m_dwSlot) {
+		case 0 :
+		case 3 :
+			return;
+		default : {
+			for (int i=0, n=children.size() ; i<n; i++) {
+				CSE_ALifeItemAmmo		*l_tpALifeItemAmmo = dynamic_cast<CSE_ALifeItemAmmo*>(m_tpALife->tpfGetObjectByID(children[i]));
+				if (l_tpALifeItemAmmo && strstr(m_tpCurrentBestWeapon->m_caAmmoSections,l_tpALifeItemAmmo->s_name)) {
+					if (m_tpCurrentBestWeapon->m_dwAmmoAvailable > l_tpALifeItemAmmo->a_elapsed) {
+						m_tpCurrentBestWeapon->m_dwAmmoAvailable	-= l_tpALifeItemAmmo->a_elapsed;
+						continue;
+					}
+					if (m_tpCurrentBestWeapon->m_dwAmmoAvailable) {
+						l_tpALifeItemAmmo->a_elapsed = u16(l_tpALifeItemAmmo->a_elapsed - u16(m_tpCurrentBestWeapon->m_dwAmmoAvailable));
+						continue;
+					}
+					m_tpALife->vfReleaseObject(l_tpALifeItemAmmo,true);
+					children.erase		(children.begin() + i);
+					i--;
+					n--;
+				}
 			}
-			if (m_tpCurrentBestWeapon->m_dwAmmoAvailable) {
-				l_tpALifeItemAmmo->a_elapsed = u16(l_tpALifeItemAmmo->a_elapsed - u16(m_tpCurrentBestWeapon->m_dwAmmoAvailable));
-				continue;
-			}
-			m_tpALife->vfReleaseObject(l_tpALifeItemAmmo,true);
-			children.erase		(children.begin() + i);
-			i--;
-			n--;
+			break;
 		}
 	}
 }
@@ -259,5 +290,5 @@ void CSE_ALifeHumanAbstract::vfAttachItems()
 	R_ASSERT2					(m_fCumulativeItemMass < EPS_L,"Invalid cumulative mass value");
 	m_fCumulativeItemMass		= 0.f;
 #pragma todo("Append with item choice logic")
-	
+
 }

@@ -26,6 +26,11 @@ void CSE_ALifeItem::STATE_Write				(NET_Packet &tNetPacket)
 void CSE_ALifeItem::STATE_Read				(NET_Packet &tNetPacket, u16 size)
 {
 	inherited::STATE_Read		(tNetPacket, size);
+	if ((m_tClassID == CLSID_OBJECT_W_BINOCULAR) && (m_wVersion < 37)) {
+		tNetPacket.r_u16		();
+		tNetPacket.r_u16		();
+		tNetPacket.r_u8			();
+	}
 }
 
 void CSE_ALifeItem::UPDATE_Write			(NET_Packet &tNetPacket)
@@ -121,6 +126,7 @@ CSE_ALifeItemWeapon::CSE_ALifeItemWeapon	(LPCSTR caSection) : CSE_ALifeItem(caSe
 	m_fHitPower					= pSettings->r_float(caSection,"hit_power");
 	m_tHitType					= g_tfString2HitType(pSettings->r_string(caSection,"hit_type"));
 	m_caAmmoSections			= pSettings->r_string(caSection,"ammo_class");
+	m_dwSlot					= pSettings->r_u32(caSection,"slot");
 	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
         set_visual				(pSettings->r_string(caSection,"visual"));
 }

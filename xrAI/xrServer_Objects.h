@@ -17,7 +17,7 @@
 	#include "PropertiesListHelper.h"
 #endif
 
-#define SPAWN_VERSION	u16(36)
+#define SPAWN_VERSION	u16(37)
 //------------------------------------------------------------------------------
 // Version history
 //------------------------------------------------------------------------------
@@ -51,6 +51,7 @@
 //		and CSE_ALifeHumanAbstract		appended with known_traders property
 //		and CSE_ALifeTask				appended with try count property
 //		and CSE_ALifePersonalTask		no more exists
+// 37 - бинокль имеет ServerEntity не CSE_ALifeItemWeapon, а CSE_ALifeItem
 //------------------------------------------------------------------------------
 
 class CPureServerObject : public IPureServerObject {

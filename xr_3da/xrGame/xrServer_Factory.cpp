@@ -75,12 +75,12 @@ CSE_Abstract *F_entity_Create			(LPCSTR caSection)
 		case CLSID_OBJECT_W_USP45:		
 		case CLSID_OBJECT_W_GROZA:		
 		case CLSID_OBJECT_W_FORT:		
-		case CLSID_OBJECT_W_BINOCULAR:	
 		case CLSID_OBJECT_W_SHOTGUN:	
 		case CLSID_OBJECT_W_SVD:		
 		case CLSID_OBJECT_W_SVU:		
 		case CLSID_OBJECT_W_RPG7:		
 		case CLSID_OBJECT_W_KNIFE:		return xr_new<CSE_ALifeItemWeapon>				(caSection);  			// Visualed
+		case CLSID_OBJECT_W_BINOCULAR:	return xr_new<CSE_ALifeItem>					(caSection);  			// Visualed
 		case CLSID_OBJECT_A_PM:			return xr_new<CSE_ALifeItemAmmo>				(caSection);  			// Visualed
 		case CLSID_OBJECT_G_RPG7:		return xr_new<CSE_Temporary>					(caSection);
 		case CLSID_OBJECT_G_FAKE:		return xr_new<CSE_Temporary>					(caSection);

@@ -60,6 +60,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemWeapon,CSE_ALifeItem)
 	EHitType						m_tHitType;
 	LPCSTR							m_caAmmoSections;
 	u32								m_dwAmmoAvailable;
+	u32								m_dwSlot;
 
 									CSE_ALifeItemWeapon(LPCSTR caSection);
 	virtual void					OnEvent			(NET_Packet& P, u16 type, u32 time, u32 sender );
