@@ -1,8 +1,8 @@
 4;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
  
 [wpn_vintorez]
-GroupControlSection	= spawn_group
-discovery_dependency = 
+GroupControlSection		 = spawn_group
+discovery_dependency 	 = 
 $spawn                   = "weapons\vintorez"					; option for Level Editor
 $npc                     = off
 $prefetch 		         = 8
@@ -21,11 +21,11 @@ ammo_elapsed		     = 20
 
 ammo_mag_size		     = 20
 
-hand_dependence		     = 2
+hand_dependence		     = 1
 ammo_class		         = ammo_9x39_pab9, ammo_9x39_sp5, ammo_9x39_ap
 
 slot 			         = 2		; // secondary
-animation_slot			 = 2		; type of the animation that will be used
+animation_slot			 = 8		; type of the animation that will be used
 
 inv_name		         = Vintorez
 inv_name_short		     = Vintorez
@@ -50,25 +50,20 @@ cam_max_angle				= 6		;максимальный угол отдачи
 cam_max_angle_horz	= 5.0	;(degree) maximum shot horizontal degree 
 cam_step_angle_horz	= 0.5	;(degree) size of step camera moved in horizontal position while shooting
 
-;;;destroy it
-cam_horz_prob = 1			;probability of the horizontal deviation of effector while shooting (1 – always deviates)
-cam_horz_factor = 1.5		; empirically determined coefficient  of the horizontal deviation (if raises – dispersal raises) 
-
-
 fire_dispersion_condition_factor = 5	;увеличение дисперсии в процентах при максимальном износе 
 misfire_probability 		= 0.0001	;вероятность осечки при максимальном износе 
 condition_shot_dec 			= 0.00003	;увеличение износа при каждом выстреле
 ;-----------------------------------------------------------------------------------
 
-direction                = 0, 0, 1
+direction                	= 0, 0, 1
 
-fire_point               = 0.0, 0.15, 0.6
+fire_point               	= 0.0, 0.127, 0.559
 
-smoke_particles			= weapons\generic_shoot_00
+smoke_particles				= weapons\generic_shoot_00
 
-shell_point		 = 0.05, 0.14, 0.07
-shell_dir		 = 0.0, 1.0, 0.0
-shell_particles	 = weapons\generic_shells
+shell_point		 			= 0.0, 0.127, 0.10
+shell_dir		 			= 0.0, 1.0, 0.0
+shell_particles	 			= weapons\generic_shells
 
 rpm_empty_click 	     = 200
 
@@ -84,8 +79,8 @@ rpm                      = 600
 
 hud                      = wpn_vintorez_hud
 normal                   = 0, 1, 0
-position                 = -0.03, -0.045, 0.1
-orientation              = -0.0, -6.7, -5
+position                 = -0.026, -0.084, 0.0
+orientation              = 0, 0, 0
 startup_ammo             = 1000
 visual                   = weapons\vintorez\wpn_vintorez.ogf
 
@@ -127,7 +122,7 @@ snd_reload_grenade	= weapons\gen_grenload
 [wpn_vintorez_hud]
 
 shell_point          = -0.15, -0.02, 0.05
-shell_dir		 = 0.0, 1.0, 0.0
+shell_dir			 = 0.0, 1.0, 0.0
 
 
 fire_point               = 0.320000,0.040000,0.070000
@@ -147,7 +142,3 @@ anim_shoot		= shoot
 zoom_offset			= -0.130000,0.000000,0.000000
 zoom_rotate_x		= 0.000000
 zoom_rotate_y		= 0.000000
-
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
