@@ -343,12 +343,7 @@ void CLevelGraph::draw_oriented_bounding_box(Fmatrix &T,	Fvector &half_dim, u32 
 void CLevelGraph::draw_travel_line() const
 {
 	draw_dynamic_obstacles				();
-	if (!m_tpTravelLine.empty()) {
-		Fvector							P = m_tpTravelLine[0];
-		P.y								+= .1f;
-		RCache.dbg_DrawAABB				(P,.1f,.1f,.1f,D3DCOLOR_XRGB(0,0,255));
-	}
-	for (u32 I=1; I<m_tpTravelLine.size(); ++I) {
+	for (u32 I=1, N=m_tpTravelLine.size(); I<N; ++I) {
 		Fvector	P1, P2; 
 		P1.set							(m_tpTravelLine[I - 1]);
 		P2.set							(m_tpTravelLine[I]);
@@ -358,10 +353,12 @@ void CLevelGraph::draw_travel_line() const
 
 		RCache.dbg_DrawLINE				(Fidentity,P1,P2,D3DCOLOR_XRGB(0,255,0));
 
-		if (I == (m_tpTravelLine.size() - 1 ))
-			RCache.dbg_DrawAABB			(P1,.1f,.1f,.1f,D3DCOLOR_XRGB(255,0,0));
+		if (I == (N - 1)) {
+			P2.y						+= 0.005f;
+			RCache.dbg_DrawAABB			(P2,.105f,.105f,.105f,D3DCOLOR_XRGB(255,0,0));
+		}
 		else 
-			RCache.dbg_DrawAABB			(P1,.1f,.1f,.1f,D3DCOLOR_XRGB(0,0,255));
+			RCache.dbg_DrawAABB			(P2,.1f,.1f,.1f,D3DCOLOR_XRGB(0,0,255));
 
 		Fvector         T;
 		Fvector4        S;
@@ -370,6 +367,11 @@ void CLevelGraph::draw_travel_line() const
 		T.y								+= (1.5f);
 
 		Device.mFullTransform.transform (S,T);
+	}
+	if (!m_tpTravelLine.empty()) {
+		Fvector							P = m_tpTravelLine.front();
+		P.y								+= .1f;
+		RCache.dbg_DrawAABB				(P,.1f,.1f,.1f,D3DCOLOR_XRGB(255,255,255));
 	}
 }
 
@@ -508,31 +510,38 @@ void CLevelGraph::set_start_point	()
 	obj						= Level().Objects.FindObjectByName("localhost/dima");
 	CActor					*actor = dynamic_cast<CActor*>(obj);
 
-	start.angular_velocity	= PI_DIV_2;
-	start.linear_velocity	= 0.f;
 	start.position			= v2d(stalker->Position());
 	start.direction.x		= -_sin(-stalker->m_body.current.yaw);
 	start.direction.y		= _cos(-stalker->m_body.current.yaw);
 	start.vertex_id			= vertex(v3d(start.position));
 
-	dest.angular_velocity	= PI_DIV_2;
-	dest.linear_velocity	= 0.f;
 	dest.position			= v2d(actor->Position());
-	start.direction.x		= -_sin(actor->r_model_yaw);
-	start.direction.y		= _cos(actor->r_model_yaw);
+	dest.direction.x		= -_sin(actor->r_model_yaw);
+	dest.direction.y		= _cos(actor->r_model_yaw);
 	dest.vertex_id			= vertex(v3d(dest.position));
 	
 //	start.angular_velocity	= 1.f;
 //	start.linear_velocity	= 2.f;
 //	start.position			= Fvector2().set(-50.f,-40.f);
-//	start.direction.set		(0.f,1.f);
+//	start.direction.set		(1.f,1.f);
 //	start.vertex_id			= vertex(v3d(start.position));
 //	
 //	dest.angular_velocity	= 1.f;
 //	dest.linear_velocity	= 2.f;
-//	dest.position			= Fvector2().set(-40.f,-40.f);
-//	dest.direction.set		(0.f,1.f);
+//	dest.position			= Fvector2().set(-50.f,-40.f);
+//	dest.direction.set		(-1.f,1.f);
 //	dest.vertex_id			= vertex(v3d(dest.position));
+
+//	start.position.set		(-60.953323f,-27.175020f);
+//	start.direction.set		(-0.759748f,-0.650218f);
+//	start.vertex_id			= vertex(v3d(start.position));
+//
+//	dest.position.set		(5.340783f,3.886290f);
+//	dest.direction.set		(-0.100624f,-0.994924f);
+//	dest.vertex_id			= vertex(v3d(dest.position));
+
+	write_trajectory_point	(start,"start");
+	write_trajectory_point	(dest,"dest");
 }
 
 IC	void adjust_point(
@@ -574,7 +583,8 @@ IC	void assign_angle(
 			angle = angle + PI_MUL_2;
 		else
 			angle = angle - PI_MUL_2;
-	VERIFY(_valid(angle));
+
+	VERIFY				(_valid(angle));
 	TIMER_STOP(AssignAngle)
 }
 
@@ -613,10 +623,6 @@ IC	bool compute_tangent(
 		direction		= start.direction;
 
 	start_yaw			= direction.getH();
-	float				f1,f2;
-	v3d(direction).getHP(f1,f2);
-	VERIFY				(fsimilar(start_yaw,f1));
-	VERIFY				(fsimilar(angle_normalize(start_yaw),start_yaw >= 0.f ? start_yaw : start_yaw + PI_MUL_2));
 	start_yaw			= start_yaw >= 0.f ? start_yaw : start_yaw + PI_MUL_2;
 	start_cp			= start.direction.cross_product(direction);
 	
@@ -625,18 +631,12 @@ IC	bool compute_tangent(
 	if (fis_zero(direction.square_magnitude()))
 		direction		= dest.direction;
 	dest_yaw			= direction.getH();
-	v3d(direction).getHP(f1,f2);
-	VERIFY				(fsimilar(dest_yaw,f1));
-	VERIFY				(fsimilar(angle_normalize(dest_yaw),dest_yaw >= 0.f ? dest_yaw : dest_yaw + PI_MUL_2));
 	dest_yaw			= dest_yaw >= 0.f ? dest_yaw : dest_yaw + PI_MUL_2;
 	dest_cp				= dest.direction.cross_product(direction);
 
 	// direction from the first circle to the second one
 	direction.sub		(dest_circle.center,start_circle.center);
 	yaw1				= direction.getH();
-	v3d(direction).getHP(f1,f2);
-	VERIFY				(fsimilar(yaw1,f1));
-	VERIFY				(fsimilar(angle_normalize(yaw1),yaw1 >= 0.f ? yaw1 : yaw1 + PI_MUL_2));
 	yaw1 = yaw2			= yaw1 >= 0.f ? yaw1 : yaw1 + PI_MUL_2;
 
 	if (start_cp*dest_cp >= 0.f) {
@@ -647,12 +647,10 @@ IC	bool compute_tangent(
 				tangents[0]			= tangents[1] = start_circle;
 				if (start_cp >= 0.f) {
 					adjust_point	(start_circle.center,yaw1 + PI_DIV_2,	start_circle.radius,tangents[0].point);
-					VERIFY			(fsimilar(angle_normalize(yaw1 + PI_DIV_2),yaw1 + PI_DIV_2 < PI_MUL_2 ? yaw1 + PI_DIV_2 : yaw1 - PI - PI_DIV_2));
 					assign_angle	(tangents[0].angle,start_yaw,yaw1 + PI_DIV_2 < PI_MUL_2 ? yaw1 + PI_DIV_2 : yaw1 - PI - PI_DIV_2,true);
 				}
 				else {
 					adjust_point	(start_circle.center,yaw1 - PI_DIV_2,	start_circle.radius,tangents[0].point);
-					VERIFY			(fsimilar(angle_normalize(yaw1 - PI_DIV_2),yaw1 - PI_DIV_2 >= 0.f ? yaw1 - PI_DIV_2 : yaw1 + PI + PI_DIV_2));
 					assign_angle	(tangents[0].angle,start_yaw,yaw1 - PI_DIV_2 >= 0.f ? yaw1 - PI_DIV_2 : yaw1 + PI + PI_DIV_2,false);
 				}
 
@@ -679,7 +677,6 @@ IC	bool compute_tangent(
 			float			temp = r_diff/distance;
 			clamp			(temp,-.99999f,.99999f);
 			alpha			= acosf(temp);
-			VERIFY			(fsimilar(angle_normalize(alpha),alpha >= 0.f ? alpha : alpha + PI_MUL_2));
 			alpha			= alpha >= 0.f ? alpha : alpha + PI_MUL_2;
 		}
 	}
@@ -695,9 +692,7 @@ IC	bool compute_tangent(
 		float			temp = (start_circle.radius + dest_circle.radius)/distance;
 		clamp			(temp,-.99999f,.99999f);
 		alpha			= acosf(temp);
-		VERIFY			(fsimilar(angle_normalize(alpha),alpha >= 0.f ? alpha : alpha + PI_MUL_2));
 		alpha			= alpha >= 0.f ? alpha : alpha + PI_MUL_2;
-		VERIFY			(fsimilar(angle_normalize(yaw1 + PI),yaw1 < PI ? yaw1 + PI : yaw1 - PI));
 		yaw2			= yaw1 < PI ? yaw1 + PI : yaw1 - PI;
 	}
 
@@ -712,9 +707,7 @@ IC	bool compute_tangent(
 	temp.sub			(tangents[0].point,start_circle.center);
 	float				tangent_cp = direction.cross_product(temp);
 	if (start_cp*tangent_cp >= 0) {
-		VERIFY			(fsimilar(angle_normalize(yaw1 + alpha),yaw1 + alpha < PI_MUL_2 ? yaw1 + alpha : yaw1 + alpha - PI_MUL_2));
 		assign_angle	(tangents[0].angle,start_yaw,yaw1 + alpha < PI_MUL_2 ? yaw1 + alpha : yaw1 + alpha - PI_MUL_2,start_cp >= 0);
-		VERIFY			(fsimilar(angle_normalize(yaw2 + alpha),yaw2 + alpha < PI_MUL_2 ? yaw2 + alpha : yaw2 + alpha - PI_MUL_2));
 		assign_angle	(tangents[1].angle,dest_yaw, yaw2 + alpha < PI_MUL_2 ? yaw2 + alpha : yaw2 + alpha - PI_MUL_2,dest_cp  >= 0,false);
 		TIMER_STOP(ComputeTangent)
 		return			(true);
@@ -723,9 +716,7 @@ IC	bool compute_tangent(
 	// compute external tangent points
 	adjust_point		(start_circle.center,yaw1 - alpha,	start_circle.radius,tangents[0].point);
 	adjust_point		(dest_circle.center, yaw2 - alpha,	dest_circle.radius, tangents[1].point);
-	VERIFY				(fsimilar(angle_normalize(yaw1 - alpha),yaw1 - alpha >= 0.f ? yaw1 - alpha : yaw1 - alpha + PI_MUL_2));
 	assign_angle		(tangents[0].angle,start_yaw,yaw1 - alpha >= 0.f ? yaw1 - alpha : yaw1 - alpha + PI_MUL_2,start_cp >= 0);
-	VERIFY				(fsimilar(angle_normalize(yaw2 - alpha),yaw2 - alpha >= 0.f ? yaw2 - alpha : yaw2 - alpha + PI_MUL_2));
 	assign_angle		(tangents[1].angle,dest_yaw, yaw2 - alpha >= 0.f ? yaw2 - alpha : yaw2 - alpha + PI_MUL_2,dest_cp  >= 0,false);
 
 	TIMER_STOP(ComputeTangent)
@@ -772,10 +763,11 @@ IC	bool build_circle_trajectory(
 		direction.set	(1.f,0.f);
 
 	float				sina, cosa, sinb, cosb, sini, cosi, temp;
-	u32					m = fis_zero(position.angular_velocity) ? 1 : iFloor(_abs(angle)/position.angular_velocity*10.f +.5f);
-	u32					n = fis_zero(position.angular_velocity) || !m ? 1 : m, k = vertex_id ? 1 : 0;
+	u32					m = fis_zero(position.angular_velocity) ? 1 : iFloor(_abs(angle)/position.angular_velocity*10.f +1.5f);
+	u32					n = fis_zero(position.angular_velocity) || !m ? 1 : m;
+	int					k = vertex_id ? 0 : 0;//-1;
 	if (path)
-		path->reserve	(size + n);
+		path->reserve	(size + n + k);
 
 	sina				= -direction.x;
 	cosa				= direction.y;
@@ -784,7 +776,7 @@ IC	bool build_circle_trajectory(
 	sini				= 0.f;
 	cosi				= 1.f;
 
-	for (u32 i=0; i<n + k; ++i) {
+	for (u32 i=0; i<=n + k; ++i) {
 		TIMER_START(BCT_AP)
 		Fvector			t;
 		t.x				= -sin_apb(sina,cosa,sini,cosi)*position.radius + position.center.x;
@@ -985,13 +977,13 @@ bool compute_path(
 			(CLevelGraph::STravelParams&)dest	= *i;
 			travel_line.clear				();
 			if (compute_trajectory(level_graph,start,dest,6.f,m_tpTravelLine ? &travel_line : 0,time)) {
-//				Msg		("[L=%f][A=%f][L=%f][A=%f] : %f",
-//					start.linear_velocity,
-//					start.angular_velocity,
-//					dest.linear_velocity,
-//					dest.angular_velocity,
-//					time
-//				);
+				Msg		("[L=%f][A=%f][L=%f][A=%f] : %f",
+					start.linear_velocity,
+					start.angular_velocity,
+					dest.linear_velocity,
+					dest.angular_velocity,
+					time
+				);
 				if (time < min_time) {
 					min_time = time;
 					if (m_tpTravelLine) {
@@ -1023,33 +1015,33 @@ void fill_params(
 	xr_vector<CLevelGraph::STravelParams>	&dest_set
 )
 {
-//	start.angular_velocity	= PI_DIV_2;
+//	start.angular_velocity	= PI_MUL_2;
 //	start.linear_velocity	= 0.f;//0.0001f;
 //	start_set.push_back		(start);
 
-//	start.angular_velocity	= PI;
-//	start.linear_velocity	= 2.15f;
-//	start_set.push_back		(start);
-
-	start.angular_velocity	= 1.f;//PI_DIV_2;
-	start.linear_velocity	= 2.f;//4.5f;
+	start.angular_velocity	= PI;
+	start.linear_velocity	= 2.15f;
 	start_set.push_back		(start);
+
+//	start.angular_velocity	= PI_DIV_2;
+//	start.linear_velocity	= 4.5f;
+//	start_set.push_back		(start);
 
 //	start.angular_velocity	= PI_DIV_4;
 //	start.linear_velocity	= 6.f;
 //	start_set.push_back		(start);
 
-//	dest.angular_velocity	= PI_DIV_2;
+//	dest.angular_velocity	= PI_MUL_2;
 //	dest.linear_velocity	= 0.f;
 //	dest_set.push_back		(dest);
 
-//	dest.angular_velocity	= PI;
-//	dest.linear_velocity	= 2.15f;
-//	dest_set.push_back		(dest);
-
-	dest.angular_velocity	= 1.f;//PI_DIV_2;
-	dest.linear_velocity	= 2.f;//4.5f;
+	dest.angular_velocity	= PI;
+	dest.linear_velocity	= 2.15f;
 	dest_set.push_back		(dest);
+
+//	dest.angular_velocity	= PI_DIV_2;
+//	dest.linear_velocity	= 4.5f;
+//	dest_set.push_back		(dest);
 
 //	dest.angular_velocity	= PI_DIV_4;
 //	dest.linear_velocity	= 6.f;
@@ -1076,14 +1068,14 @@ void CLevelGraph::build_detail_path(
 		return;
 
 #ifndef AI_COMPILER
-	Device.Statistic.TEST0.Begin();
+	Device.Statistic.TEST0.Begin			();
 #endif
 	VERIFY									(!m_tpaNodes.empty());
 	if (m_tpaNodes.size() == 1) {
 		if (!compute_path(level_graph,start,dest,start_set,dest_set,&m_tpTravelLine)) {
 			m_tpTravelLine.clear			();
 #ifndef AI_COMPILER
-			Device.Statistic.TEST0.End();
+			Device.Statistic.TEST0.End		();
 #endif
 			return;
 		}
@@ -1092,7 +1084,7 @@ void CLevelGraph::build_detail_path(
 		if (compute_path(level_graph,start,dest,start_set,dest_set,&m_tpTravelLine)) {
 			Msg	("%d : ok, %d points",Level().timeServer(),m_tpTravelLine.size());
 #ifndef AI_COMPILER
-			Device.Statistic.TEST0.End();
+			Device.Statistic.TEST0.End		();
 #endif
 			return;
 		}
@@ -1184,16 +1176,16 @@ void CLevelGraph::build_detail_path(
 			}
 			t								= d;
 		}
-//		if (!compute_path(level_graph,s,d,start_set,dest_set,&m_tpTravelLine)) {
-//			if (compute_path(level_graph,s,d,start_set,dest_set,0)) {
-//				compute_path(level_graph,s,d,start_set,dest_set,&m_tpTravelLine);
-//				t=t;
-//			}
-//			VERIFY							(false);
-//		}
+		if (!compute_path(level_graph,s,d,start_set,dest_set,&m_tpTravelLine)) {
+			if (compute_path(level_graph,s,d,start_set,dest_set,0)) {
+				compute_path(level_graph,s,d,start_set,dest_set,&m_tpTravelLine);
+				t=t;
+			}
+			VERIFY							(false);
+		}
 	}
 #ifndef AI_COMPILER
-	Device.Statistic.TEST0.End();
+	Device.Statistic.TEST0.End				();
 #endif
 }
 
