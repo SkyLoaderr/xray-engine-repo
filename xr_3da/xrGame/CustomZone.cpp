@@ -1169,7 +1169,7 @@ void CCustomZone::UpdateWind()
 {
 	if(!m_bBlowoutWindActive) return;
 
-	if(m_dwBlowoutWindTimeEnd<(u32)m_iStateTime)
+	if(m_fDistanceToCurEntity>WIND_RADIUS || m_dwBlowoutWindTimeEnd<(u32)m_iStateTime)
 	{
 		StopWind();
 		return;
