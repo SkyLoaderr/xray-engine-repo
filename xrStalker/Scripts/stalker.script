@@ -9,7 +9,7 @@ function motivation_global:__init(obj,motivations) super()
 end
 
 function motivation_global:evaluate(motivation_id)
-	if motivations["alive"] == motivation_id then
+	if self.motivations["alive"] == motivation_id then
 		if self.obj:alive() == true then
 			return			1.0
 		else
