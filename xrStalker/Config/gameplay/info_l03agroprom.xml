@@ -7,7 +7,7 @@
 		<location>
 			<level>l03_agroprom</level>
 			<object>200</object>
-			<icon name="" x="5" y="1" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
+			<icon big_icon="1" name="" x="5" y="1" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
 			<text>Добыдть военные документы</text>
 		</location>    
     </info_portion>
@@ -22,7 +22,7 @@
 			<level>l03_agroprom</level>
 			<x>12</x>
 			<y>8</y>
-			<icon name="" x="1" y="0" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
+			<icon big_icon="1" name="" x="1" y="0" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
 			<text>Встретиться со сталкерами.</text>
 		</location>    
 		<task>agr_meet_krot_band</task>
