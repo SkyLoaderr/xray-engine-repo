@@ -15,13 +15,6 @@ class ENGINE_API CCDA
 	UINT					retLen;
 	MCIERROR				err;
 
-	float					fSaveCDVol;
-
-	HMIXER							hMixer;
-	MIXERCONTROLDETAILS				cd_detail;
-    MIXERCONTROLDETAILS_UNSIGNED	cd_volume;
-	BOOL							bVolume;
-
 	DWORD					dwCurTrack;
 	BOOL					bWorking;
 	BOOL					bPaused;
@@ -33,9 +26,6 @@ class ENGINE_API CCDA
 public:
 							CCDA				( HMIXER _hMixer );
 							~CCDA			( );
-
-	float					GetVolume				( );
-	void					SetVolume				( float vol );
 
 	void					Open					( );
 	void					Close					( );

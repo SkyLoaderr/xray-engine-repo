@@ -70,12 +70,12 @@ void C3DSoundRender::OnMove()
 	Listener.vPosition.set				(Device.vCameraPosition);
 	Listener.vOrientFront.set			(Device.vCameraDirection);
 	Listener.vOrientTop.set				(Device.vCameraTop);
-	Listener.flRolloffFactor			= psSoundRolloff;
-	pListener->SetAllParameters			(Listener.d3d(), DS3D_DEFERRED );
+	Listener.fRolloffFactor				= psSoundRolloff;
+	pListener->SetAllParameters			((DS3DLISTENER*)&Listener, DS3D_DEFERRED );
 	pListener->CommitDeferredSettings	();
 }
 
-int C3DSoundRender::FindByName(LPCSTR name, BOOL bFreq) {
+int C3DSoundRender::FindByName			(LPCSTR name, BOOL bFreq) {
 	for (DWORD i=0; i<sounds.size(); i++) {
 		if (sounds[i].size()) {
 			if ((strcmp(sounds[i][0]->fName,name)==0)&&(bFreq==sounds[i][0]->bCtrlFreq))  return i;
@@ -84,7 +84,7 @@ int C3DSoundRender::FindByName(LPCSTR name, BOOL bFreq) {
 	return -1;
 }
 
-int C3DSoundRender::FindEmptySlot()
+int C3DSoundRender::FindEmptySlot		()
 {
 	for (DWORD i=0; i<sounds.size(); i++) {
 		if (sounds[i].size()==0) return i;
@@ -92,7 +92,7 @@ int C3DSoundRender::FindEmptySlot()
 	return -1;
 }
 
-int	C3DSoundRender::Append(C3DSound *p)
+int	C3DSoundRender::Append				(C3DSound *p)
 {
 	// empty slot not found - expand lists
 	vector <C3DSound *>	pv;
@@ -103,7 +103,7 @@ int	C3DSoundRender::Append(C3DSound *p)
 	return i;
 }
 
-int	C3DSoundRender::CreateSound(LPCSTR name, BOOL bCtrlFreq, BOOL bNotClip)
+int	C3DSoundRender::CreateSound			(LPCSTR name, BOOL bCtrlFreq, BOOL bNotClip)
 {
 	int fnd;
 	if ((fnd=FindByName(name,bCtrlFreq))>=0) {
@@ -125,7 +125,7 @@ int	C3DSoundRender::CreateSound(LPCSTR name, BOOL bCtrlFreq, BOOL bNotClip)
 	return Append(pSnd);
 }
 
-int	C3DSoundRender::CreateSound(CInifile *pIni, LPCSTR section)
+int	C3DSoundRender::CreateSound			(CInifile *pIni, LPCSTR section)
 {
 	FILE_NAME	fn;
 	strcpy(fn,pIni->ReadSTRING(section, "fname"));
@@ -151,7 +151,8 @@ int	C3DSoundRender::CreateSound(CInifile *pIni, LPCSTR section)
 	return Append(pSnd);
 }
 
-void C3DSoundRender::DeleteSound(int& hSound) {
+void C3DSoundRender::DeleteSound		(int& hSound) 
+{
 	VERIFY(hSound>=0);
 	VERIFY(hSound<int(sounds.size()));
 	VERIFY(refcounts[hSound]>0);
@@ -167,7 +168,8 @@ void C3DSoundRender::DeleteSound(int& hSound) {
 	hSound = -1;
 }
 
-C3DSound* C3DSoundRender::GetFreeSound(int hSound) {
+C3DSound* C3DSoundRender::GetFreeSound(int hSound) 
+{
 	VERIFY(hSound>=0);
 	VERIFY(hSound<int(sounds.size()));
 	for (DWORD i=0; i<sounds[hSound].size(); i++)
@@ -207,7 +209,7 @@ void C3DSoundRender::Reload()
 				sounds[i][j]->Stop();
 				_RELEASE(sounds[i][j]->pBuffer3D);
 				_RELEASE(sounds[i][j]->pBuffer);
-				pSounds->lpDirectSound->DuplicateSoundBuffer(sounds[i][0]->pBuffer,&sounds[i][j]->pBuffer);
+				pSounds->pDevice->DuplicateSoundBuffer(sounds[i][0]->pBuffer,&sounds[i][j]->pBuffer);
 				VERIFY	(sounds[i][j]->pBuffer);
 				sounds[i][j]->pBuffer->QueryInterface(IID_IDirectSound3DBuffer,(void **)(&sounds[i][j]->pBuffer3D));
 				sounds[i][j]->bNeedUpdate = true;

@@ -11,66 +11,15 @@ CCDA::CCDA( HMIXER _hMixer ) {
 	lTotalTime		= 0;
 	bWorking		= false;
 	bPaused			= false;
-	bVolume			= false;
-
-	hMixer			= _hMixer;
-
-	MMRESULT			mmr;
-	MIXERLINE			mxl;
-    MIXERLINECONTROLS	mxlc;
-    MIXERCONTROL		mxctrl;
-
-	mxl.cbStruct		= sizeof(MIXERLINE);
-	mxl.dwComponentType = MIXERLINE_COMPONENTTYPE_SRC_COMPACTDISC;
-	mmr = mixerGetLineInfo((HMIXEROBJ)hMixer, &mxl, MIXER_GETLINEINFOF_COMPONENTTYPE );
-
-	if (mmr==MMSYSERR_NOERROR){
-		mxlc.cbStruct		= sizeof(mxlc);
-		mxlc.dwLineID		= mxl.dwLineID;
-		mxlc.dwControlType	= MIXERCONTROL_CONTROLTYPE_VOLUME;
-		mxlc.cbmxctrl		= sizeof(MIXERCONTROL);
-		mxlc.pamxctrl		= &mxctrl;
-		mmr = mixerGetLineControls((HMIXEROBJ)hMixer, &mxlc, MIXER_GETLINECONTROLSF_ONEBYTYPE);
-
-		if (mmr==MMSYSERR_NOERROR){
-			bVolume				= true;
-			cd_detail.cbStruct	= sizeof(cd_detail);
-			cd_detail.dwControlID= mxctrl.dwControlID;
-			cd_detail.cChannels	= 1;//1-для всех каналов; mxl.cChannels;
-			cd_detail.cMultipleItems= mxctrl.cMultipleItems;
-			cd_detail.cbDetails	= sizeof(cd_volume);
-			cd_detail.paDetails	= &cd_volume;
-		}
-	}
-	fSaveCDVol = GetVolume();
 }
 
 
 CCDA::~CCDA( ) {
-	SetVolume(fSaveCDVol);
 	Stop			( );
 	Close			( );
 }
 
-float CCDA::GetVolume( )
-{
-	DWORD			vol = 0;
-	if(bVolume)
-		if (MMSYSERR_NOERROR==mixerGetControlDetails((HMIXEROBJ)hMixer, &cd_detail, MIXER_GETCONTROLDETAILSF_VALUE))
-			return	float(LOWORD( cd_volume.dwValue ))/0xFFFF;
-	return			0;
-}
-
-void CCDA::SetVolume( float vol )
-{
-	if(bVolume){
-		clamp( vol, 0.0f, 1.0f );
-		cd_volume.dwValue = (int)(vol*0xFFFF);
-		mixerSetControlDetails((HMIXEROBJ)hMixer, &cd_detail, MIXER_SETCONTROLDETAILSF_VALUE);
-	}
-}
-
-void CCDA::Open( ) {
+void CCDA::Open( )	{
 	Close			( );
 	mciSendString	( "open cdaudio shareable wait",	retStr, retLen, 0 );
 	mciSendString	( "set cdaudio door closed",		retStr, retLen, 0 );
@@ -78,14 +27,15 @@ void CCDA::Open( ) {
 	mciSendString	( "set cdaudio audio_all",			retStr, retLen, 0 );
 }
 
-CDA_STATE CCDA::GetState( ) {
+CDA_STATE CCDA::GetState( ) 
+{
 	err	= mciSendString( "status cdaudio mode", retStr, retLen, NULL );
 	if ( err == 0 ){
-		if ( !stricmp( retStr, "not ready") )	return CDA_STATE_NOTREADY;
-		if ( !stricmp( retStr, "paused"	) )		return CDA_STATE_PAUSE;
+		if ( !stricmp( retStr, "not ready") )		return CDA_STATE_NOTREADY;
+		if ( !stricmp( retStr, "paused"	) )			return CDA_STATE_PAUSE;
 		if ( !stricmp( retStr, "playing"	) )		return CDA_STATE_PLAY;
 		if ( !stricmp( retStr, "stopped"	) )		return CDA_STATE_STOP;
-		if ( !stricmp( retStr, "open"	) )		return CDA_STATE_OPEN;
+		if ( !stricmp( retStr, "open"	) )			return CDA_STATE_OPEN;
 	}
 	return CDA_STATE_NOTREADY;
 }

@@ -31,45 +31,8 @@ CSoundManager::CSoundManager(BOOL bCDA )
 
 	bPresent		= false;
 
-	lpDirectSound	= NULL;
-    lpPrimaryBuf	= NULL;
-
-	fSaveMasterVol	= 0.0f;
-	fSaveWaveVol	= 0.0f;
-
-	// Mixer
-	MMRESULT			mmr;
-	MIXERLINE			mxl;
-    MIXERCONTROL		mxctrl;
-    MIXERLINECONTROLS	mxlc;
-	UINT				uMxId;
-
-	bVolume				= false;
-	hMixer				= (HMIXER)(0);
-	mmr					= mixerGetID( (HMIXEROBJ)(hMixer), &uMxId, MIXER_OBJECTF_MIXER );
-
-	mxl.cbStruct		= sizeof(MIXERLINE);
-	mxl.dwComponentType = MIXERLINE_COMPONENTTYPE_DST_SPEAKERS;
-	mmr = mixerGetLineInfo((HMIXEROBJ)hMixer, &mxl, MIXER_GETLINEINFOF_COMPONENTTYPE );
-
-	if (mmr==MMSYSERR_NOERROR){
-		mxlc.cbStruct		= sizeof(mxlc);
-		mxlc.dwLineID		= mxl.dwLineID;
-		mxlc.dwControlType	= MIXERCONTROL_CONTROLTYPE_VOLUME;
-		mxlc.cbmxctrl		= sizeof(MIXERCONTROL);
-		mxlc.pamxctrl		= &mxctrl;
-		mmr = mixerGetLineControls((HMIXEROBJ)hMixer, &mxlc, MIXER_GETLINECONTROLSF_ONEBYTYPE);
-
-		if (mmr==MMSYSERR_NOERROR){
-//			bVolume							= true;
-			master_detail.cbStruct			= sizeof(master_detail);
-			master_detail.dwControlID		= mxctrl.dwControlID;
-			master_detail.cChannels			= 1;//1-для всех каналов; mxl.cChannels;
-			master_detail.cMultipleItems	= mxctrl.cMultipleItems;
-			master_detail.cbDetails			= sizeof(master_volume);
-			master_detail.paDetails			= &master_volume;
-		}
-	}
+	pDevice			= NULL;
+    pBuffer			= NULL;
 
 	Initialize					( );
 
@@ -82,8 +45,8 @@ CSoundManager::CSoundManager(BOOL bCDA )
 	if (bPresent) {
 		// CDA
 		if (bCDA){
-			pCDA		= new CCDA( hMixer );
-			pCDA->Open( );
+			pCDA		= new CCDA			( );
+			pCDA->Open	();
 		}
 
 		// 3D Sounds
@@ -108,12 +71,12 @@ CSoundManager::~CSoundManager( )
 	if (bPresent){
 		psSoundVMaster = fSaveMasterVol;
 		SetVMaster	( );
-		lpPrimaryBuf->SetVolume( LONG((1-fSaveWaveVol)*float(DSBVOLUME_MIN)) );
+		pBuffer->SetVolume( LONG((1-fSaveWaveVol)*float(DSBVOLUME_MIN)) );
 	}
 
-	_RELEASE		( lpPrimaryBuf	);
-	_SHOW_REF		( "DirectSound", lpDirectSound );
-	_RELEASE		( lpDirectSound );
+	_RELEASE		( pBuffer	);
+	_SHOW_REF		( "DirectSound", pDevice );
+	_RELEASE		( pDevice );
 }
 
 void CSoundManager::Restart()
@@ -141,14 +104,14 @@ BOOL CSoundManager::CreatePrimaryBuffer( )
 	dsbd.dwBufferBytes	= 0;
 
 	// Actual creating
-    if( FAILED	( lpDirectSound->CreateSoundBuffer( &dsbd, &lpPrimaryBuf, NULL ) ) )
+    if( FAILED	( pDevice->CreateSoundBuffer( &dsbd, &pBuffer, NULL ) ) )
         return false;
 
     // Calculate primary buffer format.
 	DSCAPS				dsCaps;
 	dsCaps.dwSize		= sizeof(DSCAPS);
-	VERIFY				(lpDirectSound);
-	CHK_DX				(lpDirectSound->GetCaps (&dsCaps));
+	VERIFY				(pDevice);
+	CHK_DX				(pDevice->GetCaps (&dsCaps));
 
     ZeroMemory			( &wfm, sizeof( WAVEFORMATEX ) );
 	switch ( psSoundFreq ){
@@ -163,8 +126,8 @@ BOOL CSoundManager::CreatePrimaryBuffer( )
     wfm.nAvgBytesPerSec	= wfm.nSamplesPerSec * wfm.nBlockAlign;
 
 	// For safety only :)
-	lpPrimaryBuf->SetFormat	(&wfm);
-	lpPrimaryBuf->Play		(0,0,0);
+	pBuffer->SetFormat	(&wfm);
+	pBuffer->Play		(0,0,0);
 
 	return true;
 }
@@ -177,11 +140,11 @@ void CSoundManager::Initialize( )
 {
 	bPresent		= false;
 
-    if( FAILED		( DirectSoundCreate( NULL, &lpDirectSound, NULL ) ) )
+    if( FAILED		( DirectSoundCreate( NULL, &pDevice, NULL ) ) )
         return;
 
     // Set cooperative level.
-    if( FAILED		( lpDirectSound->SetCooperativeLevel( Device.m_hWnd, DSSCL_PRIORITY ) ) )
+    if( FAILED		( pDevice->SetCooperativeLevel( Device.m_hWnd, DSSCL_PRIORITY ) ) )
         return;
 
 	if( !CreatePrimaryBuffer ( ) ) return;
@@ -190,9 +153,9 @@ void CSoundManager::Initialize( )
 
 	fSaveMasterVol	= GetVMaster	( );
 	LONG 			lVol;
-	lpPrimaryBuf->GetVolume( &lVol );
+	pBuffer->GetVolume( &lVol );
 	fSaveWaveVol	= (1-float(lVol)/float(DSBVOLUME_MIN));
-//	lpPrimaryBuf->SetVolume( DSBVOLUME_MAX );
+//	pBuffer->SetVolume( DSBVOLUME_MAX );
 
 	GetDeviceInfo	();
 }
@@ -254,10 +217,10 @@ void CSoundManager::GetDeviceInfo( )
 
 	if ( !bPresent ) return;
 
-	VERIFY(lpDirectSound);
+	VERIFY(pDevice);
 	DSCAPS				dsCaps;
 	dsCaps.dwSize		= sizeof(DSCAPS);
-	CHK_DX(lpDirectSound->GetCaps  (&dsCaps));
+	CHK_DX(pDevice->GetCaps  (&dsCaps));
 
 	Log("\nDirectSound info...");
 	Log("* DirectSound:                 ", (dsCaps.dwFlags&DSCAPS_EMULDRIVER)?"not available":"available.");
@@ -283,7 +246,7 @@ void CSoundManager::SetFreq( )
 	WAVEFORMATEX wfm;
 	DWORD		 ret;
 	ZeroMemory	( &wfm, sizeof( wfm ) );
-	lpPrimaryBuf->GetFormat( &wfm, sizeof(wfm), &ret );
+	pBuffer->GetFormat( &wfm, sizeof(wfm), &ret );
 
 	switch ( psSoundFreq ){
 		case sf_11K:	wfm.nSamplesPerSec = 11025; break;
@@ -291,7 +254,7 @@ void CSoundManager::SetFreq( )
 		case sf_44K:	wfm.nSamplesPerSec = 44100; break;
 	}
 	wfm.nAvgBytesPerSec	= wfm.nSamplesPerSec * wfm.nBlockAlign;
-	lpPrimaryBuf->SetFormat(&wfm);
+	pBuffer->SetFormat(&wfm);
 	pSoundRender->Reload	();
 	p2DSounds->Reload		();
 	pMusicStreams->Reload	();
