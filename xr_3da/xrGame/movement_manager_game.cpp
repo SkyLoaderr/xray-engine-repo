@@ -16,6 +16,7 @@ void CMovementManager::process_game_path()
 		switch (m_path_state) {
 			case ePathStateSelectGameVertex : {
 				CGameLocationSelector::select_location(game_vertex_id(),CGamePathManager::m_dest_vertex_id);
+
 				if (CGameLocationSelector::failed())
 					break;
 				m_path_state	= ePathStateBuildGamePath;
@@ -24,7 +25,9 @@ void CMovementManager::process_game_path()
 			}
 			case ePathStateBuildGamePath : {
 				Device.Statistic.TEST0.Begin();
+				
 				CGamePathManager::build_path(game_vertex_id(),game_dest_vertex_id());
+
 				if (CGamePathManager::failed()) {
 					Device.Statistic.TEST0.End();
 					break;
@@ -42,12 +45,14 @@ void CMovementManager::process_game_path()
 			}
 			case ePathStateBuildLevelPath : {
 //				Device.Statistic.TEST1.Begin();
+
 				CLevelPathManager::build_path(
 					level_vertex_id(),
 					ai().game_graph().vertex(
 						CGamePathManager::intermediate_vertex_id()
 					)->level_vertex_id()
 				);
+
 				if (CLevelPathManager::failed()) {
 //					Device.Statistic.TEST1.End();
 					break;
@@ -65,6 +70,7 @@ void CMovementManager::process_game_path()
 			}
 			case ePathStateBuildDetailPath : {
 //				Device.Statistic.TEST2.Begin();
+
 				CDetailPathManager::set_state_patrol_path(true);
 				CDetailPathManager::set_start_position(Position());
 				CDetailPathManager::set_start_direction(Fvector().setHP(-m_body.current.yaw,0));
