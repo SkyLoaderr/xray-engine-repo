@@ -309,24 +309,24 @@
                 <next>2</next>
                 <next>3</next>
                 <next>4</next>
-                <next>10</next>
                 <next>5</next>
+                <next>10</next>
             </phrase>
             <phrase id="31">
                 <text>escape_trader_talk_level_31</text>
                 <next>2</next>
                 <next>3</next>
                 <next>4</next>
-                <next>10</next>
                 <next>5</next>
+                <next>10</next>
             </phrase>
             <phrase id="51">
                 <text>escape_trader_talk_level_51</text>
                 <next>2</next>
                 <next>3</next>
                 <next>4</next>
-                <next>10</next>
                 <next>5</next>
+                <next>10</next>
             </phrase>
             <phrase id="10">
                 <text>escape_trader_talk_level_10</text>
@@ -340,8 +340,8 @@
                 <next>2</next>
                 <next>3</next>
                 <next>4</next>
-                <next>10</next>
                 <next>5</next>
+                <next>10</next>                
             </phrase>
             <phrase id="5">
                 <text>escape_trader_talk_level_5</text>
@@ -352,8 +352,8 @@
                 <next>2</next>
                 <next>3</next>
                 <next>4</next>
-                <next>10</next>
                 <next>5</next>
+                <next>10</next>
             </phrase>
             <phrase id="0">
                 <text>escape_trader_talk_level_0</text>
@@ -362,7 +362,7 @@
         </phrase_list>
     </dialog>
     <dialog id="escape_trader_done_gift">
-        <has_info>escape_stalker_to_trader_give</has_info>
+        <dont_has_info>escape_stalker_done</dont_has_info>
         <phrase_list>
             <phrase id="1">
                 <text>escape_trader_done_gift_1</text>
@@ -389,6 +389,7 @@
     </dialog>
     <dialog id="escape_trader_done_tutorial_artefact">
         <precondition>escape_dialog.have_tutorial_artefact</precondition>
+        <dont_has_info>tutorial_artefact_done</dont_has_info>
         <phrase_list>
             <phrase id="0">
                 <text>escape_trader_done_tutorial_artefact_0</text>

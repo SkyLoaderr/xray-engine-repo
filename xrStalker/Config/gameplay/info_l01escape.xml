@@ -129,24 +129,13 @@
 	</info_portion>
 	<info_portion id="escape_stalker_spawn">	
 	</info_portion>
+	<info_portion id="escape_stalker_give">	
+	</info_portion>	
 	<info_portion id="escape_stalker_done">
 		<disable>escape_stalker_help</disable>
 	</info_portion>
 	<info_portion id="escape_stalker_die">
 		<disable>escape_stalker_help</disable>
-	</info_portion>
-
-	<info_portion id="escape_stalker_to_trader_give">
-		<location>
-			<level>l01_escape</level>
-			<object>003</object>
-			<icon name="Торговец" x="6" y="0" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
-			<text>Принеси передачу торговцу</text>
-		</location>	
-		<task>esc_wounded_to_trader_gift</task>
-	</info_portion>
-	<info_portion id="escape_stalker_to_trader_done">
-		<disable>escape_stalker_to_trader_give</disable>
 	</info_portion>
 
 	
