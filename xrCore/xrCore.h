@@ -75,6 +75,7 @@
 #endif
 
 #ifdef __BORLANDC__
+	#include <dstring.h>
 	#define MODULE_NAME 	"xrCoreB.dll"
     #ifndef DEBUG
     	#pragma inline_depth	( 254 )
