@@ -802,6 +802,17 @@ void CScriptGameObject::heli_go_to_point(Fvector& pos, Fvector& via, float time)
 	helicopter->goToPoint(&pos, &via, time);
 }
 
+float CScriptGameObject::heli_last_point_time ()
+{
+	CHelicopter		*helicopter = dynamic_cast<CHelicopter*>(m_tpGameObject);
+	if (!helicopter) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member heli_last_point_time!");
+		NODEFAULT;
+		return true;
+	}
+	return !!helicopter->getLastPointTime();
+}
+
 /*
 void				heli_use_rocket			(bool b);
 bool				heli_is_use_rocket		()const;

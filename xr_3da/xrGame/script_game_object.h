@@ -681,7 +681,8 @@ public:
 			void				heli_goto_stay_point	(Fvector& pos, float time=0.0f);
 			void				heli_go_patrol			(float time=0.0f);
 			void				heli_go_to_point		(Fvector& pos, Fvector& via, float time);
-/*			void				heli_use_rocket			(bool b);
+			float				heli_last_point_time	();
+			/*			void				heli_use_rocket			(bool b);
 			bool				heli_is_use_rocket		()const;
 			void				heli_use_mgun			(bool b);
 			bool				heli_use_mgun			()const;*/
