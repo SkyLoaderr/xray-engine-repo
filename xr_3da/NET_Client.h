@@ -24,7 +24,7 @@ protected:
 	{
 		DPN_APPLICATION_DESC	dpAppDesc;
 		IDirectPlay8Address*	pHostAddress;
-		char					dpSessionName[128];
+		ref_str					dpSessionName;
 	};
 	CTimer*					device_timer;
 protected:
@@ -63,7 +63,7 @@ public:
 	BOOL					net_isCompleted_Connect	()	{ return net_Connected;		}
 	BOOL					net_isCompleted_Sync	()	{ return net_Syncronised;	}
 	BOOL					net_isDisconnected		()	{ return net_Disconnected;	}
-	LPCSTR					net_SessionName			()	{ return net_Hosts.front().dpSessionName; }
+	LPCSTR					net_SessionName			()	{ return *(net_Hosts.front().dpSessionName); }
 
 	// receive
 	IC NET_Packet*			net_msg_Retreive		()	{ return net_Queue.Retreive();	}

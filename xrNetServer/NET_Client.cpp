@@ -205,16 +205,17 @@ BOOL IPureClient::Connect(LPCSTR options)
 		DWORD					dpServerDescSize=sizeof(desc);
 		dpServerDesc->dwSize	= sizeof(DPN_APPLICATION_DESC);
 		R_CHK					(NET->GetApplicationDesc(dpServerDesc,&dpServerDescSize,0));
-		if( dpServerDesc->pwszSessionName)
-			R_CHK(WideCharToMultiByte(CP_ACP,0,dpServerDesc->pwszSessionName,-1,NODE.dpSessionName,sizeof(NODE.dpSessionName),0,0));
-
-		net_Hosts.push_back			(NODE);
+		string4096				dpSessionName;
+		if( dpServerDesc->pwszSessionName)	{
+			R_CHK(WideCharToMultiByte(CP_ACP,0,dpServerDesc->pwszSessionName,-1,dpSessionName,sizeof(NODE.dpSessionName),0,0));
+			NODE.dpSessionName	= dpSessionName;
+		}
+		net_Hosts.push_back		(NODE);
 	} else {
-	
 		string64						EnumData;
 		EnumData[0] = 0;
-		strcat(EnumData, "ToConnect");
-		DWORD EnumSize = xr_strlen(EnumData) + 1;
+		strcat	(EnumData, "ToConnect");
+		DWORD	EnumSize = xr_strlen(EnumData) + 1;
 		// We now have the host address so lets enum
 		R_CHK(NET->EnumHosts(
 			&dpAppDesc,				// pApplicationDesc

@@ -125,7 +125,7 @@ void IPureServer::Reparse	()
 BOOL IPureServer::Connect(LPCSTR options)
 {
 	// Parse options
-	string256				session_name;
+	string4096				session_name;
 	strcpy					(session_name,options);
 	if (strchr(session_name,'/'))	*strchr(session_name,'/')=0;
 
@@ -166,8 +166,8 @@ BOOL IPureServer::Connect(LPCSTR options)
 	CHK_DX(NET->SetServerInfo( &dpPlayerInfo, NULL, NULL, DPNSETSERVERINFO_SYNC ) );
 	
     // Set server/session description
-	WCHAR	SessionNameUNICODE[1024];
-	CHK_DX(MultiByteToWideChar(CP_ACP, 0, session_name, -1, SessionNameUNICODE, 1024 ));
+	WCHAR	SessionNameUNICODE[4096];
+	CHK_DX(MultiByteToWideChar(CP_ACP, 0, session_name, -1, SessionNameUNICODE, 4096 ));
 	
     // Now set up the Application Description
     ZeroMemory					(&dpAppDesc, sizeof(DPN_APPLICATION_DESC));
