@@ -86,6 +86,7 @@ function pp_effector:process(pp)
 	local dual		= duality()
 	local noise		= noise()
 	local color		= color()
+	local blend		= color()
 
 	dual.h			= self.max_power.dual.h 			* d
 	dual.v			= self.max_power.dual.v 			* d
@@ -97,7 +98,15 @@ function pp_effector:process(pp)
 	color.a			= self.max_power.noise.color.a 		* d 
 	pp.gray			= self.max_power.gray 				* d
 	pp.blur			= self.max_power.blur 				* d
+	
+	noise.fps		= self.max_power.noise.fps 			* d
+	blend.r			= self.max_power.blend_color.r 		* d
+	blend.g			= self.max_power.blend_color.g 		* d
+	blend.b			= self.max_power.blend_color.b 		* d 
+	blend.a			= self.max_power.blend_color.a 		* d 
 
+	pp.blend_color	= blend
+	
 	noise.color		= color
 	pp.dual			= dual
 	pp.noise		= noise
@@ -143,6 +152,7 @@ function pp_linear_lerp:process(pp)
 	local dual		= duality()
 	local noise		= noise()
 	local color		= color()
+	local blend		= color()
 
 	dual.h			= self.min_power.dual.h 		 + (self.max_power.dual.h 			- self.min_power.dual.h 		)	* d
 	dual.v			= self.min_power.dual.v 		 + (self.max_power.dual.v 			- self.min_power.dual.v 		)	* d
@@ -155,6 +165,13 @@ function pp_linear_lerp:process(pp)
 	pp.gray			= self.min_power.gray 			 + (self.max_power.gray 			- self.min_power.gray 			)	* d
 	pp.blur			= self.min_power.blur 			 + (self.max_power.blur 			- self.min_power.blur 			)	* d
 
+	noise.fps		= self.min_power.noise.fps 		 + (self.max_power.noise.fps 		- self.min_power.noise.fps 		)	* d
+	blend.r			= self.min_power.blend_color.r 	 + (self.max_power.blend_color.r 	- self.min_power.blend_color.r 	)	* d
+	blend.g			= self.min_power.blend_color.g 	 + (self.max_power.blend_color.g 	- self.min_power.blend_color.g 	)	* d
+	blend.b			= self.min_power.blend_color.b 	 + (self.max_power.blend_color.b 	- self.min_power.blend_color.b 	)	* d 
+	blend.a			= self.min_power.blend_color.a 	 + (self.max_power.blend_color.a 	- self.min_power.blend_color.a 	)	* d 
+
+	pp.blend_color	= blend
 	noise.color		= color
 	pp.dual			= dual
 	pp.noise		= noise
