@@ -15,7 +15,9 @@ CPatrolPathParams::CPatrolPathParams	(LPCSTR caPatrolPathToGo, const PatrolPathM
 {
 	m_path_name			= caPatrolPathToGo;
 	m_path				= Level().patrol_paths().path(shared_str(caPatrolPathToGo),true);
-	THROW2				(m_path,"There is no patrol path %s",caPatrolPathToGo);
+	
+	THROW3				(m_path,"There is no patrol path",caPatrolPathToGo);
+	
 	m_tPatrolPathStart	= tPatrolPathStart;
 	m_tPatrolPathStop	= tPatrolPathStop;
 	m_bRandom			= bRandom;
