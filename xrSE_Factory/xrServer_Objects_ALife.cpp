@@ -139,20 +139,12 @@ void CSE_ALifeGraphPoint::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 	tNetPacket.r_u8				(m_tLocations[1]);
 	tNetPacket.r_u8				(m_tLocations[2]);
 	tNetPacket.r_u8				(m_tLocations[3]);
-	if (!tNetPacket.r_eof()) {
-		tNetPacket.r_pos		-= 4;
-		u32						dwTemp;
-		tNetPacket.r_u32		(dwTemp);
-		m_tLocations[0]			= (u8)dwTemp;
-		tNetPacket.r_u32		(dwTemp);
-		m_tLocations[1]			= (u8)dwTemp;
-	}
 };
 
 void CSE_ALifeGraphPoint::STATE_Write		(NET_Packet	&tNetPacket)
 {
-	tNetPacket.w_stringZ			(m_caConnectionPointName);
-	tNetPacket.w_stringZ			(m_caConnectionLevelName);
+	tNetPacket.w_stringZ		(m_caConnectionPointName);
+	tNetPacket.w_stringZ		(m_caConnectionLevelName);
 	tNetPacket.w_u8				(m_tLocations[0]);
 	tNetPacket.w_u8				(m_tLocations[1]);
 	tNetPacket.w_u8				(m_tLocations[2]);
