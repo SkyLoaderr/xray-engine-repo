@@ -58,6 +58,9 @@ void CInventoryItem::Load(LPCSTR section)
 
 	inherited::Load(section);
 
+	ISpatial*		self				=	dynamic_cast<ISpatial*> (this);
+	if (self)		self->spatial.type	|=	STYPE_VISIBLEFORAI;	
+
 	m_name = pSettings->r_string(section, "inv_name");
 	m_nameShort = pSettings->r_string(section, "inv_name_short");
 	NameComplex();
