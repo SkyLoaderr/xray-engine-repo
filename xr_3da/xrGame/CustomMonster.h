@@ -1,4 +1,4 @@
-// CustomMonster.h: interface for the CCustomMonster class.
+	// CustomMonster.h: interface for the CCustomMonster class.
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -171,9 +171,9 @@ public:
 	// HUD
 	virtual void		OnHUDDraw				(CCustomHUD* hud);
 	virtual bool		bfExecMovement			(){return(false);};
-	IC			void		StandUp(){m_cBodyState=BODY_STATE_STAND;};
-	IC			void		Squat(){m_cBodyState=BODY_STATE_CROUCH;};
-	IC			void		Lie(){m_cBodyState=BODY_STATE_LIE;};
+	IC		void		StandUp()	{ m_cBodyState = BODY_STATE_STAND;  };
+	IC		void		Squat()		{ m_cBodyState = BODY_STATE_CROUCH; };
+	IC		void		Lie()		{ m_cBodyState = BODY_STATE_LIE;    };
 	
 public:
 	//typedef BOOL (*QualifierFunction)(CObject*, void*);

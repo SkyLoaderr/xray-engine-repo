@@ -11,7 +11,6 @@
 #include "..\\..\\..\\3dsound.h"
 #include "ai_soldier.h"
 #include "ai_soldier_selectors.h"
-#include "..\\..\\..\\bodyinstance.h"
 #include "..\\..\\..\\xr_trims.h"
 
 CAI_Soldier::CAI_Soldier()
@@ -317,7 +316,7 @@ bool CAI_Soldier::bfCheckForVisibility(CEntity* tpEntity)
 	}
 
 	// computing lightness weight
-	fResult *= float(0 + tpEntity->AI_Node->light)/(0 + 255.f);
+	fResult *= 2*float(0 + tpEntity->AI_Node->light)/(0 + 255.f);
 	
 	// computing enemy state
 	switch (m_cBodyState) {
@@ -338,7 +337,7 @@ bool CAI_Soldier::bfCheckForVisibility(CEntity* tpEntity)
 	//if ()
 	//fResult += m_fCurSpeed < MAX_VIEWABLE_SPEED ? SPEED_WEIGHT*(1.f - m_fCurSpeed/MAX_VIEWABLE_SPEED) : SPEED_WEIGHT;
 
-	return(fResult >= 3.f);
+	return(fResult >= 6.f);
 }
 
 void CAI_Soldier::SelectEnemy(SEnemySelected& S)
@@ -411,7 +410,7 @@ bool CAI_Soldier::bfCheckIfCanKillMember()
 IC bool CAI_Soldier::bfCheckIfCanKillEnemy() 
 {
 	Fvector tMyLook;
-	tMyLook.direct(r_torso_current.yaw,r_torso_current.pitch);
+	tMyLook.direct(r_torso_current.yaw + PI/6,r_torso_current.pitch);
 	if (Enemy.Enemy) {
 		Fvector tFireVector, tMyPosition = Position(), tEnemyPosition = Enemy.Enemy->Position();
 		tFireVector.sub(tMyPosition,tEnemyPosition);
@@ -776,17 +775,28 @@ void CAI_Soldier::vfSetFire(bool bFire, CGroup &Group)
 	//Msg("firing : %d",Group.m_dwFiring);
 }
 
-void CAI_Soldier::vfSetMovementType(bool bCrouched, float fSpeed)
+void CAI_Soldier::vfSetMovementType(char cBodyState, float fSpeed)
 {
-	if (bCrouched) {
-		Squat();
-		m_fCurSpeed = m_fCrouchCoefficient*fSpeed;
+	switch (cBodyState) {
+		case BODY_STATE_STAND : {
+			StandUp();
+			m_fCurSpeed = fSpeed;
+			r_torso_speed = PI;
+			break;
+		}
+		case BODY_STATE_CROUCH : {
+			Squat();
+			m_fCurSpeed = m_fCrouchCoefficient*fSpeed;
+			r_torso_speed = 3*PI_DIV_4;
+			break;
+		}
+		case BODY_STATE_LIE : {
+			Lie();
+			m_fCurSpeed = 3*m_fCrouchCoefficient*fSpeed;
+			r_torso_speed = PI_DIV_2;
+			break;
+		}
 	}
-	else {
-		StandUp();
-		m_fCurSpeed = fSpeed;
-	}
-	
 }
 
 void CAI_Soldier::vfCheckForSavedEnemy()
@@ -818,6 +828,16 @@ void CAI_Soldier::AttackFire()
 	
 	SelectEnemy(Enemy);
 	
+	DWORD dwCurTime = Level().timeServer();
+	
+	if ((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime) && (m_cBodyState != BODY_STATE_LIE)) {
+		tStateStack.push(eCurrentState);
+		eCurrentState = aiSoldierLyingDown;
+		m_dwLastRangeSearch = 0;
+		bStopThinking = true;
+		return;
+	}
+	
 	if (!(Enemy.Enemy)) {
 		if (((tSavedEnemy) && (tSavedEnemy->g_Health() <= 0)) || (!tSavedEnemy)) {
 			eCurrentState = tStateStack.top();
@@ -848,12 +868,14 @@ void CAI_Soldier::AttackFire()
 	Fvector tDistance;
 	tDistance.sub(Position(),Enemy.Enemy->Position());
 
+	/**
 	if ((tDistance.square_magnitude() >= 25.f) && ((Group.m_dwFiring > 1) || ((Group.m_dwFiring == 1) && (!m_bFiring)))) {
 		eCurrentState = aiSoldierAttackRun;
 		m_dwLastRangeSearch = 0;
 		bStopThinking = true;
 		return;
 	}
+	/**/
 
 	if ((Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() == 0)) {
 		tStateStack.push(eCurrentState);
@@ -870,9 +892,9 @@ void CAI_Soldier::AttackFire()
 	vfAimAtEnemy();
 	
 	vfSetFire(true,Group);
-
-	vfSetMovementType(true,m_fMaxSpeed);
-
+	
+	vfSetMovementType(m_cBodyState,0);
+	
 	bStopThinking = true;
 }
 
@@ -888,6 +910,16 @@ void CAI_Soldier::AttackRun()
 	}
 	
 	SelectEnemy(Enemy);
+	
+	DWORD dwCurTime = Level().timeServer();
+	
+	if ((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime)) {
+		tStateStack.push(eCurrentState);
+		eCurrentState = aiSoldierLyingDown;
+		m_dwLastRangeSearch = 0;
+		bStopThinking = true;
+		return;
+	}
 	
 	if (!(Enemy.Enemy)) {
 		if (((tSavedEnemy) && (tSavedEnemy->g_Health() <= 0)) || (!tSavedEnemy)) {
@@ -943,7 +975,7 @@ void CAI_Soldier::AttackRun()
 	if ((Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() <= Weapons->ActiveWeapon()->GetAmmoMagSize()*0.2f))
 		Weapons->ActiveWeapon()->Reload();
 	
-	vfSetMovementType(false,m_fMaxSpeed);
+	vfSetMovementType(m_cBodyState,m_fMaxSpeed);
 
 	bStopThinking = true;
 }
@@ -1035,7 +1067,7 @@ void CAI_Soldier::FindEnemy()
 
 	vfSetFire(false,Group);
 	
-	vfSetMovementType(false,m_fMaxSpeed);
+	vfSetMovementType(BODY_STATE_STAND,m_fMaxSpeed);
 
 	bStopThinking = true;
 }
@@ -1120,7 +1152,7 @@ void CAI_Soldier::FollowLeader()
 
 	vfSetFire(false,Group);
 
-	vfSetMovementType(false,m_fMinSpeed);
+	vfSetMovementType(BODY_STATE_STAND,m_fMinSpeed);
 	// stop processing more rules
 	bStopThinking = true;
 }
@@ -1195,7 +1227,7 @@ void CAI_Soldier::FreeHunting()
 
 	vfSetFire(false,Group);
 
-	vfSetMovementType(false,m_fMinSpeed);
+	vfSetMovementType(BODY_STATE_STAND,m_fMinSpeed);
 	// stop processing more rules
 	bStopThinking = true;
 }
@@ -1212,6 +1244,29 @@ void CAI_Soldier::Jumping()
 #ifdef WRITE_LOG
 	Msg("creature : %s, mode : %s",cName(),"Jumping...");
 #endif
+}
+
+void CAI_Soldier::LyingDown()
+{
+	WRITE_TO_LOG("Lying down...");
+	
+	if (g_Health() <= 0) {
+		eCurrentState = aiSoldierDie;
+		bStopThinking = true;
+		return;
+	}
+
+	vfSetMovementType(BODY_STATE_LIE,0);
+	
+	//if ((m_tpCurrentGlobalAnimation == tSoldierAnimations.tLie.tGlobal.tpLieDown) && (m_tpCurrentGlobalBlend) && (!(m_tpCurrentGlobalBlend->playing))) {
+	if ((m_tpCurrentGlobalAnimation == tSoldierAnimations.tLie.tGlobal.tpLieDown) && (Level().timeServer() - dwHitTime > 500)) {
+		eCurrentState = tStateStack.top();
+		tStateStack.pop();
+		bStopThinking = true;
+		return;
+	}
+
+	bStopThinking = true;
 }
 
 void CAI_Soldier::MoreDeadThanAlive()
@@ -1256,7 +1311,7 @@ void CAI_Soldier::NoWeapon()
 
 	vfSetFire(false,Group);
 
-	vfSetMovementType(false,m_fMaxSpeed);
+	vfSetMovementType(BODY_STATE_STAND,m_fMaxSpeed);
 	// stop processing more rules
 	bStopThinking = true;
 }
@@ -1295,7 +1350,7 @@ void CAI_Soldier::Pursuit()
 				
 	if ((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime)) {
 		tStateStack.push(eCurrentState);
-		eCurrentState = aiSoldierPatrolUnderFire;
+		eCurrentState = aiSoldierPatrolHurt;
 		m_dwLastRangeSearch = 0;
 		bStopThinking = true;
 		return;
@@ -1348,7 +1403,7 @@ void CAI_Soldier::Pursuit()
 
 	vfSetFire(false,Group);
 
-	vfSetMovementType(false,m_fMinSpeed);
+	vfSetMovementType(BODY_STATE_STAND,m_fMinSpeed);
 	
 	bStopThinking = true;
 }
@@ -1421,9 +1476,9 @@ void CAI_Soldier::Reload()
 		Weapons->ActiveWeapon()->Reload();
 
 	//if (AI_Path.TravelPath.size() <= AI_Path.TravelStart)
-		vfSetMovementType(false,m_fMinSpeed);
+		vfSetMovementType(m_cBodyState,m_fMinSpeed);
 	//else
-	//	vfSetMovementType(true,m_fMinSpeed);
+	//	vfSetMovementType(BODY_STATE_CROUCH,m_fMinSpeed);
 	// stop processing more rules
 	bStopThinking = true;
 }
@@ -1518,7 +1573,7 @@ void CAI_Soldier::UnderFire()
 
 	vfSetFire(dwCurTime - dwHitTime < 1000,Group);
 
-	vfSetMovementType(false,m_fMaxSpeed);
+	vfSetMovementType(BODY_STATE_STAND,m_fMaxSpeed);
 	// stop processing more rules
 	bStopThinking = true;
 }
@@ -1565,6 +1620,10 @@ void CAI_Soldier::Think()
 				Jumping();
 				break;
 			}
+			case aiSoldierLyingDown : {
+				LyingDown();
+				break;
+			}
 			case aiSoldierMoreDeadThanAlive : {
 				MoreDeadThanAlive();
 				break;
@@ -1593,6 +1652,14 @@ void CAI_Soldier::Think()
 				PatrolHurt();
 				break;
 			}
+			case aiSoldierPatrolHurtAggressiveUnderFire : {
+				PatrolHurtAggressiveUnderFire();
+				break;
+														  }
+			case aiSoldierPatrolHurtNonAggressiveUnderFire : {
+				PatrolHurtAggressiveUnderFire();
+				break;
+														  }
 			case aiSoldierPursuit : {
 				Pursuit();
 				break;

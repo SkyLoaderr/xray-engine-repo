@@ -9,79 +9,7 @@
 #include "stdafx.h"
 #include "ai_soldier.h"
 #include "ai_soldier_selectors.h"
-
-#define NEXT_POINT(m_iCurrentPoint) (m_iCurrentPoint) == tpaPatrolPoints.size() - 1 ? 0 : (m_iCurrentPoint) + 1
-#define PREV_POINT(m_iCurrentPoint) (m_iCurrentPoint) == 0 ? tpaPatrolPoints.size() - 1 : (m_iCurrentPoint) - 1
-
-#define MAX_PATROL_DISTANCE		6.f
-#define MIN_PATROL_DISTANCE		1.f
-
-#ifdef WRITE_LOG
-	#define WRITE_TO_LOG(S) Msg("creature : %s, mode : %s",cName(),S);
-#else
-	#define WRITE_TO_LOG(S)
-#endif
-
-#define CHECK_FOR_STATE_TRANSITIONS(S) \
-	WRITE_TO_LOG(S);\
-	\
-	if (g_Health() <= 0) {\
-		eCurrentState = aiSoldierDie;\
-		bStopThinking = true;\
-		return;\
-	}\
-	\
-	SelectEnemy(Enemy);\
-	\
-	if (Enemy.Enemy) {\
-		tStateStack.push(eCurrentState);\
-		eCurrentState = aiSoldierAttackFire;\
-		m_dwLastRangeSearch = 0;\
-		bStopThinking = true;\
-		return;\
-	}\
-	\
-	DWORD dwCurTime = Level().timeServer();\
-	\
-	if ((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime)) {\
-		tStateStack.push(eCurrentState);\
-		eCurrentState = aiSoldierPatrolUnderFire;\
-		m_dwLastRangeSearch = 0;\
-		bStopThinking = true;\
-		return;\
-	}\
-	\
-	if (dwCurTime - dwSenseTime < SENSE_JUMP_TIME) {\
-		tStateStack.push(eCurrentState);\
-		eCurrentState = aiSoldierSenseSomething;\
-		m_dwLastRangeSearch = 0;\
-		bStopThinking = true;\
-		return;\
-	}\
-	\
-	INIT_SQUAD_AND_LEADER;\
-	\
-	CGroup &Group = Squad.Groups[g_Group()];\
-	\
-	if ((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime)) {\
-		tHitDir = Group.m_tLastHitDirection;\
-		dwHitTime = Group.m_dwLastHitTime;\
-		tStateStack.push(eCurrentState);\
-		eCurrentState = aiSoldierPatrolUnderFire;\
-		m_dwLastRangeSearch = 0;\
-		bStopThinking = true;\
-		return;\
-	}
-
-#define SET_LOOK_FIRE_MOVEMENT(a,b,c)\
-	SetLessCoverLook(AI_Node);\
-	\
-	vfSetFire(a,Group);\
-	\
-	vfSetMovementType(b,c);\
-	\
-	bStopThinking = true;
-
+#include "..\..\xr_weapon_list.h"
 
 extern void	UnpackContour(PContour& C, DWORD ID);
 extern void	IntersectContours(PSegment& Dest, PContour& C1, PContour& C2);
@@ -773,6 +701,15 @@ void CAI_Soldier::PatrolUnderFire()
 	}
 	/**/
 	
+	/**
+	if (m_cBodyState != BODY_STATE_LIE) {
+		tStateStack.push(eCurrentState);
+		eCurrentState = aiSoldierLyingDown;
+		bStopThinking = true;
+		return;
+	}
+	/**/
+
 	INIT_SQUAD_AND_LEADER;
 
 	CGroup &Group = Squad.Groups[g_Group()];
@@ -791,11 +728,168 @@ void CAI_Soldier::PatrolUnderFire()
 	tTemp.mul(40.f);
 	SelectorUnderFire.m_tEnemyPosition.sub(Position(),tTemp);
 
-	if (AI_Path.bNeedRebuild)
-		vfBuildPathToDestinationPoint(0);
+	/**
+	if (AI_Path.TravelStart >= AI_Path.TravelPath.size() - 1) {
+		mk_rotation(Group.m_tLastHitDirection,r_torso_target);
+		r_target.yaw = r_torso_target.yaw;
+		r_torso_target.yaw = r_torso_target.yaw - EYE_WEAPON_DELTA;
+	}
 	else
-		if (m_dwLastSuccessfullSearch <= Group.m_dwLastHitTime)
-			vfSearchForBetterPosition(SelectorUnderFire,Squad,Leader);
+		SetLessCoverLook(AI_Node);
+	/**/
+
+	/**/
+	if (dwCurTime - dwHitTime >= 1*1000) {
+		if (AI_Path.bNeedRebuild)
+			vfBuildPathToDestinationPoint(0);
+		else
+			if (m_dwLastSuccessfullSearch <= Group.m_dwLastHitTime)
+				vfSearchForBetterPosition(SelectorUnderFire,Squad,Leader);
+			
+		//mk_rotation(Group.m_tLastHitDirection,r_torso_target);
+		//r_target.yaw = r_torso_target.yaw + 0*PI_DIV_6;
+		//r_torso_target.yaw = r_torso_target.yaw - EYE_WEAPON_DELTA;
+		/**
+		tWatchDirection.sub(Group.m_tHitPosition,eye_matrix.c);
+		mk_rotation(tWatchDirection,r_torso_target);
+		r_target.yaw = r_torso_target.yaw;
+		r_torso_target.yaw = r_torso_target.yaw - EYE_WEAPON_DELTA;
+		//r_torso_target.pitch = r_target.pitch = 0;
+		/**/
+		SetLessCoverLook(AI_Node);
+		vfSetMovementType(BODY_STATE_CROUCH,m_fMaxSpeed);
+	}
+	else {
+		SetLessCoverLook(AI_Node);
+		AI_Path.TravelPath.clear();
+		vfSetMovementType(BODY_STATE_CROUCH,0);
+	}
+	/**/
+	
+	vfSetFire(false,Group);
+	
+	// stop processing more rules
+	bStopThinking = true;
+}
+
+void CAI_Soldier::PatrolHurtAggressiveUnderFire()
+{
+	// if no more health then soldier is dead
+	WRITE_TO_LOG("Patrol hurt aggressive under fire");
+
+	if (g_Health() <= 0) {
+		eCurrentState = aiSoldierDie;
+		bStopThinking = true;
+		return;
+	}
+
+	SelectEnemy(Enemy);
+
+	DWORD dwCurTime = Level().timeServer();
+	
+	if ((Enemy.Enemy) && (dwCurTime - dwHitTime >= 12000)) {
+		eCurrentState = aiSoldierAttackFire;
+		m_dwLastRangeSearch = 0;
+		bStopThinking = true;
+		return;
+	}
+	
+	if (dwCurTime - dwHitTime >= 12000) {
+		eCurrentState = aiSoldierPatrolUnderFire;
+		m_dwLastRangeSearch = 0;
+		bStopThinking = true;
+		return;
+	}
+	
+	if (m_cBodyState != BODY_STATE_LIE) {
+		tStateStack.push(eCurrentState);
+		eCurrentState = aiSoldierLyingDown;
+		bStopThinking = true;
+		return;
+	}
+
+	INIT_SQUAD_AND_LEADER;
+
+	CGroup &Group = Squad.Groups[g_Group()];
+	
+	tWatchDirection.sub(Group.m_tHitPosition,vPosition);
+	mk_rotation(tWatchDirection,r_torso_target);
+	r_target.yaw = r_torso_target.yaw;
+	r_torso_target.yaw = r_torso_target.yaw - EYE_WEAPON_DELTA;
+	//r_torso_target.pitch = r_target.pitch = 0;
+	vfSetMovementType(BODY_STATE_LIE,0);
+	
+	if ((Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() <= 0)) {
+		vfSetFire(Enemy.Enemy ? true : false,Group);
+		Weapons->ActiveWeapon()->Reload();
+	}
+	else
+		vfSetFire(Enemy.Enemy ? fabsf(r_torso_current.yaw - r_torso_target.yaw) < PI/30.f : false,Group);
+	
+	bStopThinking = true;
+}
+
+void CAI_Soldier::PatrolHurtNonAggressiveUnderFire()
+{
+	// if no more health then soldier is dead
+#ifdef WRITE_LOG
+	Msg("creature : %s, mode : %s",cName(),"Patrol hurt non-aggressive under fire");
+#endif
+	if (g_Health() <= 0) {
+		eCurrentState = aiSoldierDie;
+		bStopThinking = true;
+		return;
+	}
+
+	SelectEnemy(Enemy);
+
+	/**/
+	if (Enemy.Enemy)		{
+		eCurrentState = aiSoldierAttackFire;
+		m_dwLastRangeSearch = 0;
+		bStopThinking = true;
+		return;
+	}
+	/**/
+
+	DWORD dwCurTime = Level().timeServer();
+
+	/**/
+	if (dwCurTime - dwHitTime > HIT_REACTION_TIME) {
+		eCurrentState = tStateStack.top();
+		tStateStack.pop();
+		m_dwLastRangeSearch = 0;
+		bStopThinking = true;
+		return;
+	}
+	/**/
+	
+	/**
+	if (m_cBodyState != BODY_STATE_LIE) {
+		tStateStack.push(eCurrentState);
+		eCurrentState = aiSoldierLyingDown;
+		bStopThinking = true;
+		return;
+	}
+	/**/
+
+	INIT_SQUAD_AND_LEADER;
+
+	CGroup &Group = Squad.Groups[g_Group()];
+	
+	if ((dwCurTime - Group.m_dwLastHitTime > HIT_REACTION_TIME) && (Group.m_dwLastHitTime)) {
+		eCurrentState = tStateStack.top();
+		tStateStack.pop();
+		m_dwLastRangeSearch = 0;
+		bStopThinking = true;
+		return;
+	}
+	
+	vfInitSelector(SelectorUnderFire,Squad,Leader);
+
+	Fvector tTemp = tHitDir;
+	tTemp.mul(40.f);
+	SelectorUnderFire.m_tEnemyPosition.sub(Position(),tTemp);
 
 	/**
 	if (AI_Path.TravelStart >= AI_Path.TravelPath.size() - 1) {
@@ -809,19 +903,34 @@ void CAI_Soldier::PatrolUnderFire()
 
 	/**/
 	if (dwCurTime - dwHitTime >= 1*1000) {
+		if (AI_Path.bNeedRebuild)
+			vfBuildPathToDestinationPoint(0);
+		else
+			if (m_dwLastSuccessfullSearch <= Group.m_dwLastHitTime)
+				vfSearchForBetterPosition(SelectorUnderFire,Squad,Leader);
+			
 		//mk_rotation(Group.m_tLastHitDirection,r_torso_target);
 		//r_target.yaw = r_torso_target.yaw + 0*PI_DIV_6;
 		//r_torso_target.yaw = r_torso_target.yaw - EYE_WEAPON_DELTA;
+		/**
 		tWatchDirection.sub(Group.m_tHitPosition,eye_matrix.c);
 		mk_rotation(tWatchDirection,r_torso_target);
 		r_target.yaw = r_torso_target.yaw;
 		r_torso_target.yaw = r_torso_target.yaw - EYE_WEAPON_DELTA;
+		//r_torso_target.pitch = r_target.pitch = 0;
+		/**/
+		SetLessCoverLook(AI_Node);
+		vfSetMovementType(BODY_STATE_CROUCH,m_fMaxSpeed);
+	}
+	else {
+		SetLessCoverLook(AI_Node);
+		AI_Path.TravelPath.clear();
+		vfSetMovementType(BODY_STATE_CROUCH,0);
 	}
 	/**/
 	
-	vfSetFire(dwCurTime - dwHitTime < 0*1000,Group);
-
-	vfSetMovementType(false,m_fMaxSpeed);
+	vfSetFire(false,Group);
+	
 	// stop processing more rules
 	bStopThinking = true;
 }
@@ -837,13 +946,23 @@ void CAI_Soldier::PatrolHurt()
 		return;
 	}
 
+	if (m_cBodyState != BODY_STATE_LIE) {
+		tStateStack.push(eCurrentState);
+		eCurrentState = aiSoldierLyingDown;
+		bStopThinking = true;
+		return;
+	}
+	
 	INIT_SQUAD_AND_LEADER;
 	CGroup &Group = Squad.Groups[g_Group()];
 	
 	DWORD dwCurTime = Level().timeServer();
 
-	if (dwCurTime - dwHitTime >= 1*1000) {
-		eCurrentState = aiSoldierPatrolUnderFire;
+	if (dwCurTime - dwHitTime >= 2000) {
+		if (iHealth < 0)
+			eCurrentState = aiSoldierPatrolHurtNonAggressiveUnderFire;
+		else
+			eCurrentState = aiSoldierPatrolHurtAggressiveUnderFire;
 		m_dwLastRangeSearch = 0;
 		bStopThinking = true;
 		return;
@@ -851,21 +970,10 @@ void CAI_Soldier::PatrolHurt()
 
 	AI_Path.TravelPath.clear();
 
-	/**
-	tWatchDirection.sub(tHitPosition,eye_matrix.c);
-	mk_rotation(tWatchDirection,r_torso_target);
-	r_target.yaw = r_torso_target.yaw + 0*PI_DIV_6;
-	r_torso_target.yaw = r_torso_target.yaw - EYE_WEAPON_DELTA;
-	/**
-	mk_rotation(tHitDir,r_torso_target);
-	r_target.yaw = r_torso_target.yaw;
-	r_torso_target.yaw = r_torso_target.yaw - EYE_WEAPON_DELTA;
-	/**/
-
 	vfSetFire(false,Group);
 
-	vfSetMovementType(true,0);
-	// stop processing more rules
+	vfSetMovementType(BODY_STATE_LIE,0);
+
 	bStopThinking = true;
 }
 
@@ -936,18 +1044,18 @@ void CAI_Soldier::FollowLeaderPatrol()
 	if (acosf(tWatchDirection.dotproduct(tTemp0)) < PI_DIV_2) {
 		float fDistance = Leader->Position().distance_to(Position());
 		if (fDistance >= m_fMaxPatrolDistance) {
-			SET_LOOK_FIRE_MOVEMENT(false,false,1.1f*m_fMinSpeed);
+			SET_LOOK_FIRE_MOVEMENT(false, BODY_STATE_STAND,1.1f*m_fMinSpeed);
 		}
 		else
 			if (fDistance <= m_fMinPatrolDistance) {
-				SET_LOOK_FIRE_MOVEMENT(false,false,.9f*m_fMinSpeed);
+				SET_LOOK_FIRE_MOVEMENT(false, BODY_STATE_STAND,.9f*m_fMinSpeed);
 			}
 			else {
-				SET_LOOK_FIRE_MOVEMENT(false,false,((fDistance - (m_fMaxPatrolDistance + m_fMinPatrolDistance)*.5f)/((m_fMaxPatrolDistance - m_fMinPatrolDistance)*.5f)*.1f + m_fMinPatrolDistance)*m_fMinSpeed);
+				SET_LOOK_FIRE_MOVEMENT(false, BODY_STATE_STAND,((fDistance - (m_fMaxPatrolDistance + m_fMinPatrolDistance)*.5f)/((m_fMaxPatrolDistance - m_fMinPatrolDistance)*.5f)*.1f + m_fMinPatrolDistance)*m_fMinSpeed);
 			}
 	}
 	else {
-		SET_LOOK_FIRE_MOVEMENT(false,false,.9f*m_fMinSpeed);
+		SET_LOOK_FIRE_MOVEMENT(false, BODY_STATE_STAND,.9f*m_fMinSpeed);
 	}
 	
 	// stop processing more rules
@@ -972,7 +1080,7 @@ void CAI_Soldier::Patrol()
 			m_dwLastRangeSearch = Level().timeServer();
 		}
 	
-	SET_LOOK_FIRE_MOVEMENT(false,false,m_fMinSpeed)
+	SET_LOOK_FIRE_MOVEMENT(false, BODY_STATE_STAND,m_fMinSpeed)
 }
 
 void CAI_Soldier::PatrolReturn()
@@ -1043,9 +1151,9 @@ void CAI_Soldier::PatrolReturn()
 	}
 
 	if (Leader != this) {
-		SET_LOOK_FIRE_MOVEMENT(false,false,m_fMaxSpeed)
+		SET_LOOK_FIRE_MOVEMENT(false, BODY_STATE_STAND,m_fMaxSpeed)
 	}
 	else {
-		SET_LOOK_FIRE_MOVEMENT(false,false,m_fMinSpeed)
+		SET_LOOK_FIRE_MOVEMENT(false, BODY_STATE_STAND,m_fMinSpeed)
 	}
 }

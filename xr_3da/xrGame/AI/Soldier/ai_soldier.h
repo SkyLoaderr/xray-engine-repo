@@ -12,6 +12,7 @@
 #include "..\\..\\CustomMonster.h"
 #include "..\\..\\group.h"
 #include "ai_soldier_selectors.h"
+#include "..\\..\\..\\bodyinstance.h"
 
 class CAI_Soldier : public CCustomMonster  
 {
@@ -30,6 +31,7 @@ class CAI_Soldier : public CCustomMonster
 		aiSoldierFreeHunting,
 		aiSoldierInjuring,
 		aiSoldierJumping,
+		aiSoldierLyingDown,
 		aiSoldierMoreDeadThanAlive,
 		aiSoldierNoWeapon,
 		
@@ -37,6 +39,8 @@ class CAI_Soldier : public CCustomMonster
 		aiSoldierPatrolRoute,
 		aiSoldierFollowLeaderPatrol,
 		aiSoldierPatrolHurt,
+		aiSoldierPatrolHurtAggressiveUnderFire,
+		aiSoldierPatrolHurtNonAggressiveUnderFire,
 		aiSoldierPatrolUnderFire,
 
 		aiSoldierPursuit,
@@ -51,7 +55,7 @@ class CAI_Soldier : public CCustomMonster
 	protected:
 		
 		// macroses
-//		#define WRITE_LOG
+		#define WRITE_LOG
 		#define MIN_RANGE_SEARCH_TIME_INTERVAL	15000.f
 		#define MAX_TIME_RANGE_SEARCH			150000.f
 		#define	FIRE_ANGLE						PI/10
@@ -71,143 +75,228 @@ class CAI_Soldier : public CCustomMonster
 			if (Leader->g_Health() <= 0)\
 				Leader = this;\
 			R_ASSERT (Leader);
+		#define NEXT_POINT(m_iCurrentPoint) (m_iCurrentPoint) == tpaPatrolPoints.size() - 1 ? 0 : (m_iCurrentPoint) + 1
+		#define PREV_POINT(m_iCurrentPoint) (m_iCurrentPoint) == 0 ? tpaPatrolPoints.size() - 1 : (m_iCurrentPoint) - 1
 
-		// head turns
-		static void __stdcall HeadSpinCallback(CBoneInstance*);
+		#define MAX_PATROL_DISTANCE		6.f
+		#define MIN_PATROL_DISTANCE		1.f
 
-		// media
-		sound3D			sndHit[SND_HIT_COUNT];
-		sound3D			sndDie[SND_DIE_COUNT];
+		#ifdef WRITE_LOG
+			#define WRITE_TO_LOG(S) Msg("creature : %s, mode : %s",cName(),S);
+		#else
+			#define WRITE_TO_LOG(S)
+		#endif
 
-////////////////////////////////////////////////////////////////////////////
-// normal animations
-////////////////////////////////////////////////////////////////////////////
+		#define CHECK_FOR_STATE_TRANSITIONS(S) \
+			WRITE_TO_LOG(S);\
+			\
+			if (g_Health() <= 0) {\
+				eCurrentState = aiSoldierDie;\
+				bStopThinking = true;\
+				return;\
+			}\
+			\
+			SelectEnemy(Enemy);\
+			\
+			if (Enemy.Enemy) {\
+				tStateStack.push(eCurrentState);\
+				eCurrentState = aiSoldierAttackFire;\
+				m_dwLastRangeSearch = 0;\
+				bStopThinking = true;\
+				return;\
+			}\
+			\
+			DWORD dwCurTime = Level().timeServer();\
+			\
+			if ((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime)) {\
+				tStateStack.push(eCurrentState);\
+				eCurrentState = aiSoldierPatrolHurt;\
+				m_dwLastRangeSearch = 0;\
+				bStopThinking = true;\
+				return;\
+			}\
+			\
+			if (dwCurTime - dwSenseTime < SENSE_JUMP_TIME) {\
+				tStateStack.push(eCurrentState);\
+				eCurrentState = aiSoldierSenseSomething;\
+				m_dwLastRangeSearch = 0;\
+				bStopThinking = true;\
+				return;\
+			}\
+			\
+			INIT_SQUAD_AND_LEADER;\
+			\
+			CGroup &Group = Squad.Groups[g_Group()];\
+			\
+			if ((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime)) {\
+			tHitDir = Group.m_tLastHitDirection;\
+			dwHitTime = Group.m_dwLastHitTime;\
+			tHitPosition = Group.m_tHitPosition;\
+			tStateStack.push(eCurrentState);\
+				eCurrentState = aiSoldierPatrolUnderFire;\
+				m_dwLastRangeSearch = 0;\
+				bStopThinking = true;\
+				return;\
+			}
 
-// global animations
-typedef struct tagSNormalGlobalAnimations{
-	CMotionDef* tpaDeath[2];
-	CMotionDef* tpJumpBegin;
-	CMotionDef* tpJumpIdle;
-}SNormalGlobalAnimations;
+		/************************************************************************/
+		/* 		
+		tHitDir = Group.m_tLastHitDirection;\
+		dwHitTime = Group.m_dwLastHitTime;\
+		tHitPosition = Group.m_tHitPosition;\
+		*/
+		/************************************************************************/
 
-// torso animations
-typedef struct tagSNormalTorsoAnimations{
-	CMotionDef* tpaIdle[2];
-	CMotionDef* tpaAim[2];
-	CMotionDef* tpaAttack[2];
-	CMotionDef* tpDamageLeft;
-	CMotionDef* tpDamageRight;
-	CMotionDef* tpReload;
-}SNormalTorsoAnimations;
+		#define SET_LOOK_FIRE_MOVEMENT(a,b,c)\
+			SetLessCoverLook(AI_Node);\
+			\
+			vfSetFire(a,Group);\
+			\
+			vfSetMovementType(b,c);\
+			\
+			bStopThinking = true;
 
-// legs animations
-typedef struct tagSNormalLegsAnimations{
-	SAnimState  tRun;
-	SAnimState  tWalk;
-	CMotionDef* tpTurn;
-	CMotionDef* tpIdle;
-}SNormalLegsAnimations;
+		////////////////////////////////////////////////////////////////////////////
+		// normal animations
+		////////////////////////////////////////////////////////////////////////////
 
-// hands animations
-typedef struct tagSNormalHandsAnimations{
-	CMotionDef* tpPointGesture;
-	CMotionDef* tpSmokeGesture;
-}SNormalHandsAnimations;
+		// global animations
+		typedef struct tagSNormalGlobalAnimations{
+			CMotionDef* tpaDeath[2];
+			CMotionDef* tpJumpBegin;
+			CMotionDef* tpJumpIdle;
+		}SNormalGlobalAnimations;
 
-// normal animations
-typedef struct tagSNormalAnimations{
-	SNormalGlobalAnimations tGlobal;
-	SNormalTorsoAnimations  tTorso;
-	SNormalLegsAnimations	tLegs;
-	SNormalHandsAnimations	tHands;
-}SNormalAnimations;
+		// torso animations
+		typedef struct tagSNormalTorsoAnimations{
+			CMotionDef* tpaIdle[2];
+			CMotionDef* tpaAim[2];
+			CMotionDef* tpaAttack[2];
+			CMotionDef* tpDamageLeft;
+			CMotionDef* tpDamageRight;
+			CMotionDef* tpReload;
+		}SNormalTorsoAnimations;
 
-////////////////////////////////////////////////////////////////////////////
-// crouch animations
-////////////////////////////////////////////////////////////////////////////
+		// legs animations
+		typedef struct tagSNormalLegsAnimations{
+			SAnimState  tRun;
+			SAnimState  tWalk;
+			CMotionDef* tpTurn;
+			CMotionDef* tpIdle;
+		}SNormalLegsAnimations;
 
-// global animations
-typedef struct tagSCrouchGlobalAnimations{
-	CMotionDef* tpDeath;
-	CMotionDef* tpJumpBegin;
-	CMotionDef* tpJumpIdle;
-}SCrouchGlobalAnimations;
+		// hands animations
+		typedef struct tagSNormalHandsAnimations{
+			CMotionDef* tpPointGesture;
+			CMotionDef* tpSmokeGesture;
+		}SNormalHandsAnimations;
 
-// torso animations
-typedef struct tagSCrouchTorsoAnimations{
-	CMotionDef* tpAim;
-}SCrouchTorsoAnimations;
+		// normal animations
+		typedef struct tagSNormalAnimations{
+			SNormalGlobalAnimations tGlobal;
+			SNormalTorsoAnimations  tTorso;
+			SNormalLegsAnimations	tLegs;
+			SNormalHandsAnimations	tHands;
+		}SNormalAnimations;
 
-// legs animations
-typedef struct tagSCrouchLegsAnimations{
-	SAnimState  tRun;
-	SAnimState  tWalk;
-	CMotionDef* tpTurn;
-	CMotionDef* tpIdle;
-}SCrouchLegsAnimations;
+		////////////////////////////////////////////////////////////////////////////
+		// crouch animations
+		////////////////////////////////////////////////////////////////////////////
 
-// hands animations
-typedef struct tagSCrouchHandsAnimations{
-	CMotionDef* tpPointGesture;
-}SCrouchHandsAnimations;
+		// global animations
+		typedef struct tagSCrouchGlobalAnimations{
+			CMotionDef* tpDeath;
+			CMotionDef* tpJumpBegin;
+			CMotionDef* tpJumpIdle;
+		}SCrouchGlobalAnimations;
 
-// crouch animations
-typedef struct tagSCrouchAnimations{
-	SCrouchGlobalAnimations	tGlobal;
-	SCrouchTorsoAnimations  tTorso;
-	SCrouchLegsAnimations	tLegs;
-	SCrouchHandsAnimations	tHands;
-}SCrouchAnimations;
+		// torso animations
+		typedef struct tagSCrouchTorsoAnimations{
+			CMotionDef* tpAim;
+		}SCrouchTorsoAnimations;
 
-////////////////////////////////////////////////////////////////////////////
-// lie animations
-////////////////////////////////////////////////////////////////////////////
+		// legs animations
+		typedef struct tagSCrouchLegsAnimations{
+			SAnimState  tRun;
+			SAnimState  tWalk;
+			CMotionDef* tpTurn;
+			CMotionDef* tpIdle;
+		}SCrouchLegsAnimations;
 
-// global animations
-typedef struct tagSLieGlobalAnimations{
-	CMotionDef* tpDeath;
-}SLieGlobalAnimations;
+		// hands animations
+		typedef struct tagSCrouchHandsAnimations{
+			CMotionDef* tpPointGesture;
+		}SCrouchHandsAnimations;
 
-// torso animations
-typedef struct tagSLieTorsoAnimations{
-	CMotionDef* tpIdle;
-	CMotionDef* tpReload;
-}SLieTorsoAnimations;
+		// crouch animations
+		typedef struct tagSCrouchAnimations{
+			SCrouchGlobalAnimations	tGlobal;
+			SCrouchTorsoAnimations  tTorso;
+			SCrouchLegsAnimations	tLegs;
+			SCrouchHandsAnimations	tHands;
+		}SCrouchAnimations;
 
-// legs animations
-typedef struct tagSLieLegsAnimations{
-	SAnimState  tWalk;
-}SLieLegsAnimations;
+		////////////////////////////////////////////////////////////////////////////
+		// lie animations
+		////////////////////////////////////////////////////////////////////////////
 
-// hands animations
-typedef struct tagSLieHandsAnimations{
-	CMotionDef* tpPointGesture;
-}SLieHandsAnimations;
+		// global animations
+		typedef struct tagSLieGlobalAnimations{
+			CMotionDef* tpDeath;
+			CMotionDef* tpLieDown;
+		}SLieGlobalAnimations;
 
-// lie animations
-typedef struct tagSLieAnimations{
-	SLieGlobalAnimations	tGlobal;
-	SLieTorsoAnimations		tTorso;
-	SLieLegsAnimations		tLegs;
-	SLieHandsAnimations		tHands;
-}SLieAnimations;
+		// torso animations
+		typedef struct tagSLieTorsoAnimations{
+			CMotionDef* tpIdle;
+			CMotionDef* tpReload;
+		}SLieTorsoAnimations;
 
-////////////////////////////////////////////////////////////////////////////
-// soldier animations
-////////////////////////////////////////////////////////////////////////////
+		// legs animations
+		typedef struct tagSLieLegsAnimations{
+			SAnimState  tWalk;
+		}SLieLegsAnimations;
 
-typedef struct tagSSoldierAnimations{
-	SNormalAnimations	tNormal;
-	SCrouchAnimations	tCrouch;
-	SLieAnimations		tLie;
-}SSoldierAnimations;
+		// hands animations
+		typedef struct tagSLieHandsAnimations{
+			CMotionDef* tpPointGesture;
+		}SLieHandsAnimations;
+
+		// lie animations
+		typedef struct tagSLieAnimations{
+			SLieGlobalAnimations	tGlobal;
+			SLieTorsoAnimations		tTorso;
+			SLieLegsAnimations		tLegs;
+			SLieHandsAnimations		tHands;
+		}SLieAnimations;
+
+		////////////////////////////////////////////////////////////////////////////
+		// soldier animations
+		////////////////////////////////////////////////////////////////////////////
+
+		typedef struct tagSSoldierAnimations{
+			SNormalAnimations	tNormal;
+			SCrouchAnimations	tCrouch;
+			SLieAnimations		tLie;
+		}SSoldierAnimations;
 
 		SSoldierAnimations	tSoldierAnimations;
 		CMotionDef*			m_tpCurrentGlobalAnimation;
 		CMotionDef*			m_tpCurrentTorsoAnimation;
 		CMotionDef*			m_tpCurrentHandsAnimation;
 		CMotionDef*			m_tpCurrentLegsAnimation;
-
+		CBlend*				m_tpCurrentGlobalBlend;
+		CBlend*				m_tpCurrentTorsoBlend;
+		CBlend*				m_tpCurrentHandsBlend;
+		CBlend*				m_tpCurrentLegsBlend;
+		
+		// head turns
+		static void __stdcall HeadSpinCallback(CBoneInstance*);
+		
+		// media
+		sound3D			sndHit[SND_HIT_COUNT];
+		sound3D			sndDie[SND_DIE_COUNT];
+		
 		// ai
 		ESoldierStates	eCurrentState;
 		ESoldierStates	m_ePreviousState;
@@ -252,7 +341,6 @@ typedef struct tagSSoldierAnimations{
 		float					m_fMinPatrolDistance;
 		float					m_fMaxPatrolDistance;
 		
-		
 		// finite state machine
 		stack<ESoldierStates>	tStateStack;
 		bool					m_bStateChanged;
@@ -281,12 +369,15 @@ typedef struct tagSSoldierAnimations{
 		void FreeHunting();
 		void Injuring();
 		void Jumping();
+		void LyingDown();
 		void MoreDeadThanAlive();
 		void NoWeapon();
 		
 		void Patrol();
 		void PatrolReturn();
 		void PatrolHurt();
+		void PatrolHurtAggressiveUnderFire();
+		void PatrolHurtNonAggressiveUnderFire();
 		void PatrolUnderFire();
 		void FollowLeaderPatrol();
 		
@@ -318,7 +409,7 @@ typedef struct tagSSoldierAnimations{
 		bool bfCheckIfCanKillMember();
 	IC	bool bfCheckIfCanKillEnemy();
 		void vfSetFire(bool bFire, CGroup &Group);
-		void vfSetMovementType(bool bCrouched, float fSpeed);
+		void vfSetMovementType(char cBodyState, float fSpeed);
 		void vfCheckForSavedEnemy();
 
 	public:
