@@ -150,7 +150,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			xrClientData*		c_dest		= e_dest->owner;			// клиент, чей юнит умер
 			xrClientData*		c_src		= e_src->owner;				// клиент, чей юнит убил
 			xrClientData*		c_from		= ID_to_client	(sender);	// клиент, откуда пришла мессага
-			R_ASSERT2			(c_dest == c_from, "Security error (SSU :)");// assure client ownership of event
+//			R_ASSERT2			(c_dest == c_from, "Security error (SSU :)");// assure client ownership of event
 
 			//
 			
