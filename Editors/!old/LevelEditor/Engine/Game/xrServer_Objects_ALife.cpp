@@ -12,6 +12,7 @@
 #ifndef XRGAME_EXPORTS
 #	include "net_utils.h"
 #	include "bone.h"
+#	include "defines.h"
 #else
 	#include "..\bone.h"
 #endif
