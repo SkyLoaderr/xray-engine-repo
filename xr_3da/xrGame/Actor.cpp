@@ -437,6 +437,7 @@ void CActor::Update	(DWORD DT)
 		// Dropping
 		if (b_DropActivated)	{
 			f_DropPower			+= dt*0.1f;
+			clamp				(f_DropPower,0.f,1.f);
 		} else {
 			f_DropPower			= 0.f;
 		}
