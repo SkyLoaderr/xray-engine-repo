@@ -377,7 +377,8 @@ void CCustomRocket::UpdateEnginePh			()
 
 void CCustomRocket::UpdateEngine				()
 {
-	VERIFY(getVisible() && m_pPhysicsShell);
+	VERIFY(getVisible() );
+	VERIFY( m_pPhysicsShell);
 
 	if (m_dwEngineTime <= 0) 
 	{
