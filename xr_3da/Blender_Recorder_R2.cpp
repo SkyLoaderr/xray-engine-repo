@@ -79,6 +79,11 @@ void	CBlender_Compile::r2_Sampler	(LPCSTR name, LPCSTR texture, u32 address, u32
 	RS.SetSAMP				(stage,D3DSAMP_ELEMENTINDEX,element);
 }
 
+void	CBlender_Compile::r2_Sampler_rtf(LPCSTR name, LPCSTR texture, u32 element/* =0 */)
+{
+	r2_Sampler	(name,texture,D3DTADDRESS_CLAMP,D3DTEXF_POINT,D3DTEXF_NONE,D3DTEXF_POINT,element);
+}
+
 void	CBlender_Compile::r2_End		()
 {
 	dest.constants			= Device.Shader._CreateConstantTable(ctable);
