@@ -36,7 +36,7 @@ void CSightManager::reinit			()
 	m_enabled					= true;
 }
 
-void CSightManager::SetPointLookAngles(const Fvector &tPosition, float &yaw, float &pitch)
+void CSightManager::SetPointLookAngles(const Fvector &tPosition, float &yaw, float &pitch, const CGameObject *object)
 {
 	Fvector			tTemp;
 	tTemp.sub		(tPosition,m_object->eye_matrix.c);
@@ -47,13 +47,19 @@ void CSightManager::SetPointLookAngles(const Fvector &tPosition, float &yaw, flo
 	pitch			*= -1;
 }
 
-void CSightManager::SetFirePointLookAngles(const Fvector &tPosition, float &yaw, float &pitch)
+void CSightManager::SetFirePointLookAngles(const Fvector &tPosition, float &yaw, float &pitch, const CGameObject *object)
 {
 	Fvector			tTemp;
-	m_object->Center(tTemp);
-	tTemp.sub		(tPosition,Fvector(tTemp));
-	if (fis_zero(tTemp.square_magnitude()))
-		tTemp.set	(0.f,0.f,1.f);
+
+	if (object && object->use_center_to_aim()) {
+		m_object->Center(tTemp);
+		tTemp.sub		(tPosition,Fvector(tTemp));
+		if (fis_zero(tTemp.square_magnitude()))
+			tTemp.set	(0.f,0.f,1.f);
+	}
+	else
+		tTemp.sub	(tPosition,m_object->eye_matrix.c);
+
 	tTemp.getHP		(yaw,pitch);
 	VERIFY			(_valid(yaw));
 	VERIFY			(_valid(pitch));
@@ -63,11 +69,11 @@ void CSightManager::SetFirePointLookAngles(const Fvector &tPosition, float &yaw,
 
 void CSightManager::SetDirectionLook()
 {
-	MonsterSpace::SBoneRotation		orientation = object().movement().m_head, body_orientation = object().movement().body_orientation();
-	GetDirectionAngles				(object().movement().m_head.target.yaw,object().movement().m_head.target.pitch);
-	object().movement().m_head.target.yaw		*= -1;
+	MonsterSpace::SBoneRotation				orientation = object().movement().m_head, body_orientation = object().movement().body_orientation();
+	GetDirectionAngles						(object().movement().m_head.target.yaw,object().movement().m_head.target.pitch);
+	object().movement().m_head.target.yaw	*= -1;
 	object().movement().m_head.target.pitch	*= 0;//-1;
-	object().movement().m_body.target			= object().movement().m_head.target;
+	object().movement().m_body.target		= object().movement().m_head.target;
 }
 
 void CSightManager::SetLessCoverLook(const CLevelGraph::CVertex *tpNode, bool bDifferenceLook)

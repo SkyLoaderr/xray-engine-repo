@@ -69,6 +69,8 @@ public:
 			void	control_hit					();
 
 public:
+	virtual bool	use_center_to_aim			() const {return true;}
+
 	CAnimTriple		anim_triple_control;
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION

@@ -57,9 +57,9 @@ void CSightAction::execute		()
 			look_pos.x				= m_object_to_look->Position().x;
 			look_pos.z				= m_object_to_look->Position().z;
 			if (m_torso_look)
-				object().sight().SetFirePointLookAngles	(look_pos,object().movement().m_head.target.yaw,object().movement().m_head.target.pitch);
+				object().sight().SetFirePointLookAngles	(look_pos,object().movement().m_head.target.yaw,object().movement().m_head.target.pitch,m_object_to_look);
 			else
-				object().sight().SetPointLookAngles		(look_pos,object().movement().m_head.target.yaw,object().movement().m_head.target.pitch);
+				object().sight().SetPointLookAngles		(look_pos,object().movement().m_head.target.yaw,object().movement().m_head.target.pitch,m_object_to_look);
 #ifdef SIGHT_TEST
 			Msg					("%6d %s",Device.dwTimeGlobal,m_torso_look ? "eSightTypeFireObject" : "eSightTypeObject");
 #endif

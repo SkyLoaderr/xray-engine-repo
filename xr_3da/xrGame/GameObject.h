@@ -241,7 +241,7 @@ public:
 	virtual u32				ef_detector_type	() const;
 	virtual bool			natural_weapon		() const {return true;}
 	virtual bool			natural_detector	() const {return true;}
-
+	virtual bool			use_center_to_aim	() const {return false;}
 
 public:
 	

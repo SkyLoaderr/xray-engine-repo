@@ -31,6 +31,8 @@ public:
 	static	void __stdcall	BoneCallback			(CBoneInstance *B);
 			void			vfAssignBones			();
 
+	virtual bool	use_center_to_aim				() const {return true;}
+
 	CBoneInstance			*bone_spine;
 	CBoneInstance			*bone_head;
 

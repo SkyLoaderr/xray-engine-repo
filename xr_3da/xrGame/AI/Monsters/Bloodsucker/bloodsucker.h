@@ -65,6 +65,7 @@ public:
 	virtual	void			on_activate				();
 	virtual	void			on_deactivate			();
 	virtual	void			on_change_visibility	(bool b_visibility);
+	virtual bool			use_center_to_aim		() const {return true;}
 
 #ifdef DEBUG
 	virtual CBaseMonster::SDebugInfo show_debug_info();
