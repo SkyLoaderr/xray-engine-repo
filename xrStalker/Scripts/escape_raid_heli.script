@@ -1,0 +1,32 @@
+function activate()
+
+end
+
+function set_enemy( obj )
+
+end
+
+function main()
+    local path = patrol( "way_raid_heli" )
+    local heli = get_level_object( "heli" )
+    local max_num = path:count() * 0.5 - 1
+    local pnt = 0
+
+    while true do
+        pnt = pnt + 2
+        if pnt >= path:count() then
+            pnt = 0
+        end
+
+        printf( "before")
+        heli:heli_go_to_point( path:point( pnt ), path:point( pnt + 1 ), 10 )
+        wait( 2000 )
+        printf( "after")
+        local t = heli:heli_last_point_time() -- * 1000 - device():time_global()
+        printf( "%f", t )
+        printf( "%f", device():time_global() )
+        
+--        wait( 5000 )
+        break
+    end
+end
