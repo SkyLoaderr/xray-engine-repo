@@ -289,6 +289,69 @@ void CSE_Visual::FillProp		(LPCSTR pref, PropItemVec& values)
 #endif
 
 ////////////////////////////////////////////////////////////////////////////
+// CSE_Animated
+////////////////////////////////////////////////////////////////////////////
+CSE_Motion::CSE_Motion			(LPCSTR name)
+{
+	motion_name					= name;
+#ifdef _EDITOR
+	animator					= 0;
+	OnChangeMotion				(0);
+#endif
+}
+
+CSE_Motion::~CSE_Motion			()
+{
+}
+
+void CSE_Motion::set_motion		(LPCSTR name)
+{
+	motion_name					= name;
+#ifdef _EDITOR
+	OnChangeMotion				(0);
+#endif
+}
+
+void CSE_Motion::motion_read	(NET_Packet	&tNetPacket)
+{
+	tNetPacket.r_string			(motion_name);
+#ifdef _EDITOR
+	OnChangeMotion				(0);
+#endif
+}
+
+void CSE_Motion::motion_write	(NET_Packet	&tNetPacket)
+{
+	tNetPacket.w_string			(motion_name);
+}
+
+#ifdef _EDITOR
+#include "ObjectAnimator.h"
+void CSE_Motion::PlayMotion(LPCSTR name)
+{
+    // play motion if skeleton
+    if (animator) animator->Play(name);
+}
+
+void __fastcall	CSE_Motion::OnChangeMotion	(PropValue* sender)
+{
+	xr_delete					(animator);
+    if (*motion_name) {
+        animator				= xr_new<CObjectAnimator>();
+        animator->Load			(*motion_name);
+        PlayMotion				();
+    }
+	UI->Command					(COMMAND_UPDATE_PROPERTIES);
+}
+
+void CSE_Motion::FillProp		(LPCSTR pref, PropItemVec& values)
+{
+    PropValue					*V = PHelper.CreateChoose(values, FHelper.PrepareKey(pref,"Motion"),&motion_name, smGameAnim);
+    V->OnChangeEvent			= OnChangeMotion;
+}
+#endif
+
+////////////////////////////////////////////////////////////////////////////
 // CSE_Event
 ////////////////////////////////////////////////////////////////////////////
 CSE_Event::CSE_Event						(LPCSTR caSection) : CSE_Shape(), CSE_Abstract(caSection)

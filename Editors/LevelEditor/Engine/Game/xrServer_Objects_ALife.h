@@ -241,25 +241,25 @@ SERVER_ENTITY_DECLARE_END
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectHangingLamp,CSE_ALifeDynamicObjectVisual)
 
 #ifdef _EDITOR
-		void __fastcall					OnChangeAnim	(PropValue* sender);
-		void __fastcall					OnChooseAnim	(PropValue* sender, AStringVec& lst);
-		void __fastcall					OnChooseBone	(PropValue* sender, AStringVec& lst);
+    void __fastcall					OnChangeAnim	(PropValue* sender);
+    void __fastcall					OnChooseAnim	(PropValue* sender, AStringVec& lst);
+    void __fastcall					OnChooseBone	(PropValue* sender, AStringVec& lst);
 #endif
-		enum{
-			flPhysic					= (1<<0)
-		};
+    enum{
+        flPhysic					= (1<<0)
+    };
 
-		Flags16							flags;
-		u32								color;
-		float							brightness;
-		ref_str							startup_animation;
-		ref_str							color_animator;
-		float							spot_range;
-		ref_str							fixed_bones;
-		float							m_health;
+    Flags16							flags;
+    u32								color;
+    float							brightness;
+    ref_str							startup_animation;
+    ref_str							color_animator;
+    float							spot_range;
+    ref_str							fixed_bones;
+    float							m_health;
 
-										CSE_ALifeObjectHangingLamp	(LPCSTR caSection);
-		virtual							~CSE_ALifeObjectHangingLamp	();
+                                    CSE_ALifeObjectHangingLamp	(LPCSTR caSection);
+    virtual							~CSE_ALifeObjectHangingLamp	();
 SERVER_ENTITY_DECLARE_END
 
 
@@ -269,7 +269,12 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectProjector,CSE_ALifeDynamicObjectVisua
 SERVER_ENTITY_DECLARE_END
 
 
-SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeHelicopter,CSE_ALifeDynamicObjectVisual)
+SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHelicopter,CSE_ALifeDynamicObjectVisual,CSE_Motion)
+#ifdef _EDITOR
+	void __fastcall					OnChangeAnim				(PropValue* sender);
+	void __fastcall					OnChooseAnim				(PropValue* sender, AStringVec& lst);
+#endif
+	ref_str							startup_animation;
 									CSE_ALifeHelicopter			(LPCSTR caSection);
 	virtual							~CSE_ALifeHelicopter		();
 SERVER_ENTITY_DECLARE_END

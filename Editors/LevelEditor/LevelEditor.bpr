@@ -75,7 +75,7 @@
       intermediate\ESceneSoundSrcToolsIO.obj intermediate\ESceneWayToolsIO.obj 
       intermediate\ESceneGroupToolsIO.obj intermediate\ESceneDOTools_Pick.obj 
       intermediate\ESceneDOTools_Controls.obj 
-      intermediate\ESceneDOTools_Generate.obj"/>
+      intermediate\ESceneDOTools_Generate.obj intermediate\ObjectAnimator.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -263,6 +263,7 @@
       <FILE FILENAME="Edit\ESceneDOTools_Pick.cpp" FORMNAME="" UNITNAME="ESceneDOTools_Pick.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\ESceneDOTools_Controls.cpp" FORMNAME="" UNITNAME="ESceneDOTools_Controls.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\ESceneDOTools_Generate.cpp" FORMNAME="" UNITNAME="ESceneDOTools_Generate.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\ObjectAnimator.cpp" FORMNAME="" UNITNAME="ObjectAnimator" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

@@ -1028,7 +1028,7 @@ CSE_ALifeSchedulable::~CSE_ALifeSchedulable()
 // CSE_ALifeHelicopter
 ////////////////////////////////////////////////////////////////////////////
 
-CSE_ALifeHelicopter::CSE_ALifeHelicopter	(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection)
+CSE_ALifeHelicopter::CSE_ALifeHelicopter	(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection), CSE_Motion() 
 {
 }
 
@@ -1038,28 +1038,62 @@ CSE_ALifeHelicopter::~CSE_ALifeHelicopter	()
 
 void CSE_ALifeHelicopter::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
-	inherited::STATE_Read	(tNetPacket,size);
+	inherited1::STATE_Read		(tNetPacket,size);
+    CSE_Motion::motion_read		(tNetPacket);
+    
+    tNetPacket.r_string			(startup_animation);
+    
+#ifdef _EDITOR    
+	CSE_Visual::PlayAnimation	(*startup_animation?*startup_animation:"$editor");
+	CSE_Motion::PlayMotion		();
+#endif
 }
 
 void CSE_ALifeHelicopter::STATE_Write		(NET_Packet	&tNetPacket)
 {
-	inherited::STATE_Write		(tNetPacket);
+	inherited1::STATE_Write		(tNetPacket);
+    CSE_Motion::motion_write	(tNetPacket);
+
+    tNetPacket.w_string			(startup_animation);
 }
 
 void CSE_ALifeHelicopter::UPDATE_Read		(NET_Packet	&tNetPacket)
 {
-	inherited::UPDATE_Read		(tNetPacket);
+	inherited1::UPDATE_Read		(tNetPacket);
 }
 
 void CSE_ALifeHelicopter::UPDATE_Write		(NET_Packet	&tNetPacket)
 {
-	inherited::UPDATE_Write		(tNetPacket);
+	inherited1::UPDATE_Write		(tNetPacket);
 }
 
 #ifdef _EDITOR
-void CSE_ALifeHelicopter::FillProp			(LPCSTR pref, PropItemVec& values)
+void __fastcall	CSE_ALifeHelicopter::OnChangeAnim(PropValue* sender)
 {
-	inherited::FillProp			(pref,	 values);
+	CSE_Visual::PlayAnimation	(*startup_animation);
+}
+
+void __fastcall	CSE_ALifeHelicopter::OnChooseAnim(PropValue* sender, AStringVec& lst)
+{
+    CSkeletonAnimated::accel  	*ll_motions	= PSkeletonAnimated(visual)->LL_Motions();
+    CSkeletonAnimated::accel::iterator _I, _E;
+    _I							= ll_motions->begin();
+    _E							= ll_motions->end();
+    for (; _I!=_E; ++_I) 		lst.push_back(*_I->first);
+}
+void CSE_ALifeHelicopter::FillProp(LPCSTR pref, PropItemVec& values)
+{
+	inherited1::FillProp		(pref,	 values);
+
+    // motions
+    if (visual && PSkeletonAnimated(visual))
+    {
+        RChooseValue* V			= PHelper.CreateChoose	(values,	FHelper.PrepareKey(pref,s_name,"Startup animation"), &startup_animation, smCustom);
+        V->OnChangeEvent		= OnChangeAnim;
+        V->OnChooseEvent		= OnChooseAnim;
+    }
+
+	CSE_Motion::FillProp		(FHelper.PrepareKey(pref,s_name).c_str(),	 values);
 }
 #endif
 

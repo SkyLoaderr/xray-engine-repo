@@ -170,6 +170,34 @@ public:
 #endif
 };
 
+#ifdef _EDITOR
+	class CObjectAnimator;
+#endif
+
+class CSE_Motion
+{
+	ref_str							motion_name;
+public:
+#ifdef _EDITOR
+	CObjectAnimator*	   			animator;
+    void __fastcall					OnChangeMotion	(PropValue* sender);
+    void 							PlayMotion		(LPCSTR name=0);
+#endif
+public:
+									CSE_Motion 		(LPCSTR name=0);
+	virtual							~CSE_Motion		();
+
+	void							motion_read		(NET_Packet& P);
+	void							motion_write	(NET_Packet& P);
+
+    void							set_motion		(LPCSTR name);
+	LPCSTR							get_motion		() const {return *motion_name;};
+    
+#ifdef _EDITOR
+    void 							FillProp		(LPCSTR pref, PropItemVec& values);
+#endif
+};
+
 SERVER_ENTITY_DECLARE_BEGIN(CSE_Spectator,CSE_Abstract)
 									CSE_Spectator	(LPCSTR caSection);
 	virtual							~CSE_Spectator	();
