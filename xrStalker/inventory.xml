@@ -11,7 +11,7 @@
     
     <!-- BAG FRAME WINDOW -->
     <bag_static x="20" y="260" width="350" height="480">
-		<texture>ui/ui_dg_inventory</texture>
+		<texture>ui\ui_dg_inventory</texture>
         <text x="20" y="8" font="header" r="255" g="255" b="255">Bag</text>
     </bag_static>
 
