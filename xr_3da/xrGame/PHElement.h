@@ -232,8 +232,8 @@ virtual		dMass*			getMassTensor			()
 		m_group=NULL;
 		m_phys_ref_object=NULL;
 		ul_material=GMLib.GetMaterialIdx("objects\\box_default");
-		k_w=0.05f;
-		k_l=0.0002f;//1.8f;
+		k_w=default_k_w;
+		k_l=default_k_l;//1.8f;
 		m_fratures_holder=NULL;
 	};
 	//CPHElement(){ m_space=ph_world->GetSpace();};

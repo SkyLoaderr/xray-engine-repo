@@ -1415,12 +1415,20 @@ void CPHElement::PresetActive()
 {
 	if(bActive) return;
 	
+	CBoneInstance& B=m_shell->PKinematics()->LL_GetBoneInstance(m_SelfID);
+	mXFORM.set(B.mTransform);
+	m_start_time=Device.fTimeGlobal;
 	Fmatrix global_transform;
 	global_transform.set(m_shell->mXFORM);
-	//if(m_parent_element)
 	global_transform.mulB(mXFORM);
 	SetTransform(global_transform);
-	
+
+	if(!m_parent_element) 
+	{
+		m_shell->m_object_in_root.set(mXFORM);
+		m_shell->m_object_in_root.invert();
+
+	}
 	Memory.mem_copy(m_safe_position,dBodyGetPosition(m_body),sizeof(dVector3));
 	Memory.mem_copy(m_safe_velocity,dBodyGetLinearVel(m_body),sizeof(dVector3));
 
@@ -1433,7 +1441,7 @@ void CPHElement::PresetActive()
 	previous_r[0]=0.f;
 	dis_count_f=0;
 	m_body_interpolation.SetBody(m_body);
-	bActivating=true;
+	FillInterpolation();
 	bActive=true;
 	RunSimulation();
 	

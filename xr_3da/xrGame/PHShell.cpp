@@ -150,15 +150,16 @@ void CPHShell::AfterSetActive()
 	if(bActive)	return;
 	PureActivate();
 	bActive=true;
-	bActivating=true;
 	ELEMENT_I i=elements.begin(),e=elements.end();
 	for(;i!=e;++i)(*i)->PresetActive();
+
 }
 
 void CPHShell::PureActivate()
 {
 	if(bActive)	return;
 	bActive=true;
+	dSpaceAdd(ph_world->GetSpace(),(dGeomID)m_space);
 	CPHObject::Activate();
 	if(m_spliter_holder)m_spliter_holder->Activate();
 	m_object_in_root.identity();
@@ -169,7 +170,7 @@ void CPHShell::PresetActive()
 	VERIFY(!bActive);
 	if(!m_space) 
 	{
-		m_space=dSimpleSpaceCreate(ph_world->GetSpace());
+		m_space=dSimpleSpaceCreate(0);
 		dSpaceSetCleanup(m_space,0);
 	}
 }

@@ -297,9 +297,10 @@ shell_root CPHShellSplitterHolder::ElementSingleSplit(const element_fracture &sp
 
 	m_pShell->PassEndJoints(split_elem.second.m_start_jt_num,split_elem.second.m_end_jt_num,new_shell_last_desc);
 
-
-
+///////////////////temporary for initialization set old Kinematics in new shell/////////////////
+	new_shell_last->set_Kinematics(m_pShell->PKinematics());
 	new_shell_last_desc->AfterSetActive();
+	new_shell_last->set_Kinematics(NULL);
 	R_ASSERT2(split_elem.second.m_bone_id<64,"strange root");
 	return mk_pair(new_shell_last,split_elem.second.m_bone_id);
 
