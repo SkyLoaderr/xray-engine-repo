@@ -167,7 +167,6 @@ object ItemList: TItemList
     ShowImages = False
     ShowLeafButton = False
     ShowLines = False
-    SortType = stCustom
     StoragePath = '\Tree'
     StripedOddColor = clGray
     StripedEvenColor = 8158332

@@ -24,8 +24,9 @@ public:
     enum{
     	flShowCB		= (1<<0),
     	flCBChecked		= (1<<1),
-        flDrawThumbnail	= (1<<2),
-        flDrawCanvas	= (1<<3),
+		flDrawThumbnail	= (1<<2),
+		flDrawCanvas	= (1<<3),
+        flSorted		= (1<<4),
     };
     Flags32				m_Flags;
 public:

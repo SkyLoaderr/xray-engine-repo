@@ -156,7 +156,7 @@ void __fastcall TItemList::FormClose(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TItemList::AssignItems(ListItemsVec& items, bool full_expand, const AnsiString& title)
+void __fastcall TItemList::AssignItems(ListItemsVec& items, bool full_expand, const AnsiString& title, bool full_sort)
 {
 	// begin fill mode
 	LockUpdating			();
@@ -183,6 +183,16 @@ void __fastcall TItemList::AssignItems(ListItemsVec& items, bool full_expand, co
 
     // end fill mode
 	if (full_expand) tvItems->FullExpand();
+
+    // sorting
+    if (full_sort){
+    	tvItems->Sort(true);
+    }else{
+        for (ListItemsIt it=m_Items.begin(); it!=m_Items.end(); it++){
+            ListItem* prop		= *it;
+            if (prop->m_Flags.is(ListItem::flSorted)) prop->item->Sort(true);
+        }
+    }
 
     // expand sel items
     TElList* el_list=xr_new<TElList>();

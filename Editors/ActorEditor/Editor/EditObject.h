@@ -261,6 +261,7 @@ public:
     IC EditMeshVec& Meshes					()	{return m_Meshes; }
     IC int			MeshCount				()	{return m_Meshes.size();}
 	IC void			AppendMesh				(CEditableMesh* M){m_Meshes.push_back(M);}
+    IC SurfaceVec&	Surfaces				()	{return m_Surfaces;}
     IC SurfaceIt	FirstSurface			()	{return m_Surfaces.begin();}
     IC SurfaceIt	LastSurface				()	{return m_Surfaces.end();}
     IC int			SurfaceCount			()	{return m_Surfaces.size();}

@@ -72,7 +72,7 @@ public:		// User declarations
     void __fastcall 	RefreshForm				();
 
     void __fastcall		SelectItem				(const AnsiString& full_name, bool bVal, bool bLeaveSel, bool bExpand);
-    void __fastcall 	AssignItems				(ListItemsVec& values, bool full_expand, const AnsiString& title="Item List");
+    void __fastcall 	AssignItems				(ListItemsVec& values, bool full_expand, const AnsiString& title="Item List", bool full_sort=false);
     bool __fastcall 	IsFocused				(){return tvItems->Focused();}
 
     int __fastcall		GetSelected				(ListItemsVec& items);
