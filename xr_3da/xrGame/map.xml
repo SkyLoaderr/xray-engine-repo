@@ -58,7 +58,7 @@
 		<font font="letterica16" r="45" g="250" b="200"></font>
 	</map_goals_list>
 	
-	<!-- Name of global map location frame -->
+	<!-- Name of global map location frame !!!!OLD!!!! !!!!REMOVE!!!!-->
 	<map_location_frame>ui\ui_frame_very_small</map_location_frame>
 
 </window>
