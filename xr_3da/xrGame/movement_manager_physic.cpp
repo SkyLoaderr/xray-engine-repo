@@ -66,27 +66,45 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 	float				dist				=	desirable_speed * time_delta;		// пройденное расстояние в соостветствие с желаемой скоростью 
 	float				desirable_dist		=	dist;
 
-	Fvector				mdir,target;
-	target.set			(CDetailPathManager::path()[CDetailPathManager::curr_travel_point_index() + 1].position);
-	mdir.sub			(target, dest_position);
-	float				mdist =	mdir.magnitude();
+	// определить целевую точку
+	Fvector				target;
 	
-	while (dist > mdist) {
+	// обновить CDetailPathManager::m_current_travel_point в соответствие с текущей позицией
+	while (CDetailPathManager::m_current_travel_point < CDetailPathManager::path().size() - 1) {
+
+		float pos_dist_to_cur_point			= dest_position.distance_to(CDetailPathManager::path()[CDetailPathManager::m_current_travel_point].position);
+		float pos_dist_to_next_point		= dest_position.distance_to(CDetailPathManager::path()[CDetailPathManager::m_current_travel_point+1].position);
+		float cur_point_dist_to_next_point	= CDetailPathManager::path()[CDetailPathManager::m_current_travel_point].position.distance_to(CDetailPathManager::path()[CDetailPathManager::m_current_travel_point+1].position);
+		
+		if ((pos_dist_to_cur_point > cur_point_dist_to_next_point) && (pos_dist_to_cur_point > pos_dist_to_next_point)) {
+			++CDetailPathManager::m_current_travel_point;			
+		} else break;
+	}
+
+	target.set			(CDetailPathManager::path()[CDetailPathManager::curr_travel_point_index() + 1].position);
+	// определить направление к целевой точке
+	Fvector				dir_to_target;
+	dir_to_target.sub	(target, dest_position);
+
+	// дистанция до целевой точки
+	float				dist_to_target = dir_to_target.magnitude();
+	
+	while (dist > dist_to_target) {
 		dest_position.set	(target);
 
 		if (CDetailPathManager::curr_travel_point_index() + 1 >= CDetailPathManager::path().size())	break;
 		else {
-			dist			-= mdist;
+			dist			-= dist_to_target;
 			++CDetailPathManager::m_current_travel_point;
 			if ((CDetailPathManager::curr_travel_point_index()+1) >= CDetailPathManager::path().size())
 				break;
-			target.set	(CDetailPathManager::path()[CDetailPathManager::curr_travel_point_index() + 1].position);
-			mdir.sub	(target, dest_position);
-			mdist		= mdir.magnitude();
+			target.set			(CDetailPathManager::path()[CDetailPathManager::curr_travel_point_index() + 1].position);
+			dir_to_target.sub	(target, dest_position);
+			dist_to_target		= dir_to_target.magnitude();
 		}
 	}
-
-	if (mdist < EPS_L) {
+	
+	if (dist_to_target < EPS_L) {
 		CDetailPathManager::m_current_travel_point = CDetailPathManager::path().size() - 1;
 		m_speed			= 0.f;
 		return;
@@ -101,12 +119,11 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 	xr_vector<CObject*> &tpNearestList	= Level().ObjectSpace.q_nearest; 
 	setEnabled(true);
 
-	motion.mul			(mdir, dist / mdist);
+	// установить позицию
+	motion.mul			(dir_to_target, dist / dist_to_target);
 	dest_position.add	(motion);
-	/////////////////////////////////////////////
 	
-	
-	Fvector velocity					=	mdir;
+	Fvector velocity					=	dir_to_target;
 	velocity.normalize_safe();							  //как не странно, mdir - не нормирован
 	velocity.mul						(desirable_speed);//*1.25f
 	if(!movement_control->JumpState())
@@ -117,9 +134,8 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 		if(!movement_control->TryPosition(dest_position)) {
 			movement_control->Calculate		(CDetailPathManager::path(),desirable_speed,CDetailPathManager::m_current_travel_point,precision);
 			movement_control->GetPosition	(dest_position);
-			
 			// проверка на хит
-			if (!fsimilar(0.f,movement_control->gcontact_HealthLost)) Hit	(movement_control->gcontact_HealthLost,mdir,this,movement_control->ContactBone(),dest_position,0);
+			if (!fsimilar(0.f,movement_control->gcontact_HealthLost)) Hit	(movement_control->gcontact_HealthLost,dir_to_target,this,movement_control->ContactBone(),dest_position,0);
 
 		} else {
 			movement_control->b_exect_position	=	true;
@@ -132,7 +148,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 		movement_control->GetPosition			(dest_position);
 		
 		// проверка на хит
-		if (!fsimilar(0.f,movement_control->gcontact_HealthLost)) Hit	(movement_control->gcontact_HealthLost,mdir,this,movement_control->ContactBone(),dest_position,0);
+		if (!fsimilar(0.f,movement_control->gcontact_HealthLost)) Hit	(movement_control->gcontact_HealthLost,dir_to_target,this,movement_control->ContactBone(),dest_position,0);
 	}
 	
 	// установить скорость

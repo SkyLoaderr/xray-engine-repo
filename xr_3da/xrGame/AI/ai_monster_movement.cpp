@@ -4,6 +4,7 @@
 #include "biting/ai_biting.h"
 #include "ai_monster_motion_stats.h"
 #include "../phmovementcontrol.h"
+#include "ai_monster_debug.h"
 
 CMonsterMovement::CMonsterMovement()
 {
@@ -109,6 +110,7 @@ void CMonsterMovement::MoveToTarget(const Fvector &pos, u32 node_id)
 
 void CMonsterMovement::MoveToTarget(const Fvector &position)
 {
+
 	bool new_params = false;
 
 	// перестраивать если дошёл до конца пути
@@ -155,6 +157,7 @@ void CMonsterMovement::MoveAwayFromTarget(const Fvector &position, float dist)
 {
 	Fvector target_pos;
 	Fvector dir;
+		
 	dir.sub(Position(), position);
 #pragma todo("Dima to Jim : verify why direction becomes incorrect, pssibly XFORM() and/or position is not valid")
 	if (fis_zero(dir.square_magnitude(),EPS_L)) dir.set(0.f,0.f,1.f);
