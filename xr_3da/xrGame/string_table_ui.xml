@@ -1,11 +1,13 @@
-п»ї<?xml version='1.0' encoding="UTF-8"?>
-<!-- С‚Р°Р±Р»РёС†Р° СЃС‚СЂРѕРє РѕР±С‰РµРіРѕ РЅР°Р·РЅР°С‡РµРЅРёСЏ -->
+<?xml version='1.0' encoding="windows-1251"?>
+<!-- таблица строк общего назначения -->
 <string_table>
 	<string id="Local Map">
 		<text>To Local Map</text>
+		<text ln="rus">Локальная карта</text>
 	</string>
 	<string id="Global Map">
 		<text>To Global Map</text>
+		<text ln="rus">Глобальная карта</text>
 	</string>
 </string_table>
 
