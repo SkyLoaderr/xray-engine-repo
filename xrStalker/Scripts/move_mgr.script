@@ -17,6 +17,8 @@ local state_standing_before_anim = 2
 local state_before_anim_playing = 3
 local state_anim_playing = 4
 
+rotation_start_time = 700
+
 local sync = {}
 
 class "move_mgr"
@@ -137,6 +139,7 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 
 	self.sl = nil -- прожектор, запоминается, чтобы отпустить его потом из под скрипта
 	
+	xr_state.anim_update(nil, self.object)
 	self.object:clear_animations()
 
 	--self.object:set_mental_state(anim.free)
@@ -145,6 +148,7 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 
 	self.object:set_path_type(game_object.patrol_path)
 	self.object:set_detail_path_type(move.line)
+	self.object:patrol_path_make_inactual()
 	self.object:set_patrol_path(self.path_walk, patrol.nearest, patrol.continue, true)
 	self.object:set_sight(look.danger, nil, 0)
 	self.state = state_moving
@@ -332,6 +336,7 @@ end
 
 function move_mgr:update(no_dialog_mgr_update)
 	--printf("move_mgr:update(self.state == %s)", utils.to_str(self.state))
+	printf("move_mgr:update(self.object:anims == %d)", self.object:animation_count())
 
 	if not no_dialog_mgr_update then
 		-- self.dialog_mgr:update() -- UNCOMMENT ME
@@ -808,7 +813,7 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 				xr_state.anim_update(nil, self.object) -- не играть анимацию во время поворота!
 				--self:update_standing_state() -- anim_update сбивает crouch -- нет, поворачиваться в старом состоянии
 			end
-			self.expiration_time = device():time_global() + 700 -- дать 700 мс на начало поворота
+			self.expiration_time = device():time_global() + rotation_start_time -- дать 700 мс на начало поворота
 			--printf("move_mgr:waypoint_callback(): look_at_waypoint")
 			self:look_at_waypoint(pt_chosen_idx) -- поворачиваемся
 		else
