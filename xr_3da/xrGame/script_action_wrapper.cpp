@@ -9,6 +9,8 @@
 #include "stdafx.h"
 #include "script_action_wrapper.h"
 #include "script_game_object.h"
+#include "ai_space.h"
+#include "script_engine.h"
 
 void CScriptActionWrapper::reinit				(CScriptGameObject *object, CPropertyStorage *storage, bool clear_all)
 {
@@ -52,7 +54,12 @@ void CScriptActionWrapper::finalize_static		(CScriptActionBase *action)
 
 CScriptActionWrapper::_edge_value_type CScriptActionWrapper::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
 {
-	return								(const_cast<CScriptActionWrapper*>(this)->call_member<_edge_value_type>("weight",condition0,condition1));
+	_edge_value_type					_weight = const_cast<CScriptActionWrapper*>(this)->call_member<_edge_value_type>("weight",condition0,condition1);
+	if (_weight < min_weight()) {
+		ai().script_engine().script_log	(eLuaMessageTypeError,"Weight is less than effect count! It is corrected from %d to %d",_weight,min_weight());
+		_weight							= min_weight();
+	}
+	return								(_weight);
 }
 
 CScriptActionWrapper::_edge_value_type CScriptActionWrapper::weight_static	(CScriptActionBase *action, const CSConditionState &condition0, const CSConditionState &condition1)
