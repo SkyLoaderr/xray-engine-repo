@@ -12,7 +12,7 @@
 #include "xr_weapon_list.h"
 
 #define AI_MAX_EVALUATION_FUNCTION_COUNT	128
-#define OUT_MESSAGE(s1,s2)					Msg(s1,s2);
+#define OUT_MESSAGE(s1,s2)					//Msg(s1,s2);
 
 class CAI_DDD;
 
