@@ -132,7 +132,7 @@ SOURCE=.\StdAfx.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj" /Yc"stdafx.h"
+# ADD CPP /Yc"stdafx.h"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
@@ -140,7 +140,7 @@ SOURCE=.\StdAfx.cpp
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj" /Yc"stdafx.h"
+# ADD CPP /Yc"stdafx.h"
 
 !ENDIF 
 
@@ -155,13 +155,9 @@ SOURCE=.\xrGame.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
-
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -179,13 +175,9 @@ SOURCE=.\Entity.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
-
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -200,15 +192,9 @@ SOURCE=.\GameObject.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
-
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
-
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -223,15 +209,9 @@ SOURCE=.\MovementControl.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
-
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
-
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -266,15 +246,9 @@ SOURCE=.\AI_PathNodes.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
-
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
-
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -289,15 +263,9 @@ SOURCE=.\CustomMonster.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
-
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
-
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -312,15 +280,9 @@ SOURCE=.\CustomMonster_VCPU.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
-
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
-
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -331,15 +293,9 @@ SOURCE=.\CustomMonster_VisTrack.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
-
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
-
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -354,15 +310,12 @@ SOURCE=.\dbg_draw_frustum.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -380,15 +333,9 @@ SOURCE=.\Weapon.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
-
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
-
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -403,15 +350,9 @@ SOURCE=.\WeaponHUD.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
-
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
-
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -430,15 +371,9 @@ SOURCE=.\WeaponM134.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
-
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
-
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -457,15 +392,9 @@ SOURCE=.\WeaponGroza.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
-
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
-
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -528,15 +457,11 @@ SOURCE=.\WeaponProtecta.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
-
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -555,15 +480,12 @@ SOURCE=.\EffectorNoise.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -578,15 +500,12 @@ SOURCE=.\EffectorRecoil.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -601,15 +520,12 @@ SOURCE=.\EffectorShot.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -625,15 +541,12 @@ SOURCE=.\xr_weapon_list.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -652,15 +565,12 @@ SOURCE=.\CustomDoor.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -679,15 +589,12 @@ SOURCE=.\CustomItem.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -706,15 +613,12 @@ SOURCE=.\CustomLift.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -733,15 +637,12 @@ SOURCE=.\CustomEvent.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -760,15 +661,12 @@ SOURCE=.\Actor.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -787,15 +685,12 @@ SOURCE=.\ActorAnimation.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -810,15 +705,12 @@ SOURCE=.\ActorCameras.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -829,15 +721,11 @@ SOURCE=.\ActorInput.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
-
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -848,15 +736,12 @@ SOURCE=.\EffectorBobbing.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -875,15 +760,12 @@ SOURCE=.\DemoActor.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -898,15 +780,12 @@ SOURCE=.\DemoActorCameras.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -921,15 +800,12 @@ SOURCE=.\DummyObject.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -948,15 +824,12 @@ SOURCE=.\Flyer.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -971,15 +844,12 @@ SOURCE=.\FlyerCameras.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -990,15 +860,12 @@ SOURCE=.\FlyerInput.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -1016,15 +883,12 @@ SOURCE=.\AI\Hen\ai_hen.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -1041,7 +905,6 @@ SOURCE=.\AI\Hen\ai_hen_selectors.cpp
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
@@ -1072,15 +935,12 @@ SOURCE=.\Group.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -1095,15 +955,12 @@ SOURCE=.\Level.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -1125,15 +982,12 @@ SOURCE=.\UI.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -1148,15 +1002,12 @@ SOURCE=.\UICursor.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -1171,15 +1022,12 @@ SOURCE=.\UICustomItem.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -1194,15 +1042,12 @@ SOURCE=.\UIDynamicItem.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -1217,15 +1062,12 @@ SOURCE=.\UIGroup.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -1240,15 +1082,12 @@ SOURCE=.\UIHealth.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -1263,15 +1102,12 @@ SOURCE=.\UIStaticItem.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -1286,15 +1122,12 @@ SOURCE=.\UIWeapon.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -1309,15 +1142,12 @@ SOURCE=.\UIZoneMap.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -1333,15 +1163,12 @@ SOURCE=.\ContextMenu.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -1356,15 +1183,12 @@ SOURCE=.\HitMarker.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -1379,15 +1203,12 @@ SOURCE=.\HUDCursor.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -1402,15 +1223,12 @@ SOURCE=.\HUDManager.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -1433,15 +1251,12 @@ SOURCE=.\xrServer.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -1456,15 +1271,12 @@ SOURCE=.\xrServer_Entities.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -1482,15 +1294,12 @@ SOURCE=.\DynamicHeightMap.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -1506,15 +1315,12 @@ SOURCE=.\Rain.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -1529,15 +1335,12 @@ SOURCE=.\Tracer.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -1556,15 +1359,12 @@ SOURCE=.\ai_a_star.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -1587,15 +1387,12 @@ SOURCE=.\AI_qNode.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -1606,15 +1403,12 @@ SOURCE=.\AI_qPath.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -1625,15 +1419,12 @@ SOURCE=.\AI_qRange.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -1644,15 +1435,12 @@ SOURCE=.\AI_Space.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
@@ -1667,15 +1455,12 @@ SOURCE=.\AI_Utilities.cpp
 
 !IF  "$(CFG)" == "xrGame - Win32 Release"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Mixed" /D "_PRJCP_xrGame_2Evprj"
 
 !ENDIF 
 
