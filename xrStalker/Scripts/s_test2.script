@@ -94,7 +94,6 @@ function Defender:initialize ()
 	   self.state = on_ready		   
 	else
 	   action (self.npc, move (move.standing, move.run, move.line, self.way), anim (anim.danger), cond (cond.move_end))
-	   action (self.npc, move (move.crouch, move.stand, move.line, self.way), anim (anim.danger), cond (cond.time_end, time_infinite))	
 	   printf ("State = ON_MOVE")
 	   self.state = on_move		   		   
 	end	   		   
@@ -108,9 +107,10 @@ function Defender:process ()
 	--если еще идем, то вперед
 	if self.state == on_move then
 	   if self.npc:action () then 
-	      printf ("On move")
 	   	  return
 	   else 
+	      reset_action (self.npc, self.script)   
+	      action (self.npc, move (move.crouch, move.stand, move.line, self.way), anim (anim.danger), cond (cond.time_end, time_infinite))	
 	      self.state = on_ready 
 	      printf ("Set On_Ready")
 	   end
