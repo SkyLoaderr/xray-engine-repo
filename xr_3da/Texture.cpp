@@ -326,10 +326,10 @@ _BUMP:
 					DWORD&	pDst	= *(((DWORD*)((BYTE*)Rdst.pBits + (y * Rdst.Pitch)))+x);
 					pDst			= color_rgba
 						(
-						color_get_R(pDst),
-						color_get_G(pDst),
+						color_get_A(pSrc),
 						color_get_B(pDst),
-						color_get_A(pSrc)
+						color_get_G(pDst),
+						color_get_R(pDst)
 						);
 				}
 			}
@@ -397,7 +397,14 @@ _BUMP_from_base:
 						DWORD&	pDst	= *(((DWORD*)((BYTE*)Rdst.pBits + (y * Rdst.Pitch)))+x);
 						u32		occ		= color_get_A(pDst)/3;
 						u32		def		= 8;
-						pDst			= subst_alpha(pDst,(occ*1+def*3)/4);
+						u32		gloss	= (occ*1+def*3)/4;
+						pDst			= color_rgba
+							(
+							gloss,
+							color_get_B(pDst),
+							color_get_G(pDst),
+							color_get_R(pDst)
+							);
 					}
 				}
 
