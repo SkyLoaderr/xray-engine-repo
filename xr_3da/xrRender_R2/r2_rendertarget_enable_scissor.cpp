@@ -85,6 +85,8 @@ BOOL CRenderTarget::enable_scissor		(light* L)		// true if intersects near plane
 			// volume doesn't touch scissor - enable mask
 			CHK_DX		(HW.pDevice->SetRenderState(D3DRS_SCISSORTESTENABLE,TRUE));
 			CHK_DX		(HW.pDevice->SetScissorRect(&R));
+		} else {
+			__asm int 3;
 		}
 	}
 

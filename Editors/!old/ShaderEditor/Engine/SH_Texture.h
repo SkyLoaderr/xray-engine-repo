@@ -12,7 +12,9 @@ public:
 	{
 		u32					bLoaded		: 1;
 		u32					bUser		: 1;
-		u32					MemoryUsage	: 30;
+		u32					seqCycles	: 1;
+		u32					MemoryUsage	: 28;
+
 	}									flags;
 	IDirect3DBaseTexture9*				pSurface;
 	CAviPlayerCustom*					pAVI;
@@ -20,7 +22,6 @@ public:
 	// Sequence data
 	u32									seqMSPF;	// milliseconds per frame
 	xr_vector<IDirect3DBaseTexture9*>	seqDATA;
-	BOOL								seqCycles;
 
 	// Description
 	IDirect3DBaseTexture9*				desc_cache;
