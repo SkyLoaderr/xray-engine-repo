@@ -133,8 +133,8 @@ function Defender:process ()
 	for a = 1, table.getn (self.monsters), 1 do
 	    local monster = self.monsters[a]
 	    if monster.npc:alive () == true then
-	       printf ("Monster alive")  
 	       local tdist = distance_between (monster.npc, self.npc)
+	       printf ("Distance from stalker to monster - %f", tdist)
 	       if tdist < dist and self.npc:see (monster.npc) == true then
 	          printf ("Monster found")
 	          dist = tdist
