@@ -98,6 +98,7 @@ void	CBlender::Compile(CBlender_Compile& C)
 #include "blender_shadow_world.h"
 #include "blender_blur.h"
 #include "blender_model.h"
+#include "blender_model_ebb.h"
 
 CBlender*	CBlender::Create	(CLASS_ID cls)
 {	
