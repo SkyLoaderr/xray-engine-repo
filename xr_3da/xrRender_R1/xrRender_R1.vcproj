@@ -229,6 +229,9 @@
 				RelativePath="FStaticRender.h">
 			</File>
 			<File
+				RelativePath="FStaticRender_Blenders.cpp">
+			</File>
+			<File
 				RelativePath="FStaticRender_Cached.cpp">
 			</File>
 			<File
