@@ -17,6 +17,7 @@
 #include "xr_streamsnd.h"
 #include "std_classes.h"
 #include "GameFont.h"
+#include <crtdbg.h>
   
 // global variables
 ENGINE_API	CApplication*	pApp			= NULL;
@@ -113,10 +114,11 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	CreateLog		(!(strstr(lpCmdLine,"-Q") || strstr(lpCmdLine,"-q")));
 	Debug.Start	();
 
+	// _CrtSetDbgFlag( _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG) | _CRTDBG_ALLOC_MEM_DF | _CRTDBG_CHECK_ALWAYS_DF | _CRTDBG_LEAK_CHECK_DF);
 	if (bCaptureExceptions)	
 	{
 		__try {
-			Startup();
+			Startup	();
 			
 		} __except(Debug.LogStack(GetExceptionInformation())) {
 			MessageBox(0,"Unhandled exception. See ENGINE.LOG for details.","Error",MB_OK|MB_ICONSTOP);
