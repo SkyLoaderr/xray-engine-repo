@@ -271,7 +271,7 @@ private:
 //		BOOL				m_bJumpKeyPressed;
 	};
 	xr_deque<net_input>		NET_I;
-	void					NetInput_Save			( );
+//	void					NetInput_Save			( );
 	//------------------------------
 	void					g_cl_CheckControls		(u32 mstate_wf, Fvector &vControlAccel, float &Jump, float dt);
 	void					g_cl_ValidateMState		(float dt, u32 mstate_wf);
