@@ -9,10 +9,10 @@
 #include "stdafx.h"
 #include "xrAI.h"
 #include "xrLevel.h"
-#include "xrServer.h"
-
 #include "xrGraph.h"
 #include "ai_nodes.h"
+
+#include "xrServer_Entities.h"
 #include "xr_spawn_merge.h"
 
 CVirtualFileStream				*tpGraphVFS = 0;

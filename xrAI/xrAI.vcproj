@@ -535,6 +535,16 @@
 				<File
 					RelativePath="xr_spawn_merge.h">
 				</File>
+				<Filter
+					Name="aaaaaaaaa"
+					Filter="">
+					<File
+						RelativePath="NET_Compressor.h">
+					</File>
+					<File
+						RelativePath="NET_utils.h">
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<File

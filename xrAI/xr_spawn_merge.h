@@ -8,8 +8,6 @@
 
 #pragma once
 
-#include "xrServer_Entities.h"
-
 typedef struct tagSSPawnHeader {
 	u32		dwVersion;
 	u32		dwSpawnCount;
