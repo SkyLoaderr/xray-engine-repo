@@ -71,6 +71,19 @@ public:
 			void	StrangeSounds		(const Fvector &position);
 			
 			ref_sound m_strange_sound;
+
+	// Telekinesis
+	
+			void	ProcessTelekinesis	(CObject *target);
+			void	UpdateTelekinesis	();
+
+
+	// Movement
+			Fvector m_current_position;
+
+	virtual	void	move_along_path			(CPHMovementControl *movement_control, Fvector &dest_position, float time_delta);
+			float	CalculateRealPosition	();
+
 };
 
 

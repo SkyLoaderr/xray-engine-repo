@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "poltergeist.h"
+#include "../../../PHMovementControl.h"
 
 CPoltergeist::CPoltergeist()
 {
@@ -79,14 +80,16 @@ void CPoltergeist::Hide()
 	
 	StartParticles();
 	MotionMan.ForceAnimSelect();
+
+	movement_control()->DestroyCharacter();
 }
 
 void CPoltergeist::Show()
 {
 	m_hidden = false;
 	
-	setEnabled(true);
-	setVisible(true);
+	//setEnabled(true);
+	//setVisible(true);
 
 	StopParticles();
 	
