@@ -22,6 +22,9 @@ light::light(void)
 
 light::~light(void)
 {
+	// by Dima
+	L->set_active	(false);
+	// end
 }
 
 #if RENDER==R_R2 
