@@ -8,6 +8,8 @@
 
 #pragma once
 
+#define PARTIAL_SPECIALIZATION
+
 template <
 	typename _Graph,
 	typename _DataStorage,
@@ -27,12 +29,12 @@ protected:
 public:
 
 						CPathManagerBase(
-				const _Graph			*graph,
-				_DataStorage			*data_storage
+				const _Graph			*_graph,
+				_DataStorage			*_data_storage
 			)
 	{
-		this->graph				= graph;
-		this->data_storage		= data_storage;
+		graph					= _graph;
+		data_storage			= _data_storage;
 	}
 
 	virtual				~CPathManagerBase()
@@ -44,20 +46,20 @@ public:
 	}
 
 	virtual	void		init			(
-				xr_vector<_index_type>	*path,
-				const _index_type		start_node_index,
-				const _index_type		goal_node_index,
-				const _index_type		max_visited_node_count	= _index_type(u32(-1)),
-				const _dist_type		max_range				= _dist_type(6000),
-				const _iteration_type	max_iteration_count		= _iteration_type(u32(-1))
+				xr_vector<_index_type>	*_path,
+				const _index_type		_start_node_index,
+				const _index_type		_goal_node_index,
+				const _index_type		_max_visited_node_count	= _index_type(u32(-1)),
+				const _dist_type		_max_range				= _dist_type(6000),
+				const _iteration_type	_max_iteration_count	= _iteration_type(u32(-1))
 			)
 	{
-		this->path				= path;
-		this->start_node_index	= start_node_index;
-		this->goal_node_index	= goal_node_index;
-		this->max_visited_node_count = max_visited_node_count;
-		this->max_range			= max_range;
-		this->max_iteration_count = max_iteration_count;
+		path					= _path;
+		start_node_index		= _start_node_index;
+		goal_node_index			= _goal_node_index;
+		max_visited_node_count	= _max_visited_node_count;
+		max_range				= _max_range;
+		max_iteration_count		= _max_iteration_count;
 	}
 
 	virtual	_dist_type	evaluate		(const _index_type node_index1, const _index_type node_index2)
@@ -106,13 +108,54 @@ public:
 	}
 };
 
+#ifdef PARTIAL_SPECIALIZATION
+template <
+	typename _Graph,
+	typename _DataStorage,
+	typename _dist_type			= float,
+	typename _index_type		= u32,
+	typename _iteration_type	= u32
+>
+class CPathManager : 
+	public	CPathManagerBase<
+		_Graph,
+		_DataStorage,
+		_dist_type,
+		_index_type,
+		_iteration_type
+	>
+{
+public:
+						CPathManager	(
+				const _Graph			*_graph,
+				_DataStorage			*_data_storage
+				) : CPathManagerBase<_Graph,_DataStorage,_dist_type,_index_type,_iteration_type>(_graph,_data_storage)
+	{
+	}
+};
+
 template <
 	typename _DataStorage,
 	typename _dist_type,
 	typename _index_type,
 	typename _iteration_type
 >	
-class CPathManagerAI_Map :
+	class CPathManager<
+			CAI_Map,
+			_DataStorage,
+			_dist_type,
+			_index_type,
+			_iteration_type
+		> :
+#else
+template <
+	typename _DataStorage,
+	typename _dist_type,
+	typename _index_type,
+	typename _iteration_type
+>	
+	class CPathManagerAI_Map :
+#endif
 	public CPathManagerBase <
 		CAI_Map,
 		_DataStorage,
@@ -121,10 +164,15 @@ class CPathManagerAI_Map :
 		_iteration_type
 	>
 {
+#ifdef PARTIAL_SPECIALIZATION
+	#define _CPathManager CPathManager
+#else
+	#define _CPathManager CPathManagerAI_Map
+#endif
 protected:
-	typedef CAI_Map _Graph_;
+	typedef CAI_Map _Graph;
 	typedef CPathManagerBase <
-		_Graph_,
+		_Graph,
 		_DataStorage,
 		_dist_type,
 		_index_type,
@@ -143,16 +191,16 @@ protected:
 	float		m_fSize2;
 	float		m_fYSize2;
 public:
-						CPathManagerAI_Map(
-							const _Graph_			*graph,
-							_DataStorage			*data_storage
-						) : inherited(graph,data_storage)
+						_CPathManager	(
+							const _Graph			*_graph,
+							_DataStorage			*_data_storage
+						) : inherited(_graph,_data_storage)
 	{
 		m_fSize2				= graph->m_fSize2;
 		m_fYSize2				= graph->m_fYSize2;
 	}
 
-	virtual				~CPathManagerAI_Map()
+	virtual				~_CPathManager	()
 	{
 	}
 
@@ -180,13 +228,13 @@ public:
 		inherited::init			();
 		m_dwLastBestNode		= u32(-1);
 		{
-			_Graph_::InternalNode&tNode1	= *graph->Node(start_node_index);
+			_Graph::InternalNode&tNode1	= *graph->Node(start_node_index);
 			x2					= (float)(tNode1.p1.x) + (float)(tNode1.p0.x);
 			y2					= (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
 			z2					= (float)(tNode1.p1.z) + (float)(tNode1.p0.z);
 		}
 		{
-			_Graph_::InternalNode&tNode1	= *graph->Node(goal_node_index);
+			_Graph::InternalNode&tNode1	= *graph->Node(goal_node_index);
 			x3					= (float)(tNode1.p1.x) + (float)(tNode1.p0.x);
 			y3					= (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
 			z3					= (float)(tNode1.p1.z) + (float)(tNode1.p0.z);
@@ -197,7 +245,7 @@ public:
 	{
 		if (m_dwLastBestNode != node_index1) {
 			m_dwLastBestNode = node_index1;
-			_Graph_::InternalNode &tNode0 = *graph->Node(node_index1), &tNode1 = *graph->Node(node_index2);
+			_Graph::InternalNode &tNode0 = *graph->Node(node_index1), &tNode1 = *graph->Node(node_index2);
 
 			x1 = (float)(tNode0.p1.x) + (float)(tNode0.p0.x);
 			y1 = (float)(tNode0.p1.y) + (float)(tNode0.p0.y);
@@ -210,7 +258,7 @@ public:
 			return(_sqrt((float)(m_fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + m_fYSize2*_sqr(y2 - y1))));
 		}
 		else {
-			_Graph_::InternalNode &tNode1 = *graph->Node(node_index2);
+			_Graph::InternalNode &tNode1 = *graph->Node(node_index2);
 
 			x2 = (float)(tNode1.p1.x) + (float)(tNode1.p0.x);
 			y2 = (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
@@ -252,6 +300,7 @@ public:
 	}
 };
 
+#ifndef PARTIAL_SPECIALIZATION
 template <typename _Graph> 
 class CPathManagerTraits 
 {
@@ -309,9 +358,10 @@ class CPathManager :
 {
 public:
 						CPathManager	(
-				const _Graph			*graph,
-				_DataStorage			*data_storage
-				) : CPathManagerTraits<_Graph>::Specialization<_DataStorage,_dist_type,_index_type,_iteration_type>::CSpecializedPathManager(graph,data_storage)
+				const _Graph			*_graph,
+				_DataStorage			*_data_storage
+				) : CPathManagerTraits<_Graph>::Specialization<_DataStorage,_dist_type,_index_type,_iteration_type>::CSpecializedPathManager(_graph,_data_storage)
 	{
 	}
 };
+#endif
