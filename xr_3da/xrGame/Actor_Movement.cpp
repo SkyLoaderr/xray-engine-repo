@@ -216,7 +216,7 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 		{
 			
 			m_PhysicMovementControl->EnableCharacter();
-			if(ActivateBox(1))mstate_real			|=	mcCrouch;
+			if(ActivateBox(2))mstate_real			|=	mcCrouch;
 
 		}
 
@@ -225,16 +225,18 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 
 		if (((mstate_real&mcCrouch)))
 		{
-			if(0==(mstate_real&mcAccel)&&(mstate_wf&mcAccel))
+			if (!isAccelerated(mstate_real) && isAccelerated(mstate_wf))
+//			if(0==(mstate_real&mcAccel)&&(mstate_wf&mcAccel))
 			{
 				m_PhysicMovementControl->EnableCharacter();
-				if(!ActivateBox(2))move	&=~mcAccel;
+				if(!ActivateBox(1))move	&=~mcAccel;
 			}
 
-			if((mstate_real&mcAccel)&&0==(mstate_wf&mcAccel))
+			if (isAccelerated(mstate_real) && !isAccelerated(mstate_wf))
+//			if((mstate_real&mcAccel)&&0==(mstate_wf&mcAccel))
 			{
 				m_PhysicMovementControl->EnableCharacter();
-				if(ActivateBox(1))mstate_real	&=~mcAccel;
+				if(ActivateBox(2))mstate_real	&=~mcAccel;
 			}
 
 		}
@@ -251,7 +253,7 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 			mstate_real|=mcSprint;
 		else
 			mstate_real&=~mcSprint;
-		if(!(mstate_real&(mcFwd|mcLStrafe|mcRStrafe))||mstate_real&(mcCrouch|mcClimb))
+		if(!(mstate_real&(mcFwd|mcLStrafe|mcRStrafe))||mstate_real&(mcCrouch|mcClimb)|| !isAccelerated(mstate_wf))
 		{
 			mstate_real&=~mcSprint;
 			mstate_wishful&=~mcSprint;

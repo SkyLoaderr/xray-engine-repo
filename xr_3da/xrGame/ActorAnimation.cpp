@@ -335,8 +335,10 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 
 		if (!M_legs)
 		{
-			if((mstate_rl&mcCrouch)&&!(mstate_rl&mcAccel))
+			if((mstate_rl&mcCrouch)&&isAccelerated(mstate_rl))//!(mstate_rl&mcAccel))
+			{
 				M_legs=smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle("cr_idle_0");
+			}
 			else 
 				M_legs	= ST->legs_idle;
 		}
@@ -394,7 +396,7 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 	{
 		string128 buf;
 		strcpy(buf,"");
-		if (mstate_rl&mcAccel)		strcat(buf,"Accel ");
+		if (isAccelerated(mstate_rl))		strcat(buf,"Accel ");
 		if (mstate_rl&mcCrouch)		strcat(buf,"Crouch ");
 		if (mstate_rl&mcFwd)		strcat(buf,"Fwd ");
 		if (mstate_rl&mcBack)		strcat(buf,"Back ");

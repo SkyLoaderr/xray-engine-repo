@@ -23,19 +23,22 @@ public:
 
 protected:
 	void ConditionJump(float weight);
-	void ConditionWalk(float weight, bool accel);
+	void ConditionWalk(float weight, bool accel, bool sprint);
+	void ConditionStand(float weight);
 
 	float m_fAlcohol;
 
 	//силы расходуемые на прыжки и бег
 	//(при максимальном весе)
 	float m_fJumpPower;
+	float m_fStandPower;
 	float m_fWalkPower;
 	float m_fJumpWeightPower;
 	float m_fWalkWeightPower;
 	float m_fOverweightWalkK;
 	float m_fOverweightJumpK;
 	float m_fAccelK;
+	float m_fSprintK;
 protected:
 	//хромание при потере сил и здоровья
 	virtual bool IsLimping() const;

@@ -799,7 +799,12 @@ void CActor::shedule_Update	(u32 DT)
 			g_SetAnimation				(mstate_real);
 
 			if (NET_Last.mstate & mcCrouch)
-				m_PhysicMovementControl->ActivateBox(1, true);
+			{
+				if (isAccelerated(mstate_real))
+					m_PhysicMovementControl->ActivateBox(1, true);
+				else
+					m_PhysicMovementControl->ActivateBox(2, true);
+			}
 			else 
 				m_PhysicMovementControl->ActivateBox(0, true);
 		};
@@ -1121,8 +1126,12 @@ void CActor::UpdateCondition()
 
 	if((mstate_real&mcAnyMove))
 	{
-	   ConditionWalk(inventory().TotalWeight()/inventory().GetMaxWeight(), isAccelerated(mstate_real));
+		ConditionWalk(inventory().TotalWeight()/inventory().GetMaxWeight(), isAccelerated(mstate_real), (mstate_real&mcSprint) != 0);
 	}
+	else
+	{
+		ConditionStand(inventory().TotalWeight()/inventory().GetMaxWeight());
+	};
 	
 	CActorCondition::UpdateCondition();
 }
@@ -1363,7 +1372,8 @@ void CActor::UpdateMotionIcon(u32 mstate_rl)
 	CUIMotionIcon		&motion_icon=HUD().GetUI()->UIMainIngameWnd.MotionIcon();
 	if(mstate_rl&mcCrouch)
 	{
-		if(mstate_rl&mcAccel)
+//		if(mstate_rl&mcAccel)
+		if (!isAccelerated(mstate_rl))
 			motion_icon.ShowState(CUIMotionIcon::stCreep);
 		else
 			motion_icon.ShowState(CUIMotionIcon::stCrouch);

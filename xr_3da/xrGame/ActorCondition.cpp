@@ -5,12 +5,14 @@
 CActorCondition::CActorCondition(void)
 {
 	m_fJumpPower = 0.f;
+	m_fStandPower = 0.f;
 	m_fWalkPower = 0.f;
 	m_fJumpWeightPower = 0.f;
 	m_fWalkWeightPower = 0.f;
 	m_fOverweightWalkK = 0.f;
 	m_fOverweightJumpK = 0.f;
 	m_fAccelK = 0.f;
+	m_fSprintK = 0.f;
 	m_bLimping  = false;
 }
 
@@ -29,12 +31,14 @@ void CActorCondition::LoadCondition(LPCSTR entity_section)
 	}
 
 	m_fJumpPower		= pSettings->r_float(section,"jump_power");
+	m_fStandPower		= pSettings->r_float(section,"stand_power");
 	m_fWalkPower		= pSettings->r_float(section,"walk_power");
 	m_fJumpWeightPower	= pSettings->r_float(section,"jump_weight_power");
 	m_fWalkWeightPower	= pSettings->r_float(section,"walk_weight_power");
 	m_fOverweightWalkK	= pSettings->r_float(section,"overweight_walk_k");
 	m_fOverweightJumpK	= pSettings->r_float(section,"overweight_jump_k");
 	m_fAccelK			= pSettings->r_float(section,"accel_k");
+	m_fSprintK			= pSettings->r_float(section,"sprint_k");
 
 	//порог силы и здоровья меньше которого актер начинает хромать
 	m_fLimpingHealthBegin	= pSettings->r_float(section,	"limping_health_begin");
@@ -69,12 +73,21 @@ void CActorCondition::ConditionJump(float weight)
 	power += m_fJumpWeightPower*weight*(weight>1.f?m_fOverweightJumpK:1.f);
 	m_fPower -= power;
 }
-void CActorCondition::ConditionWalk(float weight, bool accel)
+void CActorCondition::ConditionWalk(float weight, bool accel, bool sprint)
 {	
 	float delta_time = float(m_iDeltaTime)/1000.f;
 	float power = m_fWalkPower;
 	power += m_fWalkWeightPower*weight*(weight>1.f?m_fOverweightWalkK:1.f);
-	power *= delta_time*(accel?m_fAccelK:1.f);
+	power *= delta_time*(accel?(sprint?m_fSprintK:m_fAccelK):1.f);
+	m_fPower -= power;
+}
+
+void CActorCondition::ConditionStand(float weight)
+{	
+	float delta_time = float(m_iDeltaTime)/1000.f;
+	float power = m_fStandPower;
+//	power += m_fWalkWeightPower*weight*(weight>1.f?m_fOverweightWalkK:1.f);
+	power *= delta_time;//*(accel?m_fAccelK:1.f);
 	m_fPower -= power;
 }
 
