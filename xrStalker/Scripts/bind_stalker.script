@@ -89,7 +89,7 @@ function actor_binder:delayed_sleep_callback()
 		if self.st.punch.dump_inventory_pos then
 			printf("_bp: dump_inventory_pos")
 			drop_location = self.st.punch.dump_inventory_pos
-			self.object:inventory_for_each(dump_item)
+			self.object:inventory_for_each(drop_item)
 			self.st.punch.dump_inventory_pos = nil
 		end
 		
