@@ -70,8 +70,14 @@ void CLevel::g_sv_Spawn		(NET_Packet* Packet)
 			GEN.w_u16		(u16(O->ID()));
 
 			// Simulate event arrival
-			CGameObject* GO = dynamic_cast<CGameObject*>(O);
-			if (0!=GO)		GO->net_Event	(GEN);
+			for (;;) 
+			{
+				CObject*	 uO	= Objects.net_Find	(s_server_parent_id);
+				R_ASSERT	(uO);
+				CGameObject* GO = dynamic_cast<CGameObject*>(O);
+				if (0==GO)		break;
+				GO->net_Event	(GEN);
+			}
 		}
 	}
 }
