@@ -299,11 +299,11 @@ void CSE_ALifeItemTorch::FillProps			(LPCSTR pref, PropItemVec& values)
 	PHelper.CreateChoose		(values, FHelper.PrepareKey2(pref,s_name,"Glow texture"),	glow_texture,		sizeof(glow_texture), 	smTexture);
 	PHelper.CreateFloat			(values, FHelper.PrepareKey2(pref,s_name,"Glow radius"),		&glow_radius,		0.1f, 1000.f);
     // bones
-    if (visual && PKinematics(visual))
+    if (visual && smart_cast<CKinematics*>(visual))
     {
         AStringVec				vec;
-        u16 cnt					= PKinematics(visual)->LL_Bones()->size();
-        for (u16 k=0; k<cnt; k++) vec.push_back(PKinematics(visual)->LL_BoneName_dbg(k));
+        u16 cnt					= smart_cast<CKinematics*>(visual)->LL_Bones()->size();
+        for (u16 k=0; k<cnt; k++) vec.push_back(smart_cast<CKinematics*>(visual)->LL_BoneName_dbg(k));
 		PHelper.CreateToken2<u16>(values, FHelper.PrepareKey2(pref,s_name,"Guide bone"),		&guid_bone,	&vec);
     }
 */

@@ -31,15 +31,7 @@ public:
 			void				test();
 
 template<typename T>
-T*	GetControl(LPCSTR name){
-		ref_str n = name;
-		CUIWindow* pWnd = FindChild(n);
-		if(pWnd == NULL)
-			return NULL;
-
-		return smart_cast<T*>(pWnd);
-}
-
+IC	T*	GetControl(LPCSTR name);
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

@@ -74,7 +74,7 @@ void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 
 		Fvector				D;
 		float				yaw, pitch;
 		D.getHP				(yaw,pitch);
-		CSkeletonAnimated	*tpKinematics = PSkeletonAnimated(Visual());
+		CSkeletonAnimated	*tpKinematics = smart_cast<CSkeletonAnimated*>(Visual());
 #pragma todo("Dima to Dima : forward-back bone impulse direction has been determined incorrectly!")
 		CMotionDef			*tpMotionDef = m_tAnims.A[body_state()].m_tGlobal.A[0].A[iFloor(tpKinematics->LL_GetBoneInstance(element).get_param(1) + (angle_difference(m_body.current.yaw,-yaw) <= PI_DIV_2 ? 0 : 1))];
 		float				power_factor = 3.f*amount/100.f; clamp(power_factor,0.f,1.f);

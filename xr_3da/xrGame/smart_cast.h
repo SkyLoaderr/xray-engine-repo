@@ -28,6 +28,44 @@
 
 #	ifdef XRGAME_EXPORTS
 
+		DECLARE_SPECIALIZATION_INLINE	(CKinematics,		IRender_Visual,		dcast_PKinematics);
+#		undef cast_type_list
+#		define cast_type_list save_cast_list	(CKinematics,		IRender_Visual)
+
+		DECLARE_SPECIALIZATION_INLINE	(CSkeletonRigid,	IRender_Visual,		dcast_PSkeletonRigid);
+#		undef cast_type_list
+#		define cast_type_list save_cast_list	(CSkeletonRigid,	IRender_Visual)
+
+		DECLARE_SPECIALIZATION_INLINE	(CSkeletonAnimated,	IRender_Visual,		dcast_PSkeletonAnimated);
+#		undef cast_type_list
+#		define cast_type_list save_cast_list	(CSkeletonAnimated,	IRender_Visual)
+
+		DECLARE_SPECIALIZATION_INLINE	(IParticleCustom,	IRender_Visual,		dcast_ParticleCustom);
+#		undef cast_type_list
+#		define cast_type_list save_cast_list	(IParticleCustom,	IRender_Visual)
+
+#		ifndef DO_NOT_DECLARE_TYPE_LIST
+			namespace Feel { class ENGINE_API Sound; }
+			typedef Feel::Sound Feel__Sound;
+			template <> extern\
+			Feel::Sound* SmartDynamicCast::smart_cast<Feel::Sound,ISpatial>(ISpatial *p);\
+			add_to_cast_list(Feel__Sound,ISpatial);
+#			undef cast_type_list
+#			define cast_type_list save_cast_list	(Feel__Sound,		ISpatial)
+#		endif
+
+		DECLARE_SPECIALIZATION_INLINE	(IRenderable,		ISpatial,			dcast_Renderable);
+#		undef cast_type_list
+#		define cast_type_list save_cast_list	(IRenderable,		ISpatial)
+
+		DECLARE_SPECIALIZATION_INLINE	(IRender_Light,		ISpatial,			dcast_Light);
+#		undef cast_type_list
+#		define cast_type_list save_cast_list	(IRender_Light,		ISpatial)
+
+		DECLARE_SPECIALIZATION_INLINE	(CObject,			ISpatial,			dcast_CObject);
+#		undef cast_type_list
+#		define cast_type_list save_cast_list	(CObject,			ISpatial)
+
 #		ifndef DO_NOT_DECLARE_TYPE_LIST
 			class CObject;
 			class CGameObject;
@@ -59,6 +97,10 @@
 		DECLARE_SPECIALIZATION	(CGameObject,		CInventoryOwner,	cast_game_object);
 #		undef cast_type_list
 #		define cast_type_list save_cast_list	(CGameObject,		CInventoryOwner)
+
+		DECLARE_SPECIALIZATION	(CAI_Rat,			CCustomMonster,		dcast_Rat);
+#		undef cast_type_list
+#		define cast_type_list save_cast_list	(CAI_Rat,			CCustomMonster)
 
 #	endif
 	

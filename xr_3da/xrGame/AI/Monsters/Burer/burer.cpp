@@ -63,25 +63,25 @@ void CBurer::reload(LPCSTR section)
 
 	// Load triple gravi animations
 	CMotionDef *def1, *def2, *def3;
-	def1 = PSkeletonAnimated(Visual())->ID_Cycle_Safe("stand_gravi_0");
+	def1 = smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("stand_gravi_0");
 	VERIFY(def1);
 
-	def2 = PSkeletonAnimated(Visual())->ID_Cycle_Safe("stand_gravi_1");
+	def2 = smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("stand_gravi_1");
 	VERIFY(def2);
 
-	def3 = PSkeletonAnimated(Visual())->ID_Cycle_Safe("stand_gravi_2");
+	def3 = smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("stand_gravi_2");
 	VERIFY(def3);
 
 	anim_triple_gravi.init_external	(def1, def2, def3);
 	
 	// Load triple tele animations
-	def1 = PSkeletonAnimated(Visual())->ID_Cycle_Safe("stand_tele_0");
+	def1 = smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("stand_tele_0");
 	VERIFY(def1);
 
-	def2 = PSkeletonAnimated(Visual())->ID_Cycle_Safe("stand_tele_1");
+	def2 = smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("stand_tele_1");
 	VERIFY(def2);
 
-	def3 = PSkeletonAnimated(Visual())->ID_Cycle_Safe("stand_tele_2");
+	def3 = smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("stand_tele_2");
 	VERIFY(def3);
 
 	anim_triple_tele.init_external	(def1, def2, def3);

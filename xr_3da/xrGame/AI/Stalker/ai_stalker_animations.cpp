@@ -699,7 +699,7 @@ void CAI_Stalker::SelectAnimation(const Fvector& /**_view/**/, const Fvector& /*
 	if (!m_object->g_Alive())
 		return;
 
-	CSkeletonAnimated		&tVisualObject		=	*(PSkeletonAnimated(m_object->Visual()));
+	CSkeletonAnimated		&tVisualObject		=	*(smart_cast<CSkeletonAnimated*>(m_object->Visual()));
 
 	if (!m_script_animations.empty()) {
 		m_tpCurrentGlobalAnimation	= 0;
@@ -768,7 +768,7 @@ void CAI_Stalker::SelectAnimation(const Fvector& /**_view/**/, const Fvector& /*
 
 void CStalkerAnimations::add_animation		(LPCSTR animation, bool hand_usage)
 {
-	CMotionDef						*motion = PSkeletonAnimated(m_visual)->ID_Cycle_Safe(animation);
+	CMotionDef						*motion = smart_cast<CSkeletonAnimated*>(m_visual)->ID_Cycle_Safe(animation);
 	if (!motion) {
 		CObject						*object = smart_cast<CObject*>(this);
 		VERIFY						(object);
@@ -800,21 +800,21 @@ void CStalkerAnimations::reload				(IRender_Visual *Visual, CInifile *ini, LPCST
 	m_object								= smart_cast<CAI_Stalker*>(this);
 	VERIFY									(m_object);
 	m_visual								= Visual;
-	m_tAnims.Load							(PSkeletonAnimated(Visual),"");
-	m_tHead.Load							(PSkeletonAnimated(Visual),"");
-	m_tGlobalItem.Load						(PSkeletonAnimated(Visual),"item_");
+	m_tAnims.Load							(smart_cast<CSkeletonAnimated*>(Visual),"");
+	m_tHead.Load							(smart_cast<CSkeletonAnimated*>(Visual),"");
+	m_tGlobalItem.Load						(smart_cast<CSkeletonAnimated*>(Visual),"item_");
 	
 	if (!m_object->g_Alive())
 		return;
 
-	int										head_bone = PKinematics(Visual)->LL_BoneID(ini->r_string(section,"bone_head"));
-	PKinematics(Visual)->LL_GetBoneInstance	(u16(head_bone)).set_callback(HeadCallback,m_object);
+	int										head_bone = smart_cast<CKinematics*>(Visual)->LL_BoneID(ini->r_string(section,"bone_head"));
+	smart_cast<CKinematics*>(Visual)->LL_GetBoneInstance	(u16(head_bone)).set_callback(HeadCallback,m_object);
 
-	int										shoulder_bone = PKinematics(Visual)->LL_BoneID(ini->r_string(section,"bone_shoulder"));
-	PKinematics(Visual)->LL_GetBoneInstance	(u16(shoulder_bone)).set_callback(ShoulderCallback,m_object);
+	int										shoulder_bone = smart_cast<CKinematics*>(Visual)->LL_BoneID(ini->r_string(section,"bone_shoulder"));
+	smart_cast<CKinematics*>(Visual)->LL_GetBoneInstance	(u16(shoulder_bone)).set_callback(ShoulderCallback,m_object);
 
-	int										spin_bone = PKinematics(Visual)->LL_BoneID(ini->r_string(section,"bone_spin"));
-	PKinematics(Visual)->LL_GetBoneInstance	(u16(spin_bone)).set_callback(SpinCallback,m_object);
+	int										spin_bone = smart_cast<CKinematics*>(Visual)->LL_BoneID(ini->r_string(section,"bone_spin"));
+	smart_cast<CKinematics*>(Visual)->LL_GetBoneInstance	(u16(spin_bone)).set_callback(SpinCallback,m_object);
 };
 
 void CAI_Stalker::adjust_speed_to_animation	(const EMovementDirection movement_direction)
@@ -841,6 +841,6 @@ void CAI_Stalker::dbg_animation				(LPCSTR caption, CMotionDef *animation)
 {
 #ifdef DEBUG
 	if (psAI_Flags.is(aiAnimation))
-		Msg			("%6d [%s][%s][%s]",Level().timeServer(),*cName(),caption,PSkeletonAnimated(Visual())->LL_MotionDefName_dbg(animation));
+		Msg			("%6d [%s][%s][%s]",Level().timeServer(),*cName(),caption,smart_cast<CSkeletonAnimated*>(Visual())->LL_MotionDefName_dbg(animation));
 #endif
 }

@@ -331,7 +331,7 @@ void CAI_Rat::CreateSkeleton(){
 	//sphere.R=0.25;
 	//element->add_Sphere(sphere);
 	element->setDensity(m_phMass);
-	element->SetMaterial(PKinematics(Visual())->LL_GetData(PKinematics(Visual())->LL_GetBoneRoot()).game_mtl_idx);
+	element->SetMaterial(smart_cast<CKinematics*>(Visual())->LL_GetData(smart_cast<CKinematics*>(Visual())->LL_GetBoneRoot()).game_mtl_idx);
 	m_pPhysicsShell=P_create_Shell();
 	m_pPhysicsShell->add_Element(element);
 	m_pPhysicsShell->Activate(XFORM(),0,XFORM());
@@ -340,7 +340,7 @@ void CAI_Rat::CreateSkeleton(){
 		m_pPhysicsShell->applyHit(m_saved_hit_position,m_saved_hit_dir,m_saved_impulse,0,m_saved_hit_type);
 	}
 	/*
-	CKinematics* M		= PKinematics(Visual());			VERIFY(M);
+	CKinematics* M		= smart_cast<CKinematics*>(Visual());			VERIFY(M);
 	m_pPhysicsShell		= P_create_Shell();
 
 	//get bone instance

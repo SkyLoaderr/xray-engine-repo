@@ -160,7 +160,7 @@ void CTorch::Switch()
 
 	if(*light_trace_bone)
 	{
-		CKinematics* pVisual = PKinematics(Visual()); VERIFY(pVisual);
+		CKinematics* pVisual = smart_cast<CKinematics*>(Visual()); VERIFY(pVisual);
 		pVisual->LL_SetBoneVisible(pVisual->LL_BoneID(light_trace_bone),bActive,TRUE);
 	}
 }
@@ -172,7 +172,7 @@ void CTorch::Switch	(bool light_on)
 
 	if(*light_trace_bone)
 	{
-		CKinematics* pVisual = PKinematics(Visual()); VERIFY(pVisual);
+		CKinematics* pVisual = smart_cast<CKinematics*>(Visual()); VERIFY(pVisual);
 		pVisual->LL_SetBoneVisible(pVisual->LL_BoneID(light_trace_bone),light_on,TRUE);
 	}
 }
@@ -185,13 +185,13 @@ BOOL CTorch::net_Spawn(LPVOID DC)
 	cNameVisual_set			(torch->get_visual());
 
 	R_ASSERT				(!CFORM());
-	R_ASSERT				(PKinematics(Visual()));
+	R_ASSERT				(smart_cast<CKinematics*>(Visual()));
 	collidable.model		= xr_new<CCF_Skeleton>	(this);
 
 	if (!inherited::net_Spawn(DC))
 		return				(FALSE);
 	
-	CKinematics* K			= PKinematics(Visual());
+	CKinematics* K			= smart_cast<CKinematics*>(Visual());
 	CInifile* pUserData		= K->LL_UserData(); 
 	R_ASSERT3				(pUserData,"Empty Torch user data!",torch->get_visual());
 	lanim					= LALib.FindItem(pUserData->r_string("torch_definition","color_animator"));
@@ -261,11 +261,11 @@ void CTorch::UpdateCL	()
 	{
 
 
-		CBoneInstance& BI = PKinematics(Visual())->LL_GetBoneInstance(guid_bone);
+		CBoneInstance& BI = smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(guid_bone);
 		Fmatrix M;
 
 		if (H_Parent()) {
-			PKinematics(H_Parent()->Visual())->CalculateBones	();
+			smart_cast<CKinematics*>(H_Parent()->Visual())->CalculateBones	();
 			M.mul						(XFORM(),BI.mTransform);
 			light_render->set_rotation	(M.k,M.i);
 			light_render->set_position	(M.c);

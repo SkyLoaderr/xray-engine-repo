@@ -54,8 +54,8 @@ BOOL CVehicleHelicopter::net_Spawn			(LPVOID DC)
 	CSE_ALifeHelicopter	*heli	= smart_cast<CSE_ALifeHelicopter*>(abstract);
 	VERIFY				(heli);
 
-	R_ASSERT			(Visual()&&PKinematics(Visual()));
-	CSkeletonAnimated	*A= PSkeletonAnimated(Visual());
+	R_ASSERT			(Visual()&&smart_cast<CKinematics*>(Visual()));
+	CSkeletonAnimated	*A= smart_cast<CSkeletonAnimated*>(Visual());
 	if (A) {
 		A->PlayCycle		(*heli->startup_animation);
 		A->CalculateBones	();

@@ -36,10 +36,10 @@ void CWeaponRPG7::Load	(LPCSTR section)
 
 void CWeaponRPG7::UpdateGrenadeVisibility(bool visibility)
 {
-	CKinematics* pHudVisual = PKinematics(m_pHUD->Visual());
+	CKinematics* pHudVisual = smart_cast<CKinematics*>(m_pHUD->Visual());
 	VERIFY(pHudVisual);
 	if (H_Parent() != Level().CurrentEntity()) pHudVisual = NULL;
-	CKinematics* pWeaponVisual = PKinematics(Visual()); 
+	CKinematics* pWeaponVisual = smart_cast<CKinematics*>(Visual()); 
 	VERIFY(pWeaponVisual);
 
 	if (pHudVisual) pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID(*m_sHudGrenadeBoneName),visibility,TRUE);

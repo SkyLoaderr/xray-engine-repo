@@ -152,8 +152,8 @@ void __stdcall CAI_Bloodsucker::BoneCallback(CBoneInstance *B)
 void CAI_Bloodsucker::vfAssignBones()
 {
 	// Установка callback на кости
-	bone_spine =	&PKinematics(Visual())->LL_GetBoneInstance(PKinematics(Visual())->LL_BoneID("bip01_spine"));
-	bone_head =		&PKinematics(Visual())->LL_GetBoneInstance(PKinematics(Visual())->LL_BoneID("bip01_head"));
+	bone_spine =	&smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_spine"));
+	bone_head =		&smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_head"));
 	bone_spine->set_callback(BoneCallback,this);
 	bone_head->set_callback(BoneCallback,this);
 

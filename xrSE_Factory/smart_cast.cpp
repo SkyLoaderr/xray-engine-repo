@@ -12,6 +12,8 @@
 #	ifdef XRGAME_EXPORTS
 #		include	"gameobject.h"
 #		include "actor.h"
+#		include "custommonster.h"
+#		include "../ispatial.h"
 #	endif
 #endif
 

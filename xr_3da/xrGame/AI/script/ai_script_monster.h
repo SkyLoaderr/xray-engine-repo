@@ -11,22 +11,11 @@
 #include "../../GameObject.h"
 #include "../../script_callback.h"
 #include "../../ai_sounds.h"
+#include "../../script_monster_space.h"
 
 class CScriptEntityAction;
 class CEntity;
 class CScriptGameObject;
-
-namespace ScriptMonster {
-	enum EActionType {
-		eActionTypeMovement = u32(0),
-		eActionTypeWatch,
-		eActionTypeAnimation,
-		eActionTypeSound,
-		eActionTypeParticle,
-		eActionTypeObject,
-		eActionTypeCount
-	};
-};
 
 using namespace ScriptMonster;
 
@@ -61,7 +50,7 @@ protected:
 public:
 	CMotionDef					*m_tpScriptAnimation;
 protected:
-	CScriptCallback				m_tpCallbacks[eActionTypeCount];
+	CScriptCallback				m_tpCallbacks[ScriptMonster::eActionTypeCount];
 	CScriptCallback				m_tSoundCallback;
 	CScriptCallback				m_tHitCallback;
 	ref_sound					*m_current_sound;

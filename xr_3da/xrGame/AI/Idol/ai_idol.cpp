@@ -50,7 +50,7 @@ BOOL CAI_Idol::net_Spawn			(LPVOID DC)
 	u32								N = _GetItemCount(*tpIdol->m_caAnimations);
 	string32						I;
 	for (u32 i=0; i<N; ++i)
-		m_tpaAnims.push_back		(PSkeletonAnimated(Visual())->ID_Cycle(_GetItem(*tpIdol->m_caAnimations,i,I)));
+		m_tpaAnims.push_back		(smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle(_GetItem(*tpIdol->m_caAnimations,i,I)));
 
 	return							TRUE;
 }
@@ -64,14 +64,14 @@ void CAI_Idol::SelectAnimation		(const Fvector& /**_view/**/, const Fvector& /**
 		switch (m_dwAnyPlayType) {
 			case 0 : {
 				if (!m_bPlaying) {
-					m_tpCurrentBlend		= PSkeletonAnimated(Visual())->PlayCycle	(m_tpaAnims[::Random.randI((int)m_tpaAnims.size())],TRUE,AnimCallback,this);
+					m_tpCurrentBlend		= smart_cast<CSkeletonAnimated*>(Visual())->PlayCycle	(m_tpaAnims[::Random.randI((int)m_tpaAnims.size())],TRUE,AnimCallback,this);
 					m_bPlaying				= true;
 				}
 				break;
 			}
 			case 1 : {
 				if (!m_bPlaying) {
-					m_tpCurrentBlend		= PSkeletonAnimated(Visual())->PlayCycle	(m_tpaAnims[m_dwCurrentAnimationIndex],TRUE,AnimCallback,this);
+					m_tpCurrentBlend		= smart_cast<CSkeletonAnimated*>(Visual())->PlayCycle	(m_tpaAnims[m_dwCurrentAnimationIndex],TRUE,AnimCallback,this);
 					m_bPlaying				= true;
 					m_dwCurrentAnimationIndex = (m_dwCurrentAnimationIndex + 1) % m_tpaAnims.size();
 				}
@@ -79,7 +79,7 @@ void CAI_Idol::SelectAnimation		(const Fvector& /**_view/**/, const Fvector& /**
 			}
 			case 2 : {
 				if (!m_bPlaying) {
-					m_tpCurrentBlend		= PSkeletonAnimated(Visual())->PlayCycle	(m_tpaAnims[m_dwCurrentAnimationIndex],TRUE,AnimCallback,this);
+					m_tpCurrentBlend		= smart_cast<CSkeletonAnimated*>(Visual())->PlayCycle	(m_tpaAnims[m_dwCurrentAnimationIndex],TRUE,AnimCallback,this);
 					m_bPlaying				= true;
 					if (m_dwCurrentAnimationIndex < m_tpaAnims.size() - 1)
 						++m_dwCurrentAnimationIndex;
@@ -175,7 +175,7 @@ void CAI_Idol::shedule_Update(u32 dt)
 void CAI_Idol::g_WeaponBones	(int &L, int &R1, int &R2)
 {
 	if (g_Alive() && inventory().ActiveItem()) {
-		CKinematics *V	= PKinematics(Visual());
+		CKinematics *V	= smart_cast<CKinematics*>(Visual());
 		R1				= V->LL_BoneID("bip01_r_hand");
 		R2				= V->LL_BoneID("bip01_r_finger2");
 		L				= V->LL_BoneID("bip01_l_finger1");

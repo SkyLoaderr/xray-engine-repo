@@ -94,7 +94,7 @@ void CWeapon::UpdateXForm	()
 		
 		if(!E) return;
 		R_ASSERT		(E);
-		CKinematics*	V		= PKinematics	(E->Visual());
+		CKinematics*	V		= smart_cast<CKinematics*>	(E->Visual());
 		VERIFY			(V);
 
 		// Get matrices
@@ -143,7 +143,7 @@ void CWeapon::UpdateFP		()
 		if (hud_mode && (0!=H_Parent()))// && Local())
 		{
 			// 1st person view - skeletoned
-			CKinematics* V			= PKinematics(m_pHUD->Visual());
+			CKinematics* V			= smart_cast<CKinematics*>(m_pHUD->Visual());
 			V->CalculateBones		();
 
 			// fire point&direction
@@ -857,9 +857,9 @@ bool CWeapon::SilencerAttachable()
 
 void CWeapon::UpdateAddonsVisibility()
 {
-	CKinematics* pHudVisual = PKinematics(m_pHUD->Visual());// R_ASSERT(pHudVisual);
+	CKinematics* pHudVisual = smart_cast<CKinematics*>(m_pHUD->Visual());// R_ASSERT(pHudVisual);
 	if (H_Parent() != Level().CurrentEntity()) pHudVisual = NULL;
-	CKinematics* pWeaponVisual = PKinematics(Visual()); R_ASSERT(pWeaponVisual);
+	CKinematics* pWeaponVisual = smart_cast<CKinematics*>(Visual()); R_ASSERT(pWeaponVisual);
 	
 	if(ScopeAttachable())
 	{

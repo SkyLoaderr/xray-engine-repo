@@ -52,7 +52,7 @@ void CAI_Biting::reinit()
 
 	state_invisible					= false;
 
-	bone_part						= PSkeletonAnimated(Visual())->LL_PartID("default");
+	bone_part						= smart_cast<CSkeletonAnimated*>(Visual())->LL_PartID("default");
 
 	b_velocity_reset				= false;
 

@@ -75,9 +75,9 @@ BOOL	CWeaponMounted::net_Spawn(LPVOID DC)
 	if (!inherited::net_Spawn(DC))
 		return			(FALSE);
 
-	R_ASSERT				(Visual() && PKinematics(Visual()));
+	R_ASSERT				(Visual() && smart_cast<CKinematics*>(Visual()));
 
-	CKinematics* K			= PKinematics(Visual());
+	CKinematics* K			= smart_cast<CKinematics*>(Visual());
 	CInifile* pUserData		= K->LL_UserData(); 
 
 	R_ASSERT3				(pUserData,"Empty MountedWeapon user data!",mw->get_visual());
@@ -130,7 +130,7 @@ void	CWeaponMounted::UpdateCL()
 {
 	inherited::UpdateCL	();
 	if (Owner()){
-		CKinematics* K		= PKinematics(Visual());
+		CKinematics* K		= smart_cast<CKinematics*>(Visual());
 		K->CalculateBones	();
 		// update fire pos & fire_dir
 		fire_bone_xform		= K->LL_GetTransform(fire_bone);
@@ -209,7 +209,7 @@ void	CWeaponMounted::cam_Update			(float dt)
 	Da.set							(0,0,0);
 	if(Owner())	Owner()->setEnabled	(false);
 
-	CKinematics* K					= PKinematics(Visual());
+	CKinematics* K					= smart_cast<CKinematics*>(Visual());
 	K->CalculateBones				();
 	const Fmatrix& C				= K->LL_GetTransform(camera_bone);
 	XFORM().transform_tiny			(P,C.c);
@@ -231,14 +231,14 @@ bool	CWeaponMounted::Use					(const Fvector& pos,const Fvector& dir,const Fvecto
 bool	CWeaponMounted::attach_Actor		(CActor* actor)
 {
 	CHolderCustom::attach_Actor(actor);
-	CKinematics* K		= PKinematics(Visual());
+	CKinematics* K		= smart_cast<CKinematics*>(Visual());
 	// убрать оружие из рук	
 	// disable shell callback
 	m_pPhysicsShell->EnabledCallbacks(FALSE);
 	// enable actor rotate callback
-	CBoneInstance& biX		= PKinematics(Visual())->LL_GetBoneInstance(rotate_x_bone);	
+	CBoneInstance& biX		= smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(rotate_x_bone);	
 	biX.set_callback		(BoneCallbackX,this);
-	CBoneInstance& biY		= PKinematics(Visual())->LL_GetBoneInstance(rotate_y_bone);	
+	CBoneInstance& biY		= smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(rotate_y_bone);	
 	biY.set_callback		(BoneCallbackY,this);
 	// set actor to mounted position
 	const Fmatrix& A	= K->LL_GetTransform(actor_bone);
@@ -252,9 +252,9 @@ void	CWeaponMounted::detach_Actor		()
 {
 	CHolderCustom::detach_Actor();
 	// disable actor rotate callback
-	CBoneInstance& biX		= PKinematics(Visual())->LL_GetBoneInstance(rotate_x_bone);	
+	CBoneInstance& biX		= smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(rotate_x_bone);	
 	biX.set_callback		(0,0);
-	CBoneInstance& biY		= PKinematics(Visual())->LL_GetBoneInstance(rotate_y_bone);	
+	CBoneInstance& biY		= smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(rotate_y_bone);	
 	biY.set_callback		(0,0);
 	// enable shell callback
 	m_pPhysicsShell->EnabledCallbacks(TRUE);

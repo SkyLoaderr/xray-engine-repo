@@ -55,3 +55,12 @@ namespace SmartDynamicCast {
 	template <> extern\
 	B* SmartDynamicCast::smart_cast<B,A>(A *p);\
 	add_to_cast_list(B,A);
+
+#define DECLARE_SPECIALIZATION_INLINE(B,A,C) \
+	class B;\
+	template <>\
+	IC	B* SmartDynamicCast::smart_cast<B,A>(A *p)\
+	{\
+		return	(p->C());\
+	}\
+	add_to_cast_list(B,A);

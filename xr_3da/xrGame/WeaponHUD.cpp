@@ -32,8 +32,8 @@ SHARED_HUD_INFO::SHARED_HUD_INFO(LPCSTR section, CHudItem* pHudItem)
 	if(smart_cast<CWeapon*>(pHudItem))
 	{
 		LPCSTR fire_bone			= pSettings->r_string					(section,"fire_bone");
-		iFireBone					= PKinematics(pVisual)->LL_BoneID	(fire_bone);
-		if (iFireBone>=PKinematics(pVisual)->LL_BoneCount())	
+		iFireBone					= smart_cast<CKinematics*>(pVisual)->LL_BoneID	(fire_bone);
+		if (iFireBone>=smart_cast<CKinematics*>(pVisual)->LL_BoneCount())	
 			Debug.fatal	("There is no '%s' bone for weapon '%s'.",fire_bone, section);
 
 		vFirePoint					= pSettings->r_fvector3					(section,"fire_point");
@@ -125,14 +125,14 @@ void CWeaponHUD::UpdatePosition(const Fmatrix& trans)
 
 CMotionDef* CWeaponHUD::animGet		(LPCSTR name)
 {
-	return PSkeletonAnimated(Visual())->ID_Cycle_Safe(name);
+	return smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe(name);
 }
 
 void CWeaponHUD::animDisplay		(CMotionDef* M,	BOOL bMixIn)
 {
 	if(m_bCurrentEntityIsParent)
 	{
-		CSkeletonAnimated* pSkeletonAnimated			= PSkeletonAnimated(Visual());
+		CSkeletonAnimated* pSkeletonAnimated			= smart_cast<CSkeletonAnimated*>(Visual());
 		VERIFY(pSkeletonAnimated);
 		pSkeletonAnimated->Update						();
 		pSkeletonAnimated->PlayCycle					(M,bMixIn);
@@ -150,7 +150,7 @@ void CWeaponHUD::animPlay			(CMotionDef* M,	BOOL bMixIn, CInventoryItem* W)
 		//если предыдущая анимация еще не доигралась, то остановить ее
 		m_bStopAtEndAnimIsRunning = true;
 
-		CBoneData			&bone_data = PKinematics(Visual())->LL_GetData(PKinematics(Visual())->LL_GetBoneRoot());
+		CBoneData			&bone_data = smart_cast<CKinematics*>(Visual())->LL_GetData(smart_cast<CKinematics*>(Visual())->LL_GetBoneRoot());
 		CBoneDataAnimated	*bone_anim = smart_cast<CBoneDataAnimated *>(&bone_data);
 		CMotion& motion = bone_anim->Motions[M->motion];
 		u32 anim_time = iFloor(0.5f + 1000.f*motion.GetLength()/ M->Dequantize(M->speed));
@@ -169,7 +169,7 @@ void CWeaponHUD::UpdateHud		()
 	}
 
 	if(m_bCurrentEntityIsParent)
-		PSkeletonAnimated(Visual())->Update	();
+		smart_cast<CSkeletonAnimated*>(Visual())->Update	();
 }
 
 void CWeaponHUD::StopCurrentAnim	()

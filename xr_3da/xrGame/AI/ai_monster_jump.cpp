@@ -100,8 +100,8 @@ void CJumping::Execute()
 		// установить целевую точку 
 		CObject		*_entity = const_cast<CObject*>(entity);
 		VERIFY		(_entity);
-		u16 bone_id = PKinematics(_entity->Visual())->LL_BoneID("bip01_head");
-		CBoneInstance &bone = PKinematics(_entity->Visual())->LL_GetBoneInstance(bone_id);
+		u16 bone_id = smart_cast<CKinematics*>(_entity->Visual())->LL_BoneID("bip01_head");
+		CBoneInstance &bone = smart_cast<CKinematics*>(_entity->Visual())->LL_GetBoneInstance(bone_id);
 
 		Fmatrix global_transform;
 		global_transform.set(entity->XFORM());

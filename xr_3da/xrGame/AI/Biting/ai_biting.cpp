@@ -145,19 +145,19 @@ void CAI_Biting::PHHit(float P,Fvector &dir,s16 element,Fvector p_in_object_spac
 }
 CBoneInstance *CAI_Biting::GetBoneInstance(LPCTSTR bone_name)
 {
-	int bone = PKinematics(Visual())->LL_BoneID(bone_name);
-	return (&PKinematics(Visual())->LL_GetBoneInstance(u16(bone)));
+	int bone = smart_cast<CKinematics*>(Visual())->LL_BoneID(bone_name);
+	return (&smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(u16(bone)));
 }
 
 CBoneInstance *CAI_Biting::GetBoneInstance(int bone_id)
 {
-	return (&PKinematics(Visual())->LL_GetBoneInstance(u16(bone_id)));
+	return (&smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(u16(bone_id)));
 }
 
 CBoneInstance *CAI_Biting::GetEatBone()
 {
-	int bone = PKinematics(Visual())->LL_BoneID("bip01_ponytail2");
-	return (&PKinematics(Visual())->LL_GetBoneInstance(u16(bone)));
+	int bone = smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_ponytail2");
+	return (&smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(u16(bone)));
 }
 
 
@@ -194,7 +194,7 @@ float CAI_Biting::GetRealDistToEnemy(const CEntity *pE)
 	Fmatrix global_transform;
 	global_transform.set(XFORM());
 	
-	global_transform.mulB(PKinematics(Visual())->LL_GetBoneInstance(PKinematics(Visual())->LL_BoneID("bip01_head")).mTransform);
+	global_transform.mulB(smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_head")).mTransform);
 	
 	Fvector dir; 
 	dir.sub(enemy_center, global_transform.c);
@@ -257,7 +257,7 @@ Fvector	CAI_Biting::get_foot_position(ELegType leg_type)
 {
 	R_ASSERT2(m_FootBones[leg_type] != BI_NONE, "foot bone had not been set");
 	
-	CKinematics *pK = PKinematics(Visual());
+	CKinematics *pK = smart_cast<CKinematics*>(Visual());
 	Fmatrix bone_transform;
 
 	bone_transform = pK->LL_GetBoneInstance(m_FootBones[leg_type]).mTransform;	
@@ -272,14 +272,14 @@ Fvector	CAI_Biting::get_foot_position(ELegType leg_type)
 void CAI_Biting::LoadFootBones()
 {
 
-	CInifile* ini		= PKinematics(Visual())->LL_UserData();
+	CInifile* ini		= smart_cast<CKinematics*>(Visual())->LL_UserData();
 	if(ini&&ini->section_exist("foot_bones")){
 		
 		CInifile::Sect& data		= ini->r_section("foot_bones");
 		for (CInifile::SectIt I=data.begin(); I!=data.end(); I++){
 			CInifile::Item& item	= *I;
 			
-			u16 index = PKinematics(Visual())->LL_BoneID(*item.second);
+			u16 index = smart_cast<CKinematics*>(Visual())->LL_BoneID(*item.second);
 			VERIFY3(index != BI_NONE, "foot bone not found", *item.second);
 			
 			if (xr_strcmp(*item.first, "front_left") == 0) 			m_FootBones[eFrontLeft]		= index;

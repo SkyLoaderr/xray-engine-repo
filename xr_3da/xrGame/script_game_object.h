@@ -94,7 +94,7 @@ public:
 	void								OnEventRaised(s16 event, NET_Packet& P);
 
 			CScriptGameObject	*Parent				() const;
-			void				Hit					(CScriptHit &tLuaHit);
+			void				Hit					(CScriptHit *tLuaHit);
 			int					clsid				() const;
 	
 	_DECLARE_FUNCTION10	(Position	,	Fvector		);
@@ -179,6 +179,8 @@ public:
 			bool				get_manual_invisibility ();
 
 
+			template <typename T>
+			IC		T	*motivation_action_manager();
 
 	//////////////////////////////////////////////////////////////////////////
 	// CInventoryOwner
@@ -299,14 +301,6 @@ public:
 			CScriptSoundInfo		GetSoundInfo	();
 			CScriptMonsterHitInfo	GetMonsterHitInfo();
 			void					bind_object		(CScriptBinderObject *object);
-	template <typename T>
-	IC		T	*motivation_action_manager()
-	{
-		T	*manager = smart_cast<T*>(m_tpGameObject);
-		if (!manager)
-			ai().script_engine().script_log				(ScriptStorage::eLuaMessageTypeError,"CMotivationActionManager : cannot access class member motivation_action_manager!");
-		return					(manager);
-	}
 
 	//////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////

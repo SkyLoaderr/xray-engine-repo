@@ -16,7 +16,7 @@ BOOL CTargetCS::net_Spawn(LPVOID DC) {
 	if (!inherited::net_Spawn(DC))
 		return			(FALSE);
 
-	CSkeletonAnimated	*V	= PSkeletonAnimated(CTargetCS::Visual());
+	CSkeletonAnimated	*V	= smart_cast<CSkeletonAnimated*>(CTargetCS::Visual());
 	if (V)
 		V->PlayCycle	("idle");
 

@@ -22,7 +22,7 @@ void CAI_Biting::SelectAnimation(const Fvector &/**_view/**/, const Fvector &/**
 	SCurrentAnimationInfo &info = MotionMan.cur_anim_info();
 	
 	if (MotionMan.PrepareAnimation()) {
-		info.blend = MotionMan.m_tpCurAnim->PlayCycle(PSkeletonAnimated(Visual()), bone_part, TRUE, vfPlayEndCallBack, this);
+		info.blend = MotionMan.m_tpCurAnim->PlayCycle(smart_cast<CSkeletonAnimated*>(Visual()), bone_part, TRUE, vfPlayEndCallBack, this);
 	}
 	
 	// установить скорость текущей анимации

@@ -8,13 +8,6 @@
 
 #pragma once
 
-IC	Fvector CSoundPlayer::compute_sound_point(const CSoundSingle &sound)
-{
-	Fmatrix								l_tMatrix;
-	l_tMatrix.mul_43					(m_object->XFORM(),PKinematics(m_object->Visual())->LL_GetBoneInstance(sound.m_bone_id).mTransform);
-	return								(l_tMatrix.c);
-}
-
 IC	void CSoundPlayer::set_sound_mask		(u32 sound_mask)
 {
 	m_sound_mask						= sound_mask;

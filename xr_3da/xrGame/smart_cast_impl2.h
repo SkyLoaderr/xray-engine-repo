@@ -9,14 +9,24 @@
 #pragma once
 
 #undef  DECLARE_SPECIALIZATION
+#undef  DECLARE_SPECIALIZATION_INLINE
+
 #define DECLARE_SPECIALIZATION(B,A,C) \
 	template <>\
 	B* SmartDynamicCast::smart_cast<B,A>(A *p){return p->C();};\
+
+#define  DECLARE_SPECIALIZATION_INLINE(B,A,C)
 
 #ifdef XRGAME_EXPORTS
 	template <> 
 	CGameObject* SmartDynamicCast::smart_cast<CGameObject,CObject>(CObject *p)
 	{
 		return static_cast<CGameObject*>(p);
+	}
+
+	template <> 
+	Feel::Sound* SmartDynamicCast::smart_cast<Feel::Sound,ISpatial>(ISpatial *p)
+	{
+		return (p->dcast_FeelSound());
 	}
 #endif

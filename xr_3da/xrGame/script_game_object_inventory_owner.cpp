@@ -20,6 +20,13 @@
 #include "uigamesp.h"
 #include "hudmanager.h"
 
+#include "restricted_object.h"
+#include "script_engine.h"
+#include "visual_memory_manager.h"
+#include "sound_memory_manager.h"
+#include "attachable_item.h"
+#include "ai/script/ai_script_monster.h"
+
 bool CScriptGameObject::GiveInfoPortion(LPCSTR info_id)
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(m_tpGameObject);
@@ -370,4 +377,157 @@ void  CScriptGameObject::ActorSleep			(int hours, int minutes)
 {
 	CActor* pActor = smart_cast<CActor*>(m_tpGameObject);	if(!pActor) return;
 	pActor->GoSleep(generate_time(0,0,0,hours, minutes, 0, 0), true);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+
+void CScriptGameObject::add_restrictions		(LPCSTR in, LPCSTR out)
+{
+	CRestrictedObject	*restricted_object = smart_cast<CRestrictedObject*>(m_tpGameObject);
+	if (!restricted_object) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CRestrictedObject : cannot access class member add_restrictions!");
+		return;
+	}
+	restricted_object->add_restrictions		(in,out);
+}
+
+void CScriptGameObject::remove_restrictions		(LPCSTR in, LPCSTR out)
+{
+	CRestrictedObject	*restricted_object = smart_cast<CRestrictedObject*>(m_tpGameObject);
+	if (!restricted_object) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CRestrictedObject : cannot access class member remove_restrictions!");
+		return;
+	}
+	restricted_object->remove_restrictions	(in,out);
+}
+
+void CScriptGameObject::remove_all_restrictions	()
+{
+	CRestrictedObject	*restricted_object = smart_cast<CRestrictedObject*>(m_tpGameObject);
+	if (!restricted_object) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CRestrictedObject : cannot access class member remove_all_restrictions!");
+		return;
+	}
+	restricted_object->remove_all_restrictions	();
+}
+
+LPCSTR CScriptGameObject::in_restrictions	()
+{
+	CRestrictedObject	*restricted_object = smart_cast<CRestrictedObject*>(m_tpGameObject);
+	if (!restricted_object) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CRestrictedObject : cannot access class member in_restrictions!");
+		return								("");
+	}
+	return									(*restricted_object->in_restrictions());
+}
+
+LPCSTR CScriptGameObject::out_restrictions	()
+{
+	CRestrictedObject	*restricted_object = smart_cast<CRestrictedObject*>(m_tpGameObject);
+	if (!restricted_object) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CRestrictedObject : cannot access class member out_restrictions!");
+		return								("");
+	}
+	return									(*restricted_object->out_restrictions());
+}
+
+bool CScriptGameObject::accessible_position	(const Fvector &position)
+{
+	CRestrictedObject	*restricted_object = smart_cast<CRestrictedObject*>(m_tpGameObject);
+	if (!restricted_object) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CRestrictedObject : cannot access class member accessible!");
+		return								(false);
+	}
+	return									(restricted_object->accessible(position));
+}
+
+bool CScriptGameObject::accessible_vertex_id(u32 level_vertex_id)
+{
+	CRestrictedObject	*restricted_object = smart_cast<CRestrictedObject*>(m_tpGameObject);
+	if (!restricted_object) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CRestrictedObject : cannot access class member accessible!");
+		return								(false);
+	}
+	return									(restricted_object->accessible(level_vertex_id));
+}
+
+u32	 CScriptGameObject::accessible_nearest	(const Fvector &position, Fvector &result)
+{
+	CRestrictedObject	*restricted_object = smart_cast<CRestrictedObject*>(m_tpGameObject);
+	if (!restricted_object) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CRestrictedObject : cannot access class member accessible!");
+		return								(u32(-1));
+	}
+	return									(restricted_object->accessible_nearest(position,result));
+}
+
+bool CScriptGameObject::limping				() const
+{
+	CEntityCondition						*entity_condition = smart_cast<CEntityCondition*>(m_tpGameObject);
+	if (!entity_condition) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CRestrictedObject : cannot access class member limping!");
+		return								(false);
+	}
+	return									(entity_condition->IsLimping());
+}
+
+void CScriptGameObject::enable_vision			(bool value)
+{
+	CVisualMemoryManager					*visual_memory_manager = smart_cast<CVisualMemoryManager*>(m_tpGameObject);
+	if (!visual_memory_manager) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CVisualMemoryManager : cannot access class member enable_vision!");
+		return;
+	}
+	visual_memory_manager->enable			(value);
+}
+
+bool CScriptGameObject::vision_enabled			() const
+{
+	CVisualMemoryManager					*visual_memory_manager = smart_cast<CVisualMemoryManager*>(m_tpGameObject);
+	if (!visual_memory_manager) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CVisualMemoryManager : cannot access class member vision_enabled!");
+		return								(false);
+	}
+	return									(visual_memory_manager->enabled());
+}
+
+void CScriptGameObject::set_sound_threshold		(float value)
+{
+	CSoundMemoryManager						*sound_memory_manager = smart_cast<CSoundMemoryManager*>(m_tpGameObject);
+	if (!sound_memory_manager) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CSoundMemoryManager : cannot access class member set_sound_threshold!");
+		return;
+	}
+	sound_memory_manager->set_threshold		(value);
+}
+
+void CScriptGameObject::restore_sound_threshold	()
+{
+	CSoundMemoryManager						*sound_memory_manager = smart_cast<CSoundMemoryManager*>(m_tpGameObject);
+	if (!sound_memory_manager) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CSoundMemoryManager : cannot access class member restore_sound_threshold!");
+		return;
+	}
+	sound_memory_manager->restore_threshold	();
+}
+
+void CScriptGameObject::enable_attachable_item	(bool value)
+{
+	CAttachableItem							*attachable_item = smart_cast<CAttachableItem*>(m_tpGameObject);
+	if (!attachable_item) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CAttachableItem : cannot access class member enable_attachable_item!");
+		return;
+	}
+	attachable_item->enable					(value);
+}
+
+bool CScriptGameObject::attachable_item_enabled	() const
+{
+	CAttachableItem							*attachable_item = smart_cast<CAttachableItem*>(m_tpGameObject);
+	if (!attachable_item) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CAttachableItem : cannot access class member attachable_item_enabled!");
+		return								(false);
+	}
+	return									(attachable_item->enabled());
 }

@@ -13,50 +13,23 @@
 #include <luabind/out_value_policy.hpp>
 
 #include "script_game_object.h"
+#include "alife_space.h"
+#include "script_monster_space.h"
+#include "movement_manager_space.h"
+#include "pda_space.h"
+#include "memory_space.h"
 #include "cover_point.h"
 #include "script_hit.h"
 #include "script_binder_object.h"
 #include "script_ini_file.h"
-#include "attachable_item.h"
-#include "ai/script/ai_script_monster.h"
-#include "movement_manager.h"
-#include "pdamsg.h"
 #include "script_sound_info.h"
 #include "script_monster_hit_info.h"
 #include "script_entity_action.h"
 #include "motivation_action_manager.h"
-#include "script_task.h"
 #include "PhysicsShell.h"
 #include "helicopter.h"
 
 using namespace luabind;
-
-
-CScriptMotivationActionManager *script_motivation_action_manager(CScriptGameObject *obj)
-{
-	return		(obj->motivation_action_manager<CScriptMotivationActionManager>());
-}
-
-
-void CScriptGameObject::AddEventCallback			(s16 event, const luabind::functor<void> &lua_function)
-{
-	ScriptCallbackInfo* c = NULL;
-	c = xr_new<ScriptCallbackInfo>();
-	m_callbacks.insert( mk_pair(event,c) );
-
-	c->m_callback.set	(lua_function);
-	c->m_event			= event;
-}
-
-void CScriptGameObject::AddEventCallback			(s16 event, const luabind::object &lua_object, LPCSTR method)
-{
-	ScriptCallbackInfo* c = NULL;
-	c = xr_new<ScriptCallbackInfo>();
-	m_callbacks.insert( mk_pair(event,c) );
-
-	c->m_callback.set	(lua_object,method);
-	c->m_event			= event;
-}
 
 void CScriptGameObject::OnEventRaised(s16 event, NET_Packet& P)
 {
@@ -66,6 +39,8 @@ void CScriptGameObject::OnEventRaised(s16 event, NET_Packet& P)
 		return;
 	SCRIPT_CALLBACK_EXECUTE_1((*it).second->m_callback, &P );
 }
+
+extern CScriptMotivationActionManager *script_motivation_action_manager(CScriptGameObject *obj);
 
 void CScriptGameObject::script_register(lua_State *L)
 {
@@ -263,7 +238,7 @@ void CScriptGameObject::script_register(lua_State *L)
 			.def("set_sight",					(void (CScriptGameObject::*)(SightManager::ESightType sight_type, const Fvector *vector3d))(CScriptGameObject::set_sight))
 			.def("set_sight",					(void (CScriptGameObject::*)(CScriptGameObject *object_to_look, bool torso_look))(CScriptGameObject::set_sight))
 			.def("set_sight",					(void (CScriptGameObject::*)(CScriptGameObject *object_to_look, bool torso_look, LPCSTR bone_name))(CScriptGameObject::set_sight))
-			.def("set_sight",					(void (CScriptGameObject::*)(const CMemoryInfo *memory_object, bool	torso_look))(CScriptGameObject::set_sight))
+			.def("set_sight",					(void (CScriptGameObject::*)(const MemorySpace::CMemoryInfo *memory_object, bool	torso_look))(CScriptGameObject::set_sight))
 
 			// object handler
 			.def("set_item",					(void (CScriptGameObject::*)(MonsterSpace::EObjectAction ))(CScriptGameObject::set_item))
@@ -366,20 +341,10 @@ void CScriptGameObject::script_register(lua_State *L)
 			[
 				value("no_pda_msg",				int(ePdaMsgMax))
 			]
+			
 			//HELICOPTER
-
 			
 			.def("get_helicopter",              &CScriptGameObject::get_helicopter)
-/*			.def("air_attack",                  &CScriptGameObject::air_attack)
-			.def("air_attack_wait",             &CScriptGameObject::air_attack_wait)
-			.def("air_attack_active",           &CScriptGameObject::air_attack_active)
-			.def("heli_goto_stay_point",        (void (CScriptGameObject::*)(float))(CScriptGameObject::heli_goto_stay_point))
-			.def("heli_goto_stay_point",        (void (CScriptGameObject::*)(Fvector&,float))(CScriptGameObject::heli_goto_stay_point))
-			.def("heli_go_patrol",				&CScriptGameObject::heli_go_patrol)
-			.def("heli_go_to_point",			&CScriptGameObject::heli_go_to_point)
-			.def("heli_last_point_time",		&CScriptGameObject::heli_last_point_time)
-			.def("heli_go_by_patrol_path",		&CScriptGameObject::heli_go_by_patrol_path)
-*/
 			.def("get_physics_shell",			&CScriptGameObject::get_physics_shell)
 
 			//usable object
@@ -388,28 +353,6 @@ void CScriptGameObject::script_register(lua_State *L)
 			.def("clear_use_callback",			(void (CScriptGameObject::*)(void))(CScriptGameObject::ClearUseCallback))
 			.def("set_tip_text",				&CScriptGameObject::SetTipText)
 			.def("set_tip_text_default",		&CScriptGameObject::SetTipTextDefault)
-			.def("set_nonscript_usable",		&CScriptGameObject::SetNonscriptUsable),
-			
-
-//		class_<CObject>("base_client_class")
-//			.def(								constructor<>()),
-//
-//		class_<CGameObject,CObject>("game_object_class")
-//			.def(								constructor<>()),
-//
-//		class_<CPhysicItem,CGameObject>("inventory_item_class")
-//			.def(								constructor<>()),
-//
-//		class_<CInventoryItem,CPhysicItem>("inventory_item_class")
-//			.def(								constructor<>()),
-//
-//		class_<CGameObject>("game_object_class")
-//			.def(								constructor<>()),
-
-//		class_<DLL_Pure>("dll_pure"),
-
-//		class_<CAttachableItem,DLL_Pure>("attachable_item")
-		class_<CAttachableItem>("attachable_item")
-			.def(								constructor<>())
+			.def("set_nonscript_usable",		&CScriptGameObject::SetNonscriptUsable)
 	];
 }

@@ -96,37 +96,37 @@ void CZombie::reload(LPCSTR section)
 
 	// Load triple death animations
 	CMotionDef *def1, *def2, *def3;
-	def1 = PSkeletonAnimated(Visual())->ID_Cycle_Safe("fake_death_0");
+	def1 = smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("fake_death_0");
 	VERIFY(def1);
 
-	def2 = PSkeletonAnimated(Visual())->ID_Cycle_Safe("fake_death_1");
+	def2 = smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("fake_death_1");
 	VERIFY(def2);
 
-	def3 = PSkeletonAnimated(Visual())->ID_Cycle_Safe("fake_death_2");
+	def3 = smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("fake_death_2");
 	VERIFY(def3);
 
 	anim_triple_death[0].init_external	(def1, def2, def3);
 
 
-	def1 = PSkeletonAnimated(Visual())->ID_Cycle_Safe("fake_death_1_0");
+	def1 = smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("fake_death_1_0");
 	VERIFY(def1);
 
-	def2 = PSkeletonAnimated(Visual())->ID_Cycle_Safe("fake_death_1_1");
+	def2 = smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("fake_death_1_1");
 	VERIFY(def2);
 
-	def3 = PSkeletonAnimated(Visual())->ID_Cycle_Safe("fake_death_1_2");
+	def3 = smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("fake_death_1_2");
 	VERIFY(def3);
 
 	anim_triple_death[1].init_external	(def1, def2, def3);
 
 
-	def1 = PSkeletonAnimated(Visual())->ID_Cycle_Safe("fake_death_2_0");
+	def1 = smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("fake_death_2_0");
 	VERIFY(def1);
 
-	def2 = PSkeletonAnimated(Visual())->ID_Cycle_Safe("fake_death_2_1");
+	def2 = smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("fake_death_2_1");
 	VERIFY(def2);
 
-	def3 = PSkeletonAnimated(Visual())->ID_Cycle_Safe("fake_death_2_2");
+	def3 = smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("fake_death_2_2");
 	VERIFY(def3);
 
 	anim_triple_death[2].init_external	(def1, def2, def3);
@@ -147,8 +147,8 @@ void __stdcall CZombie::BoneCallback(CBoneInstance *B)
 void CZombie::vfAssignBones()
 {
 	// Установка callback на кости
-	bone_spine =	&PKinematics(Visual())->LL_GetBoneInstance(PKinematics(Visual())->LL_BoneID("bip01_spine"));
-	bone_head =		&PKinematics(Visual())->LL_GetBoneInstance(PKinematics(Visual())->LL_BoneID("bip01_head"));
+	bone_spine =	&smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_spine"));
+	bone_head =		&smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_head"));
 	bone_spine->set_callback(BoneCallback,this);
 	bone_head->set_callback(BoneCallback,this);
 

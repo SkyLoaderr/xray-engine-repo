@@ -86,7 +86,7 @@ void CVisualMemoryManager::reload				(LPCSTR section)
 float CVisualMemoryManager::object_visible_distance(const CGameObject *game_object, float &object_distance) const
 {
 	Fvector								eye_position = Fvector().set(0.f,0.f,0.f), temp, eye_direction;
-	Fmatrix								&eye_matrix = PKinematics(m_monster->Visual())->LL_GetTransform(u16(m_stalker->eye_bone));
+	Fmatrix								&eye_matrix = smart_cast<CKinematics*>(m_monster->Visual())->LL_GetTransform(u16(m_stalker->eye_bone));
 
 	eye_matrix.transform_tiny			(temp,eye_position);
 	XFORM().transform_tiny				(eye_position,temp);

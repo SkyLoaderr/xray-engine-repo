@@ -59,9 +59,9 @@ void CAI_Stalker::reinit			()
 	
 	m_tTaskState					= ALife::eTaskStateChooseTask;
 
-	m_r_hand						= PKinematics(Visual())->LL_BoneID("bip01_r_hand");
-	m_l_finger1						= PKinematics(Visual())->LL_BoneID("bip01_l_finger1");
-	m_r_finger2						= PKinematics(Visual())->LL_BoneID("bip01_r_finger2");
+	m_r_hand						= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_r_hand");
+	m_l_finger1						= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_l_finger1");
+	m_r_finger2						= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_r_finger2");
 
 	m_last_best_item_frame			= 0;
 	m_best_item_to_kill				= 0;

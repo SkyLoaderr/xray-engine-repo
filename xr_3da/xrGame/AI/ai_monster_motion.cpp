@@ -343,7 +343,7 @@ void CMotionManager::FX_Play(EHitSide side, float amount)
 		case eSideRight:	p_str = &anim_it->second.fxs.right;	break;
 	}
 	
-	if (p_str && p_str->size()) PSkeletonAnimated(pMonster->Visual())->PlayFX(*(*p_str), amount);
+	if (p_str && p_str->size()) smart_cast<CSkeletonAnimated*>(pMonster->Visual())->PlayFX(*(*p_str), amount);
 
 	fx_time_last_play = pMonster->m_dwCurrentTime;
 }
@@ -627,7 +627,7 @@ void CMotionManager::UpdateAnimCount()
 		u8 count = 0;
 		
 		for (int i=0; ; ++i) {
-			if (0 != PSkeletonAnimated(pMonster->Visual())->ID_Cycle_Safe(strconcat(s_temp, *it->second.target_name,itoa(i,s,10))))  count++;
+			if (0 != smart_cast<CSkeletonAnimated*>(pMonster->Visual())->ID_Cycle_Safe(strconcat(s_temp, *it->second.target_name,itoa(i,s,10))))  count++;
 			else break;
 		}
 
@@ -642,7 +642,7 @@ void CMotionManager::UpdateAnimCount()
 CMotionDef *CMotionManager::get_motion_def(ANIM_ITEM_MAP_IT &it, u32 index)
 {
 	string128 s1,s2;
-	return PSkeletonAnimated(pMonster->Visual())->ID_Cycle_Safe(strconcat(s2,*it->second.target_name,itoa(index,s1,10)));
+	return smart_cast<CSkeletonAnimated*>(pMonster->Visual())->ID_Cycle_Safe(strconcat(s2,*it->second.target_name,itoa(index,s1,10)));
 }
 
 

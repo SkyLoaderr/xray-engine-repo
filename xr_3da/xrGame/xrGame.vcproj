@@ -864,6 +864,9 @@
 					<File
 						RelativePath=".\movement_manager_physic.cpp">
 					</File>
+					<File
+						RelativePath=".\movement_manager_space.h">
+					</File>
 					<Filter
 						Name="LocationSelectors"
 						Filter="">
@@ -2260,6 +2263,9 @@
 							</File>
 							<File
 								RelativePath=".\Ai\script\ai_script_monster.h">
+							</File>
+							<File
+								RelativePath=".\script_monster_space.h">
 							</File>
 						</Filter>
 						<Filter
@@ -6039,6 +6045,9 @@
 							</File>
 							<File
 								RelativePath=".\PDA.h">
+							</File>
+							<File
+								RelativePath=".\pda_space.h">
 							</File>
 							<File
 								RelativePath=".\PdaMsg.h">

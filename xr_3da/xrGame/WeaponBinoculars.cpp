@@ -120,7 +120,7 @@ void CWeaponBinoculars::UpdateCL	()
 	case eShowing:
 	case eHiding:
 	case eReload:
-		PSkeletonAnimated	(m_pHUD->Visual())->Update();
+		smart_cast<CSkeletonAnimated*>	(m_pHUD->Visual())->Update();
 	case eZooming:
 		state_Zooming		(dt);
 		break;

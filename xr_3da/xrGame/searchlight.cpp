@@ -62,9 +62,9 @@ BOOL CProjector::net_Spawn(LPVOID DC)
 	if (!inherited::net_Spawn(DC))
 		return			(FALSE);
 	
-	R_ASSERT				(Visual() && PKinematics(Visual()));
+	R_ASSERT				(Visual() && smart_cast<CKinematics*>(Visual()));
 
-	CKinematics* K			= PKinematics(Visual());
+	CKinematics* K			= smart_cast<CKinematics*>(Visual());
 	CInifile* pUserData		= K->LL_UserData(); 
 	R_ASSERT3				(pUserData,"Empty Projector user data!",slight->get_visual());
 	lanim					= LALib.FindItem(pUserData->r_string("projector_definition","color_animator"));
@@ -88,10 +88,10 @@ BOOL CProjector::net_Spawn(LPVOID DC)
 	TurnOn		();
 	
 	//////////////////////////////////////////////////////////////////////////
-	CBoneInstance& b_x = PKinematics(Visual())->LL_GetBoneInstance(bone_x.id);	
+	CBoneInstance& b_x = smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(bone_x.id);	
 	b_x.set_callback(BoneCallbackX,this);
 
-	CBoneInstance& b_y = PKinematics(Visual())->LL_GetBoneInstance(bone_y.id);	
+	CBoneInstance& b_y = smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(bone_y.id);	
 	b_y.set_callback(BoneCallbackY,this);
 	
 	Fvector dir = Direction();
@@ -113,14 +113,14 @@ void CProjector::TurnOn()
 {
 	light_render->set_active(true);
 	glow_render->set_active (true);
-	PKinematics(Visual())->LL_SetBoneVisible(guid_bone, TRUE, TRUE);
+	smart_cast<CKinematics*>(Visual())->LL_SetBoneVisible(guid_bone, TRUE, TRUE);
 }
 
 void CProjector::TurnOff()
 {
 	light_render->set_active(false);
 	glow_render->set_active (false);
-	PKinematics(Visual())->LL_SetBoneVisible(guid_bone, FALSE, TRUE);
+	smart_cast<CKinematics*>(Visual())->LL_SetBoneVisible(guid_bone, FALSE, TRUE);
 }
 
 void CProjector::UpdateCL	()
@@ -142,7 +142,7 @@ void CProjector::UpdateCL	()
 			glow_render->set_color(fclr);
 		}
 
-		CBoneInstance& BI = PKinematics(Visual())->LL_GetBoneInstance(guid_bone);
+		CBoneInstance& BI = smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(guid_bone);
 		Fmatrix M;
 
 		M.mul(XFORM(),BI.mTransform);

@@ -30,7 +30,7 @@ void CTargetCSCask::OnEvent(NET_Packet& P, u16 type)
 			if(l_pBall) {
 				R_ASSERT		(BE(Local(),l_pBall->Local()));	// remote can't take local
 				l_pBall->H_SetParent(this);
-				CKinematics* l_V = PKinematics(Visual());
+				CKinematics* l_V = smart_cast<CKinematics*>(Visual());
 				m_targets.push_back(l_pBall);
 				char l_num[2]	= { char(0x30+m_targets.size()), 0 };
 				int l_boneID	= l_V->LL_BoneID(l_num);
@@ -67,6 +67,6 @@ void CTargetCSCask::Load	(LPCSTR section)
 {
 	inherited::Load(section);
 
-	CSkeletonAnimated* V	= PSkeletonAnimated(Visual());
+	CSkeletonAnimated* V	= smart_cast<CSkeletonAnimated*>(Visual());
 	if(V)			V->PlayCycle	("open");
 }

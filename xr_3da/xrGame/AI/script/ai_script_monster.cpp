@@ -328,7 +328,7 @@ bool CScriptMonster::bfAssignAnimation(CScriptEntityAction *tpEntityAction)
 		return		(false);
 	if (!xr_strlen(GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay))
 		return		(true);
-	CSkeletonAnimated	&tVisualObject = *(PSkeletonAnimated(Visual()));
+	CSkeletonAnimated	&tVisualObject = *(smart_cast<CSkeletonAnimated*>(Visual()));
 	m_tpNextAnimation	= tVisualObject.ID_Cycle_Safe(*GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay);
 	return			(true);
 }
@@ -341,7 +341,7 @@ const Fmatrix CScriptMonster::GetUpdatedMatrix(ref_str caBoneName, const Fvector
 	l_tMatrix.c		= tPositionOffset;
 
 	if (xr_strlen(caBoneName)) {
-		CBoneInstance	&l_tBoneInstance = PKinematics(Visual())->LL_GetBoneInstance(PKinematics(Visual())->LL_BoneID(caBoneName));
+		CBoneInstance	&l_tBoneInstance = smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(smart_cast<CKinematics*>(Visual())->LL_BoneID(caBoneName));
 		l_tMatrix.mulA	(l_tBoneInstance.mTransform);
 		l_tMatrix.mulA	(XFORM());
 	}
@@ -639,7 +639,7 @@ bool CScriptMonster::bfScriptAnimation()
 //				Msg				("%6d Playing animation : %s",Level().timeServer(),*GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay);
 #endif
 			if (m_tpScriptAnimation != m_tpNextAnimation)
-				PSkeletonAnimated(Visual())->PlayCycle(m_tpScriptAnimation = m_tpNextAnimation,TRUE,ScriptCallBack,this);
+				smart_cast<CSkeletonAnimated*>(Visual())->PlayCycle(m_tpScriptAnimation = m_tpNextAnimation,TRUE,ScriptCallBack,this);
 			return		(true);
 		}
 	else {
