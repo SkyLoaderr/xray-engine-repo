@@ -73,14 +73,24 @@ void CParticlesObject::UpdateSpatial()
 	// spatial	(+ workaround occasional bug inside particle-system)
 	if (_valid(renderable.visual->vis.sphere))
 	{
-		renderable.xform.transform_tiny	(spatial.center,renderable.visual->vis.sphere.P);
-		spatial.radius					= renderable.visual->vis.sphere.R;
+		Fvector	P;	float	R;
+		renderable.xform.transform_tiny	(P,renderable.visual->vis.sphere.P);
+		R								= renderable.visual->vis.sphere.R;
 		if (0==spatial.type)	{
 			// First 'valid' update - register
 			spatial.type			= STYPE_RENDERABLE;
+			spatial.center			= P;
+			spatial.radius			= R;
 			spatial_register		();
 		} else {
-			spatial_move			();
+			BOOL	bMove			= FALSE;
+			if		(!P.similar(spatial.center))		bMove	= TRUE;
+			if		(!fsimilar(R,spatial.radius,0.15f))	bMove	= TRUE;
+			if		(bMove)			{
+				spatial.center			= P;
+				spatial.radius			= R;
+				spatial_move			();
+			}
 		}
 	}
 }
