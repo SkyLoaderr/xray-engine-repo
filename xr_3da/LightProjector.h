@@ -9,7 +9,6 @@
 #include "scenegraph.h"
 
 class ENGINE_API	CObject;
-class ENGINE_API	xrLIGHT;
 
 class ENGINE_API	CLightProjector  : public pureDeviceCreate, public pureDeviceDestroy
 {
@@ -31,12 +30,9 @@ private:
 
 	CRT*					RT;
 	CRT*					RT_temp;
-	Shader*					sh_Texture;
 	Shader*					sh_BlurTR;
 	Shader*					sh_BlurRT;
 	CVertexStream*			vs_Blur;
-	Shader*					sh_World;
-	CVertexStream*			vs_World;
 	Shader*					sh_Screen;
 	CVertexStream*			vs_Screen;
 private:
@@ -44,7 +40,6 @@ public:
 	void					set_object		(CObject*	O);
 	void					add_element		(NODE*		N);
 	void					calculate		();
-	void					render			();
 
 	virtual	void			OnDeviceCreate	();
 	virtual	void			OnDeviceDestroy	();

@@ -11,6 +11,8 @@
 #include "fbasicvisual.h"
 #include "lighttrack.h"
 
+const	int		P_rt_size	= 512;
+/*
 int		psSH_Blur			= 1;
 
 const	float	S_distance	= 48;
@@ -26,6 +28,7 @@ const	int		batch_size	= 128;
 const	float	S_tess		= .5f;
 const	int 	S_ambient	= 64;
 const	int 	S_clip		= 256-24;
+*/
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -43,17 +46,14 @@ CLightProjector::~CLightProjector()
 
 void CLightProjector::OnDeviceCreate	()
 {
-	LPCSTR	RTname		= "$user$shadow";
+	LPCSTR	RTname		= "$user$projector";
 	LPCSTR	RTtemp		= "$user$temp";
 	string128 RTname2;	strconcat(RTname2,RTname,",",RTname);
 	string128 RTtemp2;	strconcat(RTtemp2,RTtemp,",",RTtemp);
 	
 	// 
-	RT			= Device.Shader._CreateRT	(RTname,S_rt_size,S_rt_size);
-	RT_temp		= Device.Shader._CreateRT	(RTtemp,S_rt_size,S_rt_size);
-	sh_Texture	= Device.Shader.Create		("effects\\shadow_texture");
-	sh_World	= Device.Shader.Create		("effects\\shadow_world",	RTname);
-	vs_World	= Device.Streams.Create		(FVF::F_LIT, 4*batch_size*3);
+	RT			= Device.Shader._CreateRT	(RTname,P_rt_size,P_rt_size);
+	RT_temp		= Device.Shader._CreateRT	(RTtemp,P_rt_size,P_rt_size);
 	sh_BlurTR	= Device.Shader.Create		("effects\\blur",			RTtemp2);
 	sh_BlurRT	= Device.Shader.Create		("effects\\blur",			RTname2);
 	vs_Blur		= Device.Streams.Create		(FVF::F_TL2uv, 8);
@@ -71,8 +71,6 @@ void CLightProjector::OnDeviceDestroy	()
 	// 
 	Device.Shader.Delete					(sh_BlurRT	);
 	Device.Shader.Delete					(sh_BlurTR	);
-	Device.Shader.Delete					(sh_World	);
-	Device.Shader.Delete					(sh_Texture	);
 	Device.Shader._DeleteRT					(RT_temp	);
 	Device.Shader._DeleteRT					(RT			);
 }
