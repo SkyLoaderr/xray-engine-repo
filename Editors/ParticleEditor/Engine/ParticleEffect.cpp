@@ -22,7 +22,7 @@ CPEDef::CPEDef()
     m_ActionList		= 0;
     m_MaxParticles		= 0;
 	m_CachedShader		= 0;
-	m_TimeLimit			= 0;
+	m_fTimeLimit		= 0.f;
 }
 CPEDef::~CPEDef()
 {
@@ -55,7 +55,7 @@ void CPEDef::pAnimate(float speed, BOOL random_playback)
 void CPEDef::pTimeLimit(float time_limit)
 {
 	m_Flags.set			(dfTimeLimit,TRUE);
-	m_TimeLimit			= iFloor(time_limit*1000.f);
+	m_fTimeLimit		= time_limit;
 }
 void CPEDef::pFrameInitExecute(ParticleEffect *effect)
 {
@@ -117,8 +117,13 @@ BOOL CPEDef::Load(IReader& F)
     }
 
     if (m_Flags.is(dfTimeLimit)){
-        R_ASSERT	(F.find_chunk(PED_CHUNK_TIMELIMIT));
-        m_TimeLimit	= F.r_u32();
+		if(F.find_chunk(PED_CHUNK_TIMELIMIT)){
+			u32 dd = F.r_u32();
+			m_fTimeLimit= float(dd)/1000.f;
+		} else {
+			R_ASSERT(F.find_chunk(PED_CHUNK_TIMELIMIT2));
+			m_fTimeLimit= F.r_float();
+		}
     }
     
 #ifdef _PARTICLE_EDITOR
@@ -164,8 +169,8 @@ void CPEDef::Save(IWriter& F)
     }
 
     if (m_Flags.is(dfTimeLimit)){
-        F.open_chunk	(PED_CHUNK_TIMELIMIT);
-        F.w_u32			(m_TimeLimit);
+        F.open_chunk	(PED_CHUNK_TIMELIMIT2);
+        F.w_float		(m_fTimeLimit);
         F.close_chunk	();
     }
 #ifdef _PARTICLE_EDITOR
@@ -183,7 +188,7 @@ CParticleEffect::CParticleEffect()
     m_HandleActionList		= pGenActionLists();
     m_RT_Flags.zero			();
     m_Def					= 0;
-    m_ElapsedLimit			= 0;
+    m_fElapsedLimit			= 0.f;
 	m_MemDT					= 0;
 	m_InitialPosition.set	(0,0,0);
 }
@@ -248,9 +253,9 @@ void CParticleEffect::OnFrame(u32 frame_dt)
 		for (;m_MemDT>=uDT_STEP; m_MemDT-=uDT_STEP){
             if (m_Def->m_Flags.is(CPEDef::dfTimeLimit)){ 
 				if (!m_RT_Flags.is(flRT_DefferedStop)){
-                    m_ElapsedLimit 	-= uDT_STEP;
-                    if (m_ElapsedLimit<0){
-                        m_ElapsedLimit 	= m_Def->m_TimeLimit;
+                    m_fElapsedLimit -= fDT_STEP;
+                    if (m_fElapsedLimit<0.f){
+                        m_fElapsedLimit = m_Def->m_fTimeLimit;
                         Stop		(true);
 //                        Msg			("timelimit(%s)",GetDefinition()->m_Name);
 //                        return;
@@ -318,7 +323,7 @@ BOOL CParticleEffect::Compile(CPEDef* def)
         pEndActionList();
         // time limit
 		if (m_Def->m_Flags.is(CPEDef::dfTimeLimit))
-			m_ElapsedLimit 		= m_Def->m_TimeLimit;
+			m_fElapsedLimit 	= m_Def->m_fTimeLimit;
     }
 	if (def)	hShader			= def->m_CachedShader;
 	return TRUE;

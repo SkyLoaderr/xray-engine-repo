@@ -118,7 +118,7 @@ class ENGINE_API CParticleEffect: public IParticleCustom
 protected:
 	CPEDef*				m_Def;
 
-    s32					m_ElapsedLimit;
+    float				m_fElapsedLimit;
 
 	int					m_HandleEffect;
 	int					m_HandleActionList;
@@ -162,7 +162,7 @@ public:
     virtual void		Stop				(BOOL bDefferedStop=TRUE);
     virtual BOOL		IsPlaying			(){return m_RT_Flags.is(flRT_Playing);}
 
-	virtual float		GetTimeLimit		(){VERIFY(m_Def); return m_Def->m_Flags.is(CPEDef::dfTimeLimit)?m_Def->m_TimeLimit:-1.f;}
+	virtual float		GetTimeLimit		(){VERIFY(m_Def); return m_Def->m_Flags.is(CPEDef::dfTimeLimit)?m_Def->m_fTimeLimit:-1.f;}
 
 	virtual LPCSTR		Name				(){VERIFY(m_Def); return m_Def->m_Name;}
 };
@@ -178,6 +178,7 @@ DEFINE_VECTOR			(PS::CPEDef*,PEDVec,PEDIt);
 #define PED_CHUNK_FRAME			0x0006
 #define PED_CHUNK_SPRITE	   	0x0007
 #define PED_CHUNK_TIMELIMIT		0x0008
+#define PED_CHUNK_TIMELIMIT2	0x0009
 #define PED_CHUNK_SOURCETEXT   	0x0020
 
 //---------------------------------------------------------------------------
