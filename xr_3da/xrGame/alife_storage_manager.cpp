@@ -137,7 +137,7 @@ void CALifeStorageManager::save	(NET_Packet &net_packet)
 
 	shared_str					game_name;
 	net_packet.r_stringZ		(game_name);
-	save						(*game_name, false);
+	save						(*game_name);
 }
 
 void CALifeStorageManager::prepare_objects_for_save	()
