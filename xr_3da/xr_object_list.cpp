@@ -126,7 +126,7 @@ void	CObjectList::SLS_Save			(CFS_Base&	fs		)
 	{
 		CObject *O		= objects[i];
 		fs.open_chunk	(i);
-		fs.Wword		(O->ID());
+		fs.Wword		(u16(O->ID()));
 		O->SLS_Save		(fs);
 		fs.close_chunk	();
 	}

@@ -200,7 +200,7 @@ void CApplication::OnEvent(EVENT E, DWORD P1, DWORD P2)
 		LPSTR		Name = LPSTR(P1);
 		R_ASSERT	(0==pCreator);
 		pCreator	= (CCreator*)	NEW_INSTANCE(CLSID_LEVEL);
-		R_ASSERT	(pCreator->net_Server(Name));
+		R_ASSERT	(pCreator->net_Server(Name,FALSE));
 		_FREE		(Name);
 		Engine.mem_Compact	();
 		Msg			("* MEMORY USAGE: %d K",Engine.mem_Usage()/1024);

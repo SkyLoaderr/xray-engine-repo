@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "HUDmanager.h"
 
-void	CLevel::SLS_Save				(LPCSTR name)		// Game Save
+void	CLevel::net_Save				(LPCSTR name)		// Game Save
 {
 	if (0==Server)		{
 		HUD()->outMessage(D3DCOLOR_RGBA(0xff,0,0,0xff),"KERNEL", "Can't save game on pure client");

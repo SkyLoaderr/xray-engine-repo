@@ -29,10 +29,10 @@ void CLevel::OnKeyboardPress(int key)
 		HW.Caps.bShowOverdraw		= !HW.Caps.bShowOverdraw;
 		return;
 	case DIK_F6:
-		SLS_Save					("quick.save");
+		net_Save					("quick.save");
 		return;
 	case DIK_F9:
-		SLS_Load					("quick.save");
+		// SLS_Load					("quick.save");
 		return;
 	}
 
