@@ -126,6 +126,7 @@ void xrLoad(LPCSTR name)
 
 	// Load CFORM
 	{
+		FS.update_path			(N,"$level$","build.cform");
 		IReader*			fs = FS.r_open("$level$","build.cform");
 		
 		R_ASSERT			(fs->find_chunk(0));
@@ -147,7 +148,7 @@ void xrLoad(LPCSTR name)
 	
 	// Load .details
 	{
-		strconcat			(N,name,"level.details");
+		FS.update_path		(N,"$level$","level.details");
 		dtFS				= xr_new<CVirtualFileRW> (N);
 		dtFS->r_chunk		(0,&dtH);
 		R_ASSERT			(dtH.version==DETAIL_VERSION);
