@@ -449,7 +449,7 @@ IC	size_t CurrentTransmission(){return m_current_transmission_num;}
 
 	static void __stdcall	cb_Steer			(CBoneInstance* B);
 	virtual void Hit							(float P,Fvector &dir,CObject *who,s16 element,Fvector p_in_object_space, float impulse,  ALife::EHitType hit_type = ALife::eHitTypeWound);
-	virtual void PHHit							(float P,Fvector &dir,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type/* =ALife::eHitTypeWound */);
+	virtual void PHHit							(float P,Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type/* =ALife::eHitTypeWound */);
 			bool WheelHit						(float P,s16 element,ALife::EHitType hit_type);
 			bool DoorHit						(float P,s16 element,ALife::EHitType hit_type);
 public:

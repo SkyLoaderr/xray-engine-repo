@@ -90,7 +90,7 @@ public:
 		void 							in_NetDestroy					()																													;
 		void 							in_Init							()																													;
 		void 							in_Load							(LPCSTR section)																									;
-		void 							in_Hit							(float P,Fvector &dir, s16 element,Fvector p_in_object_space, float impulse,ALife::EHitType hit_type ,bool is_killing=false);
+		void 							in_Hit							(float P,Fvector &dir, CObject *who, s16 element,Fvector p_in_object_space, float impulse,ALife::EHitType hit_type ,bool is_killing=false);
 		void							in_NetSave						(NET_Packet& P)																										;
 		void							in_ChangeVisual					();
 /////////////////////////////////////////////////////////////////
@@ -100,6 +100,6 @@ virtual							~CCharacterPhysicsSupport				()																													;
 private:
 		void 							CreateSkeleton					(CPhysicsShell* &pShell)																							;
 		void 							CreateSkeleton					();
-		void 							ActivateShell					()																													;
+		void 							ActivateShell					(CObject* who)																										;
 };
 #endif  //CHARACTER_PHYSICS_SUPPORT

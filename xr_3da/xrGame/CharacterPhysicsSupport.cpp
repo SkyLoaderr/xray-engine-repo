@@ -5,6 +5,7 @@
 #include "PhysicsShell.h"
 #include "../skeletonanimated.h"
 #include "Actor.h"
+#include "CustomZone.h"
 const float default_hinge_friction = 5.f;
 CCharacterPhysicsSupport::~CCharacterPhysicsSupport()
 {
@@ -91,7 +92,7 @@ void CCharacterPhysicsSupport::SpawnInitPhysics(CSE_Abstract* e)
 	}
 	else
 	{
-		ActivateShell();
+		ActivateShell(NULL);
 	}
 }
 void CCharacterPhysicsSupport::in_NetDestroy()
@@ -136,7 +137,7 @@ void CCharacterPhysicsSupport::in_shedule_Update(u32 DT)
 	//CPHSkeleton::Update(DT);
 }
 
-void CCharacterPhysicsSupport::in_Hit(float P,Fvector &dir,s16 element,Fvector p_in_object_space, float impulse,ALife::EHitType hit_type ,bool is_killing)
+void CCharacterPhysicsSupport::in_Hit(float P,Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse,ALife::EHitType hit_type ,bool is_killing)
 {
 	is_killing=is_killing||(m_eState==esAlive&&!m_EntityAlife.g_Alive());
 	if(m_EntityAlife.g_Alive()&&is_killing&&hit_type==ALife::eHitTypeExplosion&&P>70.f)
@@ -148,7 +149,7 @@ void CCharacterPhysicsSupport::in_Hit(float P,Fvector &dir,s16 element,Fvector p
 	}
 	if(!m_pPhysicsShell&&is_killing)
 	{
-		ActivateShell();
+		ActivateShell(who);
 		impulse*=(hit_type==ALife::eHitTypeExplosion ? 1.f : skel_fatal_impulse_factor);
 	}
 	if(!(m_pPhysicsShell&&m_pPhysicsShell->bActive))
@@ -226,7 +227,7 @@ void CCharacterPhysicsSupport::in_UpdateCL()
 
 		//Log("mem use %d",Memory.mem_usage());
 
-		ActivateShell();
+		ActivateShell(NULL);
 		//CreateSkeleton();
 		//Log("mem use %d",Memory.mem_usage());
 
@@ -287,7 +288,7 @@ Fvector velocity;
 	b_death_anim_on=false;
 	m_eState=esDead;
 }
-void CCharacterPhysicsSupport::ActivateShell			()
+void CCharacterPhysicsSupport::ActivateShell			(CObject* who)
 {
 	if(m_eType==etActor)
 	{
@@ -309,7 +310,10 @@ void CCharacterPhysicsSupport::ActivateShell			()
 	m_pPhysicsShell->RunSimulation();
 	m_pPhysicsShell->mXFORM.set(mXFORM);
 	m_pPhysicsShell->SetCallbacks(m_pPhysicsShell->GetBonesCallback());
-	velocity.mul(1.25f*m_after_death_velocity_factor);
+	if(!smart_cast<CCustomZone*>(who))
+	{
+		velocity.mul(1.25f*m_after_death_velocity_factor);
+	}
 	m_pPhysicsShell->set_LinearVel(velocity);
 	smart_cast<CKinematics*>(m_EntityAlife.Visual())->CalculateBones	();
 	b_death_anim_on=false;
@@ -325,7 +329,7 @@ void CCharacterPhysicsSupport::in_ChangeVisual()
 	if(m_pPhysicsShell)
 	{
 		xr_delete(m_pPhysicsShell);
-		ActivateShell();
+		ActivateShell(NULL);
 	}
 
 

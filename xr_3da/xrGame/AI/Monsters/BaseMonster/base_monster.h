@@ -99,7 +99,7 @@ public:
 	virtual void			Die								(CObject* who);
 	virtual void			HitSignal						(float amount, Fvector& vLocalDir, CObject* who, s16 element);
 	virtual void			Hit								(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound);
-	virtual	void			PHHit							(float P,Fvector &dir,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound);
+	virtual	void			PHHit							(float P,Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound);
 	virtual void			SelectAnimation					(const Fvector& _view, const Fvector& _move, float speed );
 
 	virtual void			Load							(LPCSTR section);

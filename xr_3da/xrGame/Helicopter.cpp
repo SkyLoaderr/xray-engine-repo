@@ -684,9 +684,9 @@ if(who==this)
 	}
 
 }
-void CHelicopter::PHHit(float P,Fvector &dir,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
+void CHelicopter::PHHit(float P,Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
 {
-	if(!g_Alive())inherited::PHHit(P,dir,element,p_in_object_space,impulse,hit_type);
+	if(!g_Alive())inherited::PHHit(P,dir,who,element,p_in_object_space,impulse,hit_type);
 }
 void CHelicopter::doHunt(CObject* dest)
 {

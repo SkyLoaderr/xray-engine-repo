@@ -1,7 +1,7 @@
 #ifndef PH_WORLD_H
 #define PH_WORLD_H
 
-//#define DRAW_CONTACTS
+#define DRAW_CONTACTS
 
 
 class CPHMesh {

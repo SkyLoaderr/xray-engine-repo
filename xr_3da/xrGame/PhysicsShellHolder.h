@@ -48,7 +48,7 @@ public:
 	virtual void			PHSetMaterial		(u16 m);
 	virtual void			PHSetPushOut		(u32 time = 5000);
 	virtual f32				GetMass				();
-	virtual	void			PHHit				(float P,Fvector &dir,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type=ALife::eHitTypeWound);
+	virtual	void			PHHit				(float P,Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type=ALife::eHitTypeWound);
 	virtual	void			Hit					(float P, Fvector &dir,	CObject* who, 
 		s16 element,Fvector p_in_object_space, 
 		float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound);
