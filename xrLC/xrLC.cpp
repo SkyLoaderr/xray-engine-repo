@@ -6,7 +6,7 @@
 #include "build.h"
 
 #pragma comment(linker,"/STACK:0x800000,0x400000")
-//#pragma comment(linker,"/HEAP:0x40000000,0x10000000")
+//#pragma comment(linker,"/HEAP:0x70000000,0x10000000")
 
 #pragma comment(lib,"comctl32.lib")
 #pragma comment(lib,"d3dx8.lib")
