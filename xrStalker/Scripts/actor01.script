@@ -14,6 +14,12 @@ function artifact_merge(merger)
 	log	("artifact merge in actor01!")
 	printf("black drops num %d",merger:get_black_drops_num())
 	printf("mercury ball num %d",merger:get_mercury_ball_num())
+
+	if merger:get_mercury_ball_num()==2 and 
+	   merger:get_black_drops_num()==1  then
+			merger:destroy_mercury_ball(2)
+			destroy_black_drops_num()(1)
+	end 
 end
 
 
