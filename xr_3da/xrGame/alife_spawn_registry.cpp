@@ -119,7 +119,7 @@ void CALifeSpawnRegistry::save_updates			(IWriter &stream)
 	SPAWN_GRAPH::vertex_iterator	I = m_spawns.vertices().begin();
 	SPAWN_GRAPH::vertex_iterator	E = m_spawns.vertices().end();
 	for ( ; I != E; ++I) {
-		if (!(*I)->edges().empty())
+		if ((*I)->edges().empty())
 			continue;
 		stream.open_chunk			((*I)->vertex_id());
 		(*I)->data()->save_update	(stream);
@@ -132,7 +132,7 @@ void CALifeSpawnRegistry::load_updates			(IReader &stream)
 	SPAWN_GRAPH::vertex_iterator	I = m_spawns.vertices().begin();
 	SPAWN_GRAPH::vertex_iterator	E = m_spawns.vertices().end();
 	for ( ; I != E; ++I) {
-		if (!(*I)->edges().empty())
+		if ((*I)->edges().empty())
 			continue;
 		IReader						*chunk = stream.open_chunk((*I)->vertex_id());
 		(*I)->data()->load_update	(*chunk);
@@ -148,7 +148,7 @@ void CALifeSpawnRegistry::build_spawn_anomalies	()
 	SPAWN_GRAPH::vertex_iterator	I = m_spawns.vertices().begin();
 	SPAWN_GRAPH::vertex_iterator	E = m_spawns.vertices().end();
 	for ( ; I != E; ++I) {
-		CSE_ALifeAnomalousZone				*anomaly = smart_cast<CSE_ALifeAnomalousZone*>((*I)->data());
+		CSE_ALifeAnomalousZone				*anomaly = smart_cast<CSE_ALifeAnomalousZone*>(&(*I)->data()->object());
 		if (anomaly) {
 			ALife::EAnomalousZoneType		type = anomaly->m_tAnomalyType;
 			for (u16 i=0, n = anomaly->m_wItemCount; i<n; ++i) {

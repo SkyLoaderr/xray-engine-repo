@@ -25,6 +25,8 @@
 #include "xrserver.h"
 #include "ai_space.h"
 
+#include "alife_simulator.h"
+
 using namespace ALife;
 
 CALifeSurgeManager::~CALifeSurgeManager	()
@@ -351,6 +353,8 @@ void CALifeSurgeManager::assign_stalker_customers()
 //			}
 			l_tpALifeHumanAbstract->m_tpKnownCustomers.push_back(traders().trader_nearest(l_tpALifeHumanAbstract)->ID);
 			l_tpALifeHumanAbstract->m_caKnownCustomers = 0;
+			OBJECT_TASK_MAP::const_iterator	J = ai().alife().tasks().cross().find(l_tpALifeHumanAbstract->m_tpKnownCustomers.back());
+			R_ASSERT2		(ai().alife().tasks().cross().end() != J,"Can't find a specified customer in the Task registry!\nPossibly, there is no traders at all or there is no anomalous zones.");
 		}
 	}
 }
@@ -433,6 +437,7 @@ void CALifeSurgeManager::spawn_new_spawns			()
 		VERIFY					(spawn);
 //		Msg						("LSS : SURGE : SPAWN : [%s],[%s], level %s",*spawn->s_name,spawn->name_replace(),ai().game_graph().header().level(ai().game_graph().vertex(spawn->m_tGraphID)->level_id()).name());
 		create					(object,spawn,*I);
+		object->on_spawn		();
 	}
 }
 

@@ -182,6 +182,7 @@ CSE_Abstract *CALifeSimulatorBase::create(CSE_ALifeGroupAbstract *tpALifeGroupAb
 
 	register_object				(k,true);
 	k->spawn_supplies			();
+	k->on_spawn					();
 	return						(k);
 }
 
@@ -228,6 +229,8 @@ void CALifeSimulatorBase::create(CSE_ALifeDynamicObject *&i, CSE_ALifeDynamicObj
 	}
 	else
 		i->spawn_supplies		();
+
+	i->on_spawn					();
 }
 
 void CALifeSimulatorBase::create	(CSE_ALifeObject *object)

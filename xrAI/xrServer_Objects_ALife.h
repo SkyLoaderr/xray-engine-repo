@@ -187,8 +187,11 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeDynamicObject,CSE_ALifeObject)
 	ALife::_TIME_ID					m_tTimeID;
 	u64								m_switch_counter;
 	
-									CSE_ALifeDynamicObject(LPCSTR caSection);
-	virtual							~CSE_ALifeDynamicObject();
+									CSE_ALifeDynamicObject	(LPCSTR caSection);
+	virtual							~CSE_ALifeDynamicObject	();
+#ifdef XRGAME_EXPORTS
+	virtual void					on_spawn				();
+#endif
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeDynamicObject)
 #define script_type_list save_type_list(CSE_ALifeDynamicObject)

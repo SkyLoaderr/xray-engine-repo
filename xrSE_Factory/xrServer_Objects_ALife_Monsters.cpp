@@ -249,8 +249,9 @@ void CSE_ALifeTraderAbstract::set_specific_character	(SPECIFIC_CHARACTER_INDEX n
 	}
 
 #ifdef XRGAME_EXPORTS
-	CSE_ALifeCreatureAbstract* creature = smart_cast<CSE_ALifeCreatureAbstract*>(base()); VERIFY(creature);
-	creature->s_team = selected_char.Community().team();
+	CSE_ALifeCreatureAbstract* creature = smart_cast<CSE_ALifeCreatureAbstract*>(base());
+	if (creature)
+		creature->s_team = selected_char.Community().team();
 #endif
 }
 

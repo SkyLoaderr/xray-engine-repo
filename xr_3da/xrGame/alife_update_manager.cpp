@@ -142,7 +142,7 @@ void CALifeUpdateManager::update(bool switch_objects)
 		case eZoneStateSurge : {
 			surge						();
 			header().set_state			(eZoneStateBetweenSurges);
-			save						();
+//			save						();
 			break;
 		}
 		case eZoneStateBetweenSurges : {

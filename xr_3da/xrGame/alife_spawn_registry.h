@@ -61,7 +61,7 @@ public:
 			void							fill_new_spawns				(xr_vector<ALife::_SPAWN_ID> &spawns, ALife::_TIME_ID game_time, xr_vector<ALife::_SPAWN_ID> &objects);
 	IC		const CALifeSpawnHeader			&header						() const;
 	IC		const SPAWN_GRAPH				&spawns						() const;
-	IC		void							assign_artefact_position	(CSE_ALifeAnomalousZone	*anomaly, CSE_ALifeDynamicObject *object);
+	IC		void							assign_artefact_position	(CSE_ALifeAnomalousZone	*anomaly, CSE_ALifeDynamicObject *object) const;
 	IC		const ALife::ITEM_SET_MAP		&artefact_anomaly_map		() const;
 };
 
