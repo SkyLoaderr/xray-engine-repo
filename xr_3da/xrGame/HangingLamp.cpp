@@ -37,11 +37,13 @@ void CHangingLamp::Init()
 void CHangingLamp::RespawnInit()
 {
 	Init();
-	CKinematics* K = smart_cast<CKinematics*>(Visual());
-	K->LL_SetBonesVisible(u64(-1));
-	K->CalculateBones_Invalidate();
-	K->CalculateBones();
-	
+	if(Visual())
+	{
+		CKinematics* K = smart_cast<CKinematics*>(Visual());
+		K->LL_SetBonesVisible(u64(-1));
+		K->CalculateBones_Invalidate();
+		K->CalculateBones();
+	}
 }
 void CHangingLamp::Center	(Fvector& C) const 
 { 
@@ -64,12 +66,12 @@ void CHangingLamp::Load		(LPCSTR section)
 
 void CHangingLamp::net_Destroy()
 {
+	RespawnInit();
+	if(Visual())CPHSkeleton::RespawnInit();
 	inherited::net_Destroy	();
 	::Render->light_destroy	(light_render);
 	::Render->light_destroy	(light_ambient);
 	::Render->glow_destroy	(glow_render);
-	RespawnInit();
-	CPHSkeleton::RespawnInit();
 }
 
 BOOL CHangingLamp::net_Spawn(CSE_Abstract* DC)
