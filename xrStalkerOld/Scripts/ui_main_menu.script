@@ -136,9 +136,9 @@ function main_menu:InitControls()
 
 	-- TEST ---
 	
-	local tab = CUITabControl()
-	tab:Init(0,0,self.main_rect.width, self.main_rect.height);
-	self.main_frame:AttachChild(tab)
+--	local tab = CUITabControl()
+--	tab:Init(0,0,self.main_rect.width, self.main_rect.height);
+--	self.main_frame:AttachChild(tab)
 	
 --	local tabBtn = CUITabButton()
 --	tabBtn:SetAutoDelete(true)
@@ -152,8 +152,8 @@ function main_menu:InitControls()
 	----- CODE -------
 -------- BUTTONS ------------------------------- 
 	--------->> NEW GAME
---	btn = CUI3tButton()	
-	btn = CUITabButton()	
+	btn = CUI3tButton()	
+--	btn = CUITabButton()	
 	btn:SetAutoDelete(true)
 	btn:SetWindowName("btn_new_game")
 	btn:Init("ui\\ui_btn_main_menu", btn_new_rect.x, btn_new_rect.y, btn_new_rect.width, btn_new_rect.height)
@@ -161,13 +161,13 @@ function main_menu:InitControls()
 	btn:SetFont(self.button_font)
 	btn:SetTextAlign(CGameFont.alCenter)
 	btn:SetTextY(self.button_indent)
---	self:Register(btn)
---	self.main_frame:AttachChild(btn)
-	tab:AddItem(btn)
+	self:Register(btn)
+	self.main_frame:AttachChild(btn)
+--	tab:AddItem(btn)
 		
 	--------->> LOAD Game	
---	btn = CUI3tButton()
-	btn = CUITabButton()	
+	btn = CUI3tButton()
+--	btn = CUITabButton()	
 	btn:SetAutoDelete(true)
 	btn:SetWindowName("btn_load")
 	btn:Init("ui\\ui_btn_main_menu", btn_load_rect.x, btn_load_rect.y, btn_load_rect.width, btn_load_rect.height)
@@ -175,14 +175,14 @@ function main_menu:InitControls()
 	btn:SetFont(self.button_font)
 	btn:SetTextAlign(CGameFont.alCenter)
 	btn:SetTextY(self.button_indent)
---	self:Register(btn)
---	self.main_frame:AttachChild(btn)	
-	tab:AddItem(btn)
+	self:Register(btn)
+	self.main_frame:AttachChild(btn)	
+--	tab:AddItem(btn)
 	
 		
 	--------->> MULTIPLAYER
---	btn = CUI3tButton()
-	btn = CUITabButton()	
+	btn = CUI3tButton()
+--	btn = CUITabButton()	
 	btn:SetAutoDelete(true)
 	btn:SetWindowName("btn_multiplayer")
 	btn:Init("ui\\ui_btn_main_menu", btn_multi_rect.x, btn_multi_rect.y, btn_multi_rect.width, btn_multi_rect.height)
@@ -190,9 +190,9 @@ function main_menu:InitControls()
 	btn:SetFont(self.button_font)
 	btn:SetTextAlign(CGameFont.alCenter)
 	btn:SetTextY(self.button_indent)
---	self:Register(btn)
---	self.main_frame:AttachChild(btn)
-	tab:AddItem(btn)
+	self:Register(btn)
+	self.main_frame:AttachChild(btn)
+--	tab:AddItem(btn)
 	
 	
 	--------->> OPTIONS
