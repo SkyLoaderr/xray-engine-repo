@@ -456,6 +456,11 @@ void CUIStatic::SetText(LPCSTR str)
 	Elipsis(r, m_ElipsisPos);
 }
 
+void CUIStatic::SetTextColor(u32 color, E4States state){
+	m_dwTextColor[state] = color;
+	m_bUseTextColor[state] = true;
+}
+
 Irect CUIStatic::GetClipperRect()
 {
 	if (m_bClipper)

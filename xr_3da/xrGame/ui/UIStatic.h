@@ -21,10 +21,12 @@ class CLAItem;
 
 class CUIStatic : public CUIWindow  
 {
+	friend class CUIXmlInit;
 private:
 	typedef CUIWindow inherited;
 	CLAItem*				m_lanim;
 public:
+
 					CUIStatic				();
 	virtual			~CUIStatic				();
 
@@ -141,7 +143,24 @@ public:
 
 	void	SetHeadingPivot					(const Ivector2& p)		{m_UIStaticItem.SetHeadingPivot(p);}
 
+	// will be need by CUI3tButton
+	// Don't change order!!!!!
+	typedef enum {
+		E, // enabled
+		D, // disabled
+		T, // touched
+		H  // highlighted
+	} E4States;
+
+	void SetTextColor(u32 color, E4States state);
 protected:
+	//цвет текста
+	u32 m_dwFontColor;
+	// this array of color will be useful in CUI3tButton class
+	// but we really need to declare it directly there because it must be initialized in CUIXmlInit::InitStatic
+	u32  m_dwTextColor[4];
+	bool m_bUseTextColor[4]; // note: 0 index will be ignored
+
 	bool m_bClipper;
 	//растягивание текстуры в видимую область
 	bool m_bStretchTexture;
@@ -156,9 +175,6 @@ protected:
 	//текст
 	LPSTR m_str;
 	STRING m_sEdit;
-
-	//цвет текста
-	u32 m_dwFontColor;
 
 	/////////////////////////////////////
 	//форматированный вывод текста

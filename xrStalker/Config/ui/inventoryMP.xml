@@ -105,11 +105,18 @@
 			<texture_e>ui\ui_btn_mp_e</texture_e>
 			<texture_d>ui\ui_btn_mp_d</texture_d>
 			<texture_h>ui\ui_btn_mp_h</texture_h>
-			<text font="normal" r="181" g="170" b="148" align="c">ui_inv_pistols</text>
-			<text_h r="255" g="187" b="51"/>
-			<text_t r="181" g="170" b="148"/>
-			<text_d r="181" g="170" b="148"/>
+			<text font="normal" align="c">ui_inv_pistols</text>
+			<text_color>
+				<e r="181" g="170" b="148"/>
+				<d r="181" g="170" b="148"/>
+				<t r="181" g="170" b="148"/>				
+				<h r="255" g="187" b="51"/>
+			</text_color>
 			<sound_t>weapons\generic_close</sound_t>
+			<hint x="15" y="-26" width="29" height="29">
+				<text font="graffiti32Russian" align="c">1</text>
+			</hint>
+						
 		</button>
 		<button x="202" y="0" width="150" height="52" accel="3">
 			<texture_offset x="-18" y="-62"/>
@@ -117,10 +124,13 @@
 			<texture_e>ui\ui_btn_mp_e</texture_e>
 			<texture_d>ui\ui_btn_mp_d</texture_d>
 			<texture_h>ui\ui_btn_mp_h</texture_h>
-			<text font="normal" r="181" g="170" b="148" align="c">ui_inv_primary_weapons</text>
-			<text_h r="255" g="187" b="51"/>
-			<text_t r="181" g="170" b="148"/>
-			<text_d r="181" g="170" b="148"/>
+			<text font="normal" align="c">ui_inv_primary_weapons</text>
+			<text_color>
+				<e r="181" g="170" b="148"/>
+				<d r="181" g="170" b="148"/>
+				<t r="181" g="170" b="148"/>				
+				<h r="255" g="187" b="51"/>
+			</text_color>
 			<sound_t>weapons\generic_close</sound_t>
 		</button>
 		<button x="386" y="0" width="150" height="52" accel="4">
@@ -129,10 +139,13 @@
 			<texture_e>ui\ui_btn_mp_e</texture_e>
 			<texture_d>ui\ui_btn_mp_d</texture_d>
 			<texture_h>ui\ui_btn_mp_h</texture_h>
-			<text font="normal" r="181" g="170" b="148" align="c">ui_inv_granades</text>
-			<text_h r="255" g="187" b="51"/>
-			<text_t r="181" g="170" b="148"/>
-			<text_d r="181" g="170" b="148"/>
+			<text font="normal" align="c">ui_inv_granades</text>
+			<text_color>
+				<e r="181" g="170" b="148"/>
+				<d r="181" g="170" b="148"/>
+				<t r="181" g="170" b="148"/>		
+				<h r="255" g="187" b="51"/>
+			</text_color>
 			<sound_t>weapons\generic_close</sound_t>
 		</button>
 		<button x="570" y="0" width="150" height="52" accel="5">
@@ -141,10 +154,13 @@
 			<texture_e>ui\ui_btn_mp_e</texture_e>
 			<texture_d>ui\ui_btn_mp_d</texture_d>
 			<texture_h>ui\ui_btn_mp_h</texture_h>
-			<text font="normal" r="181" g="170" b="148" align="c">ui_inv_outfits</text>
-			<text_h r="255" g="187" b="51"/>
-			<text_t r="181" g="170" b="148"/>
-			<text_d r="181" g="170" b="148"/>
+			<text font="normal" align="c">ui_inv_outfits</text>
+			<text_color>
+				<e r="181" g="170" b="148"/>
+				<d r="181" g="170" b="148"/>
+				<t r="181" g="170" b="148"/>			
+				<h r="255" g="187" b="51"/>
+			</text_color>
 			<sound_t>weapons\generic_close</sound_t>
 		</button>
 		<button x="753" y="0" width="150" height="52" accel="6">
@@ -153,10 +169,13 @@
 			<texture_e>ui\ui_btn_mp_e</texture_e>
 			<texture_d>ui\ui_btn_mp_d</texture_d>
 			<texture_h>ui\ui_btn_mp_h</texture_h>
-			<text font="normal" r="181" g="170" b="148" align="c">ui_inv_equipment</text>
-			<text_h r="255" g="187" b="51"/>
-			<text_t r="181" g="170" b="148"/>
-			<text_d r="181" g="170" b="148"/>
+			<text font="normal" align="c">ui_inv_equipment</text>
+			<text_color>
+				<e r="181" g="170" b="148"/>
+				<d r="181" g="170" b="148"/>
+				<t r="181" g="170" b="148"/>				
+				<h r="255" g="187" b="51"/>
+			</text_color>
 			<sound_t>weapons\generic_close</sound_t>
 		</button>
 	</tab>
@@ -166,9 +185,12 @@
 			<texture_t>ui\ui_btn_shotgun_t</texture_t>
 			<texture_e>ui\ui_btn_primary_e</texture_e>
 			<texture_h>ui\ui_btn_shotgun_t</texture_h>
-			<text font="normal" r="181" g="170" b="148" align="c">ui_inv_shotguns</text>
-			<text_h r="255" g="187" b="51"/>
-			<text_t r="255" g="187" b="51"/>
+			<text font="normal" align="c">ui_inv_shotguns</text>
+			<text_color>
+				<e r="181" g="170" b="148"/>
+				<h r="255" g="187" b="51"/>
+				<t r="255" g="187" b="51"/>
+			</text_color>			
 			<sound_h>weapons\gen_empty</sound_h>
 			<sound_t>weapons\generic_close</sound_t>			
 	</btn_bag_shotgun>	
@@ -177,9 +199,12 @@
 			<texture_t>ui\ui_btn_assault_t</texture_t>
 			<texture_e>ui\ui_btn_primary_e</texture_e>
 			<texture_h>ui\ui_btn_assault_t</texture_h>
-			<text font="normal" r="181" g="170" b="148" align="c">ui_inv_rifles</text>
-			<text_h r="255" g="187" b="51"/>
-			<text_t r="255" g="187" b="51"/>
+			<text font="normal" align="c">ui_inv_rifles</text>
+			<text_color>
+				<e r="181" g="170" b="148"/>
+				<h r="255" g="187" b="51"/>
+				<t r="255" g="187" b="51"/>
+			</text_color>
 			<sound_h>weapons\gen_empty</sound_h>
 			<sound_t>weapons\generic_close</sound_t>
 	</btn_bag_assault>
@@ -188,9 +213,12 @@
 			<texture_t>ui\ui_btn_sniper_t</texture_t>
 			<texture_e>ui\ui_btn_primary_e</texture_e>
 			<texture_h>ui\ui_btn_sniper_t</texture_h>
-			<text font="normal" r="181" g="170" b="148" align="c">ui_inv_sniper_rifles</text>
-			<text_h r="255" g="187" b="51"/>
-			<text_t r="255" g="187" b="51"/>
+			<text font="normal" align="c">ui_inv_sniper_rifles</text>
+			<text_color>
+				<e r="181" g="170" b="148"/>
+				<h r="255" g="187" b="51"/>
+				<t r="255" g="187" b="51"/>
+			</text_color>
 			<sound_h>weapons\gen_empty</sound_h>
 			<sound_t>weapons\generic_close</sound_t>
 	</btn_bag_sniper>
@@ -199,9 +227,12 @@
 			<texture_t>ui\ui_btn_heavy_t</texture_t>
 			<texture_e>ui\ui_btn_primary_e</texture_e>
 			<texture_h>ui\ui_btn_heavy_t</texture_h>
-			<text font="normal" r="181" g="170" b="148" align="c">ui_inv_heavy_weapons</text>
-			<text_h r="255" g="187" b="51"/>
-			<text_t r="255" g="187" b="51"/>
+			<text font="normal" align="c">ui_inv_heavy_weapons</text>
+			<text_color>
+				<e r="181" g="170" b="148"/>
+				<h r="255" g="187" b="51"/>
+				<t r="255" g="187" b="51"/>
+			</text_color>
 			<sound_h>weapons\gen_empty</sound_h>
 			<sound_t>weapons\generic_close</sound_t>
 	</btn_bag_heavy>
@@ -212,9 +243,12 @@
 		<texture_e>ui\ui_mp_buy_ok_e</texture_e>
 		<texture_t>ui\ui_mp_buy_ok_h</texture_t>
 		<texture_h>ui\ui_mp_buy_ok_h</texture_h>
-		<text font="normal" r="156" g="122" b="46" align="c">Ok</text>
-		<text_h r="255" g="255" b="255"/>
-		<text_t r="255" g="255" b="255"/>
+		<text font="normal" align="c">Ok</text>
+		<text_color>
+			<e r="156" g="122" b="46"/>
+			<h r="255" g="255" b="255"/>
+			<t r="255" g="255" b="255"/>
+		</text_color>		
 	</ok_button>
 
 	<!-- CANCEL DIALOG BUTTON -->
@@ -223,17 +257,23 @@
 		<texture_e>ui\ui_mp_buy_ok_e</texture_e>
 		<texture_t>ui\ui_mp_buy_ok_h</texture_t>
 		<texture_h>ui\ui_mp_buy_ok_h</texture_h>
-		<text font="normal" r="156" g="122" b="46" align="c">Cancel</text>		
-		<text_h r="255" g="255" b="255"/>
-		<text_t r="255" g="255" b="255"/>
+		<text font="normal" align="c">Cancel</text>		
+		<text_color>
+			<e r="156" g="122" b="46"/>
+			<h r="255" g="255" b="255"/>
+			<t r="255" g="255" b="255"/>
+		</text_color>
 	</cancel_button>
 	
 	<autobuy_button x="840" y="557" width="145" height="48">
 		<texture_offset x="-42" y="0"/>
 		<texture>ui\ui_btn_mp_avto</texture>
-		<text font="normal" r="156" g="122" b="46" align="c">Autobuy</text>
-		<text_h r="255" g="255" b="255"/>
-		<text_t r="255" g="255" b="255"/>
+		<text font="normal" align="c">Autobuy</text>
+		<text_color>
+			<e r="156" g="122" b="46"/>
+			<h r="255" g="255" b="255"/>
+			<t r="255" g="255" b="255"/>
+		</text_color>
 		<sound_t>weapons\generic_close</sound_t>
 	</autobuy_button>
 	
@@ -242,10 +282,12 @@
 		<texture_e>ui\ui_btn_mp_avto_e</texture_e>
 		<texture_t>ui\ui_btn_mp_avto_t</texture_t>
 		<texture_h>ui\ui_btn_mp_avto_h</texture_h>
-		<text font="normal" r="156" g="122" b="46" align="c">Clear</text>
-		<text_h r="255" g="255" b="255"/>
-		<text_t r="255" g="255" b="255"/>
+		<text font="normal" align="c">Clear</text>
+		<text_color>
+			<e r="156" g="122" b="46"/>
+			<h r="255" g="255" b="255"/>
+			<t r="255" g="255" b="255"/>
+		</text_color>
 		<sound_t>weapons\generic_close</sound_t>
-	</clear_button>
-	
+	</clear_button>	
 </window>

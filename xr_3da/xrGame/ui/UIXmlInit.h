@@ -56,9 +56,10 @@ static bool InitAnimatedStatic		(CUIXml &xml_doc, const char *path,	int index, C
 static bool InitTextureOffset		(CUIXml &xml_doc, const char *path, int index, CUIStatic* pWnd);
 static bool InitSound				(CUIXml &xml_doc, const char *path, int index, CUI3tButton* pWnd);
 static bool InitMultiTexture		(CUIXml &xml_doc, const char *path, int index, CUI3tButton* pWnd);
-static bool InitMultiText			(CUIXml &xml_doc, const char *path, int index, CUI3tButton* pWnd);
+static bool InitMultiText			(CUIXml &xml_doc, const char *path, int index, CUIStatic* pWnd);
 static bool InitTexture				(CUIXml &xml_doc, const char *path,	int index, CUIStatic *pWnd);
 static bool InitArtefactPanel		(CUIXml &xml_doc, const char *path, int index, CUIArtefactPanel* pWnd);
+static u32	GetARGB					(CUIXml &xml_doc, const char *path, int index);
 
 	// Функция чтения алайна из xml файла и применения его к координатам.
 	// Return true если для данного окна есть выравнивание

@@ -12,6 +12,7 @@
 #include "UI_IB_Static.h"
 
 class CUI3tButton : public CUIButton {
+	using CUIButton::SetTextColor;
 public:
 	CUI3tButton();
 	virtual ~CUI3tButton();
@@ -51,11 +52,13 @@ private:
 	ref_sound		m_sound_t;
 
     // text color
-	bool m_bUseTextColorD;
-	bool m_bUseTextColorH;
-	bool m_bUseTextColorT;
-	u32  m_dwTextColorE;
-	u32  m_dwTextColorD;
-	u32  m_dwTextColorH;
-	u32  m_dwTextColorT;
+//	bool m_bUseTextColorD;
+//	bool m_bUseTextColorH;
+//	bool m_bUseTextColorT;
+//	bool m_bUseTextColor[4];
+//	u32  m_dwTextColor[4];
+//	u32  m_dwTextColorE;
+//	u32  m_dwTextColorD;
+//	u32  m_dwTextColorH;
+//	u32  m_dwTextColorT;
 };
