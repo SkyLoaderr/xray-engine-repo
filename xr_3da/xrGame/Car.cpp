@@ -111,7 +111,7 @@ void	CCar::cam_Update			(float dt)
 	case ectFirst:
 		angle_lerp					(active_camera->yaw,	-yaw_dest+m_vCamDeltaHP.x,		PI_DIV_2,dt);
 		angle_lerp					(active_camera->pitch,	-pitch_dest+m_vCamDeltaHP.y,	PI_DIV_2,dt);
-		P.set						(-0.5f,1.5f,-.15f);
+		P.set						(-0.5f,1.5f,-.05f);
 		clXFORM().transform_tiny	(P);
 		m_vCamDeltaHP.x				= m_vCamDeltaHP.x*(1-PI*dt)+((active_camera->lim_yaw.y+active_camera->lim_yaw.x)/2.f)*PI*dt;
 		break;
