@@ -28,7 +28,7 @@ CInventoryItem::CInventoryItem()
 	m_pInventory = NULL;
 	m_drop = false;
 	m_ruck = true;
-	m_bRuckDefault = false;
+	m_bRuckDefault = true;
 
 	m_bCanTake = true;
 	m_bCanTrade = true;
@@ -102,6 +102,9 @@ void CInventoryItem::Load(LPCSTR section)
 		m_bCanTrade = !!pSettings->r_bool(section, "can_trade");
 	else
 		m_bCanTrade = true;
+
+	if(pSettings->line_exist(section, "default_to_ruck"))
+		m_bRuckDefault = !!pSettings->r_bool(section, "default_to_ruck");
 }
 
 void  CInventoryItem::ChangeCondition(float fDeltaCondition)

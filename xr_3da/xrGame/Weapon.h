@@ -410,6 +410,8 @@ protected:
 	mutable int				iAmmoCurrent;
 	mutable u32				m_dwAmmoCurrentCalcFrame;	//кадр на котором просчитали кол-во патронов
 
+	virtual bool 			IsNecessaryItem	    (CInventoryItem* item);
+
 public:
 	xr_vector<shared_str>	m_ammoTypes;
 

@@ -164,6 +164,7 @@ void CHelicopter::Load(LPCSTR section)
 	m_data.m_startDir.set				(1.0f,0.0f,2.0f);
 	m_smoke_particle					= pSettings->r_string(section,"smoke_particle");
 	m_explode_particle					= pSettings->r_string(section,"explode_particle");
+
 	m_angularSpeedPitch					= pSettings->r_float(section,"path_angular_sp_pitch");
 	m_angularSpeedHeading				= pSettings->r_float(section,"path_angular_sp_heading");
 	m_LinearAcc_fw						= pSettings->r_float(section,"path_linear_acc_fw");

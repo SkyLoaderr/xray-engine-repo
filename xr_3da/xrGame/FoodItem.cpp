@@ -62,6 +62,7 @@ void CFoodItem::Load(LPCSTR section)
 	angle_offset		= pSettings->r_fvector3(section,"angle_offset");
 	m_offset.setHPB			(VPUSH(angle_offset));
 	m_offset.translate_over	(position_offset);
+
 }
 
 void CFoodItem::net_Destroy() 

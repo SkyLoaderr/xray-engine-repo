@@ -1238,3 +1238,9 @@ u32	CWeapon::ef_weapon_type	() const
 	return	(m_ef_weapon_type);
 }
 
+bool CWeapon::IsNecessaryItem	    (CInventoryItem* item)
+{
+	CObject* O = smart_cast<CObject*>(item);
+	VERIFY(O);
+	return (std::find(m_ammoTypes.begin(), m_ammoTypes.end(), O->cNameSect()) != m_ammoTypes.end() );
+}

@@ -157,7 +157,7 @@ bool CInventory::Take(CGameObject *pObj, bool bNotActivate, bool strict_placemen
 		{
 			result = Slot(pIItem, bNotActivate); VERIFY(result);
 		} 
-		else if (!pIItem->RuckDefault() && CanPutInBelt(pIItem))
+		else if ( (!pIItem->RuckDefault() || isBeautifulForActiveSlot(pIItem)) && CanPutInBelt(pIItem))
 		{
 			result = Belt(pIItem); VERIFY(result);
 		}
@@ -1065,6 +1065,13 @@ void  CInventory::AddAvailableItems(TIItemList& items_container, bool for_trade)
 			if(!for_trade || m_slots[OUTFIT_SLOT].m_pIItem->CanTrade())
 				items_container.push_back(m_slots[OUTFIT_SLOT].m_pIItem);
 	}		
+}
+
+bool CInventory::isBeautifulForActiveSlot	(CInventoryItem *pIItem)
+{
+
+	return ( (ActiveItem() != NULL) && ActiveItem()->IsNecessaryItem(pIItem) );
+
 }
 
 #include "WeaponHUD.h"

@@ -29,7 +29,7 @@ CArtefact::CArtefact(void)
 
 	m_bActorPropertiesEnabled = false;
 
-	m_bRuckDefault = true;
+//	m_bRuckDefault = true;
 }
 
 

@@ -139,7 +139,7 @@ public:
 			
 	virtual bool	CanTake				() const {return m_bCanTake;}
 	virtual bool	CanTrade			() const {return m_bCanTrade;}
-			
+	virtual bool 	IsNecessaryItem	    (CInventoryItem* item)   {return false;};
 protected:
 
 	//вещь можно подобрать

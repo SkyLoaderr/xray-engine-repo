@@ -129,25 +129,25 @@ public:
 	TISlotArr		m_slots;
 
 	//возвращает все кроме PDA в слоте и болта
-	void AddAvailableItems(TIItemList& items_container, bool for_trade = false) const;
+	void				AddAvailableItems(TIItemList& items_container, bool for_trade = false) const;
 
-	float GetTakeDist() const			{return m_fTakeDist;}
+	float				GetTakeDist					() const				{return m_fTakeDist;}
 	
-	float GetMaxWeight() const			{return m_fMaxWeight;}
-	void  SetMaxWeight(float weight)	{m_fMaxWeight = weight;}
+	float				GetMaxWeight				() const				{return m_fMaxWeight;}
+	void				SetMaxWeight				(float weight)			{m_fMaxWeight = weight;}
 
-	u32  GetMaxRuck() const				{return m_iMaxRuck;}
-	void SetMaxRuck(u32 max_ruck)		{m_iMaxRuck = max_ruck;}
-	u32	 GetMaxBelt() const				{return m_iMaxBelt;}
+	u32					GetMaxRuck					() const				{return m_iMaxRuck;}
+	void				SetMaxRuck					(u32 max_ruck)			{m_iMaxRuck = max_ruck;}
+	u32					GetMaxBelt					() const				{return m_iMaxBelt;}
 
-	u32 RuckWidth() const;
-	u32 RuckHeight() const;
-	u32 BeltWidth() const;
+	u32					RuckWidth					() const;
+	u32					RuckHeight					() const;
+	u32					BeltWidth					() const;
 	
-	u32 TotalVolume() const;
-	u32 GetMaxVolume() const;
+	u32					TotalVolume					() const;
+	u32					GetMaxVolume				() const;
 
-	CInventoryOwner*	GetOwner() const { return m_pOwner; }
+	CInventoryOwner*	GetOwner					() const				{ return m_pOwner; }
 	
 
 	// Объект на который наведен прицел
@@ -156,9 +156,9 @@ public:
 	friend class CInventoryOwner;
 
 
-	u32	ModifyFrame() const {return m_dwModifyFrame;}
-	void		Items_SetCurrentEntityHud (bool current_entity);
-
+	u32			ModifyFrame							() const				{return m_dwModifyFrame;}
+	void		Items_SetCurrentEntityHud			(bool current_entity);
+	bool		isBeautifulForActiveSlot			(CInventoryItem *pIItem);
 protected:
 	// Активный слот и слот который станет активным после смены
     //значения совпадают в обычном состоянии (нет смены слотов)
