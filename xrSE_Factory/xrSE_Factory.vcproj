@@ -1131,6 +1131,9 @@
 					Name="NetworkStuff"
 					Filter="">
 					<File
+						RelativePath=".\client_id.h">
+					</File>
+					<File
 						RelativePath=".\NET_Compressor.h">
 					</File>
 					<File
