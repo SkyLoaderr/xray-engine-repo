@@ -32,9 +32,8 @@ void	IGame_Level::SoundEvent_Register	( ref_sound* S, float range )
 
 		// Energy and signal
 		float D				= p->position.distance_to((*it)->spatial.center);
-		float A				= p->min_distance/(psSoundRolloff*D);					// (Dmin*V)/(R*D) 
-		clamp				(A,0.f,1.f);
-		float Power			= A*p->volume;
+		if (D>p->max_ai_distance) continue;
+		float Power			= (D/p->max_ai_distance)*p->volume;
 		if (Power>EPS_S)	{
 			_esound_delegate	D	=	{ L, S, Power };
 			snd_Events.push_back	(D)	;
