@@ -397,6 +397,9 @@
 					RelativePath=".\Config\misc\gulag_bar.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\misc\gulag_dark_valley.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\misc\gulag_tasks.ltx">
 				</File>
 				<File
