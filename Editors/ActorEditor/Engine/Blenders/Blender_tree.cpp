@@ -34,6 +34,10 @@ void	CBlender_Tree::Load		(IReader& FS, WORD version )
 	xrPREAD_PROP		(FS,xrPID_BOOL,		oBlend);
 }
 
+#if RENDER==R_R1
+//////////////////////////////////////////////////////////////////////////
+// R1
+//////////////////////////////////////////////////////////////////////////
 void	CBlender_Tree::Compile	(CBlender_Compile& C)
 {
 	CBlender::Compile	(C);
@@ -94,3 +98,21 @@ void	CBlender_Tree::Compile	(CBlender_Compile& C)
 		}
 	}
 }
+#else
+//////////////////////////////////////////////////////////////////////////
+// R2
+//////////////////////////////////////////////////////////////////////////
+void	CBlender_Tree::Compile	(CBlender_Compile& C)
+{
+	CBlender::Compile	(C);
+
+	if (C.bLighting)	
+	{
+	} else {
+		if (oBlend.value)		C.r2_Pass				("r2_deffer_tree_flat","r2_deffer_tree_aref_flat");
+		else					C.r2_Pass				("r2_deffer_tree_flat","r2_deffer_tree_flat");
+		C.r2_Sampler			("s_base",C.L_textures[0]);
+		C.r2_End				();
+	}
+}
+#endif
