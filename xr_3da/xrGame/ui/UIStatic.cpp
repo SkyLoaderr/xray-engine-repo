@@ -18,6 +18,7 @@ CUIStatic:: CUIStatic()
 	m_bAvailableTexture = false;
 
 	m_bClipper = false;
+	m_bStretchTexture = false;
 
 	SetTextAlign(CGameFont::alLeft);
 
@@ -69,10 +70,13 @@ void  CUIStatic::Draw()
 	RECT rect = GetAbsoluteRect();
 	m_UIStaticItem.SetPos(rect.left, rect.top);
 
-	if(m_bClipper)
-		TextureClipper();
+	if(m_bClipper) TextureClipper();
 
-	m_UIStaticItem.Render();
+	if(m_bStretchTexture)
+		//растягиваем текстуру, Clipper в таком случае игнорируется (пока)
+		m_UIStaticItem.Render(rect.left, rect.top, rect.right, rect.bottom);
+	else
+		m_UIStaticItem.Render();
 
 	inherited::Draw();
 }

@@ -77,8 +77,13 @@ public:
 	void SetTextColor(u32 color) {m_dwFontColor = color;} 
 	u32 GetTextColor() {return m_dwFontColor;}
 
+	void SetStretchTexture(bool stretch_texture) {m_bStretchTexture = stretch_texture;}
+	bool GetStretchTexture() {return m_bStretchTexture;}
+
 protected:
-	bool m_bClipper;	
+	bool m_bClipper;
+	//раст€гивание текстуры в видимую область
+	bool m_bStretchTexture;
 	
 	///////////////////////////////////////	
 	//√рафический интрефейс дл€ рисовани€
