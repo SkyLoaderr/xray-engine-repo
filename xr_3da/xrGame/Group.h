@@ -65,6 +65,10 @@ public:
 	SuspiciousGroups			m_tpaSuspiciousGroups;
 	vector<DWORD>				m_tpaPatrolPath;
 
+	// for DDD
+	DWORD						m_dwLastActionTime;
+	DWORD						m_dwLastAction;
+
 	// Constructor
 								CGroup				();
 	

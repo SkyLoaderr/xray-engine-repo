@@ -80,6 +80,10 @@ void CAI_Rat::AttackFire()
 	
 	SelectEnemy(Enemy);
 	
+	ERatStates eState = ERatStates(dwfChooseAction(eCurrentState,eCurrentState,aiRatUnderFire));
+	if (eState != eCurrentState)
+		SWITCH_TO_NEW_STATE(eState);
+
 	CHECK_IF_GO_TO_PREV_STATE(!(Enemy.Enemy) || !Enemy.Enemy->g_Alive())
 		
 	CHECK_IF_GO_TO_NEW_STATE((Enemy.Enemy->Position().distance_to(vPosition) > ATTACK_DISTANCE),aiRatAttackRun)
@@ -117,7 +121,7 @@ void CAI_Rat::AttackRun()
 	
 	SelectEnemy(Enemy);
 
-	ERatStates eState = sfChooseAction();
+	ERatStates eState = ERatStates(dwfChooseAction(eCurrentState,eCurrentState,aiRatUnderFire));
 	if (eState != eCurrentState)
 		SWITCH_TO_NEW_STATE(eState);
 
@@ -276,8 +280,9 @@ void CAI_Rat::UnderFire()
 	SelectEnemy(Enemy);
 	
 	if (Enemy.Enemy) {
-		m_fGoalChangeTime = 0;
-		SWITCH_TO_NEW_STATE(aiRatAttackFire)
+		ERatStates eState = ERatStates(dwfChooseAction(aiRatAttackFire,aiRatAttackFire,aiRatUnderFire));
+		if (eState != eCurrentState)
+			SWITCH_TO_NEW_STATE(eState);
 	}
 
 	if (m_tLastSound.dwTime >= m_dwLastUpdateTime) {

@@ -14,6 +14,8 @@
 #include "..\\..\\CustomMonster.h"
 #include "..\\..\\group.h"
 
+class CBaseFunction;
+
 class CAI_Rat : public CCustomMonster  
 {
 	enum ESoundCcount {
@@ -233,7 +235,8 @@ class CAI_Rat : public CCustomMonster
 		};		
 		
 		void vfComputeNewPosition();
-		ERatStates sfChooseAction();
+		DWORD dwfChooseAction(DWORD a1, DWORD a2, DWORD a3);
+		bool bfGetActionSuccessProbability(EntityVec &Members, objVisible &VisibleEnemies, CBaseFunction &tBaseFunction);
 		/**
 		void SenseSomething();
 		void UnderFire();

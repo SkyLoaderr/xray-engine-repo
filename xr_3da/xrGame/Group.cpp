@@ -21,6 +21,8 @@ CGroup::CGroup()
 	m_bEnemyNoticed = false;
 	m_bLessCoverLook = false;
 	m_tpaPatrolPath.clear();
+	m_dwLastActionTime = 0;
+	m_dwLastAction = DWORD(-1);
 }
 
 const Fvector& CGroup::GetCentroid()

@@ -16,6 +16,7 @@
 #define SPECIAL_SQUAD					6
 #define LIGHT_FITTING					
 #define MIN_PROBABILITY					0.5f
+#define ACTION_REFRESH_RATE				1000
 
 void CAI_Rat::Exec_Action(float dt)
 {
@@ -197,63 +198,90 @@ void CAI_Rat::SelectEnemy(SEnemySelected& S)
 #endif
 }
 
-CAI_Rat::ERatStates CAI_Rat::sfChooseAction()
+bool CAI_Rat::bfGetActionSuccessProbability(EntityVec &Members, objVisible &VisibleEnemies, CBaseFunction &tBaseFunction)
 {
-	objVisible &VisibleEnemies = Level().Teams[g_Team()].KnownEnemys;
-	if (!VisibleEnemies.size())
-		return(tStateStack.top());
-	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-	EntityVec	Members;
-	Members.push_back(Level().Teams[g_Team()].Squads[g_Squad()].Leader);
-	Members.push_back(this);
-	for (int k=0; k<(int)Group.Members.size(); k++)
-		if (Group.Members[k]->g_Alive())
-			Members.push_back(Group.Members[k]);
-
-	int i = 0, j = 0;
-	float	fCurrentMemberProbability = 1.0f;
-	float	fCurrentEnemyProbability	= 1.0f;
-	bool	bMySide = true, bStarted = true;
-	do {
-		Level().m_tpAI_DDD->m_tpCurrentMember = dynamic_cast<CEntityAlive *>(Members[j]);
-		if (!Level().m_tpAI_DDD->m_tpCurrentMember) {
+	int i = 0, j = 0, I = (int)Members.size(), J = (int)VisibleEnemies.size();
+	while ((i < I) && (j < J)) {
+		Level().m_tpAI_DDD->m_tpCurrentMember = dynamic_cast<CEntityAlive *>(Members[i]);
+		if (!(Level().m_tpAI_DDD->m_tpCurrentMember)) {
 			i++;
 			continue;
 		}
 		Level().m_tpAI_DDD->m_tpCurrentEnemy = dynamic_cast<CEntityAlive *>(VisibleEnemies[j].key);
-		if (!Level().m_tpAI_DDD->m_tpCurrentEnemy) {
+		if (!(Level().m_tpAI_DDD->m_tpCurrentEnemy)) {
 			j++;
 			continue;
 		}
-		float fProbability = Level().m_tpAI_DDD->pfAttackSuccessProbability.ffGetValue()/100.f;
-		if (bMySide) {
-			if (fCurrentMemberProbability*fProbability < MIN_PROBABILITY) {
-				if (bStarted)
-					bMySide = false;
-				fCurrentEnemyProbability = 1 - fProbability;
-				i++;
-				continue;
-			}
-			else {
-				fCurrentMemberProbability *= fProbability;
-				j++;
-				continue;
+		float fProbability = tBaseFunction.ffGetValue()/100.f, fCurrentProbability;
+		if (fProbability > MIN_PROBABILITY) {
+			fCurrentProbability = fProbability;
+			for (j++; (i < I) && (j < J); j++) {
+				Level().m_tpAI_DDD->m_tpCurrentEnemy = dynamic_cast<CEntityAlive *>(VisibleEnemies[j].key);
+				if (!(Level().m_tpAI_DDD->m_tpCurrentEnemy)) {
+					j++;
+					continue;
+				}
+				fProbability = tBaseFunction.ffGetValue()/100.f;
+				if (fCurrentProbability*fProbability < MIN_PROBABILITY) {
+					i++;
+					break;
+				}
+				else
+					fCurrentProbability *= fProbability;
 			}
 		}
-		if (!bMySide) {
-			if (fCurrentEnemyProbability*(1.0f - fProbability) > MIN_PROBABILITY) {
-				fCurrentEnemyProbability *= (1.0f - fProbability);
-				i++;
-				continue;
-			}
-			else {
-				bMySide = true;
-				i++;
-				j++;
-				continue;
+		else {
+			fCurrentProbability = 1.0f - fProbability;
+			for (i++; (i < I) && (j < J); i++) {
+				Level().m_tpAI_DDD->m_tpCurrentMember = dynamic_cast<CEntityAlive *>(Members[i]);
+				if (!(Level().m_tpAI_DDD->m_tpCurrentMember)) {
+					i++;
+					continue;
+				}
+				fProbability = 1.0f - tBaseFunction.ffGetValue()/100.f;
+				if (fCurrentProbability*fProbability < MIN_PROBABILITY) {
+					j++;
+					break;
+				}
+				else
+					fCurrentProbability *= fProbability;
 			}
 		}
 	}
-	while ((i < (int)Members.size()) && (j < (int)VisibleEnemies.size()));
-	return(aiRatAttackRun);
+	return(j >= J);
+}
+
+DWORD CAI_Rat::dwfChooseAction(DWORD a1, DWORD a2, DWORD a3)
+{
+	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+	
+	if (Level().timeServer() - Group.m_dwLastActionTime < ACTION_REFRESH_RATE)
+		return(Group.m_dwLastAction);
+
+	objVisible &VisibleEnemies = Level().Teams[g_Team()].KnownEnemys;
+	
+	if (!VisibleEnemies.size())
+		return(tStateStack.top());
+
+	EntityVec	Members;
+	Members.push_back(Level().Teams[g_Team()].Squads[g_Squad()].Leader);
+	Members.push_back(this);
+	for (int k=0; k<(int)Group.Members.size(); k++) {
+		if (Group.Members[k]->g_Alive())
+			Members.push_back(Group.Members[k]);
+	}
+
+	if (bfGetActionSuccessProbability(Members,VisibleEnemies,Level().m_tpAI_DDD->pfAttackSuccessProbability)) {
+		Group.m_dwLastActionTime = Level().timeServer();
+		return(Group.m_dwLastAction = a1);
+	}
+	else
+		if (bfGetActionSuccessProbability(Members,VisibleEnemies,Level().m_tpAI_DDD->pfDefendSuccessProbability)) {
+			Group.m_dwLastActionTime = Level().timeServer();
+			return(Group.m_dwLastAction = a2);
+		}
+		else {
+			Group.m_dwLastActionTime = Level().timeServer();
+			return(Group.m_dwLastAction = a3);
+		}
 }

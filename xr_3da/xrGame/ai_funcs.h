@@ -248,8 +248,8 @@ public:
 		fpaBaseFunctions[43] = &pfEnemyCreatureType;
 		fpaBaseFunctions[44] = &pfEnemyWeaponType;
 
-		pfEnemyStatus.				vfLoadEF("common\\EnemyStatus.dat");
 		pfPersonalStatus.			vfLoadEF("common\\PersonalStatus.dat");
+		pfEnemyStatus.				vfLoadEF("common\\EnemyStatus.dat");
 		pfWeaponEffectiveness.		vfLoadEF("common\\WeaponEffectiveness.dat");
 		pfAttackSuccessProbability.	vfLoadEF("common\\AttackSuccessProbability.dat");
 		pfDefendSuccessProbability.	vfLoadEF("common\\DefendSuccessProbability.dat");
