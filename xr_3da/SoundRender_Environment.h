@@ -4,7 +4,7 @@
 
 #include "soundrender.h"
 
-class CSoundRender_Environment
+class CSoundRender_Environment		: public CSound_environment
 {
 public:
 	u32				version;
