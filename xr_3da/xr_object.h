@@ -85,7 +85,9 @@ public:
 	IC CSector*							Sector			()					{ return pSector;		}
 	IC CLightTrack*						Lights			()					{ return pLights;		}
 	virtual float						Ambient			()					{ return 0.f;		 	}
-
+	virtual BOOL						ShadowGenerate	()					{ return FALSE;			}
+	virtual BOOL						ShadowReceive	()					{ return FALSE;			}
+	
 	virtual float						Radius			() const;
 	virtual Fvector&					Position		() 					{ return vPosition;		}
 	IC Fvector&							Direction		() 					{ return mRotate.k;		}
