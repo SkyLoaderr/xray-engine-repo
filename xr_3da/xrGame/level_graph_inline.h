@@ -10,7 +10,7 @@
 
 IC const CLevelGraph::CHeader &CLevelGraph::header	() const
 {
-	return				(m_header);
+	return				(*m_header);
 }
 
 IC bool CLevelGraph::valid_vertex_id	(u32 id) const

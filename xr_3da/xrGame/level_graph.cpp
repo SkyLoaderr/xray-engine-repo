@@ -33,13 +33,14 @@ CLevelGraph::CLevelGraph					(LPCSTR filename)
 	m_reader					= FS.r_open	(file_name);
 
 	// m_header & data
-	m_reader->r					(&m_header,sizeof(m_header));
+	m_header					= (CHeader*)m_reader->pointer();
 	R_ASSERT					(header().version() == XRAI_CURRENT_VERSION);
-	m_row_length				= iFloor((header().box().max.z - header().box().min.z)/header().cell_size() + EPS_L + 1.5f);
+	m_reader->advance			(sizeof(m_header));
 	m_palette_size				= m_reader->r_u32();
 	m_cover_palette				= (Cover*)m_reader->pointer();
 	m_reader->advance			(m_palette_size*sizeof(Cover));
 	m_nodes						= (CVertex*)m_reader->pointer();
+	m_row_length				= iFloor((header().box().max.z - header().box().min.z)/header().cell_size() + EPS_L + 1.5f);
 	m_ref_counts.assign			(header().vertex_count(),0);
 }
 

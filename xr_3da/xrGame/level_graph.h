@@ -13,9 +13,6 @@
 #else
 	#include "xrLevel.h"
 #endif
-#include "ai_alife_space.h"
-#include <math.h>
-
 
 class CLevelGraph {
 public:
@@ -51,7 +48,7 @@ private:
 	};
 
 	IReader				*m_reader;		// level graph virtual storage
-	CHeader				m_header;		// level graph header
+	CHeader				*m_header;		// level graph header
 	u32					m_palette_size;
 	Cover				*m_cover_palette;
 	CVertex				*m_nodes;		// nodes array
