@@ -57,8 +57,8 @@ IC bool	sort_defl_complex	(CDeflector* D1, CDeflector* D2)
 {
 	switch (sort_defl_analyze(D1,D2))	
 	{
-	case 1:		return false;	// 1st is better 
-	case 2:		return true;	// 2nd is better
+	case 1:		return true;	// 1st is better 
+	case 2:		return false;	// 2nd is better
 	case 0:		return false;	// none is better
 	default:	return false;
 	}
@@ -79,7 +79,7 @@ void CBuild::xrPhase_MergeLM()
 		Layer.push_back		(D);
 	}
 
-	// Merge this layer
+	// Merge this layer (which left unmarged)
 	while (Layer.size()) 
 	{
 		string512	phase_name;
@@ -151,7 +151,7 @@ void CBuild::xrPhase_MergeLM()
 		Status			("Saving...");
 		lmap->Save		();
 	}
-	clMsg	("%d lightmaps builded",g_lightmaps.size());
+	clMsg		("%d lightmaps builded",g_lightmaps.size());
 
 	// Cleanup deflectors
 	Progress	(1.f);
