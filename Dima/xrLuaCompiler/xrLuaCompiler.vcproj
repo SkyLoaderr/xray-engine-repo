@@ -207,57 +207,6 @@
 					</FileConfiguration>
 				</File>
 			</Filter>
-			<Filter
-				Name="game"
-				Filter="">
-				<Filter
-					Name="exports"
-					Filter="">
-				</Filter>
-				<Filter
-					Name="script"
-					Filter="">
-					<File
-						RelativePath=".\ai_script.cpp">
-					</File>
-					<File
-						RelativePath=".\ai_script.h">
-					</File>
-					<File
-						RelativePath=".\ai_script_actions.h">
-					</File>
-					<File
-						RelativePath=".\ai_script_classes.cpp">
-					</File>
-					<File
-						RelativePath=".\ai_script_classes.h">
-					</File>
-					<File
-						RelativePath=".\ai_script_lua_debug.cpp">
-					</File>
-					<File
-						RelativePath=".\ai_script_lua_export.cpp">
-					</File>
-					<File
-						RelativePath=".\ai_script_lua_extension.cpp">
-					</File>
-					<File
-						RelativePath=".\ai_script_lua_extension.h">
-					</File>
-					<File
-						RelativePath=".\ai_script_lua_space.h">
-					</File>
-					<File
-						RelativePath=".\ai_script_processor.cpp">
-					</File>
-					<File
-						RelativePath=".\ai_script_processor.h">
-					</File>
-					<File
-						RelativePath=".\ai_script_space.h">
-					</File>
-				</Filter>
-			</Filter>
 		</Filter>
 	</Files>
 	<Globals>
