@@ -232,6 +232,7 @@ extern int			psNET_ServerUpdate;
 extern int			psNET_ServerPending;
 extern char			psNET_Name[32];
 extern int			psNET_Port;
+extern int			psSH_Blur;
 extern float		ssaLIMIT;
 extern float		ssaDONTSORT;
 extern float		psDetailDensity;
@@ -285,6 +286,7 @@ void CCC_Register()
 	CMD4(CCC_Integer,	"rs_glows_per_frame",	&psGlowsPerFrame,	2,		32	);
 	CMD4(CCC_Integer,	"rs_vb_size",			&rsDVB_Size,		32,		4096);
 	CMD4(CCC_Integer,	"rs_ib_size",			&rsDIB_Size,		32,		4096);
+	CMD4(CCC_Integer,	"rs_sh_blur",			&psSH_Blur,			0,		2	);
 	
 	// Network
 	CMD4(CCC_Integer,	"net_cl_update_rate",	&psNET_ClientUpdate,3,		100	);
