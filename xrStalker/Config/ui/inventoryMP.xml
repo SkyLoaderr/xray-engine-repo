@@ -96,19 +96,19 @@
 	<tab x="0" y="690" width="1014" height="78">
 		<!-- BUTTONS -->
 		<button x="15" y="10" width="150" height="65" accel="2">
-			<texture>ui\ui_mp_icon_small_weapons</texture>
+			<!--texture>ui\ui_mp_icon_small_weapons</texture-->
 		</button>
 		<button x="183" y="10" width="150" height="65" accel="3">
-			<texture>ui\ui_mp_icon_main_guns</texture>
+			<!--texture>ui\ui_mp_icon_main_guns</texture-->
 		</button>
 		<button x="353" y="10" width="150" height="65" accel="4">
-			<texture>ui\ui_mp_icon_grenades</texture>
+			<!--texture>ui\ui_mp_icon_grenades</texture-->
 		</button>
 		<button x="522" y="10" width="150" height="65" accel="5">
-			<texture>ui\ui_mp_icon_suits</texture>
+			<!--texture>ui\ui_mp_icon_suits</texture-->
 		</button>
 		<button x="691" y="10" width="150" height="65" accel="6">
-			<texture>ui\ui_mp_icon_equipment</texture>
+			<!--texture>ui\ui_mp_icon_equipment</texture-->
 		</button>
 	</tab>
 

@@ -273,8 +273,8 @@ struct BoxInfo
 
 void CUIBuyWeaponWnd::InitWeaponBoxes()
 {
-	typedef boost::array<BoxInfo, 4> Boxes;
-	Boxes boxesDefs;
+	//typedef BoxInfo, 4> Boxes;
+	BoxInfo boxesDefs[4];
 
 	// Заполняем массив информации о ящиках
 	boxesDefs[0].texName		= "ui\\ui_inv_box_misc_weapons";
@@ -301,7 +301,7 @@ void CUIBuyWeaponWnd::InitWeaponBoxes()
 	CUIDragDropList *pBoxesList = m_WeaponSubBags.back();
 
 	// Пробегаемся по всем ящичкам и создаем соответсвующие им айтемы
-	for (u32 i = 0; i < boxesDefs.size(); ++i)
+	for (u32 i = 0; i < 4; ++i)
 	{
 		CUIDragDropItemMP &UIDragDropItem = m_vDragDropItems[GetFirstFreeIndex()];
 //		UIDragDropItem.SetShader(GetMPCharIconsShader());
@@ -819,26 +819,28 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			MenuLevelDown();
 			MenuLevelDown();
 		}
-		if (RIFLE_SLOT == *static_cast<int*>(pData) + 1)
+		int PrevActiveIndex = UIWeaponsTabControl.GetPrevActiveIndex() + 1;
+		if (RIFLE_SLOT == PrevActiveIndex)
 		{
 			m_WeaponSubBags.back()->Show(false);
 			UIBagWnd.DetachAll();
 		}
 		else
 		{
-			m_WeaponSubBags[*static_cast<int*>(pData) + 1]->Show(false);
-			UIBagWnd.DetachChild(m_WeaponSubBags[*static_cast<int*>(pData) + 1]);
+			m_WeaponSubBags[PrevActiveIndex]->Show(false);
+			UIBagWnd.DetachChild(m_WeaponSubBags[PrevActiveIndex]);
 		}
 
-		if (RIFLE_SLOT == UIWeaponsTabControl.GetActiveIndex() + 1)
+		int ActiveIndex = UIWeaponsTabControl.GetActiveIndex() + 1;
+		if (RIFLE_SLOT == ActiveIndex)
 		{
 			UIBagWnd.AttachChild(m_WeaponSubBags.back());
 			m_WeaponSubBags.back()->Show(true);
 		}
 		else
 		{
-			m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex() + 1]->Show(true);
-			UIBagWnd.AttachChild(m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex() + 1]);
+			m_WeaponSubBags[ActiveIndex]->Show(true);
+			UIBagWnd.AttachChild(m_WeaponSubBags[ActiveIndex]);
 		}
 			
 		SwitchIndicator(true, UIWeaponsTabControl.GetActiveIndex());
