@@ -206,7 +206,8 @@
 				ProgramDatabaseFile="x:\$(ProjectName).pdb"
 				GenerateMapFile="TRUE"
 				SubSystem="2"
-				LargeAddressAware="0"
+				LargeAddressAware="2"
+				TerminalServerAware="0"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"/>
 			<Tool

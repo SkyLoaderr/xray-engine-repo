@@ -207,7 +207,8 @@
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="x:\$(ProjectName).pdb"
 				GenerateMapFile="TRUE"
-				LargeAddressAware="0"
+				LargeAddressAware="2"
+				TerminalServerAware="0"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				ImportLibrary="x:/xrHemisphere.lib"/>
