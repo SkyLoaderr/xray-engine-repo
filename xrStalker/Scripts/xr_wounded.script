@@ -557,8 +557,6 @@ function set_wounded (npc, enabled, threshold, immediate)
     if threshold == nil then
        if char_ini:section_exist ("wounded") == true and char_ini:line_exist("wounded", "threshold") == true then
           st.threshold = char_ini:r_u32 ("wounded", "threshold") / 100.0
-       else 
-          st.threshold = false   
        end
     else
        st.threshold = threshold
@@ -567,8 +565,6 @@ function set_wounded (npc, enabled, threshold, immediate)
     if immediate == nil then
        if char_ini:section_exist ("wounded") == true and char_ini:line_exist("wounded", "immediate") == true then
           st.immediate = char_ini:r_bool ("wounded", "immediate")
-       else 
-          st.immediate = false 
        end
     else
        st.immediate = immediate
