@@ -664,43 +664,43 @@ void CCustomMonster::OnHUDDraw(CCustomHUD* hud)
 	*/
 }
 
-void CCustomMonster::feel_touch_new				(CObject* O)
-{
-	NET_Packet	P;
+//void CCustomMonster::feel_touch_new				(CObject* O)
+//{
+//	NET_Packet	P;
+//
+//	// Test for weapon
+//	CWeapon* W	= dynamic_cast<CWeapon*>	(O);
+//	if (W)
+//	{
+//		// Search if we have similar type of weapon
+//		/*
+//		CWeapon* T = Weapons->getWeaponByWeapon	(W);
+//		if (T)	
+//		{
+//			// We have similar weapon - just get ammo out of it
+//			u_EventGen	(P,GE_TRANSFER_AMMO,ID());
+//			P.w_u16		(u16(W->ID()));
+//			P.w_u16		(u16(T->ID()));
+//			u_EventSend	(P);
+//			return;
+//		} else {
+//			// We doesn't have similar weapon - pick up it
+//			u_EventGen	(P,GE_OWNERSHIP_TAKE,ID());
+//			P.w_u16		(u16(W->ID()));
+//			u_EventSend	(P);
+//			return;
+//		}
+//		*/
+//		Log("~~~~~~~~~~~~~~~~~~~~~ EVENT");
+//		// We doesn't have similar weapon - pick up it
+//		u_EventGen	(P,GE_OWNERSHIP_TAKE,ID());
+//		P.w_u16		(u16(W->ID()));
+//		u_EventSend	(P);
+//		return;
+//	}
+//
+//	// 
 
-	// Test for weapon
-	CWeapon* W	= dynamic_cast<CWeapon*>	(O);
-	if (W)
-	{
-		// Search if we have similar type of weapon
-		/*
-		CWeapon* T = Weapons->getWeaponByWeapon	(W);
-		if (T)	
-		{
-			// We have similar weapon - just get ammo out of it
-			u_EventGen	(P,GE_TRANSFER_AMMO,ID());
-			P.w_u16		(u16(W->ID()));
-			P.w_u16		(u16(T->ID()));
-			u_EventSend	(P);
-			return;
-		} else {
-			// We doesn't have similar weapon - pick up it
-			u_EventGen	(P,GE_OWNERSHIP_TAKE,ID());
-			P.w_u16		(u16(W->ID()));
-			u_EventSend	(P);
-			return;
-		}
-		*/
-		Log("~~~~~~~~~~~~~~~~~~~~~ EVENT");
-		// We doesn't have similar weapon - pick up it
-		u_EventGen	(P,GE_OWNERSHIP_TAKE,ID());
-		P.w_u16		(u16(W->ID()));
-		u_EventSend	(P);
-		return;
-	}
-
-	// 
-}
 
 void CCustomMonster::Exec_Action(float dt)
 {

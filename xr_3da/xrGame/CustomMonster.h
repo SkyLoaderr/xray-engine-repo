@@ -289,7 +289,7 @@ public:
 public:
 	virtual	float			ffGetFov				()				{return eye_fov;}	
 	virtual	float			ffGetRange				()				{return eye_range;}
-	virtual	void			feel_touch_new			(CObject* O);
+//	virtual	void			feel_touch_new			(CObject* O);
 	virtual BOOL			feel_visible_isRelevant	(CObject* O);
 };
 
