@@ -3,7 +3,7 @@
 
 ISpatial_DB*	SpatialSpace		= NULL;
 
-static	Fvector	c_spatial_offset	[8]	= 
+Fvector	c_spatial_offset	[8]	= 
 {
 	{ -1, -1, -1	},
 	{  1, -1, -1	},
