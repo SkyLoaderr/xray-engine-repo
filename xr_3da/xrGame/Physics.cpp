@@ -979,7 +979,7 @@ dSpaceAdd(m_shell->GetSpace(),m_group);
 else
 dSpaceAdd(m_shell->GetSpace(),*m_geoms.begin());
 
-//dBodyEnable(m_body);
+dBodyEnable(m_body);
 }
 
 void CPHElement::			destroy	(){
@@ -1684,13 +1684,13 @@ first->InterpolateGlobalTransform(&location);
 location.transform_tiny(pos,anchor);
 //location.transform_tiny(axis,axes[0].direction);
 location.transform_dir(axis,axes[0].direction);
+
+
+dJointAttach(m_joint,first->get_body(),second->get_body());
 dJointSetHingeAnchor(m_joint,pos.x,pos.y,pos.z);
 dJointSetHingeAxis(m_joint,axis.x,axis.y,axis.z);
 dJointSetHingeParam(m_joint,dParamLoStop ,axes[0].law);
 dJointSetHingeParam(m_joint,dParamHiStop ,axes[0].high);
-
-dJointAttach(m_joint,first->get_body(),second->get_body());
-
 }
 
 

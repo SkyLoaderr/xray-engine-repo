@@ -304,8 +304,8 @@ IC void set_direction(const Fvector& v){direction.set(v);}
 IC void set_direction(const float x,const float y,const float z){direction.set(x,y,z);}
 IC void set_param(const float e,const float c){erp=e;cfm=c;}	
 SPHAxis(){
-	high=0;
-	law=0;
+	high=M_PI/15.f;
+	law=-M_PI/15.f;;
 	erp=ERP(world_spring,world_damping);
 	cfm=CFM(world_spring,world_damping);
 	direction.set(0,0,1);
