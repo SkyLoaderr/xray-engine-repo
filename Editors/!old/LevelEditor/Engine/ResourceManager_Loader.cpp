@@ -5,7 +5,7 @@
 #include "blenders\blender.h"
 
 // eye-params
-float					rsDT_Range	= 50;
+float					r__dtex_range	= 50;
 class cl_dt_scaler		: public R_constant_setup {
 public:
 	float				scale;
@@ -13,7 +13,7 @@ public:
 	cl_dt_scaler		(float s) : scale(s)	{};
 	virtual void setup	(R_constant* C)
 	{
-		RCache.set_c	(C,scale,scale,scale,1/rsDT_Range);
+		RCache.set_c	(C,scale,scale,scale,1/r__dtex_range);
 	}
 };
 

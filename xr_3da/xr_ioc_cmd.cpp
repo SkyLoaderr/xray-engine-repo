@@ -347,7 +347,7 @@ extern char			psNET_Name[32];
 extern int			psSheduler;
 extern float		psShedulerLoadBalance;
 extern Flags32		psEnvFlags;
-extern float		rsDT_Range;
+extern float		r__dtex_range;
 ENGINE_API int			ps_r__Supersample			= 1;
 void CCC_Register()
 {
@@ -383,11 +383,10 @@ void CCC_Register()
 	CMD3(CCC_Mask,		"rs_occlusion",			&psDeviceFlags,		rsOcclusion);
 
 	CMD3(CCC_Mask,		"rs_detail",			&psDeviceFlags,		rsDetails	);
-	CMD4(CCC_Float,		"rs_dt_range",			&rsDT_Range,		5,		50	);
+	CMD4(CCC_Float,		"r__dtex_range",		&r__dtex_range,		5,		75	);
 #endif
 
 	// Render device states
-
 	CMD4(CCC_Integer,	"r__supersample",		&ps_r__Supersample,			1,		4		);
 
 	CMD3(CCC_Mask,		"rs_constant_fps",		&psDeviceFlags,		rsConstantFPS);
