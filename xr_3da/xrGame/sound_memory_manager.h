@@ -12,23 +12,28 @@
 #include "memory_space_impl.h"
 #include "entity_alive.h"
 
+class CCustomMonster;
+
 class CSoundMemoryManager : public Feel::Sound {
 private:
 	// sound objects
-	xr_vector<MemorySpace::CSoundObject>	*m_sounds;
-	xr_map<ESoundTypes,u32>	m_priorities;
-	u32						m_max_sound_count;
+	xr_vector<MemorySpace::CSoundObject>		*m_sounds;
+	xr_map<ESoundTypes,u32>						m_priorities;
+	u32											m_max_sound_count;
 	
 	// sound threshold
-	u32						m_last_sound_time;
-	u32						m_sound_decrease_quant;
-	float					m_decrease_factor;
-	float					m_min_sound_threshold;
-	float					m_sound_threshold;
-	float					m_self_sound_factor;
+	u32											m_last_sound_time;
+	u32											m_sound_decrease_quant;
+	float										m_decrease_factor;
+	float										m_min_sound_threshold;
+	float										m_sound_threshold;
+	float										m_self_sound_factor;
 
 	// selected sound
-	const MemorySpace::CSoundObject		*m_selected_sound;
+	const MemorySpace::CSoundObject				*m_selected_sound;
+
+	// to minimize dynamic_casts
+	CCustomMonster								*m_object;
 
 private:
 	IC		void	update_sound_threshold		();

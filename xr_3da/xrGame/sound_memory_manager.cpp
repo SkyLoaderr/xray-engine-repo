@@ -8,10 +8,7 @@
 
 #include "stdafx.h"
 #include "sound_memory_manager.h"
-#include "hit_memory_manager.h"
-#include "visual_memory_manager.h"
-#include "memory_manager.h"
-#include "ai/script/ai_script_monster.h"
+#include "custommonster.h"
 
 //#define SAVE_OWN_SOUNDS
 //#define SAVE_OWN_ITEM_SOUNDS
@@ -36,6 +33,8 @@ void CSoundMemoryManager::Init					()
 
 void CSoundMemoryManager::Load					(LPCSTR section)
 {
+	m_object				= dynamic_cast<CCustomMonster*>(this);
+	VERIFY					(m_object);
 	if (pSettings->line_exist(section,"DynamicSoundsCount"))
 		m_max_sound_count	= pSettings->r_s32(section,"DynamicSoundsCount");
 }
@@ -68,20 +67,19 @@ void CSoundMemoryManager::feel_sound_new(CObject *object, int sound_type, const 
 	if (!m_sounds)
 		return;
 
-	CObject					*self = dynamic_cast<CObject*>(this);
+	CObject					*self = m_object;
 	VERIFY					(self);
 #ifndef SILENCE
 	Msg						("%s (%d) - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",*self->cName(),Level().timeServer(),sound_type,object ? *object->cName() : "world",Level().timeServer(),position.x,position.y,position.z,sound_power);
 #endif
 
-	CScriptMonster			*script_monster = dynamic_cast<CScriptMonster*>(self);
-	if (script_monster)
-		script_monster->sound_callback(object,sound_type,position,sound_power);
+	CScriptMonster			*script_monster = m_object;
+	script_monster->sound_callback(object,sound_type,position,sound_power);
 		
 	update_sound_threshold	();
 
-	CEntityAlive			*entity_alive = dynamic_cast<CEntityAlive*>(this);
-	if (entity_alive && !entity_alive->g_Alive())
+	CEntityAlive			*entity_alive = m_object;
+	if (!entity_alive->g_Alive())
 		return;
 	
 	sound_power				*= 1;//ffGetStartVolume(ESoundTypes(eType));
@@ -89,9 +87,9 @@ void CSoundMemoryManager::feel_sound_new(CObject *object, int sound_type, const 
 	if ((sound_type & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING) {
 		// this is fake!
 		sound_power			= 1.f;
-		CHitMemoryManager	*hit_memory_manager = dynamic_cast<CHitMemoryManager*>(this);
+		CHitMemoryManager	*hit_memory_manager = m_object;
 		CEntityAlive		*_entity_alive = dynamic_cast<CEntityAlive*>(object);
-		if (_entity_alive && hit_memory_manager && (self->ID() != _entity_alive->ID()) && (_entity_alive->g_Team() != entity_alive->g_Team()))
+		if (_entity_alive && (self->ID() != _entity_alive->ID()) && (_entity_alive->g_Team() != entity_alive->g_Team()))
 			hit_memory_manager->add_hit_object(_entity_alive);
 	}
 	
@@ -104,31 +102,28 @@ void CSoundMemoryManager::feel_sound_new(CObject *object, int sound_type, const 
 
 void CSoundMemoryManager::add_sound_object(const CObject *object, int sound_type, const Fvector &position, float sound_power)
 {
-	CObject					*self_object = dynamic_cast<CObject*>(this);
-	VERIFY					(self_object);
-
 #ifdef SAVE_OWN_SOUNDS
 	// we do not want to save our own sounds
-	if (object && (self_object->ID() == object->ID()))
+	if (object && (m_object->ID() == object->ID()))
 		return;
 #endif
 
 #ifdef SAVE_OWN_ITEM_SOUNDS
 	// we do not want to save the sounds which was from the items we own
-	if (object && object->H_Parent() && (object->H_Parent()->ID() == self_object->ID()))
+	if (object && object->H_Parent() && (object->H_Parent()->ID() == m_object->ID()))
 		return;
 #endif
 
 #ifdef SAVE_NON_ALIVE_OBJECT_SOUNDS
 	// we do not want to save sounds from the non-alive objects (?!)
-	CMemoryManager	*memory_manager = dynamic_cast<CMemoryManager*>(this);
-	if (object && memory_manager && !memory_manager->enemy() && !dynamic_cast<const CEntityAlive*>(object))
+	CMemoryManager	*memory_manager = m_object;
+	if (object && !memory_manager->enemy() && !dynamic_cast<const CEntityAlive*>(object))
 		return;
 #endif
 
 #ifdef SAVE_FRIEND_ITEM_SOUNDS
 	// we do not want to save sounds from the teammates items
-	CEntityAlive	*me				= dynamic_cast<CEntityAlive*>(this);
+	CEntityAlive	*me				= m_object;
 	if (object && object->H_Parent() && (me->tfGetRelationType(dynamic_cast<const CEntityAlive*>(object->H_Parent())) == ALife::eRelationTypeFriend))
 		return;
 #endif
@@ -142,8 +137,8 @@ void CSoundMemoryManager::add_sound_object(const CObject *object, int sound_type
 
 #ifdef SAVE_VISIBLE_OBJECT_SOUNDS
 	// we do not save sounds from the objects we see (?!)
-	CVisualMemoryManager			*visual_memory_manager = dynamic_cast<CVisualMemoryManager*>(this);
-	if (visual_memory_manager && visual_memory_manager->visible_now(entity_alive))
+	CVisualMemoryManager			*visual_memory_manager = m_object;
+	if (visual_memory_manager->visible_now(entity_alive))
 		return;
 #endif
 
@@ -155,7 +150,7 @@ void CSoundMemoryManager::add_sound_object(const CObject *object, int sound_type
 	if (!game_object)
 		return;
 
-	const CGameObject		*self = dynamic_cast<const CGameObject*>(this);
+	const CGameObject		*self = m_object;
 
 	xr_vector<CSoundObject>::iterator	J = std::find(m_sounds->begin(),m_sounds->end(),object_id(object));
 	if (m_sounds->end() == J) {
