@@ -137,6 +137,7 @@ void CRender::OnDeviceCreate	()
 	level_Load					();
 
 	rmNormal					();
+	frame						= 0;
 }
 
 void CRender::OnDeviceDestroy	()

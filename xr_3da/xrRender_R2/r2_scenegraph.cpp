@@ -38,63 +38,64 @@ void CRender::InsertSG_Dynamic	(IVisual *pVisual, Fvector& Center)
 		N->val.Matrix			= *val_pTransform;
 		N->val.vCenter.set		(Center);
 	} else {
+		/*
 		SceneGraph::mapMatrix_Node* N		= mapMatrix.insert		(sh		);
 		SceneGraph::mapMatrixItem::TNode* C	= N->val.insertInAnyWay	(distSQ	);
 		C->val.pVisual			= pVisual;
 		C->val.Matrix			= *val_pTransform;
 		C->val.vCenter.set		(Center);
+		*/
 	}
 }
 
 void CRender::InsertSG_Static	(IVisual *pVisual)
 {
-	if (pVisual->vis.frame != Device.dwFrame) 
-	{
-		pVisual->vis.frame = Device.dwFrame;
+	if (pVisual->vis.frame == Device.dwFrame)	return;
 
-		float distSQ;
-		float SSA    = CalcSSA		(distSQ,pVisual->vis.sphere.P,pVisual);
-		if (SSA<=r_ssaDISCARD)		return;
+	pVisual->vis.frame = Device.dwFrame;
 
-		// Select List and add to it
-		ShaderElement*		sh		= pVisual->hShader->lod0;
-		if (sh->Flags.bStrictB2F) {
-			SceneGraph::mapSorted_Node* N		= mapSorted.insertInAnyWay(distSQ);
-			N->val.pVisual			= pVisual;
-			N->val.Matrix			= Fidentity;
-			N->val.vCenter.set		(pVisual->vis.sphere.P);
-		} else {
-			SPass&									pass	= *sh->Passes.front();
-			SceneGraph::mapNormal_T&				map		= mapNormal;		//	[sh->Flags.iPriority];
-			SceneGraph::mapNormalVS::TNode*			Nvs		= map.insert		(pass.vs);
-			SceneGraph::mapNormalPS::TNode*			Nps		= Nvs->val.insert	(pass.ps);
-			SceneGraph::mapNormalCS::TNode*			Ncs		= Nps->val.insert	(pass.constants);
-			SceneGraph::mapNormalStates::TNode*		Nstate	= Ncs->val.insert	(pass.state);
-			SceneGraph::mapNormalTextures::TNode*	Ntex	= Nstate->val.insert(pass.T);
-			SceneGraph::mapNormalVB::TNode*			Nvb		= Ntex->val.insert	(pVisual->hGeom->vb);
-			SceneGraph::mapNormalItems&				item	= Nvb->val;
+	float distSQ;
+	float SSA    = CalcSSA		(distSQ,pVisual->vis.sphere.P,pVisual);
+	if (SSA<=r_ssaDISCARD)		return;
 
-			// Need to sort for HZB efficient use
-			if (SSA>Nvb->val.ssa) {
-				Nvb->val.ssa = SSA;
-				if (SSA>Ntex->val.ssa) {
-					Ntex->val.ssa = SSA;
-					if (SSA>Nstate->val.ssa) {
-						Nstate->val.ssa = SSA;
-						if (SSA>Ncs->val.ssa)	{
-							Ncs->val.ssa = SSA;
-							if (SSA>Nps->val.ssa) {
-								Nps->val.ssa = SSA;
-								if (SSA>Nvs->val.ssa)	Nvs->val.ssa = SSA; 
-							}
+	// Select List and add to it
+	ShaderElement*		sh		= pVisual->hShader->lod0;
+	if (sh->Flags.bStrictB2F) {
+		SceneGraph::mapSorted_Node* N		= mapSorted.insertInAnyWay(distSQ);
+		N->val.pVisual			= pVisual;
+		N->val.Matrix			= Fidentity;
+		N->val.vCenter.set		(pVisual->vis.sphere.P);
+	} else {
+		SPass&									pass	= *sh->Passes.front();
+		SceneGraph::mapNormal_T&				map		= mapNormal;		//	[sh->Flags.iPriority];
+		SceneGraph::mapNormalVS::TNode*			Nvs		= map.insert		(pass.vs);
+		SceneGraph::mapNormalPS::TNode*			Nps		= Nvs->val.insert	(pass.ps);
+		SceneGraph::mapNormalCS::TNode*			Ncs		= Nps->val.insert	(pass.constants);
+		SceneGraph::mapNormalStates::TNode*		Nstate	= Ncs->val.insert	(pass.state);
+		SceneGraph::mapNormalTextures::TNode*	Ntex	= Nstate->val.insert(pass.T);
+		SceneGraph::mapNormalVB::TNode*			Nvb		= Ntex->val.insert	(pVisual->hGeom->vb);
+		SceneGraph::mapNormalItems&				item	= Nvb->val;
+
+		// Need to sort for HZB efficient use
+		if (SSA>Nvb->val.ssa) {
+			Nvb->val.ssa = SSA;
+			if (SSA>Ntex->val.ssa) {
+				Ntex->val.ssa = SSA;
+				if (SSA>Nstate->val.ssa) {
+					Nstate->val.ssa = SSA;
+					if (SSA>Ncs->val.ssa)	{
+						Ncs->val.ssa = SSA;
+						if (SSA>Nps->val.ssa) {
+							Nps->val.ssa = SSA;
+							if (SSA>Nvs->val.ssa)	Nvs->val.ssa = SSA; 
 						}
 					}
 				}
 			}
-
-			if (SSA<r_ssaDONTSORT)		item.unsorted.push_back		(pVisual);
-			else						item.sorted.insertInAnyWay	(distSQ,pVisual);
 		}
+
+		if (SSA<r_ssaDONTSORT)		item.unsorted.push_back		(pVisual);
+		else						item.sorted.insertInAnyWay	(distSQ,pVisual);
 	}
 }
 
