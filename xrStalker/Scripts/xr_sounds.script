@@ -26,7 +26,15 @@ function play_sound (obj, delay, theme, sub_theme, phrase_set, sub_phrase)
     if obj == nil or theme == nil then return end
     printf ("Theme %s", theme)
     if sub_theme == nil or table.getn (themes[theme]) < sub_theme then
-       sub_theme = math.random (1, table.getn (themes[theme]))
+       local n1 = table.getn (themes[theme])
+       if n1 == 0 then
+          printf ("No subthemes in %s theme", theme)
+          return
+       elseif n1 == 1 then
+              sub_theme = 1
+       else
+          sub_theme = math.random (1, table.getn (themes[theme]))
+       end   
     end
     printf ("Sub_theme %d", sub_theme)
     if phrase_set == nil or table.getn (themes[theme][sub_theme]) < (phrase_set - 1) then
@@ -59,7 +67,15 @@ function play_sound_rnd (obj, min_delay, max_delay, theme, sub_theme, phrase_set
     if obj == nil or theme == nil then return end
     printf ("Theme %s", theme)
     if sub_theme == nil or table.getn (themes[theme]) < sub_theme then
-       sub_theme = math.random (1, table.getn (themes[theme]))
+       local n1 = table.getn (themes[theme])
+       if n1 == 0 then
+          printf ("No subthemes in %s theme", theme)
+          return
+       elseif n1 == 1 then
+              sub_theme = 1
+       else
+          sub_theme = math.random (1, table.getn (themes[theme]))
+       end   
     end
     printf ("Sub_theme %d", sub_theme)
     if phrase_set == nil or table.getn (themes[theme][sub_theme]) < (phrase_set - 1) then
