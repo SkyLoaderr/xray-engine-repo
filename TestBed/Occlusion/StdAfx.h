@@ -17,8 +17,9 @@
 #include <math.h>
 #include <windows.h>
 
-#define  ENGINE_API 
-#define  IC __forceinline
+#define ENGINE_API 
+#define IC __forceinline
+#define	NO_XR_COLOR
 #include "vector.h"
 // TODO: reference additional headers your program requires here
 
