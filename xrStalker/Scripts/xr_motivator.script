@@ -298,14 +298,16 @@ end
 function checkStorage(npc)
     local count = 0
     for k,v in xr_motivator.storage[npc:id()] do
-        if k == "sleeper" or
-           k == "follower" or
-           k == "patrol" or
-           k == "guard" or
-           k == "bodyguard" or
-           k == "commander" or
-     k == "ambush" or
-     k == "bodyguard"
+        if	k == "sleeper" or
+			k == "follower" or
+			k == "patrol" or
+			k == "guard" or
+			k == "bodyguard" or
+			k == "commander" or
+			k == "ambush" or
+			k == "bodyguard" or
+			k == "sniper" or
+			k == "kamp"
         then
             if v.enabled == true then
                 count = count + 1
@@ -315,14 +317,16 @@ function checkStorage(npc)
     if count > 1 then
         printf("ERROR: there is too many active script")
         for k,v in xr_motivator.storage[npc:id()] do
-            if k == "sleeper" or
-               k == "follower" or
-               k == "patrol" or
-               k == "guard" or
-               k == "bodyguard" or
-               k == "commander" or
-         k == "ambush" or
-         k == "bodyguard"
+            if	k == "sleeper" or
+				k == "follower" or
+				k == "patrol" or
+				k == "guard" or
+				k == "bodyguard" or
+				k == "commander" or
+				k == "ambush" or
+				k == "bodyguard" or
+				k == "sniper" or
+				k == "kamp"
             then
                 if v.enabled == true then
                     printf("ERROR: %s", k)
