@@ -727,6 +727,8 @@ void CSE_ALifeItemExplosive::FillProps			(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeItemBolt::CSE_ALifeItemBolt		(LPCSTR caSection) : CSE_ALifeItem(caSection)
 {
+	m_flags.set					(flUseSwitches,FALSE);
+	m_flags.set					(flSwitchOffline,FALSE);
 }
 
 CSE_ALifeItemBolt::~CSE_ALifeItemBolt		()
@@ -757,7 +759,10 @@ bool CSE_ALifeItemBolt::can_save			() const
 {
 	return						(false);//!attached());
 }
-
+bool CSE_ALifeItemBolt::used_ai_locations		() const
+{
+	return false;
+}
 void CSE_ALifeItemBolt::FillProps			(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProps			(pref,	 values);
