@@ -197,33 +197,51 @@ struct SFindPredicate
 void CPHActorCharacter::InitContact(dContact* c,bool &do_collide,SGameMtl * material_1,SGameMtl *material_2 )
 {
 
-	
-	bool b1;
-	SFindPredicate fp(c,&b1);
-	RESTRICTOR_I r=std::find_if(begin(m_restrictors),end(m_restrictors),fp);
-	bool b_restrictor=(r!=end(m_restrictors));
-	if(b_restrictor)
+	if(GameID()==GAME_SINGLE)
 	{
-		b_side_contact=true;
-		MulSprDmp(c->surface.soft_cfm,c->surface.soft_erp,def_spring_rate,def_dumping_rate);
-		c->surface.mu		=0.00f;
-	}
 	
-	inherited::InitContact(c,do_collide,material_1,material_2);
-	if(b_restrictor&&
-		do_collide&&
-		!(b1 ? static_cast<CPHCharacter*>(retrieveGeomUserData(c->geom.g2)->ph_object)->ActorMovable():static_cast<CPHCharacter*>(retrieveGeomUserData(c->geom.g1)->ph_object)->ActorMovable())
-		)
-	{
-		dJointID contact_joint	= dJointCreateContact(0, ContactGroup, c);
-		Enable();
-		CPHObject::Island().DActiveIsland()->ConnectJoint(contact_joint);
-		if(b1)
-			dJointAttach			(contact_joint, dGeomGetBody(c->geom.g1), 0);
-		else
-			dJointAttach			(contact_joint, 0, dGeomGetBody(c->geom.g2));
-		do_collide=false;
-		m_friction_factor*=0.1f;
+		bool b1;
+		SFindPredicate fp(c,&b1);
+		RESTRICTOR_I r=std::find_if(begin(m_restrictors),end(m_restrictors),fp);
+		bool b_restrictor=(r!=end(m_restrictors));
+		if(b_restrictor)
+		{
+			b_side_contact=true;
+			MulSprDmp(c->surface.soft_cfm,c->surface.soft_erp,def_spring_rate,def_dumping_rate);
+			c->surface.mu		=0.00f;
+		}
 		
+		inherited::InitContact(c,do_collide,material_1,material_2);
+		if(b_restrictor&&
+			do_collide&&
+			!(b1 ? static_cast<CPHCharacter*>(retrieveGeomUserData(c->geom.g2)->ph_object)->ActorMovable():static_cast<CPHCharacter*>(retrieveGeomUserData(c->geom.g1)->ph_object)->ActorMovable())
+			)
+		{
+			dJointID contact_joint	= dJointCreateContact(0, ContactGroup, c);
+			Enable();
+			CPHObject::Island().DActiveIsland()->ConnectJoint(contact_joint);
+			if(b1)
+				dJointAttach			(contact_joint, dGeomGetBody(c->geom.g1), 0);
+			else
+				dJointAttach			(contact_joint, 0, dGeomGetBody(c->geom.g2));
+			do_collide=false;
+			m_friction_factor*=0.1f;
+			
+		}
+	}
+	else
+	{
+		inherited::InitContact(c,do_collide,material_1,material_2);
+		dxGeomUserData* D1=retrieveGeomUserData(c->geom.g1);
+		dxGeomUserData* D2=retrieveGeomUserData(c->geom.g2);
+		if(D1&&D2)
+		{
+			CActor* A1=smart_cast<CActor*>(D1->ph_ref_object);
+			CActor* A2=smart_cast<CActor*>(D2->ph_ref_object);
+			if(A1&&A2)
+			{
+				do_collide=(A1->PPhysicsShell()==0)==(A2->PPhysicsShell()==0);
+			}
+		}
 	}
 }
