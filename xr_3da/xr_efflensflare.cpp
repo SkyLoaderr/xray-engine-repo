@@ -334,8 +334,8 @@ void CLensFlare::Update( Fvector& sun_dir, Fcolor& color )
 	
 	// color
 	Fcolor		a; a.set(color); a.a = 0;
-	LightColor.set(a.get_maximized());
-	LightColor.a = 0;
+	LightColor.set	(a.get());
+	LightColor.a	= 0;
 	
 	bInit = true;
 }
