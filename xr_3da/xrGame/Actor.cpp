@@ -416,6 +416,8 @@ void CActor::Update	(DWORD DT)
 		if (sndZoneDetector.feedback)	sndZoneDetector.feedback->Stop	();
 	}
 */
+	cam_shift		= 0.f;
+	cam_gray		= 0.f;
 
 	// 
 	clamp			(DT,0ul,100ul);

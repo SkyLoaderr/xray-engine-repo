@@ -28,6 +28,7 @@ CCameraManager::CCameraManager()
 
 	fFov			= 90;
 	fFar			= 100;
+	fAspect			= 1.f;
 }
 
 CCameraManager::~CCameraManager()
