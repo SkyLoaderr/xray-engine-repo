@@ -359,3 +359,6 @@ function parse_params(params)
 	return rslt
 end
 
+function is_day()
+	return level.get_time_hours() >= 9 and level.get_time_hours() < 21
+end
