@@ -96,14 +96,17 @@ function stalker_script:__init		(object) super(object)
 end
 
 function stalker_script:reinit		()
+printf					("point 0")
 	local					motivations	= {}
 	local					operators	= {}
 	local					properties	= {}
 	local					manager		= self.object:motivation_action_manager()
 	local					goal		= world_state()
+	printf					("point 1")
 	
 	manager:clear			()
 
+	printf					("point 2")
 	motivations["global"]	= 0
 	motivations["dead"]		= 1
 	motivations["alive"]	= 2
@@ -114,10 +117,12 @@ function stalker_script:reinit		()
 
 	operators["dead"]		= 0
 	operators["free"]		= 1
+	printf					("point 3")
 
 	-- // motivations
 	manager:add_motivation	(motivations["global"],		stalker.motivation_global(motivations))
 
+	printf					("point 4")
 	goal:clear				()
 	goal:add_property		(world_property(properties["dead"],	true))
 	manager:add_motivation	(motivations["dead"],		motivation_action(goal))
@@ -126,13 +131,16 @@ function stalker_script:reinit		()
 	goal:add_property		(world_property(properties["solved"],true))
 	manager:add_motivation	(motivations["alive"],		motivation_action(goal))
 
+	printf					("point 5")
 	manager:add_connection	(motivations["global"],		motivations["dead"])
 	manager:add_connection	(motivations["global"],		motivations["alive"])
+	printf					("point 6")
 
 	-- // evaluators
 	manager:add_evaluator	(properties["alive"],		stalker.evaluator_alive	(self.object))
 	manager:add_evaluator	(properties["dead"],		stalker.evaluator_const	(false))
 	manager:add_evaluator	(properties["solved"],		stalker.evaluator_const	(false))
+	printf					("point 7")
 
 	-- // operators/actions
 	local					action = stalker.action_base(self.object,"dead")
@@ -146,6 +154,7 @@ function stalker_script:reinit		()
 	action:add_precondition	(properties["solved"],		false)
 	action:add_effect		(properties["solved"],		true)
 	manager:add_action		(operators["free"],			action)
+	printf					("point 8")
 end
 
 function stalker_script:reload		(section)
