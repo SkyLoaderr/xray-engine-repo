@@ -241,7 +241,7 @@ void CSheduler::Update				()
 	cycles_start					= CPU::GetCycleCount			();
 	cycles_limit					= CPU::cycles_per_milisec * u64	(iCeil(psShedulerCurrent)) + cycles_start;
 	ProcessStep						();
-	clamp							(psShedulerTarget,3.f,50.f);
+	clamp							(psShedulerTarget,3.f,66.f);
 	psShedulerCurrent				= 0.9f*psShedulerCurrent + 0.1f*psShedulerTarget;
 	Device.Statistic.Sheduler.End	();
 }
