@@ -168,7 +168,7 @@ void __fastcall SGameMtlPair::OnParentClick(PropValue* sender, bool& bModif)
         }
 	    SGameMtlPair* P	= m_Owner->GetMaterialPair(ID_parent);
         AnsiString nm	= P?m_Owner->MtlPairToName(P->GetMtl0(),P->GetMtl1()):NONE_CAPTION;
-        if (TfrmChoseItem::SelectItem(TfrmChoseItem::smCustom,MP,1,(nm==NONE_CAPTION)?0:nm.c_str(),false,&items)){
+        if (TfrmChoseItem::SelectItem(smCustom,MP,1,(nm==NONE_CAPTION)?0:nm.c_str(),&items)){
         	if (MP){
                 int m0, m1;
                 m_Owner->NameToMtlPair	(MP,m0,m1);
@@ -208,7 +208,7 @@ void __fastcall SGameMtlPair::OnCommandClick(PropValue* sender, bool& bModif)
         }
 	    SGameMtlPair* P	= m_Owner->GetMaterialPair(ID_parent);
         AnsiString nm	= P?m_Owner->MtlPairToName(P->GetMtl0(),P->GetMtl1()):NONE_CAPTION;
-        if (TfrmChoseItem::SelectItem(TfrmChoseItem::smCustom,MP,128,0,false,&items)){
+        if (TfrmChoseItem::SelectItem(smCustom,MP,128,0,&items)){
         	if (MP){
                 AStringVec lst;
                 _SequenceToList(lst,MP);
@@ -245,11 +245,11 @@ void SGameMtlPair::FillProp(PropItemVec& items)
     B					= PHelper.CreateButton(items,		"Parent", 			P?m_Owner->MtlPairToName(P->GetMtl0(),P->GetMtl1()):NONE_CAPTION,0);
     B->OnBtnClickEvent	= OnParentClick;
     
-	propBreakingSounds	= PHelper.CreateASoundSrc	(items,	"Breaking Sounds",	&BreakingSounds);
-	propStepSounds		= PHelper.CreateASoundSrc	(items,	"Step Sounds",		&StepSounds);
-	propCollideSounds	= PHelper.CreateASoundSrc	(items,	"Collide Sounds",	&CollideSounds);
-	propCollideParticles= PHelper.CreateALibParticles(items,"Collide Particles",&CollideParticles);
-	propCollideMarks	= PHelper.CreateATexture	(items,	"Collide Marks",	&CollideMarks);
+	propBreakingSounds	= PHelper.CreateChoose	(items,	"Breaking Sounds",	&BreakingSounds, 	smSoundSource);
+	propStepSounds		= PHelper.CreateChoose	(items,	"Step Sounds",		&StepSounds, 		smSoundSource);
+	propCollideSounds	= PHelper.CreateChoose	(items,	"Collide Sounds",	&CollideSounds, 	smSoundSource);
+	propCollideParticles= PHelper.CreateChoose	(items,	"Collide Particles",&CollideParticles, 	smParticles);
+	propCollideMarks	= PHelper.CreateChoose	(items,	"Collide Marks",	&CollideMarks,		smTexture);
 
     propBreakingSounds->Owner()->m_Flags.set	(SetMask(show_CB,OwnProps,flBreakingSounds));
     propStepSounds->Owner()->m_Flags.set		(SetMask(show_CB,OwnProps,flStepSounds));

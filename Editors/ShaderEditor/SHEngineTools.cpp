@@ -111,7 +111,7 @@ void CSHEngineTools::OnPreviewObjectRefChange(PropItem* sender, LPVOID edit_val)
     case pvoBox: 	fn	= "editor\\ShaderTest_Box"; 	break;
     case pvoSphere:	fn	= "editor\\ShaderTest_Sphere";	break;
     case pvoTeapot:	fn	= "editor\\ShaderTest_Teapot";	break;
-    case pvoCustom:	fn	= m_PreviewObject->GetRefName(); if (!TfrmChoseItem::SelectItem(TfrmChoseItem::smObject,fn)) return; m_bCustomEditObject = true; break;
+    case pvoCustom:	fn	= m_PreviewObject->GetRefName(); if (!TfrmChoseItem::SelectItem(smObject,fn)) return; m_bCustomEditObject = true; break;
     }
     if (AnsiString(fn).LowerCase()!=AnsiString(m_PreviewObject->GetRefName()).LowerCase()){
 	    m_PreviewObject->SetReference(fn);
@@ -467,7 +467,7 @@ LPCSTR CSHEngineTools::AppendItem(LPCSTR folder_name, LPCSTR parent_name)
         LPCSTR M=0;
         AStringVec lst;
         for (TemplateIt it=m_TemplatePalette.begin(); it!=m_TemplatePalette.end(); it++) lst.push_back((*it)->getComment());
-        if (!TfrmChoseItem::SelectItem(TfrmChoseItem::smCustom,M,1,0,false,&lst)||!M) return 0;
+        if (!TfrmChoseItem::SelectItem(smCustom,M,1,0,&lst)||!M) return 0;
         for (it=m_TemplatePalette.begin(); it!=m_TemplatePalette.end(); it++) 
         	if (0==strcmp((*it)->getComment(),M)){ 
             	cls_id = (*it)->getDescription().CLS;

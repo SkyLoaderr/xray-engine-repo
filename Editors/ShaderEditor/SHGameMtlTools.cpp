@@ -122,7 +122,7 @@ LPCSTR CSHGameMtlTools::AppendItem(LPCSTR folder_name, LPCSTR parent_name)
     AStringVec lst;
     lst.push_back("Dynamic material");
     lst.push_back("Static material");
-    if (!TfrmChoseItem::SelectItem(TfrmChoseItem::smCustom,M,1,0,false,&lst)||!M) return 0;
+    if (!TfrmChoseItem::SelectItem(smCustom,M,1,0,&lst)||!M) return 0;
 	SGameMtl* parent 	= FindItem(parent_name);
     string64 new_name;
     GenerateItemName	(new_name,folder_name,parent_name);
