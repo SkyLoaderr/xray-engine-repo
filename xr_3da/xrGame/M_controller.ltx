@@ -221,19 +221,6 @@ control_fx_texture		= act\act_controller_hit
 control_fx_texture2		= act\act_controller_hit1
 
 
-[m_Controller_damage]
-;bone_name		 = <hit_scale>,-1,<wound_scale>
-;<hit_scale>	- коэфф. изменения хита (уменьшения здоровья) 
-;<wound_scale>	- коэфф. изменения величины открытой раны
-
-default				= 1.00,	-1,	1.00
-
-bip01_pelvis 		= 0.01, -1, 0.5
-bip01_spine 		= 0.01, -1, 0.5
-bip01_spine1 		= 0.2, -1, 0.5
-bip01_neck 			= 0.5, -1, 0.5
-bip01_head 			= 10.0, -1, 10.00
-
 
 ; Controlling ability properties
 Max_Controlled_Count	= 4
@@ -304,5 +291,20 @@ color_gray		= 0,0,0;0.6,0.6,0.6
 color_add		= 0,0,0;0.00,0.02,0.07
 radius_min		= 0.01
 radius_max		= 0.8
+
+
+
+[m_Controller_damage]
+;bone_name		 = <hit_scale>,-1,<wound_scale>
+;<hit_scale>	- коэфф. изменения хита (уменьшения здоровья) 
+;<wound_scale>	- коэфф. изменения величины открытой раны
+
+default				= 1.00,	-1,	1.00
+
+bip01_pelvis 		= 0.01, -1, 0.5
+bip01_spine 		= 0.01, -1, 0.5
+bip01_spine1 		= 0.2, -1, 0.5
+bip01_neck 			= 0.5, -1, 0.5
+bip01_head 			= 10.0, -1, 10.00
 
 
