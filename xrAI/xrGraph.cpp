@@ -48,9 +48,9 @@ void vfLoadAIPoints(LPCSTR name)
 {
 	string256								fName;
 	strconcat								(fName,name,"level.spawn");
-	CVirtualFileReader						F(fName);
+	IReader									*F = FS.r_open(fName);
 	IReader									*O = 0;
-	for (int id=0, i=0; 0!=(O = F.open_chunk(id)); id++)	{
+	for (int id=0, i=0; 0!=(O = F->open_chunk(id)); id++)	{
 		NET_Packet							P;
 		P.B.count							= O->length();
 		O->r								(P.B.data,P.B.count);
@@ -318,7 +318,7 @@ void vfSaveGraph(LPCSTR name, CAI_Map *tpAI_Map)
 		tGraphVertex.dwEdgeOffset		= k + j*sizeof(CALifeGraph::SGraphEdge);
 		tGraph.w						(&tGraphVertex,	sizeof(CALifeGraph::SGraphVertex));
 	}
-	tGraph.save_to(fName,0);
+	tGraph.save_to(fName);
 	Progress(1.0f);
 	Msg("%d bytes saved",int(tGraph.size()));
 }

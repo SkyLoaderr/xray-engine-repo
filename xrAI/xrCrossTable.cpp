@@ -162,5 +162,5 @@ void					xrBuildCrossTable(LPCSTR caProjectName)
 	tMemoryStream.close_chunk();
 	
 	strconcat			(caFileName,caProjectName,CROSS_TABLE_NAME_RAW);
-	tMemoryStream.save_to(caFileName,0);
+	tMemoryStream.save_to(caFileName);
 }

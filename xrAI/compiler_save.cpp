@@ -62,29 +62,29 @@ float	CalculateHeight(Fbox& BB)
 
 void xrSaveNodes(LPCSTR N)
 {
-	Msg("NS: %d, CNS: %d, ratio: %f%%",sizeof(Node),sizeof(NodeCompressed),100*float(sizeof(NodeCompressed))/float(sizeof(Node)));
+	Msg				("NS: %d, CNS: %d, ratio: %f%%",sizeof(Node),sizeof(NodeCompressed),100*float(sizeof(NodeCompressed))/float(sizeof(Node)));
 
-	string256	fName; 
-	strconcat	(fName,N,"level.ai");
+	string256		fName; 
+	strconcat		(fName,N,"level.ai");
 
-	CFileWriter	fs(fName);
+	IWriter			*fs = FS.w_open(fName);
 
 	// Header
-	Status("Saving header...");
-	hdrNODES	H;
-	H.version	= XRAI_CURRENT_VERSION;
-	H.count		= g_merged.size()+1;
-	H.size		= g_params.fPatchSize;
-	H.size_y	= CalculateHeight(H.aabb);
-	fs.w		(&H,sizeof(H));
+	Status			("Saving header...");
+	hdrNODES		H;
+	H.version		= XRAI_CURRENT_VERSION;
+	H.count			= g_merged.size()+1;
+	H.size			= g_params.fPatchSize;
+	H.size_y		= CalculateHeight(H.aabb);
+	fs->w			(&H,sizeof(H));
 
 	// Dummy node
 	NodeCompressed	NC;
 	ZeroMemory		(&NC,sizeof(NC));
-	fs.w			(&NC,sizeof(NC));
+	fs->w			(&NC,sizeof(NC));
 
 	// All nodes
-	Status("Saving nodes...");
+	Status			("Saving nodes...");
 	for (DWORD i=0; i<g_merged.size(); i++)
 	{
 		NodeMerged&		N	= g_merged[i];
@@ -96,19 +96,19 @@ void xrSaveNodes(LPCSTR N)
 		// write node itself
 		Compress		(NC,N,H);
 		NC.links		= cnt;
-		fs.w			(&NC,sizeof(NC));
+		fs->w			(&NC,sizeof(NC));
 
 		// write links
 		for (L=0; L<N.neighbours.size(); L++)
 		{
 			DWORD		L_id		= N.neighbours[L];
-			if (L_id)	{ L_id++; fs.w		(&L_id,3); }
+			if (L_id)	{ L_id++; fs->w		(&L_id,3); }
 		}
 		Progress(float(i)/float(g_merged.size()));
 	}
 
 	// Stats
-	DWORD	SizeTotal	= fs.tell();
+	DWORD	SizeTotal	= fs->tell();
 	DWORD	SizeData	= g_merged.size()*sizeof(NodeCompressed);
 	DWORD	SizeLinks	= SizeTotal-SizeData;
 	Msg		("%dK saved (D:%d / L:%d)",SizeTotal/1024,SizeData/1024,SizeLinks/1024);

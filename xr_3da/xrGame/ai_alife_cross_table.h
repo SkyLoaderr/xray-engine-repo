@@ -29,11 +29,7 @@ public:
 	#pragma pack(pop)
 
 	SCrossTableHeader						m_tCrossTableHeader;
-#ifdef AI_COMPILER
-	CVirtualFileReader						*m_tpCrossTableVFS;
-#else
 	IReader									*m_tpCrossTableVFS;
-#endif
 	SCrossTableCell							*m_tpaCrossTable;
 
 	CALifeCrossTable						()
@@ -56,11 +52,7 @@ public:
 
 	IC void Load							(LPCSTR fName)
 	{
-#ifdef AI_COMPILER
-		m_tpCrossTableVFS					= xr_new<CVirtualFileReader>(fName);
-#else
 		m_tpCrossTableVFS					= FS.r_open(fName);
-#endif
 		R_ASSERT							(m_tpCrossTableVFS);
 		R_ASSERT							(m_tpCrossTableVFS->find_chunk(CROSS_TABLE_CHUNK_VERSION));
 		m_tpCrossTableVFS->open_chunk		(CROSS_TABLE_CHUNK_VERSION);

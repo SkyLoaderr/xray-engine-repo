@@ -79,7 +79,7 @@ public:
 			tMemoryStream.close_chunk();
 			
 			strconcat			(caFileName,S,CROSS_TABLE_NAME);
-			tMemoryStream.save_to(caFileName,0);
+			tMemoryStream.save_to(caFileName);
 		}
 
 		// loading graph
@@ -110,9 +110,9 @@ public:
 			string256								fName;
 			strconcat								(fName,"gamedata\\levels\\",tLevel.caLevelName);
 			strconcat								(fName,fName,"\\level.spawn");
-			CVirtualFileReader						F(fName);
+			IReader									*F = FS.r_open(fName);
 			IReader									*O = 0;
-			for (int id=0, i=0; 0!=(O = F.open_chunk(id)); id++)	{
+			for (int id=0, i=0; 0!=(O = F->open_chunk(id)); id++)	{
 				NET_Packet							P;
 				P.B.count							= O->length();
 				O->r								(P.B.data,P.B.count);
@@ -300,7 +300,7 @@ void xrMergeGraphs()
 		for ( ; I != E; I++)
 			(*I).second->vfSaveEdges		(F);
 	}
-	F.save_to("game.graph",0);
+	F.save_to("game.graph");
 	
 	// _free all the graphs
 	Phase("Freeing resources being allocated");

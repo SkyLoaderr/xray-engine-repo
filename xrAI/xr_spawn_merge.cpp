@@ -69,7 +69,7 @@ public:
 		fName[0]				= 0;
 		strconcat				(fName,"gamedata\\levels\\",m_tLevel.caLevelName);
 		strconcat				(fName,fName,"\\level.spawn");
-		CVirtualFileReader		*SP = xr_new<CVirtualFileReader>(fName);
+		IReader					*SP = FS.r_open(fName);
 		IReader					*S = 0;
 		NET_Packet				P;
 		int						S_id	= 0;
@@ -302,7 +302,7 @@ void xrMergeSpawns()
 	tMemoryStream.close_chunk	();
 	for (u32 i=0, dwID = 0, N = tpLevels.size(); i<N; i++)
 		tpLevels[i]->Save		(tMemoryStream,dwID);
-	tMemoryStream.save_to		("game.spawn",0);
+	tMemoryStream.save_to		("game.spawn");
 
 	Phase						("Freeing resources being allocated");
 	xr_delete					(tpGraph);

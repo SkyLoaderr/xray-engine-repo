@@ -33,7 +33,7 @@ public:
 	{
 		string256	fName;
 		strconcat	(fName,name,"level.ai");
-		vfs			= xr_new<CVirtualFileReader>(fName);
+		vfs			= FS.r_open(fName);
 		
 		// m_header & data
 		vfs->r		(&m_header,sizeof(m_header));

@@ -9,9 +9,9 @@ void xrLoad(LPCSTR name)
 	string256				N;
 	{
 		strconcat			(N,name,"level.");
-		CVirtualFileReader	FS(N);
+		IReader				*F = FS.r_open(N);
 		
-		IReader* fs			= FS.open_chunk(fsL_CFORM);
+		IReader				*fs	= F->open_chunk(fsL_CFORM);
 		R_ASSERT			(fs);
 		
 		hdrCFORM			H;
@@ -30,13 +30,13 @@ void xrLoad(LPCSTR name)
 	// Load CFORM ("lighting")
 	{
 		strconcat			(N,name,"build.cform");
-		CVirtualFileReader	FS(N);
+		IReader				*F = FS.r_open(N);
 		
 		hdrCFORM			H;
-		FS.r				(&H,sizeof(hdrCFORM));
+		F->r				(&H,sizeof(hdrCFORM));
 		R_ASSERT			(CFORM_CURRENT_VERSION==H.version);
 		
-		Fvector*	verts	= (Fvector*)FS.pointer();
+		Fvector*	verts	= (Fvector*)F->pointer();
 		CDB::TRI*	tris	= (CDB::TRI*)(verts+H.vertcount);
 		LevelLight.build	( verts, H.vertcount, tris, H.facecount );
 		Msg("* Level CFORM(L): %dK",LevelLight.memory()/1024);
@@ -45,12 +45,10 @@ void xrLoad(LPCSTR name)
 	// Load emitters
 	{
 		strconcat			(N,name,"level.game");
-		CFileReader			F(N);
-		IReader *O = 0;
-		if (0!=(O = F.open_chunk	(AIPOINT_CHUNK)))
-		{
-			for (int id=0; O->find_chunk(id); id++)
-			{
+		IReader				*F = FS.r_open(N);
+		IReader				*O = 0;
+		if (0!=(O = F->open_chunk	(AIPOINT_CHUNK))) {
+			for (int id=0; O->find_chunk(id); id++) {
 				Emitters.push_back(Fvector());
 				O->r_fvector3	(Emitters.back());
 			}
@@ -60,17 +58,10 @@ void xrLoad(LPCSTR name)
 
 	// Load lights
 	{
-		strconcat					(N,name,"build.prj");
+		strconcat				(N,name,"build.prj");
 
-		string32	ID			= BUILD_PROJECT_MARK;
-		string32	id;
-		IReader*	F			= xr_new<CFileReader>(N);
-		F->r		(&id,8);
-		if (0==strcmp(id,ID))	{
-			xr_delete		(F);
-			F			= xr_new<CCompressedReader>(N,ID);
-		}
-		IReader&				FS	= *F;
+		IReader*	F			= FS.r_open(N);
+		IReader					&FS	= *F;
 
 		// Version
 		DWORD version;
