@@ -214,6 +214,7 @@ int SceneBuilder::CalculateSector(const Fvector& P, float R)
 
 void SceneBuilder::Clear ()
 {
+    object_for_render		= 0;
     l_vert_cnt 				= 0;
 	l_face_cnt				= 0;
 	l_vert_it 				= 0;
@@ -245,6 +246,16 @@ void SceneBuilder::Clear ()
 //------------------------------------------------------------------------------
 // CEditObject build functions
 //------------------------------------------------------------------------------
+float CalcArea(const Fvector& v0, const Fvector& v1, const Fvector& v2)
+{
+	float	e1 = v0.distance_to(v1);
+	float	e2 = v0.distance_to(v2);
+	float	e3 = v1.distance_to(v2);
+
+	float	p  = (e1+e2+e3)/2.f;
+	return	_sqrt( p*(p-e1)*(p-e2)*(p-e3) );
+}
+
 BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEditableMesh* mesh, int sect_num,
 							b_vertex* verts, int& vert_cnt, int& vert_it, b_face* faces, int& face_cnt, int& face_it)
 {
@@ -312,8 +323,14 @@ BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
         	bResult 		= FALSE; 
             break; 
         }
+        u32 dwInvalidFaces 	= 0;
 	    for (IntIt f_it=face_lst.begin(); f_it!=face_lst.end(); f_it++){
 			st_Face& face = mesh->m_Faces[*f_it];
+            float _a		= CalcArea(mesh->m_Points[face.pv[0].pindex],mesh->m_Points[face.pv[1].pindex],mesh->m_Points[face.pv[2].pindex]);
+            if (fis_zero(_a)){
+            	dwInvalidFaces++;
+                continue;
+            }
             R_ASSERT(face_it<face_cnt);
             b_face& first_face 		= faces[face_it++];
         	{
@@ -363,6 +380,7 @@ BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
                 }
             }
         }
+        if (dwInvalidFaces)	Msg("!Object '%s' - '%s' has %d invalid face(s). Removed.",object->GetName(),mesh->GetName(),dwInvalidFaces);
         if (!bResult) break;
     }
     return bResult;
@@ -782,10 +800,10 @@ int SceneBuilder::BuildTexture(const char* name)
 //------------------------------------------------------------------------------
 // lod build functions
 //------------------------------------------------------------------------------
-int	SceneBuilder::BuildObjectLOD(const Fmatrix& parent, CEditableObject* e, int sector_num)
+int	SceneBuilder::BuildObjectLOD(const Fmatrix& parent, CEditableObject* E, int sector_num)
 {
-	if (!e->m_Flags.is(CEditableObject::eoUsingLOD)) return -1;
-    std::string lod_name = e->GetLODTextureName();
+	if (!E->m_Flags.is(CEditableObject::eoUsingLOD)) return -1;
+    std::string lod_name = E->GetLODTextureName();
 
 	std::string fname = lod_name+".tga";
     if (!FS.exist(_textures_,fname.c_str())){
@@ -794,8 +812,8 @@ int	SceneBuilder::BuildObjectLOD(const Fmatrix& parent, CEditableObject* e, int 
     }
 
     b_material 		mtl;
-    mtl.surfidx		= BuildTexture		(LEVEL_LODS_TEX_NAME);//lod_name.c_str());
-    mtl.shader      = BuildShader		(e->GetLODShaderName());
+    mtl.surfidx		= BuildTexture		(LEVEL_LODS_TEX_NAME);
+    mtl.shader      = BuildShader		(E->GetLODShaderName());
     mtl.sector		= sector_num;
     mtl.shader_xrlc	= -1;
     if ((u16(-1)==mtl.surfidx)||(u16(-1)==mtl.shader)) return -2;
@@ -811,7 +829,7 @@ int	SceneBuilder::BuildObjectLOD(const Fmatrix& parent, CEditableObject* e, int 
     Fvector    		p[4];
     Fvector2 		t[4];
     for (int frame=0; frame<LOD_SAMPLE_COUNT; frame++){
-        e->GetLODFrame(frame,p,t,&parent);
+        E->GetLODFrame(frame,p,t,&parent);
         for (int k=0; k<4; k++){
             b.lod.faces[frame].v[k].set(p[k]);
             b.lod.faces[frame].t[k].set(t[k]);
@@ -819,6 +837,42 @@ int	SceneBuilder::BuildObjectLOD(const Fmatrix& parent, CEditableObject* e, int 
     }
     b.lod.dwMaterial= mtl_idx;
     b.tex_name		= fname.c_str();
+
+    // make lod
+    E->m_Flags.set				(CEditableObject::eoUsingLOD,FALSE);
+    object_for_render			= E;
+    ImageLib.CreateLODTexture	(E->GetBox(), b.data, LOD_IMAGE_SIZE,LOD_IMAGE_SIZE,LOD_SAMPLE_COUNT);
+    E->m_Flags.set				(CEditableObject::eoUsingLOD,TRUE);
+
+    // calc filling
+    Fvector3 S;
+    E->GetBox().getradius		(S);
+    float R 					= _max(S.x,S.z);
+    float kx=LOD_IMAGE_SIZE, ky=LOD_IMAGE_SIZE;
+    if (S.y>R) 	kx				= (((R*LOD_IMAGE_SIZE)/S.y)/LOD_IMAGE_SIZE);
+    else		ky				= (((S.y*LOD_IMAGE_SIZE)/R)/LOD_IMAGE_SIZE);
+    
+    float fill_factor			= 0.f;
+    u32 cnt						= 0;
+    for (u32 s=0; s<LOD_SAMPLE_COUNT; s++){
+        for (u32 y=0; y<LOD_IMAGE_SIZE; y++){
+            int yy				= iFloor(float(int(y)-32)/ky+32);
+            for (u32 x=0; x<LOD_IMAGE_SIZE; x++){
+                Fvector2 p={x,x},c={32.f,32.f};
+                float r			= c.sub(p).magnitude();
+                if (r<LOD_IMAGE_SIZE*0.5f){
+                	int xx		= iFloor(float(int(x)-32)/kx+32);
+                    if (xx>=0&&xx<64&&yy>=0&&yy<64){
+                        u32 d		= b.data[yy*LOD_IMAGE_SIZE*LOD_SAMPLE_COUNT+s*LOD_IMAGE_SIZE+xx];
+                        fill_factor	+= color_get_A(d)>0?1.f:0.f;
+                    }
+                    cnt++;
+                }
+            }
+        }
+    }
+    fill_factor					/= float(cnt);
+    
     return l_lods.size()-1;
 }
 //------------------------------------------------------------------------------
@@ -963,21 +1017,27 @@ BOOL SceneBuilder::CompileStatic()
         Fvector2Vec			offsets;
         Fvector2Vec			scales;
         boolVec				rotated;
-        U32Vec				remap;
-        RStringVec 			textures;
+        SSimpleImageVec		images;
         for (int k=0; k<(int)l_lods.size(); k++){
-            textures.push_back(l_lods[k].tex_name);
+            images.push_back(SSimpleImage());
+            SSimpleImage& I	= images.back();
+            I.name			= l_lods[k].tex_name;
+            I.data			= l_lods[k].data;
+            I.w				= LOD_IMAGE_SIZE*LOD_SAMPLE_COUNT;
+            I.h				= LOD_IMAGE_SIZE;
 	        pb->Inc();
         }                           
-        std::string fn 		= MakeLevelPath(LEVEL_LODS_TEX_NAME);
-        if (1==ImageLib.CreateMergedTexture(textures,fn.c_str(),STextureParams::tfDXT5,512,2048,256,1024,offsets,scales,rotated,remap)){
+        SSimpleImage merged_image;
+        std::string fn 		= ChangeFileExt	(MakeLevelPath(LEVEL_LODS_TEX_NAME).c_str(),".dds").c_str();
+        if (1==ImageLib.CreateMergedTexture	(images,merged_image,512,2048,64,1024,offsets,scales,rotated)){
+            // all right, make texture
+            ImageLib.MakeGameTexture		(fn.c_str(),merged_image.data.begin(),merged_image.w,merged_image.h,STextureParams::tfDXT5,STextureParams::ttImage,STextureParams::flDitherColor|STextureParams::flGenerateMipMaps);
 	        for (k=0; k<(int)l_lods.size(); k++){        
 	            e_b_lod& l	= l_lods[k];         
                 for (u32 f=0; f<8; f++){
                 	for (u32 t=0; t<4; t++){
                     	Fvector2& uv = l.lod.faces[f].t[t];
-                        u32 id 		 = remap[k];
-                    	ImageLib.MergedTextureRemapUV(uv.x,uv.y,uv.x,uv.y,offsets[id],scales[id],rotated[id]);
+                    	ImageLib.MergedTextureRemapUV(uv.x,uv.y,uv.x,uv.y,offsets[k],scales[k],rotated[k]);
                     }
                 }
 		        pb->Inc();
