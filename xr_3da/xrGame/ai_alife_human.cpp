@@ -363,14 +363,10 @@ void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
 	
 	if (tTakeType == eTakeTypeAll) {
 		m_tpALife->vfAppendItemList		(children,m_tpALife->m_tpItemList);
-		{
-			OBJECT_IT					I = children.begin();
-			OBJECT_IT					E = children.end();
-			for ( ; I != E; I++) {
-				CSE_ALifeItem			*l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>(m_tpALife->tpfGetObjectByID(*I));
-				R_ASSERT2				(l_tpALifeItem,"Invalid inventory object");
-				m_tpALife->vfDetachItem	(*this,l_tpALifeItem,m_tGraphID);
-			}
+		for (int i=0, n=children.size(); i<n; n--) {
+			CSE_ALifeItem			*l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>(m_tpALife->tpfGetObjectByID(children[i]));
+			R_ASSERT2				(l_tpALifeItem,"Invalid inventory object");
+			m_tpALife->vfDetachItem	(*this,l_tpALifeItem,m_tGraphID);
 		}
 		R_ASSERT2						((m_fCumulativeItemMass < EPS_L) && (m_iCumulativeItemVolume < EPS_L),"Invalid cumulative item mass or volume value");
 		m_fCumulativeItemMass			= 0.f;

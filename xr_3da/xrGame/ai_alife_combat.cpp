@@ -70,19 +70,19 @@ ECombatAction CSE_ALifeSimulator::tfChooseCombatAction(int iCombatGroupIndex)
 bool CSE_ALifeSimulator::bfCheckForCombat(CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract1, CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract2, int &iCombatGroupIndex)
 {
 #pragma todo("Dima to Dima: Monster can't notice another monster if it is asleep")
-	if ((tpALifeMonsterAbstract1->g_team() != tpALifeMonsterAbstract2->g_team()) && randI(2)) {
+	if (tpALifeMonsterAbstract1->g_team() != tpALifeMonsterAbstract2->g_team()) {
 		getAI().m_tpCurrentALifeMember = tpALifeMonsterAbstract1;
 		getAI().m_tpCurrentALifeEnemy = tpALifeMonsterAbstract2;
-		if (randI(iFloor(getAI().m_pfNoticeProbability->ffGetMaxResultValue())) < (int)getAI().m_pfNoticeProbability->dwfGetDiscreteValue()) {
+		if (randI(iFloor(getAI().m_pfNoticeProbability->ffGetMaxResultValue())) < (int)getAI().m_pfNoticeProbability->dwfGetDiscreteValue(iFloor(getAI().m_pfNoticeProbability->ffGetMaxResultValue()))) {
 			iCombatGroupIndex	= 0;
-			return				(true);
+			return				(false);
 		}
 		else {
 			getAI().m_tpCurrentALifeMember = tpALifeMonsterAbstract2;
 			getAI().m_tpCurrentALifeEnemy = tpALifeMonsterAbstract1;
-			if (randI(iFloor(getAI().m_pfNoticeProbability->ffGetMaxResultValue())) < (int)getAI().m_pfNoticeProbability->dwfGetDiscreteValue()) {
+			if (randI(iFloor(getAI().m_pfNoticeProbability->ffGetMaxResultValue())) < (int)getAI().m_pfNoticeProbability->dwfGetDiscreteValue(iFloor(getAI().m_pfNoticeProbability->ffGetMaxResultValue()))) {
 				iCombatGroupIndex	= 1;
-				return				(true);
+				return				(false);
 			}
 		}
 	}

@@ -12,7 +12,7 @@
 #include "ai_space.h"
 #include "ai_alife_templates.h"
 
-//#define WRITE_TO_LOG
+#define WRITE_TO_LOG
 
 #ifndef DEBUG
 	#undef WRITE_TO_LOG
@@ -184,8 +184,8 @@ CAI_DDD::CAI_DDD()
 	m_fpaBaseFunctions[27]				= m_pfPersonalRelation		= xr_new<CPersonalRelationFunction>		();		
 	m_fpaBaseFunctions[28]				= m_pfPersonalGreed			= xr_new<CPersonalGreedFunction>		();			
 	m_fpaBaseFunctions[29]				= m_pfPersonalAggressiveness= xr_new<CPersonalAggressivenessFunction>();	
-	m_fpaBaseFunctions[31]				= m_pfEyeRange				= xr_new<CEyeRange>						();	
-	m_fpaBaseFunctions[30]				= m_pfMaxMonsterHealth		= xr_new<CMaxMonsterHealth>				();	
+	m_fpaBaseFunctions[30]				= m_pfPersonalEyeRange		= xr_new<CPersonalEyeRange>				();	
+	m_fpaBaseFunctions[31]				= m_pfPersonalMaxHealth		= xr_new<CPersonalMaxHealth>			();	
 										  
 	m_fpaBaseFunctions[41]				= m_pfEnemyHealth			= xr_new<CEnemyHealthFunction>			();			
 	m_fpaBaseFunctions[42]				= m_pfEnemyCreatureType		= xr_new<CEnemyCreatureTypeFunction>	();		
@@ -193,6 +193,8 @@ CAI_DDD::CAI_DDD()
 	m_fpaBaseFunctions[44]				= m_pfEnemyEquipmentCost	= xr_new<CEnemyEquipmentCostFunction>	();		
 	m_fpaBaseFunctions[45]				= m_pfEnemyRukzakWeight		= xr_new<CEnemyRukzakWeightFunction>	();		
 	m_fpaBaseFunctions[46]				= m_pfEnemyAnomality		= xr_new<CEnemyAnomalityFunction>		();			
+	m_fpaBaseFunctions[47]				= m_pfEnemyEyeRange			= xr_new<CEnemyEyeRange>				();	
+	m_fpaBaseFunctions[48]				= m_pfEnemyMaxHealth		= xr_new<CEnemyMaxHealth>				();	
 
 	m_pfWeaponEffectiveness				= xr_new<CPatternFunction>	("common\\WeaponEffectiveness.efd",		this);
 	m_pfCreatureEffectiveness			= xr_new<CPatternFunction>	("common\\CreatureEffectiveness.efd",	this);

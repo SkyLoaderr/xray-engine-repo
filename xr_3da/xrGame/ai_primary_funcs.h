@@ -73,7 +73,7 @@ public:
 
 	CPersonalCreatureTypeFunction()
 	{
-		m_fMinResultValue = 1.0;
+		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 21.0;
 		strcat(m_caName,"PersonalCreatureType");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
@@ -88,8 +88,8 @@ public:
 
 	CPersonalWeaponTypeFunction()
 	{
-		m_fMinResultValue = 1.0;
-		m_fMaxResultValue = 12.0;
+		m_fMinResultValue = 0.0;
+		m_fMaxResultValue = 11.0;
 		strcat(m_caName,"PersonalWeaponType");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
@@ -209,8 +209,8 @@ public:
 
 	CEnemyCreatureTypeFunction()
 	{
-		m_fMinResultValue = 1.0;
-		m_fMaxResultValue = 22.0;
+		m_fMinResultValue = 0.0;
+		m_fMaxResultValue = 21.0;
 		strcat(m_caName,"EnemyCreatureType");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
@@ -223,8 +223,8 @@ public:
 
 	CEnemyWeaponTypeFunction()
 	{
-		m_fMinResultValue = 1.0;
-		m_fMaxResultValue = 12.0;
+		m_fMinResultValue = 0.0;
+		m_fMaxResultValue = 11.0;
 		strcat(m_caName,"EnemyWeaponType");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
@@ -238,7 +238,7 @@ public:
 
 	CEnemyEquipmentCostFunction()
 	{
-		m_fMinResultValue = 1.0;
+		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 12.0;
 		strcat(m_caName,"EnemyEquipmentCost");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
@@ -292,30 +292,61 @@ public:
 	virtual float ffGetValue();
 };
 
-class CEyeRange : public CBaseFunction {
+class CPersonalEyeRange : public CBaseFunction {
 public:
 	typedef CBaseFunction inherited;
 
-	CEyeRange()
+	CPersonalEyeRange()
 	{
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 100.0;
-		strcat(m_caName,"EyeRange");
+		strcat(m_caName,"PersonalEyeRange");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
 
 	virtual float ffGetValue();
 };
 
-class CMaxMonsterHealth : public CBaseFunction {
+class CPersonalMaxHealth : public CBaseFunction {
 public:
 	typedef CBaseFunction inherited;
 
-	CMaxMonsterHealth()
+	CPersonalMaxHealth()
 	{
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 1000.0;
-		strcat(m_caName,"MaxMonsterHealth");
+		strcat(m_caName,"PersonalMaxHealth");
+		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
+	};
+
+	virtual float	ffGetValue();
+	virtual u32		dwfGetDiscreteValue(u32 dwDiscretizationValue = 1);
+};
+
+class CEnemyEyeRange : public CBaseFunction {
+public:
+	typedef CBaseFunction inherited;
+
+	CEnemyEyeRange()
+	{
+		m_fMinResultValue = 0.0;
+		m_fMaxResultValue = 100.0;
+		strcat(m_caName,"EnemyEyeRange");
+		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
+	};
+
+	virtual float ffGetValue();
+};
+
+class CEnemyMaxHealth : public CBaseFunction {
+public:
+	typedef CBaseFunction inherited;
+
+	CEnemyMaxHealth()
+	{
+		m_fMinResultValue = 0.0;
+		m_fMaxResultValue = 1000.0;
+		strcat(m_caName,"EnemyMaxHealth");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
 

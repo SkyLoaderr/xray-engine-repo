@@ -31,10 +31,21 @@ void CSE_ALifeSimulator::vfCheckForTheInteraction(CSE_ALifeMonsterAbstract *tpAL
 		CSE_ALifeMonsterAbstract		*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(*I);
 		if (l_tpALifeMonsterAbstract && (l_tpALifeMonsterAbstract->ID != tpALifeMonsterAbstract->ID)) {
 			if (bfCheckForCombat(tpALifeMonsterAbstract,l_tpALifeMonsterAbstract,l_iGroupIndex)) {
+				
 				vfFillCombatGroup		(tpALifeMonsterAbstract,m_tpaCombatGroups[0]);
 				vfFillCombatGroup		(l_tpALifeMonsterAbstract,m_tpaCombatGroups[1]);
+				
 				m_tpaCombatMonsters[0]	= tpALifeMonsterAbstract;
 				m_tpaCombatMonsters[1]	= l_tpALifeMonsterAbstract;
+				
+				CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>(tpALifeMonsterAbstract);
+				if (l_tpALifeHumanAbstract)
+					l_tpALifeHumanAbstract->m_tpCurrentBestWeapon = 0;
+				
+				l_tpALifeHumanAbstract	= dynamic_cast<CSE_ALifeHumanAbstract*>(tpALifeMonsterAbstract);
+				if (l_tpALifeHumanAbstract)
+					l_tpALifeHumanAbstract->m_tpCurrentBestWeapon = 0;
+
 				ECombatResult			l_tCombatResult = eCombatResultRetreat12;
 				for (int i=0; i<2*int(m_dwMaxCombatIterationCount); i++) {
 					if (tfChooseCombatAction(l_iGroupIndex) == eCombatActionAttack)

@@ -336,43 +336,46 @@ void CSE_ALifeGraphRegistry::vfChangeEventGraphPoint(CSE_ALifeEvent *tpEvent, _G
 	vfAddEventToGraphPoint		(tpEvent,tNextGraphPointID);
 }
 
-void CSE_ALifeGraphRegistry::vfAttachItem(CSE_Abstract &CSE_Abstract, CSE_ALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bALifeRequest)
+void CSE_ALifeGraphRegistry::vfAttachItem(CSE_Abstract &tAbstract, CSE_ALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bALifeRequest)
 {
-	if (bALifeRequest) {
-#ifdef DEBUG_LOG
-		Msg("ALife : (OFFLINE) Attaching item %s to object %s",tpALifeItem->s_name_replace,CSE_Abstract.s_name_replace);
-#endif
-		CSE_Abstract.children.push_back(tpALifeItem->ID);
-		tpALifeItem->ID_Parent = CSE_Abstract.ID;
-		vfRemoveObjectFromGraphPoint(tpALifeItem,tGraphID);
-	}
-#ifdef DEBUG_LOG
-	else
-		Msg("ALife : (ONLINE) Attaching item %s to object %s",tpALifeItem->s_name_replace,CSE_Abstract.s_name_replace);
-#endif
+	vfRemoveObjectFromGraphPoint(tpALifeItem,tGraphID);
 
-	CSE_ALifeTraderAbstract *tpALifeTraderParams = dynamic_cast<CSE_ALifeTraderAbstract*>(&CSE_Abstract);
-	VERIFY(tpALifeTraderParams);
-	tpALifeTraderParams->m_fCumulativeItemMass += tpALifeItem->m_fMass;
-	tpALifeTraderParams->m_iCumulativeItemVolume += tpALifeItem->m_iVolume;
+	CSE_ALifeTraderAbstract		*l_tpALifeTraderAbstract = dynamic_cast<CSE_ALifeTraderAbstract*>(&tAbstract);
+	R_ASSERT2					(bALifeRequest && l_tpALifeTraderAbstract,"Cannot detach an item from non-trader object");
+
+	if (l_tpALifeTraderAbstract) {
+		l_tpALifeTraderAbstract->children.push_back(tpALifeItem->ID);
+		tpALifeItem->ID_Parent	= l_tpALifeTraderAbstract->ID;
+		l_tpALifeTraderAbstract->m_fCumulativeItemMass		+= tpALifeItem->m_fMass;
+		l_tpALifeTraderAbstract->m_iCumulativeItemVolume	+= tpALifeItem->m_iVolume;
+	}
+	else {
+		tAbstract.children.push_back(tpALifeItem->ID);
+		tpALifeItem->ID_Parent	= tAbstract.ID;
+	}
 }
 
-void CSE_ALifeGraphRegistry::vfDetachItem(CSE_Abstract &CSE_Abstract, CSE_ALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bALifeRequest)
+void CSE_ALifeGraphRegistry::vfDetachItem(CSE_Abstract &tAbstract, CSE_ALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bALifeRequest)
 {
-	if (bALifeRequest) {
-		xr_vector<u16>				&tChildren = CSE_Abstract.children;
-		xr_vector<u16>::iterator	I = std::find	(tChildren.begin(),tChildren.end(),tpALifeItem->ID);
-		VERIFY					(I != tChildren.end());
-		tChildren.erase			(I);
+	vfAddObjectToGraphPoint		(tpALifeItem,tGraphID);
+
+	CSE_ALifeTraderAbstract		*l_tpALifeTraderAbstract = dynamic_cast<CSE_ALifeTraderAbstract*>(&tAbstract);
+	R_ASSERT2					(bALifeRequest && l_tpALifeTraderAbstract,"Cannot detach an item from non-trader object");
+
+	if (l_tpALifeTraderAbstract) {
+		OBJECT_IT				I = std::find	(l_tpALifeTraderAbstract->children.begin(),l_tpALifeTraderAbstract->children.end(),tpALifeItem->ID);
+		R_ASSERT2				(I != l_tpALifeTraderAbstract->children.end(),"Can't detach an item which is not on my own");
+		l_tpALifeTraderAbstract->children.erase(I);
+		tpALifeItem->ID_Parent	= 0xffff;
+		l_tpALifeTraderAbstract->m_fCumulativeItemMass		-= tpALifeItem->m_fMass;
+		l_tpALifeTraderAbstract->m_iCumulativeItemVolume	-= tpALifeItem->m_iVolume;
+	}
+	else {
+		OBJECT_IT				I = std::find	(tAbstract.children.begin(),tAbstract.children.end(),tpALifeItem->ID);
+		R_ASSERT2				(I != tAbstract.children.end(),"Can't detach an item which is not on my own");
+		tAbstract.children.erase(I);
 		tpALifeItem->ID_Parent	= 0xffff;
 	}
-
-	vfAddObjectToGraphPoint(tpALifeItem,tGraphID);
-
-	CSE_ALifeTraderAbstract *tpTraderParams = dynamic_cast<CSE_ALifeTraderAbstract*>(&CSE_Abstract);
-	VERIFY(tpTraderParams);
-	tpTraderParams->m_fCumulativeItemMass -= tpALifeItem->m_fMass;
-	tpTraderParams->m_iCumulativeItemVolume -= tpALifeItem->m_iVolume;
 }
 
 void CSE_ALifeGraphRegistry::vfAssignGraphPosition(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract)

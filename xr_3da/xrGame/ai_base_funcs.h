@@ -42,11 +42,8 @@ public:
 		else
 			if (fTemp >= m_fMaxResultValue)
 				return(dwDiscretizationValue - 1);
-			else {
-				float fDummy = (m_fMaxResultValue - m_fMinResultValue + 1)/float(dwDiscretizationValue);
-				fDummy = (fTemp - m_fMinResultValue)/fDummy;
-				return(iFloor(fDummy));
-			}
+			else
+				return(iFloor((fTemp - m_fMinResultValue)/(m_fMaxResultValue - m_fMinResultValue)*float(dwDiscretizationValue - 1) + .5f));
 	}
 
 	IC		float	ffGetMaxResultValue()

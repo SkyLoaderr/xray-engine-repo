@@ -115,8 +115,8 @@ public:
 			void					vfRemoveEventFromGraphPoint	(CSE_ALifeEvent			*tpEvent,				_GRAPH_ID		tGraphID);
 			void					vfAddEventToGraphPoint		(CSE_ALifeEvent			*tpEvent,				_GRAPH_ID		tNextGraphPointID);
 			void					vfChangeEventGraphPoint		(CSE_ALifeEvent			*tpEvent,				_GRAPH_ID		tGraphPointID,		_GRAPH_ID tNextGraphPointID);
-			void					vfAttachItem				(CSE_Abstract			&CSE_Abstract,			CSE_ALifeItem	*tpALifeItem,		_GRAPH_ID tGraphID,			bool bALifeRequest = true);
-			void					vfDetachItem				(CSE_Abstract			&CSE_Abstract,			CSE_ALifeItem	*tpALifeItem,		_GRAPH_ID tGraphID,			bool bALifeRequest = true);
+			void					vfAttachItem				(CSE_Abstract			&tAbstract,				CSE_ALifeItem	*tpALifeItem,		_GRAPH_ID tGraphID,			bool bALifeRequest = true);
+			void					vfDetachItem				(CSE_Abstract			&tAbstract,				CSE_ALifeItem	*tpALifeItem,		_GRAPH_ID tGraphID,			bool bALifeRequest = true);
 };
 
 class CSE_ALifeTraderRegistry {

@@ -456,14 +456,26 @@ float CGraphPointType0::ffGetValue()
 	return(m_fLastValue = getAI().m_tpaGraph[getAI().m_tpCurrentALifeObject->m_tGraphID].tVertexTypes[0]);
 }
 
-float CEyeRange::ffGetValue()
+float CPersonalEyeRange::ffGetValue()
 {
 	if (bfCheckForCachedResult())
 		return(m_fLastValue);
 	return(m_fLastValue = getAI().m_tpCurrentALifeMember->m_fEyeRange);
 }
 
-float CMaxMonsterHealth::ffGetValue()
+float CEnemyEyeRange::ffGetValue()
+{
+	if (bfCheckForCachedResult())
+		return(m_fLastValue);
+
+	CSE_ALifeMonsterAbstract*l_tpALifeMonsterAbstract = getAI().m_tpCurrentALifeMember;
+	getAI().m_tpCurrentALifeMember	= getAI().m_tpCurrentALifeEnemy;
+	m_fLastValue			= getAI().m_pfPersonalEyeRange->ffGetValue();
+	getAI().m_tpCurrentALifeMember	= l_tpALifeMonsterAbstract;
+	return					(m_fLastValue);
+}
+
+float CPersonalMaxHealth::ffGetValue()
 {
 	if (bfCheckForCachedResult())
 		return(m_fLastValue);
@@ -471,20 +483,11 @@ float CMaxMonsterHealth::ffGetValue()
 	CSE_ALifeAbstractGroup	*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(getAI().m_tpCurrentALifeMember);
 	if (!l_tpALifeAbstractGroup)
 		return(m_fLastValue = getAI().m_tpCurrentALifeMember->m_fMaxHealthValue);
-	else {
-		m_fLastValue		= 0; 
-		OBJECT_IT			I = l_tpALifeAbstractGroup->children.begin();
-		OBJECT_IT			E = l_tpALifeAbstractGroup->children.end();
-		for ( ; I != E; I++) {
-			CSE_ALifeMonsterAbstract *l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(getAI().m_tpALife->tpfGetObjectByID(*I));
-			R_ASSERT2		(l_tpALifeMonsterAbstract,"Invalid group member!");
-			m_fLastValue	+= l_tpALifeMonsterAbstract->m_fMaxHealthValue;
-		}
-		return(m_fLastValue);
-	}
+	else
+		return(m_fLastValue = getAI().m_tpCurrentALifeMember->m_fMaxHealthValue*l_tpALifeAbstractGroup->m_wCount); 
 }
 
-u32 CMaxMonsterHealth::dwfGetDiscreteValue(u32 dwDiscretizationValue)
+u32 CPersonalMaxHealth::dwfGetDiscreteValue(u32 dwDiscretizationValue)
 {
 	float fTemp = ffGetValue();
 	if (fTemp <= m_fMinResultValue)
@@ -493,22 +496,45 @@ u32 CMaxMonsterHealth::dwfGetDiscreteValue(u32 dwDiscretizationValue)
 		if (fTemp >= m_fMaxResultValue)
 			return(dwDiscretizationValue - 1);
 		else {
-			if (fTemp >= 30)
-				return(_min(2,iFloor(m_fMaxResultValue) - 1)/dwDiscretizationValue);
-			if (fTemp >= 50)
-				return(_min(3,iFloor(m_fMaxResultValue) - 1)/dwDiscretizationValue);
-			if (fTemp >= 80)
-				return(_min(4,iFloor(m_fMaxResultValue) - 1)/dwDiscretizationValue);
-			if (fTemp >= 100)
-				return(_min(5,iFloor(m_fMaxResultValue) - 1)/dwDiscretizationValue);
-			if (fTemp >= 150)
-				return(_min(6,iFloor(m_fMaxResultValue) - 1)/dwDiscretizationValue);
-			if (fTemp >= 250)
-				return(_min(7,iFloor(m_fMaxResultValue) - 1)/dwDiscretizationValue);
-			if (fTemp >= 500)
-				return(_min(8,iFloor(m_fMaxResultValue) - 1)/dwDiscretizationValue);
-			return(_min(9,iFloor(m_fMaxResultValue) - 1)/dwDiscretizationValue);
+			if (fTemp <= 30)
+				return(iFloor(1*float(dwDiscretizationValue)/10 + .5f));
+			if (fTemp <= 50)
+				return(iFloor(2*float(dwDiscretizationValue)/10 + .5f));
+			if (fTemp <= 80)
+				return(iFloor(3*float(dwDiscretizationValue)/10 + .5f));
+			if (fTemp <= 100)
+				return(iFloor(4*float(dwDiscretizationValue)/10 + .5f));
+			if (fTemp <= 150)
+				return(iFloor(5*float(dwDiscretizationValue)/10 + .5f));
+			if (fTemp <= 250)
+				return(iFloor(6*float(dwDiscretizationValue)/10 + .5f));
+			if (fTemp <= 500)
+				return(iFloor(7*float(dwDiscretizationValue)/10 + .5f));
+			if (fTemp <= 750)
+				return(iFloor(8*float(dwDiscretizationValue)/10 + .5f));
+			return(iFloor(9*float(dwDiscretizationValue)/10 + .5f));
 		}
+}
+
+float CEnemyMaxHealth::ffGetValue()
+{
+	if (bfCheckForCachedResult())
+		return(m_fLastValue);
+
+	CSE_ALifeMonsterAbstract*l_tpALifeMonsterAbstract = getAI().m_tpCurrentALifeMember;
+	getAI().m_tpCurrentALifeMember	= getAI().m_tpCurrentALifeEnemy;
+	m_fLastValue			= getAI().m_pfPersonalMaxHealth->ffGetValue();
+	getAI().m_tpCurrentALifeMember	= l_tpALifeMonsterAbstract;
+	return					(m_fLastValue);
+}
+
+u32 CEnemyMaxHealth::dwfGetDiscreteValue(u32 dwDiscretizationValue)
+{
+	CSE_ALifeMonsterAbstract*l_tpALifeMonsterAbstract = getAI().m_tpCurrentALifeMember;
+	getAI().m_tpCurrentALifeMember	= getAI().m_tpCurrentALifeEnemy;
+	u32						l_dwResult = getAI().m_pfPersonalMaxHealth->dwfGetDiscreteValue(dwDiscretizationValue);
+	getAI().m_tpCurrentALifeMember	= l_tpALifeMonsterAbstract;
+	return					(l_dwResult);
 }
 
 float CEquipmentType::ffGetValue()

@@ -29,8 +29,10 @@ class CEnemyWeaponTypeFunction;
 class CEnemyEquipmentCostFunction;
 class CEnemyRukzakWeightFunction;
 class CEnemyAnomalityFunction;
-class CEyeRange;
-class CMaxMonsterHealth;
+class CPersonalEyeRange;
+class CPersonalMaxHealth;
+class CEnemyEyeRange;
+class CEnemyMaxHealth;
 class CEquipmentType;
 class CItemDeterioration;
 class CEquipmentPreference;
@@ -121,8 +123,8 @@ public:
 	CPersonalRelationFunction				*m_pfPersonalRelation;
 	CPersonalGreedFunction					*m_pfPersonalGreed;
 	CPersonalAggressivenessFunction			*m_pfPersonalAggressiveness;
-	CEyeRange								*m_pfEyeRange;
-	CMaxMonsterHealth						*m_pfMaxMonsterHealth;
+	CPersonalEyeRange						*m_pfPersonalEyeRange;
+	CPersonalMaxHealth						*m_pfPersonalMaxHealth;
 
 	CEnemyHealthFunction					*m_pfEnemyHealth;
 	CEnemyCreatureTypeFunction				*m_pfEnemyCreatureType;
@@ -130,6 +132,8 @@ public:
 	CEnemyEquipmentCostFunction				*m_pfEnemyEquipmentCost;
 	CEnemyRukzakWeightFunction				*m_pfEnemyRukzakWeight;
 	CEnemyAnomalityFunction					*m_pfEnemyAnomality;
+	CEnemyEyeRange							*m_pfEnemyEyeRange;
+	CEnemyMaxHealth							*m_pfEnemyMaxHealth;
 
 	// complex functions
 	CPatternFunction						*m_pfWeaponEffectiveness;
