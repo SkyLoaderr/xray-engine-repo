@@ -111,6 +111,10 @@ u32		CSoundRender_Core::stat_render	()
 
 			Msg	("* %2d -- %2d[%2.2f] : %s",it,T->get_emitter()->dbg_ID,T->priority,T->get_emitter()->source->fname);
 		}
+		else 
+		{
+			Msg	("* %2d -- stopped",it);
+		}
 	}
 	return counter;
 }
