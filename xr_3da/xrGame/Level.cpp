@@ -30,11 +30,16 @@ CLevel::CLevel()
 	eDA_PlayMotion				= Engine.Event.Handler_Attach	("LEVEL:DA_PlayMotion",this);
 	eDA_StopMotion				= Engine.Event.Handler_Attach	("LEVEL:DA_StopMotion",this);
 	eEnvironment				= Engine.Event.Handler_Attach	("LEVEL:Environment",this);
+
+	eEntitySpawn				= Engine.Event.Handler_Attach	("LEVEL:spawn",this);
 }
 
 CLevel::~CLevel()
 {
 	Msg			("- Destroying level");
+
+	Engine.Event.Handler_Detach(eEntitySpawn,	this);
+
 	Engine.Event.Handler_Detach(eEnvironment,	this);
 	Engine.Event.Handler_Detach(eDA_StopMotion,	this);
 	Engine.Event.Handler_Detach(eDA_PlayMotion,	this);

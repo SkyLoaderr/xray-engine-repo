@@ -52,6 +52,8 @@ protected:
 	EVENT						eDA_PlayMotion;
 	EVENT						eDA_StopMotion;
 	EVENT						eEnvironment;
+
+	EVENT						eEntitySpawn;
 public:
 	xrServer*					Server;
 
