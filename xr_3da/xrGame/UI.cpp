@@ -21,28 +21,6 @@ CUI::CUI(CHUDManager* p)
 	UIHealth.Init	();
 	UISquad.Init	();
 
-	UIMainWindow.Init("ui\\ui_hud_frame", 100,100, 500,500);
-	
-	UIMainWindow.AttachChild(&UIButton1);
-	UIMainWindow.AttachChild(&UIButton2);
-
-	UIButton1.Init(10,10,128,128);
-	UIButton2.Init(10,210,128,128);
-
-	
-
-//	CGameFont *pGameFont = m_Parent->pFontMedium;
-	//UIButton1.SetFont(m_Parent->pFontMedium);
-	//UIButton2.SetFont(m_Parent->pFontSmall);
-
-			
-	//show the cursor
-	UICursor.SetPos(Device.dwWidth/2, Device.dwHeight/2);
-	UICursor.Show();
-	//UICursor.Hide();
-
-	
-
 	m_Parent		= p;
 	pUIGame			= 0;
 
@@ -101,15 +79,6 @@ void CUI::OnFrame()
 		if(l_pA && (l_pA->m_inventory.m_activeSlot < l_pA->m_inventory.m_slots.size())) {
 			UIWeapon.Out(dynamic_cast<CWeapon*>(l_pA->m_inventory.m_slots[l_pA->m_inventory.m_activeSlot].m_pIItem));
 		} else UIWeapon.Out(NULL);
-
-
-		//update windows
-		UIButton1.SetFont(m_Parent->pFontMedium);
-		UIButton2.SetFont(m_Parent->pFontMedium);
-		UIMainWindow.Update();
-
-				
-
 	}
 	// out GAME-style depend information
 	if (pUIGame) pUIGame->OnFrame	();
@@ -142,13 +111,6 @@ bool CUI::Render()
 		UIZoneMap.Render();
 		UIWeapon.Render();
 		UIHealth.Render();
-
-		//Draw main window and its children
-		UIMainWindow.Draw();
-
-		//render cursor only when it visible
-		if(UICursor.IsVisible())
-					UICursor.Render();
 	}
 	// out GAME-style depend information
 	if (pUIGame) pUIGame->Render	();
@@ -157,48 +119,24 @@ bool CUI::Render()
 //--------------------------------------------------------------------
 bool CUI::OnKeyboardPress(int dik)
 {
-	if(dik==MOUSE_1)
-	{
-		UIMainWindow.OnMouse(UICursor.GetPos().x,UICursor.GetPos().y,
-			CUIWindow::LBUTTON_DOWN);
-		return true;
-	}
-
-	if (pUIGame&&pUIGame->OnKeyboardPress(dik)) 
-	{
-		return true;
-	}
+	if (pUIGame&&pUIGame->OnKeyboardPress(dik)) return true;
 	return false;
 }
 //--------------------------------------------------------------------
 
 bool CUI::OnKeyboardRelease(int dik)
 {
-	if(dik==MOUSE_1)
-	{
-		UIMainWindow.OnMouse(UICursor.GetPos().x,UICursor.GetPos().y,
-			CUIWindow::LBUTTON_UP);
-		return true;
-	}
-
-
-
-	if (pUIGame&&pUIGame->OnKeyboardRelease(dik)) 
-	{
-		return true;
-	}
+	if (pUIGame&&pUIGame->OnKeyboardRelease(dik)) return true;
 	return false;
 }
 //--------------------------------------------------------------------
 
 bool CUI::OnMouseMove(int dx,int dy)
 {
-	if (UICursor.IsVisible())
+	if (UICursor.bVisible)
 	{ 
-		UICursor.MoveBy(dx, dy);
-
-		UIMainWindow.OnMouse(UICursor.GetPos().x,UICursor.GetPos().y,
-							CUIWindow::MOUSE_MOVE);
+		UICursor.vPos.x+=(float)dx;
+		UICursor.vPos.y+=(float)dy;
 		return true;
 	}
 	return false;
