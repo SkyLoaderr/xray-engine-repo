@@ -76,6 +76,9 @@
 	#ifdef _DEBUG
     	#define DEBUG
     #endif
+	#ifdef MIXED
+    	#define DEBUG
+    #endif
 #endif
 
 #ifdef __BORLANDC__
