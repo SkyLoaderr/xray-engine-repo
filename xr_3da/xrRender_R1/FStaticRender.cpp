@@ -3,14 +3,13 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "xr_ioconsole.h"
-#include "render.h"
 #include "fstaticrender.h"
-#include "fbasicvisual.h"
-#include "xr_creator.h"
-#include "xr_object.h"
-#include "CustomHUD.h"
-#include "lighttrack.h"
+#include "..\xr_ioconsole.h"
+#include "..\fbasicvisual.h"
+#include "..\fcached.h"
+#include "..\xr_object.h"
+#include "..\CustomHUD.h"
+#include "..\lighttrack.h"
 
 CRender										Render_Implementation;
 

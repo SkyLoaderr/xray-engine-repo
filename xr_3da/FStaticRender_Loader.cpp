@@ -1,12 +1,9 @@
 #include "stdafx.h"
 #include "fstaticrender.h"
-#include "fbasicvisual.h"
-#include "fmesh.h"
-#include "xrLevel.h"
-#include "cl_collector.h"
-#include "xr_creator.h"
-
-#include "x_ray.h"
+#include "..\fbasicvisual.h"
+#include "..\fmesh.h"
+#include "..\xrLevel.h"
+#include "..\x_ray.h"
 
 extern Shader*	shDEBUG;
 
