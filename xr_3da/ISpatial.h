@@ -108,10 +108,10 @@ public:
 public:
 	enum
 	{
-		OPT_ONLYFIRST	= (1<<1),
-		OPT_ONLYNEAREST	= (1<<2),
-		OPT_ORDERED		= (1<<3),
-		OPT_force_u32	= u32(-1)
+		O_ONLYFIRST		= (1<<0),
+		O_ONLYNEAREST	= (1<<1),
+		O_ORDERED		= (1<<2),
+		O_force_u32		= u32(-1)
 	};
 
 	// query
