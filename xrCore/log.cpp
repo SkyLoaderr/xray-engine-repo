@@ -69,10 +69,11 @@ void Log(const char *s)
 void __cdecl Msg( const char *format, ...)
 {
 	va_list mark;
-	char buf[1024];
-	va_start( mark, format );
-	vsprintf( buf, format, mark );
-	Log		( buf );
+	string1024	buf;
+	va_start	(mark, format );
+	int sz		= _vsnprintf(buf, sizeof(buf)-1, format, mark ); buf[sizeof(buf)-1]=0;
+    va_end		(mark);
+	if (sz)		Log(buf);
 }
 
 void Log(const char *msg, const char *dop) {
