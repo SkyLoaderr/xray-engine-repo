@@ -183,6 +183,47 @@ class CAI_Rat : public CCustomMonster
 		CRatSelectorAttack			SelectorAttack;
 		CRatSelectorFreeHunting		SelectorFreeHunting;
 
+		
+		IC bool bfCheckIfGoalChanged()
+		{
+			if (m_fGoalChangeTime<=0){
+				m_fGoalChangeTime += m_fGoalChangeDelta+m_fGoalChangeDelta*::Random.randF(-0.5f,0.5f);
+				Fvector vP;
+				vP.set(m_tSpawnPosition.x,m_tSpawnPosition.y+m_fMinHeight,m_tSpawnPosition.z);
+				m_tGoalDir.x = vP.x+m_tVarGoal.x*::Random.randF(-0.5f,0.5f); 
+				m_tGoalDir.y = vP.y+m_tVarGoal.y*::Random.randF(-0.5f,0.5f);
+				m_tGoalDir.z = vP.z+m_tVarGoal.z*::Random.randF(-0.5f,0.5f);
+				return(true);
+			}
+			return(false);
+		};
+
+		IC void vfChooseNewSpeed()
+		{
+			int iRandom = ::Random.randI(0,3);
+			switch (iRandom) {
+				case 0 : {
+					m_fSpeed = m_fMaxSpeed;
+					break;
+				}
+				case 1 : {
+					m_fSpeed = m_fMinSpeed;
+					break;
+				}
+				case 2 : {
+					if (::Random.randI(0,4) == 0)
+						m_fSpeed = EPS_S;
+					break;
+				}
+			}
+			m_fSafeSpeed = m_fSpeed;
+		};
+
+		IC void vfUpdateTime(float fTimeDelta)
+		{
+			m_fGoalChangeTime -= fTimeDelta;
+		};		
+		
 		/**
 		void SenseSomething();
 		void UnderFire();
@@ -222,7 +263,6 @@ class CAI_Rat : public CCustomMonster
 		int  ifDivideNearestNode(NodeCompressed *tpStartNode, Fvector tCurrentPosition, vector<SSubNode> &tpSubNodes);
 		void GoToPointViaSubnodes(Fvector &tLeaderPosition);
 		void vfUpdateDynamicObjects();
-		void FreeState();
 
 	public:
 					   CAI_Rat();

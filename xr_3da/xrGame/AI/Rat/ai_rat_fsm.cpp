@@ -155,38 +155,11 @@ void CAI_Rat::FreeHunting()
 	
 	CHECK_IF_SWITCH_TO_NEW_STATE(Enemy.Enemy,aiRatAttackFire)
 
-	if (m_bStateChanged) {
-		m_tHPB.x = r_torso_current.yaw;
-		m_tHPB.y = r_torso_current.pitch;
-	}
+	if (bfCheckIfGoalChanged())
+		vfChooseNewSpeed();
 
-	if (m_fGoalChangeTime<=0){
-		m_fGoalChangeTime += m_fGoalChangeDelta+m_fGoalChangeDelta*::Random.randF(-0.5f,0.5f);
-		Fvector vP;
-		vP.set(m_tSpawnPosition.x,m_tSpawnPosition.y+m_fMinHeight,m_tSpawnPosition.z);
-		m_tGoalDir.x = vP.x+m_tVarGoal.x*::Random.randF(-0.5f,0.5f); 
-		m_tGoalDir.y = vP.y+m_tVarGoal.y*::Random.randF(-0.5f,0.5f);
-		m_tGoalDir.z = vP.z+m_tVarGoal.z*::Random.randF(-0.5f,0.5f);
-		
-		int iRandom = ::Random.randI(0,3);
-		switch (iRandom) {
-			case 0 : {
-				m_fSpeed = m_fMaxSpeed;
-				break;
-			}
-			case 1 : {
-				m_fSpeed = m_fMinSpeed;
-				break;
-			}
-			case 2 : {
-				if (::Random.randI(0,4) == 0)
-					m_fSpeed = EPS_S;
-				break;
-			}
-		}
-		m_fSafeSpeed = m_fSpeed;
-	}
-	m_fGoalChangeTime -= m_fTimeUpdateDelta;
+	vfUpdateTime(m_fTimeUpdateDelta);
+
 	//if (fabsf(m_fSpeed) > EPS_L) 
 	{
 		// Update position and orientation of the planes
@@ -226,8 +199,19 @@ void CAI_Rat::FreeHunting()
 		m_tHPB.x  +=  m_fDHeading;
 		m_tHPB.z  = -m_fDHeading * 9.0f;
 
+		m_tHPB.x = angle_normalize_signed(m_tHPB.x);
+		m_tHPB.y = angle_normalize_signed(m_tHPB.y);
+		m_tHPB.z = angle_normalize_signed(m_tHPB.z);
+
 		// Build the local matrix for the pplane
-		mRotate.setHPB(m_tHPB.x,m_tHPB.y,m_tHPB.z);
+		if (m_fSpeed > EPS_L) {
+			mRotate.setHPB(m_tHPB.x,m_tHPB.y,m_tHPB.z);
+			r_target.yaw = -m_tHPB.x;
+		}
+		else
+			r_target.yaw = r_torso_target.yaw;
+
+		UpdateTransform();
 
 		// Update position
 		Fvector tTemp;

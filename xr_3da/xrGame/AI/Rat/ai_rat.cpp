@@ -25,7 +25,7 @@ CAI_Rat::CAI_Rat()
 	tpSavedEnemyNode = 0;
 	dwSavedEnemyNodeID = DWORD(-1);
 	dwLostEnemyTime = 0;
-	r_spine_speed = r_torso_speed = q_look.o_look_speed = PI_DIV_2*1;
+	r_spine_speed = r_torso_speed = q_look.o_look_speed = PI_DIV_2*2;
 	m_tpCurrentGlobalAnimation = 0;
 	m_tpCurrentGlobalBlend = 0;
 	m_bActionStarted = false;
