@@ -15,6 +15,7 @@
 CPHDestroyable::CPHDestroyable()
 {
 	m_flags.flags=0;
+	m_flags.set(fl_released,TRUE);
 }
 /////////spawn object representing destroyed item//////////////////////////////////////////////////////////////////////////////////
 void CPHDestroyable::GenSpawnReplace(u16 ref_id,LPCSTR section,shared_str visual_name)
@@ -78,30 +79,20 @@ void CPHDestroyable::Destroy(u16 source_id/*=u16(-1)*/,LPCSTR section/*="ph_skel
 
 	//	
 	obj->PPhysicsShell()->Deactivate();
+	obj->setVisible(false);
+	obj->setEnabled(false);
+	if(source_id!=u16(-1))
+	{
+		m_flags.set(fl_released,FALSE);
+	}
 	xr_vector<shared_str>::iterator i=m_destroyed_obj_visual_names.begin(),e=m_destroyed_obj_visual_names.end();
 	for(;e!=i;i++)
 		GenSpawnReplace(source_id,section,*i);
 
 
 
-	CActor				*A		=smart_cast<CActor*>(obj)	;
-	if(A)
-	{
-		A->character_physics_support()->SetRemoved();
-		obj->setVisible(FALSE);
-		obj->setEnabled(FALSE);
-	}
-	else
-	{
-		NET_Packet			P;
-		obj->u_EventGen			(P,GE_DESTROY,obj->ID());
-		//	Msg					("ge_destroy: [%d] - %s",ID(),*cName());
-		if (obj->Local()) obj->u_EventSend			(P);
-	}
-
+	
 ///////////////////////////////////////////////////////////////////////////
-
-
 	m_flags.set(fl_destroyed,TRUE);
 	return;
 }
@@ -149,16 +140,37 @@ void CPHDestroyable::Load(LPCSTR section)
 
 void CPHDestroyable::Init()
 {
-	if(!m_flags.test(fl_destroyable))return;
+
 }
 
 void CPHDestroyable::RespawnInit()
 {
 	m_flags.set(fl_destroyed,FALSE);
+	m_flags.set(fl_released,TRUE);
 	m_destroyed_obj_visual_names.clear();
+}
+void CPHDestroyable::SheduleUpdate(u32 dt)
+{
+	CPhysicsShellHolder *obj=PPhysicsShellHolder();
+	//CActor				*A		=smart_cast<CActor*>(obj)	;
+	//if(A)
+	//{
+	//	A->character_physics_support()->SetRemoved();
+	//	obj->setVisible(FALSE);
+	//	obj->setEnabled(FALSE);
+	//}
+	//else
+	if(CanRemoveObject() && m_flags.test(fl_destroyed)&&m_flags.test(fl_released))
+	{
+		NET_Packet			P;
+		obj->u_EventGen			(P,GE_DESTROY,obj->ID());
+		//	Msg					("ge_destroy: [%d] - %s",ID(),*cName());
+		if (obj->Local()) obj->u_EventSend			(P);
+	}
+
 }
 
 void CPHDestroyable::NotificateDestroy(CPHDestroyableNotificate *dn)
 {
-
+	m_flags.set(fl_released,TRUE);
 }

@@ -93,7 +93,16 @@ void CDestroyablePhysicsObject::InitServerObject(CSE_Abstract* D)
 	CSE_ALifeObjectPhysic			*PO = smart_cast<CSE_ALifeObjectPhysic*>(D);
 	if(PO)PO->type=epotSkeleton;
 }
+void CDestroyablePhysicsObject::shedule_Update(u32 dt)
+{
+	inherited::shedule_Update(dt);
+	CPHDestroyable::SheduleUpdate(dt);
+}
 
+bool CDestroyablePhysicsObject::CanRemoveObject()
+{
+	return !CParticlesPlayer::IsPlaying()&& !m_destroy_sound.feedback;//&& sound!
+}
 DLL_Pure	*CDestroyablePhysicsObject::_construct()
 {
 	

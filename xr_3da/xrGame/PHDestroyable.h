@@ -6,6 +6,7 @@ class CSE_Abstract;
 class CPHDestroyableNotificate;
 class CPHDestroyableNotificator
 {
+
 public:
 	virtual		void						NotificateDestroy			(CPHDestroyableNotificate *dn)=0;
 };
@@ -19,7 +20,8 @@ public  CPHDestroyableNotificator
 			enum
 			{
 				fl_destroyable		= 1<<0,
-				fl_destroyed		= 1<<1
+				fl_destroyed		= 1<<1,
+				fl_released			= 1<<2
 			};
 	virtual CPhysicsShellHolder*		PPhysicsShellHolder			()																											=0;
 public:
@@ -33,6 +35,8 @@ public:
 			void						Load						(CInifile* ini,LPCSTR section)																				;
 virtual		void						NotificateDestroy			(CPHDestroyableNotificate *dn);
 IC			bool						CanDestroy					()												{return m_flags.test(fl_destroyable)&&!m_flags.test(fl_destroyed);}
+virtual		bool						CanRemoveObject				(){return true;}
+virtual		void						SheduleUpdate				(u32 dt);
 virtual		void						GenSpawnReplace				(u16 source_id,LPCSTR section,shared_str visual_name)														;
 virtual		void						InitServerObject			(CSE_Abstract*				D)																				;
 };

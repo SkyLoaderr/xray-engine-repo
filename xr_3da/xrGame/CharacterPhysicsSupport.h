@@ -79,10 +79,12 @@ IC	bool isAlive()
 protected:
 virtual void							SpawnInitPhysics				(CSE_Abstract	*D)																									;
 virtual CPhysicsShellHolder*			PPhysicsShellHolder				()	{return m_EntityAlife.PhysicsShellHolder();}	
+virtual bool							CanRemoveObject					();
 public:
 
 		void							SetRemoved						();
 		bool							IsRemoved						(){return m_eState==esRemoved;}
+
 //////////////////base hierarchi methods///////////////////////////////////////////////////
 		void 							in_UpdateCL()																																		;
 		void 							in_shedule_Update				( u32 DT )																											;

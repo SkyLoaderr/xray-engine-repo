@@ -146,6 +146,7 @@ void CCharacterPhysicsSupport::in_Init()
 void CCharacterPhysicsSupport::in_shedule_Update(u32 DT)
 {
 	//CPHSkeleton::Update(DT);
+	CPHDestroyable::SheduleUpdate(DT);
 }
 
 void CCharacterPhysicsSupport::in_Hit(float P,Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse,ALife::EHitType hit_type ,bool is_killing)
@@ -344,4 +345,16 @@ void CCharacterPhysicsSupport::in_ChangeVisual()
 	}
 
 
+}
+
+bool CCharacterPhysicsSupport::CanRemoveObject()
+{
+	if(m_eType==etActor)
+	{
+		return false;
+	}
+	else
+	{
+		return !m_EntityAlife.IsPlaying();
+	}
 }

@@ -12,6 +12,7 @@ CTeleWhirlwind ::CTeleWhirlwind ()
 	m_center.set(0.f,0.f,0.f);
 	m_keep_radius=1.f;
 	m_throw_power=100.f;
+
 }
 
 bool CTeleWhirlwind::activate(CPhysicsShellHolder *obj, float strength, float height, u32 max_time_keep)
@@ -72,6 +73,10 @@ void CTeleWhirlwind::clear_notrelevant()
 }
 
 
+void CTeleWhirlwind::play_destroy(CTeleWhirlwindObject *obj)
+{
+	
+}
 	CTeleWhirlwindObject::		CTeleWhirlwindObject()
 {
 			m_telekinesis=0;
