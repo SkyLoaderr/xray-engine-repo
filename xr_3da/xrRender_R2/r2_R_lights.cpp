@@ -37,7 +37,7 @@ void	CRender::render_lights	(light_Package& LP)
 
 		for		(u16 smap_ID=0; refactored.size()!=total; smap_ID++)
 		{
-			LP_smap_pool.initialize	(SMAP_size);
+			LP_smap_pool.initialize	(RImplementation.o.smapsize);
 			std::sort				(source.begin(),source.end(),pred_area);
 			for	(u32 test=0; test<source.size(); test++)
 			{

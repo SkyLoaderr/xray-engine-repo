@@ -16,7 +16,7 @@ void	CBlender_combine::Compile(CBlender_Compile& C)
 		C.r_Pass			("null",			"combine_1",		FALSE,	FALSE,	FALSE); // , TRUE, D3DBLEND_INVSRCALPHA, D3DBLEND_SRCALPHA);
 		C.r_Sampler_rtf		("s_position",		r2_RT_P);
 		C.r_Sampler_rtf		("s_normal",		r2_RT_N);
-		C.r_Sampler_rtf		("s_diffuse",		r2_RT_D_G);
+		C.r_Sampler_rtf		("s_diffuse",		r2_RT_albedo);
 		C.r_Sampler_rtf		("s_accumulator",	r2_RT_accum);
 		C.r_Sampler_rtf		("s_depth",			r2_RT_depth);
 		C.r_Sampler_rtf		("s_tonemap",		r2_RT_luminance);

@@ -145,21 +145,19 @@ void	CRenderTarget::OnDeviceCreate	()
 	// DIRECT (spot)
 	if (RImplementation.o.HW_smap)
 	{
-		u32	w=SMAP_size, h=SMAP_size;
-
-		rt_smap_depth.create		(r2_RT_smap_depth,			w,h,D3DFMT_D24X8	);
-		rt_smap_surf.create			(r2_RT_smap_surf,			w,h,D3DFMT_R5G6B5	);
+		u32	size					=RImplementation.o.smapsize;
+		rt_smap_depth.create		(r2_RT_smap_depth,			size,size,D3DFMT_D24X8	);
+		rt_smap_surf.create			(r2_RT_smap_surf,			size,size,D3DFMT_R5G6B5	);
 		rt_smap_ZB					= NULL;
 		s_accum_mask.create			(b_accum_mask,				"r2\\accum_mask");
 		s_accum_direct.create		(b_accum_direct,			"r2\\accum_direct");
 	}
 	else
 	{
-		u32	w=SMAP_size, h=SMAP_size;
-
-		rt_smap_surf.create			(r2_RT_smap_surf,			w,h,D3DFMT_R32F);
+		u32	size					=RImplementation.o.smapsize;
+		rt_smap_surf.create			(r2_RT_smap_surf,			size,size,D3DFMT_R32F);
 		rt_smap_depth				= NULL;
-		R_CHK						(HW.pDevice->CreateDepthStencilSurface	(w,h,D3DFMT_D24X8,D3DMULTISAMPLE_NONE,0,TRUE,&rt_smap_ZB,NULL));
+		R_CHK						(HW.pDevice->CreateDepthStencilSurface	(size,size,D3DFMT_D24X8,D3DMULTISAMPLE_NONE,0,TRUE,&rt_smap_ZB,NULL));
 		s_accum_mask.create			(b_accum_mask,				"r2\\accum_mask");
 		s_accum_direct.create		(b_accum_direct,			"r2\\accum_direct");
 	}
@@ -346,7 +344,6 @@ void	CRenderTarget::OnDeviceDestroy	()
 	accum_point_geom_destroy	();
 
 	// Blenders
-	xr_delete					(b_decompress			);
 	xr_delete					(b_combine				);
 	xr_delete					(b_luminance			);
 	xr_delete					(b_bloom				);

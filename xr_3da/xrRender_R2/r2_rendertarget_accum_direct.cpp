@@ -6,7 +6,7 @@ void CRenderTarget::shadow_direct	(light* L, u32 dls_phase)
 
 	// *** assume accumulator setted up ***
 	// texture adjustment matrix
-	float			fTexelOffs			= (.5f / SMAP_size);
+	float			fTexelOffs			= (.5f / float(RImplementation.o.smapsize));
 	u32				uRange				= 1; 
 	float			fRange				= float(uRange);
 	float			fBias				= -0.0035f*fRange;
@@ -50,7 +50,7 @@ void CRenderTarget::shadow_direct	(light* L, u32 dls_phase)
 		RCache.set_Geometry			(g_combine);
 
 		// Shader + constants
-		float circle				= ps_r2_ls_dsm_kernel / SMAP_size;
+		float circle				= ps_r2_ls_dsm_kernel / float(RImplementation.o.smapsize);
 		Fvector4 J; float scale		= circle/11.f;
 
 		// 1
