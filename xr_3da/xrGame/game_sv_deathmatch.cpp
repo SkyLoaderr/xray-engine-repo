@@ -1653,6 +1653,7 @@ void game_sv_Deathmatch::OnCreate				(u16 eid_who)
 	CSE_ALifeCustomZone* pCustomZone	=	smart_cast<CSE_ALifeCustomZone*> (pEntity);
 	if (!pCustomZone) return;
 	
+	bool bFound = false;
 	if (!m_AnomalySetsList.empty())
 	{
 		for (u32 j=0; j<m_AnomalySetsList.size(); j++)
@@ -1663,16 +1664,20 @@ void game_sv_Deathmatch::OnCreate				(u16 eid_who)
 				const char *pName = ((*Anomalies)[i]).c_str();
 				if (xr_strcmp(pName, pCustomZone->name_replace())) continue;
 				
-				NET_Packet P;
-				u_EventGen		(P,GE_ZONE_STATE_CHANGE,eid_who);
-				P.w_u8			(u8(4)); //eZoneStateDisabled
-				u_EventSend(P);
+				bFound = true;				
 
 				m_AnomalyIDSetsList[j].push_back(eid_who);
-				return;
 			};
 		};
 	}
+
+	if (bFound)
+	{
+		NET_Packet P;
+		u_EventGen		(P,GE_ZONE_STATE_CHANGE,eid_who);
+		P.w_u8			(u8(4)); //eZoneStateDisabled
+		u_EventSend(P);
+	};
 };
 
 void	game_sv_Deathmatch::Send_Anomaly_States		(ClientID id_who)
