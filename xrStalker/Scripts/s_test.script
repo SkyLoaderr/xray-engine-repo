@@ -28,7 +28,7 @@ end
 
 function Test2:set_value (v)
     self.value = v
-    s_test.Test1:set_value (v)
+    s_test.Test1:set_value (v + 10)
 end    
 
     
