@@ -49,7 +49,8 @@ end
 function stalkers_attacked (actor)
 
 	rainbow_hrom_u_nas_problema:play_at_pos (stalker2, stalker2:position (), 0)
-	stalker1:script	(false,  freedom00.script_name())
+	stalker1:script	(false, freedom00.script_name())
+	stalker1:script	(true,  freedom00.script_name())
 
     action (stalker3, 
 			move (move.standing, move.run, move.line, patrol ("outway")), 
