@@ -72,7 +72,7 @@ void CCar::reinit		()
 
 void __stdcall  CCar::cb_Steer(CBoneInstance* B)
 {
-	CCar*	C			= dynamic_cast<CCar*>	(static_cast<CObject*>(B->Callback_Param));
+	CCar*	C			= smart_cast<CCar*>	(static_cast<CObject*>(B->Callback_Param));
 	Fmatrix m;
 
 	C->m_steer_angle=C->m_steering_wheels.begin()->GetSteerAngle()*0.1f+C->m_steer_angle*0.9f;
@@ -86,7 +86,7 @@ void	CCar::Load					( LPCSTR section )
 {
 	inherited::Load					(section);
 	//CPHSkeleton::Load(section);
-	ISpatial*		self				=	dynamic_cast<ISpatial*> (this);
+	ISpatial*		self				=	smart_cast<ISpatial*> (this);
 	if (self)		self->spatial.type	|=	STYPE_VISIBLEFORAI;	
 }
 
@@ -106,7 +106,7 @@ BOOL	CCar::net_Spawn				(LPVOID DC)
 
 void CCar::SpawnInitPhysics	(CSE_Abstract	*D)
 {
-	CSE_PHSkeleton		*so = dynamic_cast<CSE_PHSkeleton*>(D);
+	CSE_PHSkeleton		*so = smart_cast<CSE_PHSkeleton*>(D);
 	R_ASSERT						(so);
 	ParseDefinitions				();//parse ini filling in m_driving_wheels,m_steering_wheels,m_breaking_wheels
 	CreateSkeleton					();//creates m_pPhysicsShell & fill in bone_map
@@ -176,7 +176,7 @@ void CCar::RestoreNetState(CSE_PHSkeleton* po)
 {
 	if(!po->_flags.test(CSE_PHSkeleton::flSavedData))return;
 	CPHSkeleton::RestoreNetState(po);
-	CSE_ALifeCar* co=dynamic_cast<CSE_ALifeCar*>(po);
+	CSE_ALifeCar* co=smart_cast<CSE_ALifeCar*>(po);
 	xr_map<u16,SDoor>::iterator i,e;
 	xr_vector<u8>::iterator		ii=co->door_states.begin();
 	i=m_doors.begin();
@@ -1170,7 +1170,7 @@ void CCar::OnEvent(NET_Packet& P, u16 type)
 			P.r_u16		(id);
 			CObject* O	= Level().Objects.net_Find	(id);
 
-			if(GetInventory()->Take(dynamic_cast<CGameObject*>(O), false, false)) 
+			if(GetInventory()->Take(smart_cast<CGameObject*>(O), false, false)) 
 			{
 				O->H_SetParent(this);
 			}
@@ -1189,7 +1189,7 @@ void CCar::OnEvent(NET_Packet& P, u16 type)
 			P.r_u16		(id);
 			CObject* O	= Level().Objects.net_Find	(id);
 
-			if(GetInventory()->Drop(dynamic_cast<CGameObject*>(O))) 
+			if(GetInventory()->Drop(smart_cast<CGameObject*>(O))) 
 			{
 				O->H_SetParent(0);
 			}
@@ -1244,7 +1244,7 @@ BOOL CCar::UsedAI_Locations()
 //	if(! l_pUD1) return;
 //	if(!l_pUD2) return;
 //
-//	CEntityAlive* capturer=dynamic_cast<CEntityAlive*>(l_pUD1->ph_ref_object);
+//	CEntityAlive* capturer=smart_cast<CEntityAlive*>(l_pUD1->ph_ref_object);
 //	if(capturer)
 //	{
 //		CPHCapture* capture=capturer->m_PhysicMovementControl->PHCapture();
@@ -1262,7 +1262,7 @@ BOOL CCar::UsedAI_Locations()
 //
 //	}
 //
-//	capturer=dynamic_cast<CEntityAlive*>(l_pUD2->ph_ref_object);
+//	capturer=smart_cast<CEntityAlive*>(l_pUD2->ph_ref_object);
 //	if(capturer)
 //	{
 //		CPHCapture* capture=capturer->m_PhysicMovementControl->PHCapture();

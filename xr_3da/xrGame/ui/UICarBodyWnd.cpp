@@ -137,11 +137,11 @@ void CUICarBodyWnd::InitCarBody(CInventory* pOurInv,    CGameObject* pOurObject,
 	m_pOthersInv = pOthersInv;
 
 	
-	CInventoryOwner* pOurInvOwner = dynamic_cast<CInventoryOwner*>(pOurObject);
+	CInventoryOwner* pOurInvOwner = smart_cast<CInventoryOwner*>(pOurObject);
 	UICharacterInfoLeft.InitCharacter(pOurInvOwner);
-	CInventoryOwner* pOthersInvOwner = dynamic_cast<CInventoryOwner*>(pOthersObject);
+	CInventoryOwner* pOthersInvOwner = smart_cast<CInventoryOwner*>(pOthersObject);
 	if(pOthersInvOwner)	UICharacterInfoRight.InitCharacter(pOthersInvOwner);
-	//CCar* pOthersCar = dynamic_cast<CCar*>(pOthersObject);	
+	//CCar* pOthersCar = smart_cast<CCar*>(pOthersObject);	
 	
 
 	m_pMouseCapturer = NULL;
@@ -194,10 +194,10 @@ void CUICarBodyWnd::UpdateLists()
 
 			UIDragDropItem.SetFont(HUD().pFontLetterica16Russian);
 
-			CWeaponAmmo* pWeaponAmmo  = dynamic_cast<CWeaponAmmo*>((*it));
+			CWeaponAmmo* pWeaponAmmo  = smart_cast<CWeaponAmmo*>((*it));
 			if(pWeaponAmmo)	UIDragDropItem.SetCustomUpdate(AmmoUpdateProc);
 
-			CEatableItem* pEatableItem = dynamic_cast<CEatableItem*>((*it));
+			CEatableItem* pEatableItem = smart_cast<CEatableItem*>((*it));
 			if(pEatableItem) UIDragDropItem.SetCustomUpdate(FoodUpdateProc);
 
 
@@ -240,10 +240,10 @@ void CUICarBodyWnd::UpdateLists()
 
 			UIDragDropItem.SetFont(HUD().pFontLetterica16Russian);
 
-			CWeaponAmmo* pWeaponAmmo  = dynamic_cast<CWeaponAmmo*>((*it));
+			CWeaponAmmo* pWeaponAmmo  = smart_cast<CWeaponAmmo*>((*it));
 			if(pWeaponAmmo)	UIDragDropItem.SetCustomUpdate(AmmoUpdateProc);
 
-			CEatableItem* pEatableItem = dynamic_cast<CEatableItem*>((*it));
+			CEatableItem* pEatableItem = smart_cast<CEatableItem*>((*it));
 			if(pEatableItem) UIDragDropItem.SetCustomUpdate(FoodUpdateProc);
 
 			//установить коэффициент масштабирования
@@ -337,7 +337,7 @@ void CUICarBodyWnd::Show()
 //содержит свойство GetInventory()
 bool CUICarBodyWnd::OurBagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
-	CUICarBodyWnd* this_car_body_wnd =  dynamic_cast<CUICarBodyWnd*>(pList->GetParent()->GetParent());
+	CUICarBodyWnd* this_car_body_wnd =  smart_cast<CUICarBodyWnd*>(pList->GetParent()->GetParent());
 	R_ASSERT2(this_car_body_wnd, "wrong parent addressed as trade wnd");
 
 	PIItem pIItem = (PIItem)(pItem->GetData());
@@ -362,7 +362,7 @@ bool CUICarBodyWnd::OurBagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 
 bool CUICarBodyWnd::OthersBagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
-	CUICarBodyWnd* this_car_body_wnd =  dynamic_cast<CUICarBodyWnd*>(pList->GetParent()->GetParent());
+	CUICarBodyWnd* this_car_body_wnd =  smart_cast<CUICarBodyWnd*>(pList->GetParent()->GetParent());
 	R_ASSERT2(this_car_body_wnd, "wrong parent addressed as trade wnd");
 
 

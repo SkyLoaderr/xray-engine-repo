@@ -178,7 +178,7 @@ bool CAI_Trader::bfAssignSound(CScriptEntityAction *tpEntityAction)
 
 void __stdcall CAI_Trader::BoneCallback(CBoneInstance *B)
 {
-	CAI_Trader*	this_class = dynamic_cast<CAI_Trader*> (static_cast<CObject*>(B->Callback_Param));
+	CAI_Trader*	this_class = smart_cast<CAI_Trader*> (static_cast<CObject*>(B->Callback_Param));
 
 	this_class->LookAtActor(B);
 }
@@ -206,7 +206,7 @@ void CAI_Trader::LookAtActor(CBoneInstance *B)
 BOOL CAI_Trader::net_Spawn			(LPVOID DC)
 {
 	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
-	CSE_ALifeTrader					*l_tpTrader = dynamic_cast<CSE_ALifeTrader*>(e);
+	CSE_ALifeTrader					*l_tpTrader = smart_cast<CSE_ALifeTrader*>(e);
 	
 	clone							(l_tpTrader->m_tpOrderedArtefacts,m_tpOrderedArtefacts);
 	
@@ -274,7 +274,7 @@ void CAI_Trader::OnEvent		(NET_Packet& P, u16 type)
 		case GE_OWNERSHIP_TAKE:
 			P.r_u16		(id);
 			Obj = Level().Objects.net_Find	(id);
-			if(inventory().Take(dynamic_cast<CGameObject*>(Obj), false, false)) 
+			if(inventory().Take(smart_cast<CGameObject*>(Obj), false, false)) 
 				Obj->H_SetParent(this);
 			else
 			{
@@ -288,7 +288,7 @@ void CAI_Trader::OnEvent		(NET_Packet& P, u16 type)
 		case GE_OWNERSHIP_REJECT:
 			P.r_u16		(id);
 			Obj = Level().Objects.net_Find	(id);
-			if(inventory().Drop(dynamic_cast<CGameObject*>(Obj))) 
+			if(inventory().Drop(smart_cast<CGameObject*>(Obj))) 
 				Obj->H_SetParent(0);
 			break;
 		case GE_TRANSFER_AMMO:
@@ -302,8 +302,8 @@ void CAI_Trader::feel_touch_new				(CObject* O)
 	if (Remote())		return;
 
 	// Now, test for game specific logical objects to minimize traffic
-	CInventoryItem		*I	= dynamic_cast<CInventoryItem*>	(O);
-	CBolt				*E	= dynamic_cast<CBolt*>			(O);
+	CInventoryItem		*I	= smart_cast<CInventoryItem*>	(O);
+	CBolt				*E	= smart_cast<CBolt*>			(O);
 
 	if (I && !E) {
 		Msg("Taking item %s!",*I->cName());
@@ -379,7 +379,7 @@ void CAI_Trader::net_Destroy()
 
 void TraderScriptCallBack(CBlend* B)
 {
-	CScriptMonster	*l_tpScriptMonster = dynamic_cast<CScriptMonster*> (static_cast<CObject*>(B->CallbackParam));
+	CScriptMonster	*l_tpScriptMonster = smart_cast<CScriptMonster*> (static_cast<CObject*>(B->CallbackParam));
 	R_ASSERT		(l_tpScriptMonster);
 	if (l_tpScriptMonster->GetCurrentAction()) 
 		l_tpScriptMonster->GetCurrentAction()->m_tAnimationAction.m_bCompleted = true;
@@ -545,7 +545,7 @@ bool CAI_Trader::BuyArtefact (CArtefact* pArtefact)
 void CAI_Trader::SyncArtefactsWithServer	()
 {
 	CSE_Abstract					*e	= Level().Server->game->get_entity_from_eid(ID()); VERIFY(e);
-    CSE_ALifeTrader					*l_tpTrader = dynamic_cast<CSE_ALifeTrader*>(e);
+    CSE_ALifeTrader					*l_tpTrader = smart_cast<CSE_ALifeTrader*>(e);
 	delete_data						(l_tpTrader->m_tpOrderedArtefacts);
 	clone							(m_tpOrderedArtefacts, l_tpTrader->m_tpOrderedArtefacts);
 }

@@ -89,7 +89,7 @@ void CUISleepWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	}
 	else if ((&UIPlusBtn == pWnd || &UIMinusBtn == pWnd || &UIRestBtn == pWnd) && BUTTON_DOWN == msg)
 	{
-		CUIButton *pBtn = dynamic_cast<CUIButton*>(pWnd);
+		CUIButton *pBtn = smart_cast<CUIButton*>(pWnd);
 		R_ASSERT(pBtn);
 
 		pBtn->EnableTextHighlighting(false);
@@ -97,7 +97,7 @@ void CUISleepWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	
 	if ((&UIPlusBtn == pWnd || &UIMinusBtn == pWnd || &UIRestBtn == pWnd) && BUTTON_CLICKED == msg)
 	{
-		CUIButton *pBtn = dynamic_cast<CUIButton*>(pWnd);
+		CUIButton *pBtn = smart_cast<CUIButton*>(pWnd);
 		R_ASSERT(pBtn);
 
 		pBtn->EnableTextHighlighting(true);

@@ -648,7 +648,7 @@ CMotionDef *CMotionManager::get_motion_def(ANIM_ITEM_MAP_IT &it, u32 index)
 
 void CMotionManager::ActivateJump()
 {
-	pJumping = dynamic_cast<CJumping *>(pMonster);
+	pJumping = smart_cast<CJumping *>(pMonster);
 }
 void CMotionManager::DeactivateJump()
 {

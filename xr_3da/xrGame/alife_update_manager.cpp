@@ -187,13 +187,13 @@ void CALifeUpdateManager::create_anomalies	()
 		CSE_Abstract					*object = F_entity_Create((*I)->s_name);
 		R_ASSERT2						(object,"Can't create entity.");
 
-		CSE_ALifeDynamicObject			*i = dynamic_cast<CSE_ALifeDynamicObject*>(object);
+		CSE_ALifeDynamicObject			*i = smart_cast<CSE_ALifeDynamicObject*>(object);
 		R_ASSERT2						(i,"Non-ALife object in the 'game.spawn'");
 
-		CSE_ALifeAnomalousZone			*tpALifeAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(i);
+		CSE_ALifeAnomalousZone			*tpALifeAnomalousZone = smart_cast<CSE_ALifeAnomalousZone*>(i);
 		if (tpALifeAnomalousZone) {
 			for ( ; j != m; ++j) {
-				CSE_ALifeAnomalousZone	*anomaly = dynamic_cast<CSE_ALifeAnomalousZone*>(*j);
+				CSE_ALifeAnomalousZone	*anomaly = smart_cast<CSE_ALifeAnomalousZone*>(*j);
 				R_ASSERT2				(anomaly,"Anomalous zones are grouped with incompatible objects!");
 				create					(i,*j,_SPAWN_ID(j - B));
 			}

@@ -61,7 +61,7 @@ void CHUDCursor::Render()
 
 	CObject*	O = Level().CurrentEntity();
 	if (0==O)	return;
-	CEntity*	E = dynamic_cast<CEntity*>(O);
+	CEntity*	E = smart_cast<CEntity*>(O);
 	if (0==E)	return;
 
 	p1	= Device.vCameraPosition;
@@ -101,8 +101,8 @@ void CHUDCursor::Render()
 	{ 
 		if (RQ.O)
 		{
-			CEntityAlive*	E = dynamic_cast<CEntityAlive*>(RQ.O);
-			PIItem	l_pI = dynamic_cast<PIItem>(RQ.O);
+			CEntityAlive*	E = smart_cast<CEntityAlive*>(RQ.O);
+			PIItem	l_pI = smart_cast<PIItem>(RQ.O);
 
 			if (E && (E->g_Health()>0))
 			{
@@ -117,7 +117,7 @@ void CHUDCursor::Render()
 				}
 				else
 				{
-					CEntityAlive*	pCurEnt = dynamic_cast<CEntityAlive*>(Level().CurrentEntity());
+					CEntityAlive*	pCurEnt = smart_cast<CEntityAlive*>(Level().CurrentEntity());
 					if (pCurEnt)
 					{					
 						if (GameID() == GAME_DEATHMATCH)

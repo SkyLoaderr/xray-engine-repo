@@ -165,7 +165,7 @@ void CHudItem::UpdateHudPosition	()
 	{
 		Fmatrix							trans;
 
-		CActor* pActor = dynamic_cast<CActor*>(H_Parent());
+		CActor* pActor = smart_cast<CActor*>(H_Parent());
 		if(pActor)
 		{
 			pActor->EffectorManager().affected_Matrix	(trans);
@@ -188,7 +188,7 @@ void CHudItem::OnH_A_Chield		()
 	hud_mode = FALSE;
 	
 	if (m_pHUD) {
-		if(Level().CurrentEntity() == H_Parent() && dynamic_cast<CActor*>(H_Parent()))
+		if(Level().CurrentEntity() == H_Parent() && smart_cast<CActor*>(H_Parent()))
 			m_pHUD->SetCurrentEntityHud(true);
 		else
 			m_pHUD->SetCurrentEntityHud(false);
@@ -201,7 +201,7 @@ void CHudItem::OnH_B_Chield		()
 {
 	inherited::OnH_B_Chield		();
 
-	if (m_pInventory && m_pInventory->ActiveItem() == dynamic_cast<PIItem>(this))
+	if (m_pInventory && m_pInventory->ActiveItem() == smart_cast<PIItem>(this))
 		OnActiveItem ();
 	else
 		OnHiddenItem ();

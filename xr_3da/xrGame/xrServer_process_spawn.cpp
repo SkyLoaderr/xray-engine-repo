@@ -94,7 +94,7 @@ CSE_Abstract* xrServer::Process_spawn(NET_Packet& P, ClientID sender, BOOL bSpaw
 			CSE_Abstract					*e_parent = ID_to_entity(E->ID_Parent);
 			R_ASSERT						(e_parent);
 			
-			if (!tpExistedEntity && !dynamic_cast<game_sv_mp_script*>(game) )
+			if (!tpExistedEntity && !smart_cast<game_sv_mp_script*>(game) )
 				game->OnTouch				(E->ID_Parent,E->ID);
 
 			e_parent->children.push_back	(E->ID);

@@ -98,7 +98,7 @@ bool CGraviZone::IdleState()
 			xr_set<CObject*>::iterator it;
 			for(it = m_inZone.begin(); m_inZone.end() != it; ++it) 
 			{
-				CPhysicsShellHolder * GO = dynamic_cast<CPhysicsShellHolder *>(*it);
+				CPhysicsShellHolder * GO = smart_cast<CPhysicsShellHolder *>(*it);
 
 				if(GO && GO->PPhysicsShell() && TTelekinesis::is_active_object(GO))
 				{
@@ -114,7 +114,7 @@ bool CGraviZone::IdleState()
 			xr_set<CObject *>::iterator it;
 			for(it = m_inZone.begin(); m_inZone.end() != it; ++it) 
 			{
-				CPhysicsShellHolder * GO = dynamic_cast<CPhysicsShellHolder *>(*it);
+				CPhysicsShellHolder * GO = smart_cast<CPhysicsShellHolder *>(*it);
 
 				if(GO && GO->PPhysicsShell() && !TTelekinesis::is_active_object(GO))
 				{
@@ -133,9 +133,9 @@ bool CGraviZone::IdleState()
 
 void CGraviZone::Affect(CObject* O) 
 {
-	CPhysicsShellHolder* GO = dynamic_cast<CPhysicsShellHolder*>(O);
+	CPhysicsShellHolder* GO = smart_cast<CPhysicsShellHolder*>(O);
 	if(!GO) return;
-	CEntityAlive* EA = dynamic_cast<CEntityAlive*>(GO);	
+	CEntityAlive* EA = smart_cast<CEntityAlive*>(GO);	
 
 	//////////////////////////////////////////////////////////////////////////
 	//	зат€гиваем объет по направлению к центру зоны

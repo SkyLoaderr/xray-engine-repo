@@ -136,7 +136,7 @@ void CZombie::reload(LPCSTR section)
 
 void __stdcall CZombie::BoneCallback(CBoneInstance *B)
 {
-	CZombie*	this_class = dynamic_cast<CZombie*> (static_cast<CObject*>(B->Callback_Param));
+	CZombie*	this_class = smart_cast<CZombie*> (static_cast<CObject*>(B->Callback_Param));
 
 	START_PROFILE("AI/Zombie/Bones Update");
 	this_class->Bones.Update(B, Level().timeServer());

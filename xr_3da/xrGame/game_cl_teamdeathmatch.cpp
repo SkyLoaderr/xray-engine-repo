@@ -99,7 +99,7 @@ void game_cl_TeamDeathmatch::TranslateGameMessage	(u32 msg, NET_Packet& P)
 CUIGameCustom* game_cl_TeamDeathmatch::createGameUI()
 {
 	CLASS_ID clsid			= CLSID_GAME_UI_TEAMDEATHMATCH;
-	CUIGameTDM*			pUIGame	= dynamic_cast<CUIGameTDM*> ( NEW_INSTANCE ( clsid ) );
+	CUIGameTDM*			pUIGame	= smart_cast<CUIGameTDM*> ( NEW_INSTANCE ( clsid ) );
 	R_ASSERT(pUIGame);
 	pUIGame->SetClGame(this);
 	pUIGame->Init();
@@ -146,7 +146,7 @@ void game_cl_TeamDeathmatch::OnTeamSelect(int Team)
 	{
 		CObject *l_pObj = Level().CurrentEntity();
 
-		CGameObject *l_pPlayer = dynamic_cast<CGameObject*>(l_pObj);
+		CGameObject *l_pPlayer = smart_cast<CGameObject*>(l_pObj);
 		if(!l_pPlayer) return;
 
 		NET_Packet		P;
@@ -230,7 +230,7 @@ char*	game_cl_TeamDeathmatch::getTeamSection(int Team)
 
 void game_cl_TeamDeathmatch::shedule_Update			(u32 dt)
 {
-	if(!m_game_ui && HUD().GetUI() ) m_game_ui = dynamic_cast<CUIGameTDM*>( HUD().GetUI()->UIGame() );
+	if(!m_game_ui && HUD().GetUI() ) m_game_ui = smart_cast<CUIGameTDM*>( HUD().GetUI()->UIGame() );
 	inherited::shedule_Update(dt);
 }
 

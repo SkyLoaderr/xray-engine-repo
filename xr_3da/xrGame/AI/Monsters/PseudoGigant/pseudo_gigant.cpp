@@ -146,7 +146,7 @@ void CPseudoGigant::event_on_step()
 {
 	//////////////////////////////////////////////////////////////////////////
 	// Earthquake Effector	//////////////
-	CActor* pActor =  dynamic_cast<CActor*>(Level().CurrentEntity());
+	CActor* pActor =  smart_cast<CActor*>(Level().CurrentEntity());
 	if(pActor)
 	{
 		float dist_to_actor = pActor->Position().distance_to(Position());

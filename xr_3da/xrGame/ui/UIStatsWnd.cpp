@@ -79,7 +79,7 @@ CUIStatsListItem * CUIStatsWnd::FindFrom(const u32 beg_pos, const char *strCapti
 {
 	for (int i = 0; i < UIStatsList.GetSize(); ++i)
 	{
-		CUIStatsListItem *pSLItem = dynamic_cast<CUIStatsListItem*>(UIStatsList.GetItem(i));
+		CUIStatsListItem *pSLItem = smart_cast<CUIStatsListItem*>(UIStatsList.GetItem(i));
 		R_ASSERT(beg_pos < pSLItem->FieldsVector.size());
 		for (FIELDS_VECTOR_it it = pSLItem->FieldsVector.begin() + beg_pos; it < pSLItem->FieldsVector.end(); ++it)
 		{
@@ -110,9 +110,9 @@ void CUIStatsWnd::HighlightItem(const u32 uItem)
 	if (m_uHighlightedItem != uItem)
 	{
 		if (m_uHighlightedItem != 0xffffffff)
-			dynamic_cast<CUIStatsListItem*>(UIStatsList.GetItem(m_uHighlightedItem))->Highlight(false);
+			smart_cast<CUIStatsListItem*>(UIStatsList.GetItem(m_uHighlightedItem))->Highlight(false);
 		if (uItem != 0xffffffff)
-			dynamic_cast<CUIStatsListItem*>(UIStatsList.GetItem(uItem))->Highlight(true);
+			smart_cast<CUIStatsListItem*>(UIStatsList.GetItem(uItem))->Highlight(true);
 		m_uHighlightedItem = uItem;
 	}
 }

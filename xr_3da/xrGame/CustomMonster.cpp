@@ -34,7 +34,7 @@ void CCustomMonster::SAnimState::Create(CSkeletonAnimated* K, LPCSTR base)
 
 //void __stdcall CCustomMonster::TorsoSpinCallback(CBoneInstance* B)
 //{
-//	CCustomMonster*		M = dynamic_cast<CCustomMonster*> (static_cast<CObject*>(B->Callback_Param));
+//	CCustomMonster*		M = smart_cast<CCustomMonster*> (static_cast<CObject*>(B->Callback_Param));
 //
 //	Fmatrix					spin;
 //	spin.setXYZ				(0, M->NET_Last.o_torso.pitch, 0);
@@ -70,7 +70,7 @@ void CCustomMonster::Load		(LPCSTR section)
 	CMemoryManager::Load		(section);
 	CMovementManager::Load		(section);
 
-	ISpatial*		self				= dynamic_cast<ISpatial*> (this);
+	ISpatial*		self				= smart_cast<ISpatial*> (this);
 	if (self)		{
 		self->spatial.type	|= STYPE_VISIBLEFORAI;
 		self->spatial.type	|= STYPE_REACTTOSOUND;
@@ -438,7 +438,7 @@ void CCustomMonster::UpdateCL	()
 
 BOOL CCustomMonster::feel_visible_isRelevant (CObject* O)
 {
-	CEntityAlive* E = dynamic_cast<CEntityAlive*>		(O);
+	CEntityAlive* E = smart_cast<CEntityAlive*>		(O);
 	if (0==E)								return FALSE;
 	if (E->g_Team() == g_Team())			return FALSE;
 	return TRUE;
@@ -454,7 +454,7 @@ void CCustomMonster::eye_pp_s0			( )
 	Fmatrix&	mEye						= V->LL_GetTransform(u16(eye_bone));
 	Fmatrix		X;							X.mul_43	(XFORM(),mEye);
 	VERIFY									(_valid(mEye));
-	const CAI_Stalker						*stalker = dynamic_cast<const CAI_Stalker*>(this);
+	const CAI_Stalker						*stalker = smart_cast<const CAI_Stalker*>(this);
 	const MonsterSpace::SBoneRotation		&rotation = stalker ? stalker->head_orientation() : m_body;
 	eye_matrix.setHPB						(-rotation.current.yaw + m_fEyeShiftYaw,-rotation.current.pitch,0);
 	eye_matrix.c.add						(X.c,m_tEyeShift);
@@ -679,7 +679,7 @@ BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 	CDamageManager::Load		(*cNameSect());
 
 	CSE_Abstract				*e	= (CSE_Abstract*)(DC);
-	CSE_ALifeMonsterAbstract	*E	= dynamic_cast<CSE_ALifeMonsterAbstract*>(e);
+	CSE_ALifeMonsterAbstract	*E	= smart_cast<CSE_ALifeMonsterAbstract*>(e);
 
 	eye_matrix.identity			();
 	m_body.current.yaw			= m_body.target.yaw	= -E->o_Angle.y;

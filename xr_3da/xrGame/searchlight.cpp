@@ -34,7 +34,7 @@ void CProjector::Load(LPCSTR section)
 
 void __stdcall CProjector::BoneCallbackX(CBoneInstance *B)
 {
-	CProjector	*P = dynamic_cast<CProjector*> (static_cast<CObject*>(B->Callback_Param));
+	CProjector	*P = smart_cast<CProjector*> (static_cast<CObject*>(B->Callback_Param));
 
 	float delta_yaw = angle_difference(P->_start.yaw,P->_current.yaw);
 	if (angle_normalize_signed(P->_start.yaw - P->_current.yaw) > 0) delta_yaw = -delta_yaw;
@@ -46,7 +46,7 @@ void __stdcall CProjector::BoneCallbackX(CBoneInstance *B)
 
 void __stdcall CProjector::BoneCallbackY(CBoneInstance *B)
 {
-	CProjector	*P = dynamic_cast<CProjector*> (static_cast<CObject*>(B->Callback_Param));
+	CProjector	*P = smart_cast<CProjector*> (static_cast<CObject*>(B->Callback_Param));
 
 	Fmatrix M;
 	M.setXYZi (0.0f,P->_current.pitch, 0.0f);
@@ -56,7 +56,7 @@ void __stdcall CProjector::BoneCallbackY(CBoneInstance *B)
 BOOL CProjector::net_Spawn(LPVOID DC)
 {
 	CSE_Abstract				*e		= (CSE_Abstract*)(DC);
-	CSE_ALifeObjectProjector	*slight	= dynamic_cast<CSE_ALifeObjectProjector*>(e);
+	CSE_ALifeObjectProjector	*slight	= smart_cast<CSE_ALifeObjectProjector*>(e);
 	R_ASSERT				(slight);
 	
 	if (!inherited::net_Spawn(DC))

@@ -85,12 +85,12 @@ bool CPseudodogGrowling::CheckPsiAttack()
 
 	if (angle_difference(h,my_h) > deg(10) ) return false;
 
-	CActor *pA = const_cast<CActor *>(dynamic_cast<const CActor *>(enemy));
+	CActor *pA = const_cast<CActor *>(smart_cast<const CActor *>(enemy));
 	if (!pA) return false;
 
-	if (pMonster != dynamic_cast<CAI_Biting *>(pA->ObjectWeLookingAt())) return false;
+	if (pMonster != smart_cast<CAI_Biting *>(pA->ObjectWeLookingAt())) return false;
 
-	CWeaponMagazined *pWeapon = dynamic_cast<CWeaponMagazined *>(pA->m_inventory->ActiveItem());
+	CWeaponMagazined *pWeapon = smart_cast<CWeaponMagazined *>(pA->m_inventory->ActiveItem());
 	if (!pWeapon) return false;
 
 	return true;

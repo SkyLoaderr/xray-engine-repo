@@ -631,7 +631,7 @@ void CAI_Rat::EatCorpse()
 		m_fSpeed						= 0;
 		if (Level().timeServer() - m_previous_query_time > m_dwHitInterval) {
 			m_previous_query_time		= Level().timeServer();
-			const CEntityAlive			*const_corpse = dynamic_cast<const CEntityAlive*>(item());
+			const CEntityAlive			*const_corpse = smart_cast<const CEntityAlive*>(item());
 			VERIFY						(const_corpse);
 			CEntityAlive				*corpse = const_cast<CEntityAlive*>(const_corpse);
 			VERIFY						(corpse);
@@ -661,7 +661,7 @@ void CAI_Rat::vfUpdateSpawnPosition()
 	VERIFY			(leader);
 
 	if (ID() != leader->ID())	{
-		CAI_Rat		*rat_leader = dynamic_cast<CAI_Rat*>(leader);
+		CAI_Rat		*rat_leader = smart_cast<CAI_Rat*>(leader);
 		if (rat_leader) {
 			if (m_tSafeSpawnPosition.distance_to(rat_leader->m_tSafeSpawnPosition) > EPS_L) {
 				vfAddActiveMember(true);

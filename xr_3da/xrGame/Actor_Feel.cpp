@@ -25,11 +25,11 @@ void CActor::feel_touch_delete	(CObject* O)
 
 BOOL CActor::feel_touch_contact	(CObject* O)
 {	
-	CInventoryItem* item = dynamic_cast<CInventoryItem*>(O);
-	CInventoryOwner* inventory_owner = dynamic_cast<CInventoryOwner*>(O);
+	CInventoryItem* item = smart_cast<CInventoryItem*>(O);
+	CInventoryOwner* inventory_owner = smart_cast<CInventoryOwner*>(O);
 	if(item && item->Useful() && !item->H_Parent()) 
 		return TRUE;
-	else if(inventory_owner && inventory_owner != dynamic_cast<CInventoryOwner*>(this))
+	else if(inventory_owner && inventory_owner != smart_cast<CInventoryOwner*>(this))
 		return TRUE;
 	else
 		return FALSE;
@@ -73,8 +73,8 @@ void CActor::PickupInfoDraw(CObject* object)
 {
 	LPCSTR draw_str = NULL;
 	
-	CInventoryItem* item = dynamic_cast<CInventoryItem*>(object);
-	CInventoryOwner* inventory_owner = dynamic_cast<CInventoryOwner*>(object);
+	CInventoryItem* item = smart_cast<CInventoryItem*>(object);
+	CInventoryOwner* inventory_owner = smart_cast<CInventoryOwner*>(object);
 	
 	VERIFY(item || inventory_owner);
 

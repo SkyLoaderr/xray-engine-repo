@@ -119,7 +119,7 @@ void CStalkerActionFreeNoALife::initialize	()
 //	m_object->set_path_type			(MovementManager::ePathTypePatrolPath);
 //	m_object->set_path				("way",PatrolPathManager::ePatrolStartTypeFirst,PatrolPathManager::ePatrolRouteTypeContinue,false);
 
-//	CGameObject						*actor = dynamic_cast<CGameObject*>(Level().CurrentEntity());
+//	CGameObject						*actor = smart_cast<CGameObject*>(Level().CurrentEntity());
 //	m_object->set_desired_position	(&actor->Position());
 //	m_object->set_level_dest_vertex	(actor->level_vertex_id());
 //	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
@@ -132,8 +132,8 @@ void CStalkerActionFreeNoALife::initialize	()
 	m_object->set_movement_type		(eMovementTypeStand);
 	m_object->set_mental_state		(eMentalStateFree);
 //	m_object->CObjectHandler::set_goal	(eObjectActionUse,m_object->inventory().GetItemFromInventory("bread"));
-//	dynamic_cast<CAttachableItem*>(m_object->inventory().GetItemFromInventory("hand_radio"))->enable(false);
-	CGameObject						*actor = dynamic_cast<CGameObject*>(Level().CurrentEntity());
+//	smart_cast<CAttachableItem*>(m_object->inventory().GetItemFromInventory("hand_radio"))->enable(false);
+	CGameObject						*actor = smart_cast<CGameObject*>(Level().CurrentEntity());
 	m_object->CSightManager::setup	(CSightAction(actor,true));
 #endif
 }
@@ -375,7 +375,7 @@ void CStalkerActionGetEnemySeen::execute	()
 
 	m_object->setup					(CSightAction(SightManager::eSightTypePosition,mem_object.m_object_params.m_position,true));
 
-	if (!dynamic_cast<CMissile*>(m_object->best_weapon()))
+	if (!smart_cast<CMissile*>(m_object->best_weapon()))
 		m_object->CObjectHandler::set_goal		(eObjectActionAimReady1,m_object->best_weapon());
 
 	if (ai().level_graph().inside(mem_object.m_object_params.m_level_vertex_id,mem_object.m_object_params.m_position)) {
@@ -656,7 +656,7 @@ void CStalkerActionGetReadyToKillVeryAggressive::execute	()
 	else
 		m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypeCurrentDirection,true));
 
-	if (!dynamic_cast<CMissile*>(m_object->best_weapon()))
+	if (!smart_cast<CMissile*>(m_object->best_weapon()))
 		m_object->CObjectHandler::set_goal		(eObjectActionAimReady1,m_object->best_weapon());
 }
 
@@ -818,7 +818,7 @@ void CStalkerActionGetReadyToKillAggressive::execute	()
 	m_object->set_body_state		(eBodyStateStand);
 	m_object->set_mental_state		(eMentalStateDanger);
 
-	if (!dynamic_cast<CMissile*>(m_object->best_weapon()))
+	if (!smart_cast<CMissile*>(m_object->best_weapon()))
 		m_object->CObjectHandler::set_goal		(eObjectActionAimReady1,m_object->best_weapon());
 }
 
@@ -1075,7 +1075,7 @@ void CStalkerActionGetReadyToKillAvoid::execute	()
 	m_object->set_mental_state		(eMentalStateDanger);
 
 	m_object->CSightManager::setup				(SightManager::eSightTypeCurrentDirection);
-	if (!dynamic_cast<CMissile*>(m_object->best_weapon()))
+	if (!smart_cast<CMissile*>(m_object->best_weapon()))
 		m_object->CObjectHandler::set_goal		(eObjectActionAimReady1,m_object->best_weapon());
 }
 
@@ -1377,7 +1377,7 @@ void CStalkerActionGetReadyToKillModerate::execute	()
 	else
 		m_object->CSightManager::setup		(CSightAction(SightManager::eSightTypePosition,m_object->memory(m_object->enemy()).m_object_params.m_position,true));
 
-	if (!dynamic_cast<CMissile*>(m_object->best_weapon()))
+	if (!smart_cast<CMissile*>(m_object->best_weapon()))
 		m_object->CObjectHandler::set_goal	(eObjectActionAimReady1,m_object->best_weapon());
 }
 
@@ -1607,7 +1607,7 @@ void CStalkerActionGetEnemySeenModerate::execute	()
 
 	m_object->setup					(CSightAction(SightManager::eSightTypePosition,mem_object.m_object_params.m_position,true));
 
-	if (!dynamic_cast<CMissile*>(m_object->best_weapon()))
+	if (!smart_cast<CMissile*>(m_object->best_weapon()))
 		m_object->CObjectHandler::set_goal		(eObjectActionAimReady1,m_object->best_weapon());
 
 	if (ai().level_graph().inside(mem_object.m_object_params.m_level_vertex_id,mem_object.m_object_params.m_position)) {

@@ -31,8 +31,8 @@ void CMemoryManager::Load			(LPCSTR section)
 	CHitMemoryManager::Load			(section);
 	CEnemyManager::Load				(section);
 	CItemManager::Load				(section);
-	m_object						= dynamic_cast<CAI_Stalker*>(this);
-	m_self							= dynamic_cast<CEntityAlive*>(this);
+	m_object						= smart_cast<CAI_Stalker*>(this);
+	m_self							= smart_cast<CEntityAlive*>(this);
 	VERIFY							(m_self);
 }
 
@@ -86,7 +86,7 @@ void CMemoryManager::update			(const xr_vector<T> &objects)
 		if (m_object && !(*I).m_squad_mask.is(m_object->agent_manager().mask(m_object)))
 			continue;
 		
-		const CEntityAlive			*entity_alive = dynamic_cast<const CEntityAlive*>((*I).m_object);
+		const CEntityAlive			*entity_alive = smart_cast<const CEntityAlive*>((*I).m_object);
 		if (!entity_alive || !CEnemyManager::add(entity_alive))
 			CItemManager::add		((*I).m_object);
 	}
@@ -100,7 +100,7 @@ const CMemoryInfo	CMemoryManager::memory(const CObject *object) const
 		return						(result);
 
 	ALife::_TIME_ID					game_time = 0;
-	const CGameObject				*game_object = dynamic_cast<const CGameObject*>(object);
+	const CGameObject				*game_object = smart_cast<const CGameObject*>(object);
 	VERIFY							(game_object);
 
 	{

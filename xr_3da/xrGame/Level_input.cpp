@@ -71,7 +71,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 			J = I;
 			bOk = false;
 			for (++I; I != E; ++I) {
-				CEntityAlive* tpEntityAlive = dynamic_cast<CEntityAlive*>(*I);
+				CEntityAlive* tpEntityAlive = smart_cast<CEntityAlive*>(*I);
 				if (tpEntityAlive) {
 					bOk = true;
 					break;
@@ -79,7 +79,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 			}
 			if (!bOk)
 				for (I = B; I != J; ++I) {
-					CEntityAlive* tpEntityAlive = dynamic_cast<CEntityAlive*>(*I);
+					CEntityAlive* tpEntityAlive = smart_cast<CEntityAlive*>(*I);
 					if (tpEntityAlive) {
 						bOk = true;
 						break;
@@ -96,10 +96,10 @@ void CLevel::IR_OnKeyboardPress(int key)
 				Engine.Sheduler.Unregister	(*I);
 				Engine.Sheduler.Register	(*I, TRUE);
 
-				CActor* pActor = dynamic_cast<CActor*> (*I);
+				CActor* pActor = smart_cast<CActor*> (*I);
 				if (pActor)
 				{
-					CHudItem* pHudItem = dynamic_cast<CHudItem*>(pActor->inventory().ActiveItem());
+					CHudItem* pHudItem = smart_cast<CHudItem*>(pActor->inventory().ActiveItem());
 					if (pHudItem) 
 					{
 						pHudItem->GetHUD()->SetCurrentEntityHud(true);
@@ -143,7 +143,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 		break;
 
 	case DIK_F9:{
-		CStalkerMovementManager* move = dynamic_cast<CStalkerMovementManager*>(Objects.FindObjectByName("m_stalker_e"));
+		CStalkerMovementManager* move = smart_cast<CStalkerMovementManager*>(Objects.FindObjectByName("m_stalker_e"));
 		if (!move)
 			return;
 
@@ -219,7 +219,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 #endif
 	default:
 		if (CurrentEntity())		{
-			IInputReceiver*		IR	= dynamic_cast<IInputReceiver*>	(CurrentEntity());
+			IInputReceiver*		IR	= smart_cast<IInputReceiver*>	(CurrentEntity());
 			if (IR)				IR->IR_OnKeyboardPress(key_binding[key]);
 		}
 		break;
@@ -233,7 +233,7 @@ void CLevel::IR_OnKeyboardRelease(int key)
 	if ( Game().OnKeyboardRelease(key_binding[key]) ) return;
 
 	if (CurrentEntity())		{
-		IInputReceiver*		IR	= dynamic_cast<IInputReceiver*>	(CurrentEntity());
+		IInputReceiver*		IR	= smart_cast<IInputReceiver*>	(CurrentEntity());
 		if (IR)				IR->IR_OnKeyboardRelease			(key_binding[key]);
 	}
 }
@@ -241,7 +241,7 @@ void CLevel::IR_OnKeyboardRelease(int key)
 void CLevel::IR_OnKeyboardHold(int key)
 {
 	if (CurrentEntity())		{
-		IInputReceiver*		IR	= dynamic_cast<IInputReceiver*>	(CurrentEntity());
+		IInputReceiver*		IR	= smart_cast<IInputReceiver*>	(CurrentEntity());
 		if (IR)				IR->IR_OnKeyboardHold				(key_binding[key]);
 	}
 }
@@ -258,7 +258,7 @@ void CLevel::IR_OnMouseMove( int dx, int dy )
 {
 	if (pHUD->GetUI()->IR_OnMouseMove(dx,dy)) return;
 	if (CurrentEntity())		{
-		IInputReceiver*		IR	= dynamic_cast<IInputReceiver*>	(CurrentEntity());
+		IInputReceiver*		IR	= smart_cast<IInputReceiver*>	(CurrentEntity());
 		if (IR)				IR->IR_OnMouseMove					(dx,dy);
 	}
 }

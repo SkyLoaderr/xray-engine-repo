@@ -24,8 +24,8 @@ public:
 						CAI_Idol		();
 	virtual				~CAI_Idol		();
 public:
-	virtual CGameObject*				cast_game_object		()						{return CGameObject::cast_game_object();}
-	virtual const CGameObject*			cast_game_object		() const				{return CGameObject::cast_game_object();}
+	virtual CGameObject*				cast_game_object		()						{return this;}
+	virtual const CGameObject*			cast_game_object		() const				{return this;}
 public:
 
 	virtual void		Load			( LPCSTR section );

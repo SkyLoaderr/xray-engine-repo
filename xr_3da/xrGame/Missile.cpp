@@ -128,7 +128,7 @@ void CMissile::spawn_fake_missile()
 //#endif
 //	CSE_Abstract		*D	= F_entity_Create(*cNameSect());
 //	R_ASSERT			(D);
-//	CSE_ALifeDynamicObject				*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(D);
+//	CSE_ALifeDynamicObject				*l_tpALifeDynamicObject = smart_cast<CSE_ALifeDynamicObject*>(D);
 //	R_ASSERT							(l_tpALifeDynamicObject);
 //	l_tpALifeDynamicObject->m_tNodeID	= level_vertex_id();
 //	// Fill
@@ -154,7 +154,7 @@ void CMissile::OnH_A_Chield()
 {
 	inherited::OnH_A_Chield();
 
-	if(!m_fake_missile && !dynamic_cast<CMissile*>(H_Parent())) 
+	if(!m_fake_missile && !smart_cast<CMissile*>(H_Parent())) 
 		spawn_fake_missile	();
 }
 
@@ -190,7 +190,7 @@ void CMissile::UpdateCL()
 			SwitchState(MS_THROW);
 		else 
 		{
-			CActor	*actor = dynamic_cast<CActor*>(H_Parent());
+			CActor	*actor = smart_cast<CActor*>(H_Parent());
 			if (actor) {
 				m_fThrowForce		+= (m_fForceGrowSpeed * Device.dwTimeDelta) * .001f;
 				if (m_fThrowForce > m_fMaxForce)
@@ -360,7 +360,7 @@ void CMissile::UpdateXForm()
 		if (0==H_Parent())	return;
 
 		// Get access to entity and its visual
-		CEntityAlive*		E		= dynamic_cast<CEntityAlive*>(H_Parent());
+		CEntityAlive*		E		= smart_cast<CEntityAlive*>(H_Parent());
         
 		if(!E)				return	;
 
@@ -408,7 +408,7 @@ void CMissile::Hide()
 
 void CMissile::setup_throw_params()
 {
-	CActor* pActor = dynamic_cast<CActor*>(H_Parent());
+	CActor* pActor = smart_cast<CActor*>(H_Parent());
 	if(pActor)// && pActor->HUDview())
 	{
 //		UpdateFP();
@@ -433,7 +433,7 @@ void CMissile::setup_throw_params()
 
 void CMissile::Throw() 
 {
-	VERIFY								(dynamic_cast<CEntity*>(H_Parent()));
+	VERIFY								(smart_cast<CEntity*>(H_Parent()));
 	
 	//Fvector								throw_point, throw_direction;
 	//entity->g_fireParams				(throw_point,throw_direction);
@@ -461,7 +461,7 @@ void CMissile::OnEvent(NET_Packet& P, u16 type)
 	switch (type) {
 		case GE_OWNERSHIP_TAKE : {
 			P.r_u16(id);
-			CMissile		*missile = dynamic_cast<CMissile*>(Level().Objects.net_Find(id));			
+			CMissile		*missile = smart_cast<CMissile*>(Level().Objects.net_Find(id));			
 			m_fake_missile	= missile;
 			missile->H_SetParent(this);
 			break;
@@ -470,7 +470,7 @@ void CMissile::OnEvent(NET_Packet& P, u16 type)
 			P.r_u16			(id);
 			if (m_fake_missile && (id == m_fake_missile->ID()))
 				m_fake_missile	= NULL;
-			CMissile		*missile = dynamic_cast<CMissile*>(Level().Objects.net_Find(id));
+			CMissile		*missile = smart_cast<CMissile*>(Level().Objects.net_Find(id));
 			if (!missile)
 				break;
 			missile->H_SetParent(0);
@@ -551,7 +551,7 @@ void  CMissile::UpdateFP()
 
 void CMissile::activate_physic_shell()
 {
-	if (!dynamic_cast<CMissile*>(H_Parent())) {
+	if (!smart_cast<CMissile*>(H_Parent())) {
 		inherited::activate_physic_shell();
 		return;
 	}

@@ -40,7 +40,7 @@ void CDamageManager::reload				(LPCSTR section)
 			if (!xr_strcmp(*(*i).first,"default"))
 				m_default_hit_factor	= (float)atof(*(*i).second);
 			else {
-				CObject					*object = dynamic_cast<CObject*>(this);
+				CObject					*object = smart_cast<CObject*>(this);
 				VERIFY					(object);
 				int						bone = PKinematics(object->Visual())->LL_BoneID(i->first); 
 				R_ASSERT2				(BI_NONE != bone, *(*i).first);

@@ -214,7 +214,7 @@ void CActor::Load	(LPCSTR section )
 	CInventoryOwner::Load	(section);
 
 	//////////////////////////////////////////////////////////////////////////
-	ISpatial*		self			=	dynamic_cast<ISpatial*> (this);
+	ISpatial*		self			=	smart_cast<ISpatial*> (this);
 	if (self)	{
 		self->spatial.type	|=	STYPE_VISIBLEFORAI;
 		self->spatial.type	&= ~STYPE_REACTTOSOUND;
@@ -491,7 +491,7 @@ void CActor::Die	( )
 		}
 		else
 		{
-			CCustomOutfit *pOutfit = dynamic_cast<CCustomOutfit *> ((*I).m_pIItem);
+			CCustomOutfit *pOutfit = smart_cast<CCustomOutfit *> ((*I).m_pIItem);
 			if (pOutfit) continue;
 
 			if((*I).m_pIItem) inventory().Ruck((*I).m_pIItem);
@@ -502,7 +502,7 @@ void CActor::Die	( )
 	TIItemList &l_list = inventory().m_ruck;
 	for(PPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it)
 	{
-		CArtefact* pArtefact = dynamic_cast<CArtefact*>(*l_it);
+		CArtefact* pArtefact = smart_cast<CArtefact*>(*l_it);
 		if(pArtefact)
 			pArtefact->Drop();
 	}
@@ -527,7 +527,7 @@ void CActor::Die	( )
 				};
 			};
 
-			CCustomOutfit *pOutfit = dynamic_cast<CCustomOutfit *> (*l_it);
+			CCustomOutfit *pOutfit = smart_cast<CCustomOutfit *> (*l_it);
 			if (pOutfit) continue;
 
 			//пока у нас нельзя обыскивать трупы, удаляем все объекты из инвентаря
@@ -714,7 +714,7 @@ void CActor::UpdateCL()
 	}
 	//-------------------------------------------------------------------
 //*
-	CWeapon* pWeapon = dynamic_cast<CWeapon*>(inventory().ActiveItem());	
+	CWeapon* pWeapon = smart_cast<CWeapon*>(inventory().ActiveItem());	
 	m_bZoomAimingMode = false;
 
 	//обновить положение камеры и FOV 
@@ -734,7 +734,7 @@ void CActor::UpdateCL()
 		{
 			float full_fire_disp = pWeapon->GetFireDispersion();
 
-			CEffectorZoomInertion* S = dynamic_cast<CEffectorZoomInertion*>	(EffectorManager().GetEffector(eCEZoom));
+			CEffectorZoomInertion* S = smart_cast<CEffectorZoomInertion*>	(EffectorManager().GetEffector(eCEZoom));
 			if(S) S->SetParams(full_fire_disp);
 
 			//помнить, что если m_bZoomAimingMode = true
@@ -744,7 +744,7 @@ void CActor::UpdateCL()
 		}
 
 		//if(eacFirstEye == cam_active)
-//		if(this == dynamic_cast<CActor*>(Level().CurrentEntity()))
+//		if(this == smart_cast<CActor*>(Level().CurrentEntity()))
 		if(Level().CurrentEntity() && this->ID()==Level().CurrentEntity()->ID() )
 		{
 			float only_weapon_fire_disp = pWeapon->GetFireDispersion();
@@ -754,7 +754,7 @@ void CActor::UpdateCL()
 	}
 	else
 	{
-//		if(this == dynamic_cast<CActor*>(Level().CurrentEntity()))
+//		if(this == smart_cast<CActor*>(Level().CurrentEntity()))
 		if(Level().CurrentEntity() && this->ID()==Level().CurrentEntity()->ID() )
 		{
 			HUD().SetCrosshairDisp(0.f);
@@ -887,7 +887,7 @@ void CActor::shedule_Update	(u32 DT)
 	setVisible				(!HUDview	());
 
 	//установить режим показа HUD для текущего активного слота
-	CHudItem* pHudItem = dynamic_cast<CHudItem*>(inventory().ActiveItem());	
+	CHudItem* pHudItem = smart_cast<CHudItem*>(inventory().ActiveItem());	
 	if(pHudItem && !pHudItem->getDestroy()) 
 		pHudItem->SetHUDmode(HUDview());
 
@@ -896,15 +896,15 @@ void CActor::shedule_Update	(u32 DT)
 	//что актер видит перед собой
 	Collide::rq_result& RQ = HUD().GetCurrentRayQuery();
 	
-	m_pObjectWeLookingAt = dynamic_cast<CGameObject*>(RQ.O);
+	m_pObjectWeLookingAt = smart_cast<CGameObject*>(RQ.O);
 
 	if(RQ.O &&  RQ.range<inventory().GetTakeDist()) 
 	{
-		m_pUsableObject					= dynamic_cast<CUsableScriptObject*>(RQ.O);
-		inventory().m_pTarget			= dynamic_cast<PIItem>(RQ.O);
-		m_pPersonWeLookingAt			= dynamic_cast<CInventoryOwner*>(RQ.O);
-		m_pVehicleWeLookingAt			= dynamic_cast<CHolderCustom*>(RQ.O);
-		CEntityAlive* pEntityAlive		= dynamic_cast<CEntityAlive*>(RQ.O);
+		m_pUsableObject					= smart_cast<CUsableScriptObject*>(RQ.O);
+		inventory().m_pTarget			= smart_cast<PIItem>(RQ.O);
+		m_pPersonWeLookingAt			= smart_cast<CInventoryOwner*>(RQ.O);
+		m_pVehicleWeLookingAt			= smart_cast<CHolderCustom*>(RQ.O);
+		CEntityAlive* pEntityAlive		= smart_cast<CEntityAlive*>(RQ.O);
 		
 		if (GameID() == GAME_SINGLE )
 		{
@@ -1001,7 +1001,7 @@ void CActor::OnHUDDraw	(CCustomHUD* /**hud/**/)
 {
 	//CWeapon* W			= Weapons->ActiveWeapon();
 	//if (W)				W->renderable_Render		();
-	//CWeapon *W = dynamic_cast<CWeapon*>(inventory().ActiveItem()); if(W) W->renderable_Render();
+	//CWeapon *W = smart_cast<CWeapon*>(inventory().ActiveItem()); if(W) W->renderable_Render();
 
 	if(inventory().ActiveItem()&&!m_holder) {
 		inventory().ActiveItem()->renderable_Render();
@@ -1078,7 +1078,7 @@ ENGINE_API extern float		psHUD_FOV;
 float CActor::Radius()const
 { 
 	float R		= inherited::Radius();
-	CWeapon* W	= dynamic_cast<CWeapon*>(inventory().ActiveItem());
+	CWeapon* W	= smart_cast<CWeapon*>(inventory().ActiveItem());
 	if (W) R	+= W->Radius();
 	//	if (HUDview()) R *= 1.f/psHUD_FOV;
 	return R;
@@ -1176,13 +1176,13 @@ void	CActor::SpawnAmmoForWeapon	(CInventoryItem *pIItem)
 {
 	if (!pIItem) return;
 
-	CWeaponMagazined* pWM = dynamic_cast<CWeaponMagazined*> (pIItem);
+	CWeaponMagazined* pWM = smart_cast<CWeaponMagazined*> (pIItem);
 	if (!pWM || !pWM->AutoSpawnAmmo()) return;
 	
 	bool UsableAmmoExist = false;
 	for (u32 I = 0; I<pWM->m_ammoTypes.size(); I++)
 	{
-		CWeaponAmmo* pAmmo = dynamic_cast<CWeaponAmmo*>(inventory().Get(*(pWM->m_ammoTypes[I]), false));
+		CWeaponAmmo* pAmmo = smart_cast<CWeaponAmmo*>(inventory().Get(*(pWM->m_ammoTypes[I]), false));
 		if (!pAmmo) continue;
 
 		UsableAmmoExist = true;
@@ -1195,7 +1195,7 @@ void	CActor::RemoveAmmoForWeapon	(CInventoryItem *pIItem)
 {
 	if (!pIItem) return;
 
-	CWeaponMagazined* pWM = dynamic_cast<CWeaponMagazined*> (pIItem);
+	CWeaponMagazined* pWM = smart_cast<CWeaponMagazined*> (pIItem);
 	if (!pWM || !pWM->AutoSpawnAmmo()) return;
 
 	NET_Packet			P;
@@ -1203,7 +1203,7 @@ void	CActor::RemoveAmmoForWeapon	(CInventoryItem *pIItem)
 
 	for (u32 I = 0; I<pWM->m_ammoTypes.size(); I++)
 	{
-		CWeaponAmmo* pAmmo = dynamic_cast<CWeaponAmmo*>(inventory().Get(*(pWM->m_ammoTypes[I]), false));
+		CWeaponAmmo* pAmmo = smart_cast<CWeaponAmmo*>(inventory().Get(*(pWM->m_ammoTypes[I]), false));
 		if (!pAmmo || !pAmmo->m_bCanBeUnlimited) break;
 
 		UsableAmmoExist = true;

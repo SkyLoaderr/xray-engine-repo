@@ -82,7 +82,7 @@ BOOL CWeaponAmmo::net_Spawn(LPVOID DC)
 {
 	BOOL bResult = inherited::net_Spawn	(DC);
 	CSE_Abstract					*e		= (CSE_Abstract*)(DC);
-	CSE_ALifeItemAmmo					*l_pW	= dynamic_cast<CSE_ALifeItemAmmo*>(e);
+	CSE_ALifeItemAmmo					*l_pW	= smart_cast<CSE_ALifeItemAmmo*>(e);
 	m_boxCurr = l_pW->a_elapsed;
 	
 	if(m_boxCurr > m_boxSize)
@@ -135,7 +135,7 @@ s32 CWeaponAmmo::Sort(PIItem pIItem)
 {
 	// Если нужно разместить IItem после this - вернуть 1, если
 	// перед - -1. Если пофиг то 0.
-	CWeaponAmmo *l_pA = dynamic_cast<CWeaponAmmo*>(pIItem);
+	CWeaponAmmo *l_pA = smart_cast<CWeaponAmmo*>(pIItem);
 	if(!l_pA) return 0;
 	if(xr_strcmp(cNameSect(), l_pA->cNameSect())) return 0;
 	if(m_boxCurr <= l_pA->m_boxCurr) return 1;
@@ -146,7 +146,7 @@ bool CWeaponAmmo::Merge(PIItem pIItem)
 {
 	// Если удалось слить вместе вернуть true
 	if(m_boxCurr == m_boxSize) return false;
-	CWeaponAmmo *l_pA = dynamic_cast<CWeaponAmmo*>(pIItem);
+	CWeaponAmmo *l_pA = smart_cast<CWeaponAmmo*>(pIItem);
 	if(!l_pA) return false;
 	if(xr_strcmp(cNameSect(), l_pA->cNameSect())) return false;
 	u16 l_free = m_boxSize - m_boxCurr;
@@ -210,7 +210,7 @@ CInventoryItem *CWeaponAmmo::can_make_killing	(const CInventory *inventory) cons
 	xr_set<PIItem>::const_iterator	I = inventory->m_all.begin();
 	xr_set<PIItem>::const_iterator	E = inventory->m_all.end();
 	for ( ; I != E; ++I) {
-		CWeapon		*weapon = dynamic_cast<CWeapon*>(*I);
+		CWeapon		*weapon = smart_cast<CWeapon*>(*I);
 		if (!weapon)
 			continue;
 		xr_vector<ref_str>::const_iterator	i = std::find(weapon->m_ammoTypes.begin(),weapon->m_ammoTypes.end(),cNameSect());

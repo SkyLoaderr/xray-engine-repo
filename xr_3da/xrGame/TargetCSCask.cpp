@@ -26,7 +26,7 @@ void CTargetCSCask::OnEvent(NET_Packet& P, u16 type)
 			///Log			("----------- void CTargetCSCask::OnEvent --- TAKE",l_pObj->cName());
 
 			// Test for CS Target
-			CTargetCS* l_pBall = dynamic_cast<CTargetCS*>(l_pObj);
+			CTargetCS* l_pBall = smart_cast<CTargetCS*>(l_pObj);
 			if(l_pBall) {
 				R_ASSERT		(BE(Local(),l_pBall->Local()));	// remote can't take local
 				l_pBall->H_SetParent(this);
@@ -46,7 +46,7 @@ void CTargetCSCask::OnEvent(NET_Packet& P, u16 type)
 			//Log			("----------- void CTargetCSCask::OnEvent --- REJECT",l_pObj->cName());
 
 			// Test for CS Target
-			CTargetCS* l_pBall	= dynamic_cast<CTargetCS*>(l_pObj);
+			CTargetCS* l_pBall	= smart_cast<CTargetCS*>(l_pObj);
 			if(l_pBall) {
 				// R_ASSERT(BE(Local(),l_pBall->Local()));	// remote can't eject local
 				l_pBall->H_SetParent(0);

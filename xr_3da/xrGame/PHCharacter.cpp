@@ -128,11 +128,11 @@ void __stdcall CarHitCallback(bool& /**do_colide/**/,dContact& /**c/**/)
 	if(!(usr_data_1&&usr_data_2)) return;
 
 	CPHCharacter* Character;
-	Character=dynamic_cast<CPHCharacter*>(usr_data_1->ph_object);
+	Character=smart_cast<CPHCharacter*>(usr_data_1->ph_object);
 	if(Character)
 	{
-	CGameObject* Obj=dynamic_cast<CGameObject*>(usr_data_1->ph_ref_object);
-	CCar*		 Car=dynamic_cast<CCar*>	   (usr_data_2->ph_ref_object);
+	CGameObject* Obj=smart_cast<CGameObject*>(usr_data_1->ph_ref_object);
+	CCar*		 Car=smart_cast<CCar*>	   (usr_data_2->ph_ref_object);
 	if(Obj&&Car)
 	{
 	Fvector vel,rvel;
@@ -150,11 +150,11 @@ void __stdcall CarHitCallback(bool& /**do_colide/**/,dContact& /**c/**/)
 	}
 	}
 
-	Character=dynamic_cast<CPHCharacter*>(usr_data_2->ph_object);
+	Character=smart_cast<CPHCharacter*>(usr_data_2->ph_object);
 	if(Character)
 	{
-	CGameObject* Obj=dynamic_cast<CGameObject*>(usr_data_2->ph_ref_object);
-	CCar*		 Car=dynamic_cast<CCar*>	   (usr_data_1->ph_ref_object);
+	CGameObject* Obj=smart_cast<CGameObject*>(usr_data_2->ph_ref_object);
+	CCar*		 Car=smart_cast<CCar*>	   (usr_data_1->ph_ref_object);
 	if(Obj&&Car)
 	{
 	Fvector vel,rvel;

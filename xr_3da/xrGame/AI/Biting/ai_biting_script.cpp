@@ -50,7 +50,7 @@ bool CAI_Biting::bfAssignObject(CScriptEntityAction *tpEntityAction)
 //	if (!l_tObjectAction.m_tpObject)
 //		return	(false == (l_tObjectAction.m_bCompleted = true));
 //
-//	CEntityAlive	*l_tpEntity		= dynamic_cast<CEntityAlive*>(l_tObjectAction.m_tpObject);
+//	CEntityAlive	*l_tpEntity		= smart_cast<CEntityAlive*>(l_tObjectAction.m_tpObject);
 //	if (!l_tpEntity) return	(false == (l_tObjectAction.m_bCompleted = true));
 //
 //	switch (l_tObjectAction.m_tGoalType) {
@@ -155,7 +155,7 @@ bool CAI_Biting::bfAssignMonsterAction(CScriptEntityAction *tpEntityAction)
 	CScriptMonsterAction	&l_tAction = tpEntityAction->m_tMonsterAction;	
 	if (l_tAction.completed()) return false;
 
-	CEntityAlive *pE = dynamic_cast<CEntityAlive *>(l_tAction.m_tObject);
+	CEntityAlive *pE = smart_cast<CEntityAlive *>(l_tAction.m_tObject);
 
 	switch(l_tAction.m_tAction) {
 		case eGA_Rest:		
@@ -249,7 +249,7 @@ CEntity *CAI_Biting::GetCurrentEnemy()
 	CEntity *enemy = 0;
 	
 	if (EnemyMan.get_enemy()) 
-		enemy = const_cast<CEntity *>(dynamic_cast<const CEntity*>(EnemyMan.get_enemy()));
+		enemy = const_cast<CEntity *>(smart_cast<const CEntity*>(EnemyMan.get_enemy()));
 
 	if (!enemy || enemy->getDestroy() || !enemy->g_Alive()) enemy = 0;
 
@@ -261,7 +261,7 @@ CEntity *CAI_Biting::GetCurrentCorpse()
 	CEntity *corpse = 0;
 
 	if (CorpseMan.get_corpse()) 
-		corpse = const_cast<CEntity *>(dynamic_cast<const CEntity*>(CorpseMan.get_corpse()));
+		corpse = const_cast<CEntity *>(smart_cast<const CEntity*>(CorpseMan.get_corpse()));
 
 	if (!corpse || corpse->getDestroy() || corpse->g_Alive()) corpse = 0;
 

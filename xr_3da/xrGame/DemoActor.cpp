@@ -60,7 +60,7 @@ void CDemoActor::PlayDemo(const char* /**name/**/)
 		CObject* O		= g_pGameLevel->Objects.FindObjectByName(attached);
 		R_ASSERT		(O);
 		R_ASSERT		(O->SUB_CLS_ID==CLSID_OBJECT_DUMMY);
-		dynamic_cast<CDummyObject*>(O)->PlayDemo(name);
+		smart_cast<CDummyObject*>(O)->PlayDemo(name);
 	}
 */
 }

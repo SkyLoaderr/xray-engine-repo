@@ -110,7 +110,7 @@ void CUIMapBackground::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 	{
 		if(BUTTON_FOCUS_RECEIVED == msg)
 		{
-			m_pActiveMapSpot = dynamic_cast<CUIMapSpot*>(pWnd);
+			m_pActiveMapSpot = smart_cast<CUIMapSpot*>(pWnd);
 			GetTop()->SendMessage(this, MAPSPOT_FOCUS_RECEIVED);
 		}
 		else if(BUTTON_FOCUS_LOST == msg)
@@ -198,7 +198,7 @@ void CUIMapBackground::DrawFogOfWar()
 	right_bottom_pos.y = left_top_pos.y + m_fMapViewHeightMeters;
 
 
-	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 	if(pActor) Level().FogOfWar().GetFogCell(pActor->Position(), cell_left_top_pos);
 
 	//получить индексы квадрата тумана
@@ -359,7 +359,7 @@ void CUIMapBackground::OnMouse(int x, int y, EUIMessages mouse_action)
 
 		for (WINDOW_LIST_it it = GetChildWndList().begin(); it != GetChildWndList().end(); ++it)
 		{
-			CUIMapSpot				*pSpot		= dynamic_cast<CUIMapSpot*>(*it);
+			CUIMapSpot				*pSpot		= smart_cast<CUIMapSpot*>(*it);
 			if (!pSpot) continue;
 
 			if (pSpot->m_bArrowVisible)
@@ -475,7 +475,7 @@ void CUIMapBackground::UpdateActorPos()
 {
 	//установить положение карты, так чтобы актер 
 	//был по центру
-	CEntityAlive *pActor = dynamic_cast<CEntityAlive*>(Level().CurrentEntity());
+	CEntityAlive *pActor = smart_cast<CEntityAlive*>(Level().CurrentEntity());
 	if(!pActor) return;
 	m_vActivePos = pActor->Position();
 	UpdateActivePos();

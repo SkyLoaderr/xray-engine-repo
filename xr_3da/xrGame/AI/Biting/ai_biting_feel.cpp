@@ -18,7 +18,7 @@ void CAI_Biting::feel_sound_new(CObject* who, int eType, const Fvector &Position
 	if (!g_Alive()) return;
 
 	// ignore sounds from team
-	CEntityAlive* E = dynamic_cast<CEntityAlive*> (who);
+	CEntityAlive* E = smart_cast<CEntityAlive*> (who);
 	if (E && (E->g_Team() == g_Team()) || (this == who)) return;
 	
 	// ignore unknown sounds
@@ -30,7 +30,7 @@ void CAI_Biting::feel_sound_new(CObject* who, int eType, const Fvector &Position
 	if ((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING)
 		power = 1.f;
 
-	CScriptMonster	*script_monster = dynamic_cast<CScriptMonster*>(this);
+	CScriptMonster	*script_monster = smart_cast<CScriptMonster*>(this);
 	if (script_monster)
 		script_monster->sound_callback(who,eType,Position,power);
 	
@@ -61,7 +61,7 @@ void CAI_Biting::HitEntity(const CEntity *pEntity, float fDamage, float impulse,
 		VERIFY		(pEntityNC);
 		pEntityNC->Hit(fDamage,hit_dir,this,0,position_in_bone_space,impulse);
 		
-		if (dynamic_cast<CActor *>(pEntityNC)) SetAttackEffector();
+		if (smart_cast<CActor *>(pEntityNC)) SetAttackEffector();
 	}
 }
 
@@ -72,7 +72,7 @@ BOOL  CAI_Biting::feel_vision_isRelevant(CObject* O)
 	
 	if ((O->spatial.type & STYPE_VISIBLEFORAI) != STYPE_VISIBLEFORAI) return FALSE;
 	
-	CEntityAlive* E = dynamic_cast<CEntityAlive*> (O);
+	CEntityAlive* E = smart_cast<CEntityAlive*> (O);
 	if (!E) return FALSE;
 	if (E->g_Team() == g_Team() && E->g_Alive()) return FALSE;
 
@@ -103,7 +103,7 @@ void CAI_Biting::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 e
 
 	HitMemory.add_hit(who,hit_side);
 
-	CScriptMonster	*script_monster = dynamic_cast<CScriptMonster*>(this);
+	CScriptMonster	*script_monster = smart_cast<CScriptMonster*>(this);
 	if (script_monster)
 		script_monster->hit_callback(amount,vLocalDir,who,element);
 	
@@ -152,7 +152,7 @@ bool CAI_Biting::RayPickEnemy(const CObject *target_obj, const Fvector &trace_fr
 
 void CAI_Biting::SetAttackEffector() 
 {
-	CActor *pA = dynamic_cast<CActor *>(Level().CurrentEntity());
+	CActor *pA = smart_cast<CActor *>(Level().CurrentEntity());
 	if (pA) {
 		pA->EffectorManager().AddEffector(xr_new<CMonsterEffectorHit>(get_sd()->m_attack_effector.ce_time,get_sd()->m_attack_effector.ce_amplitude,get_sd()->m_attack_effector.ce_period_number,get_sd()->m_attack_effector.ce_power));
 		Level().Cameras.AddEffector(xr_new<CMonsterEffector>(get_sd()->m_attack_effector.ppi, get_sd()->m_attack_effector.time, get_sd()->m_attack_effector.time_attack, get_sd()->m_attack_effector.time_release));

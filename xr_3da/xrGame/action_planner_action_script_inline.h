@@ -43,7 +43,7 @@ void CSActionPlannerActionScript::reinit		(CScriptGameObject *object, CPropertyS
 {
 	VERIFY				(object);
 	inherited::reinit	(object,storage,clear_all);
-	m_object			= dynamic_cast<_object_type*>(object->object());
+	m_object			= smart_cast<_object_type*>(object->object());
 	VERIFY				(m_object);
 }
 

@@ -222,7 +222,7 @@ void CUIInventoryWnd::Init()
 
 void CUIInventoryWnd::InitInventory() 
 {
-	CInventoryOwner *pInvOwner = dynamic_cast<CInventoryOwner*>(Level().CurrentEntity());
+	CInventoryOwner *pInvOwner = smart_cast<CInventoryOwner*>(Level().CurrentEntity());
 
 	if(!pInvOwner) return;
 
@@ -357,7 +357,7 @@ void CUIInventoryWnd::InitInventory()
 									(*it)->GetGridHeight()*INV_GRID_HEIGHT);
 
 
-			CWeaponAmmo* pWeaponAmmo  = dynamic_cast<CWeaponAmmo*>((*it));
+			CWeaponAmmo* pWeaponAmmo  = smart_cast<CWeaponAmmo*>((*it));
 
 			// Не отображаем патроны в инвентаре если они посечены как "бесконечные"
 			// Применимио только к режиму мультиплеера
@@ -368,7 +368,7 @@ void CUIInventoryWnd::InitInventory()
 					continue;
 			}
 
-			CEatableItem* pEatableItem = dynamic_cast<CEatableItem*>((*it));
+			CEatableItem* pEatableItem = smart_cast<CEatableItem*>((*it));
 			if(pEatableItem) UIDragDropItem.SetCustomUpdate(FoodUpdateProc);
 
 			UIBeltList.AttachChild(&UIDragDropItem);
@@ -409,7 +409,7 @@ void CUIInventoryWnd::InitInventory()
 								(*it)->GetGridWidth()*INV_GRID_WIDTH,
 								(*it)->GetGridHeight()*INV_GRID_HEIGHT);
 				
-			CWeaponAmmo* pWeaponAmmo  = dynamic_cast<CWeaponAmmo*>((*it));
+			CWeaponAmmo* pWeaponAmmo  = smart_cast<CWeaponAmmo*>((*it));
 
 			// Не отображаем патроны в инвентаре если они посечены как "бесконечные"
 			// Применимио только к режиму мультиплеера
@@ -420,7 +420,7 @@ void CUIInventoryWnd::InitInventory()
 					continue;
 			}
 
-			CEatableItem* pEatableItem = dynamic_cast<CEatableItem*>((*it));
+			CEatableItem* pEatableItem = smart_cast<CEatableItem*>((*it));
 			if(pEatableItem) UIDragDropItem.SetCustomUpdate(FoodUpdateProc);
 
 			UIBagList.AttachChild(&UIDragDropItem);
@@ -446,7 +446,7 @@ void CUIInventoryWnd::InitInventory()
 //проверка на помещение инвентаря в слоты
 bool CUIInventoryWnd::SlotProc0(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
-	CUIInventoryWnd* this_inventory = dynamic_cast<CUIInventoryWnd*>(pList->GetParent());
+	CUIInventoryWnd* this_inventory = smart_cast<CUIInventoryWnd*>(pList->GetParent());
 	R_ASSERT2(this_inventory, "wrong parent addressed as inventory wnd");
 
 	PIItem pInvItem = (PIItem)pItem->GetData();
@@ -465,7 +465,7 @@ bool CUIInventoryWnd::SlotProc0(CUIDragDropItem* pItem, CUIDragDropList* pList)
 
 bool CUIInventoryWnd::SlotProc1(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
-	CUIInventoryWnd* this_inventory = dynamic_cast<CUIInventoryWnd*>(pList->GetParent());
+	CUIInventoryWnd* this_inventory = smart_cast<CUIInventoryWnd*>(pList->GetParent());
 	R_ASSERT2(this_inventory, "wrong parent addressed as inventory wnd");
 
 	PIItem pInvItem = (PIItem)pItem->GetData();
@@ -485,7 +485,7 @@ bool CUIInventoryWnd::SlotProc1(CUIDragDropItem* pItem, CUIDragDropList* pList)
 }
 bool CUIInventoryWnd::SlotProc2(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
-	CUIInventoryWnd* this_inventory = dynamic_cast<CUIInventoryWnd*>(pList->GetParent());
+	CUIInventoryWnd* this_inventory = smart_cast<CUIInventoryWnd*>(pList->GetParent());
 	R_ASSERT2(this_inventory, "wrong parent addressed as inventory wnd");
 
 	PIItem pInvItem = (PIItem)pItem->GetData();
@@ -505,7 +505,7 @@ bool CUIInventoryWnd::SlotProc2(CUIDragDropItem* pItem, CUIDragDropList* pList)
 }
 bool CUIInventoryWnd::SlotProc3(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
-	CUIInventoryWnd* this_inventory = dynamic_cast<CUIInventoryWnd*>(pList->GetParent());
+	CUIInventoryWnd* this_inventory = smart_cast<CUIInventoryWnd*>(pList->GetParent());
 	R_ASSERT2(this_inventory, "wrong parent addressed as inventory wnd");
 
 	PIItem pInvItem = (PIItem)pItem->GetData();
@@ -525,7 +525,7 @@ bool CUIInventoryWnd::SlotProc3(CUIDragDropItem* pItem, CUIDragDropList* pList)
 }
 bool CUIInventoryWnd::SlotProc4(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
-	CUIInventoryWnd* this_inventory = dynamic_cast<CUIInventoryWnd*>(pList->GetParent());
+	CUIInventoryWnd* this_inventory = smart_cast<CUIInventoryWnd*>(pList->GetParent());
 	R_ASSERT2(this_inventory, "wrong parent addressed as inventory wnd");
 
 
@@ -546,19 +546,19 @@ bool CUIInventoryWnd::SlotProc4(CUIDragDropItem* pItem, CUIDragDropList* pList)
 //одеть костюм
 bool CUIInventoryWnd::OutfitSlotProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
-	CUIInventoryWnd* this_inventory = dynamic_cast<CUIInventoryWnd*>(pList->GetParent());
+	CUIInventoryWnd* this_inventory = smart_cast<CUIInventoryWnd*>(pList->GetParent());
 	R_ASSERT2(this_inventory, "wrong parent addressed as inventory wnd");
 
 	PIItem pInvItem = (PIItem)pItem->GetData();
 
 	// Cнимаем текущий костюм.
-	CUIInventoryWnd *pInvWnd = dynamic_cast<CUIInventoryWnd*>(pList->GetParent());
+	CUIInventoryWnd *pInvWnd = smart_cast<CUIInventoryWnd*>(pList->GetParent());
 	// Нет костюма, или парент у листа не CUIInventoryWnd, чего быть не может.
 	if (!pInvWnd) return false;
 
 	// Проверка возможности надевания нового костюма
 	
-	if (dynamic_cast<CCustomOutfit*>(pInvItem))
+	if (smart_cast<CCustomOutfit*>(pInvItem))
 		pInvWnd->SendMessage(NULL, UNDRESS_OUTFIT, NULL);
 
 	if(!this_inventory->GetInventory()->CanPutInSlot(pInvItem)) return false;
@@ -577,7 +577,7 @@ bool CUIInventoryWnd::OutfitSlotProc(CUIDragDropItem* pItem, CUIDragDropList* pL
 //в рюкзак
 bool CUIInventoryWnd::BagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
-	CUIInventoryWnd* this_inventory = dynamic_cast<CUIInventoryWnd*>(pList->GetParent()->GetParent());
+	CUIInventoryWnd* this_inventory = smart_cast<CUIInventoryWnd*>(pList->GetParent()->GetParent());
 	R_ASSERT2(this_inventory, "wrong parent addressed as inventory wnd");
 
 
@@ -599,7 +599,7 @@ bool CUIInventoryWnd::BagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 //на пояс
 bool CUIInventoryWnd::BeltProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
-	CUIInventoryWnd* this_inventory = dynamic_cast<CUIInventoryWnd*>(pList->GetParent());
+	CUIInventoryWnd* this_inventory = smart_cast<CUIInventoryWnd*>(pList->GetParent());
 	R_ASSERT2(this_inventory, "wrong parent addressed as inventory wnd");
 
 
@@ -694,13 +694,13 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 				AttachAddon();
 				break;
 			case INVENTORY_DETACH_SCOPE_ADDON:
-				DetachAddon(*(dynamic_cast<CWeapon*>(m_pCurrentItem))->GetScopeName());
+				DetachAddon(*(smart_cast<CWeapon*>(m_pCurrentItem))->GetScopeName());
 				break;
 			case INVENTORY_DETACH_SILENCER_ADDON:
-				DetachAddon(*(dynamic_cast<CWeapon*>(m_pCurrentItem))->GetSilencerName());
+				DetachAddon(*(smart_cast<CWeapon*>(m_pCurrentItem))->GetSilencerName());
 				break;
 			case INVENTORY_DETACH_GRENADE_LAUNCHER_ADDON:
-				DetachAddon(*(dynamic_cast<CWeapon*>(m_pCurrentItem))->GetGrenadeLauncherName());
+				DetachAddon(*(smart_cast<CWeapon*>(m_pCurrentItem))->GetGrenadeLauncherName());
 				break;
 			}
 		}
@@ -715,10 +715,10 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	}
 	else if(pWnd == &UISleepWnd && msg == SLEEP_WND_PERFORM_BUTTON_CLICKED)
 	{
-		CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+		CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 		if(!pActor) return;
 		
-//		CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+//		CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 //		if(!pGameSP) return;
 		if(GameID() != GAME_SINGLE)
 			return;
@@ -782,8 +782,8 @@ void CUIInventoryWnd::Draw()
 
 void CUIInventoryWnd::Update()
 {
-	//CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
-	CEntityAlive *pEntityAlive = dynamic_cast<CEntityAlive*>(Level().CurrentEntity());
+	//CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
+	CEntityAlive *pEntityAlive = smart_cast<CEntityAlive*>(Level().CurrentEntity());
 
 	if(pEntityAlive) 
 	{
@@ -824,10 +824,10 @@ void CUIInventoryWnd::Update()
 
 void CUIInventoryWnd::DropItem()
 {
-	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 	if(!pActor) return;
 
-//	if (dynamic_cast<CCustomOutfit*>(m_pCurrentItem))
+//	if (smart_cast<CCustomOutfit*>(m_pCurrentItem))
 //		SendMessage(NULL, CUIOutfitSlot::UNDRESS_OUTFIT, NULL);
 	if (m_pCurrentDragDropItem == UIOutfitSlot.GetDragDropItemsList().front())
 		SendMessage(NULL, UNDRESS_OUTFIT, NULL);
@@ -835,7 +835,7 @@ void CUIInventoryWnd::DropItem()
 	m_pCurrentItem->Drop();
 	m_pCurrentDragDropItem->Highlight(false);
 	
-	(dynamic_cast<CUIDragDropList*>(m_pCurrentDragDropItem->GetParent()))->
+	(smart_cast<CUIDragDropList*>(m_pCurrentDragDropItem->GetParent()))->
 										DetachChild(m_pCurrentDragDropItem);
 	
 	DD_ITEMS_VECTOR_IT it = std::find(m_vDragDropItems.begin(), m_vDragDropItems.end(),m_pCurrentDragDropItem);
@@ -853,14 +853,14 @@ void CUIInventoryWnd::DropItem()
 
 void CUIInventoryWnd::EatItem()
 {
-	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 	if(!pActor) return;
 
 	pActor->inventory().Eat(m_pCurrentItem);
 	
 	if(!m_pCurrentItem->Useful())
 	{
-		(dynamic_cast<CUIDragDropList*>(m_pCurrentDragDropItem->GetParent()))->
+		(smart_cast<CUIDragDropList*>(m_pCurrentDragDropItem->GetParent()))->
 			DetachChild(m_pCurrentDragDropItem);
 
 		DD_ITEMS_VECTOR_IT it = std::find(m_vDragDropItems.begin(), m_vDragDropItems.end(),m_pCurrentDragDropItem);
@@ -886,14 +886,14 @@ void CUIInventoryWnd::EatItem()
 void CUIInventoryWnd::Show() 
 { 
 /*	//спрятать вещь из активного слота в инвентарь на время вызова менюшки
-	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 	if(pActor)
 	{
 		m_iCurrentActiveSlot = pActor->inventory().GetActiveSlot();
 
 		if(pActor->inventory().ActiveItem())
 		{
-			CWeapon* pWeapon = dynamic_cast<CWeapon*>(pActor->inventory().ActiveItem());
+			CWeapon* pWeapon = smart_cast<CWeapon*>(pActor->inventory().ActiveItem());
 			if(pWeapon) pWeapon->ResetPending();
 		}
 		pActor->inventory().Activate(NO_ACTIVE_SLOT);
@@ -907,7 +907,7 @@ void CUIInventoryWnd::Show()
 
 	if (GameID() != GAME_SINGLE)
 	{
-		CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+		CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 		if(!pActor) return;
 
 		NET_Packet	P;
@@ -919,7 +919,7 @@ void CUIInventoryWnd::Show()
 void CUIInventoryWnd::Hide()
 {
 	//достать вещь в активный слот
-	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 	if(pActor && m_iCurrentActiveSlot != NO_ACTIVE_SLOT && 
 		pActor->inventory().m_slots[m_iCurrentActiveSlot].m_pIItem)
 	{
@@ -930,7 +930,7 @@ void CUIInventoryWnd::Hide()
 
 	if (GameID() != GAME_SINGLE)
 	{
-		CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+		CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 		if(!pActor) return;
 
 		NET_Packet	P;
@@ -951,14 +951,14 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 		
 	UIPropertiesBox.RemoveAll();
 	
-	CEatableItem* pEatableItem = dynamic_cast<CEatableItem*>(m_pCurrentItem);
-	CCustomOutfit* pOutfit = dynamic_cast<CCustomOutfit*>(m_pCurrentItem);
-	CArtefactMerger* pArtefactMerger = dynamic_cast<CArtefactMerger*>(m_pCurrentItem);
+	CEatableItem* pEatableItem = smart_cast<CEatableItem*>(m_pCurrentItem);
+	CCustomOutfit* pOutfit = smart_cast<CCustomOutfit*>(m_pCurrentItem);
+	CArtefactMerger* pArtefactMerger = smart_cast<CArtefactMerger*>(m_pCurrentItem);
 	
-	CWeapon* pWeapon = dynamic_cast<CWeapon*>(m_pCurrentItem);
-	CScope* pScope = dynamic_cast<CScope*>(m_pCurrentItem);
-	CSilencer* pSilencer = dynamic_cast<CSilencer*>(m_pCurrentItem);
-	CGrenadeLauncher* pGrenadeLauncher = dynamic_cast<CGrenadeLauncher*>(m_pCurrentItem);
+	CWeapon* pWeapon = smart_cast<CWeapon*>(m_pCurrentItem);
+	CScope* pScope = smart_cast<CScope*>(m_pCurrentItem);
+	CSilencer* pSilencer = smart_cast<CSilencer*>(m_pCurrentItem);
+	CGrenadeLauncher* pGrenadeLauncher = smart_cast<CGrenadeLauncher*>(m_pCurrentItem);
 	
 
 	if(m_pCurrentItem->GetSlot()<SLOTS_NUM && m_pInv->CanPutInSlot(m_pCurrentItem))
@@ -1159,7 +1159,7 @@ bool CUIInventoryWnd::ToBelt()
 //запуск и остановка меню работы с артефактами
 void CUIInventoryWnd::StartArtefactMerger()
 {
-	UIArtefactMergerWnd.InitArtefactMerger(dynamic_cast<CArtefactMerger*>(m_pCurrentItem));
+	UIArtefactMergerWnd.InitArtefactMerger(smart_cast<CArtefactMerger*>(m_pCurrentItem));
 	UIArtefactMergerWnd.Show();
 }
 void CUIInventoryWnd::StopArtefactMerger()
@@ -1241,7 +1241,7 @@ void CUIInventoryWnd::AttachAddon()
 
 
 	//спрятать вещь из активного слота в инвентарь на время вызова менюшки
-	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 	if(pActor && m_pItemToUpgrade == pActor->inventory().ActiveItem())
 	{
 					m_iCurrentActiveSlot = pActor->inventory().GetActiveSlot();
@@ -1249,7 +1249,7 @@ void CUIInventoryWnd::AttachAddon()
 //		m_iCurrentActiveSlot = pActor->HideActiveItem();
 	}
 
-	(dynamic_cast<CUIDragDropList*>(m_pCurrentDragDropItem->GetParent()))->
+	(smart_cast<CUIDragDropList*>(m_pCurrentDragDropItem->GetParent()))->
 									DetachChild(m_pCurrentDragDropItem);
 	SetCurrentItem(NULL);
 	m_pCurrentDragDropItem = NULL;
@@ -1268,7 +1268,7 @@ void CUIInventoryWnd::DetachAddon(const char* addon_name)
 	m_pCurrentItem->Detach(addon_name);
 
 	//спрятать вещь из активного слота в инвентарь на время вызова менюшки
-	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 	if(pActor && m_pCurrentItem == pActor->inventory().ActiveItem())
 	{
 			m_iCurrentActiveSlot = pActor->inventory().GetActiveSlot();
@@ -1390,7 +1390,7 @@ void CUIInventoryWnd::UpdateTime()
 
 void CUIInventoryWnd::UpdateWeight()
 {
-	CInventoryOwner *pInvOwner = dynamic_cast<CInventoryOwner*>(Level().CurrentEntity());
+	CInventoryOwner *pInvOwner = smart_cast<CInventoryOwner*>(Level().CurrentEntity());
 	R_ASSERT(pInvOwner);
 	string128 buf;
 	ZeroMemory(buf, 128);

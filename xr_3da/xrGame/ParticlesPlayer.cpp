@@ -72,7 +72,7 @@ void CParticlesPlayer::Load(CKinematics* K)
 //уничтожение партиклов на net_Destroy
 void	CParticlesPlayer::net_DestroyParticles	()
 {
-	VERIFY(dynamic_cast<CObject*>(this));
+	VERIFY(smart_cast<CObject*>(this));
 
 	for(BoneInfoVecIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++)
 	{
@@ -106,7 +106,7 @@ void CParticlesPlayer::StartParticles(const ref_str& particles_name, u16 bone_nu
 {
 	R_ASSERT(*particles_name);
 	
-	CObject* object					= dynamic_cast<CObject*>(this);
+	CObject* object					= smart_cast<CObject*>(this);
 	VERIFY(object);
 
 	//найти ближайшую допустимую косточку, чтобы повесить партиклы
@@ -134,7 +134,7 @@ void CParticlesPlayer::StartParticles(const ref_str& particles_name, u16 bone_nu
 
 void CParticlesPlayer::StartParticles(const ref_str& ps_name, const Fvector& dir, u16 sender_id, int life_time, bool auto_stop)
 {
-	CObject* object					= dynamic_cast<CObject*>(this);
+	CObject* object					= smart_cast<CObject*>(this);
 	VERIFY(object);
 	for(BoneInfoVecIt it = m_Bones.begin(); it!=m_Bones.end(); it++){
 		SParticlesInfo* particles_info	= it->AppendParticles(object,ps_name);
@@ -199,7 +199,7 @@ void CParticlesPlayer::UpdateParticles()
 
 	m_bActiveBones  = false;
 
-    CObject* object			= dynamic_cast<CObject*>(this);
+    CObject* object			= smart_cast<CObject*>(this);
 	VERIFY(object);
 
 	for(BoneInfoVecIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){

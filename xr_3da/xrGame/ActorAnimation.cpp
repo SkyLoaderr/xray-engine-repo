@@ -17,7 +17,7 @@ static const float p_head_factor		= 0.1f;
 
 void __stdcall CActor::SpinCallback(CBoneInstance* B)
 {
-	CActor*	A			= dynamic_cast<CActor*>(static_cast<CObject*>(B->Callback_Param));	VERIFY	(A);
+	CActor*	A			= smart_cast<CActor*>(static_cast<CObject*>(B->Callback_Param));	VERIFY	(A);
 
 	Fmatrix				spin;
 	float				bone_yaw	= angle_normalize_signed(A->r_torso.yaw - A->r_model_yaw - A->r_model_yaw_delta)*y_spin_factor;
@@ -31,7 +31,7 @@ void __stdcall CActor::SpinCallback(CBoneInstance* B)
 
 void __stdcall CActor::ShoulderCallback(CBoneInstance* B)
 {
-	CActor*	A			= dynamic_cast<CActor*>(static_cast<CObject*>(B->Callback_Param));	VERIFY(A);
+	CActor*	A			= smart_cast<CActor*>(static_cast<CObject*>(B->Callback_Param));	VERIFY(A);
 	Fmatrix				spin;
 	float				bone_yaw	= angle_normalize_signed(A->r_torso.yaw - A->r_model_yaw - A->r_model_yaw_delta)*y_shoulder_factor;
 	float				bone_pitch	= angle_normalize_signed(A->r_torso.pitch)*p_shoulder_factor;
@@ -44,7 +44,7 @@ void __stdcall CActor::ShoulderCallback(CBoneInstance* B)
 
 void __stdcall CActor::HeadCallback(CBoneInstance* B)
 {
-	CActor*	A			= dynamic_cast<CActor*>(static_cast<CObject*>(B->Callback_Param));	VERIFY(A);
+	CActor*	A			= smart_cast<CActor*>(static_cast<CObject*>(B->Callback_Param));	VERIFY(A);
 	Fmatrix				spin;
 	float				bone_yaw	= angle_normalize_signed(A->r_torso.yaw - A->r_model_yaw - A->r_model_yaw_delta)*y_head_factor;
 	float				bone_pitch	= angle_normalize_signed(A->r_torso.pitch)*p_head_factor;
@@ -57,7 +57,7 @@ void __stdcall CActor::HeadCallback(CBoneInstance* B)
 
 void __stdcall CActor::VehicleHeadCallback(CBoneInstance* B)
 {
-	CActor*	A			= dynamic_cast<CActor*>(static_cast<CObject*>(B->Callback_Param));	VERIFY(A);
+	CActor*	A			= smart_cast<CActor*>(static_cast<CObject*>(B->Callback_Param));	VERIFY(A);
 	Fmatrix				spin;
 	float				bone_yaw	= angle_normalize_signed(A->r_torso.yaw)*0.75f;
 	float				bone_pitch	= angle_normalize_signed(A->r_torso.pitch)*0.75f;
@@ -213,8 +213,8 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		
 		if(!M_torso)
 		{
-			CWeapon		*W = dynamic_cast<CWeapon*>(inventory().ActiveItem());
-			CMissile	*M = dynamic_cast<CMissile*>(inventory().ActiveItem());
+			CWeapon		*W = smart_cast<CWeapon*>(inventory().ActiveItem());
+			CMissile	*M = smart_cast<CMissile*>(inventory().ActiveItem());
 			if (W || M) {
 				SActorMotions::SActorState::STorsoWpn* TW	= &ST->m_torso[(W ? W->HandDependence() : M->animation_slot()) - 1];
 				if (!b_DropActivated&&!fis_zero(f_DropPower)){

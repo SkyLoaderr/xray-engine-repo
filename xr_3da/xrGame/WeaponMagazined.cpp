@@ -133,7 +133,7 @@ void CWeaponMagazined::FireEnd()
 {
 	inherited::FireEnd();
 
-	CActor	*actor = dynamic_cast<CActor*>(H_Parent());
+	CActor	*actor = smart_cast<CActor*>(H_Parent());
 	if(!iAmmoElapsed && actor) 
 		Reload();
 }
@@ -149,8 +149,8 @@ bool CWeaponMagazined::TryReload()
 {
 	if(m_pInventory) 
 	{
-		m_pAmmo = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(*m_ammoTypes[m_ammoType],
-											!dynamic_cast<CActor*>(H_Parent())));
+		m_pAmmo = smart_cast<CWeaponAmmo*>(m_pInventory->Get(*m_ammoTypes[m_ammoType],
+											!smart_cast<CActor*>(H_Parent())));
 
 		
 		if(IsMisfire())
@@ -168,8 +168,8 @@ bool CWeaponMagazined::TryReload()
 		} 
 		else for(u32 i = 0; i < m_ammoTypes.size(); ++i) 
 		{
-			m_pAmmo = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(*m_ammoTypes[i],
-																   !dynamic_cast<CActor*>(H_Parent())));
+			m_pAmmo = smart_cast<CWeaponAmmo*>(m_pInventory->Get(*m_ammoTypes[i],
+																   !smart_cast<CActor*>(H_Parent())));
 			if(m_pAmmo) 
 			{ 
 				m_ammoType = i; 
@@ -187,11 +187,11 @@ bool CWeaponMagazined::TryReload()
 
 bool CWeaponMagazined::IsAmmoAvailable()
 {
-	if (dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(*m_ammoTypes[m_ammoType],!dynamic_cast<CActor*>(H_Parent()))))
+	if (smart_cast<CWeaponAmmo*>(m_pInventory->Get(*m_ammoTypes[m_ammoType],!smart_cast<CActor*>(H_Parent()))))
 		return	(true);
 	else
 		for(u32 i = 0; i < m_ammoTypes.size(); ++i)
-			if (dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(*m_ammoTypes[i],!dynamic_cast<CActor*>(H_Parent()))))
+			if (smart_cast<CWeaponAmmo*>(m_pInventory->Get(*m_ammoTypes[i],!smart_cast<CActor*>(H_Parent()))))
 				return	(true);
 	return		(false);
 }
@@ -240,8 +240,8 @@ void CWeaponMagazined::UnloadMagazine()
 	xr_map<LPCSTR, u16>::iterator l_it;
 	for(l_it = l_ammo.begin(); l_ammo.end() != l_it; ++l_it) 
 	{
-		CWeaponAmmo *l_pA = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(l_it->first,
-														!dynamic_cast<CActor*>(H_Parent())));
+		CWeaponAmmo *l_pA = smart_cast<CWeaponAmmo*>(m_pInventory->Get(l_it->first,
+														!smart_cast<CActor*>(H_Parent())));
 		if(l_pA) 
 		{
 			u16 l_free = l_pA->m_boxSize - l_pA->m_boxCurr;
@@ -269,16 +269,16 @@ void CWeaponMagazined::ReloadMagazine()
 	if(m_pInventory) 
 	{
 		//попытатьс€ найти в инвентаре патроны текущего типа 
-		m_pAmmo = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(*m_ammoTypes[m_ammoType],
-														   !dynamic_cast<CActor*>(H_Parent())));
+		m_pAmmo = smart_cast<CWeaponAmmo*>(m_pInventory->Get(*m_ammoTypes[m_ammoType],
+														   !smart_cast<CActor*>(H_Parent())));
 		
 		if(!m_pAmmo && !l_lockType) 
 		{
 			for(u32 i = 0; i < m_ammoTypes.size(); ++i) 
 			{
 				//проверить патроны всех подход€щих типов
-				m_pAmmo = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(*m_ammoTypes[i],
-													!dynamic_cast<CActor*>(H_Parent())));
+				m_pAmmo = smart_cast<CWeaponAmmo*>(m_pInventory->Get(*m_ammoTypes[i],
+													!smart_cast<CActor*>(H_Parent())));
 				if(m_pAmmo) 
 				{ 
 					m_ammoType = i; 
@@ -445,7 +445,7 @@ void CWeaponMagazined::state_Fire	(float dt)
 	d.set(vLastFD);
 
 	if(H_Parent()) 
-		dynamic_cast<CEntity*>	(H_Parent())->g_fireParams	(this, p1,d);
+		smart_cast<CEntity*>	(H_Parent())->g_fireParams	(this, p1,d);
 	else 
 		return;
 	
@@ -637,8 +637,8 @@ bool CWeaponMagazined::Action(s32 cmd, u32 flags)
 
 bool CWeaponMagazined::CanAttach(PIItem pIItem)
 {
-	CScope* pScope = dynamic_cast<CScope*>(pIItem);
-	CSilencer* pSilencer = dynamic_cast<CSilencer*>(pIItem);
+	CScope* pScope = smart_cast<CScope*>(pIItem);
+	CSilencer* pSilencer = smart_cast<CSilencer*>(pIItem);
 	
 	if(pScope &&
 	   m_eScopeStatus == ALife::eAddonAttachable &&
@@ -672,8 +672,8 @@ bool CWeaponMagazined::Attach(PIItem pIItem)
 {
 	bool result = false;
 
-	CScope* pScope = dynamic_cast<CScope*>(pIItem);
-	CSilencer* pSilencer = dynamic_cast<CSilencer*>(pIItem);
+	CScope* pScope = smart_cast<CScope*>(pIItem);
+	CSilencer* pSilencer = smart_cast<CSilencer*>(pIItem);
 	
 	if(pScope &&
 	   m_eScopeStatus == CSE_ALifeItemWeapon::eAddonAttachable &&
@@ -853,10 +853,10 @@ void CWeaponMagazined::OnZoomIn			()
 		PlayAnimIdle();
 
 
-	CActor* pActor = dynamic_cast<CActor*>(H_Parent());
+	CActor* pActor = smart_cast<CActor*>(H_Parent());
 	if(pActor)
 	{
-		CEffectorZoomInertion* S = dynamic_cast<CEffectorZoomInertion*>	(pActor->EffectorManager().GetEffector(eCEZoom));
+		CEffectorZoomInertion* S = smart_cast<CEffectorZoomInertion*>	(pActor->EffectorManager().GetEffector(eCEZoom));
 		if (!S)	
 			S = (CEffectorZoomInertion*)pActor->EffectorManager().AddEffector(xr_new<CEffectorZoomInertion> ());
 		S->SetRndSeed(pActor->GetZoomRndSeed());
@@ -872,7 +872,7 @@ void CWeaponMagazined::OnZoomOut		()
 	if(STATE == eIdle)
 		PlayAnimIdle();
 
-	CActor* pActor = dynamic_cast<CActor*>(H_Parent());
+	CActor* pActor = smart_cast<CActor*>(H_Parent());
 	if(pActor)
 		pActor->EffectorManager().RemoveEffector	(eCEZoom);
 

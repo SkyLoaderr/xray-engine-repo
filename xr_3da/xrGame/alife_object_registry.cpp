@@ -76,7 +76,7 @@ CSE_ALifeDynamicObject *CALifeObjectRegistry::get_object		(IReader &file_stream)
 	// create entity
 	CSE_Abstract			*tpSE_Abstract = F_entity_Create	(s_name);
 	R_ASSERT2				(tpSE_Abstract,"Can't create entity.");
-	CSE_ALifeDynamicObject	*tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(tpSE_Abstract);
+	CSE_ALifeDynamicObject	*tpALifeDynamicObject = smart_cast<CSE_ALifeDynamicObject*>(tpSE_Abstract);
 	R_ASSERT2				(tpALifeDynamicObject,"Non-ALife object in the saved game!");
 	tpALifeDynamicObject->Spawn_Read(tNetPacket);
 

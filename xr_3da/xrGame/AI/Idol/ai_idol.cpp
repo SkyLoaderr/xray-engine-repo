@@ -35,7 +35,7 @@ void CAI_Idol::Load					(LPCSTR section)
 BOOL CAI_Idol::net_Spawn			(LPVOID DC)
 {
 	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
-	CSE_ALifeObjectIdol				*tpIdol	= dynamic_cast<CSE_ALifeObjectIdol*>(e);
+	CSE_ALifeObjectIdol				*tpIdol	= smart_cast<CSE_ALifeObjectIdol*>(e);
 	
 	R_ASSERT						(tpIdol);
 	
@@ -111,7 +111,7 @@ void CAI_Idol::OnEvent		(NET_Packet& P, u16 type)
 			CObject* O	= Level().Objects.net_Find	(id);
 
 			if (bDebug)	Log("Trying to take - ", *O->cName());
-			if(g_Alive() && inventory().Take(dynamic_cast<CGameObject*>(O), false, false)) {
+			if(g_Alive() && inventory().Take(smart_cast<CGameObject*>(O), false, false)) {
 				O->H_SetParent(this);
 				if (bDebug)	Log("TAKE - ", *O->cName());
 			}
@@ -122,7 +122,7 @@ void CAI_Idol::OnEvent		(NET_Packet& P, u16 type)
 			P.r_u16		(id);
 			CObject* O	= Level().Objects.net_Find	(id);
 			
-			if(inventory().Drop(dynamic_cast<CGameObject*>(O))) {
+			if(inventory().Drop(smart_cast<CGameObject*>(O))) {
 				O->H_SetParent(0);
 				feel_touch_deny(O,2000);
 			}
@@ -142,8 +142,8 @@ void CAI_Idol::feel_touch_new				(CObject* O)
 	if (Remote())		return;
 
 	// Now, test for game specific logical objects to minimize traffic
-	CInventoryItem		*I	= dynamic_cast<CInventoryItem*>	(O);
-	CBolt				*E	= dynamic_cast<CBolt*>			(O);
+	CInventoryItem		*I	= smart_cast<CInventoryItem*>	(O);
+	CBolt				*E	= smart_cast<CBolt*>			(O);
 
 	if (I && !E) {
 		Msg("Taking item %s!",*I->cName());

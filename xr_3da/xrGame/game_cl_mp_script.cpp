@@ -70,7 +70,7 @@ game_cl_mp_script::game_cl_mp_script()
 CScriptGameObject*	game_cl_mp_script::GetObjectByGameID (u32 id)
 {
 	CObject* pObject = Level().Objects.net_Find(id);
-	CGameObject* pGameObject = dynamic_cast<CGameObject*>(pObject);
+	CGameObject* pGameObject = smart_cast<CGameObject*>(pObject);
 	if(!pGameObject)
 		return NULL;
 

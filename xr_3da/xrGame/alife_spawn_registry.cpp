@@ -115,14 +115,14 @@ void CALifeSpawnRegistry::load	(IReader &file_stream)
 		R_ASSERT2				(M_UPDATE == ID,"Invalid packet ID (!= M_UPDATE)!");
 		E->UPDATE_Read			(tNetPacket);
 
-		VERIFY					(dynamic_cast<CSE_ALifeObject*>(E));
+		VERIFY					(smart_cast<CSE_ALifeObject*>(E));
 
 		R_ASSERT2				((GAME_SINGLE == E->s_gameid) || (GAME_ANY == E->s_gameid),"Invalid game type!");
-		R_ASSERT2				(0 != (*I = dynamic_cast<CSE_ALifeDynamicObject*>(E)),"Non-ALife object in the 'game.spawn'");
+		R_ASSERT2				(0 != (*I = smart_cast<CSE_ALifeDynamicObject*>(E)),"Non-ALife object in the 'game.spawn'");
 		R_ASSERT3				(!((*I)->used_ai_locations()) || ((*I)->m_tNodeID != u32(-1)),"Invalid vertex for object ",(*I)->s_name_replace);
 		
 		// building map of sets : get all the zone types which can generate given artefact
-		CSE_ALifeAnomalousZone	*anomaly = dynamic_cast<CSE_ALifeAnomalousZone*>(E);
+		CSE_ALifeAnomalousZone	*anomaly = smart_cast<CSE_ALifeAnomalousZone*>(E);
 		if (anomaly) {
 			ALife::EAnomalousZoneType	type = anomaly->m_tAnomalyType;
 			for (u16 i=0, n = anomaly->m_wItemCount; i<n; ++i) {

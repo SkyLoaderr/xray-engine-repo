@@ -25,7 +25,7 @@ CUIDMFragList::~CUIDMFragList()
 //--------------------------------------------------------------------
 CUIStatsListItem*		CUIDMFragList::GetItem			(int index)
 {
-	return (dynamic_cast<CUIStatsListItem*> (UIStatsList.GetItem(index)));
+	return (smart_cast<CUIStatsListItem*> (UIStatsList.GetItem(index)));
 };
 
 IC bool	pred_player		(LPVOID v1, LPVOID v2)

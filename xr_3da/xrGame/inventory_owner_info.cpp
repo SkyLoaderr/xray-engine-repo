@@ -60,7 +60,7 @@ bool CInventoryOwner::OnReceiveInfo(INFO_INDEX info_index)
 		return false;
 
 	//Запустить скриптовый callback
-	CGameObject* pThisGameObject = dynamic_cast<CGameObject*>(this);
+	CGameObject* pThisGameObject = smart_cast<CGameObject*>(this);
 	VERIFY(pThisGameObject);
 
 	SCRIPT_CALLBACK_EXECUTE_2(*m_pInfoCallback, pThisGameObject->lua_game_object(), info_index);
@@ -91,7 +91,7 @@ void CInventoryOwner::OnDisableInfo(INFO_INDEX info_id)
 
 void CInventoryOwner::TransferInfo(INFO_INDEX info_index, bool add_info) const
 {
-	const CObject* pThisObject = dynamic_cast<const CObject*>(this); VERIFY(pThisObject);
+	const CObject* pThisObject = smart_cast<const CObject*>(this); VERIFY(pThisObject);
 
 	//отправляем от нашему PDA пакет информации с номером
 	NET_Packet		P;

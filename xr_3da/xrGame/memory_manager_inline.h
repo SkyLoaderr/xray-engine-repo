@@ -10,7 +10,7 @@
 
 IC	ALife::ERelationType CMemoryManager::get_relation(const CEntityAlive *tpEntityAlive) const
 {
-	const CEntityAlive		*self = dynamic_cast<const CEntityAlive*>(this);
+	const CEntityAlive		*self = smart_cast<const CEntityAlive*>(this);
 	VERIFY					(self);
 	if (tpEntityAlive->g_Team() != self->g_Team())
 		return				(ALife::eRelationTypeEnemy);
@@ -53,7 +53,7 @@ IC	void CMemoryManager::fill_enemies	(const xr_vector<T> &objects, const _predic
 		if (!(*I).m_enabled)
 			continue;
 
-		const CEntityAlive			*entity_alive = dynamic_cast<const CEntityAlive*>((*I).m_object);
+		const CEntityAlive			*entity_alive = smart_cast<const CEntityAlive*>((*I).m_object);
 		if (entity_alive && CEnemyManager::useful(entity_alive))
 			predicate				(entity_alive);
 	}

@@ -69,7 +69,7 @@ void CHangingLamp::net_Destroy()
 BOOL CHangingLamp::net_Spawn(LPVOID DC)
 {
 	CSE_Abstract			*e		= (CSE_Abstract*)(DC);
-	CSE_ALifeObjectHangingLamp	*lamp	= dynamic_cast<CSE_ALifeObjectHangingLamp*>(e);
+	CSE_ALifeObjectHangingLamp	*lamp	= smart_cast<CSE_ALifeObjectHangingLamp*>(e);
 	R_ASSERT				(lamp);
 	inherited::net_Spawn	(DC);
 	Fcolor					clr;
@@ -143,7 +143,7 @@ BOOL CHangingLamp::net_Spawn(LPVOID DC)
 
 void	CHangingLamp::SpawnInitPhysics	(CSE_Abstract	*D)	
 {
-	CSE_ALifeObjectHangingLamp	*lamp	= dynamic_cast<CSE_ALifeObjectHangingLamp*>(D);	
+	CSE_ALifeObjectHangingLamp	*lamp	= smart_cast<CSE_ALifeObjectHangingLamp*>(D);	
 	if (lamp->flags.is(CSE_ALifeObjectHangingLamp::flPhysic))		CreateBody(lamp);
 }
 
@@ -311,7 +311,7 @@ void CHangingLamp::CreateBody(CSE_ALifeObjectHangingLamp	*lamp)
 	m_pPhysicsShell->SetAirResistance();//0.0014f,1.5f
 
 	BONE_P_PAIR_IT g_i= bone_map.find(guid_bone);
-	guid_physic_bone=dynamic_cast<CPHElement*>(g_i->second.element);
+	guid_physic_bone=smart_cast<CPHElement*>(g_i->second.element);
 	bone_map.erase(g_i);
 
 	//if(!lanim)pKinematics->Calculate();

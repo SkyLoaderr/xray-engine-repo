@@ -43,7 +43,7 @@ CPhysicsShell*				P_build_Shell			(CGameObject* obj,bool not_active_state,BONE_P
 
 	pPhysicsShell->build_FromKinematics(pKinematics,bone_map);
 
-	pPhysicsShell->set_PhysicsRefObject(dynamic_cast<CPhysicsShellHolder*>(obj));
+	pPhysicsShell->set_PhysicsRefObject(smart_cast<CPhysicsShellHolder*>(obj));
 	pPhysicsShell->mXFORM.set(obj->XFORM());
 	pPhysicsShell->Activate(not_active_state);//,
 	//m_pPhysicsShell->SmoothElementsInertia(0.3f);
@@ -136,7 +136,7 @@ CPhysicsShell*	P_build_SimpleShell(CGameObject* obj,float mass,bool not_active_s
 	CPhysicsElement* E = P_create_Element(); R_ASSERT(E); E->add_Box(obb);
 	pPhysicsShell->add_Element(E);
 	pPhysicsShell->setMass(mass);
-	pPhysicsShell->set_PhysicsRefObject(dynamic_cast<CPhysicsShellHolder*>(obj));
+	pPhysicsShell->set_PhysicsRefObject(smart_cast<CPhysicsShellHolder*>(obj));
 	if(!obj->H_Parent())
 		pPhysicsShell->Activate(obj->XFORM(),0,obj->XFORM(),not_active_state);
 	pPhysicsShell->mDesired.identity();

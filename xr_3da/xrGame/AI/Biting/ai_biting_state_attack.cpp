@@ -508,11 +508,11 @@ void CBitingAttack::UpdateInitFlags()
 {
 	init_flags.zero();
 
-	const CAI_Rat *tpRat = dynamic_cast<const CAI_Rat *>(enemy);
+	const CAI_Rat *tpRat = smart_cast<const CAI_Rat *>(enemy);
 	if (tpRat) init_flags.or(AF_ATTACK_RAT);
 
 	// определить способности
-	pJumping = dynamic_cast<CJumping *>(pMonster);
+	pJumping = smart_cast<CJumping *>(pMonster);
 	if (pJumping)			init_flags.or(AF_HAS_JUMP_ABILITY);
 	if (pMonster->ability_invisibility())	init_flags.or(AF_HAS_INVISIBILITY_ABILITY);
 
@@ -613,12 +613,12 @@ bool CBitingAttack::CheckPsiAttack()
 	
 	if (angle_difference(h,my_h) > deg(10) ) return false;
 	
-	CActor *pA = const_cast<CActor *>(dynamic_cast<const CActor *>(enemy));
+	CActor *pA = const_cast<CActor *>(smart_cast<const CActor *>(enemy));
 	if (!pA) return false;
 	
-	if (pMonster != dynamic_cast<CAI_Biting *>(pA->ObjectWeLookingAt())) return false;
+	if (pMonster != smart_cast<CAI_Biting *>(pA->ObjectWeLookingAt())) return false;
 
-	CWeaponMagazined *pWeapon = dynamic_cast<CWeaponMagazined *>(pA->m_inventory->ActiveItem());
+	CWeaponMagazined *pWeapon = smart_cast<CWeaponMagazined *>(pA->m_inventory->ActiveItem());
 	if (!pWeapon) return false;
 
 	return true;

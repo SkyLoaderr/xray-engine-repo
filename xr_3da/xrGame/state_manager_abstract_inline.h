@@ -157,7 +157,7 @@ void CAbstractStateManager::update					()
 	inherited::update		();
 
 	if (current_vertex_id() == dest_vertex_id()) {
-		IGraphManager				*state_manager_interface = dynamic_cast<IGraphManager*>(&current_state());
+		IGraphManager				*state_manager_interface = smart_cast<IGraphManager*>(&current_state());
 		if (!state_manager_interface) 
 			current_state().execute();
 		return;

@@ -21,7 +21,7 @@ void game_cl_Deathmatch::OnBuyMenu_Ok	()
 	if (!m_bBuyEnabled) return;
 	CObject *l_pObj = Level().CurrentEntity();
 
-	CGameObject *l_pPlayer = dynamic_cast<CGameObject*>(l_pObj);
+	CGameObject *l_pPlayer = smart_cast<CGameObject*>(l_pObj);
 	if(!l_pPlayer) return;
 
 	game_PlayerState* Pl = local_player;
@@ -78,7 +78,7 @@ void game_cl_Deathmatch::SetBuyMenuItems		()
 	//---------------------------------------------------------
 	pCurBuyMenu->IgnoreMoney(true);
 	//---------------------------------------------------------
-	CActor* pCurActor = dynamic_cast<CActor*> (Level().Objects.net_Find	(P->GameID));
+	CActor* pCurActor = smart_cast<CActor*> (Level().Objects.net_Find	(P->GameID));
 	if (pCurActor)
 	{
 		//проверяем предметы которые есть у игрока
@@ -152,7 +152,7 @@ void game_cl_Deathmatch::CheckItem			(PIItem pItem, PRESET_ITEMS* pPresetItems)
 		}
 	}
 	//-----------------------------------------------------
-	CWeapon* pWeapon = dynamic_cast<CWeapon*> (pItem);
+	CWeapon* pWeapon = smart_cast<CWeapon*> (pItem);
 	if (pWeapon)
 	{
 		if (pWeapon->ScopeAttachable())

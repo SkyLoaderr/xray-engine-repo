@@ -57,7 +57,7 @@ void CObjectActionShow::execute		()
 	inherited::execute				();
 	VERIFY							(m_item);
 	if (!m_object->inventory().ActiveItem() || (m_object->inventory().ActiveItem()->ID() != m_item->ID())) {
-		CHudItem					*hud_item = dynamic_cast<CHudItem*>(m_object->inventory().ActiveItem());
+		CHudItem					*hud_item = smart_cast<CHudItem*>(m_object->inventory().ActiveItem());
 		if (!hud_item)
 			return;
 		if (!hud_item->IsPending()) {
@@ -105,7 +105,7 @@ void CObjectActionReload::initialize		()
 void CObjectActionReload::execute			()
 {
 	inherited::execute();
-	CWeapon			*weapon = dynamic_cast<CWeapon*>(m_object->inventory().ActiveItem());
+	CWeapon			*weapon = smart_cast<CWeapon*>(m_object->inventory().ActiveItem());
 	VERIFY			(weapon);
 	if (!weapon->IsPending() && !weapon->GetAmmoElapsed())
 		m_object->inventory().Action(kWPN_RELOAD,	CMD_START);

@@ -144,7 +144,7 @@ void CSE_ALifeSimulator::vfListSpawnPoints()
 //	SPAWN_P_IT	E = m_tpSpawnPoints.end();
 //	Msg("%s->Listing spawn points :",*cName());
 //	for (int i=0; I != E; ++I, ++i) {
-//		CSE_ALifeCreatureSpawnPoint *tpALifeCreatureSpawnPoint = dynamic_cast<CSE_ALifeCreatureSpawnPoint *>(*I);
+//		CSE_ALifeCreatureSpawnPoint *tpALifeCreatureSpawnPoint = smart_cast<CSE_ALifeCreatureSpawnPoint *>(*I);
 //		if (tpALifeCreatureSpawnPoint)
 //			Msg("* %4d : [MDL=%10s][GID=%d]",i,(*I)->m_caModel,tpALifeCreatureSpawnPoint->m_wGroupID);
 //		else
@@ -173,13 +173,13 @@ void CSE_ALifeSimulator::vfObjectInfo(_OBJECT_ID	tObjectID)
 	Msg("* Graph ID      : %d",tpALifeDynamicObject->m_tGraphID);
 	vfPrintTime("* Update        :",tpALifeDynamicObject->m_tTimeID);
 	
-	CSE_ALifeInventoryItem	 *l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(tpALifeDynamicObject);
+	CSE_ALifeInventoryItem	 *l_tpALifeInventoryItem = smart_cast<CSE_ALifeInventoryItem*>(tpALifeDynamicObject);
 	if (l_tpALifeInventoryItem) {
 		Msg("* Mass          : %7.2f",l_tpALifeInventoryItem->m_fMass);
 		Msg("* Price         : %d",l_tpALifeInventoryItem->m_dwCost);
 	}
 	
-	CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract *>(tpALifeDynamicObject);
+	CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract = smart_cast<CSE_ALifeMonsterAbstract *>(tpALifeDynamicObject);
 	if (tpALifeMonsterAbstract) {
 		Msg("* Graph ID next : %d",tpALifeMonsterAbstract->m_tNextGraphID);
 		Msg("* Graph ID prev : %d",tpALifeMonsterAbstract->m_tPrevGraphID);
@@ -189,12 +189,12 @@ void CSE_ALifeSimulator::vfObjectInfo(_OBJECT_ID	tObjectID)
 		Msg("* Distance to   : %7.2f",tpALifeMonsterAbstract->m_fDistanceToPoint);
 	}
 	
-//	CSE_ALifeMonsterParams *tpALifeMonsterParams = dynamic_cast<CSE_ALifeMonsterParams *>(tpALifeDynamicObject);
+//	CSE_ALifeMonsterParams *tpALifeMonsterParams = smart_cast<CSE_ALifeMonsterParams *>(tpALifeDynamicObject);
 //	if (tpALifeMonsterParams) {
 //		Msg("* Health        : %d",tpALifeMonsterParams->m_iHealth);
 //	}
 //		
-	CSE_ALifeGroupAbstract *tpALifeMonsterGroup = dynamic_cast<CSE_ALifeGroupAbstract *>(tpALifeDynamicObject);
+	CSE_ALifeGroupAbstract *tpALifeMonsterGroup = smart_cast<CSE_ALifeGroupAbstract *>(tpALifeDynamicObject);
 	if (tpALifeMonsterGroup) {
 		OBJECT_IT				I = tpALifeMonsterGroup->m_tpMembers.begin();
 		OBJECT_IT				E = tpALifeMonsterGroup->m_tpMembers.end();
@@ -203,7 +203,7 @@ void CSE_ALifeSimulator::vfObjectInfo(_OBJECT_ID	tObjectID)
 		return;
 	}
 	
-	CSE_ALifeTraderAbstract *tpALifeTraderParams = dynamic_cast<CSE_ALifeTraderAbstract *>(tpALifeDynamicObject);
+	CSE_ALifeTraderAbstract *tpALifeTraderParams = smart_cast<CSE_ALifeTraderAbstract *>(tpALifeDynamicObject);
 	if (tpALifeTraderParams) {
 		Msg("* Rank          : %d",tpALifeTraderParams->m_tRank);
 		Msg("* Money         : %d",tpALifeTraderParams->m_dwMoney);
@@ -220,7 +220,7 @@ void CSE_ALifeSimulator::vfObjectInfo(_OBJECT_ID	tObjectID)
 		vfPrintLargeString("* Items",S,int(E - tpALifeTraderParams->children.begin()),105);
 	}
 		
-	CSE_ALifeTraderAbstract *tpALifeTraderAbstract = dynamic_cast<CSE_ALifeTraderAbstract *>(tpALifeDynamicObject);
+	CSE_ALifeTraderAbstract *tpALifeTraderAbstract = smart_cast<CSE_ALifeTraderAbstract *>(tpALifeDynamicObject);
 	if (tpALifeTraderAbstract) {
 		PERSONAL_EVENT_P_IT	I = tpALifeTraderAbstract->m_tpEvents.begin();
 		PERSONAL_EVENT_P_IT	E = tpALifeTraderAbstract->m_tpEvents.end();
@@ -234,7 +234,7 @@ void CSE_ALifeSimulator::vfObjectInfo(_OBJECT_ID	tObjectID)
 		Msg("* Max item mass : %7.2f",tpALifeTraderAbstract->m_fMaxItemMass);
 	}
 		
-	CSE_ALifeHumanAbstract *tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract *>(tpALifeDynamicObject);
+	CSE_ALifeHumanAbstract *tpALifeHumanAbstract = smart_cast<CSE_ALifeHumanAbstract *>(tpALifeDynamicObject);
 	if (tpALifeHumanAbstract) {
 		Msg("* Search speed  : %7.2f",tpALifeHumanAbstract->m_fSearchSpeed);
 		Msg("* Task state    : %7.2f",tpALifeHumanAbstract->m_tTaskState);
@@ -307,7 +307,7 @@ void CSE_ALifeSimulator::vfEventInfo(_EVENT_ID tEventID)
 		D_OBJECT_PAIR_IT I = m_tObjectRegistry.begin();
 		D_OBJECT_PAIR_IT E = m_tObjectRegistry.end();
 		for (int j=0; I != E; ++I) {
-			CSE_ALifeHumanAbstract *tpALifeHuman = dynamic_cast<CSE_ALifeHumanAbstract *>((*I).second);
+			CSE_ALifeHumanAbstract *tpALifeHuman = smart_cast<CSE_ALifeHumanAbstract *>((*I).second);
 			if (!tpALifeHuman)
 				continue;
 			PERSONAL_EVENT_P_IT i = tpALifeHuman->m_tpEvents.begin();
@@ -366,7 +366,7 @@ void CSE_ALifeSimulator::vfTaskInfo(_TASK_ID tTaskID)
 		D_OBJECT_PAIR_IT I = m_tObjectRegistry.begin();
 		D_OBJECT_PAIR_IT E = m_tObjectRegistry.end();
 		for (int j=0; I != E; ++I) {
-			CSE_ALifeHumanAbstract *tpALifeHuman = dynamic_cast<CSE_ALifeHumanAbstract *>((*I).second);
+			CSE_ALifeHumanAbstract *tpALifeHuman = smart_cast<CSE_ALifeHumanAbstract *>((*I).second);
 			if (!tpALifeHuman)
 				continue;
 		}
@@ -382,11 +382,11 @@ void CSE_ALifeSimulator::vfSpawnPointInfo(_SPAWN_ID tSpawnID)
 //	Msg("* GraphID                 : %s",tSpawnPoint.m_tNearestGraphPointID);
 //	Msg("* Position                : [%7.2f][%7.2f][%7.2f]",tSpawnPoint.m_tPosition.x,tSpawnPoint.m_tPosition.y,tSpawnPoint.m_tPosition.z);
 //	
-//	CSE_ALifeZoneSpawnPoint *tpZoneSpawnPoint = dynamic_cast<CSE_ALifeZoneSpawnPoint *>(&tSpawnPoint);
+//	CSE_ALifeZoneSpawnPoint *tpZoneSpawnPoint = smart_cast<CSE_ALifeZoneSpawnPoint *>(&tSpawnPoint);
 //	if (tpZoneSpawnPoint) {
 //		Msg("* Zone type               : %d",tpZoneSpawnPoint->m_tAnomalousZoneType);
 //	}
-//	CSE_ALifeCreatureSpawnPoint *tpCreatureSpawnPoint = dynamic_cast<CSE_ALifeCreatureSpawnPoint *>(&tSpawnPoint);
+//	CSE_ALifeCreatureSpawnPoint *tpCreatureSpawnPoint = smart_cast<CSE_ALifeCreatureSpawnPoint *>(&tSpawnPoint);
 //	if (tpCreatureSpawnPoint) {
 //		Msg("* Team                    : %d",tpCreatureSpawnPoint->m_ucTeam);
 //		Msg("* Squad                   : %d",tpCreatureSpawnPoint->m_ucSquad);

@@ -127,7 +127,7 @@ void CActor::AddGameTask			 (const CInfoPortion* info_portion)
 bool CActor::OnReceiveInfo(INFO_INDEX info_index)
 {
 	//только если находимся в режиме single
-	CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 	if(!pGameSP) return false;
 	
 	if(!CInventoryOwner::OnReceiveInfo(info_index))
@@ -152,7 +152,7 @@ bool CActor::OnReceiveInfo(INFO_INDEX info_index)
 void CActor::OnDisableInfo(INFO_INDEX info_index)
 {
 	//только если находимся в режиме single
-	CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 	if(pGameSP && pGameSP->TalkMenu.IsShown()) pGameSP->TalkMenu.UpdateQuestions();
 
 	Level().RemoveMapLocationByInfo(info_index);
@@ -164,13 +164,13 @@ void CActor::OnDisableInfo(INFO_INDEX info_index)
 void CActor::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_INDEX info_index)
 {
 	//только если находимся в режиме single
-	CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 	if(!pGameSP) return;
 
 	//визуализация в интерфейсе
 	CObject* pPdaObject =  Level().Objects.net_Find(who);
 	VERIFY(pPdaObject);
-	CPda* pPda = dynamic_cast<CPda*>(pPdaObject);
+	CPda* pPda = smart_cast<CPda*>(pPdaObject);
 	VERIFY(pPda);
 	HUD().GetUI()->UIMainIngameWnd.ReceivePdaMessage(pPda->GetOriginalOwner(), msg, info_index);
 
@@ -197,7 +197,7 @@ void CActor::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_INDEX info_index)
 void  CActor::ReceivePhrase		(DIALOG_SHARED_PTR& phrase_dialog)
 {
 	//только если находимся в режиме single
-	CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 	if(!pGameSP) return;
 
 	if(pGameSP->TalkMenu.IsShown())
@@ -233,7 +233,7 @@ void   CActor::UpdateAvailableDialogs	(CPhraseDialogManager* partner)
 	}
 
 	//добавить актерский диалог собеседника
-	CInventoryOwner* pInvOwnerPartner = dynamic_cast<CInventoryOwner*>(partner); VERIFY(pInvOwnerPartner);
+	CInventoryOwner* pInvOwnerPartner = smart_cast<CInventoryOwner*>(partner); VERIFY(pInvOwnerPartner);
 	
 	for(u32 i = 0; i<pInvOwnerPartner->CharacterInfo().ActorDialogs().size(); i++)
 		AddAvailableDialog(CPhraseDialog::IndexToId(pInvOwnerPartner->CharacterInfo().ActorDialogs()[i]), partner);
@@ -258,7 +258,7 @@ void CActor::RunTalkDialog(CInventoryOwner* talk_partner)
 	{	
 		StartTalk(talk_partner);
 		//только если находимся в режиме single
-		CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+		CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 		if(pGameSP)
 		{
 			if(pGameSP->MainInputReceiver())
@@ -270,7 +270,7 @@ void CActor::RunTalkDialog(CInventoryOwner* talk_partner)
 
 void CActor::StartTalk (CInventoryOwner* talk_partner)
 {
-	CGameObject* GO = dynamic_cast<CGameObject*>(talk_partner); VERIFY(GO);
+	CGameObject* GO = smart_cast<CGameObject*>(talk_partner); VERIFY(GO);
 	//обновить информацию о контакте
 	UpdateContact(GO->ID());
 

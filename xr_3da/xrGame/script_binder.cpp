@@ -56,7 +56,7 @@ void CScriptBinder::reload			(LPCSTR section)
 		return;
 	}
 	
-	CGameObject				*game_object = dynamic_cast<CGameObject*>(this);
+	CGameObject				*game_object = smart_cast<CGameObject*>(this);
 	lua_function			(game_object ? game_object->lua_game_object() : 0);
 	
 	if (m_object)
@@ -66,7 +66,7 @@ void CScriptBinder::reload			(LPCSTR section)
 BOOL CScriptBinder::net_Spawn		(LPVOID DC)
 {
 	CSE_Abstract			*abstract = (CSE_Abstract*)DC;
-	CSE_ALifeObject			*object = dynamic_cast<CSE_ALifeObject*>(abstract);
+	CSE_ALifeObject			*object = smart_cast<CSE_ALifeObject*>(abstract);
 	if (object && m_object && !m_object->net_Spawn(object))
 		return				(FALSE);
 
@@ -83,7 +83,7 @@ void CScriptBinder::net_Destroy		()
 void CScriptBinder::set_object		(CScriptBinderObject *object)
 {
 	VERIFY2					(!m_object,"Cannot bind to the object twice!");
-	Msg						("Core object %s is binded with the script object",dynamic_cast<CGameObject*>(this) ? *dynamic_cast<CGameObject*>(this)->cName() : "");
+	Msg						("Core object %s is binded with the script object",smart_cast<CGameObject*>(this) ? *smart_cast<CGameObject*>(this)->cName() : "");
 	m_object				= object;
 }
 

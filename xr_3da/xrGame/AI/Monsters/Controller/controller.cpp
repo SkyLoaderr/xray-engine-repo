@@ -132,7 +132,7 @@ void CController::UpdateControlled()
 {
 	// если есть враг, проверить может ли быть враг взят под контроль
 	if (EnemyMan.get_enemy()) {
-		CControlledEntityBase *entity = dynamic_cast<CControlledEntityBase *>(const_cast<CEntityAlive *>(EnemyMan.get_enemy()));
+		CControlledEntityBase *entity = smart_cast<CControlledEntityBase *>(const_cast<CEntityAlive *>(EnemyMan.get_enemy()));
 		if (entity) {
 			if (!entity->is_under_control() && (m_controlled_objects.size() < m_max_controlled_number)) {
 				// взять под контроль
@@ -156,7 +156,7 @@ void CController::UpdateControlled()
 //////////////////////////////////////////////////////////////////////////
 // Test	
 //////////////////////////////////////////////////////////////////////////
-	CActor *pA = dynamic_cast<CActor*>(Level().CurrentEntity());
+	CActor *pA = smart_cast<CActor*>(Level().CurrentEntity());
 	if (!pA) return;
 	//pA->SetControlled();
 //////////////////////////////////////////////////////////////////////////
@@ -194,7 +194,7 @@ void CController::set_controlled_task(u32 task)
 	const CEntity *object = ((((ETask)task) == eTaskNone) ? 0 : ((((ETask)task) == eTaskFollow) ? this : EnemyMan.get_enemy()));
 	
 	for	(u32 i=0; i<m_controlled_objects.size(); i++) {
-		CControlledEntityBase *entity = dynamic_cast<CControlledEntityBase *>(m_controlled_objects[i]);		
+		CControlledEntityBase *entity = smart_cast<CControlledEntityBase *>(m_controlled_objects[i]);		
 		entity->get_data().m_object = object;
 		entity->get_data().m_task	= (ETask)task;
 	}
@@ -212,7 +212,7 @@ void CController::CheckSpecParams(u32 spec_params)
 void CController::InitThink()
 {
 	for	(u32 i=0; i<m_controlled_objects.size(); i++) {	
-		CAI_Biting *base = dynamic_cast<CAI_Biting*>(m_controlled_objects[i]);
+		CAI_Biting *base = smart_cast<CAI_Biting*>(m_controlled_objects[i]);
 		if (!base) continue;
 		if (base->EnemyMan.get_enemy()) 
 			EnemyMemory.add_enemy  (base->EnemyMan.get_enemy(), 
@@ -225,7 +225,7 @@ void CController::InitThink()
 
 void CController::play_control_sound_start()
 {
-	CActor *pA = dynamic_cast<CActor*>(Level().CurrentEntity());
+	CActor *pA = smart_cast<CActor*>(Level().CurrentEntity());
 	if (!pA) return;
 	
 	Fvector pos = pA->Position();
@@ -237,7 +237,7 @@ void CController::play_control_sound_start()
 
 void CController::play_control_sound_hit()
 {
-	CActor *pA = dynamic_cast<CActor*>(Level().CurrentEntity());
+	CActor *pA = smart_cast<CActor*>(Level().CurrentEntity());
 	if (!pA) return;
 
 	Fvector pos = pA->Position();
@@ -281,7 +281,7 @@ void CController::control_hit()
 	play_control_sound_hit();
 	
 	// start postprocess
-	CActor *pA = dynamic_cast<CActor *>(Level().CurrentEntity());
+	CActor *pA = smart_cast<CActor *>(Level().CurrentEntity());
 	if (pA) {
 		pA->EffectorManager().AddEffector(xr_new<CMonsterEffectorHit>(m_control_effector.ce_time,m_control_effector.ce_amplitude,m_control_effector.ce_period_number,m_control_effector.ce_power));
 		Level().Cameras.AddEffector(xr_new<CMonsterEffector>(m_control_effector.ppi, m_control_effector.time, m_control_effector.time_attack, m_control_effector.time_release));
@@ -364,5 +364,5 @@ void CController::net_Destroy()
 
 void CController::FreeFromControl()
 {
-	for	(u32 i=0; i<m_controlled_objects.size(); i++) dynamic_cast<CControlledEntityBase *>(m_controlled_objects[i])->free_from_control(this);
+	for	(u32 i=0; i<m_controlled_objects.size(); i++) smart_cast<CControlledEntityBase *>(m_controlled_objects[i])->free_from_control(this);
 }

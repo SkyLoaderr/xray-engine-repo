@@ -68,7 +68,7 @@ void CGroupHierarchyHolder::register_in_squad			(CEntity *member)
 
 void CGroupHierarchyHolder::register_in_agent_manager	(CEntity *member)
 {
-	if (!get_agent_manager() && dynamic_cast<CAI_Stalker*>(member)) {
+	if (!get_agent_manager() && smart_cast<CAI_Stalker*>(member)) {
 		m_agent_manager						= xr_new<CAgentManager>();
 		agent_manager().set_squad_objects	(&visible_objects());
 		agent_manager().set_squad_objects	(&sound_objects());
@@ -81,7 +81,7 @@ void CGroupHierarchyHolder::register_in_agent_manager	(CEntity *member)
 
 void CGroupHierarchyHolder::register_in_group_senses	(CEntity *member)
 {
-	CMemoryManager				*memory_manager = dynamic_cast<CMemoryManager*>(member);
+	CMemoryManager				*memory_manager = smart_cast<CMemoryManager*>(member);
 	if (memory_manager) {
 		memory_manager->CVisualMemoryManager::set_squad_objects	(&visible_objects());
 		memory_manager->CSoundMemoryManager::set_squad_objects	(&sound_objects());
@@ -132,7 +132,7 @@ void CGroupHierarchyHolder::unregister_in_agent_manager	(CEntity *member)
 
 void CGroupHierarchyHolder::unregister_in_group_senses	(CEntity *member)
 {
-	CMemoryManager				*memory_manager = dynamic_cast<CMemoryManager*>(member);
+	CMemoryManager				*memory_manager = smart_cast<CMemoryManager*>(member);
 	if (memory_manager) {
 		memory_manager->CVisualMemoryManager::set_squad_objects	(0);
 		memory_manager->CSoundMemoryManager::set_squad_objects	(0);

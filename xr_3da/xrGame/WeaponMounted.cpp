@@ -19,7 +19,7 @@
 
 void __stdcall CWeaponMounted::BoneCallbackX(CBoneInstance *B)
 {
-	CWeaponMounted	*P = dynamic_cast<CWeaponMounted*> (static_cast<CObject*>(B->Callback_Param));
+	CWeaponMounted	*P = smart_cast<CWeaponMounted*> (static_cast<CObject*>(B->Callback_Param));
 
 	if (P->Owner()){
 		Fmatrix rX;		rX.rotateX		(P->camera->pitch);
@@ -28,7 +28,7 @@ void __stdcall CWeaponMounted::BoneCallbackX(CBoneInstance *B)
 }
 void __stdcall CWeaponMounted::BoneCallbackY(CBoneInstance *B)
 {
-	CWeaponMounted	*P = dynamic_cast<CWeaponMounted*> (static_cast<CObject*>(B->Callback_Param));
+	CWeaponMounted	*P = smart_cast<CWeaponMounted*> (static_cast<CObject*>(B->Callback_Param));
 
 	if (P->Owner()){
 		Fmatrix rY;		rY.rotateY		(P->camera->yaw);
@@ -68,7 +68,7 @@ void	CWeaponMounted::Load(LPCSTR section)
 BOOL	CWeaponMounted::net_Spawn(LPVOID DC)
 {
 	CSE_Abstract			*e	= (CSE_Abstract*)(DC);
-	CSE_ALifeMountedWeapon	*mw	= dynamic_cast<CSE_ALifeMountedWeapon*>(e);
+	CSE_ALifeMountedWeapon	*mw	= smart_cast<CSE_ALifeMountedWeapon*>(e);
 	R_ASSERT				(mw);
 
 	if (!inherited::net_Spawn(DC))
@@ -297,7 +297,7 @@ void CWeaponMounted::OnShot		()
 	StartSmokeParticles(fire_pos, zero_vel);
 	OnShellDrop(fire_pos, zero_vel);
 
-	bool hud_mode = (Level().CurrentEntity() == dynamic_cast<CObject*>(Owner()));
+	bool hud_mode = (Level().CurrentEntity() == smart_cast<CObject*>(Owner()));
 	HUD_SOUND::PlaySound(sndShot, fire_pos, Owner(), hud_mode);
 
 	//добавить эффектор стрельбы
@@ -335,7 +335,7 @@ void CWeaponMounted::AddShotEffector		()
 {
 	if(Owner())
 	{
-		CEffectorShot* S		= dynamic_cast<CEffectorShot*>	(Owner()->EffectorManager().GetEffector(eCEShot)); 
+		CEffectorShot* S		= smart_cast<CEffectorShot*>	(Owner()->EffectorManager().GetEffector(eCEShot)); 
 		if (!S)	S				= (CEffectorShot*)Owner()->EffectorManager().AddEffector(xr_new<CEffectorShot> (camMaxAngle,camRelaxSpeed, 0.25f));
 		R_ASSERT				(S);
 		S->MountedWeaponShot	();

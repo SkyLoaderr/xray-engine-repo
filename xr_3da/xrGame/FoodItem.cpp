@@ -77,7 +77,7 @@ void CFoodItem::UpdateCL()
 
 u32 CFoodItem::GetSlot	() const
 {
-	if(H_Parent() && dynamic_cast<const CActor*>(H_Parent()))
+	if(H_Parent() && smart_cast<const CActor*>(H_Parent()))
 	{
 		return NO_ACTIVE_SLOT;
 	}
@@ -222,7 +222,7 @@ void CFoodItem::UpdateXForm	()
 		if (0==H_Parent())	return;
 
 		// Get access to entity and its visual
-		CEntityAlive*	E		= dynamic_cast<CEntityAlive*>(H_Parent());
+		CEntityAlive*	E		= smart_cast<CEntityAlive*>(H_Parent());
 
 		if(!E) return;
 

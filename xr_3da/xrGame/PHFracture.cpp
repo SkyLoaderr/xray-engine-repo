@@ -35,7 +35,7 @@ element_fracture CPHFracturesHolder::SplitFromEnd(CPHElement* element,u16 fractu
 	u16 end_geom_num		=fract_i->m_end_geom_num;
 	SubFractureMass			(fracture);
 
-	CPHElement* new_element	=dynamic_cast<CPHElement*>(P_create_Element());
+	CPHElement* new_element	=smart_cast<CPHElement*>(P_create_Element());
 	new_element->m_SelfID=fract_i->m_bone_id;
 	new_element->mXFORM.set(element->mXFORM);
 	element->PassEndGeoms(geom_num,end_geom_num,new_element);

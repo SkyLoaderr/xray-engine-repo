@@ -36,10 +36,10 @@ void CAI_Stalker::OnEvent		(NET_Packet& P, u16 type)
 #ifndef SILENCE
 			Msg("Trying to take - %s (%d)", *O->cName(),O->ID());
 #endif
-			CGameObject	*_O = dynamic_cast<CGameObject*>(O);
+			CGameObject	*_O = smart_cast<CGameObject*>(O);
 			if (inventory().Take(_O,true, false)) { //GetScriptControl()
 				O->H_SetParent(this);
-				if (!inventory().ActiveItem() && GetScriptControl() && dynamic_cast<CShootingObject*>(O))
+				if (!inventory().ActiveItem() && GetScriptControl() && smart_cast<CShootingObject*>(O))
 					CObjectHandler::set_goal	(eObjectActionIdle,_O);
 
 #ifndef SILENCE
@@ -69,7 +69,7 @@ void CAI_Stalker::OnEvent		(NET_Packet& P, u16 type)
 			if (!O)
 				return;
 
-			if (inventory().Drop(dynamic_cast<CGameObject*>(O)) && !O->getDestroy()) {
+			if (inventory().Drop(smart_cast<CGameObject*>(O)) && !O->getDestroy()) {
 				O->H_SetParent	(0);
 				feel_touch_deny	(O,2000);
 			}
@@ -86,7 +86,7 @@ void CAI_Stalker::feel_touch_new				(CObject* O)
 	if ((O->spatial.type | STYPE_VISIBLEFORAI) != O->spatial.type) return;
 
 	// Now, test for game specific logical objects to minimize traffic
-	CInventoryItem		*I	= dynamic_cast<CInventoryItem*>	(O);
+	CInventoryItem		*I	= smart_cast<CInventoryItem*>	(O);
 
 	if (I && I->Useful()) {
 #ifndef SILENCE

@@ -56,7 +56,7 @@ public:
 		for(ARTIFACT_LIST_it it = m_ArtefactList.begin();
 							 m_ArtefactList.end() != it;
 							 ++it)
-							if(dynamic_cast<A*>(*it)) ++artifact_count;
+							if(smart_cast<A*>(*it)) ++artifact_count;
 		return artifact_count;
 	};
 
@@ -76,7 +76,7 @@ public:
 		ARTIFACT_LIST_it it = m_ArtefactList.begin();
 		do
 		{
-			if(dynamic_cast<A*>(*it)) 
+			if(smart_cast<A*>(*it)) 
 			{
 				++artifact_count;
 				//удалить объект артефакта

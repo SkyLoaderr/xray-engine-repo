@@ -59,7 +59,7 @@ void CStalkerMovementManager::init					()
 void CStalkerMovementManager::Load					(LPCSTR section)
 {
 	inherited::Load					(section);
-	m_stalker						= dynamic_cast<CAI_Stalker*>(this);
+	m_stalker						= smart_cast<CAI_Stalker*>(this);
 	VERIFY							(m_stalker);
 }
 

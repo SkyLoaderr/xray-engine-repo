@@ -44,7 +44,7 @@ IC	void CGameLocationSelector::reinit			(const CGameGraph *graph)
 	CAI_ObjectLocation::reinit		();
 	
 	m_selection_type				= eSelectionTypeRandomBranching;
-	m_location_manager				= dynamic_cast<CLocationManager*>(this);
+	m_location_manager				= smart_cast<CLocationManager*>(this);
 	VERIFY							(m_location_manager);
 	m_time_to_change				= 0;
 	if (graph)

@@ -37,7 +37,7 @@ T*	GetControl(LPCSTR name){
 		if(pWnd == NULL)
 			return NULL;
 
-		return dynamic_cast<T*>(pWnd);
+		return smart_cast<T*>(pWnd);
 }
 
 

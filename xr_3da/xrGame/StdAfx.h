@@ -36,3 +36,5 @@
 #include "ode_include.h"
 
 #define BOOST_THROW_EXCEPTION_HPP_INCLUDED
+
+#include "smart_cast.h"

@@ -71,7 +71,7 @@ void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 
 {
 	if (g_Alive()) {
 		// Play hit-ref_sound
-		CEntityAlive		*entity_alive = dynamic_cast<CEntityAlive*>(who);
+		CEntityAlive		*entity_alive = smart_cast<CEntityAlive*>(who);
 		if (!entity_alive || (tfGetRelationType(entity_alive) != ALife::eRelationTypeFriend))
 			CSoundPlayer::play	(eStalkerSoundInjuring);
 		else
@@ -156,7 +156,7 @@ void CAI_Stalker::update_best_item_info	()
 		xr_vector<const CGameObject*>::const_iterator	I = items().begin();
 		xr_vector<const CGameObject*>::const_iterator	E = items().end();
 		for ( ; I != E; ++I) {
-			const CInventoryItem	*inventory_item = dynamic_cast<const CInventoryItem*>(*I);
+			const CInventoryItem	*inventory_item = smart_cast<const CInventoryItem*>(*I);
 			if (!inventory_item || !CItemManager::useful(inventory_item))
 				continue;
 			CInventoryItem			*item			= inventory_item->can_kill(&inventory());
@@ -196,7 +196,7 @@ void CAI_Stalker::update_best_item_info	()
 	xr_vector<const CGameObject*>::const_iterator	I = items().begin();
 	xr_vector<const CGameObject*>::const_iterator	E = items().end();
 	for ( ; I != E; ++I) {
-		const CInventoryItem	*inventory_item = dynamic_cast<const CInventoryItem*>(*I);
+		const CInventoryItem	*inventory_item = smart_cast<const CInventoryItem*>(*I);
 		if (!inventory_item || !CItemManager::useful(inventory_item))
 			continue;
 		const CInventoryItem	*item = inventory_item->can_kill(items());
@@ -289,7 +289,7 @@ bool CAI_Stalker::can_kill_member		(const Fvector &position, const Fvector &dire
 	if (!ray_query_result.O)
 		return				(false);
 	
-	CEntityAlive			*entity_alive = dynamic_cast<CEntityAlive*>(ray_query_result.O);
+	CEntityAlive			*entity_alive = smart_cast<CEntityAlive*>(ray_query_result.O);
 	if (!entity_alive)
 		return				(false);
 
@@ -312,7 +312,7 @@ bool CAI_Stalker::inside_anomaly		()
 //	xr_vector<CObject*>::const_iterator	I = feel_touch.begin();
 //	xr_vector<CObject*>::const_iterator	E = feel_touch.end();
 //	for ( ; I != E; ++I) {
-//		CCustomZone			*zone = dynamic_cast<CCustomZone*>(*I);
+//		CCustomZone			*zone = smart_cast<CCustomZone*>(*I);
 //		if (zone)
 //			return			(true);
 //	}

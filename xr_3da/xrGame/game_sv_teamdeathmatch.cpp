@@ -166,7 +166,7 @@ u32		game_sv_TeamDeathmatch::RP_2_Use				(CSE_Abstract* E)
 {
 	return 0;
 	/*
-	CSE_ALifeCreatureActor	*pA	=	dynamic_cast<CSE_ALifeCreatureActor*>(E);
+	CSE_ALifeCreatureActor	*pA	=	smart_cast<CSE_ALifeCreatureActor*>(E);
 	if (!pA) return 0;
 
 	return u32(pA->s_team);
@@ -181,8 +181,8 @@ void	game_sv_TeamDeathmatch::OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, N
 
 	if (!e_hitter || !e_hitted) return;
 
-	CSE_ALifeCreatureActor*		a_hitter		= dynamic_cast <CSE_ALifeCreatureActor*> (e_hitter);
-	CSE_ALifeCreatureActor*		a_hitted		= dynamic_cast <CSE_ALifeCreatureActor*> (e_hitted);
+	CSE_ALifeCreatureActor*		a_hitter		= smart_cast <CSE_ALifeCreatureActor*> (e_hitter);
+	CSE_ALifeCreatureActor*		a_hitted		= smart_cast <CSE_ALifeCreatureActor*> (e_hitted);
 
 	if (!a_hitter || !a_hitted) return;
 

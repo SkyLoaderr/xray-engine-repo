@@ -164,7 +164,7 @@ void	game_sv_Deathmatch::Update					()
 				if (m_dwSM_LastSwitchTime<Level().timeServer())
 					SM_SwitchOnNextActivePlayer();
 				
-				CUIGameDM* GameDM = dynamic_cast<CUIGameDM*>(HUD().GetUI()->UIGame());
+				CUIGameDM* GameDM = smart_cast<CUIGameDM*>(HUD().GetUI()->UIGame());
 				if (GameDM) GameDM->SetSpectrModeMsgCaption("");
 
 				CObject* pObject = Level().CurrentViewEntity();
@@ -271,7 +271,7 @@ void	game_sv_Deathmatch::SM_SwitchOnNextActivePlayer()
 		xrClientData*	C = NULL;
 		C	= (xrClientData*)m_server->client_Get			(it);	
 		pNewObject =  Level().Objects.net_Find(C->ps->GameID);
-		CActor* pActor = dynamic_cast<CActor*>(pNewObject);
+		CActor* pActor = smart_cast<CActor*>(pNewObject);
 		if (!pActor || !pActor->g_Alive()) return;
 	};
 	SM_SwitchOnPlayer(pNewObject);
@@ -294,16 +294,16 @@ void	game_sv_Deathmatch::SM_SwitchOnPlayer(CObject* pNewObject)
 	Engine.Sheduler.Unregister	(pNewObject);
 	Engine.Sheduler.Register	(pNewObject, TRUE);
 	*/
-	CActor* pActor = dynamic_cast<CActor*> (pNewObject);
+	CActor* pActor = smart_cast<CActor*> (pNewObject);
 	if (pActor)
 	{
-		CHudItem* pHudItem = dynamic_cast<CHudItem*>(pActor->inventory().ActiveItem());
+		CHudItem* pHudItem = smart_cast<CHudItem*>(pActor->inventory().ActiveItem());
 		if (pHudItem) 
 		{
 			pHudItem->GetHUD()->SetCurrentEntityHud(true);
 			pHudItem->StartIdleAnim();
 		}
-		CWeapon* pWeapon = dynamic_cast<CWeapon*>(pActor->inventory().ActiveItem());
+		CWeapon* pWeapon = smart_cast<CWeapon*>(pActor->inventory().ActiveItem());
 		if (pWeapon)
 		{
 			pWeapon->InitAddons();
@@ -383,7 +383,7 @@ void	game_sv_Deathmatch::OnPlayerReady			(ClientID id)
 			//------------------------------------------------------------
 			RespawnPlayer(id, false);
 			CSE_Abstract* pOwner = xrCData->owner;
-			CSE_ALifeCreatureActor	*pA	=	dynamic_cast<CSE_ALifeCreatureActor*>(pOwner);
+			CSE_ALifeCreatureActor	*pA	=	smart_cast<CSE_ALifeCreatureActor*>(pOwner);
 			if(pA)
 			{
 				SpawnWeaponsForActor(pOwner, ps);
@@ -428,14 +428,14 @@ void	game_sv_Deathmatch::assign_RP				(CSE_Abstract* E)
 	u32		Team		= RP_2_Use(E);
 	VERIFY				(rpoints[Team].size());
 
-	CSE_Spectator		*pSpectator = dynamic_cast<CSE_Spectator*>(E);
+	CSE_Spectator		*pSpectator = smart_cast<CSE_Spectator*>(E);
 	if (pSpectator)
 	{
 		inherited::assign_RP(E);
 		return;
 	};
 
-	CSE_ALifeCreatureActor	*pA	=	dynamic_cast<CSE_ALifeCreatureActor*>(E);
+	CSE_ALifeCreatureActor	*pA	=	smart_cast<CSE_ALifeCreatureActor*>(E);
 	if (!pA)
 	{
 		inherited::assign_RP(E);
@@ -528,14 +528,14 @@ void	game_sv_Deathmatch::CheckItem		(game_PlayerState*	ps, PIItem pItem, xr_vect
 		found = true;
 		pItemsDesired->erase(pItemsDesired->begin()+it);
 		//----- Check for Addon Changes ---------------------
-		CWeapon		*pWeapon	=	dynamic_cast<CWeapon*>(pItem);
+		CWeapon		*pWeapon	=	smart_cast<CWeapon*>(pItem);
 		if (pWeapon)
 		{
 			u8 OldAddons  = pWeapon->GetAddonsState();
 			u8 NewAddons  = u8(ItemID&0x00ff)>>0x05;
 			if (OldAddons != NewAddons)
 			{
-				CSE_ALifeItemWeapon* pSWeapon = dynamic_cast<CSE_ALifeItemWeapon*>(get_entity_from_eid(pWeapon->ID()));
+				CSE_ALifeItemWeapon* pSWeapon = smart_cast<CSE_ALifeItemWeapon*>(get_entity_from_eid(pWeapon->ID()));
 				if (pSWeapon)
 				{
 					pSWeapon->m_addon_flags.zero();
@@ -574,7 +574,7 @@ void	game_sv_Deathmatch::OnPlayerBuyFinished		(ClientID id_who, NET_Packet& P)
 		ItemsDesired.push_back(ItemID);
 	};
 
-	CSE_ALifeCreatureActor*		e_Actor	= dynamic_cast<CSE_ALifeCreatureActor*>(get_entity_from_eid	(ps->GameID));
+	CSE_ALifeCreatureActor*		e_Actor	= smart_cast<CSE_ALifeCreatureActor*>(get_entity_from_eid	(ps->GameID));
 /*	
 	if (e_Actor)
 	{
@@ -585,7 +585,7 @@ void	game_sv_Deathmatch::OnPlayerBuyFinished		(ClientID id_who, NET_Packet& P)
 		xr_vector<u16>::const_iterator	E = e_Actor->children.end		();
 		for ( ; I != E; ++I) 
 		{
-			PIItem pItem = dynamic_cast<PIItem> (Level().Objects.net_Find(*I));
+			PIItem pItem = smart_cast<PIItem> (Level().Objects.net_Find(*I));
 			CheckItem(ps, pItem, &ItemsDesired, &ItemsToDelete);
 		};
 		//-------------------------------------------------------------
@@ -600,7 +600,7 @@ void	game_sv_Deathmatch::OnPlayerBuyFinished		(ClientID id_who, NET_Packet& P)
 		//-------------------------------------------------------------
 	}
 */
-	CActor* pActor = dynamic_cast<CActor*>(Level().Objects.net_Find	(ps->GameID));
+	CActor* pActor = smart_cast<CActor*>(Level().Objects.net_Find	(ps->GameID));
 	if (pActor)
 	{
 		PIItem pItem = NULL;
@@ -698,7 +698,7 @@ void	game_sv_Deathmatch::SetPlayersDefItems		(game_PlayerState* ps)
 //
 //	/////////////////////////////////////////////////////////////////////////////////
 //	//если это оружие - спавним его с полным магазином
-//	CSE_ALifeItemWeapon		*pWeapon	=	dynamic_cast<CSE_ALifeItemWeapon*>(E);
+//	CSE_ALifeItemWeapon		*pWeapon	=	smart_cast<CSE_ALifeItemWeapon*>(E);
 //	if (pWeapon)
 //	{
 //		pWeapon->a_elapsed = pWeapon->get_ammo_magsize();
@@ -712,7 +712,7 @@ void	game_sv_Deathmatch::SetPlayersDefItems		(game_PlayerState* ps)
 
 void	game_sv_Deathmatch::SpawnWeaponsForActor(CSE_Abstract* pE, game_PlayerState*	ps)
 {
-	CSE_ALifeCreatureActor* pA	=	dynamic_cast<CSE_ALifeCreatureActor*>(pE);
+	CSE_ALifeCreatureActor* pA	=	smart_cast<CSE_ALifeCreatureActor*>(pE);
 	R_ASSERT2(pA, "Owner not a Actor");
 	if (!pA) return;
 
@@ -832,7 +832,7 @@ void	game_sv_Deathmatch::SetSkin					(CSE_Abstract* E, u16 Team, u16 ID)
 {
 	if (!E) return;
 	//-------------------------------------------
-	CSE_Visual* pV = dynamic_cast<CSE_Visual*>(E);
+	CSE_Visual* pV = smart_cast<CSE_Visual*>(E);
 	if (!pV) return;
 	//-------------------------------------------
 	string256 SkinName;
@@ -886,8 +886,8 @@ void	game_sv_Deathmatch::OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, NET_P
 
 	if (!e_hitter || !e_hitted) return;
 
-	CSE_ALifeCreatureActor*		a_hitter		= dynamic_cast <CSE_ALifeCreatureActor*> (e_hitter);
-	CSE_ALifeCreatureActor*		a_hitted		= dynamic_cast <CSE_ALifeCreatureActor*> (e_hitted);
+	CSE_ALifeCreatureActor*		a_hitter		= smart_cast <CSE_ALifeCreatureActor*> (e_hitter);
+	CSE_ALifeCreatureActor*		a_hitted		= smart_cast <CSE_ALifeCreatureActor*> (e_hitted);
 
 	if (!a_hitter || !a_hitted) return;
 
@@ -1078,7 +1078,7 @@ void	game_sv_Deathmatch::RemoveItemFromActor	(CSE_Abstract* pItem)
 {
 	if (!pItem) return;
 	//-------------------------------------------------------------
-	CSE_ALifeItemWeapon* pWeapon = dynamic_cast<CSE_ALifeItemWeapon*> (pItem);
+	CSE_ALifeItemWeapon* pWeapon = smart_cast<CSE_ALifeItemWeapon*> (pItem);
 	if (pWeapon)
 	{
 	};
@@ -1204,7 +1204,7 @@ void	game_sv_Deathmatch::StartAnomalies			()
 		for (u32 i=0; i<OldAnomalies->size(); i++)
 		{
 			const char *pName = ((*OldAnomalies)[i]).c_str();
-			CCustomZone* pZone = dynamic_cast<CCustomZone*> (Level().Objects.FindObjectByName(pName));
+			CCustomZone* pZone = smart_cast<CCustomZone*> (Level().Objects.FindObjectByName(pName));
 			if (!pZone) continue;
 //			if (pZone->IsEnabled())
 				pZone->ZoneDisable();
@@ -1217,7 +1217,7 @@ void	game_sv_Deathmatch::StartAnomalies			()
 	for (u32 i=0; i<NewAnomalies->size(); i++)
 	{
 		const char *pName = ((*NewAnomalies)[i]).c_str();
-		CCustomZone* pZone = dynamic_cast<CCustomZone*> (Level().Objects.FindObjectByName(pName));
+		CCustomZone* pZone = smart_cast<CCustomZone*> (Level().Objects.FindObjectByName(pName));
 		if (!pZone) continue;
 //		if (!pZone->IsEnabled())
 			pZone->ZoneEnable();
@@ -1229,11 +1229,11 @@ BOOL	game_sv_Deathmatch::OnTouch			(u16 eid_who, u16 eid_what)
 	CSE_Abstract*		e_who	= m_server->ID_to_entity(eid_who);		VERIFY(e_who	);
 	CSE_Abstract*		e_what	= m_server->ID_to_entity(eid_what);	VERIFY(e_what	);
 
-	CSE_ALifeCreatureActor*			A		= dynamic_cast<CSE_ALifeCreatureActor*> (e_who);
+	CSE_ALifeCreatureActor*			A		= smart_cast<CSE_ALifeCreatureActor*> (e_who);
 	if (A)
 	{
 		// Actor touches something
-		CSE_ALifeItemWeapon*	W			=	dynamic_cast<CSE_ALifeItemWeapon*> (e_what);
+		CSE_ALifeItemWeapon*	W			=	smart_cast<CSE_ALifeItemWeapon*> (e_what);
 		if (W) 
 		{
 			// Weapon
@@ -1243,7 +1243,7 @@ BOOL	game_sv_Deathmatch::OnTouch			(u16 eid_who, u16 eid_what)
 			{
 				CSE_Abstract*		Et	= m_server->ID_to_entity				(C[it]);
 				if (0==Et)				continue;
-				CSE_ALifeItemWeapon*		T	= dynamic_cast<CSE_ALifeItemWeapon*>	(Et);
+				CSE_ALifeItemWeapon*		T	= smart_cast<CSE_ALifeItemWeapon*>	(Et);
 				if (0==T)				continue;
 				if (slot == T->get_slot())	
 				{
@@ -1256,21 +1256,21 @@ BOOL	game_sv_Deathmatch::OnTouch			(u16 eid_who, u16 eid_what)
 			return TRUE;
 		}
 		
-		CSE_ALifeItemAmmo* pIAmmo			=	dynamic_cast<CSE_ALifeItemAmmo*> (e_what);
+		CSE_ALifeItemAmmo* pIAmmo			=	smart_cast<CSE_ALifeItemAmmo*> (e_what);
 		if (pIAmmo)
 		{
 			//Ammo
 			return TRUE;
 		};
 
-		CSE_ALifeItemGrenade* pIGrenade		=	dynamic_cast<CSE_ALifeItemGrenade*> (e_what);
+		CSE_ALifeItemGrenade* pIGrenade		=	smart_cast<CSE_ALifeItemGrenade*> (e_what);
 		if (pIGrenade)
 		{
 			//Grenade
 			return TRUE;
 		};
 
-		CSE_ALifeItemCustomOutfit* pOutfit		= dynamic_cast<CSE_ALifeItemCustomOutfit*> (e_what);
+		CSE_ALifeItemCustomOutfit* pOutfit		= smart_cast<CSE_ALifeItemCustomOutfit*> (e_what);
 		if (pOutfit)
 		{
 			//Possibly Addons and/or Outfits

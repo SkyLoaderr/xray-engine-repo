@@ -420,10 +420,10 @@ void CUIBuyWeaponWnd::InitInventory()
 //проверка на помещение инвентаря в слоты
 bool CUIBuyWeaponWnd::SlotProc0(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
-	CUIBuyWeaponWnd* this_inventory = dynamic_cast<CUIBuyWeaponWnd*>(pList->GetParent());
+	CUIBuyWeaponWnd* this_inventory = smart_cast<CUIBuyWeaponWnd*>(pList->GetParent());
 	R_ASSERT2(this_inventory, "wrong parent addressed as inventory wnd");
 
-	CUIDragDropItemMP *pDDItemMP = dynamic_cast<CUIDragDropItemMP*>(pItem);
+	CUIDragDropItemMP *pDDItemMP = smart_cast<CUIDragDropItemMP*>(pItem);
 	R_ASSERT(pDDItemMP);
 
 	if(!this_inventory->CanPutInSlot(pDDItemMP, KNIFE_SLOT)) return false;
@@ -442,10 +442,10 @@ bool CUIBuyWeaponWnd::SlotProc0(CUIDragDropItem* pItem, CUIDragDropList* pList)
 
 bool CUIBuyWeaponWnd::SlotProc1(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
-	CUIBuyWeaponWnd* this_inventory = dynamic_cast<CUIBuyWeaponWnd*>(pList->GetParent());
+	CUIBuyWeaponWnd* this_inventory = smart_cast<CUIBuyWeaponWnd*>(pList->GetParent());
 	R_ASSERT2(this_inventory, "wrong parent addressed as inventory wnd");
 
-	CUIDragDropItemMP *pDDItemMP = dynamic_cast<CUIDragDropItemMP*>(pItem);
+	CUIDragDropItemMP *pDDItemMP = smart_cast<CUIDragDropItemMP*>(pItem);
 	R_ASSERT(pDDItemMP);
 
 	if(!this_inventory->CanPutInSlot(pDDItemMP, PISTOL_SLOT)) return false;
@@ -463,11 +463,11 @@ bool CUIBuyWeaponWnd::SlotProc1(CUIDragDropItem* pItem, CUIDragDropList* pList)
 }
 bool CUIBuyWeaponWnd::SlotProc2(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
-	CUIBuyWeaponWnd* this_inventory = dynamic_cast<CUIBuyWeaponWnd*>(pList->GetParent());
+	CUIBuyWeaponWnd* this_inventory = smart_cast<CUIBuyWeaponWnd*>(pList->GetParent());
 	R_ASSERT2(this_inventory, "wrong parent addressed as inventory wnd");
 
 	CUIDragDropItemMP::AddonIDs	addonID;
-	CUIDragDropItemMP *pDDItemMP	= dynamic_cast<CUIDragDropItemMP*>(pItem), 
+	CUIDragDropItemMP *pDDItemMP	= smart_cast<CUIDragDropItemMP*>(pItem), 
 					  *pAddonOwner	= this_inventory->IsItemAnAddon(pDDItemMP, addonID);
 
 	R_ASSERT(pDDItemMP);
@@ -509,10 +509,10 @@ bool CUIBuyWeaponWnd::SlotProc2(CUIDragDropItem* pItem, CUIDragDropList* pList)
 
 bool CUIBuyWeaponWnd::SlotProc3(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
-	CUIBuyWeaponWnd* this_inventory = dynamic_cast<CUIBuyWeaponWnd*>(pList->GetParent());
+	CUIBuyWeaponWnd* this_inventory = smart_cast<CUIBuyWeaponWnd*>(pList->GetParent());
 	R_ASSERT2(this_inventory, "wrong parent addressed as inventory wnd");
 
-	CUIDragDropItemMP *pDDItemMP = dynamic_cast<CUIDragDropItemMP*>(pItem);
+	CUIDragDropItemMP *pDDItemMP = smart_cast<CUIDragDropItemMP*>(pItem);
 	R_ASSERT(pDDItemMP);
 
 	// Если вещь не граната
@@ -533,10 +533,10 @@ bool CUIBuyWeaponWnd::SlotProc3(CUIDragDropItem* pItem, CUIDragDropList* pList)
 }
 bool CUIBuyWeaponWnd::SlotProc4(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
-	CUIBuyWeaponWnd* this_inventory = dynamic_cast<CUIBuyWeaponWnd*>(pList->GetParent());
+	CUIBuyWeaponWnd* this_inventory = smart_cast<CUIBuyWeaponWnd*>(pList->GetParent());
 	R_ASSERT2(this_inventory, "wrong parent addressed as inventory wnd");
 
-	CUIDragDropItemMP *pDDItemMP = dynamic_cast<CUIDragDropItemMP*>(pItem);
+	CUIDragDropItemMP *pDDItemMP = smart_cast<CUIDragDropItemMP*>(pItem);
 	R_ASSERT(pDDItemMP);
 
 	if(!this_inventory->CanPutInSlot(pDDItemMP, APPARATUS_SLOT)) return false;
@@ -557,10 +557,10 @@ bool CUIBuyWeaponWnd::SlotProc4(CUIDragDropItem* pItem, CUIDragDropList* pList)
 //одеть костюм
 bool CUIBuyWeaponWnd::OutfitSlotProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
-	CUIBuyWeaponWnd* this_inventory = dynamic_cast<CUIBuyWeaponWnd*>(pList->GetParent());
+	CUIBuyWeaponWnd* this_inventory = smart_cast<CUIBuyWeaponWnd*>(pList->GetParent());
 	R_ASSERT2(this_inventory, "wrong parent addressed as inventory wnd");
 
-	CUIDragDropItemMP *pDDItemMP = dynamic_cast<CUIDragDropItemMP*>(pItem);
+	CUIDragDropItemMP *pDDItemMP = smart_cast<CUIDragDropItemMP*>(pItem);
 	R_ASSERT(pDDItemMP);
 	
 	if (OUTFIT_SLOT == pDDItemMP->GetSlot())
@@ -605,10 +605,10 @@ bool CUIBuyWeaponWnd::BagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
 	// Так как только 1 саббег в данный момент приаттачен к UIBagWnd, а pList может быть 
 	// и не этим приаттаченым листом, то адрес UIBagWnd мы сохранили в MessageTarget
-	CUIBuyWeaponWnd* this_inventory = dynamic_cast<CUIBuyWeaponWnd*>(pList->GetMessageTarget());
+	CUIBuyWeaponWnd* this_inventory = smart_cast<CUIBuyWeaponWnd*>(pList->GetMessageTarget());
 	R_ASSERT2(this_inventory, "wrong parent addressed as inventory wnd");
 
-	CUIDragDropItemMP *pDDItemMP = dynamic_cast<CUIDragDropItemMP*>(pItem);
+	CUIDragDropItemMP *pDDItemMP = smart_cast<CUIDragDropItemMP*>(pItem);
 
 	// У нас не может быть обычная вещь в этом диалоге.
 	R_ASSERT(pDDItemMP);
@@ -658,10 +658,10 @@ bool CUIBuyWeaponWnd::BagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 //на пояс
 bool CUIBuyWeaponWnd::BeltProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
-	CUIBuyWeaponWnd* this_inventory = dynamic_cast<CUIBuyWeaponWnd*>(pList->GetParent());
+	CUIBuyWeaponWnd* this_inventory = smart_cast<CUIBuyWeaponWnd*>(pList->GetParent());
 	R_ASSERT2(this_inventory, "wrong parent addressed as inventory wnd");
 
-	CUIDragDropItemMP *pDDItemMP = dynamic_cast<CUIDragDropItemMP*>(pItem);
+	CUIDragDropItemMP *pDDItemMP = smart_cast<CUIDragDropItemMP*>(pItem);
 	// У нас не может быть обычная вещь в этом диалоге.
 	R_ASSERT(pDDItemMP);
 
@@ -726,7 +726,7 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	{
 		CUIDragDropItemMP	*pAddonOwner;
 
-		m_pCurrentDragDropItem = dynamic_cast<CUIDragDropItemMP*>(pWnd);
+		m_pCurrentDragDropItem = smart_cast<CUIDragDropItemMP*>(pWnd);
 		R_ASSERT(m_pCurrentDragDropItem);
 
 		// Проверяем, а не находимся ли мы на уровне ящиков?
@@ -845,7 +845,7 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 //		HUD().GetUI()->UIGame()->StartStopMenu(this);
 //		HUD().GetUI()->UIGame()->OnBuyMenu_Ok();
 		Game().StartStopMenu(this);
-		game_cl_Deathmatch * dm = dynamic_cast<game_cl_Deathmatch *>(&(Game()));
+		game_cl_Deathmatch * dm = smart_cast<game_cl_Deathmatch *>(&(Game()));
 		dm->OnBuyMenu_Ok();
 	}
 	else if (&UIBtnCancel == pWnd && BUTTON_CLICKED == msg)
@@ -892,7 +892,7 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	// Если костюмчик вернулся в слот, то спрятать его
 	else if (OUTFIT_RETURNED_BACK == msg && pWnd->GetParent() == &UITopList[OUTFIT_SLOT])
 	{
-		CUIDragDropItemMP *pDDItemMP = dynamic_cast<CUIDragDropItemMP*>(pWnd);
+		CUIDragDropItemMP *pDDItemMP = smart_cast<CUIDragDropItemMP*>(pWnd);
 		if (pDDItemMP && OUTFIT_SLOT == pDDItemMP->GetSlot())
 		{
 			pDDItemMP->Show(false);
@@ -988,12 +988,12 @@ void CUIBuyWeaponWnd::Update()
 
 void CUIBuyWeaponWnd::DropItem()
 {
-	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 	if(!pActor) return;
 
 	m_pCurrentItem->Drop();
 
-	(dynamic_cast<CUIDragDropList*>(m_pCurrentDragDropItem->GetParent()))->
+	(smart_cast<CUIDragDropList*>(m_pCurrentDragDropItem->GetParent()))->
 		DetachChild(m_pCurrentDragDropItem);
 
 //	SetCurrentItem(NULL);
@@ -1007,7 +1007,7 @@ void CUIBuyWeaponWnd::Show()
 
 	if (GameID() != GAME_SINGLE)
 	{
-		CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+		CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 		if(!pActor) return;
 
 		NET_Packet	P;
@@ -1022,7 +1022,7 @@ void CUIBuyWeaponWnd::Hide()
 
 	if (GameID() != GAME_SINGLE)
 	{
-		CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+		CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 		if(!pActor) return;
 
 		NET_Packet	P;
@@ -1474,7 +1474,7 @@ bool CUIBuyWeaponWnd::SlotToSection(const u32 SlotNum)
 	// Выкидываем вещь из слота если есть.
 	if (!UITopList[SlotNum].GetDragDropItemsList().empty())
 	{
-		CUIDragDropItemMP *pDDItemMP = dynamic_cast<CUIDragDropItemMP*>(*UITopList[SlotNum].GetDragDropItemsList().begin());
+		CUIDragDropItemMP *pDDItemMP = smart_cast<CUIDragDropItemMP*>(*UITopList[SlotNum].GetDragDropItemsList().begin());
 		// Берем текущее оружие в слоте
 		pDDItemMP->MoveOnNextDrop();
 		// убираем все аддоны
@@ -1618,7 +1618,7 @@ CUIDragDropItemMP * CUIBuyWeaponWnd::GetWeapon(u32 slotNum, u32 idx)
 
 	DRAG_DROP_LIST_it it = UITopList[slotNum].GetDragDropItemsList().begin(); 
 	std::advance(it, idx);
-	return dynamic_cast<CUIDragDropItemMP*>(*it);
+	return smart_cast<CUIDragDropItemMP*>(*it);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -1738,7 +1738,7 @@ bool CUIBuyWeaponWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 		{
 			for (DRAG_DROP_LIST_it it = m_WeaponSubBags.back()->GetDragDropItemsList().begin(); it != m_WeaponSubBags.back()->GetDragDropItemsList().end(); ++it)
 			{
-				CUIDragDropItemMP *pDDItemMP = dynamic_cast<CUIDragDropItemMP*>(*it);
+				CUIDragDropItemMP *pDDItemMP = smart_cast<CUIDragDropItemMP*>(*it);
 				R_ASSERT(pDDItemMP);
 				if (static_cast<u32>(dik - 2) == pDDItemMP->GetPosInSectionsGroup())
 				{
@@ -1792,7 +1792,7 @@ bool CUIBuyWeaponWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 	if (dik == g_iOkAccelerator)
 	{
 		SendMessage(&UIBtnOK, BUTTON_CLICKED, NULL);
-//		CUIDragDropItemMP *p = GetAddonByID(dynamic_cast<CUIDragDropItemMP*>(UITopList[RIFLE_SLOT].GetDragDropItemsList().front()), CUIDragDropItemMP::ID_SILENCER);
+//		CUIDragDropItemMP *p = GetAddonByID(smart_cast<CUIDragDropItemMP*>(UITopList[RIFLE_SLOT].GetDragDropItemsList().front()), CUIDragDropItemMP::ID_SILENCER);
 		return true;
 	}
 
@@ -1815,7 +1815,7 @@ bool CUIBuyWeaponWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 
 void WpnDrawIndex(CUIDragDropItem *pDDItem)
 {
-	CUIDragDropItemMP *pDDItemMP = dynamic_cast<CUIDragDropItemMP*>(pDDItem);
+	CUIDragDropItemMP *pDDItemMP = smart_cast<CUIDragDropItemMP*>(pDDItem);
 	R_ASSERT(pDDItemMP);
 	if (!pDDItemMP) return;
 
@@ -1888,7 +1888,7 @@ const u8 CUIBuyWeaponWnd::GetCurrentSuit()
 {
 	if (!UITopList[OUTFIT_SLOT].GetDragDropItemsList().empty())
 	{
-		CUIDragDropItemMP *pDDItemMP = dynamic_cast<CUIDragDropItemMP*>(UITopList[OUTFIT_SLOT].GetDragDropItemsList().front());
+		CUIDragDropItemMP *pDDItemMP = smart_cast<CUIDragDropItemMP*>(UITopList[OUTFIT_SLOT].GetDragDropItemsList().front());
 		if (0 == xr_strcmp(pDDItemMP->GetSectionName(), "a"))
 		{
 
@@ -1907,7 +1907,7 @@ void CUIBuyWeaponWnd::CheckBuyAvailabilityInShop()
 		for (DRAG_DROP_LIST_it it2 = (*it)->GetDragDropItemsList().begin(); it2 != (*it)->GetDragDropItemsList().end(); ++it2)
 		{
 			// В данном диалоге вещь не UIDragDropItemMP быть не может
-			CUIDragDropItemMP *pDDItemMP = dynamic_cast<CUIDragDropItemMP*>(*it2);
+			CUIDragDropItemMP *pDDItemMP = smart_cast<CUIDragDropItemMP*>(*it2);
 			R_ASSERT(pDDItemMP);
 
 			if (pDDItemMP->GetCost() <= GetMoneyAmount())
@@ -1963,7 +1963,7 @@ bool CUIBuyWeaponWnd::CheckBuyAvailabilityInSlots()
 
 			for (DRAG_DROP_LIST_it it = pList.begin(); it != pList.end(); ++it)
 			{
-				CUIDragDropItemMP *pDDItemMP = dynamic_cast<CUIDragDropItemMP*>(*it);
+				CUIDragDropItemMP *pDDItemMP = smart_cast<CUIDragDropItemMP*>(*it);
 				R_ASSERT(pDDItemMP);
 
 				// И если на нее хватает денег, то отнимаем ее цену от количества денег
@@ -2003,7 +2003,7 @@ bool CUIBuyWeaponWnd::CheckBuyAvailabilityInSlots()
 		 it != UITopList[BELT_SLOT].GetDragDropItemsList().end();
 		 ++it)
 	{
-		CUIDragDropItemMP *pDDItemMP = dynamic_cast<CUIDragDropItemMP*>(*it);
+		CUIDragDropItemMP *pDDItemMP = smart_cast<CUIDragDropItemMP*>(*it);
 		R_ASSERT(pDDItemMP);
 
 		if (!pDDItemMP->m_bHasRealRepresentation)
@@ -2239,7 +2239,7 @@ CUIDragDropItemMP * CUIBuyWeaponWnd::IsItemAnAddon(CUIDragDropItemMP *pPossibleA
 	// проверяем не аддон ли pPossibleAddon вещи в слот(е/ах)
 	if (!UITopList[RIFLE_SLOT].GetDragDropItemsList().empty())
 	{
-		CUIDragDropItemMP * pDDItemMP = dynamic_cast<CUIDragDropItemMP*>(UITopList[RIFLE_SLOT].GetDragDropItemsList().front());
+		CUIDragDropItemMP * pDDItemMP = smart_cast<CUIDragDropItemMP*>(UITopList[RIFLE_SLOT].GetDragDropItemsList().front());
 
 		if (pDDItemMP && pDDItemMP->bAddonsAvailable)
 		{
@@ -2286,7 +2286,7 @@ void CUIBuyWeaponWnd::ApplyFilter(int slotNum, const ref_str &name, const ref_st
 	// Пробегаемся по всему списку и перекидываем в последний список оружие затребованного типа
 	for (DRAG_DROP_LIST_it it = shop->GetDragDropItemsList().begin(); it != shop->GetDragDropItemsList().end();)
 	{
-		CUIDragDropItemMP *pDDItemMP = dynamic_cast<CUIDragDropItemMP*>(*it++);
+		CUIDragDropItemMP *pDDItemMP = smart_cast<CUIDragDropItemMP*>(*it++);
 		R_ASSERT(pDDItemMP);
 
 		if (0 != xr_strcmp(value, pSettings->r_string(pDDItemMP->GetSectionName(), *name)))
@@ -2297,7 +2297,7 @@ void CUIBuyWeaponWnd::ApplyFilter(int slotNum, const ref_str &name, const ref_st
 		else
 		{
 			if (!UITopList[RIFLE_SLOT].GetDragDropItemsList().empty() &&
-				0 == xr_strcmp(pDDItemMP->GetSectionName(),	dynamic_cast<CUIDragDropItemMP*>(UITopList[RIFLE_SLOT].GetDragDropItemsList().front())->GetSectionName()))
+				0 == xr_strcmp(pDDItemMP->GetSectionName(),	smart_cast<CUIDragDropItemMP*>(UITopList[RIFLE_SLOT].GetDragDropItemsList().front())->GetSectionName()))
 			{
 				RemoveWeapon(shop, pDDItemMP);
 				++idx;

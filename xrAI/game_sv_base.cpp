@@ -294,11 +294,11 @@ void	game_sv_GameState::assign_RP				(CSE_Abstract* E)
 	VERIFY				(E);
 
 	u8					l_uc_team = u8(-1);
-	CSE_Spectator		*tpSpectator = dynamic_cast<CSE_Spectator*>(E);
+	CSE_Spectator		*tpSpectator = smart_cast<CSE_Spectator*>(E);
 	if (tpSpectator)
 		l_uc_team = tpSpectator->g_team();
 	else {
-		CSE_ALifeCreatureAbstract	*tpTeamed = dynamic_cast<CSE_ALifeCreatureAbstract*>(E);
+		CSE_ALifeCreatureAbstract	*tpTeamed = smart_cast<CSE_ALifeCreatureAbstract*>(E);
 		if (tpTeamed)
 			l_uc_team = tpTeamed->g_team();
 		else
@@ -433,8 +433,8 @@ void game_sv_GameState::OnHit (u16 id_hitter, u16 id_hitted, NET_Packet& P)
 	CSE_Abstract*		e_hitted		= get_entity_from_eid	(id_hitted	);
 	if (!e_hitter || !e_hitted) return;
 
-	CSE_Abstract*		a_hitter		= dynamic_cast <CSE_ALifeCreatureActor*> (e_hitter);
-	CSE_Abstract*		a_hitted		= dynamic_cast <CSE_ALifeCreatureActor*> (e_hitted);
+	CSE_Abstract*		a_hitter		= smart_cast <CSE_ALifeCreatureActor*> (e_hitter);
+	CSE_Abstract*		a_hitted		= smart_cast <CSE_ALifeCreatureActor*> (e_hitted);
 
 	if (a_hitted && a_hitter)
 	{

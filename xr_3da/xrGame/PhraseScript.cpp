@@ -81,7 +81,7 @@ bool CPhraseScript::Precondition	(const CGameObject* pSpeakerGO) const
 {
 	bool predicate_result = true;
 
-	if(!CheckInfo(dynamic_cast<const CInventoryOwner*>(pSpeakerGO)))
+	if(!CheckInfo(smart_cast<const CInventoryOwner*>(pSpeakerGO)))
 		return false;
 
 	for(u32 i = 0; i<Preconditions().size(); i++)
@@ -98,7 +98,7 @@ bool CPhraseScript::Precondition	(const CGameObject* pSpeakerGO) const
 
 void CPhraseScript::Action			(const CGameObject* pSpeakerGO) const 
 {
-	TransferInfo(dynamic_cast<const CInventoryOwner*>(pSpeakerGO));
+	TransferInfo(smart_cast<const CInventoryOwner*>(pSpeakerGO));
 
 	for(u32 i = 0; i<Actions().size(); i++)
 	{
@@ -114,7 +114,7 @@ bool CPhraseScript::Precondition	(const CGameObject* pSpeakerGO1, const CGameObj
 {
 	bool predicate_result = true;
 
-	if(!CheckInfo(dynamic_cast<const CInventoryOwner*>(pSpeakerGO1)))
+	if(!CheckInfo(smart_cast<const CInventoryOwner*>(pSpeakerGO1)))
 		return false;
 
 	for(u32 i = 0; i<Preconditions().size(); i++)
@@ -131,7 +131,7 @@ bool CPhraseScript::Precondition	(const CGameObject* pSpeakerGO1, const CGameObj
 
 void CPhraseScript::Action			(const CGameObject* pSpeakerGO1, const CGameObject* pSpeakerGO2) const 
 {
-	TransferInfo(dynamic_cast<const CInventoryOwner*>(pSpeakerGO1));
+	TransferInfo(smart_cast<const CInventoryOwner*>(pSpeakerGO1));
 
 	for(u32 i = 0; i<Actions().size(); i++)
 	{

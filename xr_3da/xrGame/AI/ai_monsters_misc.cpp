@@ -22,7 +22,7 @@ bool bfGetActionSuccessProbability(GroupHierarchyHolder::MEMBER_REGISTRY &Member
 	int i = 0, j = 0, I = (int)Members.size(), J = (int)VisibleEnemies.size();
 	xr_vector<const CEntityAlive*>::const_iterator	II = VisibleEnemies.begin();
 	for ( ; (i < I) && (j < J); ) {
-		ai().ef_storage().m_tpCurrentMember = dynamic_cast<CEntityAlive *>(Members[i]);
+		ai().ef_storage().m_tpCurrentMember = smart_cast<CEntityAlive *>(Members[i]);
 		if (!(ai().ef_storage().m_tpCurrentMember) || !(ai().ef_storage().m_tpCurrentMember->g_Alive())) {
 			++i;
 			continue;
@@ -55,7 +55,7 @@ bool bfGetActionSuccessProbability(GroupHierarchyHolder::MEMBER_REGISTRY &Member
 		else {
 			fCurrentProbability = 1.0f - fProbability;
 			for (++i; (i < I) && (j < J); ++i) {
-				ai().ef_storage().m_tpCurrentMember = dynamic_cast<CEntityAlive *>(Members[i]);
+				ai().ef_storage().m_tpCurrentMember = smart_cast<CEntityAlive *>(Members[i]);
 				if (!(ai().ef_storage().m_tpCurrentMember) || !(ai().ef_storage().m_tpCurrentMember->g_Alive())) {
 					++i;
 					continue;
@@ -90,7 +90,7 @@ u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability0, float fMinP
 		}
 	}
 
-	const CEnemyManager					*enemy_manager = dynamic_cast<const CEnemyManager*>(tpEntity);
+	const CEnemyManager					*enemy_manager = smart_cast<const CEnemyManager*>(tpEntity);
 	VERIFY								(enemy_manager);
 	const xr_vector<const CEntityAlive*>	&VisibleEnemies = enemy_manager->enemies();
 

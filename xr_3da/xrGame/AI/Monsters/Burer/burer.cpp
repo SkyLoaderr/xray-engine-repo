@@ -283,7 +283,7 @@ void CBurer::UpdateGraviObject()
 
 	Collide::rq_result	l_rq;
 	if (Level().ObjectSpace.RayPick(new_pos, dir, trace_dist, Collide::rqtBoth, l_rq)) {
-		const CObject *enemy = dynamic_cast<const CObject *>(m_gravi_object.enemy);
+		const CObject *enemy = smart_cast<const CObject *>(m_gravi_object.enemy);
 		if ((l_rq.O == enemy) && (l_rq.range < trace_dist)) {
 			
 			// check for visibility
@@ -335,7 +335,7 @@ void CBurer::UpdateGraviObject()
 	xr_vector<CObject*> &tpObjects = Level().ObjectSpace.q_nearest;
 
 	for (u32 i=0;i<tpObjects.size();i++) {
-		CPhysicsShellHolder  *obj = dynamic_cast<CPhysicsShellHolder *>(tpObjects[i]);
+		CPhysicsShellHolder  *obj = smart_cast<CPhysicsShellHolder *>(tpObjects[i]);
 		if (!obj || !obj->m_pPhysicsShell) continue;
 		
 		Fvector dir;
@@ -366,14 +366,14 @@ void CBurer::StartGraviPrepare()
 	const CEntityAlive *enemy = EnemyMan.get_enemy();
 	if (!enemy) return;
 	
-	CActor *pA = const_cast<CActor *>(dynamic_cast<const CActor*>(enemy));
+	CActor *pA = const_cast<CActor *>(smart_cast<const CActor*>(enemy));
 	if (!pA) return;
 
 	pA->CParticlesPlayer::StartParticles(particle_gravi_prepare,Fvector().set(0.0f,0.1f,0.0f),pA->ID());
 }
 void CBurer::StopGraviPrepare() 
 {
-	CActor *pA = dynamic_cast<CActor*>(Level().CurrentEntity());
+	CActor *pA = smart_cast<CActor*>(Level().CurrentEntity());
 	if (!pA) return;
 
 	pA->CParticlesPlayer::StopParticles(particle_gravi_prepare);
@@ -425,7 +425,7 @@ void CBurer::on_scanning()
 
 void CBurer::on_scan_success()
 {
-	CActor *pA = dynamic_cast<CActor *>(Level().CurrentEntity());
+	CActor *pA = smart_cast<CActor *>(Level().CurrentEntity());
 	if (!pA) return;
 
 	EnemyMan.add_enemy(pA);

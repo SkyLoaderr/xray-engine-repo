@@ -146,7 +146,7 @@ void CSE_ALifeHumanAbstract::vfGoToCustomer()
 		m_dwCurNode = 0;
 		if (int(m_dwCurTaskID) > 0) {
 			CALifeTask			*l_tpTask = ai().alife().tasks().task(m_dwCurTaskID);
-			CSE_ALifeTrader			*l_tpTrader = dynamic_cast<CSE_ALifeTrader*>(ai().alife().objects().object(l_tpTask->m_tCustomerID));
+			CSE_ALifeTrader			*l_tpTrader = smart_cast<CSE_ALifeTrader*>(ai().alife().objects().object(l_tpTask->m_tCustomerID));
 			if (l_tpTrader)
 				alife().communicate_with_customer(this,l_tpTrader);
 		}

@@ -18,7 +18,7 @@ BOOL CTargetCSBase::net_Spawn		(LPVOID DC)
 
 	if (res){
 		CSE_Abstract				*e	= (CSE_Abstract*)(DC);
-		CSE_Target_CS_Base			*T	= dynamic_cast<CSE_Target_CS_Base*>(e);
+		CSE_Target_CS_Base			*T	= smart_cast<CSE_Target_CS_Base*>(e);
 		radius	= T->radius;
 		team	= T->s_team;
 		setVisible					(true);
@@ -42,7 +42,7 @@ void CTargetCSBase::net_Destroy	()
 }
 
 void CTargetCSBase::feel_touch_new			(CObject* O) {
-	CTargetCS *l_pTarg = dynamic_cast<CTargetCS*>(O);
+	CTargetCS *l_pTarg = smart_cast<CTargetCS*>(O);
 	if(l_pTarg) {
 		l_pTarg=l_pTarg;
 	}

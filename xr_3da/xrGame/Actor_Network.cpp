@@ -581,7 +581,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	};
 	//force actor to be local on server client
 	CSE_Abstract			*e	= (CSE_Abstract*)(DC);
-	CSE_ALifeCreatureActor	*E	= dynamic_cast<CSE_ALifeCreatureActor*>(e);	
+	CSE_ALifeCreatureActor	*E	= smart_cast<CSE_ALifeCreatureActor*>(e);	
 	if (OnServer())
 	{
 		E->s_flags.set(M_SPAWN_OBJECT_LOCAL, TRUE);
@@ -643,7 +643,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 
 	m_pArtefact				= 0;
 
-	CSE_ALifeTraderAbstract	 *pTA	= dynamic_cast<CSE_ALifeTraderAbstract*>(e);
+	CSE_ALifeTraderAbstract	 *pTA	= smart_cast<CSE_ALifeTraderAbstract*>(e);
 	m_dwMoney				= pTA->m_dwMoney;
 	m_tRank					= pTA->m_tRank;
 

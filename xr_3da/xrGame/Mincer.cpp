@@ -59,8 +59,8 @@ float CMincer::Impulse(float power, float mass)
 }
 void CMincer::Affect(CObject* O) 
 {
-	//CGameObject *l_pO = dynamic_cast<CGameObject*>(O);
-	CEntityAlive *pObject = dynamic_cast<CEntityAlive*>(O);
+	//CGameObject *l_pO = smart_cast<CGameObject*>(O);
+	CEntityAlive *pObject = smart_cast<CEntityAlive*>(O);
 
 	//разрядка только на живые существа
 	if(pObject /*&& l_pO->g_Alive()*/) 

@@ -46,7 +46,7 @@ void CActor::IR_OnKeyboardPress(int cmd)
 	case kTORCH:{ 
 		PIItem I = inventory().Get("device_torch",false); 
 		if (I){
-			CTorch* torch = dynamic_cast<CTorch*>(I);
+			CTorch* torch = smart_cast<CTorch*>(I);
 			if (torch) torch->Switch();
 		}
 		}break;
@@ -141,7 +141,7 @@ void CActor::IR_OnKeyboardRelease(int cmd)
 				u32 FullKickTime = Level().timeServer() - m_dwStartKickTime;
 				
 				Collide::rq_result& RQ = HUD().GetCurrentRayQuery();
-				CActor* pActor = dynamic_cast<CActor*>(RQ.O);
+				CActor* pActor = smart_cast<CActor*>(RQ.O);
 				if (!pActor || pActor->g_Alive()) break;
 
 				Fvector original_dir, position_in_bone_space;
@@ -231,7 +231,7 @@ void CActor::ActorUse()
 		if(m_pPersonWeLookingAt)
 		{
 			CEntityAlive* pEntityAliveWeLookingAt = 
-				dynamic_cast<CEntityAlive*>(m_pPersonWeLookingAt);
+				smart_cast<CEntityAlive*>(m_pPersonWeLookingAt);
 
 			VERIFY(pEntityAliveWeLookingAt);
 
@@ -243,26 +243,26 @@ void CActor::ActorUse()
 			else  if(!Level().IR_GetKeyState(DIK_LSHIFT))
 			{
 				//только если находимся в режиме single
-				CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+				CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 				if(pGameSP)pGameSP->StartCarBody(&inventory(), this,
 					&m_pPersonWeLookingAt->inventory(),
-					dynamic_cast<CGameObject*>(m_pPersonWeLookingAt));
+					smart_cast<CGameObject*>(m_pPersonWeLookingAt));
 			}
 		}
 		else if(m_pVehicleWeLookingAt && Level().IR_GetKeyState(DIK_LSHIFT))
 		{
 			//только если находимся в режиме single
-			CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+			CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 			if(pGameSP)pGameSP->StartCarBody(&inventory(), this,
 				m_pVehicleWeLookingAt->GetInventory(),
-				dynamic_cast<CGameObject*>(m_pVehicleWeLookingAt));
+				smart_cast<CGameObject*>(m_pVehicleWeLookingAt));
 
 		}
 
 		if(Level().IR_GetKeyState(DIK_LSHIFT))
 		{
 			Collide::rq_result& RQ = HUD().GetCurrentRayQuery();
-			CPhysicsShellHolder* object = dynamic_cast<CPhysicsShellHolder*>(RQ.O);
+			CPhysicsShellHolder* object = smart_cast<CPhysicsShellHolder*>(RQ.O);
 			u16 element = BI_NONE;
 			if(object) 
 				element = (u16)RQ.element;
@@ -279,7 +279,7 @@ void CActor::ActorUse()
 			{
 				if (m_holder)
 				{
-					CGameObject* holder			= dynamic_cast<CGameObject*>(m_holder);
+					CGameObject* holder			= smart_cast<CGameObject*>(m_holder);
 					switch (holder->SUB_CLS_ID)
 					{
 					case CLSID_CAR:					if(use_Vehicle(0))			return;	break;

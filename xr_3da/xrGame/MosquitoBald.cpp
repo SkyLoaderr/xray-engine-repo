@@ -36,7 +36,7 @@ bool CMosquitoBald::BlowoutState()
 
 void CMosquitoBald::Affect(CObject* O) 
 {
-	CPhysicsShellHolder *pGameObject = dynamic_cast<CPhysicsShellHolder*>(O);
+	CPhysicsShellHolder *pGameObject = smart_cast<CPhysicsShellHolder*>(O);
 	if(!pGameObject) return;
 
 	if(m_ObjectInfoMap[O].zone_ignore) return;

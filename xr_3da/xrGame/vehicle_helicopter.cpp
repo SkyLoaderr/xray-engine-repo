@@ -51,7 +51,7 @@ BOOL CVehicleHelicopter::net_Spawn			(LPVOID DC)
 
 	// assigning m_animator here
 	CSE_Abstract		*abstract=(CSE_Abstract*)(DC);
-	CSE_ALifeHelicopter	*heli	= dynamic_cast<CSE_ALifeHelicopter*>(abstract);
+	CSE_ALifeHelicopter	*heli	= smart_cast<CSE_ALifeHelicopter*>(abstract);
 	VERIFY				(heli);
 
 	R_ASSERT			(Visual()&&PKinematics(Visual()));

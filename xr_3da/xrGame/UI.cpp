@@ -68,7 +68,7 @@ u32 ScaleAlpha(u32 val, float factor)
 
 void CUI::OnFrame()
 {
-	CEntity* m_Actor = dynamic_cast<CEntity*>(Level().CurrentEntity());
+	CEntity* m_Actor = smart_cast<CEntity*>(Level().CurrentEntity());
 	if (m_Actor){
 		
 		
@@ -87,9 +87,9 @@ void CUI::OnFrame()
 		// weapon
 		//CWeaponList* wpns = m_Actor->GetItemList();
 		//if (wpns) UIWeapon.Out(wpns->ActiveWeapon());
-		CActor *l_pA = dynamic_cast<CActor*>(m_Actor);
+		CActor *l_pA = smart_cast<CActor*>(m_Actor);
 		if(l_pA && (l_pA->inventory().m_iActiveSlot < l_pA->inventory().m_slots.size())) {
-			UIWeapon.Out(dynamic_cast<CWeapon*>(l_pA->inventory().m_slots[l_pA->inventory().m_iActiveSlot].m_pIItem));
+			UIWeapon.Out(smart_cast<CWeapon*>(l_pA->inventory().m_slots[l_pA->inventory().m_iActiveSlot].m_pIItem));
 		} else UIWeapon.Out(NULL);
 		
 		*/
@@ -134,7 +134,7 @@ void CUI::OnFrame()
 
 bool CUI::Render()
 {
-	CEntity* m_Actor = dynamic_cast<CEntity*>(Level().CurrentEntity());
+	CEntity* m_Actor = smart_cast<CEntity*>(Level().CurrentEntity());
 	if (m_Actor)
 	{
 #ifdef UI_INTERFACE_ON

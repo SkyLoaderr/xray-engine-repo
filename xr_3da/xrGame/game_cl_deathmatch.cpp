@@ -53,7 +53,7 @@ game_cl_Deathmatch::~game_cl_Deathmatch()
 CUIGameCustom* game_cl_Deathmatch::createGameUI()
 {
 	CLASS_ID clsid			= CLSID_GAME_UI_DEATHMATCH;
-	m_game_ui	= dynamic_cast<CUIGameDM*> ( NEW_INSTANCE ( clsid ) );
+	m_game_ui	= smart_cast<CUIGameDM*> ( NEW_INSTANCE ( clsid ) );
 	R_ASSERT(m_game_ui);
 	m_game_ui->SetClGame(this);
 	m_game_ui->Init();
@@ -124,7 +124,7 @@ void game_cl_Deathmatch::OnSkinMenu_Ok			()
 {
 	CObject *l_pObj = Level().CurrentEntity();
 
-	CGameObject *l_pPlayer = dynamic_cast<CGameObject*>(l_pObj);
+	CGameObject *l_pPlayer = smart_cast<CGameObject*>(l_pObj);
 	if(!l_pPlayer) return;
 
 	NET_Packet		P;
@@ -142,7 +142,7 @@ void game_cl_Deathmatch::OnSkinMenu_Ok			()
 
 BOOL game_cl_Deathmatch::CanCallBuyMenu			()
 {
-	CSpectator* pCurPlayer = dynamic_cast<CSpectator*> (Level().CurrentEntity());
+	CSpectator* pCurPlayer = smart_cast<CSpectator*> (Level().CurrentEntity());
 	if (!pCurPlayer) return FALSE;
 
 	return m_bBuyEnabled;
@@ -203,7 +203,7 @@ char*	game_cl_Deathmatch::getTeamSection(int Team)
 void game_cl_Deathmatch::shedule_Update			(u32 dt)
 {
 	//fake
-	if(!m_game_ui && HUD().GetUI() ) m_game_ui = dynamic_cast<CUIGameDM*>( HUD().GetUI()->UIGame() );
+	if(!m_game_ui && HUD().GetUI() ) m_game_ui = smart_cast<CUIGameDM*>( HUD().GetUI()->UIGame() );
 	if (timelimit && Phase()==GAME_PHASE_INPROGRESS)
 	{
 		if (Level().timeServer()<(start_time + timelimit))

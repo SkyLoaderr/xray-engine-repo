@@ -41,17 +41,17 @@ void CPHSkeleton::Init()
 bool CPHSkeleton::Spawn(CSE_Abstract *D)
 {
 	
-	CSE_PHSkeleton *po		= dynamic_cast<CSE_PHSkeleton*>(D);
+	CSE_PHSkeleton *po		= smart_cast<CSE_PHSkeleton*>(D);
 	VERIFY					(po);
 
 	m_flags					= po->_flags;
-	CSE_Visual				*visual = dynamic_cast<CSE_Visual*>(D);
+	CSE_Visual				*visual = smart_cast<CSE_Visual*>(D);
 	VERIFY					(visual);
 	m_startup_anim			= visual->startup_animation;
 
 	if(po->_flags.test(CSE_PHSkeleton::flSpawnCopy))
 	{
-		CPHSkeleton* source=dynamic_cast<CPHSkeleton*>(Level().Objects.net_Find(po->source_id));
+		CPHSkeleton* source=smart_cast<CPHSkeleton*>(Level().Objects.net_Find(po->source_id));
 		R_ASSERT2(source,"no source");
 		source->UnsplitSingle(this);
 		m_flags.set				(CSE_PHSkeleton::flSpawnCopy,FALSE);
@@ -335,9 +335,9 @@ void CPHSkeleton::InitServerObject(CSE_Abstract * D)
 {
 
 	CPhysicsShellHolder* obj=PPhysicsShellHolder();
-	CSE_ALifeDynamicObject		*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(D);
+	CSE_ALifeDynamicObject		*l_tpALifeDynamicObject = smart_cast<CSE_ALifeDynamicObject*>(D);
 	R_ASSERT					(l_tpALifeDynamicObject);
-	CSE_ALifePHSkeletonObject		*l_tpALifePhysicObject = dynamic_cast<CSE_ALifePHSkeletonObject*>(D);
+	CSE_ALifePHSkeletonObject		*l_tpALifePhysicObject = smart_cast<CSE_ALifePHSkeletonObject*>(D);
 	R_ASSERT					(l_tpALifePhysicObject);
 
 	l_tpALifePhysicObject->m_tGraphID	=obj->game_vertex_id();

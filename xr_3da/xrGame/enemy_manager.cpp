@@ -48,7 +48,7 @@ float CEnemyManager::evaluate				(const CEntityAlive *object) const
 	ai().ef_storage().m_tpCurrentMember = m_self_entity_alive;
 	ai().ef_storage().m_tpCurrentEnemy	= object;
 	return								(ai().ef_storage().m_pfVictoryProbability->ffGetValue()/100.f);
-//	float				distance = dynamic_cast<const CEntityAlive *>(this)->Position().distance_to_sqr(object->Position());
+//	float				distance = smart_cast<const CEntityAlive *>(this)->Position().distance_to_sqr(object->Position());
 //	distance			= !fis_zero(distance) ? distance : EPS_L;
 //	return				(1.f/distance);
 }
@@ -70,8 +70,8 @@ bool CEnemyManager::expedient				(const CEntityAlive *object) const
 
 void CEnemyManager::Load					(LPCSTR section)
 {
-	m_self_entity_alive		= dynamic_cast<CEntityAlive*>(this);
-	m_self_hit_manager		= dynamic_cast<CHitMemoryManager*>(this);
+	m_self_entity_alive		= smart_cast<CEntityAlive*>(this);
+	m_self_hit_manager		= smart_cast<CHitMemoryManager*>(this);
 }
 
 void CEnemyManager::reload					(LPCSTR section)
@@ -103,8 +103,8 @@ void CEnemyManager::update					()
 		}
 		else if(!m_actor_enemy)
 		{
-			m_actor_enemy = dynamic_cast<const CActor*>(selected());
-			if(m_actor_enemy && dynamic_cast<const CAI_Stalker*>(m_self_entity_alive))
+			m_actor_enemy = smart_cast<const CActor*>(selected());
+			if(m_actor_enemy && smart_cast<const CAI_Stalker*>(m_self_entity_alive))
 			{
 				SMapLocation map_location;
 				map_location.attached_to_object = true;

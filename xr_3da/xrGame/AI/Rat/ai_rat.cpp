@@ -157,7 +157,7 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 {
 	//////////////////////////////////////////////////////////////////////////
 	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
-	CSE_ALifeMonsterRat				*tpSE_Rat = dynamic_cast<CSE_ALifeMonsterRat*>(e);
+	CSE_ALifeMonsterRat				*tpSE_Rat = smart_cast<CSE_ALifeMonsterRat*>(e);
 	// model
 	if (!inherited::net_Spawn(DC))
 		return(FALSE);

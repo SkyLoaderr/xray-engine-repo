@@ -69,7 +69,7 @@ CUIGameDM::CUIGameDM()
 void CUIGameDM::SetClGame (game_cl_GameState* g)
 {
 	inherited::SetClGame(g);
-	m_game = dynamic_cast<game_cl_Deathmatch*>(g);
+	m_game = smart_cast<game_cl_Deathmatch*>(g);
 	R_ASSERT(m_game);
 }
 
@@ -376,7 +376,7 @@ void CUIGameDM::OnBuyMenu_Ok	()
 	if (!m_bBuyEnabled) return;
 	CObject *l_pObj = Level().CurrentEntity();
 
-	CGameObject *l_pPlayer = dynamic_cast<CGameObject*>(l_pObj);
+	CGameObject *l_pPlayer = smart_cast<CGameObject*>(l_pObj);
 	if(!l_pPlayer) return;
 
 	game_cl_GameState::Player* Pl = m_game->local_player;
@@ -483,7 +483,7 @@ void		CUIGameDM::OnSkinMenu_Ok			()
 {
 	CObject *l_pObj = Level().CurrentEntity();
 
-	CGameObject *l_pPlayer = dynamic_cast<CGameObject*>(l_pObj);
+	CGameObject *l_pPlayer = smart_cast<CGameObject*>(l_pObj);
 	if(!l_pPlayer) return;
 
 	NET_Packet		P;
@@ -502,7 +502,7 @@ void		CUIGameDM::OnSkinMenu_Ok			()
 
 BOOL		CUIGameDM::CanCallBuyMenu			()
 {
-	CSpectator* pCurPlayer = dynamic_cast<CSpectator*> (Level().CurrentEntity());
+	CSpectator* pCurPlayer = smart_cast<CSpectator*> (Level().CurrentEntity());
 	if (!pCurPlayer) return FALSE;
 
 	return m_bBuyEnabled;
@@ -550,7 +550,7 @@ void		CUIGameDM::CheckItem			(PIItem pItem, PRESET_ITEMS* pPresetItems)
 		}
 	}
 	//-----------------------------------------------------
-	CWeapon* pWeapon = dynamic_cast<CWeapon*> (pItem);
+	CWeapon* pWeapon = smart_cast<CWeapon*> (pItem);
 	if (pWeapon)
 	{
 		if (pWeapon->ScopeAttachable())
@@ -617,7 +617,7 @@ void		CUIGameDM::SetBuyMenuItems		()
 	//---------------------------------------------------------
 	pCurBuyMenu->IgnoreMoney(true);
 	//---------------------------------------------------------
-	CActor* pCurActor = dynamic_cast<CActor*> (Level().Objects.net_Find	(P->GameID));
+	CActor* pCurActor = smart_cast<CActor*> (Level().Objects.net_Find	(P->GameID));
 	if (pCurActor)
 	{
 		//проверяем предметы которые есть у игрока

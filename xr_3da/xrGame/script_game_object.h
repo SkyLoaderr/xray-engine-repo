@@ -302,7 +302,7 @@ public:
 	template <typename T>
 	IC		T	*motivation_action_manager()
 	{
-		T	*manager = dynamic_cast<T*>(m_tpGameObject);
+		T	*manager = smart_cast<T*>(m_tpGameObject);
 		if (!manager)
 			ai().script_engine().script_log				(ScriptStorage::eLuaMessageTypeError,"CMotivationActionManager : cannot access class member motivation_action_manager!");
 		return					(manager);

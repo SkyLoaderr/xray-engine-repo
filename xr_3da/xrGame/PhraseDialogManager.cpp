@@ -77,8 +77,8 @@ bool CPhraseDialogManager::AddAvailableDialog(PHRASE_DIALOG_ID dialog_id, CPhras
 
 	//вызвать скриптовую присоединенную функцию 
 	//активируется после сказанной фразы
-	const CGameObject*	pSpeakerGO1 = dynamic_cast<const CGameObject*>(this);		VERIFY(pSpeakerGO1);
-	const CGameObject*	pSpeakerGO2 = dynamic_cast<const CGameObject*>(partner);	VERIFY(pSpeakerGO2);
+	const CGameObject*	pSpeakerGO1 = smart_cast<const CGameObject*>(this);		VERIFY(pSpeakerGO1);
+	const CGameObject*	pSpeakerGO2 = smart_cast<const CGameObject*>(partner);	VERIFY(pSpeakerGO2);
 
 	bool predicate_result = phrase_dialog->Precondition(pSpeakerGO1, pSpeakerGO2);
 	if(predicate_result) m_AvailableDialogs.push_back(phrase_dialog);

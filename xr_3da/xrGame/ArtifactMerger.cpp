@@ -112,7 +112,7 @@ void CArtefactMerger::SpawnArtefact(const char* af_section)
 	CSE_Abstract*		D	= F_entity_Create(af_section);
 	R_ASSERT		   (D);
 	CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = 
-								 dynamic_cast<CSE_ALifeDynamicObject*>(D);
+								 smart_cast<CSE_ALifeDynamicObject*>(D);
 	R_ASSERT			(l_tpALifeDynamicObject);
 	l_tpALifeDynamicObject->m_tNodeID = this->level_vertex_id();
 		

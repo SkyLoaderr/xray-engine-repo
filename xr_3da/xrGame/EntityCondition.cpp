@@ -331,7 +331,7 @@ void CEntityCondition::Sleep(float hours)
 
 float CEntityCondition::HitOutfitEffect(float hit_power, ALife::EHitType hit_type)
 {
-    CInventoryOwner* pInvOwner = dynamic_cast<CInventoryOwner*>(this);
+    CInventoryOwner* pInvOwner = smart_cast<CInventoryOwner*>(this);
 	if(!pInvOwner) return hit_power;
 
 	CCustomOutfit* pOutfit = (CCustomOutfit*)pInvOwner->inventory().m_slots[OUTFIT_SLOT].m_pIItem;

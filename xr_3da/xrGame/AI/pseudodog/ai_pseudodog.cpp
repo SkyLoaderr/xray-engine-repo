@@ -196,8 +196,8 @@ void CAI_PseudoDog::StateSelector()
 	if (!m_bAngry && (m_time_became_angry + MIN_ANGRY_TIME > m_current_update))			m_bAngry = true;
 	
 	const CEntityAlive	*enemy		= EnemyMan.get_enemy();
-	const CAI_Stalker	*pStalker	= dynamic_cast<const CAI_Stalker *>(enemy);
-	const CActor		*pActor		= dynamic_cast<const CActor *>(enemy);
+	const CAI_Stalker	*pStalker	= smart_cast<const CAI_Stalker *>(enemy);
+	const CActor		*pActor		= smart_cast<const CActor *>(enemy);
 
 	TTime last_hit_time = 0;
 	if (HitMemory.is_hit()) last_hit_time = HitMemory.get_last_hit_time();
@@ -240,7 +240,7 @@ void CAI_PseudoDog::UpdateCL()
 
 		if (strike_in_jump) return;
 
-		const CEntity *pE = dynamic_cast<const CEntity *>(CJumping::GetEnemy());
+		const CEntity *pE = smart_cast<const CEntity *>(CJumping::GetEnemy());
 		if (!pE) return;
 
 		Fvector trace_from;
@@ -273,7 +273,7 @@ void CAI_PseudoDog::CheckSpecParams(u32 spec_params)
 		MotionMan.Seq_Add(eAnimAttackPsi);
 		MotionMan.Seq_Switch();
 
-		CActor *pA = dynamic_cast<CActor *>(Level().CurrentEntity());
+		CActor *pA = smart_cast<CActor *>(Level().CurrentEntity());
 		if (pA) {
 			pA->EffectorManager().AddEffector(xr_new<CMonsterEffectorHit>(m_psi_effector.ce_time,m_psi_effector.ce_amplitude,m_psi_effector.ce_period_number,m_psi_effector.ce_power));
 			Level().Cameras.AddEffector(xr_new<CMonsterEffector>(m_psi_effector.ppi, m_psi_effector.time, m_psi_effector.time_attack, m_psi_effector.time_release));
@@ -294,7 +294,7 @@ void CAI_PseudoDog::CheckSpecParams(u32 spec_params)
 
 void CAI_PseudoDog::play_effect_sound()
 {
-	CActor *pA = dynamic_cast<CActor*>(Level().CurrentEntity());
+	CActor *pA = smart_cast<CActor*>(Level().CurrentEntity());
 	if (!pA) return;
 	
 	Fvector pos = pA->Position();

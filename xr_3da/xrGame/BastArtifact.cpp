@@ -41,14 +41,14 @@ void __stdcall CBastArtefact::ObjectContactCallback(bool& /**do_colide/**/,dCont
 	if(!l_pUD1 || !l_pUD2) return;
 
 	//определить кто есть кто, из двух столкнувшихся предметов
-	CBastArtefact *pBastArtefact = l_pUD1 ? dynamic_cast<CBastArtefact*>(l_pUD1->ph_ref_object) : NULL;
-	if(!pBastArtefact) pBastArtefact = l_pUD2 ? dynamic_cast<CBastArtefact*>(l_pUD2->ph_ref_object) : NULL;
+	CBastArtefact *pBastArtefact = l_pUD1 ? smart_cast<CBastArtefact*>(l_pUD1->ph_ref_object) : NULL;
+	if(!pBastArtefact) pBastArtefact = l_pUD2 ? smart_cast<CBastArtefact*>(l_pUD2->ph_ref_object) : NULL;
 	if(!pBastArtefact) return;
 	if(!pBastArtefact->IsAttacking()) return;
 
 	CEntityAlive *pEntityAlive = NULL;
-	pEntityAlive = l_pUD1 ? dynamic_cast<CEntityAlive*>(l_pUD1->ph_ref_object) : NULL;
-	if(!pEntityAlive) pEntityAlive = l_pUD2 ? dynamic_cast<CEntityAlive*>(l_pUD2->ph_ref_object) : NULL;
+	pEntityAlive = l_pUD1 ? smart_cast<CEntityAlive*>(l_pUD1->ph_ref_object) : NULL;
+	if(!pEntityAlive) pEntityAlive = l_pUD2 ? smart_cast<CEntityAlive*>(l_pUD2->ph_ref_object) : NULL;
 
 	pBastArtefact->BastCollision(pEntityAlive);
 }
@@ -245,7 +245,7 @@ bool CBastArtefact::Useful() const
 
 void CBastArtefact::feel_touch_new(CObject* O) 
 {
-	CEntityAlive* pEntityAlive = dynamic_cast<CEntityAlive*>(O);
+	CEntityAlive* pEntityAlive = smart_cast<CEntityAlive*>(O);
 
 	if(pEntityAlive && pEntityAlive->g_Alive()) 
 	{
@@ -255,7 +255,7 @@ void CBastArtefact::feel_touch_new(CObject* O)
 
 void CBastArtefact::feel_touch_delete(CObject* O) 
 {
-	CEntityAlive* pEntityAlive = dynamic_cast<CEntityAlive*>(O);
+	CEntityAlive* pEntityAlive = smart_cast<CEntityAlive*>(O);
 
 	if(pEntityAlive)
 	{
@@ -267,7 +267,7 @@ void CBastArtefact::feel_touch_delete(CObject* O)
 
 BOOL CBastArtefact::feel_touch_contact(CObject* O) 
 {
-	CEntityAlive* pEntityAlive = dynamic_cast<CEntityAlive*>(O);
+	CEntityAlive* pEntityAlive = smart_cast<CEntityAlive*>(O);
 
 	if(pEntityAlive && pEntityAlive->g_Alive()) 
 		return TRUE;

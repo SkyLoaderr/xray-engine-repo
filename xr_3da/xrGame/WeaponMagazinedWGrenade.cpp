@@ -246,7 +246,7 @@ void CWeaponMagazinedWGrenade::state_Fire(float dt)
 		d.set(vLastFD);
 		
 		if(H_Parent()) 
-			dynamic_cast<CEntity*>	(H_Parent())->g_fireParams	(this, p1,d);
+			smart_cast<CEntity*>	(H_Parent())->g_fireParams	(this, p1,d);
 		else 
 			return;
 		
@@ -285,7 +285,7 @@ void CWeaponMagazinedWGrenade::SwitchState(u32 S)
 		p1.set(vLastFP2);
 		d.set(vLastFD);
 
-		CEntity*					E = dynamic_cast<CEntity*>(H_Parent());
+		CEntity*					E = smart_cast<CEntity*>(H_Parent());
 				
 		if (E)
 			E->g_fireParams		(this, p1,d);
@@ -304,7 +304,7 @@ void CWeaponMagazinedWGrenade::SwitchState(u32 S)
 		d.mul(CRocketLauncher::m_fLaunchSpeed);
 		CRocketLauncher::LaunchRocket(launch_matrix, d, zero_vel);
 
-		CExplosiveRocket* pGrenade = dynamic_cast<CExplosiveRocket*>(getCurrentRocket()/*m_pRocket*/);
+		CExplosiveRocket* pGrenade = smart_cast<CExplosiveRocket*>(getCurrentRocket()/*m_pRocket*/);
 		VERIFY(pGrenade);
 		pGrenade->SetCurrentParentID(H_Parent()->ID());
 
@@ -405,7 +405,7 @@ void CWeaponMagazinedWGrenade::OnH_B_Independent()
 
 bool CWeaponMagazinedWGrenade::CanAttach(PIItem pIItem)
 {
-	CGrenadeLauncher* pGrenadeLauncher = dynamic_cast<CGrenadeLauncher*>(pIItem);
+	CGrenadeLauncher* pGrenadeLauncher = smart_cast<CGrenadeLauncher*>(pIItem);
 	
 	if(pGrenadeLauncher &&
 	   CSE_ALifeItemWeapon::eAddonAttachable == m_eGrenadeLauncherStatus &&
@@ -428,7 +428,7 @@ bool CWeaponMagazinedWGrenade::CanDetach(const char* item_section_name)
 
 bool CWeaponMagazinedWGrenade::Attach(PIItem pIItem)
 {
-	CGrenadeLauncher* pGrenadeLauncher = dynamic_cast<CGrenadeLauncher*>(pIItem);
+	CGrenadeLauncher* pGrenadeLauncher = smart_cast<CGrenadeLauncher*>(pIItem);
 	
 	if(pGrenadeLauncher &&
 	   CSE_ALifeItemWeapon::eAddonAttachable == m_eGrenadeLauncherStatus &&

@@ -42,7 +42,7 @@ void CBitingEat::Init()
 	VERIFY			(p_corpse);
 	pCorpse			= const_cast<CEntityAlive *>(p_corpse);
 
-	bEatRat			= (dynamic_cast<CAI_Rat *>(pCorpse) ? true : false);
+	bEatRat			= (smart_cast<CAI_Rat *>(pCorpse) ? true : false);
 	m_fDistToCorpse = ((bEatRat)? 1.0f : pMonster->get_sd()->m_fDistToCorpse); 
 
 	SavedPos			= pCorpse->Position();		// сохранить позицию трупа

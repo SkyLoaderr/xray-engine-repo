@@ -26,7 +26,7 @@ BOOL CRestrictedObject::net_Spawn			(LPVOID data)
 		return					(FALSE);
 
 	CSE_Abstract				*abstract	= (CSE_Abstract*)(data);
-	CSE_ALifeMonsterAbstract	*monster	= dynamic_cast<CSE_ALifeMonsterAbstract*>(abstract);
+	CSE_ALifeMonsterAbstract	*monster	= smart_cast<CSE_ALifeMonsterAbstract*>(abstract);
 	VERIFY						(monster);
 	
 	Level().space_restriction_manager().restrict	(ID(),monster->m_out_space_restrictors,monster->m_in_space_restrictors);

@@ -151,7 +151,7 @@ void CUISkinSelectorWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		// Нажали ОК.
 		Game().StartStopMenu(this);
 //		HUD().GetUI()->UIGame()->OnSkinMenu_Ok();
-		game_cl_Deathmatch * dm = dynamic_cast<game_cl_Deathmatch *>(&(Game()));
+		game_cl_Deathmatch * dm = smart_cast<game_cl_Deathmatch *>(&(Game()));
 		dm->OnSkinMenu_Ok();
 
 	}

@@ -129,7 +129,7 @@ void CUISpawnWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 //			m_iResult = -1;
 //		};
 		Game().StartStopMenu(this);
-		game_cl_TeamDeathmatch * dm = dynamic_cast<game_cl_TeamDeathmatch *>(&(Game()));
+		game_cl_TeamDeathmatch * dm = smart_cast<game_cl_TeamDeathmatch *>(&(Game()));
 		dm->OnTeamSelect(m_iResult);
 	}
 

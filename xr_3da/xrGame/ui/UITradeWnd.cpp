@@ -246,7 +246,7 @@ void CUITradeWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 
 	//Обрабатывем сообщение уже после того как вещь
 	//была перемещена куда-нибудь
-	if(dynamic_cast<CUIDragDropItem*>(pWnd))
+	if(smart_cast<CUIDragDropItem*>(pWnd))
 	{
 		UpdatePrices();
 	}
@@ -309,7 +309,7 @@ void CUITradeWnd::Hide()
 //содержит свойство GetInventory()
 bool CUITradeWnd::OurBagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
-	CUITradeWnd* this_trade_wnd =  dynamic_cast<CUITradeWnd*>(pList->GetParent()->GetParent());
+	CUITradeWnd* this_trade_wnd =  smart_cast<CUITradeWnd*>(pList->GetParent()->GetParent());
 	R_ASSERT2(this_trade_wnd, "wrong parent addressed as trade wnd");
 
 	if(&this_trade_wnd->UIOurTradeList != pItem->GetParent()) return false;
@@ -321,7 +321,7 @@ bool CUITradeWnd::OurBagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 
 bool CUITradeWnd::OthersBagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
-	CUITradeWnd* this_trade_wnd =  dynamic_cast<CUITradeWnd*>(pList->GetParent()->GetParent());
+	CUITradeWnd* this_trade_wnd =  smart_cast<CUITradeWnd*>(pList->GetParent()->GetParent());
 	R_ASSERT2(this_trade_wnd, "wrong parent addressed as trade wnd");
 
 	if(&this_trade_wnd->UIOthersTradeList != pItem->GetParent()) return false;
@@ -333,7 +333,7 @@ bool CUITradeWnd::OthersBagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 
 bool CUITradeWnd::OurTradeProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
-	CUITradeWnd* this_trade_wnd =  dynamic_cast<CUITradeWnd*>(pList->GetParent()->GetParent());
+	CUITradeWnd* this_trade_wnd =  smart_cast<CUITradeWnd*>(pList->GetParent()->GetParent());
 	R_ASSERT2(this_trade_wnd, "wrong parent addressed as trade wnd");
 
 	if(&this_trade_wnd->UIOurBagList != pItem->GetParent()) return false;
@@ -345,7 +345,7 @@ bool CUITradeWnd::OurTradeProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 
 bool CUITradeWnd::OthersTradeProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
-	CUITradeWnd* this_trade_wnd =  dynamic_cast<CUITradeWnd*>(pList->GetParent()->GetParent());
+	CUITradeWnd* this_trade_wnd =  smart_cast<CUITradeWnd*>(pList->GetParent()->GetParent());
 	R_ASSERT2(this_trade_wnd, "wrong parent addressed as trade wnd");
 
 	if(&this_trade_wnd->UIOthersBagList != pItem->GetParent()) return false;
@@ -576,10 +576,10 @@ void CUITradeWnd::UpdateLists()
 
 			UIDragDropItem.SetData((*it));
 
-			CWeaponAmmo* pWeaponAmmo  = dynamic_cast<CWeaponAmmo*>((*it));
+			CWeaponAmmo* pWeaponAmmo  = smart_cast<CWeaponAmmo*>((*it));
 			if(pWeaponAmmo)	UIDragDropItem.SetCustomUpdate(AmmoUpdateProc);
 
-			CEatableItem* pEatableItem = dynamic_cast<CEatableItem*>((*it));
+			CEatableItem* pEatableItem = smart_cast<CEatableItem*>((*it));
 			if(pEatableItem) UIDragDropItem.SetCustomUpdate(FoodUpdateProc);
 
 			//установить коэффициент масштабирования
@@ -620,10 +620,10 @@ void CUITradeWnd::UpdateLists()
 
 			UIDragDropItem.SetData((*it));
 
-			CWeaponAmmo* pWeaponAmmo  = dynamic_cast<CWeaponAmmo*>((*it));
+			CWeaponAmmo* pWeaponAmmo  = smart_cast<CWeaponAmmo*>((*it));
 			if(pWeaponAmmo)	UIDragDropItem.SetCustomUpdate(AmmoUpdateProc);
 
-			CEatableItem* pEatableItem = dynamic_cast<CEatableItem*>((*it));
+			CEatableItem* pEatableItem = smart_cast<CEatableItem*>((*it));
 			if(pEatableItem) UIDragDropItem.SetCustomUpdate(FoodUpdateProc);
 
 			//установить коэффициент масштабирования
@@ -653,13 +653,13 @@ void CUITradeWnd::SetCurrentItem(CInventoryItem* pItem)
 
 void CUITradeWnd::DropCurrentItem()
 {
-	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 	if(!pActor) return;
 
 	m_pCurrentItem->Drop();
 	m_pCurrentDragDropItem->Highlight(false);
 
-	(dynamic_cast<CUIDragDropList*>(m_pCurrentDragDropItem->GetParent()))->
+	(smart_cast<CUIDragDropList*>(m_pCurrentDragDropItem->GetParent()))->
 		DetachChild(m_pCurrentDragDropItem);
 
 	//-----------------------------------------------------------------------

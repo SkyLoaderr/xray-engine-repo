@@ -128,7 +128,7 @@ IC	typename CSMotivationManager::CSMotivationAction *CSMotivationManager::select
 {
 	xr_vector<CMotivationWeight>::const_iterator	I = std::find(m_actions.begin(),m_actions.end(),m_selected_id);
 	VERIFY				(m_actions.end() != I);
-	return				(dynamic_cast<CSMotivationAction*>(motivation(m_selected_id)));
+	return				(smart_cast<CSMotivationAction*>(motivation(m_selected_id)));
 }
 
 TEMPLATE_SPECIALIZATION

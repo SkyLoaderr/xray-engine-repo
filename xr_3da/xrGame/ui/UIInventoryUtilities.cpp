@@ -44,7 +44,7 @@ void InventoryUtilities::DestroyShaders()
 void InventoryUtilities::AmmoUpdateProc(CUIDragDropItem* pItem)
 {
 	CInventoryItem* pIItem = (CInventoryItem*)(pItem->GetData());
-	CWeaponAmmo* pAmmoItem = dynamic_cast<CWeaponAmmo*>(pIItem);
+	CWeaponAmmo* pAmmoItem = smart_cast<CWeaponAmmo*>(pIItem);
 
 	if (pAmmoItem->m_boxCurr > 1)
 	{
@@ -64,7 +64,7 @@ void InventoryUtilities::FoodUpdateProc(CUIDragDropItem* pItem)
 {
 	//CEatableItem* pEatableItem = (CEatableItem*)(pItem->GetData());
 	CInventoryItem* pIItem = (CInventoryItem*)(pItem->GetData()); R_ASSERT(pIItem);
-	CEatableItem* pEatableItem = dynamic_cast<CEatableItem*>(pIItem); R_ASSERT(pEatableItem);
+	CEatableItem* pEatableItem = smart_cast<CEatableItem*>(pIItem); R_ASSERT(pEatableItem);
 
 	if (pEatableItem->m_iPortionsNum > 1)
 	{

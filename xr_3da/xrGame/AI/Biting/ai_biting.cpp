@@ -165,7 +165,7 @@ void CAI_Biting::MoraleBroadcast(float fValue)
 {
 	CGroupHierarchyHolder &Group = Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group());
 	for (u32 i=0; i<Group.members().size(); ++i) {
-		CEntityAlive *pE = dynamic_cast<CEntityAlive *>(Group.members()[i]);
+		CEntityAlive *pE = smart_cast<CEntityAlive *>(Group.members()[i]);
 		if (!pE) continue;
 		
 		if (pE->g_Alive() && (pE->Position().distance_to(Position()) < get_sd()->m_fMoraleBroadcastDistance)) pE->ChangeEntityMorale(fValue);
@@ -214,7 +214,7 @@ float CAI_Biting::GetRealDistToEnemy(const CEntity *pE)
 
 bool CAI_Biting::useful(const CGameObject *object) const
 {
-	const CEntityAlive *pCorpse = dynamic_cast<const CEntityAlive *>(object); 
+	const CEntityAlive *pCorpse = smart_cast<const CEntityAlive *>(object); 
 	if (!pCorpse) return false;
 	
 	if (!pCorpse->g_Alive()) return true;
@@ -365,7 +365,7 @@ void CAI_Biting::PitchCorrection()
 	bool b_need_pitch_correction = true;
 	
 	if (ability_can_jump()) {
-		CJumping *pJumping = dynamic_cast<CJumping *>(this);
+		CJumping *pJumping = smart_cast<CJumping *>(this);
 		if (pJumping && pJumping->IsActive()) b_need_pitch_correction = false;
 	}
 	if (b_need_pitch_correction) inherited::PitchCorrection();

@@ -17,11 +17,11 @@ bool CAI_Stalker::useful		(const CGameObject *object) const
 	if (!CItemManager::useful(object))
 		return			(false);
 
-	const CInventoryItem *inventory_item = dynamic_cast<const CInventoryItem*>(object);
+	const CInventoryItem *inventory_item = smart_cast<const CInventoryItem*>(object);
 	if (!inventory_item || !inventory_item->Useful())
 		return			(false);
 
-	const CBolt			*bolt = dynamic_cast<const CBolt*>(object);
+	const CBolt			*bolt = smart_cast<const CBolt*>(object);
 	if (bolt)
 		return			(false);
 

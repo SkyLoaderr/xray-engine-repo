@@ -52,7 +52,7 @@ protected:
 	bool					m_bObjectRemoved;
 
 public:
-	//functions used for avoiding most of the dynamic_cast
+	//functions used for avoiding most of the smart_cast
 	virtual CInventoryOwner*			cast_inventory_owner	()						{return NULL;}
 	virtual const CInventoryOwner*		cast_inventory_owner	() const				{return NULL;}
 	virtual CInventoryItem*				cast_inventory_item		()						{return NULL;}

@@ -175,7 +175,7 @@ void CUIMapWnd::InitLocalMap()
 	Ivector2 P;
 	Fvector src;
 	
-	CActor* pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+	CActor* pActor = smart_cast<CActor*>(Level().CurrentEntity());
 		
 	if (!pActor) return;
 
@@ -324,7 +324,7 @@ void CUIMapWnd::InitGlobalMap()
 
 void CUIMapWnd::InitGlobalMapLocationObjectives()
 {
-	CActor* pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+	CActor* pActor = smart_cast<CActor*>(Level().CurrentEntity());
 
 	if (!pActor) return;
 
@@ -372,7 +372,7 @@ void CUIMapWnd::InitMaps()
 void CUIMapWnd::AddObjectSpot(CGameObject* pGameObject)
 {	
 	//!!! пока только для CEntity (чтоб было откуда брать иконку)
-	CEntity* pEntity = dynamic_cast<CEntity*>(pGameObject);
+	CEntity* pEntity = smart_cast<CEntity*>(pGameObject);
 	if(!pEntity) return;
 
 
@@ -417,7 +417,7 @@ void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 			{
 				UIStaticInfo.Show(true);
 				
-				//CInventoryOwner* pInvOwner = dynamic_cast<CInventoryOwner*>(m_pCurrentMap->m_pActiveMapSpot->m_pObject);
+				//CInventoryOwner* pInvOwner = smart_cast<CInventoryOwner*>(m_pCurrentMap->m_pActiveMapSpot->m_pObject);
 
 				if(xr_strlen(m_pCurrentMap->m_pActiveMapSpot->m_sDescText.GetBuf())>1)
 				{
@@ -454,7 +454,7 @@ void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 		{
 			if (UIGlobalMapBackground.m_pActiveMapSpot && prevSpot != UIGlobalMapBackground.m_pActiveMapSpot)
 			{
-				CUIGlobalMapLocation *pGML = dynamic_cast<CUIGlobalMapLocation*>(UIGlobalMapBackground.m_pActiveMapSpot);
+				CUIGlobalMapLocation *pGML = smart_cast<CUIGlobalMapLocation*>(UIGlobalMapBackground.m_pActiveMapSpot);
 				R_ASSERT(pGML);
 				pGML->SetColor(activeLocalMapColor);
 				UIMapName.SetText(*pGML->m_strMapName);
@@ -476,7 +476,7 @@ void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 			prevSpot = NULL;
 			if (UIGlobalMapBackground.m_pActiveMapSpot)
 			{
-				CUIGlobalMapLocation *pGML = dynamic_cast<CUIGlobalMapLocation*>(UIGlobalMapBackground.m_pActiveMapSpot);
+				CUIGlobalMapLocation *pGML = smart_cast<CUIGlobalMapLocation*>(UIGlobalMapBackground.m_pActiveMapSpot);
 				R_ASSERT(pGML);
 				pGML->SetColor(inactiveLocalMapColor);
 			}

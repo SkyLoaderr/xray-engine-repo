@@ -174,8 +174,8 @@ void	game_sv_mp::RespawnPlayer			(ClientID id_who, bool NoSpectator)
 	if (!xrCData || !xrCData->owner) return;
 //	game_PlayerState*	ps	=	&(xrCData->ps);
 	CSE_Abstract* pOwner = xrCData->owner;
-	CSE_ALifeCreatureActor	*pA	=	dynamic_cast<CSE_ALifeCreatureActor*>(pOwner);
-	CSE_Spectator			*pS =	dynamic_cast<CSE_Spectator*>(pOwner);
+	CSE_ALifeCreatureActor	*pA	=	smart_cast<CSE_ALifeCreatureActor*>(pOwner);
+	CSE_Spectator			*pS =	smart_cast<CSE_Spectator*>(pOwner);
 
 	if (pA)
 	{
@@ -231,8 +231,8 @@ void	game_sv_mp::SpawnPlayer				(ClientID id, LPCSTR N)
 
 	E->s_flags.assign		(M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);	// flags
 
-	CSE_ALifeCreatureActor	*pA	=	dynamic_cast<CSE_ALifeCreatureActor*>(E);
-	CSE_Spectator			*pS	=	dynamic_cast<CSE_Spectator*>(E);
+	CSE_ALifeCreatureActor	*pA	=	smart_cast<CSE_ALifeCreatureActor*>(E);
+	CSE_Spectator			*pS	=	smart_cast<CSE_Spectator*>(E);
 
 	R_ASSERT2	(pA || pS,"Respawned Client is not Actor nor Spectator");
 	
@@ -284,7 +284,7 @@ void	game_sv_mp::AllowDeadBodyRemove		(ClientID id, u16 GameID)
 
 	if (pObject && pObject->SUB_CLS_ID == CLSID_OBJECT_ACTOR)
 	{
-		CActor* pActor = dynamic_cast <CActor*>(pObject);
+		CActor* pActor = smart_cast <CActor*>(pObject);
 		if (pActor)
 		{
 			pActor->set_death_time		();
@@ -307,7 +307,7 @@ void	game_sv_mp::SetSkin					(CSE_Abstract* E, u16 Team, u16 ID)
 {
 	if (!E) return;
 	//-------------------------------------------
-	CSE_Visual* pV = dynamic_cast<CSE_Visual*>(E);
+	CSE_Visual* pV = smart_cast<CSE_Visual*>(E);
 	if (!pV) return;
 	//-------------------------------------------
 	string256 SkinName;
@@ -365,7 +365,7 @@ bool	game_sv_mp::GetPosAngleFromActor				(ClientID id, Fvector& Pos, Fvector &An
 
 	if (!pObject || pObject->SUB_CLS_ID != CLSID_OBJECT_ACTOR) return false;
 
-	CActor* pActor = dynamic_cast <CActor*>(pObject);
+	CActor* pActor = smart_cast <CActor*>(pObject);
 	if (!pActor) return false;
 
 	Angle.set(-pActor->cam_Active()->pitch, -pActor->cam_Active()->yaw, 0);
@@ -410,7 +410,7 @@ void	game_sv_mp::SpawnWeapon4Actor		(u16 actorId,  LPCSTR N, u8 Addons)
 
 	/////////////////////////////////////////////////////////////////////////////////
 	//если это оружие - спавним его с полным магазином
-	CSE_ALifeItemWeapon		*pWeapon	=	dynamic_cast<CSE_ALifeItemWeapon*>(E);
+	CSE_ALifeItemWeapon		*pWeapon	=	smart_cast<CSE_ALifeItemWeapon*>(E);
 	if (pWeapon)
 	{
 		pWeapon->a_elapsed = pWeapon->get_ammo_magsize();

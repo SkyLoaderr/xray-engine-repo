@@ -19,7 +19,7 @@ BOOL CTorridZone::net_Spawn(LPVOID DC)
 		return			(FALSE);
 
 	CSE_Abstract		*abstract=(CSE_Abstract*)(DC);
-	CSE_ALifeTorridZone	*zone	= dynamic_cast<CSE_ALifeTorridZone*>(abstract);
+	CSE_ALifeTorridZone	*zone	= smart_cast<CSE_ALifeTorridZone*>(abstract);
 	VERIFY				(zone);
 /*
 	R_ASSERT			(Visual()&&PKinematics(Visual()));

@@ -31,7 +31,7 @@ void CRocketLauncher::SpawnRocket(LPCSTR rocket_section, CGameObject* parent_roc
 
 	CSE_Abstract*		D	= F_entity_Create(rocket_section);
 	R_ASSERT			(D);
-	CSE_Temporary		*l_tpTemporary = dynamic_cast<CSE_Temporary*>(D);
+	CSE_Temporary		*l_tpTemporary = smart_cast<CSE_Temporary*>(D);
 	R_ASSERT			(l_tpTemporary);
 	l_tpTemporary->m_tNodeID	= parent_rocket_launcher->level_vertex_id();
 	// Fill
@@ -57,14 +57,14 @@ void CRocketLauncher::SpawnRocket(LPCSTR rocket_section, CGameObject* parent_roc
 void CRocketLauncher::AttachRocket(u16 rocket_id, CGameObject* parent_rocket_launcher)
 {
 /*	VERIFY(m_pRocket == NULL);
-	m_pRocket = dynamic_cast<CCustomRocket*>(Level().Objects.net_Find(rocket_id));
+	m_pRocket = smart_cast<CCustomRocket*>(Level().Objects.net_Find(rocket_id));
 	//хозяином выставляем того, кто стреляет, а не непосредственно оружие
-	m_pRocket->m_pOwner = dynamic_cast<CGameObject*>(parent_rocket_launcher->H_Root());
+	m_pRocket->m_pOwner = smart_cast<CGameObject*>(parent_rocket_launcher->H_Root());
 	VERIFY(m_pRocket->m_pOwner);
 	m_pRocket->H_SetParent(parent_rocket_launcher);*/
 
-	CCustomRocket * pRocket = dynamic_cast<CCustomRocket*>(Level().Objects.net_Find(rocket_id));
-	pRocket->m_pOwner = dynamic_cast<CGameObject*>(parent_rocket_launcher->H_Root());
+	CCustomRocket * pRocket = smart_cast<CCustomRocket*>(Level().Objects.net_Find(rocket_id));
+	pRocket->m_pOwner = smart_cast<CGameObject*>(parent_rocket_launcher->H_Root());
 	VERIFY(pRocket->m_pOwner);
 	pRocket->H_SetParent(parent_rocket_launcher);
 	m_rockets.push_back(pRocket);
@@ -73,7 +73,7 @@ void CRocketLauncher::AttachRocket(u16 rocket_id, CGameObject* parent_rocket_lau
 
 void CRocketLauncher::DetachRocket(u16 rocket_id)
 {
-	CCustomRocket *pRocket = dynamic_cast<CCustomRocket*>(Level().Objects.net_Find(rocket_id));
+	CCustomRocket *pRocket = smart_cast<CCustomRocket*>(Level().Objects.net_Find(rocket_id));
 	if (!pRocket && OnClient()) return;
 
 	VERIFY(pRocket);

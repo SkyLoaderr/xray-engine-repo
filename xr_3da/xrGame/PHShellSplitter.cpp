@@ -28,7 +28,7 @@ shell_root CPHShellSplitterHolder::SplitJoint(u16 aspl)
 	//create _new physics shell 
 
 	CPhysicsShell *new_shell=P_create_Shell();
-	CPHShell	  *new_shell_desc=dynamic_cast<CPHShell*>(new_shell);
+	CPHShell	  *new_shell_desc=smart_cast<CPHShell*>(new_shell);
 	new_shell_desc->mXFORM.set(m_pShell->mXFORM);
 	new_shell_desc->m_object_in_root.set(m_pShell->m_object_in_root);
 	SPLITTER_I splitter=m_splitters.begin()+aspl;
@@ -273,7 +273,7 @@ shell_root CPHShellSplitterHolder::ElementSingleSplit(const element_fracture &sp
 	//const CPHShellSplitter& splitter=m_splitters[aspl];
 	//CPHElement* element=m_pShell->elements[splitter.m_element];
 	CPhysicsShell *new_shell_last=P_create_Shell();
-	CPHShell	  *new_shell_last_desc=dynamic_cast<CPHShell*>(new_shell_last);
+	CPHShell	  *new_shell_last_desc=smart_cast<CPHShell*>(new_shell_last);
 	new_shell_last->mXFORM.set(m_pShell->mXFORM);	const u16 start_joint=split_elem.second.m_start_jt_num;
 	R_ASSERT(_valid(new_shell_last->mXFORM));
 	const u16 end_joint=split_elem.second.m_end_jt_num;
@@ -291,7 +291,7 @@ shell_root CPHShellSplitterHolder::ElementSingleSplit(const element_fracture &sp
 				CKinematics* K = m_pShell->PKinematics();
 				dVector3 safe_pos1, safe_pos2;
 				dQuaternion safe_q1, safe_q2;
-				CPhysicsElement* el1=dynamic_cast<CPHElement*>(split_elem.first),*el2=joint->PSecond_element();
+				CPhysicsElement* el1=smart_cast<CPHElement*>(split_elem.first),*el2=joint->PSecond_element();
 				dBodyID body1=el1->get_body(), body2=el2->get_body();
 				dVectorSet(safe_pos1,dBodyGetPosition(body1));
 				dVectorSet(safe_pos2,dBodyGetPosition(body2));

@@ -33,6 +33,7 @@
 			struct no  {char a[2];};
 
 			template <typename T> static T &invoke();
+			template <typename T> struct other{};
 		};
 
 		template <typename T> struct remove_pointer{
@@ -44,6 +45,18 @@
 		};
 
 		template <typename T> struct remove_pointer<T* const>{
+			typedef T type;
+		};
+
+		template <typename T> struct remove_reference{
+			typedef T type;
+		};
+
+		template <typename T> struct remove_reference<T&>{
+			typedef T type;
+		};
+
+		template <typename T> struct remove_reference<T const &>{
 			typedef T type;
 		};
 
@@ -61,6 +74,14 @@
 			static detail::no select(...);
 
 			enum { value = sizeof(detail::yes) == sizeof(select(detail::invoke<T>()))};
+		};
+
+		template <typename T>
+		struct is_reference {
+			template <typename P> static detail::yes select(detail::other<P&>);
+			static detail::no select(...);
+
+			enum { value = sizeof(detail::yes) == sizeof(select(detail::other<T>()))};
 		};
 
 		template <typename T1, typename T2>

@@ -100,8 +100,8 @@ bool CPhraseDialog::SayPhrase (DIALOG_SHARED_PTR& phrase_dialog, PHRASE_ID phras
 	bool first_is_speaking = phrase_dialog->FirstIsSpeaking();
 	phrase_dialog->m_bFirstIsSpeaking = !phrase_dialog->m_bFirstIsSpeaking;
 
-	const CGameObject*	pSpeakerGO1 = dynamic_cast<const CGameObject*>(phrase_dialog->FirstSpeaker());	VERIFY(pSpeakerGO1);
-	const CGameObject*	pSpeakerGO2 = dynamic_cast<const CGameObject*>(phrase_dialog->SecondSpeaker());	VERIFY(pSpeakerGO2);
+	const CGameObject*	pSpeakerGO1 = smart_cast<const CGameObject*>(phrase_dialog->FirstSpeaker());	VERIFY(pSpeakerGO1);
+	const CGameObject*	pSpeakerGO2 = smart_cast<const CGameObject*>(phrase_dialog->SecondSpeaker());	VERIFY(pSpeakerGO2);
 	if(!first_is_speaking) std::swap(pSpeakerGO1, pSpeakerGO2);
 
 	CPhraseGraph::CVertex* phrase_vertex = phrase_dialog->data()->m_PhraseGraph.vertex(phrase_dialog->m_iSaidPhraseID);
@@ -160,8 +160,8 @@ LPCSTR CPhraseDialog::GetPhraseText	(PHRASE_ID phrase_id, bool current_speaking)
 	VERIFY(phrase_vertex);
 	
 	//если есть скриптовый текст, то он и будет задан
-	const CGameObject*	pSpeakerGO1 = dynamic_cast<const CGameObject*>(CurrentSpeaker());
-	const CGameObject*	pSpeakerGO2 = dynamic_cast<const CGameObject*>(OtherSpeaker());	
+	const CGameObject*	pSpeakerGO1 = smart_cast<const CGameObject*>(CurrentSpeaker());
+	const CGameObject*	pSpeakerGO2 = smart_cast<const CGameObject*>(OtherSpeaker());	
 
 	if(!current_speaking) 
 		std::swap(pSpeakerGO1, pSpeakerGO2);

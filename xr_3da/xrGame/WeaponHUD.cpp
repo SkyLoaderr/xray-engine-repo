@@ -29,7 +29,7 @@ SHARED_HUD_INFO::SHARED_HUD_INFO(LPCSTR section, CHudItem* pHudItem)
 	//	R_ASSERT					(pVisual->Type==MT_SKELETON_ANIM);
 
 	// fire bone	
-	if(dynamic_cast<CWeapon*>(pHudItem))
+	if(smart_cast<CWeapon*>(pHudItem))
 	{
 		LPCSTR fire_bone			= pSettings->r_string					(section,"fire_bone");
 		iFireBone					= PKinematics(pVisual)->LL_BoneID	(fire_bone);
@@ -151,7 +151,7 @@ void CWeaponHUD::animPlay			(CMotionDef* M,	BOOL bMixIn, CInventoryItem* W)
 		m_bStopAtEndAnimIsRunning = true;
 
 		CBoneData			&bone_data = PKinematics(Visual())->LL_GetData(PKinematics(Visual())->LL_GetBoneRoot());
-		CBoneDataAnimated	*bone_anim = dynamic_cast<CBoneDataAnimated *>(&bone_data);
+		CBoneDataAnimated	*bone_anim = smart_cast<CBoneDataAnimated *>(&bone_data);
 		CMotion& motion = bone_anim->Motions[M->motion];
 		u32 anim_time = iFloor(0.5f + 1000.f*motion.GetLength()/ M->Dequantize(M->speed));
 		m_pCallbackItem = W;

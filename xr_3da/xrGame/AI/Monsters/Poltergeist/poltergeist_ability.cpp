@@ -16,7 +16,7 @@ void CPoltergeist::PhysicalImpulse(const Fvector &position)
 	
 	u32 index = Random.randI(tpObjects.size());
 	
-	CPhysicsShellHolder  *obj = dynamic_cast<CPhysicsShellHolder *>(tpObjects[index]);
+	CPhysicsShellHolder  *obj = smart_cast<CPhysicsShellHolder *>(tpObjects[index]);
 	if (!obj || !obj->m_pPhysicsShell) return;
 
 	Fvector dir;

@@ -87,7 +87,7 @@ void CWeapon::UpdateXForm	()
 		if (0==H_Parent())	return;
 
 		// Get access to entity and its visual
-		CEntityAlive*	E		= dynamic_cast<CEntityAlive*>(H_Parent());
+		CEntityAlive*	E		= smart_cast<CEntityAlive*>(H_Parent());
 		
 		if(!E) return;
 		R_ASSERT		(E);
@@ -368,7 +368,7 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 {
 	BOOL bResult					= inherited::net_Spawn(DC);
 	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
-	CSE_ALifeItemWeapon			    *E	= dynamic_cast<CSE_ALifeItemWeapon*>(e);
+	CSE_ALifeItemWeapon			    *E	= smart_cast<CSE_ALifeItemWeapon*>(e);
 
 	//iAmmoCurrent					= E->a_current;
 	iAmmoElapsed					= E->a_elapsed;
@@ -661,7 +661,7 @@ bool CWeapon::Action(s32 cmd, u32 flags)
 						l_newType = (l_newType+1)%m_ammoTypes.size();
 					} while(l_newType != m_ammoType && 
 							!m_pInventory->Get(*m_ammoTypes[l_newType],
-												!dynamic_cast<CActor*>(H_Parent())));
+												!smart_cast<CActor*>(H_Parent())));
 				
 					if(l_newType != m_ammoType) 
 					{
@@ -703,7 +703,7 @@ void CWeapon::SpawnAmmo(u32 boxCurr, LPCSTR ammoSect, u32 ParentID)
 
 	// Create
 	CSE_Abstract		*D		= F_entity_Create(ammoSect);
-	CSE_ALifeItemAmmo	*l_pA	= dynamic_cast<CSE_ALifeItemAmmo*>(D);
+	CSE_ALifeItemAmmo	*l_pA	= smart_cast<CSE_ALifeItemAmmo*>(D);
 	R_ASSERT(l_pA);
 	// Fill
 	l_pA->m_boxSize = (u16)pSettings->r_s32(ammoSect, "box_size");
@@ -755,7 +755,7 @@ int CWeapon::GetAmmoCurrent() const
 
 		for(PPIItem l_it = m_pInventory->m_belt.begin(); m_pInventory->m_belt.end() != l_it; ++l_it) 
 		{
-			CWeaponAmmo *l_pAmmo = dynamic_cast<CWeaponAmmo*>(*l_it);
+			CWeaponAmmo *l_pAmmo = smart_cast<CWeaponAmmo*>(*l_it);
 
 			if(l_pAmmo && !xr_strcmp(l_pAmmo->cNameSect(), l_ammoType)) 
 			{
@@ -765,7 +765,7 @@ int CWeapon::GetAmmoCurrent() const
 
 		for(PPIItem l_it = m_pInventory->m_ruck.begin(); m_pInventory->m_ruck.end() != l_it; ++l_it) 
 		{
-			CWeaponAmmo *l_pAmmo = dynamic_cast<CWeaponAmmo*>(*l_it);
+			CWeaponAmmo *l_pAmmo = smart_cast<CWeaponAmmo*>(*l_it);
 			if(l_pAmmo && !xr_strcmp(l_pAmmo->cNameSect(), l_ammoType)) 
 			{
 				iAmmoCurrent = iAmmoCurrent + l_pAmmo->m_boxCurr;
@@ -790,7 +790,7 @@ BOOL CWeapon::CheckForMisfire()
 		bMisfire = true;
 		SwitchState(eMisfire);
 		
-		if(dynamic_cast<CActor*>(this->H_Parent()))
+		if(smart_cast<CActor*>(this->H_Parent()))
 			HUD().outMessage(0xffffffff,this->cName(), "gun jammed");
 		
 		return TRUE;
@@ -1014,7 +1014,7 @@ CInventoryItem *CWeapon::can_kill	(CInventory *inventory) const
 	TIItemSet::iterator I = inventory->m_all.begin();
 	TIItemSet::iterator E = inventory->m_all.end();
 	for ( ; I != E; ++I) {
-		CInventoryItem	*inventory_item = dynamic_cast<CInventoryItem*>(*I);
+		CInventoryItem	*inventory_item = smart_cast<CInventoryItem*>(*I);
 		if (!inventory_item)
 			continue;
 		xr_vector<ref_str>::const_iterator	i = std::find(m_ammoTypes.begin(),m_ammoTypes.end(),inventory_item->cNameSect());
@@ -1033,7 +1033,7 @@ const CInventoryItem *CWeapon::can_kill	(const xr_vector<const CGameObject*> &it
 	xr_vector<const CGameObject*>::const_iterator I = items.begin();
 	xr_vector<const CGameObject*>::const_iterator E = items.end();
 	for ( ; I != E; ++I) {
-		const CInventoryItem	*inventory_item = dynamic_cast<const CInventoryItem*>(*I);
+		const CInventoryItem	*inventory_item = smart_cast<const CInventoryItem*>(*I);
 		if (!inventory_item)
 			continue;
 		xr_vector<ref_str>::const_iterator	i = std::find(m_ammoTypes.begin(),m_ammoTypes.end(),inventory_item->cNameSect());
@@ -1064,7 +1064,7 @@ void CWeapon::UpdateHudPosition	()
 	{
 		Fmatrix							trans;
 
-		CActor* pActor = dynamic_cast<CActor*>(H_Parent());
+		CActor* pActor = smart_cast<CActor*>(H_Parent());
 		if(pActor)
 		{
 			pActor->EffectorManager().affected_Matrix	(trans);

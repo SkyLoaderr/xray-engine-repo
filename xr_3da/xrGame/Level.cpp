@@ -183,7 +183,7 @@ LPCSTR CLevel::Name		()
 {
 	if(!CurrentEntity()) return NULL;
 	if(ai().get_alife() && ai().get_game_graph())
-		return  ai().game_graph().header().level(ai().game_graph().vertex(dynamic_cast<CGameObject*>(CurrentEntity())->game_vertex_id())->level_id()).name();
+		return  ai().game_graph().header().level(ai().game_graph().vertex(smart_cast<CGameObject*>(CurrentEntity())->game_vertex_id())->level_id()).name();
 	else
 		return NULL;
 }
@@ -223,7 +223,7 @@ void CLevel::OnFrame	()
 				Msg("! ERROR: c_EVENT[%d] : unknown dest",dest);
 				continue;
 			}
-			CGameObject* GO = dynamic_cast<CGameObject*>(O);
+			CGameObject* GO = smart_cast<CGameObject*>(O);
 			if (!GO)		{
 				Msg("! ERROR: c_EVENT[%d] : non-game-object",dest);
 				continue;
@@ -243,7 +243,7 @@ void CLevel::OnFrame	()
 					ok			= false;
 				}
 
-				CGameObject		*GD = dynamic_cast<CGameObject*>(D);
+				CGameObject		*GD = smart_cast<CGameObject*>(D);
 				if (!GD)		{
 					Msg			("! ERROR: c_EVENT[%d] : non-game-object",id);
 					ok			= false;
@@ -358,7 +358,7 @@ void CLevel::OnRender()
 		xr_vector<CObject*>::iterator	I = Level().Objects.objects.begin();
 		xr_vector<CObject*>::iterator	E = Level().Objects.objects.end();
 		for ( ; I != E; ++I) {
-			CSpaceRestrictor	*space_restrictor = dynamic_cast<CSpaceRestrictor*>(*I);
+			CSpaceRestrictor	*space_restrictor = smart_cast<CSpaceRestrictor*>(*I);
 			if (space_restrictor)
 				space_restrictor->OnRender();
 		}
@@ -368,7 +368,7 @@ void CLevel::OnRender()
 			xr_vector<CObject*>::iterator	E = Level().Objects.objects.end();
 			for ( ; I != E; ++I) {
 
-				CInventoryItem* pIItem = dynamic_cast<CInventoryItem*>(*I);
+				CInventoryItem* pIItem = smart_cast<CInventoryItem*>(*I);
 				if (pIItem) pIItem->OnRender();
 			}
 		};
@@ -549,7 +549,7 @@ void __stdcall		CLevel::PhisStepsCallback	( u32 Time0, u32 Time1 )
 	for (xr_vector<CObject*>::iterator O=Level().Objects.objects.begin(); O!=Level().Objects.objects.end(); ++O) 
 	{
 		if( (*O)->SUB_CLS_ID == CLSID_OBJECT_ACTOR){
-			CActor* pActor = dynamic_cast<CActor*>(*O);
+			CActor* pActor = smart_cast<CActor*>(*O);
 			if (!pActor || pActor->Remote()) continue;
 				pActor->UpdatePosStack(Time0, Time1);
 		}

@@ -53,7 +53,7 @@ void CLocationManager::reinit		()
 
 void CLocationManager::reload		(LPCSTR section)
 {
-	CGameObject						*game_object = dynamic_cast<CGameObject*>(this);
+	CGameObject						*game_object = smart_cast<CGameObject*>(this);
 	if (!game_object || !game_object->spawn_ini() || !game_object->spawn_ini()->section_exist("alife") || !game_object->spawn_ini()->line_exist("alife","terrain"))
 		return;
 	setup_location_types			(game_object->spawn_ini()->r_string("alife","terrain"),*game_object->cNameSect());

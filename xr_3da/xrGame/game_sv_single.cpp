@@ -50,7 +50,7 @@ void	game_sv_Single::OnCreate		(u16 id_who)
 	if (!e_who->m_bALifeControl)
 		return;
 
-	CSE_ALifeObject			*alife_object	= dynamic_cast<CSE_ALifeObject*>(e_who);
+	CSE_ALifeObject			*alife_object	= smart_cast<CSE_ALifeObject*>(e_who);
 	if (!alife_object)
 		return;
 
@@ -59,7 +59,7 @@ void	game_sv_Single::OnCreate		(u16 id_who)
 	if (alife_object->ID_Parent != 0xffff) {
 		CSE_ALifeDynamicObject			*parent = ai().alife().objects().object(alife_object->ID_Parent,true);
 		if (parent) {
-			CSE_ALifeTraderAbstract		*trader = dynamic_cast<CSE_ALifeTraderAbstract*>(parent);
+			CSE_ALifeTraderAbstract		*trader = smart_cast<CSE_ALifeTraderAbstract*>(parent);
 			if (trader)
 				alife().create			(alife_object);
 			else
@@ -78,9 +78,9 @@ BOOL	game_sv_Single::OnTouch			(u16 eid_who, u16 eid_what)
 	CSE_Abstract*		e_what	= get_entity_from_eid(eid_what);	VERIFY(e_what	);
 
 	if (ai().get_alife()) {
-		CSE_ALifeTraderAbstract	*l_tpTraderParams		= dynamic_cast<CSE_ALifeTraderAbstract*>(e_who);
-		CSE_ALifeInventoryItem	*l_tpALifeInventoryItem	= dynamic_cast<CSE_ALifeInventoryItem*>	(e_what);
-		CSE_ALifeDynamicObject	*l_tpDynamicObject		= dynamic_cast<CSE_ALifeDynamicObject*>	(e_who);
+		CSE_ALifeTraderAbstract	*l_tpTraderParams		= smart_cast<CSE_ALifeTraderAbstract*>(e_who);
+		CSE_ALifeInventoryItem	*l_tpALifeInventoryItem	= smart_cast<CSE_ALifeInventoryItem*>	(e_what);
+		CSE_ALifeDynamicObject	*l_tpDynamicObject		= smart_cast<CSE_ALifeDynamicObject*>	(e_who);
 		
 		if	(
 				l_tpTraderParams && 
@@ -107,11 +107,11 @@ BOOL	game_sv_Single::OnDetach		(u16 eid_who, u16 eid_what)
 		CSE_Abstract*		e_who	= get_entity_from_eid(eid_who);		VERIFY(e_who	);
 		CSE_Abstract*		e_what	= get_entity_from_eid(eid_what);	VERIFY(e_what	);
 
-		CSE_ALifeInventoryItem *l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(e_what);
+		CSE_ALifeInventoryItem *l_tpALifeInventoryItem = smart_cast<CSE_ALifeInventoryItem*>(e_what);
 		if (!l_tpALifeInventoryItem)
 			return TRUE;
 
-		CSE_ALifeDynamicObject *l_tpDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(e_who);
+		CSE_ALifeDynamicObject *l_tpDynamicObject = smart_cast<CSE_ALifeDynamicObject*>(e_who);
 		if (!l_tpDynamicObject)
 			return TRUE;
 		
@@ -126,7 +126,7 @@ BOOL	game_sv_Single::OnDetach		(u16 eid_who, u16 eid_what)
 				u16				id = l_tpALifeInventoryItem->base()->ID_Parent;
 				l_tpALifeInventoryItem->base()->ID_Parent	= 0xffff;
 				
-				CSE_ALifeDynamicObject *dynamic_object = dynamic_cast<CSE_ALifeDynamicObject*>(e_what);
+				CSE_ALifeDynamicObject *dynamic_object = smart_cast<CSE_ALifeDynamicObject*>(e_what);
 				VERIFY			(dynamic_object);
 				dynamic_object->m_tNodeID		= l_tpDynamicObject->m_tNodeID;
 				dynamic_object->m_tGraphID		= l_tpDynamicObject->m_tGraphID;

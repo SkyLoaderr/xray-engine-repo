@@ -140,7 +140,7 @@ void CUIJobsWnd::AddTask(CGameTask * const task)
 		UIList.AddParsedItem<CUIIconedListItem>(*stbl(task->ObjectiveDesc(i)), subitemsOffset, clTaskSubItemColor, pSubTasksFnt);
 
 		R_ASSERT(iconedItemIdx < UIList.GetSize());
-		CUIIconedListItem * pTask = dynamic_cast<CUIIconedListItem*>(UIList.GetItem(iconedItemIdx));
+		CUIIconedListItem * pTask = smart_cast<CUIIconedListItem*>(UIList.GetItem(iconedItemIdx));
 
 		R_ASSERT(pTask);
 		if (pTask)
@@ -161,7 +161,7 @@ void CUIJobsWnd::ReloadJobs()
 {
 	UIList.RemoveAll();
 
-	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 
 	if (!pActor || !pActor->game_task_registry.objects_ptr()) return;
 

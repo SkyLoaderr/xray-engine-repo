@@ -50,14 +50,14 @@ void CALifeGraphRegistry::update			(CSE_ALifeDynamicObject *object)
 		return;
 
 	if (object->s_flags.is(M_SPAWN_OBJECT_ASPLAYER)) {
-		m_actor						= dynamic_cast<CSE_ALifeCreatureActor*>(object);
+		m_actor						= smart_cast<CSE_ALifeCreatureActor*>(object);
 		R_ASSERT2					(m_actor,"Invalid flag M_SPAWN_OBJECT_ASPLAYER for non-actor object!");
 	}
 
 	if (m_actor && !m_level)
 		setup_current_level			();
 
-	CSE_ALifeInventoryItem			*item = dynamic_cast<CSE_ALifeInventoryItem*>(object);
+	CSE_ALifeInventoryItem			*item = smart_cast<CSE_ALifeInventoryItem*>(object);
 	if (!item || !item->attached())
 		add							(object,object->m_tGraphID);
 }

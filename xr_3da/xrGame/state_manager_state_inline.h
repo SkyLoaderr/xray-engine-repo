@@ -68,7 +68,7 @@ void CStateManagerAbstract::update			()
 
 	execute							();
 	CSStateManagerAbstract::update	();
-	IGraphManager					*state_manager_interface = dynamic_cast<IGraphManager*>(&current_state());
+	IGraphManager					*state_manager_interface = smart_cast<IGraphManager*>(&current_state());
 	if (state_manager_interface)
 		state_manager_interface->update();
 }

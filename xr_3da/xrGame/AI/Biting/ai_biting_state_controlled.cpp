@@ -28,7 +28,7 @@ void CBitingControlled::Init()
 
 void CBitingControlled::Run()
 {
-	CControlledEntityBase *entity = dynamic_cast<CControlledEntityBase *>(pMonster);
+	CControlledEntityBase *entity = smart_cast<CControlledEntityBase *>(pMonster);
 	VERIFY(entity);
 
 	switch (entity->get_data().m_task) {

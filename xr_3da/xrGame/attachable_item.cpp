@@ -39,7 +39,7 @@ void CAttachableItem::reload		(LPCSTR section)
 void CAttachableItem::OnH_A_Chield	() 
 {
 	inherited::OnH_A_Chield			();
-	const CInventoryOwner			*inventory_owner = dynamic_cast<const CInventoryOwner*>(H_Parent());
+	const CInventoryOwner			*inventory_owner = smart_cast<const CInventoryOwner*>(H_Parent());
 	VERIFY							(inventory_owner);
 	if (inventory_owner->attached(this))
 		setVisible					(true);
@@ -56,14 +56,14 @@ void CAttachableItem::renderable_Render()
 void CAttachableItem::enable		(bool value)
 {
 	if (value && !enabled() && H_Parent()) {
-		CAttachmentOwner	*owner = dynamic_cast<CAttachmentOwner*>(H_Parent());
+		CAttachmentOwner	*owner = smart_cast<CAttachmentOwner*>(H_Parent());
 		VERIFY				(owner);
 		m_enabled			= value;
 		owner->attach		(this);
 		setVisible			(true);
 	}
 	if (!value && enabled() && H_Parent()) {
-		CAttachmentOwner	*owner = dynamic_cast<CAttachmentOwner*>(H_Parent());
+		CAttachmentOwner	*owner = smart_cast<CAttachmentOwner*>(H_Parent());
 		VERIFY				(owner);
 		m_enabled			= value;
 		owner->detach		(this);

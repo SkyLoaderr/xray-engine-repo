@@ -19,7 +19,7 @@ void CFryupZone::OnRender()
 //	CCF_Shape *l_pShape			= xr_new<CCF_Shape>(this);
 //	collidable.model			= l_pShape;
 //	CSE_Abstract				*e = (CSE_Abstract*)(DC);
-//	CSE_ALifeAnomalousZone		*Z = dynamic_cast<CSE_ALifeAnomalousZone*>(e);
+//	CSE_ALifeAnomalousZone		*Z = smart_cast<CSE_ALifeAnomalousZone*>(e);
 //
 //	for (u32 i=0; i < Z->shapes.size(); ++i) 
 //	{

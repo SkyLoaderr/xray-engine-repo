@@ -108,10 +108,10 @@ void CUIPdaListItem::InitCharacter(CInventoryOwner* pInvOwner)
 		pInvOwner->CharacterInfo().TradeIconX()+CHAR_ICON_WIDTH*ICON_GRID_WIDTH,
 		pInvOwner->CharacterInfo().TradeIconY()+CHAR_ICON_HEIGHT*ICON_GRID_HEIGHT);
 	
-	CActor* pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+	CActor* pActor = smart_cast<CActor*>(Level().CurrentEntity());
 	if (pActor)
 	{
-		CEntityAlive* ContactEA = dynamic_cast<CEntityAlive*>(pInvOwner);
+		CEntityAlive* ContactEA = smart_cast<CEntityAlive*>(pInvOwner);
 		LPCSTR	relation_str = NULL;
 		u32		color		 = 0;
 

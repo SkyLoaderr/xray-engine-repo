@@ -85,7 +85,7 @@ void CInventoryOwner::reinit				()
 BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 {
 	//получить указатель на объект, InventoryOwner
-	CGameObject			*pThis = dynamic_cast<CGameObject*>(this);
+	CGameObject			*pThis = smart_cast<CGameObject*>(this);
 	if(!pThis) return FALSE;
 
 	//-------------------------------------
@@ -97,7 +97,7 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 
 	CSE_Abstract* E	= (CSE_Abstract*)(DC);
 	CSE_ALifeTraderAbstract* pTrader = NULL;
-	if(E) pTrader = dynamic_cast<CSE_ALifeTraderAbstract*>(E);
+	if(E) pTrader = smart_cast<CSE_ALifeTraderAbstract*>(E);
 	if(!pTrader) return FALSE;
 
 	CharacterInfo().m_iSpecificCharacterIndex = pTrader->specific_character(); 
@@ -106,7 +106,7 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 	{
 		CharacterInfo().Load(pTrader->character_profile());
 
-		CAI_PhraseDialogManager* dialog_manager = dynamic_cast<CAI_PhraseDialogManager*>(this);
+		CAI_PhraseDialogManager* dialog_manager = smart_cast<CAI_PhraseDialogManager*>(this);
 		if(dialog_manager && CharacterInfo().StartDialog() != NO_PHRASE_DIALOG)
 		{
 			dialog_manager->SetStartDialog(CPhraseDialog::IndexToId(CharacterInfo().StartDialog()));
@@ -118,7 +118,7 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 		pTrader->set_character_profile(DEFAULT_PROFILE);
 		CharacterInfo().Load(DEFAULT_PROFILE);
 		/*CharacterInfo().data()->m_sGameName = pThis->cName();
-		CEntity* pEntity = dynamic_cast<CEntity*>(pThis); VERIFY(pEntity);
+		CEntity* pEntity = smart_cast<CEntity*>(pThis); VERIFY(pEntity);
 		CharacterInfo().data()->m_iIconX = pEntity->GetTradeIconX();
 		CharacterInfo().data()->m_iIconY = pEntity->GetTradeIconY();
 
@@ -131,7 +131,7 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 
 #ifdef DEBUG
 	//CSE_Abstract			*E	= (CSE_Abstract*)(DC);
-	CSE_ALifeDynamicObject	*dynamic_object = dynamic_cast<CSE_ALifeDynamicObject*>(E);
+	CSE_ALifeDynamicObject	*dynamic_object = smart_cast<CSE_ALifeDynamicObject*>(E);
 	VERIFY					(dynamic_object);
 #endif
 
@@ -185,7 +185,7 @@ void CInventoryOwner::UpdateInventoryOwner(u32 deltaT)
 		}
 
 		//если мы умерли, то тоже не говорить
-		CEntityAlive* pOurEntityAlive = dynamic_cast<CEntityAlive*>(this);
+		CEntityAlive* pOurEntityAlive = smart_cast<CEntityAlive*>(this);
 		R_ASSERT(pOurEntityAlive);
 		if(!pOurEntityAlive->g_Alive()) StopTalk();
 	}
@@ -195,7 +195,7 @@ void CInventoryOwner::UpdateInventoryOwner(u32 deltaT)
 //достать PDA из специального слота инвентаря
 CPda* CInventoryOwner::GetPDA() const
 {
-//	CEntityAlive* pEntityAlive = dynamic_cast<CEntityAlive*>(this);
+//	CEntityAlive* pEntityAlive = smart_cast<CEntityAlive*>(this);
 	
 //	if(!pEntityAlive || !pEntityAlive->g_Alive()) return NULL; 
 
@@ -225,11 +225,11 @@ void CInventoryOwner::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_INDEX info_in
 
 
 	//Запустить скриптовый callback
-	CGameObject* pThisGameObject = dynamic_cast<CGameObject*>(this);
+	CGameObject* pThisGameObject = smart_cast<CGameObject*>(this);
 	VERIFY(pThisGameObject);
-	CPda* pWhoPda = dynamic_cast<CPda*>(Level().Objects.net_Find(who));
+	CPda* pWhoPda = smart_cast<CPda*>(Level().Objects.net_Find(who));
 	VERIFY(pWhoPda);
-	CGameObject* pWho = dynamic_cast<CGameObject*>(pWhoPda->H_Parent());
+	CGameObject* pWho = smart_cast<CGameObject*>(pWhoPda->H_Parent());
 
 
 	/*Msg("who pda %d, who parent %d, we pda %d, we parent %d", who, 
@@ -276,10 +276,10 @@ bool CInventoryOwner::OfferTalk(CInventoryOwner* talk_partner)
 	if(!IsTalkEnabled()) return false;
 
 	//проверить отношение к собеседнику
-	CEntityAlive* pOurEntityAlive = dynamic_cast<CEntityAlive*>(this);
+	CEntityAlive* pOurEntityAlive = smart_cast<CEntityAlive*>(this);
 	R_ASSERT(pOurEntityAlive);
 
-	CEntityAlive* pPartnerEntityAlive = dynamic_cast<CEntityAlive*>(talk_partner);
+	CEntityAlive* pPartnerEntityAlive = smart_cast<CEntityAlive*>(talk_partner);
 	R_ASSERT(pPartnerEntityAlive);
 	
 	ALife::ERelationType relation = pOurEntityAlive->tfGetRelationType(pPartnerEntityAlive);
@@ -349,7 +349,7 @@ float  CInventoryOwner::MaxCarryWeight () const
 
 void CInventoryOwner::spawn_supplies		()
 {
-	CGameObject								*game_object = dynamic_cast<CGameObject*>(this);
+	CGameObject								*game_object = smart_cast<CGameObject*>(this);
 	VERIFY									(game_object);
 
 	if (use_bolts())
@@ -357,7 +357,7 @@ void CInventoryOwner::spawn_supplies		()
 
 	if (!ai().get_alife()) {
 		CSE_Abstract						*abstract = Level().spawn_item("device_pda",game_object->Position(),game_object->level_vertex_id(),game_object->ID(),true);
-		CSE_ALifeItemPDA					*pda = dynamic_cast<CSE_ALifeItemPDA*>(abstract);
+		CSE_ALifeItemPDA					*pda = smart_cast<CSE_ALifeItemPDA*>(abstract);
 		R_ASSERT							(pda);
 		pda->m_original_owner				= (u16)game_object->ID();
 		NET_Packet							P;

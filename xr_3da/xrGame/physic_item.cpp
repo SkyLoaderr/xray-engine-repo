@@ -113,7 +113,7 @@ void CPhysicItem::UpdateCL()
 
 void CPhysicItem::activate_physic_shell()
 {
-	CObject						*object = dynamic_cast<CObject*>(H_Parent());
+	CObject						*object = smart_cast<CObject*>(H_Parent());
 	R_ASSERT					(object);
 	XFORM().set					(object->XFORM());
 	inherited::activate_physic_shell();

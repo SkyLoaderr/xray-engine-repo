@@ -63,7 +63,7 @@ void CAgentManager::reload			(LPCSTR section)
 
 void CAgentManager::add				(CEntity *member)
 {
-	CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(member);
+	CAI_Stalker					*stalker = smart_cast<CAI_Stalker*>(member);
 	if (!stalker || !stalker->g_Alive())
 		return;
 
@@ -82,7 +82,7 @@ void CAgentManager::add				(CEntity *member)
 
 void CAgentManager::remove			(CEntity *member, bool no_assert)
 {
-	CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(member);
+	CAI_Stalker					*stalker = smart_cast<CAI_Stalker*>(member);
 	if (!stalker)
 		return;
 

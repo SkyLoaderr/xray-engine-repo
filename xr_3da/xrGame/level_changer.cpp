@@ -32,7 +32,7 @@ BOOL CLevelChanger::net_Spawn	(LPVOID DC)
 	collidable.model			= l_pShape;
 	
 	CSE_Abstract				*l_tpAbstract = (CSE_Abstract*)(DC);
-	CSE_ALifeLevelChanger		*l_tpALifeLevelChanger = dynamic_cast<CSE_ALifeLevelChanger*>(l_tpAbstract);
+	CSE_ALifeLevelChanger		*l_tpALifeLevelChanger = smart_cast<CSE_ALifeLevelChanger*>(l_tpAbstract);
 	R_ASSERT					(l_tpALifeLevelChanger);
 
 	m_game_vertex_id			= l_tpALifeLevelChanger->m_tNextGraphID;
@@ -79,7 +79,7 @@ void CLevelChanger::shedule_Update(u32 dt)
 
 void CLevelChanger::feel_touch_new	(CObject *tpObject)
 {
-	CActor						*l_tpActor = dynamic_cast<CActor*>(tpObject);
+	CActor						*l_tpActor = smart_cast<CActor*>(tpObject);
 	if (l_tpActor) {
 		NET_Packet				net_packet;
 		net_packet.w_begin		(M_CHANGE_LEVEL);

@@ -23,7 +23,7 @@ void CMonsterCorpseMemory::update()
 {
 	for (xr_vector<const CGameObject *>::const_iterator I = monster->CItemManager::items().begin(); I != monster->CItemManager::items().end(); ++I) {
 		if (monster->CMemoryManager::visible_now(*I)) {
-			const CEntityAlive *p_corpse = dynamic_cast<const CEntityAlive*>(*I);
+			const CEntityAlive *p_corpse = smart_cast<const CEntityAlive*>(*I);
 			if (!p_corpse || p_corpse->g_Alive()) continue;
 			add_corpse(p_corpse);
 		}

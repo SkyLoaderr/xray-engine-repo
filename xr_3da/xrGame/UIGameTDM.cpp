@@ -37,7 +37,7 @@ CUIGameTDM::CUIGameTDM()
 void CUIGameTDM::SetClGame (game_cl_GameState* g)
 {
 	inherited::SetClGame(g);
-	m_game = dynamic_cast<game_cl_TeamDeathmatch*>(g);
+	m_game = smart_cast<game_cl_TeamDeathmatch*>(g);
 	R_ASSERT(m_game);
 }
 
@@ -144,7 +144,7 @@ void CUIGameTDM::OnTeamSelect(int Team)
 	{
 		CObject *l_pObj = Level().CurrentEntity();
 
-		CGameObject *l_pPlayer = dynamic_cast<CGameObject*>(l_pObj);
+		CGameObject *l_pPlayer = smart_cast<CGameObject*>(l_pObj);
 		if(!l_pPlayer) return;
 
 		NET_Packet		P;

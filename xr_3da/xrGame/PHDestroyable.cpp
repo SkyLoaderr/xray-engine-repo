@@ -27,9 +27,9 @@ void CPHDestroyable::Destroy()
 		CSE_Abstract*				D	= F_entity_Create("ph_skeleton_object");//*cNameSect()
 		VERIFY						(D);
 
-		CSE_ALifeDynamicObject		*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(D);
+		CSE_ALifeDynamicObject		*l_tpALifeDynamicObject = smart_cast<CSE_ALifeDynamicObject*>(D);
 		VERIFY						(l_tpALifeDynamicObject);
-		CSE_ALifePHSkeletonObject	*l_tpALifePhysicObject = dynamic_cast<CSE_ALifePHSkeletonObject*>(D);
+		CSE_ALifePHSkeletonObject	*l_tpALifePhysicObject = smart_cast<CSE_ALifePHSkeletonObject*>(D);
 		VERIFY						(l_tpALifePhysicObject);
 
 		l_tpALifePhysicObject->m_tGraphID	=obj->game_vertex_id();

@@ -35,9 +35,9 @@ void CAI_PhraseDialogManager::ReceivePhrase (DIALOG_SHARED_PTR& phrase_dialog)
 
 void CAI_PhraseDialogManager::AnswerPhrase (DIALOG_SHARED_PTR& phrase_dialog)
 {
-	CInventoryOwner* pInvOwner = dynamic_cast<CInventoryOwner*>(this);
+	CInventoryOwner* pInvOwner = smart_cast<CInventoryOwner*>(this);
 	VERIFY(pInvOwner);
-	CGameObject* pOthersGO = dynamic_cast<CGameObject*>(phrase_dialog->OurPartner(this));
+	CGameObject* pOthersGO = smart_cast<CGameObject*>(phrase_dialog->OurPartner(this));
 	VERIFY(pOthersGO);
 
 	if(!phrase_dialog->IsFinished())

@@ -114,7 +114,7 @@ LPCSTR CScriptMonster::GetScriptControlName() const
 
 bool CScriptMonster::CheckObjectVisibility(const CGameObject *tpObject)
 {
-	CCustomMonster		*l_tpCustomMonster = dynamic_cast<CCustomMonster*>(this);
+	CCustomMonster		*l_tpCustomMonster = smart_cast<CCustomMonster*>(this);
 	if (!l_tpCustomMonster)
 		return			(false);
 	return				(l_tpCustomMonster->CVisualMemoryManager::visible_now(tpObject));
@@ -124,7 +124,7 @@ bool CScriptMonster::CheckObjectVisibility(const CGameObject *tpObject)
 //заданного через section_name
 bool CScriptMonster::CheckTypeVisibility(const char* section_name)
 {
-	CCustomMonster		*l_tpCustomMonster = dynamic_cast<CCustomMonster*>(this);
+	CCustomMonster		*l_tpCustomMonster = smart_cast<CCustomMonster*>(this);
 	if (!l_tpCustomMonster)
 		return			(false);
 	l_tpCustomMonster->feel_vision_get(l_tpCustomMonster->m_visible_objects);
@@ -132,7 +132,7 @@ bool CScriptMonster::CheckTypeVisibility(const char* section_name)
 	xr_vector<CObject*>::const_iterator	E = l_tpCustomMonster->m_visible_objects.end();
 	for ( ; I != E; ++I)
 	{
-		CObject* pObject = dynamic_cast<CObject*>(*I);
+		CObject* pObject = smart_cast<CObject*>(*I);
 		if (!xr_strcmp(section_name, pObject->cNameSect()))
 			return		(true);
 	}
@@ -191,7 +191,7 @@ CScriptEntityAction *CScriptMonster::GetCurrentAction()
 void __stdcall ActionCallback(CKinematics *tpKinematics)
 {
 	// sounds
-	CScriptMonster	*l_tpScriptMonster = dynamic_cast<CScriptMonster*>(static_cast<CObject*>(tpKinematics->Update_Callback_Param));
+	CScriptMonster	*l_tpScriptMonster = smart_cast<CScriptMonster*>(static_cast<CObject*>(tpKinematics->Update_Callback_Param));
 	VERIFY			(l_tpScriptMonster);
 	if (!l_tpScriptMonster->GetCurrentAction())
 		return;
@@ -416,17 +416,17 @@ bool CScriptMonster::bfAssignMovement(CScriptEntityAction *tpEntityAction)
 	if (l_tMovementAction.m_bCompleted)
 		return		(false);
 
-	CEntityAlive			*entity_alive = dynamic_cast<CEntityAlive*>(this);
+	CEntityAlive			*entity_alive = smart_cast<CEntityAlive*>(this);
 	if (entity_alive && !entity_alive->g_Alive()) {
 		l_tMovementAction.m_bCompleted = true;
 		return				(false);
 	}
 	
-	CMovementManager		*l_tpMovementManager = dynamic_cast<CMovementManager*>(this);
+	CMovementManager		*l_tpMovementManager = smart_cast<CMovementManager*>(this);
 
 	switch (l_tMovementAction.m_tGoalType) {
 		case CScriptMovementAction::eGoalTypeObject : {
-			CGameObject		*l_tpGameObject = dynamic_cast<CGameObject*>(l_tMovementAction.m_tpObjectToGo);
+			CGameObject		*l_tpGameObject = smart_cast<CGameObject*>(l_tMovementAction.m_tpObjectToGo);
 			R_ASSERT		(l_tpGameObject);
 			l_tpMovementManager->set_path_type(MovementManager::ePathTypeLevelPath);
 //			Msg			("%6d Object %s, position [%f][%f][%f]",Level().timeServer(),*l_tpGameObject->cName(),VPUSH(l_tpGameObject->Position()));
@@ -506,7 +506,7 @@ void CScriptMonster::set_callback	(const luabind::object &lua_object, LPCSTR met
 	m_tpCallbacks[tActionType].set(lua_object, method);
 
 	if (eActionTypeMovement == tActionType) {
-		CPatrolPathManager	*l_tpPatrolPathManager = dynamic_cast<CPatrolPathManager*>(this);
+		CPatrolPathManager	*l_tpPatrolPathManager = smart_cast<CPatrolPathManager*>(this);
 		if (l_tpPatrolPathManager)
 			l_tpPatrolPathManager->set_callback(m_tpCallbacks[tActionType]);
 	}
@@ -519,7 +519,7 @@ void CScriptMonster::set_callback	(const luabind::functor<void> &lua_function, c
 	m_tpCallbacks[tActionType].set(lua_function);
 	
 	if (eActionTypeMovement == tActionType) {
-		CPatrolPathManager	*l_tpPatrolPathManager = dynamic_cast<CPatrolPathManager*>(this);
+		CPatrolPathManager	*l_tpPatrolPathManager = smart_cast<CPatrolPathManager*>(this);
 		if (l_tpPatrolPathManager)
 			l_tpPatrolPathManager->set_callback(m_tpCallbacks[tActionType]);
 	}
@@ -532,7 +532,7 @@ void CScriptMonster::clear_callback	(const ScriptMonster::EActionType tActionTyp
 	m_tpCallbacks[tActionType].clear();
 
 	if (tActionType) {
-		CPatrolPathManager	*l_tpPatrolPathManager = dynamic_cast<CPatrolPathManager*>(this);
+		CPatrolPathManager	*l_tpPatrolPathManager = smart_cast<CPatrolPathManager*>(this);
 		if (l_tpPatrolPathManager)
 			l_tpPatrolPathManager->set_callback(m_tpCallbacks[tActionType]);
 	}
@@ -607,7 +607,7 @@ void CScriptMonster::shedule_Update	(u32 DT)
 
 void ScriptCallBack(CBlend* B)
 {
-	CScriptMonster	*l_tpScriptMonster = dynamic_cast<CScriptMonster*> (static_cast<CObject*>(B->CallbackParam));
+	CScriptMonster	*l_tpScriptMonster = smart_cast<CScriptMonster*> (static_cast<CObject*>(B->CallbackParam));
 	R_ASSERT		(l_tpScriptMonster);
 	if (l_tpScriptMonster->GetCurrentAction() && !B->bone_or_part) {
 		if (!l_tpScriptMonster->GetCurrentAction()->m_tAnimationAction.m_bCompleted)
@@ -666,7 +666,7 @@ const CScriptEntityAction *CScriptMonster::GetActionByIndex	(u32 action_index) c
 
 void CScriptMonster::sound_callback	(const CObject *object, int sound_type, const Fvector &position, float sound_power)
 {
-	if (!dynamic_cast<const CGameObject*>(object))
+	if (!smart_cast<const CGameObject*>(object))
 		return;
 
 	if (!m_tSoundCallback.assigned())
@@ -674,7 +674,7 @@ void CScriptMonster::sound_callback	(const CObject *object, int sound_type, cons
 
 	m_saved_sounds.push_back		(
 		CSavedSound(
-			dynamic_cast<const CGameObject*>(object)->lua_game_object(),
+			smart_cast<const CGameObject*>(object)->lua_game_object(),
 			sound_type,
 			position,
 			sound_power
@@ -684,14 +684,14 @@ void CScriptMonster::sound_callback	(const CObject *object, int sound_type, cons
 
 void CScriptMonster::hit_callback	(float amount, const Fvector &vLocalDir, const CObject *who, s16 element)
 {
-	if (!dynamic_cast<const CGameObject*>(who))
+	if (!smart_cast<const CGameObject*>(who))
 		return;
 
 	SCRIPT_CALLBACK_EXECUTE_5(m_tHitCallback, 
 		lua_game_object(),
 		amount,
 		vLocalDir,
-		dynamic_cast<const CGameObject*>(who)->lua_game_object(),
+		smart_cast<const CGameObject*>(who)->lua_game_object(),
 		element
 	);
 }

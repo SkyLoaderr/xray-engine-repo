@@ -81,13 +81,13 @@ void CALifeSurgeManager::generate_anomalies()
 	D_OBJECT_P_MAP::const_iterator	B = objects().objects().begin(), I = B, J;
 	D_OBJECT_P_MAP::const_iterator	E = objects().objects().end();
 	for ( ; I != E; ++I) {
-		CSE_ALifeAnomalousZone *l_tpALifeAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>((*I).second);
+		CSE_ALifeAnomalousZone *l_tpALifeAnomalousZone = smart_cast<CSE_ALifeAnomalousZone*>((*I).second);
 		if (l_tpALifeAnomalousZone)
 			l_tpALifeAnomalousZone->m_maxPower = 0.f;
 	}
 	// for each spawn group activate a zone if any
 	for (I = B; I != E; ) {
-		CSE_ALifeAnomalousZone *l_tpALifeAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>((*I).second);
+		CSE_ALifeAnomalousZone *l_tpALifeAnomalousZone = smart_cast<CSE_ALifeAnomalousZone*>((*I).second);
 		if (!l_tpALifeAnomalousZone) {
 			++I;
 			continue;
@@ -131,9 +131,9 @@ void CALifeSurgeManager::generate_anomalies()
 			continue;
 
 		// otherwise assign random anomaly power to the zone
-		l_tpALifeAnomalousZone	= dynamic_cast<CSE_ALifeAnomalousZone*>((*I).second);
+		l_tpALifeAnomalousZone	= smart_cast<CSE_ALifeAnomalousZone*>((*I).second);
 		R_ASSERT2				(l_tpALifeAnomalousZone,"Anomalous zones are grouped with incompatible objects!");
-		CSE_ALifeAnomalousZone	*l_tpSpawnAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(*j);
+		CSE_ALifeAnomalousZone	*l_tpSpawnAnomalousZone = smart_cast<CSE_ALifeAnomalousZone*>(*j);
 		R_ASSERT2				(l_tpSpawnAnomalousZone,"Anomalous zones are grouped with incompatible objects!");
 #pragma todo("Dima to Dima : Correct anomalous zones power")
 		l_tpALifeAnomalousZone->m_maxPower = l_tpALifeAnomalousZone->m_fStartPower = randF(50,150);
@@ -150,7 +150,7 @@ void CALifeSurgeManager::generate_anomalies()
 			if (p < l_tpSpawnAnomalousZone->m_wItemCount) {
 				CSE_Abstract	*l_tpSE_Abstract = F_entity_Create(l_tpSpawnAnomalousZone->m_cppArtefactSections[p]);
 				R_ASSERT3		(l_tpSE_Abstract,"Can't spawn artefact ",l_tpSpawnAnomalousZone->m_cppArtefactSections[p]);
-				CSE_ALifeDynamicObject	*i = dynamic_cast<CSE_ALifeDynamicObject*>(l_tpSE_Abstract);
+				CSE_ALifeDynamicObject	*i = smart_cast<CSE_ALifeDynamicObject*>(l_tpSE_Abstract);
 				R_ASSERT2		(i,"Non-ALife object in the 'game.spawn'");
 
 				i->ID			= server().PerformIDgen(0xffff);
@@ -158,7 +158,7 @@ void CALifeSurgeManager::generate_anomalies()
 				spawns().assign_artefact_position(l_tpSpawnAnomalousZone,i);
 				i->m_bALifeControl = true;
 
-				CSE_ALifeItemArtefact *l_tpALifeItemArtefact = dynamic_cast<CSE_ALifeItemArtefact*>(i);
+				CSE_ALifeItemArtefact *l_tpALifeItemArtefact = smart_cast<CSE_ALifeItemArtefact*>(i);
 				R_ASSERT2		(l_tpALifeItemArtefact,"Anomalous zone can't generate non-artefact objects since they don't have an 'anomaly property'!");
 
 				l_tpALifeItemArtefact->m_fAnomalyValue = l_tpALifeAnomalousZone->m_maxPower*(1.f - i->o_Position.distance_to(l_tpSpawnAnomalousZone->o_Position)/l_tpSpawnAnomalousZone->m_fRadius);
@@ -185,7 +185,7 @@ void CALifeSurgeManager::generate_anomaly_map	()
 	D_OBJECT_P_MAP::const_iterator			I = objects().objects().begin();
 	D_OBJECT_P_MAP::const_iterator			E = objects().objects().end();
 	for ( ; I != E; ++I) {
-		CSE_ALifeAnomalousZone				*anomaly = dynamic_cast<CSE_ALifeAnomalousZone*>((*I).second);
+		CSE_ALifeAnomalousZone				*anomaly = smart_cast<CSE_ALifeAnomalousZone*>((*I).second);
 		if (!anomaly || !randI(20))
 			continue;
 
@@ -206,8 +206,8 @@ void CALifeSurgeManager::ballance_creatures()
 		D_OBJECT_P_MAP::const_iterator	I = objects().objects().begin();
 		D_OBJECT_P_MAP::const_iterator	E = objects().objects().end();
 		for ( ; I != E; ++I) {
-			CSE_ALifeCreatureAbstract *l_tpALifeCreatureAbstract = dynamic_cast<CSE_ALifeCreatureAbstract*>((*I).second);
-			CSE_ALifeGroupAbstract	  *l_tpALifeGroupAbstract = dynamic_cast<CSE_ALifeGroupAbstract*>((*I).second);
+			CSE_ALifeCreatureAbstract *l_tpALifeCreatureAbstract = smart_cast<CSE_ALifeCreatureAbstract*>((*I).second);
+			CSE_ALifeGroupAbstract	  *l_tpALifeGroupAbstract = smart_cast<CSE_ALifeGroupAbstract*>((*I).second);
 			if (l_tpALifeCreatureAbstract)
 				if (l_tpALifeGroupAbstract) {
 					if (l_tpALifeGroupAbstract->m_wCount) {
@@ -248,12 +248,12 @@ void CALifeSurgeManager::ballance_creatures()
 						break;
 				}
 				if (l_fSum > l_fProbability) {
-					CSE_ALifeAnomalousZone		*l_tpALifeAnomalousZone		= dynamic_cast<CSE_ALifeAnomalousZone*>(*j);
+					CSE_ALifeAnomalousZone		*l_tpALifeAnomalousZone		= smart_cast<CSE_ALifeAnomalousZone*>(*j);
 					if (l_tpALifeAnomalousZone)
 						continue;
 
 #pragma todo("Dima to Dima : Decide where to spawn an actor!")
-//					CSE_ALifeCreatureAbstract	*l_tpALifeCreatureAbstract	= dynamic_cast<CSE_ALifeCreatureAbstract*>(*j);
+//					CSE_ALifeCreatureAbstract	*l_tpALifeCreatureAbstract	= smart_cast<CSE_ALifeCreatureAbstract*>(*j);
 //					if (l_tpALifeCreatureAbstract)
 //						continue;
 
@@ -273,14 +273,14 @@ void CALifeSurgeManager::kill_creatures()
 	D_OBJECT_P_MAP::const_iterator	I = objects().objects().begin();
 	D_OBJECT_P_MAP::const_iterator	E = objects().objects().end();
 	for ( ; I != E; ++I) {
-		CSE_ALifeCreatureAbstract *l_tpALifeCreatureAbstract = dynamic_cast<CSE_ALifeCreatureAbstract*>((*I).second);
+		CSE_ALifeCreatureAbstract *l_tpALifeCreatureAbstract = smart_cast<CSE_ALifeCreatureAbstract*>((*I).second);
 		if (l_tpALifeCreatureAbstract && (l_tpALifeCreatureAbstract->m_bDirectControl) && (l_tpALifeCreatureAbstract->fHealth > 0.f)) {
-			CSE_ALifeGroupAbstract *l_tpALifeGroupAbstract = dynamic_cast<CSE_ALifeGroupAbstract*>((*I).second);
+			CSE_ALifeGroupAbstract *l_tpALifeGroupAbstract = smart_cast<CSE_ALifeGroupAbstract*>((*I).second);
 			ai().ef_storage().m_tpCurrentALifeObject = (*I).second;
 			if (l_tpALifeGroupAbstract) {
 				_GRAPH_ID			l_tGraphID = l_tpALifeCreatureAbstract->m_tGraphID;
 				for (u32 i=0, N = (u32)l_tpALifeGroupAbstract->m_tpMembers.size(); i<N; ++i) {
-					CSE_ALifeCreatureAbstract	*l_tpALifeCreatureAbstract = dynamic_cast<CSE_ALifeCreatureAbstract*>(objects().object(l_tpALifeGroupAbstract->m_tpMembers[i]));
+					CSE_ALifeCreatureAbstract	*l_tpALifeCreatureAbstract = smart_cast<CSE_ALifeCreatureAbstract*>(objects().object(l_tpALifeGroupAbstract->m_tpMembers[i]));
 					R_ASSERT2					(l_tpALifeCreatureAbstract,"Group class differs from the member class!");
 					ai().ef_storage().m_tpCurrentALifeObject = l_tpALifeCreatureAbstract;
 					if (randF(100) > ai().ef_storage().m_pfSurgeDeathProbability->ffGetValue()) {
@@ -314,7 +314,7 @@ void CALifeSurgeManager::sell_artefacts(CSE_ALifeTrader &tTrader)
 		xr_vector<u16>::iterator	e = tTrader.children.end();
 		for ( ; i != e; ++i) {
 			// checking if the purchased item is an artefact
-			CSE_ALifeItemArtefact *l_tpALifeItemArtefact = dynamic_cast<CSE_ALifeItemArtefact*>(objects().object(*i));
+			CSE_ALifeItemArtefact *l_tpALifeItemArtefact = smart_cast<CSE_ALifeItemArtefact*>(objects().object(*i));
 			if (!l_tpALifeItemArtefact)
 				continue;
 
@@ -397,7 +397,7 @@ void CALifeSurgeManager::buy_supplies(CSE_ALifeTrader &tTrader)
 		xr_vector<u16>::iterator	e = tTrader.children.end();
 		for ( ; i != e; ++i) {
 			// checking if the purchased item is an item
-			CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(objects().object(*i));
+			CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = smart_cast<CSE_ALifeInventoryItem*>(objects().object(*i));
 			R_ASSERT2				(l_tpALifeInventoryItem,"Non inventory object has a parent?!");
 			// adding item to the temporary item map
 			ITEM_COUNT_PAIR_IT		k = m_tpTraderItems.find(l_tpALifeInventoryItem->base()->s_name);
@@ -442,9 +442,9 @@ void CALifeSurgeManager::buy_supplies(CSE_ALifeTrader &tTrader)
 				// create item object
 				CSE_Abstract	*l_tpSE_Abstract = F_entity_Create	(S);
 				R_ASSERT2		(l_tpSE_Abstract,"Can't create entity.");
-				CSE_ALifeDynamicObject	*i = dynamic_cast<CSE_ALifeDynamicObject*>(l_tpSE_Abstract);
+				CSE_ALifeDynamicObject	*i = smart_cast<CSE_ALifeDynamicObject*>(l_tpSE_Abstract);
 				R_ASSERT2		(i,"Non-ALife object in the 'game.spawn'");
-				CSE_ALifeItem	*l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>(i);
+				CSE_ALifeItem	*l_tpALifeItem = smart_cast<CSE_ALifeItem*>(i);
 				R_ASSERT2		(l_tpALifeItem,"Non-item object in the trader supplies string!");
 				
 				// checking if there is enough money to buy an item
@@ -542,7 +542,7 @@ void CALifeSurgeManager::assign_stalker_customers()
 	SCHEDULE_P_MAP::const_iterator	I = scheduled().objects().begin();
 	SCHEDULE_P_MAP::const_iterator	E = scheduled().objects().end();
 	for ( ; I != E; ++I) {
-		CSE_ALifeHumanAbstract		*l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>((*I).second);
+		CSE_ALifeHumanAbstract		*l_tpALifeHumanAbstract = smart_cast<CSE_ALifeHumanAbstract*>((*I).second);
 		if (l_tpALifeHumanAbstract && xr_strlen(l_tpALifeHumanAbstract->m_caKnownCustomers)) {
 //			u32						N = _GetItemCount(l_tpALifeHumanAbstract->m_caKnownCustomers);
 //			if (!N)
@@ -556,7 +556,7 @@ void CALifeSurgeManager::assign_stalker_customers()
 //				D_OBJECT_P_MAP::const_iterator	II = objects().objects().begin();
 //				D_OBJECT_P_MAP::const_iterator	EE = objects().objects().end();
 //				for ( ; II != EE; ++II) {
-//					CSE_ALifeTraderAbstract *l_tpTraderAbstract = dynamic_cast<CSE_ALifeTraderAbstract*>((*II).second);
+//					CSE_ALifeTraderAbstract *l_tpTraderAbstract = smart_cast<CSE_ALifeTraderAbstract*>((*II).second);
 //					if (l_tpTraderAbstract) {
 //						if (!xr_strcmp((*II).second->s_name_replace,S)) {
 //							l_tpALifeHumanAbstract->m_tpKnownCustomers.push_back((*II).second->ID);

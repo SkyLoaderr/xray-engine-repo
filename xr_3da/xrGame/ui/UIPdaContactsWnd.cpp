@@ -94,7 +94,7 @@ void CUIPdaContactsWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 
 	if (pWnd->GetParent() == &UIListWnd && BUTTON_FOCUS_RECEIVED)
 	{
-		CUIPdaListItem *pPLIItem = dynamic_cast<CUIPdaListItem*>(pWnd);
+		CUIPdaListItem *pPLIItem = smart_cast<CUIPdaListItem*>(pWnd);
 		R_ASSERT(pPLIItem);
 	}
 

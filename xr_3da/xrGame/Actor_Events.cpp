@@ -44,20 +44,20 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 				break;
 			}
 
-			CFoodItem* pFood = dynamic_cast<CFoodItem*>(O);
+			CFoodItem* pFood = smart_cast<CFoodItem*>(O);
 			if(pFood)
 				pFood->m_eItemPlace = eItemPlaceRuck;
 
-			if(inventory().Take(dynamic_cast<CGameObject*>(O), false, true)) 
+			if(inventory().Take(smart_cast<CGameObject*>(O), false, true)) 
 			{
-				O->H_SetParent(dynamic_cast<CObject*>(this));
+				O->H_SetParent(smart_cast<CObject*>(this));
 				
 
 				//добавить новый артефакт в меню, если
 				//мы работали с устройством сочетания 
-				CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+				CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 				
-				CArtefact* pArtefact = dynamic_cast<CArtefact*>(O);
+				CArtefact* pArtefact = smart_cast<CArtefact*>(O);
 				if(pGameSP && pArtefact)
 				{
 					if(pGameSP->MainInputReceiver() == &pGameSP->InventoryMenu &&
@@ -68,16 +68,16 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 				}
 
 
-/*				CScope* pScope = dynamic_cast<CScope*>(O);
-				CSilencer* pSilencer = dynamic_cast<CSilencer*>(O);
-				CGrenadeLauncher* pGrenadeLauncher = dynamic_cast<CGrenadeLauncher*>(O);
+/*				CScope* pScope = smart_cast<CScope*>(O);
+				CSilencer* pSilencer = smart_cast<CSilencer*>(O);
+				CGrenadeLauncher* pGrenadeLauncher = smart_cast<CGrenadeLauncher*>(O);
 */
 				//добавить отсоединенный аддон в инвентарь
 				if(pGameSP/* && (pScope || pSilencer || pGrenadeLauncher)*/)
 				{
 					if(pGameSP->MainInputReceiver() == &pGameSP->InventoryMenu)
 					{
-						pGameSP->InventoryMenu.AddItemToBag(dynamic_cast<CInventoryItem*>(O));
+						pGameSP->InventoryMenu.AddItemToBag(smart_cast<CInventoryItem*>(O));
 					}
 				}
 
@@ -105,7 +105,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 				break;
 			}
 			
-			if (inventory().Drop(dynamic_cast<CGameObject*>(O)) && !O->getDestroy()) 
+			if (inventory().Drop(smart_cast<CGameObject*>(O)) && !O->getDestroy()) 
 			{
 				O->H_SetParent(0);
 				feel_touch_deny(O,2000);
@@ -143,12 +143,12 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			if (!O) break;
 			switch (type)
 			{
-			case GEG_PLAYER_ITEM2SLOT:	inventory().Slot(dynamic_cast<CInventoryItem*>(O)); break;
-			case GEG_PLAYER_ITEM2BELT:	inventory().Belt(dynamic_cast<CInventoryItem*>(O)); break;
-			case GEG_PLAYER_ITEM2RUCK:	inventory().Ruck(dynamic_cast<CInventoryItem*>(O)); break;
+			case GEG_PLAYER_ITEM2SLOT:	inventory().Slot(smart_cast<CInventoryItem*>(O)); break;
+			case GEG_PLAYER_ITEM2BELT:	inventory().Belt(smart_cast<CInventoryItem*>(O)); break;
+			case GEG_PLAYER_ITEM2RUCK:	inventory().Ruck(smart_cast<CInventoryItem*>(O)); break;
 			case GEG_PLAYER_ITEMDROP:	
 				{
-					CInventoryItem* pIItem = dynamic_cast<CInventoryItem*>(O);
+					CInventoryItem* pIItem = smart_cast<CInventoryItem*>(O);
 					if (!pIItem) break;
 					pIItem->Drop();
 				}break;

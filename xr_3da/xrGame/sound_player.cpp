@@ -43,7 +43,7 @@ void CSoundPlayer::reload			(LPCSTR section)
 	set_sound_mask					(u32(-1));
 	set_sound_mask					(0);
 	VERIFY							(m_playing_sounds.empty());
-	m_object						= dynamic_cast<CObject*>(this);
+	m_object						= smart_cast<CObject*>(this);
 	VERIFY							(m_object);
 }
 

@@ -60,7 +60,7 @@ EActorSleep CActor::CanSleepHere()
 									NearestList.end() != it;
 									it++)
 	{
-		CEntityAlive* entity = dynamic_cast<CEntityAlive*>(*it);
+		CEntityAlive* entity = smart_cast<CEntityAlive*>(*it);
 		if(entity && entity->g_Alive() &&
 			entity->tfGetRelationType(this) == ALife::eRelationTypeEnemy)
 			return easEnemies;
@@ -86,7 +86,7 @@ EActorSleep CActor::GoSleep(ALife::_TIME_ID sleep_time, bool without_check)
 	//поставить будильник
 	m_dwWakeUpTime = Level().GetGameTime() + sleep_time;
 
-	VERIFY(this == dynamic_cast<CActor*>(Level().CurrentEntity()));
+	VERIFY(this == smart_cast<CActor*>(Level().CurrentEntity()));
 
 	Level().Cameras.RemoveEffector(EEffectorPPType(SLEEP_EFFECTOR_TYPE_ID));
 	m_pSleepEffectorPP = xr_new<CSleepEffectorPP>(m_pSleepEffector->ppi,
@@ -116,7 +116,7 @@ void CActor::Awoke()
 	}
 
 
-	VERIFY(this == dynamic_cast<CActor*>(Level().CurrentEntity()));
+	VERIFY(this == smart_cast<CActor*>(Level().CurrentEntity()));
 	VERIFY(m_pSleepEffectorPP);
 
 	if(m_pSleepEffectorPP)
@@ -135,7 +135,7 @@ void CActor::UpdateSleep()
 	if(!IsSleeping()) return;
 
 
-	VERIFY(this == dynamic_cast<CActor*>(Level().CurrentEntity()));
+	VERIFY(this == smart_cast<CActor*>(Level().CurrentEntity()));
 	VERIFY(m_pSleepEffectorPP);
 
 //	u32 y,m,d,h,mi,s,ms;

@@ -73,7 +73,7 @@ void CUIWpnDragDropItem::SetData(void* pData)
 	inherited::SetData(pData);
 
 	CInventoryItem* pItem = (CInventoryItem*)pData;
-	m_pWeapon = dynamic_cast<CWeapon*>(pItem);
+	m_pWeapon = smart_cast<CWeapon*>(pItem);
 
 	if(m_pWeapon)
 	{

@@ -48,7 +48,7 @@ IC	void CPathManagerTemplate::reinit			(const _Graph *graph)
 	m_intermediate_index	= _index_type(-1);
 	m_dest_vertex_id		= _index_type(-1);
 	m_path.clear			();
-	m_restricted_object		= dynamic_cast<CRestrictedObject*>(this);
+	m_restricted_object		= smart_cast<CRestrictedObject*>(this);
 }
 
 TEMPLATE_SPECIALIZATION

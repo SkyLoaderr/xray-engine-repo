@@ -43,7 +43,7 @@ void CActor::g_fireParams	(const CHudItem* pHudItem, Fvector &fire_pos, Fvector 
 	fire_pos = EffectorManager().vPosition;
 	fire_dir = EffectorManager().vDirection;
 
-	const CMissile* pMissile = dynamic_cast <const CMissile*> (pHudItem);
+	const CMissile* pMissile = smart_cast <const CMissile*> (pHudItem);
 	if (pMissile)
 	{
 		Fvector offset;

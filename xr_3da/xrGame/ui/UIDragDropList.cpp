@@ -56,7 +56,7 @@ CUIDragDropList::~CUIDragDropList()
 
 void CUIDragDropList::AttachChild(CUIWindow* pChild)
 {
-	CUIDragDropItem* pDragDropItem = dynamic_cast<CUIDragDropItem*>(pChild);
+	CUIDragDropItem* pDragDropItem = smart_cast<CUIDragDropItem*>(pChild);
 	if(pDragDropItem) 
 	{
 		PlaceItemInGrid(pDragDropItem);
@@ -84,7 +84,7 @@ void CUIDragDropList::DetachChild(CUIWindow* pChild)
 	if( m_ChildWndList.end() != it)
 	{
 
-		CUIDragDropItem* pDragDropItem = dynamic_cast<CUIDragDropItem*>(pChild);
+		CUIDragDropItem* pDragDropItem = smart_cast<CUIDragDropItem*>(pChild);
 		if(pDragDropItem)
 		{
 			RemoveItemFromGrid(pDragDropItem);
@@ -152,7 +152,7 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			GetMessageTarget()->SendMessage(this, DRAG_DROP_REFRESH_ACTIVE_ITEM , NULL);
 		}
 	}
-	else if(dynamic_cast<CUIDragDropItem*>(pWnd) && msg == DRAG_DROP_ITEM_DRAG)
+	else if(smart_cast<CUIDragDropItem*>(pWnd) && msg == DRAG_DROP_ITEM_DRAG)
 	{
 		//принадлежит ли элемент отправивший сообщение ITEM_DRAG нашему списку
 		WINDOW_LIST_it it = std::find(m_ChildWndList.begin(),
@@ -171,11 +171,11 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 
 			//выбросить элемент из сетки
 			RemoveItemFromGrid((CUIDragDropItem*)pWnd);
-			dynamic_cast<CUIDragDropItem*>(pWnd)->Highlight(false);
+			smart_cast<CUIDragDropItem*>(pWnd)->Highlight(false);
 			
 		}
 	}
-	else if(dynamic_cast<CUIDragDropItem*>(pWnd) && msg == DRAG_DROP_ITEM_DROP)
+	else if(smart_cast<CUIDragDropItem*>(pWnd) && msg == DRAG_DROP_ITEM_DROP)
 	{	
 		//принадлежит ли элемент отправивший сообщение ITEM_DROP нашему списку
 		WINDOW_LIST_it it = std::find(m_ChildWndList.begin(), 
@@ -626,7 +626,7 @@ void CUIDragDropList::UpdateList()
 {
 	for(WINDOW_LIST_it it = m_ChildWndList.begin(); m_ChildWndList.end() != it; ++it)
 	{
-		CUIDragDropItem* pDragDropItem = dynamic_cast<CUIDragDropItem*>(*it);
+		CUIDragDropItem* pDragDropItem = smart_cast<CUIDragDropItem*>(*it);
 		if(pDragDropItem)
 		{
 			int y = (pDragDropItem->GetGridRow()-m_iCurrentFirstRow)*GetCellHeight();

@@ -19,7 +19,7 @@ void CUIDragDropItemMP::AttachDetachAddon(AddonIDs iAddonIndex, bool bAttach, bo
 	if (m_AddonInfo[iAddonIndex].iAttachStatus != -1)
 	{
 		// отнимаем от денег стоимость вещи.
-		CUIBuyWeaponWnd *this_inventory = dynamic_cast<CUIBuyWeaponWnd*>(GetOwner()->GetMessageTarget());
+		CUIBuyWeaponWnd *this_inventory = smart_cast<CUIBuyWeaponWnd*>(GetOwner()->GetMessageTarget());
 		R_ASSERT(this_inventory);
 
 		CUIDragDropItemMP *pPossibleAddon = this_inventory->GetAddonByID(this, iAddonIndex);
@@ -34,7 +34,7 @@ void CUIDragDropItemMP::AttachDetachAddon(CUIDragDropItemMP *pPossibleAddon, boo
 	AddonIDs ID = IsOurAddon(pPossibleAddon);
 	if (ID != ID_NONE)
 	{
-		CUIBuyWeaponWnd *this_inventory = dynamic_cast<CUIBuyWeaponWnd*>(GetOwner()->GetMessageTarget());
+		CUIBuyWeaponWnd *this_inventory = smart_cast<CUIBuyWeaponWnd*>(GetOwner()->GetMessageTarget());
 		R_ASSERT(this_inventory);
 
 		if (bAttach)
@@ -48,7 +48,7 @@ void CUIDragDropItemMP::AttachDetachAddon(CUIDragDropItemMP *pPossibleAddon, boo
 				m_pAddon[ID]->EnableDragDrop(false);
 				m_pAddon[ID]->Enable(false);
 				m_pAddon[ID]->m_bHasRealRepresentation = bRealRepresentationSet;
-				m_pAddon[ID]->Rescale(dynamic_cast<CUIDragDropList*>(m_pAddon[ID]->GetParent())->GetItemsScale());
+				m_pAddon[ID]->Rescale(smart_cast<CUIDragDropList*>(m_pAddon[ID]->GetParent())->GetItemsScale());
 
 				// Отнимаем денежку
 				this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - 
@@ -65,7 +65,7 @@ void CUIDragDropItemMP::AttachDetachAddon(CUIDragDropItemMP *pPossibleAddon, boo
 				m_pAddon[ID]->Show(true);
 				m_pAddon[ID]->EnableDragDrop(true);
 				m_pAddon[ID]->Enable(true);
-				m_pAddon[ID]->Rescale(dynamic_cast<CUIDragDropList*>(m_pAddon[ID]->GetParent())->GetItemsScale());
+				m_pAddon[ID]->Rescale(smart_cast<CUIDragDropList*>(m_pAddon[ID]->GetParent())->GetItemsScale());
 				// Прибавляем денежку
 				if (m_pAddon[ID]->GetColor() != cUnableToBuy)
 				{

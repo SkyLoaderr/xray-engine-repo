@@ -41,7 +41,7 @@ void CTargetCS::OnH_B_Independent() {
 void CTargetCS::UpdateCL		()
 {
 	inherited::UpdateCL();
-	if(dynamic_cast<CTargetCSCask*>(H_Parent())) {
+	if(smart_cast<CTargetCSCask*>(H_Parent())) {
 		//XFORM().set			();
 		XFORM().mul				(H_Parent()->XFORM(), m_pos);
 		Position().set			(XFORM().c);

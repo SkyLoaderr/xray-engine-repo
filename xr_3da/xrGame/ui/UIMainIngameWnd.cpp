@@ -314,7 +314,7 @@ void CUIMainIngameWnd::Update()
 
 	static string256 text_str;
 
-	m_pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+	m_pActor = smart_cast<CActor*>(Level().CurrentEntity());
 	if (!m_pActor) 
 	{
 		m_pWeapon = NULL;
@@ -350,10 +350,10 @@ void CUIMainIngameWnd::Update()
 
 	if(m_pActor->inventory().GetActiveSlot() < m_pActor->inventory().m_slots.size()) 
 	{
-		CWeapon* pWeapon = dynamic_cast<CWeapon*>(m_pActor->inventory().m_slots[
+		CWeapon* pWeapon = smart_cast<CWeapon*>(m_pActor->inventory().m_slots[
 										m_pActor->inventory().GetActiveSlot()].m_pIItem); 
 
-		CWeaponMagazined* pWeaponMagazined = dynamic_cast<CWeaponMagazined*>(pWeapon);
+		CWeaponMagazined* pWeaponMagazined = smart_cast<CWeaponMagazined*>(pWeapon);
 		
 		if(pWeapon)
 		{
@@ -679,7 +679,7 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 		}
 		else
 		{
-			CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+			CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 
 			R_ASSERT(pActor);
 
@@ -795,7 +795,7 @@ void CUIMainIngameWnd::ReceivePdaMessage(CInventoryOwner* pSender, EPdaMsg msg, 
 	UIPdaMsgListWnd.AddItem<CUIListItem>(pItem, 0); 
 	UIPdaMsgListWnd.ScrollToBegin();
 
-	pItem->InitCharacter(dynamic_cast<CInventoryOwner*>(pSender));
+	pItem->InitCharacter(smart_cast<CInventoryOwner*>(pSender));
 	pItem->SetValue(m_dwMaxShowTime);
 
 
@@ -953,16 +953,16 @@ void CUIMainIngameWnd::OnNewsReceived(const CALifeNews &newsItem)
 //		UIPdaMsgListWnd.AddItem<CUIListItem>(pItem); 
 //		UIPdaMsgListWnd.ScrollToBegin();
 //
-//		pItem->InitCharacter(dynamic_cast<CInventoryOwner*>(Level().CurrentEntity()));
+//		pItem->InitCharacter(smart_cast<CInventoryOwner*>(Level().CurrentEntity()));
 //		pItem->SetValue(m_dwMaxShowTime);
 //
 //		UIPdaMsgListWnd.Show(true);	
 //
 //		pItem->UIMsgText.SetText(result);
-		AddPersonalizedGameMessage(dynamic_cast<CInventoryOwner*>(Level().CurrentEntity()), result);
+		AddPersonalizedGameMessage(smart_cast<CInventoryOwner*>(Level().CurrentEntity()), result);
 	}
 
-	CUIGameSP* pGameSP		= dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+	CUIGameSP* pGameSP		= smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 	pGameSP->PdaMenu.AddNewsItem(result);
 }
 
@@ -1098,7 +1098,7 @@ void CUIMainIngameWnd::FadeUpdate(CUIListWnd *pWnd, int fadeDuration)
 {
 	for(int i=0; i<pWnd->GetSize(); i++)
 	{
-		CUIPdaMsgListItem* pItem = dynamic_cast<CUIPdaMsgListItem*>(pWnd->GetItem(i));
+		CUIPdaMsgListItem* pItem = smart_cast<CUIPdaMsgListItem*>(pWnd->GetItem(i));
 		R_ASSERT(pItem);
 		int show_time = pItem->GetValue();
 

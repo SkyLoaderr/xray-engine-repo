@@ -19,7 +19,7 @@
 #define DECLARE_FUNCTION13(A,D,F,G,H)	_DECLARE_FUNCTION13(A,D,F,G,H)	{
 
 #define CAST_OBJECT(Z,A,B)\
-		B				*l_tpEntity = dynamic_cast<B*>(Z);\
+		B				*l_tpEntity = smart_cast<B*>(Z);\
 		if (!l_tpEntity) {\
 			ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"%s : cannot access class member %s!",#B,#A);
 

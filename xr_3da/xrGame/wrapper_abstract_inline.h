@@ -60,7 +60,7 @@ void CWrapper::reinit				(CScriptGameObject *object)
 {
 	VERIFY					(object);
 	inherited::reinit		(object);
-	m_object				= dynamic_cast<_object_type*>(object->object());
+	m_object				= smart_cast<_object_type*>(object->object());
 	VERIFY					(m_object);
 }
 
@@ -116,7 +116,7 @@ void CWrapper2::reinit				(CScriptGameObject *object, CPropertyStorage *storage)
 {
 	VERIFY					(object);
 	inherited::reinit		(object,storage);
-	m_object				= dynamic_cast<_object_type*>(object->object());
+	m_object				= smart_cast<_object_type*>(object->object());
 	VERIFY					(m_object);
 }
 

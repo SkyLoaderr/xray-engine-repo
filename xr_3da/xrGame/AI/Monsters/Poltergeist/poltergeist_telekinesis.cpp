@@ -16,7 +16,7 @@ void CPoltergeist::ProcessTelekinesis(const CObject *target)
 
 	u32 index = Random.randI(tpObjects.size());
 
-	CPhysicsShellHolder  *obj = dynamic_cast<CPhysicsShellHolder *>(const_cast<CObject*>(tpObjects[index]));
+	CPhysicsShellHolder  *obj = smart_cast<CPhysicsShellHolder *>(const_cast<CObject*>(tpObjects[index]));
 	if (!obj || !obj->m_pPhysicsShell) return;
 
 	CTelekinesis::activate(obj,1.5f, 2.f, 5000);

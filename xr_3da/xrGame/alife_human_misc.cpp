@@ -31,7 +31,7 @@ bool CSE_ALifeHumanAbstract::bfCanTreat				()
 	xr_vector<u16>::iterator	I = children.begin();
 	xr_vector<u16>::iterator	E = children.end();
 	for ( ; I != E; ++I) {
-		CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(ai().alife().objects().object(*I));
+		CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = smart_cast<CSE_ALifeInventoryItem*>(ai().alife().objects().object(*I));
 		R_ASSERT2				(l_tpALifeInventoryItem,"Non inventory item ihas a parent?!");
 		if (bfItemCanTreat(l_tpALifeInventoryItem))
 			vfUseItem			(l_tpALifeInventoryItem);

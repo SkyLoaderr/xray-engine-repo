@@ -46,8 +46,8 @@ void CVisualMemoryManager::Load					(LPCSTR section)
 	
 	m_max_object_count			= pSettings->r_s32(section,"DynamicObjectsCount");
 	m_transparency_threshold	= pSettings->r_float(section,"transparency_threshold");
-	m_monster					= dynamic_cast<CCustomMonster*>(this);
-	m_stalker					= dynamic_cast<CAI_Stalker*>(this);
+	m_monster					= smart_cast<CCustomMonster*>(this);
+	m_stalker					= smart_cast<CAI_Stalker*>(this);
 
 	if (!m_stalker)
 		return;
@@ -227,7 +227,7 @@ bool CVisualMemoryManager::visible				(const CGameObject *game_object, float tim
 
 void CVisualMemoryManager::add_visible_object	(const CObject *object, float time_delta)
 {
-	const CGameObject *game_object	= dynamic_cast<const CGameObject*>(object);
+	const CGameObject *game_object	= smart_cast<const CGameObject*>(object);
 	const CGameObject *self			= this;
 	if (!game_object || !visible(game_object,time_delta))
 		return;

@@ -35,7 +35,7 @@ CScriptTaskList::CScriptTaskList	(u16 trader_id)
 
 	CSE_Abstract* E = Level().Server->game->get_entity_from_eid(trader_id);
 	CSE_ALifeTrader* pTrader = NULL;
-	if(E) pTrader = dynamic_cast<CSE_ALifeTrader*>(E);
+	if(E) pTrader = smart_cast<CSE_ALifeTrader*>(E);
 
 	ALife::ARTEFACT_TRADER_ORDER_MAP::const_iterator i = pTrader->m_tpOrderedArtefacts.begin();
 	ALife::ARTEFACT_TRADER_ORDER_MAP::const_iterator e = pTrader->m_tpOrderedArtefacts.end();

@@ -26,7 +26,7 @@ bool CItemManager::useful			(const CGameObject  *object) const
 	if (m_restricted_object && !m_restricted_object->accessible(object->Position()))
 		return				(false);
 
-	const CInventoryItem	*inventory_item = dynamic_cast<const CInventoryItem*>(object);
+	const CInventoryItem	*inventory_item = smart_cast<const CInventoryItem*>(object);
 	if (inventory_item && !inventory_item->useful_for_NPC())
 		return				(false);
 
@@ -38,7 +38,7 @@ bool CItemManager::useful			(const CGameObject  *object) const
 
 float CItemManager::evaluate		(const CGameObject *object) const
 {
-	const CInventoryItem	*inventory_item = dynamic_cast<const CInventoryItem*>(object);
+	const CInventoryItem	*inventory_item = smart_cast<const CInventoryItem*>(object);
 	VERIFY					(inventory_item);
 	VERIFY					(inventory_item->useful_for_NPC());
 	return					(1000000.f - (float)inventory_item->Cost());
@@ -47,5 +47,5 @@ float CItemManager::evaluate		(const CGameObject *object) const
 void CItemManager::reinit			()
 {
 	inherited::reinit		();
-	m_restricted_object		= dynamic_cast<CRestrictedObject*>(this);
+	m_restricted_object		= smart_cast<CRestrictedObject*>(this);
 }

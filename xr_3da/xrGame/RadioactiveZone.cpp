@@ -27,7 +27,7 @@ bool  CRadioactiveZone::BlowoutState	()
 
 void CRadioactiveZone::Affect(CObject* O) 
 {
-	CGameObject *GO = dynamic_cast<CGameObject*>(O);
+	CGameObject *GO = smart_cast<CGameObject*>(O);
 	
 	if(GO) 
 	{

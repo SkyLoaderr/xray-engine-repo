@@ -65,7 +65,7 @@ bool CAI_Rat::useful		(const CGameObject *object) const
 	if (!CItemManager::useful(object))
 		return			(false);
 
-	const CEntityAlive	*entity_alive = dynamic_cast<const CEntityAlive*>(object);
+	const CEntityAlive	*entity_alive = smart_cast<const CEntityAlive*>(object);
 	if (!entity_alive)
 		return			(false);
 
@@ -74,7 +74,7 @@ bool CAI_Rat::useful		(const CGameObject *object) const
 
 float CAI_Rat::evaluate		(const CGameObject *object) const
 {
-	const CEntityAlive	*entity_alive = dynamic_cast<const CEntityAlive*>(object);
+	const CEntityAlive	*entity_alive = smart_cast<const CEntityAlive*>(object);
 	VERIFY				(entity_alive);
 	if (!entity_alive->g_Alive()) {
 		if ((Level().timeServer() - entity_alive->GetLevelDeathTime() < m_dwEatCorpseInterval) && (entity_alive->m_fFood > 0) && (m_bEatMemberCorpses || (entity_alive->g_Team() != g_Team())) && (m_bCannibalism || (entity_alive->SUB_CLS_ID != SUB_CLS_ID)))

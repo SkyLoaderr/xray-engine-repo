@@ -443,7 +443,7 @@ CSE_PHSkeleton::~CSE_PHSkeleton()
 
 void CSE_PHSkeleton::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
-	CSE_Visual				*visual = dynamic_cast<CSE_Visual*>(this);
+	CSE_Visual				*visual = smart_cast<CSE_Visual*>(this);
 	R_ASSERT				(visual);
 	tNetPacket.r_stringZ	(visual->startup_animation);
 	tNetPacket.r_u8			(_flags.flags);
@@ -455,7 +455,7 @@ void CSE_PHSkeleton::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 
 void CSE_PHSkeleton::STATE_Write		(NET_Packet	&tNetPacket)
 {
-	CSE_Visual				*visual = dynamic_cast<CSE_Visual*>(this);
+	CSE_Visual				*visual = smart_cast<CSE_Visual*>(this);
 	R_ASSERT				(visual);
 	tNetPacket.w_stringZ	(visual->startup_animation);
 	tNetPacket.w_u8			(_flags.flags);

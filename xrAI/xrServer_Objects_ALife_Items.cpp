@@ -54,7 +54,7 @@ CSE_ALifeInventoryItem::CSE_ALifeInventoryItem(LPCSTR caSection)
 
 CSE_Abstract *CSE_ALifeInventoryItem::init	()
 {
-	m_self						= dynamic_cast<CSE_ALifeObject*>(this);
+	m_self						= smart_cast<CSE_ALifeObject*>(this);
 	R_ASSERT					(m_self);
 	m_self->m_flags.set			(CSE_ALifeObject::flSwitchOffline,TRUE);
 	return						(base());
@@ -141,7 +141,7 @@ void CSE_ALifeInventoryItem::UPDATE_Read	(NET_Packet &tNetPacket)
 void CSE_ALifeInventoryItem::FillProps		(LPCSTR pref, PropItemVec& values)
 {
 	PHelper().CreateFloat			(values, PrepareKey(pref, base()->s_name, "Item condition"), 		&m_fCondition, 			0.f, 1.f);
-	CSE_ALifeObject					*alife_object = dynamic_cast<CSE_ALifeObject*>(base());
+	CSE_ALifeObject					*alife_object = smart_cast<CSE_ALifeObject*>(base());
 	R_ASSERT						(alife_object);
 	PHelper().CreateFlag32			(values, PrepareKey(pref, base()->s_name,"ALife\\Useful for AI"),	&alife_object->m_flags,	CSE_ALifeObject::flUsefulForAI);
 }

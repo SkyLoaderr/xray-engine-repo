@@ -37,7 +37,7 @@ void	CPhysicsShellHolder::Hit(float P, Fvector &dir, CObject* /**who/**/, s16 el
 
 void CPhysicsShellHolder::create_physic_shell	()
 {
-	IPhysicShellCreator *shell_creator = dynamic_cast<IPhysicShellCreator*>(this);
+	IPhysicShellCreator *shell_creator = smart_cast<IPhysicShellCreator*>(this);
 	if (shell_creator)
 		shell_creator->CreatePhysicsShell();
 }

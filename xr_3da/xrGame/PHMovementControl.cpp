@@ -787,7 +787,7 @@ void CPHMovementControl::JumpV(const Fvector &jump_velocity)
 void CPHMovementControl::Jump(const Fvector &end_point, float time)
 {
 //vPosition
-Jump(dynamic_cast<CGameObject*>(m_character->PhysicsRefObject())->Position(),end_point,time);
+Jump(smart_cast<CGameObject*>(m_character->PhysicsRefObject())->Position(),end_point,time);
 }
 void CPHMovementControl::Jump(const Fvector &start_point,const Fvector &end_point, float time)
 {
@@ -804,7 +804,7 @@ JumpV(velosity);
 float CPHMovementControl::Jump(const Fvector &end_point)
 {
 Fvector start_point;
-start_point.set(dynamic_cast<CGameObject*>(m_character->PhysicsRefObject())->Position());
+start_point.set(smart_cast<CGameObject*>(m_character->PhysicsRefObject())->Position());
 Fvector velosity;
 velosity.x=end_point.x-start_point.x;
 velosity.y=end_point.y-start_point.y;
@@ -819,7 +819,7 @@ return time;
 void CPHMovementControl::GetJumpMinVelParam(Fvector &min_vel,float &time,JumpType &type,const Fvector &end_point)
 {
 	Fvector start_point;
-	start_point.set(dynamic_cast<CGameObject*>(m_character->PhysicsRefObject())->Position());
+	start_point.set(smart_cast<CGameObject*>(m_character->PhysicsRefObject())->Position());
 	min_vel.x=end_point.x-start_point.x;
 	min_vel.y=end_point.y-start_point.y;
 	min_vel.z=end_point.z-start_point.z;
@@ -850,7 +850,7 @@ void CPHMovementControl::GetJumpMinVelParam(Fvector &min_vel,float &time,JumpTyp
 float CPHMovementControl::JumpMinVelTime(const Fvector &end_point)
 {
 	Fvector start_point,transference;
-	start_point.set(dynamic_cast<CGameObject*>(m_character->PhysicsRefObject())->Position());
+	start_point.set(smart_cast<CGameObject*>(m_character->PhysicsRefObject())->Position());
 	transference.x=end_point.x-start_point.x;
 	transference.y=end_point.y-start_point.y;
 	transference.z=end_point.z-start_point.z;
@@ -860,7 +860,7 @@ float CPHMovementControl::JumpMinVelTime(const Fvector &end_point)
 void CPHMovementControl::GetJumpParam(Fvector &velocity, JumpType &type,const Fvector &end_point, float time)
 {
 	Fvector start_point;
-	start_point.set(dynamic_cast<CGameObject*>(m_character->PhysicsRefObject())->Position());
+	start_point.set(smart_cast<CGameObject*>(m_character->PhysicsRefObject())->Position());
 	Fvector velosity;
 	velosity.x=end_point.x-start_point.x;
 	velosity.z=end_point.z-start_point.z;
@@ -907,7 +907,7 @@ void CPHMovementControl::CreateCharacter()
 }
 CPHSynchronize*	CPHMovementControl::GetSyncItem()
 {
-	if(m_character)	return dynamic_cast<CPHSynchronize*>(m_character);
+	if(m_character)	return smart_cast<CPHSynchronize*>(m_character);
 	else			return 0;
 }
 void CPHMovementControl::Freeze()

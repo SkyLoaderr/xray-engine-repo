@@ -115,16 +115,16 @@ void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 			switch (UITabControl.GetActiveIndex()) 
 			{
 			case 0:
-				m_pActiveDialog = dynamic_cast<CUIWindow*>(&UIDiaryWnd);
+				m_pActiveDialog = smart_cast<CUIWindow*>(&UIDiaryWnd);
 				break;
 			case 1:
-				m_pActiveDialog = dynamic_cast<CUIWindow*>(&UIPdaCommunication);
+				m_pActiveDialog = smart_cast<CUIWindow*>(&UIPdaCommunication);
 				break;
 			case 2:
-				m_pActiveDialog = dynamic_cast<CUIWindow*>(&UIMapWnd);
+				m_pActiveDialog = smart_cast<CUIWindow*>(&UIMapWnd);
 				break;
 			case 3:
-				m_pActiveDialog = dynamic_cast<CUIWindow*>(&UIEncyclopediaWnd);
+				m_pActiveDialog = smart_cast<CUIWindow*>(&UIEncyclopediaWnd);
 				break;
 			}
 			m_pActiveDialog->Reset();

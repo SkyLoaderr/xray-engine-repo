@@ -7029,6 +7029,16 @@
 						RelativePath=".\intrusive_ptr_inline.h">
 					</File>
 				</Filter>
+				<Filter
+					Name="SmartCast"
+					Filter="">
+					<File
+						RelativePath=".\smart_cast.cpp">
+					</File>
+					<File
+						RelativePath=".\smart_cast.h">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Server"

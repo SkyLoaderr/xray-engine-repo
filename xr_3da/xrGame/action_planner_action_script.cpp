@@ -17,7 +17,7 @@ using namespace luabind;
 template <typename T1, typename T2>
 T1 *_dynamic_cast(T2 *p2)
 {
-	return			(dynamic_cast<T1*>(p2));
+	return			(smart_cast<T1*>(p2));
 }
 
 void CActionPlannerAction<CScriptGameObject>::script_register(lua_State *L)

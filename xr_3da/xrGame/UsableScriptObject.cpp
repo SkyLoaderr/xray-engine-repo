@@ -43,7 +43,7 @@ void CUsableScriptObject::clear_callback()
 bool CUsableScriptObject::use(CGameObject* who_use)
 {
 	VERIFY(who_use);
-	CGameObject* pThis = dynamic_cast<CGameObject*>(this); VERIFY(pThis);
+	CGameObject* pThis = smart_cast<CGameObject*>(this); VERIFY(pThis);
 
 	if(!callback)	return false;
 	SCRIPT_CALLBACK_EXECUTE_2(*callback, pThis->lua_game_object(),who_use->lua_game_object());

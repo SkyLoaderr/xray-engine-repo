@@ -62,7 +62,7 @@ void CTorch::Switch	(bool light_on)
 BOOL CTorch::net_Spawn(LPVOID DC) 
 {
 	CSE_Abstract			*e	= (CSE_Abstract*)(DC);
-	CSE_ALifeItemTorch		*torch	= dynamic_cast<CSE_ALifeItemTorch*>(e);
+	CSE_ALifeItemTorch		*torch	= smart_cast<CSE_ALifeItemTorch*>(e);
 	R_ASSERT				(torch);
 	cNameVisual_set			(torch->get_visual());
 

@@ -109,7 +109,7 @@
 //	//	// Get cur dist
 //	//	if (task.target.entity) {
 //
-//	//		CPhysicsShellHolder *pO = dynamic_cast<CPhysicsShellHolder *>(task.target.entity);
+//	//		CPhysicsShellHolder *pO = smart_cast<CPhysicsShellHolder *>(task.target.entity);
 //	//		R_ASSERT(pO);
 //	//		Fvector nearest_bone_pos = pMonster->m_PhysicMovementControl->PHCaptureGetNearestElemPos(pO);
 //	//		cur_dist = nearest_bone_pos.distance_to(pMonster->Position());
@@ -122,7 +122,7 @@
 //
 //	//		// Set movement 
 //	//		if (task.target.entity) {
-//	//			CEntity *pE = dynamic_cast<CEntity *>(task.target.entity);
+//	//			CEntity *pE = smart_cast<CEntity *>(task.target.entity);
 //	//			R_ASSERT(pE);
 //	//			//pMonster->MoveToTarget(pE);
 //	//		} else { 

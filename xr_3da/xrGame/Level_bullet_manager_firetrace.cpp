@@ -97,7 +97,7 @@ void CBulletManager::FireShotmark (const SBullet* bullet, const Fvector& vDir, c
 
 		//вернуть нормаль по которой играли партиклы и ставили валмарки
 
-		CCF_Skeleton* skeletion = dynamic_cast<CCF_Skeleton*>(R.O->CFORM());
+		CCF_Skeleton* skeletion = smart_cast<CCF_Skeleton*>(R.O->CFORM());
 		if(skeletion)
 		{
 			xr_vector<CCF_OBB>::iterator it = std::find_if(skeletion->_GetElements().begin(),
@@ -194,7 +194,7 @@ void CBulletManager::DynamicObjectHit (SBullet* bullet, const Fvector& end_point
 	impulse = hit_result.second;
 
 
-	CEntity* E = dynamic_cast<CEntity*>(R.O);
+	CEntity* E = smart_cast<CEntity*>(R.O);
 	//учитываем попадание в разные части 
 	if(E) power *= E->HitScale(R.element);
 

@@ -45,8 +45,8 @@ IC	void CSelectorTemplate::reinit					(const _Graph *graph)
 	m_graph					= graph;
 	m_path					= 0;
 	dest_vertex_id			= 0;
-	m_restricted_object		= dynamic_cast<CRestrictedObject*>(this);
-	m_selector_manager		= dynamic_cast<CSelectorManager*>(this);
+	m_restricted_object		= smart_cast<CRestrictedObject*>(this);
+	m_selector_manager		= smart_cast<CSelectorManager*>(this);
 	VERIFY					(m_selector_manager);
 }	
 

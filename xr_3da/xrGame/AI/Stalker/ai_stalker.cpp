@@ -168,7 +168,7 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
 	m_pPhysics_support->in_NetSpawn	(e);
 	
-	CSE_ALifeHumanAbstract			*tpHuman = dynamic_cast<CSE_ALifeHumanAbstract*>(e);
+	CSE_ALifeHumanAbstract			*tpHuman = smart_cast<CSE_ALifeHumanAbstract*>(e);
 	R_ASSERT						(tpHuman);
 	m_dwMoney						= tpHuman->m_dwMoney;
 
@@ -357,7 +357,7 @@ void CAI_Stalker::UpdateCL()
 
 void CAI_Stalker::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
 {
-	if(dynamic_cast<CActor*>(who))
+	if(smart_cast<CActor*>(who))
 		CInventoryOwner::CharacterInfo().SetRelationType(who->ID(), ALife::eRelationTypeEnemy);
 
 	inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
@@ -442,7 +442,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 
 	// inventory update
 	if (GetLevelDeathTime() && (inventory().TotalWeight() > 0)) {
-		CWeapon *tpWeapon = dynamic_cast<CWeapon*>(inventory().ActiveItem());
+		CWeapon *tpWeapon = smart_cast<CWeapon*>(inventory().ActiveItem());
 		if (!tpWeapon || !tpWeapon->GetAmmoElapsed() || !m_bHammerIsClutched || (Level().timeServer() - GetLevelDeathTime() > 500)) {
 			xr_vector<CInventorySlot>::iterator I = inventory().m_slots.begin(), B = I;
 			xr_vector<CInventorySlot>::iterator E = inventory().m_slots.end();
@@ -460,7 +460,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 //			TIItemList &l_list = inventory().m_ruck;
 //			for(PPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it)
 //			{
-//				CArtefact* pArtefact = dynamic_cast<CArtefact*>(*l_it);
+//				CArtefact* pArtefact = smart_cast<CArtefact*>(*l_it);
 //				if(pArtefact)
 //					pArtefact->Drop();
 //
@@ -494,7 +494,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 float CAI_Stalker::Radius() const
 { 
 	float R		= inherited::Radius();
-	CWeapon* W	= dynamic_cast<CWeapon*>(inventory().ActiveItem());
+	CWeapon* W	= smart_cast<CWeapon*>(inventory().ActiveItem());
 	if (W) R	+= W->Radius();
 	return R;
 }
@@ -531,7 +531,7 @@ void CAI_Stalker::OnRender			()
 	if (!psAI_Flags.is(aiVision))
 		return;
 
-	if (!dynamic_cast<CGameObject*>(Level().CurrentEntity()))
+	if (!smart_cast<CGameObject*>(Level().CurrentEntity()))
 		return;
 
 	Fvector						shift;
@@ -553,7 +553,7 @@ void CAI_Stalker::OnRender			()
 	float						x = (1.f + v_res.x)/2.f * (Device.dwWidth);
 	float						y = (1.f - v_res.y)/2.f * (Device.dwHeight);
 
-	CNotYetVisibleObject		*object = not_yet_visible_object(dynamic_cast<CGameObject*>(Level().CurrentEntity()));
+	CNotYetVisibleObject		*object = not_yet_visible_object(smart_cast<CGameObject*>(Level().CurrentEntity()));
 	string64					out_text;
 	sprintf						(out_text,"%.2f",object ? object->m_value : 0.f);
 

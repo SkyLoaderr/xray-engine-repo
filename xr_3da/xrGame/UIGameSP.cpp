@@ -22,7 +22,7 @@ CUIGameSP::~CUIGameSP()
 void CUIGameSP::SetClGame (game_cl_GameState* g)
 {
 	inherited::SetClGame(g);
-	m_game = dynamic_cast<game_cl_Single*>(g);
+	m_game = smart_cast<game_cl_Single*>(g);
 	R_ASSERT(m_game);
 }
 
@@ -72,7 +72,7 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 	//временно! пока, по убыванию сил до критического
 	//уровня персонаж не засыпает, а просто переходит
 	//в меню инвенторя
-	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 	if(pActor && pActor->g_Alive() && !pActor->GetPower())
 	{
 			if(m_pMainInputReceiver/*m_pUserMenu*/ == NULL)

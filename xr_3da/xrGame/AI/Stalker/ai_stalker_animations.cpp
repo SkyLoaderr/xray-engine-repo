@@ -190,7 +190,7 @@ void CStalkerAnimations::vfAssignGlobalAnimation(CMotionDef *&tpGlobalAnimation)
 		return;
 	}
 
-	CFoodItem				*food_item = dynamic_cast<CFoodItem*>(m_object->inventory().ActiveItem());
+	CFoodItem				*food_item = smart_cast<CFoodItem*>(m_object->inventory().ActiveItem());
 	if (food_item) {
 		u32					dwCurrentAniSlot = food_item->animation_slot();
 		switch (food_item->STATE) {
@@ -236,8 +236,8 @@ void CStalkerAnimations::vfAssignHeadAnimation(CMotionDef *&tpHeadAnimation)
 
 void CStalkerAnimations::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 {
-	CWeapon					*tpWeapon	= dynamic_cast<CWeapon*>(m_object->inventory().ActiveItem());
-	CMissile				*missile	= dynamic_cast<CMissile*>(m_object->inventory().ActiveItem());
+	CWeapon					*tpWeapon	= smart_cast<CWeapon*>(m_object->inventory().ActiveItem());
+	CMissile				*missile	= smart_cast<CMissile*>(m_object->inventory().ActiveItem());
 	CLASS_ID				clsid = tpWeapon ? tpWeapon->SUB_CLS_ID : missile ? missile->SUB_CLS_ID : 0;
 	u32						dwCurrentAniSlot = 0;
 	if (tpWeapon || missile)
@@ -694,7 +694,7 @@ static void	ScriptPlayCallback(CBlend *B)
 
 void CAI_Stalker::SelectAnimation(const Fvector& /**_view/**/, const Fvector& /**_move/**/, float /**speed/**/)
 {
-	CAI_Stalker				*m_object = /**dynamic_cast<CAI_Stalker*>(/**/this;//);
+	CAI_Stalker				*m_object = /**smart_cast<CAI_Stalker*>(/**/this;//);
 //	VERIFY					(m_object);
 	if (!m_object->g_Alive())
 		return;
@@ -770,7 +770,7 @@ void CStalkerAnimations::add_animation		(LPCSTR animation, bool hand_usage)
 {
 	CMotionDef						*motion = PSkeletonAnimated(m_visual)->ID_Cycle_Safe(animation);
 	if (!motion) {
-		CObject						*object = dynamic_cast<CObject*>(this);
+		CObject						*object = smart_cast<CObject*>(this);
 		VERIFY						(object);
 		ai().script_engine().script_log(eLuaMessageTypeError,"There is no animation %s (object %s)!",animation,*object->cName());
 		return;
@@ -797,7 +797,7 @@ void CStalkerAnimations::reinit				()
 
 void CStalkerAnimations::reload				(IRender_Visual *Visual, CInifile *ini, LPCSTR section)
 {
-	m_object								= dynamic_cast<CAI_Stalker*>(this);
+	m_object								= smart_cast<CAI_Stalker*>(this);
 	VERIFY									(m_object);
 	m_visual								= Visual;
 	m_tAnims.Load							(PSkeletonAnimated(Visual),"");

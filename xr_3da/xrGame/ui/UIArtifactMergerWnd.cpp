@@ -87,7 +87,7 @@ bool CUIArtefactMerger::ArtefactProc(CUIDragDropItem* pItem, CUIDragDropList*)
 {
 	PIItem pInvItem = (PIItem)pItem->GetData();
 
-	if(dynamic_cast<CArtefact*>(pInvItem))
+	if(smart_cast<CArtefact*>(pInvItem))
 		return true;
 	else
 		return false;
@@ -102,7 +102,7 @@ void CUIArtefactMerger::PerformArtefactMerger()
 		CUIDragDropItem* pDragDropItem = *it;
 		PIItem pItem = (PIItem)pDragDropItem->GetData();
 
-		m_pArtefactMerger->AddArtefact(dynamic_cast<CArtefact*>(pItem));
+		m_pArtefactMerger->AddArtefact(smart_cast<CArtefact*>(pItem));
 	}
 
 	m_pArtefactMerger->PerformMerge();

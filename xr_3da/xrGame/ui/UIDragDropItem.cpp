@@ -267,7 +267,7 @@ void CUIDragDropItem::Rescale(float scale)
 
 void CUIDragDropItem::Highlight(bool on)
 {
-	CUIDragDropList *pDDList = dynamic_cast<CUIDragDropList*>(GetParent());
+	CUIDragDropList *pDDList = smart_cast<CUIDragDropList*>(GetParent());
 	if (!pDDList || !IsShown()) return;
 
 	int place_row = GetGridRow();

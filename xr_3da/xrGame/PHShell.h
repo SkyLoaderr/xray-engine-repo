@@ -32,7 +32,7 @@ public:
 	virtual	BoneCallbackFun* GetBonesCallback		()	{return BonesCallback ;}
 	virtual BoneCallbackFun* GetStaticObjectBonesCallback()	{return StataticRootBonesCallBack;}
 	virtual	void			add_Element				(CPhysicsElement* E)		  {
-		CPHElement* ph_element=dynamic_cast<CPHElement*>(E);
+		CPHElement* ph_element=smart_cast<CPHElement*>(E);
 		ph_element->SetShell(this);
 		elements.push_back(ph_element);
 
@@ -53,7 +53,7 @@ public:
 	virtual	void			add_Joint				(CPhysicsJoint* J)					{
 		if(!J)return;
 		joints.push_back((CPHJoint*)J);
-		dynamic_cast<CPHJoint*>(J)->SetShell(this);
+		smart_cast<CPHJoint*>(J)->SetShell(this);
 	};
 
 	virtual CPHIsland*		PIsland					(){return &Island();};

@@ -16,7 +16,7 @@ CHelicopter::CHelicopter()
 	m_light_render	= NULL;
 	m_lanim			= NULL;
 
-	ISpatial*		self				=	dynamic_cast<ISpatial*> (this);
+	ISpatial*		self				=	smart_cast<ISpatial*> (this);
 	if (self)		self->spatial.type &=~STYPE_VISIBLEFORAI;;	
 
 }
@@ -234,11 +234,11 @@ BOOL CHelicopter::net_Spawn(LPVOID	DC)
 
 
 	for(u32 i=0; i<4; ++i)
-		CRocketLauncher::SpawnRocket(*m_sRocketSection, dynamic_cast<CGameObject*>(this/*H_Parent()*/));
+		CRocketLauncher::SpawnRocket(*m_sRocketSection, smart_cast<CGameObject*>(this/*H_Parent()*/));
 
 	// assigning m_animator here
 	CSE_Abstract		*abstract	=(CSE_Abstract*)(DC);
-	CSE_ALifeHelicopter	*heli		= dynamic_cast<CSE_ALifeHelicopter*>(abstract);
+	CSE_ALifeHelicopter	*heli		= smart_cast<CSE_ALifeHelicopter*>(abstract);
 	VERIFY				(heli);
 
 	R_ASSERT						(Visual()&&PKinematics(Visual()));

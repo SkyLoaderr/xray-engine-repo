@@ -86,7 +86,7 @@ void CUITabControl::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	if (BUTTON_CLICKED == msg)
 	{
 		// если нажали на активную кнопку, то ничего не делать.
-		TABS_VECTOR::value_type pushedItem = dynamic_cast<TABS_VECTOR::value_type>(pWnd);
+		TABS_VECTOR::value_type pushedItem = smart_cast<TABS_VECTOR::value_type>(pWnd);
 		if (!pushedItem) return;
 
 		if (msg != BUTTON_CLICKED		||

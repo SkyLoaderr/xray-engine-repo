@@ -47,10 +47,10 @@ void CSE_ALifeObject::spawn_supplies		()
 
 void CSE_ALifeTraderAbstract::spawn_supplies	()
 {
-	CSE_ALifeDynamicObject		*dynamic_object = dynamic_cast<CSE_ALifeDynamicObject*>(this);
+	CSE_ALifeDynamicObject		*dynamic_object = smart_cast<CSE_ALifeDynamicObject*>(this);
 	VERIFY						(dynamic_object);
 	CSE_Abstract				*abstract = dynamic_object->alife().spawn_item("device_pda",base()->o_Position,dynamic_object->m_tNodeID,dynamic_object->m_tGraphID,base()->ID);
-	CSE_ALifeItemPDA			*pda = dynamic_cast<CSE_ALifeItemPDA*>(abstract);
+	CSE_ALifeItemPDA			*pda = smart_cast<CSE_ALifeItemPDA*>(abstract);
 	pda->m_original_owner		= base()->ID;
 }
 
@@ -115,8 +115,8 @@ void CSE_ALifeTraderAbstract::detach(CSE_ALifeInventoryItem *tpALifeInventoryIte
 		tpALifeInventoryItem->base()->ID_Parent	= 0xffff;
 	}
 	
-	CSE_ALifeDynamicObject					*l_tpALifeDynamicObject1 = dynamic_cast<CSE_ALifeDynamicObject*>(tpALifeInventoryItem);
-	CSE_ALifeDynamicObject					*l_tpALifeDynamicObject2 = dynamic_cast<CSE_ALifeDynamicObject*>(this);
+	CSE_ALifeDynamicObject					*l_tpALifeDynamicObject1 = smart_cast<CSE_ALifeDynamicObject*>(tpALifeInventoryItem);
+	CSE_ALifeDynamicObject					*l_tpALifeDynamicObject2 = smart_cast<CSE_ALifeDynamicObject*>(this);
 	R_ASSERT2								(l_tpALifeDynamicObject1 && l_tpALifeDynamicObject2,"Invalid parent or children objects");
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
@@ -141,7 +141,7 @@ void CSE_ALifeTraderAbstract::detach(CSE_ALifeInventoryItem *tpALifeInventoryIte
 u32	CSE_ALifeTrader::dwfGetItemCost(CSE_ALifeInventoryItem *tpALifeInventoryItem)
 {
 #pragma todo("Dima to Dima : correct price for non-artefact objects")
-	CSE_ALifeItemArtefact		*l_tpALifeItemArtefact = dynamic_cast<CSE_ALifeItemArtefact*>(tpALifeInventoryItem);
+	CSE_ALifeItemArtefact		*l_tpALifeItemArtefact = smart_cast<CSE_ALifeItemArtefact*>(tpALifeInventoryItem);
 	if (!l_tpALifeItemArtefact)
 		return					(tpALifeInventoryItem->m_dwCost);
 

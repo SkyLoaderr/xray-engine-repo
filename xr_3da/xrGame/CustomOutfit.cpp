@@ -117,7 +117,7 @@ void	CCustomOutfit::OnMoveToSlot		()
 {
 	if (m_pInventory)
 	{
-		CActor* pActor = dynamic_cast<CActor*> (m_pInventory->GetOwner());
+		CActor* pActor = smart_cast<CActor*> (m_pInventory->GetOwner());
 		if (pActor)
 		{
 			if (m_ActorVisual != NULL)
@@ -158,7 +158,7 @@ void	CCustomOutfit::OnMoveToRuck		()
 {
 	if (m_pInventory)
 	{
-		CActor* pActor = dynamic_cast<CActor*> (m_pInventory->GetOwner());
+		CActor* pActor = smart_cast<CActor*> (m_pInventory->GetOwner());
 		if (pActor)
 		{
 			if (m_ActorVisual != NULL)

@@ -86,10 +86,10 @@ public:
 	virtual					~CAI_Biting						();
 
 public:
-	virtual CEntityAlive*				cast_entity_alive		()						{return CEntityAlive::cast_entity_alive();}
-	virtual const CEntityAlive*			cast_entity_alive		() const				{return CEntityAlive::cast_entity_alive();}
-	virtual CEntity*					cast_entity				()						{return CEntity::cast_entity();}
-	virtual const CEntity*				cast_entity				() const				{return CEntity::cast_entity();}
+	virtual CEntityAlive*				cast_entity_alive		()						{return this;}
+	virtual const CEntityAlive*			cast_entity_alive		() const				{return this;}
+	virtual CEntity*					cast_entity				()						{return this;}
+	virtual const CEntity*				cast_entity				() const				{return this;}
 
 public:
 	

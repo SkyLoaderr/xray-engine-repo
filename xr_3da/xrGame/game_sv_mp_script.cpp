@@ -82,8 +82,8 @@ void	game_sv_mp_script::SpawnPlayer				(ClientID id, LPCSTR N, LPCSTR SkinName, 
 	CSE_Abstract* pOldOwner = CL->owner;
 	if (pOldOwner && pOldOwner->owner == CL ){
 	
-		CSE_ALifeCreatureActor	*pOldActor			=	dynamic_cast<CSE_ALifeCreatureActor*>(pOldOwner);
-		CSE_Spectator			*pOldSpectator		=	dynamic_cast<CSE_Spectator*>(pOldOwner);
+		CSE_ALifeCreatureActor	*pOldActor			=	smart_cast<CSE_ALifeCreatureActor*>(pOldOwner);
+		CSE_Spectator			*pOldSpectator		=	smart_cast<CSE_Spectator*>(pOldOwner);
 
 		if (pOldActor)
 		{
@@ -107,8 +107,8 @@ void	game_sv_mp_script::SpawnPlayer				(ClientID id, LPCSTR N, LPCSTR SkinName, 
 
 	E->s_flags.assign		(M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);			// flags
 
-	CSE_ALifeCreatureActor	*pA	=	dynamic_cast<CSE_ALifeCreatureActor*>(E);
-	CSE_Spectator			*pS	=	dynamic_cast<CSE_Spectator*>(E);
+	CSE_ALifeCreatureActor	*pA	=	smart_cast<CSE_ALifeCreatureActor*>(E);
+	CSE_Spectator			*pS	=	smart_cast<CSE_Spectator*>(E);
 
 	R_ASSERT2	(pA || pS,"Respawned Client is not Actor nor Spectator");
 	

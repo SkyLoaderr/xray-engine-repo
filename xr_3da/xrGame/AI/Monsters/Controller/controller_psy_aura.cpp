@@ -106,18 +106,18 @@ void CPsyAuraController::frame_update()
 BOOL CPsyAuraController::feel_touch_contact(CObject* O)
 {
 	// реагировать только на актера
-	if (dynamic_cast<CActor*>(O)) return TRUE;
+	if (smart_cast<CActor*>(O)) return TRUE;
 	else return FALSE;
 }
 
 void CPsyAuraController::feel_touch_new(CObject* O)
 {
-	m_actor = dynamic_cast<CActor*>(O);
+	m_actor = smart_cast<CActor*>(O);
 }
 
 void CPsyAuraController::feel_touch_delete(CObject* O)
 {
-	if (dynamic_cast<CActor*>(O)) m_actor = 0;
+	if (smart_cast<CActor*>(O)) m_actor = 0;
 }
 //////////////////////////////////////////////////////////////////////////
 

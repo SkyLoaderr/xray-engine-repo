@@ -5,7 +5,7 @@
 #include "physicsshellholder.h"
 void CPHShellSimpleCreator::CreatePhysicsShell()
 {
-	CPhysicsShellHolder* owner = dynamic_cast<CPhysicsShellHolder*>(this); VERIFY(owner);
+	CPhysicsShellHolder* owner = smart_cast<CPhysicsShellHolder*>(this); VERIFY(owner);
 	if (!owner->Visual()) return;
 	
 	CKinematics* pKinematics		= PKinematics(owner->Visual());

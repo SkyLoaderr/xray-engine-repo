@@ -64,7 +64,7 @@ void CGameObject::Load(LPCSTR section)
 
 	inherited::Load			(section);
 	CPrefetchManager::Load	(section);
-	ISpatial*		self				= dynamic_cast<ISpatial*> (this);
+	ISpatial*		self				= smart_cast<ISpatial*> (this);
 	if (self)	{
 		// #pragma todo("to Dima: All objects are visible for AI ???")
 		// self->spatial.type	|=	STYPE_VISIBLEFORAI;	
@@ -178,7 +178,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 	CSE_Abstract*		E			= (CSE_Abstract*)DC;
 	VERIFY							(E);
 
-	const CSE_Visual				*l_tpVisual = dynamic_cast<const CSE_Visual*>(E);
+	const CSE_Visual				*l_tpVisual = smart_cast<const CSE_Visual*>(E);
 	if (l_tpVisual) 
 		cNameVisual_set				(l_tpVisual->get_visual());
 
@@ -195,7 +195,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 	Position().set					(E->o_Position);
 	VERIFY							(_valid(renderable.xform));
 	VERIFY							(!fis_zero(DET(renderable.xform)));
-	CSE_ALifeObject					*O = dynamic_cast<CSE_ALifeObject*>(E);
+	CSE_ALifeObject					*O = smart_cast<CSE_ALifeObject*>(E);
 	if (O && xr_strlen(O->m_ini_string)) {
 #pragma warning(push)
 #pragma warning(disable:4238)
@@ -244,8 +244,8 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 	}
 	else {
 		if (ai().get_level_graph()) {
-			CSE_ALifeObject			*l_tpALifeObject = dynamic_cast<CSE_ALifeObject*>(E);
-			CSE_Temporary			*l_tpTemporary	= dynamic_cast<CSE_Temporary*>	(E);
+			CSE_ALifeObject			*l_tpALifeObject = smart_cast<CSE_ALifeObject*>(E);
+			CSE_Temporary			*l_tpTemporary	= smart_cast<CSE_Temporary*>	(E);
 			if (l_tpALifeObject && ai().level_graph().valid_vertex_id(l_tpALifeObject->m_tNodeID))
 				set_level_vertex	(l_tpALifeObject->m_tNodeID);
 			else
@@ -542,7 +542,7 @@ void CGameObject::shedule_Update	(u32 dt)
 	if(NeedToDestroyObject())
 		DestroyObject();
 
-	// Msg							("-SUB-:[%x][%s] CGameObject::shedule_Update",dynamic_cast<void*>(this),*cName());
+	// Msg							("-SUB-:[%x][%s] CGameObject::shedule_Update",smart_cast<void*>(this),*cName());
 	inherited::shedule_Update	(dt);
 	CScriptBinder::shedule_Update(dt);
 }

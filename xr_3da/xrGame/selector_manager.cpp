@@ -49,10 +49,10 @@ void CSelectorManager::remove_all		()
 
 void CSelectorManager::init_selector	(CAbstractVertexEvaluator &S)
 {
-	const CMemoryManager	*memory_manager = dynamic_cast<const CMemoryManager*>(this);
+	const CMemoryManager	*memory_manager = smart_cast<const CMemoryManager*>(this);
 	VERIFY					(memory_manager);
 
-	const CEntityAlive		*entity_alive = dynamic_cast<const CEntityAlive*>(this);
+	const CEntityAlive		*entity_alive = smart_cast<const CEntityAlive*>(this);
 	VERIFY					(entity_alive);
 
 	if (memory_manager->hit()) {
@@ -65,7 +65,7 @@ void CSelectorManager::init_selector	(CAbstractVertexEvaluator &S)
 	}
 
 	S.m_dwCurTime			= Level().timeServer();
-	S.m_tMe					= dynamic_cast<CEntity*>(this);
+	S.m_tMe					= smart_cast<CEntity*>(this);
 	S.m_tpMyNode			= memory_manager->level_vertex();
 	S.m_tMyPosition			= memory_manager->Position();
 	

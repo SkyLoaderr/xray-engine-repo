@@ -82,9 +82,9 @@ void CLevelGraph::render()
 	// end of test
 	
 //	{
-//		CActor				*actor = dynamic_cast<CActor*>(Level().CurrentEntity());
+//		CActor				*actor = smart_cast<CActor*>(Level().CurrentEntity());
 //		if (actor) {
-//			CAI_Stalker		*stalker = dynamic_cast<CAI_Stalker*>(Level().Objects.FindObjectByName("m_stalker_e0000"));
+//			CAI_Stalker		*stalker = smart_cast<CAI_Stalker*>(Level().Objects.FindObjectByName("m_stalker_e0000"));
 //			if (stalker) {
 //				Fvector		dir;
 //				dir.sub		(actor->Position(),stalker->Position());
@@ -110,7 +110,7 @@ void CLevelGraph::render()
 //	}
 	
 	if (bDebug && psAI_Flags.test(aiDebug)) {
-		CGameObject*	O	= dynamic_cast<CGameObject*> (Level().CurrentEntity());
+		CGameObject*	O	= smart_cast<CGameObject*> (Level().CurrentEntity());
 		Fvector	POSITION	= O->Position();
 		POSITION.y += 0.5f;
 
@@ -374,9 +374,9 @@ void CLevelGraph::render()
 				ALife::D_OBJECT_P_MAP::const_iterator	E = ai().alife().objects().objects().end();
 				for ( ; I != E; ++I) {
 					{
-						CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract *>((*I).second);
+						CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract = smart_cast<CSE_ALifeMonsterAbstract *>((*I).second);
 						if (tpALifeMonsterAbstract && tpALifeMonsterAbstract->m_bDirectControl && !tpALifeMonsterAbstract->m_bOnline) {
-							CSE_ALifeHumanAbstract *tpALifeHuman = dynamic_cast<CSE_ALifeHumanAbstract *>(tpALifeMonsterAbstract);
+							CSE_ALifeHumanAbstract *tpALifeHuman = smart_cast<CSE_ALifeHumanAbstract *>(tpALifeMonsterAbstract);
 							if (tpALifeHuman && tpALifeHuman->m_tpPath.size()) {
 								Fvector t1 = ai().game_graph().vertex(tpALifeHuman->m_tpPath[0])->game_point();
 								t1.y += .6f;
@@ -409,7 +409,7 @@ void CLevelGraph::render()
 							}
 						}
 						else {
-							CSE_ALifeInventoryItem *l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>((*I).second);
+							CSE_ALifeInventoryItem *l_tpALifeInventoryItem = smart_cast<CSE_ALifeInventoryItem*>((*I).second);
 							if (l_tpALifeInventoryItem && !l_tpALifeInventoryItem->attached()) {
 								Fvector t1 = ai().game_graph().vertex((*I).second->m_tGraphID)->game_point();
 								t1.y += .6f;
@@ -417,7 +417,7 @@ void CLevelGraph::render()
 								RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(255,255,0));
 							}
 							else {
-								CSE_ALifeCreatureActor *tpALifeCreatureActor = dynamic_cast<CSE_ALifeCreatureActor*>((*I).second);
+								CSE_ALifeCreatureActor *tpALifeCreatureActor = smart_cast<CSE_ALifeCreatureActor*>((*I).second);
 								if (tpALifeCreatureActor) {
 									Fvector t1 = ai().game_graph().vertex((*I).second->m_tGraphID)->game_point();
 									t1.y += .6f;
@@ -425,7 +425,7 @@ void CLevelGraph::render()
 									RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(255,255,255));
 								}
 								else {
-									CSE_ALifeTrader *tpALifeTrader = dynamic_cast<CSE_ALifeTrader*>((*I).second);
+									CSE_ALifeTrader *tpALifeTrader = smart_cast<CSE_ALifeTrader*>((*I).second);
 									if (tpALifeTrader) {
 										Fvector t1 = ai().game_graph().vertex((*I).second->m_tGraphID)->game_point();
 										t1.y += .6f;
@@ -445,12 +445,12 @@ void CLevelGraph::render()
 		xr_vector<CObject*>::iterator	I = Level().Objects.objects.begin();
 		xr_vector<CObject*>::iterator	E = Level().Objects.objects.end();
 		for ( ; I != E; ++I) {
-			CTeamBaseZone	*team_base_zone = dynamic_cast<CTeamBaseZone*>(*I);
+			CTeamBaseZone	*team_base_zone = smart_cast<CTeamBaseZone*>(*I);
 			if (team_base_zone) {
 				team_base_zone->OnRender();
 				continue;
 			}
-			CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster*>(*I);
+			CCustomMonster *tpCustomMonster = smart_cast<CCustomMonster*>(*I);
 			if (tpCustomMonster) {
 				tpCustomMonster->OnRender();
 				if (!tpCustomMonster->CDetailPathManager::path().empty()) {
@@ -458,7 +458,7 @@ void CLevelGraph::render()
 					RCache.dbg_DrawAABB(temp,1.f,1.f,1.f,D3DCOLOR_XRGB(0,0,255));
 				}
 			}
-			CAI_Stalker		*stalker = dynamic_cast<CAI_Stalker*>(*I);
+			CAI_Stalker		*stalker = smart_cast<CAI_Stalker*>(*I);
 			if (!stalker || !stalker->enemy())
 				continue;
 
@@ -510,7 +510,7 @@ void CLevelGraph::render()
 	xr_vector<CObject*>::iterator	I = Level().Objects.objects.begin();
 	xr_vector<CObject*>::iterator	E = Level().Objects.objects.end();
 	for ( ; I != E; ++I) {
-		CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster*>(*I);
+		CCustomMonster *tpCustomMonster = smart_cast<CCustomMonster*>(*I);
 		if (tpCustomMonster) {
 			tpCustomMonster->OnRender();
 			if (!tpCustomMonster->CDetailPathManager::path().empty()) {
@@ -734,9 +734,9 @@ void CLevelGraph::set_start_point	()
 	start.position			= v2d(Level().CurrentEntity()->Position());
 	start.vertex_id			= vertex(v3d(start.position));
 //	CObject					*obj = Level().Objects.FindObjectByName("m_stalker_e0000");
-//	CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(obj);
+//	CAI_Stalker				*stalker = smart_cast<CAI_Stalker*>(obj);
 //	obj						= Level().Objects.FindObjectByName("localhost/dima/name=DIMA-AI");
-//	CActor					*actor = dynamic_cast<CActor*>(obj);
+//	CActor					*actor = smart_cast<CActor*>(obj);
 //	if (!stalker || !actor)
 //		return;
 //

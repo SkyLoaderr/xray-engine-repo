@@ -50,7 +50,7 @@ void CUINewsWnd::Init()
 
 void CUINewsWnd::SendMessage(CUIWindow *pWnd, s16 msg, void* pData)
 {
-//	CUITreeViewItem *pItem = dynamic_cast<CUITreeViewItem*>(pWnd);
+//	CUITreeViewItem *pItem = smart_cast<CUITreeViewItem*>(pWnd);
 //	if (pItem && CUIListWnd::LIST_ITEM_CLICKED == msg)
 //	{
 //		if (pItem->IsRoot())

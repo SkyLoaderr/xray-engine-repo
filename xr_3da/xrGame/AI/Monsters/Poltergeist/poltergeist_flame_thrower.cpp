@@ -113,7 +113,7 @@ void CPoltergeist::UpdateFlame()
 
 bool CPoltergeist::GetValidFlamePosition(const CObject *target_object, Fvector &res_pos)
 {
-	const CGameObject *Obj = dynamic_cast<const CGameObject *>(target_object);
+	const CGameObject *Obj = smart_cast<const CGameObject *>(target_object);
 	if (!Obj) return (false);
 
 	Fvector dir;

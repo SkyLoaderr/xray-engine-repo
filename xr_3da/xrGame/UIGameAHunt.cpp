@@ -28,7 +28,7 @@ CUIGameAHunt::CUIGameAHunt()
 void CUIGameAHunt::SetClGame (game_cl_GameState* g)
 {
 	inherited::SetClGame(g);
-	m_game = dynamic_cast<game_cl_ArtefactHunt*>(g);
+	m_game = smart_cast<game_cl_ArtefactHunt*>(g);
 	R_ASSERT(m_game);
 }
 
@@ -127,7 +127,7 @@ CUIGameAHunt::~CUIGameAHunt()
 /* moved to game_cl_artefactHunt
 void		CUIGameAHunt::OnObjectEnterTeamBase	(CObject *tpObject, CTeamBaseZone* pTeamBaseZone)
 {
-	CActor* pActor = dynamic_cast<CActor*> (tpObject);
+	CActor* pActor = smart_cast<CActor*> (tpObject);
 	if (tpObject == Level().CurrentEntity() && pActor->g_Team() == pTeamBaseZone->GetZoneTeam())
 	{
 		m_bBuyEnabled = TRUE;
@@ -136,7 +136,7 @@ void		CUIGameAHunt::OnObjectEnterTeamBase	(CObject *tpObject, CTeamBaseZone* pTe
 
 void CUIGameAHunt::OnObjectLeaveTeamBase	(CObject *tpObject, CTeamBaseZone* pTeamBaseZone)
 {
-	CActor* pActor = dynamic_cast<CActor*> (tpObject);
+	CActor* pActor = smart_cast<CActor*> (tpObject);
 	if (tpObject == Level().CurrentEntity() && pActor->g_Team() == pTeamBaseZone->GetZoneTeam())
 	{
 		m_bBuyEnabled = FALSE;
@@ -147,7 +147,7 @@ BOOL		CUIGameAHunt::CanCallBuyMenu			()
 {
 	if (!m_bBuyEnabled) return FALSE;
 
-	CActor* pCurActor = dynamic_cast<CActor*> (Level().CurrentEntity());
+	CActor* pCurActor = smart_cast<CActor*> (Level().CurrentEntity());
 	if (!pCurActor || !pCurActor->g_Alive()) return FALSE;
 
 	return TRUE;

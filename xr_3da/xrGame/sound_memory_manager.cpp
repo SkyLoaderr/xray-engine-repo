@@ -33,7 +33,7 @@ void CSoundMemoryManager::init					()
 
 void CSoundMemoryManager::Load					(LPCSTR section)
 {
-	m_object				= dynamic_cast<CCustomMonster*>(this);
+	m_object				= smart_cast<CCustomMonster*>(this);
 	VERIFY					(m_object);
 	if (pSettings->line_exist(section,"DynamicSoundsCount"))
 		m_max_sound_count	= pSettings->r_s32(section,"DynamicSoundsCount");
@@ -88,7 +88,7 @@ void CSoundMemoryManager::feel_sound_new(CObject *object, int sound_type, const 
 		// this is fake!
 		sound_power			= 1.f;
 		CHitMemoryManager	*hit_memory_manager = m_object;
-		CEntityAlive		*_entity_alive = dynamic_cast<CEntityAlive*>(object);
+		CEntityAlive		*_entity_alive = smart_cast<CEntityAlive*>(object);
 		if (_entity_alive && (self->ID() != _entity_alive->ID()) && (_entity_alive->g_Team() != entity_alive->g_Team()))
 			hit_memory_manager->add_hit_object(_entity_alive);
 	}
@@ -117,20 +117,20 @@ void CSoundMemoryManager::add_sound_object(const CObject *object, int sound_type
 #ifdef SAVE_NON_ALIVE_OBJECT_SOUNDS
 	// we do not want to save sounds from the non-alive objects (?!)
 	CMemoryManager	*memory_manager = m_object;
-	if (object && !memory_manager->enemy() && !dynamic_cast<const CEntityAlive*>(object))
+	if (object && !memory_manager->enemy() && !smart_cast<const CEntityAlive*>(object))
 		return;
 #endif
 
 #ifdef SAVE_FRIEND_ITEM_SOUNDS
 	// we do not want to save sounds from the teammates items
 	CEntityAlive	*me				= m_object;
-	if (object && object->H_Parent() && (me->tfGetRelationType(dynamic_cast<const CEntityAlive*>(object->H_Parent())) == ALife::eRelationTypeFriend))
+	if (object && object->H_Parent() && (me->tfGetRelationType(smart_cast<const CEntityAlive*>(object->H_Parent())) == ALife::eRelationTypeFriend))
 		return;
 #endif
 
 #ifdef SAVE_FRIEND_SOUNDS
 	// we do not want ot save sounds from the teammates
-	const CEntityAlive	*entity_alive	= dynamic_cast<const CEntityAlive*>(object);
+	const CEntityAlive	*entity_alive	= smart_cast<const CEntityAlive*>(object);
 	if (entity_alive && me && (me->tfGetRelationType(entity_alive) == ALife::eRelationTypeFriend))
 		return;
 #endif
@@ -146,7 +146,7 @@ void CSoundMemoryManager::add_sound_object(const CObject *object, int sound_type
 	Msg							("* %s - ref_sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",*self->cName(),sound_type,object ? object->cName() : "world",Level().timeServer(),position.x,position.y,position.z,sound_power);
 #endif
 
-	const CGameObject		*game_object = dynamic_cast<const CGameObject*>(object);
+	const CGameObject		*game_object = smart_cast<const CGameObject*>(object);
 	if (!game_object)
 		return;
 

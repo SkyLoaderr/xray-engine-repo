@@ -74,7 +74,7 @@ void CUIPdaCommunication::Init()
 
 void CUIPdaCommunication::InitPDACommunication()
 {
-	m_pInvOwner = dynamic_cast<CInventoryOwner*>(Level().CurrentEntity());
+	m_pInvOwner = smart_cast<CInventoryOwner*>(Level().CurrentEntity());
 	if(!m_pInvOwner) return;
 
 	m_pPda = m_pInvOwner->GetPDA();
@@ -247,26 +247,26 @@ void CUIPdaCommunication::InitPdaDialog()
 	m_pContactObject =  Level().Objects.net_Find(m_idContact);
 
 	R_ASSERT2(m_pContactObject, "wrong ID");
-	m_pOthersInvOwner = m_pContactInvOwner = dynamic_cast<CInventoryOwner*>(m_pContactObject);
+	m_pOthersInvOwner = m_pContactInvOwner = smart_cast<CInventoryOwner*>(m_pContactObject);
 	R_ASSERT2(m_pContactInvOwner, "can't cast to inventory owner");
 	m_pContactPda = m_pContactInvOwner->GetPDA();
 	VERIFY(m_pContactPda);
 
-	m_pOurInvOwner = m_pInvOwner  = dynamic_cast<CInventoryOwner*>(Level().CurrentEntity());;
+	m_pOurInvOwner = m_pInvOwner  = smart_cast<CInventoryOwner*>(Level().CurrentEntity());;
 	R_ASSERT2(m_pInvOwner, "wrong inventory owner");
 
 	//инициализировать окошко с информацией о собеседнике
 	UIPdaDialogWnd.UICharacterInfo.InitCharacter(m_pContactInvOwner);
 
-	m_pActor  = dynamic_cast<CActor*>(Level().CurrentEntity());;
+	m_pActor  = smart_cast<CActor*>(Level().CurrentEntity());;
 	if(m_pActor)
 	{
-		CEntityAlive* ContactEA = dynamic_cast<CEntityAlive*>(m_pContactInvOwner);
-		UIPdaDialogWnd.UICharacterInfo.SetRelation(ContactEA->tfGetRelationType(dynamic_cast<CEntityAlive*>(m_pActor)));
+		CEntityAlive* ContactEA = smart_cast<CEntityAlive*>(m_pContactInvOwner);
+		UIPdaDialogWnd.UICharacterInfo.SetRelation(ContactEA->tfGetRelationType(smart_cast<CEntityAlive*>(m_pActor)));
 	}
 
-	m_pOurDialogManager = dynamic_cast<CPhraseDialogManager*>(m_pOurInvOwner);
-	m_pOthersDialogManager = dynamic_cast<CPhraseDialogManager*>(m_pOthersInvOwner);
+	m_pOurDialogManager = smart_cast<CPhraseDialogManager*>(m_pOurInvOwner);
+	m_pOthersDialogManager = smart_cast<CPhraseDialogManager*>(m_pOthersInvOwner);
 
 	ToTopicMode			();
 	UpdateMessageLog	();

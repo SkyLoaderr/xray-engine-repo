@@ -38,7 +38,7 @@ void CAI_Biting::AA_CheckHit()
 	SAAParam params;
 
 	if (!EnemyMan.get_enemy()) return;
-	const CObject *obj = dynamic_cast<const CObject *>(EnemyMan.get_enemy());
+	const CObject *obj = smart_cast<const CObject *>(EnemyMan.get_enemy());
 
 	if (!MotionMan.AA_TimeTest(params))  return;
 	

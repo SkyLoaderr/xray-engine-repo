@@ -121,7 +121,7 @@ Fvector CUIMapSpot::MapPos()
 
 	CSE_Abstract* E = Level().Server->game->get_entity_from_eid(m_object_id);
 	CSE_ALifeObject* O = NULL;
-	if(E) O = dynamic_cast<CSE_ALifeObject*>(E);
+	if(E) O = smart_cast<CSE_ALifeObject*>(E);
 	if(O)
 	{
 		//объект в оффлайне на нашем уровне
@@ -162,5 +162,5 @@ Fvector CUIMapSpot::MapPos()
 void CUIMapSpot::SetObjectID(u16 id)
 {
 	m_object_id = id;
-	m_our_level_id = ai().game_graph().vertex(dynamic_cast<CGameObject*>(Level().CurrentEntity())->game_vertex_id())->level_id();
+	m_our_level_id = ai().game_graph().vertex(smart_cast<CGameObject*>(Level().CurrentEntity())->game_vertex_id())->level_id();
 }

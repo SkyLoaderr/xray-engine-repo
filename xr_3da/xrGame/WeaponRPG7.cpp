@@ -98,7 +98,7 @@ void CWeaponRPG7::switch2_Fire	()
 		p1.set(vLastFP); 
 		d.set(vLastFD);
 
-		CEntity* E = dynamic_cast<CEntity*>(H_Parent());
+		CEntity* E = smart_cast<CEntity*>(H_Parent());
 		if (E) E->g_fireParams (this, p1,d);
 
 		Fmatrix launch_matrix;
@@ -116,7 +116,7 @@ void CWeaponRPG7::switch2_Fire	()
 		//		angular_vel.mul(1400.f);
 		CRocketLauncher::LaunchRocket(launch_matrix, d, zero_vel);
 
-		CExplosiveRocket* pGrenade = dynamic_cast<CExplosiveRocket*>(getCurrentRocket());
+		CExplosiveRocket* pGrenade = smart_cast<CExplosiveRocket*>(getCurrentRocket());
 		VERIFY(pGrenade);
 		pGrenade->SetCurrentParentID(H_Parent()->ID());
 

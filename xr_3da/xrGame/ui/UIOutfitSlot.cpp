@@ -45,7 +45,7 @@ void CUIOutfitSlot::Init(int x, int y, int width, int height)
 
 void CUIOutfitSlot::AttachChild(CUIWindow *pChild)
 {
-	CUIDragDropItem *pDDItem = dynamic_cast<CUIDragDropItem*>(pChild);
+	CUIDragDropItem *pDDItem = smart_cast<CUIDragDropItem*>(pChild);
 	if (!pDDItem)
 	{
 		inherited::AttachChild(pChild);
@@ -60,7 +60,7 @@ void CUIOutfitSlot::AttachChild(CUIWindow *pChild)
 		return;
 	}
 
-	CCustomOutfit* pOutfit = dynamic_cast<CCustomOutfit*>(pInvItem);
+	CCustomOutfit* pOutfit = smart_cast<CCustomOutfit*>(pInvItem);
 	//в этот слот могут помещаться только костюмы
 	R_ASSERT(pOutfit);
 
@@ -165,7 +165,7 @@ void CUIOutfitSlot::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 void CUIOutfitSlot::SetMPOutfit()
 {
 	UIOutfitIcon.SetShader(GetMPCharIconsShader());
-	CObject *pInvOwner = dynamic_cast<CObject*>(Level().CurrentEntity());
+	CObject *pInvOwner = smart_cast<CObject*>(Level().CurrentEntity());
 	if (!pInvOwner) return;
 	if (pInvOwner->cNameVisual() == NULL) return;
 

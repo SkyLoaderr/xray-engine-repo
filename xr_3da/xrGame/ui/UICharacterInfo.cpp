@@ -207,17 +207,17 @@ void CUICharacterInfo::InitCharacter(CInventoryOwner* pInvOwner)
 	VERIFY(pInvOwner);
 	InitCharacter(&pInvOwner->CharacterInfo());
 
-	CActor *m_pActor = dynamic_cast<CActor *>(pInvOwner);
+	CActor *m_pActor = smart_cast<CActor *>(pInvOwner);
 	if (m_pActor)
 	{
 		UIRelationCaption.Show(false);
 		UIRelation.Show(false);
 	}
 
-	CEntityAlive	*entity_alive = dynamic_cast<CEntityAlive*>(Level().CurrentEntity());
+	CEntityAlive	*entity_alive = smart_cast<CEntityAlive*>(Level().CurrentEntity());
 	VERIFY			(entity_alive);
 
-	CEntityAlive* ContactEA = dynamic_cast<CEntityAlive*>(pInvOwner);
+	CEntityAlive* ContactEA = smart_cast<CEntityAlive*>(pInvOwner);
 	SetRelation(ContactEA->tfGetRelationType(entity_alive));
 }
 

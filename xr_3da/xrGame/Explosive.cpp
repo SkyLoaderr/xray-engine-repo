@@ -298,8 +298,8 @@ void CExplosive::Explode()
 
 	//////////////////////////////////////////////////////////////////////////
 	// Explode Effector	//////////////
-	CGameObject* GO = static_cast<CGameObject*>(Level().CurrentEntity());
-	CActor* pActor = GO?GO->cast_actor():NULL;
+	CGameObject* GO = smart_cast<CGameObject*>(Level().CurrentEntity());
+	CActor* pActor = smart_cast<CActor*>(GO);
 	if(pActor)
 	{
 		float dist_to_actor = pActor->Position().distance_to(pos);

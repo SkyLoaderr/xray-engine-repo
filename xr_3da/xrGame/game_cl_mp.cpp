@@ -36,7 +36,7 @@ bool	game_cl_mp::OnKeyboardPress			(int key)
 
 		};
 		if(b_need_to_send_ready){
-				CGameObject* GO = dynamic_cast<CGameObject*>(curr);
+				CGameObject* GO = smart_cast<CGameObject*>(curr);
 				NET_Packet			P;
 				GO->u_EventGen		(P,GE_GAME_EVENT,GO->ID()	);
 				P.w_u16(GAME_EVENT_PLAYER_READY);

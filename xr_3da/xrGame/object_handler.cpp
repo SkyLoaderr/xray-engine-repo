@@ -87,7 +87,7 @@ void CObjectHandler::OnItemTake		(CInventoryItem *inventory_item)
 	CInventoryOwner::OnItemTake	(inventory_item);
 	add_item					(inventory_item);
 
-	CTorch						*torch = dynamic_cast<CTorch*>(inventory_item);
+	CTorch						*torch = smart_cast<CTorch*>(inventory_item);
 	if (torch)
 		torch->Switch			(true);
 }
@@ -97,7 +97,7 @@ void CObjectHandler::OnItemDrop		(CInventoryItem *inventory_item)
 	CInventoryOwner::OnItemDrop	(inventory_item);
 	remove_item					(inventory_item);
 
-	CTorch						*torch = dynamic_cast<CTorch*>(inventory_item);
+	CTorch						*torch = smart_cast<CTorch*>(inventory_item);
 	if (torch)
 		torch->Switch			(false);
 }
@@ -121,7 +121,7 @@ CInventoryItem *CObjectHandler::best_weapon() const
 	for ( ; I != E; ++I) {
 		if ((*I)->getDestroy())
 			continue;
-		CWeapon		*weapon = dynamic_cast<CWeapon*>(*I);
+		CWeapon		*weapon = smart_cast<CWeapon*>(*I);
 		if (weapon && (weapon->GetAmmoCurrent() > 0*weapon->GetAmmoMagSize()/10)) {
 			ai().ef_storage().m_tpGameObject	= weapon;
 			u32	current_weapon_type = ai().ef_storage().m_pfPersonalWeaponType->dwfGetWeaponType();
@@ -132,7 +132,7 @@ CInventoryItem *CObjectHandler::best_weapon() const
 			ai().ef_storage().m_tpGameObject	= 0;
 			continue;
 		}
-		CMissile	*missile = dynamic_cast<CMissile*>(*I);
+		CMissile	*missile = smart_cast<CMissile*>(*I);
 		if (missile) {
 			ai().ef_storage().m_tpGameObject	= missile;
 			u32	current_weapon_type = ai().ef_storage().m_pfPersonalWeaponType->dwfGetWeaponType();
@@ -153,7 +153,7 @@ u32 CObjectHandler::weapon_state(const CWeapon *weapon) const
 
 	switch (weapon->STATE) {
 		case CWeapon::eIdle		:  {
-			const CWeaponMagazined	*weapon_magazined = dynamic_cast<const CWeaponMagazined*>(weapon);
+			const CWeaponMagazined	*weapon_magazined = smart_cast<const CWeaponMagazined*>(weapon);
 			if (!weapon_magazined || (weapon_magazined->GetAmmoElapsed() && !weapon_magazined->IsMisfire()))
 				return(CWeapon::eIdle);
 			if (!weapon_magazined->GetAmmoElapsed() && (current_action_state_id() != eObjectActionReload1))
@@ -177,9 +177,9 @@ u32 CObjectHandler::weapon_state(const CWeapon *weapon) const
 
 void CObjectHandler::add_item			(CInventoryItem *inventory_item)
 {
-	CWeapon						*weapon		= dynamic_cast<CWeapon*>		(inventory_item);
-	CMissile					*missile	= dynamic_cast<CMissile*>		(inventory_item);
-	CFoodItem					*eatable	= dynamic_cast<CFoodItem*>	(inventory_item);
+	CWeapon						*weapon		= smart_cast<CWeapon*>		(inventory_item);
+	CMissile					*missile	= smart_cast<CMissile*>		(inventory_item);
+	CFoodItem					*eatable	= smart_cast<CFoodItem*>	(inventory_item);
 
 	if (weapon) {
 		add_evaluators			(weapon);

@@ -25,7 +25,7 @@ void CPatrolPathManager::reinit				()
 	m_prev_point_index		= u32(-1);
 	m_start_point_index		= u32(-1);
 	m_callback				= 0;
-	m_restricted_object		= dynamic_cast<CRestrictedObject*>(this);
+	m_restricted_object		= smart_cast<CRestrictedObject*>(this);
 	VERIFY					(m_restricted_object);
 }
 

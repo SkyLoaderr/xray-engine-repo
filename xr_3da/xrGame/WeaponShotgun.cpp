@@ -135,7 +135,7 @@ void CWeaponShotgun::switch2_Fire	()
 		p1.set(vLastFP); 
 		d.set(vLastFD);
 
-		CEntity*					E = dynamic_cast<CEntity*>(H_Parent());
+		CEntity*					E = smart_cast<CEntity*>(H_Parent());
 		if (E) E->g_fireParams		(p1,d);
 		OnShot						();
 		FireTrace					(p1,vLastFP,d);
@@ -160,7 +160,7 @@ void CWeaponShotgun::switch2_Fire2	()
 		p1.set(vLastFP); 
 		d.set(vLastFD);
 
-		CEntity*					E = dynamic_cast<CEntity*>(H_Parent());
+		CEntity*					E = smart_cast<CEntity*>(H_Parent());
 		if (E) E->g_fireParams		(this, p1,d);
 		
 		OnShotBoth						();

@@ -30,7 +30,7 @@ float CWeapon::GetFireDispersion	(float cartridge_k) const
 	float fire_disp = fireDispersionBase*cartridge_k*GetConditionDispersionFactor();
 	
 	//вычислить дисперсию, вносимую самим стрелком
-	const CInventoryOwner* pOwner	=	dynamic_cast<const CInventoryOwner*>(H_Parent());
+	const CInventoryOwner* pOwner	=	smart_cast<const CInventoryOwner*>(H_Parent());
 	VERIFY (pOwner);
 
 	float parent_disp = pOwner->GetWeaponAccuracy();
@@ -44,10 +44,10 @@ float CWeapon::GetFireDispersion	(float cartridge_k) const
 // Для эффекта отдачи оружия
 void CWeapon::AddShotEffector		()
 {
-	CActor* pActor = dynamic_cast<CActor*>(H_Parent());
+	CActor* pActor = smart_cast<CActor*>(H_Parent());
 	if(pActor)
 	{
-		CEffectorShot* S		= dynamic_cast<CEffectorShot*>	(pActor->EffectorManager().GetEffector(eCEShot)); 
+		CEffectorShot* S		= smart_cast<CEffectorShot*>	(pActor->EffectorManager().GetEffector(eCEShot)); 
 		if (!S)	S				= (CEffectorShot*)pActor->EffectorManager().AddEffector(xr_new<CEffectorShot> (camMaxAngle,camRelaxSpeed, camHorzProb, camHorzFactor));
 		R_ASSERT				(S);
 		S->Shot					(camDispersion);
@@ -56,18 +56,18 @@ void CWeapon::AddShotEffector		()
 
 void  CWeapon::RemoveShotEffector	()
 {
-	CActor* pActor = dynamic_cast<CActor*>(H_Parent());
+	CActor* pActor = smart_cast<CActor*>(H_Parent());
 	if(pActor)
 		pActor->EffectorManager().RemoveEffector	(eCEShot);
 }
 
 const Fvector& CWeapon::GetRecoilDeltaAngle()
 {
-	CActor* pActor		= dynamic_cast<CActor*>(H_Parent());
+	CActor* pActor		= smart_cast<CActor*>(H_Parent());
 
 	CEffectorShot* S = NULL;
 	if(pActor)
-		S = dynamic_cast<CEffectorShot*>(pActor->EffectorManager().GetEffector(eCEShot)); 
+		S = smart_cast<CEffectorShot*>(pActor->EffectorManager().GetEffector(eCEShot)); 
 
 	if(S)
 	{

@@ -52,7 +52,7 @@ void CWeaponKnife::renderable_Render()
 {
 	UpdateXForm						();
 
-	CActor *pActor = dynamic_cast<CActor*>(H_Parent());
+	CActor *pActor = smart_cast<CActor*>(H_Parent());
 	if (pActor && pActor->HUDview() && m_pHUD && !m_pHUD->IsHidden()) { 
 		// HUD render
 		::Render->set_Transform		(&m_pHUD->Transform());
@@ -166,7 +166,7 @@ void CWeaponKnife::OnAnimationEnd()
 				d.set(vLastFD);
 
 				if(H_Parent()) 
-					dynamic_cast<CEntity*>(H_Parent())->g_fireParams(this, p1,d);
+					smart_cast<CEntity*>(H_Parent())->g_fireParams(this, p1,d);
 				else break;
 
 				KnifeStrike(p1,d);
@@ -186,7 +186,7 @@ void CWeaponKnife::OnAnimationEnd()
 				d.set(vLastFD);
 				
 				if(H_Parent()) 
-					dynamic_cast<CEntity*>(H_Parent())->g_fireParams(this, p1,d);
+					smart_cast<CEntity*>(H_Parent())->g_fireParams(this, p1,d);
 				else break;
 			
 				KnifeStrike(p1,d);

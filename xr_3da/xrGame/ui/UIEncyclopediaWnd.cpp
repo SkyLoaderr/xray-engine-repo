@@ -160,7 +160,7 @@ void CUIEncyclopediaWnd::Show(bool status)
 	{
 		DeleteArticles();
 
-		CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+		CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 		if(pActor && pActor->encyclopedia_registry.objects_ptr())
 		{
 			for(ARTICLE_VECTOR::const_iterator it = pActor->encyclopedia_registry.objects_ptr()->begin();

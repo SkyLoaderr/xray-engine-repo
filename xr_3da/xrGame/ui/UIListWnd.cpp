@@ -255,7 +255,7 @@ void CUIListWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	
 		if( m_ChildWndList.end() != it)
 		{
-			CUIListItem* pListItem2, *pListItem = dynamic_cast<CUIListItem*>(*it);
+			CUIListItem* pListItem2, *pListItem = smart_cast<CUIListItem*>(*it);
 			R_ASSERT(pListItem);
 
 			if(BUTTON_CLICKED == msg)
@@ -277,7 +277,7 @@ void CUIListWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 				
 				for (it = m_ChildWndList.begin(); it != m_ChildWndList.end(); ++it)
 				{
-					pListItem2 = dynamic_cast<CUIListItem*>(*it);
+					pListItem2 = smart_cast<CUIListItem*>(*it);
 					if (!pListItem2) continue;
 					if (pListItem2->GetGroupID() == -1) continue;
 					if (pListItem2->GetGroupID() == pListItem->GetGroupID())
@@ -293,7 +293,7 @@ void CUIListWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 
 				for (it = m_ChildWndList.begin(); it != m_ChildWndList.end(); ++it)
 				{
-					pListItem2 = dynamic_cast<CUIListItem*>(*it);
+					pListItem2 = smart_cast<CUIListItem*>(*it);
 					if (!pListItem2) continue;
 					pListItem2->SetHighlightText(false);
 				}
@@ -301,7 +301,7 @@ void CUIListWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 
 				/*for (it = m_ChildWndList.begin(); (it != m_ChildWndList.end()) && (m_iFocusedItem == -1); ++it)
 				{
-					pListItem2 = dynamic_cast<CUIListItem*>(*it);
+					pListItem2 = smart_cast<CUIListItem*>(*it);
 					if (!pListItem2) continue;
 					if (pWnd != pListItem2)
 						pListItem2->OnMouse(cursor_pos.x - pListItem2->GetWndRect().left, cursor_pos.y - pListItem2->GetWndRect().top, MOUSE_MOVE);
@@ -321,7 +321,7 @@ void CUIListWnd::Draw()
 		RECT rect = GetAbsoluteRect();
 		for (it = m_ChildWndList.begin(); it != m_ChildWndList.end(); ++it)
 		{
-			CUIListItem *pListItem2 = dynamic_cast<CUIListItem*>(*it);
+			CUIListItem *pListItem2 = smart_cast<CUIListItem*>(*it);
 			if (!pListItem2) continue;
 			if (pListItem2->GetGroupID() == -1) continue;
 			if ((pListItem2->GetGroupID() == m_iFocusedItemGroupID) && 

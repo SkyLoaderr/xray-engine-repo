@@ -15,7 +15,7 @@ IC	const CALifeTraderRegistry::TRADER_REGISTRY &CALifeTraderRegistry::traders	()
 
 IC	void CALifeTraderRegistry::add	(CSE_ALifeDynamicObject *object)
 {
-	CSE_ALifeTrader			*trader = dynamic_cast<CSE_ALifeTrader*>(object);
+	CSE_ALifeTrader			*trader = smart_cast<CSE_ALifeTrader*>(object);
 	if (trader) {
 		m_traders.push_back	(trader);
 		std::sort			(m_traders.begin(),m_traders.end(),CCompareTraderRanksPredicate());

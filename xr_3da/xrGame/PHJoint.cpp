@@ -237,8 +237,8 @@ void CPHJoint::CreateUniversalHinge()
 
 void CPHJoint::CreateWelding()
 {
-	//dynamic_cast<CPHElement*>(pFirst_element)
-	//	->DynamicAttach(dynamic_cast<CPHElement*>(pSecond_element));
+	//smart_cast<CPHElement*>(pFirst_element)
+	//	->DynamicAttach(smart_cast<CPHElement*>(pSecond_element));
 
 }
 #ifdef  ODE_SLOW_SOLVER
@@ -494,8 +494,8 @@ CPHJoint::CPHJoint(CPhysicsJoint::enumType type ,CPhysicsElement* first,CPhysics
 	m_back_ref	=NULL;
 	m_destroy_info=NULL;
 	pFirstGeom	  =NULL;
-	pFirst_element=dynamic_cast<CPHElement*>(first);
-	pSecond_element=dynamic_cast<CPHElement*>(second); 
+	pFirst_element=smart_cast<CPHElement*>(first);
+	pSecond_element=smart_cast<CPHElement*>(second); 
 	m_joint=NULL;
 	m_joint1=NULL;
 	eType=type;
@@ -1169,11 +1169,11 @@ void CPHJoint::SPHAxis::set_sd_factors(float sf,float df,enumType jt)
 }
 CPhysicsElement* CPHJoint::PFirst_element()
 {
-	return dynamic_cast<CPhysicsElement*>(pFirst_element);
+	return smart_cast<CPhysicsElement*>(pFirst_element);
 }
 CPhysicsElement* CPHJoint::PSecond_element()
 {
-	return dynamic_cast<CPhysicsElement*>(pSecond_element);
+	return smart_cast<CPhysicsElement*>(pSecond_element);
 }
 void CPHJoint::SetBreakable(float force,float torque)
 {

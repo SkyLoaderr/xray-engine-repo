@@ -22,7 +22,7 @@ void CPrefetchManager::Load				(LPCSTR section)
 	if (!pSettings->line_exist(section,"texture_prefetch"))
 		return;
 
-	CObject							*object = dynamic_cast<CObject*>(this);
+	CObject							*object = smart_cast<CObject*>(this);
 	VERIFY							(object);
 	
 	LPCSTR							textures = pSettings->r_string(section,"texture_prefetch");

@@ -84,7 +84,7 @@ public:
 				buf.insert(buf.begin(), text.begin()+last_pos, text.begin()+i);
 				buf.push_back(0);
 				ReturnStatus &= AddItem<Element>(&buf.front(), shift, pData, value, insertBeforeIdx);
-				Element *pLocalItem = dynamic_cast<Element*>(GetItem(GetSize() - 1));
+				Element *pLocalItem = smart_cast<Element*>(GetItem(GetSize() - 1));
 				pLocalItem->SetGroupID(GroupID);
 				pLocalItem->SetTextColor(MsgColor);
 				pLocalItem->SetFont(pFont);
@@ -100,7 +100,7 @@ public:
 			buf.push_back(0);
 			AddItem<Element>(&buf.front(), shift, pData, value, insertBeforeIdx);
 			GetItem(GetSize() - 1)->SetGroupID(GroupID);
-			Element *pLocalItem = dynamic_cast<Element*>(GetItem(GetSize() - 1));
+			Element *pLocalItem = smart_cast<Element*>(GetItem(GetSize() - 1));
 			pLocalItem->SetGroupID(GroupID);
 			pLocalItem->SetTextColor(MsgColor);
 			pLocalItem->SetFont(pFont);

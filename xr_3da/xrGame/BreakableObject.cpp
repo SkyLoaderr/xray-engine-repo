@@ -34,7 +34,7 @@ BOOL CBreakableObject::net_Spawn(LPVOID DC)
 {
 
 	CSE_Abstract			*e		= (CSE_Abstract*)(DC);
-	CSE_ALifeObjectBreakable *obj	= dynamic_cast<CSE_ALifeObjectBreakable*>(e);
+	CSE_ALifeObjectBreakable *obj	= smart_cast<CSE_ALifeObjectBreakable*>(e);
 	R_ASSERT				(obj);
 	inherited::net_Spawn	(DC);
 	collidable.model = xr_new<CCF_Skeleton>(this);

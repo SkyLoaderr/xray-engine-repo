@@ -42,7 +42,7 @@ void CHitMemoryManager::init				()
 
 void CHitMemoryManager::Load				(LPCSTR section)
 {
-	m_object				= dynamic_cast<CCustomMonster*>(this);
+	m_object				= smart_cast<CCustomMonster*>(this);
 	VERIFY					(m_object);
 	if (pSettings->line_exist(section,"HurtCount"))
 		m_max_hit_count	= pSettings->r_s32(section,"HurtCount");
@@ -91,7 +91,7 @@ void CHitMemoryManager::add_hit_object		(float amount, const Fvector &vLocalDir,
 	Fvector						direction;
 	object->XFORM().transform_dir(direction,vLocalDir);
 
-	const CEntityAlive			*entity_alive = dynamic_cast<const CEntityAlive*>(who);
+	const CEntityAlive			*entity_alive = smart_cast<const CEntityAlive*>(who);
 	if (!entity_alive || (self->tfGetRelationType(entity_alive) == ALife::eRelationTypeFriend))
 		return;
 
