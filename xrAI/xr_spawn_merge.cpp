@@ -409,9 +409,9 @@ LPCSTR cafGetActorLevelName(xr_vector<CSpawn *> &tpLevels, string256 &S)
 			VERIFY2			(!l_tpActor,"There must the SINGLE level with ACTOR!");
 			l_tpActor		= actor;
 		}
-		if (l_tpActor)
-			return			(strconcat(S,tpLevels[i]->m_tLevel.name(),".spawn"));
 	}
+	if (l_tpActor)
+		return				(strconcat(S,tpLevels[i]->m_tLevel.name(),".spawn"));
 	R_ASSERT2				(false,"There is no actor!");
 	return					("game.spawn");
 }
