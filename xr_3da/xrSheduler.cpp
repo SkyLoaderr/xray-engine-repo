@@ -194,7 +194,7 @@ void CSheduler::ProcessStep			()
 		// 
 		if (CPU::GetCycleCount() > cycles_limit)	{
 			// we have maxed out the load - increase heap
-			psShedulerTarget	+= psShedulerReaction * 2;
+			psShedulerTarget	+= (psShedulerReaction * 3);
 			break;
 		}
 	}
