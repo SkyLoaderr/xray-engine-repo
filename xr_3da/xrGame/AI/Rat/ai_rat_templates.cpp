@@ -186,10 +186,14 @@ void CAI_Rat::vfSearchForBetterPositionWTime(CAISelectorBase &S, CSquad &Squad, 
 
 void CAI_Rat::vfSetFire(bool bFire, CGroup &Group)
 {
-	if (bFire)
+	if (bFire) {
+		m_bFiring = true;
 		q_action.setup(AI::AIC_Action::AttackBegin);
-	else
+	}
+	else {
+		m_bFiring = false;
 		q_action.setup(AI::AIC_Action::AttackEnd);
+	}
 }
 
 void CAI_Rat::vfSetMovementType(char cBodyState, float fSpeed)

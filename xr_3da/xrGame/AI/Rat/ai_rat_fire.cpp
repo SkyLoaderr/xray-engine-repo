@@ -19,7 +19,9 @@ void CAI_Rat::Exec_Action(float dt)
 			
 			DWORD dwTime = Level().timeServer();
 			
-			if (dwTime - m_dwStartAttackTime > m_dwHitInterval) {
+			//if ((Movement.Environment() == CMovementControl::peOnGround) && (dwTime - m_dwStartAttackTime > m_dwHitInterval)) {
+			//if (dwTime - m_dwStartAttackTime > m_dwHitInterval) {
+			if (Movement.Environment() == CMovementControl::peOnGround) {
 				
 				m_bActionStarted = true;
 				m_dwStartAttackTime = dwTime;
@@ -34,9 +36,8 @@ void CAI_Rat::Exec_Action(float dt)
 					else
 						m_bActionStarted = false;
 			}
-			else {
+			else
 				m_bActionStarted = false;
-			}
 
 			break;
 		}

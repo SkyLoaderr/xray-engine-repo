@@ -70,14 +70,12 @@ void CAI_Rat::FreeHunting()
 			if (ps_Element(ps_Size() - 1).dwTime - ps_Element(ps_Size() - 2).dwTime < 500)
 				SelectorFreeHunting.m_tDirection.sub(ps_Element(ps_Size() - 2).vPosition,ps_Element(ps_Size() - 1).vPosition);
 			else {
-				/**/
 				Fvector tDistance;
 				tDistance.sub(ps_Element(ps_Size() - 1).vPosition,ps_Element(ps_Size() - 2).vPosition);
 				if (tDistance.magnitude() < .01f)
 					SelectorFreeHunting.m_tDirection.sub(ps_Element(ps_Size() - 2).vPosition,ps_Element(ps_Size() - 1).vPosition);
 				else
 					SelectorFreeHunting.m_tDirection.sub(ps_Element(ps_Size() - 1).vPosition,ps_Element(ps_Size() - 2).vPosition);
-				/**/
 				//SelectorFreeHunting.m_tDirection.sub(ps_Element(ps_Size() - 2).vPosition,ps_Element(ps_Size() - 1).vPosition);
 			}
 		else
@@ -104,6 +102,7 @@ void CAI_Rat::FreeHunting()
 					vfBuildPathToDestinationPoint(0);
 				}
 			}
+	/**/
 
 	SetDirectionLook();
 

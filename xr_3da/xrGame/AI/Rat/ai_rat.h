@@ -100,7 +100,7 @@ class CAI_Rat : public CCustomMonster
 		
 				// action data
 		bool			m_bActionStarted;
-		bool			m_bJumping;
+		bool			m_bFiring;
 		
 		// hit data
 		DWORD			dwHitTime;

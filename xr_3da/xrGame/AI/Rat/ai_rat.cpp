@@ -33,12 +33,12 @@ CAI_Rat::CAI_Rat()
 	m_tpCurrentGlobalAnimation = 0;
 	m_tpCurrentGlobalBlend = 0;
 	m_bActionStarted = false;
-	m_bJumping = false;
 	m_bMobility = true;
 	// event handlers
 	m_tpEventSay = Engine.Event.Handler_Attach("level.entity.say",this);
 	m_tpEventAssignPath = Engine.Event.Handler_Attach("level.entity.path.assign",this);
 	m_dwPatrolPathIndex = -1;
+	m_bFiring = false;
 }
 
 CAI_Rat::~CAI_Rat()
@@ -164,32 +164,31 @@ void CAI_Rat::net_Import(NET_Packet* P)
 
 void CAI_Rat::Exec_Movement	( float dt )
 {
-	if (eCurrentState != aiRatAttackFire)
-		AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,dt);
-	else
-		if (tSavedEnemy) {
-			UpdateTransform();
-			if (m_bActionStarted) {
-				m_bActionStarted = false;
+	AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,dt);
+	if (m_bFiring) {
+		if (m_bActionStarted) {
+			m_bActionStarted = false;
+			if (tSavedEnemy) {
 				Fvector tAcceleration, tVelocity;
 				tVelocity.sub(tSavedEnemy->Position(),vPosition);
 				tVelocity.normalize_safe();
+				tVelocity.mul(m_fJumpSpeed);
 				Movement.SetVelocity(tVelocity);
 				tAcceleration.set(0,0,0);
 				Movement.SetPosition(vPosition);
-				Movement.Calculate	(tAcceleration,0,m_cBodyState == BODY_STATE_STAND ? m_fJumpSpeed : m_fJumpSpeed*.8f,dt > .1f ? .1f : dt,false);
+				Movement.Calculate(tAcceleration,0,m_fJumpSpeed,dt > .1f ? .1f : dt,false);
 				Movement.GetPosition(vPosition);
 			}
-			else {
-				Fvector tAcceleration;
-				tAcceleration.set(0,1,0);
-				tAcceleration.mul(m_fJumpSpeed);
-				Movement.SetPosition(vPosition);
-				Movement.Calculate	(tAcceleration,0,0,dt > .1f ? .1f : dt,false);
-				Movement.GetPosition(vPosition);
-			}
-			UpdateTransform	();
 		}
+		else {
+			Fvector tAcceleration;
+			tAcceleration.set(0,m_fJumpSpeed,0);
+			Movement.SetPosition(vPosition);
+			Movement.Calculate	(tAcceleration,0,0,dt > .1f ? .1f : dt,false);
+			Movement.GetPosition(vPosition);
+		}
+		UpdateTransform();
+	}
 }
 
 void CAI_Rat::OnEvent(EVENT E, DWORD P1, DWORD P2)
