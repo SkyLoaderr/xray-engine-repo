@@ -1527,6 +1527,9 @@
 							<File
 								RelativePath=".\alife_abstract_registry_inline.h">
 							</File>
+							<File
+								RelativePath=".\alife_registry_wrapper.h">
+							</File>
 						</Filter>
 						<Filter
 							Name="anomaly_registry"
@@ -6211,6 +6214,15 @@
 							RelativePath=".\AI_PhraseDialogManager.h">
 						</File>
 						<File
+							RelativePath=".\encyclopedia_article.cpp">
+						</File>
+						<File
+							RelativePath=".\encyclopedia_article.h">
+						</File>
+						<File
+							RelativePath=".\encyclopedia_article_defs.h">
+						</File>
+						<File
 							RelativePath=".\GameTask.cpp">
 						</File>
 						<File
@@ -7122,6 +7134,10 @@
 						<File
 							RelativePath="PHInterpolation.h">
 						</File>
+					</Filter>
+					<Filter
+						Name="BodyEffectors"
+						Filter="">
 						<File
 							RelativePath=".\PHItemList.h">
 						</File>
@@ -7135,6 +7151,10 @@
 						<File
 							RelativePath=".\PHBaseBodyEffector.h">
 						</File>
+					</Filter>
+					<Filter
+						Name="PHNet"
+						Filter="">
 						<File
 							RelativePath=".\PHContactBodyEffector.cpp">
 						</File>
@@ -7235,6 +7255,13 @@
 							Filter="">
 							<File
 								RelativePath=".\PHSimpleCharacter.cpp">
+							</File>
+						</Filter>
+						<Filter
+							Name="SipmpleCharacter"
+							Filter="">
+							<File
+								RelativePath=".\PHSimpleCharacter.h">
 							</File>
 							<File
 								RelativePath=".\PHSimpleCharacter.h">
