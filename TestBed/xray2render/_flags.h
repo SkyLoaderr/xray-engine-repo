@@ -17,8 +17,8 @@ public:
     IC	SelfRef	invert	()											{ flags	=	~flags;		return *this;	}
     IC	SelfRef	invert	(const Self& f)								{ flags	=	~f.flags;	return *this;	}
     IC	SelfRef	invert	(const T mask)								{ flags ^=	mask;		return *this;	}
-	IC	SelfRef	set		(const Self& f)								{ flags =	f.flags;	return *this;	}
-	IC	SelfRef	set		(const T mask)								{ flags	=	mask;		return *this;	}
+	IC	SelfRef	assign	(const Self& f)								{ flags =	f.flags;	return *this;	}
+	IC	SelfRef	assign	(const T mask)								{ flags	=	mask;		return *this;	}
 	IC	SelfRef	set		(const T mask,	BOOL value)					{ if (value) flags|=mask; else flags&=~mask; return *this; }
 	IC 	BOOL	is		(const T mask)						const	{ return mask==(flags&mask);			}
 	IC 	BOOL	is_any	(const T mask)						const	{ return BOOL(flags&mask);				}
