@@ -14,6 +14,7 @@
 CBlender_Model_EbB::CBlender_Model_EbB	()
 {
 	description.CLS		= B_MODEL_EbB;
+	description.version	= 1;
 	strcpy				(oT2_Name,	"$null");
 	strcpy				(oT2_xform,	"$null");
 }

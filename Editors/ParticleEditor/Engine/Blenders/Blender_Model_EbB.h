@@ -10,9 +10,8 @@ class CBlender_Model_EbB : public IBlender
 {
 public:
 	string64	oT2_Name;					// name of secondary texture
-	string64	oT2_xform;					// xform for secondary texture
 public:
-	virtual		LPCSTR		getComment()	{ return "MODEL: env^base";	}
+	virtual		LPCSTR		getComment()	{ return "MODEL: env-map through base";	}
 	virtual		BOOL		canBeLMAPped()	{ return FALSE; }
 
 	virtual		void		Save			(IWriter&	fs);
