@@ -130,7 +130,9 @@ void CBitingAttack::Run()
 	if (flags.is(AF_ENEMY_IS_NOT_REACHABLE) && !b_attack_melee) m_tAction = ACTION_ENEMY_POSITION_APPROACH;
 	
 	// проверить на возможность прыжка
-	if (flags.is(AF_HAS_JUMP_ABILITY)) pJumping->Check(pMonster->Position(),m_tEnemy.obj->Position(),m_tEnemy.obj);
+	if (flags.is(AF_HAS_JUMP_ABILITY)) 
+		if (pJumping->Check(pMonster->Position(),m_tEnemy.obj->Position(),m_tEnemy.obj))
+			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttackHit);
 	
 	// восстановить некоторые переменные
 	if (!b_attack_melee) bEnableBackAttack = true;
@@ -271,7 +273,7 @@ void CBitingAttack::Run()
 		// **********************
 		case ACTION_ROTATION_JUMP: 
 		// **********************
-			
+			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttackHit);
 			pMonster->MotionMan.SetSpecParams	(ASP_ROTATION_JUMP);
 			next_rot_jump_enabled				= m_dwCurrentTime + Random.randI(3000,4000);
 			pMonster->disable_path				();

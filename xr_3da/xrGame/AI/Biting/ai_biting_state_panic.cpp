@@ -43,8 +43,8 @@ void CBitingPanic::Run()
 			pMonster->Path_GetAwayFromPoint	(m_tEnemy.position,20);	
 			pMonster->SetSelectorPathParams ();
 
-			// если не видел врага > 8 сек 
-			if (m_tEnemy.time + 8000 < m_dwCurrentTime) {
+			// если не видел врага > 15 сек 
+			if (m_tEnemy.time + 15000 < m_dwCurrentTime) {
 				m_tAction = ACTION_FACE_BACK_SCARED;
 				pMonster->CMovementManager::m_body.target.yaw = angle_normalize(pMonster->CMovementManager::m_body.target.yaw + PI);
 			}

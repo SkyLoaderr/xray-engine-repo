@@ -26,6 +26,15 @@ bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
 
 	CMonsterMovement::Frame_Finalize				();
 	
+//	// Show patrol path
+//	HDebug->L_Clear();
+//	const CLevel::SPath *P = CPatrolPathManager::get_path();
+//	for (u32 i=0; i < P->tpaWayPoints.size(); i++) {
+//		HDebug->L_AddPoint(P->tpaWayPoints[i].tWayPoint, 0.35f, D3DCOLOR_XRGB(0,255,255));
+//	}
+//
+//	HDebug->SetActive();
+
 	return			(true);		
 }
 

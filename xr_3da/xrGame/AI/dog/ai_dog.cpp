@@ -224,9 +224,6 @@ void CAI_Dog::OnSoundPlay()
 	//if (!Bones.IsActive()) Bones.SetMotion(GetBoneInstance("bip01_head"),AXIS_Y, PI_DIV_6, PI_MUL_2, 1);
 }
 
-void CAI_Dog::LookPosition(Fvector /**pos/**/, float angular_speed)
-{
-}
 
 #define TURN_HEAD_ANGLE PI_DIV_4
 
@@ -290,7 +287,7 @@ void CAI_Dog::UpdateCL()
 		setEnabled(true);			
 
 		// !!!
-		LookPosition(pE->Position());
+		// LookPosition(pE->Position());
 	}
 }
 

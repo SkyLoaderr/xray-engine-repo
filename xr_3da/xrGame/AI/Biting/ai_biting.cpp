@@ -55,6 +55,16 @@ void CAI_Biting::Init()
 	// Инициализация параметров анимации	
 	MotionMan.Init					(this);
 
+
+	CMonsterMovement::Init();
+}
+
+void CAI_Biting::reinit()
+{
+	CSoundPlayer::play(MonsterSpace::eMonsterSoundAttackHit);
+	inherited::reinit();
+	CMonsterMovement::reinit			();
+
 	time_start_stand				=0;
 	bStanding						= false;
 
@@ -64,12 +74,7 @@ void CAI_Biting::Init()
 	CMonsterMovement::Init();
 }
 
-void CAI_Biting::reinit()
-{
-	m_pPhysics_support->in_NetSpawn		();
-	inherited::reinit					();
-	CMonsterMovement::reinit			();
-}
+
 
 void CAI_Biting::Die()
 {

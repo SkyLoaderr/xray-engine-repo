@@ -65,7 +65,7 @@ void CAI_Biting::Think()
 #ifdef DEBUG
 	HDebug->SetActive						(true);
 #endif
-	
+
 }
 
 
