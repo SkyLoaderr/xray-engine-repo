@@ -54,7 +54,7 @@ CCustomMonster::CCustomMonster()
 {
 	Device.seqRender.Add	(this,REG_PRIORITY_LOW-999);
 
-	Weapons					= 0;
+	Weapons	= 0;
 	tWatchDirection.x = 1.f;
 	tWatchDirection.y = tWatchDirection.z = 0.f;
 }
@@ -98,6 +98,10 @@ void CCustomMonster::Load(CInifile* ini, const char* section)
 	m_fWalkAccel			= ini->ReadFLOAT(section,"walk_accel");	
 	m_fJumpSpeed			= ini->ReadFLOAT(section,"jump_speed");
 	m_fRunCoef				= ini->ReadFLOAT(section,"run_coef");
+	//
+	m_fMinSpeed				= ini->ReadFLOAT(section,"min_speed");
+	m_fMaxSpeed				= ini->ReadFLOAT(section,"max_speed");
+	m_fCurSpeed				= m_fMaxSpeed;
 
 	// Motions
 	PKinematics	V			= PKinematics(pVisual);
@@ -117,14 +121,11 @@ void CCustomMonster::Load(CInifile* ini, const char* section)
 	int spine_bone			= PKinematics(pVisual)->LL_BoneID("torso1");
 	PKinematics(pVisual)->LL_GetInstance(spine_bone).set_callback(SpinCallback,this);
 
-	// Pathfinding
-	//fuzzyFollow.Load		(ini,section);
-	//fuzzyAttack.Load		(ini,section);
-	//fuzzyPursuit.Load		(ini,section);
-
 	// Sheduler
 	dwMinUpdate	= 25;
 	dwMaxUpdate	= 200;
+
+	//
 }
 
 void CCustomMonster::g_fireParams(Fvector &fire_pos, Fvector &fire_dir)

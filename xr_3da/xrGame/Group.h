@@ -4,11 +4,11 @@ class	CEntity;
 
 enum	EGroupState
 {
-	gsHoldPosition=0,			//	удерживать позицию				
-	gsNeedBackup,				//	идти ко мне (нужна помощь)		
+	gsFreeHunting=0,			//	свободная охота					
+	gsFollowMe,					//	идти ко мне (нужна помощь)		
 	gsGoInThisDirection,		//	идти по направлению: "бесконечно" 
-	gsGoToThatPosition,			//	идти в заданную позицию:			
-	gsFreeHunting,				//	свободная охота					
+	gsGoToThisPosition,			//	идти в заданную позицию:			
+	gsHoldPosition,				//	удерживать позицию				
 
 	gsLast,
 	gsForceDWORD = DWORD(-1)

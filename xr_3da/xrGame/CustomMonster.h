@@ -59,6 +59,9 @@ public:
 	AI::AIC_Look		q_look;
 	AI::AIC_Action		q_action;
 	Fvector				tWatchDirection;
+	float				m_fMinSpeed;
+	float				m_fMaxSpeed;
+	float				m_fCurSpeed;
 
 	/**
 	stack<AI::CAIState*> STATE;
@@ -162,8 +165,12 @@ public:
 };
 
 namespace AI{
-	#define HIT_REACTION_TIME		30000
-	#define SENSE_REACTION_TIME		30000
+	#define LOST_ENEMY_REACTION_TIME	30000
+	#define HIT_REACTION_TIME			30000
+	#define SENSE_REACTION_TIME			30000
+	#define HIT_JUMP_TIME				300
+	#define SENSE_JUMP_TIME				300
+	#define ATTACK_HIT_REACTION_TIME	300
 }
 
 #endif // !defined(AFX_CUSTOMMONSTER_H__D44439C3_D752_41AE_AD49_C68E5DE3045F__INCLUDED_)

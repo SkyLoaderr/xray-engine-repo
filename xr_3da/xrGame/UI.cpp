@@ -8,11 +8,11 @@
 #include "Group.h"
 
 static LPCSTR group_state_list[gsLast]={
-	{"Hold position"},
-	{"Need backup"},
+	{"Free hunting"},
+	{"Follow me"},
 	{"Go in this direction"},
 	{"Go to that position"},
-	{"Free hunting"}
+	{"Hold position"}
 };
 
 
@@ -150,9 +150,9 @@ bool CUI::OnKeyboardPress(int dik)
 	case DIK_0: SelectGroup(9); break;
 	// set command
 	case DIK_R: SetState(gsHoldPosition);		break;
-	case DIK_T: SetState(gsNeedBackup);			break;
+	case DIK_T: SetState(gsFollowMe);			break;
 	case DIK_Y: SetState(gsGoInThisDirection);	break;
-	case DIK_U: SetState(gsGoToThatPosition);	break;
+	case DIK_U: SetState(gsGoToThisPosition);	break;
 	case DIK_I: SetState(gsFreeHunting);		break;
 	// set trigger
 	case DIK_F: InvertFlag(gtAgressive);		break;

@@ -12,6 +12,8 @@
 #include "..\\..\\CustomMonster.h"
 #include "..\\..\\group.h"
 
+#include "ai_hen_selectors.h"
+
 const DWORD _FB_hit_RelevantTime	= 10;
 const DWORD _FB_sense_RelevantTime	= 10;
 const float _FB_look_speed			= PI;
@@ -53,17 +55,26 @@ class CAI_Hen : public CCustomMonster
 
 	protected:
 		// media
-		sound3D		sndHit[SND_HIT_COUNT];
-		sound3D		sndDie[SND_DIE_COUNT];
+		sound3D			sndHit[SND_HIT_COUNT];
+		sound3D			sndDie[SND_DIE_COUNT];
 		// ai
-		EHenStates	eCurrentState;
-		bool		bStopThinking;
+		EHenStates		eCurrentState;
+		bool			bStopThinking;
 		// hit data
-		DWORD	dwHitTime;
-		Fvector	tHitDir;
+		DWORD			dwHitTime;
+		Fvector			tHitDir;
 		// sense data
-		DWORD	dwSenseTime;
-		Fvector	tSenseDir;
+		DWORD			dwSenseTime;
+		Fvector			tSenseDir;
+		// saved enemy
+		CEntity*		tSavedEnemy;
+		Fvector			tSavedEnemyPosition;
+		DWORD			dwLostEnemyTime;
+		NodeCompressed* tpSavedEnemyNode;
+		DWORD			dwSavedEnemyNodeID;
+		bool			bBuildPathToLostEnemy;
+		// finite state machine
+		stack<EHenStates>	tStateStack;
 		void Die();
 		void UnderFire();
 		void SenseSomething();
@@ -80,6 +91,13 @@ class CAI_Hen : public CCustomMonster
 		void Retreat();
 		void Cover();
 	
+		CHenSelectorAttack		SelectorAttack;
+		CHenSelectorFreeHunting SelectorFreeHunting;
+		CHenSelectorFollow		SelectorFollow;
+		CHenSelectorPursuit		SelectorPursuit;
+		CHenSelectorUnderFire	SelectorUnderFire;
+
+		void SetLessCoverLook(NodeCompressed *tNode);
 	public:
 					  CAI_Hen();
 		virtual		  ~CAI_Hen();
@@ -88,9 +106,10 @@ class CAI_Hen : public CCustomMonster
 		virtual void  SenseSignal(int amount, Fvector& vLocalDir, CEntity* who);
 		virtual void  Death();
 		virtual void  Load( CInifile* ini, const char* section );
+		virtual BOOL  Spawn(BOOL bLocal, int server_id, int team, int squad, int group, Fvector4& o_pos);
 		virtual void  Think();
 		virtual float EnemyHeuristics(CEntity* E);
 		virtual void  SelectEnemy(SEnemySelected& S);
 };
-
+		
 #endif

@@ -105,5 +105,5 @@ void CCustomMonster::Exec_Action	( float dt )
 
 void CCustomMonster::Exec_Movement	( float dt )
 {
-	AI_Path.Calculate(this,vPosition,vPosition,5,dt);
+	AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,dt);
 }

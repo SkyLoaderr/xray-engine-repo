@@ -55,7 +55,7 @@ __forceinline float ffCriteria(NodeCompressed tNode0, NodeCompressed tNode1)
 	/**/
 }
 
-__forceinline float ffAttackCriteria(NodeCompressed tNode0, NodeCompressed tNode1, NodeCompressed tEnemyNode)
+__forceinline float ffAttackCriteria(NodeCompressed tNode0, NodeCompressed tNode1, NodeCompressed tEnemyNode, float fOptimalEnemyDistance)
 {
 	/**
 	float x1 = (fSize*(float)(tNode0.p1.x) + fSize*(float)(tNode0.p0.x))/2;
@@ -76,7 +76,7 @@ __forceinline float ffAttackCriteria(NodeCompressed tNode0, NodeCompressed tNode
 	float y2 = (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
 	float z2 = (float)(tNode1.p1.z) + (float)(tNode1.p0.z);
 
-	/**
+	/**/
 	float x3 = (float)(tEnemyNode.p1.x) + (float)(tEnemyNode.p0.x);
 	float y3 = (float)(tEnemyNode.p1.y) + (float)(tEnemyNode.p0.y);
 	float z3 = (float)(tEnemyNode.p1.z) + (float)(tEnemyNode.p0.z);
@@ -86,8 +86,8 @@ __forceinline float ffAttackCriteria(NodeCompressed tNode0, NodeCompressed tNode
 
 	float fLight = (float)(tNode1.light)/255.f;
 	
-	return(fLight*10 + fCover*5 + 30*(float)sqrt((float)(fSize2*(SQR(x2 - x1) + SQR(z2 - z1)) + fYSize2*SQR(y2 - y1))));
-	//return(0.f*SQR((float)sqrt((float)(fSize2*(SQR(x3 - x1) + SQR(z3 - z1)) + fYSize2*SQR(y3 - y1))) - OPTINAL_ENEMY_DISTANCE) + fLight*10 + fCover*5 + 30*(float)sqrt((float)(fSize2*(SQR(x2 - x1) + SQR(z2 - z1)) + fYSize2*SQR(y2 - y1))));
+	//return(fLight*10 + fCover*5 + 30*(float)sqrt((float)(fSize2*(SQR(x2 - x1) + SQR(z2 - z1)) + fYSize2*SQR(y2 - y1))));
+	return(40.f*SQR((float)sqrt((float)(fSize2*(SQR(x3 - x1) + SQR(z3 - z1)) + fYSize2*SQR(y3 - y1))) - fOptimalEnemyDistance) + fLight*10 + fCover*5 + 30*(float)sqrt((float)(fSize2*(SQR(x2 - x1) + SQR(z2 - z1)) + fYSize2*SQR(y2 - y1))));
 	/**/
 }
 
@@ -140,6 +140,7 @@ void CAI_Space::vfUnloadSearch()
 
 float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path& Result, MemberNodes& MemberPlaces)
 {
+	Device.Statistic.AI_Path.Begin();
 	// initialization
 	uint uiHeap = 0;
 
@@ -196,6 +197,7 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 			for (uint j=1; tpTemp; tpTemp = tpTemp->tpBack, j++)
 				Result.Nodes[i - j] = tpTemp->iIndex;
 				
+			Device.Statistic.AI_Path.End();
 			return(fDistance);
 		}
 		
@@ -311,11 +313,13 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 	for ( ii=0; ii<MemberPlaces.size(); ii++)
 		q_mark[MemberPlaces[ii]] = false;
 
+	Device.Statistic.AI_Path.End();
 	return(MAX_VALUE);
 }
 
-float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path& Result, MemberNodes& MemberPlaces, NodeCompressed& tEnemyNode)
+float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path& Result, MemberNodes& MemberPlaces, NodeCompressed& tEnemyNode, float fOptimalEnemyDistance)
 {
+	Device.Statistic.AI_Path.Begin();
 	// initialization
 	uint uiHeap = 0;
 
@@ -335,7 +339,7 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 	tpOpenedList->tpOpenedNext = tpTemp;
 	tpTemp->iIndex = dwStartNode;
 	tpTemp->g = 0.0;
-	tpTemp->h = ffAttackCriteria(mNodeStructure(dwStartNode),mNodeStructure(dwGoalNode), tEnemyNode);
+	tpTemp->h = ffAttackCriteria(mNodeStructure(dwStartNode),mNodeStructure(dwGoalNode), tEnemyNode, fOptimalEnemyDistance);
 	tpTemp->tpOpenedPrev = tpOpenedList;
 	tpTemp->ucOpenCloseMask = OPEN_MASK;
 	ASSIGN_GOODNESS(tpTemp)
@@ -362,7 +366,7 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 			tpTemp1 = tpBestNode;
 			tpTemp = tpTemp1->tpBack;
 			for (uint i=1; tpTemp; tpTemp1 = tpTemp, tpTemp = tpTemp->tpBack, i++)
-				fDistance += ffAttackCriteria(mNodeStructure(tpTemp1->iIndex),mNodeStructure(tpTemp->iIndex), tEnemyNode);
+				fDistance += ffAttackCriteria(mNodeStructure(tpTemp1->iIndex),mNodeStructure(tpTemp->iIndex), tEnemyNode, fOptimalEnemyDistance);
 
 			Result.Nodes.resize(i);
 
@@ -372,6 +376,7 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 			for (uint j=1; tpTemp; tpTemp = tpTemp->tpBack, j++)
 				Result.Nodes[i - j] = tpTemp->iIndex;
 				
+			Device.Statistic.AI_Path.End();
 			return(fDistance);
 		}
 		
@@ -402,7 +407,7 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 					}
 					
 					// initialize node
-					float dG = tpBestNode->g + ffAttackCriteria(mNodeStructure(tpBestNode->iIndex),mNodeStructure(iNodeIndex), tEnemyNode);
+					float dG = tpBestNode->g + ffAttackCriteria(mNodeStructure(tpBestNode->iIndex),mNodeStructure(iNodeIndex), tEnemyNode, fOptimalEnemyDistance);
 					
 					// check if this node is already in the opened list
 					if (tpTemp->ucOpenCloseMask) {
@@ -444,10 +449,10 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 					tpTemp2 = tpaIndexes[iNodeIndex] = taHeap + uiHeap++;
 					tpTemp2->iIndex = iNodeIndex;
 					tpTemp2->tpBack = tpBestNode;
-					tpTemp2->g = tpBestNode->g + ffAttackCriteria(mNodeStructure(tpBestNode->iIndex),mNodeStructure(iNodeIndex), tEnemyNode);
+					tpTemp2->g = tpBestNode->g + ffAttackCriteria(mNodeStructure(tpBestNode->iIndex),mNodeStructure(iNodeIndex), tEnemyNode, fOptimalEnemyDistance);
 
 					// put that node to the opened list if wasn't found there and in the closed one
-					tpTemp2->h = ffAttackCriteria(mNodeStructure(dwGoalNode),mNodeStructure(iNodeIndex), tEnemyNode);
+					tpTemp2->h = ffAttackCriteria(mNodeStructure(dwGoalNode),mNodeStructure(iNodeIndex), tEnemyNode, fOptimalEnemyDistance);
 					ASSIGN_GOODNESS(tpTemp2)
 					
 					tpTemp  = tpOpenedList;
@@ -487,5 +492,6 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 	for ( ii=0; ii<MemberPlaces.size(); ii++)
 		q_mark[MemberPlaces[ii]] = false;
 
+	Device.Statistic.AI_Path.End();
 	return(MAX_VALUE);
 }

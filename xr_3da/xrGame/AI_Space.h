@@ -22,7 +22,7 @@ namespace AI {
 		MemberPlacement taDestMemberPositions;
 		MemberNodes		taDestMemberNodes;
 		EntityVec		taMembers;
-
+		#define MAX_NODE_ESTIMATION_COST 10000000.f
 		// Estimator itself: 
 		// Node, SqrDistance2node, stop/continue
 		// Return: min - best, max - worse
@@ -63,7 +63,7 @@ public:
 	void			Load			(LPCSTR name);
 	void			Render			();
 
-	void			q_RangeX		(DWORD StartNode, const Fvector& Pos,	float Range,	AI::NodeEstimator& Estimator);
+	void			q_Range			(DWORD StartNode, const Fvector& Pos,	float Range,	AI::NodeEstimator& Estimator, DWORD dwLeaderNode);
 	//void			vfSearchNodeInTheDirection(DWORD StartNode, const Fvector& Pos,	float Range,	AI::NodeEstimator& Estimator, MemberNodes& MemberPlaces, Fvector tSearchDirection);
 	void			q_Range			(DWORD StartNode, const Fvector& Pos,	float Range,	AI::NodeEstimator& Estimator);
 	void			q_Path			(DWORD StartNode, DWORD GoalNode,		AI::Path&	Result);
@@ -71,7 +71,7 @@ public:
 
 	// yet another A* search
 	float			vfFindTheXestPath(DWORD StartNode, DWORD GoalNode, AI::Path& Result, MemberNodes& MemberPlaces);
-	float			vfFindTheXestPath(DWORD StartNode, DWORD GoalNode, AI::Path& Result, MemberNodes& MemberPlaces, NodeCompressed& tEnemyNode);
+	float			vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path& Result, MemberNodes& MemberPlaces, NodeCompressed& tEnemyNode, float fOptimalEnemyDistance);
 	void			vfLoadSearch();
 	void			vfUnloadSearch();
 	// 
