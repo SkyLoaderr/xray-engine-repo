@@ -4,6 +4,9 @@ class CPHScriptCondition:
 	public CPHCondition
 {
 	luabind::functor<bool>			*m_lua_function;
+
+							CPHScriptCondition				(const CPHScriptCondition &func) {m_lua_function=func.m_lua_function;}	;
+
 public:
 							CPHScriptCondition				(const luabind::functor<bool> &func)	;
 	virtual					~CPHScriptCondition				()										;
