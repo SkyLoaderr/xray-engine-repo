@@ -30,10 +30,9 @@ CSector*	CRender::getSectorActive	()					{ return pLastSector;								}
 CVisual*	CRender::getVisual			(int id)			{ VERIFY(id<Visuals.size());	return Visuals[id];	}
 DWORD		CRender::getFVF				(int id)			{ VERIFY(id<FVF.size());		return FVF[id];		}
 IDirect3DVertexBuffer8*	CRender::getVB	(int id)			{ VERIFY(id<VB.size());			return VB[id];		}
-void		CRender::getLights			(Fvector &pos, float fRadius, vector<xrLIGHT*> dest)
-{
-	L_DB.Select	(pos,fRadius,dest);
-}
+void		CRender::L_add				(CLightPPA* L)		{ VERIFY(L); L_Dynamic.Add(L);						}
+void		CRender::L_select			(Fvector &pos, float fRadius, vector<xrLIGHT*> dest)
+{	L_DB.Select	(pos,fRadius,dest);		}
 
 BOOL		CRender::occ_visible		(sPoly& P)			{ return HOM.visible(P);							}
 BOOL		CRender::occ_visible		(Fbox& P)			{ return HOM.visible(P);							}

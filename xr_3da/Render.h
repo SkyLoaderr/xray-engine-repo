@@ -12,6 +12,7 @@ class ENGINE_API	CPortal;
 class ENGINE_API	CVisual;
 class ENGINE_API	CObject;
 class ENGINE_API	xrLIGHT;
+class ENGINE_API	CLightPPA;
 
 // definition
 class	ENGINE_API	CRender_interface	:

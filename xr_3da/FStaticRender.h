@@ -94,7 +94,6 @@ public:
 	virtual CVisual*				getVisual				(int id);
 	virtual DWORD					getFVF					(int id);
 	virtual IDirect3DVertexBuffer8*	getVB					(int id);
-	virtual void					getLights				(Fvector &pos, float fRadius, vector<xrLIGHT*>	dest);
 	virtual CSector*				detectSector			(Fvector& P);
 	
 	// Main 
@@ -104,6 +103,10 @@ public:
 	virtual void					add_Lights				(vector<WORD> &V);
 	virtual void					add_Glows				(vector<WORD> &V);
 	virtual void					add_Patch				(Shader* S, Fvector& P1, float s, float a, BOOL bNearer);
+	
+	// Lighting
+	virtual void					L_add					(CLightPPA* L	);
+	virtual void					L_select				(Fvector &pos, float fRadius, vector<xrLIGHT*>	dest);
 	
 	// Models
 	virtual CVisual*				model_CreatePS			(LPCSTR name, PS::SEmitter* E);
