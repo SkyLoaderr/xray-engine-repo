@@ -35,8 +35,9 @@ function action(obj,...)
 		end
 		i = i + 1
 	end
-	if (obj ~= nil)
+	if (obj ~= nil) then
 		obj:command(act)
+	end
 	return	entity_action(act)
 end
 
