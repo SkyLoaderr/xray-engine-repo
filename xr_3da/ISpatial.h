@@ -32,6 +32,7 @@ enum
 	STYPE_COLLIDEABLE			= (1<<2),
 	STYPE_VISIBLEFORAI			= (1<<3),
 	STYPE_REACTTOSOUND			= (1<<4),
+	STYPE_PHYSIC				= (1<<4),
 };
 //////////////////////////////////////////////////////////////////////////
 // Comment: 
