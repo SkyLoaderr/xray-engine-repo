@@ -414,7 +414,7 @@ bool CScriptMonster::bfAssignParticles(CEntityAction *tpEntityAction)
 	return			(!l_tParticleAction.m_bCompleted);
 }
 
-bool CScriptMonster::bfAssignObject(CEntityAction * /**tpEntityAction/**/)
+bool CScriptMonster::bfAssignObject(CEntityAction *tpEntityAction)
 {
 	return			(GetCurrentAction() && !GetCurrentAction()->m_tObjectAction.m_bCompleted);
 }
