@@ -250,7 +250,8 @@ void CALifeSimulatorBase::unregister_object	(CSE_ALifeDynamicObject *object, boo
 		scheduled().remove			(object);
 	}
 	else
-		graph().level().remove		(object);
+		if (object->ID_Parent == 0xffff)
+			graph().level().remove	(object);
 }
 
 void CALifeSimulatorBase::release	(CSE_Abstract *abstract, bool alife_query)
