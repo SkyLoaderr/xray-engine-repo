@@ -172,75 +172,151 @@ void		sort_tlist
 
 void CRender::render_scenegraph	()
 {
+	// **************************************************** NORMAL
 	// Perform sorting based on ScreenSpaceArea
 	// Sorting by SSA and changes minimizations
-	mapNormalVS&	vs				= mapNormal;
-	vs.getANY_P						(lstVS);
-	std::sort						(lstVS.begin(), lstVS.end(), cmp_vs);
-	for (u32 vs_id=0; vs_id<lstVS.size(); vs_id++)
 	{
-		mapNormalVS::TNode*	Nvs			= lstVS[vs_id];
-		RCache.set_VS					(Nvs->key);	
-
-		mapNormalPS&		ps			= Nvs->val;		ps.ssa	= 0;
-		ps.getANY_P						(lstPS);
-		std::sort						(lstPS.begin(), lstPS.end(), cmp_ps);
-		for (u32 ps_id=0; ps_id<lstPS.size(); ps_id++)
+		mapNormalVS&	vs				= mapNormal;
+		vs.getANY_P						(lstVS);
+		std::sort						(lstVS.begin(), lstVS.end(), cmp_vs);
+		for (u32 vs_id=0; vs_id<lstVS.size(); vs_id++)
 		{
-			mapNormalPS::TNode*	Nps			= lstPS[ps_id];
-			RCache.set_PS					(Nps->key);	
+			mapNormalVS::TNode*	Nvs			= lstVS[vs_id];
+			RCache.set_VS					(Nvs->key);	
 
-			mapNormalCS&		cs			= Nps->val;		cs.ssa	= 0;
-			cs.getANY_P						(lstCS);
-			std::sort						(lstCS.begin(), lstCS.end(), cmp_cs);
-			for (u32 cs_id=0; cs_id<lstCS.size(); cs_id++)
+			mapNormalPS&		ps			= Nvs->val;		ps.ssa	= 0;
+			ps.getANY_P						(lstPS);
+			std::sort						(lstPS.begin(), lstPS.end(), cmp_ps);
+			for (u32 ps_id=0; ps_id<lstPS.size(); ps_id++)
 			{
-				mapNormalCS::TNode*	Ncs			= lstCS[cs_id];
-				RCache.set_xform_world			(Fidentity);
-				RCache.set_Constants			(Ncs->key);
+				mapNormalPS::TNode*	Nps			= lstPS[ps_id];
+				RCache.set_PS					(Nps->key);	
 
-				mapNormalStates&	states		= Ncs->val;		states.ssa	= 0;
-				states.getANY_P					(lstStates);
-				std::sort						(lstStates.begin(), lstStates.end(), cmp_states);
-				for (u32 state_id=0; state_id<lstStates.size(); state_id++)
+				mapNormalCS&		cs			= Nps->val;		cs.ssa	= 0;
+				cs.getANY_P						(lstCS);
+				std::sort						(lstCS.begin(), lstCS.end(), cmp_cs);
+				for (u32 cs_id=0; cs_id<lstCS.size(); cs_id++)
 				{
-					mapNormalStates::TNode*	Nstate		= lstStates[state_id];
-					RCache.set_States					(Nstate->key);
+					mapNormalCS::TNode*	Ncs			= lstCS[cs_id];
+					RCache.set_Constants			(Ncs->key);
 
-					mapNormalTextures&		tex			= Nstate->val;	tex.ssa =	0;
-					sort_tlist							(lstTextures,lstTexturesTemp,tex,true);
-					for (u32 tex_id=0; tex_id<lstTextures.size(); tex_id++)
+					mapNormalStates&	states		= Ncs->val;		states.ssa	= 0;
+					states.getANY_P					(lstStates);
+					std::sort						(lstStates.begin(), lstStates.end(), cmp_states);
+					for (u32 state_id=0; state_id<lstStates.size(); state_id++)
 					{
-						mapNormalTextures::TNode*	Ntex		= lstTextures[tex_id];
-						RCache.set_Textures						(Ntex->key);
+						mapNormalStates::TNode*	Nstate		= lstStates[state_id];
+						RCache.set_States					(Nstate->key);
 
-						mapNormalVB&				vb			= Ntex->val;	vb.ssa	=	0;
-						vb.getANY_P								(lstVB);
-						std::sort								(lstVB.begin(), lstVB.end(), cmp_vb);
-						for (u32 vb_id=0; vb_id<lstVB.size(); vb_id++)
+						mapNormalTextures&		tex			= Nstate->val;	tex.ssa =	0;
+						sort_tlist							(lstTextures,lstTexturesTemp,tex,true);
+						for (u32 tex_id=0; tex_id<lstTextures.size(); tex_id++)
 						{
-							mapNormalVB::TNode*			Nvb		= lstVB[vb_id];
-							// no need to setup that shit - visual defined
+							mapNormalTextures::TNode*	Ntex		= lstTextures[tex_id];
+							RCache.set_Textures						(Ntex->key);
 
-							mapNormalItems&				items	= Nvb->val;		items.ssa	= 0;
-							mapNormal_Render						(items);
+							mapNormalVB&				vb			= Ntex->val;	vb.ssa	=	0;
+							vb.getANY_P								(lstVB);
+							std::sort								(lstVB.begin(), lstVB.end(), cmp_vb);
+							for (u32 vb_id=0; vb_id<lstVB.size(); vb_id++)
+							{
+								mapNormalVB::TNode*			Nvb		= lstVB[vb_id];
+								// no need to setup that shit - visual defined
+
+								mapNormalItems&				items	= Nvb->val;		items.ssa	= 0;
+								mapNormal_Render					(items);
+							}
+							lstVB.clear				();
+							vb.clear				();
 						}
-						lstVB.clear				();
-						vb.clear				();
+						lstTextures.clear		();
+						lstTexturesTemp.clear	();
+						tex.clear				();
 					}
-					lstTextures.clear		();
-					lstTexturesTemp.clear	();
-					tex.clear				();
+					lstStates.clear			();
+					states.clear			();
 				}
-				lstStates.clear			();
-				states.clear			();
+				lstCS.clear				();
+				cs.clear				();
 			}
-			lstCS.clear				();
-			cs.clear				();
+			lstPS.clear				();
+			ps.clear				();
 		}
-		lstPS.clear				();
-		ps.clear				();
+		lstVS.clear				();
+		vs.clear				();
 	}
-	lstVS.clear				();
-	vs.clear				();
+
+	// **************************************************** MATRIX
+	// Perform sorting based on ScreenSpaceArea
+	// Sorting by SSA and changes minimizations
+	{
+		mapMatrixVS&	vs				= mapMatrix;
+		vs.getANY_P						(lstVS);
+		std::sort						(lstVS.begin(), lstVS.end(), cmp_vs);
+		for (u32 vs_id=0; vs_id<lstVS.size(); vs_id++)
+		{
+			mapMatrixVS::TNode*	Nvs			= lstVS[vs_id];
+			RCache.set_VS					(Nvs->key);	
+
+			mapMatrixPS&		ps			= Nvs->val;		ps.ssa	= 0;
+			ps.getANY_P						(lstPS);
+			std::sort						(lstPS.begin(), lstPS.end(), cmp_ps);
+			for (u32 ps_id=0; ps_id<lstPS.size(); ps_id++)
+			{
+				mapMatrixPS::TNode*	Nps			= lstPS[ps_id];
+				RCache.set_PS					(Nps->key);	
+
+				mapMatrixCS&		cs			= Nps->val;		cs.ssa	= 0;
+				cs.getANY_P						(lstCS);
+				std::sort						(lstCS.begin(), lstCS.end(), cmp_cs);
+				for (u32 cs_id=0; cs_id<lstCS.size(); cs_id++)
+				{
+					mapMatrixCS::TNode*	Ncs			= lstCS[cs_id];
+					RCache.set_Constants			(Ncs->key);
+
+					mapMatrixStates&	states		= Ncs->val;		states.ssa	= 0;
+					states.getANY_P					(lstStates);
+					std::sort						(lstStates.begin(), lstStates.end(), cmp_states);
+					for (u32 state_id=0; state_id<lstStates.size(); state_id++)
+					{
+						mapMatrixStates::TNode*	Nstate		= lstStates[state_id];
+						RCache.set_States					(Nstate->key);
+
+						mapMatrixTextures&		tex			= Nstate->val;	tex.ssa =	0;
+						sort_tlist							(lstTextures,lstTexturesTemp,tex,true);
+						for (u32 tex_id=0; tex_id<lstTextures.size(); tex_id++)
+						{
+							mapMatrixTextures::TNode*	Ntex		= lstTextures[tex_id];
+							RCache.set_Textures						(Ntex->key);
+
+							mapMatrixVB&				vb			= Ntex->val;	vb.ssa	=	0;
+							vb.getANY_P								(lstVB);
+							std::sort								(lstVB.begin(), lstVB.end(), cmp_vb);
+							for (u32 vb_id=0; vb_id<lstVB.size(); vb_id++)
+							{
+								mapMatrixVB::TNode*			Nvb		= lstVB[vb_id];
+								// no need to setup that shit - visual defined
+
+								mapMatrixItems&				items	= Nvb->val;		items.ssa	= 0;
+								mapMatrix_Render					(items);
+							}
+							lstVB.clear				();
+							vb.clear				();
+						}
+						lstTextures.clear		();
+						lstTexturesTemp.clear	();
+						tex.clear				();
+					}
+					lstStates.clear			();
+					states.clear			();
+				}
+				lstCS.clear				();
+				cs.clear				();
+			}
+			lstPS.clear				();
+			ps.clear				();
+		}
+		lstVS.clear				();
+		vs.clear				();
+	}
 }

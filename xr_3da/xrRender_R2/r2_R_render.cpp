@@ -24,10 +24,12 @@ void CRender::Render	()
 		RCache.set_xform_project	(Device.mProject);
 
 		// Rendering
+		/*
 		rmNear						();
 		mapHUD.traverseLR			(sorted_L1);
 		mapHUD.clear				();
 		rmNormal					();
+		*/
 
 		// Restore projection
 		Device.mProject				= Pold;

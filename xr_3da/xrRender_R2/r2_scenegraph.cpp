@@ -4,6 +4,7 @@
 #include "..\fmesh.h"
 #include "..\fcached.h"
 #include "..\flod.h"
+#include "..\ftreevisual.h"
 
 using namespace SceneGraph;
 
@@ -110,7 +111,7 @@ void CRender::InsertSG_Static	(IVisual *pVisual)
 		N->val.Matrix			= Fidentity;
 		N->val.vCenter.set		(pVisual->vis.sphere.P);
 	} else {
-		SPass&									pass	= *sh->Passes.front();
+		SPass&						pass	= *sh->Passes.front();
 		mapNormal_T&				map		= mapNormal;		//	[sh->Flags.iPriority];
 		mapNormalVS::TNode*			Nvs		= map.insert		(pass.vs);
 		mapNormalPS::TNode*			Nps		= Nvs->val.insert	(pass.ps);
@@ -232,6 +233,13 @@ void CRender::add_leafs_Static(IVisual *pVisual)
 			/*
 			}
 			*/
+		}
+		break;
+	case MT_TREE:
+		{
+			FTreeVisual*	pV	= (FTreeVisual*) pVisual;
+			val_pTransform		= &pV->xform;
+			InsertSG_Dynamic	(pV,pV->vis.sphere.P);
 		}
 		break;
 	default:
@@ -366,10 +374,17 @@ void CRender::add_Static(IVisual *pVisual, u32 planes)
 			*/
 		}
 		break;
+	case MT_TREE:
+		{
+			FTreeVisual*	pV	= (FTreeVisual*) pVisual;
+			val_pTransform		= &pV->xform;
+			InsertSG_Dynamic	(pV,pV->vis.sphere.P);
+		}
+		break;
 	default:
 		{
 			// General type of visual
-			InsertSG_Static(pVisual);
+			InsertSG_Static		(pVisual);
 		}
 		break;
 	}

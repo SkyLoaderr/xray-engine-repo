@@ -23,9 +23,10 @@ protected:
 	R_constant*					c_l_dir;
 	R_constant*					c_l_color;
 
-	Fmatrix						xform;
 	Fvector4					c_scale;
 	Fvector4					c_bias;
+public:
+	Fmatrix						xform;
 public:
 	virtual void Render			(float LOD		);									// LOD - Level Of Detail  [0.0f - min, 1.0f - max], Ignored
 	virtual void Load			(LPCSTR N, IReader *data, u32 dwFlags);
