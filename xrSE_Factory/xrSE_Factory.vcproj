@@ -288,6 +288,27 @@
 				RelativePath=".\FastDelegate.h">
 			</File>
 			<Filter
+				Name="IntrusivePtr"
+				Filter="">
+				<File
+					RelativePath=".\intrusive_ptr.h">
+				</File>
+				<File
+					RelativePath=".\intrusive_ptr_inline.h">
+				</File>
+			</Filter>
+			<Filter
+				Name="AComponents"
+				Filter="">
+				<Filter
+					Name="SpaceRestrictionManager"
+					Filter="">
+					<File
+						RelativePath=".\restriction_space.h">
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
 				Name="ASound"
 				Filter="">
 				<File
