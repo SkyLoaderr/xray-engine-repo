@@ -148,8 +148,10 @@ end
 function fract:get_capacity()
 	i = {}
 	for k,v in self.Job do
-		if i[v.state] == nil then i[v.state] = 0 end
-		i[v.state] = i[v.state] + 1
+		for kk,vv in v.state do
+			if i[vv] == nil then i[vv] = 0 end
+			i[vv] = i[vv] + 1
+		end
 	end
 	t = 0
 	for k,v in i do
