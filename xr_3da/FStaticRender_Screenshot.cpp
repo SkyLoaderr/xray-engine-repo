@@ -74,7 +74,7 @@ void CRender::Screenshot		()
 			);
 	}
 
-	// 
+	/*
 	Fmatrix	mInv;	mInv.invert	(Device.mView);
 	float	fFAR	= 100.f;
 	XRC.ray_options	(CDB::OPT_CULL|CDB::OPT_ONLYNEAREST);
@@ -98,6 +98,7 @@ void CRender::Screenshot		()
 			}
 		}
 	}
+	*/
 
 	// 
     TGAdesc			p;
