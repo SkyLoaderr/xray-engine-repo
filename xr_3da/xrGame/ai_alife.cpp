@@ -25,6 +25,9 @@ void CAI_ALife::Load()
 	shedule_Max					= 10000;
 	m_dwNPCBeingProcessed		=     0;
 	m_qwMaxProcessTime			=   100*CPU::cycles_per_microsec;
+	
+	m_tNPCHeader.dwVersion		= ALIFE_VERSION;
+	m_tNPCHeader.dwCount		= 0;
 
 	FILE_NAME	caFileName;
 	if (!Engine.FS.Exist(caFileName, Path.GameData, "game.spawn"))
@@ -71,9 +74,12 @@ void CAI_ALife::Load()
 	R_ASSERT(tpStream->FindChunk(ALIFE_CHUNK_DATA));
 	m_tpNPC.resize(m_tNPCHeader.dwCount);
 	for (int i=0; i<(int)m_tNPCHeader.dwCount; i++) {
-		m_tpNPC[i].wCount			= tpStream->Rword();
-		m_tpNPC[i].wSpawnPoint		= tpStream->Rword();
-		m_tpNPC[i].dwLastUpdateTime	= tpStream->Rdword();
+		m_tpNPC[i].wCount				= tpStream->Rword();
+		m_tpNPC[i].wSpawnPoint			= tpStream->Rword();
+		m_tpNPC[i].dwLastUpdateTime		= tpStream->Rdword();
+		m_tpNPC[i].tpUsefulObject.resize(tpStream->Rword());
+		for (int j=0; j<(int)m_tpNPC[i].tpUsefulObject.size(); j++)
+			tpStream->Read(&(m_tpNPC[i].tpUsefulObject[j]),sizeof(SUsefulObject));
 	}
 	Engine.FS.Close(tpStream);
 }
@@ -93,6 +99,9 @@ void CAI_ALife::Save()
 		tStream.Wword		(m_tpNPC[i].wCount);
 		tStream.Wword		(m_tpNPC[i].wSpawnPoint);
 		tStream.Wdword		(m_tpNPC[i].dwLastUpdateTime);
+		tStream.Wword		((u16)m_tpNPC[i].tpUsefulObject.size());
+		for (int j=0; j<(int)m_tpNPC[i].tpUsefulObject.size(); j++)
+            tStream.write(&(m_tpNPC[i].tpUsefulObject[j]),sizeof(SUsefulObject));
 	}
 	tStream.close_chunk	();
 	
@@ -117,9 +126,11 @@ void CAI_ALife::Generate()
 			}
 		}
 		SALifeNPC tALifeNPC;
-		tALifeNPC.wSpawnPoint	= (u16)k;
-		tALifeNPC.wCount		= m_tpSpawnPoint[k].wCount;
-		m_tpNPC.push_back		(tALifeNPC);
+		tALifeNPC.wSpawnPoint			= (u16)k;
+		tALifeNPC.wCount				= m_tpSpawnPoint[k].wCount;
+		tALifeNPC.dwLastUpdateTime		= Level().timeServer();
+		tALifeNPC.tpUsefulObject.clear	();
+		m_tpNPC.push_back				(tALifeNPC);
 		i = m;	
 	}
 	m_tNPCHeader.dwVersion	= ALIFE_VERSION;
@@ -137,6 +148,8 @@ void CAI_ALife::Update(u32 dt)
 			if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i > m_qwMaxProcessTime)
 				break;
 		}
+	u64 t2x = CPU::GetCycleCount() - qwStartTime;
+	Msg("* %.3f microseconds",CPU::cycles2microsec*t2x);
 }
 
 void CAI_ALife::vfProcessNPC(u32 dwNPCIndex)
