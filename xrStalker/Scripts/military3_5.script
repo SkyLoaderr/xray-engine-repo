@@ -31,6 +31,7 @@ function Projector:process ()
 	   if self.time <= 0 then
 		  self.time = 0
 		  self.in_process = false
+		  printf ("Time out !")
 	   end
 	   return
 	end
@@ -51,7 +52,6 @@ function Projector:process ()
 	   point = self.points[self.current]
 	end
 
-	printf ("Projector target %f, %f, %f", point.x, point.y, point.z)
 	action (self.projector, look (point, self.speedh, self.speedv))
 
 	self.time = game.time () + 5000
