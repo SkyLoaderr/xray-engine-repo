@@ -295,7 +295,23 @@ HRESULT	CRender::shader_compile			(
 		defines[def_it].Definition	=	"1";
 		def_it						++;
 	}
-	
+	// skinning
+	if (0==m_skinning)		{
+		defines[def_it].Name		=	"SKIN_0";
+		defines[def_it].Definition	=	"1";
+		def_it						++;
+	}
+	if (1==m_skinning)		{
+		defines[def_it].Name		=	"SKIN_1";
+		defines[def_it].Definition	=	"1";
+		def_it						++;
+	}
+	if (2==m_skinning)		{
+		defines[def_it].Name		=	"SKIN_2";
+		defines[def_it].Definition	=	"1";
+		def_it						++;
+	}
+
 	// finish
 	defines[def_it].Name			=	0;
 	defines[def_it].Definition		=	0;
