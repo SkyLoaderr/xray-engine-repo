@@ -139,9 +139,6 @@ void CSector::Save(CFS_Base &fs)
 	// Portals
 	fs.write_chunk(fsP_Portals,Portals.begin(),Portals.size()*sizeof(WORD));
 
-	// Occluders
-	fs.write_chunk(fsP_Occluders,Occluders.begin(),Occluders.size()*sizeof(b_occluder));
-
 	// Glows
 	fs.write_chunk(fsP_Glows,Glows.begin(),Glows.size()*sizeof(WORD));
 

@@ -13,7 +13,6 @@ class CSector
 	vector<WORD>		Portals;
 	vector<WORD>		Glows;
 	vector<WORD>		Lights;
-	vector<b_occluder>	Occluders;
 public: 
 	void add_portal		(WORD P)		{ Portals.push_back(P);		}
 	void add_occluder	(b_occluder& O)	{ Occluders.push_back(O);	}

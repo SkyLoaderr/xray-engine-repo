@@ -19,7 +19,6 @@ enum fsEVisChunks {
 	fsV_NODES,
 	fsV_LIGHTS,
 	fsV_GLOWS,
-	fsV_OCCLUDERS,
 	fsV_MAP,
 	fsV_forcedword = DWORD(-1)
 };
