@@ -51,7 +51,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 -- Function
 ----------------------------------------------------------------------------------------------------------------------
-function go_position(obj, position)
+function setPosition(obj, position)
 	xr_motivator.storage[obj:id()].state.position = position
 end
 
