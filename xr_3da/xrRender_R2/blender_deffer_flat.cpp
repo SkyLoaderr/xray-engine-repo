@@ -23,18 +23,17 @@ void	CBlender_deffer_flat::Compile(CBlender_Compile& C)
 	// codepath is the same, only the shaders differ
 	switch(C.iElement) 
 	{
-	case 0: 	// deffer
-		uber_deffer		(C,"base","base",false);
+	case SE_R2_NORMAL_HQ: 		// deffer
+		uber_deffer		(C,true,"base","base",false);
 		break;
-	case CRender::PHASE_SMAP_D:	// smap-direct
-	case CRender::PHASE_SMAP_P:	// smap-point
-	case CRender::PHASE_SMAP_S:	// smap-spot							//. !!!! dumb
+	case SE_R2_NORMAL_LQ: 		// deffer
+		uber_deffer		(C,false,"base","base",false);
+		break;
+	case SE_R2_SHADOW:			// smap-direct
 		if (RImplementation.o.HW_smap)	C.r_Pass	("shadow_direct_base","dumb",	FALSE,TRUE,TRUE,FALSE);
 		else							C.r_Pass	("shadow_direct_base","shadow_direct_base",FALSE);
 		C.r_Sampler		("s_base",C.L_textures[0]);
 		C.r_End			();
-		break;
-	case 4: 	// deffer-emap
 		break;
 	}
 }

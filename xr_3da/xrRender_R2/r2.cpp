@@ -29,11 +29,21 @@ public:
 //////////////////////////////////////////////////////////////////////////
 ShaderElement*			CRender::rimp_select_sh_dynamic	(IRender_Visual	*pVisual, float cdist_sq)
 {
+	int		id	= SE_R2_SHADOW;
+	if	(CRender::PHASE_NORMAL == RImplementation.phase)
+	{
+		id = ((_sqrt(cdist_sq)-pVisual->vis.sphere.R)<ps_r2_df_parallax_range)?SE_R2_NORMAL_HQ:SE_R2_NORMAL_LQ;
+	}
 	return pVisual->hShader->E[RImplementation.phase]._get();
 }
 //////////////////////////////////////////////////////////////////////////
 ShaderElement*			CRender::rimp_select_sh_static	(IRender_Visual	*pVisual, float cdist_sq)
 {
+	int		id	= SE_R2_SHADOW;
+	if	(CRender::PHASE_NORMAL == RImplementation.phase)
+	{
+		id = ((_sqrt(cdist_sq)-pVisual->vis.sphere.R)<ps_r2_df_parallax_range)?SE_R2_NORMAL_HQ:SE_R2_NORMAL_LQ;
+	}
 	return pVisual->hShader->E[RImplementation.phase]._get();
 }
 extern float					g_fSCREEN		;

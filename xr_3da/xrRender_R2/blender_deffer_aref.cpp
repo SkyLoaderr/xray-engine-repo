@@ -25,18 +25,17 @@ void	CBlender_deffer_aref::Compile(CBlender_Compile& C)
 	// ***only pixel shaders differ***
 	switch(C.iElement) 
 	{
-	case 0: 	// deffer
-		uber_deffer		(C,"base","base",true);
+	case SE_R2_NORMAL_HQ: 	// deffer
+		uber_deffer		(C,true,"base","base",true);
 		break;
-	case CRender::PHASE_SMAP_D:	// smap-direct
-	case CRender::PHASE_SMAP_P:	// smap-point
-	case CRender::PHASE_SMAP_S:	// smap-spot									//. !!!! "shadow_direct_base_aref"
+	case SE_R2_NORMAL_LQ: 	// deffer
+		uber_deffer		(C,false,"base","base",true);
+		break;
+	case SE_R2_SHADOW:		// smap
 		if (RImplementation.o.HW_smap)	C.r_Pass	("shadow_direct_base_aref","shadow_direct_base_aref",FALSE,TRUE,TRUE,FALSE,D3DBLEND_ZERO,D3DBLEND_ONE,TRUE,220);
 		else							C.r_Pass	("shadow_direct_base_aref","shadow_direct_base_aref",FALSE);
 		C.r_Sampler		("s_base",C.L_textures[0]);
 		C.r_End			();
-		break;
-	case 4: 	// deffer-EMAP
 		break;
 	}
 }
