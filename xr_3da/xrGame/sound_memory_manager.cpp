@@ -1,9 +1,9 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: sound_memory.cpp
+//	Module 		: sound_memory_manager.cpp
 //	Created 	: 02.10.2001
 //  Modified 	: 19.11.2003
 //	Author		: Dmitriy Iassenev
-//	Description : Sound memory
+//	Description : Sound memory manager
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"

@@ -59,9 +59,9 @@ public:
 					CDetailPathManager		();
 	virtual			~CDetailPathManager		();
 	virtual void	init					();
-			void	build_detail_path		(const xr_vector<u32> &level_path);
+			void	build_path				(const xr_vector<u32> &level_path);
 			const	Fvector &direction		();
 			float	speed					();
-			bool	detail_path_actual		() const;
-			bool	detail_path_completed	() const;
+			bool	path_actual				() const;
+			bool	path_completed			() const;
 };

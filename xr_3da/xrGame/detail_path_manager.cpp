@@ -52,7 +52,7 @@ const Fvector &CDetailPathManager::direction()
 		return		(direction.normalize());
 }
 
-void CDetailPathManager::build_detail_path(const xr_vector<u32> &level_path)
+void CDetailPathManager::build_path(const xr_vector<u32> &level_path)
 {
 	if (!m_detail_path_actual && valid(m_detail_start_position) && valid(m_detail_dest_position)) {
 		switch (m_detail_path_type) {
@@ -155,12 +155,12 @@ float CDetailPathManager::speed	()
 	return				(0.f);
 }
 
-bool CDetailPathManager::detail_path_actual() const
+bool CDetailPathManager::path_actual() const
 {
 	return				(true);
 }
 
-bool CDetailPathManager::detail_path_completed() const
+bool CDetailPathManager::path_completed() const
 {
 	return				(true);
 }

@@ -1,18 +1,18 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: event_memory_manager.cpp
+//	Module 		: hit_memory_manager.cpp
 //	Created 	: 02.10.2001
 //  Modified 	: 19.11.2003
 //	Author		: Dmitriy Iassenev
-//	Description : Event memory manager
+//	Description : Hit memory manager
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "event_memory_manager.h"
+#include "hit_memory_manager.h"
 
-CEventMemoryManager::CEventMemoryManager		()
+CHitMemoryManager::CHitMemoryManager		()
 {
 }
 
-CEventMemoryManager::~CEventMemoryManager		()
+CHitMemoryManager::~CHitMemoryManager		()
 {
 }

@@ -8,24 +8,31 @@
 
 #pragma once
 
-#include "game_location_selector.h"
-#include "game_path_manager.h"
-#include "level_location_selector.h"
-#include "level_path_manager.h"
+#include "path_manager_game_selector.h"
+#include "path_manager_level_selector.h"
+#include "abstract_location_selector.h"
+#include "abstract_path_manager.h"
 #include "detail_path_manager.h"
 #include "enemy_location_predictor.h"
+#include "gameobject.h"
 
 class CPHMovementControl;
 
 class CMovementManager : 
-	public CGameLocationSelector,
-	public CGamePathManager,
-	public CLevelLocationSelector,
-	public CLevelPathManager,
+	public CAbstractLocationSelector<CGameGraph,PathManagers::SVertexType<float,u32,u32>,u32>,
+	public CAbstractPathManager		<CGameGraph,PathManagers::SVertexType<float,u32,u32>,u32>,
+	public CAbstractLocationSelector<CLevelGraph,PathManagers::CAbstractVertexEvaluator,u32>,
+	public CAbstractPathManager		<CLevelGraph,PathManagers::CAbstractVertexEvaluator,u32>,
 	public CDetailPathManager,
-	public CEnemyLocationPredictor
+	public CEnemyLocationPredictor,
+	virtual public CGameObject
 {
 private:
+	typedef CAbstractLocationSelector	<CGameGraph,PathManagers::SVertexType<float,u32,u32>,u32>	CGameLocationSelector;
+	typedef CAbstractPathManager		<CGameGraph,PathManagers::SVertexType<float,u32,u32>,u32>	CGamePathManager;
+	typedef CAbstractLocationSelector	<CLevelGraph,PathManagers::CAbstractVertexEvaluator,u32>	CLevelLocationSelector;
+	typedef CAbstractPathManager		<CLevelGraph,PathManagers::CAbstractVertexEvaluator,u32>	CLevelPathManager;
+
 	enum EPathState {
 		ePathStateSelectGameVertex = u32(0),
 		ePathStateBuildGamePath,
@@ -59,17 +66,20 @@ public:
 private:
 	EPathState								m_path_state;
 	EPathType								m_path_type;
-	bool									m_path_type_changed;
+	bool									m_path_actuality;
 
-//	template <u64 flags>
-//	void			find_location			(PathManagers::CVertexEvaluator<flags> *node_evaluator);
 	void			process_game_path		();
 	void			process_level_path		();
 	void			process_enemy_search	();
 	bool			path_actual				() const;
 
 protected:
+	ALife::_GRAPH_ID						m_game_dest_vertex_id;
+	u32										m_level_dest_vertex_id;
 	float									m_speed;
+
+	friend class CScriptMonster;
+	friend class CGroup;
 
 public:
 					CMovementManager		();
@@ -77,5 +87,9 @@ public:
 	virtual void	init					();
 			void	build_path				();
 			void	move_along_path			(CPHMovementControl *movement_control, float time_delta);
-			void	set_path_type			(EPathType path_type);
+	IC		void	set_path_type			(EPathType path_type);
+	IC		void	set_game_dest_node		(const ALife::_GRAPH_ID game_vertex_id);
+	IC		void	set_level_dest_node		(const u32 level_vertex_id);
 };
+
+#include "movement_manager_inline.h"
