@@ -44,10 +44,6 @@ function main()
 	stalker1:script	(true,script_01.script_name())
 	stalker2:script	(true,script_01.script_name())
 
-		printf("ddd!")
-		flush()
-
-
 			action(                                                                                                       
 			    stalker1,
 			  	move	(move.standing, move.walk,move.line,patrol("way0002")),
@@ -64,22 +60,13 @@ function main()
 				cond	(cond.time_end, 500000)
 			)
 
-			printf("aaa!")
-			flush()
-
 	while stalker1:action() and stalker2:action() do
 		if stalker1:see(actor) == false and stalker2:see(actor) == false and is_actor_entered == nil then 
-
-			printf("aa!")
-			flush()
 
 			stalker1:script	(false, script_01.script_name())
 			stalker1:script	(true,  script_01.script_name())
 			stalker2:script	(false, script_01.script_name())
 			stalker2:script	(true,  script_01.script_name())
-
-			printf("a!")
-			flush()
 
 			wait(2000)
 			action(                                                                                                       
@@ -89,9 +76,6 @@ function main()
 				cond	(cond.sound_end, 1000)
 			)
 
-			printf("b!")
-			flush()
-
 			wait(4000)
 			action(                                                                                                       
 			    stalker2,
@@ -100,9 +84,6 @@ function main()
 				cond	(cond.sound_end, 1000)
 			)
 			wait(3000)
-
-			printf("c!")
-			flush()
 
 			action(                                                                                                       
 			    stalker1,
@@ -128,9 +109,8 @@ function main()
 				cond	(cond.sound_end, 1000)
 			)
 			wait(2000)
-			break
 		end
-		wait()			
+		break		
 	end
 
 	event:clear_callback(true)
