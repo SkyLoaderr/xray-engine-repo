@@ -224,28 +224,19 @@ void CALifeSurgeManager::buy_supplies(CSE_ALifeTrader &tTrader)
 			// purchase an item
 			for (int p=0; p<l_iDifference; ++p) {
 				// create item object
-				CSE_Abstract	*l_tpSE_Abstract = F_entity_Create	(S);
-				R_ASSERT2		(l_tpSE_Abstract,"Can't create entity.");
+				CSE_Abstract			*l_tpSE_Abstract = spawn_item	(S,tTrader.o_Position,tTrader.m_tNodeID,tTrader.m_tGraphID,tTrader.ID);
+				R_ASSERT2				(l_tpSE_Abstract,"Can't create entity.");
 				CSE_ALifeDynamicObject	*i = smart_cast<CSE_ALifeDynamicObject*>(l_tpSE_Abstract);
-				R_ASSERT2		(i,"Non-ALife object in the 'game.spawn'");
-				CSE_ALifeItem	*l_tpALifeItem = smart_cast<CSE_ALifeItem*>(i);
-				R_ASSERT2		(l_tpALifeItem,"Non-item object in the trader supplies string!");
+				R_ASSERT2				(i,"Non-ALife object in the 'game.spawn'");
+				CSE_ALifeItem			*l_tpALifeItem = smart_cast<CSE_ALifeItem*>(i);
+				R_ASSERT2				(l_tpALifeItem,"Non-item object in the trader supplies string!");
 				
 				// checking if there is enough money to buy an item
 				if (l_tpALifeItem->m_dwCost > tTrader.m_dwMoney) {
-					xr_delete	(l_tpSE_Abstract);
+					release				(l_tpSE_Abstract);
 					break;
 				}
-				tTrader.m_dwMoney			-= l_tpALifeItem->m_dwCost;
-				l_tpALifeItem->ID			= server().PerformIDgen(0xffff);
-				l_tpALifeItem->ID_Parent	= tTrader.ID;
-				l_tpALifeItem->m_tSpawnID	= _SPAWN_ID(-1);
-				l_tpALifeItem->m_tGraphID	= tTrader.m_tGraphID;
-				l_tpALifeItem->o_Position	= tTrader.o_Position;
-				l_tpALifeItem->m_tNodeID	= tTrader.m_tNodeID;
-				l_tpALifeItem->m_fDistance	= tTrader.m_fDistance;
-				l_tpALifeItem->m_bALifeControl = true;
-				register_object				(i,true);
+				tTrader.m_dwMoney		-= l_tpALifeItem->m_dwCost;
 			}
 		}
 	}
