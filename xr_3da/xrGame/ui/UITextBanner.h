@@ -69,6 +69,9 @@ public:
 	void	PlayAnimation		()					{ m_bAnimate = true;	}
 	void	StopAnimation		()					{ m_bAnimate = false;	}
 
+	// Меняем режим вывода
+	void	SetNewRenderMethod	(bool bNew)			{ m_bNewRenderMethod = bNew; }
+
 protected:
 	// Переменные времени для каждого из стилей.
 	// В паре:	first	- контрольный период эффекта (задаваемый пользователем)
@@ -89,6 +92,10 @@ protected:
 
 	// Letters color
 	u32			m_Cl;
+
+	// Все переделать под новый стиль вывода надписей невозможно, поэтому
+	// вводим флажек переключения между старым и новым (c z буфером) режимом вывода
+	bool		m_bNewRenderMethod;
 };
 
 #endif

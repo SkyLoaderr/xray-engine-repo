@@ -6,9 +6,10 @@
 #include "UITextBanner.h"
 
 CUITextBanner::CUITextBanner()
-	:	m_bAnimate(true),
-		m_Cl(0xffffffff),
-		m_pFont(NULL)
+	:	m_bAnimate			(true),
+		m_Cl				(0xffffffff),
+		m_pFont				(NULL),
+		m_bNewRenderMethod	(false)
 {
 }
 
@@ -85,7 +86,8 @@ void CUITextBanner::Out(float x, float y, const char *fmt, ...)
 	R_ASSERT(m_pFont);
 	m_pFont->SetColor(m_Cl);
 	m_pFont->Out(x, y, buf.c_str());
-	m_pFont->OnRender();
+	if (m_bNewRenderMethod)
+		m_pFont->OnRender();
 }
 
 ////////////////////////////////////////////////////////////////////////////////

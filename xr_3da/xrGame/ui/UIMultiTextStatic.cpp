@@ -15,6 +15,7 @@
 CUIMultiTextStatic::SinglePhrase * CUIMultiTextStatic::AddPhrase()
 {
 	m_vPhrases.resize(m_vPhrases.size() + 1);
+	m_vPhrases.back().effect.SetNewRenderMethod(true);
 	return &m_vPhrases.back();
 }
 
