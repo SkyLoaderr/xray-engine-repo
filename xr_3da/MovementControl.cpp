@@ -232,23 +232,19 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 	fActualVelocity			= dst*fActualVelocity+ src*fAvgVelocity;
 
 	//	Don't allow new velocity to go against original velocity unless told otherwise
-	if (!bLight) {
-		Fvector vel_dir;
-		final_vel.normalize_safe	();
-		vel_dir.normalize_safe		(vVelocity);
-		if ((final_vel.dotproduct	(vel_dir)<0.f)||((s_res/s_calc)<0.001f)){ 
-			vVelocity.set(0,0,0);
-			final_pos.set(vPosition);
-		} else {
-			vPosition.set(final_pos);
-		}
-		
-		// Environment
-		if (fLastMotionMag>EPS_S)
-			CheckEnvironment();
+	Fvector vel_dir;
+	final_vel.normalize_safe	();
+	vel_dir.normalize_safe		(vVelocity);
+	if ((final_vel.dotproduct	(vel_dir)<0.f)||((s_res/s_calc)<0.001f)){ 
+		vVelocity.set(0,0,0);
+		final_pos.set(vPosition);
 	} else {
 		vPosition.set(final_pos);
 	}
+	
+	// Environment
+	if (fLastMotionMag>EPS_S)
+		CheckEnvironment();
  
 	// Set movement friction
 	switch(eEnvironment)
@@ -265,6 +261,8 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 	if ((eOldEnvironment==peInAir || eOldEnvironment==peAtWall) && (eEnvironment==peOnGround))
 	{
 		gcontact_Was		= TRUE;
+		gcontact_Power		= 0;
+		gcontact_HealthLost = 0;
 		if (s_res<s_calc)	
 		{
 			float		dt_x	= dt*(s_res/s_calc);
