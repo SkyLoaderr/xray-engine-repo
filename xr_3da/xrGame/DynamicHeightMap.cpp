@@ -132,8 +132,8 @@ float CHM_Static::Query	(float x, float z)
 	Slot*		S		= data[gz][gx];
 	
 	// precision
-	float		ostX	= pos.x-v_x*dhm_size;
-	float		ostZ	= pos.x-v_x*dhm_size;
+	float		ostX	= x-v_x*dhm_size;
+	float		ostZ	= z-v_z*dhm_size;
 	int			px		= iFloor(dhm_precision*ostX/dhm_size);	clamp(px,0,dhm_precision-1);
 	int			pz		= iFloor(dhm_precision*ostZ/dhm_size);	clamp(pz,0,dhm_precision-1);
 	return		S->data	[pz][px];
