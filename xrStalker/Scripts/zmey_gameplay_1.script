@@ -133,7 +133,8 @@ function main ()
 	if c_stalker_wounded.npc:alive() then
 		action_first(c_stalker_wounded.npc, anim("smert"), cond(cond.anim_end, time_infinite))
 		-- Если жив, можно уже начинать играть фразу:
-		psa_dobei:play_at_pos(c_stalker_wounded.npc, c_stalker_wounded.npc:position());
+		--psa_dobei:play_at_pos(c_stalker_wounded.npc, c_stalker_wounded.npc:position());
+		psa_dobei:play_at_pos(c_stalker_wounded.npc, c_stalker_wounded.npc:position(), 0, 0)
 		GiveInfoViaPda(c_actor.npc, c_actor.npc, 1)
 		-- Если мертв, то попозже (чтобы не заглушилось предсмертным криком)
 	end
@@ -174,7 +175,8 @@ function main ()
 			wait()
 		end
 		-- Еще раз:
-		psa_dobei:play_at_pos(c_stalker_wounded.npc, c_stalker_wounded.npc:position());
+		--psa_dobei:play_at_pos(c_stalker_wounded.npc, c_stalker_wounded.npc:position());
+		psa_dobei:play_at_pos(c_stalker_wounded.npc, c_stalker_wounded.npc:position(), 0, 0)
 		GiveInfoViaPda(c_actor.npc, c_actor.npc, 1)
 	end
 
