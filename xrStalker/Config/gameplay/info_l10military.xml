@@ -106,8 +106,14 @@
 	<info_portion id="mil_cook_dialog5"></info_portion>
 	<info_portion id="mil_cook_dialog6"></info_portion>
 	
+	<!-- Пьянка с поваром-->
+	<info_portion id="mil_freedom_cook_drink_1"></info_portion>
+	<info_portion id="mil_freedom_cook_drink_2"></info_portion>
+	<info_portion id="mil_freedom_cook_drink_3"></info_portion>
+	
 	<info_portion id="mil_village_monsters_spawn"></info_portion>
 	<info_portion id="mil_arsenal_inside"></info_portion>
+	
 	
 	
 </game_information_portions>
