@@ -1,11 +1,40 @@
 function main ()
 
-	local hero = get_level_object ("stalker_hero")
-	hero:script (true, military4.script_name ())
-	action (hero, move (move.standing, move.stand), anim ("machina_1"), look (), cond (cond.time_end, 100000000))
-	
-	while hero:action () do wait () end
+    local hero = get_level_object ("hero")
+    local niva = get_level_object ("niva")
+    local path = patrol ("freeway")
 
-	hero:script (false, military4.script_name ())
+    hero:script (true, military4.script_name ())
+    niva:script (true, military4.script_name ())
+    action (hero, move (move.standing, move.stand), anim ("mashina_0"), cond (cond.time_end, 1000000))
+
+    wait (5000)
+
+    action (niva, move (move.on + move.up + move.fwd, 20.1), cond (cond.time_end, 8200))
+    action (niva, move (move.right + move.on + move.fwd, 20.1), cond (cond.time_end, 800))
+    action (niva, move (move.on + move.up + move.fwd, 20.1), cond (cond.time_end, 12500))
+
+    while niva:action () do wait () end
+
+    reset_action (niva, military4.script_name ())
+
+    action (niva, move (move.off, 0), cond (cond.time_end, 2000))
+    action (niva, object ("phy_door_right", object.activate), cond (cond.time_end, 2000))
+
+    reset_action (hero, military4.script_name ())
+    niva:script (false, military4.script_name ())
+
+    local pos = path:point (0)
+    printf ("Position X : %f, Y : %f, Z : %f", pos.x, pos.y, pos.z)
+    action (hero, move (move.standing, move.stand), anim ("mashina_1"), cond (cond.anim_end))
+    action (hero, move (move.standing, move.walk, move.line, pos, 5000), anim ("mashina_2"), cond (cond.anim_end))
+    action (hero, move (move.standing, move.stand), anim ("mashina_3"), cond (cond.anim_end))
+    action (hero, move (move.standing, move.stand), anim ("mashina_4"), cond (cond.anim_end))
+    action (hero, move (move.standing, move.stand), anim ("mashina_5"), cond (cond.anim_end))
+
+    while niva:action () or hero:action () do wait () end
+
+
+    hero:script (false, military4.script_name ())
 
 end
