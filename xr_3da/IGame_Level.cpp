@@ -159,10 +159,7 @@ void	IGame_Level::OnFrame		( )
 	{
 		Sounds_dwNextTime		= Device.dwTimeGlobal + ::Random.randI	(1000,10000);
 		Fvector	pos;
-		pos.random_dir			();
-		pos.normalize			();
-		pos.mul					(::Random.randF(10,50));
-		pos.add					(Device.vCameraPosition);
-		Sound->play_at_pos		(Sounds_Random[::Random.randI(Sounds_Random.size())],0,pos,false);
+		pos.random_dir().normalize().mul(::Random.randF(10,50)).add		(Device.vCameraPosition);
+		Sounds_Random[::Random.randI(Sounds_Random.size())].play_at_pos	(0,pos,0);
 	}
 }
