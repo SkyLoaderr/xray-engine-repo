@@ -10,7 +10,7 @@
 #include "..\\..\\xr_weapon_list.h"
 #include "..\\..\\..\\3dsound.h"
 #include "ai_crow.h"
-#include "ai_crow_selectors.h"
+#include "..\\ai_monsters.h"
 #include "..\\..\\hudmanager.h"
 
 //#define WRITE_LOG
@@ -56,9 +56,6 @@ void CAI_Crow::Load(CInifile* ini, const char* section)
 	pSounds->Create3D(sndDie[2],"actor\\die2");
 	pSounds->Create3D(sndDie[3],"actor\\die3");
 
-	SelectorFreeHunting.Load(ini,section);
-	SelectorFreeHunting.fSearchRange += ::Random.randF(-1.f,1.f);
-	
 	CKinematics* V = PKinematics(pVisual);
 	m_fly = V->ID_Cycle("norm_fly_fwd");
 	m_death_idle = V->ID_Cycle("norm_death_idle");
@@ -128,7 +125,7 @@ void CAI_Crow::Die()
 	bStopThinking = true;
 }
 
-IC void CAI_Crow::SetDirectionLook(NodeCompressed *tNode)
+IC void CAI_Crow::SetDirectionLook()
 {
 	int i = ps_Size();
 	if (i > 1) {
@@ -142,6 +139,19 @@ IC void CAI_Crow::SetDirectionLook(NodeCompressed *tNode)
 	}
 }
 
+bool CAI_Crow::bfChangeFlyTrajectory(Fvector &tActorPosition, DWORD dwTime)
+{
+	Fvector tTemp;
+	tTemp.sub(tActorPosition,m_tSavedActorPosition);
+	if (tTemp.magnitude() < m_fActorChange)
+		return(false);
+	else
+		if (dwTime - m_dwLastTrajectoryChange < m_dwChangeInterval)
+			return(false);
+		else
+			return(true);
+}
+
 void CAI_Crow::FreeHunting()
 {
 	// if no more health then crow is dead
@@ -153,90 +163,19 @@ void CAI_Crow::FreeHunting()
 		return;
 	}
 	else {
-		CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
-		// determining who is leader
-		CEntity* Leader = Squad.Leader;
-		// checking if the leader exists
-		R_ASSERT (Leader);
-		// checking if leader is dead then make myself a leader
-		if (Leader->g_Health() <= 0)
-			Leader = this;
-		// setting up watch mode to false
-		bool bWatch = false;
-		// get pointer to the class of node estimator 
-		// for finding the best node in the area
-		CCrowSelectorFreeHunting S = SelectorFreeHunting;
-		// if i am not a leader then assign leader
-		if (Leader != this) {
-			S.m_tLeader = Leader;
-			S.m_tLeaderPosition = Leader->Position();
-			S.m_tpLeaderNode = Leader->AI_Node;
-			S.m_tLeaderNode = Leader->AI_NodeID;
+		Fvector tActorPosition = Level().CurrentViewEntity()->Position();
+		if (bfChangeFlyTrajectory(tActorPosition,Level().timeServer())) {
+			m_fRadius = m_fOptRadius + ::Random.randF(-m_fRadiusDeviation, m_fRadiusDeviation);
+			m_tCenter = tActorPosition;
+			m_tCenter.x += ::Random.randF(-m_fXDeviation, m_fXDeviation);
+			m_tCenter.z += ::Random.randF(-m_fZDeviation, m_fZDeviation);
+			float fNewHeight = m_fOptHeight + ::Random.randF(-m_fYDeviation, m_fYDeviation);
+			m_tCenter.y += fNewHeight;
 		}
-		// otherwise assign leader to null
 		else {
-			S.m_tLeader = 0;
-			S.m_tLeaderPosition.set(0,0,0);
-			S.m_tpLeaderNode = NULL;
-			S.m_tLeaderNode = -1;
+			
 		}
-		S.m_tHitDir			= tHitDir;
-		S.m_dwHitTime		= dwHitTime;
-		
-		S.m_dwCurTime		= Level().timeServer();
-		
-		S.m_tMe				= this;
-		S.m_tpMyNode		= AI_Node;
-		S.m_tMyPosition		= Position();
-		S.m_tDirection		= tWatchDirection;
-		
-		S.m_tEnemy			= 0;
-		S.m_tEnemyPosition.set(0,0,0);
-		S.m_tpEnemyNode		= NULL;
-		
-		S.taMembers = Squad.Groups[g_Group()].Members;
-		// checking if I need to rebuild the path i.e. previous search
-		// has found better destination node
-		if (AI_Path.bNeedRebuild) {
-			Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
-			if (AI_Path.Nodes.size() > 2) {
-			// if path is long enough then build travel line
-				AI_Path.BuildTravelLine(Position());
-				m_bMobility = true;
-			}
-			else {
-			// if path is too short then clear it (patch for ExecMove)
-				AI_Path.TravelPath.clear();
-				m_bMobility = false;
-				AI_Path.bNeedRebuild = FALSE;
-			}
-		} 
-		else
-			if ((AI_Path.TravelPath.size() - AI_Path.TravelStart < 3) || (AI_Path.TravelPath.size() < 3) || (AI_Path.DestNode == AI_NodeID)) {
-				// fill arrays of members and exclude myself
-				Squad.Groups[g_Group()].GetAliveMemberInfo(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this);
-				// SelectFollow evaluation function in the radius 35 meteres
-				float fOldCost;
-				Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
-				// if search has found new best node then 
-				//if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path)))){
-					AI_Path.DestNode		= S.BestNode;
-					AI_Path.bNeedRebuild	= TRUE;
-				//} 
-				//else 
-					// search hasn't found a better node we have to look around
-				//	bWatch = true;
-				if (AI_Path.TravelPath.size() < 2)
-					AI_Path.bNeedRebuild	= TRUE;
-			}
-			//else
-			//	bWatch = true;
-		// setting up a look
-		
-		SetDirectionLook(AI_Node);
-		
-		q_action.setup(AI::AIC_Action::AttackEnd);
-		// checking flag to stop processing more states
+		SetDirectionLook();
 		m_fCurSpeed = m_fMinSpeed;
 		bStopThinking = true;
 		return;
@@ -261,43 +200,6 @@ void CAI_Crow::Think()
 	while (!bStopThinking);
 }
 
-void CAI_Crow::net_Export(NET_Packet* P)					// export to server
-{
-	R_ASSERT				(net_Local);
-
-	// export last known packet
-	R_ASSERT				(!NET.empty());
-	net_update& N			= NET.back();
-	P->w_u32				(N.dwTimeStamp);
-	P->w_u8					(0);
-	P->w_vec3				(N.p_pos);
-	P->w_angle8				(N.o_model);
-	P->w_angle8				(N.o_torso.yaw);
-	P->w_angle8				(N.o_torso.pitch);
-}
-
-void CAI_Crow::net_Import(NET_Packet* P)
-{
-	R_ASSERT				(!net_Local);
-	net_update				N;
-
-	u8 flags;
-	P->r_u32				(N.dwTimeStamp);
-	P->r_u8					(flags);
-	P->r_vec3				(N.p_pos);
-	P->r_angle8				(N.o_model);
-	P->r_angle8				(N.o_torso.yaw);
-	P->r_angle8				(N.o_torso.pitch);
-
-	if (NET.empty() || (NET.back().dwTimeStamp<N.dwTimeStamp))	{
-		NET.push_back			(N);
-		NET_WasInterpolating	= TRUE;
-	}
-
-	bVisible				= TRUE;
-	bEnabled				= TRUE;
-}
-
 void CAI_Crow::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
 {
 	//R_ASSERT(fsimilar(_view.magnitude(),1));
@@ -311,7 +213,7 @@ void CAI_Crow::SelectAnimation(const Fvector& _view, const Fvector& _move, float
 		if (::Random.randI(0,10) == 0)
 			S = m_fly;
 		else
-			S = m_idle;
+			S = m_fly;
 	
 	if (S != m_current){ 
 		m_current = S;

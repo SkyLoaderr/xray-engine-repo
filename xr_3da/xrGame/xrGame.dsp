@@ -593,14 +593,6 @@ SOURCE=.\AI\Crow\ai_crow.cpp
 
 SOURCE=.\AI\Crow\ai_crow.h
 # End Source File
-# Begin Source File
-
-SOURCE=.\AI\Crow\ai_crow_selectors.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI\Crow\ai_crow_selectors.h
-# End Source File
 # End Group
 # Begin Source File
 

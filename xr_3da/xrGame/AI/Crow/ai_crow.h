@@ -11,7 +11,6 @@
 
 #include "..\\..\\CustomMonster.h"
 #include "..\\..\\group.h"
-#include "ai_crow_selectors.h"
 #include "..\\..\\..\\bodyinstance.h"
 
 class CAI_Crow : public CCustomMonster  
@@ -47,13 +46,26 @@ class CAI_Crow : public CCustomMonster
 
 		CBlend*			m_tpCurrentBlend;
 
+		float			m_fActorChange;
+		float			m_fOptRadius;
+		float			m_fRadiusDeviation;
+		float			m_fXDeviation;
+		float			m_fYDeviation;
+		float			m_fZDeviation;
+		float			m_fOptHeight;
+		DWORD			m_dwChangeInterval;
+		
+		Fvector			m_tSavedActorPosition;
+		DWORD			m_dwLastTrajectoryChange;
+		float			m_fRadius;
+		Fvector			m_tCenter;
+
 		// finite state machine
 		stack<ECrowStates>	tStateStack;
 		void Die();
 		void FreeHunting();
-		void SetDirectionLook(NodeCompressed *tNode);
-	
-		CCrowSelectorFreeHunting SelectorFreeHunting;
+		void SetDirectionLook();
+		bool bfChangeFlyTrajectory(Fvector &tActorPosition, DWORD dwTime);
 
 	public:
 					   CAI_Crow();
@@ -64,10 +76,7 @@ class CAI_Crow : public CCustomMonster
 		virtual void  Death();
 		virtual void  Load( CInifile* ini, const char* section );
 		virtual void  Think();
-		
-		virtual void  net_Export				(NET_Packet* P);				// export to server
-		virtual void  net_Import				(NET_Packet* P);				// import from server
-		virtual void  SelectAnimation			( const Fvector& _view, const Fvector& _move, float speed );
+		virtual void  SelectAnimation( const Fvector& _view, const Fvector& _move, float speed );
 };
 		
 #endif
