@@ -13,9 +13,11 @@
 const int		dm_max_objects	= 64;
 const int		dm_obj_in_slot	= 4;
 const int		dm_size			= 20;
-const int		dm_cache_line	= 1+dm_size+1+dm_size+1;
+const int		dm_cache_line	= dm_size+1+dm_size;
 const int		dm_cache_size	= dm_cache_line*dm_cache_line;
 const float		dm_fade			= float(2*dm_size)-.5f;
+const float		dm_slot_size	= DETAIL_SLOT_SIZE;
+const float		dm_slot_radius	= DETAIL_SLOT_SIZE*0.70710678118654752440084436210485f; // (slot_size/2)*sqrtf(2)
 
 class ENGINE_API CDetailManager  
 {
@@ -34,11 +36,12 @@ public:
 	{
 		DWORD				id;	
 		vector<SlotItem>	items;
+
+		SlotPart()			{ items.reserve	(4); }
 	};
 	enum	SlotType
 	{
 		stReady		= 0,	// Ready to use
-		stInvalid,			// Invalid cache entry
 		stPending,			// Pending for decompression
 
 		stFORCEDWORD = 0xffffffff
@@ -47,15 +50,16 @@ public:
 	{
 		DWORD				type;
 		int					sx,sz;
-		DWORD				dwFrameUsed;	// LRU cache
 		Fbox				BB;
 		SlotPart			G[dm_obj_in_slot];
+
+		Slot()				{ type=stReady; sx=sz=0; BB.invalidate(); }
 	};
 
 	DEFINE_SVECTOR	(vector<SlotItem*>,dm_max_objects,vis_list,vis_it);
 	DEFINE_SVECTOR	(CDetail*,dm_max_objects,DetailVec,DetailIt);
 public:	
-	int						dither			[16][16];
+	int								dither			[16][16];
 public:
 	CStream*						dtFS;
 	DetailHeader					dtH;
@@ -65,43 +69,51 @@ public:
 public:
 	DetailVec						objects;
 	vis_list						visible	[3];	// 0=still, 1=Wave1, 2=Wave2
-	svector<Slot,dm_cache_size>		pool;
+
+	Slot*							cache[dm_cache_line][dm_cache_line];	// grid-cache itself
+	svector<Slot*,dm_cache_size>	cache_task;								// non-unpacked slots
+	Slot							cache_pool[dm_cache_size];					// just memory for slots
+	int								cache_cx;
+	int								cache_cz;
 
 public:
 #ifdef _EDITOR
-	virtual ObjectList*		GetSnapObjects	()=0;
+	virtual ObjectList*				GetSnapObjects	()=0;
 #endif
-	IC bool					UseVS			()		{ return HW.Caps.vertex.dwVersion >= CAP_VERSION(1,1); }
+	IC bool							UseVS			()		{ return HW.Caps.vertex.dwVersion >= CAP_VERSION(1,1); }
 
 	// Software processor
-	CVS*					soft_VS;
-	void					soft_Load		();
-	void					soft_Unload		();
-	void					soft_Render		();
+	CVS*							soft_VS;
+	void							soft_Load		();
+	void							soft_Unload		();
+	void							soft_Render		();
 
 	// Hardware processor
-	CVS*					hw_VS_wave;
-	CVS*					hw_VS_still;
-	DWORD					hw_BatchSize;
-	IDirect3DVertexBuffer8*	hw_VB;
-	IDirect3DIndexBuffer8*	hw_IB;
-	void					hw_Load			();
-	void					hw_Unload		();
-	void					hw_Render		();
-	void					hw_Render_dump	(CVS* vs, vis_list& vis, DWORD c_base);
+	CVS*							hw_VS_wave;
+	CVS*							hw_VS_still;
+	DWORD							hw_BatchSize;
+	IDirect3DVertexBuffer8*			hw_VB;
+	IDirect3DIndexBuffer8*			hw_IB;
+	void							hw_Load			();
+	void							hw_Unload		();
+	void							hw_Render		();
+	void							hw_Render_dump	(CVS* vs, vis_list& vis, DWORD c_base);
 
 public:
-	void					Decompress		(int sx, int sz, Slot& D);
-	Slot&					Query			(int sx, int sz);
-	DetailSlot&				QueryDB			(int sx, int sz);
-	void					UpdateCache		(int sx, int sy, int limit);
+	DetailSlot&						QueryDB			(int sx, int sz);
+
+	void							cache_Initialize();
+	void							cache_Update	(int sx, int sz, Fvector& view, int limit);
+	void							cache_Task		(int sx, int sz, Slot* D);
+	Slot*							cache_Query		(int sx, int sz);
+	void							cache_Decompress(Slot* D);
 	
-	void					Load			();
-	void					Unload			();
-	void					Render			(Fvector& EYE);
-
-	CDetailManager			();
-	virtual ~CDetailManager	();
-};
-
+	void							Load			();
+	void							Unload			();
+	void							Render			(Fvector& EYE);
+									
+	CDetailManager					();
+	virtual ~CDetailManager			();
+};									
+									
 #endif // !defined(AFX_DETAILMANAGER_H__2C7B9CBD_4751_4D3E_8020_4792B800E4E2__INCLUDED_)

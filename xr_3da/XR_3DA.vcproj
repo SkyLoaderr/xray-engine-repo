@@ -2017,6 +2017,12 @@
 					RelativePath=".\DetailManager.h">
 				</File>
 				<File
+					RelativePath="DetailManager_CACHE.cpp">
+				</File>
+				<File
+					RelativePath="DetailManager_Decompress.cpp">
+				</File>
+				<File
 					RelativePath=".\DetailManager_VS.cpp">
 				</File>
 				<File
