@@ -14,7 +14,7 @@ class CPHMovementControl
 static const path_few_point=10;
 public:
 void				PHCaptureObject(CGameObject* object);
-void				PHCaptureObject(CGameObject* object,int element);
+void				PHCaptureObject(CGameObject* object,u16 element);
 CPHCapture*			PHCapture      (){return m_capture;}
 void				PHReleaseObject();
 void				Jump(const Fvector &jump_velocity);

@@ -697,7 +697,7 @@ m_capture=xr_new<CPHCapture>(m_character,
 							 );
 }
 
-void	CPHMovementControl::PHCaptureObject(CGameObject* object,int element)
+void	CPHMovementControl::PHCaptureObject(CGameObject* object,u16 element)
 {
 	if(m_capture) return;
 
