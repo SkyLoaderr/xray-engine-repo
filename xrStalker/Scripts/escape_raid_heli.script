@@ -81,7 +81,7 @@ function HeliManager:HeliOnPoint(p)
 		if self.attack_passes > 0 then
 			if not self.attack_dest_away then
 				-- отлетаем чуть-чуть
-				self.m_heliObject:SetDestPosition( self.m_heli:position():add( self.m_heli:direction():mul( 50 ) ) )
+				self.m_heliObject:SetDestPosition( self.m_heli:position():add( self.m_heli:direction():mul( 100 ) ) )
 				self.attack_dest_away = true
 				self.attack_passes = self.attack_passes - 1
 			else
