@@ -261,6 +261,8 @@ void CUIPdaCommunication::InitPdaDialog()
 	m_pOurDialogManager = smart_cast<CPhraseDialogManager*>(m_pOurInvOwner);
 	m_pOthersDialogManager = smart_cast<CPhraseDialogManager*>(m_pOthersInvOwner);
 
+	UIPdaDialogWnd.UILogListWnd.RemoveAll();
+
 	ToTopicMode			();
 	UpdateMessageLog	();
 	UpdateMsgButtons	();
@@ -319,18 +321,6 @@ void CUIPdaCommunication::UpdateMessageLog()
 //и обновление кнопок ответа
 void CUIPdaCommunication::UpdateMsgButtons()
 {
-/*	u32 id_pda_contact = 0xffff;
-
-	id_pda_contact = m_pContactPda->ID();
-
-	if(m_pPda->WaitForReply(id_pda_contact))
-	{
-		UIPdaDialogWnd.ContactWaitForReply();
-	}
-	else
-	{
-		UIPdaDialogWnd.ContactRestore();
-	}*/
 	UpdateQuestions();
 }
 
@@ -433,9 +423,6 @@ void CUIPdaCommunication::SayPhrase(PHRASE_ID phrase_id)
 	//если диалог завершился, перейти в режим выбора темы
 	if(m_pCurrentDialog->IsFinished()) 
 		ToTopicMode();
-	else
-		//добавить табличку, что мы ждем ответа
-		UIPdaDialogWnd.ContactWaitForReply();
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -26,7 +26,6 @@ CUIPdaDialogWnd::CUIPdaDialogWnd()
 {
 	m_iClickedQuestion = -1;
 	m_bContactActive = false;
-	m_bContactWait = false;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -153,8 +152,6 @@ void CUIPdaDialogWnd::ContactWaitForReply()
 {
 	UILogListWnd.AddItem<CUIListItem>(WAIT_FOR_REPLY, 0, NULL, TECH_INFO);
 
-	m_bContactWait = true;
-
 	UIPhrasesListWnd.Show(false);
 	UIPhrasesListWnd.Enable(false);
 }
@@ -163,14 +160,13 @@ void CUIPdaDialogWnd::ContactWaitForReply()
 
 void CUIPdaDialogWnd::ContactRestore()
 {
-	if(!m_bContactActive || m_bContactWait)
+	if(!m_bContactActive)
 	{
 		if(UILogListWnd.GetSize()>0 && UILogListWnd.GetItem(UILogListWnd.GetSize()-1)->GetValue() == TECH_INFO)
 			UILogListWnd.RemoveItem(UILogListWnd.GetSize()-1);
 	}
 	m_bContactActive = true;
-	m_bContactWait = false;
-
+	
 	UIPhrasesListWnd.Show(true);
 	UIPhrasesListWnd.Enable(true);
 }

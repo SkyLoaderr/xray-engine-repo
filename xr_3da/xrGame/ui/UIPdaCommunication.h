@@ -95,7 +95,6 @@ protected:
 	//диалог
 	void InitTalkDialog();
 	void UpdateQuestions();
-	void NeedUpdateQuestions();
 	void AskQuestion();
 
 	void SayPhrase(PHRASE_ID phrase_id);
@@ -103,6 +102,8 @@ protected:
 	// Функции добавления строк в листы вопросов и ответов
 	void AddQuestion(CUIString str, void* pData, int value = 0);
 	void AddAnswer(CUIString str, const CUIString &SpeakerName);
+public:
+	void NeedUpdateQuestions();
 
 protected:
 	bool m_bNeedToUpdateQuestions;

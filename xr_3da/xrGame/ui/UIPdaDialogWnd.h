@@ -52,8 +52,7 @@ public:
 	EPdaMsg m_iMsgNum;
 
 	bool m_bContactActive;
-	bool m_bContactWait;
-
+	
 	//лог сообщений
 	CUIListWnd UILogListWnd;
 	//список фраз которые может говорить игрок
