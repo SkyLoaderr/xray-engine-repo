@@ -67,8 +67,6 @@ void	CCar::Update				( DWORD T )
 
 	float dt						= float(T)/1000.f;
 	
-	vPosition.y						+= sinf(Device.fTimeGlobal);
-
 	UpdateTransform					();
 	if (IsMyCamera())				cam_Update(dt);
 }
