@@ -1,10 +1,16 @@
 #pragma once
 
+#include "..\render.h"
 #include "..\ispatial.h"
 #include "r__dsgraph_types.h"
 
-class R_dsgraph_structure
+class R_dsgraph_structure										: public IRender_interface
 {
+public:
+	IRenderable*												val_pObject;
+	Fmatrix*													val_pTransform;
+	BOOL														val_bHUD;
+	BOOL														val_bInvisible;
 public:
 	// Dynamic scene graph
 	R_dsgraph::mapNormal_T										mapNormal	[2];	// 2==(priority/2)
@@ -33,6 +39,12 @@ public:
 	xr_vector<R_dsgraph::_LodItem>								lstLODs;
 	xr_vector<int>												lstLODgroups;
 	xr_vector<ISpatial*>										lstRenderables;
+public:
+	IC		void					set_HUD					(BOOL 		V	)				{ val_bHUD		= V;				}
+	IC		BOOL					get_HUD					()								{ return val_bHUD;					}
+	IC		void					set_Invisible			(BOOL 		V	)				{ val_bInvisible= V;				}
+	IC		BOOL					get_Invisible			()								{ return val_bInvisible;			}
+
 public:
 	void		r_dsgraph_insert_dynamic						(IRender_Visual	*pVisual, Fvector& Center);
 	void		r_dsgraph_insert_static							(IRender_Visual	*pVisual);

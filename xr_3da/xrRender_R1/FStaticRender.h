@@ -18,7 +18,7 @@
 #include "light_DB.h"
 
 // definition
-class CRender	:	public IRender_interface, public R_dsgraph_structure
+class CRender	:	public R_dsgraph_structure
 {
 public:
 	// Sector detection and visibility

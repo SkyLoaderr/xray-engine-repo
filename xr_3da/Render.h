@@ -81,10 +81,6 @@ class	ENGINE_API	IRender_interface
 {
 public:
 	// Data
-	IRenderable*					val_pObject;
-	Fmatrix*						val_pTransform;
-	BOOL							val_bHUD;
-	BOOL							val_bInvisible;
 	CFrustum						ViewBase;
 	CFrustum*						View;
 	u32								marker;
@@ -109,10 +105,10 @@ public:
 	// Main 
 	IC		void					set_Frustum				(CFrustum*	O	)				{ VERIFY(O);	View = O;			}
 	IC		void					set_Transform			(Fmatrix*	M	)				{ VERIFY(M);	val_pTransform = M;	}
-	IC		void					set_HUD					(BOOL 		V	)				{ val_bHUD		= V;				}
-	IC		BOOL					get_HUD					()								{ return val_bHUD;					}
-	IC		void					set_Invisible			(BOOL 		V	)				{ val_bInvisible= V;				}
-	IC		BOOL					get_Invisible			()								{ return val_bInvisible;			}
+	virtual void					set_HUD					(BOOL 		V	);
+	virtual BOOL					get_HUD					();
+	virtual void					set_Invisible			(BOOL 		V	);
+	virtual BOOL					get_Invisible			();
 	virtual void					flush					()								= 0;	
 	virtual void					set_Object				(IRenderable*		O	)		= 0;
 	virtual void					add_Visual				(IRender_Visual*	V	)		= 0;	// add visual leaf	(no culling performed at all)
