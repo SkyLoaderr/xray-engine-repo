@@ -21,8 +21,9 @@ void CHWCaps::Update()
 	HRESULT _hr			= HW.pDevice->CreateQuery(D3DQUERYTYPE_VCACHE,&q_vc);
 	if (FAILED(_hr)) 
 	{
-		vc.OptMethod	= 0;
-		vc.CacheSize	= 16;
+		vc.OptMethod			= 0;
+		vc.CacheSize			= 16;
+		vertex.dwVertexCache	= 16;
 	} else {
 		q_vc->Issue			(D3DISSUE_END);
 		q_vc->GetData		(&vc,sizeof(vc),D3DGETDATA_FLUSH);

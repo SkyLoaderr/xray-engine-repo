@@ -143,9 +143,11 @@ SVS*	CShaderManager::_CreateVS		(LPCSTR name)
 		LPD3DXBUFFER				pErrorBuf	= NULL;
 		LPD3DXSHADER_CONSTANTTABLE	pConstants	= NULL;
 		HRESULT						_hr			= S_OK;
+		string64					cname;
+		strconcat					(cname, "GameData\\shaders\\", name, ".vs");
 
 		// vertex
-		_hr = D3DXCompileShaderFromFile	(name, NULL, NULL, "v_main", "vs_2_0", D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR, &pShaderBuf, &pErrorBuf, NULL);
+		_hr = D3DXCompileShaderFromFile	(cname, NULL, NULL, "main", "vs_1_1", D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR, &pShaderBuf, &pErrorBuf, NULL);
 		if (SUCCEEDED(_hr))
 		{
 			if (pShaderBuf) 
