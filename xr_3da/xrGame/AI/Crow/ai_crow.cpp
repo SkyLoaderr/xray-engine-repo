@@ -38,10 +38,6 @@ void CAI_Crow::Load					( LPCSTR section )
 	CKinematics*	M				= PKinematics(pVisual);
 	R_ASSERT						(M);
 	M->PlayCycle					("init");
-	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_frontl")).set_callback	(cb_WheelFL,this);
-	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_frontr")).set_callback	(cb_WheelFR,this);
-	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_rearl")).set_callback	(cb_WheelBL,this);
-	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_rearr")).set_callback	(cb_WheelBR,this);
 }
 
 BOOL CAI_Crow::Spawn(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
