@@ -200,7 +200,7 @@ bool EParticlesObject::ExportGame(SExportStreams& F)
 
 bool EParticlesObject::Compile(LPCSTR ref_name)
 {
-    PS::CPEDef* def 		= ::Render->PSystems.FindPE(ref_name);
+    PS::CPEDef* def 		= ::Render->PSystems.FindPED(ref_name);
     if (m_PE.Compile(def)){
 		m_RefName			= ref_name;
 		UpdateTransform		();
@@ -223,7 +223,7 @@ void EParticlesObject::FillProp(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp(pref, items);
     PropValue* V;
-    V=PHelper.CreateALibPG	(items,FHelper.PrepareKey(pref, "Reference"),&m_RefName);
+    V=PHelper.CreateALibPE	(items,FHelper.PrepareKey(pref, "Reference"),&m_RefName);
     V->OnChangeEvent		= OnRefChange;
 }
 //----------------------------------------------------

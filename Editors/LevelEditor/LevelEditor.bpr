@@ -105,11 +105,11 @@
       intermediate\ELog.obj intermediate\FS2.obj intermediate\ESound_Source.obj 
       intermediate\ESound_Environment.obj intermediate\SoundManager_LE.obj 
       intermediate\xrRender_console.obj intermediate\Blender_Palette.obj 
-      intermediate\EParticlesObject.obj intermediate\ParticleGroupEditor.obj 
-      intermediate\SceneSummaryInfo.obj intermediate\Custom2DProjector.obj 
-      intermediate\R_Backend_xform.obj intermediate\Blender_Recorder_R2.obj 
-      intermediate\ESceneAIMapTools.obj intermediate\FrameAIMap.obj 
-      intermediate\UI_AIMapTools.obj intermediate\DetailObjectsPick.obj 
+      intermediate\EParticlesObject.obj intermediate\SceneSummaryInfo.obj 
+      intermediate\Custom2DProjector.obj intermediate\R_Backend_xform.obj 
+      intermediate\Blender_Recorder_R2.obj intermediate\ESceneAIMapTools.obj 
+      intermediate\FrameAIMap.obj intermediate\UI_AIMapTools.obj 
+      intermediate\DetailObjectsPick.obj 
       intermediate\ESceneAIMapTools_Generate.obj 
       intermediate\motion_simulator.obj intermediate\ESceneAIMapTools_Render.obj 
       intermediate\AIMapExport.obj intermediate\du_cone.obj 
@@ -390,7 +390,6 @@
       <FILE FILENAME="Engine\xrRender_console.cpp" FORMNAME="" UNITNAME="xrRender_console" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Blenders\Blender_Palette.cpp" FORMNAME="" UNITNAME="Blender_Palette" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\EParticlesObject.cpp" FORMNAME="" UNITNAME="EParticlesObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ParticleGroupEditor.cpp" FORMNAME="" UNITNAME="ParticleGroupEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\SceneSummaryInfo.cpp" FORMNAME="" UNITNAME="SceneSummaryInfo" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\Custom2DProjector.cpp" FORMNAME="" UNITNAME="Custom2DProjector" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\R_Backend_xform.cpp" FORMNAME="" UNITNAME="R_Backend_xform" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -418,6 +417,7 @@
       <FILE FILENAME="edit\BoneEditor.cpp" FORMNAME="" UNITNAME="BoneEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\ParticleEffect.cpp" FORMNAME="" UNITNAME="ParticleEffect" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\IInputReceiver.cpp" FORMNAME="" UNITNAME="IInputReceiver" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="LevelEditor.todo" FORMNAME="" UNITNAME="LevelEditor.todo" CONTAINERID="ToDo" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

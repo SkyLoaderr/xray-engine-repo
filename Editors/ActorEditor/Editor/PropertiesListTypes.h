@@ -134,7 +134,7 @@ public:
 class PropItem{
 	friend class		CPropHelper;
     friend class		TProperties;
-    LPSTR				key;
+    AnsiString			key;
     EPropType			type;
 	TElTreeItem*		item;
 	DEFINE_VECTOR		(PropValue*,PropValueVec,PropValueIt);
@@ -167,10 +167,9 @@ public:
     {
     	for (PropValueIt it=values.begin(); it!=values.end(); it++)
         	xr_delete	(*it);
-    	xr_free			(key);
     };
     void				SetItemHeight	(int height){item->OwnerHeight=false; item->Height=height;}
-    void				SetName			(LPCSTR name){xr_free(key);key=xr_strdup(name);}
+    void				SetName			(const AnsiString& name){key=name;}
     IC void				ResetValues		()
     {
     	for (PropValueIt it=values.begin(); it!=values.end(); it++)
@@ -218,7 +217,7 @@ public:
     IC EPropType		Type			(){return type;}
 	IC TElTreeItem*		Item			(){return item;}
 	IC TElTreeItem**	LPItem			(){return &item;}
-	IC LPCSTR			Key				(){return key;}
+	IC LPCSTR			Key				(){return key.c_str();}
     IC void				Enable			(BOOL val){m_Flags.set(flDisabled,!val);}
     IC BOOL				Enabled			(){return !m_Flags.is(flDisabled);}
 

@@ -40,7 +40,7 @@ class CDetail{
 	DWORD				number_vertices;
 	WORD				*indices;
 	DWORD				number_indices;
-	Shader*				shader;
+	ref_shader			shader;
 	DWORD				flags;
 	Fsphere				bv_sphere;
 	Fbox				bv_bb;

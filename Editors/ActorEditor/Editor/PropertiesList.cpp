@@ -254,7 +254,7 @@ void __fastcall TProperties::AssignItems(PropItemVec& items, bool full_expand, c
     m_Items					= items;
 	for (PropItemIt it=m_Items.begin(); it!=m_Items.end(); it++){
     	PropItem* prop		= *it;
-        prop->item			= FHelper.AppendObject(tvProperties,prop->key);
+        prop->item			= FHelper.AppendObject(tvProperties,prop->key); R_ASSERT3(prop->item,"Duplicate properties key found:",prop->key.c_str());
         prop->item->Tag	    = (int)prop;
         prop->item->UseStyles=true;
         prop->item->CheckBoxEnabled = prop->m_Flags.is(PropItem::flShowCB);

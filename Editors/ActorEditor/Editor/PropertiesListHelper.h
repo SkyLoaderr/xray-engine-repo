@@ -7,7 +7,7 @@
 
 //---------------------------------------------------------------------------
 class CPropHelper{
-	IC PropItem*		CreateItem		(PropItemVec& items, LPCSTR key, EPropType type, u32 item_flags=0)
+	IC PropItem*		CreateItem		(PropItemVec& items, const AnsiString& key, EPropType type, u32 item_flags=0)
     {
     	PropItem* item	= FindItem(items,key,type);
         if (!item){
@@ -18,21 +18,20 @@ class CPropHelper{
         }
         return			item;
     }
-    IC PropValue*		AppendValue		(PropItemVec& items, LPCSTR key, PropValue* val, EPropType type, u32 item_flags=0)
+    IC PropValue*		AppendValue		(PropItemVec& items, const AnsiString& key, PropValue* val, EPropType type, u32 item_flags=0)
     {
     	PropItem* item	= CreateItem(items,key,type,item_flags);
         val->m_Owner	= item;
         item->AppendValue(val);
         return val;
     }
-//------------------------------------------------------------------------------
-public:
-    IC PropItem* 		FindItem		(PropItemVec& items,	LPCSTR key, EPropType type)
+    IC PropItem* 		FindItem		(PropItemVec& items, const AnsiString& key, EPropType type)
     {
     	for (PropItemIt it=items.begin(); it!=items.end(); it++)
-        	if (((*it)->type==type)&&(0==strcmp((*it)->key,key))) return *it;
+        	if (((*it)->type==type)&&((*it)->key==key)) return *it;
         return 0;
     }
+public:
 
 //------------------------------------------------------------------------------
 // predefind event routines
@@ -92,116 +91,116 @@ public:
     void __fastcall		NameBeforeEdit	(PropItem* sender, LPVOID edit_val);
     void __fastcall		NameDraw		(PropValue* sender, LPVOID draw_val);
 public:
-    IC CaptionValue*	CreateCaption	(PropItemVec& items, LPCSTR key, AnsiString val)
+    IC CaptionValue*	CreateCaption	(PropItemVec& items, AnsiString key, AnsiString val)
     {	return			(CaptionValue*)	AppendValue		(items,key,xr_new<CaptionValue>(val),PROP_CAPTION);		}
-    IC S8Value* 		CreateS8		(PropItemVec& items, LPCSTR key, s8* val, s8 mn=0, s8 mx=100, s8 inc=1)
+    IC S8Value* 		CreateS8		(PropItemVec& items, AnsiString key, s8* val, s8 mn=0, s8 mx=100, s8 inc=1)
     {	return			(S8Value*)		AppendValue		(items,key,xr_new<S8Value>(val,mn,mx,inc,0),PROP_S8);	}
-    IC S16Value* 		CreateS16		(PropItemVec& items, LPCSTR key, s16* val, s16 mn=0, s16 mx=100, s16 inc=1)
+    IC S16Value* 		CreateS16		(PropItemVec& items, AnsiString key, s16* val, s16 mn=0, s16 mx=100, s16 inc=1)
     {	return			(S16Value*)		AppendValue		(items,key,xr_new<S16Value>(val,mn,mx,inc,0),PROP_S16); }
-    IC S32Value* 	 	CreateS32		(PropItemVec& items, LPCSTR key, s32* val, s32 mn=0, s32 mx=100, s32 inc=1)
+    IC S32Value* 	 	CreateS32		(PropItemVec& items, AnsiString key, s32* val, s32 mn=0, s32 mx=100, s32 inc=1)
     {   return			(S32Value*)		AppendValue		(items,key,xr_new<S32Value>(val,mn,mx,inc,0),PROP_S32); }
-    IC U8Value* 		CreateU8		(PropItemVec& items, LPCSTR key, u8* val, u8 mn=0, u8 mx=100, u8 inc=1)
+    IC U8Value* 		CreateU8		(PropItemVec& items, AnsiString key, u8* val, u8 mn=0, u8 mx=100, u8 inc=1)
     {   return			(U8Value*)		AppendValue		(items,key,xr_new<U8Value>(val,mn,mx,inc,0),PROP_U8);   }
-    IC U16Value* 		CreateU16		(PropItemVec& items, LPCSTR key, u16* val, u16 mn=0, u16 mx=100, u16 inc=1)
+    IC U16Value* 		CreateU16		(PropItemVec& items, AnsiString key, u16* val, u16 mn=0, u16 mx=100, u16 inc=1)
     {   return			(U16Value*)		AppendValue		(items,key,xr_new<U16Value>(val,mn,mx,inc,0),PROP_U16); }
-    IC U32Value* 	  	CreateU32		(PropItemVec& items, LPCSTR key, u32* val, u32 mn=0, u32 mx=100, u32 inc=1)
+    IC U32Value* 	  	CreateU32		(PropItemVec& items, AnsiString key, u32* val, u32 mn=0, u32 mx=100, u32 inc=1)
     {	return			(U32Value*)		AppendValue		(items,key,xr_new<U32Value>(val,mn,mx,inc,0),PROP_U32);	}
-    IC FloatValue* 		CreateFloat		(PropItemVec& items, LPCSTR key, float* val, float mn=0.f, float mx=1.f, float inc=0.01f, int decim=2)
+    IC FloatValue* 		CreateFloat		(PropItemVec& items, AnsiString key, float* val, float mn=0.f, float mx=1.f, float inc=0.01f, int decim=2)
     {   return			(FloatValue*)	AppendValue		(items,key,xr_new<FloatValue>(val,mn,mx,inc,decim),PROP_FLOAT);}
-    IC BOOLValue* 	  	CreateBOOL		(PropItemVec& items, LPCSTR key, BOOL* val)
+    IC BOOLValue* 	  	CreateBOOL		(PropItemVec& items, AnsiString key, BOOL* val)
     {   return			(BOOLValue*)	AppendValue		(items,key,xr_new<BOOLValue>(val),PROP_BOOLEAN);        }
-    IC Flag8Value* 		CreateFlag8		(PropItemVec& items, LPCSTR key, Flags8* val, u8 mask)
+    IC Flag8Value* 		CreateFlag8		(PropItemVec& items, AnsiString key, Flags8* val, u8 mask)
     {   return			(Flag8Value*)	AppendValue		(items,key,xr_new<Flag8Value>(val,mask),PROP_FLAG8);    }
-    IC Flag16Value* 	CreateFlag16	(PropItemVec& items, LPCSTR key, Flags16* val, u16 mask)
+    IC Flag16Value* 	CreateFlag16	(PropItemVec& items, AnsiString key, Flags16* val, u16 mask)
     {   return			(Flag16Value*)	AppendValue		(items,key,xr_new<Flag16Value>(val,mask),PROP_FLAG16);  }
-    IC Flag32Value*    	CreateFlag32	(PropItemVec& items, LPCSTR key, Flags32* val, u32 mask)
+    IC Flag32Value*    	CreateFlag32	(PropItemVec& items, AnsiString key, Flags32* val, u32 mask)
     {   return			(Flag32Value*)	AppendValue		(items,key,xr_new<Flag32Value>(val,mask),PROP_FLAG32);	}
-    IC VectorValue*   	CreateVector	(PropItemVec& items, LPCSTR key, Fvector* val, float mn=0.f, float mx=1.f, float inc=0.01f, int decim=2)
+    IC VectorValue*   	CreateVector	(PropItemVec& items, AnsiString key, Fvector* val, float mn=0.f, float mx=1.f, float inc=0.01f, int decim=2)
     {   return			(VectorValue*)	AppendValue		(items,key,xr_new<VectorValue>(val,mn,mx,inc,decim),PROP_VECTOR);}
-	IC TokenValue* 		CreateToken		(PropItemVec& items, LPCSTR key, LPVOID val, xr_token* token, int p_size)
+	IC TokenValue* 		CreateToken		(PropItemVec& items, AnsiString key, LPVOID val, xr_token* token, int p_size)
     {   return			(TokenValue*)	AppendValue		(items,key,xr_new<TokenValue>((u32*)val,token,p_size),PROP_TOKEN);}
-	IC TokenValue2*   	CreateToken2	(PropItemVec& items, LPCSTR key, u32* val, AStringVec* lst)
+	IC TokenValue2*   	CreateToken2	(PropItemVec& items, AnsiString key, u32* val, AStringVec* lst)
     {   return			(TokenValue2*)	AppendValue		(items,key,xr_new<TokenValue2>(val,lst),PROP_TOKEN2);	}
-	IC TokenValue3*   	CreateToken3	(PropItemVec& items, LPCSTR key, u32* val, u32 cnt, const TokenValue3::Item* lst)
+	IC TokenValue3*   	CreateToken3	(PropItemVec& items, AnsiString key, u32* val, u32 cnt, const TokenValue3::Item* lst)
     {   return			(TokenValue3*)	AppendValue		(items,key,xr_new<TokenValue3>(val,cnt,lst),PROP_TOKEN3);}
-	IC TokenValue4*   	CreateToken4	(PropItemVec& items, LPCSTR key, u32* val, const TokenValue4::ItemVec* lst, int p_size)
+	IC TokenValue4*   	CreateToken4	(PropItemVec& items, AnsiString key, u32* val, const TokenValue4::ItemVec* lst, int p_size)
     {   return			(TokenValue4*)	AppendValue		(items,key,xr_new<TokenValue4>(val,lst,p_size),PROP_TOKEN4);}
-	IC ListValue* 	 	CreateList		(PropItemVec& items, LPCSTR key, LPSTR val, int lim, AStringVec* lst)
+	IC ListValue* 	 	CreateList		(PropItemVec& items, AnsiString key, LPSTR val, int lim, AStringVec* lst)
     {   return			(ListValue*)	AppendValue		(items,key,xr_new<ListValue>(val,lim,lst),PROP_LIST);       }
-	IC ListValue* 	 	CreateListA		(PropItemVec& items, LPCSTR key, LPSTR val, int lim, u32 cnt, LPCSTR* lst)
+	IC ListValue* 	 	CreateListA		(PropItemVec& items, AnsiString key, LPSTR val, int lim, u32 cnt, LPCSTR* lst)
     {   return			(ListValue*)	AppendValue		(items,key,xr_new<ListValue>(val,lim,cnt,lst),PROP_LIST);	}
-    IC U32Value*  		CreateColor		(PropItemVec& items, LPCSTR key, u32* val)
+    IC U32Value*  		CreateColor		(PropItemVec& items, AnsiString key, u32* val)
     {   return			(U32Value*)		AppendValue		(items,key,xr_new<U32Value>(val,0x00000000,0xffffffff,1,0),PROP_COLOR);}
-    IC ColorValue*		CreateFColor	(PropItemVec& items, LPCSTR key, Fcolor* val)
+    IC ColorValue*		CreateFColor	(PropItemVec& items, AnsiString key, Fcolor* val)
     {   return			(ColorValue*)	AppendValue		(items,key,xr_new<ColorValue>(val),PROP_FCOLOR);        }
-	IC TextValue* 	   	CreateText		(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
+	IC TextValue* 	   	CreateText		(PropItemVec& items, AnsiString key, LPSTR val, int lim)
     {   return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_TEXT);       }
-	IC ATextValue* 		CreateAText		(PropItemVec& items, LPCSTR key, AnsiString* val)
+	IC ATextValue* 		CreateAText		(PropItemVec& items, AnsiString key, AnsiString* val)
     {   return			(ATextValue*)	AppendValue		(items,key,xr_new<ATextValue>(val),PROP_A_TEXT);        }
-	IC TextValue* 	 	CreateEShader	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
+	IC TextValue* 	 	CreateEShader	(PropItemVec& items, AnsiString key, LPSTR val, int lim)
     {   return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_ESHADER);    }
-	IC TextValue* 	   	CreateCShader	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
+	IC TextValue* 	   	CreateCShader	(PropItemVec& items, AnsiString key, LPSTR val, int lim)
     {	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_CSHADER);	}
-	IC TextValue* 	   	CreateTexture	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
+	IC TextValue* 	   	CreateTexture	(PropItemVec& items, AnsiString key, LPSTR val, int lim)
     {	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_TEXTURE,PropItem::flDrawThumbnail);}
-	IC TextValue* 	  	CreateTexture2	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
+	IC TextValue* 	  	CreateTexture2	(PropItemVec& items, AnsiString key, LPSTR val, int lim)
     {	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_TEXTURE2,PropItem::flDrawThumbnail);}
-	IC ATextValue* 		CreateAEShader	(PropItemVec& items, LPCSTR key, AnsiString* val)
+	IC ATextValue* 		CreateAEShader	(PropItemVec& items, AnsiString key, AnsiString* val)
     {	return			(ATextValue*)	AppendValue		(items,key,xr_new<ATextValue>(val),PROP_A_ESHADER);     }
-	IC ATextValue* 		CreateACShader	(PropItemVec& items, LPCSTR key, AnsiString* val)
+	IC ATextValue* 		CreateACShader	(PropItemVec& items, AnsiString key, AnsiString* val)
     {	return			(ATextValue*)	AppendValue		(items,key,xr_new<ATextValue>(val),PROP_A_CSHADER);     }
-    IC ATextValue*	   	CreateAGameMtl	(PropItemVec& items, LPCSTR key, AnsiString* val)
+    IC ATextValue*	   	CreateAGameMtl	(PropItemVec& items, AnsiString key, AnsiString* val)
     {	return			(ATextValue*)	AppendValue		(items,key,xr_new<ATextValue>(val),PROP_A_GAMEMTL);		}
-	IC ATextValue* 		CreateATexture	(PropItemVec& items, LPCSTR key, AnsiString* val)
+	IC ATextValue* 		CreateATexture	(PropItemVec& items, AnsiString key, AnsiString* val)
     {	return			(ATextValue*)	AppendValue		(items,key,xr_new<ATextValue>(val),PROP_A_TEXTURE,PropItem::flDrawThumbnail);}
-	IC TextValue*	 	CreateLightAnim	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
+	IC TextValue*	 	CreateLightAnim	(PropItemVec& items, AnsiString key, LPSTR val, int lim)
     {	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_LIGHTANIM);  }
-	IC TextValue* 	 	CreateLibObject	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
+	IC TextValue* 	 	CreateLibObject	(PropItemVec& items, AnsiString key, LPSTR val, int lim)
     {	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_LIBOBJECT);  }
-	IC ATextValue* 		CreateALibObject(PropItemVec& items, LPCSTR key, AnsiString* val)
+	IC ATextValue* 		CreateALibObject(PropItemVec& items, AnsiString key, AnsiString* val)
     {	return			(ATextValue*)	AppendValue		(items,key,xr_new<ATextValue>(val),PROP_A_LIBOBJECT);   }
-	IC TextValue* 	 	CreateGameObject(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
+	IC TextValue* 	 	CreateGameObject(PropItemVec& items, AnsiString key, LPSTR val, int lim)
     {	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_GAMEOBJECT); }
-    IC TextValue*		CreateSoundSrc	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
+    IC TextValue*		CreateSoundSrc	(PropItemVec& items, AnsiString key, LPSTR val, int lim)
     {	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_SOUNDSRC);   }
-    IC ATextValue*	  	CreateASoundSrc	(PropItemVec& items, LPCSTR key, AnsiString* val)
+    IC ATextValue*	  	CreateASoundSrc	(PropItemVec& items, AnsiString key, AnsiString* val)
     {	return			(ATextValue*)	AppendValue		(items,key,xr_new<ATextValue>(val),PROP_A_SOUNDSRC);    }
-    IC TextValue*		CreateSoundEnv	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
+    IC TextValue*		CreateSoundEnv	(PropItemVec& items, AnsiString key, LPSTR val, int lim)
     {	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_SOUNDENV);   }
-    IC ATextValue*	  	CreateASoundEnv	(PropItemVec& items, LPCSTR key, AnsiString* val)
+    IC ATextValue*	  	CreateASoundEnv	(PropItemVec& items, AnsiString key, AnsiString* val)
     {	return			(ATextValue*)	AppendValue		(items,key,xr_new<ATextValue>(val),PROP_A_SOUNDENV);    }
-    IC TextValue*	 	CreateLibPS		(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
+    IC TextValue*	 	CreateLibPS		(PropItemVec& items, AnsiString key, LPSTR val, int lim)
     {	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_LIBPS);      }
-    IC ATextValue*	 	CreateALibPS	(PropItemVec& items, LPCSTR key, AnsiString* val)
+    IC ATextValue*	 	CreateALibPS	(PropItemVec& items, AnsiString key, AnsiString* val)
     {	return			(ATextValue*)	AppendValue		(items,key,xr_new<ATextValue>(val),PROP_A_LIBPS);		}
-    IC TextValue*	 	CreateLibPE		(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
+    IC TextValue*	 	CreateLibPE		(PropItemVec& items, AnsiString key, LPSTR val, int lim)
     {	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_LIBPE);		}
-    IC ATextValue*	 	CreateALibPE	(PropItemVec& items, LPCSTR key, AnsiString* val)
+    IC ATextValue*	 	CreateALibPE	(PropItemVec& items, AnsiString key, AnsiString* val)
     {	return			(ATextValue*)	AppendValue		(items,key,xr_new<ATextValue>(val),PROP_A_LIBPE);       }
-	IC TextValue* 		CreateEntity	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
+	IC TextValue* 		CreateEntity	(PropItemVec& items, AnsiString key, LPSTR val, int lim)
     {	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_ENTITY);     }
-	IC WaveValue* 		CreateWave		(PropItemVec& items, LPCSTR key, WaveForm* val)
+	IC WaveValue* 		CreateWave		(PropItemVec& items, AnsiString key, WaveForm* val)
     {	return			(WaveValue*)	AppendValue		(items,key,xr_new<WaveValue>(val),PROP_WAVE);           }
-    IC TextValue* 		CreateGameMtl	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
+    IC TextValue* 		CreateGameMtl	(PropItemVec& items, AnsiString key, LPSTR val, int lim)
     {	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_GAMEMTL);    }
-    IC ButtonValue*		CreateButton	(PropItemVec& items, LPCSTR key, AnsiString val)
+    IC ButtonValue*		CreateButton	(PropItemVec& items, AnsiString key, AnsiString val)
     {	return			(ButtonValue*)	AppendValue		(items,key,xr_new<ButtonValue>(val),PROP_BUTTON);		}
     
-    IC FloatValue* 		CreateAngle		(PropItemVec& items, LPCSTR key, float* val, float mn=0.f, float mx=PI_MUL_2, float inc=0.01f, int decim=2)
+    IC FloatValue* 		CreateAngle		(PropItemVec& items, AnsiString key, float* val, float mn=0.f, float mx=PI_MUL_2, float inc=0.01f, int decim=2)
     {   FloatValue* V	= (FloatValue*)	AppendValue		(items,key,xr_new<FloatValue>(val,mn,mx,inc,decim),PROP_FLOAT);
     	V->Owner()->OnAfterEditEvent	= floatRDOnAfterEdit;
         V->Owner()->OnBeforeEditEvent	= floatRDOnBeforeEdit; 
 	    V->Owner()->OnDrawTextEvent 	= floatRDOnDraw;
         return V;						
     }
-    IC VectorValue* 	CreateAngle3	(PropItemVec& items, LPCSTR key, Fvector* val, float mn=0.f, float mx=PI_MUL_2, float inc=0.01f, int decim=2)
+    IC VectorValue* 	CreateAngle3	(PropItemVec& items, AnsiString key, Fvector* val, float mn=0.f, float mx=PI_MUL_2, float inc=0.01f, int decim=2)
     {   VectorValue* V	= (VectorValue*)	AppendValue		(items,key,xr_new<VectorValue>(val,mn,mx,inc,decim),PROP_VECTOR);
     	V->Owner()->OnAfterEditEvent	= FvectorRDOnAfterEdit;
         V->Owner()->OnBeforeEditEvent	= FvectorRDOnBeforeEdit;
 	    V->Owner()->OnDrawTextEvent		= FvectorRDOnDraw;
         return V;					
     }
-    IC TextValue* 		CreateName		(PropItemVec& items, LPCSTR key, LPSTR val, int lim, ListItem* owner)  
+    IC TextValue* 		CreateName		(PropItemVec& items, AnsiString key, LPSTR val, int lim, ListItem* owner)  
     {   TextValue* V	= (TextValue*) 	CreateText	(items,key,val,lim);
         V->Owner()->OnAfterEditEvent   	= NameAfterEdit;
         V->Owner()->OnBeforeEditEvent  	= NameBeforeEdit;
@@ -210,7 +209,7 @@ public:
 	    if (V->Owner()->m_Flags.is(PropItem::flMixed)) V->Owner()->m_Flags.set(PropItem::flDisabled,TRUE);
         return V;					
     }
-    IC TextValue* 		CreateName_TI	(PropItemVec& items, LPCSTR key, LPSTR val, int lim, TElTreeItem* owner)  
+    IC TextValue* 		CreateName_TI	(PropItemVec& items, AnsiString key, LPSTR val, int lim, TElTreeItem* owner)  
     {   TextValue* V	= (TextValue*) 	CreateText	(items,key,val,lim);
         V->Owner()->OnAfterEditEvent   	= NameAfterEdit_TI;
         V->Owner()->OnBeforeEditEvent  	= NameBeforeEdit;
@@ -219,7 +218,7 @@ public:
 	    if (V->Owner()->m_Flags.is(PropItem::flMixed)) V->Owner()->m_Flags.set(PropItem::flDisabled,TRUE);
         return V;					
     }
-    IC SceneItemValue*	CreateSceneItem	(PropItemVec& items, LPCSTR key, LPSTR val, int lim, EObjClass cls, LPCSTR type)
+    IC SceneItemValue*	CreateSceneItem	(PropItemVec& items, AnsiString key, LPSTR val, int lim, EObjClass cls, LPCSTR type)
     {	return			(SceneItemValue*)AppendValue(items,key,xr_new<SceneItemValue>(val,lim,cls,type),PROP_SCENE_ITEM);    }
 	void 				DrawThumbnail	(TCanvas *Surface, TRect &R, LPCSTR fname);
 };

@@ -59,12 +59,12 @@ void CDetail::OnDeviceCreate()
     VERIFY				(surf);
     AnsiString	s_name	= surf->_ShaderName();
     AnsiString	t_name	= surf->_Texture();
-	shader				= Device.Shader.Create(s_name.c_str(),t_name.c_str());
+	shader.create		(s_name.c_str(),t_name.c_str());
 }
 
 void CDetail::OnDeviceDestroy()
 {
-	Device.Shader.Delete(shader);
+	shader.destroy();
 }
 
 int CDetail::_AddVert(const Fvector& p, float u, float v)

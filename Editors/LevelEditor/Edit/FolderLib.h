@@ -13,30 +13,26 @@ const u32 TYPE_INVALID= -1;
 const u32 TYPE_FOLDER	= 0;
 const u32 TYPE_OBJECT	= 1;
 class CFolderHelper{
-	static AnsiString XKey;
     IC AnsiString		FolderAppend	(LPCSTR val)
     {
     	if (val&&val[0]) return AnsiString(val)+"\\";
         return   		"";
     }
 public:
-    IC LPCSTR			PrepareKey		(LPCSTR pref, LPCSTR key)
+    IC AnsiString		PrepareKey		(LPCSTR pref, LPCSTR key)
     {
         R_ASSERT(key);
-    	XKey			= FolderAppend(pref)+AnsiString(key);
-        return XKey.c_str();
+        return FolderAppend(pref)+AnsiString(key);
     }
-    IC LPCSTR			PrepareKey		(LPCSTR pref0, LPCSTR pref1, LPCSTR key)
+    IC AnsiString		PrepareKey		(LPCSTR pref0, LPCSTR pref1, LPCSTR key)
     {
         R_ASSERT(key);
-    	XKey			= FolderAppend(pref0)+FolderAppend(pref1)+AnsiString(key);
-        return XKey.c_str();
+        return FolderAppend(pref0)+FolderAppend(pref1)+AnsiString(key);
     }
-    IC LPCSTR			PrepareKey		(LPCSTR pref0, LPCSTR pref1, LPCSTR pref2, LPCSTR key)
+    IC AnsiString		PrepareKey		(LPCSTR pref0, LPCSTR pref1, LPCSTR pref2, LPCSTR key)
     {
         R_ASSERT(key);
-    	XKey			= FolderAppend(pref0)+FolderAppend(pref1)+FolderAppend(pref2)+AnsiString(key);
-        return XKey.c_str();
+        return FolderAppend(pref0)+FolderAppend(pref1)+FolderAppend(pref2)+AnsiString(key);
     }
 public:
 	typedef void 		__fastcall (__closure *TOnRenameItem)(LPCSTR p0, LPCSTR p1);

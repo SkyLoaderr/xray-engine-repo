@@ -8,7 +8,6 @@
 #pragma package(smart_init)
 
 CFolderHelper FHelper;
-AnsiString CFolderHelper::XKey;
 
 static TElTreeItem*			DragItem;
 
