@@ -87,7 +87,7 @@ class CCC_Help : public CConsoleCommand
 public:
 	CCC_Help(LPCSTR N) : CConsoleCommand(N) { bEmptyArgsHandled = TRUE; };
 	virtual void Execute(LPCSTR args) {
-		Log("- --- Command list start ---");
+		Log("- --- Command listing: start ---");
 		CConsole::vecCMD_IT it;
 		for (it=Console.Commands.begin(); it!=Console.Commands.end(); it++)
 		{
@@ -97,7 +97,7 @@ public:
 			
 			Msg("%-20s (%-10s) --- %s",	C.Name(), _S, _I);
 		}
-		Log("- --- Command list end ----");
+		Log("- --- Command listing: end ----");
 	}
 };
 //-----------------------------------------------------------------------

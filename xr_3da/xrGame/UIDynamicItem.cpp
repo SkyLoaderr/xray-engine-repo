@@ -56,7 +56,7 @@ void CUIDynamicItem::Render	()
 	for (u32 i=0; i<item_cnt; i++,it++)
 		inherited::Render(pv,it->pos,it->color);
 
-	// unlock VB and Render it as triangle list
+	// unlock VB and Render it as triangle LIST
 	RCache.Vertex.Unlock	(item_cnt*4,hVS->vb_stride);
 	RCache.set_Shader		(hShader);
 	RCache.set_Geometry		(hVS);
@@ -76,7 +76,7 @@ void CUIDynamicItem::Render(float angle)
 	for (u32 i=0; i<item_cnt; i++,it++)
 		inherited::Render(pv,it->pos,it->color,angle);	
 
-	// unlock VB and Render it as triangle list
+	// unlock VB and Render it as triangle LIST
 	RCache.Vertex.Unlock	(item_cnt*4,hVS->vb_stride);
 	RCache.set_Shader		(hShader);
 	RCache.set_Geometry		(hVS);

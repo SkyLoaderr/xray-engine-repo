@@ -17,7 +17,7 @@ class CPHCharacter : public CPHObject
 {
 protected:
 ////////////////////////// dynamic
-list<CPHObject*>::iterator m_ident;
+xr_list<CPHObject*>::iterator m_ident;
 CPHInterpolation m_body_interpolation;
 dBodyID m_body;
 CPhysicsRefObject* m_phys_ref_object;

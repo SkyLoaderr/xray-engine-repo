@@ -7,11 +7,11 @@
 
 class CInventory;
 class CInventoryItem;
-typedef CInventoryItem* PIItem;
-typedef set<PIItem> TIItemSet;
-typedef list<PIItem> TIItemList;
-typedef TIItemSet::iterator PSPIItem;
-typedef TIItemList::iterator PPIItem;
+typedef CInventoryItem*			PIItem;
+typedef xr_set<PIItem>			TIItemSet;
+typedef xr_list<PIItem>			TIItemList;
+typedef TIItemSet::iterator		PSPIItem;
+typedef TIItemList::iterator	PPIItem;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 class CInventoryItem : public CGameObject {				// Предок объектов инвентаря

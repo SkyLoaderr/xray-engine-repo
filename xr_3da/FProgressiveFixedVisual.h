@@ -15,8 +15,8 @@ struct ENGINE_API Vsplit
 							// (the vert I create is just the current end of the VB)
 	BYTE	numNewTriangles;
 	BYTE	numFixFaces;
-							// the index here is an offset in the FixFaces list
-							// which contains offsets in the triangle list
+							// the index here is an offset in the FixFaces _list
+							// which contains offsets in the triangle _list
 };
 #pragma pack(pop)
 

@@ -263,7 +263,7 @@ void IPureClient::Disconnect()
 {
     if( NET )	NET->Close(0);
 
-    // Clean up Host list
+    // Clean up Host _list_
 	net_csEnumeration.Enter			();
 	for (u32 i=0; i<net_Hosts.size(); i++) {
 		HOST_NODE&	N = net_Hosts[i];

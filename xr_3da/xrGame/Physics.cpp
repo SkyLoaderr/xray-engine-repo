@@ -724,7 +724,7 @@ void CPHWorld::Step(dReal step)
 {
 	// compute contact joints and forces
 
-	list<CPHObject*>::iterator iter;
+	xr_list<CPHObject*>::iterator iter;
 	//step+=astep;
 
 	//const  dReal k_p=24000000.f;//550000.f;///1000000.f;

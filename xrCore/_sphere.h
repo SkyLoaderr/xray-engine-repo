@@ -113,7 +113,7 @@ namespace
     public:
         // types
 		// use my alloactor so that it doesn't leak forever !
-		typedef std::list<vec3D>			VectorList;
+		typedef xr_list<vec3D>				VectorList;
 		
         typedef VectorList::iterator        It;
         typedef VectorList::const_iterator  Cit;

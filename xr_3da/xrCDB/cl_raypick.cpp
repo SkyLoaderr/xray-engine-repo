@@ -15,7 +15,6 @@
 
 
 namespace RAPID {
-	// add rapick info to list
 	void XRCollide::add_raypick(const raypick_info& rp_inf)
 	{
 		RayContact.push_back(rp_inf);

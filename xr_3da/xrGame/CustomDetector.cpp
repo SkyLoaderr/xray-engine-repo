@@ -101,7 +101,7 @@ void CCustomDetector::Update(u32 dt) {
 	if(H_Parent()) {
 		f32 l_maxPow = 0;
 		BOOL l_buzzer = false;
-		list<CCustomZone*>::iterator l_it;
+		xr_list<CCustomZone*>::iterator l_it;
 		for(l_it = m_zones.begin(); l_it != m_zones.end(); l_it++) {
 			CCustomZone *l_pZ = *l_it;
 			u32 &l_time = m_times[l_pZ];
@@ -136,7 +136,7 @@ void CCustomDetector::Update(u32 dt) {
 void CCustomDetector::UpdateCL() {
 	inherited::UpdateCL();
 	f32 l_zonePow = 0;
-	list<CCustomZone*>::iterator l_it;
+	xr_list<CCustomZone*>::iterator l_it;
 	for(l_it = m_zones.begin(); l_it != m_zones.end(); l_it++) l_zonePow = _max(l_zonePow, (*l_it)->Power((*l_it)->Position().distance_to(vPosition)));
 	/*
 	CGameFont* H		= HUD().pFontMedium;

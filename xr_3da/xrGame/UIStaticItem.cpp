@@ -82,7 +82,7 @@ void CUIStaticItem::Render(Shader* sh)
 		v_cnt		+=4;
 	}
 
-	// unlock VB and Render it as triangle list
+	// unlock VB and Render it as triangle LIST
 	RCache.Vertex.Unlock	(v_cnt,hVS->vb_stride);
 	RCache.set_Geometry		(hVS);
 	RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,v_cnt,0,v_cnt/2);
@@ -102,7 +102,7 @@ void CUIStaticItem::Render(float angle, Shader* sh)
 	
 	inherited::Render(pv,bp,dwColor,angle);	
 
-	// unlock VB and Render it as triangle list
+	// unlock VB and Render it as triangle LIST
 	RCache.Vertex.Unlock	(4,hVS->vb_stride);
 	RCache.set_Geometry		(hVS);
 	RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,4,0,2);

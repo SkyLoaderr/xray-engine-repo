@@ -205,7 +205,7 @@ struct CONTRIB
 struct CLIST
 {
 	int		n;					/* number of contributors */
-	CONTRIB	*p;					/* pointer to list of contributions */
+	CONTRIB	*p;					/* pointer to _list_ of contributions */
 };
 
 u32	CC	(double a)

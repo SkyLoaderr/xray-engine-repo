@@ -157,15 +157,15 @@ void CWeaponRPG7Grenade::Explode(const Fvector &pos, const Fvector &normal)
 	m_explodeTime	= EXPLODE_TIME;
 	m_flashTime		= FLASH_TIME;
 	setVisible(false);
-	list<CPGObject*>::iterator l_it;
+	xr_list<CPGObject*>::iterator l_it;
 	for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); l_it++) (*l_it)->Stop();
 	Sound->play_at_pos(sndExplode, 0, vPosition, false);
 	Fvector l_dir; f32 l_dst;
 	m_blasted.clear();
 	feel_touch.clear();
 	feel_touch_update(vPosition, m_blastR);
-	list<s16> l_elsemnts;
-	list<Fvector> l_bs_positions;
+	xr_list<s16>		l_elsemnts;
+	xr_list<Fvector>	l_bs_positions;
 	while(m_blasted.size()) {
 		CGameObject *l_pGO = *m_blasted.begin();
 		Fvector l_goPos; if(l_pGO->Visual()) l_pGO->clCenter(l_goPos); else l_goPos.set(l_pGO->Position());
@@ -442,7 +442,7 @@ void CWeaponRPG7Grenade::UpdateCL() {
 			if(m_engineTime <= 0) {
 				m_state		= stFlying;
 				// остановить двигатель
-				list<CPGObject*>::iterator l_it;
+				xr_list<CPGObject*>::iterator l_it;
 				for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); l_it++) (*l_it)->Stop();
 			}else{
 				// двигатель все еще работает
@@ -453,7 +453,7 @@ void CWeaponRPG7Grenade::UpdateCL() {
 				l_dir.set(0, 1.f, 0);
 				l_force = m_engine_u * Device.dwTimeDelta / 1000.f;
 				m_pPhysicsShell->applyImpulse(l_dir, l_force);
-				list<CPGObject*>::iterator l_it;
+				xr_list<CPGObject*>::iterator l_it;
 				Fvector vel;
 				m_pPhysicsShell->get_LinearVel(vel);
 				// обновить эффекты

@@ -244,7 +244,7 @@ static float incoming( st_Key *key0, st_Key *key1, st_Key *key1n ){
 //======================================================================
 //evalEnvelope()
 //
-//Given a list of keys and a time, returns the interpolated value of the
+//Given a _list_ of keys and a time, returns the interpolated value of the
 //envelope at that time.
 //======================================================================
 float evalEnvelope( CEnvelope *env, float time ){

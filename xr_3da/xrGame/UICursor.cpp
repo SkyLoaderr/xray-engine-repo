@@ -42,7 +42,7 @@ void CUICursor::Render	()
 	pv->set(cx+size, cy+size,	.0001f,.9999f, C, 1, 1); pv++;
 	pv->set(cx+size, cy,		.0001f,.9999f, C, 1, 0); pv++;
 	
-	// unlock VB and Render it as triangle list
+	// unlock VB and Render it as triangle LIST
 	Stream->Unlock					(4,hVS->vb_stride);
 	RCache.set_Shader		(hShader);
 	RCache.set_Geometry		(hVS);

@@ -57,7 +57,7 @@ void CTargetCSCask::OnEvent(NET_Packet& P, u16 type)
 
 void CTargetCSCask::OnVisible() {
 	inherited::OnVisible();
-	list<CTargetCS*>::iterator l_it = m_targets.begin();
+	xr_list<CTargetCS*>::iterator l_it = m_targets.begin();
 	while(l_it != m_targets.end()) { (*l_it)->OnVisible(); l_it++; }
 }
 

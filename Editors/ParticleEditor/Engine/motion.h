@@ -36,7 +36,7 @@ struct st_BoneMotion
     			st_BoneMotion(){name=0; m_Flags.zero(); ZeroMemory(envs,sizeof(CEnvelope*)*ctMaxChannel);}
     void        SetName(LPCSTR nm){xr_free(name); name=xr_strdup(nm);}
 };
-// list по костям
+// vector по костям
 DEFINE_VECTOR(st_BoneMotion,BoneMotionVec,BoneMotionIt);
 
 //--------------------------------------------------------------------------

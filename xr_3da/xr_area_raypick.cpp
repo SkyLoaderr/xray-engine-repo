@@ -275,7 +275,7 @@ BOOL  CObjectSpace::RayPickW( const Fvector &start, const Fvector &dir, float ra
 		// check collide
 		XRC.BBoxCollide	(M_target,&target->model, M_bbox,box_center,box_radius);
 		if (!XRC.GetBBoxContactCount()) continue;
-		// fill tris list
+		// fill tris
 		Fmatrix *pM = (target->owner)?&(target->owner->mTransform):0;
 		for (u32 i=0; i<XRC.GetBBoxContactCount(); i++){
 												AddToTrisList( pM, &target->model.tris[XRC.BBoxContact[i].id] );
@@ -318,7 +318,7 @@ BOOL  CObjectSpace::RayPickW( const Fvector &start, const Fvector &dir, float ra
 	
 	collide_list.push_back(0);
 	
-	// fill tris list
+	// fill tris
 	for (u32 i=0; i<XRC.GetBBoxContactCount(); i++)
 	{
 		CDB::tri &T = Static.tris[XRC.BBoxContact[i].id];

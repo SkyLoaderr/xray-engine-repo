@@ -179,8 +179,8 @@ void CGrenade::Explode() {
 	Fvector l_dir; f32 l_dst;
 	m_blasted.clear();
 	feel_touch_update(vPosition, m_blastR);
-	list<s16> l_elsemnts;
-	list<Fvector> l_bs_positions;
+	xr_list<s16>		l_elsemnts;
+	xr_list<Fvector>	l_bs_positions;
 	while(m_blasted.size()) {
 		CGameObject *l_pGO = *m_blasted.begin();
 		Fvector l_goPos; if(l_pGO->Visual()) l_pGO->clCenter(l_goPos); else l_goPos.set(l_pGO->Position());

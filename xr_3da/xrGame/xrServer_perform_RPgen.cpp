@@ -3,7 +3,7 @@
 BOOL xrServer::PerformRP	(xrServerEntity* EEE)
 {
 	/*
-	// Get list of respawn points
+	// Get LIST of respawn points
 	if (EEE->g_team() >= (int)(Level().Teams.size()))	return FALSE;
 	svector<Fvector4,maxRP>&	RP					= Level().Teams[EEE->g_team()].RespawnPoints;
 	if (RP.empty())									return FALSE;

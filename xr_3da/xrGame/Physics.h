@@ -193,7 +193,7 @@ class CPHWorld {
 	dSpaceID Space;
 	
 	CPHMesh Mesh;
-	list<CPHObject*> m_objects;
+	xr_list<CPHObject*> m_objects;
 public:
 	double m_frame_sum;
 	dReal frame_time;
@@ -209,12 +209,12 @@ public:
 	dSpaceID GetSpace(){return Space;};
 	//	dWorldID GetWorld(){return phWorld;};
 	void Create();
-	list <CPHObject*> ::iterator AddObject(CPHObject* object){
+	xr_list <CPHObject*> ::iterator AddObject(CPHObject* object){
 		m_objects.push_back(object);
-		//list <CPHObject*> ::iterator i= m_objects.end();
+		//xr_list <CPHObject*> ::iterator i= m_objects.end();
 		return --(m_objects.end());
 	};
-	void RemoveObject(list<CPHObject*> :: iterator i){
+	void RemoveObject(xr_list<CPHObject*> :: iterator i){
 		m_objects.erase((i));
 	};
 	//CPHElement* AddElement(){
@@ -520,7 +520,7 @@ class CPHShell: public CPhysicsShell,public CPHObject {
 	dSpaceID			m_space;
 	bool bActivating;
 
-list<CPHObject*>::iterator m_ident;
+xr_list<CPHObject*>::iterator m_ident;
 				
 public:
 

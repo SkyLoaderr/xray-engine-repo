@@ -177,10 +177,10 @@ namespace PAPI{
 	// A group of particles - Info and an array of Particles
 	struct PARTICLEDLL_API ParticleGroup
 	{
-		int p_count;		// Number of particles currently existing.
-		int max_particles;	// Max particles allowed in group.
-		int particles_allocated; // Actual allocated size.
-		Particle list[1];	// Actually, num_particles in size
+		int p_count;				// Number of particles currently existing.
+		int max_particles;			// Max particles allowed in group.
+		int particles_allocated;	// Actual allocated size.
+		Particle list[1];			// Actually, num_particles in size
 
 		IC void Remove(int i)
 		{

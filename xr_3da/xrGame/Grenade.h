@@ -38,7 +38,7 @@ public:
 	CGrenade *m_pFake;
 	f32 m_blast, m_blastR, m_fragsR, m_fragHit;
 	s32 m_frags;
-	list<CGameObject*> m_blasted;
+	xr_list<CGameObject*> m_blasted;
 
 	LPSTR pstrWallmark;
 	Shader* hWallmark;

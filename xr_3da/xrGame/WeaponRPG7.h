@@ -25,12 +25,12 @@ public:
 	void Explode(const Fvector &pos, const Fvector &normal);
 	virtual void FragWallmark(const Fvector& vDir, const Fvector &vEnd, Collide::ray_query& R);
 
-	Fvector			m_pos, m_vel;
-	CGameObject*	m_pOwner;
+	Fvector					m_pos, m_vel;
+	CGameObject*			m_pOwner;
 
-	f32				m_blast, m_blastR, m_fragsR, m_fragHit;
-	s32				m_frags;
-	list<CGameObject*> m_blasted;
+	f32						m_blast, m_blastR, m_fragsR, m_fragHit;
+	s32						m_frags;
+	xr_list<CGameObject*>	m_blasted;
 
 	enum EState{
 		stInactive,
