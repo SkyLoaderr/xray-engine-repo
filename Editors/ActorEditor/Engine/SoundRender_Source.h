@@ -33,5 +33,7 @@ public:
 	void					load					(LPCSTR name,	BOOL b3D);
     void					unload					();
 	void					decompress				(u32	line);
+
+	virtual	u32				length_ms				( )	{return dwTimeTotal;	}
 };
 #endif

@@ -139,6 +139,7 @@ struct	ref_sound
 class XRSOUND_API	CSound_source
 {
 public:
+	virtual	u32				length_ms				( )		= 0;
 };
 
 /// definition (Sound Source)
