@@ -37,7 +37,7 @@ void CMincer::Affect(CObject* O) {
 		//l_pO->ph_Movement.ApplyImpulse(l_dir, 50.f*Power(l_pO->Position().distance_to(P)));
 		Fvector position_in_bone_space;
 		float power = Power(l_pO->Position().distance_to(P)), impulse = 0;
-		if(false && power > 0.01f) {
+		if(power > 0.01f) {
 			position_in_bone_space.set(0.f,0.f,0.f);
 			NET_Packet		l_P;
 			l_pO->u_EventGen		(l_P,GE_HIT,l_pO->ID());
