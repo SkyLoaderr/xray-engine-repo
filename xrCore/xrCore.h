@@ -227,7 +227,7 @@ public:
 	string64	CompName;
 	string512	Params;
 public:
-	void		_initialize	(LPCSTR ApplicationName, LogCallback cb=0, LPCSTR root_path=0);
+	void		_initialize	(LPCSTR ApplicationName, LogCallback cb=0);
 	void		_destroy	();
 };
 extern XRCORE_API xrCore Core;

@@ -248,30 +248,13 @@ bool CLocatorAPI::Recurse		(const char* path)
     return true;
 }
 
-void CLocatorAPI::_initialize	(BOOL bBuildCopy, LPCSTR root_path)
+void CLocatorAPI::_initialize	(BOOL bBuildCopy)
 {
 	Log				("Initializing File System...");
 	DWORD	M1		= Memory.mem_usage();
 
 	m_Flags.set		(flBuildCopy,bBuildCopy);
 
-	// scan root directory
-	bNoRecurse		= TRUE;
-	string256		buf;
-	IReader* F		= 0;
-	if (root_path){
-		Recurse		(root_path);
-		strconcat	(buf,root_path,"fs.ltx");
-		F			= r_open(buf);
-	}else{
-		Recurse		("");
-		F			= r_open("fs.ltx"); 
-	}
-	R_ASSERT2		(F,"Can't open file 'fs.ltx'");
-
-	string256		id, temp, root, add, def, capt;
-	LPCSTR			lp_add, lp_def, lp_capt;
-    string16		b_v;
 	// append appliction path
     {
         string256		app_root,fn,dr,di;
@@ -283,7 +266,18 @@ void CLocatorAPI::_initialize	(BOOL bBuildCopy, LPCSTR root_path)
         Recurse			(P->m_Path);
         pathes.insert	(mk_pair(xr_strdup("$app_root$"),P));
     }
+	// scan root directory
+	bNoRecurse		= TRUE;
+	string_path		buf;
+	IReader* F		= 0;
+    Recurse			("");
+    F				= r_open("fs.ltx"); 
+    if (!F) F		= r_open("$app_root$","fs.ltx"); 
+	R_ASSERT2		(F,"Can't open file 'fs.ltx'");
     // append all pathes    
+	string256		id, temp, root, add, def, capt;
+	LPCSTR			lp_add, lp_def, lp_capt;
+    string16		b_v;
 	while(!F->eof()){
 		F->r_string	(buf);
         _GetItem(buf,0,id,'=');

@@ -32,7 +32,7 @@ namespace CPU
 {
 	extern	void			Detect	();
 };
-void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb, LPCSTR root_path)
+void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb)
 {
 	static BOOL				bInitialized	= FALSE;
 
@@ -59,7 +59,7 @@ void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb, LPCSTR root_p
 	rtc_initialize			();
 	Debug._initialize		();
 	xr_FS					= xr_new<CLocatorAPI>	();
-	FS._initialize			(0!=strstr(Params,"-build"),root_path);
+	FS._initialize			(0!=strstr(Params,"-build"));
 	CreateLog				(cb,0!=strstr(Params,"-nolog"));
 
 	bInitialized			= TRUE;

@@ -121,7 +121,7 @@ private:
 public:
 								CLocatorAPI		();
 								~CLocatorAPI	();
-	void						_initialize		(BOOL bBuildCopy, LPCSTR root_path);
+	void						_initialize		(BOOL bBuildCopy);
 	void						_destroy		();
 
 	IReader*					r_open			(LPCSTR initial, LPCSTR N);
