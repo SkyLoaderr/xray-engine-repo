@@ -69,7 +69,8 @@ extern "C" int dSortTriBoxCollide (
 	dReal neg_depth=dInfinity,b_neg_depth=dInfinity;
 	//dReal max_proj=-dInfinity,proj;
 	const dReal* p=dGeomGetPosition(o1);
-	UINT b_count=0;
+	UINT	b_count		=0			;
+	bool	intersect	=	false	;
 	//dVector3 pos_vect={last_pos[0]-p[0],last_pos[1]-p[1],last_pos[2]-p[2]};
 
 
@@ -164,6 +165,29 @@ extern "C" int dSortTriBoxCollide (
 			if((!(dDOT(last_pos,tri.norm)-tri.pos<0.f))||*pushing_neg||*pushing_b_neg)
 				if(__aabb_tri(Point(p),Point((float*)&AABB),vertices))
 				{
+					if(!(*pushing_neg||*pushing_b_neg))
+					{
+						if(last_pos[0]!=-dInfinity)
+						{
+						
+						dVector3 tri_point;
+						PlanePoint(tri.norm,tri.pos,last_pos,p,tri_point);
+						intersect=intersect||TriContainPoint(	(dReal*)&Res->verts[0],
+																(dReal*)&Res->verts[1],
+																(dReal*)&Res->verts[2],
+																tri.norm,tri.side0,
+																tri.side1,tri_point);
+						}
+						else
+						{
+							intersect=true;
+						}
+					}
+					else
+					{
+						intersect=true;
+					}
+
 					if(TriContainPoint((dReal*)&Res->verts[0],(dReal*)&Res->verts[1],(dReal*)&Res->verts[2],
 						tri.norm,tri.side0,
 						tri.side1,p)
@@ -254,7 +278,8 @@ extern "C" int dSortTriBoxCollide (
 	}
 	//((b_count>1)||(*pushing_b_neg))&&
 
-	if(b_neg_depth<dInfinity&&ret==0){
+	if(b_neg_depth<dInfinity&&ret==0&&intersect){
+
 		bool include = true;
 
 		for(i=pos_tries.begin();pos_tries.end() != i;++i){
@@ -667,6 +692,7 @@ int dSortedTriSphere(//const dReal* v1,const dReal* v2,
 						 //dReal max_proj=-dInfinity,proj;
 						 const dReal* p=dGeomGetPosition(o1);
 						 UINT b_count=0;
+						 bool intersect=false;
 						 //dVector3 pos_vect={last_pos[0]-p[0],last_pos[1]-p[1],last_pos[2]-p[2]};
 
 
@@ -724,6 +750,28 @@ int dSortedTriSphere(//const dReal* v1,const dReal* v2,
 								 if( (!(dDOT(last_pos,tri.norm)-tri.pos<0.f)&& -dInfinity != last_pos[0]) ||*pushing_neg||*pushing_b_neg)
 									 if(__aabb_tri(Point(p),Point((float*)&AABB),vertices))
 									 {
+										 if(!(*pushing_neg||*pushing_b_neg))
+										 {
+											 if(last_pos[0]!=-dInfinity)
+											 {
+
+												 dVector3 tri_point;
+												 PlanePoint(tri.norm,tri.pos,last_pos,p,tri_point);
+												 intersect=intersect||TriContainPoint(	(dReal*)&Res->verts[0],
+													 (dReal*)&Res->verts[1],
+													 (dReal*)&Res->verts[2],
+													 tri.norm,tri.side0,
+													 tri.side1,tri_point);
+											 }
+											 else
+											 {
+												 intersect=true;
+											 }
+										 }
+										 else
+										 {
+											 intersect=true;
+										 }
 										 if(TriContainPoint((dReal*)&Res->verts[0],(dReal*)&Res->verts[1],(dReal*)&Res->verts[2],
 											 tri.norm,tri.side0,
 											 tri.side1,p)
@@ -814,7 +862,7 @@ int dSortedTriSphere(//const dReal* v1,const dReal* v2,
 						 }
 
 						 //((b_count>1)||(*pushing_b_neg))&&
-						 if(b_neg_depth<dInfinity&&ret==0){
+						 if(b_neg_depth<dInfinity&&ret==0&&intersect){
 							 bool include = true;
 							 for(i=pos_tries.begin();pos_tries.end()!=i;++i)
 							 {

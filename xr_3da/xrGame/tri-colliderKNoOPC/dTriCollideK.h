@@ -462,6 +462,25 @@ inline bool  TriPlaneContainPoint(const dReal* triAx,const dReal* v0, const dRea
 
 }
 
+inline void PlanePoint(const dReal* norm,dReal pos,const dReal* from,const dReal* to,dReal* point)
+{
+	dVector3	dir		=	{to[0]-from[0],to[1]-from[1],to[2]-from[2]}	;
+	dReal		rmag	=	dDOT(dir,dir)								;
+	VERIFY(rmag!=0.f)													;
+				rmag	=	dSqrt(rmag)									;
+				rmag	=	1.f/rmag									;
+
+	dir[0]*=rmag;	dir[1]*=rmag;	dir[2]*=rmag						;
+
+	dReal		cosinus	=		dDOT(norm,dir)							;
+	VERIFY2(cosinus<0.f,"wrong positions")								;
+	dReal mul=(dDOT(from,norm)-pos)/cosinus								;
+	dir[0]*=mul;	dir[1]*=mul;	dir[2]*=mul							;
+	point[0]=from[0]-dir[0]												;	
+	point[1]=from[1]-dir[1]												;	
+	point[2]=from[2]-dir[2]												;
+	
+}
 
 /*
 inline dReal FragmentonBoxTest1(const dReal* Pt1,const dReal* Pt2,const dReal* BxP,const dReal* BxEx,const dReal* R,dReal* norm){
