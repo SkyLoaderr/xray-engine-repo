@@ -206,6 +206,7 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 	HUD().pFontSmall->OutNext	(buf);
 	HUD().pFontSmall->OutNext	("Accel     [%3.2f, %3.2f, %3.2f]",VPUSH(NET_SavedAccel));
 	HUD().pFontSmall->OutNext	("V         [%3.2f, %3.2f, %3.2f]",VPUSH(ph_Movement.GetVelocity()));
+	HUD().pFontSmall->OutNext	("Node ID   %d",AI_NodeID);
 #endif
 }
 

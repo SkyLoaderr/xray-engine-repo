@@ -21,7 +21,62 @@ void CAI_Stalker::vfBuildPathToDestinationPoint(CAISelectorBase *S)
 	
 	if (AI_Path.Nodes.size() > 0) {
 		// if path is long enough then build travel line
-		AI_Path.BuildTravelLine(Position());
+		//AI_Path.BuildTravelLine(Position());
+		//////////////////////////////////////////////////////////////////////////
+		
+		vector<Fvector>		tpaPoints(0);
+		vector<Fvector>		tpaDeviations(0);
+		vector<Fvector>		tpaTravelPath(0);
+		tpaPoints.push_back(vPosition);
+		u32 N = AI_Path.Nodes.size();
+		Fvector			tStartPosition = vPosition;
+		u32				dwCurNode = AI_NodeID;
+
+		for (u32 i=1; i<N; i++)
+			if (!getAI().bfCheckNodeInDirection(dwCurNode,tStartPosition,AI_Path.Nodes[i]))
+				if (dwCurNode != AI_Path.Nodes[i - 1])
+					tpaPoints.push_back(tStartPosition = getAI().tfGetNodeCenter(dwCurNode = AI_Path.Nodes[--i]));
+				else
+					tpaPoints.push_back(tStartPosition = getAI().tfGetNodeCenter(dwCurNode = AI_Path.Nodes[i]));
+		
+		if (tStartPosition.distance_to(getAI().tfGetNodeCenter(AI_Path.Nodes[N - 1])) > getAI().Header().size)
+			tpaPoints.push_back(getAI().tfGetNodeCenter(AI_Path.Nodes[N - 1]));
+		
+		tpaDeviations.resize(N = tpaPoints.size());
+		
+		getAI().vfCreateFastRealisticPath(tpaPoints,AI_NodeID,tpaDeviations,tpaTravelPath,AI_Path.Nodes,false,false);
+		
+//		if (!tpaTravelPath.empty() && getAI().bfInsideNode(getAI().Node(AI_Path.DestNode),tpaTravelPath[tpaTravelPath.size() - 1])) {
+		if (false) {
+			N = tpaTravelPath.size();
+			AI::CPathNodes::CTravelNode	T;
+			AI_Path.TravelPath.clear();
+			for (i=0; i<N; i++) {
+				T.P = tpaTravelPath[i];
+				AI_Path.TravelPath.push_back(T);
+			}
+		}
+		else {
+			AI_Path.TravelPath.clear();
+			AI_Path.Nodes.clear();
+			for (i=1; i<N; i++) {
+				vector<Fvector>	tpaLine;
+				vector<u32>		tpaNodes;
+				tpaLine.clear();
+				tpaLine.push_back(tpaPoints[i-1]);
+				tpaLine.push_back(tpaPoints[i]);
+				getAI().vfCreateFastRealisticPath(tpaLine,getAI().q_LoadSearch(tpaLine[0]),tpaDeviations,tpaTravelPath,tpaNodes,false,false,0,0);
+				u32 n = tpaTravelPath.size();
+				AI::CPathNodes::CTravelNode	T;
+				for (u32 j= i<2?0:1; j<n; j++) {
+					T.P = tpaTravelPath[j];
+					AI_Path.TravelPath.push_back(T);
+					AI_Path.Nodes.push_back(tpaNodes[j]);
+				}
+			}
+		}
+
+		//////////////////////////////////////////////////////////////////////////
 		AI_Path.TravelStart = 0;
 	}
 	else {

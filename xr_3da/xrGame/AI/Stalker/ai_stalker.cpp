@@ -740,6 +740,8 @@ void CAI_Stalker::Update	( u32 DT )
 	// *** general stuff
 	inherited::inherited::Update	(DT);
 	
+//	inherited::Update	(DT);
+
 	if(m_pPhysicsShell){
 
 	if(m_pPhysicsShell->bActive && m_saved_impulse!=0.f)

@@ -224,7 +224,7 @@ void CAI_Stalker::Searching()
 //	u32							dwTime = Level().timeServer();
 //	tDummy.setHP				(angle_normalize_signed(-2*PI*dwTime/20000),0);
 //	tDummy.add					(vPosition);
-	vfSetMovementType			(eBodyStateStand,eMovementTypeWalk,eLookTypeDanger);//,tDummy);//Device.vCameraPosition);
+	vfSetMovementType			(eBodyStateCrouch,eMovementTypeWalk,eLookTypeDanger);//,tDummy);//Device.vCameraPosition);
 
 	if (m_fCurSpeed < EPS_L)
 		r_torso_target.yaw		= r_target.yaw;

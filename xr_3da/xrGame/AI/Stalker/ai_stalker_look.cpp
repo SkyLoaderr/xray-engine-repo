@@ -227,6 +227,8 @@ void CAI_Stalker::Exec_Look(float dt)
 	vfValidateAngleDependency(r_current.yaw,r_target.yaw,r_torso_current.yaw);
 
 	// updating torso angles
+//	float					fAngleDifference = _abs(angle_normalize_signed(r_torso_current.yaw - r_torso_target.yaw));
+//	float					fSpeedFactor = 1;//fAngleDifference < PI_DIV_2 ? fAngleDifference/PI_DIV_2/3 : 1.f;
 	angle_lerp_bounds		(r_torso_current.yaw,r_torso_target.yaw,r_torso_speed,dt);
 	angle_lerp_bounds		(r_torso_current.pitch,r_torso_target.pitch,r_torso_speed,dt);
 	

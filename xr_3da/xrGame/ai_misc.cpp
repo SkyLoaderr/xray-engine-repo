@@ -267,13 +267,10 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, u32 dwStar
 	tStartPoint.add(tpaPoints[0],tpaDeviations[0]);
 	tFinishPoint.add(tpaPoints[iCurrentPatrolPoint],tpaDeviations[iCurrentPatrolPoint]);
 	
-	//if (bLooped) {
-	//	tpaPath.push_back(tStartPoint);
-	//	dwaNodes.push_back(dwStartNode);
-	//}
-
 	dwPrevNode = u32(-1);
 	dwaNodes.push_back(dwStartNode);
+	if (!bLooped)
+		tpaPath.push_back(tStartPoint);
 	dwCurNode = dwStartNode;
 	tTempPoint = tTravelNode = tPrevPoint = tStartPoint;
 	
@@ -338,15 +335,8 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, u32 dwStar
 						t2.normalize();
 						clamp(fAlpha = t1.dotproduct(t2),-0.9999999f,0.9999999f);
 						fAlpha = acosf(fAlpha);
-						if (fAlpha < PI/2) {
-							/**
-							tTravelNode = tFinalPosition;
-							if ((!tpaPath.size()) || tCurrentPosition.distance_to_xz(tpaPath[tpaPath.size() - 1]) > fSegmentSizeMin)
-								tpaPath.push_back(tTravelNode);
-							tPrevPoint = tTravelNode;
-							/**/
+						if (fAlpha < PI/2)
 							break;
-						}
 						else {
 							tTravelNode = tCurrentPosition;
 							if ((!tpaPath.size()) || tCurrentPosition.distance_to_xz(tpaPath[tpaPath.size() - 1]) > fSegmentSizeMin)
@@ -356,13 +346,6 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, u32 dwStar
 					}
 					while (true);
 				}
-				/**
-				else {
-					tTravelNode = tFinalPosition;
-					tpaPath.push_back(tTravelNode);
-					tPrevPoint = tTravelNode;
-				}
-				/**/
 					
 				// assign y-values to the circle points being built
 				j = iStartI;
@@ -413,13 +396,12 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, u32 dwStar
 								break;
 							}
 						}
-						//VERIFY(i<iCount);
 						if (i >= iCount) {
 							u32 dwBestNode;
 							float fBestCost;
 							NodePosition tNodePosition;
 							PackPosition(tNodePosition,tpaPath[j]);
-							q_Range_Bit_X(dwCurNode,tPrevPoint,4*fHalfSubNodeSize,&tNodePosition,dwBestNode,fBestCost);
+							q_Range_Bit_X(dwCurNode,tPrevPoint,16*fHalfSubNodeSize,&tNodePosition,dwBestNode,fBestCost);
 							if (bfInsideNode(Node(dwBestNode),tpaPath[j])) {
 								dwCurNode = dwBestNode;
 								tpaPath[j].y = ffGetY(*(Node(dwBestNode)),tpaPath[j].x,tpaPath[j].z);
@@ -576,6 +558,7 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, u32 dwStar
 
 				if (iSavedIndex > -1) {
 					tTravelNode = tTempPoint;
+					
 					if ((tPrevPoint.distance_to_xz(tStartPoint) >= fPreviousRoundedDistance) || 
 						((!bLooped) && (iCurrentPatrolPoint == 1))) {
 						if ((!tpaPath.size()) || tTravelNode.distance_to_xz(tpaPath[tpaPath.size() - 1]) > fSegmentSizeMin)
@@ -589,6 +572,7 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, u32 dwStar
 						else
 							tpaPath.push_back(tTravelNode);
 					}
+					
 					tPrevPoint = tTravelNode;
 					dwPrevNode = dwCurNode;
 					dwCurNode = iSavedIndex;
@@ -697,6 +681,7 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, u32 dwStar
 						}
 						else {
 							//VERIFY(false);
+							//bool bTemp = bfCheckNodeInDirection(q_LoadSearch(tStartPoint),tStartPoint,q_LoadSearch(tFinishPoint));
 							tpaPath.clear();
 							return;
 						}
@@ -952,16 +937,16 @@ bool CAI_Space::bfCheckNodeInDirection(u32 dwStartNode, Fvector tStartPosition, 
 	CPathNodes::PSegment tSegment;
 	int i, iNodeIndex, iCount, iSavedIndex;
 	Fvector tPrevPoint, tTempPoint, tStartPoint, tFinishPoint, tTravelNode;
-	float fCurDistance = 0.f, fDistance = ffGetDistanceBetweenNodeCenters(dwStartNode,dwFinishNode);
+	float fCurDistance = 0.f, fDistance = tStartPosition.distance_to(tfGetNodeCenter(dwFinishNode));
 	u32 dwCurNode, dwPrevNode = u32(-1);
 
-	tStartPoint = tStartPosition;
-
+	if (bfInsideNode(Node(dwFinishNode),tStartPoint = tStartPosition))
+		return(true);
 	tFinishPoint = tfGetNodeCenter(dwFinishNode);
 	dwCurNode = dwStartNode;
 	tTempPoint = tTravelNode = tPrevPoint = tStartPoint;
 
-	while ((dwCurNode != dwFinishNode) && (fCurDistance < fDistance)) {
+	while ((dwCurNode != dwFinishNode) && (fCurDistance < (fDistance + EPS_L))) {
 		UnpackContour(tCurContour,dwCurNode);
 		tpNode = Node(dwCurNode);
 		taLinks = (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));

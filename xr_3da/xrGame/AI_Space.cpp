@@ -332,6 +332,14 @@ void CAI_Space::Render()
 			}
 		}
 	}
+	
+	CObjectList::OBJ_IT	I = Level().Objects.objects.begin();
+	CObjectList::OBJ_IT	E = Level().Objects.objects.end();
+	for ( ; I != E; I++) {
+		CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster*>(*I);
+		if (tpCustomMonster)
+			tpCustomMonster->OnRender();
+	}
 }
 
 int	CAI_Space::q_LoadSearch(const Fvector& pos)

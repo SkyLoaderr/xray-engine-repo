@@ -92,6 +92,7 @@ public:
 	CMotionDef		*m_tpCurrentGlobalAnimation;
 	CMotionDef		*m_tpCurrentTorsoAnimation;
 	CMotionDef		*m_tpCurrentLegsAnimation;
+	u8				m_bAnimationIndex;
 	
 					CStalkerAnimations()
 	{
