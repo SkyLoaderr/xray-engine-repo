@@ -15,7 +15,7 @@
 
  ************************************************************************/
 
-#include "../../libgfx/include/gfx/gfx.h"
+#include <gfx/gfx.h>
 using namespace std;
 #include <string.h>
 

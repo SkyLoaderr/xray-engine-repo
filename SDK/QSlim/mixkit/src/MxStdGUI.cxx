@@ -14,9 +14,9 @@
 #include "MxStdGUI.h"
 #include "MxGLUtils.h"
 #include "MxSMF.h"
-#include "../../lib/FL/Fl_Color_Chooser.H"
-#include "../../lib/FL/fl_file_chooser.H"
-#include "../../lib/FL/filename.H"
+#include <FL/Fl_Color_Chooser.H>
+#include <FL/fl_file_chooser.H>
+#include <FL/filename.H>
 
 
 const int MX_SELECT_NONE=0;

@@ -19,11 +19,11 @@
 
 #include "gl.h"
 
-#include "../../lib/FL/Fl.H"
-#include "../../lib/FL/Fl_Window.H"
-#include "../../lib/FL/Fl_Menu_Bar.H"
-#include "../../lib/FL/Fl_Gl_Window.H"
-#include "../../lib/FL/Fl_Output.H"
+#include <FL/Fl.H>
+#include <FL/Fl_Window.H>
+#include <FL/Fl_Menu_Bar.H>
+#include <FL/Fl_Gl_Window.H>
+#include <FL/Fl_Output.H>
 
 class MxGUI;
 

@@ -25,9 +25,27 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libgfx", "..\libgfx\vc6\lib
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "smfquadric", "smfquadric\smfquadric.vcproj", "{60E1CF4F-3F51-4CA9-BB37-8B19E5076DC9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0F363857-B7E2-40DF-B817-BD22BE1DA282} = {0F363857-B7E2-40DF-B817-BD22BE1DA282}
+		{0C525CC1-C966-43E3-BD94-DD05E0CFDBA8} = {0C525CC1-C966-43E3-BD94-DD05E0CFDBA8}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "smfclean", "smfclean\smfclean.vcproj", "{7BBF0003-06FF-41FB-A1E0-853E452F1C86}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0F363857-B7E2-40DF-B817-BD22BE1DA282} = {0F363857-B7E2-40DF-B817-BD22BE1DA282}
+		{0C525CC1-C966-43E3-BD94-DD05E0CFDBA8} = {0C525CC1-C966-43E3-BD94-DD05E0CFDBA8}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "smfrefine", "smfrefine\smfrefine.vcproj", "{119139A5-A036-4CC3-B75F-D76697CE56F3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0F363857-B7E2-40DF-B817-BD22BE1DA282} = {0F363857-B7E2-40DF-B817-BD22BE1DA282}
+		{0C525CC1-C966-43E3-BD94-DD05E0CFDBA8} = {0C525CC1-C966-43E3-BD94-DD05E0CFDBA8}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 6
+		SccNumberOfProjects = 9
 		SccProjectName0 = \u0022$/SDK/QSlim\u0022,\u0020YLVAAAAA
 		SccLocalPath0 = ..
 		SccProvider0 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
@@ -54,6 +72,18 @@ Global
 		SccLocalPath5 = ..
 		CanCheckoutShared = true
 		SccProjectFilePathRelativizedFromConnection5 = win32\\SMFView\\
+		SccProjectUniqueName6 = smfquadric\\smfquadric.vcproj
+		SccLocalPath6 = ..
+		CanCheckoutShared = true
+		SccProjectFilePathRelativizedFromConnection6 = win32\\smfquadric\\
+		SccProjectUniqueName7 = smfclean\\smfclean.vcproj
+		SccLocalPath7 = ..
+		CanCheckoutShared = true
+		SccProjectFilePathRelativizedFromConnection7 = win32\\smfclean\\
+		SccProjectUniqueName8 = smfrefine\\smfrefine.vcproj
+		SccLocalPath8 = ..
+		CanCheckoutShared = true
+		SccProjectFilePathRelativizedFromConnection8 = win32\\smfrefine\\
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -80,6 +110,18 @@ Global
 		{0F363857-B7E2-40DF-B817-BD22BE1DA282}.Debug.Build.0 = Debug|Win32
 		{0F363857-B7E2-40DF-B817-BD22BE1DA282}.Release.ActiveCfg = Release|Win32
 		{0F363857-B7E2-40DF-B817-BD22BE1DA282}.Release.Build.0 = Release|Win32
+		{60E1CF4F-3F51-4CA9-BB37-8B19E5076DC9}.Debug.ActiveCfg = Debug|Win32
+		{60E1CF4F-3F51-4CA9-BB37-8B19E5076DC9}.Debug.Build.0 = Debug|Win32
+		{60E1CF4F-3F51-4CA9-BB37-8B19E5076DC9}.Release.ActiveCfg = Release|Win32
+		{60E1CF4F-3F51-4CA9-BB37-8B19E5076DC9}.Release.Build.0 = Release|Win32
+		{7BBF0003-06FF-41FB-A1E0-853E452F1C86}.Debug.ActiveCfg = Debug|Win32
+		{7BBF0003-06FF-41FB-A1E0-853E452F1C86}.Debug.Build.0 = Debug|Win32
+		{7BBF0003-06FF-41FB-A1E0-853E452F1C86}.Release.ActiveCfg = Release|Win32
+		{7BBF0003-06FF-41FB-A1E0-853E452F1C86}.Release.Build.0 = Release|Win32
+		{119139A5-A036-4CC3-B75F-D76697CE56F3}.Debug.ActiveCfg = Debug|Win32
+		{119139A5-A036-4CC3-B75F-D76697CE56F3}.Debug.Build.0 = Debug|Win32
+		{119139A5-A036-4CC3-B75F-D76697CE56F3}.Release.ActiveCfg = Release|Win32
+		{119139A5-A036-4CC3-B75F-D76697CE56F3}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

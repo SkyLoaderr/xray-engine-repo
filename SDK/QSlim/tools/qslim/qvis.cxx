@@ -14,12 +14,12 @@
 #include <MxStdGUI.h>
 #include <stdio.h>
 
-#include "../../lib/FL/fl_file_chooser.H"
-#include "../../lib/FL/filename.H"
-#include "../../lib/FL/filename.H"
-#include "../../lib/FL/Fl_Slider.H"
-#include "../../lib/FL/fl_draw.H"
-#include "../../lib/FL/fl_ask.H"
+#include <FL/fl_file_chooser.H>
+#include <FL/filename.H>
+#include <FL/filename.H>
+#include <FL/Fl_Slider.H>
+#include <FL/fl_draw.H>
+#include <FL/fl_ask.H>
 
 #include "qslim.h"
 
