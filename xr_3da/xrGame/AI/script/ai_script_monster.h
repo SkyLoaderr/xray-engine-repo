@@ -16,8 +16,7 @@ class CScriptEntityAction;
 class CEntity;
 class CScriptGameObject;
 
-class CScriptMonster : virtual public CGameObject {
-public:
+namespace ScriptMonster {
 	enum EActionType {
 		eActionTypeMovement = u32(0),
 		eActionTypeWatch,
@@ -27,7 +26,11 @@ public:
 		eActionTypeObject,
 		eActionTypeCount
 	};
+};
 
+using namespace ScriptMonster;
+
+class CScriptMonster : virtual public CGameObject {
 public:
 	struct CSavedSound {
 		CScriptGameObject	*m_lua_game_object;

@@ -11,6 +11,7 @@
 #include "../../pda.h"
 #include "../../inventory.h"
 #include "../../xrmessages.h"
+#include "../../shootingobject.h"
 
 #define SILENCE
 

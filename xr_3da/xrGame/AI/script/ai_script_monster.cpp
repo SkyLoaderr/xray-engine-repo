@@ -425,14 +425,14 @@ bool CScriptMonster::bfAssignMovement(CScriptEntityAction *tpEntityAction)
 		case CScriptMovementAction::eGoalTypeObject : {
 			CGameObject		*l_tpGameObject = dynamic_cast<CGameObject*>(l_tMovementAction.m_tpObjectToGo);
 			R_ASSERT		(l_tpGameObject);
-			l_tpMovementManager->set_path_type(CMovementManager::ePathTypeLevelPath);
+			l_tpMovementManager->set_path_type(MovementManager::ePathTypeLevelPath);
 //			Msg			("%6d Object %s, position [%f][%f][%f]",Level().timeServer(),*l_tpGameObject->cName(),VPUSH(l_tpGameObject->Position()));
 			l_tpMovementManager->set_dest_position(l_tpGameObject->Position());
 			l_tpMovementManager->set_level_dest_vertex(l_tpGameObject->level_vertex_id());
 			break;
 		}
 		case CScriptMovementAction::eGoalTypePatrolPath : {
-			l_tpMovementManager->set_path_type	(CMovementManager::ePathTypePatrolPath);
+			l_tpMovementManager->set_path_type	(MovementManager::ePathTypePatrolPath);
 			l_tpMovementManager->set_path		(l_tMovementAction.m_path,l_tMovementAction.m_path_name);
 			l_tpMovementManager->set_start_type	(l_tMovementAction.m_tPatrolPathStart);
 			l_tpMovementManager->set_route_type	(l_tMovementAction.m_tPatrolPathStop);
@@ -443,7 +443,7 @@ bool CScriptMonster::bfAssignMovement(CScriptEntityAction *tpEntityAction)
 			break;
 		}
 		case CScriptMovementAction::eGoalTypePathPosition : {
-			l_tpMovementManager->set_path_type(CMovementManager::ePathTypeLevelPath);
+			l_tpMovementManager->set_path_type(MovementManager::ePathTypeLevelPath);
 			l_tpMovementManager->set_dest_position(l_tMovementAction.m_tDestinationPosition);
 			
 //			u64					start = CPU::GetCycleCount();
@@ -463,7 +463,7 @@ bool CScriptMonster::bfAssignMovement(CScriptEntityAction *tpEntityAction)
 		}
 		case CScriptMovementAction::eGoalTypeNoPathPosition : {
 			if (l_tpMovementManager) {
-				l_tpMovementManager->set_path_type(CMovementManager::ePathTypeLevelPath);
+				l_tpMovementManager->set_path_type(MovementManager::ePathTypeLevelPath);
 				if (l_tpMovementManager->CDetailPathManager::path().empty() || (l_tpMovementManager->CDetailPathManager::path()[l_tpMovementManager->CDetailPathManager::path().size() - 1].position.distance_to(l_tMovementAction.m_tDestinationPosition) > .1f)) {
 					l_tpMovementManager->CDetailPathManager::m_path.resize(2);
 					l_tpMovementManager->CDetailPathManager::m_path[0].position = Position();
@@ -477,7 +477,7 @@ bool CScriptMonster::bfAssignMovement(CScriptEntityAction *tpEntityAction)
 		}
 		default : {
 			if (l_tpMovementManager) {
-				//l_tpMovementManager->set_path_type	(CMovementManager::ePathTypeNoPath);
+				//l_tpMovementManager->set_path_type	(MovementManager::ePathTypeNoPath);
 				l_tpMovementManager->set_desirable_speed(0.f);
 			}
 			return									(l_tMovementAction.m_bCompleted = true);
@@ -496,7 +496,7 @@ void CScriptMonster::net_Destroy()
 	FreeAll					();
 }
 
-void CScriptMonster::set_callback	(const luabind::object &lua_object, LPCSTR method, const CScriptMonster::EActionType tActionType)
+void CScriptMonster::set_callback	(const luabind::object &lua_object, LPCSTR method, const ScriptMonster::EActionType tActionType)
 {
 	VERIFY					(tActionType < eActionTypeCount);
 
@@ -509,7 +509,7 @@ void CScriptMonster::set_callback	(const luabind::object &lua_object, LPCSTR met
 	}
 }
 
-void CScriptMonster::set_callback	(const luabind::functor<void> &lua_function, const CScriptMonster::EActionType tActionType)
+void CScriptMonster::set_callback	(const luabind::functor<void> &lua_function, const ScriptMonster::EActionType tActionType)
 {
 	VERIFY					(tActionType < eActionTypeCount);
 	
@@ -522,7 +522,7 @@ void CScriptMonster::set_callback	(const luabind::functor<void> &lua_function, c
 	}
 }
 
-void CScriptMonster::clear_callback	(const CScriptMonster::EActionType tActionType)
+void CScriptMonster::clear_callback	(const ScriptMonster::EActionType tActionType)
 {
 	VERIFY					(tActionType < eActionTypeCount);
 	
@@ -565,7 +565,7 @@ void CScriptMonster::clear_hit_callback	(bool member_callback)
 	m_tHitCallback.clear(member_callback);
 }
 
-void CScriptMonster::callback		(const CScriptMonster::EActionType tActionType)
+void CScriptMonster::callback		(const ScriptMonster::EActionType tActionType)
 {
 	SCRIPT_CALLBACK_EXECUTE_2(m_tpCallbacks[tActionType], lua_game_object(),u32(tActionType));
 }
@@ -608,7 +608,7 @@ void ScriptCallBack(CBlend* B)
 	R_ASSERT		(l_tpScriptMonster);
 	if (l_tpScriptMonster->GetCurrentAction() && !B->bone_or_part) {
 		if (!l_tpScriptMonster->GetCurrentAction()->m_tAnimationAction.m_bCompleted)
-			l_tpScriptMonster->callback(CScriptMonster::eActionTypeAnimation);
+			l_tpScriptMonster->callback(ScriptMonster::eActionTypeAnimation);
 #ifdef _DEBUG
 //		if (!xr_strcmp("m_stalker_wounded",*l_tpScriptMonster->cName()))
 //			Msg			("Completed %s",*l_tpScriptMonster->GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay);

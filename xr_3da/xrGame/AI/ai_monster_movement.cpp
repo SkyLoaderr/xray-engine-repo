@@ -223,12 +223,12 @@ void CMonsterMovement::SetPathParams(u32 dest_vertex_id, const Fvector &dest_pos
 {
 	set_level_dest_vertex(dest_vertex_id);
 	set_dest_position(dest_pos);
-	set_path_type (CMovementManager::ePathTypeLevelPath);
+	set_path_type (MovementManager::ePathTypeLevelPath);
 }
 
 void CMonsterMovement::SetSelectorPathParams()
 {
-	set_path_type (CMovementManager::ePathTypeLevelPath);
+	set_path_type (MovementManager::ePathTypeLevelPath);
 	
 	// использовать при установке селектора: true - использовать путь найденный селектором, false - селектор находит тольтко ноду, путь строит BuildLevelPath
 	use_selector_path(true);
@@ -238,7 +238,7 @@ void CMonsterMovement::SetSelectorPathParams()
 
 void CMonsterMovement::WalkNextGraphPoint()
 {
-	set_path_type		(CMovementManager::ePathTypeGamePath);
+	set_path_type		(MovementManager::ePathTypeGamePath);
 	set_selection_type	(CMovementManager::eSelectionTypeRandomBranching);
 }
 

@@ -11,6 +11,8 @@
 #include "../../script_entity_action.h"
 #include "../../torch.h"
 #include "../../inventory.h"
+#include "../../weapon.h"
+#include "../../weaponmagazined.h"
 
 void CAI_Stalker::UseObject(const CObject *tpObject)
 {

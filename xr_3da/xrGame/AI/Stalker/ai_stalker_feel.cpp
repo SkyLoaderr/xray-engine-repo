@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "ai_stalker.h"
+#include "../../inventory_item.h"
 
 BOOL CAI_Stalker::feel_vision_isRelevant(CObject* O)
 {

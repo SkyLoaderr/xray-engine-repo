@@ -90,6 +90,7 @@ void CScanningAbilityAbstract::enable()
 	state		= eStateNotActive;
 	scan_value	= 0.f; 
 }
+
 TEMPLATE_SPECIALIZATION
 void CScanningAbilityAbstract::disable()
 {
@@ -97,3 +98,4 @@ void CScanningAbilityAbstract::disable()
 	scan_value	= 0.f; 
 }
 
+#undef TEMPLATE_SPECIALIZATION
