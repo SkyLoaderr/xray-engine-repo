@@ -81,6 +81,24 @@ void	Vertex::normalFromAdj()
 	N.normalize_safe();
 }
 
+void	_TCF::barycentric	(Fvector2 &P, float &u, float &v, float &w)
+{
+	Fvector2 	kV02; kV02.sub(uv[0],uv[2]);
+	Fvector2 	kV12; kV12.sub(uv[1],uv[2]);
+	Fvector2 	kPV2; kPV2.sub(P,    uv[2]);
+
+	float		fM00 = kV02.dot(kV02);
+	float		fM01 = kV02.dot(kV12);
+	float		fM11 = kV12.dot(kV12);
+	float		fR0  = kV02.dot(kPV2);
+	float		fR1  = kV12.dot(kPV2);
+	float		fDet = fM00*fM11 - fM01*fM01;
+
+	u			= (fM11*fR0 - fM01*fR1)/fDet;
+	v			= (fM00*fR1 - fM01*fR0)/fDet;
+	w			= 1.0f - u - v;
+}
+
 Face::Face()
 {
 	pDeflector				= 0;
@@ -202,15 +220,30 @@ float Face::CalcMaxEdge()
 	float	e1 = v[0]->P.distance_to(v[1]->P);
 	float	e2 = v[0]->P.distance_to(v[2]->P);
 	float	e3 = v[1]->P.distance_to(v[2]->P);
-	
+
 	if (e1>e2 && e1>e3) return e1;
 	if (e2>e1 && e2>e3) return e2;
 	return e3;
 }
 
-BOOL Face::RenderEqualTo(Face *F)
+BOOL	Face::RenderEqualTo	(Face *F)
 {
 	if (F->dwMaterial	!= dwMaterial		)	return FALSE;
 	if (F->tc.size()	!= F->tc.size()		)	return FALSE;	// redundant???
 	return TRUE;
+}
+
+void	Face::CalcCenter	(Fvector &C)
+{
+	C.set(v[0]->P);
+	C.add(v[1]->P);
+	C.add(v[2]->P);
+	C.div(3);
+};
+
+void	Face::AddChannel	(Fvector2 &p1, Fvector2 &p2, Fvector2 &p3) 
+{
+	_TCF	TC;
+	TC.uv[0] = p1;	TC.uv[1] = p2;	TC.uv[2] = p3;
+	tc.push_back(TC);
 }
