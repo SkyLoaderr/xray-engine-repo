@@ -1420,8 +1420,8 @@ void CAI_Soldier::OnPatrolHurt()
 
 	vfSetFire(false,Group);
 
-	//vfSetMovementType(BODY_STATE_LIE,0);
-
+	m_dwLastRangeSearch = dwCurTime;
+	
 	tWatchDirection.sub(tHitPosition,vPosition);
 	float fDistance = tWatchDirection.magnitude();
 	mk_rotation(tWatchDirection,r_torso_target);
@@ -1475,44 +1475,55 @@ void CAI_Soldier::OnHurtAloneDefend()
 
 	DWORD dwCurTime = Level().timeServer();
 	
-	//CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime),aiSoldierPatrolHurt)
+	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime) && (dwHitTime > m_dwLastRangeSearch),aiSoldierPatrolHurt)
 
 	INIT_SQUAD_AND_LEADER
+	
+	m_dwLastRangeSearch = dwCurTime;
 	
 	CGroup &Group = Squad.Groups[g_Group()];
 
 	tSavedEnemyPosition = tHitPosition;
 	
-	switch (m_cBodyState) {
-		case BODY_STATE_LIE : {
-			vfInitSelector(SelectorUnderFire,Squad,Leader);
-
-			SelectorPatrol.m_tEnemyPosition = tHitPosition;
-
-			if (AI_Path.bNeedRebuild)
-				vfBuildPathToDestinationPoint(0);
-			else
-				vfSearchForBetterPositionWTime(SelectorUnderFire,Squad,Leader);
-
-			break;
-		}
-	}
-		
-	vfAimAtEnemy();
-	
 	vfSetFire(false,Group);
 
 	switch (m_cBodyState) {
 		case BODY_STATE_STAND : {
-			if (dwCurTime - dwHitTime > 25000) {
-				vfSetMovementType(BODY_STATE_STAND,m_fMaxSpeed);
+			vfInitSelector(SelectorUnderFireCover,Squad,Leader);
+
+			SelectorUnderFireCover.m_tEnemyPosition = tHitPosition;
+			SelectorUnderFireCover.m_tDirection = tHitDir;
+
+			if (AI_Path.bNeedRebuild)
+				vfBuildPathToDestinationPoint(0);
+			else
+				vfSearchForBetterPositionWTime(SelectorUnderFireCover,Squad,Leader);
+				
+			if (AI_Path.fSpeed)
 				SetDirectionLook();
-			}
+			else
+				vfAimAtEnemy();
+
+			if (dwCurTime - dwHitTime > 25000)
+				vfSetMovementType(BODY_STATE_STAND,m_fMaxSpeed);
 			else
 				vfSetMovementType(m_cBodyState,m_fMinSpeed);
+
 			break;
 		}
 		case BODY_STATE_CROUCH : {
+			vfInitSelector(SelectorUnderFireCover,Squad,Leader);
+
+			SelectorUnderFireCover.m_tEnemyPosition = tHitPosition;
+			SelectorUnderFireCover.m_tDirection = tHitDir;
+
+			if (AI_Path.bNeedRebuild)
+				vfBuildPathToDestinationPoint(0);
+			else
+				vfSearchForBetterPositionWTime(SelectorUnderFireCover,Squad,Leader);
+				
+			vfAimAtEnemy();
+			
 			if (dwCurTime - dwHitTime > 25000)
 				vfSetMovementType(BODY_STATE_STAND,m_fMinSpeed);
 			else
@@ -1520,6 +1531,18 @@ void CAI_Soldier::OnHurtAloneDefend()
 			break;
 		}
 		case BODY_STATE_LIE : {
+			vfInitSelector(SelectorUnderFireLine,Squad,Leader);
+
+			SelectorUnderFireLine.m_tEnemyPosition = tHitPosition;
+			SelectorUnderFireLine.m_tDirection = tHitDir;
+
+			if (AI_Path.bNeedRebuild)
+				vfBuildPathToDestinationPoint(0);
+			else
+				vfSearchForBetterPositionWTime(SelectorUnderFireLine,Squad,Leader);
+				
+			vfAimAtEnemy();
+			
 			if (dwCurTime - dwHitTime > 15000) {
 				if (m_cBodyState != BODY_STATE_STAND) {
 					StandUp();
@@ -1551,6 +1574,8 @@ void CAI_Soldier::OnWaitingForTime()
 	WRITE_TO_LOG("Waiting for time...");
 
 	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
+
+	CHECK_IF_SWITCH_TO_NEW_STATE((Level().timeServer() - dwHitTime < HIT_JUMP_TIME) && (dwHitTime) && (dwHitTime > m_dwLastRangeSearch),aiSoldierPatrolHurt)
 
 	if (m_bStateChanged)
 		m_dwLastRangeSearch = Level().timeServer();

@@ -388,12 +388,12 @@ float CSoldierSelectorSenseSomething::Estimate(NodeCompressed* tNode, float fDis
 	return(m_fResult);
 }
 
-CSoldierSelectorUnderFire::CSoldierSelectorUnderFire()
+CSoldierSelectorUnderFireCover::CSoldierSelectorUnderFireCover()
 { 
-	Name = "selector_under_fire"; 
+	Name = "selector_under_fire_cover"; 
 }
 
-float CSoldierSelectorUnderFire::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)	// min - best, max - worse
+float CSoldierSelectorUnderFireCover::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)	// min - best, max - worse
 {
 	// initialization
 	m_tpCurrentNode = tNode;
@@ -401,17 +401,45 @@ float CSoldierSelectorUnderFire::Estimate(NodeCompressed* tNode, float fDistance
 	vfInit();
 	// computations
 	vfAddTravelCost();
-	CHECK_RESULT;
-	vfAddLightCost();
-	CHECK_RESULT;
-	vfAddTotalCoverCost();
-	CHECK_RESULT;
-	//vfAddDeviationFromPreviousDirectionCost();
 	//CHECK_RESULT;
-	vfAddDistanceToEnemyCost();
-	CHECK_RESULT;
+	vfAddLightCost();
+	//CHECK_RESULT;
+	vfAddTotalCoverCost();
+	//CHECK_RESULT;
+	vfAddDeviationFromPreviousDirectionCost();
+	//CHECK_RESULT;
+	//vfAddDistanceToEnemyCost();
+	//CHECK_RESULT;
 	vfAddCoverFromEnemyCost();
 	
-	CHECK_RESULT;
+	//CHECK_RESULT;
+	return(m_fResult);
+}
+
+CSoldierSelectorUnderFireLine::CSoldierSelectorUnderFireLine()
+{ 
+	Name = "selector_under_fire_line"; 
+}
+
+float CSoldierSelectorUnderFireLine::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)	// min - best, max - worse
+{
+	// initialization
+	m_tpCurrentNode = tNode;
+	m_fDistance = fDistance;
+	vfInit();
+	// computations
+	vfAddTravelCost();
+	//CHECK_RESULT;
+	vfAddLightCost();
+	//CHECK_RESULT;
+	vfAddTotalCoverCost();
+	//CHECK_RESULT;
+	vfAddDeviationFromPreviousDirectionCost();
+	//CHECK_RESULT;
+	//vfAddDistanceToEnemyCost();
+	//CHECK_RESULT;
+	vfAddCoverFromEnemyCost();
+	
+	//CHECK_RESULT;
 	return(m_fResult);
 }

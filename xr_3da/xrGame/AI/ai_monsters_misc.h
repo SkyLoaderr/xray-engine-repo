@@ -14,7 +14,7 @@
 #include "..\\Entity.h"
 		   
 	// Fuzzy State Machine
-	// #define WRITE_LOG
+	#define WRITE_LOG
 
 	#ifdef WRITE_LOG
 		#define WRITE_TO_LOG(S) {\
@@ -29,16 +29,16 @@
 		}
 	#endif
 
+	//m_dwLastRangeSearch = 0;
 	#define GO_TO_NEW_STATE(a) {\
 		eCurrentState = a;\
-		m_dwLastRangeSearch = 0;\
 		return;\
 	}
 
+	//m_dwLastRangeSearch = 0;
 	#define GO_TO_PREV_STATE {\
 		eCurrentState = tStateStack.top();\
 		tStateStack.pop();\
-		m_dwLastRangeSearch = 0;\
 		return;\
 	}
 
@@ -58,6 +58,7 @@
 	#define CHECK_IF_GO_TO_NEW_STATE(a,b)\
 		if (a)\
 			GO_TO_NEW_STATE(b)
+	
 	/************************************************************************/
 	/* 		
 	tHitDir = Group.m_tLastHitDirection;\

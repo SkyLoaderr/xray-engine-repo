@@ -94,7 +94,8 @@ void CAI_Soldier::vfLoadSelectors(CInifile *ini, const char *section)
 	SelectorReload.Load(ini,section);
 	SelectorRetreat.Load(ini,section);
 	SelectorSenseSomething.Load(ini,section);
-	SelectorUnderFire.Load(ini,section);
+	SelectorUnderFireCover.Load(ini,section);
+	SelectorUnderFireLine.Load(ini,section);
 }
 
 void CAI_Soldier::Load(CInifile* ini, const char* section)

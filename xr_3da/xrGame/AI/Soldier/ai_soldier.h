@@ -331,7 +331,8 @@ class CAI_Soldier : public CCustomMonster
 		CSoldierSelectorReload				SelectorReload;
 		CSoldierSelectorRetreat				SelectorRetreat;
 		CSoldierSelectorSenseSomething		SelectorSenseSomething;
-		CSoldierSelectorUnderFire			SelectorUnderFire;
+		CSoldierSelectorUnderFireCover		SelectorUnderFireCover;
+		CSoldierSelectorUnderFireLine		SelectorUnderFireLine;
 
 		/**
 		void OnAttackRun();

@@ -96,10 +96,17 @@ class CSoldierSelectorSenseSomething : public CAISelectorBase
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 
-class CSoldierSelectorUnderFire : public CAISelectorBase
+class CSoldierSelectorUnderFireCover : public CAISelectorBase
 {
 	public:
-		CSoldierSelectorUnderFire();
+		CSoldierSelectorUnderFireCover();
+		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
+};
+
+class CSoldierSelectorUnderFireLine : public CAISelectorBase
+{
+	public:
+		CSoldierSelectorUnderFireLine();
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 
