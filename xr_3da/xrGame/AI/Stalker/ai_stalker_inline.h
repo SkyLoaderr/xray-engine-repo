@@ -17,3 +17,8 @@ IC	const CAgentManager	&CAI_Stalker::agent_manager	() const
 {
 	return				(Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()].agent_manager());
 }
+
+IC	bool CAI_Stalker::accessible					(const Fvector &position) const
+{
+	return				(CRestrictedObject::accessible(position));
+}

@@ -15,9 +15,10 @@ private:
 	typedef CGameObject inherited;
 
 public:
-	virtual BOOL	net_Spawn		(LPVOID data);
-			void	add_border		() const;
-			void	remove_border	() const;
-			bool	accessible		(const Fvector &position) const;
-			bool	accessible		(u32 vertex_id) const;
+	virtual BOOL	net_Spawn			(LPVOID data);
+			void	add_border			() const;
+			void	remove_border		() const;
+			bool	accessible			(const Fvector &position) const;
+			bool	accessible			(u32 vertex_id) const;
+			u32		accessible_nearest	(const Fvector &position, Fvector &result) const;
 };

@@ -187,6 +187,7 @@ public:
 	{
 		return					(true);
 	}
+	IC		bool				accessible						(const Fvector &position) const;
 
 	//игровое имя 
 	virtual LPCSTR	Name										() const {return CInventoryOwner::Name();}

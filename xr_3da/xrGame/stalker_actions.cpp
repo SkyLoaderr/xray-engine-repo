@@ -318,8 +318,16 @@ void CStalkerActionGetEnemySeen::execute	()
 	if (!mem_object.m_object)
 		return;
 
-	m_object->set_level_dest_vertex	(mem_object.m_object_params.m_level_vertex_id);
-	m_object->set_desired_position	(&mem_object.m_object_params.m_position);
+	if (m_object->accessible(mem_object.m_object_params.m_position)) {
+		m_object->set_level_dest_vertex	(mem_object.m_object_params.m_level_vertex_id);
+		m_object->set_desired_position	(&mem_object.m_object_params.m_position);
+	}
+	else {
+		Fvector desired_position;
+		u32	level_vertex_id = m_object->accessible_nearest(mem_object.m_object_params.m_position,desired_position);
+		m_object->set_level_dest_vertex	(level_vertex_id);
+		m_object->set_desired_position	(&desired_position);
+	}
 	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
 	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 	m_object->set_body_state		(eBodyStateStand);
@@ -565,8 +573,16 @@ void CStalkerActionGetReadyToKillVeryAggressive::execute	()
 
 	if (m_object->enemy() && m_object->Position().distance_to(m_object->enemy()->Position()) >= 10.f) {
 		CMemoryInfo						mem_object = m_object->memory(m_object->enemy());
-		m_object->set_level_dest_vertex	(mem_object.m_object_params.m_level_vertex_id);
-		m_object->set_desired_position	(&mem_object.m_object_params.m_position);
+		if (m_object->accessible(mem_object.m_object_params.m_position)) {
+			m_object->set_level_dest_vertex	(mem_object.m_object_params.m_level_vertex_id);
+			m_object->set_desired_position	(&mem_object.m_object_params.m_position);
+		}
+		else {
+			Fvector desired_position;
+			u32	level_vertex_id = m_object->accessible_nearest(mem_object.m_object_params.m_position,desired_position);
+			m_object->set_level_dest_vertex	(level_vertex_id);
+			m_object->set_desired_position	(&desired_position);
+		}
 		m_object->set_movement_type		(eMovementTypeWalk);
 	}
 	else
@@ -648,8 +664,16 @@ void CStalkerActionKillEnemyVeryAggressive::execute		()
 	m_object->enemy()->Center		(position);
 
 	if (m_object->Position().distance_to(m_object->enemy()->Position()) >= 10.f) {
-		m_object->set_level_dest_vertex	(mem_object.m_object_params.m_level_vertex_id);
-		m_object->set_desired_position	(&mem_object.m_object_params.m_position);
+		if (m_object->accessible(mem_object.m_object_params.m_position)) {
+			m_object->set_level_dest_vertex	(mem_object.m_object_params.m_level_vertex_id);
+			m_object->set_desired_position	(&mem_object.m_object_params.m_position);
+		}
+		else {
+			Fvector desired_position;
+			u32	level_vertex_id = m_object->accessible_nearest(mem_object.m_object_params.m_position,desired_position);
+			m_object->set_level_dest_vertex	(level_vertex_id);
+			m_object->set_desired_position	(&desired_position);
+		}
 		m_object->set_movement_type		(eMovementTypeWalk);
 	}
 	else
@@ -1431,8 +1455,16 @@ void CStalkerActionGetEnemySeenModerate::execute	()
 
 	if (m_object->enemy()) {
 		if (Level().timeServer() >= m_start_standing_time + 10000) {
-			m_object->set_level_dest_vertex	(mem_object.m_object_params.m_level_vertex_id);
-			m_object->set_desired_position	(&mem_object.m_object_params.m_position);
+			if (m_object->accessible(mem_object.m_object_params.m_position)) {
+				m_object->set_level_dest_vertex	(mem_object.m_object_params.m_level_vertex_id);
+				m_object->set_desired_position	(&mem_object.m_object_params.m_position);
+			}
+			else {
+				Fvector desired_position;
+				u32	level_vertex_id = m_object->accessible_nearest(mem_object.m_object_params.m_position,desired_position);
+				m_object->set_level_dest_vertex	(level_vertex_id);
+				m_object->set_desired_position	(&desired_position);
+			}
 			m_object->set_movement_type		(eMovementTypeWalk);
 			if (m_object->Position().similar(mem_object.m_object_params.m_position,.1f))
 				m_object->CMemoryManager::enable(m_object->enemy(),false);
