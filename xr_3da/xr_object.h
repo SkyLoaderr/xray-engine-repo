@@ -10,6 +10,7 @@ class	ENGINE_API CCFModel;
 class	ENGINE_API CInifile;
 class	ENGINE_API CSector;
 class	ENGINE_API CCustomHUD;
+class	ENGINE_API CLightTrack;
 class	ENGINE_API NET_Packet;
 struct	ENGINE_API NodeCompressed;
 
@@ -54,6 +55,7 @@ protected:
 	// Visibility detection
 	CSector*							pSector;
 	ESectorMode							SectorMode;
+	CLightTrack*						pLights;
 
 	// Information and status
 	void								StatusBegin		();
@@ -80,7 +82,8 @@ public:
 	IC const Fmatrix&					svXFORM			()			 const	{ return svTransform;	}
 	IC const Fmatrix&					clXFORM			()			 const	{ return clTransform;	}
 	
-	IC CSector*							Sector			()					{ return pSector; }
+	IC CSector*							Sector			()					{ return pSector;	}
+	IC CLightTrack*						Lights			()					{ return pLights;	}
 
 	virtual float						Radius			() const;
 	virtual Fvector&					Position		() 					{ return vPosition; }

@@ -8,6 +8,7 @@
 #include "xr_ini.h"
 #include "xrLevel.h"
 #include "fbasicvisual.h"
+#include "lighttrack.h"
 
 #include "x_ray.h"
 #include "XR_SmallFont.h"
@@ -160,6 +161,7 @@ BOOL CObject::Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_ang
 void CObject::OnDeviceDestroy	()
 {
 	if (pVisual)				Render->model_Delete	(pVisual);
+	_DELETE						(pLights);
 }
 
 void CObject::OnDeviceCreate	()
@@ -167,6 +169,7 @@ void CObject::OnDeviceCreate	()
 	// visual and shadow
 	REQ_CREATE					();
 	pVisual						= Render->model_Create	(pVisualName);
+	pLights						= new CLightTrack;
 }
 
 // Updates
