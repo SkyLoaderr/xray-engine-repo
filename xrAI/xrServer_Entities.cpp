@@ -1155,6 +1155,54 @@ void xrSE_Dog::FillProp(LPCSTR pref, PropItemVec& items)
 }
 #endif
 
+//////////////////////////////////////////////////////////////////////////
+// Biting
+//////////////////////////////////////////////////////////////////////////
+
+xrSE_Biting::xrSE_Biting(LPCSTR caSection) : CALifeMonsterAbstract(caSection)
+{
+	caModel[0]						= 0;
+	LPCSTR	S						= pSettings->r_string(caSection,"visual");
+	Memory.mem_copy					(caModel,S,(strlen(S) + 1)*sizeof(char));
+}
+
+void xrSE_Biting::STATE_Read(NET_Packet& P, u16 size)
+{
+	// inherited properties
+	inherited::STATE_Read(P,size);
+	// model
+	P.r_string(caModel);
+}
+
+void xrSE_Biting::STATE_Write(NET_Packet& P)
+{
+	// inherited properties
+	inherited::STATE_Write(P);
+	// model
+	P.w_string(caModel);
+}
+
+void xrSE_Biting::UPDATE_Read(NET_Packet& P)
+{
+	inherited::UPDATE_Read(P);
+}
+
+void xrSE_Biting::UPDATE_Write(NET_Packet& P)
+{
+	inherited::UPDATE_Write(P);
+}
+
+
+#ifdef _EDITOR
+void xrSE_Biting::FillProp(LPCSTR pref, PropItemVec& items)
+{
+   	inherited::FillProp(pref, items);
+	// model
+    PHelper.CreateGameObject(items,PHelper.PrepareKey(pref,s_name,"Model"),caModel,sizeof(caModel));
+}	
+#endif
+
+
 // Zone
 xrSE_Zone::xrSE_Zone(LPCSTR caSection) : CALifeDynamicObject(caSection)
 {
@@ -1586,6 +1634,8 @@ xrServerEntity*	F_entity_Create		(LPCSTR caSection)
 	case CLSID_AI_CROW:				return xr_new<xrSE_Crow>			(caSection);
 	case CLSID_AI_RAT:				return xr_new<xrSE_Rat>				(caSection);
 	case CLSID_AI_RAT_GROUP:		return xr_new<CALifeGroupTemplate<xrSE_Rat> >(caSection);
+	case CLSID_AI_FLESH:			return xr_new<xrSE_Biting>			(caSection);
+	case CLSID_AI_FLESH_GROUP:		return xr_new<CALifeGroupTemplate<xrSE_Biting> >(caSection);
 	case CLSID_AI_ZOMBIE:			return xr_new<xrSE_Zombie>			(caSection);
 	case CLSID_AI_DOG:				return xr_new<xrSE_Dog>				(caSection);
 	case CLSID_AI_SOLDIER:			return xr_new<xrSE_Enemy>			(caSection);

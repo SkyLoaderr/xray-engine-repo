@@ -440,6 +440,16 @@
 						</File>
 					</Filter>
 					<Filter
+						Name="ai_biting"
+						Filter="">
+						<File
+							RelativePath="AI\Biting\ai_biting.cpp">
+						</File>
+						<File
+							RelativePath="AI\Biting\ai_biting.h">
+						</File>
+					</Filter>
+					<Filter
 						Name="ai_crow"
 						Filter="">
 						<File

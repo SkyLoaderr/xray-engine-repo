@@ -10,6 +10,7 @@
 // all the monsters
 #define CLSID_AI_GRAPH				MK_CLSID('A','I','_','G','R','A','P','H')
 #define CLSID_AI_CROW				MK_CLSID('A','I','_','C','R','O','W',' ')
+
 #define CLSID_AI_RAT				MK_CLSID('A','I','_','R','A','T',' ',' ')
 #define CLSID_AI_RAT_GROUP			MK_CLSID('A','I','_','R','A','T','_','G')
 
@@ -18,7 +19,10 @@
 #define CLSID_AI_ZOMBIE_HUMAN		MK_CLSID('A','I','_','Z','O','M','_','H')
 #define CLSID_AI_POLTERGEIST		MK_CLSID('A','I','_','P','O','L','T','R')
 #define CLSID_AI_DOG				MK_CLSID('A','I','_','D','O','G',' ',' ')
+
 #define CLSID_AI_FLESH				MK_CLSID('A','I','_','F','L','E','S','H')
+#define CLSID_AI_FLESH_GROUP		MK_CLSID('A','I','_','F','L','E','_','G')
+
 #define CLSID_AI_DWARF				MK_CLSID('A','I','_','D','W','A','R','F')
 #define CLSID_AI_SCIENTIST			MK_CLSID('A','I','_','S','C','I','E','N')
 #define CLSID_AI_PHANTOM			MK_CLSID('A','I','_','P','H','A','N','T')

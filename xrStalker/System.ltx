@@ -3489,6 +3489,119 @@ ph_friction_wall     = 4.0                              ; ???
 
 ;animations			 = udar_1,udar_2,rrrrrr_1,rrrrrr_2,rrrrrr_3
 
+;-----------------------------------------------------------------------------------
+; Flesh
+;-----------------------------------------------------------------------------------
+[flesh_group]
+$spawn 			     = on			; option for Level Editor
+$npc			     = on			; option for Level Editor
+Human		     	     = off			; option for ALife Simulator
+class                        = AI_FLE_G			; AI class
+monster_section              = m_flesh_e
+
+[m_flesh_e]
+$spawn 			     = on			; option for Level Editor
+$npc			     = on			; option for Level Editor
+$prefetch 			 = 16
+Scheduled		     = on			; option for ALife Simulator
+Human		     	 = off			; option for ALife Simulator
+Health			     = 40			; option for ALife Simulator
+MinSpeed		     = 1.0			; option for ALife Simulator
+MaxSpeed		     = 1.5			; option for ALife Simulator
+going_speed                  = 1.0                      ; option for ALife Simulator
+visual				 = monsters\flesh\flesh_1
+
+cform                        = skeleton			; collision class
+class                        = AI_FLESH			; AI class
+
+ph_box0_center 		     =   0.0,   0.11, -0.22
+ph_box0_size 		     =   0.085, 0.11, 0.525
+ph_box1_center 		     =   0.0,   0.11, -0.22
+ph_box1_size 		     =   0.085, 0.11, 0.525
+ph_foot_center		     =   0.0,   0.0,  -0.22
+ph_foot_size 		     =   0.085, 0.11,  0.525
+ph_crash_speed_min           = 16
+ph_crash_speed_max           = 30
+ph_mass 		     = 2
+cost			     = 1
+ph_friction_air              = 0.01
+ph_friction_ground           = 7.0
+ph_friction_wall            = 4.0			; ???
+
+bone_torso				= bip01_spine1 		; bone name
+bone_head				= bip01_head		; bone name
+weapon_usage		     = 0			; boolean
+
+EyeYShift		     = .15			; meters
+
+MinVoiceInterval	     =  30000			; milliseconds
+MaxVoiceInterval	     = 120000			; milliseconds
+VoiceRefreshRate	     =   2500			; milliseconds
+
+ChangeActiveStateProbability = 1.0 			; range [0..1]
+ActiveCountPercent	     =   16				; percents
+StandingCountPercent	 =   16				; percents
+PassiveScheduleMin	     =  100				; microseconds
+PassiveScheduleMax       = 1000				; microseconds
+
+LostMemoryTime		     = 20000			; milliseconds
+LostRecoilTime		     =  2000			; milliseconds
+UnderFireDistance	     =   100			; meters
+RetreatTime				 = 10000			; milliseconds
+RetreatDistance		     =   100			; meters
+AttackStraightDistance	 =    10			; meters
+StableDistance		     =     5			; meters
+WallMinTurnValue	     =    90 			; degrees
+WallMaxTurnValue	     =   270			; degrees
+
+AngleSpeed				 = 0.2	            ; degrees per second
+GoalChangeDelta	 	     = 10.0				; seconds
+GoalVariation	  	     = 10.0, 0.0, 20.0	; each coordinate in meters
+AngularStandSpeed		 = 360				; degrees
+AngularMinSpeed			 = 360				; degrees
+AngularMaxSpeed			 = 30				; degrees
+AngularAttackSpeed		 = 10				; degrees
+
+MoraleDeathDistance	     = 50				; meters
+SoundThreshold		     = 0.06             ; range [0..1]
+
+ActionRefreshRate	     = 500			; milliseconds
+MaxHealthValue		     = 15			; range [0..200]
+
+EatMemberCorpses	     = 1			; range {0,1}
+Cannibalism				= 1			; range {0,1}
+EatCorpseInterval	     = 600000			; milliseconds
+
+corp_mass				= 500			;
+
+; personal charactersitics
+EyeFov							= 120;
+EyeRange						= 10;
+Health							= 5;
+MinSpeed						= .5;
+MaxSpeed						= 1.5;
+AttackSpeed					= 4.0;
+MaxPursuitRadius				= 100;
+MaxHomeRadius					= 10;
+; morale
+MoraleSuccessAttackQuant		= 20;
+MoraleDeathQuant				= -10;
+MoraleFearQuant				= -20;
+MoraleRestoreQuant				=  10;
+MoraleRestoreTimeInterval	= 3000;
+MoraleMinValue					= 0;
+MoraleMaxValue					= 100;
+MoraleNormalValue				= 66;
+; attack
+HitPower						= 30.0;
+HitInterval						= 1500;
+AttackDistance					= 0.7f;
+AttackAngle						= 45;
+AttackSuccessProbability		= 0.5f;
+
+terrain							= 255,255,255,255,30,40
+;-----------------------------------------------------------------
+
 [alife]
     schedule_min         = 1                ; milliseconds
     schedule_max         = 999              ; milliseconds
