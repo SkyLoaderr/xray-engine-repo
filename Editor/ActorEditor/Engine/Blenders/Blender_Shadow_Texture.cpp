@@ -33,7 +33,7 @@ void CBlender_ShTex::Compile	(CBlender_Compile& C)
 	C.PassBegin		();
 	{
 		C.PassSET_ZB		(FALSE, FALSE);
-		C.PassSET_Blend		(FALSE, D3DBLEND_ONE, D3DBLEND_ZERO,	FALSE, 0);
+		C.PassSET_Blend_SET	();
 		C.PassSET_LightFog	(FALSE, FALSE);
 
 		// Stage0 - Base texture

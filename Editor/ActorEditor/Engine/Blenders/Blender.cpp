@@ -95,6 +95,7 @@ void	CBlender::Compile(CBlender_Compile& C)
 #include "blender_LmBmmD.h"
 #include "blender_BmmD.h"
 #include "blender_shadow_texture.h"
+#include "blender_shadow_world.h"
 
 CBlender*	CBlender::Create	(CLASS_ID cls)
 {	
@@ -114,6 +115,7 @@ CBlender*	CBlender::Create	(CLASS_ID cls)
 	case B_LmEbB:			return new CBlender_LmEbB;			break;
 	case B_BmmD:			return new CBlender_BmmD;			break;
 	case B_SHADOW_TEX:		return new CBlender_ShTex;			break;
+	case B_SHADOW_WORLD:	return new CBlender_ShWorld;		break;
 	default:				return 0;
 	}
 }
@@ -135,4 +137,5 @@ void		CBlender::CreatePalette(vector<CBlender*> &palette)
 	palette.push_back(Create(B_LmEbB));
 	palette.push_back(Create(B_BmmD));
 	palette.push_back(Create(B_SHADOW_TEX));
+	palette.push_back(Create(B_SHADOW_WORLD));
 }

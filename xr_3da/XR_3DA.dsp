@@ -742,6 +742,14 @@ SOURCE=.\Blenders\Blender_Shadow_Texture.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\Blenders\Blender_Shadow_World.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Blenders\Blender_Shadow_World.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\Blenders\Blender_Vertex.cpp
 # End Source File
 # Begin Source File
