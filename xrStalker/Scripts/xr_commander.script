@@ -45,7 +45,7 @@ class "action_commander" ( action_base )
 
 function action_commander:__init( name )  super ( nil, name )
     self.initialized = false
-    self.drunk = true
+--    self.drunk = true
 end
 
 function action_commander:initialize()
@@ -178,7 +178,7 @@ function action_commander:execute()
             repeat
                 if not self.drunk then
                     self.act = random_choice_weighted{
-                                   [walk_inside]  = 40,
+                                   [walk_inside]  = 4000,
                                    [walk_outside] = 20,
                                    [look_map]     = 10,
                                    [look_outside] = 10,
@@ -186,7 +186,7 @@ function action_commander:execute()
                                    [drink_vodka]  = 10}
                 else
                     self.act = random_choice_weighted{
-                                   [walk_inside]  = 60,
+                                   [walk_inside]  = 6000,
                                    [walk_outside] = 10,
                                    [look_outside] = 10,
                                    [drink_vodka]  = 20}
@@ -235,15 +235,17 @@ end
 
 -- анимации для стояния в домике
 function action_commander:add_inside_animations( n )
-    for i = 1, math.random( n ) do
-        if self.drunk then
+    if self.drunk then
+        for i = 1, math.random( n * 10 ) do
             self.object:add_animation( "drunk_idle_0", true )
-        else
+        end
+    else
+        for i = 1, math.random( n ) do
             self.object:add_animation(
                 random_choice_weighted{
-                    ["komandir_4"] = 60,
-                    ["komandir_2"] = 25,
-                    ["komandir_3"] = 15 },
+                    ["komandir_4"] = 40,
+                    ["komandir_2"] = 40,
+                    ["komandir_3"] = 20 },
                 true )
         end
     end
