@@ -683,7 +683,7 @@ void CSE_ALifeLevelChanger::FillProps		(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeObjectPhysic::CSE_ALifeObjectPhysic(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection),CSE_PHSkeleton(caSection)
 {
-	type 						= epotBox;
+	type 						= epotSkeleton;
 	mass 						= 10.f;
 
 	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
