@@ -482,6 +482,7 @@ void CPHShell::build_FromKinematics(CKinematics* K,BONE_P_MAP* p_geting_map)
 	//CBoneData& bone_data	= m_pKinematics->LL_GetData(0);
 	if(!m_spliter_holder) m_spliter_holder=xr_new<CPHShellSplitterHolder>(this);
 	AddElementRecursive(0,m_pKinematics->LL_GetBoneRoot(),Fidentity,0);
+	R_ASSERT2((*elements.begin())->numberOfGeoms(),"No physics shapes was assigned for model or no shapes in main root bone!!!");
 	SetCallbacks();
 	if(m_spliter_holder->isEmpty())xr_delete(m_spliter_holder);
 }
