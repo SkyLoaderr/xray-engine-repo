@@ -128,7 +128,6 @@ void CLightPPA_Manager::Render()
 		CHK_DX				(HW.pDevice->SetLight	(LID_HELPER,D3D.d3d()));
 		CHK_DX				(HW.pDevice->LightEnable(LID_HELPER,TRUE));
 
-
 		// Calculations and rendering
 		PPL.Render	(VS);
 	}
