@@ -30,7 +30,6 @@ protected:
 protected:
 			void		new_game				(LPCSTR	save_name);
 			void		init_ef_storage			() const;
-			void		update					(bool switch_objects, bool spawn_update = true, bool scheduled_update = true);
 	virtual	void		reload					(LPCSTR section);
 
 public:
@@ -39,6 +38,7 @@ public:
 	virtual float		shedule_Scale			();
 	virtual void		shedule_Update			(u32 dt);	
 	virtual BOOL		shedule_Ready			();
+			void		update					(bool switch_objects, bool spawn_update = true, bool scheduled_update = true);
 			void		load					(LPCSTR game_name = 0, bool no_assert = false, bool new_only = false);
 			bool		load_game				(LPCSTR game_name, bool no_assert = false);
 	IC		float		update_monster_factor	() const;
