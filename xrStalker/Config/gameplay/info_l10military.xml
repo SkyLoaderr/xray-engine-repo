@@ -31,6 +31,7 @@
 	
 	<!-- Диалог с охранником у ворот-->
 	<info_poriton id="mil_zoneguard_first"></info_poriton>
+	<info_portion id="mil_zoneguard_talk"></info_portion>
 	
 	<!-- Диалог с Максом-->
 	<info_portion id="mil_max_talk"></info_portion>
