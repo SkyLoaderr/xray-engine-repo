@@ -258,9 +258,9 @@ void VerifyPath	(LPCSTR path)
 	for(int i=0;path[i];i++){
 		if( path[i]!='\\' || i==0 )
 			continue;
-		memcpy( tmp, path, i );
+		CopyMemory		( tmp, path, i );
 		tmp[i] = 0;
-		CreateDirectory( tmp, 0 );
+		CreateDirectory	( tmp, 0 );
 	}
 }
 

@@ -91,7 +91,7 @@ BOOL ApplyBorders(b_texture &lm, u32 ref)
 					GET(lm,x+1,y+1,ref,C,r,g,b);
 					
 					if (C) {
-						result[y*lm.dwWidth+x]=RGBA_MAKE(r/C,g/C,b/C,ref);
+						result[y*lm.dwWidth+x]=color_rgba(r/C,g/C,b/C,ref);
 						bNeedContinue = TRUE;
 					}
 				}

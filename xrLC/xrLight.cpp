@@ -3,7 +3,7 @@
 #include "xrThread.h"
 #include "xrSyncronize.h"
 
-CCriticalSection		task_CS;
+xrCriticalSection		task_CS;
 vector<int>				task_pool;
 
 class CLMThread : public CThread
@@ -71,7 +71,7 @@ extern BOOL	hasImplicitLighting(Face* F);
 typedef	multimap<float,vecVertex>	mapVert;
 typedef	mapVert::iterator			mapVertIt;
 mapVert*							g_trans;
-CCriticalSection					g_trans_CS;
+xrCriticalSection					g_trans_CS;
 
 void	g_trans_register			(Vertex* V)
 {

@@ -6,16 +6,16 @@ class VertexCache
 {
 
 public:
-	VertexCache	(int size);
-	VertexCache	();
+	VertexCache		(int size);
+	VertexCache		();
 	~VertexCache	();
 
 	bool			InCache	(int entry);
-	int			AddEntry(int entry);
+	int				AddEntry(int entry);
 	void			Clear	();
 
 	void			Copy	(VertexCache* inVcache);
-	int			At		(int index);
+	int				At		(int index);
 	void			Set		(int index, int value);
 
 private:
@@ -26,7 +26,7 @@ inline bool VertexCache::InCache(int entry)
 {
 	bool returnVal = false;
 
-	for(int i = 0; i < entries.size(); i++)
+	for(u32 i = 0; i < entries.size(); i++)
 	{
 		if(entries[i] == entry)
 		{

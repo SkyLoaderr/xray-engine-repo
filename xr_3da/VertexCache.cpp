@@ -32,13 +32,13 @@ void VertexCache::Set(int index, int value)
 
 void VertexCache::Clear()
 {
-	for(int i = 0; i < entries.size(); i++)
+	for(u32 i = 0; i < entries.size(); i++)
 		entries[i] = -1;
 }
 
 void VertexCache::Copy(VertexCache* inVcache)
 {
-	for(int i = 0; i < entries.size(); i++)
+	for(u32 i = 0; i < entries.size(); i++)
 	{
 		inVcache->Set(i, entries[i]);
 	}

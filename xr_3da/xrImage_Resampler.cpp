@@ -349,7 +349,7 @@ void	imf_Process	(u32* dstI, u32 dstW, u32 dstH, u32* srcI, u32 srcW, u32 srcH, 
 					w_b			+=	W*double(RGBA_GETBLUE(P));
 					w_a			+=	W*double(RGBA_GETALPHA(P));
 				}
-				put_pixel(tmp, i, k, RGBA_MAKE(CC(w_r),CC(w_g),CC(w_b),CC(w_a+.5)));
+				put_pixel(tmp, i, k, color_rgba(CC(w_r),CC(w_g),CC(w_b),CC(w_a+.5)));
 			}
 		}
 		xr_free(raster);

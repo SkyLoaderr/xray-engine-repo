@@ -74,7 +74,7 @@ IC u32 convert(float a)
 	else if (a>=1)	return 255;
 	else			return iFloor(a*255.f);
 }
-IC void pixel	(int x, int y,  b_texture* T, u32 C=RGBA_MAKE(0,255,0,0))
+IC void pixel	(int x, int y,  b_texture* T, u32 C=color_rgba(0,255,0,0))
 {
 	if (x<0) return; else if (x>=(int)T->dwWidth)	return;
 	if (y<0) return; else if (y>=(int)T->dwHeight)	return;
@@ -130,8 +130,8 @@ void CLightmap::Save()
 		for (u32 _x=0; _x<lmap_size; _x++)
 		{
 			u32 pixel = lm.pSurface[_y*lmap_size+_x];
-			if (RGBA_GETALPHA(pixel)>=(254-BORDER))	pixel = (pixel&RGBA_MAKE(255,255,255,0))|RGBA_MAKE(0,0,0,255);
-			else									pixel = (pixel&RGBA_MAKE(255,255,255,0));
+			if (RGBA_GETALPHA(pixel)>=(254-BORDER))	pixel = (pixel&color_rgba(255,255,255,0))|color_rgba(0,0,0,255);
+			else									pixel = (pixel&color_rgba(255,255,255,0));
 		}
 	}
 	for (u32 ref=254; ref>0; ref--) {

@@ -44,7 +44,7 @@ void CDeflector::L_Direct_Edge (CDB::COLLIDER* DB, LSelection* LightsSelected, U
 		R.lerp		(C,g_params.m_lm_amb_color,g_params.m_lm_amb_fogness);
 		R.mul_rgb	(.5f);
 		R.a			= 1.f;
-		Lumel		= R.get() | RGBA_MAKE(0,0,0,255);
+		Lumel		= R.get() | color_rgba(0,0,0,255);
 	}
 }
 

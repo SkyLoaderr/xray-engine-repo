@@ -99,8 +99,8 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 				_F->AddChannel		( uv1, uv2, uv3 );
 			} catch (...)
 			{
-				err_save	();
-				Fatal		("* ERROR: Can't process face #%d",i);
+				err_save		();
+				Debug.fatal		("* ERROR: Can't process face #%d",i);
 			}
 		}
 		Progress			(p_total+=p_cost);
@@ -110,7 +110,7 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 		if (dwInvalidFaces)	
 		{
 			err_save		();
-			Fatal			("* FATAL: %d invalid faces. Compilation aborted",dwInvalidFaces);
+			Debug.fatal		("* FATAL: %d invalid faces. Compilation aborted",dwInvalidFaces);
 		}
 	}
 
