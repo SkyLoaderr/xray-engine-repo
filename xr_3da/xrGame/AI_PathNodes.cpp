@@ -394,9 +394,9 @@ void CPathNodes::BuildTravelLine(const Fvector& current_pos)
 
 void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, float speed, float dt)
 {
-	if (TravelPath.empty())	{
-		fSpeed	= 0;
-		return	;
+	if ((TravelPath.empty()) || (TravelPath.size() - 1 <= TravelStart))	{
+		fSpeed = 0;
+		return;
 	}
 	//Msg("TP %d",TravelPath.size());
 	if (dt<EPS)			return;
