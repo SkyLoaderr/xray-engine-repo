@@ -65,7 +65,7 @@ IC	bool isDead()
 	}
 IC	bool isAlive()
 	{
-		return m_eState==esAlive;
+		return !m_pPhysicsShell;
 	}
 public:
 void Deactivate();

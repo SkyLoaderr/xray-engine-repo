@@ -124,7 +124,9 @@ void CCharacterPhysicsSupport::in_shedule_Update(u32 DT )
 	else if (!m_EntityAlife.g_Alive())
 	{
 
+		//Log("mem use %d",Memory.mem_usage());
 		CreateSkeleton();
+		//Log("mem use %d",Memory.mem_usage());
 #ifndef NO_PHYSICS_IN_AI_MOVE
 
 		Movement.DestroyCharacter();
