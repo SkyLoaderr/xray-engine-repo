@@ -97,7 +97,7 @@ public:
 	u32				w_qclr		(float v, u32 range)	{	s32 _v = iFloor(v * float(range)); clamp(_v,0,s32(range)); return _v; };
 	float			r_qclr		(u32 v,   u32 range)	{	return float(v)/float(range); }
 
-	void			verify		()						{	VERIFY(16==sizeof(DetailSlot));	}
+	static void		verify		()						{	VERIFY(16==sizeof(DetailSlot));	}
 };
 
 #pragma pack(pop)

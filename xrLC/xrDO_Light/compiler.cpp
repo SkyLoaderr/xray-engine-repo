@@ -466,9 +466,10 @@ public:
 	}
 	virtual void		Execute()
 	{
-		CDB::COLLIDER	DB;
-		DB.ray_options	(CDB::OPT_ONLYNEAREST | CDB::OPT_CULL		);
-		DB.box_options	(0);//CDB::OPT_FULL_TEST							);
+		DetailSlot::verify	();
+		CDB::COLLIDER		DB;
+		DB.ray_options		(CDB::OPT_ONLYNEAREST | CDB::OPT_CULL		);
+		DB.box_options		(CDB::OPT_FULL_TEST							);
 
 		xr_vector<R_Light>	Lights = g_lights;
 
@@ -479,7 +480,7 @@ public:
 			{
 				DetailSlot&	DS = dtS[_z*dtH.size_x+_x];
 
-				if ((DS.items[0].id==0xff)&&(DS.items[1].id==0xff)&&(DS.items[2].id==0xff)&&(DS.items[3].id==0xff))
+				if ((DS.id0==DetailSlot::ID_Empty)&&(DS.id1==DetailSlot::ID_Empty)&&(DS.id2==DetailSlot::ID_Empty)&&(DS.id3==DetailSlot::ID_Empty))
 					continue;
 
 				// Build slot BB & sphere
@@ -487,8 +488,8 @@ public:
 				int slt_x = int(_x)-int(dtH.offs_x);
 				
 				Fbox		BB;
-				BB.min.set	(slt_x*DETAIL_SLOT_SIZE,	DS.y_min,	slt_z*DETAIL_SLOT_SIZE);
-				BB.max.set	(BB.min.x+DETAIL_SLOT_SIZE,	DS.y_max,	BB.min.z+DETAIL_SLOT_SIZE);
+				BB.min.set	(slt_x*DETAIL_SLOT_SIZE,	DS.r_ybase(),				slt_z*DETAIL_SLOT_SIZE);
+				BB.max.set	(BB.min.x+DETAIL_SLOT_SIZE,	DS.r_ybase()+DS.r_yheight(),BB.min.z+DETAIL_SLOT_SIZE);
 				BB.grow		(0.05f);
 
 				Fsphere		S;
@@ -570,11 +571,6 @@ public:
 					}
 				}
 				
-				// 
-				// if ((0==count[0]) || (0==count[1]) || (0==count[2]) || (0==count[3]))
-					// Msg("* failed to calculate slot X%d:Z%d",_x,_z);
-//				Msg("%dx%d [0:%f, 1:%f, 2:%f, 3:%f]",_x,_z,amount[0],amount[1],amount[2],amount[3]);
-
 				// calculation of luminocity
 				DetailPalette* dc = (DetailPalette*)&DS.color;	int LL; float	res;
 				res				= amount[0]/float(count[0]); LL = iFloor(7.f * res); clamp(LL,0,15); dc->a0	= LL;
