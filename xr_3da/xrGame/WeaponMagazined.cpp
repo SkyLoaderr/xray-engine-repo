@@ -9,6 +9,7 @@
 #include "actor.h"
 #include "xr_weapon_list.h"
 #include "actor.h"
+#include "..\PGObject.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -407,6 +408,11 @@ void CWeaponMagazined::OnShot		()
 	
 	// Shell Drop
 	OnShellDrop					();
+
+	CPGObject* pStaticPG;/* s32 l_c = m_effects.size();*/
+	pStaticPG = xr_new<CPGObject>("weapons\\generic_shoot",Sector());
+	Fmatrix l_pos; l_pos.set(svTransform); l_pos.c.set(vLastFP);
+	pStaticPG->UpdateParent(l_pos); pStaticPG->Play();
 }
 
 void CWeaponMagazined::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R)

@@ -2,6 +2,7 @@
 #include "weaponpistol.h"
 #include "WeaponHUD.h"
 #include "effectorshot.h"
+#include "..\PGObject.h"
 
 CWeaponPistol::CWeaponPistol(LPCSTR name) : CWeaponCustomPistol(name)
 {
@@ -86,4 +87,9 @@ void CWeaponPistol::OnShot		()
 	
 	// Shell Drop
 	OnShellDrop					();
+
+	CPGObject* pStaticPG;/* s32 l_c = m_effects.size();*/
+	pStaticPG = xr_new<CPGObject>("weapons\\generic_shoot",Sector());
+	Fmatrix l_pos; l_pos.set(svTransform); l_pos.c.set(vLastFP);
+	pStaticPG->UpdateParent(l_pos); pStaticPG->Play();
 }

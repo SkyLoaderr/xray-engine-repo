@@ -897,7 +897,7 @@ bool CWeapon::Detach(PIItem pIItem, bool force) {
 
 void CWeapon::SpawnAmmo(u32 boxCurr, LPCSTR ammoSect) {
 	if(!m_ammoTypes.size()) return;
-	static l_type = 0;
+	static l_type = 0; l_type %= m_ammoTypes.size();
 	if(!ammoSect) ammoSect = m_ammoTypes[l_type/*m_ammoType*/]; //m_ammoType++; m_ammoType %= m_ammoTypes.size();
 	l_type++; l_type %= m_ammoTypes.size();
 
