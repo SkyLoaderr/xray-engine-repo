@@ -1,23 +1,23 @@
-п»ї<?xml version='1.0' encoding="UTF-8"?>
+<?xml version='1.0' encoding="UTF-8"?>
 <!-- for descriptions of various items -->
 <string_table>
 	<string id="item test1">
-		<text>п>ї This is a ITEM test string</text>
+		<text> This is a ITEM test string</text>
 	</string>
 	<string id="item test2">
 		<text>This is a another ITEM test string</text>
 	</string>
 
 	<string id="item_krot_flash">
-		<text>Флешка Крота с информацией о тайнике Стрелка</text>
+		<text>пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ</text>
 	</string>
 	<string id="item_gunslinger_flash">
-		<text>Флешка из тайника Стрелка</text>
+		<text>пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ</text>
 	</string>
 	<string id="item_scientist_flash">
-		<text>Флешка мёртвого учёного найденного в лесу</text>
+		<text>пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ</text>
 	</string>
 	<string id="item_quest_case_02">
-		<text>Документы из лагеря военных на НИИ Агропром</text>
+		<text>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ</text>
 	</string>
 </string_table>
