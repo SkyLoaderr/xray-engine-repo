@@ -1412,6 +1412,7 @@ extern "C" {
 
 #endif
 
+#pragma warning(disable:4244)
 #define DO_COMPRESS     lzo1x_1_compress
 
 static
