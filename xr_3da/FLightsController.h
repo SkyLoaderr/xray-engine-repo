@@ -36,7 +36,6 @@ public:
 	void	add_sector_lights(vector<WORD> &L);
 
 	void	UnselectAll		(void);			// Disables all lights
-	void	BuildSelection	(void);			// Select relevant lights
 
 	void	SelectDynamic	(Fvector &pos, float fRadius);
 

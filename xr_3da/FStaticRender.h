@@ -60,7 +60,7 @@ public:
 	vecGEO							Visuals;
 	vector<CPortal>					Portals;
 	vector<CSector*>				Sectors;
-	CLightsController				Lights;
+	CLightDB_Static					Lights;
 	CLightPPA_Manager				Lights_Dynamic;
 	CGlowManager					Glows;
 	CWallmarksEngine				Wallmarks;

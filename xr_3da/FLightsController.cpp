@@ -25,14 +25,7 @@ void CLightDB_Static::UnselectAll(void) {
 	vecI_it it;
 	for (it=Selected.begin(); it!=Selected.end(); it++)
 		Disable(*it);
-	for (it=SelectedDynamic.begin(); it!=SelectedDynamic.end(); it++)
-		Disable(*it);
-	for (it=SelectedProcedural.begin(); it!=SelectedProcedural.end(); it++)
-		Disable(*it);
-//	dwLastLights=SelectedDynamic.size()+Selected.size();
-
 	Selected.clear();
-	SelectedDynamic.clear();
 }
 
 // for dynamic
@@ -76,8 +69,8 @@ void CLightDB_Static::Load(CStream *fs)
 	Lights.resize(count);
 	fs->Read(Lights.begin(),size);
 
-	Distance.resize	(count+LightsDynamic.size());
-	Enabled.resize	(count+LightsDynamic.size());
+	Distance.resize	(count);
+	Enabled.resize	(count);
 
 	for (DWORD i=0; i<count; i++) 
 	{
@@ -115,30 +108,6 @@ IC void t_spline(float t, float *m)
 	m[2] = ( 0.5f * ( (-3.0f * t3) + ( 4.0f * t2) + ( 1.0f * t) ) );
 	m[3] = ( 0.5f * ( ( 1.0f * t3) + (-1.0f * t2) + ( 0.0f * t) ) );
 }
-void CLightDB_Static::BuildSelection()
-{
-	DWORD	i;
-
-	// ***** dynamic
-	// first
-	for (i=0; i<LightsDynamic.size(); i++) {
-		xrLIGHT &L = LightsDynamic[i];
-		if (::Render.ViewBase.testSphere_dirty(L.position, L.range))
-		{
-			DWORD idx=i+Lights.size();
-			Distance[idx]=iFloor(1000.0f*Device.vCameraPosition.distance_to_sqr(L.position));
-			SelectedDynamic.push_back(idx);
-			CHK_DX(HW.pDevice->SetLight(idx,L.d3d()));
-		} else {
-			Disable(i+Lights.size());
-		}
-	}
-	std::sort(
-		SelectedDynamic.begin(),
-		SelectedDynamic.end(),
-		lights_compare);
-}
-
 void	CLightDB_Static::add_sector_lights(vector<WORD> &L)
 {
 	for (vector<WORD>::iterator I=L.begin(); I!=L.end(); I++)
