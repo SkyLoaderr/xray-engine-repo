@@ -201,6 +201,7 @@ public:
 		DATA			= _DATA;
 		y_start			= _y_start;
 		y_end			= _y_end;
+		Start			();
 	}
 	virtual void		Execute	()
 	{
