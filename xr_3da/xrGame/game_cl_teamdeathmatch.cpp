@@ -245,6 +245,20 @@ void game_cl_TeamDeathmatch::shedule_Update			(u32 dt)
 		StartStopMenu(pUITeamSelectWnd,true);
 	//---------------------------------------------------------
 	inherited::shedule_Update(dt);
+	switch (phase)
+	{
+	case GAME_PHASE_TEAM1_SCORES:
+		{
+			m_game_ui->SetRoundResultCaption("Team Green WINS!");
+		}break;
+	case GAME_PHASE_TEAM2_SCORES:
+		{
+			m_game_ui->SetRoundResultCaption("Team Blue WINS!");
+		}break;
+	default:
+		{
+		}break;
+	};
 }
 
 bool	game_cl_TeamDeathmatch::OnKeyboardPress			(int key)

@@ -10,6 +10,8 @@
 #include "../igame_persistent.h"
 #include "clsid_game.h"
 
+#define DELAYED_ROUND_TIME	7000
+
 void	game_sv_Deathmatch::Create					(shared_str& options)
 {
 	inherited::Create						(options);
@@ -1527,7 +1529,7 @@ void	game_sv_Deathmatch::RespawnPlayer			(ClientID id_who, bool NoSpectator)
 void	game_sv_Deathmatch::OnDelayedRoundEnd		(LPCSTR /**reason/**/)
 {
 	m_delayedRoundEnd = true;
-	m_roundEndDelay = Device.TimerAsync() + 10000;
+	m_roundEndDelay = Device.TimerAsync() + DELAYED_ROUND_TIME;
 }
 
 void	game_sv_Deathmatch::check_ForceRespawn		()
