@@ -25,7 +25,9 @@ CRender::~CRender	()
 void					CRender::create					()
 {
 	::Device.Resources->SetHLSL_path("R1\\");
-	Models						= xr_new<CModelPool>			();
+	Models						= xr_new<CModelPool>	();
+    Models->Logging				(FALSE);
+
 
 	PSLibrary.OnCreate			();
 	PSLibrary.OnDeviceCreate	();
