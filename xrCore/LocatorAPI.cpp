@@ -699,6 +699,7 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 							xr_delete			(_dst);
 							xr_delete			(_src);
 							set_file_age		(fname_in_cache,desc.modif);
+							Register			(fname_in_cache,0xffffffff,0,desc.size_real,desc.size_real,desc.modif);
 						}
 
 						// Use
