@@ -441,6 +441,7 @@ void __fastcall TItemList::tvItemsItemDraw(TObject *Sender,
     ListItem* prop 			= (ListItem*)Item->Tag;
     if (prop){
     	Surface->Font->Color= (TColor)prop->prop_color;
+        R.left				+= 	4;
         DrawText			(Surface->Handle, AnsiString(Item->Text).c_str(), -1, &R, DT_LEFT | DT_SINGLELINE);
         if (miDrawThumbnails->Checked&&prop->m_Flags.is(ListItem::flDrawThumbnail)){ 
             R.top			+=	tvItems->LineHeight-4;
@@ -450,6 +451,7 @@ void __fastcall TItemList::tvItemsItemDraw(TObject *Sender,
         }
     }else{
     	Surface->Font->Color= Item->MainStyle->TextColor;
+        R.left				+= 	4;
         DrawText			(Surface->Handle, AnsiString(Item->Text).c_str(), -1, &R, DT_LEFT | DT_SINGLELINE);
     }
 }
