@@ -27,6 +27,7 @@ void CShaderManager::xrStartUp()
 			B->Load			(*fs);
 			blenders.insert	(make_pair(strdup(desc.cName),B));
 			chunk->Close	();
+			chunk_id		+= 1;
 		}
 		fs->Close();
 	}
