@@ -32,7 +32,6 @@
 
 // Define types and namespaces (CPU & FPU)
 #include	"_types.h"
-#include	"_math.h"
 
 // Constants
 #ifdef M_VISUAL
