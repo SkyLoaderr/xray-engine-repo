@@ -195,7 +195,9 @@ void CRender::Render		()
 		marker									++;
 		phase									= PHASE_EMAP;
 		Target.phase_scene						();
-
+		for (int it=0; it<lstRecorded.size(); it++)	{
+			r_dsgraph_insert_static				(lstRecorded[it]);
+		}
 		for (emapslice=0; emapslice<ps_r2_emap_slices; emapslice++)
 		{
 			bool	b_last						= (emapslice==(ps_r2_emap_slices-1));
