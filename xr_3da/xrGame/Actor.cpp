@@ -168,6 +168,7 @@ CActor::CActor() : CEntityAlive()
 	m_bHeavyBreathSndPlaying = false;
 
 	m_controlled_mouse_scale_factor	 = 10.f;
+	m_fSprintFactor					 = 4.f;
 	SetControlled					(false);
 	//-----------------------------------------------------------------------------------
 	hFriendlyIndicator.create				(FVF::F_LIT,RCache.Vertex.Buffer(),RCache.QuadIB);
@@ -288,7 +289,7 @@ void CActor::Load	(LPCSTR section )
 	m_fWalkBackFactor			= pSettings->r_float(section,"walk_back_coef");
 	m_fCrouchFactor				= pSettings->r_float(section,"crouch_coef");
 	m_fClimbFactor				= pSettings->r_float(section,"climb_coef");
-//	m_fSprintFactor				= pSettings->r_float(section,"sprint_koef");
+	//m_fSprintFactor				= pSettings->r_float(section,"sprint_koef");
 	skel_airr_lin_factor		= pSettings->r_float(section,"ph_skeleton_airr_lin_factor");
 	skel_airr_ang_factor		= pSettings->r_float(section,"ph_skeleton_airr_ang_factor");
 	hinge_force_factor1 		= pSettings->r_float(section,"ph_skeleton_hinger_factor1");

@@ -251,6 +251,24 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 			RestoreHidedWeapon(GEG_PLAYER_RESTORE_CURRENT_SLOT);
 		};
 	};
+
+	if(mstate_wf&mcSprint)
+					mstate_real|=mcSprint;
+	if(!(mstate_real&(mcFwd|mcLStrafe|mcRStrafe))||mstate_real&(mcCrouch|mcClimb))
+	{
+		mstate_real&=~mcSprint;
+	}
+
+	
+	if (mstate_real & mcSprint)
+	{
+		HideCurrentWeapon(GEG_PLAYER_DEACTIVATE_CURRENT_SLOT, true);
+	}
+	else
+	{
+		RestoreHidedWeapon(GEG_PLAYER_RESTORE_CURRENT_SLOT);
+	}
+
 	/*
 	if(mstate_real&mcClimb&&mstate_real&mcAnyMove&&
 	inventory().ActiveItem()&&inventory().ActiveItem()->HandDependence()==hd2Hand)
