@@ -2,6 +2,7 @@
 #include "entity.h"
 #include "PHDynamicData.h"
 #include "PhysicsShell.h"
+#include "ai\\script\\ai_script_monster.h"
 
 
 // refs
@@ -10,8 +11,11 @@ class						CActor;
 
 // defs
 
+class CEntityAction;
 
-class CCar : public CEntity,
+class CCar : 
+	public CEntity, 
+	public CScriptMonster,
 	public CPHObject
 {
 	static BONE_P_MAP bone_map; //interface for PhysicsShell
@@ -368,11 +372,9 @@ public:
 	virtual BOOL			net_Spawn			( LPVOID DC );
 	virtual void			net_Destroy			();
 	virtual void			UpdateCL			( ); 
-#ifdef DEBUG
 	virtual void			shedule_Update		(u32 dt);
-#endif
-
-	virtual void			renderable_Render			( ); 
+	virtual void			renderable_Render	( ); 
+	virtual	bool			bfAssignMovement	(CEntityAction *tpEntityAction);
 
 	// Network
 	virtual void			net_Export			(NET_Packet& P);				// export to server
@@ -384,6 +386,8 @@ public:
 	virtual void			IR_OnKeyboardPress		(int dik);
 	virtual void			IR_OnKeyboardRelease	(int dik);
 	virtual void			IR_OnKeyboardHold		(int dik);
+	virtual void			vfProcessInputKey		(int iCommand, bool bPressed);
+	virtual void			OnEvent					( NET_Packet& P, u16 type);
 
 	// Hits
 	virtual void			HitSignal			(float HitAmount,	Fvector& local_dir, CObject* who, s16 element)	{};
@@ -476,6 +480,3 @@ private:
 		}
 	}
 };
-
-
-

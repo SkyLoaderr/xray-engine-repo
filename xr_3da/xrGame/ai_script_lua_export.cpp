@@ -336,7 +336,20 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 				value("curve",					int(MonsterSpace::ePathTypeStraightDodge)),
 				value("curve_criteria",			int(MonsterSpace::ePathTypeDodgeCriteria))
 			]
+			.enum_("input")
+			[
+				value("none",					int(CMovementAction::eInputKeyNone)),
+				value("fwd",					int(CMovementAction::eInputKeyForward)),
+				value("back",					int(CMovementAction::eInputKeyBack)),
+				value("left",					int(CMovementAction::eInputKeyLeft)),
+				value("right",					int(CMovementAction::eInputKeyRight)),
+				value("up",						int(CMovementAction::eInputKeyShiftUp)),
+				value("down",					int(CMovementAction::eInputKeyShiftDown)),
+				value("break",					int(CMovementAction::eInputKeyBreaks)),
+				value("engine",					int(CMovementAction::eInputKeyEngine))
+			]
 			.def(								constructor<>())
+			.def(								constructor<const CMovementAction::EInputKeys &>())
 			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,MonsterSpace::EPathType,CLuaGameObject*>())
 			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,MonsterSpace::EPathType,CLuaGameObject*,float>())
 			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,MonsterSpace::EPathType,const CPatrolPathParams &>())
@@ -349,7 +362,8 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("path",						&CMovementAction::SetPathType)
 			.def("object",						&CMovementAction::SetObjectToGo)
 			.def("patrol",						&CMovementAction::SetPatrolPath)
-			.def("position",					&CMovementAction::SetPosition),
+			.def("position",					&CMovementAction::SetPosition)
+			.def("input",						&CMovementAction::SetInputKeys),
 
 		class_<CWatchAction>("look")
 			.enum_("look")

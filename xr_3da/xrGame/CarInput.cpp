@@ -5,6 +5,7 @@
 #include "actor.h"
 #include "cameralook.h"
 #include "camerafirsteye.h"
+#include "ai_script_actions.h"
 
 void	CCar::IR_OnMouseMove(int dx, int dy)
 {
@@ -22,7 +23,34 @@ void	CCar::IR_OnMouseMove(int dx, int dy)
 	}
 }
 
-void	CCar::IR_OnKeyboardPress(int cmd)
+bool CCar::bfAssignMovement(CEntityAction *tpEntityAction)
+{
+	if (tpEntityAction->m_tMovementAction.m_bCompleted)
+		return(true);
+
+	u32		l_tInput = tpEntityAction->m_tMovementAction.m_tInputKeys;
+
+	vfProcessInputKey(kFWD		,	!!(l_tInput & CMovementAction::eInputKeyForward	));
+	vfProcessInputKey(kBACK		,	!!(l_tInput & CMovementAction::eInputKeyBack		));
+	vfProcessInputKey(kL_STRAFE	,	!!(l_tInput & CMovementAction::eInputKeyLeft		));
+	vfProcessInputKey(kR_STRAFE	,	!!(l_tInput & CMovementAction::eInputKeyRight		));
+	vfProcessInputKey(kACCEL	,	!!(l_tInput & CMovementAction::eInputKeyShiftUp	));
+	vfProcessInputKey(kCROUCH	,	!!(l_tInput & CMovementAction::eInputKeyShiftDown	));
+	vfProcessInputKey(kJUMP		,	!!(l_tInput & CMovementAction::eInputKeyBreaks	));
+	vfProcessInputKey(kWPN_FIRE	,	!!(l_tInput & CMovementAction::eInputKeyEngine	));
+
+	return	(false);
+}
+
+void CCar::vfProcessInputKey	(int iCommand, bool bPressed)
+{
+	if (bPressed)
+		IR_OnKeyboardPress	(iCommand);
+	else
+		IR_OnKeyboardRelease(iCommand);
+}
+
+void CCar::IR_OnKeyboardPress(int cmd)
 {
 	if (Remote())								return;
 

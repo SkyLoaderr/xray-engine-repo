@@ -317,7 +317,7 @@ bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 	
 	if (l_tMovementAction.m_bCompleted)
 		return		(false);
-	
+
 	CCustomMonster		*l_tpCustomMonster = dynamic_cast<CCustomMonster*>(this);
 
 	switch (l_tMovementAction.m_tGoalType) {

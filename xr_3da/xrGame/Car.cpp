@@ -8,8 +8,7 @@
 #include "Actor.h"
 #define   _USE_MATH_DEFINES
 #include "math.h"
-
-
+#include "ai_script_actions.h"
 
 BONE_P_MAP CCar::bone_map=BONE_P_MAP();
 
@@ -125,16 +124,21 @@ void	CCar::net_Destroy()
 	if(ini->line_exist("car_definition","steer"))
 		pKinematics->LL_GetInstance(pKinematics->LL_BoneID(ini->r_string("car_definition","steer"))).set_callback(0,0);
 }
-#ifdef DEBUG
-void	CCar::shedule_Update		(u32 dt)
+
+void CCar::shedule_Update(u32 dt)
 {
 	inherited::shedule_Update(dt);
 
-	//if()
-	
-
+	if (GetScriptControl())
+		ProcessScripts();
+	else {
+		while (!m_tpActionQueue.empty()) {
+			xr_delete	(m_tpActionQueue.front());
+			m_tpActionQueue.erase(m_tpActionQueue.begin());
+		}
+		ResetScriptData				(false);
+	}
 }
-#endif
 
 void	CCar::UpdateCL				( )
 {
@@ -1055,3 +1059,9 @@ void CCar::SExhaust::Stop()
 }
 
 #undef   _USE_MATH_DEFINES
+
+void CCar::OnEvent(NET_Packet& P, u16 type)
+{
+	inherited::OnEvent		(P,type);
+}
+

@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "ai_monster_space.h"
+
 class CAbstractAction {
 public:
 	bool							m_bCompleted;
@@ -64,7 +66,21 @@ public:
 		eGoalTypePatrolPath,
 		eGoalTypePathPosition,
 		eGoalTypeNoPathPosition,
+		eGoalTypeInput,
 		eGoalTypeDummy = u32(-1),
+	};
+
+	enum EInputKeys {
+		eInputKeyNone		= u32(1) << 0,
+		eInputKeyForward	= u32(1) << 1,
+		eInputKeyBack		= u32(1) << 2,
+		eInputKeyLeft		= u32(1) << 3,
+		eInputKeyRight		= u32(1) << 4,
+		eInputKeyShiftUp	= u32(1) << 5,
+		eInputKeyShiftDown	= u32(1) << 6,
+		eInputKeyBreaks		= u32(1) << 7,
+		eInputKeyEngine		= u32(1) << 8,
+		eInputKeyDummy		= u32(1) << 9,
 	};
 
 	MonsterSpace::EBodyState		m_tBodyState;
@@ -79,12 +95,14 @@ public:
 	EGoalType						m_tGoalType;
 	float							m_fSpeed;
 	bool							m_bRandom;
+	EInputKeys						m_tInputKeys;
 
 							CMovementAction		()
 	{
-		SetBodyState		(eBodyStateStand);
-		SetMovementType		(eMovementTypeStand);
-		SetPathType			(ePathTypeStraight);
+		SetInputKeys		(eInputKeyNone);
+		SetBodyState		(MonsterSpace::eBodyStateStand);
+		SetMovementType		(MonsterSpace::eMovementTypeStand);
+		SetPathType			(MonsterSpace::ePathTypeStraight);
 		SetPatrolPath		("");
 		SetPatrolStart		(CPatrolPathParams::ePatrolPathNearest);
 		SetPatrolStop		(CPatrolPathParams::ePatrolPathContinue);
@@ -126,12 +144,17 @@ public:
 
 							CMovementAction		(const Fvector &tPosition, float fSpeed)
 	{
-		SetBodyState		(eBodyStateStand);
-		SetMovementType		(eMovementTypeStand);
-		SetPathType			(ePathTypeStraight);
+		SetBodyState		(MonsterSpace::eBodyStateStand);
+		SetMovementType		(MonsterSpace::eMovementTypeStand);
+		SetPathType			(MonsterSpace::ePathTypeStraight);
 		SetPosition			(tPosition);
 		SetSpeed			(fSpeed);
 		m_tGoalType			= eGoalTypeNoPathPosition;
+	}
+
+							CMovementAction		(const EInputKeys tInputKeys)
+	{
+		SetInputKeys		(tInputKeys);
 	}
 
 			void			SetBodyState		(const MonsterSpace::EBodyState tBodyState)
@@ -187,6 +210,12 @@ public:
 	{
 		m_bRandom			= bRandom;
 	}
+
+			void			SetInputKeys		(const EInputKeys tInputKeys)
+	{
+		m_tInputKeys		= tInputKeys;
+		m_tGoalType			= eGoalTypeInput;
+	}
 };
 
 class CWatchAction : public CAbstractAction {
@@ -205,7 +234,7 @@ public:
 							CWatchAction		()
 	{
 		m_tpObjectToWatch	= 0;
-		m_tWatchType		= eLookTypePathDirection;
+		m_tWatchType		= MonsterSpace::eLookTypePathDirection;
 		m_tWatchVector.set	(0,0,0);
 		m_tGoalType			= eGoalTypeWatchType;
 	}
@@ -258,7 +287,7 @@ public:
 							CAnimationAction	()
 	{
 		strcpy				(m_caAnimationToPlay,"");
-		m_tMentalState		= eMentalStateDanger;
+		m_tMentalState		= MonsterSpace::eMentalStateDanger;
 		m_tGoalType			= eGoalTypeMental;
 		m_bCompleted		= false;
 	}
@@ -276,7 +305,7 @@ public:
 			void			SetAnimation		(LPCSTR caAnimationToPlay)
 	{
 		strcpy				(m_caAnimationToPlay,caAnimationToPlay);
-		m_tMentalState		= eMentalStateDanger;
+		m_tMentalState		= MonsterSpace::eMentalStateDanger;
 		m_tGoalType			= eGoalTypeAnimation;
 		m_bCompleted		= false;
 	}
@@ -496,7 +525,7 @@ public:
 							CObjectAction		()
 	{
 		m_tpObject			= 0;
-		m_tGoalType			= eObjectActionIdle;
+		m_tGoalType			= MonsterSpace::eObjectActionIdle;
 		m_bCompleted		= false;
 	}
 
