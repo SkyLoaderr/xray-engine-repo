@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "ai_script_classes.h"
+#include "script_game_object.h"
 
 #define TEMPLATE_SPECIALIZATION \
 	template <\
@@ -55,7 +55,7 @@ void CWrapper::reinit				(_object_type *object)
 }
 
 TEMPLATE_SPECIALIZATION
-void CWrapper::reinit				(CLuaGameObject *object)
+void CWrapper::reinit				(CScriptGameObject *object)
 {
 	VERIFY					(object);
 	inherited::reinit		(object);
@@ -111,7 +111,7 @@ void CWrapper2::reinit				(_object_type *object, CPropertyStorage *storage)
 }
 
 TEMPLATE_SPECIALIZATION
-void CWrapper2::reinit				(CLuaGameObject *object, CPropertyStorage *storage)
+void CWrapper2::reinit				(CScriptGameObject *object, CPropertyStorage *storage)
 {
 	VERIFY					(object);
 	inherited::reinit		(object,storage);

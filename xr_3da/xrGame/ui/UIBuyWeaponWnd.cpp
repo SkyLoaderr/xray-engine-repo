@@ -18,7 +18,7 @@
 #include "../level.h"
 
 #include "../script_space.h"
-#include "../ai_script_processor.h"
+#include "../script_process.h"
 
 #include "UIInventoryUtilities.h"
 using namespace InventoryUtilities;

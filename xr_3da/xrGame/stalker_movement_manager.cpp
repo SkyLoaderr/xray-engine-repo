@@ -9,7 +9,7 @@
 #include "stdafx.h"
 #include "stalker_movement_manager.h"
 #include "stalker_movement_manager_space.h"
-#include "ai_script_actions.h"
+#include "script_entity_action.h"
 #include "ai/stalker/ai_stalker.h"
 #include "sight_manager.h"
 

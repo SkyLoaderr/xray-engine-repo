@@ -29,7 +29,7 @@
 #include "../grenadelauncher.h"
 
 #include "../script_space.h"
-#include "../ai_script_processor.h"
+#include "../script_process.h"
 
 #include "../eatable_item.h"
 #include "../inventory.h"

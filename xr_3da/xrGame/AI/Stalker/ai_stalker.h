@@ -131,11 +131,11 @@ public:
 	virtual CInventoryItem		*GetCurrentEquipment	() const;
 	virtual CInventoryItem		*GetMedikit				() const;
 	virtual CInventoryItem		*GetFood				() const;
-	virtual	bool				bfAssignMovement		(CEntityAction			*tpEntityAction);
-	virtual	bool				bfAssignWatch			(CEntityAction			*tpEntityAction);
+	virtual	bool				bfAssignMovement		(CScriptEntityAction			*tpEntityAction);
+	virtual	bool				bfAssignWatch			(CScriptEntityAction			*tpEntityAction);
 	virtual	void				ResetScriptData			(void					*P = 0);
-	virtual	bool				bfAssignObject			(CEntityAction			*tpEntityAction);
-	virtual	bool				bfAssignAnimation		(CEntityAction			*tpEntityAction);
+	virtual	bool				bfAssignObject			(CScriptEntityAction			*tpEntityAction);
+	virtual	bool				bfAssignAnimation		(CScriptEntityAction			*tpEntityAction);
 	
 	// physics
 	virtual u16					PHGetSyncItemsNumber	()			{return inherited ::PHGetSyncItemsNumber();}

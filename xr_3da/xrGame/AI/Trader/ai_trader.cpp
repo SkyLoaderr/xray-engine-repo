@@ -10,8 +10,8 @@
 #include "ai_trader.h"
 #include "../../bolt.h"
 #include "../../trade.h"
-#include "../../ai_script_actions.h"
-#include "../../ai_script_classes.h"
+#include "../../script_entity_action.h"
+#include "../../script_game_object.h"
 #include "../../inventory.h"
 #include "../../xrserver_objects_alife_monsters.h"
 
@@ -163,7 +163,7 @@ void CAI_Trader::AssignHeadAnimation()
 }
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CAI_Trader::bfAssignSound(CEntityAction *tpEntityAction)
+bool CAI_Trader::bfAssignSound(CScriptEntityAction *tpEntityAction)
 {
 	if (!CScriptMonster::bfAssignSound(tpEntityAction))
 		return			(false);

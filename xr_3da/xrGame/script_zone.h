@@ -12,7 +12,7 @@
 #include "../feel_touch.h"
 #include "script_callback.h"
 
-class CLuaGameObject;
+class CScriptGameObject;
 
 class CScriptZone : public CGameObject, public Feel::Touch {
 	CScriptCallback m_tpOnEnter;

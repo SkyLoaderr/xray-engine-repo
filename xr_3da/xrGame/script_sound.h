@@ -13,7 +13,7 @@
 #include "ai_sounds.h"
 #include "ai_space.h"
 
-class CLuaGameObject;
+class CScriptGameObject;
 
 class CScriptSound {
 	mutable ref_sound		m_sound;
@@ -25,18 +25,18 @@ public:
 	IC							CScriptSound		(LPCSTR caSoundName, ESoundTypes sound_type = SOUND_TYPE_NO_SOUND);
 	virtual						~CScriptSound		();
 	IC		u32					Length				();
-	IC		void				Play				(CLuaGameObject *object);
-	IC		void				Play				(CLuaGameObject *object, float delay);
-			void				Play				(CLuaGameObject *object, float delay, int flags);
-	IC		void				PlayUnlimited		(CLuaGameObject *object);
-	IC		void				PlayUnlimited		(CLuaGameObject *object, float delay);
-			void				PlayUnlimited		(CLuaGameObject *object, float delay, int flags);
-	IC		void				PlayAtPos			(CLuaGameObject *object, const Fvector &position);
-	IC		void				PlayAtPos			(CLuaGameObject *object, const Fvector &position, float delay);
-			void				PlayAtPos			(CLuaGameObject *object, const Fvector &position, float delay, int flags);
-	IC		void				PlayAtPosUnlimited	(CLuaGameObject *object, const Fvector &position);
-	IC		void				PlayAtPosUnlimited	(CLuaGameObject *object, const Fvector &position, float delay);
-			void				PlayAtPosUnlimited	(CLuaGameObject *object, const Fvector &position, float delay, int flags);
+	IC		void				Play				(CScriptGameObject *object);
+	IC		void				Play				(CScriptGameObject *object, float delay);
+			void				Play				(CScriptGameObject *object, float delay, int flags);
+	IC		void				PlayUnlimited		(CScriptGameObject *object);
+	IC		void				PlayUnlimited		(CScriptGameObject *object, float delay);
+			void				PlayUnlimited		(CScriptGameObject *object, float delay, int flags);
+	IC		void				PlayAtPos			(CScriptGameObject *object, const Fvector &position);
+	IC		void				PlayAtPos			(CScriptGameObject *object, const Fvector &position, float delay);
+			void				PlayAtPos			(CScriptGameObject *object, const Fvector &position, float delay, int flags);
+	IC		void				PlayAtPosUnlimited	(CScriptGameObject *object, const Fvector &position);
+	IC		void				PlayAtPosUnlimited	(CScriptGameObject *object, const Fvector &position, float delay);
+			void				PlayAtPosUnlimited	(CScriptGameObject *object, const Fvector &position, float delay, int flags);
 	IC		void				Stop				();
 	IC		void				SetPosition			(const Fvector &position);
 	IC		void				SetFrequency		(float frequency);

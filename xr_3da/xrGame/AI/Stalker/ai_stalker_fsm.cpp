@@ -12,7 +12,7 @@
 #include "../../hudmanager.h"
 #include "../../bolt.h"
 #include "../../weapon.h"
-#include "../../ai_script_actions.h"
+#include "../../script_entity_action.h"
 #include "../../game_graph.h"
 
 #define AI_BEST

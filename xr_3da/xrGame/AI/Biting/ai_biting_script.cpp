@@ -1,12 +1,12 @@
 #include "stdafx.h"
 #include "ai_biting.h"
-#include "../../ai_script_actions.h"
+#include "../../script_entity_action.h"
 #include "../../phmovementcontrol.h"
 #include "../../sight_manager.h"
 #include "../ai_monster_debug.h"
 
 //////////////////////////////////////////////////////////////////////////
-bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
+bool CAI_Biting::bfAssignMovement (CScriptEntityAction *tpEntityAction)
 {
 	if (!inherited::bfAssignMovement(tpEntityAction))
 		return		(false);
@@ -31,7 +31,7 @@ bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
 
 //////////////////////////////////////////////////////////////////////////
 
-bool CAI_Biting::bfAssignObject(CEntityAction *tpEntityAction)
+bool CAI_Biting::bfAssignObject(CScriptEntityAction *tpEntityAction)
 {
 	if (!inherited::bfAssignObject(tpEntityAction))
 		return	(false);
@@ -57,7 +57,7 @@ bool CAI_Biting::bfAssignObject(CEntityAction *tpEntityAction)
 }
 
 
-bool CAI_Biting::bfAssignWatch(CEntityAction *tpEntityAction)
+bool CAI_Biting::bfAssignWatch(CScriptEntityAction *tpEntityAction)
 {
 	if (!inherited::bfAssignWatch(tpEntityAction))
 		return		(false);
@@ -85,7 +85,7 @@ bool CAI_Biting::bfAssignWatch(CEntityAction *tpEntityAction)
 	return		(!l_tWatchAction.m_bCompleted);
 }
 
-bool CAI_Biting::bfAssignAnimation(CEntityAction *tpEntityAction)
+bool CAI_Biting::bfAssignAnimation(CScriptEntityAction *tpEntityAction)
 {
 	if (!inherited::bfAssignAnimation(tpEntityAction))
 		return			(false);
@@ -109,7 +109,7 @@ bool CAI_Biting::bfAssignAnimation(CEntityAction *tpEntityAction)
 	return				(true);
 }
 
-bool CAI_Biting::bfAssignSound(CEntityAction *tpEntityAction)
+bool CAI_Biting::bfAssignSound(CScriptEntityAction *tpEntityAction)
 {
 	CScriptSoundAction	&l_tAction = tpEntityAction->m_tSoundAction;
 	if (l_tAction.completed()) return false;
@@ -138,11 +138,11 @@ bool CAI_Biting::bfAssignSound(CEntityAction *tpEntityAction)
 
 
 
-bool CAI_Biting::bfAssignMonsterAction(CEntityAction *tpEntityAction)
+bool CAI_Biting::bfAssignMonsterAction(CScriptEntityAction *tpEntityAction)
 {
 	if (!inherited::bfAssignMonsterAction(tpEntityAction)) return false;
 	
-	CMonsterAction	&l_tAction = tpEntityAction->m_tMonsterAction;	
+	CScriptMonsterAction	&l_tAction = tpEntityAction->m_tMonsterAction;	
 	if (l_tAction.completed()) return false;
 
 	switch(l_tAction.m_tAction) {

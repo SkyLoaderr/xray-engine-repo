@@ -12,9 +12,9 @@
 #include "../../script_callback.h"
 #include "../../ai_sounds.h"
 
-class CEntityAction;
+class CScriptEntityAction;
 class CEntity;
-class CLuaGameObject;
+class CScriptGameObject;
 
 class CScriptMonster : virtual public CGameObject {
 public:
@@ -30,13 +30,13 @@ public:
 
 public:
 	struct CSavedSound {
-		CLuaGameObject	*m_lua_game_object;
+		CScriptGameObject	*m_lua_game_object;
 		int				m_sound_type;
 		Fvector			m_position;
 		float			m_sound_power;
 
 		IC				CSavedSound(
-							CLuaGameObject	*lua_game_object,
+							CScriptGameObject	*lua_game_object,
 							int				sound_type,
 							const Fvector	&position,
 							float			sound_power
@@ -50,11 +50,11 @@ public:
 	};
 protected:
 	typedef CGameObject inherited;
-	xr_deque<CEntityAction*>	m_tpActionQueue;
+	xr_deque<CScriptEntityAction*>	m_tpActionQueue;
 	bool						m_bScriptControl;
 	ref_str						m_caScriptName;
 	CMotionDef					*m_tpNextAnimation;
-	CEntityAction				*m_tpCurrentEntityAction;
+	CScriptEntityAction				*m_tpCurrentEntityAction;
 public:
 	CMotionDef					*m_tpScriptAnimation;
 protected:
@@ -74,7 +74,7 @@ public:
 			const Fmatrix		GetUpdatedMatrix		(ref_str caBoneName, const Fvector &tPositionOffset, const Fvector &tAngleOffset);
 			void				vfUpdateParticles		();
 			void				vfUpdateSounds			();
-			void				vfFinishAction			(CEntityAction		*tpEntityAction);
+			void				vfFinishAction			(CScriptEntityAction		*tpEntityAction);
 	virtual	void				SetScriptControl		(const bool			bScriptControl, ref_str	caSciptName);
 	virtual	bool				GetScriptControl		() const;
 	virtual	LPCSTR				GetScriptControlName	() const;
@@ -83,18 +83,18 @@ public:
 	virtual bool				CheckTypeVisibility		(const char* section_name);
 
 	virtual bool				CheckIfCompleted		() const										{return false;};
-	virtual	CEntityAction		*GetCurrentAction		();
-	virtual	void				AddAction				(const CEntityAction*tpEntityAction, bool bHighPriority = false);
+	virtual	CScriptEntityAction		*GetCurrentAction		();
+	virtual	void				AddAction				(const CScriptEntityAction*tpEntityAction, bool bHighPriority = false);
 	virtual void				UseObject				(const CObject		*tpObject);
 	virtual void				ProcessScripts			();
 	virtual	void				ResetScriptData			(void				*P = 0);
-	virtual	bool				bfAssignMovement		(CEntityAction		*tpEntityAction);
-	virtual	bool				bfAssignWatch			(CEntityAction		*tpEntityAction);
-	virtual	bool				bfAssignAnimation		(CEntityAction		*tpEntityAction);
-	virtual	bool				bfAssignSound			(CEntityAction		*tpEntityAction);
-	virtual	bool				bfAssignParticles		(CEntityAction		*tpEntityAction);
-	virtual	bool				bfAssignObject			(CEntityAction		*tpEntityAction);
-	virtual bool				bfAssignMonsterAction	(CEntityAction		*tpEntityAction);
+	virtual	bool				bfAssignMovement		(CScriptEntityAction		*tpEntityAction);
+	virtual	bool				bfAssignWatch			(CScriptEntityAction		*tpEntityAction);
+	virtual	bool				bfAssignAnimation		(CScriptEntityAction		*tpEntityAction);
+	virtual	bool				bfAssignSound			(CScriptEntityAction		*tpEntityAction);
+	virtual	bool				bfAssignParticles		(CScriptEntityAction		*tpEntityAction);
+	virtual	bool				bfAssignObject			(CScriptEntityAction		*tpEntityAction);
+	virtual bool				bfAssignMonsterAction	(CScriptEntityAction		*tpEntityAction);
 
 	virtual void				set_callback			(const luabind::object &lua_object, LPCSTR method, const CScriptMonster::EActionType tActionType);
 	virtual void				set_callback			(const luabind::functor<void> &lua_function, const CScriptMonster::EActionType tActionType);
@@ -118,7 +118,7 @@ public:
 	virtual void				UpdateCL				();
 			bool				bfScriptAnimation		();
 			u32					GetActionCount			() const;
-	const CEntityAction			*GetActionByIndex		(u32 action_index) const;
+	const CScriptEntityAction			*GetActionByIndex		(u32 action_index) const;
 
 	virtual CEntity				*GetCurrentEnemy		();
 	virtual CEntity				*GetCurrentCorpse		();

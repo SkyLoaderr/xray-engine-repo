@@ -25,43 +25,43 @@ IC	u32	CScriptSound::Length				()
 	return					(m_sound.handle->length_ms());
 }
 
-IC	void CScriptSound::Play					(CLuaGameObject *object)
+IC	void CScriptSound::Play					(CScriptGameObject *object)
 {
 	Play					(object,0.f,0);
 }
 
-IC	void CScriptSound::Play					(CLuaGameObject *object, float delay)
+IC	void CScriptSound::Play					(CScriptGameObject *object, float delay)
 {
 	Play					(object,delay,0);
 }
 		
-IC	void CScriptSound::PlayUnlimited		(CLuaGameObject *object)
+IC	void CScriptSound::PlayUnlimited		(CScriptGameObject *object)
 {
 	PlayUnlimited			(object,0.f,0);
 }
 
-IC	void CScriptSound::PlayUnlimited		(CLuaGameObject *object, float delay)
+IC	void CScriptSound::PlayUnlimited		(CScriptGameObject *object, float delay)
 {
 	PlayUnlimited			(object,delay,0);
 }
-		void				PlayUnlimited	(CLuaGameObject *object, float delay, int flags);
+		void				PlayUnlimited	(CScriptGameObject *object, float delay, int flags);
 
-IC	void CScriptSound::PlayAtPos			(CLuaGameObject *object, const Fvector &position)
+IC	void CScriptSound::PlayAtPos			(CScriptGameObject *object, const Fvector &position)
 {
 	PlayAtPos				(object,position,0.f,0);
 }
 
-IC	void CScriptSound::PlayAtPos			(CLuaGameObject *object, const Fvector &position, float delay)
+IC	void CScriptSound::PlayAtPos			(CScriptGameObject *object, const Fvector &position, float delay)
 {
 	PlayAtPos				(object,position,delay,0);
 }
 
-IC	void CScriptSound::PlayAtPosUnlimited	(CLuaGameObject *object, const Fvector &position)
+IC	void CScriptSound::PlayAtPosUnlimited	(CScriptGameObject *object, const Fvector &position)
 {
 	PlayAtPosUnlimited		(object,position,0.f,0);
 }
 
-IC	void CScriptSound::PlayAtPosUnlimited	(CLuaGameObject *object, const Fvector &position, float delay)
+IC	void CScriptSound::PlayAtPosUnlimited	(CScriptGameObject *object, const Fvector &position, float delay)
 {
 	PlayAtPosUnlimited		(object,position,delay,0);
 }

@@ -10,10 +10,10 @@
 #include "ai_script_monster.h"
 #include "../../CustomMonster.h"
 #include "../../../feel_vision.h"
-#include "../../ai_script_actions.h"
+#include "../../script_entity_action.h"
 #include "../../weapon.h"
 #include "../../ParticlesObject.h"
-#include "../../ai_script_classes.h"
+#include "../../script_game_object.h"
 
 void __stdcall ActionCallback(CKinematics *tpKinematics);
 
@@ -150,7 +150,7 @@ void CScriptMonster::UseObject(const CObject * /**tpObject/**/)
 #pragma todo("Dima to Dima : Use object specified by script")
 }
 
-void CScriptMonster::AddAction(const CEntityAction *tpEntityAction, bool bHighPriority)
+void CScriptMonster::AddAction(const CScriptEntityAction *tpEntityAction, bool bHighPriority)
 {
 #ifdef _DEBUG
 //	if (!xr_strcmp("m_stalker_wounded",*cName())) {
@@ -159,14 +159,14 @@ void CScriptMonster::AddAction(const CEntityAction *tpEntityAction, bool bHighPr
 #endif
 	bool				empty = m_tpActionQueue.empty();
 	if (!bHighPriority || m_tpActionQueue.empty())
-		m_tpActionQueue.push_back(xr_new<CEntityAction>(*tpEntityAction));
+		m_tpActionQueue.push_back(xr_new<CScriptEntityAction>(*tpEntityAction));
 	else {
 		VERIFY			(m_tpActionQueue.front());
-		CEntityAction	*l_tpEntityAction = xr_new<CEntityAction>(*m_tpActionQueue.front());
+		CScriptEntityAction	*l_tpEntityAction = xr_new<CScriptEntityAction>(*m_tpActionQueue.front());
 		vfFinishAction	(m_tpActionQueue.front());
 		xr_delete		(m_tpActionQueue.front());
 		m_tpActionQueue.front() = l_tpEntityAction;
-		m_tpActionQueue.insert(m_tpActionQueue.begin(),xr_new<CEntityAction>(*tpEntityAction));
+		m_tpActionQueue.insert(m_tpActionQueue.begin(),xr_new<CScriptEntityAction>(*tpEntityAction));
 	}
 
 	if (empty)
@@ -175,8 +175,8 @@ void CScriptMonster::AddAction(const CEntityAction *tpEntityAction, bool bHighPr
 #ifdef _DEBUG
 //	if (!xr_strcmp("m_stalker_wounded",*cName()))
 //		Msg					("\n%6d Action queue",Level().timeServer());
-//	xr_deque<CEntityAction*>::const_iterator	I = m_tpActionQueue.begin();
-//	xr_deque<CEntityAction*>::const_iterator	E = m_tpActionQueue.end();
+//	xr_deque<CScriptEntityAction*>::const_iterator	I = m_tpActionQueue.begin();
+//	xr_deque<CScriptEntityAction*>::const_iterator	E = m_tpActionQueue.end();
 //	for ( ; I != E; ++I)
 //		if (!xr_strcmp("m_stalker_wounded",*cName()))
 //			Msg				("%6d Action : %s",Level().timeServer(),*(*I)->m_tAnimationAction.m_caAnimationToPlay);
@@ -185,7 +185,7 @@ void CScriptMonster::AddAction(const CEntityAction *tpEntityAction, bool bHighPr
 #endif
 }
 
-CEntityAction *CScriptMonster::GetCurrentAction()
+CScriptEntityAction *CScriptMonster::GetCurrentAction()
 {
 	if (m_tpActionQueue.empty())
 		return(0);
@@ -220,7 +220,7 @@ void CScriptMonster::vfUpdateSounds()
 		m_current_sound->feedback->set_position(GetUpdatedMatrix(l_tSoundAction.m_caBoneName,l_tSoundAction.m_tSoundPosition,Fvector().set(0,0,0)).c);
 }
 
-void CScriptMonster::vfFinishAction(CEntityAction *tpEntityAction)
+void CScriptMonster::vfFinishAction(CScriptEntityAction *tpEntityAction)
 {
 	if (m_current_sound) {
 		m_current_sound->destroy	();
@@ -232,7 +232,7 @@ void CScriptMonster::vfFinishAction(CEntityAction *tpEntityAction)
 
 void CScriptMonster::ProcessScripts()
 {
-	CEntityAction	*l_tpEntityAction = 0;
+	CScriptEntityAction	*l_tpEntityAction = 0;
 #ifdef DEBUG
 	bool			empty_queue = m_tpActionQueue.empty();
 #endif
@@ -311,12 +311,12 @@ void CScriptMonster::ProcessScripts()
 	bfAssignMonsterAction(l_tpEntityAction);
 }
 
-bool CScriptMonster::bfAssignWatch(CEntityAction *tpEntityAction)
+bool CScriptMonster::bfAssignWatch(CScriptEntityAction *tpEntityAction)
 {
 	return			(true);
 }
 
-bool CScriptMonster::bfAssignMonsterAction(CEntityAction *tpEntityAction)
+bool CScriptMonster::bfAssignMonsterAction(CScriptEntityAction *tpEntityAction)
 {
 	if (GetCurrentAction() && GetCurrentAction()->m_tMonsterAction.m_bCompleted)
 		return		(false);
@@ -324,7 +324,7 @@ bool CScriptMonster::bfAssignMonsterAction(CEntityAction *tpEntityAction)
 	return			(true);
 }
 
-bool CScriptMonster::bfAssignAnimation(CEntityAction *tpEntityAction)
+bool CScriptMonster::bfAssignAnimation(CScriptEntityAction *tpEntityAction)
 {
 	m_tpNextAnimation = 0;
 	if (GetCurrentAction() && GetCurrentAction()->m_tAnimationAction.m_bCompleted)
@@ -352,7 +352,7 @@ const Fmatrix CScriptMonster::GetUpdatedMatrix(ref_str caBoneName, const Fvector
 	return			(l_tMatrix);
 }
 
-bool CScriptMonster::bfAssignSound(CEntityAction *tpEntityAction)
+bool CScriptMonster::bfAssignSound(CScriptEntityAction *tpEntityAction)
 {
 	CScriptSoundAction	&l_tSoundAction = tpEntityAction->m_tSoundAction;
 	if (l_tSoundAction.m_bCompleted)
@@ -383,7 +383,7 @@ bool CScriptMonster::bfAssignSound(CEntityAction *tpEntityAction)
 	return		(!l_tSoundAction.m_bCompleted);
 }
 
-bool CScriptMonster::bfAssignParticles(CEntityAction *tpEntityAction)
+bool CScriptMonster::bfAssignParticles(CScriptEntityAction *tpEntityAction)
 {
 	CScriptParticleAction	&l_tParticleAction = tpEntityAction->m_tParticleAction;
 	if (l_tParticleAction.m_bCompleted)
@@ -407,12 +407,12 @@ bool CScriptMonster::bfAssignParticles(CEntityAction *tpEntityAction)
 	return			(!l_tParticleAction.m_bCompleted);
 }
 
-bool CScriptMonster::bfAssignObject(CEntityAction *tpEntityAction)
+bool CScriptMonster::bfAssignObject(CScriptEntityAction *tpEntityAction)
 {
 	return			(GetCurrentAction() && !GetCurrentAction()->m_tObjectAction.m_bCompleted);
 }
 
-bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
+bool CScriptMonster::bfAssignMovement(CScriptEntityAction *tpEntityAction)
 {
 	CScriptMovementAction	&l_tMovementAction	= tpEntityAction->m_tMovementAction;
 	
@@ -662,7 +662,7 @@ u32	 CScriptMonster::GetActionCount	() const
 	return							(m_tpActionQueue.size());
 }
 
-const CEntityAction *CScriptMonster::GetActionByIndex	(u32 action_index) const
+const CScriptEntityAction *CScriptMonster::GetActionByIndex	(u32 action_index) const
 {
 	return							(m_tpActionQueue[action_index]);
 }

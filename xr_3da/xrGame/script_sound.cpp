@@ -8,33 +8,33 @@
 
 #include "stdafx.h"
 #include "script_sound.h"
-#include "ai_script_classes.h"
+#include "script_game_object.h"
 
 CScriptSound::~CScriptSound		()
 {
 	m_sound.destroy();
 }
 
-void CScriptSound::Play			(CLuaGameObject *object, float delay, int flags)
+void CScriptSound::Play			(CScriptGameObject *object, float delay, int flags)
 {
 	VERIFY				(m_sound.handle);
 	m_sound.play		(object->object(),flags,delay);
 }
 
-void CScriptSound::PlayUnlimited	(CLuaGameObject *object, float delay, int flags)
+void CScriptSound::PlayUnlimited	(CScriptGameObject *object, float delay, int flags)
 {
 	VERIFY				(m_sound.handle);
 	VERIFY				((flags & sm_Looped) != sm_Looped);
 	m_sound.play_unlimited(object->object(),flags,delay);
 }
 
-void CScriptSound::PlayAtPos		(CLuaGameObject *object, const Fvector &position, float delay, int flags)
+void CScriptSound::PlayAtPos		(CScriptGameObject *object, const Fvector &position, float delay, int flags)
 {
 	VERIFY				(m_sound.handle);
 	m_sound.play_at_pos(object->object(), position,flags,delay);
 }
 
-void CScriptSound::PlayAtPosUnlimited(CLuaGameObject *object, const Fvector &position, float delay, int flags)
+void CScriptSound::PlayAtPosUnlimited(CScriptGameObject *object, const Fvector &position, float delay, int flags)
 {
 	VERIFY				(m_sound.handle);
 	VERIFY				((flags & sm_Looped) != sm_Looped);

@@ -8,22 +8,7 @@
 
 #pragma once
 
-IC	CScriptWorldProperty::CScriptWorldProperty	() :
-	inherited			(_condition_type(-1),_value_type(-1))
-{
-}
-
-IC	CScriptWorldProperty::CScriptWorldProperty	(_condition_type condition, _value_type value) :
-	inherited			(condition,value)
-{
-}
-
-IC	CScriptWorldProperty::_condition_type CScriptWorldProperty::condition	() const
-{
-	return				(m_condition);
-}
-
-IC	CScriptWorldProperty::_condition_type CScriptWorldProperty::value	() const
-{
-	return				(m_value);
-}
+//IC	CScriptWorldProperty::CScriptWorldProperty	(const _condition_type condition, const _value_type value) :
+//	inherited	(condition,value)
+//{
+//}

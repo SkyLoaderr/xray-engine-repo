@@ -124,6 +124,6 @@ private:
 			void			AssignHeadAnimation		();
 
 
-	virtual	bool			bfAssignSound			(CEntityAction *tpEntityAction);
+	virtual	bool			bfAssignSound			(CScriptEntityAction *tpEntityAction);
 
 };

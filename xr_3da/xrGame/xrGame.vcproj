@@ -389,6 +389,9 @@
 							<File
 								RelativePath=".\action_base_inline.h">
 							</File>
+							<File
+								RelativePath=".\action_base_script.cpp">
+							</File>
 							<Filter
 								Name="ActionScriptBase"
 								Filter="">
@@ -397,6 +400,19 @@
 								</File>
 								<File
 									RelativePath=".\action_script_base_inline.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="ScriptActionWrapper"
+								Filter="">
+								<File
+									RelativePath=".\script_action_wrapper.cpp">
+								</File>
+								<File
+									RelativePath=".\script_action_wrapper.h">
+								</File>
+								<File
+									RelativePath=".\script_action_wrapper_inline.h">
 								</File>
 							</Filter>
 						</Filter>
@@ -409,6 +425,22 @@
 							<File
 								RelativePath=".\action_planner_inline.h">
 							</File>
+							<File
+								RelativePath=".\action_planner_script.cpp">
+							</File>
+							<Filter
+								Name="ScriptActionPlannerWrapper"
+								Filter="">
+								<File
+									RelativePath=".\script_action_planner_wrapper.cpp">
+								</File>
+								<File
+									RelativePath=".\script_action_planner_wrapper.h">
+								</File>
+								<File
+									RelativePath=".\script_action_planner_wrapper_inline.h">
+								</File>
+							</Filter>
 						</Filter>
 						<Filter
 							Name="ActionPlannerAction"
@@ -419,6 +451,22 @@
 							<File
 								RelativePath=".\action_planner_action_inline.h">
 							</File>
+							<File
+								RelativePath=".\action_planner_action_script.cpp">
+							</File>
+							<Filter
+								Name="ScriptActionPlannerActionWrapper"
+								Filter="">
+								<File
+									RelativePath=".\script_action_planner_action_wrapper.cpp">
+								</File>
+								<File
+									RelativePath=".\script_action_planner_action_wrapper.h">
+								</File>
+								<File
+									RelativePath=".\script_action_planner_action_wrapper_inline.h">
+								</File>
+							</Filter>
 						</Filter>
 						<Filter
 							Name="PropertyStorage"
@@ -429,6 +477,9 @@
 							<File
 								RelativePath=".\property_storage_inline.h">
 							</File>
+							<File
+								RelativePath=".\property_storage_script.cpp">
+							</File>
 						</Filter>
 						<Filter
 							Name="WorldPropertyEvaluator"
@@ -438,6 +489,9 @@
 							</File>
 							<File
 								RelativePath=".\property_evaluator_inline.h">
+							</File>
+							<File
+								RelativePath=".\property_evaluator_script.cpp">
 							</File>
 							<Filter
 								Name="const"
@@ -459,6 +513,19 @@
 									RelativePath=".\property_evaluator_member_inline.h">
 								</File>
 							</Filter>
+							<Filter
+								Name="ScriptPropertyEvaluatorWrapper"
+								Filter="">
+								<File
+									RelativePath=".\script_property_evaluator_wrapper.cpp">
+								</File>
+								<File
+									RelativePath=".\script_property_evaluator_wrapper.h">
+								</File>
+								<File
+									RelativePath=".\script_property_evaluator_wrapper_inline.h">
+								</File>
+							</Filter>
 						</Filter>
 					</Filter>
 					<Filter
@@ -473,6 +540,22 @@
 							<File
 								RelativePath=".\motivation_inline.h">
 							</File>
+							<File
+								RelativePath=".\motivation_script.cpp">
+							</File>
+							<Filter
+								Name="ScriptMotivationWrapper"
+								Filter="">
+								<File
+									RelativePath=".\script_motivation_wrapper.cpp">
+								</File>
+								<File
+									RelativePath=".\script_motivation_wrapper.h">
+								</File>
+								<File
+									RelativePath=".\script_motivation_wrapper_inline.h">
+								</File>
+							</Filter>
 						</Filter>
 						<Filter
 							Name="MotivationAction"
@@ -483,6 +566,22 @@
 							<File
 								RelativePath=".\motivation_action_inline.h">
 							</File>
+							<File
+								RelativePath=".\motivation_action_script.cpp">
+							</File>
+							<Filter
+								Name="ScriptMotivationActionWrapper"
+								Filter="">
+								<File
+									RelativePath=".\script_motivation_action_wrapper.cpp">
+								</File>
+								<File
+									RelativePath=".\script_motivation_action_wrapper.h">
+								</File>
+								<File
+									RelativePath=".\script_motivation_action_wrapper_inline.h">
+								</File>
+							</Filter>
 						</Filter>
 						<Filter
 							Name="MotivationManager"
@@ -493,6 +592,22 @@
 							<File
 								RelativePath=".\motivation_manager_inline.h">
 							</File>
+							<File
+								RelativePath=".\motivation_manager_script.cpp">
+							</File>
+							<Filter
+								Name="ScriptMotivationManagerWrapper"
+								Filter="">
+								<File
+									RelativePath=".\script_motivation_manager_wrapper.cpp">
+								</File>
+								<File
+									RelativePath=".\script_motivation_manager_wrapper.h">
+								</File>
+								<File
+									RelativePath=".\script_motivation_manager_wrapper_inline.h">
+								</File>
+							</Filter>
 						</Filter>
 					</Filter>
 					<Filter
@@ -504,6 +619,9 @@
 						<File
 							RelativePath=".\motivation_action_manager_inline.h">
 						</File>
+						<File
+							RelativePath=".\motivation_action_manager_script.cpp">
+						</File>
 						<Filter
 							Name="MotivationActionManagerScript"
 							Filter="">
@@ -512,6 +630,19 @@
 							</File>
 							<File
 								RelativePath=".\motivation_action_manager_script_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="ScriptMotivationActionManagerWrapper"
+							Filter="">
+							<File
+								RelativePath=".\script_motivation_action_manager_wrapper.cpp">
+							</File>
+							<File
+								RelativePath=".\script_motivation_action_manager_wrapper.h">
+							</File>
+							<File
+								RelativePath=".\script_motivation_action_manager_wrapper_inline.h">
 							</File>
 						</Filter>
 					</Filter>
@@ -606,6 +737,9 @@
 					</File>
 					<File
 						RelativePath=".\memory_space_impl.h">
+					</File>
+					<File
+						RelativePath=".\memory_space_script.cpp">
 					</File>
 					<Filter
 						Name="EnemyManager"
@@ -910,6 +1044,16 @@
 						<File
 							RelativePath=".\condition_state_inline.h">
 						</File>
+						<Filter
+							Name="ScriptWorldState"
+							Filter="">
+							<File
+								RelativePath=".\script_world_state.h">
+							</File>
+							<File
+								RelativePath=".\script_world_state_script.cpp">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="operator_abstract"
@@ -930,6 +1074,19 @@
 						<File
 							RelativePath=".\operator_condition_inline.h">
 						</File>
+						<Filter
+							Name="ScriptWorldProperty"
+							Filter="">
+							<File
+								RelativePath=".\script_world_property.h">
+							</File>
+							<File
+								RelativePath=".\script_world_property_inline.h">
+							</File>
+							<File
+								RelativePath=".\script_world_property_script.cpp">
+							</File>
+						</Filter>
 					</Filter>
 				</Filter>
 				<Filter
@@ -1025,6 +1182,9 @@
 					</File>
 					<File
 						RelativePath=".\cover_point_inline.h">
+					</File>
+					<File
+						RelativePath=".\cover_point_script.cpp">
 					</File>
 				</Filter>
 			</Filter>
@@ -1888,12 +2048,29 @@
 					<Filter
 						Name="script"
 						Filter="">
-						<File
-							RelativePath=".\Ai\script\ai_script_monster.cpp">
-						</File>
-						<File
-							RelativePath=".\Ai\script\ai_script_monster.h">
-						</File>
+						<Filter
+							Name="script_monster"
+							Filter="">
+							<File
+								RelativePath=".\Ai\script\ai_script_monster.cpp">
+							</File>
+							<File
+								RelativePath=".\Ai\script\ai_script_monster.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="script_binder"
+							Filter="">
+							<File
+								RelativePath=".\script_binder.cpp">
+							</File>
+							<File
+								RelativePath=".\script_binder.h">
+							</File>
+							<File
+								RelativePath=".\script_binder_inline.h">
+							</File>
+						</Filter>
 					</Filter>
 				</Filter>
 				<Filter
@@ -1978,6 +2155,9 @@
 							</File>
 							<File
 								RelativePath=".\motivation_action_manager_stalker_inline.h">
+							</File>
+							<File
+								RelativePath=".\motivation_action_manager_stalker_script.cpp">
 							</File>
 							<File
 								RelativePath=".\stalker_decision_space.h">
@@ -3168,6 +3348,9 @@
 								RelativePath=".\path_manager_params_level_evaluator.h">
 							</File>
 							<File
+								RelativePath=".\path_manager_params_level_evaluator_script.cpp">
+							</File>
+							<File
 								RelativePath=".\path_manager_params_obstacles.h">
 							</File>
 							<File
@@ -3712,186 +3895,202 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="Script"
-					Filter="">
-					<File
-						RelativePath=".\ai_script.cpp">
-					</File>
-					<File
-						RelativePath=".\ai_script.h">
-					</File>
-				</Filter>
-				<Filter
-					Name="ScriptBinder"
-					Filter="">
-					<File
-						RelativePath=".\script_binder.cpp">
-					</File>
-					<File
-						RelativePath=".\script_binder.h">
-					</File>
-					<File
-						RelativePath=".\script_binder_inline.h">
-					</File>
-				</Filter>
-				<Filter
 					Name="ScriptClasses"
 					Filter="">
 					<File
 						RelativePath=".\script_bind_macroses.h">
 					</File>
 					<Filter
-						Name="ScriptActionManagement"
+						Name="ScriptActions"
 						Filter="">
 						<Filter
-							Name="ScriptAction"
-							Filter="">
-							<Filter
-								Name="ScriptActionWrapper"
-								Filter="">
-								<File
-									RelativePath=".\script_action_wrapper.cpp">
-								</File>
-								<File
-									RelativePath=".\script_action_wrapper.h">
-								</File>
-								<File
-									RelativePath=".\script_action_wrapper_inline.h">
-								</File>
-							</Filter>
-						</Filter>
-						<Filter
-							Name="ScriptActionPlanner"
-							Filter="">
-							<Filter
-								Name="ScriptActionPlannerWrapper"
-								Filter="">
-								<File
-									RelativePath=".\script_action_planner_wrapper.cpp">
-								</File>
-								<File
-									RelativePath=".\script_action_planner_wrapper.h">
-								</File>
-								<File
-									RelativePath=".\script_action_planner_wrapper_inline.h">
-								</File>
-							</Filter>
-						</Filter>
-						<Filter
-							Name="ScriptMotivation"
-							Filter="">
-							<Filter
-								Name="ScriptMotivationWrapper"
-								Filter="">
-								<File
-									RelativePath=".\script_motivation_wrapper.cpp">
-								</File>
-								<File
-									RelativePath=".\script_motivation_wrapper.h">
-								</File>
-								<File
-									RelativePath=".\script_motivation_wrapper_inline.h">
-								</File>
-							</Filter>
-						</Filter>
-						<Filter
-							Name="ScriptMotivationAction"
-							Filter="">
-							<Filter
-								Name="ScriptMotivationActionWrapper"
-								Filter="">
-								<File
-									RelativePath=".\script_motivation_action_wrapper.cpp">
-								</File>
-								<File
-									RelativePath=".\script_motivation_action_wrapper.h">
-								</File>
-								<File
-									RelativePath=".\script_motivation_action_wrapper_inline.h">
-								</File>
-							</Filter>
-						</Filter>
-						<Filter
-							Name="ScriptMotivationActionManager"
-							Filter="">
-							<Filter
-								Name="ScriptMotivationActionManagerWrapper"
-								Filter="">
-								<File
-									RelativePath=".\script_motivation_action_manager_wrapper.cpp">
-								</File>
-								<File
-									RelativePath=".\script_motivation_action_manager_wrapper.h">
-								</File>
-								<File
-									RelativePath=".\script_motivation_action_manager_wrapper_inline.h">
-								</File>
-							</Filter>
-						</Filter>
-						<Filter
-							Name="ScriptMotivationManager"
-							Filter="">
-							<Filter
-								Name="ScriptMotivationManager"
-								Filter="">
-								<File
-									RelativePath=".\script_motivation_manager_wrapper.cpp">
-								</File>
-								<File
-									RelativePath=".\script_motivation_manager_wrapper.h">
-								</File>
-								<File
-									RelativePath=".\script_motivation_manager_wrapper_inline.h">
-								</File>
-							</Filter>
-						</Filter>
-						<Filter
-							Name="ScriptPropertyEvaluator"
-							Filter="">
-							<Filter
-								Name="ScriptPropertyEvaluatorWrapper"
-								Filter="">
-								<File
-									RelativePath=".\script_property_evaluator_wrapper.cpp">
-								</File>
-								<File
-									RelativePath=".\script_property_evaluator_wrapper.h">
-								</File>
-								<File
-									RelativePath=".\script_property_evaluator_wrapper_inline.h">
-								</File>
-							</Filter>
-						</Filter>
-						<Filter
-							Name="ScriptWorldProperty"
+							Name="script_abstract_action"
 							Filter="">
 							<File
-								RelativePath=".\script_world_property.h">
+								RelativePath=".\script_abstract_action.cpp">
+							</File>
+							<File
+								RelativePath=".\script_abstract_action.h">
+							</File>
+							<File
+								RelativePath=".\script_abstract_action_inline.h">
 							</File>
 						</Filter>
 						<Filter
-							Name="ScriptWorldState"
+							Name="script_movement_action"
 							Filter="">
 							<File
-								RelativePath=".\script_world_state.h">
+								RelativePath=".\script_movement_action.cpp">
+							</File>
+							<File
+								RelativePath=".\script_movement_action.h">
+							</File>
+							<File
+								RelativePath=".\script_movement_action_inline.h">
+							</File>
+							<File
+								RelativePath=".\script_movement_action_script.cpp">
+							</File>
+							<Filter
+								Name="patrol_path_params"
+								Filter="">
+								<File
+									RelativePath=".\patrol_path_params.cpp">
+								</File>
+								<File
+									RelativePath=".\patrol_path_params.h">
+								</File>
+								<File
+									RelativePath=".\patrol_path_params_inline.h">
+								</File>
+								<File
+									RelativePath=".\patrol_path_params_script.cpp">
+								</File>
+							</Filter>
+						</Filter>
+						<Filter
+							Name="script_watch_action"
+							Filter="">
+							<File
+								RelativePath=".\script_watch_action.cpp">
+							</File>
+							<File
+								RelativePath=".\script_watch_action.h">
+							</File>
+							<File
+								RelativePath=".\script_watch_action_inline.h">
+							</File>
+							<File
+								RelativePath=".\script_watch_action_script.cpp">
 							</File>
 						</Filter>
 						<Filter
-							Name="ScriptActionPlannerAction"
+							Name="acript_animation_action"
 							Filter="">
+							<File
+								RelativePath=".\script_animation_action.cpp">
+							</File>
+							<File
+								RelativePath=".\script_animation_action.h">
+							</File>
+							<File
+								RelativePath=".\script_animation_action_inline.h">
+							</File>
+							<File
+								RelativePath=".\script_animation_action_script.cpp">
+							</File>
+						</Filter>
+						<Filter
+							Name="script_sound_action"
+							Filter="">
+							<File
+								RelativePath=".\script_sound_action.cpp">
+							</File>
+							<File
+								RelativePath=".\script_sound_action.h">
+							</File>
+							<File
+								RelativePath=".\script_sound_action_inline.h">
+							</File>
+							<File
+								RelativePath=".\script_sound_action_script.cpp">
+							</File>
+						</Filter>
+						<Filter
+							Name="script_particle_action"
+							Filter="">
+							<File
+								RelativePath=".\script_particle_action.cpp">
+							</File>
+							<File
+								RelativePath=".\script_particle_action.h">
+							</File>
+							<File
+								RelativePath=".\script_particle_action_inline.h">
+							</File>
+							<File
+								RelativePath=".\script_particle_action_script.cpp">
+							</File>
 							<Filter
-								Name="ScriptActionPlannerActionWrapper"
+								Name="particle_params"
 								Filter="">
 								<File
-									RelativePath=".\script_action_planner_action_wrapper.cpp">
+									RelativePath=".\particle_params.cpp">
 								</File>
 								<File
-									RelativePath=".\script_action_planner_action_wrapper.h">
+									RelativePath=".\particle_params.h">
 								</File>
 								<File
-									RelativePath=".\script_action_planner_action_wrapper_inline.h">
+									RelativePath=".\particle_params_inline.h">
+								</File>
+								<File
+									RelativePath=".\particle_params_script.cpp">
 								</File>
 							</Filter>
+						</Filter>
+						<Filter
+							Name="script_object_action"
+							Filter="">
+							<File
+								RelativePath=".\script_object_action.cpp">
+							</File>
+							<File
+								RelativePath=".\script_object_action.h">
+							</File>
+							<File
+								RelativePath=".\script_object_action_inline.h">
+							</File>
+							<File
+								RelativePath=".\script_object_action_script.cpp">
+							</File>
+						</Filter>
+						<Filter
+							Name="script_action_condition"
+							Filter="">
+							<File
+								RelativePath=".\script_action_condition.cpp">
+							</File>
+							<File
+								RelativePath=".\script_action_condition.h">
+							</File>
+							<File
+								RelativePath=".\script_action_condition_inline.h">
+							</File>
+							<File
+								RelativePath=".\script_action_condition_script.cpp">
+							</File>
+						</Filter>
+						<Filter
+							Name="script_monster_action"
+							Filter="">
+							<File
+								RelativePath=".\script_monster_action.cpp">
+							</File>
+							<File
+								RelativePath=".\script_monster_action.h">
+							</File>
+							<File
+								RelativePath=".\script_monster_action_inline.h">
+							</File>
+							<File
+								RelativePath=".\script_monster_action_script.cpp">
+							</File>
+						</Filter>
+						<Filter
+							Name="script_entity_action"
+							Filter="">
+							<File
+								RelativePath=".\script_entity_action.cpp">
+							</File>
+							<File
+								RelativePath=".\script_entity_action.h">
+							</File>
+							<File
+								RelativePath=".\script_entity_action_inline.h">
+							</File>
+							<File
+								RelativePath=".\script_entity_action_script.cpp">
+							</File>
 						</Filter>
 					</Filter>
 					<Filter
@@ -3903,6 +4102,9 @@
 						<File
 							RelativePath=".\script_binder_object.h">
 						</File>
+						<File
+							RelativePath=".\script_binder_object_script.cpp">
+						</File>
 						<Filter
 							Name="ScriptBinderObjectWrapper"
 							Filter="">
@@ -3913,6 +4115,100 @@
 								RelativePath=".\script_binder_object_wrapper.h">
 							</File>
 						</Filter>
+					</Filter>
+					<Filter
+						Name="ScriptCallback"
+						Filter="">
+						<File
+							RelativePath=".\script_callback.cpp">
+						</File>
+						<File
+							RelativePath=".\script_callback.h">
+						</File>
+						<File
+							RelativePath=".\script_callback_inline.h">
+						</File>
+						<File
+							RelativePath=".\script_callback_macroses.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="ScriptEffector"
+						Filter="">
+						<File
+							RelativePath=".\script_effector.cpp">
+						</File>
+						<File
+							RelativePath=".\script_effector.h">
+						</File>
+						<File
+							RelativePath=".\script_effector_inline.h">
+						</File>
+						<File
+							RelativePath=".\script_effector_script.cpp">
+						</File>
+						<Filter
+							Name="ScriptEffectorWrapper"
+							Filter="">
+							<File
+								RelativePath=".\script_effector_wrapper.cpp">
+							</File>
+							<File
+								RelativePath=".\script_effector_wrapper.h">
+							</File>
+							<File
+								RelativePath=".\script_effector_wrapper_inline.h">
+							</File>
+						</Filter>
+					</Filter>
+					<Filter
+						Name="ScriptFmatrix"
+						Filter="">
+						<File
+							RelativePath=".\script_fmatrix.h">
+						</File>
+						<File
+							RelativePath=".\script_fmatrix_script.cpp">
+						</File>
+					</Filter>
+					<Filter
+						Name="ScriptFvector"
+						Filter="">
+						<File
+							RelativePath=".\script_fvector.h">
+						</File>
+						<File
+							RelativePath=".\script_fvector_script.cpp">
+						</File>
+					</Filter>
+					<Filter
+						Name="ScriptGameObject"
+						Filter="">
+						<File
+							RelativePath=".\script_game_object.cpp">
+						</File>
+						<File
+							RelativePath=".\script_game_object.h">
+						</File>
+						<File
+							RelativePath=".\script_game_object_script.cpp">
+						</File>
+					</Filter>
+					<Filter
+						Name="ScriptHit"
+						Filter="">
+						<File
+							RelativePath=".\script_hit.cpp">
+						</File>
+						<File
+							RelativePath=".\script_hit.h">
+						</File>
+						<File
+							RelativePath=".\script_hit_inline.h">
+						</File>
+						<File
+							RelativePath=".\script_hit_script.cpp">
+						</File>
 					</Filter>
 					<Filter
 						Name="ScriptIniFile"
@@ -3947,22 +4243,6 @@
 						</Filter>
 					</Filter>
 					<Filter
-						Name="ScriptHit"
-						Filter="">
-						<File
-							RelativePath=".\script_hit.cpp">
-						</File>
-						<File
-							RelativePath=".\script_hit.h">
-						</File>
-						<File
-							RelativePath=".\script_hit_inline.h">
-						</File>
-						<File
-							RelativePath=".\script_hit_script.cpp">
-						</File>
-					</Filter>
-					<Filter
 						Name="ScriptMonsterHitInfo"
 						Filter="">
 						<File
@@ -3973,13 +4253,23 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="ScriptSoundInfo"
+						Name="ScriptNetPacket"
 						Filter="">
 						<File
-							RelativePath=".\script_sound_info.h">
+							RelativePath=".\script_net_packet.h">
 						</File>
 						<File
-							RelativePath=".\script_sound_info_script.cpp">
+							RelativePath=".\script_net_packet_script.cpp">
+						</File>
+					</Filter>
+					<Filter
+						Name="ScriptRenderDevice"
+						Filter="">
+						<File
+							RelativePath=".\script_render_device.h">
+						</File>
+						<File
+							RelativePath=".\script_render_device_script.cpp">
 						</File>
 					</Filter>
 					<Filter
@@ -3999,46 +4289,23 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="ScriptEffector"
+						Name="ScriptSoundInfo"
 						Filter="">
 						<File
-							RelativePath=".\script_effector.cpp">
+							RelativePath=".\script_sound_info.h">
 						</File>
 						<File
-							RelativePath=".\script_effector.h">
-						</File>
-						<File
-							RelativePath=".\script_effector_inline.h">
-						</File>
-						<File
-							RelativePath=".\script_effector_script.cpp">
+							RelativePath=".\script_sound_info_script.cpp">
 						</File>
 					</Filter>
 					<Filter
-						Name="ScriptCallback"
+						Name="ScriptSoundType"
 						Filter="">
 						<File
-							RelativePath=".\script_callback.h">
+							RelativePath=".\script_sound_type.h">
 						</File>
 						<File
-							RelativePath=".\script_callback_inline.h">
-						</File>
-					</Filter>
-					<Filter
-						Name="ScriptActions"
-						Filter="">
-						<File
-							RelativePath=".\ai_script_actions.h">
-						</File>
-					</Filter>
-					<Filter
-						Name="ScriptGameObject"
-						Filter="">
-						<File
-							RelativePath=".\ai_script_classes.cpp">
-						</File>
-						<File
-							RelativePath=".\ai_script_classes.h">
+							RelativePath=".\script_sound_type_script.cpp">
 						</File>
 					</Filter>
 				</Filter>
@@ -4129,32 +4396,26 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="ScriptExport"
+					Name="ScriptProcess"
 					Filter="">
 					<File
-						RelativePath=".\ai_script_export_old_actions.cpp">
+						RelativePath=".\script_process.cpp">
 					</File>
 					<File
-						RelativePath=".\ai_script_lua_export.cpp">
-					</File>
-					<File
-						RelativePath=".\ai_script_lua_export_actions.cpp">
-					</File>
-					<File
-						RelativePath=".\ai_script_lua_export_extension.cpp">
-					</File>
-					<File
-						RelativePath=".\ai_script_lua_export_object.cpp">
+						RelativePath=".\script_process.h">
 					</File>
 				</Filter>
 				<Filter
-					Name="ScriptProcessor"
+					Name="ScriptStackTracker"
 					Filter="">
 					<File
-						RelativePath=".\ai_script_processor.cpp">
+						RelativePath=".\script_stack_tracker.cpp">
 					</File>
 					<File
-						RelativePath=".\ai_script_processor.h">
+						RelativePath=".\script_stack_tracker.h">
+					</File>
+					<File
+						RelativePath=".\script_stack_tracker_inline.h">
 					</File>
 				</Filter>
 				<Filter
@@ -4172,19 +4433,16 @@
 					<File
 						RelativePath=".\script_storage_space.h">
 					</File>
-					<Filter
-						Name="ScriptStackTracker"
-						Filter="">
-						<File
-							RelativePath=".\script_stack_tracker.cpp">
-						</File>
-						<File
-							RelativePath=".\script_stack_tracker.h">
-						</File>
-						<File
-							RelativePath=".\script_stack_tracker_inline.h">
-						</File>
-					</Filter>
+				</Filter>
+				<Filter
+					Name="ScriptThread"
+					Filter="">
+					<File
+						RelativePath=".\script_thread.cpp">
+					</File>
+					<File
+						RelativePath=".\script_thread.h">
+					</File>
 				</Filter>
 			</Filter>
 			<Filter
@@ -4270,6 +4528,9 @@
 					</File>
 					<File
 						RelativePath="Level_network_start_client.cpp">
+					</File>
+					<File
+						RelativePath=".\level_script.cpp">
 					</File>
 					<File
 						RelativePath="Level_SLS_Default.cpp">
@@ -5276,6 +5537,9 @@
 								Name="ArtifactMerger"
 								Filter="">
 								<File
+									RelativePath=".\artifact_merger_script.cpp">
+								</File>
+								<File
 									RelativePath=".\ArtifactMerger.cpp">
 								</File>
 								<File
@@ -5890,6 +6154,9 @@
 					Name="_particles"
 					Filter="">
 					<File
+						RelativePath=".\particles_object_script.cpp">
+					</File>
+					<File
 						RelativePath=".\ParticlesObject.cpp">
 					</File>
 					<File
@@ -6027,6 +6294,9 @@
 					<File
 						RelativePath=".\object_factory_register.cpp">
 					</File>
+					<File
+						RelativePath=".\object_factory_script.cpp">
+					</File>
 				</Filter>
 				<Filter
 					Name="Random32"
@@ -6101,6 +6371,9 @@
 						</File>
 						<File
 							RelativePath="game_sv_base.h">
+						</File>
+						<File
+							RelativePath=".\game_sv_base_script.cpp">
 						</File>
 						<Filter
 							Name="artefact_hunt"

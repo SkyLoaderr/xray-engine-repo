@@ -8,7 +8,7 @@
 
 #include "stdafx.h"
 #include "ai_stalker.h"
-#include "../../ai_script_actions.h"
+#include "../../script_entity_action.h"
 #include "../../weapon.h"
 #include "../../WeaponMagazined.h"
 #include "../../torch.h"
@@ -61,7 +61,7 @@ void CAI_Stalker::ResetScriptData(void *P)
 	CMemoryManager::Init		();
 }
 
-bool CAI_Stalker::bfAssignMovement(CEntityAction *tpEntityAction)
+bool CAI_Stalker::bfAssignMovement(CScriptEntityAction *tpEntityAction)
 {
 	if (!inherited::bfAssignMovement(tpEntityAction))
 		return						(false);
@@ -85,7 +85,7 @@ bool CAI_Stalker::bfAssignMovement(CEntityAction *tpEntityAction)
 	return							(true);
 }
 
-bool CAI_Stalker::bfAssignWatch(CEntityAction *tpEntityAction)
+bool CAI_Stalker::bfAssignWatch(CScriptEntityAction *tpEntityAction)
 {
 	if (!inherited::bfAssignWatch(tpEntityAction))
 		return		(false);
@@ -133,7 +133,7 @@ bool CAI_Stalker::bfAssignWatch(CEntityAction *tpEntityAction)
 	return		(!l_tWatchAction.m_bCompleted);
 }
 
-bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
+bool CAI_Stalker::bfAssignObject(CScriptEntityAction *tpEntityAction)
 {
 	CScriptObjectAction	&l_tObjectAction	= tpEntityAction->m_tObjectAction;
 	CInventoryItem	*l_tpInventoryItem	= dynamic_cast<CInventoryItem*>(l_tObjectAction.m_tpObject);
@@ -297,7 +297,7 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 	return	(true);
 }
 
-bool CAI_Stalker::bfAssignAnimation(CEntityAction *tpEntityAction)
+bool CAI_Stalker::bfAssignAnimation(CScriptEntityAction *tpEntityAction)
 {
 	if (!inherited::bfAssignAnimation(tpEntityAction))
 		return			(false);

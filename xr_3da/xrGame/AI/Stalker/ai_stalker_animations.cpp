@@ -12,7 +12,7 @@
 #include "../../../motion.h"
 #include "../../weapon.h"
 #include "../../missile.h"
-#include "../../ai_script_actions.h"
+#include "../../script_entity_action.h"
 #include "../../inventory.h"
 #include "../../fooditem.h"
 

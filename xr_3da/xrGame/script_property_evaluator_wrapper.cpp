@@ -8,24 +8,24 @@
 
 #include "stdafx.h"
 #include "script_property_evaluator_wrapper.h"
-#include "ai_script_classes.h"
+#include "script_game_object.h"
 
-void CPropertyEvaluatorWrapper::reinit			(CLuaGameObject *object, CPropertyStorage *storage)
+void CScriptPropertyEvaluatorWrapper::reinit			(CScriptGameObject *object, CPropertyStorage *storage)
 {
 	call_member<void>("reinit",object,storage);
 }
 
-void CPropertyEvaluatorWrapper::reinit_static	(CScriptPropertyEvaluator *evaluator, CLuaGameObject *object, CPropertyStorage *storage)
+void CScriptPropertyEvaluatorWrapper::reinit_static	(CScriptPropertyEvaluator *evaluator, CScriptGameObject *object, CPropertyStorage *storage)
 {
 	evaluator->CScriptPropertyEvaluator::reinit(object,storage);
 }
 
-bool CPropertyEvaluatorWrapper::evaluate		()
+bool CScriptPropertyEvaluatorWrapper::evaluate		()
 {
 	return		(call_member<bool>("evaluate"));
 }
 
-bool CPropertyEvaluatorWrapper::evaluate_static	(CScriptPropertyEvaluator *evaluator)
+bool CScriptPropertyEvaluatorWrapper::evaluate_static	(CScriptPropertyEvaluator *evaluator)
 {
 	return		(evaluator->CScriptPropertyEvaluator::evaluate());
 }

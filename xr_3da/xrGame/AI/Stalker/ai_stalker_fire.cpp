@@ -9,7 +9,7 @@
 #include "stdafx.h"
 #include "ai_stalker.h"
 #include "../../WeaponMagazined.h"
-#include "../../ai_script_actions.h"
+#include "../../script_entity_action.h"
 #include "../../inventory.h"
 #include "../../ef_storage.h"
 

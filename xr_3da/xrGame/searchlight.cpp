@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "searchlight.h"
 #include "../LightAnimLibrary.h"
-#include "ai_script_actions.h"
+#include "script_entity_action.h"
 #include "xrServer_Objects_ALife.h"
 
 //////////////////////////////////////////////////////////////////////
@@ -170,7 +170,7 @@ BOOL CProjector::UsedAI_Locations()
 	return					(FALSE);
 }
 
-bool CProjector::bfAssignWatch(CEntityAction *tpEntityAction)
+bool CProjector::bfAssignWatch(CScriptEntityAction *tpEntityAction)
 {
 	if (!inherited::bfAssignWatch(tpEntityAction))
 		return		(false);
@@ -190,7 +190,7 @@ bool CProjector::bfAssignWatch(CEntityAction *tpEntityAction)
 	return false == (l_tWatchAction.m_bCompleted = ((delta_yaw < EPS_L) && (delta_pitch < EPS_L)));
 }
 
-bool CProjector::bfAssignObject(CEntityAction *tpEntityAction)
+bool CProjector::bfAssignObject(CScriptEntityAction *tpEntityAction)
 {
 	if (!inherited::bfAssignObject(tpEntityAction))
 		return	(false);

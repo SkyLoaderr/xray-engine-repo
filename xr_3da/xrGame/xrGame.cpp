@@ -20,7 +20,7 @@
 #include "trade.h"
 #include "ai_space.h"
 #include "script_engine.h"
-#include "ai_script_processor.h"
+#include "script_process.h"
 #include "customzone.h"
 #include "ui/UIMainIngameWnd.h"
 #include "ui/xrXMLParser.h"
@@ -795,8 +795,8 @@ public:
 			P->m_Flags.set	(FS_Path::flNeedRescan,TRUE);
 			FS.rescan_pathes();
 			// run script
-			if (ai().script_engine().script_processor("level")) {
-				ai().script_engine().script_processor("level")->add_script(S);
+			if (ai().script_engine().script_process("level")) {
+				ai().script_engine().script_process("level")->add_script(S);
 				ai().script_engine().reload_modules(true);
 			}
 		}
@@ -810,8 +810,8 @@ public:
 		if (!xr_strlen(args))
 			Log("* Specify string to run!");
 		else {
-			if (ai().script_engine().script_processor("level")) {
-				ai().script_engine().script_processor("level")->add_string(args);
+			if (ai().script_engine().script_process("level")) {
+				ai().script_engine().script_process("level")->add_string(args);
 				ai().script_engine().reload_modules(true);
 			}
 		}

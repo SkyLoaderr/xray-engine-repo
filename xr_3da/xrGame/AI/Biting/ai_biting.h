@@ -133,12 +133,12 @@ public:
 
 	// ---------------------------------------------------------------------------------
 	// Process scripts
-	virtual	bool			bfAssignMovement				(CEntityAction	*tpEntityAction);
-	virtual	bool			bfAssignObject					(CEntityAction	*tpEntityAction);
-	virtual	bool			bfAssignWatch					(CEntityAction	*tpEntityAction);
-	virtual bool			bfAssignAnimation				(CEntityAction  *tpEntityAction);
-	virtual	bool			bfAssignMonsterAction			(CEntityAction	*tpEntityAction);
-	virtual bool			bfAssignSound					(CEntityAction *tpEntityAction);
+	virtual	bool			bfAssignMovement				(CScriptEntityAction	*tpEntityAction);
+	virtual	bool			bfAssignObject					(CScriptEntityAction	*tpEntityAction);
+	virtual	bool			bfAssignWatch					(CScriptEntityAction	*tpEntityAction);
+	virtual bool			bfAssignAnimation				(CScriptEntityAction  *tpEntityAction);
+	virtual	bool			bfAssignMonsterAction			(CScriptEntityAction	*tpEntityAction);
+	virtual bool			bfAssignSound					(CScriptEntityAction *tpEntityAction);
 	
 	virtual void			ProcessScripts					();
 

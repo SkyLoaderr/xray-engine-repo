@@ -11,7 +11,7 @@
 #include "../ai_monsters_misc.h"
 #include "../../actor.h"
 #include "../../bolt.h"
-#include "../../ai_script_actions.h"
+#include "../../script_entity_action.h"
 #include "../../ef_storage.h"
 #include "../../inventory.h"
 #include "../../character_info.h"

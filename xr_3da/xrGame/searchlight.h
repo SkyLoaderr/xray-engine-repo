@@ -41,8 +41,8 @@ public:
 
 	virtual BOOL	UsedAI_Locations();
 
-	virtual	bool	bfAssignWatch(CEntityAction	*tpEntityAction);
-	virtual	bool	bfAssignObject(CEntityAction *tpEntityAction);
+	virtual	bool	bfAssignWatch(CScriptEntityAction	*tpEntityAction);
+	virtual	bool	bfAssignObject(CScriptEntityAction *tpEntityAction);
 private:
 			void	TurnOn			();
 			void	TurnOff			();
