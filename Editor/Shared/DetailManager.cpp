@@ -55,6 +55,7 @@ void CDetail::Load		(CStream* S)
 	FILE_NAME		fnT,fnS;
 	S->RstringZ		(fnS);
 	S->RstringZ		(fnT);
+//	strcpy			(fnS,"grass");
 	shader			= Device.Shader.Create(fnS,fnT);
 
 	// Params
@@ -223,7 +224,7 @@ void CDetailManager::Render		(Fvector& EYE)
 								
 								if (g_fSCREEN*radius*radius/dist_sq < ssaLIMIT) continue;
 
-								Item.scale_calculated = alpha;
+								Item.scale_calculated = scale; //alpha;
 								vis.push_back	(siIT);
 							}
 						}
@@ -292,9 +293,7 @@ void CDetailManager::Render		(Fvector& EYE)
 			for (DWORD item=item_start; item<item_end; item++)
 			{
 				SlotItem&	Instance	= *(vis[item]);
-				float	scale			= Instance.scale;
-				float   alpha			= Instance.scale_calculated; 
-				DWORD	a				= iFloor(alpha*255.f);
+				float	scale			= Instance.scale_calculated;
 
 				// Build matrix and xform vertices
 				mScale.scale			(scale,scale,scale);
@@ -307,7 +306,7 @@ void CDetailManager::Render		(Fvector& EYE)
 					mXform.mul_43			(Instance.mRotY,mScale);
 					mXform.translate_over	(Instance.P);
 				}
-				Object.Transfer			(mXform, vDest, Instance.C|D3DCOLOR_RGBA(0,0,0,a));
+				Object.Transfer			(mXform, vDest, Instance.C);
 				vDest					+=	vCount_Object;
 			}
 			VS->Unlock	(vCount_Lock);
