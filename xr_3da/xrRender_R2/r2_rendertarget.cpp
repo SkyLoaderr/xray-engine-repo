@@ -174,8 +174,11 @@ void	CRenderTarget::OnDeviceCreate	()
 		s_combine_dbg_DepthD		= Device.Shader.Create		("effects\\screen_set",		r2_RT_smap_d_surf);
 		g_combine					= Device.Shader.CreateGeom	(FVF::F_TL,		RCache.Vertex.Buffer(), RCache.QuadIB);
 
-		u32 fvf_aa					= D3DFVF_XYZRHW|D3DFVF_TEX7|D3DFVF_TEXCOORDSIZE2(0)|D3DFVF_TEXCOORDSIZE2(1)|D3DFVF_TEXCOORDSIZE2(2)|D3DFVF_TEXCOORDSIZE2(3)|D3DFVF_TEXCOORDSIZE2(4)|D3DFVF_TEXCOORDSIZE4(5)|D3DFVF_TEXCOORDSIZE4(6);
-		g_aa						= Device.Shader.CreateGeom	(fvf_aa,		RCache.Vertex.Buffer(), RCache.QuadIB);
+		u32 fvf_aa_blur				= D3DFVF_XYZRHW|D3DFVF_TEX4|D3DFVF_TEXCOORDSIZE2(0)|D3DFVF_TEXCOORDSIZE2(1)|D3DFVF_TEXCOORDSIZE2(2)|D3DFVF_TEXCOORDSIZE2(3);
+		g_aa_AA						= Device.Shader.CreateGeom	(fvf_aa_blur,	RCache.Vertex.Buffer(), RCache.QuadIB);
+
+		u32 fvf_aa_AA				= D3DFVF_XYZRHW|D3DFVF_TEX7|D3DFVF_TEXCOORDSIZE2(0)|D3DFVF_TEXCOORDSIZE2(1)|D3DFVF_TEXCOORDSIZE2(2)|D3DFVF_TEXCOORDSIZE2(3)|D3DFVF_TEXCOORDSIZE2(4)|D3DFVF_TEXCOORDSIZE4(5)|D3DFVF_TEXCOORDSIZE4(6);
+		g_aa_AA						= Device.Shader.CreateGeom	(fvf_aa_AA,		RCache.Vertex.Buffer(), RCache.QuadIB);
 	}
 
 	// Build textures
@@ -249,7 +252,8 @@ void	CRenderTarget::OnDeviceDestroy	()
 	_RELEASE					(t_material_surf);
 
 	// COMBINE
-	Device.Shader.DeleteGeom	(g_aa					);
+	Device.Shader.DeleteGeom	(g_aa_AA				);
+	Device.Shader.DeleteGeom	(g_aa_blur				);
 	Device.Shader.DeleteGeom	(g_combine				);
 	Device.Shader.Delete		(s_combine_dbg_DepthD	);
 	Device.Shader.Delete		(s_combine_dbg_Normal	);

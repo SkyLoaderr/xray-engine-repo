@@ -83,7 +83,8 @@ private:
 
 	// Combine
 	SGeometry*					g_combine;
-	SGeometry*					g_aa;
+	SGeometry*					g_aa_blur;
+	SGeometry*					g_aa_AA;
 	Shader*						s_combine_dbg_DepthD;
 	Shader*						s_combine_dbg_Normal;
 	Shader*						s_combine_dbg_Accumulator;
