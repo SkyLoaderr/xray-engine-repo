@@ -88,7 +88,7 @@ class CAI_Soldier : public CCustomMonster
 		bool			m_bFiring;
 
 		// patrol array
-		vector<Fvector>	tpaPatrolPoints;
+		vector<DWORD>	tpaPatrolPoints;
 		int				m_iCurrentPoint;
 		
 		// finite state machine

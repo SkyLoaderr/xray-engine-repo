@@ -79,14 +79,17 @@ void CAI_Soldier::Load(CInifile* ini, const char* section)
 		tpaPatrolPoints.resize(path_count);
 
 		for (int i=0; i<path_count; i++) {
-			sscanf(buf2,"%f,%f,%f",&(tpaPatrolPoints[i].x),&(tpaPatrolPoints[i].y),&(tpaPatrolPoints[i].z));
+			Fvector tTemp;
+			sscanf(buf2,"%f,%f,%f",&(tTemp.x),&(tTemp.y),&(tTemp.z));
+			tpaPatrolPoints[i] = Level().AI.q_LoadSearch(tTemp);
 			for (int komas=0; komas<3; buf2++)
 				if (*buf2 == ',')
 					komas++;
 		}
 
 		m_iCurrentPoint = 0;
-		AI_Path.bNeedRebuild = FALSE;
+		AI_Path.DestNode = tpaPatrolPoints[m_iCurrentPoint];
+		AI_Path.bNeedRebuild	= TRUE;
 	}
 
 	// load parameters from ".ini" file
@@ -1180,16 +1183,25 @@ void CAI_Soldier::Patrol()
 		}
 	}
 	else {
-		Fvector tTemp;
-		tTemp.sub(Position(),tpaPatrolPoints[m_iCurrentPoint]);
-		
-		if (tTemp.square_magnitude() < 6.f)
+		if (AI_NodeID == tpaPatrolPoints[m_iCurrentPoint])
 			m_iCurrentPoint = m_iCurrentPoint == tpaPatrolPoints.size() - 1 ? 0 : m_iCurrentPoint + 1;
 		
-		SelectorPatrol.m_tEnemyPosition = tpaPatrolPoints[m_iCurrentPoint];
+		if (AI_Path.DestNode != tpaPatrolPoints[m_iCurrentPoint])
+			AI_Path.bNeedRebuild = TRUE;
+
+		AI_Path.DestNode = tpaPatrolPoints[m_iCurrentPoint];
+
+		if (!bfCheckPath(AI_Path))
+			AI_Path.bNeedRebuild = TRUE;
+		/**
+		Fvector tTemp0,tTemp1;
+		Level().AI.UnpackPosition(tTemp0,Level().AI.Node(tpaPatrolPoints[m_iCurrentPoint])->p0);
+		Level().AI.UnpackPosition(tTemp1,Level().AI.Node(tpaPatrolPoints[m_iCurrentPoint])->p1);
+		SelectorPatrol.m_tEnemyPosition.average(tTemp0,tTemp1);
 		SelectorPatrol.m_tCurrentPosition = Position();
 		m_dwLastRangeSearch = 0;
 		vfSearchForBetterPosition(SelectorPatrol,Squad,Leader);
+		/**/
 	}
 	/////////////////////////
 

@@ -19,8 +19,8 @@
 #define mNode(x)			(this->Node(x))
 #define MAX_VALUE			100000.0
 #define MAX_NODES			4096
-#define fLightWeight		5.f
-#define fCoverWeight		10.f
+#define fLightWeight		5.f //5
+#define fCoverWeight		10.f //10
 #define fDistanceWeight		40.f
 #define fEnemyViewWeight	100.f
 
