@@ -262,7 +262,7 @@ HRESULT CMyD3DApplication::Render		()
 		RenderFAT					();
 		RenderShadowMap				();
 		RenderLight_Direct	    	();
-		RenderCombine				(CM_DBG_ACCUMULATOR);
+		RenderCombine				(CM_DBG_NORMALS);
 		// RenderOverlay				();
 
 		// Output statistics
@@ -360,7 +360,7 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 		// Fill in input list
 		std::vector<NVMeshMender::VertexAttribute> inputAtts;
 		inputAtts.push_back(positionAtt);
-		inputAtts.push_back(normalAtt);
+		// inputAtts.push_back(normalAtt);
 		inputAtts.push_back(indexAtt);
 		inputAtts.push_back(texCoordAtt);
 
