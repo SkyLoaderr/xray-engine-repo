@@ -140,6 +140,13 @@ void __fastcall TfraLeftBar::ebSceneCommandsMouseDown(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::ebImageCommandsMouseDown(TObject *Sender,
+      TMouseButton Button, TShiftState Shift, int X, int Y)
+{
+	FOLDER::ShowPPMenu(pmImages,dynamic_cast<TExtBtn*>(Sender));
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfraLeftBar::tvEngineMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
@@ -488,5 +495,22 @@ void __fastcall TfraLeftBar::fsStorageSavePlacement(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::ImageEditor1Click(TObject *Sender)
+{
+	UI.Command( COMMAND_IMAGE_EDITOR );
+}
+//---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::Refresh1Click(TObject *Sender)
+{
+	UI.Command( COMMAND_REFRESH_TEXTURES );
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::Checknewtextures1Click(TObject *Sender)
+{
+	UI.Command( COMMAND_CHECK_TEXTURES );
+
+}
+//---------------------------------------------------------------------------
 

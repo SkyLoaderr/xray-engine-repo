@@ -12,6 +12,7 @@ USEFORM("Editor\TopBar.cpp", fraTopBar); /* TFrame: File Type */
 USEFORM("Editor\PropertiesList.cpp", frmProperties);
 USEFORM("Editor\NumericVector.cpp", frmNumericVector);
 USEFORM("Editor\TextForm.cpp", frmText);
+USEFORM("Editor\ImageEditor.cpp", frmImageLib);
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"
