@@ -1,0 +1,185 @@
+--[[------------------------------------------------------------------------------------------------------------------
+"Бармен" в баре "С.Т.А.Л.К.Е.Р."
+Чугай Саша
+
+Сделать:
+    - сказать про запутывания
+    - звуки, подобрать готовые реплики
+    - настоящие звуки
+    - анимации
+    - двери
+--------------------------------------------------------------------------------------------------------------------]]
+
+local prop_barman    = xr_evaluators_id.chugai_barman_base
+local prop_bar       = xr_evaluators_id.chugai_barman_base + 1 -- тру = за стойкой, фолс = в комнате
+
+local act_bar        = xr_actions_id.chugai_barman_base
+local act_small_room = xr_actions_id.chugai_barman_base + 1
+
+local change_act_timeout
+
+local subtheme_lets_go   = 1
+local subtheme_idle_bar  = 2
+local subtheme_idle_room = 3
+
+---------------------------------------------------------------------------------------------------------------------
+-- Эвалуатор свойства "нужно стоять за стойкой" = "не нужно быть в комнатке"
+---------------------------------------------------------------------------------------------------------------------
+class "evaluator_bar" ( property_evaluator )
+
+function evaluator_bar:__init( name ) super()
+end
+
+function evaluator_bar:evaluate()
+    return this.near_bar
+end
+
+----------------------------------------------------------------------------------------------------------------------
+-- Действие "за стойкой"
+----------------------------------------------------------------------------------------------------------------------
+class "action_bar" ( action_base )
+
+function action_bar:__init( name )  super ( nil, name )
+end
+
+function action_bar:initialize()
+    action_base.initialize( self )
+
+    self.object:set_sight               ( look.direction, vector():set( 1, 0, 0 ), 0 )
+    self.object:set_movement_type       ( move.stand )
+    self.object:set_mental_state        ( anim.free )
+    self.object:set_item                ( object.idle, nil )
+
+    self.turn_end = game.time() + 12000
+
+    self.object:enable_talk()
+    self.object:set_start_dialog( "barman_bar" )
+
+    -- close door
+end
+
+function action_bar:finalize()
+    action_base.finalize( self )
+
+    self.object:disable_talk()
+end
+
+function action_bar:execute()
+    action_base.execute( self )
+
+    if self.turn_end < game.time() and self.object:animation_count() < 3 then
+        self.object:add_animation( "komandir_4", true )
+    end
+
+    xr_sounds.set_sound( self.object, this.snds_idle_bar )
+
+    this.check_change( self.object )
+end
+
+----------------------------------------------------------------------------------------------------------------------
+-- Действие "в каморке"
+----------------------------------------------------------------------------------------------------------------------
+class "action_small_room" ( action_base )
+
+function action_small_room:__init( name )  super ( nil, name )
+end
+
+function action_small_room:initialize()
+    action_base.initialize( self )
+
+    self.object:set_sight               ( look.direction, vector():set( 1, 0, 0 ), 0 )
+    self.object:set_movement_type       ( move.stand )
+    self.object:set_mental_state        ( anim.free )
+    self.object:set_item                ( object.idle, nil )
+
+    self.turn_end = game.time() + 12000
+
+    self.object:enable_talk()
+    self.object:set_start_dialog( "barman_room" )
+
+    --close door
+end
+
+function action_small_room:finalize()
+    action_base.finalize( self )
+
+    self.object:disable_talk()
+end
+
+function action_small_room:execute()
+    action_base.execute( self )
+
+    if self.turn_end < game.time() and self.object:animation_count() < 3 then
+        self.object:add_animation( "komandir_4", true )
+    end
+
+    if not self.object:is_talking() then
+        xr_sounds.set_sound( self.object, this.snds_idle_room )
+    end
+
+    this.check_change( self.object )
+end
+
+----------------------------------------------------------------------------------------------------------------------
+function check_change( npc )
+    if change_act_timeout and change_act_timeout < game.time() then
+        if this.near_bar then
+            xr_position.setPosition( npc, this.id_room )
+            xr_sounds.play_sound( npc, 0, "barman", subtheme_lets_go, 1, random_choice( 8, 9 ) )
+        else
+            xr_position.setPosition( npc, this.id_bar )
+        end
+
+        this.near_bar = not this.near_bar
+        change_act_timeout = nil
+    end
+end
+----------------------------------------------------------------------------------------------------------------------
+
+function add_to_binder( npc )
+    local path = patrol( "way_barman" )
+    this.id_bar  = path:level_vertex_id( 0 )
+    this.id_room = path:level_vertex_id( 1 )
+
+    this.near_bar = true
+    xr_position.setPosition( npc, this.id_bar )
+    
+    -- sounds
+    this.snds_idle_bar  = xr_sounds.create_sound_constructor( "barman", subtheme_idle_bar )
+    this.snds_idle_room = xr_sounds.create_sound_constructor( "barman", subtheme_idle_room )
+
+    -- GOAP
+
+    local manager = npc:motivation_action_manager()
+
+    manager:add_evaluator( prop_barman, const_evaluator( true ) )
+    manager:add_evaluator( prop_bar,    this.evaluator_bar( "property_barman_bar" ) )
+
+    local action = this.action_bar( "action_bar", a )
+    action:add_precondition( world_property( xr_evaluators_id.position, true ) )
+    action:add_precondition( world_property( prop_bar, true ) )
+    action:add_effect( world_property( prop_barman, false ) )
+    manager:add_action( act_bar, action )
+
+    local action = this.action_small_room( "action_small_room", a )
+    action:add_precondition( world_property( xr_evaluators_id.position, true ) )
+    action:add_precondition( world_property( prop_bar, false ) )
+    action:add_effect( world_property( prop_barman, false ) )
+    manager:add_action( act_small_room, action )
+
+    action = manager:action( stalker_ids.action_puzzle_solver )
+    action:add_precondition( world_property( prop_barman, false ) )
+end
+
+----------------------------------------------------------------------------------------------------------------------
+
+function to_small_room( barman, actor )
+    change_act_timeout = game.time() + 20000
+--    open_door
+end
+
+function from_small_room( barman, actor )
+    change_act_timeout = game.time() + 20000
+--  Открывай!
+--  open_door
+end
