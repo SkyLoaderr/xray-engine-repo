@@ -581,7 +581,7 @@ bool CSkeletonAnimated::LoadMotions(LPCSTR N, IReader *data)
     #else
                         VERIFY3			(*b_it!=BI_NONE,"Can't find bone:",buf);
     #endif
-                        rm_bones[m_idx] = *b_it;
+                        if (bRes)		rm_bones[m_idx] = *b_it;
                     }
                     part_bone_cnt		+= (u16)PART.bones.size();
                 }
@@ -645,6 +645,9 @@ bool CSkeletonAnimated::LoadMotions(LPCSTR N, IReader *data)
 			Debug.fatal				("Old skinned model version unsupported! (%s)",N);
         }
     }
+
+    if (!bRes)	return false;
+    
 	// Load animation
 	IReader*	MS		= data->open_chunk(OGF_MOTIONS2);
     if (!MS) 	return false;
