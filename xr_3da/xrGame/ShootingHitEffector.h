@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../effectorPP.h"
-#include "../../effector.h"
+#include "../effectorPP.h"
+#include "../effector.h"
 
 //////////////////////////////////////////////////////////////////////////
 // CMonsterEffector
