@@ -14,7 +14,6 @@
 #include "../../script_binder.h"
 #include "../../setup_manager.h"
 #include "../../setup_action.h"
-#include "../../cover_manager.h"
 #include "../../object_handler.h"
 #include "ai_stalker_animations.h"
 #include "ai_stalker_space.h"
@@ -87,7 +86,7 @@ public:
 	// heritage
 								CAI_Stalker						();
 	virtual						~CAI_Stalker					();
-			void				Init							();
+			void				init							();
 	virtual void				Load							(LPCSTR	section );				
 	virtual	void				reinit							();
 	virtual void				reload							(LPCSTR	section );				

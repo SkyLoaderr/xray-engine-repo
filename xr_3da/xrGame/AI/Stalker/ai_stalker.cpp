@@ -27,7 +27,7 @@
 
 CAI_Stalker::CAI_Stalker			()
 {
-	Init							();
+	init							();
 	InitTrade						();
 	m_pPhysics_support				= xr_new<CCharacterPhysicsSupport>(CCharacterPhysicsSupport::EType::etStalker,this);
 	m_PhysicMovementControl->AllocateCharacterObject(CPHMovementControl::CharacterType::ai);
@@ -38,7 +38,7 @@ CAI_Stalker::~CAI_Stalker			()
 	xr_delete						(m_pPhysics_support);
 }
 
-void CAI_Stalker::Init()
+void CAI_Stalker::init()
 {
 	shedule.t_min					= 200;
 	shedule.t_max					= 1;
@@ -71,10 +71,10 @@ void CAI_Stalker::reinit			()
 	m_best_found_item_to_kill		= 0;
 	m_best_found_ammo				= 0;
 	m_item_actuality				= false;
-	m_ce_close						= xr_new<CCoverEvaluatorCloseToEnemy>();
-	m_ce_far						= xr_new<CCoverEvaluatorFarFromEnemy>();
-	m_ce_best						= xr_new<CCoverEvaluatorBest>();
-	m_ce_angle						= xr_new<CCoverEvaluatorAngle>();
+	m_ce_close						= xr_new<CCoverEvaluatorCloseToEnemy>(this);
+	m_ce_far						= xr_new<CCoverEvaluatorFarFromEnemy>(this);
+	m_ce_best						= xr_new<CCoverEvaluatorBest>(this);
+	m_ce_angle						= xr_new<CCoverEvaluatorAngle>(this);
 	m_ce_close->set_inertia			(3000);
 	m_ce_far->set_inertia			(3000);
 	m_ce_best->set_inertia			(1000);

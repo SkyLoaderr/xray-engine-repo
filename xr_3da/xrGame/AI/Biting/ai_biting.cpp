@@ -53,9 +53,9 @@ CAI_Biting::CAI_Biting()
 	// Attack-stops init
 	AS_Init							();
 
-	m_corpse_cover_evaluator		= xr_new<CMonsterCorpseCoverEvaluator>();
-	m_enemy_cover_evaluator			= xr_new<CCoverEvaluatorFarFromEnemy>();
-	m_cover_evaluator_close_point	= xr_new<CCoverEvaluatorCloseToEnemy>();
+	m_corpse_cover_evaluator		= xr_new<CMonsterCorpseCoverEvaluator>(this);
+	m_enemy_cover_evaluator			= xr_new<CCoverEvaluatorFarFromEnemy>(this);
+	m_cover_evaluator_close_point	= xr_new<CCoverEvaluatorCloseToEnemy>(this);
 
 }
 

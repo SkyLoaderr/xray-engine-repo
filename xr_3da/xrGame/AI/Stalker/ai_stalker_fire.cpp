@@ -152,7 +152,7 @@ void CAI_Stalker::update_best_item_info	()
 		xr_vector<const CGameObject*>::const_iterator	E = items().end();
 		for ( ; I != E; ++I) {
 			const CInventoryItem	*inventory_item = dynamic_cast<const CInventoryItem*>(*I);
-			if (!inventory_item)
+			if (!inventory_item || !CItemManager::useful(inventory_item))
 				continue;
 			CInventoryItem			*item			= inventory_item->can_kill(&inventory());
 			if (item) {
@@ -192,7 +192,7 @@ void CAI_Stalker::update_best_item_info	()
 	xr_vector<const CGameObject*>::const_iterator	E = items().end();
 	for ( ; I != E; ++I) {
 		const CInventoryItem	*inventory_item = dynamic_cast<const CInventoryItem*>(*I);
-		if (!inventory_item)
+		if (!inventory_item || !CItemManager::useful(inventory_item))
 			continue;
 		const CInventoryItem	*item = inventory_item->can_kill(items());
 		if (item) {

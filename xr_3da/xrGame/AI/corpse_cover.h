@@ -11,6 +11,11 @@ protected:
 	float				m_max_distance;
 
 public:
+
+	IC	CMonsterCorpseCoverEvaluator		(CRestrictedObject *object) : inherited(object)
+	{
+	}
+
 	IC		void		setup				(float min_enemy_distance, float max_enemy_distance){
 		inherited::setup		();
 		m_min_distance			= min_enemy_distance;

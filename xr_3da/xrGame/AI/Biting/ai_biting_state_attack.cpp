@@ -468,7 +468,7 @@ bool CBitingAttack::CheckSteal()
 		// Вычислить отклонение по пути
 		float path_angle = 0.f;
 		if (pMonster->IsMovingOnPath() && (pMonster->CDetailPathManager::curr_travel_point_index() < pMonster->CDetailPathManager::path().size()-3)) {
-			const xr_vector<CDetailPathManager::STravelPathPoint> &path = pMonster->CDetailPathManager::path();
+			const xr_vector<DetailPathManager::STravelPathPoint> &path = pMonster->CDetailPathManager::path();
 
 			float prev_yaw, prev_h;
 			pMonster->CDetailPathManager::direction().getHP(prev_yaw,prev_h);
