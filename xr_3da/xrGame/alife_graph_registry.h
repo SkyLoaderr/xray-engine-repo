@@ -16,8 +16,8 @@ class CSE_ALifeCreatureActor;
 
 class CALifeGraphRegistry {
 public:
-	typedef xr_map<ALife::_OBJECT_ID,CSE_ALifeDynamicObject*>	OBJECT_REGISTRY;
-	typedef xr_map<ALife::_EVENT_ID,CALifeEvent*>				EVENT_REGISTRY;
+	typedef CSafeMapIterator<ALife::_OBJECT_ID,CSE_ALifeDynamicObject>	OBJECT_REGISTRY;
+	typedef CSafeMapIterator<ALife::_EVENT_ID,CALifeEvent>				EVENT_REGISTRY;
 
 public:
 	class CGraphPointInfo {
@@ -57,6 +57,8 @@ protected:
 
 protected:
 			void						setup_current_level		();
+	template <typename F, typename C>
+	IC		void						iterate					(C &c, const F& f);
 
 public:
 										CALifeGraphRegistry		(ref_str *server_command_line);
@@ -75,6 +77,10 @@ public:
 	IC		void						set_process_time		(const u64 &process_time);
 	IC		CSE_ALifeCreatureActor		*actor					() const;
 	IC		const GRAPH_REGISTRY		&objects				() const;
+	template <typename F>
+	IC		void						iterate_objects			(ALife::_GRAPH_ID game_vertex_id, const F& f);
+	template <typename F>
+	IC		void						iterate_events			(ALife::_GRAPH_ID game_vertex_id, const F& f);
 };
 
 #include "alife_graph_registry_inline.h"

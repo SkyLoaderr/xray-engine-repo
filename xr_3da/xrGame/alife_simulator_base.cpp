@@ -266,9 +266,12 @@ void CALifeSimulatorBase::unregister_object	(CSE_ALifeDynamicObject *object, boo
 void CALifeSimulatorBase::release	(CSE_Abstract *abstract, bool alife_query)
 {
 #ifdef DEBUG
-	if (psAI_Flags.test(aiALife)) {
-		Msg							("[LSS] Releasing object [%s][%s][%d]",abstract->s_name_replace,abstract->s_name,abstract->ID);
+//	if (psAI_Flags.test(aiALife)) {
+	if (!xr_strcmp("rat_group",abstract->s_name_replace)) {
+		abstract = abstract;
 	}
+		Msg							("[LSS] Releasing object [%s][%s][%d][%x]",abstract->s_name_replace,abstract->s_name,abstract->ID,dynamic_cast<void*>(abstract));
+//	}
 #endif
 	CSE_ALifeDynamicObject			*object = objects().object(abstract->ID);
 	VERIFY							(object);

@@ -16,11 +16,9 @@ class CALifeInteractionManager :
 	public CALifeCombatManager,
 	public CALifeCommunicationManager
 {
+	friend class CCheckForInteractionPredicate;
 protected:
 	u32								m_inventory_slot_count;
-
-	// temporary buffer for purchased by the particular trader artefacts
-	ALife::D_OBJECT_P_MAP			m_temp_objects;
 
 public:
 	BOOL_VECTOR						m_temp_marks;

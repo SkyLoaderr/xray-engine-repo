@@ -68,8 +68,8 @@ void CALifeGraphRegistry::setup_current_level	()
 	level().set_process_time	(m_process_time);
 	for (int i=0, n=ai().game_graph().header().vertex_count(); i<n; ++i)
 		if (ai().game_graph().vertex(i)->level_id() == level().level_id()) {
-			D_OBJECT_PAIR_IT	I = m_objects[i].objects().begin();
-			D_OBJECT_PAIR_IT	E = m_objects[i].objects().end();
+			D_OBJECT_P_MAP::const_iterator	I = m_objects[i].objects().objects().begin();
+			D_OBJECT_P_MAP::const_iterator	E = m_objects[i].objects().objects().end();
 			for ( ; I != E; ++I)
 				level().add		((*I).second);
 		}

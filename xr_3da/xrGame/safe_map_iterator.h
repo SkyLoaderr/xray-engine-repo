@@ -44,6 +44,9 @@ public:
 	IC		u32				update				(const _update_predicate &predicate);
 	IC		void			set_process_time	(const u64 &process_time);
 	IC		const _REGISTRY	&objects			() const;
+	IC		void			clear				();
+	IC		bool			empty				() const;
+	IC		void			begin				();
 };
 
 #include "safe_map_iterator_inline.h"

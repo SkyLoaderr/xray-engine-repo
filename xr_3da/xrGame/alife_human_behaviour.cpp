@@ -19,9 +19,6 @@ using namespace ALife;
 
 void CSE_ALifeHumanAbstract::update			()
 {
-	if (!need_update(this)) {
-		need_update		(this);
-	}
 	VERIFY				(need_update(this));
 	if (!bfActive())
 		return;

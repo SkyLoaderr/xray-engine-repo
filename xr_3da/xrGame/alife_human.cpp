@@ -438,8 +438,8 @@ void CSE_ALifeHumanAbstract::attach_available_ammo(CSE_ALifeItemWeapon *tpALifeI
 void CSE_ALifeHumanAbstract::vfProcessItems()
 {
 	alife().m_temp_item_vector.clear();
-	D_OBJECT_P_MAP::const_iterator	I = ai().alife().graph().objects()[m_tGraphID].objects().begin();
-	D_OBJECT_P_MAP::const_iterator	E = ai().alife().graph().objects()[m_tGraphID].objects().end();
+	D_OBJECT_P_MAP::const_iterator	I = ai().alife().graph().objects()[m_tGraphID].objects().objects().begin();
+	D_OBJECT_P_MAP::const_iterator	E = ai().alife().graph().objects()[m_tGraphID].objects().objects().end();
 	for ( ; I != E; ++I) {
 		CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>((*I).second);
 		if (l_tpALifeInventoryItem && l_tpALifeInventoryItem->bfUseful() && !(*I).second->m_bOnline)
