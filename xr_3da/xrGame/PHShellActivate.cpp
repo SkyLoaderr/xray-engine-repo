@@ -175,7 +175,8 @@ void CPHShell::Deactivate(){
 	for(j=joints.begin();joints.end() != j;++j)
 		(*j)->Deactivate();
 
-	if(!bActivating)CPHObject::Deactivate();
+	//if(!bActivating)
+		CPHObject::Deactivate();
 
 	if(m_space) {
 		dSpaceDestroy(m_space);
