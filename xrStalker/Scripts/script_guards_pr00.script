@@ -207,8 +207,7 @@ function main()
 			wait(2000)			
 			prof_ti_ubil_sivogo:play_at_pos		(guard02,guard02:position(),0);
 			guard02:script						(false,  script_guards_pr00.script_name())
-			wait(2000)			
-			rainbow_hrom_u_nas_problema:play_at_pos		(guard02,guard02:position(),0);
+			wait(3000)			
 			hrom_prishli_rebyat = 1
 		break
 		end
@@ -220,7 +219,7 @@ function main()
 		wait(2000)			
 			rainbow_suka_ti_cherta_ubil:play_at_pos		(guard01,guard01:position(),0);
 			guard01:script						(false,  script_guards_pr00.script_name())
-			wait(2000)			
+			wait(3000)			
 			rainbow_hrom_u_nas_problema:play_at_pos		(guard02,guard02:position(),0);
 			hrom_prishli_rebyat = 1
 		break
@@ -230,12 +229,14 @@ function main()
 
 	while true do
 		if hrom_prishli_rebyat == 1 then
+			printf("alarm!")
+			flush()
 		wait(2000)			
 			final_guard04:script	(false,script_guards_pr00.script_name())
 			final_guard05:script	(false,script_guards_pr00.script_name())
-			siren:play_at_pos		(final_guard04,final_guard04:position(),0);
+			siren:play_at_pos		(actor,actor:position(),0);
 			wait(1000)			
-			nemedlenno:play_at_pos		(final_guard05,final_guard05:position(),0);
+			nemedlenno:play_at_pos		(actor,actor:position(),0);
 			wait(2000)			
 		break
 		end
@@ -246,7 +247,6 @@ function main()
 		if actor.health <= 0 then
 			guard01:script	(true,script_guards_pr00.script_name())
 			guard02:script	(true,script_guards_pr00.script_name())
-
 			action(
 				guard01,
 			  	move	(move.standing, move.stand,move.line,patrol("way0001")),
