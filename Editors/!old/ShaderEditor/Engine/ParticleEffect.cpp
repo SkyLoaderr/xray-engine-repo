@@ -146,7 +146,7 @@ BOOL CParticleEffect::Compile(CPEDef* def)
 		if (m_Def->m_Flags.is(CPEDef::dfTimeLimit))
 			m_fElapsedLimit 	= m_Def->m_fTimeLimit;
 	}
-	if (def)	hShader			= def->m_CachedShader;
+	if (def)	shader			= def->m_CachedShader;
 	return TRUE;
 }
 

@@ -123,7 +123,7 @@ void Fvisual::Load		(const char* N, IReader *data, u32 dwFlags)
 
 void Fvisual::Render	(float LOD)
 {
-	RCache.set_Geometry		(hGeom);
+	RCache.set_Geometry		(geom);
 	RCache.Render			(D3DPT_TRIANGLELIST,vBase,0,vCount,iBase,dwPrimitives);
 }
 

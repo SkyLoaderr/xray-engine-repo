@@ -189,7 +189,7 @@ void CSkeletonX_PM::Render	(float LOD)
 	}
 	VERIFY					(lod_id>=0 && lod_id<int(pSWI->count));
 	FSlideWindow& SW		= pSWI->sw[lod_id];
-	_Render					(hGeom,SW.num_verts,SW.offset,SW.num_tris);
+	_Render					(geom,SW.num_verts,SW.offset,SW.num_tris);
 }
 void CSkeletonX_ST::Render	(float LOD) 
 {
