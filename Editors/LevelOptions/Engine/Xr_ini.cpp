@@ -428,7 +428,6 @@ void	CInifile::w_string	( LPCSTR S, LPCSTR L, LPCSTR			V, LPCSTR comment)
 	char	value	[256];	_parse	(value,V);
 
 	// duplicate & insert
-#pragma todo("std::lower_bound is INEFFICIENT here")
 	Item	I;
 	Sect&	data	= r_section	(sect);
 	I.first			= (line[0]?line:0);
