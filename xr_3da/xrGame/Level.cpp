@@ -101,6 +101,8 @@ CLevel::CLevel():IPureClient(Device.GetTimerGlobal())
 	pActors4CrPr.clear();
 }
 
+extern CAI_Space *g_ai_space;
+
 CLevel::~CLevel()
 {
 	Msg					("- Destroying level");
@@ -152,6 +154,8 @@ CLevel::~CLevel()
 	//-----------------------------------------------------------
 	pObjects4CrPr.clear();
 	pActors4CrPr.clear();
+
+	ai().unload					();
 }
 
 // Game interface ////////////////////////////////////////////////////
