@@ -126,10 +126,16 @@ u32 CLAItem::Interpolate(int frame)
     return c.get();
 }
 
-u32 CLAItem::Calculate(float T, int& frame)
+u32 CLAItem::CalculateBGR(float T, int& frame)
 {
     frame	= iFloor(fmodf(Device.fTimeGlobal,float(iFrameCount)/fFPS)*fFPS);
     return Interpolate(frame);
+}
+
+u32 CLAItem::CalculateRGB(float T, int& frame)
+{
+	u32 c 	= CalculateBGR(T,frame);
+    return color_rgba(color_get_B(c),color_get_G(c),color_get_R(c),color_get_A(c));
 }
 
 int CLAItem::PrevKeyFrame(int frame)

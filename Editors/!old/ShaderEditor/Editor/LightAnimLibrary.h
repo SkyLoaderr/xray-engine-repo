@@ -21,7 +21,8 @@ public:
     void			Load				(IReader& F);
     void			Save				(IWriter& F);
     u32				Interpolate			(int frame);
-    u32				Calculate			(float T, int& frame);
+    u32				CalculateRGB		(float T, int& frame);
+    u32				CalculateBGR		(float T, int& frame);
     void		    Resize				(int new_len);
     void		    InsertKey			(int frame, u32 color);
     void		    DeleteKey			(int frame);
