@@ -28,33 +28,33 @@ CSoundManager::CSoundManager(BOOL bCDA )
 {
 	Log("Starting SOUND device...");
 	pSounds			= this;
-
+	
 	bPresent		= false;
-
+	
 	pDevice			= NULL;
     pBuffer			= NULL;
-
-	Initialize					( );
-
+	
+	Initialize		( );
+	
 	// Clear all
 	pCDA			= NULL;
 	pSoundRender	= NULL;
 	p2DSounds		= NULL;
 	pMusicStreams	= NULL;
-
+	
 	if (bPresent) {
 		// CDA
 		if (bCDA){
 			pCDA		= new CCDA			( );
 			pCDA->Open	();
 		}
-
+		
 		// 3D Sounds
 		pSoundRender	= new C3DSoundRender( );
-
+		
 		// 2D Sounds
 		p2DSounds		= new C2DSoundRender( );
-
+		
 		// Streams Sounds
 		pMusicStreams	= new CMusicStream	( );
 	}
@@ -67,14 +67,20 @@ CSoundManager::~CSoundManager( )
 	_DELETE			( p2DSounds		);
 	_DELETE			( pSoundRender	);
 	_DELETE			( pCDA			);
-
+	
 	if (bPresent){
-//		pBuffer->SetVolume( LONG((1-fSaveWaveVol)*float(DSBVOLUME_MIN)) );
+		//		pBuffer->SetVolume( LONG((1-fSaveWaveVol)*float(DSBVOLUME_MIN)) );
 	}
-
+	
 	_RELEASE		( pBuffer		);
 	_RELEASE		( pDevice		);
 }
+
+void CSoundManager::SetGeometry	( RAPID::Model* M )
+{
+	pSoundRender->SetGeometry	(M);
+}
+
 
 void CSoundManager::Restart()
 {
