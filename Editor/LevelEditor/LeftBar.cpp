@@ -36,6 +36,11 @@ __fastcall TfraLeftBar::TfraLeftBar(TComponent* Owner)
     ebTargetDO->Tag			= etDO;
 
     DEFINE_INI(fsStorage);
+    for (int i=5; i>=0; i--)
+    {
+		AnsiString recent_fn= fsStorage->ReadString	(AnsiString("RecentFiles")+AnsiString(i),"");
+        if (!recent_fn.IsEmpty()) AppendRecentFile(recent_fn.c_str());
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -516,6 +521,53 @@ void __fastcall TfraLeftBar::Scale1Click(TObject *Sender)
 void __fastcall TfraLeftBar::miPropertiesClick(TObject *Sender)
 {
     UI.Command(COMMAND_SHOWPROPERTIES);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::miRecentFilesClick(TObject *Sender)
+{
+	TMenuItem* MI = dynamic_cast<TMenuItem*>(Sender); R_ASSERT(MI&&(MI->Tag==0x1001));
+    AnsiString fn = MI->Caption;
+    if (FS.Exist(fn.c_str()))	UI.Command(COMMAND_LOAD,(DWORD)fn.c_str());
+    else						ELog.DlgMsg(mtError, "Error reading file '%s'",fn.c_str());
+}
+//---------------------------------------------------------------------------
+
+void TfraLeftBar::AppendRecentFile(LPCSTR name)
+{
+	R_ASSERT(miRecentFiles->Count<=5);
+
+	for (int i = 0; i < miRecentFiles->Count; i++)
+    	if (miRecentFiles->Items[i]->Caption==name){
+        	miRecentFiles->Items[i]->MenuIndex = 0;
+            return;
+		}
+
+	if (miRecentFiles->Count==5) miRecentFiles->Remove(miRecentFiles->Items[4]);
+
+    TMenuItem *MI = new TMenuItem(0);
+    MI->Caption = name;
+    MI->OnClick = miRecentFilesClick;
+    MI->Tag		= 0x1001;
+    miRecentFiles->Insert(0,MI);
+
+    miRecentFiles->Enabled = true;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::fsStorageSavePlacement(TObject *Sender)
+{
+	for (int i = 0; i < miRecentFiles->Count; i++)
+	{
+		TMenuItem* MI = miRecentFiles->Items[i];
+		fsStorage->WriteString(AnsiString("RecentFiles")+AnsiString(i),MI->Caption);
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::Quit1Click(TObject *Sender)
+{
+	UI.Command(COMMAND_QUIT);
 }
 //---------------------------------------------------------------------------
 

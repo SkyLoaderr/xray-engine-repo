@@ -836,7 +836,7 @@ void EScene::GroupSave(){
     	return;
     }
 	AnsiString fn;
-	if (FS.GetSaveName(&FS.m_Groups,fn))
+	if (FS.GetSaveName(FS.m_Groups,fn))
     	SaveSelection(OBJCLASS_DUMMY,fn.c_str());
 }
 //--------------------------------------------------------------------------------------------------

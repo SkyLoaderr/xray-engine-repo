@@ -71,27 +71,27 @@ void CFileSystem::OnCreate(){
 	strcpy(m_Local,"x:\\");
     strcpy(m_Server,"\\\\X-Ray\\stalker$\\");
 
-	m_LocalRoot.Init  	(m_Local, 	"",               		"",     	"" );
-	m_ServerRoot.Init  	(m_Server, 	"",               		"",     	"" );
-    m_GameLevels.Init	(m_Server, 	"game\\data\\levels\\",	"",     	"" );
-    m_GameSounds.Init	(m_Server, 	"game\\data\\sounds\\",	"wav",		"Wave (*.wav)|*.wav" );
-	m_GameRoot.Init 	(m_Server, 	"game\\",         		"",     	"" );
-	m_GameCForms.Init	(m_Server, 	"game\\data\\cforms\\",	"vcf",		"Collision form (*.vcf)|*.vcf" );
-	m_GameMeshes.Init	(m_Server, 	"game\\data\\meshes\\",	"ogf",		"Render model (*.ogf)|*.ogf" );
-    m_GameDO.Init		(m_Server,  "game\\data\\meshes\\",	"do",		"Detail object (*.do)|*.do" );
-    m_GameTextures.Init	(m_Server,	"game\\data\\textures\\","dds",		"Textures (*.dds)|*.dds" );
-	m_GameKeys.Init		(m_Server,  "game\\data\\meshes\\",	"key",		"XRay model keys (*.key)" );
+	m_LocalRoot.Init  	(m_Local, 	"",               		"",     			"" );
+	m_ServerRoot.Init  	(m_Server, 	"",               		"",     			"" );
+    m_GameLevels.Init	(m_Server, 	"game\\data\\levels\\",	"",     			"" );
+    m_GameSounds.Init	(m_Server, 	"game\\data\\sounds\\",	"*.wav",			"Wave (*.wav)" );
+	m_GameRoot.Init 	(m_Server, 	"game\\",         		"",     			"" );
+	m_GameCForms.Init	(m_Server, 	"game\\data\\cforms\\",	"*.vcf",			"Collision form (*.vcf)" );
+	m_GameMeshes.Init	(m_Server, 	"game\\data\\meshes\\",	"*.ogf",			"Render model (*.ogf)" );
+    m_GameDO.Init		(m_Server,  "game\\data\\meshes\\",	"*.do",				"Detail object (*.do)" );
+    m_GameTextures.Init	(m_Server,	"game\\data\\textures\\","*.dds",			"Textures (*.dds)" );
+	m_GameKeys.Init		(m_Server,  "game\\data\\meshes\\",	"*.key",			"XRay model keys (*.key)" );
 
-	m_Groups.Init   	(m_Server, 	"objects\\",       		"mesh", 	"Groups (*.group)|*.group" );
-    m_Objects.Init  	(m_Server, 	"objects\\",       		"object",	"Editor objects (*.object,*.lwo)|*.object;*.lwo" );
-	m_Import.Init  		(m_Local, 	"import\\",       		"object",	"Import objects (*.object,*.lwo)|*.object;*.lwo" );
-	m_OMotion.Init		(m_Local, 	"import\\", 		   	"anm",		"Object animation (*.anim)|*.anim" );
-	m_OMotions.Init		(m_Local, 	"import\\", 		    "anms",	    "Object animation list (*.anims)|*.anims" );
-	m_SMotion.Init		(m_Local, 	"import\\", 		    "skl",		"Skeleton motion file (*.skl)|*.skl" );
-	m_SMotions.Init		(m_Local, 	"import\\", 		    "skls",		"Skeleton motions file (*.skls)|*.skls" );
-	m_Maps.Init     	(m_Server, 	"maps\\",         		"lv2",  	"Levels (*.lv2)|*.lv2" );
-	m_Textures.Init 	(m_Server, 	"textures\\",     		"bmp",  	"Textures (*.bmp;*.tga)|*.bmp;*.tga" );
-	m_Temp.Init     	(m_Local, 	"temp\\",         		"",     	"" );
+	m_Groups.Init   	(m_Server, 	"objects\\",       		"*.group", 			"Groups (*.group)" );
+    m_Objects.Init  	(m_Server, 	"objects\\",       		"*.object;*.lwo",	"Editor objects (*.object,*.lwo)" );
+	m_Import.Init  		(m_Local, 	"import\\",       		"*.object;*.lwo", 	"Import objects (*.object,*.lwo)" );
+	m_OMotion.Init		(m_Local, 	"import\\", 		   	"*.anim",			"Object animation (*.anim)" );
+	m_OMotions.Init		(m_Local, 	"import\\", 		    "*.anims",	    	"Object animation list (*.anims)" );
+	m_SMotion.Init		(m_Local, 	"import\\", 		    "*.skl",			"Skeleton motion file (*.skl)" );
+	m_SMotions.Init		(m_Local, 	"import\\", 		    "*.skls",			"Skeleton motions file (*.skls)" );
+	m_Maps.Init     	(m_Server, 	"maps\\",         		"*.level",  		"Levels (*.level)" );
+	m_Textures.Init 	(m_Server, 	"textures\\",     		"*.bmp;*.tga",		"Textures (*.bmp;*.tga)" );
+	m_Temp.Init     	(m_Local, 	"temp\\",         		"",     			"" );
 
     strcpy				(m_LastAccessFN,"access.ini"); 	FS.m_ServerRoot.Update(m_LastAccessFN);
     string256 fn; strcpy(fn,"access.log"); FS.m_ServerRoot.Update(fn);
@@ -109,153 +109,91 @@ bool FileExists(LPCSTR fn){
 	int handle	= open(fn, O_RDONLY);
     return handle>-1;
 }
-bool CFileSystem::GetOpenName( FSPath *initial, char *buffer, bool bMulti ){
-	VERIFY( initial && buffer );
-
+#endif
+bool CFileSystem::GetOpenName( FSPath& initial, char *buffer, bool bMulti, LPCSTR offset ){
+	VERIFY(buffer);
 	char flt[1024];ZeroMemory(flt,sizeof(char)*1024);
-	char ext[256];
-	sprintf(ext,"*.%s",initial->m_DefExt);
-	strcpy(flt,initial->m_FilterString);
-	strcpy(flt+strlen(flt)+1,ext);
+	strcpy(flt,initial.m_FilterString);
+	strcpy(flt+strlen(flt)+1,initial.m_DefExt);
 
 	OPENFILENAME ofn;
 	memset( &ofn, 0, sizeof(ofn) );
 	ofn.hwndOwner = 0;
-	ofn.lpstrDefExt = initial->m_DefExt;
+	ofn.lpstrDefExt = initial.m_DefExt;
 	ofn.lpstrFile = buffer;
 	ofn.lpstrFilter = flt;
 	ofn.lStructSize = sizeof(ofn);
 	ofn.nMaxFile = MAX_PATH;
 	ofn.nFilterIndex = 1;
-	ofn.lpstrInitialDir = initial->m_Path;
-	ofn.Flags = 
+    string512 path; strcpy(path,(offset&&offset[0])?offset:initial.m_Path);
+	ofn.lpstrInitialDir = path;
+	ofn.Flags =
+    	OFN_PATHMUSTEXIST|
+    	OFN_FILEMUSTEXIST|
 		OFN_HIDEREADONLY|
 		OFN_FILEMUSTEXIST|
-		OFN_NOCHANGEDIR|(bMulti?OFN_ALLOWMULTISELECT:0);
-	return !!GetOpenFileName( &ofn );
+		OFN_NOCHANGEDIR|(bMulti?OFN_ALLOWMULTISELECT|OFN_EXPLORER:0);
+	bool bRes = !!GetOpenFileName( &ofn );
+    if (bRes&&bMulti){
+    	string64  	buf;
+    	string64  	dir;
+    	string4096 	fns;
+        strcpy(dir, buffer);
+
+        int cnt		= _GetItemCount(buffer,0x0);
+		strcpy		(fns,dir);
+		strcat		(fns,"\\");
+		strcat		(fns,_GetItem(buffer,1,buf,0x0));
+		for (int i=2; i<cnt; i++){
+            strcat	(fns,",");
+            strcat	(fns,dir);
+			strcat	(fns,"\\");
+            strcat	(fns,_GetItem(buffer,i,buf,0x0));
+        }
+        strcpy		(buffer,fns);
+    }
+    return bRes;
 }
 
-bool CFileSystem::GetSaveName( FSPath *initial, char *buffer ){
-
-	VERIFY( initial && buffer );
-
-	char flt[1024]; ZeroMemory(flt,sizeof(char)*1024);
-	char ext[256];
-	sprintf(ext,"*.%s",initial->m_DefExt);
-	strcpy(flt,initial->m_FilterString);
-	strcpy(flt+strlen(flt)+1,ext);
+bool CFileSystem::GetSaveName( FSPath& initial, char *buffer, LPCSTR offset ){
+	VERIFY(buffer );
+	char flt[1024];ZeroMemory(flt,sizeof(char)*1024);
+	strcpy(flt,initial.m_FilterString);
+	strcpy(flt+strlen(flt)+1,initial.m_DefExt);
 
 	OPENFILENAME ofn;
 	memset( &ofn, 0, sizeof(ofn) );
 	ofn.hwndOwner = 0;
-	ofn.lpstrDefExt = initial->m_DefExt;
+	ofn.lpstrDefExt = initial.m_DefExt;
 	ofn.lpstrFile = buffer;
 	ofn.lpstrFilter = flt;
 	ofn.lStructSize = sizeof(ofn);
 	ofn.nMaxFile = MAX_PATH;
 	ofn.nFilterIndex = 1;
-	ofn.lpstrInitialDir = initial->m_Path;
-	ofn.Flags = 
+    string512 path; strcpy(path,(offset&&offset[0])?offset:initial.m_Path);
+	ofn.lpstrInitialDir = path;
+	ofn.Flags =
 		OFN_HIDEREADONLY|
 		OFN_OVERWRITEPROMPT|
 		OFN_NOCHANGEDIR;
 	return !!GetSaveFileName( &ofn );
 }
-#else
-bool CFileSystem::GetOpenName( FSPath *initial, char *buffer, bool bMulti ){
-	VERIFY( initial && buffer );
-
-    bool res;
-    AnsiString flt;
-    TOpenDialog* od = new TOpenDialog(0);
-    flt = initial->m_FilterString;
-    od->Filter = flt;
-    od->FilterIndex = 1;
-    od->InitialDir = initial->m_Path;
-    od->DefaultExt = initial->m_DefExt;
-    od->FileName = buffer;
-    od->Options << ofNoChangeDir << ofFileMustExist	<< ofPathMustExist;
-    if (bMulti) od->Options << ofAllowMultiSelect;
-    res = od->Execute();
-    if (res){
-    	if (bMulti){
-	        strcpy(buffer, od->Files->Strings[0].c_str());
-    	    for (int i=1; i<od->Files->Count; i++){
-				strcat(buffer,",");
-                strcat(buffer,od->Files->Strings[i].c_str());
-            }
-        }else
-    		strcpy(buffer, od->FileName.c_str());
-    }
-    _DELETE(od);
-    return res;
-}
-
-bool CFileSystem::GetSaveName( FSPath *initial, char *buffer ){
-	VERIFY( initial && buffer );
-
-    bool res;
-    AnsiString flt;
-    TSaveDialog* od = new TSaveDialog(0);
-    flt = initial->m_FilterString;
-    od->Filter = flt;
-    od->FilterIndex = 1;
-    od->InitialDir = initial->m_Path;
-    od->DefaultExt = initial->m_DefExt;
-    od->FileName = buffer;
-    od->Options << ofOverwritePrompt;
-    res = od->Execute();
-    if (res) strcpy(buffer, od->FileName.c_str());
-    _DELETE(od);
-    return res;
-}
 //----------------------------------------------------
-
-bool CFileSystem::GetOpenName( FSPath *initial, AnsiString& buffer, bool bMulti ){
-	VERIFY( initial );
-    bool res;
-    AnsiString flt;
-    TOpenDialog* od = new TOpenDialog(0);
-    flt = initial->m_FilterString;
-    od->Filter = flt;
-    od->FilterIndex = 1;
-    od->InitialDir = initial->m_Path;
-    od->DefaultExt = initial->m_DefExt;
-    od->FileName = buffer;
-    od->Options << ofNoChangeDir << ofFileMustExist	<< ofPathMustExist;
-    if (bMulti) od->Options << ofAllowMultiSelect;
-    res = od->Execute();
-    if (res){
-    	if (bMulti){
-	        buffer = od->Files->Strings[0];
-    	    for (int i=1; i<od->Files->Count; i++)
-				buffer += ","+od->Files->Strings[i];
-        }else
-    		buffer = od->FileName;
-    }
-    _DELETE(od);
-    return res;
+bool CFileSystem::GetOpenName(FSPath& initial, AnsiString& buffer, bool bMulti, LPCSTR offset ){
+	string4096 buf;
+    strcpy(buf,buffer.c_str());
+	bool bRes = GetOpenName(initial,buf,bMulti,offset);
+    if (bRes) buffer=buf;
+	return bRes;
 }
 
-bool CFileSystem::GetSaveName( FSPath *initial, AnsiString& buffer ){
-	VERIFY( initial );
-
-    bool res;
-    AnsiString flt;
-    TSaveDialog* od = new TSaveDialog(0);
-    flt = initial->m_FilterString;
-    od->Filter = flt;
-    od->FilterIndex = 1;
-    od->InitialDir = initial->m_Path;
-    od->DefaultExt = initial->m_DefExt;
-    od->FileName = buffer;
-    od->Options << ofOverwritePrompt;
-    res = od->Execute();
-    if (res) buffer = od->FileName;
-    _DELETE(od);
-    return res;
+bool CFileSystem::GetSaveName( FSPath& initial, AnsiString& buffer, LPCSTR offset ){
+	string4096 buf;
+    strcpy(buf,buffer.c_str());
+	bool bRes = GetSaveName(initial,buf,offset);
+    if (bRes) buffer=buf;
+	return bRes;
 }
-#endif
 
 bool CFileSystem::Exist(LPCSTR _FileName, bool bMessage){
     bool bRes = FileExists(_FileName);

@@ -71,7 +71,7 @@ void __fastcall TfrmPropertiesObject::ebOAppendMotionClick(TObject *Sender)
 {
 	VERIFY(m_LibObject);
     AnsiString fn;
-    if (FS.GetOpenName(&FS.m_OMotion,fn)){
+    if (FS.GetOpenName(FS.m_OMotion,fn)){
     	COMotion* M=m_LibObject->AppendOMotion(fn.c_str());
     	if (M){
         	char buf[1024];
@@ -196,7 +196,7 @@ void __fastcall TfrmPropertiesObject::ebOMotionSaveClick(TObject *Sender)
 	AnsiString fn;
     if (m_LibObject->OMotionCount()){
     	fn = m_LibObject->GetName();
-	    if (FS.GetSaveName(&FS.m_OMotions,fn)){
+	    if (FS.GetSaveName(FS.m_OMotions,fn)){
         	m_LibObject->SaveOMotions(fn.c_str());
 	    	ELog.DlgMsg(mtInformation,"Motions saved.");
         }
@@ -210,7 +210,7 @@ void __fastcall TfrmPropertiesObject::ebOMotionLoadClick(TObject *Sender)
 {
 	VERIFY(m_LibObject);
 	AnsiString fn;
-    if (FS.GetOpenName(&FS.m_OMotions,fn)){
+    if (FS.GetOpenName(FS.m_OMotions,fn)){
 	    TElTreeItem* Item = tvOMotions->Items->GetFirstNode(); Item->Clear();
 		m_LibObject->ClearOMotions();
 		m_LibObject->LoadOMotions(fn.c_str());

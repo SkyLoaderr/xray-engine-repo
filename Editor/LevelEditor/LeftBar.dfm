@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 730
+  Height = 277
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -1417,6 +1417,7 @@ object fraLeftBar: TfraLeftBar
     Options = []
     RegistryRoot = prLocalMachine
     Version = 3
+    OnSavePlacement = fsStorageSavePlacement
     StoredProps.Strings = (
       'paEdit.Tag'
       'paEdit.Height'
@@ -1435,6 +1436,7 @@ object fraLeftBar: TfraLeftBar
   end
   object pmSceneFile: TMxPopupMenu
     Alignment = paCenter
+    AutoHotkeys = maManual
     AutoPopup = False
     TrackButton = tbLeftButton
     MarginStartColor = 10921638
@@ -1452,8 +1454,8 @@ object fraLeftBar: TfraLeftBar
       Caption = 'Clear'
       OnClick = ebClearClick
     end
-    object Load1: TMenuItem
-      Caption = 'Load'
+    object miOpen: TMenuItem
+      Caption = 'Open'
       OnClick = ebLoadClick
     end
     object Save1: TMenuItem
@@ -1463,6 +1465,20 @@ object fraLeftBar: TfraLeftBar
     object SaveAs1: TMenuItem
       Caption = 'Save As'
       OnClick = ebSaveAsClick
+    end
+    object N3: TMenuItem
+      Caption = '-'
+    end
+    object miRecentFiles: TMenuItem
+      Caption = 'Recent Files'
+      Enabled = False
+    end
+    object N7: TMenuItem
+      Caption = '-'
+    end
+    object Quit1: TMenuItem
+      Caption = 'Quit'
+      OnClick = Quit1Click
     end
   end
   object pmSceneCompile: TMxPopupMenu

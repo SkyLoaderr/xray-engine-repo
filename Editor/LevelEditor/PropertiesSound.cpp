@@ -102,7 +102,7 @@ void __fastcall TfrmPropertiesSound::ebLinkClick(TObject *Sender)
 {
     if (!bMultipleSelection){
     	char _FileName[MAX_PATH]="";
-        if( FS.GetOpenName( &FS.m_GameSounds, _FileName ) ){
+        if(FS.GetOpenName(FS.m_GameSounds,_FileName)){
             VERIFY( _FileName );
             strlwr(_FileName);
             char* s=strstr(_FileName,FS.m_GameSounds.m_Path);

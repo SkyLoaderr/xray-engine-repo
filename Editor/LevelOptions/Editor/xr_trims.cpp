@@ -95,6 +95,7 @@ int				_GetItemCount ( const char* src, char separator )
 		res		++;
         last_res=res;
 		cnt		++;
+        if (res[0]==separator) break;
 	}
     if (strlen(last_res)) cnt++;
 	return		cnt;

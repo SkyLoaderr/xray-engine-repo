@@ -56,7 +56,7 @@ __published:	// IDE-managed Components
 	TExtBtn *ebIgnoreGroup;
 	TMxPopupMenu *pmSceneFile;
 	TMenuItem *Clear1;
-	TMenuItem *Load1;
+	TMenuItem *miOpen;
 	TMenuItem *Save1;
 	TMenuItem *SaveAs1;
 	TMxPopupMenu *pmSceneCompile;
@@ -140,6 +140,10 @@ __published:	// IDE-managed Components
 	TMenuItem *N4;
 	TMenuItem *miProperties;
 	TMenuItem *RefreshLibrary1;
+	TMenuItem *N3;
+	TMenuItem *miRecentFiles;
+	TMenuItem *N7;
+	TMenuItem *Quit1;
     void __fastcall ebClearClick(TObject *Sender);
     void __fastcall ebLoadClick(TObject *Sender);
     void __fastcall ebSaveClick(TObject *Sender);
@@ -212,6 +216,9 @@ __published:	// IDE-managed Components
 	void __fastcall Scale1Click(TObject *Sender);
 	void __fastcall miPropertiesClick(TObject *Sender);
 	void __fastcall RefreshLibrary1Click(TObject *Sender);
+	void __fastcall miRecentFilesClick(TObject *Sender);
+	void __fastcall fsStorageSavePlacement(TObject *Sender);
+	void __fastcall Quit1Click(TObject *Sender);
 private:	// User declarations
 	void __fastcall ShowPPMenu(TMxPopupMenu* M, TObject* btn);
 public:		// User declarations
@@ -219,6 +226,7 @@ public:		// User declarations
 	void ChangeTarget(int tgt);
     void UpdateBar();
     void UpdateSnapList();
+    void AppendRecentFile(LPCSTR name);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfraLeftBar *fraLeftBar;

@@ -32,7 +32,7 @@ object frmEditorPreferences: TfrmEditorPreferences
       Top = 0
       Width = 396
       Height = 243
-      ActivePage = tsScene
+      ActivePage = tsMouse
       Align = alClient
       TabOrder = 0
       object tsCamera: TTabSheet

@@ -350,7 +350,7 @@ void __fastcall TfrmEditLibrary::ebExportDOClick(TObject *Sender)
     TElTreeItem* node = tvObjects->Selected;
     if (node&&FOLDER::IsObject(node)){
     	AnsiString fn;
-		if (FS.GetSaveName(&FS.m_GameDO,fn)){
+		if (FS.GetSaveName(FS.m_GameDO,fn)){
 		    AnsiString name;
     		FOLDER::MakeName(node,0,name,false);
 			// make detail
@@ -370,11 +370,12 @@ void __fastcall TfrmEditLibrary::ebExportDOClick(TObject *Sender)
 void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
 {
     AnsiString open_nm, save_nm, nm;
-    if (FS.GetOpenName(&FS.m_Import,open_nm,true)){
+    if (FS.GetOpenName(FS.m_Import,open_nm,true)){
     	AStringVec lst;
         SequenceToList(lst,open_nm.c_str());
 		bool bNeedUpdate=false;
 		bool bNeedBreak=false;
+		AnsiString path;
         for (AStringIt it=lst.begin(); it!=lst.end(); it++){
             nm = *it;
             nm = nm.Delete(1,strlen(FS.m_Import.m_Path));
@@ -382,8 +383,9 @@ void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
             if (O->Load(it->c_str())){
                 O->m_ObjVer.f_age = FS.GetFileAge(*it);
                 save_nm = ChangeFileExt(nm,".object");
-                if (FS.GetSaveName(&FS.m_Objects,save_nm)){
-                    O->SaveObject(save_nm.c_str());
+                if (FS.GetSaveName(FS.m_Objects,save_nm,path.c_str())){
+                	path = ExtractFilePath(save_nm);
+                    O->SaveObject(save_nm.c_str());                  
                     FS.MarkFile(*it);
                     bNeedUpdate=true;
                 }else bNeedBreak=true;
