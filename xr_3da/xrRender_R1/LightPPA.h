@@ -34,4 +34,11 @@ public:
 	void			render_spot		();
 };
 
+//////////////////////////////////////////////////////////////////////////
+// binders for lighting
+//////////////////////////////////////////////////////////////////////////
+class cl_light_PR		: public R_constant_setup		{	virtual void setup	(R_constant* C);	};
+class cl_light_C		: public R_constant_setup		{	virtual void setup	(R_constant* C);	};
+class cl_light_XFORM	: public R_constant_setup		{	virtual void setup	(R_constant* C);	};
+
 #endif // !defined(AFX_LIGHTPPA_H__E5B97AC9_84A6_4773_9FEF_3BC5D1CEF8B6__INCLUDED_)
