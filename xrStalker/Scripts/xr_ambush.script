@@ -41,6 +41,9 @@ function evaluator_attack:__init( name, npc, a ) super()
 end
 
 function evaluator_attack:evaluate()
+	if not self.a.enabled then
+		return true
+	end
 --    printf( "1" )
     local enemy = self.npc:best_enemy()
 --    printf( "1.1" )
