@@ -28,7 +28,7 @@ void CCustomDetector::Load(LPCSTR section) {
 	m_buzzer_radius = pSettings->ReadFLOAT(section,"buzzer_radius");
 	CCF_Shape*	shape			= xr_new<CCF_Shape>	(this);
 	cfModel						= shape;
-	Fsphere S;	S.P.set			(0,0,0); S.R = m_buzzer_radius;
+	Fsphere S;	S.P.set			(0,1.f,0); S.R = m_buzzer_radius;
 	shape->add_sphere			(S);
 	shape->ComputeBounds						();
 	pCreator->ObjectSpace.Object_Register		(this);
@@ -114,6 +114,7 @@ void CCustomDetector::Update(u32 dt) {
 }
 
 void CCustomDetector::UpdateCL() {
+	inherited::UpdateCL();
 	f32 l_zonePow = 0;
 	list<CCustomZone*>::iterator l_it;
 	for(l_it = m_zones.begin(); l_it != m_zones.end(); l_it++) l_zonePow = max(l_zonePow, (*l_it)->Power((*l_it)->Position().distance_to(vPosition)));
@@ -125,7 +126,7 @@ void CCustomDetector::UpdateCL() {
 void CCustomDetector::feel_touch_new(CObject* O) {
 	CCustomZone *l_pZ = dynamic_cast<CCustomZone*>(O);
 	if(l_pZ) {
-		Level().HUD()->outMessage(0xffffffff,cName(),"started to feel a zone.");
+		if(bDebug) Level().HUD()->outMessage(0xffffffff,cName(),"started to feel a zone.");
 		m_zones.push_back(l_pZ);
 		m_times[l_pZ] = 0;
 	}
@@ -134,7 +135,7 @@ void CCustomDetector::feel_touch_new(CObject* O) {
 void CCustomDetector::feel_touch_delete(CObject* O) {
 	CCustomZone *l_pZ = dynamic_cast<CCustomZone*>(O);
 	if(l_pZ) {
-		Level().HUD()->outMessage(0xffffffff,cName(),"stoped to feel a zone.");
+		if(bDebug) Level().HUD()->outMessage(0xffffffff,cName(),"stoped to feel a zone.");
 		m_zones.erase(find(m_zones.begin(), m_zones.end(), l_pZ));
 	}
 }
@@ -178,7 +179,7 @@ void CCustomDetector::OnRender() {
 	Device.Shader.OnFrameEnd();
 	Fmatrix l_ball;
 	l_ball.scale(m_buzzer_radius, m_buzzer_radius, m_buzzer_radius);
-	Fvector l_p; l_p.set(0, 0, 0); clTransform.transform(l_p, l_p);
+	Fvector l_p; l_p.set(0, 1.f, 0); clTransform.transform(l_p, l_p);
 	l_ball.translate_add(l_p);
 	Device.Primitive.dbg_DrawEllipse(l_ball, D3DCOLOR_XRGB(255,0,255));
 }
