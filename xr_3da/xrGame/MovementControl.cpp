@@ -405,7 +405,7 @@ void CMovementControl::CheckEnvironment(const Fvector& newpos)
 		aabb.getsize(foot_ext);
 		foot_ext.set(foot_ext.x*.5f,vFootExt.y,foot_ext.z*.5f);
 		xform.transform_tiny(foot_center,vFootCenter);
-		for(int i=0; i<cp_cnt; i++)
+		for(int i=0; i<(int)cp_cnt; i++)
 		{
 			clQueryTri& T=pCreator->ObjectSpace.q_result.tris[i];
 			// тестируем положение ног

@@ -231,7 +231,7 @@ void CGrenade::Explode() {
 				P.w_u16			(u16(ID()));
 				P.w_dir			(l_dir);
 				P.w_float		(l_hit);
-				P.w_s16			(RQ.element);
+				P.w_s16			((s16)RQ.element);
 				P.w_vec3		(l_bs_pos);
 				P.w_float		(l_hit/(E?E->HitScale(RQ.element):1.f));
 				u_EventSend		(P);

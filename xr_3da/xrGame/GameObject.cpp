@@ -226,7 +226,7 @@ f32 CGameObject::ExplosionEffect(const Fvector &expl_centre, const f32 expl_radi
 	Fvector l_dir; l_dir.sub(l_pos, expl_centre); l_dir.normalize();
 	if(!Level().ObjectSpace.RayPick(expl_centre, l_dir, expl_radius, RQ)) return 0;
 	if(RQ.O != this) return 0;
-	elements.push_back(RQ.element);
+	elements.push_back((s16)RQ.element);
 	l_pos.set(0, 0, 0);
 	bs_positions.push_back(l_pos);
 	return 1.f;
