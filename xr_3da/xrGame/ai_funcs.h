@@ -16,8 +16,8 @@
 #include "Entity.h"
 #include "xr_weapon_list.h"
 
-#define OUT_MESSAGE(s1,s2)	Msg(s1,s2);
-
+#define AI_MAX_EVALUATION_FUNCTION_COUNT	128
+#define OUT_MESSAGE(s1,s2)					Msg(s1,s2);
 
 class CBaseFunction {
 protected:
@@ -30,13 +30,12 @@ protected:
 
 public:
 
-	virtual	void	vfLoadEF(const char *caFileName, CBaseFunction **fpaBaseFunctions) {};
-	virtual float	ffGetValue(CEntityAlive *tpEntityAlive, CBaseFunction **fpaBaseFunctions) = 0;
 					CBaseFunction() {m_caName[0] = 0;};
-	
-	virtual DWORD	dwfGetDiscreteValue(CEntityAlive *tpEntityAlive, CBaseFunction **fpaBaseFunctions, DWORD dwDiscretizationValue)
+	virtual	void	vfLoadEF(const char *caFileName) {};
+	virtual float	ffGetValue() = 0;
+	virtual DWORD	dwfGetDiscreteValue(DWORD dwDiscretizationValue)
 	{
-		float fTemp = ffGetValue(tpEntityAlive,fpaBaseFunctions);
+		float fTemp = ffGetValue();
 		if (fTemp <= m_fMinResultValue)
 			return(0);
 		else
@@ -91,12 +90,12 @@ public:
 	DWORD		*m_dwaVariableTypes;
 	DWORD		*m_dwaVariableValues;
 
-				CPatternFunction(const char *caEFFileName, CBaseFunction **fpaBaseFunctions);
+				CPatternFunction(const char *caEFFileName);
 				CPatternFunction();
 				~CPatternFunction();
 
-	virtual	void	vfLoadEF(const char *caEFFileName, CBaseFunction **fpaBaseFunctions);
-	virtual float	ffGetValue(CEntityAlive *tpEntityAlive, CBaseFunction **fpaBaseFunctions);
+	virtual	void	vfLoadEF(const char *caEFFileName);
+	virtual float	ffGetValue();
 };
 
 class CDistanceFunction : public CBaseFunction {
@@ -108,15 +107,7 @@ public:
 		strcat(m_caName,"Distance");
 		OUT_MESSAGE("Evaluation function %s is successfully initalized",m_caName);
 	}
-	
-	virtual float ffGetValue(CEntityAlive *tpEntityAlive, CBaseFunction **fpaBaseFunctions)
-	{
-		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpEntityAlive))
-			return(m_fLastValue);
-		m_dwLastUpdate = Level().timeServer();
-		m_tpLastMonster = tpEntityAlive;
-		return(m_fLastValue = tpEntityAlive->Position().distance_to(tpEntityAlive->m_tpCurrentEnemy->Position()));
-	};
+	virtual float ffGetValue();
 };
  
 class CPersonalHealthFunction : public CBaseFunction {
@@ -128,15 +119,7 @@ public:
 		strcat(m_caName,"PersonalHealth");
 		OUT_MESSAGE("Evaluation function %s is successfully initalized",m_caName);
 	}
-	
-	virtual float ffGetValue(CEntityAlive *tpEntityAlive, CBaseFunction **fpaBaseFunctions)
-	{
-		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpEntityAlive))
-			return(m_fLastValue);
-		m_dwLastUpdate = Level().timeServer();
-		m_tpLastMonster = tpEntityAlive;
-		return(m_fLastValue = tpEntityAlive->g_Health());
-	};
+	virtual float ffGetValue();
 };
  
 class CPersonalMoraleFunction : public CBaseFunction {
@@ -148,15 +131,7 @@ public:
 		strcat(m_caName,"PersonalMorale");
 		OUT_MESSAGE("Evaluation function %s is successfully initalized",m_caName);
 	}
-	
-	virtual float ffGetValue(CEntityAlive *tpEntityAlive, CBaseFunction **fpaBaseFunctions)
-	{
-		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpEntityAlive))
-			return(m_fLastValue);
-		m_dwLastUpdate = Level().timeServer();
-		m_tpLastMonster = tpEntityAlive;
-		return(m_fLastValue = m_fMaxResultValue);
-	};
+	virtual float ffGetValue();
 };
  
 class CPersonalCreatureTypeFunction : public CBaseFunction {
@@ -168,156 +143,12 @@ public:
 		strcat(m_caName,"PersonalCreatureType");
 		OUT_MESSAGE("Evaluation function %s is successfully initalized",m_caName);
 	}
-	
-	virtual float ffGetValue(CEntityAlive *tpEntityAlive, CBaseFunction **fpaBaseFunctions)
-	{
-		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpEntityAlive))
-			return(m_fLastValue);
-		m_dwLastUpdate = Level().timeServer();
-		m_tpLastMonster = tpEntityAlive;
-		switch (tpEntityAlive->SUB_CLS_ID) {
-			case CLSID_AI_RAT				: {
-				m_fLastValue =  1;
-				break;
-			}
-			case CLSID_AI_RAT_WOLF			: {
-				m_fLastValue =  2;
-				break;
-			}
-			case CLSID_AI_ZOMBIE			: {
-				m_fLastValue =  3;
-				break;
-			}
-			case CLSID_AI_ZOMBIE_HUMAN		: {
-				m_fLastValue =  4;
-				break;
-			}
-			case CLSID_AI_POLTERGEIST		: {
-				m_fLastValue =  5;
-				break;
-			}
-			case CLSID_AI_DOG				: {
-				m_fLastValue =  6;
-				break;
-			}
-			case CLSID_AI_FLESH				: {
-				m_fLastValue =  7;
-				break;
-			}
-			case CLSID_AI_DWARF				: {
-				m_fLastValue =  8;
-				break;
-			}
-			case CLSID_AI_SCIENTIST			: {
-				m_fLastValue =  9;
-				break;
-			}
-			case CLSID_AI_PHANTOM			: {
-				m_fLastValue = 10;
-				break;
-			}
-			case CLSID_AI_SPONGER			: {
-				m_fLastValue = 11;
-				break;
-			}
-			case CLSID_AI_CONTROLLER		: {
-				m_fLastValue = 12;
-				break;
-			}
-			case CLSID_AI_BLOODSUCKER		: {
-				m_fLastValue = 13;
-				break;
-			}
-			case CLSID_AI_SOLDIER			: {
-				m_fLastValue = 14;
-				break;
-			}
-			case CLSID_AI_STALKER_DARK		: {
-				m_fLastValue = 15;
-				break;
-			}
-			case CLSID_AI_STALKER_MILITARY	: {
-				m_fLastValue = 16;
-				break;
-			}
-			case CLSID_AI_STALKER			: {
-				m_fLastValue = 17;
-				break;
-			}
-			case CLSID_AI_BURER				: {
-				m_fLastValue = 18;
-				break;
-			}
-			case CLSID_AI_GIANT				: {
-				m_fLastValue = 19;
-				break;
-			}
-			case CLSID_AI_CHIMERA	: {
-				m_fLastValue = 20;
-				break;
-			}
-			case CLSID_AI_FRACTURE	: {
-				m_fLastValue = 21;
-				break;
-			}
-			case CLSID_AI_DOG_BLACK	: {
-				m_fLastValue = 22;
-				break;
-			}
-		}
-		return(m_fLastValue);
-	};
+	virtual float ffGetValue();
 };
  
 class CPersonalWeaponTypeFunction : public CBaseFunction {
-	
-	float ffGetTheBestWeapon(CEntityAlive *tpEntityAlive) 
-	{
-		DWORD dwBestWeapon = 2;
-		for (int i=0; i<(int)tpEntityAlive->tpfGetWeapons()->getWeaponCount(); i++) {
-			CWeapon *tpCustomWeapon = tpEntityAlive->tpfGetWeapons()->getWeaponByIndex(i);
-			if (tpCustomWeapon->GetAmmoCurrent() > tpCustomWeapon->GetAmmoMagSize()/10) {
-				DWORD dwCurrentBestWeapon = 0;
-				switch (tpCustomWeapon->SUB_CLS_ID) {
-					case CLSID_OBJECT_W_M134	: {
-						dwCurrentBestWeapon = 9;
-						break;
-					}
-					case CLSID_OBJECT_W_FN2000	: {
-						dwCurrentBestWeapon = 8;
-						break;
-					}
-					case CLSID_OBJECT_W_AK74	: {
-						dwCurrentBestWeapon = 6;
-						break;
-					}
-					case CLSID_OBJECT_W_LR300	: {
-						dwCurrentBestWeapon = 6;
-						break;
-					}
-					case CLSID_OBJECT_W_HPSA	: {
-						dwCurrentBestWeapon = 5;
-						break;
-					}
-					case CLSID_OBJECT_W_PM		: {
-						dwCurrentBestWeapon = 5;
-						break;
-					}
-					case CLSID_OBJECT_W_FORT	: {
-						dwCurrentBestWeapon = 5;
-						break;
-					}
-					default						: {
-						dwCurrentBestWeapon = 0;
-						break;
-					}
-				}
-				if (dwCurrentBestWeapon > dwBestWeapon)
-					dwBestWeapon = dwCurrentBestWeapon;
-			}
-		}
-		return(float(dwBestWeapon));
-	}
+
+	float ffGetTheBestWeapon();
 
 public:
 	CPersonalWeaponTypeFunction() {
@@ -326,107 +157,7 @@ public:
 		strcat(m_caName,"PersonalWeaponType");
 		OUT_MESSAGE("Evaluation function %s is successfully initalized",m_caName);
 	}
-	
-	virtual float ffGetValue(CEntityAlive *tpEntityAlive, CBaseFunction **fpaBaseFunctions)
-	{
-		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpEntityAlive))
-			return(m_fLastValue);
-		m_dwLastUpdate = Level().timeServer();
-		m_tpLastMonster = tpEntityAlive;
-		switch (tpEntityAlive->SUB_CLS_ID) {
-			case CLSID_AI_RAT				: {
-				m_fLastValue =  1;
-				break;
-			}
-			case CLSID_AI_RAT_WOLF			: {
-				m_fLastValue =  2;
-				break;
-			}
-			case CLSID_AI_ZOMBIE			: {
-				m_fLastValue =  1;
-				break;
-			}
-			case CLSID_AI_ZOMBIE_HUMAN		: {
-				m_fLastValue =  1;
-				break;
-			}
-			case CLSID_AI_POLTERGEIST		: {
-				// 1 or 12
-				m_fLastValue =  12;
-				break;
-			}
-			case CLSID_AI_DOG				: {
-				m_fLastValue =  2;
-				break;
-			}
-			case CLSID_AI_FLESH				: {
-				m_fLastValue =  2;
-				break;
-			}
-			case CLSID_AI_DWARF				: {
-				m_fLastValue =  1;
-				break;
-			}
-			case CLSID_AI_SCIENTIST			: {
-				m_fLastValue =  ffGetTheBestWeapon(tpEntityAlive);
-				break;
-			}
-			case CLSID_AI_PHANTOM			: {
-				m_fLastValue =  3;
-				break;
-			}
-			case CLSID_AI_SPONGER			: {
-				m_fLastValue =  2;
-				break;
-			}
-			case CLSID_AI_CONTROLLER		: {
-				//2 or 11
-				m_fLastValue =  11;
-				break;
-			}
-			case CLSID_AI_BLOODSUCKER		: {
-				m_fLastValue =  3;
-				break;
-			}
-			case CLSID_AI_SOLDIER			: {
-				m_fLastValue =  ffGetTheBestWeapon(tpEntityAlive);
-				break;
-			}
-			case CLSID_AI_STALKER_DARK		: {
-				m_fLastValue =  ffGetTheBestWeapon(tpEntityAlive);
-				break;
-			}
-			case CLSID_AI_STALKER_MILITARY	: {
-				m_fLastValue =  ffGetTheBestWeapon(tpEntityAlive);
-				break;
-			}
-			case CLSID_AI_STALKER			: {
-				m_fLastValue =  ffGetTheBestWeapon(tpEntityAlive);
-				break;
-			}
-			case CLSID_AI_BURER				: {
-				m_fLastValue =  3;
-				break;
-			}
-			case CLSID_AI_GIANT				: {
-				m_fLastValue =  3;
-				break;
-			}
-			case CLSID_AI_CHIMERA	: {
-				m_fLastValue =  3;
-				break;
-			}
-			case CLSID_AI_FRACTURE	: {
-				m_fLastValue =  4;
-				break;
-			}
-			case CLSID_AI_DOG_BLACK	: {
-				m_fLastValue =  4;
-				break;
-			}
-		}
-		return(m_fLastValue);
-	};
+	virtual float ffGetValue();
 };
  
 class CEnemyHealthFunction : public CBaseFunction {
@@ -438,15 +169,7 @@ public:
 		strcat(m_caName,"EnemyHealth");
 		OUT_MESSAGE("Evaluation function %s is successfully initalized",m_caName);
 	}
-	
-	virtual float ffGetValue(CEntityAlive *tpEntityAlive, CBaseFunction **fpaBaseFunctions)
-	{
-		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpEntityAlive->m_tpCurrentEnemy))
-			return(m_fLastValue);
-		m_dwLastUpdate = Level().timeServer();
-		m_tpLastMonster = tpEntityAlive->m_tpCurrentEnemy;
-		return(m_fLastValue = tpEntityAlive->pfPersonalHealth.ffGetValue(tpEntityAlive->m_tpCurrentEnemy,fpaBaseFunctions));
-	};
+	virtual float ffGetValue();
 };
  
 class CEnemyMoraleFunction : public CBaseFunction {
@@ -458,15 +181,7 @@ public:
 		strcat(m_caName,"EnemyMorale");
 		OUT_MESSAGE("Evaluation function %s is successfully initalized",m_caName);
 	}
-	
-	virtual float ffGetValue(CEntityAlive *tpEntityAlive, CBaseFunction **fpaBaseFunctions)
-	{
-		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpEntityAlive->m_tpCurrentEnemy))
-			return(m_fLastValue);
-		m_dwLastUpdate = Level().timeServer();
-		m_tpLastMonster = tpEntityAlive->m_tpCurrentEnemy;
-		return(m_fLastValue = tpEntityAlive->pfPersonalMorale.ffGetValue(tpEntityAlive->m_tpCurrentEnemy,fpaBaseFunctions));
-	};
+	virtual float ffGetValue();
 };
  
 class CEnemyCreatureTypeFunction : public CBaseFunction {
@@ -478,15 +193,7 @@ public:
 		strcat(m_caName,"EnemyCreatureType");
 		OUT_MESSAGE("Evaluation function %s is successfully initalized",m_caName);
 	}
-	
-	virtual float ffGetValue(CEntityAlive *tpEntityAlive, CBaseFunction **fpaBaseFunctions)
-	{
-		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpEntityAlive->m_tpCurrentEnemy))
-			return(m_fLastValue);
-		m_dwLastUpdate = Level().timeServer();
-		m_tpLastMonster = tpEntityAlive->m_tpCurrentEnemy;
-		return(m_fLastValue = tpEntityAlive->pfPersonalCreatureType.ffGetValue(tpEntityAlive->m_tpCurrentEnemy,fpaBaseFunctions));
-	};
+	virtual float ffGetValue();
 };
  
 class CEnemyWeaponTypeFunction : public CBaseFunction {
@@ -498,22 +205,13 @@ public:
 		strcat(m_caName,"EnemyWeaponType");
 		OUT_MESSAGE("Evaluation function %s is successfully initalized",m_caName);
 	}
-	
-	virtual float ffGetValue(CEntityAlive *tpEntityAlive, CBaseFunction **fpaBaseFunctions)
-	{
-		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpEntityAlive->m_tpCurrentEnemy))
-			return(m_fLastValue);
-		m_dwLastUpdate = Level().timeServer();
-		m_tpLastMonster = tpEntityAlive->m_tpCurrentEnemy;
-		return(m_fLastValue = tpEntityAlive->pfPersonalWeaponType.ffGetValue(tpEntityAlive->m_tpCurrentEnemy,fpaBaseFunctions));
-	};
+	virtual float ffGetValue();
 };
  
-#define AI_MAX_EVALUATION_FUNCTION_COUNT 128
-
 class CAI_DDD {
 
 public:
+	CEntityAlive					*m_tpCurrentMember;
 	CEntityAlive					*m_tpCurrentEnemy;
 	// primary functions
 	CBaseFunction					*fpaBaseFunctions		[AI_MAX_EVALUATION_FUNCTION_COUNT];
@@ -537,8 +235,7 @@ public:
 	CPatternFunction				pfAttackSuccessProbability;
 	CPatternFunction				pfDefendSuccessProbability;
 
-	CAI_DDD()
-	{	
+	CAI_DDD() {	
 		fpaBaseFunctions[0] = &pfDistance;
 		
 		fpaBaseFunctions[21] = &pfPersonalHealth;
@@ -551,11 +248,11 @@ public:
 		fpaBaseFunctions[43] = &pfEnemyCreatureType;
 		fpaBaseFunctions[44] = &pfEnemyWeaponType;
 
-		pfEnemyStatus.				vfLoadEF("common\\EnemyStatus.dat",				fpaBaseFunctions);
-		pfPersonalStatus.			vfLoadEF("common\\PersonalStatus.dat",			fpaBaseFunctions);
-		pfWeaponEffectiveness.		vfLoadEF("common\\WeaponEffectiveness.dat",		fpaBaseFunctions);
-		pfAttackSuccessProbability.	vfLoadEF("common\\AttackSuccessProbability.dat",fpaBaseFunctions);
-		pfDefendSuccessProbability.	vfLoadEF("common\\DefendSuccessProbability.dat",fpaBaseFunctions);
+		pfEnemyStatus.				vfLoadEF("common\\EnemyStatus.dat");
+		pfPersonalStatus.			vfLoadEF("common\\PersonalStatus.dat");
+		pfWeaponEffectiveness.		vfLoadEF("common\\WeaponEffectiveness.dat");
+		pfAttackSuccessProbability.	vfLoadEF("common\\AttackSuccessProbability.dat");
+		pfDefendSuccessProbability.	vfLoadEF("common\\DefendSuccessProbability.dat");
 	}
 };
 

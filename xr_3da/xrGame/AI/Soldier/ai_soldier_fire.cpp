@@ -373,55 +373,55 @@ DWORD CAI_Soldier::tfGetAloneFightType()
 				}
 				case CLSID_AI_SOLDIER	: {
 					fTempCoefficient = SOLDIER_ENEMY*tpCustomMonster->g_Health()/100.f;
-					for (int j=0; j<tpCustomMonster->tpfGetWeapons()->WeaponCount(); j++) {
-						CWeapon *tpWeapon = tpCustomMonster->tpfGetWeapons()->getWeaponByIndex(j);
+					for (int j=0; j<tpCustomMonster->GetItemList()->WeaponCount(); j++) {
+						CWeapon *tpWeapon = tpCustomMonster->GetItemList()->getWeaponByIndex(j);
 //						int iAmmoCurrent = (int)tpWeapon->GetAmmoCurrent();
 						int iAmmoElapsed = (int)tpWeapon->GetAmmoElapsed();
 						switch (tpWeapon->SUB_CLS_ID) {
 							case CLSID_OBJECT_W_M134		: {
-								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+								if (j == tpCustomMonster->GetItemList()->ActiveWeaponID())
 									fTempCoefficient *= M134_ENEMY_ACTIVE*iAmmoElapsed;
 								else
 									fTempCoefficient *= M134_ENEMY_INACTIVE*iAmmoElapsed;
 								break;
 							}
 							case CLSID_OBJECT_W_FN2000		: {
-								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+								if (j == tpCustomMonster->GetItemList()->ActiveWeaponID())
 									fTempCoefficient *= FN2000_ENEMY_ACTIVE*iAmmoElapsed;
 								else
 									fTempCoefficient *= FN2000_ENEMY_INACTIVE*iAmmoElapsed;
 								break;
 							}
 							case CLSID_OBJECT_W_AK74		: {	
-								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+								if (j == tpCustomMonster->GetItemList()->ActiveWeaponID())
 									fTempCoefficient *= AK74_ENEMY_ACTIVE*iAmmoElapsed;
 								else
 									fTempCoefficient *= AK74_ENEMY_INACTIVE*iAmmoElapsed;
 								break;
 							}
 							case CLSID_OBJECT_W_LR300		: {
-								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+								if (j == tpCustomMonster->GetItemList()->ActiveWeaponID())
 									fTempCoefficient *= LR300_ENEMY_ACTIVE*iAmmoElapsed;
 								else
 									fTempCoefficient *= LR300_ENEMY_INACTIVE*iAmmoElapsed;
 								break;
 							}
 							case CLSID_OBJECT_W_HPSA		: {	
-								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+								if (j == tpCustomMonster->GetItemList()->ActiveWeaponID())
 									fTempCoefficient *= HPSA_ENEMY_ACTIVE*iAmmoElapsed;
 								else
 									fTempCoefficient *= HPSA_ENEMY_INACTIVE*iAmmoElapsed;
 								break;
 							}
 							case CLSID_OBJECT_W_PM			: {
-								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+								if (j == tpCustomMonster->GetItemList()->ActiveWeaponID())
 									fTempCoefficient *= PM_ENEMY_ACTIVE*iAmmoElapsed;
 								else
 									fTempCoefficient *= PM_ENEMY_INACTIVE*iAmmoElapsed;
 								break;
 							}
 							case CLSID_OBJECT_W_FORT		: {	
-								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+								if (j == tpCustomMonster->GetItemList()->ActiveWeaponID())
 									fTempCoefficient *= FORT_ENEMY_ACTIVE*iAmmoElapsed;
 								else
 									fTempCoefficient *= FORT_ENEMY_INACTIVE*iAmmoElapsed;
@@ -443,55 +443,55 @@ DWORD CAI_Soldier::tfGetAloneFightType()
 				continue;
 			
 			fTempCoefficient = STALKER_ENEMY*tpActor->g_Health()/100.f;
-			for (int j=0; j<tpActor->tpfGetWeapons()->WeaponCount(); j++) {
-				CWeapon *tpWeapon = tpActor->tpfGetWeapons()->getWeaponByIndex(j);
+			for (int j=0; j<tpActor->GetItemList()->WeaponCount(); j++) {
+				CWeapon *tpWeapon = tpActor->GetItemList()->getWeaponByIndex(j);
 //				int iAmmoCurrent = (int)tpWeapon->GetAmmoCurrent();
 				int iAmmoElapsed = (int)tpWeapon->GetAmmoElapsed();
 				switch (tpWeapon->SUB_CLS_ID) {
 					case CLSID_OBJECT_W_M134		: {
-						if (j == tpActor->tpfGetWeapons()->ActiveWeaponID())
+						if (j == tpActor->GetItemList()->ActiveWeaponID())
 							fTempCoefficient *= M134_ENEMY_ACTIVE*iAmmoElapsed;
 						else
 							fTempCoefficient *= M134_ENEMY_INACTIVE*iAmmoElapsed;
 						break;
 					}
 					case CLSID_OBJECT_W_FN2000		: {
-						if (j == tpActor->tpfGetWeapons()->ActiveWeaponID())
+						if (j == tpActor->GetItemList()->ActiveWeaponID())
 							fTempCoefficient *= FN2000_ENEMY_ACTIVE*iAmmoElapsed;
 						else
 							fTempCoefficient *= FN2000_ENEMY_INACTIVE*iAmmoElapsed;
 						break;
 					}
 					case CLSID_OBJECT_W_AK74		: {	
-						if (j == tpActor->tpfGetWeapons()->ActiveWeaponID())
+						if (j == tpActor->GetItemList()->ActiveWeaponID())
 							fTempCoefficient *= AK74_ENEMY_ACTIVE*iAmmoElapsed;
 						else
 							fTempCoefficient *= AK74_ENEMY_INACTIVE*iAmmoElapsed;
 						break;
 					}
 					case CLSID_OBJECT_W_LR300		: {
-						if (j == tpActor->tpfGetWeapons()->ActiveWeaponID())
+						if (j == tpActor->GetItemList()->ActiveWeaponID())
 							fTempCoefficient *= LR300_ENEMY_ACTIVE*iAmmoElapsed;
 						else
 							fTempCoefficient *= LR300_ENEMY_INACTIVE*iAmmoElapsed;
 						break;
 					}
 					case CLSID_OBJECT_W_HPSA		: {	
-						if (j == tpActor->tpfGetWeapons()->ActiveWeaponID())
+						if (j == tpActor->GetItemList()->ActiveWeaponID())
 							fTempCoefficient *= HPSA_ENEMY_ACTIVE*iAmmoElapsed;
 						else
 							fTempCoefficient *= HPSA_ENEMY_INACTIVE*iAmmoElapsed;
 						break;
 					}
 					case CLSID_OBJECT_W_PM			: {
-						if (j == tpActor->tpfGetWeapons()->ActiveWeaponID())
+						if (j == tpActor->GetItemList()->ActiveWeaponID())
 							fTempCoefficient *= PM_ENEMY_ACTIVE*iAmmoElapsed;
 						else
 							fTempCoefficient *= PM_ENEMY_INACTIVE*iAmmoElapsed;
 						break;
 					}
 					case CLSID_OBJECT_W_FORT		: {	
-						if (j == tpActor->tpfGetWeapons()->ActiveWeaponID())
+						if (j == tpActor->GetItemList()->ActiveWeaponID())
 							fTempCoefficient *= FORT_ENEMY_ACTIVE*iAmmoElapsed;
 						else
 							fTempCoefficient *= FORT_ENEMY_INACTIVE*iAmmoElapsed;
@@ -521,55 +521,55 @@ DWORD CAI_Soldier::tfGetAloneFightType()
 				}
 				case CLSID_AI_SOLDIER	: {
 					fTempCoefficient = SOLDIER_FRIEND*tpCustomMonster->g_Health()/100.f;
-					for (int j=0; j<tpCustomMonster->tpfGetWeapons()->WeaponCount(); j++) {
-						CWeapon *tpWeapon = tpCustomMonster->tpfGetWeapons()->getWeaponByIndex(j);
+					for (int j=0; j<tpCustomMonster->GetItemList()->WeaponCount(); j++) {
+						CWeapon *tpWeapon = tpCustomMonster->GetItemList()->getWeaponByIndex(j);
 //						int iAmmoCurrent = (int)tpWeapon->GetAmmoCurrent();
 						int iAmmoElapsed = (int)tpWeapon->GetAmmoElapsed();
 						switch (tpWeapon->SUB_CLS_ID) {
 							case CLSID_OBJECT_W_M134		: {
-								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+								if (j == tpCustomMonster->GetItemList()->ActiveWeaponID())
 									fTempCoefficient *= M134_FRIEND_ACTIVE*iAmmoElapsed;
 								else
 									fTempCoefficient *= M134_FRIEND_INACTIVE*iAmmoElapsed;
 								break;
 							}
 							case CLSID_OBJECT_W_FN2000		: {
-								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+								if (j == tpCustomMonster->GetItemList()->ActiveWeaponID())
 									fTempCoefficient *= FN2000_FRIEND_ACTIVE*iAmmoElapsed;
 								else
 									fTempCoefficient *= FN2000_FRIEND_INACTIVE*iAmmoElapsed;
 								break;
 							}
 							case CLSID_OBJECT_W_AK74		: {	
-								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+								if (j == tpCustomMonster->GetItemList()->ActiveWeaponID())
 									fTempCoefficient *= AK74_FRIEND_ACTIVE*iAmmoElapsed;
 								else
 									fTempCoefficient *= AK74_FRIEND_INACTIVE*iAmmoElapsed;
 								break;
 							}
 							case CLSID_OBJECT_W_LR300		: {
-								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+								if (j == tpCustomMonster->GetItemList()->ActiveWeaponID())
 									fTempCoefficient *= LR300_FRIEND_ACTIVE*iAmmoElapsed;
 								else
 									fTempCoefficient *= LR300_FRIEND_INACTIVE*iAmmoElapsed;
 								break;
 							}
 							case CLSID_OBJECT_W_HPSA		: {	
-								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+								if (j == tpCustomMonster->GetItemList()->ActiveWeaponID())
 									fTempCoefficient *= HPSA_FRIEND_ACTIVE*iAmmoElapsed;
 								else
 									fTempCoefficient *= HPSA_FRIEND_INACTIVE*iAmmoElapsed;
 								break;
 							}
 							case CLSID_OBJECT_W_PM			: {
-								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+								if (j == tpCustomMonster->GetItemList()->ActiveWeaponID())
 									fTempCoefficient *= PM_FRIEND_ACTIVE*iAmmoElapsed;
 								else
 									fTempCoefficient *= PM_FRIEND_INACTIVE*iAmmoElapsed;
 								break;
 							}
 							case CLSID_OBJECT_W_FORT		: {	
-								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+								if (j == tpCustomMonster->GetItemList()->ActiveWeaponID())
 									fTempCoefficient *= FORT_FRIEND_ACTIVE*iAmmoElapsed;
 								else
 									fTempCoefficient *= FORT_FRIEND_INACTIVE*iAmmoElapsed;
@@ -614,55 +614,55 @@ DWORD CAI_Soldier::tfGetGroupFightType()
 				}
 				case CLSID_AI_SOLDIER	: {
 					fTempCoefficient = SOLDIER_ENEMY*tpCustomMonster->g_Health()/100.f;
-					for (int j=0; j<tpCustomMonster->tpfGetWeapons()->WeaponCount(); j++) {
-						CWeapon *tpWeapon = tpCustomMonster->tpfGetWeapons()->getWeaponByIndex(j);
+					for (int j=0; j<tpCustomMonster->GetItemList()->WeaponCount(); j++) {
+						CWeapon *tpWeapon = tpCustomMonster->GetItemList()->getWeaponByIndex(j);
 //						int iAmmoCurrent = (int)tpWeapon->GetAmmoCurrent();
 						int iAmmoElapsed = (int)tpWeapon->GetAmmoElapsed();
 						switch (tpWeapon->SUB_CLS_ID) {
 							case CLSID_OBJECT_W_M134		: {
-								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+								if (j == tpCustomMonster->GetItemList()->ActiveWeaponID())
 									fTempCoefficient *= M134_ENEMY_ACTIVE*iAmmoElapsed;
 								else
 									fTempCoefficient *= M134_ENEMY_INACTIVE*iAmmoElapsed;
 								break;
 							}
 							case CLSID_OBJECT_W_FN2000		: {
-								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+								if (j == tpCustomMonster->GetItemList()->ActiveWeaponID())
 									fTempCoefficient *= FN2000_ENEMY_ACTIVE*iAmmoElapsed;
 								else
 									fTempCoefficient *= FN2000_ENEMY_INACTIVE*iAmmoElapsed;
 								break;
 							}
 							case CLSID_OBJECT_W_AK74		: {	
-								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+								if (j == tpCustomMonster->GetItemList()->ActiveWeaponID())
 									fTempCoefficient *= AK74_ENEMY_ACTIVE*iAmmoElapsed;
 								else
 									fTempCoefficient *= AK74_ENEMY_INACTIVE*iAmmoElapsed;
 								break;
 							}
 							case CLSID_OBJECT_W_LR300		: {
-								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+								if (j == tpCustomMonster->GetItemList()->ActiveWeaponID())
 									fTempCoefficient *= LR300_ENEMY_ACTIVE*iAmmoElapsed;
 								else
 									fTempCoefficient *= LR300_ENEMY_INACTIVE*iAmmoElapsed;
 								break;
 							}
 							case CLSID_OBJECT_W_HPSA		: {	
-								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+								if (j == tpCustomMonster->GetItemList()->ActiveWeaponID())
 									fTempCoefficient *= HPSA_ENEMY_ACTIVE*iAmmoElapsed;
 								else
 									fTempCoefficient *= HPSA_ENEMY_INACTIVE*iAmmoElapsed;
 								break;
 							}
 							case CLSID_OBJECT_W_PM			: {
-								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+								if (j == tpCustomMonster->GetItemList()->ActiveWeaponID())
 									fTempCoefficient *= PM_ENEMY_ACTIVE*iAmmoElapsed;
 								else
 									fTempCoefficient *= PM_ENEMY_INACTIVE*iAmmoElapsed;
 								break;
 							}
 							case CLSID_OBJECT_W_FORT		: {	
-								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+								if (j == tpCustomMonster->GetItemList()->ActiveWeaponID())
 									fTempCoefficient *= FORT_ENEMY_ACTIVE*iAmmoElapsed;
 								else
 									fTempCoefficient *= FORT_ENEMY_INACTIVE*iAmmoElapsed;
@@ -684,55 +684,55 @@ DWORD CAI_Soldier::tfGetGroupFightType()
 				continue;
 			
 			fTempCoefficient = STALKER_ENEMY*tpActor->g_Health()/100.f;
-			for (int j=0; j<tpActor->tpfGetWeapons()->WeaponCount(); j++) {
-				CWeapon *tpWeapon = tpActor->tpfGetWeapons()->getWeaponByIndex(j);
+			for (int j=0; j<tpActor->GetItemList()->WeaponCount(); j++) {
+				CWeapon *tpWeapon = tpActor->GetItemList()->getWeaponByIndex(j);
 //				int iAmmoCurrent = (int)tpWeapon->GetAmmoCurrent();
 				int iAmmoElapsed = (int)tpWeapon->GetAmmoElapsed();
 				switch (tpWeapon->SUB_CLS_ID) {
 					case CLSID_OBJECT_W_M134		: {
-						if (j == tpActor->tpfGetWeapons()->ActiveWeaponID())
+						if (j == tpActor->GetItemList()->ActiveWeaponID())
 							fTempCoefficient *= M134_ENEMY_ACTIVE*iAmmoElapsed;
 						else
 							fTempCoefficient *= M134_ENEMY_INACTIVE*iAmmoElapsed;
 						break;
 					}
 					case CLSID_OBJECT_W_FN2000		: {
-						if (j == tpActor->tpfGetWeapons()->ActiveWeaponID())
+						if (j == tpActor->GetItemList()->ActiveWeaponID())
 							fTempCoefficient *= FN2000_ENEMY_ACTIVE*iAmmoElapsed;
 						else
 							fTempCoefficient *= FN2000_ENEMY_INACTIVE*iAmmoElapsed;
 						break;
 					}
 					case CLSID_OBJECT_W_AK74		: {	
-						if (j == tpActor->tpfGetWeapons()->ActiveWeaponID())
+						if (j == tpActor->GetItemList()->ActiveWeaponID())
 							fTempCoefficient *= AK74_ENEMY_ACTIVE*iAmmoElapsed;
 						else
 							fTempCoefficient *= AK74_ENEMY_INACTIVE*iAmmoElapsed;
 						break;
 					}
 					case CLSID_OBJECT_W_LR300		: {
-						if (j == tpActor->tpfGetWeapons()->ActiveWeaponID())
+						if (j == tpActor->GetItemList()->ActiveWeaponID())
 							fTempCoefficient *= LR300_ENEMY_ACTIVE*iAmmoElapsed;
 						else
 							fTempCoefficient *= LR300_ENEMY_INACTIVE*iAmmoElapsed;
 						break;
 					}
 					case CLSID_OBJECT_W_HPSA		: {	
-						if (j == tpActor->tpfGetWeapons()->ActiveWeaponID())
+						if (j == tpActor->GetItemList()->ActiveWeaponID())
 							fTempCoefficient *= HPSA_ENEMY_ACTIVE*iAmmoElapsed;
 						else
 							fTempCoefficient *= HPSA_ENEMY_INACTIVE*iAmmoElapsed;
 						break;
 					}
 					case CLSID_OBJECT_W_PM			: {
-						if (j == tpActor->tpfGetWeapons()->ActiveWeaponID())
+						if (j == tpActor->GetItemList()->ActiveWeaponID())
 							fTempCoefficient *= PM_ENEMY_ACTIVE*iAmmoElapsed;
 						else
 							fTempCoefficient *= PM_ENEMY_INACTIVE*iAmmoElapsed;
 						break;
 					}
 					case CLSID_OBJECT_W_FORT		: {	
-						if (j == tpActor->tpfGetWeapons()->ActiveWeaponID())
+						if (j == tpActor->GetItemList()->ActiveWeaponID())
 							fTempCoefficient *= FORT_ENEMY_ACTIVE*iAmmoElapsed;
 						else
 							fTempCoefficient *= FORT_ENEMY_INACTIVE*iAmmoElapsed;
@@ -762,55 +762,55 @@ DWORD CAI_Soldier::tfGetGroupFightType()
 				}
 				case CLSID_AI_SOLDIER	: {
 					fTempCoefficient = SOLDIER_FRIEND*tpCustomMonster->g_Health()/100.f;
-					for (int j=0; j<tpCustomMonster->tpfGetWeapons()->WeaponCount(); j++) {
-						CWeapon *tpWeapon = tpCustomMonster->tpfGetWeapons()->getWeaponByIndex(j);
+					for (int j=0; j<tpCustomMonster->GetItemList()->WeaponCount(); j++) {
+						CWeapon *tpWeapon = tpCustomMonster->GetItemList()->getWeaponByIndex(j);
 //						int iAmmoCurrent = (int)tpWeapon->GetAmmoCurrent();
 						int iAmmoElapsed = (int)tpWeapon->GetAmmoElapsed();
 						switch (tpWeapon->SUB_CLS_ID) {
 							case CLSID_OBJECT_W_M134		: {
-								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+								if (j == tpCustomMonster->GetItemList()->ActiveWeaponID())
 									fTempCoefficient *= M134_FRIEND_ACTIVE*iAmmoElapsed;
 								else
 									fTempCoefficient *= M134_FRIEND_INACTIVE*iAmmoElapsed;
 								break;
 							}
 							case CLSID_OBJECT_W_FN2000		: {
-								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+								if (j == tpCustomMonster->GetItemList()->ActiveWeaponID())
 									fTempCoefficient *= FN2000_FRIEND_ACTIVE*iAmmoElapsed;
 								else
 									fTempCoefficient *= FN2000_FRIEND_INACTIVE*iAmmoElapsed;
 								break;
 							}
 							case CLSID_OBJECT_W_AK74		: {	
-								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+								if (j == tpCustomMonster->GetItemList()->ActiveWeaponID())
 									fTempCoefficient *= AK74_FRIEND_ACTIVE*iAmmoElapsed;
 								else
 									fTempCoefficient *= AK74_FRIEND_INACTIVE*iAmmoElapsed;
 								break;
 							}
 							case CLSID_OBJECT_W_LR300		: {
-								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+								if (j == tpCustomMonster->GetItemList()->ActiveWeaponID())
 									fTempCoefficient *= LR300_FRIEND_ACTIVE*iAmmoElapsed;
 								else
 									fTempCoefficient *= LR300_FRIEND_INACTIVE*iAmmoElapsed;
 								break;
 							}
 							case CLSID_OBJECT_W_HPSA		: {	
-								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+								if (j == tpCustomMonster->GetItemList()->ActiveWeaponID())
 									fTempCoefficient *= HPSA_FRIEND_ACTIVE*iAmmoElapsed;
 								else
 									fTempCoefficient *= HPSA_FRIEND_INACTIVE*iAmmoElapsed;
 								break;
 							}
 							case CLSID_OBJECT_W_PM			: {
-								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+								if (j == tpCustomMonster->GetItemList()->ActiveWeaponID())
 									fTempCoefficient *= PM_FRIEND_ACTIVE*iAmmoElapsed;
 								else
 									fTempCoefficient *= PM_FRIEND_INACTIVE*iAmmoElapsed;
 								break;
 							}
 							case CLSID_OBJECT_W_FORT		: {	
-								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+								if (j == tpCustomMonster->GetItemList()->ActiveWeaponID())
 									fTempCoefficient *= FORT_FRIEND_ACTIVE*iAmmoElapsed;
 								else
 									fTempCoefficient *= FORT_FRIEND_INACTIVE*iAmmoElapsed;

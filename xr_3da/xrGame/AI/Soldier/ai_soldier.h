@@ -343,6 +343,8 @@ class CAI_Soldier : public CCustomMonster
 		float				m_fDistanceWent;
 		char				m_cStep;
 
+		CWeaponList			*Weapons;
+
 		// head turns
 		static void __stdcall HeadSpinCallback(CBoneInstance*);
 		static void	__stdcall LegsSpinCallback(CBoneInstance*);
@@ -613,7 +615,7 @@ class CAI_Soldier : public CCustomMonster
 			VERIFY(tpEntity);
 			CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster *>(tpEntity);
 			if (tpCustomMonster)
-				if (tpCustomMonster->tpfGetWeapons())
+				if (tpCustomMonster->GetItemList())
 					return(true);
 				else
 					return(false);

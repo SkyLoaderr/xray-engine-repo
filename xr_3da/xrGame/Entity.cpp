@@ -11,30 +11,6 @@
 #define MAX_ARMOR		200
 #define MAX_HEALTH		100
 
-#define PATH_AI			"ai\\"
-
-bool							CEntityAlive::bPatternFunctionLoaded = false;
-CBaseFunction					*CEntityAlive::fpaBaseFunctions[MAX_FUNCTION_COUNT];
-// primary functions
-CDistanceFunction				CEntityAlive::pfDistance;
-
-CPersonalHealthFunction			CEntityAlive::pfPersonalHealth;
-CPersonalMoraleFunction			CEntityAlive::pfPersonalMorale;
-CPersonalCreatureTypeFunction	CEntityAlive::pfPersonalCreatureType;
-CPersonalWeaponTypeFunction		CEntityAlive::pfPersonalWeaponType;
-
-CEnemyHealthFunction			CEntityAlive::pfEnemyHealth;
-CEnemyMoraleFunction			CEntityAlive::pfEnemyMorale;
-CEnemyCreatureTypeFunction		CEntityAlive::pfEnemyCreatureType;
-CEnemyWeaponTypeFunction		CEntityAlive::pfEnemyWeaponType;
-
-// complex functions
-CPatternFunction				CEntityAlive::pfPersonalStatus;
-CPatternFunction				CEntityAlive::pfEnemyStatus;
-CPatternFunction				CEntityAlive::pfWeaponEffectiveness;
-CPatternFunction				CEntityAlive::pfAttackSuccessProbability;
-CPatternFunction				CEntityAlive::pfDefendSuccessProbability;
-
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////

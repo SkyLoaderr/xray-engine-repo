@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "HUDmanager.h"
 #include "LevelGameDef.h"
+#include "ai_funcs.h"
 
 void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 {
@@ -338,7 +339,7 @@ BOOL CLevel::Load_GameSpecific_Before()
 BOOL CLevel::Load_GameSpecific_After()
 {
 	if (GAME == GAME_SINGLE)
-		m_tpAI_DDD	= new CAI_DDD;
+		m_tpAI_DDD	= new CAI_DDD();
 	else
 		m_tpAI_DDD	= 0;
 

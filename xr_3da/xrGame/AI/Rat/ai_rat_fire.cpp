@@ -215,17 +215,17 @@ CAI_Rat::ERatStates CAI_Rat::sfChooseAction()
 	float	fCurrentEnemyProbability	= 1.0f;
 	bool	bMySide = true, bStarted = true;
 	do {
-		CEntityAlive *m_tpCurrentMember = dynamic_cast<CEntityAlive *>(Members[j]);
-		if (!m_tpCurrentMember) {
+		Level().m_tpAI_DDD->m_tpCurrentMember = dynamic_cast<CEntityAlive *>(Members[j]);
+		if (!Level().m_tpAI_DDD->m_tpCurrentMember) {
 			i++;
 			continue;
 		}
-		m_tpCurrentEnemy = dynamic_cast<CEntityAlive *>(VisibleEnemies[j].key);
-		if (!m_tpCurrentEnemy) {
+		Level().m_tpAI_DDD->m_tpCurrentEnemy = dynamic_cast<CEntityAlive *>(VisibleEnemies[j].key);
+		if (!Level().m_tpAI_DDD->m_tpCurrentEnemy) {
 			j++;
 			continue;
 		}
-		float fProbability = pfAttackSuccessProbability.ffGetValue(this,fpaBaseFunctions);
+		float fProbability = Level().m_tpAI_DDD->pfAttackSuccessProbability.ffGetValue();
 		if (bMySide) {
 			if (fCurrentMemberProbability*fProbability < MIN_PROBABILITY) {
 				if (bStarted)

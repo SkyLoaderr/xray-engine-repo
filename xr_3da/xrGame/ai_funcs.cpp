@@ -8,7 +8,6 @@
 
 #include "stdafx.h"
 #include "ai_funcs.h"
-#include "CustomMonster.h"
 
 #define AI_PATH		"ai\\"
 
@@ -23,7 +22,7 @@ CPatternFunction::CPatternFunction()
 	m_dwaVariableValues = 0;
 }
 
-CPatternFunction::CPatternFunction(const char *caFileName, CBaseFunction **fpaBaseFunctions)
+CPatternFunction::CPatternFunction(const char *caFileName)
 {
 	m_dwPatternCount = m_dwVariableCount = m_dwParameterCount = 0;
 	m_dwaVariableTypes = 0;
@@ -32,7 +31,7 @@ CPatternFunction::CPatternFunction(const char *caFileName, CBaseFunction **fpaBa
 	m_tpPatterns = 0;
 	m_faParameters = 0;
 	m_dwaVariableValues = 0;
-	vfLoadEF(caFileName,fpaBaseFunctions);
+	vfLoadEF(caFileName);
 }
 
 CPatternFunction::~CPatternFunction()
@@ -47,7 +46,7 @@ CPatternFunction::~CPatternFunction()
 	_FREE(m_dwaVariableValues);
 }
 
-void CPatternFunction::vfLoadEF(const char *caFileName, CBaseFunction **fpaBaseFunctions)
+void CPatternFunction::vfLoadEF(const char *caFileName)
 {
 	char caPath[260];
 	memcpy(caPath,Path.GameData,(strlen(Path.GameData) + 1)*sizeof(char));
@@ -112,7 +111,7 @@ void CPatternFunction::vfLoadEF(const char *caFileName, CBaseFunction **fpaBaseF
 	
 	_FREE(m_dwaAtomicIndexes);
     
-	fpaBaseFunctions[m_dwFunctionType] = this;
+	Level().m_tpAI_DDD->fpaBaseFunctions[m_dwFunctionType] = this;
 	
 	strcat(m_caName,caFileName);
 	Msg("Evaluation function (%s) is successfully loaded",caPath);
@@ -126,13 +125,341 @@ float CPatternFunction::ffEvaluate()
 	return(fResult);
 }
 
-float CPatternFunction::ffGetValue(CEntityAlive *tpEntityAlive, CBaseFunction **fpaBaseFunctions)
+float CPatternFunction::ffGetValue()
 {
-	if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpEntityAlive))
+	if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == Level().m_tpAI_DDD->m_tpCurrentMember))
 		return(m_fLastValue);
 	m_dwLastUpdate = Level().timeServer();
-	m_tpLastMonster = tpEntityAlive;
+	m_tpLastMonster = Level().m_tpAI_DDD->m_tpCurrentMember;
 	for (DWORD i=0; i<m_dwVariableCount; i++)
-		m_dwaVariableValues[i] = fpaBaseFunctions[m_dwaVariableTypes[i]]->dwfGetDiscreteValue(tpEntityAlive,fpaBaseFunctions,m_dwaAtomicFeatureRange[i]);
+		m_dwaVariableValues[i] = Level().m_tpAI_DDD->fpaBaseFunctions[m_dwaVariableTypes[i]]->dwfGetDiscreteValue(m_dwaAtomicFeatureRange[i]);
 	return(m_fLastValue = ffEvaluate());
 }
+
+// primary functions
+float CDistanceFunction::ffGetValue()
+{
+	if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == Level().m_tpAI_DDD->m_tpCurrentMember))
+		return(m_fLastValue);
+	m_dwLastUpdate = Level().timeServer();
+	m_tpLastMonster = Level().m_tpAI_DDD->m_tpCurrentMember;
+	return(m_fLastValue = Level().m_tpAI_DDD->m_tpCurrentMember->Position().distance_to(Level().m_tpAI_DDD->m_tpCurrentEnemy->Position()));
+};
+
+float CPersonalHealthFunction::ffGetValue()
+{
+	if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == Level().m_tpAI_DDD->m_tpCurrentMember))
+		return(m_fLastValue);
+	m_dwLastUpdate = Level().timeServer();
+	m_tpLastMonster = Level().m_tpAI_DDD->m_tpCurrentMember;
+	return(m_fLastValue = Level().m_tpAI_DDD->m_tpCurrentMember->g_Health());
+};
+	
+float CPersonalMoraleFunction::ffGetValue()
+{
+	if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == Level().m_tpAI_DDD->m_tpCurrentMember))
+		return(m_fLastValue);
+	m_dwLastUpdate = Level().timeServer();
+	m_tpLastMonster = Level().m_tpAI_DDD->m_tpCurrentMember;
+	return(m_fLastValue = m_fMaxResultValue);
+};
+
+float CPersonalCreatureTypeFunction::ffGetValue()
+{
+	if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == Level().m_tpAI_DDD->m_tpCurrentMember))
+		return(m_fLastValue);
+	m_dwLastUpdate = Level().timeServer();
+	m_tpLastMonster = Level().m_tpAI_DDD->m_tpCurrentMember;
+	switch (Level().m_tpAI_DDD->m_tpCurrentMember->SUB_CLS_ID) {
+		case CLSID_AI_RAT				: {
+			m_fLastValue =  1;
+			break;
+		}
+		case CLSID_AI_RAT_WOLF			: {
+			m_fLastValue =  2;
+			break;
+		}
+		case CLSID_AI_ZOMBIE			: {
+			m_fLastValue =  3;
+			break;
+		}
+		case CLSID_AI_ZOMBIE_HUMAN		: {
+			m_fLastValue =  4;
+			break;
+		}
+		case CLSID_AI_POLTERGEIST		: {
+			m_fLastValue =  5;
+			break;
+		}
+		case CLSID_AI_DOG				: {
+			m_fLastValue =  6;
+			break;
+		}
+		case CLSID_AI_FLESH				: {
+			m_fLastValue =  7;
+			break;
+		}
+		case CLSID_AI_DWARF				: {
+			m_fLastValue =  8;
+			break;
+		}
+		case CLSID_AI_SCIENTIST			: {
+			m_fLastValue =  9;
+			break;
+		}
+		case CLSID_AI_PHANTOM			: {
+			m_fLastValue = 10;
+			break;
+		}
+		case CLSID_AI_SPONGER			: {
+			m_fLastValue = 11;
+			break;
+		}
+		case CLSID_AI_CONTROLLER		: {
+			m_fLastValue = 12;
+			break;
+		}
+		case CLSID_AI_BLOODSUCKER		: {
+			m_fLastValue = 13;
+			break;
+		}
+		case CLSID_AI_SOLDIER			: {
+			m_fLastValue = 14;
+			break;
+		}
+		case CLSID_AI_STALKER_DARK		: {
+			m_fLastValue = 15;
+			break;
+		}
+		case CLSID_AI_STALKER_MILITARY	: {
+			m_fLastValue = 16;
+			break;
+		}
+		case CLSID_AI_STALKER			: {
+			m_fLastValue = 17;
+			break;
+		}
+		case CLSID_AI_BURER				: {
+			m_fLastValue = 18;
+			break;
+		}
+		case CLSID_AI_GIANT				: {
+			m_fLastValue = 19;
+			break;
+		}
+		case CLSID_AI_CHIMERA	: {
+			m_fLastValue = 20;
+			break;
+		}
+		case CLSID_AI_FRACTURE	: {
+			m_fLastValue = 21;
+			break;
+		}
+		case CLSID_AI_DOG_BLACK	: {
+			m_fLastValue = 22;
+			break;
+		}
+	}
+	return(m_fLastValue);
+};
+
+float CPersonalWeaponTypeFunction::ffGetTheBestWeapon() 
+{
+	DWORD dwBestWeapon = 2;
+	for (int i=0; i<(int)Level().m_tpAI_DDD->m_tpCurrentMember->GetItemList()->getWeaponCount(); i++) {
+		CWeapon *tpCustomWeapon = Level().m_tpAI_DDD->m_tpCurrentMember->GetItemList()->getWeaponByIndex(i);
+		if (tpCustomWeapon->GetAmmoCurrent() > tpCustomWeapon->GetAmmoMagSize()/10) {
+			DWORD dwCurrentBestWeapon = 0;
+			switch (tpCustomWeapon->SUB_CLS_ID) {
+				case CLSID_OBJECT_W_M134	: {
+					dwCurrentBestWeapon = 9;
+					break;
+				}
+				case CLSID_OBJECT_W_FN2000	: {
+					dwCurrentBestWeapon = 8;
+					break;
+				}
+				case CLSID_OBJECT_W_AK74	: {
+					dwCurrentBestWeapon = 6;
+					break;
+				}
+				case CLSID_OBJECT_W_LR300	: {
+					dwCurrentBestWeapon = 6;
+					break;
+				}
+				case CLSID_OBJECT_W_HPSA	: {
+					dwCurrentBestWeapon = 5;
+					break;
+				}
+				case CLSID_OBJECT_W_PM		: {
+					dwCurrentBestWeapon = 5;
+					break;
+				}
+				case CLSID_OBJECT_W_FORT	: {
+					dwCurrentBestWeapon = 5;
+					break;
+				}
+				default						: {
+					dwCurrentBestWeapon = 0;
+					break;
+				}
+			}
+			if (dwCurrentBestWeapon > dwBestWeapon)
+				dwBestWeapon = dwCurrentBestWeapon;
+		}
+	}
+	return(float(dwBestWeapon));
+}
+	
+float CPersonalWeaponTypeFunction::ffGetValue()
+{
+	if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == Level().m_tpAI_DDD->m_tpCurrentMember))
+		return(m_fLastValue);
+	m_dwLastUpdate = Level().timeServer();
+	m_tpLastMonster = Level().m_tpAI_DDD->m_tpCurrentMember;
+	switch (Level().m_tpAI_DDD->m_tpCurrentMember->SUB_CLS_ID) {
+		case CLSID_AI_RAT				: {
+			m_fLastValue =  1;
+			break;
+		}
+		case CLSID_AI_RAT_WOLF			: {
+			m_fLastValue =  2;
+			break;
+		}
+		case CLSID_AI_ZOMBIE			: {
+			m_fLastValue =  1;
+			break;
+		}
+		case CLSID_AI_ZOMBIE_HUMAN		: {
+			m_fLastValue =  1;
+			break;
+		}
+		case CLSID_AI_POLTERGEIST		: {
+			// 1 or 12
+			m_fLastValue =  12;
+			break;
+		}
+		case CLSID_AI_DOG				: {
+			m_fLastValue =  2;
+			break;
+		}
+		case CLSID_AI_FLESH				: {
+			m_fLastValue =  2;
+			break;
+		}
+		case CLSID_AI_DWARF				: {
+			m_fLastValue =  1;
+			break;
+		}
+		case CLSID_AI_SCIENTIST			: {
+			m_fLastValue =  ffGetTheBestWeapon();
+			break;
+		}
+		case CLSID_AI_PHANTOM			: {
+			m_fLastValue =  3;
+			break;
+		}
+		case CLSID_AI_SPONGER			: {
+			m_fLastValue =  2;
+			break;
+		}
+		case CLSID_AI_CONTROLLER		: {
+			//2 or 11
+			m_fLastValue =  11;
+			break;
+		}
+		case CLSID_AI_BLOODSUCKER		: {
+			m_fLastValue =  3;
+			break;
+		}
+		case CLSID_AI_SOLDIER			: {
+			m_fLastValue =  ffGetTheBestWeapon();
+			break;
+		}
+		case CLSID_AI_STALKER_DARK		: {
+			m_fLastValue =  ffGetTheBestWeapon();
+			break;
+		}
+		case CLSID_AI_STALKER_MILITARY	: {
+			m_fLastValue =  ffGetTheBestWeapon();
+			break;
+		}
+		case CLSID_AI_STALKER			: {
+			m_fLastValue =  ffGetTheBestWeapon();
+			break;
+		}
+		case CLSID_AI_BURER				: {
+			m_fLastValue =  3;
+			break;
+		}
+		case CLSID_AI_GIANT				: {
+			m_fLastValue =  3;
+			break;
+		}
+		case CLSID_AI_CHIMERA	: {
+			m_fLastValue =  3;
+			break;
+		}
+		case CLSID_AI_FRACTURE	: {
+			m_fLastValue =  4;
+			break;
+		}
+		case CLSID_AI_DOG_BLACK	: {
+			m_fLastValue =  4;
+			break;
+		}
+	}
+	return(m_fLastValue);
+};
+	
+float CEnemyHealthFunction::ffGetValue()
+{
+	if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == Level().m_tpAI_DDD->m_tpCurrentEnemy))
+		return(m_fLastValue);
+	m_dwLastUpdate = Level().timeServer();
+	m_tpLastMonster = Level().m_tpAI_DDD->m_tpCurrentEnemy;
+	CEntityAlive *tpEntity = Level().m_tpAI_DDD->m_tpCurrentMember;
+	Level().m_tpAI_DDD->m_tpCurrentMember = Level().m_tpAI_DDD->m_tpCurrentEnemy;
+	m_fLastValue = Level().m_tpAI_DDD->pfPersonalHealth.ffGetValue();
+	Level().m_tpAI_DDD->m_tpCurrentMember = tpEntity;
+	return(m_fLastValue);
+};
+
+float CEnemyMoraleFunction::ffGetValue()
+{
+	if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == Level().m_tpAI_DDD->m_tpCurrentEnemy))
+		return(m_fLastValue);
+	m_dwLastUpdate = Level().timeServer();
+	m_tpLastMonster = Level().m_tpAI_DDD->m_tpCurrentEnemy;
+	CEntityAlive *tpEntity = Level().m_tpAI_DDD->m_tpCurrentMember;
+	Level().m_tpAI_DDD->m_tpCurrentMember = Level().m_tpAI_DDD->m_tpCurrentEnemy;
+	m_fLastValue = Level().m_tpAI_DDD->pfPersonalMorale.ffGetValue();
+	Level().m_tpAI_DDD->m_tpCurrentMember = tpEntity;
+	return(m_fLastValue);
+};
+
+float CEnemyCreatureTypeFunction::ffGetValue()
+{
+	if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == Level().m_tpAI_DDD->m_tpCurrentEnemy))
+		return(m_fLastValue);
+	m_dwLastUpdate = Level().timeServer();
+	m_tpLastMonster = Level().m_tpAI_DDD->m_tpCurrentEnemy;
+	CEntityAlive *tpEntity = Level().m_tpAI_DDD->m_tpCurrentMember;
+	Level().m_tpAI_DDD->m_tpCurrentMember = Level().m_tpAI_DDD->m_tpCurrentEnemy;
+	m_fLastValue = Level().m_tpAI_DDD->pfPersonalCreatureType.ffGetValue();
+	Level().m_tpAI_DDD->m_tpCurrentMember = tpEntity;
+	return(m_fLastValue);
+};
+
+float CEnemyWeaponTypeFunction::ffGetValue()
+{
+	if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == Level().m_tpAI_DDD->m_tpCurrentEnemy))
+		return(m_fLastValue);
+	m_dwLastUpdate = Level().timeServer();
+	m_tpLastMonster = Level().m_tpAI_DDD->m_tpCurrentEnemy;
+	CEntityAlive *tpEntity = Level().m_tpAI_DDD->m_tpCurrentMember;
+	Level().m_tpAI_DDD->m_tpCurrentMember = Level().m_tpAI_DDD->m_tpCurrentEnemy;
+	m_fLastValue = Level().m_tpAI_DDD->pfPersonalWeaponType.ffGetValue();
+	Level().m_tpAI_DDD->m_tpCurrentMember = tpEntity;
+	return(m_fLastValue);
+};

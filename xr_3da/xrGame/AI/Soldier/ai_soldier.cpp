@@ -159,6 +159,7 @@ void CAI_Soldier::Load	(LPCSTR section)
 	m_dwMaxDynamicObjectsCount = min(pSettings->ReadINT(section,"DynamicObjectsCount"),MAX_DYNAMIC_OBJECTS);
 	m_dwMaxDynamicSoundsCount = min(pSettings->ReadINT(section,"DynamicSoundsCount"),MAX_DYNAMIC_SOUNDS);
 
+	Weapons = GetItemList();
 	//tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[0] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[1] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[2] = PKinematics(pVisual)->ID_Cycle(pSettings->ReadSTRING(section,"TestAnimation"));
 	//m_fAddAngle = pSettings->ReadFLOAT(section,"AddAngle");
 }
