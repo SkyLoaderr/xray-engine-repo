@@ -1,5 +1,6 @@
 #ifndef SH_RT_H
 #define SH_RT_H
+#pragma once
 
 class	ENGINE_API	CTexture;
 

@@ -5,7 +5,7 @@
 #include "sh_texture.h"
 #include "sh_matrix.h"
 #include "sh_constant.h"
-
+#include "sh_rt.h"
 
 // API
 IC void	CShaderManager::set_Code		(DWORD dwCode)
