@@ -150,7 +150,7 @@ BOOL IPureClient::Connect(LPCSTR options)
 
 	// Debug
 	dump_URL		("! cl ",	net_Address_device);
-	dump_URL		("! c2s",	net_Address_server);
+	dump_URL		("! en ",	net_Address_server);
 	
     // Now set up the Application Description
     DPN_APPLICATION_DESC        dpAppDesc;
@@ -225,6 +225,7 @@ BOOL IPureClient::Connect(LPCSTR options)
 			Msg("* HOST #%d: %s\n",I+1,net_Hosts[I].dpSessionName);
 		
 		R_CHK(net_Hosts.front().pHostAddress->Duplicate(&pHostAddress ) );
+		dump_URL		("! c2s ",	pHostAddress);
 		R_CHK(NET->Connect(
 			&dpAppDesc,				// pdnAppDesc
 			pHostAddress,			// pHostAddr
