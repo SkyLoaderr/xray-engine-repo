@@ -8,16 +8,16 @@
 
 vector<OGF_Base *>		g_tree;
 b_params				g_params;
-extern DWORD			dwInvalidFaces;
+extern u32				dwInvalidFaces;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 template <class T>
-void transfer(const char *name, vector<T> &dest, CStream& F, DWORD chunk)
+void transfer(const char *name, vector<T> &dest, CStream& F, u32 chunk)
 {
 	CStream*	O		= F.OpenChunk(chunk);
-	DWORD		count	= O?(O->Length()/sizeof(T)):0;
+	u32		count	= O?(O->Length()/sizeof(T)):0;
 	Msg			("* %16s: %d",name,count);
 	if (count)  
 	{
@@ -27,7 +27,7 @@ void transfer(const char *name, vector<T> &dest, CStream& F, DWORD chunk)
 	if (O)		O->Close	();
 }
 
-extern DWORD*	Surface_Load	(char* name, DWORD& w, DWORD& h);
+extern u32*	Surface_Load	(char* name, u32& w, u32& h);
 extern void		Surface_Init	();
 
 CBuild::CBuild	(b_params& Params, CStream& FS)
@@ -35,7 +35,7 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 	// HANDLE		hLargeHeap	= HeapCreate(0,64*1024*1024,0);
 	// Msg			("* <LargeHeap> handle: %X",hLargeHeap);
 
-	DWORD			i			= 0;
+	u32			i			= 0;
 
 	float			p_total		= 0;
 	float			p_cost		= 1.f/3.f;
@@ -49,7 +49,7 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 	Status					("Vertices...");
 	{
 		F = FS.OpenChunk		(EB_Vertices);
-		DWORD v_count			=	F->Length()/sizeof(b_vertex);
+		u32 v_count			=	F->Length()/sizeof(b_vertex);
 		g_vertices.reserve		(3*v_count/2);
 		scene_bb.invalidate		();
 		for (i=0; i<v_count; i++)
@@ -70,7 +70,7 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 	{
 		F = FS.OpenChunk		(EB_Faces);
 		R_ASSERT				(F);
-		DWORD f_count			=	F->Length()/sizeof(b_face);
+		u32 f_count			=	F->Length()/sizeof(b_face);
 		g_faces.reserve			(f_count);
 		for (i=0; i<f_count; i++)
 		{
@@ -84,7 +84,7 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 				_F->dwMaterialGame	= B.dwMaterialGame;
 
 				// Vertices and adjacement info
-				for (DWORD it=0; it<3; it++)
+				for (u32 it=0; it<3; it++)
 				{
 					int id			= B.v[it];
 					R_ASSERT		(id<(int)g_vertices.size());
@@ -136,9 +136,9 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 			while (!F->Eof())
 			{
 				F->Read				(temp.control.name,sizeof(temp.control.name));
-				DWORD cnt			= F->Rdword();
+				u32 cnt			= F->Rdword();
 				temp.control.data.resize(cnt);
-				F->Read				(temp.control.data.begin(),cnt*sizeof(DWORD));
+				F->Read				(temp.control.data.begin(),cnt*sizeof(u32));
 
 				L_layers.push_back	(temp);
 			}
@@ -149,7 +149,7 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 		{
 			F = FS.OpenChunk(EB_Light_static);
 			b_light_static	temp;
-			DWORD cnt		= F->Length()/sizeof(temp);
+			u32 cnt		= F->Length()/sizeof(temp);
 			for				(i=0; i<cnt; i++)
 			{
 				R_Light		RL;
@@ -187,8 +187,8 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 	{
 		Surface_Init	();
 		F = FS.OpenChunk(EB_Textures);
-		DWORD tex_count	= F->Length()/sizeof(b_texture);
-		for (DWORD t=0; t<tex_count; t++)
+		u32 tex_count	= F->Length()/sizeof(b_texture);
+		for (u32 t=0; t<tex_count; t++)
 		{
 			Progress		(float(t)/float(tex_count));
 
@@ -234,7 +234,7 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 
 	// post-process materials
 	Status	("Post-process materials...");
-	for (DWORD m=0; m<materials.size(); m++)
+	for (u32 m=0; m<materials.size(); m++)
 	{
 		b_material &M	= materials[m];
 
@@ -389,7 +389,7 @@ void CBuild::Run	(string& P)
 
 	// Glows
 	fs.open_chunk(fsL_GLOWS);
-	for (DWORD i=0; i<glows.size(); i++)
+	for (u32 i=0; i<glows.size(); i++)
 	{
 		b_glow&	G = glows[i];
 		fs.write(&G,4*sizeof(float));
@@ -415,8 +415,8 @@ void CBuild::Run	(string& P)
 void CBuild::err_save	()
 {
 	string256		log_name,log_user;
-	DWORD			buffer_size		= 128;
-	GetUserName		(log_user,&buffer_size);
+	u32			buffer_size		= 128;
+	GetUserName		(log_user,(DWORD*)&buffer_size);
 	strconcat		(log_name,"build_",strlwr(log_user),".err");
 
 	CFS_File		err(log_name);

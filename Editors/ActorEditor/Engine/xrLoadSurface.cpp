@@ -117,8 +117,8 @@ u32*	Surface_Load(char* name, u32& w, u32& h)
 	w					= FreeImage_GetWidth	(map32);
 
 	DWORD		memSize	= w*h*4;
-	LPDWORD		memPTR	= LPDWORD(xr_malloc(memSize));
-	LPDWORD		memDATA	= LPDWORD(FreeImage_GetScanLine(map32,0));
+	u32*		memPTR	= (u32*)(xr_malloc(memSize));
+	u32*		memDATA	= (u32*)(FreeImage_GetScanLine(map32,0));
 	CopyMemory	(memPTR,memDATA,memSize);
 	FreeImage_Free		(map32);
 	return		memPTR;
