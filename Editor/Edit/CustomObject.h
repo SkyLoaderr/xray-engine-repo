@@ -39,7 +39,7 @@ public:
     IC int 			GetGroupIndex	()			{return m_GroupIndex;}
 
 	IC virtual bool IsRender		(){return true;}
-	virtual void 	Render			(int priority){};
+	virtual void 	Render			(int priority, bool strictB2F){};
 	virtual void 	RTL_Update		(float dT)	{};
 
 	virtual bool 	RayPick			(float& dist, Fvector& start,Fvector& dir, SRayPickInfo* pinf=NULL){ return false; };
