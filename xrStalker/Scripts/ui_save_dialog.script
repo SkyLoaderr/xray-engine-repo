@@ -119,12 +119,12 @@ function save_dialog:InitCallBacks()
 	self:AddCallback("button_cancel",ui_events.BUTTON_CLICKED,self,"OnButton_cancel_clicked")
 end
 
-function save_dialog:OnButton_ok_clicked()
-	self.m_game_cl:StopMenu(self,true)
+function save_dialog:OnButton_ok_clicked()	
+	level.start_stop_menu(self,true)
 end
 
 function save_dialog:OnButton_cancel_clicked()
-	self.m_game_cl:StopMenu(self,true)
+	level.start_stop_menu(self,true)
 end
 
 function save_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
@@ -132,7 +132,7 @@ function save_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
 
    local bind = dik_to_bind(dik)
    if bind == key_bindings.kQUIT then
-      self.m_game_cl:StopMenu(self,true)
+      level.start_stop_menu(self,true)
    end
    return true
 end
