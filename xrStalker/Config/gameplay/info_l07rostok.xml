@@ -92,9 +92,15 @@
 	<info_portion id="bar_dolg_bunker_pass"></info_portion>
 
 	<info_portion id="bar_dolg_community_start"></info_portion>
-	<info_portion id="bar_dolg_veteran_start"></info_portion>
+	<info_portion id="bar_dolg_veteran_start">
+		<task>bar_dolg_test_quest</task>
+		<action>level_tasks.notify_new_task</action>
+	</info_portion>
 	<info_portion id="bar_dolg_veteran_gain"></info_portion>
-	<info_portion id="bar_dolg_veteran_done"></info_portion>
+	<info_portion id="bar_dolg_veteran_done">
+		<disable>bar_dolg_veteran_start</disable>
+		<disable>bar_dolg_veteran_gain</disable>
+	</info_portion>
 
 	<info_portion id="bar_dolg_community_leader"></info_portion>
 	<info_portion id="bar_dolg_community_leader_talk"></info_portion>
