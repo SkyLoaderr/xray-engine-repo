@@ -80,11 +80,11 @@ protected:
 		virtual SERVER_BASE_CLASS	*server_object		(LPCSTR section) const;
 	};
 
-	struct ICLSID_ItemPredicate {
+	struct CObjectItemPredicate {
 		CLASS_ID					m_clsid;
 
-		IC							ICLSID_ItemPredicate(const CLASS_ID &clsid);
-		IC							ICLSID_ItemPredicate();
+		IC							CObjectItemPredicate(const CLASS_ID &clsid);
+		IC							CObjectItemPredicate();
 		IC	bool					operator()			(const CObjectItemAbstract *item) const;
 		IC	bool					operator()			(const CObjectItemAbstract *item1, const CObjectItemAbstract *item2) const;
 		IC	bool					operator()			(const CObjectItemAbstract *item1, const CLASS_ID &clsid) const;
@@ -108,30 +108,30 @@ protected:
 #endif
 
 public:
-	typedef xr_vector<CObjectItemAbstract*>			CLSID_STORAGE;
-	typedef CLSID_STORAGE::iterator			iterator;
-	typedef CLSID_STORAGE::const_iterator	const_iterator;
+	typedef xr_vector<CObjectItemAbstract*>		OBJECT_ITEM_STORAGE;
+	typedef OBJECT_ITEM_STORAGE::iterator		iterator;
+	typedef OBJECT_ITEM_STORAGE::const_iterator	const_iterator;
 
 protected:
-	CLSID_STORAGE					m_clsids;
+	OBJECT_ITEM_STORAGE				m_clsids;
 
 protected:
-	IC		void					add					(CObjectItemAbstract *item);
-	IC		const CLSID_STORAGE		&clsids				() const;
+	IC		void						add				(CObjectItemAbstract *item);
+	IC		const OBJECT_ITEM_STORAGE	&clsids			() const;
+	template <typename _unknown_type>
+	IC		void						add				(const CLASS_ID &clsid, LPCSTR script_clsid);
 #ifndef _EDITOR
-	IC		const CObjectItemAbstract		&item				(const CLASS_ID &clsid) const;
+	template <typename _client_type, typename _server_type>
+	IC		void						add				(const CLASS_ID &clsid, LPCSTR script_clsid);
+	IC		const CObjectItemAbstract	&item			(const CLASS_ID &clsid) const;
 #else
-	IC		const CObjectItemAbstract		*item				(const CLASS_ID &clsid, bool no_assert) const;
+	IC		const CObjectItemAbstract	*item			(const CLASS_ID &clsid, bool no_assert) const;
 #endif
 
 public:
 									CObjectFactory		();
 	virtual							~CObjectFactory		();
-	template <typename _unknown_type>
-	IC		void					add					(const CLASS_ID &clsid, LPCSTR script_clsid);
 #ifndef _EDITOR
-	template <typename _client_type, typename _server_type>
-	IC		void					add					(const CLASS_ID &clsid, LPCSTR script_clsid);
 	IC		int						script_clsid		(const CLASS_ID &clsid) const;
 			void					script_register		() const;
 	IC		CLIENT_BASE_CLASS		*client_object		(const CLASS_ID &clsid) const;

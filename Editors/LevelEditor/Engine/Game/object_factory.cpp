@@ -306,5 +306,5 @@ CObjectFactory::CObjectFactory			()
 	ADD(CScriptMonster		,CSE_ALifeDynamicObjectVisual	,CLSID_SCRIPT_OBJECT		,"script_object");
 	ADD(CBreakableObject	,CSE_ALifeObjectBreakable		,CLSID_OBJECT_BREAKABLE		,"obj_breakable");
 
-	std::sort				(m_clsids.begin(),m_clsids.end(),ICLSID_ItemPredicate());
+	std::sort				(m_clsids.begin(),m_clsids.end(),CObjectItemPredicate());
 }

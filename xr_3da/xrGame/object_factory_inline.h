@@ -28,27 +28,27 @@ IC	ref_str	CObjectFactory::CObjectItemAbstract::script_clsid	() const
 }
 #endif
 
-IC	CObjectFactory::ICLSID_ItemPredicate::ICLSID_ItemPredicate	(const CLASS_ID &clsid) :
+IC	CObjectFactory::CObjectItemPredicate::CObjectItemPredicate	(const CLASS_ID &clsid) :
 	m_clsid				(clsid)
 {
 }
 
-IC	CObjectFactory::ICLSID_ItemPredicate::ICLSID_ItemPredicate	() :
+IC	CObjectFactory::CObjectItemPredicate::CObjectItemPredicate	() :
 	m_clsid				(CLASS_ID(-1))
 {
 }
 
-IC	bool CObjectFactory::ICLSID_ItemPredicate::operator()	(const CObjectItemAbstract *item) const
+IC	bool CObjectFactory::CObjectItemPredicate::operator()	(const CObjectItemAbstract *item) const
 {
 	return				(m_clsid == item->clsid());
 }
 
-IC	bool CObjectFactory::ICLSID_ItemPredicate::operator()	(const CObjectItemAbstract *item1, const CObjectItemAbstract *item2) const
+IC	bool CObjectFactory::CObjectItemPredicate::operator()	(const CObjectItemAbstract *item1, const CObjectItemAbstract *item2) const
 {
 	return				(item1->clsid() < item2->clsid());
 }
 
-IC	bool CObjectFactory::ICLSID_ItemPredicate::operator()	(const CObjectItemAbstract *item, const CLASS_ID &clsid) const
+IC	bool CObjectFactory::CObjectItemPredicate::operator()	(const CObjectItemAbstract *item, const CLASS_ID &clsid) const
 {
 	return				(item->clsid() < clsid);
 }
@@ -73,7 +73,7 @@ CObjectFactory::SERVER_BASE_CLASS *CObjectFactory::CObjectItem<_client_type,_ser
 	return				(xr_new<SERVER_TYPE>(section));
 }
 
-IC	const CObjectFactory::CLSID_STORAGE &CObjectFactory::clsids	() const
+IC	const CObjectFactory::OBJECT_ITEM_STORAGE &CObjectFactory::clsids	() const
 {
 	return				(m_clsids);
 }
@@ -81,14 +81,14 @@ IC	const CObjectFactory::CLSID_STORAGE &CObjectFactory::clsids	() const
 #ifndef _EDITOR
 IC	const CObjectFactory::CObjectItemAbstract &CObjectFactory::item	(const CLASS_ID &clsid) const
 {
-	const_iterator		I = std::lower_bound(clsids().begin(),clsids().end(),clsid,ICLSID_ItemPredicate());
+	const_iterator		I = std::lower_bound(clsids().begin(),clsids().end(),clsid,CObjectItemPredicate());
 	VERIFY				((I != clsids().end()) && ((*I)->clsid() == clsid));
 	return				(**I);
 }
 #else
 IC	const CObjectFactory::CObjectItemAbstract *CObjectFactory::item	(const CLASS_ID &clsid, bool no_assert) const
 {
-	const_iterator		I = std::lower_bound(clsids().begin(),clsids().end(),clsid,ICLSID_ItemPredicate());
+	const_iterator		I = std::lower_bound(clsids().begin(),clsids().end(),clsid,CObjectItemPredicate());
 	if ((I != clsids().end()) && ((*I)->clsid() == clsid)) {
 		R_ASSERT		(no_assert);
 		return			(0);
@@ -134,7 +134,7 @@ IC	void CObjectFactory::add	(const CLASS_ID &clsid, LPCSTR script_clsid)
 
 IC	void CObjectFactory::add	(CObjectItemAbstract *item)
 {
-	const_iterator		I = std::find_if(clsids().begin(),clsids().end(),ICLSID_ItemPredicate(item->clsid()));
+	const_iterator		I = std::find_if(clsids().begin(),clsids().end(),CObjectItemPredicate(item->clsid()));
 	VERIFY				(I == clsids().end());
 	m_clsids.push_back	(item);
 }
@@ -142,7 +142,7 @@ IC	void CObjectFactory::add	(CObjectItemAbstract *item)
 #ifndef _EDITOR
 IC	int	CObjectFactory::script_clsid	(const CLASS_ID &clsid) const
 {
-	const_iterator		I = std::lower_bound(clsids().begin(),clsids().end(),clsid,ICLSID_ItemPredicate());
+	const_iterator		I = std::lower_bound(clsids().begin(),clsids().end(),clsid,CObjectItemPredicate());
 	VERIFY				((I != clsids().end()) && ((*I)->clsid() == clsid));
 	return				(int(I - clsids().begin()));
 }
