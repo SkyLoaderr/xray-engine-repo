@@ -29,7 +29,7 @@ CPGObject::CPGObject(LPCSTR ps_name, IRender_Sector* S, BOOL bAutoRemove)
 
 	// sheduled
 	shedule_Min			= 20;
-	shedule_Max			= 100;
+	shedule_Max			= 50;
 }
 
 //----------------------------------------------------

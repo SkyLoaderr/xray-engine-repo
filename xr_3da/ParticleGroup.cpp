@@ -243,7 +243,7 @@ void CParticleGroup::OnFrame(u32 frame_dt)
         		m_ElapsedLimit 	-= uDT_STEP;
 				if (m_ElapsedLimit<0){
             		m_ElapsedLimit 	= m_Def->m_TimeLimit;
-                    Stop		(false);
+                    Stop		(true);
 					return;
 				}
 			}
@@ -285,7 +285,8 @@ BOOL CParticleGroup::Compile(CPGDef* def)
         // load action list
         // get pointer to specified action list.
         PAPI::PAHeader* pa		= _GetListPtr(m_HandleActionList);
-        if(pa == NULL)	return FALSE; // ERROR
+        if(pa == NULL)	
+			return FALSE; // ERROR
 
         // start append actions
         pNewActionList			(m_HandleActionList);
