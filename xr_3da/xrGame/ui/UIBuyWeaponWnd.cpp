@@ -234,39 +234,18 @@ void CUIBuyWeaponWnd::Init(char *strSectionName)
 	// Заполняем массив со списком оружия
 	std::strcpy(m_SectionName, strSectionName);
 	InitWpnSectStorage();
+	FillWpnSubBags();
 }
 
 void CUIBuyWeaponWnd::InitInventory() 
 {
-	CInventoryOwner *pInvOwner = dynamic_cast<CInventoryOwner*>(Level().CurrentEntity());
-
-	if(!pInvOwner) return;
-
-	CInventory* pInv = &pInvOwner->inventory();
-
 	m_pMouseCapturer = NULL;
 
-	SetCurrentItem(NULL);
-
+/*
 	UIPropertiesBox.Hide();
 	UIArtifactMergerWnd.Hide();
 	UISleepWnd.Hide();
 
-	m_pInv = pInv;
-
-	//инициализировать информацию о персонаже
-	UICharacterInfo.InitCharacter(pInvOwner);
-
-	//очистить после предыдущего запуска
-	UITopList[0].DropAll();
-	UITopList[1].DropAll();
-	UITopList[2].DropAll();
-	UITopList[3].DropAll();
-	UITopList[4].DropAll();
-	UIOutfitSlot.DropAll();
-
-	UIBeltList.DropAll();
-//	UIBagList.DropAll();
 	m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex()]->DropAll();
 
 
@@ -363,14 +342,13 @@ void CUIBuyWeaponWnd::InitInventory()
 			R_ASSERT(m_iUsedItems<MAX_ITEMS);
 		}
 	}
+*/
 
 
 //	ruck_list = pInv->m_ruck;
 //	ruck_list.sort(GreaterRoomInRuck);
 
-	//Рюкзак
-	ClearWpnSubBags();
-	FillWpnSubBags();
+
 /*
 	for(it =  ruck_list.begin(); ruck_list.end() != it; ++it) 
 	{
@@ -506,6 +484,17 @@ bool CUIBuyWeaponWnd::OutfitSlotProc(CUIDragDropItem* pItem, CUIDragDropList* pL
 //в рюкзак
 bool CUIBuyWeaponWnd::BagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
+//	CUIBuyWeaponWnd* this_inventory = dynamic_cast<CUIBuyWeaponWnd*>(pList->GetParent()->GetParent());
+//	R_ASSERT2(this_inventory, "wrong parent addressed as inventory wnd");
+//
+//	CUIDragDropItemMP *pDDItemMP = dynamic_cast<CUIDragDropItemMP*>(pItem);
+//
+//	// У нас не может быть обычная вещь в этом диалоге.
+//	R_ASSERT(pDDItemMP);
+//	
+//	// Применяем хитрый трюк. В этой процедуре переносим вещь, и запрещаем дальнейшую обработку
+//	// SHIT!
+
 	return true;
 }
 
