@@ -167,6 +167,9 @@
 					RelativePath=".\Config\creatures\m_stalker.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\creatures\m_stalker_zombied.ltx">
+				</File>
+				<File
 					RelativePath=".\config\creatures\M_tushkano.ltx">
 				</File>
 				<File
@@ -389,6 +392,9 @@
 				</File>
 				<File
 					RelativePath=".\Config\misc\effectors.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\misc\gulag_bar.ltx">
 				</File>
 				<File
 					RelativePath=".\Config\misc\gulag_tasks.ltx">
@@ -1456,6 +1462,9 @@
 					<Filter
 						Name="Gulags"
 						Filter="">
+						<File
+							RelativePath=".\scripts\gulag_bar.script">
+						</File>
 						<File
 							RelativePath=".\Scripts\gulag_military.script">
 						</File>
