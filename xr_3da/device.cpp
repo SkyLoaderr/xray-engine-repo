@@ -14,7 +14,7 @@
 #pragma warning(default:4995)
 
 ENGINE_API CRenderDevice Device;
-
+ENGINE_API BOOL g_bRendering = FALSE; 
 BOOL CRenderDevice::Begin	()
 {
 	HW.Validate		();
@@ -39,6 +39,7 @@ BOOL CRenderDevice::Begin	()
 	RCache.OnFrameBegin		();
 	if (HW.Caps.SceneMode)	overdrawBegin	();
 	FPU::m24r	();
+	g_bRendering = 	TRUE;
 	return		TRUE;
 }
 
@@ -55,6 +56,7 @@ void CRenderDevice::Clear	()
 void CRenderDevice::End		(void)
 {
 	VERIFY	(HW.pDevice);
+	g_bRendering = 	FALSE;
 
 	if (HW.Caps.SceneMode)	overdrawEnd		();
 

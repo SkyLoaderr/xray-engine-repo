@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #include "uistaticitem.h"
 #include "hudmanager.h"
+extern ENGINE_API BOOL g_bRendering; 
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -52,7 +53,9 @@ void CUIStaticItem::Init(LPCSTR tex, LPCSTR sh, int left, int top, u32 align)
 
 void CUIStaticItem::Render		(const ref_shader& sh)
 {
+	VERIFY(g_bRendering);
 	// установить обязательно перед вызовом CustomItem::Render() !!!
+	VERIFY(sh?sh:hShader);
 	RCache.set_Shader			(sh?sh:hShader);
 	// convert&set pos
 	Ivector2		bp;
@@ -135,7 +138,9 @@ void CUIStaticItem::Render		(const ref_shader& sh)
 //--------------------------------------------------------------------
 void CUIStaticItem::Render(float angle, const ref_shader& sh)
 {
+	VERIFY(g_bRendering);
 	// установить обязательно перед вызовом CustomItem::Render() !!!
+	VERIFY(sh?sh:hShader);
 	RCache.set_Shader			(sh?sh:hShader);
 	// convert&set pos
 	Ivector2		bp;
@@ -160,7 +165,9 @@ void CUIStaticItem::Render(float angle, const ref_shader& sh)
 void CUIStaticItem::Render(float x1, float y1, float x2, float y2, 
 						   float x3, float y3, float x4, float y4, const ref_shader& sh)
 {
+	VERIFY(g_bRendering);
 	// установить обязательно перед вызовом CustomItem::Render() !!!
+	VERIFY(sh?sh:hShader);
 	RCache.set_Shader		(sh?sh:hShader);
 	// convert&set pos
 	Ivector2		bp;

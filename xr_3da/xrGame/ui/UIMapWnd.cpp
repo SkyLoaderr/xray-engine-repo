@@ -314,7 +314,7 @@ void CUIMapWnd::InitLocalMapObjectives()
 	m_pActorSpot = map_spot;
 
 	//!!! предварительный рендер неизвестно зачем
-	m_pActorSpot->GetStaticItem()->Render();
+//	m_pActorSpot->GetStaticItem()->Render();
 
 	//информация о выбранном объекте
 	UIStaticInfo.Show(false);
