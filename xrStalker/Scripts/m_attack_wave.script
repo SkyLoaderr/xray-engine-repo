@@ -1,3 +1,16 @@
+function boar_callback (obj, action_type, index)
+
+	if index < 0 or then return end
+
+    local ptr = patrol (obj:patrol ())
+
+	if ptr:flag (index, 1) == false then return end
+	action_first (obj, anim ("stand_attack_1"), move (move.act_stand_idle, move.default, tways[a]), cond (cond.anim_end))
+	obj:clear_callback (game.movement)
+
+end
+
+
 function main ()
 
     local t = {
@@ -47,6 +60,8 @@ function main ()
         t[a]:script (true, m_attack_wave.script_name ())
         action (t[a], move (move.act_stand_idle, move.default, tways[a]), cond (cond.time_end, 1000000000))
         end
+
+	t[2]:set_callback (boar_callback, game.movement)
 
     wait (20000)
 
