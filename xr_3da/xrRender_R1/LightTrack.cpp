@@ -101,6 +101,7 @@ void	CROS_impl::update	(IRenderable* O)
 	dwFrame				= Device.dwFrame;
 	if					(0==O)								return;
 	VERIFY				(dynamic_cast<CROS_impl*>(O->renderable.ROS));
+	float	dt			=	Device.fTimeDelta;
 
 	// select sample
 	Fvector	position;	O->renderable.xform.transform_tiny	(position,O->renderable.visual->vis.sphere.P);
@@ -116,7 +117,7 @@ void	CROS_impl::update	(IRenderable* O)
 			 light*	sun		=		RImplementation.Lights.sun_adapted	;
 			#endif
 			Fvector	direction;	direction.set	(sun->direction).invert().normalize	();
-			sun_value		=	(g_pGameLevel->ObjectSpace.RayTest(position,direction,500.f,Collide::rqtBoth,&cache_sun))?1.f:0.f;
+			sun_value		=	(g_pGameLevel->ObjectSpace.RayTest(position,direction,500.f,collide::rqtBoth,&cache_sun))?1.f:0.f;
 		}
 	}
 	
@@ -128,7 +129,7 @@ void	CROS_impl::update	(IRenderable* O)
 
 		// take sample
 		Fvector	direction;	direction.set	(hdir[sample][0],hdir[sample][1],hdir[sample][2]).normalize	();
-		result[sample]	=	!!g_pGameLevel->ObjectSpace.RayTest(position,direction,500.f,Collide::rqtBoth,&cache[sample]);
+		result[sample]	=	!!g_pGameLevel->ObjectSpace.RayTest(position,direction,500.f,collide::rqtBoth,&cache[sample]);
 	}
 
 	// light-tracing
@@ -137,7 +138,7 @@ void	CROS_impl::update	(IRenderable* O)
 	if		(bTraceLights)	{
 		// Select nearest lights
 		Fvector					bb_size	=	{radius,radius,radius};
-		g_SpatialSpace->q_box				(RImplementation.lstSpatial,0,STYPE_LIGHTSOURCE,pos,bb_size);
+		g_SpatialSpace->q_box				(RImplementation.lstSpatial,0,STYPE_LIGHTSOURCE,position,bb_size);
 		for (u32 o_it=0; o_it<RImplementation.lstSpatial.size(); o_it++)	{
 			ISpatial*	spatial		= RImplementation.lstSpatial[o_it];
 			light*		source		= (light*)	(spatial->dcast_Light());
@@ -164,7 +165,7 @@ void	CROS_impl::update	(IRenderable* O)
 
 			// point/spot
 			float	f			=	D.sub(P,LP).magnitude();
-			if (g_pGameLevel->ObjectSpace.RayTest(LP,D.div(f),f,Collide::rqtStatic,&I->cache))	amount -=	lt_dec;
+			if (g_pGameLevel->ObjectSpace.RayTest(LP,D.div(f),f,collide::rqtStatic,&I->cache))	amount -=	lt_dec;
 			else																				amount +=	lt_inc;
 			I->test				+=	amount * dt;	clamp	(I->test,-.5f,1.f);
 			I->energy			=	.9f*I->energy + .1f*I->test;
@@ -187,7 +188,6 @@ void	CROS_impl::update	(IRenderable* O)
 	}
 
 	// hemi & sun: update and smooth
-	float	dt				=	Device.fTimeDelta;
 	float	l_f				=	dt*lt_smooth;
 	float	l_i				=	1.f-l_f;
 	int		_pass			=	0;
