@@ -234,8 +234,9 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	setEnabled				(E->s_flags&M_SPAWN_OBJECT_LOCAL);
 	setActive				(TRUE);
 
-	patch_frame			= 0;
-	patch_position.set	(vPosition);
+	patch_frame				= 0;
+	patch_position.set		(vPosition);
+	die_hide				= 1.f;
 
 	Engine.Sheduler.Unregister	(this);
 	Engine.Sheduler.Register	(this,TRUE);
@@ -428,6 +429,37 @@ void CActor::ZoneEffect	(float z_amount)
 //	sndZoneDetector.feedback->SetPosition		(P);
 }
 
+void CActor::UpdateCL()
+{
+	inherited::UpdateCL();
+
+	// Analyze Die-State
+	if (!g_Alive())			
+	{
+		if (die_hide>0)		
+		{
+			float dt			=	Device.fTimeDelta;
+			die_hide			-=	.01f*dt;
+			if (die_hide>0)		{
+				Fmatrix					mScale,mTranslate;
+				float	down			= (1.f-die_hide)/.1f;
+				vScale.set				(1,die_hide,1);
+				mScale.scale			(vScale);
+				mTranslate.translate	(vPosition.x,vPosition.y-down,vPosition.z);
+				clTransform.mul_43		(mTranslate,mRotate);
+				clTransform.mulB_43		(mScale);
+			}
+			else if (Local()) 
+			{
+				// Request destroy
+				NET_Packet			P;
+				u_EventGen			(P,GE_DESTROY,ID());
+				u_EventSend			(P);
+			}
+		}
+	}
+}
+
 void CActor::Update	(DWORD DT)
 {
 	if (!getEnabled())	return;
@@ -463,23 +495,6 @@ void CActor::Update	(DWORD DT)
 	clamp					(DT,0ul,100ul);
 	float	dt				= float(DT)/1000.f;
 
-	// Analyze Die-State
-	if (!g_Alive())			
-	{
-		if (die_hide>0)		
-		{
-			die_hide			-= .01f*dt;
-			if (die_hide>0)		vScale.set			(1,die_hide,1);
-			else if (Local()) 
-			{
-				// Request destroy
-				NET_Packet			P;
-				u_EventGen			(P,GE_DESTROY,ID());
-				u_EventSend			(P);
-			}
-		}
-	}
-	
 	// Check controls, create accel, prelimitary setup "mstate_real"
 	float	Jump	= 0;
 	if (Local())	{
