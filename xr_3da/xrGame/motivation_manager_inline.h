@@ -212,7 +212,7 @@ IC	void CSMotivationManager::propagate	(u32 motivation_id, float weight)
 	if (I == E) {
 		xr_map<u32,float>::iterator	i = m_actions.find(motivation_id);
 		if (m_actions.end() == i)
-			m_actions.insert(std::make_pair(motivation_id,weight));
+			m_actions.insert	(std::make_pair(motivation_id,weight));
 		else
 			(*i).second			+= weight;
 		return;
@@ -222,7 +222,7 @@ IC	void CSMotivationManager::propagate	(u32 motivation_id, float weight)
 	m_edges.resize		(vertex->edges().size());
 	xr_vector<float>::iterator	J = m_edges.begin();
 	for ( ; I != E; ++I, ++J) {
-		u32				vertex_id = graph().vertex((*I).vertex_index())->vertex_id();
+		u32				vertex_id = graph().vertex((*I).vertex_id())->vertex_id();
 		*J				= vertex->data()->evaluate(vertex_id);
 		total_value		+= *J;
 	}
