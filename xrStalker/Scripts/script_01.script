@@ -32,11 +32,10 @@ function main()
 	local sound_cough = sound_object("scripts\\idle\\cough1")
 	local sound_holodno = sound_object("scripts\\idle\\say_holodno")
 
-	wait		(2000)
-
+	wait		(1000)
 	stalker1:script	(true,script_01.script_name())
 	stalker2:script	(true,script_01.script_name())
- 	action(                                                                                                       
+	action(                                                                                                       
 	    stalker1,
 	  	move	(move.standing, move.walk,move.line,patrol("way0002")),
 		cond	(cond.time_end, 100000)
@@ -47,7 +46,7 @@ function main()
 		cond	(cond.time_end, 100000)
 	)
 	sound_cough:play_at_pos		(stalker1,stalker1:position(),0);
-	wait		(3000)
+	wait		(4000)
 	sound_holodno:play_at_pos		(stalker1,stalker1:position(),0);
 
 	event:clear_callback(true)
