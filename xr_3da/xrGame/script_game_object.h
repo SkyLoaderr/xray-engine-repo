@@ -214,11 +214,14 @@ public:
 			void				SetTradeCallback	(const luabind::object &object, LPCSTR method);
 			void				ClearTradeCallback	();
 			const xr_vector<CScriptTask>& TraderArtefactTask ();
-	
-//////////////////////////////////////////////////////////////////////////
+
 //
 //////////////////////////////////////////////////////////////////////////
-
+	////////////////////////////use calback///////////////////////////////////////////////
+			void				SetUseCallback		(const luabind::functor<void> &tpUseCallback);
+			void				SetUseCallback		(const luabind::object &object, LPCSTR method);
+			void				ClearUseCallback	();
+//////////////////////////////////////////////////////////////////////////
 
 			LPCSTR				GetPatrolPathName	();
 			void				SetCallback			(const luabind::object &lua_object, LPCSTR method, const ScriptMonster::EActionType tActionType);

@@ -4414,6 +4414,9 @@
 						<File
 							RelativePath=".\script_game_object_trader.cpp">
 						</File>
+						<File
+							RelativePath=".\script_game_object_use.cpp">
+						</File>
 					</Filter>
 					<Filter
 						Name="ScriptHit"
@@ -5037,6 +5040,16 @@
 							</File>
 							<File
 								RelativePath=".\holder_custom.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="UsableScriptObject"
+							Filter="">
+							<File
+								RelativePath=".\UsableScriptObject.cpp">
+							</File>
+							<File
+								RelativePath=".\UsableScriptObject.h">
 							</File>
 						</Filter>
 					</Filter>

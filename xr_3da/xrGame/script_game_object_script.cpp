@@ -304,7 +304,11 @@ void CScriptGameObject::script_register(lua_State *L)
 			.def("heli_go_patrol",				&CScriptGameObject::heli_go_patrol)
 			.def("heli_go_to_point",			&CScriptGameObject::heli_go_to_point)
 			.def("heli_last_point_time",		&CScriptGameObject::heli_last_point_time)
-			.def("get_physics_shell",			&CScriptGameObject::get_physics_shell),
+			.def("get_physics_shell",			&CScriptGameObject::get_physics_shell)
+
+			.def("set_use_callback",			(void (CScriptGameObject::*)(const luabind::functor<void> &))(CScriptGameObject::SetUseCallback))
+			.def("set_use_callback",			(void (CScriptGameObject::*)(const luabind::object &, LPCSTR))(CScriptGameObject::SetUseCallback))
+			.def("clear_use_callback",			(void (CScriptGameObject::*)(void))(CScriptGameObject::ClearUseCallback)),
 //		class_<CObject>("base_client_class")
 //			.def(								constructor<>()),
 //
