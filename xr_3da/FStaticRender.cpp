@@ -84,6 +84,9 @@ void CRender::Calculate()
 	g_fFarSq	=	fFar; 
 	g_fFarSq	*=	g_fFarSq;
 	g_fSCREEN	=	float(Device.dwWidth*Device.dwHeight);
+	
+	// HOM rendering
+	HOM.Render	(ViewBase);
 
 	// Build lights visibility & perform basic initialization
 	// Lights

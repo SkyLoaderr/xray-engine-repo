@@ -277,7 +277,8 @@ void CRender::add_Static(FBasicVisual *pVisual, CVisiCache C)
 	// Check frustum visibility and calculate distance to visual's center
 	EFC_Visible	VIS;
 	VIS = View->visibleVisual(C,pVisual);
-	if (fcvNone==VIS) { return; }
+	if (fcvNone==VIS)					return;
+	if (!HOM.Visible(pVisual->bv_BBox))	return;
 	
 	// If we get here visual is visible or partially visible
 	vector<FBasicVisual*>::iterator I,E;	// it may be usefull for 'hierrarhy' visuals
