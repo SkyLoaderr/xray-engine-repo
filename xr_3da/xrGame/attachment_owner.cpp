@@ -60,11 +60,12 @@ void CAttachmentOwner::renderable_Render		()
 
 void __stdcall AttachmentCallback(CKinematics *tpKinematics)
 {
-	CAttachmentOwner		*attachment_owner = smart_cast<CAttachmentOwner*>(static_cast<CObject*>(tpKinematics->Update_Callback_Param));
+	CGameObject				*game_object = smart_cast<CGameObject*>(static_cast<CObject*>(tpKinematics->Update_Callback_Param));
+	VERIFY					(game_object);
+	
+	CAttachmentOwner		*attachment_owner = smart_cast<CAttachmentOwner*>(game_object);
 	VERIFY					(attachment_owner);
 
-	CGameObject				*game_object = smart_cast<CGameObject*>(attachment_owner);
-	VERIFY					(game_object);
 	CKinematics				*kinematics = smart_cast<CKinematics*>(game_object->Visual());
 
 	xr_vector<CAttachableItem*>::const_iterator	I = attachment_owner->attached_objects().begin();
