@@ -207,6 +207,8 @@ protected:
 	//для текущего активного актера и оружия
 	CActor*				m_pActor;	
 	CWeapon*			m_pWeapon;
+	CInventoryItem*		m_pItem;
+
 	int					m_iWeaponIconX;
 	int					m_iWeaponIconY;
 	int					m_iWeaponIconWidth;

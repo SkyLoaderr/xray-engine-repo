@@ -389,10 +389,15 @@ public:
 			void			SpawnAmmo			(u32 boxCurr = 0xffffffff, 
 													LPCSTR ammoSect = NULL, 
 													u32 ParentID = 0xffffffff);
+
+	//показывать ли кол-во патронов на экране
+	virtual bool			ShowAmmo			() {return m_bShowAmmo;	}
 protected:
 	int						iAmmoElapsed;		// ammo in magazine, currently
 	int						iMagazineSize;		// size (in bullets) of magazine
 	int						iBuckShot;
+
+	bool					m_bShowAmmo;
 
 	//для подсчета в GetAmmoCurrent
 	mutable int				iAmmoCurrent;

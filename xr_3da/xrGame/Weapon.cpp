@@ -68,6 +68,7 @@ CWeapon::CWeapon(LPCSTR name)
 
 	m_fCurrentCartirdgeDisp = 1.f;
 
+	m_bShowAmmo = true;
 }
 
 CWeapon::~CWeapon		()
@@ -256,6 +257,11 @@ void CWeapon::Load		(LPCSTR section)
 
 	iAmmoElapsed		= pSettings->r_s32		(section,"ammo_elapsed"		);
 	iMagazineSize		= pSettings->r_s32		(section,"ammo_mag_size"	);
+	
+	if(pSettings->line_exist(section,"show_ammo"))
+		m_bShowAmmo = !!pSettings->r_bool(section,"show_ammo");
+	else
+		m_bShowAmmo = true;
 	
 	////////////////////////////////////////////////////
 	// дисперсия стрельбы

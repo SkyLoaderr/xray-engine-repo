@@ -13,6 +13,7 @@
 #include "../inventory.h"
 #include "../UIGameSP.h"
 #include "../weaponmagazined.h"
+#include "../missile.h"
 #include "../xrServer_objects_ALife.h"
 #include "../alife_simulator.h"
 #include "../alife_object_registry.h"
@@ -78,6 +79,7 @@ CUIMainIngameWnd::CUIMainIngameWnd()
 {
 	m_pActor					= NULL;
 	m_pWeapon					= NULL;
+	m_pItem						= NULL;
 
 	m_bShowHudInfo				= true;
 	m_bShowHudCrosshair			= false;
@@ -391,6 +393,7 @@ void CUIMainIngameWnd::Update()
 	m_pActor = smart_cast<CActor*>(Level().CurrentEntity());
 	if (!m_pActor) 
 	{
+		m_pItem = NULL;
 		m_pWeapon = NULL;
 		CUIWindow::Update();
 		return;
@@ -424,67 +427,98 @@ void CUIMainIngameWnd::Update()
 
 	if(m_pActor->inventory().GetActiveSlot() < m_pActor->inventory().m_slots.size()) 
 	{
-		CWeapon* pWeapon = smart_cast<CWeapon*>(m_pActor->inventory().m_slots[
-										m_pActor->inventory().GetActiveSlot()].m_pIItem); 
-
+		PIItem item =  m_pActor->inventory().m_slots[m_pActor->inventory().GetActiveSlot()].m_pIItem;
+		CWeapon* pWeapon = smart_cast<CWeapon*>(item); 
+		CMissile* pMissile = smart_cast<CMissile*>(item); 
 		CWeaponMagazined* pWeaponMagazined = smart_cast<CWeaponMagazined*>(pWeapon);
 		
-		if(pWeapon)
+		bool active_item_changed = false;
+		if(item && m_pItem != item)
+		{
+			m_pItem = item;
+			active_item_changed = true;
+		}
+
+		if(pMissile && active_item_changed)
+		{
+			UIWeaponIcon.Show(false);
+			UIWeaponSignAmmo.Show(false);
+
+			UIWeaponBack.SetText(m_pItem->NameShort());
+			UIWeaponBack.SetTextX(static_cast<int>((UIWeaponBack.GetAbsoluteRect().right - 
+				UIWeaponBack.GetAbsoluteRect().left) * 0.5 - 
+				UIWeaponIcon.GetFont()->SizeOf(m_pItem->NameShort()) / 2));
+
+		}
+		else if(pWeapon)
 		{
 			// Remember last used ammo types, and if this type doesn't changed 
 			// then no need to update info
 			static u32			prevAmmoID		= static_cast<u32>(-1);
 
-			if(m_pWeapon != pWeapon || prevAmmoID != m_pWeapon->m_ammoType)
+			if(active_item_changed || prevAmmoID != m_pWeapon->m_ammoType)
 			{
-
 				m_pWeapon = pWeapon;
 
-				//if (xr_strcmp(m_pWeapon->NameShort(), "knife") != 0)
-				if (pWeaponMagazined)
+				if(m_pWeapon->ShowAmmo())
 				{
-					UIWeaponIcon.Show(true);
-				}
-				else
-				{
-					UIWeaponIcon.Show(false);
-				}
+					//if (xr_strcmp(m_pWeapon->NameShort(), "knife") != 0)
+					if (pWeaponMagazined)
+					{
+						UIWeaponIcon.Show(true);
+					}
+					else
+					{
+						UIWeaponIcon.Show(false);
+					}
 
-				prevAmmoID			= m_pWeapon->m_ammoType;
-				shared_str sect_name	= m_pWeapon->m_ammoTypes[m_pWeapon->m_ammoType];
-				
-				//properties used by inventory menu
-				int m_iGridWidth	= pSettings->r_u32(sect_name, "inv_grid_width");
-				int m_iGridHeight	= pSettings->r_u32(sect_name, "inv_grid_height");
+					UIWeaponSignAmmo.Show(true);
 
-				int m_iXPos			= pSettings->r_u32(sect_name, "inv_grid_x");
-				int m_iYPos			= pSettings->r_u32(sect_name, "inv_grid_y");
+					prevAmmoID			= m_pWeapon->m_ammoType;
+					shared_str sect_name	= m_pWeapon->m_ammoTypes[m_pWeapon->m_ammoType];
 
-				UIWeaponIcon.GetUIStaticItem().SetOriginalRect(
+					//properties used by inventory menu
+					int m_iGridWidth	= pSettings->r_u32(sect_name, "inv_grid_width");
+					int m_iGridHeight	= pSettings->r_u32(sect_name, "inv_grid_height");
+
+					int m_iXPos			= pSettings->r_u32(sect_name, "inv_grid_x");
+					int m_iYPos			= pSettings->r_u32(sect_name, "inv_grid_y");
+
+					UIWeaponIcon.GetUIStaticItem().SetOriginalRect(
 						m_iXPos * INV_GRID_WIDTH,
 						m_iYPos * INV_GRID_HEIGHT,
 						m_iGridWidth * INV_GRID_WIDTH,
 						m_iGridHeight * INV_GRID_HEIGHT);
-				float scale_x = float(m_iWeaponIconWidth)/
-					float(m_iGridWidth*INV_GRID_WIDTH);
+					float scale_x = float(m_iWeaponIconWidth)/
+						float(m_iGridWidth*INV_GRID_WIDTH);
 
-				float scale_y = float(m_iWeaponIconHeight)/
-					float(m_iGridHeight*INV_GRID_HEIGHT);
+					float scale_y = float(m_iWeaponIconHeight)/
+						float(m_iGridHeight*INV_GRID_HEIGHT);
 
-				float scale = scale_x<scale_y?scale_x:scale_y;
+					float scale = scale_x<scale_y?scale_x:scale_y;
 					UIWeaponIcon.SetTextureScale(scale);
 					UIWeaponIcon.SetWidth(iFloor(0.5f+ m_iGridWidth*INV_GRID_WIDTH*scale));
 					UIWeaponIcon.SetHeight(iFloor(0.5f+ m_iGridHeight*INV_GRID_HEIGHT*scale));
 
-				UIWeaponIcon.MoveWindow(m_iWeaponIconX + 
-					(m_iWeaponIconWidth - UIWeaponIcon.GetWidth())/2,
-					m_iWeaponIconY + 
-					(m_iWeaponIconHeight - UIWeaponIcon.GetHeight())/2);
+					UIWeaponIcon.MoveWindow(m_iWeaponIconX + 
+						(m_iWeaponIconWidth - UIWeaponIcon.GetWidth())/2,
+						m_iWeaponIconY + 
+						(m_iWeaponIconHeight - UIWeaponIcon.GetHeight())/2);
+				}
+				else
+				{
+					UIWeaponIcon.Show(false);
+					UIWeaponSignAmmo.Show(false);
+				}
 			}
 
-			UIWeaponBack.SetText(m_pWeapon->NameShort());
-			UIWeaponBack.SetTextX(static_cast<int>((UIWeaponBack.GetAbsoluteRect().right - UIWeaponBack.GetAbsoluteRect().left) * 0.5 - UIWeaponIcon.GetFont()->SizeOf(m_pWeapon->NameShort()) / 2));
-			
+
+			UIWeaponBack.SetText(m_pItem->NameShort());
+			UIWeaponBack.SetTextX(static_cast<int>((UIWeaponBack.GetAbsoluteRect().right - 
+				UIWeaponBack.GetAbsoluteRect().left) * 0.5 - 
+				UIWeaponIcon.GetFont()->SizeOf(m_pItem->NameShort()) / 2));
+
+
 			int	AE = m_pWeapon->GetAmmoElapsed();
 			int	AC = m_pWeapon->GetAmmoCurrent();
 			if((AE>=0)&&(AC>=0))
