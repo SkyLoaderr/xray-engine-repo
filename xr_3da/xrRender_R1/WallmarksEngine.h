@@ -32,13 +32,13 @@ private:
 private:
 	void		BuildMatrix			(Fmatrix &dest, float invsz, const Fvector& from);
 	void		RecurseTri			(u32 T,	Fmatrix &mView, wallmark	&W);
-	void		AddWallmark_internal(CDB::TRI* tri, const Fvector &contact_point, ref_shader hTexture, float sz);
+	void		AddWallmark_internal(CDB::TRI* tri, Fvector* verts, const Fvector &contact_point, ref_shader hTexture, float sz);
 
 	wallmark*	wm_allocate			(ref_shader&	S	);
 	void		wm_render			(wallmark*	W, FVF::LIT* &V);
 	void		wm_destroy			(wallmark*	W	);
 public:
-	void		AddWallmark			(CDB::TRI* tri, const Fvector &contact_point, ref_shader hTexture, float sz);
+	void		AddWallmark			(CDB::TRI* tri, Fvector* verts, const Fvector &contact_point, ref_shader hTexture, float sz);
 	void		Render				();
 
 	CWallmarksEngine				();
