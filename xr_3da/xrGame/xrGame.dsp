@@ -506,6 +506,9 @@ SOURCE=.\FlyerCameras.cpp
 SOURCE=.\FlyerInput.cpp
 # End Source File
 # End Group
+# Begin Group "AI_Monsters"
+
+# PROP Default_Filter ""
 # Begin Group "ai_human"
 
 # PROP Default_Filter ""
@@ -517,6 +520,7 @@ SOURCE=.\AI_Human.cpp
 
 SOURCE=.\AI_Human.h
 # End Source File
+# End Group
 # End Group
 # Begin Source File
 
