@@ -2,6 +2,7 @@
 #include "resource.h"
 #include "log.h"
 #include <time.h>
+#include <mmsystem.h>
 
 //************************* Log-thread data
 static xrCriticalSection	csLog;

@@ -159,8 +159,10 @@ public:
 protected:
 	OBJECT_ITEM_STORAGE					m_clsids;
 	bool								m_initialized;
+#ifndef NO_XR_GAME
 	mutable CLIENT_SCRIPT_BASE_CLASS	*m_client_instance;
 	mutable SERVER_SCRIPT_BASE_CLASS	*m_server_instance;
+#endif
 
 protected:
 			void						register_classes();

@@ -11,6 +11,7 @@
 #include "xr_spawn_merge.h"
 #include "xrCrossTable.h"
 #include "path_test.h"
+#include <mmsystem.h>
 
 #pragma comment(linker,"/STACK:0x800000,0x400000")
 
