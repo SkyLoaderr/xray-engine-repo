@@ -333,6 +333,7 @@
                 <next>6</next>
             </phrase>
             <phrase id="1">
+				<precondition>escape_dialog.novice_gane_job</precondition>
                 <text>Я посмотрю что можно сделать.[Задание]</text>
                 <give_info>escape_novice_need_weapon</give_info>
                 <next>5</next>
@@ -367,7 +368,6 @@
     <dialog id="escape_novice_thank_actor">
         <phrase_list>
             <phrase id="0">
-			<precondition>escape_dialog.bandits_dead</precondition>
                 <text>Ну спасибо браток. Не забуду. Я твой должник навеки.</text>
             </phrase>
         </phrase_list>
