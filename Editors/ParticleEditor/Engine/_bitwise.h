@@ -26,7 +26,7 @@ IC void set_positive(float &f)	{ (*LPDWORD(&f)) &= ~fdSGN;			}
  * that I discovered a few months ago.
  */
 IC	int		btwLowestBitMask(int v)		{	return (v & -v);	}
-IC	u32	btwLowestBitMask(u32 x)	{   return x & ~(x-1);	}
+IC	u32		btwLowestBitMask(u32 x)	{   return x & ~(x-1);	}
 
 /* Ok, so now we are cooking on gass. Here we use this function for some */
 /* rather useful utility functions */
