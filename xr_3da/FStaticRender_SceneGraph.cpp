@@ -30,16 +30,18 @@ void CRender::InsertSG_Dynamic	(CVisual *pVisual, Fvector& Center)
 	if (pVisual->hShader->Flags.bStrictB2F) {
 		SceneGraph::mapSorted_Node* N		= mapSorted.insertInAnyWay(distSQ);
 		N->val.pVisual			= pVisual;
-		N->val.Matrix			= *pTransform;
+		N->val.Matrix			= *val_pTransform;
 		N->val.vCenter.set		(Center);
-		N->val.iLighting		= iLightLevel;
+		N->val.iLighting		= val_iLightLevel;
+		C->val.nearer			= val_bNearer;
 	} else {
 		SceneGraph::mapMatrix_Node* N		= mapMatrix.insert(pVisual->hShader);
 		SceneGraph::mapMatrixItem::TNode* C	= N->val.insertInAnyWay(distSQ);
 		C->val.pVisual			= pVisual;
-		C->val.Matrix			= *pTransform;
+		C->val.Matrix			= *val_pTransform;
 		C->val.vCenter.set		(Center);
-		C->val.iLighting		= iLightLevel;
+		C->val.iLighting		= val_iLightLevel;
+		C->val.nearer			= val_bNearer;
 		L_Shadows.add_element	(C);
 	}
 }
