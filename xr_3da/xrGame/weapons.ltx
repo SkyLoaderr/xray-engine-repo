@@ -315,12 +315,19 @@ grenade_launcher_status		= 0
 
 
 [wpn_fn2000_hud]
-shell_point		 = 0.0, 0.0, 0.0
+shell_point				 = 0.0, 0.0, 0.0
 fire_point               = -0.04, -0.05, 0.14
 fire_bone                = rifle
 orientation              = 4.5, 0, 0
 position                 = 0.12, -0.16, 0.55
 visual                   = weapon\fn2000\wpn_fn2000_hud.ogf
+
+anim_holster = holster
+anim_idle = idle
+anim_reload = reload
+anim_draw = draw
+anim_holster = holster
+anim_shoot = shoot
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
  
@@ -428,6 +435,14 @@ fire_bone                = wpn_body
 orientation              = 0, 0, 0
 position                 = 0, 0, 0
 visual                   = weapon\vintorez\wpn_vintorez_hud.ogf
+
+anim_holster	= holster
+anim_idle		= idle
+anim_reload		= reload
+anim_draw		= draw
+anim_holster	= holster
+anim_shoot		= shoot
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 [wpn_lr300]
@@ -534,6 +549,13 @@ fire_bone                = wpn_body
 orientation              = 0, 0, 0
 position                 = 0, 0, 0
 visual                   = weapon\lr300\wpn_lr300_hud.ogf
+
+anim_holster	= holster
+anim_idle		= idle
+anim_reload		= reload
+anim_draw		= draw
+anim_holster	= holster
+anim_shoot		= shoot
 
 ;;;;;;;;;;;;;;;;;;;;;;
 [wpn_val]
@@ -642,8 +664,15 @@ fire_bone                = wpn_body
 orientation              = 0, 0, 0
 position                 = 0, 0, 0
 visual                   = weapon\val\wpn_val_hud.ogf
-;;;;;;;;;;;;;;;;;;;;;;
 
+anim_holster	= holster
+anim_idle		= idle
+anim_reload		= reload
+anim_draw		= draw
+anim_holster	= holster
+anim_shoot		= shoot
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [wpn_ak74]
 GroupControlSection	= spawn_group
 discovery_dependency = 
@@ -766,6 +795,13 @@ orientation              = 5.7, 0, -1
 position                 = 0.063, -0.015, 0.02
 visual                   = weapon\ak74\wpn_ak74_hud.ogf
 
+anim_holster	= holster
+anim_idle		= idle
+anim_reload		= reload
+anim_draw		= draw
+anim_holster	= holster
+anim_shoot		= shoot
+
 [wpn_groza]
 GroupControlSection	= spawn_group
 discovery_dependency = 
@@ -875,6 +911,13 @@ orientation              = 5.7, 0, -1
 position                 = 0.063, -0.015, 0.02
 visual                   = weapon\groza\wpn_groza_hud.ogf
 
+anim_holster	= holster
+anim_idle		= idle
+anim_reload		= reload
+anim_draw		= draw
+anim_holster	= holster
+anim_shoot		= shoot
+
 [wpn_hpsa]
 GroupControlSection	= spawn_group
 discovery_dependency = 
@@ -976,6 +1019,13 @@ fire_bone                = wpn_body
 orientation              = 0,0,0
 position                 = 0,0,0
 visual                   = weapon\hpsa\wpn_hpsa_hud.ogf
+
+anim_holster	= holster
+anim_idle		= idle
+anim_reload		= reload
+anim_draw		= draw
+anim_holster	= holster
+anim_shoot		= shoot
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [wpn_pm]
@@ -1083,6 +1133,13 @@ fire_bone                = wpn_body
 orientation              = 0,0,0
 position                 = 0,0,0
 visual                   = weapon\pm\wpn_pm_hud.ogf
+
+anim_holster	= holster
+anim_idle		= idle
+anim_reload		= reload
+anim_draw		= draw
+anim_holster	= holster
+anim_shoot		= shoot
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [wpn_walther]
@@ -1192,6 +1249,13 @@ orientation              = 0,0,0
 position                 = 0,0,0
 visual                   = weapon\walter_99\wpn_walter_99_hud.ogf
 
+anim_holster	= holster
+anim_idle		= idle
+anim_reload		= reload
+anim_draw		= draw
+anim_holster	= holster
+anim_shoot		= shoot
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [wpn_usp]
 GroupControlSection	= spawn_group
@@ -1300,7 +1364,18 @@ orientation              = 0,0,0
 position                 = 0,0,0
 visual                   = weapon\usp_45\wpn_usp_45_hud.ogf
 
+anim_holster	= holster
+anim_idle		= idle
+anim_reload		= reload
+anim_draw		= draw
+anim_holster	= holster
+anim_shoot		= shoot
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; RPG7
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 [wpn_rpg7]
 GroupControlSection	= spawn_group
 discovery_dependency = 
@@ -1550,62 +1625,13 @@ orientation              = 0,0,0
 position                 = 0,0,0
 visual                   = weapon\fort\wpn_fort_hud.ogf
 
-[wpn_binoc]
-GroupControlSection	= spawn_group
-discovery_dependency = 
-$spawn                   = "weapons\binocular"					; option for Level Editor
-$npc			 = on				; option for Level Editor
-$prefetch 		 = 8
-scheduled                = off              ; option for ALife Simulator
-cform                    = skeleton
-class                    = W_BINOC
-hud                      = wpn_BINOC_hud
-position                 = 0, 0, .2
-normal                   = 0, 1, 0
-direction                = 0, 0, 1
-orientation              = -12, 7, 0
-visual                   = weapon\binoculars\wpn_binoculars.ogf
-hand_dependence		 = 1
-slot 			 = 4		; // binocular
-inv_name		 = BINOCULAR
-inv_name_short		 = BINOCULAR
-inv_weight		 = .5
+anim_holster	= holster
+anim_idle		= idle
+anim_reload		= reload
+anim_draw		= draw
+anim_holster	= holster
+anim_shoot		= shoot
 
-inv_grid_width		= 2
-inv_grid_height		= 2
-inv_grid_x			= 16
-inv_grid_y			= 8
-
-resource		= 6000
-min_radius               = 100
-max_radius               = 150
-
-cost					 = 350
-
-cam_relax_speed          = 5.5
-cam_dispersion           = 2
-cam_max_angle		 = 5
-disp_vel_factor		 = 0.1
-disp_crouch_factor	 = 0.75
-disp_jump_factor	 = 3
-max_zoom_factor		 = 40.f
-
-ph_mass			 = 1
-cost			 = 120
-
-;addons
-scope_status				= 0
-silencer_status				= 0
-grenade_launcher_status		= 0
-
-
-[wpn_binoc_hud]
-shell_point		 = 0.0, 0.0, 0.0
-fire_point               = 0.05, 0.0, 0.1
-fire_bone                = binoculars
-orientation              = 10, 0, -2
-position                 = 0.15, -0.14, 0.25
-visual                   = weapon\binoculars\wpn_binoculars_hud.ogf
 
 [wpn_m134]
 GroupControlSection	= spawn_group
@@ -1705,6 +1731,14 @@ orientation              = 4, 5, 0
 position                 = .13, -.19, 0.75
 visual                   = weapon\m134\wpn_m134_hud.ogf
 
+anim_holster	= holster
+anim_idle		= idle
+anim_reload		= reload
+anim_draw		= draw
+anim_holster	= holster
+anim_shoot		= shoot
+
+
 [wpn_toz34]
 GroupControlSection	= spawn_group
 discovery_dependency = 
@@ -1799,6 +1833,14 @@ cost			 = 900
 scope_status				= 0
 silencer_status				= 0
 grenade_launcher_status		= 0
+
+anim_holster	= holster
+anim_idle		= idle
+anim_reload		= reload
+anim_draw		= draw
+anim_holster	= holster
+anim_shoot		= shoot
+
 
  
 [wpn_shotgun_hud]
@@ -1915,6 +1957,14 @@ orientation              = 0, 0, 0
 position                 = 0, 0, 0
 visual                   = weapon\svd\wpn_svd_hud.ogf
 
+anim_holster	= holster
+anim_idle		= idle
+anim_reload		= reload
+anim_draw		= draw
+anim_holster	= holster
+anim_shoot		= shoot
+
+
 [wpn_svu]
 GroupControlSection	= spawn_group
 discovery_dependency = 
@@ -2019,6 +2069,74 @@ fire_bone                = wpn_body
 orientation              = 0, 0, 0
 position                 = 0, 0, 0
 visual                   = weapon\svu\wpn_svu_hud.ogf
+
+anim_holster	= holster
+anim_idle		= idle
+anim_reload		= reload
+anim_draw		= draw
+anim_holster	= holster
+anim_shoot		= shoot
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; BINOCULARS
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[wpn_binoc]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn                   = "weapons\binocular"					; option for Level Editor
+$npc			 = on				; option for Level Editor
+$prefetch 		 = 8
+scheduled                = off              ; option for ALife Simulator
+cform                    = skeleton
+class                    = W_BINOC
+hud                      = wpn_BINOC_hud
+position                 = 0, 0, .2
+normal                   = 0, 1, 0
+direction                = 0, 0, 1
+orientation              = -12, 7, 0
+visual                   = weapon\binoculars\wpn_binoculars.ogf
+hand_dependence		 = 1
+slot 			 = 4		; // binocular
+inv_name		 = BINOCULAR
+inv_name_short		 = BINOCULAR
+inv_weight		 = .5
+
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 16
+inv_grid_y			= 8
+
+resource		= 6000
+min_radius               = 100
+max_radius               = 150
+
+cost					 = 350
+
+cam_relax_speed          = 5.5
+cam_dispersion           = 2
+cam_max_angle		 = 5
+disp_vel_factor		 = 0.1
+disp_crouch_factor	 = 0.75
+disp_jump_factor	 = 3
+max_zoom_factor		 = 40.f
+
+ph_mass			 = 1
+cost			 = 120
+
+;addons
+scope_status				= 0
+silencer_status				= 0
+grenade_launcher_status		= 0
+
+
+[wpn_binoc_hud]
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.05, 0.0, 0.1
+fire_bone                = binoculars
+orientation              = 10, 0, -2
+position                 = 0.15, -0.14, 0.25
+visual                   = weapon\binoculars\wpn_binoculars_hud.ogf
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2977,3 +3095,4 @@ inv_grid_width		= 2
 inv_grid_height		= 1
 inv_grid_x			= 18
 inv_grid_y			= 0
+
