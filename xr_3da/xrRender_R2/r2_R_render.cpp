@@ -58,6 +58,18 @@ void CRender::render_main	()
 		// Determine visibility for dynamic part of scene
 		set_Object							(0);
 		//. g_pGameLevel->pHUD->Render_First( );
+		u32 uID_LTRACK						= 0xffffffff;
+		if (phase==PHASE_NORMAL)			{
+			uLastLTRACK	++;
+			if (lstRenderables.size())		uID_LTRACK	= uLastLTRACK%lstRenderables.size();
+
+			// update light-vis for current entity / actor
+			CObject*	O					= g_pGameLevel->CurrentViewEntity();
+			if (O)		{
+				CROS_impl*	R					= (CROS_impl*) O->ROS();
+				if (R)		R->update			(O);
+			}
+		}
 		for (u32 o_it=0; o_it<lstRenderables.size(); o_it++)
 		{
 			ISpatial*	spatial		= lstRenderables[o_it];		spatial->spatial_updatesector	();
@@ -86,6 +98,12 @@ void CRender::render_main	()
 					if (!bVisible)					break;	// exit loop on frustums
 
 					// Rendering
+					if (o_it==uID_LTRACK)	{
+						// track lighting environment
+						VERIFY				(renderable->renderable.ROS);
+						CROS_impl*		T = (CROS_impl*)renderable->renderable.ROS;
+						T->update			(renderable);
+					}
 					set_Object						(renderable);
 					renderable->renderable_Render	();
 					set_Object						(0);
