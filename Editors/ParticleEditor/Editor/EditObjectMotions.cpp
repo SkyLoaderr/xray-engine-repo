@@ -202,28 +202,34 @@ bool CEditableObject::AppendSMotion(LPCSTR fname, SMotionVec* inserted)
         }
     }else if (0==stricmp(ext,".skls")){
         IReader* F	= FS.r_open(fname);
-        // object motions
-        int cnt 	= F->r_u32();
-        for (int k=0; k<cnt; k++){
-            CSMotion* M	= xr_new<CSMotion>();
-            if (!M->Load(*F)){
-                ELog.DlgMsg(mtError,"Motion '%s' has different version. Load failed.",M->Name());
-                xr_delete(M);
-	            bRes = false;
-                break;
-            }
-            if (!CheckBoneCompliance(M)){
-                xr_delete(M);
-	            bRes = false;
-                break;
-            }
-            if (bRes){
-                M->SortBonesBySkeleton(m_Bones);
-                string256 			m_name;
-                GenerateSMotionName	(m_name,M->Name(),M);
-                M->SetName			(m_name);
-                m_SMotions.push_back(M);
-                if (inserted)		inserted->push_back(M);
+        if (!F){ 
+        	ELog.DlgMsg(mtError,"Can't open file '%s'.",fname);
+            bRes = false;
+    	}
+        if (bRes){
+            // object motions
+            int cnt 	= F->r_u32();
+            for (int k=0; k<cnt; k++){
+                CSMotion* M	= xr_new<CSMotion>();
+                if (!M->Load(*F)){
+                    ELog.DlgMsg(mtError,"Motion '%s' has different version. Load failed.",M->Name());
+                    xr_delete(M);
+                    bRes = false;
+                    break;
+                }
+                if (!CheckBoneCompliance(M)){
+                    xr_delete(M);
+                    bRes = false;
+                    break;
+                }
+                if (bRes){
+                    M->SortBonesBySkeleton(m_Bones);
+                    string256 			m_name;
+                    GenerateSMotionName	(m_name,M->Name(),M);
+                    M->SetName			(m_name);
+                    m_SMotions.push_back(M);
+                    if (inserted)		inserted->push_back(M);
+                }
             }
         }
         FS.r_close(F);
