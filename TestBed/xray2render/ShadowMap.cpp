@@ -1038,27 +1038,42 @@ HRESULT CMyD3DApplication::UpdateTransform()
 
 	// Setup shadow map transform
 	vLookatPt					= vModelOffs;
-	vEyePt						= vLookatPt + dv_LightDir * (m_fModelSize / 2.0f);
+	vEyePt						= vLookatPt - dv_LightDir * (m_fModelSize / 2.0f);
     D3DXMatrixLookAtLH			(&matView, &vEyePt, &vLookatPt, &vUpVec);
 
 	// Projection for directional light
     D3DXMatrixOrthoLH			(&matProj, 5.0f, 5.0f, 0.0f, DEPTH_RANGE);
 
-	D3DXMATRIX matShadowModelMVP,matInvView;
+	D3DXMATRIX matShadowModelMVP;
 	D3DXMatrixMultiply			(&mat, &matView, &matProj);
-	D3DXMatrixInverse			(&matInvView,0,&dm_2view);
-	D3DXMatrixMultiply			(&matShadowModelMVP,	&matInvView, &mat);
+	D3DXMatrixMultiply			(&matShadowModelMVP,	&matWorldModel, &mat);
 	
 	dm_model2world2view2projection_smap	= matShadowModelMVP;
+
+	// Now, take positions from eye-space to world space
+	D3DXMATRIX matView2World,matView2World2Light;
+	D3DXMatrixInverse			(&matView2World,0,&dm_2view);
+	D3DXMatrixMultiply			(&matView2World2Light,&matView2World,&mat);
 
 	// Texture adjustment matrix
 	FLOAT fTexelOffs			= (.5f / SHADOW_MAP_SIZE);
 	D3DXMATRIX matTexAdj	(	0.5f,      0.0f,        0.0f,        0.0f,
 								0.0f,     -0.5f,        0.0f,        0.0f,
-								0.0f,      0.0f,        0.0f,        0.0f,
-								0.5f + fTexelOffs,	0.5f + fTexelOffs,	1.0f, 1.0f);
-	D3DXMatrixMultiply			(&dm_model2world2view2projection_light, &matShadowModelMVP, &matTexAdj);
+								0.0f,      0.0f,        1.0f,        0.0f,
+								0.5f + fTexelOffs,	0.5f + fTexelOffs,	0.0f, 1.0f);
+	D3DXMatrixMultiply			(&dm_model2world2view2projection_light, &matView2World2Light, &matTexAdj);
 
+	// ***** Verify results
+	D3DXVECTOR3		vecPoint	= vEyePt + dv_LightDir*1.f;
+	D3DXVECTOR3		vecP_smap, vecP_light;
+	D3DXVECTOR4		vtP_smap,  vtP_light;
+	D3DXMATRIX		invModel;
+	D3DXMatrixInverse			(&invModel,		0, &matWorldModel);
+	D3DXVec3TransformCoord		(&vecP_smap,	&vecPoint, &invModel);
+	D3DXVec3TransformCoord		(&vecP_light,	&vecPoint, &dm_2view);
+
+	D3DXVec3Transform			(&vtP_smap,		&vecP_smap,	&dm_model2world2view2projection_smap	);
+	D3DXVec3Transform			(&vtP_light,	&vecP_light,&dm_model2world2view2projection_light	);
 	return S_OK;
 }
 
