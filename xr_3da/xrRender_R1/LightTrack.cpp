@@ -55,8 +55,8 @@ void	CLightDB_Static::Track	(IRenderable* O)
 	CLightTrack& dest	= *pROS;
 	if					(dest.dwFrame==Device.dwFrame)	return;
 	dest.dwFrame		= Device.dwFrame;
-	O->Center			(pos);
-	fRadius				= O->Radius();
+	O->renderable.xform.transform_tiny	(pos,O->renderable.visual->vis.sphere.P);
+	fRadius				= O->renderable.visual->vis.sphere.R;
 	
 	// Process ambient lighting
 	float	dt			= Device.fTimeDelta;
