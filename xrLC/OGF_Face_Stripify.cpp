@@ -31,7 +31,7 @@ void xrStripify		(xr_vector<u16> &indices, xr_vector<u16> &perturb, int iCacheSi
 	GenerateStrips	(&*indices.begin(),(u32)indices.size(),PGROUP);
 	R_ASSERT		(PGROUP.size()==1);
 	R_ASSERT		(PGROUP[0].type==PT_LIST);
-	R_ASSERT		(indices.size()==PGROUP[0].numIndices);
+	if (indices.size()!=PGROUP[0].numIndices)	throw "Stripify failed.";
 
 	// Remap indices
 	xr_vector<PrimitiveGroup>	xPGROUP;
@@ -81,6 +81,7 @@ void OGF::Stripify		()
 			x_vertices[i]=temp_list[permute[i]];
 	} catch (...)	{
 		clMsg		("ERROR: [fast-vert] Stripifying failed. Dump below.");
+		DumpFaces	();
 	}
 
 	// normal verts
@@ -108,6 +109,10 @@ void OGF::Stripify		()
 
 void OGF::DumpFaces()
 {
+	clMsg	("normal:");
 	for (u32 i=0; i<faces.size(); i++)
-		clMsg("Face #%4d: %4d %4d %4d",i,int(faces[i].v[0]),int(faces[i].v[1]),int(faces[i].v[2]));
+		clMsg("face #%4d: %4d %4d %4d",i,int(faces[i].v[0]),int(faces[i].v[1]),int(faces[i].v[2]));
+	clMsg	("fast:");
+	for (u32 i=0; i<x_faces.size(); i++)
+		clMsg("face #%4d: %4d %4d %4d",i,int(x_faces[i].v[0]),int(x_faces[i].v[1]),int(x_faces[i].v[2]));
 }
