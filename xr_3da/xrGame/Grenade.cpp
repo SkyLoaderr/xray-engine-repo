@@ -149,8 +149,8 @@ void CGrenade::Explode() {
 	list<Fvector> l_bs_positions;
 	while(m_blasted.size()) {
 		CGameObject *l_pGO = *m_blasted.begin();
-		l_dir.sub(l_pGO->Position(), vPosition); l_dst = l_dir.magnitude(); l_dir.div(l_dst);
-		f32 l_impuls = m_blast * (1.f - l_dst/m_blastR);
+		l_dir.sub(l_pGO->Position(), vPosition); l_dst = l_dir.magnitude(); l_dir.div(l_dst); l_dir.y += .2f;
+		f32 l_impuls = m_blast * (1.f - (l_dst/m_blastR)*(l_dst/m_blastR));
 		if(l_impuls > .001f) {
 			setEnabled(false);
 			l_impuls *= l_pGO->ExplosionEffect(vPosition, m_blastR, l_elsemnts, l_bs_positions);
@@ -180,7 +180,7 @@ void CGrenade::Explode() {
 		if(Level().ObjectSpace.RayPick(vPosition, l_dir, m_fragsR, RQ)) {
 			Fvector l_end, l_bs_pos; l_end.mad(vPosition,l_dir,RQ.range); l_bs_pos.set(0, 0, 0);
 			if(RQ.O) {
-				f32 l_hit = m_fragHit * (1.f - RQ.range/m_fragsR);
+				f32 l_hit = m_fragHit * (1.f - (RQ.range/m_fragsR)*(RQ.range/m_fragsR));
 				CEntity* E = dynamic_cast<CEntity*>(RQ.O);
 				if(E) l_hit *= E->HitScale(RQ.element);
 				NET_Packet		P;

@@ -119,7 +119,7 @@ void CWeaponRPG7Grenade::Explode(const Fvector &normal) {
 	while(m_blasted.size()) {
 		CGameObject *l_pGO = *m_blasted.begin();
 		l_dir.sub(l_pGO->Position(), vPosition); l_dst = l_dir.magnitude(); l_dir.div(l_dst); l_dir.y += .2f;
-		f32 l_impuls = m_blast * (1.f - l_dst/m_blastR);
+		f32 l_impuls = m_blast * (1.f - (l_dst/m_blastR)*(l_dst/m_blastR));
 		if(l_impuls > .001f) {
 			setEnabled(false);
 			l_impuls *= l_pGO->ExplosionEffect(vPosition, m_blastR, l_elsemnts, l_bs_positions);
@@ -149,7 +149,7 @@ void CWeaponRPG7Grenade::Explode(const Fvector &normal) {
 		if(Level().ObjectSpace.RayPick(vPosition, l_dir, m_fragsR, RQ)) {
 			Fvector l_end, l_bs_pos; l_end.mad(vPosition,l_dir,RQ.range); l_bs_pos.set(0, 0, 0);
 			if(RQ.O) {
-				f32 l_hit = m_fragHit * (1.f - RQ.range/m_fragsR);
+				f32 l_hit = m_fragHit * (1.f - (RQ.range/m_fragsR)*(RQ.range/m_fragsR));
 				CEntity* E = dynamic_cast<CEntity*>(RQ.O);
 				if(E) l_hit *= E->HitScale(RQ.element);
 				NET_Packet		P;
@@ -322,7 +322,7 @@ void CWeaponRPG7Grenade::OnH_B_Independent() {
 		vPosition.set(m_pPhysicsShell->mXFORM.c);
 		m_pPhysicsShell->set_PhysicsRefObject(this);
 		m_pPhysicsShell->set_ObjectContactCallback(ObjectContactCallback);
-		m_engineTime = 2000;
+		m_engineTime = 3000;
 	}
 }
 
@@ -344,11 +344,12 @@ void CWeaponRPG7Grenade::UpdateCL() {
 		if(m_engineTime < 0xffffffff) {
 			m_engineTime -= Device.dwTimeDelta;
 			Fvector l_pos; l_pos.set(0, 0, 3.f);
-			//R_ASSERT(clTransform.k.magnitude() <= 1.01f);
-			m_pPhysicsShell->applyImpulseTrace(l_pos, clTransform.k, 35.f);
+			float l_force = 5300.f * Device.dwTimeDelta / 1000.f;
+			m_pPhysicsShell->applyImpulseTrace(l_pos, clTransform.k, l_force);
 			Fvector l_dir; l_dir.set(0, 1.f, 0);
-			m_pPhysicsShell->applyForce(l_dir, 430.f);
-			//m_pPhysicsShell->applyImpulse(l_dir, 8.f);
+			l_force = 1360.f * Device.dwTimeDelta / 1000.f;
+			//m_pPhysicsShell->applyForce(l_dir, 430.f);
+			m_pPhysicsShell->applyImpulse(l_dir, l_force);
 		}
 	} //else if(H_Parent()) svTransform.set(H_Parent()->clXFORM());
 }
@@ -413,10 +414,10 @@ void CWeaponRPG7::OnStateSwitch(u32 S) {
 void CWeaponRPG7::ReloadMagazine() {
 	inherited::ReloadMagazine();
 	if(iAmmoElapsed && !m_pGrenade) {
-		xrServerEntity*		D	= F_entity_Create("wpn_rpg7_messile");
+		xrServerEntity*		D	= F_entity_Create("wpn_rpg7_missile");
 		R_ASSERT			(D);
 		// Fill
-		strcpy				(D->s_name,"wpn_rpg7_messile");
+		strcpy				(D->s_name,"wpn_rpg7_missile");
 		strcpy				(D->s_name_replace,"");
 		D->s_gameid			=	u8(GameID());
 		D->s_RP				=	0xff;
