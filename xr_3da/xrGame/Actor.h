@@ -609,6 +609,11 @@ protected:
 #endif
 		u32								m_iCurWeaponHideState;
 		void							Check_Weapon_ShowHideState	();
+
+		Fvector							m_AutoPickUp_AABB;
+		Fvector							m_AutoPickUp_AABB_Offset;
+
+		void							Check_for_AutoPickUp	();
 		void							SelectBestWeapon	();
 public:
 		virtual void					HideCurrentWeapon		(u32 Msg);//, bool only2handed);

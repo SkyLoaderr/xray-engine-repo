@@ -364,6 +364,15 @@ void CActor::Load	(LPCSTR section )
 	{
 		invincibility_fire_shield_3rd			= pSettings->r_string(section,"Invincibility_Shield_3rd");
 	};	
+
+	//-----------------------------------------
+	m_AutoPickUp_AABB.set(0.02f, 0.02f, 0.02f);
+	if (pSettings->line_exist(section, "AutoPickUp_AABB"))
+		m_AutoPickUp_AABB = pSettings->r_fvector3(section, "AutoPickUp_AABB");
+
+	m_AutoPickUp_AABB_Offset.set(0, 0, 0);
+	if (pSettings->line_exist(section, "AutoPickUp_AABB_offs"))
+		m_AutoPickUp_AABB_Offset = pSettings->r_fvector3(section, "AutoPickUp_AABB_offs");
 }
 
 void CActor::PHHit(float P,Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type /* = ALife::eHitTypeWound */)
@@ -657,7 +666,7 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 	{
 
 
-		if (Local()) {
+		if (Local() && g_Alive()) {
 			if (m_PhysicMovementControl->gcontact_Was) 
 				g_pGameLevel->Cameras.AddEffector		(xr_new<CEffectorFall> (m_PhysicMovementControl->gcontact_Power));
 			Fvector D; D.set					(0,1,0);
@@ -959,6 +968,8 @@ void CActor::shedule_Update	(u32 DT)
 	//для свойст артефактов, находящихся на поясе
 	UpdateArtefactsOnBelt();
 	m_pPhysics_support->in_shedule_Update(DT);
+	///////////////////////////////////////////////
+	Check_for_AutoPickUp();
 }
 
 void CActor::renderable_Render	()

@@ -1307,6 +1307,25 @@ void	CActor::OnRender_Network()
 {
 	if (g_Alive())
 	{
+		if (dbg_net_Draw_Flags.test(1<<8))
+		{
+			/*
+			Fvector         bc,bd;
+			Fbox            xf;
+			Fmatrix M = XFORM();
+			
+			M.translate_add(m_AutoPickUp_AABB_Offset);
+
+			xf.xform        (m_AutoPickUp_AABB,Fidentity);
+			xf.get_CD       (bc,bd);
+			*/
+
+			Fvector bc; bc.add(Position(), m_AutoPickUp_AABB_Offset);
+			Fvector bd = m_AutoPickUp_AABB;
+
+			RCache.dbg_DrawAABB			(bc, bd.x, bd.y, bd.z, color_rgba(0, 255, 0, 255));
+		};
+
 		if (!(dbg_net_Draw_Flags.is_any((1<<2)))) return;
 		float size = 0.2f;
 
@@ -1615,3 +1634,41 @@ BOOL CActor::net_SaveRelevant()
 	return TRUE;
 }
 
+void	CActor::Check_for_AutoPickUp()
+{
+	if (!psActorFlags.test(AF_AUTOPICKUP)) return;
+	if (GameID() == GAME_SINGLE) return;
+	if (Level().CurrentControlEntity() != this) return;
+	if (!g_Alive()) return;
+
+	BOOL Enabled = getEnabled();
+	setEnabled(false);
+	/*
+	Fvector         bc,bd;
+	Fbox            xf;
+	Fmatrix M = XFORM();
+	M.translate_add(m_AutoPickUp_AABB_Offset);
+	xf.xform        (m_AutoPickUp_AABB,M);
+	xf.get_CD       (bc,bd);
+	*/
+
+	Fvector bc; bc.add(Position(), m_AutoPickUp_AABB_Offset);
+
+	xr_vector<ISpatial*>	ISpatialResult;
+	g_SpatialSpace->q_box   (ISpatialResult,0,STYPE_COLLIDEABLE,bc,m_AutoPickUp_AABB);
+
+	// Determine visibility for dynamic part of scene
+	for (u32 o_it=0; o_it<ISpatialResult.size(); o_it++)
+	{
+		ISpatial*		spatial	= ISpatialResult[o_it];
+		CInventoryItem*	pIItem	= smart_cast<CInventoryItem*> (spatial->dcast_CObject        ());
+		if (0 == pIItem) continue;
+
+		NET_Packet P;
+		u_EventGen(P,GE_OWNERSHIP_TAKE, ID());
+		P.w_u16(pIItem->object().ID());
+		u_EventSend(P);
+	}
+
+	setEnabled(Enabled);
+}

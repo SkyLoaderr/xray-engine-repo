@@ -1774,6 +1774,7 @@ void CCC_RegisterCommands()
 
 
 	CMD3(CCC_Mask,		"g_unlimitedammo",			&psActorFlags,	AF_UNLIMITEDAMMO);
+	CMD3(CCC_Mask,		"g_autopickup",				&psActorFlags,	AF_AUTOPICKUP);
 
 	// adjust mode support
 	CMD4(CCC_Integer,	"hud_adjust_mode",			&g_bHudAdjustMode,	0, 3);
@@ -1819,6 +1820,7 @@ void CCC_RegisterCommands()
 	CMD3(CCC_Mask,		"dbg_draw_actor_phys",		&dbg_net_Draw_Flags,	(1<<5));
 	CMD3(CCC_Mask,		"dbg_draw_customdetector",	&dbg_net_Draw_Flags,	(1<<6));
 	CMD3(CCC_Mask,		"dbg_destroy",				&dbg_net_Draw_Flags,	(1<<7));
+	CMD3(CCC_Mask,		"dbg_draw_autopickupbox",	&dbg_net_Draw_Flags,	(1<<8));
 
 #endif
 

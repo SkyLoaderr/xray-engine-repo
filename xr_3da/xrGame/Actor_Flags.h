@@ -5,6 +5,7 @@
 #define AF_ALWAYSRUN		0x0004
 #define AF_UNLIMITEDAMMO	0x0008
 #define AF_RUN_BACKWARD		0x0010
+#define AF_AUTOPICKUP		0x0020
 
 extern Flags32 psActorFlags;
 

@@ -102,7 +102,6 @@ void	game_sv_mp::KillPlayer				(ClientID id_who, u16 GameID)
 		xrCData->ps->setFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD);
 		xrCData->ps->deaths				+=	1;
 		xrCData->ps->DeathTime			= Device.dwTimeGlobal;
-
 	};
 	//-------------------------------------------------------
 	CActor* pActor = smart_cast <CActor*>(pObject);
@@ -124,7 +123,7 @@ void	game_sv_mp::KillPlayer				(ClientID id_who, u16 GameID)
 	ClientID clientID;clientID.setBroadcast();
 	u_EventSend(P);
 	
-	SetPlayersDefItems		(xrCData->ps);
+	if (xrCData) SetPlayersDefItems		(xrCData->ps);
 	signal_Syncronize();
 };
 
