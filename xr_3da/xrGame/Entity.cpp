@@ -150,8 +150,8 @@ BOOL CEntity::net_Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o
 	iHealth				= 100;
 	iArmor				= 0;
 	
-	pCreator->Objects.sheduled.Unregister	(this);
-	pCreator->Objects.sheduled.Register		(this);
+	Engine.Sheduler.Unregister	(this);
+	Engine.Sheduler.Register	(this);
 
 	return				TRUE;
 }

@@ -22,7 +22,7 @@ class	ENGINE_API				CCreator	:
 	public pureFrame,
 	public CEventBase
 {
-protected:
+public:
 	// Loader
 	typedef vector<char *>		vecC;
 	typedef vecC::iterator		vecCIT;
@@ -34,6 +34,7 @@ protected:
 		return LL_strings[id];
 	}
 
+protected:
 	// Network interface
 	CObject*					pCurrentEntity;
 	CObject*					pCurrentViewEntity;

@@ -274,6 +274,9 @@ void CCustomMonster::Exec_Physics( float dt )
 	svCenter	(C);
 	R = Radius	();
 	Level().ObjectSpace.TestNearestObject	(cfModel, C, R);
+
+	// 
+	Engine.Sheduler.Slice	();
 }
 
 void CCustomMonster::Update	( DWORD DT )
@@ -291,30 +294,35 @@ void CCustomMonster::Update	( DWORD DT )
 		// here is monster AI call
 		m_fTimeUpdateDelta				= dt;
 		Device.Statistic.AI_Think.Begin	();
-		Think();
+		Think							();
 		Device.Statistic.AI_Think.End	();
 		if (m_fCurSpeed < EPS_L) {
 			AI_Path.TravelPath.clear();
 			AI_Path.TravelStart = 0;
 		}
 
+		//
+		Engine.Sheduler.Slice			();
+
 		// Look and action streams
 		if (iHealth>0) {
-			Exec_Look			(dt);
-			Exec_Movement		(dt);
-			Exec_Physics		(dt);
-			Exec_Visibility		();
+			Exec_Look				(dt);
+			Exec_Movement			(dt);
+			Exec_Physics			(dt);
+			Exec_Visibility			();
 			
-			net_update			uNext;
-			uNext.dwTimeStamp	= Level().timeServer();
-			uNext.o_model		= r_torso_current.yaw;
-			uNext.o_torso		= r_torso_current;
-			uNext.p_pos			= vPosition;
-			NET.push_back		(uNext);
+			net_update				uNext;
+			uNext.dwTimeStamp		= Level().timeServer();
+			uNext.o_model			= r_torso_current.yaw;
+			uNext.o_torso			= r_torso_current;
+			uNext.p_pos				= vPosition;
+			NET.push_back			(uNext);
 		}
-		else {
-			Exec_Physics	(dt);
-			if (bfExecMovement()) {
+		else 
+		{
+			Exec_Physics			(dt);
+			if (bfExecMovement()) 
+			{
 				Exec_Movement	(dt);
 				net_update			uNext;
 				uNext.dwTimeStamp	= Level().timeServer();
@@ -324,7 +332,7 @@ void CCustomMonster::Update	( DWORD DT )
 				NET.push_back		(uNext);
 			}
 		}
-		Exec_Action	(dt);
+		Exec_Action				(dt);
 	}
 
 	// weapons
@@ -474,9 +482,12 @@ void CCustomMonster::Exec_Visibility	( )
 	}
 	Device.Statistic.AI_Vis.End		();
 
-	// 5. Camera
+	// Camera
 	if (IsMyCamera())						
 		pCreator->Cameras.Update	(eye_matrix.c,eye_matrix.k,eye_matrix.j,eye_fov,1.f,eye_range);
+
+	// Slice
+	Engine.Sheduler.Slice();
 }
 
 extern void dbg_draw_frustum (float FOV, float _FAR, float A, Fvector &P, Fvector &D, Fvector &U);

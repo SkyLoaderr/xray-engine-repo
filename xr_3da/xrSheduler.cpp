@@ -19,9 +19,9 @@ CSheduled::~CSheduled	()
 	shedule_Unregister	();
 }
 
-void	CSheduled::shedule_Register			(DWORD priority)
+void	CSheduled::shedule_Register			()
 {
-	Engine.Sheduler.Register	(this, priority);
+	Engine.Sheduler.Register	(this);
 }
 
 void	CSheduled::shedule_Unregister		()
@@ -40,6 +40,7 @@ void CSheduler::Initialize		()
 	fiber_main			= ConvertThreadToFiber	(0);
 	fiber_thread		= CreateFiber			(0,t_process,0);
 }
+
 void CSheduler::Destroy			()
 {
 	R_ASSERT			(Items.empty());
@@ -47,7 +48,7 @@ void CSheduler::Destroy			()
 	DeleteFiber			(fiber_main);
 }
 
-void CSheduler::Register		(CSheduled* O, DWORD priority)
+void CSheduler::Register		(CSheduled* O)
 {
 	// Fill item structure
 	Item						TNext;
@@ -90,13 +91,13 @@ void CSheduler::ProcessStep			()
 	while (Top().dwTimeForExecute < dwTime)
 	{
 		// Update
-		Item	T					= Top	(Priority);
+		Item	T					= Top	();
 		DWORD	Elapsed				= dwTime-T.dwTimeOfLastExecute;
 
 		// Calc next update interval
 		DWORD	dwMin				= T.Object->shedule_Min;
 		DWORD	dwMax				= T.Object->shedule_Max;
-		float	scale				= Device.vCameraPosition.distance_to(T.Object->Position())/psUpdateFar;
+		float	scale				= T.Object->shedule_Scale(); 
 		DWORD	dwUpdate			= dwMin+iFloor(float(dwMax-dwMin)*scale);
 		clamp	(dwUpdate,dwMin,dwMax);
 
@@ -107,8 +108,8 @@ void CSheduler::ProcessStep			()
 		TNext.Object				= T.Object;
 
 		// Insert into priority Queue
-		Pop							(Priority);
-		Push						(Priority, TNext);
+		Pop							();
+		Push						(TNext);
 
 		// Real update call
 		if (T.Object->Ready())		T.Object->Update		(Elapsed);

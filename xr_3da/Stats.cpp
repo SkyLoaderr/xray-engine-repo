@@ -25,7 +25,7 @@ void CStats::Show()
 	// Stop timers
 	{
 		EngineTOTAL.FrameEnd		();	
-		UpdateSheduled.FrameEnd		();	
+		Sheduler.FrameEnd			();	
 		UpdateClient.FrameEnd		();	
 		Physics.FrameEnd			();	
 		Animation.FrameEnd			();	
@@ -103,7 +103,7 @@ void CStats::Show()
 		F.OutNext	("xforms:      %d",dwXFORMs);
 		F.OutSkip	();
 		F.OutNext	("*** ENGINE:  %2.2fms",EngineTOTAL.result);	
-		F.OutNext	("uSheduled:   %2.2fms",UpdateSheduled.result);
+		F.OutNext	("uSheduled:   %2.2fms",Sheduler.result);
 		F.OutNext	("uClients:    %2.2fms",UpdateClient.result);
 		F.OutNext	("Physics:     %2.2fms, %d",Physics.result,Physics.count);	
 		F.OutNext	("aiThink:     %2.2fms, %d",AI_Think.result,AI_Think.count);	
@@ -153,7 +153,7 @@ void CStats::Show()
 
 	{
 		EngineTOTAL.FrameStart		();	
-		UpdateSheduled.FrameStart	();	
+		Sheduler.FrameStart			();	
 		UpdateClient.FrameStart		();	
 		Physics.FrameStart			();	
 		Animation.FrameStart		();	

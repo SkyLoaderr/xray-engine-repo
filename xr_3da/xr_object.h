@@ -76,7 +76,8 @@ public:
 	IC BOOL								Local			()					{ return net_Local;		}
 	IC BOOL								Remote			()					{ return !net_Local;	}
 	IC DWORD							ID				()					{ return net_ID;		}
-	virtual BOOL						Ready			()					{ return net_Ready;		}		
+	virtual BOOL						Ready			()					{ return net_Ready;		}
+	virtual float						shedule_Scale	()					{ return Device.vCameraPosition.distance_to(Position())/200.f; }
 
 	// Parentness
 	IC CObject*							H_Parent		()					{ return Parent;		}

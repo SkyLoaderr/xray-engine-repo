@@ -14,6 +14,8 @@ public:
 public:
 						CPSObject		(LPCSTR ps_name, CSector* S=0, BOOL bAutoRemove=true);
 	virtual				~CPSObject		();
+
+	virtual float		shedule_Scale	()	{ return Device.vCameraPosition.distance_to(Position())/200.f; }
 	virtual void		Update			(DWORD dt);
 	virtual Fvector&	Position		(){return m_Emitter.m_Position;}
 	void				UpdateSector	(CSector* sect);

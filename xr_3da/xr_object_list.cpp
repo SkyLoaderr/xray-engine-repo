@@ -75,11 +75,6 @@ void CObjectList::DestroyObject	( u32 ID )
 }
 void CObjectList::OnMove		()
 {
-	// Sheduled
-	Device.Statistic.UpdateSheduled.Begin	();
-	sheduled.Update			( );
-	Device.Statistic.UpdateSheduled.End		();
-
 	// Clients
 	Device.Statistic.UpdateClient.Begin		();
 	for (OBJ_IT O=objects.begin(); O!=objects.end(); O++) 

@@ -296,9 +296,14 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 	}
 
 	Device.Statistic.Physics.End();
+
+	//
+	Engine.Sheduler.Slice();
 }
+
 void CMovementControl::Move(Fvector& Dest, Fvector& Motion, BOOL bDynamic)
 {
+	Device.Statistic.Physics.Begin();
 	Fbox	bbf;
 	bbf.set(-vFootExt.x, -vFootExt.y, -vFootExt.z, +vFootExt.x, +vFootExt.y, +vFootExt.z );
 	bbf.add(vFootCenter);
@@ -306,6 +311,10 @@ void CMovementControl::Move(Fvector& Dest, Fvector& Motion, BOOL bDynamic)
 	pCreator->ObjectSpace.cl_Move( 
 		pObject->CFORM(), pObject->svXFORM(), 
 		Motion, aabb, bbf, Dest, final_vel, EPS, bDynamic);
+	Device.Statistic.Physics.End();
+
+	//
+	Engine.Sheduler.Slice();
 }
 
 void CMovementControl::CheckEnvironment()
@@ -340,4 +349,7 @@ void CMovementControl::CheckEnvironment()
 			}
 		}
 	}
+
+	//
+	Engine.Sheduler.Slice();
 }
