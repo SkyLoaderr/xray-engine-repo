@@ -15,9 +15,12 @@ CCustomEvent::CCustomEvent()
 
 CCustomEvent::~CCustomEvent		()
 {
-	_FREE						(ObjectName);
-	OnEnter.Destroy				();
-	OnExit.Destroy				();
+	for (tActions_it it=Actions.begin(); it!=Actions.end(); it++) 
+	{
+		Engine.Event.Destroy(it->E);
+		_FREE(it->P1);
+	}
+	Actions.clear();
 }
 
 void CCustomEvent::Load			(CInifile* ini, const char * section)
@@ -45,9 +48,8 @@ void CCustomEvent::Load			(CInifile* ini, const char * section)
 	dwMaxUpdate					= 1000;
 }
 
-DEF_EVENT CCustomEvent::Parse		(LPCSTR DEF)
+void CCustomEvent::Parse		(DEF_EVENT& D, LPCSTR DEF)
 {
-	DEF_EVENT	D;
 	D.E			= 0;
 	D.P1		= 0;
 	string512	Event,Param;
