@@ -20,6 +20,7 @@ class xrClientData	: public IClient
 public:
 	CSE_Abstract*			owner;
 	BOOL					net_Ready;
+	BOOL					net_Accepted;
 	u32						game_replicate_id;
 
 	game_PlayerState*		ps;
@@ -54,7 +55,7 @@ private:
 		256,		// block size
 		u16(-1)		// invalid id
 	>							m_tID_Generator;
-
+protected:
 	void						Server_Client_Check (IClient* CL);
 
 public:
@@ -85,10 +86,13 @@ public:
 	
 	xrClientData*			SelectBestClientToMigrateTo		(CSE_Abstract* E, BOOL bForceAnother=FALSE);
 
-	void					SendConnectionData		(IClient* _CL);
+	
 	void					AttachNewClient			(IClient* CL);
 protected:
 	virtual void			new_client			(ClientID clientID, LPCSTR name, bool bLocal);
+	virtual bool			NeedToCheckClient	(IClient* CL)	{ return false; };
+	void					SendConnectResult		(IClient* CL, u8 res, char* ResultStr);
+	void					SendConnectionData		(IClient* CL);
 
 public:
 	// constr / destr

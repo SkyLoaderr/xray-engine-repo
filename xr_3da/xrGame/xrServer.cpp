@@ -23,6 +23,7 @@ xrClientData::xrClientData	():IClient(Device.GetTimerGlobal())
 
 	owner		= NULL;
 	net_Ready	= FALSE;
+	net_Accepted = FALSE;
 }
 xrClientData::~xrClientData()
 {
@@ -281,6 +282,11 @@ u32 xrServer::OnMessage(NET_Packet& P, ClientID sender)			// Non-Zero means broa
 		{
 			Process_save			(P,sender);
 			VERIFY					(verify_entities());
+		}break;
+	case M_CLIENT_REQUEST_CONNECTION_DATA:
+		{
+			xrClientData* CL		= ID_to_client	(sender);
+			OnCL_Connected(CL);
 		}break;
 	}
 

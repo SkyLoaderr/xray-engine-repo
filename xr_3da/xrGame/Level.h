@@ -92,8 +92,13 @@ private:
 	void						UpdateDeltaUpd					( u32 LastTime );
 	void						BlockCheatLoad					()				;
 
+	BOOL						Connect2Server				(LPCSTR options);
+private:
+	bool						m_bConnectResultReceived;
+	u8							m_bConnectResult;
 public:	
 	void						OnGameSpyChallenge			(NET_Packet* P);
+	void						OnConnectResult				(NET_Packet* P);
 public:
 	//////////////////////////////////////////////	
 	// static particles

@@ -133,3 +133,40 @@ struct _NetworkProcessor	: public pureFrame
 }	NET_processor;
 
 pureFrame*	g_pNetProcessor	= &NET_processor;
+
+BOOL			CLevel::Connect2Server				(LPCSTR options)
+{
+	m_bConnectResultReceived = false;
+	m_bConnectResult = 0;
+
+	if (!Connect(options)) return FALSE;
+
+	while (!m_bConnectResultReceived)		
+	{ 
+		ClientReceive(); 
+		Sleep(5); 
+		Server->Update();
+	}
+	if (!m_bConnectResult) 
+	{
+		Disconnect		();
+		return FALSE;
+	};
+
+	//---------------------------------------------------------------------------
+	NET_Packet P;
+	P.w_begin(M_CLIENT_REQUEST_CONNECTION_DATA);
+	Send(P);
+	//---------------------------------------------------------------------------
+	return TRUE;
+};
+
+void			CLevel::OnConnectResult				(NET_Packet* P)
+{
+	m_bConnectResultReceived = true;
+	m_bConnectResult = P->r_u8();
+	string128 ResultStr;
+	P->r_stringZ(ResultStr);
+
+	Msg("Client : Connect %s - <%s>", m_bConnectResult ? "accepted" : "rejected", ResultStr);
+};

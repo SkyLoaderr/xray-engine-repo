@@ -64,6 +64,11 @@ void xrServer::AttachNewClient			(IClient* CL)
 	// config client
 	SendTo_LL				(CL->ID,&msgConfig,sizeof(msgConfig));
 
+	Server_Client_Check		(CL); 
+
 	// gen message
-	OnCL_Connected			(CL);
+	if (!NeedToCheckClient(CL))
+	{
+		SendConnectResult(CL, 1, "All Ok");
+	};
 }

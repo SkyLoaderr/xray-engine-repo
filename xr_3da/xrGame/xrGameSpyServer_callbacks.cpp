@@ -2,6 +2,7 @@
 #include "xrGameSpyServer.h"
 #include "xrGameSpyServer_callbacks.h"
 
+//--------------------------- QR2 callbacks ---------------------------------------
 void callback_serverkey(int keyid, qr2_buffer_t outbuf, void *userdata)
 {
 	if (!userdata) return;
@@ -121,6 +122,8 @@ int callback_count(qr2_key_type keytype, void *userdata)
 
 void callback_adderror(qr2_error_t error, gsi_char *errmsg, void *userdata)
 {
+	int x=0;
+	x=x;
 };
 
 void callback_nn(int cookie, void *userdata)
@@ -129,4 +132,22 @@ void callback_nn(int cookie, void *userdata)
 
 void callback_cm(gsi_char *data, int len, void *userdata)
 {
+};
+
+//--------------------------- CD Key callbacks -----------------------------------
+void ClientAuthorizeCallback(int productid, int localid, int authenticated, char *errmsg, void *instance)
+{
+	xrGameSpyServer* pServer = (xrGameSpyServer*) instance;
+	ClientID ID; ID.set(u32(localid));
+	if (pServer) pServer->OnCDKey_Validation(ID, authenticated, errmsg);
+	/*
+	if (authenticated)
+	{
+		Msg("GameSpy::CDKey::Server : Client accepted - <%s>", errmsg);
+	}
+	else
+	{
+		Msg("GameSpy::CDKey::Server : Client rejected - <%s>", errmsg);
+	}
+	*/
 };

@@ -98,16 +98,25 @@ void			xrGameSpyServer::SendChallengeString_2_Client (IClient* C)
 	if (!C) return;
 	xrGameSpyClientData* pClient = (xrGameSpyClientData*) C;
 
-//	if (pClient == GetServer_client()) return;
-
     CreateRandomChallenge(pClient->m_pChallengeString, 8);
 	//--------- Send Respond ---------------------------------------------
 	NET_Packet P;
-//	u_EventGen			(P,M_GAMESPY_CHALLENGE,8);
-//	P.w_stringZ(pClient->m_pChallengeString);
-//	SendTo(pClient->ID, P);
 
-	P.w_begin	(M_GAMESPY_CHALLENGE);
+	P.w_begin	(M_GAMESPY_CDKEY_VALIDATION_CHALLENGE);
 	P.w_stringZ(pClient->m_pChallengeString);
 	SendTo(pClient->ID, P);
 }
+
+void			xrGameSpyServer::OnCDKey_Validation				(ClientID ID, int res, char* errormsg)
+{
+	xrGameSpyClientData* CL = (xrGameSpyClientData*)  ID_to_client(ID);
+	if (0 != res)
+	{
+		Msg("GameSpy::CDKey: Validation successful - <%s>", errormsg);
+	}
+	else
+	{
+		Msg("GameSpy::CDKey: Validation failed - <%s>", errormsg);
+	}
+	SendConnectResult(CL, u8(res), errormsg);
+};

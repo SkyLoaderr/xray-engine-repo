@@ -2,6 +2,7 @@
 #include "GameSpy/CDKey/gcdkeys.h"
 #include "GameSpy/available.h"
 
+//--------------------------- QR2 callbacks ---------------------------------------
 // Called when a server key needs to be reported
 void callback_serverkey(int keyid, qr2_buffer_t outbuf, void *userdata);
 // Called when a player key needs to be reported
@@ -20,3 +21,10 @@ void callback_nn(int cookie, void *userdata);
 // Called when a client sends a message to the server through qr2
 //    (Not commonly used)
 void callback_cm(gsi_char *data, int len, void *userdata);
+
+//--------------------------- CD Key callbacks -----------------------------------
+/* Callback function to indicate whether a client has been authorized or not.
+If the client has been, then we send them a "welcome" string, representative of
+allowing them to "enter" the game. If they have not been authenticated, we dump
+them after sending an error message */
+void ClientAuthorizeCallback(int productid, int localid, int authenticated, char *errmsg, void *instance);

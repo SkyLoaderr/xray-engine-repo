@@ -23,7 +23,10 @@ void xrServer::OnCL_Disconnected	(IClient* CL)
 	P.r_pos = 0;
 	ClientID clientID;clientID.set(0);
 //	game->OnEvent(P,GAME_EVENT_PLAYER_DISCONNECTED, 0, clientID);
-	game->AddDelayedEvent(P,GAME_EVENT_PLAYER_DISCONNECTED, 0, clientID);
+	if (xrCData->owner != 0)
+	{
+		game->AddDelayedEvent(P,GAME_EVENT_PLAYER_DISCONNECTED, 0, clientID);
+	};
 //	if (SV_Client) game->OnPlayerDisconnect(CL->ID);
 //	game->signal_Syncronize	();
 

@@ -22,7 +22,8 @@ BOOL CLevel::net_Start_client	( LPCSTR options )
 	sprintf						(temp,"CLIENT: Connecting to '%s'...",name_of_server);
 	pApp->LoadTitle				(temp);
 
-	if (Connect(options)) 
+///	if (Connect(options)) 
+	if (Connect2Server(options))
 	{
 		// Determine internal level-ID
 		LPCSTR	level_name	= net_SessionName	();

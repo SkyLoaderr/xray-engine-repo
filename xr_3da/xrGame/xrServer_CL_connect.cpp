@@ -36,7 +36,7 @@ void xrServer::Perform_connect_spawn(CSE_Abstract* E, xrClientData* CL, NET_Pack
 	E->net_Processed	= TRUE;
 }
 
-void xrServer::SendConnectionData	(IClient* _CL)
+void xrServer::SendConnectionData(IClient* _CL)
 {
 	xrClientData*	CL				= (xrClientData*)_CL;
 	NET_Packet		P;
@@ -54,7 +54,8 @@ void xrServer::SendConnectionData	(IClient* _CL)
 void xrServer::OnCL_Connected		(IClient* _CL)
 {
 	xrClientData*	CL				= (xrClientData*)_CL;
-	Server_Client_Check(CL); 
+	CL->net_Accepted = TRUE;
+///	Server_Client_Check(CL); 
 
 	csPlayers.Enter					();
 
@@ -71,4 +72,15 @@ void xrServer::OnCL_Connected		(IClient* _CL)
 	game->AddDelayedEvent(P,GAME_EVENT_PLAYER_CONNECTED, 0, clientID);
 
 	csPlayers.Leave					();
+
+	game->ProcessDelayedEvent();
 }
+
+void	xrServer::SendConnectResult(IClient* CL, u8 res, char* ResultStr)
+{
+	NET_Packet P;
+	P.w_begin(M_CLIENT_CONNECT_RESULT);
+	P.w_u8(res);
+	P.w_stringZ(ResultStr);
+	SendTo(CL->ID, P);
+};
