@@ -40,6 +40,8 @@ snd_files = {
 	trade_no_soldier               = "script_sound\\talk\\trade\\no\\soldier\\soldier_tradeno_",
 	wounded_get_help               = "script_sound\\help\\soldier\\soldier_help_",
 	wounded_enemy                  = "script_sound\\help\\soldier\\soldier_help_",
+	zombie						   = "script_replics\\zombie\\stalker_zombie\\zombie_phrase_",
+
 ------------------ сюжетные --------------------
 ------ ESCAPE --------
 	-- бандиты на заводе
@@ -55,6 +57,10 @@ snd_files = {
 	esc_f_band_on_actor            = "script_replics\\bandit_1\\replics\\bandit_on_actor_",
 	place1                         = "script_replics\\bandit_1\\replics\\bandit_hiding_place_1",
 	place2                         = "script_replics\\bandit_1\\replics\\bandit_hiding_place_2",
+	// Новичок, которого ограбили
+	esc_novice_weeping		   	   = "script_replics\\stalker_1\\newbie\\robbered_replic_1_",
+	esc_novice_ask_for_help		   = "script_replics\\stalker_1\\newbie\\robbered_replic_2_",
+	esc_novice_i_dead_their		   = "script_replics\\stalker_1\\newbie\\robbered_replic_3_",
 ------ GARBAGE  -------
 
 ------ AGROPROM -------
@@ -65,9 +71,9 @@ function load_sound(obj)
 	local sounds_base = stalker_ids.sound_script + 10000
 
 	function id()
-		local t = sounds_base
-		sounds_base = sounds_base + 1
-		return t
+		sounds_base = sounds_base + 1			//local t = sounds_base
+		return sounds_base - 1					//sounds_base = sounds_base + 1
+												//return t
 	end
 	-- загрузка звуков, возвращает ИД пачки и количество звуков в пачке.
 	function load_theme(name)
@@ -166,16 +172,23 @@ function load_sound(obj)
 	theme["wounded_enemy"] = { exec = npc_class, types = {}}
 	theme["wounded_enemy"].types["soldier"] = load_theme("wounded_enemy")
 
+	// Zombie
+	theme["zombie"]								  = load_theme("zombie")
 ----- сюжетные/одноразовые темы
 ------ ESCAPE --------
 	-- бандиты на заводе
 --[[	theme["escape_factory_bandits_novice"]        = load_theme("esc_f_band_novice")
 	theme["escape_factory_bandits_zone"]          = load_theme("esc_f_band_zone")
-	theme["escape_factory_bandits_place"]         = load_theme("esc_f_band_place")
+	theme["escape_factory_bandits_place"]         = load_theme("esc_f_band_place")]]
 	theme["escape_factory_bandits_novice_again"]  = load_theme("esc_f_band_place")
-	theme["escape_factory_bandits_on_actor"]      = load_theme("esc_f_band_place")]]
+	theme["escape_factory_bandits_on_actor"]      = load_theme("esc_f_band_place")
 	theme["place1"] = load_theme("place1")
 	theme["place2"] = load_theme("place2")
+	
+	// Новичок, которого ограбили
+	theme["escape_novice_weeping"]			  	= load_theme("esc_novice_weeping")
+	theme["escape_novice_ask_for_help"]		  	= load_theme("esc_novice_ask_for_help")
+	theme["escape_novice_i_dead_their"]		  	= load_theme("esc_novice_i_dead_their")
 ------ GARBAGE  -------
 
 ------ AGROPROM -------
@@ -267,6 +280,7 @@ function sound_update(npc, sound, now)
 			sound.last_num = num
 
 			if type( now ) == "number" then
+				printf("Number")
 				npc:play_sound(id, now+1, now, 1, 0, num)
 			else
 				npc:play_sound(id, 1, 0, 1, 0, num)
