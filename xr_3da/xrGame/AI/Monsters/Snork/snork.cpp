@@ -6,6 +6,7 @@
 #include "../../../detail_path_manager_space.h"
 #include "../../../detail_path_manager.h"
 #include "../ai_monster_movement.h"
+#include "../../../level.h"
 
 CSnork::CSnork() 
 {

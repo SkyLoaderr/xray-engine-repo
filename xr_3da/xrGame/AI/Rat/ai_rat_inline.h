@@ -49,58 +49,6 @@ IC void CAI_Rat::vfUpdateTime(float fTimeDelta)
 	m_fGoalChangeTime -= fTimeDelta > .1f ? .1f : fTimeDelta;
 };		
 
-IC void CAI_Rat::vfAddActiveMember(bool bForceActive)
-{
-	CGroupHierarchyHolder &Group = Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group());
-	if (!m_bActive && (bForceActive || (Group.m_dwAliveCount*m_dwActiveCountPercent/100 >= Group.m_dwActiveCount))) {
-		m_bActive = true;
-		m_eCurrentState = aiRatFreeHuntingActive;
-		++Group.m_dwActiveCount;
-		shedule.t_min	= m_dwActiveScheduleMin;
-		shedule.t_max	= m_dwActiveScheduleMax;
-		vfRemoveStandingMember();
-	}
-	//Msg("* Group : alive[%2d], active[%2d]",Group.m_dwAliveCount,Group.m_dwActiveCount);
-};
-
-IC void CAI_Rat::vfRemoveActiveMember()
-{
-	CGroupHierarchyHolder &Group = Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group());
-	if (m_bActive) {
-		R_ASSERT(Group.m_dwActiveCount > 0);
-		--(Group.m_dwActiveCount);
-		m_bActive = false;
-		m_eCurrentState = aiRatFreeHuntingPassive;
-		shedule.t_min	= m_dwPassiveScheduleMin;
-		shedule.t_max	= m_dwPassiveScheduleMax;
-	}
-	//Msg("* Group : alive[%2d], active[%2d]",Group.m_dwAliveCount,Group.m_dwActiveCount);
-};
-
-IC void CAI_Rat::vfAddStandingMember()
-{
-	CGroupHierarchyHolder &Group = Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group());
-	if ((Group.m_dwAliveCount*m_dwStandingCountPercent/100 >= Group.m_dwStandingCount) && (!m_bStanding)) {
-		++Group.m_dwStandingCount;
-		m_bStanding = true;
-	}
-};
-
-IC void CAI_Rat::vfRemoveStandingMember()
-{
-	CGroupHierarchyHolder &Group = Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group());
-	if (m_bStanding) {
-		R_ASSERT(Group.m_dwStandingCount > 0);
-		--(Group.m_dwStandingCount);
-		m_bStanding = false;
-	}
-};
-
-IC bool CAI_Rat::bfCheckIfSoundFrightful()
-{
-	return(((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_BULLET_HIT) == SOUND_TYPE_WEAPON_BULLET_HIT) || ((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING));
-};
-
 IC	bool CAI_Rat::use_model_pitch	() const
 {
 	return			(!!g_Alive());

@@ -10,6 +10,7 @@
 #include "base_monster.h"
 #include "../ai_monster_utils.h"
 #include "../../../../skeletonanimated.h"
+#include "../../../sound_player.h"
 
 static void __stdcall vfPlayEndCallBack(CBlend* B)
 {
@@ -43,7 +44,7 @@ void CBaseMonster::AA_CheckHit()
 	SAAParam params;
 	if (!MotionMan.AA_TimeTest(params))  return;
 	
-	CSoundPlayer::play(MonsterSpace::eMonsterSoundAttackHit);
+	sound().play(MonsterSpace::eMonsterSoundAttackHit);
 
 	bool should_hit = true;
 	// определить дистанцию до врага
@@ -71,6 +72,6 @@ void CBaseMonster::AA_CheckHit()
 	if (should_hit) HitEntity(enemy, params.hit_power, params.impulse, params.impulse_dir);
 	
 	MeleeChecker.on_hit_attempt		(should_hit);
-	MotionMan.AA_UpdateLastAttack	(Level().timeServer());
+	MotionMan.AA_UpdateLastAttack	(Device.dwTimeGlobal);
 }
 

@@ -3,6 +3,7 @@
 #include "burer_attack_melee.h"
 #include "burer.h"
 #include "../ai_monster_movement.h"
+#include "../../../sound_player.h"
 
 #define MIN_DIST_MELEE_ATTACK	5.f
 #define MAX_DIST_MELEE_ATTACK	9.f
@@ -52,7 +53,7 @@ void CBurerAttackMelee::Run()
 			// Смотреть на врага 
 			pMonster->DirMan.face_target(enemy,1200);
 
-			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
+			pMonster->sound().play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
 
 			break;
 
@@ -69,7 +70,7 @@ void CBurerAttackMelee::Run()
 			pMonster->movement().set_rebuild_time	(100 + u32(50.f * dist));
 			pMonster->movement().set_distance_to_end(0.1f);
 
-			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
+			pMonster->sound().play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
 
 			break;
 	}

@@ -90,6 +90,6 @@ void CAI_Rat::SelectAnimation(const Fvector& /**_view/**/, const Fvector& /**_mo
 		m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(m_tpCurrentGlobalAnimation = tpGlobalAnimation);
 #ifdef DEBUG
 	if (psAI_Flags.is(aiAnimation))
-		Msg			("%6d %s animation : %s (%f,%f)",Level().timeServer(),"Global",smart_cast<CSkeletonAnimated*>(Visual())->LL_MotionDefName_dbg(m_tpCurrentGlobalAnimation),movement().m_body.current.yaw,movement().m_body.target.yaw);
+		Msg			("%6d %s animation : %s (%f,%f)",Device.dwTimeGlobal,"Global",smart_cast<CSkeletonAnimated*>(Visual())->LL_MotionDefName_dbg(m_tpCurrentGlobalAnimation),movement().m_body.current.yaw,movement().m_body.target.yaw);
 #endif
 }

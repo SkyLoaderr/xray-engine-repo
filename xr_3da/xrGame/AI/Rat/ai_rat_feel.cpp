@@ -11,6 +11,7 @@
 #include "../../clsid_game.h"
 #include "../../memory_manager.h"
 #include "../../enemy_manager.h"
+#include "../../ai_sounds.h"
 
 BOOL CAI_Rat::feel_vision_isRelevant(CObject* O)
 {
@@ -31,7 +32,7 @@ void CAI_Rat::feel_sound_new(CObject* who, int eType, const Fvector &Position, f
 	if (power >= m_fSoundThreshold) {
 		if ((this != who) && ((m_tLastSound.dwTime <= m_dwLastUpdateTime) || (m_tLastSound.fPower <= power))) {
 			m_tLastSound.eSoundType		= ESoundTypes(eType);
-			m_tLastSound.dwTime			= Level().timeServer();
+			m_tLastSound.dwTime			= Device.dwTimeGlobal;
 			m_tLastSound.fPower			= power;
 			m_tLastSound.tSavedPosition = Position;
 			m_tLastSound.tpEntity		= smart_cast<CEntityAlive*>(who);

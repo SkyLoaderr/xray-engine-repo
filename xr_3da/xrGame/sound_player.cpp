@@ -14,16 +14,11 @@
 #include "../xr_object.h"
 #include "../skeletoncustom.h"
 
-CSoundPlayer::CSoundPlayer			()
+CSoundPlayer::CSoundPlayer			(CObject *object)
 {
+	VERIFY							(object);
+	m_object						= object;
 	seed							(u32(CPU::GetCycleCount() & 0xffffffff));
-}
-
-DLL_Pure *CSoundPlayer::_construct	()
-{
-	m_object						= smart_cast<CObject*>(this);
-	VERIFY							(m_object);
-	return							(m_object);
 }
 
 CSoundPlayer::~CSoundPlayer			()

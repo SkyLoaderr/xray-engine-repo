@@ -2,6 +2,7 @@
 #include "step_manager.h"
 #include "custommonster.h"
 #include "../skeletonanimated.h"
+#include "level.h"
 
 #define TIME_OFFSET 10
 
@@ -62,7 +63,7 @@ void CStepManager::on_animation_start(shared_str anim, CBlend *blend)
 {
 	if (!m_blend) return;
 
-	m_time_anim_started = Level().timeServer(); 
+	m_time_anim_started = Device.dwTimeGlobal; 
 	
 	// искать текущую анимацию в STEPS_MAP
 	STEPS_MAP_IT it = m_steps_map.find(anim);
@@ -95,7 +96,7 @@ void CStepManager::update()
 
 	// получить параметры шага
 	SStepParam	&step		= m_step_info.params;
-	u32		cur_time		= Level().timeServer();
+	u32		cur_time		= Device.dwTimeGlobal;
 
 	// время одного цикла анимации
 	float cycle_anim_time	= get_blend_time() / step.cycles;

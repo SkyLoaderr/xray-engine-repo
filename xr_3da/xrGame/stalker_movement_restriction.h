@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "ai/stalker/ai_stalker_impl.h"
 #include "agent_manager.h"
 
 class CAI_Stalker;

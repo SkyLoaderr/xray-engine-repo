@@ -3,6 +3,7 @@
 #include "base_monster_state.h"
 #include "../ai_monster_movement.h"
 #include "../../../entitycondition.h"
+#include "../../../level.h"
 
 #define DELTA_NEXT_THINK	5000
 

@@ -23,6 +23,9 @@
 #include "ai_object_location_impl.h"
 #include "game_graph.h"
 #include "ai_debug.h"
+#include "../igame_level.h"
+#include "level.h"
+#include "net_utils.h"
 
 #define OBJECT_REMOVE_TIME 180000
 //////////////////////////////////////////////////////////////////////

@@ -25,6 +25,7 @@
 #include "sight_manager.h"
 #include "ai_object_location.h"
 #include "stalker_movement_manager.h"
+#include "sound_player.h"
 
 using namespace StalkerDecisionSpace;
 
@@ -43,7 +44,7 @@ CStalkerActionCombatBase::CStalkerActionCombatBase	(CCoverPoint **last_cover, CA
 void CStalkerActionCombatBase::initialize			()
 {
 	inherited::initialize		();
-	object().remove_active_sounds	(u32(eStalkerSoundMaskNoHumming));
+	object().sound().remove_active_sounds	(u32(eStalkerSoundMaskNoHumming));
 }
 
 void CStalkerActionCombatBase::finalize				()
@@ -53,7 +54,7 @@ void CStalkerActionCombatBase::finalize				()
 	if (!object().g_Alive())
 		return;
 
-	object().set_sound_mask	(0);
+	object().sound().set_sound_mask	(0);
 }
 
 IC	void CStalkerActionCombatBase::last_cover			(CCoverPoint *last_cover)
@@ -86,7 +87,7 @@ CStalkerActionGetItemToKill::CStalkerActionGetItemToKill	(CCoverPoint **last_cov
 void CStalkerActionGetItemToKill::initialize	()
 {
 	inherited::initialize	();
-	object().remove_active_sounds(u32(eStalkerSoundMaskNoHumming));
+	object().sound().remove_active_sounds(u32(eStalkerSoundMaskNoHumming));
 	object().sight().setup	(CSightAction(object().m_best_found_item_to_kill,true));
 }
 
@@ -98,7 +99,7 @@ void CStalkerActionGetItemToKill::finalize	()
 	if (!object().g_Alive())
 		return;
 
-	object().set_sound_mask(0);
+	object().sound().set_sound_mask(0);
 }
 
 void CStalkerActionGetItemToKill::execute	()
@@ -133,7 +134,7 @@ CStalkerActionMakeItemKilling::CStalkerActionMakeItemKilling	(CCoverPoint **last
 void CStalkerActionMakeItemKilling::initialize	()
 {
 	inherited::initialize			();
-	object().remove_active_sounds	(u32(eStalkerSoundMaskNoHumming));
+	object().sound().remove_active_sounds	(u32(eStalkerSoundMaskNoHumming));
 	object().sight().clear	();
 	object().sight().add_action(eSightActionTypeWatchItem,xr_new<CSightControlAction>(1.f,3000,CSightAction(SightManager::eSightTypePathDirection)));
 	object().sight().add_action(eSightActionTypeWatchEnemy,xr_new<CSightControlAction>(1.f,3000,CSightAction(SightManager::eSightTypePosition,object().memory().enemy().selected()->Position(),false)));
@@ -147,7 +148,7 @@ void CStalkerActionMakeItemKilling::finalize	()
 	if (!object().g_Alive())
 		return;
 
-	object().set_sound_mask		(0);
+	object().sound().set_sound_mask		(0);
 }
 
 void CStalkerActionMakeItemKilling::execute	()
@@ -192,7 +193,7 @@ void CStalkerActionRetreatFromEnemy::finalize	()
 	if (!object().g_Alive())
 		return;
 
-	object().set_sound_mask(0);
+	object().sound().set_sound_mask(0);
 }
 
 void CStalkerActionRetreatFromEnemy::execute		()
@@ -236,7 +237,7 @@ void CStalkerActionRetreatFromEnemy::execute		()
 		}
 	}
 
-	object().play	(object().memory().enemy().selected()->human_being() ? eStalkerSoundPanicHuman : eStalkerSoundPanicMonster,0,0,10000);
+	object().sound().play	(object().memory().enemy().selected()->human_being() ? eStalkerSoundPanicHuman : eStalkerSoundPanicMonster,0,0,10000);
 }
 
 _edge_value_type CStalkerActionRetreatFromEnemy::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
@@ -338,7 +339,7 @@ void CStalkerActionKillEnemy::initialize		()
 	m_storage->set_property				(eWorldPropertyPositionHolded,false);
 	m_storage->set_property				(eWorldPropertyEnemyDetoured,false);
 	if (object().memory().enemy().selected()->human_being())
-		object().play					(eStalkerSoundAttack);
+		object().sound().play					(eStalkerSoundAttack);
 }
 
 void CStalkerActionKillEnemy::finalize			()
@@ -403,11 +404,11 @@ void CStalkerActionTakeCover::initialize		()
 	if (object().memory().enemy().selected()->human_being()) {
 		if (object().memory().visual().visible_now(object().memory().enemy().selected()) && object().agent_manager().group_behaviour())
 //			if (::Random.randI(2))
-				object().play				(eStalkerSoundBackup);
+				object().sound().play				(eStalkerSoundBackup);
 //			else
-//				object().play				(eStalkerSoundAttack);
+//				object().sound().play				(eStalkerSoundAttack);
 		else
-			object().play					(eStalkerSoundAttack);
+			object().sound().play					(eStalkerSoundAttack);
 	}
 }
 
@@ -554,7 +555,7 @@ void CStalkerActionHoldPosition::initialize		()
 	object().movement().set_mental_state			(eMentalStateDanger);
 	object().CObjectHandler::set_goal	(eObjectActionAimReady1,object().best_weapon());
 	if (object().agent_manager().group_behaviour())
-		object().play					(eStalkerSoundDetour,5000);
+		object().sound().play					(eStalkerSoundDetour,5000);
 	set_inertia_time					(5000 + ::Random32.random(5000));
 }
 
@@ -617,7 +618,7 @@ void CStalkerActionDetourEnemy::execute			()
 	inherited::execute					();
 
 	if (object().memory().enemy().selected()->human_being() && object().agent_manager().group_behaviour())
-		object().play					(eStalkerSoundDetour,5000);
+		object().sound().play					(eStalkerSoundDetour,5000);
 	
 	CMemoryInfo							mem_object = object().memory().memory(object().memory().enemy().selected());
 
@@ -681,7 +682,7 @@ void CStalkerActionSearchEnemy::execute			()
 {
 	inherited::execute					();
 	
-	object().play						(eStalkerSoundSearch,10000);
+	object().sound().play						(eStalkerSoundSearch,10000);
 	CMemoryInfo							mem_object = object().memory().memory(object().memory().enemy().selected());
 
 	if (!mem_object.m_object)

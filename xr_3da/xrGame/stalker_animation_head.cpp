@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "stalker_animation_manager.h"
 #include "ai/stalker/ai_stalker.h"
+#include "sound_player.h"
 
 void CStalkerAnimationManager::head_play_callback		(CBlend *blend)
 {
@@ -19,7 +20,7 @@ void CStalkerAnimationManager::head_play_callback		(CBlend *blend)
 
 const CAnimationPair *CStalkerAnimationManager::assign_head_animation	()
 {
-	if (object().active_sound_count(true))
+	if (object().sound().active_sound_count(true))
 		return	(&m_head_animations.A[1]);
 	else
 		return	(&m_head_animations.A[0]);

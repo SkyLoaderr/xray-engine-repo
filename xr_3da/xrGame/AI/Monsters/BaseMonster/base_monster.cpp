@@ -26,6 +26,7 @@
 #include "../../../ai_debug.h"
 #include "../ai_monster_movement.h"
 #include "../../../entitycondition.h"
+#include "../../../sound_player.h"
 
 CBaseMonster::CBaseMonster()
 {
@@ -145,9 +146,9 @@ void CBaseMonster::Die(CObject* who)
 	inherited::Die(who);
 
 	if (is_special_killer(who))
-		CSoundPlayer::play			(MonsterSpace::eMonsterSoundDieInAnomaly);
+		sound().play			(MonsterSpace::eMonsterSoundDieInAnomaly);
 	else
-		CSoundPlayer::play			(MonsterSpace::eMonsterSoundDie);
+		sound().play			(MonsterSpace::eMonsterSoundDie);
 
 	monster_squad().remove_member((u8)g_Team(),(u8)g_Squad(), this);
 }
@@ -272,7 +273,7 @@ void CBaseMonster::set_state_sound(u32 type, bool once)
 {
 	if (once) {
 	
-		CSoundPlayer::play(type);
+		sound().play(type);
 	
 	} else {
 
@@ -291,7 +292,7 @@ void CBaseMonster::set_state_sound(u32 type, bool once)
 			break;
 		}
 
-		CSoundPlayer::play(type, 0, 0, delay);
+		sound().play(type, 0, 0, delay);
 	}
 }
 

@@ -6,6 +6,7 @@
 #include "../ai_monster_squad_manager.h"
 #include "../ai_monster_utils.h"
 #include "../ai_monster_movement.h"
+#include "../../../sound_player.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBaseMonsterControlled class
@@ -97,7 +98,7 @@ void CBaseMonsterControlled::ExecuteAttack()
 				pMonster->movement().set_dest_direction	(command.direction);
 			}
 
-			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
+			pMonster->sound().play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
 
 			break;
 			
@@ -107,7 +108,7 @@ void CBaseMonsterControlled::ExecuteAttack()
 			
 			pMonster->MotionMan.m_tAction	= ACT_ATTACK;
 			pMonster->DirMan.face_target(enemy, 1200);
-			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
+			pMonster->sound().play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
 			break;
 	}
 	

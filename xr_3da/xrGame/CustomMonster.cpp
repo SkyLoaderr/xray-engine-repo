@@ -28,6 +28,8 @@
 #include "game_graph.h"
 #include "movement_manager.h"
 #include "entitycondition.h"
+#include "sound_player.h"
+#include "level.h"
 
 #define IMPORTANT_BUILD
 
@@ -155,8 +157,8 @@ void CCustomMonster::reinit()
 	CEntityAlive::reinit		();
 	CMaterialManager::reinit	();
 	memory().reinit				();
-	movement().reinit	();
-	CSoundPlayer::reinit		();
+	movement().reinit			();
+	sound().reinit				();
 
 	eye_pp_stage				= 0;
 	m_dwLastUpdateTime			= 0xffffffff;
@@ -167,7 +169,7 @@ void CCustomMonster::reinit()
 
 void CCustomMonster::reload		(LPCSTR section)
 {
-	CSoundPlayer::reload		(section);
+	sound().reload				(section);
 	CEntityAlive::reload		(section);
 	CMaterialManager::reload	(section);
 	memory().reload				(section);
@@ -259,7 +261,7 @@ void CCustomMonster::shedule_Update	( u32 DT )
 	// Queue setup
 	if (dt > 3) return;
 
-	m_dwCurrentTime	= Level().timeServer();
+	m_dwCurrentTime	= Device.dwTimeGlobal;
 
 	VERIFY				(_valid(Position()));
 	if (Remote())		{
@@ -274,7 +276,7 @@ void CCustomMonster::shedule_Update	( u32 DT )
 			if (Device.dwFrame > spawn_time() + g_AI_inactive_time)
 				Think					();
 		}
-		m_dwLastUpdateTime				= Level().timeServer();
+		m_dwLastUpdateTime				= Device.dwTimeGlobal;
 		Device.Statistic.TEST1.End();
 		Device.Statistic.AI_Think.End	();
 
@@ -337,11 +339,11 @@ void CCustomMonster::UpdateCL	()
 	inherited::UpdateCL					();
 
 	CScriptEntity::process_sound_callbacks();
-	CSoundPlayer::update				(Device.fTimeDelta);
+	sound().update				(Device.fTimeDelta);
 
 	if	(NET.empty())	return;
 
-	m_dwCurrentTime	= Level().timeServer();
+	m_dwCurrentTime	= Device.dwTimeGlobal;
 
 	// distinguish interpolation/extrapolation
 	u32	dwTime			= Level().timeServer()-NET_Latency;
@@ -906,10 +908,10 @@ DLL_Pure *CCustomMonster::_construct()
 {
 	m_memory_manager			= xr_new<CMemoryManager>(this);
 	m_movement_manager			= create_movement_manager();
+	m_sound_player				= xr_new<CSoundPlayer>(this);
 
 	inherited::_construct		();
 	CScriptEntity::_construct	();
-	CSoundPlayer::_construct	();
 	CMaterialManager::_construct();
 
 	return						(this);

@@ -15,6 +15,7 @@
 #include "item_manager.h"
 #include "greeting_manager.h"
 #include "ai/stalker/ai_stalker.h"
+#include "ai/stalker/ai_stalker_impl.h"
 #include "agent_manager.h"
 #include "memory_space_impl.h"
 #include "ai_object_location.h"

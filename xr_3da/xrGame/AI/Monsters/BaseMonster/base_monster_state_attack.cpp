@@ -14,6 +14,7 @@
 #include "../../../detail_path_manager.h"
 #include "../ai_monster_movement.h"
 #include "../../../entitycondition.h"
+#include "../../../sound_player.h"
 
 
 /////////////////////////////////////////////////////////////////////////
@@ -143,7 +144,7 @@ void CBaseMonsterAttack::Run()
 	// проверить на возможность прыжка
 	if (flags.is(AF_HAS_JUMP_ABILITY)) 
 		if (pJumping->Check(pMonster->Position(),enemy->Position(),enemy)){
-			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttackHit);
+			pMonster->sound().play(MonsterSpace::eMonsterSoundAttackHit);
 			pMonster->MotionMan.ActivateJump();
 		}
 	
@@ -227,7 +228,7 @@ void CBaseMonsterAttack::Run()
 
 			if (flags.is(AF_ATTACK_RAT)) pMonster->MotionMan.SetSpecParams(ASP_ATTACK_RAT);
 
-			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
+			pMonster->sound().play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
 
 			break;
 
@@ -240,7 +241,7 @@ void CBaseMonsterAttack::Run()
 			pMonster->movement().set_target_point		(pMonster->EnemyMan.get_enemy_position(), pMonster->EnemyMan.get_enemy_vertex());
 			pMonster->movement().set_generic_parameters	();
 
-			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundSteal, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
+			pMonster->sound().play(MonsterSpace::eMonsterSoundSteal, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
 			break;
 		
 		// ******************
@@ -255,7 +256,7 @@ void CBaseMonsterAttack::Run()
 
 			pMonster->MotionMan.SetSpecParams(ASP_THREATEN);
 
-			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundThreaten);
+			pMonster->sound().play(MonsterSpace::eMonsterSoundThreaten);
 			
 			break;
 
@@ -268,7 +269,7 @@ void CBaseMonsterAttack::Run()
 			pMonster->movement().set_generic_parameters	();
 			pMonster->MotionMan.accel_activate					(eAT_Calm);
 			
-			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
+			pMonster->sound().play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
 
 			break;
 
@@ -280,7 +281,7 @@ void CBaseMonsterAttack::Run()
 			pMonster->MotionMan.m_tAction						= ACT_WALK_FWD;
 			pMonster->movement().set_retreat_from_point	(random_position(pMonster->EnemyMan.get_enemy_position(), 2.f));
 			pMonster->movement().set_generic_parameters	();
-			pMonster->CSoundPlayer::play						(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
+			pMonster->sound().play						(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
 			pMonster->MotionMan.accel_activate					(eAT_Calm);
 		
 			break;
@@ -289,7 +290,7 @@ void CBaseMonsterAttack::Run()
 		case ACTION_ROTATION_JUMP: 
 		// **********************
 
-			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundLanding);
+			pMonster->sound().play(MonsterSpace::eMonsterSoundLanding);
 			pMonster->MotionMan.SetSpecParams	(ASP_ROTATION_JUMP);
 			next_rot_jump_enabled				= m_dwCurrentTime + Random.randI(3000,4000);
 			pMonster->movement().disable_path				();
@@ -300,7 +301,7 @@ void CBaseMonsterAttack::Run()
 		// ********************
 			LOG_EX("ATTACK: Attack Run");
 
-			pMonster->CSoundPlayer::play				(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);			
+			pMonster->sound().play				(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);			
 			pMonster->MotionMan.m_tAction				= ACT_RUN;
 			pMonster->movement().set_try_min_time(false);
 
@@ -334,7 +335,7 @@ void CBaseMonsterAttack::Run()
 			pMonster->DirMan.face_target(enemy,1200);
 
 			pMonster->MotionMan.SetSpecParams(ASP_PSI_ATTACK);
-			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundPsyAttack);
+			pMonster->sound().play(MonsterSpace::eMonsterSoundPsyAttack);
 			pMonster->play_effect_sound();
 
 			time_next_psi_attack			= m_dwCurrentTime + Random.randI(2000,4000);

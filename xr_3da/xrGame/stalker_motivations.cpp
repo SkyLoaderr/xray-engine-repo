@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "stalker_motivations.h"
 #include "ai/stalker/ai_stalker.h"
+#include "ai/stalker/ai_stalker_impl.h"
 #include "stalker_decision_space.h"
 #include "agent_manager.h"
 #include "script_game_object.h"

@@ -9,6 +9,8 @@
 #include "../../../xr_level_controller.h"
 #include "pseudodog_state_manager.h"
 #include "../../../../skeletonanimated.h"
+#include "../../../sound_player.h"
+#include "../../../level.h"
 
 CAI_PseudoDog::CAI_PseudoDog()
 {
@@ -149,7 +151,7 @@ void CAI_PseudoDog::reload(LPCSTR section)
 {
 	inherited::reload	(section);
 	
-	CSoundPlayer::add	(pSettings->r_string(section,"sound_psy_attack"),	16,	SOUND_TYPE_MONSTER_ATTACKING,	1,	u32(1 << 31) | 15,	MonsterSpace::eMonsterSoundPsyAttack, "bip01_head");
+	sound().add	(pSettings->r_string(section,"sound_psy_attack"),	16,	SOUND_TYPE_MONSTER_ATTACKING,	1,	u32(1 << 31) | 15,	MonsterSpace::eMonsterSoundPsyAttack, "bip01_head");
 	
 	CJumping::AddState	(smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("jump_prepare_0"),	JT_CUSTOM,	true,	0.f, inherited::get_sd()->m_fsVelocityRunFwdNormal.velocity.angular_real);
 	CJumping::AddState	(smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("jump_glide_0"),	JT_GLIDE,	false,	0.f, inherited::get_sd()->m_fsVelocityRunFwdNormal.velocity.angular_real);

@@ -18,6 +18,7 @@
 #include "enemy_manager.h"
 #include "memory_space.h"
 #include "ai_object_location.h"
+#include "level.h"
 
 CSelectorManager::CSelectorManager		(CCustomMonster *object)
 {
@@ -62,7 +63,7 @@ void CSelectorManager::init_selector	(CAbstractVertexEvaluator &S)
 		S.m_hit_time		= 0;
 	}
 
-	S.m_dwCurTime			= Level().timeServer();
+	S.m_dwCurTime			= Device.dwTimeGlobal;
 	S.m_tMe					= smart_cast<CEntity*>(this);
 	S.m_tpMyNode			= m_object->ai_location().level_vertex();
 	S.m_tMyPosition			= m_object->Position();

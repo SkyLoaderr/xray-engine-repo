@@ -5,6 +5,7 @@
 #include "../../../WeaponMagazined.h"
 #include "../../../inventory.h"
 #include "../../../actor.h"
+#include "../../../sound_player.h"
 
 CPseudodogGrowling::CPseudodogGrowling(CAI_PseudoDog *p)
 {
@@ -45,14 +46,14 @@ void CPseudodogGrowling::Run()
 	/********************/
 		pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;	
 		pMonster->MotionMan.SetSpecParams(ASP_THREATEN);
-		pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundThreaten, 0,0, pMonster->get_sd()->m_dwAttackSndDelay);
+		pMonster->sound().play(MonsterSpace::eMonsterSoundThreaten, 0,0, pMonster->get_sd()->m_dwAttackSndDelay);
 		break;
 	/*************************/
 	case ACTION_PSI_ATTACK:
 	/*************************/
 		pMonster->MotionMan.m_tAction	= ACT_STAND_IDLE;	
 		pMonster->MotionMan.SetSpecParams(ASP_PSI_ATTACK);
-		pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundPsyAttack);
+		pMonster->sound().play(MonsterSpace::eMonsterSoundPsyAttack);
 		pMonster->play_effect_sound();
 
 		time_next_psi_attack			= m_dwCurrentTime + Random.randI(2000,4000);
@@ -61,7 +62,7 @@ void CPseudodogGrowling::Run()
 	case ACTION_ANGRY_IDLE:
 	/**********************/
 		pMonster->MotionMan.m_tAction	= ACT_STAND_IDLE;	
-		pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundThreaten, 0,0, pMonster->get_sd()->m_dwAttackSndDelay);
+		pMonster->sound().play(MonsterSpace::eMonsterSoundThreaten, 0,0, pMonster->get_sd()->m_dwAttackSndDelay);
 		break;
 	}
 	

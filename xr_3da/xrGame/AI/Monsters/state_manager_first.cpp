@@ -36,7 +36,7 @@ void CStateManagerFirst::execute()
 	STATE_MAP_IT state_it = m_states.find(m_current_state);
 	VERIFY(state_it != m_states.end());
 
-	state_it->second->Execute	(Level().timeServer());
+	state_it->second->Execute	(Device.dwTimeGlobal);
 }
 
 void CStateManagerFirst::add_state(EGlobalStates id, IState *p_state)

@@ -65,7 +65,7 @@ void CStalkerActionSolveZonePuzzle::finalize	()
 	if (!object().g_Alive())
 		return;
 
-	object().remove_active_sounds	(u32(eStalkerSoundMaskNoHumming));
+	object().sound().remove_active_sounds	(u32(eStalkerSoundMaskNoHumming));
 }
 
 void CStalkerActionSolveZonePuzzle::execute		()
@@ -118,7 +118,7 @@ void CStalkerActionReachTaskLocation::finalize	()
 void CStalkerActionReachTaskLocation::execute		()
 {
 	inherited::execute					();
-	object().play						(eStalkerSoundHumming,60000,10000);
+	object().sound().play					(eStalkerSoundHumming,60000,10000);
 	object().movement().set_game_dest_vertex		(object().current_alife_task().m_tGraphID);
 	if (object().movement().path_completed() || object().alife_task_completed())
 		m_storage->set_property			(eWorldPropertyReachedTaskLocation,true);
@@ -161,7 +161,7 @@ void CStalkerActionAccomplishTask::initialize	()
 	object().movement().set_mental_state			(eMentalStateFree);
 	object().sight().setup				(CSightAction(SightManager::eSightTypeSearch,false,true));
 	object().movement().extrapolate_path			(true);
-	object().remove_active_sounds		(u32(eStalkerSoundMaskNoHumming));
+	object().sound().remove_active_sounds		(u32(eStalkerSoundMaskNoHumming));
 	if (!object().best_weapon())
 		object().CObjectHandler::set_goal	(eObjectActionIdle);
 	else
@@ -176,7 +176,7 @@ void CStalkerActionAccomplishTask::finalize	()
 	if (!object().g_Alive())
 		return;
 
-	object().set_sound_mask			(0);
+	object().sound().set_sound_mask			(0);
 }
 
 void CStalkerActionAccomplishTask::execute		()
@@ -247,7 +247,7 @@ void CStalkerActionReachCustomerLocation::execute		()
 {
 	inherited::execute					();
 
-	object().play						(eStalkerSoundHumming,60000,10000);
+	object().sound().play				(eStalkerSoundHumming,60000,10000);
 
 	CSE_ALifeDynamicObject				*customer = ai().alife().objects().object(object().current_alife_task().m_tCustomerID);
 	if (object().ai_location().game_vertex_id() != customer->m_tGraphID) {
@@ -294,7 +294,7 @@ void CStalkerActionCommunicateWithCustomer::initialize	()
 	object().movement().set_mental_state			(eMentalStateFree);
 	object().sight().setup				(CSightAction(SightManager::eSightTypeCover,false,true));
 	object().CObjectHandler::set_goal	(eObjectActionIdle);
-	object().remove_active_sounds		(u32(eStalkerSoundMaskNoHumming));
+	object().sound().remove_active_sounds		(u32(eStalkerSoundMaskNoHumming));
 	m_trader							= smart_cast<CAI_Trader*>(Level().Objects.net_Find(object().current_alife_task().m_tCustomerID));
 	VERIFY								(m_trader);
 }
@@ -306,7 +306,7 @@ void CStalkerActionCommunicateWithCustomer::finalize	()
 	if (!object().g_Alive())
 		return;
 
-	object().set_sound_mask			(0);
+	object().sound().set_sound_mask		(0);
 }
 
 void CStalkerActionCommunicateWithCustomer::execute		()

@@ -8,6 +8,7 @@
 #include "critical_action_info.h"
 #include "../../detail_path_manager.h"
 #include "ai_monster_movement.h"
+#include "../../level.h"
 
 CJumpingAbility::CJumpingAbility()
 {
@@ -114,7 +115,7 @@ bool CJumpingAbility::is_landing()
 {
 	if (m_time_started == 0) return false;
 
-	if (m_time_started + (m_jump_time*1000) > Level().timeServer()) return false;
+	if (m_time_started + (m_jump_time*1000) > Device.dwTimeGlobal) return false;
 	
 	Fvector direction;
 	direction.set(0.f, -1.f, 0.f);
@@ -201,7 +202,7 @@ void CJumpingAbility::on_TA_change(IEventData *p_data)
 		// выполнить прыжок в соответствии с делителем времени
 		m_object->m_PhysicMovementControl->Jump(m_target_position,ph_time/m_jump_factor);
 		m_jump_time			= ph_time/m_jump_factor;
-		m_time_started		= Level().timeServer();
+		m_time_started		= Device.dwTimeGlobal;
 		m_time_next_allowed	= m_time_started + m_delay_after_jump;
 	}
 }
@@ -274,7 +275,7 @@ bool CJumpingAbility::is_on_the_ground()
 
 bool CJumpingAbility::can_jump(CObject *target)
 {
-	if (m_active || (m_time_next_allowed > Level().timeServer())) return false;
+	if (m_active || (m_time_next_allowed > Device.dwTimeGlobal)) return false;
 	
 	Fvector source_position		= m_object->Position	();
 	Fvector target_position;

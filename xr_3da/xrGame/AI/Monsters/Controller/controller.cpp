@@ -10,6 +10,8 @@
 #include "../../../hudmanager.h"
 #include "../../../ui.h"
 #include "../../../../skeletonanimated.h"
+#include "../../../level.h"
+#include "../../../sound_player.h"
 
 CController::CController()
 {
@@ -335,7 +337,7 @@ void CController::shedule_Update(u32 dt)
 void CController::Jump()
 {
 	if (CJumping::Check(Position(),EnemyMan.get_enemy()->Position(),EnemyMan.get_enemy())){
-		CSoundPlayer::play(MonsterSpace::eMonsterSoundAttackHit);
+		sound().play(MonsterSpace::eMonsterSoundAttackHit);
 		MotionMan.ActivateJump();
 	}
 }

@@ -125,7 +125,7 @@ bool CMotionManager::PrepareAnimation()
 	sprintf(st, "%s%d", *anim_it->second.target_name, index);
 	m_cur_anim.name				= st; 
 	m_cur_anim.index			= u8(index);
-	m_cur_anim.time_started		= Level().timeServer();
+	m_cur_anim.time_started		= Device.dwTimeGlobal;
 	m_cur_anim.speed.current	= -1.f;
 	m_cur_anim.speed.target		= -1.f;
 
@@ -276,7 +276,7 @@ void CMotionManager::Seq_Finish()
 bool CMotionManager::AA_TimeTest(SAAParam &params)
 {
 	// Частота хитов не может быть больше 'TIME_DELTA'
-	TTime cur_time	= Level().timeServer();
+	TTime cur_time	= Device.dwTimeGlobal;
 
 	if (aa_time_last_attack + TIME_DELTA > cur_time) return false;
 

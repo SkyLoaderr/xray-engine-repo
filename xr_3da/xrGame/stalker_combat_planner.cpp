@@ -12,6 +12,7 @@
 #include "stalker_decision_space.h"
 #include "stalker_property_evaluators.h"
 #include "ai/stalker/ai_stalker.h"
+#include "ai/stalker/ai_stalker_impl.h"
 #include "script_game_object.h"
 #include "cover_evaluators.h"
 #include "cover_manager.h"
@@ -20,6 +21,7 @@
 #include "memory_manager.h"
 #include "visual_memory_manager.h"
 #include "enemy_manager.h"
+#include "sound_player.h"
 
 const u32 TOLLS_INTERVAL = 2000;
 
@@ -90,7 +92,7 @@ void CStalkerCombatPlanner::update				()
 		return;
 
 	if (m_object->agent_manager().group_behaviour())
-		m_object->CSoundPlayer::play(StalkerSpace::eStalkerSoundTolls);
+		m_object->sound().play(StalkerSpace::eStalkerSoundTolls);
 
 	reaction.clear			();
 }
@@ -105,7 +107,7 @@ void CStalkerCombatPlanner::initialize			()
 	m_last_enemy_id			= u16(-1);
 	m_last_level_time		= 0;
 	if (m_object->memory().visual().visible_now(m_object->memory().enemy().selected()) && m_object->memory().enemy().selected()->human_being())
-		object().CSoundPlayer::play		(eStalkerSoundAlarm);
+		object().sound().play		(eStalkerSoundAlarm);
 }
 
 void CStalkerCombatPlanner::finalize			()
@@ -113,7 +115,7 @@ void CStalkerCombatPlanner::finalize			()
 	if (!object().g_Alive())
 		return;
 
-	object().CSoundPlayer::remove_active_sounds	(u32(-1));
+	object().sound().remove_active_sounds	(u32(-1));
 }
 
 void CStalkerCombatPlanner::add_evaluators		()

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "poltergeist.h"
 #include "../../../PhysicsShell.h"
+#include "../../../level.h"
 
 #define IMPULSE					10.f
 #define IMPULSE_RADIUS			5.f

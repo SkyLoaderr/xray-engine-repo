@@ -16,6 +16,7 @@
 #include "entity_alive.h"
 #include "ai/stalker/ai_stalker.h"
 #include "ai/monsters/BaseMonster/base_monster.h"
+#include "level.h"
 
 
 

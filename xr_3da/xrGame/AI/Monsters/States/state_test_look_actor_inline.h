@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../../../level.h"
+
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Object\
 >

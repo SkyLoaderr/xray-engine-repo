@@ -9,6 +9,7 @@
 #include "../../../actor.h"
 #include "../../../../skeletonanimated.h"
 #include "../ai_monster_movement.h"
+#include "../../../level.h"
 
 CAI_Bloodsucker::CAI_Bloodsucker()
 {
@@ -145,7 +146,7 @@ void __stdcall CAI_Bloodsucker::BoneCallback(CBoneInstance *B)
 {
 	CAI_Bloodsucker*	this_class = static_cast<CAI_Bloodsucker*> (B->Callback_Param);
 
-	this_class->Bones.Update(B, Level().timeServer());
+	this_class->Bones.Update(B, Device.dwTimeGlobal);
 }
 
 

@@ -10,7 +10,6 @@
 
 #include "random32.h"
 #include "ai_sounds.h"
-#include "level.h"
 
 class CSoundPlayer : public CRandom32 {
 public:
@@ -86,7 +85,7 @@ public:
 				(sound.m_synchro_mask & m_sound_mask) || 
 				(
 					!sound.m_sound->feedback && 
-					(sound.m_stop_time <= Level().timeServer())
+					(sound.m_stop_time <= Device.dwTimeGlobal)
 				);
 			if (result)
 				sound.destroy					();
@@ -108,9 +107,8 @@ private:
 			bool		check_sound_legacy			(u32 internal_type) const;
 
 public:
-						CSoundPlayer				();
+						CSoundPlayer				(CObject *object);
 	virtual				~CSoundPlayer				();
-	virtual	DLL_Pure	*_construct					();
 	virtual	void		reinit						();
 	virtual	void		reload						(LPCSTR section);
 			u32			add							(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 priority, u32 mask, u32 internal_type, LPCSTR bone_name, LPCSTR head_anim = 0);

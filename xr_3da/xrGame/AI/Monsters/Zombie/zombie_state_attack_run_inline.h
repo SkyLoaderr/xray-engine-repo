@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../../../sound_player.h"
+
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Object\
 >
@@ -65,7 +67,7 @@ void CStateZombieAttackRunAbstract::execute()
 	if (action == ACT_RUN) 
 		object->movement().set_try_min_time	(true);
 	
-	object->CSoundPlayer::play					(MonsterSpace::eMonsterSoundAttack, 0,0,object->get_sd()->m_dwAttackSndDelay);
+	object->sound().play						(MonsterSpace::eMonsterSoundAttack, 0,0,object->get_sd()->m_dwAttackSndDelay);
 	object->MotionMan.accel_activate			(eAT_Aggressive);
 	object->MotionMan.accel_set_braking			(false);
 

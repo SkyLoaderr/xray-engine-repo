@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "poltergeist.h"
 #include "../../../PhysicsShellHolder.h"
+#include "../../../level.h"
 
 #define TELE_RADIUS  10.f
 #define TIME_TO_HOLD 2000

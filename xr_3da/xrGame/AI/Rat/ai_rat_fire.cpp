@@ -8,11 +8,13 @@
 
 #include "stdafx.h"
 #include "ai_rat.h"
+#include "ai_rat_impl.h"
 #include "ai_rat_space.h"
 #include "../../clsid_game.h"
 #include "../../memory_manager.h"
 #include "../../enemy_manager.h"
 #include "../../item_manager.h"
+#include "../../sound_player.h"
 
 using namespace RatSpace;
 
@@ -20,8 +22,8 @@ void CAI_Rat::Exec_Action(float /**dt/**/)
 {
 	switch (m_tAction) {
 		case eRatActionAttackBegin : {
-			u32					dwTime = Level().timeServer();
-			CSoundPlayer::play	(eRatSoundAttack);//,0,0,m_dwHitInterval+1,m_dwHitInterval);
+			u32					dwTime = Device.dwTimeGlobal;
+			sound().play	(eRatSoundAttack);//,0,0,m_dwHitInterval+1,m_dwHitInterval);
 			if (memory().enemy().selected() && memory().enemy().selected()->g_Alive() && (dwTime - m_dwStartAttackTime > m_dwHitInterval)) {
 				m_bActionStarted = true;
 				m_dwStartAttackTime = dwTime;
@@ -55,13 +57,13 @@ void CAI_Rat::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 /**e
 	// Save event
 	Fvector D;
 	XFORM().transform_dir(D,vLocalDir);
-	m_hit_time = Level().timeServer();
+	m_hit_time = Device.dwTimeGlobal;
 	m_hit_direction.set(D);
 	m_hit_direction.normalize();
 	m_tHitPosition = who->Position();
 	
 	// Play hit-ref_sound
-	CSoundPlayer::play			(eRatSoundInjuring);
+	sound().play			(eRatSoundInjuring);
 }
 
 bool CAI_Rat::useful		(const CGameObject *object) const
@@ -81,7 +83,7 @@ float CAI_Rat::evaluate		(const CGameObject *object) const
 	const CEntityAlive	*entity_alive = smart_cast<const CEntityAlive*>(object);
 	VERIFY				(entity_alive);
 	if (!entity_alive->g_Alive()) {
-		if ((Level().timeServer() - entity_alive->GetLevelDeathTime() < m_dwEatCorpseInterval) && (entity_alive->m_fFood > 0) && (m_bEatMemberCorpses || (entity_alive->g_Team() != g_Team())) && (m_bCannibalism || (entity_alive->CLS_ID != CLS_ID)))
+		if ((Device.dwTimeGlobal - entity_alive->GetLevelDeathTime() < m_dwEatCorpseInterval) && (entity_alive->m_fFood > 0) && (m_bEatMemberCorpses || (entity_alive->g_Team() != g_Team())) && (m_bCannibalism || (entity_alive->CLS_ID != CLS_ID)))
 			return		(entity_alive->m_fFood*entity_alive->m_fFood)*Position().distance_to(entity_alive->Position());
 		else
 			return		(flt_max);
@@ -92,7 +94,7 @@ float CAI_Rat::evaluate		(const CGameObject *object) const
 
 void CAI_Rat::vfUpdateMorale()
 {
-	u32 dwCurTime = Level().timeServer();
+	u32 dwCurTime = Device.dwTimeGlobal;
 	if (m_fMorale < m_fMoraleMinValue)
 		m_fMorale = m_fMoraleMinValue;
 	if (m_fMorale > m_fMoraleMaxValue)
@@ -138,12 +140,4 @@ void CAI_Rat::vfUpdateMorale()
 		if (m_fMorale > m_fMoraleMaxValue)
 			m_fMorale = m_fMoraleMaxValue;
 	}
-}
-
-void CAI_Rat::vfUpdateMoraleBroadcast(float fValue, float /**fRadius/**/)
-{
-	CGroupHierarchyHolder &Group = Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group());
-	for (int i=0; i<(int)Group.members().size(); ++i)
-		if (Group.members()[i]->g_Alive())
-			Group.members()[i]->m_fMorale += fValue;
 }

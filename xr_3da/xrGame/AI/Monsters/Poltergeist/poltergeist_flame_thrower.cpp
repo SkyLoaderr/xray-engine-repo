@@ -3,6 +3,8 @@
 #include "../../../xrmessages.h"
 #include "../../../ai_object_location.h"
 #include "../../../level_graph.h"
+#include "../../../level.h"
+#include "../../../net_utils.h"
 
 #define FIND_POINT_ATTEMPT_COUNT	5
 #define MIN_FLAME_DIST				2.f
@@ -29,7 +31,7 @@ void CPoltergeist::FireFlame(const CObject *target_object)
 
 	element->position			= position;
 	element->target_object		= target_object;
-	element->time_started		= Level().timeServer();
+	element->time_started		= Device.dwTimeGlobal;
 	element->sound.clone		(m_flame_sound, SOUND_TYPE_WORLD);
 	element->sound.play_at_pos	(this,element->position);
 	
@@ -84,7 +86,7 @@ void CPoltergeist::UpdateFlame()
 			continue;
 		}
 
-		if (element->time_started + m_flame_fire_delay < Level().timeServer()) {
+		if (element->time_started + m_flame_fire_delay < Device.dwTimeGlobal) {
 			// Test hit
 			collide::rq_result rq;
 			

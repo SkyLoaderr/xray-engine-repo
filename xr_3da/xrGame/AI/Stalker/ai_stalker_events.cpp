@@ -12,6 +12,8 @@
 #include "../../inventory.h"
 #include "../../xrmessages.h"
 #include "../../shootingobject.h"
+#include "../../net_utils.h"
+#include "../../level.h"
 
 #define SILENCE
 

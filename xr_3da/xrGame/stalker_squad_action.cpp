@@ -11,6 +11,7 @@
 #include "stdafx.h"
 #include "stalker_squad_action.h"
 #include "ai/stalker/ai_stalker.h"
+#include "ai/stalker/ai_stalker_impl.h"
 #include "agent_manager.h"
 #include "script_game_object.h"
 #include "setup_manager.h"

@@ -6,6 +6,8 @@
 #include "../ai_monster_debug.h"
 #include "burer_state_manager.h"
 #include "../../../../skeletonanimated.h"
+#include "../../../sound_player.h"
+#include "../../../level.h"
 
 CBurer::CBurer()
 {
@@ -34,8 +36,8 @@ void CBurer::reload(LPCSTR section)
 {
 	inherited::reload(section);
 
-	CSoundPlayer::add(pSettings->r_string(section,"sound_gravi_attack"),	16,	SOUND_TYPE_MONSTER_ATTACKING,	2,	u32(1 << 31) | 16,	MonsterSpace::eMonsterSoundGraviAttack, "bip01_head");
-	CSoundPlayer::add(pSettings->r_string(section,"sound_tele_attack"),		16,	SOUND_TYPE_MONSTER_ATTACKING,	2,	u32(1 << 31) | 17,	MonsterSpace::eMonsterSoundTeleAttack, "bip01_head");
+	sound().add(pSettings->r_string(section,"sound_gravi_attack"),	16,	SOUND_TYPE_MONSTER_ATTACKING,	2,	u32(1 << 31) | 16,	MonsterSpace::eMonsterSoundGraviAttack, "bip01_head");
+	sound().add(pSettings->r_string(section,"sound_tele_attack"),		16,	SOUND_TYPE_MONSTER_ATTACKING,	2,	u32(1 << 31) | 17,	MonsterSpace::eMonsterSoundTeleAttack, "bip01_head");
 
 	CSkeletonAnimated *pSkel = smart_cast<CSkeletonAnimated*>(Visual());
 	
@@ -169,7 +171,7 @@ void CBurer::UpdateGraviObject()
 		return;
 	}
 
-	float dt = float(Level().timeServer() - m_gravi_object.time_last_update);
+	float dt = float(Device.dwTimeGlobal - m_gravi_object.time_last_update);
 	float dist = dt * float(m_gravi_speed)/1000.f;
 		
 	if (dist < m_gravi_step) return;
@@ -221,7 +223,7 @@ void CBurer::UpdateGraviObject()
 	}
 																								
 	m_gravi_object.cur_pos				= new_pos;
-	m_gravi_object.time_last_update		= Level().timeServer();
+	m_gravi_object.time_last_update		= Device.dwTimeGlobal;
 
 	// ---------------------------------------------------------------------
 	// draw particle
@@ -332,7 +334,7 @@ void CBurer::Die(CObject* who)
 
 void CBurer::on_scanning()
 {
-	time_last_scan = Level().timeServer();
+	time_last_scan = Device.dwTimeGlobal;
 }
 
 void CBurer::on_scan_success()

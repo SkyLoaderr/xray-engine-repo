@@ -94,9 +94,9 @@ void CStateManagerCat::execute()
 		yaw *= -1;	yaw = angle_normalize(yaw);
 		if (angle_difference(yaw,object->movement().m_body.current.yaw) > 2*PI_DIV_3) {
 			
-			if (m_rot_jump_last_time + ROTATION_JUMP_DELAY < Level().timeServer()) {
+			if (m_rot_jump_last_time + ROTATION_JUMP_DELAY < Device.dwTimeGlobal) {
 				object->MotionMan.SetSpecParams(ASP_ROTATION_JUMP);
-				m_rot_jump_last_time = Level().timeServer();
+				m_rot_jump_last_time = Device.dwTimeGlobal;
 				return;
 			}
 			

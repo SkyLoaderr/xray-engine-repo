@@ -7,16 +7,14 @@
 #include "../feel_vision.h"
 #include "../feel_sound.h"
 #include "../feel_touch.h"
-#include "entity_alive.h"
 
 #include "ai_space.h"
-#include "script_entity.h"
 #include "ai_monster_space.h"
 
+#include "entity_alive.h"
+#include "script_entity.h"
 #include "damage_manager.h"
-#include "event_memory_manager.h"
 #include "material_manager.h"
-#include "sound_player.h"
 
 using namespace MonsterSpace;
 
@@ -25,15 +23,15 @@ class CMotionDef;
 class CSkeletonAnimated;
 class CMemoryManager;
 class CMovementManager;
+class CSoundPlayer;
 
 class CCustomMonster : 
 	public CEntityAlive, 
 	public CScriptEntity,
+	public CMaterialManager,
 	public Feel::Vision,
 	public Feel::Sound,
-	public Feel::Touch,
-	public CMaterialManager,
-	public CSoundPlayer
+	public Feel::Touch
 {
 private:
 	typedef	CEntityAlive	inherited;
@@ -41,6 +39,7 @@ private:
 private:
 	CMemoryManager		*m_memory_manager;
 	CMovementManager	*m_movement_manager;
+	CSoundPlayer		*m_sound_player;
 
 protected:
 	
@@ -222,6 +221,7 @@ protected:
 	virtual CMovementManager	*create_movement_manager();
 public:
 	IC		CMovementManager	&movement				() const;
+	IC		CSoundPlayer		&sound					() const;
 };
 
 #include "custommonster_inline.h"

@@ -13,11 +13,6 @@ IC	BOOL CAI_Stalker::UsedAI_Locations				()
 	return	(TRUE);
 }
 
-IC	const CAgentManager	&CAI_Stalker::agent_manager	() const
-{
-	return	(Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).agent_manager());
-}
-
 IC	CStalkerAnimationManager &CAI_Stalker::animation() const
 {
 	VERIFY	(m_animation_manager);

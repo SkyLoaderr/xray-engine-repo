@@ -2,6 +2,7 @@
 #include "base_monster.h"
 #include "base_monster_state.h"
 #include "../ai_monster_movement.h"
+#include "../../../sound_player.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBaseMonsterPanic class
@@ -99,11 +100,11 @@ void CBaseMonsterPanic::Run()
 			// Смотреть на врага 
 			pMonster->DirMan.face_target(pMonster->EnemyMan.get_enemy(), 1200);
 
-			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
+			pMonster->sound().play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
 			break;
 	}
 	
-	pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundPanic, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
+	pMonster->sound().play(MonsterSpace::eMonsterSoundPanic, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
 
 	m_tPrevAction = m_tAction;
 }

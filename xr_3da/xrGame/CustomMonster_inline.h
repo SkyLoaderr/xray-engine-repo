@@ -47,3 +47,9 @@ IC	CMovementManager &CCustomMonster::movement	() const
 	VERIFY			(m_movement_manager);
 	return			(*m_movement_manager);
 }
+
+IC	CSoundPlayer &CCustomMonster::sound			() const
+{
+	VERIFY			(m_sound_player);
+	return			(*m_sound_player);
+}

@@ -3,6 +3,8 @@
 #include "burer_attack_tele.h"
 #include "burer.h"
 #include "../../../PhysicsShell.h"
+#include "../../../sound_player.h"
+#include "../../../level.h"
 
 #define GOOD_DISTANCE_FOR_TELE	15.f
 #define TELE_DELAY				4000
@@ -194,7 +196,7 @@ void CBurerAttackTele::ExecuteTeleFire()
 
 	pMonster->StopTeleObjectParticle(selected_object);
 	
-	pMonster->CSoundPlayer::play(eMonsterSoundTeleAttack);
+	pMonster->sound().play(eMonsterSoundTeleAttack);
 	pMonster->DeactivateShield();
 }
 

@@ -348,14 +348,14 @@ float CAgentManager::cover_danger		(CCoverPoint *cover) const
 	xr_vector<CDangerCover>::const_iterator	I = m_danger_covers.begin();
 	xr_vector<CDangerCover>::const_iterator	E = m_danger_covers.end();
 	for ( ; I != E; ++I) {
-		if (Level().timeServer() > (*I).m_level_time + DANGER_INTERVAL)
+		if (Device.dwTimeGlobal > (*I).m_level_time + DANGER_INTERVAL)
 			continue;
 
 		float		distance = 1.f + (*I).m_cover->position().distance_to(cover->position());
 		if (distance > DANGER_DISTANCE)
 			continue;
 
-		result		*= distance/DANGER_DISTANCE*float(Level().timeServer() - (*I).m_level_time)/float(DANGER_INTERVAL);
+		result		*= distance/DANGER_DISTANCE*float(Device.dwTimeGlobal - (*I).m_level_time)/float(DANGER_INTERVAL);
 	}
 
 	return			(result);

@@ -107,7 +107,7 @@ void __stdcall CZombie::BoneCallback(CBoneInstance *B)
 	CZombie*	this_class = static_cast<CZombie*>(B->Callback_Param);
 
 	START_PROFILE("AI/Zombie/Bones Update");
-	this_class->Bones.Update(B, Level().timeServer());
+	this_class->Bones.Update(B, Device.dwTimeGlobal);
 	STOP_PROFILE("AI/Zombie/Bones Update");
 }
 
@@ -146,7 +146,7 @@ void CZombie::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_obje
 	if (!g_Alive()) return;
 	
 	if ((hit_type == ALife::eHitTypeFireWound) && (Device.dwFrame != last_hit_frame)) {
-		if (!MotionMan.TA_IsActive() && (time_resurrect + TIME_RESURRECT_RESTORE < Level().timeServer()) && (conditions().GetHealth() < health_death_threshold)) {
+		if (!MotionMan.TA_IsActive() && (time_resurrect + TIME_RESURRECT_RESTORE < Device.dwTimeGlobal) && (conditions().GetHealth() < health_death_threshold)) {
 			if (conditions().GetHealth() < last_health_fake_death) {
 				
 				if ((last_health_fake_death - conditions().GetHealth()) > (health_death_threshold / fake_death_count)) {
@@ -154,7 +154,7 @@ void CZombie::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_obje
 					active_triple_idx			= u8(Random.randI(FAKE_DEATH_TYPES_COUNT));
 					MotionMan.TA_Activate		(&anim_triple_death[active_triple_idx]);
 					movement().stop_now	();
-					time_dead_start				= Level().timeServer();
+					time_dead_start				= Device.dwTimeGlobal;
 
 					last_health_fake_death		= conditions().GetHealth();
 				}
@@ -171,14 +171,14 @@ void CZombie::shedule_Update(u32 dt)
 	inherited::shedule_Update(dt);
 
 	if (time_dead_start != 0) {
-		if (time_dead_start + TIME_FAKE_DEATH < Level().timeServer()) {
+		if (time_dead_start + TIME_FAKE_DEATH < Device.dwTimeGlobal) {
 			time_dead_start  = 0;
 
 			VERIFY(anim_triple_death[active_triple_idx].is_active());
 
 			MotionMan.TA_PointBreak();	
 
-			time_resurrect = Level().timeServer();
+			time_resurrect = Device.dwTimeGlobal;
 		}
 	}
 }

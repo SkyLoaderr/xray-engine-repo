@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "ai_stalker.h"
+#include "ai_stalker_impl.h"
 #include "../../script_entity_action.h"
 #include "../../inventory.h"
 #include "../../ef_storage.h"
@@ -25,6 +26,7 @@
 #include "../../item_manager.h"
 #include "../../stalker_movement_manager.h"
 #include "../../entitycondition.h"
+#include "../../sound_player.h"
 
 float CAI_Stalker::GetWeaponAccuracy	() const
 {
@@ -90,9 +92,9 @@ void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 
 		// Play hit-ref_sound
 		CEntityAlive		*entity_alive = smart_cast<CEntityAlive*>(who);
 		if (!entity_alive || (tfGetRelationType(entity_alive) != ALife::eRelationTypeFriend))
-			CSoundPlayer::play	(eStalkerSoundInjuring);
+			sound().play	(eStalkerSoundInjuring);
 		else
-			CSoundPlayer::play	(eStalkerSoundInjuringByFriend);
+			sound().play	(eStalkerSoundInjuringByFriend);
 		Fvector				D;
 		float				yaw, pitch;
 		D.getHP				(yaw,pitch);

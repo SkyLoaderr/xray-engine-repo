@@ -36,7 +36,7 @@ void CMonsterHitMemory::add_hit(CObject *who, EHitSide side)
 {
 	SMonsterHit			new_hit_info;
 	new_hit_info.object		= who;
-	new_hit_info.time		= Level().timeServer();
+	new_hit_info.time		= Device.dwTimeGlobal;
 	new_hit_info.side		= side;
 	new_hit_info.position	= monster->Position();
 
@@ -63,7 +63,7 @@ struct predicate_old_hit {
 
 void CMonsterHitMemory::remove_non_actual() 
 {
-	MONSTER_HIT_VECTOR_IT it = remove_if(m_hits.begin(), m_hits.end(), predicate_old_hit(time_memory, Level().timeServer()));
+	MONSTER_HIT_VECTOR_IT it = remove_if(m_hits.begin(), m_hits.end(), predicate_old_hit(time_memory, Device.dwTimeGlobal));
 	m_hits.erase(it, m_hits.end());
 }
 

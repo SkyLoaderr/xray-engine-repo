@@ -31,7 +31,7 @@ void CStateMonsterThreatenThreatenAbstract::execute()
 	m_object->DirMan.face_target(m_object->EnemyMan.get_enemy(), 1200);
 
 	m_object->MotionMan.SetSpecParams	(ASP_THREATEN);
-	m_object->CSoundPlayer::play		(MonsterSpace::eMonsterSoundThreaten);
+	m_object->sound().play		(MonsterSpace::eMonsterSoundThreaten);
 }
 
 TEMPLATE_SPECIALIZATION

@@ -2918,6 +2918,9 @@
 							RelativePath="AI\Rat\ai_rat_fsm.cpp">
 						</File>
 						<File
+							RelativePath=".\ai\rat\ai_rat_impl.h">
+						</File>
+						<File
 							RelativePath=".\ai\rat\ai_rat_inline.h">
 						</File>
 						<File
@@ -3351,6 +3354,9 @@
 						</File>
 						<File
 							RelativePath=".\Ai\Stalker\ai_stalker.h">
+						</File>
+						<File
+							RelativePath=".\ai\stalker\ai_stalker_impl.h">
 						</File>
 						<File
 							RelativePath=".\ai\stalker\ai_stalker_inline.h">

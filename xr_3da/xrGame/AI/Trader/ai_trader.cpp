@@ -20,6 +20,8 @@
 #include "../../alife_artefact_order.h"
 #include "../../relation_registry.h"
 #include "../../object_broker.h"
+#include "../../sound_player.h"
+#include "../../level.h"
 
 CAI_Trader::CAI_Trader()
 {
@@ -49,7 +51,7 @@ void CAI_Trader::reinit	()
 	CScriptEntity::reinit	();
 	CEntityAlive::reinit	();
 	CInventoryOwner::reinit	();
-	CSoundPlayer::reinit	();
+	sound().reinit			();
 
 	m_OnStartCallback.clear ();
 	m_OnStopCallback.clear	();
@@ -65,7 +67,7 @@ void CAI_Trader::reload	(LPCSTR section)
 {
 	CEntityAlive::reload	(section);
 	CInventoryOwner::reload	(section);
-	CSoundPlayer::reload	(section);
+	sound().reload			(section);
 
 	head_anims.clear		();	
 
@@ -370,7 +372,7 @@ void CAI_Trader::net_Destroy()
 void CAI_Trader::UpdateCL()
 { 
 	inherited::UpdateCL		();
-	CSoundPlayer::update	(Device.fTimeDelta);
+	sound().update			(Device.fTimeDelta);
 
 	if (!GetScriptControl() && !bfScriptAnimation()) {
 		SelectAnimation		(XFORM().k,XFORM().k,0.f);
@@ -552,9 +554,11 @@ ALife::ERelationType  CAI_Trader::tfGetRelationType	(const CEntityAlive *tpEntit
 
 DLL_Pure *CAI_Trader::_construct	()
 {
+	m_sound_player				= xr_new<CSoundPlayer>(this);
+	
 	CEntityAlive::_construct	(); 
 	CInventoryOwner::_construct	();
 	CScriptEntity::_construct	();
-	CSoundPlayer::_construct	();
+	
 	return						(this);
 }

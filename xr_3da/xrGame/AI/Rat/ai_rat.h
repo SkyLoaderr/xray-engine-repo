@@ -18,6 +18,7 @@
 
 class CMotionDef;
 class CBlend;
+enum ESoundTypes;
 
 class CAI_Rat : public CCustomMonster, public CEatableItem
 {

@@ -21,12 +21,12 @@ class CInventoryItem;
 class CArtefact;
 class CMotionDef;
 class CBlend;
+class CSoundPlayer;
 
 class CAI_Trader : public CEntityAlive, 
 				   public CInventoryOwner, 
 				   public CScriptEntity,
-				   public CAI_PhraseDialogManager,
-				   public CSoundPlayer
+				   public CAI_PhraseDialogManager
 {
 private:
 	typedef CEntityAlive inherited;
@@ -161,5 +161,15 @@ public:
 	IC		bool			busy_now				() const
 	{
 		return				(m_busy_now);
+	}
+
+private:
+	CSoundPlayer			*m_sound_player;
+
+public:
+	IC		CSoundPlayer	&sound					() const
+	{
+		VERIFY				(m_sound_player);
+		return				(*m_sound_player);
 	}
 };

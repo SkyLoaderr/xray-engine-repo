@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../../../sound_player.h"
+
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Object\
 >
@@ -32,7 +34,7 @@ void CStatePoltergeistAttackHiddenAbstract::execute()
 	object->MotionMan.m_tAction			= ACT_RUN;
 	object->MotionMan.accel_activate	(eAT_Aggressive);
 	object->MotionMan.accel_set_braking (false);
-	object->CSoundPlayer::play			(MonsterSpace::eMonsterSoundAttack, 0,0,object->get_sd()->m_dwAttackSndDelay);
+	object->sound().play				(MonsterSpace::eMonsterSoundAttack, 0,0,object->get_sd()->m_dwAttackSndDelay);
 }
 
 TEMPLATE_SPECIALIZATION

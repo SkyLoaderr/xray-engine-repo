@@ -207,7 +207,7 @@ void CPoltergeist::UpdateHeight()
 {
 	if (!m_hidden) return;
 	
-	u32 cur_time = Level().timeServer();
+	u32 cur_time = Device.dwTimeGlobal;
 	
 	if (time_height_updated < cur_time)	{
 		time_height_updated = cur_time + Random.randI(HEIGHT_CHANGE_MIN_TIME,HEIGHT_CHANGE_MAX_TIME);

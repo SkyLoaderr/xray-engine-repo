@@ -12,7 +12,7 @@ void CDirectionManager::reinit()
 
 void CDirectionManager::face_target(const Fvector &position, u32 delay)
 {
-	if (m_time_last_faced + delay > Level().timeServer()) return;
+	if (m_time_last_faced + delay > Device.dwTimeGlobal) return;
 	
 	m_delay = delay;
 
@@ -26,7 +26,7 @@ void CDirectionManager::face_target(const Fvector &position, u32 delay)
 	
 	m_object->movement().m_body.target.yaw	= yaw;
 
-	m_time_last_faced			= Level().timeServer();
+	m_time_last_faced			= Device.dwTimeGlobal;
 }
 
 void CDirectionManager::use_path_direction(bool reversed)

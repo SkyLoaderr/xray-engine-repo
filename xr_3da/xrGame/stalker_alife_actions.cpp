@@ -20,6 +20,7 @@
 #include "sight_manager.h"
 #include "ai_object_location.h"
 #include "stalker_movement_manager.h"
+#include "sound_player.h"
 
 #ifdef _DEBUG
 //#	define STALKER_DEBUG_MODE
@@ -49,7 +50,7 @@ void CStalkerActionGatherItems::initialize	()
 	object().movement().set_body_state		(eBodyStateStand);
 	object().movement().set_movement_type		(eMovementTypeWalk);
 	object().movement().set_mental_state		(eMentalStateDanger);
-	object().remove_active_sounds	(u32(eStalkerSoundMaskNoHumming));
+	object().sound().remove_active_sounds	(u32(eStalkerSoundMaskNoHumming));
 	if (!object().inventory().ActiveItem())
 		object().CObjectHandler::set_goal	(eObjectActionIdle);
 	else
@@ -63,7 +64,7 @@ void CStalkerActionGatherItems::finalize	()
 	if (!object().g_Alive())
 		return;
 
-	object().set_sound_mask(0);
+	object().sound().set_sound_mask(0);
 }
 
 void CStalkerActionGatherItems::execute		()
@@ -153,7 +154,7 @@ void CStalkerActionNoALife::finalize	()
 	if (!object().g_Alive())
 		return;
 
-	object().remove_active_sounds	(u32(eStalkerSoundMaskNoHumming));
+	object().sound().remove_active_sounds	(u32(eStalkerSoundMaskNoHumming));
 }
 
 IC	u32 get_value(u32 diff)
@@ -165,7 +166,7 @@ void CStalkerActionNoALife::execute		()
 {
 	inherited::execute				();
 #ifndef STALKER_DEBUG_MODE
-	object().play					(eStalkerSoundHumming,60000,10000);
+	object().sound().play			(eStalkerSoundHumming,60000,10000);
 	if (Level().timeServer() >= m_stop_weapon_handling_time)
 		if (!object().best_weapon())
 			object().CObjectHandler::set_goal	(eObjectActionIdle);

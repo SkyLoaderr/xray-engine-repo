@@ -4,6 +4,7 @@
 #include "../jump_ability.h"
 #include "../../../../skeletonanimated.h"
 #include "../ai_monster_movement.h"
+#include "../../../level.h"
 
 CSnorkJump::CSnorkJump(CSnork *monster)
 {

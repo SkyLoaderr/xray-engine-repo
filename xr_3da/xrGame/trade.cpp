@@ -9,6 +9,7 @@
 
 #include "character_info.h"
 #include "relation_registry.h"
+#include "level.h"
 
 class CInventoryOwner;
 

@@ -2,6 +2,7 @@
 #include "../ai_monster_state.h"
 #include "burer_attack_gravi.h"
 #include "burer.h"
+#include "../../../sound_player.h"
 
 #define GOOD_DISTANCE_FOR_GRAVI 6.f
 
@@ -79,7 +80,7 @@ bool CBurerAttackGravi::CheckStartCondition()
 	float dist = pMonster->Position().distance_to(enemy->Position());
 	if (dist < GOOD_DISTANCE_FOR_GRAVI) return false;
 
-	if (pMonster->EnemyMan.get_enemy_time_last_seen() != Level().timeServer()) return false; 
+	if (pMonster->EnemyMan.get_enemy_time_last_seen() != Device.dwTimeGlobal) return false; 
 
 	// всё ок, можно начать грави атаку
 	return true;
@@ -134,7 +135,7 @@ void CBurerAttackGravi::ExecuteGraviFire()
 	pMonster->m_gravi_object.activate(enemy, from_pos, target_pos);
 	
 	pMonster->StopGraviPrepare();
-	pMonster->CSoundPlayer::play(eMonsterSoundGraviAttack);
+	pMonster->sound().play(eMonsterSoundGraviAttack);
 	pMonster->DeactivateShield();
 
 }

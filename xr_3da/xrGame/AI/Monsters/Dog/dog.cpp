@@ -4,6 +4,7 @@
 #include "dog_state_manager.h"
 #include "../../../../skeletonanimated.h"
 #include "../ai_monster_movement.h"
+#include "../../../level.h"
 
 CAI_Dog::CAI_Dog()
 {

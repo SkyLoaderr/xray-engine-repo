@@ -4,6 +4,7 @@
 #include "burer.h"
 #include "../ai_monster_utils.h"
 #include "../ai_monster_movement.h"
+#include "../../../sound_player.h"
 
 #define DIST_QUANT 10.f
 
@@ -18,7 +19,7 @@ void CBurerAttackRunAround::Init()
 
 	enemy = pMonster->EnemyMan.get_enemy();	
 
-	time_started = Level().timeServer();
+	time_started = Device.dwTimeGlobal;
 
 	dest_direction.set(0.f,0.f,0.f);
 
@@ -61,7 +62,7 @@ void CBurerAttackRunAround::Run()
 	pMonster->movement().set_target_point		(selected_point);
 	pMonster->movement().set_generic_parameters	();
 
-	pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
+	pMonster->sound().play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
 }
 
 void CBurerAttackRunAround::Done()
@@ -75,7 +76,7 @@ void CBurerAttackRunAround::UpdateExternal()
 
 bool CBurerAttackRunAround::IsCompleted() 
 {
-	if ((time_started + 3500 < Level().timeServer()) || 
+	if ((time_started + 3500 < Device.dwTimeGlobal) || 
 		(pMonster->movement().IsMovingOnPath() && pMonster->movement().IsPathEnd(2.f))) {
 
 		pMonster->DirMan.face_target(enemy);
@@ -106,7 +107,7 @@ void CBurerAttackFaceTarget::Run()
 {
 	pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
 	pMonster->DirMan.face_target(point);
-	pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
+	pMonster->sound().play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
 }
 
 void CBurerAttackFaceTarget::Done()

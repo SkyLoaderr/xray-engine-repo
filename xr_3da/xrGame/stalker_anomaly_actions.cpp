@@ -23,6 +23,7 @@
 #include "sight_manager.h"
 #include "restricted_object.h"
 #include "stalker_movement_manager.h"
+#include "sound_player.h"
 
 using namespace StalkerDecisionSpace;
 
@@ -39,7 +40,7 @@ void CStalkerActionGetOutOfAnomaly::initialize	()
 {
 	inherited::initialize				();
 
-	object().remove_active_sounds		(u32(eStalkerSoundMaskNoHumming));
+	object().sound().remove_active_sounds		(u32(eStalkerSoundMaskNoHumming));
 
 	object().movement().set_node_evaluator		(0);
 	object().movement().set_path_evaluator		(0);
@@ -68,7 +69,7 @@ void CStalkerActionGetOutOfAnomaly::finalize	()
 	if (!object().g_Alive())
 		return;
 
-	object().set_sound_mask			(0);
+	object().sound().set_sound_mask			(0);
 }
 
 void CStalkerActionGetOutOfAnomaly::execute	()
@@ -109,7 +110,7 @@ CStalkerActionDetectAnomaly::CStalkerActionDetectAnomaly	(CAI_Stalker *object, L
 void CStalkerActionDetectAnomaly::initialize	()
 {
 	inherited::initialize			();
-	object().remove_active_sounds	(u32(eStalkerSoundMaskNoHumming));
+	object().sound().remove_active_sounds	(u32(eStalkerSoundMaskNoHumming));
 	m_inertia_time					= 15000 + ::Random32.random(5000);
 }
 
@@ -121,7 +122,7 @@ void CStalkerActionDetectAnomaly::finalize	()
 		return;
 
 	object().CObjectHandler::set_goal	(eObjectActionIdle);
-	object().set_sound_mask			(0);
+	object().sound().set_sound_mask		(0);
 }
 
 void CStalkerActionDetectAnomaly::execute	()

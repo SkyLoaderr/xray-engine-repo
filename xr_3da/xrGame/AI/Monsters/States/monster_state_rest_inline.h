@@ -56,7 +56,7 @@ void CStateMonsterRestAbstract::execute()
 		if (!get_state(eStateFun)->check_completion()) 
 			state_fun = true;
 	} else {
-		if (get_state(eStateFun)->check_start_conditions() && (time_last_fun + TIME_DELAY_FUN < Level().timeServer())) 
+		if (get_state(eStateFun)->check_start_conditions() && (time_last_fun + TIME_DELAY_FUN < Device.dwTimeGlobal)) 
 			state_fun = true;
 	}
 	
@@ -70,7 +70,7 @@ void CStateMonsterRestAbstract::execute()
 		}
 	}
 	
-	if ((prev_substate == eStateFun) && (current_substate != prev_substate)) time_last_fun = Level().timeServer();
+	if ((prev_substate == eStateFun) && (current_substate != prev_substate)) time_last_fun = Device.dwTimeGlobal;
 
 	get_state_current()->execute();
 

@@ -19,6 +19,7 @@
 #include "sight_manager.h"
 #include "ai_object_location.h"
 #include "stalker_movement_manager.h"
+#include "sound_player.h"
 
 using namespace StalkerDecisionSpace;
 
@@ -45,7 +46,7 @@ void CStalkerActionGetReadyToDialog::initialize	()
 	object().movement().set_level_dest_vertex	(object().ai_location().level_vertex_id());
 	object().movement().set_desired_position	(&object().Position());
 	object().sight().setup						(SightManager::eSightTypeCurrentDirection);
-	object().remove_active_sounds				(u32(eStalkerSoundMaskNoHumming));
+	object().sound().remove_active_sounds		(u32(eStalkerSoundMaskNoHumming));
 
 	if (object().inventory().ActiveItem() && object().best_weapon() && (object().inventory().ActiveItem()->ID() == object().best_weapon()->ID()))
 		object().CObjectHandler::set_goal		(eObjectActionStrapped,object().best_weapon());
@@ -60,7 +61,7 @@ void CStalkerActionGetReadyToDialog::finalize	()
 	if (!object().g_Alive())
 		return;
 
-	object().set_sound_mask(0);
+	object().sound().set_sound_mask(0);
 }
 
 void CStalkerActionGetReadyToDialog::execute		()
@@ -93,7 +94,7 @@ void CStalkerActionHello::initialize	()
 	object().movement().set_level_dest_vertex	(object().ai_location().level_vertex_id());
 	object().movement().set_desired_position	(&object().Position());
 	object().sight().setup			(SightManager::eSightTypeCurrentDirection);
-	object().remove_active_sounds	(u32(eStalkerSoundMaskNoHumming));
+	object().sound().remove_active_sounds	(u32(eStalkerSoundMaskNoHumming));
 	object().body_action			(eBodyActionHello);
 	
 	if (object().inventory().ActiveItem() && object().best_weapon() && (object().inventory().ActiveItem()->ID() == object().best_weapon()->ID()))
@@ -115,7 +116,7 @@ void CStalkerActionHello::finalize	()
 	if (!object().g_Alive())
 		return;
 
-	object().set_sound_mask(0);
+	object().sound().set_sound_mask(0);
 }
 
 void CStalkerActionHello::execute		()
@@ -146,7 +147,7 @@ void CStalkerActionDialog::initialize	()
 	object().movement().set_level_dest_vertex	(object().ai_location().level_vertex_id());
 	object().movement().set_desired_position	(&object().Position());
 	object().sight().setup			(SightManager::eSightTypeCurrentDirection);
-	object().remove_active_sounds	(u32(eStalkerSoundMaskNoHumming));
+	object().sound().remove_active_sounds	(u32(eStalkerSoundMaskNoHumming));
 	object().body_action			(eBodyActionHello);
 //	
 //	if (object().inventory().ActiveItem() && object().best_weapon() && (object().inventory().ActiveItem()->ID() == object().best_weapon()->ID()))
@@ -162,7 +163,7 @@ void CStalkerActionDialog::finalize	()
 	if (!object().g_Alive())
 		return;
 
-	object().set_sound_mask(0);
+	object().sound().set_sound_mask(0);
 }
 
 void CStalkerActionDialog::execute		()

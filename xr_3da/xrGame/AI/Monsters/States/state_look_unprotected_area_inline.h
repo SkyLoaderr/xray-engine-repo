@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../../../sound_player.h"
+
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Object\
 >
@@ -44,9 +46,9 @@ void CStateMonsterLookToUnprotectedAreaAbstract::execute()
 
 	if (data.sound_type != u32(-1)) {
 		if (data.sound_delay != u32(-1))
-			object->CSoundPlayer::play(data.sound_type, 0,0,data.sound_delay);
+			object->sound().play(data.sound_type, 0,0,data.sound_delay);
 		else 
-			object->CSoundPlayer::play(data.sound_type);
+			object->sound().play(data.sound_type);
 	}
 
 }

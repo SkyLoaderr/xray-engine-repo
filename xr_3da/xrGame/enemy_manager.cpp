@@ -17,6 +17,7 @@
 #include "autosave_manager.h"
 #include "ai_object_location.h"
 #include "level_graph.h"
+#include "level.h"
 
 #define USE_EVALUATOR
 
