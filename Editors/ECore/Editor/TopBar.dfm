@@ -1,8 +1,8 @@
 object fraTopBar: TfraTopBar
   Left = 0
   Top = 0
-  Width = 443
-  Height = 277
+  Width = 658
+  Height = 20
   HorzScrollBar.Visible = False
   VertScrollBar.Visible = False
   Align = alClient
@@ -21,7 +21,7 @@ object fraTopBar: TfraTopBar
     Left = 0
     Top = 0
     Width = 51
-    Height = 277
+    Height = 20
     Align = alLeft
     BevelOuter = bvNone
     Color = 10528425
@@ -175,7 +175,7 @@ object fraTopBar: TfraTopBar
     Left = 51
     Top = 0
     Width = 127
-    Height = 277
+    Height = 20
     Align = alLeft
     BevelOuter = bvNone
     Color = 10528425
@@ -548,7 +548,7 @@ object fraTopBar: TfraTopBar
     Left = 282
     Top = 0
     Width = 227
-    Height = 277
+    Height = 20
     Align = alLeft
     BevelOuter = bvNone
     Color = 10528425
@@ -627,6 +627,7 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
+      OnClick = ebSettingsClick
     end
     object ebASnap: TExtBtn
       Left = 175
@@ -700,6 +701,7 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
+      OnClick = ebSettingsClick
     end
     object ebCSParent: TExtBtn
       Left = 0
@@ -773,6 +775,7 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
+      OnClick = ebSettingsClick
     end
     object ebGSnap: TExtBtn
       Left = 50
@@ -843,6 +846,7 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
+      OnClick = ebSettingsClick
     end
     object ebOSnap: TExtBtn
       Left = 75
@@ -920,8 +924,9 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
+      OnClick = ebSettingsClick
     end
-    object ebNonUniformScale: TExtBtn
+    object ebNUScale: TExtBtn
       Left = 25
       Top = 0
       Width = 25
@@ -992,6 +997,7 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
+      OnClick = ebSettingsClick
     end
     object ebVSnap: TExtBtn
       Left = 150
@@ -1069,8 +1075,9 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
+      OnClick = ebSettingsClick
     end
-    object ebMoveToSnap: TExtBtn
+    object ebMTSnap: TExtBtn
       Left = 100
       Top = 0
       Width = 25
@@ -1145,8 +1152,9 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
+      OnClick = ebSettingsClick
     end
-    object ebNormalAlignment: TExtBtn
+    object ebNormalAlign: TExtBtn
       Left = 125
       Top = 0
       Width = 25
@@ -1217,13 +1225,14 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
+      OnClick = ebSettingsClick
     end
   end
   object paAxis: TPanel
     Left = 178
     Top = 0
     Width = 104
-    Height = 277
+    Height = 20
     Align = alLeft
     BevelOuter = bvNone
     Color = 10528425
@@ -1300,6 +1309,7 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
+      OnClick = ebAxisClick
     end
     object ebAxisY: TExtBtn
       Left = 25
@@ -1371,6 +1381,7 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
+      OnClick = ebAxisClick
     end
     object ebAxisZ: TExtBtn
       Left = 50
@@ -1442,6 +1453,7 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
+      OnClick = ebAxisClick
     end
     object ebAxisZX: TExtBtn
       Left = 75
@@ -1514,13 +1526,14 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
+      OnClick = ebAxisClick
     end
   end
   object paView: TPanel
     Left = 550
     Top = 0
     Width = 179
-    Height = 277
+    Height = 20
     Align = alLeft
     BevelOuter = bvNone
     Color = 10528425
@@ -1758,7 +1771,7 @@ object fraTopBar: TfraTopBar
     Left = 509
     Top = 0
     Width = 41
-    Height = 277
+    Height = 20
     Align = alLeft
     BevelOuter = bvNone
     Color = 10528425
@@ -1922,14 +1935,14 @@ object fraTopBar: TfraTopBar
       'ebCSParent.Down'
       'ebGSnap.Down'
       'ebMSnap.Down'
-      'ebNonUniformScale.Down'
+      'ebNUScale.Down'
       'ebOSnap.Down'
       'ebVSnap.Down'
       'ebCameraArcBall.Down'
       'ebCameraFly.Down'
       'ebCameraPlane.Down'
-      'ebMoveToSnap.Down'
-      'ebNormalAlignment.Down')
+      'ebMTSnap.Down'
+      'ebNormalAlign.Down')
     StoredValues = <>
     Left = 65522
     Top = 65520

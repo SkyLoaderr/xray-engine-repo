@@ -2,8 +2,7 @@
 #pragma hdrstop
 
 #include "TopBar.h"
-#include "UI_Tools.h"
-#include "main.h"
+#include "UI_ToolsCustom.h"
 #include "ui_main.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -15,11 +14,26 @@ TfraTopBar *fraTopBar;
 __fastcall TfraTopBar::TfraTopBar(TComponent* Owner)
         : TFrame(Owner)
 {
-    ebActionSelect->Tag     = eaSelect;
-    ebActionAdd->Tag        = eaAdd;
-    ebActionMove->Tag       = eaMove;
-    ebActionRotate->Tag     = eaRotate;
-    ebActionScale->Tag      = eaScale;
+    ebActionSelect->Tag     = etaSelect;
+    ebActionAdd->Tag        = etaAdd;
+    ebActionMove->Tag       = etaMove;
+    ebActionRotate->Tag     = etaRotate;
+    ebActionScale->Tag      = etaScale;
+
+    ebAxisX->Tag			= etAxisX;
+    ebAxisY->Tag			= etAxisY;
+    ebAxisZ->Tag			= etAxisZ;
+    ebAxisZX->Tag			= etAxisZX;
+    
+	ebCSParent->Tag			= etfCSParent;
+	ebNUScale->Tag			= etfNUScale;
+	ebNormalAlign->Tag		= etfNormalAlign;
+	ebGSnap->Tag			= etfGSnap;
+	ebOSnap->Tag			= etfOSnap;
+	ebMTSnap->Tag			= etfMTSnap;
+	ebVSnap->Tag			= etfVSnap;
+	ebASnap->Tag			= etfASnap;
+	ebMSnap->Tag			= etfMSnap;
 
     DEFINE_INI(fsStorage);
 }
@@ -54,6 +68,22 @@ void __fastcall TfraTopBar::ActionClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraTopBar::ebAxisClick(TObject *Sender)
+{
+    TExtBtn* btn=dynamic_cast<TExtBtn*>(Sender);
+    VERIFY(btn);
+    UI.Command(COMMAND_CHANGE_AXIS, btn->Tag);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraTopBar::ebSettingsClick(TObject *Sender)
+{
+    TExtBtn* btn=dynamic_cast<TExtBtn*>(Sender);
+    VERIFY(btn);
+    UI.Command(COMMAND_CHANGE_SETTINGS, btn->Tag, btn->Down);
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfraTopBar::ebViewClick(TObject *Sender)
 {
     TExtBtn* btn=dynamic_cast<TExtBtn*>(Sender);
@@ -70,33 +100,44 @@ void __fastcall TfraTopBar::ebViewClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraTopBar::ChangeAction(int act){
-    TExtBtn* btn=0;
-	//select button from action
-    switch(act){
-        case eaSelect:  btn=ebActionSelect; break;
-        case eaAdd:     btn=ebActionAdd; 	break;
-        case eaMove:    btn=ebActionMove; 	break;
-        case eaRotate:  btn=ebActionRotate; break;
-        case eaScale:   btn=ebActionScale; 	break;
-        default: throw -1;
+void __fastcall TfraTopBar::RefreshBar()
+{
+    TExtBtn* btn		= 0;
+	//actions
+    switch(Tools.GetAction()){
+    case etaSelect: 	btn=ebActionSelect; 	break;
+    case etaAdd:    	btn=ebActionAdd; 		break;
+    case etaMove:   	btn=ebActionMove; 		break;
+    case etaRotate: 	btn=ebActionRotate; 	break;
+    case etaScale:		btn=ebActionScale;		break;
+    default: THROW;
     }
-	btn->Down = true;
-    UI.RedrawScene();
+	btn->Down 			= true;
+    // axis
+	switch (Tools.GetAxis()){
+    case etAxisX: 		btn=ebAxisX; 	break;
+    case etAxisY: 		btn=ebAxisY; 	break;
+    case etAxisZ: 		btn=ebAxisZ; 	break;
+    case etAxisZX: 		btn=ebAxisZX; 	break;
+    default: THROW;
+    }
+	btn->Down 			= true;
+    // settings
+	ebCSParent->Down	= Tools.GetSettings(etfCSParent);
+	ebNUScale->Down		= Tools.GetSettings(etfNUScale);
+	ebNormalAlign->Down	= Tools.GetSettings(etfNormalAlign);
+	ebGSnap->Down		= Tools.GetSettings(etfGSnap);
+	ebOSnap->Down		= Tools.GetSettings(etfOSnap);
+	ebMTSnap->Down		= Tools.GetSettings(etfMTSnap);
+	ebVSnap->Down		= Tools.GetSettings(etfVSnap);
+	ebASnap->Down		= Tools.GetSettings(etfASnap);
+	ebMSnap->Down		= Tools.GetSettings(etfMSnap);
+    // redraw scene
+    UI.RedrawScene		();
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraTopBar::ChangeAxis(int ax){
-    TExtBtn* btn=0;
-	switch (ax){
-	    case eAxisX: 	btn=ebAxisX; 	break;
-    	case eAxisY: 	btn=ebAxisY; 	break;
-	    case eAxisZ: 	btn=ebAxisZ; 	break;
-    	case eAxisZX: 	btn=ebAxisZX; 	break;
-    default: THROW;
-    }
-	btn->Down = true;
-}
+
 void __fastcall TfraTopBar::ebZoomExtentsClick(TObject *Sender)
 {
  	UI.Command( COMMAND_ZOOM_EXTENTS, FALSE );
@@ -123,4 +164,9 @@ void __fastcall TfraTopBar::fsStorageRestorePlacement(TObject *Sender)
     UI.RedrawScene();
 }
 //---------------------------------------------------------------------------
+
+
+
+
+
 
