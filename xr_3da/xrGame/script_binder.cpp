@@ -42,36 +42,16 @@ void CScriptBinder::Load			(LPCSTR section)
 void CScriptBinder::reload			(LPCSTR section)
 {
 	VERIFY					(!m_object);
-	if (!pSettings->line_exist(section,"script_binding"))// || true)
+	if (!pSettings->line_exist(section,"script_binding"))
 		return;
 	
 	LPCSTR					string_to_run = pSettings->r_string(section,"script_binding");
-	if (!xr_strlen(string_to_run))
-		return;
-
-	string256				name_space, function;
-	LPCSTR					I = string_to_run, J = 0;
-	for ( ; ; J=I,++I) {
-		I					= strchr(I,'.');
-		if (!I)
-			break;
-	}
-	strcpy					(name_space,"_G");
-	if (!J)
-		strcpy				(function,string_to_run);
-	else {
-		Memory.mem_copy		(name_space,string_to_run, u32(J - string_to_run)*sizeof(char));
-		name_space[u32(J - string_to_run)] = 0;
-		strcpy				(function,J + 1);
-	}
-
-	if	(!ai().script_engine().object(name_space,function,LUA_TFUNCTION)) {
+	luabind::functor<void>	lua_function;
+	if (!ai().script_engine().functor(string_to_run,lua_function)) {
 		ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"function %s is not loaded!",string_to_run);
 		return;
 	}
-
-	luabind::object			lua_namespace	= ai().script_engine().name_space(name_space);
-	luabind::functor<void>	lua_function	= luabind::object_cast<luabind::functor<void> >(lua_namespace[function]);
+	
 	CGameObject				*game_object = dynamic_cast<CGameObject*>(this);
 	lua_function			(game_object ? game_object->lua_game_object() : 0);
 	

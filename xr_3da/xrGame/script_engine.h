@@ -65,6 +65,8 @@ public:
 	IC		CScriptStackTracker	*current_thread				();
 	IC		CScriptStackTracker	&script_stack_tracker		();
 	IC		void				reload_modules				(bool flag);
+	template <typename _result_type>
+	IC		bool				functor						(LPCSTR function_to_call, luabind::functor<_result_type> &lua_function);
 };
 
 #include "script_engine_inline.h"

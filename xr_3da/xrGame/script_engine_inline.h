@@ -48,3 +48,33 @@ IC	void CScriptEngine::reload_modules		(bool flag)
 	m_reload_modules						= flag;
 }
 
+template <typename _result_type>
+IC	bool CScriptEngine::functor(LPCSTR function_to_call, luabind::functor<_result_type> &lua_function)
+{
+	if (!xr_strlen(function_to_call))
+		return				(false);
+
+	string256				name_space, function;
+	LPCSTR					I = function_to_call, J = 0;
+	for ( ; ; J=I,++I) {
+		I					= strchr(I,'.');
+		if (!I)
+			break;
+	}
+	strcpy					(name_space,"_G");
+	if (!J)
+		strcpy				(function,function_to_call);
+	else {
+		Memory.mem_copy		(name_space,function_to_call, u32(J - function_to_call)*sizeof(char));
+		name_space[u32(J - function_to_call)] = 0;
+		strcpy				(function,J + 1);
+	}
+
+	if	(!object(name_space,function,LUA_TFUNCTION))
+		return				(false);
+
+	luabind::object			lua_namespace	= ai().script_engine().name_space(name_space);
+	lua_function			= luabind::object_cast<luabind::functor<_result_type> >(lua_namespace[function]);
+
+	return					(true);
+}
