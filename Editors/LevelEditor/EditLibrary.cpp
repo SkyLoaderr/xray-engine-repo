@@ -352,7 +352,7 @@ void __fastcall TfrmEditLibrary::ebMakeLODClick(TObject *Sender)
             tex_name = ChangeFileExt(name,".tga");
             string256 nm; strcpy(nm,tex_name.c_str()); _ChangeSymbol(nm,'\\','_');
             tex_name = "lod_"+AnsiString(nm);
-            tex_name = EFS.AppendFolderToName(tex_name);
+            tex_name = ImageLib.UpdateFileName(tex_name);
             ImageLib.CreateLODTexture(O->GetBox(), tex_name.c_str(),LOD_IMAGE_SIZE,LOD_IMAGE_SIZE,LOD_SAMPLE_COUNT,O->m_Version);
             m_pEditObject->GetReference()->OnDeviceDestroy();
 //.        	tvItemsItemFocused(Sender);
