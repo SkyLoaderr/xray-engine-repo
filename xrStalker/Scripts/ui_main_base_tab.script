@@ -16,7 +16,11 @@ function main_base_tab:__finalize()
 end
 
 function main_base_tab:InitControls(x, y)
-	self.main_rect = {x = 0, y = 0, width = 257, height = 270}
+	self.main_rect = {)
+	self.mian_rect.x = 0
+	self.main_rect.y = 0 
+	self.main_rect.width = 257
+	self.main_rect.height = 270
 	// huge btn struct with all common parameters
 	self.btn = {}
 	self.btn.indent = -1
@@ -27,6 +31,6 @@ function main_base_tab:InitControls(x, y)
 	self.btn.font = GetFontLetterica25()
 	
 	-- CODE
-	self:init(x, y)
+	self:init(x, y, main_rect.width, main_rect.height)
 end
 
