@@ -82,7 +82,7 @@ function object_spawner:hide(npc_id)
 	sim:set_interactive		(npc_id, false)
 end
 function object_spawner:update()	
-	printf("!!%s!! %s", self.name, game.get_game_time():diffSec(self.timer))
+	--printf("!!%s!! %s", self.name, game.get_game_time():diffSec(self.timer))
 	if game.get_game_time():diffSec(self.timer) > self.idle then
 		for k,v in self.list do
 			if self.rules(k) == true then
