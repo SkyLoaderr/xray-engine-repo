@@ -168,7 +168,7 @@ void __fastcall TfrmPropertiesEObject::OnPick(const SRayPickInfo& pinf)
 	if (ebDropper->Down&&m_pEditObject){
         CSurface* surf=pinf.e_mesh->GetSurfaceByFaceID(pinf.inf.id);
         AnsiString s_name = AnsiString("Surfaces\\")+AnsiString(surf->_Name());
-        FOLDER::RestoreSelection(m_SurfProp->tvProperties,s_name.c_str());
+        FHelper.RestoreSelection(m_SurfProp->tvProperties,s_name.c_str());
     }
 }
 //---------------------------------------------------------------------------

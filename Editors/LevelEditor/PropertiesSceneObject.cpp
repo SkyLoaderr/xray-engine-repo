@@ -209,7 +209,7 @@ void __fastcall TfrmPropertiesSceneObject::tsMotionsShow(TObject *Sender)
     if (!IsMultiSelection()){
         // create root tree node (object name)
         for (OMotionIt m_it=m_EditObject->m_OMotions.begin(); m_it!=m_EditObject->m_OMotions.end(); m_it++){
-        	TElTreeItem *Item = FOLDER::AppendObject(tvOMotions,(*m_it)->Name());
+        	TElTreeItem *Item = FHelper.AppendObject(tvOMotions,(*m_it)->Name());
             Item->ShowCheckBox = true;
             Item->CheckBoxType = ectCheckBox;
             Item->CheckBoxEnabled = true;
@@ -219,7 +219,7 @@ void __fastcall TfrmPropertiesSceneObject::tsMotionsShow(TObject *Sender)
         lbOMotionCount->Caption 	= m_EditObject->m_OMotions.size();
 		lbActiveOMotion->Caption 	= "...";
         if (m_EditObject->m_ActiveOMotion){
-	        TElTreeItem* Item 		= FOLDER::FindObject(tvOMotions,m_EditObject->m_ActiveOMotion->Name());
+	        TElTreeItem* Item 		= FHelper.FindObject(tvOMotions,m_EditObject->m_ActiveOMotion->Name());
             Item->Checked 			= true;
 	    	lbActiveOMotion->Caption= Item->Text;
         }
@@ -237,10 +237,10 @@ void __fastcall TfrmPropertiesSceneObject::tvOMotionsItemFocused(
 {
 //	selected_omotion = 0;
 	TElTreeItem* item = tvOMotions->Selected;
-    if (item&&FOLDER::IsObject(item)){
+    if (item&&FHelper.IsObject(item)){
 	    R_ASSERT(!IsMultiSelection());
         AnsiString fn;
-        FOLDER::MakeFullName		(item,0,fn);
+        FHelper.MakeFullName		(item,0,fn);
         COMotion* M					= m_EditObject->FindOMotionByName(fn.c_str());
         VERIFY2(M,"Can't find motion in 'm_OMotions'.");
         lbOMotionName->Caption 		= item->Text;
@@ -261,12 +261,12 @@ void __fastcall TfrmPropertiesSceneObject::ebOMotionAppendClick(
     if (Engine.FS.GetOpenName(Engine.FS.m_OMotion,fn)){
     	COMotion* M=m_EditObject->AppendOMotion(fn.c_str());
     	if (M){
-		    AnsiString nm; FOLDER::MakeName(tvOMotions->Selected,0,nm,true); nm += ChangeFileExt(ExtractFileName(fn),"");
+		    AnsiString nm; FHelper.MakeName(tvOMotions->Selected,0,nm,true); nm += ChangeFileExt(ExtractFileName(fn),"");
         	string256 buf;
             m_EditObject->GenerateOMotionName(buf,nm.c_str(),M);
             M->SetName(buf);
             // append to list
-            TElTreeItem* Item = FOLDER::AppendObject(tvOMotions,M->Name());
+            TElTreeItem* Item = FHelper.AppendObject(tvOMotions,M->Name());
             Item->ShowCheckBox = true;
             Item->CheckBoxType = ectCheckBox;
             Item->CheckBoxEnabled = true;
@@ -293,7 +293,7 @@ void __fastcall TfrmPropertiesSceneObject::ebOMotionDeleteClick(
       TObject *Sender)
 {
     if (tvOMotions->Selected)
-		FOLDER::RemoveItem(tvOMotions,tvOMotions->Selected,OnRemoveItem);
+		FHelper.RemoveItem(tvOMotions,tvOMotions->Selected,OnRemoveItem);
 }
 //---------------------------------------------------------------------------
 
@@ -312,7 +312,7 @@ void __fastcall TfrmPropertiesSceneObject::tvOMotionsItemChange(
 	case icmCheckState:
     	if (m_EditObject){
             if (Item->Checked){
-		        AnsiString fn; FOLDER::MakeFullName(Item,0,fn);
+		        AnsiString fn; FHelper.MakeFullName(Item,0,fn);
     		    m_EditObject->SetActiveOMotion(m_EditObject->FindOMotionByName(fn.c_str()));
 		    	lbActiveOMotion->Caption	= Item->Text;
             }else{
@@ -370,7 +370,7 @@ void __fastcall TfrmPropertiesSceneObject::ebOMotionLoadClick(
 void __fastcall TfrmPropertiesSceneObject::tvOMotionsDragDrop(
       TObject *Sender, TObject *Source, int X, int Y)
 {
-	FOLDER::DragDrop(Sender,Source,X,Y,OnRenameItem);
+	FHelper.DragDrop(Sender,Source,X,Y,OnRenameItem);
 }
 //---------------------------------------------------------------------------
 
@@ -378,14 +378,14 @@ void __fastcall TfrmPropertiesSceneObject::tvOMotionsDragOver(
       TObject *Sender, TObject *Source, int X, int Y, TDragState State,
       bool &Accept)
 {
-	FOLDER::DragOver(Sender,Source,X,Y,State,Accept);
+	FHelper.DragOver(Sender,Source,X,Y,State,Accept);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPropertiesSceneObject::tvOMotionsStartDrag(
       TObject *Sender, TDragObject *&DragObject)
 {
-	FOLDER::StartDrag(Sender,DragObject);
+	FHelper.StartDrag(Sender,DragObject);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmPropertiesSceneObject::OnRenameItem(LPCSTR p0, LPCSTR p1)
@@ -398,7 +398,7 @@ void __fastcall TfrmPropertiesSceneObject::OnRenameItem(LPCSTR p0, LPCSTR p1)
 void __fastcall TfrmPropertiesSceneObject::InplaceMotionEditValidateResult(
       TObject *Sender, bool &InputValid)
 {
-	InputValid = FOLDER::RenameItem(tvOMotions,InplaceMotionEdit->Item,InplaceMotionEdit->Editor->Text,OnRenameItem);
+	InputValid = FHelper.RenameItem(tvOMotions,InplaceMotionEdit->Item,InplaceMotionEdit->Editor->Text,OnRenameItem);
 	if (InputValid) OnModified(Sender);
 }
 //---------------------------------------------------------------------------
@@ -419,7 +419,7 @@ void __fastcall TfrmPropertiesSceneObject::Rename1Click(TObject *Sender)
 void __fastcall TfrmPropertiesSceneObject::CreateFolder1Click(
       TObject *Sender)
 {
-	FOLDER::CreateNewFolder(tvOMotions,true);
+	FHelper.CreateNewFolder(tvOMotions,true);
 	OnModified(Sender);
 }
 //---------------------------------------------------------------------------
@@ -441,7 +441,7 @@ void __fastcall TfrmPropertiesSceneObject::tvOMotionsMouseDown(
       TObject *Sender, TMouseButton Button, TShiftState Shift, int X,
       int Y)
 {
-	if (Button==mbRight)	FOLDER::ShowPPMenu(pmMotions,0);
+	if (Button==mbRight)	FHelper.ShowPPMenu(pmMotions,0);
 }
 //---------------------------------------------------------------------------
 
@@ -473,7 +473,7 @@ void __fastcall TfrmPropertiesSceneObject::ebSoundAppendClick(
     if (N){
     	if (m_EditObject->AppendSound(N)){
             // append to list
-            TElTreeItem* Item = FOLDER::AppendObject(tvSounds,N);
+            TElTreeItem* Item = FHelper.AppendObject(tvSounds,N);
             Item->ShowCheckBox = true;
             Item->CheckBoxType = ectCheckBox;
             Item->CheckBoxEnabled = true;
@@ -493,7 +493,7 @@ void __fastcall TfrmPropertiesSceneObject::ebSoundDeleteClick(
       TObject *Sender)
 {
     if (tvSounds->Selected)
-		FOLDER::RemoveItem(tvSounds,tvSounds->Selected,OnRemoveSoundItem);
+		FHelper.RemoveItem(tvSounds,tvSounds->Selected,OnRemoveSoundItem);
 }
 //---------------------------------------------------------------------------
 
@@ -513,7 +513,7 @@ void __fastcall TfrmPropertiesSceneObject::tvSoundsItemChange(
 	case icmCheckState:
     	if (m_EditObject){
             if (Item->Checked){
-		        AnsiString fn; FOLDER::MakeFullName(Item,0,fn);
+		        AnsiString fn; FHelper.MakeFullName(Item,0,fn);
     		    m_EditObject->SetActiveSound(fn.c_str());
 		    	lbSoundActive->Caption	= Item->Text;
             }else{
@@ -536,7 +536,7 @@ void __fastcall TfrmPropertiesSceneObject::tsSoundsShow(TObject *Sender)
     if (!IsMultiSelection()){
         // create root tree node (object name)
         for (AStringIt m_it=m_EditObject->m_Sounds.begin(); m_it!=m_EditObject->m_Sounds.end(); m_it++){
-        	TElTreeItem *Item = FOLDER::AppendObject(tvSounds,m_it->c_str());
+        	TElTreeItem *Item = FHelper.AppendObject(tvSounds,m_it->c_str());
             Item->ShowCheckBox = true;
             Item->CheckBoxType = ectCheckBox;
             Item->CheckBoxEnabled = true;
@@ -546,7 +546,7 @@ void __fastcall TfrmPropertiesSceneObject::tsSoundsShow(TObject *Sender)
         lbSoundCount->Caption 	= m_EditObject->m_Sounds.size();
 		lbSoundActive->Caption 	= "...";
         if (!m_EditObject->m_ActiveSound.IsEmpty()){
-	        TElTreeItem* Item 		= FOLDER::FindObject(tvSounds,m_EditObject->m_ActiveSound.c_str());
+	        TElTreeItem* Item 		= FHelper.FindObject(tvSounds,m_EditObject->m_ActiveSound.c_str());
             Item->Checked 			= true;
 	    	lbSoundActive->Caption	= Item->Text;
         }

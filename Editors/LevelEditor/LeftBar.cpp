@@ -385,56 +385,56 @@ void __fastcall TfraLeftBar::MakeDetailsClick(TObject *Sender)
 void __fastcall TfraLeftBar::ebSceneFileMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	FOLDER::ShowPPMenu(pmSceneFile,dynamic_cast<TExtBtn*>(Sender));
+	FHelper.ShowPPMenu(pmSceneFile,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebSceneCompileMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	FOLDER::ShowPPMenu(pmSceneCompile,dynamic_cast<TExtBtn*>(Sender));
+	FHelper.ShowPPMenu(pmSceneCompile,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebImagesMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	FOLDER::ShowPPMenu(pmImages,dynamic_cast<TExtBtn*>(Sender));
+	FHelper.ShowPPMenu(pmImages,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebSceneCommandsMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	FOLDER::ShowPPMenu(pmSceneCommands,dynamic_cast<TExtBtn*>(Sender));
+	FHelper.ShowPPMenu(pmSceneCommands,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ExtBtn7MouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	FOLDER::ShowPPMenu(pmToolsEdit,dynamic_cast<TExtBtn*>(Sender));
+	FHelper.ShowPPMenu(pmToolsEdit,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ExtBtn8MouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	FOLDER::ShowPPMenu(pmToolsSelection,dynamic_cast<TExtBtn*>(Sender));
+	FHelper.ShowPPMenu(pmToolsSelection,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ExtBtn10MouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	FOLDER::ShowPPMenu(pmToolsVisibility,dynamic_cast<TExtBtn*>(Sender));
+	FHelper.ShowPPMenu(pmToolsVisibility,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ExtBtn9MouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	FOLDER::ShowPPMenu(pmToolsLocking,dynamic_cast<TExtBtn*>(Sender));
+	FHelper.ShowPPMenu(pmToolsLocking,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
@@ -477,7 +477,7 @@ void __fastcall TfraLeftBar::UpdateSnapList()
 void __fastcall TfraLeftBar::ExtBtn1MouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	FOLDER::ShowPPMenu(pmSnapListCommand,dynamic_cast<TExtBtn*>(Sender));
+	FHelper.ShowPPMenu(pmSnapListCommand,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 

@@ -111,7 +111,7 @@ void __fastcall TfrmEditLibrary::FormShow(TObject *Sender)
 	Device.LightEnable(1,true);
 
     if (!m_LastSelection.IsEmpty())
-    	FOLDER::RestoreSelection(tvObjects,m_LastSelection.c_str());
+    	FHelper.RestoreSelection(tvObjects,m_LastSelection.c_str());
 	// check window position
 	UI.CheckWindowPos(this);
 }
@@ -182,10 +182,10 @@ void __fastcall TfrmEditLibrary::tvObjectsItemFocused(TObject *Sender)
 
 	_DELETE(m_Thm);
     bool mt=false;
-    if (node&&FOLDER::IsObject(node)&&UI.ContainEState(esEditLibrary)){
+    if (node&&FHelper.IsObject(node)&&UI.ContainEState(esEditLibrary)){
         // change thm
         AnsiString nm,obj_fn,thm_fn;
-        FOLDER::MakeName		(node,0,nm,false);
+        FHelper.MakeName		(node,0,nm,false);
 
         obj_fn					= ChangeFileExt(nm,".object");
         thm_fn					= ChangeFileExt(nm,".thm");
@@ -233,9 +233,9 @@ void __fastcall TfrmEditLibrary::cbPreviewClick(TObject *Sender)
 {
     TElTreeItem *node = tvObjects->Selected;
     bool mt=false;
-    if (cbPreview->Checked&&node&&FOLDER::IsObject(node)){
+    if (cbPreview->Checked&&node&&FHelper.IsObject(node)){
 	    AnsiString name;
-    	FOLDER::MakeName(node,0,name,false);
+    	FHelper.MakeName(node,0,name,false);
 		ChangeReference(name.c_str());
         mt = true;
     }
@@ -252,7 +252,7 @@ void TfrmEditLibrary::InitObjects()
     FilePairIt it=lst.begin();
     FilePairIt _E=lst.end();   
     for(; it!=_E; it++)
-        FOLDER::AppendObject(tvObjects,it->first.c_str());
+        FHelper.AppendObject(tvObjects,it->first.c_str());
 	tvObjects->IsUpdating		= false;
 }
 //---------------------------------------------------------------------------
@@ -268,9 +268,9 @@ void __fastcall TfrmEditLibrary::FormKeyDown(TObject *Sender, WORD &Key,
 void __fastcall TfrmEditLibrary::ebPropertiesClick(TObject *Sender)
 {
 	TElTreeItem* node = tvObjects->Selected;
-    if (node&&FOLDER::IsObject(node)){
+    if (node&&FHelper.IsObject(node)){
 	    AnsiString name;
-    	FOLDER::MakeName(node,0,name,false);
+    	FHelper.MakeName(node,0,name,false);
         ChangeReference(name.c_str());
         UpdateObjectProperties();
         m_Props->ShowProperties();
@@ -301,8 +301,8 @@ void __fastcall TfrmEditLibrary::tvObjectsDblClick(TObject *Sender)
 void __fastcall TfrmEditLibrary::ebMakeThmClick(TObject *Sender)
 {
 	DWORDVec pixels;
-	if (tvObjects->Selected&&FOLDER::IsObject(tvObjects->Selected)){
-    	AnsiString name; FOLDER::MakeName(tvObjects->Selected,0,name,false);
+	if (tvObjects->Selected&&FHelper.IsObject(tvObjects->Selected)){
+    	AnsiString name; FHelper.MakeName(tvObjects->Selected,0,name,false);
         int src_age;
    	    CEditableObject* obj = Lib.CreateEditObject(name.c_str(),&src_age);
     	if (obj&&cbPreview->Checked){
@@ -322,8 +322,8 @@ void __fastcall TfrmEditLibrary::ebMakeThmClick(TObject *Sender)
 
 void __fastcall TfrmEditLibrary::ebMakeLODClick(TObject *Sender)
 {
-	if (tvObjects->Selected&&FOLDER::IsObject(tvObjects->Selected)){
-    	AnsiString name; FOLDER::MakeName(tvObjects->Selected,0,name,false);
+	if (tvObjects->Selected&&FHelper.IsObject(tvObjects->Selected)){
+    	AnsiString name; FHelper.MakeName(tvObjects->Selected,0,name,false);
         int age;
         CEditableObject* O = m_pEditObject->GetReference();
     	if (O&&cbPreview->Checked){
@@ -393,7 +393,7 @@ extern bool __fastcall LookupFunc(TElTreeItem* Item, void* SearchDetails);
 void __fastcall TfrmEditLibrary::tvObjectsKeyPress(TObject *Sender, char &Key){
 	TElTreeItem* node = tvObjects->Items->LookForItemEx(tvObjects->Selected,-1,false,false,false,&Key,LookupFunc);
     if (!node) node = tvObjects->Items->LookForItemEx(0,-1,false,false,false,&Key,LookupFunc);
-    FOLDER::RestoreSelection(tvObjects,node);
+    FHelper.RestoreSelection(tvObjects,node);
 }
 //---------------------------------------------------------------------------
 
@@ -406,11 +406,11 @@ void __fastcall TfrmEditLibrary::pbImagePaint(TObject *Sender)
 void __fastcall TfrmEditLibrary::ebExportDOClick(TObject *Sender)
 {
     TElTreeItem* node = tvObjects->Selected;
-    if (node&&FOLDER::IsObject(node)){
+    if (node&&FHelper.IsObject(node)){
     	AnsiString fn;
 		if (Engine.FS.GetSaveName(Engine.FS.m_GameDO,fn)){
 		    AnsiString name;
-    		FOLDER::MakeName(node,0,name,false);
+    		FHelper.MakeName(node,0,name,false);
 			// make detail
     	    CDetail DO;
         	if (DO.Update(name.c_str())){
@@ -428,8 +428,8 @@ void __fastcall TfrmEditLibrary::ebExportDOClick(TObject *Sender)
 void __fastcall TfrmEditLibrary::ebExportHOMClick(TObject *Sender)
 {
     TElTreeItem* node = tvObjects->Selected;
-    if (node&&FOLDER::IsObject(node)){
-    	AnsiString name; FOLDER::MakeName(node,0,name,false);
+    if (node&&FHelper.IsObject(node)){
+    	AnsiString name; FHelper.MakeName(node,0,name,false);
         int age;
    	    CEditableObject* obj = Lib.CreateEditObject(name.c_str(),&age);
     	if (obj){
@@ -457,8 +457,8 @@ void __fastcall TfrmEditLibrary::ebExportHOMClick(TObject *Sender)
 void __fastcall TfrmEditLibrary::ebMakeLWOClick(TObject *Sender)
 {
     TElTreeItem* node = tvObjects->Selected;
-    if (node&&FOLDER::IsObject(node)){
-    	AnsiString name; FOLDER::MakeName(node,0,name,false);
+    if (node&&FHelper.IsObject(node)){
+    	AnsiString name; FHelper.MakeName(node,0,name,false);
         AnsiString save_nm;
         if (Engine.FS.GetSaveName(Engine.FS.m_Import,save_nm,0,3)){
             int age;
@@ -530,8 +530,8 @@ void TfrmEditLibrary::UpdateObjectProperties()
 void __fastcall TfrmEditLibrary::ExtBtn1Click(TObject *Sender)
 {
     TElTreeItem* node = tvObjects->Selected;
-    if (node&&FOLDER::IsObject(node)){
-    	AnsiString name; FOLDER::MakeName(node,0,name,false);
+    if (node&&FHelper.IsObject(node)){
+    	AnsiString name; FHelper.MakeName(node,0,name,false);
         int age;
    	    CEditableObject* obj = Lib.CreateEditObject(name.c_str(),&age);
     	if (obj){

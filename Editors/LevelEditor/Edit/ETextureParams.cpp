@@ -32,8 +32,6 @@ xr_token					tfmt_token						[ ]={
 	{ "16 bit (5:6:5)",		STextureParams::tf565				},
 	{ "24 bit (8:8:8)",		STextureParams::tfRGB				},
 	{ "32 bit (8:8:8:8)",	STextureParams::tfRGBA				},
-	{ "NVHS (signed HILO)",	STextureParams::tfNVHS				},
-	{ "NVHU (unsigned HILO)",STextureParams::tfNVHU				},
 	{ 0,					0									}
 };
 

@@ -146,7 +146,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
         ((TExtBtn*)p1)->Down = !((TExtBtn*)p1)->Down;
         break;
     case COMMAND_FILE_MENU:
-		FOLDER::ShowPPMenu(fraLeftBar->pmSceneFile,0);
+		FHelper.ShowPPMenu(fraLeftBar->pmSceneFile,0);
     	break;
 	case COMMAND_LOAD:
 		if( !Scene.locked() ){

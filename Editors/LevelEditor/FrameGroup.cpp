@@ -60,3 +60,27 @@ void __fastcall TfraGroup::ebUngroupClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraGroup::ebCenterToGroupClick(TObject *Sender)
+{
+	ObjectList lst;
+	if (Scene.GetQueryObjects(lst,OBJCLASS_GROUP,1,1,0)){
+    	for (ObjectIt it=lst.begin(); it!=lst.end(); it++){
+			((CGroupObject*)(*it))->UpdateBBoxAndPivot(false);
+        }
+        Scene.UndoSave();
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraGroup::ebAlignToObjectClick(TObject *Sender)
+{
+	ObjectList lst;
+	if (Scene.GetQueryObjects(lst,OBJCLASS_GROUP,1,1,0)){
+    	for (ObjectIt it=lst.begin(); it!=lst.end(); it++){
+			((CGroupObject*)(*it))->UpdateBBoxAndPivot(true);
+        }
+        Scene.UndoSave();
+    }
+}
+//---------------------------------------------------------------------------
+

@@ -57,7 +57,7 @@ void __fastcall TfrmEditLightAnim::FormShow(TObject *Sender)
     UI.BeginEState(esEditLightAnim);
 
     if (!m_LastSelection.IsEmpty()){
-    	TElTreeItem *node=FOLDER::FindObject(tvItems,m_LastSelection.c_str());
+    	TElTreeItem *node=FHelper.FindObject(tvItems,m_LastSelection.c_str());
 	    if (node){
     	    tvItems->Selected = node;
         	tvItems->EnsureVisible(node);
@@ -113,10 +113,10 @@ void __fastcall TfrmEditLightAnim::tvItemsItemFocused(TObject *Sender)
     
     TElTreeItem* node = tvItems->Selected;
 
-    if (node&&FOLDER::IsObject(node)){
+    if (node&&FHelper.IsObject(node)){
         // change thm
         AnsiString nm,obj_fn,thm_fn;
-        FOLDER::MakeName		(node,0,nm,false);
+        FHelper.MakeName		(node,0,nm,false);
 		CLAItem* I  			= LALib.FindItem(nm.c_str());
         SetCurrentItem			(I);
     }else{
@@ -131,7 +131,7 @@ void TfrmEditLightAnim::InitItems()
     SetCurrentItem			(0);
     tvItems->Items->Clear();
     for (LAItemIt it=LALib.Items.begin(); it!=LALib.Items.end(); it++)
-        FOLDER::AppendObject(tvItems,(*it)->cName);
+        FHelper.AppendObject(tvItems,(*it)->cName);
 	tvItems->IsUpdating		= false;
 }
 //---------------------------------------------------------------------------
@@ -167,31 +167,18 @@ void TfrmEditLightAnim::UpdateView()
 		sePointer->Color = TColor(m_CurrentItem->IsKey(sePointer->Value)?0x00BFFFFF:0x00A0A0A0);
     }
 }
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmEditLightAnim::NameOnAfterEdit(PropValue* sender, LPVOID edit_val)
-{
-	FOLDER::AfterTextEdit(tvItems->Selected,((TextValue*)sender)->GetValue(),*(AnsiString*)edit_val);
-}
-//------------------------------------------------------------------------------
-void __fastcall TfrmEditLightAnim::NameOnBeforeEdit(PropValue* sender, LPVOID edit_val)
-{
-	FOLDER::BeforeTextEdit(((TextValue*)sender)->GetValue(),*(AnsiString*)edit_val);
-}
-//------------------------------------------------------------------------------
-void __fastcall TfrmEditLightAnim::NameOnDraw(PropValue* sender, LPVOID draw_val)
-{
-	FOLDER::TextDraw(((TextValue*)sender)->GetValue(),*(AnsiString*)draw_val);
-}
 //------------------------------------------------------------------------------
 void TfrmEditLightAnim::GetItemData()
 {
 	if (m_CurrentItem){
     	PropValueVec values;
-        FILL_PROP(values,	"Name",			m_CurrentItem->cName,		PHelper.CreateText	(sizeof(m_CurrentItem->cName),NameOnAfterEdit,NameOnBeforeEdit,NameOnDraw));
+        FILL_PROP(values,	"Name",			m_CurrentItem->cName,		PHelper.CreateText	(sizeof(m_CurrentItem->cName),FHelper.NameAfterEdit,FHelper.NameBeforeEdit,FHelper.NameDraw));
         FILL_PROP(values,	"FPS",			&m_CurrentItem->fFPS,		PHelper.CreateFloat	(0.1f,1000,1.f,1));
-        FILL_PROP(values,	"Frame Count",	&m_CurrentItem->iFrameCount,PHelper.CreateS32		(1,100000,1));
+        FILL_PROP(values,	"Frame Count",	&m_CurrentItem->iFrameCount,PHelper.CreateS32	(1,100000,1));
     	m_Props->AssignValues(values,true);
+		// set name
+        PropValue* P	= PHelper.FindProp(values,"Name"); VERIFY(P);
+        P->tag			= (int)tvItems->Items->LookForItem(0,m_CurrentItem->cName,0,0,false,true,false,true,true); VERIFY(P->tag);
     }else{
     	m_Props->ClearProperties();
     }
@@ -202,7 +189,7 @@ void TfrmEditLightAnim::GetItemData()
 void TfrmEditLightAnim::SetCurrentItem(CLAItem* I)
 {
 	m_CurrentItem = I;
-    if (m_CurrentItem) 	tvItems->Selected = FOLDER::FindObject(tvItems,m_CurrentItem->cName);
+    if (m_CurrentItem) 	tvItems->Selected = FHelper.FindObject(tvItems,m_CurrentItem->cName);
     else				tvItems->Selected = 0;
     paItemProps->Visible = tvItems->Selected;
     // fill data
@@ -213,9 +200,9 @@ void TfrmEditLightAnim::SetCurrentItem(CLAItem* I)
 void __fastcall TfrmEditLightAnim::ebAddAnimClick(TObject *Sender)
 {
     AnsiString folder;
-	FOLDER::MakeName(tvItems->Selected,0,folder,true);
+	FHelper.MakeName(tvItems->Selected,0,folder,true);
     CLAItem* I = LALib.AppendItem(folder.c_str(),0);
-    FOLDER::AppendObject(tvItems,I->cName);
+    FHelper.AppendObject(tvItems,I->cName);
     SetCurrentItem(I);
     OnModified();
 }
@@ -226,7 +213,7 @@ void __fastcall TfrmEditLightAnim::ebDeleteAnimClick(TObject *Sender)
 	TElTreeItem* node = tvItems->Selected;
     if (node){
 	    AnsiString name;
-		FOLDER::MakeName(node,0,name,false);
+		FHelper.MakeName(node,0,name,false);
         if (node->GetPrev()) 		tvItems->Selected = node->GetPrev();
         else if (node->GetNext())	tvItems->Selected = node->GetNext();
         else						tvItems->Selected = 0;
@@ -422,21 +409,21 @@ void __fastcall TfrmEditLightAnim::sePointerExit(TObject *Sender)
 void __fastcall TfrmEditLightAnim::tvItemsDragDrop(TObject *Sender,
       TObject *Source, int X, int Y)
 {
-	FOLDER::DragDrop(Sender,Source,X,Y,OnRenameItem);
+	FHelper.DragDrop(Sender,Source,X,Y,OnRenameItem);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmEditLightAnim::tvItemsDragOver(TObject *Sender,
       TObject *Source, int X, int Y, TDragState State, bool &Accept)
 {
-	FOLDER::DragOver(Sender,Source,X,Y,State,Accept);
+	FHelper.DragOver(Sender,Source,X,Y,State,Accept);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmEditLightAnim::tvItemsStartDrag(TObject *Sender,
       TDragObject *&DragObject)
 {
-	FOLDER::StartDrag(Sender,DragObject);
+	FHelper.StartDrag(Sender,DragObject);
 }
 //---------------------------------------------------------------------------
 
@@ -450,7 +437,7 @@ void __fastcall TfrmEditLightAnim::OnRenameItem(LPCSTR p0, LPCSTR p1)
 void __fastcall TfrmEditLightAnim::tvItemsMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	if (Button==mbRight)	FOLDER::ShowPPMenu(pmActionList);
+	if (Button==mbRight)	FHelper.ShowPPMenu(pmActionList);
 }
 //---------------------------------------------------------------------------
 
@@ -477,19 +464,19 @@ void __fastcall TfrmEditLightAnim::InplaceTextEditValidateResult(
         }
     }
     AnsiString full_name;
-    if (FOLDER::IsFolder(node)){
+    if (FHelper.IsFolder(node)){
         for (item=node->GetFirstChild(); item&&(item->Level>node->Level); item=item->GetNext()){
-            if (FOLDER::IsObject(item)){
-                FOLDER::MakeName(item,0,full_name,false);
+            if (FHelper.IsObject(item)){
+                FHelper.MakeName(item,0,full_name,false);
                 string256 new_nm;
-                FOLDER::ReplacePart(full_name.c_str(),new_text.c_str(),node->Level,new_nm);
+                FHelper.ReplacePart(full_name.c_str(),new_text.c_str(),node->Level,new_nm);
                 LALib.RenameItem(full_name.c_str(),new_nm);
             }
         }
-    }else if (FOLDER::IsObject(node)){
-        FOLDER::MakeName(node,0,full_name,false);
+    }else if (FHelper.IsObject(node)){
+        FHelper.MakeName(node,0,full_name,false);
         string256 new_nm;
-        FOLDER::ReplacePart(full_name.c_str(),new_text.c_str(),node->Level,new_nm);
+        FHelper.ReplacePart(full_name.c_str(),new_text.c_str(),node->Level,new_nm);
 		LALib.RenameItem(full_name.c_str(),new_nm);
     }
     tvItems->Selected=node;
@@ -501,10 +488,10 @@ void __fastcall TfrmEditLightAnim::CreateFolder1Click(TObject *Sender)
 {
 	AnsiString folder;
     AnsiString start_folder;
-    FOLDER::MakeName(tvItems->Selected,0,start_folder,true);
-    FOLDER::GenerateFolderName(tvItems,tvItems->Selected,folder);
+    FHelper.MakeName(tvItems->Selected,0,start_folder,true);
+    FHelper.GenerateFolderName(tvItems,tvItems->Selected,folder);
     folder = start_folder+folder;
-	TElTreeItem* node = FOLDER::AppendFolder(tvItems,folder.c_str());
+	TElTreeItem* node = FHelper.AppendFolder(tvItems,folder.c_str());
     if (tvItems->Selected) tvItems->Selected->Expand(false);
     tvItems->EditItem(node,-1);
 	OnModified();

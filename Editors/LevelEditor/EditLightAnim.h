@@ -135,9 +135,6 @@ private:	// User declarations
 
     TProperties*		m_Props;
     void __fastcall		OnModified		(void);
-	void __fastcall 	NameOnAfterEdit	(PropValue* sender, LPVOID edit_val);
-	void __fastcall 	NameOnBeforeEdit(PropValue* sender, LPVOID edit_val);
-	void __fastcall 	NameOnDraw		(PropValue* sender, LPVOID draw_val);
 public:		// User declarations
     __fastcall TfrmEditLightAnim(TComponent* Owner);
     static bool FinalClose();

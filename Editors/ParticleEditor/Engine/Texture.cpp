@@ -480,6 +480,7 @@ _DDS_CUBE:
 			0,&IMG,0,
 			&pTextureCUBE
 			));
+		Engine.FS.Close			(S);
 
 		// Log
 		Msg						("* T_C [%d-%d] (%dK): %s",IMG.Width,IMG.Height,CTexture::MemUsage(pTextureCUBE)/1024,fn);
