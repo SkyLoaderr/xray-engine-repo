@@ -38,3 +38,24 @@ BOOL APIENTRY DllMain				(HANDLE module_handle, DWORD call_reason, LPVOID reserv
 	}
     return				(TRUE);
 }
+
+//#include "import_export.h"
+//
+//struct CTestInterface0 : public CTestInterface {
+//	CTestInterface0()
+//	{
+////		OnGetString = Delegate(this,&CTestInterface0::get_string);
+//	}
+//
+//	virtual void get_string(LPCSTR &string)
+//	{
+//		string		= "Wow!!!";
+//	}
+//};
+//
+//DLL_API CTestInterface	*create_test_object	()
+//{
+//	return	(xr_new<CTestInterface0>)
+//}
+//
+//DLL_API void			destroy_test_object	(CSE_Abstract *&CTestInterface);
