@@ -71,3 +71,6 @@ extern void vfShowBoard(TBoardCell tColor, f64 dBlackTime = 0, f64 dWhiteTime = 
 extern bool bfMakeMove(TBoardCell *taBoard, TBoardCell tMoveColor, TBoardCell tIndex, char *cpCurrentValue);
 extern char *cafTimeToString(f64 dTime);
 extern char cfShowDisk(TBoardCell tColor, char cIndex);
+
+extern bool bfMakeMove(TBoardCell *taBoard, TBoardCell tMoveColor, TBoardCell tIndex, char *cpCurrentValue, u32 *dwpFlipCount);
+

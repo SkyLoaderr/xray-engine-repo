@@ -1701,7 +1701,7 @@ void vfUndo(u32 dwFlipCount, TBoardCell tOpponentColor)
 {
 	TIMER_START(Undo)
 	dwFlipCount--;
-*(*(--tppFlipStack)) = EMPTY;
+	*(*(--tppFlipStack)) = EMPTY;
 
 	__ASSERT(tppFlipStack - tpaGlobalFlipStack > 0);
 	__ASSERT(tppFlipStack - tpaGlobalFlipStack < 65536);
@@ -2271,3 +2271,227 @@ void vfShowBoard(TBoardCell tColor, f64 dBlackTime, f64 dWhiteTime)
 	}
 	vfDualPrintF("   A B C D E F G H           WHITE (%c)            A  B  C  D  E  F  G  H\n\n",WHITE_DISK_CHARACTER);
 }
+
+#define ucfFlipDirectionIfAvailableX2(tpSquare, iIncrement, tMoveColor, tOpponentColor) \
+{\
+    tpCurrent = tpSquare + iIncrement;\
+    \
+	if (*tpCurrent == tOpponentColor) {\
+        \
+		tpCurrent += iIncrement;\
+        \
+		if (*tpCurrent == tOpponentColor) {\
+            \
+			tpCurrent += iIncrement;\
+        \
+			if (*tpCurrent == tOpponentColor) {\
+                \
+				tpCurrent += iIncrement;\
+            \
+				if (*tpCurrent == tOpponentColor) {\
+                    \
+					tpCurrent += iIncrement;\
+                \
+					if (*tpCurrent == tOpponentColor) {\
+                        \
+						tpCurrent += iIncrement;\
+                    \
+						if (*tpCurrent == tOpponentColor) {\
+                            tpCurrent += iIncrement;\
+                        }\
+                    }\
+                }\
+            }\
+        }\
+		if (*tpCurrent==tMoveColor) {\
+            \
+			tpCurrent -= iIncrement;\
+			do {\
+                *tpCurrent = tMoveColor;\
+                *(tppFlipStack++) = tpCurrent;\
+                tpCurrent -= iIncrement;\
+                *cpCurrentValue += 2;\
+            } \
+			while (tpCurrent != tpSquare);\
+			\
+        }\
+    }\
+\
+}
+
+bool bfMakeMove(TBoardCell *taBoard, TBoardCell tMoveColor, TBoardCell tIndex, char *cpCurrentValue, u32 *dwpFlipCount)
+{
+    TBoardCell tOpponentColor = (tMoveColor == BLACK ? WHITE : BLACK);
+    u8 ucMask = ucaFlippingDirections[tIndex];
+	char cOldValue = *cpCurrentValue;
+
+	TBoardCell *tpSquare  = taBoard + tIndex;
+	TBoardCell *tpCurrent = tpSquare;
+
+    if (tMoveColor == BLACK) {
+		switch(ucMask) {
+			case 1 : {
+				ucfFlipDirectionIfAvailableX2(tpSquare,  1, BLACK, WHITE);
+				ucfFlipDirectionIfAvailableX2(tpSquare,  9, BLACK, WHITE);
+				ucfFlipDirectionIfAvailableX2(tpSquare, 10, BLACK, WHITE);
+				break;
+			}
+			case 2 : {
+				ucfFlipDirectionIfAvailableX2(tpSquare, -1, BLACK, WHITE);
+				ucfFlipDirectionIfAvailableX2(tpSquare,  1, BLACK, WHITE);
+				ucfFlipDirectionIfAvailableX2(tpSquare,  8, BLACK, WHITE);
+				ucfFlipDirectionIfAvailableX2(tpSquare,  9, BLACK, WHITE);
+				ucfFlipDirectionIfAvailableX2(tpSquare, 10, BLACK, WHITE);
+				break;
+			}
+			case 3 : {
+				ucfFlipDirectionIfAvailableX2(tpSquare, -1, BLACK, WHITE);
+				ucfFlipDirectionIfAvailableX2(tpSquare,  8, BLACK, WHITE);
+				ucfFlipDirectionIfAvailableX2(tpSquare,  9, BLACK, WHITE);
+				break;
+			}
+			case 4 : {
+				ucfFlipDirectionIfAvailableX2(tpSquare, -9, BLACK, WHITE);
+				ucfFlipDirectionIfAvailableX2(tpSquare, -8, BLACK, WHITE);
+				ucfFlipDirectionIfAvailableX2(tpSquare,  1, BLACK, WHITE);
+				ucfFlipDirectionIfAvailableX2(tpSquare,  9, BLACK, WHITE);
+				ucfFlipDirectionIfAvailableX2(tpSquare, 10, BLACK, WHITE);
+				break;
+			}
+			case 5 : {
+				ucfFlipDirectionIfAvailableX2(tpSquare,-10, BLACK, WHITE);
+				ucfFlipDirectionIfAvailableX2(tpSquare, -9, BLACK, WHITE);
+				ucfFlipDirectionIfAvailableX2(tpSquare, -8, BLACK, WHITE);
+				ucfFlipDirectionIfAvailableX2(tpSquare, -1, BLACK, WHITE);
+				ucfFlipDirectionIfAvailableX2(tpSquare,  1, BLACK, WHITE);
+				ucfFlipDirectionIfAvailableX2(tpSquare,  8, BLACK, WHITE);
+				ucfFlipDirectionIfAvailableX2(tpSquare,  9, BLACK, WHITE);
+				ucfFlipDirectionIfAvailableX2(tpSquare, 10, BLACK, WHITE);
+				break;
+			}
+			case 6 : {
+				ucfFlipDirectionIfAvailableX2(tpSquare,-10, BLACK, WHITE);
+				ucfFlipDirectionIfAvailableX2(tpSquare, -9, BLACK, WHITE);
+				ucfFlipDirectionIfAvailableX2(tpSquare, -1, BLACK, WHITE);
+				ucfFlipDirectionIfAvailableX2(tpSquare,  8, BLACK, WHITE);
+				ucfFlipDirectionIfAvailableX2(tpSquare,  9, BLACK, WHITE);
+				break;
+			}
+			case 7 : {
+				ucfFlipDirectionIfAvailableX2(tpSquare, -9, BLACK, WHITE);
+				ucfFlipDirectionIfAvailableX2(tpSquare, -8, BLACK, WHITE);
+				ucfFlipDirectionIfAvailableX2(tpSquare,  1, BLACK, WHITE);
+				break;
+			}
+			case 8 : {
+				ucfFlipDirectionIfAvailableX2(tpSquare,-10, BLACK, WHITE);
+				ucfFlipDirectionIfAvailableX2(tpSquare, -9, BLACK, WHITE);
+				ucfFlipDirectionIfAvailableX2(tpSquare, -8, BLACK, WHITE);
+				ucfFlipDirectionIfAvailableX2(tpSquare, -1, BLACK, WHITE);
+				ucfFlipDirectionIfAvailableX2(tpSquare,  1, BLACK, WHITE);
+				break;
+			}
+			case 9 : {
+				ucfFlipDirectionIfAvailableX2(tpSquare,-10, BLACK, WHITE);
+				ucfFlipDirectionIfAvailableX2(tpSquare, -9, BLACK, WHITE);
+				ucfFlipDirectionIfAvailableX2(tpSquare, -1, BLACK, WHITE);
+				break;
+			}
+		}
+	
+		*dwpFlipCount = (*cpCurrentValue - cOldValue) >> 1;
+		if (*dwpFlipCount) {
+			*tpSquare			= BLACK;
+			*(tppFlipStack++)	= tpSquare;
+			++(*cpCurrentValue);
+			++(*dwpFlipCount);
+			return				(true);
+		}
+		else 
+			return				(false);
+	
+	}
+	else {
+		switch(ucMask) {
+			case 1 : {
+				ucfFlipDirectionIfAvailableX2(tpSquare,  1, WHITE, BLACK);
+				ucfFlipDirectionIfAvailableX2(tpSquare,  9, WHITE, BLACK);
+				ucfFlipDirectionIfAvailableX2(tpSquare, 10, WHITE, BLACK);
+				break;
+			}
+			case 2 : {
+				ucfFlipDirectionIfAvailableX2(tpSquare, -1, WHITE, BLACK);
+				ucfFlipDirectionIfAvailableX2(tpSquare,  1, WHITE, BLACK);
+				ucfFlipDirectionIfAvailableX2(tpSquare,  8, WHITE, BLACK);
+				ucfFlipDirectionIfAvailableX2(tpSquare,  9, WHITE, BLACK);
+				ucfFlipDirectionIfAvailableX2(tpSquare, 10, WHITE, BLACK);
+				break;
+			}
+			case 3 : {
+				ucfFlipDirectionIfAvailableX2(tpSquare, -1, WHITE, BLACK);
+				ucfFlipDirectionIfAvailableX2(tpSquare,  8, WHITE, BLACK);
+				ucfFlipDirectionIfAvailableX2(tpSquare,  9, WHITE, BLACK);
+				break;
+			}
+			case 4 : {
+				ucfFlipDirectionIfAvailableX2(tpSquare, -9, WHITE, BLACK);
+				ucfFlipDirectionIfAvailableX2(tpSquare, -8, WHITE, BLACK);
+				ucfFlipDirectionIfAvailableX2(tpSquare,  1, WHITE, BLACK);
+				ucfFlipDirectionIfAvailableX2(tpSquare,  9, WHITE, BLACK);
+				ucfFlipDirectionIfAvailableX2(tpSquare, 10, WHITE, BLACK);
+				break;
+			}
+			case 5 : {
+				ucfFlipDirectionIfAvailableX2(tpSquare,-10, WHITE, BLACK);
+				ucfFlipDirectionIfAvailableX2(tpSquare, -9, WHITE, BLACK);
+				ucfFlipDirectionIfAvailableX2(tpSquare, -8, WHITE, BLACK);
+				ucfFlipDirectionIfAvailableX2(tpSquare, -1, WHITE, BLACK);
+				ucfFlipDirectionIfAvailableX2(tpSquare,  1, WHITE, BLACK);
+				ucfFlipDirectionIfAvailableX2(tpSquare,  8, WHITE, BLACK);
+				ucfFlipDirectionIfAvailableX2(tpSquare,  9, WHITE, BLACK);
+				ucfFlipDirectionIfAvailableX2(tpSquare, 10, WHITE, BLACK);
+				break;
+			}
+			case 6 : {
+				ucfFlipDirectionIfAvailableX2(tpSquare,-10, WHITE, BLACK);
+				ucfFlipDirectionIfAvailableX2(tpSquare, -9, WHITE, BLACK);
+				ucfFlipDirectionIfAvailableX2(tpSquare, -1, WHITE, BLACK);
+				ucfFlipDirectionIfAvailableX2(tpSquare,  8, WHITE, BLACK);
+				ucfFlipDirectionIfAvailableX2(tpSquare,  9, WHITE, BLACK);
+				break;
+			}
+			case 7 : {
+				ucfFlipDirectionIfAvailableX2(tpSquare, -9, WHITE, BLACK);
+				ucfFlipDirectionIfAvailableX2(tpSquare, -8, WHITE, BLACK);
+				ucfFlipDirectionIfAvailableX2(tpSquare,  1, WHITE, BLACK);
+				break;
+			}
+			case 8 : {
+				ucfFlipDirectionIfAvailableX2(tpSquare,-10, WHITE, BLACK);
+				ucfFlipDirectionIfAvailableX2(tpSquare, -9, WHITE, BLACK);
+				ucfFlipDirectionIfAvailableX2(tpSquare, -8, WHITE, BLACK);
+				ucfFlipDirectionIfAvailableX2(tpSquare, -1, WHITE, BLACK);
+				ucfFlipDirectionIfAvailableX2(tpSquare,  1, WHITE, BLACK);
+				break;
+			}
+			case 9 : {
+				ucfFlipDirectionIfAvailableX2(tpSquare,-10, WHITE, BLACK);
+				ucfFlipDirectionIfAvailableX2(tpSquare, -9, WHITE, BLACK);
+				ucfFlipDirectionIfAvailableX2(tpSquare, -1, WHITE, BLACK);
+				break;
+			}
+		}
+		
+		*dwpFlipCount = (*cpCurrentValue - cOldValue) >> 1;
+		if (*dwpFlipCount) {
+			*tpSquare			= WHITE;
+			*(tppFlipStack++)	= tpSquare;
+			++(*cpCurrentValue);
+			++(*dwpFlipCount);
+			return				(true);
+		}
+		else
+			return(false);
+	}
+}
+

@@ -99,7 +99,7 @@ int __cdecl main(int argc, char *argv[])
 
 		__asm				emms;
 
-		vfDualPrintF		("%d : %f = %f\n", qwVariationCount, float(finish - start)/float(CPU::qwCyclesPerSecond), float(qwVariationCount)*float(CPU::qwCyclesPerSecond)/float(finish - start));
+		vfDualPrintF		("%I64u : %f = %f\n", qwVariationCount, float(finish - start)/float(CPU::qwCyclesPerSecond), float(qwVariationCount)*float(CPU::qwCyclesPerSecond)/float(finish - start));
 		//vfPlayGame(bBlack);
 	}
 	else {
