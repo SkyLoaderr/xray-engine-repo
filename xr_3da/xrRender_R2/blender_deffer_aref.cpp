@@ -30,7 +30,7 @@ void	CBlender_deffer_aref::Compile(CBlender_Compile& C)
 			strconcat		(fnameA,fname,"_bump");
 			strconcat		(fnameB,"$user$",fname,"_bumpX");
 
-			if (C.bDetail)	
+			if (C.bDetail_Bump)	
 			{
 				string256		fNameDT;
 				strconcat		(fNameDT,C.detail_texture,"_bump");
@@ -78,7 +78,7 @@ void	CBlender_deffer_aref::Compile(CBlender_Compile& C)
 			strconcat		(fnameA,fname,"_bump");
 			strconcat		(fnameB,"$user$",fname,"_bumpX");
 
-			if (C.bDetail)	
+			if (C.bDetail_Bump)	
 			{
 				string256		fNameDT;
 				strconcat		(fNameDT,C.detail_texture,"_bump");

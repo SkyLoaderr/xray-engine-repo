@@ -60,7 +60,7 @@ void CBlender_Vertex::Compile	(CBlender_Compile& C)
 		case SE_R1_NORMAL_HQ:
 		case SE_R1_NORMAL_LQ:
 			// Level view
-			if (C.bDetail)
+			if (C.bDetail_Diffuse)
 			{
 				C.r_Pass	("vert_dt","vert_dt",TRUE);
 				C.r_Sampler	("s_base",	C.L_textures[0]);
