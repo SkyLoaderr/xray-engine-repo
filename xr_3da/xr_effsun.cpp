@@ -5,10 +5,10 @@
 #include "xr_ini.h"
 
 CSun::CSun( CInifile* pIni, LPSTR section ) {
-// общие установки
+	// общие установки
 	sun_color.set				(255, 255, 255, 255);
 	sun_dir.set					(-0.5774f,-0.5774f,-0.5774f);
-
+	
 	LoadSunData					( pIni, section );
 	LensFlare.Load				( pIni, section );
 }
