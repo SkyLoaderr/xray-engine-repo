@@ -56,13 +56,11 @@ function stalker_zombe_action:execute ()
     if( self.a.stand and self.object:animation_count() == 0 ) then
         --≈сли остановились и проиграли до конца анимацию, то снова идем
         self.a.stand = false
-        printf( "1111111" )
         self.object:set_movement_type( move.walk )
     end
 end
 ---------------------------------------------------------------------------------------------------------------------
 function stalker_zombe_action:speak()
-    printf( "Speak" )
     if( math.random() > 0.5 ) then
     	self.object:play_sound( walk_speak, 1, 0, 1, 0, math.random( 0, 8 ) )
     else
@@ -84,8 +82,6 @@ end
 --patrol binder
 ----------------------------------------------------------------------------------------------------------------------
 function add_zombe(obj)
-    printf( "id ========%d", obj:id() )
-
     local operators     = {}
     local properties    = {}
     local st            = {
@@ -100,7 +96,6 @@ function add_zombe(obj)
     if( char_ini:section_exist ("zombe") == true ) then
         if( char_ini:line_exist("zombe", "path") == true ) then
             st.path = char_ini:r_string("zombe", "path")
-            --printf( "Read path: %s", st.path )
         else
         	printf( "________Error.    Section zombe/path not found" )
         end
@@ -200,11 +195,9 @@ function stalker_novice_action:state_walk( param )
     self.object:set_mental_state    ( anim.free )
     if( device():time_global() > self.a.time + 3000 ) then
         --ѕервые 3 секунды идем просто, потом начинаем что-то искать
-        --printf( "Search" )
         self.object:set_sight       ( look.search, nil, 0 )
     else
 		self.object:set_sight       ( look.path_dir, nil, 0 )
-        --printf( "Path dir" )
     end
     self.object:set_item            ( object.idle, self.object:best_weapon() )
 end
@@ -212,7 +205,6 @@ end
 function stalker_novice_action:state_sit_down( param )
 	if( param )	then                        --Init state sit
     	printf( "Init state sit_down" )
-        --printf( "Numbet wayPoint %d", patrol( self.a.rest):count() )
         self.a.index = math.random( 1, patrol( self.a.rest):count() - 1 )
         self.object:set_dest_level_vertex_id( patrol( self.a.rest ):level_vertex_id( self.a.index ) )
         self.object:set_path_type 			( game_object.level_path )
@@ -247,7 +239,6 @@ function stalker_novice_action:state_sit_down( param )
         end
         --—идим уже больше, чем отведенно врем€ на отдых, тогда начинаем вставать
         if( device():time_global() > self.a.time + time_rest ) then
-            --printf( "Device_time %d  need_time %d", device():time_global(), self.a.time + time_rest )
             self.object:clear_animations()
             self.a.curState = stand_up
             self.object:add_animation( "stalker_1_up", true )
@@ -280,24 +271,18 @@ function add_novice(obj)
     if( char_ini:section_exist ("novice") == true ) then
         if( char_ini:line_exist("novice", "path") == true ) then
 			st.path = char_ini:r_string("novice", "path")
-            --printf( "Read path: %s", st.path )
         end
         if( char_ini:line_exist("novice", "rest") == true ) then
             st.rest = char_ini:r_string("novice", "rest")
-            --printf( "Read path: %s", st.path )
         end
-
     end
 
     xr_motivator.storage[obj:id()] = { novice = {} }
     xr_motivator.storage[obj:id()].novice = st
 
-    --printf( "stalker_novice_action" )
-    --    obj:add_sound ("Scripts\\Patrol\\Commander1_", 20, snd_type.talk, 2, 1, commander_snd)
 
     properties[ "work" ]              = xr_evaluators_id.jon_stalker_zombe
     operators [ "stalker_novice" ]    = xr_actions_id.jon_stalker_zombe
-
 
     local manager  = obj:motivation_action_manager ()
     manager:add_evaluator ( properties[ "work" ], this.enabled_evaluator( xr_motivator.storage[obj:id()].novice ) )
@@ -314,7 +299,6 @@ function add_novice(obj)
 end
 
 function bind_object( obj, name )
-    if( global_sounds ) then printf( "= ========================" ) end
     if( name == "zombe" ) then
     	this.add_zombe ( obj )
     elseif( name == "novice" ) then
