@@ -1062,7 +1062,7 @@ void CScriptGameObject::set_dest_level_vertex_id(u32 level_vertex_id)
 
 		if (!ai().level_graph().valid_vertex_id(level_vertex_id)) {
 #ifdef DEBUG
-			ai().script_engine().script_log				(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : invalid vertex id being setup by action %s!",stalker->current_action().m_action_name);
+			ai().script_engine().script_log				(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : invalid vertex id being setup by action %s!",stalker->CMotivationActionManagerStalker::current_action().m_action_name);
 #endif
 			return;
 		}
