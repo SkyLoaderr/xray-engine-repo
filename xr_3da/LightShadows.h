@@ -29,7 +29,7 @@ private:
 		int					slot;
 		Fvector				C;
 		Fmatrix				M;
-		xrLIGHT*			L;
+		Flight*				L;
 	};
 	struct	tess_tri
 	{

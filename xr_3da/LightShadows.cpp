@@ -105,7 +105,7 @@ void CLightShadows::add_element	(NODE* N)
 	casters.back().nodes.push_back	(*N);
 }
 
-IC float PLC_energy	(Fvector& P, Fvector& N, xrLIGHT* L, float E)
+IC float PLC_energy	(Fvector& P, Fvector& N, Flight* L, float E)
 {
 	Fvector Ldir;
 	if (L->type==D3DLIGHT_DIRECTIONAL)
@@ -185,9 +185,8 @@ void CLightShadows::calculate	()
 		// iterate on lights
 		for (int l_it=0; (l_it<lights.size()) && (slot_id<slot_max); l_it++)
 		{
-			xrLIGHT*	L		=	lights[l_it];
-			float	level		=	L->diffuse.magnitude_rgb	();
-			if (level<S_level)	continue;
+			CLightTrack::Light&	L	=	lights[l_it];
+			if (L.energy<S_level)	continue;
 			
 			// calculate light center
 			Fvector		Lpos	= L->position;
