@@ -69,8 +69,7 @@ CObject::~CObject( )
 	Device.seqDevCreate.Remove	(this);
 	Device.seqDevDestroy.Remove	(this);
 
-	if (sh_Shader)				Device.Shader.Delete		(sh_Shader);
-	if (pVisual)				Render.Models.Delete		(pVisual);
+	OnDeviceDestroy				();
 	_DELETE	( cfModel );
 	_FREE	( ObjectName	);
 	_FREE	( pVisualName	);
@@ -106,8 +105,6 @@ void CObject::Load				( CInifile* ini, const char *section )
 
 	// Visual
 	pVisualName					= strdup(ini->ReadSTRING(section,"visual"));
-	pVisual						= Render.Models.Create(pVisualName);
-	bVisible					= true;
 
 	// Collision model
 	cfModel						= NULL;
@@ -122,10 +119,9 @@ void CObject::Load				( CInifile* ini, const char *section )
 		pCreator->ObjectSpace.Object_Register(this);
 		cfModel->OnMove();
 	}
-	
-	// shadow
-	sh_Shader					= Device.Shader.Create	("effects\\shadow","effects\\shadow",false);
-	sh_Size						= Radius()/2;
+
+	OnDeviceCreate				();
+	bVisible					= true;
 }
 
 BOOL CObject::Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle)
@@ -147,11 +143,16 @@ BOOL CObject::Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_ang
 
 void CObject::OnDeviceDestroy	()
 {
-	Render.Models.Delete		(pVisual);
+	if (pVisual)				Render.Models.Delete	(pVisual);
+	if (sh_Shader)				Device.Shader.Delete	(sh_Shader);
 }
 void CObject::OnDeviceCreate	()
 {
-	pVisual						= Render.Models.Create(pVisualName);
+	// visual and shadow
+	REQ_CREATE					();
+	pVisual						= Render.Models.Create	(pVisualName);
+	sh_Shader					= Device.Shader.Create	("effects\\shadow","effects\\shadow",false);
+	sh_Size						= Radius()/2;
 }
 
 // Updates
