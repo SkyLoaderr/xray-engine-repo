@@ -281,8 +281,14 @@ void OGF::CalculateTB()
 xrCriticalSection			progressive_cs;
 void OGF::MakeProgressive	(float metric_limit)
 {
-	progressive_cs.Enter	();
+	// test
+	// there is no-sense to simplify small models
+	// for batch size 50,100,200 - we are CPU-limited anyway even on nv30
+	// for nv40 and up the better guess will probably be around 500
+	if (faces.size()<c_PM_FaceLimit)		return		;	
+
 	// prepare progressive geom
+	progressive_cs.Enter	();
 	VIPM_Init				();
 	for (u32 v_idx=0;  v_idx<vertices.size(); v_idx++)	VIPM_AppendVertex	(vertices[v_idx].P,	vertices[v_idx].UV[0]					);
 	for (u32 f_idx=0; f_idx<faces.size(); f_idx++)		VIPM_AppendFace		(faces[f_idx].v[0],	faces[f_idx].v[1],	faces[f_idx].v[2]	);
@@ -292,13 +298,15 @@ void OGF::MakeProgressive	(float metric_limit)
 	while (VR->swr_records.size()>0)	{
 		// test metric
 		u32		_full	=	vertices.size	()		;
-		u32		_remove	=	m_SWI.count				;
+		u32		_remove	=	VR->swr_records.size()	;
 		u32		_simple	=	_full - _remove			;
 		float	_metric	=	float(_remove)/float(_full);
 		if		(_metric<metric_limit)		{
 			progressive_clear				()		;
 			clMsg	("* mesh simplified from [%4dv] to [%4dv] ==> em[%0.2f]-discarded",_full,_simple,metric_limit);
 			break									;
+		} else {
+			clMsg	("* mesh simplified from [%4dv] to [%4dv] ==> em[%0.2f]-accepted",_full,_simple,metric_limit);
 		}
 
 		// OK

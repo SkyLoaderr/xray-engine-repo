@@ -108,8 +108,7 @@ void CBuild::Flex2OGF()
 		try {
 			pOGF->Optimize						();
 			pOGF->CalcBounds					();
-			if (pOGF->faces.size()>c_PM_FaceLimit)
-				pOGF->MakeProgressive			(c_PM_MetricLimit_static);
+			pOGF->MakeProgressive				(c_PM_MetricLimit_static);
 			pOGF->Stripify						();
 		} catch (...)
 		{
