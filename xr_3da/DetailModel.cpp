@@ -77,7 +77,7 @@ void CDetail::Unload	()
 	Device.Shader.Delete(shader);
 }
 
-void CDetail::Transfer	(Fmatrix& mXform, fvfVertexOut* vDest, u32 C, WORD* iDest, u32 iOffset)
+void CDetail::transfer	(Fmatrix& mXform, fvfVertexOut* vDest, u32 C, WORD* iDest, u32 iOffset)
 {
 	// Transfer vertices
 	{
