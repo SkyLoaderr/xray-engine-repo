@@ -4,6 +4,9 @@
 #include "actor.h"
 #include "vehicle_custom.h"
 #include "../CameraBase.h"
+
+#include "ActorEffector.h"
+
 void CActor::attach_Vehicle(CVehicleCustom* vehicle)
 {
 	if(!vehicle) return;
@@ -77,7 +80,12 @@ bool CActor::use_Vehicle(CGameObject* object)
 		{
 			if( vehicle->Use(Device.vCameraPosition, Device.vCameraDirection,center))
 			{
-				if (pCamBobbing){Level().Cameras.RemoveEffector(cefBobbing); pCamBobbing=0;}
+//				if (pCamBobbing){Level().Cameras.RemoveEffector(cefBobbing); pCamBobbing=0;}
+				if (pCamBobbing)
+				{
+					EffectorManager().RemoveEffector(eCEBobbing);
+					pCamBobbing = NULL;
+				}
 
 				attach_Vehicle(vehicle);
 			}

@@ -540,6 +540,7 @@ void CActor::net_Destroy	()
 	xr_delete(pStatGraph);
 
 	xr_delete(m_pActorEffector);
+	pCamBobbing = NULL;
 }
 
 
