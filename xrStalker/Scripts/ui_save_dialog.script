@@ -12,7 +12,7 @@ function save_dialog:__finilize()
 end
 
 function save_dialog:InitControls()
-	local indent          = 20
+	local indent          = 50
 	local screen          = {width = 1024,height = 768}	
 	local main_rect       = {x = 0,      y = 0,      width = 800, height = 600}	
 	main_rect.x = (screen.width - main_rect.width)/2
@@ -33,8 +33,10 @@ function save_dialog:InitControls()
 							 width  = btn_ok_rect.width}
 	local list_rect       = {x = indent,
 						     y = edit_rect.y + edit_rect.height + indent,
-						     width = 500,
-						     height = 400}
+						     width = 0,
+						     height = 0}
+	list_rect.width  = main_rect.width - indent*2
+	list_rect.height = main_rect.height - indent - list_rect.y
 	
 	-- init self position and size
 	self:Init(main_rect.x, main_rect.y, main_rect.width, main_rect.height)
