@@ -828,6 +828,7 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 		CMD1(CCC_Money,				"g_money"				);
 		CMD1(CCC_Team,				"g_change_team"			);
 		CMD1(CCC_Kill,				"g_kill"				);
+		CMD3(CCC_Mask,				"g_backrun",			&psActorFlags,	AF_RUN_BACKWARD);
 		
 		// alife
 		CMD1(CCC_ALifePath,			"al_path"				);		// build path
