@@ -295,6 +295,10 @@ BOOL	IReader::r_chunk_safe	(u32 ID, void *dest, u32 dest_size)	// чтение XR Chun
 CTempReader::~CTempReader()
 {	xr_free(data);	};
 //---------------------------------------------------
+// pack stream
+CPackReader::~CPackReader()
+{	UnmapViewOfFile(base_address);	};
+//---------------------------------------------------
 // file stream
 CFileReader::CFileReader(const char *name)
 {
@@ -314,7 +318,8 @@ CCompressedReader::~CCompressedReader()
 {	xr_free(data);	};
 
 
-CVirtualFileRW::CVirtualFileRW(const char *cFileName) {
+CVirtualFileRW::CVirtualFileRW(const char *cFileName) 
+{
 	// Open the file
 	hSrcFile = CreateFile(cFileName, GENERIC_READ|GENERIC_WRITE, FILE_SHARE_READ, 0, OPEN_EXISTING, 0, 0);
 	R_ASSERT(hSrcFile!=INVALID_HANDLE_VALUE);
@@ -334,10 +339,10 @@ CVirtualFileRW::~CVirtualFileRW()
 	CloseHandle		(hSrcFile);
 }
 
-CVirtualFileReader::CVirtualFileReader(const char *cFileName) {
+CVirtualFileReader::CVirtualFileReader(const char *cFileName) 
+{
 	// Open the file
-	hSrcFile = CreateFile(cFileName, GENERIC_READ, FILE_SHARE_READ|FILE_SHARE_WRITE,
-		0, OPEN_EXISTING, 0, 0);
+	hSrcFile = CreateFile(cFileName, GENERIC_READ, FILE_SHARE_READ|FILE_SHARE_WRITE, 0, OPEN_EXISTING, 0, 0);
 	R_ASSERT(hSrcFile!=INVALID_HANDLE_VALUE);
 	Size = (int)GetFileSize(hSrcFile, NULL);
 	R_ASSERT(Size);
@@ -348,7 +353,8 @@ CVirtualFileReader::CVirtualFileReader(const char *cFileName) {
 	data = (char*)MapViewOfFile (hSrcMap, FILE_MAP_READ, 0, 0, 0);
 	R_ASSERT2(data,cFileName);
 }
-CVirtualFileReader::~CVirtualFileReader() {
+CVirtualFileReader::~CVirtualFileReader() 
+{
 	UnmapViewOfFile ((void*)data);
 	CloseHandle		(hSrcMap);
 	CloseHandle		(hSrcFile);

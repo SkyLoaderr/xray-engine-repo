@@ -96,6 +96,10 @@ CLocatorAPI::CLocatorAPI()
 {
 	FThread				= 0;
     m_Flags.zero		();
+	// get page size
+	SYSTEM_INFO			sys_inf;
+	GetSystemInfo		(&sys_inf);
+	dwAllocGranularity	= sys_inf.dwAllocationGranularity;
 }
 
 CLocatorAPI::~CLocatorAPI()
@@ -150,6 +154,36 @@ void CLocatorAPI::Register		(LPCSTR name, u32 vfs, u32 ptr, u32 size_real, u32 s
 	}
 }
 
+IReader* open_chunk(void* ptr, u32 ID)	
+{
+	BOOL			res;
+	u32				dwType, dwSize;
+	DWORD			read_byte;
+	u32 pt			= SetFilePointer(ptr,0,0,FILE_BEGIN); VERIFY(pt!=INVALID_SET_FILE_POINTER);
+	while (true){
+		res			= ReadFile	(ptr,&dwType,4,&read_byte,0); VERIFY(res&&(read_byte==4));
+		res			= ReadFile	(ptr,&dwSize,4,&read_byte,0); VERIFY(res&&(read_byte==4));
+		if ((dwType&(~CFS_CompressMark)) == ID) {
+			u8* src_data	= xr_alloc<u8>(dwSize);
+			res				= ReadFile	(ptr,src_data,dwSize,&read_byte,0); VERIFY(res&&(read_byte==dwSize));
+			if (dwType&CFS_CompressMark) {
+				BYTE*			dest;
+				unsigned		dest_sz;
+				_decompressLZ	(&dest,&dest_sz,src_data,dwSize);
+				xr_free			(src_data);
+				return xr_new<CTempReader>(dest,dest_sz);
+			} else {
+				return xr_new<CTempReader>(src_data,dwSize);
+			}
+			break;
+		}else{ 
+			pt		= SetFilePointer(ptr,dwSize,0,FILE_CURRENT); 
+			if (pt==INVALID_SET_FILE_POINTER) return 0;
+		}
+	}
+	return 0;
+};
+
 void CLocatorAPI::ProcessArchive(const char* _path)
 {
 	// find existing archive
@@ -161,7 +195,11 @@ void CLocatorAPI::ProcessArchive(const char* _path)
 	archives.push_back	(archive());
 	archive& A		= archives.back();
 	A.path			= path;
-	A.vfs			= xr_new<CVirtualFileReader> (*path);
+	// Open the file
+	A.hSrcFile = CreateFile			(*path, GENERIC_READ, FILE_SHARE_READ|FILE_SHARE_WRITE, 0, OPEN_EXISTING, 0, 0);
+	R_ASSERT						(A.hSrcFile!=INVALID_HANDLE_VALUE);
+	A.hSrcMap = CreateFileMapping	(A.hSrcFile, 0, PAGE_READONLY, 0, 0, 0);
+	R_ASSERT						(A.hSrcMap!=INVALID_HANDLE_VALUE);
 
 	// Create base path
 	string_path			base;
@@ -170,8 +208,8 @@ void CLocatorAPI::ProcessArchive(const char* _path)
 	strcat				(base,"\\");
 
 	// Read headers
-//	RStringVec fv;
-	IReader*	hdr		= A.vfs->open_chunk(1);
+	IReader* hdr		= open_chunk(A.hSrcFile,1); R_ASSERT(hdr);
+//	IReader*	hdr		= A.vfs->open_chunk(1);
 	while (!hdr->eof())
 	{
 		string_path		name,full;
@@ -183,17 +221,11 @@ void CLocatorAPI::ProcessArchive(const char* _path)
 		u32 size_real	= hdr->r_u32();
 		u32 size_compr	= hdr->r_u32();
 		Register		(full,(u32)vfs,ptr,size_real,size_compr,0);
-/*	
-		//tmp
-		if(ptr)
-			fv.push_back(full);
-*/		
 	}
 	hdr->close			();
 
-
 	// Seek to zero for safety
-	A.vfs->seek		(0);
+//	A.vfs->seek			(0);
 /*
 	for(RStringVecIt it=fv.begin();it!=fv.end();++it){
 		IReader* ird = FS.r_open(**it);
@@ -225,8 +257,8 @@ void CLocatorAPI::ProcessOne	(const char* path, void* _F)
 		Register	(N,0xffffffff,0,F.size,F.size,(u32)F.time_write);
 		Recurse		(N);
 	} else {
-		if (strext(N) && 0==strncmp(strext(N),".xp",3))					ProcessArchive	(N);
-		else															Register		(N,0xffffffff,0,F.size,F.size,(u32)F.time_write);
+		if (strext(N) && 0==strncmp(strext(N),".xp",3))		ProcessArchive	(N);
+		else												Register		(N,0xffffffff,0,F.size,F.size,(u32)F.time_write);
 	}
 }
 
@@ -380,7 +412,8 @@ void CLocatorAPI::_destroy		()
 	pathes.clear	();
 	for				(archives_it a_it=archives.begin(); a_it!=archives.end(); a_it++)
     {
-    	xr_delete	(a_it->vfs);
+		CloseHandle	(a_it->hSrcMap);
+		CloseHandle	(a_it->hSrcFile);
     }
     archives.clear	();
 }
@@ -674,16 +707,24 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 		else							R = xr_new<CVirtualFileReader>	(fname);
 	} else {
 		// Archived one
-		LPVOID	ptr	= LPVOID(LPBYTE(archives[desc.vfs].vfs->pointer()) + desc.ptr);
-		if (desc.size_real != desc.size_compressed)	
-		{
+		archive& A						= archives[desc.vfs];
+		u32 start						= (desc.ptr/dwAllocGranularity)*dwAllocGranularity;
+		u32 end							= (desc.ptr+desc.size_compressed)/dwAllocGranularity;
+		if ((desc.ptr+desc.size_compressed)%dwAllocGranularity)	end+=1;
+		end								*= dwAllocGranularity;
+		u32 sz							= (end-start);
+		u8* ptr							= (u8*)MapViewOfFile(A.hSrcMap, FILE_MAP_READ, 0, start, sz);
+		u32 ptr_offs					= desc.ptr-start;
+		if (desc.size_real != desc.size_compressed)	{
 			// Compressed
-			u8*			dest		= xr_alloc<u8>(desc.size_real);
-			rtc_decompress			(dest,desc.size_real,ptr,desc.size_compressed);
-			R = xr_new<CTempReader>	(dest,desc.size_real);
+			u8*			dest			= xr_alloc<u8>(desc.size_real);
+			rtc_decompress				(dest,desc.size_real,ptr+ptr_offs,desc.size_compressed);
+			R = xr_new<CTempReader>		(dest,desc.size_real);
+			UnmapViewOfFile				(ptr);
 		} else {
+//			R_ASSERT2(data,cFileName);
 			// Plain (VFS)
-			R = xr_new<IReader>		(ptr,desc.size_real);
+			R = xr_new<CPackReader>		(ptr,ptr+ptr_offs,desc.size_real);
 		}
 	}
 

@@ -83,8 +83,8 @@ public:
 	};
 	struct	archive
 	{
-		shared_str					path;
-		IReader*				vfs;
+		shared_str				path;
+		void					*hSrcFile, *hSrcMap;
 	};
 	DEFINE_MAP_PRED				(LPCSTR,FS_Path*,PathMap,PathPairIt,pred_str);
 	PathMap						pathes;
@@ -122,6 +122,8 @@ private:
     void						ClearEventNotification	();
 
 	files_it					file_find_it	(LPCSTR n);
+public:
+	u32							dwAllocGranularity;
 public:
 								CLocatorAPI		();
 								~CLocatorAPI	();
