@@ -449,6 +449,8 @@ function action_raid:__init (name, storage) super (nil, name)
     self.mental_state = anim.free
     self.stage = 0
     self.in_find = false
+    self.path_type = patrol.start
+    self.first_init = true
 end
 --------------
 function action_raid:initialize ()
@@ -466,7 +468,13 @@ function action_raid:initialize ()
     self.object:set_body_state            (self.body_state)
     self.object:set_movement_type         (self.move_type)
     self.object:set_path_type             (game_object.patrol_path)
-    self.object:set_patrol_path           (self.a.raid_path, patrol.nearest, patrol.continue, true)
+    if self.first_init == true then 
+       self.path_type = patrol.start
+       self.first_init = false
+    else 
+       self.path_type = patrol.nearest 
+    end 
+    self.object:set_patrol_path           (self.a.raid_path, self.path_type, patrol.continue, true)
     self.object:set_mental_state          (self.mental_state)
     self.object:set_sight                 (look.path_dir, nil, 0)
     self.stage = 0
@@ -524,6 +532,7 @@ function action_raid:move_callback (obj, action_type, index)
     local ptr = patrol (self.object:patrol ())
     if ptr:flag (index, 4) == true then
        self.a.raid_enabled = false
+       self.first_init = true
        return
     end   
     
