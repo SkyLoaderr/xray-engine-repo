@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 549
+  Height = 277
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 260
-    Height = 549
+    Height = 277
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -32,7 +32,7 @@ object fraLeftBar: TfraLeftBar
     TabOrder = 0
     object Splitter1: TSplitter
       Left = 1
-      Top = 334
+      Top = 62
       Width = 258
       Height = 2
       Cursor = crVSplit
@@ -197,12 +197,19 @@ object fraLeftBar: TfraLeftBar
         Width = 256
         Height = 250
         ActiveTabColor = 10528425
+        BorderWidth = 0
         Color = 10528425
+        DrawFocus = False
         Flat = True
+        HotTrack = True
         InactiveTabColor = 10528425
+        Multiline = False
         OnChange = pcShadersChange
+        RaggedRight = False
+        ScrollOpposite = False
         Style = etsNetTabs
         TabIndex = 3
+        TabPosition = etpTop
         HotTrackFont.Charset = DEFAULT_CHARSET
         HotTrackFont.Color = 15790320
         HotTrackFont.Height = -11
@@ -210,18 +217,15 @@ object fraLeftBar: TfraLeftBar
         HotTrackFont.Style = []
         TabBkColor = 10528425
         ActivePage = tsMaterialPair
-        ActiveTabFont.Charset = DEFAULT_CHARSET
-        ActiveTabFont.Color = clWindowText
-        ActiveTabFont.Height = -11
-        ActiveTabFont.Name = 'MS Sans Serif'
-        ActiveTabFont.Style = []
+        FlatTabBorderColor = clBtnShadow
         Align = alClient
         ParentColor = False
         TabOrder = 0
-        DockOrientation = doNoOrient
         object tsEngine: TElTabSheet
           TabColor = 10528425
           PageControl = pcShaders
+          ImageIndex = -1
+          TabVisible = True
           Caption = 'Engine'
           Color = 10528425
           Visible = False
@@ -351,24 +355,48 @@ object fraLeftBar: TfraLeftBar
             Top = 52
             Width = 252
             Height = 173
+            Cursor = crDefault
+            LeftPosition = 0
+            DragCursor = crDrag
             Align = alClient
+            AutoCollapse = False
+            DockOrientation = doNoOrient
+            DefaultSectionWidth = 120
             BorderStyle = bsNone
+            BorderSides = [ebsLeft, ebsRight, ebsTop, ebsBottom]
             CustomPlusMinus = True
             DragAllowed = True
             DrawFocusRect = False
             DragTrgDrawMode = dtdDownColorLine
+            ExplorerEditMode = False
             FocusedSelectColor = 10526880
             FocusedSelectTextColor = clBlack
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -11
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            GradientSteps = 64
             HeaderHeight = 19
             HeaderHotTrack = False
             HeaderSections.Data = {F4FFFFFF00000000}
+            HeaderFont.Charset = DEFAULT_CHARSET
+            HeaderFont.Color = clWindowText
+            HeaderFont.Height = -11
+            HeaderFont.Name = 'MS Sans Serif'
+            HeaderFont.Style = []
             HorizontalLines = True
             HorzDivLinesColor = 7368816
             HorzScrollBarStyles.ShowTrackHint = False
             HorzScrollBarStyles.Width = 16
             HorzScrollBarStyles.ButtonSize = 16
+            IgnoreEnabled = False
+            IncrementalSearch = False
             InplaceEditorDelay = 1000
             ItemIndent = 14
+            KeepSelectionWithinLevel = False
+            LineBorderActiveColor = clBlack
+            LineBorderInactiveColor = clBlack
             LineHeight = 16
             MinusPicture.Data = {
               F6000000424DF600000000000000360000002800000008000000080000000100
@@ -379,7 +407,9 @@ object fraLeftBar: TfraLeftBar
               E0E0E0E0E0E0E0E0E0808080808080808080808080E0E0E0E0E0E0E0E0E0E0E0
               E0E0E0E0808080808080808080E0E0E0E0E0E0E0E0E0E0E0E0E0E0E080808080
               8080808080808080808080808080808080808080808080808080}
+            MouseFrameSelect = True
             MultiSelect = False
+            OwnerDrawMask = '~~@~~'
             PlusMinusTransparent = True
             PlusPicture.Data = {
               F6000000424DF600000000000000360000002800000008000000080000000100
@@ -390,6 +420,7 @@ object fraLeftBar: TfraLeftBar
               E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0808080808080E0E0E0E0E0E0E0E0E0E0E0
               E0808080808080808080808080E0E0E0E0E0E080808080808080808080808080
               8080808080808080808080808080808080808080808080808080}
+            ScrollbarOpposite = False
             ScrollTracking = True
             ShowLeafButton = False
             ShowLines = False
@@ -403,6 +434,7 @@ object fraLeftBar: TfraLeftBar
             VertScrollBarStyles.ShowTrackHint = True
             VertScrollBarStyles.Width = 16
             VertScrollBarStyles.ButtonSize = 16
+            VirtualityLevel = vlNone
             BkColor = clGray
             OnItemFocused = tvItemFocused
             OnDragDrop = OnDragDrop
@@ -413,6 +445,8 @@ object fraLeftBar: TfraLeftBar
         object tsCompiler: TElTabSheet
           TabColor = 10528425
           PageControl = pcShaders
+          ImageIndex = -1
+          TabVisible = True
           Caption = 'Compiler'
           Color = 10528425
           Visible = False
@@ -533,24 +567,48 @@ object fraLeftBar: TfraLeftBar
             Top = 52
             Width = 252
             Height = 173
+            Cursor = crDefault
+            LeftPosition = 0
+            DragCursor = crDrag
             Align = alClient
+            AutoCollapse = False
+            DockOrientation = doNoOrient
+            DefaultSectionWidth = 120
             BorderStyle = bsNone
+            BorderSides = [ebsLeft, ebsRight, ebsTop, ebsBottom]
             CustomPlusMinus = True
             DragAllowed = True
             DrawFocusRect = False
             DragTrgDrawMode = dtdDownColorLine
+            ExplorerEditMode = False
             FocusedSelectColor = 10526880
             FocusedSelectTextColor = clBlack
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -11
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            GradientSteps = 64
             HeaderHeight = 19
             HeaderHotTrack = False
             HeaderSections.Data = {F4FFFFFF00000000}
+            HeaderFont.Charset = DEFAULT_CHARSET
+            HeaderFont.Color = clWindowText
+            HeaderFont.Height = -11
+            HeaderFont.Name = 'MS Sans Serif'
+            HeaderFont.Style = []
             HorizontalLines = True
             HorzDivLinesColor = 7368816
             HorzScrollBarStyles.ShowTrackHint = False
             HorzScrollBarStyles.Width = 16
             HorzScrollBarStyles.ButtonSize = 16
+            IgnoreEnabled = False
+            IncrementalSearch = False
             InplaceEditorDelay = 1000
             ItemIndent = 14
+            KeepSelectionWithinLevel = False
+            LineBorderActiveColor = clBlack
+            LineBorderInactiveColor = clBlack
             LineHeight = 16
             MinusPicture.Data = {
               F6000000424DF600000000000000360000002800000008000000080000000100
@@ -561,7 +619,9 @@ object fraLeftBar: TfraLeftBar
               E0E0E0E0E0E0E0E0E0808080808080808080808080E0E0E0E0E0E0E0E0E0E0E0
               E0E0E0E0808080808080808080E0E0E0E0E0E0E0E0E0E0E0E0E0E0E080808080
               8080808080808080808080808080808080808080808080808080}
+            MouseFrameSelect = True
             MultiSelect = False
+            OwnerDrawMask = '~~@~~'
             PlusMinusTransparent = True
             PlusPicture.Data = {
               F6000000424DF600000000000000360000002800000008000000080000000100
@@ -572,6 +632,7 @@ object fraLeftBar: TfraLeftBar
               E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0808080808080E0E0E0E0E0E0E0E0E0E0E0
               E0808080808080808080808080E0E0E0E0E0E080808080808080808080808080
               8080808080808080808080808080808080808080808080808080}
+            ScrollbarOpposite = False
             ScrollTracking = True
             ShowLeafButton = False
             ShowLines = False
@@ -585,6 +646,7 @@ object fraLeftBar: TfraLeftBar
             VertScrollBarStyles.ShowTrackHint = True
             VertScrollBarStyles.Width = 16
             VertScrollBarStyles.ButtonSize = 16
+            VirtualityLevel = vlNone
             BkColor = clGray
             OnItemFocused = tvItemFocused
             OnDragDrop = OnDragDrop
@@ -595,6 +657,8 @@ object fraLeftBar: TfraLeftBar
         object tsMaterial: TElTabSheet
           TabColor = 10528425
           PageControl = pcShaders
+          ImageIndex = -1
+          TabVisible = True
           Caption = 'Material'
           Color = 10528425
           Visible = False
@@ -715,24 +779,48 @@ object fraLeftBar: TfraLeftBar
             Top = 52
             Width = 252
             Height = 173
+            Cursor = crDefault
+            LeftPosition = 0
+            DragCursor = crDrag
             Align = alClient
+            AutoCollapse = False
+            DockOrientation = doNoOrient
+            DefaultSectionWidth = 120
             BorderStyle = bsNone
+            BorderSides = [ebsLeft, ebsRight, ebsTop, ebsBottom]
             CustomPlusMinus = True
             DragAllowed = True
             DrawFocusRect = False
             DragTrgDrawMode = dtdDownColorLine
+            ExplorerEditMode = False
             FocusedSelectColor = 10526880
             FocusedSelectTextColor = clBlack
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -11
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            GradientSteps = 64
             HeaderHeight = 19
             HeaderHotTrack = False
             HeaderSections.Data = {F4FFFFFF00000000}
+            HeaderFont.Charset = DEFAULT_CHARSET
+            HeaderFont.Color = clWindowText
+            HeaderFont.Height = -11
+            HeaderFont.Name = 'MS Sans Serif'
+            HeaderFont.Style = []
             HorizontalLines = True
             HorzDivLinesColor = 7368816
             HorzScrollBarStyles.ShowTrackHint = False
             HorzScrollBarStyles.Width = 16
             HorzScrollBarStyles.ButtonSize = 16
+            IgnoreEnabled = False
+            IncrementalSearch = False
             InplaceEditorDelay = 1000
             ItemIndent = 14
+            KeepSelectionWithinLevel = False
+            LineBorderActiveColor = clBlack
+            LineBorderInactiveColor = clBlack
             LineHeight = 16
             MinusPicture.Data = {
               F6000000424DF600000000000000360000002800000008000000080000000100
@@ -743,7 +831,9 @@ object fraLeftBar: TfraLeftBar
               E0E0E0E0E0E0E0E0E0808080808080808080808080E0E0E0E0E0E0E0E0E0E0E0
               E0E0E0E0808080808080808080E0E0E0E0E0E0E0E0E0E0E0E0E0E0E080808080
               8080808080808080808080808080808080808080808080808080}
+            MouseFrameSelect = True
             MultiSelect = False
+            OwnerDrawMask = '~~@~~'
             PlusMinusTransparent = True
             PlusPicture.Data = {
               F6000000424DF600000000000000360000002800000008000000080000000100
@@ -754,6 +844,7 @@ object fraLeftBar: TfraLeftBar
               E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0808080808080E0E0E0E0E0E0E0E0E0E0E0
               E0808080808080808080808080E0E0E0E0E0E080808080808080808080808080
               8080808080808080808080808080808080808080808080808080}
+            ScrollbarOpposite = False
             ScrollTracking = True
             ShowLeafButton = False
             ShowLines = False
@@ -767,6 +858,7 @@ object fraLeftBar: TfraLeftBar
             VertScrollBarStyles.ShowTrackHint = True
             VertScrollBarStyles.Width = 16
             VertScrollBarStyles.ButtonSize = 16
+            VirtualityLevel = vlNone
             BkColor = clGray
             OnItemFocused = tvItemFocused
             OnDragDrop = OnDragDrop
@@ -776,6 +868,8 @@ object fraLeftBar: TfraLeftBar
         end
         object tsMaterialPair: TElTabSheet
           PageControl = pcShaders
+          ImageIndex = -1
+          TabVisible = True
           Caption = 'Material Pair'
           ParentColor = True
           object Bevel4: TBevel
@@ -790,24 +884,48 @@ object fraLeftBar: TfraLeftBar
             Top = 52
             Width = 252
             Height = 173
+            Cursor = crDefault
+            LeftPosition = 0
+            DragCursor = crDrag
             Align = alClient
+            AutoCollapse = False
+            DockOrientation = doNoOrient
+            DefaultSectionWidth = 120
             BorderStyle = bsNone
+            BorderSides = [ebsLeft, ebsRight, ebsTop, ebsBottom]
             CustomPlusMinus = True
             DragAllowed = True
             DrawFocusRect = False
             DragTrgDrawMode = dtdDownColorLine
+            ExplorerEditMode = False
             FocusedSelectColor = 10526880
             FocusedSelectTextColor = clBlack
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -11
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            GradientSteps = 64
             HeaderHeight = 19
             HeaderHotTrack = False
             HeaderSections.Data = {F4FFFFFF00000000}
+            HeaderFont.Charset = DEFAULT_CHARSET
+            HeaderFont.Color = clWindowText
+            HeaderFont.Height = -11
+            HeaderFont.Name = 'MS Sans Serif'
+            HeaderFont.Style = []
             HorizontalLines = True
             HorzDivLinesColor = 7368816
             HorzScrollBarStyles.ShowTrackHint = False
             HorzScrollBarStyles.Width = 16
             HorzScrollBarStyles.ButtonSize = 16
+            IgnoreEnabled = False
+            IncrementalSearch = False
             InplaceEditorDelay = 1000
             ItemIndent = 14
+            KeepSelectionWithinLevel = False
+            LineBorderActiveColor = clBlack
+            LineBorderInactiveColor = clBlack
             LineHeight = 16
             MinusPicture.Data = {
               F6000000424DF600000000000000360000002800000008000000080000000100
@@ -818,7 +936,9 @@ object fraLeftBar: TfraLeftBar
               E0E0E0E0E0E0E0E0E0808080808080808080808080E0E0E0E0E0E0E0E0E0E0E0
               E0E0E0E0808080808080808080E0E0E0E0E0E0E0E0E0E0E0E0E0E0E080808080
               8080808080808080808080808080808080808080808080808080}
+            MouseFrameSelect = True
             MultiSelect = False
+            OwnerDrawMask = '~~@~~'
             PlusMinusTransparent = True
             PlusPicture.Data = {
               F6000000424DF600000000000000360000002800000008000000080000000100
@@ -829,6 +949,7 @@ object fraLeftBar: TfraLeftBar
               E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0808080808080E0E0E0E0E0E0E0E0E0E0E0
               E0808080808080808080808080E0E0E0E0E0E080808080808080808080808080
               8080808080808080808080808080808080808080808080808080}
+            ScrollbarOpposite = False
             ScrollTracking = True
             ShowLeafButton = False
             ShowLines = False
@@ -842,6 +963,7 @@ object fraLeftBar: TfraLeftBar
             VertScrollBarStyles.ShowTrackHint = True
             VertScrollBarStyles.Width = 16
             VertScrollBarStyles.ButtonSize = 16
+            VirtualityLevel = vlNone
             BkColor = clGray
             OnItemFocused = tvItemFocused
             OnDragDrop = OnDragDrop
@@ -958,7 +1080,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paShaderProperties: TPanel
       Left = 1
-      Top = 336
+      Top = 64
       Width = 258
       Height = 212
       Align = alBottom
