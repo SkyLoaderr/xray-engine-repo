@@ -1,6 +1,7 @@
 #pragma once
 
 #include "net_compressor.h"
+#pragma pack(push,1)
 
 const	u32		NET_PacketSizeLimit	= 8192;
 
@@ -168,3 +169,5 @@ public:
 		r_vec3	(M.c);	M._44_	= 1;
 	}
 };
+
+#pragma pack(pop)
