@@ -146,7 +146,7 @@ BOOL IPureClient::Connect(LPCSTR options)
     R_CHK(CoCreateInstance	(CLSID_DirectPlay8Address,NULL, CLSCTX_INPROC_SERVER, IID_IDirectPlay8Address,(LPVOID*) &net_Address_server )); 
     R_CHK(net_Address_server->SetSP			(&CLSID_DP8SP_TCPIP ));
 	R_CHK(net_Address_server->AddComponent	(DPNA_KEY_PORT,	&psNET_Port, sizeof(psNET_Port), DPNA_DATATYPE_DWORD ));
-    R_CHK(net_Address_server->AddComponent	(DPNA_KEY_HOSTNAME, ServerNameUNICODE, 2*(wcslen(ServerNameUNICODE) + 1), DPNA_DATATYPE_STRING ));
+    R_CHK(net_Address_server->AddComponent	(DPNA_KEY_HOSTNAME, ServerNameUNICODE, 2*u32(wcslen(ServerNameUNICODE) + 1), DPNA_DATATYPE_STRING ));
 
 	// Debug
 	// dump_URL		("! cl ",	net_Address_device);

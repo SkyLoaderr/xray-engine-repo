@@ -322,7 +322,6 @@ void CCC_Register()
 	CMD3(CCC_Mask,		"rs_triplebuffer",		&psDeviceFlags,		rsTriplebuffer);
 	CMD3(CCC_Mask,		"rs_fullscreen",		&psDeviceFlags,		rsFullscreen);
 	CMD3(CCC_Mask,		"rs_clear_bb",			&psDeviceFlags,		rsClearBB);
-	CMD3(CCC_Mask,		"rs_compress_lmaps",	&psDeviceFlags,		rsCompressLMAPs);
 	CMD3(CCC_Mask,		"rs_occlusion",			&psDeviceFlags,		rsOcclusion);
 	CMD3(CCC_Mask,		"rs_stats",				&psDeviceFlags,		rsStatistic);
 	CMD3(CCC_Mask,		"rs_postprocess",		&psDeviceFlags,		rsPostprocess);
