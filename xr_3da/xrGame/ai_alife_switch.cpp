@@ -361,6 +361,8 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 			if (l_tpALifeCreatureAbstract && (l_tpALifeCreatureAbstract->fHealth < EPS_L))
 				Msg				("! uncontrolled situation [%d][%d][%s][%f]",I->ID,I->ID_Parent,l_tpALifeCreatureAbstract->s_name_replace,l_tpALifeCreatureAbstract->fHealth);
 			R_ASSERT2			(!dynamic_cast<CSE_ALifeCreatureAbstract*>(tpfGetObjectByID(I->ID_Parent)) || (dynamic_cast<CSE_ALifeCreatureAbstract*>(tpfGetObjectByID(I->ID_Parent))->fHealth >= EPS_L),"Parent offline, item online...");
+			if (!tpfGetObjectByID(I->ID_Parent)->m_bOnline)
+				Msg				("! uncontrolled situation [%d][%d][%s][%f]",I->ID,I->ID_Parent,l_tpALifeCreatureAbstract->s_name_replace,l_tpALifeCreatureAbstract->fHealth);
 #endif
 			R_ASSERT2			(tpfGetObjectByID(I->ID_Parent)->m_bOnline,"Parent offline, item online...");
 		}
@@ -403,6 +405,8 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 			if (l_tpALifeCreatureAbstract && (l_tpALifeCreatureAbstract->fHealth < EPS_L))
 				Msg				("! uncontrolled situation [%d][%d][%s][%f]",I->ID,I->ID_Parent,l_tpALifeCreatureAbstract->s_name_replace,l_tpALifeCreatureAbstract->fHealth);
 			R_ASSERT2			(!l_tpALifeCreatureAbstract || (l_tpALifeCreatureAbstract->fHealth >= EPS_L),"Parent online, item offline...");
+			if (tpfGetObjectByID(I->ID_Parent)->m_bOnline)
+				Msg				("! uncontrolled situation [%d][%d][%s][%f]",I->ID,I->ID_Parent,l_tpALifeCreatureAbstract->s_name_replace,l_tpALifeCreatureAbstract->fHealth);
 #endif
 			R_ASSERT2			(!tpfGetObjectByID(I->ID_Parent)->m_bOnline,"Parent online, item offline...");
 		}
