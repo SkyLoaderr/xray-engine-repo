@@ -53,6 +53,7 @@ void FSPath::VerifyPath(){
 CFileSystem::CFileSystem( ){
 	m_Root[0] = 0;
 	hFindHandle	= -1;
+    m_FindItems = 0;
 }
 
 CFileSystem::~CFileSystem(){
@@ -64,7 +65,7 @@ void CFileSystem::OnCreate(){
 //	_splitpath( _ExeName, m_Root, 0, 0, 0 );
 //	_splitpath( _ExeName, 0, m_Root+strlen(m_Root), 0, 0 );
 	strcpy(m_Root,"x:\\");
-    strcpy(m_Server,"s:\\");
+    strcpy(m_Server,"\\\\X-Ray\\stalker$\\");
 
 	m_ExeRoot.Init  	(m_Root, 	"",               		"",     	"" );
     m_GameLevels.Init	(m_Server, 	"game\\data\\levels\\",	"",     	"" );
@@ -209,29 +210,40 @@ void CFileSystem::CopyFileTo(LPCSTR src, LPCSTR dest, bool bOverwrite){
 }
 //----------------------------------------------------
 
-void CFileSystem::SetFileAge( const AnsiString& name, int age ){
- 	int iFileHandle;
-	iFileHandle = FileOpen(name, fmOpenWrite|fmShareDenyNone);
-	FileSetDate(iFileHandle,age);
-    FileClose(iFileHandle);
+//----------------------------------------------------
+// Age routines
+//----------------------------------------------------
+BOOL CFileSystem::GetFileAge( const AnsiString& name, int FT ){
+	int hfile	= _open(name.c_str(),O_BINARY|O_RDONLY);
+	if	(hfile<=0) return FALSE;
+	int handle	= _get_osfhandle(hfile);
+//	BOOL res	= GetFileTime(HANDLE(handle),0,0,&FT);
+	_close		(hfile);
+//	return		res;
+}
+//----------------------------------------------------
+void CFileSystem::SetFileAge( const AnsiString& name, int FT ){
+	int hfile	= _open(name.c_str(),O_BINARY|O_RDWR); R_ASSERT(hfile>0);
+	int handle	= _get_osfhandle(hfile);
+//	BOOL res	= SetFileTime(HANDLE(handle),0,0,&FT); R_ASSERT(res);
+	_close		(hfile);
 }
 //----------------------------------------------------
 void CFileSystem::SetFileAgeFrom(const AnsiString& src_name, const AnsiString& dest_name){
-	int src_age = GetFileAge(src_name);
-    R_ASSERT(src_age);
-    SetFileAge(dest_name,int(src_age));
+	FILETIME FT;
+//	BOOL res = GetFileAge(src_name,FT); R_ASSERT(res);
+//	SetFileAge(dest_name,FT);
 }
 //----------------------------------------------------
-int CFileSystem::GetFileAge( const AnsiString& name ){
- 	int iFileHandle;
-	iFileHandle = FileOpen(name, fmOpenRead|fmShareDenyNone);
-    if (iFileHandle!=-1){
-		int age = FileGetDate(iFileHandle);
-    	FileClose(iFileHandle);
-	    return age;
-    }
-    return 0;
+int CFileSystem::CompareFileAge(const AnsiString& fn1, const AnsiString& fn2){
+	int FT1, FT2;
+	BOOL fn1_res = GetFileAge(fn1,FT1);
+	BOOL fn2_res = GetFileAge(fn2,FT2);
+	if (!fn1_res||!fn2_res) return -1;
+//	return (0==CompareFileTime(&FT1,&FT2));
 }
+//----------------------------------------------------
+//
 //----------------------------------------------------
 int	CFileSystem::FileLength(LPCSTR fn){
 	if (Exist(fn)){
@@ -243,13 +255,6 @@ int	CFileSystem::FileLength(LPCSTR fn){
     return 0;
 }
 //----------------------------------------------------
-
-int CFileSystem::CompareFileAge(const AnsiString& fn1, const AnsiString& fn2){
-	int age1 = GetFileAge(fn1);
-	int age2 = GetFileAge(fn2);
-    if ((age1==0)||(age2==0)) return -1;
-    return (age1==age2);
-}
 
 void CFileSystem::MarkFile(const AnsiString& fn){
 	AnsiString ext = ExtractFileExt(fn);
@@ -303,14 +308,19 @@ void CFileSystem::ProcessOne(_finddata_t& F, const char* path)
 	strcpy		(N,path);
 	strcat		(N,F.name);
 
+    FILETIME 	FT;
+	int hfile	= _open(F.name,O_BINARY|O_RDONLY);
+	int handle	= _get_osfhandle(hfile);
+	BOOL res	= GetFileTime(HANDLE(handle),0,0,&FT);
+
 	if (F.attrib&_A_SUBDIR) {
 		if (0==strcmp(F.name,"."))	return;
 		if (0==strcmp(F.name,"..")) return;
 		strcat(N,"\\");
-        if (!bFiles) m_FindItems.push_back(strlwr(N));
+        if (!bFiles) m_FindItems->insert(make_pair(strlwr(N),F.time_write));
 		Recurse(N);
 	} else {
-		if (bFiles) m_FindItems.push_back(strlwr(N));
+		if (bFiles) m_FindItems->insert(make_pair(strlwr(N),F.time_write));
 	}
 }
 
@@ -332,20 +342,20 @@ void CFileSystem::Recurse(const char* path)
     _findclose		( hFile );
 }
 
-AStringVec& CFileSystem::GetFiles(LPCSTR path)
+int CFileSystem::GetFiles(LPCSTR path, FindDataMap& items)
 {
 	bFiles			= true;
-	m_FindItems.clear();
+	m_FindItems		= &items;
 	Recurse			(path);
-    return m_FindItems;
+    return m_FindItems->size();
 }
 
-AStringVec& CFileSystem::GetDirectories(LPCSTR path)
+int CFileSystem::GetDirectories(LPCSTR path, FindDataMap& items)
 {
 	bFiles			= false;
-	m_FindItems.clear();
+	m_FindItems		= &items;
 	Recurse			(path);
-    return m_FindItems;
+    return m_FindItems->size();
 }
 
 void CFileSystem::VerifyPath(LPCSTR path)

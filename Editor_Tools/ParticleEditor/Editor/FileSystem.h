@@ -19,13 +19,15 @@ public:
 	void VerifyPath();
 };
 
+DEFINE_MAP(AnsiString,int,FindDataMap,FindDataPairIt);
+
 class CFileSystem {
 	_finddata_t	FData;
 	int 	hFindHandle;
 	void 	ProcessOne(_finddata_t& F, const char* path);
 	void 	Recurse(const char* path);
 
-	AStringVec m_FindItems;
+	FindDataMap* m_FindItems;
     bool	bFiles;
 public:
 	char 	m_Root[MAX_PATH];
@@ -66,8 +68,8 @@ public:
 	void 	CopyFileTo		(LPCSTR src, LPCSTR dest, bool bOverwrite=true);
     int		FileLength		(LPCSTR src);
 
-    int  	GetFileAge		(const AnsiString& name);
-    void 	SetFileAge		(const AnsiString& name, int age);
+    BOOL  	GetFileAge		(const AnsiString& name, int FT);
+    void 	SetFileAge		(const AnsiString& name, int FT);
     void 	SetFileAgeFrom	(const AnsiString& src_name, const AnsiString& dest_name);
     int 	CompareFileAge	(const AnsiString& fn1, const AnsiString& fn2); // result - 1-equal, 0-different, -1-error
 
@@ -80,8 +82,8 @@ public:
     LPCSTR	FindFirst(LPSTR mask);
     LPCSTR	FindNext();
 
-    AStringVec&	GetFiles	(LPCSTR path);
-	AStringVec& GetDirectories(LPCSTR path);
+    int		GetFiles		(LPCSTR path, FindDataMap& items); // return item count
+	int		GetDirectories	(LPCSTR path, FindDataMap& items); // return item count
 
     void	VerifyPath		(LPCSTR path);
 };
