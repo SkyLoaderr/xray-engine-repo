@@ -66,6 +66,19 @@ function object_spawner:addList(sobject)
 								pos = sobject.position,
 								cond = xr_logic.cfg_get_condlist(char_ini,"spawner","cond",sobject) }
 end
+function object_spawner:remove_from_list (id)
+    printf ("Query for remove object with ID : %d", id)
+    for k, v in  pairs (self.list) do
+        if self.list[k].id == id then
+           self.list[k] = nil
+           printf ("Object with ID : %d successfully removed from spawn list", id)
+           return
+        end
+    end        
+    
+    printf ("Object with ID : %d not found in spawn list", id)
+end
+
 function object_spawner:restore(npc_id)
 	local sim = alife()
 	if sim == nil then return true end	
@@ -109,3 +122,9 @@ function update()
 		xr_spawner.spawner:update()
 	end
 end
+
+function remove_from_list (id)
+    if xr_spawner.spawner ~= nil then
+       xr_spawner.spawner:remove_from_list (id)
+    end
+end        
