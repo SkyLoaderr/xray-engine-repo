@@ -62,7 +62,7 @@ void CDetail::Load		(CStream* S)
 	flags			= S->Rdword	();
 	number_vertices	= S->Rdword	();
 	number_indices	= S->Rdword	();
-	R_ASSERT		(0==(number_vertices%3));
+	R_ASSERT		(0==(number_indices%3));
 
 	// Vertices
 	DWORD			size_vertices		= number_vertices*sizeof(fvfVertexIn); 
@@ -84,16 +84,17 @@ void CDetail::Load		(CStream* S)
 
 void CDetail::Unload	()
 {
-	if (vertices)		{ _aligned_free(vertices); vertices=0; }
+	if (vertices)		{ _aligned_free(vertices);	vertices=0; }
+	if (indices)		{ _aligned_free(indices);	indices=0;	}
 	Device.Shader.Delete(shader);
 }
 
-void CDetail::Transfer	(Fmatrix& mXform, fvfVertexOut* vD, DWORD C)
+void CDetail::Transfer	(Fmatrix& mXform, fvfVertexOut* vDest, DWORD C, WORD* iDest, DWORD iOffset)
 {
 	// Transfer vertices
 	{
 		fvfVertexIn		*srcIt = vertices, *srcEnd = vertices+number_vertices;
-		fvfVertexOut	*dstIt = vD;
+		fvfVertexOut	*dstIt = vDest;
 		for	(; srcIt!=srcEnd; srcIt++, dstIt++)
 		{
 			mXform.transform_tiny	(dstIt->P,srcIt->P);
@@ -101,6 +102,18 @@ void CDetail::Transfer	(Fmatrix& mXform, fvfVertexOut* vD, DWORD C)
 			dstIt->u	= srcIt->u;
 			dstIt->v	= srcIt->v;
 		}
+	}
+
+	// Transfer indices (in 32bit lines)
+	VERIFY	(iOffset<65535);
+	{
+		DWORD	item	= (iOffset<<16) | iOffset;
+		DWORD	count	= number_indices/2;
+		LPDWORD	sit		= LPDWORD(indices);
+		LPDWORD	send	= sit+count;
+		LPDWORD	dit		= LPDWORD(iDest);
+		for		(; sit!=send; dit++,sit++)	*dit=*sit+item;
+		if		(number_indices&1)	iDest[number_indices-1]=indices[number_indices-1]+WORD(iOffset);
 	}
 }
 
