@@ -101,7 +101,7 @@
 				EnableEnhancedInstructionSet="1"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
-				AssemblerOutput="4"
+				AssemblerOutput="0"
 				ProgramDataBaseFileName="$(OutDir)/$(TargetName).pdb"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="FALSE"
