@@ -149,7 +149,7 @@ void CAI_ALife::vfGenerateSpawnPoints(u32 dwSpawnCount)
 		m_tpSpawnPoints[i].ucGroup					= (u8)::Random.randI(255);
 		m_tpSpawnPoints[i].wCount					= (u16)::Random.randI(5,45);
 		m_tpSpawnPoints[i].fBirthRadius				= 10.f;
-		m_tpSpawnPoints[i].fBirthProbability			= 1.0f;
+		m_tpSpawnPoints[i].fBirthProbability		= 1.0f;
 		m_tpSpawnPoints[i].fIncreaseCoefficient		= 1.01f;
 		m_tpSpawnPoints[i].fAnomalyDeathProbability	= 0.0f;
 		m_tpSpawnPoints[i].tpRouteGraphPoints.push_back(m_tpSpawnPoints[i].tNearestGraphPointID);
@@ -479,15 +479,14 @@ void CAI_ALife::vfCheckForItems(CALifeHumanAbstract	*tpALifeHumanAbstract)
 {
 	CALifeHuman *tpALifeHuman = dynamic_cast<CALifeHuman *>(tpALifeHumanAbstract);
 	if (tpALifeHuman)
-		vfProcessItems(tpALifeHuman->m_tHumanParams,tpALifeHuman->m_tGraphID,m_tpSpawnPoints[tpALifeHuman->m_tSpawnID].fMaxItemMass);
+		vfProcessItems(tpALifeHuman->m_tHumanParams,tpALifeHuman->m_tGraphID,tpALifeHuman->m_fMaxItemMass);
 	else {
 		CALifeHumanGroup *tpALifeHumanGroup = dynamic_cast<CALifeHumanGroup *>(tpALifeHumanAbstract);
 		VERIFY(tpALifeHumanGroup);
-		float	fMaxItemMass = m_tpSpawnPoints[tpALifeHumanGroup->m_tSpawnID].fMaxItemMass;
 		HUMAN_PARAMS_IT	I = tpALifeHumanGroup->m_tpMembers.begin();
 		HUMAN_PARAMS_IT	E = tpALifeHumanGroup->m_tpMembers.end();
 		for ( ; I != E; I++)
-			vfProcessItems(*I,tpALifeHumanGroup->m_tGraphID,fMaxItemMass);
+			vfProcessItems(*I,tpALifeHumanGroup->m_tGraphID,tpALifeHumanGroup->m_fMaxItemMass);
 	}
 }
 

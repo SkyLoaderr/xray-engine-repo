@@ -137,8 +137,6 @@ namespace ALife {
 		float						fBirthProbability;
 		float						fIncreaseCoefficient;
 		float						fAnomalyDeathProbability;
-		float						fMaxItemMass;
-		int							iHealth;
 		u8							ucRoutePointCount;
 		GRAPH_VECTOR				tpRouteGraphPoints;
 	} SSpawnPoint;

@@ -309,6 +309,7 @@ public:
 	
 	PERSONAL_EVENT_VECTOR			m_tpEvents;
 	TASK_VECTOR						m_tpTaskIDs;
+	float							m_fMaxItemMass;
 
 	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
@@ -339,6 +340,7 @@ public:
 			for ( ; it != E; it++)
 				tMemoryStream.write	(it,sizeof(*it));
 		}
+		tMemoryStream.Wfloat(m_fMaxItemMass);
 	};
 
 	virtual	void					Load(CStream	&tFileStream)
@@ -359,7 +361,7 @@ public:
 				for (int j=0; j<(int)tPersonalEvent.tpItemIDs.size(); j++)
 					tFileStream.Read(&(tPersonalEvent.tpItemIDs[j]),	sizeof(tPersonalEvent.tpItemIDs[j]));
 				tFileStream.Read	(&tPersonalEvent.iHealth,			sizeof(tPersonalEvent.iHealth));
-				tFileStream.Read	(&tPersonalEvent.tRelation,		sizeof(tPersonalEvent.tRelation));
+				tFileStream.Read	(&tPersonalEvent.tRelation,			sizeof(tPersonalEvent.tRelation));
 			}
 		}
 		// loading tasks
@@ -370,6 +372,7 @@ public:
 			for ( ; it != E; it++)
 				tFileStream.Read	(it,sizeof(*it));
 		}
+		m_fMaxItemMass				= tFileStream.Rfloat();
 	};
 
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
@@ -377,6 +380,7 @@ public:
 		inherited::Init(tSpawnID,tpSpawnPoints);
 		m_tpEvents.	clear			();
 		m_tpTaskIDs.clear			();
+		m_fMaxItemMass				= pSettings->ReadFLOAT				(tpSpawnPoints[tSpawnID].caModel, "MaxItemMass");
 	};
 };
 
@@ -434,7 +438,11 @@ public:
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
 	{
 		inherited::Init		(tSpawnID,tpSpawnPoints);
-		m_tpMembers.clear	();
+		m_tpMembers.resize	(m_wCount);
+		HUMAN_PARAMS_IT		I = m_tpMembers.begin();
+		HUMAN_PARAMS_IT		E = m_tpMembers.end();
+		for ( ; I != E; I++)
+			(*I).Init(tSpawnID,tpSpawnPoints);
 	};
 };
 
