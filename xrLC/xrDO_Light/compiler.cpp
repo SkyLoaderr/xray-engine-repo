@@ -591,7 +591,8 @@ public:
 				for (CDB::RESULT* I=DB.r_begin(); I!=DB.r_end(); I++) box_result.push_back(I->id);
 				if (box_result.empty())	continue;
 
-				CDB::TRI* tris		= RCAST_Model.get_tris();
+				CDB::TRI*	tris	= RCAST_Model.get_tris();
+				Fvector*	verts	= RCAST_Model.get_verts();
 				
 				// select lights
 				Selected.select		(g_lights,S.P,S.R);
@@ -618,14 +619,15 @@ public:
 						float		r_u,r_v,r_range;
 						for (DWORDIt tit=box_result.begin(); tit!=box_result.end(); tit++)
 						{
-							CDB::TRI&	T	= tris	[*tit];
-							if (CDB::TestRayTri(start,dir,T.verts,r_u,r_v,r_range,TRUE))
+							CDB::TRI&	T		= tris	[*tit];
+							Fvector		V[3]	= { verts[T.verts[0]], verts[T.verts[1]], verts[T.verts[2]] };
+							if (CDB::TestRayTri(start,dir,V,r_u,r_v,r_range,TRUE))
 							{
 								if (r_range>=0.f)	{
 									float y_test	= start.y - r_range;
 									if (y_test>P.y)	{
 										P.y			= y_test+EPS;
-										t_n.mknormal(*T.verts[0],*T.verts[1],*T.verts[2]);
+										t_n.mknormal(V[0],V[1],V[2]);
 									}
 								}
 							}
