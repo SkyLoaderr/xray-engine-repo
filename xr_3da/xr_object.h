@@ -29,15 +29,16 @@ class	ENGINE_API						CObject :
 	public IEventReceiver
 {
 public:
-	struct SavedPosition
+	struct	SavedPosition
 	{
 		u32			dwTime;
 		Fvector		vPosition;
 	};
-	union ObjectFlags
+	union	ObjectProperties
 	{
 		struct 
 		{
+			u32	net_ID			:	16;
 			u32	bEnabled		:	1;
 			u32	bVisible		:	1;
 			u32	bDestroy		:	1;
@@ -48,10 +49,8 @@ public:
 		u32	storage;
 	};
 private:
-	ObjectFlags							FLAGS;
-	u16									net_ID;
-
 	// Some property variables
+	ObjectProperties					Props;
 	ref_str								NameObject;
 	ref_str								NameSection;
 	ref_str								NameVisual;
@@ -71,11 +70,11 @@ public:
 	u32									dwFrame_UpdateCL;
 
 	// Network
-	IC BOOL								Local				()			const	{ return FLAGS.net_Local;	}
-	IC BOOL								Remote				()			const	{ return !FLAGS.net_Local;	}
-	IC u16								ID					()			const	{ return net_ID;			}
-	IC void								setID				(u16 _ID)			{ net_ID = _ID;				}
-	virtual BOOL						Ready				()					{ return FLAGS.net_Ready;	}
+	IC BOOL								Local				()			const	{ return Props.net_Local;	}
+	IC BOOL								Remote				()			const	{ return !Props.net_Local;	}
+	IC u16								ID					()			const	{ return Props.net_ID;		}
+	IC void								setID				(u16 _ID)			{ Props.net_ID = _ID;		}
+	virtual BOOL						Ready				()					{ return Props.net_Ready;	}
 	virtual float						shedule_Scale		()					{ return Device.vCameraPosition.distance_to(Position())/200.f; }
 
 	// Parentness
@@ -84,8 +83,6 @@ public:
 	CObject*							H_Root				()					{ return Parent?Parent->H_Root():this;	}
 	const CObject*						H_Root				()			const	{ return Parent?Parent->H_Root():this;	}
 	virtual CObject*					H_SetParent			(CObject* O);
-	// virtual void						H_ChildAdd			(CObject* O)		{};
-	// virtual void						H_ChildRemove		(CObject* O)		{};
 
 	// Geometry xform
 	virtual void						Center				(Fvector& C) const;
@@ -128,17 +125,17 @@ public:
 	
 	// Properties
 	void								setVisible			(BOOL _visible);
-	IC BOOL								getVisible			()			const	{ return FLAGS.bVisible;			}
+	IC BOOL								getVisible			()			const	{ return Props.bVisible;			}
 	void								setEnabled			(BOOL _enabled);
-	IC BOOL								getEnabled			()			const	{ return FLAGS.bEnabled;			}
-	IC void								setDestroy			(BOOL _destroy)		{ FLAGS.bDestroy = _destroy?1:0;	}
-	IC BOOL								getDestroy			()			const	{ return FLAGS.bDestroy;			}
-	IC void								setLocal			(BOOL _local)		{ FLAGS.net_Local = _local?1:0;		}
-	IC BOOL								getLocal			()			const	{ return FLAGS.net_Local;			}
-	IC void								setSVU				(BOOL _svu)			{ FLAGS.net_SV_Update	= _svu?1:0;	}
-	IC BOOL								getSVU				()			const	{ return FLAGS.net_SV_Update;		}
-	IC void								setReady			(BOOL _ready)		{ FLAGS.net_Ready = _ready?1:0;		}
-	IC BOOL								getReady			()			const	{ return FLAGS.net_Ready;			}
+	IC BOOL								getEnabled			()			const	{ return Props.bEnabled;			}
+	IC void								setDestroy			(BOOL _destroy)		{ Props.bDestroy = _destroy?1:0;	}
+	IC BOOL								getDestroy			()			const	{ return Props.bDestroy;			}
+	IC void								setLocal			(BOOL _local)		{ Props.net_Local = _local?1:0;		}
+	IC BOOL								getLocal			()			const	{ return Props.net_Local;			}
+	IC void								setSVU				(BOOL _svu)			{ Props.net_SV_Update	= _svu?1:0;	}
+	IC BOOL								getSVU				()			const	{ return Props.net_SV_Update;		}
+	IC void								setReady			(BOOL _ready)		{ Props.net_Ready = _ready?1:0;		}
+	IC BOOL								getReady			()			const	{ return Props.net_Ready;			}
 
 	//---------------------------------------------------------------------
 										CObject				();
@@ -157,8 +154,8 @@ public:
 	virtual void						net_Import			(NET_Packet& P) {};					// import from server
 	virtual	void						net_ImportInput		(NET_Packet& P)	{};
 	virtual BOOL						net_Relevant		()				{ return FALSE; };	// relevant for export to server
-	virtual void						net_MigrateInactive	(NET_Packet& P)	{ FLAGS.net_Local = FALSE;		};
-	virtual void						net_MigrateActive	(NET_Packet& P)	{ FLAGS.net_Local = TRUE;		};
+	virtual void						net_MigrateInactive	(NET_Packet& P)	{ Props.net_Local = FALSE;		};
+	virtual void						net_MigrateActive	(NET_Packet& P)	{ Props.net_Local = TRUE;		};
 	virtual void						net_Relcase			(CObject*	 O) { };				// destroy all links to another objects
 
 	// Position stack

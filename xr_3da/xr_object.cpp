@@ -49,12 +49,12 @@ void CObject::setEnabled		(BOOL _enabled)
 {
 	if (_enabled)
 	{
-		FLAGS.bEnabled							=	1;	
+		Props.bEnabled							=	1;	
 		if (collidable.model)	spatial.type	|=	STYPE_COLLIDEABLE;
 	}
 	else
 	{
-		FLAGS.bEnabled							=	0;
+		Props.bEnabled							=	0;
 		spatial.type							&=	~STYPE_COLLIDEABLE;
 	}
 }
@@ -63,12 +63,12 @@ void CObject::setVisible		(BOOL _visible)
 {
 	if (_visible)				// Parent should control object visibility itself (??????)
 	{
-		FLAGS.bVisible							= 1;
+		Props.bVisible							= 1;
 		if (renderable.visual)	spatial.type	|=	STYPE_RENDERABLE;
 	}
 	else
 	{
-		FLAGS.bVisible							= 0;
+		Props.bVisible							= 0;
 		spatial.type							&=	~STYPE_RENDERABLE;
 	}
 }
@@ -84,7 +84,7 @@ const	Fbox&	CObject::BoundingBox	()				const	{ VERIFY2(renderable.visual,*cName(
 CObject::CObject		( )
 {
 	// Transform
-	FLAGS.storage				= 0;
+	Props.storage				= 0;
 
 	Parent						= NULL;
 
@@ -149,7 +149,7 @@ void CObject::net_Destroy		()
 {
 	shedule_unregister			();
 	spatial_unregister			();
-	FLAGS.bDestroy				= 1;
+	Props.bDestroy				= 1;
 }
 
 // Updates
