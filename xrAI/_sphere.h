@@ -10,24 +10,31 @@ public:
 	IC void		set(const _sphere<T> &S)			{ P.set(S.P); R=S.R; }
 	IC void		identity()							{ P.set(0,0,0); R=1; }
 
+	enum ERP_Result{
+		rpNone			= 0,
+		rpOriginInside	= 1,
+		rpOriginOutside	= 2,
+		fcv_forcedword = u32(-1)
+	};
 	// Ray-sphere intersection
-	IC BOOL		intersect(const _vector3<T>& S, const _vector3<T>& D, T& range)	
+	IC ERP_Result intersect(const _vector3<T>& S, const _vector3<T>& D, T& range)	
     {
 		_vector3<T> Q;	Q.sub(P,S);
 	
+		T R2	= R*R;
 		T c2	= Q.square_magnitude	();
 		T v		= Q.dotproduct			(D);
-		T d		= R*R - (c2 - v*v);
+		T d		= R2 - (c2 - v*v);
 
 		if		(d > 0.f)
 		{
 			T _range	= v - _sqrt(d);
 			if (_range<range)	{
 				range = _range;
-				return TRUE;
+				return (c2<R2)?rpOriginInside:rpOriginOutside;
 			}
 		}
-		return FALSE;
+		return rpNone;
 	}
 	IC BOOL		intersect(const _vector3<T>& S, const _vector3<T>& D)	
 	{

@@ -462,11 +462,14 @@ BOOL CCF_Shape::_RayQuery(const Collide::ray_defs& Q, Collide::rq_results& R)
 		float range		= Q.range;
 		switch (shape.type)
 		{
-		case 0: // sphere
-			if (shape.data.sphere.intersect(dS,dD,range)){
-				bHIT	= TRUE;
-				R.append_result(owner,range,el,Q.flags&CDB::OPT_ONLYNEAREST);
-				if (Q.flags&CDB::OPT_ONLYFIRST) return TRUE;
+		case 0:
+			{ // sphere
+				Fsphere::ERP_Result	rp_res 	= shape.data.sphere.intersect(dS,dD,range);
+				if ((rp_res==Fsphere::rpOriginOutside)||(!(Q.flags&CDB::OPT_CULL)&&(rp_res==Fsphere::rpOriginInside))){
+					bHIT	= TRUE;
+					R.append_result(owner,range,el,Q.flags&CDB::OPT_ONLYNEAREST);
+					if (Q.flags&CDB::OPT_ONLYFIRST) return TRUE;
+				}
 			}
 			break;
 		case 1: // box
@@ -484,7 +487,7 @@ BOOL CCF_Shape::_RayQuery(const Collide::ray_defs& Q, Collide::rq_results& R)
 						range		= _sqrt(d);
 						bHIT		= TRUE;
 						R.append_result(owner,range,el,Q.flags&CDB::OPT_ONLYNEAREST);
-						if (CDB::OPT_ONLYFIRST) return TRUE;
+						if (Q.flags&CDB::OPT_ONLYFIRST) return TRUE;
 					}
 				}
 			}
