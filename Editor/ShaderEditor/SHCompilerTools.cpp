@@ -95,11 +95,11 @@ void CSHCompilerTools::Reload(){
 
 void CSHCompilerTools::Load(){
 	AnsiString fn = "shaders_xrlc.xr";
-    FS.m_GameRoot.Update(fn);
+    Engine.FS.m_GameRoot.Update(fn);
 
     m_bUpdateCurrent	= false;
 
-    if (FS.Exist(fn.c_str())){
+    if (Engine.FS.Exist(fn.c_str())){
     	m_Library.Load(fn.c_str());
 
         Shader_xrLCVec lst = m_Library.Library();
@@ -122,15 +122,15 @@ void CSHCompilerTools::Save(){
 
     // save
 	AnsiString fn = "shaders_xrlc.xr";
-    FS.m_GameRoot.Update(fn);
+    Engine.FS.m_GameRoot.Update(fn);
 
     // copy exist file
-    FS.MarkFile(fn);
+    Engine.FS.MarkFile(fn);
 
     // save new file
-    FS.UnlockFile			(0,fn.c_str(),false);
+    Engine.FS.UnlockFile	(0,fn.c_str(),false);
     m_Library.Save			(fn.c_str());
-    FS.LockFile				(0,fn.c_str(),false);
+    Engine.FS.LockFile		(0,fn.c_str(),false);
 	m_bUpdateCurrent		= true;
 	SetCurrentShader		(name);
 

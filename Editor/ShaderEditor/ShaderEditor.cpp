@@ -36,14 +36,6 @@ USEUNIT("engine\Envelope.cpp");
 USEUNIT("engine\motion.cpp");
 USEUNIT("engine\bone.cpp");
 USEUNIT("engine\clsid.cpp");
-USEUNIT("engine\cl_raypick.cpp");
-USEUNIT("engine\cl_build.cpp");
-USEUNIT("engine\cl_collector.cpp");
-USEUNIT("engine\cl_collide.cpp");
-USEUNIT("engine\cl_intersect.cpp");
-USEUNIT("engine\cl_overlap.cpp");
-USEUNIT("engine\cl_RAPID.cpp");
-USEUNIT("engine\cl_bboxcollide.cpp");
 USEUNIT("engine\xr_ini.cpp");
 USEUNIT("editor\ColorPicker.cpp");
 USEUNIT("engine\LzHuf.cpp");
@@ -117,6 +109,20 @@ USEUNIT("Engine\BLENDERS\Blender_LaEmB.cpp");
 USEUNIT("Engine\BLENDERS\Blender_LmBmmD.cpp");
 USEUNIT("Engine\BLENDERS\Blender_Lm(EbB).cpp");
 USEUNIT("Engine\BLENDERS\Blender_BmmD.cpp");
+USEUNIT("Editor\ModelPool.cpp");
+USEUNIT("Engine\Animations\xrSkin1W.cpp");
+USEUNIT("Engine\Animations\FBasicVisual.cpp");
+USEUNIT("Engine\Animations\FHierrarhyVisual.cpp");
+USEUNIT("Engine\Animations\FProgressive.cpp");
+USEUNIT("Engine\Animations\FProgressiveFixedVisual.cpp");
+USEUNIT("Engine\Animations\FVisual.cpp");
+USEUNIT("Engine\Animations\SkeletonCalculate.cpp");
+USEUNIT("Engine\Animations\SkeletonX.cpp");
+USEUNIT("Engine\Animations\xrBoneLerp.cpp");
+USEUNIT("Engine\Animations\BodyInstance.cpp");
+USELIB("Lib\xrCDB.lib");
+USEUNIT("Engine\xrXRC.cpp");
+USEUNIT("Editor\Engine.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

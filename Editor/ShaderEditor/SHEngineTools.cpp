@@ -17,8 +17,8 @@ class CCollapseBlender: public CParseBlender{
 public:
 	virtual void Parse(DWORD type, LPCSTR key, LPVOID data){
     	switch(type){
-        case xrPID_MATRIX: 	Tools.Engine.CollapseMatrix		((LPSTR)data); break;
-        case xrPID_CONSTANT: Tools.Engine.CollapseConstant	((LPSTR)data); break;
+        case xrPID_MATRIX: 		Tools.SEngine.CollapseMatrix	((LPSTR)data); break;
+        case xrPID_CONSTANT: 	Tools.SEngine.CollapseConstant	((LPSTR)data); break;
         };
     }
 };
@@ -27,8 +27,8 @@ class CRefsBlender: public CParseBlender{
 public:
 	virtual void Parse(DWORD type, LPCSTR key, LPVOID data){
     	switch(type){
-        case xrPID_MATRIX: 	Tools.Engine.UpdateMatrixRefs		((LPSTR)data); break;
-        case xrPID_CONSTANT: Tools.Engine.UpdateConstantRefs	((LPSTR)data); break;
+        case xrPID_MATRIX: 		Tools.SEngine.UpdateMatrixRefs		((LPSTR)data); break;
+        case xrPID_CONSTANT: 	Tools.SEngine.UpdateConstantRefs	((LPSTR)data); break;
         };
     }
 };
@@ -37,8 +37,8 @@ class CRemoveBlender: public CParseBlender{
 public:
 	virtual void Parse(DWORD type, LPCSTR key, LPVOID data){
     	switch(type){
-        case xrPID_MATRIX: 	Tools.Engine.RemoveMatrix((LPSTR)data); break;
-        case xrPID_CONSTANT: Tools.Engine.RemoveConstant((LPSTR)data); break;
+        case xrPID_MATRIX: 		Tools.SEngine.RemoveMatrix((LPSTR)data); break;
+        case xrPID_CONSTANT: 	Tools.SEngine.RemoveConstant((LPSTR)data); break;
         };
     }
 };
@@ -85,8 +85,8 @@ void CSHEngineTools::OnDestroy(){
 
     // remove temp $shader$
 	AnsiString sh		= SHADER_FILENAME_TEMP;
-    FS.m_Temp.Update	(sh);
-    FS.DeleteFileByName	(sh.c_str());
+    Engine.FS.m_Temp.Update	(sh);
+    Engine.FS.DeleteFileByName	(sh.c_str());
 }
 
 void CSHEngineTools::ClearData(){
@@ -138,7 +138,7 @@ void CSHEngineTools::UpdateDeviceShaders()
     SaveForRender		();
     // reset device shaders from temp file
 	AnsiString sh		= SHADER_FILENAME_TEMP;
-    FS.m_Temp.Update	(sh);
+    Engine.FS.m_Temp.Update	(sh);
     Device.Reset		(sh.c_str(),TRUE);
 	// restore current shader
 	SetCurrentBlender	(name,false);
@@ -168,12 +168,12 @@ void CSHEngineTools::Reload(){
 
 void CSHEngineTools::Load(){
 	AnsiString fn = "shaders.xr";
-    FS.m_GameRoot.Update(fn);
+    Engine.FS.m_GameRoot.Update(fn);
 
 	TfrmShaderProperties::FreezeUpdate(true);
     m_bUpdateCurrent	= false;
 
-    if (FS.Exist(fn.c_str())){
+    if (Engine.FS.Exist(fn.c_str())){
         CCompressedStream		FS(fn.c_str(),"shENGINE");
         char					name[256];
 
@@ -285,7 +285,7 @@ void CSHEngineTools::Save()
 {
     // set name
 	AnsiString fn 				= SHADER_FILENAME_BASE;
-    FS.m_GameRoot.Update		(fn);
+    Engine.FS.m_GameRoot.Update	(fn);
 
     // collapse reference
 	CollapseReferences();
@@ -296,12 +296,12 @@ void CSHEngineTools::Save()
     Save(F);
 
     // copy exist file
-    FS.MarkFile(fn);
+    Engine.FS.MarkFile(fn);
 
     // save new file
-    FS.UnlockFile(0,fn.c_str(),false);
+    Engine.FS.UnlockFile(0,fn.c_str(),false);
     F.SaveTo(fn.c_str(), "shENGINE");
-    FS.LockFile(0,fn.c_str(),false);
+    Engine.FS.LockFile(0,fn.c_str(),false);
 
     m_bModified	= FALSE;
 	TfrmShaderProperties::SetModified(false);
@@ -310,7 +310,7 @@ void CSHEngineTools::Save()
 void CSHEngineTools::SaveForRender()
 {
     // set name
-	AnsiString fn = SHADER_FILENAME_TEMP; FS.m_Temp.Update(fn);
+	AnsiString fn = SHADER_FILENAME_TEMP; Engine.FS.m_Temp.Update(fn);
     // collapse reference
 	CollapseReferences();
     // save

@@ -171,12 +171,6 @@ void TUI::Redraw(){
     // draw axis
         DU::DrawAxis();
 
-		static int y=20;
-        y--;
-        if (y==0){
-        	C3DCursor* C=0;
-            C->Render();
-        }
     // end draw
         Device.End();
     }

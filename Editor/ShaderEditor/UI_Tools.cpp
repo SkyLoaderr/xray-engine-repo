@@ -44,42 +44,42 @@ EActiveEditor CShaderTools::ActiveEditor()
 
 void CShaderTools::Modified(){
     switch (ActiveEditor()){
-    case aeEngine: 		Engine.Modified(); 		break;
-    case aeCompiler: 	Compiler.Modified(); 	break;
+    case aeEngine: 		SEngine.Modified(); 	break;
+    case aeCompiler: 	SCompiler.Modified(); 	break;
     }
 }
 //---------------------------------------------------------------------------
 
 bool CShaderTools::OnCreate(){
 	// shader test locking
-	AnsiString sh_fn = "shaders.xr"; FS.m_GameRoot.Update(sh_fn);
-	if (FS.CheckLocking(0,sh_fn.c_str(),false,true))
+	AnsiString sh_fn = "shaders.xr"; Engine.FS.m_GameRoot.Update(sh_fn);
+	if (Engine.FS.CheckLocking(0,sh_fn.c_str(),false,true))
     	return false;
 	// shader test locking
-	AnsiString lc_fn = "shaders_xrlc.xr"; FS.m_GameRoot.Update(lc_fn);
-	if (FS.CheckLocking(0,lc_fn.c_str(),false,true))
+	AnsiString lc_fn = "shaders_xrlc.xr"; Engine.FS.m_GameRoot.Update(lc_fn);
+	if (Engine.FS.CheckLocking(0,lc_fn.c_str(),false,true))
     	return false;
 	//
     Device.seqDevCreate.Add(this);
     Device.seqDevDestroy.Add(this);
-	Engine.OnCreate();
-    Compiler.OnCreate();
+	SEngine.OnCreate();
+    SCompiler.OnCreate();
 	// lock
-    FS.LockFile(0,sh_fn.c_str());
-    FS.LockFile(0,lc_fn.c_str());
+    Engine.FS.LockFile(0,sh_fn.c_str());
+    Engine.FS.LockFile(0,lc_fn.c_str());
     return true;
 }
 
 void CShaderTools::OnDestroy(){
 	// unlock
-    FS.UnlockFile(&FS.m_GameRoot,"shaders.xr");
-    FS.UnlockFile(&FS.m_GameRoot,"shaders_xrlc.xr");
+    Engine.FS.UnlockFile(&Engine.FS.m_GameRoot,"shaders.xr");
+    Engine.FS.UnlockFile(&Engine.FS.m_GameRoot,"shaders_xrlc.xr");
 	//
     Lib.RemoveEditObject(m_EditObject);
     Device.seqDevCreate.Remove(this);
     Device.seqDevDestroy.Remove(this);
-	Engine.OnDestroy();
-    Compiler.OnDestroy();
+	SEngine.OnDestroy();
+    SCompiler.OnDestroy();
 }
 
 void CShaderTools::Render(){
@@ -171,9 +171,9 @@ void CShaderTools::OnShowHint(AStringVec& ss){
             CSurface* surf=pinf.e_mesh->GetSurfaceByFaceID(pinf.rp_inf.id);
             ss.push_back(AnsiString("Surface: ")+AnsiString(surf->_Name()));
             ss.push_back(AnsiString("Texture: ")+AnsiString(surf->_Texture()));
-            ss.push_back(AnsiString("2 Sided: ")+AnsiString(surf->_2Sided()?"on":"off"));
             ss.push_back(AnsiString("Shader: ")+AnsiString(surf->_ShaderName()));
             ss.push_back(AnsiString("LC Shader: ")+AnsiString(surf->_ShaderXRLCName()));
+            ss.push_back(AnsiString("2 Sided: ")+AnsiString(surf->_2Sided()?"on":"off"));
         }
     }
 }
@@ -186,7 +186,7 @@ void CShaderTools::UpdateObjectShader(bool bClearOnly){
     	    Device.Shader.Delete(surf->_Shader());
             string512 tex; strcpy(tex,surf->_Texture());
             for (int i=0; i<7; i++){ strcat(tex,","); strcat(tex,surf->_Texture());}
-            if (Engine.m_CurrentBlender)	surf->SetShader(Engine.m_CurrentBlender->getName(),bClearOnly?0:Device.Shader.Create(Engine.m_CurrentBlender->getName(),tex));
+            if (SEngine.m_CurrentBlender)	surf->SetShader(SEngine.m_CurrentBlender->getName(),bClearOnly?0:Device.Shader.Create(SEngine.m_CurrentBlender->getName(),tex));
             else							surf->SetShader("editor\\wire",bClearOnly?0:Device.Shader.Create("editor\\wire",tex));
             UI.RedrawScene();
 //    	}
@@ -195,7 +195,7 @@ void CShaderTools::UpdateObjectShader(bool bClearOnly){
 
 void CShaderTools::ApplyChanges()
 {
-    if (ActiveEditor()==aeEngine)		Tools.Engine.ApplyChanges();
-    else if (ActiveEditor()==aeCompiler)Tools.Compiler.ApplyChanges();
+    if (ActiveEditor()==aeEngine)		SEngine.ApplyChanges();
+    else if (ActiveEditor()==aeCompiler)SCompiler.ApplyChanges();
 }
 

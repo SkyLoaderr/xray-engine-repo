@@ -7,14 +7,6 @@
 #include "dxerr8.h"
 #include "ImageManager.h"
 
-#include "FMesh.h"
-#include "FBasicVisual.h"
-#include "FVisual.h"
-#include "FHierrarhyVisual.h"
-#include "FProgressiveFixedVisual.h"
-#include "FProgressive.h"
-#include "BodyInstance.h"
-
 #pragma package(smart_init)
 
 extern void __stdcall xrSkin1W_x86(	vertRender* D, vertBoned1W* S, DWORD vCount, CBoneInstance* Bones);

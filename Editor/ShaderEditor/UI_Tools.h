@@ -37,8 +37,8 @@ class CShaderTools: public pureDeviceCreate, public pureDeviceDestroy
     bool				m_bCustomEditObject;
     EAction 			m_Action;
 public:
-    CSHEngineTools		Engine;
-    CSHCompilerTools	Compiler;
+    CSHEngineTools		SEngine;
+    CSHCompilerTools	SCompiler;
 public:
 						CShaderTools		();
     virtual 			~CShaderTools		();
@@ -49,8 +49,8 @@ public:
     bool				OnCreate			();
     void				OnDestroy			();
 
-    bool				IfModified			(){return Engine.IfModified()&&Compiler.IfModified();}
-    bool				IsModified			(){return Engine.IsModified()||Compiler.IsModified();}
+    bool				IfModified			(){return SEngine.IfModified()&&SCompiler.IfModified();}
+    bool				IsModified			(){return SEngine.IsModified()||SCompiler.IsModified();}
     void				Modified			();
 
     void				ZoomObject			();

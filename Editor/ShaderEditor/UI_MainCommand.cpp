@@ -22,7 +22,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 
 	switch( _Command ){
 	case COMMAND_INITIALIZE:{
-		FS.OnCreate			();
+		Engine.Initialize	();
 		InitMath			();
         // make interface
 	    fraBottomBar		= new TfraBottomBar(0);
@@ -47,6 +47,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 		Tools.OnDestroy	();
 		Lib.OnDestroy	();
         UI.OnDestroy	();
+        Engine.Destroy	();
 		//----------------
         _DELETE(fraLeftBar);
 	    _DELETE(fraTopBar);
@@ -61,20 +62,20 @@ bool TUI::Command( int _Command, int p1, int p2 ){
         break;
 	case COMMAND_SAVE:
     	// engine shaders
-    	Tools.Engine.Save();
+    	Tools.SEngine.Save();
     	// compiler
-    	Tools.Compiler.Save();
+    	Tools.SCompiler.Save();
 		Command(COMMAND_UPDATE_CAPTION);
     	break;
     case COMMAND_RELOAD:
     	if (Tools.ActiveEditor()==aeEngine){
-	    	if (!Tools.Engine.IfModified()) return false;
+	    	if (!Tools.SEngine.IfModified()) return false;
             if (ELog.DlgMsg(mtConfirmation,"Reload shaders?")==mrYes)
-                Tools.Engine.Reload();
+                Tools.SEngine.Reload();
     	}else if (Tools.ActiveEditor()==aeCompiler){
-	    	if (!Tools.Compiler.IfModified()) return false;
+	    	if (!Tools.SCompiler.IfModified()) return false;
             if (ELog.DlgMsg(mtConfirmation,"Reload shaders?")==mrYes)
-                Tools.Compiler.Reload();
+                Tools.SCompiler.Reload();
         }
 		Command(COMMAND_UPDATE_CAPTION);
     	break;

@@ -100,7 +100,7 @@ void __fastcall TfrmShaderProperties::RemoveMatrix(TElTreeItem* parent){
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmShaderProperties::AddMatrix(TElTreeItem* parent, LPSTR name){
-	CMatrix* M = Tools.Engine.FindMatrix(name,true);
+	CMatrix* M = Tools.SEngine.FindMatrix(name,true);
     R_ASSERT(M);
 	tvProperties->IsUpdating = true;
     AddItem(parent,BPID_TOKEN2,	"Mode",				&M->dwMode,	(LPDWORD)mode_token);
@@ -116,7 +116,7 @@ void __fastcall TfrmShaderProperties::AddMatrix(TElTreeItem* parent, LPSTR name)
 }
 
 void __fastcall TfrmShaderProperties::AddConstant(TElTreeItem* parent, LPSTR name){
-	CConstant* C = Tools.Engine.FindConstant(name,true);
+	CConstant* C = Tools.SEngine.FindConstant(name,true);
     R_ASSERT(C);
     AddItem(parent,BPID_WAVE,	"R",				(LPDWORD)&C->_R);
     AddItem(parent,BPID_WAVE,	"G",				(LPDWORD)&C->_G);
@@ -526,11 +526,11 @@ void __fastcall TfrmShaderProperties::PMItemClick(TObject *Sender)
         	if (mi->MenuIndex==0){
             	if (*nm=='$'){
 //            	if (strcmp(nm,MCString[mi->MenuIndex])!=0){
-					strcpy(nm,Tools.Engine.AppendConstant());
+					strcpy(nm,Tools.SEngine.AppendConstant());
 		            Modified();
                 }
             }else if (mi->MenuIndex>=2){
-            	if (*nm!='$') Tools.Engine.RemoveConstant(nm);
+            	if (*nm!='$') Tools.SEngine.RemoveConstant(nm);
             	if (strcmp(nm,MCString[mi->MenuIndex])!=0){
 					strcpy(nm,MCString[mi->MenuIndex]);
 		            item->ColumnText->Strings[0]= MCString[mi->MenuIndex];
@@ -542,14 +542,14 @@ void __fastcall TfrmShaderProperties::PMItemClick(TObject *Sender)
 			LPSTR nm = (LPSTR)item->Data;
         	if (mi->MenuIndex==0){
             	if (*nm=='$'){
-					strcpy(nm,Tools.Engine.AppendMatrix());
+					strcpy(nm,Tools.SEngine.AppendMatrix());
 		            item->ColumnText->Strings[0]= MCString[mi->MenuIndex];
                     AddMatrix(item,nm);
 		            Modified();
                 }
             }else if (mi->MenuIndex>=2){
             	if (*nm!='$'){
-                	Tools.Engine.RemoveMatrix(nm);
+                	Tools.SEngine.RemoveMatrix(nm);
                     RemoveMatrix(item);
                 }
             	if (strcmp(nm,MCString[mi->MenuIndex])!=0){
@@ -572,8 +572,8 @@ void __fastcall TfrmShaderProperties::InitProperties(){
 	if (form&&!m_bFreeze){
     	switch(Tools.ActiveEditor()){
         case aeEngine:
-            if (Tools.Engine.m_CurrentBlender){ // fill Tree
-                CStream data(Tools.Engine.m_BlenderStream.pointer(), Tools.Engine.m_BlenderStream.size());
+            if (Tools.SEngine.m_CurrentBlender){ // fill Tree
+                CStream data(Tools.SEngine.m_BlenderStream.pointer(), Tools.SEngine.m_BlenderStream.size());
                 data.Advance(sizeof(CBlender_DESC));
                 DWORD type;
                 char key[255];
@@ -582,7 +582,7 @@ void __fastcall TfrmShaderProperties::InitProperties(){
                 form->tvProperties->IsUpdating = true;
                 form->tvProperties->Items->Clear();
 
-                form->AddItem(0,BPID_TYPE,"Type",(LPDWORD)Tools.Engine.m_CurrentBlender->getComment());
+                form->AddItem(0,BPID_TYPE,"Type",(LPDWORD)Tools.SEngine.m_CurrentBlender->getComment());
 
                 while (!data.Eof()){
                     int sz=0;
@@ -614,7 +614,7 @@ void __fastcall TfrmShaderProperties::InitProperties(){
             }
         break;
         case aeCompiler:
-            if (Tools.Compiler.m_LibShader){ // fill Tree
+            if (Tools.SCompiler.m_LibShader){ // fill Tree
                 DWORD type;
                 char key[255];
                 TElTreeItem* marker_node=0;
@@ -623,7 +623,7 @@ void __fastcall TfrmShaderProperties::InitProperties(){
 
                 form->AddItem(0,BPID_TYPE,"Type",LPDWORD("Compiler shader"));
 
-                Shader_xrLC& L = Tools.Compiler.m_EditShader;
+                Shader_xrLC& L = Tools.SCompiler.m_EditShader;
 			    form->AddItem(marker_node,BPID_FLOAT2,	"Translucency",	(LPDWORD)&L.vert_translucency );
 			    form->AddItem(marker_node,BPID_FLOAT2,	"Ambient",		(LPDWORD)&L.vert_ambient );
 			    form->AddItem(marker_node,BPID_FLOAT2,	"LM density",	(LPDWORD)&L.lm_density );
