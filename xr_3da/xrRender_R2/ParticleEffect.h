@@ -20,6 +20,8 @@ namespace PAPI
 
 namespace PS
 {
+	class CParticleEffect;
+
 	typedef BOOL (__stdcall * CollisionCallback)(CParticleEffect* E, PAPI::Particle& P, const Fvector& pt, const Fvector& norm); // TRUE-continue collision exec
 	typedef void (__stdcall * DestroyCallback)	(CParticleEffect* E, PAPI::Particle& P);
 

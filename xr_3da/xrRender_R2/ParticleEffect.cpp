@@ -4,8 +4,10 @@
 
 #include "..\psystem.h"
 #include "ParticleEffect.h"
-#include "render.h"
-#include "UI_Tools.h"
+
+#ifdef _EDITOR
+	#include "UI_Tools.h"
+#endif
 
 using namespace PAPI;
 using namespace PS;
@@ -179,11 +181,11 @@ BOOL CPEDef::Load(IReader& F)
 
 	F.r_chunk		(PED_CHUNK_FLAGS,&m_Flags);
 
-    AnsiString		buf;
+    string256		buf;
     if (m_Flags.is(dfSprite)){
         R_ASSERT	(F.find_chunk(PED_CHUNK_SPRITE));
-        F.r_stringZ	(buf); m_ShaderName = xr_strdup(buf.c_str());
-        F.r_stringZ	(buf); m_TextureName= xr_strdup(buf.c_str());
+        F.r_stringZ	(buf); m_ShaderName = xr_strdup(buf);
+        F.r_stringZ	(buf); m_TextureName= xr_strdup(buf);
     }
 
     if (m_Flags.is(dfFramed)){
@@ -471,7 +473,7 @@ IC void FillSprite	(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fv
 
 IC void FillSprite	(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fvector2& lt, const Fvector2& rb, float radius, u32 clr, const Fvector& D, float scale, float factor, float w_2, float h_2)
 {
-	Fvector			P1,P2,P3,P4;
+	Fvector			P1,P2;
 
 	P1.mad			(pos,D,-radius*factor);
 	P2.mad			(pos,D,radius*factor);
