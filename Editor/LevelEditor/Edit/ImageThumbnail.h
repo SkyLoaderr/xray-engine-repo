@@ -34,6 +34,7 @@ public:
 	void 			Save			(int age=0);
 	void 			Draw			(TPanel* panel, TPaintBox* pbox, bool bStretch);
 	void 			CreateFromData	(LPDWORD p, int w, int h);
+    void			VFlip			();
     IC bool			IsObject		(){return m_Type==EITObject;}
     IC bool			IsTexture		(){return m_Type==EITTexture;}
     IC bool			Valid			(){return !m_Pixels.empty()&&(_Width()>0)&&(_Height()>0);}

@@ -38,6 +38,21 @@ bool CreateBitmap(HDC hdc, HBITMAP& th, DWORDVec& data, int w, int h){
 }
 //----------------------------------------------------
 
+void EImageThumbnail::VFlip()
+{
+//	return;
+	R_ASSERT(!m_Pixels.empty());
+	DWORD line[THUMB_WIDTH];
+    DWORD sz_ln=sizeof(DWORD)*THUMB_WIDTH;
+    DWORD y2 = THUMB_WIDTH-1;
+    for (int y=0; y<THUMB_HEIGHT/2; y++,y2--){
+    	CopyMemory(line,m_Pixels.begin()+y2*THUMB_WIDTH,sz_ln);
+    	CopyMemory(m_Pixels.begin()+y2*THUMB_WIDTH,m_Pixels.begin()+y*THUMB_WIDTH,sz_ln);
+    	CopyMemory(m_Pixels.begin()+y*THUMB_WIDTH,line,sz_ln);
+    }
+}
+//----------------------------------------------------
+
 EImageThumbnail::EImageThumbnail(LPCSTR src_name, THMType type, bool bLoad)
 {
 	m_Type	= type;

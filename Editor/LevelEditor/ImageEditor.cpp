@@ -93,7 +93,7 @@ void __fastcall TfrmImageLib::FormClose(TObject *Sender, TCloseAction &Action)
     SaveTextureParams();
     if (bCheckMode&&!texture_map.empty()){
     	LPSTRVec modif;
-		ImageManager.SynchronizeTextures(true,true,false,&texture_map,&modif);
+		ImageManager.SynchronizeTextures(true,true,true,&texture_map,&modif);
     	Device.RefreshTextures(&modif);
 		ImageManager.FreeModifVec(modif);
     }else{
@@ -152,7 +152,7 @@ void __fastcall TfrmImageLib::ebCloseClick(TObject *Sender)
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmImageLib::SaveTextureParams(){
-	if (m_Thm&&ImageProps->IsModified()){
+	if (m_Thm&&(ImageProps->IsModified()||bCheckMode)){
         m_Thm->Save();
 	    FilePairIt it=texture_map.find(m_SelectedName); R_ASSERT(it!=texture_map.end());
         modif_map.insert(*it);

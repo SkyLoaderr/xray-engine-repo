@@ -46,6 +46,7 @@ __published:	// IDE-managed Components
 	TPanel *paTextureCount;
 	TElTree *tvItems;
 	TSplitter *Splitter1;
+	TBevel *Bevel2;
     void __fastcall ebCloseClick(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);
     void __fastcall FormClose(TObject *Sender, TCloseAction &Action);

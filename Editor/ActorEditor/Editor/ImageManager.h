@@ -2,15 +2,14 @@
 #ifndef EImageManagerH
 #define EImageManagerH
 
-struct FIBITMAP;
 struct STextureParams;
 class EImageThumbnail;
 
 //DEVINE_MAP(LPSTR,EImageThumbnail*,)
 
 class CImageManager{
-    void		MakeThumbnail		(EImageThumbnail* THM, FIBITMAP* bm);
-    void		MakeGameTexture		(EImageThumbnail* THM, LPCSTR game_name, FIBITMAP* bm);
+    void		MakeThumbnail		(EImageThumbnail* THM, DWORD* data, int w, int h);
+    void		MakeGameTexture		(EImageThumbnail* THM, LPCSTR game_name, DWORD* data);
 public:
 				CImageManager		(){;}
 				~CImageManager		(){;}
