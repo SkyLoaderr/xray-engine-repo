@@ -82,7 +82,8 @@ function mob_walker:update(delta)
 
 	if enemy then
 		if not self.st.friendly and
-		   (not self.st.actor_friendly or enemy:id () ~= actor:id ()) then
+		   (not self.st.actor_friendly or enemy:id () ~= actor:id ()) and
+		   (not self.st.npc_friendly or enemy:id() == actor:id()) then
 			xr_logic.mob_release(self.object)
 			return
 		end
@@ -91,6 +92,7 @@ function mob_walker:update(delta)
 	local h = self.object:get_monster_hit_info()
 	if h.who and h.time ~= 0 then
 		if h.who:id() == actor:id() and self.st.actor_friendly then
+			-- Если хотя бы раз был атакован actor-ом, то больше не дружественен к нему
 			self.st.actor_friendly = false
 		end
 		--printf("_bp [%s]: h.who:name() = %s", self.object:name(), h.who:name())
@@ -271,6 +273,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 
 	st.no_reset        = utils.cfg_get_bool(ini, section, "no_reset", npc, false)
 	st.actor_friendly  = utils.cfg_get_bool(ini, section, "actor_friendly", npc, false)
+	st.npc_friendly    = utils.cfg_get_bool(ini, section, "npc_friendly", npc, false)
 	st.friendly        = utils.cfg_get_bool(ini, section, "friendly", npc, false)
 	st.path_walk       = utils.cfg_get_string(ini, section, "path_walk", npc, true,  gulag_name)
 	st.path_look       = utils.cfg_get_string(ini, section, "path_look", npc, false, gulag_name)
