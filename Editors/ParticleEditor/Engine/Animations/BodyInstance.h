@@ -245,6 +245,7 @@ public:
 	typedef xr_map<LPSTR,CMotionDef,str_pred>	mdef;
 private:
 	// Globals
+    CInifile*								pUserData;
 	vecBones*								bones;			// all bones+motions	(shared)
 	CBoneInstance*							bone_instances;	// bone instances
 	int										iRoot;			// Root bone index
@@ -287,6 +288,7 @@ public:
 	int							LL_MotionID		(LPCSTR B);
 	int							LL_PartID		(LPCSTR B);
 
+    CInifile*					LL_UserData		(){return pUserData;}
 	IC accel*					LL_Bones		(){return bone_map;}
 	IC accel*					LL_Motions		(){return motion_map;}
 	IC CBoneInstance&			LL_GetInstance	(int bone_id)

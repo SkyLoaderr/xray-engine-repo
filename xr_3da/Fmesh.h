@@ -1,5 +1,5 @@
-#ifndef _F_MESH_H_
-#define _F_MESH_H_
+#ifndef fmeshH
+#define fmeshH
 #pragma once
 
 /*
@@ -87,6 +87,7 @@ enum OGF_Chuncks {
 	OGF_LODDEF		= 21,
 	OGF_TREEDEF		= 22,
 	OGF_IKDATA		= 23,	// * For skeletons only
+	OGF_USERDATA	= 24,	// * For skeletons only (Ini-file)
     OGF_forcedword	= 0xFFFFFFFF
 };
 
@@ -167,4 +168,4 @@ struct ogf_bsphere {
 // scale : vec4
 // bias  : vec4
 
-#endif // _F_MESH_H_
+#endif // fmeshH

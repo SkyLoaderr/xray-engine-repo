@@ -128,7 +128,7 @@ void __fastcall TfrmText::FormClose(TObject *Sender, TCloseAction &Action)
 
 void __fastcall TfrmText::ebLoadClick(TObject *Sender)
 {
-	AnsiString fn;
+	AnsiString fn;                   
 	if (EFS.GetOpenName(_import_,fn,false,NULL,2)){
     	string4096 buf;
     	IReader* F 		= FS.r_open(fn.c_str());
@@ -141,7 +141,7 @@ void __fastcall TfrmText::ebLoadClick(TObject *Sender)
 
 void __fastcall TfrmText::ebSaveClick(TObject *Sender)
 {
-	AnsiString fn;
+	AnsiString fn;        
 	if (EFS.GetSaveName(_import_,fn,NULL,2)){
     	CMemoryWriter F;
         F.w_stringZ	(mmText->Text.c_str());

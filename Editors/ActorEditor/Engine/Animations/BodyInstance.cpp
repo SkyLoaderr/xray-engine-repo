@@ -476,6 +476,7 @@ void CKinematics::Release()
 	}
 
 	// destroy shared data
+    xr_delete(pUserData);
 	xr_delete(bones);
 	xr_delete(motion_map);
 	xr_delete(bone_map);
@@ -513,6 +514,7 @@ void CKinematics::Copy(IVisual *P)
 	inherited::Copy	(P);
 
 	CKinematics* pFrom = (CKinematics*)P;
+    PCOPY(pUserData);
 	PCOPY(bones);
 	PCOPY(iRoot);
 	PCOPY(motion_map);
@@ -580,6 +582,10 @@ void CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 	inherited::Load(N,data, dwFlags);
 
 	// Globals
+	IReader* UD 	= data->open_chunk(OGF_USERDATA);
+    pUserData		= UD?xr_new<CInifile>(*UD):0;
+    if (UD)			UD->close();
+    
 	motion_map		= xr_new<accel> ();
 	bone_map		= xr_new<accel> ();
 	bones			= xr_new<vecBones> ();

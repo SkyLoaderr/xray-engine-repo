@@ -369,7 +369,7 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
         F.w			(&obb,sizeof(Fobb));
     }
     F.close_chunk();
-
+                     
     F.open_chunk(OGF_IKDATA);
     for (bone_it=m_Source->FirstBone(); bone_it!=m_Source->LastBone(); bone_it++,bone_idx++){
     	CBone* B = (*bone_it);
@@ -385,6 +385,10 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
     }
     F.close_chunk();
     
+    F.open_chunk(OGF_USERDATA);
+    F.w(m_Source->GetClassScript().c_str(),m_Source->GetClassScript().Length());
+    F.close_chunk();
+
 	UI.ProgressInc();
     UI.ProgressEnd();
 
