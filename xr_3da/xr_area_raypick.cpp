@@ -21,12 +21,12 @@ BOOL CObjectSpace::RayTest	( const Fvector &start, const Fvector &dir, float ran
 	if (bDynamic) 
 	{
 		// Traverse object database
-		g_SpatialSpace.q_ray	(0,STYPE_COLLIDEABLE,start,dir,range);
+		g_SpatialSpace->q_ray	(0,STYPE_COLLIDEABLE,start,dir,range);
 
 		// Determine visibility for dynamic part of scene
-		for (u32 o_it=0; o_it<g_SpatialSpace.q_result.size(); o_it++)
+		for (u32 o_it=0; o_it<g_SpatialSpace->q_result.size(); o_it++)
 		{
-			ISpatial*	spatial			= g_SpatialSpace.q_result[o_it];
+			ISpatial*	spatial			= g_SpatialSpace->q_result[o_it];
 			CObject*	collidable		= dynamic_cast<CObject*>			(spatial);
 			if (collidable && collidable->collidable.model->_RayTest(Q))	return TRUE;
 		}
@@ -78,13 +78,13 @@ BOOL CObjectSpace::RayPick	( const Fvector &start, const Fvector &dir, float ran
 	}
 
 	// Traverse object database
-	g_SpatialSpace.q_ray	(0,STYPE_COLLIDEABLE,start,dir,range);
+	g_SpatialSpace->q_ray	(0,STYPE_COLLIDEABLE,start,dir,range);
 
 	ICollisionForm::RayQuery	Q(start,dir,R.range);
 	// Determine visibility for dynamic part of scene
-	for (u32 o_it=0; o_it<g_SpatialSpace.q_result.size(); o_it++)
+	for (u32 o_it=0; o_it<g_SpatialSpace->q_result.size(); o_it++)
 	{
-		ISpatial*	spatial			= g_SpatialSpace.q_result[o_it];
+		ISpatial*	spatial			= g_SpatialSpace->q_result[o_it];
 		CObject*	collidable		= dynamic_cast<CObject*>	(spatial);
 		if			(0==collidable)	continue;
 		u32		C	= D3DCOLOR_XRGB	(64,64,64);

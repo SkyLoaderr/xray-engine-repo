@@ -159,6 +159,6 @@ public:
 	void							q_frustum		(u32 _o, u32 _mask, const CFrustum&	_frustum);
 };
 
-ENGINE_API extern ISpatial_DB		g_SpatialSpace;
+ENGINE_API extern ISpatial_DB*		g_SpatialSpace;
 
 #pragma pack(pop)

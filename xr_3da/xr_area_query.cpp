@@ -34,12 +34,12 @@ void CObjectSpace::BoxQuery(const Fbox& B, const Fmatrix& M, u32 flags)
 	if (flags&clQUERY_DYNAMIC)
 	{
 		// Traverse object database
-		g_SpatialSpace.q_box	(0,STYPE_COLLIDEABLE,bc,bd);
+		g_SpatialSpace->q_box	(0,STYPE_COLLIDEABLE,bc,bd);
 
 		// Determine visibility for dynamic part of scene
-		for (u32 o_it=0; o_it<g_SpatialSpace.q_result.size(); o_it++)
+		for (u32 o_it=0; o_it<g_SpatialSpace->q_result.size(); o_it++)
 		{
-			ISpatial*	spatial						= g_SpatialSpace.q_result[o_it];
+			ISpatial*	spatial						= g_SpatialSpace->q_result[o_it];
 			CObject*	collidable					= dynamic_cast<CObject*>	(spatial);
 			if			(0==collidable)				continue;
 			collidable->collidable.model->_BoxQuery	(B,M,flags);

@@ -77,6 +77,7 @@ void Startup				( )
 	LALib.OnCreate				( );
 	pApp						= xr_new<CApplication>	();
 	g_pGamePersistent			= (IGame_Persistent*)	NEW_INSTANCE (CLSID_GAME_PERSISTANT);
+	g_SpatialSpace				= xr_new<ISpatial_DB>	();
 
 	// Destroy LOGO
 	DestroyWindow				(logoWindow);
@@ -86,6 +87,7 @@ void Startup				( )
 	Device.Run					( );
 
 	// Destroy APP
+	xr_delete					( g_SpatialSpace	);
 	DEL_INSTANCE				( g_pGamePersistent );
 	xr_delete					( pApp				);
 	Engine.Event.Dump			( );
@@ -348,8 +350,8 @@ void CApplication::OnFrame	( )
 	T.Start	();
 	while	(T.GetElapsed_ms()<10);
 	*/
-	Engine.Event.OnFrame();
-	g_SpatialSpace.update();
+	Engine.Event.OnFrame	();
+	g_SpatialSpace->update	();
 }
 
 void CApplication::Level_Scan()

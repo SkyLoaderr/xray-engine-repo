@@ -22,11 +22,11 @@ void __stdcall _sound_event	(ref_sound* S, float range)
 
 		// Query objects
 		Fvector					bb_size	= {range,range,range};
-		g_SpatialSpace.q_box	(0,STYPE_REACTTOSOUND,p->position,bb_size);
+		g_SpatialSpace->q_box	(0,STYPE_REACTTOSOUND,p->position,bb_size);
 
 		// Iterate
-		xr_vector<ISpatial*>::iterator	it	= g_SpatialSpace.q_result.begin	();
-		xr_vector<ISpatial*>::iterator	end	= g_SpatialSpace.q_result.end	();
+		xr_vector<ISpatial*>::iterator	it	= g_SpatialSpace->q_result.begin	();
+		xr_vector<ISpatial*>::iterator	end	= g_SpatialSpace->q_result.end	();
 		for (; it!=end; it++)
 		{
 			Feel::Sound* L		= dynamic_cast<Feel::Sound*>(*it);
@@ -65,11 +65,11 @@ IC int	CObjectSpace::GetNearest ( const Fvector &point, float range )
 	q_nearest.clear		( );
 	Fsphere				Q;	Q.set(point,range);
 	Fvector				B;	B.set(range,range,range);
-	g_SpatialSpace.q_box(0,STYPE_COLLIDEABLE,point,B);
+	g_SpatialSpace->q_box(0,STYPE_COLLIDEABLE,point,B);
 
 	// Iterate
-	xr_vector<ISpatial*>::iterator	it	= g_SpatialSpace.q_result.begin	();
-	xr_vector<ISpatial*>::iterator	end	= g_SpatialSpace.q_result.end	();
+	xr_vector<ISpatial*>::iterator	it	= g_SpatialSpace->q_result.begin	();
+	xr_vector<ISpatial*>::iterator	end	= g_SpatialSpace->q_result.end	();
 	for (; it!=end; it++)
 	{
 		CObject* O				= dynamic_cast<CObject*>(*it);
@@ -109,7 +109,7 @@ void CObjectSpace::Load	()
 	Static.build				( verts, H.vertcount, tris, H.facecount, build_callback );
 
 	m_BoundingVolume.set		(H.aabb);
-	g_SpatialSpace.initialize	(H.aabb);
+	g_SpatialSpace->initialize	(H.aabb);
 	Sound->set_geometry_occ		( &Static );
 	Sound->set_handler			( _sound_event );
 

@@ -40,7 +40,7 @@ namespace Feel {
 		Frustum.CreateFromMatrix				(mFull,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
 
 		// Traverse object database
-		g_SpatialSpace.q_frustum
+		g_SpatialSpace->q_frustum
 			(
 			0,
 			STYPE_VISIBLEFORAI,
@@ -49,9 +49,9 @@ namespace Feel {
 
 		// Determine visibility for dynamic part of scene
 		seen.clear								();
-		for (u32 o_it=0; o_it<g_SpatialSpace.q_result.size(); o_it++)
+		for (u32 o_it=0; o_it<g_SpatialSpace->q_result.size(); o_it++)
 		{
-			ISpatial*	spatial								= g_SpatialSpace.q_result[o_it];
+			ISpatial*	spatial								= g_SpatialSpace->q_result[o_it];
 			CObject*	object								= dynamic_cast<CObject*>(spatial);
 			if (object && feel_vision_isRelevant(object))	seen.push_back(object);
 		}

@@ -35,7 +35,7 @@ public:
 			u32				tmask	= fmask;
 			if (fcvNone==F->testSphere(sC,sR,tmask))	continue;
 
-			g_SpatialSpace.q_result.push_back(S);
+			g_SpatialSpace->q_result.push_back(S);
 		}
 
 		// recurse
