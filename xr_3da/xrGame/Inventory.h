@@ -186,6 +186,8 @@ public:
 	void   Clear();											// clearing Inventory
 	virtual u32		dwfGetSameItemCount(LPCSTR caSection);	// get all the items with the same section name
 	virtual bool	bfCheckForObject(_OBJECT_ID tObjectID);	// get all the items with the same object id
+			u32		dwfGetObjectCount();
+	CInventoryItem	*tpfGetObjectByIndex(int iIndex);
 
 	bool Eat(PIItem pIItem);								// скушать предмет :)
 

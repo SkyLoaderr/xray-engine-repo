@@ -331,4 +331,45 @@ public:
 			CLuaGameObject	*GetCurrentEquipment() const;
 			CLuaGameObject	*GetFood			() const;
 			CLuaGameObject	*GetMedikit			() const;
+
+	// CInventoryOwner
+	
+	IC		u32				GetInventoryObjectCount() const
+	{
+		CInventoryOwner		*l_tpInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
+		if (l_tpInventoryOwner)
+			return			(l_tpInventoryOwner->m_inventory.dwfGetObjectCount());
+		else {
+			Msg				("* [LUA] CLuaGameObject : cannot access class member obj_count!");
+			return			(0);
+		}
+	}
+
+	IC		CLuaGameObject	*GetObjectByName	(LPCSTR caObjectName) const
+	{
+		CInventoryOwner		*l_tpInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
+		if (l_tpInventoryOwner) {
+			CInventoryItem	*l_tpInventoryItem = l_tpInventoryOwner->m_inventory.Get(caObjectName,true);
+			CGameObject		*l_tpGameObject = dynamic_cast<CGameObject*>(l_tpInventoryItem);
+			return			(xr_new<CLuaGameObject>(l_tpGameObject));
+		}
+		else {
+			Msg				("* [LUA] CLuaGameObject : cannot access class member object!");
+			return			(0);
+		}
+	}
+	
+	IC		CLuaGameObject	*GetObjectByIndex	(int iIndex) const
+	{
+		CInventoryOwner		*l_tpInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
+		if (l_tpInventoryOwner) {
+			CInventoryItem	*l_tpInventoryItem = l_tpInventoryOwner->m_inventory.tpfGetObjectByIndex(iIndex);
+			CGameObject		*l_tpGameObject = dynamic_cast<CGameObject*>(l_tpInventoryItem);
+			return			(xr_new<CLuaGameObject>(l_tpGameObject));
+		}
+		else {
+			Msg				("* [LUA] CLuaGameObject : cannot access class member object!");
+			return			(0);	
+		}
+	}
 };

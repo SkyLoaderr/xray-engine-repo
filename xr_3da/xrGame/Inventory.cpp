@@ -1198,6 +1198,25 @@ bool CInventory::CanPutInRuck(PIItem pIItem)
 	return result;
 }
 
+u32	CInventory::dwfGetObjectCount()
+{
+	return		(m_ruck.size());
+}
+
+CInventoryItem	*CInventory::tpfGetObjectByIndex(int iIndex)
+{
+	if ((iIndex >= 0) && (iIndex < m_ruck.size())) {
+		TIItemList	&l_list = m_ruck;
+		int			i = 0;
+		for(PPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++, i++) 
+			if (i == iIndex)
+                return	(*l_it);
+	}
+	else {
+		Msg		("* [LUA] invalid inventory index!");
+		return	(0);
+	}
+}
 
 // CInventorySlot class //////////////////////////////////////////////////////////////////////////
 

@@ -519,13 +519,6 @@ public:
 
 class CObjectAction : public CAbstractAction {
 public:
-	enum EObjectActionType {
-		eObjectActionTypeShow = u32(0),
-		eObjectActionTypeHide,
-		eObjectActionTypeUse1,
-		eObjectActionTypeUse2,
-		eObjectActionTypeDummy = u32(-1),
-	};
 	CObject							*m_tpObject;
 	MonsterSpace::EObjectAction		m_tGoalType;
 

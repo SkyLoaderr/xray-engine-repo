@@ -437,8 +437,13 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.enum_("state")
 			[
 				value("idle",					int(MonsterSpace::eObjectActionIdle)),
-				value("primary_fire",			int(MonsterSpace::eObjectActionPrimaryFire)),
-				value("secondary_fire",			int(MonsterSpace::eObjectActionSecondaryFire))
+				value("fire1",					int(MonsterSpace::eObjectActionPrimaryFire)),
+				value("fire2",					int(MonsterSpace::eObjectActionSecondaryFire)),
+				value("reload",					int(MonsterSpace::eObjectActionReload)),
+				value("activate",				int(MonsterSpace::eObjectActionActivate)),
+				value("deactivate",				int(MonsterSpace::eObjectActionDeactivate)),
+				value("use",					int(MonsterSpace::eObjectActionUse)),
+				value("dummy",					int(MonsterSpace::eObjectActionDummy))
 			]
 			.def(								constructor<>())
 			.def(								constructor<CLuaGameObject*,MonsterSpace::EObjectAction>())
@@ -541,5 +546,8 @@ void Script::vfExportObject(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("get_ammo",					&CLuaGameObject::GetWeaponAmmo)
 			.def("command",						&CLuaGameObject::AddAction)
 			.def("action",						&CLuaGameObject::GetCurrentAction)
+			.def("obj_count",					&CLuaGameObject::GetInventoryObjectCount)
+			.def("object",						&CLuaGameObject::GetObjectByName)
+			.def("object",						&CLuaGameObject::GetObjectByIndex)
 	];
 }

@@ -70,7 +70,7 @@ namespace MonsterSpace {
 		eObjectActionSecondaryFire,
 		eObjectActionReload,
 		eObjectActionActivate,
-		eObjectActionHide,
+		eObjectActionDeactivate,
 		eObjectActionUse,
 		eObjectActionDummy = u32(-1)
 	};
