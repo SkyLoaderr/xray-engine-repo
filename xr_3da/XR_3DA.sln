@@ -94,12 +94,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrCompress", "..\xrCompress
 		{A0F7D1FB-59A7-4717-A7E4-96F37E91998E} = {A0F7D1FB-59A7-4717-A7E4-96F37E91998E}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DXT", "..\xrDXT\DXT.vcproj", "{EBF9B543-0830-4866-9B48-DC0740E87E8A}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
-	GlobalSection(DPCodeReviewSolutionGUID) = preSolution
-		DPCodeReviewSolutionGUID = {00000000-0000-0000-0000-000000000000}
-	EndGlobalSection
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 16
+		SccNumberOfProjects = 17
 		SccLocalPath0 = .
 		CanCheckoutShared = true
 		SolutionUniqueID = {6F8E4AE3-CB8E-4760-8086-796FE333A467}
@@ -164,6 +165,10 @@ Global
 		SccLocalPath15 = ..\\xrODE
 		CanCheckoutShared = true
 		SccProjectFilePathRelativizedFromConnection15 = contrib\\msvc7\\ode_default\\
+		SccProjectUniqueName16 = ..\\xrDXT\\DXT.vcproj
+		SccProjectName16 = \u0022$/Editors/Tools/DXT\u0022,\u0020DDFAAAAA
+		SccLocalPath16 = ..\\xrDXT
+		CanCheckoutShared = true
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -261,11 +266,20 @@ Global
 		{EF76867B-6EB8-4DC0-A1D6-E964FAD6FC7B}.Mixed.Build.0 = Release|Win32
 		{EF76867B-6EB8-4DC0-A1D6-E964FAD6FC7B}.Release.ActiveCfg = Release|Win32
 		{EF76867B-6EB8-4DC0-A1D6-E964FAD6FC7B}.Release.Build.0 = Release|Win32
+		{EBF9B543-0830-4866-9B48-DC0740E87E8A}.Debug.ActiveCfg = Debug|Win32
+		{EBF9B543-0830-4866-9B48-DC0740E87E8A}.Debug.Build.0 = Debug|Win32
+		{EBF9B543-0830-4866-9B48-DC0740E87E8A}.Mixed.ActiveCfg = Release|Win32
+		{EBF9B543-0830-4866-9B48-DC0740E87E8A}.Mixed.Build.0 = Release|Win32
+		{EBF9B543-0830-4866-9B48-DC0740E87E8A}.Release.ActiveCfg = Release|Win32
+		{EBF9B543-0830-4866-9B48-DC0740E87E8A}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection
 	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+	GlobalSection(DPCodeReviewSolutionGUID) = preSolution
+		DPCodeReviewSolutionGUID = {00000000-0000-0000-0000-000000000000}
 	EndGlobalSection
 EndGlobal

@@ -655,10 +655,10 @@ IC u32 it_gloss_rev		(u32 d, u32 s)
 IC u32 it_difference	(u32 d, u32 orig, u32 ucomp)	
 {	
 	return	color_rgba(
-	128+(int(color_get_R(orig))-int(color_get_R(ucomp)))*2,		// R-error
-	128+(int(color_get_G(orig))-int(color_get_G(ucomp)))*2,		// G-error
-	128+(int(color_get_B(orig))-int(color_get_B(ucomp)))*2,		// B-error
-	128+(int(color_get_A(orig))-int(color_get_A(ucomp)))*2	);	// A-error	
+	128+0*(int(color_get_R(orig))-int(color_get_R(ucomp)))*2,		// R-error
+	128+0*(int(color_get_G(orig))-int(color_get_G(ucomp)))*2,		// G-error
+	128+1*(int(color_get_B(orig))-int(color_get_B(ucomp)))*2,		// B-error
+	128+0*(int(color_get_A(orig))-int(color_get_A(ucomp)))*2	);	// A-error	
 }
 IC u32 it_height_rev	(u32 d, u32 s)	
 {
@@ -721,7 +721,7 @@ bool DXTCompressBump(LPCSTR out_name, u8* T_height_gloss, u32 w, u32 h, u32 pitc
 	// stage 0 
 	pitch				= w*4;
 	//tga_save			("x:\\0-height-gloss.tga",w,h,T_height_gloss,true);
-	ConvertToNormalMap	(pSrc,KERNEL_5x5,fmt->bump_virtual_height*200.f);
+	ConvertToNormalMap	(pSrc,KERNEL_3x3,fmt->bump_virtual_height*200.f);
 	u8* T_normal_1		= pSrc->GetImageDataPointer();
 	//tga_save			("x:\\1-normal_1.tga",w,h,T_normal_1,true);
 	gloss_power			= 0.f;
