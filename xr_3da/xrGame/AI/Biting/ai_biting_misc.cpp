@@ -8,11 +8,11 @@
 
 #include "stdafx.h"
 #include "ai_biting.h"
-#include "..\\..\\actor.h"
-#include "..\\..\\hudmanager.h"
+#include "../../actor.h"
+#include "../../hudmanager.h"
 
-#include "..\\..\\ai_script_actions.h"
-#include "..\\ai_monster_jump.h"
+#include "../../ai_script_actions.h"
+#include "../ai_monster_jump.h"
 
 // A - я слышу опасный звук
 // B - я слышу неопасный звук
@@ -63,8 +63,8 @@ void CAI_Biting::vfUpdateParameters()
 
 		CCustomMonster	*tpCustomMonster = dynamic_cast<CCustomMonster *>(ve.obj);
 		if (tpCustomMonster) {
-			yaw1		= -tpCustomMonster->r_current.yaw;
-			pitch1		= -tpCustomMonster->r_current.pitch;
+			yaw1		= -tpCustomMonster->m_head.current.yaw;
+			pitch1		= -tpCustomMonster->m_head.current.pitch;
 			fYawFov		= angle_normalize_signed(tpCustomMonster->ffGetFov()*PI/180.f);
 			fRange		= tpCustomMonster->ffGetRange();
 		}
@@ -90,7 +90,7 @@ void CAI_Biting::vfUpdateParameters()
 			yaw2			= angle_normalize_signed(yaw2);
 			pitch2			= angle_normalize_signed(pitch2);
 			
-			I = getAI().bfTooSmallAngle(yaw1,yaw2,fYawFov) && (getAI().bfTooSmallAngle(pitch1,pitch2,fPitchFov));
+			I = (angle_difference(yaw1,yaw2) <= fYawFov) && (angle_difference(pitch1,pitch2) <= fPitchFov);
 		}
 	}
 
@@ -132,7 +132,7 @@ void CAI_Biting::vfUpdateParameters()
 	// Set current enemy
 	m_tEnemy					= ve;
 	
-	if (m_tEnemy.obj && (m_tEnemyPrevFrame.obj == m_tEnemy.obj) && (m_tEnemy.time != m_dwCurrentUpdate)) {
+	if (m_tEnemy.obj && (m_tEnemyPrevFrame.obj == m_tEnemy.obj) && (m_tEnemy.time != m_current_update)) {
 		flagsEnemy |= FLAG_ENEMY_LOST_SIGHT;		// враг потерян из вида
 	}
 	
@@ -171,7 +171,7 @@ void CAI_Biting::vfUpdateParameters()
 	cur_pos			= Position();
 
 	bStanding		= !!prev_pos.similar(cur_pos);
-	if (bStanding && (time_start_stand == 0)) time_start_stand = m_dwCurrentUpdate;		// только начинаем стоять на месте
+	if (bStanding && (0 == time_start_stand)) time_start_stand = m_current_update;		// только начинаем стоять на месте
 	if (!bStanding) time_start_stand = 0; 
 
 	prev_pos	= cur_pos;
@@ -199,9 +199,9 @@ bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
 	
 	CJumping  *pJ = dynamic_cast<CJumping*>(this);
 	
-	if (pJ && !pJ->IsActive() && (MotionMan.m_tAction == ACT_JUMP)) {
+	if (pJ && !pJ->IsActive() && (ACT_JUMP == MotionMan.m_tAction)) {
 		pJ->Check(Position(), l_tMovementAction.m_tDestinationPosition, 0);
-	} else 	if (MotionMan.m_tAction == ACT_DRAG) {
+	} else 	if (ACT_DRAG == MotionMan.m_tAction) {
 		MotionMan.SetSpecParams(ASP_DRAG_CORPSE | ASP_MOVE_BKWD);
 	}
 	
@@ -217,17 +217,17 @@ bool CAI_Biting::bfAssignObject(CEntityAction *tpEntityAction)
 
 	CObjectAction	&l_tObjectAction = tpEntityAction->m_tObjectAction;
 	if (!l_tObjectAction.m_tpObject)
-		return	((l_tObjectAction.m_bCompleted = true) == false);
+		return	(false == (l_tObjectAction.m_bCompleted = true));
 
 	CEntityAlive	*l_tpEntity		= dynamic_cast<CEntityAlive*>(l_tObjectAction.m_tpObject);
-	if (!l_tpEntity) return	((l_tObjectAction.m_bCompleted = true) == false);
+	if (!l_tpEntity) return	(false == (l_tObjectAction.m_bCompleted = true));
 	
 	switch (l_tObjectAction.m_tGoalType) {
 		case eObjectActionTake: 
-			Movement.PHCaptureObject(l_tpEntity);
+			m_PhysicMovementControl.PHCaptureObject(l_tpEntity);
 			break;
 		case eObjectActionDrop: 
-			Movement.PHReleaseObject();
+			m_PhysicMovementControl.PHReleaseObject();
 			break;
 	}
 	l_tObjectAction.m_bCompleted = true;
