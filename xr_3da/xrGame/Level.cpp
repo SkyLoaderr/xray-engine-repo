@@ -236,6 +236,7 @@ int	CLevel::get_RPID(LPCSTR /**name/**/)
 
 void CLevel::OnFrame	()
 {
+	Memory.dbg_check();
 	// Client receive
 	if (net_isDisconnected())	
 	{
