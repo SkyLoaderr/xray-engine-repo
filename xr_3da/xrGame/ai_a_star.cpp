@@ -41,7 +41,7 @@ IC float ffCriteria(NodeCompressed &tNode0, NodeCompressed &tNode1)
 
 	float fLight = (float)(tNode1.light)/255.f;
 	
-	return(fLight*fCriteriaLightWeight + fCover*fCriteriaCoverWeight + fCriteriaDistanceWeight*_sqrt((float)(fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + 0*fYSize2*_sqr(y2 - y1))));
+	return(fLight*fCriteriaLightWeight + fCover*fCriteriaCoverWeight + fCriteriaDistanceWeight*_sqrt((float)(fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + 1*fYSize2*_sqr(y2 - y1))));
 }
 
 IC float ffCriteria(NodeCompressed &tNode0, NodeCompressed &tNode1, NodeCompressed &tEnemyNode, float &fOptimalEnemyDistance)

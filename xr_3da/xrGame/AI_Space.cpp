@@ -87,34 +87,53 @@ void CAI_Space::Load(LPCSTR name)
 	}
 
 	// special query tables
-	q_mark.assign		(m_header.count,0);
-	q_mark_bit.assign	(m_header.count,false);
-	q_mark_bit_x.assign	(m_header.count,false);
+	q_mark.assign			(m_header.count,0);
+	q_mark_bit.assign		(m_header.count,false);
+	q_mark_bit_x.assign		(m_header.count,false);
 
 	// for graph
-	strconcat	(fName,name,"level.graph");
+	strconcat				(fName,name,"level.graph");
 	if (!Engine.FS.Exist(fName))
 		return;
-	m_tpGraphVFS = Engine.FS.Open	(fName);
-	m_tpGraphVFS->Read(&m_tGraphHeader,sizeof(SGraphHeader));
-	R_ASSERT(m_tGraphHeader.dwVersion == XRAI_CURRENT_VERSION);
-	m_tpaGraph = (SGraphVertex*)m_tpGraphVFS->Pointer();
+	m_tpGraphVFS			= Engine.FS.Open	(fName);
+	m_tpGraphVFS->Read		(&m_tGraphHeader,sizeof(AI::SGraphHeader));
+	R_ASSERT				(m_tGraphHeader.dwVersion == XRAI_CURRENT_VERSION);
+	m_tpaGraph				= (AI::SGraphVertex*)m_tpGraphVFS->Pointer();
 
 	// for a* search
+	m_fSize2				= _sqr(m_fSize = m_header.size)/4;
+	m_fYSize2				= _sqr(m_fYSize = (float)(m_header.size_y/32767.0))/4;
 	u32 S1					= (MAX_NODES + 1)*sizeof(SNode);
 	m_tpHeap				= (SNode *)xr_malloc(S1);
 	ZeroMemory				(m_tpHeap,S1);
 	u32 S2					= m_header.count*sizeof(SIndexNode);
 	m_tpIndexes				= (SIndexNode *)xr_malloc(S2);
 	ZeroMemory				(m_tpIndexes,S2);
-	Msg("* AI path-finding structures: %d K",(S1 + S2)/(1024));
+	Msg						("* AI path-finding structures: %d K",(S1 + S2)/(1024));
 	
 //	AI::Path		tPath;
-//	vector<u32> tpPath;
-//	float		fDistance;
-//	tpMapPath   = new CAStarSearch<CAIMapShortestPathNode>(MAX_NODES);
+//	vector<u32>		tpPath;
+//	float			fDistance;
+//	m_tpLCDPath		= new CAStarSearch<CAIMapLCDPathNode>(MAX_NODES);
+//	vfLoadSearch();
 //	vfFindTheXestPath(77,67,tPath);
-//	tpMapPath->vfFindOptimalPath(m_tpHeap,m_tpIndexes,77,67,1000.f,fDistance,tpPath);
+//	u64 t1 = CPU::GetCycleCount();
+//	vfFindTheXestPath(77,67,tPath);
+//	u64 t2 = CPU::GetCycleCount();
+//	t2 -= t1;
+//	vfUnloadSearch();
+//	m_tpLCDPath->vfFindOptimalPath(m_tpHeap,m_tpIndexes,77,67,1000.f,fDistance,tpPath);
+//	u64 t1x = CPU::GetCycleCount();
+//	m_tpLCDPath->vfFindOptimalPath(m_tpHeap,m_tpIndexes,77,67,1000.f,fDistance,tpPath);
+//	u64 t2x = CPU::GetCycleCount();
+//	t2x -= t1x;
+//	Msg("A star times : %11I64u -> %11I64u",t2, t2x);
+//	if (tPath.Nodes.size() != tpPath.size())
+//		Msg("different sizes!");
+//	else
+//		for (int i=0; i<(int)tpPath.size(); i++)
+//			if (tPath.Nodes[i] != tpPath[i])
+//				Msg("%d : %d -> %d",i,tPath.Nodes[i],tpPath[i]);
 }
 
 void CAI_Space::Render()
@@ -128,7 +147,7 @@ void CAI_Space::Render()
 			t1.y += .6f;
 			Device.Primitive.dbg_DrawAABB(t1,.5f,.5f,.5f,D3DCOLOR_XRGB(0,0,255));
 			for (int j=0; j<(int)m_tpaGraph[i].dwNeighbourCount; j++) {
-				Fvector t2 = m_tpaGraph[((SGraphEdge *)((BYTE *)m_tpaGraph + m_tpaGraph[i].dwEdgeOffset) + j)->dwVertexNumber].tPoint;
+				Fvector t2 = m_tpaGraph[((AI::SGraphEdge *)((BYTE *)m_tpaGraph + m_tpaGraph[i].dwEdgeOffset) + j)->dwVertexNumber].tPoint;
 				t2.y += .6f;
 				Device.Primitive.dbg_DrawLINE(Fidentity,t1,t2,D3DCOLOR_XRGB(0,255,0));
 			}
@@ -424,3 +443,4 @@ int	CAI_Space::q_LoadSearch(const Fvector& pos)
 //		_FREE(tppMap[i]);
 //	_FREE(tppMap);
 //}
+

@@ -9,9 +9,29 @@
 //#include "virtualvector.h"
 #include "..\xrLevel.h"
 #include "ai_a_star_search.h"
-#include "ai_a_star_nodes.h"
+//#include "ai_a_star_nodes.h"
 
 namespace AI {
+	typedef struct tagSGraphEdge {
+		u32		dwVertexNumber;
+		float	fPathDistance;
+	} SGraphEdge;
+
+	#pragma pack(push,4)
+	typedef struct tagSGraphVertex {
+		Fvector				tPoint;
+		u32					dwNodeID:24;
+		u32					ucVertexType:8;
+		u32					dwNeighbourCount;
+		u32					dwEdgeOffset;
+	} SGraphVertex;
+	#pragma pack(pop)
+
+	typedef struct tagSGraphHeader {
+		u32					dwVersion;
+		u32					dwVertexCount;
+	} SGraphHeader;
+
 	class	NodeEstimator
 	{
 	public:
@@ -39,146 +59,65 @@ namespace AI {
 	};
 };
 
-//class CAIMapShortestPathNode : public CTemplateNode {
-//public:
-//	IC float	ffEvaluate(u32 dwStartNode, u32 dwFinishNode)
-//	{
-//		NodeCompressed tNode0 = AI.Node(dwStartNode), tNode1 = AI.Node(dwFinishNode);
-//		
-//		float x1 = (float)(tNode0.p1.x) + (float)(tNode0.p0.x);
-//		float y1 = (float)(tNode0.p1.y) + (float)(tNode0.p0.y);
-//		float z1 = (float)(tNode0.p1.z) + (float)(tNode0.p0.z);
-//		
-//		float x2 = (float)(tNode1.p1.x) + (float)(tNode1.p0.x);
-//		float y2 = (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
-//		float z2 = (float)(tNode1.p1.z) + (float)(tNode1.p0.z);
-//
-//		return(_sqrt((float)(AI.m_fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + 0*AI.m_fYSize2*_sqr(y2 - y1))));
-//	}
-//
-//	IC u32		dwfGetNodeEdgeCount(u32 dwNode)
-//	{
-//		return(AI.Node(dwNode)->);
-//	}
-//
-//	IC u32		dwfGetNodeNeighbour(u32 dwNode, u32 dwNeighbourIndex)
-//	{
-//		return(AI.UnpackLink(((NodeLink *)((BYTE *)AI.Node(dwNode) + sizeof(NodeCompressed)))[dwNeighbourIndex]));
-//	}
-//};
-//
-//class CAIMapLCDPathNode : public CTemplateNode {
-//private:
-//	float	
-//		m_fCriteriaLightWeight,
-//		m_fCriteriaCoverWeight,
-//		m_fCriteriaDistanceWeight;
-//
-//public:
-//	CAIMapLCDPathNode()
-//	{
-//		m_fCriteriaLightWeight = 5.f;
-//		m_fCriteriaCoverWeight = 10.f;
-//		m_fCriteriaDistanceWeight 40.f;
-//	}
-//
-//	IC float	ffEvaluate(u32 dwStartNode, u32 dwFinishNode)
-//	{
-//		NodeCompressed tNode0 = AI.Node(dwStartNode), tNode1 = AI.Node(dwFinishNode);
-//		float x1 = (float)(tNode0.p1.x) + (float)(tNode0.p0.x);
-//		float y1 = (float)(tNode0.p1.y) + (float)(tNode0.p0.y);
-//		float z1 = (float)(tNode0.p1.z) + (float)(tNode0.p0.z);
-//		
-//		float x2 = (float)(tNode1.p1.x) + (float)(tNode1.p0.x);
-//		float y2 = (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
-//		float z2 = (float)(tNode1.p1.z) + (float)(tNode1.p0.z);
-//
-//		float fCover = 1/(EPS_L + (float)(tNode1.cover[0])/255.f + (float)(tNode1.cover[1])/255.f + (float)(tNode1.cover[2])/255.f  + (float)(tNode1.cover[3])/255.f);
-//
-//		float fLight = (float)(tNode1.light)/255.f;
-//		
-//		return(fLight*m_fCriteriaLightWeight + fCover*m_fCriteriaCoverWeight + m_fCriteriaDistanceWeight*_sqrt((float)(AI.m_fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + 0*AI.m_fYSize2*_sqr(y2 - y1))));
-//	}
-//
-//	IC u32		dwfGetNodeEdgeCount(u32 dwNode)
-//	{
-//		return(AI.Node(dwNode)->links);
-//	}
-//
-//	IC u32		dwfGetNodeNeighbour(u32 dwNode, u32 dwNeighbourIndex)
-//	{
-//		return(AI.UnpackLink(((NodeLink *)((BYTE *)AI.Node(dwNode) + sizeof(NodeCompressed)))[dwNeighbourIndex]));
-//	}
-//};
-//
-//class CAIMapEnemyPathNode : public CTemplateNode {
-//private:
-//	float	
-//		m_fCriteriaEnemyViewWeight,
-//		m_fCriteriaLightWeight,
-//		m_fCriteriaCoverWeight,
-//		m_fCriteriaDistanceWeight;
-//
-//public:
-//	CAIMapEnemyPathNode()
-//	{
-//		m_fCriteriaLightWeight = 5.f;
-//		m_fCriteriaCoverWeight = 10.f;
-//		m_fCriteriaDistanceWeight = 40.f;
-//		m_fCriteriaEnemyViewWeight = 100.f;
-//	}
-//
-//	IC float	ffEvaluate(u32 dwStartNode, u32 dwFinishNode)
-//	{
-//		NodeCompressed tNode0 = AI.Node(dwStartNode), tNode1 = AI.Node(dwFinishNode);
-//		float x1 = (float)(tNode0.p1.x) + (float)(tNode0.p0.x);
-//		float y1 = (float)(tNode0.p1.y) + (float)(tNode0.p0.y);
-//		float z1 = (float)(tNode0.p1.z) + (float)(tNode0.p0.z);
-//		
-//		float x2 = (float)(tNode1.p1.x) + (float)(tNode1.p0.x);
-//		float y2 = (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
-//		float z2 = (float)(tNode1.p1.z) + (float)(tNode1.p0.z);
-//
-//		float x3 = tEnemyPosition.x/AI.m_fSize;
-//		float y3 = tEnemyPosition.y/AI.m_fYSize;
-//		float z3 = tEnemyPosition.z/AI.m_fSize;
-//
-//		float fCover = 1.f/(EPS_L + (float)(tNode1.cover[0])/255.f + (float)(tNode1.cover[1])/255.f + (float)(tNode1.cover[2])/255.f  + (float)(tNode1.cover[3])/255.f);
-//
-//		float fLight = (float)(tNode1.light)/255.f;
-//		
-//		return(m_fCriteriaEnemyViewWeight*(_sqrt((float)(AI.m_fSize2*(_sqr(x3 - x1) + _sqr(z3 - z1)) + AI.m_fYSize2*_sqr(y3 - y1))) - fOptimalEnemyDistance) + fLight*fCriteriaLightWeight + fCover*fCriteriaCoverWeight + fCriteriaDistanceWeight*(float)sqrt((float)(AI.m_fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + AI.m_fYSize2*_sqr(y2 - y1))));
-//	}
-//
-//	IC u32		dwfGetNodeEdgeCount(u32 dwNode)
-//	{
-//		return(AI.Node(dwNode)->links);
-//	}
-//
-//	IC u32		dwfGetNodeNeighbour(u32 dwNode, u32 dwNeighbourIndex)
-//	{
-//		return(AI.UnpackLink(((NodeLink *)((BYTE *)AI.Node(dwNode) + sizeof(NodeCompressed)))[dwNeighbourIndex]));
-//	}
-//};
-//
-//class CAIGraphShortestPathNode : public CTemplateNode {
-//public:
-//	IC float	ffEvaluate(u32 dwStartNode, u32 dwFinishNode)
-//	{
-//		return(((SGraphEdge *)((BYTE *)m_tpaGraph + m_tpaGraph[dwStartNode].dwEdgeOffset) + dwFinishNode)->fPathDistance);
-//	}
-//
-//	IC u32		dwfGetNodeEdgeCount(u32 dwNode)
-//	{
-//		return(m_tpaGraph[dwStartNode].dwNeighbourCount);
-//	}
-//
-//	IC u32		dwfGetNodeNeighbour(u32 dwNode, u32 dwNeighbourIndex)
-//	{
-//		return(((SGraphEdge *)((BYTE *)m_tpaGraph + m_tpaGraph[i].dwEdgeOffset) + j)->dwVertexNumber);
-//	}
-//};
-//
+class CAIMapShortestPathNode : public CTemplateNode {
+public:
+	IC float	ffEvaluate(u32 dwStartNode, u32 dwFinishNode);
+	IC u32		dwfGetNodeEdgeCount(u32 dwNode);
+	IC u32		dwfGetNodeNeighbour(u32 dwNode, u32 dwNeighbourIndex);
+	IC bool		bfCheckIfAccessible(u32 dwNode);
+};
+
+class CAIMapLCDPathNode : public CTemplateNode {
+private:
+	float	
+		m_fCriteriaLightWeight,
+		m_fCriteriaCoverWeight,
+		m_fCriteriaDistanceWeight;
+
+public:
+	CAIMapLCDPathNode()
+	{
+		m_fCriteriaLightWeight = 5.f;
+		m_fCriteriaCoverWeight = 10.f;
+		m_fCriteriaDistanceWeight = 40.f;
+	}
+	IC float	ffEvaluate(u32 dwStartNode, u32 dwFinishNode);
+	IC u32		dwfGetNodeEdgeCount(u32 dwNode);
+	IC u32		dwfGetNodeNeighbour(u32 dwNode, u32 dwNeighbourIndex);
+	IC bool		bfCheckIfAccessible(u32 dwNode);
+};
+
+class CAIMapEnemyPathNode : public CTemplateNode {
+private:
+	float	
+		m_fCriteriaEnemyViewWeight,
+		m_fCriteriaLightWeight,
+		m_fCriteriaCoverWeight,
+		m_fCriteriaDistanceWeight,
+		m_fOptimalEnemyDistance;
+public:
+	CAIMapEnemyPathNode()
+	{
+		m_fCriteriaLightWeight = 5.f;
+		m_fCriteriaCoverWeight = 10.f;
+		m_fCriteriaDistanceWeight = 40.f;
+		m_fCriteriaEnemyViewWeight = 100.f;
+		m_fOptimalEnemyDistance = 30.f;
+	}
+	IC float	ffEvaluate(u32 dwStartNode, u32 dwFinishNode);
+	IC u32		dwfGetNodeEdgeCount(u32 dwNode);
+	IC u32		dwfGetNodeNeighbour(u32 dwNode, u32 dwNeighbourIndex);
+	IC bool		bfCheckIfAccessible(u32 dwNode);
+};
+
+class CAIGraphShortestPathNode : public CTemplateNode {
+public:
+	IC float	ffEvaluate(u32 dwStartNode, u32 dwFinishNode);
+	IC u32		dwfGetNodeEdgeCount(u32 dwNode);
+	IC u32		dwfGetNodeNeighbour(u32 dwNode, u32 dwNeighbourIndex);
+	IC bool		bfCheckIfAccessible(u32 dwNode);
+};
+
 class CAI_Space	: public pureDeviceCreate, pureDeviceDestroy
 {
 private:
@@ -191,29 +130,8 @@ private:
 	// Debug
 	Shader*							sh_debug;
 
-	typedef struct tagSGraphEdge {
-		u32		dwVertexNumber;
-		float	fPathDistance;
-	} SGraphEdge;
-
-	#pragma pack(push,4)
-	typedef struct tagSGraphVertex {
-		Fvector				tPoint;
-		u32					dwNodeID:24;
-		u32					ucVertexType:8;
-		u32					dwNeighbourCount;
-		u32					dwEdgeOffset;
-	} SGraphVertex;
-	#pragma pack(pop)
-
-	typedef struct tagSGraphHeader {
-		u32					dwVersion;
-		u32					dwVertexCount;
-	} SGraphHeader;
-
-	CStream*				m_tpGraphVFS;			// virtual file
-	SGraphVertex			*m_tpaGraph;			// graph
-	SGraphHeader			m_tGraphHeader;			// graph header
+	CStream*						m_tpGraphVFS;			// virtual file
+	AI::SGraphHeader				m_tGraphHeader;			// graph header
 public:
 	// Query
 	vector<bool>					q_mark_bit;		// temporal usage mark for queries
@@ -236,13 +154,14 @@ public:
 	//void			q_Range_Bit		(u32 StartNode, const Fvector& BasePos, float Range, u32 &BestNode, float &BestCost);
 	u32				q_Node			(u32 PrevNode,  const Fvector& Pos, bool bShortSearch = false);
 
-//	float									m_fSize,m_fYSize,m_fSize2,m_fYSize2;
+	AI::SGraphVertex						*m_tpaGraph;			// graph
 	SNode									*m_tpHeap;
 	SIndexNode								*m_tpIndexes;
-//	CAStarSearch<CAIMapShortestPathNode>	*tpMapPath;
-//	CAStarSearch<CAIMapLCDPathNode>			*tpLCDPath;
-//	CAStarSearch<CAIMapEnemyPathNode>		*tpEnemyPath;
-//	CAStarSearch<CAIGraphShortestPathNode>	*tpGraphPath;
+	float									m_fSize,m_fYSize,m_fSize2,m_fYSize2;
+	CAStarSearch<CAIMapShortestPathNode>	*m_tpMapPath;
+	CAStarSearch<CAIMapLCDPathNode>			*m_tpLCDPath;
+	CAStarSearch<CAIMapEnemyPathNode>		*m_tpEnemyPath;
+	CAStarSearch<CAIGraphShortestPathNode>	*m_tpGraphPath;
 //	// yet another A* search
 	#define DEFAULT_LIGHT_WEIGHT		  5.f 
 	#define DEFAULT_COVER_WEIGHT		 10.f 

@@ -130,7 +130,7 @@ public:
 			// check if that node is our goal
 			if (tpBestNode->iIndex == (int)dwGoalNode) {
 
-				float fValue = 0.0;
+				fValue = 0.0;
 				tpTemp1 = tpBestNode;
 				tpTemp = tpTemp1->tpBack;
 				for (u32 i=1; tpTemp; tpTemp1 = tpTemp, tpTemp = tpTemp->tpBack, i++) ;

@@ -180,4 +180,6 @@ IC u32					GameID()	{ return Game().type;			}
 class  CPHWorld;
 extern CPHWorld*				ph_world;
 
+#include "ai_a_star_nodes.h"
+
 #endif // !defined(AFX_LEVEL_H__38F63863_DB0C_494B_AFAB_C495876EC671__INCLUDED_)
