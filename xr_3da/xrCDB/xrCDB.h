@@ -33,13 +33,12 @@ namespace CDB
 		DWORD			frustum_mode;
 
 		// Result management
-		int*			r_data;
-		int				r_count;
-		int				r_size;
-		void			r_add			(int id);
+		int*			rd_ptr;
+		int				rd_count;
+		int				rd_size;
 	public:
-		CDB				();
-		~CDB			();
+		COLLIDER		();
+		~COLLIDER		();
 		
 		void			ray_mode		(DWORD f)	{	ray_mode = f;		}
 		void			ray_query		(const Model *m_def, const Fvector& r_start,  const Fvector& r_dir, float r_range = 10000.f);
@@ -50,8 +49,10 @@ namespace CDB
 		void			frustum_mode	(DWORD f)	{	frustum_mode = f;	}
 		void			frustum_query	(const Model *m_def, const CFrustum& F);
 		
-		int*			r_begin			()	{	return r_data;				};
-		int*			r_end			()	{	return r_data + r_count;	};
-		int				r_count			()	{	return r_count;				};
-		int				r_free			();
+		void			r_add			(int id);
+		int*			r_begin			()	{	return rd_ptr;				};
+		int*			r_end			()	{	return rd_ptr + rd_count;	};
+		int				r_count			()	{	return rd_count;			};
+		void			r_clear			()	{	rd_count = 0;				};
+		void			r_free			();
 };
