@@ -8,13 +8,13 @@
 
 // These are the bit flags that get set on calling cpuid
 // with register eax set to 1
-#define _MMX_FEATURE_BIT        0x00800000
-#define _SSE_FEATURE_BIT        0x02000000
-#define _SSE2_FEATURE_BIT        0x04000000
+#define _MMX_FEATURE_BIT			0x00800000
+#define _SSE_FEATURE_BIT			0x02000000
+#define _SSE2_FEATURE_BIT			0x04000000
 
 // This bit is set when cpuid is called with
 // register set to 80000001h (only applicable to AMD)
-#define _3DNOW_FEATURE_BIT      0x80000000
+#define _3DNOW_FEATURE_BIT			0x80000000
 
 int IsCPUID()
 {
@@ -58,24 +58,25 @@ void _os_support(int feature, int& res)
             }
             break;
         case _CPU_FEATURE_3DNOW:
-            __asm {
+            __asm 
+			{
                 __asm _emit 0x0f __asm _emit 0x0f __asm _emit 0xc0 __asm _emit 0x96 
                                         // pfrcp mm0, mm0
                                         // executing 3Dnow instruction
             }
             break;
         case _CPU_FEATURE_MMX:
-            __asm {
+            __asm 
+			{
                 pxor mm0, mm0           // executing MMX instruction
             }
             break;
         }
     } __except (EXCEPTION_EXECUTE_HANDLER) {
-        if (_exception_code() == STATUS_ILLEGAL_INSTRUCTION) {
-            return;
-        }
+		_mm_empty	();
         return;
     }
+	_mm_empty	();
 	res |= feature;
 }
 #endif
@@ -94,7 +95,6 @@ void _os_support(int feature, int& res)
 * void map_mname(int, int, const char *, char *) maps family and model to processor name
 *
 ****************************************************/
-
 
 void map_mname( int family, int model, const char * v_name, char *m_name)
 {
@@ -125,24 +125,22 @@ void map_mname( int family, int model, const char * v_name, char *m_name)
             case 13:
             case 14:
             case 15:	strcpy (m_name,"K6-3");			break;
-            default:
-                strcpy (m_name, "Unknown");
+            default:	strcpy (m_name,"K6 family");	break;
             }
             break;
 
         case 6: // Athlon
             switch(model)  // No model numbers are currently defined
             {
-            case 1:	strcpy (m_name,"ATHLON Model 1");	break;
-			case 2:	strcpy (m_name,"ATHLON Model 2");	break;
-			case 3:	strcpy (m_name,"DURON");			break;
+            case 1:		strcpy (m_name,"ATHLON Model 1");	break;
+			case 2:		strcpy (m_name,"ATHLON Model 2");	break;
+			case 3:		strcpy (m_name,"DURON");			break;
 			case 4:	
-			case 5:	strcpy (m_name,"ATHLON T-Bird");	break;
-			case 6:	strcpy (m_name,"ATHLON XP");		break;
-			case 7:	strcpy (m_name,"DURON XP");			break;
-            default:
-                strcpy (m_name, "K7 Unknown");
-            }
+			case 5:		strcpy (m_name,"ATHLON TB");		break;
+			case 6:		strcpy (m_name,"ATHLON XP");		break;
+			case 7:		strcpy (m_name,"DURON XP");			break;
+            default:    strcpy (m_name,"K7 Family");		break;
+			}
             break;
         }
     } else if ( !strncmp("GenuineIntel", v_name, 12))
@@ -153,15 +151,14 @@ void map_mname( int family, int model, const char * v_name, char *m_name)
             switch (model) // extract model code
             {
             case 0:
-            case 1:	strcpy (m_name,"i486DX");			break;
-            case 2: strcpy (m_name,"i486SX");			break;
-            case 3: strcpy (m_name,"i486DX2");			break;
-            case 4: strcpy (m_name,"i486SL");			break;
-            case 5: strcpy (m_name,"i486SX2");			break;
-            case 7: strcpy (m_name,"i486DX2E");			break;
-            case 8: strcpy (m_name,"i486DX4");			break;
-            default:
-                strcpy (m_name, "i486 Unknown");
+            case 1:		strcpy (m_name,"i486DX");			break;
+            case 2:		strcpy (m_name,"i486SX");			break;
+            case 3:		strcpy (m_name,"i486DX2");			break;
+            case 4:		strcpy (m_name,"i486SL");			break;
+            case 5:		strcpy (m_name,"i486SX2");			break;
+            case 7:		strcpy (m_name,"i486DX2E");			break;
+            case 8:		strcpy (m_name,"i486DX4");			break;
+            default:    strcpy (m_name,"i486 family");		break;
             }
             break;
         case 5:
@@ -169,25 +166,30 @@ void map_mname( int family, int model, const char * v_name, char *m_name)
             {
             case 1:
             case 2:
-            case 3:	strcpy (m_name,"Pentium");			break;
-            case 4: strcpy (m_name,"Pentium-MMX");		break;
-            default:
-                strcpy (m_name, "Pentium Unknown");
+            case 3:		strcpy (m_name,"Pentium");			break;
+            case 4:		strcpy (m_name,"Pentium-MMX");		break;
+            default:	strcpy (m_name,"P5 family");		break;
             }
             break;
         case 6:
             switch (model) // extract model code
             {
-            case 1:	strcpy (m_name,"Pentium-Pro");		break;
-            case 3: strcpy (m_name,"Pentium-II");		break;
-            case 5: strcpy (m_name,"Pentium-II");		break;  // actual differentiation depends on cache settings
-            case 6: strcpy (m_name,"Celeron");			break;
-            case 7: strcpy (m_name,"Pentium-III");		break;  // actual differentiation depends on cache settings
-			case 8: strcpy (m_name,"P3 Coppermine");	break;
-            default:
-                strcpy (m_name, "Unknown");
+            case 1:		strcpy (m_name,"Pentium-Pro");		break;
+            case 3:		strcpy (m_name,"Pentium-II");		break;
+            case 5:		strcpy (m_name,"Pentium-II");		break;  // actual differentiation depends on cache settings
+            case 6:		strcpy (m_name,"Celeron");			break;
+            case 7:		strcpy (m_name,"Pentium-III");		break;  // actual differentiation depends on cache settings
+			case 8:		strcpy (m_name,"P3 Coppermine");	break;
+            default:	strcpy (m_name,"P3 family");		break;
             }
             break;
+		case 15:
+			// F15/M2/S4 ???
+			switch (model)
+			{
+			case 2:		strcpy	(m_name,"Pentium 4");		break;
+			default:	strcpy	(m_name,"P4 family");		break;
+			}
         }
     } else if ( !strncmp("CyrixInstead", v_name,12))
     {
@@ -298,11 +300,7 @@ notamd:
         _os_support(_CPU_FEATURE_SSE2,os_support);
     }
 
-#ifdef M_VISUAL
-	_mm_empty	();
-#endif
-
-    if (pinfo)
+	if (pinfo)
     {
         memset(pinfo, 0, sizeof(_processor_info));
         pinfo->os_support = os_support;
