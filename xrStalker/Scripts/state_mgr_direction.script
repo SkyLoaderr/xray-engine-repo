@@ -30,9 +30,7 @@ function eva_state_mgr_direction:evaluate()
 	end
 	
 	if self.target_position ~= nil then
-		local dir = self.object:position():sub(self.target_position)
---		printf("pos: %s %s %s", self.target_position.x, self.target_position.y, self.target_position.z)
---		printf("lpos: %s %s %s", self.st.look_position.x, self.st.look_position.y, self.st.look_position.z)
+		local dir = utils.vector_copy_by_val(self.target_position):sub(self.object:position())
 --		printf("head: %s", yaw_degree(dir, self.object:head_orientation()))
 --		printf("body: %s", yaw_degree(dir, self.object:direction()))
 
