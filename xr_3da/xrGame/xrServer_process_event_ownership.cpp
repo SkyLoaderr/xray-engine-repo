@@ -16,7 +16,8 @@ void xrServer::Process_event_ownership(NET_Packet& P, DPNID sender, u32 time, u1
 	xrClientData*		c_parent	= e_parent->owner;
 	xrClientData*		c_entity	= e_entity->owner;
 	xrClientData*		c_from		= ID_to_client	(sender);
-	R_ASSERT			(c_parent == c_from);		// assure client only send request for local units
+	if (c_parent != c_from)					return;	//. hack
+	//R_ASSERT			(c_parent == c_from);		// assure client only send request for local units
 
 	if (game->OnTouch	(id_parent,id_entity))
 	{
