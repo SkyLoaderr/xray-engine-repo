@@ -180,20 +180,19 @@ float rayTrace	(RAPID::XRCollide* DB, R_Light& L, Fvector& P, Fvector& D, float 
 		return 0;
 	}
 	
+	// 2. Polygon doesn't pick - real database query
 	try {
-		// 2. Polygon doesn't pick - real database query
 		DB->RayPick(0,&RCAST_Model,P,D,R);
+	} catch (...) { Msg("* ERROR: rayTrace :: 2"); }
+
+	// 3. analyze polygons and cache nearest if possible
+	try {
 		if (0==DB->GetRayContactCount()) {
 			return 1;
 		} else {
-			// analyze polygons and cache nearest if possible
 			return getLastRP_Scale(DB,L);
 		}
-	} catch (...)
-	{
-		Msg("* ERROR: rayTrace :: 2");
-		return 0;
-	}
+	} catch (...) { Msg("* ERROR: rayTrace :: 3"); }
 }
 
 void LightPoint(RAPID::XRCollide* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light* begin, R_Light* end)
