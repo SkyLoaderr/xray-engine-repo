@@ -23,8 +23,7 @@ BOOL psLibrary_Load(const char *Name, PS::PSVec &LIB)
 	F->r		(&id,8);
 	if (0==strncmp(id,ID,8))	
 	{
-		FS.r_close			(F);
-		F						= xr_new<CCompressedReader> (Name,ID);
+		Debug.fatal			("Unsupported PS library. Compressed?");
 	}else{
     	F->seek	(0);
     }

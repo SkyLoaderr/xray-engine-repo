@@ -33,15 +33,15 @@ CDemoPlay::CDemoPlay(const char *name, float ms, BOOL bc, float life_time) : CEf
 			pCreator->Cameras.RemoveEffector(cefDemo);
 			return;
 		}
-		u32 sz		= 0;
-		void *data	= FileDownload(name,&sz);
-		VERIFY		(sz%sizeof(Fmatrix) == 0);
+		IReader*	fs	= FS.r_open	(name);
+		u32 sz			= fs->length();
+		R_ASSERT		(sz%sizeof(Fmatrix) == 0);
 		
-		seq.resize	(sz/sizeof(Fmatrix));
-		m_count		= seq.size();
-		Memory.mem_copy(&*seq.begin(),data,sz);
-		xr_free		(data);
-		Log			("! Total frames: ",m_count);
+		seq.resize		(sz/sizeof(Fmatrix));
+		m_count			= seq.size();
+		Memory.mem_copy	(&*seq.begin(),fs->pointer(),sz);
+		FS.r_close		(fs);
+		Log				("! Total frames: ",m_count);
 	}
 	stat_Start		();
 
