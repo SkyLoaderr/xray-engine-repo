@@ -20,7 +20,6 @@ function CStorage:get_data(npc_id)
 	assert(table.getn(self.data) >= 0)				// Попытка вызвать get_date() без проверки empty()
 	
 	self.index		 	= if_then_else(table.getn(self.data) > 1, table.getn(self.data), 1)
-	//table.insert(self.use, npc_id, self.data[self.index])
 	self.use[npc_id] 	= self.data[self.index]
 	self.n				= self.n + 1
 	table.remove(self.data, self.index)
