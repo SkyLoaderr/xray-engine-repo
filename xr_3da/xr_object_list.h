@@ -4,9 +4,9 @@
 #include "xrSheduler.h"
 
 // refs
-class ENGINE_API CObject;
-class ENGINE_API CInifile;
-class ENGINE_API NET_Packet;
+class	ENGINE_API	CObject;
+class	ENGINE_API	CInifile;
+class	ENGINE_API	NET_Packet;
 
 class	ENGINE_API 				CObjectList
 {
