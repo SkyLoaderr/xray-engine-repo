@@ -216,12 +216,11 @@ void __cdecl CHUDManager::outMessage(u32 C, LPCSTR from, LPCSTR msg, ...)
 }
 void __cdecl CHUDManager::outMessage(u32 C, const ref_str& from, LPCSTR msg, ...)
 {
-	char		buffer	[256];
+	string256	buffer;
 
 	va_list		p;
 	va_start	(p,msg);
-	vsprintf	(buffer,msg,p);
-	R_ASSERT	(xr_strlen(buffer)<256);
+	_vsnprintf	(buffer,sizeof(buffer)-1,msg,p); buffer[sizeof(buffer)-1] = 0;
 	va_end		(p);
 
 	GetUI()->AddMessage	(*from,buffer,C);
