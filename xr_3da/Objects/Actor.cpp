@@ -753,5 +753,6 @@ void CActor::OnHUDDraw(CCustomHUD* hud)
 	if (mstate_real&mcTurn)		strcat(buf,"Turn ");
 	if (m_bJumpKeyPressed)		strcat(buf,"+Jumping ");
 
-	HUD->pHUDFont->Out(400,320,buf);
+	HUD->pHUDFont->Color(0xffffffff);
+	HUD->pHUDFont->Out	(400,320,buf);
 }
