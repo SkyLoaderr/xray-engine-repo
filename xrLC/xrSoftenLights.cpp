@@ -164,7 +164,4 @@ void CBuild::SoftenLights()
 		}
 	}
 	Msg("* Total light-layers: %d",lights.size());
-
-	Status("Caching faces opacity...");
-	for (vecFaceIt I=g_faces.begin(); I!=g_faces.end(); I++) (*I)->CacheOpacity();
 }
