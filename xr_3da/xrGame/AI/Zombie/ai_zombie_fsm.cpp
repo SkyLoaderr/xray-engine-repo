@@ -562,7 +562,7 @@ void CAI_Zombie::Resurrect()
 
 	bStopThinking = true;
 	
-	m_fSafeSpeed = m_fSpeed = 0.f;
+	m_fSpeed = 0.f;
 
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 	vfSetFire(false,Group);
@@ -579,7 +579,8 @@ void CAI_Zombie::Resurrect()
 		if (m_tpSoundBeingPlayed && m_tpSoundBeingPlayed->feedback)
 			m_tpSoundBeingPlayed->feedback->SetPosition(eye_matrix.c);
 	
-	//if (((m_tpCurrentGlobalAnimation == m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[0]) || (m_tpCurrentGlobalAnimation == m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[1]) || (m_tpCurrentGlobalAnimation == m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[2])) && (!m_tpCurrentGlobalBlend->playing)) {
-	//	GO_TO_NEW_STATE_THIS_UPDATE(aiZombieFreeHuntingActive);
-	//}
+	if (((m_tpCurrentGlobalAnimation == m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[0]) || (m_tpCurrentGlobalAnimation == m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[1]) || (m_tpCurrentGlobalAnimation == m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[2])) && (!m_tpCurrentGlobalBlend->playing)) {
+		m_fGoalChangeTime = 0.f;
+		GO_TO_NEW_STATE_THIS_UPDATE(aiZombieFreeHuntingActive);
+	}
 }
