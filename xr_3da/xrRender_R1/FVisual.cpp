@@ -153,8 +153,19 @@ void Fvisual::Load		(const char* N, IReader *data, u32 dwFlags)
 
 void Fvisual::Render		(float LOD)
 {
+#if RENDER==R_R2
+	if (m_fast && RImplementation.phase==CRender::PHASE_SMAP)
+	{
+		RCache.set_Geometry		(m_fast->geom);
+		RCache.Render			(D3DPT_TRIANGLELIST,m_fast->vBase,0,m_fast->vCount,m_fast->iBase,m_fast->dwPrimitives);
+	} else {
+		RCache.set_Geometry		(geom);
+		RCache.Render			(D3DPT_TRIANGLELIST,vBase,0,vCount,iBase,dwPrimitives);
+	}
+#else
 	RCache.set_Geometry		(geom);
 	RCache.Render			(D3DPT_TRIANGLELIST,vBase,0,vCount,iBase,dwPrimitives);
+#endif
 }
 
 #define PCOPY(a)	a = pFrom->a
