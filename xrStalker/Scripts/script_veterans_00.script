@@ -31,139 +31,116 @@ function main()
 			prof_kgm4:play_at_pos				(stalker_veteran01,stalker_veteran01:position(),0);
 			wait(3000)			
 		end
-		wait()			
 
 		if stalker_veteran01:see(actor) == false and stalker_veteran02:see(actor) == false then
 			prof_nashel_taynik_a:play_at_pos	(stalker_veteran01,stalker_veteran01:position(),0);
 			wait(4000)			
 		end
-		wait()			
 
 		if stalker_veteran01:see(actor) == false and stalker_veteran02:see(actor) == false then
 			prof_kgm3:play_at_pos				(stalker_veteran01,stalker_veteran01:position(),0);
 			wait(2000)			
 		end
-		wait()			
 
 		if stalker_veteran01:see(actor) == false and stalker_veteran02:see(actor) == false then
 			prof_nashel_taynik_b:play_at_pos	(stalker_veteran01,stalker_veteran01:position(),0);
 			wait(6000)			
 		end
-		wait()			
 
 		if stalker_veteran01:see(actor) == false and stalker_veteran02:see(actor) == false then		
 			rainbow_ya_bi_pomalkival:play_at_pos				(stalker_veteran02,stalker_veteran02:position(),0);
 			wait(4000)			
 		end
-		wait()			
 
 		if stalker_veteran01:see(actor) == false and stalker_veteran02:see(actor) == false then
 			rainbow_mojet_sidet_stalker:play_at_pos	(stalker_veteran02,stalker_veteran02:position(),0);
 			wait(4000)			
 		end
-		wait()			
 
 		if stalker_veteran01:see(actor) == false and stalker_veteran02:see(actor) == false then		
 			prof_kgm2:play_at_pos				(stalker_veteran01,stalker_veteran01:position(),0);
 			wait(2000)			
 		end
-		wait()			
 
 		if stalker_veteran01:see(actor) == false and stalker_veteran02:see(actor) == false then		
 			prof_chert:play_at_pos				(stalker_veteran01,stalker_veteran01:position(),0);
 			wait(2000)			
 		end
-		wait()			
 
 		if stalker_veteran01:see(actor) == false and stalker_veteran02:see(actor) == false then
 			prof_blin_tochno:play_at_pos	(stalker_veteran01,stalker_veteran01:position(),0);
 			wait(3000)			
 		end
-		wait()			
 
 		if stalker_veteran01:see(actor) == false and stalker_veteran02:see(actor) == false then
 			prof_proveru_ya_vagonchik:play_at_pos				(stalker_veteran01,stalker_veteran01:position(),0);
 			wait(4000)			
 		end
-		wait()			
 
 		if stalker_veteran01:see(actor) == false and stalker_veteran02:see(actor) == false then		
 			rainbow_poshutil_ya:play_at_pos				(stalker_veteran02,stalker_veteran02:position(),0);
 			wait(4000)			
 		end
-		wait()			
 
 		if stalker_veteran01:see(actor) == false and stalker_veteran02:see(actor) == false then		
 			prof_teper_ne_uspokous:play_at_pos				(stalker_veteran01,stalker_veteran01:position(),0);
 			wait(4000)			
 		end
-		wait()			
 
 		if stalker_veteran01:see(actor) == false and stalker_veteran02:see(actor) == false then
 			prof_prikroy:play_at_pos	(stalker_veteran01,stalker_veteran01:position(),0);
 			wait(8000)			
 		end
-		wait()			
 
 		if stalker_veteran01:see(actor) == false and stalker_veteran02:see(actor) == false then		
 			rainbow_nda:play_at_pos				(stalker_veteran02,stalker_veteran02:position(),0);
 			wait(8000)			
 		end
-		wait()			
 
 		if stalker_veteran01:see(actor) == false and stalker_veteran02:see(actor) == false then		
 			prof_vrode_nikogo:play_at_pos				(stalker_veteran01,stalker_veteran01:position(),0);
 			wait(5000)			
 		end
-		wait()			
 
 		if stalker_veteran01:see(actor) == false and stalker_veteran02:see(actor) == false then
 			prof_kgm2:play_at_pos	(stalker_veteran01,stalker_veteran01:position(),0);
 			wait(2000)			
 		end
-		wait()			
 
 		if stalker_veteran01:see(actor) == false and stalker_veteran02:see(actor) == false then
 			prof_valim_otsuda:play_at_pos	(stalker_veteran01,stalker_veteran01:position(),0);
 			wait(10000)			
 		end
-		wait()			
 
 		if stalker_veteran01:see(actor) == false and stalker_veteran02:see(actor) == false then
 			prof_chto_za_chert:play_at_pos	(stalker_veteran01,stalker_veteran01:position(),0);
 			wait(4000)			
 		end
-		wait()			
 
 		if stalker_veteran01:see(actor) == false and stalker_veteran02:see(actor) == false then		
 			rainbow_za_namy_sledyat:play_at_pos				(stalker_veteran02,stalker_veteran02:position(),0);
 			wait(5000)			
 		end
-		wait()			
 
 		if stalker_veteran01:see(actor) == false and stalker_veteran02:see(actor) == false then		
 			prof_u_menya_toje:play_at_pos				(stalker_veteran01,stalker_veteran01:position(),0);
 			wait(4000)			
 		end
-		wait()			
 
 		if stalker_veteran01:see(actor) == false and stalker_veteran02:see(actor) == false then
 			prof_blin:play_at_pos				(stalker_veteran01,stalker_veteran01:position(),0);
 			wait(2000)			
 		end
-		wait()			
 
 		if stalker_veteran01:see(actor) == false and stalker_veteran02:see(actor) == false then		
 			prof_kgm2:play_at_pos				(stalker_veteran01,stalker_veteran01:position(),0);
 			wait(12000)			
 		end
-		wait()			
 
 		if stalker_veteran01:see(actor) == false and stalker_veteran02:see(actor) == false then		
 			prof_do_basi_bi_dobratsya:play_at_pos				(stalker_veteran01,stalker_veteran01:position(),0);
 			wait(3000)			
 		end
-		wait()			
 
 	while true do
 		if stalker_veteran01:see(actor) or stalker_veteran02:see(actor) then
