@@ -27,7 +27,7 @@ protected:
 	CWeaponList*	m_pContainer;
 	CWeaponHUD*		m_pHUD;
 
-	LPSTR			pstrWalmark;
+	LPSTR			pstrWallmark;
 	LPSTR			pstrUIIcon;
 	Shader*			hWallmark;
 	Shader*			hUIIcon;

@@ -28,7 +28,7 @@ CWeapon::CWeapon(LPCSTR name)
 	m_Offset.identity();
 
 	pstrUIIcon	= 0;
-	pstrWalmark	= 0;
+	pstrWallmark= 0;
 	hUIIcon		= 0;
 	hWallmark	= 0;
 }
@@ -38,6 +38,10 @@ CWeapon::~CWeapon()
 	_FREE		(m_WpnName);
 	_DELETE		(pVisual);
 	_DELETE		(m_pHUD);
+	
+	_FREE		(pstrUIIcon);
+	_FREE		(pstrWallmark);
+	
 	Device.Shader.Delete(hUIIcon);
 	if (hWallmark) Device.Shader.Delete(hWallmark);
 }
@@ -76,8 +80,8 @@ void CWeapon::Load		(CInifile* ini, const char* section)
 	hUIIcon				= Device.Shader.Create("font",pstrUIIcon);
 	
 	LPCSTR	name		= ini->ReadSTRING	(section,"wm_name");
-	pstrWalmark			= strdup(name);
-	if (0==pstrWalmark)	hWallmark = 0; 
+	pstrWallmark		= strdup(name);
+	if (0==pstrWallmark)hWallmark = 0; 
 	else				hWallmark = Device.Shader.Create("effects\\wallmark",pstrWalmark);
 	fWallmarkSize		= ini->ReadFLOAT	(section,"wm_size");
 
@@ -121,8 +125,8 @@ void CWeapon::OnDeviceCreate()
 	if (0==pstrUIIcon)	hUIIcon		= 0;
 	else				hUIIcon		= Device.Shader.Create("font",pstrUIIcon);
 
-	if (0==pstrWalmark)	hWallmark	= 0; 
-	else				hWallmark	= Device.Shader.Create("effects\\wallmark",pstrWalmark);
+	if (0==pstrWallmark)hWallmark	= 0; 
+	else				hWallmark	= Device.Shader.Create("effects\\wallmark",pstrWallmark);
 }
 void CWeapon::OnDeviceDestroy()
 {
