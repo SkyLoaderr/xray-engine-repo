@@ -197,7 +197,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     	break;
 	case COMMAND_RESET_ANIMATION:
    		break;
-    case COMMAND_MAKE_PREVIEW:
+    case COMMAND_MAKE_PREVIEW:  
     	Tools.MakePreview();
     	break;
     case COMMAND_PREVIEW_OBJ_PREF:

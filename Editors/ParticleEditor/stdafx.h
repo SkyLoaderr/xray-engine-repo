@@ -72,9 +72,6 @@ using namespace std;
 
 #define IC				__forceinline
 
-#define _MIN(a,b) (((a)<(b))?(a):(b))
-#define _MAX(a,b) (((a)>(b))?(a):(b))
-
 // iseful macros
 // MSC names for functions
 #ifdef _eof
@@ -108,12 +105,6 @@ __inline LPVOID _aligned_malloc(size_t sz, int r){
 __inline void _aligned_free(LPVOID ptr){
 	free(ptr);
 }
-
-namespace std{
-__inline float _cpp_min(float a, float b){ return _MIN(a,b);}
-__inline float _cpp_max(float a, float b){ return _MAX(a,b);}
-}
-
 
 #define _RELEASE( _Object_ )\
 	if( (_Object_) ){\
