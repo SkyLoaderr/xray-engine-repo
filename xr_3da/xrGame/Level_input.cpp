@@ -77,15 +77,15 @@ void CLevel::IR_OnKeyboardPress(int key)
 		return;
 	}
 #ifdef DEBUG
-	case DIK_F9:
-		getAI().SetStartPoint(CurrentEntity()->Position());
-		return;
-	case DIK_F10:
-		getAI().SetFinishPoint(CurrentEntity()->Position());
-		return;
-	case DIK_F11:
-		getAI().ComputePath();
-		return;
+//	case DIK_F9:
+//		getAI().SetStartPoint(CurrentEntity()->Position());
+//		return;
+//	case DIK_F10:
+//		getAI().SetFinishPoint(CurrentEntity()->Position());
+//		return;
+//	case DIK_F11:
+//		getAI().ComputePath();
+//		return;
 #endif
 	}
 
