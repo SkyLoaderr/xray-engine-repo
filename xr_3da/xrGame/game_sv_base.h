@@ -26,6 +26,7 @@ public:
 	virtual		s32					get_option_i			(LPCSTR lst, LPCSTR name, s32 def = 0);
 
 	// Events
+	virtual		void				OnPlayerConnect			(LPCSTR options);
 	virtual		void				OnPlayerReady			(u32 id_who)					{};
 	virtual		void				OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)	= 0;
 	virtual		BOOL				OnTargetTouched			(u32 id_who, u32 eid_target)	= 0;	// TRUE=allow ownership, FALSE=denie
