@@ -15,6 +15,7 @@ extern		pso_MemFill		xrMemFill_x86;
 extern		pso_MemFill32	xrMemFill32_MMX;
 extern		pso_MemFill32	xrMemFill32_x86;
 
+
 void	xrMemory::_initialize	()
 {
 	DWORD	features		= CPU::ID.feature & CPU::ID.os_support;
@@ -119,4 +120,5 @@ char* __stdcall xr_strdup	(const char* string)
 	Memory.mem_copy		(memory,string,len);
 	return	memory;
 }
+
 

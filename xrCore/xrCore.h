@@ -5,8 +5,8 @@
 // XRCORE_API functions as being imported from a DLL, whereas this DLL sees symbols
 // defined with this macro as being exported.
 
-#ifndef XR_CORE_H
-#define XR_CORE_H
+#ifndef xrCoreH
+#define xrCoreH
 
 #pragma once
 #define WIN32_LEAN_AND_MEAN			// Exclude rarely-used stuff from Windows headers
@@ -158,6 +158,8 @@ using namespace std;
 #include "xrSyncronize.h"
 #include "xrMemory.h"
 #include "xrDebug.h"
+#include "FS.h"
+#include "log.h"
 
 template <class T>
 class destructor
@@ -180,7 +182,7 @@ public:
 	string64	CompName;
 	string512	Params;
 public:
-	void		_initialize	(const char* ApplicationName);
+	void		_initialize	(LPCSTR ApplicationName, LogCallback cb=0);
 	void		_destroy	();
 };
 extern XRCORE_API xrCore Core;

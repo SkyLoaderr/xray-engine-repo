@@ -23,7 +23,7 @@ BOOL APIENTRY	DllMain(	HANDLE hModule,
     return TRUE;
 }
 
-void xrCore::_initialize	(const char* _ApplicationName)
+void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb)
 {
 	static BOOL				bInitialized	= FALSE;
 
@@ -41,6 +41,8 @@ void xrCore::_initialize	(const char* _ApplicationName)
 	DWORD	sz_comp			= sizeof(CompName);
 	GetComputerName			(CompName,&sz_comp);
 
+	CreateLog				(cb);
+
 	// Mathematics & PSI detection
 	InitMath				();
 
@@ -48,4 +50,9 @@ void xrCore::_initialize	(const char* _ApplicationName)
 	Memory._initialize		();
 
 	bInitialized			= TRUE;
+}
+
+void xrCore::_destroy		()
+{
+	CloseLog				();
 }

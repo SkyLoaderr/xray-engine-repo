@@ -326,6 +326,28 @@
 				</File>
 			</Filter>
 		</Filter>
+		<Filter
+			Name="FS"
+			Filter="">
+			<File
+				RelativePath="FS.cpp">
+			</File>
+			<File
+				RelativePath="FS.h">
+			</File>
+			<File
+				RelativePath="LzHuf.cpp">
+			</File>
+			<File
+				RelativePath="log.cpp">
+			</File>
+			<File
+				RelativePath="log.h">
+			</File>
+			<File
+				RelativePath="lzhuf.h">
+			</File>
+		</Filter>
 		<File
 			RelativePath="xrDebug.cpp">
 		</File>

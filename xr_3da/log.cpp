@@ -5,11 +5,9 @@
 #include "log.h"
 
 static string64				logFName		= "engine.log";
-static HWND					logWindow		= NULL;
-static HWND					logoWindow		= NULL;
-static HWND					logControl		= NULL;
 static xrCriticalSection	logCS;
 std::vector <LPCSTR>		LogFile;
+static LogCallback			LogCB			= 0;
 
 void AddOne				(const char *split) 
 {
@@ -28,13 +26,8 @@ void AddOne				(const char *split)
 
 	LogFile.push_back	(split);
 
-	if (logControl) 
-	{
-		SendMessage	( logControl, LB_ADDSTRING, 0, (LPARAM)split );
-		u32 dwCnt = SendMessage	( logControl, LB_GETCOUNT, 0, 0);
-		SendMessage	( logControl, LB_SETTOPINDEX, dwCnt-1, 0);
-		UpdateWindow( logWindow);
-	}
+	//exec CallBack
+	if (LogCB)			LogCB(split);
 
 	logCS.Leave			();
 }
@@ -114,55 +107,22 @@ void Log(const char *msg, const Fmatrix &dop) {
 	Log		(buf);
 }
 
-static BOOL CALLBACK logDlgProc( HWND hw, UINT msg, WPARAM wp, LPARAM lp )
-{
-	switch( msg ){
-		case WM_DESTROY:
-			logControl= 0;
-			logWindow = 0;
-			break;
-		case WM_CLOSE:
-			DestroyWindow( hw );
-			break;
-		case WM_COMMAND:
-			if( LOWORD(wp)==IDCANCEL )
-				DestroyWindow( hw );
-			break;
-		default:
-			return FALSE;
-	}
-	return TRUE;
-}
-
 static char *month[12] = {
 	"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"
 };
 static int day_in_month[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
-
-void CreateLog(BOOL bQuiet)
+void CreateLog(LogCallback cb)
 {
+	LogCB				= cb;
 	strconcat			(logFName,"logs\\",Core.ApplicationName,"_",Core.UserName,".log");
+    R_ASSERT2(VerifyPath(logFName),"Can't create directory");
 
 	FILE *f;
 	f = fopen(logFName, "wt");
 	if (f==NULL) abort();
 	fprintf(f,"\n");
 	fclose(f);
-
-	if (!bQuiet) {
-		logWindow = CreateDialog(
-			GetModuleHandle(NULL),
-			MAKEINTRESOURCE(IDD_LOG),
-			0, logDlgProc );
-		
-		logControl = GetDlgItem( logWindow, IDC_LIST );
-	} else {
-		logoWindow = CreateDialog(
-			GetModuleHandle(NULL),
-			MAKEINTRESOURCE(IDD_STARTUP),
-			0, logDlgProc );
-	}
 
 	// Calculating build
 	long Time;
@@ -183,36 +143,5 @@ void CreateLog(BOOL bQuiet)
 
 void CloseLog(void)
 {
-	CloseLogWindow();
-	// Don't cleanup log
-	/*
-	for (u32 i=0; i<LogFile.size(); i++) {
-		xr_free(LogFile[i]);
-	}
-	*/
 	LogFile.clear();
 }
-
-void CloseLogWindow(void) {
-	if (logWindow) {
-		DestroyWindow(logWindow);
-		logWindow	= NULL;
-		logControl	= NULL;
-	}
-	if (logoWindow) {
-		DestroyWindow(logoWindow);
-		logoWindow	= NULL;
-	}
-}
-
-/*
-#ifndef ENGINE_BUILD
-void ENGINE_API	__cdecl Status	(const char *format, ...)
-{
-	if (logWindow) {
-		HWND S = GetDlgItem( logWindow, IDC_TEXT );
-		SetWindowText(S,format);
-	}
-}
-#endif
-*/

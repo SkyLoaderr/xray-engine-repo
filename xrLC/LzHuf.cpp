@@ -29,7 +29,7 @@ char		wterr[] = "Can't write.";
 #define MAX_FREQ    0x4000					/* updates tree when the */
 
 
-BYTE				text_buf[N + F];
+u8				text_buf[N + F];
 int					match_position, match_length, lson[N + 1], rson[N + 257], dad[N + 1];
 
 unsigned			code, len;
@@ -53,13 +53,13 @@ private:
 	unsigned	putbuf;
 	unsigned	putlen;
 	
-	BYTE*		in_start;
-	BYTE*		in_end;
-	BYTE*		in_iterator;
+	u8*			in_start;
+	u8*			in_end;
+	u8*			in_iterator;
 	
-	BYTE*		out_start;
-	BYTE*		out_end;
-	BYTE*		out_iterator;
+	u8*			out_start;
+	u8*			out_end;
+	u8*			out_iterator;
 public:
 	IC int		_getb() {
 		if (in_iterator==in_end) return EOF;
@@ -67,12 +67,12 @@ public:
 	}
 	IC void		_putb(int c) {
 		if (out_iterator==out_end) {
-			int			out_size	= out_end-out_start;
-			out_start	= (BYTE*) xr_realloc(out_start,out_size+1024);
+			int	out_size= out_end-out_start;
+			out_start	= (u8*) xr_realloc(out_start,out_size+1024);
 			out_iterator= out_start+out_size;
 			out_end		= out_iterator+1024;
 		}
-		*out_iterator++ = BYTE(c);
+		*out_iterator++ = u8(c);
 	}
 	
 	LZfs() {
@@ -80,7 +80,7 @@ public:
 		out_start	= out_end	= out_iterator = 0;
 	}
 	
-	IC void		Init_Input(BYTE* _start, BYTE* _end) {
+	IC void		Init_Input(u8* _start, u8* _end) {
 		// input
 		in_start	= _start;
 		in_end		= _end;
@@ -91,7 +91,7 @@ public:
 	}
 	IC void		Init_Output(int _rsize) {
 		// output
-		out_start	= (BYTE*)xr_malloc(_rsize);
+		out_start	= (u8*)xr_malloc(_rsize);
 		out_end		= out_start + _rsize;
 		out_iterator= out_start;
 	}
@@ -101,7 +101,7 @@ public:
 	IC int		OutSize		() {
 		return out_iterator-out_start;
 	}
-	IC BYTE*	OutPointer	() {
+	IC u8*	OutPointer	() {
 		return out_start;
 	}
 	IC void		OutRelease	() {
@@ -177,7 +177,7 @@ IC void InitTree(void)  /* initialize trees */
 void InsertNode(int r)  /* insert to tree */
 {
     int				i, p, cmp;
-    BYTE			*key;
+    u8			*key;
     unsigned		c;
 	
     cmp = 1;
@@ -273,7 +273,7 @@ void DeleteNode(int p)  /* remove from tree */
 
 /* table for encoding and decoding the upper 6 bits of position */
 /* for encoding */
-BYTE p_len[64] = {
+u8 p_len[64] = {
     0x03, 0x04, 0x04, 0x04, 0x05, 0x05, 0x05, 0x05,
 	0x05, 0x05, 0x05, 0x05, 0x06, 0x06, 0x06, 0x06,
 	0x06, 0x06, 0x06, 0x06, 0x06, 0x06, 0x06, 0x06,
@@ -284,7 +284,7 @@ BYTE p_len[64] = {
 	0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08
 };
 
-BYTE p_code[64] = {
+u8 p_code[64] = {
     0x00, 0x20, 0x30, 0x40, 0x50, 0x58, 0x60, 0x68,
 	0x70, 0x78, 0x80, 0x88, 0x90, 0x94, 0x98, 0x9C,
 	0xA0, 0xA4, 0xA8, 0xAC, 0xB0, 0xB4, 0xB8, 0xBC,
@@ -296,7 +296,7 @@ BYTE p_code[64] = {
 };
 
 /* for decoding */
-BYTE d_code[256] = {
+u8 d_code[256] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -331,7 +331,7 @@ BYTE d_code[256] = {
 	0x38, 0x39, 0x3A, 0x3B, 0x3C, 0x3D, 0x3E, 0x3F,
 };
 
-BYTE d_len[256] = {
+u8 d_len[256] = {
     0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03,
 	0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03,
 	0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03,
@@ -637,7 +637,7 @@ void Decode(void)  /* recover */
 
 unsigned _writeLZ	(int hf, void* d, unsigned size)
 {
-	BYTE*	start = (BYTE*) d;
+	u8*	start = (u8*) d;
 	fs.Init_Input(start,start+size);
 	
 	// Actual compression
@@ -649,18 +649,18 @@ unsigned _writeLZ	(int hf, void* d, unsigned size)
 	return size_out;
 }
 
-void _compressLZ	(BYTE** dest, unsigned* dest_sz, void* src, unsigned src_sz)
+void _compressLZ	(u8** dest, unsigned* dest_sz, void* src, unsigned src_sz)
 {
-	BYTE*	start = (BYTE*) src;
+	u8*	start = (u8*) src;
 	fs.Init_Input(start,start+src_sz);
     Encode();
 	*dest		= fs.OutPointer();
 	*dest_sz	= fs.OutSize();
 }
 
-void _decompressLZ	(BYTE** dest, unsigned* dest_sz, void* src, unsigned src_sz)
+void _decompressLZ	(u8** dest, unsigned* dest_sz, void* src, unsigned src_sz)
 {
-	BYTE*	start = (BYTE*) src;
+	u8*	start = (u8*) src;
 	fs.Init_Input(start,start+src_sz);
     Decode();
 	*dest		= fs.OutPointer();
@@ -670,7 +670,7 @@ void _decompressLZ	(BYTE** dest, unsigned* dest_sz, void* src, unsigned src_sz)
 unsigned _readLZ	(int hf, void* &d, unsigned size)
 {
 	// Read file in memory
-	BYTE*	data	= (BYTE*)xr_malloc(size);
+	u8*	data	= (u8*)xr_malloc(size);
 	_read	(hf,data,size);
 	
 	fs.Init_Input(data,data+size);

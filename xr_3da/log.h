@@ -1,22 +1,21 @@
-#ifndef _log_H__
-#define _log_H__
+#ifndef logH
+#define logH
 
 #define VPUSH(a)	a.x,a.y,a.z
 
-void ENGINE_API __cdecl Msg		(const char *format, ...);
-void ENGINE_API			Log		(const char *msg);
-void ENGINE_API			Log		(const char *msg);
-void ENGINE_API			Log		(const char *msg, const char*	dop);
-void ENGINE_API			Log		(const char *msg, u32			dop);
-void ENGINE_API			Log		(const char *msg, int  			dop);
-void ENGINE_API			Log		(const char *msg, float			dop);
-void ENGINE_API			Log		(const char *msg, const Fvector& dop);
-void ENGINE_API			Log		(const char *msg, const Fmatrix& dop);
-void ENGINE_API	__cdecl Status	(const char *format, ...);
+void XRCORE_API __cdecl Msg		(LPCSTR format, ...);
+void XRCORE_API			Log		(LPCSTR msg);
+void XRCORE_API			Log		(LPCSTR msg);
+void XRCORE_API			Log		(LPCSTR msg, LPCSTR			dop);
+void XRCORE_API			Log		(LPCSTR msg, u32			dop);
+void XRCORE_API			Log		(LPCSTR msg, int  			dop);
+void XRCORE_API			Log		(LPCSTR msg, float			dop);
+void XRCORE_API			Log		(LPCSTR msg, const Fvector& dop);
+void XRCORE_API			Log		(LPCSTR msg, const Fmatrix& dop);
 
-void CreateLog					(BOOL bQ=FALSE);
-void CloseLog					(void);
-void CloseLogWindow				(void);
+typedef void (__stdcall * LogCallback) (LPCSTR string);
+void CreateLog					(LogCallback cb=0);
+void CloseLog					();
 
 #endif
 
