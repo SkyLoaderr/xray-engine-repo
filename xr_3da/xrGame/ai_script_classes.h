@@ -203,7 +203,7 @@ public:
 						  dynamic_cast<CEntityCondition*>(m_tpGameObject);
 		
 		if (pEntityCondition)
-			return			(pEntityCondition->GetWhoHitLastTime()->cName());
+			return			(*pEntityCondition->GetWhoHitLastTime()->cName());
 		else 
 		{
 			LuaOut			(Lua::eLuaMessageTypeError,"CLuaGameObject : cannot access class member  WhoHitName()");
@@ -217,7 +217,7 @@ public:
 						  dynamic_cast<CEntityCondition*>(m_tpGameObject);
 		
 		if (pEntityCondition)
-			return			(pEntityCondition->GetWhoHitLastTime()->cNameSect());
+			return			(*pEntityCondition->GetWhoHitLastTime()->cNameSect());
 		else 
 		{
 			LuaOut			(Lua::eLuaMessageTypeError,"CLuaGameObject : cannot access class member  WhoHitName()");
