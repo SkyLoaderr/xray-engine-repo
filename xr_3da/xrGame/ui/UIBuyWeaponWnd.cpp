@@ -519,14 +519,15 @@ bool CUIBuyWeaponWnd::BagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 //на пояс
 bool CUIBuyWeaponWnd::BeltProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
-	CUIBuyWeaponWnd* this_inventory = dynamic_cast<CUIBuyWeaponWnd*>(pList->GetParent());
-	R_ASSERT2(this_inventory, "wrong parent addressed as inventory wnd");
-
-
-	PIItem pInvItem = (PIItem)pItem->GetData();
-
-	if(!this_inventory->GetInventory()->CanPutInBelt(pInvItem)) return false;
-	return this_inventory->GetInventory()->Belt(pInvItem);
+	return false;
+//	CUIBuyWeaponWnd* this_inventory = dynamic_cast<CUIBuyWeaponWnd*>(pList->GetParent());
+//	R_ASSERT2(this_inventory, "wrong parent addressed as inventory wnd");
+//
+//
+//	PIItem pInvItem = (PIItem)pItem->GetData();
+//
+//	if(!this_inventory->GetInventory()->CanPutInBelt(pInvItem)) return false;
+//	return this_inventory->GetInventory()->Belt(pInvItem);
 }
 
 //------------------------------------------------
