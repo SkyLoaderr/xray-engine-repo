@@ -5,15 +5,16 @@
 #include "PhysicsCommon.h"
 #include "gamemtllib.h"
 
-void CPHContactBodyEffector::Init(dBodyID body, dContact& contact, float flotation)
+void CPHContactBodyEffector::Init(dBodyID body,const dContact& contact,SGameMtl* material)
 {
 	CPHBaseBodyEffector::Init(body);
 	m_contact=contact;
-	m_recip_flotation=1.f-flotation;
+	m_recip_flotation=1.f-material->fFlotationFactor;
+	m_material=material;
 }
-void CPHContactBodyEffector::Merge(dContact& contact, float	flotation)
+void CPHContactBodyEffector::Merge(const dContact& contact, SGameMtl* material)
 {
-	m_recip_flotation=_max(1.f-flotation,m_recip_flotation);
+	m_recip_flotation=_max(1.f-material->fFlotationFactor,m_recip_flotation);
 	//m_contact.geom.normal[0]+=contact.geom.normal[0];
 	//m_contact.geom.normal[1]+=contact.geom.normal[1];
 	//m_contact.geom.normal[2]+=contact.geom.normal[2];
@@ -39,7 +40,7 @@ void CPHContactBodyEffector::Apply()
 						0.f
 						};
 
-		if(!GMLib.GetMaterialByIdx((u16)m_contact.surface.mode)->Flags.is(SGameMtl::flPassable))
+		if(!m_material->Flags.is(SGameMtl::flPassable))
 		{
 			dVector3& norm=m_contact.geom.normal;
 			dNormalize3(norm);

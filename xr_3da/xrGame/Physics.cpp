@@ -86,14 +86,12 @@ public:
 IC void add_contact_body_effector(dBodyID body,const dContact& c,SGameMtl* material)
 {
 	CPHContactBodyEffector* effector=(CPHContactBodyEffector*)dBodyGetData(body);
-	dContact _c=c;
-	_c.surface.mode=material->GetID();
 	if(effector)
-		effector->Merge(_c,material->fFlotationFactor);
+		effector->Merge(c,material);
 	else
 	{	
 		effector=ContactEffectors.add();
-		effector->Init(body,_c,material->fFlotationFactor);
+		effector->Init(body,c,material);
 		dBodySetData(body,(void*)effector);
 	}
 }
