@@ -58,10 +58,10 @@ occRasterizer::~occRasterizer	()
 
 void occRasterizer::clear		()
 {
-	DWORD size	= occ_dim*occ_dim;
-	float f		= 1.f;
-	fillDW_8x	(LPDWORD(bufFrame),		size,0);
-	fillDW_8x	(LPDWORD(bufDepth),		size,*LPDWORD(&f));
+	DWORD size		= occ_dim*occ_dim;
+	float f			= 1.f;
+	PSGP.memFill32	(bufFrame,size,0);
+	PSGP.memFill32	(bufDepth,size,*LPDWORD(&f));
 }
 
 IC BOOL shared(occTri* T1, occTri* T2)
