@@ -100,6 +100,9 @@ public:
 	void							render_hud					();
 	void							render_smap_direct			(Fmatrix& mCombined);
 	void							render_smap_sector			(CSector* S, Fmatrix& mCombined, Fvector& C);
+
+	IRender_Portal*					getPortal					(int id);
+	IRender_Sector*					getSectorActive				();
 public:
 	// Loading / Unloading
 	virtual void					create						();
@@ -109,10 +112,7 @@ public:
 	virtual void					level_Unload				();
 
 	// Information
-	virtual int						getVisualsCount				();
-	virtual IRender_Portal*			getPortal					(int id);
 	virtual IRender_Sector*			getSector					(int id);
-	virtual IRender_Sector*			getSectorActive				();
 	virtual IRender_Visual*			getVisual					(int id);
 	virtual D3DVERTEXELEMENT9*		getVB_Format				(int id);
 	virtual IDirect3DVertexBuffer9*	getVB						(int id);

@@ -99,6 +99,9 @@ private:
 	void							calc_DetailTexturing	();
 	void							calc_FogPass			();
 public:
+	IRender_Portal*					getPortal				(int id);
+
+public:
 	// Loading / Unloading
 	virtual	void					create					();
 	virtual	void					destroy					();
@@ -107,9 +110,7 @@ public:
 	virtual void					level_Unload			();
 	
 	// Information
-	virtual IRender_Portal*			getPortal				(int id);
 	virtual IRender_Sector*			getSector				(int id);
-	virtual IRender_Sector*			getSectorActive			();
 	virtual IRender_Visual*			getVisual				(int id);
 	virtual D3DVERTEXELEMENT9*		getVB_Format			(int id);
 	virtual IDirect3DVertexBuffer9*	getVB					(int id);

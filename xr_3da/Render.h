@@ -102,9 +102,7 @@ public:
 	virtual void					level_Unload			()								= 0;
 
 	// Information
-	virtual IRender_Portal*			getPortal				(int id)						= 0;
 	virtual IRender_Sector*			getSector				(int id)						= 0;
-	virtual IRender_Sector*			getSectorActive			()								= 0;
 	virtual IRender_Visual*			getVisual				(int id)						= 0;
 	virtual D3DVERTEXELEMENT9*		getVB_Format			(int id)						= 0;
 	virtual IDirect3DVertexBuffer9*	getVB					(int id)						= 0;
