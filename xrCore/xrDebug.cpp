@@ -184,11 +184,9 @@ LONG UnhandledFilter	( struct _EXCEPTION_POINTERS *pExceptionInfo )
 			char szScratch [_MAX_PATH];
 
 			// work out a good place for the dump file
-			if (!GetTempPath( _MAX_PATH, szDumpPath ))
-				strcpy( szDumpPath, "logs\\" );
-
-			strcat( szDumpPath, Core.ApplicationName );
-			strcat( szDumpPath, ".crash" );
+			strcpy	( szDumpPath, "logs\\"				);
+			strcat	( szDumpPath, Core.ApplicationName	);
+			strcat	( szDumpPath, ".crash"				);
 
 			// ask the user if they want to save a dump file
 			if (::MessageBox( NULL, "Would you like to save a crash-report file?", Core.ApplicationName, MB_YESNO )==IDYES)
