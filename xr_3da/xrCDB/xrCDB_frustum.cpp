@@ -14,6 +14,12 @@ public:
 	
 	CFrustum*		F;
 	
+	IC void			_init		(COLLIDER* CL, TRI* T, CFrustum* _F)
+	{
+		dest		= CL;
+		tris		= T;
+		F			= _F;
+	}
 	IC EFC_Visible	_box		(Fvector& C, Fvector& E, BYTE& mask)
 	{
 		Fvector		m,M;
@@ -21,10 +27,19 @@ public:
 		M.add		(C,E);
 		return F->testAABB		(m,M,mask);
 	}
-	IC void			_prim		(DWORD prim)
+	void			_prim		(DWORD prim)
 	{
 		if (bClass3)	{
-			
+			sPoly		src,dest;
+			src.resize	(3);
+			src[0]		= *tris[prim].verts[0];
+			src[1]		= *tris[prim].verts[1];
+			src[2]		= *tris[prim].verts[2];
+			if (F->ClipPoly(src,dest))
+			{
+				RESULT& R	= dest->r_add();
+				R.id		= prim;
+			}
 		} else {
 			RESULT& R	= dest->r_add();
 			R.id		= prim;
