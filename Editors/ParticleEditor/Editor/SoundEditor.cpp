@@ -19,14 +19,12 @@
 #pragma resource "*.dfm"
 
 TfrmSoundLib* TfrmSoundLib::form = 0;
-FS_QueryMap	TfrmSoundLib::sound_map;
 FS_QueryMap	TfrmSoundLib::modif_map;
 //---------------------------------------------------------------------------
 __fastcall TfrmSoundLib::TfrmSoundLib(TComponent* Owner)
     : TForm(Owner)
 {
     DEFINE_INI(fsStorage);
-    bImportMode = false;
 	bFormLocked = false;
 }
 //---------------------------------------------------------------------------
@@ -34,9 +32,11 @@ __fastcall TfrmSoundLib::TfrmSoundLib(TComponent* Owner)
 void __fastcall TfrmSoundLib::FormCreate(TObject *Sender)
 {
 	m_ItemProps = TProperties::CreateForm("",paProperties,alClient);
-    m_ItemList	= TItemList::CreateForm("Items",paItems,alClient);
+    m_ItemList	= TItemList::CreateForm("Items",paItems,alClient,TItemList::ilEditMenu|TItemList::ilMultiSelect);
+    m_ItemList->OnItemRemove	= RemoveSound;
+    m_ItemList->OnItemRename	= RenameSound;
     m_ItemList->OnItemsFocused 	= OnItemsFocused;
-    m_ItemList->SetImages(ImageList);
+    m_ItemList->SetImages		(ImageList);
     bAutoPlay 	= FALSE;
 }
 //---------------------------------------------------------------------------
@@ -54,10 +54,8 @@ void __fastcall TfrmSoundLib::EditLib(AnsiString& title, bool bImport)
 	if (!form){
         form 				= xr_new<TfrmSoundLib>((TComponent*)0);
         form->Caption 		= title;
-	    form->bImportMode 	= bImport;
-        form->ebRemoveSound->Enabled = !bImport;
-
-        if (!form->bImportMode)  SndLib.GetSounds(sound_map);
+        form->ebRemoveCurrent->Enabled = !bImport;
+        form->ebRenameCurrent->Enabled = !bImport;
 		form->modif_map.clear	();
     }
 
@@ -66,61 +64,60 @@ void __fastcall TfrmSoundLib::EditLib(AnsiString& title, bool bImport)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmSoundLib::ImportSounds()
-{
-	sound_map.clear			();
-    int new_cnt 			= SndLib.GetLocalNewSounds(sound_map);
-    if (new_cnt){
-    	if (ELog.DlgMsg(mtInformation,"Found %d new sound(s)",new_cnt))
-    		EditLib			(AnsiString("Update sounds"),true);
-    }else{
-    	ELog.DlgMsg			(mtInformation,"Can't find new sounds.");
-    }
-}
-
 void __fastcall TfrmSoundLib::UpdateLib()
 {
     SaveSoundParams();
-    if (bImportMode&&!sound_map.empty()){
+    // save game sounds
+    if (modif_map.size()){
+        AStringVec modif;
         LockForm();
-        SndLib.SafeCopyLocalToServer(sound_map);
-		// rename with folder
-		FS_QueryMap	files=sound_map;
-        sound_map.clear();
-        AnsiString fn;
-        FS_QueryPairIt it=files.begin();
-        FS_QueryPairIt _E=files.end();
-        for (;it!=_E; it++){
-        	fn 	= it->first;
-        	SndLib.UpdateFileName	(fn);
-            sound_map.insert(mk_pair(fn,FS_QueryItem(it->second.size,it->second.modif,it->second.flags.get())));
-        }
-        // sync
-		SndLib.SynchronizeSounds(true,true,true,&sound_map,0);
+        SndLib.SynchronizeSounds(true,true,true,&modif_map,0);
         UnlockForm();
-    	SndLib.RefreshSounds(false);
-    }else{
-	    // save game sounds
-        if (modif_map.size()){
-            AStringVec modif;
-	        LockForm();
-            SndLib.SynchronizeSounds(true,true,true,&modif_map,0);
-            UnlockForm();
-	    	SndLib.RefreshSounds(false);
-        }
-	}
+        SndLib.RefreshSounds(false);
+    }
 }
 
 bool __fastcall TfrmSoundLib::HideLib()
 {
 	if (form){
     	form->Close();
-    	sound_map.clear();
 		modif_map.clear();
     }
     return true;
 }
 //---------------------------------------------------------------------------
+
+void TfrmSoundLib::AppendModif(LPCSTR nm)
+{
+    FS_QueryItem 	dest;
+    bool bFind		= FS.file_find(dest,_sounds_,ChangeFileExt(nm,".wav").c_str(),true); R_ASSERT(bFind);
+    modif_map.insert(mk_pair(nm,dest));
+}
+//---------------------------------------------------------------------------
+
+BOOL __fastcall TfrmSoundLib::RemoveSound(LPCSTR fname, EItemType type)
+{
+	// delete it from modif map
+    FS_QueryPairIt it=modif_map.find(fname); 
+    if (it!=modif_map.end()) modif_map.erase(it);
+	// remove sound source
+	return SndLib.RemoveSound(fname,type);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmSoundLib::RenameSound(LPCSTR p0, LPCSTR p1, EItemType type)
+{
+    // rename sound source
+	SndLib.RenameSound(p0,p1,type);
+	// delete old from map
+    FS_QueryPairIt old_it=modif_map.find(p0); 
+    if (old_it!=modif_map.end()){
+    	modif_map.erase	(old_it);
+        AppendModif		(p1);
+	}	
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfrmSoundLib::FormShow(TObject *Sender)
 {
     InitItemsList		();
@@ -139,14 +136,18 @@ void __fastcall TfrmSoundLib::FormClose(TObject *Sender, TCloseAction &Action)
 //---------------------------------------------------------------------------
 void TfrmSoundLib::InitItemsList()
 {
+    FS_QueryMap		sound_map;
+    SndLib.GetSounds(sound_map,TRUE);
+
 	ListItemsVec items;
 
     ListItem* V;
-    // fill
+    // fill items
 	FS_QueryPairIt it = sound_map.begin();
 	FS_QueryPairIt _E = sound_map.end();
     for (; it!=_E; it++)
         LHelper.CreateItem(items,it->first.c_str(),0);
+
     m_ItemList->AssignItems(items,false,true);
 }
 
@@ -189,12 +190,10 @@ void __fastcall TfrmSoundLib::ebCancelClick(TObject *Sender)
 
 void __fastcall TfrmSoundLib::SaveSoundParams()
 {
-	if (m_ItemProps->IsModified()||bImportMode){
+	if (m_ItemProps->IsModified()){
 	    for (THMIt t_it=m_THMs.begin(); t_it!=m_THMs.end(); t_it++){
-            (*t_it)->Save(0,bImportMode?_import_:0);
-            AnsiString fn = (*t_it)->SrcName();
-            FS_QueryPairIt it=sound_map.find(fn); R_ASSERT(it!=sound_map.end());
-            modif_map.insert(*it);
+            (*t_it)->Save	(0,0);
+            AppendModif		((*t_it)->SrcName());
         }
     }
 }
@@ -215,9 +214,60 @@ void __fastcall TfrmSoundLib::fsStorageSavePlacement(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmSoundLib::ebRemoveSoundClick(TObject *Sender)
+void __fastcall TfrmSoundLib::ebRemoveCurrentClick(TObject *Sender)
 {
-	m_ItemList->RemoveSelItems(SndLib.RemoveSound);
+	m_ItemList->RemoveSelItems();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmSoundLib::ebRenameCurrentClick(TObject *Sender)
+{
+	m_ItemList->RenameSelItem();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmSoundLib::ebImportSoundClick(TObject *Sender)
+{
+    AnsiString open_nm;
+    if (EFS.GetOpenName(_import_,open_nm,true,0,4)){
+		// load
+    	AStringVec lst;
+        _SequenceToList(lst,open_nm.c_str());
+		bool bNeedUpdate=false;
+        // folder name
+        AnsiString folder;
+        TElTreeItem* item = m_ItemList->GetSelected(); 
+        if (item) FHelper.MakeName(item,0,folder,true);
+        //
+//		AnsiString path; // нужен при multi-open для сохранения последнего пути
+		AnsiString m_LastSelection;
+        for (AStringIt it=lst.begin(); it!=lst.end(); it++){
+            AnsiString 			dest_name = AnsiString(folder+ExtractFileName(*it));
+            AnsiString			dest_full_name;
+            FS.update_path		(dest_full_name,_sounds_,dest_name.c_str());
+            if (FS.exist(dest_full_name.c_str())){
+            	int res = ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"File '%s' already exist. Owerwrite it?",ExtractFileName(*it).c_str());
+                if (res==mrCancel) 	break;
+                if (res==mrNo)		continue;
+            }
+            FS.file_copy		(it->c_str(),dest_full_name.c_str());
+            FS_QueryMap 		QM; 
+            FS.file_list		(QM,_sounds_,FS_ListFiles|FS_ClampExt,dest_name.c_str());
+            SndLib.SynchronizeSounds(true, true, true, &QM, 0);
+//.            EFS.MarkFile		(*it,true);
+            EFS.BackupFile		(_sounds_,dest_name);
+            EFS.WriteAccessLog	(dest_full_name.c_str(),"Import");
+            bNeedUpdate			= true;
+            m_LastSelection 	= ChangeFileExt(dest_name,"");
+        }
+        if (bNeedUpdate){
+        	SndLib.RefreshSounds(false);
+			InitItemsList		();
+			m_ItemList->SelectItem	(m_LastSelection,true,false,true);
+        }
+        // refresh selected
+//		RefreshSelected();
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -271,17 +321,7 @@ void __fastcall TfrmSoundLib::OnItemsFocused(ListItemsVec& items)
 	    for (ListItemsIt it=items.begin(); it!=items.end(); it++){
             ListItem* prop = *it;
             if (prop){
-            	ESoundThumbnail* thm=0;
-                if (bImportMode){
-                    thm = xr_new<ESoundThumbnail>(prop->Key(),false);
-                    AnsiString fn = prop->Key();
-                    SndLib.UpdateFileName(fn);
-        //            if (!(m_Thm->Load(m_SelectedName.c_str(),&EFS.m_Import)||m_Thm->Load(fn.c_str(),&EFS.m_Textures)))
-                    if (!thm->Load(prop->Key(),_import_)){
-                        bool bLoad = thm->Load(fn.c_str(),_sounds_);
-                        SndLib.CreateSoundThumbnail(thm,prop->Key(),_import_,!bLoad);
-                    }
-                }else thm = xr_new<ESoundThumbnail>(prop->Key());
+            	ESoundThumbnail* thm=xr_new<ESoundThumbnail>(prop->Key());
                 m_THMs.push_back	(thm);
                 thm->FillProp		(props);
             }
@@ -296,12 +336,10 @@ void __fastcall TfrmSoundLib::OnItemsFocused(ListItemsVec& items)
 		PlaySound(thm->SrcName(), size, time);
         PHelper.CreateCaption(props,"File Length",	AnsiString().sprintf("%.2f Kb",float(size)/1024.f));
         PHelper.CreateCaption(props,"Total Time",	AnsiString().sprintf("%.2f sec",float(time)/1000.f));
-        if (!bImportMode){
-            ButtonValue* B=PHelper.CreateButton	(props, "Control",	"Play,Stop",ButtonValue::flFirstOnly);
-            B->OnBtnClickEvent		= OnControlClick;
-            B=PHelper.CreateButton	(props, "Auto Play",bAutoPlay?"on":"off",ButtonValue::flFirstOnly);
-            B->OnBtnClickEvent		= OnControl2Click;
-        }
+        ButtonValue* B=PHelper.CreateButton	(props, "Control",	"Play,Stop",ButtonValue::flFirstOnly);
+        B->OnBtnClickEvent		= OnControlClick;
+        B=PHelper.CreateButton	(props, "Auto Play",bAutoPlay?"on":"off",ButtonValue::flFirstOnly);
+        B->OnBtnClickEvent		= OnControl2Click;
     }
     
 	m_ItemProps->AssignItems		(props,true);
@@ -310,7 +348,6 @@ void __fastcall TfrmSoundLib::OnItemsFocused(ListItemsVec& items)
 
 void TfrmSoundLib::PlaySound(LPCSTR name, u32& size, u32& time)
 {
-	if (bImportMode) return;
     const CLocatorAPI::file* file	= FS.exist(_game_sounds_,ChangeFileExt(name,".ogg").c_str());
     if (file){
         m_Snd.create		(TRUE,name);
@@ -322,4 +359,6 @@ void TfrmSoundLib::PlaySound(LPCSTR name, u32& size, u32& time)
     	if (!bAutoPlay)		m_Snd.stop();
     }
 }
+
+
 

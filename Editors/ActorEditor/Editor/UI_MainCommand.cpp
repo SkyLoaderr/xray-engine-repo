@@ -82,9 +82,6 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     	if (ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Are you sure to synchronize sounds?")==mrYes)
 			SndLib.RefreshSounds(true);
         break;
-	case COMMAND_CHECK_SOUNDS:
-    	TfrmSoundLib::ImportSounds();
-        break;
     case COMMAND_IMAGE_EDITOR:
     	TfrmImageLib::EditLib(AnsiString("Image Editor"));
     	break;

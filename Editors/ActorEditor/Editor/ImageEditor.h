@@ -37,7 +37,6 @@ __published:	// IDE-managed Components
 	TLabel *RxLabel3;
 	TLabel *lbInfo;
 	TPanel *paItems;
-	TPanel *paTextureCount;
 	TSplitter *Splitter1;
 	TBevel *Bevel2;
 	TExtBtn *ebCheckAllCompliance;

@@ -261,13 +261,14 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
 	    U32Vec data;
     	u32 w, h, a;
 
-        string256 base_name; strcpy(base_name,it->first.c_str()); strlwr(base_name);
-        if (bProgress) UI.ProgressInc(base_name);
+        AnsiString base_name	=it->first.LowerCase();
+        if (bProgress) 			UI.ProgressInc(base_name.c_str());
         AnsiString fn;
-        FS.update_path			(fn,_textures_,it->first.c_str());
-        if (strext(base_name)) *strext(base_name)=0;
+        FS.update_path			(fn,_textures_,base_name.c_str());
+    	if (!FS.exist(fn.c_str())) continue;
+        base_name				= ChangeFileExt(base_name,"");
 
-		FS_QueryPairIt th = M_THUM.find(base_name);
+		FS_QueryPairIt th 	= M_THUM.find(base_name);
     	bool bThm = ((th==M_THUM.end()) || ((th!=M_THUM.end())&&(th->second.modif!=it->second.modif)));
   		FS_QueryPairIt gm = M_GAME.find(base_name);
     	bool bGame= bThm || ((gm==M_GAME.end()) || ((gm!=M_GAME.end())&&(gm->second.modif!=it->second.modif)));
@@ -298,9 +299,9 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
                 if (FMT.flags.is(STextureParams::flHasDetailTexture)){
                     AnsiString det;                          
                     det.sprintf("%s, %f",FMT.detail_name,FMT.detail_scale);
-                    ltx_ini->w_string("association", base_name, det.c_str());
+                    ltx_ini->w_string("association", base_name.c_str(), det.c_str());
                 }else{
-                    ltx_ini->remove_line("association", base_name);
+                    ltx_ini->remove_line("association", base_name.c_str());
                 }
             }else{
 		    	ELog.DlgMsg(mtError,"Can't make game texture '%s'.\nInvalid size (%dx%d).",fn.c_str(),w,h);
@@ -365,9 +366,9 @@ int	CImageManager::GetServerModifiedTextures(FS_QueryMap& files)
 //------------------------------------------------------------------------------
 // возвращает список всех текстур
 //------------------------------------------------------------------------------
-int CImageManager::GetTextures(FS_QueryMap& files)
+int CImageManager::GetTextures(FS_QueryMap& files, BOOL bFolders)
 {                	
-    return FS.file_list(files,_textures_,FS_ListFiles,".tga,.bmp"); 
+    return FS.file_list(files,_textures_,(bFolders?FS_ListFolders:0)|FS_ListFiles,".tga,.bmp"); 
 }
 //------------------------------------------------------------------------------
 // возвращает список текстур, которые нужно обновить

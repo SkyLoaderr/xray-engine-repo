@@ -72,7 +72,8 @@ enum ESoundTypes {
 #define CROUCH_SOUND_FACTOR					.3f
 #define ACCELERATED_SOUND_FACTOR			.5f
 
-xr_token TokenAnomalyType[]={
+xr_token anomaly_type_token[]={
+	{ "undefined",				0},
 	{ "Weapon Recharging",		SOUND_TYPE_WEAPON_RECHARGING		},
 	{ "Weapon Shooting",		SOUND_TYPE_WEAPON_SHOOTING			},
 	{ "Weapon Taking",			SOUND_TYPE_WEAPON_TAKING			},
@@ -88,7 +89,6 @@ xr_token TokenAnomalyType[]={
 	{ "NPC Attacking",			SOUND_TYPE_MONSTER_ATTACKING		},
 	{ "World Object Breaking",	SOUND_TYPE_WORLD_OBJECT_BREAKING	},
 	{ "World Object Falling",	SOUND_TYPE_WORLD_OBJECT_FALLING		},
-	{ "Meaningless",			0},
 	{ 0,						0}
 };
 

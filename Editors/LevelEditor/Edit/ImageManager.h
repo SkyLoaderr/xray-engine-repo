@@ -17,7 +17,7 @@ public:
     BOOL __fastcall	RemoveTexture	(LPCSTR fname, EItemType type);
     BOOL		CheckCompliance		(LPCSTR fname, int& compl);
     void		CheckCompliance		(FS_QueryMap& files, FS_QueryMap& compl);
-    int			GetTextures			(FS_QueryMap& files);
+    int			GetTextures			(FS_QueryMap& files, BOOL bFolder=FALSE);
 //	int			GetServerModifiedTextures(CLocatorAPI::files_query& files);
 	int 		GetLocalNewTextures	(FS_QueryMap& files);
 	void		SafeCopyLocalToServer(FS_QueryMap& files);

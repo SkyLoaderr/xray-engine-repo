@@ -198,25 +198,29 @@ void __fastcall TItemList::AssignItems(ListItemsVec& items, bool full_expand, bo
     m_Items					= items;
 	for (ListItemsIt it=m_Items.begin(); it!=m_Items.end(); it++){
     	ListItem* prop		= *it;
-        prop->item			= FHelper.AppendObject(tvItems,prop->key);
-        if (!prop->item){
-        	ELog.DlgMsg		(mtError,"Duplicate item name found: '%s'",prop->key);
-            break;
+        if (!prop->key.IsEmpty()&&(prop->key[prop->key.Length()]=='\\')){
+        	FHelper.AppendFolder(tvItems,prop->key);
+        }else{
+            prop->item			= FHelper.AppendObject(tvItems,prop->key);
+            if (!prop->item){
+                ELog.DlgMsg		(mtError,"Duplicate item name found: '%s'",prop->key);
+                break;
+            }
+            prop->item->ImageIndex= prop->icon_index;
+            prop->item->Tag	    = (int)prop;
+            prop->item->UseStyles=true;
+            prop->item->CheckBoxEnabled = prop->m_Flags.is(ListItem::flShowCB);
+            prop->item->ShowCheckBox 	= prop->m_Flags.is(ListItem::flShowCB);
+            prop->item->CheckBoxState 	= (TCheckBoxState)prop->m_Flags.is(ListItem::flCBChecked);
+            // set flags                                        
+            if (prop->m_Flags.is(ListItem::flDrawThumbnail)){
+                prop->item->Height 		= 64;
+                prop->item->OwnerHeight = !miDrawThumbnails->Checked;
+            }
+            // set style
+            prop->item->MainStyle->OwnerProps 	= true;
+            prop->item->MainStyle->Style 		= ElhsOwnerDraw;
         }
-        prop->item->ImageIndex= prop->icon_index;
-        prop->item->Tag	    = (int)prop;
-        prop->item->UseStyles=true;
-        prop->item->CheckBoxEnabled = prop->m_Flags.is(ListItem::flShowCB);
-        prop->item->ShowCheckBox 	= prop->m_Flags.is(ListItem::flShowCB);
-        prop->item->CheckBoxState 	= (TCheckBoxState)prop->m_Flags.is(ListItem::flCBChecked);
-        // set flags                                        
-        if (prop->m_Flags.is(ListItem::flDrawThumbnail)){
-        	prop->item->Height 		= 64;
-        	prop->item->OwnerHeight = !miDrawThumbnails->Checked;
-        }
-        // set style
-        prop->item->MainStyle->OwnerProps 	= true;
-        prop->item->MainStyle->Style 		= ElhsOwnerDraw;
     }
 
     // end fill mode
@@ -419,7 +423,7 @@ void __fastcall TItemList::InplaceEditValidateResult(
 		FHelper.MakeName			(IE->Item,0,old_name,false);
 	    _ReplaceItem				(old_name.c_str(),IE->Item->Level,new_text.c_str(),new_name,'\\');
 	    TElTreeItem* find_item		= FHelper.FindItem(tvItems,new_name);
-    	InputValid 					= (!find_item);
+    	InputValid 					= (find_item==IE->Item)||(!find_item);//.(!find_item); нужно для того чтобы принимало 
     }
 }
 //---------------------------------------------------------------------------

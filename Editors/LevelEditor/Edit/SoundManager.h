@@ -16,9 +16,10 @@ public:
 				~CSoundManager		(){;}
 
     BOOL __fastcall	RemoveSound		(LPCSTR fname, EItemType type);
+	void __fastcall RenameSound		(LPCSTR p0, LPCSTR p1, EItemType type);
 
 	// texture routines
-    int			GetSounds			(FS_QueryMap& files);
+    int			GetSounds			(FS_QueryMap& files, BOOL bFolders=FALSE);
     int			GetSoundEnvs		(AStringVec& items);
 
 	int 		GetLocalNewSounds	(FS_QueryMap& files);

@@ -55,10 +55,7 @@ void __fastcall TfrmImageLib::EditLib(AnsiString& title, bool bImport)
         form->ebRemoveTexture->Enabled = !bImport;
         compl_map.clear		();
 
-        if (!form->bImportMode)  ImageLib.GetTextures(texture_map);
 		form->modif_map.clear	();
-
-        form->paTextureCount->Caption = AnsiString(" Images in list: ")+AnsiString(texture_map.size());
     }
 
     form->ShowModal();
@@ -140,6 +137,8 @@ void __fastcall TfrmImageLib::FormClose(TObject *Sender, TCloseAction &Action)
 //---------------------------------------------------------------------------
 void TfrmImageLib::InitItemsList()
 {
+    if (!form->bImportMode)  ImageLib.GetTextures(texture_map);
+    
 	ListItemsVec items;
 
     ListItem* V;

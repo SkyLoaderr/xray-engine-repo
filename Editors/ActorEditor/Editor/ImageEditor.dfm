@@ -1,6 +1,6 @@
 object frmImageLib: TfrmImageLib
-  Left = 684
-  Top = 273
+  Left = 509
+  Top = 234
   Width = 350
   Height = 455
   BorderIcons = [biSystemMenu, biMinimize]
@@ -259,18 +259,6 @@ object frmImageLib: TfrmImageLib
     BevelOuter = bvNone
     ParentColor = True
     TabOrder = 1
-    object paTextureCount: TPanel
-      Left = 0
-      Top = 412
-      Width = 168
-      Height = 16
-      Align = alBottom
-      Alignment = taLeftJustify
-      BevelOuter = bvNone
-      Caption = 'Textures: 123'
-      Color = 10528425
-      TabOrder = 0
-    end
   end
   object fsStorage: TFormStorage
     Version = 1

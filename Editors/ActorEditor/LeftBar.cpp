@@ -357,9 +357,4 @@ void __fastcall TfraLeftBar::MenuItem4Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::MenuItem5Click(TObject *Sender)
-{
-	UI.Command( COMMAND_CHECK_SOUNDS );
-}
-//---------------------------------------------------------------------------
 

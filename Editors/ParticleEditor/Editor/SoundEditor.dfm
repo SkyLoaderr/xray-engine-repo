@@ -1,6 +1,6 @@
 object frmSoundLib: TfrmSoundLib
-  Left = 684
-  Top = 273
+  Left = 559
+  Top = 200
   Width = 350
   Height = 455
   BorderIcons = [biSystemMenu, biMinimize]
@@ -46,26 +46,26 @@ object frmSoundLib: TfrmSoundLib
     TabOrder = 0
     object Bevel2: TBevel
       Left = 1
-      Top = 367
+      Top = 336
       Width = 170
       Height = 2
       Align = alBottom
       Shape = bsBottomLine
+      Style = bsRaised
     end
     object paCommand: TPanel
       Left = 1
-      Top = 369
+      Top = 338
       Width = 170
-      Height = 58
+      Height = 89
       Align = alBottom
-      BevelInner = bvLowered
       BevelOuter = bvNone
       Color = 10528425
       TabOrder = 0
       object ebOk: TExtBtn
-        Left = 1
-        Top = 23
-        Width = 168
+        Left = 0
+        Top = 55
+        Width = 170
         Height = 17
         Align = alTop
         BevelShow = False
@@ -75,9 +75,9 @@ object frmSoundLib: TfrmSoundLib
         OnClick = ebOkClick
       end
       object ebCancel: TExtBtn
-        Left = 1
-        Top = 40
-        Width = 168
+        Left = 0
+        Top = 72
+        Width = 170
         Height = 17
         Align = alTop
         BevelShow = False
@@ -86,33 +86,56 @@ object frmSoundLib: TfrmSoundLib
         FlatAlwaysEdge = True
         OnClick = ebCancelClick
       end
-      object Bevel3: TBevel
-        Left = 1
-        Top = 18
-        Width = 168
-        Height = 5
-        Align = alTop
-        Shape = bsLeftLine
-        Style = bsRaised
-      end
-      object ebRemoveSound: TExtBtn
-        Left = 1
-        Top = 1
-        Width = 168
+      object ebRemoveCurrent: TExtBtn
+        Left = 0
+        Top = 34
+        Width = 170
         Height = 17
         Align = alTop
         BevelShow = False
         CloseButton = False
-        Caption = 'Remove Sound'
+        Caption = 'Remove Current'
         FlatAlwaysEdge = True
-        OnClick = ebRemoveSoundClick
+        OnClick = ebRemoveCurrentClick
+      end
+      object ebImportSound: TExtBtn
+        Left = 0
+        Top = 0
+        Width = 170
+        Height = 17
+        Align = alTop
+        BevelShow = False
+        CloseButton = False
+        Caption = 'Import Sound...'
+        FlatAlwaysEdge = True
+        OnClick = ebImportSoundClick
+      end
+      object ebRenameCurrent: TExtBtn
+        Left = 0
+        Top = 17
+        Width = 170
+        Height = 17
+        Align = alTop
+        BevelShow = False
+        CloseButton = False
+        Caption = 'Rename'
+        FlatAlwaysEdge = True
+        OnClick = ebRenameCurrentClick
+      end
+      object Bevel1: TBevel
+        Left = 0
+        Top = 51
+        Width = 170
+        Height = 4
+        Align = alTop
+        Style = bsRaised
       end
     end
     object paProperties: TPanel
       Left = 1
       Top = 1
       Width = 170
-      Height = 366
+      Height = 335
       Align = alClient
       BevelOuter = bvNone
       Color = 10528425

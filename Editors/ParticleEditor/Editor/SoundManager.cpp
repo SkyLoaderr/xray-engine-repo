@@ -19,9 +19,9 @@ AnsiString CSoundManager::UpdateFileName(AnsiString& fn)
 //------------------------------------------------------------------------------
 // возвращает список всех звуков
 //------------------------------------------------------------------------------
-int CSoundManager::GetSounds(FS_QueryMap& files)
+int CSoundManager::GetSounds(FS_QueryMap& files, BOOL bFolders)
 {
-    return FS.file_list(files,_sounds_,FS_ListFiles|FS_ClampExt,".wav");
+    return FS.file_list(files,_sounds_,(bFolders?FS_ListFolders:0)|FS_ListFiles|FS_ClampExt,".wav");
 }
 
 int	CSoundManager::GetSoundEnvs(AStringVec& items)
@@ -37,6 +37,7 @@ int	CSoundManager::GetSoundEnvs(AStringVec& items)
 bool CSoundManager::OnCreate()
 {
 	psSoundFreq			= sf_44K;
+	psSoundFlags.set	(ssHardware,FALSE);
     Sound->_initialize	((u64)Device.m_hWnd);
     return true;
 }
@@ -68,6 +69,31 @@ void CSoundManager::MuteSounds(BOOL bVal)
 {
 	if (bVal) 	::psSoundVEffects = 0.f;
     else		::psSoundVEffects = psDeviceFlags.is(rsMuteSounds)?0.f:1.f;
+}
+
+void CSoundManager::RenameSound(LPCSTR nm0, LPCSTR nm1, EItemType type)
+{
+	if (TYPE_FOLDER==type){
+    	FS.dir_delete			(_sounds_,nm0,FALSE);
+    	FS.dir_delete			(_game_sounds_,nm0,FALSE);
+    }else if (TYPE_OBJECT==type){
+        AnsiString fn0,fn1,temp;
+        // rename base file
+        FS.update_path(fn0,_sounds_,nm0); 	fn0+=".wav";
+        FS.update_path(fn1,_sounds_,nm1);	fn1+=".wav";
+        FS.file_rename(fn0.c_str(),fn1.c_str(),false);
+        EFS.WriteAccessLog	(AnsiString().sprintf("%s -> %s",fn0.c_str(),fn1.c_str()).c_str(),"Rename");
+
+        // rename thm
+        FS.update_path(fn0,_sounds_,nm0);	fn0+=".thm";
+        FS.update_path(fn1,_sounds_,nm1);	fn1+=".thm";
+        FS.file_rename(fn0.c_str(),fn1.c_str(),false);
+
+        // rename ogg
+        FS.update_path(fn0,_game_sounds_,nm0);	fn0+=".ogg";
+        FS.update_path(fn1,_game_sounds_,nm1);	fn1+=".ogg";
+        FS.file_rename(fn0.c_str(),fn1.c_str(),false);
+	}
 }
 
 BOOL CSoundManager::RemoveSound(LPCSTR fname, EItemType type)
@@ -103,7 +129,7 @@ BOOL CSoundManager::RemoveSound(LPCSTR fname, EItemType type)
 //------------------------------------------------------------------------------
 int CSoundManager::GetLocalNewSounds(FS_QueryMap& files)
 {
-    return FS.file_list(files,_import_,FS_ListFiles|FS_RootOnly|FS_ClampExt,".wav");
+    return FS.file_list	(files,_import_,FS_ListFiles|FS_RootOnly|FS_ClampExt,".wav");
 }
 
 //------------------------------------------------------------------------------
@@ -187,7 +213,7 @@ void CSoundManager::SynchronizeSounds(bool sync_thm, bool sync_game, bool bForce
     FS_QueryMap M_GAME;
 
     if (source_list) M_BASE = *source_list;
-    else FS.file_list(M_BASE,_sounds_,FS_ListFiles,".wav");
+    else FS.file_list(M_BASE,_sounds_,FS_ListFiles|FS_ClampExt,".wav");
     if (M_BASE.empty()) return;
     if (sync_thm) 	FS.file_list(M_THUM,_sounds_,FS_ListFiles|FS_ClampExt,".thm");
     if (sync_game) 	FS.file_list(M_GAME,_game_sounds_,FS_ListFiles|FS_ClampExt,".ogg");
@@ -199,13 +225,13 @@ void CSoundManager::SynchronizeSounds(bool sync_thm, bool sync_game, bool bForce
     FS_QueryPairIt it=M_BASE.begin();
 	FS_QueryPairIt _E = M_BASE.end();
 	for (; it!=_E; it++){
-        string256 base_name; strcpy(base_name,it->first.c_str()); strlwr(base_name);
-        UI.ProgressInc(base_name);
+        AnsiString base_name	= ChangeFileExt(it->first.LowerCase(),"");
+        UI.ProgressInc			(base_name.c_str());
         AnsiString fn;
-        FS.update_path			(fn,_sounds_,it->first.c_str());
-        if (strext(base_name)) *strext(base_name)=0;
+        FS.update_path			(fn,_sounds_,base_name.c_str());
+    	if (!FS.exist(AnsiString(fn+".wav").c_str())) continue;
 
-		FS_QueryPairIt th = M_THUM.find(base_name);
+		FS_QueryPairIt th 		= M_THUM.find(base_name);
     	bool bThm = ((th==M_THUM.end()) || ((th!=M_THUM.end())&&(th->second.modif!=it->second.modif)));
   		FS_QueryPairIt gm = M_GAME.find(base_name);
     	bool bGame= bThm || ((gm==M_GAME.end()) || ((gm!=M_GAME.end())&&(gm->second.modif!=it->second.modif)));
@@ -215,8 +241,6 @@ void CSoundManager::SynchronizeSounds(bool sync_thm, bool sync_game, bool bForce
     	// check thumbnail
     	if (sync_thm&&bThm){
         	THM = xr_new<ESoundThumbnail>(it->first.c_str());
-//.		    bool bRes = Surface_Load(fn.c_str(),data,w,h,a); R_ASSERT(bRes);
-//.			MakeThumbnailImage(THM,data.begin(),w,h,a);
             THM->Save	(it->second.modif);
         }
         // check game sounds
