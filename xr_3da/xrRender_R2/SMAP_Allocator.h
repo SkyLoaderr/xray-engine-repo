@@ -48,7 +48,7 @@ public:
 	}
 	BOOL			push		(SMAP_Rect& R, u32	_size)
 	{
-		VERIFY	(_size<psize && _size>4);
+		VERIFY	(_size<=psize && _size>4);
 
 		// setup first in the soup, if empty state
 		if (stack.empty())	{
