@@ -93,11 +93,8 @@ function have_a_vodka (stalker, player)
 end
 
 function actor_punch (first_speaker, second_speaker)
+	db.storage[db.actor:id()].punch = {}
 	local st = db.storage[db.actor:id()].punch
-	if not st then
-		st = {}
-		db.storage[db.actor:id()].punch = st
-	end
 	st.dest_walk = patrol("mil_actor_path"):point(0)
 	st.dest_look = utils.vector_copy_by_val ( patrol("mil_actor_path"):point(1)):sub(st.dest_walk)
 	st.info = {}-- "val_prisoner_plr_captured", "val_prisoner_door_unlocked",  "val_prisoner_door_unlocked_demo" }

@@ -134,6 +134,7 @@ function val_actor_in_cage(actor, npc)
 	return xr_logic.npc_in_zone(actor, db.zone_by_name["val_prisoner_cage_zone"])
 end
 
+--[[
 function val_prisoner_in_cage(actor, npc)
 	local prisoner = utils.obj_by_sid(402)
 	if not prisoner then
@@ -141,6 +142,7 @@ function val_prisoner_in_cage(actor, npc)
 	end
 	return xr_logic.npc_in_zone(prisoner, db.zone_by_name["val_prisoner_cage_zone"])
 end
+--]]
 
 function actor_wears_bandit_outfit(actor, npc)
 	--[[

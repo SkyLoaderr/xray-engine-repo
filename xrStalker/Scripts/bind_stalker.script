@@ -79,6 +79,11 @@ function actor_binder:delayed_sleep_callback()
 	if self.st.punch and self.st.punch.enabled then
 		self.object:set_actor_position(self.st.punch.dest_walk)
 		self.object:set_actor_direction(self.st.punch.dest_look.y)
+		if self.st.punch.disable_input_tm then
+			printf("_bp: disable_input")
+			level.disable_input()
+			self.st.enable_input_tm = device():time_global() + self.st.punch.disable_input_tm
+		end
 
 		if self.st.punch.info then
 			for k, v in self.st.punch.info do
@@ -99,7 +104,12 @@ function actor_binder:update(delta)
 	   device():time_global() >= self.delayed_sleep_callback_start_tm then
 		self:delayed_sleep_callback()
 	end
-		
+
+	if self.st.enable_input_tm and device():time_global() >= self.st.enable_input_tm then
+		level.enable_input()
+		self.st.enable_input_tm = nil
+	end
+
 	--' Проверка потери жизни
 --[[
 	printf("%f * %f | %d", self.object.health, self.object.health - lasthealth, game.time() - lasttime)
