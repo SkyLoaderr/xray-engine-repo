@@ -155,7 +155,7 @@ CSMotion* CEditableObject::AppendSMotion(LPCSTR name, LPCSTR fname){
         	M->SetName(name);
 	     	m_SMotions.push_back(M);
         }else{
-        	ELog.DlgMsg(mtError,"Motion file '%s' has different bone names. Append failed.",fname);
+        	ELog.DlgMsg(mtError,"Append failed.",fname);
 	    	_DELETE(M);
         }
     }else{
@@ -171,7 +171,7 @@ bool CEditableObject::ReloadSMotion(CSMotion* src, const char* fname){
 	  	if (CheckBoneCompliance(M)){
         	src->CopyMotion(M);
             return true;
-        }else                        ELog.DlgMsg(mtError,"Motion file '%s' has different bone names. Reload failed.",fname);
+        }else                        ELog.DlgMsg(mtError,"Reload failed.",fname);
 		_DELETE(M);
     }else{
 		ELog.DlgMsg(mtError,"Motion '%s' can't load. Append failed.",fname);
@@ -201,7 +201,7 @@ bool CEditableObject::LoadSMotions(const char* fname){
         }
 	  	if (!CheckBoneCompliance(*m_it)){
         	ClearSMotions();
-            ELog.DlgMsg(mtError,"Motions file '%s' has different bone names. Load failed.",fname);
+            ELog.DlgMsg(mtError,"Load failed.",fname);
             _DELETE(m_it);
             return false;
         }
@@ -314,11 +314,20 @@ void CEditableObject::GetBoneWorldTransform(DWORD bone_idx, float t, CSMotion* m
 bool CEditableObject::CheckBoneCompliance(CSMotion* M){
 	VERIFY(M);
     BoneMotionVec& lst = M->BoneMotions();
-	if (m_Bones.size()!=lst.size()) return false;
+	if (m_Bones.size()!=lst.size()){
+		ELog.Msg(mtError,"Different bone count.\nObject has '%d' bones. Motion has '%d' bones.",m_Bones.size(),lst.size());
+    	return false;
+    }
     for(BoneMotionIt bm_it=lst.begin(); bm_it!=lst.end(); bm_it++)
-    	if (!FindBoneByName(bm_it->name)) return false;
+    	if (!FindBoneByName(bm_it->name)){
+        	ELog.Msg(mtError,"Can't find bone '%s' in object.",bm_it->name);
+        	return false;
+        }
     for(BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++)
-    	if (!M->FindBoneMotion((*b_it)->Name())) return false;
+    	if (!M->FindBoneMotion((*b_it)->Name())){
+        	ELog.Msg(mtError,"Can't find bone '%s' in motion.",(*b_it)->Name());
+        	return false;
+        }
     return true;
 }
 
