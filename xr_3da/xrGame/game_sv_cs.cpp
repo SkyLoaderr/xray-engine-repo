@@ -22,16 +22,19 @@ void game_sv_CS::SavePlayerWeapon(u32 it, CFS_Memory &store) {
 	u32 l_chunk = 0;
 	NET_Packet l_packet;
 	CFS_Memory &l_mem = store;
+	xrSE_Actor *l_pActor = dynamic_cast<xrSE_Actor*>(l_pServer->ID_to_entity(get_id_2_eid(get_it_2_id(it))));
+	if(!l_pActor) return;
 	vector<u16>* l_pCilds = get_children(get_it_2_id(it));
 	for(u32 cit = 0; cit < l_pCilds->size(); cit++) {
 		xrSE_Weapon *l_pWeapon = dynamic_cast<xrSE_Weapon*>(l_pServer->ID_to_entity((*l_pCilds)[cit]));
 		if(!l_pWeapon) continue;
+		//l_pWeapon->flags
 		u16 id_save = l_pWeapon->ID;			// save wpn entity ID 
 		l_pWeapon->ID = 0xffff;					// set 0xffff to get new gen ID
 		l_pWeapon->Spawn_Write(l_packet, true);
 		l_pWeapon->ID = id_save;				// restore wpn entity ID 
 		l_pWeapon->state = 3;
-		l_mem.open_chunk(l_chunk++); l_mem.write(l_packet.B.data, l_packet.B.count); l_mem.close_chunk();
+		l_mem.open_chunk((l_pActor->weapon==l_pWeapon->get_slot())?(l_pCilds->size() - 1):l_chunk++); l_mem.write(l_packet.B.data, l_packet.B.count); l_mem.close_chunk();
 	}
 }
 
