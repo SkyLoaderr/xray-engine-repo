@@ -30,7 +30,6 @@
 #	include "ai/monsters/chimera/chimera.h"
 #	include "ai/dog/ai_dog.h"
 #	include "ai/stalker/ai_stalker.h"
-#	include "ai/zombie/ai_zombie.h"
 #	include "ai/idol/ai_idol.h"
 #	include "ai/bloodsucker/ai_bloodsucker.h"
 #	include "ai/boar/ai_boar.h"
@@ -39,6 +38,7 @@
 #	include "ai/monsters/PseudoGigant/pseudo_gigant.h"
 #	include "ai/monsters/controller/controller.h"
 #	include "ai/monsters/poltergeist/poltergeist.h"
+#	include "ai/monsters/zombie/zombie.h"
 
 #	include "ai/trader/ai_trader.h"
 
@@ -198,7 +198,6 @@ void CObjectFactory::register_classes	()
 	ADD(CAI_Dog					,CSE_ALifeMonsterBiting			,CLSID_AI_DOG_RED			,"dog_red");
 	ADD(CAI_Stalker				,CSE_ALifeHumanStalker			,CLSID_AI_SOLDIER			,"soldier");
 	ADD(CAI_Stalker				,CSE_ALifeHumanStalker			,CLSID_AI_STALKER			,"stalker");
-	ADD(CAI_Zombie				,CSE_ALifeMonsterZombie			,CLSID_AI_ZOMBIE			,"zombie");
 	ADD(CAI_Idol				,CSE_ALifeObjectIdol			,CLSID_AI_IDOL				,"idol");
 	ADD(CAI_Bloodsucker			,CSE_ALifeMonsterBiting			,CLSID_AI_BLOODSUCKER		,"bloodsucker");
 	ADD(CAI_Boar				,CSE_ALifeMonsterBiting			,CLSID_AI_BOAR				,"boar");
@@ -207,6 +206,7 @@ void CObjectFactory::register_classes	()
 	ADD(CPseudoGigant			,CSE_ALifeMonsterBiting			,CLSID_AI_GIANT				,"pseudo_gigant");
 	ADD(CController				,CSE_ALifeMonsterBiting			,CLSID_AI_CONTROLLER		,"controller");
 	ADD(CPoltergeist			,CSE_ALifeMonsterBiting			,CLSID_AI_PHANTOM			,"poltergeist");
+	ADD(CZombie					,CSE_ALifeMonsterBiting			,CLSID_AI_ZOMBIE			,"zombie");
 
 	// Trader
 	ADD(CAI_Trader				,CSE_ALifeTrader				,CLSID_AI_TRADER			,"trader");
