@@ -167,31 +167,30 @@ void CActorTools::MakePreview()
 
 void CActorTools::MotionOnAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
 {
-	FlagValue* V = (FlagValue*)sender;
 	R_ASSERT(edit_val);
-    if (!(*(LPDWORD)edit_val&V->mask)){
-	    m_pCycleNode->Hidden	= false;
-    	m_pFXNode->Hidden		= true;
-    }else{
+    if (*(BOOL*)edit_val){
 	    m_pCycleNode->Hidden	= true;
     	m_pFXNode->Hidden		= false;
+    }else{
+    	m_pFXNode->Hidden		= true;
+	    m_pCycleNode->Hidden	= false;
     }
 }
 
 //------------------------------------------------------------------------------
 void __fastcall CActorTools::NameOnAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
 {
-	FOLDER::AfterTextEdit(fraLeftBar->tvMotions->Selected,((TextValue*)sender)->val,*(AnsiString*)edit_val);
+	FOLDER::AfterTextEdit(fraLeftBar->tvMotions->Selected,((TextValue*)sender)->GetValue(),*(AnsiString*)edit_val);
 }
 //------------------------------------------------------------------------------
 void __fastcall CActorTools::NameOnBeforeEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
 {
-	FOLDER::BeforeTextEdit(((TextValue*)sender)->val,*(AnsiString*)edit_val);
+	FOLDER::BeforeTextEdit(((TextValue*)sender)->GetValue(),*(AnsiString*)edit_val);
 }
 //------------------------------------------------------------------------------
 void __fastcall CActorTools::NameOnDraw(PropValue* sender, LPVOID draw_val)
 {
-	FOLDER::TextDraw(((TextValue*)sender)->val,*(AnsiString*)draw_val);
+	FOLDER::TextDraw(((TextValue*)sender)->GetValue(),*(AnsiString*)draw_val);
 }
 //------------------------------------------------------------------------------
                         
@@ -218,36 +217,44 @@ void CActorTools::FillMotionProperties()
 {
 	R_ASSERT(m_pEditObject);
 	CSMotion* SM = m_pEditObject->GetActiveSMotion();
-    m_MotionProps->BeginFillMode();
     if (SM){
-        m_MotionProps->AddItem(0,PROP_TEXT,  		"Name",		m_MotionProps->MakeTextValue (&SM->Name(),sizeof(SM->Name()),NameOnAfterEdit,NameOnBeforeEdit,NameOnDraw));
-        m_MotionProps->AddItem(0,PROP_FLOAT, 		"Speed", 	m_MotionProps->MakeFloatValue(&SM->fSpeed,	0.f,20.f,0.01f,2));
-        m_MotionProps->AddItem(0,PROP_FLOAT, 		"Accrue", 	m_MotionProps->MakeFloatValue(&SM->fAccrue,	0.f,20.f,0.01f,2));
-        m_MotionProps->AddItem(0,PROP_FLOAT, 		"Falloff", 	m_MotionProps->MakeFloatValue(&SM->fFalloff,	0.f,20.f,0.01f,2));
-        FlagValue* TV = m_MotionProps->MakeFlagValue(&SM->m_dwFlags,esmFX,MotionOnAfterEdit);
-        m_MotionProps->AddItem(0,PROP_FLAG, 		"Type FX", 	TV);
-        m_pCycleNode = m_MotionProps->AddItem(0,PROP_MARKER, "Cycle");
+		PropValueVec values;
+    	FILL_PROP(values, "Name",		&SM->Name(),  	PROP::CreateTextValue	(sizeof(SM->Name()),NameOnAfterEdit,NameOnBeforeEdit,NameOnDraw));
+    	FILL_PROP(values, "Speed",		&SM->fSpeed,   	PROP::CreateFloatValue	(0.f,20.f,0.01f,2));
+    	FILL_PROP(values, "Accrue",		&SM->fAccrue,  	PROP::CreateFloatValue	(0.f,20.f,0.01f,2));
+    	FILL_PROP(values, "Falloff", 	&SM->fFalloff, 	PROP::CreateFloatValue	(0.f,20.f,0.01f,2));
+
+        FlagValue* TV = PROP::CreateFlagValue(esmFX,MotionOnAfterEdit);
+        FILL_PROP(values, "Type FX", 	&SM->m_dwFlags, TV);
         {
             AStringVec lst;
             lst.push_back("--none--");
             for (BPIt it=m_pEditObject->FirstBonePart(); it!=m_pEditObject->LastBonePart(); it++) lst.push_back(it->alias);
-            m_MotionProps->AddItem(m_pCycleNode,PROP_TOKEN2, 	"Bone part",	m_MotionProps->MakeTokenValue2(&SM->iBoneOrPart,&lst,BPOnAfterEdit,BPOnBeforeEdit,BPOnDraw));
-            m_MotionProps->AddItem(m_pCycleNode,PROP_FLAG,		"Stop at end",	m_MotionProps->MakeFlagValue(&SM->m_dwFlags,esmStopAtEnd));
-            m_MotionProps->AddItem(m_pCycleNode,PROP_FLAG,		"No mix",		m_MotionProps->MakeFlagValue(&SM->m_dwFlags,esmNoMix));
+            FILL_PROP(values, "Cycle\\Bone part",	&SM->iBoneOrPart,	PROP::CreateTokenValue2(&lst,BPOnAfterEdit,BPOnBeforeEdit,BPOnDraw));
+            FILL_PROP(values, "Cycle\\Stop at end",	&SM->m_dwFlags,		PROP::CreateFlagValue(esmStopAtEnd));
+            FILL_PROP(values, "Cycle\\No mix",		&SM->m_dwFlags,		PROP::CreateFlagValue(esmNoMix));
         }
-        m_pFXNode = m_MotionProps->AddItem(0,PROP_MARKER, "FX");
         {
             AStringVec lst;
             for (BoneIt it=m_pEditObject->FirstBone(); it!=m_pEditObject->LastBone(); it++) lst.push_back((*it)->Name());
-            m_MotionProps->AddItem(m_pFXNode,PROP_TOKEN2,	"Start bone",m_MotionProps->MakeTokenValue2(&SM->iBoneOrPart,&lst));
-            m_MotionProps->AddItem(m_pFXNode,PROP_FLOAT, 	"Power", 	m_MotionProps->MakeFloatValue(&SM->fPower,	0.f,20.f,0.01f,2));
+            FILL_PROP(values, "FX\\Start bone",		&SM->iBoneOrPart,	PROP::CreateTokenValue2(&lst));
+	    	FILL_PROP(values, "FX\\Power",			&SM->fPower,   		PROP::CreateFloatValue	(0.f,20.f,0.01f,2));
         }
-        MotionOnAfterEdit(0,TV,TV->val);
+        // fill values
+        m_MotionProps->AssignValues(values,true);
+        // find cycle/fx root node
+	    PropValue* C 	= PROP::FindProp(values,"Cycle\\Bone part");	R_ASSERT(C&&C->item);
+        m_pCycleNode 	= C->item->Parent; R_ASSERT(m_pCycleNode); 
+	    PropValue* F 	= PROP::FindProp(values,"FX\\Start bone");		R_ASSERT(F&&F->item);
+        m_pFXNode 		= F->item->Parent; R_ASSERT(m_pFXNode); 
+		// first init node
+        BOOL val = TV->GetValue();
+        MotionOnAfterEdit(0,TV,&val);
     }else{
+    	m_MotionProps->ClearProperties();	
 		m_pCycleNode=0;
         m_pFXNode	=0;
     }
-	m_MotionProps->EndFillMode();
 }
 
 void CActorTools::PlayMotion()

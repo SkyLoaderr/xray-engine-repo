@@ -61,7 +61,8 @@
       Intermediate\cpuid.obj Intermediate\_math.obj Intermediate\xrSkin1W.obj 
       Intermediate\TextForm.obj Intermediate\ExportObjectOGF.obj 
       Intermediate\ImageEditor.obj Intermediate\ETextureParams.obj 
-      Intermediate\ShaderFunction.obj Intermediate\PropertiesListTypes.obj"/>
+      Intermediate\ShaderFunction.obj Intermediate\PropertiesListTypes.obj 
+      Intermediate\LightAnimLibrary.obj"/>
     <RESFILES value="ActorEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -249,6 +250,7 @@
       <FILE FILENAME="Editor\ShaderFunction.cpp" FORMNAME="frmShaderFunction" UNITNAME="ShaderFunction" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\SceneClassList.h" FORMNAME="" UNITNAME="SceneClassList.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\PropertiesListTypes.cpp" FORMNAME="" UNITNAME="PropertiesListTypes" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\LightAnimLibrary.cpp" FORMNAME="" UNITNAME="LightAnimLibrary" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

@@ -563,9 +563,9 @@ void CActorTools::FillObjectProperties()
 
 	PropValueVec values;
 
-    FILL_PROP(values, "Flags\\Make Progressive",		&m_pEditObject->GetFlags(),  	PROP::CreateFlagValue(CEditableObject::eoDynamic));
-    FILL_PROP(values, "Transform\\Position",			&m_pEditObject->a_vPosition, 	PROP::CreateVectorValue(-10000,	10000,0.01,2,OnAfterTransformation));
-    FILL_PROP(values, "Transform\\Rotation",			&m_pEditObject->a_vRotate, 		PROP::CreateVectorValue(-10000,	10000,0.1,1,RotateOnAfterEdit,RotateOnBeforeEdit,RotateOnDraw));
+    FILL_PROP(values, "Make Progressive",		&m_pEditObject->GetFlags(),  	PROP::CreateFlagValue(CEditableObject::eoDynamic));
+    FILL_PROP(values, "Transform\\Position",	&m_pEditObject->a_vPosition, 	PROP::CreateVectorValue(-10000,	10000,0.01,2,OnAfterTransformation));
+    FILL_PROP(values, "Transform\\Rotation",	&m_pEditObject->a_vRotate, 		PROP::CreateVectorValue(-10000,	10000,0.1,1,RotateOnAfterEdit,RotateOnBeforeEdit,RotateOnDraw));
 
     m_pEditObject->FillPropSurf		(values,OnAfterShaderEdit,OnAfterTextureEdit);
     m_pEditObject->FillPropSummary	(values);

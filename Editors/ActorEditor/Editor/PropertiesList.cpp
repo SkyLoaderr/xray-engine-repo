@@ -429,7 +429,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
         switch(prop->type){
 		case PROP_FLAG:{
         	FlagValue*	V 				= (FlagValue*)prop;
-            bool new_val 				= !V->GetValue();
+            BOOL new_val 				= !V->GetValue();
 			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
             if (V->ApplyValue(new_val)){
                 Modified();
