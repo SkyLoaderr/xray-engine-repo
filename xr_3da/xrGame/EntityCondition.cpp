@@ -544,7 +544,7 @@ void CEntityCondition::Awoke()
 
 bool CEntityCondition::IsLimping() const
 {
-	return (m_fPower*m_fHealth <= .5f);
+	return (false);//m_fPower*m_fHealth <= .5f);
 }
 
 void CEntityCondition::save	(NET_Packet &output_packet)
