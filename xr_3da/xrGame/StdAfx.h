@@ -15,6 +15,10 @@
 #define WIN32_LEAN_AND_MEAN		// Exclude rarely-used stuff from Windows headers
 
 #include "..\stdafx.h"
+
+#pragma warning( 4 : 4018 )
+#pragma warning( 4 : 4244 )
+
 #include "clsid_game.h"
 
 #include "..\xr_object.h"
