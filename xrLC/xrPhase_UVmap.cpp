@@ -133,11 +133,11 @@ void CBuild::mem_CompactSubdivs()
 		temp.clear			();
 		temp.assign			(g_XSplit[SP]->begin(),g_XSplit[SP]->end());
 		_DELETE				(g_XSplit[SP]);
+		mem_Compact			();
 		g_XSplit[SP]		= new vecFace;
 		g_XSplit[SP]->assign(temp.begin(),temp.end());
 	}
 	Msg("%d ms for memory compacting...",timeGetTime()-dwT);
-	mem_Compact				();
 }
 void CBuild::mem_Compact()
 {
