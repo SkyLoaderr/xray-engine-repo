@@ -90,7 +90,6 @@ function main()
 			wait(2000)			
 			prof_nashel_taynik_a:play_at_pos	(stalker1,stalker1:position(),0);
 			wait(2000)			
-			break
 		end
 
 	while true do
