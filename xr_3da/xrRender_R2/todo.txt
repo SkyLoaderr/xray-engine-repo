@@ -4,17 +4,21 @@ done, ~5.5% perf-gain	:	cull point-light frustums against real frustum
 done, works OK			:	fixed coordinate system for point lights - should minimize flickering
 						:	clip every-light frustums against real frustum - difficult
 						:	scissoring ???
+done, works OK			:	3*32	bit RTs		- position/normal compression
+done, works OK			:	bilinear/q-linear filter for cubemaps
+done, works OK			:	1*DXT5	bumpmaps	- lower quality, 8 bit, faster
 ----------------------------
-3*32	bit RTs		- position/normal compression
+						:	U8V8	encoding of encodeRG
+						:	L8		encoding of encodeB + mov instead add
+						:	U8V8	encoding of material
+----------------------------
+work out tonemapping	(?)
 xrLC geometry selection for point/spot lights
 
-bilinear/q-linear filter for cubemaps
 bicubic filter for spot shadows
-2*DXT5	bumpmaps	- better quality, 16bit total
 detail	bumpmaps	- better quality
 work out blooming	(again)
 work out skybox		(again)
-work out tonemapping(?)
 sRGB convert diffuse???
 reverse culling	for spot/point with initial clears - should avoid most biasing ?
 ----------------------------

@@ -75,20 +75,48 @@ void	CBlender_LmEbB::Compile(CBlender_Compile& C)
 		}
 		C.PassEnd			();
 	} else {
-		if (2==C.iElement)	
+		if (C.L_textures.size()<2)	Debug.fatal	("Not enought textures for shader, base tex: %s",C.L_textures[0]);
+		switch (C.iElement)
 		{
-			compile_L	(C);
-		} else {
-			switch (HW.Caps.pixel.dwStages)
+		case SE_R1_NORMAL_HQ:
+		case SE_R1_NORMAL_LQ:
+			// Level view
+			if (C.bDetail)
 			{
-			case 2:		// Geforce1/2/MX
-				compile_2	(C);
-				break;
-			case 3:		// Kyro, Radeon, Radeon2, Geforce3/4
-			default:
-				compile_3	(C);
-				break;
+				C.r_Pass	("lmapE_dt","lmapE_dt",TRUE);
+				C.r_Sampler	("s_base",	C.L_textures[0]);
+				C.r_Sampler	("s_lmap",	C.L_textures[1]);
+				C.r_Sampler	("s_detail",C.detail_texture);
+				C.r_End		();
+			} else
+			{
+				C.r_Pass	("lmapE","lmapE",TRUE);
+				C.r_Sampler	("s_base",C.L_textures[0]);
+				C.r_Sampler	("s_lmap",C.L_textures[1]);
+				C.r_End		();
 			}
+			break;
+		case SE_R1_LPOINT:
+			C.r_Pass		("lmap_point","add_point",FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE,D3DBLEND_ONE,TRUE);
+			C.r_Sampler		("s_base",	C.L_textures[0]		);
+			C.r_Sampler_clf	("s_lmap",	TEX_POINT_ATT		);
+			C.r_Sampler_clf	("s_att",	TEX_POINT_ATT		);
+			C.r_End			();
+			break;
+		case SE_R1_LSPOT:
+			C.r_Pass		("lmap_spot","add_spot",FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE,D3DBLEND_ONE,TRUE);
+			C.r_Sampler		("s_base",	C.L_textures[0]);
+			C.r_Sampler_clf	("s_lmap",	"internal\\internal_light_att",		true);
+			C.r_Sampler_clf	("s_att",	TEX_SPOT_ATT		);
+			C.r_End			();
+			break;
+		case SE_R1_LMODELS:
+			// Lighting only, not use alpha-channel
+			C.r_Pass		("lmap_l","lmap_l",FALSE);
+			C.r_Sampler		("s_base",C.L_textures[0]);
+			C.r_Sampler		("s_lmap",C.L_textures[1]);
+			C.r_End			();
+			break;
 		}
 	}
 }
