@@ -109,7 +109,7 @@ CStream*	CStream::OpenChunk(u32 ID)
 	} else return 0;
 };
 void	CStream::Close()
-{	delete this; }
+{	xr_delete((CStream*)this); }
 
 #ifdef	ENGINE_BUILD
 void	CStream::Read	(void *p,int cnt)
