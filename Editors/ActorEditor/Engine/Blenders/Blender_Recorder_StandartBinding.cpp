@@ -5,10 +5,9 @@
 #include "blenders\Blender_Recorder.h"
 #include "blenders\Blender.h"
 
+#include "igame_persistent.h"
 #ifdef _EDITOR
-	#include "ui_tools.h"
 #else
-	#include "igame_persistent.h"
 	#include "environment.h"
 	#include "xr_effsun.h"
 #endif
@@ -53,14 +52,8 @@ class cl_fog_params	: public R_constant_setup {
 	{
 		if (marker!=Device.dwFrame)
 		{
-#ifdef _EDITOR
-			u32 fog_color;
-            float s_fog, e_fog;
-		    Tools.GetCurrentFog(fog_color, s_fog, e_fog);
-#else
 			f_near	= g_pGamePersistent->Environment.Current.fog_near;
 			f_far	= 1/(g_pGamePersistent->Environment.Current.fog_far - f_near);
-#endif
 		}
 		RCache.set_c	(C,f_near,f_far,0,0);
 	}
