@@ -40,14 +40,18 @@ void CLight_Compute_XFORM_and_VIS::compute_xf_spot	(light* L)
 	float	duel_dot			= 1.f -	0.5f*Device.vCameraDirection.dotproduct(L_dir);
 
 	// compute how large the light is - give more texels to larger lights, assume 8m as being optimal radius
-	float	sizefactor			= L->range/8.f;		// 4m = .5, 8m=1.f, 16m=2.f, 32m=4.f
+	float	sizefactor			= L->range/8.f;				// 4m = .5, 8m=1.f, 16m=2.f, 32m=4.f
+
+	// compute how wide the light frustum is - assume 90deg as being optimal
+	float	widefactor			= L->cone/deg2rad(90.f);	// 
 
 	// factors
 	float	factor0				= powf	(ssa,		1.f/2.f);		// ssa is quadratic
 	float	factor1				= powf	(intensity, 1.f/8.f);		// less perceptually important?
 	float	factor2				= powf	(duel_dot,	1.f/4.f);		// difficult to fast-change this -> visible
 	float	factor3				= powf	(sizefactor,1.f/4.f);		// this shouldn't make much difference
-	float	factor				= ps_r2_ls_squality * factor0 * factor1 * factor2 * factor3;
+	float	factor4				= powf	(widefactor,1.f/2.f);		// make it linear ???
+	float	factor				= ps_r2_ls_squality * factor0 * factor1 * factor2 * factor3 * factor4;
 	
 	// final size calc
 	L->X.S.size					= iFloor( factor * SMAP_adapt_optimal );
