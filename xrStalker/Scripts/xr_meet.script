@@ -318,21 +318,18 @@ function action_contact:initialize()
 	self.object:set_movement_type(move.stand)
 end
 function action_contact:execute ()
-	local weap = self.a.actor:active_item()
-
-	local ww = self.object:active_item()
-	
 	-- нужно остановиться и посмотреть в сторону актора
 	local pos = self.a.actor:position()
 
-	local isweap = isWeapon(weap)
+	local isweap = isWeapon(self.a.actor:active_item())
+	local isww = isWeapon(self.object:active_item())
 
 	if self.a.noweap == true then
 		isweap = false
 	end
 
 	if isweap then
-		if isWeapon(ww) == false then
+		if isww == false then
 			self.object:set_item(object.idle, self.object:best_weapon())			
 		end
 		self.object:set_mental_state(anim.danger)
@@ -355,15 +352,15 @@ function action_contact:execute ()
 			end
 		end
 	else
-		if isWeapon(ww) == true then
+		if isww == true then
 			self.object:set_mental_state(anim.free)
 			self.object:clear_animations()
 			self.object:add_animation("torg_0", true)
      			self.object:set_item(object.deactivate, self.object:best_weapon())
-			self.object:enable_talk()
 		end
 		pos.y = pos.y + 1.4
 		self.object:set_sight(look.point, pos, 0)
+		self.object:enable_talk()
 
 		--болтаем ли мы или еще нет
 		if self.object:is_talking() then
