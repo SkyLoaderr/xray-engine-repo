@@ -69,6 +69,11 @@ void	CEffect_Rain::OnEvent	(EVENT E, DWORD P1, DWORD P2)
 	}
 }
 
+void	CEffect_Rain::Born		(Item& dest, float radius, float height)
+{
+
+}
+
 void	CEffect_Rain::Render	()
 {
 	// Parse states
@@ -98,7 +103,7 @@ void	CEffect_Rain::Render	()
 	
 	// Born new if needed
 	float	b_radius		= 30.f;	// Need to ask from heightmap
-	float	b_height		= 50.f;
+	float	b_height		= Device.vCameraPosition.y+50.f;
 	if (bBornNewItems && (items.size()<desired_items))	{
 		items.reserve	(desired_items);
 		while (items.size()<desired_items)	{

@@ -16,8 +16,8 @@ CBlender::CBlender()
 	oPriority.min	= 0;
 	oPriority.max	= 3;
 	oPriority.value	= 1;
-	oT_Name[0]		= 0;
-	oT_xform[0]		= 0;
+	strcpy			(oT_Name,	"$base0");
+	strcpy			(oT_xform,	"$null");
 }
 
 CBlender::~CBlender()
