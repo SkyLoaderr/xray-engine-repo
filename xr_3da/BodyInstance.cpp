@@ -645,7 +645,7 @@ void CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
             IKD->r_stringZ	(B->game_mtl);
             IKD->r			(&B->shape,sizeof(SBoneShape));
             IKD->r			(&B->IK_data,sizeof(SJointIKData));
-            IKD->r_fvector3	(B->bind_hpb);
+            IKD->r_fvector3	(B->bind_xyz);
             IKD->r_fvector3	(B->bind_translate);
 	        B->mass			= IKD->r_float();
     	    IKD->r_fvector3	(B->center_of_mass);

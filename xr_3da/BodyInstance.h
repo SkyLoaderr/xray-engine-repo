@@ -155,7 +155,7 @@ public:
 	xr_vector<CMotion>	Motions;	// all known motions
 	Fobb			obb;
 
-	Fvector			bind_hpb;
+	Fvector			bind_xyz;
 	Fvector			bind_translate;
     SBoneShape		shape;
     string64		game_mtl;
