@@ -54,15 +54,24 @@ private:
 		float	fPathDistance;
 	} SGraphEdge;
 
+#pragma pack(4)
 	typedef struct tagSGraphVertex {
 		Fvector				tPoint;
-		u32					dwNodeID;
-		unsigned char		ucVertexType;
+		u32					dwNodeID:24;
+		u32					ucVertexType:8;
 		u32					dwNeighbourCount;
-		tagSGraphEdge		*tpaEdges;
+		u32					dwEdgeOffset;
 	} SGraphVertex;
+#pragma pack()
 
-	vector<SGraphVertex>			tpaGraph;		// graph
+	typedef struct tagSGraphHeader {
+		u32					dwVersion;
+		u32					dwVertexCount;
+	} SGraphHeader;
+
+	CStream*				m_tpGraphVFS;			// virtual file
+	SGraphVertex			*m_tpaGraph;			// graph
+	SGraphHeader			m_tGraphHeader;			// graph header
 public:
 	// Query
 	vector<bool>					q_mark_bit;		// temporal usage mark for queries

@@ -34,6 +34,21 @@ typedef struct tagRPoint {
 	Fvector A;
 } RPoint;
 
+typedef struct tagSCompressedGraphVertex {
+	Fvector				tPoint;
+	u32					dwNodeID:24;
+	u32					ucVertexType:8;
+	u32					dwNeighbourCount;
+	u32					dwEdgeOffset;
+} SCompressedGraphVertex;
+
+typedef struct tagSGraphHeader {
+	u32					dwVersion;
+	u32					dwVertexCount;
+} SGraphHeader;
+
+SGraphHeader			tGraphHeader;
+
 CStream*				vfs;			// virtual file
 hdrNODES				m_header;		// m_header
 BYTE*					m_nodes;		// virtual nodes DATA array
@@ -193,9 +208,16 @@ void vfSaveGraph(LPCSTR name)
 	strconcat	(fName,name,"level.graph");
 	
 	CFS_Memory	tGraph;
-	tGraph.Wdword(m_header.version);	
+	tGraphHeader.dwVersion = m_header.version;
+	tGraphHeader.dwVertexCount = tpaGraph.size();
+	tGraph.write(&tGraphHeader,sizeof(SGraphHeader));	
 	Progress(0.0f);
-	for (int i=0; i<(int)tpaGraph.size(); Progress(float(++i)/tpaGraph.size()/2)) {
+	SCompressedGraphVertex tCompressedGraphVertex;
+	memset(&tCompressedGraphVertex,0,sizeof(SCompressedGraphVertex));
+	for (int i=0; i<(int)tpaGraph.size(); Progress(float(++i)/tpaGraph.size()/4))
+		tGraph.write(&tCompressedGraphVertex,sizeof(SCompressedGraphVertex));
+	Progress(0.25f);
+	for (int i=0; i<(int)tpaGraph.size(); Progress(.25f + float(++i)/tpaGraph.size()/2)) {
 		SGraphVertex &tGraphVertex = tpaGraph[i];
 		for (int j=0, k=0; j<(int)tGraphVertex.dwNeighbourCount; j++)
 			if (!q_mark_bit[tGraphVertex.tpaEdges + j - tpaEdges]) {
@@ -205,17 +227,20 @@ void vfSaveGraph(LPCSTR name)
 			}
 		tGraphVertex.dwNeighbourCount = k;
 	}
-	Progress(.5f);
-	for (int i=0; i<(int)tpaGraph.size(); Progress(.5f + float(++i)/tpaGraph.size()/2)) {
+	Progress(.75f);
+	tGraph.seek(sizeof(SGraphHeader));
+	for (int i=0, j=0, k=tpaGraph.size()*sizeof(SCompressedGraphVertex); i<(int)tpaGraph.size(); j += tpaGraph[i].dwNeighbourCount, Progress(.75f + float(++i)/tpaGraph.size()/4)) {
 		SGraphVertex &tGraphVertex = tpaGraph[i];
-		tGraph.Wvector(tGraphVertex.tPoint);
-		tGraph.Wbyte(tGraphVertex.ucVertexType);
-		tGraph.Wdword(tGraphVertex.dwNodeID);	
-		tGraph.Wdword(tGraphVertex.dwNeighbourCount);	
+		tCompressedGraphVertex.tPoint = tGraphVertex.tPoint;
+		tCompressedGraphVertex.dwNodeID = tGraphVertex.dwNodeID;
+		tCompressedGraphVertex.ucVertexType = tGraphVertex.ucVertexType;
+		tCompressedGraphVertex.dwNeighbourCount = tGraphVertex.dwNeighbourCount;
+		tCompressedGraphVertex.dwEdgeOffset = k + j*sizeof(SGraphEdge);
+		tGraph.write(&tCompressedGraphVertex,sizeof(SCompressedGraphVertex));
 	}
-	Progress(1.0f);
 	tGraph.SaveTo(fName,0);
-	Msg("%d bytes saved",int(tGraph.tell()));
+	Progress(1.0f);
+	Msg("%d bytes saved",int(tGraph.size()));
 }
 
 void xrBuildGraph(LPCSTR name)
