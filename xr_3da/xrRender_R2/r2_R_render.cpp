@@ -4,14 +4,14 @@
 #include "..\customhud.h"
 #include "..\xr_object.h"
 
-IC	bool	pred_sp_sort	(ISpatial* _1, ISpatial* _2)
+IC	bool	pred_sp_sort	(ISpatial*	_1, ISpatial* _2)
 {
 	float	d1		= _1->spatial.center.distance_to_sqr(Device.vCameraPosition);
 	float	d2		= _2->spatial.center.distance_to_sqr(Device.vCameraPosition);
 	return	d1<d2;
 }
 
-void CRender::render_main	()
+void CRender::render_main	(Fmatrix&	m_ViewProjection)
 {
 //	Msg						("---begin");
 	marker									++;
@@ -26,7 +26,7 @@ void CRender::render_main	()
 			pLastSector,
 			ViewBase,
 			Device.vCameraPosition,
-			Device.mFullTransform,
+			m_ViewProjection,
 			CPortalTraverser::VQ_HOM + CPortalTraverser::VQ_SSA + 
 			(HW.Caps.bScissor?CPortalTraverser::VQ_SCISSOR:0)	// generate scissoring info
 			);
@@ -138,22 +138,39 @@ void CRender::Render		()
 	Fcolor					sun_color			= ((light*)Lights.sun_adapted._get())->color;
 	BOOL					bSUN				= ps_r2_ls_flags.test(R2FLAG_SUN) && (u_diffuse2s(sun_color.r,sun_color.g,sun_color.b)>EPS);
 
-	//******* Main calc - DEFERRER RENDERER
-	Device.Statistic.RenderCALC.Begin			();
-	// Frustum & HOM rendering
-	ViewBase.CreateFromMatrix					(Device.mFullTransform,FRUSTUM_P_LRTB + FRUSTUM_P_FAR);
+	// HOM
+	ViewBase.CreateFromMatrix					(Device.mFullTransform, FRUSTUM_P_LRTB + FRUSTUM_P_FAR);
 	View										= 0;
 	HOM.Enable									();
 	HOM.Render									(ViewBase);
 
+	//******* Z-prefill calc - DEFERRER RENDERER
+	if (ps_r2_ls_flags.test(R2FLAG_ZFILL))		{
+		Device.Statistic.RenderCALC.Begin			();
+		float		z_distance	= 0.1f;
+		Fmatrix		m_zfill, m_project;
+		m_project.build_projection	(
+			deg2rad(Device.fFOV*Device.fASPECT), 
+			Device.fASPECT, VIEWPORT_NEAR, 
+			z_distance * g_pGamePersistent->Environment.CurrentEnv.far_plane);
+		m_zfill.mul	(m_project,Device.mView);
+		r_pmask										(true,false);	// enable priority "0"
+		set_Recorder								(NULL)		;
+		render_main									(m_zfill)	;
+		r_pmask										(true,false);	// disable priority "1"
+		Device.Statistic.RenderCALC.End				( )			;
+	}
+
+	//******* Main calc - DEFERRER RENDERER
 	// Main calc
+	Device.Statistic.RenderCALC.Begin			();
 	r_pmask										(true,false);	// enable priority "0"
 	if (bSUN)									set_Recorder	(&main_coarse_structure);
 	else										set_Recorder	(NULL);
-	render_main									();
+	render_main									( );
 	set_Recorder								(NULL);
 	r_pmask										(true,false);	// disable priority "1"
-	Device.Statistic.RenderCALC.End				();
+	Device.Statistic.RenderCALC.End				( );
 
 	//******* Main render
 	{

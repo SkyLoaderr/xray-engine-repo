@@ -76,7 +76,8 @@ void	CBlender_Particle::Compile	(CBlender_Compile& C)
 	IBlender::Compile		(C);
 	switch	(C.iElement) 
 	{
-	case 0: 	// deffer
+	case SE_R2_NORMAL_HQ: 	// deffer
+	case SE_R2_NORMAL_LQ: 	// deffer
 		switch (oBlend.IDselected)
 		{
 		case 0:	C.r_Pass	("deffer_particle",	"deffer_particle",	FALSE,	TRUE,TRUE,	FALSE,	D3DBLEND_ONE,		D3DBLEND_ZERO,			FALSE,200);	break;	// SET
@@ -89,9 +90,7 @@ void	CBlender_Particle::Compile	(CBlender_Compile& C)
 		C.r_Sampler			("s_base",	C.L_textures[0],false,oClamp.value?D3DTADDRESS_CLAMP:D3DTADDRESS_WRAP);
 		C.r_End				();
 		break;
-	case CRender::PHASE_SMAP_D:	// smap-direct
-	case CRender::PHASE_SMAP_P:	// smap-point
-	case CRender::PHASE_SMAP_S:	// smap-spot
+	case SE_R2_SHADOW:		// smap
 		// HARD or SOFT: shadow-map
 		switch (oBlend.IDselected)
 		{

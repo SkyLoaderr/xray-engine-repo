@@ -112,12 +112,12 @@ void CHOM::Unload		()
 	bEnabled			= FALSE;
 }
 
-void CHOM::Render_DB	(CFrustum& base)
+void CHOM::Render_DB			(CFrustum& base)
 {
 	// Query DB
-	xrc.frustum_options		(0);
-	xrc.frustum_query		(m_pModel,base);
-	if (0==xrc.r_count())	return;
+	xrc.frustum_options			(0);
+	xrc.frustum_query			(m_pModel,base);
+	if (0==xrc.r_count())		return;
 
 	// Prepare
 	CDB::RESULT*	it			= xrc.r_begin	();
