@@ -319,4 +319,8 @@
 	</character>
 
 
+	<character id="killer_specnaz_courier">
+		<class>Killer_specnaz_courier</class>
+	</character>
+
 </xml>

@@ -323,5 +323,34 @@
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
+
+<!---------------------------KILLER SPECNAZ COURIER---------------------->
+	<specific_character id="killer_specnaz_courier" team_default = "1">
+		<name>Неизвестный наемник</name>
+		<icon x="4" y="2"></icon>
+		<map_icon x="2" y="0"></map_icon>
+		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
+
+		<team>Killer_specnaz</team>
+		
+		<class>Killer_specnaz_courier</class>
+		<community>killer</community>
+
+		<rank>70</rank>
+		<reputation>-50</reputation>
+
+		<visual>actors\killer\stalker_ki_antigas</visual>
+		<supplies>
+			[spawn] \n
+			wpn_walther \n
+			ammo_9x19_pbp = 1 \n
+			wpn_spas12 \n
+			ammo_12x76_dart = 1 \n
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
 		
 </xml>
