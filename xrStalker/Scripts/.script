@@ -1,5 +1,6 @@
 module ("stalker")
---module ("xr_patrol")
+module ("xr_patrol")
+module ("globals")
 
 function printf(fmt,...)
 	log(string.format(fmt,unpack(arg)))
@@ -546,7 +547,7 @@ function str_split (str)
     end
 
     printf ("%s %s %d %d", str1, str2, str3, str4)
-    return str1, str2, (str2 + 1) - 1, (str3 + 1) - 1
+    return str1, str2, (str3 + 1) - 1, (str4 + 1) - 1
 end
 
 
