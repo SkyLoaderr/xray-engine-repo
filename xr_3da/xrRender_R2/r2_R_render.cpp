@@ -54,6 +54,9 @@ void CRender::Render	()
 	{
 		Target.phase_smap_direct				();
 
+		RCache.set_xform_world					(Fidentity);
+		RCache.set_xform_view					(LR_Direct.L_view);
+		RCache.set_xform_project				(LR_Direct.L_project);
 		render_scenegraph						();
 	}
 	Device.Statistic.RenderDUMP.End			();
