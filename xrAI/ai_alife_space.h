@@ -46,6 +46,7 @@ class CSE_ALifeArtefactDemand;
 class CSE_ALifeArtefactNeed;
 class CSE_ALifeItem;
 class CSE_ALifeItemWeapon;
+class CSE_ALifeSchedulable;
 
 namespace ALife {
 	typedef u64	_CLASS_ID;									// Class ID
@@ -235,6 +236,13 @@ namespace ALife {
 		eTakeTypeRest,
 	};
 
+	enum ECombatType {
+		eCombatTypeMonsterMonster = u32(0),
+		eCombatTypeMonsterAnomaly,
+		eCombatTypeAnomalyMonster,
+		eCombatTypeDummy = u32(-1),
+	};
+
 	IC EHitType	g_tfString2HitType(LPCSTR caHitType)
 	{
 		if (!stricmp(caHitType,"burn"))
@@ -312,7 +320,7 @@ namespace ALife {
 	DEFINE_VECTOR	(SArtefactTraderOrder,		ARTEFACT_TRADER_ORDER_VECTOR,	ARTEFACT_TRADER_ORDER_IT);
 	DEFINE_VECTOR	(CSE_ALifeItem*,			ITEM_P_VECTOR,					ITEM_P_IT);
 	DEFINE_VECTOR	(CSE_ALifeItemWeapon*,		WEAPON_P_VECTOR,				WEAPON_P_IT);
-	
+	DEFINE_VECTOR	(CSE_ALifeSchedulable*,		SCHEDULE_P_VECTOR,				SCHEDULE_P_IT);
 
 	DEFINE_SVECTOR	(ANOMALY_P_VECTOR,			eAnomalousZoneTypeDummy,		ANOMALY_P_VECTOR_SVECTOR,	ANOMALY_P_VECTOR_SIT)
 
@@ -326,7 +334,7 @@ namespace ALife {
 	DEFINE_MAP		(_TASK_ID,					CSE_ALifeTask*,					TASK_MAP,					TASK_PAIR_IT);
 	DEFINE_MAP		(_OBJECT_ID,				CSE_ALifeDynamicObject*,		D_OBJECT_P_MAP,				D_OBJECT_P_PAIR_IT);
 	DEFINE_MAP		(_LEVEL_ID,					D_OBJECT_P_MAP*,				D_OBJECT_P_MAP_MAP,			D_OBJECT_P_MAP_PAIR_IT);
-	DEFINE_MAP		(_OBJECT_ID,				CSE_ALifeMonsterAbstract*,		MONSTER_P_MAP,				MONSTER_P_PAIR_IT);
+	DEFINE_MAP		(_OBJECT_ID,				CSE_ALifeSchedulable*,			SCHEDULE_P_MAP,				SCHEDULE_P_PAIR_IT);
 
 	DEFINE_MAP_PRED	(LPCSTR,					CSE_ALifeDiscovery*,			DISCOVERY_P_MAP,			DISCOVERY_P_PAIR_IT,	pred_str);
 	DEFINE_MAP_PRED	(LPCSTR,					CSE_ALifeOrganization*,			ORGANIZATION_P_MAP,			ORGANIZATION_P_PAIR_IT, pred_str);

@@ -131,7 +131,7 @@ public:
 
 class CSE_ALifeScheduleRegistry {
 public:
-	MONSTER_P_MAP					m_tpScheduledObjects;	// массив обновляемых объектов
+	SCHEDULE_P_MAP					m_tpScheduledObjects;	// массив обновляемых объектов
 	_OBJECT_ID						m_tNextFirstProcessObjectID;
 
 			void					Init						();

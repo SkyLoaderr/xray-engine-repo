@@ -40,8 +40,8 @@ class CSE_ALifeSimulator :
 	ORGANIZATION_ORDER_MAP			m_tpSoldArtefacts;
 	
 	// temporary buffers for combats
-	MONSTER_P_VECTOR				m_tpaCombatGroups[2];
-	CSE_ALifeMonsterAbstract		*m_tpaCombatMonsters[2];
+	SCHEDULE_P_VECTOR				m_tpaCombatGroups[2];
+	CSE_ALifeSchedulable			*m_tpaCombatObjects[2];
 
 	// common
 			void					vfUpdateDynamicData			(bool						bReserveID = true);
@@ -49,6 +49,8 @@ class CSE_ALifeSimulator :
 			void					vfCreateNewTask				(CSE_ALifeTrader			*tpTrader);
 			void					vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject		*&tpALifDynamicObject,		CSE_ALifeDynamicObject *tpALifeDynamicObject, _SPAWN_ID tSpawnID);
 			void					vfSetupScheduledObjects		();
+			void					vfPrintTime					(LPCSTR						S,							_TIME_ID				tTimeID);
+			void					vfAssignDeathPosition		(CSE_ALifeCreatureAbstract	*tpALifeCreatureAbstract,	_GRAPH_ID				tGraphID);
 	// surge
 			void					vfPerformSurge				();
 			void					vfGenerateAnomalousZones	();
@@ -64,23 +66,24 @@ class CSE_ALifeSimulator :
 			void					vfAssignStalkerCustomers	();
 	// switch online/offline routines
 			void					vfValidatePosition			(CSE_ALifeDynamicObject		*I);
-			void					vfRemoveOnlineObject		(CSE_ALifeDynamicObject		*tpALifeDynamicObject,		bool bAddToScheduled = true);
-			void					vfCreateOnlineObject		(CSE_ALifeDynamicObject		*tpALifeDynamicObject,		bool bRemoveFromScheduled = true);
+			void					vfRemoveOnlineObject		(CSE_ALifeDynamicObject		*tpALifeDynamicObject,		bool					bAddToScheduled = true);
+			void					vfCreateOnlineObject		(CSE_ALifeDynamicObject		*tpALifeDynamicObject,		bool					bRemoveFromScheduled = true);
 			void					vfSwitchObjectOnline		(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
 			void					vfSwitchObjectOffline		(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
 			void					ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
 			void					vfFurlObjectOffline			(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
 	// interaction routines
-			void					vfCheckForInteraction		(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract,	_GRAPH_ID					tGraphID);
-			void					vfFillCombatGroup			(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract,	int							iGroupIndex);
-			bool					bfCheckForInteraction		(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract1,	CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract2, int &iCombatGroupIndex);
+			void					vfInitAI_ALifeMembers		();
+			void					vfCheckForInteraction		(CSE_ALifeSchedulable		*tpALifeSchedulable,		_GRAPH_ID				tGraphID);
+			bool					bfCheckForInteraction		(CSE_ALifeSchedulable		*tpALifeSchedulable1,		CSE_ALifeSchedulable	*tpALifeSchedulable2,			int &iCombatGroupIndex, bool &bMutualDetection);
+			bool					bfCheckObjectDetection		(CSE_ALifeSchedulable		*tpALifeSchedulable1,		CSE_ALifeSchedulable	*tpALifeSchedulable2);
+
 			void					vfPerformAttackAction		(int						iCombatGroupIndex);
 			bool					bfCheckIfRetreated			(int						iCombatGroupIndex);
-			void					vfPerformCommunication		(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract1,		CSE_ALifeHumanAbstract		*tpALifeHumanAbstract2);
+			void					vfPerformCommunication		(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract1,		CSE_ALifeHumanAbstract	*tpALifeHumanAbstract2);
+			
+			void					vfFillCombatGroup			(CSE_ALifeSchedulable		*tpALifeSchedulable,		int						iGroupIndex);
 			void					vfFinishCombat				(ECombatResult				tCombatResult);
-			void					vfAssignDeathPosition		(CSE_ALifeCreatureAbstract	*tpALifeCreatureAbstract,	_GRAPH_ID					tGraphID);
-			void					vfInitAI_ALifeMembers		();
-			void					vfPrintTime					(LPCSTR						S,							_TIME_ID					tTimeID);
 public:
 	// members
 	bool							m_bLoaded;
@@ -89,6 +92,7 @@ public:
 	u32								m_dwInventorySlotCount;
 	WEAPON_P_VECTOR					m_tpWeaponVector;	
 	BOOL_VECTOR						m_baMarks;
+	ECombatType						m_tCombatType;
 	
 	// temporary buffers for combats
 	ITEM_P_VECTOR					m_tpItemVector;
@@ -109,7 +113,7 @@ public:
 			void					vfReleaseObject				(CSE_Abstract				*tpSE_Abstract,				bool						bForceDelete = true);
 	// miscellanious
 			void					vfCommunicateWithCustomer	(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		CSE_ALifeTraderAbstract		*tpTraderAbstract);
-			void					vfCheckForInteraction		(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract);
+			void					vfCheckForInteraction		(CSE_ALifeSchedulable		*tpALifeSchedulable);
 			void					vfAppendItemList			(OBJECT_VECTOR &tObjectVector, ITEM_P_VECTOR &tItemList);
 			ECombatAction			tfChooseCombatAction		(int						iCombatGroupIndex);
 	// console commands support

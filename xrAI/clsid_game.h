@@ -109,14 +109,15 @@
 #define CLSID_Z_ACIDF 				MK_CLSID('Z','_','A','C','I','D','F',' ')
 #define CLSID_Z_GALANT				MK_CLSID('Z','_','G','A','L','A','N','T')
 #define CLSID_Z_RADIO				MK_CLSID('Z','_','R','A','D','I','O',' ')
-#define CLSID_Z_GALANT				MK_CLSID('Z','_','G','A','L','A','N','T')
 #define CLSID_Z_BFUZZ				MK_CLSID('Z','_','B','F','U','Z','Z',' ')
 #define CLSID_Z_RUSTYH				MK_CLSID('Z','_','R','U','S','T','Y','H')
+#define CLSID_Z_FRYUP  				MK_CLSID('Z','_','F','R','Y','U','P ',' ')
 #define CLSID_Z_DEAD  				MK_CLSID('Z','_','D','E','A','D',' ',' ')
 #define CLSID_LEVEL_CHANGER			MK_CLSID('L','V','L','_','C','H','N','G')
 
 // Detectors
 #define CLSID_DETECTOR_SIMPLE		MK_CLSID('D','_','S','I','M','D','E','T')
+#define CLSID_DETECTOR_VISUAL		MK_CLSID('D','_','V','I','S','D','E','T')
 
 // PDA
 #define CLSID_DEVICE_PDA			MK_CLSID('D','_','P','D','A',' ',' ',' ')

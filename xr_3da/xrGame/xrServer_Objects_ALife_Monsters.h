@@ -11,16 +11,6 @@
 
 #include "xrServer_Objects_ALife.h"
 
-#ifndef _EDITOR
-#ifndef AI_COMPILER
-class CSE_ALifeSimulator;
-#endif
-#endif
-
-#ifdef _EDITOR
-class CSE_ALifeItemWeapon;
-#endif
-
 class CSE_ALifeTraderAbstract : virtual public CSE_Abstract {
 public:
 	float							m_fCumulativeItemMass;
@@ -79,7 +69,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCreatureAbstract,CSE_ALifeDynamicObjectVisu
 	IC		float					g_Health				()										{ return fHealth;}
 SERVER_ENTITY_DECLARE_END
 
-SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,IPureSchedulableObject)
+SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,CSE_ALifeSchedulable)
 	_GRAPH_ID						m_tNextGraphID;
 	_GRAPH_ID						m_tPrevGraphID;
 	float							m_fGoingSpeed;
@@ -93,24 +83,20 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,
 	float							m_fHitPower;
 	EHitType						m_tHitType;
 	svector<float,eHitTypeMax>		m_fpImmunityFactors;
-	CSE_ALifeItemWeapon				*m_tpCurrentBestWeapon;
-	CSE_ALifeSimulator				*m_tpALife;
 	
 									CSE_ALifeMonsterAbstract(LPCSTR					caSection);
 	IC		float					g_MaxHealth				()											{ return m_fMaxHealthValue;	}
 #ifdef _EDITOR
-	virtual	void					Update					(CSE_ALifeSimulator		*tpALifeSimulator)	{};
+	virtual	void					Update					()	{};
 #else
 #ifdef AI_COMPILER
-	virtual	void					Update					(CSE_ALifeSimulator		*tpALifeSimulator)	{};
+	virtual	void					Update					()	{};
 #else
-	virtual	void					Update					(CSE_ALifeSimulator		*tpALifeSimulator);
-	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(EHitType				&tHitType,			float &fHitPower);
-	virtual bool					bfPerformAttack			()											{return(true);};
-	virtual	void					vfUpdateWeaponAmmo		()											{};
-	virtual	void					vfProcessItems			()											{};
-	virtual	void					vfAttachItems			(ETakeType tTakeType = eTakeTypeAll)		{};
-	virtual	EMeetActionType			tfGetActionType			(CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract, int iGroupIndex);
+	virtual	void					Update					();
+	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(EHitType				&tHitType,			 float &fHitPower);
+	virtual	EMeetActionType			tfGetActionType			(CSE_ALifeSchedulable	*tpALifeSchedulable, int iGroupIndex, bool bMutualDetection);
+	virtual bool					bfActive				();
+	virtual CSE_ALifeDynamicObject	*tpfGetBestDetector		();
 #endif
 #endif
 SERVER_ENTITY_DECLARE_END
@@ -204,7 +190,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 	virtual							~CSE_ALifeHumanAbstract	();
 #ifndef _EDITOR
 #ifndef AI_COMPILER
-	virtual	void					Update					(CSE_ALifeSimulator		*tpALife);
+	virtual	void					Update					();
 			// FSM
 			void					vfChooseTask			();
 			void					vfHealthCare			();
@@ -241,8 +227,9 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 	virtual	void					vfProcessItems			();
 	virtual	void					vfAttachItems			(ETakeType tTakeType = eTakeTypeAll);
 			bool					bfCanGetItem			(CSE_ALifeItem *tpALifeItem);
-	virtual	EMeetActionType			tfGetActionType			(CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract, int iGroupIndex);
+	virtual	EMeetActionType			tfGetActionType			(CSE_ALifeSchedulable *tpALifeSchedulable, int iGroupIndex, bool bMutualDetection);
 			void					vfCollectAmmoBoxes		();
+	virtual CSE_ALifeDynamicObject	*tpfGetBestDetector		();
 #endif
 #endif
 SERVER_ENTITY_DECLARE_END

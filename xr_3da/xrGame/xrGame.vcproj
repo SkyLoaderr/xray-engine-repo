@@ -631,16 +631,6 @@
 						<File
 							RelativePath="AI\Stalker\ai_stalker_space.h">
 						</File>
-						<Filter
-							Name="ai_trader"
-							Filter="">
-							<File
-								RelativePath="AI\Trader\ai_trader.cpp">
-							</File>
-							<File
-								RelativePath="AI\Trader\ai_trader.h">
-							</File>
-						</Filter>
 					</Filter>
 					<Filter
 						Name="ai_crow"
@@ -740,6 +730,16 @@
 						</File>
 						<File
 							RelativePath="AI\Idol\ai_idol.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="ai_trader"
+						Filter="">
+						<File
+							RelativePath=".\Ai\Trader\ai_trader.cpp">
+						</File>
+						<File
+							RelativePath=".\Ai\Trader\ai_trader.h">
 						</File>
 					</Filter>
 				</Filter>
@@ -2256,6 +2256,9 @@
 					</File>
 					<File
 						RelativePath=".\ai_alife_monster.cpp">
+					</File>
+					<File
+						RelativePath=".\ai_alife_zone.cpp">
 					</File>
 				</Filter>
 			</Filter>

@@ -310,7 +310,7 @@ void CSE_ALifeCreatureAbstract::FillProp	(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeMonsterAbstract
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeMonsterAbstract::CSE_ALifeMonsterAbstract(LPCSTR caSection)	: CSE_ALifeCreatureAbstract(caSection), CSE_Abstract(caSection)
+CSE_ALifeMonsterAbstract::CSE_ALifeMonsterAbstract(LPCSTR caSection)	: CSE_ALifeCreatureAbstract(caSection), CSE_ALifeSchedulable(caSection), CSE_Abstract(caSection)
 {
 	m_tNextGraphID				= m_tGraphID;
 	m_tPrevGraphID				= m_tGraphID;
@@ -361,6 +361,7 @@ CSE_ALifeMonsterAbstract::CSE_ALifeMonsterAbstract(LPCSTR caSection)	: CSE_ALife
 		tTerrainPlace.dwMaxTime	= atoi(_GetItem(S,i++,I))*1000;
 		m_tpaTerrain.push_back	(tTerrainPlace);
 	}
+	m_tpBestDetector			= this;
 }
 
 void CSE_ALifeMonsterAbstract::STATE_Write	(NET_Packet &tNetPacket)

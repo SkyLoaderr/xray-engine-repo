@@ -11,7 +11,7 @@
 
 //#define OLD_BEHAVIOUR
 
-void CSE_ALifeHumanAbstract::Update			(CSE_ALifeSimulator *tpALife)
+void CSE_ALifeHumanAbstract::Update			()
 {
 	if (fHealth <= 0)
 		return;

@@ -11,7 +11,7 @@
 #include "ai_space.h"
 #include "ai_alife_predicates.h"
 
-void CSE_ALifeMonsterAbstract::Update		(CSE_ALifeSimulator *tpALife)
+void CSE_ALifeMonsterAbstract::Update		()
 {
 	bool				bContinue;
 	do {
@@ -19,7 +19,7 @@ void CSE_ALifeMonsterAbstract::Update		(CSE_ALifeSimulator *tpALife)
 		if (fHealth <= 0)
 			return;
 		if (m_tNextGraphID != m_tGraphID) {
-			_TIME_ID					tCurTime = tpALife->tfGetGameTime();
+			_TIME_ID					tCurTime = m_tpALife->tfGetGameTime();
 			m_fDistanceFromPoint		+= float(tCurTime - m_tTimeID)/1000.f * m_fCurSpeed;
 			if (m_fDistanceToPoint - m_fDistanceFromPoint < EPS_L) {
 				bContinue = true;
@@ -27,7 +27,7 @@ void CSE_ALifeMonsterAbstract::Update		(CSE_ALifeSimulator *tpALife)
 					m_tTimeID		= tCurTime - _TIME_ID(iFloor((m_fDistanceFromPoint - m_fDistanceToPoint)*1000.f/m_fCurSpeed));
 				m_fDistanceToPoint		= m_fDistanceFromPoint	= 0.0f;
 				m_tPrevGraphID			= m_tGraphID;
-				tpALife->vfChangeObjectGraphPoint(this,m_tGraphID,m_tNextGraphID);
+				m_tpALife->vfChangeObjectGraphPoint(this,m_tGraphID,m_tNextGraphID);
 				CSE_ALifeAbstractGroup	*tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(this);
 				if (tpALifeAbstractGroup)
 					tpALifeAbstractGroup->m_bCreateSpawnPositions = true;
@@ -61,7 +61,7 @@ void CSE_ALifeMonsterAbstract::Update		(CSE_ALifeSimulator *tpALife)
 				}
 			}
 			else {
-				int iChosenBranch = tpALife->randI(0,iBranches);
+				int iChosenBranch = m_tpALife->randI(0,iBranches);
 				iBranches = 0;
 				for (int i=0; i<wNeighbourCount; i++)
 					if (tpaEdges[i].dwVertexNumber != m_tPrevGraphID) {
@@ -87,10 +87,10 @@ void CSE_ALifeMonsterAbstract::Update		(CSE_ALifeSimulator *tpALife)
 			else
 				m_fCurSpeed			= m_fGoingSpeed;
 		}
-		tpALife->vfCheckForInteraction(this);
+		m_tpALife->vfCheckForInteraction(this);
 	}
-	while (bContinue && (tpALife->m_tpActor->o_Position.distance_to(o_Position) > tpALife->m_fOnlineDistance));
-	m_tTimeID					= tpALife->tfGetGameTime();
+	while (bContinue && (m_tpALife->m_tpActor->o_Position.distance_to(o_Position) > m_tpALife->m_fOnlineDistance));
+	m_tTimeID					= m_tpALife->tfGetGameTime();
 }
 
 CSE_ALifeItemWeapon	*CSE_ALifeMonsterAbstract::tpfGetBestWeapon(EHitType &tHitType, float &fHitPower)
@@ -100,7 +100,24 @@ CSE_ALifeItemWeapon	*CSE_ALifeMonsterAbstract::tpfGetBestWeapon(EHitType &tHitTy
 	return						(0);
 }
 
-EMeetActionType	CSE_ALifeMonsterAbstract::tfGetActionType(CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract, int iGroupIndex)
+EMeetActionType	CSE_ALifeMonsterAbstract::tfGetActionType(CSE_ALifeSchedulable *tpALifeSchedulable, int iGroupIndex, bool bMutualDetection)
 {
-	return						(g_team() == tpALifeMonsterAbstract->g_team() ? eMeetActionTypeIgnore : (m_tpALife->tfChooseCombatAction(iGroupIndex)==eCombatActionAttack ? eMeetActionTypeAttack : eMeetActionTypeIgnore));
+	if (m_tpALife->m_tCombatType == eCombatTypeMonsterMonster) {
+		CSE_ALifeMonsterAbstract	*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(tpALifeSchedulable);
+		R_ASSERT2					(l_tpALifeMonsterAbstract,"Inconsistent meet action type");
+		return						(g_team() == l_tpALifeMonsterAbstract->g_team() ? eMeetActionTypeIgnore : ((bMutualDetection || m_tpALife->tfChooseCombatAction(iGroupIndex)==eCombatActionAttack) ? eMeetActionTypeAttack : eMeetActionTypeIgnore));
+	}
+	else
+		return(eMeetActionTypeAttack);
+}
+
+bool CSE_ALifeMonsterAbstract::bfActive()
+{
+	CSE_ALifeAbstractGroup		*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(this);
+	return						((l_tpALifeAbstractGroup && (l_tpALifeAbstractGroup->m_wCount > 0)) || (fHealth > 0));
+}
+
+CSE_ALifeDynamicObject *CSE_ALifeMonsterAbstract::tpfGetBestDetector()
+{
+	return						(this);
 }

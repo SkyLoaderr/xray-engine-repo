@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////
+
 //	Module 		: ai_alife_human.cpp
 //	Created 	: 24.07.2003
 //  Modified 	: 24.07.2003
@@ -638,7 +638,35 @@ bool CSE_ALifeHumanAbstract::bfCanGetItem(CSE_ALifeItem *tpALifeItem)
 	return			(true);
 }
 
-EMeetActionType	CSE_ALifeHumanAbstract::tfGetActionType(CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract, int iGroupIndex)
+EMeetActionType	CSE_ALifeHumanAbstract::tfGetActionType(CSE_ALifeSchedulable *tpALifeSchedulable, int iGroupIndex, bool bMutualDetection)
 {
-	return						(g_team() == tpALifeMonsterAbstract->g_team() ? eMeetActionTypeInteract : (m_tpALife->tfChooseCombatAction(iGroupIndex)==eCombatActionAttack ? eMeetActionTypeAttack : eMeetActionTypeIgnore));
+	if (m_tpALife->m_tCombatType == eCombatTypeMonsterMonster) {
+		CSE_ALifeMonsterAbstract	*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(tpALifeSchedulable);
+		R_ASSERT2					(l_tpALifeMonsterAbstract,"Inconsistent meet action type");
+		return						(g_team() == l_tpALifeMonsterAbstract->g_team() ? eMeetActionTypeInteract : ((bMutualDetection || m_tpALife->tfChooseCombatAction(iGroupIndex)==eCombatActionAttack) ? eMeetActionTypeAttack : eMeetActionTypeIgnore));
+	}
+	else
+		return(eMeetActionTypeAttack);
+}
+
+CSE_ALifeDynamicObject *CSE_ALifeHumanAbstract::tpfGetBestDetector()
+{
+	m_tpBestDetector				= 0;
+	OBJECT_IT						I = children.begin();
+	OBJECT_IT						E = children.end();
+	for ( ; I != E; I++) {
+		CSE_ALifeItem				*l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>(m_tpALife->tpfGetObjectByID(*I));
+		R_ASSERT2					(l_tpALifeItem,"Non-item object in the inventory found");
+		switch (l_tpALifeItem->m_tClassID) {
+			case CLSID_DETECTOR_SIMPLE		: {
+				m_tpBestDetector	= l_tpALifeItem;
+				break;
+			}
+			case CLSID_DETECTOR_VISUAL		: {
+				m_tpBestDetector	= l_tpALifeItem;
+				return				(m_tpBestDetector);
+			}
+		}
+	}
+	return							(m_tpBestDetector);
 }

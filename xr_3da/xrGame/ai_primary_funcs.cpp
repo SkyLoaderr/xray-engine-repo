@@ -33,8 +33,10 @@ float CPersonalHealthFunction::ffGetValue()
 		return(m_fLastValue = getAI().m_tpCurrentMember->g_Health());
 	}
 	else {
-		m_fMaxResultValue = getAI().m_tpCurrentALifeMember->g_MaxHealth();
-		return(m_fLastValue = getAI().m_tpCurrentALifeMember->g_Health());
+		CSE_ALifeMonsterAbstract	*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(getAI().m_tpCurrentALifeMember);
+		R_ASSERT3					(l_tpALifeMonsterAbstract,"Invalid object passed to the evaluation function ",m_caName);
+		m_fMaxResultValue = l_tpALifeMonsterAbstract->g_MaxHealth();
+		return(m_fLastValue = l_tpALifeMonsterAbstract->g_Health());
 	}
 }
 
@@ -44,8 +46,11 @@ float CPersonalMoraleFunction::ffGetValue()
 		return(m_fLastValue);
 	if (getAI().m_tpCurrentMember)
 		return(m_fLastValue = getAI().m_tpCurrentMember->m_fMorale);
-	else
-		return(m_fLastValue = getAI().m_tpCurrentALifeMember->m_fMorale);
+	else {
+		CSE_ALifeMonsterAbstract	*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(getAI().m_tpCurrentALifeMember);
+		R_ASSERT3					(l_tpALifeMonsterAbstract,"Invalid object passed to the evaluation function ",m_caName);
+		return(m_fLastValue = l_tpALifeMonsterAbstract->m_fMorale);
+	}
 }
 
 float CPersonalCreatureTypeFunction::ffGetValue()
@@ -53,7 +58,15 @@ float CPersonalCreatureTypeFunction::ffGetValue()
 	if (bfCheckForCachedResult())
 		return(m_fLastValue);
 	
-	CLASS_ID	l_tClassID = getAI().m_tpCurrentMember ? getAI().m_tpCurrentMember->SUB_CLS_ID : getAI().m_tpCurrentALifeMember->m_tClassID;
+	CLASS_ID	l_tClassID;
+	if (getAI().m_tpCurrentMember) {
+		l_tClassID = getAI().m_tpCurrentMember->SUB_CLS_ID;
+	}
+	else {
+		CSE_ALifeDynamicObject		*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(getAI().m_tpCurrentALifeMember);
+		R_ASSERT3					(l_tpALifeDynamicObject,"Invalid object passed to the evaluation function ",m_caName);
+		l_tClassID = l_tpALifeDynamicObject->m_tClassID;
+	}
 	switch (l_tClassID) {
 		case CLSID_AI_RAT				: {
 			m_fLastValue =  1;
@@ -215,7 +228,15 @@ float CPersonalWeaponTypeFunction::ffGetValue()
 	if (bfCheckForCachedResult())
 		return(m_fLastValue);
 	
-	CLASS_ID	l_tClassID = getAI().m_tpCurrentMember ? getAI().m_tpCurrentMember->SUB_CLS_ID : getAI().m_tpCurrentALifeMember->m_tClassID;
+	CLASS_ID	l_tClassID;
+	if (getAI().m_tpCurrentMember) {
+		l_tClassID = getAI().m_tpCurrentMember->SUB_CLS_ID;
+	}
+	else {
+		CSE_ALifeDynamicObject		*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(getAI().m_tpCurrentALifeMember);
+		R_ASSERT3					(l_tpALifeDynamicObject,"Invalid object passed to the evaluation function ",m_caName);
+		l_tClassID = l_tpALifeDynamicObject->m_tClassID;
+	}
 	switch (l_tClassID) {
 		case CLSID_AI_RAT				: {
 			m_fLastValue =  1;
@@ -311,6 +332,38 @@ float CPersonalWeaponTypeFunction::ffGetValue()
 		}
 		case CLSID_AI_TRADER: 
 			break;
+		case CLSID_Z_MBALD : {
+			m_fLastValue =  13;
+			break;
+		}
+		case CLSID_Z_MINCER : {
+			m_fLastValue =  14;
+			break;
+		}
+		case CLSID_Z_RADIO : {
+			m_fLastValue =  15;
+			break;
+		}
+		case CLSID_Z_ACIDF : {
+			m_fLastValue =  16;
+			break;
+		}
+		case CLSID_Z_GALANT : {
+			m_fLastValue =  17;
+			break;
+		}
+		case CLSID_Z_BFUZZ : {
+			m_fLastValue =  18;
+			break;
+		}
+		case CLSID_Z_RUSTYH : {
+			m_fLastValue =  19;
+			break;
+		}
+		case CLSID_Z_FRYUP : {
+			m_fLastValue =  20;
+			break;
+		}
 		default : NODEFAULT;
 	}
 	return(m_fLastValue -= 1.f);
@@ -322,8 +375,11 @@ float CPersonalAccuracyFunction::ffGetValue()
 		return(m_fLastValue);
 	if (getAI().m_tpCurrentMember)
 		return(m_fLastValue = getAI().m_tpCurrentMember->m_fAccuracy);
-	else
-		return(m_fLastValue = getAI().m_tpCurrentALifeMember->m_fAccuracy);
+	else {
+		CSE_ALifeMonsterAbstract	*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(getAI().m_tpCurrentALifeMember);
+		R_ASSERT3					(l_tpALifeMonsterAbstract,"Invalid object passed to the evaluation function ",m_caName);
+		return(m_fLastValue = l_tpALifeMonsterAbstract->m_fAccuracy);
+	}
 }
 
 float CPersonalIntelligenceFunction::ffGetValue()
@@ -332,8 +388,11 @@ float CPersonalIntelligenceFunction::ffGetValue()
 		return(m_fLastValue);
 	if (getAI().m_tpCurrentMember)
 		return(m_fLastValue = getAI().m_tpCurrentMember->m_fIntelligence);
-	else
-		return(m_fLastValue = getAI().m_tpCurrentALifeMember->m_fIntelligence);
+	else {
+		CSE_ALifeMonsterAbstract	*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(getAI().m_tpCurrentALifeMember);
+		R_ASSERT3					(l_tpALifeMonsterAbstract,"Invalid object passed to the evaluation function ",m_caName);
+		return(m_fLastValue = l_tpALifeMonsterAbstract->m_fIntelligence);
+	}
 }
 
 float CPersonalRelationFunction::ffGetValue()
@@ -364,26 +423,26 @@ float CPersonalAggressivenessFunction::ffGetValue()
 float CEnemyHealthFunction::ffGetValue()
 {
 	if (bfCheckForCachedResult())
-		return(m_fLastValue);
+		return							(m_fLastValue);
 	if (getAI().m_tpCurrentMember) {
-		CEntityAlive *tpEntity = getAI().m_tpCurrentMember;
-		getAI().m_tpCurrentMember = getAI().m_tpCurrentEnemy;
-		m_fLastValue = getAI().m_pfPersonalHealth->ffGetValue();
-		getAI().m_tpCurrentMember = tpEntity;
+		CEntityAlive *tpEntity			= getAI().m_tpCurrentMember;
+		getAI().m_tpCurrentMember		= getAI().m_tpCurrentEnemy;
+		m_fLastValue					= getAI().m_pfPersonalHealth->ffGetValue();
+		getAI().m_tpCurrentMember		= tpEntity;
 	}
 	else {
-		CSE_ALifeMonsterAbstract *l_tpALifeMonsterAbstract = getAI().m_tpCurrentALifeMember;
-		getAI().m_tpCurrentALifeMember = getAI().m_tpCurrentALifeEnemy;
-		m_fLastValue = getAI().m_pfPersonalHealth->ffGetValue();
-		getAI().m_tpCurrentALifeMember = l_tpALifeMonsterAbstract;
+		CSE_ALifeSchedulable			*l_tpALifeSchedulable = getAI().m_tpCurrentALifeMember;
+		getAI().m_tpCurrentALifeMember	= getAI().m_tpCurrentALifeEnemy;
+		m_fLastValue					= getAI().m_pfPersonalHealth->ffGetValue();
+		getAI().m_tpCurrentALifeMember	= l_tpALifeSchedulable;
 	}
-	return(m_fLastValue);
+	return								(m_fLastValue);
 }
 
 float CEnemyCreatureTypeFunction::ffGetValue()
 {
 	if (bfCheckForCachedResult())
-		return(m_fLastValue);
+		return							(m_fLastValue);
 	if (getAI().m_tpCurrentMember) {
 		CEntityAlive *tpEntity			= getAI().m_tpCurrentMember;
 		getAI().m_tpCurrentMember		= getAI().m_tpCurrentEnemy;
@@ -391,18 +450,18 @@ float CEnemyCreatureTypeFunction::ffGetValue()
 		getAI().m_tpCurrentMember		= tpEntity;
 	}
 	else {
-		CSE_ALifeMonsterAbstract		*l_tpALifeMonsterAbstract = getAI().m_tpCurrentALifeMember;
+		CSE_ALifeSchedulable			*l_tpALifeSchedulable = getAI().m_tpCurrentALifeMember;
 		getAI().m_tpCurrentALifeMember	= getAI().m_tpCurrentALifeEnemy;
 		m_fLastValue					= getAI().m_pfPersonalCreatureType->ffGetValue();
-		getAI().m_tpCurrentALifeMember	= l_tpALifeMonsterAbstract;
+		getAI().m_tpCurrentALifeMember	= l_tpALifeSchedulable;
 	}
-	return(m_fLastValue);
+	return								(m_fLastValue);
 }
 
 float CEnemyWeaponTypeFunction::ffGetValue()
 {
 	if (bfCheckForCachedResult())
-		return(m_fLastValue);
+		return							(m_fLastValue);
 	if (getAI().m_tpCurrentMember) {
 		CEntityAlive					*tpEntity = getAI().m_tpCurrentMember;
 		CGameObject						*l_tpGameObject = getAI().m_tpGameObject;
@@ -412,15 +471,15 @@ float CEnemyWeaponTypeFunction::ffGetValue()
 		getAI().m_tpGameObject			= l_tpGameObject;
 	}
 	else {
-		CSE_ALifeMonsterAbstract		*l_tpALifeMonsterAbstract = getAI().m_tpCurrentALifeMember;
+		CSE_ALifeSchedulable			*l_tpALifeSchedulable = getAI().m_tpCurrentALifeMember;
 		CSE_ALifeObject					*l_tpALifeObject = getAI().m_tpCurrentALifeObject;
 		getAI().m_tpCurrentALifeObject	= getAI().m_tpCurrentALifeEnemy->m_tpCurrentBestWeapon;
 		getAI().m_tpCurrentALifeMember	= getAI().m_tpCurrentALifeEnemy;
 		m_fLastValue					= getAI().m_pfPersonalWeaponType->ffGetValue();
-		getAI().m_tpCurrentALifeMember	= l_tpALifeMonsterAbstract;
+		getAI().m_tpCurrentALifeMember	= l_tpALifeSchedulable;
 		getAI().m_tpCurrentALifeObject	= l_tpALifeObject;
 	}
-	return(m_fLastValue);
+	return								(m_fLastValue);
 }
 
 float CEnemyEquipmentCostFunction::ffGetValue()
@@ -464,15 +523,17 @@ float CEnemyAnomalityFunction::ffGetValue()
 float CGraphPointType0::ffGetValue()
 {
 	if (bfCheckForCachedResult())
-		return(m_fLastValue);
-	return(m_fLastValue = getAI().m_tpaGraph[getAI().m_tpCurrentALifeObject->m_tGraphID].tVertexTypes[0]);
+		return						(m_fLastValue);
+	return							(m_fLastValue = getAI().m_tpaGraph[getAI().m_tpCurrentALifeObject->m_tGraphID].tVertexTypes[0]);
 }
 
 float CPersonalEyeRange::ffGetValue()
 {
 	if (bfCheckForCachedResult())
-		return(m_fLastValue);
-	return(m_fLastValue = getAI().m_tpCurrentALifeMember->m_fEyeRange);
+		return						(m_fLastValue);
+	CSE_ALifeMonsterAbstract		*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(getAI().m_tpCurrentALifeMember);
+	R_ASSERT3						(l_tpALifeMonsterAbstract,"Invalid object passed to the evaluation function ",m_caName);
+	return							(m_fLastValue = l_tpALifeMonsterAbstract->m_fEyeRange);
 }
 
 float CEnemyEyeRange::ffGetValue()
@@ -480,23 +541,25 @@ float CEnemyEyeRange::ffGetValue()
 	if (bfCheckForCachedResult())
 		return(m_fLastValue);
 
-	CSE_ALifeMonsterAbstract*l_tpALifeMonsterAbstract = getAI().m_tpCurrentALifeMember;
+	CSE_ALifeSchedulable			*l_tpALifeSchedulable = getAI().m_tpCurrentALifeMember;
 	getAI().m_tpCurrentALifeMember	= getAI().m_tpCurrentALifeEnemy;
-	m_fLastValue			= getAI().m_pfPersonalEyeRange->ffGetValue();
-	getAI().m_tpCurrentALifeMember	= l_tpALifeMonsterAbstract;
-	return					(m_fLastValue);
+	m_fLastValue					= getAI().m_pfPersonalEyeRange->ffGetValue();
+	getAI().m_tpCurrentALifeMember	= l_tpALifeSchedulable;
+	return							(m_fLastValue);
 }
 
 float CPersonalMaxHealth::ffGetValue()
 {
 	if (bfCheckForCachedResult())
-		return(m_fLastValue);
+		return						(m_fLastValue);
 	
-	CSE_ALifeAbstractGroup	*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(getAI().m_tpCurrentALifeMember);
+	CSE_ALifeMonsterAbstract		*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(getAI().m_tpCurrentALifeMember);
+	R_ASSERT3						(l_tpALifeMonsterAbstract,"Invalid object passed to the evaluation function ",m_caName);
+	CSE_ALifeAbstractGroup			*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(getAI().m_tpCurrentALifeMember);
 	if (!l_tpALifeAbstractGroup)
-		return(m_fLastValue = getAI().m_tpCurrentALifeMember->m_fMaxHealthValue);
+		return						(m_fLastValue = l_tpALifeMonsterAbstract->m_fMaxHealthValue);
 	else
-		return(m_fLastValue = getAI().m_tpCurrentALifeMember->m_fMaxHealthValue*l_tpALifeAbstractGroup->m_wCount); 
+		return						(m_fLastValue = l_tpALifeMonsterAbstract->m_fMaxHealthValue*l_tpALifeAbstractGroup->m_wCount); 
 }
 
 u32 CPersonalMaxHealth::dwfGetDiscreteValue(u32 dwDiscretizationValue)
@@ -531,22 +594,22 @@ u32 CPersonalMaxHealth::dwfGetDiscreteValue(u32 dwDiscretizationValue)
 float CEnemyMaxHealth::ffGetValue()
 {
 	if (bfCheckForCachedResult())
-		return(m_fLastValue);
+		return						(m_fLastValue);
 
-	CSE_ALifeMonsterAbstract*l_tpALifeMonsterAbstract = getAI().m_tpCurrentALifeMember;
+	CSE_ALifeSchedulable			*l_tpALifeSchedulable = getAI().m_tpCurrentALifeMember;
 	getAI().m_tpCurrentALifeMember	= getAI().m_tpCurrentALifeEnemy;
-	m_fLastValue			= getAI().m_pfPersonalMaxHealth->ffGetValue();
-	getAI().m_tpCurrentALifeMember	= l_tpALifeMonsterAbstract;
-	return					(m_fLastValue);
+	m_fLastValue					= getAI().m_pfPersonalMaxHealth->ffGetValue();
+	getAI().m_tpCurrentALifeMember	= l_tpALifeSchedulable;
+	return							(m_fLastValue);
 }
 
 u32 CEnemyMaxHealth::dwfGetDiscreteValue(u32 dwDiscretizationValue)
 {
-	CSE_ALifeMonsterAbstract*l_tpALifeMonsterAbstract = getAI().m_tpCurrentALifeMember;
+	CSE_ALifeSchedulable			*l_tpALifeSchedulable = getAI().m_tpCurrentALifeMember;
 	getAI().m_tpCurrentALifeMember	= getAI().m_tpCurrentALifeEnemy;
-	u32						l_dwResult = getAI().m_pfPersonalMaxHealth->dwfGetDiscreteValue(dwDiscretizationValue);
-	getAI().m_tpCurrentALifeMember	= l_tpALifeMonsterAbstract;
-	return					(l_dwResult);
+	u32								l_dwResult = getAI().m_pfPersonalMaxHealth->dwfGetDiscreteValue(dwDiscretizationValue);
+	getAI().m_tpCurrentALifeMember	= l_tpALifeSchedulable;
+	return							(l_dwResult);
 }
 
 float CEquipmentType::ffGetValue()
@@ -705,4 +768,124 @@ float CWeaponAmmoCount::ffGetValue()
 		R_ASSERT2				(l_tpALifeHumanAbstract,"Non-human object in WeaponAmmoCount evaluation function");
 		return					(m_fLastValue = l_tpALifeHumanAbstract->get_available_ammo_count(dynamic_cast<CSE_ALifeItemWeapon*>(getAI().m_tpCurrentALifeObject),getAI().m_tpALife->m_tpItemVector));
 	}
+}
+
+float CEnemyAnomalyType::ffGetValue()
+{
+	if (bfCheckForCachedResult())
+		return					(m_fLastValue);
+
+	CLASS_ID					l_tClassID;
+	if (getAI().m_tpCurrentMember)
+		l_tClassID				= getAI().m_tpCurrentMember->SUB_CLS_ID;
+	else {
+		CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(getAI().m_tpCurrentALifeEnemy);
+		R_ASSERT3				(l_tpALifeDynamicObject,"Invalid object passed to the evaluation function ",m_caName);
+		l_tClassID				= l_tpALifeDynamicObject->m_tClassID;
+	}
+	switch (l_tClassID) {
+		case CLSID_Z_MBALD : {
+			m_fLastValue		=  1;
+			break;
+		}
+		case CLSID_Z_MINCER : {
+			m_fLastValue		=  2;
+			break;
+		}
+		case CLSID_Z_RADIO : {
+			m_fLastValue		=  3;
+			break;
+		}
+		case CLSID_Z_ACIDF : {
+			m_fLastValue		=  4;
+			break;
+		}
+		case CLSID_Z_GALANT : {
+			m_fLastValue		=  5;
+			break;
+		}
+		case CLSID_Z_BFUZZ : {
+			m_fLastValue		=  6;
+			break;
+		}
+		case CLSID_Z_RUSTYH : {
+			m_fLastValue		=  7;
+			break;
+		}
+		case CLSID_Z_FRYUP : {
+			m_fLastValue		=  8;
+			break;
+		}
+		default : NODEFAULT;
+	}
+	return						(m_fLastValue -= 1.f);
+}
+
+float CDetectorType::ffGetValue()
+{
+	if (bfCheckForCachedResult())
+		return					(m_fLastValue);
+
+	CLASS_ID					l_tClassID;
+	if (getAI().m_tpCurrentMember)
+		if (!getAI().m_tpGameObject)
+			return				(m_fLastValue = 0);
+		else
+			l_tClassID			= getAI().m_tpGameObject->SUB_CLS_ID;
+	else {
+		CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(getAI().m_tpCurrentALifeObject);
+		if (!l_tpALifeDynamicObject)
+			return				(m_fLastValue = 0);
+		else
+			l_tClassID			= l_tpALifeDynamicObject->m_tClassID;
+	}
+	
+	switch (l_tClassID) {
+		
+		case CLSID_AI_RAT				: 
+		case CLSID_AI_RAT_WOLF			: 
+		case CLSID_AI_ZOMBIE			: 
+		case CLSID_AI_ZOMBIE_HUMAN		: 
+		case CLSID_AI_POLTERGEIST		: 
+		case CLSID_AI_DOG				: 
+		case CLSID_AI_FLESH				: 
+		case CLSID_AI_DWARF				: 
+		case CLSID_AI_SCIENTIST			: 
+		case CLSID_AI_PHANTOM			: 
+		case CLSID_AI_SPONGER			: 
+		case CLSID_AI_CONTROLLER		: 
+		case CLSID_AI_BLOODSUCKER		: 
+		case CLSID_AI_BURER				: 
+		case CLSID_AI_GIANT				: 
+		case CLSID_AI_CHIMERA			: 
+		case CLSID_AI_FRACTURE			: 
+		case CLSID_AI_DOG_RED			:
+		case CLSID_AI_DOG_BLACK			: 
+		case CLSID_DETECTOR_SIMPLE		: {
+			m_fLastValue		=  2;
+			break;
+		}
+		case CLSID_DETECTOR_VISUAL		: {
+			m_fLastValue		=  3;
+			break;
+		}
+		default : NODEFAULT;
+	}
+
+	return						(m_fLastValue -= 1.f);
+}
+
+float CEnemyDistanceToGraphPoint::ffGetValue()
+{
+	CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(getAI().m_tpCurrentALifeEnemy);
+	R_ASSERT3				(l_tpALifeDynamicObject,"Invalid object passed to the evaluation function ",m_caName);
+	if (l_tpALifeDynamicObject->m_fDistance < 5.f)
+		return				(m_fLastValue = 0);
+	if (l_tpALifeDynamicObject->m_fDistance < 10.f)
+		return				(m_fLastValue = 1);
+	if (l_tpALifeDynamicObject->m_fDistance < 15.f)
+		return				(m_fLastValue = 2);
+	if (l_tpALifeDynamicObject->m_fDistance < 20.f)
+		return				(m_fLastValue = 3);
+	return					(m_fLastValue = 4);
 }

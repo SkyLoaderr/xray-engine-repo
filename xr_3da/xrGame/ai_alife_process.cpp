@@ -94,12 +94,12 @@ void CSE_ALifeSimulator::shedule_Update			(u32 dt)
 			Msg("Enough time (0) !");
 #endif
 			if (m_tpScheduledObjects.size()) {
-				MONSTER_P_PAIR_IT		B = m_tpScheduledObjects.begin();
-				MONSTER_P_PAIR_IT		E = m_tpScheduledObjects.end();
-				MONSTER_P_PAIR_IT		M = m_tpScheduledObjects.find(m_tNextFirstProcessObjectID), I;
+				SCHEDULE_P_PAIR_IT		B = m_tpScheduledObjects.begin();
+				SCHEDULE_P_PAIR_IT		E = m_tpScheduledObjects.end();
+				SCHEDULE_P_PAIR_IT		M = m_tpScheduledObjects.find(m_tNextFirstProcessObjectID), I;
 				int i=1;
 				for (I = M ; I != E; I++, i++) {
-					(*I).second->Update(this);
+					(*I).second->Update();
 					if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= qwMaxProcessTime) {
 						m_tNextFirstProcessObjectID = (++I == E) ? (*B).second->ID : (*I).second->ID;
 						Device.Statistic.TEST3.End();
@@ -107,7 +107,7 @@ void CSE_ALifeSimulator::shedule_Update			(u32 dt)
 					}
 				}
 				for (I = B; I != M; I++, i++) {
-					(*I).second->Update(this);
+					(*I).second->Update();
 					if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= qwMaxProcessTime) {
 						m_tNextFirstProcessObjectID = (++I == E) ? (*B).second->ID : (*I).second->ID;
 						Device.Statistic.TEST3.End();

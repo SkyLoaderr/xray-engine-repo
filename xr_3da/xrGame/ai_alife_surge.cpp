@@ -134,7 +134,7 @@ void CSE_ALifeSimulator::vfGenerateAnomalousZones()
 		R_ASSERT2				(l_tpALifeAnomalousZone,"Anomalous zones are grouped with incompatible objects!");
 		CSE_ALifeAnomalousZone	*l_tpSpawnAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(*j);
 		R_ASSERT2				(l_tpSpawnAnomalousZone,"Anomalous zones are grouped with incompatible objects!");
-		l_tpALifeAnomalousZone->m_maxPower = randF(50,150);
+		l_tpALifeAnomalousZone->m_maxPower = l_tpALifeAnomalousZone->m_fStartPower = randF(50,150);
 
 		// proceed random artefacts generation for the active zone
 		fProbability			= randF(1.f);
@@ -212,8 +212,18 @@ void CSE_ALifeSimulator::vfBallanceCreatures()
 		D_OBJECT_PAIR_IT				E = m_tObjectRegistry.end();
 		for ( ; I != E; I++) {
 			CSE_ALifeCreatureAbstract *l_tpALifeCreatureAbstract = dynamic_cast<CSE_ALifeCreatureAbstract*>((*I).second);
-			if (!l_tpALifeCreatureAbstract || (l_tpALifeCreatureAbstract->fHealth > 0.f))
-				m_baAliveSpawnObjects[(*I).second->m_tSpawnID] = true;
+			CSE_ALifeAbstractGroup	  *l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>((*I).second);
+			if (l_tpALifeCreatureAbstract)
+				if (l_tpALifeAbstractGroup) {
+					if (l_tpALifeAbstractGroup->m_wCount) {
+						m_baAliveSpawnObjects[(*I).second->m_tSpawnID] = true;
+#pragma todo("Dima to Dima : Add monster population increse here")
+						//l_tpALifeAbstractGroup->m_wCount *= l_tpALifeAbstractGroup->m_wCount < 50 ? 1.5 : 0.8;
+					}
+				}
+				else
+					if (l_tpALifeCreatureAbstract->fHealth > 0.f)
+						m_baAliveSpawnObjects[(*I).second->m_tSpawnID] = true;
 		}
 	}
 	// balancing creatures by spawn groups
@@ -716,8 +726,8 @@ void CSE_ALifeSimulator::vfUpdateTasks()
 
 void CSE_ALifeSimulator::vfAssignStalkerCustomers()
 {
-	MONSTER_P_PAIR_IT				I = m_tpScheduledObjects.begin();
-	MONSTER_P_PAIR_IT				E = m_tpScheduledObjects.end();
+	SCHEDULE_P_PAIR_IT				I = m_tpScheduledObjects.begin();
+	SCHEDULE_P_PAIR_IT				E = m_tpScheduledObjects.end();
 	for ( ; I != E; I++) {
 		CSE_ALifeHumanAbstract		*l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>((*I).second);
 		if (l_tpALifeHumanAbstract && strlen(l_tpALifeHumanAbstract->m_caKnownCustomers)) {

@@ -11,81 +11,80 @@
 #include "ai_space.h"
 #include "ai_alife_predicates.h"
 
-void CSE_ALifeSimulator::vfCheckForInteraction(CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract)
+void CSE_ALifeSimulator::vfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSchedulable)
 {
-	CSE_ALifeAbstractGroup		*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(tpALifeMonsterAbstract);
-	_GRAPH_ID					l_tGraphID = tpALifeMonsterAbstract->m_tGraphID;
-	vfCheckForInteraction		(tpALifeMonsterAbstract,l_tGraphID);
-	if ((l_tpALifeAbstractGroup && !l_tpALifeAbstractGroup->m_wCount) || (!l_tpALifeAbstractGroup && tpALifeMonsterAbstract->fHealth <= 0))
+	if (!tpALifeSchedulable->bfActive())
 		return;
+	CSE_ALifeDynamicObject		*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(tpALifeSchedulable);
+	R_ASSERT2					(l_tpALifeDynamicObject,"Unknown schedulable object class");
+	_GRAPH_ID					l_tGraphID = l_tpALifeDynamicObject->m_tGraphID;
+	vfCheckForInteraction		(tpALifeSchedulable,l_tGraphID);
 	CSE_ALifeGraph::SGraphEdge	*I = (CSE_ALifeGraph::SGraphEdge *)((u8 *)getAI().m_tpaGraph + getAI().m_tpaGraph[l_tGraphID].dwEdgeOffset);
 	CSE_ALifeGraph::SGraphEdge	*E = I + (u32)getAI().m_tpaGraph[l_tGraphID].tNeighbourCount;
 	for ( ; I != E; I++)
-		vfCheckForInteraction	(tpALifeMonsterAbstract,(_GRAPH_ID)(*I).dwVertexNumber);
+		vfCheckForInteraction	(tpALifeSchedulable,(_GRAPH_ID)(*I).dwVertexNumber);
 }
 
-void CSE_ALifeSimulator::vfCheckForInteraction(CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract, _GRAPH_ID tGraphID)
+void CSE_ALifeSimulator::vfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSchedulable, _GRAPH_ID tGraphID)
 {
-	CSE_ALifeHumanAbstract		*l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>(tpALifeMonsterAbstract);
+	CSE_ALifeHumanAbstract		*l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>(tpALifeSchedulable);
 	D_OBJECT_P_IT				I = m_tpGraphObjects[tGraphID].tpObjects.begin();
 	D_OBJECT_P_IT				E = m_tpGraphObjects[tGraphID].tpObjects.end();
 	int							l_iGroupIndex;
 	bool						l_bFirstTime = true;
+	bool						l_bMutualDetection;
 	for ( ; I != E; I++) {
-		CSE_ALifeMonsterAbstract		*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(*I);
-		
-		if (!l_tpALifeMonsterAbstract || (l_tpALifeMonsterAbstract->ID == tpALifeMonsterAbstract->ID))
+		if ((*I)->ID == tpALifeSchedulable->ID)
 			continue;
 
-		if (!bfCheckForInteraction(tpALifeMonsterAbstract,l_tpALifeMonsterAbstract,l_iGroupIndex))
+		CSE_ALifeSchedulable	*l_tpALifeSchedulable = dynamic_cast<CSE_ALifeSchedulable*>(*I);
+		if (!l_tpALifeSchedulable)
+			continue;
+
+		if (!bfCheckForInteraction(tpALifeSchedulable,l_tpALifeSchedulable,l_iGroupIndex,l_bMutualDetection))
 			continue;
 
 		if (l_bFirstTime) {
-			vfFillCombatGroup	(tpALifeMonsterAbstract,0);
+			vfFillCombatGroup	(tpALifeSchedulable,0);
 			l_bFirstTime		= false;
 		}
 		
-		vfFillCombatGroup		(l_tpALifeMonsterAbstract,1);
+		vfFillCombatGroup		(l_tpALifeSchedulable,1);
 
-		if (m_tpaCombatGroups[1].empty())
-			continue;
-		
-		switch (m_tpaCombatMonsters[l_iGroupIndex]->tfGetActionType(m_tpaCombatMonsters[l_iGroupIndex ^ 1],l_iGroupIndex)) {
+		switch (m_tpaCombatObjects[l_iGroupIndex]->tfGetActionType(m_tpaCombatObjects[l_iGroupIndex ^ 1],l_iGroupIndex,l_bMutualDetection)) {
 			case eMeetActionTypeAttack : {
-				if ((m_tpaCombatGroups[1].size() == 1) && (m_tpaCombatGroups[1][0]->fHealth <= 0))
-					continue;
 #ifdef OFFLINE_LOG
-				Msg("[LSS] %s started combat versus %s",m_tpaCombatMonsters[l_iGroupIndex]->s_name_replace,m_tpaCombatMonsters[l_iGroupIndex ^ 1]->s_name_replace);
+				Msg("[LSS] %s started combat versus %s",m_tpaCombatObjects[l_iGroupIndex]->s_name_replace,m_tpaCombatObjects[l_iGroupIndex ^ 1]->s_name_replace);
 #endif
 				ECombatResult			l_tCombatResult = eCombatResultRetreat12;
 				for (int i=0; i<2*int(m_dwMaxCombatIterationCount); i++) {
 					if (tfChooseCombatAction(l_iGroupIndex) == eCombatActionAttack) {
 #ifdef OFFLINE_LOG
-						Msg("[LSS] %s choosed to attack %s",m_tpaCombatMonsters[l_iGroupIndex]->s_name_replace,m_tpaCombatMonsters[l_iGroupIndex ^ 1]->s_name_replace);
+						Msg("[LSS] %s choosed to attack %s",m_tpaCombatObjects[l_iGroupIndex]->s_name_replace,m_tpaCombatObjects[l_iGroupIndex ^ 1]->s_name_replace);
 #endif
 						vfPerformAttackAction(l_iGroupIndex);
 					}
 					else {
 #ifdef OFFLINE_LOG
-						Msg("[LSS] %s choosed to retreat from %s",m_tpaCombatMonsters[l_iGroupIndex]->s_name_replace,m_tpaCombatMonsters[l_iGroupIndex ^ 1]->s_name_replace);
+						Msg("[LSS] %s choosed to retreat from %s",m_tpaCombatObjects[l_iGroupIndex]->s_name_replace,m_tpaCombatObjects[l_iGroupIndex ^ 1]->s_name_replace);
 #endif
 						if (bfCheckIfRetreated(l_iGroupIndex)) {
 #ifdef OFFLINE_LOG
-							Msg("[LSS] %s did retreat from %s",m_tpaCombatMonsters[l_iGroupIndex]->s_name_replace,m_tpaCombatMonsters[l_iGroupIndex ^ 1]->s_name_replace);
+							Msg("[LSS] %s did retreat from %s",m_tpaCombatObjects[l_iGroupIndex]->s_name_replace,m_tpaCombatObjects[l_iGroupIndex ^ 1]->s_name_replace);
 #endif
 							l_tCombatResult	= l_iGroupIndex ? eCombatResultRetreat2 : eCombatResultRetreat1;
 							break;
 						}
 #ifdef OFFLINE_LOG
-						Msg("[LSS] %s didn't retreat from %s",m_tpaCombatMonsters[l_iGroupIndex]->s_name_replace,m_tpaCombatMonsters[l_iGroupIndex ^ 1]->s_name_replace);
+						Msg("[LSS] %s didn't retreat from %s",m_tpaCombatObjects[l_iGroupIndex]->s_name_replace,m_tpaCombatObjects[l_iGroupIndex ^ 1]->s_name_replace);
 #endif
 					}
 
 					l_iGroupIndex		^= 1;
 
-					if (m_tpaCombatGroups[l_iGroupIndex].empty()) {
+					if (!m_tpaCombatObjects[l_iGroupIndex]->bfActive()) {
 #ifdef OFFLINE_LOG
-						Msg("[LSS] %s is dead",m_tpaCombatMonsters[l_iGroupIndex]->s_name_replace);
+						Msg("[LSS] %s is dead",m_tpaCombatObjects[l_iGroupIndex]->s_name_replace);
 #endif
 						l_tCombatResult	= l_iGroupIndex ? eCombatResult2Kill1 : eCombatResult1Kill2;
 						break;
@@ -96,10 +95,10 @@ void CSE_ALifeSimulator::vfCheckForInteraction(CSE_ALifeMonsterAbstract *tpALife
 			}
 			case eMeetActionTypeInteract : {
 				if (l_tpALifeHumanAbstract)	{
-					CSE_ALifeHumanAbstract		*l_tpALifeHumanAbstract2 = dynamic_cast<CSE_ALifeHumanAbstract*>(l_tpALifeMonsterAbstract);
+					CSE_ALifeHumanAbstract		*l_tpALifeHumanAbstract2 = dynamic_cast<CSE_ALifeHumanAbstract*>(l_tpALifeSchedulable);
 					if (l_tpALifeHumanAbstract2) {
 #ifdef OFFLINE_LOG
-						Msg("[LSS] %s interacted with ",m_tpaCombatMonsters[l_iGroupIndex]->s_name_replace,m_tpaCombatMonsters[l_iGroupIndex ^ 1]->s_name_replace);
+						Msg("[LSS] %s interacted with ",m_tpaCombatObjects[l_iGroupIndex]->s_name_replace,m_tpaCombatObjects[l_iGroupIndex ^ 1]->s_name_replace);
 #endif
 						vfPerformCommunication(l_tpALifeHumanAbstract,l_tpALifeHumanAbstract2);
 					}
@@ -108,7 +107,7 @@ void CSE_ALifeSimulator::vfCheckForInteraction(CSE_ALifeMonsterAbstract *tpALife
 			}
 			case eMeetActionTypeIgnore : {
 #ifdef OFFLINE_LOG
-				Msg("[LSS] %s refused from combat",m_tpaCombatMonsters[l_iGroupIndex]->s_name_replace);
+				Msg("[LSS] %s refused from combat",m_tpaCombatObjects[l_iGroupIndex]->s_name_replace);
 #endif
 				continue;
 			}

@@ -286,10 +286,10 @@ void CSE_ALifeSimulator::vfNewGame(LPCSTR caSaveName)
 					break;
 				}
 
-				MONSTER_P_PAIR_IT	I = m_tpScheduledObjects.begin();
-				MONSTER_P_PAIR_IT	E = m_tpScheduledObjects.end();
+				SCHEDULE_P_PAIR_IT	I = m_tpScheduledObjects.begin();
+				SCHEDULE_P_PAIR_IT	E = m_tpScheduledObjects.end();
 				for ( ; I != E; I++)
-					(*I).second->Update(this);
+					(*I).second->Update();
 
 				break;
 			}

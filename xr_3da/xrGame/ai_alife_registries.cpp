@@ -442,36 +442,50 @@ void CSE_ALifeScheduleRegistry::Update(CSE_ALifeDynamicObject *tpALifeDynamicObj
 {
 	if (!tpALifeDynamicObject->m_bDirectControl)
 		return;
-
-	CSE_ALifeMonsterAbstract		*tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract *>(tpALifeDynamicObject);
-
-	if (tpALifeMonsterAbstract && (tpALifeMonsterAbstract->fHealth > 0))
-		vfAddObjectToScheduled		(tpALifeMonsterAbstract);
+	vfAddObjectToScheduled		(tpALifeDynamicObject);
 }
 
 void CSE_ALifeScheduleRegistry::vfAddObjectToScheduled(CSE_ALifeDynamicObject *tpALifeDynamicObject)
 {
 	R_ASSERT2					(!tpALifeDynamicObject->m_bOnline,"Can't add to scheduled objects online object!");
-	CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract *>(tpALifeDynamicObject);
-	if (!tpALifeMonsterAbstract)
+	
+	CSE_ALifeSchedulable		*l_tpALifeSchedulable = dynamic_cast<CSE_ALifeSchedulable*>(tpALifeDynamicObject);
+	if (!l_tpALifeSchedulable)
 		return;
 
-	m_tpScheduledObjects.insert	(std::make_pair(tpALifeMonsterAbstract->ID,tpALifeMonsterAbstract));
+	CSE_ALifeMonsterAbstract	*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(tpALifeDynamicObject);
+	if (l_tpALifeMonsterAbstract && (l_tpALifeMonsterAbstract->fHealth <= 0))
+		return;
+
+	CSE_ALifeAnomalousZone		*l_tpALifeAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(tpALifeDynamicObject);
+	if (l_tpALifeAnomalousZone && (l_tpALifeAnomalousZone->m_maxPower < EPS_L))
+		return;
+
+	m_tpScheduledObjects.insert	(std::make_pair(l_tpALifeSchedulable->ID,l_tpALifeSchedulable));
 
 	if (m_tNextFirstProcessObjectID == _OBJECT_ID(-1))
-		m_tNextFirstProcessObjectID = tpALifeMonsterAbstract->ID;
+		m_tNextFirstProcessObjectID = l_tpALifeSchedulable->ID;
 }
 
 void CSE_ALifeScheduleRegistry::vfRemoveObjectFromScheduled(CSE_ALifeDynamicObject *tpALifeDynamicObject)
 {
 	R_ASSERT2					(tpALifeDynamicObject->m_bOnline || (dynamic_cast<CSE_ALifeMonsterAbstract*>(tpALifeDynamicObject) && (dynamic_cast<CSE_ALifeMonsterAbstract*>(tpALifeDynamicObject)->fHealth <= 0)),"Can't remove from scheduled objects offline object!");
-	CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract *>(tpALifeDynamicObject);
-	if (!tpALifeMonsterAbstract || ((tpALifeMonsterAbstract->fHealth <= 0) && (m_tpScheduledObjects.find(tpALifeDynamicObject->ID) == m_tpScheduledObjects.end())))
+	
+	CSE_ALifeSchedulable		*l_tpALifeSchedulable = dynamic_cast<CSE_ALifeMonsterAbstract *>(tpALifeDynamicObject);
+	if (!l_tpALifeSchedulable)
 		return;
 
-	MONSTER_P_PAIR_IT			I = m_tpScheduledObjects.find(tpALifeDynamicObject->ID), J = I;
-	R_ASSERT2					(I != m_tpScheduledObjects.end(),"Object not found in the level map!");
-	if (m_tNextFirstProcessObjectID == tpALifeDynamicObject->ID) {
+	CSE_ALifeAnomalousZone		*l_tpALifeAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(tpALifeDynamicObject);
+	if (l_tpALifeAnomalousZone && (l_tpALifeAnomalousZone->m_maxPower < EPS_L))
+		return;
+
+	CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract *>(tpALifeDynamicObject);
+	if (tpALifeMonsterAbstract && (tpALifeMonsterAbstract->fHealth <= 0) && (m_tpScheduledObjects.find(tpALifeDynamicObject->ID) == m_tpScheduledObjects.end()))
+		return;
+
+	SCHEDULE_P_PAIR_IT			I = m_tpScheduledObjects.find(l_tpALifeSchedulable->ID), J = I;
+	R_ASSERT2					(I != m_tpScheduledObjects.end(),"Object not found on the level map!");
+	if (m_tNextFirstProcessObjectID == l_tpALifeSchedulable->ID) {
 		if (++J == m_tpScheduledObjects.end())
 			J = m_tpScheduledObjects.begin();
 		if (J != m_tpScheduledObjects.end())

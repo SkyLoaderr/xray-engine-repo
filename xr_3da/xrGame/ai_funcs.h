@@ -40,6 +40,9 @@ class CMainWeaponType;
 class CMainWeaponPreference;
 class CItemValue;
 class CWeaponAmmoCount;
+class CEnemyAnomalyType;
+class CDetectorType;
+class CEnemyDistanceToGraphPoint;
 
 class CAI_DDD;
 
@@ -98,8 +101,8 @@ public:
 	CEntityAlive							*m_tpCurrentMember;
 	CEntityAlive							*m_tpCurrentEnemy;
 	CSE_ALifeObject							*m_tpCurrentALifeObject;
-	CSE_ALifeMonsterAbstract				*m_tpCurrentALifeMember;
-	CSE_ALifeMonsterAbstract				*m_tpCurrentALifeEnemy;
+	CSE_ALifeSchedulable					*m_tpCurrentALifeMember;
+	CSE_ALifeSchedulable					*m_tpCurrentALifeEnemy;
 	CSE_ALifeSimulator						*m_tpALife;
 	// primary functions
 	CBaseFunction							*m_fpaBaseFunctions		[AI_MAX_EVALUATION_FUNCTION_COUNT];
@@ -113,6 +116,7 @@ public:
 	CMainWeaponPreference					*m_pfMainWeaponPreference;
 	CItemValue								*m_pfItemValue;
 	CWeaponAmmoCount						*m_pfWeaponAmmoCount;
+	CDetectorType							*m_pfDetectorType;
 
 	CPersonalHealthFunction					*m_pfPersonalHealth;
 	CPersonalMoraleFunction					*m_pfPersonalMorale;
@@ -134,6 +138,8 @@ public:
 	CEnemyAnomalityFunction					*m_pfEnemyAnomality;
 	CEnemyEyeRange							*m_pfEnemyEyeRange;
 	CEnemyMaxHealth							*m_pfEnemyMaxHealth;
+	CEnemyAnomalyType						*m_pfEnemyAnomalyType;
+	CEnemyDistanceToGraphPoint				*m_pfEnemyDistanceToGraphPoint;
 
 	// complex functions
 	CPatternFunction						*m_pfWeaponEffectiveness;
@@ -145,15 +151,18 @@ public:
 	CPatternFunction						*m_pfEntityCost;
 	CPatternFunction						*m_pfExpediency;
 	CPatternFunction						*m_pfSurgeDeathProbability;
-	CPatternFunction						*m_pfTerrainType;
-	CPatternFunction						*m_pfNoticability;
-	CPatternFunction						*m_pfNoticeProbability;
-	CPatternFunction						*m_pfRetreatProbability;
-	CPatternFunction						*m_pfWeaponAttackTimes;
-	CPatternFunction						*m_pfWeaponSuccessProbability;
 	CPatternFunction						*m_pfEquipmentValue;
 	CPatternFunction						*m_pfMainWeaponValue;
 	CPatternFunction						*m_pfSmallWeaponValue;
+	CPatternFunction						*m_pfTerrainType;
+	CPatternFunction						*m_pfWeaponAttackTimes;
+	CPatternFunction						*m_pfWeaponSuccessProbability;
+	CPatternFunction						*m_pfEnemyDetectability;
+	CPatternFunction						*m_pfEnemyDetectProbability;
+	CPatternFunction						*m_pfEnemyRetreatProbability;
+	CPatternFunction						*m_pfAnomalyDetectProbability;
+	CPatternFunction						*m_pfAnomalyInteractProbability;
+	CPatternFunction						*m_pfAnomalyRetreatProbability;
 
 											CAI_DDD();
 	virtual									~CAI_DDD();

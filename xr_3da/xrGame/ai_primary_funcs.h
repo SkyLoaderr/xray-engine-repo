@@ -89,7 +89,7 @@ public:
 	CPersonalWeaponTypeFunction()
 	{
 		m_fMinResultValue = 0.0;
-		m_fMaxResultValue = 11.0;
+		m_fMaxResultValue = 19.0;
 		strcat(m_caName,"PersonalWeaponType");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
@@ -453,6 +453,51 @@ public:
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 100.0;
 		strcat(m_caName,"WeaponAmmoCount");
+		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
+	};
+
+	virtual float	ffGetValue();
+};
+
+class CEnemyAnomalyType : public CBaseFunction {
+public:
+	typedef CBaseFunction inherited;
+
+	CEnemyAnomalyType()
+	{
+		m_fMinResultValue = 0.0;
+		m_fMaxResultValue = 7.0;
+		strcat(m_caName,"EnemyAnomalyType");
+		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
+	};
+
+	virtual float	ffGetValue();
+};
+
+class CDetectorType : public CBaseFunction {
+public:
+	typedef CBaseFunction inherited;
+
+	CDetectorType()
+	{
+		m_fMinResultValue = 0.0;
+		m_fMaxResultValue = 2.0;
+		strcat(m_caName,"DetectorType");
+		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
+	};
+
+	virtual float	ffGetValue();
+};
+
+class CEnemyDistanceToGraphPoint : public CBaseFunction {
+public:
+	typedef CBaseFunction inherited;
+
+	CEnemyDistanceToGraphPoint()
+	{
+		m_fMinResultValue = 0.0;
+		m_fMaxResultValue = 4.0;
+		strcat(m_caName,"EnemyDistanceToGraphPoint");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
 

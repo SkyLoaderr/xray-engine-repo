@@ -13,6 +13,31 @@
 #include "ai_alife_space.h"
 using namespace ALife;
 
+#ifndef _EDITOR
+	#ifndef AI_COMPILER
+		class CSE_ALifeSimulator;
+	#endif
+#else
+	class CSE_ALifeItemWeapon;
+#endif
+
+class CSE_ALifeSchedulable : public IPureSchedulableObject, virtual public CSE_Abstract {
+public:
+	CSE_ALifeItemWeapon				*m_tpCurrentBestWeapon;
+	CSE_ALifeSimulator				*m_tpALife;
+	CSE_ALifeDynamicObject			*m_tpBestDetector;
+
+									CSE_ALifeSchedulable	(LPCSTR caSection) : CSE_Abstract(caSection) {};
+	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(EHitType				&tHitType,			float &fHitPower) = 0;
+	virtual bool					bfPerformAttack			()											{return(true);};
+	virtual	void					vfUpdateWeaponAmmo		()											{};
+	virtual	void					vfProcessItems			()											{};
+	virtual	void					vfAttachItems			(ETakeType tTakeType = eTakeTypeAll)		{};
+	virtual	EMeetActionType			tfGetActionType			(CSE_ALifeSchedulable *tpALifeSchedulable, int iGroupIndex, bool bMutualDetection) = 0;
+	virtual bool					bfActive				()															= 0;
+	virtual CSE_ALifeDynamicObject	*tpfGetBestDetector		()															= 0;
+};
+
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeEvent,CPureServerObject)
 	_EVENT_ID						m_tEventID;
 	_TIME_ID						m_tTimeID;
@@ -203,7 +228,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeLevelChanger,CSE_ALifeDynamicObject,CSE_Sh
 	virtual							~CSE_ALifeLevelChanger	();
 SERVER_ENTITY_DECLARE_END
 
-SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeAnomalousZone,CSE_ALifeDynamicObject,CSE_Shape)
+SERVER_ENTITY_DECLARE_BEGIN3(CSE_ALifeAnomalousZone,CSE_ALifeDynamicObject,CSE_Shape,CSE_ALifeSchedulable)
 	f32								m_maxPower;
 	f32								m_attn;
 	u32								m_period;
@@ -215,9 +240,24 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeAnomalousZone,CSE_ALifeDynamicObject,CSE_S
 	u16								m_wArtefactSpawnCount;
 	u32								m_dwStartIndex;
 	EAnomalousZoneType				m_tAnomalyType;
+	EHitType						m_tHitType;
+	float							m_fStartPower;
 
 									CSE_ALifeAnomalousZone	(LPCSTR caSection);
 	virtual							~CSE_ALifeAnomalousZone	();
+#ifdef _EDITOR
+	virtual	void					Update					()	{};
+#else
+#ifdef AI_COMPILER
+	virtual	void					Update					()	{};
+#else
+	virtual	void					Update					();
+	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(EHitType				&tHitType,				float &fHitPower);
+	virtual	EMeetActionType			tfGetActionType			(CSE_ALifeSchedulable	*tpALifeSchedulable,	int iGroupIndex, bool bMutualDetection);
+	virtual bool					bfActive				();
+	virtual CSE_ALifeDynamicObject	*tpfGetBestDetector		();
+#endif
+#endif
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectPhysic,CSE_ALifeDynamicObjectVisual)
