@@ -376,7 +376,7 @@ void CAI_Zombie::AttackRun()
 
 	m_fSafeSpeed = m_fSpeed = m_fAttackSpeed;
 
-	if (bfComputeNextDirectionPosition())
+	if (bfComputeNewPosition(true,true))
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieTurn);
 
 	Msg("%s : %5.2f",cName(),m_fSpeed);
@@ -435,7 +435,7 @@ void CAI_Zombie::Pursuit()
 	
 	vfUpdateTime(m_fTimeUpdateDelta);
 
-	if (bfComputeNextDirectionPosition())
+	if (bfComputeNewPosition(true,true))
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieTurn);
 }
 
@@ -473,7 +473,7 @@ void CAI_Zombie::ReturnHome()
 
 	vfUpdateTime(m_fTimeUpdateDelta);
 
-	if (bfComputeNextDirectionPosition())
+	if (bfComputeNewPosition())
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieTurn);
 }
 

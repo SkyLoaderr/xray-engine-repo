@@ -105,7 +105,7 @@ void CAI_Zombie::vfAdjustSpeed()
 			}
 }
 
-bool CAI_Zombie::bfComputeNewPosition(bool bCanAdjustSpeed)
+bool CAI_Zombie::bfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForward)
 {
 	// saving current parameters
 	Fvector tSafeHPB = m_tHPB;
@@ -130,42 +130,64 @@ bool CAI_Zombie::bfComputeNewPosition(bool bCanAdjustSpeed)
 	Fvector tOffset;
 	tOffset.sub(m_tGoalDir,vPosition);
 
-	// First, tweak the pitch
-	if (tOffset.y > 1.0) {			// We're too low
-		m_tHPB.y += fAT;
-		if (m_tHPB.y > 0.8f)	
-			m_tHPB.y = 0.8f;
-	}
-	else 
-		if (tOffset.y < -1.0) {	// We're too high
-			m_tHPB.y -= fAT;
-			if (m_tHPB.y < -0.8f)
-				m_tHPB.y = -0.8f;
+	if (!bStraightForward) {
+		if (tOffset.y > 1.0) {			// We're too low
+			m_tHPB.y += fAT;
+			if (m_tHPB.y > 0.8f)	
+				m_tHPB.y = 0.8f;
 		}
-		else							// Add damping
-			m_tHPB.y *= 0.95f;
-
-	// Now figure out yaw changes
+		else 
+			if (tOffset.y < -1.0) {	// We're too high
+				m_tHPB.y -= fAT;
+				if (m_tHPB.y < -0.8f)
+					m_tHPB.y = -0.8f;
+			}
+			else							// Add damping
+				m_tHPB.y *= 0.95f;
+	}
+	
 	tDirection.normalize();
 	tOffset.normalize	();
 
 	float fDot = tDirection.dotproduct(tOffset);
+	float fSafeDot = fDot;
+
 	fDot = (1.0f-fDot)/2.0f * fAT * 10.0f;
 
 	tOffset.crossproduct(tOffset,tDirection);
 
-	if (tOffset.y > 0.01f)		
-		m_fDHeading = ( m_fDHeading * 9.0f + fDot )*0.1f;
-	else 
-		if (tOffset.y < 0.01f)
-			m_fDHeading = (m_fDHeading*9.0f - fDot)*0.1f;
+	if (bStraightForward) {
+		if (tOffset.y > 0.01f) {
+			if (fSafeDot > .95f)
+				m_fDHeading = 0.f;
+			else
+				if (fSafeDot > 0.75f)
+					m_fDHeading = .10f;
+			m_fDHeading = ( m_fDHeading * 9.0f + fDot )*0.1f;
+		}
+		else 
+			if (tOffset.y < 0.01f) {
+				if (fSafeDot > .95f)
+					m_fDHeading = 0.f;
+				else
+					if (fSafeDot > 0.75f)
+						m_fDHeading = -.10f;
+				m_fDHeading = (m_fDHeading*9.0f - fDot)*0.1f;
+			}
+	}
+	else {
+		if (tOffset.y > 0.01f)		
+			m_fDHeading = ( m_fDHeading * 9.0f + fDot )*0.1f;
+		else 
+			if (tOffset.y < 0.01f)
+				m_fDHeading = (m_fDHeading*9.0f - fDot)*0.1f;
+	}
+
 
 	m_tHPB.x  +=  m_fDHeading;
-	m_tHPB.z  = -m_fDHeading * 9.0f;
 
 	m_tHPB.x = angle_normalize_signed(m_tHPB.x);
 	m_tHPB.y = angle_normalize_signed(m_tHPB.y);
-	m_tHPB.z = angle_normalize_signed(m_tHPB.z);
 
 	// Build the local matrix for the pplane
 	mRotate.setHPB(m_tHPB.x,m_tHPB.y,m_tHPB.z);
@@ -181,7 +203,14 @@ bool CAI_Zombie::bfComputeNewPosition(bool bCanAdjustSpeed)
 //	}
 //	else
 		vPosition.mad(tDirection,m_fSpeed*m_fTimeUpdateDelta);
-	
+
+//	Fvector tAcceleration;
+//	tAcceleration.setHP(r_torso_current.yaw,r_torso_current.pitch);
+//	tAcceleration.mul(m_fSpeed);
+//	Movement.SetPosition(vPosition);
+//	Movement.Calculate	(tAcceleration,0,0,m_fTimeUpdateDelta,false);
+//	Movement.GetPosition(vPosition);
+
 	u32 dwNewNode = AI_NodeID;
 	NodeCompressed *tpNewNode = AI_Node;
 	NodePosition	QueryPos;
@@ -206,127 +235,8 @@ bool CAI_Zombie::bfComputeNewPosition(bool bCanAdjustSpeed)
 		UpdateTransform();
 	}
 
-	bool m_bResult = false;
-	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
-		m_fSpeed = .1f;
-		if (m_bNoWay)
-			if ((Level().timeServer() - m_dwLastRangeSearch > TIME_TO_RETURN) || (!m_dwLastRangeSearch)) {
-				float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
-				r_torso_target.yaw = r_torso_current.yaw + fAngle;
-				r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
-				Fvector tTemp;
-				tTemp.setHP(-r_torso_target.yaw,-r_torso_target.pitch);
-				tTemp.mul(100.f);
-				m_tGoalDir.add(vPosition,tTemp);
-				m_dwLastRangeSearch = Level().timeServer();
-			}
-		m_bResult = true;
-	}
+	//UpdateTransform();
 
-	return(m_bResult);
-}
-
-bool CAI_Zombie::bfComputeNextDirectionPosition(bool bCanAdjustSpeed)
-{
-	if (bCanAdjustSpeed)
-		vfAdjustSpeed();
-
-	if (m_fSpeed < EPS_L)
-		return(true);
-	
-	m_fCurSpeed = m_fSpeed;
-
-	float fAT = m_fASpeed * m_fTimeUpdateDelta;
-
-	Fvector& tDirection = mRotate.k;
-	
-	// Tweak orientation based on last position and goal
-	Fvector tOffset;
-	tOffset.sub(m_tGoalDir,vPosition);
-	//float fDistance = tOffset.magnitude();
-	
-	// First, tweak the pitch
-//	if (tOffset.y > 1.0) {			// We're too low
-//		m_tHPB.y += fAT;
-//		if (m_tHPB.y > 0.8f)	
-//			m_tHPB.y = 0.8f;
-//	}
-//	else 
-//		if (tOffset.y < -1.0) {	// We're too high
-//			m_tHPB.y -= fAT;
-//			if (m_tHPB.y < -0.8f)
-//				m_tHPB.y = -0.8f;
-//		}
-//		else							// Add damping
-//			m_tHPB.y *= 0.95f;
-
-	// Now figure out yaw changes
-	tDirection.normalize();
-	tOffset.normalize	();
-
-	float fDot = tDirection.dotproduct(tOffset);
-	float fSafeDot = fDot;
-
-	fDot = (1.0f-fDot)/2.0f * fAT * 10.0f;
-	
-	tOffset.crossproduct(tOffset,tDirection);
-
-	if (tOffset.y > 0.01f) {
-		if (fSafeDot > .95f)
-			m_fDHeading = 0.f;
-		else
-			if (fSafeDot > 0.75f)
-				m_fDHeading = .10f;
-		m_fDHeading = ( m_fDHeading * 9.0f + fDot )*0.1f;
-	}
-	else 
-		if (tOffset.y < 0.01f) {
-			if (fSafeDot > .95f)
-				m_fDHeading = 0.f;
-			else
-				if (fSafeDot > 0.75f)
-					m_fDHeading = -.10f;
-			m_fDHeading = (m_fDHeading*9.0f - fDot)*0.1f;
-		}
-
-	m_tHPB.x  +=  m_fDHeading;
-	//m_tHPB.z  = -m_fDHeading * 9.0f;
-
-	m_tHPB.x = angle_normalize_signed(m_tHPB.x);
-	m_tHPB.y = angle_normalize_signed(m_tHPB.y);
-	m_tHPB.z = 0;//angle_normalize_signed(m_tHPB.z);
-
-	// Build the local matrix for the pplane
-	mRotate.setHPB(m_tHPB.x,m_tHPB.y,m_tHPB.z);
-	r_target.yaw = r_torso_target.yaw = -m_tHPB.x;
-	UpdateTransform();
-	
-	// Update position
-	Fvector tTemp;
-	tTemp.set(vPosition);
-	vPosition.mad(tDirection,m_fSpeed*m_fTimeUpdateDelta);
-	
-	u32 dwNewNode = AI_NodeID;
-	NodeCompressed *tpNewNode = AI_Node;
-	NodePosition	QueryPos;
-	Level().AI.PackPosition	(QueryPos,vPosition);
-	if (!AI_NodeID || !Level().AI.u_InsideNode(*AI_Node,QueryPos)) {
-		dwNewNode = Level().AI.q_Node(AI_NodeID,vPosition);
-		tpNewNode = Level().AI.Node(dwNewNode);
-	}
-	if (dwNewNode && Level().AI.u_InsideNode(*tpNewNode,QueryPos)) {
-		vPosition.y = Level().AI.ffGetY(*tpNewNode,vPosition.x,vPosition.z);
-		m_tOldPosition.set(tTemp);
-		m_bNoWay = false;
-	}
-	else {
-		vPosition.set(m_tOldPosition);
-		m_fSafeSpeed = m_fSpeed = EPS_S;
-		m_bNoWay = true;
-	}
-	
-	SetDirectionLook();
-	
 	bool m_bResult = false;
 	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
 		m_fSpeed = .1f;
