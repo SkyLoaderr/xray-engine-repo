@@ -182,10 +182,10 @@ void InitMath(void)
 
 	// Msg("Initializing geometry pipeline and mathematic routines...");
 	CPU::Detect();
-	Msg("* Detected CPU: %s %s, F%d/M%d/S%d, %d mhz, %d-clk 'rdtsc'",
+	Msg("* Detected CPU: %s %s, F%d/M%d/S%d, %.2f mhz, %d-clk 'rdtsc'",
 		CPU::ID.v_name,CPU::ID.model_name,
 		CPU::ID.family,CPU::ID.model,CPU::ID.stepping,
-		u32(CPU::cycles_per_second/__int64(1000000)),
+		float(CPU::cycles_per_second/u64(1000000)),
 		u32(CPU::cycles_overhead)
 		);
 	string128	features;	strcpy(features,"RDTSC");
