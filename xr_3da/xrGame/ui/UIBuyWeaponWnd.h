@@ -130,7 +130,7 @@ protected:
 
 		// Аттачим/детачим аддоны
 		void				AttachDetachAddon(int iAddonIndex, bool bAttach);
-		void				AttachDetchAllAddons(bool bAttach);
+		void				AttachDetachAllAddons(bool bAttach);
 		bool				IsAddonAttached(int iAddonIndex) { return m_AddonInfo[iAddonIndex].iAttachStatus == 1; }
 		// Переопределяем некоторые функции, которые нам нужны для коректной отрисовки оружия с аддонами
 		virtual void		ClipperOn();
@@ -341,6 +341,9 @@ protected:
 	// Удалить элемент из листа по его позиции в списке секций.
 	void RemoveItemByPos(const u32 sectionNum, CUIDragDropList *pDDList);
 public:
+	// А не является ли данная вещь чьим-то аддоном?
+	// Возвращаем адрес хозяина аддона, если нашли и тип аддона
+	CUIDragDropItemMP * IsItemAnAddon(CUIDragDropItemMP *pPossibleAddon, CUIDragDropItemMP::AddonIDs &ID);
 	// Обработчик нажатий на кнопки клавы
 	virtual bool OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action);
 	// Получить имя секции в weapon.ltx соответствующий оружию в слоте или на поясе

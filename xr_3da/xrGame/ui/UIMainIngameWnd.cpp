@@ -45,6 +45,12 @@ float			g_fHudAdjustValue			= 0.0f;
 #define C_ON_ENEMY	D3DCOLOR_XRGB(0xff,0,0)
 #define C_DEFAULT	D3DCOLOR_XRGB(0xff,0xff,0xff)
 
+//-----------------------------------------------------------------------------/
+//  Textual constants
+//-----------------------------------------------------------------------------/
+const char * const PDA_INGAME_SINGLEPLAYER_CFG	= "ingame_msglog_sp.xml";
+const char * const PDA_INGAME_MULTIPLAYER_CFG	= "ingame_msglog_mp.xml";
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -120,7 +126,20 @@ void CUIMainIngameWnd::Init()
 	xml_init.InitStatic(uiXml, "static", 10, &UIPdaOnline);
 	
 	AttachChild(&UIPdaMsgListWnd);
-	xml_init.InitListWnd(uiXml, "list", 0, &UIPdaMsgListWnd);
+
+	// У нас отдельные конфигурации листа для SP, и MP modes
+	CUIXml uiXml2;
+	if (Game().type != GAME_SINGLE)
+	{
+		uiXml2.Init("$game_data$", PDA_INGAME_MULTIPLAYER_CFG);
+		xml_init.InitListWnd(uiXml2, "list", 0, &UIPdaMsgListWnd);
+	}
+	else
+	{
+		uiXml2.Init("$game_data$", PDA_INGAME_SINGLEPLAYER_CFG);
+		xml_init.InitListWnd(uiXml2, "list", 0, &UIPdaMsgListWnd);
+	}
+
 	UIPdaMsgListWnd.SetVertFlip(true);
 		
 	AttachChild(&UITextWound);

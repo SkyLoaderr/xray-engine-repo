@@ -320,9 +320,19 @@ bool CUIBuyWeaponWnd::SlotProc2(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	CUIBuyWeaponWnd* this_inventory = dynamic_cast<CUIBuyWeaponWnd*>(pList->GetParent());
 	R_ASSERT2(this_inventory, "wrong parent addressed as inventory wnd");
 
-	CUIDragDropItemMP *pDDItemMP = dynamic_cast<CUIDragDropItemMP*>(pItem);
+	CUIBuyWeaponWnd::CUIDragDropItemMP::AddonIDs	addonID;
+	CUIDragDropItemMP *pDDItemMP	= dynamic_cast<CUIDragDropItemMP*>(pItem), 
+					  *pAddonOwner	= this_inventory->IsItemAnAddon(pDDItemMP, addonID);
 	R_ASSERT(pDDItemMP);
 
+	// Если аддон
+
+	if (pAddonOwner)
+	{
+		pAddonOwner->AttachDetachAddon(addonID, !pAddonOwner->IsAddonAttached(addonID));
+		return false;
+	}
+	// Не аддон
 	if(!this_inventory->CanPutInSlot(pDDItemMP, RIFLE_SLOT)) return false;
 
 	this_inventory->SlotToSection(RIFLE_SLOT);
@@ -382,6 +392,9 @@ bool CUIBuyWeaponWnd::BagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	// У нас не может быть обычная вещь в этом диалоге.
 	R_ASSERT(pDDItemMP);
 	
+	// Удаляем аддоны
+	pDDItemMP->AttachDetachAllAddons(false);
+	// Перемещаем вещь
 	static_cast<CUIDragDropList*>(pDDItemMP->GetParent())->
 		DetachChild(pDDItemMP);
 	pDDItemMP->GetOwner()->AttachChild(pDDItemMP);
@@ -417,41 +430,21 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	}
 	else if(msg == CUIDragDropItem::ITEM_DB_CLICK)
 	{
-		bool		flag = true;
+		CUIDragDropItemMP	*pAddonOwner;
+
 		m_pCurrentDragDropItem = dynamic_cast<CUIDragDropItemMP*>(pWnd);
 		R_ASSERT(m_pCurrentDragDropItem);
 
 		// проверяем, а не является ли эта вещь чим-то аддоном?
-		for (int i = 0; i < m_iUsedItems; ++i)
-		{
-			if (m_vDragDropItems[i].bAddonsAvailable)
-			{
-				// если Silencer
-				if (m_pCurrentDragDropItem == m_vDragDropItems[i].m_pSilencerAddon)
-				{
-					m_vDragDropItems[i].AttachDetachAddon(CUIDragDropItemMP::ID_SILENCER, !m_vDragDropItems[i].IsAddonAttached(CUIDragDropItemMP::ID_SILENCER));
-					flag = false;
-					break;
-				}
-				// если Scope
-				if (m_pCurrentDragDropItem == m_vDragDropItems[i].m_pScopeAddon)
-				{
-					m_vDragDropItems[i].AttachDetachAddon(CUIDragDropItemMP::ID_SCOPE, !m_vDragDropItems[i].IsAddonAttached(CUIDragDropItemMP::ID_SCOPE));
-					flag = false;
-					break;
-				}
-				// если GL
-				if (m_pCurrentDragDropItem == m_vDragDropItems[i].m_pGLAddon)
-				{
-					m_vDragDropItems[i].AttachDetachAddon(CUIDragDropItemMP::ID_GRENADE_LAUNCHER, !m_vDragDropItems[i].IsAddonAttached(CUIDragDropItemMP::ID_GRENADE_LAUNCHER));
-					flag = false;
-					break;
-				}
-			}
-		}
+		CUIDragDropItemMP::AddonIDs addonID;	
+		pAddonOwner = IsItemAnAddon(m_pCurrentDragDropItem, addonID);
 
+		if (pAddonOwner)
+		{
+			pAddonOwner->AttachDetachAddon(addonID, !pAddonOwner->IsAddonAttached(addonID));
+		}
 		// Если мы нашли уже аддон, то ничего дальше  деалать не надо
-		if (flag)
+		else
 		{
 			// "Поднять" вещь для освобождения занимаемого места
 			SendMessage(m_pCurrentDragDropItem, CUIDragDropItem::ITEM_DRAG, NULL);
@@ -706,9 +699,30 @@ void CUIBuyWeaponWnd::ActivatePropertiesBox()
 
 	UIPropertiesBox.RemoveAll();
 
-	if(m_pCurrentDragDropItem->GetSlot() < MP_SLOTS_NUM && &UIBagWnd == m_pCurrentDragDropItem->GetParent()->GetParent())
+	// Если обычная вещь
+	if((m_pCurrentDragDropItem->GetSlot() < MP_SLOTS_NUM				||
+		static_cast<u32>(-1) ==m_pCurrentDragDropItem->GetSlot())		&& 
+		&UIBagWnd == m_pCurrentDragDropItem->GetParent()->GetParent())
 	{
-		UIPropertiesBox.AddItem("Buy Item",  NULL, BUY_ITEM_ACTION);
+		// Если вещь не аддон, то действие одно, а если аддон, то другое
+		CUIDragDropItemMP::AddonIDs		ID;
+		CUIDragDropItemMP				*pDDItemMP = IsItemAnAddon(m_pCurrentDragDropItem, ID);
+
+		if (pDDItemMP)
+		{
+			m_pCurrentDragDropItem = pDDItemMP;
+			UIPropertiesBox.AddItem(pDDItemMP->IsAddonAttached(ID) ? "Detach Addon" : "Attach Addon", 
+									NULL,
+									pDDItemMP->IsAddonAttached(ID) ? DETACH_SILENCER_ADDON + static_cast<int>(ID) : ATTACH_SILENCER_ADDON + static_cast<int>(ID));
+		}
+		else
+		{
+			UIPropertiesBox.AddItem("Buy Item",  NULL, BUY_ITEM_ACTION);
+		}
+	}
+	else
+	{
+		UIPropertiesBox.AddItem("Cancel", NULL, CANCEL_BUYING_ACTION);
 		// Так как оружие еще в сумке, то просматриваем его список аддонов и модифицируем меню
 		if (m_pCurrentDragDropItem->bAddonsAvailable)
 		{
@@ -717,7 +731,7 @@ void CUIBuyWeaponWnd::ActivatePropertiesBox()
 			{
 				switch (m_pCurrentDragDropItem->m_AddonInfo[i].iAttachStatus)
 				{
-				// If addon detached
+					// If addon detached
 				case 0:
 					strMenuItem = std::string("Attach ") + m_pCurrentDragDropItem->m_strAddonTypeNames[i];
 					UIPropertiesBox.AddItem(strMenuItem.c_str(), NULL, ATTACH_SILENCER_ADDON + i);
@@ -732,10 +746,8 @@ void CUIBuyWeaponWnd::ActivatePropertiesBox()
 			}
 		}
 	}
-	else
-	{
-		UIPropertiesBox.AddItem("Cancel", NULL, CANCEL_BUYING_ACTION);
-	}
+
+	// Если вещь в слоте, и для нее предусмотрены аддоны, то добавляем пункты покупки аддонов
 
 	UIPropertiesBox.AutoUpdateSize();
 	UIPropertiesBox.BringAllToTop();
@@ -1149,7 +1161,7 @@ bool CUIBuyWeaponWnd::SlotToSection(const u32 SlotNum)
 		// Берем текущее оружие в слоте...
 		pDDItemMP->MoveOnNextDrop();
 		// ...убираем все аддоны...
-		pDDItemMP->AttachDetchAllAddons(false);
+		pDDItemMP->AttachDetachAllAddons(false);
 		// ...и посылаем ему сообщение переместиться в сумку
 		m_WeaponSubBags[pDDItemMP->GetSection()]->SendMessage(pDDItemMP, 
 									CUIDragDropItem::ITEM_DROP, NULL);
@@ -1503,6 +1515,40 @@ void CUIBuyWeaponWnd::RemoveItemByPos(const u32 sectionNum, CUIDragDropList *pDD
 
 ////////////////////////////////////////////////////////////////////////////////
 
+CUIBuyWeaponWnd::CUIDragDropItemMP * CUIBuyWeaponWnd::IsItemAnAddon(CUIDragDropItemMP *pPossibleAddon, CUIDragDropItemMP::AddonIDs &ID)
+{
+	R_ASSERT(pPossibleAddon);
+
+	for (int i = 0; i < m_iUsedItems; ++i)
+	{
+		if (m_vDragDropItems[i].bAddonsAvailable)
+		{
+			// если Silencer
+			if (pPossibleAddon == m_vDragDropItems[i].m_pSilencerAddon)
+			{
+				ID = CUIDragDropItemMP::ID_SILENCER;
+				return &m_vDragDropItems[i];
+			}
+			// если Scope
+			if (pPossibleAddon == m_vDragDropItems[i].m_pScopeAddon)
+			{
+				ID = CUIDragDropItemMP::ID_SCOPE;
+				return &m_vDragDropItems[i];
+			}
+			// если GL
+			if (pPossibleAddon == m_vDragDropItems[i].m_pGLAddon)
+			{
+				ID = CUIDragDropItemMP::ID_GRENADE_LAUNCHER;
+				return &m_vDragDropItems[i];
+			}
+		}
+	}
+
+	return NULL;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
 //-----------------------------------------------------------------------------/
 //  CUIDragDropItemMP class
 //-----------------------------------------------------------------------------/
@@ -1535,7 +1581,7 @@ void CUIBuyWeaponWnd::CUIDragDropItemMP::AttachDetachAddon(int iAddonIndex, bool
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIBuyWeaponWnd::CUIDragDropItemMP::AttachDetchAllAddons(bool bAttach)
+void CUIBuyWeaponWnd::CUIDragDropItemMP::AttachDetachAllAddons(bool bAttach)
 {
 	for (int i = 0; i < 3; ++i)
 		AttachDetachAddon(i, bAttach);
