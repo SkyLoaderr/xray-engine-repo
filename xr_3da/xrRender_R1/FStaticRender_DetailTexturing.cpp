@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "fstaticrender.h"
 
 void CRender::calc_DetailTexturing()
 {

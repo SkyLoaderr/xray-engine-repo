@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "fstaticrender.h"
 #include "..\fhierrarhyvisual.h"
 #include "..\bodyinstance.h"
 #include "..\fmesh.h"

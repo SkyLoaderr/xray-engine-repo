@@ -36,7 +36,7 @@ public:
     }
 };
 
-#if (sizeof(Flight)!=sizeof(D3DLIGHT9)) 
+#if sizeof(Flight)!=sizeof(D3DLIGHT9)
 #error Different structure size
 #endif
 

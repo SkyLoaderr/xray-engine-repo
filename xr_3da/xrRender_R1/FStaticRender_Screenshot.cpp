@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "fstaticrender.h"
 #include "..\tga.h"
 #include "..\xrImage_Resampler.h"
 

@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "fstaticrender.h"
 #include "..\flod.h"
 
 extern float r_ssaLOD_A;
