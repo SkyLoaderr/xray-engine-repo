@@ -30,9 +30,9 @@ void CDraw::Lines_Draw	(Fvector& P1, Fvector& P2, float width, DWORD C)
 	R.cross			(dir);
 
 	pCurrent->set	(Device._x2real(s1.p.x+R.x*l1), Device._y2real(s1.p.y+R.y*l1), s1.p.z, s1.p.w, C, 0, 1); pCurrent++;
-	pCurrent->set	(Device._x2real(s2.p.x+R.x*l2), Device._y2real(s2.p.y+R.y*l2), s2.p.z, s2.p.w, C, 0, 0); pCurrent++;
+	pCurrent->set	(Device._x2real(s2.p.x+R.x*l2), Device._y2real(s2.p.y+R.y*l2), s2.p.z, s1.p.w, C, 0, 0); pCurrent++;
 	pCurrent->set	(Device._x2real(s1.p.x-R.x*l1), Device._y2real(s1.p.y-R.y*l1), s1.p.z, s1.p.w, C, 1, 1); pCurrent++;
-	pCurrent->set	(Device._x2real(s2.p.x-R.x*l2), Device._y2real(s2.p.y-R.y*l2), s2.p.z, s2.p.w, C, 1, 0); pCurrent++;
+	pCurrent->set	(Device._x2real(s2.p.x-R.x*l2), Device._y2real(s2.p.y-R.y*l2), s2.p.z, s1.p.w, C, 1, 0); pCurrent++;
 }
 
 void CDraw::Lines_End	()

@@ -180,12 +180,6 @@ void CWeaponGroza::Update(float dt, BOOL bHUDView)
 			fTime-=dt;
 			Fvector p1, d;
 			m_pParent->g_fireParams(p1,d);
-			while (fTime<0)
-			{
-				bFlame	= TRUE;
-				VERIFY(m_pParent);
-				fTime+=fTimeToFire;
-
 				// bullet_trace
 				{
 					Fvector		b1,b2;
@@ -194,6 +188,12 @@ void CWeaponGroza::Update(float dt, BOOL bHUDView)
 					b2.direct	(p1,d,30);
 					::Render.add_Line(b1,b2,.1f,D3DCOLOR_XRGB(255,0,0),sh_BulletTracer);
 				}
+
+			while (fTime<0)
+			{
+				bFlame	= TRUE;
+				VERIFY(m_pParent);
+				fTime+=fTimeToFire;
 
 				// real fire
 				Collide::ray_query RQ;
