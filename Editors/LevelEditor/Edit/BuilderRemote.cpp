@@ -256,8 +256,6 @@ BOOL SceneBuilder::BuildObject(CSceneObject* obj)
     UI.SetStatus(temp.c_str());
 
     const Fmatrix& T 	= obj->_Transform();
-    // build LOD           
-	CSector* S 			= PortalUtils.FindSector(obj,*O->FirstMesh());
 	// parse mesh data
     for(EditMeshIt M=O->FirstMesh();M!=O->LastMesh();M++){
 		CSector* S = PortalUtils.FindSector(obj,*M);

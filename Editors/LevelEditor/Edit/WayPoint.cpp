@@ -54,7 +54,7 @@ void CWayPoint::Render(bool bParentSelect)
 		DU::DrawSelectionBox(bb,&clr);
 	}
 }
-bool CWayPoint::RayPick(float& distance, Fvector& S, Fvector& D)
+bool CWayPoint::RayPick(float& distance, const Fvector& S, const Fvector& D)
 {
 	Fvector ray2;
 	ray2.sub( m_vPosition, S ); ray2.y+=WAYPOINT_RADIUS;

@@ -361,12 +361,12 @@ bool TUI_Tools::IfModified()
 {
     EEditorState est 		= UI.GetEState();
     switch(est){
-    case esEditLightAnim: 	return TfrmEditLightAnim::FinalClose(); break;
-    case esEditLibrary: 	return TfrmEditLibrary::FinalClose(); 	break;
-    case esEditScene:		return Scene.IfModified(); 				break;
+    case esEditLightAnim: 	return TfrmEditLightAnim::FinalClose();
+    case esEditLibrary: 	return TfrmEditLibrary::FinalClose();
+    case esEditScene:		return Scene.IfModified();
     default: THROW;
     }
-    return false;
+//    return false;
 }
 //---------------------------------------------------------------------------
 

@@ -2,8 +2,8 @@
 // file: WayPoint.h
 //----------------------------------------------------
 
-#ifndef _INCDEF_WayPoint_H_
-#define _INCDEF_WayPoint_H_                                
+#ifndef WayPointH
+#define WayPointH                                
 
 #include "LevelGameDef.h"
 
@@ -23,7 +23,7 @@ class CWayPoint{
 public:
                 CWayPoint		();
     void    	Render      	(bool bParentSelect);
-    bool    	RayPick	    	(float& distance, Fvector& S, Fvector& D);
+    bool    	RayPick	    	(float& distance, const Fvector& S, const Fvector& D);
     bool 		FrustumPick		(const CFrustum& frustum);
     bool 		FrustumSelect	(int flag, const CFrustum& frustum);
     void		Select			(int flag);

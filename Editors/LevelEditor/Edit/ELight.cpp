@@ -81,7 +81,7 @@ void CLight::OnUpdateTransform(){
 
 void CLight::CopyFrom(CLight* src)
 {
-	THROW2("Go to AlexMX");
+	THROW2("CLight:: Go to AlexMX");
 }
 
 void CLight::AffectD3D(BOOL flag){
