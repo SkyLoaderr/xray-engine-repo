@@ -51,9 +51,10 @@ CSE_ALifeTraderAbstract::CSE_ALifeTraderAbstract(LPCSTR caSection)
 	m_fMaxItemMass				= pSettings->r_float(caSection, "max_item_mass");
 	m_tpEvents.clear			();
 
-#ifdef XRGAME_EXPORTS
+
 	m_iCharacterProfile			= NO_PROFILE;
 	m_iSpecificCharacter		= NO_SPECIFIC_CHARACTER;
+#ifdef XRGAME_EXPORTS
 	m_character_profile_init	= false;
 #endif
 	m_trader_flags.zero			();
