@@ -522,8 +522,14 @@ bool CDetailPathManager::fill_key_points(
 			j							= (i + j)/2;
 		}
 		else {
-			i							= j;
-			j							= (i + m)/2;
+			if ((j == n) && !ai().level_graph().valid_vertex_id(ai().level_graph().check_position_in_direction(start_point.vertex_id,start_point.position,dest.position))) {
+				m						= j;
+				j						= (i + j)/2;
+			}
+			else {
+				i						= j;
+				j						= (i + m)/2;
+			}
 		}
 		if (i >= m - 1) {
 			if (i <= _i)
