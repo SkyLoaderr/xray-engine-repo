@@ -59,10 +59,7 @@ function evaluator_wound:evaluate ()
   	   return false
 	end
 
-    if self.object.health < self.a.hp_max then
-       return true
-    end
-    return false    
+    return this.is_wounded(self.object, self.a.hp_max)   
 end
 ------------------------------------------------------------------------------------------
 
@@ -699,4 +696,8 @@ function set_wounded (object, ini, scheme, section)
     st.cover = false
     st.ignore_time = 0
     
+end
+
+function is_wounded(npc, hp_max)
+    return npc.health < hp_max
 end
