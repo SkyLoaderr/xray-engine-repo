@@ -125,7 +125,12 @@ IC void		xrPREAD_MARKER	(CStream& FS)
 template <class T>
 IC void		xrPREAD_PROP	(CStream& FS, DWORD ID, T& data)
 {
-	R_ASSERT(ID==xrPREAD(FS)); FS.Read(&data,sizeof(data))
+	R_ASSERT(ID==xrPREAD(FS)); FS.Read(&data,sizeof(data));
+	switch (ID) 
+	{
+	case xrPID_TOKEN:	FS.Advance(((xrP_TOKEN*)&data)->Count * sizeof(xrP_TOKEN::Item));	break;
+	case xrPID_CLSID:	FS.Advance(((xrP_CLSID*)&data)->Count * sizeof(CLASS_ID));			break;
+	};
 }
 
 #pragma pack(pop)

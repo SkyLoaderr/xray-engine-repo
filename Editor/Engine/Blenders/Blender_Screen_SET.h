@@ -17,7 +17,7 @@ class ENGINE_API CBlender_Screen_SET : public CBlender
 	xrP_BOOL	oLighting;
 	xrP_BOOL	oFog;
 public:
-	virtual		LPCSTR		getComment()	{ return "basic"; }
+	virtual		LPCSTR		getComment()	{ return "basic (simple)"; }
 	
 	virtual		void		Save			(CFS_Base&  FS);
 	virtual		void		Load			(CStream&	FS);

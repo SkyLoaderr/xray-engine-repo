@@ -27,13 +27,13 @@ CBlender_default_aref::~CBlender_default_aref()
 void	CBlender_default_aref::Save(	CFS_Base& FS )
 {
 	CBlender::Save	(FS);
-	xrPWRITE_PROP		("Alpha ref",	xrPID_INTEGER,	oAREF);
+	xrPWRITE_PROP	(FS,"Alpha ref",	xrPID_INTEGER,	oAREF);
 }
 
 void	CBlender_default_aref::Load(	CStream& FS )
 {
 	CBlender::Load	(FS);
-	xrPREAD_PROP			(xrPID_INTEGER,		oAREF);
+	xrPREAD_PROP	(FS,xrPID_INTEGER,	oAREF);
 }
 
 void CBlender_default_aref::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param, BOOL bEditor)
