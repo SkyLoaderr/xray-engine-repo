@@ -728,6 +728,7 @@ void CPHElement::StataticRootBonesCallBack(CBoneInstance* B)
 		B->mTransform.set(mXFORM);
 	}
 	VERIFY2(!fis_zero(DET((B->mTransform))),"Bones callback returns 0 matrix");
+	VERIFY2(_valid(B->mTransform),"Bones callback returns bad matrix");
 	//else
 	//{
 
@@ -797,6 +798,7 @@ void CPHElement::BonesCallBack(CBoneInstance* B)
 		B->mTransform.set(mXFORM);
 	}
 	VERIFY2(!fis_zero(DET((B->mTransform))),"Bones callback returns 0 matrix");
+	VERIFY2(_valid(B->mTransform),"Bones callback returns bad matrix");
 	//else
 	//{
 
