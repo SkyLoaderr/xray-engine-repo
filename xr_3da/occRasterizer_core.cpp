@@ -121,6 +121,7 @@ void i_section	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T, int
 	// Find the start/end Y pixel coord, set the starting pts for scan line ends
 	int		startY, endY;
 	float	*startp1, *startp2;
+	BOOL	bMiddle	= FALSE;
 	if (Sect == BOTTOM) { 
 		startY	= minPixel(A[1]); endY = maxPixel(B[1]); 
 		startp1 = startp2 = A;
