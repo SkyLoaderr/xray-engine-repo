@@ -380,8 +380,7 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 		local continue = true
 
 		if (vo_id == clsid.stalker or vo_id == clsid.actor) then
-			if vo:squad() == self.npc:squad() and 
-			   vo:group() == self.npc:group()
+			if vo:squad() == self.npc:squad()
 			then
 				continue = false
 			end
