@@ -38,6 +38,10 @@ void callback_serverkey(int keyid, qr2_buffer_t outbuf, void *userdata)
 		{
 			qr2_buffer_add_int(outbuf, g_pGamePersistent->bDedicatedServer);
 		}break;
+	case HOSTPORT_KEY:
+		{
+			qr2_buffer_add_int(outbuf, pServer->GetPort());
+		}break;
 	}
 	GSI_UNUSED(userdata);
 };
@@ -65,6 +69,7 @@ void callback_keylist(qr2_key_type keytype, qr2_keybuffer_t keybuffer, void *use
 		qr2_keybuffer_add(keybuffer, PASSWORD_KEY);
 
 		qr2_keybuffer_add(keybuffer, DEDICATED_KEY);
+		qr2_keybuffer_add(keybuffer, HOSTPORT_KEY);
 		break;
 	case key_player:
 //		qr2_keybuffer_add(keybuffer, PLAYER__KEY);

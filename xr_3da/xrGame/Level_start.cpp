@@ -58,6 +58,21 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 		m_caServerOptions		= op_server;
 	}
 
+	//=============================================================================
+	//add server port if don't have one in options
+	if (!strstr(m_caClientOptions.c_str(), "port=") && Server)
+	{
+		string64	PortStr;
+		sprintf(PortStr, "/port=%d", Server->GetPort());
+
+		string1024	tmp;
+		strcpy(tmp, m_caClientOptions.c_str());
+		strcat(tmp, PortStr);
+		
+		m_caClientOptions = tmp;
+	}
+	//=============================================================================
+
 	// Start client
 	bResult						= net_Start_client(*m_caClientOptions);
 	// Send Ready message to server

@@ -104,7 +104,6 @@ XRNETSERVER_API Flags32	psNET_Flags			= {0};
 XRNETSERVER_API int		psNET_ClientUpdate	= 30;		// FPS
 XRNETSERVER_API int		psNET_ClientPending	= 2;
 XRNETSERVER_API char	psNET_Name[32]		= "Player";
-int				psNET_Port	= 5445;
 
 // {0218FA8B-515B-4bf2-9A5F-2F079D1759F3}
 static const GUID NET_GUID = 
@@ -141,6 +140,25 @@ BOOL IPureClient::Connect	(LPCSTR options)
 	string64						server_name;
 	strcpy							(server_name,options);
 	if (strchr(server_name,'/'))	*strchr(server_name,'/') = 0;
+	
+	int				psNET_Port	= 5445;
+	if (strstr(options, "port="))
+	{
+		string64	portstr;
+        strcpy(portstr, strstr(options, "port=")+5);
+		if (strchr(portstr,'/'))	*strchr(portstr,'/') = 0;
+		psNET_Port = atol(portstr);
+	};
+	Msg("* Client connect on port %d\n",psNET_Port);
+/*
+	string4096				session_name;
+	string4096				session_options = "";
+
+	strcpy					(session_name,options);
+	if (strchr(session_name,'/'))	*strchr(session_name,'/')=0;
+	if (strchr(options,'/'))	strcpy(session_options, strchr(options,'/')+1);
+*/
+
 
 	//
 	net_Connected	= FALSE;
@@ -161,10 +179,10 @@ BOOL IPureClient::Connect	(LPCSTR options)
 	
     // Create our IDirectPlay8Address Device Address, --- Set the SP for our Device Address
 	net_Address_device	= NULL;
-	u32 c_port			= psNET_Port+1;
+//	u32 c_port			= psNET_Port+1;
     R_CHK(CoCreateInstance	(CLSID_DirectPlay8Address,NULL, CLSCTX_INPROC_SERVER, IID_IDirectPlay8Address,(LPVOID*) &net_Address_device )); 
     R_CHK(net_Address_device->SetSP(bSimulator? &CLSID_NETWORKSIMULATOR_DP8SP_TCPIP : &CLSID_DP8SP_TCPIP ));
-	R_CHK(net_Address_device->AddComponent	(DPNA_KEY_PORT, &c_port, sizeof(c_port), DPNA_DATATYPE_DWORD ));
+//	R_CHK(net_Address_device->AddComponent	(DPNA_KEY_PORT, &c_port, sizeof(c_port), DPNA_DATATYPE_DWORD ));
 	
     // Create our IDirectPlay8Address Server Address, --- Set the SP for our Server Address
 	WCHAR	ServerNameUNICODE	[256];
