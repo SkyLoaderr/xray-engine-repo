@@ -19,6 +19,7 @@ public:
 
 		// Priority
 		SetThreadPriority	(GetCurrentThread(), THREAD_PRIORITY_BELOW_NORMAL);
+		Sleep				(10);
 
 		// Light models
 		for (m=0; m<pBuild->mu_models.size(); m++)
