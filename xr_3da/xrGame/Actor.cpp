@@ -281,8 +281,10 @@ void CActor::Load	(LPCSTR section )
 	float	mass		= pSettings->r_float	(section,"ph_mass"				);
 	m_PhysicMovementControl->SetCrashSpeeds	(cs_min,cs_max);
 	m_PhysicMovementControl->SetMass		(mass);
-	if(pSettings->line_exist(section,"restrictor_radius"))
-		m_PhysicMovementControl->SetActorRestrictorRadius(CPHCharacter::rtStalker,pSettings->r_float(section,"restrictor_radius"));
+	if(pSettings->line_exist(section,"stalker_restrictor_radius"))
+		m_PhysicMovementControl->SetActorRestrictorRadius(CPHCharacter::rtStalker,pSettings->r_float(section,"stalker_restrictor_radius"));
+	if(pSettings->line_exist(section,"medium_monster_restrictor_radius"))
+		m_PhysicMovementControl->SetActorRestrictorRadius(CPHCharacter::rtMonsterMedium,pSettings->r_float(section,"medium_monster_restrictor_radius"));
 	m_PhysicMovementControl->Load(section);
 
 	m_PhysicMovementControl->SetParent(this);

@@ -223,48 +223,54 @@ void add_call(const luabind::functor<bool> &condition,const luabind::functor<voi
 {
 	CPHScriptCondition	* c=xr_new<CPHScriptCondition>(condition);
 	CPHScriptAction		* a=xr_new<CPHScriptAction>(action);
-	Level().ph_commander().add_call_unique(c,c,a,a);
+	Level().ph_commander_scripts().add_call_unique(c,c,a,a);
 }
 
 void remove_call(const luabind::functor<bool> &condition,const luabind::functor<void> &action)
 {
 	CPHScriptCondition	c(condition);
 	CPHScriptAction		a(action);
-	Level().ph_commander().remove_call(&c,&a);
+	Level().ph_commander_scripts().remove_call(&c,&a);
 }
 
 void add_call(const luabind::object &lua_object, LPCSTR condition,LPCSTR action)
 {
+	try{	
 	CPHScriptObjectCondition	*c=xr_new<CPHScriptObjectCondition>(lua_object,condition);
 	CPHScriptObjectAction		*a=xr_new<CPHScriptObjectAction>(lua_object,action);
-	Level().ph_commander().add_call_unique(c,c,a,a);
+	Level().ph_commander_scripts().add_call_unique(c,c,a,a);
+	}
+	catch(...)
+	{
+		Msg("add_call exepted!!");
+	}
 }
 
 void remove_call(const luabind::object &lua_object, LPCSTR condition,LPCSTR action)
 {
 	CPHScriptObjectCondition	c(lua_object,condition);
 	CPHScriptObjectAction		a(lua_object,action);
-	Level().ph_commander().remove_call(&c,&a);
+	Level().ph_commander_scripts().remove_call(&c,&a);
 }
 
 void add_call(const luabind::object &lua_object, const luabind::functor<bool> &condition,const luabind::functor<void> &action)
 {
 	CPHScriptObjectConditionN	*c=xr_new<CPHScriptObjectConditionN>(lua_object,condition);
 	CPHScriptObjectActionN		*a=xr_new<CPHScriptObjectActionN>(lua_object,action);
-	Level().ph_commander().add_call_unique(c,c,a,a);
+	Level().ph_commander_scripts().add_call_unique(c,c,a,a);
 }
 
 void remove_call(const luabind::object &lua_object, const luabind::functor<bool> &condition,const luabind::functor<void> &action)
 {
 	CPHScriptObjectConditionN	c(lua_object,condition);
 	CPHScriptObjectActionN		a(lua_object,action);
-	Level().ph_commander().remove_call(&c,&a);
+	Level().ph_commander_scripts().remove_call(&c,&a);
 }
 
 void remove_calls_for_object(const luabind::object &lua_object)
 {
 	CPHSriptReqObjComparer c(lua_object);
-	Level().ph_commander().remove_calls(&c);
+	Level().ph_commander_scripts().remove_calls(&c);
 }
 
 

@@ -110,6 +110,7 @@ CLevel::CLevel():IPureClient(Device.GetTimerGlobal())
 	m_autosave_manager			= xr_new<CAutosaveManager>();
 	
 	m_ph_commander				= xr_new<CPHCommander>();
+	m_ph_commander_scripts		= xr_new<CPHCommander>();
 #ifdef DEBUG
 	m_bSynchronization			= false;
 #endif	
@@ -187,6 +188,7 @@ CLevel::~CLevel()
 
 	//-----------------------------------------------------------
 	xr_delete					(m_ph_commander);
+	xr_delete					(m_ph_commander_scripts);
 	//-----------------------------------------------------------
 	pObjects4CrPr.clear();
 	pActors4CrPr.clear();
@@ -370,7 +372,8 @@ void CLevel::OnFrame	()
 	//Device.Statistic.Scripting.Begin	();
 	ai().script_engine().script_process	("level")->update();
 	//Device.Statistic.Scripting.End		();
-	m_ph_commander->update();
+	m_ph_commander->update				();
+	m_ph_commander_scripts->update		();
 //	autosave_manager().update			();
 
 	//просчитать полет пуль

@@ -46,6 +46,7 @@ class CPHCommander
 {
 	
 	PHCALL_STORAGE	m_calls;
+
 public:
 						~CPHCommander				()																;
 	void				add_call_unique				(CPHCondition* condition,CPHReqComparerV* cmp_condition,CPHAction* action,CPHReqComparerV* cmp_action);

@@ -656,7 +656,16 @@ void CPHMovementControl::Load					(LPCSTR section){
 	float	cs_min		= pSettings->r_float	(section,"ph_crash_speed_min"	);
 	float	cs_max		= pSettings->r_float	(section,"ph_crash_speed_max"	);
 	float	mass		= pSettings->r_float	(section,"ph_mass"				);
-	
+	xr_token retrictor_types[]={
+		{ "actor",			CPHCharacter::rtActor},
+		{ "medium_monster",	CPHCharacter::rtMonsterMedium},
+		{ "stalker",		CPHCharacter::rtStalker	},
+		{ "none",			CPHCharacter::rtNone	},
+		{ 0,							0}
+	};
+
+	if(pSettings->line_exist(section,"actor_restrictor"))
+		SetRestrictionType(CPHCharacter::ERestrictionType(pSettings->r_token(section,"actor_restrictor",retrictor_types)));
 
 	SetCrashSpeeds	(cs_min,cs_max);
 	SetMass		(mass);

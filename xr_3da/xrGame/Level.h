@@ -58,7 +58,8 @@ protected:
 	CAutosaveManager			*m_autosave_manager;
 
 	CPHCommander				*m_ph_commander;
-
+	CPHCommander				*m_ph_commander_scripts;
+	
 	// level name
 	shared_str					m_name;
 	// Local events
@@ -193,6 +194,7 @@ public:
 	IC CAutosaveManager				&autosave_manager			();
 
 	IC CPHCommander					&ph_commander				();
+	IC CPHCommander					&ph_commander_scripts		();
 	// C/D
 	CLevel();
 	virtual ~CLevel();
@@ -317,6 +319,11 @@ IC CPHCommander	& CLevel::ph_commander()
 {
 	VERIFY(m_ph_commander);
 	return *m_ph_commander;
+}
+IC CPHCommander & CLevel::ph_commander_scripts()
+{
+	VERIFY(m_ph_commander_scripts);
+	return *m_ph_commander_scripts;
 }
 //by Mad Max 
 IC bool					OnServer()	{ return Level().IsServer();				}

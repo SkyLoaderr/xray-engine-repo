@@ -13,7 +13,7 @@ void CLevel::net_Stop		()
 
 	BulletManager().Clear		();
 	ph_commander().clear		();
-	
+	ph_commander_scripts().clear();
 	if (Server)
 	{
 		Server->Disconnect		();
