@@ -16,7 +16,6 @@
 
 #include "xrServer_Objects_ALife_Monsters.h"
 #include "ai_alife_templates.h"
-#include "xrServer_Objects_ALife_Items.h"
 #include "ai_alife_predicates.h"
 
 #ifndef _EDITOR

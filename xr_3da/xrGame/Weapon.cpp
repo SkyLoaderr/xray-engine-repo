@@ -5,15 +5,13 @@
 #include "stdafx.h"
 #include "effectorshot.h"
 #include "Weapon.h"
-
-
 #include "ParticlesObject.h"
-
 #include "HUDManager.h"
 #include "WeaponHUD.h"
 #include "entity_alive.h"
 #include "actor.h"
 #include "inventory.h"
+#include "xrserver_objects_alife_items.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -386,14 +384,14 @@ void CWeapon::Load		(LPCSTR section)
 
 
 	// информация о возможных апгрейдах и их визуализации в инвентаре
-	m_eScopeStatus			 = (CSE_ALifeItemWeapon::EAddonStatus)pSettings->r_s32(section,"scope_status");
-	m_eSilencerStatus		 = (CSE_ALifeItemWeapon::EAddonStatus)pSettings->r_s32(section,"silencer_status");
-	m_eGrenadeLauncherStatus = (CSE_ALifeItemWeapon::EAddonStatus)pSettings->r_s32(section,"grenade_launcher_status");
+	m_eScopeStatus			 = (ALife::EWeaponAddonStatus)pSettings->r_s32(section,"scope_status");
+	m_eSilencerStatus		 = (ALife::EWeaponAddonStatus)pSettings->r_s32(section,"silencer_status");
+	m_eGrenadeLauncherStatus = (ALife::EWeaponAddonStatus)pSettings->r_s32(section,"grenade_launcher_status");
 
 
 
 	
-	if(m_eScopeStatus == CSE_ALifeItemWeapon::eAddonAttachable)
+	if(m_eScopeStatus == ALife::eAddonAttachable)
 	{
 		m_sScopeName = pSettings->r_string(section,"scope_name");
 		m_iScopeX = pSettings->r_s32(section,"scope_x");
@@ -406,7 +404,7 @@ void CWeapon::Load		(LPCSTR section)
 		
 		m_UIScope.Init(*scope_tex_name, "hud\\default", 0, 0, alNone);
 	}
-	else if(m_eScopeStatus == CSE_ALifeItemWeapon::eAddonPermanent)
+	else if(m_eScopeStatus == ALife::eAddonPermanent)
 	{
 		m_fScopeZoomFactor = pSettings->r_float	(section, "scope_zoom_factor");
 		if (pSettings->line_exist(section, "scope_texture"))
@@ -418,7 +416,7 @@ void CWeapon::Load		(LPCSTR section)
 
 	}
 
-	if(m_eSilencerStatus == CSE_ALifeItemWeapon::eAddonAttachable)
+	if(m_eSilencerStatus == ALife::eAddonAttachable)
 	{
 		m_sSilencerName = pSettings->r_string(section,"silencer_name");
 		m_iSilencerX = pSettings->r_s32(section,"silencer_x");
@@ -426,7 +424,7 @@ void CWeapon::Load		(LPCSTR section)
 	}
 
     
-	if(m_eGrenadeLauncherStatus == CSE_ALifeItemWeapon::eAddonAttachable)
+	if(m_eGrenadeLauncherStatus == ALife::eAddonAttachable)
 	{
 		m_sGrenadeLauncherName = pSettings->r_string(section,"grenade_launcher_name");
 		m_iGrenadeLauncherX = pSettings->r_s32(section,"grenade_launcher_x");

@@ -1,11 +1,8 @@
 #include "stdafx.h"
-
 #include "WeaponRPG7Grenade.h"
-
 #include "weaponrpg7.h"
 #include "WeaponHUD.h"
-
-
+#include "xrserver_objects_alife_items.h"
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //

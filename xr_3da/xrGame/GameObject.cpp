@@ -16,6 +16,7 @@
 #include "game_level_cross_table.h"
 #include "ph_shell_interface.h"
 #include "ai_script_classes.h"
+#include "xrserver_objects_alife.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "hudmanager.h"
+#include "xrserver_objects.h"
 
 void xrServer::Perform_connect_spawn(CSE_Abstract* E, xrClientData* CL, NET_Packet& P)
 {

@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "script_zone.h"
 #include "ai_script_classes.h"
+#include "xrserver_objects_alife_monsters.h"
 
 CScriptZone::CScriptZone		()
 {

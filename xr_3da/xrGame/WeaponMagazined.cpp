@@ -2,18 +2,16 @@
 #include "effectorshot.h"
 #include "PSObject.h"
 #include "hudmanager.h"
-
 #include "WeaponHUD.h"
 #include "WeaponMagazined.h"
 #include "entity.h"
 #include "actor.h"
 #include "actor.h"
 #include "ParticlesObject.h"
-
 #include "scope.h"
 #include "silencer.h"
-
 #include "inventory.h"
+#include "xrserver_objects_alife_items.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -73,7 +71,7 @@ void CWeaponMagazined::Load	(LPCSTR section)
 	animGet				(mhud_shots,	pSettings->r_string(*hud_sect, "anim_shoot"));
 
 	//звуки и партиклы глушителя, еслит такой есть
-	if(m_eSilencerStatus == CSE_ALifeItemWeapon::eAddonAttachable)
+	if(m_eSilencerStatus == ALife::eAddonAttachable)
 	{
 		if(pSettings->line_exist(section, "silencer_flame_particles"))
 			m_sSilencerFlameParticles = pSettings->r_string(section, "silencer_flame_particles");
@@ -572,12 +570,12 @@ bool CWeaponMagazined::CanAttach(PIItem pIItem)
 	CSilencer* pSilencer = dynamic_cast<CSilencer*>(pIItem);
 	
 	if(pScope &&
-	   m_eScopeStatus == CSE_ALifeItemWeapon::eAddonAttachable &&
+	   m_eScopeStatus == ALife::eAddonAttachable &&
 	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonScope) == 0 &&
 	   !xr_strcmp(*m_sScopeName, pIItem->cNameSect()))
        return true;
 	else if(pSilencer &&
-	   m_eSilencerStatus == CSE_ALifeItemWeapon::eAddonAttachable &&
+	   m_eSilencerStatus == ALife::eAddonAttachable &&
 	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonSilencer) == 0 &&
 	   !xr_strcmp(*m_sSilencerName, pIItem->cNameSect()))
        return true;

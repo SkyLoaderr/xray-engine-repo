@@ -18,11 +18,8 @@
 // refs
 class CEntity;
 class ENGINE_API CMotionDef;
-
-
-
-#include "xrServer_Objects_ALife_Items.h"
-
+class CSE_ALifeItemWeapon;
+class CSE_ALifeItemWeaponAmmo;
 
 class CWeapon : public CHudItem,
 				public CShootingObject
@@ -114,9 +111,9 @@ protected:
 	float					fZoomFactor;
 
 	//возможность подключения различных аддонов
-	CSE_ALifeItemWeapon::EAddonStatus			m_eScopeStatus;
-	CSE_ALifeItemWeapon::EAddonStatus			m_eSilencerStatus;
-	CSE_ALifeItemWeapon::EAddonStatus			m_eGrenadeLauncherStatus;
+	ALife::EWeaponAddonStatus	m_eScopeStatus;
+	ALife::EWeaponAddonStatus	m_eSilencerStatus;
+	ALife::EWeaponAddonStatus	m_eGrenadeLauncherStatus;
 
 	//назваания секций подключаемых аддонов
 	ref_str		m_sScopeName;

@@ -10,6 +10,7 @@
 #include "math.h"
 #include "ai_script_actions.h"
 #include "inventory.h"
+#include "xrserver_objects_alife_items.h"
 
 BONE_P_MAP CCar::bone_map=BONE_P_MAP();
 

@@ -72,7 +72,7 @@ SERVER_ENTITY_DECLARE_END
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemWeapon,CSE_ALifeItem)
 
 	//возможность подключения аддонов
-	enum EAddonStatus{
+	enum EWeaponAddonStatus{
 		eAddonDisabled				= 0,	//нельзя присоеденить
 		eAddonPermanent				= 1,	//постоянно подключено по умолчанию
 		eAddonAttachable			= 2		//можно присоединять

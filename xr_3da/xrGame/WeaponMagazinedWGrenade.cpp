@@ -7,6 +7,7 @@
 #include "ParticlesObject.h"
 #include "GrenadeLauncher.h"
 #include "WeaponFakeGrenade.h"
+#include "xrserver_objects_alife_items.h"
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -53,7 +54,7 @@ void CWeaponMagazinedWGrenade::Load	(LPCSTR section)
 	animGet				(mhud_shots_w_gl,	pSettings->r_string(*hud_sect, "anim_shoot_gl"));
 
 
-	if(m_eGrenadeLauncherStatus == CSE_ALifeItemWeapon::eAddonPermanent)
+	if(m_eGrenadeLauncherStatus == ALife::eAddonPermanent)
 	{
 		m_fGrenadeVel = pSettings->r_float(section, "grenade_vel");
 	}
