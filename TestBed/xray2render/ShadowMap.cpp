@@ -713,7 +713,7 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 					DWORD&	pSrc	= *(((DWORD*)((BYTE*)Rsrc.pBits + (y * Rsrc.Pitch)))+x);
 					DWORD&	pDst	= *(((DWORD*)((BYTE*)Rdst.pBits + (y * Rdst.Pitch)))+x);
 
-					DWORD	mask	= 0xff << 24;
+					DWORD	mask	= DWORD(0xff) << DWORD(24);
 					
 					pDst			= (pDst& (~mask)) | (pSrc&mask);
 				}
