@@ -528,7 +528,7 @@ end
 function obj_by_sid(sid)
 	local se_obj = alife():story_object(sid)
 	if se_obj then
-		return db.obj_by_id[se_obj.id]
+		return level.object_by_id(se_obj.id)
 	end
 	return nil
 end

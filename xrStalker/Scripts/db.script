@@ -3,7 +3,7 @@
 Чугай Саша
 --------------------------------------------------------------------------------------------------]]
 
-obj_by_id    = {}
+--obj_by_id    = {}
 zone_by_name = {}
 sl_by_name   = {}
 storage      = {}
@@ -11,11 +11,11 @@ actor        = nil
 
 
 function add_obj( obj )
-	obj_by_id [obj:id()] = obj
+--	obj_by_id [obj:id()] = obj
 end
 
 function del_obj( obj )
-	obj_by_id [obj:id()] = nil
+--	obj_by_id [obj:id()] = nil
 	storage   [obj:id()] = nil
 end
 

@@ -159,9 +159,9 @@ function check_spawn (s_object)
 	if actor ~= nil then
 		if spawn_list[s_object.id].cond ~= nil then
 		    if spawn_list[s_object.id].npc == nil then
-               if db.obj_by_id[s_object.id] ~= nil then 
+               if level.object_by_id(s_object.id) ~= nil then 
                   if is_object_online (s_object.id) == true then
-                     spawn_list[s_object.id].npc = db.obj_by_id[s_object.id]
+                     spawn_list[s_object.id].npc = level.object_by_id(s_object.id)
                   else   
                      spawn_list[s_object.id].npc = nil
                   end

@@ -30,7 +30,7 @@ function evaluator_leader:evaluate ()
        if sim then
           local se_obj = sim:story_object (tonumber(self.st.leader))
           if se_obj then
-             if db.obj_by_id[se_obj.id] ~= nil then
+             if level.object_by_id(se_obj.id) ~= nil then
                 self.st.leader_id = se_obj.id
                 return true
              end
@@ -117,8 +117,8 @@ end
 function action_follow:execute ()
     action_base.execute (self)
     -- проверим, а жив ли еще старшќй.
-    if db.obj_by_id[self.st.leader_id] == nil or 
-       db.obj_by_id[self.st.leader_id]:alive () == false then
+    if level.object_by_id(self.st.leader_id) == nil or 
+       level.object_by_id(self.st.leader_id):alive () == false then
        self:free ()
        self.st.signals["leader_dead"] = true
        return 
@@ -137,7 +137,7 @@ function action_follow:execute ()
     if self.state == 0 then
        if vdist > 1 then 
           self.object:set_desired_position (vpos)
-          self.object:set_desired_direction (db.obj_by_id[self.st.leader_id]:direction ())
+          self.object:set_desired_direction (level.object_by_id(self.st.leader_id):direction ())
           self.object:set_detail_path_type (move.line)
           self.object:set_path_type (game_object.level_path)
           self.object:set_dest_level_vertex_id (vid)
@@ -170,7 +170,7 @@ end
 --------
 function action_follow:calculate_position ()
     -- получим от лидера ноду и направление
-    local leader = db.obj_by_id[self.st.leader_id]
+    local leader = level.object_by_id(self.st.leader_id)
     local l_vid = leader:level_vertex_id ()
     local l_dir = leader:direction ()
     -- а также количество народу.

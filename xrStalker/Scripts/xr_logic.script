@@ -598,11 +598,11 @@ function try_switch_to_another_section(npc, st, actor)
 				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
 			end
 		elseif c.name == "on_npc_in_zone" then
-			if npc_in_zone(db.obj_by_id[c.npc_id], db.zone_by_name[c.v2]) then
+			if npc_in_zone(level.object_by_id(c.npc_id), db.zone_by_name[c.v2]) then
 				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
 			end
 		elseif c.name == "on_npc_not_in_zone" then
-			if not npc_in_zone(db.obj_by_id[c.npc_id], db.zone_by_name[c.v2]) then
+			if not npc_in_zone(level.object_by_id(c.npc_id), db.zone_by_name[c.v2]) then
 				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
 			end
 		elseif c.name == "on_actor_inside" then
