@@ -486,10 +486,14 @@ void	game_sv_ArtefactHunt::Assign_Artefact_RPoint	(CSE_Abstract* E)
 		// init
 		game_PlayerState*	ps	=	get_it	(it);
 		if (ps->flags & GAME_PLAYER_FLAG_VERY_VERY_DEAD) continue;
-		pEnemies.push_back(it);
+		//pEnemies.push_back(it);
 	};
 
-	if (!pEnemies.empty())
+	if (pEnemies.empty())
+	{
+		r	= rp[::Random.randI((int)rp.size())];
+	}
+	else
 	{
 		pRPDist.clear();
 
@@ -514,10 +518,6 @@ void	game_sv_ArtefactHunt::Assign_Artefact_RPoint	(CSE_Abstract* E)
 		std::sort(pRPDist.begin(), pRPDist.end());
 		r	= rp[(pRPDist.back()).PointID];
 	}
-	else
-	{
-		r	= rp[::Random.randI((int)rp.size())];
-	};
 
 	E->o_Position.set	(r.P);
 	E->o_Angle.set		(r.A);
