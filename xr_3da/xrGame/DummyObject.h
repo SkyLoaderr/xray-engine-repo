@@ -41,6 +41,9 @@ public:
 	virtual void						UpdateCL		( );									// Called each frame, so no need for dt
 	virtual void						OnVisible		( );
 
+	virtual BOOL						ShadowGenerate	( ) { return FALSE;	}
+	virtual BOOL						ShadowReceive	( ) { return FALSE;	}
+
 	void				PlayDemo		( LPCSTR N );
 
 	CDummyObject		();
