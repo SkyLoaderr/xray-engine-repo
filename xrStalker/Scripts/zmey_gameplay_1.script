@@ -6,39 +6,7 @@
 -- wpn_wounded
 
 -- Имена звуковых файлов
-local snd_blood_kashel =              [[scripts\Rolik\stalker_wounded\wounded_blood_kashel]]
-local snd_da_podoidige_blige =        [[scripts\Rolik\stalker_wounded\wounded_da_podoidige_blige]]
-local snd_i_otnesi_torgovcy =         [[scripts\Rolik\stalker_wounded\wounded_i_otnesi_torgovcy]]
-local snd_kashel =                    [[scripts\Rolik\stalker_wounded\wounded_kashel]]
-local snd_kashel1 =                   [[scripts\Rolik\stalker_wounded\wounded_kashel1]]
-local snd_kashel2 =                   [[scripts\Rolik\stalker_wounded\wounded_kashel2]]
-local snd_kashel3 =                   [[scripts\Rolik\stalker_wounded\wounded_kashel3]]
-local snd_kashel4 =                   [[scripts\Rolik\stalker_wounded\wounded_kashel4]]
-local snd_kashel5 =                   [[scripts\Rolik\stalker_wounded\wounded_kashel5]]
-local snd_kashel_long =               [[scripts\Rolik\stalker_wounded\wounded_kashel_long]]
-local snd_long_kashel =               [[scripts\Rolik\stalker_wounded\wounded_long_kashel]]
-local snd_mne_yge_ne_pomogesh =       [[scripts\Rolik\stalker_wounded\wounded_mne_yge_ne_pomogesh]]
-local snd_ne_ostavlyai_menya =        [[scripts\Rolik\stalker_wounded\wounded_ne_ostavlyai_menya]]
-local snd_on_svalilsya_s_mosta =      [[scripts\Rolik\stalker_wounded\wounded_on_svalilsya_s_mosta]]
-local snd_ostanovis =                 [[scripts\Rolik\stalker_wounded\wounded_ostanovis]]
-local snd_pain =                      [[scripts\Rolik\stalker_wounded\wounded_pain]]
-local snd_pain1 =                     [[scripts\Rolik\stalker_wounded\wounded_pain1]]
-local snd_pain2 =                     [[scripts\Rolik\stalker_wounded\wounded_pain2]]
-local snd_pain3 =                     [[scripts\Rolik\stalker_wounded\wounded_pain3]]
-local snd_podoidi =                   [[scripts\Rolik\stalker_wounded\wounded_podoidi]]
-local snd_podoidi_blige =             [[scripts\Rolik\stalker_wounded\wounded_podoidi_blige]]
-local snd_postoi =                    [[scripts\Rolik\stalker_wounded\wounded_postoi]]
-local snd_psa_dobei =                 [[scripts\Rolik\stalker_wounded\wounded_psa_dobei]]
-local snd_ston1 =                     [[scripts\Rolik\stalker_wounded\wounded_ston1]]
-local snd_ston2 =                     [[scripts\Rolik\stalker_wounded\wounded_ston2]]
-local snd_ston4 =                     [[scripts\Rolik\stalker_wounded\wounded_ston4]]
-local snd_ti_dolgen_dobit_psa =       [[scripts\Rolik\stalker_wounded\wounded_ti_dolgen_dobit_psa]]
-local snd_ti_dolgen_menya_vislyshat = [[scripts\Rolik\stalker_wounded\wounded_ti_dolgen_menya_vislyshat]]
-local snd_ti_dolgen_vislyshat_menya = [[scripts\Rolik\stalker_wounded\wounded_ti_dolgen_vislyshat_menya]]
-local snd_vo_vremya_ataki_mutantov =  [[scripts\Rolik\stalker_wounded\wounded_vo_vremya_ataki_mutantov]]
-local snd_zaberi_artefakt =           [[scripts\Rolik\stalker_wounded\wounded_zaberi_artefakt]]
-local snd_zaberi_artrefakt =          [[scripts\Rolik\stalker_wounded\wounded_zaberi_artrefakt]]
-local snd_zabirai_patroni_i_yhodi =   [[scripts\Rolik\stalker_wounded\wounded_zabirai_patroni_i_yhodi]]
+local snd_prefix =                    [[scripts\Rolik\stalker_wounded\]]
 
 function main ()
 	debug_script_name = zmey_gameplay_1.script_name()
@@ -46,28 +14,37 @@ function main ()
 
 	-- 1) Подойди 2) Подойди ближе 3) Кашляет 4) Да подойди же ближе! 5) Ты должен выслушать меня 6) Стонет и кашляет
 	dlg_podoidi = classes.DialogueFSM()
-	dlg_podoidi:set(false, 0, 1, snd_podoidi, {3000}, "govor_1")
-	dlg_podoidi:set(false, 1, 2, snd_podoidi_blige, {2000}, "zavet")
-	dlg_podoidi:set(false, 2, 3, snd_kashel_long, {2000}, "kashel_1")
-	dlg_podoidi:set(false, 3, 4, snd_da_podoidige_blige, {3000}, "govor_2")
-	dlg_podoidi:set(false, 4, 5, snd_ti_dolgen_menya_vislyshat, {3000}, "govor_4")
-	dlg_podoidi:set(false, 5, 5, snd_blood_kashel, {3000, 5000}, "kashel_1")
-	dlg_podoidi:set(false, 5, 5, snd_kashel, {3000, 5000}, "kashel_2")
-	dlg_podoidi:set(false, 5, 5, snd_kashel1, {3000, 5000}, "kashel_1")
-	dlg_podoidi:set(false, 5, 5, snd_kashel2, {3000, 5000}, "kashel_2")
-	dlg_podoidi:set(false, 5, 5, snd_kashel3, {3000, 5000}, "kashel_1")
-	dlg_podoidi:set(false, 5, 5, snd_kashel4, {3000, 5000}, "kashel_2")
-	dlg_podoidi:set(false, 5, 5, snd_kashel5, {3000, 5000}, "kashel_1")
-	dlg_podoidi:set(false, 5, 5, snd_kashel_long, {3000, 5000}, "kashel_2")
-	dlg_podoidi:set(false, 5, 5, snd_long_kashel, {3000, 5000}, "kashel_1")
+	dlg_podoidi:set(false, 0, 1, snd_prefix .. "wounded-01", {3000}, "govor_1") -- подойди
+	dlg_podoidi:set(false, 1, 2, snd_prefix .. "wounded-02", {2000}, "zavet") -- подойжи ближе
+	dlg_podoidi:set(false, 2, 3, snd_prefix .. "wounded-16-1", {2000}, "kashel_1") -- кашель1
+	dlg_podoidi:set(false, 3, 4, snd_prefix .. "wounded-06", {3000}, "govor_2") -- да подойди же ближе
+	dlg_podoidi:set(false, 4, 5, snd_prefix .. "wounded-07", {3000}, "govor_4") -- ты должен выслушать меня!
+	dlg_podoidi:set(false, 5, 5, snd_prefix .. "wounded-16-1", {2000, 5000}, "kashel_1")
+	dlg_podoidi:set(false, 5, 5, snd_prefix .. "wounded-16-2", {2000, 5000}, "kashel_2")
+	dlg_podoidi:set(false, 5, 5, snd_prefix .. "wounded-16-3", {2000, 5000}, "kashel_1")
+	dlg_podoidi:set(false, 5, 5, snd_prefix .. "wounded-16-4", {2000, 5000}, "kashel_2")
+	dlg_podoidi:set(false, 5, 5, snd_prefix .. "wounded-16-5", {2000, 5000}, "kashel_1")
+	dlg_podoidi:set(false, 5, 5, snd_prefix .. "wounded-16-6", {2000, 5000}, "kashel_2")
+	dlg_podoidi:set(false, 5, 5, snd_prefix .. "wounded-17-1", {2000, 5000}, "kashel_1")
+	dlg_podoidi:set(false, 5, 5, snd_prefix .. "wounded-17-2", {2000, 5000}, "kashel_2")
+	dlg_podoidi:set(false, 5, 5, snd_prefix .. "wounded-18-1", {2000, 5000}, "kashel_1")
+	dlg_podoidi:set(false, 5, 5, snd_prefix .. "wounded-18-2", {2000, 5000}, "kashel_2")
+	dlg_podoidi:set(false, 5, 5, snd_prefix .. "wounded-19-1", {2000, 5000}, "kashel_1")
+	dlg_podoidi:set(false, 5, 5, snd_prefix .. "wounded-19-2", {2000, 5000}, "kashel_2")
 
 	dlg_postoi = classes.DialogueFSM()
-	dlg_postoi:set(false, 0, 1, snd_postoi, {0}, "govor_3")
-	dlg_postoi:set(false, 0, 1, snd_ostanovis, {0}, "govor_3")
+	dlg_postoi:set(false, 0, 1, snd_prefix .. "wounded-03", {1000}, "govor_3") -- постой!
+	dlg_postoi:set(false, 0, 1, snd_prefix .. "wounded-04", {1000}, "govor_3") -- остановись!
+	dlg_postoi:set(false, 1, 2, snd_prefix .. "wounded-05", {0}, "govor_3") -- не оставляй меня!
 
 	dlg_5metrov = classes.DialogueFSM()
-	dlg_5metrov:set(false, 0, 1, snd_ti_dolgen_dobit_psa, {0}, "govor_1")
-	dlg_5metrov:set(false, 1, 2, snd_zabirai_patroni_i_yhodi, {0}, "govor_2")
+	dlg_5metrov:set(false, 0, 1, snd_prefix .. "wounded-08", {1000}, "govor_1") -- ты должен добить Пса
+	dlg_5metrov:set(false, 1, 2, snd_prefix .. "wounded-09", {1000}, "govor_2") -- он свалился с моста
+	dlg_5metrov:set(false, 2, 3, snd_prefix .. "wounded-10", {2000}, "govor_1") -- во время атаки мутантов
+	dlg_5metrov:set(false, 3, 4, snd_prefix .. "wounded-11", {1000}, "govor_2") -- забери артефакт
+	dlg_5metrov:set(false, 4, 5, snd_prefix .. "wounded-12", {1000}, "govor_1") -- и отнеси торговцу... он ждет
+	dlg_5metrov:set(false, 5, 6, snd_prefix .. "wounded-13", {2000}, "govor_2") -- забирай патроны и уходи
+	dlg_5metrov:set(false, 6, 7, snd_prefix .. "wounded-14", {0}, "govor_2") -- мне уже не поможешь
 
 ----------------------------------------------------------------------------------------------------
 
@@ -145,7 +122,7 @@ function main ()
 	end
 	
 	-- фразу отыграем через sound object:
-	local psa_dobei = sound_object(snd_psa_dobei)
+	local psa_dobei = sound_object(snd_prefix .. "wounded-15")
 
 	if c_stalker_wounded.npc:alive() then
 		action_first(c_stalker_wounded.npc, anim("smert"), cond(cond.anim_end, time_infinite))
