@@ -274,6 +274,8 @@ public:
 	SRotation				torso;
 	Fvector					accel;
 	Fvector					velocity;
+	float					fHealth;
+	float					fArmor;
 
 	xrSE_Actor() {};
 
@@ -288,6 +290,8 @@ public:
 		P.r_angle8			(torso.pitch);
 		P.r_sdir			(accel		);
 		P.r_sdir			(velocity	);
+		P.r_float_q16		(fHealth,	-1000,1000);
+		P.r_float_q16		(fArmor,	-1000,1000);
 	};
 	virtual void			UPDATE_Write		(NET_Packet& P)
 	{
@@ -300,6 +304,8 @@ public:
 		P.w_angle8			(torso.pitch);
 		P.w_sdir			(accel		);
 		P.w_sdir			(velocity	);
+		P.w_float_q16		(fHealth,	-1000,1000);
+		P.w_float_q16		(fArmor,	-1000,1000);
 	};
 };
 
