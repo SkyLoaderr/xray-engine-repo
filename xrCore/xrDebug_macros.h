@@ -15,7 +15,11 @@
 #define VERIFY3(expr, e2, e3) if (!(expr)) ::Debug.fail(#expr,e2,e3,__FILE__, __LINE__)
 #define CHK_DX(expr) { HRESULT hr = expr; if (FAILED(hr)) ::Debug.error(hr,#expr,__FILE__, __LINE__); }
 #else
-#define NODEFAULT __assume(0)
+	#ifdef __BORLANDC__
+		#define NODEFAULT
+    #else
+		#define NODEFAULT __assume(0)
+    #endif
 #define VERIFY(expr)
 #define VERIFY2(expr, e2)
 #define VERIFY3(expr, e2, e3)
