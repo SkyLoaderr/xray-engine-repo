@@ -92,9 +92,7 @@ bool CMotionManager::PrepareAnimation()
 
 	if (0 != m_tpCurAnim) return false;
 	
-	if (pCurAnimTriple && pCurAnimTriple->is_active()) {
-		if (pCurAnimTriple->prepare_animation(&m_tpCurAnim)) return true;
-	}
+	if (TA_IsActive() && pCurAnimTriple->prepare_animation(&m_tpCurAnim)) return true;
 
 	// получить элемент SAnimItem соответствующий cur_anim
 	ANIM_ITEM_MAP_IT anim_it = get_sd()->m_tAnims.find(cur_anim);
@@ -383,10 +381,11 @@ bool CMotionManager::IsStandCurAnim()
 void CMotionManager::Update()
 {
 	if (seq_playing) return;
-	
+	if (TA_IsActive()) return;
+
 	// Установка Yaw
 	if (pMonster->IsMovingOnPath()) pMonster->SetDirectionLook( ((spec_params & ASP_MOVE_BKWD) == ASP_MOVE_BKWD) );
-	
+
 	b_forced_velocity	= false;
 
 	SelectAnimation		();

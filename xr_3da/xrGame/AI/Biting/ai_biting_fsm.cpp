@@ -57,7 +57,7 @@ void CAI_Biting::Think()
 
 	// установить текущую скорость
 	CMonsterMovement::Frame_Finalize		();
-
+	
 	// Debuging
 #ifdef DEBUG
 	HDebug->SetActive						(true);
@@ -88,7 +88,7 @@ void CAI_Biting::Think()
 	//	Group.Member_Add(this);
 	//} 
 
-	//Msg("Time[%u]  ::  Team[%u] Squad[%u] Group[%u]", m_current_update, g_Team(),g_Squad(),g_Group());
+	//Msg("Time[%u]  ::  Team[%u] Squad[%u] Group[u%]", m_current_update, g_Team(),g_Squad(),g_Group());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
