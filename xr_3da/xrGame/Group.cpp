@@ -73,9 +73,10 @@ void CGroup::Member_Remove(CEntity* E){
 	EntityIt it = std::find(Members.begin(),Members.end(),E);
 	if (Members.end()!=it) {
 		Members.erase(it);
-		agent_manager().remove(E);
+		if (get_agent_manager())
+			agent_manager().remove(E);
 		
-		if (Members.empty())
+		if (Members.empty() && get_agent_manager())
 			xr_delete	(m_agent_manager);
 
 		CMemoryManager	*memory_manager = dynamic_cast<CMemoryManager*>(E);
