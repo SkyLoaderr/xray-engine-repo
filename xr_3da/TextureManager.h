@@ -8,7 +8,6 @@
 
 #include "shader.h"
 #include "tss_def.h"
-#include "vs_constants.h"
 
 class ENGINE_API CShaderManager
 {

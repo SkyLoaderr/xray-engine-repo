@@ -6,8 +6,6 @@
 #include "sh_matrix.h"
 #include "sh_constant.h"
 #include "sh_rt.h"
-#include "sh_vs.h"
-#include "sh_ps.h"
 
 IC void	CBackend::set_xform				(u32 ID, const Fmatrix& M)
 {
