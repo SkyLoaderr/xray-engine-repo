@@ -13,6 +13,11 @@
 #else
 #define XRCDB_API __declspec(dllimport)
 #endif
+#ifdef M_VISUAL
+#define ALIGN(a) __declspec(align(a))
+#else
+#define ALIGN(a)
+#endif
 
 // forward declarations
 class CFrustum;
@@ -49,7 +54,7 @@ namespace CDB
 	typedef		void __stdcall	build_callback	(Fvector* V, int Vcnt, TRI* T, int Tcnt, void* params);
 
 	// Model definition
-	class XRCDB_API MODEL
+	ALIGN(16)	class XRCDB_API MODEL
 	{
 		friend class COLLIDER;
 		enum
