@@ -203,6 +203,10 @@
 #		undef cast_type_list
 #		define cast_type_list save_cast_list	(CAttachmentOwner,	CGameObject)
 
+		DECLARE_SPECIALIZATION	(CEatableItem,		CInventoryItem,	cast_eatable_item);
+#		undef cast_type_list
+#		define cast_type_list save_cast_list	(CEatableItem,		CInventoryItem)
+
 #	endif
 	
 	DECLARE_SPECIALIZATION	(CSE_Abstract,		CSE_ALifeInventoryItem,	cast_abstract);

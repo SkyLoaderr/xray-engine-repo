@@ -28,6 +28,7 @@ class CWeaponAmmo;
 class CWeapon;
 class CPhysicsShellHolder;
 class NET_Packet;
+class CEatableItem;
 
 class CInventoryItem : public CHitImmunity {
 private:
@@ -39,6 +40,7 @@ public:
 
 public:
 	virtual CInventoryItem	*cast_inventory_item()	{return this;}
+	virtual CEatableItem	*cast_eatable_item	()	{return 0;}
 	virtual CWeapon			*cast_weapon		()	{return 0;}
 	virtual CFoodItem		*cast_food_item		()	{return 0;}
 	virtual CMissile		*cast_missile		()	{return 0;}
