@@ -133,7 +133,7 @@ IC	int CBoardClassicOthello::compute_difference	(const cell_index &index) const
 	}
 	
 	if (start != result)
-		++result;
+		result += _color_to_move == BLACK ? 1 : -1;
 
 	return	(result);
 }
