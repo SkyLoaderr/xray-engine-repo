@@ -106,7 +106,7 @@
 				OptimizeForWindowsApplication="FALSE"
 				PreprocessorDefinitions="WIN32,NDEBUG,_WINDOWS,AI_COMPILER"
 				StringPooling="TRUE"
-				ExceptionHandling="TRUE"
+				ExceptionHandling="FALSE"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="FALSE"
 				EnableFunctionLevelLinking="FALSE"

@@ -80,12 +80,7 @@ protected:
 	typedef CDataStorageBaseIndexBlock <
 		CGraphNode,
 		DataStorageBaseIndex::SGraphIndexNode<
-			DataStorageList::SGraphNode<
-				_dist_type,
-				_index_type,
-				index_bits,
-				mask_bits
-			>,
+			CGraphNode,
 			_path_id_type
 		>,
 		_dist_type,
@@ -235,12 +230,7 @@ protected:
 	typedef CDataStorageBaseIndexBlock <
 		CGraphNode,
 		DataStorageBaseIndex::SGraphIndexNode<
-			DataStorageList::SGraphNode<
-				_dist_type,
-				_index_type,
-				index_bits,
-				mask_bits
-			>,
+			CGraphNode,
 			_path_id_type
 		>,
 		_dist_type,
@@ -402,12 +392,7 @@ protected:
 	typedef CDataStorageBaseIndexBlock <
 		CGraphNode,
 		DataStorageBaseIndex::SGraphIndexNode<
-			DataStorageListDoubleLinked::SGraphNode<
-				_dist_type,
-				_index_type,
-				index_bits,
-				mask_bits
-			>,
+			CGraphNode,
 			_path_id_type
 		>,
 		_dist_type,
@@ -578,12 +563,7 @@ protected:
 	typedef CDataStorageBaseIndexBlock <
 		CGraphNode,
 		DataStorageBaseIndex::SGraphIndexNode<
-			DataStorageListDoubleLinked::SGraphNode<
-				_dist_type,
-				_index_type,
-				index_bits,
-				mask_bits
-			>,
+			CGraphNode,
 			_path_id_type
 		>,
 		_dist_type,
@@ -727,12 +707,7 @@ protected:
 	typedef CDataStorageBaseIndexBlock <
 		CGraphNode,
 		DataStorageBaseIndex::SGraphIndexNode<
-			DataStorageListDoubleLinked::SGraphNode<
-				_dist_type,
-				_index_type,
-				index_bits,
-				mask_bits
-			>,
+			CGraphNode,
 			_path_id_type
 		>,
 		_dist_type,
@@ -1137,12 +1112,7 @@ public:
 	> CGraphNode;
 
 	typedef	DataStorageBucketList::SGraphIndexNode<
-		DataStorageBucketList::SGraphNode<
-			_dist_type,
-			_index_type,
-			index_bits,
-			mask_bits
-		>,
+		CGraphNode,
 		_path_id_type
 	> SGraphIndexNode;
 
@@ -1240,7 +1210,7 @@ public:
 //		}
 	}
 
-//	IC		CGraphNode	&create_node	(_index_type node_index)
+//	IC		CGraphNode	&create_node	(const _index_type node_index)
 //	{
 //		if (indexes[node_index].node && (indexes[node_index].node->index() == node_index) && (buckets[indexes[node_index].node->bucket_id] == indexes[node_index].node))
 //			buckets[indexes[node_index].node->bucket_id] = 0;

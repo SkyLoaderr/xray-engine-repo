@@ -32,22 +32,22 @@
 
 #define ROWS	300
 #define COLUMNS 300
-typedef u32	_dist_type;
+typedef float	_dist_type;
 
-//typedef CAI_Map																CGraph;
+typedef CAI_Map																CGraph;
 //typedef CSE_ALifeGraph														CGraph;
-typedef CTestTable<_dist_type,ROWS,COLUMNS>									CGraph;	
+//typedef CTestTable<_dist_type,ROWS,COLUMNS>									CGraph;	
 
-//typedef CDataStorageMultiBinaryHeap<4,_dist_type,u32,u32,true,24,8>			CDataStorage;
+typedef CDataStorageMultiBinaryHeap<8,_dist_type,u32,u32,true,24,8>			CDataStorage;
 //typedef CDataStorageBinaryHeap<_dist_type,u32,u32,true,24,8>					CDataStorage;
 //typedef CDataStorageDLSL<_dist_type,u32,u32,true,24,8>						CDataStorage;
 //typedef CDataStorageCheapList<35,true,true,_dist_type,u32,u32,true,24,8>	CDataStorage;
 //typedef CDataStoragePriorityQueue<boost::lazy_fibonacci_heap,_dist_type,u32,u32,true,24,8>CDataStorage;
-typedef CDataStorageBucketList<8*1024,_dist_type,u32,u32,true,24,8>				CDataStorage;
+//typedef CDataStorageBucketList<8*1024,_dist_type,u32,u32,true,24,8>				CDataStorage;
 typedef CPathManager<CGraph,CDataStorage,_dist_type,u32,u32>				CDistancePathManager;
 typedef CAStar<CDataStorage,CDistancePathManager,CGraph,u32,_dist_type>		CAStarSearch;
 
-#define TIME_TEST
+//#define TIME_TEST
 
 void path_test(LPCSTR caLevelName)
 {
@@ -58,7 +58,8 @@ void path_test(LPCSTR caLevelName)
 	else
 		strcpy				(fName,caLevelName);
 	CGraph					*graph			= xr_new<CGraph>				(fName);
-	CDataStorage			*data_storage	= xr_new<CDataStorage>			(graph->get_node_count(),_dist_type(0),_dist_type(2000));
+//	CDataStorage			*data_storage	= xr_new<CDataStorage>			(graph->get_node_count(),_dist_type(0),_dist_type(2000));
+	CDataStorage			*data_storage	= xr_new<CDataStorage>			(graph->get_node_count());
 	CDistancePathManager	*path_manager	= xr_new<CDistancePathManager>	();
 	CAStarSearch			*a_star			= xr_new<CAStarSearch>			();
 	
@@ -67,13 +68,13 @@ void path_test(LPCSTR caLevelName)
 #ifdef TIME_TEST
 	xr_vector<u32>			a;
 
-	a.resize				(ROWS*COLUMNS);
-	for (int i=0, n = ROWS*COLUMNS; i<n; ++i)
-		a[i] = (i/COLUMNS + 1)*(COLUMNS + 2) + i%COLUMNS + 1;
+//	a.resize				(ROWS*COLUMNS);
+//	for (int i=0, n = ROWS*COLUMNS; i<n; ++i)
+//		a[i] = (i/COLUMNS + 1)*(COLUMNS + 2) + i%COLUMNS + 1;
 
-//	a.resize				(graph->get_node_count());
-//	for (int i=0, n = (int)a.size(); i<n; ++i)
-//		a[i] = i;
+	a.resize				(graph->get_node_count());
+	for (int i=0, n = (int)a.size(); i<n; ++i)
+		a[i] = i;
 	
 	std::random_shuffle		(a.begin(),a.end());
 	Msg						("%d times",_min((int)a.size(),TEST_COUNT));
@@ -100,7 +101,7 @@ void path_test(LPCSTR caLevelName)
 	Msg						("%f microseconds",float(s64(finish - start))*CPU::cycles2microsec);
 	Msg						("%f microseconds per search",float(s64(finish - start))*CPU::cycles2microsec/_min((int)a.size(),TEST_COUNT));
 #else
-	for (int I=1, N = graph->get_node_count() - 1; I<N; ++I) {
+	for (int I=124, N = graph->get_node_count() - 1; I<N; ++I) {
 //		int _i = I/(COLUMNS + 2), _j = I % (COLUMNS + 2);
 //		if (!_i || !_j || (_i == ROWS + 1) || (_j == COLUMNS + 1))
 //			continue;
