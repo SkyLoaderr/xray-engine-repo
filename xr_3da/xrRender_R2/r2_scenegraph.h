@@ -8,7 +8,7 @@ namespace SceneGraph
 	struct _MatrixItem	{
 		IVisual*		pVisual;
 		Fmatrix			Matrix;				// matrix (copy)
-		Fvector			vCenter;
+		Fvector3		vCenter;
 		float			lod;
 	};
 	struct _LodItem		{
@@ -17,28 +17,36 @@ namespace SceneGraph
 	};
 
 	// Higher level	- NORMAL
-	struct mapNormalDirect
+	struct	mapNormalDirect
 	{
 		FixedMAP<float,IVisual*>			sorted;
 		std::vector<IVisual*>				unsorted;
 	};
-	struct mapNormalItems		: public	mapNormalDirect										{	float	ssa;	};
-	struct mapNormalVB			: public	FixedMAP<IDirect3DVertexBuffer9*,mapNormalItems>	{	float	ssa;	};
-	struct mapNormalTextures	: public	FixedMAP<STextureList*,mapNormalVB>					{	float	ssa;	};
-	struct mapNormalStates		: public	FixedMAP<IDirect3DStateBlock9*,mapNormalTextures>	{	float	ssa;	};
-	struct mapNormalCS			: public	FixedMAP<R_constant_table*,mapNormalStates>			{	float	ssa;	};
-	struct mapNormalPS			: public	FixedMAP<IDirect3DPixelShader9*, mapNormalCS>		{	float	ssa;	};
-	struct mapNormalVS			: public	FixedMAP<IDirect3DVertexShader9*, mapNormalPS>		{	};
+	struct	mapNormalItems		: public	mapNormalDirect										{	float	ssa;	};
+	struct	mapNormalVB			: public	FixedMAP<IDirect3DVertexBuffer9*,mapNormalItems>	{	float	ssa;	};
+	struct	mapNormalTextures	: public	FixedMAP<STextureList*,mapNormalVB>					{	float	ssa;	};
+	struct	mapNormalStates		: public	FixedMAP<IDirect3DStateBlock9*,mapNormalTextures>	{	float	ssa;	};
+	struct	mapNormalCS			: public	FixedMAP<R_constant_table*,mapNormalStates>			{	float	ssa;	};
+	struct	mapNormalPS			: public	FixedMAP<IDirect3DPixelShader9*, mapNormalCS>		{	float	ssa;	};
+	struct	mapNormalVS			: public	FixedMAP<IDirect3DVertexShader9*, mapNormalPS>		{	};
+	typedef mapNormalVS			mapNormal_T;
 
-	// Higher level - MATRIX
-	typedef FixedMAP<float,_MatrixItem>				mapMatrixItem;
+	// Higher level	- NORMAL
+	struct	mapMatrixDirect
+	{
+		FixedMAP<float,_MatrixItem>			sorted;
+		std::vector<_MatrixItem>			unsorted;
+	};
+	struct	mapMatrixItems		: public	mapNormalDirect										{	float	ssa;	};
+	struct	mapMatrixVB			: public	FixedMAP<IDirect3DVertexBuffer9*,mapNormalItems>	{	float	ssa;	};
+	struct	mapMatrixTextures	: public	FixedMAP<STextureList*,mapNormalVB>					{	float	ssa;	};
+	struct	mapMatrixStates		: public	FixedMAP<IDirect3DStateBlock9*,mapNormalTextures>	{	float	ssa;	};
+	struct	mapMatrixCS			: public	FixedMAP<R_constant_table*,mapNormalStates>			{	float	ssa;	};
+	struct	mapMatrixPS			: public	FixedMAP<IDirect3DPixelShader9*, mapNormalCS>		{	float	ssa;	};
+	struct	mapMatrixVS			: public	FixedMAP<IDirect3DVertexShader9*, mapNormalPS>		{	};
+	typedef mapMatrixVS			mapMatrix_T;
 
 	// Top level
-	typedef mapNormalVS								mapNormal_T;
-
-	typedef FixedMAP<ShaderElement*,mapMatrixItem>	mapMatrix_T;
-	typedef mapMatrix_T::TNode						mapMatrix_Node;
-
 	typedef FixedMAP<float,_MatrixItem>				mapSorted_T;
 	typedef mapSorted_T::TNode						mapSorted_Node;
 

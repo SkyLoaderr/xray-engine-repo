@@ -74,6 +74,9 @@ private:
 	void							flush_LODs				();
 
 public:
+	void							render_scenegraph		();
+	void							render_smap_direct		();
+public:
 	// Loading / Unloading
 	virtual	void					level_Load				();
 	virtual void					level_Unload			();
