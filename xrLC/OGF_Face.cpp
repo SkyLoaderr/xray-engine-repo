@@ -52,7 +52,6 @@ u16 OGF::x_BuildVertex	(x_vertex& V1)
 	x_vertices.push_back	(V1);
 	return (u32)			x_vertices.size()-1;
 }
-
 u16 OGF::_BuildVertex	(OGF_Vertex& V1)
 {
 	try {
@@ -65,7 +64,6 @@ u16 OGF::_BuildVertex	(OGF_Vertex& V1)
 	vertices.push_back	(V1);
 	return (u32)vertices.size()-1;
 }
-
 void OGF::x_BuildFace	(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3)
 {
 	x_face	F;
