@@ -517,8 +517,10 @@ void CActor::Update	(u32 DT)
 				vPosition.set			(NET_Last.p_pos);
 				UpdateTransform			();
 
+				/*
 				if (delta)				dt = float(delta)/1000.f;
 				else					dt = EPS_S;
+				*/
 			}
 
 			g_sv_Orientate				(NET_Last.mstate,dt);
