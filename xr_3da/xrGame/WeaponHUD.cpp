@@ -61,7 +61,8 @@ void CWeaponHUD::Load(CInifile* ini, const char* section)
 	mFireCycled					= PKinematics(Visual())->ID_Cycle_Safe("fire");
 	mFireSpinup					= PKinematics(Visual())->ID_Cycle_Safe("spinup");
 	char name[64];
-	for (int i=0; ; i++){
+	for (int i=0; ; i++)
+	{
 		sprintf(name,"shoot%d",i);
 		CMotionDef* M			= PKinematics(Visual())->ID_FX_Safe(name);
 		if (!M)					break;
@@ -72,11 +73,13 @@ void CWeaponHUD::Load(CInifile* ini, const char* section)
 	PKinematics					(pVisual)->PlayCycle(mIdle);
 }
 
-void CWeaponHUD::UpdatePosition(const Fmatrix& trans){
+void CWeaponHUD::UpdatePosition(const Fmatrix& trans)
+{
 	mTransform.mul	(trans,m_Offset);
 }
 
-void CWeaponHUD::Shoot(){ 
+void CWeaponHUD::Shoot()
+{ 
 	VERIFY			(mShoots.size());
 	new_mstate		= hsShoot; 
 	int sh_id		= Random.randI(mShoots.size());
