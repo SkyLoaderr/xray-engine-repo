@@ -1072,10 +1072,10 @@ function loadStates(gname, type)
 end
 
 function get_megafone(type, name)
-	if type == "blockpost" then
-		st = gramofon.m_gramofon(name.."_rupor", "blockpost_commander")
-		st:event(0)
-		return st
-	end
+--	if type == "blockpost" then
+--		st = gramofon.m_gramofon(name.."_rupor", "blockpost_commander")
+--		st:event(0)
+--		return st
+--	end
 	return nil
 end
