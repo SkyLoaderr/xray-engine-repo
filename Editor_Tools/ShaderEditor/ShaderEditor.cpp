@@ -103,6 +103,7 @@ USEUNIT("Engine\BLENDERS\Blender.cpp");
 USEUNIT("SHEngineTools.cpp");
 USEUNIT("SHCompilerTools.cpp");
 USEUNIT("Engine\BLENDERS\blender_light.cpp");
+USEUNIT("Editor\FolderLib.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

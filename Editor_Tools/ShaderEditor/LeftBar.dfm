@@ -181,14 +181,14 @@ object fraLeftBar: TfraLeftBar
         RaggedRight = False
         ScrollOpposite = False
         Style = etsNetTabs
-        TabIndex = 0
+        TabIndex = 1
         TabPosition = etpTop
         HotTrackFont.Charset = DEFAULT_CHARSET
         HotTrackFont.Color = clBlue
         HotTrackFont.Height = -11
         HotTrackFont.Name = 'MS Sans Serif'
         HotTrackFont.Style = []
-        ActivePage = tsEngine
+        ActivePage = tsCompiler
         FlatTabBorderColor = clBtnShadow
         Align = alClient
         ParentColor = False
@@ -198,6 +198,7 @@ object fraLeftBar: TfraLeftBar
           ImageIndex = -1
           TabVisible = True
           Caption = 'Engine'
+          Visible = False
           object Bevel1: TBevel
             Left = 0
             Top = 50
@@ -470,7 +471,6 @@ object fraLeftBar: TfraLeftBar
           ImageIndex = -1
           TabVisible = True
           Caption = 'Compiler'
-          Visible = False
           object Bevel4: TBevel
             Left = 0
             Top = 149

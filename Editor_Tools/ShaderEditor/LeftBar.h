@@ -124,17 +124,10 @@ __published:	// IDE-managed Components
 private:	// User declarations
 	void __fastcall TemplateClick	(TObject *Sender);
 	void __fastcall ShowPPMenu		(TMxPopupMenu* M, TObject* btn);
-	TElTreeItem* 	FindFolder		(TElTree* tv, LPCSTR full_name);
-	TElTreeItem* 	AppendFolder	(TElTree* tv, LPCSTR full_name);
-	bool __fastcall MakeName		(TElTreeItem* begin_item, TElTreeItem* end_item, AnsiString& folder, bool bOnlyFolder);
-	void __fastcall GenerateFolderName(TElTree* tv, TElTreeItem* node,AnsiString& name);
-	TElTreeItem* 	FindFolderItem	(TElTree* tv, TElTreeItem* start_item, const AnsiString& name);
-	TElTreeItem* 	FindItemInFolder(TElTree* tv, TElTreeItem* start_item, const AnsiString& name); //sibling
     TElTree*		CurrentView		(){ if (pcShaders->ActivePage==tsEngine) 		return tvEngine;
 									    else if (pcShaders->ActivePage==tsCompiler)	return tvCompiler;
                                         THROW;
     								  }
-	void 			AddItem			(TElTree* tv, LPCSTR full_name, bool bLoadMode);
     TElTreeItem*	DragItem;
 public:		// User declarations
         __fastcall TfraLeftBar		(TComponent* Owner);
