@@ -17,6 +17,8 @@
 
 Fvisual::Fvisual()  : CVisual()
 {
+	pVertices			= 0;
+	pIndices			= 0;
 }
 
 Fvisual::~Fvisual()
