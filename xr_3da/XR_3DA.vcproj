@@ -1018,22 +1018,6 @@
 						RelativePath=".\ParticleSorter.h">
 					</File>
 				</Filter>
-				<Filter
-					Name="Instances"
-					Filter="">
-					<File
-						RelativePath="PGObject.cpp">
-					</File>
-					<File
-						RelativePath="PGObject.h">
-					</File>
-					<File
-						RelativePath=".\PSObject.cpp">
-					</File>
-					<File
-						RelativePath=".\PSObject.h">
-					</File>
-				</Filter>
 			</Filter>
 			<Filter
 				Name="Lighting"
