@@ -22,16 +22,9 @@ CCreator::CCreator( )
 
 CCreator::~CCreator	( ) 
 {
-	delete						LL_Stream;
-	iRelease					( );
-
-	// Destroy all objects
-	Objects.Unload				( );
-
-	DEL_INSTANCE				( pHUD );
-
-	bReady						= false;
-	_DELETE						( pLevel );
+	DEL_INSTANCE				( pHUD		);
+	_DELETE						( pLevel	);
+	Engine.FS.Close				( LL_Stream	);
 
 	pSounds->Delete				(Sounds_Ambience);
 
@@ -48,6 +41,15 @@ CCreator::~CCreator	( )
 	// Unregister
 	Device.seqRender.Remove		(this);
 	Device.seqFrame.Remove		(this);
+}
+
+void CCreator::net_Stop			()
+{
+	// Destroy all objects
+	Objects.Unload				( );
+	iRelease					( );
+
+	bReady						= false;
 }
 
 //-------------------------------------------------------------------------------------------

@@ -62,7 +62,7 @@ public:
 	virtual BOOL				net_Start				( LPCSTR name, BOOL server	)	= 0;
 	virtual void				net_Load				( LPCSTR name )					= 0;
 	virtual void				net_Save				( LPCSTR name )					= 0;
-	virtual void				net_Stop				( )								= 0;
+	virtual void				net_Stop				( );
 
 	virtual BOOL				Load					( u32 dwNum );
 	virtual BOOL				Load_GameSpecific_Before( ) { return TRUE; };	// before object loading

@@ -2,12 +2,12 @@
 
 enum
 {
-	GAME_ANY					= 0,
-	GAME_SINGLE					= 1,
-	GAME_DEATHMATCH				= 2,
-	GAME_CTF					= 3,
-	GAME_ASSAULT				= 4,	// Team1 - assaulting, Team0 - Defending
-	GAME_CS						= 5
+	GAME_ANY							= 0,
+	GAME_SINGLE							= 1,
+	GAME_DEATHMATCH						= 2,
+	GAME_CTF							= 3,
+	GAME_ASSAULT						= 4,	// Team1 - assaulting, Team0 - Defending
+	GAME_CS								= 5
 };
 
 enum
@@ -19,6 +19,18 @@ enum
 	GAME_PLAYER_FLAG_CS_HAS_ARTEFACT	= (1<<4),
 
 	GAME_PLAYER_FLAG_FORCEDWORD			= u32(-1)
+};
+
+enum
+{
+	GAME_PLAYER_WEAPON_KNIGHT			= 0,
+	GAME_PLAYER_WEAPON_PRIMARY			= 1,
+	GAME_PLAYER_WEAPON_SECONDARY		= 2,
+	GAME_PLAYER_WEAPON_SPECIAL_1		= 3,
+	GAME_PLAYER_WEAPON_SPECIAL_2		= 4,
+	GAME_PLAYER_WEAPON_BINOCULAR		= 5,
+
+	GAME_PLAYER_WEAPON_FORCEDWORD		= u32(-1)
 };
 
 enum
@@ -38,6 +50,8 @@ struct	game_PlayerState
 	s16			money_total;
 	s16			money_for_round;
 	u16			flags;
+
+	u4			weapons[]
 
 	game_PlayerState();
 };
