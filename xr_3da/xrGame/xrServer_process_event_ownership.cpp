@@ -18,6 +18,7 @@ void xrServer::Process_event_ownership(NET_Packet& P, DPNID sender, u32 time, u1
 
 	switch (GAME)
 	{
+	case GAME_SINGLE:
 	case GAME_DEATHMATCH:
 		{
 			// Perform migration if needed
