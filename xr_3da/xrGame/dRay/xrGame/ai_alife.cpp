@@ -258,17 +258,6 @@ void CSE_ALifeSimulator::vfNewGame(LPCSTR caSaveName)
 	CSE_ALifeScheduleRegistry::Init	();
 	CSE_ALifeNewsRegistry::clear	();
 
-	// test
-	ALife::SGameNews				news;
-	news.m_game_time				= tfGetGameTime();
-	news.m_game_vertex_id			= 0;
-	news.m_news_type				= ALife::eNewsTypeKill;
-	news.m_class_id					= CLSID_OBJECT_ACTOR;
-	news.m_object_id				[0] = 0;
-	news.m_object_id				[1] = 0xffff;
-	CSE_ALifeNewsRegistry::add		(news);
-	// end of the test
-
 	m_tpServer->PerformIDgen	(0x0000);
 	D_OBJECT_P_IT				B = m_tpSpawnPoints.begin();
 	D_OBJECT_P_IT				E = m_tpSpawnPoints.end();
