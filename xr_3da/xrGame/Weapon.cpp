@@ -87,10 +87,11 @@ void CWeapon::Load		(CInifile* ini, const char* section)
 
 	LPCSTR hud_sect		= ini->ReadSTRING	(section,"hud");
 	m_pHUD->Load		(ini,hud_sect);
-	iAmmoElapsed		= ini->ReadINT		(section,"ammo_elapsed");
-	iMagazineSize		= ini->ReadINT		(section,"ammo_mag_size");
-	iMagazineCount		= ini->ReadINT		(section,"ammo_mag_count");
-	iMagazineCountLimit	= ini->ReadINT		(section,"ammo_mag_count_max");
+
+	iAmmoLimit			= ini->ReadINT		(section,"ammo_limit"		);
+	iAmmoCurrent		= ini->ReadINT		(section,"ammo_current"		);
+	iAmmoElapsed		= ini->ReadINT		(section,"ammo_elapsed"		);
+	iMagazineSize		= ini->ReadINT		(section,"ammo_mag_size"	);
 	
 	fireDistance		= ini->ReadFLOAT	(section,"fire_distance"	);
 	fireDispersion		= ini->ReadFLOAT	(section,"fire_dispersion"	); fireDispersion = deg2rad(fireDispersion);
@@ -234,8 +235,9 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 	
 	// Ammo
 	iAmmoElapsed	--;
-	if (iAmmoElapsed==0) {
-		m_pParent->g_fireEnd();
+	if (iAmmoElapsed==0) 
+	{
+		OnMagazineEmpty	();
 	}
 	
 	return				bResult;

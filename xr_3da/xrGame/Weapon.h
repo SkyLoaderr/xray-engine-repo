@@ -23,6 +23,7 @@ protected:
 
 	Fmatrix			m_Offset;
 	
+	void			signal_HideComplete		();
 protected:
 	CEntity*		m_pParent;
 	CWeaponList*	m_pContainer;
@@ -34,10 +35,11 @@ protected:
 	Shader*			hUIIcon;
 	float			fWallmarkSize;
 
-	int				iMagazineSize;		// ammo in magazine, maximal
-	int				iMagazineCount;		// number of magazines left
-	int				iMagazineCountLimit;// number of magazines max
+	int				iAmmoLimit;			// maximum ammo we can have
+	int				iAmmoCurrent;		// ammo we have now
 	int				iAmmoElapsed;		// ammo in magazine, currently
+	int				iMagazineSize;		// size (in bullets) of magazine
+
 	float			fTimeToFire;
 	int				iHitPower;
 
@@ -76,7 +78,7 @@ protected:
 	virtual void	UpdateFP		(BOOL bHUD)	= 0;
 	virtual void	UpdateXForm		(BOOL bHUD)	= 0;
 	
-	void			signal_HideComplete		();
+	virtual void	OnMagazineEmpty	()			= 0;
 public:
 					CWeapon			(LPCSTR name);
 	virtual			~CWeapon		();
