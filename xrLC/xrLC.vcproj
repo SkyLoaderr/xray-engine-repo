@@ -721,6 +721,15 @@
 				RelativePath=".\xrPhase_AdaptiveHT.cpp">
 			</File>
 			<File
+				RelativePath=".\xrPhase_AdaptiveHT_qslim.cpp">
+				<FileConfiguration
+					Name="Mixed|Win32"
+					ExcludedFromBuild="TRUE">
+					<Tool
+						Name="VCCLCompilerTool"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath=".\xrPhase_GI.cpp">
 			</File>
 			<File
@@ -736,9 +745,6 @@
 				RelativePath=".\xrPhase_MergeLM_Surface.cpp">
 			</File>
 			<File
-				RelativePath="xrPhase_R2_Lighting.cpp">
-			</File>
-			<File
 				RelativePath=".\xrPhase_ResolveMaterials.cpp">
 			</File>
 			<File
@@ -746,9 +752,6 @@
 			</File>
 			<File
 				RelativePath="xrPhase_TangentBasis.cpp">
-			</File>
-			<File
-				RelativePath=".\xrPhase_Tesselate.cpp">
 			</File>
 			<File
 				RelativePath=".\xrPhase_UVmap.cpp">

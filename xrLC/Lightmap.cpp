@@ -131,14 +131,14 @@ void CLightmap::Save()
 	Progress			(1.f);
 
 	// Saving			(DXT5.dds)
-	Status			("Compression...");
+	Status			("Compression base...");
 	{
 		xr_vector<u32>			packed;
 		lm.Pack					(packed);
 
-		char					FN[_MAX_PATH];
+		string_path				FN;
 		sprintf					(lm_texture.name,"lmap#%d",lmapNameID			); 
-		sprintf					(FN,"%s%s.dds",	pBuild->path,lm_texture.name	);
+		sprintf					(FN,"%s%s_1.dds",	pBuild->path,lm_texture.name);
 		BYTE*	raw_data		= LPBYTE(&*packed.begin());
 		u32	w					= lm.width;
 		u32	h					= lm.height;
@@ -151,9 +151,44 @@ void CLightmap::Save()
 		fmt.flags.set			(STextureParams::flBinaryAlpha,		FALSE);
 		DXTCompress				(FN,raw_data,w,h,pitch,&fmt,4);
 	}
+	Status			("Compression hemi..."); //.
+	{
+		xr_vector<u32>			packed;
+		lm.Pack_hemi			(packed);
 
-	// Saving hemisphere (shrink??? DXT1???)
-	//. ???????????????????????????????
+		xr_vector<u32>			packed_half(packed.size()/2); 
+
+		u32 w					= lm.width/2;
+		u32 h					= lm.height/2;
+		u32	pitch				= w*4;
+
+		for (u32 y=0; y<lm.height-1; y++){
+			for (u32 x=0; x<lm.width-1; x++){
+				Fcolor p0;		p0.set(packed[y*lm.width+x]);
+				Fcolor p1;		p1.set(packed[y*lm.width+x+1]);
+				Fcolor p2;		p2.set(packed[(y+1)*lm.width+x]);
+				Fcolor p3;		p3.set(packed[(y+1)*lm.width+x+1]);
+				Fcolor dest;
+				dest.r			= (p0.r+p1.r+p2.r+p3.r)/4;
+				dest.g			= (p0.g+p1.g+p2.g+p3.g)/4;
+				dest.b			= (p0.b+p1.b+p2.b+p3.b)/4;
+				dest.a			= (p0.a+p1.a+p2.a+p3.a)/4;
+				packed_half[y/2*w+x/2] = dest.get();
+			}
+		}
+
+		string_path				FN;
+		sprintf					(lm_texture.name,"lmap#%d",lmapNameID			); 
+		sprintf					(FN,"%s%s_2.dds",	pBuild->path,lm_texture.name);
+		BYTE*	raw_data		= LPBYTE(&*packed_half.begin());
+
+		STextureParams fmt;
+		fmt.fmt					= STextureParams::tfDXT1;
+		fmt.flags.set			(STextureParams::flDitherColor,		FALSE);
+		fmt.flags.set			(STextureParams::flGenerateMipMaps,	FALSE);
+		fmt.flags.set			(STextureParams::flBinaryAlpha,		FALSE);
+		DXTCompress				(FN,raw_data,w,h,pitch,&fmt,4);
+	}
 
 	lm_texture.bHasAlpha		= TRUE;
 	lm_texture.dwWidth			= lm.width;

@@ -2,8 +2,8 @@
 #include "build.h"
 
 const	float	aht_max_edge	= c_SS_maxsize/2.5f;	// 2.0f;			// 2 m
-const	float	aht_min_edge	= .2f;					// 20 cm
-const	float	aht_min_err		= 16.f/255.f;			// ~10% error
+//const	float	aht_min_edge	= .2f;					// 20 cm
+//const	float	aht_min_err		= 16.f/255.f;			// ~10% error
 
 bool	is_CCW	(int _1, int _2)
 {
@@ -32,7 +32,7 @@ int		callback_edge_longest	(Face* F)
 	}
 	return	max_id;
 }
-
+/*
 // Iterate on edges - select with maximum error
 int		callback_edge_error		(Face* F)
 {
@@ -62,7 +62,7 @@ int		callback_edge_error		(Face* F)
 	if (b1 && b2 && b3)		return	-1;		// don't touch flat-shaded triangle
 	else					return	max_id;	// tesselate longest edge
 }
-
+*/
 void	callback_vertex_hemi	(Vertex* V)
 {
 	// calc vertex attributes
@@ -72,7 +72,7 @@ void	callback_vertex_hemi	(Vertex* V)
 	LightPoint				(&DB, RCAST_Model, vC, V->P, V->N, pBuild->L_static, LP_dont_rgb+LP_dont_sun,0);
 	V->C._set				(vC);
 }
-
+/*
 int		smfVertex				(Vertex* V)
 {
 	return 1 + (std::lower_bound(g_vertices.begin(),g_vertices.end(),V)-g_vertices.begin());
@@ -111,7 +111,7 @@ void GSaveAsSMF					(LPCSTR fname)
 	
 	FS.w_close	(W);
 }
-
+*/
 void CBuild::xrPhase_AdaptiveHT	()
 {
 	CDB::COLLIDER	DB;
@@ -330,7 +330,7 @@ void CBuild::u_SmoothVertColors(int count)
 		}
 
 		// Transfer
-		for (int it=0; it<g_vertices.size(); it++)
+		for (u32 it=0; it<g_vertices.size(); it++)
 			g_vertices[it]->C	= colors[it];
 	}
 }

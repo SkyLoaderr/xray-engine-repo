@@ -20,10 +20,8 @@ void lm_layer::Pack		(xr_vector<u32>& dest)
 		*W++	= color_rgba(_r,_g,_b,_d);
 	}
 }
-
-void lm_layer::Pack_hemi	(xr_vector<u32>& dest)	
+void lm_layer::Pack_hemi	(xr_vector<u32>& dest)	//.
 {
-	//. width/2, height/2 ????
 	dest.resize			(width*height);
 	xr_vector<base_color>::iterator I=surface.begin();
 	xr_vector<base_color>::iterator E=surface.end();
@@ -33,18 +31,17 @@ void lm_layer::Pack_hemi	(xr_vector<u32>& dest)
 		base_color_c	C; I->_get(C);
 		u8	_h	= u8_clr(C.hemi);
 		*W++	= color_rgba(_h,_h,_h,_h);
-		//.??? 4 ???? samples , average
 	}
 }
-u32 lm_layer::Pixel	(u32 ID)
+void lm_layer::Pixel	(u32 ID, u8& r, u8& g, u8& b, u8& s, u8& h)
 {
 	xr_vector<base_color>::iterator I = surface.begin()+ID;
 	base_color_c	c;	I->_get(c);
-	u8	_r	= u8_clr(c.rgb.x);
-	u8	_g	= u8_clr(c.rgb.y);
-	u8	_b	= u8_clr(c.rgb.z);
-	u8	_d	= u8_clr(c.sun);
-	return	color_rgba(_r,_g,_b,_d);
+	r	= u8_clr(c.rgb.x);
+	g	= u8_clr(c.rgb.y);
+	b	= u8_clr(c.rgb.z);
+	s	= u8_clr(c.sun);
+	h	= u8_clr(c.hemi);
 }
 
 void blit			(u32* dest, u32 ds_x, u32 ds_y, u32* src, u32 ss_x, u32 ss_y, u32 px, u32 py, u32 aREF)

@@ -87,6 +87,9 @@ void CBuild::Light_prepare()
 	for (u32 m=0; m<mu_models.size(); m++)	mu_models[m]->calc_faceopacity();
 }
 
+
+//.#define CFORM_ONLY
+
 void CBuild::Run	(LPCSTR P)
 {
 	//****************************************** Open Level
@@ -111,14 +114,6 @@ void CBuild::Run	(LPCSTR P)
 		FS.w_close			(fs);
 	}
 
-	//****************************************** Tesselating
-	/*
-	FPU::m64r					();
-	Phase						("Tesselating...");
-	mem_Compact					();
-	Tesselate					();
-	*/
-	
 	//****************************************** Optimizing + checking for T-junctions
 	FPU::m64r					();
 	Phase						("Optimizing...");
@@ -130,7 +125,9 @@ void CBuild::Run	(LPCSTR P)
 	FPU::m64r					();
 	Phase						("Adaptive HT...");
 	mem_Compact					();
+#ifndef CFORM_ONLY
 	xrPhase_AdaptiveHT			();
+#endif
 
 	//****************************************** Building normals
 	FPU::m64r					();
@@ -145,6 +142,11 @@ void CBuild::Run	(LPCSTR P)
 	Phase						("Building collision database...");
 	mem_Compact					();
 	BuildCForm					();
+
+#ifdef CFORM_ONLY
+	return;
+#endif
+
 	BuildPortals				(*fs);
 
 	//****************************************** T-Basis

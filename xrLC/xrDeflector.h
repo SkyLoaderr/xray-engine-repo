@@ -23,7 +23,7 @@ struct lm_layer
 	xr_vector<u8>			marker;
 	LMODE					mode;	
 
-	void					create						(u32 w, u32 h)
+	void					create			(u32 w, u32 h)
 	{
 		width				= w;
 		height				= h;
@@ -31,15 +31,16 @@ struct lm_layer
 		surface.clear();	surface.resize	(size);
 		marker.clear();		marker.assign	(size,0);
 	}
-	void					destroy						()
+	void					destroy			()
 	{
 		width=height		= 0;
-		surface.clear_and_free	();
-		marker.clear_and_free	();
+		surface.clear_and_free				();
+		marker.clear_and_free				();
 	}
-	u32						Area ()						{ return (width+2*BORDER)*(height+2*BORDER); }
-	u32						Pixel(u32 ID);
-	void					Pack (xr_vector<u32>& dest);
+	u32						Area			()						{ return (width+2*BORDER)*(height+2*BORDER); }
+	void					Pixel			(u32 ID, u8& r, u8& g, u8& b, u8& s, u8& h);
+	void					Pack			(xr_vector<u32>& dest);
+	void					Pack_hemi		(xr_vector<u32>& dest);
 
 	lm_layer()				{ width=height=0; }
 };

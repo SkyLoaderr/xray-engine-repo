@@ -37,7 +37,7 @@ void CDeflector::L_Direct_Edge (CDB::COLLIDER* DB, base_lighting* LightsSelected
 		// ok - perform lighting
 		base_color_c	C;
 		Fvector			P;	P.mad(v1,vdir,time);
-		LightPoint		(DB, RCAST_Model, C, P, N, *LightsSelected, /*.???*/LP_DEFAULT, skip);
+		LightPoint		(DB, RCAST_Model, C, P, N, *LightsSelected, LP_DEFAULT, skip); //.
 		
 		C.mul		(.5f);
 		lm.surface	[_y*lm.width+_x]._set	(C);
@@ -94,10 +94,11 @@ void CDeflector::L_Direct	(CDB::COLLIDER* DB, base_lighting* LightsSelected, HAS
 							Vertex	*V2 = F->v[1];
 							Vertex	*V3 = F->v[2];
 							wP.from_bary(V1->P,V2->P,V3->P,B);
-							if (F->Shader().flags.bLIGHT_Sharp)	{ wN.set(F->N); }
-							else								{ wN.from_bary(V1->N,V2->N,V3->N,B); wN.normalize(); }
+//. не нужно использовать	if (F->Shader().flags.bLIGHT_Sharp)	{ wN.set(F->N); }
+//							else								
+							{ wN.from_bary(V1->N,V2->N,V3->N,B); wN.normalize(); }
 							try {
-								LightPoint	(DB, RCAST_Model, C, wP, wN, *LightsSelected, /*hemi!!!!*/LP_DEFAULT, F);
+								LightPoint	(DB, RCAST_Model, C, wP, wN, *LightsSelected, LP_UseFaceDisable, F); //.
 								Fcount		+= 1;
 							} catch (...) {
 								clMsg("* ERROR (CDB). Recovered. ");
@@ -121,7 +122,6 @@ void CDeflector::L_Direct	(CDB::COLLIDER* DB, base_lighting* LightsSelected, HAS
 			}
 		}
 	}
-
 	// *** Render Edges
 	float texel_size = (1.f/float(_max(lm.width,lm.height)))/8.f;
 	for (u32 t=0; t<UVpolys.size(); t++)

@@ -49,24 +49,6 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 	string256				sh_name;
 	FS.update_path			(sh_name,"$game_data$","shaders_xrlc.xr");
 	shaders.Load			(sh_name);
-	if (b_R2) 
-	{
-		Shader_xrLCVec&			v	= shaders.Library();
-		for (u32 it=0; it<v.size(); it++)
-		{
-			v[it].flags.bLIGHT_Vertex	= TRUE;
-			v[it].vert_ambient			= 0;
-			v[it].vert_translucency		= 0;
-		}
-	} 
-	else 
-	{
-		Shader_xrLCVec&		v	= shaders.Library();
-		/*
-		for (u32 it=0; it<v.size(); it++)
-			clMsg ("-",v[it].Name);
-		*/
-	}
 
 	//*******
 	Status					("Vertices...");
