@@ -21,7 +21,7 @@ for i in 1,100000	do
 		printf("spam log qwekfjqhwkjbvfqldjkvhqljkefvhqlkerjh")
 	end
 end
-
+--[[
 function main_()
 for i in 1,100000	do
 		printf("spam log qwekfjqhwkjbvfqldjkvhqljkefvhqlkerjh")
@@ -56,3 +56,4 @@ for i in 1,100000	do
 
 
 end
+]]
