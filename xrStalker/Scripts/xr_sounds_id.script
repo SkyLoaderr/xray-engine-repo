@@ -7,26 +7,24 @@
 global_sounds = stalker_ids.sound_script
 
 --Сидорович
-sound_sidor_base    =   global_sounds + 1024
+sound_sidor_base    =   global_sounds + 1000
 
 sound_patrol_base   =   sound_sidor_base + 0
-sound_wounded_base  =   sound_patrol_base + 10
+sound_wounded_base  =   sound_sidor_base + 10
 
 
 -- Стохе
-sound_stohe_base    =   sound_sidor_base + 1024
-
+sound_stohe_base    =   global_sounds + 2000
 stohe_kamp_base     =   sound_stohe_base + 0
 stohe_tradeseller_base  =   sound_stohe_base + 10
 stohe_meet_base     =   sound_stohe_base + 20
 
 -- Змей
-sound_zmey_base    =   sound_stohe_base + 1024
-
+sound_zmey_base    =   global_sounds + 3000
 zmey_guard_base     = sound_zmey_base + 0
 
 -- Чугай
-chugai_sounds          = sound_sidor_base + 1024
+chugai_sounds          = global_sounds + 4000
 
 ambush_bad_weather     = chugai_sounds + 0
 ambush_enemy           = chugai_sounds + 1
