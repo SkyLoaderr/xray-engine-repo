@@ -41,7 +41,12 @@ void CSoundPlayer::reinit			()
 
 void CSoundPlayer::reload			(LPCSTR section)
 {
+	VERIFY							(m_playing_sounds.empty());
 	clear							();
+}
+
+void CSoundPlayer::unload			()
+{
 	remove_active_sounds			(u32(-1));
 	VERIFY							(m_playing_sounds.empty());
 }

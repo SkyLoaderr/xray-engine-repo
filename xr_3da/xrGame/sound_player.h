@@ -112,6 +112,7 @@ public:
 	virtual				~CSoundPlayer				();
 	virtual	void		reinit						();
 	virtual	void		reload						(LPCSTR section);
+			void		unload						();
 			u32			add							(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 priority, u32 mask, u32 internal_type, LPCSTR bone_name, CSoundUserDataPtr data = 0);
 			void		remove						(u32 internal_type);
 			void		clear						();
