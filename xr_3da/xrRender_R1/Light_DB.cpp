@@ -127,15 +127,26 @@ void			CLight_DB::add_light		(light* L)
 	if (Device.dwFrame==L->dwFrame)	return;
 	L->dwFrame	=	Device.dwFrame;
 
-	if (L->flags.bShadow)	
-	{
-		//$$$ nv3x codepath doesn't implement shadowed point lights
-		if (RImplementation.b_nv3x && (IRender_Light::POINT==L->flags.type))
-			v_selected_unshadowed.push_back	(L);
-		else
-			v_selected_shadowed.push_back	(L);
+	if (L->flags.bShadow)			{
+		switch (L->flags.type)	{
+			case IRender_Light::POINT:
+				if (RImplementation.b_nv3x)	v_point.push_back	(L);
+				else						v_point_s.push_back	(L);
+				break;
+			case IRender_Light::SPOT:
+				v_spot_s.push_back			(L);
+				break;
+		}
+	}	else	{
+		switch (L->flags.type)	{
+			case IRender_Light::POINT:
+				v_point.push_back	(L);
+				break;
+			case IRender_Light::SPOT:
+				v_spot.push_back	(L);
+				break;
+		}
 	}
-	else	v_selected_unshadowed.push_back	(L);
 }
 #endif
 
@@ -160,6 +171,8 @@ void			CLight_DB::Update			()
 	}
 
 	// Clear selection
-	v_selected_shadowed.clear	();
-	v_selected_unshadowed.clear	();
+	v_point.clear	();
+	v_point_s.clear	();
+	v_spot.clear	();
+	v_spot_s.clear	();
 }
