@@ -55,6 +55,8 @@ extern void _error(HRESULT hr,LPCSTR file,int line);
 #define _RELEASE(a) { if (a) { a->Release(); a=0; } }
 #define NODEFAULT
 #define Msg	printf
+#define xr_malloc malloc
+#define xr_free free
 
 #define NO_XR_COLOR
 #define NO_XR_LIGHT
