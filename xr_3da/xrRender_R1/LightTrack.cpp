@@ -6,13 +6,21 @@
 #include "LightTrack.h"
 #include "..\xr_object.h"
 
+#ifdef _EDITOR
+#include "igame_persistent.h"
+#include "environment.h"
+#else
+#include "..\igame_persistent.h"
+#include "..\environment.h"
+#endif
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 CLightTrack::CLightTrack()
 {
 	ambient				= 0;
-	approximate			= { 0,0,0 };
+	approximate.set		( 0,0,0 );
 	dwFrame				= u32(-1);
 	Shadowed_dwFrame	= u32(-1);
 	Shadowed_Slot		= -1;
