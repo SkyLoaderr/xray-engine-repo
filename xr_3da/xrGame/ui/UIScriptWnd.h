@@ -5,9 +5,8 @@
 #include "../script_space_forward.h"
 #include "../script_export_space.h"
 
-struct SCallbackInfo{
-	CScriptCallback		m_pCallback;
-};
+struct SCallbackInfo;
+
 
 class UIScriptWnd :public CUIDialogWnd
 {
@@ -25,9 +24,21 @@ protected:
 public:
 								UIScriptWnd			();
 	virtual						~UIScriptWnd		();
-			void				AddCallback			(const luabind::functor<void> &lua_function);
-			void				AddCallback			(const luabind::object &lua_object, LPCSTR method);
+			void				AddCallback			(LPCSTR control_id, s16 event, const luabind::functor<void> &lua_function);
 			void				test();
+
+template<typename T>
+T*	GetControl(LPCSTR name){
+	ref_str n = name;
+	WINDOW_LIST_it it = m_ChildWndList.begin();
+	for(; it!=m_ChildWndList.end(); ++it)
+		if( (*it)->WindowName()== n ){
+			return dynamic_cast<T*>(*it);
+		}
+	return NULL;
+}
+
+
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 

@@ -2,6 +2,8 @@
 #include "UIScriptWnd.h"
 #include "../script_space.h"
 
+//UI-controls
+#include "UIButton.h"
 
 using namespace luabind;
 
@@ -13,10 +15,11 @@ void UIScriptWnd::script_register(lua_State *L)
 		.def(					constructor<>())
 
 		.def("Load",			&UIScriptWnd::Load)
-		.def("AddCallback",		(void (UIScriptWnd::*)(const luabind::functor<void>&)) UIScriptWnd::AddCallback)
-		.def("AddCallback",		(void (UIScriptWnd::*)(const luabind::object&, LPCSTR)) UIScriptWnd::AddCallback)
+		.def("AddCallback",		&UIScriptWnd::AddCallback)
 
 		.def("test",			&UIScriptWnd::test)
 
+		.def("GetButton",		(CUIButton* (UIScriptWnd::*)(LPCSTR)) UIScriptWnd::GetControl<CUIButton>)
+		
 	];
 }
