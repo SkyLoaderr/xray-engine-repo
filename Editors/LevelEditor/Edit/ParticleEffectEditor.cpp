@@ -14,11 +14,25 @@ void __fastcall PS::CPEDef::OnSourceTextEdit(PropValue* sender, bool& bDataModif
     }
 }
 
+void __fastcall PS::CPEDef::OnControlClick(PropValue* sender, bool& bDataModified)
+{
+	ButtonValue* B 		= dynamic_cast<ButtonValue*>(sender); R_ASSERT(B);
+    switch (B->btn_num){
+    case 0: 			Tools.PlayCurrent();		break;
+    case 1: 			Tools.StopCurrent(false);	break;
+    case 2: 			Tools.StopCurrent(true);	break;
+    }
+    bDataModified		= false;
+}
+
 void PS::CPEDef::FillProp(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner)
 {
-	::PHelper.CreateName(items,FHelper.PrepareKey(pref,"Name"),m_Name,sizeof(m_Name),owner);
-	ButtonValue* B 		= ::PHelper.CreateButton(items,FHelper.PrepareKey(pref,"Source Text"),"Edit");
-    B->OnBtnClickEvent	= OnSourceTextEdit;
+	ButtonValue* B;
+	B=::PHelper.CreateButton(items,FHelper.PrepareKey(pref,"Control"),"Play,Stop,Stop...");
+    B->OnBtnClickEvent		= OnControlClick;
+	::PHelper.CreateName	(items,FHelper.PrepareKey(pref,"Name"),m_Name,sizeof(m_Name),owner);
+    B=::PHelper.CreateButton(items,FHelper.PrepareKey(pref,"Source Text"),"Edit");
+    B->OnBtnClickEvent		= OnSourceTextEdit;
 }
 
 

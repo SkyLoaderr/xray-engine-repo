@@ -60,9 +60,9 @@ void __fastcall TfrmText::ebCancelClick(TObject *Sender)
 
 void __fastcall TfrmText::ebApplyClick(TObject *Sender)
 {
-	*m_Text = mmText->Text;
-    if (OnApplyClick) OnApplyClick();
-	mmText->Modified = false;
+	*m_Text 				= mmText->Text;
+    if (OnApplyClick) 		OnApplyClick();
+	mmText->Modified 		= false;
 }
 //---------------------------------------------------------------------------
 
@@ -99,6 +99,14 @@ bool __fastcall TfrmText::RunEditor(AnsiString& txt, LPCSTR caption, u32 flags, 
     form->OnCodeInsight		= on_insight;
 
 	return (form->ShowModal()==mrOk);
+}
+//---------------------------------------------------------------------------
+
+void TfrmText::SetText(AnsiString& text)
+{
+    m_Text					= &text;
+	mmText->Text 			= text;
+    mmText->Modified		= false;
 }
 //---------------------------------------------------------------------------
 

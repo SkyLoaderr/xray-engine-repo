@@ -718,6 +718,8 @@ Plugs:
 - добавить смус группы
 --------------------------------------------------------------------------------
 LE:
+- При Sector::CaptureVolume UpdateProperties
+- Отрисовывать компиляц ошибки виднее
 - навести порядок в DU
 - Icon Rotate Local/Parent
 - (ObjectList,ChoseForm)->ItemsList

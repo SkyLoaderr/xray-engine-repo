@@ -10,23 +10,33 @@ class ENGINE_API CParticleEffect;
 class ENGINE_API CPGDef
 {
 public:
-    enum{
-        df__			= (1<<0),
-    };
-
     string64			m_Name;
     Flags32				m_Flags;
-
 	struct SEffect{
-    	string64		effect;
-        float			offset_time;
-        SEffect(){effect[0]=0;offset_time=0.f;}
+        enum{
+            flDeferredStop	= (1<<0),
+            flRandomizeTime	= (1<<1),
+        };
+    	enum EEffType{
+        	etStopEnd		= 0,
+        	etPeriodic		= 1,
+            etMaxType		= u32(-1)
+        };
+        EEffType		m_Type;
+        Flags32			m_Flags;
+    	string64		m_EffectName;  
+        u32				m_Time0;
+        u32				m_Time1;
+		SEffect(){m_Flags.zero();m_Type=etStopEnd;m_EffectName[0]=0;m_Time0=0;m_Time1=0;}
     };
     DEFINE_VECTOR(SEffect,EffectVec,EffectIt);
     EffectVec			m_Effects;
 #ifdef _PARTICLE_EDITOR
-    u32					m_Count;
-	void __fastcall 	OnCountChange	(PropValue* sender);
+	void __fastcall 	OnEffectsEditClick	(PropValue* sender, bool& bDataModified);
+	void __fastcall 	OnEffectTypeChange	(PropValue* sender);
+	void __fastcall 	OnEffectEditClick	(PropValue* sender, bool& bDataModified);
+	void __fastcall 	OnControlClick	(PropValue* sender, bool& bDataModified);
+	void __fastcall 	OnParamsChange	(PropValue* sender);
 	void				FillProp	   	(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner);
 #endif
 public:
@@ -40,34 +50,37 @@ public:
 DEFINE_VECTOR(CPGDef*,PGDVec,PGDIt);
 
 class CParticleGroup: public FHierrarhyVisual{
-	CPGDef*				m_Def;
-    float				m_CurrentTime;
-    DEFINE_VECTOR(CParticleEffect*,EffectVec,EffectIt);
-    EffectVec			m_Effects;
+	const CPGDef*		m_Def;
+    u32					m_CurrentTime;
 public:
-						CParticleGroup	(){;}
+    enum{
+    	flPlaying		= (1<<0),
+    };
+    Flags32				m_Flags;
+public:
+						CParticleGroup	();
 						~CParticleGroup	(){;}
-	void	 			OnFrame			(u32 dt){;}
+	void	 			OnFrame			(u32 dt);
 
-	u32					RenderTO		(FVF::TL* V){;}
-	virtual void		Render			(float LOD){;}
+//	u32					RenderTO		(FVF::TL* V);
+//	virtual void		Render			(float LOD);
 	virtual void		Copy			(IRender_Visual* pFrom){;}
 
     void 				OnDeviceCreate	(){;}
     void 				OnDeviceDestroy	(){;}
 
-    void				UpdateParent	(const Fmatrix& m, const Fvector& velocity){;}
+    void				UpdateParent	(const Fmatrix& m, const Fvector& velocity);
 
-    BOOL				Compile			(CPGDef* def){;}
+    BOOL				Compile			(CPGDef* def);
 
-	CPGDef*				GetDefinition	(){return m_Def;}
+	const CPGDef*		GetDefinition	(){return m_Def;}
 
-	void				Play			(){;}
-    void				Stop			(bool bFinishPlaying=true){;}
+	void				Play			();
+    void				Stop			(bool bFinishPlaying=true);
 };
 
 }
-#define PGD_VERSION				0x0001
+#define PGD_VERSION				0x0003
 //----------------------------------------------------
 #define PGD_CHUNK_VERSION		0x0001
 #define PGD_CHUNK_NAME			0x0002

@@ -37,30 +37,15 @@ void TItemList::ClearParams(TElTreeItem* node)
 {
 	if (node){
     	THROW2("ClearParams - node");
-    	//S когда будут все итемы удалить у каждого
-/*
-//s
-    	for (TElTreeItem* item=node; item; item=item->GetNext()){
-			PropValue* V = (PropValue*)GetItemData(item);
-            if (V){
-	            PropValuePairIt it=std::find(m_Values.begin(),m_Values.end(),V); VERIFY(it!=m_Values.end());
-    	        if (it){
-					m_Values.erase(it);
-					xr_delete(V);
-                }
-            }
-		}
-*/
     }else{
         // save last selected items
-        ListItemsVec items;
-        GetSelected(items);
-        if (!items.empty()){
+        ElItemsVec items;
+        if (GetSelected(items)){
             last_selected_items.clear();
-            for (ListItemsIt l_it=items.begin(); l_it!=items.end(); l_it++){
-                last_selected_items.push_back(AnsiString());
-                AnsiString& s = last_selected_items.back();
-                FHelper.MakeFullName((*l_it)->Item(),0,s);
+            for (ElItemsIt l_it=items.begin(); l_it!=items.end(); l_it++){
+                AnsiString s;
+                FHelper.MakeFullName(*l_it,0,s);
+                last_selected_items.push_back(s);
             }
         }
         // real clear
@@ -88,8 +73,8 @@ void __fastcall TItemList::SelectItem(const AnsiString& full_name, bool bVal, bo
         if (bExpand) 			FHelper.ExpandItem(tvItems,item);
         if (tvItems->MultiSelect) 	item->Selected 		= bVal;
         else 						tvItems->Selected   = item;
-		tvItems->EnsureVisible	(item);
-		if (tvItems->OnAfterSelectionChange) tvItems->OnAfterSelectionChange(tvItems);
+		tvItems->EnsureVisible	(item); 
+		if (tvItems->OnAfterSelectionChange) tvItems->OnAfterSelectionChange(0);
     }
 }
 //---------------------------------------------------------------------------
@@ -97,15 +82,18 @@ void __fastcall TItemList::SelectItem(const AnsiString& full_name, bool bVal, bo
 __fastcall TItemList::TItemList(TComponent* Owner) : TForm(Owner)
 {
     DEFINE_INI		(fsStorage);
+    m_Flags.zero	();
+    OnItemsFocused	= 0;
+    OnCloseEvent	= 0;
+    OnItemRename	= 0;
 }
 //---------------------------------------------------------------------------
 
-TItemList* TItemList::CreateForm(TWinControl* parent, TAlign align, TOnItemsFocused focused, TOnCloseEvent on_close, bool allow_multiselect)
+TItemList* TItemList::CreateForm(TWinControl* parent, TAlign align, u32 flags)
 {
 	TItemList* props 			= xr_new<TItemList>(parent);
-    props->OnItemsFocused    	= focused;
-    props->OnCloseEvent			= on_close;
-    props->tvItems->MultiSelect	= allow_multiselect;
+    props->m_Flags.set			(flags);
+    props->tvItems->MultiSelect	= props->m_Flags.is(ilMultiSelect);
     if (parent){
 		props->Parent 			= parent;
     	props->Align 			= align;
@@ -113,17 +101,34 @@ TItemList* TItemList::CreateForm(TWinControl* parent, TAlign align, TOnItemsFocu
         props->ShowList	();
         props->fsStorage->Active= false;
     }
+    if (props->m_Flags.is(ilDragAllowed)){
+	    props->tvItems->OnStartDrag = FHelper.StartDrag;
+	    props->tvItems->OnDragOver 	= FHelper.DragOver;
+        props->tvItems->DragAllowed	= true;
+    }else{
+	    props->tvItems->OnStartDrag = 0;
+	    props->tvItems->OnDragOver 	= 0;
+        props->tvItems->DragAllowed	= false;
+    }
 	return props;
 }
 
-TItemList* TItemList::CreateModalForm(const AnsiString& title, ListItemsVec& items, bool bFullExpand, TOnItemsFocused on_focused, TOnCloseEvent on_close, bool allow_multiselect)
+TItemList* TItemList::CreateModalForm(const AnsiString& title, ListItemsVec& items, u32 flags)
 {
 	TItemList* props 			= xr_new<TItemList>((TComponent*)0);
-    props->tvItems->MultiSelect	= allow_multiselect;
-    props->OnItemsFocused    	= on_focused;
-    props->OnCloseEvent			= on_close;
-    props->AssignItems			(items,bFullExpand,title);
+    props->m_Flags.set			(flags);
+    props->tvItems->MultiSelect	= props->m_Flags.is(ilMultiSelect);
+    props->AssignItems			(items,props->m_Flags.is(ilFullExpand),title);
 	props->ShowListModal		();
+    if (props->m_Flags.is(ilDragAllowed)){
+	    props->tvItems->OnStartDrag = FHelper.StartDrag;
+	    props->tvItems->OnDragOver 	= FHelper.DragOver;
+        props->tvItems->DragAllowed	= true;
+    }else{
+	    props->tvItems->OnStartDrag = 0;
+	    props->tvItems->OnDragOver 	= 0;
+        props->tvItems->DragAllowed	= false;
+    }
 	return props;
 }
 
@@ -166,7 +171,6 @@ void __fastcall TItemList::AssignItems(ListItemsVec& items, bool full_expand, co
     // clear values
 //    if (tvItems->Selected) FHelper.MakeFullName(tvItems->Selected,0,last_selected_item);
     ClearParams				();
-    tvItems->Items->Clear	();
     // fill values
     m_Items					= items;
 	for (ListItemsIt it=m_Items.begin(); it!=m_Items.end(); it++){
@@ -178,7 +182,7 @@ void __fastcall TItemList::AssignItems(ListItemsVec& items, bool full_expand, co
         prop->item->CheckBoxEnabled = prop->m_Flags.is(ListItem::flShowCB);
         prop->item->ShowCheckBox 	= prop->m_Flags.is(ListItem::flShowCB);
         prop->item->CheckBoxState 	= (TCheckBoxState)prop->m_Flags.is(ListItem::flCBChecked);
-        // set flags
+        // set flags                                        
         if (prop->m_Flags.is(ListItem::flDrawThumbnail)){
         	prop->item->Height 		= 64;
         	prop->item->OwnerHeight = !miDrawThumbnails->Checked;
@@ -190,7 +194,8 @@ void __fastcall TItemList::AssignItems(ListItemsVec& items, bool full_expand, co
 
     // sorting
     if (full_sort){
-    	tvItems->Sort(true);
+    	tvItems->Sort		(true);
+        tvItems->SortMode 	= smAdd;
     }else{
         for (ListItemsIt it=m_Items.begin(); it!=m_Items.end(); it++){
             ListItem* prop		= *it;
@@ -199,16 +204,16 @@ void __fastcall TItemList::AssignItems(ListItemsVec& items, bool full_expand, co
     }
 
     // expand sel items
-    TElList* el_list=xr_new<TElList>();
+    ElItemsVec el_list;
     for (AStringIt s_it=last_selected_items.begin(); s_it!=last_selected_items.end(); s_it++)
-    	el_list->Add(FHelper.ExpandItem(tvItems,*s_it));
+    	el_list.push_back(FHelper.ExpandItem(tvItems,*s_it));
 
 	UnlockUpdating			();
 
     // restore selection
     tvItems->DeselectAll	();
-    for (int k=0; k<el_list->Count; k++)
-	    FHelper.RestoreSelection(tvItems,(TElTreeItem*)el_list->Items[k],true);
+	for (ElItemsIt el_it=el_list.begin(); el_it!=el_list.end(); el_it++)
+	    FHelper.RestoreSelection(tvItems,*el_it,true);
 
     Caption = title;
 }
@@ -237,6 +242,13 @@ void __fastcall TItemList::tvItemsMouseDown(TObject *Sender,
             pmItems->Popup(P.x,P.y-10);
         }
     };
+    if (m_Flags.is(ilEditMenu)){
+        if (Button==mbRight){
+            TPoint P; P.x = X; P.y = Y;
+            P=tvItems->ClientToScreen(P);
+            pmEdit->Popup(P.x,P.y-10);
+        }
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -254,17 +266,12 @@ void __fastcall TItemList::tvItemsMouseUp(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TItemList::tvItemsItemFocused(TObject *Sender)
+int __fastcall TItemList::GetSelected(ElItemsVec& items)
 {
-/*
-	if (OnItemsFocused) 	OnItemsFocused(tvItems->Selected);
-	if (tvItems->Selected){
-        ListItem* prop 		= (ListItem*)tvItems->Selected->Tag;
-        if (prop&&prop->OnItemFocused)prop->OnItemFocused(prop);
-    }
-*/
+    for (TElTreeItem* item = tvItems->GetNextSelected(0); item; item = tvItems->GetNextSelected(item))
+        items.push_back	(item);
+    return items.size();
 }
-//---------------------------------------------------------------------------
 
 int __fastcall TItemList::GetSelected(ListItemsVec& items)
 {
@@ -274,9 +281,11 @@ int __fastcall TItemList::GetSelected(ListItemsVec& items)
     }
     return items.size();
 }
+//---------------------------------------------------------------------------
 
 void __fastcall TItemList::tvItemsAfterSelectionChange(TObject *Sender)
 {
+	if (IsLocked()) return;
     ListItemsVec sel_items;
     GetSelected	(sel_items);
     if (OnItemsFocused) 	OnItemsFocused(sel_items);
@@ -287,6 +296,8 @@ void __fastcall TItemList::tvItemsAfterSelectionChange(TObject *Sender)
 
 void __fastcall TItemList::FormShow(TObject *Sender)
 {
+    InplaceEdit->Editor->Color		= TColor(0x00A0A0A0);
+    InplaceEdit->Editor->BorderStyle= bsNone;
 	// check window position
 	UI.CheckWindowPos(this);
 }
@@ -341,6 +352,83 @@ void __fastcall TItemList::tvItemsItemDraw(TObject *Sender,
       TElTreeItem *Item, TCanvas *Surface, TRect &R, int SectionIndex)
 {
 //	
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TItemList::InplaceEditValidateResult(
+      TObject *Sender, bool &InputValid)
+{
+	R_ASSERT(m_Flags.is(ilEditMenu));
+	TElTreeInplaceAdvancedEdit* IE	= InplaceEdit;
+    AnsiString new_text 			= AnsiString(IE->Editor->Text).LowerCase();
+    IE->Editor->Text 				= new_text;
+	AnsiString old_name,new_name;
+	FHelper.MakeName				(IE->Item,0,old_name,false);
+    _ReplaceItem					(old_name.c_str(),IE->Item->Level,new_text.c_str(),new_name,'\\');
+    TElTreeItem* find_item			= FHelper.FindItem(tvItems,new_name);
+    InputValid 						= (find_item==IE->Item)||(!find_item);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TItemList::InplaceEditAfterOperation(TObject *Sender,
+      bool &Accepted, bool &DefaultConversion)
+{
+	R_ASSERT(m_Flags.is(ilEditMenu));
+	TElTreeInplaceAdvancedEdit* IE	= InplaceEdit;
+    AnsiString new_text 			= AnsiString(IE->Editor->Text).LowerCase();
+    FHelper.RenameItem				(tvItems,IE->Item,new_text,OnItemRename);
+	if (tvItems->OnAfterSelectionChange) tvItems->OnAfterSelectionChange(0);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TItemList::miCreateFolderClick(TObject *Sender)
+{
+	R_ASSERT(m_Flags.is(ilEditMenu));
+	AnsiString folder;
+    AnsiString start_folder;
+    FHelper.MakeName(tvItems->Selected,0,start_folder,true);
+    FHelper.GenerateFolderName(tvItems,tvItems->Selected,folder);
+    folder = start_folder+folder;
+	TElTreeItem* node = FHelper.AppendFolder(tvItems,folder.c_str());
+    if (tvItems->Selected) tvItems->Selected->Expand(false);
+    tvItems->EditItem(node,-1);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TItemList::Rename1Click(TObject *Sender)
+{
+	R_ASSERT(m_Flags.is(ilEditMenu));
+    ElItemsVec sel_items;
+    if (1==GetSelected(sel_items))
+		if (sel_items.back()) tvItems->EditItem(sel_items.back(),-1);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TItemList::tvItemsDragDrop(TObject *Sender,
+      TObject *Source, int X, int Y)
+{
+	R_ASSERT(m_Flags.is(ilEditMenu));
+	FHelper.DragDrop(Sender,Source,X,Y,OnItemRename);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TItemList::Delete1Click(TObject *Sender)
+{
+	R_ASSERT(m_Flags.is(ilEditMenu));
+    ElItemsVec sel_items;
+    if (GetSelected(sel_items))
+        for (ElItemsIt it=sel_items.begin(); it!=sel_items.end(); it++)
+			FHelper.RemoveItem(tvItems,*it,OnItemRemove);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TItemList::tvItemsKeyDown(TObject *Sender, WORD &Key,
+      TShiftState Shift)
+{
+	if (m_Flags.is(ilEditMenu)){
+		if (Key==VK_DELETE) 
+			FHelper.RemoveItem(tvItems,tvItems->Selected,OnItemRemove);
+    }
 }
 //---------------------------------------------------------------------------
 

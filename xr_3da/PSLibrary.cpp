@@ -163,7 +163,7 @@ bool CPSLibrary::Load(const char* nm)
             if (def->Load(*O)) m_PGDs.push_back(def);
             else{ bRes = false; xr_delete(def); }
             O->close();
-            if (!bRes)	break;
+            if (!bRes) break;
             O 			= OBJ->open_chunk(count);
         }
         OBJ->close();

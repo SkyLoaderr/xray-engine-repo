@@ -77,6 +77,7 @@ public:
     void 	ApplyEdit	(){ebApplyClick(0);}
     void 	InsertLine	(const AnsiString& line);
     void 	InsertTextCP(const AnsiString& line, bool bCommas=true);
+    void	SetText		(AnsiString& text);
 };
 //---------------------------------------------------------------------------
 #endif

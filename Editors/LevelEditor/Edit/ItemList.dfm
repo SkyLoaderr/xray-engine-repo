@@ -1,6 +1,6 @@
 object ItemList: TItemList
-  Left = 452
-  Top = 252
+  Left = 1536
+  Top = 430
   Width = 259
   Height = 329
   BiDiMode = bdRightToLeft
@@ -39,7 +39,6 @@ object ItemList: TItemList
     HeaderPopupMenu = pmSystem
     DragCursor = crDrag
     Align = alClient
-    AlwaysKeepSelection = False
     AutoCollapse = False
     AutoLineHeight = False
     DockOrientation = doNoOrient
@@ -98,8 +97,9 @@ object ItemList: TItemList
     Color = clWhite
     CustomCheckboxes = True
     CustomPlusMinus = True
+    DragAllowed = True
     DrawFocusRect = False
-    ExpandOnDblClick = False
+    DragTrgDrawMode = dtdDownColorLine
     ExplorerEditMode = True
     FilteredVisibility = True
     FocusedSelectColor = 10526880
@@ -130,6 +130,7 @@ object ItemList: TItemList
     HorzScrollBarStyles.UseXPThemes = False
     IgnoreEnabled = False
     IncrementalSearch = False
+    InplaceEditorDelay = 0
     ItemIndent = 14
     KeepSelectionWithinLevel = False
     LineBorderActiveColor = clBlack
@@ -167,6 +168,7 @@ object ItemList: TItemList
     ShowLeafButton = False
     ShowLines = False
     StoragePath = '\Tree'
+    SortUseCase = False
     StripedOddColor = clGray
     StripedEvenColor = 8158332
     StripedItems = True
@@ -175,7 +177,6 @@ object ItemList: TItemList
     Tracking = False
     TrackColor = 10526880
     VertDivLinesColor = 7368816
-    VerticalLines = True
     VertScrollBarStyles.ShowTrackHint = True
     VertScrollBarStyles.Width = 16
     VertScrollBarStyles.ButtonSize = 16
@@ -188,11 +189,12 @@ object ItemList: TItemList
     OnAfterSelectionChange = tvItemsAfterSelectionChange
     OnItemChange = tvItemsItemChange
     OnItemDraw = tvItemsItemDraw
-    OnItemFocused = tvItemsItemFocused
     OnClick = tvItemsClick
+    OnDragDrop = tvItemsDragDrop
     OnMouseDown = tvItemsMouseDown
     OnMouseMove = tvItemsMouseMove
     OnMouseUp = tvItemsMouseUp
+    OnKeyDown = tvItemsKeyDown
   end
   object fsStorage: TFormStorage
     StoredValues = <>
@@ -228,6 +230,7 @@ object ItemList: TItemList
     object miDrawThumbnails: TMenuItem
       AutoCheck = True
       Caption = 'Draw Thumbnails'
+      Visible = False
       OnClick = miDrawThumbnailsClick
     end
   end
@@ -243,5 +246,44 @@ object ItemList: TItemList
     LeftMargin = 10
     Style = msOwnerDraw
     Top = 56
+  end
+  object InplaceEdit: TElTreeInplaceAdvancedEdit
+    Tree = tvItems
+    Types = [sftText]
+    OnAfterOperation = InplaceEditAfterOperation
+    OnValidateResult = InplaceEditValidateResult
+    Top = 88
+  end
+  object pmEdit: TMxPopupMenu
+    Alignment = paCenter
+    MarginStartColor = 10921638
+    MarginEndColor = 2763306
+    BKColor = 10528425
+    SelColor = clBlack
+    SelFontColor = 10526880
+    SepHColor = 1644825
+    SepLColor = 13158600
+    LeftMargin = 10
+    Style = msOwnerDraw
+    Left = 32
+    Top = 56
+    object MenuItem1: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem2: TMenuItem
+      Caption = 'Create Folder'
+      OnClick = miCreateFolderClick
+    end
+    object MenuItem3: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem4: TMenuItem
+      Caption = 'Rename'
+      OnClick = Rename1Click
+    end
+    object MenuItem5: TMenuItem
+      Caption = 'Delete'
+      OnClick = Delete1Click
+    end
   end
 end

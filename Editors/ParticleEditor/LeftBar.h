@@ -40,19 +40,11 @@ __published:	// IDE-managed Components
 	TPanel *paParticles;
 	TLabel *Label1;
 	TMenuItem *Custom1;
-	TMxPopupMenu *pmShaderList;
-	TMenuItem *ExpandAll1;
-	TMenuItem *CollapseAll1;
-	TMenuItem *N1;
-	TMenuItem *CreateFolder1;
-	TMenuItem *Rename1;
 	TMenuItem *N2;
 	TMenuItem *Import1;
 	TMenuItem *Export1;
-	TElTreeInplaceAdvancedEdit *InplaceParticleEdit;
 	TPanel *paPSList;
 	TBevel *Bevel2;
-	TElTree *tvParticles___;
 	TPanel *Panel1;
 	TExtBtn *ebEngineShaderRemove;
 	TExtBtn *ebEngineShaderClone;
@@ -63,16 +55,7 @@ __published:	// IDE-managed Components
 	TExtBtn *ExtBtn1;
 	TPanel *paItemProps;
 	TPanel *paAction;
-	TPanel *paCurrentPS;
-	TLabel *Label3;
-	TExtBtn *ExtBtn4;
 	TExtBtn *ebEngineApplyChanges;
-	TExtBtn *ebCurrentPSPlay;
-	TExtBtn *ebCurrentPSStop;
-	TMxLabel *lbCurState;
-	TMxLabel *lbParticleCount;
-	TMxLabel *RxLabel2;
-	TMxLabel *RxLabel1;
 	TExtBtn *ebImageCommands;
 	TMxPopupMenu *pmImages;
 	TMenuItem *ImageEditor1;
@@ -88,45 +71,28 @@ __published:	// IDE-managed Components
 	TMenuItem *N4;
 	TMenuItem *N5;
 	TMenuItem *N7;
-	TMenuItem *N8;
 	TImageList *ilModeIcons;
 	TMenuItem *ParticleGroup1;
 	TPanel *paItemList;
+	TSplitter *Splitter1;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall ebReloadClick(TObject *Sender);
     void __fastcall PanelMimimizeClick(TObject *Sender);
     void __fastcall PanelMaximizeClick(TObject *Sender);
     void __fastcall ebEditorPreferencesClick(TObject *Sender);
     void __fastcall ebRefreshTexturesClick(TObject *Sender);
-	void __fastcall ebSceneCommandsMouseDown(TObject *Sender,
-          TMouseButton Button, TShiftState Shift, int X, int Y);
-	void __fastcall tvParticles___MouseDown(TObject *Sender, TMouseButton Button,
-          TShiftState Shift, int X, int Y);
+	void __fastcall ebSceneCommandsMouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift, int X, int Y);
 	void __fastcall PreviewClick(TObject *Sender);
 	void __fastcall ebEngineApplyChangesClick(TObject *Sender);
-	void __fastcall CreateFolder1Click(TObject *Sender);
-	void __fastcall ExpandAll1Click(TObject *Sender);
-	void __fastcall CollapseAll1Click(TObject *Sender);
-	void __fastcall ebParticleRemoveClick(TObject *Sender);
 	void __fastcall ebParticleCloneClick(TObject *Sender);
-	void __fastcall tvParticles___KeyDown(TObject *Sender, WORD &Key,
-          TShiftState Shift);
-	void __fastcall Rename1Click(TObject *Sender);
-	void __fastcall InplaceParticleEditValidateResult(TObject *Sender,
-          bool &InputValid);
 	void __fastcall ebPSCreateClick(TObject *Sender);
-	void __fastcall ebCurrentPSPlayClick(TObject *Sender);
-	void __fastcall ebCurrentPSStopClick(TObject *Sender);
 	void __fastcall ebImageCommandsMouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
 	void __fastcall ImageEditor1Click(TObject *Sender);
 	void __fastcall Refresh1Click(TObject *Sender);
 	void __fastcall Checknewtextures1Click(TObject *Sender);
-	void __fastcall OnDragDrop(TObject *Sender, TObject *Source,
-          int X, int Y);
 	void __fastcall ExtBtn3Click(TObject *Sender);
 	void __fastcall ebPECreateClick(TObject *Sender);
-	void __fastcall tvParticles___DblClick(TObject *Sender);
 	void __fastcall ebFileMouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
 	void __fastcall ebCreateMouseDown(TObject *Sender, TMouseButton Button,
@@ -134,11 +100,8 @@ __published:	// IDE-managed Components
 	void __fastcall fsStorageRestorePlacement(TObject *Sender);
 	void __fastcall fsStorageSavePlacement(TObject *Sender);
 	void __fastcall ebPGCreateClick(TObject *Sender);
+	void __fastcall ebEngineShaderRemoveClick(TObject *Sender);
 private:	// User declarations
-	void __fastcall ShowPPMenu		(TMxPopupMenu* M, TObject* btn);
-	void __fastcall RenameItem(LPCSTR p0, LPCSTR p1);
-	BOOL __fastcall RemoveItem(LPCSTR p0);
-	void __fastcall AfterRemoveItem();
 public:		// User declarations
         __fastcall TfraLeftBar		(TComponent* Owner);
     void 			UpdateBar		();

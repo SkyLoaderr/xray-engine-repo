@@ -136,8 +136,10 @@ TElTreeItem* CFolderHelper::FindItemInFolder(TElTree* tv, TElTreeItem* start_fol
 }
 //---------------------------------------------------------------------------
 
-TElTreeItem* CFolderHelper::FindItem(TElTree* tv, AnsiString full_name, TElTreeItem** last_valid_node, int* last_valid_idx)
+TElTreeItem* CFolderHelper::FindItem(TElTree* tv, AnsiString full_name, TElTreeItem** last_valid_node, int* last_valid_idx) 
 {
+    if (last_valid_node) *last_valid_node=0;
+    if (last_valid_idx) *last_valid_idx=-1;
 	if (!full_name.IsEmpty()){
         int cnt = _GetItemCount(full_name.c_str(),'\\');
         if (cnt<=0) return 0;
@@ -161,8 +163,9 @@ TElTreeItem* CFolderHelper::FindItem(TElTree* tv, AnsiString full_name, TElTreeI
             if (last_valid_idx) *last_valid_idx=--itm;
         }
         return node;
-    }else
+    }else{
     	return 0;
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -299,11 +302,11 @@ AnsiString CFolderHelper::ReplacePart(AnsiString old_name, AnsiString ren_part, 
 //---------------------------------------------------------------------------
 // Drag'n'Drop
 //---------------------------------------------------------------------------
-void CFolderHelper::DragDrop(TObject *Sender, TObject *Source, int X, int Y, TOnRenameItem after_drag)
+void CFolderHelper::DragDrop(TObject *Sender, TObject *Source, int X, int Y, TOnItemRename after_drag)
 {
 	R_ASSERT(after_drag);
 
-	TElTree* tv = dynamic_cast<TElTree*>(Sender); VERIFY(Sender);
+	TElTree* tv = dynamic_cast<TElTree*>(Sender); VERIFY(tv);
     TSTItemPart IP=(TSTItemPart)0;
     int 		hc=0;
 	TElTreeItem* tgt_folder = tv->GetItemAt(X, Y, IP, hc);
@@ -325,7 +328,11 @@ void CFolderHelper::DragDrop(TObject *Sender, TObject *Source, int X, int Y, TOn
         	continue;
         }
 
-        if (!pNode) pNode = tv->Items->AddChildObject(cur_folder,item->Text,(TObject*)type);
+        if (!pNode){ 
+        	pNode = tv->Items->AddChildObject(cur_folder,item->Text,(TObject*)type);
+            pNode->ImageIndex 	= item->ImageIndex;
+            pNode->Tag			= item->Tag;
+        }
 		if (IsFolder(item)){
         	cur_folder = pNode;
 		    MakeName(cur_folder,0,cur_fld_name,true);
@@ -393,7 +400,9 @@ void CFolderHelper::StartDrag(TObject *Sender, TDragObject *&DragObject)
 }
 //---------------------------------------------------------------------------
 
-bool CFolderHelper::RenameItem(TElTree* tv, TElTreeItem* node, AnsiString& new_text, TOnRenameItem OnRename){
+bool CFolderHelper::RenameItem(TElTree* tv, TElTreeItem* node, AnsiString& new_text, TOnItemRename OnRename)
+{
+    R_ASSERT(OnRename);
     new_text = new_text.LowerCase();
 
     // find item with some name
@@ -439,7 +448,7 @@ void CFolderHelper::CreateNewFolder(TElTree* tv, bool bEditAfterCreate)
 }
 //------------------------------------------------------------------------------
 
-BOOL CFolderHelper::RemoveItem(TElTree* tv, TElTreeItem* pNode, TOnRemoveItem OnRemoveItem, TOnAfterRemoveItem OnAfterRemoveItem)
+BOOL CFolderHelper::RemoveItem(TElTree* tv, TElTreeItem* pNode, TOnItemRemove OnRemoveItem, TOnItemAfterRemove OnAfterRemoveItem)
 {
 	BOOL bRes = FALSE;
     R_ASSERT(OnRemoveItem);
@@ -513,6 +522,7 @@ TElTreeItem* CFolderHelper::RestoreSelection(TElTree* tv, TElTreeItem* node, boo
 		if (tv->OnAfterSelectionChange) tv->OnAfterSelectionChange(tv);
     }else{
 		tv->Selected 		= node;
+		if (tv->OnAfterSelectionChange) tv->OnAfterSelectionChange(tv);
     }
 	if (node){
 		tv->EnsureVisible	(node);

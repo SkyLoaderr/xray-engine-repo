@@ -191,6 +191,7 @@ void 	CModelPool::Render(IRender_Visual* m_pVisual, const Fmatrix& mTransform, i
     // render visual
     RCache.set_xform_world(mTransform);
     switch (m_pVisual->Type){
+    case MT_PARTICLE_GROUP:
     case MT_SKELETON:
     case MT_HIERRARHY:{
         FHierrarhyVisual* pV			= (FHierrarhyVisual*)m_pVisual;
@@ -222,18 +223,17 @@ void 	CModelPool::RenderSingle(IRender_Visual* m_pVisual, const Fmatrix& mTransf
     }
 }
 
-IRender_Visual* CModelPool::CreatePE	(PS::CPEDef* source)
+PS::CParticleEffect* CModelPool::CreatePE	(PS::CPEDef* source)
 {
 	PS::CParticleEffect* V	= (PS::CParticleEffect*)Instance_Create(MT_PARTICLE_EFFECT);
 	V->Compile		(source);
 	return V;
 }
 
-IRender_Visual* CModelPool::CreatePG	(PS::CPGDef* source)
+PS::CParticleGroup* CModelPool::CreatePG	(PS::CPGDef* source)
 {
-//	PS::CParticleGroup* V	= (PS::CParticleGroup*)Instance_Create(MT_PARTICLE_GROUP);
-//	V->Compile		(source);
-//.	return V;  	
-	return 0;
+	PS::CParticleGroup* V	= (PS::CParticleGroup*)Instance_Create(MT_PARTICLE_GROUP);
+	V->Compile		(source);
+	return V;  	
 }
 

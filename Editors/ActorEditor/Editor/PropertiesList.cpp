@@ -551,7 +551,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
 	TElTreeItem* item = tvProperties->GetItemAt(X,Y,IP,HC);
   	if (item){
     	if ((HC==1)&&(Button==mbLeft)){
-        	Log("Shift",(int)Shift.Contains(ssDouble));
+//        	Log("Shift",(int)Shift.Contains(ssDouble));
             PropItem* prop = (PropItem*)item->Tag;
             // ѕроверить чтобы не нажимать 2 раза дл€ кнопок
             if (prop&&(PROP_BUTTON==prop->type)) m_FirstClickItem=item;

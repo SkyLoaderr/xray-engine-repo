@@ -30,8 +30,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
     break;
     case COMMAND_RELOAD:
 		if (!Tools.IfModified()) return false;
-        if (ELog.DlgMsg(mtConfirmation,"Reload library?")==mrYes)
-        	Tools.Reload();
+		Tools.Reload();
 		Command(COMMAND_UPDATE_CAPTION);
     	break;
 	case COMMAND_CLEAR:

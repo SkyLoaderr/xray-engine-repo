@@ -35,9 +35,9 @@ public:
         return FolderAppend(pref0)+FolderAppend(pref1)+FolderAppend(pref2)+AnsiString(key);
     }
 public:
-	typedef void 		__fastcall (__closure *TOnRenameItem)(LPCSTR p0, LPCSTR p1);
-	typedef BOOL 		__fastcall (__closure *TOnRemoveItem)(LPCSTR p0);
-	typedef void 		__fastcall (__closure *TOnAfterRemoveItem)();
+	typedef void 		__fastcall (__closure *TOnItemRename)(LPCSTR p0, LPCSTR p1);
+	typedef BOOL 		__fastcall (__closure *TOnItemRemove)(LPCSTR p0);
+	typedef void 		__fastcall (__closure *TOnItemAfterRemove)();
     IC bool				IsFolder			(TElTreeItem* node){return node?(TYPE_FOLDER==(u32)node->Data):TYPE_INVALID;}
     IC bool				IsObject			(TElTreeItem* node){return node?(TYPE_OBJECT==(u32)node->Data):TYPE_INVALID;}
 
@@ -49,17 +49,17 @@ public:
 	TElTreeItem*		AppendObject		(TElTree* tv, AnsiString full_name);
     TElTreeItem* 		FindObject			(TElTree* tv, AnsiString full_name, TElTreeItem** last_valid_node=0, int* last_valid_idx=0, bool bIgnoreExt=false);
     TElTreeItem* 		FindFolder			(TElTree* tv, AnsiString full_name, TElTreeItem** last_valid_node=0, int* last_valid_idx=0);
-    TElTreeItem* 		FindItem			(TElTree* tv, AnsiString full_name, TElTreeItem** last_valid_node=0, int* last_valid_idx=0);
+    TElTreeItem* 		FindItem			(TElTree* tv, AnsiString full_name, TElTreeItem** last_valid_node=0, int* last_valid_idx=0); 
     void 				GenerateFolderName	(TElTree* tv, TElTreeItem* node,AnsiString& name,AnsiString pref="folder");
 	void 				GenerateObjectName	(TElTree* tv, TElTreeItem* node, AnsiString& name,AnsiString pref="object");
 	AnsiString	 		GetFolderName		(const AnsiString& full_name, AnsiString& dest);
 	AnsiString	 		GetObjectName		(const AnsiString& full_name, AnsiString& dest);
     AnsiString			ReplacePart			(AnsiString old_name, AnsiString ren_part, int level, LPSTR dest);
-    bool 				RenameItem          (TElTree* tv, TElTreeItem* node, AnsiString& new_text, TOnRenameItem OnRenameItem);
+    bool 				RenameItem          (TElTree* tv, TElTreeItem* node, AnsiString& new_text, TOnItemRename OnRenameItem);
     void 				CreateNewFolder		(TElTree* tv, bool bEditAfterCreate);
-    BOOL				RemoveItem			(TElTree* tv, TElTreeItem* pNode, TOnRemoveItem OnRemoveItem, TOnAfterRemoveItem OnAfterRemoveItem=0);
+    BOOL				RemoveItem			(TElTree* tv, TElTreeItem* pNode, TOnItemRemove OnRemoveItem, TOnItemAfterRemove OnAfterRemoveItem=0);
     // drag'n'drop
-	void __fastcall		DragDrop			(TObject *Sender, TObject *Source, int X, int Y, TOnRenameItem after_drag);
+	void __fastcall		DragDrop			(TObject *Sender, TObject *Source, int X, int Y, TOnItemRename after_drag);
 	void __fastcall		DragOver			(TObject *Sender, TObject *Source, int X, int Y, TDragState State, bool &Accept);
 	void __fastcall		StartDrag			(TObject *Sender, TDragObject *&DragObject);
     // popup menu

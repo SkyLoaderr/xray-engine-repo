@@ -81,6 +81,8 @@ class CParticleTools: public pureDeviceCreate, public pureDeviceDestroy
     void __fastcall		OnItemModified		(void); 
 
     void __fastcall 	OnParticleItemFocused	(ListItemsVec& items);
+	void __fastcall 	OnParticleItemRename	(LPCSTR old_name, LPCSTR new_name);
+    BOOL __fastcall 	OnParticleItemRemove	(LPCSTR name);
 
     void				RealUpdateProperties();
 	void 				SelectListItem		(LPCSTR pref, LPCSTR name, bool bVal, bool bLeaveSel, bool bExpand);
@@ -118,7 +120,7 @@ public:
     void				ChangeAction		(EAction action);
 
     void				PlayCurrent			();
-    void				StopCurrent			();
+    void				StopCurrent			(bool bFinishPlaying);
 
     void				Rename				(LPCSTR src_name, LPCSTR part_name, int part_idx);
     void				Rename				(LPCSTR src_name, LPCSTR dest_name);
