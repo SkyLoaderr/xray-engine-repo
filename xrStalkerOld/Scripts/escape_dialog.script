@@ -15,7 +15,7 @@ function trader_alredy_give_job(trader, actor)
 	return false 
 end
 function is_tutorial(trader, actor)
-	return not actor:has_info("tutorial_end")
+	return not db.actor:has_info("tutorial_end")
 end
 function is_not_tutorial(trader, actor)
  return not this.is_tutorial(trader, actor)
@@ -181,6 +181,25 @@ function wolf_notify_meet(first_speaker, second_speaker)
 	level_tasks.set_task_state(task.completed, "esc_dinamit_to_volk", 1)
 end
 
+--' WOLF
+function has_novice_access(actor, npc)
+	if db.actor then
+		return db.actor:has_info("tutorial_wounded_help") or db.actor:has_info("tutorial_wounded_death")
+	end
+	return false
+end
+function not_has_novice_access(actor, npc)
+	return not this.has_novice_access(actor, npc)
+end
+function need_wolf_greet(actor, npc)
+	if db.actor then
+		return db.actor:has_info("tutorial_wounded_help") and db.actor:dont_has_info("tutorial_wounded_volk_greet")
+	end
+	return false	
+end
+function not_need_wolf_greet(actor, npc)
+	return not this.need_wolf_greet(actor, npc)
+end
 
 --' Escape dynamite for Wolf
 function transfer_wolf_ammo_to_actor(first_speaker, second_speaker)
@@ -196,7 +215,7 @@ end
 function give_dynamite(first_speaker, second_speaker)
 	local case = first_speaker:object("dynamite")
 	dialogs.relocate_item(second_speaker, case, "out")
-	second_speaker:transfer_money(1000, first_speaker)
+	dialogs.relocate_money(second_speaker, 1000, "in")
 	level_tasks.set_task_state(task.completed, "esc_dinamit_to_volk", 0)
 end
 
