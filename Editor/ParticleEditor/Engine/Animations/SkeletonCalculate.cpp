@@ -117,6 +117,7 @@ void CKinematics::Calculate(BOOL bLight)
 
 	// Calculate bones
 	Device.Statistic.Animation.Begin();
+/*
 #ifndef _EDITOR
 	if (CPU::ID.feature&_CPU_FEATURE_3DNOW) {
 		CBoneInstance*	I	= bone_instances;
@@ -133,6 +134,7 @@ repeat:
 		};
 	}
 #endif    
+*/
 	(*bones)[iRoot]->Calculate		(this,&Fidentity);
 	Device.Statistic.Animation.End	();
 
