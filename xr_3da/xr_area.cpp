@@ -240,7 +240,7 @@ void CObjectSpace::dbgRender()
 
 	for (i=0; i<dbg_S.size(); i++)
 	{
-		pair<Fsphere,u32>& P = dbg_S[i];
+		std::pair<Fsphere,u32>& P = dbg_S[i];
 		Fsphere&	S = P.first;
 		Fmatrix		M;
 		M.scale		(S.R,S.R,S.R);

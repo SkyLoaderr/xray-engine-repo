@@ -43,7 +43,7 @@ void Touch::feel_touch_update	(Fvector& C, float R)
 		if (O->getDestroy())		continue;							// Don't touch candidates for destroy
 		if (!feel_touch_contact(O))	continue;							// Actual contact
 
-		if (find(feel_touch.begin(),feel_touch.end(),O) == feel_touch.end())
+		if (std::find(feel_touch.begin(),feel_touch.end(),O) == feel_touch.end())
 		{
 			// check for deny
 			BOOL bDeny = FALSE;
@@ -63,7 +63,7 @@ void Touch::feel_touch_update	(Fvector& C, float R)
 	for (int d = 0; d<int(feel_touch.size()); d++)
 	{
 		CObject* O	= feel_touch[d];
-		if (O->getDestroy() || !feel_touch_contact(O) || (find(n_begin,n_end,O) == n_end))	// Don't touch candidates for destroy
+		if (O->getDestroy() || !feel_touch_contact(O) || (std::find(n_begin,n_end,O) == n_end))	// Don't touch candidates for destroy
 		{
 			// _delete_
 			feel_touch_delete		(O);

@@ -29,7 +29,7 @@ void		CObjectList::Destroy			( CObject*	O		)
 {
 	if (0==O)				return;
 	net_Unregister			(O);
-	OBJ_IT it				=	find		(objects.begin(),objects.end(),O);
+	OBJ_IT it				=	std::find	(objects.begin(),objects.end(),O);
 	if (it!=objects.end())	objects.erase	(it);
 	map_POOL.insert			(mk_pair(O->cNameSect(),O));
 }

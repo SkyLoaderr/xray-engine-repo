@@ -33,7 +33,7 @@ CObjectList::~CObjectList	( )
 
 CObject*	CObjectList::FindObjectByName	( LPCSTR name )
 {
-	OBJ_IT O=find_if(objects.begin(),objects.end(),fNameEQ(name));
+	OBJ_IT O=std::find_if(objects.begin(),objects.end(),fNameEQ(name));
 	if (O!=objects.end())	return *O;
 	else					return NULL;
 }
@@ -56,7 +56,7 @@ void CObjectList::SingleUpdate	(CObject* O)
 		if (O->H_Parent() && O->H_Parent()->getDestroy() && !O->shedule_Locked)	
 		{
 			// Push to destroy-queue if it isn't here already
-			if (find(destroy_queue.begin(),destroy_queue.end(),O)==destroy_queue.end())
+			if (std::find(destroy_queue.begin(),destroy_queue.end(),O)==destroy_queue.end())
 				destroy_queue.push_back	(O);
 		}
 	}

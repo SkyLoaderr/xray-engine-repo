@@ -39,11 +39,11 @@ namespace Feel {
 		// B-A = objects, that become visible
 		if (!seen.empty()) 
 		{
-			objSET::iterator E = remove(seen.begin(),seen.end(),parent);
+			objSET::iterator E = std::remove(seen.begin(),seen.end(),parent);
 			seen.resize(E-seen.begin());
 
 			{
-				objSET::iterator	E = set_difference(
+				objSET::iterator	E = std::set_difference(
 					seen.begin(), seen.end(),
 					query.begin(),query.end(),
 					diff.begin() );
@@ -56,7 +56,7 @@ namespace Feel {
 		// A-B = objects, that are invisible
 		if (!query.empty()) 
 		{
-			objSET::iterator	E = set_difference(
+			objSET::iterator	E = std::set_difference(
 				query.begin(),query.end(),
 				seen.begin(), seen.end(),
 				diff.begin() );

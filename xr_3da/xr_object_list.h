@@ -11,7 +11,7 @@ class ENGINE_API NET_Packet;
 class	ENGINE_API 				CObjectList
 {
 private:
-	struct str_pred : public binary_function<char*, char*, bool> 
+	struct str_pred : public std::binary_function<char*, char*, bool> 
 	{	
 		IC bool operator()(LPCSTR x, LPCSTR y) const
 		{	return strcmp(x,y)<0;	}

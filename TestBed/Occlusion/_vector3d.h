@@ -176,7 +176,7 @@ public:
 	// Safe-Normalize
 	IC	void	normalize_safe(const Self &v) {
 		T magnitude=v.x*v.x + v.y*v.y + v.z*v.z;
-		if (magnitude>numeric_limits<T>::min()) {
+		if (magnitude>std::numeric_limits<T>::min()) {
 			magnitude=_sqrt(1/magnitude);
 			x = v.x*magnitude;
 			y = v.y*magnitude;
