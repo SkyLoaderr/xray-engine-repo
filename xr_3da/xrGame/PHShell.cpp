@@ -261,9 +261,11 @@ void CPHShell::PhTune(dReal step){
 
 void CPHShell::Update(){
 	if(!bActive) return;
+	if(bActivating) bActivating=false;
 	ELEMENT_I i;
 	for(i=elements.begin();elements.end() != i;++i)
 		(*i)->Update();
+
 	mXFORM.set((*elements.begin())->mXFORM);
 	VERIFY2(_valid(mXFORM),"invalid position in update");
 }

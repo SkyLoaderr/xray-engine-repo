@@ -108,14 +108,16 @@ void CPHAICharacter::InitContact(dContact* c){
 		const dReal* vel=dBodyGetLinearVel(m_body);
 		dReal c_vel;
 		dBodyID b;
-
+		SGameMtl* obj_material=NULL;
 		if(bo1)
 		{
 			b=dGeomGetBody(c->geom.g2);
+			obj_material=GMLib.GetMaterialByIdx(retrieveGeomUserData(c->geom.g2)->material);
 		}
 		else
 		{
 			b=dGeomGetBody(c->geom.g1);
+			obj_material=GMLib.GetMaterialByIdx(retrieveGeomUserData(c->geom.g1)->material);
 		}
 
 		dMass m;
@@ -141,7 +143,7 @@ void CPHAICharacter::InitContact(dContact* c){
 
 		dReal accepted_energy=(kin_energy_start-kin_energy_end);
 		if(accepted_energy>0.f)
-			c_vel=dSqrt(accepted_energy/m_mass*2.f);
+			c_vel=dSqrt(accepted_energy/m_mass*2.f)*obj_material->fBounceDamageFactor;
 		else c_vel=0.f;
 
 			if(c_vel>m_contact_velocity) 
@@ -187,7 +189,7 @@ void CPHAICharacter::InitContact(dContact* c){
 	//if(b_lose_control) 
 	{
 		const dReal* v=dBodyGetLinearVel(m_body);
-		dReal mag=dFabs(dDOT(v,c->geom.normal));
+		dReal mag=dFabs(dDOT(v,c->geom.normal))*tri_material->fBounceDamageFactor;
 		if(mag>m_contact_velocity)
 		{
 			m_contact_velocity=mag;

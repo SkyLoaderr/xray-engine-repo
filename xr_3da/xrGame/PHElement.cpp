@@ -421,6 +421,7 @@ void CPHElement::Activate(const Fmatrix &transform,const Fvector& lin_vel,const 
 
 void CPHElement::Update(){
 	if(!bActive) return;
+	if(bActivating) bActivating=false;
 	if( !dBodyIsEnabled(m_body)) return;
 
 	//		PHDynamicData::DMXPStoFMX(dBodyGetRotation(m_body),
