@@ -52,8 +52,7 @@ function main ()
     action (stalker1, anim ("stalker_2_1"), cond (cond.time_end, 100000000))
     action (stalker2, anim ("stalker_1_1"), cond (cond.time_end, 100000000))
     action (stalker3, object (torch, object.deactivate), cond (cond.time_end, 100))
-    
-    action (stalker3, object (weapon, object.deactivate), cond (cond.time_end,3000))
+    action (stalker3, object (weapon, object.deactivate), cond (cond.time_end, 1000))
     action (stalker3, anim ("stalker_3_2"), cond (cond.time_end, 100000000))
     
     sound2_1:play_at_pos (stalker2, stalker2:position (), 0)
@@ -98,17 +97,13 @@ function main ()
     while stalker3:action () do wait () end
     reset_action (stalker3, military2_1.script_name ())
 
-    action (stalker3, object (weapon, object.activate), cond (cond.time_end, 2000))
+    action (stalker3, object (weapon, object.activate), cond (cond.time_end, 1000))
     while stalker3:action () do wait () end
 
     --check move
     reset_action (stalker3, military2_1.script_name ())
     action (stalker3, move (pos, 0.26), look (look.search), anim ("walk_fwd_crawl"), cond (cond.move_end))
     action (stalker3, move (pos, 0.05), anim ("walk_fwd_crawl_stop"), cond (cond.anim_end))
-
---    while stalker3:action () do wait () end
---    reset_action (stalker3, military2_1.script_name ())
-
     action (stalker3, anim ("prisluh"), cond (cond.anim_end	))
 	action (stalker3, anim ("prisluh_v_torso_idle_2"), sound ("scripts\\Rolik\\Stalker3_2", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false),
 			cond (cond.sound_end))
@@ -116,14 +111,13 @@ function main ()
 	while stalker3:action () do wait () end
 
 	reset_action (stalker3, military2_1.script_name ())
-	action (stalker3, anim ("norm_torso_2_idle_0"), cond (cond.time_end, 1000))
+	action (stalker3, anim ("after_prisluh"), cond (cond.anim_end))
 	while stalker3:action () do wait () end
 
 	--last
 	reset_action (stalker3, military2_1.script_name ())
-	action (stalker3, anim ("norm_torso_2_idle_0"), object (torch, object.deactivate), cond (cond.time_end, 100))
-	action (stalker3, object (weapon, object.deactivate), cond (cond.time_end, 100))
-    action (stalker3, move (move.standing, move.walk, move.line, testway),  anim (anim.danger), look (look.path_dir), cond (cond.move_end))
+	action (stalker3, anim ("after_prisluh"), object (torch, object.deactivate), cond (cond.object_end))
+    action (stalker3, move (move.standing, move.walk, move.line, testway),  object (weapon, object.deactivate), anim (anim.danger), look (look.path_dir), cond (cond.move_end))
 
     reset_action (stalker1, military2_1.script_name ())
     reset_action (stalker2, military2_1.script_name ())
