@@ -6,6 +6,7 @@
 
 class CPSObject			: public CPS_Instance
 {
+	typedef CPS_Instance	inherited;
 public:
 	PS::SEmitter		m_Emitter;
 public:
