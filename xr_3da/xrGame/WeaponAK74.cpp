@@ -124,6 +124,9 @@ void CWeaponAK74::OnDrawFlame	(BOOL bHUDView)
 		P.add(D);
 	}
 }
+void CWeaponAK74::OnAnimationEnd()
+{
+}
 void CWeaponAK74::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R)
 {
 	pSounds->Play3DAtPos	(sndRicochet[Random.randI(SND_RIC_COUNT)], vEnd,false);

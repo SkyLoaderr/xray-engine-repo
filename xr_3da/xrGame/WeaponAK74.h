@@ -40,6 +40,7 @@ protected:
 	virtual void	OnEmptyClick	(BOOL bHUDView);
 	virtual void	OnDrawFlame		(BOOL bHUDView);
 	virtual void	OnShotmark		(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R);
+	virtual void	OnAnimationEnd	();
 public:
 					CWeaponAK74		();
 	virtual			~CWeaponAK74	();
