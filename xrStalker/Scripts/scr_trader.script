@@ -541,9 +541,9 @@ function t_Life:sound_with_anim()
 
          return true
     end
-
 	//'Сколько можно тут стоять
-    if( device():time_global() > self.mem.time + pause_time and level.actor() and self.mem.npc:see(level.actor())) then
+    if( device():time_global() > self.mem.time + pause_time) then
+         printf("talk")
          self.mem.anim_snd   = random_choice( Trader_Wait1, Trader_Wait2, Trader_Wait3, Trader_Wait4, Trader_Wait5, Trader_Wait6 )
          self.mem.repeats    = 1
          self.mem.time       = device():time_global()
