@@ -1609,7 +1609,7 @@ void CPHElement::get_State(SPHNetState& state)
 	m_body_interpolation.GetPosition(state.previous_position,0);
 	m_body_interpolation.GetRotation(state.previous_quaternion,0);
 	get_LinearVel(state.linear_vel);
-	get_AngularVel(state.linear_vel);
+	get_AngularVel(state.angular_vel);
 	getForce(state.force);
 	getTorque(state.torque);
 }
