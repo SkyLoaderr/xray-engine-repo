@@ -100,11 +100,6 @@ public:
     // mouse sensetive
     float m_MouseSM, m_MouseSS, m_MouseSR;
 protected:
-    virtual bool	CommandBefore			(bool& present, int _Command, int p = 0, int p2 = 0)=0;
-    virtual bool	CommandAfter			(bool& present, int _Command, int p = 0, int p2 = 0)=0;
-    virtual bool 	ApplyShortCutExt		(WORD Key, TShiftState Shift)=0;
-    virtual bool 	ApplyGlobalShortCutExt	(WORD Key, TShiftState Shift)=0;
-
     virtual void	RealQuit				()=0;
 public:
     				TUI				();
@@ -153,7 +148,7 @@ public:
 	void __fastcall MouseRelease		(TShiftState Shift, int X, int Y);
 	void __fastcall MouseMove			(TShiftState Shift, int X, int Y);
 
-    bool 			Command				(int _Command, int p = 0, int p2 = 0);
+    virtual bool 	Command				(int _Command, int p = 0, int p2 = 0)=0;
 
     void 			BeginEState			(EEditorState st){ m_EditorState.push_back(st); }
     void 			EndEState			(){ m_EditorState.pop_back(); }
@@ -188,8 +183,8 @@ public:
     void 			NeedBreak			(){bNeedAbort = true;}
     void 			ResetBreak			(){bNeedAbort = false;}
 
-    bool 			ApplyShortCut		(WORD Key, TShiftState Shift);
-    bool 			ApplyGlobalShortCut	(WORD Key, TShiftState Shift);
+    virtual bool 	ApplyShortCut		(WORD Key, TShiftState Shift)=0;
+    virtual bool 	ApplyGlobalShortCut	(WORD Key, TShiftState Shift)=0;
 
     void			SetGradient			(u32 color){;}
 
