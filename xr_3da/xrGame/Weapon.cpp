@@ -16,7 +16,7 @@
 #include "actor.h"
 #include "actoreffector.h"
 
-#define WEAPON_REMOVE_TIME		60000
+#define WEAPON_REMOVE_TIME		30000
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
