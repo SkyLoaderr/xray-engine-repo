@@ -68,6 +68,7 @@ void CRT::Create	(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f)
 	if (FAILED(_hr) || (0==pSurface))	return;
 
 	// OK
+	Msg			("* created RT(%s), %dx%d",Name,w,h);
 	R_CHK		(pSurface->GetSurfaceLevel	(0,&pRT));
 	pTexture	= Device.Resources->_CreateTexture	(Name);
 	pTexture->surface_set	(pSurface);
@@ -134,6 +135,7 @@ void CRTC::Create	(LPCSTR Name, u32 size,	D3DFORMAT f)
 	if (FAILED(_hr) || (0==pSurface))	return;
 
 	// OK
+	Msg			("* created RTc(%s), 6(%d)",Name,size);
 	for (u32 face=0; face<6; face++)
 		R_CHK	(pSurface->GetCubeMapSurface	((D3DCUBEMAP_FACES)face, 0, pRT+face));
 	pTexture	= Device.Resources->_CreateTexture	(Name);

@@ -120,9 +120,6 @@ void	CRenderTarget::OnDeviceCreate	()
 	dwAccumulatorClearMark			= 0;
 	Device.Resources->Evict			();
 
-	// Query
-	CHK_DX							(HW.pDevice->CreateQuery(D3DQUERYTYPE_OCCLUSION,&Q));
-
 	// Blenders
 	b_occq							= xr_new<CBlender_light_occq>			();
 	b_accum_mask					= xr_new<CBlender_accum_direct_mask>	();
@@ -176,7 +173,7 @@ void	CRenderTarget::OnDeviceCreate	()
 		}
 	}
 
-	// DIRECT
+	// DIRECT (spot)
 	if (RImplementation.b_HW_smap)
 	{
 		u32	w=DSM_size, h=DSM_size;
@@ -441,8 +438,6 @@ void	CRenderTarget::OnDeviceCreate	()
 
 void	CRenderTarget::OnDeviceDestroy	()
 {
-	_RELEASE					(Q);
-
 	// Textures
 	t_ncm->surface_set			(NULL);
 	_RELEASE					(t_ncm_surf);

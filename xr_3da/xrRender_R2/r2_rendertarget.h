@@ -26,7 +26,6 @@ public:
 	IBlender*					b_bloom;
 	IBlender*					b_combine;
 	IBlender*					b_decompress;
-	IDirect3DQuery9*			Q;
 	xr_vector<std::pair<Fsphere,Fcolor> >		dbg_spheres;
 
 	// MRT-path (or decompressed MET)
