@@ -29,38 +29,40 @@ void CStateManagerSnork::execute()
 {
 	u32 state_id = u32(-1);
 
-	const CEntityAlive* enemy	= object->EnemyMan.get_enemy();
-	const CEntityAlive* corpse	= object->CorpseMan.get_corpse();
+	//const CEntityAlive* enemy	= object->EnemyMan.get_enemy();
+	//const CEntityAlive* corpse	= object->CorpseMan.get_corpse();
 
-	if (enemy) {
-		switch (object->EnemyMan.get_danger_type()) {
-			case eVeryStrong:	state_id = eStatePanic; break;
-			case eStrong:		
-			case eNormal:
-			case eWeak:			state_id = eStatePanic; break;
-		}
+	//if (enemy) {
+	//	switch (object->EnemyMan.get_danger_type()) {
+	//		case eVeryStrong:	state_id = eStatePanic; break;
+	//		case eStrong:		
+	//		case eNormal:
+	//		case eWeak:			state_id = eStatePanic; break;
+	//	}
 
-	} else if (object->HitMemory.is_hit()) {
-		state_id = eStateHitted;
-	} else if (object->hear_dangerous_sound) {
-		state_id = eStateDangerousSound;
-	} else if (object->hear_interesting_sound) {
-		state_id = eStateInterestingSound;
-	} else {
-		bool can_eat = false;
-		if (corpse) {
+	//} else if (object->HitMemory.is_hit()) {
+	//	state_id = eStateHitted;
+	//} else if (object->hear_dangerous_sound) {
+	//	state_id = eStateDangerousSound;
+	//} else if (object->hear_interesting_sound) {
+	//	state_id = eStateInterestingSound;
+	//} else {
+	//	bool can_eat = false;
+	//	if (corpse) {
 
-			if (prev_substate == eStateEat) {
-				if (!get_state_current()->check_completion()) can_eat = true;
-			}
+	//		if (prev_substate == eStateEat) {
+	//			if (!get_state_current()->check_completion()) can_eat = true;
+	//		}
 
-			if ((prev_substate != eStateEat) && (object->GetSatiety() < object->get_sd()->m_fMinSatiety)) 
-				can_eat = true;		
-		}
+	//		if ((prev_substate != eStateEat) && (object->GetSatiety() < object->get_sd()->m_fMinSatiety)) 
+	//			can_eat = true;		
+	//	}
 
-		if (can_eat) state_id = eStateEat;
-		else state_id = eStateRest;
-	}
+	//	if (can_eat) state_id = eStateEat;
+	//	else state_id = eStateRest;
+	//}
+	
+	state_id = eStateRest;
 
 	select_state(state_id); 
 

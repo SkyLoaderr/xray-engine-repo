@@ -23,7 +23,7 @@
 #include "../monster_corpse_manager.h"
 
 #include "../../../step_manager.h"
-
+#include "../monster_event_manager.h"
 
 class CMonsterDebug;
 class CCharacterPhysicsSupport;
@@ -31,6 +31,7 @@ class CAnimTriple;
 class CMonsterCorpseCoverEvaluator;
 class CCoverEvaluatorFarFromEnemy;
 class CCoverEvaluatorCloseToEnemy;
+class CMonsterEventManager;
 
 class CBaseMonster : public CCustomMonster, 
 				   virtual public CMonsterMovement,
@@ -281,8 +282,9 @@ public:
 	bool					hear_interesting_sound;
 
 	// -----------------------------------------------------------------------------
-
+	CMonsterEventManager	EventMan;
 	CMotionManager			MotionMan; 
+	// -----------------------------------------------------------------------------
 
 	bool					RayPickEnemy			(const CObject *target_obj, const Fvector &trace_from, const Fvector &dir, float dist, float radius, u32 num_picks);
 
@@ -309,12 +311,6 @@ public:
 	u32						m_dwFrameSpawn;
 	u32						m_dwFrameDestroy;
 	u32						m_dwFrameClient;
-
-/////////////////////////////////////////////////////////
-// TEMP
-	u32						prev_size;
-////////////////////////////////////////////////////////
-
 
 	u16						bone_part;
 	

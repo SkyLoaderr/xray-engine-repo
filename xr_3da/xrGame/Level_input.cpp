@@ -210,6 +210,9 @@ void CLevel::IR_OnKeyboardPress(int key)
 		case DIK_1:
 			monster->test();
 			break;
+		case DIK_2:
+			monster->test2();
+			break;
 		}
 	}
 #endif

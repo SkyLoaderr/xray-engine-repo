@@ -22,13 +22,17 @@ class CJumpingAbility {
 
 	float			m_blend_speed;
 
+	Fvector			m_dir;	
+
+	u32				m_velocity_mask;
+
 public:
 					CJumpingAbility		();
 	virtual			~CJumpingAbility	();
 
 	virtual void	init_external		(CBaseMonster *obj, CMotionDef *m_def1, CMotionDef *m_def2, CMotionDef *m_def3);
 
-	virtual void	jump				(Fvector target);
+	virtual void	jump				(Fvector target, u32 vel_mask = u32(-1));
 	virtual void	update_frame		();
 	virtual void	update_scheduled	();
 	virtual void	pointbreak			();
@@ -43,5 +47,7 @@ public:
 
 			bool	hit_test			();
 			bool	is_landing			();
+			void	build_line			();
+
 };
 

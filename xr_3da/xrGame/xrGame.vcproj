@@ -2221,10 +2221,13 @@
 								Name="Event Handler"
 								Filter="">
 								<File
-									RelativePath=".\ai\Monsters\event_handler.cpp">
+									RelativePath=".\ai\Monsters\monster_event_manager.cpp">
 								</File>
 								<File
-									RelativePath=".\ai\Monsters\event_handler.h">
+									RelativePath=".\ai\Monsters\monster_event_manager.h">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\monster_event_manager_defs.h">
 								</File>
 								<Filter
 									Name="Custom Events"

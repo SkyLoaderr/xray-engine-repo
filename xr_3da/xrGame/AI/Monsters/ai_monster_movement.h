@@ -30,13 +30,6 @@ public:
 
 	CMotionStats		*MotionStats;
 
-	// -------------------------------------------------------------------
-		void	MoveToTarget			(const CEntity *entity); 
-		void	MoveToTarget			(const Fvector &pos, u32 node_id);
-		void	MoveToTarget			(const Fvector &position);
-		void	MoveAwayFromTarget		(const Fvector &position, float dist = 10.f);
-	// -------------------------------------------------------------------
-
 		bool	IsMoveAlongPathFinished	();
 		bool	IsMovingOnPath			();
 		bool	ObjectNotReachable		(const CEntity *entity);
@@ -147,6 +140,12 @@ public:
 
 	IC	void		detour_graph_points		();
 	IC	void		set_generic_parameters	();
+
+	//////////////////////////////////////////////////////////////////////////
+	// special path
+		bool		m_special;
+		bool		build_special			(const Fvector &target, u32 node, u32 vel_mask, bool linear = true);
+		void		stop_special			();
 };
 
 #include "ai_monster_movement_inline.h"

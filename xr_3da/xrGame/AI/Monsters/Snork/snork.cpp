@@ -3,9 +3,18 @@
 #include "snork_state_manager.h"
 #include "../../../../skeletonanimated.h"
 
-CSnork::CSnork()
+CSnork::CSnork() 
 {
 	StateMan = xr_new<CStateManagerSnork>(this);
+
+	EventMan.get_binder(eventAnimationStart)->bind	(this, &CSnork::on_test_1);
+	EventMan.get_binder(eventAnimationStart)->bind	(this, &CSnork::on_test_2);
+	EventMan.get_binder(eventAnimationStart)->bind	(this, &CSnork::on_test_3);
+	EventMan.get_binder(eventAnimationStart)->bind	(this, &CSnork::on_test_2);
+
+	EventMan.get_binder(eventSoundStart)->bind	(this, &CSnork::on_test_1);
+	EventMan.get_binder(eventSoundStart)->bind	(this, &CSnork::on_test_2);
+
 }
 
 CSnork::~CSnork()
@@ -66,7 +75,7 @@ void CSnork::reinit()
 
 	def1 = pSkel->ID_Cycle_Safe("stand_attack_2_0");	VERIFY(def1);
 	def2 = pSkel->ID_Cycle_Safe("stand_attack_2_1");	VERIFY(def2);
-	def3 = pSkel->ID_Cycle_Safe("stand_attack_2_2");	VERIFY(def3);
+	def3 = pSkel->ID_Cycle_Safe("stand_run_0");			VERIFY(def3);
 	
 	CJumpingAbility::init_external(this, def1, def2, def3);
 }
@@ -74,12 +83,14 @@ void CSnork::reinit()
 void CSnork::UpdateCL()
 {
 	inherited::UpdateCL();
-	//CJumpingAbility::update_frame();
+	CJumpingAbility::update_frame();
 }
 
 void CSnork::test()
 {
-	//CJumpingAbility::jump(CJumpingAbility::get_target(Level().CurrentEntity()));
+	//CJumpingAbility::jump(CJumpingAbility::get_target(Level().CurrentEntity()), eVelocityParameterRunNormal);
+
+	EventMan.raise(eventSoundStart);
 }
 
 void CSnork::CheckSpecParams(u32 spec_params)
@@ -95,5 +106,32 @@ void CSnork::CheckSpecParams(u32 spec_params)
 	}
 }
 
+void CSnork::test2()
+{
+	//Fvector target_position;
+	//Fvector dir;
+	//dir.set(Direction());
+	//dir.invert();
+	//target_position.mad(Position(), dir, 5.f);
+	//
+	//bool ret_val = CMonsterMovement::build_special(target_position, u32(-1), eVelocityParameterRunNormal);
+	//if (!ret_val) Msg("SPECIAL FAILED!!!");
+	//else Msg("SPECIAL PATH BUILT!!!");
+
+	EventMan.raise(eventAnimationStart);
+}
+
+void CSnork::on_test_1(IEventData *data)
+{
+	Msg("DELEGATE test1");
+}
+void CSnork::on_test_2(IEventData *data)
+{	
+	Msg("DELEGATE test2");
+}
+void CSnork::on_test_3(IEventData *data)
+{
+	Msg("DELEGATE test3");
+}
 
 

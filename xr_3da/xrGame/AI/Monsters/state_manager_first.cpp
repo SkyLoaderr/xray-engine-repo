@@ -75,7 +75,5 @@ void CStateManagerFirst::set_state(EGlobalStates state)
 		state_it_new->second->Activate	();		
 		m_current_state					= state;
 	}
-	
-	execute();
 }
 

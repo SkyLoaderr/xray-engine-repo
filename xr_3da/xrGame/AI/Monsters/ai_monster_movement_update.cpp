@@ -6,6 +6,12 @@
 // Init Movement
 void CMonsterMovement::Update_Initialize()
 {
+	if (m_special) {
+		if (!CDetailPathManager::completed(Position())) return;
+
+		stop_special();
+	}
+	
 	CLevelLocationSelector::set_evaluator			(0);
 	CDetailPathManager::set_path_type				(eDetailPathTypeSmooth);
 	b_try_min_time									= true;
@@ -20,7 +26,9 @@ void CMonsterMovement::Update_Initialize()
 //////////////////////////////////////////////////////////////////////////
 // Update Movement
 void CMonsterMovement::Update_Execute()
-{
+{	
+	if (m_special) return;
+
 	CDetailPathManager::set_try_min_time			(b_try_min_time); 
 	CDetailPathManager::set_use_dest_orientation	(b_use_dest_orient);
 	enable_movement									(b_enable_movement);

@@ -25,9 +25,9 @@ void CStateMonsterThreatenWalkAbstract::initialize()
 TEMPLATE_SPECIALIZATION
 void CStateMonsterThreatenWalkAbstract::execute()
 {
-	m_object->MotionMan.m_tAction	= ACT_WALK_FWD;
-	m_object->MoveToTarget			(m_object->EnemyMan.get_enemy());
-	m_object->CSoundPlayer::play	(MonsterSpace::eMonsterSoundThreaten, 0,0,m_object->get_sd()->m_dwAttackSndDelay);
+	//m_object->MotionMan.m_tAction	= ACT_WALK_FWD;
+	//m_object->MoveToTarget			(m_object->EnemyMan.get_enemy());
+	//m_object->CSoundPlayer::play	(MonsterSpace::eMonsterSoundThreaten, 0,0,m_object->get_sd()->m_dwAttackSndDelay);
 }
 
 TEMPLATE_SPECIALIZATION

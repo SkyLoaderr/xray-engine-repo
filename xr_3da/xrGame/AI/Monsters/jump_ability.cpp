@@ -28,9 +28,13 @@ void CJumpingAbility::init_external(CBaseMonster *obj, CMotionDef *m_def1, CMoti
 	
 	m_def_glide			= m_def2;
 	m_jump_time			= 1.f;
+
+	m_active			= false;
+
+	//m_object->EventMan.RegisterEvent(Event_TA_OnChange, on_change_event);
 }
 
-void CJumpingAbility::jump(Fvector target)
+void CJumpingAbility::jump(Fvector target, u32 vel_mask)
 {
 	// получить время физ.прыжка
 	float ph_time = m_object->m_PhysicMovementControl->JumpMinVelTime(target);
@@ -44,6 +48,10 @@ void CJumpingAbility::jump(Fvector target)
 	m_active			= true;
 
 	m_blend_speed		= -1.f;
+
+	//m_dir				= ;
+
+	m_velocity_mask		= vel_mask;
 	
 }
 
@@ -51,19 +59,26 @@ void CJumpingAbility::update_frame()
 {
 	if (!m_active) return;
 	
-	if (!m_object->MotionMan.TA_IsActive())		stop();
-	//if ((m_time_started != 0) && (m_time_started + 1000 < Level().timeServer()))		{
-	//	m_time_started = 0;
-	//	pointbreak();
-	//}
+	if (!m_object->MotionMan.TA_IsActive())	{
+		Msg("Time = [%u] Stop TA_Stopped",Level().timeServer());
+		stop();
+	}
 	
 	if (is_landing()) {
 		pointbreak		();
+		build_line		();
 		m_time_started	= 0;
+
+		Msg("Time = [%u] Point Break", Level().timeServer());
+	}
+	
+	set_animation_speed	();
+
+	if (m_object->CMonsterMovement::enabled() && m_object->CDetailPathManager::completed(m_object->Position())) {
+		Msg("Time = [%u] Stop m_special stopped", Level().timeServer());
+		stop();
 	}
 
-	
-	set_animation_speed();
 	
 	// test for hit
 	//hit_test();
@@ -97,6 +112,16 @@ bool CJumpingAbility::is_landing()
 	else return false;
 }
 
+void CJumpingAbility::build_line()
+{
+	if (m_velocity_mask == u32(-1)) return;
+	
+	Fvector target_position;
+	target_position.mad(m_object->Position(), m_object->Direction(), 4.f);
+
+	m_object->CMonsterMovement::build_special(target_position, u32(-1), m_velocity_mask);
+}
+
 
 void CJumpingAbility::set_animation_speed() 
 {
@@ -105,22 +130,20 @@ void CJumpingAbility::set_animation_speed()
 	
 	if ((m_animation_holder->get_state() == eStateExecute) && (info.blend->motionID == m_def_glide->motion)) {
 		if (m_blend_speed < 0)	m_blend_speed = info.blend->speed;
-		info.speed.current = m_blend_speed * (info.blend->timeTotal / m_jump_time);
-		Msg("Speed = [%f] Blend Time = [%f] Jump Time = [%f]", info.speed.current, info.blend->timeTotal, m_jump_time);
+		info.speed.current = (info.blend->timeTotal / m_jump_time);
 	} else {
 		info.speed.current = -1.f;
 	}
-
 }
-
 
 void CJumpingAbility::update_scheduled()
 {
-
 }
+
 void CJumpingAbility::stop()
 {
 	m_active = false;
+	if (m_object->MotionMan.TA_IsActive())	m_object->MotionMan.TA_Deactivate();
 }
 
 void CJumpingAbility::pointbreak()

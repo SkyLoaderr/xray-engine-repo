@@ -54,6 +54,8 @@ void CMonsterMovement::reinit()
 	m_velocity_angular				= 0.f;
 
 	initialize_movement				();
+
+	m_special						= false;
 }
 
 void CMonsterMovement::InitExternal(CBaseMonster *pM)
@@ -79,88 +81,6 @@ void CMonsterMovement::InitSelector(CAbstractVertexEvaluator &S, Fvector target_
 	S.m_tEnemyPosition	= target_pos;
 	S.m_tEnemy			= 0;
 }
-
-//////////////////////////////////////////////////////////////////////////
-// Move To Target
-void CMonsterMovement::MoveToTarget(const CEntity *entity) 
-{
-	SetPathParams(entity->level_vertex_id(), get_valid_position(entity, entity->Position()));
-}
-
-void CMonsterMovement::MoveToTarget(const Fvector &pos, u32 node_id) 
-{
-	if (accessible(node_id)) {
-		SetPathParams(node_id,pos);
-	} else {
-		Fvector res;
-		u32 node = accessible_nearest(pos, res);
-		SetPathParams(node,res);
-	}
-	
-}
-
-
-void CMonsterMovement::MoveToTarget(const Fvector &position)
-{
-
-	bool new_params = false;
-
-	// перестраивать если дошёл до конца пути
-	if (IsPathEnd(2,1.5f)) new_params = true;
-
-	// перестраивать если вышел временной квант
-	if (m_selector_approach->m_dwCurTime  + 2000 < m_object->m_dwCurrentTime) new_params = true;
-
-	if (!new_params) return;
-
-	// если нода в прямой видимости - не использовать селектор
-	CRestrictedObject::add_border		(Position(), position);
-	u32 node_id = ai().level_graph().check_position_in_direction(level_vertex_id(),Position(),position);
-	CRestrictedObject::remove_border	();
-	if (ai().level_graph().valid_vertex_id(node_id) && accessible(node_id)) {
-		SetPathParams (node_id, position);
-
-		// хранить в данном селекторе время последнего перестраивания пути
-		m_selector_approach->m_dwCurTime = m_object->m_dwCurrentTime;
-	} else {
-		bool use_selector = true;
-
-		if (ai().level_graph().valid_vertex_position(position) && accessible(position)) {
-			u32 vertex_id = ai().level_graph().vertex_id(position);
-			if (ai().level_graph().valid_vertex_id(vertex_id) && accessible(vertex_id)) {
-				SetPathParams (vertex_id, position);
-
-				// хранить в данном селекторе время последнего перестраивания пути
-				m_selector_approach->m_dwCurTime = m_object->m_dwCurrentTime;
-
-				use_selector = false;
-			}
-		}
-
-		if (use_selector) {
-			CLevelLocationSelector::set_evaluator(m_selector_approach);
-			InitSelector(*m_selector_approach, position);
-
-			CLevelLocationSelector::set_query_interval(0);	
-			SetSelectorPathParams ();
-		}
-	}
-}
-
-void CMonsterMovement::MoveAwayFromTarget(const Fvector &position, float dist)
-{
-	Fvector target_pos;
-	Fvector dir;
-		
-	dir.sub(Position(), position);
-#pragma todo("Dima to Jim : verify why direction becomes incorrect, pssibly XFORM() and/or position is not valid")
-	if (fis_zero(dir.square_magnitude(),EPS_L)) dir.set(0.f,0.f,1.f);
-	dir.normalize();
-	target_pos.mad(Position(),dir,dist);
-
-	MoveToTarget(target_pos);
-}
-
 
 bool CMonsterMovement::IsMoveAlongPathFinished()
 {
@@ -231,6 +151,12 @@ void CMonsterMovement::SetSelectorPathParams()
 
 void CMonsterMovement::update_velocity()
 {
+	if (m_special) {
+		const CDetailPathManager::STravelParams &current_velocity = CDetailPathManager::velocity(CDetailPathManager::path()[curr_travel_point_index()].velocity);
+		set_desirable_speed	(_abs(current_velocity.linear_velocity));
+		return;
+	}
+
 	// Обновить линейную скорость движения
 	float t_accel = ((m_velocity_linear.target < m_velocity_linear.current) ? 
 										m_object->MotionMan.accel_get(eAV_Braking) :
@@ -259,3 +185,65 @@ void CMonsterMovement::stop_now()
 	m_object->m_velocity_linear.target	= 0.f;
 	m_object->m_velocity_linear.current = 0.f;
 }
+
+//////////////////////////////////////////////////////////////////////////
+// Special Build Path
+//////////////////////////////////////////////////////////////////////////
+#define MAX_STAGES_COUNT 6
+
+bool CMonsterMovement::build_special(const Fvector &target, u32 node, u32 vel_mask, bool linear)
+{
+	if (node == u32(-1)) {
+		if (!position_in_direction(target, node)) {
+			return false;
+		}
+	}
+	
+	enable_movement									(true);
+	
+	set_velocity_mask								(vel_mask);	
+	set_desirable_mask								(vel_mask);
+
+	CDetailPathManager::set_try_min_time			(false); 
+	CDetailPathManager::set_use_dest_orientation	(false);
+	
+	CLevelLocationSelector::set_evaluator			(0);
+	CDetailPathManager::set_path_type				(eDetailPathTypeSmooth);
+	set_path_type									(MovementManager::ePathTypeLevelPath);
+
+	set_dest_position								(target);
+	set_level_dest_vertex							(node);
+	
+	
+	u32 cur_time			= Level().timeServer();
+	bool b_continue_build	= true;
+	
+	u8	stages_count		= 0;
+
+	do {
+		update_path							();
+		
+		if (CDetailPathManager::actual() || 
+			(time_path_built() >= cur_time) || 
+			CDetailPathManager::failed() || 
+			CMovementManager::path_completed())		b_continue_build = false;
+
+		stages_count++;
+		VERIFY(stages_count < MAX_STAGES_COUNT);
+	} while (b_continue_build);
+
+	if (!CMovementManager::path_completed()) {
+		m_special = true;	
+		return true;
+	}
+	
+	enable_movement									(false);
+	return false;
+}
+
+void CMonsterMovement::stop_special()
+{
+	m_special = false;	
+}
+
+//////////////////////////////////////////////////////////////////////////

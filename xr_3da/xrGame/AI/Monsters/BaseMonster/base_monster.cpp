@@ -19,6 +19,7 @@
 #include "../../../phdestroyable.h"
 #include "../../../../skeletoncustom.h"
 
+
 CBaseMonster::CBaseMonster()
 {
 	m_PhysicMovementControl->AllocateCharacterObject(CPHMovementControl::CharacterType::ai);
@@ -51,8 +52,6 @@ CBaseMonster::CBaseMonster()
 	// Инициализация параметров анимации	
 	MotionMan.Init					(this);
 
-//	m_fGoingSpeed					= 0.f;
-
 	// Attack-stops init
 	AS_Init							();
 
@@ -75,6 +74,7 @@ CBaseMonster::~CBaseMonster()
 	xr_delete(m_corpse_cover_evaluator);
 	xr_delete(m_enemy_cover_evaluator);
 	xr_delete(m_cover_evaluator_close_point);
+
 }
 
 
@@ -255,53 +255,6 @@ float CBaseMonster::GetEnemyDistances(float &min_dist, float &max_dist, const CE
 	return cur_dist;
 }
 
-//////////////////////////////////////////////////////////////////////////
-// Function for foot processing
-//////////////////////////////////////////////////////////////////////////
-//Fvector	CBaseMonster::get_foot_position(ELegType leg_type)
-//{
-//	R_ASSERT2(m_FootBones[leg_type] != BI_NONE, "foot bone had not been set");
-//	
-//	CKinematics *pK = smart_cast<CKinematics*>(Visual());
-//	Fmatrix bone_transform;
-//
-//	bone_transform = pK->LL_GetBoneInstance(m_FootBones[leg_type]).mTransform;	
-//
-//	Fmatrix global_transform;
-//	global_transform.set(XFORM());
-//	global_transform.mulB(bone_transform);
-//
-//	return global_transform.c;
-//}
-//
-//void CBaseMonster::LoadFootBones()
-//{
-//
-//	CInifile* ini		= smart_cast<CKinematics*>(Visual())->LL_UserData();
-//	if(ini&&ini->section_exist("foot_bones")){
-//		
-//		CInifile::Sect& data		= ini->r_section("foot_bones");
-//		for (CInifile::SectIt I=data.begin(); I!=data.end(); I++){
-//			CInifile::Item& item	= *I;
-//			
-//			u16 index = smart_cast<CKinematics*>(Visual())->LL_BoneID(*item.second);
-//			VERIFY3(index != BI_NONE, "foot bone not found", *item.second);
-//			
-//			if (xr_strcmp(*item.first, "front_left") == 0) 			m_FootBones[eFrontLeft]		= index;
-//			else if (xr_strcmp(*item.first, "front_right")== 0)		m_FootBones[eFrontRight]	= index;
-//			else if (xr_strcmp(*item.first, "back_right")== 0)		m_FootBones[eBackRight]		= index;
-//			else if (xr_strcmp(*item.first, "back_left")== 0)		m_FootBones[eBackLeft]		= index;
-//		}
-//	} else VERIFY("section [foot_bones] not found in monster user_data");
-//
-//	// проверка на соответсвие
-//	int count = 0;
-//	for (u32 i = 0; i < eLegsMaxNumber; i++) 
-//		if (m_FootBones[i] != BI_NONE) count++;
-//
-//	VERIFY(count == get_legs_number());
-//}
-
 float CBaseMonster::get_current_animation_time()
 {
 	return MotionMan.GetCurAnimTime();
@@ -422,24 +375,6 @@ void CBaseMonster::set_state_sound(u32 type, bool once)
 		CSoundPlayer::play(type, 0, 0, delay);
 	}
 }
-
-
-
-//void CBaseMonster::SetState(IState *pS, bool bSkipInertiaCheck)
-//{
-//	if (CurrentState != pS) {
-//		// проверка инерций
-//		if (!bSkipInertiaCheck)
-//			if (CurrentState->IsInertia()) {
-//				if (CurrentState->GetPriority() >= pS->GetPriority()) return;
-//			}
-//
-//			CurrentState->Done();
-//			CurrentState->Reset();
-//			CurrentState = pS;
-//			CurrentState->Activate();
-//	}
-//}
 
 BOOL CBaseMonster::feel_touch_on_contact	(CObject *O)
 {

@@ -44,16 +44,16 @@ void CStateMonsterFindEnemyRunAbstract::initialize()
 TEMPLATE_SPECIALIZATION
 void CStateMonsterFindEnemyRunAbstract::execute()
 {
-	object->MotionMan.m_tAction			= ACT_RUN;
-	object->MotionMan.accel_activate	(eAT_Aggressive);
-	object->MoveToTarget				(target_point, target_vertex);
-	object->CSoundPlayer::play			(MonsterSpace::eMonsterSoundAttack, 0,0,object->get_sd()->m_dwAttackSndDelay);
-
-#ifdef DEBUG
-	if (psAI_Flags.test(aiMonsterDebug)) {
-		object->HDebug->M_Add(0,"Find Enemy :: Run", D3DCOLOR_XRGB(255,0,0));
-	}
-#endif
+//	object->MotionMan.m_tAction			= ACT_RUN;
+//	object->MotionMan.accel_activate	(eAT_Aggressive);
+//	object->MoveToTarget				(target_point, target_vertex);
+//	object->CSoundPlayer::play			(MonsterSpace::eMonsterSoundAttack, 0,0,object->get_sd()->m_dwAttackSndDelay);
+//
+//#ifdef DEBUG
+//	if (psAI_Flags.test(aiMonsterDebug)) {
+//		object->HDebug->M_Add(0,"Find Enemy :: Run", D3DCOLOR_XRGB(255,0,0));
+//	}
+//#endif
 
 }
 
