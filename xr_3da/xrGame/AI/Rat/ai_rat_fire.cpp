@@ -106,7 +106,7 @@ void CAI_Rat::SelectEnemy(SEnemySelected& S)
 	
 	for (u32 i=0; i<Known.size(); i++) {
 		CEntityAlive*	E = dynamic_cast<CEntityAlive*>(Known[i].key);
-		if (!E)
+		if (!E || E->getDestroy())
 			continue;
 		float		H = EnemyHeuristics(E);
 		if (H<S.fCost) {
@@ -125,6 +125,10 @@ void CAI_Rat::SelectEnemy(SEnemySelected& S)
 			}
 		}
 	}
+	if (S.Enemy)
+		vfSaveEnemy();
+	if (m_tSavedEnemy->getDestroy())
+		m_tSavedEnemy = 0;
 }
 
 float CAI_Rat::CorpHeuristics(CEntity* E)

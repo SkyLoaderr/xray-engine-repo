@@ -158,7 +158,7 @@ void CAI_Stalker::SelectEnemy(SEnemySelected& S)
 	
 	for (u32 i=0; i<Known.size(); i++) {
 		CEntityAlive*	E = dynamic_cast<CEntityAlive*>(Known[i].key);
-		if (!E || !E->g_Alive())
+		if (!E || !E->g_Alive() || E->getDestroy())
 			continue;
 
 		float		H = EnemyHeuristics(E);
@@ -180,6 +180,8 @@ void CAI_Stalker::SelectEnemy(SEnemySelected& S)
 	}
 	if (m_tEnemy.Enemy)
 		vfSaveEnemy();
+	if (m_tSavedEnemy->getDestroy())
+		m_tSavedEnemy = 0;
 }
 
 bool CAI_Stalker::bfCheckForNodeVisibility(u32 dwNodeID, bool bIfRayPick)

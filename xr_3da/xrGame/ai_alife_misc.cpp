@@ -13,7 +13,7 @@
 
 void CSE_ALifeSimulator::vfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSchedulable)
 {
-	if (!tpALifeSchedulable->bfActive())
+	//if (!tpALifeSchedulable->bfActive())
 		return;
 	CSE_ALifeDynamicObject		*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(tpALifeSchedulable);
 	R_ASSERT2					(l_tpALifeDynamicObject,"Unknown schedulable object class");

@@ -325,10 +325,11 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 						if (tpGroupMember->fHealth <= 0) {
 							// detach object from the group
 							tpGroupMember->m_bDirectControl	= true;
-							tpGroupMember->m_bOnline		= true;
+							tpGroupMember->m_bOnline		= false;
 							tpALifeAbstractGroup->m_tpMembers.erase(tpALifeAbstractGroup->m_tpMembers.begin() + i);
 							// store the new separate object into the registries
 							vfUpdateDynamicData(tpGroupMember);
+							tpGroupMember->m_bOnline		= true;
 							i--;
 							N--;
 							continue;
