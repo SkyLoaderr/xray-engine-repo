@@ -595,18 +595,37 @@ public:
 	}
 	IC	void	setHPB	(float _h, float _p, float _b)
 	{
-		_h		= -_h;		_p		= -_p;
-		float _sh,_ch;		_sincos(_h,_sh,_ch);
 		float _sp,_cp;		_sincos(_p,_sp,_cp);
+		float _sh,_ch;		_sincos(_h,_sh,_ch);
 		float _sb,_cb;		_sincos(_b,_sb,_cb);
-	
-		i.set(_cb*_ch+_sb*_sp*_sh, 	_sb*_cp,	-_sh*_cb+_sb*_sp*_ch);	_14_=0;
-		j.set(-_sb*_ch+_cb*_sp*_sh, _cb*_cp,	_sb*_sh+_cb*_sp*_ch);	_24_=0;
-		k.set(_cp*_sh, 				-_sp, 		_cp*_ch);				_34_=0;
+
+		i.set(_cb*_ch+_sb*_sp*_sh, 	_sb*_cp,	_sh*_cb-_sb*_sp*_ch);	_14_=0;
+		j.set(-_sb*_ch+_cb*_sp*_sh, _cb*_cp,	-_sb*_sh-_cb*_sp*_ch);	_24_=0;
+		k.set(-_cp*_sh, 			_sp, 		_cp*_ch);				_34_=0;
 		c.set(0,					0,			0);						_44_=1;
     }
 	IC	void	setYPR	(float y, float p, float r){setHPB(y,p,r);}
 	IC	void	setXYZ	(float x, float y, float z){setHPB(y,x,z);}
+	IC	void	getHPB	(float& h, float& p, float& b){
+        if ( m[2][1] < 1.0f ){
+            if ( m[2][1] > -1.0f ){
+                b 	= -atan2(-m[0][1],m[1][1]);
+                p 	= asin(m[2][1]);
+                h 	= atan2(-m[2][0],m[2][2]);
+            }else{
+                b 	= atan2(m[0][2],m[0][0]);
+                p 	= -PI_DIV_2;
+                h	= 0.0f;
+            }
+        }else{
+            b 	= -atan2(m[0][2],m[0][0]);
+            p 	= PI_DIV_2;
+            h 	= 0.0f;
+        }
+    }
+	IC	void	getXYZ	(float& x, float& y, float& z){getHPB(y,x,z);}
+	IC	void	getHPB	(Fvector& hpb){getHPB(hpb.x,hpb.y,hpb.z);}
+	IC	void	getXYZ	(Fvector& xyz){getXYZ(xyz.x,xyz.y,xyz.z);}
 } Fmatrix;
 
 #endif
