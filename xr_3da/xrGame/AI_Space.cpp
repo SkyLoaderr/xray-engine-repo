@@ -24,6 +24,7 @@ CAI_Space::CAI_Space	()
 	Device.seqDevDestroy.Add	(this);
 	OnDeviceCreate				();
 	m_tpAStar					= 0;
+	m_tpaGraph					= 0;
 }
 
 CAI_Space::~CAI_Space	()
