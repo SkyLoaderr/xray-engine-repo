@@ -644,7 +644,7 @@ void ConvertToNormalMap(NVI_Image* pSrc, KernelType kt, float scale)
 IC u32 it_gloss_rev		(u32 d, u32 s)	
 {	
 	return	color_rgba	(
-	color_get_A(s),		// gloss
+	color_get_A(s)+1,		// gloss
 	color_get_B(d),
 	color_get_G(d),
 	color_get_R(d)		);
