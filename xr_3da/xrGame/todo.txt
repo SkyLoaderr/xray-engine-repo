@@ -85,7 +85,12 @@ Oles:
 		. TODO:	Local  actor	+ latency
 		. TODO: Local  monster	+ latency
 	. TODO: Per sector wallmarks
-	. TODO: Detail objects
+	+ TODO: Detail objects
+		+ TODO: Interpolation
+		+ TODO: Dither
+		+ TODO: Fastest rendering :)
+		. TODO: Lighting
+		. TODO: File reader
 	. TODO: Lighting on models
 	. TODO: Semi-Static, vertex-cache optimized LOD (only on static)
 	. TODO: AI
