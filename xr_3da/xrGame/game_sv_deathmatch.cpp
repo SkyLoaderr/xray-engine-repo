@@ -12,7 +12,6 @@ u32		g_dwMaxCorpses = 10;
 
 void	game_sv_Deathmatch::Create					(LPSTR &options)
 {
-//	__super::Create							(options);
 	inherited::Create						(options);
 	fraglimit			= get_option_i		(options,"fraglimit",0);
 	timelimit			= get_option_i		(options,"timelimit",0)*60000;	// in (ms)
