@@ -140,7 +140,8 @@ function action_follow:execute ()
     if not self.was_reset then
        self:reset_scheme()
     end
-
+    
+    xr_sound.set_sound(self.object, self.st.sound_theme)
     --local pos = self.object:position ()
     --printf ("FOLLWER %s POSITION x = %f, y = %f, z = %f", self.object:name (), pos.x, pos.y, pos.z)
     -- проверим, а жив ли еще старшќй.
@@ -209,6 +210,7 @@ function action_follow:finalize ()
        --table.remove (db.storage[self.st.leader_id].followers, self.index)
        self.index = nil
     end   
+    xr_sound.set_sound(self.object, nil)
 end
 --------
 function action_follow:calculate_position ()
@@ -321,6 +323,7 @@ function action_follow:reset_scheme ()
     self.st.signals["leader_dead"] = false
     self.st.signals["leader_section_changed"] = false
     self.st.signals["leader_dead"] = false
+    xr_sound.set_sound(self.object, self.st.sound_theme)
 end
 --------
 function action_follow:activate_scheme ()
@@ -389,5 +392,6 @@ function set_scheme (npc, ini, scheme, section, gulag_name)
           st.distance = 5
 	   end
 	end   
+	st.sound_theme = utils.cfg_get_string (ini, section, "snd",  npc, false, "", "state,weather")
     
 end
