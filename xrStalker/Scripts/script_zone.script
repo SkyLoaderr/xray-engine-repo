@@ -1,0 +1,93 @@
+module("monsterAi")
+
+class "monster_zone"
+function monster_zone:__init(obj, ini)
+
+	//' Читаем тип монстра в этой зоне
+	if(ini:line_exist("monster", "type") == true) then
+		self.type	= ini:r_string("monster", "type")
+	else
+		assert(false)
+	end
+	
+	//' Читаем время действия скрипта для монстра в этой зоне
+	if(ini:line_exist("monster", "work_time") == true) then
+		self.work_time	= ini:r_u32("monster", "work_time")
+	else
+		self.work_time = nil
+	end
+
+	//' Читаем кастом дату для настройки скрипта
+	self:read_custom_data(ini)
+	
+	self.ini_ok	= true
+end
+
+function monster_zone:on_enter(obj)
+	if(is_object_monster(obj)) then
+		printf("bindind monster. type = %s", self.type)
+		//obj:bind_object(monster_binder(obj, self.type, self.time))
+		obj:bind_object(monsterai.CMonsterBaseBind(obj))
+	end
+end
+
+function monster_zone:read_custom_data(ini)
+	if(self.type == "sleep") then
+		self.way	= ini:r_string("monster", "way")
+	elseif(self.type == "aaa") then
+	
+	end
+end
+
+
+//---------------------------------------------------------------------------------------------------------
+//' monster_binder
+//---------------------------------------------------------------------------------------------------------
+
+class "monster_binder" (object_binder)
+function monster_binder:__init(obj, type, time) super(obj)
+	self.object:script(true, script_name())
+end
+
+function monster_binder:reload(section)
+	object_binder.reload(self, section)
+	assert(false)			//' если сюда попали, то что-то надо менять в архитектуре
+end
+
+function monster_binder:update(delta)
+	object_binder.update(self, delta)
+	if(self.object:alive() == false) then
+		printf("dead")
+		return
+	end
+	
+	if(self.object:action() == nil) then
+		action(self.object, anim(anim.sit_idle, 0), cond(cond.time_end, 4000))
+		action(self.object, anim(anim.stand_idle, 0), cond(cond.time_end, 4000))
+	end
+end
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function is_object_monster(obj)
+	local otype = get_clsid(obj)
+	if(otype == clsid.crow			or
+		otype == clsid.zombie		or
+		otype == clsid.flesh		or
+		otype == clsid.controller	or
+		otype == clsid.bloodsucker	or
+		otype == clsid.burer		or
+		otype == clsid.chimera		or
+		otype == clsid.boar			or
+		otype == clsid.idol			or
+		otype == clsid.dog_red		or
+		otype == clsid.dog_black	or
+		otype == clsid.pseudo_gigant  )
+	then
+		return true
+	end
+	
+	return false
+end
+
