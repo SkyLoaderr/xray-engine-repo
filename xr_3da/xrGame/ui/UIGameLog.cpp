@@ -91,6 +91,9 @@ void CUIGameLog::Update()
 	CUIListItem				*pItem		= NULL;
 	CUIColorAnimatorWrapper *anm		= NULL;
 	toDelIndexes.clear();
+
+	int invisible_items = 0;
+
 	for (int i = 0; i < UILogList.GetSize(); ++i)
 	{
 		pItem = UILogList.GetItem(i);
@@ -111,12 +114,25 @@ void CUIGameLog::Update()
 		}
 
 		// Remove at animation end
-		if (anm->Done() || !pItem->IsShown())
+		if (anm->Done())
 		{
 			xr_delete(anm);
 			toDelIndexes.insert(i);
 		}
+
+		if (!pItem->IsShown())
+			invisible_items++;		
 	}
+
+	for (int i = 0; i < invisible_items; i++)
+	{
+		pItem = UILogList.GetItem(i);
+		anm		= reinterpret_cast<CUIColorAnimatorWrapper*>(pItem->GetData());
+		
+		xr_delete(anm);
+		toDelIndexes.insert(i);
+	}
+	
 
 	// Delete elements
 	for (ToDelIndexes_it it = toDelIndexes.begin(); it != toDelIndexes.end(); ++it)
