@@ -4,6 +4,11 @@
 #include "SoundRender_Source.h"
 #include "SoundRender_Emitter.h"
 
+void	CSoundRender_Emitter::fill_data		(void* ptr, u32 offset, u32 size)
+{
+	Memory.mem_copy							(ptr,wave+offset,size);
+}
+
 void	CSoundRender_Emitter::fill_block	(void* ptr, u32 size)
 {
 	//Msg			("stream: %10s - [%X]:%d, p=%d, t=%d",source->fname,ptr,size,position,source->dwBytesTotal);
@@ -27,7 +32,7 @@ void	CSoundRender_Emitter::fill_block	(void* ptr, u32 size)
 					u32	sz_data		= source->dwBytesTotal - position;
 					u32 sz_zero		= (position+size) - source->dwBytesTotal;
 					VERIFY			(size == (sz_data+sz_zero));
-					Memory.mem_copy	(dest,wave+position,sz_data);
+					fill_data		(dest,position,sz_data);
 					Memory.mem_fill	(dest+sz_data,0,sz_zero);
 					//Msg				("        playing: [%d]-normal,[%d]-zero",sz_data,sz_zero);
 				}
@@ -40,13 +45,13 @@ void	CSoundRender_Emitter::fill_block	(void* ptr, u32 size)
 				u32		sz_first	= source->dwBytesTotal - position;
                 if (0==sz_first)
                 {
-                    Memory.mem_copy		(dest,wave,size);
+					fill_data			(dest,0,size);
                 } else {
                     u32		sz_second	= (position+size) - source->dwBytesTotal;
                     VERIFY				(size == (sz_first+sz_second));
                     VERIFY				(position<source->dwBytesTotal);
-                    Memory.mem_copy		(dest,wave+position,sz_first);
-                    Memory.mem_copy		(dest+sz_first,wave,sz_second);
+					fill_data			(dest,			position,	sz_first);
+					fill_data			(dest+sz_first,	0,			sz_second);
                 }
 				//Msg					("        looping: [%d]-first,[%d]-second",sz_first,sz_second);
 				position			+= size;
@@ -60,7 +65,7 @@ void	CSoundRender_Emitter::fill_block	(void* ptr, u32 size)
 	} else {
 		// Everything OK, just stream
 		//Msg				("        normal");
-		Memory.mem_copy		(dest,wave+position,size);
+		fill_data			(dest,position,size);
 		position			+= size;
 	}
 }
