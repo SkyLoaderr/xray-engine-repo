@@ -484,7 +484,7 @@ bool CActor::CanAccelerate			()
 
 bool	CActor::CanJump				()
 {
-	bool can_Jump = !IsLimping() &&
+	bool can_Jump = /*!IsLimping() &&*/
 		!m_PhysicMovementControl->PHCapture() &&((mstate_real&mcJump)==0) && (m_fJumpTime<=0.f) 
 		&& !m_bJumpKeyPressed &&!m_bZoomAimingMode;
 
