@@ -9,6 +9,7 @@
 #include "..\xr_level_controller.h"
 #include "EffectorBobbing.h"
 #include "EffectorPPHit.h"
+#include "EffectorHit.h"
 #include "customitem.h"
 #include "hudmanager.h"
 #include "Actor_Flags.h"
@@ -425,6 +426,7 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element, float i
 	if(pCreator->CurrentEntity() == this) {
 		Fvector l_d; l_d.set(dir); l_d.normalize();
 		Level().Cameras.AddEffector(xr_new<CEffectorPPHit>(svTransform.i.dotproduct(l_d), svTransform.j.dotproduct(l_d), .5f, .001f*iLost));
+		Level().Cameras.AddEffector(xr_new<CEffectorHit>(svTransform.i.dotproduct(l_d), svTransform.j.dotproduct(l_d), .5f, .001f*iLost));
 	}
 	switch (GameID())
 	{
@@ -465,6 +467,7 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 	if(pCreator->CurrentEntity() == this) {
 		Fvector l_d; l_d.set(dir); l_d.normalize();
 		Level().Cameras.AddEffector(xr_new<CEffectorPPHit>(svTransform.i.dotproduct(l_d), svTransform.j.dotproduct(l_d), .5f, .001f*iLost));
+		Level().Cameras.AddEffector(xr_new<CEffectorHit>(svTransform.i.dotproduct(l_d), svTransform.j.dotproduct(l_d), .5f, .001f*iLost));
 	}
 
 	switch (GameID())

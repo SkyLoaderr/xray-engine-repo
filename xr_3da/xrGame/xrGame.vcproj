@@ -640,6 +640,12 @@
 						RelativePath=".\EffectorBobbing.h">
 					</File>
 					<File
+						RelativePath="EffectorHit.cpp">
+					</File>
+					<File
+						RelativePath="EffectorHit.h">
+					</File>
+					<File
 						RelativePath="EffectorPPHit.cpp">
 					</File>
 					<File
