@@ -397,11 +397,11 @@ BOOL	__stdcall rms_test	(lm_layer& lm, u32 w, u32 h, u32 rms)
 				u32 pixel_r_base	= scan_rest_base[x];
 				u32 pixel_hemi		= scan_lmap_hemi[x];
 				u32 pixel_r_hemi	= scan_rest_hemi[x];
-				if (rms_diff(color_get_R(pixel_r_base),color_get_R(pixel_base))>rms)	return FALSE;
-				if (rms_diff(color_get_G(pixel_r_base),color_get_G(pixel_base))>rms)	return FALSE;
-				if (rms_diff(color_get_B(pixel_r_base),color_get_B(pixel_base))>rms)	return FALSE;
-				if (rms_diff(color_get_A(pixel_r_base),color_get_A(pixel_base))>rms)	return FALSE;
-				if (rms_diff(color_get_R(pixel_r_hemi),color_get_R(pixel_hemi))>rms)	return FALSE;
+				if (rms_diff(color_get_R(pixel_r_base),color_get_R(pixel_base))>rms)			return FALSE;
+				if (rms_diff(color_get_G(pixel_r_base),color_get_G(pixel_base))>rms)			return FALSE;
+				if (rms_diff(color_get_B(pixel_r_base),color_get_B(pixel_base))>rms)			return FALSE;
+				if (rms_diff(color_get_A(pixel_r_base),color_get_A(pixel_base))>rms)			return FALSE;
+				if (rms_diff(color_get_R(pixel_r_hemi),color_get_R(pixel_hemi))>((rms*4)/3))	return FALSE;
 			}
 		}
 	}
@@ -419,11 +419,11 @@ BOOL	__stdcall rms_test	(lm_layer&	lm, u32 _r, u32 _g, u32 _b, u32 _s, u32 _h, u
 			if (lm.marker[offset]>=254)	{
 				u8			r,g,b,s,h;
 				lm.Pixel	(offset,r,g,b,s,h);
-				if (rms_diff(_r, r)>rms)	return FALSE;
-				if (rms_diff(_g, g)>rms)	return FALSE;
-				if (rms_diff(_b, b)>rms)	return FALSE;
-				if (rms_diff(_s, s)>rms)	return FALSE;
-				if (rms_diff(_h, h)>rms)	return FALSE;
+				if (rms_diff(_r, r)>rms)			return FALSE;
+				if (rms_diff(_g, g)>rms)			return FALSE;
+				if (rms_diff(_b, b)>rms)			return FALSE;
+				if (rms_diff(_s, s)>rms)			return FALSE;
+				if (rms_diff(_h, h)>((rms*4)/3))	return FALSE;
 			}
 		}
 	}
