@@ -73,7 +73,7 @@ void FTreeVisual::Load		(const char* N, CStream *data, u32 dwFlags)
 	c_m_w2v2p			= T.get	("m_w2v2p");
 }
 
-float	psTree_w_rot1		= 30.f;
+float	psTree_w_rot		= 30.f;
 float	psTree_w_speed		= 2.f;
 float	psTree_w_amp		= .1f;
 Fvector psTree_Wave			= {1.f/5.f, 1.f/7.f, 1.f/3.f};
@@ -82,13 +82,13 @@ void FTreeVisual::Render	(float LOD)
 {
 	// Calc wind-vector, scale
 	Fvector4 wind;
-	float	tm_rot1			= PI_MUL_2*Device.fTimeGlobal/psTree_w_rot1;
-	wind.set				(sinf(tm_rot1),0,cosf(tm_rot1),0);	wind.normalize	();	wind.mul(psTree_w_amp);	// dir1*amplitude
+	float	tm_rot			= PI_MUL_2*Device.fTimeGlobal/psTree_w_rot;
+	wind.set				(sinf(tm_rot),0,cosf(tm_rot),0);	wind.normalize	();	wind.mul(psTree_w_amp);	// dir1*amplitude
 	float	scale			= 1.f/float(FTreeVisual_quant);
 
 	// setup constants
 	RCache.set_c			(c_consts,	scale,		scale,		0,					0);
-	RCache.set_c			(c_wave,	psWave.x,	psWave.y,	psWave.z,			Device.fTimeGlobal*psTree_w_speed);	// wave
+	RCache.set_c			(c_wave,	psTree_Wave.x,	psTree_Wave.y,	psTree_Wave.z,	Device.fTimeGlobal*psTree_w_speed);	// wave
 	RCache.set_c			(c_wind,	wind);																			// wind
 	RCache.set_c			(c_c_scale,	c_scale);																		// scale
 	RCache.set_c			(c_c_bias,	c_bias);																		// bias

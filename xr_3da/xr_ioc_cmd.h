@@ -154,9 +154,9 @@ class ENGINE_API CCC_Vector3 : public CConsoleCommand
 	Fvector*		value;
 	Fvector			min,max;
 public:
-	CCC_Float(LPCSTR N, Fvector* V, const Fvector _min=0, const Fvector _max=1) :
+	CCC_Vector3(LPCSTR N, Fvector* V, const Fvector _min, const Fvector _max) :
 	  CConsoleCommand(N),
-	  value(V),
+	  value(V)
 	{
 		min.set(_min);
 		max.set(_max);
