@@ -1006,9 +1006,9 @@ function add_to_binder( npc, ini, scheme, section, a )
 
     local manager = npc:motivation_action_manager()
 
-    manager:add_evaluator( prop_commander, this.evaluator_commander( "property_commander", a ) )
-    manager:add_evaluator( prop_dead_hook, this.evaluator_dead_hook( "property_dead_hook", a ) )
-    manager:add_evaluator( prop_actor_is_close, this.evaluator_actor_is_close( "property_actor_is_close", npc ) )
+    manager:add_evaluator( prop_commander, this.evaluator_commander( "commander_commander", a ) )
+    manager:add_evaluator( prop_dead_hook, this.evaluator_dead_hook( "commander_dead_hook", a ) )
+    manager:add_evaluator( prop_actor_is_close, this.evaluator_actor_is_close( "commander_actor_is_close", npc ) )
 
     local action = this.action_look_at_actor( "action_look_at_actor", a )
     action:add_precondition( world_property( stalker_ids.property_enemy,    false ) )

@@ -497,9 +497,9 @@ function  add_to_binder(npc, ini, scheme, section, storage)
 	operators["follow"]                 = xr_actions_id.sidor_act_follower_base + 1
 	operators["raid"]                   = xr_actions_id.sidor_act_follower_base + 2
    
-    manager:add_evaluator (properties["leader_present"], this.evaluator_leader_present 	("evaluator_leader_alive", storage))
-    manager:add_evaluator (properties["follow"], this.evaluator_follow	("evaluator_follow", storage))
-    manager:add_evaluator (properties["raid"], this.evaluator_raid ("evaluator_raid", storage))
+    manager:add_evaluator (properties["leader_present"], this.evaluator_leader_present 	("follower_leader_alive", storage))
+    manager:add_evaluator (properties["follow"], this.evaluator_follow	("follower_follow", storage))
+    manager:add_evaluator (properties["raid"], this.evaluator_raid ("follower_raid", storage))
         
     local action = this.action_leader_wait ("action_leader_wait", storage)
     action:add_precondition     (world_property (stalker_ids.property_alive,    true))
