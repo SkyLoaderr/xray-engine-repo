@@ -35,3 +35,7 @@ vertex
 		diffuse.a	-	hemi-occlusion
 		normal		-	for lighting
 		normal.a	-	dir-occlusion		- COLOR_1	(???)
+-------------------------------------------------------------------------------
+rgb		- all static lights	| lmap :	lmap.rgb	| vert: diffuse.rgb	|	mu: diffuse.rgb*Argb+Brgb	| models:	prj+dlights
+hemi	- hemisphere		|			diffuse.a	|		diffuse.a	|		diffuse.a*Ah+Bh			|			prj
+sun		- sun				|			lmap.a		|		normal.a	|		diffuse.a*As+Bs			|			prj+dlights
