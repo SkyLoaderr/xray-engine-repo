@@ -53,7 +53,7 @@ void xrServer::Update	()
 		xrS_entities::iterator	I=entities.begin(),E=entities.end();
 		for (; I!=E; I++)
 		{
-			xrServerEntity&	Test = *(*I);
+			xrServerEntity&	Test = *(I->second);
 
 			if (!Test.net_Ready)		continue;
 			if (Test.owner == Client)	continue;	// Can't be relevant

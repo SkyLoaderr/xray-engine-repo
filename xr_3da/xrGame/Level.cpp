@@ -296,11 +296,11 @@ void CLevel::ClientReceive()
 					u16			ID2;
 					P->r_u16	(ID2);
 					CEntity*	WHO = (CEntity*)Objects.net_Find(ID2);
-					DWORD		perc;	P->r_u8		(perc);
-					Fvector		dir;	P->r_dir	(perc);
+					u8			perc;	P->r_u8		(perc);
+					Fvector		dir;	P->r_dir	(dir);
 
 					CEntity*	E	= (CEntity*)O;
-					E->Hit		(perc,dir,WHO);
+					E->Hit		(u32(perc),dir,WHO);
 				}
 			}
 			break;

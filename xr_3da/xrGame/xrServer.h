@@ -117,7 +117,7 @@ class xrServer	: public IPureServer
 private:
 	xrS_entities			entities;
 	
-	void					ProcessRP			(xrServerEntity* E);
+	BOOL					ProcessRP			(xrServerEntity* E);
 public:
 	// constr / destr
 	xrServer				();
