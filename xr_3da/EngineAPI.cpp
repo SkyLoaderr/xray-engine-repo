@@ -21,14 +21,17 @@ CEngineAPI::~CEngineAPI()
 void CEngineAPI::Initialize(void)
 {
 	//
-	Log				("Loading DLL: xrRender");
-	hRender			= LoadLibrary	("xrRender_R1.dll");
+	LPCSTR			r_name	= "xrRender_R1.dll";
+	if (strstr(Core.Params,"-r2"))	r_name	= "xrRender_R2.dll";
+	Log				("Loading DLL:",r_name);
+	hRender			= LoadLibrary	(r_name);
 	if (0==hRender)	R_CHK			(GetLastError());
 	R_ASSERT		(hRender);
 
 	//
-	Log				("Loading DLL: xrGame");
-	hGame			= LoadLibrary	("xrGame.dll");
+	LPCSTR			g_name	= "xrGame.dll";
+	Log				("Loading DLL:",g_name);
+	hGame			= LoadLibrary	(g_name);
 	if (0==hGame)	R_CHK			(GetLastError());
 	R_ASSERT		(hGame);
 	pCreate			= (Factory_Create*)		GetProcAddress(hGame,"xrFactory_Create"		);	R_ASSERT(pCreate);
