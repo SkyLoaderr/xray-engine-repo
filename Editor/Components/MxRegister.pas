@@ -1,4 +1,4 @@
-unit MxReg;
+unit MxRegister;
 
 {$I MX.INC}
 {$D-,L-,S-}
@@ -10,8 +10,8 @@ procedure Register;
 implementation
 
 {$R *.res}
-uses Classes, SysUtils, mxPlacemnt, DsgnIntf, mxPropsEd, mxMenus, mxCtrls, ExtBtn, gradient, multi_check,
-	multi_color, multi_edit, renderwindow;//, Controls, Graphics;
+uses Classes, SysUtils, mxPlacemnt, DesignIntf, mxPropsEd, mxMenus, mxCtrls, ExtBtn, gradient, multi_check,
+	multi_color, multi_edit, renderwindow;
 
 { Designer registration }
 procedure Register;

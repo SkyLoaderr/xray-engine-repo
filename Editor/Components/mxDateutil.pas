@@ -81,7 +81,7 @@ const
 
 implementation
 
-uses SysUtils, {$IFDEF WIN32} Windows, {$ENDIF} Consts, mxStrUtils;
+uses SysUtils, {$IFDEF WIN32} Windows, {$ENDIF} Consts, mxStrUtils, RTLConsts;
 
 function IsLeapYear(AYear: Integer): Boolean;
 begin
@@ -536,7 +536,7 @@ end;
 function StrToDateFmt(const DateFormat, S: string): TDateTime;
 begin
   if not InternalStrToDate(DateFormat, S, Result) then
-    raise EConvertError.CreateFmt({$IFDEF RX_D3} SInvalidDate {$ELSE}
+    raise EConvertError.CreateFmt({$IFDEF RX_D3} SInvalidDate  {$ELSE}
       LoadStr(SInvalidDate) {$ENDIF}, [S]);
 end;
 

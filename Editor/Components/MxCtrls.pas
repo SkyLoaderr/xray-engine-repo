@@ -805,7 +805,7 @@ implementation
 {$ENDIF}
 
 uses SysUtils, Dialogs, {$IFDEF WIN32} CommCtrl, {$ELSE} Str16, {$ENDIF}
-  mxVCLUtils, mxMaxMin, Consts, mxAppUtils {$IFDEF RX_D4}, ImgList,
+  mxVCLUtils, mxMaxMin, Consts, RTLConsts, mxAppUtils {$IFDEF RX_D4}, ImgList,
   ActnList {$ENDIF};
 
 const
@@ -1396,7 +1396,7 @@ type
 const
   BorderStyles: array[TBorderStyle] of Longword = (0, WS_BORDER);
   Styles: array[TListBoxStyle] of Longword =
-    (0, LBS_OWNERDRAWFIXED, LBS_OWNERDRAWVARIABLE);
+    (0, LBS_OWNERDRAWFIXED, LBS_OWNERDRAWVARIABLE, 0, 0);
   Sorteds: array[Boolean] of Longword = (0, LBS_SORT);
   MultiSelects: array[Boolean] of Longword = (0, LBS_MULTIPLESEL);
   ExtendSelects: array[Boolean] of Longword = (0, LBS_EXTENDEDSEL);

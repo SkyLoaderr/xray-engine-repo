@@ -153,8 +153,6 @@ private
     procedure SetButtonKind(Value: TSpinButtonKind);
     procedure UpDownClick(Sender: TObject; Button: TUDBtnType);
     procedure LWChange(Sender: TObject; Val: integer);
-    function GetMinHeight: Integer;
-    procedure GetTextHeight(var SysHeight, Height: Integer);
     function GetValue: Extended;
     function CheckValue(NewValue: Extended): Extended;
     function GetAsInteger: Longint;
@@ -1143,31 +1141,6 @@ begin
     ResizeButton;
     SetEditRect;
   end;
-end;
-
-procedure TMultiObjSpinEdit.GetTextHeight(var SysHeight, Height: Integer);
-var
-  DC: HDC;
-  SaveFont: HFont;
-  SysMetrics, Metrics: TTextMetric;
-begin
-  DC := GetDC(0);
-  GetTextMetrics(DC, SysMetrics);
-  SaveFont := SelectObject(DC, Font.Handle);
-  GetTextMetrics(DC, Metrics);
-  SelectObject(DC, SaveFont);
-  ReleaseDC(0, DC);
-  SysHeight := SysMetrics.tmHeight;
-  Height := Metrics.tmHeight;
-end;
-
-function TMultiObjSpinEdit.GetMinHeight: Integer;
-var
-  I, H: Integer;
-begin
-  GetTextHeight(I, H);
-  if I > H then I := H;
-  Result := H + (GetSystemMetrics(SM_CYBORDER) * 4) + 1;
 end;
 
 procedure TMultiObjSpinEdit.UpClick(Sender: TObject);

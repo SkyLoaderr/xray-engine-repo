@@ -355,7 +355,7 @@ function ForceDirectories(Dir: string): Boolean;
 
 implementation
 
-uses Consts, Dialogs, ShlObj, ActiveX;
+uses Consts, Dialogs, ShlObj, ActiveX, RTLConsts, SYSConst;
 
 {$R FileCtrl}
 

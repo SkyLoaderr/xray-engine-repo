@@ -107,7 +107,7 @@ procedure InternalRestoreMDIChildren(MainForm: TForm; IniFile: TObject);
 
 implementation
 
-uses SysUtils, Messages, Consts, mxStrUtils, mxFileUtil, mxPlacemnt;
+uses SysUtils, Messages, Consts, mxStrUtils, mxFileUtil, mxPlacemnt, RTLConsts;
 
 function GetDefaultSection(Component: TComponent): string;
 var

@@ -279,7 +279,7 @@ uses SysUtils,
 {$IFDEF RX_D3}
   Consts,
 {$ENDIF RX_D3}
-  mxAppUtils, mxStrUtils, mxProps;
+  mxAppUtils, mxStrUtils, mxProps, Variants, RTLConsts;
 
 const
 { The following string should not be localized }

@@ -14,7 +14,7 @@ interface
 
 uses
   SysUtils, Messages, Classes, Graphics, Controls, Forms, Dialogs, StdCtrls, 
-  Buttons, ExtCtrls, mxPlacemnt, Consts, DsgnIntf, mxVclUtils, MXCtrls, MXProps; 
+  Buttons, ExtCtrls, mxPlacemnt, Consts, DesignIntf, DesignEditors, mxVclUtils, MXCtrls, MXProps; 
 
 type
 

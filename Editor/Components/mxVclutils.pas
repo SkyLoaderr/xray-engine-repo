@@ -349,7 +349,7 @@ type
 implementation
 
 Uses SysUtils, Messages, mxMaxMin, Consts, SysConst,
-  CommCtrl, mxCConst, mxConst;
+  CommCtrl, mxCConst, mxConst, RTLConsts, Variants;
 
 { Exceptions }
 

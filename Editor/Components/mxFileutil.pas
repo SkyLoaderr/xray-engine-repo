@@ -15,7 +15,7 @@ unit mxFileUtil;
 interface
 
 uses {$IFDEF WIN32} Windows, {$ELSE} WinTypes, WinProcs, {$ENDIF} Messages,
-  SysUtils, Classes, Consts, Controls;
+  SysUtils, Classes, Consts, Controls, RTLConsts;
 
 procedure CopyFile(const FileName, DestName: string;
   ProgressControl: TControl);
