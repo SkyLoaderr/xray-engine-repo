@@ -1,0 +1,6 @@
+local this = this_test0
+
+function main()
+	wait(5000)
+	printf("Script name this_test0 : %s",this.script_name());
+end
