@@ -32,7 +32,7 @@ void CSE_ALifeTraderAbstract::vfAttachItem(CSE_ALifeInventoryItem *tpALifeInvent
 		tpALifeInventoryItem->ID_Parent	= ID;
 	}
 #ifdef ALIFE_LOG
-	Msg							("[LSS] Updating [%s] inventory with attached item [%s][%d]",s_name_replace,tpALifeInventoryItem->s_name_replace,tpALifeInventoryItem->ID);
+	Msg									("[LSS] Updating [%s] inventory with attached item [%s][%d]",s_name_replace,tpALifeInventoryItem->s_name_replace,tpALifeInventoryItem->ID);
 #endif
 	m_fCumulativeItemMass				+= tpALifeInventoryItem->m_fMass;
 	m_iCumulativeItemVolume				+= tpALifeInventoryItem->m_iVolume;

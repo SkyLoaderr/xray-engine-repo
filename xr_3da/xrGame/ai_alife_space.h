@@ -10,7 +10,7 @@
 #define XRAY_AI_ALIFE_SPACE
 
 #ifdef DEBUG
-#define ALIFE_LOG
+//#define ALIFE_LOG
 #endif
 
 // spawn points

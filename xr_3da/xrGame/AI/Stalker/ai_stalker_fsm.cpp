@@ -12,6 +12,7 @@
 #include "..\\..\\hudmanager.h"
 #include "..\\..\\bolt.h"
 #include "..\\..\\weapon.h"
+#include "..\\..\\ai_script_actions.h"
 
 #define AI_BEST
 /**
@@ -908,9 +909,16 @@ void CAI_Stalker::TakeItems()
 
 void CAI_Stalker::Think()
 {
-	if (m_bScriptControl) {
+	if (GetScriptControl()) {
 		ProcessScripts();
 		return;
+	}
+	else {
+		while (!m_tpActionQueue.empty()) {
+			ResetScriptData(false);
+			xr_delete	(m_tpActionQueue.back());
+			m_tpActionQueue.erase(m_tpActionQueue.begin());
+		}
 	}
 	if (!m_dwLastUpdate) {
 		Level().ObjectSpace.GetNearest(Position(),3.f);

@@ -64,9 +64,9 @@ void CSE_ALifeSimulator::vfProcessUpdates()
 		for (int i=1; ; i++) {
 			m_bUpdateChanged				= false;
 			if ((*I).second->m_qwUpdateCounter == m_qwCycleCounter) {
-	#ifdef ALIFE_LOG
+#ifdef ALIFE_LOG
 				Msg							("[LSS][US][%d : %d]",i, m_tpScheduledObjects.size());
-	#endif
+#endif
 				return;
 			}
 
@@ -95,9 +95,9 @@ void CSE_ALifeSimulator::vfProcessUpdates()
 			m_tNextFirstProcessObjectID		= (*I).first;
 
 			if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= l_qwMaxProcessTime) {
-	#ifdef ALIFE_LOG
+#ifdef ALIFE_LOG
 				Msg							("[LSS][US][%d : %d]",i, m_tpScheduledObjects.size());
-	#endif
+#endif
 				return;
 			}
 		}

@@ -277,7 +277,6 @@ public:
 	{
 		if (m_tpSound) {
 			m_tpSound->destroy();
-			xr_delete		(m_tpSound);
 			m_tpSound		= 0;
 		}
 	}

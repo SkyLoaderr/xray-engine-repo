@@ -69,6 +69,7 @@ CEntityAction *CAI_Stalker::GetCurrentAction()
 void CAI_Stalker::ResetScriptData(bool bResetPath)
 {
 	m_tpCurrentGlobalAnimation = 0;
+
 	if (bResetPath)
 		vfSetParameters(0,0,false,eObjectActionIdle,m_tPathType,m_tBodyState,eMovementTypeStand,m_tMentalState,m_tLookType);
 }
