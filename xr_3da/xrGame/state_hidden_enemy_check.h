@@ -16,9 +16,6 @@ class CStateHiddenEnemyCheck : public CStateBase<CAI_Stalker> {
 protected:
 	typedef CStateBase<CAI_Stalker> inherited;
 
-private:
-	u32					m_priority;
-
 public:
 						CStateHiddenEnemyCheck	(LPCSTR state_name);
 	virtual				~CStateHiddenEnemyCheck	();

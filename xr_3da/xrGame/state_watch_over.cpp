@@ -46,7 +46,8 @@ void CStateWatchOver::initialize		()
 {
 	inherited::initialize			();
 	m_object->set_sound_mask		(u32(eStalkerSoundMaskHumming));
-	set_inertia_time				(::Random.randI(5000,10000));
+	set_inertia_time				(::Random.randI(5,10)*1000);
+
 }
 
 void CStateWatchOver::execute			()

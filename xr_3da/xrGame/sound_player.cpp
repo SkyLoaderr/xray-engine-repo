@@ -141,8 +141,21 @@ void CSoundPlayer::play				(u32 internal_type, u32 max_start_time, u32 min_start
 	VERIFY						(sound_single.m_sound->handle);
 	VERIFY						(max_start_time >= min_start_time);
 	VERIFY						(max_stop_time >= min_stop_time);
-	sound_single.m_start_time	= Level().timeServer() + (max_start_time ? ::Random.randI(min_start_time,max_start_time) : max_start_time);
-	sound_single.m_stop_time	= sound_single.m_start_time + sound_single.m_sound->handle->length_ms() + (max_stop_time ? ::Random.randI(min_stop_time,max_stop_time) : max_stop_time);
+	u32							random_time = 0;
+	if (max_start_time)
+		if (max_start_time > 0x7fff)
+			random_time			= ::Random.randI(min_start_time/1000,max_start_time/1000)*1000;
+		else
+			random_time			= ::Random.randI(min_start_time,max_start_time);
+	sound_single.m_start_time	= Level().timeServer() + random_time;
+	
+	random_time					= 0;
+	if (max_stop_time)
+		if (max_stop_time > 0x7fff)
+			random_time			= ::Random.randI(min_stop_time/1000,max_stop_time/1000)*1000;
+		else
+			random_time			= ::Random.randI(min_stop_time,max_stop_time);
+	sound_single.m_stop_time	= sound_single.m_start_time + sound_single.m_sound->handle->length_ms() + random_time;
 	m_playing_sounds.push_back	(sound_single);
 	
 	if (Level().timeServer() >= m_playing_sounds.back().m_start_time)

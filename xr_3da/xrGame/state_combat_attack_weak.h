@@ -16,9 +16,6 @@ class CStateAttackWeak : public CStateBase<CAI_Stalker> {
 protected:
 	typedef CStateBase<CAI_Stalker> inherited;
 
-private:
-	u32					m_priority;
-
 public:
 						CStateAttackWeak	(LPCSTR state_name);
 	virtual				~CStateAttackWeak	();

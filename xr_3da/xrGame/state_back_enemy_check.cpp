@@ -46,7 +46,7 @@ void CStateBackEnemyCheck::initialize		()
 {
 	inherited::initialize			();
 	m_object->set_sound_mask		(u32(eStalkerSoundMaskHumming));
-	set_inertia_time				(::Random.randI(10000,30000));
+	set_inertia_time				(::Random.randI(10,30)*1000);
 }
 
 void CStateBackEnemyCheck::execute			()

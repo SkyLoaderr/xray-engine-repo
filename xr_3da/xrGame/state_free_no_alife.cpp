@@ -47,7 +47,7 @@ void CStateFreeNoAlife::reload			(LPCSTR section)
 void CStateFreeNoAlife::initialize		()
 {
 	inherited::initialize			();
-	set_inertia_time				(::Random.randI(60000,120000));
+	set_inertia_time				(::Random.randI(60,120)*1000);
 	m_object->set_sound_mask		(eStalkerSoundMaskAnySound);
 	m_object->set_selection_type	(CMovementManager::eSelectionTypeRandomBranching);
 }

@@ -16,9 +16,6 @@ class CStateDeathRecentlyDead : public CStateBase<CAI_Stalker> {
 protected:
 	typedef CStateBase<CAI_Stalker> inherited;
 
-private:
-	u32					m_priority;
-
 public:
 						CStateDeathRecentlyDead	(LPCSTR state_name);
 	virtual				~CStateDeathRecentlyDead();

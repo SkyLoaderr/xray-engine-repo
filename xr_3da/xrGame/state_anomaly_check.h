@@ -15,10 +15,6 @@ class CAI_Stalker;
 class CStateAnomalyCheck : public CStateBase<CAI_Stalker> {
 protected:
 	typedef CStateBase<CAI_Stalker> inherited;
-
-private:
-	u32					m_priority;
-
 public:
 						CStateAnomalyCheck	(LPCSTR state_name);
 	virtual				~CStateAnomalyCheck	();

@@ -56,8 +56,8 @@ void CStateManagerNoALife::Load				(LPCSTR section)
 
 	inherited::Load			(section);
 	
-	m_free_probability		= .50f;
-	m_watch_probability		= .00f;
+	m_free_probability		= .40f;
+	m_watch_probability		= .10f;
 	m_anomaly_probability	= .50f;
 	m_hidden_probability	= .00f;
 	m_back_probability		= .00f;
