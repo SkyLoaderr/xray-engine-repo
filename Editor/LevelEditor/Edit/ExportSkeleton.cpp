@@ -413,8 +413,8 @@ bool CExportSkeleton::ExportMotions(CFS_Base& F)
                         m_Source->GetBoneWorldTransform(parent_idx,t,motion,parent);
                         inv_parent.invert(parent);
                     }else{
-                        parent 		= precalc_identity;
-                        inv_parent	= precalc_identity;
+                        parent 		= Fidentity;
+                        inv_parent	= Fidentity;
                     }
                     Fmatrix 	rot;
                     rot.setHPB	(-R.x,-R.y,R.z);
@@ -424,6 +424,7 @@ bool CExportSkeleton::ExportMotions(CFS_Base& F)
                 }
 
                 q.set		(mat);
+
                 // Quantize quaternion
                 int	_x = int(q.x*KEY_Quant); clamp(_x,-32767,32767); short x =  _x; F.write(&x,2);
                 int	_y = int(q.y*KEY_Quant); clamp(_y,-32767,32767); short y =  _y; F.write(&y,2);

@@ -205,9 +205,9 @@ USEUNIT("edit\ExportSkeleton.cpp");
 USEUNIT("edit\Engine.cpp");
 USEUNIT("edit\ModelPool.cpp");
 USELIB("lib\xrCDB.lib");
-USEOBJ("Intermediate\_math.obj");
 USEOBJ("Intermediate\cpuid.obj");
 USEUNIT("Engine\SH_RT.cpp");
+USEOBJ("Intermediate\_math.obj");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

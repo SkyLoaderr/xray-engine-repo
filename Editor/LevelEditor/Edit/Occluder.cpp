@@ -190,7 +190,7 @@ void COccluder::UpdatePoints3D(){
     mScale.scale			(m_vPlaneSize.x,1.f,m_vPlaneSize.y);
     mTranslate.translate	(m_vCenter);
     M.mul			        (mTranslate,mRotate);
-    M.mul			        (mScale);
+    M.mulB			        (mScale);
     m_3DPoints.dwFrame		= Device.dwFrame;
     m_3DPoints.m_Points.resize(m_Points.size());
     FvectorIt lst_it		= m_3DPoints.m_Points.begin();

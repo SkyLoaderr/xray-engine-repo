@@ -32,7 +32,7 @@ void CCustomObject::OnUpdateTransform(){
 	mScale.scale			(PScale);
 	mTranslate.translate	(PPosition);
 	FTransform.mul			(mTranslate,mRotate);
-	FTransform.mul			(mScale);
+	FTransform.mulB			(mScale);
 }
 
 void CCustomObject::Select( BOOL flag ){
@@ -191,20 +191,11 @@ void CCustomObject::ParentRotate(Fvector& axis, float angle){
 
 void CCustomObject::LocalRotate(Fvector& axis, float angle){
     Fmatrix m;
-    m.rotation(axis,angle);
-
-    FTransform.mul(m);
-
     Fvector r;
-    r.x = asinf( FTransform.k.y );
-    if (FTransform.k.x<0)	r.y = acosf(FTransform.k.z);
-    else	 	r.y = 2*PI-acosf(FTransform.k.z);
-//	r.z = acosf(FTransform.i.x);
-    if (FTransform.i.y<0)	r.z = -acosf( FTransform.j.y / cos( r.x ));
-    else		r.z = acosf( FTransform.j.y / cos( r.x ));
-
+    m.rotation(axis,angle);
+    FTransform.mulB(m);
+    FTransform.getXYZ(r);
     FRotate		= r;
-
 }
 
 void CCustomObject::Scale( Fvector& center, Fvector& amount ){

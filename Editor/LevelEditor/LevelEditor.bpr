@@ -95,8 +95,8 @@
       intermediate\FVisual.obj intermediate\SkeletonCalculate.obj 
       intermediate\SkeletonX.obj intermediate\xrBoneLerp.obj 
       intermediate\BodyInstance.obj intermediate\ExportSkeleton.obj 
-      intermediate\Engine.obj intermediate\ModelPool.obj Intermediate\_math.obj 
-      Intermediate\cpuid.obj intermediate\SH_RT.obj"/>
+      intermediate\Engine.obj intermediate\ModelPool.obj Intermediate\cpuid.obj 
+      intermediate\SH_RT.obj Intermediate\_math.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>

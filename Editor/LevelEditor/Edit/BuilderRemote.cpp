@@ -244,7 +244,7 @@ void SceneBuilder::BuildObjectDynamic(CEditableObject* O){
 	l_faces			= new b_face[l_faces_cnt];
 	l_vertices		= new b_vertex[l_vertices_cnt];
     for(EditMeshIt M=O->FirstMesh();M!=O->LastMesh();M++)
-    	BuildMesh(precalc_identity,O,*M,m_iDefaultSectorNum);
+    	BuildMesh(Fidentity,O,*M,m_iDefaultSectorNum);
 }
 
 //------------------------------------------------------------------------------

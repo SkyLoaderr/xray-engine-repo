@@ -404,13 +404,13 @@ void __fastcall object_StrictB2F_3(EScene::mapObject_Node *N){((CSceneObject*)N-
 
 #define RENDER_CLASS_NORMAL(P,C)\
  	Device.SetShader(Device.m_WireShader);\
-    Device.SetTransform(D3DTS_WORLD,precalc_identity);\
+    Device.SetTransform(D3DTS_WORLD,Fidentity);\
     _E=LastObj(C); _F=FirstObj(C);\
     for(;_F!=_E;_F++) if((*_F)->Visible()) (*_F)->Render(P,false);
 
 #define RENDER_CLASS_ALPHA(P,C)\
  	Device.SetShader(Device.m_SelectionShader);\
-    Device.SetTransform(D3DTS_WORLD,precalc_identity);\
+    Device.SetTransform(D3DTS_WORLD,Fidentity);\
     _E=LastObj(C); _F=FirstObj(C);\
     for(;_F!=_E;_F++) if((*_F)->Visible()) (*_F)->Render(P,true);
 
@@ -499,7 +499,7 @@ void EScene::Render( const Fmatrix& camera )
 		for(_F=m_SnapObjects.begin();_F!=m_SnapObjects.end();_F++) if((*_F)->Visible()) ((CSceneObject*)(*_F))->RenderSelection();
 
 	// draw PS
-    Device.SetTransform(D3DTS_WORLD,precalc_identity);
+    Device.SetTransform(D3DTS_WORLD,Fidentity);
     _F = FirstObj(OBJCLASS_PS);
     _E = LastObj(OBJCLASS_PS);
    	for(;_F!=_E;_F++)

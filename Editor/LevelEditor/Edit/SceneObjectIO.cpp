@@ -14,28 +14,34 @@
 #include "motion.h"
 
 //----------------------------------------------------
+#define SCENEOBJ_CURRENT_VERSION		0x0011
+//----------------------------------------------------
+#define SCENEOBJ_CHUNK_VERSION		  	0x0900
+#define SCENEOBJ_CHUNK_REFERENCE     	0x0902
+#define SCENEOBJ_CHUNK_PLACEMENT     	0x0904
+//----------------------------------------------------
 bool CSceneObject::Load(CStream& F){
     bool bRes = true;
 	do{
         DWORD version = 0;
         char buf[1024];
-        R_ASSERT(F.ReadChunk(EOBJ_CHUNK_VERSION,&version));
-        if ((version!=0x0010)&&(version!=EOBJ_CURRENT_VERSION)){
+        R_ASSERT(F.ReadChunk(SCENEOBJ_CHUNK_VERSION,&version));
+        if ((version!=0x0010)&&(version!=SCENEOBJ_CURRENT_VERSION)){
             ELog.DlgMsg( mtError, "CSceneObject: unsupported file version. Object can't load.");
             bRes = false;
             break;
         }
 
         if (version==0x0010){
-	        R_ASSERT(F.FindChunk(EOBJ_CHUNK_PLACEMENT));
-    	    F.Rvector(PPosition);
-	        F.Rvector(PRotate);
-    	    F.Rvector(PScale);
+	        R_ASSERT(F.FindChunk(SCENEOBJ_CHUNK_PLACEMENT));
+    	    F.Rvector(FPosition);
+	        F.Rvector(FRotate);
+    	    F.Rvector(FScale);
         }
 
 		CCustomObject::Load(F);
 
-        R_ASSERT(F.FindChunk(EOBJ_CHUNK_REFERENCE));
+        R_ASSERT(F.FindChunk(SCENEOBJ_CHUNK_REFERENCE));
         F.Read(&m_ObjVer, sizeof(m_ObjVer));
         F.RstringZ(buf);
         if (!SetReference(buf)){
@@ -55,12 +61,12 @@ bool CSceneObject::Load(CStream& F){
 void CSceneObject::Save(CFS_Base& F){
 	CCustomObject::Save(F);
 
-	F.open_chunk	(EOBJ_CHUNK_VERSION);
-	F.Wword			(EOBJ_CURRENT_VERSION);
+	F.open_chunk	(SCENEOBJ_CHUNK_VERSION);
+	F.Wword			(SCENEOBJ_CURRENT_VERSION);
 	F.close_chunk	();
 
     // reference object version
-    F.open_chunk	(EOBJ_CHUNK_REFERENCE);
+    F.open_chunk	(SCENEOBJ_CHUNK_REFERENCE);
     F.write			(&m_pRefs->m_ObjVer,sizeof(m_pRefs->m_ObjVer));
     F.WstringZ		(m_pRefs->GetName());
     F.close_chunk	();

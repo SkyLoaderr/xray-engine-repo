@@ -142,7 +142,7 @@ CEditableObject* ELibrary::CreateEditObject(LPCSTR nm,int* age)
     if (it!=m_EditObjects.end())	m_EditObject = it->second;
     else if (m_EditObject=LoadEditObject(name,p_it->second))
 		m_EditObjects[name] = m_EditObject;
-	m_EditObject->m_RefCount++;
+	if (m_EditObject) m_EditObject->m_RefCount++;
     UI.ProgressEnd();
 	return m_EditObject;
 }

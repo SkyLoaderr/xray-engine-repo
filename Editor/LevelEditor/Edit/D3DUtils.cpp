@@ -204,7 +204,7 @@ void DrawDirectionalLight(const Fvector& p, const Fvector& d, float radius, floa
     b.max.set(r,r,r);
 
     DrawSelectionBox(b,&c);
-	Device.SetTransform(D3DTS_WORLD,precalc_identity);
+	Device.SetTransform(D3DTS_WORLD,Fidentity);
 }
 
 void DrawPointLight(const Fvector& p, float radius, DWORD c)
@@ -562,7 +562,7 @@ void DrawGrid(){
     for (FLvertexIt v_it=m_GridPoints.begin(); v_it!=m_GridPoints.end(); v_it++,pv++) pv->set(*v_it);
 	LStream->Unlock(m_GridPoints.size());
 	// Render it as triangle list
-    Device.SetTransform(D3DTS_WORLD,precalc_identity);
+    Device.SetTransform(D3DTS_WORLD,Fidentity);
 	Device.SetShader(Device.m_WireShader);
     Device.DP(D3DPT_LINELIST,LStream,vBase,m_GridPoints.size()/2);
 }

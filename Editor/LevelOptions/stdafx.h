@@ -218,7 +218,7 @@ IC DWORD rgb2bgr(DWORD val)
 
 typedef char		sh_name[64];
 
-extern ENGINE_API Fmatrix precalc_identity;;
+extern ENGINE_API Fmatrix Fidentity;;
 extern ENGINE_API Fbox box_identity;
 
 struct st_Version{

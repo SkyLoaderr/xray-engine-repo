@@ -70,29 +70,8 @@ public:
 		_41=0; _42=0; _43=0; _44=1;
 	}
 	IC	void	get_rapid	(_matrix33& R) const;
-
-	IC	void	rotation	(const _quaternion &Q) {
-		T xx = Q.x*Q.x; T yy = Q.y*Q.y; T zz = Q.z*Q.z;
-		T xy = Q.x*Q.y; T xz = Q.x*Q.z; T yz = Q.y*Q.z;
-		T wx = Q.w*Q.x; T wy = Q.w*Q.y; T wz = Q.w*Q.z;
-
-		_11 = 1 - 2 * ( yy + zz );	_12 =     2 * ( xy - wz );	_13 =     2 * ( xz + wy );	_14 = 0;
-		_21 =     2 * ( xy + wz );	_22 = 1 - 2 * ( xx + zz );	_23 =     2 * ( yz - wx );	_24 = 0;
-		_31 =     2 * ( xz - wy );	_32 =     2 * ( yz + wx );	_33 = 1 - 2 * ( xx + yy );	_34 = 0;
-		_41 = 0;					_42 = 0;					_43 = 0;					_44 = 1;
-	}
-	
-	IC	void	mk_xform	(const _quaternion &Q, const Tvector &V) {
-		T xx = Q.x*Q.x; T yy = Q.y*Q.y; T zz = Q.z*Q.z;
-		T xy = Q.x*Q.y; T xz = Q.x*Q.z; T yz = Q.y*Q.z;
-		T wx = Q.w*Q.x; T wy = Q.w*Q.y; T wz = Q.w*Q.z;
-
-		_11 = 1 - 2 * ( yy + zz );	_12 =     2 * ( xy - wz );	_13 =     2 * ( xz + wy );	_14 = 0;
-		_21 =     2 * ( xy + wz );	_22 = 1 - 2 * ( xx + zz );	_23 =     2 * ( yz - wx );	_24 = 0;
-		_31 =     2 * ( xz - wy );	_32 =     2 * ( yz + wx );	_33 = 1 - 2 * ( xx + yy );	_34 = 0;
-		_41 = V.x;					_42 = V.y;					_43 = V.z;					_44 = 1;
-	}
-
+	IC	void	rotation	(const _quaternion &Q);
+	IC	void	mk_xform	(const _quaternion &Q, const Tvector &V);
 	// Multiply RES = A[4x4]*B[4x4] (WITH projection)
 	IC	void	mul			(const Self &A,const Self &B)
 	{
@@ -485,7 +464,38 @@ public:
 		transform_dir	(res,v);
 		v.set			(res);
 	}
-	IC	void	setHPB	(T _h, T _p, T _b)
+	IC	void	setHPB	(T h, T p, T b)
+	{
+        T ch, cp, cb, sh, sp, sb, cc, cs, sc, ss;
+
+        _sincos(h,sh,ch);
+        _sincos(p,sp,cp);
+        _sincos(b,sb,cb);
+        cc = ch*cb; cs = ch*sb; sc = sh*cb; ss = sh*sb;
+
+        i.set(cc-sp*ss,	-cp*sb,	sp*cs+sc);	_14_=0;
+        j.set(sp*sc+cs,	cp*cb, 	ss-sp*cc);  _24_=0;
+        k.set(-cp*sh,    	sp,		cp*ch); _34_=0;
+        c.set(0,			0,		0);     _44_=1;
+    }
+	IC	void	setXYZ	(T x, T y, T z){setHPB(y,x,z);}
+	IC	void	getHPB	(T& h, T& p, T& b){
+        T cy = _sqrt(j.y*j.y + i.y*i.y);
+        if (cy > 16.0f*FLT_EPSILON) {
+            h = -atan2(k.x, k.z);
+            p = -atan2(-k.y, cy);
+            b = -atan2(i.y, j.y);
+        } else {
+            h = -atan2(-i.z, i.x);
+            p = -atan2(-k.y, cy);
+            b = 0;
+        }
+    }
+	IC	void	getXYZ	(T& x, T& y, T& z){getHPB(y,x,z);}
+	IC	void	getHPB	(Tvector& hpb){getHPB(hpb.x,hpb.y,hpb.z);}
+	IC	void	getXYZ	(Tvector& xyz){getXYZ(xyz.x,xyz.y,xyz.z);}
+    // remove
+	IC	void	setHPB_old	(T h, T p, T b)
 	{
 		T _sp,_cp;		_sincos(_p,_sp,_cp);
 		T _sh,_ch;		_sincos(_h,_sh,_ch);
@@ -496,9 +506,7 @@ public:
 		k.set(-_cp*_sh, 			_sp, 		_cp*_ch);				_34_=0;
 		c.set(0,					0,			0);						_44_=1;
     }
-	IC	void	setYPR	(T y, T p, T r){setHPB(y,p,r);}
-	IC	void	setXYZ	(T x, T y, T z){setHPB(y,x,z);}
-	IC	void	getHPB	(T& h, T& p, T& b){
+	IC	void	getHPB_old	(T& h, T& p, T& b){
         if ( m[2][1] < 1.0f ){
             if ( m[2][1] > -1.0f ){
                 b 	= -atan2(-m[0][1],m[1][1]);
@@ -515,9 +523,6 @@ public:
             h 	= 0.0f;
         }
     }
-	IC	void	getXYZ	(T& x, T& y, T& z){getHPB(y,x,z);}
-	IC	void	getHPB	(Tvector& hpb){getHPB(hpb.x,hpb.y,hpb.z);}
-	IC	void	getXYZ	(Tvector& xyz){getXYZ(xyz.x,xyz.y,xyz.z);}
 };
 
 typedef		_matrix<float>	Fmatrix;

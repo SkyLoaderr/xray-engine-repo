@@ -69,7 +69,7 @@ void CDetailManager::Render(int priority, bool strictB2F){
 	if (m_Slots.size()){
     	if (1==priority){
         	if (false==strictB2F){
-                Device.SetTransform(D3DTS_WORLD,precalc_identity);
+                Device.SetTransform(D3DTS_WORLD,Fidentity);
                 Device.SetShader(Device.m_WireShader);
 
                 Fvector			c;
@@ -114,7 +114,7 @@ void CDetailManager::RenderTexture(float alpha){
 	V[3].set(m_BBox.max.x,m_BBox.max.y,m_BBox.min.z,color,1,1);
 
 	Device.SetShader(m_pBaseShader);
-    Device.SetTransform(D3DTS_WORLD,precalc_identity);
+    Device.SetTransform(D3DTS_WORLD,Fidentity);
     DU::DrawPrimitiveLIT(D3DPT_TRIANGLEFAN,2,V,4,false,false);
 }
 
@@ -282,7 +282,7 @@ void CDetailManager::RenderObjects(const Fvector& EYE)
     	            mXform.mul_43		(mRotXZ,Instance.mRotY);
                 }
                 mScale.scale 			(scale,scale,scale);
-                mXform.mul_43 			(mScale);
+                mXform.mulB_43 			(mScale);
                 mXform.translate_over	(Instance.P);
 
 				// Transfer vertices

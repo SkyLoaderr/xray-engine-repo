@@ -63,7 +63,7 @@ CEditableObject* __fastcall TfrmEditLibrary::RayPick(const Fvector& start, const
 	if (!form) return 0;
 	if (form->m_SelectedObject&&form->cbPreview->Checked){
     	float dist=flt_max;
-    	form->m_SelectedObject->RayPick(dist,start,direction,precalc_identity,pinf);
+    	form->m_SelectedObject->RayPick(dist,start,direction,Fidentity,pinf);
         if (pinf&&pinf->e_mesh&&pinf->e_obj) TfrmPropertiesObject::OnPick(*pinf);
         return form->m_SelectedObject;
     }
@@ -80,7 +80,7 @@ void __fastcall TfrmEditLibrary::OnRender(){
         mScale.scale			(form->m_SelectedObject->t_vScale);
         mTranslate.translate	(form->m_SelectedObject->t_vPosition);
         mTransform.mul			(mTranslate,mRotate);
-        mTransform.mul			(mScale);
+        mTransform.mulB			(mScale);
         form->m_SelectedObject->RenderSingle(mTransform);
 //        if (fraBottomBar->miDrawObjectBones->Checked) form->m_SelectedObject->RenderBones(mTransform);
     }
@@ -94,7 +94,7 @@ void __fastcall TfrmEditLibrary::ZoomObject(){
         mScale.scale			(form->m_SelectedObject->t_vScale);
         mTranslate.translate	(form->m_SelectedObject->t_vPosition);
         mTransform.mul			(mTranslate,mRotate);
-        mTransform.mul			(mScale);
+        mTransform.mulB			(mScale);
         // get bbox&transform
 		Fbox& bb 				= form->m_SelectedObject->GetBox();
         bb.transform			(mTransform);

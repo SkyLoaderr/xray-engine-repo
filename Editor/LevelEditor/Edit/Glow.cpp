@@ -61,7 +61,7 @@ void CGlow::Render(int priority, bool strictB2F){
         pinf.inf.range = D.magnitude();
         if (pinf.inf.range) D.div(pinf.inf.range);
         // тестируем находится ли во фрустуме glow
-		Device.SetTransform(D3DTS_WORLD,precalc_identity);
+		Device.SetTransform(D3DTS_WORLD,Fidentity);
         if (Device.m_Frustum.testSphere(PPosition,m_Range)){
         	// рендерим Glow
 //        	if (!Scene.RayPick(m_Position,D,OBJCLASS_EDITOBJECT,&pinf)){

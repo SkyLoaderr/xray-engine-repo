@@ -36,12 +36,12 @@ void CEvent::SForm::GetTransform(Fmatrix& M){
 	mScale.scale	(vSize);
 	mTranslate.translate(vPosition);
 	M.mul			(mTranslate,mRotate);
-	M.mul			(mScale);
+	M.mulB			(mScale);
 }
 
 void CEvent::SForm::RenderBox(const Fmatrix& parent, bool bAlpha){
 	Fmatrix T; GetTransform(T);
-    T.mul2(parent);
+    T.mulA(parent);
 	// render
 	FVF::L v;
 	FLvertexVec V;

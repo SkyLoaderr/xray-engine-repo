@@ -331,22 +331,19 @@ public:
 };
 //----------------------------------------------------
 //----------------------------------------------------
-#define EOBJ_CURRENT_VERSION		0x0011
+#define EOBJ_CURRENT_VERSION		0x0010
 //----------------------------------------------------
 #define EOBJ_CHUNK_OBJECT_BODY		0x7777
 #define EOBJ_CHUNK_VERSION		  	0x0900
 #define EOBJ_CHUNK_REFERENCE     	0x0902
 #define EOBJ_CHUNK_FLAGS           	0x0903
-#define EOBJ_CHUNK_PLACEMENT     	0x0904
 #define EOBJ_CHUNK_SURFACES			0x0905
 #define EOBJ_CHUNK_EDITMESHES      	0x0910
 #define EOBJ_CHUNK_LIB_VERSION     	0x0911
 #define EOBJ_CHUNK_CLASSSCRIPT     	0x0912
 #define EOBJ_CHUNK_BONES			0x0913
 #define EOBJ_CHUNK_OMOTIONS			0x0914
-#define EOBJ_CHUNK_ACTIVE_OMOTION	0x0915
 #define EOBJ_CHUNK_SMOTIONS			0x0916
-#define EOBJ_CHUNK_ACTIVE_SMOTION	0x0917
 #define EOBJ_CHUNK_SURFACES_XRLC	0x0918
 #define EOBJ_CHUNK_BONEPARTS		0x0919
 #define EOBJ_CHUNK_ACTORTRANSFORM	0x0920
