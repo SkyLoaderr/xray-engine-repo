@@ -112,7 +112,7 @@
 
 
     <!-- HEALTH BAR -->
-    <progress_bar x="15" y="65" length="215" broad="20" horz="0" min="0" max="1000" pos="0">
+    <progress_bar x="15" y="65" length="216" broad="20" horz="0" min="0" max="1000" pos="0">
         <texture tile="0" width="18" height="220" length="215" r="255" g="0" b="0">ui\ui_inv_progress_blood</texture>
         <background x="0" y="0">ui\ui_inv_progress_blood_empty</background>
     </progress_bar>
