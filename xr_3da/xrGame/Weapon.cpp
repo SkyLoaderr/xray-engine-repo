@@ -538,7 +538,15 @@ void CWeapon::net_Import	(NET_Packet& P)
 	P.r_u16					(ammo_elapsed);
 	iAmmoElapsed = int(ammo_elapsed);
 
-	P.r_u8					(m_flagsAddOnState);	
+	P.r_u8					(m_flagsAddOnState);
+
+	u8 ammoType, wstate;
+	P.r_u8					(ammoType);
+	P.r_u8					(wstate);
+
+//	m_ammoType = ammoType;
+//	STATE = wstate;
+	
 }
 
 void CWeapon::shedule_Update	(u32 dT)

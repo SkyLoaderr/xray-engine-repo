@@ -226,6 +226,9 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 	Fvector  src;
 
 
+	if (pActor->GetPDA())
+	{
+#pragma todo("Mad Max то Юра : я вставил здесь проверку, чтобы не вылетало если нет PDA надо разобраться..............")
 	for(KNOWN_INFO_PAIR_IT it = pActor->GetPDA()->m_mapKnownInfo.begin();
 		pActor->GetPDA()->m_mapKnownInfo.end() != it;
 		++it)
@@ -275,6 +278,7 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 			entity.Out(P.x,P.y,entity_color);
 		}
 	}
+	};
 
 
 
