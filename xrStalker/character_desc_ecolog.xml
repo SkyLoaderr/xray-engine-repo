@@ -3,9 +3,9 @@
 <xml>
 <!---------------------------ECOLOG------------------------------>
 	<specific_character id="ecolog_default" team_default = "1">
-		<name>Неизвестный экогол</name>
-		<icon x="0" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
+		<name>Неизвестный эколог</name>
+		<icon x="8" y="4"></icon>
+		<map_icon x="1" y="6"></map_icon>
 		<bio>Об этом сталкере ничего не известно.</bio>
 
 		<team>Ecolog_general</team>
@@ -25,9 +25,9 @@
 
 <!---------------------------ECOLOG GUARD------------------------>
 	<specific_character id="ecolog_guard_default" team_default = "1">
-		<name>Неизвестный экогол</name>
-		<icon x="0" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
+		<name>Неизвестный эколог</name>
+		<icon x="6" y="4"></icon>
+		<map_icon x="0" y="6"></map_icon>
 		<bio>Об этом сталкере ничего не известно.</bio>
 
 		<team>Ecolog_guard_general</team>
