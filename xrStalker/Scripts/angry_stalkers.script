@@ -46,7 +46,7 @@ function main()
 	while siviy:action() and chert:action() do
 		if siviy:see(chert) then
 			wait(2000)			
-			siviy_privet:play_at_pos						(siviy,siviy:position(),0);
+			rainbow_privet:play_at_pos						(siviy,siviy:position(),0);
 			wait(2000)			
 			prof_ne_ojidal_tebya_vstretit:play_at_pos		(chert,chert:position(),0);
 			wait(2000)			
