@@ -210,14 +210,20 @@ void CRender::LoadSectors(CStream* fs)
 	{
 		b_portal	P;
 		fs->Read(&P,sizeof(P));
-		Portals[i].Setup(P.vertices,P.vert_count,
-			getSector(P.sector_front),
-			getSector(P.sector_back));
 		if (i==64)	{
+			Portals[i].Setup(P.vertices,P.vert_count,
+				getSector(P.sector_front),
+				getSector(P.sector_back));
+		} else {
+			Portals[i].Setup(P.vertices,P.vert_count,
+				getSector(P.sector_back),
+				getSector(P.sector_front));
+		}
+#pragma todo("portal 64")
+		/*
 			Portals[i].P.n.invert();
 			Portals[i].P.d = -Portals[i].P.d;
-		}
-#pragma todo("portal 64");
+		*/
 		for (DWORD j=2; j<P.vert_count; j++)
 			CL.add_face_packed(
 				P.vertices[0],P.vertices[j-1],P.vertices[j],
