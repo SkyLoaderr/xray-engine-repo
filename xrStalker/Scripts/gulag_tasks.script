@@ -177,7 +177,6 @@ function loadJob(sj, gname, type)
 			path_main = gname.."_alarm_left",
 			path_hideout = gname.."_alarm_left" }
 		table.insert(sj, t)			
---[[
 		t = { name = "guard",
 			object = nil, begin = nil, idle = 0,
 			prior = 6, state = 1,
@@ -205,6 +204,7 @@ function loadJob(sj, gname, type)
 			path_main = gname.."_alarm_center",
 			path_hideout = gname.."_alarm_center" }
 		table.insert(sj, t)		
+--[[
 		t = { name = "sleeper",
 			object = nil, begin = nil, idle = 0,
 			prior = 1, state = 1,
