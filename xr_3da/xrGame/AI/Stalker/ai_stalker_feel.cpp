@@ -84,7 +84,7 @@ bool CAI_Stalker::bfCheckForVisibility(CEntity* tpEntity)
 	
 #ifdef LOG_PARAMETERS
 	if (bMessage)
-		HUD().outMessage(0xffffffff,cName(),"%s",fResult >= m_fVisibilityThreshold ? "I see actor" : "I don't see actor");
+		HUD().outMessage(0xffffffff,cName(),"%s : %d",fResult >= m_fVisibilityThreshold ? "I see actor" : "I don't see actor",Level().timeServer());
 //	if (iLogParameters)
 //		Msg("%6.2f %6.2f %6.2f %6.2f %6.2f %6.2f %6.2f %6.2f",fDistance,fAlpha,fSpeed,AI_Path.fSpeed,float(tpEntity->AI_Node->light)/255.f,float(AI_Node->light)/255.f,tpEntity->Radius(),float(iLogParameters - 1));
 #endif
