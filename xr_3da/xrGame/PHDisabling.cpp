@@ -120,7 +120,7 @@ void	CPHDisablingTranslational::UpdateL1()
 	float			velocity_param		=	m_mean_velocity		.Update(* (Fvector*) position)		;
 	float			acceleration_param	=	m_mean_acceleration	.Update(* (Fvector*) velocity)		;
 
-	CheckState						(m_stateL1,velocity_param,acceleration_param)					;
+	CheckState						(m_stateL1,velocity_param*m_frames,acceleration_param*m_frames)					;
 }
 
 void CPHDisablingTranslational::set_DisableParams(const SAllDDOParams& params)

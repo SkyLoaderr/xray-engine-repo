@@ -70,7 +70,14 @@ void CPHMovementControl::AddControlVel	(const Fvector& vel)
 	vExternalImpulse.add(vel);
 	bExernalImpulse=true;
 }
-
+void CPHMovementControl::ApplyImpulse(const Fvector& dir,const dReal P)
+{
+	Fvector force;
+	force.set(dir);
+	force.mul(P/fixed_step);
+	AddControlVel(force);
+	/*m_character->ApplyImpulse(dir,P);*/
+}
 void CPHMovementControl::Calculate(Fvector& vAccel,float /**ang_speed/**/,float jump,float /**dt/**/,bool /**bLight/**/){
 
 	
@@ -177,10 +184,11 @@ void CPHMovementControl::Calculate(const xr_vector<DetailPathManager::STravelPat
 	bool  near_line;
 	m_path_size=path.size();
 	Fvector dir;
-
+	dir.set(0,0,0);
 	if(m_path_size==0)
 	{
-		m_character->SetMaximumVelocity(0.f);
+		//m_character->SetMaximumVelocity(0.f);
+		speed=0;
 		vPosition.set(new_position);
 	}
 	else if(b_exect_position)
@@ -200,8 +208,7 @@ void CPHMovementControl::Calculate(const xr_vector<DetailPathManager::STravelPat
 		m_path_distance=0;
 		vPathDir.set(dir);
 		vPathPoint.set(vPosition);
-		m_character->SetMaximumVelocity(speed);
-		m_character->SetAcceleration(dir);
+	
 
 	}
 	else {
@@ -249,11 +256,34 @@ void CPHMovementControl::Calculate(const xr_vector<DetailPathManager::STravelPat
 #pragma TODO ("this must be done on the funnction start!!")
 			if(fis_zero(speed)) dir.set(0,0,0);
 
-			m_character->SetMaximumVelocity(speed);
-			m_character->SetAcceleration(dir);
+
 		}
 		
 	}
+/////////////////////////////////////////////////////////////////
+	if(bExernalImpulse)
+	{
+
+		//vAccel.add(vExternalImpulse);
+		Fvector V;
+		V.set(dir);
+		V.mul(speed*fMass/fixed_step);
+		V.add(vExternalImpulse);
+		m_character->ApplyForce(vExternalImpulse);
+		speed=V.magnitude();
+
+		if(fis_zero(speed))
+		{
+			dir.set(V);
+			dir.mul(1.f/speed);
+		}
+		vExternalImpulse.set(0.f,0.f,0.f);
+		bExernalImpulse=false;
+	}
+
+	m_character->SetMaximumVelocity(speed);
+	m_character->SetAcceleration(dir);
+//////////////////////////////////////////////////////
 	m_character->GetVelocity(vVelocity); 
 	fActualVelocity=vVelocity.magnitude();
 	gcontact_Was=m_character->ContactWas();

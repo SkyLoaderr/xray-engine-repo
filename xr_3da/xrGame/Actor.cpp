@@ -331,7 +331,7 @@ void CActor::Load	(LPCSTR section )
 
 void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector position_in_bone_space, float impulse, ALife::EHitType hit_type)
 {
-	if (g_Alive() && (hit_type == ALife::eHitTypeWound || hit_type == ALife::eHitTypeStrike))
+	if (g_Alive() && (hit_type == ALife::eHitTypeWound||hit_type == ALife::eHitTypeFireWound || hit_type == ALife::eHitTypeStrike))
 	{
 		m_PhysicMovementControl->ApplyImpulse(dir,impulse);
 		m_saved_dir.set(dir);
