@@ -80,9 +80,20 @@
 	</info_portion>
 
 	<!-- BAR DRUNK DOLG QUEST -->
-	<info_portion id="bar_bar_drunk_dolg_quest_start"></info_portion>
+	<info_portion id="bar_bar_drunk_dolg_quest_start">
+		<task>bar_drunk_dolg_quest</task>
+		<action>level_tasks.notify_new_task</action>
+	</info_portion>
+
 	<info_portion id="bar_bar_drunk_dolg_quest_gain"></info_portion>
-	<info_portion id="bar_bar_drunk_dolg_quest_finish"></info_portion>
+	<info_portion id="bar_bar_drunk_dolg_quest_finish">
+		<disable>bar_bar_drunk_dolg_quest_start</disable>
+		<disable>bar_bar_drunk_dolg_quest_gain</disable>
+	</info_portion>
+
+
+
+bar_drunk_dolg_quest
 
 
 	<!-- DOLG BASE -->
