@@ -195,7 +195,7 @@ void __cdecl	crashthread			( void* )
 				rndptr._b1		=	u8(rndg.randI(0,256));
 				rndptr._b2		=	u8(rndg.randI(0,256));
 				rndptr._b3		=	u8(rndg.randI(0,256));
-				rndptr._ptri	&= ~(1ul<31ul);
+				rndptr._ptri	&=  (1ul<31ul)-1;
 				*rndptr._ptr	=	0xBAADF00D;
 			//} catch(...) {
 			//	// OK
