@@ -125,22 +125,15 @@ void CVisionMemory::UpdateVision(TTime dt)
 	CurrentTime	= dt;
 
 	// получить список видимых объектов
-	xr_vector<CObject*> Visible_Objects;
-	xr_vector<CObject*>::iterator I, E;
-	pMonster->feel_vision_get(Visible_Objects);
-
-	I = Visible_Objects.begin();
-	E = Visible_Objects.end();
-
 	VisionElem ve;
+	objVisible &VisibleEnemies = Level().Teams[pMonster->g_Team()].Squads[pMonster->g_Squad()].KnownEnemys;
 
-	for (; I!=E; I++) {
-
-		CEntityAlive *pE = dynamic_cast<CEntityAlive *>(*I);
+	for (int i=0, n=VisibleEnemies.size(); i<n; i++) {
+		CEntityAlive *pE = dynamic_cast<CEntityAlive *>(VisibleEnemies[i].key);
 		if (!pE) R_ASSERT("Visible object is not of class CEntityAlive. Check feel_vision_isRelevant!");
 
 		ve.Set(pE,CurrentTime);
-
+ 
 		if (!pE->g_Alive()) AddObject(ve);
 		else AddEnemy(ve);
 	}

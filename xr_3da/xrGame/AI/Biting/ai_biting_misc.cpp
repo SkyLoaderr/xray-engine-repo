@@ -77,12 +77,14 @@ void CAI_Biting::vfUpdateParameters()
 	// Зрение
 	objVisible			&VisibleEnemies = Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
 
+	// определить, видит ли меня враг
+	I = false;
+
 	VisionElem ve;
 	if (GetEnemy(ve)) {
-		VisibleEnemies.insert(ve.obj);
+		//VisibleEnemies.insert(ve.obj);
 
 		// определить, видит ли меня враг
-		I = false;
 		float			yaw1 = 0.f, pitch1 =0.f, yaw2, pitch2, fYawFov = 0.f, fPitchFov = 0.f, fRange = 0.f;
 		
 

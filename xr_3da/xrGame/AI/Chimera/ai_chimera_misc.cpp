@@ -54,13 +54,14 @@ void CAI_Chimera::vfUpdateParameters()
 	//------------------------------------
 	// Зрение
 	objVisible			&VisibleEnemies = Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
+	
+	// определить, видит ли меня враг
+	I = false;
 
 	VisionElem ve;
 	if (GetEnemy(ve)) {
-		VisibleEnemies.insert(ve.obj);
-
-		// определить, видит ли меня враг
-		I = false;
+		//VisibleEnemies.insert(ve.obj);
+	
 		float			yaw1 = 0.f, pitch1 =0.f, yaw2, pitch2, fYawFov = 0.f, fPitchFov = 0.f, fRange = 0.f;
 		
 
@@ -102,6 +103,7 @@ void CAI_Chimera::vfUpdateParameters()
 	// вероятность победы
 	C = D = E = F = G	= false;
 	
+
 	if (bfIsAnyAlive(VisibleEnemies)) {
 		switch (dwfChooseAction(0,m_fAttackSuccessProbability0,m_fAttackSuccessProbability1,m_fAttackSuccessProbability2,m_fAttackSuccessProbability3,g_Team(),g_Squad(),g_Group(),0,1,2,3,4,this,30.f)) {
 			case 4 : 
