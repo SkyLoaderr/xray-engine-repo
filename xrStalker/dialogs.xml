@@ -142,5 +142,123 @@
 		
 	</phrase_list>
 	</dialog>
-    
+
+    <dialog id="stalker_helper">
+        <phrase_list>
+            <phrase id="0">
+                <text>Ну, я тут, чего звал?</text>
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>10</next>
+            </phrase>
+            <phrase id="1">
+                <text>Брат, поделись аптечкой, помираю!</text>
+                <next>11</next>
+                <next>12</next>
+                <next>13</next>
+                <next>14</next>
+            </phrase>
+            <phrase id="11">
+				<!-- прекондишн -->
+                <text>Возьми, потом отблагодаришь.</text>
+                <!-- Вызвать функцию передачи аптечки -->
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>10</next>
+            </phrase>
+            <phrase id="12">
+				<!-- прекондишн -->
+                <text>Да ты и так неплохо выглядишь.</text>
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>10</next>
+            </phrase>
+            <phrase id="13">
+				<!-- прекондишн -->
+                <text>Извини, нету.</text>
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>10</next>
+            </phrase>
+            <phrase id="14">
+				<!-- прекондишн -->
+                <text>Только за деньги. За 300 монет.</text>
+                <next>141</next>
+                <next>142</next>
+            </phrase>
+            <phrase id="141">
+                <text>На твои деньги, барыга. Давай аптечку.</text>
+                <next>1411</next>
+            </phrase>
+            <phrase id="1411">
+                <text>По рукам.</text>
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>10</next>
+            </phrase>
+            <phrase id="142">
+                <text>Не, не могу.</text>
+                <next>1412</next>
+			</phrase>
+            <phrase id="1412">
+                <text>Ну как хочешь.</text>
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>10</next>
+            </phrase>            
+            <phrase id="2">
+                <text>Нужно оружие, а то без него хреново как-то.</text>
+            </phrase>
+            <phrase id="21">
+				<!-- прекондишн -->
+                <text>Посмотри сам что есть. Отдам по себестоимости.</text>
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>10</next>
+            </phrase>
+            <phrase id="22">
+				<!-- прекондишн -->
+                <text>Извини, ничего нет.</text>
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>10</next>
+            </phrase>           
+            <phrase id="3">
+                <text>Помоги прорваться, боюсь один не справлюсь.</text>
+                <next>31</next>
+                <next>32</next>
+            </phrase>
+            <phrase id="31">
+				<!-- прекондишн -->
+                <text>Ну пойдем, посмотрим кого ты там испугался.</text>
+                <!-- врубается помощник -->
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>10</next>
+            </phrase>
+            <phrase id="32">
+				<!-- прекондишн -->
+                <text>Что-то как-то мне лениво. Разбирайся сам.</text>
+                <!-- обнуляется схема помощника. Обрывается диалог. -->
+            </phrase>
+
+            <phrase id="10">
+                <text>Уже все, спасибо.</text>
+                <next>101</next>
+            </phrase>
+            <phrase id="101">
+                <text>Ну как знаешь.</text>
+                <!-- Вызвать функцию отмены помощника -->
+            </phrase>
+        </phrase_list>
+    </dialog>    
 </game_dialogs>
