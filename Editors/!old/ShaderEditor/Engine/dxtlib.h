@@ -20,7 +20,7 @@ Comments:
 
 
 
-#pragma comment(lib, "nvDXTlib.lib")
+// #pragma comment(lib, "nvDXTlib.lib")
 
 
 
