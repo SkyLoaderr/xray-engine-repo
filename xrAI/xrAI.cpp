@@ -106,7 +106,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
                      int       nCmdShow)
 {
 	// Initialize debugging
- 	Core._initialize		("xrAI");
+ 	Core._initialize		("xrAI",NULL);
 
 	Startup					(lpCmdLine);
 	

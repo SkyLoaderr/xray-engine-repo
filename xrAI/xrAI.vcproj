@@ -287,6 +287,12 @@
 				Name="Log"
 				Filter="">
 				<File
+					RelativePath="cl_log.cpp">
+				</File>
+				<File
+					RelativePath="cl_log.h">
+				</File>
+				<File
 					RelativePath=".\log.cpp">
 				</File>
 				<File
