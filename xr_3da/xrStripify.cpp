@@ -33,7 +33,7 @@ void xrStripify		(std::vector<WORD> &indices, std::vector<WORD> &perturb, int iC
 	R_ASSERT		(indices.size()==PGROUP[0].numIndices);
 
 	// Remap indices
-	vector<PrimitiveGroup>	xPGROUP=0;
+	vector<PrimitiveGroup>	xPGROUP;
 	RemapIndices	(PGROUP,u16(perturb.size()),xPGROUP);
 	R_ASSERT		(xPGROUP.size()==1);
 	R_ASSERT		(xPGROUP[0].type==PT_LIST);
