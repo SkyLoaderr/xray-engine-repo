@@ -203,9 +203,9 @@ void CSpawnPoint::Construct(LPVOID data)
                 m_EM_Radius			= 10.f;
                 m_EM_Power			= 1.f;
                 m_EM_ViewDist		= 300.f;
-                m_EM_FogColor		= 0x00FFFFFF;
+                m_EM_FogColor		= 0x00808080;
                 m_EM_FogDensity		= 1.f;
-	    		m_EM_AmbientColor	= 0x00FFFFFF;
+	    		m_EM_AmbientColor	= 0x00000000;
     	        m_EM_LMapColor		= 0x00FFFFFF;
     	    }else{
         		SetValid(false);
@@ -577,6 +577,16 @@ void CSpawnPoint::Save(IWriter& F){
 }
 //----------------------------------------------------
 
+Fvector3 u32_3f(u32 clr)
+{
+	Fvector	tmp;
+    float f	= 1.f / 255.f;
+    tmp.x 	= f * float((clr >> 16)& 0xff);
+    tmp.y 	= f * float((clr >>  8)& 0xff);
+    tmp.z 	= f * float((clr >>  0)& 0xff);
+    return	tmp;
+}
+
 bool CSpawnPoint::ExportGame(SExportStreams& F)
 {
 	// spawn
@@ -595,14 +605,16 @@ bool CSpawnPoint::ExportGame(SExportStreams& F)
 			F.rpoint.stream.close_chunk	();
         break;
         case ptEnvMod:
+        	Fcolor tmp;
 	        F.envmodif.stream.open_chunk(F.envmodif.chunk++);
+            F.envmodif.stream.w_fvector3(PPosition);
             F.envmodif.stream.w_float	(m_EM_Radius);
             F.envmodif.stream.w_float	(m_EM_Power);
             F.envmodif.stream.w_float	(m_EM_ViewDist);
-            F.envmodif.stream.w_u32	 	(m_EM_FogColor);
+            F.envmodif.stream.w_fvector3(u32_3f(m_EM_FogColor));
             F.envmodif.stream.w_float	(m_EM_FogDensity);
-            F.envmodif.stream.w_u32	 	(m_EM_AmbientColor);
-            F.envmodif.stream.w_u32	 	(m_EM_LMapColor);
+            F.envmodif.stream.w_fvector3(u32_3f(m_EM_AmbientColor));
+            F.envmodif.stream.w_fvector3(u32_3f(m_EM_LMapColor));
 			F.envmodif.stream.close_chunk();
         break;
         default: THROW;

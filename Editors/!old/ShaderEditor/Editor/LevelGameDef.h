@@ -94,13 +94,14 @@ extern ECORE_API xr_token rpoint_type[];
 
 - file level.env_mod
 	- chunk #0
-        float			(m_EM_Radius);
+        w_fvector3		(m_EM_Position);
+        w_float			(m_EM_Radius);
         w_float			(m_EM_Power);
         w_float			(m_EM_ViewDist);
-        w_u32			(m_EM_FogColor);
+        w_fvector3		(m_EM_FogColor);
         w_float			(m_EM_FogDensity);
-        w_u32			(m_EM_AmbientColor);
-        w_u32			(m_EM_LMapColor);
+        w_fvector3		(m_EM_AmbientColor);
+        w_fvector3		(m_EM_LMapColor);
     ...
     - chunk #n
 */
