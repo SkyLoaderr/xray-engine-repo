@@ -67,6 +67,8 @@ IC BOOL lesser(float& a, float& b)
 	return *A<*B;
 }
 
+const float		one_div_3	= 1.f/3.f;
+
 // Rasterize a scan line between given X point values, corresponding Z values and current color
 void i_scan		(int curY, float leftX, float lhx, float rightX, float rhx, float startZ, float endZ)
 {
@@ -114,7 +116,7 @@ void i_scan		(int curY, float leftX, float lhx, float rightX, float rhx, float s
 	{
 		if (shared(currentTri,pFrame[i-1])) 
 		{
-			float ZR = (Z+pDepth[i-1])/2;
+			float ZR = (Z+2*pDepth[i-1])*one_div_3;
 			if (ZR<pDepth[i])	{ pFrame[i]	= currentTri; pDepth[i]	= ZR; }
 		}
 	}
@@ -133,7 +135,7 @@ void i_scan		(int curY, float leftX, float lhx, float rightX, float rhx, float s
 	for (; i>=limit; i--, Z-=dZ)
 	{
 		if (shared(currentTri,pFrame[i+1])) {
-			float ZR = (Z+pDepth[i+1])/2;
+			float ZR = (Z+2*pDepth[i+1])*one_div_3;
 			if (ZR<pDepth[i])	{ pFrame[i]	= currentTri; pDepth[i]	= ZR; }
 		}
 	}
