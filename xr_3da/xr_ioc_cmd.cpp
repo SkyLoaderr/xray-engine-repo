@@ -113,7 +113,7 @@ public:
 	CCC_SaveCFG(LPCSTR N) : IConsole_Command(N) { bEmptyArgsHandled = TRUE; };
 	virtual void Execute(LPCSTR args) 
 	{
-		LPCSTR	c_name		= Console->ConfigFile;
+		LPCSTR	c_name		= (xr_strlen(args)>0)?args:Console->ConfigFile;
 		SetFileAttributes	(c_name,FILE_ATTRIBUTE_NORMAL);
 		IWriter* F			= FS.w_open(c_name);
 		R_ASSERT			(F);
