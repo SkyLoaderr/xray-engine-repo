@@ -6,7 +6,10 @@
 void xrServer::OnCL_Disconnected	(IClient* CL)
 {
 	csPlayers.Enter			();
-	HUD().outMessage		(0xffffffff,"SERVER","Player '%s' disconnected",CL->Name);
+	if (!CL->flags.bLocal)
+	{			
+		HUD().outMessage		(0xffffffff,"SERVER","Player '%s' disconnected",game->get_option_s(CL->Name,"name",CL->Name));
+	};
 
 	// Game config (all, info includes deleted player now, excludes at the next cl-update)
 	game->OnPlayerDisconnect(CL->ID);
