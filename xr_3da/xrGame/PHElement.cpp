@@ -599,6 +599,7 @@ void CPHElement::SetTransform(const Fmatrix &m0){
 
 
 CPHElement::~CPHElement	(){
+	Deactivate();
 	m_boxes_data.clear();
 	m_spheras_data.clear();
 	m_cylinders_data.clear();

@@ -26,7 +26,7 @@ public:
 													m_pKinematics=NULL;
 			};
 
-	~CPHShell				()							
+virtual ~CPHShell				()							
 	{
 						if(bActive) Deactivate();
 

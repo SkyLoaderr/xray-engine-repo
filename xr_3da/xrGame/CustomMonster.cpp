@@ -67,6 +67,7 @@ CCustomMonster::CCustomMonster()
 
 CCustomMonster::~CCustomMonster	()
 {
+
 }
 
 void CCustomMonster::Load		(LPCSTR section)

@@ -162,6 +162,11 @@ void CAI_Chimera::net_Destroy()
 	inherited::net_Destroy();
 	Init();
 	Movement.DestroyCharacter();
+	if(m_pPhysicsShell)
+	{
+		m_pPhysicsShell->Deactivate();
+	}
+	xr_delete(m_pPhysicsShell);
 }
 
 void CAI_Chimera::net_Export(NET_Packet& P) 

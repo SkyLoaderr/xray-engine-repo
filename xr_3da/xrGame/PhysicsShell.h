@@ -72,7 +72,7 @@ public:
 	virtual void			SetMaterial				(u32 m)													= 0;
 	virtual void			SetMaterial				(LPCSTR m)												= 0;
 	
-	virtual ~CPhysicsBase	()																	{};
+	virtual					~CPhysicsBase	()																{};
 };
 
 // ABSTRACT:
@@ -96,7 +96,7 @@ public:
 	virtual void			setDensityMC			(float M,const Fvector& mass_center)			= 0;
 	virtual	dBodyID			get_body				()												= 0;
 	virtual float			getRadius				()												= 0;
-	virtual ~CPhysicsElement	()																	{};
+	virtual ~CPhysicsElement						()												{};
 };
 
 //ABSTRACT:
@@ -187,6 +187,7 @@ public:
 	virtual CPhysicsElement*	get_Element				(s16 bone_id)										= 0;
 	virtual CPhysicsElement*	get_Element				(LPCSTR bone_name)									= 0;
 	virtual void				build_FromKinematics	(CKinematics* K,BONE_P_MAP* p_geting_map=NULL)		= 0;
+	virtual						~CPhysicsShell		     (){}
 	//build_FromKinematics		in returns elements  & joint pointers according bone IDs;
 	};
 
