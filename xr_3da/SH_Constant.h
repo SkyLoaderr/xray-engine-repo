@@ -42,6 +42,15 @@ public:
 		float	t	= Device.fTimeGlobal;
 		set_float	(_R.Calculate(t),_G.Calculate(t),_B.Calculate(t),_A.Calculate(t));
 	}
+	IC	BOOL		Similar		(CConstant& C)		// comare by modes and params
+	{
+		if (dwMode!=C.dwMode)	return FALSE;
+		if (!_R.Similar(C._R))	return FALSE;
+		if (!_G.Similar(C._G))	return FALSE;
+		if (!_B.Similar(C._B))	return FALSE;
+		if (!_A.Similar(C._A))	return FALSE;
+		return TRUE;
+	}
 };
 
 class	ENGINE_API	CConstantArray
