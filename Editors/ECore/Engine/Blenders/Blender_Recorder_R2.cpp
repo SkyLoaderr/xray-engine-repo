@@ -104,7 +104,6 @@ u32		CBlender_Compile::r_Sampler		(LPCSTR _name, LPCSTR texture, bool b_ps1x_Pro
 		i_Address				(dwStage,address);
 		i_Filter				(dwStage,fmin,fmip,fmag);
 		i_Projective			(dwStage,b_ps1x_ProjectiveDivide);
-		RS.SetSAMP				(dwStage,D3DSAMP_ELEMENTINDEX,element);
 	}
 	return	dwStage;
 }

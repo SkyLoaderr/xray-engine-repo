@@ -73,7 +73,7 @@ public:
 	void				StageSET_Color3		(u32 a1, u32 op, u32 a2, u32 a3);
 	void				StageSET_Alpha		(u32 a1, u32 op, u32 a2);
 	void				StageSET_TMC		(LPCSTR T, LPCSTR M, LPCSTR C, int UVW_channel);
-	void				Stage_Texture		(LPCSTR name);
+	void				Stage_Texture		(LPCSTR name, u32 address=D3DTADDRESS_WRAP,	u32	 fmin=D3DTEXF_LINEAR, u32 fmip=D3DTEXF_LINEAR,	u32 fmag=D3DTEXF_LINEAR);
 	void				Stage_Matrix		(LPCSTR name, int UVW_channel);
 	void				Stage_Constant		(LPCSTR name);
 	void				StageEnd			();
@@ -91,7 +91,7 @@ public:
 	// R1/R2-compiler	[programmable]		- templates
 	void				r_Pass				(LPCSTR vs,		LPCSTR ps,		bool bFog,	BOOL	bZtest=TRUE,				BOOL	bZwrite=TRUE,			BOOL	bABlend=FALSE,			D3DBLEND	abSRC=D3DBLEND_ONE,		D3DBLEND abDST=D3DBLEND_ZERO,	BOOL aTest=FALSE,	u32 aRef=0);
 	void				r_Constant			(LPCSTR name,	R_constant_setup* s);
-	u32					r_Sampler			(LPCSTR name,	LPCSTR texture, bool b_ps1x_ProjectiveDivide=false, u32	address=D3DTADDRESS_WRAP,	u32		fmin=D3DTEXF_LINEAR,	u32		fmip=D3DTEXF_LINEAR,	u32 fmag=D3DTEXF_LINEAR,	u32 element=0);
+	u32					r_Sampler			(LPCSTR name,	LPCSTR texture, bool b_ps1x_ProjectiveDivide=false, u32	address=D3DTADDRESS_WRAP,	u32		fmin=D3DTEXF_LINEAR,	u32		fmip=D3DTEXF_LINEAR,	u32 fmag=D3DTEXF_LINEAR);
 	void				r_Sampler_rtf		(LPCSTR name,	LPCSTR texture,	bool b_ps1x_ProjectiveDivide=false, u32	element=0);
 	void				r_Sampler_clf		(LPCSTR name,	LPCSTR texture,	bool b_ps1x_ProjectiveDivide=false, u32	element=0);
 	void				r_End				();
