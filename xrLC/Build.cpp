@@ -116,9 +116,9 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 
 	//*******
 	Status	("Models and References");
+	F = FS.OpenChunk		(EB_MU_models);
+	if (F)
 	{
-		F = FS.OpenChunk		(EB_MU_models);
-		R_ASSERT				(F);
 		u32 count				= F->Rdword	();
 
 		while (count && !F->Eof())
@@ -130,8 +130,9 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 
 		F->Close				();
 	}
+	F = FS.OpenChunk		(EB_MU_refs);
+	if (F)
 	{
-		F = FS.OpenChunk		(EB_MU_refs);
 		R_ASSERT				(F);
 		u32 count				= F->Rdword	();
 		
@@ -160,7 +161,7 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 			while (!F->Eof())
 			{
 				F->Read				(temp.control.name,sizeof(temp.control.name));
-				u32 cnt			= F->Rdword();
+				u32 cnt				= F->Rdword();
 				temp.control.data.resize(cnt);
 				F->Read				(temp.control.data.begin(),cnt*sizeof(u32));
 
