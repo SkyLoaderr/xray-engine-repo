@@ -2,9 +2,8 @@
 
 #include "shader_xrlc.h"
 
-#ifndef IC
-#define IC __forceinline
-#endif
+class base_Vertex	{ virtual ~base_Vertex() = 0; };	base_Vertex::~base_Vertex() {};
+class base_Face		{ virtual ~base_Face() = 0; };		base_Face::~base_Face()		{};
 
 class Vertex;
 class Face;
