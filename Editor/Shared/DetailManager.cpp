@@ -90,30 +90,6 @@ void CDetail::Unload	()
 
 void CDetail::Transfer	(Fmatrix& mXform, fvfVertexOut* vDest, DWORD C, WORD* iDest, DWORD iOffset)
 {
-	// Transfer vertices
-	{
-		fvfVertexIn		*srcIt = vertices, *srcEnd = vertices+number_vertices;
-		fvfVertexOut	*dstIt = vDest;
-		for	(; srcIt!=srcEnd; srcIt++, dstIt++)
-		{
-			mXform.transform_tiny	(dstIt->P,srcIt->P);
-			dstIt->C	= C;
-			dstIt->u	= srcIt->u;
-			dstIt->v	= srcIt->v;
-		}
-	}
-
-	// Transfer indices (in 32bit lines)
-	VERIFY	(iOffset<65535);
-	{
-		DWORD	item	= (iOffset<<16) | iOffset;
-		DWORD	count	= number_indices/2;
-		LPDWORD	sit		= LPDWORD(indices);
-		LPDWORD	send	= sit+count;
-		LPDWORD	dit		= LPDWORD(iDest);
-		for		(; sit!=send; dit++,sit++)	*dit=*sit+item;
-		if		(number_indices&1)	iDest[number_indices-1]=indices[number_indices-1]+WORD(iOffset);
-	}
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -340,7 +316,36 @@ void CDetailManager::Render		(Fvector& EYE)
 					mXform.mul_43			(Instance.mRotY,mScale);
 					mXform.translate_over	(Instance.P);
 				}
-				Object.Transfer			(mXform, vDest, Instance.C, iDest, iOffset);
+//				Object.Transfer			(mXform, vDest, Instance.C, iDest, iOffset);
+				
+				// Transfer vertices
+				{
+					DWORD					C = Instance.C;
+					CDetail::fvfVertexIn	*srcIt = Object.vertices, *srcEnd = Object.vertices+Object.number_vertices;
+					CDetail::fvfVertexOut	*dstIt = vDest;
+					for	(; srcIt!=srcEnd; srcIt++, dstIt++)
+					{
+						mXform.transform_tiny	(dstIt->P,srcIt->P);
+						dstIt->C	= C;
+						dstIt->u	= srcIt->u;
+						dstIt->v	= srcIt->v;
+					}
+				}
+				
+				// Transfer indices (in 32bit lines)
+				VERIFY	(iOffset<65535);
+				{
+					DWORD	item	= (iOffset<<16) | iOffset;
+					DWORD	count	= Object.number_indices/2;
+					LPDWORD	sit		= LPDWORD(Object.indices);
+					LPDWORD	send	= sit+count;
+					LPDWORD	dit		= LPDWORD(iDest);
+					for		(; sit!=send; dit++,sit++)	*dit=*sit+item;
+					if		(Object.number_indices&1)	
+						iDest[Object.number_indices-1]=Object.indices[Object.number_indices-1]+WORD(iOffset);
+				}
+				
+				// Increment counters
 				vDest					+=	vCount_Object;
 				iDest					+=	iCount_Object;
 				iOffset					+=	vCount_Object;
