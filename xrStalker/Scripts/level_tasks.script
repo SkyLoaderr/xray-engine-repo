@@ -30,7 +30,7 @@ function main()
        		   actor:object("quest_case_02") ~= nil
        		then
        			actor:give_info_portion("agroprom_take_agroprom_documents")
-				actor:set_task_state(task.completed, "escape_blockpost_case", 1)
+				actor:set_task_state(task.completed, "agroprom_get_military_documents", 1)
        		end       	
        	end
 
