@@ -184,9 +184,9 @@ Device.Statistic.TEST0.End		();
 			//int c_dw						=	255;	//iFloor			(c_f);
 			//clamp							(c_dw,0,255);
 			//Item.C_dw						=	color_rgba		(c_dw,c_dw,c_dw,255);
-			Item.c_rgb.x					=	ps_r__Detail_rainbow_hemi*DS.r_qclr	(DS.c_r,15);
-			Item.c_rgb.y					=	ps_r__Detail_rainbow_hemi*DS.r_qclr	(DS.c_g,15);
-			Item.c_rgb.z					=	ps_r__Detail_rainbow_hemi*DS.r_qclr	(DS.c_b,15);
+			Item.c_rgb.x					=	DS.r_qclr	(DS.c_r,	15);
+			Item.c_rgb.y					=	DS.r_qclr	(DS.c_g,	15);
+			Item.c_rgb.z					=	DS.r_qclr	(DS.c_b,	15);
 			Item.c_hemi						=	DS.r_qclr	(DS.c_hemi,	15);
 			Item.c_sun						=	DS.r_qclr	(DS.c_dir,	15);
 

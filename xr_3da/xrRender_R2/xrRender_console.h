@@ -4,14 +4,11 @@
 
 // Common
 extern ENGINE_API	int			ps_r__Supersample;
-extern ECORE_API	int			ps_r__tf_Anisotropic;
-extern ECORE_API	float		ps_r__tf_Mipbias;
 extern ECORE_API	int			ps_r__LightSleepFrames;
 
 extern ECORE_API	float		ps_r__Detail_l_ambient;
 extern ECORE_API	float		ps_r__Detail_l_aniso;
 extern ECORE_API	float		ps_r__Detail_density;
-extern ECORE_API	float		ps_r__Detail_rainbow_hemi;
 
 extern ECORE_API	float		ps_r__Tree_w_rot;
 extern ECORE_API	float		ps_r__Tree_w_speed;
@@ -29,16 +26,20 @@ extern ECORE_API	float		ps_r1_ssaDONTSORT;
 extern ECORE_API	float		ps_r1_ssaLOD_A;
 extern ECORE_API	float		ps_r1_ssaLOD_B;
 extern ECORE_API	float		ps_r1_ssaHZBvsTEX;
+extern ECORE_API	float		ps_r1_tf_Mipbias;
+extern ECORE_API	int			ps_r1_tf_Anisotropic;
 
 // R1-specific
 extern ECORE_API	int			ps_r1_GlowsPerFrame;	// r1-only
 
 // R2
-extern ECORE_API float			ps_r2_ssaDISCARD;
-extern ECORE_API float			ps_r2_ssaDONTSORT;
-extern ECORE_API float			ps_r2_ssaLOD_A;
-extern ECORE_API float			ps_r2_ssaLOD_B;
-extern ECORE_API float			ps_r2_ssaHZBvsTEX;
+extern ECORE_API	float		ps_r2_ssaDISCARD;
+extern ECORE_API	float		ps_r2_ssaDONTSORT;
+extern ECORE_API	float		ps_r2_ssaLOD_A;
+extern ECORE_API	float		ps_r2_ssaLOD_B;
+extern ECORE_API	float		ps_r2_ssaHZBvsTEX;
+extern ECORE_API	float		ps_r2_tf_Mipbias;
+extern ECORE_API	int			ps_r2_tf_Anisotropic;
 
 // R2-specific
 extern ECORE_API Flags32		ps_r2_ls_flags;				// r2-only

@@ -5,8 +5,6 @@
  
 // Common
 //int			ps_r__Supersample			= 1;
-int			ps_r__tf_Anisotropic		= 4		;
-float		ps_r__tf_Mipbias			= -0.5f	;
 int			ps_r__LightSleepFrames		= 10	;
 
 float		ps_r__Detail_l_ambient		= 0.9f	;
@@ -26,21 +24,25 @@ float		ps_r__GLOD_ssa_end			=  64.f	;
 float		ps_r__LOD					=  1.f	;
 
 // R1
-float		ps_r1_ssaDISCARD			= 4.f;
-float		ps_r1_ssaDONTSORT			= 32.f;
-float		ps_r1_ssaLOD_A				= 64.f;
-float		ps_r1_ssaLOD_B				= 48.f;
-float		ps_r1_ssaHZBvsTEX			= 256.f;
+float		ps_r1_ssaDISCARD			= 4.f	;
+float		ps_r1_ssaDONTSORT			= 32.f	;
+float		ps_r1_ssaLOD_A				= 64.f	;
+float		ps_r1_ssaLOD_B				= 48.f	;
+float		ps_r1_ssaHZBvsTEX			= 256.f	;
+int			ps_r1_tf_Anisotropic		= 2		;
+float		ps_r1_tf_Mipbias			= -0.5f	;
 
 // R1-specific
-int			ps_r1_GlowsPerFrame			= 16;	// r1-only
+int			ps_r1_GlowsPerFrame			= 16	;	// r1-only
 
 // R2
-float		ps_r2_ssaDISCARD			= 4.f;
-float		ps_r2_ssaDONTSORT			= 32.f;
-float		ps_r2_ssaLOD_A				= 64.f;
-float		ps_r2_ssaLOD_B				= 48.f;
-float		ps_r2_ssaHZBvsTEX			= 256.f;
+float		ps_r2_ssaDISCARD			= 4.f	;
+float		ps_r2_ssaDONTSORT			= 32.f	;
+float		ps_r2_ssaLOD_A				= 48.f	;
+float		ps_r2_ssaLOD_B				= 32.f	;
+float		ps_r2_ssaHZBvsTEX			= 256.f	;
+int			ps_r2_tf_Anisotropic		= 4		;
+float		ps_r2_tf_Mipbias			= 0.0f	;
 
 // R2-specific
 Flags32		ps_r2_ls_flags				= { R2FLAG_SUN | R2FLAG_FASTBLOOM | R2FLAG_AA };	// r2-only
@@ -158,8 +160,6 @@ void		xrRender_initconsole	()
 	CMD1(CCC_Screenshot,"screenshot"			);
 
 //	CMD4(CCC_Integer,	"r__supersample",		&ps_r__Supersample,			1,		4		);
-	CMD2(CCC_tf_Aniso,	"r__tf_aniso",			&ps_r__tf_Anisotropic		);
-	CMD2(CCC_tf_MipBias,"r__tf_mipbias",		&ps_r__tf_Mipbias			);
 	CMD4(CCC_Integer,	"r__lsleep_frames",		&ps_r__LightSleepFrames,	4,		30		);
 
 	CMD1(CCC_ModelPoolStat,"stat_models"		);
@@ -174,7 +174,6 @@ void		xrRender_initconsole	()
 	CMD4(CCC_Float,		"r__detail_l_ambient",	&ps_r__Detail_l_ambient,	.5f,	.95f	);
 	CMD4(CCC_Float,		"r__detail_l_aniso",	&ps_r__Detail_l_aniso,		.1f,	.5f		);
 	CMD4(CCC_Float,		"r__detail_density",	&ps_r__Detail_density,		.05f,	0.99f	);
-	CMD4(CCC_Float,		"r__detail_rainbow_h",	&ps_r__Detail_rainbow_hemi,	.00f,	1.0f	);
 
 	tw_min.set			(EPS,EPS,EPS);
 	tw_max.set			(2,2,2);
@@ -190,6 +189,8 @@ void		xrRender_initconsole	()
 	CMD4(CCC_Float,		"r1_ssa_discard",		&ps_r1_ssaDISCARD,			1,		16		);
 	CMD4(CCC_Float,		"r1_ssa_dontsort",		&ps_r1_ssaDONTSORT,			16,		128		);
 	CMD4(CCC_Float,		"r1_ssa_hzb_vs_tex",	&ps_r1_ssaHZBvsTEX,			16,		512		);
+	CMD2(CCC_tf_Aniso,	"r1_tf_aniso",			&ps_r1_tf_Anisotropic		);
+	CMD2(CCC_tf_MipBias,"r1_tf_mipbias",		&ps_r1_tf_Mipbias			);
 
 	// R1-specific
 	CMD4(CCC_Integer,	"r1_glows_per_frame",	&ps_r1_GlowsPerFrame,		2,		32		);
@@ -200,6 +201,8 @@ void		xrRender_initconsole	()
 	CMD4(CCC_Float,		"r2_ssa_discard",		&ps_r2_ssaDISCARD,			1,		16		);
 	CMD4(CCC_Float,		"r2_ssa_dontsort",		&ps_r2_ssaDONTSORT,			16,		128		);
 	CMD4(CCC_Float,		"r2_ssa_hzb_vs_tex",	&ps_r2_ssaHZBvsTEX,			16,		512		);
+	CMD2(CCC_tf_Aniso,	"r2_tf_aniso",			&ps_r2_tf_Anisotropic		);
+	CMD2(CCC_tf_MipBias,"r2_tf_mipbias",		&ps_r2_tf_Mipbias			);
 
 	// R2-specific
 	CMD2(CCC_R2GM,		"r2em",					&ps_r2_gmaterial							);
