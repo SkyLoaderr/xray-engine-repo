@@ -267,14 +267,25 @@ public:
 	IC u8 GetDayTime() { 
 		return ((u8) ((GetGameTime() / 3600000) % 24 )); 
 	}
-
-
+	//by Mad Max 
+	IC bool	IsServer ()
+	{
+		return (Server->client_Count() != 0);
+	};
+	IC bool IsClient ()
+	{
+		return (Server->client_Count() == 0);
+	};
 };
 
 IC CLevel&				Level()		{ return *((CLevel*) g_pGameLevel);			}
 IC game_cl_GameState&	Game()		{ return Level().game;					}
 IC u32					GameID()	{ return Game().type;					}
 IC CHUDManager&			HUD()		{ return *((CHUDManager*)Level().pHUD);	}
+//by Mad Max 
+IC bool					OnServer()	{ return Level().IsServer();				}
+IC bool					OnClient()	{ return Level().IsClient();				}
+
 
 class  CPHWorld;
 extern CPHWorld*				ph_world;
