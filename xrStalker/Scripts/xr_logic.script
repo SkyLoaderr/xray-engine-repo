@@ -1,0 +1,167 @@
+----------------------------------------------------------------------------------------------------
+-- Script switching logic
+----------------------------------------------------------------------------------------------------
+-- Разработчик: Andrey Fidrya (Zmey) af@svitonline.com
+----------------------------------------------------------------------------------------------------
+
+function gulag_activate(npc, ini, section, gulag_name)
+	xr_motivator.storage[npc_id]["active_section"] = nil
+	xr_motivator.storage[npc_id]["gulag_name"] = if_then_else(gulag_name, gulag_name, "")
+	activate_by_section(npc, ini, section)
+end
+
+function stalker_enable_scripts(npc, ini)
+	printf("DEBUG: stalker_enable_scripts")
+	local npc_id = npc:id()
+
+	xr_motivator.storage[npc_id]["active_section"] = nil
+	xr_motivator.storage[npc_id]["gulag_name"] = ""
+
+	if ini:section_exist("logic") then
+		local active_section = utils.cfg_get_string(ini, "logic", "active", npc, true, "")
+		if active_section == "nil" then
+			printf("WARNING: object '%s': active section is 'nil'", npc:name())
+		else
+			activate_by_section(npc, ini, active_section)
+		end
+	else
+		--utils.abort("object '%s': unable to find section 'logic'", npc:name())
+		printf("WARNING: object '%s': unable to find section 'logic'", npc:name())
+	end
+	printf("DEBUG: stalker_enable_scripts end")
+end
+
+function activate_by_section(npc, ini, section)
+	printf("DEBUG: activate_by_section: looking for section '%s'", section)
+
+	local npc_id = npc:id()
+	if xr_motivator.storage[npc_id]["active_section"] then
+		utils.abort("xr_logic: activate_by_section: while processing section '%s': character '%s': trying to " ..
+			"activate more than one schemes at once (section '%s' is active)",
+			section, npc:name(), xr_motivator.storage[npc_id]["active_section"])
+	end
+
+	if ini:section_exist(section) then
+		local scheme = utils.get_scheme_by_section(section)
+		if scheme == nil then
+			utils.abort("object '%s': unable to determine scheme name from section name '%s'",
+				npc:name(), section)
+		end
+		-- schemes[scheme] даст имя файла (модуля), в котором реализована схема
+		-- _G[] даст указатель на неймспейс (таблицу) этого модуля
+		_G[schemes[scheme]].set_scheme(npc, ini, scheme, section, xr_motivator.storage[npc_id]["gulag_name"])
+		printf("DEBUG: activate_by_section: scheme '%s' activated from section '%s'", scheme, section)
+		xr_motivator.storage[npc_id]["active_section"] = section
+	else
+		utils.abort("object '%s': activate_by_section: section '%s' does not exist",
+			npc:name(), section)
+	end
+end
+
+function assign_storage_and_bind(npc, ini, scheme, section)
+	local npc_id = npc:id()
+	local st
+	
+	if not xr_motivator.storage[npc_id][scheme] then
+		xr_motivator.storage[npc_id][scheme] = {}
+		st = xr_motivator.storage[npc_id][scheme]
+		
+		-- Схема стартует впервые - прибиндить
+		printf("DEBUG: assign_storage_and_bind: bind scheme: '%s'", scheme)
+		_G[schemes[scheme]].add_to_binder(npc, ini, scheme, section, st)
+	else
+		st = xr_motivator.storage[npc_id][scheme]
+	end
+
+	st["scheme"] = scheme
+	st["section"] = section
+	st["ini"] = ini
+
+	return st
+end
+
+function subscribe_action_for_events(st, new_action)
+	printf("DEBUG: registering new action for reset event")
+	if not st.actions then
+		st.actions = {}
+	end
+	st.actions[new_action] = true
+end
+
+function reset_actions(st)
+	printf("DEBUG: reset_actions")
+	if not st.actions then
+		utils.abort("reset_actions: scheme '%s', section '%s': at least one action in a scheme must be " ..
+			"subscribed for events", st.scheme, st.section)
+	end
+	for action_ptr, is_active in pairs(st.actions) do
+		action_ptr:reset_scheme()
+	end
+end
+
+function pick_random_section_from_list(lst)
+	-- FIXME
+	for n, s in pairs(lst) do
+		printf("pick_random_section_from_list: picked '%s'", s)
+		return s
+	end
+	return nil
+end
+
+function try_switch_to_another_section(npc, st)
+	local l = st.logic
+	local npc_id = npc:id()
+
+	if l.on_actor_dist_le then
+		local actor = level.actor()
+		if distance_between(actor, npc) <= l.on_actor_dist_le.dist then
+			xr_motivator.storage[npc_id]["active_section"] = nil
+			activate_by_section(npc, st.ini, pick_random_section_from_list(l.on_actor_dist_le.sections))
+			printf("DEBUG: try_switch_to_another_section: returning true")
+			return true
+		end
+	end
+	return false
+end
+
+function is_active(npc, st)
+	local is_act = (st.section == xr_motivator.storage[npc:id()]["active_section"])
+
+	--[[
+	if is_act then
+		printf("DEBUG: trying to switch to another section")
+		try_switch_to_another_section(npc, st)
+	end
+	--]]
+
+	-- Текущая секция активна и не сработало ни одно из условий переключения на другие секции
+	return is_act
+end
+
+function conf_get_number_and_list(ini, section, field, npc)
+	local str = utils.cfg_get_string(ini, section, field, npc, false, "")
+	if not str then
+		return nil
+	end
+
+	local par = utils.parse_params(str)
+	
+	local t = {}
+	t.number = tonumber(par[1])
+	t.list = {}
+	t.list[1] = par[2]
+	return t
+end
+
+function cfg_get_switch_conditions(ini, section, npc)
+	local l = {}
+	local t
+
+	t = conf_get_number_and_list(ini, section, "on_actor_dist_le", npc)
+	if t then
+		l.on_actor_dist_le = { dist = t.number, sections = t.list }
+	end
+
+	return l
+end
+
