@@ -41,7 +41,7 @@ void CBuild::PreOptimize()
 	
 	// Pre-alloc memory
 	int		_size	= (HDIM_X+1)*(HDIM_Y+1)*(HDIM_Z+1);
-	int		_average= (Vcount/_size)/2;
+	int		_average= (Vcount/_size)/2;	if (_average<2)	_average = 2;
 	for (int ix=0; ix<HDIM_X+1; ix++)
 		for (int iy=0; iy<HDIM_Y+1; iy++)
 			for (int iz=0; iz<HDIM_Z+1; iz++)
