@@ -303,7 +303,7 @@ void CAI_ALife::Update(u32 dt)
 		do {
 			i++;
 			m_dwObjectsBeingProcessed = ((m_dwObjectsBeingProcessed + 1) % m_tpScheduledObjects.size());
-			vfProcessNPC(m_dwObjectsBeingProcessed);
+			vfProcessNPC(m_tpScheduledObjects[m_dwObjectsBeingProcessed]);
 		}
 		while (((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i < m_qwMaxProcessTime) && (i < (int)m_tpScheduledObjects.size()));
 	}
@@ -313,17 +313,16 @@ void CAI_ALife::Update(u32 dt)
 #endif
 }
 
-void CAI_ALife::vfProcessNPC(u32 dwNPCIndex)
+void CAI_ALife::vfProcessNPC(_OBJECT_ID	&tObjectID)
 {
 //	Msg						("* Monster %d",dwNPCIndex);
 //	Msg						("* * Time       : %d",m_tpNPC[dwNPCIndex].dwLastUpdateTime);
 //	Msg						("* * Spawn      : %d",m_tpNPC[dwNPCIndex].wSpawnPoint);
 //	Msg						("* * Count      : %d",m_tpNPC[dwNPCIndex].wCount);
-	vfCheckForDeletedEvents	(dwNPCIndex);
-	vfChooseNextRoutePoint	(dwNPCIndex);
-	vfCheckForTheBattle		(dwNPCIndex);
-//!!	m_tpScheduledObjects	[dwNPCIndex].dwLastUpdateTime = Level().timeServer();
-
+	vfCheckForDeletedEvents	(tObjectID);
+	vfChooseNextRoutePoint	(tObjectID);
+	vfCheckForTheBattle		(tObjectID);
+	m_tObjectRegistry.m_tppMap[tObjectID]->m_tTimeID = Level().timeServer();
 //	Msg						("* * PrevPoint  : %d",m_tpNPC[dwNPCIndex].wPrevGraphPoint);
 //	Msg						("* * GraphPoint : %d",m_tpNPC[dwNPCIndex].wGraphPoint);
 //	Msg						("* * NextPoint  : %d",m_tpNPC[dwNPCIndex].wNextGraphPoint);
@@ -333,7 +332,7 @@ void CAI_ALife::vfProcessNPC(u32 dwNPCIndex)
 //	Msg						("* * Health     : %d",m_tpNPC[dwNPCIndex].iHealth);
 }
 
-void CAI_ALife::vfChooseNextRoutePoint(u32 dwNPCIndex)
+void CAI_ALife::vfChooseNextRoutePoint(_OBJECT_ID &tObjectID)
 {
 //	if (m_tpNPC[dwNPCIndex].wNextGraphPoint != m_tpNPC[dwNPCIndex].wGraphPoint) {
 //		u32 dwCurTime = Level().timeServer();
@@ -400,10 +399,10 @@ void CAI_ALife::vfChooseNextRoutePoint(u32 dwNPCIndex)
 //	}
 }
 
-void CAI_ALife::vfCheckForTheBattle(u32 dwNPCIndex)
+void CAI_ALife::vfCheckForTheBattle(_OBJECT_ID &tObjectID)
 {
 }
 
-void CAI_ALife::vfCheckForDeletedEvents(u32 dwNPCIndex)
+void CAI_ALife::vfCheckForDeletedEvents(_OBJECT_ID &tObjectID)
 {
 }

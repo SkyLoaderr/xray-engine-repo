@@ -60,10 +60,10 @@ public:
 		vfAddToGraphPoint		(tObjectID,tNextGraphPointID);
 	}
 
-	void							vfCheckForDeletedEvents	(_OBJECT_ID tObjectID);
-	void							vfCheckForTheBattle		(_OBJECT_ID tObjectID);
-	void							vfChooseNextRoutePoint	(_OBJECT_ID tObjectID);
-	void							vfProcessNPC			(_OBJECT_ID tObjectID);
+	void							vfCheckForDeletedEvents	(_OBJECT_ID &tObjectID);
+	void							vfCheckForTheBattle		(_OBJECT_ID &tObjectID);
+	void							vfChooseNextRoutePoint	(_OBJECT_ID &tObjectID);
+	void							vfProcessNPC			(_OBJECT_ID &tObjectID);
 	void							vfInitTerrain			();
 	void							vfInitLocationOwners	();
 	void							vfInitGraph				();
