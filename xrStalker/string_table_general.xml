@@ -46,6 +46,9 @@
 		<text>%%s kill %%s</text>
 		<text ln="rus">%%s убил %%s</text>
 	</string>
-	
+		<string id="alife_news_retreat">
+		<text>%%s retreat from battlefield</text>
+		<text ln="rus">%%s отступил с места боя</text>
+	</string>
 </string_table>
 
