@@ -1,16 +1,13 @@
 // HOM.h: interface for the CHOM class.
 //
 //////////////////////////////////////////////////////////////////////
-
-#if !defined(AFX_HOM_H__94471B51_E215_4C67_B753_B02F66D79911__INCLUDED_)
-#define AFX_HOM_H__94471B51_E215_4C67_B753_B02F66D79911__INCLUDED_
 #pragma once
 
 #include "vis_common.h"
 
-class ENGINE_API occTri;
+class occTri;
 
-class ENGINE_API CHOM  
+class CHOM  
 {
 private:
 	CDB::MODEL*				m_pModel;
@@ -42,5 +39,3 @@ public:
 	CHOM();
 	~CHOM();
 };
-
-#endif // !defined(AFX_HOM_H__94471B51_E215_4C67_B753_B02F66D79911__INCLUDED_)

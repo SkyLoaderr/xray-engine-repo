@@ -515,6 +515,25 @@
 				RelativePath="blender_light.h">
 			</File>
 		</Filter>
+		<Filter
+			Name="HOM Occlusion"
+			Filter="">
+			<File
+				RelativePath="HOM.cpp">
+			</File>
+			<File
+				RelativePath="HOM.h">
+			</File>
+			<File
+				RelativePath="occRasterizer.cpp">
+			</File>
+			<File
+				RelativePath="occRasterizer.h">
+			</File>
+			<File
+				RelativePath="occRasterizer_core.cpp">
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>

@@ -1411,37 +1411,6 @@
 					RelativePath="vis_common.h">
 				</File>
 				<Filter
-					Name="HOM occlusion"
-					Filter="">
-					<File
-						RelativePath=".\HOM.cpp">
-						<FileConfiguration
-							Name="Release|Win32">
-							<Tool
-								Name="VCCLCompilerTool"
-								AssemblerOutput="4"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Mixed (for debug only)|Win32">
-							<Tool
-								Name="VCCLCompilerTool"
-								AssemblerOutput="4"/>
-						</FileConfiguration>
-					</File>
-					<File
-						RelativePath=".\HOM.h">
-					</File>
-					<File
-						RelativePath=".\occRasterizer.cpp">
-					</File>
-					<File
-						RelativePath=".\occRasterizer.h">
-					</File>
-					<File
-						RelativePath=".\occRasterizer_core.cpp">
-					</File>
-				</Filter>
-				<Filter
 					Name="Frustum"
 					Filter="">
 					<File

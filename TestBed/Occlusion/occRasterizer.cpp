@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "occRasterizer.h"
 
-ENGINE_API occRasterizer	Raster;
+occRasterizer	Raster;
 
 void __stdcall fillDW_8x	(void* _p, u32 size, u32 value)
 {

@@ -1,9 +1,5 @@
 // occRasterizer.h: interface for the occRasterizer class.
-//
 //////////////////////////////////////////////////////////////////////
-
-#if !defined(AFX_OCCRASTERIZER_H__3739AF97_E2A7_4740_B8C2_6EEB0F8CB66D__INCLUDED_)
-#define AFX_OCCRASTERIZER_H__3739AF97_E2A7_4740_B8C2_6EEB0F8CB66D__INCLUDED_
 #pragma once
 
 const int	occ_dim_0			= 64;
@@ -12,7 +8,7 @@ const int	occ_dim_2			= occ_dim_1/2;
 const int	occ_dim_3			= occ_dim_2/2;
 const int	occ_dim				= occ_dim_0+4;	// 2 pixel border around frame
 
-class ENGINE_API	occTri
+class occTri
 {
 public:	
 	occTri*			adjacent	[3];
@@ -27,7 +23,7 @@ const float			occQ_s32	= float(0x40000000);	// [-2..2]
 const float			occQ_s16	= float(16384-1);		// [-2..2]
 typedef	s32			occD;
 
-class ENGINE_API	occRasterizer  
+class occRasterizer  
 {
 private:
 	occTri*			bufFrame	[occ_dim][occ_dim];
@@ -68,6 +64,4 @@ public:
 	~occRasterizer	();
 };
 
-ENGINE_API	extern occRasterizer	Raster;
-
-#endif // !defined(AFX_OCCRASTERIZER_H__3739AF97_E2A7_4740_B8C2_6EEB0F8CB66D__INCLUDED_)
+extern occRasterizer	Raster;
