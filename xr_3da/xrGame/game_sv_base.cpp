@@ -282,7 +282,7 @@ void game_sv_GameState::Create					(shared_str &options)
 	// loading scripts
 	ai().script_engine().remove_script_process("game");
 	string256					S;
-	FS.update_path				(S,"$game_data$","script.ltx");
+	FS.update_path				(S,"$game_config$","script.ltx");
 	CInifile					*l_tpIniFile = xr_new<CInifile>(S);
 	R_ASSERT					(l_tpIniFile);
 
