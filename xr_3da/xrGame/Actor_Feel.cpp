@@ -8,6 +8,7 @@
 #include "level.h"
 #include "xr_level_controller.h"
 #include "UsableScriptObject.h"
+#include "customzone.h"
 
 #define PICKUP_INFO_COLOR 0xFFAAAAAA
 
