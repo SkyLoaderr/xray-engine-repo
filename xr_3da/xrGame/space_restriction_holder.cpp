@@ -62,7 +62,6 @@ void CSpaceRestrictionHolder::register_restrictor				(CSpaceRestrictor *space_re
 	}
 	
 	CSpaceRestrictionShape	*shape = xr_new<CSpaceRestrictionShape>(space_restrictor,restrictor_type != RestrictionSpace::eDefaultRestrictorTypeNone);
-//	Msg						("INTRUSIVE : adding CSpaceRestrictionBase %s",*space_restrictors);
 	RESTRICTIONS::iterator	I = m_restrictions.find(space_restrictors);
 	if (I == m_restrictions.end()) {
 		CSpaceRestrictionBridge	*bridge = xr_new<CSpaceRestrictionBridge>(shape);
