@@ -225,38 +225,38 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 	end
 
 	-- <«¬” >
-	local snd_from = self.path_look_info[index]["snd_from"]
-	if snd_from then
-		snd_from = tonumber(snd_from)
-	end
-	local snd_to = self.path_look_info[index]["snd_to"]
-	if snd_to then
-		snd_to = tonumber(snd_to)
-	end
-
-	local snd_prob = self.path_look_info[index]["snd_prob"]
-	if snd_prob then
-		snd_prob = tonumber(snd_prob)
-	else
-		snd_prob = 100
-	end
-
-	local suggested_snd_once = self.path_look_info[index]["snd_cont"]
-	if suggested_snd_cont == "true" then
-		self.play_once = false
-	else
-		self.play_once = true
-	end
-
-	local snd_wait_anim = self.path_look_info[index]["snd_wait_anim"]
-	if snd_wait_anim == "true" then
-		self.play_sound_after_anim_start = true
-	else
-		self.play_sound_after_anim_start = false
-	end
-
-	local suggested_snd = self.path_look_info[index]["snd"]
+	local suggested_snd = self.path_walk_info[index]["snd"]
 	if suggested_snd then
+		local snd_from = self.path_walk_info[index]["snd_from"]
+		if snd_from then
+			snd_from = tonumber(snd_from)
+		end
+		local snd_to = self.path_walk_info[index]["snd_to"]
+		if snd_to then
+			snd_to = tonumber(snd_to)
+		end
+
+		local snd_prob = self.path_walk_info[index]["snd_prob"]
+		if snd_prob then
+			snd_prob = tonumber(snd_prob)
+		else
+			snd_prob = 100
+		end
+
+		local suggested_snd_once = self.path_walk_info[index]["snd_cont"]
+		if suggested_snd_cont == "true" then
+			self.play_once = false
+		else
+			self.play_once = true
+		end
+
+		local snd_wait_anim = self.path_walk_info[index]["snd_wait_anim"]
+		if snd_wait_anim == "true" then
+			self.play_sound_after_anim_start = true
+		else
+			self.play_sound_after_anim_start = false
+		end
+
 		if snd_from and snd_to then
 			self.sound = { rnd = snd_prob,
 				maxidle = snd_to - snd_from + 1, 
@@ -351,6 +351,24 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 		end
 	end
 	if pt_chosen_idx then
+		if not suggested_snd then -- в path_walk звук не задан, проверить, задан ли он на точке
+			suggested_snd = self.path_look_info[index]["snd"]
+			if suggested_snd then
+				local snd_prob = self.path_look_info[index]["snd_prob"]
+				if snd_prob then
+					snd_prob = tonumber(snd_prob)
+				else
+					snd_prob = 100
+				end
+				self.sound = { rnd = snd_prob,
+					maxidle = 1, 
+					sumidle = -1,
+					themes = parse_names(suggested_snd) }
+				-- Ётот звук играть не пр€мо сейчас, а когда начнетс€ анимаци€ на позиции (после поворота и т.д.):
+				self.play_sound_after_anim_start = true
+			end
+		end
+
 		if pt_chosen_idx ~= self.last_look_index then
 			xr_state.anim_update(nil, self.object) -- не играть анимацию во врем€ поворота!
 			self.expiration_time = device():time_global() + 700 -- дать 700 мс на начало поворота
