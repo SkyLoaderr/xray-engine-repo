@@ -105,23 +105,30 @@ void CConsoleUI::show_header()
 
 int __cdecl CConsoleUI::log	(LPCSTR format, ...)
 {
-	va_list		marker;
+	va_list					marker;
 
-	va_start	(marker,format);
+	va_start				(marker,format);
 
-	int			result = vfprintf(stdout,format,marker);
-	vfprintf	(m_log,format,marker);
+	int						result = vfprintf(stdout,format,marker);
+	vfprintf				(m_log,format,marker);
 
-	va_end		(marker);
+	va_end					(marker);
 
-	return		(result);
+	return					(result);
 }
 
 void CConsoleUI::execute	(char argc, char *argv[])
 {
-	char s[128];
+	char					s[256];
+	xr_strcpy				(s,"");
+	for (char i=1; i<argc; ++i) {
+		strcat(s,argv[i]);
+		strcat(s," ");
+	}
+	script().run_string		(s);
+
 	for (;;) {
-		log					("bge> ");
+		log					("bge>");
 		xr_strcpy			(s,"");
 		scanf				("%[^\n]s %c",s);
 		script().run_string	(s);
