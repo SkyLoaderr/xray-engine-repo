@@ -20,7 +20,7 @@ function evaluator_close_combat:__init(name, storage) super (nil, name)
 	self.a = storage
 end
 function evaluator_close_combat:evaluate()
-	if self.a.enabled == false then return true end
+	if not xr_logic.is_active(self.object, self.a) then return true end
 	return (self.object:best_enemy() ~= nil and distance_between(self.object, self.object:best_enemy()) < self.a.radius )
 end
 
