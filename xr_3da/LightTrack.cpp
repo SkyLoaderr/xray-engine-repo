@@ -45,6 +45,7 @@ void	CLightDB_Static::Track	(CObject* O)
 	float				fRadius;
 
 	// Prepare
+	if					(0==O)							return;
 	CLightTrack& dest	= *O->Lights();
 	if					(dest.dwFrame==Device.dwFrame)	return;
 	dest.dwFrame		= Device.dwFrame;

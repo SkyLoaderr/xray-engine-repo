@@ -58,12 +58,7 @@ void		CRender::set_Object			(CObject*		O )
 { 
 	val_pObject			= O;
 	L_Shadows.set_object(O);
-	
-	if (O) {
-		Fvector C; 
-		O->clCenter(C); 
-		L_DB.Track(C,O->Radius(),*O->Lights()); 
-	}
+	L_DB.Track			(O);
 }
 
 
