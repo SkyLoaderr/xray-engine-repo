@@ -404,6 +404,7 @@ void CSE_ALifeGraphRegistry::vfDetachItem(CSE_Abstract &tAbstract, CSE_ALifeInve
 			l_tpALifeDynamicObject1->o_Position		= l_tpALifeDynamicObject2->o_Position;
 			l_tpALifeDynamicObject1->m_tGraphID		= l_tpALifeDynamicObject2->m_tGraphID;
 			l_tpALifeDynamicObject1->m_fDistance	= l_tpALifeDynamicObject2->m_fDistance;
+			tpALifeInventoryItem->m_tPreviousParentID = l_tpALifeDynamicObject2->ID;
 		}
 		l_tpALifeTraderAbstract->m_fCumulativeItemMass		-= tpALifeInventoryItem->m_fMass;
 		l_tpALifeTraderAbstract->m_iCumulativeItemVolume	-= tpALifeInventoryItem->m_iVolume;

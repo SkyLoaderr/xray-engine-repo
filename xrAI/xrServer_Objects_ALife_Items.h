@@ -23,6 +23,7 @@ public:
 	int								m_iGridWidth;
 	int								m_iGridHeight;
 	u64								m_qwGridBitMask;
+	_OBJECT_ID						m_tPreviousParentID;
 
 									CSE_ALifeInventoryItem	(LPCSTR caSection);
 	IC		bool					bfAttached		() const

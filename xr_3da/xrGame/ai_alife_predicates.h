@@ -129,7 +129,32 @@ public:
 				return				(true);
 			}
 		return						(false);
-	};
+	}
+};
+
+class CSortByOwnerPredicate {
+	CSE_ALifeObjectRegistry			*m_tpALifeObjectRegistry;
+public:
+	_OBJECT_ID						m_tParentID;
+	
+									CSortByOwnerPredicate	(CSE_ALifeObjectRegistry *tpALifeObjectRegistry, _OBJECT_ID tParentID)
+	{
+		m_tpALifeObjectRegistry		= tpALifeObjectRegistry;
+		m_tParentID					= tParentID;
+	}
+
+	IC bool							operator()							(const CSE_ALifeInventoryItem *tpALifeInventoryItem1, const CSE_ALifeInventoryItem *tpALifeInventoryItem2) const
+	{
+		if (tpALifeInventoryItem1->m_tPreviousParentID == m_tParentID)
+			if (tpALifeInventoryItem2->m_tPreviousParentID == m_tParentID)
+				return				(tpALifeInventoryItem1 < tpALifeInventoryItem2);
+			else
+				return				(true);
+		else {
+			R_ASSERT				(tpALifeInventoryItem2->m_tPreviousParentID == m_tParentID);
+			return					(false);
+		}
+	}
 };
 
 #endif

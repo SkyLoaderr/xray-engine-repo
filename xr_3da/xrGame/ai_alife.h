@@ -104,7 +104,7 @@ class CSE_ALifeSimulator :
 			void					vfFillCombatGroup			(CSE_ALifeSchedulable		*tpALifeSchedulable,		int						iGroupIndex);
 			void					vfFinishCombat				(ECombatResult				tCombatResult);
 	// trading routines
-			void					vfRunFunctionByIndex		(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract1,		CSE_ALifeHumanAbstract	*tpALifeHumanAbstract2,			int				i,							int						j,						int						&i1,						int				&i2);
+			void					vfRunFunctionByIndex		(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		OBJECT_VECTOR			&tpBlockedItems,				ITEM_P_VECTOR	&tpItems,					int						i,						int						&j);
 			void					vfAssignItemParents			(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		int						iItemCount);
 			void					vfAttachOwnerItems			(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		ITEM_P_VECTOR			&tpItemVector,					ITEM_P_VECTOR	&tpOwnItems);
 			void					vfRestoreItems				(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		ITEM_P_VECTOR			&tpItemVector);
@@ -116,7 +116,7 @@ class CSE_ALifeSimulator :
 			bool					bfCheckForInventoryCapacity	(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract1,		ITEM_P_VECTOR			&tpTrader1,						INT_VECTOR		&tpIndexes1,				CSE_ALifeHumanAbstract	*tpALifeHumanAbstract2,	ITEM_P_VECTOR			&tpTrader2,					INT_VECTOR		&tpIndexes2);
 			bool					bfCheckForInventoryCapacity	(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract1,		ITEM_P_VECTOR			&tpTrader1,						int				iSum1,						int						iMoney1,				CSE_ALifeHumanAbstract	*tpALifeHumanAbstract2,		ITEM_P_VECTOR	&tpTrader2,		int			iSum2,		int iMoney2, int iBallance);
 			bool					bfCheckForTrade				(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract1,		ITEM_P_VECTOR			&tpTrader1,						INT_VECTOR		&tpSums1,					int						iMoney1,				CSE_ALifeHumanAbstract	*tpALifeHumanAbstract2,		ITEM_P_VECTOR	&tpTrader2,		INT_VECTOR	&tpSums2,	int iMoney2, int iBallance);
-			bool					bfCheckIfCanNullTradersBallance(CSE_ALifeHumanAbstract	*tpALifeHumanAbstract1,		CSE_ALifeHumanAbstract	*tpALifeHumanAbstract2,		int				iItemCount1,				int						iItemCount2,			int						iBallance);
+			bool					bfCheckIfCanNullTradersBallance(CSE_ALifeHumanAbstract	*tpALifeHumanAbstract1,		CSE_ALifeHumanAbstract	*tpALifeHumanAbstract2,			int				iItemCount1,				int						iItemCount2,			int						iBallance);
 			void					vfPerformTrading			(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract1,		CSE_ALifeHumanAbstract	*tpALifeHumanAbstract2);
 			void					vfPerformCommunication		();
 
