@@ -201,7 +201,7 @@ public:
 	virtual BOOL						net_Relevant		()	{ return net_Local; };		// relevant for export to server
 
 	virtual void			Die					( );
-	virtual	BOOL			Hit					(float P, Fvector &dir,			CObject* who);
+	virtual	void			Hit					(float P, Fvector &dir,			CObject* who);
 	virtual void			HitSignal			(float P, Fvector &vLocalDir,	CObject* who);
 
 	virtual	float			ffGetFov			()			{ return 90.f;		}	
