@@ -104,13 +104,14 @@ function motivator_binder:reinit()
 -- Скрипты, управляемые xr_logic
 ----------------------------------------------------------------------------------------------------------------------
 	xr_logic.stalker_enable_scripts(self.object, char_ini)
-	
+
 ----------------------------------------------------------------------------------------------------------------------
 -- Смена стартового диалога
 ----------------------------------------------------------------------------------------------------------------------
 	if char_ini:section_exist("dialog") and char_ini:line_exist("dialog", "id") then
+		printf("CC: new dialog set")
 		self.object:set_start_dialog(char_ini:r_string("dialog", "id"))
-	end
+	end		
 end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:net_spawn(sobject)
@@ -128,6 +129,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:update(delta)
     object_binder.update(self, delta)
+    
 --' Проверка ТИМ СКВАД ГРУП
 if false then
   if memtsg[self.object:id()] == nil then
