@@ -22,7 +22,7 @@ function evaluator_new:evaluate()
 	self.a.evn:calculate()
 	self.a.evn:print()
 
-	return self.a.evn:isEvents() or self.a.obj.id ~= nil
+	return self.a.evn:isEvents()
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -85,25 +85,25 @@ function action_wait:initialize()
 				  "prisluh_2_idle_6" }}
 
 	xr_state.change_state(self.object, 0)
-	printf("Reactions RESET")
 end
 function action_wait:execute()
 	self.a.evn:get_event(self.a.obj)
 
-	printf("Process obj %d, type: %s",self.a.obj.id, self.a.obj.type)
+	if self.a.obj.id ~= nil and
+	   self.a.obj.type ~= nil then
+	   printf("Process obj %d, type: %s",self.a.obj.id, self.a.obj.type)
+	end
 
 	if self.a.obj.type == "watch" then
 		--' если мы можем идентицифировать объект - отмечаем как известный и идем дальше
 		if self.a.obj.visibility >= self.object:visibility_threshold() then
 			self.a.evn:markAsUsed(self.a.obj.id)
-			self.a.obj.id = nil
 			return
 		end
 
 		--' если прошло много времени, прекращаем
 		if game.time() - self.a.obj.time >= self.a.time_wait then
 			self.a.evn:removeFromWatch(self.a.obj.id)
-			self.a.obj.id = nil
 			return
 		end
 
@@ -122,7 +122,6 @@ function action_wait:execute()
 		--' если мы можем идентицифировать объект - отмечаем как известный и идем дальше
 		if self.a.obj.visibility >= self.object:visibility_threshold() then
 			self.a.evn:markAsUsed(self.a.obj.id)
-			self.a.obj.id = nil
 			return
 		end
 	end
@@ -131,7 +130,6 @@ function action_wait:execute()
 		--' если мы можем идентицифировать объект - отмечаем как известный и идем дальше
 		if self.a.obj.visibility >= self.object:visibility_threshold() then
 			self.a.evn:markCorpse(self.a.obj.id)
-			self.a.obj.id = nil
 			return
 		end
 	end
@@ -140,7 +138,6 @@ function action_wait:execute()
 		--' если мы можем идентицифировать объект - отмечаем как известный и идем дальше
 		if self.a.obj.visibility >= self.object:visibility_threshold() then
 			self.a.evn:markCorpse(self.a.obj.id)
-			self.a.obj.id = nil
 			return
 		end
 	end
@@ -149,7 +146,6 @@ function action_wait:execute()
 		--' если мы можем идентицифировать объект - отмечаем как известный и идем дальше
 		if self.a.obj.visibility >= self.object:visibility_threshold() then
 			self.a.evn:markCorpse(self.a.obj.id)
-			self.a.obj.id = nil
 			return
 		end
 	end
@@ -158,14 +154,13 @@ function action_wait:execute()
 		--' если мы можем идентицифировать объект - отмечаем как известный и идем дальше
 		if self.a.obj.visibility >= self.object:visibility_threshold() then
 			self.a.evn:markCorpse(self.a.obj.id)
-			self.a.obj.id = nil
 			return
 		end
 	end
 	action_base.execute(self)
 end
-function action_wait:finalize()
-	self:set_prisluh(false)
+function action_wait:finalize()	
+	self:set_prisluh(false)	
 	action_base.finalize (self)
 end
 function action_wait:set_prisluh(prisluh)

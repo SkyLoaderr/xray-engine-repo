@@ -130,25 +130,18 @@ function motivator_binder:reload (section)
         }
     xr_state.add_to_binder(self.object)
     -- Настройка схемы реакции
-        xr_motivator.storage[self.object:id()].reactions = {
-            enabled = true,
-            time_wait = 5*60*1000,
-            evn = xr_reactions.events(self.object),
-        -- объект раздражения
-        obj = { -- позицию раздражителя
-                position = nil,
-                -- id раздражителя
-                id = nil,
-                -- как реагировать
-                type = nil,
-                -- время раздражителя
-                time = nil,
-            -- видимость
-            visibility = nil
-        },
-        -- правила для обнаружений (какие типы объектов мы игнорим)
-            rules = {}
-        }
+	xr_motivator.storage[self.object:id()].reactions = {
+		enabled = true,
+		time_wait = 5*60*1000,
+		evn = xr_reactions.events(self.object),
+		obj = {position = nil,
+			id = nil,
+			type = nil,
+			time = nil,
+			visibility = nil
+			},
+		rules = {}
+		}
     xr_reactions.add_to_binder(self.object, char_ini)    
     -- схема привязки к позиции
     xr_position.add_to_binder(self.object)
