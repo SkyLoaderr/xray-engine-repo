@@ -1370,7 +1370,7 @@ void CSE_ALifeCar::data_save(NET_Packet &tNetPacket)
 		{
 			i->write(tNetPacket);
 		}
-		door_states.clear();
+		//door_states.clear();
 	}
 	{
 		tNetPacket.w_u16(u16(wheel_states.size()));
@@ -1379,7 +1379,7 @@ void CSE_ALifeCar::data_save(NET_Packet &tNetPacket)
 		{
 			i->write(tNetPacket);
 		}
-		wheel_states.clear();
+		//wheel_states.clear();
 	}
 	tNetPacket.w_float(health);
 }
