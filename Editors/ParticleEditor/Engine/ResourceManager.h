@@ -36,37 +36,37 @@ public:
 	DEFINE_MAP_PRED(const char*,texture_detail,	map_TD,			map_TDIt,			str_pred);
 private:
 	// data
-	map_Blender										m_blenders;
-	map_Texture										m_textures;
-	map_Matrix										m_matrices;
-	map_Constant									m_constants;
-	map_RT											m_rtargets;
-	map_RTC											m_rtargets_c;
-	map_VS											m_vs;
-	map_PS											m_ps;
-	map_TD											m_td;
+	map_Blender											m_blenders;
+	map_Texture											m_textures;
+	map_Matrix											m_matrices;
+	map_Constant										m_constants;
+	map_RT												m_rtargets;
+	map_RTC												m_rtargets_c;
+	map_VS												m_vs;
+	map_PS												m_ps;
+	map_TD												m_td;
 
-	xr_vector<SState*>								v_states;
-	xr_vector<SDeclaration*>						v_declarations;
-	xr_vector<SGeometry*>							v_geoms;
-	xr_vector<R_constant_table*>					v_constant_tables;
+	xr_vector<SState*>									v_states;
+	xr_vector<SDeclaration*>							v_declarations;
+	xr_vector<SGeometry*>								v_geoms;
+	xr_vector<R_constant_table*>						v_constant_tables;
 
 	// lists
-	xr_vector<STextureList*>						lst_textures;
-	xr_vector<SMatrixList*>							lst_matrices;
-	xr_vector<SConstantList*>						lst_constants;
+	xr_vector<STextureList*>							lst_textures;
+	xr_vector<SMatrixList*>								lst_matrices;
+	xr_vector<SConstantList*>							lst_constants;
 
 	// main shader-array
-	xr_vector<SPass*>								v_passes;
-	xr_vector<ShaderElement*>						v_elements;
-	xr_vector<Shader*>								v_shaders;
-	xr_vector<std::pair<LPCSTR,R_constant_setup*> >	v_constant_setup;
+	xr_vector<SPass*>									v_passes;
+	xr_vector<ShaderElement*>							v_elements;
+	xr_vector<Shader*>									v_shaders;
 
 	// misc
 public:
-	lua_State*						LSVM;
-	BOOL							bDeferredLoad;
-	string256						HLSL_Path;
+	xr_vector<std::pair<ref_str,R_constant_setup*> >	v_constant_setup;
+	lua_State*											LSVM;
+	BOOL												bDeferredLoad;
+	ref_str												HLSL_Path;
 private:
 	void							LS_Load				();
 	void							LS_Unload			();
@@ -160,7 +160,7 @@ public:
 	Shader*			Create					(LPCSTR s_shader=0, LPCSTR s_textures=0,	LPCSTR s_constants=0,	LPCSTR s_matrices=0);
 	Shader*			Create					(IBlender*	B,		LPCSTR s_shader=0,		LPCSTR s_textures=0,	LPCSTR s_constants=0, LPCSTR s_matrices=0);
 	void			Delete					(const Shader*	S			);
-	void			RegisterConstantSetup	(LPCSTR name,		R_constant_setup* s)	{	v_constant_setup.push_back(mk_pair(name,s));	}
+	void			RegisterConstantSetup	(LPCSTR name,		R_constant_setup* s)	{	v_constant_setup.push_back(mk_pair(ref_str(name),s));	}
 
 	SGeometry*		CreateGeom				(D3DVERTEXELEMENT9* decl, IDirect3DVertexBuffer9* vb, IDirect3DIndexBuffer9* ib);
 	SGeometry*		CreateGeom				(u32 FVF				, IDirect3DVertexBuffer9* vb, IDirect3DIndexBuffer9* ib);

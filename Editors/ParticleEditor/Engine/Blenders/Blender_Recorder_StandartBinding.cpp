@@ -185,4 +185,11 @@ void	CBlender_Compile::SetMapping	()
 	// detail
 	if (bDetail	&& detail_scaler)
 		r_Constant			("dt_params",		detail_scaler);
+
+	// other common
+	for (u32 it=0; it<Device.Resources->v_constant_setup.size(); it++)
+	{
+		std::pair<ref_str,R_constant_setup*>	cs	= Device.Resources->v_constant_setup[it];
+		r_Constant			(*cs.first,cs.second);
+	}
 }
