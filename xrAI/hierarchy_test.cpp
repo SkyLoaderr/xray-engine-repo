@@ -323,7 +323,8 @@ IC	void build_convex_hierarchy(const CLevelGraph &level_graph, CSectorGraph &sec
 //			VERIFY							(!(*I).second->edges().empty());
 			if (!(*I).second->edges().empty())
 				continue;
-
+			
+			++count;
 			if ((*I).second->data().min_vertex_id == (*I).second->data().max_vertex_id)
 				Msg							("! Node %d is not connected to the graph!",(*I).second->data().min_vertex_id);
 			else
