@@ -26,6 +26,7 @@ edge_links(m0->vert_count())
 	D = compute_dimension(m);
 
 	will_decouple_quadrics = false;
+	contraction_callback = NULL;
 }
 
 void MxPropSlim::consider_color(bool will)
@@ -460,7 +461,7 @@ s)
 		MxVertexID v2						= info->v2;
 
 		if( m->vertex_is_valid(v1) && m->vertex_is_valid(v2) ){
-			m->compute_contraction				(v1, v2, &conx);
+			m->compute_contraction			(v1, v2, &conx);
 et[0] - m->vertex(v1)[0]);
 			conx.dv1[1] = float(info->target[1] - m->vertex(v1)[1]);
 			conx.dv1[2] = float(info->target[2] - m->vertex(v1)[2]);
@@ -469,7 +470,8 @@ et[0] - m->vertex(v1)[0]);
 			conx.dv2[2] = float(info->target[2] - m->vertex(v2)[2]);
 
 			if( contraction_callback )
-		o);
+				(*contraction_callback)(conx, -				(*contraction_callback)(conx, -(info->heap_key()+EDGE_BASE_ERROR));
+o);
 
 			const MxFaceList& N2			= conx.delta_faces;
 			for (u32 f_idx=conx.delta_pivot; f_idx<(u32)N2.size(); f_idx++)
