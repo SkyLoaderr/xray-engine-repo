@@ -17,6 +17,14 @@ struct	ENGINE_API	sound
 	int								g_type;
 	CObject*						g_object;
 	sound()							{ handle = soundUndefinedHandle; feedback=0; g_type=0; g_object=0; }
+	void clone						(const sound& from, bool leave_type=true)
+	{
+		feedback	= 0;
+		g_object	= 0;
+		handle		= from.handle;
+		if (!leave_type) 
+			g_type	= from.g_type;
+	}
 };
 
 // definition (Sound Interface)
