@@ -137,10 +137,31 @@ private:
 	R_constants_array		a_pixel;
 	R_constants_array		a_vertex;
 public:
-	// fp
-	void					set		(R_constant* C, Fmatrix& M)
-	{
-		if (C->destination&1)		a_pixel.set		(C,C->ps,M);
-		if (C->destination&2)		a_vertex.set	(C,C->vs,M);
+	// fp, non-array versions
+	void					set		(R_constant* C, Fmatrix& A)		{
+		if (C->destination&1)		a_pixel.set		(C,C->ps,A);
+		if (C->destination&2)		a_vertex.set	(C,C->vs,A);
+	}
+	void					set		(R_constant* C, Fvector4& A)	{
+		if (C->destination&1)		a_pixel.set		(C,C->ps,A);
+		if (C->destination&2)		a_vertex.set	(C,C->vs,A);
+	}
+	void					set		(R_constant* C, float x, float y, float z, float w)	{
+		Fvector4 data;		data.set(x,y,z,w);
+		set					(C,data);
+	}
+
+	// fp, array versions
+	void					seta	(R_constant* C, u32 e, Fmatrix& A)		{
+		if (C->destination&1)		a_pixel.seta	(C,C->ps,e,A);
+		if (C->destination&2)		a_vertex.seta	(C,C->vs,e,A);
+	}
+	void					seta	(R_constant* C, u32 e, Fvector4& A)	{
+		if (C->destination&1)		a_pixel.seta	(C,C->ps,e,A);
+		if (C->destination&2)		a_vertex.seta	(C,C->vs,e,A);
+	}
+	void					seta	(R_constant* C, u32 e, float x, float y, float z, float w)	{
+		Fvector4 data;		data.set(x,y,z,w);
+		seta				(C,e,data);
 	}
 };
