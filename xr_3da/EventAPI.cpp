@@ -61,19 +61,26 @@ void CEventAPI::Dump()
 
 EVENT	CEventAPI::Create(const char* N)
 {
-	CEvent E(N);
+	CS.Enter	();
+	CEvent	E	(N);
 	for (vector<CEvent*>::iterator I=Events.begin(); I!=Events.end(); I++)
+	{
 		if ((*I)->Equal(E)) {
-			EVENT F = *I;
+			EVENT F		= *I;
 			F->dwRefCount++;
-			return F;
+			CS.Leave	();
+			return		F;
 		}
-		EVENT X = new CEvent(N);
-		Events.push_back(X);
-		return X;
+	}
+
+	EVENT X = new CEvent(N);
+	Events.push_back(X);
+	CS.Leave	();
+	return X;
 }
 void	CEventAPI::Destroy(EVENT& E)
 {
+	CS.Enter	();
 	E->dwRefCount--;
 	if (E->dwRefCount == 0) 
 	{
@@ -82,45 +89,59 @@ void	CEventAPI::Destroy(EVENT& E)
 		Events.erase(I);
 		delete E; E=0;
 	}
+	CS.Leave	();
 }
 EVENT	CEventAPI::Handler_Attach(const char* N, CEventBase* H)
 {
+	CS.Enter	();
 	EVENT	E = Create(N);
 	E->Attach(H);
+	CS.Leave	();
 	return E;
 }
 void	CEventAPI::Handler_Detach(EVENT& E, CEventBase* H)
 {
-	E->Detach(H);
-	Destroy(E);
+	CS.Enter	();
+	E->Detach	(H);
+	Destroy		(E);
+	CS.Leave	();
 }
 void	CEventAPI::Signal(EVENT E, DWORD P1, DWORD P2)
 {
-	E->Signal(P1,P2);	
+	CS.Enter	();
+	E->Signal	(P1,P2);	
+	CS.Leave	();
 }
 void	CEventAPI::Signal(LPCSTR N, DWORD P1, DWORD P2)
 {
-	EVENT	E = Create(N);
-	Signal	(E,P1,P2);
-	Destroy	(E);
+	CS.Enter	();
+	EVENT		E = Create(N);
+	Signal		(E,P1,P2);
+	Destroy		(E);
+	CS.Leave	();
 }
 void	CEventAPI::Defer(EVENT E, DWORD P1, DWORD P2)
 {
+	CS.Enter	();
 	E->dwRefCount++;
 	Events_Deferred.push_back	(Deferred());
 	Events_Deferred.back().E	= E;
 	Events_Deferred.back().P1	= P1;
 	Events_Deferred.back().P2	= P2;
+	CS.Leave	();
 }
 void	CEventAPI::Defer(LPCSTR N, DWORD P1, DWORD P2)
 {
-	EVENT	E = Create(N);
-	Defer	(E,P1,P2);
-	Destroy	(E);
+	CS.Enter	();
+	EVENT	E	= Create(N);
+	Defer		(E,P1,P2);
+	Destroy		(E);
+	CS.Leave	();
 }
 
 void	CEventAPI::OnFrame	()
 {
+	CS.Enter	();
 	if (Events_Deferred.empty())	return;
 	for (DWORD I=0; I<Events_Deferred.size(); I++)
 	{
@@ -129,4 +150,5 @@ void	CEventAPI::OnFrame	()
 		Destroy		(Events_Deferred[I].E);
 	}
 	Events_Deferred.clear();
+	CS.Leave	();
 }

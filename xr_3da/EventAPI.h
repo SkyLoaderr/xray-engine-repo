@@ -21,7 +21,7 @@ class ENGINE_API CEventAPI
 private:
 	vector<EVENT>		Events;
 	vector<Deferred>	Events_Deferred;
-
+	CCriticalSection	CS;
 public:
 	EVENT	Create	(const char* N);
 	void	Destroy	(EVENT& E);
