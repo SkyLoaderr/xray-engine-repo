@@ -120,7 +120,8 @@ void CDetailManager::hw_Unload()
 }
 
 
-float	psDetail_w_rot			= 30.f;
+float	psDetail_w_rot1			= 30.f;
+float	psDetail_w_rot2			= 1.5f;
 float	psDetail_w_speed		= 2.f;
 float	psDetail_l_ambient		= .9f;
 float	psDetail_l_aniso		= .25f;
@@ -133,16 +134,16 @@ void CDetailManager::hw_Render()
 	// float	fPhaseZ		=	sinf(Device.fTimeGlobal*0.11f)	*fPhaseRange;
 
 	// Render-prepare
-	float	tm_rot		= PI_MUL_2*Device.fTimeGlobal/psDetail_w_rot;
-	Fvector dir2D;
-	dir2D.set			(sinf(tm_rot),0,cosf(tm_rot));
-	dir2D.normalize		();
+	Fvector dir1,dir2;
+	float	tm_rot		= PI_MUL_2*Device.fTimeGlobal/psDetail_w_rot1;
+	dir1.set			(sinf(tm_rot),0,cosf(tm_rot));
+	dir1.normalize		();
 
 	CVS_Constants& VSC	=	Device.Shader.VSC;
 	float scale			=	1.f/float(quant);
 	VSC.set				(0,	scale,		scale,		psDetail_l_aniso,	psDetail_l_ambient);			// consts
 	VSC.set				(1,	1.f/5.f,	1.f/7.f,	1.f/3.f,	Device.fTimeGlobal*psDetail_w_speed);	// wave
-	VSC.set				(2,	dir2D);																		// wind-dir
+	VSC.set				(2,	dir1);																		// wind-dir
 	VSC.set				(3,	Device.mFullTransform);
 	VSC.set				(7,	1,			.1f,		0,			2);				//const c[7] = 1 0.1 0 2
 	VSC.set				(8,	0,			0.5f,		1.f,		0);				//const c[8] = 0 0.5 1 0
