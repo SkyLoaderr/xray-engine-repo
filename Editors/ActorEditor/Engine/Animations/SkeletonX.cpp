@@ -23,6 +23,8 @@ void CSkeletonX::_Copy		(CSkeletonX *B)
 	Vertices1W				= B->Vertices1W;
 	Vertices2W				= B->Vertices2W;
 	cache_DiscardID			= 0xffffffff;
+	RenderMode				= B->RenderMode;
+	RMS_boneid				= B->RMS_boneid;
 }
 void CSkeletonX_PM::Copy	(IRender_Visual *V) 
 {
@@ -54,11 +56,27 @@ void CSkeletonX_ST::Copy	(IRender_Visual *P)
 void CSkeletonX_PM::Render	(float LOD) 
 {
 	SetLOD		(LOD);
-	_Render		(hGeom,V_Current,I_Current/3);
+	if			(RM_SINGLE==RenderMode)	{
+		VERIFY					(pVertices);
+		Fmatrix	W;	W.mul_43	(RCache.xforms.m_w,Parent->bone_instances[RMS_boneid]->mTransform);
+		RCache.set_xform_world	(W);
+		RCache.set_Geometry		(hGeom);
+		RCache.Render			(D3DPT_TRIANGLELIST,0,0,vCount,0,I_Current/3);
+	} else {
+		_Render		(hGeom,V_Current,I_Current/3);
+	}
 }
 void CSkeletonX_ST::Render	(float LOD) 
 {
-	_Render		(hGeom,vCount,dwPrimitives);
+	if			(RM_SINGLE==RenderMode)	{
+		VERIFY					(pVertices);
+		Fmatrix	W;	W.mul_43	(RCache.xforms.m_w,Parent->bone_instances[RMS_boneid]->mTransform);
+		RCache.set_xform_world	(W);
+		RCache.set_Geometry		(hGeom);
+		RCache.Render			(D3DPT_TRIANGLELIST,0,0,vCount,0,dwPrimitives);
+	} else {
+		_Render		(hGeom,vCount,dwPrimitives);
+	}
 }
 void CSkeletonX::_Render	(ref_geom& hGeom, u32 vCount, u32 pCount)
 {
@@ -127,6 +145,7 @@ void CSkeletonX::_Load(const char* N, IReader *data, u32& dwVertCount)
 	dwVertType	= data->r_u32(); 
 	dwVertCount	= data->r_u32();
 
+	RenderMode	= RM_SCINNING;
 	switch		(dwVertType)
 	{
 	case 1*0x12071980:
@@ -138,6 +157,10 @@ void CSkeletonX::_Load(const char* N, IReader *data, u32& dwVertCount)
 		for (it=0; it<dwVertCount; it++)
 			bids.insert	(Vertices1W[it].matrix);
 		Msg	("         BPV: %d, %d verts, %d bone-influences",bpv,dwVertCount,bids.size());
+		if	(1==bids.size())	{
+			RenderMode	= RM_SINGLE;
+			RMS_boneid	= *bids.begin();
+		}
 		break;
 	case 2*0x12071980:
 		bpv			= 2;
@@ -177,18 +200,42 @@ void CSkeletonX_PM::Load(const char* N, IReader *data, u32 dwFlags)
 	indices				= LPWORD(xr_malloc(dwCount*2));
 	Memory.mem_copy		(indices,data->pointer(),dwCount*2);
 	dwPrimitives		= dwCount/3;
-
 	BOOL	bSoft		= HW.Caps.vertex.bSoftware || (dwFlags&VLOAD_FORCESOFTWARE);
 	u32		dwUsage		= D3DUSAGE_WRITEONLY | (bSoft?D3DUSAGE_SOFTWAREPROCESSING:0);
 	D3DPOOL	dwPool		= bSoft?D3DPOOL_SYSTEMMEM:D3DPOOL_MANAGED;
 	BYTE*	bytes		= 0;
-
 	R_CHK				(HW.pDevice->CreateIndexBuffer(dwCount*2,dwUsage,D3DFMT_INDEX16,dwPool,&pIndices,0));
 	R_CHK				(pIndices->Lock(0,0,(void**)&bytes,0));
 	Memory.mem_copy		(bytes, indices, dwCount*2);
 	pIndices->Unlock	();
 
-	hGeom.create		(vertRenderFVF, RCache.Vertex.Buffer(), pIndices);
+	// Create HW VB in case this is possible
+	if (RenderMode==RM_SINGLE)
+	{
+		VERIFY				(Vertices1W);
+		vBase				= 0;
+		CHK_DX				(D3DXDeclaratorFromFVF(vertRenderFVF,dcl));
+		u32		vStride		= D3DXGetFVFVertexSize		(vertRenderFVF);
+		BOOL	bSoft		= HW.Caps.vertex.bSoftware || (dwFlags&VLOAD_FORCESOFTWARE);
+		u32		dwUsage		= D3DUSAGE_WRITEONLY | (bSoft?D3DUSAGE_SOFTWAREPROCESSING:0);
+		BYTE*	bytes		= 0;
+		R_CHK				(HW.pDevice->CreateVertexBuffer(vCount*vStride,dwUsage,0,D3DPOOL_MANAGED,&pVertices,0));
+		R_CHK				(pVertices->Lock(0,0,(void**)&bytes,0));
+		vertRender*		dst	= (vertRender*)bytes;
+		vertBoned1W*	src = (vertBoned1W*)Vertices1W;
+		for (u32 it=0; it<vCount; it++)	{
+			dst->P			= src->P;
+			dst->N			= src->N;
+			dst->u			= src->u;
+			dst->v			= src->v;
+			dst++; src++;
+		}
+		pVertices->Unlock	();
+
+		hGeom.create		(vertRenderFVF, pVertices, pIndices);
+	} else {
+		hGeom.create		(vertRenderFVF, RCache.Vertex.Buffer(), pIndices);
+	}
 }
 
 void CSkeletonX_ST::Load(const char* N, IReader *data, u32 dwFlags) 
@@ -196,5 +243,31 @@ void CSkeletonX_ST::Load(const char* N, IReader *data, u32 dwFlags)
 	_Load				(N,data,vCount);
 	inherited::Load		(N,data,dwFlags|VLOAD_NOVERTICES);
 
-	hGeom.create		(vertRenderFVF, RCache.Vertex.Buffer(), pIndices);
+	// Create HW VB in case this is possible
+	if (RenderMode==RM_SINGLE)
+	{
+		VERIFY				(Vertices1W);
+		vBase				= 0;
+		CHK_DX				(D3DXDeclaratorFromFVF(vertRenderFVF,dcl));
+		u32		vStride		= D3DXGetFVFVertexSize		(vertRenderFVF);
+		BOOL	bSoft		= HW.Caps.vertex.bSoftware || (dwFlags&VLOAD_FORCESOFTWARE);
+		u32		dwUsage		= D3DUSAGE_WRITEONLY | (bSoft?D3DUSAGE_SOFTWAREPROCESSING:0);
+		BYTE*	bytes		= 0;
+		R_CHK				(HW.pDevice->CreateVertexBuffer(vCount*vStride,dwUsage,0,D3DPOOL_MANAGED,&pVertices,0));
+		R_CHK				(pVertices->Lock(0,0,(void**)&bytes,0));
+		vertRender*		dst	= (vertRender*)bytes;
+		vertBoned1W*	src = (vertBoned1W*)Vertices1W;
+		for (u32 it=0; it<vCount; it++)	{
+			dst->P			= src->P;
+			dst->N			= src->N;
+			dst->u			= src->u;
+			dst->v			= src->v;
+			dst++; src++;
+		}
+		pVertices->Unlock	();
+
+		hGeom.create		(vertRenderFVF, pVertices, pIndices);
+	} else {
+		hGeom.create		(vertRenderFVF, RCache.Vertex.Buffer(), pIndices);
+	}
 }

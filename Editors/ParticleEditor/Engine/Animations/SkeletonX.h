@@ -43,13 +43,17 @@ class ENGINE_API CSkeletonX
 {
 protected:
 	enum					{ vertRenderFVF = D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX1 };
+	enum					{ RM_SINGLE, RM_SCINNING};
 
-	CKinematics*		Parent;			// setted up by parent
+	CKinematics*			Parent;			// setted up by parent
 	vertBoned1W*			Vertices1W;		// shared
 	vertBoned2W*			Vertices2W;		// shared
 	u32						cache_DiscardID;
 	u32						cache_vCount;
 	u32						cache_vOffset;
+
+	u32						RenderMode;		
+	u32						RMS_boneid;
 	
 	void					_Copy			(CSkeletonX *V);
 	void					_Render			(ref_geom& hGeom,	u32 vCount,		u32 pCount);
