@@ -24,17 +24,20 @@ CLocationManager::~CLocationManager	()
 void CLocationManager::setup_location_types(LPCSTR S, LPCSTR section)
 {
 	m_vertex_types.clear			();
-	u32								N = _GetItemCount(S);
-	R_ASSERT3						(!(N % (GameGraph::LOCATION_TYPE_COUNT + 2)) && N,"Terrain locations are incorrectly specified for the monster",section);
 	GameGraph::STerrainPlace		terrain_mask;
+	u32								N = _GetItemCount(S)/GameGraph::LOCATION_TYPE_COUNT*GameGraph::LOCATION_TYPE_COUNT;
 	terrain_mask.tMask.resize		(GameGraph::LOCATION_TYPE_COUNT);
+	if (!N) {
+		for (u32 j=0; j<GameGraph::LOCATION_TYPE_COUNT; ++j)
+			terrain_mask.tMask[j]	= 255;
+		m_vertex_types.push_back	(terrain_mask);
+		return;
+	}
 	m_vertex_types.reserve			(32);
 	string16						I;
 	for (u32 i=0; i<N;) {
 		for (u32 j=0; j<GameGraph::LOCATION_TYPE_COUNT; ++j, ++i)
 			terrain_mask.tMask[j]	= GameGraph::_LOCATION_ID(atoi(_GetItem(S,i,I)));
-		terrain_mask.dwMinTime		= atoi(_GetItem(S,i++,I))*1000;
-		terrain_mask.dwMaxTime		= atoi(_GetItem(S,i++,I))*1000;
 		m_vertex_types.push_back	(terrain_mask);
 	}
 }

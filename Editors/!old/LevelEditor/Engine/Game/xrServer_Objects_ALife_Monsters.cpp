@@ -1061,18 +1061,23 @@ CSE_ALifeMonsterAbstract::CSE_ALifeMonsterAbstract(LPCSTR caSection)	: CSE_ALife
 
 	m_fGoingSpeed				= pSettings->r_float(caSection, "going_speed");
 	LPCSTR						S = pSettings->r_string(caSection,"terrain");
-	u32							N = _GetItemCount(S);
-	R_ASSERT					(((N % (GameGraph::LOCATION_TYPE_COUNT + 2)) == 0) && (N));
-	GameGraph::STerrainPlace	tTerrainPlace;
-	tTerrainPlace.tMask.resize	(GameGraph::LOCATION_TYPE_COUNT);
-	string16					I;
-	for (u32 i=0; i<N;) {
-		for (u32 j=0; j<GameGraph::LOCATION_TYPE_COUNT; ++j, ++i)
-			tTerrainPlace.tMask[j] = GameGraph::_LOCATION_ID(atoi(_GetItem(S,i,I)));
-		tTerrainPlace.dwMinTime	= atoi(_GetItem(S,i++,I))*1000;
-		tTerrainPlace.dwMaxTime	= atoi(_GetItem(S,i++,I))*1000;
-		m_tpaTerrain.push_back	(tTerrainPlace);
+	u32							N = _GetItemCount(S)/GameGraph::LOCATION_TYPE_COUNT*GameGraph::LOCATION_TYPE_COUNT;
+	GameGraph::STerrainPlace	terrain_mask;
+	terrain_mask.tMask.resize	(GameGraph::LOCATION_TYPE_COUNT);
+	if (!N) {
+		for (u32 j=0; j<GameGraph::LOCATION_TYPE_COUNT; ++j)
+			terrain_mask.tMask[j]	= 255;
+		m_tpaTerrain.push_back		(terrain_mask);
 	}
+	else {
+		string16					I;
+		for (u32 i=0; i<N;) {
+			for (u32 j=0; j<GameGraph::LOCATION_TYPE_COUNT; ++j, ++i)
+				terrain_mask.tMask[j] = GameGraph::_LOCATION_ID(atoi(_GetItem(S,i,I)));
+			m_tpaTerrain.push_back	(terrain_mask);
+		}
+	}
+
 	m_tpBestDetector			= this;
 }
 

@@ -156,8 +156,6 @@ namespace GameGraph {
 
 	struct STerrainPlace{
 		svector<_LOCATION_ID,LOCATION_TYPE_COUNT>	tMask;
-		u32											dwMinTime;
-		u32											dwMaxTime;
 	};
 
 	DEFINE_VECTOR	(STerrainPlace,				TERRAIN_VECTOR,					TERRAIN_IT);

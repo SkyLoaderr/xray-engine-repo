@@ -18,6 +18,7 @@
 #include "../../movement_manager.h"
 #include "../../location_manager.h"
 #include "../../level.h"
+#include "../../random32.h"
 
 IC bool CAI_Rat::bfCheckIfOutsideAIMap(Fvector &tTemp1)
 {
@@ -346,7 +347,7 @@ void CAI_Rat::vfChooseNextGraphPoint()
 				if (ai().game_graph().mask(movement().locations().vertex_types()[j].tMask,ai().game_graph().vertex((*i).vertex_id())->vertex_type())) {
 					m_tCurGP	= m_tNextGP;
 					m_tNextGP	= (*i).vertex_id();
-					m_dwTimeToChange	= Device.dwTimeGlobal + ::Random.randI(movement().locations().vertex_types()[j].dwMinTime,movement().locations().vertex_types()[j].dwMaxTime);
+					m_dwTimeToChange	= Device.dwTimeGlobal + ::Random32.random(60000) + 60000;
 					return;
 				}
 		}
@@ -360,7 +361,7 @@ void CAI_Rat::vfChooseNextGraphPoint()
 					if (iBranches == iChosenBranch) {
 						m_tCurGP			= m_tNextGP;
 						m_tNextGP			= (*i).vertex_id();
-						m_dwTimeToChange	= Device.dwTimeGlobal + ::Random.randI(movement().locations().vertex_types()[j].dwMinTime,movement().locations().vertex_types()[j].dwMaxTime);
+						m_dwTimeToChange	= Device.dwTimeGlobal + ::Random32.random(60000) + 60000;
 						return;
 					}
 					++iBranches;

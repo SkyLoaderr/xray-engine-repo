@@ -39,7 +39,6 @@ IC	void CGameLocationSelector::reinit			(const CGameGraph *graph)
 {
 	inherited::reinit				(graph);
 	m_selection_type				= eSelectionTypeRandomBranching;
-	m_time_to_change				= 0;
 	if (graph)
 		graph->set_invalid_vertex	(m_previous_vertex_id);
 	else
@@ -97,7 +96,6 @@ IC	void CGameLocationSelector::select_random_location(const _vertex_id_type star
 						if (!accessible((*i).vertex_id()))
 							continue;
 						dest_vertex_id		= (*i).vertex_id();
-						m_time_to_change	= Device.dwTimeGlobal + ::Random.randI(m_location_manager->vertex_types()[j].dwMinTime,m_location_manager->vertex_types()[j].dwMaxTime);
 						++iBranches;
 						break;
 					}
@@ -116,7 +114,6 @@ IC	void CGameLocationSelector::select_random_location(const _vertex_id_type star
 						continue;
 					if (iBranches == iChosenBranch) {
 						dest_vertex_id		= (*i).vertex_id();
-						m_time_to_change	= Device.dwTimeGlobal + ::Random.randI(m_location_manager->vertex_types()[j].dwMinTime,m_location_manager->vertex_types()[j].dwMaxTime);
 						bOk = true;
 						break;
 					}
