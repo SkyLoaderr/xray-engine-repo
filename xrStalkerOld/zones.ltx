@@ -3,7 +3,7 @@ GroupControlSection	= spawn_group_zone
 $spawn 			= "zones\mosquito bald"
 $prefetch 		= 16
 class			= Z_MBALD
-hit_impulse_scale	= 0.2;0.5 ;0.1
+hit_impulse_scale	= 0.3;0.5 ;0.1
 effective_radius	= 0.85 ;размер радиуса в процентах от оригинального, где действует зона
 
 ef_anomaly_type			= 1
@@ -988,7 +988,7 @@ light_height		= 1.5			;подъем источника света на высоту
 
 idle_light			= off
 
-awaking_time		= 500;1000
+awaking_time		= 300;1000
 blowout_time		= 2500	
 accamulate_time		= 1000
 
@@ -999,12 +999,12 @@ blowout_explosion_time	= 2100
 ;параметры телекинеза дл€ зоны
 throw_in_impulse			= 		4000		;сила импульса вт€гивани€ (дл€ тела 100кг)
 throw_out_impulse			=		4000;		;сила выбрасывани€ взрывом
-throw_in_impulse_alive		= 		400;400 800	;сила импульса вт€гивани€ дл€ живых
+throw_in_impulse_alive		= 		600;400 800	;сила импульса вт€гивани€ дл€ живых
 throw_in_atten				= 		2;8			;коэфф. зат€гивани€ (чем меньше, тем плавнее зат€гивает)
 blowout_radius_percent		= 		0.8		;радиус (в процентах от всего радиуса) непосредственно выброса
 actor_blowout_radius_percent=		0.5
 
-tele_height				= 0.15;	3.5	;высота подъема телекинеза 
+tele_height				= 0.05;	3.5	;высота подъема телекинеза 
 time_to_tele			= 5000		;врем€ деражани€ объекта в воздухе
 tele_pause				= 5000		;пауза перед тем как снова подн€ть упавший объект
 
