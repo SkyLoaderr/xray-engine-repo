@@ -45,15 +45,16 @@ private:
 	vector<bool>			ids_used;
 	multiset<svs_respawn>	q_respawn;
 
-	BOOL					PerformRP			(xrServerEntity* E);
-	void					PerformMigration	(xrServerEntity* E, xrClientData* from, xrClientData* to);
-	u16						PerformIDgen		(u16 desired);
+	BOOL					PerformRP				(xrServerEntity* E);
+	void					PerformMigration		(xrServerEntity* E, xrClientData* from, xrClientData* to);
+	u16						PerformIDgen			(u16 desired);
+	void					Perform_connect_spawn	(xrServerEntity* E, xrClientData* to, NET_Packet& P);
 
-	void					Process_spawn		(NET_Packet& P, DPNID sender);
-	void					Process_update		(NET_Packet& P, DPNID sender);
-	void					Process_event		(NET_Packet& P, DPNID sender);
-	void					Process_ownership	(NET_Packet& P, DPNID sender);
-	void					Process_rejecting	(NET_Packet& P, DPNID sender);
+	void					Process_spawn			(NET_Packet& P, DPNID sender);
+	void					Process_update			(NET_Packet& P, DPNID sender);
+	void					Process_event			(NET_Packet& P, DPNID sender);
+	void					Process_ownership		(NET_Packet& P, DPNID sender);
+	void					Process_rejecting		(NET_Packet& P, DPNID sender);
 
 	xrClientData*			SelectBestClientToMigrateTo		(xrServerEntity* E);
 

@@ -36,7 +36,8 @@ public:
 	xrServerEntity_DESC		desc;
 public:
 	BOOL					net_Ready;
-
+	BOOL					net_Processed;	// Internal flag for connectivity-graph
+public:
 	u16						RespawnTime;
 
 	u16						ID;				// internal ID
