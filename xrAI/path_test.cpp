@@ -10,53 +10,20 @@
 #include "ai_map.h"
 #include "ai_alife_graph.h"
 #include "test_table.h"
-
+#include "data_storage_priority_queue.h"
+#include "data_storage_heap.h"
+#include "data_storage_list.h"
 #include "boost\\d_heap.hpp"
 #include "boost\\f_heap.hpp"
 #include "boost\\l_heap.hpp"
 #include "boost\\p_heap.hpp"
-//#include "boost\\r_heap.hpp"
 #include "boost\\s_heap.hpp"
-
-#include "data_storage_priority_queue.h"
-#include "data_storage_heap.h"
-#include "data_storage_list.h"
-//#include "data_storage.h"
 #include "path_manager.h"
 #include "a_star.h"
-
-#include "path_test_old.h"
 #include "path_test.h"
 
-#define TEST_DIST1	150.f
-#define TEST_DIST2	100.f
-//#define ROWS	30
-//#define COLUMNS 30
-//typedef float		_dist_type;
-
-typedef CAI_Map																CGraph;
-//typedef CSE_ALifeGraph														CGraph;
-//typedef CTestTable<_dist_type,ROWS,COLUMNS>									CGraph;	
-
-//typedef CDataStorageUL<_dist_type,u32,u32,true,24,8>						CDataStorage;
-//typedef CDataStorageDLUL<_dist_type,u32,u32,true,24,8>						CDataStorage;
-//typedef CDataStorageSL<_dist_type,u32,u32,true,24,8>						CDataStorage;
-//typedef CDataStorageDLSL<_dist_type,u32,u32,true,24,8>						CDataStorage;
-//typedef CDataStorageBinaryHeap<_dist_type,u32,u32,true,24,8>					CDataStorage;
-//typedef CDataStorageBinaryHeapList<256,_dist_type,u32,u32,true,24,8>			CDataStorage;
-//typedef CDataStorageMultiBinaryHeap<1,_dist_type,u32,u32,true,24,8>			CDataStorage;
-//typedef CDataStorageCheapList<32,true,true,_dist_type,u32,u32,true,24,8>	CDataStorage;
-//typedef CDataStorageBucketList<8*1024,false,_dist_type,u32,u32,true,24,8>		CDataStorage;
-//typedef CDataStoragePriorityQueue<boost::fibonacci_heap,_dist_type,u32,u32,true,24,8>	CDataStorage;
-//typedef CDataStoragePriorityQueue<boost::lazy_fibonacci_heap,_dist_type,u32,u32,true,24,8>CDataStorage;
-//typedef CDataStoragePriorityQueue<boost::pairing_heap,_dist_type,u32,u32,true,24,8>CDataStorage;
-//typedef CPathManager<CGraph,CDataStorage,_dist_type,u32,u32>				CDistancePathManager;
-//typedef CAStar<CDataStorage,CDistancePathManager,CGraph,u32,_dist_type>		CAStarSearch;
-
-#define TIME_TEST
-
 struct SPathParams{
-	SPathParams(){};
+	SPathParams() {};
 	SPathParams(u32 x, u32 y) : x(x), y(y) {};
 	u32 x,y;
 };
@@ -79,8 +46,8 @@ void test					(_Graph *graph, const xr_vector<SPathParams> &path_params, _dist_t
 	u64						start, finish;
 	u32						test_count = path_params.size();
 	
-//	SetPriorityClass		(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
-//	SetThreadPriority		(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
+	SetPriorityClass		(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
+	SetThreadPriority		(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
 	Sleep					(1);
 	
 	start					= CPU::GetCycleCount();
@@ -128,8 +95,8 @@ void test					(_Graph *graph, const xr_vector<SPathParams> &path_params, _dist_t
 	u64						start, finish;
 	u32						test_count = path_params.size();
 	
-//	SetPriorityClass		(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
-//	SetThreadPriority		(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
+	SetPriorityClass		(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
+	SetThreadPriority		(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
 	Sleep					(1);
 	
 	start					= CPU::GetCycleCount();
@@ -174,6 +141,9 @@ void init_search			(LPCSTR caLevelName, _Graph *&graph, xr_vector<SPathParams> &
 	}
 	std::random_shuffle		(path_params.begin(),path_params.end());
 }
+
+#define TEST_DIST1	150.f
+#define TEST_DIST2	100.f
 
 template <>
 void init_search<CAI_Map>	(LPCSTR caLevelName, CAI_Map *&graph, xr_vector<SPathParams> &path_params, bool bRandom)
@@ -263,9 +233,9 @@ void test_all				(LPCSTR caLevelName, u32 test_count, _dist_type min_value, _dis
 	test<CDataStorageDLSL<_dist_type,u32,u32,true,24,8>										>	(graph,path_params,min_value);
 	test<CDataStorageBinaryHeap<_dist_type,u32,u32,true,24,8>								>	(graph,path_params,min_value);
 	test<CDataStorageBinaryHeapList<256,_dist_type,u32,u32,true,24,8>						>	(graph,path_params,min_value);
-	test<CDataStorageMultiBinaryHeap<1,_dist_type,u32,u32,true,24,8>						>	(graph,path_params,min_value);
+	test<CDataStorageMultiBinaryHeap<4,_dist_type,u32,u32,true,24,8>						>	(graph,path_params,min_value);
 	test<CDataStorageCheapList<32,true,true,_dist_type,u32,u32,true,24,8>					>	(graph,path_params,min_value);
-	test<CDataStorageBucketList<8*1024,false,_dist_type,u32,u32,true,24,8>					>	(graph,path_params,min_value,max_value);
+	test<CDataStorageBucketList<8*1024,true,_dist_type,u32,u32,true,24,8>					>	(graph,path_params,min_value,max_value);
 	test<CDataStoragePriorityQueue<boost::fibonacci_heap,_dist_type,u32,u32,true,24,8>		>	(graph,path_params,min_value);
 	test<CDataStoragePriorityQueue<boost::lazy_fibonacci_heap,_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
 	test<CDataStoragePriorityQueue<boost::pairing_heap,_dist_type,u32,u32,true,24,8>		>	(graph,path_params,min_value);
@@ -277,8 +247,8 @@ void test_all				(LPCSTR caLevelName, u32 test_count, _dist_type min_value, _dis
 
 void path_test				(LPCSTR caLevelName)
 {
-	test_all<CAI_Map>					(caLevelName,TEST_COUNT,float(0),float(2000));
-	test_all<CSE_ALifeGraph>			(caLevelName,TEST_COUNT,float(0),float(2000));;
+//	test_all<CAI_Map>					(caLevelName,TEST_COUNT,float(0),float(2000));
+	test_all<CSE_ALifeGraph>			(caLevelName,TEST_COUNT,float(0),float(2000));
 	test_all<CTestTable<u32,30,30> >	(caLevelName,TEST_COUNT,u32(0),u32(60));
 	test_all<CTestTable<u32,300,300> >	(caLevelName,TEST_COUNT,u32(0),u32(600));
 	test_all<CTestTable<u32,900,900> >	(caLevelName,TEST_COUNT,u32(0),u32(1800));
