@@ -179,6 +179,7 @@ class CAI_Rat : public CCustomMonster
 		u32					m_dwActionRefreshRate;
 		float				m_fAttackSuccessProbability;
 
+		// former constants
 		u32					m_dwLostMemoryTime;
 		u32					m_dwLostRecoilTime;
 		float				m_fUnderFireDistance;
@@ -188,6 +189,7 @@ class CAI_Rat : public CCustomMonster
 		float				m_fStableDistance;
 		float				m_fWallMinTurnValue;
 		float				m_fWallMaxTurnValue;
+		float				m_fSoundThreshold;
 
 		//////////////////////////
 		// INLINE FUNCTIONS

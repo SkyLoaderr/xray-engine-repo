@@ -128,6 +128,8 @@ void CAI_Rat::Load(LPCSTR section)
 
 	m_fMaxHealthValue	 			= pSettings->ReadFLOAT (section,"MaxHealthValue");
 
+	m_fSoundThreshold				= pSettings->ReadFLOAT (section,"SoundThreshold");
+
 	m_dwActiveScheduleMin			= shedule_Min;
 	m_dwActiveScheduleMax			= shedule_Max;
 }
