@@ -119,15 +119,14 @@ public:
 		for ( ; I != E; I++) {
 			map<u32,vector<CALifeObject*> >::iterator J = tpSGMap.find((*I)->m_dwSpawnGroup);
 			if (J != tpSGMap.end()) {
-				if ((*I)->m_dwSpawnGroup) {
+				if ((*I)->m_dwSpawnGroup > 0) {
 					for (u32 i=0; i<(*J).second.size(); i++)
 						(*J).second[i]->m_dwSpawnGroup = *dwGroupOffset;
 					++*dwGroupOffset;
 				}
-				else {
+				else
 					for (u32 i=0; i<(*J).second.size(); i++)
 						(*J).second[i]->m_dwSpawnGroup = (*dwGroupOffset)++;
-				}
 				(*J).second.clear();
 			}
 		}
