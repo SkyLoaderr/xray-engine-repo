@@ -10,7 +10,7 @@ function add_member (obj)
     end
     printf ("Object %s is added to zone", obj:name ())
     table.insert (members, obj.id)
-    switch_offline (obj)
+    this.switch_offline (obj)
     return        
 end
 -------------------------------------------------------------------------
@@ -33,7 +33,29 @@ function factory_combat:on_enter (obj)
     on_active = true    
     if table.getn (members) == 0 then return end
     for a = 1, table.getn (members), 1 do
-        switch_online (members[a])
+        this.switch_online (members[a])
     end
 end
 -----------------------
+
+
+
+
+-------------------------------------------------------------------------------------------
+function switch_online (id)
+    if id == -1 then return end
+    local sim = alife ()
+    if sim ~= nil then
+       sim:set_switch_online  (id, true)
+       sim:set_switch_offline (id, false)
+    end
+end
+-------------------------------------------------------------------------------------------
+function switch_offline (npc)
+    if npc == nil then return end
+    local sim = alife ()
+    if sim ~= nil then
+       sim:set_switch_online  (npc.id, false)
+       sim:set_switch_offline (npc.id, true)
+    end
+end
