@@ -105,38 +105,38 @@ CBuild::CBuild(b_transfer * L)
 		if (R.flags.bAffectDynamic) lights_dynamic.push_back(R);
 	}
 	lights.resize	(1);
-
+	
 	// process textures
 	Status			("Processing textures...");
 	Surface_Init	();
 	for (DWORD t=0; t<L->tex_count; t++)
 	{
 		Progress(float(t)/float(L->tex_count));
-
+		
 		b_texture&		TEX = L->textures[t];
 		b_BuildTexture	BT;
 		CopyMemory		(&BT,&TEX,sizeof(TEX));
-
+		
 		// load thumbnail
 		LPSTR N			= BT.name;
 		if (strchr(N,'.')) *(strchr(N,'.')) = 0;
 		char th_name[256]; strconcat(th_name,"x:\\textures\\thumbnail\\",N,".thm");
 		CCompressedStream THM(th_name,"THM");
-
+		
 		// analyze thumbnail information
 		R_ASSERT(THM.ReadChunk(THM_CHUNK_TEXTUREPARAM,&BT.THM));
 		
 		// load surface if it has an alpha channel or has "implicit lighting" flag
-		BT.pSurface = 0;
+		Msg("- loading: %s",N);
+		DWORD		w=0,h=0;
+		BT.pSurface = Surface_Load(N,w,h);
+		BT.dwWidth	= w;
+		BT.dwHeight	= h;
 		if (BT.THM.HasAlphaChannel() || (BT.THM.flag&EF_IMPLICIT_LIGHTED))	
 		{
-			Msg("- loading: %s",N);
-			// load & flip
-			DWORD		w=0,h=0;
-			BT.pSurface = Surface_Load(N,w,h);
-			BT.dwWidth	= w;
-			BT.dwHeight	= h;
 			BT.Vflip	();
+		} else {
+			Surface_Free
 		}
 		
 		// save all the stuff we've created

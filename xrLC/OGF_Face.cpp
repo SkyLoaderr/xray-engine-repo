@@ -32,13 +32,13 @@ BOOL OGF_Vertex::similar(OGF* ogf, OGF_Vertex& V)
 WORD OGF::_BuildVertex	(OGF_Vertex& V1)
 {
 	try {
-	for (itOGF_V it=vertices.begin(); it!=vertices.end(); it++)
-	{
-		if (it->similar(this,V1)) return WORD(it-vertices.begin());
-	}
-	vertices.push_back(V1);
+		for (itOGF_V it=vertices.begin(); it!=vertices.end(); it++)
+		{
+			if (it->similar(this,V1)) return WORD(it-vertices.begin());
+		}
+		vertices.push_back(V1);
 	} catch (...) { Msg("* ERROR: OGF::_BuildVertex");	}
-
+	
 	return vertices.size()-1;
 }
 
