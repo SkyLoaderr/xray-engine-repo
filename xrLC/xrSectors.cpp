@@ -15,7 +15,7 @@ void CBuild::BuildSectors()
 
 	DWORD SectorCount = SectorMax+1; 
 	g_sectors.resize(SectorCount);
-	ZeroMemory(g_sectors.begin(),g_sectors.size()*sizeof(void*));
+	ZeroMemory(&*g_sectors.begin(),g_sectors.size()*sizeof(void*));
 	clMsg("%d sectors accepted.",SectorCount);
 
 	Status("Spatializing geometry...");

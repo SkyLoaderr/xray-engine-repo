@@ -98,7 +98,7 @@ VOID CDeflector::OA_Export()
 	Fbox bb; bb.invalidate();
 	for (it = UVpolys.begin(); it!=UVpolys.end(); it++)
 	{
-		UVtri	*T = it;
+		UVtri	*T = &*it;
 		Face	*F = T->owner;
 		Fvector	P;	// projected
 

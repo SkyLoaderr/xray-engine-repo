@@ -351,8 +351,8 @@ void	OGF::Save_Progressive	(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors,
 				g_VB.Begin(FVF);
 				for (itOGF_V V=strip_verts.begin(); V!=strip_verts.end(); V++)
 				{
-					if (bNeedNormals)	g_VB.Add(V,6*sizeof(float));	// Position & normal
-					else				g_VB.Add(V,3*sizeof(float));	// Position only
+					if (bNeedNormals)	g_VB.Add(&*V,6*sizeof(float));	// Position & normal
+					else				g_VB.Add(&*V,3*sizeof(float));	// Position only
 					if (bColors)		g_VB.Add(&(V->Color),4);
 					for (DWORD uv=0; uv<dwRelevantUV; uv++)
 						g_VB.Add(V->UV.begin()+uv,2*sizeof(float));
@@ -371,7 +371,7 @@ void	OGF::Save_Progressive	(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors,
 					// Faces
 					fs.open_chunk	(OGF_INDICES);
 					fs.w_u32		(strip_indices.size());
-					fs.w		(strip_indices.begin(),strip_indices.size()*sizeof(WORD));
+					fs.w			(&*strip_indices.begin(),strip_indices.size()*sizeof(WORD));
 					fs.close_chunk	();
 				}
 				fs.close_chunk		();

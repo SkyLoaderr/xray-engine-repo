@@ -25,7 +25,7 @@ BOOL OGF_Vertex::similar(OGF* ogf, OGF_Vertex& V)
 	
 	R_ASSERT(UV.size()==V.UV.size());
 	for (DWORD i=0; i<V.UV.size(); i++) {
-		OGF_Texture *T = ogf->textures.begin()+i;
+		OGF_Texture *T = &*ogf->textures.begin()+i;
 		b_texture	*B = T->pSurface;
 		float		eu = 1.f/float(B->dwWidth );
 		float		ev = 1.f/float(B->dwHeight);
@@ -150,7 +150,7 @@ void OGF::MakeProgressive()
 
 		// Convert
 		PM_Result R;
-		I_Current = PM_Convert((WORD*)faces.begin(),faces.size()*3,&R);
+		I_Current	= PM_Convert((WORD*)&*faces.begin(),faces.size()*3,&R);
 
 		if (I_Current>=0) 
 		{
@@ -163,10 +163,10 @@ void OGF::MakeProgressive()
 			
 			// Copy results
 			pmap_vsplit.resize(R.splitSIZE);
-			CopyMemory(pmap_vsplit.begin(),R.splitPTR,R.splitSIZE*sizeof(Vsplit));
+			CopyMemory(&*pmap_vsplit.begin(),R.splitPTR,R.splitSIZE*sizeof(Vsplit));
 
 			pmap_faces.resize(R.facefixSIZE);
-			CopyMemory(pmap_faces.begin(),R.facefixPTR,R.facefixSIZE*sizeof(WORD));
+			CopyMemory(&*pmap_faces.begin(),R.facefixPTR,R.facefixSIZE*sizeof(WORD));
 
 			dwMinVerts = R.minVertices;
 		}
@@ -204,7 +204,7 @@ void OGF_Node::Save	(IWriter &fs)
 	// Chields
 	fs.open_chunk		(OGF_CHIELDS_L);
 	fs.w_u32			(chields.size());
-	fs.w				(chields.begin(),chields.size()*sizeof(DWORD));
+	fs.w				(&*chields.begin(),chields.size()*sizeof(DWORD));
 	fs.close_chunk		();
 }
 
@@ -226,12 +226,12 @@ void OGF_LOD::Save		(IWriter &fs)
 	// Chields
 	fs.open_chunk		(OGF_CHIELDS_L);
 	fs.w_u32			(chields.size());
-	fs.w			(chields.begin(),chields.size()*sizeof(DWORD));
+	fs.w				(&*chields.begin(),chields.size()*sizeof(DWORD));
 	fs.close_chunk		();
 
 	// Lod-def
 	fs.open_chunk		(OGF_LODDEF);
-	fs.w			(lod_faces,sizeof(lod_faces));
+	fs.w				(lod_faces,sizeof(lod_faces));
 	fs.close_chunk		();
 
 	// Texture & shader

@@ -439,13 +439,13 @@ VOID CDeflector::Light(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H)
 	}
 
 	// Iterate on layers
-	for (R_Layer* layer=pBuild->L_layers.begin(); layer!=pBuild->L_layers.end(); layer++)
+	for (R_Layer* layer=&*pBuild->L_layers.begin(); layer!=&*pBuild->L_layers.end(); layer++)
 	{
 		// Convert lights to local form
 		try {
 			LightsSelected->clear	();
-			R_Light*	L			= layer->lights.begin();
-			for (; L!=layer->lights.end(); L++)
+			R_Light*	L			= &*layer->lights.begin();
+			for (; L!=&*layer->lights.end(); L++)
 			{
 				if (L->type==LT_POINT) {
 					float dist						= Sphere.P.distance_to(L->position);
@@ -453,16 +453,16 @@ VOID CDeflector::Light(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H)
 				}
 				LightsSelected->push_back(*L);
 			}
-			if ((layer!=pBuild->L_layers.begin()) && LightsSelected->empty())	continue;	// empty, non-base layer
+			if ((layer!=&*pBuild->L_layers.begin()) && LightsSelected->empty())	continue;	// empty, non-base layer
 		} catch (...)
 		{
-			clMsg("* ERROR: CDeflector::Light - LocalSelect (L:%d)",layer-pBuild->L_layers.begin());
+			clMsg("* ERROR: CDeflector::Light - LocalSelect (L:%d)",layer-&*pBuild->L_layers.begin());
 		}
 
 		// Register _new layer
 		layers.push_back	(Layer());
 		Layer&	layer_data	= layers.back();
-		layer_data.base_id	= layer - pBuild->L_layers.begin();
+		layer_data.base_id	= layer - &*pBuild->L_layers.begin();
 		b_texture& lm		= layer_data.lm;
 		lm.dwWidth			= dwWidth;
 		lm.dwHeight			= dwHeight;
@@ -485,7 +485,7 @@ VOID CDeflector::Light(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H)
 			}
 		} catch (...)
 		{
-			clMsg("* ERROR: CDeflector::Light - Compression (L:%d)", layer-pBuild->L_layers.begin());
+			clMsg("* ERROR: CDeflector::Light - Compression (L:%d)", layer-&*pBuild->L_layers.begin());
 		}
 
 		// Expand with borders
@@ -562,12 +562,12 @@ VOID CDeflector::Light(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H)
 			}
 		} catch (...)
 		{
-			clMsg("* ERROR: CDeflector::Light - BorderExpansion (L:%d)", layer-pBuild->L_layers.begin());
+			clMsg("* ERROR: CDeflector::Light - BorderExpansion (L:%d)", layer-&*pBuild->L_layers.begin());
 		}
 
 		// Test if layer really needed 
 		{
-			if (layer==pBuild->L_layers.begin())			continue;	// base, ambient layer - always present
+			if (layer==&*pBuild->L_layers.begin())			continue;	// base, ambient layer - always present
 			BOOL			bSkip	= TRUE;
 			u32			size	= (lm.dwWidth+2*BORDER)*(lm.dwHeight+2*BORDER);
 			for (u32 pix=0; pix<size; pix++)	{
