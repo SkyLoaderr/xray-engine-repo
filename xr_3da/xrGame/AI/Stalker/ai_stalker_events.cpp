@@ -50,7 +50,12 @@ void CAI_Stalker::OnEvent		(NET_Packet& P, u16 type)
 #endif
 			}
 			else {
-				DropItemSendMessage(O);
+//				DropItemSendMessage(O);
+				NET_Packet				P;
+				u_EventGen				(P,GE_OWNERSHIP_REJECT,ID());
+				P.w_u16					(u16(O->ID()));
+				u_EventSend				(P);
+
 #ifndef SILENCE
 				Msg("TAKE - can't take! - Dropping for valid server information %s (%d)", *O->cName(),O->ID());
 #endif
