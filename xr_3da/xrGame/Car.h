@@ -13,8 +13,11 @@ private:
 private:
 	CPHJeep					m_jeep;
 	bool					m_repairing;
-	CCameraBase*			camera;
-	float					m_fCamDPitch;
+	CCameraBase*			camera[3];
+	CCameraBase*			active_camera;
+	Fvector					m_vCamDeltaHP;
+
+	void					OnCameraChange		(int type);
 	
 	void					cam_Update			(float dt);
 
