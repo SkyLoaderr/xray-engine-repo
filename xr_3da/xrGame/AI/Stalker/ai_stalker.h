@@ -147,12 +147,7 @@ private:
 	bool					m_bActionStarted;
 	u32						m_dwSoundTime;
 
-	//HIT PHYS
-	float					m_saved_impulse;
-	Fvector					m_saved_hit_position;
-	Fvector					m_saved_hit_dir;
-	s16						m_saved_element;
-	
+
 	CCharacterPhysicsSupport* m_pPhysics_support;
 	// Graph
 	_GRAPH_ID				m_tCurGP;
