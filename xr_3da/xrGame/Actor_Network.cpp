@@ -587,6 +587,12 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 		E->s_flags.set(M_SPAWN_OBJECT_LOCAL, TRUE);
 	};
 
+	//-------------------------------------
+	// инициализация реестров, используемых актером
+	contacts_registry.init(ID());
+	encyclopedia_registry.init(ID());
+	game_task_registry.init(ID());
+
 	if (!CInventoryOwner::net_Spawn(DC)) return FALSE;
 	if (!inherited::net_Spawn(DC))	return FALSE;
 
@@ -703,11 +709,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 		}
 	}
 
-	//-------------------------------------
-	// инициализация реестров, используемых актером
-	contacts_registry.init(ID());
-	encyclopedia_registry.init(ID());
-	game_task_registry.init(ID());
+
 	//-------------------------------------
 	m_States.empty();
 

@@ -89,10 +89,21 @@ void CActor::AddGameTask			 (const CInfoPortion* info_portion)
 
 	GAME_TASK_VECTOR& task_vector = game_task_registry.objects();
 
-	for(ARTICLE_INDEX_VECTOR::const_iterator it = info_portion->GameTasks().begin();
+	std::size_t old_size = task_vector.size();
+
+	for(TASK_INDEX_VECTOR::const_iterator it = info_portion->GameTasks().begin();
 		it != info_portion->GameTasks().end(); it++)
 	{
-		task_vector.push_back(TASK_DATA(*it, Level().GetGameTime()));
+
+		for(GAME_TASK_VECTOR::const_iterator it1 = task_vector.begin();
+			it1 != task_vector.end(); it1++)
+		{
+			if(*it == (*it1).index)
+				break;
+		}
+
+		if(it1 == task_vector.end())
+			task_vector.push_back(TASK_DATA(*it, Level().GetGameTime()));
 	}
 
 
@@ -107,7 +118,9 @@ void CActor::AddGameTask			 (const CInfoPortion* info_portion)
 		rect, "Task Update Press P");*/
 
 	//установить флажок необходимости прочтения тасков в PDA
-	HUD().GetUI()->UIMainIngameWnd.SetFlashIconState(CUIMainIngameWnd::efiPdaTask, true);
+
+	if(old_size != task_vector.size())
+		HUD().GetUI()->UIMainIngameWnd.SetFlashIconState(CUIMainIngameWnd::efiPdaTask, true);
 }
 
 
