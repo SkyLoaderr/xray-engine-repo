@@ -43,7 +43,7 @@ public:
 
 	void		Load		(CStream* S);
 	void		Unload		();
-	void		Transfer	(Fmatrix& mXform, fvfVertexOut* vD, DWORD C);
+	void		Transfer	(Fmatrix& mXform, fvfVertexOut* vDest, DWORD C, WORD* iDest, DWORD iOffset);
 };
 
 class ENGINE_API CDetailManager  
