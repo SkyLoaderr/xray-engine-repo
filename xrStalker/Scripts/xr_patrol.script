@@ -740,7 +740,7 @@ function set_patrol (npc, enabled, patrol_path, escape_path, raid_enabled, raid_
        st.enabled = enabled     
     end
     
-    if patrol_path == nil then   
+    if patrol_path == nil then
        if char_ini:section_exist ("patrol") == true and char_ini:line_exist("patrol", "patrol_path") == true then
           st.patrol_path = char_ini:r_string("patrol", "patrol_path")
        else
