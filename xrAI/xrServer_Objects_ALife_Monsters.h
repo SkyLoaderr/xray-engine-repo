@@ -282,6 +282,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,
 	virtual CSE_ALifeDynamicObject	*tpfGetBestDetector		();
 	virtual	void					vfDetachAll				(bool					bFictitious = false) {};
 			void					vfCheckForPopulationChanges();
+	virtual void					on_surge				();
 #endif
 	virtual bool					need_update				(CSE_ALifeDynamicObject *object);
 SERVER_ENTITY_DECLARE_END

@@ -128,7 +128,6 @@ CSE_Abstract *CALifeSimulatorBase::spawn_item	(LPCSTR section, const Fvector &po
 	strcat						(s_name_replace,itoa(abstract->ID,S1,10));
 	abstract->set_name_replace	(s_name_replace);
 
-
 	CSE_ALifeDynamicObject		*dynamic_object = smart_cast<CSE_ALifeDynamicObject*>(abstract);
 	VERIFY						(dynamic_object);
 
@@ -137,10 +136,12 @@ CSE_Abstract *CALifeSimulatorBase::spawn_item	(LPCSTR section, const Fvector &po
 	if(weapon)
 		weapon->a_elapsed = weapon->get_ammo_magsize();
 
-
 	dynamic_object->m_tNodeID	= level_vertex_id;
 	dynamic_object->m_tGraphID	= game_vertex_id;
 	dynamic_object->m_tSpawnID	= u16(-1);
+
+	dynamic_object->on_spawn	();
+
 	register_object				(dynamic_object,true);
 
 //	Msg							("LSS : SPAWN : [%s],[%s], level %s",*dynamic_object->s_name,dynamic_object->name_replace(),*ai().game_graph().header().level(ai().game_graph().vertex(dynamic_object->m_tGraphID)->level_id()).name());

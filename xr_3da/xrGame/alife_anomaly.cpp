@@ -83,6 +83,7 @@ void CSE_ALifeDynamicObject::on_spawn		()
 
 void CSE_ALifeCreatureAbstract::on_spawn	()
 {
+	inherited::on_spawn					();
 	m_dynamic_out_restrictions.clear	();
 	m_dynamic_in_restrictions.clear		();
 
@@ -134,4 +135,11 @@ void CSE_ALifeAnomalousZone::on_spawn						()
 			l_tpALifeItemArtefact->m_fAnomalyValue = m_maxPower*(1.f - i->o_Position.distance_to(o_Position)/m_fRadius);
 		}
 	}
+}
+
+void CSE_ALifeMonsterAbstract::on_surge	()
+{
+	inherited1::on_surge			();
+	m_dynamic_out_restrictions.clear();
+	m_dynamic_in_restrictions.clear	();
 }

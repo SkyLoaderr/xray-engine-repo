@@ -602,6 +602,7 @@ CSE_ALifeSpaceRestrictor::CSE_ALifeSpaceRestrictor	(LPCSTR caSection) : CSE_ALif
 	m_flags.set					(flUseSwitches,FALSE);
 	m_space_restrictor_type		= RestrictionSpace::eDefaultRestrictorTypeNone;
 	m_flags.set					(flUsedAI_Locations,FALSE);
+	m_spawn_flags.set			(flSpawnDestroyOnSpawn,FALSE);
 }
 
 CSE_ALifeSpaceRestrictor::~CSE_ALifeSpaceRestrictor	()
