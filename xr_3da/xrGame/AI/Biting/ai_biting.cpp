@@ -10,26 +10,22 @@
 
 #include "ai_biting.h"
 
-
-
 CAI_Biting::CAI_Biting()
 {
-	// init local parameters
-	m_pPhysicsShell			= NULL;
-
+	Init();
 }
 
 CAI_Biting::~CAI_Biting()
 {
-	// delete sounds
+}
 
-	xr_delete				(m_pPhysicsShell);
-
+void CAI_Biting::Init()
+{
 }
 
 void CAI_Biting::Die()
 {
-	inherited::Death( );
+	inherited::Die( );
 
 	// ...
 
@@ -41,7 +37,7 @@ void CAI_Biting::Load(LPCSTR section)
 	inherited::Load(section);
 	
 
-	g_vfLoadSounds (m_tpSoundTest,pSettings->r_string(section,"sound_test"),100);
+//	g_vfLoadSounds (m_tpSoundTest,pSettings->r_string(section,"sound_test"),100);
 
 	// Load params from section
 

@@ -623,15 +623,10 @@ void CCustomMonster::HitSignal(float perc, Fvector& vLocalDir, CObject* who)
 {
 }
 
-void CCustomMonster::Death	()
-{
-}
-
 void CCustomMonster::Die	()
 {
-
-
 }
+
 BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 {
 	if (!inherited::net_Spawn(DC))	return FALSE;

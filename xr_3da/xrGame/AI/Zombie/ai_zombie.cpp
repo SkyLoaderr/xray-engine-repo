@@ -57,7 +57,7 @@ CAI_Zombie::~CAI_Zombie()
 
 void CAI_Zombie::Die()
 {
-	inherited::Death( );
+	inherited::Die( );
 	m_eCurrentState = aiZombieDie;
 	
 	///Fvector	dir;

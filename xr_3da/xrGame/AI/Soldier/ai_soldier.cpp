@@ -76,10 +76,10 @@ CAI_Soldier::~CAI_Soldier()
 }
 
 // when soldier is dead
-void CAI_Soldier::Death()
+void CAI_Soldier::Die()
 {
 	// perform death operations
-	inherited::Death( );
+	inherited::Die();
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 	vfSetFire(false,Group);
 	m_eCurrentState = aiSoldierDie;

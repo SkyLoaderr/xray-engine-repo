@@ -6,8 +6,7 @@
 //	Description : AI Behaviour for monster "Soldier"
 ////////////////////////////////////////////////////////////////////////////
 
-#ifndef __XRAY_AI_SOLDIER__
-#define __XRAY_AI_SOLDIER__
+#pragma once
 
 #include "..\\ai_selector_template.h"
 #include "..\\ai_monsters_misc.h"
@@ -730,7 +729,6 @@ class CAI_Soldier : public CCustomMonster
 		virtual		  ~CAI_Soldier();
 		virtual void  Update(u32 DT);
 		virtual void  HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 element);
-		virtual void  Death();
 		virtual void  Load( LPCSTR section );
 		virtual void  Think();
 		virtual float EnemyHeuristics(CEntity* E);
@@ -744,5 +742,3 @@ class CAI_Soldier : public CCustomMonster
 		virtual objQualifier* GetQualifier();
 		virtual	void  feel_sound_new(CObject* who, int eType, Fvector& Position, float power);
 };
-		
-#endif

@@ -57,7 +57,7 @@ CAI_Rat::~CAI_Rat()
 
 void CAI_Rat::Die()
 {
-	inherited::Death( );
+	inherited::Die( );
 	m_eCurrentState = aiRatDie;
 	
 	Fvector	dir;

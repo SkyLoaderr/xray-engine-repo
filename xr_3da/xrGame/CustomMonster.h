@@ -216,7 +216,6 @@ public:
 	virtual				~CCustomMonster			( );
 
 	virtual BOOL		net_Spawn				( LPVOID DC);
-	virtual void		Death					( );
 	virtual void		Die						( );
 
 	virtual void		HitSignal				( float P,	Fvector& vLocalDir, CObject* who);

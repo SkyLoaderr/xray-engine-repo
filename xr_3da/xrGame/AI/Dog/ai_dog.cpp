@@ -53,7 +53,7 @@ CAI_Dog::~CAI_Dog()
 
 void CAI_Dog::Die()
 {
-	inherited::Death( );
+	inherited::Die( );
 	m_eCurrentState = aiDogDie;
 	
 	Fvector	dir;
