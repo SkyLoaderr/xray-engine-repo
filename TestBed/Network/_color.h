@@ -8,7 +8,7 @@ IC u32	color_xrgb	(u32 r, u32 g, u32 b)			{	return color_argb(0xff,r,g,b);	}
 IC u32	colot_get_R	(u32 rgba)						{	return (((rgba) >> 16) & 0xff);	}
 IC u32	colot_get_G	(u32 rgba)						{	return (((rgba) >> 8) & 0xff);	}
 IC u32	colot_get_B	(u32 rgba)						{	return ((rgba) & 0xff);			}
-IC u32  color_get_A	(u32 rgba)						{	return ((rgba) >> 24);			}
+IC u32  color_get_A_(u32 rgba)						{	return ((rgba) >> 24);			}
 
 typedef struct _color {
 public:
