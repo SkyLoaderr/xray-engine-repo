@@ -71,7 +71,9 @@ function if_see_actor1(npc)
 	return false
 end
 
-
+function print(number, number)
+	printf("%d %d", number, number)
+end
 
 function main()
 	log	("script don't want to work!")
