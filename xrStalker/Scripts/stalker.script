@@ -62,6 +62,7 @@ end
 		
 		local console = get_console()
 		console:execute("run_script avi_start")
+		printf("*AVI* RUN START AVI")
 		
 		self.bCheckStart = false
 	end			
