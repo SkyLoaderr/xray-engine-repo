@@ -44,9 +44,7 @@ void __fastcall mapMatrix_Render	(mapMatrixItems& N)
 	for (; I!=E; I++)		{
 		_MatrixItem&	Ni			= *I;
 		RCache.set_xform_world		(Ni.Matrix);
-#if RENDER==R_R1
-		RImplementation.ApplyObject	(Ni.pObject);
-#endif
+		RImplementation.apply_object(Ni.pObject);
 		Ni.pVisual->Render			(calcLOD(Ni.ssa,Ni.pVisual->vis.sphere.R));
 	}
 	N.clear	();
@@ -60,11 +58,8 @@ void __fastcall sorted_L1		(mapSorted_Node *N)
 	VERIFY (V && V->hShader._get() && V->hGeom._get());
 	RCache.set_Element				(N->val.se);
 	RCache.set_xform_world			(N->val.Matrix);
-#if RENDER==R_R1
-	RImplementation.ApplyObject		(N->val.pObject);
-#else
+	RImplementation.apply_object	(N->val.pObject);
 	RImplementation.apply_lmaterial	();
-#endif
 	V->Render						(calcLOD(N->key,V->vis.sphere.R));
 }
 

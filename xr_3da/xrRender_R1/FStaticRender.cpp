@@ -180,7 +180,7 @@ void					CRender::set_Object				(IRenderable*		O )
 		L_Projector->set_object	(0);
 	}
 }
-void					CRender::ApplyObject			(IRenderable*		O )
+void					CRender::apply_object			(IRenderable*		O )
 {
 	if (0==O)			return;
 	if (PHASE_NORMAL==phase)	{

@@ -105,10 +105,11 @@ public:
 
 	xr_vector<Fbox3>											main_coarse_structure;
 
-	shared_str													c_sbase;
-	shared_str													c_lmaterial;
+	shared_str													c_sbase			;
+	shared_str													c_lmaterial		;
+	float														o_hemi			;
 
-	IDirect3DQuery9*											q_sync_point;
+	IDirect3DQuery9*											q_sync_point	;
 private:
 	// Loading / Unloading
 	void							LoadBuffers					(IReader	*fs);
@@ -147,6 +148,12 @@ public:
 	IC void							occq_end					(u32&	ID		)	{ HWOCC.occq_end	(ID);			}
 	IC u32							occq_get					(u32&	ID		)	{ return HWOCC.occq_get		(ID);	}
 
+	ICF void						apply_object				(IRenderable*	O)
+	{
+		if (0==O)					return;
+		CROS_impl& LT				= *((CROS_impl*)O->renderable.ROS);
+		o_hemi						= LT.hemi_smooth			;
+	}
 	IC void							apply_lmaterial				()
 	{
 		R_constant*		C	= RCache.get_c(c_sbase);			// get sampler
@@ -159,7 +166,7 @@ public:
 #ifdef	DEBUG
 		if (ps_r2_ls_flags.test(R2FLAG_GLOBALMATERIAL))	mtl=ps_r2_gmaterial;
 #endif
-		RCache.set_c		(c_lmaterial,0,0,0,(mtl+.5f)/4.f);
+		RCache.set_c		(c_lmaterial,o_hemi,o_hemi,o_hemi,(mtl+.5f)/4.f);
 	}
 
 public:

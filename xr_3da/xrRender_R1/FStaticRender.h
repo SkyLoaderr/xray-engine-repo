@@ -93,8 +93,8 @@ public:
 	IRender_Portal*						getPortal				(int id);
 	IRender_Sector*						getSectorActive			();
 	IRender_Visual*						model_CreatePE			(LPCSTR			name);
-	void								ApplyObject				(IRenderable*	O);
 	void								ApplyBlur4				(FVF::TL4uv*	dest, u32 w, u32 h, float k);
+	void								apply_object			(IRenderable*	O);
 	IC void								apply_lmaterial			()				{};
 public:
 	// feature level
