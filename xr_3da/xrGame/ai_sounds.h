@@ -73,7 +73,7 @@ enum ESoundTypes {
 #define ACCELERATED_SOUND_FACTOR			.5f
 
 xr_token anomaly_type_token[]={
-	{ "undefined",				0},
+	{ "undefined",				st_Undefined						},
 	{ "Weapon Recharging",		SOUND_TYPE_WEAPON_RECHARGING		},
 	{ "Weapon Shooting",		SOUND_TYPE_WEAPON_SHOOTING			},
 	{ "Weapon Taking",			SOUND_TYPE_WEAPON_TAKING			},

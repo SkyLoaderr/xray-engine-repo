@@ -2,7 +2,7 @@ object frmSoundLib: TfrmSoundLib
   Left = 559
   Top = 200
   Width = 350
-  Height = 455
+  Height = 469
   BorderIcons = [biSystemMenu, biMinimize]
   Caption = 'Sound Editor'
   Color = 10528425
@@ -28,7 +28,7 @@ object frmSoundLib: TfrmSoundLib
     Left = 168
     Top = 0
     Width = 2
-    Height = 428
+    Height = 442
     Cursor = crHSplit
     Align = alRight
     Color = 13816530
@@ -38,24 +38,15 @@ object frmSoundLib: TfrmSoundLib
     Left = 170
     Top = 0
     Width = 172
-    Height = 428
+    Height = 442
     Align = alRight
     BevelOuter = bvLowered
     Color = 10528425
     Constraints.MinWidth = 172
     TabOrder = 0
-    object Bevel2: TBevel
-      Left = 1
-      Top = 336
-      Width = 170
-      Height = 2
-      Align = alBottom
-      Shape = bsBottomLine
-      Style = bsRaised
-    end
     object paCommand: TPanel
       Left = 1
-      Top = 338
+      Top = 352
       Width = 170
       Height = 89
       Align = alBottom
@@ -88,13 +79,13 @@ object frmSoundLib: TfrmSoundLib
       end
       object ebRemoveCurrent: TExtBtn
         Left = 0
-        Top = 34
+        Top = 36
         Width = 170
         Height = 17
         Align = alTop
         BevelShow = False
         CloseButton = False
-        Caption = 'Remove Current'
+        Caption = 'Remove'
         FlatAlwaysEdge = True
         OnClick = ebRemoveCurrentClick
       end
@@ -112,7 +103,7 @@ object frmSoundLib: TfrmSoundLib
       end
       object ebRenameCurrent: TExtBtn
         Left = 0
-        Top = 17
+        Top = 19
         Width = 170
         Height = 17
         Align = alTop
@@ -122,20 +113,42 @@ object frmSoundLib: TfrmSoundLib
         FlatAlwaysEdge = True
         OnClick = ebRenameCurrentClick
       end
-      object Bevel1: TBevel
+      object Panel1: TPanel
         Left = 0
-        Top = 51
+        Top = 17
         Width = 170
-        Height = 4
+        Height = 2
         Align = alTop
-        Style = bsRaised
+        BevelOuter = bvNone
+        ParentColor = True
+        TabOrder = 0
+        object Panel3: TPanel
+          Left = 0
+          Top = 0
+          Width = 170
+          Height = 2
+          Align = alTop
+          BevelOuter = bvNone
+          ParentColor = True
+          TabOrder = 0
+        end
+      end
+      object Panel2: TPanel
+        Left = 0
+        Top = 53
+        Width = 170
+        Height = 2
+        Align = alTop
+        BevelOuter = bvNone
+        ParentColor = True
+        TabOrder = 1
       end
     end
     object paProperties: TPanel
       Left = 1
       Top = 1
       Width = 170
-      Height = 335
+      Height = 351
       Align = alClient
       BevelOuter = bvNone
       Color = 10528425
@@ -146,7 +159,7 @@ object frmSoundLib: TfrmSoundLib
     Left = 0
     Top = 0
     Width = 168
-    Height = 428
+    Height = 442
     Align = alClient
     BevelOuter = bvNone
     ParentColor = True

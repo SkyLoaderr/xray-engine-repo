@@ -32,13 +32,14 @@ __published:	// IDE-managed Components
 	TPanel *paProperties;
 	TPanel *paItems;
 	TSplitter *Splitter1;
-	TBevel *Bevel2;
 	TImageList *ImageList;
 	TExtBtn *ebCancel;
 	TExtBtn *ebRemoveCurrent;
 	TExtBtn *ebImportSound;
 	TExtBtn *ebRenameCurrent;
-	TBevel *Bevel1;
+	TPanel *Panel1;
+	TPanel *Panel2;
+	TPanel *Panel3;
     void __fastcall ebOkClick(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);
     void __fastcall FormClose(TObject *Sender, TCloseAction &Action);

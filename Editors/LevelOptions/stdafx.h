@@ -196,5 +196,8 @@ struct astr_pred : public std::binary_function<const AnsiString&, const AnsiStri
 #define _detail_objects_	"$detail_objects$"
 #endif
 
+#define		TEX_POINT_ATT	"internal\\internal_light_attpoint"
+#define		TEX_SPOT_ATT	"internal\\internal_light_attclip"
+
 #pragma hdrstop
 
