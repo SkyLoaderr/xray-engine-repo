@@ -34,7 +34,8 @@ private:
 	
 	float				param_blur;
 	float				param_gray;
-	float				param_duality;
+	float				param_duality_h;
+	float				param_duality_v;
 	float				param_noise;
 	float				param_noise_scale;
 	u32					param_noise_color;
@@ -45,7 +46,7 @@ public:
 	void				OnDeviceCreate		();
 	void				OnDeviceDestroy		();
 
-	BOOL				NeedPostProcess		()	{ return (param_blur>0.01f)||(param_gray>0.01f)||(param_noise>0.01f)||(param_duality>0.001f); }
+	BOOL				NeedPostProcess		()	{ return (param_blur>0.01f)||(param_gray>0.01f)||(param_noise>0.01f)||(param_duality_h>0.001f)||(param_duality_v>0.001f); }
 	BOOL				Available			()	{ return bAvailable; }
 	BOOL				Perform				();
 
@@ -56,7 +57,8 @@ public:
 
 	virtual void		set_blur			(float f)		{ param_blur=f;			}
 	virtual void		set_gray			(float f)		{ param_gray=f;			}
-	virtual void		set_duality			(float f)		{ param_duality=_abs(f);}
+	virtual void		set_duality_h		(float f)		{ param_duality_h=_abs(f);}
+	virtual void		set_duality_v		(float f)		{ param_duality_v=_abs(f);}
 	virtual void		set_noise			(float f)		{ param_noise=f;		}
 	virtual void		set_noise_scale		(float f)		{ param_noise_scale=f;	}
 	virtual void		set_noise_color		(u32 f)			{ param_noise_color=f;	}

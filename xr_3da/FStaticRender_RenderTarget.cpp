@@ -17,7 +17,8 @@ CRenderTarget::CRenderTarget()
 	param_blur		= 0.f;
 	param_gray		= 0.f;
 	param_noise		= 0.f;
-	param_duality	= 0.5f;
+	param_duality_h	= 0.5f;
+	param_duality_v	= 0.5f;
 	param_noise_fps	= 25.f;
 
 	im_noise_time	= 1/100;
@@ -148,11 +149,12 @@ void CRenderTarget::e_render_duality()
 {
 	Device.Shader.set_Shader		(pShaderDuality);
 
-	float		shift				= param_duality*.5f;
+	float		shift_u				= param_duality_h*.5f;
+	float		shift_v				= param_duality_v*.5f;
 
 	Fvector2	r0,r1,l0,l1;
-	r0.set(0.f,0.f);		r1.set(1.f-shift,1.f);
-	l0.set(0.f+shift,0.f);	l1.set(1.f,1.f);
+	r0.set(0.f,0.f);					r1.set(1.f-shift_u,1.f-shift_v);
+	l0.set(0.f+shift_u,0.f+shift_v);	l1.set(1.f,1.f);
 
 	u32			_w					= Device.dwWidth;
 	u32			_h					= Device.dwHeight;
@@ -175,7 +177,8 @@ void CRenderTarget::e_render_duality()
 
 BOOL CRenderTarget::Perform		()
 {
-	set_duality					(.05f*sinf(100.f*Device.fTimeGlobal));
+	set_duality_h					(.15f*sinf(1.f*Device.fTimeGlobal));
+	set_duality_v					(.17f*sinf(1.1f*Device.fTimeGlobal));
 
 	return Available() && ( NeedPostProcess() || (psSupersample>1));
 }
@@ -247,7 +250,7 @@ void CRenderTarget::End		()
 	Device.Streams.Vertex.Unlock	(12,pVS->dwStride);
 
 	// Actual rendering
-	if (param_duality>0.001f)
+	if (param_duality_h>0.001f || param_duality_v>0.001f)
 	{
 		e_render_duality	();
 	} else 
