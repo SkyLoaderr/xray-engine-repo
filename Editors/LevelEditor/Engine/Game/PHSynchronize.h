@@ -20,6 +20,9 @@ protected:
 private:
 };
 
+void	PHNetInterpolationModeON();
+void	PHNetInterpolationModeOFF();
+bool	PHNetInterpolationMode();
 
 
 #endif

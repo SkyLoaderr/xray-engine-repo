@@ -488,7 +488,7 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 		joint_data.type==jtRigid
 		)				
 		;
-	bool element_added=false;//set true when if elemen createt and added by this call
+	bool element_added=false;//set true when if elemen created and added by this call
 	u16	 splitter_position=0;
 	u16 fracture_num=u16(-1);
 
@@ -944,7 +944,7 @@ void CPHShell::UpdateRoot()
 void CPHShell::InterpolateGlobalTransform(Fmatrix* m)
 {
 	
-	if(!CPHObject::is_active()) return;
+	if(!CPHObject::is_active()&&!PHNetInterpolationMode()) return;
 	(*elements.begin())->InterpolateGlobalTransform(m);
 	m->mulB_43	(m_object_in_root);
 	
