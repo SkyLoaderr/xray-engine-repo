@@ -22,6 +22,7 @@ function main()
 		{"script_object0019","idle"},
 		{"script_object0020","idle"},
 		{"script_object0021","idle"},
+		{"script_object", "idle"}
 	}
 	
 	local	object_table = {}
