@@ -105,6 +105,14 @@ void CRenderTarget::accum_point_shadow	(light* L)
 		J.set(+1,+1,+1); J.mul(scale); RCache.set_ca	(_C,7,J);
 	}
 
+	//
+	Fvector		test;
+	Fvector4	res;
+	test.set(-1,-1,0); m_TexelAdjust.transform(res,test);
+	test.set( 1,-1,0); m_TexelAdjust.transform(res,test);
+	test.set(-1, 1,0); m_TexelAdjust.transform(res,test);
+	test.set( 1, 1,0); m_TexelAdjust.transform(res,test);
+
 	// Render if (stencil >= light_id && z-pass)
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFUNC,		D3DCMP_LESSEQUAL	));
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILREF,			dwLightMarkerID		));
