@@ -46,6 +46,16 @@ public:
 	void							cform_write			(NET_Packet& P);
 };
 
+class xrSE_Visualed
+{
+public:
+	string64						visual_name;
+public:
+									xrSE_Visualed		(){visual_name[0]=0;}
+	void							visual_read			(NET_Packet& P);
+	void							visual_write		(NET_Packet& P);
+};
+
 // Some preprocessor help
 #ifdef _EDITOR
 #define xrSE_EDITOR_METHODS	virtual void FillProp(LPCSTR pref, PropItemVec& values);
@@ -57,6 +67,7 @@ public:
 
 //
 #define xrSE_DECLARE_BEGIN(__A,__B)	class __A : public __B	{ typedef __B inherited; public:
+#define xrSE_DECLARE_BEGIN2(__A,__B,__C) class __A : public __B, public __C	{ typedef __B inherited; public:
 
 //
 #define	xrSE_DECLARE_END \
@@ -68,9 +79,8 @@ virtual void 						STATE_Write		(NET_Packet& P); \
 xrSE_EDITOR_METHODS\
 };
 
-xrSE_DECLARE_BEGIN(xrSE_HangingLamp,xrServerEntity)
+xrSE_DECLARE_BEGIN2(xrSE_HangingLamp,xrServerEntity,xrSE_Visualed)
 	u32								color;
-	string64						caModel;
 	string64						animator;
 	string64						spot_texture;
 	string32						spot_bone;

@@ -590,6 +590,16 @@ void	xrSE_Enemy::FillProp			(LPCSTR pref, PropItemVec& items)
 //		}
 //	}
 //};
+void					xrSE_Visualed::visual_read(NET_Packet& P)
+{
+	P.r_string			(visual_name);
+}
+
+void					xrSE_Visualed::visual_write(NET_Packet& P)
+{
+	P.w_string			(visual_name);
+}
+
 void					xrSE_CFormed::cform_read			(NET_Packet& P)
 {
 	shapes.clear();
@@ -1339,8 +1349,7 @@ void xrSE_Idol::FillProp(LPCSTR pref, PropItemVec& items)
 //***** Lamp
 xrSE_HangingLamp::xrSE_HangingLamp(LPCSTR caSection) : xrServerEntity(caSection)
 {
-	strcpy					(caModel,"lights\\hanginglamp");
-	strcpy					(spot_texture,"lights\\lights_hl");
+	strcpy					(spot_texture,"");
 	strcpy					(animator,"");
 	strcpy					(spot_bone,"");
 	spot_range				= 10.f;
@@ -1350,11 +1359,11 @@ xrSE_HangingLamp::xrSE_HangingLamp(LPCSTR caSection) : xrServerEntity(caSection)
 xrSE_HangingLamp::~xrSE_HangingLamp()
 {
 }
-void xrSE_HangingLamp::STATE_Read			(NET_Packet& P, u16 size)
+void xrSE_HangingLamp::STATE_Read		(NET_Packet& P, u16 size)
 {
+	visual_read				(P);
 	// model
 	P.r_u32					(color);
-	P.r_string				(caModel);
 	P.r_string				(animator);
 	P.r_string				(spot_texture);
 	P.r_string				(spot_bone);
@@ -1363,9 +1372,9 @@ void xrSE_HangingLamp::STATE_Read			(NET_Packet& P, u16 size)
 }
 void xrSE_HangingLamp::STATE_Write		(NET_Packet& P)
 {
+	visual_write			(P);
 	// model
 	P.w_u32					(color);
-	P.w_string				(caModel);
 	P.w_string				(animator);
 	P.w_string				(spot_texture);
 	P.w_string				(spot_bone);
@@ -1375,16 +1384,15 @@ void xrSE_HangingLamp::STATE_Write		(NET_Packet& P)
 void xrSE_HangingLamp::UPDATE_Read		(NET_Packet& P)	{};
 void xrSE_HangingLamp::UPDATE_Write		(NET_Packet& P)	{};
 #ifdef _EDITOR
-void	xrSE_HangingLamp::FillProp			(LPCSTR pref, PropItemVec& values)
+void	xrSE_HangingLamp::FillProp		(LPCSTR pref, PropItemVec& values)
 {
-	inherited::FillProp(pref,values);
-	PHelper.CreateColor					(items, PHelper.PrepareKey(pref,s_name,"Color"),			&color);
-	PHelper.CreateGameObject			(items, PHelper.PrepareKey(pref,s_name,"Model"),			caModel,			sizeof(caModel));
-	PHelper.CreateLightAnim				(items, PHelper.PrepareKey(pref,s_name,"Light animator"),	animator,			sizeof(animator));
-	PHelper.CreateTexture				(items, PHelper.PrepareKey(pref,s_name,"Spot texture"),		spot_texture,		sizeof(spot_texture));
-	PHelper.CreateText					(items, PHelper.PrepareKey(pref,s_name,"Spot bone"),		spot_bone,			sizeof(spot_bone));
-	PHelper.CreateFloat					(items, PHelper.PrepareKey(pref,s_name,"Spot range"),		&spot_range,		0.1f, 1000.f);
-	PHelper.CreateAngle					(items, PHelper.PrepareKey(pref,s_name,"Spot angle"),		&spot_cone_angle,	0, PI_DIV_2);
+	inherited::FillProp		(pref,values);
+	PHelper.CreateColor		(values, PHelper.PrepareKey(pref,s_name,"Color"),			&color);
+	PHelper.CreateLightAnim	(values, PHelper.PrepareKey(pref,s_name,"Light animator"),	animator,			sizeof(animator));
+	PHelper.CreateTexture	(values, PHelper.PrepareKey(pref,s_name,"Spot texture"),	spot_texture,		sizeof(spot_texture));
+	PHelper.CreateText		(values, PHelper.PrepareKey(pref,s_name,"Spot bone"),		spot_bone,			sizeof(spot_bone));
+	PHelper.CreateFloat		(values, PHelper.PrepareKey(pref,s_name,"Spot range"),		&spot_range,		0.1f, 1000.f);
+	PHelper.CreateAngle		(values, PHelper.PrepareKey(pref,s_name,"Spot angle"),		&spot_cone_angle,	0, PI_DIV_2);
 }
 #endif
 
