@@ -7,7 +7,8 @@ local time_walk 	= 100000
 local time_rest 	= 15000         --Сколько анимаций сидения сидим
 local novice_speak  = 10000     --Через какое время примерно новичок произносит фразы
 
-local time_to_speak = 15000     --Через какое время примерно зомби произносит фразы
+--local time_to_speak = 15000     --Через какое время примерно зомби произносит фразы
+local time_to_speak = 1000     --Через какое время примерно зомби произносит фразы
 
 local time_walk2    = 15000     --Время ходьбы для навичка номер2
 
@@ -106,11 +107,13 @@ end
 function stalker_zombe_action:speak()
     if( math.random() < 0 ) then
     	self.object:play_sound( stand_speak, 1, 0, 1, 0, math.random( 0, 6 ) )
+		xr_sounds.play_sound(self.object, 0, "trivial", 1)
     else
         self.object:set_movement_type ( move.stand )
         self.object:add_animation( "prisluh_9_0", true )
         self.object:add_animation( "prisluh_9_2", true )
-		self.object:play_sound( stand_speak, 3000, 1000, 1, 0, math.random( 0, 6 ) )
+--        xr_sounds.play_sound_rnd(self.object, 1000, 3000, "trivial", 1)
+        xr_sounds.play_sound(self.object, 0, "trivial", 1)
         self.a.stand = true
     end
 
@@ -152,10 +155,10 @@ function add_zombe(obj)
     xr_motivator.storage[obj:id()] 		 = { zombe = {} }
     xr_motivator.storage[obj:id()].zombe = st
 
+	printf( "11")
+    xr_sounds.load_sounds(obj)
+	printf( "22" )
     printf( "binding stalker zombe" )
-
-    obj:add_sound ( "\script_replics\\zombie\\stalker_zombie\\zombie_phrase_", 20, snd_type.talk, 2, 1, stand_speak )
-
 
     properties[ "zombee_alife" ]      = xr_evaluators_id.jon_stalker_zombe
     operators [ "stalker_zombe" ]     = xr_actions_id.jon_stalker_zombe
@@ -306,8 +309,8 @@ function add_novice(obj)
     local operators     = {}
     local properties    = {}
 
-    obj:add_sound ( "script_replics\\stalker_1\\newbie\\newbie_where_artifacts_1", 20, snd_type.talk, 2, 1, walk_speak )
-    obj:add_sound ( "script_replics\\stalker_1\\newbie\\newbie_no_luck_2", 20, snd_type.talk, 2, 1, walk_speak + 1 )
+    obj:add_sound( "script_replics\\stalker_1\\newbie\\newbie_replic_2_1", 20, snd_type.talk, 2, 1, walk_speak )
+--    obj:add_sound ( "script_replics\\stalker_1\\newbie\\newbie_no_luck_2", 20, snd_type.talk, 2, 1, walk_speak + 1 )
 
     properties["state_end"]     	  = xr_evaluators_id.state_change
     properties[ "work" ]              = xr_evaluators_id.jon_stalker_novice
@@ -410,10 +413,10 @@ function stalker_novice2_action:action( param )
     	printf( "Play sound" )
         if( math.random() < 0.5 ) then
         	self.object:play_sound      ( walk_speak2, 5000, 2000, 1, 0, math.random( 0, 5 ) )
-	        self.object:add_animation   ( "prisluh_8_0", true )
-            self.object:add_animation   ( "prisluh_8_3", true )
-            self.object:add_animation   ( "prisluh_8_6", true )
-	        self.object:add_animation   ( "prisluh_8_1", true )
+	        self.object:add_animation   ( "prisluh_2_idle_0", true )
+            self.object:add_animation   ( "prisluh_2_idle_3", true )
+            self.object:add_animation   ( "prisluh_2_idle_6", true )
+	        self.object:add_animation   ( "prisluh_2_idle_1", true )
         	self.time   = device():time_global() + 8000--+ math.random(6000, 10000)
             self.state  = 8
         else
@@ -433,7 +436,7 @@ function stalker_novice2_action:action( param )
     	if( device():time_global() > self.time ) then
         	self.object:clear_animations()
             if( self.staet == 8 ) then
-            	self.object:add_animation   ( "prisluh_8_7", true )
+            	self.object:add_animation   ( "prisluh_2_idle_7", true )
             else
                 self.object:add_animation   ( "prisluh_9_3", true )
             end
