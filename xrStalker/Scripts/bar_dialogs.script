@@ -5,3 +5,14 @@ end
 function give_dolg_deposite(actor, npc)	
 	actor:transfer_money(1000, npc)
 end
+
+
+--Бармен в комнате
+function give_extra_task(actor, npc)
+	printf("1")
+	return false
+end
+function dont_give_extra_task(actor, npc)
+	printf("2")
+	return not give_extra_task(actor, npc)
+end

@@ -41,6 +41,21 @@
 		<disable>bar_bar_yantar_off_start</disable>
 	</info_portion>	
 
+	<!-- barman walk info portions -->
+	<info_portion id="bar_barman_need_hole">
+		<disable>bar_barman_need_room</disable>
+	</info_portion>
+	<info_portion id="bar_barman_stay_hole">
+		<disable>bar_barman_stay_room</disable>
+	</info_portion>
+	
+	<info_portion id="bar_barman_need_room">
+		<disable>bar_barman_need_hole</disable>
+	</info_portion>
+	<info_portion id="bar_barman_stay_room">
+		<disable>bar_barman_stay_hole</disable>
+	</info_portion>
+
 
 	<!-- DOLG BASE -->
 	<info_portion id="bar_dolg_base_pass"></info_portion>
