@@ -1,9 +1,9 @@
 ////////////////////////////////////////////////////////////////////////////
 //	Module 		: memory_space_impl.h
-//	Created 	: 25.12.2003
-//  Modified 	: 25.12.2003
+//	Created 	: 25.05.2004
+//  Modified 	: 25.05.2004
 //	Author		: Dmitriy Iassenev
-//	Description : Memory space
+//	Description : Memory space implementation
 ////////////////////////////////////////////////////////////////////////////
 
 #pragma once
