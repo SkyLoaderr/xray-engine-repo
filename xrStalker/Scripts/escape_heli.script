@@ -37,6 +37,7 @@ function update()
 		if state_init then
 --			heli_mgr:set_path( "heli_path_tutorial" )
 			heli_mgr.not_die = true
+			heli_mgr.heliObject:TurnEngineSound( false )
 
 			-- запомнить ID раненого и тут же его спрятать
 			wounded_id = get_level_object( "esc_vagon_wounded" ):id()
@@ -58,6 +59,8 @@ function update()
 	-- вертолёт летит к новичкам
 	if state == state_heli_fly then
 		if state_init then
+			heli_mgr.heliObject:TurnEngineSound( true )
+
 			for i = 1, 2 do
 				table.insert( newbies, get_level_object( "esc_vagon_newbie" .. i ) )
 			end
