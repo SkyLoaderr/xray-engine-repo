@@ -23,6 +23,7 @@ function main()
 	trader_guard02	= get_level_object("guard_wait02")
 
 	wait(1000)			
+
 	guard01:script	(true,script_guards_pr00.script_name())
 	guard02:script	(true,script_guards_pr00.script_name())
 	guard03:script	(true,script_guards_pr00.script_name())
@@ -36,6 +37,9 @@ function main()
 	guard_wait01:script	(true,script_guards_pr00.script_name())
 	guard_wait02:script	(true,script_guards_pr00.script_name())
 	guard_wait03:script	(true,script_guards_pr00.script_name())
+
+	trader_guard01:script	(true,script_guards_pr00.script_name())
+	trader_guard02:script	(true,script_guards_pr00.script_name())
 
 			action(
 				guard01,
@@ -144,7 +148,7 @@ function main()
 	end
 
 	while guard03:action() do
-		if guard03:see(actor) and distance_between(guard03,actor) <= 30 then
+		if guard03:see("actor") and distance_between(guard03,actor) <= 30 then
 			prof_oba:play_at_pos						(guard03,guard03:position(),0);
 			wait(1000)			
 			prof_hmm_kto_eto:play_at_pos						(guard03,guard03:position(),0);
@@ -169,7 +173,7 @@ function main()
 --	end
 
 	while guard03:action() do
-		if guard03:see(actor) and distance_between(guard03,actor) <= 20 then
+		if guard03:see("actor") and distance_between(guard03,actor) <= 20 then
 			printf("see = true2!")
 			flush()
 			wait(2000)		
@@ -226,7 +230,7 @@ function main()
 	end
 
 	while guard03:action() do
-		if guard03:see(actor) and distance_between(guard01,actor) <= 20 then
+		if guard03:see("actor") and distance_between(guard01,actor) <= 20 then
 			wait(2000)			
 			prof_sam_naprosilsya:play_at_pos			(guard03,guard03:position(),0);
 			wait(1000)			
