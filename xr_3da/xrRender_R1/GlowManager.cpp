@@ -234,17 +234,17 @@ void CGlowManager::Render()
 				// Now perform dotproduct if need it
 				float	scale	= 1.f, dist_sq;
 				Fvector	dir;
-				dir.sub			(Device.vCameraPosition,G->position);
+				dir.sub			(Device.vCameraPosition,G.position);
 				dist_sq			= dir.sqr_magnitude();
-				if (G->direction.sqr_magnitude()>EPS)	{
+				if (G.direction.sqr_magnitude()>EPS)	{
 					dir.div			(_sqrt(dist_sq));
-					scale			= dir.dotproduct(G->direction);
+					scale			= dir.dotproduct(G.direction);
 				}
 				if (G.fade*scale<=1.f)	continue;
 
 				// Now fade glows directly in front of us
 				TL.transform	(G.spatial.center,Device.mFullTransform);
-				float size		=	fov_scale * G.spatial.radius /TL.p.w;
+				float size		=	fov_scale * G.spatial.radius / TL.p.w;
 				scale			*=	clamp	(TL.p.z,0,.5f)*2;
 				if (G.fade*scale<=1.f)	continue;
 				
