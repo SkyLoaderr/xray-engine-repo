@@ -97,8 +97,8 @@ void CRenderTarget::End		(float blur)
 	// DWORD	C		= 0xffffffff;
 	float	tw		= float(Device.dwWidth);
 	float	th		= float(Device.dwHeight);
-	DWORD	_w		= Device.dwWidth-1;
-	DWORD	_h		= Device.dwHeight-1;
+	DWORD	_w		= Device.dwWidth;
+	DWORD	_h		= Device.dwHeight;
 	
 	// UV
 	Fvector2		shift,p0,p1;
