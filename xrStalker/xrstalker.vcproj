@@ -1435,6 +1435,9 @@
 			<Filter
 				Name="GP"
 				Filter="">
+				<File
+					RelativePath=".\Scripts\level_weathers.script">
+				</File>
 				<Filter
 					Name="Binders"
 					Filter="">
