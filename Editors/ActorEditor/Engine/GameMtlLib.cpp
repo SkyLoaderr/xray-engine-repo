@@ -106,26 +106,28 @@ void CGameMtlLibrary::Load()
 #ifdef GM_NON_GAME
 SGameMtlPair::~SGameMtlPair		()
 {
-}                     
+}                
 void SGameMtlPair::Load(IReader& fs)
 {
+	ref_str				buf;
+
 	R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_PAIR));
-    mtl0				= fs.r_u32();
-    mtl1				= fs.r_u32();
-    ID					= fs.r_u32();
-    ID_parent			= fs.r_u32();
-    OwnProps.set		(fs.r_u32());
+	mtl0				= fs.r_u32();
+	mtl1				= fs.r_u32();
+	ID					= fs.r_u32();
+	ID_parent			= fs.r_u32();
+	OwnProps.set		(fs.r_u32());
 
-    R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_BREAKING));
-    fs.r_stringZ			(BreakingSounds);
+	R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_BREAKING));
+	fs.r_stringZ			(buf); 	BreakingSounds	= *buf;
 
-    R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_STEP));
-    fs.r_stringZ			(StepSounds);
+	R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_STEP));
+	fs.r_stringZ			(buf);	StepSounds		= *buf;
 
-    R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_COLLIDE));
-    fs.r_stringZ			(CollideSounds);
-    fs.r_stringZ			(CollideParticles);
-    fs.r_stringZ			(CollideMarks);
+	R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_COLLIDE));
+	fs.r_stringZ			(buf);	CollideSounds	= *buf;
+	fs.r_stringZ			(buf);	CollideParticles= *buf;
+	fs.r_stringZ			(buf);	CollideMarks	= *buf;
 }
 #endif
 
