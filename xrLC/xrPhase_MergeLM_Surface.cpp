@@ -85,11 +85,12 @@ bool Place_Perpixel	(_rect& R, CDeflector::Layer* D, BOOL bRotate)
 }
 
 // Check for intersection
-BOOL _rect_place(vector<_rect>& dest, _rect &r, CDeflector::Layer* D)
+BOOL _rect_place(_rect &r, CDeflector::Layer* D)
 {
+	_rect R;
+
 	// Normal
 	{
-		_rect R;
 		DWORD x_max = 512-r.b.x; 
 		DWORD y_max = 512-r.b.y; 
 		for (DWORD _Y=0; _Y<y_max; _Y++)
@@ -98,9 +99,9 @@ BOOL _rect_place(vector<_rect>& dest, _rect &r, CDeflector::Layer* D)
 			{
 				if (surface[_Y*512+_X]) continue;
 				R.init(_X,_Y,_X+r.b.x,_Y+r.b.y);
-				if (Place_Perpixel(R,D,FALSE)) {
-					_rect_register(R,D,FALSE);
-					dest.push_back(R);
+				if (Place_Perpixel	(R,D,FALSE)) {
+					_rect_register	(R,D,FALSE);
+					r.set			(R);
 					return TRUE;
 				}
 			}
@@ -109,7 +110,6 @@ BOOL _rect_place(vector<_rect>& dest, _rect &r, CDeflector::Layer* D)
 	
 	// Rotated
 	{
-		_rect R;
 		DWORD x_max = 512-r.b.y; 
 		DWORD y_max = 512-r.b.x; 
 		for (DWORD _Y=0; _Y<y_max; _Y++)
@@ -119,9 +119,9 @@ BOOL _rect_place(vector<_rect>& dest, _rect &r, CDeflector::Layer* D)
 				if (surface[_Y*512+_X]) continue;
 				
 				R.init(_X,_Y,_X+r.b.y,_Y+r.b.x);
-				if (Place_Perpixel(R,D,TRUE)) {
-					_rect_register(R,D,TRUE);
-					dest.push_back(R);
+				if (Place_Perpixel	(R,D,TRUE)) {
+					_rect_register	(R,D,TRUE);
+					r.set			(R);
 					return TRUE;
 				}
 			}

@@ -9,6 +9,8 @@
 #include "xrDXTC.h"
 #include "xrImage_Filter.h"
 
+vector<CLightmap*>		g_lightmaps;
+
 extern BOOL ApplyBorders(b_texture &lm, DWORD ref);
 
 //////////////////////////////////////////////////////////////////////
