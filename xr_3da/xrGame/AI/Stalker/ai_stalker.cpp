@@ -159,13 +159,13 @@ void CAI_Stalker::Die				(CObject* who)
 	else
 		play						(eStalkerSoundDie);
 	
+	agent_manager().register_corpse	(this);
+
 	inherited::Die					(who);
 	m_hammer_is_clutched			= !CObjectHandler::planner().m_storage.property(ObjectHandlerSpace::eWorldPropertyStrapped) && !::Random.randI(0,2);
 
 	//запретить использование слотов в инвенторе
 	inventory().SetSlotsUseful		(false);
-
-	agent_manager().register_corpse	(this);
 }
 
 void CAI_Stalker::Load				(LPCSTR section)
