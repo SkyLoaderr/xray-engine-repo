@@ -64,9 +64,9 @@ public:
 
 	virtual void Postprocess(float /**val/**/) {}
 
-	virtual void spatial_move();
+	/*virtual void spatial_move();
 	virtual void spatial_register();
-	virtual void spatial_unregister();
+	virtual void spatial_unregister();*/
 
 	virtual void  Center (Fvector& C);
 	virtual float Radius ();

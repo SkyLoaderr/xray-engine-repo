@@ -27,7 +27,7 @@ void CScriptZone::reinit		()
 	xr_delete				(m_tpOnEnter);
 	xr_delete				(m_tpOnExit);
 }
-
+/*
 void CScriptZone::spatial_register()
 {
 	R_ASSERT2					(CFORM(),"Invalid or no CForm!");
@@ -43,6 +43,17 @@ void CScriptZone::spatial_move()
 	spatial.radius				= CFORM()->getRadius();
 	ISpatial::spatial_move		();
 }
+*/
+
+void CScriptZone::Center(Fvector& C)
+{
+	XFORM().transform_tiny	(C,CFORM()->getSphere().P);
+}
+float CScriptZone::Radius()
+{
+	return CFORM()->getRadius();
+}
+
 
 BOOL CScriptZone::net_Spawn	(LPVOID DC) 
 {

@@ -292,7 +292,7 @@ float CCustomZone::Power(float dist)
 	float power = radius < dist ? 0 : m_fMaxPower * (1.f - m_fAttenuation*(dist/radius)*(dist/radius));
 	return power < 0 ? 0 : power;
 }
-
+/*
 void CCustomZone::spatial_register()
 {
 	R_ASSERT2				(CFORM(),"Invalid or no CForm!");
@@ -316,7 +316,7 @@ void CCustomZone::spatial_move()
 	spatial.center.set		(P);
 	spatial.radius			= CFORM()->getRadius();
 	ISpatial::spatial_move	();
-}
+}*/
 
 
 void CCustomZone::Center(Fvector& C)
