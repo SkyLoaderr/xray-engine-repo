@@ -270,6 +270,8 @@ void	CRenderTarget::OnDeviceDestroy	()
 	_RELEASE					(t_ds2fade_surf);
 	t_material->surface_set		(NULL);
 	_RELEASE					(t_material_surf);
+	t_encode->surface_set		(NULL);
+	_RELEASE					(t_encode_surf);
 
 	_RELEASE					(rt_Bloom_ZB			);
 	_RELEASE					(rt_smap_p_ZB			);
