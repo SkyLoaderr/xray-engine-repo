@@ -4,8 +4,18 @@
         <text>Срочно нужна аптечка, помираю!!!</text>
     </string>
     <string id="general_new_task">
-        <text>Получены новые указания.</text>
+        <text>Получены новое задание.</text>
     </string>
+    <string id="general_complete_task">
+        <text>Задание выплонено.</text>
+    </string>
+    <string id="general_fail_task">
+        <text>Задание провалено.</text>
+    </string>
+    <string id="general_update_task">
+        <text>Задание обновлено.</text>
+    </string>
+
     <string id="tips_esc_trader_how_to_talk">
         <text>Для того, чтобы поговорить с кем-либо, наведите на него прицел и нажмите 'E'.</text>
     </string>

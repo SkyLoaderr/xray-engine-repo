@@ -6,6 +6,17 @@
     <string id="general_new_task">
         <text>New tasks received.</text>
     </string>
+    <string id="general_complete_task">
+        <text>Task completed.</text>
+    </string>
+    <string id="general_fail_task">
+        <text>Task failed.</text>
+    </string>
+    <string id="general_update_task">
+        <text>Task updated.</text>
+    </string>
+
+    
     <string id="tips_esc_trader_how_to_talk">
         <text>To talk to someone point sight at him and press ‘E’ button.</text>
     </string>
