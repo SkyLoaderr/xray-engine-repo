@@ -475,7 +475,7 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("particle",					&CEntityAction::CheckIfParticleCompleted)
 			.def("object",						&CEntityAction::CheckIfObjectCompleted)
 			.def("time",						&CEntityAction::CheckIfTimeOver)
-			.def("wait",						(bool (CEntityAction::*)() const)(CEntityAction::CheckIfActionCompleted))
+			.def("wait",						(bool (CEntityAction::*)())(CEntityAction::CheckIfActionCompleted))
 	];
 }
 

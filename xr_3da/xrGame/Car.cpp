@@ -136,7 +136,7 @@ void CCar::shedule_Update(u32 dt)
 		ProcessScripts();
 	else {
 		while (!m_tpActionQueue.empty()) {
-			xr_delete	(m_tpActionQueue.front());
+			xr_delete	(*m_tpActionQueue.begin());
 			m_tpActionQueue.erase(m_tpActionQueue.begin());
 		}
 		ResetScriptData				(false);
@@ -1072,7 +1072,7 @@ void CCar::ResetScriptData(void	*P)
 {
 	CScriptMonster::ResetScriptData(P);
 	CEntityAction	*l_tpEntityAction = xr_new<CEntityAction>();
-	l_tpEntityAction->m_tMovementAction.SetInputKeys(CMovementAction::eInputKeyNone);
+	l_tpEntityAction->m_tMovementAction.SetInputKeys(CMovementAction::eInputKeyEngineOff);
 	bfAssignMovement(l_tpEntityAction);
 	m_max_rpm		= m_fSaveMaxRPM;
 

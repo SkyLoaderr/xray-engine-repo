@@ -589,9 +589,11 @@ public:
 	CParticleAction					m_tParticleAction;
 	CObjectAction					m_tObjectAction;
 	CActionCondition				m_tActionCondition;
+	bool							m_bFirstTime;
 
 							CEntityAction		()
 	{
+		m_bFirstTime				= true;
 	}
 
 	virtual					~CEntityAction		()
@@ -674,12 +676,16 @@ public:
 		return				(CheckIfActionCompleted(m_tObjectAction));
 	}
 
-	IC		bool			CheckIfTimeOver() const
+	IC		bool			CheckIfTimeOver()
 	{
+		if (m_bFirstTime) {
+			m_tActionCondition.m_tStartTime	= Level().GetGameTime();
+			m_bFirstTime	= false;
+		}
 		return((m_tActionCondition.m_tLifeTime >= 0) && ((m_tActionCondition.m_tStartTime + m_tActionCondition.m_tLifeTime) < Level().GetGameTime()));
 	}
 
-	IC		bool			CheckIfActionCompleted() const
+	IC		bool			CheckIfActionCompleted()
 	{
 		if ((CActionCondition::MOVEMENT_FLAG	& m_tActionCondition.m_dwFlags)	&& CheckIfMovementCompleted	())
 			return			(true);

@@ -84,12 +84,11 @@ void CScriptMonster::ProcessScripts()
 {
 	CEntityAction	*l_tpEntityAction = 0;
 	while (!m_tpActionQueue.empty()) {
-		l_tpEntityAction= m_tpActionQueue.front();
+		l_tpEntityAction= *m_tpActionQueue.begin();
 		R_ASSERT	(l_tpEntityAction);
 		if (!l_tpEntityAction->CheckIfActionCompleted())
 			break;
 
-		ResetScriptData(false);
 		xr_delete	(l_tpEntityAction);
 		m_tpActionQueue.erase(m_tpActionQueue.begin());
 	}
