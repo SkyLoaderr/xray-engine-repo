@@ -45,6 +45,7 @@ xrMU_Model::_face* xrMU_Model::load_create_face(Fvector& P1, Fvector& P2, Fvecto
 
 	// register
 	m_faces.push_back	(_F);
+	return _F;
 }
 
 xrMU_Model::_vertex* xrMU_Model::load_create_vertex(Fvector& P)
