@@ -105,7 +105,6 @@ void CAI_ALife::Load()
 	m_fOnlineDistance			= pSettings->ReadFLOAT	("alife","online_distance");
 	m_dwSwitchDelay				= pSettings->ReadINT	("alife","switch_delay");
 
-#ifdef USE_SINGLE_PLAYER
 	FILE_NAME					caFileName;
 	CStream						*tpStream;
 	if (!Engine.FS.Exist(caFileName,SAVE_PATH,SAVE_NAME)) {
@@ -128,7 +127,6 @@ void CAI_ALife::Load()
 	vfUpdateDynamicData			();
 
 	m_bLoaded = true;
-#endif
 }
 
 void CAI_ALife::vfUpdateDynamicData(CALifeDynamicObject *tpALifeDynamicObject)

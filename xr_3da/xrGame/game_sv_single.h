@@ -3,20 +3,24 @@
 #include "game_sv_base.h"
 #include "ai_alife.h"
 
-//#define USE_SINGLE_PLAYER
-
 class	game_sv_Single				: public game_sv_GameState
 {
 private:
 public:
 	CAI_ALife						*m_tpALife;
 	xrServer						*m_tpServer;
+	bool							m_bALife;
 									game_sv_Single			(xrServer *tpServer) : game_sv_GameState()
 	{
 		m_tpServer					= tpServer;
+		m_tpALife					= 0;
 	};
 
-	virtual							~game_sv_Single			(){};
+	virtual							~game_sv_Single			()
+	{
+		xr_delete					(m_tpALife);
+	};
+
 	virtual		void				Create					(LPCSTR options);
 
 	// Events

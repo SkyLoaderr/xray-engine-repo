@@ -4,10 +4,11 @@
 void xrServer::SLS_Default	()
 {
 	// Spawn all other objects
-#ifdef USE_SINGLE_PLAYER
-	if (game->type == GAME_SINGLE)
-		return;
-#endif
+	if (game->type == GAME_SINGLE) {
+		game_sv_Single *tpGame = dynamic_cast<game_sv_Single*>(game);
+		if (tpGame && tpGame->m_bALife)
+			return;
+	}
 	FILE_NAME			fn_spawn;
 	if (Engine.FS.Exist(fn_spawn, ::Path.Current, "level.spawn"))
 	{

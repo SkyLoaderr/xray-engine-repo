@@ -3,7 +3,8 @@
 
 void	game_sv_Single::Create			(LPCSTR options)
 {
-	switch_Phase	(GAME_PHASE_PENDING);
+	m_bALife			= !!get_option_i(options,"alife",0);
+	switch_Phase		(GAME_PHASE_PENDING);
 }
 
 BOOL	game_sv_Single::OnTouch			(u16 eid_who, u16 eid_what)
@@ -54,8 +55,10 @@ BOOL	game_sv_Single::OnDetach		(u16 eid_who, u16 eid_what)
 
 void	game_sv_Single::OnRoundStart	()
 {
-	m_tpALife				= xr_new<CAI_ALife>(m_tpServer);
-	m_tpALife->Load			();
+	if (m_bALife) {
+		m_tpALife				= xr_new<CAI_ALife>(m_tpServer);
+		m_tpALife->Load			();
+	}
 }
 
 void	game_sv_Single::Update			()
