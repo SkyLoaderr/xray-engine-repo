@@ -377,7 +377,7 @@ void	CRender::Render		()
 	
 	// NORMAL			*** mostly the main level
 	// Perform sorting based on ScreenSpaceArea
-	CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,precalc_identity.d3d()));
+	CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,Fidentity.d3d()));
 
 	// Sorting by SSA
 	for (DWORD pr=0; pr<4; pr++)

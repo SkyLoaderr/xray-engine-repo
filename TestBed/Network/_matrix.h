@@ -82,7 +82,7 @@ public:
 		_41 = 0;					_42 = 0;					_43 = 0;					_44 = 1;
 	}
 	
-	IC	void	mk_xform	(const _quaternion &Q, const Tvector &T) {
+	IC	void	mk_xform	(const _quaternion &Q, const Tvector &V) {
 		T xx = Q.x*Q.x; T yy = Q.y*Q.y; T zz = Q.z*Q.z;
 		T xy = Q.x*Q.y; T xz = Q.x*Q.z; T yz = Q.y*Q.z;
 		T wx = Q.w*Q.x; T wy = Q.w*Q.y; T wz = Q.w*Q.z;
@@ -90,7 +90,7 @@ public:
 		_11 = 1 - 2 * ( yy + zz );	_12 =     2 * ( xy - wz );	_13 =     2 * ( xz + wy );	_14 = 0;
 		_21 =     2 * ( xy + wz );	_22 = 1 - 2 * ( xx + zz );	_23 =     2 * ( yz - wx );	_24 = 0;
 		_31 =     2 * ( xz - wy );	_32 =     2 * ( yz + wx );	_33 = 1 - 2 * ( xx + yy );	_34 = 0;
-		_41 = T.x;					_42 = T.y;					_43 = T.z;					_44 = 1;
+		_41 = V.x;					_42 = V.y;					_43 = V.z;					_44 = 1;
 	}
 
 	// Multiply RES = A[4x4]*B[4x4] (WITH projection)
