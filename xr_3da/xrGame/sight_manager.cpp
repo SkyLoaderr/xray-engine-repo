@@ -11,6 +11,8 @@
 #include "custommonster.h"
 #include "ai/stalker/ai_stalker.h"
 
+//#define SIGHT_DEBUG
+
 CSightManager::CSightManager		()
 {
 	init						();
@@ -180,18 +182,12 @@ void CSightManager::Exec_Look		(float dt)
 	// updating torso angles
 	float							fSpeedFactor = 1.f;
 
-//	bool							head_correction = need_correction(m_object->m_head.current.yaw,m_object->m_head.target.yaw,m_object->m_body.target.yaw);
-//	bool							body_correction = need_correction(m_object->m_body.current.yaw,m_object->m_body.target.yaw,m_object->m_head.current.yaw);
+#ifdef SIGHT_DEBUG
+	Msg								("%6d BEFORE BODY [%f] -> [%f]",Level().timeServer(),m_object->m_body.current.yaw,m_object->m_body.target.yaw);
+	Msg								("%6d BEFORE HEAD [%f] -> [%f]",Level().timeServer(),m_object->m_head.current.yaw,m_object->m_head.target.yaw);
+#endif
 
-//	Msg								("STALKER[%6d] : BODY [%f]->[%f], HEAD [%f]->[%f]",Level().timeServer(),m_object->m_body.current.yaw,m_object->m_body.target.yaw,m_object->m_head.current.yaw,m_object->m_head.target.yaw);
-//	if (head_correction)
-//		if (body_correction) 
-//			vfValidateAngleDependency(m_object->m_body.current.yaw,m_object->m_body.target.yaw,m_object->m_head.current.yaw);
-//		else
-//			vfValidateAngleDependency(m_object->m_head.current.yaw,m_object->m_head.target.yaw,m_object->m_body.target.yaw);
-//	else
-//		if (body_correction)
-			vfValidateAngleDependency(m_object->m_body.current.yaw,m_object->m_body.target.yaw,m_object->m_head.current.yaw);
+	vfValidateAngleDependency		(m_object->m_body.current.yaw,m_object->m_body.target.yaw,m_object->m_head.current.yaw);
 
 	m_object->angle_lerp_bounds		(m_object->m_body.current.yaw,m_object->m_body.target.yaw,fSpeedFactor*m_object->m_body.speed,dt);
 	m_object->angle_lerp_bounds		(m_object->m_body.current.pitch,m_object->m_body.target.pitch,m_object->m_body.speed,dt);
@@ -206,6 +202,11 @@ void CSightManager::Exec_Look		(float dt)
 	// normalizing head angles
 	m_object->m_head.current.yaw	= angle_normalize_signed	(m_object->m_head.current.yaw);
 	m_object->m_head.current.pitch	= angle_normalize_signed	(m_object->m_head.current.pitch);
+
+#ifdef SIGHT_DEBUG
+	Msg								("%6d AFTER  BODY [%f] -> [%f]",Level().timeServer(),m_object->m_body.current.yaw,m_object->m_body.target.yaw);
+	Msg								("%6d AFTER  HEAD [%f] -> [%f]",Level().timeServer(),m_object->m_head.current.yaw,m_object->m_head.target.yaw);
+#endif
 
 	Fmatrix							mXFORM;
 //	mXFORM.setHPB					(-m_object->NET_Last.o_model,0,0);
