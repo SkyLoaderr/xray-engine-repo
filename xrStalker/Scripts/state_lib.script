@@ -10,7 +10,6 @@ states = {
 				movement = nil,
 				mental = nil,
 				bodystate = nil,
---				direction = nil,
 				animstate = "stand",
 				animation = nil
 			},
@@ -20,7 +19,6 @@ states = {
 				movement = move.walk,
 				mental = anim.free,
 				bodystate = move.standing,
---				direction = nil,
 				animstate = "stand",
 				animation = nil
 			},
@@ -28,7 +26,6 @@ states = {
 				movement = move.walk,
 				mental = anim.free,
 				bodystate = move.standing,
---				direction = nil,
 				animstate = "stand",
 				animation = nil
 			},
@@ -39,7 +36,14 @@ states = {
 				movement = move.stand,
 				mental = anim.free,
 				bodystate = move.standing,
---				direction = "object",
+				animstate = "stand",
+				animation = "idle"
+			},
+
+	guard = {	weapon = "unstrapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
 				animstate = "stand",
 				animation = "idle"
 			},
@@ -48,7 +52,6 @@ states = {
 				movement = move.stand,
 				mental = anim.danger,
 				bodystate = move.standing,
---				direction = "object",
 				animstate = "stand",
 				animation = nil
 			},
@@ -59,7 +62,6 @@ states = {
 				movement = move.stand,
 				mental = anim.free,
 				bodystate = move.standing,
---				direction = "position",
 				animstate = "sit",
 				animation = nil
 			}
