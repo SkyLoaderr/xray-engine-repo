@@ -60,7 +60,7 @@ void CCameraManager::RemoveEffector(EEffectorType type){
 }
 
 void CCameraManager::Update(const CCameraBase* C)
-{	Update(C->vPosition,C->vDirection,C->vNormal, C->f_fov, pCreator->Environment.Current.Far); }
+{	Update(C->vPosition,C->vDirection,C->vNormal, C->f_fov, C->f_aspect, pCreator->Environment.Current.Far); }
 
 void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N, float fFOV_Dest, float fASPECT_Dest, float fFAR_Dest)
 {

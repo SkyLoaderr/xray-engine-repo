@@ -27,6 +27,7 @@ CCameraBase::CCameraBase(CObject* p, BOOL rlink)
 	bClampRoll		= false;
 	parent			= p;	VERIFY(parent);
 	f_fov			= 90;
+	f_aspect		= 1.f;
 }
 
 CCameraBase::~CCameraBase()

@@ -11,7 +11,7 @@
 // refs
 class CObject;
 
-class ENGINE_API CCameraBase
+class ENGINE_API	CCameraBase
 {
 protected:
 	CObject*		parent;
@@ -30,6 +30,7 @@ public:
 	Fvector			vDirection;
 	Fvector			vNormal;
 	float			f_fov;
+	float			f_aspect;
 public:
 					CCameraBase		( CObject* p, BOOL rlink );
 	virtual			~CCameraBase	( );
