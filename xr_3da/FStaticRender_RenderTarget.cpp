@@ -17,8 +17,8 @@ CRenderTarget::CRenderTarget()
 	param_blur		= 0.f;
 	param_gray		= 0.f;
 	param_noise		= 0.f;
-	param_duality_h	= 0.5f;
-	param_duality_v	= 0.5f;
+	param_duality_h	= 0.f;
+	param_duality_v	= 0.f;
 	param_noise_fps	= 25.f;
 
 	im_noise_time	= 1/100;
@@ -276,5 +276,5 @@ void CRenderTarget::End		()
 		}
 	}
 
-	if (param_noise>0.01f)	e_render_noise	();
+	if (param_noise>0.001f)	e_render_noise	();
 }
