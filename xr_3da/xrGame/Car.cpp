@@ -314,9 +314,12 @@ void	CCar::UpdateCL				( )
 	m_car_sound->Update();
 	if(Owner())
 	{
-		Owner()->XFORM().set(XFORM());
-		if(m_pPhysicsShell->isEnabled())Owner()->XFORM().mulB	(m_sits_transforms[0]);
-
+		
+		if(m_pPhysicsShell->isEnabled())
+		{
+			Owner()->XFORM().set(XFORM());
+			Owner()->XFORM().mulB	(m_sits_transforms[0]);
+		}
 		if(Owner()->IsMyCamera()) 
 			cam_Update	(Device.fTimeDelta);
 		HUD().GetUI()->UIMainIngameWnd.CarPanel().SetSpeed(lin_vel.magnitude()/1000.f*3600.f/100.f);

@@ -64,13 +64,13 @@ void CCar::SCarSound::Destroy()
 {
 	SwitchOff();
 	snd_engine.destroy	();
-	pcar->processing_deactivate();
 }
 
 void CCar::SCarSound::SwitchOff()
 {
 	snd_engine.stop();
 	eCarSound=sndOff;
+	pcar->processing_deactivate();
 }
 
 void CCar::SCarSound::Start()
@@ -82,12 +82,14 @@ void CCar::SCarSound::Start()
 
 void CCar::SCarSound::Stall()
 {
+	if(eCarSound==sndOff)return;
 	eCarSound=sndStalling;
 	time_state_start=Device.dwTimeGlobal;
 }
 
 void CCar::SCarSound::Stop()
 {
+	if(eCarSound==sndOff)return;
 	eCarSound=sndStoping;
 	time_state_start=Device.dwTimeGlobal;
 }
