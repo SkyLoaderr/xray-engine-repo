@@ -118,7 +118,7 @@ MotionID CSkeletonAnimated::ID_Cycle_Safe(LPCSTR  N)
 }
 MotionID CSkeletonAnimated::ID_Cycle	(shared_str  N)
 {
-	MotionID motion_ID		= ID_Cycle_Safe	(N);	R_ASSERT3(motion_ID.valid(),"! MODEL: can't find cycle: ", N);
+	MotionID motion_ID		= ID_Cycle_Safe	(N);	R_ASSERT3(motion_ID.valid(),"! MODEL: can't find cycle: ", N.c_str());
     return motion_ID;
 }
 MotionID CSkeletonAnimated::ID_Cycle_Safe(shared_str  N)
