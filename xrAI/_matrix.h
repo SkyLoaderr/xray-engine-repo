@@ -449,14 +449,14 @@ public:
 	// half_fov-angle-tangent
 	IC	void	build_projection_HAT	(float HAT, float fAspect, float fNearPlane, float fFarPlane) {
 		VERIFY( fabsf(fFarPlane-fNearPlane) > 0.01f );
-		VERIFY( fabsf(HT) > 0.001f );
+		VERIFY( fabsf(HAT) > 0.001f );
 		
 		float cot	= 1/HAT;
 		float w		= fAspect * cot;
 		float h		= 1.0f    * cot;
 		float Q		= fFarPlane / ( fFarPlane - fNearPlane );
 		
-		identity	();
+		ZeroMemory	( this, sizeof(*this) );
 		_11			= w;
 		_22			= h;
 		_33			= Q;
