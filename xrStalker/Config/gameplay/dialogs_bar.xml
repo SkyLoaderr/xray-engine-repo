@@ -2452,6 +2452,7 @@
         </phrase_list>
     </dialog>
     <dialog id="bar_dolg_leader_job">
+    <has_info>bar_dolg_community_leader_done</has_info>
         <phrase_list>
             <phrase id="1">
                 <text>bar_dolg_leader_job_1</text>
@@ -2464,16 +2465,16 @@
     </dialog>
     <dialog id="bar_dolg_leader_quest_rg6_finish">
     <precondition>bar_dialogs.have_rg6</precondition>
+    <has_info>bar_svoboda_rg6_start</has_info>
+    <dont_has_info>bar_dolg_community_leader_done</dont_has_info>
         <phrase_list>
             <phrase id="1">
                 <text>bar_dolg_leader_quest_rg6_finish_1</text>
 	        <action>bar_dialogs.give_rg6</action>
+                <give_info>bar_dolg_community_leader_done</give_info>
             </phrase>
             <phrase id="0">
                 <text>bar_dolg_leader_quest_rg6_finish_0</text>
-                <dont_has_info>bar_dolg_community_leader_done</dont_has_info>
-                <give_info>bar_dolg_community_leader_done</give_info>
-                <has_info>bar_svoboda_rg6_start</has_info>
                 <next>1</next>
             </phrase>
         </phrase_list>
