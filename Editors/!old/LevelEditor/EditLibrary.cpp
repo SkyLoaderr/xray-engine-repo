@@ -17,7 +17,7 @@
 #include "FolderLib.h"
 #include "ImageManager.h"
 #include "EThumbnail.h"
-#include "DetailObjects.h"
+#include "ESceneDOTools.h"
 #include "xr_trims.h"
 #include "SceneObject.h"
 #include "Image.h"

@@ -7,6 +7,7 @@
 void ESceneGlowTools::CreateControls()
 {
 	inherited::CreateControls();
+    m_Flags.zero	();
 }
 //----------------------------------------------------
  

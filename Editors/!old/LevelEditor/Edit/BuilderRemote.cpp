@@ -842,28 +842,21 @@ BOOL SceneBuilder::CompileStatic()
         Fvector2Vec			offsets;
         Fvector2Vec			scales;
         boolVec				rotated;
+        U32Vec				remap;
         AStringVec 			textures;
         for (int k=0; k<(int)l_lods.size(); k++){
-            e_b_lod& l		= l_lods[k];
-            for (AStringIt it=textures.begin(); it!=textures.end(); it++)
-                if (*it==*l.tex_name){
-                    l.tex_id= it-textures.begin();
-                    break;
-                }
-            if (l.tex_id==-1){ 	
-                l.tex_id	= textures.size();
-                textures.push_back(*l.tex_name);
-            }
-	        UI->ProgressInc	();                  
+            textures.push_back(*l_lods[k].tex_name);
+	        UI->ProgressInc	();                    
         }                           
         AnsiString fn 		= m_LevelPath+LEVEL_LODS_TEX_NAME;
-        if (1==ImageLib.CreateMergedTexture(textures,fn.c_str(),STextureParams::tfDXT5,512,2048,256,1024,offsets,scales,rotated)){
+        if (1==ImageLib.CreateMergedTexture(textures,fn.c_str(),STextureParams::tfDXT5,512,2048,256,1024,offsets,scales,rotated,remap)){
 	        for (k=0; k<(int)l_lods.size(); k++){        
-	            e_b_lod& l	= l_lods[k];
+	            e_b_lod& l	= l_lods[k];         
                 for (u32 f=0; f<8; f++){
                 	for (u32 t=0; t<4; t++){
                     	Fvector2& uv = l.lod.faces[f].t[t];
-                    	ImageLib.MergedTextureRemapUV(uv.x,uv.y,uv.x,uv.y,offsets[l.tex_id],scales[l.tex_id],rotated[l.tex_id]);
+                        u32 id 		 = remap[k];
+                    	ImageLib.MergedTextureRemapUV(uv.x,uv.y,uv.x,uv.y,offsets[id],scales[id],rotated[id]);
                     }
                 }
 		        UI->ProgressInc	();

@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "DetailObjects.h"
+#include "ESceneDOTools.h"
 #include "Scene.h"
 #include "cl_intersect.h"
 #include "bottombar.h"

@@ -25,10 +25,9 @@
       intermediate\BuilderLTX.obj intermediate\BuilderOGF.obj 
       intermediate\BuilderRemote.obj intermediate\Cursor3D.obj 
       intermediate\Custom2DProjector.obj intermediate\CustomObjectLE.obj 
-      intermediate\DetailObjects.obj intermediate\DetailObjects_Controls.obj 
-      intermediate\DetailObjectsGenerate.obj intermediate\DetailObjectsPick.obj 
-      intermediate\EditObjectExportLWO.obj intermediate\ELight.obj 
-      intermediate\EParticlesObject.obj intermediate\ESceneAIMapTools.obj 
+      intermediate\ESceneDOTools.obj intermediate\EditObjectExportLWO.obj 
+      intermediate\ELight.obj intermediate\EParticlesObject.obj 
+      intermediate\ESceneAIMapTools.obj 
       intermediate\ESceneAIMapTools_Controls.obj 
       intermediate\ESceneAIMapTools_Generate.obj 
       intermediate\ESceneAIMapTools_MotionSimulator.obj 
@@ -68,7 +67,15 @@
       intermediate\xrServer_Objects_ALife_Monsters.obj 
       intermediate\IGame_Persistent.obj intermediate\xrServer_Factory.obj 
       intermediate\xrServer_Objects.obj intermediate\xrServer_Objects_ALife.obj 
-      intermediate\xrServer_Objects_ALife_Items.obj"/>
+      intermediate\xrServer_Objects_ALife_Items.obj 
+      intermediate\ESceneGlowToolsIO.obj intermediate\EScenePortalToolsIO.obj 
+      intermediate\ESceneSectorToolsIO.obj intermediate\ESceneSpawnToolsIO.obj 
+      intermediate\ESceneObjectToolsIO.obj intermediate\EScenePSToolsIO.obj 
+      intermediate\ESceneShapeToolsIO.obj intermediate\ESceneSoundEnvToolsIO.obj 
+      intermediate\ESceneSoundSrcToolsIO.obj intermediate\ESceneWayToolsIO.obj 
+      intermediate\ESceneGroupToolsIO.obj intermediate\ESceneDOTools_Pick.obj 
+      intermediate\ESceneDOTools_Controls.obj 
+      intermediate\ESceneDOTools_Generate.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -93,15 +100,16 @@
     <USERDEFINES value="_EDITOR;_LEVEL_EDITOR;_DEBUG"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="LevelEditor.cpp"/>
-    <INCLUDEPATH value="Engine\Game;Edit;Engine;r:\borland\components6\alexmx;R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;P:\xrCDB;P:\xrSound;..\ECore;..\ECore\Editor;..\ECore\Engine;..\ECore\Engine\blenders;..\ECore\Engine\visuals"/>
+    <INCLUDEPATH value="C:\Rad\Borland\CBuilder6\Projects;Engine\Game;Edit;Engine;r:\borland\components6\alexmx;R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;P:\xrCDB;P:\xrSound;..\ECore;..\ECore\Editor;..\ECore\Engine;..\ECore\Engine\blenders;..\ECore\Engine\visuals"/>
     <LIBPATH value="Engine\Game;Edit;Engine;C:\Rad\Borland\CBuilder6\Projects;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;..\lib\dx;..\lib;x:\;..\ECore;..\ECore\Editor"/>
     <WARNINGS value="-w-par -w-8027"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-IEngine\Game -IEdit -IEngine -Ir:\borland\components6\alexmx 
-      -IR:\SDK\DirectX9.0\include -I$(BCB)\include -I$(BCB)\include\vcl 
-      -IP:\MagicFM_Borland\Sdk\Include -IR:\Borland\Components6\ElPack\Code 
+    <IDLCFLAGS value="-IC:\Rad\Borland\CBuilder6\Projects -IEngine\Game -IEdit -IEngine 
+      -Ir:\borland\components6\alexmx -IR:\SDK\DirectX9.0\include 
+      -I$(BCB)\include -I$(BCB)\include\vcl -IP:\MagicFM_Borland\Sdk\Include 
+      -IR:\Borland\Components6\ElPack\Code 
       -IR:\Borland\Components6\ElPack\Code\Source -IP:\xrCore -IP:\xrCDB 
       -IP:\xrSound -I..\ECore -I..\ECore\Editor -I..\ECore\Engine 
       -I..\ECore\Engine\blenders -I..\ECore\Engine\visuals -src_suffix cpp 
@@ -168,10 +176,7 @@
       <FILE FILENAME="Edit\Cursor3D.cpp" FORMNAME="" UNITNAME="Cursor3D.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\Custom2DProjector.cpp" FORMNAME="" UNITNAME="Custom2DProjector.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\CustomObjectLE.cpp" FORMNAME="" UNITNAME="CustomObjectLE.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Edit\DetailObjects.cpp" FORMNAME="" UNITNAME="DetailObjects.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Edit\DetailObjects_Controls.cpp" FORMNAME="" UNITNAME="DetailObjects_Controls.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Edit\DetailObjectsGenerate.cpp" FORMNAME="" UNITNAME="DetailObjectsGenerate.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Edit\DetailObjectsPick.cpp" FORMNAME="" UNITNAME="DetailObjectsPick.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneDOTools.cpp" FORMNAME="" UNITNAME="ESceneDOTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\EditObjectExportLWO.cpp" FORMNAME="" UNITNAME="EditObjectExportLWO.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\ELight.cpp" FORMNAME="" UNITNAME="ELight.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\EParticlesObject.cpp" FORMNAME="" UNITNAME="EParticlesObject.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -244,6 +249,20 @@
       <FILE FILENAME="Engine\Game\xrServer_Objects.cpp" FORMNAME="" UNITNAME="xrServer_Objects.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Game\xrServer_Objects_ALife.cpp" FORMNAME="" UNITNAME="xrServer_Objects_ALife.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Game\xrServer_Objects_ALife_Items.cpp" FORMNAME="" UNITNAME="xrServer_Objects_ALife_Items.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneGlowToolsIO.cpp" FORMNAME="" UNITNAME="ESceneGlowToolsIO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\EScenePortalToolsIO.cpp" FORMNAME="" UNITNAME="EScenePortalToolsIO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneSectorToolsIO.cpp" FORMNAME="" UNITNAME="ESceneSectorToolsIO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneSpawnToolsIO.cpp" FORMNAME="" UNITNAME="ESceneSpawnToolsIO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneObjectToolsIO.cpp" FORMNAME="" UNITNAME="ESceneObjectToolsIO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\EScenePSToolsIO.cpp" FORMNAME="" UNITNAME="EScenePSToolsIO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneShapeToolsIO.cpp" FORMNAME="" UNITNAME="ESceneShapeToolsIO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneSoundEnvToolsIO.cpp" FORMNAME="" UNITNAME="ESceneSoundEnvToolsIO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneSoundSrcToolsIO.cpp" FORMNAME="" UNITNAME="ESceneSoundSrcToolsIO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneWayToolsIO.cpp" FORMNAME="" UNITNAME="ESceneWayToolsIO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneGroupToolsIO.cpp" FORMNAME="" UNITNAME="ESceneGroupToolsIO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneDOTools_Pick.cpp" FORMNAME="" UNITNAME="ESceneDOTools_Pick.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneDOTools_Controls.cpp" FORMNAME="" UNITNAME="ESceneDOTools_Controls.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneDOTools_Generate.cpp" FORMNAME="" UNITNAME="ESceneDOTools_Generate.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

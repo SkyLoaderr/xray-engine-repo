@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "DetailObjects.h"
+#include "ESceneDOTools.h"
 #include "FrameDetObj.h"
 
 void EDetailManager::CreateControls()

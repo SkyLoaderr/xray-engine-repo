@@ -17,6 +17,7 @@ protected:
     	flAppendRandomScale		= (1<<30),
     	flAppendRandomRotation	= (1<<31),
     };
+    Flags32				m_Flags;
 public:
     Fvector				m_AppendRandomMinScale;
     Fvector				m_AppendRandomMaxScale;
@@ -33,8 +34,10 @@ public:
     IC int				RenderPriority			(){return 1;}
 
     // IO
-    virtual bool		Load            		(IReader&);
-    virtual void		Save            		(IWriter&);
+    virtual bool   		Load            		(IReader&);
+    virtual void   		Save            		(IWriter&);
+    virtual bool		LoadSelection      		(IReader&);
+    virtual void		SaveSelection      		(IWriter&);
 
     // append random
     void				FillAppendRandomProperties	();

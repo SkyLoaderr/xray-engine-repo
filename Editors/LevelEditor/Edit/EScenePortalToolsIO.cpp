@@ -4,7 +4,7 @@
 #include "EScenePortalTools.h"
 
 // chunks
-static const u16 GLOW_TOOLS_VERSION  	= 0x0000;
+static const u16 PORTAL_TOOLS_VERSION  	= 0x0000;
 //----------------------------------------------------
 enum{
     CHUNK_VERSION			= 0x1001ul,
@@ -12,14 +12,14 @@ enum{
 };
 //----------------------------------------------------
 
-bool ESceneGlowTools::Load(IReader& F)
+bool EScenePortalTools::Load(IReader& F)
 {
 	u16 version 	= 0;
-    R_ASSERT(F.r_chunk(CHUNK_VERSION,&version));
-    if( version!=GLOW_TOOLS_VERSION ){
-        ELog.DlgMsg( mtError, "%s tools: Unsupported version.",ClassDesc());
-        return false;
-    }
+    if(F.r_chunk(CHUNK_VERSION,&version))
+        if( version!=PORTAL_TOOLS_VERSION ){
+            ELog.DlgMsg( mtError, "%s tools: Unsupported version.",ClassDesc());
+            return false;
+        }
 
 	if (!inherited::Load(F)) return false;
 
@@ -30,11 +30,11 @@ bool ESceneGlowTools::Load(IReader& F)
 }
 //----------------------------------------------------
 
-void ESceneGlowTools::Save(IWriter& F)
+void EScenePortalTools::Save(IWriter& F)
 {
 	inherited::Save	(F);
 
-	F.w_chunk		(CHUNK_VERSION,(u16*)&GLOW_TOOLS_VERSION,sizeof(GLOW_TOOLS_VERSION));
+	F.w_chunk		(CHUNK_VERSION,(u16*)&PORTAL_TOOLS_VERSION,sizeof(PORTAL_TOOLS_VERSION));
 
 	F.open_chunk	(CHUNK_FLAGS);
     F.w_u32			(m_Flags.get());
@@ -42,11 +42,11 @@ void ESceneGlowTools::Save(IWriter& F)
 }
 //----------------------------------------------------
  
-bool ESceneGlowTools::LoadSelection(IReader& F)
+bool EScenePortalTools::LoadSelection(IReader& F)
 {
 	u16 version 	= 0;
     R_ASSERT(F.r_chunk(CHUNK_VERSION,&version));
-    if( version!=GLOW_TOOLS_VERSION ){
+    if( version!=PORTAL_TOOLS_VERSION ){
         ELog.DlgMsg( mtError, "%s tools: Unsupported version.",ClassDesc());
         return false;
     }
@@ -55,9 +55,9 @@ bool ESceneGlowTools::LoadSelection(IReader& F)
 }
 //----------------------------------------------------
 
-void ESceneGlowTools::SaveSelection(IWriter& F)
+void EScenePortalTools::SaveSelection(IWriter& F)
 {
-	F.w_chunk		(CHUNK_VERSION,(u16*)&GLOW_TOOLS_VERSION,sizeof(GLOW_TOOLS_VERSION));
+	F.w_chunk		(CHUNK_VERSION,(u16*)&PORTAL_TOOLS_VERSION,sizeof(PORTAL_TOOLS_VERSION));
     
 	inherited::SaveSelection(F);
 }

@@ -24,6 +24,7 @@ protected:
     	flShowSun			= (1<<31),
         flShowControlName	= (1<<30),
     };
+    Flags32				m_Flags;
 	// hemisphere
 	u8					m_HemiQuality;
     // sun
@@ -57,6 +58,8 @@ public:
     // IO
     virtual bool   		Load            		(IReader&);
     virtual void   		Save            		(IWriter&);
+    virtual bool		LoadSelection      		(IReader&);
+    virtual void		SaveSelection      		(IWriter&);
 
     // utils
     virtual bool		Validate				();

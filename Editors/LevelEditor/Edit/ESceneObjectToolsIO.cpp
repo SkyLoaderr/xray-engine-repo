@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "ESceneGlowTools.h"
+#include "ESceneObjectTools.h"
 
 // chunks
 static const u16 OBJECT_TOOLS_VERSION  	= 0x0000;

@@ -14,7 +14,7 @@
 #include "sector.h"
 #include "portal.h"
 #include "EParticlesObject.h"
-#include "DetailObjects.h"
+#include "ESceneDOTools.h"
 #include "GroupObject.h"
 
 CCustomObject* ESceneCustomOTools::CreateObject(LPVOID data, LPCSTR name)

@@ -8,7 +8,7 @@
 #include "Builder.h"
 #include "Scene.h"
 #include "PortalUtils.h"
-#include "DetailObjects.h"
+#include "ESceneDOTools.h"
 #include "ui_main.h"
 //----------------------------------------------------
 

@@ -41,11 +41,6 @@ public:
     virtual LPCSTR		ClassName				()=0;
     virtual LPCSTR		ClassDesc				()=0;
     virtual int			RenderPriority			()=0;
-protected:
-    enum{
-    	flVisible		= (0<<1),
-    };
-    Flags32				m_Flags;
 public:
 						ESceneCustomMTools		(EObjClass cls);
 	virtual				~ESceneCustomMTools		();

@@ -8,7 +8,6 @@
 
 ESceneCustomOTools::ESceneCustomOTools(EObjClass cls):ESceneCustomMTools(cls)
 {
-	m_Flags.zero		();
 }
 //----------------------------------------------------
 

@@ -17,6 +17,12 @@ public:
     IC LPCSTR			ClassName				(){return "way";}
     IC LPCSTR			ClassDesc				(){return "Way";}
     IC int				RenderPriority			(){return 1;}
+
+    // IO
+    virtual bool   		Load            		(IReader&);
+    virtual void   		Save            		(IWriter&);
+    virtual bool		LoadSelection      		(IReader&);
+    virtual void		SaveSelection      		(IWriter&);
 };
 //---------------------------------------------------------------------------
 #endif

@@ -1,10 +1,8 @@
 //----------------------------------------------------
-// file: DetailObjects.h
-//----------------------------------------------------
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "DetailObjects.h"
+#include "ESceneDOTools.h"
 #include "EditMesh.h"
 #include "EditObject.h"
 #include "Texture.h"

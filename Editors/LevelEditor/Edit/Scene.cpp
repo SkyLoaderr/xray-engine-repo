@@ -15,7 +15,7 @@
 #include "ui_leveltools.h"
 
 #include "ESceneAIMapTools.h"
-#include "DetailObjects.h"
+#include "ESceneDOTools.h"
 #include "ESceneLightTools.h"
 //----------------------------------------------------
 EScene Scene;

@@ -13,6 +13,7 @@
 ESceneLightTools::ESceneLightTools():ESceneCustomOTools(OBJCLASS_LIGHT)
 {
 	Clear				();
+    m_Flags.zero		();
 }
 //------------------------------------------------------------------------------
 

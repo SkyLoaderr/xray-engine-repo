@@ -16,14 +16,21 @@ protected:
     	flPickSpawnType	= (1<<30),
     	flShowSpawnType	= (1<<31),
     };
+    Flags32				m_Flags;
 public:
-						ESceneSpawnTools		():ESceneCustomOTools(OBJCLASS_SPAWNPOINT){;}
+						ESceneSpawnTools		():ESceneCustomOTools(OBJCLASS_SPAWNPOINT){m_Flags.zero();}
 	// definition
     IC LPCSTR			ClassName				(){return "spawn";}
     IC LPCSTR			ClassDesc				(){return "Spawn";}
     IC int				RenderPriority			(){return 1;}
 
     void 				FillProp				(LPCSTR pref, PropItemVec& items);
+
+    // IO
+    virtual bool   		Load            		(IReader&);
+    virtual void   		Save            		(IWriter&);
+    virtual bool		LoadSelection      		(IReader&);
+    virtual void		SaveSelection      		(IWriter&);
 };
 //---------------------------------------------------------------------------
 #endif

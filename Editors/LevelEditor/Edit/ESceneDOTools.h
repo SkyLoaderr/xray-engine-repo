@@ -1,9 +1,6 @@
 //----------------------------------------------------
-// file: DetailObjects.h
-//----------------------------------------------------
-
-#ifndef DetailObjectsH
-#define DetailObjectsH
+#ifndef ESceneDOToolsH
+#define ESceneDOToolsH
 
 #include "DetailFormat.h"
 #include "EDetailModel.h"
@@ -46,6 +43,7 @@ class EDetailManager:
         flSlotBoxesDraw			= (1<<29),
         flObjectsDraw			= (1<<28),
     };
+    Flags32				m_Flags;
 
     ObjectList			m_SnapObjects;
 

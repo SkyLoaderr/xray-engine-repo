@@ -15,6 +15,7 @@ protected:
 	enum{
     	flTestVisibility= (1<<31),
     };
+    Flags32				m_Flags;
 public:
 						ESceneGlowTools		():ESceneCustomOTools(OBJCLASS_GLOW){;}
 	// definition
@@ -23,6 +24,12 @@ public:
     IC int				RenderPriority			(){return 20;}
 
     void 				FillProp				(LPCSTR pref, PropItemVec& items);
+
+    // IO
+    virtual bool   		Load            		(IReader&);
+    virtual void   		Save            		(IWriter&);
+    virtual bool		LoadSelection      		(IReader&);
+    virtual void		SaveSelection      		(IWriter&);
 };
 //---------------------------------------------------------------------------
 #endif

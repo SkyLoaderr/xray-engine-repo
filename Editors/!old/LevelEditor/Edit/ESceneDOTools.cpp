@@ -1,10 +1,8 @@
 //----------------------------------------------------
-// file: DetailObjects.h
-//----------------------------------------------------
 #include "stdafx.h"
-#pragma hdrstop
+#pragma hdrstop   
 
-#include "DetailObjects.h"
+#include "ESceneDOTools.h"
 #include "EditMesh.h"
 #include "EditObject.h"
 #include "Texture.h"
@@ -24,19 +22,22 @@
 #include "render.h"
 #include "PropertiesListHelper.h"
 
+static const u32 DETMGR_VERSION = 0x0003ul;
 //------------------------------------------------------------------------------
+enum{
+    DETMGR_CHUNK_VERSION		= 0x1000ul,
+    DETMGR_CHUNK_HEADER 		= 0x0000ul,
+    DETMGR_CHUNK_OBJECTS 		= 0x0001ul,
+    DETMGR_CHUNK_SLOTS			= 0x0002ul,
+    DETMGR_CHUNK_BBOX			= 0x1001ul,
+    DETMGR_CHUNK_BASE_TEXTURE	= 0x1002ul,
+    DETMGR_CHUNK_COLOR_INDEX 	= 0x1003ul,
+    DETMGR_CHUNK_SNAP_OBJECTS 	= 0x1004ul,
+    DETMGR_CHUNK_DENSITY	 	= 0x1005ul,
+    DETMGR_CHUNK_FLAGS			= 0x1006ul,
+};
+//----------------------------------------------------
 
-#define DETMGR_CHUNK_VERSION		0x1000
-#define DETMGR_CHUNK_HEADER 		0x0000
-#define DETMGR_CHUNK_OBJECTS 		0x0001
-#define DETMGR_CHUNK_SLOTS			0x0002
-#define DETMGR_CHUNK_BBOX			0x1001
-#define DETMGR_CHUNK_BASE_TEXTURE	0x1002
-#define DETMGR_CHUNK_COLOR_INDEX 	0x1003
-#define DETMGR_CHUNK_SNAP_OBJECTS 	0x1004
-#define DETMGR_CHUNK_DENSITY	 	0x1005
-
-#define DETMGR_VERSION 				0x0003
 //------------------------------------------------------------------------------
 EDetailManager::EDetailManager():ESceneCustomMTools(OBJCLASS_DO)
 {
@@ -46,6 +47,7 @@ EDetailManager::EDetailManager():ESceneCustomMTools(OBJCLASS_DO)
     InitRender			();
 	Device.seqDevCreate.Add	(this,REG_PRIORITY_LOW);
 	Device.seqDevDestroy.Add(this,REG_PRIORITY_NORMAL);
+    m_Flags.set			(flObjectsDraw);
 }
 
 EDetailManager::~EDetailManager(){
@@ -270,6 +272,8 @@ bool EDetailManager::Load(IReader& F)
         return false;
     }
 
+    if (F.find_chunk(DETMGR_CHUNK_FLAGS)) m_Flags.set(F.r_u32());
+    
 	// header
     R_ASSERT			(F.r_chunk(DETMGR_CHUNK_HEADER,&dtH));
 
@@ -326,6 +330,14 @@ bool EDetailManager::Load(IReader& F)
 
 bool EDetailManager::LoadSelection(IReader& F)
 {
+    R_ASSERT			(F.find_chunk(DETMGR_CHUNK_VERSION));
+	u32 version			= F.r_u32();
+
+    if (version!=DETMGR_VERSION){
+    	ELog.Msg(mtError,"EDetailManager: unsupported version.");
+        return false;
+    }
+
 	if (!inherited::LoadSelection(F)) return false;
 	Clear();
 	return Load			(F);
@@ -338,6 +350,10 @@ void EDetailManager::Save(IWriter& F)
 	F.open_chunk		(DETMGR_CHUNK_VERSION);
     F.w_u32				(DETMGR_VERSION);
     F.close_chunk		();
+
+	F.open_chunk		(DETMGR_CHUNK_FLAGS);
+    F.w_u32				(m_Flags.get());
+	F.close_chunk		();
 
 	// header
 	F.w_chunk			(DETMGR_CHUNK_HEADER,&dtH,sizeof(DetailHeader));
@@ -372,7 +388,13 @@ void EDetailManager::Save(IWriter& F)
 
 void EDetailManager::SaveSelection(IWriter& F)
 {
+	// version
+	F.open_chunk		(DETMGR_CHUNK_VERSION);
+    F.w_u32				(DETMGR_VERSION);
+    F.close_chunk		();
+
 	inherited::SaveSelection(F);
+
 	Save(F);
 }
 
@@ -389,6 +411,7 @@ bool EDetailManager::Export(LPCSTR fn)
     boolVec				rotated;
     AStringSet 			textures_set;
     AStringVec 			textures;
+    U32Vec				remap;
 
     int slot_cnt		= dtH.size_x*dtH.size_z;
 	for (int slot_idx=0; slot_idx<slot_cnt; slot_idx++){
@@ -407,9 +430,9 @@ bool EDetailManager::Export(LPCSTR fn)
     for (DetailIt d_it=objects.begin(); d_it!=objects.end(); d_it++,remap_object_it++)
     	*remap_object_it= textures_set.find(((EDetail*)(*d_it))->GetTextureName())==textures_set.end()?DetailSlot::ID_Empty:new_idx++;
 //    	textures_set.insert(((EDetail*)(*d_it))->GetTextureName());
-        
+
     AnsiString 			do_tex_name = ChangeFileExt(fn,"_details");
-    int res				= ImageLib.CreateMergedTexture(textures,do_tex_name.c_str(),STextureParams::tfADXT1,256,1024,256,1024,offsets,scales,rotated);
+    int res				= ImageLib.CreateMergedTexture(textures,do_tex_name.c_str(),STextureParams::tfADXT1,256,1024,256,1024,offsets,scales,rotated,remap);
     if (1!=res)			bRes=FALSE;
 
 	UI->ProgressInc		("export geometry");
@@ -429,6 +452,7 @@ bool EDetailManager::Export(LPCSTR fn)
                     for (u32 t_idx=0; t_idx<textures.size(); t_idx++) 
                         if (textures[t_idx]==tex_name) break;
                     VERIFY(t_idx<textures.size());
+                    t_idx = remap[t_idx];
                     ((EDetail*)(*it))->Export	(F,do_tex_name.c_str(),offsets[t_idx],scales[t_idx],rotated[t_idx]);
                 }
                 F.close_chunk	();

@@ -15,11 +15,11 @@ enum{
 bool ESceneSectorTools::Load(IReader& F)
 {
 	u16 version 	= 0;
-    R_ASSERT(F.r_chunk(CHUNK_VERSION,&version));
-    if( version!=SECTOR_TOOLS_VERSION ){
-        ELog.DlgMsg( mtError, "%s tools: Unsupported version.",ClassDesc());
-        return false;
-    }
+    if(F.r_chunk(CHUNK_VERSION,&version))
+        if( version!=SECTOR_TOOLS_VERSION ){
+            ELog.DlgMsg( mtError, "%s tools: Unsupported version.",ClassDesc());
+            return false;
+        }
 
 	if (!inherited::Load(F)) return false;
 

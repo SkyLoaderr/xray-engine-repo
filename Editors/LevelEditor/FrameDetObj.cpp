@@ -4,7 +4,7 @@
 #include "FrameDetObj.h"
 #include "ui_main.h"
 #include "ChoseForm.h"
-#include "DetailObjects.h"
+#include "ESceneDOTools.h"
 #include "Scene.h"
 #include "DOShuffle.h"
 

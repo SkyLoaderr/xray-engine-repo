@@ -244,6 +244,14 @@ bool ESceneAIMapTools::Load(IReader& F)
 
 bool ESceneAIMapTools::LoadSelection(IReader& F)
 {
+	u32 version = 0;
+
+    R_ASSERT(F.r_chunk(AIMAP_CHUNK_VERSION,&version));
+    if( version!=AIMAP_VERSION ){
+        ELog.DlgMsg( mtError, "AIMap: Unsupported version.");
+        return false;
+    }
+
 	if (!inherited::LoadSelection(F)) return false;
 	Clear();
 	return Load(F);
@@ -296,7 +304,12 @@ void ESceneAIMapTools::Save(IWriter& F)
 
 void ESceneAIMapTools::SaveSelection(IWriter& F)
 {
+	F.open_chunk	(AIMAP_CHUNK_VERSION);
+	F.w_u16			(AIMAP_VERSION);
+	F.close_chunk	();
+
 	inherited::SaveSelection(F);
+
 	Save(F);
 }
 

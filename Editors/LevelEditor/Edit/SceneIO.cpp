@@ -6,8 +6,6 @@
 #pragma hdrstop
 
 #include "scene.h"
-#include "DetailObjects.h"
-#include "ESceneAIMapTools.h"
 #include "ui_main.h"
 
 // file: SceneChunks.h

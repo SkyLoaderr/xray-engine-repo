@@ -6,8 +6,7 @@
 #include "ESceneDummyTools.h"
 
 #include "ESceneAIMapTools.h"
-#include "DetailObjects.h"
-
+#include "ESceneDOTools.h"
 #include "ESceneSoundSrcTools.h"
 #include "ESceneSoundEnvTools.h"
 #include "ESceneGroupTools.h"

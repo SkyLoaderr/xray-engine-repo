@@ -17,6 +17,12 @@ public:
     IC LPCSTR			ClassName				(){return "group";}
     IC LPCSTR			ClassDesc				(){return "Group";}
     IC int				RenderPriority			(){return 1;}
+
+    // IO
+    virtual bool   		Load            		(IReader&);
+    virtual void   		Save            		(IWriter&);
+    virtual bool		LoadSelection      		(IReader&);
+    virtual void		SaveSelection      		(IWriter&);
 };
 //---------------------------------------------------------------------------
 #endif

@@ -12,7 +12,7 @@
 #include "EditObject.h"
 #include "Scene.h"
 #include "folderlib.h"
-#include "DetailObjects.h"
+#include "ESceneDOTools.h"
 #include "ui_main.h"
 #include "ImageManager.h"
 //---------------------------------------------------------------------------

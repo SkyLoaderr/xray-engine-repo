@@ -17,6 +17,12 @@ public:
     IC LPCSTR			ClassName				(){return "sound_src";}
     IC LPCSTR			ClassDesc				(){return "Sound Source";}
     IC int				RenderPriority			(){return 10;}
+
+    // IO
+    virtual bool   		Load            		(IReader&);
+    virtual void   		Save            		(IWriter&);
+    virtual bool		LoadSelection      		(IReader&);
+    virtual void		SaveSelection      		(IWriter&);
 };
 //---------------------------------------------------------------------------
 #endif
