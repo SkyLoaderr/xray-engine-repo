@@ -71,7 +71,7 @@ void Startup				( )
 	BOOL bCaptureInput			= !strstr(Core.Params,"-i");
 
 	pInput						= xr_new<CInput>		(bCaptureInput);
-	Sound->_initialize			(u64(Device.m_hWnd));
+	CSound_manager_interface::_create					(u64(Device.m_hWnd));
 
 	// ...command line for auto start
 	LPCSTR	pStartup			= strstr		(Core.Params,"-start ");
@@ -99,7 +99,7 @@ void Startup				( )
 	Engine.Event.Dump			( );
 
 	// Destroying
-	Sound->_destroy				( );
+	CSound_manager_interface::_destroy				( );
 	xr_delete					( pInput		);
 	xr_delete					( pSettings		);
 
