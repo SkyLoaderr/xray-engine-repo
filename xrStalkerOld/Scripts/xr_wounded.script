@@ -158,12 +158,18 @@ function action_cover:initialize ()
     action_base.initialize (self)
     
     local pt = self.object:safe_cover (self.object:position (), 20, 0)
-    if pt == nil or self.object.health < self.a.hp_min or self.object:accessible (pt:level_vertex_id ()) == false then
+    if pt == nil or self.object.health < self.a.hp_min then
        self.pos = self.object:position ()
        self.vid = self.object:level_vertex_id ()
     else
        self.pos = pt:position ()
        self.vid = pt:level_vertex_id ()    
+    end    
+    
+    if self.object:accessible (self.vid) == false then
+       local vtemp = vector ():set (0, 0, 0); 
+       self.vid, vtemp = self.object:accessible_nearest (self.pos, vtemp)
+       self.pos = vtemp
     end    
 
     if self.object:active_item () ~= nil then
