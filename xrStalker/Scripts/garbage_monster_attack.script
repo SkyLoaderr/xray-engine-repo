@@ -8,33 +8,33 @@ local ways	= {
 				"way2",
 				"way3",
 				"way4",
-				"way5"
+				"way5",
+				"way6",
+				"way7"
 			}
 				
 local monster1	=
 			{
-				"m_boar_e0004",
-				"m_boar_e0005",
+				"m_dog_e0009",
+				"m_dog_e0008",
+				"m_dog_e0003",
 				"m_boar_e0006",
 				"m_boar_e0007",
 				"m_boar_e0008",
 				"m_boar_e0009",
 				"m_boar_e0010",
-				"m_boar_e0011",
-				"m_boar_e0012",
 				"m_boar_e0013",
-				"m_boar_e0014",
-				"m_boar_e0015"
+				"m_flesh_e0014",
+				"m_flesh_e0015",
+				"m_flesh_e0016",
+				"m_flesh_e0018",
+				"m_flesh_e0019"
 			}
 
 local monster2	=
 			{
-				"m_dog_e0009",
-				"m_dog_e0008",
-				"m_dog_e0003",
-				"m_dog_e0062",
-				"m_dog_e0004",
-				"m_dog_e0007",
+				"m_boar_e0005",
+				"m_boar_e0004",
 				"m_dog_e0052",
 				"m_dog_e0053",
 				"m_dog_e0061",
@@ -44,19 +44,29 @@ local monster2	=
 				"m_dog_e0056",
 				"m_dog_e0059",
 				"m_dog_e0057",
-				"m_dog_e0058"				
-			}
+				"m_dog_e0058",				
+				"m_flesh_e0020",
+				"m_flesh_e0021",
+				"m_flesh_e0022"
+
+	}
 			
 local monster3	=
 			{
-				"zombie1",
-				"zombie2",
-				"zombie3",
-				"zombie4",
-				"zombie5",
-				"zombie6",
-				"zombie7",
-				"zombie8"
+				"m_dog_e0062",
+				"m_dog_e0004",
+				"m_dog_e0007",
+				"m_flesh_e0008",
+				"m_flesh_e0009",
+				"m_flesh_e0010",
+				"m_flesh_e0011",
+				"m_flesh_e0012",
+				"m_flesh_e0013",
+				"m_flesh_e0017",
+				"m_boar_e0014",
+				"m_boar_e0015",
+				"m_boar_e0011",
+				"m_boar_e0012"
 			}
 
 local g_monsters 		= { monster1, monster2 }
