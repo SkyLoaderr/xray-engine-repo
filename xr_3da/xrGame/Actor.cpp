@@ -364,15 +364,17 @@ void CActor::net_ImportInput	(NET_Packet &P)
 	u8	CamMode;
 	P.r_u8				(CamMode);
 	cam_Set	(EActorCameras(CamMode));
-
+	
 	P.r_angle8		(cam_Active()->yaw);
 	P.r_angle8		(cam_Active()->pitch);
+	Fvector			rD;
+	P.r_vec3		(rD);
 
-	Fvector			t;
-	t.setHP			(-cam_Active()->yaw, cam_Active()->pitch);
+//	Fvector			t;
+//	t.setHP			(-cam_Active()->yaw, cam_Active()->pitch);
 	Fvector	vP, vD, vN;
 	cam_Active()->Get(vP, vD, vN);
-	cam_Active()->Set(vP, t, vN);
+	cam_Active()->Set(vP, rD, vN);
 };
 
 BOOL CActor::net_Spawn		(LPVOID DC)
@@ -878,8 +880,9 @@ void CActor::UpdateCL()
 	{
 		//update the fog of war
 		Level().m_pFogOfWar->UpdateFog(Position(), ACTOR_FOG_REMOVE_RADIUS);
-	}
-		
+	};
+
+	
 	
 	// Analyze Die-State
 		/*
@@ -1611,6 +1614,10 @@ void CActor::NetInput_Save()
 	NP.w_u8			(NI.cam_mode	);
 	NP.w_angle8		(NI.cam_yaw		);
 	NP.w_angle8		(NI.cam_pitch	);
+
+	Fvector		vP, vD, vN;
+	cam_Active()->Get(vP, vD, vN);
+	NP.w_vec3		(vD);
 
 	if (Level().net_HasBandwidth()) 
 	{
