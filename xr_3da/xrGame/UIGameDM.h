@@ -7,9 +7,7 @@
 
 #include "ui/UIDialogWnd.h"
 #include "ui/UIInventoryWnd.h"
-#include "ui/UIMapWnd.h"
-
-
+//#include "ui/UIMapWnd.h"
 
 // refs 
 class CUIDMFragList;
@@ -33,6 +31,6 @@ public:
 
 	/////////
 	CUIInventoryWnd		InventoryMenu;
-	CUIMapWnd			MapMenu;
+//	CUIStatsWnd*		pUIStatsWnd;
 };
 #endif // __XR_UIGAMEDM_H__

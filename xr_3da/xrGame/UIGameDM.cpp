@@ -32,7 +32,7 @@ void CUIGameDM::OnFrame()
 		pPlayerList->OnFrame();
 	break;
 	case GAME_PHASE_INPROGRESS:
-		if (uFlags&flShowFragList) pFragList->OnFrame	();
+//		if (uFlags&flShowFragList) pFragList->OnFrame	();
 	break;
 	}
 }
@@ -47,7 +47,7 @@ void CUIGameDM::Render()
 		pPlayerList->Render();
 		break;
 	case GAME_PHASE_INPROGRESS:
-		if (uFlags&flShowFragList) pFragList->Render		();
+//		if (uFlags&flShowFragList) pFragList->Render		();
 		break;
 	}
 }
@@ -64,16 +64,16 @@ bool CUIGameDM::IR_OnKeyboardPress(int dik)
 		StartStopMenu(&InventoryMenu);
 		return true;
 		break;
-	case DIK_M:
-		StartStopMenu(&MapMenu);
-		return true;
-		break;
 	}
 
 	if (Game().phase==GAME_PHASE_INPROGRESS){
 		// switch pressed keys
 		switch (dik){
-		case DIK_TAB:	SetFlag		(flShowFragList,TRUE);	return true;
+		case DIK_TAB:	
+//			SetFlag		(flShowFragList,TRUE);
+			m_pUserMenu = pFragList;
+			pFragList->Show();
+			return true;
 		}
 	}
 	return false;
@@ -87,7 +87,11 @@ bool CUIGameDM::IR_OnKeyboardRelease(int dik)
 	if (Game().phase==GAME_PHASE_INPROGRESS){
 		// switch pressed keys
 		switch (dik){
-		case DIK_TAB:	SetFlag		(flShowFragList,FALSE);	return true;
+		case DIK_TAB:	
+//			SetFlag		(flShowFragList,FALSE);	
+			pFragList->Hide();
+			m_pUserMenu = NULL;			
+			return true;
 		}
 	}
 	return false;

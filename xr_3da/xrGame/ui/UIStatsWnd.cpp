@@ -12,7 +12,7 @@ const char * const STATS_XML = "stats.xml";
 CUIStatsWnd::CUIStatsWnd()
 	: m_uHighlightedItem(0)
 {
-	Init();
+	///Init();
 }
 
 CUIStatsWnd::~CUIStatsWnd()
@@ -44,6 +44,7 @@ void CUIStatsWnd::Init()
 	xml_init.InitButton(uiXml, "button", 0, &UIBtn);
 
 	// TEST!!! Пробуем добавлять элементы
+	/*
 	CUIStatsListItem *pSLItem;
 
 	pSLItem = AddItem();
@@ -62,6 +63,7 @@ void CUIStatsWnd::Init()
 	pSLItem->FieldsVector[2]->SetText("Frags: 6");
 
 	HighlightItem(1);
+	*/
 
 }
 

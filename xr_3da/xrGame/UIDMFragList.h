@@ -2,7 +2,32 @@
 #define __XR_UIDMFRAGLIST_H__
 #pragma once
 
-#include "uilistbox.h"
+#include "ui/UIStatsWnd.h"
+
+class CUIDMFragList:public CUIStatsWnd
+{
+	typedef CUIStatsWnd inherited;
+
+protected:
+	DEFINE_VECTOR	(LPVOID,ItemVec,ItemIt);
+	ItemVec			items;
+
+public:
+	CUIDMFragList	();
+	~CUIDMFragList	();
+
+	virtual void Show();
+
+	virtual void Update();
+
+	virtual u32						GetItemCount	()	{return UIStatsList.GetSize();};
+	virtual	CUIStatsListItem*		GetItem			(int index);
+//	void			Init			();
+//	virtual void	OnFrame			();
+};
+/*
+
+//#include "uilistbox.h"
 
 class CUIDMFragList:public CUIListBox
 {
@@ -12,5 +37,6 @@ public:
 	void			Init			();
 	virtual void	OnFrame			();
 };
+*/
 
 #endif //__XR_UIFRAGLIST_H__
