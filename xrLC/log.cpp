@@ -184,7 +184,7 @@ void __cdecl logThread(void *dummy)
 	{
 		if (GetPriorityClass(GetCurrentProcess())>NORMAL_PRIORITY_CLASS)
 			SetPriorityClass(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
-
+		
 		// transfer data
 		while (!csLog.TryEnter())	{
 			_process_messages	( );
