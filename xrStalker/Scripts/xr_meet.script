@@ -32,13 +32,14 @@ function evaluator_contact:evaluate()
 	else
 		self.a.actor = nil
 	end	
-	--if self.a.over == false then
-		--printf("self.a.over == false FALSE")
-	--else
-		--printf("self.a.over == true TRUE")
-	--end
-	
-	return self.a.actor ~= nil and self.a.over == false
+
+	if self.a.actor ~= nil and self.a.over == false then
+		xr_reactions.add_rule(self.object, "ignore")
+		return true
+	else
+		xr_reactions.remove_rule(self.object, "ignore")
+		return false
+	end
 end
 -- имеет ли клиент оружие
 class "evaluator_weapon" (property_evaluator)
@@ -51,7 +52,7 @@ function evaluator_weapon:evaluate()
 	if actor then
 		if actor:alive() and
 		   self.object:see(actor)
-		then
+		then 
 			return isWeapon(actor:active_item())
 		end
 	end
@@ -249,8 +250,8 @@ function action_wait_for_buyer:finalize ()
 end
 
 -- ѕриглашение к тороговле
-class "action_wait" (action_base)
-function action_wait:__init (npc_name,action_name, storage) super (nil, action_name)
+class "action_meet_wait" (action_base)
+function action_meet_wait:__init (npc_name,action_name, storage) super (nil, action_name)
 	self.a = storage
 
 	self.sound_w = { rnd = 80,
@@ -259,7 +260,7 @@ function action_wait:__init (npc_name,action_name, storage) super (nil, action_n
 				   themes = { "weather", "state", "wait" } }
 
 end
-function action_wait:initialize()
+function action_meet_wait:initialize()
 	action_base.initialize(self)
 	self.object:set_node_evaluator()
 	self.object:set_path_evaluator()
@@ -273,7 +274,7 @@ function action_wait:initialize()
    	self.object:set_item(object.deactivate, self.object:best_weapon())
 	self.object:enable_talk()
 end
-function action_wait:execute ()
+function action_meet_wait:execute ()
 	-- нужно остановитьс€ и посмотреть в сторону актора
 	local dir = self.a.actor:position():sub(self.object:position())
 
@@ -288,7 +289,7 @@ function action_wait:execute ()
 	end
 	action_base.execute (self)
 end
-function action_wait:finalize ()
+function action_meet_wait:finalize ()
 	self.object:disable_talk()
 	xr_state.anim_update(nil, self.object)
 	action_base.finalize (self)
@@ -370,7 +371,6 @@ function action_weapon:initialize()
 	self.object:set_mental_state(anim.danger)
 
 	self.object:clear_animations()
-	xr_reactions.add_rule(self.object, "ignore")
 end
 function action_weapon:execute ()
    	self.object:set_item(object.idle, self.object:best_weapon())
@@ -396,7 +396,6 @@ function action_weapon:execute ()
 	action_base.execute (self)
 end
 function action_weapon:finalize ()
-	xr_reactions.remove_rule(self.object, "ignore")
 	action_base.finalize (self)
 end
 
@@ -429,7 +428,6 @@ function action_afraid:initialize()
 	self.object:set_mental_state(anim.danger)
 
 	self.object:clear_animations()
-	xr_reactions.add_rule(self.object, "ignore")
 	self.begin = device():time_global()
 end
 function action_afraid:execute ()
@@ -454,7 +452,6 @@ function action_afraid:execute ()
 	action_base.execute (self)
 end
 function action_afraid:finalize ()
-	xr_reactions.remove_rule(self.object, "ignore")
 	action_base.finalize (self)
 end
 
@@ -486,7 +483,6 @@ function action_contact_zoneout:initialize()
 	self.object:set_movement_type(move.stand)
 	self.object:set_mental_state(anim.danger)
 
-	xr_reactions.add_rule(self.object, "ignore")
 	self.begin = device():time_global()   
 end
 function action_contact_zoneout:execute ()
@@ -511,7 +507,6 @@ function action_contact_zoneout:execute ()
 	action_base.execute (self)
 end
 function action_contact_zoneout:finalize ()
-	xr_reactions.remove_rule(self.object, "ignore")
 	action_base.finalize (self)
 end
 
@@ -559,7 +554,6 @@ function action_contact_zone:initialize()
 		self.object:set_movement_type(move.stand)
 		self.object:set_mental_state(anim.danger)
 
-		xr_reactions.add_rule(self.object, "ignore")
 		self.begin = device():time_global()   
 	end
 end
@@ -603,8 +597,6 @@ function action_contact_zone:finalize ()
 	if self.known then
 		self.object:disable_talk()
 		xr_state.anim_update(nil, self.object)
-	else
-		xr_reactions.remove_rule(self.object, "ignore")
 	end
 	action_base.finalize (self)
 end
@@ -642,18 +634,18 @@ function add_to_binder(object, char_ini)
 	properties["contact"]		= xr_evaluators_id.stohe_meet_base + 1         
 	properties["weapon"]		= xr_evaluators_id.stohe_meet_base + 2
 	properties["afraid"]		= xr_evaluators_id.stohe_meet_base + 3
-	properties["clan"]		= xr_evaluators_id.stohe_meet_base + 4
+	properties["clan"]			= xr_evaluators_id.stohe_meet_base + 4
 	properties["clan_zone"]		= xr_evaluators_id.stohe_meet_base + 5
-	properties["talk"]		= xr_evaluators_id.stohe_meet_base + 6
+	properties["talk"]			= xr_evaluators_id.stohe_meet_base + 6
 	properties["need_punch"]	= xr_evaluators_id.zmey_punch_base + 1
 
-	operators["wait_buyer"] 	= xr_actions_id.stohe_tradeseller_base + 2
-	operators["wait_trade"]		= xr_actions_id.stohe_meet_base + 1
-	operators["weapon"]		= xr_actions_id.stohe_meet_base + 2
-	operators["afraid"]		= xr_actions_id.stohe_meet_base + 3
-	operators["contact_zone"]	= xr_actions_id.stohe_meet_base + 4
+	operators["wait_buyer"] 		= xr_actions_id.stohe_tradeseller_base + 2
+	operators["wait_trade"]			= xr_actions_id.stohe_meet_base + 1
+	operators["weapon"]				= xr_actions_id.stohe_meet_base + 2
+	operators["afraid"]				= xr_actions_id.stohe_meet_base + 3
+	operators["contact_zone"]		= xr_actions_id.stohe_meet_base + 4
 	operators["contact_zoneout"]	= xr_actions_id.stohe_meet_base + 5
-	operators["talk"]		= xr_actions_id.stohe_meet_base + 6
+	operators["talk"]				= xr_actions_id.stohe_meet_base + 6
 
 	-- Evaluators
 	manager:add_evaluator (properties["wait_buyer"], 	this.evaluator_wait		(xr_motivator.storage[object:id()].tradeseller))
@@ -665,7 +657,7 @@ function add_to_binder(object, char_ini)
 	manager:add_evaluator (properties["talk"], 		this.evaluator_talk		(xr_motivator.storage[object:id()].meet))
 
 	-- Actions
-	local action = this.action_wait (object:name(),"action_wait", xr_motivator.storage[object:id()].meet)
+	local action = action_meet_wait (object:name(),"action_meet_wait", xr_motivator.storage[object:id()].meet)
 	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
 	action:add_precondition		(world_property(properties["contact"], 		true))
@@ -676,7 +668,7 @@ function add_to_binder(object, char_ini)
 	action:add_effect 		(world_property(properties["contact"], 		false))
 	manager:add_action (operators["wait_trade"], action)
 
-	action = this.action_talk (object:name(),"action_talk", xr_motivator.storage[object:id()].meet)
+	action = action_talk (object:name(),"action_talk", xr_motivator.storage[object:id()].meet)
 	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
 	action:add_precondition		(world_property(properties["need_punch"],	false))	
@@ -684,21 +676,23 @@ function add_to_binder(object, char_ini)
 	action:add_effect 		(world_property(properties["talk"], 		false))
 	manager:add_action (operators["talk"], action)
 
-	action = this.action_afraid (object:name(),"action_afraid", xr_motivator.storage[object:id()].meet)
+	action = action_afraid (object:name(),"action_afraid", xr_motivator.storage[object:id()].meet)
 	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
+	action:add_precondition		(world_property(properties["contact"], 		true))
 	action:add_precondition		(world_property(properties["afraid"], 		true))
 	action:add_effect 		(world_property(properties["afraid"], 		false))
 	manager:add_action (operators["afraid"], action)
 
-	action = this.action_weapon (object:name(),"action_weapon", xr_motivator.storage[object:id()].meet)
+	action = action_weapon (object:name(),"action_weapon", xr_motivator.storage[object:id()].meet)
 	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
+	action:add_precondition		(world_property(properties["contact"], 		true))
 	action:add_precondition		(world_property(properties["weapon"], 		true))
 	action:add_effect 		(world_property(properties["weapon"], 		false))
 	manager:add_action (operators["weapon"], action)
 
-	action = this.action_contact_zone(object:name(),"action_contact_zone", xr_motivator.storage[object:id()].meet)
+	action = action_contact_zone(object:name(),"action_contact_zone", xr_motivator.storage[object:id()].meet)
 	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
 	action:add_precondition		(world_property(properties["contact"], 		true))
@@ -707,7 +701,7 @@ function add_to_binder(object, char_ini)
 	action:add_effect 		(world_property(properties["contact"], 		false))
 	manager:add_action (operators["contact_zone"], action)
 
-	action = this.action_contact_zoneout(object:name(),"action_contact_zoneout", xr_motivator.storage[object:id()].meet)
+	action = action_contact_zoneout(object:name(),"action_contact_zoneout", xr_motivator.storage[object:id()].meet)
 	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
 	action:add_precondition		(world_property(properties["contact"], 		true))
@@ -717,7 +711,7 @@ function add_to_binder(object, char_ini)
 	manager:add_action (operators["contact_zoneout"], action)
 	                    
 	-- ќжидание торговца
-	action = this.action_wait_for_buyer (object:name(),"action_wait_for_buyer", xr_motivator.storage[object:id()].tradeseller)
+	action = action_wait_for_buyer (object:name(),"action_wait_for_buyer", xr_motivator.storage[object:id()].tradeseller)
 	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
 	action:add_precondition		(world_property(properties["wait_buyer"], 	true))
