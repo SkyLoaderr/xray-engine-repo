@@ -203,9 +203,11 @@ function main()
 
 	while true do
 		if guard01.health <= 0  then
-		wait(2000)			
+			wait(2000)			
 			prof_ti_ubil_sivogo:play_at_pos		(guard02,guard02:position(),0);
 			guard02:script						(false,  script_guards_pr00.script_name())
+			wait(2000)			
+			rainbow_hrom_u_nas_problema:play_at_pos		(guard02,guard02:position(),0);
 		break
 		end
 		wait()			
@@ -216,6 +218,8 @@ function main()
 		wait(2000)			
 			rainbow_suka_ti_cherta_ubil:play_at_pos		(guard01,guard01:position(),0);
 			guard01:script						(false,  script_guards_pr00.script_name())
+			wait(2000)			
+			rainbow_hrom_u_nas_problema:play_at_pos		(guard02,guard02:position(),0);
 		break
 		end
 		wait()			
