@@ -36,13 +36,14 @@
     <!-- DESCRIPTION WINDOW -->
     <descr_static x="370" y="260" width="335" height="455">
         <texture> ui\ui_dg_info</texture>
+        <text x="25" y="2" font="header" r="255" g="255" b="255" a="130">Description</text>
     </descr_static>
 
     <!-- CHARACTER WINDOW -->
     <frame_window x="730" y="260" width="268" height="490">
         <base_texture>ui\ui_frame</base_texture>
         <left_top_texture x="5" y="10">ui\ui_inv_personal_over_t</left_top_texture>
-        <title x="100" y="0" width="240" height="60"><text font="header" r="255" g="255" b="255">Personal</text></title>
+        <title x="100" y="0" width="240" height="60"><text font="header" r="255" g="255" b="255" a="130">Personal</text></title>
     </frame_window>
 
     <!-- BELT STATIC BACKGROUND -->
