@@ -135,8 +135,6 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 
 	CStalkerAnimations::reload		(Visual(),pSettings,cNameSect());
 
-	m_PhysicMovementControl.SetPLastMaterial(&m_last_material_id);
-
 	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeHumanAbstract			*tpHuman = dynamic_cast<CSE_ALifeHumanAbstract*>(e);
 	R_ASSERT						(tpHuman);
