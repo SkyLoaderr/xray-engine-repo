@@ -78,7 +78,8 @@ function CStateRest:finalize()
 	end
 end
 
-//' Класс для монстров, которые биндятся
+//' Класс для монстров, которые биндятся и имеют некоторое состояние sWalk
+
 class "CStateRestBind" (CStateRest)
 function CStateRestBind:__init(_data, _mem, sWalk) super(_data, _mem)
 	if(sWalk) then
@@ -99,24 +100,43 @@ function CStateRestBind:set_data(_data, _mem)
 	self.stateWalk:set_data(_data, _mem)
 end
 
-//-----------------------------------------------------------------------------------------
-//  Состояние отдыха, в котором монстр только спит в указанной точке
-//-----------------------------------------------------------------------------------------
+// Класс для монстров, которые делают некоторое маленькое действие, эти монстры не ходят кушать
 
-class "CStateRestSleep"
-function CStateRestSleep:__init(_data, _mem, _sleep_point)
+class "CStateSmallRestBind"
+function CStateSmallRestBind:__init(_data, _mem)
 	self.data			= _data
 	self.memory			= _mem
 	self.sleep_point	= _sleep_point
 end
 
-function CStateRestSleep:set_data(_data, _mem)			// это не правильно, но по другому ни как
+function CStateSmallRestBind:set_data(_data, _mem)			// это не правильно, но по другому ни как
 	self.data	= _data
 	self.memory = _mem
 end
 
-function CStateRestSleep:initialize()
+function CStateSmallRestBind:initialize()
 	reset_action(self.data.npc, self.data.scr_name)
+end
+
+function CStateSmallRestBind:execute()
+	assert(false)									// Типа чисто виртуального класса, копий быть не должно
+end
+
+function CStateSmallRestBind:id()
+	return s_rest
+end
+
+function CStateSmallRestBind:finalize()
+end
+
+
+//-----------------------------------------------------------------------------------------
+//  Состояние отдыха, в котором монстр только спит в указанной точке
+//-----------------------------------------------------------------------------------------
+
+class "CStateRestSleep" (CStateSmallRestBind)
+function CStateRestSleep:__init(_data, _mem, _sleep_point) super(_data, _mem)
+	self.sleep_point	= _sleep_point
 end
 
 function CStateRestSleep:execute()
@@ -130,9 +150,53 @@ function CStateRestSleep:execute()
 	end
 end
 
-function CStateRestSleep:id()
-	return s_rest
+//////////////////////////////////////////////////////////////////////////////////////////
+// Монстр кемпер. Стоит в точки с индексом 0 и смотрит в точку с индексом 1
+//////////////////////////////////////////////////////////////////////////////////////////
+
+class "CStateRestCamper" (CStateSmallRestBind)
+function CStateRestCamper:__init(_data, _mem, _path) super(_data, _mem)
+	self.path	 = _path
+	self.point   = point_with_bit(patrol(self.path), 0)
+	self.look_to = point_with_bit(patrol(self.path), 1)
 end
 
-function CStateRestSleep:finalize()
+function CStateRestCamper:execute()
+	if(self.data.npc:action() == nil) then
+		assert(self.point ~= nil)
+		assert(self.look_to ~= nil)
+		
+		if(self.data.npc:position():distance_to(self.point) > 1) then
+			action(self.data.npc, move(move.walk_fwd, self.point, 1), sound(sound.idle), cond(cond.move_end))
+		end
+		action(self.data.npc, anim(anim.turn, 0), look(look.point, self.look_to), sound(sound.idle), cond(cond.look_end))
+		action(self.data.npc, anim(anim.stand_idle, 0), sound(sound.idle), cond(cond.time_end, 4000))
+		action(self.data.npc, anim(anim.look_around, 0), sound(sound.idle), cond(cond.time_end, 6000))
+	end
 end
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// Зомби. Подходит к точке и протворяется мертвым валяется там некоторое время
+//////////////////////////////////////////////////////////////////////////////////////////
+
+class "CStateRestZombieFakeDead" (CStateSmallRestBind)
+function CStateRestZombieFakeDead:__init(_data, _mem, _path) super(_data, _mem)
+	self.path	 = _path
+	self.point   = point_with_bit(patrol(self.path), 0)
+	self.look_to = point_with_bit(patrol(self.path), 1)
+end
+
+function CStateRestZombieFakeDead:execute()
+	if(self.data.npc:action() == nil) then
+		assert(self.point ~= nil)
+		assert(self.look_to ~= nil)
+		
+		if(self.data.npc:position():distance_to(self.point) > 1) then
+			action(self.data.npc, move(move.walk_fwd, self.point, 1), sound(sound.idle), cond(cond.move_end))
+		end
+		action(self.data.npc, anim(anim.turn, 0), look(look.point, self.look_to), sound(sound.idle), cond(cond.look_end))
+		action(self.data.npc, anim(anim.stand_idle, 0), sound(sound.idle), cond(cond.time_end, 4000))
+		action(self.data.npc, anim(anim.look_around, 0), sound(sound.idle), cond(cond.time_end, 6000))
+	end
+end
+
