@@ -83,6 +83,7 @@ void	CRenderTarget::phase_smap_direct()
 	RCache.set_ZB				(rt_smap_d_ZB);
 	RImplementation.rmNormal	();
 }
+
 void	CRenderTarget::phase_accumulator()
 {
 	dwWidth						= Device.dwWidth;
