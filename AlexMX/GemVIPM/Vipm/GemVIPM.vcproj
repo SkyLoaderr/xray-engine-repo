@@ -19,37 +19,52 @@
 			IntermediateDirectory=".\Debug"
 			ConfigurationType="1"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
+			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				EnableFiberSafeOptimizations="TRUE"
+				OptimizeForProcessor="2"
 				AdditionalIncludeDirectories="MyInc"
 				PreprocessorDefinitions="_DEBUG;DEBUG;WIN32;_WINDOWS;DXVERSION=8"
+				MinimalRebuild="TRUE"
+				ExceptionHandling="FALSE"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="5"
+				SmallerTypeCheck="TRUE"
+				RuntimeLibrary="3"
+				BufferSecurityCheck="TRUE"
+				EnableFunctionLevelLinking="TRUE"
+				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderFile=".\Debug/GemVIPM.pch"
 				AssemblerListingLocation=".\Debug/"
 				ObjectFile=".\Debug/"
 				ProgramDataBaseFileName=".\Debug/"
-				BrowseInformation="1"
-				WarningLevel="3"
+				BrowseInformation="0"
+				WarningLevel="4"
 				SuppressStartupBanner="TRUE"
-				DebugInformationFormat="4"
+				Detect64BitPortabilityProblems="TRUE"
+				DebugInformationFormat="3"
 				CallingConvention="2"
-				CompileAs="0"/>
+				CompileAs="0"
+				ForcedIncludeFiles=""/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib d3dx8dt.lib d3d8.lib ddraw.lib d3dxof.lib dxguid.lib winmm.lib dinput8.lib"
+				IgnoreImportLibrary="TRUE"
+				AdditionalDependencies="d3dx8dt.lib winmm.lib dinput8.lib dxguid.lib d3d8.lib "
 				OutputFile=".\Debug/GemVIPM.exe"
-				LinkIncremental="1"
+				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
+				IgnoreAllDefaultLibraries="FALSE"
+				IgnoreDefaultLibraryNames="libcd"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile=".\Debug/GemVIPM.pdb"
+				GenerateMapFile="TRUE"
 				SubSystem="2"
-				TargetMachine="1"/>
+				TargetMachine="0"/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="_DEBUG"
@@ -67,7 +82,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_DEBUG"
-				Culture="2057"/>
+				Culture="1058"/>
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
@@ -273,6 +288,10 @@
 			<File
 				RelativePath="object.h">
 			</File>
+		</Filter>
+		<Filter
+			Name="Math"
+			Filter="">
 			<File
 				RelativePath=".\quad.h">
 			</File>

@@ -92,18 +92,19 @@ HRESULT CMyD3DApplication::Render()
 			// Draw the current state of the object.
 			// Render twice.
 			// Current level.
-			m_pObject->RenderCurrentObject	( m_pd3dDevice, m_pObject->iCurSlidingWindowLevel );
+			int r_tmp=0, r_tris=0, r_edges=0;
+			RenderCurrentObject				(m_pObject->iCurSlidingWindowLevel,r_tris);
 			// Next level.
-			m_pd3dDevice->SetRenderState	( D3DRS_TEXTUREFACTOR, 0xff800000 );
-			m_pObject->RenderCurrentObject	( m_pd3dDevice, m_pObject->iCurSlidingWindowLevel + 1 );
+			m_pd3dDevice->SetRenderState	(D3DRS_TEXTUREFACTOR, 0xff800000);
+			RenderCurrentObject				(m_pObject->iCurSlidingWindowLevel + 1,r_tmp);
 
 			// Tweak the projection matrix so that things are a bit more visible.
-			m_pd3dDevice->SetTransform		( D3DTS_PROJECTION, &m_matProjCloseZbias );
+			m_pd3dDevice->SetTransform		(D3DTS_PROJECTION, &m_matProjCloseZbias);
 
 			// Render visible edges again in a different colour.
-			m_pd3dDevice->SetRenderState	( D3DRS_TEXTUREFACTOR, 0xffffff00 );
-			m_pd3dDevice->SetRenderState	( D3DRS_ZENABLE, TRUE );
-			m_pObject->RenderCurrentEdges	( m_pd3dDevice );
+			m_pd3dDevice->SetRenderState	(D3DRS_TEXTUREFACTOR, 0xffffff00);
+			m_pd3dDevice->SetRenderState	(D3DRS_ZENABLE, TRUE);
+			RenderCurrentEdges				(r_edges);
 
 			// Output statistics
 			m_pFont->DrawText( 2,  0, D3DCOLOR_ARGB(255,255,255,0), m_strFrameStats );
@@ -112,6 +113,9 @@ HRESULT CMyD3DApplication::Render()
 			char strTemp[1000];
 			sprintf ( strTemp, "Sliding window level %i, error tolerance %f%%", m_pObject->iCurSlidingWindowLevel, m_fSlidingWindowErrorTolerance * 100.0f );
 			m_pFont->DrawText( 2, 40, D3DCOLOR_ARGB(255,255,255,0), strTemp );
+
+			sprintf ( strTemp, "Faces: %i. Edges: %i", r_tris, r_edges);
+			m_pFont->DrawText( 2, 60, D3DCOLOR_ARGB(255,255,255,0), strTemp );
 
 			// End the scene.
 			m_pd3dDevice->EndScene();
@@ -189,7 +193,7 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 	if (!bAlreadyDone){
 		// Only needs doing once, but annoyingly requires a D3D device to do the init.
 		bAlreadyDone = TRUE;
-		m_pObject->CreateTestObject			(m_pd3dDevice);
+		CreateTestObject					();
 		m_pObject->MakeCurrentObjectFromPerm();
 	}
 
@@ -284,3 +288,266 @@ HRESULT CMyD3DApplication::ConfirmDevice( D3DCAPS8* pCaps, DWORD dwBehavior,
 	// Whatever - no special properties required.
 	return S_OK;
 }
+
+void CMyD3DApplication::CreateTestObject ()
+{
+	ASSERT ( m_pObject ); 
+	ASSERT ( m_pObject->PermPtRoot.ListNext() == NULL );
+	ASSERT ( m_pObject->PermTriRoot.ListNext() == NULL );
+	ASSERT ( m_pObject->PermEdgeRoot.ListNext() == NULL );
+
+#if 0
+	// Make a cube.
+	MeshPt *ppt000 = new MeshPt ( &PermPtRoot );
+	MeshPt *ppt001 = new MeshPt ( &PermPtRoot );
+	MeshPt *ppt010 = new MeshPt ( &PermPtRoot );
+	MeshPt *ppt011 = new MeshPt ( &PermPtRoot );
+	MeshPt *ppt100 = new MeshPt ( &PermPtRoot );
+	MeshPt *ppt101 = new MeshPt ( &PermPtRoot );
+	MeshPt *ppt110 = new MeshPt ( &PermPtRoot );
+	MeshPt *ppt111 = new MeshPt ( &PermPtRoot );
+
+	ppt000->mypt.vPos = D3DXVECTOR3 ( -1.0f,  1.0f, -1.0f );
+	ppt001->mypt.vPos = D3DXVECTOR3 (  1.0f,  1.0f, -1.0f );
+	ppt010->mypt.vPos = D3DXVECTOR3 ( -1.0f,  1.0f,  1.0f );
+	ppt011->mypt.vPos = D3DXVECTOR3 (  1.0f,  1.0f,  1.0f );
+	ppt100->mypt.vPos = D3DXVECTOR3 ( -1.0f, -1.0f, -1.0f );
+	ppt101->mypt.vPos = D3DXVECTOR3 (  1.0f, -1.0f, -1.0f );
+	ppt110->mypt.vPos = D3DXVECTOR3 ( -1.0f, -1.0f,  1.0f );
+	ppt111->mypt.vPos = D3DXVECTOR3 (  1.0f, -1.0f,  1.0f );
+
+	// Dodgy normals.
+	MeshPt *pt = PermPtRoot.ListNext();
+	DWORD dwIndex = 0;
+	while ( pt != NULL )
+	{
+		//pt->mypt.dwIndex = dwIndex++;
+		D3DXVec3Normalize ( &(pt->mypt.vNorm), &(pt->mypt.vPos) );
+
+		pt = pt->ListNext();
+	}
+
+
+	MeshTri *ptri;
+	// Top.
+	ptri = new MeshTri ( ppt000, ppt010, ppt011, &PermTriRoot, &PermEdgeRoot );
+	ptri = new MeshTri ( ppt000, ppt011, ppt001, &PermTriRoot, &PermEdgeRoot );
+	// Bottom.
+	ptri = new MeshTri ( ppt100, ppt111, ppt110, &PermTriRoot, &PermEdgeRoot );
+	ptri = new MeshTri ( ppt100, ppt101, ppt111, &PermTriRoot, &PermEdgeRoot );
+	// Left.
+	ptri = new MeshTri ( ppt000, ppt110, ppt010, &PermTriRoot, &PermEdgeRoot );
+	ptri = new MeshTri ( ppt000, ppt100, ppt110, &PermTriRoot, &PermEdgeRoot );
+	// Right.
+	ptri = new MeshTri ( ppt001, ppt011, ppt111, &PermTriRoot, &PermEdgeRoot );
+	ptri = new MeshTri ( ppt001, ppt111, ppt101, &PermTriRoot, &PermEdgeRoot );
+	// Front
+	ptri = new MeshTri ( ppt000, ppt001, ppt101, &PermTriRoot, &PermEdgeRoot );
+	ptri = new MeshTri ( ppt000, ppt101, ppt100, &PermTriRoot, &PermEdgeRoot );
+	// Back
+	ptri = new MeshTri ( ppt010, ppt111, ppt011, &PermTriRoot, &PermEdgeRoot );
+	ptri = new MeshTri ( ppt010, ppt110, ppt111, &PermTriRoot, &PermEdgeRoot );
+#else
+
+	HRESULT hres;
+
+	// Make a teapotahedron.
+	LPD3DXMESH pmeshTeapot;
+	ASSERT ( g_pd3dDevice != NULL );		// Slight fudge - shame we need a D3D device.
+	//hres = D3DXCreateTeapot ( g_pd3dDevice, &pmeshTeapot, NULL );
+	// These are just some simpler test meshes
+	//hres = D3DXCreatePolygon ( g_pd3dDevice, 1.0f, 6, &pmeshTeapot, NULL );
+	//hres = D3DXCreateSphere ( g_pd3dDevice, 1.0f, 12, 6, &pmeshTeapot, NULL );
+	hres = D3DXCreateSphere ( g_pd3dDevice, 1.0f, 30, 15, &pmeshTeapot, NULL );
+
+	// OK, now extract the data.
+	int iNumVerts = pmeshTeapot->GetNumVertices();
+	int iNumFaces = pmeshTeapot->GetNumFaces();
+
+	LPDIRECT3DVERTEXBUFFER8 pVertexBuffer;
+	hres = pmeshTeapot->GetVertexBuffer ( &pVertexBuffer );
+	D3DVERTEXBUFFER_DESC vbdesc;
+	hres = pVertexBuffer->GetDesc ( &vbdesc );
+	// Create my "smart" pointer.
+	MyFVFPointer pFVF ( vbdesc.FVF );
+	BYTE *pbData;
+	hres = pVertexBuffer->Lock ( 0, pFVF.GetFVFSize() * iNumVerts, &pbData, D3DLOCK_READONLY );
+	pFVF.SetCurVertex ( pbData );
+
+	// The de-index list.
+	MeshPt **ppPts = new MeshPt*[iNumVerts];
+
+	for ( int i = 0; i < iNumVerts; i++ )
+	{
+		ppPts[i] = new MeshPt ( &m_pObject->PermPtRoot );
+		ppPts[i]->mypt.vPos		= pFVF.Position();
+		ppPts[i]->mypt.vNorm	= pFVF.Normal();
+		ppPts[i]->mypt.fU		= 0.001f;
+		ppPts[i]->mypt.fV		= 0.001f;
+//		ppPts[i]->mypt.fU		= pFVF.U0();
+//		ppPts[i]->mypt.fV		= pFVF.V0();
+
+		ppPts[i]->mypt.dwIndex	= i;
+
+		++pFVF;
+	}
+
+	hres = pVertexBuffer->Unlock();
+	pVertexBuffer->Release();
+
+
+	// And now the index buffer.
+	LPDIRECT3DINDEXBUFFER8 pIndexBuffer;
+	hres = pmeshTeapot->GetIndexBuffer ( &pIndexBuffer );
+	D3DINDEXBUFFER_DESC ibdesc;
+	hres = pIndexBuffer->GetDesc ( &ibdesc );
+	// Unlikely to get any 32bpp indices, but check, just in case.
+	// If you do - well, I leave that as an exercise for the reader :-)
+
+	// Oh - just found this comment in the docs:
+	//
+	// D3DXMESH_32BIT 
+	//   The mesh has 32-bit indices instead of 16-bit indices.
+	//   A 32-bit mesh can support up to 2^32-1 faces and vertices.
+	//   This flag is not supported and should not be used. 
+	//
+	// So, that answers that question!
+	ASSERT ( ibdesc.Format == D3DFMT_INDEX16 );
+
+	// Also, assume that this defines a trilist. Not sure if the mesh tells us
+	// what the primitive type is anywhere.
+	WORD *pIndex;
+	ASSERT ( sizeof (*pIndex) * iNumFaces * 3 == ibdesc.Size );
+	hres = pIndexBuffer->Lock ( 0, ibdesc.Size, (BYTE**)&pIndex, D3DLOCK_READONLY );
+
+	for ( int j = 0; j < iNumFaces; j++ )
+	{
+		MeshPt *ppt[3];
+		for ( int i = 0; i < 3; i++ )
+		{
+			ASSERT ( *pIndex < iNumVerts );
+			ppt[i] = ppPts[*pIndex];
+			pIndex++;
+		}
+
+		MeshTri *ptri = new MeshTri ( ppt[0], ppt[1], ppt[2], &m_pObject->PermTriRoot, &m_pObject->PermEdgeRoot );
+	}
+
+	hres = pIndexBuffer->Unlock();
+	pIndexBuffer->Release();
+
+	delete[] ppPts;
+
+	// And finally bin the thing.
+	pmeshTeapot->Release();
+#endif
+
+	m_pObject->iFullNumTris = 0;
+	m_pObject->iFullNumPts	= 0;
+	MeshPt *pt = m_pObject->PermPtRoot.ListNext();
+	while ( pt != NULL )
+	{
+		// All the pts had better be the same material.
+		pt = pt->ListNext();
+		m_pObject->iFullNumPts++;
+	}
+	MeshTri *tri = m_pObject->PermTriRoot.ListNext();
+	while ( tri != NULL )
+	{
+		// All the pts had better be the same material.
+		tri = tri->ListNext();
+		m_pObject->iFullNumTris++;
+	}
+
+	MeshEdge *edge = m_pObject->PermEdgeRoot.ListNext();
+	while ( edge != NULL )
+	{
+		edge = edge->ListNext();
+	}
+
+	m_pObject->iCurSlidingWindowLevel = 0;
+	m_pObject->SetNewLevel ( m_pObject->iCurSlidingWindowLevel );
+}
+
+
+struct STDVERTEX
+{
+	D3DXVECTOR3 v;
+	D3DXVECTOR3 norm;
+	FLOAT       tu, tv;
+};
+
+#define STDVERTEX_FVF (D3DFVF_XYZ|D3DFVF_NORMAL|D3DFVF_TEX1)
+
+// Renders the given material of the current state of the object.
+// Set iSlidingWindowLevel to -1 if you don't care about level numbers.
+void CMyD3DApplication::RenderCurrentObject (int iSlidingWindowLevel, int& r_tris)
+{
+	ASSERT ( m_pObject ); 
+
+	STDVERTEX vert[3];
+
+	HRESULT hres;
+
+	hres = g_pd3dDevice->SetVertexShader ( STDVERTEX_FVF );
+
+	MeshTri *tri = m_pObject->CurTriRoot.ListNext();
+	while ( tri != NULL )
+	{
+		if ( ( iSlidingWindowLevel == -1 ) ||
+				( iSlidingWindowLevel == tri->mytri.iSlidingWindowLevel ) )
+		{
+			// Draw this one.
+			vert[0].v		= tri->pPt1->mypt.vPos;
+			vert[0].norm	= tri->pPt1->mypt.vNorm;
+			vert[0].tu		= tri->pPt1->mypt.fU;
+			vert[0].tv		= tri->pPt1->mypt.fV;
+
+			vert[1].v		= tri->pPt2->mypt.vPos;
+			vert[1].norm	= tri->pPt2->mypt.vNorm;
+			vert[1].tu		= tri->pPt2->mypt.fU;
+			vert[1].tv		= tri->pPt2->mypt.fV;
+
+			vert[2].v		= tri->pPt3->mypt.vPos;
+			vert[2].norm	= tri->pPt3->mypt.vNorm;
+			vert[2].tu		= tri->pPt3->mypt.fU;
+			vert[2].tv		= tri->pPt3->mypt.fV;
+
+			hres			= g_pd3dDevice->DrawPrimitiveUP ( D3DPT_TRIANGLELIST, 1, vert, sizeof(vert[0]) );
+			r_tris++;
+		}
+		tri = tri->ListNext();
+	}
+}
+
+void CMyD3DApplication::RenderCurrentEdges (int& r_edges)
+{
+	ASSERT ( m_pObject ); 
+
+	STDVERTEX vert[2];
+
+	HRESULT hres;
+
+	hres = g_pd3dDevice->SetVertexShader ( STDVERTEX_FVF );
+
+	MeshEdge *edge = m_pObject->CurEdgeRoot.ListNext();
+	while ( edge != NULL )
+	{
+		// Draw this one.
+		vert[0].v		= edge->pPt1->mypt.vPos;
+		vert[0].norm	= edge->pPt1->mypt.vNorm;
+		vert[0].tu		= edge->pPt1->mypt.fU;
+		vert[0].tv		= edge->pPt1->mypt.fV;
+
+		vert[1].v		= edge->pPt2->mypt.vPos;
+		vert[1].norm	= edge->pPt2->mypt.vNorm;
+		vert[1].tu		= edge->pPt2->mypt.fU;
+		vert[1].tv		= edge->pPt2->mypt.fV;
+
+		hres			= g_pd3dDevice->DrawPrimitiveUP ( D3DPT_LINELIST, 1, vert, sizeof(vert[0]) );
+		edge			= edge->ListNext();
+
+		r_edges++;
+	}
+}
+

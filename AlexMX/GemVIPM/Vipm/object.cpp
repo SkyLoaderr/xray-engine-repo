@@ -9,11 +9,20 @@
  */
 
 #include "object.h"
+#include "quad.h"
+
+
+#include "xrCore.h"
+#include "MxQMetric.h"
+#pragma comment(lib,"x:/xrCore.lib")
+#pragma comment(lib,"x:/xrQSlim.lib")
+
+#define QUAD_SIZE 5
 
 int		g_iNumOfObjectVertsDrawn	= 0;
 int		g_iMaxNumTrisDrawn			= -1;
-BOOL	g_bShowVIPMInfo				= FALSE;
-BOOL	g_bUseFastButBadOptimise	= FALSE;
+long	g_bShowVIPMInfo				= FALSE;
+long	g_bUseFastButBadOptimise	= FALSE;
 
 Object::Object()
 {
@@ -45,179 +54,6 @@ Object::~Object()
 		delete ( PermPtRoot.ListNext() );
 	}
 
-}
-
-
-void Object::CreateTestObject ( LPDIRECT3DDEVICE8 pd3dDevice )
-{
-	ASSERT ( PermPtRoot.ListNext() == NULL );
-	ASSERT ( PermTriRoot.ListNext() == NULL );
-	ASSERT ( PermEdgeRoot.ListNext() == NULL );
-
-#if 0
-	// Make a cube.
-	MeshPt *ppt000 = new MeshPt ( &PermPtRoot );
-	MeshPt *ppt001 = new MeshPt ( &PermPtRoot );
-	MeshPt *ppt010 = new MeshPt ( &PermPtRoot );
-	MeshPt *ppt011 = new MeshPt ( &PermPtRoot );
-	MeshPt *ppt100 = new MeshPt ( &PermPtRoot );
-	MeshPt *ppt101 = new MeshPt ( &PermPtRoot );
-	MeshPt *ppt110 = new MeshPt ( &PermPtRoot );
-	MeshPt *ppt111 = new MeshPt ( &PermPtRoot );
-
-	ppt000->mypt.vPos = D3DXVECTOR3 ( -1.0f,  1.0f, -1.0f );
-	ppt001->mypt.vPos = D3DXVECTOR3 (  1.0f,  1.0f, -1.0f );
-	ppt010->mypt.vPos = D3DXVECTOR3 ( -1.0f,  1.0f,  1.0f );
-	ppt011->mypt.vPos = D3DXVECTOR3 (  1.0f,  1.0f,  1.0f );
-	ppt100->mypt.vPos = D3DXVECTOR3 ( -1.0f, -1.0f, -1.0f );
-	ppt101->mypt.vPos = D3DXVECTOR3 (  1.0f, -1.0f, -1.0f );
-	ppt110->mypt.vPos = D3DXVECTOR3 ( -1.0f, -1.0f,  1.0f );
-	ppt111->mypt.vPos = D3DXVECTOR3 (  1.0f, -1.0f,  1.0f );
-
-	// Dodgy normals.
-	MeshPt *pt = PermPtRoot.ListNext();
-	DWORD dwIndex = 0;
-	while ( pt != NULL )
-	{
-		//pt->mypt.dwIndex = dwIndex++;
-		D3DXVec3Normalize ( &(pt->mypt.vNorm), &(pt->mypt.vPos) );
-
-		pt = pt->ListNext();
-	}
-
-
-	MeshTri *ptri;
-	// Top.
-	ptri = new MeshTri ( ppt000, ppt010, ppt011, &PermTriRoot, &PermEdgeRoot );
-	ptri = new MeshTri ( ppt000, ppt011, ppt001, &PermTriRoot, &PermEdgeRoot );
-	// Bottom.
-	ptri = new MeshTri ( ppt100, ppt111, ppt110, &PermTriRoot, &PermEdgeRoot );
-	ptri = new MeshTri ( ppt100, ppt101, ppt111, &PermTriRoot, &PermEdgeRoot );
-	// Left.
-	ptri = new MeshTri ( ppt000, ppt110, ppt010, &PermTriRoot, &PermEdgeRoot );
-	ptri = new MeshTri ( ppt000, ppt100, ppt110, &PermTriRoot, &PermEdgeRoot );
-	// Right.
-	ptri = new MeshTri ( ppt001, ppt011, ppt111, &PermTriRoot, &PermEdgeRoot );
-	ptri = new MeshTri ( ppt001, ppt111, ppt101, &PermTriRoot, &PermEdgeRoot );
-	// Front
-	ptri = new MeshTri ( ppt000, ppt001, ppt101, &PermTriRoot, &PermEdgeRoot );
-	ptri = new MeshTri ( ppt000, ppt101, ppt100, &PermTriRoot, &PermEdgeRoot );
-	// Back
-	ptri = new MeshTri ( ppt010, ppt111, ppt011, &PermTriRoot, &PermEdgeRoot );
-	ptri = new MeshTri ( ppt010, ppt110, ppt111, &PermTriRoot, &PermEdgeRoot );
-#else
-
-	HRESULT hres;
-
-	// Make a teapotahedron.
-	LPD3DXMESH pmeshTeapot;
-	ASSERT ( pd3dDevice != NULL );		// Slight fudge - shame we need a D3D device.
-	//hres = D3DXCreateTeapot ( pd3dDevice, &pmeshTeapot, NULL );
-	// These are just some simpler test meshes
-	//hres = D3DXCreatePolygon ( pd3dDevice, 1.0f, 6, &pmeshTeapot, NULL );
-	//hres = D3DXCreateSphere ( pd3dDevice, 1.0f, 12, 6, &pmeshTeapot, NULL );
-	hres = D3DXCreateSphere ( pd3dDevice, 1.0f, 30, 15, &pmeshTeapot, NULL );
-
-
-	// OK, now extract the data.
-	int iNumVerts = pmeshTeapot->GetNumVertices();
-	int iNumFaces = pmeshTeapot->GetNumFaces();
-
-	LPDIRECT3DVERTEXBUFFER8 pVertexBuffer;
-	hres = pmeshTeapot->GetVertexBuffer ( &pVertexBuffer );
-	D3DVERTEXBUFFER_DESC vbdesc;
-	hres = pVertexBuffer->GetDesc ( &vbdesc );
-	// Create my "smart" pointer.
-	MyFVFPointer pFVF ( vbdesc.FVF );
-	BYTE *pbData;
-	hres = pVertexBuffer->Lock ( 0, pFVF.GetFVFSize() * iNumVerts, &pbData, D3DLOCK_READONLY );
-	pFVF.SetCurVertex ( pbData );
-
-	// The de-index list.
-	MeshPt **ppPts = new MeshPt*[iNumVerts];
-
-	for ( int i = 0; i < iNumVerts; i++ )
-	{
-		ppPts[i] = new MeshPt ( &PermPtRoot );
-		ppPts[i]->mypt.vPos		= pFVF.Position();
-		ppPts[i]->mypt.vNorm	= pFVF.Normal();
-		//ppPts[i]->mypt.fU		= pFVF.U0();
-		//ppPts[i]->mypt.fV		= pFVF.V0();
-
-		//ppPts[i]->mypt.dwIndex = i;
-
-		++pFVF;
-	}
-
-	hres = pVertexBuffer->Unlock();
-	pVertexBuffer->Release();
-
-
-	// And now the index buffer.
-	LPDIRECT3DINDEXBUFFER8 pIndexBuffer;
-	hres = pmeshTeapot->GetIndexBuffer ( &pIndexBuffer );
-	D3DINDEXBUFFER_DESC ibdesc;
-	hres = pIndexBuffer->GetDesc ( &ibdesc );
-	// Unlikely to get any 32bpp indices, but check, just in case.
-	// If you do - well, I leave that as an exercise for the reader :-)
-
-	// Oh - just found this comment in the docs:
-	//
-	// D3DXMESH_32BIT 
-	//   The mesh has 32-bit indices instead of 16-bit indices.
-	//   A 32-bit mesh can support up to 2^32-1 faces and vertices.
-	//   This flag is not supported and should not be used. 
-	//
-	// So, that answers that question!
-	ASSERT ( ibdesc.Format == D3DFMT_INDEX16 );
-
-	// Also, assume that this defines a trilist. Not sure if the mesh tells us
-	// what the primitive type is anywhere.
-	WORD *pIndex;
-	ASSERT ( sizeof (*pIndex) * iNumFaces * 3 == ibdesc.Size );
-	hres = pIndexBuffer->Lock ( 0, ibdesc.Size, (BYTE**)&pIndex, D3DLOCK_READONLY );
-
-	for ( int j = 0; j < iNumFaces; j++ )
-	{
-		MeshPt *ppt[3];
-		for ( int i = 0; i < 3; i++ )
-		{
-			ASSERT ( *pIndex < iNumVerts );
-			ppt[i] = ppPts[*pIndex];
-			pIndex++;
-		}
-
-		MeshTri *ptri = new MeshTri ( ppt[0], ppt[1], ppt[2], &PermTriRoot, &PermEdgeRoot );
-	}
-
-	hres = pIndexBuffer->Unlock();
-	pIndexBuffer->Release();
-
-
-	delete[] ppPts;
-
-
-	// And finally bin the thing.
-	pmeshTeapot->Release();
-#endif
-
-	iFullNumTris = 0;
-	MeshTri *tri = PermTriRoot.ListNext();
-	while ( tri != NULL )
-	{
-		// All the pts had better be the same material.
-		tri = tri->ListNext();
-		iFullNumTris++;
-	}
-
-	MeshEdge *edge = PermEdgeRoot.ListNext();
-	while ( edge != NULL )
-	{
-		edge = edge->ListNext();
-	}
-
-	iCurSlidingWindowLevel = 0;
-	SetNewLevel ( iCurSlidingWindowLevel );
 }
 
 // Check that this is sensible.
@@ -312,82 +148,6 @@ void Object::MakeCurrentObjectFromPerm ( void )
 	SetNewLevel ( iCurSlidingWindowLevel );
 }
 
-
-struct STDVERTEX
-{
-	D3DXVECTOR3 v;
-	D3DXVECTOR3 norm;
-	FLOAT       tu, tv;
-};
-
-#define STDVERTEX_FVF (D3DFVF_XYZ|D3DFVF_NORMAL|D3DFVF_TEX1)
-
-// Renders the given material of the current state of the object.
-// Set iSlidingWindowLevel to -1 if you don't care about level numbers.
-void Object::RenderCurrentObject ( LPDIRECT3DDEVICE8 pd3ddev, int iSlidingWindowLevel )
-{
-	STDVERTEX vert[3];
-
-	HRESULT hres;
-
-	hres = pd3ddev->SetVertexShader ( STDVERTEX_FVF );
-
-	MeshTri *tri = CurTriRoot.ListNext();
-	while ( tri != NULL )
-	{
-		if ( ( iSlidingWindowLevel == -1 ) ||
-				( iSlidingWindowLevel == tri->mytri.iSlidingWindowLevel ) )
-		{
-			// Draw this one.
-			vert[0].v		= tri->pPt1->mypt.vPos;
-			vert[0].norm	= tri->pPt1->mypt.vNorm;
-			vert[0].tu		= tri->pPt1->mypt.fU;
-			vert[0].tv		= tri->pPt1->mypt.fV;
-
-			vert[1].v		= tri->pPt2->mypt.vPos;
-			vert[1].norm	= tri->pPt2->mypt.vNorm;
-			vert[1].tu		= tri->pPt2->mypt.fU;
-			vert[1].tv		= tri->pPt2->mypt.fV;
-
-			vert[2].v		= tri->pPt3->mypt.vPos;
-			vert[2].norm	= tri->pPt3->mypt.vNorm;
-			vert[2].tu		= tri->pPt3->mypt.fU;
-			vert[2].tv		= tri->pPt3->mypt.fV;
-
-			hres = pd3ddev->DrawPrimitiveUP ( D3DPT_TRIANGLELIST, 1, vert, sizeof(vert[0]) );
-		}
-		tri = tri->ListNext();
-	}
-}
-
-void Object::RenderCurrentEdges ( LPDIRECT3DDEVICE8 pd3ddev )
-{
-	STDVERTEX vert[2];
-
-	HRESULT hres;
-
-	hres = pd3ddev->SetVertexShader ( STDVERTEX_FVF );
-
-	MeshEdge *edge = CurEdgeRoot.ListNext();
-	while ( edge != NULL )
-	{
-		// Draw this one.
-		vert[0].v		= edge->pPt1->mypt.vPos;
-		vert[0].norm	= edge->pPt1->mypt.vNorm;
-		vert[0].tu		= edge->pPt1->mypt.fU;
-		vert[0].tv		= edge->pPt1->mypt.fV;
-
-		vert[1].v		= edge->pPt2->mypt.vPos;
-		vert[1].norm	= edge->pPt2->mypt.vNorm;
-		vert[1].tu		= edge->pPt2->mypt.fU;
-		vert[1].tv		= edge->pPt2->mypt.fV;
-
-		hres = pd3ddev->DrawPrimitiveUP ( D3DPT_LINELIST, 1, vert, sizeof(vert[0]) );
-
-		edge = edge->ListNext();
-	}
-}
-
 // Creates and performs a collapse of pptBinned to pptKept.
 // Make sure they actually share an edge!
 // Make sure the object is fully collapsed already.
@@ -416,7 +176,7 @@ void Object::CreateEdgeCollapse ( MeshPt *pptBinned, MeshPt *pptKept )
 
 	MeshTri *ptri;
 	int iNumTrisCollapsed = 0;
-	BOOL bNeedNewLevel = FALSE;
+	long bNeedNewLevel = FALSE;
 	for ( ptri = pptBinned->FirstTri(); ptri != NULL; ptri = pptBinned->NextTri() )
 	{
 		ASSERT ( iNumTrisCollapsed < c_iMaxNumTris );	// Grow c_iMaxNumTris as needed.
@@ -570,7 +330,7 @@ void Object::CreateEdgeCollapse ( MeshPt *pptBinned, MeshPt *pptKept )
 
 // Bin the last collapse.
 // Returns TRUE if these was a last collapse to do.
-BOOL Object::BinEdgeCollapse ( void )
+long Object::BinEdgeCollapse ( void )
 {
 	GeneralCollapseInfo *pGCI = CollapseRoot.ListNext();
 	if ( pGCI == NULL )
@@ -600,7 +360,7 @@ BOOL Object::BinEdgeCollapse ( void )
 }
 
 // Returns TRUE if a collapse was undone.
-BOOL Object::UndoCollapse ( void )
+long Object::UndoCollapse ( void )
 {
 	if ( pNextCollapse->ListNext() == NULL )
 	{
@@ -657,7 +417,7 @@ BOOL Object::UndoCollapse ( void )
 }
 
 // Returns TRUE if a collapse was done.
-BOOL Object::DoCollapse ( void )
+long Object::DoCollapse ( void )
 {
 	if ( pNextCollapse == &CollapseRoot )
 	{
@@ -717,10 +477,10 @@ void Object::SetNewLevel ( int iLevel )
 	}
 }
 
-BOOL Object::CollapseAllowedForLevel ( MeshPt *pptBinned, int iLevel )
+long Object::CollapseAllowedForLevel ( MeshPt *pptBinned, int iLevel )
 {
 	// All the tris that use the binned point must be at the current level.
-	BOOL bRes = TRUE;
+	long bRes = TRUE;
 	for ( MeshTri *pTri = pptBinned->FirstTri(); pTri != NULL; pTri = pptBinned->NextTri() )
 	{
 		if ( iLevel != pTri->mytri.iSlidingWindowLevel )
@@ -735,48 +495,163 @@ BOOL Object::CollapseAllowedForLevel ( MeshPt *pptBinned, int iLevel )
 // Set bTryToCacheResult=TRUE if you can pass pptBinned in multiple times.
 // Make sure you call this with bTryToCacheResult=FALSE if any data changes,
 //	or you'll confuse the poor thing.
-float Object::FindCollapseError ( MeshPt *pptBinned, MeshEdge *pedgeCollapse, BOOL bTryToCacheResult /*= FALSE*/ )
+void pack_to_vector(MxVector& tgt, const D3DXVECTOR3& src_p, float src_u, float src_v)
 {
-	static MeshPt *pptLast;
-	static Quad qLast;
+	tgt[0] = src_p.x;
+	tgt[1] = src_p.y;
+	tgt[2] = src_p.z;
+	if (QUAD_SIZE>3){
+		tgt[3] = src_u;
+		tgt[4] = src_v;
+	}
+}
 
-	if ( pptBinned == NULL )
+void Object::compute_face_quadric(MeshTri* tri, MxQuadric& Q)
+{
+	MxVector v1	(QUAD_SIZE);
+	MxVector v2	(QUAD_SIZE);
+	MxVector v3	(QUAD_SIZE);
+
+	pack_to_vector(v1,tri->pPt1->mypt.vPos,tri->pPt1->mypt.fU,tri->pPt1->mypt.fV);
+	pack_to_vector(v2,tri->pPt2->mypt.vPos,tri->pPt2->mypt.fU,tri->pPt2->mypt.fV);
+	pack_to_vector(v3,tri->pPt3->mypt.vPos,tri->pPt3->mypt.fU,tri->pPt3->mypt.fV);
+
+	Q			= MxQuadric(v1, v2, v3, 0.f);
+}
+void Object::collect_quadrics()
+{
+	__quadrics.resize(iFullNumPts);
+	for(unsigned int j=0; j<quadric_count(); j++)
+		__quadrics[j] = new MxQuadric(QUAD_SIZE);
+
+	MeshTri *tri = PermTriRoot.ListNext();
+	while ( tri != NULL )
 	{
-		// You can call it like this to flush the cache.
-		pptLast = NULL;
-		return 0.0f;
+		MxQuadric Q			(QUAD_SIZE);
+		compute_face_quadric(tri, Q);
+
+		MyPt& p1 = tri->pPt1->mypt;
+		MyPt& p2 = tri->pPt2->mypt;
+		MyPt& p3 = tri->pPt3->mypt;
+		
+		quadric(p1.dwIndex) += Q;
+		quadric(p2.dwIndex) += Q;
+		quadric(p3.dwIndex) += Q;
+		// All the pts had better be the same material.
+		tri = tri->ListNext();
+	}
+}
+/*
+void Object::compute_target_placement(edge_info *info)
+{
+	MxVertexID i=info->v1, j=info->v2;
+
+	const MxQuadric &Qi=quadric(i), &Qj=quadric(j);
+	MxQuadric Q=Qi;  Q+=Qj;
+
+	double e_min;
+
+	if( placement_policy==MX_PLACE_OPTIMAL && Q.optimize(info->target)){
+		e_min = Q(info->target);
+	}else{
+		// Fall back only on endpoints
+		MxVector vi(dim()), vj(dim());
+		MxVector best(dim());
+
+		pack_to_vector(i, vi);
+		pack_to_vector(j, vj);
+
+		double ei=Q(vi), ej=Q(vj);
+
+		if( ei<ej )	{ e_min = ei; best = vi; }
+		else		{ e_min = ej; best = vj; }
+
+		if( placement_policy>=MX_PLACE_ENDORMID ){
+			MxVector mid(dim());
+			mid			= vi;
+			mid			+=vj;
+			mid			/=2.f;
+			double e_mid= Q(mid);
+
+			if( e_mid < e_min ) { e_min = e_mid; best = mid; }
+		}
+		info->target	= best;
 	}
 
+	if( weighting_policy == MX_WEIGHT_AREA_AVG )
+		e_min /= Q.area();
 
-	MeshPt *pptKept = pedgeCollapse->OtherPt ( pptBinned );
-	ASSERT ( pptKept != NULL );
-
-
-	Quad qSum;
-	if ( bTryToCacheResult && ( pptLast == pptBinned ) )
-	{
-		qSum = qLast;
-	}
-	else
-	{
-		// Find the sum of the QEMs of the tris that will be binned.
-		for ( MeshTri *ptri = pptBinned->FirstTri(); ptri != NULL; ptri = pptBinned->NextTri() )
+	info->heap_key(float(-e_min));
+}
+*/
+float Object::FindCollapseError ( MeshPt *pptBinned, MeshEdge *pedgeCollapse, long bTryToCacheResult /*= FALSE*/ )
+{
+	if (1){
+		static MeshPt		*pptLast;
+		static MxQuadric	qLast(QUAD_SIZE);
+		if ( pptBinned == NULL )
 		{
-			qSum += Quad ( ptri->pPt1->mypt.vPos, ptri->pPt2->mypt.vPos, ptri->pPt3->mypt.vPos );
+			pptLast			= 0;
+			return			0.0f;
 		}
 
-		if ( bTryToCacheResult )
-		{
-			qLast = qSum;
-			pptLast = pptBinned;
+		MxQuadric			qSum(QUAD_SIZE);
+		if ( bTryToCacheResult && ( pptLast == pptBinned ) ){
+			qSum			= qLast;
+		}else{
+			for ( MeshTri *ptri = pptBinned->FirstTri(); ptri != NULL; ptri = pptBinned->NextTri() ){
+				MxQuadric	qCur(QUAD_SIZE);
+				compute_face_quadric(ptri,qCur);
+				qSum		+= qCur;
+			}
+			if ( bTryToCacheResult ){
+				qLast		= qSum;
+				pptLast		= pptBinned;
+			}else{
+				pptLast		= NULL;
+			}
 		}
-		else
-		{
+
+		MeshPt *pptKept		= pedgeCollapse->OtherPt ( pptBinned );
+		ASSERT ( pptKept != NULL );
+
+		MxVector pos(QUAD_SIZE);
+		pack_to_vector(pos,pptKept->mypt.vPos,pptKept->mypt.fU,pptKept->mypt.fV);
+
+		return qSum.evaluate(pos);
+	}else{
+		static MeshPt *pptLast;
+		static Quad qLast;
+
+		if ( pptBinned == NULL ){
+			// You can call it like this to flush the cache.
 			pptLast = NULL;
+			return 0.0f;
 		}
-	}
 
-	// And find the error once the collapse has happened.
-	return qSum.FindError ( pptKept->mypt.vPos );
+
+		MeshPt *pptKept = pedgeCollapse->OtherPt ( pptBinned );
+		ASSERT ( pptKept != NULL );
+
+
+		Quad qSum;
+		if ( bTryToCacheResult && ( pptLast == pptBinned ) ){
+			qSum = qLast;
+		}else{
+			// Find the sum of the QEMs of the tris that will be binned.
+			for ( MeshTri *ptri = pptBinned->FirstTri(); ptri != NULL; ptri = pptBinned->NextTri() )
+				qSum += Quad ( ptri->pPt1->mypt.vPos, ptri->pPt2->mypt.vPos, ptri->pPt3->mypt.vPos );
+
+			if ( bTryToCacheResult ){
+				qLast = qSum;
+				pptLast = pptBinned;
+			}else{
+				pptLast = NULL;
+			}
+		}
+
+		// And find the error once the collapse has happened.
+		return qSum.FindError ( pptKept->mypt.vPos );
+	}
 }
 

@@ -17,6 +17,8 @@ void CMyD3DApplication::CollapseAll()
 {
 	Object *object	= m_pObject;
 
+//.	m_pObject->collect_quadrics();
+
 	while (true){
 		// Find the best collapse you can.
 		// (how expensive is this? Ohhhh yes).

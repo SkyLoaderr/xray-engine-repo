@@ -12,7 +12,7 @@
 
 #include "gemvipm.h"
 
-
+/*
 #define STRICT
 #define D3D_OVERLOADS
 #include <windows.h>
@@ -28,7 +28,7 @@
 #include "resource.h"
 #include "commctrl.h"
 #include <list>
-
+*/
 
 #include "object.h"
 
@@ -128,6 +128,9 @@ HRESULT UpdateInputState( HWND hWnd )
 //      Initialize the DirectInput variables.
 //
 //-----------------------------------------------------------------------------
+#define DIRECTINPUT_VERSION 0x0700
+#include <dinput.h>
+
 HRESULT InitDirectInput( HWND hWnd, bool bExclusive )
 {
 	HRESULT hr;
@@ -137,7 +140,7 @@ HRESULT InitDirectInput( HWND hWnd, bool bExclusive )
 	hr = DirectInput8Create( g_hInst, DIRECTINPUT_VERSION, IID_IDirectInput8, (void **)&g_pDI, NULL );
 	if ( FAILED(hr) )
 	{
-		ASSERT ( FALSE );
+//		ASSERT ( FALSE );
 		return hr;
 	}
 
@@ -170,19 +173,7 @@ HRESULT InitDirectInput( HWND hWnd, bool bExclusive )
 
 
 	// KLUDGE! Win2k really hates FOREGROUND+EXCLUSIVE devices - don't know why.
-#if 0
-	if ( bExclusive )
-	{
-		dwFlags |= DISCL_EXCLUSIVE;
-	}
-	else
-	{
-		dwFlags |= DISCL_NONEXCLUSIVE;
-	}
-#else
 	dwFlags |= DISCL_NONEXCLUSIVE;
-#endif
-
 
 	hr = g_pMouse->SetCooperativeLevel( hWnd, dwFlags );
 	if ( FAILED(hr) )

@@ -666,40 +666,6 @@ inline bool MeshTri::ConsistencyCheck ( MeshPt *pPtRoot, MeshEdge *pEdgeRoot, Me
 				FAIL_CHECK();
 			}
 		}
-
-// Multiple tris that have this order may exist - can't be arsed to
-// do a FirstTri/NextTri search.
-#if 0
-		if ( pPt1->FindTri ( pPt2 ) != this )
-		{
-			FAIL_CHECK();
-		}
-		if ( pPt2->FindTri ( pPt3 ) != this )
-		{
-			FAIL_CHECK();
-		}
-		if ( pPt3->FindTri ( pPt1 ) != this )
-		{
-			FAIL_CHECK();
-		}
-#endif
-
-// Falls over if more than one edge has these points.
-// Can happen if more than two tris meet on one edge.
-#if 0
-		if ( pPt1->FindEdge ( pPt2 ) != pEdge12 )
-		{
-			FAIL_CHECK();
-		}
-		if ( pPt2->FindEdge ( pPt3 ) != pEdge23 )
-		{
-			FAIL_CHECK();
-		}
-		if ( pPt3->FindEdge ( pPt1 ) != pEdge31 )
-		{
-			FAIL_CHECK();
-		}
-#endif
 	}
 
 	return ( bRes );
@@ -1281,41 +1247,10 @@ inline bool MeshEdge::ConsistencyCheck ( MeshPt *pPtRoot, MeshEdge *pEdgeRoot, M
 				FAIL_CHECK();
 			}
 		}
-
-#if 0
-		if ( pPt1->FindEdge ( pPt2 ) != this )
-		{
-			FAIL_CHECK();
-		}
-		if ( pPt2->FindEdge ( pPt1 ) != this )
-		{
-			FAIL_CHECK();
-		}
-#endif
-
-// Should update to use FirstTri/NextTri until a verdict is reached.
-#if 0
-		// Note that pTri12 can be NULL, but if and only if
-		// the FindTri is NULL, so this is a valid test.
-		// Either both are NULL, or both are the same.
-		if ( pPt1->FindTri ( pPt2 ) != pTri12 )
-		{
-			FAIL_CHECK();
-		}
-		if ( pPt2->FindTri ( pPt1 ) != pTri21 )
-		{
-			FAIL_CHECK();
-		}
-#endif
 	}
 
 	return ( bRes );
 }
-
-
-
-
-
 
 
 inline MeshPt::MeshPt ( MeshPt *pListRoot )
@@ -1521,7 +1456,6 @@ inline MeshTri *MeshPt::FindTri ( MeshPt *pPt1, MeshPt *pPt2 )
 	return ( NULL );
 }
 
-
 // Return the next tri in the list. 
 // If a non-NULL pPt is supplied, only tris using this,pPt in that order
 // are returned, otherwise all tris are returned.
@@ -1574,9 +1508,6 @@ inline void MeshPt::EndTri ( void )
 	iCurTriNum = -1;
 }
 
-
-
-
 // Return the next Edge in the list. 
 // If a non-NULL pPt is supplied, only edges using this and pPt
 // are returned, otherwise all edges are returned.
@@ -1618,7 +1549,6 @@ inline MeshEdge *MeshPt::NextEdge ( MeshPt *pPt )
 // are returned, otherwise all edges are returned.
 inline MeshEdge *MeshPt::FirstEdge ( MeshPt *pPt )
 {
-//.	ASSERT ( iCurEdgeNum == -1 );
 	iCurEdgeNum = 0;
 	return ( NextEdge ( pPt ) );
 }
@@ -1628,8 +1558,6 @@ inline void MeshPt::EndEdge ( void )
 {
 	iCurEdgeNum = -1;
 }
-
-
 
 // Returns TRUE if the two pts are marked as being in proximity.
 inline bool MeshPt::CheckProx ( MeshPt *pPt )
@@ -1647,7 +1575,6 @@ inline bool MeshPt::CheckProx ( MeshPt *pPt )
 	}
 	return ( FALSE );
 }
-
 
 // Add the given pt to the prox list (and vice versa).
 // If the pt was not already there, returns TRUE;
@@ -1754,9 +1681,6 @@ inline bool MeshPt::RemoveProx ( MeshPt *pPt )
 
 }
 
-
-
-
 // Return the first prox pt. MUST be called before calling NextProx().
 inline MeshPt *MeshPt::FirstProx ( void )
 {
@@ -1791,8 +1715,6 @@ inline void MeshPt::EndProx ( void )
 {
 	iCurProxNum = -1;
 }
-
-
 
 inline MeshPt *MeshPt::QueryList ( void )
 {
@@ -1860,50 +1782,3 @@ inline bool MeshPt::ConsistencyCheck ( MeshPt *pPtRoot, MeshEdge *pEdgeRoot, Mes
 	}
 	return ( bRes );
 }
-
-
-
-
-
-
-
-
-#if 0
-
-// Provides consistent typesafe access to the pMore field of the objects.
-// Set them up like this:
-//
-// MESHPT_PMORE_SET(D3DVERTEX,D3DVert);
-//
-// And use them like this:
-//
-// D3DVERTEX *pVert = D3DVert(pPt);
-//
-// or this:
-//
-// D3DVert(pPt) = pVert;
-
-#define MESHPT_PMORE_SET(mytype,accessname)							\
-mytype *accessname ( MeshPt *pPt )									\
-{																	\
-	return ( (mytype *)( pPt->pMore ) );							\
-}
-
-#define MESHEDGE_PMORE_SET(mytype,accessname)						\
-mytype *accessname ( MeshEdge *pEdge )								\
-{																	\
-	return ( (mytype *)( pEdge->pMore ) );							\
-}
-
-#define MESHTRI_PMORE_SET(mytype,accessname)						\
-mytype *accessname ( MeshTri *pTri )								\
-{																	\
-	return ( (mytype *)( pTri->pMore ) );							\
-}
-
-#endif
-
-
-
-
-

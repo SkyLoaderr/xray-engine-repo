@@ -10,19 +10,20 @@
 #ifndef objectH
 #define objectH
 
-#include "TomsD3DLib.h"
-#include "quad.h"
+//#include "quad.h"
 
 // Incremented by the draw routs. Display + zero whenever you want.
 extern int g_iMaxNumTrisDrawn;
-extern BOOL g_bShowVIPMInfo;
-extern BOOL g_bUseFastButBadOptimise;
+extern long g_bShowVIPMInfo;
+extern long g_bUseFastButBadOptimise;
 
 
 // The data that gets stored inside mesh.h's tris, pts and edges.
 class MeshPt;
 class MeshEdge;
 class MeshTri;
+
+#include "D3dx8core.h"
 
 struct MyPt
 {
@@ -56,7 +57,12 @@ struct MyTri
 #define MESHEDGE_APP_DEFINED	MyEdge	myedge;
 #define MESHPT_APP_DEFINED		MyPt	mypt;
 
+
+#include "xrCore.h"
+
 #include "mesh.h"
+#include "MxBlock.h"
+#include "MxQMetric.h"
 
 struct GeneralTriInfo
 {
@@ -100,6 +106,23 @@ struct GeneralCollapseInfo
 
 struct Object
 {
+	struct edge_info
+	{
+		float				err;
+		int					v1, v2;
+		MxVector			target;
+							edge_info			(){};
+	};
+	xr_vector<edge_info*>	edge_list;
+
+	xr_vector<MxQuadric*>	__quadrics;			// 1 per vertex
+
+	void					collect_quadrics	();
+	unsigned int			quadric_count		() const { return __quadrics.size(); }
+	void					compute_face_quadric(MeshTri* tri, MxQuadric& Q);
+	MxQuadric&				quadric				(unsigned int i)       { return *(__quadrics[i]); }
+	const MxQuadric&		quadric				(unsigned int i) const { return *(__quadrics[i]); }
+
 	// The permanent shape.
 	MeshPt		PermPtRoot;
 	MeshTri		PermTriRoot;
@@ -120,6 +143,7 @@ struct Object
 	GeneralCollapseInfo		*pNextCollapse;
 
 	int			iFullNumTris;		// How many tris with no collapses.
+	int			iFullNumPts;		// How many pts with no collapses.
 	int			iNumCollapses;		// Total number of collapses.
 
 
@@ -130,9 +154,6 @@ public:
 
 				~Object						();
 
-	// Anooyingly, this requires a D3D object, even if only temporarily.
-	void		CreateTestObject			( LPDIRECT3DDEVICE8 pd3dDevice );
-
 	// Check that this is sensible.
 	void		CheckObject					( void );
 
@@ -142,12 +163,6 @@ public:
 	// Creates the current data from the permanent data.
 	void		MakeCurrentObjectFromPerm	( void );
 
-	// Renders the given material of the current state of the object.
-	// Set iSlidingWindowLevel to -1 if you don't care about level numbers.
-	void		RenderCurrentObject			( LPDIRECT3DDEVICE8 pd3ddev, int iSlidingWindowLevel = -1 );
-
-	void		RenderCurrentEdges			( LPDIRECT3DDEVICE8 pd3ddev);
-
 	// Creates and performs a collapse of pptBinned to pptKept.
 	// Make sure they actually share an edge!
 	// Make sure the object is fully collapsed already.
@@ -155,23 +170,23 @@ public:
 
 	// Bin the last collapse.
 	// Returns TRUE if these was a last collapse to do.
-	BOOL		BinEdgeCollapse				( void );
+	long		BinEdgeCollapse				( void );
 
 	// Returns TRUE if a collapse was undone.
-	BOOL		UndoCollapse				( void );
+	long		UndoCollapse				( void );
 
 	// Returns TRUE if a collapse was done.
-	BOOL		DoCollapse					( void );
+	long		DoCollapse					( void );
 	
 	void		SetNewLevel					( int iLevel );
 
-	BOOL		CollapseAllowedForLevel		( MeshPt *pptBinned, int iLevel );
+	long		CollapseAllowedForLevel		( MeshPt *pptBinned, int iLevel );
 
 	// Return the error from this edge collapse.
 	// Set bTryToCacheResult=TRUE if you can pass pptBinned in multiple times.
 	// Make sure you call this with bTryToCacheResult=FALSE if any data changes,
 	//	or you'll confuse the poor thing.
-	float		FindCollapseError			( MeshPt *pptBinned, MeshEdge *pedgeCollapse, BOOL bTryToCacheResult = FALSE );
+	float		FindCollapseError			( MeshPt *pptBinned, MeshEdge *pedgeCollapse, long bTryToCacheResult = FALSE );
 };
 
 #endif // objectH

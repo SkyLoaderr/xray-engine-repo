@@ -45,7 +45,10 @@ class CMyD3DApplication : public CD3DApplication
 	Fvector3			m_CameraHPB;
 	float				m_CameraDist;
 
-	void				BuildCamera		();
+	void				BuildCamera			();
+	void				CreateTestObject	();
+	void				RenderCurrentObject	(int iSlidingWindowLevel, int& r_tris);
+	void				RenderCurrentEdges	(int& r_edges);
 
 	CD3DFont*			m_pFont;
 

@@ -10,6 +10,7 @@
 #ifndef quadH
 #define quadH
 
+#include "D3dx8core.h"
 
 // This Quad only records the error due to the vertex positions.
 // A real implementation needs to use smarter QEMs that take account of
