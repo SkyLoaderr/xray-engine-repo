@@ -79,8 +79,8 @@ enum {
 	rsOcclusion			= (1ul<<10ul),
 	rsStatistic			= (1ul<<11ul),
 	rsDetails			= (1ul<<12ul),
-	mtSound				= (1ul<<24ul),
-	mtInput				= (1ul<<25ul)
+	mtSound				= (1ul<<16ul),
+	mtInput				= (1ul<<17ul)
 };
 ENGINE_API extern	DWORD	psCurrentMode		;
 ENGINE_API extern	DWORD	psCurrentBPP		;
