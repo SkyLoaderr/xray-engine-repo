@@ -342,7 +342,7 @@ u16	CSE_ALifeHumanAbstract::get_available_ammo_count(CSE_ALifeItemWeapon *tpALif
 
 void CSE_ALifeHumanAbstract::attach_available_ammo(CSE_ALifeItemWeapon *tpALifeItemWeapon, ITEM_P_VECTOR &tpItemVector, OBJECT_VECTOR *tpObjectVector)
 {
-	if (!tpALifeItemWeapon->m_caAmmoSections)
+	if (!tpALifeItemWeapon || !tpALifeItemWeapon->m_caAmmoSections)
 		return;
 	u32							l_dwCount = 0;
 	ITEM_P_IT					I = tpItemVector.begin();
