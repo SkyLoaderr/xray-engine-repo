@@ -53,7 +53,16 @@ enum EWayType{
         dword	(m_dwTeamId);
     ...
     - chunk #n
-
+- chunk ENVMOD_CHUNK
+	- chunk #0
+        float			(m_EM_Radius);
+        w_float			(m_EM_Power);
+        w_float			(m_EM_ViewDist);
+        w_u32			(m_EM_FogColor);
+        w_float			(m_EM_FogDensity);
+    ...
+    - chunk #n
+    
 - chunk WAY_PATH_CHUNK
 	- chunk #0
     	chunk WAYOBJECT_CHUNK_VERSION

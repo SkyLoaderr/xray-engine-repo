@@ -33,7 +33,9 @@ CPEDef::CPEDef()
 
 CPEDef::~CPEDef()
 {
+#ifdef _PARTICLE_EDITOR
 	for (EPAVecIt it=m_EActionList.begin(); it!=m_EActionList.end(); it++) xr_delete(*it);
+#endif
 }
 void CPEDef::CreateShader()
 {
