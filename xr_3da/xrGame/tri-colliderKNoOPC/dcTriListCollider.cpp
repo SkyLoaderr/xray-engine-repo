@@ -82,10 +82,14 @@ extern "C" int dSortTriBoxCollide (
 			dFabs(dDOT14(neg_tri->norm,R+2)*hside[2]);
 		neg_tri->dist=dDOT(p,neg_tri->norm)-neg_tri->pos;
 		neg_tri->depth=sidePr-neg_tri->dist;
+
 		if(neg_tri->dist<0.f)
 			neg_depth=neg_tri->depth;
 		else
+		{
 			*pushing_neg=false;
+
+		}
 	}
 
 	if(*pushing_b_neg){
@@ -95,10 +99,13 @@ extern "C" int dSortTriBoxCollide (
 			dFabs(dDOT14(b_neg_tri->norm,R+2)*hside[2]);
 		b_neg_tri->dist=dDOT(p,b_neg_tri->norm)-b_neg_tri->pos;
 		b_neg_tri->depth=sidePr-b_neg_tri->dist;
+	
 		if(b_neg_tri->dist<0.f)
 			b_neg_depth=b_neg_tri->depth;
-		else
+		else{
 			*pushing_b_neg=false;
+
+		}
 	}
 
 	

@@ -207,7 +207,7 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 	//jeepBox[0]=REAL(4.2)*scaleBox[0];jeepBox[1]=REAL(1.)*scaleBox[1];jeepBox[2]=REAL(2.08)*scaleBox[2];
 	jeepBox[0]=REAL(3.8)*scaleBox[0];jeepBox[1]=REAL(0.7)*scaleBox[1];jeepBox[2]=REAL(1.38)*scaleBox[2];
 	//cabinBox[0]=scaleBox[0]*1.9f;cabinBox[1]=scaleBox[1]*0.6f;cabinBox[2]=scaleBox[2]*2.08f;
-	cabinBox[0]=scaleBox[0]*1.7f;cabinBox[1]=scaleBox[1]*0.42f;cabinBox[2]=scaleBox[2]*1.35f;
+	cabinBox[0]=scaleBox[0]*1.7f;cabinBox[1]=scaleBox[1]*0.42f;cabinBox[2]=scaleBox[2]*1.75f;
 
 	static const dReal wheelRadius = 0.79f/2.f* scaleParam;
 
@@ -744,13 +744,31 @@ else
 
         contacts[i].surface.mode = dContactBounce;
 		contacts[i].surface.mu = 5000.f;
-		
-		if(contacts[i].geom.g2->data) 
+		bool pushing_neg=false;
+		if(contacts[i].geom.g2->data){ 
 			contacts[i].surface.mu=dGeomGetUserData(contacts[i].geom.g2)->friction;
-		if(contacts[i].geom.g1->data) 
-			contacts[i].surface.mu=dGeomGetUserData(contacts[i].geom.g1)->friction;
-		
+			if(dGeomGetClass(contacts[i].geom.g2)==dGeomTransformClass){
+				const dGeomID geom=dGeomTransformGetGeom(contacts[i].geom.g2);
+				pushing_neg=dGeomGetUserData(geom)->pushing_b_neg||dGeomGetUserData(geom)->pushing_neg;
+			}
+			else
+				pushing_neg=dGeomGetUserData(contacts[i].geom.g2)->pushing_b_neg||
+				dGeomGetUserData(contacts[i].geom.g2)->pushing_neg;
 	
+
+		}
+		if(contacts[i].geom.g1->data){ 
+			contacts[i].surface.mu=dGeomGetUserData(contacts[i].geom.g1)->friction;
+			if(dGeomGetClass(contacts[i].geom.g1)==dGeomTransformClass){
+				const dGeomID geom=dGeomTransformGetGeom(contacts[i].geom.g1);
+				pushing_neg=dGeomGetUserData(geom)->pushing_b_neg||dGeomGetUserData(geom)->pushing_neg;
+			}
+			else
+				pushing_neg=dGeomGetUserData(contacts[i].geom.g1)->pushing_b_neg||
+				dGeomGetUserData(contacts[i].geom.g1)->pushing_neg;
+		}
+		if(pushing_neg) contacts[i].surface.mu=dInfinity;
+
 		contacts[i].surface.bounce = 0.0f;//0.1f;
 		contacts[i].surface.bounce_vel =0.001f;//0.005f;
 		dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
@@ -821,7 +839,7 @@ void CPHElement::			create_Box		(Fobb&		V){
 														dGeomCreateUserData(trans);
 														dGeomCreateUserData(geom);
 														dGeomGetUserData(trans)->friction=friction_table[1];
-														
+														//dGeomGetUserData(trans)->friction=dInfinity;
 														
 														}
 
