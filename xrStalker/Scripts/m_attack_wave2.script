@@ -166,7 +166,7 @@ function Monster:find_enemy ()
 	local dist = 100000000
 	local enemy = nil
 	for a = 1, table.getn (self.targets), 1 do
-		if self.targets[a]:alive () == true then
+		if self.targets[a].npc:alive () == true then
 		   local tdist = distance_between (self.npc, self.targets[a]) 
 		   if tdist < dist and self.targets[a].attacker == nil then
 			  dist = tdist
