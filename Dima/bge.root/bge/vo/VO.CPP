@@ -90,6 +90,8 @@ int __cdecl main(int argc, char *argv[])
 		SetPriorityClass	(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
 		SetThreadPriority	(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
 
+		Sleep				(1);
+
 		start				= CPU::qwfGetCycleCount();
 		mini_max			(10,ucEmpties,tColor,cCurrentValue);
 		finish				= CPU::qwfGetCycleCount();
