@@ -33,7 +33,7 @@ void CRender::InsertSG_Dynamic	(CVisual *pVisual, Fvector& Center)
 		N->val.Matrix			= *val_pTransform;
 		N->val.vCenter.set		(Center);
 		N->val.iLighting		= val_iLightLevel;
-		C->val.nearer			= val_bNearer;
+		N->val.nearer			= val_bNearer;
 	} else {
 		SceneGraph::mapMatrix_Node* N		= mapMatrix.insert(pVisual->hShader);
 		SceneGraph::mapMatrixItem::TNode* C	= N->val.insertInAnyWay(distSQ);
@@ -183,7 +183,7 @@ void CRender::add_leafs_Dynamic(CVisual *pVisual)
 			// General type of visual
 			// Calculate distance to it's center
 			Fvector		Tpos;
-			pTransform->transform_tiny(Tpos, pVisual->bv_Position);
+			val_pTransform->transform_tiny(Tpos, pVisual->bv_Position);
 			InsertSG_Dynamic(pVisual,Tpos);
 		}
 		return;
@@ -241,8 +241,8 @@ BOOL CRender::add_Dynamic(CVisual *pVisual, DWORD planes)
 	Fvector		Tpos;	// transformed position
 	EFC_Visible	VIS;
 
-	pTransform->transform_tiny	(Tpos, pVisual->bv_Position);
-	VIS = View->testSphere		(Tpos,pVisual->bv_Radius,planes);
+	val_pTransform->transform_tiny	(Tpos, pVisual->bv_Position);
+	VIS = View->testSphere			(Tpos,pVisual->bv_Radius,planes);
 	if (fcvNone==VIS) return FALSE;
 
 	// If we get here visual is visible or partially visible
