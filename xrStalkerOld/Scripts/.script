@@ -15,6 +15,7 @@ end
 
 load_scheme("xr_walker", "walker")
 load_scheme("xr_sleeper", "sleeper")
+load_scheme("xr_kamp", "kamp")
 
 ----------------------------------------------------------------------
 -- Загрузка остальных модулей:
