@@ -272,8 +272,6 @@ xr_ambush.add_to_binder(self.object, char_ini)
         end
     end
 
-    xr_storyline.set_storyline(self.object, char_ini)
-    xr_rest.add_to_binder (self.object, stalker_ids.action_puzzle_solver)
 
 -- помощник, мля !!!
 xr_motivator.storage[self.object:id ()].sos =
@@ -299,6 +297,20 @@ xr_motivator.storage[self.object:id ()].wounded =
     immediate = false
     }
 xr_wounded.add_to_binder (self.object, char_ini)
+
+
+-- алкоголики в баре :)
+xr_motivator.storage[self.object:id ()].bar =
+{
+    enabled = false,
+    meat = false,
+    interlocutor = nil,
+    talking = false
+}
+bar_stalker.add_to_binder (self.object, char_ini)
+        
+    xr_storyline.set_storyline(self.object, char_ini)
+    xr_rest.add_to_binder (self.object, stalker_ids.action_puzzle_solver)
 
 end
 ----------------------------------------------------------------------------------------------------------------------
