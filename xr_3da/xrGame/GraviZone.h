@@ -12,15 +12,17 @@
 #include "customzone.h"
 #include "ai/telekinesis.h"
 
-class CGraviZone : public CCustomZone,
-				   public CTelekinesis
+
+
+class CBaseGraviZone : public CCustomZone
 {
 private:
 	typedef		CCustomZone					inherited;
-	typedef		CTelekinesis				TTelekinesis;
+	//typedef		CTelekinesis				TTelekinesis;
+	
 public:
-					CGraviZone(void);
-	virtual			~CGraviZone(void);
+					CBaseGraviZone(void);
+	virtual			~CBaseGraviZone(void);
 
 	virtual void	Load (LPCSTR section);
 
@@ -35,7 +37,8 @@ public:
 	virtual bool	IdleState();
 
 	virtual float	RelativePower(float dist);
-
+protected:
+	virtual CTelekinesis& Telekinesis()						=0;
 protected:
 	//сила импульса вт€гивани€ в зону (дл€ веса 100 кг)
 	float			m_fThrowInImpulse;
@@ -58,4 +61,15 @@ protected:
 
 	ref_str			m_sTeleParticlesBig;
 	ref_str			m_sTeleParticlesSmall;
+};
+
+class CGraviZone	: public CBaseGraviZone
+{
+	typedef		CBaseGraviZone				inherited;
+	CTelekinesis m_telekinesis;
+protected:
+	virtual CTelekinesis& Telekinesis()						{return m_telekinesis;}
+public:
+							CGraviZone		(void)			{}
+				virtual		~CGraviZone		(void)			{}
 };

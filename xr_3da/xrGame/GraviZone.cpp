@@ -19,15 +19,16 @@
 #include "PhysicsShellHolder.h"
 #include "Level.h"
 
-CGraviZone::CGraviZone(void)
+CBaseGraviZone ::CBaseGraviZone (void)
 {
 	m_dwTeleTime = 0;
 }
-CGraviZone::~CGraviZone(void)
+CBaseGraviZone ::~CBaseGraviZone (void)
 {
+	
 }
 
-void CGraviZone::Load(LPCSTR section)
+void CBaseGraviZone ::Load(LPCSTR section)
 {
 	inherited::Load(section);
 
@@ -52,26 +53,26 @@ void CGraviZone::Load(LPCSTR section)
 		m_sTeleParticlesSmall = NULL;
 }
 
-BOOL CGraviZone::net_Spawn(LPVOID DC)
+BOOL CBaseGraviZone ::net_Spawn(LPVOID DC)
 {
 	return inherited::net_Spawn(DC);
 }
-void CGraviZone::net_Destroy()
+void CBaseGraviZone ::net_Destroy()
 {
-	TTelekinesis::Deactivate();
+	Telekinesis().Deactivate();
 	inherited::net_Destroy();
 }
 
 
 
-void CGraviZone::shedule_Update		(u32 dt)
+void CBaseGraviZone ::shedule_Update		(u32 dt)
 {
 	inherited::shedule_Update(dt);
-	TTelekinesis::schedule_update();
+	Telekinesis().schedule_update();
 }
 
 
-bool  CGraviZone::BlowoutState()
+bool  CBaseGraviZone ::BlowoutState()
 {
 	bool result = inherited::BlowoutState();
 
@@ -85,7 +86,7 @@ bool  CGraviZone::BlowoutState()
 }
 
 
-bool CGraviZone::IdleState()
+bool CBaseGraviZone ::IdleState()
 {
 	bool result = inherited::IdleState();
 
@@ -100,9 +101,9 @@ bool CGraviZone::IdleState()
 			{
 				CPhysicsShellHolder * GO = smart_cast<CPhysicsShellHolder *>(*it);
 
-				if(GO && GO->PPhysicsShell() && TTelekinesis::is_active_object(GO))
+				if(GO && GO->PPhysicsShell() && Telekinesis().is_active_object(GO))
 				{
-					TTelekinesis::deactivate(GO);
+					Telekinesis().deactivate(GO);
 					StopTeleParticles(GO);
 				}
 			}
@@ -116,22 +117,22 @@ bool CGraviZone::IdleState()
 			{
 				CPhysicsShellHolder * GO = smart_cast<CPhysicsShellHolder *>(*it);
 
-				if(GO && GO->PPhysicsShell() && !TTelekinesis::is_active_object(GO))
+				if(GO && GO->PPhysicsShell() && !Telekinesis().is_active_object(GO))
 				{
-					TTelekinesis::activate(GO, 0.1f, m_fTeleHeight, m_dwTimeToTele);
+					Telekinesis().activate(GO, 0.1f, m_fTeleHeight, m_dwTimeToTele);
 					PlayTeleParticles(GO);
 				}
 			}
 		}
 	}
 	else
-		TTelekinesis::deactivate();
+		Telekinesis().deactivate();
 
 
 	return result;
 }
 
-void CGraviZone::Affect(CObject* O) 
+void CBaseGraviZone ::Affect(CObject* O) 
 {
 	CPhysicsShellHolder* GO = smart_cast<CPhysicsShellHolder*>(O);
 	if(!GO) return;
@@ -226,7 +227,7 @@ void CGraviZone::Affect(CObject* O)
 }
 
 
-void CGraviZone::PlayTeleParticles(CGameObject* pObject)
+void CBaseGraviZone ::PlayTeleParticles(CGameObject* pObject)
 {
 	ref_str particle_str = NULL;
 
@@ -244,7 +245,7 @@ void CGraviZone::PlayTeleParticles(CGameObject* pObject)
 
 	pObject->StartParticles(*particle_str, Fvector().set(0,1,0), ID());
 }
-void CGraviZone::StopTeleParticles(CGameObject* pObject)
+void CBaseGraviZone ::StopTeleParticles(CGameObject* pObject)
 {
 	ref_str particle_str = NULL;
 
@@ -267,7 +268,7 @@ void CGraviZone::StopTeleParticles(CGameObject* pObject)
 	pObject->StopParticles	(*particle_str);
 }
 
-float CGraviZone::RelativePower(float dist)
+float CBaseGraviZone ::RelativePower(float dist)
 {
 	float radius = Radius();
 //	if(dist>radius*m_fBlowoutRadiusPercent) return 0.f;

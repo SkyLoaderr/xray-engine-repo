@@ -2146,6 +2146,12 @@
 									<File
 										RelativePath=".\ai\telekinetic_object.h">
 									</File>
+									<File
+										RelativePath=".\TeleWhirlwind.cpp">
+									</File>
+									<File
+										RelativePath=".\TeleWhirlwind.h">
+									</File>
 								</Filter>
 								<Filter
 									Name="Invisibility"

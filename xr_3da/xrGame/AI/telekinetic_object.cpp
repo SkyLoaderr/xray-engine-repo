@@ -1,19 +1,21 @@
 #include "stdafx.h"
+#include "../physicsshellholder.h"
 #include "telekinetic_object.h"
 #include "../PhysicsShell.h"
 #include "../PHInterpolation.h"
 #include "../PHElement.h"
 #include "../level.h"
 #include "../gameobject.h"
-#include "../physicsshellholder.h"
+
 #define KEEP_IMPULSE_UPDATE 200
 #define FIRE_TIME			3000
 #define RAISE_MAX_TIME		5000
 
 CTelekineticObject::CTelekineticObject()
 {
-		state	= TS_None;
-		object	= 0;
+		state				= TS_None;
+		object				= 0;
+		telekinesis			= 0;
 }
 
 CTelekineticObject::~CTelekineticObject()
@@ -23,10 +25,10 @@ CTelekineticObject::~CTelekineticObject()
 
 
 
-bool CTelekineticObject::init(CPhysicsShellHolder *obj, float s, float h, u32 ttk) 
+bool CTelekineticObject::init(CTelekinesis* tele,CPhysicsShellHolder *obj, float s, float h, u32 ttk) 
 {
 	if (!obj || !obj->m_pPhysicsShell) return false;
-	
+
 	state				= TS_Raise;
 	object				= obj;
 	
@@ -42,7 +44,7 @@ bool CTelekineticObject::init(CPhysicsShellHolder *obj, float s, float h, u32 tt
 	time_raise_started	= Level().timeServer();
 
 	object->m_pPhysicsShell->set_ApplyByGravity(FALSE);
-
+	
 	return true;
 }
 

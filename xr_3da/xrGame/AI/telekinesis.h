@@ -3,18 +3,22 @@
 #include "telekinetic_object.h"
 #include "../PHObject.h"
 
+
+
+
 class CTelekinesis : public CPHUpdateObject {
 	
-	DEFINE_VECTOR(CTelekineticObject,TELE_OBJECTS,TELE_OBJECTS_IT);
-	
-	TELE_OBJECTS	objects;
-	bool			active;
+	DEFINE_VECTOR(CTelekineticObject*,TELE_OBJECTS,TELE_OBJECTS_IT);
+	TELE_OBJECTS			objects;
+	bool					active;
 
 public:
-					CTelekinesis		();
-	virtual			~CTelekinesis		();
+				CTelekinesis			(){active=false;}
+	virtual ~CTelekinesis			(){}
 
-			
+			// allocates relevant TelekineticObject
+
+
 			// активировать объект
 			void	activate			(CPhysicsShellHolder *obj, float strength, float height, u32 max_time_keep);
 
@@ -42,15 +46,19 @@ public:
 			u32		get_objects_count	();
 			
 			// вернуть объект по индексу в массиве
-CTelekineticObject	get_object_by_index (u32 index) {VERIFY(objects.size() > index); return objects[index];}
+			// a	copy of the object!
+CTelekineticObject	get_object_by_index (u32 index) {VERIFY(objects.size() > index); return *objects[index];}
 					
 			// обновить состон€ие на shedule_Update			
 			void	schedule_update		();
-
+protected:
+	virtual CTelekineticObject*	alloc_tele_object(){return xr_new<CTelekineticObject>();}
 private:
 
 	// обновление на шагах физики
 	virtual void 	PhDataUpdate		(dReal step);
 	virtual void 	PhTune				(dReal step);
+	
+
 };
 

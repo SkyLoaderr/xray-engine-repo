@@ -8,14 +8,18 @@
 /////////////////////////////////////////////////////
 #pragma once
 #include "gravizone.h"
+#include "telewhirlwind.h"
 
-class CMincer :	public CGraviZone
+class CMincer :	public CBaseGraviZone
 {
 private:
-	typedef CGraviZone inherited;
+	typedef CBaseGraviZone inherited;
+	CTeleWhirlwind m_telekinetics;
 public:
 	CMincer(void);
 	virtual ~CMincer(void);
-
+	virtual CTelekinesis& Telekinesis(){return m_telekinetics;}
 	virtual void Load (LPCSTR section);
+	virtual BOOL net_Spawn(LPVOID DC);
+
 };
