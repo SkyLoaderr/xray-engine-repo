@@ -204,7 +204,7 @@ void CSE_ALifeSimulator::vfGenerateAnomalyMap()
 	}
 }
 
-void CSE_ALifeSimulator::vfBallanceCreatures()
+void CSE_ALifeSimulator::vfBalanceCreatures()
 {
 #pragma todo("Dima to Dima : Respawn the objects in the spawn groups only")
 	// filling array of the survived creatures
@@ -765,7 +765,7 @@ void CSE_ALifeSimulator::vfPerformSurge()
 	vfGenerateAnomalousZones		();
 	vfGenerateAnomalyMap			();
 	vfKillCreatures					();
-	vfBallanceCreatures				();
+	vfBalanceCreatures				();
 	{
 		TRADER_P_IT					I = m_tpTraders.begin();
 		TRADER_P_IT					E = m_tpTraders.end();

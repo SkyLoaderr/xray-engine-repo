@@ -79,7 +79,7 @@ class CSE_ALifeSimulator :
 			void					vfGiveMilitariesBribe		(CSE_ALifeTrader			&tTrader);
 			void					vfUpdateOrganizations		();
 			void					vfKillCreatures				();
-			void					vfBallanceCreatures			();
+			void					vfBalanceCreatures			();
 			void					vfUpdateTasks				();
 			void					vfAssignStalkerCustomers	();
 	// switch online/offline routines
@@ -114,14 +114,14 @@ class CSE_ALifeSimulator :
 			void					vfAttachOwnerItems			(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		ITEM_P_VECTOR			&tpItemVector,					ITEM_P_VECTOR	&tpOwnItems);
 			void					vfRestoreItems				(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		ITEM_P_VECTOR			&tpItemVector);
 			void					vfAttachGatheredItems		(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		OBJECT_VECTOR			&tpObjectVector);
-			int						ifComputeBallance			(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		ITEM_P_VECTOR			&tpItemVector);
+			int						ifComputeBalance			(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		ITEM_P_VECTOR			&tpItemVector);
 			void					vfFillTraderVector			(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		int						iItemCount,						ITEM_P_VECTOR	&tpItemVector);
 			void					vfGenerateSums				(ITEM_P_VECTOR				&tpTrader,					INT_VECTOR				&tpSums);
 			bool					bfGetItemIndexes			(ITEM_P_VECTOR				&tpTrader,					int						iSum1,							INT_VECTOR		&tpIndexes,					SSumStackCell			*tpStack,				int						iStartI,					int				iStackPointer);
 			bool					bfCheckForInventoryCapacity	(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract1,		ITEM_P_VECTOR			&tpTrader1,						INT_VECTOR		&tpIndexes1,				CSE_ALifeHumanAbstract	*tpALifeHumanAbstract2,	ITEM_P_VECTOR			&tpTrader2,					INT_VECTOR		&tpIndexes2);
-			bool					bfCheckForInventoryCapacity	(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract1,		ITEM_P_VECTOR			&tpTrader1,						int				iSum1,						int						iMoney1,				CSE_ALifeHumanAbstract	*tpALifeHumanAbstract2,		ITEM_P_VECTOR	&tpTrader2,		int			iSum2,		int iMoney2, int iBallance);
-			bool					bfCheckForTrade				(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract1,		ITEM_P_VECTOR			&tpTrader1,						INT_VECTOR		&tpSums1,					int						iMoney1,				CSE_ALifeHumanAbstract	*tpALifeHumanAbstract2,		ITEM_P_VECTOR	&tpTrader2,		INT_VECTOR	&tpSums2,	int iMoney2, int iBallance);
-			bool					bfCheckIfCanNullTradersBallance(CSE_ALifeHumanAbstract	*tpALifeHumanAbstract1,		CSE_ALifeHumanAbstract	*tpALifeHumanAbstract2,			int				iItemCount1,				int						iItemCount2,			int						iBallance);
+			bool					bfCheckForInventoryCapacity	(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract1,		ITEM_P_VECTOR			&tpTrader1,						int				iSum1,						int						iMoney1,				CSE_ALifeHumanAbstract	*tpALifeHumanAbstract2,		ITEM_P_VECTOR	&tpTrader2,		int			iSum2,		int iMoney2, int iBalance);
+			bool					bfCheckForTrade				(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract1,		ITEM_P_VECTOR			&tpTrader1,						INT_VECTOR		&tpSums1,					int						iMoney1,				CSE_ALifeHumanAbstract	*tpALifeHumanAbstract2,		ITEM_P_VECTOR	&tpTrader2,		INT_VECTOR	&tpSums2,	int iMoney2, int iBalance);
+			bool					bfCheckIfCanNullTradersBalance(CSE_ALifeHumanAbstract	*tpALifeHumanAbstract1,		CSE_ALifeHumanAbstract	*tpALifeHumanAbstract2,			int				iItemCount1,				int						iItemCount2,			int						iBalance);
 			void					vfPerformTrading			(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract1,		CSE_ALifeHumanAbstract	*tpALifeHumanAbstract2);
 			void					vfPerformCommunication		();
 
