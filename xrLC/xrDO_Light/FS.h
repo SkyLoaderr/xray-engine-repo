@@ -2,8 +2,8 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#if !defined(AFX_FS_H__F9718331_BA98_4DD3_96FC_C455405D54FB__INCLUDED_)
-#define AFX_FS_H__F9718331_BA98_4DD3_96FC_C455405D54FB__INCLUDED_
+#ifndef fsH
+#define fsH
 
 #include "lzhuf.h"
 
@@ -194,6 +194,14 @@ public:
 		*dest	=	0;
 		Pos		++;
 	};
+#ifdef _EDITOR
+	IC void	RstringZ(AnsiString& dest)	// читает C-Style строку (ANSIZ)
+	{
+		char *src = (char *) data;
+		while ((src[Pos]!=0) && (!Eof())) dest += src[Pos++];
+		Pos		++;
+	};
+#endif
 	IC void	SkipStringZ()
 	{
 		char *src = (char *) data;
@@ -339,4 +347,4 @@ public:
 	}
 };
 
-#endif // !defined(AFX_FS_H__F9718331_BA98_4DD3_96FC_C455405D54FB__INCLUDED_)
+#endif // fsH

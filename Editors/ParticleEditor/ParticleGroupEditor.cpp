@@ -7,7 +7,6 @@
 #include "ParticleGroup.h"
 #include "particles/papi.h"
 #include "particles/general.h"
-//#include "d3dutils.h"
 #include "TLSprite.h"
 
 using namespace PAPI;
@@ -474,6 +473,10 @@ void CParticleGroup::Save(CFS_Base& F)
 	F.Wword			(PG_VERSION);
 	F.close_chunk	();
 
+	F.open_chunk	(PG_CHUNK_NAME);
+	F.WstringZ		(m_Name);
+	F.close_chunk	();
+    
 	ParticleGroup *pg = _GetGroupPtr(m_HandleGroup);
 	F.open_chunk	(PG_CHUNK_GROUPDATA);
     F.Wdword		(pg->max_particles); // max particles

@@ -51,7 +51,6 @@ class CParticleTools: public pureDeviceCreate, public pureDeviceDestroy
     Fvector				m_RotateVector;
     float				m_fRotateSnapAngle;
     
-    AnsiString			m_CommandList;
     CParticleGroup*		m_EditGroup;
     void __fastcall		OnApplyClick		();
 public:

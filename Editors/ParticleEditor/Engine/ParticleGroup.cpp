@@ -2,11 +2,9 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "d3dutils.h"
 #include "ParticleGroup.h"
-#include "engine/particles/papi.h"
-#include "engine/particles/general.h"
-#include "TLSprite.h"
+#include "particles/papi.h"
+#include "particles/general.h"
 
 using namespace PAPI;
 
@@ -17,12 +15,19 @@ CParticleGroup::CParticleGroup()
     m_Shader			= 0;
     m_ShaderName		= 0;
     m_TextureName		= 0;
+    strcpy(m_Name,"unknown");
+    m_Animation.InitDefault();
 }
 CParticleGroup::~CParticleGroup()
 {
 	OnDeviceDestroy		();
 	pDeleteParticleGroups(m_HandleGroup);
 	pDeleteActionLists	(m_HandleActionList);
+}
+
+void CParticleGroup::SetName(LPCSTR name)
+{
+    strcpy				(m_Name,name);
 }
 
 void CParticleGroup::OnDeviceCreate()
@@ -36,12 +41,19 @@ void CParticleGroup::OnDeviceDestroy()
 	Device.Shader.Delete(m_Shader);
 }   
 
+void CParticleGroup::RefreshShader()
+{
+	OnDeviceDestroy();
+    OnDeviceCreate();
+}
+
 void CParticleGroup::pSprite(LPCSTR sh_name, LPCSTR tex_name)
 {
 	OnDeviceDestroy		();
     xr_free(m_ShaderName);	m_ShaderName	= xr_strdup(sh_name);
     xr_free(m_TextureName);	m_TextureName	= xr_strdup(tex_name);
 	OnDeviceCreate		();
+	m_Flags.set			(flSprite,TRUE);
 }
 
 // action
@@ -106,7 +118,7 @@ void CParticleGroup::OnFrame()
           
 void CParticleGroup::Render()
 {
-	// Get a pointer to the particles in gp memory
+/*	// Get a pointer to the particles in gp memory
 	ParticleGroup *pg = _GetGroupPtr(m_HandleGroup);
 
 	if(pg == NULL)		return; // ERROR
@@ -131,5 +143,85 @@ void CParticleGroup::Render()
 			m_Sprite.Render(p,c.get(),m.size.x,m.rot.x);
 //		DU::DrawCross(p,m.size.x,m.size.y,m.size.z,m.size.x,m.size.y,m.size.z,c.get(),false);
     }
+*/
 }
+
+//------------------------------------------------------------------------------
+// I/O part
+//------------------------------------------------------------------------------
+BOOL CParticleGroup::Load(CStream& F)
+{
+	pCurrentGroup	(m_HandleGroup);
+
+	string256		buf;
+	R_ASSERT		(F.FindChunk(PG_CHUNK_VERSION));
+	u16 version		= F.Rword();
+
+    if (version!=PG_VERSION)
+    	return FALSE;
+
+	R_ASSERT		(F.FindChunk(PG_CHUNK_NAME));
+	F.RstringZ		(buf); SetName(buf);
+
+	R_ASSERT		(F.FindChunk(PG_CHUNK_GROUPDATA));
+    u32 max_part	= F.Rdword();
+    pSetMaxParticlesG(m_HandleGroup,max_part);
+    
+    CStream* O		= F.OpenChunk(PG_CHUNK_ACTIONLIST);	R_ASSERT(O);
+	if (!LoadActionList(*O))
+    	return FALSE;
+    O->Close		();
+
+	F.ReadChunk		(PG_CHUNK_FLAGS,&m_Flags);
+
+    if (m_Flags.is(flSprite)){
+        R_ASSERT	(F.FindChunk(PG_CHUNK_SPRITE));
+        F.RstringZ	(buf); m_ShaderName = xr_strdup(buf);
+        F.RstringZ	(buf); m_TextureName= xr_strdup(buf);
+	    RefreshShader();
+    }
+
+    if (m_Flags.is(flFramed)){
+        R_ASSERT	(F.FindChunk(PG_CHUNK_FRAME));
+        F.Read		(&m_Animation,sizeof(SAnimation));
+    }
+
+	F.FindChunk		(PG_CHUNK_SOURCETEXT);
+    F.RstringZ		(m_SourceText);
+
+    return TRUE;
+}
+
+BOOL CParticleGroup::LoadActionList(CStream& F)
+{
+	// get pointer to specified action list.
+	PAPI::PAHeader *pa	= _GetListPtr(m_HandleActionList);
+
+	if(pa == NULL)
+		return FALSE; // ERROR
+
+	R_ASSERT(F.FindChunk(AL_CHUNK_VERSION));
+	u16 version		= F.Rword();
+
+	if (version!=ACTION_LIST_VERSION) 
+    	return FALSE;
+	
+	// load actions
+	R_ASSERT(F.FindChunk(AL_CHUNK_ACTIONS));
+	u32 a_count			=	F.Length()/sizeof(PAPI::PAHeader);
+
+	// start append actions
+	pNewActionList(m_HandleActionList);
+
+	PAPI::PAHeader S;
+	for (u32 k=0; k<a_count; k++){
+		F.Read				(&S,sizeof(PAPI::PAHeader));
+		pAddActionToList	(&S);
+	}
+	// end append action
+	pEndActionList();
+
+	return TRUE;
+}
+
 

@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 586
+  Height = 786
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 212
-    Height = 586
+    Height = 786
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -202,7 +202,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 93
       Width = 210
-      Height = 100
+      Height = 300
       Align = alClient
       Color = 10528425
       ParentShowHint = False
@@ -224,13 +224,13 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 14
         Width = 208
-        Height = 69
+        Height = 269
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
         object Bevel2: TBevel
           Left = 0
-          Top = 67
+          Top = 267
           Width = 208
           Height = 2
           Align = alBottom
@@ -246,7 +246,7 @@ object fraLeftBar: TfraLeftBar
           Left = 0
           Top = 36
           Width = 208
-          Height = 31
+          Height = 231
           Cursor = crDefault
           LeftPosition = 0
           DragCursor = crDrag
@@ -439,7 +439,7 @@ object fraLeftBar: TfraLeftBar
       end
       object paAction: TPanel
         Left = 1
-        Top = 83
+        Top = 283
         Width = 208
         Height = 16
         Align = alBottom
@@ -470,7 +470,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paProperties: TPanel
       Left = 1
-      Top = 235
+      Top = 435
       Width = 210
       Height = 350
       Hint = 'Scene commands'
@@ -528,7 +528,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paCurrentPS: TPanel
       Left = 1
-      Top = 193
+      Top = 393
       Width = 210
       Height = 42
       Hint = 'Scene commands'

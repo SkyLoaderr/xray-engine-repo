@@ -39,21 +39,20 @@
       Intermediate\UI_Tools.obj Intermediate\UI_MainExtern.obj 
       Intermediate\ImageThumbnail.obj Intermediate\ImageManager.obj 
       Intermediate\ShaderFunction.obj Intermediate\PSLibrary.obj 
-      Intermediate\xrParticlesLib.obj Intermediate\PSObject.obj 
-      Intermediate\PropertiesPSDef.obj Intermediate\FrameEmitter.obj 
-      Intermediate\TLSPRITE.obj Intermediate\CustomObject.obj 
-      Intermediate\TopBar.obj Intermediate\EditMeshPick.obj 
-      Intermediate\EditObjectEditor.obj Intermediate\Blender_LaEmB.obj 
-      Intermediate\Blender_Lm(EbB).obj Intermediate\Blender_LmBmmD.obj 
-      Intermediate\Blender_BmmD.obj Intermediate\Engine.obj 
-      Intermediate\ModelPool.obj Intermediate\xrSkin1W.obj 
-      Intermediate\FBasicVisual.obj Intermediate\FHierrarhyVisual.obj 
-      Intermediate\FProgressiveFixedVisual.obj Intermediate\FVisual.obj 
-      Intermediate\SkeletonCalculate.obj Intermediate\SkeletonX.obj 
-      Intermediate\BodyInstance.obj Intermediate\ExportSkeleton.obj 
-      Intermediate\xrXRC.obj Intermediate\Blender_Blur.obj 
-      Intermediate\SH_RT.obj Intermediate\SH_VS.obj 
-      Intermediate\Blender_Shadow_World.obj 
+      Intermediate\PSObject.obj Intermediate\PropertiesPSDef.obj 
+      Intermediate\FrameEmitter.obj Intermediate\TLSPRITE.obj 
+      Intermediate\CustomObject.obj Intermediate\TopBar.obj 
+      Intermediate\EditMeshPick.obj Intermediate\EditObjectEditor.obj 
+      Intermediate\Blender_LaEmB.obj Intermediate\Blender_Lm(EbB).obj 
+      Intermediate\Blender_LmBmmD.obj Intermediate\Blender_BmmD.obj 
+      Intermediate\Engine.obj Intermediate\ModelPool.obj 
+      Intermediate\xrSkin1W.obj Intermediate\FBasicVisual.obj 
+      Intermediate\FHierrarhyVisual.obj Intermediate\FProgressiveFixedVisual.obj 
+      Intermediate\FVisual.obj Intermediate\SkeletonCalculate.obj 
+      Intermediate\SkeletonX.obj Intermediate\BodyInstance.obj 
+      Intermediate\ExportSkeleton.obj Intermediate\xrXRC.obj 
+      Intermediate\Blender_Blur.obj Intermediate\SH_RT.obj 
+      Intermediate\SH_VS.obj Intermediate\Blender_Shadow_World.obj 
       Intermediate\Blender_Shadow_Texture.obj Intermediate\CustomObjectMisc.obj 
       Intermediate\Blender_Model.obj Intermediate\TextForm.obj 
       Intermediate\ImageEditor.obj Intermediate\ETextureParams.obj 
@@ -67,8 +66,9 @@
       Intermediate\Blender_Model_EbB.obj Intermediate\HW.obj 
       Intermediate\du_sphere.obj Intermediate\du_box.obj 
       Intermediate\PropertiesListHelper.obj Intermediate\ParticleGroup.obj 
-      Intermediate\ParticleGroupParser.obj Intermediate\c_dinput.obj 
-      Intermediate\UI_MainCommand.obj Intermediate\ParticleSystem.obj"/>
+      Intermediate\ParticleGroupEditor.obj Intermediate\c_dinput.obj 
+      Intermediate\UI_MainCommand.obj Intermediate\ParticleSystem.obj 
+      Intermediate\PSLibraryEditor.obj"/>
     <RESFILES value="ParticleEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -197,7 +197,6 @@
       <FILE FILENAME="Editor\ImageManager.cpp" FORMNAME="" UNITNAME="ImageManager" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ShaderFunction.cpp" FORMNAME="frmShaderFunction" UNITNAME="ShaderFunction" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\PSLibrary.cpp" FORMNAME="" UNITNAME="PSLibrary" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\xrParticlesLib.cpp" FORMNAME="" UNITNAME="xrParticlesLib" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\PSObject.cpp" FORMNAME="" UNITNAME="PSObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="PropertiesPSDef.cpp" FORMNAME="" UNITNAME="PropertiesPSDef" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\FrameEmitter.cpp" FORMNAME="fraEmitter" UNITNAME="FrameEmitter" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
@@ -252,10 +251,11 @@
       <FILE FILENAME="Editor\du_box.cpp" FORMNAME="" UNITNAME="du_box.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\PropertiesListHelper.cpp" FORMNAME="" UNITNAME="PropertiesListHelper" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\ParticleGroup.cpp" FORMNAME="" UNITNAME="ParticleGroup" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="ParticleGroupParser.cpp" FORMNAME="" UNITNAME="ParticleGroupParser" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ParticleGroupEditor.cpp" FORMNAME="" UNITNAME="ParticleGroupEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\c_dinput.cpp" FORMNAME="" UNITNAME="c_dinput" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\UI_MainCommand.cpp" FORMNAME="" UNITNAME="UI_MainCommand" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\ParticleSystem.cpp" FORMNAME="" UNITNAME="ParticleSystem" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\PSLibraryEditor.cpp" FORMNAME="" UNITNAME="PSLibraryEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

@@ -113,7 +113,7 @@ void CParticleTools::Render(){
 	if (m_TestObject)	m_TestObject->RenderSingle();
 
 	// Draw the particles.
-    m_EditGroup->Render();
+    m_EditGroup->RenderEditor();
 }
 
 void CParticleTools::OnFrame(){
@@ -248,7 +248,7 @@ void CParticleTools::RenamePS(LPCSTR old_full_name, LPCSTR ren_part, int level){
 void CParticleTools::RenamePS(LPCSTR old_full_name, LPCSTR new_full_name){
 	VERIFY(m_bReady);
     ApplyChanges();
-	PS::SDef* S = PSLib.FindPS(old_full_name); R_ASSERT(S);
+	PS::SDef* S = PSLib.FindUnsorted(old_full_name); R_ASSERT(S);
     PSLib.RenamePS(S,new_full_name);
 	if (S==m_LibPS){
     	m_EditPS = *S;
@@ -301,7 +301,7 @@ void CParticleTools::SetCurrentPS(PS::SDef* P)
 
 void CParticleTools::SetCurrentPS(LPCSTR name)
 {
-    SetCurrentPS(PSLib.FindPS(name));
+    SetCurrentPS(PSLib.FindUnsorted(name));
 }
 
 void CParticleTools::UpdateCurrent(){
@@ -323,7 +323,7 @@ void CParticleTools::UpdateEmitter(){
 PS::SDef* CParticleTools::ClonePS(LPCSTR name)
 {
 	VERIFY(m_bReady);
-	PS::SDef* S = PSLib.FindPS(name); R_ASSERT(S);
+	PS::SDef* S = PSLib.FindUnsorted(name); R_ASSERT(S);
 	return AppendPS(0,S);
 }
 
@@ -494,17 +494,25 @@ void __fastcall CParticleTools::MouseMove(TShiftState Shift)
 
 void __fastcall	CParticleTools::OnApplyClick()
 {
-	m_EditGroup->ParseCommandList(m_CommandList.c_str());
+	m_EditGroup->ParseCommandList(m_EditGroup->m_SourceText.c_str());
 }
 
 void __fastcall CParticleTools::EditActionList()
 {
-	TfrmText::Run(m_CommandList,"Edit action list",false,0,false,OnApplyClick);
+	TfrmText::Run(m_EditGroup->m_SourceText,"Edit action list",false,0,false,OnApplyClick);
 }
 
 void __fastcall CParticleTools::ResetState()
 {
 	PAPI::pResetState();
+#if 0
+    CFS_Memory F;
+    m_EditGroup->Save(F);
+    F.SaveTo("c:\\test.al",0);
+#else
+    CFileStream S("c:\\test.al");
+    m_EditGroup->Load(S);
+#endif
 }
 
 void CParticleTools::GetCurrentFog(u32& fog_color, float& s_fog, float& e_fog)
