@@ -88,7 +88,7 @@ function fract:calculate()
 	end
 
 	self:updateJob()
-	self:print()
+	--self:print()
 end
 function fract:changeState(state)
 	if self.music ~= nil then
