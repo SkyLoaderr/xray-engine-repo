@@ -68,11 +68,25 @@
 			typedef T type; 
 		};
 
-		template <typename P>
-		struct is_void		 { enum { value = false}; };
-		
-		template <>
-		struct is_void<void> { enum { value = true}; };
+		template <typename T>
+		struct is_void {
+			template <typename P>
+			struct select		{enum { value = false}; };
+			
+			template <>
+			struct select<void> {enum { value = true}; };
+			
+			enum { value = select<T>::value};
+		};
+
+		template <typename T> struct is_const{
+			enum { value = false}; 
+		};
+
+		template <typename T> struct is_const<T const>{
+			enum { value = true}; 
+		};
+
 
 		template <typename T>
 		struct is_pointer {

@@ -437,6 +437,9 @@
 					RelativePath=".\smart_cast.h">
 				</File>
 				<File
+					RelativePath=".\smart_cast_impl0.h">
+				</File>
+				<File
 					RelativePath=".\smart_cast_impl1.h">
 				</File>
 				<File

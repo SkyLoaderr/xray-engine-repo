@@ -16,17 +16,54 @@
 #	define smart_cast dynamic_cast
 #else
 #	ifndef DECLARE_SPECIALIZATION
-#		include "smart_cast_impl1.h"
+#		include "smart_cast_impl0.h"
 #	else
 #		include "smart_cast_impl2.h"
+#		define DO_NOT_DECLARE_TYPE_LIST
 #	endif
+
 #	ifdef XRGAME_EXPORTS
+
 		DECLARE_SPECIALIZATION	(CEntity,			CGameObject,		cast_entity);
+#		ifndef DO_NOT_DECLARE_TYPE_LIST
+#			undef cast_type_list
+#			define cast_type_list save_cast_list	(CEntity,			CGameObject)
+#		endif
+
 		DECLARE_SPECIALIZATION	(CEntityAlive,		CGameObject,		cast_entity_alive);
+#		ifndef DO_NOT_DECLARE_TYPE_LIST
+#			undef cast_type_list
+#			define cast_type_list save_cast_list	(CEntityAlive,		CGameObject)
+#		endif
+
 		DECLARE_SPECIALIZATION	(CInventoryItem,	CGameObject,		cast_inventory_item);
+#		ifndef DO_NOT_DECLARE_TYPE_LIST
+#			undef cast_type_list
+#			define cast_type_list save_cast_list	(CInventoryItem,	CGameObject)
+#		endif
+
 		DECLARE_SPECIALIZATION	(CInventoryOwner,	CGameObject,		cast_inventory_owner);
+#		ifndef DO_NOT_DECLARE_TYPE_LIST
+#			undef cast_type_list
+#			define cast_type_list save_cast_list	(CInventoryOwner,	CGameObject)
+#		endif
+
 		DECLARE_SPECIALIZATION	(CActor,			CGameObject,		cast_actor);
+#		ifndef DO_NOT_DECLARE_TYPE_LIST
+#			undef cast_type_list
+#			define cast_type_list save_cast_list	(CActor,			CGameObject)
+#		endif
+
 		DECLARE_SPECIALIZATION	(CGameObject,		CInventoryOwner,	cast_game_object);
+#		ifndef DO_NOT_DECLARE_TYPE_LIST
+#			undef cast_type_list
+#			define cast_type_list save_cast_list	(CGameObject,		CInventoryOwner)
+#		endif
+
+#	endif
+	
+#	ifndef DO_NOT_DECLARE_TYPE_LIST
+#		include "smart_cast_impl1.h"
 #	endif
 #endif
 

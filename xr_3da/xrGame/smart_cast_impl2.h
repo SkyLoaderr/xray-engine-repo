@@ -12,8 +12,6 @@
 #define DECLARE_SPECIALIZATION(B,A,C) \
 	template <>\
 	B* SmartDynamicCast::smart_cast<B,A>(A *p){return p->C();};\
-	template <>\
-	const B* SmartDynamicCast::smart_cast<const B,const A>(const A *p){return p->C();};
 
 #ifdef XRGAME_EXPORTS
 	template <> 
