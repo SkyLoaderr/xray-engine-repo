@@ -595,6 +595,9 @@ void CActor::Update	(DWORD DT)
 void CActor::OnVisible()
 {
 	inherited::OnVisible	();
+
+	CWeapon* W				= Weapons->ActiveWeapon();
+	if (W)					W->OnVisible		();
 }
 
 void CActor::g_cl_ValidateMState(DWORD mstate_wf)
@@ -860,6 +863,9 @@ void CActor::OnHUDDraw	(CCustomHUD* hud)
 	pUI->OutHealth		(iHealth,iArmor);
 	pUI->OutWeapon		(Weapons->ActiveWeapon());
 	pUI->SetHeading		(-r_torso.yaw);
+	
+	CWeapon* W			= Weapons->ActiveWeapon();
+	if (W)				W->OnVisible		();
 
 	/**
 	char buf[128];

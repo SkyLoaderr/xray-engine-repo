@@ -278,9 +278,11 @@ CObject* CObject::H_SetParent	(CObject* O)
 	{
 		// Become chield
 		pCreator->ObjectSpace.Object_Unregister	(this);
+		if (pSector) pSector->objectRemove		(this);
 	} else {
 		// Become independent
 		pCreator->ObjectSpace.Object_Register	(this);
+		Sector_Detect							();
 	}
 	CObject* S	= Parent; 
 	Parent		= O; 
