@@ -23,7 +23,7 @@ Fvisual::Fvisual()  : IRender_Visual()
 
 Fvisual::~Fvisual()
 {
-	xr_delete(m_fast);
+	xr_delete	(m_fast);
 }
 
 void Fvisual::Release	()
