@@ -23,7 +23,7 @@ function main()
 			)
 
 	while guard01:action() do
-		if guard01.health < 95 then
+		if guard01.health <= 10 then
 			wait(1000)			
 			rainbow_mochi_ego:play_at_pos			(guard01,guard01:position(),0);
 			guard01:script	(false,script_guards_00.script_name())
