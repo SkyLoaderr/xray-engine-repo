@@ -202,7 +202,7 @@ function proceed(actor)
 
 	if	actor:has_info("bar_svoboda_rg6_start") and 
  		actor:dont_has_info("bar_dolg_veteran_gain") and
-		actor:object("dolg_arhive_document") ~= nil 
+		actor:object("dolg_arhive_documents") ~= nil 
 	then		
 		actor:give_info_portion("bar_dolg_veteran_gain")
 		set_task_state(task.completed, "bar_dolg_test_quest", 1)
