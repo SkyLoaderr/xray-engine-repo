@@ -81,7 +81,6 @@ function main()
 				stalker1,
 			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
 				sound	("scripts\\kto-to_idet","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
-				particle("ghoul\\fx-01-camp-fire","bip01_head",particle_params(vector():set(0,0,0.3),vector():set(0,0,0),vector():set(1,0,0)),false),
 				look	(look.fire_point, actor),
 				anim	(anim.danger),
 				cond	(cond.time_end, 20000)
