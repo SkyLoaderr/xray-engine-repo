@@ -157,7 +157,7 @@ function load_dialog:InitCallBacks()
 	self:AddCallback("message_box",		ui_events.MESSAGE_BOX_YES_CLICKED,    self.OnMsgYes,				self)
 	self:AddCallback("message_box",		ui_events.MESSAGE_BOX_NO_CLICKED,     self.OnMsgNo,					self)
 	// list box click
-	self:AddCallback("list_window", ui_events.LIST_ITEM_CLICKED, self, "OnListItemClicked")
+	self:AddCallback("list_window", ui_events.LIST_ITEM_CLICKED, 			  self.OnListItemClicked,		self)
 end
 
 function load_dialog:OnListItemClicked()
