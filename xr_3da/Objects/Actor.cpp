@@ -16,6 +16,7 @@
 #include "Actor_Flags.h"
 #include "UI.h"
 #include "..\render.h"
+#include "..\3dsound.h"
 
 // breakpoints
 #include "..\xr_input.h"
