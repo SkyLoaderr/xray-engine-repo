@@ -9,7 +9,9 @@
 #define		debug_mode 0
 #endif
 
+#ifndef		DEBUG
 XRCORE_API void*	g_globalCheckAddr = NULL;
+#endif
 
 MEMPOOL		mem_pools			[mem_pools_count];
 
@@ -62,17 +64,19 @@ void*	xrMemory::mem_alloc		(size_t size)
 	if		(debug_mode)		dbg_register	(_ptr,size);
 #ifdef DEBUG
 	if (mem_initialized)		debug_cs.Leave		();
-#endif
 	if(g_globalCheckAddr==_ptr){
 		__asm int 3;
 	}
+#endif
 	return	_ptr;
 }
 
 void	xrMemory::mem_free		(void* P)
 {
+#ifdef DEBUG
 	if(g_globalCheckAddr==P)
 		__asm int 3;
+#endif
 	
 
 	stat_calls++;
@@ -99,8 +103,10 @@ void	xrMemory::mem_free		(void* P)
 extern BOOL	g_bDbgFillMemory	;
 void*	xrMemory::mem_realloc	(void* P, size_t size)
 {
+#ifdef DEBUG
 	if(g_globalCheckAddr==P)
 		__asm int 3;
+#endif
 
 	stat_calls++;
 	if (0==P)					return mem_alloc(size);
@@ -137,10 +143,10 @@ void*	xrMemory::mem_realloc	(void* P, size_t size)
 	}
 #ifdef DEBUG
 	if (mem_initialized)		debug_cs.Leave	();
-#endif
 
 	if(g_globalCheckAddr==_ptr)
 	__asm int 3;
+#endif
 
 	return	_ptr;
 }
