@@ -15,6 +15,7 @@
 #include "ai/bloodsucker/ai_bloodsucker.h"
 #include "Inventory.h"
 #include "WeaponHUD.h"
+#include "xrServer.h"
 
 #ifdef DEBUG
 extern EStalkerBehaviour	g_stalker_behaviour;
@@ -113,11 +114,15 @@ void CLevel::IR_OnKeyboardPress(int key)
 
 #ifdef DEBUG
 	case DIK_DIVIDE:
-		Level().SetGameTimeFactor(1.f);	
+		if( OnServer() )
+			Server->game->SetGameTimeFactor(1.f);
+//		Level().SetGameTimeFactor(1.f);	
 		break;
 	
 	case DIK_MULTIPLY:
-		Level().SetGameTimeFactor(1000.f);
+		if( OnServer() )
+			Server->game->SetGameTimeFactor(1000.f);
+//		Level().SetGameTimeFactor(1000.f);
 		break;
 
 	case DIK_NUMPAD5: 
