@@ -12,7 +12,7 @@ function main ()
     zone:set_callback (barricade.on_enter, true)
 
 	local bones = {
---				  "bone_01", 
+				  "bone_01", 
 				  "bone_02", 
 				  "bone_03", 
 				  "bone_04", 
@@ -29,9 +29,8 @@ function main ()
 				  "bone_15", 
 				  "bone_16", 
 				  "bone_17", 
-				  "bone_18", 
 				  "bone_19", 
---				  "bone_20"
+				  "bone_20"
 				  } 
 
     while entered == false do  wait () end
