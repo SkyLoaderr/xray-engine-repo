@@ -818,6 +818,9 @@
 				Name="XRAY"
 				Filter="">
 				<File
+					RelativePath=".\ArbitraryList.h">
+				</File>
+				<File
 					RelativePath=".\fmesh.cpp">
 				</File>
 				<File
@@ -1614,10 +1617,10 @@
 					RelativePath=".\OpenMesh\Tools\Decimater\CollapseInfoT.hh">
 				</File>
 				<File
-					RelativePath=".\OpenMesh\Tools\Utils\Config.hh">
+					RelativePath=".\OpenMesh\Tools\Geometry\Config.hh">
 				</File>
 				<File
-					RelativePath=".\OpenMesh\Tools\Geometry\Config.hh">
+					RelativePath=".\OpenMesh\Tools\Utils\Config.hh">
 				</File>
 				<File
 					RelativePath=".\OpenMesh\Tools\Utils\conio.cc">
