@@ -8,9 +8,10 @@
 
 #include "clsid_game.h"
 
-#pragma warning(disable:4201)
+// #pragma warning(disable:4201)
+#include "..\igame_persitant.h"
+#include "..\igame_level.h"
 #include "..\xr_object.h"
-#include "..\xr_creator.h"
 #include "..\sound.h"
 #include "..\xr_input.h"
 #include "..\x_ray.h"

@@ -18,7 +18,7 @@
 
 #include "..\vis_common.h"
 #include "..\render.h"
-#include "..\xr_creator.h"
+#include "..\igame_level.h"
 #include "..\blenders\blender.h"
 #include "..\blenders\blender_clsid.h"
 #include "xrRender_console.h"
