@@ -80,9 +80,10 @@ BOOL CMissile::net_Spawn(LPVOID DC) {
 		R_ASSERT							(m_pPhysicsShell);
 		m_pPhysicsShell->add_Element		(E);
 		m_pPhysicsShell->setDensity			(2000.f);
-		m_pPhysicsShell->Activate			(svXFORM(),0,svXFORM());
+		m_pPhysicsShell->Activate			(svXFORM(),0,svXFORM(),true);
 		m_pPhysicsShell->mDesired.identity	();
 		m_pPhysicsShell->fDesiredStrength	= 0.f;
+		m_pPhysicsShell->SetAirResistance();
 	}
 	return l_res;
 }

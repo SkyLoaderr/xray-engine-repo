@@ -260,6 +260,7 @@ void	CCar::UpdateCL				( )
 
 	snd_engine.set_position			(C);
 	snd_engine.set_frequency		(scale);
+	snd_engine.set_volume			(0.5f);
 
 	// Camera
 	if (IsMyCamera())				

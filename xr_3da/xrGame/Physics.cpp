@@ -332,13 +332,19 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 
 		dJointSetHinge2Param(Joints[i], dParamVel2, 0.f);
 		dJointSetHinge2Param(Joints[i], dParamFMax2, 500.f);
-		dReal k_p=20000000.f;//20000.f;
-		dReal k_d=10.f;//1000.f;
-		dReal h=0.02222f;
+		dReal k_p=20000.f;
+		dReal k_d=1000.f;
+		dReal h=fixed_step;
 			
 
 		dJointSetHinge2Param(Joints[i], dParamSuspensionERP, h*k_p / (h*k_p + k_d));
 		dJointSetHinge2Param(Joints[i], dParamSuspensionCFM, 1.f / (h*k_p + k_d));
+
+#ifndef   ODE_SLOW_SOLVER
+
+		dJointSetHinge2Param(Joints[i], dParamStopERP, 1.f);
+		dJointSetHinge2Param(Joints[i], dParamStopCFM,0.f);// world_cfm/100.f
+#endif
 
 	}
 
@@ -357,14 +363,14 @@ bActive=true;
 void CPHJeep::JointTune(dReal step){
 const	dReal k_p=15000.f;//30000.f;
 const	dReal k_d=1000.f;//1000.f;
-	for(u32 i = 0; i < 4; ++i)
-	{
+	//for(u32 i = 0; i < 4; ++i)
+	//{
 
 		
-		dJointSetHinge2Param(Joints[i], dParamSuspensionERP, step*k_p / (step*k_p + k_d));
-		dJointSetHinge2Param(Joints[i], dParamSuspensionCFM, 1.f / (step*k_p + k_d));
+	//	dJointSetHinge2Param(Joints[i], dParamSuspensionERP, step*k_p / (step*k_p + k_d));
+	//	dJointSetHinge2Param(Joints[i], dParamSuspensionCFM, 1.f / (step*k_p + k_d));
 
-	}
+	//}
 	static const dReal w_limit = M_PI/16.f/0.02f;
 	const dReal* rot = dBodyGetAngularVel(Bodies[0]);
 	dReal mag=_sqrt(rot[0]*rot[0]+rot[1]*rot[1]+rot[2]*rot[2]);
@@ -771,7 +777,7 @@ void CPHWorld::Step(dReal step)
 		#ifdef ODE_SLOW_SOLVER
 		dWorldStep			(phWorld, fixed_step);
 		#else
-		dWorldStepFast (phWorld,fixed_step,10);
+		dWorldStepFast (phWorld,fixed_step,20);
 		#endif
 		Device.Statistic.ph_core.End		();
 
@@ -1779,6 +1785,8 @@ void CPHElement::PhDataUpdate(dReal step){
 ///////////////skip for disabled elements////////////////////////////////////////////////////////////
 	if( !dBodyIsEnabled(m_body)) {
 				//	if(previous_p[0]!=dInfinity) previous_p[0]=dInfinity;//disable
+					m_body_interpolation.UpdatePositions();
+					m_body_interpolation.UpdateRotations();
 					return;
 				}
 
@@ -2196,11 +2204,11 @@ void CPHElement::CallBack(CBoneInstance* B){
 
 
 	
-	if(!dBodyIsEnabled(m_body))
-	{
-		B->mTransform.set(mXFORM);
-		return;
-	}
+//	if(!dBodyIsEnabled(m_body))
+//	{
+//		B->mTransform.set(mXFORM);
+//		return;
+//	}
 
 	if(m_parent_element){
 	InterpolateGlobalTransform(&mXFORM);
