@@ -455,7 +455,7 @@ void CCustomMonster::eye_pp_s1			( )
 	Frustum.CreateFromMatrix				(mFull,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
 	eye_pp_seen.clear						();
 	IRender_Sector* S						= Sector();
-	if (S)	S->GetObjects					(Frustum,eye_matrix.c,mFull,eye_pp_seen,GetQualifier(),&id_Team);
+	if (S)	S->get_objects					(Frustum,eye_matrix.c,mFull,eye_pp_seen,GetQualifier(),&id_Team);
 	Device.Statistic.AI_Vis_Query.End		();
 }
 
