@@ -596,6 +596,7 @@ void CAI_Hen::FollowMe()
 							if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path,S.taMemberNodes,S.m_tLeaderNode))) && (S.BestCost < (fOldCost - S.fLaziness))){
 								// if old cost minus new cost is a little then hen is too lazy
 								// to move there
+								Msg("%6d %6d\n",S.BestNode,AI_Path.DestNode);
 								AI_Path.DestNode		= S.BestNode;
 								AI_Path.bNeedRebuild	= TRUE;
 							}
