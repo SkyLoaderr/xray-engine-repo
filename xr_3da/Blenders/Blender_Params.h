@@ -2,6 +2,7 @@
 #define BLENDER_PARAMS_H
 
 #pragma once
+#pragma pack(push,4)
 
 // Parameter/Property specifications
 
@@ -60,4 +61,5 @@ struct	BP_TOKEN
 	
 	//--- elements:		(ID,string64)
 };
+#pragma pack(pop)
 #endif

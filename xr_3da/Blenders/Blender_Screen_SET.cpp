@@ -25,12 +25,28 @@ CBlender_Screen_SET::~CBlender_Screen_SET()
 void	CBlender_Screen_SET::Save	( CFS_Base& FS	)
 {
 	CBlender::Save	(FS);
+
+	// Blend mode
+	BP_TOKEN::Item	I;
+	BP_WRITE		("Blending",	BPID_TOKEN,     oBlend);
+	I.ID = 0; strcpy(I.str,"SET");	FS.write		(&I,sizeof(I));
+	I.ID = 1; strcpy(I.str,"BLEND");FS.write		(&I,sizeof(I));
+	I.ID = 2; strcpy(I.str,"ADD");	FS.write		(&I,sizeof(I));
+
+	// A-ref
 	BP_WRITE		("Alpha ref",	BPID_INTEGER,	oAREF);
 }
 
 void	CBlender_Screen_SET::Load	( CStream& FS	)
 {
 	CBlender::Load	(FS);
+
+	// Blend mode
+	BP_TOKEN::Item	I;
+	BP_READ			(BPID_TOKEN,		oBlend);
+	for (DWORD it=0; it<oBlend.Count)	FS.read		(&I,sizeof(I));
+	
+	// A-ref
 	BP_READ			(BPID_INTEGER,		oAREF);
 }
 
