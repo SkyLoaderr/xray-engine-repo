@@ -151,8 +151,8 @@ void CRenderTarget::e_render_duality()
 	float		shift				= param_duality*.5f;
 
 	Fvector2	r0,r1,l0,l1;
-	r0.set(0,0);		r1.set(1-shift,1);
-	l0.set(0+shift,0);	l1.set(1,1);
+	r0.set(0.f,0.f);		r1.set(1.f-shift,1.f);
+	l0.set(0.f+shift,0.f);	l1.set(1.f,1.f);
 
 	u32			_w					= Device.dwWidth;
 	u32			_h					= Device.dwHeight;
