@@ -256,9 +256,9 @@ function action_sit:initialize ()
     if self.object:active_item () ~= nil then
        self.object:set_item (object.deactivate, self.object:active_item ())
     end   
-    self.object:add_animation ("waunded_sitdawn_0", true)
+    self.object:add_animation ("idle_to_wounded_0", true)
     --self.object:add_animation ("waunded_perehod_0", true)
-    self.object:add_animation ("waunded_idle_0", true)
+    self.object:add_animation ("wounded_idle_0", true)
 end
 ------------
 function action_sit:execute ()
@@ -278,7 +278,7 @@ end
 function action_sit:finalize ()
     action_base.finalize (self)
     this.hide_yourself(self.object)
-    self.object:add_animation ("waunded_idle_0", true)
+    self.object:add_animation ("wounded_idle_0", true)
 end    
 ------------------------------------------------------------------------------------------
 
@@ -301,7 +301,7 @@ end
 function action_idle:initialize ()
     action_base.initialize (self)
     self.object:set_movement_type         (move.stand)
-    self.object:add_animation ("waunded_idle_0", true)
+    self.object:add_animation ("wounded_idle_0", true)
     xr_meet.override_meet (self.object, true)
     self.send_time = device ():time_global ()
     
@@ -315,7 +315,7 @@ function action_idle:execute ()
     end   
 
     if self.object:animation_count () < 2 then 
-       self.object:add_animation ("waunded_idle_0", true)
+       self.object:add_animation ("wounded_idle_0", true)
     end    
     
     if self.object:is_talking () == false then
@@ -397,11 +397,11 @@ function action_help:execute ()
        end     
        self.first = true
        self.object:clear_animations ()
-       self.object:add_animation ("waunded_ruka_0", true)
+       self.object:add_animation ("wounded_ruka_0", true)
     end
         
     if self.object:animation_count () < 2 then 
-       self.object:add_animation ("waunded_idle_0", true)
+       self.object:add_animation ("wounded_idle_0", true)
     end    
 
     if self.object:is_talking () == false then
@@ -467,7 +467,7 @@ function action_stand:execute ()
        printf ("STAGE 0")
        self.stage = 1
        self.object:clear_animations ()
-       self.object:add_animation ("waunded_stand_up_0", true)
+       self.object:add_animation ("wounded_to_idle_0", true)
        xr_sound.sound_update (self.object, self.sounds, true)
        return
     end
@@ -563,7 +563,7 @@ function action_enemy:finalize ()
     action_base.finalize (self)
     self.object:set_item (object.deactivate, self.object:best_weapon ()) 
     self.object:clear_animations ()
-    self.object:add_animation ("waunded_idle_0", true)
+    self.object:add_animation ("wounded_idle_0", true)
     xr_meet.override_meet (self.object, false)
 end    
 ------------------------------------------------------------------------------------------
