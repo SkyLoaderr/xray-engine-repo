@@ -58,22 +58,30 @@ struct	hdrNODES
 class NodePosition {
 	u8	data[5];
 	
-	void xz	(u32 value)
+	IC	void xz	(u32 value)
 	{
 		Memory.mem_copy	(data,&value,3);
 	}
 
-	void y	(u16 value)
+	IC	void y	(u16 value)
 	{
 		Memory.mem_copy	(data + 3,&value,2);
 	}
 
 public:
-	u32	xz	() const
+	IC	u32	xz	() const
 	{
 		return			((*((u32*)data)) & 0x00ffffff);
 	}
-	u32	y	() const
+	IC	u32	x	(u32 row) const
+	{
+		return			(xz() / row);
+	}
+	IC	u32	z	(u32 row) const
+	{
+		return			(xz() % row);
+	}
+	IC	u32	y	() const
 	{
 		return			(*((u16*)(data + 3)));
 	}
@@ -88,7 +96,7 @@ public:
 	u8				data[11];
 private:
 	
-	void link(u8 link_index, u32 value)
+	IC	void link(u8 link_index, u32 value)
 	{
 		value			&= 0x001fffff;
 		switch (link_index) {
@@ -118,7 +126,7 @@ private:
 		}
 	}
 	
-	void light(u8 value)
+	IC	void light(u8 value)
 	{
 		data[10]		|= value << 4;
 	}
@@ -128,7 +136,7 @@ public:
 	u16				plane;
 	NodePosition	p;
 
-	u32	link(u8 index) const
+	IC	u32	link(u8 index) const
 	{
 		switch (index) {
 			case 0 :	return	((*(u32*)data) & 0x001fffff);
@@ -142,7 +150,7 @@ public:
 #endif
 	}
 	
-	u8	light() const
+	IC	u8	light() const
 	{
 		return			(data[10] >> 4);
 	}
