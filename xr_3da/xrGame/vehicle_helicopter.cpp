@@ -42,18 +42,17 @@ void CVehicleHelicopter::reload				(LPCSTR section)
 
 BOOL CVehicleHelicopter::net_Spawn			(LPVOID DC)
 {
+	if (!inherited::net_Spawn(DC))
+		return			(FALSE);
+
 	// assigning m_animator here
 	CSE_Abstract		*abstract=(CSE_Abstract*)(DC);
 	CSE_ALifeHelicopter	*heli	= dynamic_cast<CSE_ALifeHelicopter*>(abstract);
 	VERIFY				(heli);
 
-	cNameVisual_set		(heli->get_visual());
-	if (!inherited::net_Spawn(DC))
-		return			(FALSE);
-
-	R_ASSERT(Visual()&&PKinematics(Visual()));
-	CSkeletonAnimated* A= PSkeletonAnimated(Visual());
-	if(A){
+	R_ASSERT			(Visual()&&PKinematics(Visual()));
+	CSkeletonAnimated	*A= PSkeletonAnimated(Visual());
+	if (A) {
 		A->PlayCycle	(*heli->startup_animation);
 		A->Calculate	();
 	}
@@ -72,7 +71,6 @@ BOOL CVehicleHelicopter::net_Spawn			(LPVOID DC)
 void CVehicleHelicopter::net_Destroy		()
 {
 	inherited::net_Destroy();
-	xr_delete			(m_animator);
 }
 
 void CVehicleHelicopter::net_Export			(NET_Packet &P)
