@@ -169,7 +169,7 @@ void CWeaponRPG7Grenade::Explode(const Fvector &pos, const Fvector &normal)
 	while(m_blasted.size()) {
 		CGameObject *l_pGO = *m_blasted.begin();
 		Fvector l_goPos; if(l_pGO->Visual()) l_pGO->clCenter(l_goPos); else l_goPos.set(l_pGO->Position());
-		l_dir.sub(l_goPos, vPosition); l_dst = l_dir.magnitude(); l_dir.div(l_dst); l_dir.y += .2f;
+		l_dir.sub(l_goPos, vPosition); l_dst = l_dir.magnitude(); l_dir.div(l_dst); 
 		f32 l_S = (l_pGO->Visual()?l_pGO->Radius()*l_pGO->Radius():0);
 		if(l_pGO->Visual()) {
 			const Fbox &l_b1 = l_pGO->BoundingBox(); Fbox l_b2; l_b2.invalidate();
@@ -185,6 +185,7 @@ void CWeaponRPG7Grenade::Explode(const Fvector &pos, const Fvector &normal)
 			setEnabled(true);
 		}
 		if(l_impuls > .001f) while(l_elsemnts.size()) {
+			l_dir.y += .2f;
 			s16 l_element = *l_elsemnts.begin();
 			Fvector l_bs_pos = *l_bs_positions.begin();
 			NET_Packet		P;

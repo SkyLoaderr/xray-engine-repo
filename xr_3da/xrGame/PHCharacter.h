@@ -163,6 +163,7 @@ virtual		~CPHCharacter									(void)				;
 
 class CPHSimpleCharacter : public CPHCharacter {
 
+
 /////////////////CPHObject//////////////////////////////////////////////
 virtual		void		PhDataUpdate						(dReal step)		;
 virtual		void		PhTune								(dReal step)		;
@@ -170,6 +171,7 @@ virtual		void		InitContact							(dContact* c)		;
 virtual		void		StepFrameUpdate						(dReal step)		;
 /////////////////CPHCharacter////////////////////////////////////////////
 public:
+virtual ~CPHSimpleCharacter(){};
 virtual		bool		ContactWas							(){if(b_meet_control) 
 																{b_meet_control=false;return true;}
 																else return false	;}
@@ -215,5 +217,14 @@ virtual		bool		TryPosition							(Fvector pos)	{}	;
 virtual		void		SetPhysicsRefObject					(CPhysicsRefObject* ref_object){};
 };
 
+class CPHStalkerCharacter : public CPHSimpleCharacter
+{
+typedef CPHSimpleCharacter	inherited;
 
-//class CPHStalkerCharacter : public CPHCharacter 
+Fvector m_vDesiredPosition;
+public:
+
+//virtual void Calculate();
+
+
+};

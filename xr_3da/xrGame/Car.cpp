@@ -557,26 +557,70 @@ m_pPhysicsShell=P_create_Shell();
 
 static const dReal scaleParam=1.f;
 static const dVector3 scaleBox={scaleParam, scaleParam, scaleParam};
-dVector3 jeepBox,cabinBox,startPosition;
-//jeepBox={scaleBox[0],scaleBox[0],scaleBox[0]};
-//jeepBox[0]=REAL(4.2)*scaleBox[0];jeepBox[1]=REAL(1.)*scaleBox[1];jeepBox[2]=REAL(2.08)*scaleBox[2];
-jeepBox[0]=REAL(3.680)*scaleBox[0];jeepBox[1]=REAL(0.612)*scaleBox[1];jeepBox[2]=0.88f*2.f*scaleBox[2];
-//cabinBox[0]=scaleBox[0]*1.9f;cabinBox[1]=scaleBox[1]*0.6f;cabinBox[2]=scaleBox[2]*2.08f;
-cabinBox[0]=scaleBox[0]*1.7f;cabinBox[1]=scaleBox[1]*0.66f;cabinBox[2]=scaleBox[2]*2.f*0.76f;
+Fobb jeepBox,cabinBox;
+//Fcylinder w_bl,w_br,w_fl,w_fr;
+Fcylinder wheel;
+jeepBox.m_halfsize.x =REAL(3.680)*scaleBox[0]/2.f;jeepBox.m_halfsize.y=REAL(0.612)*scaleBox[1]/2.f;jeepBox.m_halfsize.z=0.88f*2.f*scaleBox[2]/2.f;
+
+cabinBox.m_halfsize.x=scaleBox[0]*1.7f/2.f;cabinBox.m_halfsize.y=scaleBox[1]*0.66f/2.f;cabinBox.m_halfsize.z=scaleBox[2]*2.f*0.76f/2.f;
 
 static const dReal wheelRadius = 0.345f* scaleParam;
-///////////////////////////////////////////////
+
+Fmatrix m;
+m.identity();
+
+jeepBox.m_rotate.set(m);
+cabinBox.m_rotate.set(m);
+jeepBox.m_translate.set(0,0,0);
+cabinBox.m_translate.set(0,0,0);
+cabinBox.m_translate.x+=-jeepBox.m_halfsize.x+cabinBox.m_halfsize.x+0.55f;
+cabinBox.m_translate.y+=cabinBox.m_halfsize.y+jeepBox.m_halfsize.y;
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//w_bl.m_radius=w_fr.m_radius=w_fl.m_radius=w_fr.m_radius=wheelRadius;
+//w_bl.m_rotate.set(m);w_br.m_rotate.set(m);w_fl.m_rotate.set(m);w_fr.m_rotate.set(m);
+//w_bl.m_translate.set(0,0,0);w_br.m_translate.set(0,0,0);w_fl.m_translate.set(0,0,0);w_fr.m_translate.set(0,0,0);
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+wheel.m_radius=wheelRadius;
+wheel.m_halflength=0.19f/2.f;
+wheel.m_rotate.identity();
+wheel.m_translate.set(0,0,0);
+/////////////////////////////////////////////////////////////////////
 VelocityRate=3.f;
 DriveForce=0;
 DriveVelocity=12.f * M_PI;
 DriveDirection=0;
 Breaks=false;
 ///////////////////////////////////
-startPosition[0]=10.0f;startPosition[1]=1.f;startPosition[2]=0.f;
-//static const dReal weelSepX=scaleBox[0]*2.74f/2.f,weelSepZ=scaleBox[2]*1.7f/2.f,weelSepY=scaleBox[1]*0.6f;
+
 static const dReal weelSepXF=scaleBox[0]*1.32f,weelSepXB=scaleBox[0]*1.155f,weelSepZ=scaleBox[2]*1.53f/2.f,weelSepY=scaleBox[1]*0.463f;
 static const dReal cabinSepX=scaleBox[0]*0.61f,cabinSepY=scaleBox[1]*0.55f;
 dReal MassShift=0.25f;
+
+
+
+CPhysicsElement* E,*R;
+int id;
+CKinematics* M		= PKinematics(pVisual);			VERIFY(M);
+m_pPhysicsShell->set_Kinematics(M);
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+E=	P_create_Element				();
+E->mXFORM.set(m);
+(M->LL_GetInstance(id)).set_callback(m_pPhysicsShell->GetBonesCallback(),E);
+
+id=M->LL_BoneID("phy_body");
+//CBoneInstance& instance=M->LL_GetInstance				(id);
+
+//E->add_Box(M->LL_GetBox(id));
+E->add_Box(jeepBox);
+E->add_Box(cabinBox);
+E->setMass(800.f);
+m_pPhysicsShell->add_Element(E);
+E->SetMaterial("materials\\car_cabine");
+R=E;
 
 // car body
 //dMass m;
@@ -605,9 +649,9 @@ dReal MassShift=0.25f;
 //dMassSetSphere(&m, 1, wheelRadius); // density, radius
 //dMassAdjust(&m, 20); // mass
 
-u32 i;
-for(i = 1; i <= 4; ++i)
-{
+//u32 i;
+//for(i = 1; i <= 4; ++i)
+//{
 	
 	//dBodySetMass(Bodies[i], &m);
 		
@@ -615,7 +659,7 @@ for(i = 1; i <= 4; ++i)
 	
 //	dGeomGetUserData(Geoms[i])->material=GMLib.GetMaterialIdx("materials\\rubber");
 
-}
+//}
 
 
 
@@ -628,7 +672,7 @@ for(i = 1; i <= 4; ++i)
 
 
 // wheel joints
-for(i = 0; i < 4; ++i)
+for(int i = 0; i < 4; ++i)
 {
 	
 //	dJointAttach(Joints[i], Bodies[0], Bodies[i+1]);
@@ -652,6 +696,19 @@ for(i = 0; i < 4; ++i)
 //	dJointSetHinge2Param(Joints[i], dParamSuspensionERP, h*k_p / (h*k_p + k_d));
 //	dJointSetHinge2Param(Joints[i], dParamSuspensionCFM, 1.f / (h*k_p + k_d));
 
+	E=	P_create_Element				();
+	E->mXFORM.set(m);
+	(M->LL_GetInstance(id)).set_callback(m_pPhysicsShell->GetBonesCallback(),E);
+
+	id=M->LL_BoneID("phy_body");
+	//CBoneInstance& instance=M->LL_GetInstance				(id);
+
+	//E->add_Box(M->LL_GetBox(id));
+	E->add_Box(jeepBox);
+	E->add_Box(cabinBox);
+	E->setMass(800.f);
+	m_pPhysicsShell->add_Element(E);
+	E->SetMaterial("materials\\car_cabine");
 }
 
 

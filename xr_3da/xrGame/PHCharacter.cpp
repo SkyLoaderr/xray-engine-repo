@@ -98,6 +98,7 @@ void CPHSimpleCharacter::Create(dVector3 sizes){
 if(b_exist) return;
 
 ////////////////////////////////////////////////////////
+/*
 m_control_force[0]=0.f;
 m_control_force[1]=0.f;
 m_control_force[2]=0.f;
@@ -131,6 +132,7 @@ m_contact_velocity=0.f;
 previous_p[0]=dInfinity;
 dis_count_f=0;
 //////////////////////////
+*/
 m_radius=_min(sizes[0],sizes[2])/2.f;
 m_cyl_hight=sizes[1]-2.f*m_radius;
 if (m_cyl_hight<0.f) m_cyl_hight=0.01f;
@@ -371,7 +373,7 @@ void CPHSimpleCharacter::PhTune(dReal step){
 	b_stop_control=was_control&&(!is_control);
 	b_meet=(!was_contact)&&(is_contact);
 	if(b_lose_control&&is_contact)b_meet_control=true;
-	b_on_ground=is_contact||(b_meet&&(!b_depart));
+	b_on_ground=b_valide_ground_contact||(b_meet&&(!b_depart));
 
 
 	if(b_at_wall ) {
@@ -388,10 +390,11 @@ void CPHSimpleCharacter::PhTune(dReal step){
 		Memory.mem_copy(m_depart_position,dBodyGetPosition(m_body),sizeof(dVector3));
 
 	const dReal* velocity=dBodyGetLinearVel(m_body);
-	if(is_contact&& !b_external_impulse && dSqrt(velocity[0]*velocity[0]+velocity[2]*velocity[2])<5.) 
+	if(b_lose_control&&b_on_ground&&m_ground_contact_normal[1]>M_SQRT1_2/2.f&& !b_external_impulse && dSqrt(velocity[0]*velocity[0]+velocity[2]*velocity[2])<5.) 
 																			b_lose_control=false;
 
-	if(b_valide_ground_contact&&m_ground_contact_normal[1]>M_SQRT1_2 ||(b_at_wall&&b_valide_wall_contact)) b_jumping=false;
+	if(b_jumping&&b_valide_ground_contact&&m_ground_contact_normal[1]>M_SQRT1_2 ||(b_at_wall&&b_valide_wall_contact)) 
+                 																								b_jumping=false;
 
 //deside if control lost
 	if(!b_on_ground){
@@ -831,7 +834,13 @@ if( m_acceleration.y>0.f&&!b_lose_control && (m_ground_contact_normal[1]>0.5f||b
 
 void CPHSimpleCharacter::ApplyAcceleration() 
 {
-
+	if (Level().iGetKeyState(DIK_RSHIFT))
+	{
+	//	__asm int 3
+	int i;
+	i=5;
+	i=i;
+	}
 
 dMass m;
 dBodyGetMass(m_body,&m);
@@ -1206,7 +1215,7 @@ EEnvironment	 CPHWheeledCharacter::CheckInvironment(){
 }
 
 void	CPHCharacter::Disable(){
-
+				if(b_lose_control) return;
 /////////////////////////////////////////////////////////////////////////////////////
 ////////disabling main body//////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////
