@@ -177,17 +177,19 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 				Fvector					nPos = Position();
 				int node				= getAI().q_LoadSearch(nPos);
 
+				CPhysicObject			*l_tpPhysicObject = dynamic_cast<CPhysicObject*>(this);
 				if (node<=0)			{
-					Msg					("! ERROR: AI node not found for object '%s'. (%f,%f,%f)",cName(),nPos.x,nPos.y,nPos.z);
-					R_ASSERT3			(!getAI().bfCheckIfMapLoaded(),"Cannot find a proper node for object ",cName());
-					AI_NodeID			= u32(-1);
-					AI_Node				= NULL;
+					if (!l_tpPhysicObject) {
+						Msg					("! ERROR: AI node not found for object '%s'. (%f,%f,%f)",cName(),nPos.x,nPos.y,nPos.z);
+						R_ASSERT3			(!getAI().bfCheckIfMapLoaded(),"Cannot find a proper node for object ",cName());
+						AI_NodeID			= u32(-1);
+						AI_Node				= NULL;
+					}
 				}
 				else {
 					AI_NodeID			= u32(node);
 					AI_Node				= getAI().Node(AI_NodeID);
 					getAI().ref_add		(AI_NodeID);
-					CPhysicObject		*l_tpPhysicObject = dynamic_cast<CPhysicObject*>(this);
 					if (!l_tpPhysicObject) {
 						CHangingLamp	*l_tpHangingLamp = dynamic_cast<CHangingLamp*>(this);
 						if (!l_tpHangingLamp)

@@ -43,8 +43,8 @@ void test					(_Graph *graph, const xr_vector<SPathParams> &path_params, _dist_t
 	u64						start, finish;
 	u32						test_count = path_params.size();
 	
-	SetPriorityClass		(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
-	SetThreadPriority		(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
+//	SetPriorityClass		(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
+//	SetThreadPriority		(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
 	Sleep					(1);
 	
 	start					= CPU::GetCycleCount();
@@ -92,8 +92,8 @@ void test					(_Graph *graph, const xr_vector<SPathParams> &path_params, _dist_t
 	u64						start, finish;
 	u32						test_count = path_params.size();
 	
-	SetPriorityClass		(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
-	SetThreadPriority		(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
+//	SetPriorityClass		(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
+//	SetThreadPriority		(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
 	Sleep					(1);
 	
 	start					= CPU::GetCycleCount();
@@ -235,8 +235,8 @@ void test_all				(LPCSTR caLevelName, u32 test_count, _dist_type min_value, _dis
 	test<CDataStorageMultiBinaryHeap<4,							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
 	test<CDataStorageCheapList		<32,true,true,				_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
 	test<CDataStorageBucketList		<8*1024,false,				_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value,max_value);
-	test<CDataStoragePriorityQueue	<boost::fibonacci_heap,		_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
-	test<CDataStoragePriorityQueue	<boost::pairing_heap,		_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
+//	test<CDataStoragePriorityQueue	<boost::fibonacci_heap,		_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
+//	test<CDataStoragePriorityQueue	<boost::pairing_heap,		_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
 
 	xr_delete				(graph);
 }
@@ -245,9 +245,9 @@ void test_all				(LPCSTR caLevelName, u32 test_count, _dist_type min_value, _dis
 
 void path_test				(LPCSTR caLevelName)
 {
-	test_all<CAI_Map>					(caLevelName,TEST_COUNT,float(0),float(2000));
+//	test_all<CAI_Map>					(caLevelName,TEST_COUNT,float(0),float(2000));
 	test_all<CSE_ALifeGraph>			(caLevelName,TEST_COUNT,float(0),float(2000));
 	test_all<CTestTable<u32,30,30> >	(caLevelName,TEST_COUNT,u32(0),u32(60));
-	test_all<CTestTable<u32,300,300> >	(caLevelName,TEST_COUNT,u32(0),u32(600));
-	test_all<CTestTable<u32,900,900> >	(caLevelName,TEST_COUNT,u32(0),u32(1800));
+//	test_all<CTestTable<u32,300,300> >	(caLevelName,TEST_COUNT,u32(0),u32(600));
+//	test_all<CTestTable<u32,900,900> >	(caLevelName,TEST_COUNT,u32(0),u32(1800));
 }
