@@ -134,7 +134,7 @@ void CLightPPA_Manager::Render()
 
 	// Clean up
 	container.clear		();
-	CHK_DX				(HW.pDevice->LightEnable(LID_HELPER,TRUE));
+	CHK_DX				(HW.pDevice->LightEnable(LID_HELPER,FALSE));
 
 	// Projection
 	Device.mProject._43 = _43;
