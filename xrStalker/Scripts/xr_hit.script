@@ -38,6 +38,6 @@ function set_hit_checker(npc, ini, scheme, section)
 end
 
 function disable_scheme(npc, scheme)
-	npc:clear_callback(callback.hit);
+	npc:set_callback(callback.hit, nil);
 end
 

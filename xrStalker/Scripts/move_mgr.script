@@ -401,7 +401,7 @@ function move_mgr:update()
 end
 
 function move_mgr:finalize(npc)
-	self.object:clear_callback(game_object.movement)
+	self.object:set_callback(game_object.movement, nil)
 
 	self:reset_sl() -- отпустить прожектор
 end

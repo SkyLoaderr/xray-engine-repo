@@ -276,7 +276,7 @@ end
 function action_follow:finalize ()
     action_base.finalize (self)
     self.object:clear_animations ()
-    self.object:clear_callback (callback.patrol_path_in_point)
+    self.object:set_callback (callback.patrol_path_in_point, nil)
 end
 --------------
 function action_follow:move_callback (obj, action_type, index)

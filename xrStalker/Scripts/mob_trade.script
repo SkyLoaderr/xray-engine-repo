@@ -93,9 +93,9 @@ end
 
 function disable_scheme(npc, scheme)
 	if npc:clsid() == clsid.trader then
-		npc:clear_callback(callback.trade_start)
-		npc:clear_callback(callback.trade_stop)
-		npc:clear_callback(callback.trade_perform_operation)
+		npc:set_callback(callback.trade_start, nil)
+		npc:set_callback(callback.trade_stop, nil)
+		npc:set_callback(callback.trade_perform_operation, nil)
 	end
 end
 

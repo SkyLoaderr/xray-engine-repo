@@ -86,8 +86,8 @@ function zone_binder:net_spawn( server_object )
 end
 
 function zone_binder:net_destroy()
-	self.object:clear_callback( callback.zone_enter )
-	self.object:clear_callback( callback.zone_exit )
+	self.object:set_callback( callback.zone_enter, nil )
+	self.object:set_callback( callback.zone_exit, nil )
 
 	table.foreach( self.managers, function( k, v ) if v.destroy then v:destroy() end end )
 

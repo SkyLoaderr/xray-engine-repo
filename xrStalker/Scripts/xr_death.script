@@ -44,6 +44,6 @@ function set_death_checker(npc, ini, scheme, section)
 end
 
 function disable_scheme(npc, scheme)
-	npc:clear_callback(callback.death)
+	npc:set_callback(callback.death, nil)
 end
 
