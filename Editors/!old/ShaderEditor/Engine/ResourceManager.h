@@ -144,7 +144,8 @@ public:
 	Shader*							_lua_Create			(LPCSTR		s_shader,	LPCSTR s_textures);
 	BOOL							_lua_HasShader		(LPCSTR		s_shader);
 
-	CResourceManager						() : bDeferredLoad(TRUE), m_description(0)	{	}
+	CResourceManager						()	: bDeferredLoad(TRUE), m_description(0)	{	}
+	~CResourceManager						()	;
 
 	void			OnDeviceCreate			(IReader* F);
 	void			OnDeviceCreate			(LPCSTR name);

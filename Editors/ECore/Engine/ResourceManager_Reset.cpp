@@ -72,3 +72,15 @@ void	CResourceManager::reset_end				()
 			v_states[_it]->state = v_states[_it]->state_code.record();
 	}
 }
+
+void	CResourceManager::~CResourceManager		()
+{
+	Msg		("* RM_Dump: textures : %d",m_textures.size());
+	Msg		("* RM_Dump: rtargets : %d",m_rtargets.size());
+	Msg		("* RM_Dump: rtargetsc: %d",m_rtargets_c.size());
+	Msg		("* RM_Dump: vs       : %d",m_vs.size());
+	Msg		("* RM_Dump: ps       : %d",m_ps.size());
+	Msg		("* RM_Dump: dcl      : %d",v_declarations.size());
+	Msg		("* RM_Dump: states   : %d",v_states.size());
+}
+
