@@ -5,6 +5,7 @@ function main ()
 	local dummy = get_level_object ("dummy")
 
     flesh:script (true, military1_1.script_name())
+	dummy:script (true, military1_1.script_name())
 
     action (flesh, move (move.act_eat, dummy), cond (cond.time_end, 10000000))
 
