@@ -5854,6 +5854,9 @@
 							<File
 								RelativePath=".\holder_custom.h">
 							</File>
+							<File
+								RelativePath=".\holder_custom_script.cpp">
+							</File>
 						</Filter>
 						<Filter
 							Name="UsableScriptObject"

@@ -91,6 +91,7 @@
 #	include "console_registrator.h"
 #	include	"PhysicsShell.h"
 #	include	"HangingLamp.h"
+#	include "holder_custom.h"
 #	include "script_task.h"
 #	include "script_string_table.h"
 #	include "client_spawn_manager.h"

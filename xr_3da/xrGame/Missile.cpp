@@ -499,6 +499,7 @@ void CMissile::OnEvent(NET_Packet& P, u16 type)
 			CMissile		*missile = smart_cast<CMissile*>(Level().Objects.net_Find(id));			
 			m_fake_missile	= missile;
 			missile->H_SetParent(this);
+			missile->Position().set(Position());
 			MSG1("take");
 			//Msg("id [%d]",id);
 			break;
@@ -522,8 +523,8 @@ void CMissile::OnEvent(NET_Packet& P, u16 type)
 			missile->H_SetParent(0);
 			break;
 		}
-		case GE_DESTROY:
-			MSG1("event destroy");
+		//case GE_DESTROY:
+		//	MSG1("event destroy");
 	}
 }
 

@@ -7,7 +7,9 @@
 #include "DestroyablePhysicsObject.h"
 #include "../SkeletonCustom.h"
 #include "xrServer_Objects_ALife.h"
-
+#include "game_object_space.h"
+#include "script_callback_ex.h"
+#include "script_game_object.h"
 CDestroyablePhysicsObject ::CDestroyablePhysicsObject()
 {
 	m_fHealth=100.f;
@@ -68,6 +70,13 @@ BOOL CDestroyablePhysicsObject::net_Spawn(CSE_Abstract* DC)
 
 void CDestroyablePhysicsObject::Hit							(float P,Fvector &dir,CObject *who,s16 element,Fvector p_in_object_space, float impulse,  ALife::EHitType hit_type)
 {
+	callback(GameObject::eHit)(
+		lua_game_object(), 
+		P,
+		dir,
+		smart_cast<const CGameObject*>(who)->lua_game_object(),
+		element
+		);
 	P=CHitImmunity::AffectHit(P,hit_type);
 	float hit_scale=1.f,wound_scale=1.f;
 	CDamageManager::HitScale(element,hit_scale,wound_scale);

@@ -74,7 +74,7 @@ class CScriptIniFile;
 class CPhysicsShell;
 class CHelicopter;
 class CHangingLamp;
-
+class CHolderCustom;
 struct ScriptCallbackInfo;
 
 class CScriptGameObject {
@@ -422,7 +422,7 @@ public:
 			CHelicopter*		get_helicopter			();
 			//LAMP
 			CHangingLamp*		get_hanging_lamp		();
-			
+			CHolderCustom*		get_custom_holder		();
 			Fvector				bone_position			(LPCSTR bone_name) const;
 			bool				is_body_turning			() const;
 			CPhysicsShell*		get_physics_shell		() const;

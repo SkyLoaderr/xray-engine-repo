@@ -15,6 +15,7 @@
 #include "script_entity.h"
 #include "physicsshellholder.h"
 #include "helicopter.h"
+#include "holder_custom.h"
 #include "inventoryowner.h"
 #include "movement_manager.h"
 #include "entity_alive.h"
@@ -158,6 +159,15 @@ CHangingLamp* CScriptGameObject::get_hanging_lamp()
 		NODEFAULT;
 	}
 	return lamp;
+}
+
+CHolderCustom* CScriptGameObject::get_custom_holder()
+{
+	CHolderCustom* holder=smart_cast<CHolderCustom*>(&object());
+	if(!holder){
+		ai().script_engine().script_log(ScriptStorage::eLuaMessageTypeError,"CGameObject : it is not a holder!");
+	}
+	return holder;
 }
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////

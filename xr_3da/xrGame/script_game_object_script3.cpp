@@ -30,6 +30,7 @@
 #include "PhysicsShell.h"
 #include "helicopter.h"
 #include "HangingLamp.h"
+#include "holder_custom.h"
 #include "script_zone.h"
 #include "relation_registry.h"
 
@@ -211,7 +212,7 @@ class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject
 		.def("get_helicopter",              &CScriptGameObject::get_helicopter)
 		.def("get_hanging_lamp",            &CScriptGameObject::get_hanging_lamp)
 		.def("get_physics_shell",			&CScriptGameObject::get_physics_shell)
-
+		.def("get_holder_class",			&CScriptGameObject::get_custom_holder)
 		//usable object
 		.def("set_tip_text",				&CScriptGameObject::SetTipText)
 		.def("set_tip_text_default",		&CScriptGameObject::SetTipTextDefault)

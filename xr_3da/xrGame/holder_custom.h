@@ -2,6 +2,8 @@
 
 //#include "gameobject.h"
 
+#include "script_export_space.h"
+
 class CInventory;
 class CActor;
 class CCameraBase;
@@ -14,9 +16,9 @@ private:
 protected:
 	CActor*					Owner				(){return m_owner;}
 public:
-							CHolderCustom		(){m_owner=0;}
-	virtual					~CHolderCustom		(){;}
-
+							CHolderCustom		()				{m_owner=0;}
+	virtual					~CHolderCustom		()				{;}
+			bool			Engaged				()				{return m_owner!=NULL;}
 	virtual void			OnMouseMove			(int x, int y)	= 0;
 	virtual void			OnKeyboardPress		(int dik)		= 0;
 	virtual void			OnKeyboardRelease	(int dik)		= 0;
@@ -33,4 +35,9 @@ public:
 	virtual Fvector			ExitPosition		()				= 0;
 
 	virtual CCameraBase*	Camera				()				= 0;
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+
+add_to_type_list(CHolderCustom)
+#undef script_type_list
+#define script_type_list save_type_list(CHolderCustom)
