@@ -137,7 +137,7 @@ public:
 				F->r_string		(str);
 				Console.Execute	(str);
 			}
-			FS.r_close(F)
+			FS.r_close(F);
 		} else {
 			Log("! Cannot open script file.");
 		}

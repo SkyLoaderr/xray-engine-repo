@@ -40,7 +40,7 @@ public:
 	virtual void	Info	(TInfo& I)		{ strcpy(I,"no arguments"); }
 	virtual void	Save	(IWriter *F)	{
 		TStatus		S;	Status(S);
-		if (S[0])	F->w_printf("%s %s\n",cName,S);
+		if (S[0])	F->w_printf("%s %s\n",cName,S); 
 	}
 };
 
