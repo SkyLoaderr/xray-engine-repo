@@ -95,9 +95,6 @@ bool CMotionManager::PrepareAnimation()
 
 	if (pJumping && pJumping->IsActive())  return pJumping->PrepareAnimation(&m_tpCurAnim);
 	
-	ValidateAnimation();
-
-	
 	if (0 != m_tpCurAnim) return false;
 	
 	if (TA_IsActive() && pCurAnimTriple->prepare_animation(&m_tpCurAnim)) return true;
@@ -747,6 +744,7 @@ void CMotionManager::ValidateAnimation()
 	if (angle_diff < deg(1) && ((item_it->first == eAnimStandTurnLeft) || (item_it->first == eAnimStandTurnRight))) {
 		m_tpCurAnim					= 0;
 		cur_anim_info().motion		= eAnimStandIdle;
+		return;
 	}
 }
 
@@ -799,4 +797,7 @@ void CMotionManager::FrameUpdate()
 		if (m_cur_anim.speed.current < 0) m_cur_anim.speed.current = 0.f;
 		velocity_lerp(m_cur_anim.speed.current, m_cur_anim.speed.target, ANIM_CHANGE_SPEED_VELOCITY, Device.fTimeDelta);
 	} else m_cur_anim.speed.current = -1.f;
+
+	Update				();	
+	ValidateAnimation	();
 }

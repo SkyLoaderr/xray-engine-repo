@@ -170,4 +170,3 @@ void CZombie::shedule_Update(u32 dt)
 	}
 	
 }
-
