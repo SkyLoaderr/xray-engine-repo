@@ -699,7 +699,7 @@ void	CalcGauss	(
 	for (i=0; i<w.size(); i++)	mag		+= w[i];
 	for (i=0; i<w.size(); i++)	w[i]	= s_out*w[i]/mag;
 
-	// ex
+	// exploit symmetry : offsets
 }
 
 HRESULT CMyD3DApplication::RestoreDeviceObjects()
