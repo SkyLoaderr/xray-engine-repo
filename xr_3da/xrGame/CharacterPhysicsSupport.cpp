@@ -23,6 +23,9 @@ CCharacterPhysicsSupport::CCharacterPhysicsSupport(EType atype,CEntityAlive* aen
 	//}
 m_eType=atype;
 m_eState=esAlive;
+b_death_anim_on					= false;
+m_pPhysicsShell					= NULL;
+m_saved_impulse					= 0.f;
 };
 
 void CCharacterPhysicsSupport::Activate()
@@ -78,9 +81,9 @@ void CCharacterPhysicsSupport::in_NetDestroy()
 
 void CCharacterPhysicsSupport::in_Init()
 {
-	b_death_anim_on					= false;
-	m_pPhysicsShell					= NULL;
-	m_saved_impulse					= 0.f;
+	//b_death_anim_on					= false;
+	//m_pPhysicsShell					= NULL;
+	//m_saved_impulse					= 0.f;
 }
 
 void CCharacterPhysicsSupport::in_shedule_Update(u32 DT )
