@@ -677,17 +677,18 @@ begin
 	// only set this to true if you have at least the ISUS Professional Edition.
 	bShowUpdateServiceDlg = FALSE;
 
+	// configure server
+	if (FeatureIsItemSelected(MEDIA,"MSDE")) then
+		ConfigureServer();
+	endif;
+         
 	// Delete ServiceManager icon
     DeleteFolderIcon(FOLDER_STARTUP, "Service Manager");
-         
-//.	BATCH_INSTALL = TRUE;
          
     //{{IS_SCRIPT_TAG(Dlg_SdDinishEx)	
     if ( BATCH_INSTALL ) then
     	SdFinishReboot ( szTitle , szMsg1 , SYS_BOOTMACHINE , szMsg2 , 0 );
     else   
-    	// configure
-		if (FeatureIsItemSelected(MEDIA,"MSDE")) then ConfigureServer(); endif;
 		// finish
 		SdFinish ( szTitle , szMsg1 , szMsg2 , szOpt1 , szOpt2 , bvOpt1 , bvOpt2 );
     endif;
@@ -736,17 +737,4 @@ begin
        	SdFinish ( szTitle , szMsg1 , szMsg2 , szOpt1 , szOpt2 , bvOpt1 , bvOpt2 );
     endif;
 end;
-//---------------------------------------------------------------------------
-// OnRebooted
-//
-// The OnRebooted event is called when the setup is run automatically after
-// rebooting the system. This is the only event that will be called in this
-// case.
-//---------------------------------------------------------------------------
-function OnRebooted()
-begin
-	// configure server (if needed)           
-	if (FeatureIsItemSelected(MEDIA,"MSDE")) then
-		ConfigureServer();
-	endif;
-end;
+
