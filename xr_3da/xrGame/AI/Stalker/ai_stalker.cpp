@@ -59,6 +59,10 @@ void CAI_Stalker::Load				(LPCSTR section)
 	m_fLateralMultiplier			= pSettings->ReadFLOAT(section,"LateralMultiplier");
 	m_fShadowWeight					= pSettings->ReadFLOAT(section,"ShadowWeight");
 
+	m_fCrouchFactor					= pSettings->ReadFLOAT(section,"CrouchFactor");
+	m_fWalkFactor					= pSettings->ReadFLOAT(section,"WalkFactor");
+	m_fRunFactor					= pSettings->ReadFLOAT(section,"RunFactor");
+
 }
 
 BOOL CAI_Stalker::net_Spawn			(LPVOID DC)

@@ -136,5 +136,5 @@ void CAI_Stalker::Searching()
 
 	vfChoosePointAndBuildPath(m_tSelectorFreeHunting);
 
-	vfSetMovementType(eBodyStateStand,eMovementTypeWalk,eLookTypeDirection);
+	vfSetMovementType(eBodyStateStand,eMovementTypeWalk,eLookTypeView);
 }

@@ -40,8 +40,8 @@ LPCSTR caWeaponActionNames	[dwWeaponActionCount] = {
 };
 
 LPCSTR caMovementNames		[dwMovementCount] = {
-	"run_",
 	"walk_",
+	"run_",
 };
 
 LPCSTR caMovementActionNames[dwMovementActionCount] = {
@@ -108,18 +108,6 @@ void __stdcall CAI_Stalker::SpinCallback(CBoneInstance *B)
 	spin.setXYZ				(angle_normalize_signed(A->r_current.pitch - A->r_torso_current.pitch)*p_spin_factor, angle_normalize_signed(-(A->r_current.yaw - A->r_torso_current.yaw)*y_spin_factor), 0);
 	B->mTransform.mulA_43	(spin);
 	B->mTransform.c			= c;
-}
-
-void __stdcall CAI_Stalker::LegsCallback(CBoneInstance *B)
-{
-//	CAI_Stalker*		A = dynamic_cast<CAI_Stalker*> (static_cast<CObject*>(B->Callback_Param));
-	
-//	Fmatrix				spin;
-//	float				bone_yaw	= A->r_torso_current.yaw - A->r_model_yaw - A->r_model_yaw_delta;
-//	float				bone_pitch	= A->r_torso_current.pitch;
-//	clamp				(bone_pitch,-PI_DIV_8,PI_DIV_4);
-//	spin.setXYZ			(bone_yaw,bone_pitch,0);
-//	B->mTransform.mulB_43(spin);
 }
 
 void CAI_Stalker::vfAssignGlobalAnimation(CMotionDef *&tpGlobalAnimation)

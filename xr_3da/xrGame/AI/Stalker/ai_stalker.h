@@ -76,10 +76,13 @@ private:
 	float					m_fVisibilityThreshold;
 	float					m_fLateralMultiplier;
 	float					m_fShadowWeight;
+	ELookType				m_tLookType;
 	// movement
 	EBodyState				m_tBodyState;
 	EMovementType			m_tMovementType;
-	ELookType				m_tLookType;
+	float					m_fCrouchFactor;
+	float					m_fWalkFactor;
+	float					m_fRunFactor;
 
 			void			vfAddStateToList				(EStalkerStates eState);
 			// state machine
@@ -104,7 +107,6 @@ private:
 	static	void __stdcall	HeadCallback					(CBoneInstance *B);
 	static	void __stdcall	ShoulderCallback				(CBoneInstance *B);
 	static	void __stdcall	SpinCallback					(CBoneInstance *B);
-	static	void __stdcall	LegsCallback					(CBoneInstance *B);
 			// look
 			bool			bfCheckForVisibility			(CEntity* tpEntity);
 			void			SetDirectionLook				();

@@ -118,9 +118,11 @@ void CAI_Stalker::vfChoosePointAndBuildPath(CAISelectorBase &tSelector)
 	INIT_SQUAD_AND_LEADER;
 	
 	if (AI_Path.bNeedRebuild)
-		vfBuildPathToDestinationPoint(0);
-	else
-		vfInitSelector(tSelector,Squad,Leader);
+		vfBuildPathToDestinationPoint	(0);
+	else {
+		vfInitSelector					(tSelector,Squad,Leader);
+		vfSearchForBetterPosition		(m_tSelectorFreeHunting,Squad,Leader);
+	}
 }
 
 void CAI_Stalker::vfSetMovementType(EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType)
@@ -128,4 +130,43 @@ void CAI_Stalker::vfSetMovementType(EBodyState tBodyState, EMovementType tMoveme
 	m_tBodyState	= tBodyState;
 	m_tMovementType = tMovementType;
 	m_tLookType		= tLookType;
+	
+	m_fCurSpeed		= 1.f;
+
+	if (AI_Path.TravelPath.size() && ((AI_Path.TravelPath.size() - 2) > AI_Path.TravelStart)) {
+		switch (m_tBodyState) {
+			case eBodyStateCrouch : {
+				m_fCurSpeed *= m_fCrouchFactor;
+				break;
+			}
+			case eBodyStateStand : {
+				break;
+			}
+			default : NODEFAULT;
+		}
+		switch (m_tMovementType) {
+			case eMovementTypeWalk : {
+				m_fCurSpeed *= m_fWalkFactor;
+				break;
+			}
+			case eMovementTypeRun : {
+				m_fCurSpeed *= m_fRunFactor;
+				break;
+			}
+			default : m_fCurSpeed = 0.f;
+		}
+	}
+	else
+		m_fCurSpeed = 0.f;
+	
+	switch (m_tLookType) {
+		case eLookTypeDirection : {
+			SetDirectionLook();
+			break;
+		}
+		case eLookTypeView : {
+			SetLessCoverLook();
+			break;
+		}
+	}
 }
