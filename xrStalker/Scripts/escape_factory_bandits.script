@@ -3,6 +3,9 @@
 Чугай Саша
 
 Сделать:
+    - стоит в бт
+    - не смотрят друг на друга
+    - проверить секцию
     - уразнообразить анимации
     - ходят туда-сюда
 --------------------------------------------------------------------------------------------------------------------]]
@@ -62,17 +65,26 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 class "evaluator_in_pos" (property_evaluator)
 
-function evaluator_in_pos:__init( name, npc ) super ()
+function evaluator_in_pos:__init( name, npc, storage ) super ()
+    self.a = storage
     self.npc = npc
 end
 
 function evaluator_in_pos:evaluate()
---    printf( "p1" )
-    local b = self.npc:level_vertex_id() == self.dest_vert_id
---    if b then sb = "true" else sb = "false" end
---    printf( sb )
---    printf( "p2" )
-    return b
+    return self.npc:level_vertex_id() == self.a.dest_vert_id
+end
+
+---------------------------------------------------------------------------------------------------------------------
+-- Эвалуатор свойства "напарник жив"
+---------------------------------------------------------------------------------------------------------------------
+class "evaluator_partner_alive" (property_evaluator)
+
+function evaluator_partner_alive:__init( name, storage ) super ()
+    self.a = storage
+end
+
+function evaluator_partner_alive:evaluate()
+    return self.a.partner == nil or self.a.partner:alive()
 end
 
 ---------------------------------------------------------------------------------------------------------------------
@@ -94,12 +106,17 @@ end
 
 class "action_go_to_pos" (action_base)
 
-function action_go_to_pos:__init( name, way_name ) super( nil, name )
+function action_go_to_pos:__init( name, way_name, storage ) super( nil, name )
+    self.a = storage
     self.way_name = way_name
 end
 
 function action_go_to_pos:initialize()
     action_base.initialize( self )
+
+    if not self.a.partner then
+        self.a.partner = level.object( self.a.partner_name )
+    end
 
     self.object:set_node_evaluator      ()
     self.object:set_path_evaluator      ()
@@ -107,10 +124,11 @@ function action_go_to_pos:initialize()
     self.object:set_sight               ( look.danger, nil, 0 )
     self.object:set_item                ( object.idle, self.object:best_weapon() )
     self.object:set_body_state          ( move.standing )
+    self.object:set_detail_path_type    ( move.line )
+
     self.object:set_movement_type       ( move.walk )
     self.object:set_mental_state        ( anim.free )
     self.object:set_path_type           ( game_object.patrol_path )
-    self.object:set_detail_path_type    ( move.line )
     self.object:set_patrol_path         ( self.way_name, patrol.start, patrol.stop, true )
 
     self.lp = nil
@@ -147,23 +165,17 @@ function action_go_to_pos:move_callback( obj, action_type, index )
 end
 
 ---------------------------------------------------------------------------------------------------------------------
--- Действие "стоять и болтать"
+-- Действие "бежать в безопасную позицию"
 ---------------------------------------------------------------------------------------------------------------------
 
-class "action_stand" (action_base)
+class "action_run_to_safe" (action_base)
 
-function action_stand:__init( name, eva_pos, positions, partner_name ) super( nil, name )
-    self.eva_pos        = eva_pos
-    self.positions      = positions
-    self.partner_name   = partner_name
+function action_run_to_safe:__init( name, storage ) super( nil, name )
+    self.a = storage
 end
 
-function action_stand:initialize()
+function action_run_to_safe:initialize()
     action_base.initialize( self )
-
-    if not self.partner then
-        self.partner = level.object( self.partner_name )
-    end
 
     self.object:set_node_evaluator      ()
     self.object:set_path_evaluator      ()
@@ -171,13 +183,61 @@ function action_stand:initialize()
     self.object:set_sight               ( look.danger, nil, 0 )
     self.object:set_item                ( object.idle, self.object:best_weapon() )
     self.object:set_body_state          ( move.standing )
-    self.object:set_movement_type       ( move.stand )
-    self.object:set_mental_state        ( anim.free )
+    self.object:set_detail_path_type    ( move.line )
 
-    if self.partner then
-        self.object:set_sight( look.point, self.partner:position():add( vector():set( 0, 1.5, 0 ) ), 0 )
-        --self.object:set_sight( look.point, self.partner:position(), 0 )
+    self.object:set_movement_type       ( move.run )
+    self.object:set_mental_state        ( anim.danger )
+    self.object:set_path_type           ( game_object.level_path )
+    self.object:set_dest_level_vertex_id( self.a.dest_vert_id )
+
+    printf( "run_to_safe initialized" )
+end
+
+function action_run_to_safe:execute()
+    action_base.execute( self )
+end
+
+function action_run_to_safe:finalize()
+    action_base.finalize( self )
+
+    this.check_enemy( self.object )
+end
+
+---------------------------------------------------------------------------------------------------------------------
+-- Действие "стоять и болтать"
+---------------------------------------------------------------------------------------------------------------------
+
+class "action_stand" (action_base)
+
+function action_stand:__init( name, positions, storage ) super( nil, name )
+    self.a              = storage
+    self.positions      = positions
+end
+
+function action_stand:initialize()
+    action_base.initialize( self )
+
+    if not self.a.partner then
+        self.a.partner = level.object( self.a.partner_name )
     end
+    
+    self.object:set_node_evaluator      ()
+    self.object:set_path_evaluator      ()
+    self.object:set_desired_direction   ()
+    self.object:set_sight               ( look.danger, nil, 0 )
+    self.object:set_item                ( object.idle, self.object:best_weapon() )
+    self.object:set_movement_type       ( move.stand )
+
+    if self.a.partner:alive() then
+        self.object:set_sight       ( look.direction, self.a.partner:position():sub( self.object:position() ), 0 )
+        self.object:set_body_state  ( move.standing )
+        self.object:set_mental_state( anim.free )
+    else
+        self.object:set_sight       ( look.direction, self.a.way_safe:point( 1 ):sub( self.object:position() ), 0 )
+        self.object:set_body_state  ( move.crouch )
+        self.object:set_mental_state( anim.danger )
+    end
+    --self.object:set_sight( look.point, self.a.partner:position(), 0 )
 
     if self.object:level_vertex_id() == self.positions[1] then
         self.timer = device():time_global() + 15000
@@ -193,20 +253,24 @@ end
 function action_stand:execute()
     action_base.execute( self )
 
-    globals.set_sound( self.object, rnd_phrases, false )
+    if self.a.partner:alive() then
+        globals.set_sound( self.object, rnd_phrases, false )
 
-    if self.timer <= device():time_global() then
-        self.eva_pos.dest_vert_id = self.positions[self.next_pos]
-    else
---        if not self.object:is_body_turning() and self.object:animation_count() < 1 then
-        if self.object:animation_count() < 3 then
-            self.object:add_animation(
-                random_choice_weighted{
-                    ["komandir_4"] = 60,
-                    ["komandir_2"] = 30,
-                    ["komandir_3"] = 20 },
-                true )
+        if self.timer <= device():time_global() then
+            self.a.dest_vert_id = self.positions[self.next_pos]
+        else
+    --        if not self.object:is_body_turning() and self.object:animation_count() < 1 then
+            if self.object:animation_count() < 3 then
+                self.object:add_animation(
+                    random_choice_weighted{
+                        ["komandir_4"] = 60,
+                        ["komandir_2"] = 30,
+                        ["komandir_3"] = 20 },
+                    true )
+            end
         end
+    else
+        -- TODO звуки
     end
 end
 
@@ -232,10 +296,17 @@ function action_dead_hook:initialize()
 
     self.a.dead_hook = true
 
-	local actor = level.actor()
-	if actor ~= nil then
-		actor:give_info_portion("escape_factory_bandits_dead")
-	end
+    -- отослать партнёра в безопасную точку
+    if self.a.partner:alive() then
+        local pa        = xr_motivator.storage[self.a.partner:id()].escape_factory_bandit
+        pa.way_safe     = patrol( "way_factory_bandits_safe" )
+        pa.dest_vert_id = pa.way_safe:level_vertex_id( 0 )
+    end
+
+    local actor = level.actor()
+    if actor then
+        actor:give_info_portion( "escape_factory_bandits_dead" )
+    end
 end
 
 function action_dead_hook:execute()
@@ -269,6 +340,8 @@ function add_to_binder( obj )
         partner_num = 1
     end
 
+    a.partner_name = "factory_bandit_" .. partner_num
+
     local way = patrol( way_name )
     local positions = { way:level_vertex_id( 0 ),
                         way:level_vertex_id( way:count() - 1 ) }
@@ -300,29 +373,40 @@ function add_to_binder( obj )
     properties["escape_factory_bandit"] = base_id + 0
     properties["in_pos"]                = base_id + 1
     properties["dead_hook"]             = base_id + 2
+    properties["partner_alive"]         = base_id + 3
     properties["reaction"]              = xr_evaluators_id.reaction
 
     base_id = xr_actions_id.chugai_escape_factory_bandits_base
-    operators["go_to_pos"] = base_id + 0
-    operators["stand"]     = base_id + 1
-    operators["dead_hook"] = base_id + 2
+    operators["go_to_pos"]     = base_id + 0
+    operators["stand"]         = base_id + 1
+    operators["dead_hook"]     = base_id + 2
+    operators["run_to_safe"]   = base_id + 3
 
-    local eva_pos = this.evaluator_in_pos( "property_in_pos", obj )
-    eva_pos.dest_vert_id = positions[1]
+    a.dest_vert_id = positions[1]
 
     local manager = obj:motivation_action_manager()
-    manager:add_evaluator( properties["in_pos"], eva_pos )
+    manager:add_evaluator( properties["in_pos"], this.evaluator_in_pos( "property_in_pos", obj, a ) )
     manager:add_evaluator( properties["escape_factory_bandit"], this.evaluator_factory_bandit( "property_escape_factory_bandit", a ) )
     manager:add_evaluator( properties["dead_hook"], this.evaluator_dead_hook( "property_dead_hook", a ) )
+    manager:add_evaluator( properties["partner_alive"], this.evaluator_partner_alive( "property_partner_alive", a ) )
 
-    local action = this.action_go_to_pos( "action_go_to_pos", way_name )
+    local action = this.action_go_to_pos( "action_go_to_pos", way_name, a )
     action:add_precondition( world_property( stalker_ids.property_alive, true  ) )
     action:add_precondition( world_property( stalker_ids.property_enemy, false ) )
     action:add_precondition( world_property( properties["reaction"],     false ) )
+    action:add_precondition( world_property( properties["partner_alive"], true ) )
     action:add_effect      ( world_property( properties["in_pos"],       true  ) )
     manager:add_action     ( operators["go_to_pos"], action )
+    
+    local action = this.action_run_to_safe( "action_run_to_safe", a )
+    action:add_precondition( world_property( stalker_ids.property_alive, true  ) )
+    action:add_precondition( world_property( stalker_ids.property_enemy, false ) )
+--    action:add_precondition( world_property( properties["reaction"],     false ) )
+    action:add_precondition( world_property( properties["partner_alive"], false ) )
+    action:add_effect      ( world_property( properties["in_pos"],       true  ) )
+    manager:add_action     ( operators["run_to_safe"], action )
 
-    action = this.action_stand( "action_stand", eva_pos, positions, "factory_bandit_" .. partner_num )
+    action = this.action_stand( "action_stand", positions, a )
     action:add_precondition( world_property( stalker_ids.property_alive, true  ) )
     action:add_precondition( world_property( stalker_ids.property_enemy, false ) )
     action:add_precondition( world_property( properties["in_pos"],       true  ) )
@@ -331,7 +415,7 @@ function add_to_binder( obj )
     manager:add_action     ( operators["stand"], action )
 
     action = manager:action( stalker_ids.action_puzzle_solver )
-    action:add_precondition( world_property (properties["escape_factory_bandit"], false ) )
+    action:add_precondition( world_property( properties["escape_factory_bandit"], false ) )
 
     action = this.action_dead_hook( "action_dead_hook", a )
     action:add_effect( world_property( properties["dead_hook"], true ) )
