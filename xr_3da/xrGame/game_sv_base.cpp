@@ -65,7 +65,7 @@ u32					game_sv_GameState::get_alive_count			(u32 team)
 	for		(u32 it=0; it<cnt; it++)	
 	{
 		game_PlayerState*	ps	=	get_it	(it);
-		/*if (ps->team == team)	*/alive	+=	(ps->flags&GAME_PLAYER_FLAG_VERY_VERY_DEAD)?0:1;
+		if (ps->team == team)	alive	+=	(ps->flags&GAME_PLAYER_FLAG_VERY_VERY_DEAD)?0:1;
 	}
 	return alive;
 }
