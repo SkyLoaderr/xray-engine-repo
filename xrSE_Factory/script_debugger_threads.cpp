@@ -3,6 +3,7 @@
 #include "ai_space.h"
 #include "script_process.h"
 #include "script_engine.h"
+#include "script_engine_space.h"
 #include "script_thread.h"
 #include "script_debugger.h"
 
@@ -12,12 +13,12 @@ u32 CDbgScriptThreads::Fill()
 	u32 res = 0;
 
 #ifdef XRGAME_EXPORTS
-	CScriptProcess* sp = ai().script_engine().script_process("game");
+	CScriptProcess* sp = ai().script_engine().script_process(ScriptEngine::eScriptProcessorGame);
 
 	if (sp)
 		res += FillFrom(sp);
 	
-	sp = ai().script_engine().script_process("level");
+	sp = ai().script_engine().script_process(ScriptEngine::eScriptProcessorLevel);
 	if (sp)
 		res += FillFrom(sp);
 

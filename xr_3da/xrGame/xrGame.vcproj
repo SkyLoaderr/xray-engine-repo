@@ -5483,6 +5483,9 @@
 					<File
 						RelativePath=".\script_engine_script.cpp">
 					</File>
+					<File
+						RelativePath=".\script_engine_space.h">
+					</File>
 				</Filter>
 				<Filter
 					Name="ScriptProcess"

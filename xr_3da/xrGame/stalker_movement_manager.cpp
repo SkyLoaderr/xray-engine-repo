@@ -425,6 +425,7 @@ void CStalkerMovementManager::parse_velocity_mask	()
 
 void CStalkerMovementManager::update(u32 time_delta)
 {
+	VERIFY						((m_target.m_mental_state != eMentalStateFree) || (m_target.m_body_state != eBodyStateCrouch));
 	m_current					= m_target;
 
 	if (movement_type() != eMovementTypeStand)

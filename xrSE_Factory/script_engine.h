@@ -15,6 +15,10 @@
 
 //#define DBG_DISABLE_SCRIPTS
 
+namespace ScriptEngine {
+	enum EScriptProcessors;
+};
+
 class CScriptProcess;
 class CScriptThread;
 struct lua_State;
@@ -26,8 +30,9 @@ struct lua_Debug;
 
 class CScriptEngine : public CScriptStorage {
 public:
-	typedef CScriptStorage inherited;
-	typedef xr_map<LPCSTR,CScriptProcess*,pred_str> CScriptProcessStorage;
+	typedef CScriptStorage								inherited;
+	typedef ScriptEngine::EScriptProcessors				EScriptProcessors;
+	typedef xr_map<EScriptProcessors,CScriptProcess*>	CScriptProcessStorage;
 
 private:
 	bool						m_reload_modules;
@@ -53,9 +58,9 @@ public:
 			void				setup_callbacks				();
 			void				load_common_scripts			();
 			bool				load_file					(LPCSTR	caScriptName,	bool	bCall = true);
-	IC		CScriptProcess		*script_process				(LPCSTR process_name) const;
-	IC		void				add_script_process			(LPCSTR process_name, CScriptProcess *script_process);
-			void				remove_script_process		(LPCSTR process_name);
+	IC		CScriptProcess		*script_process				(const EScriptProcessors &process_id) const;
+	IC		void				add_script_process			(const EScriptProcessors &process_id, CScriptProcess *script_process);
+			void				remove_script_process		(const EScriptProcessors &process_id);
 			void				setup_auto_load				();
 			void				process_file_if_exists		(LPCSTR file_name, bool warn_if_not_exist);
 			void				process_file				(LPCSTR file_name);

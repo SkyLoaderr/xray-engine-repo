@@ -4,6 +4,7 @@
 #include "script_process.h"
 #include "xrServer_Objects_ALife_Monsters.h"
 #include "script_engine.h"
+#include "script_engine_space.h"
 #include "level.h"
 #include "xrserver.h"
 #include "ai_space.h"
@@ -307,7 +308,7 @@ void game_sv_GameState::Create					(shared_str &options)
 	}
 
 	// loading scripts
-	ai().script_engine().remove_script_process("game");
+	ai().script_engine().remove_script_process(ScriptEngine::eScriptProcessorGame);
 	string256					S;
 	FS.update_path				(S,"$game_config$","script.ltx");
 	CInifile					*l_tpIniFile = xr_new<CInifile>(S);
@@ -315,9 +316,9 @@ void game_sv_GameState::Create					(shared_str &options)
 
 	if( l_tpIniFile->section_exist( type_name() ) )
 		if (l_tpIniFile->r_string(type_name(),"script"))
-			ai().script_engine().add_script_process("game",xr_new<CScriptProcess>("game",l_tpIniFile->r_string(type_name(),"script")));
+			ai().script_engine().add_script_process(ScriptEngine::eScriptProcessorGame,xr_new<CScriptProcess>("game",l_tpIniFile->r_string(type_name(),"script")));
 		else
-			ai().script_engine().add_script_process("game",xr_new<CScriptProcess>("game",""));
+			ai().script_engine().add_script_process(ScriptEngine::eScriptProcessorGame,xr_new<CScriptProcess>("game",""));
 
 	xr_delete					(l_tpIniFile);
 
@@ -446,14 +447,16 @@ void game_sv_GameState::u_EventSend(NET_Packet& P)
 
 void game_sv_GameState::Update		()
 {
-	for (u32 it=0; it<m_server->client_Count(); ++it)
-	{
-		xrClientData*	C		= (xrClientData*)	m_server->client_Get(it);
-		C->ps->ping				= u16(C->stats.getPing());
+	for (u32 it=0; it<m_server->client_Count(); ++it) {
+		xrClientData*	C			= (xrClientData*)	m_server->client_Get(it);
+		C->ps->ping					= u16(C->stats.getPing());
 	}
 	
-	if(ai().script_engine().script_process("game")&&(0!=Level().game))
-		ai().script_engine().script_process("game")->update();
+	if (Level().game) {
+		CScriptProcess				*script_process = ai().script_engine().script_process(ScriptEngine::eScriptProcessorGame);
+		if (script_process)
+			script_process->update	();
+	}
 }
 
 game_sv_GameState::game_sv_GameState()
@@ -476,7 +479,7 @@ game_sv_GameState::game_sv_GameState()
 
 game_sv_GameState::~game_sv_GameState()
 {
-	ai().script_engine().remove_script_process("game");
+	ai().script_engine().remove_script_process(ScriptEngine::eScriptProcessorGame);
 	xr_delete(m_event_queue);
 
 	SaveMapList();

@@ -174,9 +174,9 @@ bool CScriptEngine::load_file			(LPCSTR caScriptName, bool bCall)
 		return		(load_file_into_namespace(caScriptName,l_caNamespaceName,bCall));
 }
 
-void CScriptEngine::remove_script_process	(LPCSTR process_name)
+void CScriptEngine::remove_script_process	(const EScriptProcessors &process_id)
 {
-	CScriptProcessStorage::iterator	I = m_script_processes.find(process_name);
+	CScriptProcessStorage::iterator	I = m_script_processes.find(process_id);
 	if (I != m_script_processes.end()) {
 		xr_delete						((*I).second);
 		m_script_processes.erase		(I);

@@ -5,6 +5,7 @@
 #include "ParticlesObject.h"
 #include "script_process.h"
 #include "script_engine.h"
+#include "script_engine_space.h"
 #include "level.h"
 #include "game_cl_base.h"
 #include "patrol_path_storage.h"
@@ -125,12 +126,12 @@ BOOL CLevel::Load_GameSpecific_After()
 	}
 	
 	// loading scripts
-	ai().script_engine().remove_script_process("level");
+	ai().script_engine().remove_script_process(ScriptEngine::eScriptProcessorLevel);
 
 	if (pLevel->section_exist("level_scripts") && pLevel->line_exist("level_scripts","script"))
-		ai().script_engine().add_script_process("level",xr_new<CScriptProcess>("level",pLevel->r_string("level_scripts","script")));
+		ai().script_engine().add_script_process(ScriptEngine::eScriptProcessorLevel,xr_new<CScriptProcess>("level",pLevel->r_string("level_scripts","script")));
 	else
-		ai().script_engine().add_script_process("level",xr_new<CScriptProcess>("level",""));
+		ai().script_engine().add_script_process(ScriptEngine::eScriptProcessorLevel,xr_new<CScriptProcess>("level",""));
 		
 	BlockCheatLoad();
 	return TRUE;

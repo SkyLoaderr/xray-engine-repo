@@ -8,16 +8,16 @@
 
 #pragma once
 
-IC	void CScriptEngine::add_script_process		(LPCSTR process_name, CScriptProcess *script_process)
+IC	void CScriptEngine::add_script_process		(const EScriptProcessors &process_id, CScriptProcess *script_process)
 {
-	CScriptProcessStorage::const_iterator	I = m_script_processes.find(process_name);
+	CScriptProcessStorage::const_iterator	I = m_script_processes.find(process_id);
 	VERIFY									(I == m_script_processes.end());
-	m_script_processes.insert				(std::make_pair(process_name,script_process));
+	m_script_processes.insert				(std::make_pair(process_id,script_process));
 }
 
-CScriptProcess *CScriptEngine::script_process	(LPCSTR process_name) const
+CScriptProcess *CScriptEngine::script_process	(const EScriptProcessors &process_id) const
 {
-	CScriptProcessStorage::const_iterator	I = m_script_processes.find(process_name);
+	CScriptProcessStorage::const_iterator	I = m_script_processes.find(process_id);
 	if ((I != m_script_processes.end()))
 		return								((*I).second);
 	return									(0);
