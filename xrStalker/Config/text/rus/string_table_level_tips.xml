@@ -1,12 +1,33 @@
 <?xml version='1.0' encoding="windows-1251"?>
 <string_table>
-	<string id="tips_zone_danger">
-		<text>Default news</text>
+	<string id="info_zone_danger">
+		<text>Default tips</text>
 		<text ln="rus">Не ходите, дети, в Африку гулять.</text>
 	</string>
+
+	<string id="info_stalker_danger">
+		<text>Default tips</text>
+		<text ln="rus">Бэрэгись мандавошек.</text>
+	</string>
+
+	<string id="tutorial_trader_search_corpses">
+		<text>Default tips</text>
+		<text ln="rus">Обыщи трупы, там может быть что-нибудь полезное.</text>
+	</string>
+
+	<string id="tutorial_trader_help_wounded">
+		<text>Default tips</text>
+		<text ln="rus">Помни! Помогая раненым, ты помогаешь самому себе.</text>
+	</string>
+
+	<string id="tutorial_trader_give_medikit">
+		<text>Default tips</text>
+		<text ln="rus">Дай аптечку этому придурку.</text>
+	</string>
+	
 	<string id="tips_esc_trader_about_pda">
 		<text>Default news</text>
 		<text ln="rus">Нажми Contact (С). В контактах и на минимапе на лицевом визоре ты видишь людей в радиусе 250 метров с включенными ПДА. Там указывается их отношение к тебе. Будь внимателен если там появляются враги. Впрочем бандиты и гы-ыы, мутанты не включают обычно ПДА так, что будь внимателен в Зоне.</text>
 	</string>
+	
 </string_table>
-
