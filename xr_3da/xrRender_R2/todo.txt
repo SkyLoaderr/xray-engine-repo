@@ -9,10 +9,10 @@
 * skybox/fog
 
 ----------------------------
-done, ~7% perf-gain	:	intelligent	RT-switches sheduling + give some time to complete RT-rendering
-					:	cull point-light frustums against real frustum
-					:	clip every-light frustums against real frustum - difficult
-					:	scissoring ???
+done, ~7% perf-gain		:	intelligent	RT-switches sheduling + give some time to complete RT-rendering
+done, ~5.5% perf-gain	:	cull point-light frustums against real frustum
+						:	clip every-light frustums against real frustum - difficult
+						:	scissoring ???
 ----------------------------
 bilinear/q-linear filter for cubemaps
 bicubic filter for spot shadows

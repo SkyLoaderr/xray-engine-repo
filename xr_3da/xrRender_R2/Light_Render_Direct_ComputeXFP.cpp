@@ -28,30 +28,41 @@ BOOL CLight_Render_Direct::compute_xfp_1	(u32 m_phase, light* L)
 	if (RImplementation.ViewBase.testSphere_dirty(L->position,EPS_S))	return			TRUE;
 
 	// Test for visibility of result
-	Fvector		points			[5];
-	ComputeFrustum				(points,deg2rad(90.f),1.f,L->range+EPS_S,L_dir,L_up,L_right,L_pos);
-
-	sPoly	sSrc(points,4), sDest;
-	if (0!=RImplementation.ViewBase.ClipPoly(sSrc, sDest))		return TRUE;
-	sSrc.clear();	sSrc.push_back(L_pos);sSrc.push_back(points[0]);sSrc.push_back(points[1]);
-	if (0!=RImplementation.ViewBase.ClipPoly(sSrc, sDest))		return TRUE;
-	sSrc.clear();	sSrc.push_back(L_pos);sSrc.push_back(points[1]);sSrc.push_back(points[2]);
-	if (0!=RImplementation.ViewBase.ClipPoly(sSrc, sDest))		return TRUE;
-	sSrc.clear();	sSrc.push_back(L_pos);sSrc.push_back(points[2]);sSrc.push_back(points[3]);
-	if (0!=RImplementation.ViewBase.ClipPoly(sSrc, sDest))		return TRUE;
-	sSrc.clear();	sSrc.push_back(L_pos);sSrc.push_back(points[3]);sSrc.push_back(points[0]);
-	if (0!=RImplementation.ViewBase.ClipPoly(sSrc, sDest))		return TRUE;
+	{
+		Fvector		points			[5];
+		ComputeFrustum				(points,deg2rad(90.f),1.f,L->range+EPS_S,L_dir,L_up,L_right,L_pos);
+		sPoly	sSrc(points,4), sDest;
+		if (0!=RImplementation.ViewBase.ClipPoly(sSrc, sDest))		return TRUE;
+		sSrc.clear();sDest.clear();sSrc.push_back(L_pos);sSrc.push_back(points[0]);sSrc.push_back(points[1]);
+		if (0!=RImplementation.ViewBase.ClipPoly(sSrc, sDest))		return TRUE;
+		sSrc.clear();sDest.clear();sSrc.push_back(L_pos);sSrc.push_back(points[1]);sSrc.push_back(points[2]);
+		if (0!=RImplementation.ViewBase.ClipPoly(sSrc, sDest))		return TRUE;
+		sSrc.clear();sDest.clear();sSrc.push_back(L_pos);sSrc.push_back(points[2]);sSrc.push_back(points[3]);
+		if (0!=RImplementation.ViewBase.ClipPoly(sSrc, sDest))		return TRUE;
+		sSrc.clear();sDest.clear();sSrc.push_back(L_pos);sSrc.push_back(points[3]);sSrc.push_back(points[0]);
+		if (0!=RImplementation.ViewBase.ClipPoly(sSrc, sDest))		return TRUE;
+	}
 
 	// The last possibility - our main frustum is totally inside test frustum
-	Fvector		p_base			[5];
-	float		p_FOV			= Device.fFOV;
-	float		p_DIST			= g_pGamePersistent->Environment.CurrentEnv.far_plane;
-	Fmatrix		mCam;			mCam.invert			(Device.mView);
-	Fvector						camD,camN,camR,camP;
-	ComputeFrustum				(p_base,p_FOV,1.f,p_DIST,mCam.k,mCam.j,mCam.i,mCam.c);
-	CFrustum	fTest;			fTest.CreateFromMatrix			(P_combine,FRUSTUM_P_ALL);
-	for (u32 i=0; i<5; i++)
-		if (fTest.testSphere_dirty(p_base[i],EPS_S))			return TRUE;
+	{
+		Fvector		points			[5];
+		float		p_FOV			= Device.fFOV;
+		float		p_DIST			= g_pGamePersistent->Environment.CurrentEnv.far_plane;
+		Fmatrix		mCam;			mCam.invert			(Device.mView);
+		Fvector						camD,camN,camR,camP;
+		ComputeFrustum				(points,p_FOV,1.f,p_DIST,mCam.k,mCam.j,mCam.i,mCam.c);
+		CFrustum	fTest;			fTest.CreateFromMatrix			(P_combine,FRUSTUM_P_ALL);
+		sPoly	sSrc(points,4), sDest;
+		if (0!=fTest.ClipPoly(sSrc, sDest))		return TRUE;
+		sSrc.clear();sDest.clear();sSrc.push_back(L_pos);sSrc.push_back(points[0]);sSrc.push_back(points[1]);
+		if (0!=fTest.ClipPoly(sSrc, sDest))		return TRUE;
+		sSrc.clear();sDest.clear();sSrc.push_back(L_pos);sSrc.push_back(points[1]);sSrc.push_back(points[2]);
+		if (0!=fTest.ClipPoly(sSrc, sDest))		return TRUE;
+		sSrc.clear();sDest.clear();sSrc.push_back(L_pos);sSrc.push_back(points[2]);sSrc.push_back(points[3]);
+		if (0!=fTest.ClipPoly(sSrc, sDest))		return TRUE;
+		sSrc.clear();sDest.clear();sSrc.push_back(L_pos);sSrc.push_back(points[3]);sSrc.push_back(points[0]);
+		if (0!=fTest.ClipPoly(sSrc, sDest))		return TRUE;
+	}
 
 	return FALSE;
 }
