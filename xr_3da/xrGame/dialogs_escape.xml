@@ -592,7 +592,7 @@
         <phrase_list>
             <phrase id="62">
                 <text>escape_trader_jobs_62</text>
-                <give_info>eagroprom_military_case</give_info>
+                <give_info>agroprom_military_case</give_info>
                 <next>82</next>
             </phrase>
             <phrase id="72">
