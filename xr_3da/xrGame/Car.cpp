@@ -175,11 +175,9 @@ void	CCar::Update				( DWORD T )
 void	CCar::UpdateCL				( )
 {
 	// Transform
-	Fmatrix mY;//,Tr;
-	//Tr.translate		(0,-1.f,0);
+	Fmatrix mY;
 	mY.rotateY			(deg2rad(90.f));
 	clTransform.mul		(m_jeep.DynamicData.BoneTransform,mY);
-	//clTransform.mulB	(Tr);
 
 	// Sound
 	Fvector		C,V;
@@ -187,7 +185,7 @@ void	CCar::UpdateCL				( )
 	V.set		(m_jeep.GetVelocity	());
 	float		velocity						= V.magnitude();
 	float		scale							= 1.5f + 1.f*(velocity/10.f);
-//	Log			("carS",scale);
+
 	snd_engine.feedback->SetPosition			(C);
 	snd_engine.feedback->SetFrequencyScale		(scale);
 
