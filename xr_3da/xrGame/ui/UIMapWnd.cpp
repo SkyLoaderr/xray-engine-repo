@@ -159,6 +159,11 @@ void CUIMapWnd::Init()
 	xml_init.InitButton(uiXml, "gl_button", 0, &UIMapTypeSwitch);
 	UIMapTypeSwitch.SetMessageTarget(this);
 
+	// Имя текущей локальной карты
+	UILocalMapBackground.AttachChild(&UILocalMapName);
+	xml_init.InitStatic(uiXml, "local_map_name_static", 0, &UILocalMapName);
+	UILocalMapName.Enable(false);
+
 	//Элементы автоматического добавления
 	xml_init.InitAutoStatic(uiXml, "auto_static", this);
 
@@ -189,6 +194,9 @@ void CUIMapWnd::SetLocalMap(const shared_str &levelName)
 
 	// Ставим фильтр на мапспоты
 	ApplyFilterToObjectives(levelName);
+
+	// Теперь выводим имя карты
+	UILocalMapName.SetText(*CStringTable()(levelName));
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -444,6 +452,8 @@ void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 	static u16 prevScrollPosV = 0;
 	static u16 prevScrollPosH = 0;
 
+	CStringTable	stbl;
+
 	if(pWnd == &UILocalMapBackground)
 	{
 		if(MAPSPOT_FOCUS_RECEIVED == msg)
@@ -492,7 +502,7 @@ void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 				CUIGlobalMapLocation *pGML = smart_cast<CUIGlobalMapLocation*>(UIGlobalMapBackground.m_pActiveMapSpot);
 				R_ASSERT(pGML);
 				pGML->SetColor(activeLocalMapColor);
-				UIMapName.SetText(*pGML->m_strMapName);
+				UIMapName.SetText(*stbl(pGML->m_strMapName));
 				// Show map goals
 				for (Objectives_it it = m_LocalMaps[pGML->m_strMapName].obj.begin(); it != m_LocalMaps[pGML->m_strMapName].obj.end(); ++it)
 				{
