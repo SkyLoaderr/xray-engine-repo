@@ -11,5 +11,5 @@ ICollidable::ICollidable()
 };
 ICollidable::~ICollidable()		
 {
-	xr_delete( collidable.model );	
+	xr_delete		( collidable.model );	
 };
