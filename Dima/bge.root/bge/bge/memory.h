@@ -9,5 +9,5 @@
 #pragma once
 
 namespace Memory {
-	void	init();
+	void	init	();
 };
