@@ -1466,6 +1466,9 @@
 							RelativePath=".\scripts\gulag_bar.script">
 						</File>
 						<File
+							RelativePath=".\Scripts\gulag_dark_valley.script">
+						</File>
+						<File
 							RelativePath=".\Scripts\gulag_military.script">
 						</File>
 					</Filter>
