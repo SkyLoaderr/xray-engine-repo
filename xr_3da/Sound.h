@@ -42,6 +42,12 @@ struct	ENGINE_API	sound
 	IC void	set_volume				( float vol );
 };
 
+// definition (Sound Source)
+class ENGINE_API	CSound_stream_source
+{
+public:
+};
+
 // definition (Sound Interface)
 class ENGINE_API	CSound_interface
 {
@@ -74,7 +80,6 @@ public:
 	virtual void					play_at_pos				( sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false)					= 0;
 	virtual void					play_at_pos_unlimited	( sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false)					= 0;
 	virtual void					set_geometry			( CDB::MODEL* M )																		= 0;
-	virtual CDB::MODEL* 			get_geometry			( )																						= 0;
 
 	// Stream interface
 	/*

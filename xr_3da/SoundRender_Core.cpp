@@ -102,3 +102,61 @@ void CSoundRender_Core::_destroy	()
 	_RELEASE		( pBuffer		);
 	_RELEASE		( pDevice		);
 }
+void CSoundRender_Core::_restart	()
+{
+}
+
+void CSoundRender_Core::set_geometry(CDB::MODEL* M)
+{
+	geom_MODEL		= M;
+}
+
+void	CSoundRender_Core::create				( sound& S, BOOL _3D, const char* fName, int type )
+{
+	if (!bPresent)					return;
+
+	string256	fn;
+	strcpy		(fn,fName);
+	char*		E = strext(fn);
+	if (E)		*E = 0;
+	S.handle	= i_create_source				(fn,_3D);
+	S.g_type	= type;
+}
+
+void	CSoundRender_Core::play					( sound& S, CObject* O, BOOL bLoop, int iLoopCnt)
+{
+	if (!bPresent || 0==S.handle)	return;
+
+	S.g_object		= O;
+	if (S.feedback)	S.feedback->rewind	();
+	else			pSoundRender->Play	(S.handle,&S,bLoop,iLoopCnt);
+}
+void	CSoundRender_Core::play_unlimited		( sound& S, CObject* O, BOOL bLoop, int iLoopCnt)
+{
+	if (!bPresent || S.handle==soundUndefinedHandle) return;
+	pSoundRender->Play	(S.handle,0,bLoop,iLoopCnt);
+}
+void	CSoundRender_Core::play_at_pos			( sound& S, CObject* O, const Fvector &pos, BOOL bLoop, int iLoopCnt)
+{
+	if (!bPresent || S.handle==soundUndefinedHandle) return;
+	S.g_object		= O;
+	if (S.feedback)	S.feedback->Rewind	();
+	else			pSoundRender->Play	(S.handle,&S,bLoop,iLoopCnt);
+	S.feedback->SetPosition				(pos);
+}
+void	CSoundRender_Core::play_at_pos_unlimited	( sound& S, CObject* O, const Fvector &pos, BOOL bLoop, int iLoopCnt)
+{
+	if (!bPresent || S.handle==soundUndefinedHandle) return;
+	pSoundRender->Play		(S.handle,0,bLoop,iLoopCnt);
+	S.feedback->SetPosition	(pos);
+}
+void	CSoundRender_Core::destroy(sound& S )
+{
+	if (!bPresent || S.handle==soundUndefinedHandle) {
+		S.handle	= soundUndefinedHandle;
+		S.feedback	= 0;
+		return;
+	}
+	if (S.feedback)	S.feedback->Stop();
+	pSoundRender->DeleteSound(S.handle);
+}

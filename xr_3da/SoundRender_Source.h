@@ -2,7 +2,7 @@
 
 #include "soundrender.h"
 
-class CSoundRender_Source
+class CSoundRender_Source	: public CSound_source
 {
 public:
 	LPCSTR					fname;
