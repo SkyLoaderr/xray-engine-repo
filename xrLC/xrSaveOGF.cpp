@@ -43,7 +43,7 @@ void CBuild::SaveTREE(IWriter &fs)
 
 	Status				("Visuals...");
 	//mem_Compact			();
-	fs.open_chunk		(fsL_VISUALS | CFS_CompressMark);
+	fs.open_chunk		(fsL_VISUALS);
 	for (xr_vector<OGF_Base*>::iterator it = g_tree.begin(); it!=g_tree.end(); it++)
 	{
 		u32			idx = u32(it-g_tree.begin());
@@ -52,7 +52,7 @@ void CBuild::SaveTREE(IWriter &fs)
 		MFS.close_chunk	();
 		Progress		(float(idx)/float(g_tree.size()));
 	}
-	fs.w_compressed		(MFS.pointer(),MFS.size());
+	fs.w				(MFS.pointer(),MFS.size());
 	fs.close_chunk		();
 	clMsg				("Average: %d verts/%d faces, 50(%2.1f), 100(%2.1f), 500(%2.1f), 1000(%2.1f), 5000(%2.1f)",
 		g_batch_verts/g_batch_count,
