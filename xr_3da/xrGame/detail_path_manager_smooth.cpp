@@ -568,6 +568,7 @@ void CDetailPathManager::build_path_via_key_points(
 {
 	STrajectoryPoint					s,d,p;
 	s 									= start;
+	//m_dest_params						= m_start_params;
 	xr_vector<STravelPoint>::const_iterator	I = m_key_points.begin(), P = I;
 	xr_vector<STravelPoint>::const_iterator	E = m_key_points.end();
 	for ( ; I != E; ++I) {

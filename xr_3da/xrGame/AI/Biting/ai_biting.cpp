@@ -356,7 +356,7 @@ void CAI_Biting::UpdateCL()
 
 	m_pPhysics_support->in_UpdateCL();
 
-	//MotionMan.CheckAnimWithPath();
+	MotionMan.CheckAnimWithPath();
 
 	// ќбновить угловую и линейную скорости движени€
 	CMonsterMovement::update_velocity();
