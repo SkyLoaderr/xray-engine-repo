@@ -152,10 +152,9 @@ function set_storyline(object, char_ini)
     end
 
     --Снайпер-анархист
-     if( char_ini:section_exist ("sniper") == true ) then
-        xr_motivator.storage[object:id()].sniper =
+	xr_motivator.storage[object:id()].sniper =
         								  {
-        									enabled  	= true,
+        									enabled  	= false,
                                             rest_path 	= nil,
          								    point_path	= nil,
                                             camper_path = nil,
@@ -164,7 +163,9 @@ function set_storyline(object, char_ini)
                                             enter       = false,
                                             monster		= nil
                                           }
-        xr_sniper.add_to_binder (object, char_ini)
-     end
 
+     if( char_ini:section_exist ("sniper") == true ) then
+        xr_sniper.set_sniper(object, nil)
+     end
+     xr_sniper.add_to_binder(object)
 end
