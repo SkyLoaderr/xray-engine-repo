@@ -151,8 +151,8 @@ CLensFlare::~CLensFlare()
 
 #ifndef _EDITOR
 struct STranspParam		{
-	const Fvector		P;
-	const Fvector		D;
+	Fvector				P;
+	Fvector				D;
 	float				f;
 	CLensFlare*			parent;
 	float				vis;

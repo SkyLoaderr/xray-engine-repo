@@ -90,7 +90,7 @@ MotionID CSkeletonAnimated::LL_MotionID	(LPCSTR B)
 	for (int k=m_Motions.size()-1; k>=0; --k){
     	shared_motions* s_mots	= &m_Motions[k];
 		accel_map::iterator I 	= s_mots->motion_map()->find(LPSTR(B));
-    	if (I!=s_mots->motion_map()->end()){ motion_ID.set(k,I->second); break; }
+    	if (I!=s_mots->motion_map()->end())	{ motion_ID.set(u16(k),I->second); break; }
     }
     return motion_ID;
 }
@@ -112,7 +112,7 @@ MotionID CSkeletonAnimated::ID_Cycle_Safe(LPCSTR  N)
 	for (int k=m_Motions.size()-1; k>=0; --k){
     	shared_motions* s_mots	= &m_Motions[k];
 		accel_map::iterator I 	= s_mots->cycle()->find(LPSTR(N));
-		if (I!=s_mots->cycle()->end()){	motion_ID.set(k,I->second); break;}
+		if (I!=s_mots->cycle()->end())	{	motion_ID.set(u16(k),I->second); break;}
     }
     return motion_ID;
 }
@@ -239,7 +239,7 @@ MotionID CSkeletonAnimated::ID_FX_Safe		(LPCSTR  N)
 	for (int k=m_Motions.size()-1; k>=0; --k){
     	shared_motions* s_mots	= &m_Motions[k];
 		accel_map::iterator I 	= s_mots->fx()->find(LPSTR(N));
-		if (I!=s_mots->fx()->end()){	motion_ID.set(k,I->second); break;}
+		if (I!=s_mots->fx()->end())	{	motion_ID.set(u16(k),I->second); break;}
     }
     return motion_ID;
 }
