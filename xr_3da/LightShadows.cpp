@@ -61,6 +61,8 @@ public:
 };
 void CLightShadows::calculate	()
 {
+	if (id.empty())	return;
+
 	// sort by distance
 	std::sort	(id.begin(),id.end(),pred_casters(this));
 	
@@ -115,6 +117,15 @@ void CLightShadows::calculate	()
 			int		s_y			=	slot_id/slot_line;
 			D3DVIEWPORT8 VP		=	{s_x*S_size,s_y*S_size,S_size,S_size,0,1 };
 			CHK_DX					(HW.pDevice->SetViewport(&VP));
+
+			// Render object-parts
+			for (int n_it=0; n_it<C.nodes.size(); n_it++)
+			{
+				NODE* N			=	C.nodes[n_it];
+				FBasicVisual *V =	N->val.pVisual;
+				CHK_DX				(HW.pDevice->SetTransform(D3DTS_WORLD,N->val.Matrix.d3d()));
+				V->Render			(.5f);
+			}
 		}
 	}
 }
