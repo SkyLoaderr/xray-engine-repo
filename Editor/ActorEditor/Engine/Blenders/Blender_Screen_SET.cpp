@@ -113,7 +113,7 @@ void	CBlender_Screen_SET::Compile	(CBlender_Recorder& RS, sh_list& L_textures, s
 		{
 			// Usually for wallmarks
 			RS.StageBegin		();
-			RS.StageSET_Address	(D3DTADDRESS_CLAMP);
+			RS.StageSET_Address	(oClamp.value?D3DTADDRESS_CLAMP:D3DTADDRESS_WRAP);
 			RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
 			RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
 			RS.Stage_Texture	(oT_Name,	L_textures);
@@ -122,7 +122,7 @@ void	CBlender_Screen_SET::Compile	(CBlender_Recorder& RS, sh_list& L_textures, s
 			RS.StageEnd			();
 
 			RS.StageBegin		();
-			RS.StageSET_Address	(D3DTADDRESS_CLAMP);
+			RS.StageSET_Address	(oClamp.value?D3DTADDRESS_CLAMP:D3DTADDRESS_WRAP);
 			RS.StageSET_Color	(D3DTA_DIFFUSE,	  D3DTOP_BLENDDIFFUSEALPHA,	D3DTA_CURRENT);
 			RS.StageSET_Alpha	(D3DTA_DIFFUSE,	  D3DTOP_SELECTARG2,		D3DTA_CURRENT);
 			RS.Stage_Texture	("$null",	L_textures);
@@ -131,7 +131,7 @@ void	CBlender_Screen_SET::Compile	(CBlender_Recorder& RS, sh_list& L_textures, s
 			RS.StageEnd			();
 		} else {
 			RS.StageBegin		();
-			RS.StageSET_Address	(D3DTADDRESS_CLAMP);
+			RS.StageSET_Address	(oClamp.value?D3DTADDRESS_CLAMP:D3DTADDRESS_WRAP);
 			RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
 			RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
 			RS.Stage_Texture	(oT_Name,	L_textures);
