@@ -155,15 +155,6 @@ void CTorch::UpdateCL()
 		light_render->set_position	(M.c);
 		glow_render->set_position	(M.c);
 		glow_render->set_direction	(M.k);
-
-		if(light_render->get_active())
-		{
-			CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
-			if(pActor && pActor->HUDview())
-				glow_render->set_active(false);
-			else
-				glow_render->set_active(true);
-		}
 	}
 	else if(getVisible() && m_pPhysicsShell) 
 	{
