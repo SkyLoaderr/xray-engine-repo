@@ -68,11 +68,11 @@ BOOL shared(occTri* T1, occTri* T2)
 }
 /* Rasterize a scan line between given X point values, corresponding Z values and current color
 */
-void i_scan	(occRasterizer* OCC, occTri* T, int curY, float startT, float endT, float startX, float endX, float startR, float endR, float startZ, float endZ)
+void i_scan		(occTri* T, int curY, float startT, float endT, float startX, float endX, float startR, float endR, float startZ, float endZ)
 {
 //	if (13==curY)	__asm int 3;
-	occTri**	pFrame	= OCC->get_frame();
-	float*		pDepth	= OCC->get_depth();
+	occTri**	pFrame	= Raster.get_frame();
+	float*		pDepth	= Raster.get_depth();
 
 	// guard-banding and clipping
 	int minX	= minPixel(startX), maxX = maxPixel(endX);
@@ -121,10 +121,10 @@ void i_scan	(occRasterizer* OCC, occTri* T, int curY, float startT, float endT, 
 	}
 }
 
-void i_test_micro( occRasterizer* OCC, int x, int y)
+void i_test_micro( int x, int y)
 {
-	occTri**	pFrame	= OCC->get_frame();
-	float*		pDepth	= OCC->get_depth();
+	occTri**	pFrame	= Raster.get_frame();
+	float*		pDepth	= Raster.get_depth();
 	
 	if (x<1) return; else if (x>=occ_dim0-1)	return;
 	if (y<1) return; else if (y>=occ_dim0-1)	return;
@@ -140,14 +140,14 @@ void i_test_micro( occRasterizer* OCC, int x, int y)
 		if (ZR<pDepth[pos])	{ pFrame[pos] = T1; pDepth[pos] = ZR; }
 	}
 }
-void i_test		( occRasterizer* OCC, int x, int y)
+void i_test		( int x, int y)
 {
-	i_test_micro	(OCC,x,y-1);
-	i_test_micro	(OCC,x,y+1);
-	i_test_micro	(OCC,x,y);
+	i_test_micro	(x,y-1);
+	i_test_micro	(x,y+1);
+	i_test_micro	(x,y);
 }
 
-void i_line	( occRasterizer* OCC, int x1, int y1, int x2, int y2 )
+void i_line		( int x1, int y1, int x2, int y2 )
 {
     int dx = abs(x2 - x1);
     int dy = abs(y2 - y1);
@@ -159,33 +159,33 @@ void i_line	( occRasterizer* OCC, int x1, int y1, int x2, int y2 )
         int d1 = dy << 1;
         int d2 = ( dy - dx ) << 1;
 		
-		i_test(OCC,x1,y1);
+		i_test(x1,y1);
 		
         for  (int x = x1 + sx, y = y1, i = 1; i <= dx; i++, x += sx){
             if ( d > 0){
                 d += d2; y += sy;
             }else
                 d += d1;
-			i_test(OCC,x,y);
+			i_test(x,y);
         }
     }else{
         int d  = ( dx << 1 ) - dy;
         int d1 = dx << 1;
         int d2 = ( dx - dy ) << 1;
 		
-		i_test(OCC,x1,y1);
+		i_test(x1,y1);
         for  (int x = x1, y = y1 + sy, i = 1; i <= dy; i++, y += sy ){
             if ( d > 0){
                 d += d2; x += sx;
             }else
                 d += d1;
-			i_test(OCC,x,y);
+			i_test(x,y);
         }
     }
 }
-void i_edge ( occRasterizer* OCC, float x1, float y1, float x2, float y2)
+void i_edge ( float x1, float y1, float x2, float y2)
 {
-	i_line	(OCC,int(x1),int(y1),int(x2),int(y2));
+	i_line	(int(x1),int(y1),int(x2),int(y2));
 }
 
 
@@ -201,7 +201,7 @@ float maxp(float a, float b)
 float minp(float a, float b)
 {	return a<b ? a:b;		}
 
-__forceinline void i_section	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T, int Sect, BOOL bMiddle)
+__forceinline void i_section	(float *A, float *B, float *C, occTri* T, int Sect, BOOL bMiddle)
 {
 	// Find the start/end Y pixel coord, set the starting pts for scan line ends
 	int		startY, endY;
@@ -283,20 +283,20 @@ __forceinline void i_section	(occRasterizer* OCC, float *A, float *B, float *C, 
 		float	maxT	= maxp(rightX-rhx,rightX+rhx);
 		float	minX	= maxp(leftX-lhx,leftX+lhx);
 		float	maxX	= minp(rightX-rhx,rightX+rhx);
-		i_scan	(OCC, T, int(startY), minT,maxT,minX,maxX, leftX-lhx, rightX-rhx, leftZ, rightZ);
+		i_scan	(T, int(startY), minT,maxT,minX,maxX, leftX-lhx, rightX-rhx, leftZ, rightZ);
 		leftX	+= left_dX; rightX += right_dX;
 		leftZ	+= left_dZ; rightZ += right_dZ;
 	}
 }
 
-void i_section_b0	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T)
-{	i_section	(OCC,A,B,C,T,BOTTOM,0);	}
-void i_section_b1	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T)
-{	i_section	(OCC,A,B,C,T,BOTTOM,1);	}
-void i_section_t0	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T)
-{	i_section	(OCC,A,B,C,T,TOP,0);	}
-void i_section_t1	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T)
-{	i_section	(OCC,A,B,C,T,TOP,1);	}
+void i_section_b0	(float *A, float *B, float *C, occTri* T)
+{	i_section	(A,B,C,T,BOTTOM,0);	}
+void i_section_b1	(float *A, float *B, float *C, occTri* T)
+{	i_section	(A,B,C,T,BOTTOM,1);	}
+void i_section_t0	(float *A, float *B, float *C, occTri* T)
+{	i_section	(A,B,C,T,TOP,0);	}
+void i_section_t1	(float *A, float *B, float *C, occTri* T)
+{	i_section	(A,B,C,T,TOP,1);	}
 
 void occRasterizer::rasterize	(occTri* T)
 {
@@ -310,15 +310,15 @@ void occRasterizer::rasterize	(occTri* T)
 	i_order				(a, b, c);			// Order the vertices by Y
 	if (b[1]-floorf(b[1])>0.5f)	
 	{
-		i_section_b1	(this,a, b, c, T);	// Rasterise First Section
-		i_section_t0	(this,a, b, c, T);	// Rasterise Second Section
+		i_section_b1	(a, b, c, T);	// Rasterise First Section
+		i_section_t0	(a, b, c, T);	// Rasterise Second Section
 	} else {
-		i_section_b0	(this,a, b, c, T);	// Rasterise First Section
-		i_section_t1	(this,a, b, c, T);	// Rasterise Second Section
+		i_section_b0	(a, b, c, T);	// Rasterise First Section
+		i_section_t1	(a, b, c, T);	// Rasterise Second Section
 	}
 
 	// Rasterize (and Y-connect) edges
-	i_edge			(this,a[0],a[1],b[0],b[1]);
-	i_edge			(this,a[0],a[1],c[0],c[1]);
-	i_edge			(this,b[0],b[1],c[0],c[1]);
+	i_edge			(a[0],a[1],b[0],b[1]);
+	i_edge			(a[0],a[1],c[0],c[1]);
+	i_edge			(b[0],b[1],c[0],c[1]);
 }
