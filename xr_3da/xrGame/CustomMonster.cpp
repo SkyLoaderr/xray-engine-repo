@@ -708,24 +708,6 @@ void CCustomMonster::Exec_Action(float dt)
 {
 }
 
-// Развернуть объект в направление движения
-void CCustomMonster::SetDirectionLook(bool bReversed)
-{
-	int i = ps_Size();		// position stack size
-	if (i > 1) {
-		CObject::SavedPosition tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
-		tWatchDirection.sub(tCurrentPosition.vPosition,tPreviousPosition.vPosition);
-		if (tWatchDirection.magnitude() > EPS_L) {
-			vfNormalizeSafe(tWatchDirection);
-			mk_rotation(tWatchDirection,r_torso_target);
-			if (bReversed) r_torso_target.yaw = angle_normalize(r_torso_target.yaw + PI);
-			r_torso_target.pitch = 0;
-		}
-	}
-
-	r_target = r_torso_target;
-}
-
 void CCustomMonster::SetScriptControl(const bool bScriptControl, LPCSTR caSciptName)
 {
 	m_bScriptControl	= bScriptControl;

@@ -13,41 +13,49 @@ CBitingExploreNDE::CBitingExploreNDE(CAI_Biting *p)
 	SetLowPriority();
 }
 
-void CBitingExploreNDE::Reset()
-{
-	inherited::Reset();
-	m_tEnemy.obj = 0;
-}
 
 void CBitingExploreNDE::Init()
 {
-	// Test
-	WRITE_TO_LOG("_ ExploreNDE Init _");
-
 	inherited::Init();
 
-	R_ASSERT(pMonster->IsRememberSound());
+	bool bTemp;
+	pMonster->GetSound(m_tSound, bTemp);
 
-	SoundElem se;
-	bool bDangerous;
-	pMonster->GetSound(se,bDangerous);			// возвращает самый опасный звук
-	m_tEnemy.obj = dynamic_cast<CEntity *>(se.who);
-	m_tEnemy.position = se.position;
+	flag_once_1 = false;
+	flag_once_2 = false;
 
-	if (m_tEnemy.obj) pMonster->AI_Path.DestNode = m_tEnemy.obj->AI_NodeID;
-
-	// проиграть анимацию испуга
-	SetInertia(6000);
+	m_tAction = ACTION_LOOK_DESTINATION;
 }
 
 void CBitingExploreNDE::Run()
 {
-	pMonster->vfChoosePointAndBuildPath(0, &m_tEnemy.position, false, 0, 2000);
+	// если новый звук, restart
+	SoundElem	se;
+	bool		bTemp;
+	pMonster->GetSound(se, bTemp);
+	if (m_tSound.time + 2000 < se.time) Init();
 
-	// Установить параметры движения
-	pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
+	switch (m_tAction) {
+	case ACTION_LOOK_DESTINATION:			// повернуться в сторону звука
+		DO_ONCE_BEGIN(flag_once_1);
+			pMonster->AI_Path.TravelPath.clear();
+			pMonster->LookPosition(m_tSound.position);
+		DO_ONCE_END();
+	
+		pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
 
+		if (m_dwStateStartedTime + 3000 < m_dwCurrentTime) m_tAction = ACTION_GOTO_SOUND_SOURCE;
+		break;
+	case ACTION_GOTO_SOUND_SOURCE:			// идти к источнику
+ 
+		DO_ONCE_BEGIN(flag_once_2);
+			pMonster->vfInitSelector(pMonster->m_tSelectorHearSnd, true);
+			pMonster->m_tSelectorHearSnd.m_tEnemyPosition		= m_tSound.position;
+		DO_ONCE_END();
+
+		pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorHearSnd,0, true, 0, 300);
+		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
+		break;
+	}
 }
-
-
 

@@ -93,6 +93,9 @@ void CAI_Biting::Load(LPCSTR section)
 	m_tSelectorGetAway.Load			(section,"selector_getaway");
 	m_tSelectorApproach.Load		(section,"selector_approach");
 
+	m_tSelectorHearSnd.Load			(section,"selector_hear_sound");	 // like _free hunting
+
+
 	// loading frustum parameters
 	eye_fov							= pSettings->r_float(section,"EyeFov");
 	eye_range						= pSettings->r_float(section,"eye_range");

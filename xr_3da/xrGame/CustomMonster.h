@@ -128,13 +128,9 @@ public:
 	int					m_iCurrentPatrolIndex;
 	bool				m_bPatrolPathInverted;
 	u32					m_dwLastUpdateTime;
-
-	// Monster motion & state management		__START	(JIM)
 	u32					m_dwCurrentUpdate;
-	void				SetDirectionLook		(bool bReversed = false);
-	//											__END	(JIM)
 
-	// network
+// network
 //------------------------------
 	struct net_update	{
 		u32				dwTimeStamp;			// server(game) timestamp

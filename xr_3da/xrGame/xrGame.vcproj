@@ -464,6 +464,30 @@
 						Name="ai_misc"
 						Filter="">
 						<File
+							RelativePath=".\ai\ai_monster_bones.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\ai_monster_bones.h">
+						</File>
+						<File
+							RelativePath=".\ai\ai_monster_invisibility.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\ai_monster_invisibility.h">
+						</File>
+						<File
+							RelativePath=".\Ai\ai_monster_mem.cpp">
+						</File>
+						<File
+							RelativePath=".\Ai\ai_monster_mem.h">
+						</File>
+						<File
+							RelativePath=".\Ai\ai_monster_state.cpp">
+						</File>
+						<File
+							RelativePath=".\Ai\ai_monster_state.h">
+						</File>
+						<File
 							RelativePath="AI\ai_monsters_anims.h">
 						</File>
 						<File
@@ -479,18 +503,6 @@
 					<Filter
 						Name="ai_custom"
 						Filter="">
-						<File
-							RelativePath=".\Ai\ai_monster_mem.cpp">
-						</File>
-						<File
-							RelativePath=".\Ai\ai_monster_mem.h">
-						</File>
-						<File
-							RelativePath=".\Ai\ai_monster_state.cpp">
-						</File>
-						<File
-							RelativePath=".\Ai\ai_monster_state.h">
-						</File>
 						<File
 							RelativePath=".\CustomMonster.cpp">
 						</File>
@@ -701,17 +713,6 @@
 						<File
 							RelativePath=".\Ai\Chimera\ai_chimera_anim.cpp">
 						</File>
-						<File
-							RelativePath=".\Ai\Chimera\ai_chimera_state.cpp">
-						</File>
-						<File
-							RelativePath=".\Ai\Chimera\ai_chimera_state.h">
-							<FileConfiguration
-								Name="Debug|Win32">
-								<Tool
-									Name="VCCustomBuildTool"/>
-							</FileConfiguration>
-						</File>
 					</Filter>
 					<Filter
 						Name="ai_flesh"
@@ -758,28 +759,10 @@
 							RelativePath=".\Ai\Bloodsucker\ai_bloodsucker.h">
 						</File>
 						<File
-							RelativePath=".\Ai\Bloodsucker\ai_bloodsucker_bones.cpp">
-						</File>
-						<File
-							RelativePath=".\Ai\Bloodsucker\ai_bloodsucker_bones.h">
-						</File>
-						<File
 							RelativePath=".\ai\bloodsucker\ai_bloodsucker_effector.cpp">
 						</File>
 						<File
 							RelativePath=".\ai\bloodsucker\ai_bloodsucker_effector.h">
-						</File>
-						<File
-							RelativePath=".\Ai\Bloodsucker\ai_bloodsucker_misc.cpp">
-						</File>
-						<File
-							RelativePath=".\Ai\Bloodsucker\ai_bloodsucker_misc.h">
-						</File>
-						<File
-							RelativePath=".\Ai\Bloodsucker\ai_bloodsucker_state.cpp">
-						</File>
-						<File
-							RelativePath=".\Ai\Bloodsucker\ai_bloodsucker_state.h">
 						</File>
 					</Filter>
 					<Filter

@@ -81,38 +81,6 @@ void CAI_Chimera::SpinBoneInAttack(CBoneInstance *B)
 }
 
 
-//void CAI_Chimera::MotionToAnim(EMotionAnim motion, int &index1, int &index2, int &index3)
-//{
-//	index1 = index2 = 0;		// bug protection ;) todo: find out the reason
-//	index3 = -1;
-//	
-//	switch(motion) {
-//		case eAnimStandIdle:		index1 = 0; index2 = 0;	 break;
-//		case eAnimLieIdle:			index1 = 2; index2 = 0;	 break;
-//		case eAnimStandTurnLeft:	index1 = 0; index2 = 3;	 break;
-//		case eAnimWalkFwd:			index1 = 0; index2 = 3;	 break;
-//		case eAnimWalkTurnLeft:		index1 = 0; index2 = 5;  break;
-//		case eAnimWalkTurnRight:	index1 = 0; index2 = 6;  break;
-//		case eAnimRun:				index1 = 0; index2 = 7;  break;
-//		case eAnimRunTurnLeft:		index1 = 0; index2 = 8;  break;
-//		case eAnimRunTurnRight:		index1 = 0; index2 = 9;  break;
-//		case eAnimAttack:			index1 = 0; index2 = 10; break;
-//		case eAnimFastTurn:			index1 = 0; index2 = 7;  break;
-//		case eAnimEat:				index1 = 2; index2 = 14; break;
-//		case eAnimStandDamaged:		index1 = 0; index2 = 15; break;
-//		case eAnimScared:			index1 = 0; index2 = 16; break;
-//		case eAnimDie:				index1 = 0; index2 = 0;	 break;
-//		case eAnimStandLieDown:		index1 = 0; index2 = 20; break;
-//		case eAnimLieStandUp:		index1 = 2; index2 = 21; break;
-//		case eAnimCheckCorpse:		index1 = 2; index2 = 0;	 index3 = 0;	break;
-//		case eAnimStandLieDownEat:	index1 = 0; index2 = 22; break;
-//		///default:					NODEFAULT;
-//	} 
-//
-/////	if (index3 == -1) index3 = ::Random.randI((int)m_tAnimations.A[index1].A[index2].A.size());
-//}
-//
-//
 //void CAI_Chimera::LoadAttackAnim()
 //{
 //	Fvector center, left_side, right_side;

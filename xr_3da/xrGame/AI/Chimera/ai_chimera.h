@@ -2,8 +2,7 @@
 
 #include "..\\biting\\ai_biting.h"
 #include "ai_chimera_state.h"
-
-#include "..\\bloodsucker\\ai_bloodsucker_bones.h"
+#include "..\\ai_monster_bones.h"
 
 class CAI_Chimera : public CAI_Biting {
 
@@ -33,8 +32,4 @@ public:
 
 	bonesManipulation		Bones;
 
-
-	// Flesh-specific FSM
-	CChimeraAttack		*stateAttack;
-	friend  class 		CChimeraAttack;
 };

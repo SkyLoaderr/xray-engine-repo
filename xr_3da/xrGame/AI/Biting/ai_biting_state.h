@@ -105,7 +105,7 @@ private:
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class CBitingAttack : public IState {
-public:
+	typedef	IState inherited;
 	CAI_Biting	*pMonster;
 
 	enum {
@@ -126,9 +126,10 @@ public:
 
 	TTime			m_dwSuperMeleeStarted;
 
-	typedef	IState inherited;
+	bool			m_bInvisibility;
 	
-					CBitingAttack	(CAI_Biting *p);
+public:	
+					CBitingAttack	(CAI_Biting *p, bool bVisibility);
 
 	virtual	void	Reset			();
 
@@ -207,25 +208,32 @@ private:
 // CBitingExploreDNE class	// Explore danger-non-expedient enemy
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 class CBitingExploreDNE : public IState {
-	CAI_Biting		*pMonster;
-	VisionElem		m_tEnemy;
+	typedef	IState inherited;
+	CAI_Biting	*pMonster;
 
-	// implementation of 'face the most open area'
-	bool			bFacedOpenArea;
-	Fvector			cur_pos;			
-	Fvector			prev_pos;
-	TTime			m_dwStayTime;
+	enum {
+		ACTION_RUN_AWAY,
+		ACTION_LOOK_BACK_POSITION,
+		ACTION_LOOK_AROUND
+	} m_tAction;
 
+	SoundElem		m_tSound;
+	bool			flag_once_1;
 
-	typedef IState inherited;
+	Fvector 		SavedPosition;
+	Fvector 		StartPosition;
+	Fvector 		LastPosition;
+
+	float			m_fRunAwayDist;
+
+	TTime			m_dwLastPosSavedTime;
+	TTime			m_dwStayLastTimeCheck;
+
 public:
 					CBitingExploreDNE	(CAI_Biting *p);
-
-	virtual void	Reset				();	
-
 private:
-	virtual void	Init				();
-	virtual void	Run					();
+	virtual	void	Init				();
+	virtual	void	Run					();
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -261,15 +269,21 @@ private:
 // CBitingExploreNDE class	// Explore non-danger enemy //  Идти в сторону звука	
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 class CBitingExploreNDE : public IState {
-	CAI_Biting		*pMonster;
-	VisionElem		m_tEnemy;
-
 	typedef IState inherited;
+	CAI_Biting		*pMonster;
+	SoundElem		m_tSound;
+	
+	enum {
+		ACTION_LOOK_DESTINATION,
+		ACTION_GOTO_SOUND_SOURCE,
+	} m_tAction;
+
+	bool			flag_once_1;
+	bool			flag_once_2;
+
+
 public:
 					CBitingExploreNDE	(CAI_Biting *p);
-
-	virtual void	Reset				();	
-
 private:
 	virtual void	Init				();
 	virtual void	Run					();

@@ -4,13 +4,18 @@
 
 #include "..\\rat\\ai_rat.h"
 
+#include "..\\bloodsucker\\ai_bloodsucker.h"
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingAttack implementation
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-CBitingAttack::CBitingAttack(CAI_Biting *p)  
+CBitingAttack::CBitingAttack(CAI_Biting *p,  bool bVisibility)  
 {
 	pMonster = p;
+	m_bInvisibility	= bVisibility;
+
 	Reset();
 	SetHighPriority();
 }
@@ -83,14 +88,18 @@ void CBitingAttack::Run()
 
 	u32 delay;
 
-	// Invisibility Here - TODO: workout
-	//	// нивидимость Bloodsucker
-	//	if ((dist < pMonster->m_fInvisibilityDist) && (pMonster->GetPower() > pMonster->m_fPowerThreshold)) {
-	//		if (pMonster->m_tVisibility.Switch(false)) {
-	//			pMonster->ChangePower(pMonster->m_ftrPowerDown);
-	//			pMonster->ActivateEffector(pMonster->m_tVisibility.GetInvisibleInterval() / 1000.f);
-	//		}
-	//	}
+#pragma todo("Jim to Jim: fix nesting: Bloodsucker in Biting state")
+	if (m_bInvisibility) {
+		CAI_Bloodsucker *pBS =	dynamic_cast<CAI_Bloodsucker *>(pMonster);
+		if (pBS) {
+			if ((dist < pBS->m_fInvisibilityDist) && (pBS->GetPower() > pBS->m_fPowerThreshold)) {
+				if (pBS->CMonsterInvisibility::Switch(false)) {
+					pBS->ChangePower(pBS->m_ftrPowerDown);
+					pBS->ActivateEffector(pBS->CMonsterInvisibility::GetInvisibleInterval() / 1000.f);
+				}
+			}
+		}
+	}
 
 	// Выполнение состояния
 	switch (m_tAction) {	

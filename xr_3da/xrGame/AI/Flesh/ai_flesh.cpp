@@ -7,7 +7,7 @@ using namespace AI;
 CAI_Flesh::CAI_Flesh()
 {
 	stateRest			= xr_new<CBitingRest>		(this);
-	stateAttack			= xr_new<CBitingAttack>		(this);
+	stateAttack			= xr_new<CBitingAttack>		(this, false);
 	stateEat			= xr_new<CBitingEat>		(this, true);
 	stateHide			= xr_new<CBitingHide>		(this);
 	stateDetour			= xr_new<CBitingDetour>		(this);
@@ -193,7 +193,9 @@ void CAI_Flesh::CheckAttackHit()
 bool CAI_Flesh::CheckSpecParams(u32 spec_params)
 {
 	if ((spec_params & ASP_ATTACK_RAT) == ASP_ATTACK_RAT) {
-		MotionMan.SetCurAnim(eAnimAttackRat);
+		MotionMan.Seq_Add(eAnimAttackRat);
+		MotionMan.Seq_Switch();
+		return true;
 	} 
 	
 	if ((spec_params & ASP_STAND_SCARED) == ASP_STAND_SCARED) {

@@ -57,9 +57,7 @@ enum EBitingPathState {
 
 typedef VisionElem SEnemy;
 
-
 class CAI_Biting : public CCustomMonster, 
-//				   public CBitingAnimations,
 				   public CMonsterMemory
 {
 
@@ -123,6 +121,8 @@ public:
 	
 	
 	// Other
+			void			SetDirectionLook				(bool bReversed = false);
+	virtual void			LookPosition					(Fvector to_point);		// каждый монстр может по-разному реализвать эту функ (e.g. кровосос с поворотом головы и т.п.)
 			
 // members
 public:
@@ -145,7 +145,8 @@ public:
 	CAI_NodeEvaluatorTemplate<aiSearchRange | aiCoverFromEnemyWeight | aiEnemyDistance>	m_tSelectorCover;
 	CAI_NodeEvaluatorTemplate<aiSearchRange | aiEnemyDistance>			m_tSelectorGetAway;
 	CAI_NodeEvaluatorTemplate<aiSearchRange | aiEnemyDistance>			m_tSelectorApproach;
-	
+	CAI_NodeEvaluatorTemplate<aiSearchRange | aiEnemyDistance>			m_tSelectorHearSnd;
+
 	EBitingPathState		m_tPathState;
 	u32						m_dwPathBuiltLastTime;
 	
@@ -233,4 +234,5 @@ public:
 	u32						m_dwDayTimeEnd;
 	float					m_fMinSatiety;
 	float					m_fMaxSatiety;
+
 };

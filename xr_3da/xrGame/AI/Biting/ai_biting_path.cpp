@@ -380,4 +380,37 @@ void CAI_Biting::Path_ApproachPoint(CEntity *pE, Fvector position, TTime rebuild
 	vfChoosePointAndBuildPath(&m_tSelectorApproach,0, true, 0, rebuild_time);
 }
 
+// Развернуть объект в направление движения
+void CAI_Biting::SetDirectionLook(bool bReversed)
+{
+	int i = ps_Size();		// position stack size
+	if (i > 1) {
+		CObject::SavedPosition tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
+		tWatchDirection.sub(tCurrentPosition.vPosition,tPreviousPosition.vPosition);
+		if (tWatchDirection.magnitude() > EPS_L) {
+			vfNormalizeSafe(tWatchDirection);
+			mk_rotation(tWatchDirection,r_torso_target);
+			if (bReversed) r_torso_target.yaw = angle_normalize(r_torso_target.yaw + PI);
+			r_torso_target.pitch = 0;
+		}
+	}
+
+	r_target = r_torso_target;
+}
+
+// каждый монстр может по-разному реализвать эту функ (e.g. кровосос с поворотом головы и т.п.)
+void CAI_Biting::LookPosition(Fvector to_point)
+{
+	// по-умолчанию просто изменить r_torso_target.yaw
+	Fvector	dir;
+	dir.set(to_point);
+	dir.sub(Position());	
+	
+	// получаем вектор направления к источнику звука и его мировые углы
+	float		yaw,p;
+	dir.getHP(yaw,p);
+
+	// установить текущий угол
+	r_torso_target.yaw = angle_normalize(-yaw);
+}
 

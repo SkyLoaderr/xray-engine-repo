@@ -7,10 +7,10 @@ CAI_Bloodsucker::CAI_Bloodsucker()
 {
 	stateRest			= xr_new<CBitingRest>			(this);
 	stateEat			= xr_new<CBitingEat>			(this, false);
-	stateAttack			= xr_new<CBitingAttack>			(this);
-	statePanic			= xr_new<CBloodsuckerPanic>		(this);
-	stateHearDNE		= xr_new<CBloodsuckerHearDNE>	(this);
-	stateHearNDE		= xr_new<CBloodsuckerHearNDE>	(this);
+	stateAttack			= xr_new<CBitingAttack>			(this, true);
+	statePanic			= xr_new<CBitingPanic>			(this);
+	stateExploreDNE		= xr_new<CBitingExploreDNE>		(this);
+	stateExploreNDE		= xr_new<CBitingExploreNDE>		(this);
 
 	Init();
 }
@@ -40,13 +40,12 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 {
 	inherited::Load(section);
 
-	m_tVisibility.Load(section);
+	CMonsterInvisibility::Load(section);
 
 	m_fInvisibilityDist = pSettings->r_float(section,"InvisibilityDist");
 	m_ftrPowerDown		= pSettings->r_float(section,"PowerDownFactor");	
 	m_fPowerThreshold	= pSettings->r_float(section,"PowerThreshold");	
 
-	m_tSelectorHearSnd.Load(section,"selector_hear_sound");				// like _free hunting
 }
 
 
@@ -84,8 +83,8 @@ void CAI_Bloodsucker::UpdateCL()
 	inherited::UpdateCL();
 
 	// Blink processing
-	bool PrevVis	=	m_tVisibility.IsCurrentVisible();
-	bool NewVis		=	m_tVisibility.Update();
+	bool PrevVis	=	IsCurrentVisible();
+	bool NewVis		=	CMonsterInvisibility::Update();
 	if (NewVis != PrevVis) setVisible(NewVis);
 }
 
@@ -192,12 +191,12 @@ void CAI_Bloodsucker::LookDirection(Fvector to_dir, float bone_turn_speed)
 	Bones.SetMotion(GetBone("bip01_spine"), AXIS_X, bone_angle * k, bone_turn_speed, 1);
 }
 
-void CAI_Bloodsucker::LookPosition(Fvector to_point, float bone_turn_speed)
+void CAI_Bloodsucker::LookPosition(Fvector to_point)
 {
 	Fvector	dir;
 	dir.set(to_point);
 	dir.sub(Position());
-	LookDirection(dir,bone_turn_speed);
+	LookDirection(dir,PI_DIV_3);
 }
 
 void CAI_Bloodsucker::ActivateEffector(float life_time)

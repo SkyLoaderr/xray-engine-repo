@@ -13,83 +13,78 @@ CBitingExploreDNE::CBitingExploreDNE(CAI_Biting *p)
 	SetHighPriority();
 }
 
-void CBitingExploreDNE::Reset()
-{
-	inherited::Reset();
-	m_tEnemy.obj = 0;
-
-	cur_pos.set		(0.f,0.f,0.f);
-	prev_pos		= cur_pos;
-	bFacedOpenArea	= false;
-	m_dwStayTime	= 0;
-
-}
 
 void CBitingExploreDNE::Init()
 {
-	// Test
-	WRITE_TO_LOG("_ ExploreDNE Init _");
+	IState::Init();	
+	bool bTemp;
+	pMonster->GetSound(m_tSound, bTemp);
 
-	inherited::Init();
+	flag_once_1				= false;
+	SavedPosition			= pMonster->Position();
+	StartPosition			= SavedPosition;			// сохранить стартовую позицию
+	LastPosition.set		(0.f,0.f,0.f);			
+	m_fRunAwayDist			= 50.f;
+	m_dwLastPosSavedTime	= 0;
+	m_dwStayLastTimeCheck	= m_dwCurrentTime;
 
-	R_ASSERT(pMonster->IsRememberSound());
+	m_tAction				= ACTION_RUN_AWAY;
 
-	SoundElem se;
-	bool bDangerous;
-	pMonster->GetSound(se,bDangerous);	// возвращает самый опасный звук
-	m_tEnemy.obj = dynamic_cast<CEntity *>(se.who);
-	m_tEnemy.position = se.position;
-	m_tEnemy.time = se.time;
-
-	Fvector dir; 
-	dir.sub(m_tEnemy.position,pMonster->Position());
-	float yaw,pitch;
-	dir.getHP(yaw,pitch);
-
-	// проиграть анимацию испуга
-
-//	pMonster->Motion.m_tSeq.Add(eAnimFastTurn,0,pMonster->m_ftrScaredRSpeed * 2.0f,yaw,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED | MASK_YAW, STOP_ANIM_END);
-//	pMonster->Motion.m_tSeq.Add(eAnimScared,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);
-//	pMonster->Motion.m_tSeq.Switch();
-
-	SetInertia(20000);
-	pMonster->SetMemoryTime(20000);
+	SetInertia				(20000);
 }
 
 void CBitingExploreDNE::Run()
 {
-	// Тикать нафиг
-	cur_pos = pMonster->Position();
+	// если новый звук, restart
+	SoundElem	se;
+	bool		bTemp;
+	pMonster->GetSound(se, bTemp);
+	if (m_tSound.time + 2000 < se.time) Init();
 
-	// implementation of 'face the most open area'
-	if (!bFacedOpenArea && cur_pos.similar(prev_pos) && (m_dwStayTime != 0) && (m_dwStayTime + 300 < m_dwCurrentTime) && (m_dwStateStartedTime + 3000 < m_dwCurrentTime)) {
-		bFacedOpenArea	= true;
-		pMonster->AI_Path.TravelPath.clear();
+//	// нивидимость
+//	if (pMonster->GetPower() > pMonster->m_fPowerThreshold) {
+//		if (pMonster->CMonsterInvisibility::Switch(false)) pMonster->ChangePower(pMonster->m_ftrPowerDown);
+//	}
+	
+	switch (m_tAction) {
+	case ACTION_RUN_AWAY: // убегать на N метров от звука
+		Msg(" DNE : [RUN AWAY]");
 
-		pMonster->r_torso_target.yaw = angle_normalize(pMonster->r_torso_target.yaw + PI);
+		pMonster->Path_GetAwayFromPoint (0, m_tSound.position, m_fRunAwayDist, 2000);
+		pMonster->MotionMan.m_tAction = ACT_RUN;
 
-//		pMonster->Motion.m_tSeq.Add(eAnimFastTurn,0,pMonster->m_ftrScaredRSpeed * 2.0f,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED,STOP_ANIM_END);		
-//		pMonster->Motion.m_tSeq.Switch();
-	} 
+		// каждую минуту сохранять текущую позицию, а затем развернуться и посмотреть в последнюю позицию
+		// т.е. развернуться назад
+		DO_IN_TIME_INTERVAL_BEGIN(m_dwLastPosSavedTime, 1000);
+			SavedPosition = pMonster->Position();
+		DO_IN_TIME_INTERVAL_END();
 
-	if (!cur_pos.similar(prev_pos)) {
-		bFacedOpenArea = false;
-		m_dwStayTime = 0;
-	} else if (m_dwStayTime == 0) m_dwStayTime = m_dwCurrentTime;
+		// проверить условие перехода в след. состояние (достаточное расстояние || стоим на месте около 2 сек)
+		if (pMonster->Position().distance_to(StartPosition) > m_fRunAwayDist) m_tAction = ACTION_LOOK_BACK_POSITION;
+		
+		DO_IN_TIME_INTERVAL_BEGIN(m_dwStayLastTimeCheck, 2000);
+			if (pMonster->Position().similar(LastPosition)) m_tAction = ACTION_LOOK_BACK_POSITION;
+			LastPosition = pMonster->Position();
+		DO_IN_TIME_INTERVAL_END();
 
+		break;
+	case ACTION_LOOK_BACK_POSITION:			// повернуться в сторону звука
+		Msg("DNE : [LOOK_BACK_POSITION]");
+		DO_ONCE_BEGIN(flag_once_1);
+			pMonster->AI_Path.TravelPath.clear();
+			pMonster->LookPosition(SavedPosition);
+		DO_ONCE_END();
 
-	pMonster->m_tSelectorFreeHunting.m_fMaxEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + pMonster->m_tSelectorFreeHunting.m_fSearchRange;
-	pMonster->m_tSelectorFreeHunting.m_fOptEnemyDistance = pMonster->m_tSelectorFreeHunting.m_fMaxEnemyDistance;
-	pMonster->m_tSelectorFreeHunting.m_fMinEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + 3.f;
+		pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
+		
+		// если уже повернулся, перейти в след. состояние
+		if (getAI().bfTooSmallAngle(pMonster->r_torso_current.yaw, pMonster->r_torso_target.yaw, PI_DIV_6/6)) m_tAction = ACTION_LOOK_AROUND;
+		break;
 
-	pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorFreeHunting, 0, true, 0,2000);
-
-	if (!bFacedOpenArea) {
-		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;	
-	} else {
-		// spec flags (stand damaged)
-		// ...
+	case ACTION_LOOK_AROUND:
+		Msg("DNE : [LOOK_AROUND]");
+		
+		pMonster->MotionMan.m_tAction = ACT_LOOK_AROUND;
+		break;
 	}
-
-	prev_pos = cur_pos;
 }

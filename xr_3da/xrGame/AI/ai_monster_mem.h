@@ -1,5 +1,7 @@
 #pragma once
 
+#include "..\\CustomMonster.h"
+
 //*********************************************************************************************************
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // MEMORY MANAGMENT
@@ -12,7 +14,6 @@
 #define DEFINE_THIS_CLASS_AS_POLYMORPHIC() virtual void __VirtualFunctionThatMakesClassPolymorphic() {}
 
 typedef u32 TTime;
-
 
 typedef enum {
 	WEAPON_SHOOTING = 0,

@@ -54,6 +54,7 @@ void CBitingPanic::Run()
 		pMonster->r_torso_target.yaw = angle_normalize(pMonster->r_torso_target.yaw + PI);
 	} 
 
+// todo: 
 //	// нивидимость (for Bloodsucker)
 //	if (pMonster->GetPower() > pMonster->m_fPowerThreshold) {
 //		if (pMonster->m_tVisibility.Switch(false)) pMonster->ChangePower(pMonster->m_ftrPowerDown);
