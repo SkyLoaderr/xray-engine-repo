@@ -423,23 +423,23 @@ void CScriptStorage::print_error(CLuaVirtualMachine *L, int iErrorCode)
 {
 	switch (iErrorCode) {
 		case LUA_ERRRUN : {
-			Msg ("! SCRIPT RUNTIME ERROR");
+			script_log (ScriptStorage::eLuaMessageTypeError,"SCRIPT RUNTIME ERROR");
 			break;
 		}
 		case LUA_ERRMEM : {
-			Msg ("! SCRIPT ERROR (memory allocation)");
+			script_log (ScriptStorage::eLuaMessageTypeError,"SCRIPT ERROR (memory allocation)");
 			break;
 		}
 		case LUA_ERRERR : {
-			Msg ("! SCRIPT ERROR (while running the error handler function)");
+			script_log (ScriptStorage::eLuaMessageTypeError,"SCRIPT ERROR (while running the error handler function)");
 			break;
 		}
 		case LUA_ERRFILE : {
-			Msg ("! SCRIPT ERROR (while running file)");
+			script_log (ScriptStorage::eLuaMessageTypeError,"SCRIPT ERROR (while running file)");
 			break;
 		}
 		case LUA_ERRSYNTAX : {
-			Msg ("! SCRIPT SYNTAX ERROR");
+			script_log (ScriptStorage::eLuaMessageTypeError,"SCRIPT SYNTAX ERROR");
 			break;
 		}
 		default : NODEFAULT;

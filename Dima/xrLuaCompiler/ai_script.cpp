@@ -70,6 +70,8 @@ bool CScript::Update()
 			ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeInfo,"Script %s is finished!",m_script_name);
 		}
 		else {
+			VERIFY		(m_current_stack_level);
+			--m_current_stack_level;
 			VERIFY2		(!lua_gettop(lua()),"Do not pass any value to coroutine.yield()!");
 		}
 	

@@ -21,6 +21,7 @@ void CScriptStackTracker::script_hook	(CLuaVirtualMachine *L, lua_Debug *dbg)
 
 	switch	(dbg->event) {
 		case LUA_HOOKCALL : {
+			VERIFY		(m_current_stack_level < max_stack_size);
 			if (!lua_getstack(L,0,&m_stack[m_current_stack_level]))
 				break;
 			lua_getinfo	(L,"nSlu",&m_stack[m_current_stack_level]);
@@ -30,6 +31,7 @@ void CScriptStackTracker::script_hook	(CLuaVirtualMachine *L, lua_Debug *dbg)
 			break;
 							}
 		case LUA_HOOKRET : {
+			VERIFY		(m_current_stack_level);
 			--m_current_stack_level;
 			break;
 		}
@@ -54,7 +56,7 @@ void CScriptStackTracker::print_error	(CLuaVirtualMachine *L)
 {
 	VERIFY					(L && (m_virtual_machine == L));
 
-	for (int j=m_current_stack_level - 1, k=0; j>0; --j, ++k) {
+	for (int j=m_current_stack_level - 1, k=0; j>=0; --j, ++k) {
 		lua_Debug			l_tDebugInfo = m_stack[j];
 		if (!l_tDebugInfo.name)
 			ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"%2d : [C  ] C source code : %s",k,l_tDebugInfo.short_src);
