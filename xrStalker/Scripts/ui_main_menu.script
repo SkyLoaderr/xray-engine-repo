@@ -209,7 +209,8 @@ function main_menu:InitCallBacks()
 end
 
 function main_menu:OnButton_new_game_clicked()
-	level.start_stop_menu(game_cl_LastStanding.new_game_dlg,false)
+	local dlg = ui_new_game_dialog.new_game_dlg()
+	level.start_stop_menu(dlg, true)
 end
 
 function main_menu:OnMsgOk()
