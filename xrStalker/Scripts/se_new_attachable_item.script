@@ -45,7 +45,6 @@ function CSE_NewAttachableItem:__init		(section) super(section)
 	// bool
 	self._bool_0				= true
 	// vector
-	log							("0 : CSE_NewAttachableItem::CSE_NewAttachableItem called!")
 	self._vector_0				= vector():set(0.0,0.0,0.0)
 	self._vector_1				= vector():set(0.1,0.1,0.1)
 	self._vector_2				= vector():set(0.2,0.2,0.2)
@@ -66,7 +65,6 @@ function CSE_NewAttachableItem:__init		(section) super(section)
 	self._vangle_3				= vector():set(0.3,0.3,0.3)
 	self._vangle_4				= vector():set(0.4,0.4,0.4)
 	// flags16
-	log							("1 : CSE_NewAttachableItem::CSE_NewAttachableItem called!")
 	self._flag16_0				= flags16()
 	self._flag16_0:zero			()
 	// flags32
@@ -79,38 +77,32 @@ function CSE_NewAttachableItem:__init		(section) super(section)
 	self._time_1				= 0.1
 	self._time_2				= 0.2
 	// text
-	log							("2 : CSE_NewAttachableItem::CSE_NewAttachableItem called!")
 	self._text_0				= "text"
 	// token8
-	log							("3 : CSE_NewAttachableItem::CSE_NewAttachableItem called!")
 	self.tokens8				= token_list()
 	self.tokens8:add			("token8_0",0)
 	self.tokens8:add			("token8_1",1)
 	self.tokens8:add			("token8_2",2)
 	self._token8_0				= self.tokens8:id("token8_0")
 	// token16
-	log							("4 : CSE_NewAttachableItem::CSE_NewAttachableItem called!")
 	self.tokens16				= token_list()
 	self.tokens16:add			("token16_0",0)
 	self.tokens16:add			("token16_1",1)
 	self.tokens16:add			("token16_2",2)
 	self._token16_0				= self.tokens16:id("token16_0")
 	// token32
-	log							("5 : CSE_NewAttachableItem::CSE_NewAttachableItem called!")
 	self.tokens32				= token_list()
 	self.tokens32:add			("token32_0",0)
 	self.tokens32:add			("token32_1",1)
 	self.tokens32:add			("token32_2",2)
 	self._token32_0				= self.tokens32:id("token32_0")
 	// list
-	log							("6 : CSE_NewAttachableItem::CSE_NewAttachableItem called!")
 	self.list					= rtoken_list()
 	self.list:add				("listitem_0")
 	self.list:add				("listitem_1")
 	self.list:add				("listitem_2")
 	self._listvalue_0			= ""
 	// choose
-	log							("7 : CSE_NewAttachableItem::CSE_NewAttachableItem called!")
 	self._choose_00				= ""
 	self._choose_01				= ""
 	self._choose_02				= ""
