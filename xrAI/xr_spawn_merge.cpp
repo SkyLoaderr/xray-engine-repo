@@ -42,7 +42,7 @@ public:
 
 class CSpawn : public CThread {
 public:
-	CSE_ALifeGraph::SLevel		m_tLevel;
+	SLevel						m_tLevel;
 	ALIFE_OBJECT_P_VECTOR		m_tpSpawnPoints;
 	xr_vector<CSE_LevelPoint*>	m_tpLevelSpawnPoints;
 	u32							m_dwLevelID;
@@ -50,7 +50,7 @@ public:
 	CSE_ALifeCrossTable			*m_tpCrossTable;
 	xr_vector<SLevelPoint>		m_tpLevelPoints;
 
-								CSpawn(LPCSTR name, const CSE_ALifeGraph::SLevel &tLevel, u32 dwLevelID, u32 *dwGroupOffset) : CThread(dwLevelID)
+								CSpawn(LPCSTR name, const SLevel &tLevel, u32 dwLevelID, u32 *dwGroupOffset) : CThread(dwLevelID)
 	{
 		thDestroyOnComplete		= FALSE;
 		// loading AI map
@@ -365,7 +365,7 @@ void xrMergeSpawns(LPCSTR name)
 	tSpawnHeader.dwSpawnCount	= 0;
 	u32							dwGroupOffset = 0;
 	xr_vector<CSpawn *>			tpLevels;
-	CSE_ALifeGraph::SLevel		tLevel;
+	SLevel						tLevel;
     LPCSTR						N,V;
 	R_ASSERT2					(Ini->section_exist("levels"),"Can't find section 'levels' in the 'game.ltx'!");
     for (u32 k = 0; Ini->r_line("levels",k,&N,&V); k++) {

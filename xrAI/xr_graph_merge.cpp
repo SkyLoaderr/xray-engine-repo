@@ -17,6 +17,7 @@
 #include "ai_map.h"
 #include "net_utils.h"
 #include "ai_alife_templates.h"
+#include "ai_alife_space.h"
 using namespace ALife;
 
 class CLevelGraph;
@@ -294,7 +295,7 @@ void xrMergeGraphs(LPCSTR name)
 
 	GRAPH_P_MAP						tpGraphs;
 	string256						S1, S2;
-	CSE_ALifeGraph::SLevel				tLevel;
+	SLevel							tLevel;
 	u32								dwOffset = 0;
 	u32								l_dwPointOffset = 0;
 	xr_vector<SLevelPoint>			l_tpLevelPoints;
@@ -309,11 +310,11 @@ void xrMergeGraphs(LPCSTR name)
 		Memory.mem_copy				(S1,V,(u32)strlen(V) + 1);
 		strconcat					(S2,name,S1);
 		strconcat					(S1,S2,"\\");//level.graph");
-		tLevel.dwLevelID			= Ini->r_s32(N,"id");
-		CLevelGraph					*tpLevelGraph = xr_new<CLevelGraph>(tLevel,S1,dwOffset,tLevel.dwLevelID,&l_tpLevelPoints, Ini);
+		tLevel.tLevelID				= Ini->r_s32(N,"id");
+		CLevelGraph					*tpLevelGraph = xr_new<CLevelGraph>(tLevel,S1,dwOffset,tLevel.tLevelID,&l_tpLevelPoints, Ini);
 		dwOffset					+= tpLevelGraph->m_tGraphHeader.dwVertexCount;
-		tpGraphs.insert				(mk_pair(tLevel.dwLevelID,tpLevelGraph));
-		tGraphHeader.tpLevels.push_back(tLevel);
+		tpGraphs.insert				(mk_pair(tLevel.tLevelID,tpLevelGraph));
+		tGraphHeader.tpLevels.insert(std::make_pair(tLevel.tLevelID,tLevel));
     }
 	R_ASSERT(tpGraphs.size());
 	
@@ -366,31 +367,31 @@ void xrMergeGraphs(LPCSTR name)
 	F.w_u32						(tGraphHeader.dwEdgeCount);
 	F.w_u32						(tGraphHeader.dwDeathPointCount);
 	{
-		xr_vector<CSE_ALifeGraph::SLevel>::iterator	I = tGraphHeader.tpLevels.begin();
-		xr_vector<CSE_ALifeGraph::SLevel>::iterator	E = tGraphHeader.tpLevels.end();
+		LEVEL_PAIR_IT			I = tGraphHeader.tpLevels.begin();
+		LEVEL_PAIR_IT			E = tGraphHeader.tpLevels.end();
 		for ( ; I != E; I++) {
-			F.w_stringZ	((*I).caLevelName);
-			F.w_fvector3((*I).tOffset);
-			F.w_u32		((*I).dwLevelID);
+			F.w_stringZ	((*I).second.caLevelName);
+			F.w_fvector3((*I).second.tOffset);
+			F.w_u32		((*I).second.tLevelID);
 		}
 	}
 
-	dwOffset						*= sizeof(CSE_ALifeGraph::SGraphVertex);
-	l_dwPointOffset					= dwOffset + tGraphHeader.dwEdgeCount*sizeof(CSE_ALifeGraph::SGraphEdge);
+	dwOffset					*= sizeof(CSE_ALifeGraph::SGraphVertex);
+	l_dwPointOffset				= dwOffset + tGraphHeader.dwEdgeCount*sizeof(CSE_ALifeGraph::SGraphEdge);
 	{
-		xr_vector<CSE_ALifeGraph::SLevel>::iterator	I = tGraphHeader.tpLevels.begin();
-		xr_vector<CSE_ALifeGraph::SLevel>::iterator	E = tGraphHeader.tpLevels.end();
+		LEVEL_PAIR_IT			I = tGraphHeader.tpLevels.begin();
+		LEVEL_PAIR_IT			E = tGraphHeader.tpLevels.end();
 		for ( ; I != E; I++) {
-			GRAPH_P_PAIR_IT			i = tpGraphs.find((*I).dwLevelID);
-			R_ASSERT				(i != tpGraphs.end());
+			GRAPH_P_PAIR_IT		i = tpGraphs.find((*I).second.tLevelID);
+			R_ASSERT			(i != tpGraphs.end());
 			(*i).second->vfSaveVertices	(F,dwOffset,l_dwPointOffset);
 		}
 	}
 	{
-		xr_vector<CSE_ALifeGraph::SLevel>::iterator	I = tGraphHeader.tpLevels.begin();
-		xr_vector<CSE_ALifeGraph::SLevel>::iterator	E = tGraphHeader.tpLevels.end();
+		LEVEL_PAIR_IT			I = tGraphHeader.tpLevels.begin();
+		LEVEL_PAIR_IT			E = tGraphHeader.tpLevels.end();
 		for ( ; I != E; I++) {
-			GRAPH_P_PAIR_IT			i = tpGraphs.find((*I).dwLevelID);
+			GRAPH_P_PAIR_IT			i = tpGraphs.find((*I).second.tLevelID);
 			R_ASSERT				(i != tpGraphs.end());
 			(*i).second->vfSaveEdges(F);
 		}

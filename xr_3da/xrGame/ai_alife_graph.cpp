@@ -26,7 +26,7 @@ void CSE_ALifeGraph::Load				(LPCSTR fName)
 	m_tGraphHeader.dwDeathPointCount	= m_tpGraphVFS->r_u32();
 	{
 		for (u32 i=0; i<m_tGraphHeader.dwLevelCount; i++) {
-			SLevel						l_tLevel;
+			ALife::SLevel				l_tLevel;
 			m_tpGraphVFS->r_stringZ		(l_tLevel.caLevelName);
 			m_tpGraphVFS->r_fvector3	(l_tLevel.tOffset);
 			m_tpGraphVFS->r				(&l_tLevel.tLevelID,sizeof(l_tLevel.tLevelID));

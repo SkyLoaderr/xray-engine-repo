@@ -38,7 +38,7 @@ public:
 		u32							dwVertexCount;
 		u32							dwEdgeCount;
 		u32							dwDeathPointCount;
-		LEVEL_MAP					tpLevels;
+		ALife::LEVEL_MAP			tpLevels;
 	} SGraphHeader;
 	#pragma pack(pop)
 

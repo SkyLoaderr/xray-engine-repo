@@ -29,7 +29,7 @@ DEFINE_VECTOR(SDynamicGraphVertex,		GRAPH_VERTEX_VECTOR,	GRAPH_VERTEX_IT);
 DEFINE_VECTOR(CSE_ALifeGraph::SGraphEdge,	GRAPH_EDGE_VECTOR,		GRAPH_EDGE_IT);
 
 extern xr_vector<SDynamicGraphVertex>	tpaGraph;		// graph
-extern CSE_ALifeGraph::SGraphHeader	tGraphHeader;
+extern CSE_ALifeGraph::SGraphHeader		tGraphHeader;
 
 void xrBuildGraph(LPCSTR name);
 void xrMergeSpawns();

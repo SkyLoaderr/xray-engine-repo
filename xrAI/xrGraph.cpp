@@ -284,22 +284,22 @@ void vfSaveGraph(LPCSTR name, CAI_Map *tpAI_Map)
 	//
 	tGraphHeader.dwDeathPointCount = 0;
 
-	CSE_ALifeGraph::SLevel		tLevel;
+	SLevel						tLevel;
 	tLevel.tOffset.set			(0,0,0);
-	tLevel.dwLevelID			= 0;
+	tLevel.tLevelID				= 0;
 	Memory.mem_copy				(tLevel.caLevelName,name,(u32)strlen(name) + 1);
-	tGraphHeader.tpLevels.push_back(tLevel);
+	tGraphHeader.tpLevels.insert(std::make_pair(tLevel.tLevelID,tLevel));
 	tGraph.w_u32				(tGraphHeader.dwVersion);
 	tGraph.w_u32				(tGraphHeader.dwLevelCount);
 	tGraph.w_u32				(tGraphHeader.dwVertexCount);
 	tGraph.w_u32				(tGraphHeader.dwEdgeCount);
 	tGraph.w_u32				(tGraphHeader.dwDeathPointCount);
-	xr_vector<CSE_ALifeGraph::SLevel>::iterator	I = tGraphHeader.tpLevels.begin();
-	xr_vector<CSE_ALifeGraph::SLevel>::iterator	E = tGraphHeader.tpLevels.end();
+	LEVEL_PAIR_IT				I = tGraphHeader.tpLevels.begin();
+	LEVEL_PAIR_IT				E = tGraphHeader.tpLevels.end();
 	for ( ; I != E; I++) {
-		tGraph.w_stringZ		((*I).caLevelName);
-		tGraph.w_fvector3		((*I).tOffset);
-		tGraph.w_u32			((*I).dwLevelID);
+		tGraph.w_stringZ		((*I).second.caLevelName);
+		tGraph.w_fvector3		((*I).second.tOffset);
+		tGraph.w_u32			((*I).second.tLevelID);
 	}
 
 	u32							dwPosition = tGraph.size();
