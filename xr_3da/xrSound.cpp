@@ -101,7 +101,7 @@ void	CSoundManager::DeleteStream			( CSound_stream_interface* pSnd )
 	pMusicStreams->DeleteSound	((CSoundStream*)pSnd);
 }
 //-----------------------------------------------------------------------------
-BOOL CSoundManager::IsOccluded	(	Fvector& P, float R, Fvector* occ )
+BOOL	CSoundManager::IsOccluded	(	Fvector& P, float R, Fvector* occ )
 {
 	if (0==pGeometry)	return FALSE;
 
@@ -135,4 +135,13 @@ BOOL CSoundManager::IsOccluded	(	Fvector& P, float R, Fvector* occ )
 		occ[2].set	(*T.verts[2]);
 		return TRUE;
 	}
+}
+
+void	CSoundManager::SetGeometry				( CDB::MODEL* M )																		
+{
+	pGeometry	= M;
+}
+CDB::MODEL* 	CSoundManager::GetGeometry		( )
+{
+	return pGeometry;
 }
