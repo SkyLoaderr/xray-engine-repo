@@ -108,10 +108,8 @@ add_to_type_list(CObjectFactory)
 #undef script_type_list
 #define script_type_list save_type_list(CObjectFactory)
 
-IC	const CObjectFactory &object_factory()
-{
-	static CObjectFactory object_factory;
-	return	(object_factory);
-}
+extern CObjectFactory *g_object_factory;
+
+IC	const CObjectFactory &object_factory();
 
 #include "object_factory_inline.h"

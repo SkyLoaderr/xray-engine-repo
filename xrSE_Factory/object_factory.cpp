@@ -17,6 +17,8 @@
 #	include "attachable_item.h"
 #endif
 
+CObjectFactory *g_object_factory = 0;
+
 CObjectFactory::CObjectFactory	()
 {
 	m_initialized				= false;

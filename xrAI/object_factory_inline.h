@@ -8,6 +8,13 @@
 
 #pragma once
 
+IC	const CObjectFactory &object_factory()
+{
+	if (!g_object_factory)
+		g_object_factory		= xr_new<CObjectFactory>();
+	return						(*g_object_factory);
+}
+
 #ifndef NO_XR_GAME
 IC	CObjectFactory::CLIENT_SCRIPT_BASE_CLASS *CObjectFactory::client_instance() const
 {

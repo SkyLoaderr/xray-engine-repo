@@ -72,6 +72,8 @@ void clear_singletons ()
 {
 	// destroy ai space
 	xr_delete(g_ai_space);
+	// destroy object factory
+	xr_delete(g_object_factory);
 	// destroy monster squad global var
 	xr_delete(g_monster_squad);
 
