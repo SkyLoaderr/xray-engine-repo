@@ -102,7 +102,7 @@ class NodeCompressed {
 			}
 			case 2 : {
 				value	<<= 2;
-				value	|= (*(u32*)(data + 5)) & 0xff100003;
+				value	|= (*(u32*)(data + 5)) & 0xff800003;
 				Memory.mem_copy(data + 5, &value, sizeof(u32));
 				break;
 			}
@@ -129,8 +129,8 @@ public:
 	{
 		switch (index) {
 			case 0 :	return	((*(u32*)data) & 0x001fffff);
-			case 1 :	return (((*(u32*)(data + 2)) >> 5) & 0x001fffff);
-			case 2 :	return (((*(u32*)(data + 5)) >> 2) & 0x001fffff);
+			case 1 :	return	(((*(u32*)(data + 2)) >> 5) & 0x001fffff);
+			case 2 :	return	(((*(u32*)(data + 5)) >> 2) & 0x001fffff);
 			case 3 :	return	(((*(u32*)(data + 7)) >> 7) & 0x001fffff);
 			default :	NODEFAULT;
 		}
