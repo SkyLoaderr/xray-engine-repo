@@ -91,9 +91,9 @@ public:
 	void	Flex2OGF				();
 	void	BuildSectors			();
 
-	void	SaveLights		(CFS_Base &fs);
-	void	SaveTREE		(CFS_Base &fs);
-	void	SaveSectors		(CFS_Base &fs);
+	void	SaveLights				(CFS_Base &fs);
+	void	SaveTREE				(CFS_Base &fs);
+	void	SaveSectors				(CFS_Base &fs);
 
 	CBuild	(b_transfer * leveldesc);
 	~CBuild	();
