@@ -95,7 +95,7 @@ void CHUDCursor::Render()
 		F->Color	(C);
 		F->Size		(0.02f);
 		F->Out		(PT.p.x,PT.p.y+di_size*4,"~%s",RQ.O->cName());
-		F->Out		(PT.p.x,PT.p.y+di_size*2,"%d",iFloor(((CEntity*)RQ.O)->g_Health()));
+		F->Out		(PT.p.x,PT.p.y+di_size*2,"%3.2f",((CEntity*)RQ.O)->g_Health());
 	}
 	// actual rendering
 	DWORD			vOffset;

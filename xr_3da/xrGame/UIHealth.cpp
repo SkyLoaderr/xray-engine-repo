@@ -46,11 +46,10 @@ void CUIHealth::Out	(float _health, float _armor){
 	// 
 	CFontSmall* F = Level().HUD()->pSmallFont;
 	F->Color(0xffffffff);
-	F->Out	(5,	500+10,	"%d",iFloor(_health));
+	F->Out	(-1.f,-1.f,"%3.2f",_health);
 }
 //--------------------------------------------------------------------
-
-void CUIHealth::Render()
+void CUIHealth::Render	()
 {
 	back.Render			();
 	health_bar.Render	();
