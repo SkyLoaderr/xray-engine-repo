@@ -147,6 +147,10 @@ protected:
 	//партиклы дыма
 	virtual void			StartSmokeParticles	(const Fvector& play_pos,
 												 const Fvector& parent_vel);
+
+	//партиклы полосы от пули
+	virtual void			StartShotParticles	();
+
 	//партиклы гильз
 	virtual void			OnShellDrop			(const Fvector& play_pos,
 												 const Fvector& parent_vel);
@@ -166,5 +170,7 @@ protected:
 	//имя пратиклов для дыма
 	ref_str				m_sSmokeParticlesCurrent;
 	ref_str				m_sSmokeParticles;
-
+	
+	//имя партиклов следа от пули
+	ref_str				m_sShotParticles;
 };

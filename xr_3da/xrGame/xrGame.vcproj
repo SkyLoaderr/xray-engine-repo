@@ -5696,6 +5696,12 @@
 							RelativePath=".\AI_PhraseDialogManager.h">
 						</File>
 						<File
+							RelativePath=".\GameTask.cpp">
+						</File>
+						<File
+							RelativePath=".\GameTask.h">
+						</File>
+						<File
 							RelativePath=".\InfoPortion.cpp">
 						</File>
 						<File
@@ -6135,6 +6141,9 @@
 					Filter="">
 					<File
 						RelativePath="xrServer_process_event.cpp">
+					</File>
+					<File
+						RelativePath=".\xrServer_process_event_destroy.cpp">
 					</File>
 					<File
 						RelativePath=".\xrServer_process_event_destroy.cpp">
@@ -7393,6 +7402,9 @@
 				</File>
 				<File
 					RelativePath=".\w_fort.ltx">
+				</File>
+				<File
+					RelativePath=".\w_gauss.ltx">
 				</File>
 				<File
 					RelativePath=".\w_groza.ltx">

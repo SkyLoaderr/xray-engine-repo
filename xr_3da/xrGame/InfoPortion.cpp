@@ -17,9 +17,11 @@
 SInfoPortionData::SInfoPortionData ()
 {
 	m_InfoId = NO_INFO_INDEX;
+	m_pGameTask = NULL;
 }
 SInfoPortionData::~SInfoPortionData ()
 {
+	xr_delete(m_pGameTask);
 }
 
 
@@ -135,6 +137,14 @@ void CInfoPortion::load_shared	(LPCSTR xml_file)
 
 	//имена скриптовых функций
 	info_data()->m_PhraseScript.Load(uiXml, pNode);
+
+
+	XML_NODE* pTaskNode = uiXml.NavigateToNode(pNode,"task",0);
+	if(pTaskNode) 
+	{
+		info_data()->m_pGameTask = xr_new<CGameTask>();
+		info_data()->m_pGameTask->Load(uiXml, pTaskNode);
+	}
 
 	//загрузить позиции на карте
 	SMapLocation map_location;

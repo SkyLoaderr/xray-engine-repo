@@ -224,6 +224,11 @@ void CShootingObject::LoadFlameParticles (LPCSTR section, LPCSTR prefix)
 	if(pSettings->line_exist(section, full_name))
 		m_sSmokeParticles = pSettings->r_string (section, full_name);
 
+	strconcat(full_name, prefix, "shot_particles");
+	if(pSettings->line_exist(section, full_name))
+		m_sShotParticles = pSettings->r_string (section, full_name);
+
+
 	//текущие партиклы
 	m_sFlameParticlesCurrent = m_sFlameParticles;
 	m_sSmokeParticlesCurrent = m_sSmokeParticles;
@@ -354,6 +359,8 @@ void CShootingObject::FireBullet(const Fvector& pos,
 		Level().BulletManager().AddBullet(	pos, dir, m_fStartBulletSpeed, float(iHitPower), 
 											fHitImpulse, parent_id, weapon_id, 
 											ALife::eHitTypeFireWound, fireDistance, cartridge);
+
+		StartShotParticles	();
 	}
 
 	// light
@@ -367,4 +374,11 @@ void CShootingObject::FireStart	()
 void CShootingObject::FireEnd	()				
 { 
 	bWorking=false;	
+}
+
+void CShootingObject::StartShotParticles	()
+{
+	CParticlesObject* pSmokeParticles = NULL;
+	StartParticles(pSmokeParticles, *m_sShotParticles, 
+					m_vCurrentShootPos, m_vCurrentShootDir, true);
 }

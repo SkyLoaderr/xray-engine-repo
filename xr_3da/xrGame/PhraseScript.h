@@ -12,6 +12,8 @@
 class CGameObject;
 class CInventoryOwner;
 
+
+
 class CPhraseScript
 {
 public:
