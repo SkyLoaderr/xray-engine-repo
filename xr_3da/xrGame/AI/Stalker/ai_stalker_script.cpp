@@ -122,6 +122,8 @@ bool CAI_Stalker::bfAssignWatch(CEntityAction *tpEntityAction)
 			break;
 		}
 		case CWatchAction::eGoalTypeCurrent : {
+			l_tWatchAction.m_tWatchType	= eLookTypeDirection;
+			l_tWatchAction.m_tWatchVector.setHP(-m_body.current.yaw,m_body.current.pitch);
 			m_body.target				= m_body.current;
 			m_head.target				= m_head.current;
 			l_tWatchAction.m_bCompleted = true;
@@ -265,4 +267,12 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 	}
 
 	return	(true);
+}
+
+bool CAI_Stalker::bfAssignAnimation(CEntityAction *tpEntityAction)
+{
+	if (!inherited::bfAssignAnimation(tpEntityAction))
+		return			(false);
+
+	return				(true);
 }

@@ -476,6 +476,7 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 			]
 			.def(								constructor<>())
 			.def(								constructor<LPCSTR>())
+			.def(								constructor<LPCSTR,bool>())
 			.def(								constructor<MonsterSpace::EMentalState>())
 			.def("anim",						&CAnimationAction::SetAnimation)
 			.def("type",						&CAnimationAction::SetMentalState),

@@ -434,4 +434,5 @@ public:
 	virtual	bool				bfAssignWatch			(CEntityAction			*tpEntityAction);
 	virtual	void				ResetScriptData			(void					*P = 0);
 	virtual	bool				bfAssignObject			(CEntityAction			*tpEntityAction);
+	virtual	bool				bfAssignAnimation		(CEntityAction		*tpEntityAction);
 };

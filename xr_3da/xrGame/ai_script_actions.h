@@ -351,17 +351,20 @@ public:
 	ref_str							m_caAnimationToPlay;
 	MonsterSpace::EMentalState		m_tMentalState;
 	EGoalType						m_tGoalType;
+	bool							m_bHandUsage;
 
 							CAnimationAction	()
 	{
 		m_tMentalState		= MonsterSpace::eMentalStateDanger;
 		m_tGoalType			= eGoalTypeMental;
 		m_bCompleted		= false;
+		m_bHandUsage		= true;
 	}
 
-							CAnimationAction	(LPCSTR caAnimationToPlay)
+							CAnimationAction	(LPCSTR caAnimationToPlay, bool use_single_hand = false)
 	{
 		SetAnimation		(caAnimationToPlay);
+		m_bHandUsage		= !use_single_hand;
 	}
 
 							CAnimationAction	(MonsterSpace::EMentalState tMentalState)

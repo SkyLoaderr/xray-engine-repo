@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "ai_stalker.h"
 #include "../../WeaponMagazined.h"
+#include "../../ai_script_actions.h"
 
 #define TIME_FIRE_DELTA		400
 
@@ -33,7 +34,7 @@ void CAI_Stalker::g_WeaponBones	(int &L, int &R1, int &R2)
 	CKinematics *V	= PKinematics(Visual());
 	R1				= V->LL_BoneID("bip01_r_hand");
 	R2				= V->LL_BoneID("bip01_r_finger2");
-	if (IsLimping() && (m_tMentalState == eMentalStateFree))
+	if ((IsLimping() && (m_tMentalState == eMentalStateFree)) || (GetCurrentAction() && !GetCurrentAction()->m_tAnimationAction.m_bHandUsage))
 		L				= R2;
 	else
 		L				= V->LL_BoneID("bip01_l_finger1");
