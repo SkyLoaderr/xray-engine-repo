@@ -123,7 +123,7 @@ void CRenderTarget::accum_spot	(light* L)
 		// Select shader
 		u32		_id					= 0;
 		if (L->flags.bShadow)		{
-			bool	bFullSize			= (L->X.S.size == SMAP_size);
+			bool	bFullSize			= (L->X.S.size == RImplementation.o.smapsize);
 			if (L->X.S.transluent)	_id	= SE_L_TRANSLUENT;
 			else if		(bFullSize)	_id	= SE_L_FULLSIZE;
 			else					_id	= SE_L_NORMAL;
