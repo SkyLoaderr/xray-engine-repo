@@ -56,3 +56,6 @@ IC	board::score_type _minimax::search	(int depth)
 
 	return							(result);
 }
+
+#undef TEMPLATE_SPECIALIZATION
+#undef _minimax

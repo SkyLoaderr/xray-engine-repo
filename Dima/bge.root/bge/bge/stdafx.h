@@ -24,5 +24,4 @@
 #include "generic_extensions.h"
 #include "math_extensions.h"
 #include "script_extensions.h"
-
-using namespace std;
+#include "ui.h"

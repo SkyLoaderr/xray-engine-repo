@@ -1645,6 +1645,10 @@
 							>
 						</File>
 						<File
+							RelativePath=".\othello_classic_board_fill_moves.cpp"
+							>
+						</File>
+						<File
 							RelativePath=".\othello_classic_board_inline.h"
 							>
 						</File>
@@ -1717,6 +1721,26 @@
 				<Filter
 					Name="moves"
 					>
+					<File
+						RelativePath=".\move_processor.h"
+						>
+					</File>
+					<File
+						RelativePath=".\move_processor_inline.h"
+						>
+					</File>
+					<Filter
+						Name="position_move"
+						>
+						<File
+							RelativePath=".\position_moves.h"
+							>
+						</File>
+						<File
+							RelativePath=".\position_moves_inline.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 			</Filter>
 		</Filter>

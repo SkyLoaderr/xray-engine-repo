@@ -140,11 +140,12 @@ IC	void COthelloClassicBoard::do_move		(const cell_index &index)
 	m_difference		= difference + (_color_to_move == BLACK ? 1 : -1);
 	m_color_to_move		= opponent_color;
 	--m_empties;
+	m_move_processor.on_do_move();
 }
 
 void COthelloClassicBoard::do_move			(const cell_index &index)
 {
-	if (index) {
+	if (index != MOVE_PASS) {
 		if (color_to_move() == BLACK)
 			do_move<BLACK>	(index);
 		else

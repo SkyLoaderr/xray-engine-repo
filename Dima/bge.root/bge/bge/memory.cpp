@@ -8,7 +8,6 @@
 
 #include "stdafx.h"
 #include "memory.h"
-#include "ui.h"
 #include "cpu.h"
 
 //void test();

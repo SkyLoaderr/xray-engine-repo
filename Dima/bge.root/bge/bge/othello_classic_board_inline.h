@@ -76,6 +76,7 @@ template <COthelloClassicBoard::cell_type opponent_color>
 IC	void COthelloClassicBoard::undo_move		()
 {
 	VERIFY								(!m_flip_stack.empty());
+	m_move_processor.on_undo_move		();
 
 	CStackCell							&stack_cell = m_flip_stack.top();
 	int									flip_count = (int)stack_cell.m_flip_count;
@@ -120,7 +121,7 @@ IC	void COthelloClassicBoard::change_color		()
 
 IC	LPCSTR COthelloClassicBoard::move_to_string	(const cell_index &index) const
 {
-	if (!index) {
+	if (index == MOVE_PASS) {
 		strcpy						(m_temp,"PS");
 		return						(m_temp);
 	}
@@ -174,7 +175,7 @@ IC	void COthelloClassicBoard::do_move	(LPCSTR move)
 {
 	cell_index						index = string_to_move(move);
 
-	if (!index) {
+	if (index == MOVE_PASS) {
 		if (can_move()) {
 			ui().error_log			("Move \"%s\" is invalid since there are possible moves!\n",move);
 			return;
@@ -199,7 +200,7 @@ IC	bool COthelloClassicBoard::can_move	(LPCSTR move) const
 {
 	cell_index						index = string_to_move(move);
 
-	if (!index) {
+	if (index == MOVE_PASS) {
 		if (!can_move())
 			return					(true);
 		return						(false);
@@ -217,7 +218,7 @@ IC	int	 COthelloClassicBoard::compute_difference	(LPCSTR move) const
 {
 	cell_index						index = string_to_move(move);
 	
-	if (!index) {
+	if (index == MOVE_PASS) {
 		if (!can_move()) {
 			if (color_to_move() == BLACK)
 				return				(difference());
@@ -279,4 +280,11 @@ IC	int	 COthelloClassicBoard::score			() const
 		return				(score<BLACK>());
 	else
 		return				(score<WHITE>());
+}
+
+IC	COthelloClassicBoard::position_moves &COthelloClassicBoard::moves	()
+{
+	if (!m_move_processor.actual())
+		fill_moves			();
+	return					(m_move_processor.moves());
 }

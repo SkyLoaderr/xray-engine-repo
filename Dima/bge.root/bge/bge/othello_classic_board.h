@@ -9,7 +9,7 @@
 #pragma once
 
 #include "script_export_space.h"
-#include "ui.h"
+#include "move_processor.h"
 
 class COthelloClassicBoard {
 public:
@@ -25,6 +25,8 @@ public:
 		WHITE_EMPTY		=  4,
 		BLACK_WHITE		=  5,
 		DUMMY			=  6,
+
+		MOVE_PASS		=  0,
 	};
 
 public:
@@ -54,6 +56,10 @@ public:
 public:
 	typedef std::stack<CStackCell,std::vector<CStackCell> > flip_stack;
 
+public:
+	typedef CMoveProcessor<cell_index,60,60>	move_processor;
+	typedef move_processor::move_container		position_moves;
+
 private:
 	static const u8 flipping_directions[BOARD_SIZE];
 
@@ -64,6 +70,9 @@ private:
 	int						m_difference;
 	bool					m_passed;
 	flip_stack				m_flip_stack;
+	move_processor			m_move_processor;
+
+private:
 	mutable string256		m_temp;
 
 protected:
@@ -107,6 +116,12 @@ protected:
 
 	template <cell_type color_to_move>
 	IC		int				compute_difference		(const cell_index &index, bool) const;
+
+protected:
+	template <cell_type color_to_move>
+	IC		void			fill_moves				();
+
+			void			fill_moves				();
 
 public:
 	template <cell_type color_to_move>
@@ -156,6 +171,9 @@ public:
 
 public:
 	IC		int				score					() const;
+
+public:
+	IC		position_moves	&moves					();
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

@@ -8,7 +8,6 @@
 
 #include "stdafx.h"
 #include "cpu.h"
-#include "ui.h"
 #include <float.h>
 
 CProcessorInfo	CPU::processor_info;

@@ -121,7 +121,7 @@ IC	bool COthelloClassicBoard::can_move		(const cell_index &index) const
 
 bool COthelloClassicBoard::can_move			(const cell_index &index) const
 {
-	if (index) {
+	if (index != MOVE_PASS) {
 		VERIFY		(cell(index) == EMPTY);
 		if (color_to_move() == BLACK)
 			return	(can_move<BLACK>(index));

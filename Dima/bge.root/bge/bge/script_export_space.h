@@ -6,7 +6,8 @@
 //	Description : Script export space 
 ////////////////////////////////////////////////////////////////////////////
 
-#pragma once
+#ifndef SCRIPT_EXPORT_SPACE_H
+#define SCRIPT_EXPORT_SPACE_H
 
 #include <typelist.h>
 
@@ -24,5 +25,9 @@ struct lua_State;
 
 #define DECLARE_SCRIPT_REGISTER_FUNCTION public: static void script_register(lua_State *);
 
-template <typename T> struct enum_exporter{DECLARE_SCRIPT_REGISTER_FUNCTION};
-template <typename T> struct class_exporter{DECLARE_SCRIPT_REGISTER_FUNCTION};
+#ifndef SCRIPT_REGISTRATOR
+	template <typename T> struct enum_exporter{DECLARE_SCRIPT_REGISTER_FUNCTION};
+	template <typename T> struct class_exporter{DECLARE_SCRIPT_REGISTER_FUNCTION};
+#endif
+
+#endif // SCRIPT_EXPORT_SPACE_H

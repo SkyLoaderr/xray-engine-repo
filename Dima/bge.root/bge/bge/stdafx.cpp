@@ -6,10 +6,9 @@
 //	Description : Standard precompiled header
 ////////////////////////////////////////////////////////////////////////////
 
-#include "stdafx.h"
-#include "ui.h"
-
 #pragma comment(lib,"winmm.lib")
+
+#include "stdafx.h"
 
 void boost::throw_exception(const std::exception &A)
 {

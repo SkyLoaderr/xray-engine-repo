@@ -40,6 +40,8 @@ void COthelloClassicBoard::start_position	()
 	m_difference			= 0;
 	m_passed				= false;
 
+	m_move_processor.init	();
+
 	while (!m_flip_stack.empty())
 		m_flip_stack.pop();
 	m_flip_stack.c.reserve	(4096);

@@ -9,7 +9,6 @@
 #include "stdafx.h"
 #include "hardware.h"
 #include "script.h"
-#include "ui.h"
 
 void __cdecl main(char argc, char *argv[])
 {

@@ -139,7 +139,7 @@ template <COthelloClassicBoard::cell_type _color_to_move>
 IC	int	 COthelloClassicBoard::compute_difference	(const cell_index &index, bool) const
 {
 	VERIFY			(can_move(index));
-	if (index) {
+	if (index != MOVE_PASS) {
 		VERIFY		(can_move(index) == EMPTY);
 		if (color_to_move() == BLACK)
 			return	(compute_difference<BLACK>(index));

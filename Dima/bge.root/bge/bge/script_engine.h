@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include "ui.h"
 #include "script_export_space.h"
 
 struct lua_State;

@@ -8,7 +8,6 @@
 
 #include "stdafx.h"
 #include "script_engine.h"
-#include "ui.h"
 #include "script_space.h"
 
 using namespace luabind;
