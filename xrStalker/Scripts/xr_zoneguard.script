@@ -14,7 +14,7 @@ local state_standing = 3
 ----------------------------------------------------------------------------------------------------------------------
 class "evaluator_need_zoneguard" (property_evaluator)
 
-function evaluator_need_zoneguard:__init(storage) super()
+function evaluator_need_zoneguard:__init(storage, name) super(nil, name)
 	self.st = storage
 end
 
@@ -282,7 +282,7 @@ function add_to_binder(npc, ini, scheme, section, storage)
 
 	-- // evaluators
 	manager:add_evaluator(properties["need_zoneguard"],
-	this.evaluator_need_zoneguard(xr_motivator.storage[npc:id()].zoneguard))
+	this.evaluator_need_zoneguard(xr_motivator.storage[npc:id()].zoneguard, "zoneguard_need"))
 
 	local new_action = this.action_zoneguard_activity(npc, "action_zoneguard_activity", storage)
 	new_action:add_precondition(world_property(stalker_ids.property_alive, true))
