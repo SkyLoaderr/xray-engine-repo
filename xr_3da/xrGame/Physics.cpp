@@ -1027,7 +1027,12 @@ dContact contacts[N];
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////Implementation for CPhysicsElement
 void CPHElement::			add_Box		(const Fobb&		V){
-	m_boxes_data.push_back(V);
+Fobb box;
+box=V;
+if(box.m_halfsize.x<0.005f) box.m_halfsize.x=0.005f;
+if(box.m_halfsize.y<0.005f) box.m_halfsize.y=0.005f;
+if(box.m_halfsize.z<0.005f) box.m_halfsize.z=0.005f;
+	m_boxes_data.push_back(box);
 }
 
 void CPHElement::			create_Box	(const Fobb&		V){
@@ -2160,18 +2165,25 @@ void CPHElement::CallBack(CBoneInstance* B){
 
 
 	
-	//if(!dBodyIsEnabled(m_body)){}
+	if(!dBodyIsEnabled(m_body))
+	{
+		B->mTransform.set(mXFORM);
+		return;
+	}
 
 	if(m_parent_element){
-	InterpolateGlobalTransform(&B->mTransform);
+	InterpolateGlobalTransform(&mXFORM);
+	
 	parent.set(m_shell->mXFORM);
 	parent.invert();
-	B->mTransform.mulA(parent);
+	mXFORM.mulA(parent);
+	B->mTransform.set(mXFORM);
 	}
 	else{
 
 		InterpolateGlobalTransform(&m_shell->mXFORM);
-		B->mTransform.identity();
+		mXFORM.identity();
+		B->mTransform.set(mXFORM);
 		//parent.set(B->mTransform);
 		//parent.invert();
 		//m_shell->mXFORM.mulB(parent);
