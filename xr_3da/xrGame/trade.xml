@@ -79,7 +79,7 @@
 	</deal_static>
 
 	<!-- DEAL BUTTON -->
-	<deal_button x="100" y="180" width="107" height="36">
+	<deal_button x="100" y="170" width="107" height="36">
 		<texture>ui\ui_button_06</texture>
 		<text font="graffiti22" r="238" g="153" b="26" align="c">Ok</text>
 	</deal_button>
