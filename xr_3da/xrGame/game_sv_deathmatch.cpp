@@ -115,6 +115,13 @@ BOOL	game_sv_Deathmatch::OnTouch			(u16 eid_who, u16 eid_what)
 			// Weapon slot empty - ownership OK
 			return TRUE;
 		}
+		
+		CSE_ALifeInventoryItem* pI			=	dynamic_cast<CSE_ALifeInventoryItem*> (e_what);
+		if (pI)
+		{
+			//Inventory Item
+			return TRUE;
+		};
 	}
 
 	// We don't know what the hell is it, so disallow ownership just for safety 
