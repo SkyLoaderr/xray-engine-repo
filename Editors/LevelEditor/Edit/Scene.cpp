@@ -348,7 +348,7 @@ bool EScene::Validate(bool bNeedOkMsg, bool bTestPortal, bool bTestHOM, bool bTe
         }
     }
     
-    if (!SndLib.Validate()) 
+    if (!SndLib->Validate()) 
         bRes = false;
 
     {

@@ -61,8 +61,6 @@ enum {
     COMMAND_LOAD_FIRSTRECENT,
     COMMAND_MOVE_CAMERA_TO,
 
-    COMMAND_MUTE_SOUND, // p0 - on/off
-
     COMMAND_SHOWCONTEXTMENU,
 };
 //------------------------------------------------------------------------------

@@ -8,7 +8,7 @@
 #include "Builder.h"
 #include "Scene.h"
 #include "LevelGameDef.h"
-#include "SoundManager.h"
+#include "SoundManager_LE.h"
 
 BOOL SceneBuilder::BuildGame()
 {
@@ -40,7 +40,7 @@ BOOL SceneBuilder::BuildGame()
     // save sound envs
     AnsiString lev_sound_env = m_LevelPath+"level.sound_environment";
     EFS.MarkFile			(lev_sound_env,true);
-	if (SndLib.MakeEnvGeometry(F.sound_env_geom.stream,false))
+	if (LSndLib->MakeEnvGeometry(F.sound_env_geom.stream,false))
     	F.sound_env_geom.stream.save_to(lev_sound_env.c_str());
 
     // save static PG

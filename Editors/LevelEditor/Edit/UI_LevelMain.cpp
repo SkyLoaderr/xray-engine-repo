@@ -22,7 +22,7 @@
 #include "folderLib.h"
 #include "sceneproperties.h"
 #include "builder.h"
-#include "SoundManager.h"
+#include "SoundManager_LE.h"
 #include "NumericVector.h"
 #include "EditorPreferences.h"
 
@@ -542,10 +542,7 @@ bool CLevelMain::CommandExt(int _Command, int p1, int p2)
 //		::Sound->_restart();
     	break;
     case COMMAND_REFRESH_SOUND_ENV_GEOMETRY:
-    	SndLib.RefreshEnvGeometry();
-    	break;
-    case COMMAND_MUTE_SOUND:
-    	SndLib.MuteSounds(p1);
+    	LSndLib->RefreshEnvGeometry();
     	break;
     case COMMAND_MOVE_CAMERA_TO:{
     	Fvector pos=Device.m_Camera.GetPosition();
