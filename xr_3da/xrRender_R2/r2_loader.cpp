@@ -39,8 +39,10 @@ void CRender::level_Load()
 	}
 
 	// VB
-	pApp->LoadTitle		("Loading geometry...");
-	LoadBuffers			(fs);
+	if	(!g_pGamePersistent->bDedicatedServer)	{
+		pApp->LoadTitle		("Loading geometry...");
+		LoadBuffers			(fs);
+	}
 
 	// Visuals
 	pApp->LoadTitle		("Loading spatial-DB...");

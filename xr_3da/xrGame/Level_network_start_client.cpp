@@ -55,10 +55,13 @@ BOOL CLevel::net_Start_client	( LPCSTR options )
 		pHUD->Load							();
 		
 		// Textures
-		pApp->LoadTitle						("Loading textures...");
-		Device.Resources->DeferredLoad		(FALSE);
-		Device.Resources->DeferredUpload	();
-		LL_CheckTextures					();
+		if	(!g_pGamePersistent->bDedicatedServer)
+		{
+			pApp->LoadTitle						("Loading textures...");
+			Device.Resources->DeferredLoad		(FALSE);
+			Device.Resources->DeferredUpload	();
+			LL_CheckTextures					();
+		}
 
 		// Sync
 		pApp->LoadTitle						("CLIENT: Synchronising...");
