@@ -1,3 +1,6 @@
+--
+-- DELME
+-- 
 local leader_no_command             = 0
 local leader_move                   = 1
 local leader_stop                   = 2
