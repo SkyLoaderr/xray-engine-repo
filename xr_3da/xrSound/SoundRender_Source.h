@@ -5,10 +5,13 @@
 #include "soundrender.h"
 #include "soundrender_cache.h"
 
+// refs
+class OggVorbis_File;
+
 class XRSOUND_EDITOR_API 	CSoundRender_Source	: public CSound_source
 {
 public:
-	OggVorbis_File			ovf;
+	OggVorbis_File*			ovf;
 	ref_str					fname;
 	IReader*				wave;					// real source
 	cache_cat				CAT;

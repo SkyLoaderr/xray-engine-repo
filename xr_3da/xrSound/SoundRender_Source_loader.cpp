@@ -42,13 +42,13 @@ void CSoundRender_Source::LoadWave	(LPCSTR pName, BOOL b3D)
 	R_ASSERT2				(wave,pName);
 
 	ov_callbacks ovc		= {ov_read_func,ov_seek_func,ov_close_func,ov_tell_func};
-	ov_open_callbacks		(wave,&ovf,NULL,0,ovc);
+	ov_open_callbacks		(wave,ovf,NULL,0,ovc);
 
-	vorbis_info* ovi		= ov_info(&ovf,-1);
+	vorbis_info* ovi		= ov_info(ovf,-1);
 	// verify
 	R_ASSERT3				(b3D?ovi->channels==1:ovi->channels==2,"Invalid source num channels:",pName);
 	R_ASSERT3				(ovi->rate==44100,"Invalid source rate:",pName);
-	ov_halfrate				(&ovf,psSoundFreq==sf_22K);
+	ov_halfrate				(ovf,psSoundFreq==sf_22K);
 
 	WAVEFORMATEX			wfxdest;
 	SoundRender.pBuffer->GetFormat(&wfxdest,sizeof(wfxdest),0);
@@ -56,7 +56,7 @@ void CSoundRender_Source::LoadWave	(LPCSTR pName, BOOL b3D)
 	wfxdest.nBlockAlign		= wfxdest.nChannels * wfxdest.wBitsPerSample / 8;
 	wfxdest.nAvgBytesPerSec = wfxdest.nSamplesPerSec * wfxdest.nBlockAlign;
 
-	s64 pcm_total			= ov_pcm_total(&ovf,-1)-1; 
+	s64 pcm_total			= ov_pcm_total(ovf,-1)-1; 
 	if (psSoundFreq==sf_22K) pcm_total/=2;
 	dwBytesTotal			= u32(pcm_total*wfxdest.nBlockAlign); 
 	dwBytesPerMS			= wfxdest.nAvgBytesPerSec/1000;
@@ -88,7 +88,7 @@ void CSoundRender_Source::load(LPCSTR name,	BOOL b3D)
 
 void CSoundRender_Source::unload()
 {
-	ov_clear			(&ovf);
+	ov_clear			(ovf);
 	FS.r_close			(wave);
 	SoundRender.cache.cat_destroy			(CAT);
 }

@@ -8,10 +8,12 @@ CSoundRender_Source::CSoundRender_Source	()
 {
 	fname	= 0;
 	wave	= 0;
+    ovf		= xr_new<OggVorbis_File>();
 }
 
 CSoundRender_Source::~CSoundRender_Source	()
 {
+	xr_delete	(ovf);
 	unload		();
 }
 
@@ -25,10 +27,10 @@ void CSoundRender_Source::decompress		(u32 line)
 	u32		left		= _min	(left_file,line_size);
 
 	int					dummy;
-	ov_pcm_seek			(&ovf,seek_offs);
+	ov_pcm_seek			(ovf,seek_offs);
 	while (left)
 	{
-		int ret		= ov_read	(&ovf,dest,left,0,2,1,&dummy);
+		int ret		= ov_read	(ovf,dest,left,0,2,1,&dummy);
 		if (ret==0)	break;
 		if (ret<0)	continue;
 		left		-= ret;

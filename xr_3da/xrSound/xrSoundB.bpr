@@ -13,7 +13,7 @@
       Intermediate\SoundRender_Emitter_StartStop.obj 
       Intermediate\SoundRender_Emitter_streamer.obj 
       Intermediate\SoundRender_Environment.obj 
-      Intermediate\SoundRender_Source.obj 
+      Intermediate\soundrender_source.obj 
       Intermediate\SoundRender_Source_loader.obj 
       Intermediate\SoundRender_Target.obj Intermediate\stdafx.obj 
       Intermediate\cl_collector.obj Intermediate\guids.obj 
@@ -74,7 +74,7 @@
       <FILE FILENAME="SoundRender_Emitter_StartStop.cpp" FORMNAME="" UNITNAME="SoundRender_Emitter_StartStop.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="SoundRender_Emitter_streamer.cpp" FORMNAME="" UNITNAME="SoundRender_Emitter_streamer.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="SoundRender_Environment.cpp" FORMNAME="" UNITNAME="SoundRender_Environment.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="SoundRender_Source.cpp" FORMNAME="" UNITNAME="SoundRender_Source.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="soundrender_source.cpp" FORMNAME="" UNITNAME="SoundRender_Source.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="SoundRender_Source_loader.cpp" FORMNAME="" UNITNAME="SoundRender_Source_loader.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="SoundRender_Target.cpp" FORMNAME="" UNITNAME="SoundRender_Target.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="stdafx.cpp" FORMNAME="" UNITNAME="stdafx.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
