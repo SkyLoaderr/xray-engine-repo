@@ -17,7 +17,7 @@ void CRenderDevice::_SetupStates	()
 
 	HW.Caps.Update			();
 	for (u32 i=0; i<HW.Caps.raster.dwStages; i++)				{
-		float fBias = -.75f;
+		float fBias = -.5f	;
 		CHK_DX(HW.pDevice->SetSamplerState	( i, D3DSAMP_MAXANISOTROPY, 4				));
 		CHK_DX(HW.pDevice->SetSamplerState	( i, D3DSAMP_MIPMAPLODBIAS, *((LPDWORD) (&fBias))));
 		CHK_DX(HW.pDevice->SetSamplerState	( i, D3DSAMP_MINFILTER,	D3DTEXF_LINEAR 		));

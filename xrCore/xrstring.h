@@ -56,8 +56,8 @@ public:
 						~shared_str	()								{	_dec();											}
 
 	// assignment & accessors
-	shared_str&			operator=	(str_c rhs)						{	_set(rhs);	return (shared_str&)*this;				}
-	shared_str&			operator=	(shared_str const &rhs)			{	_set(rhs);	return (shared_str&)*this;				}
+	shared_str&			operator=	(str_c rhs)						{	_set(rhs);	return (shared_str&)*this;			}
+	shared_str&			operator=	(shared_str const &rhs)			{	_set(rhs);	return (shared_str&)*this;			}
 	str_c				operator*	() const						{	return p_?p_->value:0;							}
 	bool				operator!	() const						{	return p_ == 0;									}
 	char				operator[]	(size_t id)						{	return p_->value[id];							}
@@ -65,8 +65,8 @@ public:
 
 	// misc func
 	u32					size		()						const	{	if (0==p_) return 0; else return p_->dwLength;	}
-	void				swap		(shared_str & rhs)					{	str_value* tmp = p_; p_ = rhs.p_; rhs.p_ = tmp;	}
-	bool				equal		(const shared_str & rhs)	const	{	return (p_ == rhs.p_);							}
+	void				swap		(shared_str & rhs)				{	str_value* tmp = p_; p_ = rhs.p_; rhs.p_ = tmp;	}
+	bool				equal		(const shared_str & rhs) const	{	return (p_ == rhs.p_);							}
     shared_str& __cdecl	sprintf		(const char* format, ...)		{
 		string4096 	buf;
 		va_list		p;
@@ -93,15 +93,15 @@ IC bool operator	>	(shared_str const & a, shared_str const & b)		{ return a._get
 
 // externally visible standart functionality
 IC void swap			(shared_str & lhs, shared_str & rhs)				{ lhs.swap(rhs);		}
-IC u32	xr_strlen		(shared_str & a)								{ return a.size();		}
-IC int	xr_strcmp		(const shared_str & a, const char* b)			{ return xr_strcmp(*a,b);	}
-IC int	xr_strcmp		(const char* a, const shared_str & b)			{ return xr_strcmp(a,*b);	}
+IC u32	xr_strlen		(shared_str & a)									{ return a.size();		}
+IC int	xr_strcmp		(const shared_str & a, const char* b)				{ return xr_strcmp(*a,b);	}
+IC int	xr_strcmp		(const char* a, const shared_str & b)				{ return xr_strcmp(a,*b);	}
 IC int	xr_strcmp		(const shared_str & a, const shared_str & b)		{ 
 	if (a.equal(b))		return 0;
 	else				return xr_strcmp(*a,*b);
 }
-IC void	xr_strlwr		(std::string& src)							{ for(std::string::iterator it=src.begin(); it!=src.end(); it++) *it=std::string::value_type(tolower(*it));}
-IC void	xr_strlwr		(shared_str& src)								{ if (*src){LPSTR lp=xr_strdup(*src); xr_strlwr(lp); src=lp; xr_free(lp);} }
+IC void	xr_strlwr		(std::string& src)									{ for(std::string::iterator it=src.begin(); it!=src.end(); it++) *it=std::string::value_type(tolower(*it));}
+IC void	xr_strlwr		(shared_str& src)									{ if (*src){LPSTR lp=xr_strdup(*src); xr_strlwr(lp); src=lp; xr_free(lp);} }
 
 #pragma pack(pop)
 
