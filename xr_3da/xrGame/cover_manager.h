@@ -31,6 +31,7 @@ public:
 	virtual							~CCoverManager		();
 			void					compute_static_cover();
 	IC		CPointQuadTree			&covers				() const;
+	IC		CPointQuadTree			*get_covers			();
 			void					clear				();
 };
 

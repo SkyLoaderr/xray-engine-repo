@@ -57,3 +57,8 @@ IC	CCoverManager::CPointQuadTree &CCoverManager::covers	() const
 	VERIFY					(m_covers);
 	return					(*m_covers);
 }
+
+IC	CCoverManager::CPointQuadTree *CCoverManager::get_covers	()
+{
+	return					(m_covers);
+}

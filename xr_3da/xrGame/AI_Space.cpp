@@ -89,14 +89,16 @@ void CAI_Space::load				(LPCSTR level_name)
 	level_graph().set_level_id((*I).second.id());
 
 	xr_vector<CCoverPoint*>	nearest;
-	m_cover_manager->covers().nearest(Fvector().set(0.f,0.f,0.f),100000.f,nearest);
-	{
-		xr_vector<CCoverPoint*>::iterator	I = nearest.begin();
-		xr_vector<CCoverPoint*>::iterator	E = nearest.end();
-		for ( ; I != E; ++I)
-			xr_delete		(*I);
+	if (m_cover_manager->get_covers()) {
+		m_cover_manager->covers().nearest(Fvector().set(0.f,0.f,0.f),100000.f,nearest);
+		{
+			xr_vector<CCoverPoint*>::iterator	I = nearest.begin();
+			xr_vector<CCoverPoint*>::iterator	E = nearest.end();
+			for ( ; I != E; ++I)
+				xr_delete		(*I);
+		}
+		m_cover_manager->clear	();
 	}
-	m_cover_manager->clear	();
 	m_cover_manager->compute_static_cover();
 }
 
