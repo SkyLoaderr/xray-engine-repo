@@ -14,8 +14,10 @@
 
 struct lua_State;
 
-#ifndef ENGINE_BUILD
-#	define	USE_DEBUGGER
+#ifdef	DEBUG
+	#ifndef ENGINE_BUILD
+	#	define	USE_DEBUGGER
+	#endif
 #endif
 
 using namespace ScriptStorage;
