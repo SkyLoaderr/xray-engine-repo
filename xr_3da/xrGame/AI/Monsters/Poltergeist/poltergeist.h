@@ -2,6 +2,8 @@
 #include "../../biting/ai_biting.h"
 #include "../../telekinesis.h"
 
+class CPhysicsShellHolder;
+
 class CPoltergeist :	public CAI_Biting ,
 						public CTelekinesis {
 	
@@ -20,22 +22,19 @@ public:
 
 	virtual void	Load				(LPCSTR section);
 	virtual void	reload				(LPCSTR section);
+	virtual void	reinit				();
 	virtual void	StateSelector		();
 
 	virtual void	net_Destroy			();
 	virtual void	UpdateCL			();
 	virtual	void	shedule_Update		(u32 dt);
 
+	virtual void	Die					();
+
 	virtual void	ForceFinalAnimation	();
 
 			void	Hide				();
 			void	Show				();
-
-	// Particles 
-
-			void	StartParticles		();
-			void	StopParticles		();
-			void	UpdateParticles		();
 		
 	// FireBall
 
@@ -77,13 +76,25 @@ public:
 			void	ProcessTelekinesis	(CObject *target);
 			void	UpdateTelekinesis	();
 
+			u32					time_tele_start;
+			CObject				*tele_enemy;
+			CPhysicsShellHolder *tele_object;
+
+
 
 	// Movement
-			Fvector m_current_position;
+			Fvector m_current_position;		// Позиция на ноде
 
 	virtual	void	move_along_path			(CPHMovementControl *movement_control, Fvector &dest_position, float time_delta);
-			float	CalculateRealPosition	();
+			Fvector	CalculateRealPosition	();
 
+
+	// Dynamic Height
+			u32		time_height_updated;
+			float	target_height;
+
+			void	UpdateHeight			();
+			
 };
 
 

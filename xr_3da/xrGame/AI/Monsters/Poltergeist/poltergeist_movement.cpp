@@ -92,10 +92,17 @@ void CPoltergeist::move_along_path(CPHMovementControl *movement_control, Fvector
 
 	m_speed				= 0.5f * desirable_speed + 0.5f * real_speed;
 
-	Position()			= dest_position;
+	// Обновить позицию
+	m_current_position	= dest_position;
+	Position()			= CalculateRealPosition();
+	dest_position		= Position();
+
+
 }
 
-float CPoltergeist::CalculateRealPosition()
+Fvector CPoltergeist::CalculateRealPosition()
 {
-	return (m_current_position.y + m_height);
+	Fvector ret_val = m_current_position;
+	ret_val.y += m_height;
+	return (ret_val);
 }

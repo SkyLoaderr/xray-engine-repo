@@ -62,4 +62,16 @@ IC void velocity_lerp(float &_cur, float _target, float _accel, float _dt)
 	}
 }
 
+IC void def_lerp(float &_cur, float _target, float _vel, float _dt)
+{
+	if (fsimilar(_cur, _target)) return;
+
+	if (_target > _cur) {
+		_cur += _vel * _dt;
+		if (_cur > _target) _cur = _target;
+	} else {
+		_cur -= _vel * _dt;
+		if (_cur < _target) _cur = _target;
+	}
+}
 

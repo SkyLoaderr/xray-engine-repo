@@ -1,24 +1,45 @@
 #include "stdafx.h"
 #include "poltergeist.h"
+#include "../../../PhysicsShellHolder.h"
+
+#define TELE_RADIUS  2.f
+#define TIME_TO_HOLD 2000
 
 void CPoltergeist::ProcessTelekinesis(CObject *target)
 {
-	//CPhysicsShellHolder *obj = dynamic_cast<CPhysicsShellHolder *>(target);
-	//if (!obj) return;
+	if (CTelekinesis::is_active()) return;
 
-	//CTelekinesis::activate(obj,3.f, 2.f, 2000);
+	Level().ObjectSpace.GetNearest(target->Position(), TELE_RADIUS); 
+	xr_vector<CObject*> &tpObjects = Level().ObjectSpace.q_nearest;
 
-	//Fvector enemy_pos = enemy->Position();
-	//enemy_pos.y += 5 * enemy->Radius();
+	if (tpObjects.empty()) return;
 
-	//float dist = selected_object->Position().distance_to(enemy->Position());
-	//pMonster->CTelekinesis::fire(selected_object, enemy_pos, dist/12);
+	u32 index = Random.randI(tpObjects.size());
+
+	CPhysicsShellHolder  *obj = dynamic_cast<CPhysicsShellHolder *>(tpObjects[index]);
+	if (!obj || !obj->m_pPhysicsShell) return;
+
+	CTelekinesis::activate(obj,1.5f, 2.f, 5000);
+
+	time_tele_start = Level().timeServer();
+	tele_enemy		= target;
+	tele_object		= obj;
 }
 
 
 void CPoltergeist::UpdateTelekinesis()
 {
+	if (!CTelekinesis::is_active()) return;
+	if (!tele_enemy) return;
+	if (time_tele_start + TIME_TO_HOLD > Level().timeServer()) return;
+	
+	Fvector enemy_pos = tele_enemy->Position();
+	enemy_pos.y += 5 * tele_enemy->Radius();
 
+	float dist = tele_object->Position().distance_to(tele_enemy->Position());
+	CTelekinesis::fire(tele_object, enemy_pos, dist/12);
+
+	tele_enemy = 0;
 }
 
 

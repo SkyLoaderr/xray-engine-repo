@@ -1,6 +1,16 @@
 #include "stdafx.h"
 #include "poltergeist.h"
 #include "../../../PHMovementControl.h"
+#include "../../../PhysicsShellHolder.h"
+#include "../../ai_monster_debug.h"
+#include "../../ai_monster_utils.h"
+
+#define HEIGHT_CHANGE_VELOCITY	0.1f
+#define HEIGHT_CHANGE_MIN_TIME	3000
+#define HEIGHT_CHANGE_MAX_TIME	10000
+#define HEIGHT_MIN				0.6f
+#define HEIGHT_MAX				2.0f
+
 
 CPoltergeist::CPoltergeist()
 {
@@ -16,7 +26,6 @@ CPoltergeist::CPoltergeist()
 CPoltergeist::~CPoltergeist()
 {
 	xr_delete		(stateRest);
-	StopParticles	();
 }
 
 void CPoltergeist::Load(LPCSTR section)
@@ -27,8 +36,6 @@ void CPoltergeist::Load(LPCSTR section)
 
 	LoadFlame(section);
 
-	m_height				= 2.f;
-	
 	m_particles_hidden		= pSettings->r_string(section,"Hidden_Particles");
 
 	if (!MotionMan.start_load_shared(SUB_CLS_ID)) return;
@@ -66,6 +73,19 @@ void CPoltergeist::reload(LPCSTR section)
 	inherited::reload(section);
 }
 
+void CPoltergeist::reinit()
+{
+	inherited::reinit();
+	
+	m_current_position = Position();
+
+	time_tele_start		= 0;
+	tele_enemy			= 0;	
+
+	target_height		= 1.f;
+	time_height_updated = 0;
+}
+
 void CPoltergeist::StateSelector()
 {	
 	SetState(stateRest);
@@ -73,95 +93,57 @@ void CPoltergeist::StateSelector()
 
 void CPoltergeist::Hide()
 {
-	m_hidden   =true;	
+	if (m_hidden) return;
 	
-	setEnabled(false);
+	m_hidden   = true;	
+
 	setVisible(false);
 	
-	StartParticles();
 	MotionMan.ForceAnimSelect();
 
+	m_current_position = Position		();
 	movement_control()->DestroyCharacter();
+
+	CParticlesPlayer::StartParticles(m_particles_hidden,Fvector().set(0.0f,0.1f,0.0f),ID());
 }
 
 void CPoltergeist::Show()
 {
+	if (!m_hidden) return;
+
 	m_hidden = false;
 	
-	//setEnabled(true);
-	//setVisible(true);
+	setVisible(true);
 
-	StopParticles();
-	
 	MotionMan.Seq_Add	(eAnimMiscAction_00);
 	MotionMan.Seq_Switch();
-}
 
+	Position() = m_current_position;
+	movement_control()->SetPosition(Position());
+	movement_control()->CreateCharacter();
+	
+	CParticlesPlayer::StopParticles(m_particles_hidden);
+}
 
 void CPoltergeist::UpdateCL()
 {
 	inherited::UpdateCL();
-
-	UpdateParticles();
 	
+	def_lerp(m_height, target_height, HEIGHT_CHANGE_VELOCITY, Device.fTimeDelta);
+	
+	Msg("cur_height = [%f] target = [%f]", m_height, target_height);
+
+	HDebug->L_Clear();
+	HDebug->L_AddLine(m_current_position,CalculateRealPosition(),D3DCOLOR_XRGB(255,0,255));
+	HDebug->L_AddPoint(ai().level_graph().vertex_position(level_vertex_id()),0.35f,D3DCOLOR_XRGB(255,0,255));
+
+
 }
 
 void CPoltergeist::ForceFinalAnimation()
 {
-	if (m_hidden) {
-		MotionMan.SetCurAnim(eAnimMiscAction_01);
-	}
+	if (m_hidden) MotionMan.SetCurAnim(eAnimMiscAction_01);
 }
-
-//////////////////////////////////////////////////////////////////////////
-// Particles
-//////////////////////////////////////////////////////////////////////////
-
-void CPoltergeist::StartParticles()
-{
-	if(m_particles_object != NULL) {
-		UpdateParticles();
-		return;
-	}
-
-	m_particles_object = xr_new<CParticlesObject>(m_particles_hidden, false);
-	UpdateParticles();
-	m_particles_object->Play();
-}
-
-void CPoltergeist::StopParticles ()
-{
-	if(m_particles_object == NULL) return;
-
-	m_particles_object->Stop		();
-	m_particles_object->PSI_destroy	();
-	m_particles_object				= NULL;
-
-}
-void CPoltergeist::UpdateParticles()
-{
-	if(!m_particles_object) return;
-	
-	// вычислить позицию и направленность партикла
-	Fmatrix particles_pos; 
-	particles_pos.identity();
-	particles_pos.k.set(Fvector().set(0.f,1.f,0.f));
-	Fvector::generate_orthonormal_basis_normalized(particles_pos.k,particles_pos.j,particles_pos.i);
-
-	// установить позицию
-	Fvector new_pos;
-	new_pos = Position();
-	new_pos.y += m_height;
-	particles_pos.translate_over(new_pos);
-	m_particles_object->SetXFORM(particles_pos);
-
-	if(!m_particles_object->IsAutoRemove() && !m_particles_object->IsLooped() && !m_particles_object->PSI_alive()) {
-		m_particles_object->Stop		();
-		m_particles_object->PSI_destroy	();
-		m_particles_object				= NULL;
-	}
-}
-
 
 
 void CPoltergeist::shedule_Update(u32 dt)
@@ -170,6 +152,8 @@ void CPoltergeist::shedule_Update(u32 dt)
 	CTelekinesis::schedule_update();
 	
 	UpdateFlame();
+	UpdateTelekinesis();
+	UpdateHeight();
 }
 
 void CPoltergeist::net_Destroy()
@@ -178,6 +162,25 @@ void CPoltergeist::net_Destroy()
 	RemoveFlames();
 }
 
+void CPoltergeist::Die()
+{
+	if (m_hidden) {
+		setVisible(true);
+		Position() = m_current_position;
+		CParticlesPlayer::StopParticles(m_particles_hidden);
+	}
 
+	inherited::Die();
+}
 
-
+void CPoltergeist::UpdateHeight()
+{
+	if (!m_hidden) return;
+	
+	u32 cur_time = Level().timeServer();
+	
+	if (time_height_updated < cur_time)	{
+		time_height_updated = cur_time + Random.randI(HEIGHT_CHANGE_MIN_TIME,HEIGHT_CHANGE_MAX_TIME);
+		target_height		= Random.randF(HEIGHT_MIN, HEIGHT_MAX);		
+	}
+}
