@@ -24,11 +24,22 @@ void CRenderTarget::accum_point_shadow	(light* L)
 	RCache.set_Shader			(s_accum_point);
 
 	// Constants
+	Fvector4	J;
 	Fvector		L_pos;
 	Fcolor		L_clr			= L->color;
+	float		scale			= 1.f/100.f;
 	Device.mView.transform_tiny	(L_pos,L->sphere.P);
 	RCache.set_c				("light_position",	L_pos.x,L_pos.y,L_pos.z,1/L->sphere.R);
 	RCache.set_c				("light_color",		L_clr.r,L_clr.g,L_clr.b,.15f*L_clr.magnitude_rgb());
+	R_constant* _C				= RCache.get_c		("jitter");
+	J.set(-1,-1,-1); J.mul(scale); RCache.set_ca	(_C,0,J);
+	J.set(+1,-1,-1); J.mul(scale); RCache.set_ca	(_C,1,J);
+	J.set(-1,-1,+1); J.mul(scale); RCache.set_ca	(_C,2,J);
+	J.set(+1,-1,+1); J.mul(scale); RCache.set_ca	(_C,3,J);
+	J.set(-1,+1,-1); J.mul(scale); RCache.set_ca	(_C,4,J);
+	J.set(+1,+1,-1); J.mul(scale); RCache.set_ca	(_C,5,J);
+	J.set(-1,+1,+1); J.mul(scale); RCache.set_ca	(_C,6,J);
+	J.set(+1,+1,+1); J.mul(scale); RCache.set_ca	(_C,7,J);
 
 	// Render if stencil >= 0x2
 	RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
