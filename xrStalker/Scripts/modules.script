@@ -21,6 +21,7 @@ module ("gramofon")
 
 module ("xr_motivator")
 module ("xr_logic")
+module ("xr_conditions")
 module ("xr_sounds")
 module ("xr_zones")
 module ("xr_spawner")
