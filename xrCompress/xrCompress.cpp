@@ -161,7 +161,7 @@ void	Compress			(LPCSTR path, LPCSTR base)
 	{
 		// Register for future aliasing
 		ALIAS			R;
-		R.path			= xr_strdup	(path);
+		R.path			= xr_strdup	(fn);
 		R.size			= src->length();
 		R.crc			= c_crc32;
 		R.c_mode		= c_mode;
@@ -169,6 +169,8 @@ void	Compress			(LPCSTR path, LPCSTR base)
 		R.c_size		= c_size;
 		aliases.insert	(mk_pair(R.size,R));
 	}
+
+	FS.r_close	(src);
 }
 
 int __cdecl main	(int argc, char* argv[])
