@@ -52,6 +52,8 @@ CAI_Soldier::CAI_Soldier()
 	m_dwLastRadioTalk = 0;
 	m_tpSoundBeingPlayed = 0;
 	m_dwLastSoundRefresh = 0;
+	m_fDistanceWent = 0.f;
+	m_cStep = 0;
 }
 
 CAI_Soldier::~CAI_Soldier()

@@ -16,6 +16,7 @@
 #define MIN_RANGE_SEARCH_TIME_INTERVAL	15000.f
 #define MAX_TIME_RANGE_SEARCH			150000.f
 #define	FIRE_ANGLE						PI/10
+#define DISTANCE_TO_STEP				1.f
 
 bool CAI_Soldier::bfCheckPath(AI::Path &Path) {
 	const vector<BYTE> &q_mark = Level().AI.tpfGetNodeMarks();
@@ -240,6 +241,12 @@ void CAI_Soldier::vfSetFire(bool bFire, CGroup &Group)
 
 void CAI_Soldier::vfSetMovementType(char cMovementType,float fMultplier)
 {
+	m_fDistanceWent += m_fTimeUpdateDelta*AI_Path.fSpeed;
+	if (m_fDistanceWent >= DISTANCE_TO_STEP) {
+		pSounds->PlayAtPos(sndSteps[m_cStep ^= char(1)],this,vPosition);
+		m_fDistanceWent = 0.f;		
+	}
+
 	Fvector view = clTransform.k, move;
 	AI_Path.Direction(move); 
 	move.y = view.y = 0; 

@@ -20,6 +20,7 @@ class CAI_Soldier : public CCustomMonster
 		SND_HIT_COUNT=4,
 		SND_DIE_COUNT=4,
 		SND_RADIO_COUNT=4,
+		SND_STEP_COUNT=2,
 	};
 
 	enum ESoldierStates 	{
@@ -251,6 +252,8 @@ class CAI_Soldier : public CCustomMonster
 		float				m_fMaxRadioIinterval;
 		float				m_fRadioRefreshRate;
 		DWORD				m_dwLastRadioTalk;
+		float				m_fDistanceWent;
+		char				m_cStep;
 
 		
 		// head turns
@@ -261,6 +264,7 @@ class CAI_Soldier : public CCustomMonster
 		sound			sndHit[SND_HIT_COUNT];
 		sound			sndDie[SND_DIE_COUNT];
 		sound			sndRadio[SND_RADIO_COUNT];
+		sound			sndSteps[SND_STEP_COUNT];
 		
 		// events
 		EVENT			m_tpEventSay;
@@ -383,7 +387,7 @@ class CAI_Soldier : public CCustomMonster
 		void OnUnderFire();
 		void OnJumping();
 		/**/
-		void Test();
+		//void Test();
 		void Die();
 		void OnWaitingForAnimation();
 		void OnWaitingForTime();
