@@ -18,7 +18,6 @@ void CSheduler::Initialize		()
 	fiber_main			= ConvertThreadToFiber	(0);
 	fiber_thread		= CreateFiber			(0,t_process,0);
 	fibered				= FALSE;
-	slowdown			= FALSE;
 }
 
 void CSheduler::Destroy			()
