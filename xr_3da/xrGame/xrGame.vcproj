@@ -3914,6 +3914,9 @@
 						<File
 							RelativePath=".\Group.h">
 						</File>
+						<File
+							RelativePath=".\group_inline.h">
+						</File>
 					</Filter>
 					<Filter
 						Name="squad"

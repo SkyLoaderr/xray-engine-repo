@@ -33,6 +33,8 @@ namespace MemorySpace {
 		u32							m_level_time;
 		ALife::_TIME_ID				m_last_game_time;
 		u32							m_last_level_time;
+		ALife::_TIME_ID				m_first_game_time;
+		u32							m_first_level_time;
 		u32							m_update_count;
 		bool						m_enabled;
 
@@ -42,6 +44,8 @@ namespace MemorySpace {
 							m_level_time(0),
 							m_last_game_time(0),
 							m_last_level_time(0),
+							m_first_game_time(0),
+							m_first_level_time(0),
 							m_enabled(true)
 		{
 		}

@@ -8,9 +8,10 @@
 
 #pragma once
 
+class CEntity;
 class CAI_Stalker;
 
-class CAgentManager : ISheduled {
+class CAgentManager : public ISheduled {
 protected:
 	typedef ISheduled						inherited;
 	typedef xr_vector<CAI_Stalker*>			MEMBER_STORAGE;
@@ -26,8 +27,8 @@ public:
 	virtual float			shedule_Scale	();
 	virtual void			shedule_Update	(u32 time_delta);	
 	virtual BOOL			shedule_Ready	();
-			void			add				(CAI_Stalker *member);
-			void			remove			(CAI_Stalker *member);
+			void			add				(CEntity *member);
+			void			remove			(CEntity *member);
 			void			update			(u32 time_delta);
 };
 

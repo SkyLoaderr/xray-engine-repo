@@ -145,6 +145,8 @@ void CSoundMemoryManager::add_sound_object(const CObject *object, int sound_type
 		CSoundObject			sound_object;
 
 		sound_object.fill		(game_object,self,ESoundTypes(sound_type),sound_power);
+		sound_object.m_first_level_time	= Level().timeServer();
+		sound_object.m_first_game_time	= Level().GetGameTime();
 
 		VERIFY					(m_max_sound_count);
 		if (m_max_sound_count <= m_sounds->size()) {

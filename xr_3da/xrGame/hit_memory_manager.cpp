@@ -69,6 +69,8 @@ void CHitMemoryManager::add_hit_object		(float amount, const Fvector &vLocalDir,
 		CHitObject				hit_object;
 
 		hit_object.fill			(entity_alive,self);
+		hit_object.m_first_level_time	= Level().timeServer();
+		hit_object.m_first_game_time	= Level().GetGameTime();
 
 		if (m_max_hit_count <= m_hits->size()) {
 			xr_vector<CHitObject>::iterator	I = std::min_element(m_hits->begin(),m_hits->end(),SLevelTimePredicate<CEntityAlive>());

@@ -1,8 +1,18 @@
+////////////////////////////////////////////////////////////////////////////
+//	Module 		: group.cpp
+//	Created 	: 25.05.2004
+//  Modified 	: 25.05.2004
+//	Author		: Dmitriy Iassenev
+//	Description : Group class
+////////////////////////////////////////////////////////////////////////////
+
 #include "stdafx.h"
 #include "group.h"
 #include "entity.h"
 #include "custommonster.h"
 #include "ai_space.h"
+#include "agent_manager.h"
+#include "ai/stalker/ai_stalker.h"
 
 CGroup::CGroup()
 {
@@ -23,6 +33,12 @@ CGroup::CGroup()
 	m_dwActiveCount			= 0;
 	m_dwAliveCount			= 0;
 	m_dwStandingCount		= 0;
+	m_agent_manager			= 0;
+}
+
+CGroup::~CGroup()
+{
+	xr_delete				(m_agent_manager);
 }
 
 const Fvector& CGroup::GetCentroid()
@@ -34,7 +50,14 @@ const Fvector& CGroup::GetCentroid()
 	return vCentroid;
 }
 
-void CGroup::Member_Add(CEntity* E){
+void CGroup::Member_Add(CEntity *E)
+{
+	if (!get_agent_manager() && dynamic_cast<CAI_Stalker*>(E))
+		m_agent_manager	= xr_new<CAgentManager>();
+
+	if (get_agent_manager())
+		agent_manager().add	(E);
+
 	Members.push_back(E);
 	CMemoryManager	*memory_manager = dynamic_cast<CMemoryManager*>(E);
 	if (memory_manager) {
@@ -50,6 +73,10 @@ void CGroup::Member_Remove(CEntity* E){
 	EntityIt it = std::find(Members.begin(),Members.end(),E);
 	if (Members.end()!=it) {
 		Members.erase(it);
+		
+		if (Members.empty())
+			xr_delete	(m_agent_manager);
+
 		CMemoryManager	*memory_manager = dynamic_cast<CMemoryManager*>(E);
 		if (memory_manager) {
 			CSquad		&squad = Level().Teams[E->g_Team()].Squads[E->g_Squad()];

@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "agent_manager.h"
+#include "ai/stalker/ai_stalker.h"
 
 CAgentManager::CAgentManager		()
 {
@@ -18,6 +19,7 @@ CAgentManager::CAgentManager		()
 
 CAgentManager::~CAgentManager		()
 {
+	VERIFY						(m_members.empty());
 	shedule_unregister			();
 }
 
@@ -37,16 +39,22 @@ BOOL CAgentManager::shedule_Ready	()
 	return						(!m_members.empty());
 }
 
-void CAgentManager::add				(CAI_Stalker *member)
+void CAgentManager::add				(CEntity *member)
 {
-	iterator					I = std::find(m_members.begin(),m_members.end(), member);
+	CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(member);
+	if (!stalker)
+		return;
+	iterator					I = std::find(m_members.begin(),m_members.end(), stalker);
 	VERIFY						(I == m_members.end());
-	m_members.push_back			(member);
+	m_members.push_back			(stalker);
 }
 
-void CAgentManager::remove			(CAI_Stalker *member)
+void CAgentManager::remove			(CEntity *member)
 {
-	iterator					I = std::find(m_members.begin(),m_members.end(), member);
+	CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(member);
+	if (!stalker)
+		return;
+	iterator					I = std::find(m_members.begin(),m_members.end(), stalker);
 	VERIFY						(I != m_members.end());
 	m_members.erase				(I);
 }

@@ -177,6 +177,8 @@ void CVisualMemoryManager::add_visible_object	(const CObject *object)
 		CVisibleObject			visible_object;
 
 		visible_object.fill		(game_object,self);
+		visible_object.m_first_level_time	= Level().timeServer();
+		visible_object.m_first_game_time	= Level().GetGameTime();
 
 		if (m_max_object_count <= m_objects->size()) {
 			xr_vector<CVisibleObject>::iterator	I = std::min_element(m_objects->begin(),m_objects->end(),SLevelTimePredicate<CGameObject>());
