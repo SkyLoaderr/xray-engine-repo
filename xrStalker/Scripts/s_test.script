@@ -1,46 +1,19 @@
-class "Test1"
-
-function Test1:__init ()
-    self.value = 0
-    printf ("Constructor Test1 called")
-end
-
-
-function Test1:set_value (v)
-    self.value = v
-end
-
-function Test1:print ()
-    printf ("Test1 value = %d", self.value)
-end
-
-
-class "Test2" (Test1)
-
-function Test2:__init () super ("Test1")
-    printf ("Constructor Test2 called")
-end
-
-function Test2:print ()
-    s_test.Test1:print ()
-    printf ("Test2 value = %d", s_test.Test1.value)
-end
-
-function Test2:set_value (v)
-    s_test.Test1.value = v
-end    
-
-    
-
-
 function main ()
-   
-    local cl2 = s_test.Test2 ()
-    printf ("Step 1")
-    cl2:set_value (20)
-    printf ("Step 2")
-    cl2:print ()
-    printf ("Step 3")
-    cl2:print ()
+
+    local stalker = get_level_object ("muzhik")
+    stalker:script (true, s_test.script_name ())
     
+    action (stalker, look (look.search), anim (anim.free), cond (cond.time_end, time_infinite))
+    
+    while true do
+          for a = 0, 8, 1 do
+              local dog = level.object ("m_dog_e000".. a)
+              if dog and dog:alive () and stalker:see (dog) then
+                 action_first (stalker, look( look.fire_point, dog), object( stalker:best_weapon (), object.fire1, 3 ),  
+                               cond ( cond.time_end, 1000 ))
+                 while stalker:action () do wait () end
+              end
+          end
+          wait ()                     
+    end
 end
