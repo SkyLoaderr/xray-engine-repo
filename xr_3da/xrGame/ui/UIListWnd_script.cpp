@@ -3,6 +3,7 @@
 #include "UIListItemEx.h"
 
 #include "../script_space.h"
+#include <luabind\adopt_policy.hpp>
 
 using namespace luabind;
 
@@ -18,6 +19,10 @@ bool CUIListWnd::AddText_script(LPCSTR str, int shift, u32 color, CGameFont* pFo
 
 }
 
+bool CUIListWnd::AddItem_script(CUIListItem* item){
+	return AddItem(item, -1);
+}
+
 void CUIListWnd::script_register(lua_State *L)
 {
 
@@ -27,7 +32,7 @@ void CUIListWnd::script_register(lua_State *L)
 		class_<CUIListWnd, CUIWindow>("CUIListWnd")
 		.def(							constructor<>())
 		.def("AddText",					&CUIListWnd::AddText_script)
-
+		.def("AddItem",                 &CUIListWnd::AddItem_script, adopt(_2))
 		.def("RemoveItem",				&CUIListWnd::RemoveItem)
 		.def("RemoveAll",				&CUIListWnd::RemoveAll)
 		.def("EnableScrollBar",			&CUIListWnd::EnableScrollBar)
