@@ -256,6 +256,32 @@ void CAI_Soldier::OnFindAloneFire()
 	WRITE_TO_LOG("find alone fire");
 
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfActionOrFightTypeChanged());
+
+	if (m_bStateChanged)
+		m_dwLastRangeSearch = 0;
+
+	vfStopFire();
+	
+	CHECK_IF_SWITCH_TO_NEW_STATE(bfNeedRecharge(),aiSoldierRecharge)
+
+	INIT_SQUAD_AND_LEADER;
+	
+	CGroup &Group = Squad.Groups[g_Group()];
+
+	vfInitSelector(SelectorPatrol,Squad,Leader);
+
+	if (AI_Path.bNeedRebuild)
+		vfBuildPathToDestinationPoint(0);
+	else
+		vfSearchForBetterPosition(SelectorPatrol,Squad,Leader);
+
+	if (!bfTooBigDistance(tSavedEnemyPosition,1.f)) {
+		
+	}
+	SetDirectionLook();
+	
+	StandUp();
+	vfSetMovementType(RUN_FORWARD_3);
 }
 
 void CAI_Soldier::OnRetreatAloneNonFire()
@@ -417,6 +443,29 @@ void CAI_Soldier::OnAttackAloneFireRun()
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfActionOrFightTypeChanged())
 
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(bfNeedRecharge(),aiSoldierRecharge)
+
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(!bfTooFarToEnemy(Enemy.Enemy,ATTACK_FIRE_FIRE_DISTANCE))
+
+	if (m_bStateChanged)
+		m_dwLastRangeSearch = 0;
+
+	vfStopFire();
+	
+	INIT_SQUAD_AND_LEADER;
+	
+	CGroup &Group = Squad.Groups[g_Group()];
+
+	vfInitSelector(SelectorPatrol,Squad,Leader);
+
+	if (AI_Path.bNeedRebuild)
+		vfBuildPathToDestinationPoint(0);
+	else
+		vfSearchForBetterPosition(SelectorPatrol,Squad,Leader);
+
+	vfAimAtEnemy();
+	
+	StandUp();
+	vfSetMovementType(RUN_FORWARD_3);
 }
 
 void CAI_Soldier::OnAttackAloneFireSteal()
