@@ -18,6 +18,14 @@ BOOL APIENTRY	DllMain(	HANDLE hModule,
 	switch (ul_reason_for_call)
 	{
 	case DLL_PROCESS_ATTACH:
+		{
+			_clear87	();
+			_control87	( _PC_53,   MCW_PC );
+			_control87	( _RC_CHOP, MCW_RC );
+			_control87	( _RC_NEAR, MCW_RC );
+			_control87	( _MCW_EM,  MCW_EM );
+		}
+		break;
 	case DLL_THREAD_ATTACH:
 	case DLL_THREAD_DETACH:
 	case DLL_PROCESS_DETACH:
