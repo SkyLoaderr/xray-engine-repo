@@ -168,7 +168,10 @@ void CAI_Biting::ForwardStraight()
 	WRITE_TO_LOG("Forward Straight");
 	
 	VisionElem ve;
-	if (!Mem.SelectEnemy(ve)) return;
+#pragma todo("MONSTER MEMORY REFACTORING...")
+//	if (!Mem.SelectEnemy(ve)) return;
+
+
 
 // -----------------------------------------------------------------------------
 // Choose branch
@@ -434,13 +437,14 @@ void CAI_Biting::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 	
 	// проверка на видимость трупов
 	VisionElem ve;
-	Mem.SelectCorpse(ve);
+#pragma todo("MONSTER MEMORY REFACTORING...")
+	//Mem.SelectCorpse(ve);
 	
 	Fvector *tpDesiredPosition = 0;
 	
-	
-	if (Mem.SelectCorpse(ve)) 
-		if (ve.obj->m_fFood >= 0) bCorpseFound = true;
+#pragma todo("MONSTER MEMORY REFACTORING...")	
+//	if (Mem.SelectCorpse(ve)) 
+//		if (ve.obj->m_fFood >= 0) bCorpseFound = true;
 
 	if (m_bStateChanged) {
 		_CAction.Init();
@@ -449,7 +453,7 @@ void CAI_Biting::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 	if (bCorpseFound) {
 		AI_Path.DestNode		=ve.node_id;
 		Fvector l_tCorpsePosition;
-		ve.obj->clCenter(l_tCorpsePosition);
+		ve.obj->Center(l_tCorpsePosition);
 		tpDesiredPosition = &l_tCorpsePosition;
 		
 		m_tActionState = eActionStateRun;			
@@ -545,7 +549,7 @@ void CAI_Biting::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 
 					break;
 		case eActionStateRun:   // бежать к трупу
-			if (ve.obj->Position().distance_to(vPosition) > 2.0f) {
+			if (ve.obj->Position().distance_to(Position()) > 2.0f) {
 				vfSetMotionActionParams(eBodyStateStand, eMovementTypeRun, 
 										eMovementDirectionForward, eStateTypeNormal, eActionTypeRun);
 			} else  { // ест труп
@@ -595,7 +599,8 @@ void CAI_Biting::Think()
 	m_dwCurrentUpdate		= Level().timeServer();
 
 	// Обновление памяти монстра
-	Mem.UpdateMemory();
+#pragma todo("MONSTER MEMORY REFACTORING...")
+	//Mem.UpdateMemory();
 	
 
 	if (MotionSeq.Active())	{
@@ -603,11 +608,12 @@ void CAI_Biting::Think()
 	} else {
 	
 		VisionElem VE;
-		if (Mem.SelectEnemy(VE)) {
-			SetState(stateAttack);
-		} else {	
-			SetState(stateRest);
-		}
+#pragma todo("MONSTER MEMORY REFACTORING...")		
+//		if (Mem.SelectEnemy(VE)) {
+//			SetState(stateAttack);
+//		} else {	
+//			SetState(stateRest);
+//		}
 
 		CurrentState->Execute(true);
 		Motion.SetFrameParams(this);
@@ -661,7 +667,8 @@ void CAI_Biting::Think()
 	vfUpdateParameters		();
 
 	VisionElem ve;
-	Mem.SelectEnemy(ve);
+#pragma todo("MONSTER MEMORY REFACTORING...")
+	//Mem.SelectEnemy(ve);
 
 	if (!K && _K && ve.obj) {
 		K = true;

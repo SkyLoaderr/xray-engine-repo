@@ -15,7 +15,9 @@
 #include "ai_biting_mem.h"
 #include "ai_biting_state.h"
 
-class CAI_Biting : public CCustomMonster, public CBitingAnimations
+class CAI_Biting : public CCustomMonster, 
+				   public CBitingAnimations,
+				   public CMonsterMemory
 {
 	typedef struct tagSHurt {
 		CEntity *tpEntity;
@@ -333,8 +335,6 @@ private:
 
 	void vfChoosePointAndBuildPathAtOnce(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition, bool bSearchForNode, bool bSelectorPath = false);
 	
-	CMonsterMemory			Mem;
-		
 	// Fire bone indexes
 	u32		m_iLeftFireBone;
 	u32		m_iRightFireBone;
@@ -346,7 +346,6 @@ private:
 
 
 	// Extended FSM
-
 	CBitingMotion		Motion;
 	IState				*CurrentState;
 	CRest				*stateRest;
@@ -374,36 +373,6 @@ private:
 	//CMonsterMemory			Mem;
 
 	virtual BOOL			feel_vision_isRelevant	(CObject* O);
-	
 
 
-//
-//	CRest					*stateRest;
-//	CWalk					*stateWalk;
-//	CMicroAction			*microAction;
-//
-//	EMotionType				motion;
-//	
-//	friend	class IState;
-//	friend	class CRest;
-//	friend	class CWalk;
-//	friend  class CMicroAction;
-//
-//
-//	void SetStateParams(AI_Biting::EPostureAnim pa,AI_Biting::EActionAnim aa, float sp, float r_sp, float y);
-//	
-//
-//	void ChangeControl(IState *pS);
-//	void CheckForMicroAction();
-};/	friend	class IState;
-//	friend	class CRest;
-//	friend	class CWalk;
-//	friend  class CMicroAction;
-//
-//
-//	void SetStateParams(AI_Biting::EPostureAnim pa,AI_Biting::EActionAnim aa, float sp, float r_sp, float y);
-//	
-//
-//	void ChangeControl(IState *pS);
-//	void CheckForMicroAction();
 };

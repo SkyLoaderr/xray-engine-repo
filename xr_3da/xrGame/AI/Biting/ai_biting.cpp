@@ -98,10 +98,10 @@ void CAI_Biting::Init()
 
 	_CAction.Init();
 
-	bCorpseFoundFirstTime			= true;
-	m_dwEnemyMemoryTime				= 5000;  
-	m_dwEnemyLastMemoryTime			= 0;
-	Mem.Init(5000,10000,this);
+///	bCorpseFoundFirstTime			= true;
+//	m_dwEnemyMemoryTime				= 5000;  
+//	m_dwEnemyLastMemoryTime			= 0;
+//	Mem.Init(5000,10000,this);
 
 	m_dwAttackMeleeTime				= 0;
 	m_dwAttackActorMeleeTime		= 0;
@@ -300,6 +300,6 @@ void CAI_Biting::vfLoadSounds()
 
 void CAI_Biting::vfSetFireBones(CInifile *ini, const char *section)
 {
-	m_iLeftFireBone = PKinematics(pVisual)->LL_BoneID(ini->r_string(section,"LeftFireBone"));
-	m_iRightFireBone = PKinematics(pVisual)->LL_BoneID(ini->r_string(section,"RightFireBone"));
+	m_iLeftFireBone = PKinematics(Visual())->LL_BoneID(ini->r_string(section,"LeftFireBone"));
+	m_iRightFireBone = PKinematics(Visual())->LL_BoneID(ini->r_string(section,"RightFireBone"));
 }

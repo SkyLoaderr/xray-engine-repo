@@ -243,7 +243,9 @@ void CAI_Biting::vfSetParameters(EPathType path_type,IBaseAI_NodeEvaluator *tpNo
 // «рение, слух, веро€тность победы, выгодность противника
 void CAI_Biting::vfUpdateParameters()
 {
-	Mem.UpdateMemory();
+	
+	#pragma todo("MONSTER MEMORY REFACTORING...")
+	//Mem.UpdateMemory();
 
 	//------------------------------------
 	// слух
@@ -265,7 +267,10 @@ void CAI_Biting::vfUpdateParameters()
 	// «рение
 
 	VisionElem ve;
-	if (Mem.SelectEnemy(ve)) {
+#pragma todo("MONSTER MEMORY REFACTORING...")
+//	if (Mem.SelectEnemy(ve)) {
+	if (true) {
+
 		// определить, видит ли мен€ враг
 		I = false;
 		float			yaw1 = 0.f, pitch1 =0.f, yaw2, pitch2, fYawFov = 0.f, fPitchFov = 0.f, fRange = 0.f;
@@ -303,7 +308,6 @@ void CAI_Biting::vfUpdateParameters()
 			I = getAI().bfTooSmallAngle(yaw1,yaw2,fYawFov) && (getAI().bfTooSmallAngle(pitch1,pitch2,fPitchFov));
 		}
 	}
-	*/
 
 
 //	//------------------------------------

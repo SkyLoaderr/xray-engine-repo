@@ -147,9 +147,10 @@ bool CAI_Biting::AttackMelee(CObject *obj, bool bAttackRat)
 		// получить координаты fire bones
 		Fmatrix MBoneLeft;
 		Fmatrix MBoneRight;
-		
-		MBoneLeft.mul(svTransform, PKinematics(pVisual)->LL_GetInstance(m_iLeftFireBone).mTransform);
-		MBoneRight.mul(svTransform, PKinematics(pVisual)->LL_GetInstance(m_iRightFireBone).mTransform);
+
+#pragma todo("TRANSFORM REFACTORING...")
+//		MBoneLeft.mul(svTransform, PKinematics(Visual())->LL_GetInstance(m_iLeftFireBone).mTransform);
+//		MBoneRight.mul(svTransform, PKinematics(Visual())->LL_GetInstance(m_iRightFireBone).mTransform);
 
 		// получить BBox врага
 		Fvector vEnemyBoxCenter;
@@ -179,7 +180,7 @@ bool CAI_Biting::AttackMelee(CObject *obj, bool bAttackRat)
 	if (((m_dwAttackMeleeTime + 1000>m_dwCurrentUpdate) && (m_dwAttackMeleeTime + 700 < m_dwCurrentUpdate)) ||
 		(m_dwAttackMeleeTime + 2000 < m_dwCurrentUpdate)){
 		
-		if (obj->Position().distance_to(vPosition) < .8f) {
+		if (obj->Position().distance_to(Position()) < .8f) {
 			m_dwAttackMeleeTime = m_dwCurrentUpdate;
 			return true;
 		}
@@ -188,7 +189,7 @@ bool CAI_Biting::AttackMelee(CObject *obj, bool bAttackRat)
 		this->setEnabled(false);
 		Collide::ray_query	l_rq;
 		Fvector vCenter;
-		clCenter(vCenter);
+		Center(vCenter);
 		Fvector dir = Direction();
 		if (bAttackRat) {
 			Fvector tempV;

@@ -116,7 +116,7 @@ typedef struct tagVisionElem
 } VisionElem;
 
 
-class CVisionMemory : public Feel::Vision
+class CVisionMemory
 {
 	TTime					MemoryTime;				// время хранения визуальных объектов
 	TTime					CurrentTime;			// текущее время
@@ -142,7 +142,7 @@ protected:
 	void Init(TTime mem_time);
 	void Deinit();
 
-	void UpdateVision(TTime dt, CAI_Biting *pThis);
+	void UpdateVision(TTime dt);
 	void ShowDbgInfo();
 
 private:
@@ -157,19 +157,15 @@ private:
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 class CMonsterMemory : public CSoundMemory, public CVisionMemory {
 public:
-	CAI_Biting	*pData;
-
-	void Init(TTime sound_mem, TTime vision_mem, CAI_Biting *ptr){
+	void InitMemory(TTime sound_mem, TTime vision_mem){
 		CSoundMemory::Init(sound_mem);
 		CVisionMemory::Init(vision_mem);
-		pData = ptr;
 	}
-	void Deinit() {
+	void DeinitMemory() {
 		CSoundMemory::Deinit();
 		CVisionMemory::Deinit();
 	}
 
 	void UpdateMemory();
-
 	void ShowDbgInfo();
 };

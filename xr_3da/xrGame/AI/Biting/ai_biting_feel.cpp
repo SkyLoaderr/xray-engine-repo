@@ -109,9 +109,10 @@ void CAI_Biting::DoDamage(CEntity *pEntity)
 	if (!pEntity) return;
 
 	VisionElem ve;
-	if (!Mem.SelectEnemy(ve)) return;
+#pragma todo("MONSTER MEMORY REFACTORING...")
+//	if (!Mem.SelectEnemy(ve)) return;
+//	VisionElem &ve = Mem.GetNearestObject(vPosition);
 
-	VisionElem &ve = Mem.GetNearestObject(vPosition);
 
 	if ((ve.obj->CLS_ID == CLSID_ENTITY) && (ve.obj == pEntity)) {
 		Fvector tDirection;

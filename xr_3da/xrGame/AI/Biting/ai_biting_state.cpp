@@ -295,8 +295,9 @@ void CAttack::Init()
 	IState::Init();
 
 	// Получить врага
+#pragma todo("MONSTER MEMORY REFACTORING...")
 	VisionElem ve;
-	if (!pData->Mem.SelectEnemy(ve)) R_ASSERT(false);
+//	if (!pData->Mem.SelectEnemy(ve)) R_ASSERT(false);
 	pEnemy = ve.obj;
 
 	// Определение класса врага
@@ -320,10 +321,10 @@ void CAttack::Run()
 	// Выбор состояния
 	bool bAttackMelee = (m_tAction == ACTION_ATTACK_MELEE);
 
-	if (bAttackMelee && (pEnemy->Position().distance_to(pData->vPosition) < m_fDistMax)) 
+	if (bAttackMelee && (pEnemy->Position().distance_to(pData->Position()) < m_fDistMax)) 
 		m_tAction = ACTION_ATTACK_MELEE;
 	else 
-		m_tAction = ((pEnemy->Position().distance_to(pData->vPosition) > m_fDistMin) ? ACTION_RUN : ACTION_ATTACK_MELEE);
+		m_tAction = ((pEnemy->Position().distance_to(pData->Position()) > m_fDistMin) ? ACTION_RUN : ACTION_ATTACK_MELEE);
 	
 	// Выполнение состояния
 	switch (m_tAction) {

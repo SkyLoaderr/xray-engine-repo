@@ -119,25 +119,39 @@ void CVisionMemory::Deinit()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Обработка видимой информации, обновление и классификация видимых объектов
-void CVisionMemory::UpdateVision(TTime dt, CAI_Biting *pThis) 
+void CVisionMemory::UpdateVision(TTime dt) 
 {
 	CurrentTime	= dt;
 	
 	VisionElem ve;
 
-	xr_vector<feel_visible_Item>::iterator I=pThis->feel_visible.begin(),E=pThis->feel_visible.end();
-	for (; I!=E; I++) if (positive(I->fuzzy)) {
+	xr_vector<CObject*> Visible_Objects;
+	xr_vector<CObject*>::iterator I, E;
 
-		if (I->O->CLS_ID!=CLSID_ENTITY)	continue;
+	CAI_Biting *pB = dynamic_cast<CAI_Biting *>(this);
+	Feel::Vision *pV;
+	if (pB) {
+		pV = dynamic_cast<Feel::Vision *>(pB);
+		if (!pV) return; // ERROR
+	}
 
-		CEntityAlive *pE = dynamic_cast<CEntityAlive *>(I->O);
+	pV->feel_vision_get(Visible_Objects);
+
+	I= Visible_Objects.begin();
+	E = Visible_Objects.end();
+	
+	
+	for (; I!=E; I++) {
+
+		if ((*I)->CLS_ID!=CLSID_ENTITY)	continue;
+
+		CEntityAlive *pE = dynamic_cast<CEntityAlive *>(*I);
 		if (!pE) continue;
 		
-
 		ve.Set(pE,CurrentTime);
 
 		if (!pE->g_Alive()) {
-			if (pE->g_Team() == pThis->g_Team()) continue;	// труп своего
+			if (pE->g_Team() == pB->g_Team()) continue;	// труп своего
 			AddObject(ve);
 		} else AddEnemy(ve);
 	}
@@ -150,7 +164,7 @@ void CVisionMemory::UpdateVision(TTime dt, CAI_Biting *pThis)
 		}
 	}
 	for (i = 0; i<Enemies.size(); i++){
- 		if ((Enemies[i].time < CurrentTime - MemoryTime) || (!Enemies[i].obj->g_Alive()) || ((Enemies[i].obj->Position().distance_to(pThis->Position()) > 30) && (Enemies[i].time != CurrentTime))){
+ 		if ((Enemies[i].time < CurrentTime - MemoryTime) || (!Enemies[i].obj->g_Alive()) || ((Enemies[i].obj->Position().distance_to(pB->Position()) > 30) && (Enemies[i].time != CurrentTime))){
 			Enemies[i] = Enemies.back();
 			Enemies.pop_back();
 		}
@@ -222,8 +236,8 @@ bool CVisionMemory::SelectEnemy(VisionElem &ve)
 
 	if ((!EnemySelected.obj || (EnemySelected.obj && (EnemySelected.time + TIME_TO_RESELECT_ENEMY < CurrentTime))) && IsEnemy()) {
 		
-		CMonsterMemory *pM = dynamic_cast<CMonsterMemory*>(this);
-		EnemySelected = GetNearestObject(pM->pData->Position());
+		CAI_Biting *pB = dynamic_cast<CAI_Biting *>(this);
+		EnemySelected = GetNearestObject(pB->Position());
 		EnemySelected.time = CurrentTime;
 	}
 	
@@ -240,8 +254,8 @@ bool CVisionMemory::SelectCorpse(VisionElem &ve)
 		return false;
 	} 
 
-	CMonsterMemory *pM = dynamic_cast<CMonsterMemory*>(this);
-	ve = GetNearestObject(pM->pData->Position(),OBJECT);
+	CAI_Biting *pB = dynamic_cast<CAI_Biting *>(this);
+	ve = GetNearestObject(pB->Position(),OBJECT);
 
 	return true;
 }
@@ -253,7 +267,7 @@ void CMonsterMemory::UpdateMemory()
 {
 	TTime curtime = Level().timeServer();
 
-	UpdateVision(curtime,pData);
+	UpdateVision(curtime);
 	UpdateHearing(curtime);
 }
 
