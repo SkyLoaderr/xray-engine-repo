@@ -96,4 +96,37 @@
     <string id="escape_stalker_help">
         <text>empty text</text>
     </string>
+    
+    
+    
+    
+    
+    <string id="bar_freedom_spam_1">
+		<text>Профессор, ну вы же умный человек. Отдайте информацию и идите на все четыре стороны.</text>
+    </string>
+    <string id="bar_freedom_spam_2">
+		<text>Прошу по хорошему. Отдайте флешку, или мы будем вынуждены вас атаковать.</text>
+    </string>
+    <string id="bar_freedom_spam_3">
+		<text>Круглов, я не знаю латыни, но я знаю язык оружия. Мне попросить вас на нем? Или вы сами отдадите информацию?</text>
+    </string>
+    <string id="bar_freedom_spam_4">
+		<text>Короче, ты, ученный болван. Или отдаешь мне результаты, или уедешь отсюда в пластиковом мешке.</text>
+    </string>
+
+    <string id="bar_ecolog_spam_1">
+		<text>Обойдешься, шакал. Сперва школу закончи, а потом будешь ультиматумы ставить.</text>
+    </string>
+    <string id="bar_ecolog_spam_2">
+		<text>Если вы нападете, я уничтожу информацию. Фиг вам, а не мои труды.</text>
+    </string>
+    <string id="bar_ecolog_spam_3">
+		<text>Если не хотите, чтобы я уничтожил результаты исследований - держитесь подальше.</text>
+    </string>
+    <string id="bar_ecolog_spam_4">
+		<text>Волкодав, уводи своих собак, пока хвосты не ободрали!</text>
+    </string>        
+    
+    
+    
 </string_table>
