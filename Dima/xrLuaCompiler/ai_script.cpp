@@ -41,8 +41,6 @@ CScript::CScript(LPCSTR caNamespaceName)
 //	ai().script_engine().set_current_thread	("");
 
 	m_bActive			= true;
-
-//	Update				();
 }
 
 CScript::~CScript()
