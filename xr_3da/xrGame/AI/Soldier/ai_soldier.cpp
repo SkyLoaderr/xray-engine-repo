@@ -57,16 +57,6 @@ CAI_Soldier::CAI_Soldier()
 	m_cStep = 0;
 	AI_Path.fSpeed = 0;
 	r_torso_speed = q_look.o_look_speed = PI_DIV_2;
-	
-	const int iTests = 1000;
-	vector<int> C;
-	C.resize(iTests,0);
-	for (int i=0; i<iTests*iTests; i++) 
-		//C[::Random.randI(0,iTests)]++;
-		C[uifRandom(iTests)]++;
-	for (i=0; i<iTests; i++)
-		Msg("%4d-%4d",i,C[i]);
-	Log("finished");
 }
 
 CAI_Soldier::~CAI_Soldier()
