@@ -13,11 +13,8 @@
 #define STRICT						// Enable strict syntax
 #define IDIRECTPLAY2_OR_GREATER
 
-/*
-#define _WIN32_DCOM
-#define _DBSETS_H_
-#define _NETWORK_H_
-*/
+#define _WIN32_WINNT 0x0400
+
 #define NOGDICAPMASKS
 #define NOSYSMETRICS
 #define NOMENUS
