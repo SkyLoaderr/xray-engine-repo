@@ -26,6 +26,8 @@ CWeaponAutoRifle::CWeaponAutoRifle(LPCSTR name) : CWeaponMagazined(name)
 CWeaponAutoRifle::~CWeaponAutoRifle()
 {
 	// sounds
+	SoundDestroy		(sndShow		);
+	SoundDestroy		(sndHide		);
 	SoundDestroy		(sndFireLoop	);
 	SoundDestroy		(sndEmptyClick	);
 	SoundDestroy		(sndReload		);
@@ -45,6 +47,8 @@ void CWeaponAutoRifle::Load	(CInifile* ini, const char* section)
 	fFlameSize			= ini->ReadFLOAT(section,"flame_size");
 
 	// Sounds
+	SoundCreate			(sndShow,		"show");
+	SoundCreate			(sndHide,		"hide");
 	SoundCreate			(sndFireLoop,	"fire");
 	SoundCreate			(sndEmptyClick,	"empty");
 	SoundCreate			(sndReload,		"reload");

@@ -12,6 +12,8 @@ private:
 	typedef CWeaponMagazined inherited;
 private:
 	// Media :: sounds
+	sound3D					sndShow;
+	sound3D					sndHide;
 	sound3D					sndFireLoop;
 	sound3D					sndEmptyClick;
 	sound3D					sndReload;
