@@ -37,6 +37,7 @@ public:
 	virtual			~CWeaponAK74	();
 
 	virtual void	Load			(CInifile* ini, const char* section);
+	virtual void	Update			(float dt, BOOL bHUDView);
 
 };
 

@@ -19,7 +19,7 @@
 CWeaponAK74::CWeaponAK74() : CWeaponMagazined("AK74")
 {
 	pSounds->Create3D(sndFireLoop,	 "weapons\\AK74_fire");
-	pSounds->Create3D(sndEmptyClick, "weapons\\empty_click")
+	pSounds->Create3D(sndEmptyClick, "weapons\\empty_click");
 	pSounds->Create3D(sndRicochet[0],"weapons\\ric1");
 	pSounds->Create3D(sndRicochet[1],"weapons\\ric2");
 	pSounds->Create3D(sndRicochet[2],"weapons\\ric3");
@@ -46,7 +46,6 @@ void CWeaponAK74::Load	(CInifile* ini, const char* section){
 	iFlameDiv			= ini->ReadINT	(section,"flame_div");
 	fFlameLength		= ini->ReadFLOAT(section,"flame_length");
 	fFlameSize			= ini->ReadFLOAT(section,"flame_size");
-	bFlame				= FALSE;
 }
 
 void CWeaponAK74::MediaLOAD		()
@@ -133,9 +132,9 @@ void CWeaponAK74::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide:
 	PS->m_Emitter.m_ConeDirection.set(D);
 	PS->PlayAtPos		(vEnd);
 }
-void CWeaponAK74::Update(float dt, BOOL bHUDView)
+void CWeaponAK74::Update		(float dt, BOOL bHUDView)
 {
 	// sound fire loop
-	inherited::Update			();
+	inherited::Update			(dt,bHUDView);
 	if (sndFireLoop.feedback) sndFireLoop.feedback->SetPosition(vLastFP);
 }
