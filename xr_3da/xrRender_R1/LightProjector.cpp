@@ -104,8 +104,9 @@ void CLightProjector::setup		(int id)
 	float			dist		= receivers[id].C.distance_to	(Device.vCameraPosition)+receivers[id].O->renderable.visual->vis.sphere.R;
 	float			factor		= _sqr(dist/P_distance);
 	RCache.set_c	(c_xform,	receivers[id].UVgen);
-	RCache.set_c	(c_clamp,	receivers[id].UVclamp);
 	RCache.set_c	(c_factor,	factor,factor,factor,factor);
+	RCache.set_ca	(c_clamp,	0,receivers[id].UVclamp_min);
+	RCache.set_ca	(c_clamp,	1,receivers[id].UVclamp_max);
 }
 
 /*
@@ -228,7 +229,6 @@ void CLightProjector::calculate	()
 		C.UVgen.mulA		(mTemp);
 		mTemp.translate		(fSlotX+fTexelOffs,fSlotY+fTexelOffs,0);
 		C.UVgen.mulA		(mTemp);
-		C.UVclamp.set		(fSlotX+fTexelOffs,fSlotY+fTexelOffs,fSlotX+fSlotSize-fTexelOffs,fSlotY+fSlotSize-fTexelOffs);
 
 		// Clear color to ambience
 		/*
@@ -243,6 +243,8 @@ void CLightProjector::calculate	()
 		min.set				(C.C.x-p_R,	C.C.y-(p_R+P_cam_range),	C.C.z-p_R);
 		max.set				(C.C.x+p_R,	C.C.y+0,					C.C.z+p_R);
 		BB.set				(min,max);
+		C.UVclamp_min.set	(min);
+		C.UVclamp_max.set	(max);
 		ISpatial*	spatial	= dynamic_cast<ISpatial*>	(C.O);
 		if (spatial)		RImplementation.r_dsgraph_render_R1_box		(spatial->spatial.sector,BB,SE_R1_LMODELS);
 		//if (spatial)		RImplementation.r_dsgraph_render_subspace	(spatial->spatial.sector,mCombine,v_C,FALSE);

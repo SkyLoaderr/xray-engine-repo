@@ -20,7 +20,8 @@ private:
 		Fvector				C;
 		float				D;
 		Fmatrix				UVgen;
-		Fvector4			UVclamp;
+		Fvector				UVclamp_min;
+		Fvector				UVclamp_max;
 	};
 private:
 	IRenderable*			current;
