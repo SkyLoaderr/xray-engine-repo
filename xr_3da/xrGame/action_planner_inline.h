@@ -208,9 +208,6 @@ IC	void CPlanner::add_evaluator	(const _condition_type &condition_id, _condition
 {
 	inherited::add_evaluator(condition_id,evaluator);
 	evaluator->setup		(m_object,&m_storage);
-#ifdef LOG_ACTION
-	evaluator->set_use_log	(m_use_log);
-#endif
 }
 
 #ifdef LOG_ACTION
