@@ -264,7 +264,7 @@ void CPda::AddMessageToLog(u32 pda_ID, EPdaMsg msg, int info_index, bool receive
 	{
 		m_mapPdaLog[pda_ID].clear();
 		
-		if(msg != ePdaMsgInfo)
+		if(msg == ePdaMsgInfo)
 			pda_message.question = false;
 		else
 			pda_message.question = true;
