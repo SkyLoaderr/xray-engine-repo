@@ -92,7 +92,7 @@ public:
 
 	// Scene control
 	void PreCache							(u32 frames);
-	void Begin								();
+	BOOL Begin								();
 	void Clear								();
 	void End								();
 	void FrameMove							();

@@ -6,7 +6,7 @@
 
 ENGINE_API CRenderDevice Device;
 
-void CRenderDevice::Begin	()
+BOOL CRenderDevice::Begin	()
 {
 	HW.Validate		();
 	HRESULT	_hr		= HW.pDevice->TestCooperativeLevel();
@@ -15,7 +15,7 @@ void CRenderDevice::Begin	()
 		// If the device was lost, do not render until we get it back
 		if		(D3DERR_DEVICELOST==_hr)		{
 			Sleep	(33);
-			return	;
+			return	FALSE;
 		}
 
 		// Check if the device is ready to be reset
@@ -28,7 +28,8 @@ void CRenderDevice::Begin	()
 	CHK_DX					(HW.pDevice->BeginScene());
 	RCache.OnFrameBegin		();
 	if (HW.Caps.SceneMode)	overdrawBegin	();
-	FPU::m24r();
+	FPU::m24r	();
+	return		TRUE;
 }
 
 void CRenderDevice::Clear	()
@@ -63,7 +64,9 @@ void CRenderDevice::End		(void)
 	RCache.OnFrameEnd	();
     CHK_DX(HW.pDevice->EndScene());
 
-	CHK_DX(HW.pDevice->Present( NULL, NULL, NULL, NULL ));
+	HRESULT _hr		= HW.pDevice->Present( NULL, NULL, NULL, NULL );
+	if		(D3DERR_DEVICELOST==_hr)	return;			// we will handle this later
+	R_CHK	(_hr,	"Driver upgrade needed?");
 }
 
 #pragma pack(push,8)
@@ -197,12 +200,11 @@ void CRenderDevice::Run			()
 
 				Statistic.RenderTOTAL_Real.FrameStart	();
 				Statistic.RenderTOTAL_Real.Begin		();
-				Begin									();
-				
-				seqRender.Process						(rp_Render);
-				Statistic.Show							();
-
-				End										();
+				if (Begin())				{
+					seqRender.Process						(rp_Render);
+					Statistic.Show							();
+					End										();
+				}
 				Statistic.RenderTOTAL_Real.End			();
 				Statistic.RenderTOTAL_Real.FrameEnd		();
 				Statistic.RenderTOTAL.accum	= Statistic.RenderTOTAL_Real.accum;
