@@ -33,7 +33,7 @@ private:
 	struct	tess_tri
 	{
 		Fvector				v[3];
-		BOOL				render;
+		Fvector				N;
 	};
 private:
 	CObject*				current;

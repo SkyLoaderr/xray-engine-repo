@@ -14,6 +14,7 @@ const	float	S_level		= .1f;
 const	int		S_size		= 64;
 const	int		S_rt_size	= 512;
 const	int		batch_size	= 128;
+const	float	S_tess		= .5f;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -291,6 +292,7 @@ void CLightShadows::render	()
 	for (int s_it=0; s_it<shadows.size(); s_it++)
 	{
 		shadow&		S			=	shadows[s_it];
+		float		Le			=	S.L->diffuse.magnitude_rgb();
 		int			s_x			=	S.slot%slot_line;
 		int			s_y			=	S.slot/slot_line;
 		Fvector2	t_scale, t_offset;
@@ -310,6 +312,7 @@ void CLightShadows::render	()
 		if (0==XRC.r_count())	continue;
 		
 		// Clip polys by frustum
+		tess.clear				();
 		for (CDB::RESULT* p = XRC.r_begin(); p!=XRC.r_end(); p++)
 		{
 			// 
@@ -332,22 +335,33 @@ void CLightShadows::render	()
 			// Triangulate poly 
 			for (int v=2; v<clip->size(); v++)
 			{
-				Fvector& v1		= (*clip)[0];
-				Fvector& v2		= (*clip)[v-1];
-				Fvector& v3		= (*clip)[v];
-				Fvector		T;
-				
-				S.M.transform(T,v1); pv->set(v1,S.C,(T.x+1)*t_scale.x+t_offset.x,(1-T.y)*t_scale.y+t_offset.y); pv++;
-				S.M.transform(T,v2); pv->set(v2,S.C,(T.x+1)*t_scale.x+t_offset.x,(1-T.y)*t_scale.y+t_offset.y); pv++;
-				S.M.transform(T,v3); pv->set(v3,S.C,(T.x+1)*t_scale.x+t_offset.x,(1-T.y)*t_scale.y+t_offset.y); pv++;
-				batch++;
-				if (batch==batch_size)	{
-					// Flush
-					vs_World->Unlock		(batch*3);
-					Device.Primitive.Draw	(vs_World,batch,Offset);
-					pv						= (FVF::LIT*) vs_World->Lock(batch_size*3,Offset);
-					batch					= 0;
-				}
+				tess.push_back	(tess_tri());
+				tess_tri& T		= tess.back();
+				T.v[0]			= (*clip)[0];
+				T.v[1]			= (*clip)[v-1];
+				T.v[2]			= (*clip)[v];
+			}
+		}
+
+		// Tesselate
+		
+		
+		// Fill VB
+		for (int tid=0; tid<tess.size(); tid++)
+		{
+			tess_tri&	TT		= tess[tid];
+			Fvector* 	v		= TT.v;
+			Fvector		T;
+			S.M.transform(T,v[0]); pv->set(v[0],PLC_calc(v[0],TT.N,S.L,Le),(T.x+1)*t_scale.x+t_offset.x,(1-T.y)*t_scale.y+t_offset.y); pv++;
+			S.M.transform(T,v[1]); pv->set(v[1],S.C,(T.x+1)*t_scale.x+t_offset.x,(1-T.y)*t_scale.y+t_offset.y); pv++;
+			S.M.transform(T,v[2]); pv->set(v[2],S.C,(T.x+1)*t_scale.x+t_offset.x,(1-T.y)*t_scale.y+t_offset.y); pv++;
+			batch++;
+			if (batch==batch_size)	{
+				// Flush
+				vs_World->Unlock		(batch*3);
+				Device.Primitive.Draw	(vs_World,batch,Offset);
+				pv						= (FVF::LIT*) vs_World->Lock(batch_size*3,Offset);
+				batch					= 0;
 			}
 		}
 	}
