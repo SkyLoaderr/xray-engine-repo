@@ -226,7 +226,7 @@ void CSheduler::ProcessStep			()
 			//Msg	("! xrSheduler: failed to shedule object [%s] (%dms)",		N, delta_ms	);
 		}
 		if (execTime> 10)			{
-			Msg	("~ xrSheduler: too much time consumed by object [%s] (%dms)",	N, execTime	);
+			Msg	("* xrSheduler: too much time consumed by object [%s] (%dms)",	N, execTime	);
 		}
 #endif
 

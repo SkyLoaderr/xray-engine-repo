@@ -134,7 +134,7 @@ void CStepManager::update()
 			}
 
 			// Играть партиклы
-			if (!mtl_pair->CollideParticles.empty()) {
+			if (!mtl_pair->CollideParticles.empty())	{
 				LPCSTR ps_name = *mtl_pair->CollideParticles[::Random.randI(0,mtl_pair->CollideParticles.size())];
 
 				//отыграть партиклы столкновения материалов
