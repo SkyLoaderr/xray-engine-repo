@@ -66,7 +66,7 @@ end
 function wait_trading (trader)
     if trader:action () ~= nil then return 0 end
 
-    if game.time () - time < 5000 then return 0 end
+    if device ():time_global () - time < 5000 then return 0 end
 
     reset_action (trader, military_trader.script_name ())
     printf ("Phrase %d", phrase)
@@ -74,7 +74,7 @@ function wait_trading (trader)
        action (trader, anim ("che_stoish"), cond (cond.anim_end))
        stoish:play_at_pos (trader, trader:position (), 0)
        phrase = 1
-       time = game.time ()
+       time = device ():time_global ()
     elseif phrase == 1 then
            phrase = 2
            action (trader, anim ("alko"), cond (cond.anim_end))
@@ -110,7 +110,7 @@ function first_pass (trader)
     davai:play_at_pos (trader, trader:position (), 0)
     while trader:action () and davai:playing () == true do wait () end
 
-    time = game.time ()
+    time = device ():time_global ()
 
     while true do
           if actor_entered == false then return end
