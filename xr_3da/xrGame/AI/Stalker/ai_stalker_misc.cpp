@@ -237,20 +237,20 @@ void CAI_Stalker::vfUpdateSearchPosition()
 	if (m_dwParticularState != u32(-1))
 		return;
 
-	if (this != Leader)	{
+//	if (this != Leader)	{
 		CAI_Stalker *tpLeader			= dynamic_cast<CAI_Stalker*>(Leader);
 		if (tpLeader) {
 			m_tNextGraphPoint			= tpLeader->m_tNextGraphPoint;
 			m_tNextGP					= tpLeader->m_tNextGP;
 		}
-	}
-	else
-		if ((Level().timeServer() >= m_dwTimeToChange) && (getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex == m_tNextGP)) {
-			m_tNextGP					= getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
-			vfChooseNextGraphPoint		();
-			m_tNextGraphPoint.set		(getAI().m_tpaGraph[m_tNextGP].tLocalPoint);
-			m_dwTimeToChange			= Level().timeServer() + 10000;
-		}
+//	}
+//	else
+//		if ((Level().timeServer() >= m_dwTimeToChange) && (getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex == m_tNextGP)) {
+//			m_tNextGP					= getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
+//			vfChooseNextGraphPoint		();
+//			m_tNextGraphPoint.set		(getAI().m_tpaGraph[m_tNextGP].tLocalPoint);
+//			m_dwTimeToChange			= Level().timeServer() + 10000;
+//		}
 }
 
 void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E, bool &F, bool &G, bool &H, bool &I, bool &J, bool &K, bool &L, bool &M)
