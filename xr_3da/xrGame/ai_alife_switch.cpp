@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "ai_alife.h"
+#include "ai_space.h"
 #include "GameObject.h"
 
 void CSE_ALifeSimulator::vfCreateObject(CSE_ALifeDynamicObject *tpALifeDynamicObject)

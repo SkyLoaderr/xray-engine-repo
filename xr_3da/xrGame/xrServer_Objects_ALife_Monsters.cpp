@@ -10,10 +10,16 @@
 #pragma hdrstop
 
 #include "xrServer_Objects_ALife_Monsters.h"
+#include "ai_alife_templates.h"
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeTraderAbstract
 ////////////////////////////////////////////////////////////////////////////
+CSE_ALifeTraderAbstract::~CSE_ALifeTraderAbstract()
+{
+	free_vector					(m_tpEvents);
+}
+
 void CSE_ALifeTraderAbstract::STATE_Write	(NET_Packet &tNetPacket)
 {
 	save_entity_vector			(m_tpEvents,tNetPacket);
@@ -554,6 +560,11 @@ void CSE_ALifeMonsterBiting::FillProp	(LPCSTR pref, PropItemVec& values)
 //////////////////////////////////////////////////////////////////////////
 // CSE_ALifeHumanAbstract
 //////////////////////////////////////////////////////////////////////////
+CSE_ALifeHumanAbstract::~CSE_ALifeHumanAbstract()
+{
+	free_vector					(m_tpTasks);
+}
+
 void CSE_ALifeHumanAbstract::STATE_Write	(NET_Packet &tNetPacket)
 {
 	inherited1::STATE_Write		(tNetPacket);

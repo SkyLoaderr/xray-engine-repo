@@ -10,9 +10,9 @@
 
 #define ALIFE_SUPPORT_CONSOLE_COMMANDS
 
-#include "..\\xrLevel.h"
+//#include "..\\xrLevel.h"
 #include "ai_alife_interfaces.h"
-#include "ai_alife_templates.h"
+//#include "ai_alife_templates.h"
 
 class CSE_ALifeGameTime : public IPureALifeLSObject {
 public:
@@ -95,14 +95,7 @@ public:
 	u32								m_dwSpawnCount;
 	u32								m_dwLevelCount;
 	
-	virtual void					Load(IReader	&tFileStream)
-	{
-		R_ASSERT2					(tFileStream.find_chunk(SPAWN_POINT_CHUNK_VERSION),"Can't find chunk SPAWN_POINT_CHUNK_VERSION!");
-		m_tSpawnVersion				= tFileStream.r_u32();
-		R_ASSERT2					(m_tSpawnVersion == XRAI_CURRENT_VERSION,"'game.spawn' version mismatch!");
-		m_dwSpawnCount				= tFileStream.r_u32();
-		m_dwLevelCount				= tFileStream.r_u32();
-	};
+	virtual void					Load(IReader	&tFileStream);
 };
 
 class CSE_ALifeKnownAnomaly : public IPureALifeLSObject {
@@ -130,44 +123,133 @@ public:
 	};
 };
 
-//class CSE_ALifeDiscovery : public IPureALifeLSObject {
-//public:
-//	EOrganizationType				m_tOrganizationType;
-//
-//
-//									CSE_ALifeDiscovery()
-//	{
-//	}
-//
-//	virtual void					Save(IWriter	&tMemoryStream)
-//	{
-//		tMemoryStream.w				(&m_tOrganizationType,	sizeof(m_tOrganizationType));
-//	}
-//
-//	virtual void					Load(IReader	&tFileStream)
-//	{
-//		tFileStream.r				(&m_tOrganizationType,	sizeof(m_tOrganizationType));
-//	};
-//};
-//
-//class CSE_ALifeOrganization : public IPureALifeLSObject {
-//public:
-//	EOrganizationType				m_tOrganizationType;
-//	LPCSTR							m_caOrganizationIdentifier;
-//	ARTEFACT_VECTOR					m_tpArtefacts;
-//
-//
-//									CSE_ALifeKnownAnomaly()
-//	{
-//	}
-//
-//	virtual void					Save(IWriter	&tMemoryStream)
-//	{
-//		tMemoryStream.w				(&m_tOrganizationType,	sizeof(m_tOrganizationType));
-//	}
-//
-//	virtual void					Load(IReader	&tFileStream)
-//	{
-//		tFileStream.r				(&m_tOrganizationType,	sizeof(m_tOrganizationType));
-//	};
-//};
+class CSE_ALifeArtefactDemand : public IPureALifeLSObject {
+public:
+	LPCSTR							m_caSection;
+	u32								m_dwMinArtefactCount;
+	u32								m_dwMaxArtefactCount;
+	u32								m_dwMinArtefactPrice;
+	u32								m_dwMaxArtefactPrice;
+	u32								m_dwRealArtefactCount;
+	u32								m_dwRealArtefactPrice;
+
+									CSE_ALifeArtefactDemand(LPCSTR caSection, u32 dwMinArtefactCount, u32 dwMaxArtefactCount, u32 dwMinArtefactPrice, u32 dwMaxArtefactPrice) :	m_caSection(caSection), m_dwMinArtefactCount(dwMinArtefactCount), m_dwMaxArtefactCount(dwMaxArtefactCount), m_dwMinArtefactPrice(dwMinArtefactPrice), m_dwMaxArtefactPrice(dwMaxArtefactPrice),	m_dwRealArtefactCount(0), m_dwRealArtefactPrice(0)
+	{
+	}
+	
+	virtual							~CSE_ALifeArtefactDemand()
+	{
+	}
+
+	virtual void					Save(IWriter	&tMemoryStream)
+	{
+		tMemoryStream.w_u32			(m_dwRealArtefactCount);
+		tMemoryStream.w_u32			(m_dwRealArtefactPrice);
+	}
+
+	virtual void					Load(IReader	&tFileStream)
+	{
+		m_dwRealArtefactCount		= tFileStream.r_u32();
+		m_dwRealArtefactPrice		= tFileStream.r_u32();
+	};
+};
+
+class CSE_ALifeArtefactNeed {
+public:
+	LPCSTR							m_caSection;
+	u32								m_dwArtefactCount;
+
+									CSE_ALifeArtefactNeed(LPCSTR caSection, u32 dwArtefactCount) :	m_caSection(caSection), m_dwArtefactCount(dwArtefactCount)
+	{
+	}
+
+	virtual							~CSE_ALifeArtefactNeed()
+	{
+	}
+};
+
+class CSE_ALifeDiscovery : public IPureALifeLSObject {
+public:
+	LPCSTR							m_caDiscoveryIdentifier;
+	float							m_fSuccessProbability;
+	float							m_fDestroyProbability;
+	_TIME_ID						m_tFreezeTime;
+	_TIME_ID						m_tResearchTime;
+	DEMAND_P_VECTOR					m_tpArtefactDemand;
+	NEED_P_VECTOR					m_tpArtefactNeed;
+
+
+									CSE_ALifeDiscovery(LPCSTR caSection)
+	{
+		m_caDiscoveryIdentifier		= pSettings->r_string	(caSection,"name");
+		m_fSuccessProbability		= pSettings->r_float	(caSection,"success_probability");
+		m_fDestroyProbability		= pSettings->r_float	(caSection,"destroy_probability");
+		m_tFreezeTime				= (_TIME_ID)pSettings->r_u32(caSection,"destroy_freeze_time")*24*60*1000;
+		m_tResearchTime				= (_TIME_ID)pSettings->r_u32(caSection,"research_time")*24*60*1000;
+		
+		LPCSTR						S;
+		string64					S1;
+		{
+			S						= pSettings->r_string	(caSection,"demand_on_success");
+			R_ASSERT2				(!(_GetItemCount(S) % 5),"Invalid argument count in the discovery object section!");
+			m_tpArtefactDemand.resize(_GetItemCount(S)/5);
+			DEMAND_P_IT				B = m_tpArtefactDemand.begin(), I = B;
+			DEMAND_P_IT				E = m_tpArtefactDemand.end();
+			for ( ; I != E; I++)
+				*I = xr_new<CSE_ALifeArtefactDemand>(_GetItem(S,5*int(I - B) + 0,S1),atoi(_GetItem(S,5*int(I - B) + 1,S1)),atoi(_GetItem(S,5*int(I - B) + 2,S1)),atoi(_GetItem(S,5*int(I - B) + 3,S1)),atoi(_GetItem(S,5*int(I - B) + 4,S1)));
+		}
+
+		{
+			S						= pSettings->r_string	(caSection,"artefacts");
+			R_ASSERT2				(!(_GetItemCount(S) % 2),"Invalid argument count in the discovery object section!");
+			m_tpArtefactNeed.resize	(_GetItemCount(S)/2);
+			NEED_P_IT				B = m_tpArtefactNeed.begin(), I = B;
+			NEED_P_IT				E = m_tpArtefactNeed.end();
+			for ( ; I != E; I++)
+				*I = xr_new<CSE_ALifeArtefactNeed>(_GetItem(S,2*int(I - B) + 0,S1),atoi(_GetItem(S,2*int(I - B) + 1,S1)));
+		}
+	}
+
+	virtual							~CSE_ALifeDiscovery()
+	{
+	}
+
+	virtual void					Save(IWriter	&tMemoryStream)
+	{
+		{
+			DEMAND_P_IT				I = m_tpArtefactDemand.begin();
+			DEMAND_P_IT				E = m_tpArtefactDemand.end();
+			for ( ; I != E; I++)
+				(*I)->Save			(tMemoryStream);
+		}
+	}
+
+	virtual void					Load(IReader	&tFileStream)
+	{
+		{
+			DEMAND_P_IT				I = m_tpArtefactDemand.begin();
+			DEMAND_P_IT				E = m_tpArtefactDemand.end();
+			for ( ; I != E; I++)
+				(*I)->Load			(tFileStream);
+		}
+	};
+};
+
+class CSE_ALifeOrganization : public IPureALifeLSObject {
+public:
+	LPCSTR							m_caOrganizationIdentifier;
+	//ARTEFACT_VECTOR					m_tpArtefacts;
+
+
+									CSE_ALifeOrganization()
+	{
+	}
+
+	virtual void					Save(IWriter	&tMemoryStream)
+	{
+	}
+
+	virtual void					Load(IReader	&tFileStream)
+	{
+	};
+};

@@ -10,20 +10,20 @@
 
 #include "ai_space.h"
 
-typedef struct tagSAIMapData {
+struct SAIMapData {
 	CAI_Space	*tpAI_Space;
 	u32			dwFinishNode;
-} SAIMapData;
+};
 
-typedef struct tagSAIMapDataL {
+struct SAIMapDataL {
 	CAI_Space	*tpAI_Space;
 	u32			dwFinishNode;
 	float		fLight;
 	float		fCover;
 	float		fDistance;
-} SAIMapDataL;
+};
 
-typedef struct tagSAIMapDataE {
+struct SAIMapDataE {
 	CAI_Space	*tpAI_Space;
 	u32			dwFinishNode;
 	u32			dwEnemyNode;
@@ -32,9 +32,9 @@ typedef struct tagSAIMapDataE {
 	float		fDistance;
 	float		fEnemyDistance;
 	float		fEnemyView;
-} SAIMapDataE;
+};
 
-typedef struct tagSAIMapDataF {
+struct SAIMapDataF {
 	CAI_Space	*tpAI_Space;
 	u32			dwFinishNode;
 	Fvector		tEnemyPosition;
@@ -43,12 +43,12 @@ typedef struct tagSAIMapDataF {
 	float		fDistance;
 	float		fEnemyDistance;
 	float		fEnemyView;
-} SAIMapDataF;
+};
 
-typedef struct tagSAIMapDataG {
+struct SAIMapDataG {
 	CSE_ALifeGraph	*tpGraph;
 	u32			dwFinishNode;
-} SAIMapDataG;
+};
 
 
 class CAIMapTemplateNode {

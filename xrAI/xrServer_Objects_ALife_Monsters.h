@@ -32,10 +32,7 @@ public:
 		m_tpTaskIDs.clear			();
 	};
 
-	virtual							~CSE_ALifeTraderAbstract()
-	{
-		free_vector					(m_tpEvents);
-	};
+	virtual							~CSE_ALifeTraderAbstract();
 
 	virtual void					STATE_Write		(NET_Packet &tNetPacket);
 	virtual void					STATE_Read		(NET_Packet &tNetPacket, u16 size);
@@ -193,7 +190,7 @@ SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_ALifeMonsterAbstract)
 	DWORD_VECTOR					m_tpaVertices;
-	BOOL_VECTOR						m_baVisitedVertices;
+	xr_vector<bool>					m_baVisitedVertices;
 	PERSONAL_TASK_P_VECTOR			m_tpTasks;
 	ETaskState						m_tTaskState;
 	u32								m_dwCurTaskLocation;
@@ -211,10 +208,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 		m_fSearchSpeed				= pSettings->r_float(caSection, "search_speed");
 	};
 
-	virtual							~CSE_ALifeHumanAbstract()
-	{
-		free_vector					(m_tpTasks);
-	};
+	virtual							~CSE_ALifeHumanAbstract();
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeHumanStalker,CSE_ALifeHumanAbstract)

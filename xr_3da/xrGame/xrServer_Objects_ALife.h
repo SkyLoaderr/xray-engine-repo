@@ -10,7 +10,9 @@
 #define xrServer_Objects_ALifeH
 
 #include "xrServer_Objects.h"
-#include "ai_alife_templates.h"
+#include "ai_alife_space.h"
+using namespace ALife;
+//#include "ai_alife_templates.h"
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeEvent,IPureServerObject)
 	_EVENT_ID						m_tEventID;
@@ -129,40 +131,12 @@ public:
 	{
 	};
 	
-	virtual void STATE_Read			(NET_Packet	&tNetPacket, u16 size)
-	{
-		u32							dwDummy;
-		tNetPacket.r_u32			(dwDummy);
-		m_bCreateSpawnPositions		= !!dwDummy;
-		tNetPacket.r_u16			(m_wCount);
-		if (m_wVersion > 19)
-			load_base_vector		(m_tpMembers,tNetPacket);
-	};
-
-	virtual void STATE_Write		(NET_Packet	&tNetPacket)
-	{
-		tNetPacket.w_u32			(m_bCreateSpawnPositions);
-		tNetPacket.w_u16			(m_wCount);
-		save_base_vector			(m_tpMembers,tNetPacket);
-	};
-
-	virtual void UPDATE_Read		(NET_Packet	&tNetPacket)
-	{
-		u32							dwDummy;
-		tNetPacket.r_u32			(dwDummy);
-		m_bCreateSpawnPositions		= !!dwDummy;
-	};
-
-	virtual void UPDATE_Write		(NET_Packet	&tNetPacket)
-	{
-		tNetPacket.w_u32			(m_bCreateSpawnPositions);
-	};
-
+	virtual void STATE_Read			(NET_Packet	&tNetPacket, u16 size);
+	virtual void STATE_Write		(NET_Packet	&tNetPacket);
+	virtual void UPDATE_Read		(NET_Packet	&tNetPacket);
+	virtual void UPDATE_Write		(NET_Packet	&tNetPacket);
 	#ifdef _EDITOR
-	virtual void FillProp			(LPCSTR pref, PropItemVec& items)
-	{
-		PHelper.CreateU16			(items,	PHelper.PrepareKey(pref, "ALife\\Count"),			&m_wCount,			0,0xff);
-	};	
+	virtual void FillProp			(LPCSTR pref, PropItemVec& items);
 	#endif
 };
 

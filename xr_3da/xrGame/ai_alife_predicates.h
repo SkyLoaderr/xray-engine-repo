@@ -20,6 +20,16 @@ IC _TASK_ID							tfChooseTaskKeyPredicate(const CSE_ALifeTask *T)
 	return							(T->m_tTaskID);
 };
 
+IC LPCSTR							cafChooseDiscoveryKeyPredicate(const CSE_ALifeDiscovery *T)
+{
+	return							(T->m_caDiscoveryIdentifier);
+};
+
+IC LPCSTR							cafChooseOrganizationKeyPredicate(const CSE_ALifeOrganization *T)
+{
+	return							(T->m_caOrganizationIdentifier);
+};
+
 class CCompareTraderRanksPredicate {
 public:
 	bool							operator()(const CSE_ALifeTrader *tpALifeTrader1, const CSE_ALifeTrader *tpALifeTrader2) const

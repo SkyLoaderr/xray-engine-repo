@@ -23,6 +23,7 @@
 #define TASK_CHUNK_DATA				0x0003
 #define GAME_TIME_CHUNK_DATA		0x0004
 #define ANOMALY_CHUNK_DATA			0x0005
+#define DISCOVERY_CHUNK_DATA		0x0006
 
 #define LOCATION_TYPE_COUNT			4
 
@@ -41,6 +42,10 @@ class CSE_ALifeTask;
 class CSE_ALifePersonalEvent;
 class CSE_ALifePersonalTask;
 class CSE_ALifeKnownAnomaly;
+class CSE_ALifeDiscovery;
+class CSE_ALifeOrganization;
+class CSE_ALifeArtefactDemand;
+class CSE_ALifeArtefactNeed;
 
 namespace ALife {
 	typedef u64	_CLASS_ID;									// Class ID
@@ -56,6 +61,7 @@ namespace ALife {
 	const	u32	LOCATION_COUNT	= (u32(1) << (8*sizeof(_LOCATION_ID)));
 
 	DEFINE_VECTOR	(float,						FLOAT_VECTOR,					FLOAT_IT);
+	//DEFINE_VECTOR	(bool,						BOOL_VECTOR,					BOOL_IT);
 	DEFINE_VECTOR	(Fvector,					FVECTOR_VECTOR,					FVECTOR_IT);
 	DEFINE_VECTOR	(_OBJECT_ID,				OBJECT_VECTOR,					OBJECT_IT);
 	DEFINE_VECTOR	(_OBJECT_ID,				OBJECT_VECTOR,					OBJECT_IT);
@@ -73,6 +79,9 @@ namespace ALife {
 	DEFINE_VECTOR	(CSE_ALifeDynamicObject*,	ALIFE_ENTITY_P_VECTOR,			ALIFE_ENTITY_P_IT);
 	DEFINE_VECTOR	(CSE_ALifeKnownAnomaly*,	ANOMALY_P_VECTOR,				ANOMALY_P_IT);
 	DEFINE_VECTOR	(ANOMALY_P_VECTOR,			ANOMALY_P_VECTOR_VECTOR,		ANOMALY_P_VECTOR_IT);
+	DEFINE_VECTOR	(CSE_ALifeArtefactDemand*,	DEMAND_P_VECTOR,				DEMAND_P_IT);
+	DEFINE_VECTOR	(CSE_ALifeArtefactNeed*,	NEED_P_VECTOR,					NEED_P_IT);
+
 	
 	DEFINE_SVECTOR	(GRAPH_VECTOR,				LOCATION_COUNT,					GRAPH_VECTOR_SVECTOR,		GRAPH_VECTOR_IT);
 	
@@ -80,6 +89,8 @@ namespace ALife {
 	DEFINE_MAP		(_EVENT_ID,					CSE_ALifeEvent *,				EVENT_MAP,					EVENT_PAIR_IT);
 	DEFINE_MAP		(_TASK_ID,					CSE_ALifeTask *,				TASK_MAP,					TASK_PAIR_IT);
 	DEFINE_MAP		(u8,						ALIFE_ENTITY_P_VECTOR *,		ALIFE_ENTITY_P_VECTOR_MAP,	ALIFE_ENTITY_P_VECTOR_PAIR_IT);
+	DEFINE_MAP		(LPCSTR,					CSE_ALifeDiscovery*,			DISCOVERY_P_MAP,			DISCOVERY_P_PAIR_IT);
+	DEFINE_MAP		(LPCSTR,					CSE_ALifeOrganization*,			ORGANIZATION_P_MAP,			ORGANIZATION_P_PAIR_IT);
 
 	typedef struct tagSGraphPoint {
 		ALIFE_ENTITY_P_VECTOR		tpObjects;

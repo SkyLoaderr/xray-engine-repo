@@ -8,6 +8,8 @@
 
 #include "stdafx.h"
 #include "ai_alife.h"
+#include "ai_space.h"
+#include "ai_alife_predicates.h"
 
 void CSE_ALifeSimulator::vfAssignGraphPosition(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract)
 {

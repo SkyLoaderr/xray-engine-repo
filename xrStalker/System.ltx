@@ -3950,7 +3950,7 @@ class						= AI_SPGRP
 $spawn						= on											; option for Level Editor
 class						= AI_SPGRP
 
-[organizations]
+[organizations]																; a list of organization sections
 	agroprom
 	militaries
 	scientists
@@ -3978,12 +3978,14 @@ class						= AI_SPGRP
 
 [discovery_magnet]
 	name					= "Super-puper-hyper-turbo force field"			; discovery public name
-	artefacts				= af_magnet,1,af_magnet,1						; artefacts to make a discovery
-	demand_on_success		= af_magnet,4,8,50,150,af_magnet,6,12,100,300	; artefacts per week (section, count, price)
 	success_probability		= 0.2											; a probability to make a discovery
 	destroy_probability		= 0.2											; a probability to make an excident during investigations
 	destroy_freeze_time		= 14											; discovery freeze time when excident occured in days
 	research_time			= 7												; discovery research time in days
+	demand_on_success		= af_magnet,4,8,50,150,af_magnet,6,12,100,300	; artefacts per week (section, count, price)
+	artefacts				= af_magnet,1,af_magnet,1						; artefacts to make a discovery
+	discovery_dependence	= discovery_magnet								; if this discoveries are invented, then this 
+	class_ids				= CLSID_DETECTOR_SIMPLE							; class identifiers of the objects being invented after this discovery
 
 [alife]
     schedule_min			= 1												; milliseconds
@@ -3993,3 +3995,4 @@ class						= AI_SPGRP
     switch_delay			= 1000											; milliseconds
     time_factor				= 1.0											; 
     preknown_artefacts		= af_magnet										; artefact sections
+    preknown_discoveries	= discovery_magnet								; discovery sections

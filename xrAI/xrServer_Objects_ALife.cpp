@@ -12,6 +12,7 @@
 
 #include "xrServer_Objects_ALife.h"
 #include "game_base.h"
+#include "ai_alife_templates.h"
 
 #ifdef _EDITOR
 	#include "BodyInstance.h"
@@ -370,6 +371,45 @@ void CSE_ALifeObject::FillProp				(LPCSTR pref, PropItemVec& items)
 	PHelper.CreateFloat			(items,	PHelper.PrepareKey(pref, "ALife\\Probability"),			&m_fProbability,	0,100);
 	PHelper.CreateSceneItem		(items, PHelper.PrepareKey(pref,s_name,"ALife\\Group control"),	m_caGroupControl,  sizeof(m_caGroupControl), OBJCLASS_SPAWNPOINT, pSettings->r_string(s_name,"GroupControlSection"));
 }
+#endif
+
+////////////////////////////////////////////////////////////////////////////
+// CSE_ALifeAbstractGroup
+////////////////////////////////////////////////////////////////////////////
+void CSE_ALifeAbstractGroup::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
+{
+	u32							dwDummy;
+	tNetPacket.r_u32			(dwDummy);
+	m_bCreateSpawnPositions		= !!dwDummy;
+	tNetPacket.r_u16			(m_wCount);
+	if (m_wVersion > 19)
+		load_base_vector		(m_tpMembers,tNetPacket);
+};
+
+void CSE_ALifeAbstractGroup::STATE_Write	(NET_Packet	&tNetPacket)
+{
+	tNetPacket.w_u32			(m_bCreateSpawnPositions);
+	tNetPacket.w_u16			(m_wCount);
+	save_base_vector			(m_tpMembers,tNetPacket);
+};
+
+void CSE_ALifeAbstractGroup::UPDATE_Read	(NET_Packet	&tNetPacket)
+{
+	u32							dwDummy;
+	tNetPacket.r_u32			(dwDummy);
+	m_bCreateSpawnPositions		= !!dwDummy;
+};
+
+void CSE_ALifeAbstractGroup::UPDATE_Write	(NET_Packet	&tNetPacket)
+{
+	tNetPacket.w_u32			(m_bCreateSpawnPositions);
+};
+
+#ifdef _EDITOR
+void CSE_ALifeAbstractGroup::FillProp		(LPCSTR pref, PropItemVec& items)
+{
+	PHelper.CreateU16			(items,	PHelper.PrepareKey(pref, "ALife\\Count"),			&m_wCount,			0,0xff);
+};	
 #endif
 
 ////////////////////////////////////////////////////////////////////////////

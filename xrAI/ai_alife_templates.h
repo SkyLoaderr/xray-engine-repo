@@ -9,9 +9,9 @@
 #ifndef XRAY_AI_ALIFE_TEMPLATES
 #define XRAY_AI_ALIFE_TEMPLATES
 
-#include "ai_alife_space.h"
-#include "ai_alife_interfaces.h"
-using namespace ALife;
+//#include "ai_alife_space.h"
+//#include "ai_alife_interfaces.h"
+//using namespace ALife;
 
 template <class T>
 void free_vector(xr_vector<T *> &tpVector)
@@ -160,17 +160,17 @@ void save_map(xr_map<T1,T2 *> &tpMap, M &tNetPacket)
 	xr_map<T1,T2 *>::iterator	I = tpMap.begin();
 	xr_map<T1,T2 *>::iterator	E = tpMap.end();
 	for ( ; I != E; I++)
-		(*I).second->Save		(tMemoryStream);
+		(*I).second->Save		(tNetPacket);
 };
 
 template <class T1, class T2, class M>
 void load_map(xr_map<T1,T2 *> &tpMap, M &tNetPacket, T1 tfGetKey(const T2 *))
 {
 	tpMap.clear					();
-	u32							dwCount	= tFileStream.Rdword();
+	u32							dwCount	= tNetPacket.r_u32();
 	for (int i=0 ; i<(int)dwCount; i++) {
 		T2						*T = xr_new<T2>();
-		T->Load					(tFileStream);
+		T->Load					(tNetPacket);
 		tpMap.insert			(mk_pair(tfGetKey(T),T));
 	}
 };

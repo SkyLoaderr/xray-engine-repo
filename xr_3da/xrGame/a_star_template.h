@@ -15,22 +15,23 @@
 #define MAX_VALUE	10000000.f;
 
 #pragma pack(push,4)
-typedef struct tagSNode {
-	int			ucOpenCloseMask:8;
-	int			iIndex:24;
-	float		f;
-	float		g;
-	float		h;
-	tagSNode	*tpForward;
-	tagSNode	*tpBack;
-	tagSNode	*tpOpenedNext;
-	tagSNode	*tpOpenedPrev;
-} SNode;
+struct SNode;
+struct SNode {
+	int		ucOpenCloseMask:8;
+	int		iIndex:24;
+	float	f;
+	float	g;
+	float	h;
+	SNode	*tpForward;
+	SNode	*tpBack;
+	SNode	*tpOpenedNext;
+	SNode	*tpOpenedPrev;
+};
 
-typedef struct tagSIndexNode {
-	SNode		*tpNode;
-	u32			dwTime;
-} SIndexNode;
+struct SIndexNode {
+	SNode	*tpNode;
+	u32		dwTime;
+};
 #pragma pack(pop)
 
 template<class CTemplateNode, typename SData> class CAStarSearch {
