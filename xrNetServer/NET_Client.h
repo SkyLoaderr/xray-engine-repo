@@ -11,9 +11,10 @@ public:
 	INetQueue();
 	~INetQueue();
 
-	NET_Packet*			Create();
+	NET_Packet*			Create	();
+	NET_Packet*			Create	(const NET_Packet& _other);
 	NET_Packet*			Retreive();
-	void				Release();
+	void				Release	();
 };
 
 class XRNETSERVER_API IPureClient

@@ -41,6 +41,23 @@ NET_Packet*		INetQueue::Create	()
 	cs.Leave		();
 	return	P;
 }
+NET_Packet*		INetQueue::Create	(const NET_Packet& _other)
+{
+	NET_Packet*	P			= 0;
+	cs.Enter		();
+	if (unused.empty())	
+	{
+		ready.push_back		(xr_new<NET_Packet> ());
+		P					= ready.back	();
+	} else {
+		ready.push_back		(unused.back());
+		unused.pop_back		();
+		P					= ready.back	();
+	}
+	Memory.mem_copy	(P,&_other,sizeof(NET_Packet));
+	cs.Leave		();
+	return			P;
+}
 NET_Packet*		INetQueue::Retreive	()
 {
 	NET_Packet*	P			= 0;
@@ -49,7 +66,6 @@ NET_Packet*		INetQueue::Retreive	()
 	cs.Leave		();
 	return	P;
 }
-
 void			INetQueue::Release	()
 {
 	cs.Enter		();
