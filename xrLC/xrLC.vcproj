@@ -596,12 +596,6 @@
 					RelativePath=".\xrLoadSurface.cpp">
 				</File>
 				<File
-					RelativePath="xrMU_Model.cpp">
-				</File>
-				<File
-					RelativePath="xrMU_Model.h">
-				</File>
-				<File
 					RelativePath=".\xrUVpoint.h">
 				</File>
 				<Filter
@@ -652,6 +646,19 @@
 						RelativePath=".\Image.h">
 					</File>
 				</Filter>
+			</Filter>
+			<Filter
+				Name="Model"
+				Filter="">
+				<File
+					RelativePath="xrMU_Model.cpp">
+				</File>
+				<File
+					RelativePath="xrMU_Model.h">
+				</File>
+				<File
+					RelativePath="xrMU_Model_Load.cpp">
+				</File>
 			</Filter>
 		</Filter>
 		<File
