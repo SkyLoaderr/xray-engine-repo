@@ -125,7 +125,6 @@ public:
 	virtual void					set_Object					(IRenderable*		O	);
 	virtual void					add_Visual					(IRender_Visual*	V	);			// add visual leaf	(no culling performed at all)
 	virtual void					add_Geometry				(IRender_Visual*	V	);			// add visual(s)	(all culling performed)
-	virtual void					add_Patch					(ref_shader& S, const Fvector& P1, float s, float a, BOOL bNearer);
 	virtual void					add_Wallmark				(ref_shader& S, const Fvector& P, float s, CDB::TRI* T);
 
 	//
@@ -143,7 +142,6 @@ public:
 	// Models
 	virtual IRender_Visual*			model_CreatePS				(LPCSTR name, PS::SEmitter* E);
 	virtual IRender_Visual*			model_CreatePE				(LPCSTR name);
-	virtual IRender_Visual*			model_CreatePG				(LPCSTR name);
 	virtual IRender_Visual*			model_CreateParticles		(LPCSTR name);
 	virtual IRender_DetailModel*	model_CreateDM				(IReader* F);
 	virtual IRender_Visual*			model_Create				(LPCSTR name);

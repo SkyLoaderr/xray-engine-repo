@@ -820,6 +820,8 @@ void CWeapon::OnDrawFlame	()
 {
 	if (fFlameTime>0)	
 	{
+#pragma todo("Oles to Yura: replace '::Render->add_Patch' with particles")
+		/*
 		// fire flash
 		Fvector P = vLastFP;
 		float k=fFlameTime/FLAME_TIME;
@@ -833,6 +835,8 @@ void CWeapon::OnDrawFlame	()
 			::Render->add_Patch				(hFlames[Random.randI(hFlames.size())],P,S,A,hud_mode);
 			P.add(D);
 		}
+		*/
+
 		fFlameTime -= Device.fTimeDelta;
 	}
 }

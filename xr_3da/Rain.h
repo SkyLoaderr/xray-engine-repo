@@ -6,9 +6,11 @@
 #define RainH
 #pragma once
 
-//#include "..\render.h"
+//refs
+class ENGINE_API IRender_DetailModel;
 
-class CEffect_Rain
+//
+class ENGINE_API CEffect_Rain
 {
 private:
 	struct	Item

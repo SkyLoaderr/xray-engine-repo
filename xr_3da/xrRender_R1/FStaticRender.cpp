@@ -68,11 +68,6 @@ IRender_Visual*			CRender::model_CreatePE			(LPCSTR name)
 	PS::CPEDef*	SE		= PSLibrary.FindPED	(name);		VERIFY(SE);
 	return				Models->CreatePE	(SE);
 }
-IRender_Visual*			CRender::model_CreatePG			(LPCSTR name)	
-{ 
-	PS::CPGDef*	SG		= PSLibrary.FindPGD	(name);		VERIFY(SG);
-	return				Models->CreatePG	(SG);
-}
 
 IRender_Visual*			CRender::model_CreateParticles	(LPCSTR name)	
 { 
@@ -84,7 +79,6 @@ IRender_Visual*			CRender::model_CreateParticles	(LPCSTR name)
 	}
 }
 
-int						CRender::getVisualsCount		()					{ return Visuals.size();								}
 IRender_Portal*			CRender::getPortal				(int id)			{ VERIFY(id<int(Portals.size()));	return Portals[id];	}
 IRender_Sector*			CRender::getSector				(int id)			{ VERIFY(id<int(Sectors.size()));	return Sectors[id];	}
 IRender_Sector*			CRender::getSectorActive		()					{ return pLastSector;									}
@@ -105,16 +99,6 @@ BOOL					CRender::occ_visible			(Fbox& P)			{ return HOM.visible(P);							}
 
 void					CRender::add_Visual				(IRender_Visual*		V )	{ add_leafs_Dynamic(V);								}
 void					CRender::add_Geometry			(IRender_Visual*		V )	{ add_Static(V,View->getMask());					}
-void					CRender::add_Patch				(ref_shader& S, const Fvector& P1, float s, float a, BOOL bNearer)
-{
-	vecPatches.push_back(_PatchItem());
-	_PatchItem& P = vecPatches.back();
-	P.S		= S->E[0]._get();
-	P.P		= P1;
-	P.size	= s;
-	P.angle = a;
-	P.nearer= bNearer;
-}
 void		CRender::add_Wallmark		(ref_shader& S, const Fvector& P, float s, CDB::TRI* T)
 {
 	Wallmarks->AddWallmark	(T,P,&*S,s);

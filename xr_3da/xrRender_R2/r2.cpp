@@ -64,12 +64,6 @@ IRender_Visual*			CRender::model_CreatePE			(LPCSTR name)
 	PS::CPEDef*	SE			= PSLibrary.FindPED	(name);		VERIFY(SE);
 	return					Models.CreatePE	(SE);
 }
-IRender_Visual*			CRender::model_CreatePG			(LPCSTR name)	
-{ 
-	PS::CPGDef*	SG			= PSLibrary.FindPGD	(name);		VERIFY(SG);
-	return					Models.CreatePG	(SG);
-}
-
 IRender_Visual*			CRender::model_CreateParticles	(LPCSTR name)	
 { 
 	PS::CPEDef*	SE			= PSLibrary.FindPED	(name);
@@ -79,7 +73,6 @@ IRender_Visual*			CRender::model_CreateParticles	(LPCSTR name)
 		return				Models.CreatePG	(SG);
 	}
 }
-int						CRender::getVisualsCount		()					{ return Visuals.size();								}
 IRender_Portal*			CRender::getPortal				(int id)			{ VERIFY(id<int(Portals.size()));	return Portals[id];	}
 IRender_Sector*			CRender::getSector				(int id)			{ VERIFY(id<int(Sectors.size()));	return Sectors[id];	}
 IRender_Sector*			CRender::getSectorActive		()					{ return pLastSector;									}
@@ -100,31 +93,27 @@ BOOL					CRender::occ_visible			(Fbox& P)			{ return HOM.visible(P);							}
 
 void					CRender::add_Visual				(IRender_Visual*		V )	{ add_leafs_Dynamic(V);								}
 void					CRender::add_Geometry			(IRender_Visual*		V )	{ add_Static(V,View->getMask());					}
-void					CRender::add_Patch				(ref_shader& S, const Fvector& P1, float s, float a, BOOL bNearer)
-{
-	//Msg		("! NotImplemented: CRender::add_Patch");
-}
-void		CRender::add_Wallmark		(ref_shader& S, const Fvector& P, float s, CDB::TRI* T)
+void					CRender::add_Wallmark		(ref_shader& S, const Fvector& P, float s, CDB::TRI* T)
 {
 	//Msg		("! NotImplemented: CRender::add_Wallmark");
 }
-void		CRender::set_Object			(IRenderable*	O )	
+void					CRender::set_Object			(IRenderable*	O )	
 { 
 	val_pObject				= O;
 }
-void		CRender::rmNear				()
+void					CRender::rmNear				()
 {
 	IRender_Target* T	=	getTarget	();
 	D3DVIEWPORT9 VP		=	{0,0,T->get_width(),T->get_height(),0,0.02f };
 	CHK_DX				(HW.pDevice->SetViewport(&VP));
 }
-void		CRender::rmFar				()
+void					CRender::rmFar				()
 {
 	IRender_Target* T	=	getTarget	();
 	D3DVIEWPORT9 VP		=	{0,0,T->get_width(),T->get_height(),0.99999f,1.f };
 	CHK_DX				(HW.pDevice->SetViewport(&VP));
 }
-void		CRender::rmNormal			()
+void					CRender::rmNormal			()
 {
 	IRender_Target* T	=	getTarget	();
 	D3DVIEWPORT9 VP		= {0,0,T->get_width(),T->get_height(),0,1.f };

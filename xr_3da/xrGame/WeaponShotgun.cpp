@@ -172,6 +172,8 @@ void CWeaponShotgun::OnDrawFlame	()
 	else if (fFlameTime>0)	
 	{
 		// fire flash
+#pragma todo("Oles to Yura: replace '::Render->add_Patch' with particles")
+		/*
 		Fvector P = vLastFP;
 		float k=fFlameTime/FLAME_TIME;
 		Fvector D; D.mul(vLastFD,::Random.randF(fFlameLength*k)/float(iFlameDiv));
@@ -184,12 +186,15 @@ void CWeaponShotgun::OnDrawFlame	()
 			::Render->add_Patch				(hFlames[Random.randI(hFlames.size())],P,S,A,hud_mode);
 			P.add(D);
 		}
+		*/
 
 		std::swap(m_pHUD->vFirePoint, m_pHUD->vFirePoint2);
 		std::swap(vFirePoint, vFirePoint2);
 		UpdateFP();
 
 		// fire flash 2
+#pragma todo("Oles to Yura: replace '::Render->add_Patch' with particles")
+		/*
 		P = vLastFP;
 		k=fFlameTime/FLAME_TIME;
 		D; D.mul(vLastFD,::Random.randF(fFlameLength*k)/float(iFlameDiv));
@@ -203,6 +208,7 @@ void CWeaponShotgun::OnDrawFlame	()
 			P.add(D);
 		}
 		fFlameTime -= Device.fTimeDelta;
+		*/
 	}
 }
 

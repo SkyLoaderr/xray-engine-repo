@@ -889,9 +889,6 @@
 						RelativePath="ParticleGroup.h">
 					</File>
 					<File
-						RelativePath="ParticleGroup_Engine.cpp">
-					</File>
-					<File
 						RelativePath=".\psvisual.cpp">
 						<FileConfiguration
 							Name="Release|Win32">

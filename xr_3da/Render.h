@@ -102,7 +102,6 @@ public:
 	virtual void					level_Unload			()								= 0;
 
 	// Information
-	virtual int						getVisualsCount			()								= 0;
 	virtual IRender_Portal*			getPortal				(int id)						= 0;
 	virtual IRender_Sector*			getSector				(int id)						= 0;
 	virtual IRender_Sector*			getSectorActive			()								= 0;
@@ -124,7 +123,6 @@ public:
 	virtual void					set_Object				(IRenderable*		O	)		= 0;
 	virtual void					add_Visual				(IRender_Visual*	V	)		= 0;	// add visual leaf	(no culling performed at all)
 	virtual void					add_Geometry			(IRender_Visual*	V	)		= 0;	// add visual(s)	(all culling performed)
-	virtual void					add_Patch				(ref_shader& S, const Fvector& P, float s, float a, BOOL bNearer)	= 0;
 	virtual void					add_Wallmark			(ref_shader& S, const Fvector& P, float s, CDB::TRI* T)				= 0;
 
 	virtual IBlender*				blender_create			(CLASS_ID cls)								= 0;
@@ -140,11 +138,10 @@ public:
 	// Models
 	virtual IRender_Visual*			model_CreatePS			(LPCSTR name, PS::SEmitter* E)				= 0;
 	virtual IRender_Visual*			model_CreatePE			(LPCSTR name)								= 0;
-	virtual IRender_Visual*			model_CreatePG			(LPCSTR name)								= 0;
 	virtual IRender_Visual*			model_CreateParticles	(LPCSTR name)								= 0;
 	virtual IRender_DetailModel*	model_CreateDM			(IReader*	F)								= 0;
 	virtual IRender_Visual*			model_Create			(LPCSTR name)								= 0;
-	virtual IRender_Visual*			model_Create			(LPCSTR name, IReader* data)				= 0;
+	virtual IRender_Visual*			model_Create			(LPCSTR name, IReader*	data)				= 0;
 	virtual IRender_Visual*			model_Duplicate			(IRender_Visual*	V)						= 0;
 	virtual void					model_Delete			(IRender_Visual* &	V, BOOL bDiscard=FALSE)	= 0;
 	virtual void 					model_Delete			(IRender_DetailModel* & F)					= 0;
