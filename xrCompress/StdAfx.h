@@ -41,9 +41,13 @@ using namespace std;
 #define NO_XR_3DBUFFER
 #define VERIFY(a)	assert(a)
 #define R_ASSERT(a)	assert(a)
-#define _FREE(a) { if (a) free(a); }
 #define Msg printf
 #define NODEFAULT
+#define xr_malloc	malloc
+#define xr_realloc	realloc
+#define xr_free		free
+#define xr_strdup	strdup
+#define _FREE(a) { if (a) xr_free(a); }
 #include "vector.h"
 
 // TODO: reference additional headers your program requires here
