@@ -6,6 +6,9 @@
 #include "level.h"
 #include "xrMessages.h"
 
+u64		m_qwStartGameTime		= 12*60*60*1000;
+float	m_fTimeFactor			= pSettings->r_float("alife","time_factor");
+
 game_PlayerState::game_PlayerState()
 {
 	name[0]				=	0;
@@ -122,8 +125,8 @@ game_GameState::game_GameState()
 
 //	m_qwStartProcessorTime		= CPU::GetCycleCount();
 	m_qwStartProcessorTime		= Level().timeServer_Async();
-	m_qwStartGameTime			= 12*60*60*1000;
-	m_fTimeFactor				= pSettings->r_float("alife","time_factor");
+//	m_qwStartGameTime			= 12*60*60*1000;
+//	m_fTimeFactor				= pSettings->r_float("alife","time_factor");
 	//-------------------------------------------------------
 	m_qwEStartProcessorTime		= m_qwStartProcessorTime;	
 	m_qwEStartGameTime			= m_qwStartGameTime		;

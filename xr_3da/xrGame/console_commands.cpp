@@ -26,10 +26,14 @@
 #include "ai_space.h"
 #include "ai/monsters/BaseMonster/base_monster.h"
 #include "game_sv_deathmatch.h"
+#include "date_time.h"
 
 extern void show_smart_cast_stats		();
 extern void clear_smart_cast_stats		();
 extern void release_smart_cast_stats	();
+
+extern	u64		m_qwStartGameTime;
+extern	float	m_fTimeFactor;
 
 ENGINE_API
 extern	float	psHUD_FOV;
@@ -592,7 +596,7 @@ public:
 			tpGame->alife().set_switch_factor(id1);
 		}
 		else
-			Log("!Not a single player game!");
+			Log		("!Not a single player game!");
 	}
 };
 
@@ -1573,6 +1577,26 @@ public:
 	}
 };
 
+struct CCC_StartTimeSingle : public IConsole_Command {
+	CCC_StartTimeSingle(LPCSTR N) : IConsole_Command(N) {};
+	virtual void	Execute	(LPCSTR args)
+	{
+		u32 year = 1, month = 1, day = 1, hours = 0, mins = 0, secs = 0, milisecs = 0;
+		sscanf				(args,"%d.%d.%d %d:%d:%d.%d",&year,&month,&day,&hours,&mins,&secs,&milisecs);
+		year				= _max(year,1);
+		month				= _max(month,1);
+		day					= _max(day,1);
+		m_qwStartGameTime	= generate_time	(year,month,day,hours,mins,secs,milisecs);
+	}
+
+	virtual void	Status	(TStatus& S)
+	{
+		u32 year = 1, month = 1, day = 1, hours = 0, mins = 0, secs = 0, milisecs = 0;
+		split_time	(m_qwStartGameTime, year, month, day, hours, mins, secs, milisecs);
+		sprintf		(S,"%d.%d.%d %d:%d:%d.%d",year,month,day,hours,mins,secs,milisecs);
+	}
+};
+
 void CCC_RegisterCommands()
 {
 	// game
@@ -1752,9 +1776,11 @@ void CCC_RegisterCommands()
 	CMD1(CCC_Vote_Yes,		"cl_voteyes"				);
 	CMD1(CCC_Vote_No,		"cl_voteno"				);
 
-	CMD4(CCC_SvControlHit,		"net_sv_control_hit",	&net_sv_control_hit,	0, 1)	;
-	CMD4(CCC_SvControlHit,		"dbg_show_ani_info",	&g_ShowAnimationInfo,	0, 1)	;
-	CMD1(CCC_MainMenu,			"main_menu"				);
-	
+	CMD4(CCC_SvControlHit,	"net_sv_control_hit",	&net_sv_control_hit,	0, 1)	;
+	CMD4(CCC_SvControlHit,	"dbg_show_ani_info",	&g_ShowAnimationInfo,	0, 1)	;
+	CMD1(CCC_MainMenu,		"main_menu"				);
+
+	CMD1(CCC_StartTimeSingle,"start_time_single")	;
+	CMD3(CCC_Float,			"time_factor_single",	&m_fTimeFactor,			0.f)	;
 }
 
