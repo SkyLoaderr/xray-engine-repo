@@ -26,25 +26,7 @@ class ENGINE_API CObject;
 class	ENGINE_API			CObjectSpace
 {
 private:
-	friend class			CCFModel;
-public:
-	struct SCollisionData{
-		// data about player movement
-		Fvector				vVelocity;
-		Fvector				vSourcePoint;
-		
-		// for error handling  
-		Fvector				vLastSafePosition;
-		BOOL				bStuck; 
-		
-		// data for collision response 
-		BOOL				bFoundCollision;
-		float				fNearestDistance;					// nearest distance to hit
-		Fvector				vNearestIntersectionPoint;			// on sphere
-		Fvector				vNearestPolygonIntersectionPoint;	// on polygon
-		
-		Fvector				vRadius;
-	};
+	friend class					CCFModel;
 private:
 	// Debug
 	Shader*							sh_debug;
@@ -73,13 +55,6 @@ private:
 	IC int 							TransZ			( float d ) { return TransA(d+Static_Shift.z); }
 	IC void							InvTrans		( Fvector2& v, int x, int z)	{v.set(CL_SLOT_SIZE*(x+.5f)-Static_Shift.x,CL_SLOT_SIZE*(z+.5f)-Static_Shift.z);}
 	IC void							InvTrans		( Fvector& v, int x, int z)		{v.set(CL_SLOT_SIZE*(x+.5f)-Static_Shift.x,0.f,CL_SLOT_SIZE*(z+.5f)-Static_Shift.z);}
-
-	// safe translate auxilary routines
-	xr_vector<Collide::tri>			clContactedT;
-	xr_vector<Collide::elipsoid>		clContactedE;
-	void							clCheckCollision(SCollisionData& cl);
-	void							clResolveStuck	(SCollisionData& cl, Fvector& position);
-	Fvector							CollideWithWorld(SCollisionData& cl, Fvector position, Fvector velocity,WORD cnt=0);
 public:
 	typedef svector<CObject*,256>	NL_TYPE;
 	typedef CObject**				NL_IT;
@@ -113,7 +88,6 @@ public:
 	// General collision query
 	void							BoxQuery			( const Fbox& B, const Fmatrix& M, u32 flags=clGET_TRIS|clGET_BOXES|clQUERY_STATIC|clQUERY_DYNAMIC);
 
-	void							cl_Move				( const CCFModel *object, const Fmatrix& T, const Fvector& velocity, const Fbox& bb, const Fbox& bb_foots, Fvector& final_pos, Fvector& final_vel, float sq_vel, BOOL bDynamic=false);
 	BOOL							EllipsoidCollide	( CCFModel *object, const Fmatrix& T, const Fvector& center_pos, const Fbox& bb);
 
 	int								GetNearest			( CCFModel *obj, float range );

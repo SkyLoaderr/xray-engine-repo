@@ -994,7 +994,7 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 			if (!pCreator->ObjectSpace.EllipsoidCollide(cfModel,svTransform,start_pos,stand_box))
 			{
 				mstate_real &= ~mcCrouch;
-				ph_Movement.ActivateBox(0);
+				ph_Movement.ActivateBox	(0);
 				//ph_Movement.ActivateBox(0);
 			}
 		}

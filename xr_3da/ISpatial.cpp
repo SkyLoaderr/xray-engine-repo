@@ -46,12 +46,9 @@ void	ISpatial::spatial_move	()
 	//*** check if we are supposed to correct it's spatial location
 	VERIFY		(spatial_node_ptr);
 	if			(spatial_inside())	return;
-	DB->remove	(this);
-	DB->insert	(this);
+	//DB->remove(this);
+	//DB->insert(this);
 }
-
-//main(){+'\n'["Hello world"];}
-//main(){1[""];}
 
 //////////////////////////////////////////////////////////////////////////
 void			ISpatial_NODE::_init			(ISpatial_NODE* _parent)				
