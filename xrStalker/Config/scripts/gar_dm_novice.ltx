@@ -1,0 +1,47 @@
+[logic]
+active = walker1
+
+[death]
+conditions = %+gar_dm_novice_dead%
+
+[combat]
+on_info = remark@after_fight %=gar_bandits_fight%
+
+[walker1]
+path_walk = novice_walk
+path_look = novice_look
+on_actor_dist_le_nvis = 12 | remark1
+;on_info = {=unfriendly_or_has_enemy} remark@after_fight %=gar_bandits_fight%
+on_info2 = {+gar_dm_bandit1_dead +gar_dm_bandit2_dead +gar_dm_bandit3_dead} remark@after_fight
+
+[remark1]
+anim = hello
+snd = help
+no_rotate = true
+no_wpn = true
+on_signal = sound_end | remark2 %+gar_dm_novice_asked_for_help%
+;on_info = {=unfriendly_or_has_enemy} remark@after_fight %=gar_bandits_fight%
+on_info2 = {+gar_dm_bandit1_dead +gar_dm_bandit2_dead +gar_dm_bandit3_dead} remark@after_fight
+
+[remark2]
+no_move = true
+no_wpn = true
+on_actor_dist_le_nvis = 7 | remark3
+;on_info = {=unfriendly_or_has_enemy} remark@after_fight %=gar_bandits_fight%
+on_info2 = {+gar_dm_bandit1_dead +gar_dm_bandit2_dead +gar_dm_bandit3_dead} remark@after_fight
+
+[remark3]
+no_move = false
+no_wpn = true
+snd = help
+on_signal = move_end | nil %=gar_bandits_fight%
+;on_info = {=unfriendly_or_has_enemy} remark@after_fight %=gar_bandits_fight%
+on_info2 = {+gar_dm_bandit1_dead +gar_dm_bandit2_dead +gar_dm_bandit3_dead} remark@after_fight
+
+[remark@after_fight]
+no_move = false
+no_wpn = true
+snd = weather
+on_signal = move_end | nil
+arrival_timeout = 20000
+on_info = {+gar_dm_bandit1_dead +gar_dm_bandit2_dead +gar_dm_bandit3_dead -gar_dm_novice_dead} %=actor_friend%
