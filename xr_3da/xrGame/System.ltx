@@ -56,19 +56,19 @@ slot_name_7		= Outfit
 
 [lights_hanging_lamp]
 GroupControlSection	= spawn_group
-$spawn 				= lights\hanging lamp
+$spawn 				= physics\hanging lamp
 class				= O_HLAMP
 cform				= skeleton
 
 [physic_object]
 GroupControlSection	= spawn_group
-$spawn 				= physic\object
+$spawn 				= physics\object
 class				= O_PHYSIC
 
 [device_torch]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn					= lights\tourch
+$spawn					= devices\tourch
 class					= D_TORCH
 ;cform                   = rigid
 ;visual                  = lights\torch.ogf
@@ -83,7 +83,7 @@ position			= .35,.25,0
 
 [af_magnet]
 GroupControlSection	= spawn_group
-$spawn					= artifact\magnet
+$spawn					= artifacts\magnet
 class				= ARTEFACT
 cform				= skeleton
 $prefetch 			= 64
@@ -331,7 +331,7 @@ visual              = weapon\grenade\wpn_rgd_5_hud.ogf
 
 [zone_mosquito_bald]
 GroupControlSection	= spawn_group_zone
-$spawn 			= zone\Zone Mosquito Bald
+$spawn 			= zone\Mosquito Bald
 $prefetch 		= 16
 class			= Z_MBALD
 hit_impulse_scale	= .1
@@ -344,7 +344,7 @@ BirthProbability = 0.9
 
 [zone_radioactive]
 GroupControlSection	= spawn_group_zone
-$spawn 			= zone\Radioactive Zone
+$spawn 			= zone\Radioactive
 $prefetch 		= 16
 class			= Z_RADIO
 hit_impulse_scale	= .001
@@ -357,7 +357,7 @@ BirthProbability = 0.9
 
 [zone_acid_fog]
 GroupControlSection	= spawn_group_zone
-$spawn 			= zone\Zone Acid Fog
+$spawn 			= zone\Acid Fog
 $prefetch 		= 16
 class			= Z_ACIDF
 hit_impulse_scale	= .1
@@ -370,7 +370,7 @@ BirthProbability = 0.9
 
 [zone_witches_galantine]
 GroupControlSection	= spawn_group_zone
-$spawn 			= zone\Zone Witches Galantine
+$spawn 			= zone\Witches Galantine
 $prefetch 		= 16
 class			= Z_GALANT
 hit_impulse_scale	= .1
@@ -383,7 +383,7 @@ BirthProbability = 0.9
 
 [zone_burning_fuzz]
 GroupControlSection	= spawn_group_zone
-$spawn 			= zone\Zone Burning Fuzz
+$spawn 			= zone\Burning Fuzz
 $prefetch 		= 16
 class			= Z_BFUZZ
 hit_impulse_scale	= .1
@@ -396,7 +396,7 @@ BirthProbability = 0.9
 
 [zone_rusty_hair]
 GroupControlSection	= spawn_group_zone
-$spawn 			= zone\Zone Rusty Hair
+$spawn 			= zone\Rusty Hair
 $prefetch 		= 16
 class			= Z_RUSTYH
 hit_impulse_scale	= .1
@@ -409,7 +409,7 @@ BirthProbability = 0.9
 
 [zone_dead]
 GroupControlSection	= spawn_group_zone
-$spawn 			= zone\Dead Zone
+$spawn 			= zone\Dead
 $prefetch 		= 16
 class			= Z_DEAD
 hit_impulse_scale	= .1
@@ -422,7 +422,7 @@ BirthProbability = 0.9
 
 [zone_mosquito_bald_weapon]
 GroupControlSection	= spawn_group_zone
-$spawn 			= zone\Zone Mosquito Bald Weapon
+$spawn 			= zone\Mosquito Bald Weapon
 $prefetch 		= 16
 class			= Z_MBALD
 hit_impulse_scale	= .1
@@ -435,7 +435,7 @@ BirthProbability = 0.9
 
 [zone_mincer]
 GroupControlSection	= spawn_group_zone
-$spawn 			= zone\Zone Mincer
+$spawn 			= zone\Mincer
 $prefetch 		= 16
 class			= Z_MINCER
 sound			= zone_mosquito_bald.wav
