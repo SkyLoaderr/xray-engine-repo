@@ -60,6 +60,7 @@ bool CTrade::CanTrade()
 		for (u32 i=0, n = Level().ObjectSpace.q_nearest.size(); i<n; i++) {
 			// Может ли объект торговать
 			pEntity = dynamic_cast<CEntity *>(Level().ObjectSpace.q_nearest[i]);
+			if (pEntity && !pEntity->g_Alive()) return false;
 			if (SetPartner(pEntity)) break;
 		}
 	} 

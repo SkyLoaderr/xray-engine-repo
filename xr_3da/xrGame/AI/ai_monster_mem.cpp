@@ -101,6 +101,8 @@ void CSoundMemory::UpdateHearing(TTime dt)
 
 void CVisionMemory::Init(TTime mem_time) 
 {
+	Deinit();
+
 	MemoryTimeDefault	= MemoryTime = mem_time;
 	Selected.obj		= 0;
 	
@@ -109,8 +111,10 @@ void CVisionMemory::Init(TTime mem_time)
 }
 void CVisionMemory::Deinit() 
 {
-	Objects.clear(); 
-	Enemies.clear();
+	Objects.clear	(); 
+	Enemies.clear	();
+	Saved.obj		= 0;
+	Selected.obj	= 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

@@ -82,7 +82,7 @@ public:
 	void GetMostDangerousSound(SoundElem &s, bool &bDangerous);	// возвращает самый опасный звук
 
 protected:
-	void Init(TTime mem_time) {MemoryTime = mem_time;}
+	void Init(TTime mem_time) {Deinit(); MemoryTime = mem_time; }
 	void Deinit() {Sounds.clear();}
 
 	void UpdateHearing(TTime dt);

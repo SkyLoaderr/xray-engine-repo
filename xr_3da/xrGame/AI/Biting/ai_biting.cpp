@@ -39,6 +39,11 @@ CAI_Biting::~CAI_Biting()
 	xr_delete(stateExploreDNE);
 	xr_delete(stateExploreDE);
 	xr_delete(stateExploreNDE);
+
+	DELETE_SOUNDS			(SND_HIT_COUNT,	m_tpaSoundHit);
+	DELETE_SOUNDS			(SND_DIE_COUNT,	m_tpaSoundDie);
+	DELETE_SOUNDS			(SND_ATTACK_COUNT,	m_tpaSoundDie);
+	DELETE_SOUNDS			(SND_VOICE_COUNT, m_tpaSoundVoice);
 }
 
 void CAI_Biting::Init()
@@ -116,6 +121,15 @@ void CAI_Biting::Init()
 
 	m_fEyeShiftYaw					= PI_DIV_6;
 	ZeroMemory						(&m_tAttack,sizeof(m_tAttack));
+
+	CurrentState					= stateRest;
+	CurrentState->Reset				();
+	
+	AI_Path.TravelPath.clear		();
+	AI_Path.Nodes.clear				();
+	AI_Path.TravelStart				= 0;
+	AI_Path.DestNode				= u32(-1);
+
 }
 
 void CAI_Biting::Die()
@@ -131,13 +145,6 @@ void CAI_Biting::Die()
 	SelectAnimation(XFORM().k,dir,AI_Path.fSpeed);
 
 	::Sound->play_at_pos(m_tpaSoundDie[::Random.randI(SND_DIE_COUNT)],this,eye_matrix.c);
-	
-	DELETE_SOUNDS			(SND_HIT_COUNT,	m_tpaSoundHit);
-	DELETE_SOUNDS			(SND_DIE_COUNT,	m_tpaSoundDie);
-	DELETE_SOUNDS			(SND_ATTACK_COUNT,	m_tpaSoundDie);
-	DELETE_SOUNDS			(SND_VOICE_COUNT, m_tpaSoundVoice);
-
-
 }
 
 void CAI_Biting::Load(LPCSTR section)

@@ -72,6 +72,14 @@ void CAI_Chimera::Init()
 
 	m_dwPathBuiltLastTime			= 0;
 	ZeroMemory						(&m_tAttack,sizeof(m_tAttack));
+
+	CurrentState					= stateRest;
+	CurrentState->Reset				();
+
+	AI_Path.TravelPath.clear		();
+	AI_Path.Nodes.clear				();
+	AI_Path.TravelStart				= 0;
+	AI_Path.DestNode				= u32(-1);
 }
 
 void CAI_Chimera::Die()
