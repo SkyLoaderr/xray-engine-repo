@@ -8,10 +8,10 @@ function main()
 	printf("started")
 
 	-- загрузка всех кого нужно обсудить и брание их под контроль
-	escape_bobik.init_bobik	()
-    scr_trader.init			()
-	escape_dogs.init		()
-	escape1.init				()
+--	escape_bobik.init_bobik	()
+	scr_trader.init			()
+--	escape_dogs.init		()
+--	escape1.init				()
 
 --   	table.insert(work, "escape_bobik"  )
 	table.insert(work, "scr_trader"    )
