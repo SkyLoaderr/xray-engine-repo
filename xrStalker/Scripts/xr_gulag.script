@@ -88,7 +88,7 @@ function fract:calculate() -- просчет лагеря
 end
 function fract:print()
 	printf("---------------------- %s ----------------------", self.name)
-	printf("Resurses:")
+	printf("Resources:")
 	for k,v in self.Object do
 		printf("id: %d name: %s", k, v:name())
 	end
@@ -108,11 +108,62 @@ function fract:loadJob(name) -- загружает список заданий
 	if name == "blockpost" then
 		local t = { name = "guard",
 			object = nil,
+			prior = 9,
+			state = { 0, 1 }, -- в каких состояниях это задание существует
+			path_main = "blockpost_guard_left",
+			path_hideout = "blockpost_guard_left" }
+		table.insert(self.Job, t)			
+		t = { name = "guard",
+			object = nil,
+			prior = 9,
+			state = { 0, 1 }, -- в каких состояниях это задание существует
+			path_main = "blockpost_guard_right",
+			path_hideout = "blockpost_guard_right" }
+		table.insert(self.Job, t)			
+		t = { name = "guard",
+			object = nil,
+			prior = 10,
+			state = { 0, 1 }, -- в каких состояниях это задание существует
+			path_main = "blockpost_guard_center",
+			path_hideout = "blockpost_guard_center" }
+		table.insert(self.Job, t)			
+		t = { name = "sleeper",
+			object = nil,
 			prior = 1,
 			state = { 0, 1 }, -- в каких состояниях это задание существует
-			path_main = "way_blockpost",
-			path_hideout = "way_blockpost" }
+			path_main = "blockpost_sleep_1"}
 		table.insert(self.Job, t)			
+		t = { name = "sleeper",
+			object = nil,
+			prior = 1,
+			state = { 0, 1 }, -- в каких состояниях это задание существует
+			path_main = "blockpost_sleep_2"}
+		table.insert(self.Job, t)			
+		t = { name = "sleeper",
+			object = nil,
+			prior = 1,
+			state = { 0, 1 }, -- в каких состояниях это задание существует
+			path_main = "blockpost_sleep_3"}
+		table.insert(self.Job, t)			
+		t = { name = "sleeper",
+			object = nil,
+			prior = 1,
+			state = { 0, 1 }, -- в каких состояниях это задание существует
+			path_main = "blockpost_sleep_4"}
+		table.insert(self.Job, t)			
+		t = { name = "sleeper",
+			object = nil,
+			prior = 1,
+			state = { 0, 1 }, -- в каких состояниях это задание существует
+			path_main = "blockpost_sleep_5"}
+		table.insert(self.Job, t)			
+		t = { name = "sleeper",
+			object = nil,
+			prior = 1,
+			state = { 0, 1 }, -- в каких состояниях это задание существует
+			path_main = "blockpost_sleep_6"}
+		table.insert(self.Job, t)			
+
 	end
 end
 function fract:setJob(npc) -- выбирает для данного npc наиболее приоритетное задание
@@ -148,9 +199,10 @@ function fract:setJob(npc) -- выбирает для данного npc наиболее приоритетное зад
 		t.object = npc:id()
 		--устанавливаем данные для текущей работы	
 		if t.name == "guard" then
-			xr_motivator.storage[npc:id()].guard.path_main = t.path_main
-			xr_motivator.storage[npc:id()].guard.path_hideout = t.path_hideout
-			xr_motivator.storage[npc:id()].guard.enabled = true
+		        xr_guard.set_guard(npc, true, t.path_main, t.path_hideout)			
+		end
+		if t.name == "sleeper" then
+		        xr_sleeper.set_sleeper(npc, true, t.path_main)			
 		end
 	end
 end
