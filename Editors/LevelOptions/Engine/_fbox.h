@@ -56,7 +56,7 @@ public:
 		m.transform_tiny	(min,B.min);
 		max.set				(min);
 		
-		// Take the transformed min & axes and find new extents
+		// Take the transformed min & axes and find _new_ extents
 		// Using CPU code in the right place is faster...
 		if(negative(vx.x))	min.x += vx.x; else max.x += vx.x;
 		if(negative(vx.y))	min.y += vx.y; else max.y += vx.y;

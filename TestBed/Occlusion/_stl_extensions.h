@@ -12,18 +12,6 @@ struct pred_stri	: public std::binary_function<char*, char*, bool>
 	{	return strcmp(x,y)<0;	}
 };
 
-template <class T>
-class destructor
-{
-	T* ptr;
-public:
-	destructor(T* p)	{ ptr=p;		}
-	~destructor()		{ delete ptr;	}
-	IC T& operator() ()
-	{	return *ptr; }
-};
-
-
 // STL extensions
 #define DEF_VECTOR(N,T)				typedef std::vector<T> N;	typedef N::iterator N##_it; typedef N::reference N##_ref
 #define DEF_LIST(N,T)				typedef std::list<T> N;		typedef N::iterator N##_it; typedef N::reference N##_ref
