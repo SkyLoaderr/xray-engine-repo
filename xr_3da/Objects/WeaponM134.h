@@ -46,8 +46,6 @@ private:
 	int				iHUDRotBone;
 	int				iFireBone;
 
-	Fvector			vFirePoint;
-
 	DWORD			dwFP_Frame;
 	DWORD			dwXF_Frame;
 

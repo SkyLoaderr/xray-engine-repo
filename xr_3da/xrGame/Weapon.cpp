@@ -30,6 +30,10 @@ CWeapon::CWeapon(LPCSTR name)
 	pstrWallmark= 0;
 	hUIIcon		= 0;
 	hWallmark	= 0;
+
+	vLastFP.set		(0,0,0);
+	vLastFD.set		(0,0,0);
+	vLastSP.set		(0,0,0);
 }
 
 CWeapon::~CWeapon()
@@ -177,6 +181,9 @@ void CWeapon::Load		(CInifile* ini, const char* section)
 	light_lifetime		= ini->ReadFLOAT	(section,"light_time"		);
 	light_time			= -1.f;
 	iHitPower			= ini->ReadINT		(section,"hit_power"		);
+
+	vFirePoint			= ini->ReadVECTOR	(section,"fire_point"		);
+	vShellPoint			= ini->ReadVECTOR	(section,"shell_point"		);
 
 	bVisible			= FALSE;
 }

@@ -55,6 +55,7 @@ void CWeaponHUD::Load(CInifile* ini, const char* section)
 	iFireBone					= PKinematics(Visual())->LL_BoneID	(fire_bone);
 	if (iFireBone<0)			Device.Fatal("There is no 'fire_bone' for weapon '%s'.",section);
 	vFirePoint					= ini->ReadVECTOR					(section,"fire_point");
+	vShellPoint					= ini->ReadVECTOR					(section,"shell_point");
 
 	// play default animation
 	PKinematics					(pVisual)->PlayCycle("idle");

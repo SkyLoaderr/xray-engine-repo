@@ -111,8 +111,6 @@ void CWeaponM134::Load(CInifile* ini, const char* section)
 	LPCSTR fire_bone= ini->ReadSTRING	(section,"fire_bone");
 	iFireBone		= PKinematics(Visual())->LL_BoneID(fire_bone);
 	
-	vFirePoint		= ini->ReadVECTOR(section,"fire_point");
-	
 	bRotAxisHUD		= ini->ReadTOKEN(section,"rot_axis_hud",axis_token);
 	bRotAxisWpn		= ini->ReadTOKEN(section,"rot_axis_wpn",axis_token);
 	
@@ -224,8 +222,11 @@ void CWeaponM134::UpdateFP	(BOOL bHUDView)
 		Fmatrix& fire_mat		= V->LL_GetTransform(bHUDView?m_pHUD->iFireBone:iFireBone);
 		Fmatrix& parent			= bHUDView?m_pHUD->Transform():svTransform;
 		Fvector& fp				= bHUDView?m_pHUD->vFirePoint:vFirePoint;
+		Fvector& sp				= bHUDView?m_pHUD->vShellPoint:vShellPoint;
 		fire_mat.transform_tiny	(vLastFP,fp);
 		parent.transform_tiny	(vLastFP);
+		fire_mat.transform_tiny	(vLastSP,sp);
+		parent.transform_tiny	(vLastSP);
 		vLastFD.set				(0.f,0.f,1.f);
 		parent.transform_dir	(vLastFD);
 	}

@@ -24,6 +24,9 @@ protected:
 	Fmatrix			m_Offset;
 	
 	void			signal_HideComplete		();
+
+	Fvector			vFirePoint;
+	Fvector			vShellPoint;
 protected:
 	CEntity*		m_pParent;
 	CWeaponList*	m_pContainer;
@@ -43,7 +46,7 @@ protected:
 	float			fTimeToEmptyClick;
 	int				iHitPower;
 
-	Fvector			vLastFP, vLastFD;
+	Fvector			vLastFP, vLastFD, vLastSP;
 	
 	float			fireDistance;
 	float			fireDispersion;

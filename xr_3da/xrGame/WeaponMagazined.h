@@ -15,8 +15,6 @@ protected:
 	float			fTime;
 	BOOL			bFlame;
 
-	Fvector			vFirePoint;
-
 	DWORD			dwFP_Frame;
 	DWORD			dwXF_Frame;
 
@@ -44,7 +42,8 @@ protected:
 	virtual void	switch2_Reload	(BOOL bHUD)	{};
 	virtual void	switch2_Hiding	(BOOL bHUD)	{};
 	virtual void	switch2_Showing	(BOOL bHUD)	{};
-	virtual void	OnShot			(BOOL bHUD)	{};
+	virtual void	OnShot			(BOOL bHUD) {};
+	virtual void	OnShellDrop		(BOOL bHUD);
 	virtual void	OnEmptyClick	(BOOL bHUD)	{};
 	virtual void	OnDrawFlame		(BOOL bHUD)	{};
 	virtual void	OnShotmark		(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R) {};

@@ -18,9 +18,6 @@
 //////////////////////////////////////////////////////////////////////
 CWeaponMagazined::CWeaponMagazined(LPCSTR name) : CWeapon(name)
 {
-	vLastFP.set		(0,0,0);
-	vLastFD.set		(0,0,0);
-	
 	fTime			= 0;
 }
 
@@ -98,15 +95,20 @@ void CWeaponMagazined::UpdateFP		(BOOL bHUDView)
 			Fmatrix& fire_mat		= V->LL_GetTransform(m_pHUD->iFireBone);
 			Fmatrix& parent			= m_pHUD->Transform	();
 			Fvector& fp				= m_pHUD->vFirePoint;
+			Fvector& sp				= m_pHUD->vShellPoint;
 			fire_mat.transform_tiny	(vLastFP,fp);
 			parent.transform_tiny	(vLastFP);
+			fire_mat.transform_tiny	(vLastSP,sp);
+			parent.transform_tiny	(vLastSP);
 			vLastFD.set				(0.f,0.f,1.f);
 			parent.transform_dir	(vLastFD);
 		} else {
 			// 3rd person
 			Fmatrix& parent			= svTransform;
 			Fvector& fp				= vFirePoint;
+			Fvector& sp				= vShellPoint;
 			parent.transform_tiny	(vLastFP,fp);
+			parent.transform_tiny	(vLastSP,sp);
 			vLastFD.set				(0.f,0.f,1.f);
 			parent.transform_dir	(vLastFD);
 		}
@@ -331,4 +333,12 @@ void CWeaponMagazined::FireShotmark(const Fvector &vDir, const Fvector &vEnd, Co
 {
 	inherited::FireShotmark		(vDir, vEnd, R);
 	OnShotmark					(vDir, vEnd, R);
+}
+
+void CWeaponMagazined::OnShellDrop(BOOL bHUD)
+{
+	// shells
+	CPSObject* PS				= new CPSObject("weapons\\shells_generic",m_pParent->Sector(),true);
+	PS->m_Emitter.m_ConeDirection.set(vLastFD);
+	PS->PlayAtPos				(vLastSP);
 }

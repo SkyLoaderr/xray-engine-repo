@@ -19,6 +19,7 @@ class CWeaponHUD :
 public:	
 	int					iFireBone;
 	Fvector				vFirePoint;
+	Fvector				vShellPoint;
 public:
 						CWeaponHUD		();
 	virtual				~CWeaponHUD		();

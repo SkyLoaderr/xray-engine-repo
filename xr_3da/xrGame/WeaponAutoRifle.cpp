@@ -103,42 +103,54 @@ void CWeaponAutoRifle::switch2_Idle	(BOOL bHUDView)
 	if (bHUDView)	Level().Cameras.RemoveEffector	(cefShot);
 	m_pHUD->animPlay(mhud_idle);
 }
+
 void CWeaponAutoRifle::switch2_Fire	(BOOL bHUDView)
 {
 }
+
 void CWeaponAutoRifle::switch2_Empty(BOOL bHUDView)
 {
 	if (bHUDView)	Level().Cameras.RemoveEffector	(cefShot);
 }
+
 void CWeaponAutoRifle::switch2_Reload(BOOL bHUDView)
 {
 	pSounds->Play3DAtPos		(sndReload,vLastFP);
 	m_pHUD->animPlay			(mhud_reload,TRUE,this);
 }
+
 void CWeaponAutoRifle::switch2_Hiding(BOOL bHUDView)
 {
 	switch2_Idle				(bHUDView);
 	pSounds->Play3DAtPos		(sndHide,vLastFP);
 	m_pHUD->animPlay			(mhud_hide,TRUE,this);
 }
+
 void CWeaponAutoRifle::switch2_Showing(BOOL bHUDView)
 {
 	pSounds->Play3DAtPos		(sndShow,vLastFP);
 	m_pHUD->animPlay			(mhud_show,FALSE,this);
 }
-void CWeaponAutoRifle::OnShot		(BOOL bHUDView)
+
+void CWeaponAutoRifle::OnShot	(BOOL bHUDView)
 {
 	if (bHUDView)	{
-		CEffectorShot*	S = dynamic_cast<CEffectorShot*>(Level().Cameras.GetEffector(cefShot));
-		if (S)			S->Shot();
+		CEffectorShot*			S = dynamic_cast<CEffectorShot*>(Level().Cameras.GetEffector(cefShot));
+		if (S)					S->Shot();
 	}
-	m_pHUD->animPlay	(mhud_shots[Random.randI(mhud_shots.size())],FALSE);
-	pSounds->Play3DAtPos(sndShot,vLastFP);
+	m_pHUD->animPlay			(mhud_shots[Random.randI(mhud_shots.size())],FALSE);
+	pSounds->Play3DAtPos		(sndShot,vLastFP);
+	
+		
+	// Shell Drop
+	OnShellDrop					(bHUDView);
 }
+
 void CWeaponAutoRifle::OnEmptyClick	(BOOL bHUDView)
 {
 	pSounds->Play3DAtPos	(sndEmptyClick,vLastFP);
 }
+
 void CWeaponAutoRifle::OnDrawFlame	(BOOL bHUDView)
 {
 	if (bHUDView &&	(0==Level().Cameras.GetEffector(cefShot)))	Level().Cameras.AddEffector(new CEffectorShot(camRelax,camDispersion));
@@ -156,6 +168,7 @@ void CWeaponAutoRifle::OnDrawFlame	(BOOL bHUDView)
 		P.add(D);
 	}
 }
+
 void CWeaponAutoRifle::OnAnimationEnd()
 {
 	switch (st_current)
@@ -188,6 +201,7 @@ void CWeaponAutoRifle::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Col
 	PS->m_Emitter.m_ConeDirection.set(D);
 	PS->PlayAtPos		(vEnd);
 }
+
 void CWeaponAutoRifle::Update		(float dt, BOOL bHUDView)
 {
 	// sound fire loop

@@ -131,21 +131,24 @@ void CWeaponHPSA::switch2_Showing(BOOL bHUDView)
 void CWeaponHPSA::OnShot		(BOOL bHUDView)
 {
 	// Sound
-	pSounds->Play3DAtPos	(sndFireShoot,vLastFP);
+	pSounds->Play3DAtPos		(sndFireShoot,vLastFP);
 
 	// Camera
-	CEffectorShot*	S	= dynamic_cast<CEffectorShot*>(Level().Cameras.GetEffector(cefShot));
+	CEffectorShot*	S			= dynamic_cast<CEffectorShot*>(Level().Cameras.GetEffector(cefShot));
 	if (bHUDView &&	(0==S))	{
 		S = new CEffectorShot(camRelax,camDispersion);
 		Level().Cameras.AddEffector(S);
 	}
-	if (bHUDView)		S->Shot();
+	if (bHUDView)				S->Shot();
 
 	// Animation
-	m_pHUD->animPlay	(mhud_shots[Random.randI(mhud_shots.size())],FALSE);
+	m_pHUD->animPlay			(mhud_shots[Random.randI(mhud_shots.size())],FALSE);
 
 	// Flames
-	fFlameTime			= .1f;
+	fFlameTime					= .1f;
+	
+	// Shell Drop
+	OnShellDrop					(bHUDView);
 }
 void CWeaponHPSA::OnEmptyClick	(BOOL bHUDView)
 {
