@@ -57,7 +57,7 @@ void CSheduler::Destroy			()
 
 void CSheduler::Register		(ISheduled* O, BOOL RT)
 {
-	if (O->shedule.b_locked)	return;
+	VERIFY	(!O->shedule.b_locked)	;
 	if (RT)
 	{
 		// Fill item structure
@@ -83,7 +83,7 @@ void CSheduler::Register		(ISheduled* O, BOOL RT)
 
 void CSheduler::Unregister		(ISheduled* O)
 {
-	if (O->shedule.b_locked)	return;
+	VERIFY	(!O->shedule.b_locked)	;
 	if (O->shedule.b_RT)
 	{
 		for (u32 i=0; i<ItemsRT.size(); i++)
