@@ -24,11 +24,11 @@
 #include "../../hudmanager.h"
 #include "../../clsid_game.h"
 #include "../../../skeletoncustom.h"
-
 #include "../../character_info.h"
 #include "../../actor.h"
 #include "../../relation_registry.h"
 
+extern int g_AI_inactive_time;
 
 CAI_Stalker::CAI_Stalker			()
 {
@@ -76,12 +76,14 @@ void CAI_Stalker::reinit			()
 	m_ce_angle						= xr_new<CCoverEvaluatorAngle>(this);
 	m_ce_safe						= xr_new<CCoverEvaluatorSafe>(this);
 	m_ce_random_game				= xr_new<CCoverEvaluatorRandomGame>(this);
+	m_ce_ambush						= xr_new<CCoverEvaluatorAmbush>(this);
 	m_ce_close->set_inertia			(3000);
 	m_ce_far->set_inertia			(3000);
 	m_ce_best->set_inertia			(1000);
-	m_ce_angle->set_inertia			(5000);
+	m_ce_angle->set_inertia			(0);
 	m_ce_safe->set_inertia			(1000);
 	m_ce_random_game->set_inertia	(3000);
+	m_ce_ambush->set_inertia		(3000);
 
 	m_not_enough_food				= false;
 	m_can_buy_food					= false;
@@ -101,9 +103,10 @@ void CAI_Stalker::LoadSounds		(LPCSTR section)
 	CSoundPlayer::add				(pSettings->r_string(section,"sound_hit"),			100, SOUND_TYPE_MONSTER_INJURING,	1, u32(eStalkerSoundMaskInjuring),			eStalkerSoundInjuring,			head_bone_name);
 	CSoundPlayer::add				(pSettings->r_string(section,"sound_humming"),		100, SOUND_TYPE_MONSTER_TALKING,	4, u32(eStalkerSoundMaskHumming),			eStalkerSoundHumming,			head_bone_name);
 	CSoundPlayer::add				(pSettings->r_string(section,"sound_alarm"),		100, SOUND_TYPE_MONSTER_TALKING,	3, u32(eStalkerSoundMaskAlarm),				eStalkerSoundAlarm,				head_bone_name);
-	CSoundPlayer::add				(pSettings->r_string(section,"sound_surrender"),	100, SOUND_TYPE_MONSTER_TALKING,	3, u32(eStalkerSoundMaskSurrender),			eStalkerSoundSurrender,			head_bone_name);
-	CSoundPlayer::add				(pSettings->r_string(section,"sound_backup"),		100, SOUND_TYPE_MONSTER_TALKING,	3, u32(eStalkerSoundMaskBackup),			eStalkerSoundBackup,			head_bone_name);
 	CSoundPlayer::add				(pSettings->r_string(section,"sound_attack"),		100, SOUND_TYPE_MONSTER_TALKING,	3, u32(eStalkerSoundMaskAttack),			eStalkerSoundAttack,			head_bone_name);
+	CSoundPlayer::add				(pSettings->r_string(section,"sound_backup"),		100, SOUND_TYPE_MONSTER_TALKING,	3, u32(eStalkerSoundMaskBackup),			eStalkerSoundBackup,			head_bone_name);
+	CSoundPlayer::add				(pSettings->r_string(section,"sound_detour"),		100, SOUND_TYPE_MONSTER_TALKING,	3, u32(eStalkerSoundMaskDetour),			eStalkerSoundDetour,			head_bone_name);
+	CSoundPlayer::add				(pSettings->r_string(section,"sound_search"),		100, SOUND_TYPE_MONSTER_TALKING,	3, u32(eStalkerSoundMaskSearch),			eStalkerSoundSearch,			head_bone_name);
 	CSoundPlayer::add				(pSettings->r_string(section,"sound_friendly_fire"),100, SOUND_TYPE_MONSTER_INJURING,	1, u32(eStalkerSoundMaskInjuringByFriend),	eStalkerSoundInjuringByFriend,	head_bone_name);
 	CSoundPlayer::add				(pSettings->r_string(section,"sound_panic_human"),	100, SOUND_TYPE_MONSTER_TALKING,	2, u32(eStalkerSoundMaskPanicHuman),		eStalkerSoundPanicHuman,		head_bone_name);
 	CSoundPlayer::add				(pSettings->r_string(section,"sound_panic_monster"),100, SOUND_TYPE_MONSTER_TALKING,	2, u32(eStalkerSoundMaskPanicMonster),		eStalkerSoundPanicMonster,		head_bone_name);
@@ -187,7 +190,9 @@ void CAI_Stalker::Load				(LPCSTR section)
 BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 {
 	if (!CObjectHandler::net_Spawn(DC) ||
-		!inherited::net_Spawn(DC) ||  !CStalkerMovementManager::net_Spawn(DC))
+		!inherited::net_Spawn(DC) || 
+		!CStalkerMovementManager::net_Spawn(DC)
+		)
 		return						(FALSE);
 
 	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
@@ -288,6 +293,7 @@ void CAI_Stalker::net_Destroy()
 	xr_delete							(m_ce_best);
 	xr_delete							(m_ce_angle);
 	xr_delete							(m_ce_safe);
+	xr_delete							(m_ce_ambush);
 }
 
 
@@ -423,6 +429,7 @@ void CAI_Stalker::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_
 	//хит может меняться в зависимости от ранга (новички получают больше хита, чем ветераны)
 	P *= m_fRankImmunity;
 	inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
+//	inherited::Hit(0.05f,dir,who,element,p_in_object_space,impulse,hit_type);
 }
 
 void CAI_Stalker ::PHHit				(float P,Fvector &dir,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type /*ALife::eHitTypeWound*/)
@@ -461,7 +468,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 		if (GetScriptControl())
 			ProcessScripts				();
 		else
-			if (!m_demo_mode)
+			if (!m_demo_mode && (Device.dwFrame > spawn_time() + g_AI_inactive_time))
 				Think					();
 		m_dwLastUpdateTime				= Level().timeServer();
 		Device.Statistic.AI_Think.End	();

@@ -81,7 +81,7 @@ TEMPLATE_SPECIALIZATION
 bool CStateZombieAttackRunAbstract::check_completion()
 {
 	float m_fDistMin	= object->MeleeChecker.get_min_distance		();
-	float m_fDistMax	= object->MeleeChecker.get_max_distance		();
+//	float m_fDistMax	= object->MeleeChecker.get_max_distance		();
 	float dist			= object->MeleeChecker.distance_to_enemy	(object->EnemyMan.get_enemy());
 
 	if (dist < m_fDistMin)	return true;
@@ -92,7 +92,7 @@ bool CStateZombieAttackRunAbstract::check_completion()
 TEMPLATE_SPECIALIZATION
 bool CStateZombieAttackRunAbstract::check_start_conditions()
 {
-	float m_fDistMin	= object->MeleeChecker.get_min_distance		();
+//	float m_fDistMin	= object->MeleeChecker.get_min_distance		();
 	float m_fDistMax	= object->MeleeChecker.get_max_distance		();
 	float dist			= object->MeleeChecker.distance_to_enemy	(object->EnemyMan.get_enemy());
 	

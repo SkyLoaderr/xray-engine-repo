@@ -15,6 +15,7 @@
 #include "../../script_game_object.h"
 #include "../../customzone.h"
 #include "../../../skeletonanimated.h"
+#include "../../agent_manager.h"
 
 float CAI_Stalker::GetWeaponAccuracy	() const
 {
@@ -71,6 +72,10 @@ void CAI_Stalker::g_WeaponBones	(int &L, int &R1, int &R2)
 void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 element)
 {
 	if (g_Alive()) {
+		CCoverPoint				*cover = agent_manager().member(this).cover();
+		if (cover)
+			agent_manager().add_danger_cover	(cover,Level().timeServer());
+
 		// Play hit-ref_sound
 		CEntityAlive		*entity_alive = smart_cast<CEntityAlive*>(who);
 		if (!entity_alive || (tfGetRelationType(entity_alive) != ALife::eRelationTypeFriend))
@@ -86,6 +91,7 @@ void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 
 		float				power_factor = 3.f*amount/100.f; clamp(power_factor,0.f,1.f);
 		tpKinematics->PlayFX(tpMotionDef,power_factor);
 	}
+	
 	if (g_Alive())
 		add_hit_object		(amount,vLocalDir,who,element);
 }
@@ -286,13 +292,28 @@ bool CAI_Stalker::can_kill_member		(const Fvector &position, const Fvector &dire
 		return				(false);
 	
 	CEntityAlive			*entity_alive = smart_cast<CEntityAlive*>(ray_query_result.O);
-	if (!entity_alive)
+	if (!entity_alive || (entity_alive->ID() == ID()))
 		return				(false);
 
 	if (tfGetRelationType(entity_alive) != ALife::eRelationTypeEnemy)
 		return				(true);
 
 	return					(false);
+}
+
+bool CAI_Stalker::can_kill_enemy		()
+{
+//	Fvector					position, direction;
+//	g_fireParams			(0,position,direction);
+//
+//	Collide::rq_result		ray_query_result;
+//	Level().ObjectSpace.RayPick(position, direction, 50.f, Collide::rqtBoth, ray_query_result);
+//
+//	if (!ray_query_result.O)
+//		return				(false);
+//
+//	return					(ray_query_result.O->ID() == enemy()->ID());
+	return					(angle_difference(m_head.current.yaw,m_head.target.yaw) < PI_DIV_8);
 }
 
 bool CAI_Stalker::undetected_anomaly	()

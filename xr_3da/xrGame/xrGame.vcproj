@@ -3327,6 +3327,9 @@
 									<File
 										RelativePath=".\stalker_combat_planner.h">
 									</File>
+									<File
+										RelativePath=".\stalker_combat_planner_inline.h">
+									</File>
 									<Filter
 										Name="actions"
 										Filter="">
@@ -3335,6 +3338,9 @@
 										</File>
 										<File
 											RelativePath=".\stalker_combat_actions.h">
+										</File>
+										<File
+											RelativePath=".\stalker_movement_restriction.h">
 										</File>
 									</Filter>
 								</Filter>

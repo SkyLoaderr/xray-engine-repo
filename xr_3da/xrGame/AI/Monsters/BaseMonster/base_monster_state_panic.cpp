@@ -29,7 +29,7 @@ void CBaseMonsterPanic::Init()
 void CBaseMonsterPanic::Run()
 {
 	// если враг очень близко - атаковать
-	float m_fDistMin = pMonster->MeleeChecker.get_min_distance	();
+//	float m_fDistMin = pMonster->MeleeChecker.get_min_distance	();
 	float m_fDistMax = pMonster->MeleeChecker.get_max_distance	();
 	float dist = pMonster->MeleeChecker.distance_to_enemy		(pMonster->EnemyMan.get_enemy());
 

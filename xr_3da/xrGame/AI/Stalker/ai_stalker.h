@@ -35,6 +35,7 @@ class CCoverEvaluatorBest;
 class CCoverEvaluatorAngle;
 class CCoverEvaluatorSafe;
 class CCoverEvaluatorRandomGame;
+class CCoverEvaluatorAmbush;
 class CAgentManager;
 class CALifeTask;
 class CMotionDef;
@@ -101,6 +102,7 @@ public:
 	CCoverEvaluatorAngle		*m_ce_angle;
 	CCoverEvaluatorSafe			*m_ce_safe;
 	CCoverEvaluatorRandomGame	*m_ce_random_game;
+	CCoverEvaluatorAmbush		*m_ce_ambush;
 
 	// physics support
 public:
@@ -249,7 +251,9 @@ public:
 
 			bool						can_kill_member			();
 			bool						can_kill_member			(const Fvector &position, const Fvector &direction) const;
+			bool						can_kill_enemy			();
 			void						dbg_animation			(LPCSTR caption, CMotionDef *animation);
+			
 	virtual BOOL						feel_touch_on_contact	(CObject* O);
 
 	//флаги, какие действия совершал актер по отношению к сталкеру
