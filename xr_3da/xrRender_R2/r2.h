@@ -27,14 +27,14 @@ public:
 		PHASE_SMAP_P	= 2,	// E[2]
 		PHASE_SMAP_S	= 3		// E[3]
 	};
-	u32														phase;
-	BOOL													b_nv3x;
+	u32															phase;
+	BOOL														b_nv3x;
 
 	// Dynamic scene graph
-	SceneGraph::mapNormal_T									mapNormal;
-	SceneGraph::mapMatrix_T									mapMatrix;
-	SceneGraph::mapSorted_T									mapSorted;
-	SceneGraph::mapHUD_T									mapHUD;
+	SceneGraph::mapNormal_T										mapNormal;
+	SceneGraph::mapMatrix_T										mapMatrix;
+	SceneGraph::mapSorted_T										mapSorted;
+	SceneGraph::mapHUD_T										mapHUD;
 
 	xr_vector<SceneGraph::mapNormalVS::TNode*>					nrmVS;
 	xr_vector<SceneGraph::mapNormalPS::TNode*>					nrmPS;
@@ -65,7 +65,7 @@ public:
 	xr_vector<VertexDeclarator>									DCL;
 	xr_vector<IDirect3DVertexBuffer9*>							VB;
 	xr_vector<IDirect3DIndexBuffer9*>							IB;
-	xr_vector<IRender_Visual*>											Visuals;
+	xr_vector<IRender_Visual*>									Visuals;
 	CPSLibrary													PSystems;
 
 	CDetailManager												Details;

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "..\fbasicvisual.h"
 #include "..\customhud.h"
+#include "..\irenderable.h"
 
 IC	bool	pred_sp_sort	(ISpatial* _1, ISpatial* _2)
 {
@@ -85,6 +86,11 @@ void CRender::Render		()
 						}
 						else 
 						{
+							VERIFY							(spatial->spatial.type & STYPE_LIGHTSOURCE);
+							// lightsource
+							light*			L				= dynamic_cast<light*>		(spatial);
+							VERIFY							(L);
+							Lights.add_light				(L);
 						}
 					}
 				}
