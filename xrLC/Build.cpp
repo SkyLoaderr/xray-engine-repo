@@ -135,6 +135,7 @@ void CBuild::Run	(LPCSTR P)
 	Phase						("Building normals...");
 	mem_Compact					();
 	CalcNormals					();
+	SmoothVertColors			(5);
 
 	//****************************************** Collision DB
 	//should be after normals, so that double-sided faces gets separated

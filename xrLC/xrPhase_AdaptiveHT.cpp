@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "build.h"
 
-const	float	aht_min_edge	= 2.0f;			// 50 cm
+const	float	aht_min_edge	= 1.5f;			// 50 cm
 const	float	aht_min_err		= 64.f/255.f;	// ~10% error
 
 bool	is_CCW	(int _1, int _2)
