@@ -8,7 +8,7 @@ function main()
 
 	action(                                                                                                       
     	flesh,                                                                                                      
-		move(move.act_walk_fwd,actor),
+		move(move.act_run,actor),
     	cond(cond.time_end,20000) 
 	)                                                                                                             
 
