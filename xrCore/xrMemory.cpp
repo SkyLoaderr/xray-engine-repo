@@ -147,7 +147,7 @@ void	xrMemory::mem_statistic	()
 	{
 		map<u32,u32>::iterator I		= stats.begin();
 		map<u32,u32>::iterator E		= stats.end();
-		for (; I!=E; I++)	Msg			("%8d : %d",I->first,I->second);
+		for (; I!=E; I++)	Msg			("%8d : %-4d [%d]",I->first,I->second,I->first*I->second);
 	}
 }
 
