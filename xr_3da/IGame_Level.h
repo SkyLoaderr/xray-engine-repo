@@ -28,10 +28,10 @@ protected:
 	CObject*					pCurrentViewEntity;
 
 	// Static sounds
-	ref_sound					Sounds_Ambience;
 	xr_vector<ref_sound>		Sounds;
 	xr_vector<ref_sound>		Sounds_Random;
-	u32							Sounds_dwNextTime;
+	u32							Sounds_Random_dwNextTime;
+	BOOL						Sounds_Random_Enabled;
 public:
 	CObjectList					Objects;
 	CCameraManager				Cameras;

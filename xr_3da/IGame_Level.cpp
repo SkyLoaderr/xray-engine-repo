@@ -33,8 +33,6 @@ IGame_Level::~IGame_Level	()
 	xr_delete					( pLevel		);
 	FS.r_close					( LL_Stream		);
 
-	Sound->destroy				(Sounds_Ambience);
-
 	// Render-level unload
 	Render->level_Unload		();
 
@@ -155,14 +153,16 @@ void	IGame_Level::OnFrame		( )
 	}
 
 	// Ambience
-	if (Sounds_Random.size() && (Device.dwTimeGlobal > Sounds_dwNextTime))
+	if (Sounds_Random.size() && (Device.dwTimeGlobal > Sounds_Random_dwNextTime))
 	{
-		Sounds_dwNextTime		= Device.dwTimeGlobal + ::Random.randI	(10000,20000);
+		Sounds_Random_dwNextTime		= Device.dwTimeGlobal + ::Random.randI	(10000,20000);
 		Fvector	pos;
 		pos.random_dir().normalize().mul(::Random.randF(30,100)).add	(Device.vCameraPosition);
-		int		id				= ::Random.randI(Sounds_Random.size());
-		Sounds_Random[id].play_at_pos	(0,pos,0);
-		Sounds_Random[id].set_volume	(1.f);
-		Sounds_Random[id].set_range		(10,200);
+		int		id						= ::Random.randI(Sounds_Random.size());
+		if (Sounds_Random_Enabled)		{
+			Sounds_Random[id].play_at_pos	(0,pos,0);
+			Sounds_Random[id].set_volume	(1.f);
+			Sounds_Random[id].set_range		(10,200);
+		}
 	}
 }
