@@ -396,7 +396,6 @@ void xrMergeGraphs(LPCSTR name)
 			(*i).second->vfSaveEdges(F);
 		}
 	}
-	Msg								("%d : %d",l_dwStartPointOffset,F.size() + 4);
 	R_ASSERT2						(l_dwStartPointOffset == F.size() + 4,"Graph file format is corrupted");
 	save_data						(l_tpLevelPoints,F,false);
 	
