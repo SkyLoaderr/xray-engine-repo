@@ -69,8 +69,8 @@ void CCharacterPhysicsSupport::in_Load(LPCSTR section)
 
 void CCharacterPhysicsSupport::in_NetSpawn(CSE_Abstract* e)
 {
+	CPHDestroyable::Init();//this zerows colbacks !!;
 	CPHSkeleton::Spawn(e);
-	CPHDestroyable::Init();
 }
 
 void CCharacterPhysicsSupport::SpawnInitPhysics(CSE_Abstract* e)
@@ -130,7 +130,7 @@ void CCharacterPhysicsSupport::in_shedule_Update(u32 DT)
 
 void CCharacterPhysicsSupport::in_Hit(float P,Fvector &dir,s16 element,Fvector p_in_object_space, float impulse,ALife::EHitType hit_type ,bool is_killing)
 {
-	if(is_killing&&hit_type==ALife::eHitTypeExplosion&&P>70.f)
+	if(m_EntityAlife.g_Alive()&&is_killing&&hit_type==ALife::eHitTypeExplosion&&P>70.f)
 		CPHDestroyable::Destroy();
 	if((!m_EntityAlife.g_Alive()||is_killing)&&!fis_zero(m_shot_up_factor)&&hit_type!=ALife::eHitTypeExplosion)
 	{
