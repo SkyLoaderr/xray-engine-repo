@@ -24,7 +24,7 @@ void CBuild::PreOptimize()
 	// We use overlapping hash table to avoid boundary conflicts
 	vecVertex			HASH	[HDIM_X+1][HDIM_Y+1][HDIM_Z+1];
 	Fvector				VMmin,	VMscale, VMeps, scale;
-
+	
 	// Calculate offset,scale,epsilon
 	Fbox				bb = scene_bb;
 	VMscale.set			(bb.max.x-bb.min.x, bb.max.y-bb.min.y, bb.max.z-bb.min.z);
@@ -35,10 +35,19 @@ void CBuild::PreOptimize()
 	VMeps.z				= (VMeps.z<EPS_L)?VMeps.z:EPS_L;
 	scale.set			(float(HDIM_X),float(HDIM_Y),float(HDIM_Z));
 	scale.div			(VMscale);
-
+	
 	DWORD	Vcount		= g_vertices.size();
 	DWORD	Fcount		= g_faces.size();
- 
+	
+	// Pre-alloc memory
+	int		_size	= (HDIM_X+1)*(HDIM_Y+1)*(HDIM_Z+1);
+	int		_average= (Vcount/_size)/2;
+	for (int ix=0; ix<HDIM_X+1; ix++)
+		for (int iy=0; iy<HDIM_Y+1; iy++)
+			for (int iz=0; iz<HDIM_Z+1; iz++)
+				HASH[ix][iy][iz].reserve	(_average);
+
+	// 
 	Status("Processing...");
 	g_bUnregister		= false;
 	for (int it = 0; it<(int)g_vertices.size(); it++)
