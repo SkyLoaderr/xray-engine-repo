@@ -62,7 +62,7 @@ CCustomMonster::CCustomMonster()
 	eye_pp_stage		= 0;
 	m_tpPath			= 0;
 	vfResetPatrolData	();
-	m_dwLastUpdateTime	= 0;
+	m_dwLastUpdateTime	= 0xffffffff;
 }
 
 CCustomMonster::~CCustomMonster	()

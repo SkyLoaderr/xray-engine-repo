@@ -143,11 +143,13 @@ void CAI_Rat::feel_sound_new(CObject* who, int eType, Fvector& Position, float p
 	if (power >= 0.1) {
 		if ((this != who) && ((m_tLastSound.dwTime <= m_dwLastUpdateTime) || (m_tLastSound.fPower <= power))) {
 			CEntity *tpEntity = dynamic_cast<CEntity *>(who);
-			m_tLastSound.eSoundType		= ESoundTypes(eType);
-			m_tLastSound.dwTime			= Level().timeServer();
-			m_tLastSound.fPower			= power;
-			m_tLastSound.tSavedPosition = Position;
-			m_tLastSound.tpEntity		= tpEntity;
+			if (tpEntity) {
+				m_tLastSound.eSoundType		= ESoundTypes(eType);
+				m_tLastSound.dwTime			= Level().timeServer();
+				m_tLastSound.fPower			= power;
+				m_tLastSound.tSavedPosition = Position;
+				m_tLastSound.tpEntity		= tpEntity;
+			}
 		}
 	}
 	// computing total power of my own sounds for computing tha ability to hear the others

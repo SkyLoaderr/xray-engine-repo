@@ -33,7 +33,6 @@ CAI_Rat::CAI_Rat()
 	m_tpEventSay = Engine.Event.Handler_Attach("level.entity.say",this);
 	m_tpEventAssignPath = Engine.Event.Handler_Attach("level.entity.path.assign",this);
 	m_bFiring = false;
-	m_tLastSound.dwTime = 0;
 	m_fSensetivity = 0.f;
 	m_iSoundIndex = -1;
 	m_dwLastUpdate = 0;
@@ -53,6 +52,8 @@ CAI_Rat::CAI_Rat()
 	m_fMinHeight			= 0.f;
 	m_tVarGoal.set			(10.0,0.0,20.0);
 	m_dwStandLookTime		= 5000;
+	m_tLastSound.tpEntity	= 0;
+	m_tLastSound.dwTime		= 0;
 }
 
 CAI_Rat::~CAI_Rat()
