@@ -167,17 +167,17 @@ zone_warn  = guard_warn_zone1
 no_move    = true
 team       = guards
 snd_greet  = novice_camp_guards
-on_info    = {+tutorial_wounded_help -tutorial_wounded_die} walker1@esc_lager, {+tutorial_wounded_die} zoneguard1@esc_lager_enemy
+on_info    = {+tutorial_wounded_help -tutorial_wounded_die} zoneguard1@esc_lager_friend, {+tutorial_wounded_die} zoneguard1@esc_lager_enemy
 meet_dialog = escape_lager_guard_start_dialog
 
 [zoneguard1@esc_lager_friend]
 path_walk  = guard_walk1
 path_look  = guard_look1
-zone_warn  = guard_warn_zone
+zone_warn  = guard_warn_zone1
 team       = guards
-snd_greet  = talk_hello_friend
+snd_greet  = talk_hello,talk_hello_friend
 no_move    = true
-on_info    = {+tutorial_volk_acquainted} walker1@esc_lager
+;on_info    = {+tutorial_volk_acquainted} walker1@esc_lager
 meet_dialog = escape_lager_guard_start_dialog
 
 [zoneguard1@esc_lager_enemy]
@@ -198,17 +198,17 @@ zone_warn  = guard_warn_zone2
 team       = guards
 no_move    = true
 snd_greet  = novice_camp_guards
-on_info    = {+tutorial_wounded_help -tutorial_wounded_die} walker2@esc_lager, {+tutorial_wounded_die} zoneguard2@esc_lager_enemy
+on_info    = {+tutorial_wounded_help -tutorial_wounded_die} zoneguard2@esc_lager_friend, {+tutorial_wounded_die} zoneguard2@esc_lager_enemy
 meet_dialog = escape_lager_guard_start_dialog
 
 [zoneguard2@esc_lager_friend]
 path_walk  = guard_walk2
 path_look  = guard_look2
-zone_warn  = guard_warn_zone
+zone_warn  = guard_warn_zone2
 team       = guards
-snd_greet  = talk_hello_friend
+snd_greet  = talk_hello,talk_hello_friend
 no_move    = true
-on_info    = {+tutorial_volk_acquainted} walker2@esc_lager
+;on_info    = {+tutorial_volk_acquainted} walker2@esc_lager
 meet_dialog = escape_lager_guard_start_dialog
 
 [zoneguard2@esc_lager_enemy]
