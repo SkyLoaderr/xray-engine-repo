@@ -86,29 +86,29 @@ public:
         return xform(b,m);
     }
 
-	IC	void	getsize		(Tvector& R )	const 	{ R.sub( max, min ); };
-	IC	void	getradius	(Tvector& R )	const 	{ getsize(R); R.mul(0.5f); };
-	IC	T		getradius	()				const 	{ Tvector R; getradius(R); return R.magnitude();	};
-	IC	T		getvolume	()				const	{ Tvector sz; getsize(sz); return sz.x*sz.y*sz.z;	};
-	IC	SelfRef	getcenter	(Tvector& C )	const 	{
+	IC	void		getsize		(Tvector& R )	const 	{ R.sub( max, min ); };
+	IC	void		getradius	(Tvector& R )	const 	{ getsize(R); R.mul(0.5f); };
+	IC	T			getradius	()				const 	{ Tvector R; getradius(R); return R.magnitude();	};
+	IC	T			getvolume	()				const	{ Tvector sz; getsize(sz); return sz.x*sz.y*sz.z;	};
+	IC	SelfCRef	getcenter	(Tvector& C )	const 	{
 		C.x = (min.x + max.x) * 0.5f;
 		C.y = (min.y + max.y) * 0.5f;
 		C.z = (min.z + max.z) * 0.5f;
 		return				*this;
 	};
-	IC	SelfRef	get_CD		(Tvector& bc, Tvector& bd)	// center + dimensions
+	IC	SelfCRef	get_CD		(Tvector& bc, Tvector& bd)	const // center + dimensions
 	{
 		bd.sub				(max,min).mul(.5f);
 		bc.add				(min,bd);
 		return				*this;
 	}
-	IC	SelfRef	scale		(float s)					// 0.1 means make 110%, -0.1 means make 90%
+	IC	SelfRef		scale		(float s)					// 0.1 means make 110%, -0.1 means make 90%
 	{
 		Fvector	bd;	bd.sub	(max,min).mul(s);
 		grow				(bd);
 		return				*this;
 	}
-	IC	SelfRef	getsphere	(Tvector &C, T &R) const {
+	IC	SelfCRef	getsphere	(Tvector &C, T &R) const {
 		getcenter			(C);
 		R = C.distance_to	(max);
 		return				*this;
