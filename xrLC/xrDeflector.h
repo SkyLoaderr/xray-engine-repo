@@ -11,34 +11,8 @@ struct UVtri : public _TCF
 	Face*	owner;
 };
 
-#define LT_DIRECT		0
-#define LT_POINT		1
-#define LT_SECONDARY	2
-
-struct R_Light
-{
-    u32           type;				// Type of light source		
-    Fcolor          diffuse;			// Diffuse color of light	
-    Fvector         position;			// Position in world space	
-    Fvector         direction;			// Direction in world space	
-    float		    range;				// Cutoff range
-	float			range2;				// ^2
-    float	        attenuation0;		// Constant attenuation		
-    float	        attenuation1;		// Linear attenuation		
-    float	        attenuation2;		// Quadratic attenuation	
-	float			energy;				// For radiosity ONLY
-	
-	Fvector			tri[3];
-	
-	R_Light()		{
-		tri[0].set	(0,0,0);
-		tri[1].set	(0,0,EPS_S);
-		tri[2].set	(EPS_S,0,0);
-	}
-};
-
 typedef hash2D<UVtri*,128,128>	HASH;
-typedef xr_vector<R_Light>			LSelection;
+typedef xr_vector<R_Light>		LSelection;
 
 class CDeflector
 {

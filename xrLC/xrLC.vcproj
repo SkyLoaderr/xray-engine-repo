@@ -805,6 +805,9 @@
 				Name="Internal"
 				Filter="">
 				<File
+					RelativePath=".\R_light.h">
+				</File>
+				<File
 					RelativePath=".\vbm.h">
 				</File>
 				<File

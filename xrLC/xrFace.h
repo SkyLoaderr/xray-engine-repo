@@ -1,6 +1,7 @@
 #pragma once
 
 #include "shader_xrlc.h"
+#include "r_light.h"
 
 class base_lighting
 {
@@ -9,6 +10,8 @@ class base_lighting
 	float					hemi_e;
 	xr_vector<Fvector>		sun;		// P
 	float					sun_e;
+
+	void					select		(base_lighting& from, Fvector& P, float R);
 };
 class base_color
 {

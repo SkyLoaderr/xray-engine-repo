@@ -172,13 +172,26 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 	// Load lights
 	Status	("Loading lights...");
 	{
+		struct R_Control
+		{
+			string64				name;
+			xr_vector<u32>			data;
+		};
+		struct R_Layer
+		{
+			R_Control				control;
+			xr_vector<R_Light>		lights;
+		};
+		xr_vector<R_Layer>			L_layers;
+		xr_vector<BYTE>				L_control_data;
+
 		// Controlles/Layers
 		{
 			F = fs.open_chunk		(EB_Light_control);
 			L_control_data.assign	(LPBYTE(F->pointer()),LPBYTE(F->pointer())+F->length());
 
-			R_Layer			temp;
-			
+			R_Layer					temp;
+
 			while (!F->eof())
 			{
 				F->r				(temp.control.name,sizeof(temp.control.name));
@@ -193,14 +206,14 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 		}
 		// Static
 		{
-			F = fs.open_chunk(EB_Light_static);
-			b_light_static	temp;
-			u32 cnt			= F->length()/sizeof(temp);
-			for				(i=0; i<cnt; i++)
+			F = fs.open_chunk	(EB_Light_static);
+			b_light_static		temp;
+			u32 cnt				= F->length()/sizeof(temp);
+			for	(i=0; i<cnt; i++)
 			{
 				R_Light		RL;
 				F->r		(&temp,sizeof(temp));
-				Flight&		L = temp.data;
+				Flight	L	= temp.data;
 
 				// type
 				if			(L.type == D3DLIGHT_DIRECTIONAL)	RL.type	= LT_DIRECT;
@@ -224,22 +237,36 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 			F->close		();
 		}
 
-		// ***Search HEMI***
+		// ***Search LAYERS***
 		for (u32 LH=0; LH<L_layers.size(); LH++)
 		{
 			R_Layer&	TEST	= L_layers[LH];
 			if (0==stricmp(TEST.control.name,LCONTROL_HEMI))
 			{
 				// Hemi found
-				L_hemi	= TEST.lights;
+				L_static.hemi			= TEST.lights;
+			}
+			if (0==stricmp(TEST.control.name,LCONTROL_SUN))
+			{
+				// Sun found
+				L_static.sun			= TEST.lights;
+			}
+			if (0==stricmp(TEST.control.name,LCONTROL_STATIC))
+			{
+				// Static found
+				L_static.rgb			= TEST.lights;
 			}
 		}
-		clMsg	("HEMI: %d lights",L_hemi.size());
+		clMsg	("*lighting*: HEMI:   %d lights",L_static.hemi.size());
+		clMsg	("*lighting*: SUN:	  %d lights",L_static.sun.size());
+		clMsg	("*lighting*: STATIC: %d lights",L_static.rgb.size());
 
 		// ***Hack*** to merge all layers into one
+		/*
 		for (u32 H=1; H<L_layers.size(); H++)
 			L_layers[0].lights.insert(L_layers[0].lights.end(),L_layers[H].lights.begin(),L_layers[H].lights.end());
 		L_layers.erase	(L_layers.begin()+1,L_layers.end());
+		*/
 
 		// Dynamic
 		transfer("d-lights",	L_dynamic,			fs,		EB_Light_dynamic);

@@ -3,8 +3,6 @@
 
 void CBuild::SaveLights(IWriter &fs)
 {
-	fs.w_chunk		(fsL_LIGHT_CONTROL,&*L_control_data.begin(),L_control_data.size());
-
 	fs.open_chunk	(fsL_LIGHT_DYNAMIC);
 	for (u32 i=0; i<L_dynamic.size(); i++) 
 	{

@@ -41,51 +41,36 @@ struct b_BuildTexture : public b_texture
 	}
 };
 
-struct R_Control
-{
-	string64					name;
-	xr_vector<u32>				data;
-};
-struct R_Layer
-{
-	R_Control					control;
-	xr_vector<R_Light>			lights;
-};
-
 class CBuild  
 {
 public:
-	CMemoryWriter				err_invalid;
-	CMemoryWriter				err_tjunction;
-	CMemoryWriter				err_multiedge;
-	void						err_save	();
+	CMemoryWriter					err_invalid;
+	CMemoryWriter					err_tjunction;
+	CMemoryWriter					err_multiedge;
+	void							err_save	();
 
-	Fbox						scene_bb;
+	Fbox							scene_bb;
 	
-	xr_vector<b_material>		materials;
-	xr_vector<b_shader>			shader_render;
-	xr_vector<b_shader>			shader_compile;
-	xr_vector<b_BuildTexture>	textures;
+	xr_vector<b_material>			materials;
+	xr_vector<b_shader>				shader_render;
+	xr_vector<b_shader>				shader_compile;
+	xr_vector<b_BuildTexture>		textures;
 
-	xr_vector<b_glow>			glows;
-	xr_vector<b_portal>			portals;
-	xr_vector<b_lod>			lods;
+	xr_vector<b_glow>				glows;
+	xr_vector<b_portal>				portals;
+	xr_vector<b_lod>				lods;
 
-	xr_vector<R_Layer>			L_layers;
-	xr_vector<R_Light>			L_hemi;
-	xr_vector<b_light_dynamic>	L_dynamic;
+	base_lighting					L_static;
+	xr_vector<b_light_dynamic>		L_dynamic;
 	
-	xr_vector<BYTE>				L_control_data;
-	
-	xr_vector<xrMU_Model*>		mu_models;
-	xr_vector<xrMU_Reference*>	mu_refs;
+	xr_vector<xrMU_Model*>			mu_models;
+	xr_vector<xrMU_Reference*>		mu_refs;
 
-	Shader_xrLC_LIB				shaders;
-	string256					path;
+	Shader_xrLC_LIB					shaders;
+	string256						path;
 
 	void	mem_Compact				();
 	void	mem_CompactSubdivs		();
-	xr_vector<R_Layer>*				LLayer_by_name	(LPCSTR N);
 public:
 	void	Load					(const b_params& P, const IReader&  fs);
 	void	Run						(LPCSTR path);
