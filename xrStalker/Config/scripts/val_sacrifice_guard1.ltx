@@ -1,0 +1,34 @@
+[logic]
+active = follower1
+on_death = death
+on_hit = hit
+combat_ignore = combat_ignore
+;on_combat = combat
+
+[death]
+on_info = {=killed_by_actor} %+val_sacrifice_flee%
+
+[hit]
+on_info = {=hit_by_actor} %+val_sacrifice_flee%
+
+;[combat]
+;on_info = %+val_sacrifice_flee%
+
+[follower1]
+leader = 401
+combat_ignore_cond = {=actor_enemy}, {=val_enemy_sacrifice_victim}, {=val_enemy_prisoner}
+on_signal = leader_dead | walker@leave
+on_info = {+val_sacrifice_near_pit} camper@near_pit
+
+[camper@near_pit]
+radius = 0
+path_walk = val_sacrifice_guard1_walk
+path_look = val_sacrifice_guard1_look
+combat_ignore_cond = {=actor_enemy}, {=val_enemy_prisoner}
+on_info = {+val_sacrifice_victim_killed} walker@leave
+
+[walker@leave]
+path_walk = val_sacrifice_guard1_leave_walk 
+path_look = val_sacrifice_guard1_leave_look
+combat_ignore_cond = {=actor_enemy}, {=val_enemy_sacrifice_victim}, {=val_enemy_prisoner}
+

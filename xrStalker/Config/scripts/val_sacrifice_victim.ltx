@@ -1,0 +1,24 @@
+[logic]
+active = walker1
+combat_ignore = combat_ignore
+on_death = death
+
+[death]
+on_info = {+val_sacrifice_near_pit} %+val_sacrifice_victim_killed =val_sacrifice_victim_dead%
+
+[walker1]
+path_walk = val_sacrifice_victim_walk
+path_look = val_sacrifice_victim_look
+on_info = {+val_sacrifice_flee} walker@flee
+on_signal = pit | remark@near_pit %+val_sacrifice_near_pit%
+combat_ignore_cond = always
+combat_ignore_keep_when_attacked = true
+
+[remark@near_pit]
+no_move = true
+no_rotate = true
+anim = hello
+snd = help
+combat_ignore_cond = always
+combat_ignore_keep_when_attacked = true
+on_info = {+val_sacrifice_flee} walker@flee

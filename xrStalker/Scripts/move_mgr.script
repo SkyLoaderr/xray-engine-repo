@@ -389,6 +389,8 @@ function move_mgr:time_callback()
 end
 
 function move_mgr:scheme_set_signal(sig)
+	printf("_bp: object '%s': move_mgr: scheme_set_signal '%s'",
+		self.object:name(), sig)
 	local npc_id = self.object:id()
 	local stor = db.storage[npc_id]
 	local signals = stor[stor.active_scheme].signals

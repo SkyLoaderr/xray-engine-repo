@@ -143,6 +143,20 @@ function val_bs_victim_dead(actor, npc)
 	npc:hit(h)
 end
 
+-- ѕри смерти пленного дать ему небольшой пинок в сторону вейпоинта, чтобы он упал
+-- в пропасть
+function val_sacrifice_victim_dead(actor, npc)
+	printf("_bp: val_sacrifice_victim_dead: npc='%s'", npc:name())
+	local h = hit()
+	h.power = 100
+	h.direction = utils.vector_copy_by_val(patrol("val_sacrifice_fall_direction"):point(0)):sub(npc:position())
+	h.bone = "bip01_spine1"
+	h.draftsman = npc 
+	h.impulse = 2000
+	h.type = hit.wound
+	npc:hit(h)
+end
+
 function test_hit_in_actor_dir(actor, npc)
 --
 	-- TODO: реагировать только на смерть от пули (last hit = пул€)

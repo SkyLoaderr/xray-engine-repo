@@ -87,6 +87,16 @@ function val_enemy_captive(actor, npc)
 	return db.storage[npc:id()].enemy:name() == "val_escort_captive"
 end    
 
+function val_enemy_sacrifice_victim(actor, npc)
+	-- FIXME: use SID!!!
+	return db.storage[npc:id()].enemy:name() == "val_sacrifice_victim"
+end    
+
+function val_enemy_prisoner(actor, npc)
+	-- FIXME: use SID!!!
+	return db.storage[npc:id()].enemy:name() == "val_prisoner_captive"
+end    
+
 function actor_wears_bandit_outfit(actor, npc)
 	return xr_conditions_impl.actor_has_object(actor, "bandit_outfit") ~= nil
 end
