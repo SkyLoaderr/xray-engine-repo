@@ -208,8 +208,8 @@ void CUICarBodyWnd::UpdateLists()
 
 	ruck_list.clear();
 	ruck_list.insert(ruck_list.begin(),
-				m_pOthersInv->m_all.begin(),
-				m_pOthersInv->m_all.end());
+				m_pOthersInv->m_ruck.begin(),
+				m_pOthersInv->m_ruck.end());
 
 	ruck_list.sort(GreaterRoomInRuck);
 
