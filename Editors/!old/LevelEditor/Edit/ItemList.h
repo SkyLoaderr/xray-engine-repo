@@ -167,7 +167,7 @@ public:		// User declarations
 
     virtual void 		ClearList				();
 
-	virtual void 		GenerateObjectName		(ref_str name, LPCSTR start_node, LPCSTR pref="object", bool num_first=false);
+	virtual void 		GenerateObjectName		(shared_str name, LPCSTR start_node, LPCSTR pref="object", bool num_first=false);
 
     virtual void		SetOnItemFocusedEvent	(TOnILItemFocused e)			{OnItemFocusedEvent=e;}
     virtual void		SetOnItemsFocusedEvent	(TOnILItemsFocused e)			{OnItemsFocusedEvent=e;}

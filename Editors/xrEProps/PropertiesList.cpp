@@ -405,7 +405,7 @@ void TProperties::OutBOOL(BOOL val, TCanvas* Surface, TRect& R, bool bEnable)
     }
 }
 
-void TProperties::OutText(ref_str text, TCanvas* Surface, TRect& R, bool bEnable, TGraphic* g, bool bArrow)
+void TProperties::OutText(shared_str text, TCanvas* Surface, TRect& R, bool bEnable, TGraphic* g, bool bArrow)
 {
 	if (bEnable&&(g||bArrow)){
 	    R.Right	-=	g->Width+2;
@@ -464,7 +464,7 @@ void DrawButtons(TRect R, TCanvas* Surface, RStringVec& lst, int down_btn, bool 
     }
 }
 
-int DrawText(HDC hDC, ref_str text, LPRECT R, UINT uFormat)
+int DrawText(HDC hDC, shared_str text, LPRECT R, UINT uFormat)
 {
 	return DrawText(hDC,text.c_str(),-1,R,uFormat);
 }
@@ -963,17 +963,17 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
         }break;
 		case PROP_RLIST:{
 			RListValue* V			= dynamic_cast<RListValue*>(prop->GetFrontValue()); R_ASSERT(V);
-            ref_str new_val			= V->items[mi->Tag];
-            if (prop->AfterEdit<RListValue,ref_str>(new_val))
-                if (prop->ApplyValue<RListValue,ref_str>(new_val)){
+            shared_str new_val			= V->items[mi->Tag];
+            if (prop->AfterEdit<RListValue,shared_str>(new_val))
+                if (prop->ApplyValue<RListValue,shared_str>(new_val)){
                     Modified			();
                 }
 			item->ColumnText->Strings[0]= prop->GetText().c_str();
         }break;
 		case PROP_CLIST:{
 			CListValue* V			= dynamic_cast<CListValue*>(prop->GetFrontValue()); R_ASSERT(V);
-            ref_str new_val			= V->items[mi->Tag];
-            if (prop->AfterEdit<CListValue,ref_str>(new_val))
+            shared_str new_val			= V->items[mi->Tag];
+            if (prop->AfterEdit<CListValue,shared_str>(new_val))
                 if (prop->ApplyValue<CListValue,LPCSTR>(new_val.c_str())){
                     Modified			();
                 }
@@ -981,8 +981,8 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
         }break;
 		case PROP_TEXTURE2:{
 			CTextValue* T			= dynamic_cast<CTextValue*>(prop->GetFrontValue()); R_ASSERT(T);
-			ref_str edit_val	 	= T->GetValue();
-		    prop->BeforeEdit<CTextValue,ref_str>(edit_val);
+			shared_str edit_val	 	= T->GetValue();
+		    prop->BeforeEdit<CTextValue,shared_str>(edit_val);
             LPCSTR new_val 		 	= 0;
             bool bRes				= true;
         	if (mi->Tag==0){
@@ -992,7 +992,7 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
             }
             if (bRes){
                 edit_val		 	= new_val;
-                if (prop->AfterEdit<CTextValue,ref_str>(edit_val)){
+                if (prop->AfterEdit<CTextValue,shared_str>(edit_val)){
                     if (prop->ApplyValue<CTextValue,LPCSTR>(edit_val.c_str()))  
                         Modified		();
                     item->ColumnText->Strings[0]= prop->GetText().c_str();
@@ -1094,9 +1094,9 @@ void __fastcall TProperties::ChooseClick(TElTreeItem* item)
 	PropItem* prop			= (PropItem*)item->Tag;
 
     ChooseValue* V			= dynamic_cast<ChooseValue*>(prop->GetFrontValue()); VERIFY(V);
-    ref_str	edit_val		= V->GetValue();
+    shared_str	edit_val		= V->GetValue();
 	if (!edit_val.size()) 	edit_val = V->m_StartPath;
-    prop->BeforeEdit<ChooseValue,ref_str>(edit_val);
+    prop->BeforeEdit<ChooseValue,shared_str>(edit_val);
 	//
     ChooseItemVec			m_Items;
     if (!V->OnChooseFillEvent.empty()){
@@ -1107,8 +1107,8 @@ void __fastcall TProperties::ChooseClick(TElTreeItem* item)
     LPCSTR new_val			= 0;
     if (TfrmChoseItem::SelectItem(V->m_ChooseID,new_val,V->subitem,edit_val.c_str(),0,V->m_FillParam,0,m_Items.size()?&m_Items:0)){
         edit_val			= new_val;
-        if (prop->AfterEdit<ChooseValue,ref_str>(edit_val))
-            if (prop->ApplyValue<ChooseValue,ref_str>(edit_val)){
+        if (prop->AfterEdit<ChooseValue,shared_str>(edit_val))
+            if (prop->ApplyValue<ChooseValue,shared_str>(edit_val)){
                 Modified   	();
             }
         item->ColumnText->Strings[0]= prop->GetText().c_str();
@@ -1247,16 +1247,16 @@ void TProperties::PrepareLWText(TElTreeItem* item)
     switch (prop->type){
     case PROP_CTEXT:{
 		CTextValue* V		= dynamic_cast<CTextValue*>(prop->GetFrontValue()); R_ASSERT(V);
-        ref_str edit_val	= V->GetValue();
-	    prop->BeforeEdit<CTextValue,ref_str>(edit_val);
+        shared_str edit_val	= V->GetValue();
+	    prop->BeforeEdit<CTextValue,shared_str>(edit_val);
         edText->EditMask	= "";
 		edText->Text 		= edit_val.c_str();
 		edText->MaxLength	= V->lim;
 	}break;
     case PROP_RTEXT:{
 		RTextValue* V		= dynamic_cast<RTextValue*>(prop->GetFrontValue()); R_ASSERT(V);
-        ref_str edit_val	= V->GetValue();
-	    prop->BeforeEdit<RTextValue,ref_str>(edit_val);
+        shared_str edit_val	= V->GetValue();
+	    prop->BeforeEdit<RTextValue,shared_str>(edit_val);
         edText->EditMask	= "";
 		edText->Text 		= edit_val.c_str();
 		edText->MaxLength	= 0;
@@ -1293,8 +1293,8 @@ void TProperties::ApplyLWText()
 	    switch (prop->type){
         case PROP_CTEXT:{
 			CTextValue* V		= dynamic_cast<CTextValue*>(prop->GetFrontValue()); R_ASSERT(V);
-			ref_str new_val		= AnsiString(edText->Text).c_str();
-            if (prop->AfterEdit<CTextValue,ref_str>(new_val))
+			shared_str new_val		= AnsiString(edText->Text).c_str();
+            if (prop->AfterEdit<CTextValue,shared_str>(new_val))
                 if (prop->ApplyValue<CTextValue,LPCSTR>(new_val.c_str())){
                     Modified();
                 }
@@ -1302,9 +1302,9 @@ void TProperties::ApplyLWText()
         }break;
         case PROP_RTEXT:{
 			RTextValue* V		= dynamic_cast<RTextValue*>(prop->GetFrontValue()); R_ASSERT(V);
-			ref_str new_val		= AnsiString(edText->Text).c_str();
-            if (prop->AfterEdit<RTextValue,ref_str>(new_val))
-                if (prop->ApplyValue<RTextValue,ref_str>(new_val)){
+			shared_str new_val		= AnsiString(edText->Text).c_str();
+            if (prop->AfterEdit<RTextValue,shared_str>(new_val))
+                if (prop->ApplyValue<RTextValue,shared_str>(new_val)){
                     Modified();
                 }
             item->ColumnText->Strings[0] = prop->GetText().c_str();
@@ -1367,12 +1367,12 @@ void TProperties::ExecTextEditor(PropItem* prop)
 	    switch (prop->type){
     	case PROP_CTEXT:{
             CTextValue* V	= dynamic_cast<CTextValue*>(prop->GetFrontValue()); R_ASSERT(V);
-            ref_str edit_val= V->GetValue();
-		    prop->BeforeEdit<CTextValue,ref_str>(edit_val);
+            shared_str edit_val= V->GetValue();
+		    prop->BeforeEdit<CTextValue,shared_str>(edit_val);
             AnsiString tmp	= edit_val.c_str();
             if (TfrmText::RunEditor(tmp,AnsiString(prop->Item()->Text).c_str(),false)){
             	edit_val	= tmp.c_str();
-			    if (prop->AfterEdit<CTextValue,ref_str>(edit_val))
+			    if (prop->AfterEdit<CTextValue,shared_str>(edit_val))
                     if (prop->ApplyValue<CTextValue,LPCSTR>(edit_val.c_str()))
                         Modified();
                 prop->Item()->ColumnText->Strings[0] = prop->GetText().c_str();
@@ -1380,13 +1380,13 @@ void TProperties::ExecTextEditor(PropItem* prop)
         }break;
     	case PROP_RTEXT:{
             RTextValue* V	= dynamic_cast<RTextValue*>(prop->GetFrontValue()); R_ASSERT(V);
-            ref_str edit_val= V->GetValue();
-		    prop->BeforeEdit<RTextValue,ref_str>(edit_val);
+            shared_str edit_val= V->GetValue();
+		    prop->BeforeEdit<RTextValue,shared_str>(edit_val);
             AnsiString tmp	= edit_val.c_str();
             if (TfrmText::RunEditor(tmp,AnsiString(prop->Item()->Text).c_str(),false)){
             	edit_val	= tmp.c_str();
-			    if (prop->AfterEdit<RTextValue,ref_str>(edit_val))
-                    if (prop->ApplyValue<RTextValue,ref_str>(edit_val))
+			    if (prop->AfterEdit<RTextValue,shared_str>(edit_val))
+                    if (prop->ApplyValue<RTextValue,shared_str>(edit_val))
                         Modified();
                 prop->Item()->ColumnText->Strings[0] = prop->GetText().c_str();
             }

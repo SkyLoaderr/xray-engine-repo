@@ -27,7 +27,7 @@ ListItem* CListHelper::CreateItem	(ListItemsVec& items, LPCSTR key, int type, u3
     return			item;
 }
 
-bool CListHelper::NameAfterEdit(ListItem* sender, LPCSTR value, ref_str& N)
+bool CListHelper::NameAfterEdit(ListItem* sender, LPCSTR value, shared_str& N)
 {
     if (0!=AnsiString(N.c_str()).Pos("\\"))	{ N=value; return false; }
 	N	= AnsiString(N.c_str()).LowerCase().c_str();

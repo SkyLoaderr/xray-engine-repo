@@ -126,7 +126,7 @@ private:	// User declarations
     void 				CancelEditControl		();
 
 	void 				OutBOOL					(BOOL val, TCanvas* Surface, TRect& R, bool bEnable);
-	void 				OutText					(ref_str text, TCanvas* Surface, TRect& R, bool bEnable, TGraphic* g=0, bool bArrow=false);
+	void 				OutText					(shared_str text, TCanvas* Surface, TRect& R, bool bEnable, TGraphic* g=0, bool bArrow=false);
 public:
 	enum{
         plFolderStore	= (1<<0),

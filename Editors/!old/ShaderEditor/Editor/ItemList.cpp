@@ -665,7 +665,7 @@ void TItemList::GetFolders(RStringVec& folders)
 }
 //---------------------------------------------------------------------------
 
-void TItemList::GenerateObjectName(ref_str name, LPCSTR start_node, LPCSTR pref, bool num_first)
+void TItemList::GenerateObjectName(shared_str name, LPCSTR start_node, LPCSTR pref, bool num_first)
 {
 	AnsiString _name;
 	TElTreeItem* node 		  	= FHelper.FindItem(tvItems, start_node);

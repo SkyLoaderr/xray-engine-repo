@@ -133,7 +133,7 @@ void __fastcall TfrmText::ebLoadClick(TObject *Sender)
 {               
 	std::string fn;                   
 	if (EFS.GetOpenName(_import_,fn,false,NULL,2)){
-    	ref_str 		buf;
+    	shared_str 		buf;
     	IReader* F 		= FS.r_open(fn.c_str());
         F->r_stringZ	(buf);
         mmText->Text	= buf.c_str();
