@@ -44,6 +44,7 @@ public:
 		u32		fp16_blend	: 1;
 		u32		HW_smap		: 1;
 		u32		nvstencil	: 1;
+		u32		ldr			: 1;
 
 		u32		sjitter		: 1;
 		u32		noshadows	: 1;
