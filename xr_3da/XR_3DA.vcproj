@@ -877,12 +877,6 @@
 						RelativePath=".\ParticleCustom.h">
 					</File>
 					<File
-						RelativePath=".\ParticleEffect.cpp">
-					</File>
-					<File
-						RelativePath=".\ParticleEffect.h">
-					</File>
-					<File
 						RelativePath=".\psvisual.cpp">
 						<FileConfiguration
 							Name="Release|Win32">
@@ -981,22 +975,6 @@
 				<File
 					RelativePath=".\PS_instance.h">
 				</File>
-				<File
-					RelativePath="PSLibrary.cpp">
-				</File>
-				<File
-					RelativePath="PSLibrary.h">
-				</File>
-				<Filter
-					Name="Particle Sorter"
-					Filter="">
-					<File
-						RelativePath=".\ParticleSorter.cpp">
-					</File>
-					<File
-						RelativePath=".\ParticleSorter.h">
-					</File>
-				</Filter>
 			</Filter>
 			<Filter
 				Name="Lighting"
