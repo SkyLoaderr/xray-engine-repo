@@ -5,6 +5,7 @@
 #include "weapon.h"
 
 class ENGINE_API C3DSound;
+class ENGINE_API CPSVisual;
 
 #define SND_RIC_COUNT 5
 
@@ -41,6 +42,9 @@ private:
 	int				iShotCount;
 	
 	EGrozaState		st_current, st_target;
+	
+	CPSVisual*		m_pShootPSVisual;
+	PS::SEmitter	m_pShootPSEmitter;
 
 	void			DrawFlame		(const Fvector& fp, const Fvector& fd, bool bHUDView);
 	void			UpdateFP		(BOOL bHUD);

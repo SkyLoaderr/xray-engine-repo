@@ -10,10 +10,11 @@ class ENGINE_API CPSObject: public CTempObject{
 public:
 	PS::SEmitter		m_Emitter;
 public:
-						CPSObject		(LPCSTR ps_name, CSector* S);
+						CPSObject		(LPCSTR ps_name, CSector* S, bool bAutoRemove=true);
 	virtual				~CPSObject		();
 	virtual void		Update			(DWORD dt);
 	virtual Fvector&	Position		(){return m_Emitter.m_Position;}
+	void				UpdateSector	(CSector* sect);
 	void				PlayAtPos		(const Fvector& pos);
 	void				Stop			();
 };

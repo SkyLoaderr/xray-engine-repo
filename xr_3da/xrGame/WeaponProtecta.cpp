@@ -5,6 +5,7 @@
 #include "..\xr_tokens.h"
 #include "..\3DSound.h"
 #include "..\PSObject.h"
+#include "..\PSVisual.h"
 #include "..\xr_trims.h"
 #include "hudmanager.h"
 
@@ -42,12 +43,16 @@ CWeaponProtecta::~CWeaponProtecta()
 	// sounds
 	pSounds->Delete3D(sndFire);
 	for (i=0; i<SND_RIC_COUNT; i++) pSounds->Delete3D(sndRicochet[i]);
+	
+	_DELETE			(m_pShootPSVisual);
 }
 
 void CWeaponProtecta::Load(CInifile* ini, const char* section){
 	inherited::Load(ini, section);
 	R_ASSERT(m_pHUD);
 	
+	m_pShootPSVisual= (CPSVisual*)::Render.Models.CreatePS("protecta_smoke",&m_pShootPSEmitter);
+
 	vFirePoint		= ini->ReadVECTOR(section,"fire_point");
 	iShotCount		= ini->ReadINT(section,"shot_count");
 	
@@ -173,6 +178,12 @@ void CWeaponProtecta::Update(float dt, BOOL bHUDView)
 			m_pParent->g_fireParams(p1_base,d_base);
 			while (fTime<0)
 			{
+				// play smoke
+				m_pShootPSEmitter.Stop();
+				m_pShootPSEmitter.m_Position.set(vLastFP);
+				m_pShootPSEmitter.Play();
+
+				// real shoot
 				bFlame	= TRUE;
 				VERIFY(m_pParent);
 				fTime+=fTimeToFire;
@@ -230,6 +241,9 @@ void CWeaponProtecta::Render(BOOL bHUDView)
 		::Render.set_Transform		(&svTransform);
 		::Render.set_LightLevel		(iFloor(m_pParent->AI_Lighting));
 		::Render.add_leafs_Dynamic	(Visual());
+
+		// Render PS Shoot
+		::Render.add_leafs_Dynamic	(m_pShootPSVisual);
 	}
 	if ((st_current==eShoot) && bFlame) 
 	{
@@ -278,13 +292,13 @@ void CWeaponProtecta::AddShotmark(const Fvector &vDir, const Fvector &vEnd, Coll
 
 	CSector* S			= ::Render.getSector(pTri->sector);
 // stones
-	CPSObject* PS		= new CPSObject("stones",S);
+	CPSObject* PS		= new CPSObject("stones",S,true);
 	// update emitter & run
 	PS->m_Emitter.m_ConeDirection.set(D);
 	PS->PlayAtPos		(vEnd);
 
 // smoke
-	PS					= new CPSObject("smokepuffs_1",S);
+	PS					= new CPSObject("smokepuffs_1",S,true);
 	// update emitter & run
 	PS->m_Emitter.m_ConeDirection.set(D);
 	PS->PlayAtPos		(vEnd);

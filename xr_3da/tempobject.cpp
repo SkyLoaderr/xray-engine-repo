@@ -10,6 +10,7 @@
 CTempObject::CTempObject(){
 	m_pVisual		= 0;
 	m_iLifeTime		= int_max;
+	m_bAutoRemove	= TRUE;
 }
 //----------------------------------------------------
 

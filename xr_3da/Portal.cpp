@@ -105,9 +105,11 @@ void CSector::Render(CFrustum &F)
 					if (Occluders.visibleVisual(vcc,pV->Visual())!=fcvNone)
 						::Render.add_Static		(pV->Visual(),vcc);
 				}else{
-					tempObjects.erase(tempObjects.begin()+i);
-					_DELETE(pV);
-					i--;
+					if (pV->IsAutomatic()){
+						tempObjects.erase(tempObjects.begin()+i);
+						_DELETE(pV);
+						i--;
+					}
 				}
 			}
 		}

@@ -278,13 +278,13 @@ void CWeaponGroza::AddShotmark(const Fvector &vDir, const Fvector &vEnd, Collide
 
 	CSector* S			= ::Render.getSector(pTri->sector);
 // stones
-	CPSObject* PS		= new CPSObject("stones",S);
+	CPSObject* PS		= new CPSObject("stones",S,true);
 	// update emitter & run
 	PS->m_Emitter.m_ConeDirection.set(D);
 	PS->PlayAtPos		(vEnd);
 
 // smoke
-	PS					= new CPSObject("smokepuffs_1",S);
+	PS					= new CPSObject("smokepuffs_1",S,true);
 	// update emitter & run
 	PS->m_Emitter.m_ConeDirection.set(D);
 	PS->PlayAtPos		(vEnd);
