@@ -237,10 +237,10 @@ IC bool RayPick(CDB::COLLIDER& DB, Fvector& P, Fvector& D, float r, R_Light& L)
 	}
 }
 
-float LightPoint(CDB::COLLIDER& DB, Fvector &P, Fvector &N, LSelection& SEL)
+float LightPoint(CDB::COLLIDER& DB, Fvector &Pold, Fvector &N, LSelection& SEL)
 {
 	Fvector		Ldir,Pnew;
-	Pnew.mad	(P,N,0.05f);
+	Pnew.mad	(Pold,N,0.1f);
 
 	R_Light	**IT = SEL.begin(), **E = SEL.end();
 
@@ -364,7 +364,7 @@ public:
 									float y_test	= P.y - r_range;
 									if (y_test>y)	{
 										y = y_test;
-										t_n.mknormal(*T.verts[0],*T.verts[1],*T.verts[2]);
+										t_n.mknormal_non_normalized	(*T.verts[0],*T.verts[1],*T.verts[2]);
 									}
 								}
 							}
@@ -384,6 +384,7 @@ public:
 						}
 
 						// light point
+						t_n.normalize	();
 						amount	[pid]	+= LightPoint(DB,P,t_n,Selected);
 						count	[pid]	+= 1;
 					}
