@@ -71,9 +71,9 @@ public:
 	ref_smem			(ref_smem<T> const &rhs)					{	p_ = 0;	_set(rhs);											}
 	~ref_smem			()											{	_dec();														}
 
-	void				create		(u32 dwCRC, u32 dwLength, void* ptr)
+	void				create		(u32 dwCRC, u32 dwLength, T* ptr)
 	{
-		smem_value* v	= g_pSharedMemoryContainer->dock(dwCRC,dwLength,ptr); 
+		smem_value* v	= g_pSharedMemoryContainer->dock(dwCRC,dwLength*sizeof(T),ptr); 
 		if (0!=v)		v->dwReference++; _dec(); p_ = v;	
 	}
 

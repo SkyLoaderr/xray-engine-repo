@@ -394,11 +394,8 @@ void CSkeletonAnimated::Release()
 	// xr_free bones
 	for (u32 i=0; i<bones->size(); i++)
 	{
-		CBoneDataAnimated* B = (CBoneDataAnimated*)(*bones)[i];
-		for (u32 m=0; m<B->Motions.size(); m++){
-			xr_free(B->Motions[m]._keysR);
-			xr_free(B->Motions[m]._keysT);
-        }
+		CBoneDataAnimated* B	= (CBoneDataAnimated*)(*bones)[i];
+		B.Motions.clear			();
 	}
 
 	// destroy shared data
@@ -506,24 +503,22 @@ void CSkeletonAnimated::Load(const char* N, IReader *data, u32 dwFlags)
         u32 dwLen			= MS->r_u32();
         for (u32 i=0; i<bones->size(); i++)
         {
-            CMotion TMP;
-            TMP._count		= dwLen;
-            u8 t_present	= MS->r_u8();
-            u32 crc_q		= MS->r_u32();
-            TMP._keysR		= xr_alloc<CKeyQR>(dwLen);
-            MS->r			(TMP._keysR,TMP._count*sizeof(CKeyQR));
-            if (t_present){
-                u32 crc_t	= MS->r_u32();
-                TMP._keysT	= xr_alloc<CKeyQT>(dwLen);
-                MS->r		(TMP._keysT,TMP._count*sizeof(CKeyQT));
-                MS->r_fvector3	(TMP._sizeT);
-                MS->r_fvector3	(TMP._initT);
+			((CBoneDataAnimated*)(*bones)[i])->Motions.push_back(CMotion());
+            CMotion&		M	= ((CBoneDataAnimated*)(*bones)[i])->Motions.back();
+            M._count			= dwLen;
+            u8	t_present		= MS->r_u8	();
+            u32 crc_q			= MS->r_u32	();
+			M._keysR.create		(crc_q,dwLen,(CKeyQR*)MS->pointer());
+			MS->advance			(dwLen * sizeof(CKeyQR));
+            if (t_present)	{
+                u32 crc_t			= MS->r_u32	();
+				M._keysT.create		(crc_t,dwLen,(CKeyQT*)MS->pointer());
+				MS->advance			(dwLen * sizeof(CKeyQT));
+                MS->r_fvector3		(M._sizeT);
+                MS->r_fvector3		(M._initT);
             }else{
-                TMP._keysT	= 0;
-                MS->r_fvector3	(TMP._initT);
+                MS->r_fvector3		(M._initT);
             }
-
-            ((CBoneDataAnimated*)(*bones)[i])->Motions.push_back(TMP);
         }
     }
     MS->close();

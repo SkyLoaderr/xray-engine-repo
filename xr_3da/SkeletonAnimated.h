@@ -80,8 +80,8 @@ typedef BlendList::iterator				BlendListIt;
 class ENGINE_API		CMotion
 {
 public:
-	CKeyQR*				_keysR;
-	CKeyQT*				_keysT;
+	ref_smem<CKeyQR>	_keysR;
+	ref_smem<CKeyQT>	_keysT;
     Fvector				_initT;
     Fvector				_sizeT;
 	u32					_count;
