@@ -37,7 +37,7 @@ light::~light(void)
 #if RENDER==R_R2 
 void light::set_texture		(LPCSTR name)
 {
-	if (NULL==name)
+	if ((0==name) || (0==name[0]))
 	{
 		// default shaders
 		s_spot.destroy		();
