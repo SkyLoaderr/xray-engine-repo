@@ -492,7 +492,7 @@ void CCustomMonster::SenseSignal(int perc, Fvector& vLocalDir, CEntity* who)
 {
 }
 
-void CCustomMonster::Die()
+void CCustomMonster::Death()
 {
 }
 
@@ -551,8 +551,4 @@ void CCustomMonster::OnHUDDraw(CCustomHUD* hud)
 	pApp->pFont->OutNext("ACTION");
 	DumpStream			(&q_action);
 	*/
-}
-
-void CCustomMonster::Think()
-{
 }

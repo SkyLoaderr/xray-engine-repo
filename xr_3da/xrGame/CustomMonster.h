@@ -11,7 +11,6 @@
 #include "entity.h"
 #include "custommonster_vistrack.h"
 #include "ai_commands.h"
-//#include "ai\\hen\\ai_hen_state.h"
 #include "ai_pathnodes.h"
 
 class ENGINE_API CMotionDef;
@@ -69,7 +68,7 @@ public:
 	void				State_Push				( AI::CAIState* S )	{ STATE.push(S); }
 	void				State_Pop				( )					{ if(!STATE.empty()) STATE.pop(); }
 	/**/
-	virtual void		Think();
+	virtual void		Think() = 0;
 	/**/
 
 	// Rotation
@@ -132,7 +131,7 @@ public:
 	virtual				~CCustomMonster			( );
 
 	virtual BOOL		Spawn					( BOOL bLocal, int sid, int team, int squad, int group, Fvector4& o_pos );
-	virtual void		Die						( );
+	virtual void		Death					( );
 	virtual void		HitSignal				( int iHitAmount, Fvector& vLocalDir, CEntity* who);
 	virtual void		SenseSignal				( int iSenseAmount, Fvector& vLocalDir, CEntity* who);
 	virtual void		Load					( CInifile* ini, const char* section );
