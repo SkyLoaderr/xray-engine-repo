@@ -218,7 +218,8 @@ void CAI_Rat::AttackFire()
 	/**/
 	
 	//CHECK_IF_SWITCH_TO_NEW_STATE(!(Enemy.bVisible),aiRatFindEnemy)
-	CHECK_IF_GO_TO_PREV_STATE(!(Enemy.Enemy) || !(Enemy.bVisible))
+	//CHECK_IF_GO_TO_PREV_STATE(!(Enemy.Enemy) || !(Enemy.bVisible))
+	CHECK_IF_GO_TO_PREV_STATE(!(Enemy.Enemy))
 		
 	CHECK_IF_GO_TO_NEW_STATE((Enemy.Enemy->Position().distance_to(vPosition) > 2.f),aiRatAttackRun)
 
@@ -268,7 +269,8 @@ void CAI_Rat::AttackRun()
 	/**/
 	
 	//CHECK_IF_SWITCH_TO_NEW_STATE(!(Enemy.bVisible),aiRatFindEnemy)
-	CHECK_IF_GO_TO_PREV_STATE(!(Enemy.Enemy) || !(Enemy.bVisible))
+	//CHECK_IF_GO_TO_PREV_STATE(!(Enemy.Enemy) || !(Enemy.bVisible))
+	CHECK_IF_GO_TO_PREV_STATE(!(Enemy.Enemy))
 		
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 

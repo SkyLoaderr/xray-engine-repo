@@ -426,13 +426,14 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 	}
 
 	// move last quantity
-	Fvector				motion;//,final;
+	Fvector				motion;
 	motion.mul			(mdir,dist/mdist);
 
 	// resolve stucking
 	Device.Statistic.Physics.Begin	();
 	Me->UpdateTransform	();
 //	if (m_bCollision) {
+//		Fvector final;
 //		Me->Movement.Move	(final,motion,FALSE);
 //		motion.sub			(final,p_dest);
 //		p_dest.set			(final);
