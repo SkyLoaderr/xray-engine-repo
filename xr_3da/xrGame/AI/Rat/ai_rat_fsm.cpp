@@ -809,6 +809,7 @@ void CAI_Rat::EatCorpse()
 	vfSetFire(false,Group);
 	
 	m_Enemy.Enemy->clCenter(tTemp);
+	//tTemp = m_Enemy.Enemy->Position();
 	if (tTemp.distance_to(vPosition) <= m_fAttackDistance) {
 		m_fSpeed = m_fSafeSpeed = 0.f;
 		if (Level().AI.bfTooSmallAngle(r_torso_target.yaw, sTemp.yaw,m_fAttackAngle)) {
