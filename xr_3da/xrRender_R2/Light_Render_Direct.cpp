@@ -32,29 +32,19 @@ public:
 	{
 		for (int it=0; it<int(polys.size()); it++)
 		{
-			_poly&			P	= polys[it];
-			Fvector3		t1	= points[P.points[0]]-points[P.points[1]], t2 = points[P.points[0]]-points[P.points[2]];
-			P.planeN.crossproduct	(t1,t2);
-			D3DXVec3Cross		(&P.planeN,&t1,&t2);
-			D3DXVec3Normalize	(&P.planeN,&P.planeN);
-			P.planeD			= -D3DXVec3Dot(&P.planeN,&points[P.points[0]]);
+			_poly&			P	=	polys[it];
+			Fvector3		t1,t2;
+			t1.sub					(points[P.points[0]], points[P.points[1]]);
+			t2.sub					(points[P.points[0]], points[P.points[2]]);
+			P.planeN.crossproduct	(t1,t2).normalize();
+			P.planeD			= -	P.planeN.dotproduct(points[P.points[0]]);
 		}
 	}
-	void				compute_receiver_model	(DumbClipper& dest)
-	{
-		// Planes and Export
-		compute_planes	();
-		for (int it=0; it<int(polys.size()); it++)
-		{
-			_poly&			P	= polys[it];
-			dest.planes.push_back(D3DXPLANE(P.planeN.x,P.planeN.y,P.planeN.z,P.planeD));
-		}
-	}
-	void				compute_caster_model	(DumbClipper& dest, Fvector3 direction)
+	void				compute_caster_model	(xr_vector<Fplane>& dest, Fvector3 direction)
 	{
 		// COG
 		Fvector3	cog(0,0,0);
-		for		(int it=0; it<int(points.size()); it++)	cog+=points[it];
+		for		(int it=0; it<int(points.size()); it++)	cog += points[it];
 		cog		/= float(points.size());
 
 		// planes
@@ -66,7 +56,7 @@ public:
 			_poly&	base		= polys	[it];
 			assert	(base.classify(cog)<0);					// debug
 
-			int		marker		= (D3DXVec3Dot(&base.planeN,&direction)<=0)?-1:1;
+			int		marker		= (base.planeN.dotproduct(direction)<=0)?-1:1;
 
 			// register edges
 			xr_vector<int>&	plist		= polys[it].points;
@@ -76,12 +66,12 @@ public:
 				bool	found	= false;
 				for (int e=0; e<int(edges.size()); e++)	
 					if (edges[e].equal(E))	{ edges[e].counter += marker; found=true; break; }
-					if		(!found)	edges.push_back	(E);
+				if		(!found)	edges.push_back	(E);
 			}
 
 			// remove if unused
 			if (marker>0)	{
-				polys.erase(polys.begin()+it);
+				polys.erase	(polys.begin()+it);
 				it--;
 			}
 		}
@@ -107,15 +97,16 @@ public:
 		for (int it=0; it<int(polys.size()); it++)
 		{
 			_poly&	base				= polys	[it];
-			if (base.classify(cog)>0)	reverse(base.points.begin(),base.points.end());
+			if (base.classify(cog)>0)	std::reverse(base.points.begin(),base.points.end());
 		}
-		compute_planes	();
 
 		// Export
+		compute_planes	();
 		for (int it=0; it<int(polys.size()); it++)
 		{
 			_poly&			P	= polys[it];
-			dest.planes.push_back(D3DXPLANE(P.planeN.x,P.planeN.y,P.planeN.z,P.planeD));
+			Fplane			pp	= {P.planeN,P.planeD};
+			dest.push_back	(pp);
 		}
 	}
 };
