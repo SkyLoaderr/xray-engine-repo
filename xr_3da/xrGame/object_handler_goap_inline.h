@@ -28,12 +28,22 @@ IC	bool CObjectHandlerGOAP::object_action	(u32 action_id, CObject *object)
 
 IC	u32	CObjectHandlerGOAP::current_action_object_id	() const
 {
-	return				(current_action_id() & 0xffff);
+	return				(action_object_id(current_action_id()));
 }
 
 IC	u32	CObjectHandlerGOAP::current_action_state_id	() const
 {
-	return				(current_action_id() >> 16);
+	return				(action_state_id(current_action_id()));
+}
+
+IC	u32	CObjectHandlerGOAP::action_object_id		(u32 action_id) const
+{
+	return				(action_id & 0xffff);
+}
+
+IC	u32	CObjectHandlerGOAP::action_state_id			(u32 action_id) const
+{
+	return				(action_id >> 16);
 }
 
 IC	bool CObjectHandlerGOAP::goal_reached			() const
