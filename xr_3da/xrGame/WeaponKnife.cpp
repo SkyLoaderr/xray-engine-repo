@@ -129,7 +129,7 @@ void CWeaponKnife::OnAnimationEnd()
             if(m_attackStart) 
 			{
 				m_attackStart = false;
-				m_pHUD->animPlay(mhud_attack_e[Random.randI(mhud_attack_e.size())], TRUE, this);
+				m_pHUD->animPlay(mhud_attack_e[Random.randI(mhud_attack_e.size())], FALSE, this);
 				Fvector	p1, d; 
 				p1.set(vLastFP); 
 				d.set(vLastFD);
@@ -158,7 +158,7 @@ void CWeaponKnife::OnAnimationEnd()
             if(m_attackStart) 
 			{
 				m_attackStart = false;
-				m_pHUD->animPlay(mhud_attack2_e[Random.randI(mhud_attack2_e.size())], TRUE, this);
+				m_pHUD->animPlay(mhud_attack2_e[Random.randI(mhud_attack2_e.size())], FALSE, this);
 				
 				Fvector	p1, d; 
 				p1.set(vLastFP); 
