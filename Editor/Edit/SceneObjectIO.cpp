@@ -52,14 +52,9 @@ bool CSceneObject::Load(CStream& F){
         R_ASSERT(F.FindChunk(EOBJ_CHUNK_REFERENCE));
         F.Read(&m_ObjVer, sizeof(m_ObjVer));
         F.RstringZ(buf);
-        CLibObject* LO = Lib->SearchObject(buf);
-        if (!LO){
+        CEditableObject* O = Lib->GetEditObject(buf);
+        if (!(m_pRefs=O)){
             ELog.Msg( mtError, "CSceneObject: '%s' not found in library", buf );
-            bRes = false;
-            break;
-        }
-        if (0==(m_pRefs=LO->GetReference())){
-            ELog.Msg( mtError, "CSceneObject: '%s' can't load", buf );
             bRes = false;
             break;
         }

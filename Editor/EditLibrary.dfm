@@ -1,6 +1,6 @@
 object frmEditLibrary: TfrmEditLibrary
-  Left = 614
-  Top = 307
+  Left = 768
+  Top = 409
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Object Library'
@@ -42,36 +42,9 @@ object frmEditLibrary: TfrmEditLibrary
       FlatAlwaysEdge = True
       OnClick = ebCancelClick
     end
-    object ebSave: TExtBtn
-      Left = 4
-      Top = 273
-      Width = 109
-      Height = 17
-      Align = alNone
-      BevelShow = False
-      CloseButton = False
-      Caption = 'Save'
-      Enabled = False
-      Transparent = False
-      FlatAlwaysEdge = True
-      OnClick = ebSaveClick
-    end
-    object ebValidate: TExtBtn
-      Left = 4
-      Top = 249
-      Width = 109
-      Height = 17
-      Align = alNone
-      BevelShow = False
-      CloseButton = False
-      Caption = 'Validate Library'
-      Transparent = False
-      FlatAlwaysEdge = True
-      OnClick = ebValidateClick
-    end
     object ebMakeThm: TExtBtn
       Left = 4
-      Top = 232
+      Top = 140
       Width = 109
       Height = 17
       Align = alNone
@@ -85,7 +58,7 @@ object frmEditLibrary: TfrmEditLibrary
     end
     object ebUnload: TExtBtn
       Left = 4
-      Top = 208
+      Top = 252
       Width = 109
       Height = 17
       Align = alNone
@@ -96,35 +69,9 @@ object frmEditLibrary: TfrmEditLibrary
       FlatAlwaysEdge = True
       OnClick = ebUnloadClick
     end
-    object ebLoadObject: TExtBtn
-      Left = 4
-      Top = 5
-      Width = 109
-      Height = 18
-      Align = alNone
-      BevelShow = False
-      CloseButton = False
-      Caption = 'Append'
-      Transparent = False
-      FlatAlwaysEdge = True
-      OnClick = ebLoadObjectClick
-    end
-    object ebDeleteObject: TExtBtn
-      Left = 4
-      Top = 43
-      Width = 109
-      Height = 18
-      Align = alNone
-      BevelShow = False
-      CloseButton = False
-      Caption = 'Delete'
-      Transparent = False
-      FlatAlwaysEdge = True
-      OnClick = ebDeleteItemClick
-    end
     object ebProperties: TExtBtn
       Left = 4
-      Top = 66
+      Top = 121
       Width = 109
       Height = 18
       Align = alNone
@@ -135,27 +82,47 @@ object frmEditLibrary: TfrmEditLibrary
       FlatAlwaysEdge = True
       OnClick = ebPropertiesClick
     end
-    object ebReloadObject: TExtBtn
+    object ebSave: TExtBtn
       Left = 4
-      Top = 23
+      Top = 272
       Width = 109
-      Height = 18
+      Height = 17
       Align = alNone
       BevelShow = False
       CloseButton = False
-      Caption = 'Reload'
+      Caption = 'Save'
+      Enabled = False
       Transparent = False
       FlatAlwaysEdge = True
-      OnClick = ebReloadObjectClick
+      OnClick = ebSaveClick
     end
     object cbPreview: TCheckBox
       Left = 4
-      Top = 96
+      Top = 160
       Width = 108
       Height = 17
       Caption = 'Preview'
       TabOrder = 0
       OnClick = cbPreviewClick
+    end
+    object paImage: TPanel
+      Left = 0
+      Top = 1
+      Width = 116
+      Height = 116
+      BevelOuter = bvLowered
+      Caption = '<no image>'
+      TabOrder = 1
+      object pbImage: TPaintBox
+        Left = 1
+        Top = 1
+        Width = 114
+        Height = 114
+        Align = alClient
+        Color = clGray
+        ParentColor = False
+        OnPaint = pbImagePaint
+      end
     end
   end
   object tvObjects: TElTree
@@ -175,7 +142,6 @@ object frmEditLibrary: TfrmEditLibrary
     BorderSides = [ebsLeft, ebsRight, ebsTop, ebsBottom]
     CustomPlusMinus = True
     DoInplaceEdit = False
-    DragAllowed = True
     DrawFocusRect = False
     DragImageMode = dimOne
     DragTrgDrawMode = ColorRect
@@ -193,41 +159,41 @@ object frmEditLibrary: TfrmEditLibrary
     HeaderHeight = 19
     HeaderHotTrack = False
     HeaderSections.Data = {
-      F5FFFFFF07000000E42FED0E00000000FFFFFFFF000001010100321278000000
-      000000001027000000010000C0CA530500000000000001040000000000000104
+      F5FFFFFF070000001049680600000000FFFFFFFF000001010100000078000000
+      000000001027000000010000C0CA530500000000000000000000000000000100
       0000000000000000000100000000000000000000000000000000000000000000
-      6CEA01040F00850100000000A8930C04AC83C80728000000703A5C656469746F
-      725C696D616765656469746F722E637090000000010000000001000000000000
-      000000000000E42FED0E00000000FFFFFFFF0000010101003212780000000000
-      00001027000000010000702B4905010000000000010400000000000001040000
-      0000000000000001000000000000000000000000000000000000000000006CEA
-      01040F00850100000000A8930C04AC83C80728000000703A5C656469746F725C
-      696D616765656469746F722E6370900000000100000000010000000000000000
-      00000000E42FED0E00000000FFFFFFFF00000101010032127800000000000000
-      1027000000010000504F150E0200000000000104000000000000010400000000
-      000000000001000000000000000000000000000000000000000000006CEA0104
-      0F00850100000000A8930C04AC83C80728000000703A5C656469746F725C696D
-      616765656469746F722E63709000000001000000000100000000000000000000
-      0000E42FED0E00000000FFFFFFFF000001010100321278000000000000001027
-      00000001000084DF650E03000000000001040000000000000104000000000000
-      00000001000000000000000000000000000000000000000000006CEA01040F00
-      850100000000A8930C04AC83C80728000000703A5C656469746F725C696D6167
-      65656469746F722E637090000000010000000001000000000000000000000000
-      E42FED0E00000000FFFFFFFF0000010101003212780000000000000010270000
-      0001000070981404040000000000010400000000000001040000000000000000
-      0001000000000000000000000000000000000000000000006CEA01040F008501
-      00000000A8930C04AC83C80728000000703A5C656469746F725C696D61676565
-      6469746F722E637090000000010000000001000000000000000000000000E42F
-      ED0E00000000FFFFFFFF00000101010032127800000000000000102700000001
-      00000427B6190500000000000104000000000000010400000000000000000001
-      000000000000000000000000000000000000000000006CEA01040F0085010000
-      0000A8930C04AC83C80728000000703A5C656469746F725C696D616765656469
-      746F722E637090000000010000000001000000000000000000000000E42FED0E
-      00000000FFFFFFFF000001010100321278000000000000001027000000010000
-      54C5450406000000000001040000000000000104000000000000000000010000
-      00000000000000000000000000000000000000006CEA01040F00850100000000
-      A8930C04AC83C80728000000703A5C656469746F725C696D616765656469746F
-      722E637090000000010000000001000000000000000000000000}
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000090000000010000000001000000000000
+      0000000000001049680600000000FFFFFFFF0000010101000000780000000000
+      00001027000000010000702B4905010000000000000000000000000001000000
+      0000000000000001000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000900000000100000000010000000000000000
+      000000001049680600000000FFFFFFFF00000101010000007800000000000000
+      1027000000010000504F150E0200000000000000000000000000010000000000
+      0000000000010000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000009000000001000000000100000000000000000000
+      00001049680600000000FFFFFFFF000001010100000078000000000000001027
+      00000001000084DF650E03000000000000000000000000000100000000000000
+      0000000100000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000090000000010000000001000000000000000000000000
+      1049680600000000FFFFFFFF0000010101000000780000000000000010270000
+      0001000070981404040000000000000000000000000001000000000000000000
+      0001000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000900000000100000000010000000000000000000000001049
+      680600000000FFFFFFFF00000101010000007800000000000000102700000001
+      00000427B6190500000000000000000000000000010000000000000000000001
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000009000000001000000000100000000000000000000000010496806
+      00000000FFFFFFFF000001010100000078000000000000001027000000010000
+      54C5450406000000000000000000000000000100000000000000000000010000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000090000000010000000001000000000000000000000000}
     HeaderFont.Charset = DEFAULT_CHARSET
     HeaderFont.Color = clWindowText
     HeaderFont.Height = -11
@@ -271,7 +237,6 @@ object frmEditLibrary: TfrmEditLibrary
       E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0808080808080E0E0E0E0E0E0E0E0E0E0E0
       E0808080808080808080808080E0E0E0E0E0E080808080808080808080808080
       8080808080808080808080808080808080808080808080808080}
-    PopupMenu = pmObjects
     ScrollbarOpposite = False
     ScrollTracking = True
     ShowLeafButton = False
@@ -293,49 +258,9 @@ object frmEditLibrary: TfrmEditLibrary
     UseXPThemes = False
     TextColor = clBtnText
     BkColor = clGray
-    OnItemChange = tvObjectsItemChange
     OnItemFocused = tvObjectsItemFocused
-    OnDragDrop = tvObjectsDragDrop
-    OnDragOver = tvObjectsDragOver
-    OnStartDrag = tvObjectsStartDrag
     OnDblClick = tvObjectsDblClick
     OnKeyPress = tvObjectsKeyPress
-  end
-  object pmObjects: TPopupMenu
-    object miNewFolder: TMenuItem
-      Caption = 'New Folder...'
-      GroupIndex = 1
-      OnClick = miNewFolderClick
-    end
-    object miEditFolder: TMenuItem
-      Caption = 'Edit Folder'
-      GroupIndex = 1
-      OnClick = miEditFolderClick
-    end
-    object miDeleteFolder: TMenuItem
-      Caption = 'Delete Folder'
-      GroupIndex = 1
-      OnClick = ebDeleteItemClick
-    end
-    object Folder1: TMenuItem
-      Caption = '-'
-      GroupIndex = 1
-    end
-    object LoadObject1: TMenuItem
-      Caption = 'Append Object'
-      GroupIndex = 1
-      OnClick = ebLoadObjectClick
-    end
-    object DeleteObject1: TMenuItem
-      Caption = 'Delete Object'
-      GroupIndex = 1
-      OnClick = ebDeleteItemClick
-    end
-    object miObjectProperties: TMenuItem
-      Caption = 'Object Properties'
-      GroupIndex = 1
-      OnClick = ebPropertiesClick
-    end
   end
   object fsStorage: TFormStorage
     StoredValues = <
@@ -351,7 +276,5 @@ object frmEditLibrary: TfrmEditLibrary
         Name = 'EmitterDirZ'
         Value = 0s
       end>
-    Left = 32
-    Top = 8
   end
 end

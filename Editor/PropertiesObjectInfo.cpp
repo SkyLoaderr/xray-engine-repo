@@ -15,7 +15,7 @@
 //---------------------------------------------------------------------------
 void __fastcall TfrmPropertiesObject::tsInfoShow(TObject *Sender)
 {
-	if (!m_CurrentObject) return;
+	if (!m_EditObject) return;
 // Set up info
     paBB->Visible = true;
 

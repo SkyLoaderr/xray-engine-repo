@@ -16,7 +16,7 @@
 //---------------------------------------------------------------------------
 void __fastcall TfrmPropertiesObject::tsSurfacesShow(TObject *Sender)
 {
-	if (!m_CurrentObject) return;
+	if (!m_EditObject) return;
 // Set up surfaces&textures
     bool bEq;
     tvSurfaces->Items->Clear();

@@ -359,12 +359,6 @@ void __fastcall TfraLeftBar::ebResetAnimationClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::ebCleanLibraryClick(TObject *Sender)
-{
-	UI.Command( COMMAND_CLEAN_LIBRARY );
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfraLeftBar::ebGroupDestroyAllClick(TObject *Sender)
 {
 	UI.Command(COMMAND_GROUP_DESTROYALL);

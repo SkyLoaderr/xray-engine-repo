@@ -30,7 +30,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	case COMMAND_EXIT:{
 	    EEditorState est = GetEState();
     	switch(est){
-        case esEditLibrary: 	if(frmEditLibrary) if (!frmEditLibrary->FinalClose()) return false; break;
+        case esEditLibrary: 	if (!TfrmEditLibrary::FinalClose()) return false; break;
         case esEditParticles:	if (!TfrmEditParticles::FinalClose()) return false;  break;
         case esEditImages:		if (!TfrmImageLib::HideImageLib()) return false; break;
         case esEditScene:		if (!Scene->IfModified()) return false; break;
@@ -63,10 +63,10 @@ bool TUI::Command( int _Command, int p1, int p2 ){
         break;
     case COMMAND_LIBRARY_EDITOR:
         if (Scene->ObjCount()||(GetEState()!=esEditScene)){
-        	if (GetEState()==esEditLibrary)	frmEditLibraryEditLibrary();
+        	if (GetEState()==esEditLibrary)	TfrmEditLibrary::ShowEditor();
             else							ELog.DlgMsg(mtError, "Scene must be empty before editing library!");
         }else{
-            frmEditLibraryEditLibrary();
+            TfrmEditLibrary::ShowEditor();
         }
         break;
     case COMMAND_PARTICLE_EDITOR:
@@ -382,7 +382,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 			Scene->ZoomExtents(p1);
 		} else {
         	if (GetEState()==esEditLibrary){
-            	frmEditLibrary->ZoomObject();
+            	TfrmEditLibrary::ZoomObject();
             }else{
                 ELog.DlgMsg( mtError, "Scene sharing violation" );
                 bRes = false;
@@ -479,14 +479,6 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 			bRes = false;
         }
 		break;
-    case COMMAND_CLEAN_LIBRARY:
-		if( !Scene->locked() ){
-	    	Lib->Clean();
-		}else{
-        	ELog.DlgMsg( mtError, "Scene sharing violation" );
-			bRes = false;
-        }
-    	break;
     case COMMAND_SET_SNAP_OBJECTS:
 		if( !Scene->locked() ){
 	    	int cnt=Scene->SetSnapList();

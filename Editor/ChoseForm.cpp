@@ -46,10 +46,11 @@ LPCSTR __fastcall TfrmChoseItem::SelectObject(bool bMulti, bool bExcludeSystem, 
     form->tvItems->Items->Clear		();
     // fill object list
 	AnsiString fld;
-    for (LibObjIt it=Lib->FirstObj(); it!=Lib->LastObj(); it++){
-		if (!start_folder||(start_folder&&(stricmp(start_folder,FOLDER::GetFolderName((*it)->GetName(),fld))==0)))
-			if (!bExcludeSystem||(bExcludeSystem&&((*it)->GetName()[0]!='$')))
-            	FOLDER::AppendObject(form->tvItems,(*it)->GetName());
+    AStringVec& lst = Lib->Objects();
+    for (AStringIt it=lst.begin(); it!=lst.end(); it++){
+		if (!start_folder||(start_folder&&(stricmp(start_folder,FOLDER::GetFolderName(it->c_str(),fld))==0)))
+			if (!bExcludeSystem||(bExcludeSystem&&((*it)[0]!='$')))
+            	FOLDER::AppendObject(form->tvItems,it->c_str());
     }
     // redraw
 	form->tvItems->IsUpdating		= false;
@@ -406,9 +407,8 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
     	        if (!m_Thm->Valid()) 	pbImage->Repaint();
         	    else				 	pbImagePaint(Sender);
             }
-			CLibObject* LO			= Lib->SearchObject(nm.c_str()); R_ASSERT(LO);
 			lbItemName->Caption 	= "\""+Item->Text+"\"";
-			lbFileName->Caption		= "\""+AnsiString(LO->GetSrcName())+"\"";
+			lbFileName->Caption		= "\""+Item->Text+".object\"";
             lbInfo->Caption			= "-";
         }else{
 			lbItemName->Caption = "\""+Item->Text+"\"";

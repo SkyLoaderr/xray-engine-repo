@@ -25,11 +25,11 @@
 #include <Grids.hpp>
 #include <Menus.hpp>
 
-class CLibObject;
 class CEditMesh;
 class CSurface;
 class CSMotion;
 class COMotion;
+class EImageThumbnail;
 //---------------------------------------------------------------------------
 class TfrmPropertiesObject : public TForm
 {
@@ -252,7 +252,7 @@ __published:	// IDE-managed Components
 	void __fastcall seTransformChange(TObject *Sender);
 	void __fastcall ebSelectShaderXRLCClick(TObject *Sender);
 private:	// User declarations
-//S    ETextureCore* 			tx_selected;
+    EImageThumbnail*		tx_selected;
     CSurface* 				surf_selected;
 
     CSMotion* 				selected_smotion;
@@ -270,7 +270,6 @@ private:	// User declarations
     TElTreeItem* 			FindSMotionItem(const char* name);
 
     // static part
-	static CLibObject* 		m_CurrentObject;
 	static CEditableObject* m_EditObject;
 	static 	TfrmPropertiesObject* form;
 
@@ -282,8 +281,8 @@ public:		// User declarations
     static void __fastcall 	ShowProperties();
     static void __fastcall 	HideProperties();
     static bool __fastcall 	Visible(){return !!form;}
-    static void	SetCurrent	(CLibObject* object);
-    static void	Reset		(){m_CurrentObject=0;}
+    static void	SetCurrent	(CEditableObject* object);
+    static void	Reset		(){m_EditObject=0;}
     static bool	IsModified	(){return form?form->ebOk->Enabled:false;}
     static void	Pick		(const SRayPickInfo& pinf);
 };

@@ -54,6 +54,7 @@ void __fastcall TfraObject::ebDeselectByRefsClick(TObject *Sender)
 {
 	SelByRefObject( false );
 }
+//---------------------------------------------------------------------------
 
 void TfraObject::SelByRefObject( bool flag ){
     ObjectList objlist;
@@ -62,19 +63,16 @@ void TfraObject::SelByRefObject( bool flag ){
         sel_name = ((CSceneObject*)objlist.front())->GetName();
 	LPCSTR N = TfrmChoseItem::SelectObject(false,true,0,sel_name);
     if (!N) return;
-    CLibObject *LO = Lib->SearchObject(N);
-	if( LO && LO->IsLoaded() ){
-    	CEditableObject* _C = LO->GetReference();
-		ObjectIt _F = Scene->FirstObj(OBJCLASS_SCENEOBJECT);
-    	ObjectIt _E = Scene->LastObj(OBJCLASS_SCENEOBJECT);
-        for(;_F!=_E;_F++){
-			if( (*_F)->Visible() ){
-				CSceneObject *_O = (CSceneObject *)(*_F);
-				if( _O->RefCompare( _C ) )
-					_O->Select( flag );
-			}
-		}
-	}
+    ObjectIt _F = Scene->FirstObj(OBJCLASS_SCENEOBJECT);
+    ObjectIt _E = Scene->LastObj(OBJCLASS_SCENEOBJECT);
+    for(;_F!=_E;_F++)
+    {
+        if((*_F)->Visible() )
+        {
+            CSceneObject *_O = (CSceneObject *)(*_F);
+            if(_O->RefCompare(N)) _O->Select( flag );
+        }
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -91,11 +89,7 @@ void __fastcall TfraObject::ebCurObjClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 void __fastcall TfraObject::OutCurrentName(){
-    if (Lib->GetCurrentObject()){
-        ebCurObj->Caption = AnsiString(Lib->GetCurrentObject()->GetName());
-    }else{
-		ebCurObj->Caption = "<none>";
-    }
+	ebCurObj->Caption = Lib->GetCurrentObject()?Lib->GetCurrentObject():"<none>";
 }
 //---------------------------------------------------------------------------
 

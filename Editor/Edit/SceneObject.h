@@ -34,6 +34,7 @@ public:
     IC bool			CheckVersion			()  {return (m_ObjVer==m_pRefs->m_ObjVer);}
     // get object properties methods
 	IC bool 		RefCompare				(CEditableObject *to){return !!(m_pRefs==to); }
+	IC bool 		RefCompare				(LPCSTR ref){return strcmp(ref,m_pRefs->GetName())==0; }
 	IC CEditableObject*	GetRef				()	{return m_pRefs; }
 	IC void			SetRef					(CEditableObject* ref)	{m_pRefs = ref;}
 	IC EditMeshVec& Meshes					() {VERIFY(m_pRefs); return m_pRefs->Meshes();}

@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 617
+  Height = 277
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -1523,10 +1523,6 @@ object fraLeftBar: TfraLeftBar
     object ResetAniamation1: TMenuItem
       Caption = 'Reset Animation'
       OnClick = ebResetAnimationClick
-    end
-    object CleanLibrary1: TMenuItem
-      Caption = 'Clean Library'
-      OnClick = ebCleanLibraryClick
     end
   end
   object pmToolsEdit: TMxPopupMenu

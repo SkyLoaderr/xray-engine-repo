@@ -162,6 +162,7 @@ int CImageManager::GetFiles(AStringVec& files)
     AStringVec& lst = FS.GetFiles(FS.m_Textures.m_Path);
     for (AStringIt it=lst.begin(); it!=lst.end(); it++){
 	    AnsiString ext = ExtractFileExt(*it).LowerCase();
+//        ext = ext.SubString(2,ext.Length());
         if (ext=="thm") continue;
         if (!IsFormatRegister(ext.c_str())) continue;
      	files.push_back(it->Delete(1,count));

@@ -14,7 +14,7 @@
 //---------------------------------------------------------------------------
 void __fastcall TfrmPropertiesObject::tsMeshesShow(TObject *Sender)
 {
-	if (!m_CurrentObject) return;
+	if (!m_EditObject) return;
 // Set up meshes
     AnsiString name;
 

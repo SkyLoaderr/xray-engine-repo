@@ -61,6 +61,8 @@ void CEditableObject::SaveObject(const char* fname){
     Save(F);
     F.close_chunk();
 
+    FS.VerifyPath(fname);
+
     F.SaveTo(fname,0);
 //    UI.ProgressStart(2,"Compressing...");
 //    UI.ProgressUpdate(1);
@@ -259,6 +261,8 @@ void CEditableObject::Save(CFS_Base& F){
     	F.WstringZ		(m_ActiveSMotion->Name());
 	    F.close_chunk	();
     }
+
+	t_bOnModified		= false;
 }
 //------------------------------------------------------------------------------
 CSMotion* CEditableObject::LoadSMotion(const char* fname){

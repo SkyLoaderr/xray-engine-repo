@@ -52,8 +52,8 @@ void TfrmDOShuffle::GetInfo(){
     // objects
     for (DOIt d_it=DM->m_Objects.begin(); d_it!=DM->m_Objects.end(); d_it++){
     	SDOData* dd = new SDOData;
-        dd->LO = Lib->SearchObject((*d_it)->GetName());
-        VERIFY(dd->LO);
+        dd->O = Lib->GetEditObject((*d_it)->GetName());
+        VERIFY(dd->O);
         dd->m_fMinScale 		= (*d_it)->m_fMinScale;
         dd->m_fMaxScale 		= (*d_it)->m_fMaxScale;
         dd->m_fDensityFactor 	= (*d_it)->m_fDensityFactor;
@@ -285,8 +285,8 @@ void __fastcall TfrmDOShuffle::ebAddObjectClick(TObject *Sender)
         for (AStringIt s_it=lst.begin(); s_it!=lst.end(); s_it++)
         	if (!FindItem(s_it->c_str())){
                 SDOData* dd = new SDOData;
-                dd->LO = Lib->SearchObject(s_it->c_str());
-                VERIFY(dd->LO);
+                dd->O = Lib->GetEditObject(s_it->c_str());
+                VERIFY(dd->O);
                 dd->m_fMinScale 		= 0.5f;
                 dd->m_fMaxScale 		= 2.f;
                 dd->m_fDensityFactor 	= 1.f;

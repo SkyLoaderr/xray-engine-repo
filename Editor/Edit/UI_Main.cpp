@@ -135,7 +135,7 @@ bool TUI::PickGround(Fvector& hitpoint, const Fvector& start, const Fvector& dir
         SRayPickInfo pinf;
 	    EEditorState est = GetEState();
         switch(est){
-        case esEditLibrary:		bPickObject = !!frmEditLibrary->RayPick(start,direction,&pinf); break;
+        case esEditLibrary:		bPickObject = !!TfrmEditLibrary::RayPick(start,direction,&pinf); break;
         case esEditScene:		bPickObject = !!Scene->RayPick(start,direction,OBJCLASS_SCENEOBJECT,&pinf,false,true); break;
         default: THROW;
         }
@@ -302,7 +302,7 @@ void TUI::Redraw(){
 
 	    EEditorState est = GetEState();
         switch(est){
-        case esEditLibrary: 	if (frmEditLibrary) frmEditLibrary->OnRender(); break;
+        case esEditLibrary: 	TfrmEditLibrary::OnRender(); break;
         case esEditParticles: 	TfrmEditParticles::OnRender(); break;
         case esEditImages:	 	TfrmImageLib::OnRender(); break;
         case esEditScene:		Scene->Render(&precalc_identity); break;
@@ -492,7 +492,7 @@ void TUI::OnMousePress(int btn){
                 Device.m_Camera.MouseRayFromPoint(m_StartRStart, m_StartRNorm, m_StartCp );
                 Device.m_Camera.MouseRayFromPoint(m_CurrentRStart, m_CurrentRNorm, m_CurrentCp );
 				SRayPickInfo pinf;
-                frmEditLibrary->RayPick(m_CurrentRStart,m_CurrentRNorm,&pinf);
+                TfrmEditLibrary::RayPick(m_CurrentRStart,m_CurrentRNorm,&pinf);
             }break;
             case esEditParticles: 	break;
             case esEditImages: 		break;

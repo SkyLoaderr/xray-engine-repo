@@ -16,32 +16,21 @@
 #pragma resource "*.dfm"
 
 TfrmPropertiesObject* 	TfrmPropertiesObject::form 				= 0;
-CLibObject* 			TfrmPropertiesObject::m_CurrentObject 	= 0;
 CEditableObject*		TfrmPropertiesObject::m_EditObject		= 0;
 
-void TfrmPropertiesObject::SetCurrent(CLibObject* object){
+void TfrmPropertiesObject::SetCurrent(CEditableObject* object){
     if (form){
 	    form->ApplyObjectsInfo();
-	    m_CurrentObject = object;
+	    m_EditObject = object;
     	form->GetObjectsInfo();
 		form->pcObjects->ActivePage->OnShow(0);
     }else{
-	    m_CurrentObject = object;
-    }
-    if (form&&m_CurrentObject){
-	    m_EditObject = m_CurrentObject->GetReference();
-    	R_ASSERT(m_EditObject);
-    }else{
-		m_EditObject = 0;
+	    m_EditObject = object;
     }
 }
 
 void __fastcall TfrmPropertiesObject::ShowProperties(){
     if (!form) form = new TfrmPropertiesObject(0);
-    if (m_CurrentObject){
-	    m_EditObject = m_CurrentObject->GetReference();
-    	R_ASSERT(m_EditObject);
-    }
     form->Show();
 	form->GetObjectsInfo();
 }
@@ -109,17 +98,16 @@ void __fastcall TfrmPropertiesObject::ebApplyClick(TObject *Sender)
 void __fastcall TfrmPropertiesObject::ebCancelClick(TObject *Sender)
 {
     Close();
-    if (m_CurrentObject){
-        m_CurrentObject->Modified(false);
-    	m_CurrentObject->UnloadObject();
-        m_CurrentObject = 0;
+    if (m_EditObject){
+    	Lib->UnloadObject(m_EditObject->GetName());
+        m_EditObject = 0;
     }
 }
 //--------------------------------------------------------------------------------------------------
 
 void TfrmPropertiesObject::GetObjectsInfo(){
 	bLoadMode = true;
-	if (m_CurrentObject){
+	if (m_EditObject){
     	pcObjects->Enabled = true;
 
         mmScript->Text = m_EditObject->GetClassScript();
@@ -137,7 +125,7 @@ void TfrmPropertiesObject::GetObjectsInfo(){
 }
 
 void TfrmPropertiesObject::ApplyObjectsInfo(){
-	if (m_CurrentObject&&IsModified()){
+	if (m_EditObject&&IsModified()){
         if (!edName->Text.Length()){
             ELog.DlgMsg(mtError,"Enter Object Name!");
             return;
@@ -146,16 +134,12 @@ void TfrmPropertiesObject::ApplyObjectsInfo(){
         cbMakeDynamic->ObjApply( m_EditObject->m_DynamicObject );
 		// class script
         m_EditObject->GetClassScript() = mmScript->Text;
-		// name
-        m_EditObject->SetName(edName->Text.c_str());
         // modify transformation
 	    m_EditObject->t_vPosition.set	(sePositionX->Value,sePositionY->Value,	sePositionZ->Value);
 		m_EditObject->t_vRotate.set		(seRotateX->Value,	seRotateY->Value,	seRotateZ->Value);
 	    m_EditObject->t_vScale.set		(seScaleX->Value,	seScaleY->Value,	seScaleZ->Value);
-        // set "NeedSave" object flag
-		m_EditObject->m_LibParent->Modified();
         // set "Modify" library flag
-	    frmEditLibrary->OnModified();
+	    TfrmEditLibrary::OnModified();
 	}
 }
 
@@ -170,7 +154,7 @@ void __fastcall TfrmPropertiesObject::FormKeyDown(TObject *Sender,
 
 void __fastcall TfrmPropertiesObject::cbMakeDynamicClick(TObject *Sender)
 {
-	VERIFY(m_CurrentObject);
+	VERIFY(m_EditObject);
     tsScript->TabVisible 		= cbMakeDynamic->Checked;
     tsOAnimation->TabVisible 	= cbMakeDynamic->Checked;
     tsSAnimation->TabVisible 	= cbMakeDynamic->Checked&&m_EditObject->IsSkeleton();
@@ -180,7 +164,7 @@ void __fastcall TfrmPropertiesObject::cbMakeDynamicClick(TObject *Sender)
 
 void __fastcall TfrmPropertiesObject::tsMainOptionsShow(TObject *Sender)
 {
-	if (!m_CurrentObject) return;
+	if (!m_EditObject) return;
     edName->Enabled 		= true;
     mmScript->Enabled 		= true;
     gbTemplates->Enabled 	= true;
@@ -196,7 +180,7 @@ void __fastcall TfrmPropertiesObject::tsMainOptionsShow(TObject *Sender)
 void __fastcall TfrmPropertiesObject::pcObjectsChange(TObject *Sender)
 {
     ebDropper->Down		= false;
-	if (((pcObjects->ActivePage==tsMeshes)||(pcObjects->ActivePage==tsSurfaces))&&m_CurrentObject)
+	if (((pcObjects->ActivePage==tsMeshes)||(pcObjects->ActivePage==tsSurfaces))&&m_EditObject)
 	    ebDropper->Enabled	= true;
     else
 	    ebDropper->Enabled	= false;
@@ -204,7 +188,7 @@ void __fastcall TfrmPropertiesObject::pcObjectsChange(TObject *Sender)
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPropertiesObject::Pick(const SRayPickInfo& pinf){
-	if (form&&form->ebDropper->Down&&m_CurrentObject){
+	if (form&&form->ebDropper->Down&&m_EditObject){
 		if ((form->pcObjects->ActivePage==form->tsMeshes)||(form->pcObjects->ActivePage==form->tsSurfaces)){
             if (form->pcObjects->ActivePage==form->tsMeshes){
                 form->tvMeshes->Selected = form->tvMeshes->Items->LookForItem(0,pinf.e_mesh->GetName(),0,0,false,true,false,false,true);

@@ -67,7 +67,6 @@ __published:	// IDE-managed Components
 	TMxPopupMenu *pmSceneCommands;
 	TMenuItem *Refresh1;
 	TMenuItem *ResetAniamation1;
-	TMenuItem *CleanLibrary1;
 	TMxPopupMenu *pmToolsEdit;
 	TMxPopupMenu *pmToolsSelection;
 	TMxPopupMenu *pmToolsVisibility;
@@ -180,7 +179,6 @@ __published:	// IDE-managed Components
 	void __fastcall ebGroupDestroyClick(TObject *Sender);
 	void __fastcall ebGroupSaveClick(TObject *Sender);
 	void __fastcall ebResetAnimationClick(TObject *Sender);
-	void __fastcall ebCleanLibraryClick(TObject *Sender);
 	void __fastcall ebGroupDestroyAllClick(TObject *Sender);
 	void __fastcall ebMakeLTXClick(TObject *Sender);
 	void __fastcall ebSceneFileMouseDown(TObject *Sender, TMouseButton Button,

@@ -39,7 +39,7 @@ void __fastcall TfrmLog::ebClearClick(TObject *Sender)
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmLog::AddMessage(TMsgDlgType mt, const AnsiString& msg){
-	VERIFY(form);
+	if (!form) return;
 	form->lbLog->Items->AddObject(msg,(TObject*)mt);
     form->lbLog->ItemIndex = form->lbLog->Items->Count-1;
     if ((mt==mtError)&&!form->Visible) form->Show();

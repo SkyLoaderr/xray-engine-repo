@@ -99,6 +99,9 @@ public:
 	Fvector 		t_vPosition;
     Fvector			t_vScale;
     Fvector			t_vRotate;
+
+    bool			t_bOnModified;
+    IC bool			IsModified				(){return t_bOnModified;}
 protected:
     st_Version		m_ObjVer;
 
@@ -120,7 +123,7 @@ public:
 					CEditableObject			(LPCSTR name);
 	virtual 		~CEditableObject		();
 
-//    LPCSTR			GetName					();
+    LPCSTR			GetName					(){ return m_LibName.c_str();}
 //    void			SetName					(LPCSTR name);
 
     IC EditMeshIt	FirstMesh				()	{return m_Meshes.begin();}

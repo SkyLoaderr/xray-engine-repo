@@ -87,14 +87,9 @@ void CDetail::OnDeviceDestroy(){
 
 bool CDetail::Update	(LPCSTR name){
     // update link
-    CLibObject* m_pLO	= Lib->SearchObject(name);
-    if (!m_pLO){
+    m_pRefs				= Lib->GetEditObject(name);
+    if (!m_pRefs){
         ELog.DlgMsg		(mtError, "CDetail: '%s' not found in library", name);
-        return false;
-    }
-    m_pRefs				= m_pLO->GetReference();
-    if (0==m_pRefs){
-        ELog.DlgMsg		(mtError, "CDetail: '%s' can't load", name);
         return false;
     }
     if(m_pRefs->SurfaceCount()!=1){

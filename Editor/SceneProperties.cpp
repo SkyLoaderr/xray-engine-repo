@@ -297,17 +297,17 @@ void __fastcall TfrmSceneProperties::ebChooseSkydomeClick(TObject *Sender)
 #ifdef _LEVEL_EDITOR
 	LPCSTR N = TfrmChoseItem::SelectObject(false,true,SKYDOME_FOLDER,0);
 	if (!N) return;
-	CLibObject* LO = Lib->SearchObject(N);
-    if (!LO){
-        ELog.DlgMsg(mtError,"Object %s can't find in library.",N);
-        return ;
-    }
-	CEditableObject* O = LO->GetReference();
+
+	CEditableObject* O = Lib->GetEditObject(N);
+	if (!O){
+    	ELog.DlgMsg(mtError,"Object %s can't find in library.",N);
+        return;
+	}
     if (!O->IsDynamic()){
     	ELog.DlgMsg(mtError,"Non-dynamic models can't be used as Skydome.");
         return ;
-    }
-	edSkydomeObjectName->Text = LO->GetName();
+	}
+	edSkydomeObjectName->Text = N;
 #endif
 }
 //---------------------------------------------------------------------------

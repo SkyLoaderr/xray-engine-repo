@@ -46,17 +46,19 @@ bool __fastcall TUI_ControlObjectAdd::Start(TShiftState Shift){
     TfraObject* fraObject = (TfraObject*)parent_tool->pFrame; VERIFY(fraObject);
 	Fvector p;
 	if(!UI.PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm)) return false;
-    CLibObject* LO = Lib->GetCurrentObject();
-    if(!LO){
+    LPCSTR N = Lib->GetCurrentObject();
+    if(!N){
     	fraObject->ebCurObjClick(0);
-	    LO = Lib->GetCurrentObject();
+	    N = Lib->GetCurrentObject();
+
     }
-	if(LO!=0){
+    CEditableObject* ref = Lib->GetEditObject(Lib->GetCurrentObject());
+	if(ref){
         if (UI.PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm)){
             char namebuffer[MAX_OBJ_NAME];
-            Scene->GenObjectName( OBJCLASS_SCENEOBJECT, namebuffer, LO->GetName() );
-            CSceneObject *obj = new CSceneObject( namebuffer );
-            obj->SetRef( LO->GetReference() );
+            Scene->GenObjectName(OBJCLASS_SCENEOBJECT, namebuffer, N);
+            CSceneObject *obj = new CSceneObject(namebuffer);
+            obj->SetRef(ref);
             if (fraLeftBar->ebRandomAdd->Down){
                 Fvector S;
                 if (frmEditorPreferences->cbRandomRotation->Checked){

@@ -11,7 +11,7 @@
 //---------------------------------------------------------------------
 void __fastcall TfrmPropertiesObject::tsSAnimationShow(TObject *Sender)
 {
-	if (!m_CurrentObject) return;
+	if (!m_EditObject) return;
 // Set up surfaces&textures
     AnsiString name;
     tvSMotions->Items->Clear();
@@ -60,7 +60,7 @@ void __fastcall TfrmPropertiesObject::tsSAnimationShow(TObject *Sender)
 
 void __fastcall TfrmPropertiesObject::ebSAppendMotionClick(TObject *Sender)
 {
-	VERIFY(m_CurrentObject);
+	VERIFY(m_EditObject);
     AnsiString fn;
     if (FS.GetOpenName(&FS.m_SMotion,fn)){
     	CSMotion* M=m_EditObject->AppendSMotion(fn.c_str());
@@ -87,7 +87,7 @@ void __fastcall TfrmPropertiesObject::ebSAppendMotionClick(TObject *Sender)
 
 void __fastcall TfrmPropertiesObject::ebSReloadMotionClick(TObject *Sender)
 {
-	VERIFY(m_CurrentObject);
+	VERIFY(m_EditObject);
     if (selected_smotion){
     	AnsiString fn;
 	    if (FS.GetOpenName(&FS.m_SMotion,fn)){
@@ -104,7 +104,7 @@ void __fastcall TfrmPropertiesObject::ebSReloadMotionClick(TObject *Sender)
 
 void __fastcall TfrmPropertiesObject::ebSDeleteMotionClick(TObject *Sender)
 {
-	VERIFY(m_CurrentObject);
+	VERIFY(m_EditObject);
     if (tvSMotions->Selected){
         TElTreeItem* Item 	= tvSMotions->Selected;
         if (Item->Data){
@@ -132,7 +132,7 @@ TElTreeItem* TfrmPropertiesObject::FindSMotionItem(const char* name){
     return 0;
 }
 void __fastcall TfrmPropertiesObject::ebSResetActiveMotion(TElTreeItem* ignore_item){
-	if (m_CurrentObject){
+	if (m_EditObject){
 //		lbActiveSMotion->Caption 		= "...";
 	    for ( TElTreeItem* node = tvSMotions->Items->GetFirstNode(); node; node = node->GetNext())
     	    if (node->Checked&&(ignore_item!=node)){ node->Checked = false; break; }
@@ -143,7 +143,7 @@ void __fastcall TfrmPropertiesObject::ebSResetActiveMotion(TElTreeItem* ignore_i
 void __fastcall TfrmPropertiesObject::tvSMotionsItemChange(TObject *Sender,
       TElTreeItem *Item, TItemChangeMode ItemChangeMode)
 {
-	VERIFY(m_CurrentObject);
+	VERIFY(m_EditObject);
 	switch(ItemChangeMode){
     case icmText:
         if (FEditNode){
@@ -161,7 +161,7 @@ void __fastcall TfrmPropertiesObject::tvSMotionsItemChange(TObject *Sender,
         }
     break;
     case icmCheckState:
-    	if (m_CurrentObject){
+    	if (m_EditObject){
             if (Item->Checked){
 		    	lbActiveSMotion->Caption 	 = Item->Text;
     		    m_EditObject->SetActiveSMotion((CSMotion*)Item->Data);
@@ -255,7 +255,7 @@ void __fastcall TfrmPropertiesObject::seSMotionSpeedLWChange(
 
 void __fastcall TfrmPropertiesObject::ebSMotionClearClick(TObject *Sender)
 {
-	VERIFY(m_CurrentObject);
+	VERIFY(m_EditObject);
     TElTreeItem* Item = tvSMotions->Items->GetFirstNode(); Item->Clear();
 	m_EditObject->ClearSMotions();
 	OnModified(Sender);
@@ -264,7 +264,7 @@ void __fastcall TfrmPropertiesObject::ebSMotionClearClick(TObject *Sender)
 
 void __fastcall TfrmPropertiesObject::ebSMotionSaveClick(TObject *Sender)
 {
-	VERIFY(m_CurrentObject);
+	VERIFY(m_EditObject);
 	AnsiString fn;
     if (m_EditObject->SMotionCount()){
     	fn = m_EditObject->GetName();
@@ -280,7 +280,7 @@ void __fastcall TfrmPropertiesObject::ebSMotionSaveClick(TObject *Sender)
 
 void __fastcall TfrmPropertiesObject::ebSMotionLoadClick(TObject *Sender)
 {
-	VERIFY(m_CurrentObject);
+	VERIFY(m_EditObject);
 	AnsiString fn;
     if (FS.GetOpenName(&FS.m_SMotions,fn)){
     	TElTreeItem* Item = tvSMotions->Items->GetFirstNode(); Item->Clear();

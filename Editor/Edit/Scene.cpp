@@ -508,20 +508,17 @@ void EScene::Render( Fmatrix *_Camera ){
 void EScene::UpdateSkydome(){
 	_DELETE(m_SkyDome);
     if (!m_LevelOp.m_SkydomeObjName.IsEmpty()){
-        CLibObject* LO = Lib->SearchObject(m_LevelOp.m_SkydomeObjName.c_str());
-        if (!LO){
-        	ELog.DlgMsg(mtError,"Skydome %s can't find in library.",m_LevelOp.m_SkydomeObjName.c_str());
-        	return ;
+        CEditableObject* O = Lib->GetEditObject(m_LevelOp.m_SkydomeObjName.c_str());
+        if (!O){
+        	ELog.DlgMsg(mtError,"Object %s can't find in library.",m_LevelOp.m_SkydomeObjName.c_str());
+            return;
         }
-        CEditableObject* O = LO->GetReference();
         if (!O->IsDynamic()){
         	ELog.DlgMsg(mtError,"Non-dynamic models can't be used as Skydome.");
         	return ;
         }
-        if (O){
-            m_SkyDome = new CSceneObject("$Sky");
-            m_SkyDome->SetRef(O);
-        }
+        m_SkyDome = new CSceneObject("$Sky");
+        m_SkyDome->SetRef(O);
     }
 }
 
