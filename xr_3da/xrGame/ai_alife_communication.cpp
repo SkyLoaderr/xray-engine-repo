@@ -154,29 +154,29 @@ void CSE_ALifeSimulator::vfRestoreItems(CSE_ALifeHumanAbstract *tpALifeHumanAbst
 }
 
 #ifdef FAST_OWNERSHIP
-void CSE_ALifeSimulator::vfAttachGatheredItems(CSE_ALifeHumanAbstract *tpALifeHumanAbstract1, CSE_ALifeHumanAbstract *tpALifeHumanAbstract2, OBJECT_VECTOR &tpObjectVector)
+void CSE_ALifeSimulator::vfAttachGatheredItems(CSE_ALifeTraderAbstract *tpALifeTraderAbstract1, CSE_ALifeTraderAbstract *tpALifeTraderAbstract2, OBJECT_VECTOR &tpObjectVector)
 #else
-void CSE_ALifeSimulator::vfAttachGatheredItems(CSE_ALifeHumanAbstract *tpALifeHumanAbstract1, OBJECT_VECTOR &tpObjectVector)
+void CSE_ALifeSimulator::vfAttachGatheredItems(CSE_ALifeTraderAbstract *tpALifeTraderAbstract1, OBJECT_VECTOR &tpObjectVector)
 #endif
 {
 	tpObjectVector.clear();
-	tpObjectVector.insert(tpObjectVector.end(),tpALifeHumanAbstract1->children.begin(),tpALifeHumanAbstract1->children.end());
-	tpALifeHumanAbstract1->children.clear();
-	tpALifeHumanAbstract1->vfInitInventory();
+	tpObjectVector.insert(tpObjectVector.end(),tpALifeTraderAbstract1->children.begin(),tpALifeTraderAbstract1->children.end());
+	tpALifeTraderAbstract1->children.clear();
+	tpALifeTraderAbstract1->vfInitInventory();
 	OBJECT_IT			I = tpObjectVector.begin();
 	OBJECT_IT			E = tpObjectVector.end();
 	for ( ; I != E; I++) {
 #ifndef FAST_OWNERSHIP
 		CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = tpfGetObjectByID(*I);
 		l_tpALifeDynamicObject->ID_Parent = 0xffff;
-		vfAttachItem	(*tpALifeHumanAbstract1,dynamic_cast<CSE_ALifeInventoryItem*>(l_tpALifeDynamicObject),l_tpALifeDynamicObject->m_tGraphID);
+		vfAttachItem	(*tpALifeTraderAbstract1,dynamic_cast<CSE_ALifeInventoryItem*>(l_tpALifeDynamicObject),l_tpALifeDynamicObject->m_tGraphID);
 #else
 		CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(tpfGetObjectByID(*I));
-		if (l_tpALifeInventoryItem->m_tPreviousParentID != tpALifeHumanAbstract1->ID) {
-			R_ASSERT									(l_tpALifeInventoryItem->m_tPreviousParentID == tpALifeHumanAbstract2->ID);
-			tpALifeHumanAbstract2->vfDetachItem			(l_tpALifeInventoryItem,0,false);
+		if (l_tpALifeInventoryItem->m_tPreviousParentID != tpALifeTraderAbstract1->ID) {
+			R_ASSERT									(l_tpALifeInventoryItem->m_tPreviousParentID == tpALifeTraderAbstract2->ID);
+			tpALifeTraderAbstract2->vfDetachItem		(l_tpALifeInventoryItem,0,false);
 		}
-		tpALifeHumanAbstract1->vfAttachItem				(l_tpALifeInventoryItem,true);
+		tpALifeTraderAbstract1->vfAttachItem			(l_tpALifeInventoryItem,true);
 #endif
 	}
 }
@@ -697,23 +697,51 @@ void CSE_ALifeSimulator::vfPerformCommunication()
 void CSE_ALifeSimulator::vfCommunicateWithCustomer(CSE_ALifeHumanAbstract *tpALifeHumanAbstract, CSE_ALifeTraderAbstract *tpALifeTraderAbstract)
 {
 	// update items
-	if (tpfGetTaskByID(tpALifeHumanAbstract->m_dwCurTaskID,true)) {
-		OBJECT_IT								I;
-		if (tpALifeHumanAbstract->bfCheckIfTaskCompleted(I)) {
-			D_OBJECT_PAIR_IT					J = m_tObjectRegistry.find(*I);
-			R_ASSERT2							(J != m_tObjectRegistry.end(), "Specified object hasn't been found in the Object registry!");
-			CSE_ALifeInventoryItem				*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>((*J).second);
-			R_ASSERT2							(l_tpALifeInventoryItem,"Non inventory item has a parent?!");
-			if (tpALifeTraderAbstract->m_dwMoney >= l_tpALifeInventoryItem->m_dwCost) {
-#pragma todo("Dima to Dima : Optimize next 2 strings for better performance")
-				vfDetachItem					(*tpALifeHumanAbstract,l_tpALifeInventoryItem,tpALifeHumanAbstract->m_tGraphID);
-				vfAttachItem					(*tpALifeTraderAbstract,l_tpALifeInventoryItem,tpALifeHumanAbstract->m_tGraphID);
-				// paying/receiving money
-				tpALifeTraderAbstract->m_dwMoney-= l_tpALifeInventoryItem->m_dwCost;
-				tpALifeHumanAbstract->m_dwMoney += l_tpALifeInventoryItem->m_dwCost;
-			}
-		}
+	CSE_ALifeGroupAbstract	*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeGroupAbstract*>(tpALifeHumanAbstract);
+	if (l_tpALifeAbstractGroup) {
+		OBJECT_IT		I = l_tpALifeAbstractGroup->m_tpMembers.begin();
+		OBJECT_IT		E = l_tpALifeAbstractGroup->m_tpMembers.end();
+		for ( ; I != E; I++)
+			vfCommunicateWithCustomer(dynamic_cast<CSE_ALifeHumanAbstract*>(tpfGetObjectByID(*I)),tpALifeTraderAbstract);
+		return;
 	}
+	
+#pragma todo("Dima to Dima : assign correct trader prices")
+	tpALifeHumanAbstract->m_dwTotalMoney = tpALifeHumanAbstract->m_dwMoney;
+	while (!tpALifeHumanAbstract->children.empty()) {
+		CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(tpfGetObjectByID(*tpALifeHumanAbstract->children.begin()));
+		OBJECT_IT				I = tpALifeHumanAbstract->children.begin();
+		tpALifeHumanAbstract->vfDetachItem(l_tpALifeInventoryItem,&I);
+		tpALifeTraderAbstract->vfAttachItem(l_tpALifeInventoryItem,true);
+		tpALifeHumanAbstract->m_dwTotalMoney += l_tpALifeInventoryItem->m_dwCost;
+		tpALifeTraderAbstract->m_dwMoney	-= l_tpALifeInventoryItem->m_dwCost;
+	}
+	
+	tpALifeHumanAbstract->m_dwMoney			= tpALifeHumanAbstract->m_dwTotalMoney;
+	
+	vfAppendItemVector						(tpALifeTraderAbstract->children,m_tpItemVector);
+
+	m_tpBlockedItems1.clear					();
+	for (int i=0; i<8; i++) {
+		int									l_iItemCount = 0;
+		vfRunFunctionByIndex				(tpALifeHumanAbstract,m_tpBlockedItems1,m_tpItemVector,i,l_iItemCount);
+		vfAssignItemParents					(tpALifeHumanAbstract,l_iItemCount);
+	}
+	tpALifeTraderAbstract->m_dwMoney		+= tpALifeHumanAbstract->m_dwMoney - tpALifeHumanAbstract->m_dwTotalMoney;
+	tpALifeHumanAbstract->m_dwMoney			= tpALifeHumanAbstract->m_dwTotalMoney;
+	tpALifeHumanAbstract->m_dwTotalMoney	= u32(-1);
+
+	if (int(tpALifeTraderAbstract->m_dwMoney) < 0) {
+#pragma todo("Dima to Dima : Process situation if trader has not enough money")
+//		if (bfCheckIfCanNullTradersBalance		(tpALifeHumanAbstract,tpALifeTraderAbstract,0,m_tpItemVector.size(),-int(tpALifeTraderAbstract->m_dwMoney))) {
+//		}
+//		else {
+//		}
+	}
+
+	vfAttachGatheredItems(tpALifeHumanAbstract,tpALifeTraderAbstract,m_tpBlockedItems1);
+	vfAttachGatheredItems(tpALifeTraderAbstract,tpALifeHumanAbstract,m_tpBlockedItems2);
+
 	// update events
 #pragma todo("Dima to Dima: Update events")
 }

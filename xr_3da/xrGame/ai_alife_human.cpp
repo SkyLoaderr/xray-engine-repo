@@ -348,21 +348,24 @@ void CSE_ALifeHumanAbstract::attach_available_ammo(CSE_ALifeItemWeapon *tpALifeI
 {
 	if (!tpALifeItemWeapon || !tpALifeItemWeapon->m_caAmmoSections)
 		return;
-	u32							l_dwCount = 0;
+	u32							l_dwCount = 0, l_dwSafeMoney = m_dwTotalMoney;
 	ITEM_P_IT					I = tpItemVector.begin();
 	ITEM_P_IT					E = tpItemVector.end();
 	for ( ; I != E; I++) {
 		CSE_ALifeItemAmmo		*l_tpALifeItemAmmo = dynamic_cast<CSE_ALifeItemAmmo*>(*I);
-		if (l_tpALifeItemAmmo && strstr(tpALifeItemWeapon->m_caAmmoSections,l_tpALifeItemAmmo->s_name) && bfCanGetItem(l_tpALifeItemAmmo) && (!tpObjectVector || (std::find(tpObjectVector->begin(),tpObjectVector->end(),l_tpALifeItemAmmo->ID) == tpObjectVector->end()))) {
+		if (l_tpALifeItemAmmo && strstr(tpALifeItemWeapon->m_caAmmoSections,l_tpALifeItemAmmo->s_name) && (l_tpALifeItemAmmo->m_dwCost <= m_dwTotalMoney) && bfCanGetItem(l_tpALifeItemAmmo) && (!tpObjectVector || (std::find(tpObjectVector->begin(),tpObjectVector->end(),l_tpALifeItemAmmo->ID) == tpObjectVector->end()))) {
 			if (!tpObjectVector)
 				m_tpALife->vfAttachItem(*this,l_tpALifeItemAmmo,l_tpALifeItemAmmo->m_tGraphID);
-			else
+			else {
 				children.push_back(l_tpALifeItemAmmo->ID);
+				m_dwTotalMoney -= l_tpALifeItemAmmo->m_dwCost;
+			}
 			l_dwCount++;
 			if (l_dwCount >= MAX_AMMO_ATTACH_COUNT)
 				break;
 		}
 	}
+	m_dwTotalMoney				= l_dwSafeMoney;
 }
 
 void CSE_ALifeHumanAbstract::vfProcessItems()
@@ -659,7 +662,9 @@ int  CSE_ALifeHumanAbstract::ifChooseWeapon(EWeaponPriorityType tWeaponPriorityT
 		else
 			children.push_back	(l_tpALifeItemBest->ID);
 		
+		m_dwTotalMoney			-= l_tpALifeItemBest->m_dwCost;
 		attach_available_ammo	(dynamic_cast<CSE_ALifeItemWeapon*>(l_tpALifeItemBest),m_tpALife->m_tpItemVector,tpObjectVector);
+		m_dwTotalMoney			= l_dwSafeMoney;
 		
 		if (!tpObjectVector) {
 			ITEM_P_IT				I = remove_if(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
