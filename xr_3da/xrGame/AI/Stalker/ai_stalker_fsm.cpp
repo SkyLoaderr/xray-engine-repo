@@ -583,13 +583,12 @@ void CAI_Stalker::Think()
 	} else
 	
 	if (B && !K && !H && !L) {
-//		WRITE_TO_LOG			("Exploring non-danger non-expedient sound");
-//		m_dwInertion			= 10000;
-//		tPoint					= m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
-//		AI_Path.DestNode		= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
-//		tPoint.y				= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
-//		vfSetParameters(0,&tPoint,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,tPoint);
-		Detour			();
+		WRITE_TO_LOG			("Exploring non-danger non-expedient sound");
+		m_dwInertion			= 10000;
+		tPoint					= m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
+		AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
+		tPoint.y				= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
+		vfSetParameters(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypePoint,tPoint);
 	} else
 	if (B && !K && H && !L) {
 		WRITE_TO_LOG			("Exploring non-danger expedient sound");
@@ -603,13 +602,12 @@ void CAI_Stalker::Think()
 		vfSetParameters(0,&tPoint,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,tPoint);
 	} else
 	if (B && !K && !H && L) {
-//		WRITE_TO_LOG			("Exploring non-danger non-expedient sound");
-//		m_dwInertion			= 10000;
-//		tPoint					= m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
-//		AI_Path.DestNode		= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
-//		tPoint.y				= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
-//		vfSetParameters(0,&tPoint,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,tPoint);
-		Detour			();
+		WRITE_TO_LOG			("Exploring non-danger non-expedient sound");
+		m_dwInertion			= 10000;
+		tPoint					= m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
+		AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
+		tPoint.y				= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
+		vfSetParameters(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypePoint,tPoint);
 	} else
 	if (B && !K && H && L) {
 		WRITE_TO_LOG			("Exploring non-danger expedient sound");
