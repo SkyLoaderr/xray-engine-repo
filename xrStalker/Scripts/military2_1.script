@@ -133,10 +133,10 @@ function main ()
             
     wait (1000)            
     
-    printf ("Best weapon for stalker1 - %s", stalker1:best_weapon ())
-    printf ("Best weapon for stalker2 - %s", stalker2:best_weapon ())
-    --update_action (stalker1, military2_1.script_name (), object (stalker1:best_weapon (), object.fire1))
-    --update_action (stalker2, military2_1.script_name (), object (stalker1:best_weapon (), object.fire1))
+    printf ("Best weapon for stalker1 - %s", stalker1:best_weapon ():name ())
+    printf ("Best weapon for stalker2 - %s", stalker2:best_weapon ():name ())
+    update_action (stalker1, military2_1.script_name (), object (stalker1:best_weapon (), object.fire1))
+    update_action (stalker2, military2_1.script_name (), object (stalker2:best_weapon (), object.fire1))
     
     
     icount = 0
