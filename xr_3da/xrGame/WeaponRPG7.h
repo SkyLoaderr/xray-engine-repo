@@ -37,7 +37,7 @@ public:
 	float fWallmarkSize;
 	sound sndRicochet[SND_RIC_COUNT], sndExplode;
 	ESoundTypes m_eSoundRicochet, m_eSoundExplode;
-	u32 m_engineTime, m_expoldeTime;
+	u32 m_engineTime, m_explodeTime;
 	char m_effectsSTR[255];
 	vector<LPCSTR> m_effects;
 	char m_trailEffectsSTR[255];

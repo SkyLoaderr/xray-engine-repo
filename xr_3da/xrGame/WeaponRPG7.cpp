@@ -36,7 +36,7 @@ CWeaponRPG7Grenade::CWeaponRPG7Grenade() {
 	m_eSoundRicochet = ESoundTypes(0/*SOUND_TYPE_WEAPON_BULLET_RICOCHET*/);
 	m_pLight = ::Render->light_create();
 	m_pLight->set_shadow(true);
-	m_expoldeTime = m_engineTime = 0xffffffff;
+	m_explodeTime = m_engineTime = 0xffffffff;
 }
 
 CWeaponRPG7Grenade::~CWeaponRPG7Grenade() {
@@ -146,7 +146,7 @@ void CWeaponRPG7Grenade::Load(LPCSTR section) {
 
 void CWeaponRPG7Grenade::Explode(const Fvector &pos, const Fvector &normal) {
 	m_engineTime = 0xffffffff;
-	m_expoldeTime = 5000;
+	m_explodeTime = 5000;
 	setVisible(false);
 	list<CPGObject*>::iterator l_it;
 	for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); l_it++) (*l_it)->Stop();
@@ -239,7 +239,7 @@ BOOL CWeaponRPG7Grenade::net_Spawn(LPVOID DC) {
 	BOOL l_res = inherited::net_Spawn(DC);
 	m_pos.set(0, 0, 0); m_vel.set(0, 0, 0);
 	m_pOwner = NULL;
-	m_expoldeTime = m_engineTime = 0xffffffff;
+	m_explodeTime = m_engineTime = 0xffffffff;
 
 	if(0==pstrWallmark) hWallmark	= 0; 
 	else hWallmark	= Device.Shader.Create("effects\\wallmark",pstrWallmark);
@@ -390,14 +390,15 @@ void CWeaponRPG7Grenade::OnH_B_Independent() {
 
 void CWeaponRPG7Grenade::UpdateCL() {
 	inherited::UpdateCL();
-	if(m_expoldeTime <= Device.dwTimeDelta) {
-		m_expoldeTime = 0xffffffff;
+	if(m_explodeTime <= Device.dwTimeDelta) {
+		m_explodeTime = 0xffffffff;
+		m_pLight->set_active(false);
 		NET_Packet P;
 		u_EventGen(P, GE_DESTROY, ID());
 		u_EventSend(P);
 		return;
 	}
-	if(m_expoldeTime < 0xffffffff) m_expoldeTime -= Device.dwTimeDelta;
+	if(m_explodeTime < 0xffffffff) m_explodeTime -= Device.dwTimeDelta;
 	if(getVisible() && m_pPhysicsShell) {
 		m_pPhysicsShell->Update	();
 		svTransform.set(m_pPhysicsShell->mXFORM);
