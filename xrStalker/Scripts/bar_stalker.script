@@ -39,6 +39,7 @@ function action_bar:__init (name, storage) super (nil, name)
     self.phrase = 0
     self.wait_time = 0
     self.wait = 0
+    self.delay = 0
 end
 -------------------
 function action_bar:initialize ()
@@ -59,6 +60,7 @@ function action_bar:initialize ()
        self.theme = "bar_talk_double"
     end       
     
+    self.delay = device ():time_global () + math.random (10000, 30000)
 end    
 -------------------
 function action_bar:execute ()
@@ -124,12 +126,12 @@ function action_bar:double_talk ()
     if self.interlocutor == nil then return end
     
     if self.sub_theme == 0 then
+       if self.delay - device ():time_global () > 0 then return end
        self.sub_theme = xr_sounds.get_random_subtheme (self.theme) 
        self.phrase = 1
        return
     end
     
---    printf ("DOUBLE PLAY")
     local talker = nil
     if bit_and (self.phrase, 1) == 1 then
        talker = self.object 
@@ -153,6 +155,7 @@ function action_bar:double_talk ()
     self.phrase = self.phrase + 1
     if self.phrase > xr_sounds.get_num_phrases (self.theme, self.sub_theme) then
        self.sub_theme = 0
+       self.delay = device ():time_global () + math.random (10000, 30000)
     end   
     
 end
