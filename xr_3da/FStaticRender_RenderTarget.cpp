@@ -84,12 +84,17 @@ void CRenderTarget::OnDeviceDestroy	()
 void CRenderTarget::Begin	()
 {
 	R_CHK		(HW.pDevice->SetRenderTarget	(pRT,		pBaseZB));
+	D3DVIEWPORT8 VP = {0,0,Device.dwWidth,Device.dwHeight,0,1.f };
+	CHK_DX		(HW.pDevice->SetViewport(&VP));
+	
 	if (psDeviceFlags&rsClearBB) CHK_DX(HW.pDevice->Clear(0,0,D3DCLEAR_TARGET,D3DCOLOR_XRGB(0,255,0),1,0));
 }
 
 void CRenderTarget::End		(float blur)
 {
 	R_CHK		(HW.pDevice->SetRenderTarget	(pBaseRT,	pBaseZB));
+	D3DVIEWPORT8 VP = {0,0,Device.dwWidth,Device.dwHeight,0,1.f };
+	CHK_DX		(HW.pDevice->SetViewport(&VP));
 	
 	// Draw full-screen quad textured with our scene image
 	DWORD	Offset;
