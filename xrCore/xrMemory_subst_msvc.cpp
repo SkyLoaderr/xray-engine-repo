@@ -28,9 +28,10 @@ void*	xrMemory::mem_alloc		(size_t size)
 	if (!mem_initialized || debug_mode)		
 	{
 		// generic
-		void*	_real			= xr_aligned_offset_malloc	(size,16,0x1);
-		_ptr					= (void*)(((u8*)_real)+1);
-		*acc_header(_ptr)		= mem_generic;
+		stat_counter			+=	size;
+		void*	_real			=	xr_aligned_offset_malloc	(size,16,0x1);
+		_ptr					=	(void*)(((u8*)_real)+1);
+		*acc_header(_ptr)		=	mem_generic;
 		return	_ptr;
 	}
 
