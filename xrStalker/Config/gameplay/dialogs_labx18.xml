@@ -2,34 +2,103 @@
 <game_dialogs>
     <dialog id="dar_explorer_dialog">
         <phrase_list>
-            <phrase id="21">
-                <text>dar_explorer_dialog_21</text>
-                <next>211</next>
+            <phrase id="1">
+                <text>dar_explorer_dialog_1</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="11">
+                <text>dar_explorer_dialog_11</text>
+                <next>111</next>
+                <next>112</next>
             </phrase>
             <phrase id="2">
                 <text>dar_explorer_dialog_2</text>
                 <next>21</next>
             </phrase>
-            <phrase id="211">
-                <text>dar_explorer_dialog_211</text>
-                <action>dialogs.break_dialog</action>
+            <phrase id="61">
+                <text>dar_explorer_dialog_61</text>
+            </phrase>
+            <phrase id="112">
+                <text>dar_explorer_dialog_112</text>
+            </phrase>
+            <phrase id="11113">
+                <text>dar_explorer_dialog_11113</text>
+            </phrase>
+            <phrase id="2121">
+                <text>dar_explorer_dialog_2121</text>
+            </phrase>
+            <phrase id="212">
+                <text>dar_explorer_dialog_212</text>
+                <next>2121</next>
             </phrase>
             <phrase id="111">
                 <text>dar_explorer_dialog_111</text>
                 <action>dialogs.break_dialog</action>
+                <next>1111</next>
             </phrase>
-            <phrase id="11">
-                <text>dar_explorer_dialog_11</text>
+            <phrase id="1111">
+                <text>dar_explorer_dialog_1111</text>
+                <next>11111</next>
+                <next>11112</next>
+                <next>11113</next>
+            </phrase>
+            <phrase id="11111">
+                <text>dar_explorer_dialog_11111</text>
+                <next>51</next>
+            </phrase>
+            <phrase id="11112">
+                <text>dar_explorer_dialog_11112</text>
+                <next>61</next>
+            </phrase>
+            <phrase id="512">
+                <text>dar_explorer_dialog_512</text>
+                <next>5121</next>
+            </phrase>
+            <phrase id="5111">
+                <text>dar_explorer_dialog_5111</text>
+            </phrase>
+            <phrase id="5121">
+                <text>dar_explorer_dialog_5121</text>
+            </phrase>
+            <phrase id="21">
+                <text>dar_explorer_dialog_21</text>
+                <next>211</next>
+                <next>212</next>
                 <next>111</next>
             </phrase>
-            <phrase id="1">
-                <text>dar_explorer_dialog_1</text>
-                <next>11</next>
+            <phrase id="511">
+                <text>dar_explorer_dialog_511</text>
+                <next>5111</next>
+            </phrase>
+            <phrase id="51">
+                <text>dar_explorer_dialog_51</text>
+                <next>511</next>
+                <next>512</next>
+            </phrase>
+            <phrase id="211">
+                <text>dar_explorer_dialog_211</text>
+                <action>dialogs.break_dialog</action>
+                <next>2111</next>
             </phrase>
             <phrase id="0">
                 <text>dar_explorer_dialog_0</text>
                 <next>1</next>
                 <next>2</next>
+            </phrase>
+            <phrase id="2111">
+                <text>dar_explorer_dialog_2111</text>
+                <next>21111</next>
+                <next>21112</next>
+                <next>21113</next>
+            </phrase>
+            <phrase id="21112">
+                <text>dar_explorer_dialog_21112</text>
+            </phrase>
+            <phrase id="21113">
+                <text>dar_explorer_dialog_21113</text>
+            </phrase>
+            <phrase id="21111">
+                <text>dar_explorer_dialog_21111</text>
             </phrase>
         </phrase_list>
     </dialog>
