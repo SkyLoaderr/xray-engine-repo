@@ -770,7 +770,7 @@ void CSkeletonAnimated::Calculate(BOOL bLight)
 		Fbox	Box; Box.invalidate();
 		for (u32 b=0; b<bones->size(); b++)
 		{
-			if			(!LL_GetBoneVisible(b))			continue;
+			if			(!LL_GetBoneVisible(u16(b)))		continue;
 			Fobb&		obb		= (*bones)[b]->obb;
 			Fmatrix&	Mbone	= bone_instances[b].mTransform;
 			Fmatrix		Mbox;	obb.xform_get(Mbox);

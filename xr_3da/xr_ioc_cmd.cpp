@@ -172,7 +172,7 @@ public:
 			Log("! Can't start game without client. Arguments: '%s'.",args);
 			return;
 		}
-		Engine.Event.Defer	("KERNEL:start",u32(xr_strlen(op_server)?xr_strdup(op_server):0),u32(xr_strdup(op_client)));
+		Engine.Event.Defer	("KERNEL:start",u64(xr_strlen(op_server)?xr_strdup(op_server):0),u64(xr_strdup(op_client)));
 	}
 };
 
@@ -188,7 +188,7 @@ public:
 		string256	fn;
 		if (FS.exist(fn,"",args,".save"))
 		{
-			Engine.Event.Defer("KERNEL:server_load",u32(xr_strdup(fn)));
+			Engine.Event.Defer("KERNEL:server_load",u64(xr_strdup(fn)));
 		} else {
 			Log("! Cannot find save-game '%s'.",fn);
 		}

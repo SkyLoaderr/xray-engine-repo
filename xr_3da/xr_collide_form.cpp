@@ -240,7 +240,7 @@ BOOL CCF_Skeleton::_RayTest( RayQuery& Q)
 	BOOL bHIT = FALSE;
 	for (xr_vector<CCF_OBB>::iterator I=model.begin(); I!=model.end(); I++) 
 	{
-		if	(!K->LL_GetBoneVisible(I-model.begin())) continue;
+		if	(!K->LL_GetBoneVisible(u16(I-model.begin())))	continue;
 		if	(RAYvsOBB(*I,Q.start,Q.dir,Q.range)) 
 		{
 			bHIT		= TRUE;
@@ -271,12 +271,12 @@ BOOL CCF_Skeleton::_RayPick( RayPickResult& result, const Fvector& _start, const
 	BOOL bHIT = FALSE;
 	for (xr_vector<CCF_OBB>::iterator I=model.begin(); I!=model.end(); I++) 
 	{
-		if	(!K->LL_GetBoneVisible(I-model.begin())) continue;
+		if	(!K->LL_GetBoneVisible(u16(I-model.begin()))) continue;
 		float range		= _range;
 		if (RAYvsOBB(*I,_start,_dir,range)) 
 		{
 			bHIT		= TRUE;
-			result.AppendResult(range,I-model.begin(),_flags&CDB::OPT_ONLYNEAREST);
+			result.AppendResult(range,int(I-model.begin()),_flags&CDB::OPT_ONLYNEAREST);
 			if (_flags&CDB::OPT_ONLYFIRST) return TRUE;
 		}
 	}

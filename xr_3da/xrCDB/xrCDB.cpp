@@ -35,10 +35,10 @@ void	TRI::convert_I2P	(Fvector* pBaseV)
 }
 void	TRI::convert_P2I	(Fvector* pBaseV)	
 {
-	u32*	pVertsID= (u32*)	verts;	// as indexed form
-	pVertsID[0] = verts[0]-pBaseV;
-	pVertsID[1] = verts[1]-pBaseV;
-	pVertsID[2] = verts[2]-pBaseV;
+	u32* pVertsID	= (u32*) verts;		// as indexed form
+	pVertsID[0]		= u32(verts[0]-pBaseV);
+	pVertsID[1]		= u32(verts[1]-pBaseV);
+	pVertsID[2]		= u32(verts[2]-pBaseV);
 }
 
 // Model building

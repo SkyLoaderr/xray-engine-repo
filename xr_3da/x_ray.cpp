@@ -67,7 +67,7 @@ void Startup				( )
 	BOOL bCaptureInput			= !strstr(Core.Params,"-i");
 
 	pInput						= xr_new<CInput>		(bCaptureInput);
-	Sound->_initialize			(u32(Device.m_hWnd));
+	Sound->_initialize			(Device.m_hWnd);
 
 	// ...command line for auto start
 	LPCSTR	pStartup			= strstr		(Core.Params,"-start ");
@@ -214,7 +214,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	if (strstr(lpCmdLine,"-exec ")) 
 	{
 		char *N = strstr(lpCmdLine,"-exec ")+6;
-		return _execl(N,N,0);
+		return (int)_execl(N,N,0);
 	}
 	return 0;
 }

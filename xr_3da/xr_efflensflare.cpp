@@ -371,7 +371,7 @@ int	CLensFlare::AppendDef(CInifile* pIni, LPCSTR sect)
 	if (!sect||(0==sect[0])) return -1;
     for (LensFlareDescIt it=m_Palette.begin(); it!=m_Palette.end(); it++)
 	{
-    	if (0==strcmp(*it->section,sect)) return it-m_Palette.begin();
+    	if (0==strcmp(*it->section,sect)) return int(it-m_Palette.begin());
     }
     m_Palette.push_back			(CLensFlareDescriptor());
     CLensFlareDescriptor& lf 	= m_Palette.back();
