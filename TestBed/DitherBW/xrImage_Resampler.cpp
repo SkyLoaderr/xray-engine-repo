@@ -113,7 +113,7 @@ float	triangle_filter		(float t)
 float	bell_filter			(float t)		/* box (*) box (*) box */
 {
 	if(t < 0) t = -t;
-	if(t < .5) return(.75 - (t * t));
+	if(t < .5) return float(.75 - (t * t));
 	if(t < 1.5) {
 		t = (t - 1.5);
 		return(.5 * (t * t));
