@@ -100,7 +100,7 @@ void CSE_Visual::OnChangeVisual	(PropValue* sender)
 	abstract->set_editor_flag	(ISE_Abstract::flVisualChange);
 }
 
-void CSE_Visual::FillProp		(LPCSTR pref, PropItemVec &items)
+void CSE_Visual::FillProps		(LPCSTR pref, PropItemVec &items)
 {
 	ISE_Abstract* abstract		= dynamic_cast<ISE_Abstract*>(this); VERIFY(abstract);
 	ChooseValue *V 				= PHelper().CreateChoose(items, PrepareKey(pref,abstract->name(),"Model\\Visual"),	&visual_name,	smVisual);
@@ -140,7 +140,7 @@ void CSE_Motion::OnChangeMotion	(PropValue* sender)
 	abstract->set_editor_flag	(ISE_Abstract::flMotionChange);
 }
 
-void CSE_Motion::FillProp(		LPCSTR pref, PropItemVec &items)
+void CSE_Motion::FillProps(		LPCSTR pref, PropItemVec &items)
 {
 	ISE_Abstract* abstract		= dynamic_cast<ISE_Abstract*>(this); VERIFY(abstract);
 	ChooseValue *V				= PHelper().CreateChoose(items, PrepareKey(pref,abstract->name(),"Motion"),&motion_name, smGameAnim);
