@@ -55,7 +55,7 @@ public:
 	}
 
 	// Skydome
-	IRender_Visual*		pSkydome;
+	IRender_Visual*				pSkydome;
 public:
 					CEnvironment		();
 					~CEnvironment		();
