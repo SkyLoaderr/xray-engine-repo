@@ -38,7 +38,6 @@ public:
 	virtual float							shedule_Scale		();
 	virtual void							shedule_Update		(u32 time_delta);	
 	virtual	shared_str						shedule_Name		() const		{ return shared_str("agent_manager"); };
-	virtual BOOL							shedule_Ready		();
 	virtual	void							remove_links		(CObject *object);
 	virtual	shared_str						cName				() const;
 
