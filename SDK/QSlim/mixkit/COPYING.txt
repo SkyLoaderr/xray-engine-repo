@@ -1,0 +1,50 @@
+MixKit -- Code library for multiresolution surface modeling
+Copyright (C) 1998-2000 Michael Garland.
+
+This library is free software; you can redistribute it and/or modify
+it under the terms of the GNU Library General Public License (subject
+to the clarifications and exceptions outlined below) as published by
+the Free Software Foundation; either version 2 of the License, or (at
+your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Library General Public License for more details.
+
+You should have received a copy of the GNU Library General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
+USA
+
+The complete text of the GNU Library General Public License can be
+found in the accompanying file LGPL.txt.
+
+------------------------------------------------------------------------
+Clarifications/Exceptions
+------------------------------------------------------------------------
+
+(1) If you link the MixKit library with other files to produce an
+executable, this does not by itself cause the resulting executable to
+be covered by the GNU General Public License.  This includes static
+linking of the library.  Your use of that executable is in no way
+restricted on account of linking the MixKit library code into it.
+This exception DOES NOT invalidate any other reasons why the
+executable file might be covered by the GNU General Public License
+
+(2) A few pieces of code in this library have been adapted from other
+sources and may be distributed under terms other than the LGPL.
+Further details can be found in the relevant files.
+
+	- MxTriProject.cxx contains code which is copyrighted by
+	  Hugues Hoppe and is free for non-commercial use only.
+
+	- The getopt* files were taken from the GNU C Library v2.0.4
+	  and are copyrighted by the FSF.  They are still covered by
+	  the LGPL.
+
+	- MxMat[34]-jacobi.cxx are both derived in part from Numerical
+	  Recipes in C.  They are free for non-commercial use only.
+
+	- The intersection code in MxFitFrame-2.cxx was written by
+	  David Eberly, but it may be freely distributed.

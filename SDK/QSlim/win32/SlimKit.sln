@@ -1,0 +1,88 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MixKit", "..\mixkit\MixKit.vcproj", "{0C525CC1-C966-43E3-BD94-DD05E0CFDBA8}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QSlim", "QSlim\QSlim.vcproj", "{0522C791-09F0-415A-A03D-C7F0A6616596}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0F363857-B7E2-40DF-B817-BD22BE1DA282} = {0F363857-B7E2-40DF-B817-BD22BE1DA282}
+		{0C525CC1-C966-43E3-BD94-DD05E0CFDBA8} = {0C525CC1-C966-43E3-BD94-DD05E0CFDBA8}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QVis", "QVis\QVis.vcproj", "{65441316-8271-4A5A-843A-D36B65958C2B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0F363857-B7E2-40DF-B817-BD22BE1DA282} = {0F363857-B7E2-40DF-B817-BD22BE1DA282}
+		{0C525CC1-C966-43E3-BD94-DD05E0CFDBA8} = {0C525CC1-C966-43E3-BD94-DD05E0CFDBA8}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SMFView", "SMFView\SMFView.vcproj", "{57302FDB-EF10-47BD-97A0-B0399D7AC5B0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0F363857-B7E2-40DF-B817-BD22BE1DA282} = {0F363857-B7E2-40DF-B817-BD22BE1DA282}
+		{0C525CC1-C966-43E3-BD94-DD05E0CFDBA8} = {0C525CC1-C966-43E3-BD94-DD05E0CFDBA8}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libgfx", "..\libgfx\vc6\libgfx\libgfx.vcproj", "{0F363857-B7E2-40DF-B817-BD22BE1DA282}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SourceCodeControl) = preSolution
+		SccNumberOfProjects = 6
+		SccProjectName0 = \u0022$/SDK/QSlim\u0022,\u0020YLVAAAAA
+		SccLocalPath0 = ..
+		SccProvider0 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = true
+		SccProjectFilePathRelativizedFromConnection0 = win32\\
+		SolutionUniqueID = {255C717C-C131-4B78-AC59-CC8C63607B19}
+		SccProjectUniqueName1 = ..\\libgfx\\vc6\\libgfx\\libgfx.vcproj
+		SccLocalPath1 = ..
+		CanCheckoutShared = true
+		SccProjectFilePathRelativizedFromConnection1 = libgfx\\vc6\\libgfx\\
+		SccProjectUniqueName2 = ..\\mixkit\\MixKit.vcproj
+		SccLocalPath2 = ..
+		CanCheckoutShared = true
+		SccProjectFilePathRelativizedFromConnection2 = mixkit\\
+		SccProjectUniqueName3 = QSlim\\QSlim.vcproj
+		SccLocalPath3 = ..
+		CanCheckoutShared = true
+		SccProjectFilePathRelativizedFromConnection3 = win32\\QSlim\\
+		SccProjectUniqueName4 = QVis\\QVis.vcproj
+		SccLocalPath4 = ..
+		CanCheckoutShared = true
+		SccProjectFilePathRelativizedFromConnection4 = win32\\QVis\\
+		SccProjectUniqueName5 = SMFView\\SMFView.vcproj
+		SccLocalPath5 = ..
+		CanCheckoutShared = true
+		SccProjectFilePathRelativizedFromConnection5 = win32\\SMFView\\
+	EndGlobalSection
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{0C525CC1-C966-43E3-BD94-DD05E0CFDBA8}.Debug.ActiveCfg = Debug|Win32
+		{0C525CC1-C966-43E3-BD94-DD05E0CFDBA8}.Debug.Build.0 = Debug|Win32
+		{0C525CC1-C966-43E3-BD94-DD05E0CFDBA8}.Release.ActiveCfg = Release|Win32
+		{0C525CC1-C966-43E3-BD94-DD05E0CFDBA8}.Release.Build.0 = Release|Win32
+		{0522C791-09F0-415A-A03D-C7F0A6616596}.Debug.ActiveCfg = Debug|Win32
+		{0522C791-09F0-415A-A03D-C7F0A6616596}.Debug.Build.0 = Debug|Win32
+		{0522C791-09F0-415A-A03D-C7F0A6616596}.Release.ActiveCfg = Release|Win32
+		{0522C791-09F0-415A-A03D-C7F0A6616596}.Release.Build.0 = Release|Win32
+		{65441316-8271-4A5A-843A-D36B65958C2B}.Debug.ActiveCfg = Debug|Win32
+		{65441316-8271-4A5A-843A-D36B65958C2B}.Debug.Build.0 = Debug|Win32
+		{65441316-8271-4A5A-843A-D36B65958C2B}.Release.ActiveCfg = Release|Win32
+		{65441316-8271-4A5A-843A-D36B65958C2B}.Release.Build.0 = Release|Win32
+		{57302FDB-EF10-47BD-97A0-B0399D7AC5B0}.Debug.ActiveCfg = Debug|Win32
+		{57302FDB-EF10-47BD-97A0-B0399D7AC5B0}.Debug.Build.0 = Debug|Win32
+		{57302FDB-EF10-47BD-97A0-B0399D7AC5B0}.Release.ActiveCfg = Release|Win32
+		{57302FDB-EF10-47BD-97A0-B0399D7AC5B0}.Release.Build.0 = Release|Win32
+		{0F363857-B7E2-40DF-B817-BD22BE1DA282}.Debug.ActiveCfg = Debug|Win32
+		{0F363857-B7E2-40DF-B817-BD22BE1DA282}.Debug.Build.0 = Debug|Win32
+		{0F363857-B7E2-40DF-B817-BD22BE1DA282}.Release.ActiveCfg = Release|Win32
+		{0F363857-B7E2-40DF-B817-BD22BE1DA282}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
