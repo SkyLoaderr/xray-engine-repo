@@ -357,7 +357,7 @@ void game_sv_CS::OnPlayerBuy		(u32 id_who, u16 eid_who, LPCSTR what)
 	if (iAmmoMagCount)	
 	{ 
 		// Buy ammo
-		int		slot			=	get_option_i(what,"primary") ? 3:2;
+		int		slot			=	get_option_i(what,"primary") ? 1:2;
 
 		// Search weapon slot
 		xrServer*		S		=	Level().Server;
@@ -371,9 +371,9 @@ void game_sv_CS::OnPlayerBuy		(u32 id_who, u16 eid_who, LPCSTR what)
 			if (0==T)				continue;
 			if (slot == T->get_slot())	
 			{
-				// We've found this slot - buy something :)
+				// We've found this slot - buy something :) |  491 05 36 - Andy
 
-				// TO: WONDERLAND: I didn't bother to check all conditions, money, etc. Sorry :)))
+				// TO: VITYA: I didn't bother to check all conditions, money, etc. Sorry :)))
 				xrSE_Weapon*		W	= T;
 				u16		a_limit			= W->get_ammo_limit		();
 				u16		a_total			= W->get_ammo_total		();
