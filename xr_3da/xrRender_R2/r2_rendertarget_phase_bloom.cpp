@@ -50,6 +50,7 @@ void CRenderTarget::phase_bloom	()
 	u32		Offset;
 
 	// Targets
+	RCache.set_RT						(rt_Bloom_1->pRT,		0);
 	RCache.set_RT						(NULL,					1);
 	RCache.set_RT						(NULL,					2);
 	RCache.set_ZB						(NULL);					// No need for ZBuffer at all
@@ -59,6 +60,11 @@ void CRenderTarget::phase_bloom	()
 	// Misc		- draw everything (no culling)
 	CHK_DX	(HW.pDevice->SetRenderState	( D3DRS_STENCILENABLE,		FALSE				));
 	CHK_DX	(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_NONE		)); 	
+
+	// Render skybox/skydome into Bloom1
+	RImplementation.rmFar				();
+	pCreator->Environment.RenderFirst	();		// sky
+	RImplementation.rmNormal			();
 
 	// Transfer into Bloom1
 	{
@@ -97,7 +103,6 @@ void CRenderTarget::phase_bloom	()
 		float lscale				= .75f;	// must be .25 infact
 		float ldr					= .25f*ps_r2_ls_dynamic_range;	ldr *= lscale;
 		float lh					= .25f*.5f;						lh	*= lscale;
-		RCache.set_RT				(rt_Bloom_1->pRT,		0);
 		RCache.set_Element			(s_bloom->E[0]);
 		RCache.set_c				("light_dynamic_range",	ldr,ldr,ldr,ldr);
 		RCache.set_c				("light_hemi",			lh,lh,lh,0.f);
@@ -261,5 +266,14 @@ void CRenderTarget::phase_bloom	()
 		RCache.set_ca				("weight", 1,			w1);
 		RCache.set_Geometry			(g_bloom_filter);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
+	}
+
+	// 
+	{
+		// Render skybox/skydome into Bloom2.rgbx
+		RCache.set_RT						(rt_Bloom_2->pRT,		0);
+		RImplementation.rmFar				();
+		pCreator->Environment.RenderFirst	();
+		RImplementation.rmNormal			();
 	}
 }

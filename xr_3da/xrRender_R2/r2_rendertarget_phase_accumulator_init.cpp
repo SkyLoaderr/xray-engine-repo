@@ -78,6 +78,12 @@ void CRenderTarget::phase_accumulator_init()
 	// Stencil	- increment value if both (stencil,aref) pass
 	// Stencil	- result -> 0x2 where pixel can be potentialy lighted/shadowed
 	{
+		// Restore targets
+		RCache.set_RT						(rt_Accumulator->pRT,	0);
+		RCache.set_RT						(NULL,					1);
+		RCache.set_RT						(NULL,					2);
+		RCache.set_ZB						(HW.pBaseZB);
+
 		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILENABLE,		TRUE				));
 		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFUNC,		D3DCMP_LESSEQUAL	));
 		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILREF,			0x03				));

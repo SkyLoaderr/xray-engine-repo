@@ -14,6 +14,7 @@ void	CRenderTarget::phase_combine	()
 	// Clear	- don't clear - it's stupid here :)
 
 	// Stencil	- draw only where stencil >= 0x1
+	/*
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILENABLE,		TRUE				));
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFUNC,		D3DCMP_LESSEQUAL	));
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILREF,			0x01				));
@@ -22,6 +23,7 @@ void	CRenderTarget::phase_combine	()
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFAIL,		D3DSTENCILOP_KEEP	));
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILPASS,		D3DSTENCILOP_KEEP	));
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILZFAIL,		D3DSTENCILOP_KEEP	));
+	*/
 
 	// Misc		- draw everything (no culling)
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_NONE		)); 	
@@ -47,7 +49,7 @@ void	CRenderTarget::phase_combine	()
 
 		// Draw COLOR
 		float dr					= ps_r2_ls_dynamic_range;
-		RCache.set_Shader			(s_combine_dbg_Accumulator);
+		RCache.set_Shader			(s_combine);
 		RCache.set_c				("light_dynamic_range",	dr,dr,dr,dr);
 		RCache.set_c				("light_hemi",			.5f,.5f,.5f,0.f);
 		RCache.set_Geometry			(g_combine);
@@ -56,7 +58,7 @@ void	CRenderTarget::phase_combine	()
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILENABLE,		FALSE				));
 
 	// ********************* Debug
-	if (0)
+	if (1)
 	{
 		u32		Offset;
 		u32		C					= D3DCOLOR_RGBA	(255,255,255,255);
