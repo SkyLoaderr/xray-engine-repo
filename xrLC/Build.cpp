@@ -310,10 +310,10 @@ void CBuild::Run	(string& P)
 	xrPhase_Subdivide();
 	IsolateVertices	();
 	
-	FPU::m64r		();
-	Phase			("Soften lights...");
-	mem_Compact		();
-	SoftenLights				();
+//	FPU::m64r		();
+//	Phase			("Soften lights...");
+//	mem_Compact		();
+//	SoftenLights				();
 
 	FPU::m64r		();
 	Phase			("Implicit lighting...");
