@@ -358,7 +358,7 @@ private:
 	
 	void vfChoosePointAndBuildPathAtOnce(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition, bool bSearchForNode, bool bSelectorPath = false);
 	
-	CMonsterMemory			Mem;
+	//CMonsterMemory			Mem;
 
 	virtual BOOL			feel_vision_isRelevant	(CObject* O);
 	
