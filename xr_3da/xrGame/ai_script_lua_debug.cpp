@@ -18,28 +18,30 @@ bool Script::bfPrintOutput(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScr
 {
 	for (int i=-1; ; i--)
 		if (lua_isstring(tpLuaVirtualMachine,i)) {
-			if (!i)
-				Msg("* [LUA] Output from %s",caScriptFileName);
 			LPCSTR	S = lua_tostring(tpLuaVirtualMachine,i);
 			if (!strcmp(S,"cannot resume dead coroutine")) {
-				Msg		("* [LUA] script %s is finished",caScriptFileName);
+				LuaOut	(Lua::eLuaMessageTypeInfo,"Script %s is finished",caScriptFileName);
 				return	(true);
 			}
-			else
-				Msg		("* [LUA] %s",S);
+			else {
+				if (!i)
+					LuaOut	(Lua::eLuaMessageTypeInfo,"Output from %s",caScriptFileName);
+				LuaOut	(Lua::eLuaMessageTypeMessage,"%s",S);
+			}
 		}
 		else {
 			for ( i=0; ; i++)
 				if (lua_isstring(tpLuaVirtualMachine,i)) {
-					if (!i)
-						Msg("* [LUA] Output from %s",caScriptFileName);
 					LPCSTR	S = lua_tostring(tpLuaVirtualMachine,i);
 					if (!strcmp(S,"cannot resume dead coroutine")) {
-						Msg		("* [LUA] script %s is finished",caScriptFileName);
+						LuaOut	(Lua::eLuaMessageTypeInfo,"Script %s is finished",caScriptFileName);
 						return	(true);
 					}
-					else
-						Msg		("* [LUA] %s",S);
+					else {
+						if (!i)
+							LuaOut	(Lua::eLuaMessageTypeInfo,"Output from %s",caScriptFileName);
+						LuaOut	(Lua::eLuaMessageTypeMessage,"%s",S);
+					}
 				}
 				else
 					return		(false);

@@ -35,3 +35,5 @@ extern "C" {
 #pragma warning(default:4267)
 
 typedef lua_State CLuaVirtualMachine;
+
+#include "ai_script_lua_space.h"

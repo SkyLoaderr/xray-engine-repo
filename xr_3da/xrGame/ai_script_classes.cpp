@@ -33,7 +33,7 @@ CLuaGameObject *CLuaGameObject::GetCurrentWeapon() const
 {
 	CAI_Stalker		*l_tpStalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
 	if (!l_tpStalker) {
-		Log		("* [LUA] CAI_Stalker : cannot access class member GetCurrentWeapon!");
+		LuaOut		(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member GetCurrentWeapon!");
 		return		(0);
 	}
 	return			(xr_new<CLuaGameObject>(l_tpStalker->GetCurrentWeapon()));
@@ -43,7 +43,7 @@ CLuaGameObject *CLuaGameObject::GetCurrentEquipment() const
 {
 	CAI_Stalker		*l_tpStalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
 	if (!l_tpStalker) {
-		Log		("* [LUA] CAI_Stalker : cannot access class member GetCurrentWeapon!");
+		LuaOut		(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member GetCurrentWeapon!");
 		return		(0);
 	}
 	return			(xr_new<CLuaGameObject>(l_tpStalker->GetCurrentEquipment()));
@@ -53,7 +53,7 @@ CLuaGameObject *CLuaGameObject::GetFood() const
 {
 	CAI_Stalker		*l_tpStalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
 	if (!l_tpStalker) {
-		Log		("* [LUA] CAI_Stalker : cannot access class member GetCurrentWeapon!");
+		LuaOut		(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member GetCurrentWeapon!");
 		return		(0);
 	}
 	return			(xr_new<CLuaGameObject>(l_tpStalker->GetFood()));
@@ -63,7 +63,7 @@ CLuaGameObject *CLuaGameObject::GetMedikit() const
 {
 	CAI_Stalker		*l_tpStalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
 	if (!l_tpStalker) {
-		Log		("* [LUA] CAI_Stalker : cannot access class member GetCurrentWeapon!");
+		LuaOut		(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member GetCurrentWeapon!");
 		return		(0);
 	}
 	return			(xr_new<CLuaGameObject>(l_tpStalker->GetMedikit()));

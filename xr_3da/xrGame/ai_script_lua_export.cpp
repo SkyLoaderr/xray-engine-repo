@@ -26,9 +26,7 @@ using namespace Script;
 
 void LuaLog(LPCSTR caMessage)
 {
-	Msg			("* [LUA] %s",caMessage);
-	if (g_ca_stdout)
-		g_ca_stdout	+= sprintf(g_ca_stdout,"%s",caMessage);
+	Lua::LuaOut	(Lua::eLuaMessageTypeMessage,"%s",caMessage);
 }
 
 double get_time()
@@ -48,8 +46,8 @@ const CCameraManager &get_camera_manager()
 
 void vfLuaErrorHandler(CLuaVirtualMachine *tpLuaVirtualMachine)
 {
-	bfPrintOutput(tpLuaVirtualMachine,"unknown script");
-	vfPrintError(tpLuaVirtualMachine,LUA_ERRRUN);
+	if (!bfPrintOutput(tpLuaVirtualMachine,"unknown script"));
+		vfPrintError(tpLuaVirtualMachine,LUA_ERRRUN);
 }
 
 CLuaGameObject *get_object_by_name(LPCSTR caObjectName)
@@ -63,8 +61,8 @@ CLuaGameObject *get_object_by_name(LPCSTR caObjectName)
 
 int LuaPanic(CLuaVirtualMachine *tpLuaVirtualMachine)
 {
-	bfPrintOutput(tpLuaVirtualMachine,"unknown script");
-	vfPrintError(tpLuaVirtualMachine,LUA_ERRRUN);
+	if (!bfPrintOutput(tpLuaVirtualMachine,"unknown script"));
+		vfPrintError(tpLuaVirtualMachine,LUA_ERRRUN);
 	return(0);
 }
 
@@ -73,7 +71,7 @@ void LuaHookCall(CLuaVirtualMachine *tpLuaVirtualMachine, lua_Debug *tpLuaDebug)
 	lua_getstack	(tpLuaVirtualMachine,0,tpLuaDebug);
 	if (tpLuaDebug->event)
 		return;
-	Msg				("* [Lua] %s : called %s %s",tpLuaDebug->short_src,tpLuaDebug->namewhat,tpLuaDebug->name);
+	LuaOut			(Lua::eLuaMessageTypeInfo,"%s : called %s %s",tpLuaDebug->short_src,tpLuaDebug->namewhat,tpLuaDebug->name);
 }
 
 void LuaHookReturn(CLuaVirtualMachine *tpLuaVirtualMachine, lua_Debug *tpLuaDebug)
@@ -81,14 +79,14 @@ void LuaHookReturn(CLuaVirtualMachine *tpLuaVirtualMachine, lua_Debug *tpLuaDebu
 //	lua_getstack	(tpLuaVirtualMachine,0,tpLuaDebug);
 	if (tpLuaDebug->event & LUA_HOOKTAILRET)
 		return;
-	Msg				("* [Lua] %s : returned %s %s",tpLuaDebug->short_src,tpLuaDebug->namewhat,tpLuaDebug->name);
+	LuaOut			(Lua::eLuaMessageTypeInfo,"%s : returned %s %s",tpLuaDebug->short_src,tpLuaDebug->namewhat,tpLuaDebug->name);
 }
 
 void LuaHookLine(CLuaVirtualMachine *tpLuaVirtualMachine, lua_Debug *tpLuaDebug)
 {
 //	lua_getstack	(tpLuaVirtualMachine,0,tpLuaDebug);
 	if (tpLuaDebug->currentline > -1)
-		Msg			("* [Lua] %s : %s %s : current line is %d",tpLuaDebug->short_src,tpLuaDebug->namewhat,tpLuaDebug->name,tpLuaDebug->currentline);
+		LuaOut		(Lua::eLuaMessageTypeInfo,"%s : %s %s : current line is %d",tpLuaDebug->short_src,tpLuaDebug->namewhat,tpLuaDebug->name,tpLuaDebug->currentline);
 }
 
 void LuaHookCount(CLuaVirtualMachine *tpLuaVirtualMachine, lua_Debug *tpLuaDebug)

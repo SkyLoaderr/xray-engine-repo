@@ -4,6 +4,7 @@
 #include "trade.h"
 
 #include "ui\\UIInventoryUtilities.h"
+#include "ai_script_lua_space.h"
 using namespace InventoryUtilities;
 
 // CInventoryItem class ///////////////////////////////////////////////////////////////////////////////
@@ -1228,7 +1229,7 @@ CInventoryItem	*CInventory::tpfGetObjectByIndex(int iIndex)
                 return	(*l_it);
 	}
 	else {
-		Msg		("* [LUA] invalid inventory index!");
+		LuaOut	(Lua::eLuaMessageTypeError,"invalid inventory index!");
 		return	(0);
 	}
 	R_ASSERT(false);
@@ -1241,7 +1242,7 @@ CInventoryItem	*CInventory::GetItemFromInventory(LPCSTR caItemName)
 	for(PSPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++) 
 		if (!strcmp((*l_it)->cName(),caItemName))
 			return	(*l_it);
-	Msg		("* [LUA] Object with name %s is not found in the %s inventory!",caItemName,dynamic_cast<CGameObject*>(m_pOwner)->cName());
+	LuaOut	(Lua::eLuaMessageTypeError,"Object with name %s is not found in the %s inventory!",caItemName,dynamic_cast<CGameObject*>(m_pOwner)->cName());
 	return	(0);
 }
 

@@ -395,7 +395,7 @@ void xrMergeSpawns(LPCSTR name)
 	for (u32 i=0, N = tpLevels.size(); i<N; i++)
 		tSpawnHeader.dwSpawnCount += tpLevels[i]->m_tpSpawnPoints.size();
 	
-	CMemoryWriter					tMemoryStream;
+	CMemoryWriter				tMemoryStream;
 	tMemoryStream.open_chunk	(SPAWN_POINT_CHUNK_VERSION);
 	tMemoryStream.w				(&tSpawnHeader,sizeof(tSpawnHeader));
 	tMemoryStream.close_chunk	();

@@ -237,7 +237,7 @@ void CScriptMonster::vfChoosePatrolPathPoint(CEntityAction *tpEntityAction)
 
 	CLevel::SPathPairIt	I = Level().m_PatrolPaths.find(l_tMovementAction.m_caPatrolPathToGo);
 	if (I == Level().m_PatrolPaths.end()) {
-		Msg			("* [LUA] Patrol path %s not found!",l_tMovementAction.m_caPatrolPathToGo);
+		LuaOut		(Lua::eLuaMessageTypeError,"Patrol path %s not found!",l_tMovementAction.m_caPatrolPathToGo);
 		l_tMovementAction.m_bCompleted = true;
 		return;
 	}

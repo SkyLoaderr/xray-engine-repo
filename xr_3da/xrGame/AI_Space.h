@@ -58,6 +58,7 @@ public:
 	xr_vector<u32>		m_dwaNodeStackM;// temporal usage stack for queries
 	xr_vector<u32>		m_dwaNodeStackS;// temporal usage stack for queries
 	u32					m_dwCurrentLevelID;
+	IWriter				*m_tpLuaOutput;
 	
 						CAI_Space		();
 	virtual				~CAI_Space		();

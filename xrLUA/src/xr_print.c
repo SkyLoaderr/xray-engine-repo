@@ -10,7 +10,7 @@ void __cdecl xr_printf(FILE *stream, const char *fmt, ...)
 	va_start		(marker,fmt);
 
 	if (g_ca_stdout)
-		g_ca_stdout += sprintf(g_ca_stdout,fmt,marker);
+		g_ca_stdout += vsprintf(g_ca_stdout,fmt,marker);
 
 	va_end			(marker);              
 }

@@ -9,6 +9,7 @@
 #pragma once
 
 #include "ai_monster_space.h"
+#include "ai_script_lua_space.h"
 #include "car.h"
 
 class CAbstractAction {
@@ -394,7 +395,7 @@ public:
 			m_bCompleted	= false;
 		}
 		else {
-			Log				("* [LUA] File not found \"%s\"!",l_caFileName);
+			LuaOut			(Lua::eLuaMessageTypeError,"File not found \"%s\"!",l_caFileName);
 			m_tpSound		= 0;
 			m_bStartedToPlay= true;
 			m_bCompleted	= true;

@@ -2665,6 +2665,9 @@
 						RelativePath=".\ai_script_lua_extension.h">
 					</File>
 					<File
+						RelativePath=".\ai_script_lua_space.h">
+					</File>
+					<File
 						RelativePath=".\ai_script_processor.cpp">
 					</File>
 					<File

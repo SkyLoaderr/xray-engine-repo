@@ -32,7 +32,7 @@
 #define CAST_OBJECT(Z,A,B)\
 		B				*l_tpEntity = dynamic_cast<B*>(Z);\
 		if (!l_tpEntity) {\
-			Msg		("* [LUA] %s : cannot access class member %s!",#B,#A);
+			LuaOut		(Lua::eLuaMessageTypeError,"%s : cannot access class member %s!",#B,#A);
 
 #define CAST_OBJECT0(Z,A,B)\
 		CAST_OBJECT(Z,A,B)\
@@ -118,7 +118,7 @@ public:
 		if (FS.exist(l_caFileName,"$game_sounds$",caSoundName,".wav"))
 			::Sound->create	(*(m_tpSound = xr_new<ref_sound>()),TRUE,caSoundName,0);
 		else {
-			Log				("* [LUA] File not found \"%s\"!",l_caFileName);
+			LuaOut			(Lua::eLuaMessageTypeError,"File not found \"%s\"!",l_caFileName);
 			m_tpSound		= 0;
 		}
 	}
@@ -155,7 +155,7 @@ public:
 		if (l_tpSoundParams)
 			return			(l_tpSoundParams->position);
 		else {
-			Log				("* [LUA] Sound was not launched, can't get position!");
+			LuaOut			(Lua::eLuaMessageTypeError,"Sound was not launched, can't get position!");
 			return			(Fvector().set(0,0,0));
 		}
 	}
@@ -301,13 +301,13 @@ public:
 	{
 		CEntityAlive		*l_tpEntityAlive1 = dynamic_cast<CEntityAlive*>(m_tpGameObject);
 		if (!l_tpEntityAlive1) {
-			Log				("* [LUA] %s cannot access class member!",m_tpGameObject->cName());
+			LuaOut			(Lua::eLuaMessageTypeError,"%s cannot access class member!",m_tpGameObject->cName());
 			return;
 		}
 		
 		CEntityAlive		*l_tpEntityAlive2 = dynamic_cast<CEntityAlive*>(who->m_tpGameObject);
 		if (!l_tpEntityAlive2) {
-			Log				("* [LUA] %s cannot access class member!",who->m_tpGameObject->cName());
+			LuaOut			(Lua::eLuaMessageTypeError,"%s cannot access class member!",who->m_tpGameObject->cName());
 			return;
 		}
 		
@@ -331,7 +331,7 @@ public:
 		if (l_tpCustomMonster)
 			l_tpCustomMonster->KillEntity(tpLuaGameObject->m_tpGameObject);
 		else
-			Msg				("* [LUA] CLuaGameObject : cannot access class member CheckObjectVisibility!");
+			LuaOut			(Lua::eLuaMessageTypeError,"CLuaGameObject : cannot access class member CheckObjectVisibility!");
 	}
 
 	// CAI_Stalker
@@ -342,7 +342,7 @@ public:
 		if (l_tpCustomMonster)
 			l_tpCustomMonster->UseObject(tpLuaGameObject->m_tpGameObject);
 		else
-			Msg				("* [LUA] CLuaGameObject : cannot access class member UseObject!");
+			LuaOut			(Lua::eLuaMessageTypeError,"CLuaGameObject : cannot access class member UseObject!");
 	}
 
 	BIND_FUNCTION10	(m_tpGameObject,	GetRank,			CAI_Stalker,	GetRank,			u32,								eStalkerRankDummy);
@@ -361,7 +361,7 @@ public:
 		if (l_tpInventoryOwner)
 			return			(l_tpInventoryOwner->m_inventory.dwfGetObjectCount());
 		else {
-			Msg				("* [LUA] CLuaGameObject : cannot access class member obj_count!");
+			LuaOut			(Lua::eLuaMessageTypeError,"CLuaGameObject : cannot access class member obj_count!");
 			return			(0);
 		}
 	}
@@ -378,7 +378,7 @@ public:
 				return		(xr_new<CLuaGameObject>(l_tpGameObject));
 		}
 		else {
-			Msg				("* [LUA] CLuaGameObject : cannot access class member object!");
+			LuaOut			(Lua::eLuaMessageTypeError,"CLuaGameObject : cannot access class member object!");
 			return			(0);
 		}
 	}
@@ -395,7 +395,7 @@ public:
 				return		(xr_new<CLuaGameObject>(l_tpGameObject));
 		}
 		else {
-			Msg				("* [LUA] CLuaGameObject : cannot access class member object!");
+			LuaOut			(Lua::eLuaMessageTypeError,"CLuaGameObject : cannot access class member object!");
 			return			(0);	
 		}
 	}
@@ -404,7 +404,7 @@ public:
 	{
 		CScriptZone	*l_tpScriptZone = dynamic_cast<CScriptZone*>(m_tpGameObject);
 		if (!l_tpScriptZone)
-			Msg		("* [LUA] CScriptZone : cannot access class member set_callback!");
+			LuaOut			(Lua::eLuaMessageTypeError,"CScriptZone : cannot access class member set_callback!");
 		else
 			l_tpScriptZone->set_callback(tpZoneCallback,bOnEnter);
 	}
@@ -413,7 +413,7 @@ public:
 	{
 		CScriptZone	*l_tpScriptZone = dynamic_cast<CScriptZone*>(m_tpGameObject);
 		if (!l_tpScriptZone)
-			Msg		("* [LUA] CScriptZone : cannot access class member set_callback!");
+			LuaOut			(Lua::eLuaMessageTypeError,"CScriptZone : cannot access class member set_callback!");
 		else
 			l_tpScriptZone->clear_callback(bOnEnter);
 	}

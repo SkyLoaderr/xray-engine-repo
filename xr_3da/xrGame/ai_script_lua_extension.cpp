@@ -6,11 +6,51 @@
 //	Description : XRay Script extensions
 ////////////////////////////////////////////////////////////////////////////
 
+#include <stdarg.h>
 #include "stdafx.h"
 #include "ai_script_space.h"
 #include "ai_script_lua_extension.h"
+#include "ai_space.h"
 
 using namespace Script;
+
+int __cdecl Lua::LuaOut(Lua::ELuaMessageType tLuaMessageType, LPCSTR caFormat, ...)
+{
+	LPCSTR		S = "";
+	LPSTR		S1;
+	string4096	S2;
+	switch (tLuaMessageType) {
+		case Lua::eLuaMessageTypeInfo : {
+			S	= "* [LUA] ";
+			break;
+		}
+		case Lua::eLuaMessageTypeError : {
+			S	= "! [LUA] ";
+			break;
+		}
+		case Lua::eLuaMessageTypeMessage : {
+			S	= "[LUA] ";
+			break;
+		}
+		default : NODEFAULT;
+	}
+	
+	strcpy	(S2,S);
+	S1		= S2 + strlen(S);
+
+	va_list	l_tMarker;
+	
+	va_start(l_tMarker,caFormat);
+
+	int		l_iResult = vsprintf(S1,caFormat,l_tMarker);
+	
+	va_end	(l_tMarker);
+
+	Msg		("%s",S2);
+	getAI().m_tpLuaOutput->w_string(S1);
+
+	return	(l_iResult);
+}
 
 void Script::vfLoadStandardScripts(CLuaVirtualMachine *tpLuaVirtualMachine)
 {
@@ -68,7 +108,7 @@ bool bfCreateNamespaceTable(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caNa
 	for (;;) {
 		if (!strlen(S)) {
 			lua_pop		(tpLuaVirtualMachine,1);
-			Msg			(" [LUA] Error : the namespace name %s is incorrect!",caNamespaceName);
+			LuaOut		(Lua::eLuaMessageTypeError,"the namespace name %s is incorrect!",caNamespaceName);
 			xr_free		(S2);
 			return		(false);
 		}
@@ -88,7 +128,7 @@ bool bfCreateNamespaceTable(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caNa
 			if (!lua_istable(tpLuaVirtualMachine,-1)) {
 				xr_free			(S2);
 				lua_pop			(tpLuaVirtualMachine,2);
-				Msg				("! [LUA] Error : the namespace name %s is already being used by the non-table object!",caNamespaceName);
+				LuaOut			(Lua::eLuaMessageTypeError,"the namespace name %s is already being used by the non-table object!",caNamespaceName);
 				return			(false);
 			}
 			lua_remove		(tpLuaVirtualMachine,-2);
@@ -121,8 +161,8 @@ bool Script::bfLoadBuffer(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caBuff
 
 	if (l_iErrorCode) {
 #ifdef DEBUG
-		bfPrintOutput	(tpLuaVirtualMachine,caScriptName);
-		vfPrintError	(tpLuaVirtualMachine,l_iErrorCode);
+		if (!bfPrintOutput	(tpLuaVirtualMachine,caScriptName));
+			vfPrintError(tpLuaVirtualMachine,l_iErrorCode);
 #endif
 		return			(false);
 	}

@@ -208,7 +208,7 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 					l_tObjectAction.m_bCompleted = true;
 			}
 			else
-				Msg	("* [LUA] cannot reload active item because it is not selected!");
+				LuaOut(Lua::eLuaMessageTypeError,"cannot reload active item because it is not selected!");
 			break;
 		}
 		case eObjectActionActivate : {
@@ -220,7 +220,7 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 					l_tObjectAction.m_bCompleted = true;
 			}
 			else
-				Msg	("* [LUA] cannot activate non-inventory object!");
+				LuaOut(Lua::eLuaMessageTypeError,"cannot activate non-inventory object!");
 			break;
 		}
 		case eObjectActionDeactivate : {
@@ -230,7 +230,7 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 				l_tObjectAction.m_bCompleted = true;
 			}
 			else
-				Msg	("* [LUA] cannot activate non-inventory object!");
+				LuaOut(Lua::eLuaMessageTypeError,"cannot activate non-inventory object!");
 			break;
 		}
 		case eObjectActionUse : {
@@ -239,7 +239,7 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 		}
 		case eObjectActionTake : {
 			if (m_inventory.GetItemFromInventory(l_tObjectAction.m_tpObject->cName())) {
-				Msg	("* [LUA] item is already in the inventory!");
+				LuaOut(Lua::eLuaMessageTypeError,"item is already in the inventory!");
 				return	((l_tObjectAction.m_bCompleted = true) == false);
 			}
 			feel_touch_new(l_tObjectAction.m_tpObject);
@@ -248,7 +248,7 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 		}
 		case eObjectActionDrop : {
 			if (!m_inventory.GetItemFromInventory(l_tObjectAction.m_tpObject->cName())) {
-				Msg	("* [LUA] item is not in the inventory!");
+				LuaOut(Lua::eLuaMessageTypeError,"item is not in the inventory!");
 				return	((l_tObjectAction.m_bCompleted = true) == false);
 			}
 			DropItemSendMessage(l_tObjectAction.m_tpObject);

@@ -12,6 +12,7 @@
 #include "CustomMonster.h"
 #include "..\\net_client.h"
 #include "ai_alife.h"
+#include "ai_script_lua_space.h"
 using namespace AI;
 
 CAI_Space *g_tpAI_Space = 0;
@@ -35,12 +36,18 @@ CAI_Space::CAI_Space	()
 	}
 	
 	m_dwCurrentLevelID			= u32(-1);
+
+	string256					l_caLogFileName;
+	strconcat                   (l_caLogFileName,Core.ApplicationName,"_",Core.UserName,"_lua.log");
+	FS.update_path              (l_caLogFileName,"$logs$",l_caLogFileName);
+	m_tpLuaOutput				= FS.w_open(l_caLogFileName);
 }
 
 CAI_Space::~CAI_Space	()
 {
 	Unload();
 	xr_delete					(m_tpAStar);
+	FS.w_close					(m_tpLuaOutput);
 }
 
 void CAI_Space::Unload()
