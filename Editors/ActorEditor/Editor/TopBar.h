@@ -13,7 +13,7 @@
 #include "ExtBtn.hpp"
 #include "mxPlacemnt.hpp"
 //---------------------------------------------------------------------------
-class TfraTopBar : public TFrame
+class ECORE_API TfraTopBar : public TFrame
 {
 __published:	// IDE-managed Components
     TPanel *paTBEdit;

@@ -3,7 +3,7 @@
 
 #include "TopBar.h"
 #include "UI_ToolsCustom.h"
-#include "ui_main.h"
+#include "ui_maincustom.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ExtBtn"
@@ -50,13 +50,13 @@ void TfraTopBar::OnTimer(){
 
 void __fastcall TfraTopBar::ebEditUndoClick(TObject *Sender)
 {
- 	UI.Command( COMMAND_UNDO );
+ 	UI->Command( COMMAND_UNDO );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraTopBar::ebEditRedoClick(TObject *Sender)
 {
- 	UI.Command( COMMAND_REDO );
+ 	UI->Command( COMMAND_REDO );
 }
 //---------------------------------------------------------------------------
 
@@ -64,7 +64,7 @@ void __fastcall TfraTopBar::ActionClick(TObject *Sender)
 {
     TExtBtn* btn=dynamic_cast<TExtBtn*>(Sender);
     VERIFY(btn);
-    UI.Command(COMMAND_CHANGE_ACTION, btn->Tag);
+    UI->Command(COMMAND_CHANGE_ACTION, btn->Tag);
 }
 //---------------------------------------------------------------------------
 
@@ -72,7 +72,7 @@ void __fastcall TfraTopBar::ebAxisClick(TObject *Sender)
 {
     TExtBtn* btn=dynamic_cast<TExtBtn*>(Sender);
     VERIFY(btn);
-    UI.Command(COMMAND_CHANGE_AXIS, btn->Tag);
+    UI->Command(COMMAND_CHANGE_AXIS, btn->Tag);
 }
 //---------------------------------------------------------------------------
 
@@ -80,7 +80,7 @@ void __fastcall TfraTopBar::ebSettingsClick(TObject *Sender)
 {
     TExtBtn* btn=dynamic_cast<TExtBtn*>(Sender);
     VERIFY(btn);
-    UI.Command(COMMAND_CHANGE_SETTINGS, btn->Tag, btn->Down);
+    UI->Command(COMMAND_CHANGE_SETTINGS, btn->Tag, btn->Down);
 }
 //---------------------------------------------------------------------------
 
@@ -96,7 +96,7 @@ void __fastcall TfraTopBar::ebViewClick(TObject *Sender)
         if (btn==ebViewBottom)  Device.m_Camera.ViewBottom();
         if (btn==ebViewReset)  	Device.m_Camera.ViewReset();
     }
-    UI.RedrawScene();
+    UI->RedrawScene();
 }
 //---------------------------------------------------------------------------
 
@@ -104,7 +104,7 @@ void __fastcall TfraTopBar::RefreshBar()
 {
     TExtBtn* btn		= 0;
 	//actions
-    switch(Tools.GetAction()){
+    switch(Tools->GetAction()){
     case etaSelect: 	btn=ebActionSelect; 	break;
     case etaAdd:    	btn=ebActionAdd; 		break;
     case etaMove:   	btn=ebActionMove; 		break;
@@ -114,7 +114,7 @@ void __fastcall TfraTopBar::RefreshBar()
     }
 	btn->Down 			= true;
     // axis
-	switch (Tools.GetAxis()){
+	switch (Tools->GetAxis()){
     case etAxisX: 		btn=ebAxisX; 	break;
     case etAxisY: 		btn=ebAxisY; 	break;
     case etAxisZ: 		btn=ebAxisZ; 	break;
@@ -123,30 +123,30 @@ void __fastcall TfraTopBar::RefreshBar()
     }
 	btn->Down 			= true;
     // settings
-	ebCSParent->Down	= Tools.GetSettings(etfCSParent);
-	ebNUScale->Down		= Tools.GetSettings(etfNUScale);
-	ebNormalAlign->Down	= Tools.GetSettings(etfNormalAlign);
-	ebGSnap->Down		= Tools.GetSettings(etfGSnap);
-	ebOSnap->Down		= Tools.GetSettings(etfOSnap);
-	ebMTSnap->Down		= Tools.GetSettings(etfMTSnap);
-	ebVSnap->Down		= Tools.GetSettings(etfVSnap);
-	ebASnap->Down		= Tools.GetSettings(etfASnap);
-	ebMSnap->Down		= Tools.GetSettings(etfMSnap);
+	ebCSParent->Down	= Tools->GetSettings(etfCSParent);
+	ebNUScale->Down		= Tools->GetSettings(etfNUScale);
+	ebNormalAlign->Down	= Tools->GetSettings(etfNormalAlign);
+	ebGSnap->Down		= Tools->GetSettings(etfGSnap);
+	ebOSnap->Down		= Tools->GetSettings(etfOSnap);
+	ebMTSnap->Down		= Tools->GetSettings(etfMTSnap);
+	ebVSnap->Down		= Tools->GetSettings(etfVSnap);
+	ebASnap->Down		= Tools->GetSettings(etfASnap);
+	ebMSnap->Down		= Tools->GetSettings(etfMSnap);
     // redraw scene
-    UI.RedrawScene		();
+    UI->RedrawScene		();
 }
 //---------------------------------------------------------------------------
 
 
 void __fastcall TfraTopBar::ebZoomExtentsClick(TObject *Sender)
 {
- 	UI.Command( COMMAND_ZOOM_EXTENTS, FALSE );
+ 	UI->Command( COMMAND_ZOOM_EXTENTS, FALSE );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraTopBar::ebZoomExtentsSelectedClick(TObject *Sender)
 {
- 	UI.Command( COMMAND_ZOOM_EXTENTS, TRUE );
+ 	UI->Command( COMMAND_ZOOM_EXTENTS, TRUE );
 }
 //---------------------------------------------------------------------------
 
@@ -161,7 +161,7 @@ void __fastcall TfraTopBar::fsStorageRestorePlacement(TObject *Sender)
 	if (ebCameraPlane->Down) 			Device.m_Camera.SetStyle(csPlaneMove);
 	else if (ebCameraArcBall->Down) 	Device.m_Camera.SetStyle(cs3DArcBall);
 	else if (ebCameraFly->Down) 		Device.m_Camera.SetStyle(csFreeFly);
-    UI.RedrawScene();
+    UI->RedrawScene();
 }
 //---------------------------------------------------------------------------
 

@@ -3,9 +3,8 @@
 #pragma hdrstop
 
 #include "BottomBar.h"
-#include "leftbar.h"
 #include "LogForm.h"
-#include "ui_main.h"
+#include "ui_maincustom.h"
 #include "igame_persistent.h"
 #include "environment.h"
 #include "PropertiesListHelper.h"
@@ -31,7 +30,7 @@ void __fastcall TfraBottomBar::ClickOptionsMenuItem(TObject *Sender)
     TMenuItem* mi = dynamic_cast<TMenuItem*>(Sender);
     if (mi){
         mi->Checked = !mi->Checked;
-        if (mi==miDrawGrid)     			UI.Command(COMMAND_TOGGLE_GRID);
+        if (mi==miDrawGrid)     			UI->Command(COMMAND_TOGGLE_GRID);
         else if (mi==miRenderWithTextures)	psDeviceFlags.set(rsRenderTextures,mi->Checked);
         else if (mi==miMuteSounds)			psDeviceFlags.set(rsMuteSounds,mi->Checked);
         else if (mi==miLightScene)  		psDeviceFlags.set(rsLighting,mi->Checked);
@@ -39,23 +38,23 @@ void __fastcall TfraBottomBar::ClickOptionsMenuItem(TObject *Sender)
         else if (mi==miRenderEdgedFaces)	psDeviceFlags.set(rsEdgedFaces,mi->Checked);
         else if (mi==miFog)					psDeviceFlags.set(rsFog,mi->Checked);
         else if (mi==miRealTime)			psDeviceFlags.set(rsRenderRealTime,mi->Checked);
-        else if (mi==miDrawSafeRect)		UI.Command(COMMAND_TOGGLE_SAFE_RECT);
+        else if (mi==miDrawSafeRect)		UI->Command(COMMAND_TOGGLE_SAFE_RECT);
         else if (mi==miRenderFillPoint)		Device.dwFillMode 	= D3DFILL_POINT;
         else if (mi==miRenderFillWireframe)	Device.dwFillMode 	= D3DFILL_WIREFRAME;
         else if (mi==miRenderFillSolid)		Device.dwFillMode 	= D3DFILL_SOLID;
         else if (mi==miRenderShadeFlat)		Device.dwShadeMode	= D3DSHADE_FLAT;
         else if (mi==miRenderShadeGouraud)	Device.dwShadeMode	= D3DSHADE_GOURAUD;
-        else if (mi==miRenderHWTransform){	HW.Caps.bForceGPU_SW = !mi->Checked; UI.Resize(); }
+        else if (mi==miRenderHWTransform){	HW.Caps.bForceGPU_SW = !mi->Checked; UI->Resize(); }
     }
-    UI.RedrawScene();
-    UI.Command(COMMAND_UPDATE_TOOLBAR);
+    UI->RedrawScene();
+    UI->Command(COMMAND_UPDATE_TOOLBAR);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfraBottomBar::QualityClick(TObject *Sender)
 {
-    UI.SetRenderQuality((float)(((TMenuItem*)Sender)->Tag)/100);
+    UI->SetRenderQuality((float)(((TMenuItem*)Sender)->Tag)/100);
     ((TMenuItem*)Sender)->Checked = true;
-    UI.Resize();
+    UI->Resize();
 }
 //---------------------------------------------------------------------------
 void __fastcall TfraBottomBar::fsStorageRestorePlacement(TObject *Sender)
@@ -135,14 +134,14 @@ void __fastcall TfraBottomBar::ebLogClick(TObject *Sender)
 
 void __fastcall TfraBottomBar::ebStopClick(TObject *Sender)
 {
-	UI.Command(COMMAND_BREAK_LAST_OPERATION);
+	UI->Command(COMMAND_BREAK_LAST_OPERATION);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraBottomBar::ebStatClick(TObject *Sender)
 {
 	psDeviceFlags.set(rsStatistic,!psDeviceFlags.is(rsStatistic));
-    UI.RedrawScene();
+    UI->RedrawScene();
 }
 //---------------------------------------------------------------------------
 

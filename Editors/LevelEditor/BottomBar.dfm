@@ -258,9 +258,6 @@ object fraBottomBar: TfraBottomBar
       'N25.Checked'
       'N50.Checked'
       'N75.Checked'
-      'miDrawObjectBones.Checked'
-      'miObjectLoopedAnimation.Checked'
-      'miDrawObjectAnimPath.Checked'
       'miRenderFillPoint.Checked'
       'miRenderFillSolid.Checked'
       'miRenderFillWireframe.Checked'
@@ -270,9 +267,7 @@ object fraBottomBar: TfraBottomBar
       'miRenderWithTextures.Checked'
       'miDrawSectorSolid.Checked'
       'miShowHint.Checked'
-      'miDrawObjectsPivot.Checked'
-      'miSpawnPointDrawText.Checked'
-      'miDrawObjectLOD.Checked')
+      'miSpawnPointDrawText.Checked')
     StoredValues = <>
     Left = 185
     Top = 33
@@ -411,28 +406,6 @@ object fraBottomBar: TfraBottomBar
       Caption = '-'
       GroupIndex = 4
     end
-    object Objects1: TMenuItem
-      Caption = 'Objects'
-      GroupIndex = 4
-      object miDrawObjectBones: TMenuItem
-        Caption = 'Draw Bones'
-        OnClick = ClickOptionsMenuItem
-      end
-      object miObjectLoopedAnimation: TMenuItem
-        Caption = 'Looped Animation'
-        OnClick = ClickOptionsMenuItem
-      end
-      object miDrawObjectAnimPath: TMenuItem
-        Caption = 'Draw Animation Path'
-        Checked = True
-        OnClick = ClickOptionsMenuItem
-      end
-      object miDrawObjectLOD: TMenuItem
-        Caption = 'Draw Object LOD'
-        Checked = True
-        OnClick = ClickOptionsMenuItem
-      end
-    end
     object miDrawSectors: TMenuItem
       Caption = 'Sectors'
       GroupIndex = 4
@@ -459,12 +432,6 @@ object fraBottomBar: TfraBottomBar
         Checked = True
         OnClick = ClickOptionsMenuItem
       end
-    end
-    object miDrawObjectsPivot: TMenuItem
-      Caption = 'Draw Objects Pivot'
-      Checked = True
-      GroupIndex = 4
-      OnClick = ClickOptionsMenuItem
     end
     object N4: TMenuItem
       Caption = '-'

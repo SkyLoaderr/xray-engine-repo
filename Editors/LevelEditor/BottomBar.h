@@ -15,7 +15,7 @@
 #include <ExtCtrls.hpp>
 #include <Menus.hpp>
 //---------------------------------------------------------------------------
-class TfraBottomBar : public TFrame
+class ECORE_API TfraBottomBar : public TFrame
 {
 __published:	// IDE-managed Components
 	TFormStorage *fsStorage;
@@ -34,10 +34,6 @@ __published:	// IDE-managed Components
 	TMenuItem *miDrawSectors;
 	TMenuItem *Portals1;
 	TMenuItem *miDrawPortalSimpleModel;
-	TMenuItem *Objects1;
-	TMenuItem *miDrawObjectBones;
-	TMenuItem *miObjectLoopedAnimation;
-	TMenuItem *miDrawObjectAnimPath;
 	TMenuItem *Render1;
 	TMenuItem *FillMode1;
 	TMenuItem *miRenderFillSolid;
@@ -59,7 +55,6 @@ __published:	// IDE-managed Components
 	TMenuItem *miDrawSectorSolid;
     TMenuItem *N1;
     TMenuItem *miShowHint;
-	TMenuItem *miDrawObjectsPivot;
 	TPanel *paBottomBar;
 	TPanel *paInfo;
 	TPanel *paStatusBar;
@@ -79,7 +74,6 @@ __published:	// IDE-managed Components
 	TMenuItem *miSpawnPointDrawText;
 	TMenuItem *miDrawSafeRect;
 	TMenuItem *miMuteSounds;
-	TMenuItem *miDrawObjectLOD;
 	TMenuItem *N5;
 	TMenuItem *miWeather;
 	TMenuItem *miWeatherNone;
@@ -101,6 +95,7 @@ public:
     AnsiString sProgressTitle;
 public:		// User declarations
     __fastcall TfraBottomBar(TComponent* Owner);
+    void RefreshBar(){;}
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfraBottomBar *fraBottomBar;
