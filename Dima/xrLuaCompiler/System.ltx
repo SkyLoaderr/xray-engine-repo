@@ -1,0 +1,2128 @@
+#include "environment.ltx"
+#include "monsters.ltx"
+#include "weapons.ltx"
+
+[console_font]
+shader 		= font
+texture		= ui\ui_font_console_02
+size		= 0.02
+interval	= 1,1
+
+[startup_font]
+shader		= font
+texture		= ui\ui_font_menu
+size		= 0.023
+interval	= 1,1
+
+[stat_font]
+shader 		= font
+texture		= ui\ui_font_hud_01
+interval	= 0.75,1
+
+[hud_font_small]
+shader 		= font
+texture		= ui\ui_font_hud_01
+interval	= 0.75,1
+
+[hud_font_medium]
+shader 		= font
+texture		= ui\ui_font_hud_02
+
+[hud_font_di]
+shader 		= font
+texture		= ui\ui_font_console_02
+
+[hud_font_big_digit]
+shader 		= font
+texture		= ui\ui_font_big_digit
+
+[ui_font_header_europe]
+shader		= font
+texture		= ui\ui_font_header_europe
+
+[ui_font_header_russian]
+shader		= font
+texture		= ui\ui_font_header_russian
+
+[inventory]
+take_dist		= 2
+max_weight		= 40
+max_ruck		= 56
+max_belt		= 18
+slots			= 8
+slot_name_1		= Knife
+slot_name_2		= "Light gun"
+slot_name_3		= "Heavy gun"
+slot_name_4		= Grenades
+slot_name_5		= Apparatus
+slot_name_6		= Throw
+slot_name_7		= Outfit
+slot_name_8		= PDA
+
+[lights_hanging_lamp]
+GroupControlSection	= spawn_group
+$spawn 				= "physics\hanging lamp"
+class				= O_HLAMP
+cform				= skeleton
+
+[physic_object]
+GroupControlSection	= spawn_group
+$spawn 				= "physics\object"
+class				= O_PHYSIC
+
+[device_torch]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn				= "devices\tourch"
+class				= D_TORCH
+cost				= 0
+inv_name			= "Torch"
+inv_name_short		= "Torch"
+inv_weight			= .4
+position			= .35,.25,0
+
+[af_magnet]
+GroupControlSection	= spawn_group
+$spawn				= "artifacts\magnet"
+class				= ARTEFACT
+cform				= skeleton
+$prefetch 			= 64
+;visual				= weapon\bolt\wpn_bolt.ogf
+visual				= cs\artefact_magnet.ogf
+inv_name			= "Magnet"
+inv_name_short		= 
+inv_weight			= 1
+
+food_value			= 0
+health_value		= 0
+
+inv_icon			= ui\ui_inv_pmm_ammo				; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+
+cost				= 1000
+
+detector_dist		= 8
+detector_sound		= zone_mosquito_bald.wav
+
+jump_height			= .5
+energy				= 1
+
+[m_mball]
+GroupControlSection	= spawn_group
+$spawn 			= "temp\m_mball"
+$npc			= on				; option for Level Editor
+$prefetch 		= 3
+cform           = skeleton
+class   		= AF_MBALL
+
+visual				= artifacts\artifact_kristal.ogf	;visual = cs\artefact_magnet.ogf
+inv_name			= "Mercury Ball"
+inv_name_short		= 
+inv_weight			= 1
+
+food_value			= 0
+health_value		= 0
+
+inv_icon			= ui\ui_inv_pmm_ammo				; for inventory menu
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+cost				= 1000
+
+detector_dist		= 8
+detector_sound		= zone_mosquito_bald.wav
+
+
+[bolt]
+class				= II_BOLT
+cform				= skeleton
+visual				= weapon\bolt\wpn_bolt.ogf
+inv_name			= Bolt
+$prefetch 			= 16
+inv_name_short		= 
+inv_weight			= .0
+
+inv_icon			= ui\ui_inv_pmm_ammo				; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+slot				= 5
+hud					= bolt_hud
+force_min			= 25
+force_max			= 100
+force_grow_speed	= 25
+
+cost				= 0
+
+[bolt_hud]
+shell_point			= 0.0, 0.0, 0.0
+fire_point          = 0.05, 0.0, 0.1
+fire_bone           = bolt_0
+
+orientation         = 0,0,0
+position            = 0,0,0
+visual              = weapon\bolt\wpn_bolt_hud.ogf
+
+[medkit]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 				= "food and drugs\medkit"
+;$prefetch 			= 32
+class				= II_MEDKI
+cform				= skeleton
+visual				= equipment\aptechka.ogf
+
+inv_name			= Medkit
+inv_name_short		= Medkit
+inv_weight			= 0.2
+inv_icon			= ui\ui_inv_medkit				; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 0
+inv_grid_y			= 0
+cost				= 50
+
+; eatable item
+eat_health = 0.1										
+eat_satiety = 0
+eat_power = 0.05
+eat_radiation = -0.01	
+eat_portions_num = 100
+
+[bread]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 				= "food and drugs\bread"
+;$prefetch 			= 32
+class				= II_BREAD
+cform				= skeleton
+visual				= items\bred.ogf	;items\geiger_01.ogf
+
+inv_name			= Bread
+inv_name_short		= Bread
+inv_weight			= 0.2
+inv_icon			= ui\ui_inv_medkit				; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 0
+inv_grid_y			= 0
+cost				= 50
+
+; eatable item
+eat_health = 0.01
+eat_satiety = 0.2
+eat_power = 0
+eat_radiation = 0	
+eat_portions_num = -1
+
+[kolbasa]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 				= "food and drugs\kolbasa"
+;$prefetch 			= 32
+class				= II_BREAD
+cform				= skeleton
+visual				= items\kolbasa.ogf	;items\geiger_01.ogf
+
+inv_name			= Kolbasa
+inv_name_short		= Kolbasa
+inv_weight			= 0.2
+inv_icon			= ui\ui_inv_medkit				; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 0
+inv_grid_y			= 0
+cost				= 50
+
+; eatable item
+eat_health = 0.01
+eat_satiety = 0.2
+eat_power = 0
+eat_radiation = 0	
+eat_portions_num = -1
+
+[conserva]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 				= "food and drugs\conserva"
+;$prefetch 			= 32
+class				= II_BREAD
+cform				= skeleton
+visual				= items\conserv1.ogf	;items\geiger_01.ogf
+
+inv_name			= Conserva
+inv_name_short		= Conserva
+inv_weight			= 0.2
+inv_icon			= ui\ui_inv_medkit				; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 0
+inv_grid_y			= 0
+cost				= 50
+
+; eatable item
+eat_health = 0.01
+eat_satiety = 0.2
+eat_power = 0
+eat_radiation = 0	
+eat_portions_num = -1
+
+[antirad]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 			= "food and drugs\antirad"
+;$prefetch 		= 32
+class			= II_ANTIR
+cform           = skeleton
+visual          = items\conserv2.ogf ;items\geiger_01.ogf
+
+inv_name			= Antirad
+inv_name_short		= Antirad
+inv_weight			= 0.2
+inv_icon			= ui\ui_inv_medkit				; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 0
+inv_grid_y			= 0
+cost				= 50
+
+; eatable item
+eat_health = 0										
+eat_satiety = 0
+eat_power = -0.01
+eat_radiation = 0.3
+eat_portions_num = 10
+
+[document]
+GroupControlSection	= spawn_group
+;discovery_dependency = 
+$spawn 				= "documents\document 01"
+;$prefetch 			= 32
+class				= II_DOC
+cform				= skeleton
+visual				= items\geiger_01.ogf
+
+inv_name			= Document
+inv_name_short		= Document
+inv_weight			= 0.2
+inv_icon			= ui\ui_inv_medkit				; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 0
+inv_grid_y			= 0
+cost				= 50
+
+
+[scientific_outfit]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 			= "outfit\scientific"
+;$prefetch 		= 32
+class			= EQU_SCIE
+cform           = skeleton
+visual          = equipment\stalker_scient_suit	;items\geiger_01.ogf;	corps\corp_zomb1
+
+inv_name			= "Scienific Outfit"
+inv_name_short		= "Scienific Outfit"
+inv_weight			= 6.5
+inv_icon			= ui\ui_inv_binoculars					; for inventory menu
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 18
+inv_grid_y			= 13
+cost				= 1500
+
+burn_immunity = 1.0				;коэффициенты иммунитета самого костюма
+strike_immunity = 1.0
+shock_immunity = 1.0
+wound_immunity = 1.0		
+radiation_immunity = 1.0
+telepatic_immunity = 1.0
+chemical_burn_immunity = 1.0
+explosion_immunity = 1.0
+fire_wound_immunity  = 1.0
+
+burn_protection = 0.3			;коэффициенты защиты костюма персонажем 
+strike_protection = 0.9
+shock_protection = 0.4
+wound_protection = 0.8		
+radiation_protection = 0.1
+telepatic_protection = 0.3
+chemical_burn_protection = 1.0
+explosion_protection = 1.0
+fire_wound_protection  = 1.0
+
+[scientist_outfit]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 			= "outfit\scientist"
+;$prefetch 		= 32
+class			= EQU_SCIE
+cform           = skeleton
+visual          = equipment\scientist_suit	;items\geiger_01.ogf;	corps\corp_zomb1
+
+inv_name			= "Scientist Outfit"
+inv_name_short		= "Scientist Outfit"
+inv_weight			= 6.5
+inv_icon			= ui\ui_inv_binoculars					; for inventory menu
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 0
+inv_grid_y			= 0
+cost				= 1500
+
+burn_immunity = 1.0				;коэффициенты иммунитета самого костюма
+strike_immunity = 1.0
+shock_immunity = 1.0
+wound_immunity = 1.0		
+radiation_immunity = 1.0
+telepatic_immunity = 1.0
+chemical_burn_immunity = 1.0
+explosion_immunity = 1.0
+fire_wound_immunity  = 1.0
+
+burn_protection = 0.3			;коэффициенты защиты костюма персонажем 
+strike_protection = 0.9
+shock_protection = 0.4
+wound_protection = 0.8		
+radiation_protection = 0.1
+telepatic_protection = 0.3
+chemical_burn_protection = 1.0
+explosion_protection = 1.0
+fire_wound_protection  = 1.0
+
+[green_outfit]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 			= "outfit\green"
+;$prefetch 		= 32
+class			= EQU_STLK
+cform           = skeleton
+visual          = equipment\green_stalker_suit	;items\geiger_01.ogf;	corps\corp_stalk1	
+
+inv_name			= "Green Outfit"
+inv_name_short		= "Green Outfit"
+inv_weight			= 4.0
+inv_icon			= ui\ui_inv_binoculars					; for inventory menu
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 0
+inv_grid_y			= 0
+cost				= 2500
+
+burn_immunity = 1.0				;коэффициенты иммунитета самого костюма
+strike_immunity = 1.0
+shock_immunity = 1.0
+wound_immunity = 1.0		
+radiation_immunity = 1.0
+telepatic_immunity = 1.0
+chemical_burn_immunity = 1.0
+explosion_immunity = 1.0
+fire_wound_immunity  = 1.0
+
+burn_protection = 0.5			;коэффициенты защиты костюма персонажем 
+strike_protection = 0.7
+shock_protection = 0.7
+wound_protection = 0.7		
+radiation_protection = 0.3
+telepatic_protection = 0.5
+chemical_burn_protection = 1.0
+explosion_protection = 1.0
+fire_wound_protection  = 1.0
+
+[stalker_outfit]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 			= "outfit\stalker"
+;$prefetch 		= 32
+class			= EQU_STLK
+cform           = skeleton
+visual          = equipment\stalker_suit	;items\geiger_01.ogf;	corps\corp_stalk1	
+
+inv_name			= "Stalker Outfit"
+inv_name_short		= "Stalker Outfit"
+inv_weight			= 4.0
+inv_icon			= ui\ui_inv_binoculars					; for inventory menu
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 16
+inv_grid_y			= 13
+cost				= 2500
+
+burn_immunity = 1.0				;коэффициенты иммунитета самого костюма
+strike_immunity = 1.0
+shock_immunity = 1.0
+wound_immunity = 1.0		
+radiation_immunity = 1.0
+telepatic_immunity = 1.0
+chemical_burn_immunity = 1.0
+explosion_immunity = 1.0
+fire_wound_immunity  = 1.0
+
+burn_protection = 0.5			;коэффициенты защиты костюма персонажем 
+strike_protection = 0.7
+shock_protection = 0.7
+wound_protection = 0.7		
+radiation_protection = 0.3
+telepatic_protection = 0.5
+chemical_burn_protection = 1.0
+explosion_protection = 1.0
+fire_wound_protection  = 1.0
+
+[military_outfit]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 			= "outfit\military"
+;$prefetch 		= 32
+class			= EQU_MLTR
+cform           = skeleton
+visual          = equipment\stalker_killer_suit	;items\geiger_01.ogf;	corps\corp_stalk2
+
+inv_name			= "Military Outfit"
+inv_name_short		= "Military Outfit"
+inv_weight			= 15.0
+inv_icon			= ui\ui_inv_binoculars					; for inventory menu
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 6
+inv_grid_y			= 15
+cost				= 5000
+
+burn_immunity = 1.0				;коэффициенты иммунитета самого костюма
+strike_immunity = 1.0
+shock_immunity = 1.0
+wound_immunity = 1.0		
+radiation_immunity = 1.0
+telepatic_immunity = 1.0
+chemical_burn_immunity = 1.0
+explosion_immunity = 1.0
+fire_wound_immunity  = 1.0
+
+burn_protection = 0.4			;коэффициенты защиты костюма персонажем 
+strike_protection = 0.4
+shock_protection = 0.5
+wound_protection = 0.4		
+radiation_protection = 0.6
+telepatic_protection = 1.0
+chemical_burn_protection = 1.0
+explosion_protection = 1.0
+fire_wound_protection  = 1.0
+
+[exo_outfit]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 			= "outfit\exo"
+;$prefetch 		= 32
+class			= EQU_EXO
+cform           = skeleton
+visual          = equipment\exoskelet	;items\geiger_01.ogf;	corps\corp_sold2
+
+inv_name			= "Exo Outfit"
+inv_name_short		= "Exo Outfit"
+inv_weight			= 25.0
+inv_icon			= ui\ui_inv_binoculars					; for inventory menu
+inv_grid_width		= 3
+inv_grid_height		= 2
+inv_grid_x			= 12
+inv_grid_y			= 13
+cost				= 12000
+
+burn_immunity = 1.0				;коэффициенты иммунитета самого костюма
+strike_immunity = 1.0
+shock_immunity = 1.0
+wound_immunity = 1.0		
+radiation_immunity = 1.0
+telepatic_immunity = 1.0
+chemical_burn_immunity = 1.0
+explosion_immunity = 1.0
+fire_wound_immunity  = 1.0
+
+burn_protection = 0.5			;коэффициенты защиты костюма персонажем 
+strike_protection = 0.6
+shock_protection = 0.5
+wound_protection = 0.6		
+radiation_protection = 0.7
+telepatic_protection = 1.0
+chemical_burn_protection = 1.0
+explosion_protection = 1.0
+fire_wound_protection  = 1.0
+
+[zone_mosquito_bald]
+GroupControlSection	= spawn_group_zone
+$spawn 			= "zone\mosquito bald"
+$prefetch 		= 16
+class			= Z_MBALD
+hit_impulse_scale	= .1
+sound			= zone_mosquito_bald.wav
+postprocess		= postprocess_anomaly
+hit_effect		= anomaly\_anomal-03-full; anomaly\a-02-black-stars ;explosions\expl_02_sparks
+effects			= anomaly\marevo2		;anomaly\marevo, anomaly\storm_01
+artefacts		= af_magnet,0.7
+BirthProbability = 0.9
+hit_type		= strike
+
+[zone_radioactive]
+GroupControlSection	= spawn_group_zone
+$spawn 			= "zone\radioactive"
+$prefetch 		= 16
+class			= Z_RADIO
+hit_impulse_scale	= .001
+sound			= zone_mosquito_bald.wav
+postprocess		= postprocess_anomaly
+hit_effect		= explosions\expl_02_sparks
+effects			= anomaly\marevo, anomaly\storm_01
+artefacts		= af_magnet,0.7
+BirthProbability = 0.9
+
+hit_type		= radiation
+
+[zone_acid_fog]
+GroupControlSection	= spawn_group_zone
+$spawn 			= "zone\acid fog"
+$prefetch 		= 16
+class			= Z_ACIDF
+hit_impulse_scale	= .1
+sound			= zone_mosquito_bald.wav
+postprocess		= postprocess_anomaly
+hit_effect		= explosions\expl_02_sparks
+effects			= anomaly\marevo2		;anomaly\marevo, anomaly\storm_01
+artefacts		= af_magnet,0.7
+BirthProbability = 0.9
+
+hit_type		= burn
+
+[zone_witches_galantine]
+GroupControlSection	= spawn_group_zone
+$spawn 			= "zone\witches galantine"
+$prefetch 		= 16
+class			= Z_GALANT
+hit_impulse_scale	= .1
+sound			= zone_mosquito_bald.wav
+postprocess		= postprocess_anomaly
+hit_effect		= explosions\expl_02_sparks
+effects			= anomaly\marevo2		;anomaly\marevo, anomaly\storm_01
+artefacts		= af_magnet,0.7
+BirthProbability = 0.9
+
+hit_type		= burn
+
+[zone_burning_fuzz]
+GroupControlSection	= spawn_group_zone
+$spawn 			= "zone\burning fuzz"
+$prefetch 		= 16
+class			= Z_BFUZZ
+hit_impulse_scale	= .1
+sound			= zone_mosquito_bald.wav
+postprocess		= postprocess_anomaly
+hit_effect		= explosions\expl_02_sparks
+effects			= anomaly\marevo2		;anomaly\marevo, anomaly\storm_01
+artefacts		= af_magnet,0.7
+BirthProbability = 0.9
+
+hit_type		= burn
+
+[zone_rusty_hair]
+GroupControlSection	= spawn_group_zone
+$spawn 			= "zone\rusty hair"
+$prefetch 		= 16
+class			= Z_RUSTYH
+hit_impulse_scale	= .1
+sound			= zone_mosquito_bald.wav
+postprocess		= postprocess_anomaly
+hit_effect		= explosions\expl_02_sparks
+effects			= anomaly\marevo2		;anomaly\marevo, anomaly\storm_01
+artefacts		= af_magnet,0.7
+BirthProbability = 0.9
+
+hit_type		= shock
+
+[zone_dead]
+GroupControlSection	= spawn_group_zone
+$spawn 			= "zone\dead"
+$prefetch 		= 16
+class			= Z_DEAD
+hit_impulse_scale	= .1
+sound			= zone_mosquito_bald.wav
+postprocess		= postprocess_anomaly
+hit_effect		= explosions\expl_02_sparks
+effects			= anomaly\marevo2		;anomaly\marevo, anomaly\storm_01
+artefacts		= af_magnet,0.7
+BirthProbability = 0.9
+
+hit_type		= radiation
+
+[zone_mosquito_bald_weapon]
+GroupControlSection	= spawn_group_zone
+$spawn 			= "zone\mosquito bald weapon"
+$prefetch 		= 16
+class			= Z_MBALD
+hit_impulse_scale	= .1
+sound			= zone_mosquito_bald.wav
+postprocess		= postprocess_anomaly
+hit_effect		= explosions\expl_02_sparks
+effects			= anomaly\marevo, anomaly\storm_01
+artefacts		= wpn_ak7,0.2, wpn_pm,0.4, wpn_knife,0.5 
+BirthProbability = 0.9
+
+hit_type		= shock
+
+[zone_mincer]
+GroupControlSection	= spawn_group_zone
+$spawn 			= "zone\mincer"
+$prefetch 		= 16
+class			= Z_MINCER
+sound			= zone_mosquito_bald.wav
+hit_impulse_scale	= .1
+postprocess		= postprocess_anomaly1
+effects				= anomaly\marevo2, anomaly\storm_01
+artefacts		= af_magnet,30
+BirthProbability = 0.9
+
+hit_type		= shock
+
+[zone_x]
+GroupControlSection	= spawn_group_zone
+$spawn 			= "zone\zone-x"
+$prefetch 		= 16
+class			= Z_MBALD
+hit_impulse_scale	= 0
+sound			= zone_mosquito_bald.wav
+postprocess		= postprocess_anomaly
+hit_effect		= explosions\expl_02_sparks
+effects				= anomaly\marevo2
+artefacts		= af_magnet,30
+BirthProbability = 0.9
+
+hit_type		= shock
+
+[zone_x1]
+GroupControlSection	= spawn_group_zone
+$spawn 			= "zone\zone-x1"
+$prefetch 		= 16
+class			= Z_MBALD
+hit_impulse_scale	= 0
+sound			= zone_mosquito_bald.wav
+postprocess		= postprocess_anomaly3
+hit_effect		= explosions\expl_02_sparks
+effects				= anomaly\marevo2, anomaly\storm_01
+artefacts		= af_magnet,30
+BirthProbability = 0.9
+
+hit_type		= shock
+
+[zone_x2]
+GroupControlSection	= spawn_group_zone
+$spawn 			= "zone\zone-x2"
+$prefetch 		= 16
+class			= Z_MBALD
+hit_impulse_scale	= 0
+sound			= zone_mosquito_bald.wav
+postprocess		= postprocess_anomaly4
+hit_effect		= explosions\expl_02_sparks
+effects				= anomaly\marevo2, anomaly\storm_01
+artefacts		= af_magnet,30
+BirthProbability = 0.9
+
+hit_type		= shock
+
+[zone_x3]
+GroupControlSection	= spawn_group_zone
+$spawn 			= "zone\zone-x3"
+$prefetch 		= 16
+class			= Z_MBALD
+hit_impulse_scale	= 0
+sound			= zone_mosquito_bald.wav
+postprocess		= postprocess_anomaly5
+hit_effect		= explosions\expl_02_sparks
+effects				= anomaly\marevo2, anomaly\storm_01
+artefacts		= af_magnet,30
+BirthProbability = 0.9
+
+hit_type		= shock
+
+[detector_simple]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 			= "devices\detector"
+$prefetch 		= 32
+class			= D_SIMDET
+cform                   = skeleton
+visual                  = items\geiger_01.ogf
+radius			= 10
+buzzer_radius		= 1.5
+noise			= zone_mosquito_bald.wav       ;detectors\geiger_noise_loop.wav 
+buzzer			= zone_mosquito_bald.wav       ;detectors\DA-2_alarm_loop.wav
+
+zone_class_1		= zone_mosquito_bald
+zone_sound_1		= detectors\DA-2_beep1.wav
+zone_class_2		= zone_mincer
+zone_sound_2		= detectors\DA-2_beep1.wav 
+zone_class_3		= zone_radioactive
+zone_sound_3		= detectors\DA-2_beep1.wav 
+
+inv_name			= Detector
+inv_name_short		= Detector
+inv_weight			= 1.
+inv_icon			= ui\ui_inv_binoculars					; for inventory menu
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 0
+inv_grid_y			= 0
+cost				= 10
+
+[device_pda]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 			= "devices\pda"
+;$prefetch 		= 32
+class			= D_PDA
+cform           = skeleton
+visual          = equipment\pda.ogf
+radius			= 1
+slot			= 8
+
+inv_name			= PDA
+inv_name_short		= PDA
+inv_weight			= 0.2
+inv_icon			= ui\ui_inv_binoculars					; for inventory menu
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 0
+inv_grid_y			= 0
+cost				= 50
+
+[spectator]
+$player 		= on
+class                   = SPECT
+
+[actor]
+GroupControlSection	= spawn_group
+$spawn 			= "actor"
+$ed_icon		= ed\ed_actor
+$player 		= on
+cform                   = skeleton
+class                   = O_ACTOR
+money					= 0;
+rank					= 3;
+;jump_speed             = 20
+;jump_speed             = 5.6
+jump_speed              = 6.
+crouch_coef 		= 0.2
+max_item_mass			= 40.0
+run_coef                 = 2.4
+visual			 = actors\Different_stalkers\stalker_hood_multiplayer.ogf
+;visual			 = actors\alpha\pidarka_urban.ogf
+walk_accel               = 17 ;40 ;17  ;54 ;40
+ph_box0_center 		 = 0.0,  0.9,  0.0
+ph_box0_size 		 = 0.35, 0.9,  0.35
+ph_box1_center 		 = 0.0,  0.6,  0.0
+ph_box1_size 		 = 0.40, 0.6,  0.40
+ph_foot_center		 = 0.0,  0.2,  0.0
+ph_foot_size 		 = 0.20, 0.23, 0.20
+ph_crash_speed_min       = 16
+ph_crash_speed_max       = 30
+ph_mass 		 = 120
+ph_friction_air          = 0.05 ;0.05
+ph_friction_ground       = 8 ;16 ;8.0 ;20.0   ;16
+ph_friction_wall         = 4.0                              ; ???
+capture_bone			 = 0
+
+ph_skeleton_mass_factor	 = 3.0
+ph_skeleton_airr_lin_factor = 0.7
+ph_skeleton_airr_ang_factor = 5.0
+ph_skeleton_hinger_factor    =15.
+ph_skeleton_hinger_factor1   =1.
+ph_skeleton_hinger_factor2   =0
+ph_skeleton_hinge_vel	     =0
+ph_skeleton_ddelay	     =20
+ph_skel_fatal_impulse_factor = 1.
+damage			 = actor_damage
+
+;actor condition
+
+satiety_v = 0.001			;0.001			;скорость уменьшения сытости со временем
+radiation_v = 0.00001		;0.004			;скорость уменьшения радиации
+satiety_power_v = 0.001		;0.01			;увеличение силы при уменьшении сытости 
+satiety_health_v = 0.001	;0.03			;увеличение здоровья при уменьшении сытости 
+satiety_critical = 0.25						;критическое значения сытости (в процентах от 0..1) когда здоровье начианает уменьшаться
+radiation_health_v = 0.01	;0.006			;уменьшение здоровья при воздействии радиации
+bleeding_v = 0.01			;0.02			;потеря крови при максимальной ране
+wound_incarnation_v = 0.01	;0.001		    ;скорость заживания раны 
+health_hit_part = 1.0		;0.8			;процент хита, уходящий на отнимание здоровья
+power_hit_part = 1.0		;0.9			;процент хита, уходящий на отнимание силы
+accel_power_v = 0.00005		;0.0005			;влияния ускорения на отбирание сил
+jump_power_v = 0.005		;0.005			;влияния прыжка на отбирание сил
+
+burn_immunity = 1.0				;коэффициенты иммунитета 
+strike_immunity = 1.0
+shock_immunity = 1.0
+wound_immunity = 1.0		;0.3
+radiation_immunity = 1.0
+telepatic_immunity = 1.0
+chemical_burn_immunity = 1.0
+explosion_immunity = 1.0
+fire_wound_immunity  = 1.0
+
+sleep_health = 1.0		;1.5				;коэффициенты скоростей изменения параметров во время сна
+sleep_power = 1.0		;1.5
+sleep_satiety = 1.0		;0.8
+sleep_radiation = 1.0	;1.1
+
+medkit = 0.3					;временно! вместо аптечки
+medkit_wound = 0.2				;сколько процентов кровотечения оставливает аптечка 
+antirad = 0.3					;временно! вместо антирада
+
+
+[actor_damage]
+;bone_name		 = <hit_scale>,<fwd_damage_anim_index> 
+;-1 - нет анимаций, четный номер - спереди, нечетный номер - сзади, УКАЗЫВАЕТСЯ ТОЛЬКО ПЕРЕДНИЙ!!! ЗАДНИЙ НА АВТОМАТЕ
+default			 = 1.0, -1
+
+bip01_pelvis 		 = 1.0, 10
+bip01_spine 		 = 1.0, 10
+bip01_spine1 		 = 1.0, 0
+bip01_neck 		 = 3.0, 0
+bip01_head 		 = 4.0, 0
+eyelid_1 		 = 8.0, 0
+eye_left 		 = 8.0, 0
+eye_right 		 = 8.0, 0
+jaw_1 		 	 = 2.0, 0
+
+bip01_l_clavicle	 = 0.5, 4
+bip01_l_upperarm	 = 0.5, 4
+bip01_l_forearm	 	 = 0.5, 4
+bip01_l_hand	 	 = 0.5, 4
+bip01_l_finger0	 	 = 0.5, 4
+bip01_l_finger01	 = 0.5, 4
+bip01_l_finger02	 = 0.5, 4
+bip01_l_finger1	 	 = 0.5, 4
+bip01_l_finger11	 = 0.5, 4
+bip01_l_finger12	 = 0.5, 4
+bip01_l_finger2	 	 = 0.5, 4
+bip01_l_finger21	 = 0.5, 4
+bip01_l_finger22	 = 0.5, 4
+
+bip01_r_clavicle	 = 0.5, 2
+bip01_r_upperarm	 = 0.5, 2
+bip01_r_forearm	 	 = 0.5, 2
+bip01_r_hand	 	 = 0.5, 2
+bip01_r_finger0	 	 = 0.5, 2
+bip01_r_finger01	 = 0.5, 2
+bip01_r_finger02	 = 0.5, 2
+bip01_r_finger1	 	 = 0.5, 2
+bip01_r_finger11	 = 0.5, 2
+bip01_r_finger12	 = 0.5, 2
+bip01_r_finger2	 	 = 0.5, 2
+bip01_r_finger21	 = 0.5, 2
+bip01_r_finger22	 = 0.5, 2
+
+bip01_l_thigh	 	 = 0.6, 8
+bip01_l_calf	 	 = 0.6, 8
+bip01_l_foot	 	 = 0.6, 8
+bip01_l_toe0	 	 = 0.6, 8
+bip01_r_thigh	 	 = 0.6, 6
+bip01_r_calf	 	 = 0.6, 6
+bip01_r_foot	 	 = 0.6, 6
+bip01_r_toe0	 	 = 0.6, 6
+      
+[g_event]
+class 			 = EVENT
+
+[m_target_assault]
+$spawn 			 = "temp\m_target_assault"
+$prefetch 		= 2
+cform                    = skeleton
+class                    = T_ASS
+visual                   = monsters\crow\crow.ogf
+
+[m_target_cs_base]
+$spawn 			 = "temp\m_target_cs_base"
+$prefetch 		= 2
+class                    = T_CSBASE
+
+[m_target_cs_cask]
+$spawn 			 = "temp\m_target_cs_cask"
+$prefetch 		= 2
+class                    = T_CSCASK
+cform                    = skeleton
+visual                   = cs\cs_container.ogf
+
+[m_target_cs]
+$prefetch 		= 2
+class                    = T_CS
+cform                    = skeleton
+visual                   = cs\artefact_ochko1.ogf 
+
+[m_car]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 			= "vehicles\car"
+cform                   = skeleton
+class                   = C_NIVA
+
+inv_weight				= 1000
+cost					= 100000
+inv_grid_width			= 1
+inv_grid_height			= 1
+
+[m_health]
+GroupControlSection	= spawn_group
+$spawn                   = "temp\m_health"
+cform                    = skeleton
+class                    = O_HEALTH
+visual                   = monsters\crow\crow.ogf
+
+[m_crow]
+GroupControlSection	= spawn_group
+$spawn                   = "monsters\crow"		; option for Level Editor
+$prefetch 				 = 50
+spawn 	                 = on	;
+cform                    = skeleton
+class                    = AI_CROW
+visual                   = monsters\crow\crow.ogf
+speed                    = 6.0	
+angular_speed            = 0.1	
+goal_change_delta        = 5.0
+min_height	             = 25
+goal_variability	 = 10.0, 15.0, 200.0
+idle_sound_delta	 = 60.f
+; movement params
+ph_box0_center 	         = 0.0,  0.025, 0.0
+ph_box0_size             = 0.1,  0.05,  0.1
+ph_box1_center 	         = 0.0,  0.025, 0.0
+ph_box1_size 	         = 0.1,  0.05,  0.1
+ph_foot_center           = 0.0,  0.0,   0.0
+ph_foot_size             = 0.1,  0.025, 0.1
+ph_crash_speed_min       = 16
+ph_crash_speed_max       = 30
+ph_mass 		         = 1
+ph_friction_air          = 0.01
+ph_friction_ground       = 7.0
+ph_friction_wall         = 4.0                              ; ???
+capture_bone			 = 0
+
+;entity condition
+
+satiety_v = 0.001			;0.01			;скорость уменьшения сытости со временем
+radiation_v = 0.00001		;0.004			;скорость уменьшения радиации
+satiety_power_v = 0.001		;0.01			;увеличение силы при уменьшении сытости 
+satiety_health_v = 0.001	;0.03			;увеличение здоровья при уменьшении сытости 
+satiety_critical = 0.25						;критическое значения сытости (в процентах от 0..1) когда здоровье начианает уменьшаться
+radiation_health_v = 0.01	;0.006			;уменьшение здоровья при воздействии радиации
+bleeding_v = 0.05			;0.02			;потеря крови при максимальной ране
+wound_incarnation_v = 0.01	;0.001		    ;скорость заживания раны 
+health_hit_part = 1.0		;0.8			;процент хита, уходящий на отнимание здоровья
+power_hit_part = 1.0		;0.9			;процент хита, уходящий на отнимание силы
+
+burn_immunity = 1.0				;коэффициенты иммунитета 
+strike_immunity = 1.0
+shock_immunity = 1.0
+wound_immunity = 1.0		
+radiation_immunity = 1.0
+telepatic_immunity = 1.0
+chemical_burn_immunity = 1.0
+explosion_immunity = 1.0
+fire_wound_immunity  = 1.0
+
+sleep_health = 1.0		;1.5				;коэффициенты скоростей изменения параметров во время сна
+sleep_power = 1.0		;1.5
+sleep_satiety = 1.0		;0.8
+sleep_radiation = 1.0	;1.1
+
+
+
+[m_stalker_e]
+GroupControlSection	= spawn_group
+$spawn                   = "monsters\stalker"		; option for Level Editor
+$npc			     = on			; option for Level Editor
+$prefetch 		     = 32
+Scheduled		     = on			; option for ALife Simulator
+Human		     	 = on			; optionww for ALife Simulator
+Health			     = 100			; option for ALife Simulator
+MinSpeed		     = 1.0			; option for ALife Simulator
+MaxSpeed		     = 5.0			; option for ALife Simulator
+money				 = 5000;
+rank					= 1;
+going_speed                  = 1.5                      ; option for ALife Simulator
+search_speed				 = 0.5
+going_item_detect_probability = 0.1
+search_item_detect_probability = 0.9
+eye_fov                      = 170	;145	;170
+eye_range                    = 30	;70	;150
+max_item_mass				 = 40.0
+MaxHealthValue		     = 100			; range [0..200]
+
+; State                = 7
+; 0 - бежать прямо на врага
+; 1 - бежать на врага петляя
+; 2 - бежать на врага по укрытиям
+; 3 - бежать от врага по укрытиям
+; 4 - паника
+; 5 - прятаться от врага
+; 6 - обходить врага
+
+cform                        = skeleton			; collision class
+class                        = AI_STL			; AI class
+
+visual			 = actors\Different_stalkers\stalker_no_hood_singleplayer.ogf
+
+ph_box0_center 		 = 0.0,  0.9,  0.0
+ph_box0_size 		 = 0.35, 0.9,  0.35
+ph_box1_center 		 = 0.0,  0.6,  0.0
+ph_box1_size 		 = 0.40, 0.6,  0.40
+ph_foot_center		 = 0.0,  0.2,  0.0
+ph_foot_size 		 = 0.20, 0.23, 0.20
+ph_crash_speed_min       = 16
+ph_crash_speed_max       = 30
+ph_mass 		 = 120
+ph_friction_air          = 0.05 ;0.05
+ph_friction_ground       = 8 ;16 ;8.0 ;20.0   ;16
+ph_friction_wall         = 4.0                              ; ???
+capture_bone			 = 0
+
+weapon_usage		     = 1			; boolean
+bone_torso_weapon	     = bip01_r_hand
+bone_head_weapon	     = bip01_l_finger1
+
+bone_head		     = bip01_head
+bone_shoulder		     = bip01_spine2
+bone_spin		     = bip01_spine1
+bone_model		     = bip01
+DynamicObjectsCount	     = 32
+DynamicSoundsCount	     = 32 
+
+ph_skeleton_mass_factor	 = 1.5
+ph_skeleton_airr_lin_factor = 1.0
+ph_skeleton_airr_ang_factor = 1.0
+ph_skeleton_hinger_factor    =15.
+ph_skeleton_hinger_factor1   =0
+ph_skeleton_hinger_factor2   =0
+ph_skeleton_hinge_vel	     =10
+ph_skeleton_ddelay	     	 =20
+ph_skel_fatal_impulse_factor =7.0
+
+; selectors
+;                           fSearchRange,fEnemySurround,fTotalCover,fTravelWeight,fLightWeight,fLaziness,fTotalViewVectorWeight,fCoverFromMemberWeight,fOptMemberDistance,fOptMemberDistanceWeight,fMinMemberDistance,fMinMemberDistanceWeight,fMaxMemberDistance,fMaxMemberDistanceWeight,fMemberViewDeviationWeight,fCoverFromEnemyWeight,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight,fEnemyViewDeviationWeight
+selector_attack          =      20.0,        300.0,         50.0,         0.0,         10.0,       200.0,            100.0,                40.0,                 40.0,                  10.0,                 10.0,                  450.0,              80.0,                150.0,                     1000.0,                   300.0,               10.0,                1000.0,                10.0,                 500.0,           120.0,               100.0,                   2000.0
+;                           fSearchRange,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
+selector_free_hunting    =      20.0,            20.0,                 1000.0,                 0.0,               10000.0,               1000.0,               10000.0,      
+;                           fSearchRange,fCoverFromEnemyWeight
+selector_reload          =      20.0,              -2000.0,
+;                           fSearchRange,fCoverFromEnemyWeight,fOptMemberDistance,fOptMemberDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
+selector_cover           =      20.0,            -1000.0,                30.0,                 0.0,                  0.0,              100000.0,             100000.0,               1000.0,
+;                           fSearchRange,fCoverFromEnemyWeight,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight,fEnemyViewDeviationWeight
+selector_retreat         =      20.0,             -100.0,            1000.0,                 1000.0,                0.0,                   0.0,        100000.0,                 0.0,                   000.0
+
+MovementIdleTime 	 	 =    1500			; время неподвижности объекта, после которого его скорость считается нулевой
+MaxInvisibleSpeed 	 	 =     1.0			; максимальная скорость, при которой объект невидимый
+MaxViewableSpeed 	 	 =    10.0			; скорость, при которой объект уже ничего не видит
+MovementSpeedWeight 	 =    40.0			; вес скорости передвижения объекта
+DistanceWeight 		 	 =    20.0			; вес расстояния от персонажа до объекта
+SpeedWeight 			 =    -0.0			; вес скорости персонажа
+VisibilityThreshold 	 =     0.0			; порог видимости (если сумма весов больше него, то персонаж видит объект)
+LateralMultiplier	 	 =     1.5			; множитель бокового зрения персонажа
+ShadowWeight	 	 	 =    -5.0			; вес освещения объекта
+
+CrouchFactor             =     0.2
+WalkFactor               =     2.15
+RunFactor                =     4.5
+WalkFreeFactor           =     1.25
+RunFreeFactor            =     2.5
+PanicFactor              =     6.5
+DamagedWalkFactor        =     0.75
+DamagedRunFactor         =     1.4
+DamagedWalkFreeFactor    =     0.6
+DamagedRunFreeFactor     =     0
+DamagedPanicFactor       =     1.9
+
+FireRandomMin 		 =     1
+FireRandomMax 		 =     5
+NoFireTimeMin 		 =   200
+NoFireTimeMax 		 =   750
+MinMissDistance		 =     6.0
+MinMissFactor		 =     0.0
+MaxMissDistance		 =    50.0
+MaxMissFactor		 =     0.0
+
+terrain		         = 255,255,255,255,0,1          ;1,255,255,255,0,1, 2,255,255,255,0,1, 3,255,255,255,0,1, 4,255,255,255,0,1
+damage				 = actor_damage
+sound_death			 = monsters\stalker\death\em1_killed
+sound_hit			 = monsters\stalker\wound\wound
+sound_humming		 = monsters\stalker\humming\em1_humming,monsters\stalker\humming\em1_whistle
+sound_alarm			 = monsters\stalker\alarm\alarm
+sound_surrender		 = monsters\stalker\surrender\em1_surrender
+
+;entity condition
+
+satiety_v = 0.001			;0.01			;скорость уменьшения сытости со временем
+radiation_v = 0.00001		;0.004			;скорость уменьшения радиации
+satiety_power_v = 0.000		;0.01			;увеличение силы при уменьшении сытости 
+satiety_health_v = 0.000	;0.03			;увеличение здоровья при уменьшении сытости 
+satiety_critical = 0.25						;критическое значения сытости (в процентах от 0..1) когда здоровье начианает уменьшаться
+radiation_health_v = 0.01	;0.006			;уменьшение здоровья при воздействии радиации
+bleeding_v = 0.01			;0.02			;потеря крови при максимальной ране
+wound_incarnation_v = 0.01	;0.001		    ;скорость заживания раны 
+health_hit_part = 1.0		;0.8			;процент хита, уходящий на отнимание здоровья
+power_hit_part = 1.0		;0.9			;процент хита, уходящий на отнимание силы
+
+burn_immunity = 1.0				;коэффициенты иммунитета 
+strike_immunity = 1.0
+shock_immunity = 1.0
+wound_immunity = 1.0		
+radiation_immunity = 1.0
+telepatic_immunity = 1.0
+chemical_burn_immunity = 1.0
+explosion_immunity = 1.0
+fire_wound_immunity  = 1.0
+
+sleep_health = 1.0		;1.5				;коэффициенты скоростей изменения параметров во время сна
+sleep_power = 1.0		;1.5
+sleep_satiety = 1.0		;0.8
+sleep_radiation = 1.0	;1.1
+
+hit_power				= 10
+hit_type				= strike
+
+[m_stalker_demo]
+GroupControlSection	= spawn_group
+$spawn                   = "monsters\stalker-demo"		; option for Level Editor
+$npc			     = on			; option for Level Editor
+$prefetch 		     = 32
+Scheduled		     = on			; option for ALife Simulator
+Human		     	 = on			; optionww for ALife Simulator
+Health			     = 100			; option for ALife Simulator
+MinSpeed		     = 1.0			; option for ALife Simulator
+MaxSpeed		     = 5.0			; option for ALife Simulator
+money				 = 0;
+rank					= 0;
+going_speed                  = 1.5                      ; option for ALife Simulator
+search_speed				 = 0.5
+going_item_detect_probability = 0.1
+search_item_detect_probability = 0.9
+eye_fov                      = 145	;170
+eye_range                    = 80	;150
+max_item_mass				 = 40.0
+MaxHealthValue		     = 100			; range [0..200]
+
+State                = 7
+; 0 - бежать прямо на врага
+; 1 - бежать на врага петляя
+; 2 - бежать на врага по укрытиям
+; 3 - бежать от врага по укрытиям
+; 4 - паника
+; 5 - прятаться от врага
+; 6 - обходить врага
+
+cform                        = skeleton			; collision class
+class                        = AI_STL			; AI class
+
+visual			 = actors\Different_stalkers\stalker_no_hood_singleplayer.ogf
+
+ph_box0_center 		 = 0.0,  0.9,  0.0
+ph_box0_size 		 = 0.35, 0.9,  0.35
+ph_box1_center 		 = 0.0,  0.6,  0.0
+ph_box1_size 		 = 0.40, 0.6,  0.40
+ph_foot_center		 = 0.0,  0.2,  0.0
+ph_foot_size 		 = 0.20, 0.23, 0.20
+ph_crash_speed_min       = 16
+ph_crash_speed_max       = 30
+ph_mass 		 		 = 120
+ph_friction_air          = 0.05 ;0.05
+ph_friction_ground       = 8 ;16 ;8.0 ;20.0   ;16
+ph_friction_wall         = 4.0                              ; ???
+capture_bone			 = 0
+
+weapon_usage		     = 1			; boolean
+bone_torso_weapon	     = bip01_r_hand
+bone_head_weapon	     = bip01_l_finger1
+
+bone_head		     = bip01_head
+bone_shoulder		     = bip01_spine2
+bone_spin		     = bip01_spine1
+bone_model		     = bip01
+DynamicObjectsCount	     = 32
+DynamicSoundsCount	     = 32 
+
+ph_skeleton_mass_factor	 	 =1.0
+ph_skeleton_airr_lin_factor  =10.0 ;0.7
+ph_skeleton_airr_ang_factor  =10.0 ;5.0
+ph_skeleton_hinger_factor    =10.
+ph_skeleton_hinger_factor1   =2
+ph_skeleton_hinger_factor2   =0
+ph_skeleton_hinge_vel	     =10
+ph_skeleton_ddelay	     	 =30
+ph_skel_fatal_impulse_factor =5.0
+
+; selectors
+;                           fSearchRange,fEnemySurround,fTotalCover,fTravelWeight,fLightWeight,fLaziness,fTotalViewVectorWeight,fCoverFromMemberWeight,fOptMemberDistance,fOptMemberDistanceWeight,fMinMemberDistance,fMinMemberDistanceWeight,fMaxMemberDistance,fMaxMemberDistanceWeight,fMemberViewDeviationWeight,fCoverFromEnemyWeight,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight,fEnemyViewDeviationWeight
+selector_attack          =      20.0,        300.0,         50.0,         0.0,         10.0,       200.0,            100.0,                40.0,                 40.0,                  10.0,                 10.0,                  450.0,              80.0,                150.0,                     1000.0,                   300.0,               10.0,                1000.0,                10.0,                 500.0,           120.0,               100.0,                   2000.0
+;                           fSearchRange,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
+selector_free_hunting    =      20.0,              0.1,                1000.0,                 0.0,               10000.0,               1000.0,               10000.0,      
+;                           fSearchRange,fCoverFromEnemyWeight
+selector_reload          =      20.0,              -2000.0,
+;                           fSearchRange,fCoverFromEnemyWeight,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
+selector_cover           =      20.0,            -1000.0,                30.0,                 0.0,                  0.0,              100000.0,             100000.0,               1000.0,
+;                           fSearchRange,fCoverFromEnemyWeight,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight,fEnemyViewDeviationWeight
+selector_retreat         =      20.0,             -100.0,            1000.0,                 1000.0,                0.0,                   0.0,        100000.0,                 0.0,                   000.0
+
+MovementIdleTime 	 	 =    1500			; время неподвижности объекта, после которого его скорость считается нулевой
+MaxInvisibleSpeed 	 	 =     1.0			; максимальная скорость, при которой объект невидимый
+MaxViewableSpeed 	 	 =    10.0			; скорость, при которой объект уже ничего не видит
+MovementSpeedWeight 	 =    40.0			; вес скорости передвижения объекта
+DistanceWeight 		 	 =    20.0			; вес расстояния от персонажа до объекта
+SpeedWeight 			 =    -0.0			; вес скорости персонажа
+VisibilityThreshold 	 =     0.0			; порог видимости (если сумма весов больше него, то персонаж видит объект)
+LateralMultiplier	 	 =     1.5			; множитель бокового зрения персонажа
+ShadowWeight	 	 	 =    -5.0			; вес освещения объекта
+
+CrouchFactor             =     0.2
+WalkFactor               =     2.15
+RunFactor                =     4.5
+WalkFreeFactor           =     1.25
+RunFreeFactor            =     2.5
+PanicFactor              =     6.5
+DamagedWalkFactor        =     0.75
+DamagedRunFactor         =     1.4
+DamagedWalkFreeFactor    =     0.6
+DamagedRunFreeFactor     =     0
+DamagedPanicFactor       =     1.9
+
+FireRandomMin 		 =     1
+FireRandomMax 		 =     5
+NoFireTimeMin 		 =   200
+NoFireTimeMax 		 =   750
+MinMissDistance		 =     6.0
+MinMissFactor		 =     0.0
+MaxMissDistance		 =    50.0
+MaxMissFactor		 =     0.0
+
+terrain		             = 255,255,255,255,0,1          ;1,255,255,255,0,1, 2,255,255,255,0,1, 3,255,255,255,0,1, 4,255,255,255,0,1
+amage				 = actor_damage
+sound_death			 = monsters\stalker\death\em1_killed
+sound_hit			 = monsters\stalker\wound\wound
+sound_humming		 = monsters\stalker\humming\em1_humming,monsters\stalker\humming\em1_whistle
+sound_alarm			 = monsters\stalker\alarm\alarm
+sound_surrender		 = monsters\stalker\surrender\em1_surrender
+
+;entity condition
+
+satiety_v = 0.001			;0.01			;скорость уменьшения сытости со временем
+radiation_v = 0.00001		;0.004			;скорость уменьшения радиации
+satiety_power_v = 0.001		;0.01			;увеличение силы при уменьшении сытости 
+satiety_health_v = 0.001	;0.03			;увеличение здоровья при уменьшении сытости 
+satiety_critical = 0.25						;критическое значения сытости (в процентах от 0..1) когда здоровье начианает уменьшаться
+radiation_health_v = 0.01	;0.006			;уменьшение здоровья при воздействии радиации
+bleeding_v = 0.05			;0.02			;потеря крови при максимальной ране
+wound_incarnation_v = 0.01	;0.001		    ;скорость заживания раны 
+health_hit_part = 1.0		;0.8			;процент хита, уходящий на отнимание здоровья
+power_hit_part = 1.0		;0.9			;процент хита, уходящий на отнимание силы
+
+burn_immunity = 1.0				;коэффициенты иммунитета 
+strike_immunity = 1.0
+shock_immunity = 1.0
+wound_immunity = 1.0		
+radiation_immunity = 1.0
+telepatic_immunity = 1.0
+chemical_burn_immunity = 1.0
+explosion_immunity = 1.0
+fire_wound_immunity  = 1.0
+
+sleep_health = 1.0		;1.5				;коэффициенты скоростей изменения параметров во время сна
+sleep_power = 1.0		;1.5
+sleep_satiety = 1.0		;0.8
+sleep_radiation = 1.0	;1.1
+
+[rat_group]
+GroupControlSection	= spawn_group
+$spawn               = "monsters\rat-group"		; option for Level Editor
+$npc			     = on				; option for Level Editor
+Human		     	 = off				; option for ALife Simulator
+class                = AI_RAT_G			; AI class
+monster_section      = m_rat_e
+
+[m_rat_e]
+GroupControlSection	 = spawn_group
+$spawn               = "monsters\rat"	; option for Level Editor
+$npc			     = on				; option for Level Editor
+$prefetch 			 = 128
+Scheduled		     = on				; option for ALife Simulator
+Human		     	     = off			; option for ALife Simulator
+Health			     = 15				; option for ALife Simulator
+MinSpeed		     = 1.0				; option for ALife Simulator
+MaxSpeed		     = 1.5				; option for ALife Simulator
+going_speed          = 1.0				; option for ALife Simulator
+retreat_threshold	 = 0.2
+eye_range			 = 10
+MaxHealthValue		 = 15				; range [0..200]
+hit_power			 = 10
+hit_type			 = wound
+
+cform                        = skeleton			; collision class
+class                        = AI_RAT			; AI class
+
+ph_box0_center 		     =   0.0,   0.11, -0.22
+ph_box0_size 		     =   0.085, 0.11, 0.525
+ph_box1_center 		     =   0.0,   0.11, -0.22
+ph_box1_size 		     =   0.085, 0.11, 0.525
+ph_foot_center		     =   0.0,   0.0,  -0.22
+ph_foot_size 		     =   0.085, 0.11,  0.525
+ph_crash_speed_min           = 16
+ph_crash_speed_max           = 30
+ph_mass 		     = 2
+cost			     = 1
+ph_friction_air              = 0.01
+ph_friction_ground           = 7.0
+ph_friction_wall             = 4.0			; ???
+capture_bone				 = 0
+
+bone_torso		     = bip01_spine1 		; bone name
+bone_head		     = bip01_head		; bone name
+weapon_usage		     = 0			; boolean
+
+EyeYShift		     = .15			; meters
+
+MinVoiceInterval	     =  30000			; milliseconds
+MaxVoiceInterval	     = 120000			; milliseconds
+VoiceRefreshRate	     =   2500			; milliseconds
+
+ChangeActiveStateProbability = 1.0 			; range [0..1]
+ActiveCountPercent	     =   16				; percents
+StandingCountPercent	 =   16				; percents
+PassiveScheduleMin	     =  100				; microseconds
+PassiveScheduleMax       = 1000				; microseconds
+
+LostMemoryTime		     = 20000			; milliseconds
+LostRecoilTime		     =  2000			; milliseconds
+UnderFireDistance	     =   100			; meters
+RetreatTime				 = 10000			; milliseconds
+RetreatDistance		     =   100			; meters
+AttackStraightDistance	 =    10			; meters
+StableDistance		     =     5			; meters
+WallMinTurnValue	     =    90 			; degrees
+WallMaxTurnValue	     =   270			; degrees
+
+AngleSpeed				 = 0.2	            ; degrees per second
+GoalChangeDelta	 	     = 10.0				; seconds
+GoalVariation	  	     = 10.0, 0.0, 20.0	; each coordinate in meters
+AngularStandSpeed		 = 360				; degrees
+AngularMinSpeed			 = 360				; degrees
+AngularMaxSpeed			 = 30				; degrees
+AngularAttackSpeed		 = 10				; degrees
+
+MoraleDeathDistance	     = 50				; meters
+SoundThreshold		     = 0.06             ; range [0..1]
+
+ActionRefreshRate	     = 500			; milliseconds
+MaxHealthValue		     = 15			; range [0..200]
+
+EatMemberCorpses	     = 1			; range {0,1}
+Cannibalism				 = 1			; range {0,1}
+EatCorpseInterval	     = 600000		; milliseconds
+
+corp_mass				 = 500			;
+
+;terrain		             = 3,255,255,255,30,60, 4,255,255,255,30,60, 11,255,255,255,30,60, 12,255,255,255,30,60, 13,255,255,255,30,60, 14,255,255,255,30,60, 15,255,255,255,30,60
+;terrain		             = 1,255,255,255,30,60, 2,255,255,255,30,60, 3,255,255,255,30,60, 4,255,255,255,30,60
+terrain		             = 255,255,255,255,30,40
+
+;inventory item information
+cost			= 0
+inv_name		= "dead rat"
+inv_name_short	= "rat"
+inv_weight		= .5
+
+inv_icon			= ui\ui_inv_pmm_ammo				; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 0
+inv_grid_y			= 0
+inv_weight			= 2
+food_value			= 10
+
+; eatable item
+eat_health = -0.1										
+eat_satiety = 0.2
+eat_power = -0.05
+eat_radiation = 0.01	;0.03;
+eat_portions_num = -1
+
+hit_type = wound
+
+;entity condition
+
+satiety_v = 0.001			;0.01			;скорость уменьшения сытости со временем
+radiation_v = 0.00001		;0.004			;скорость уменьшения радиации
+satiety_power_v = 0.001		;0.01			;увеличение силы при уменьшении сытости 
+satiety_health_v = 0.001	;0.03			;увеличение здоровья при уменьшении сытости 
+satiety_critical = 0.25						;критическое значения сытости (в процентах от 0..1) когда здоровье начианает уменьшаться
+radiation_health_v = 0.01	;0.006			;уменьшение здоровья при воздействии радиации
+bleeding_v = 0.05			;0.02			;потеря крови при максимальной ране
+wound_incarnation_v = 0.01	;0.001		    ;скорость заживания раны 
+health_hit_part = 1.0		;0.8			;процент хита, уходящий на отнимание здоровья
+power_hit_part = 1.0		;0.9			;процент хита, уходящий на отнимание силы
+
+burn_immunity = 1.0				;коэффициенты иммунитета 
+strike_immunity = 1.0
+shock_immunity = 1.0
+wound_immunity = 1.0		
+radiation_immunity = 1.0
+telepatic_immunity = 1.0
+chemical_burn_immunity = 1.0
+explosion_immunity = 1.0
+fire_wound_immunity  = 1.0
+
+sleep_health = 1.0		;1.5				;коэффициенты скоростей изменения параметров во время сна
+sleep_power = 1.0		;1.5
+sleep_satiety = 1.0		;0.8
+sleep_radiation = 1.0	;1.1
+
+
+[m_zombie_e]
+GroupControlSection	= spawn_group
+$spawn                   = "monsters\zombie"		; option for Level Editor
+$npc			     = on			; option for Level Editor
+Scheduled		     = on			; option for ALife Simulator
+Human		     	     = off			; option for ALife Simulator
+Health			     = 200			; option for ALife Simulator
+MinSpeed		     = 1.0			; option for ALife Simulator
+MaxSpeed		     = 1.5			; option for ALife Simulator
+going_speed                  = 1.0                      ; option for ALife Simulator
+MaxHealthValue		 = 200			; range [0..200]
+
+cform                        = skeleton			; collision class
+class                        = AI_ZOM			; AI class
+
+ph_box0_center 		     =   0.0,   0.11, -0.22
+ph_box0_size 		     =   0.085, 0.11, 0.525
+ph_box1_center 		     =   0.0,   0.11, -0.22
+ph_box1_size 		     =   0.085, 0.11, 0.525
+ph_foot_center		     =   0.0,   0.0,  -0.22
+ph_foot_size 		     =   0.085, 0.11,  0.525
+ph_crash_speed_min           = 16
+ph_crash_speed_max           = 30
+ph_mass 		     = 45
+ph_friction_air              = 0.01
+ph_friction_ground           = 7.0
+ph_friction_wall             = 4.0			; ???
+capture_bone				 = 0
+
+bone_torso		     = bip01_spine1 		; bone name
+bone_head		     = bip01_head		; bone name
+weapon_usage		     = 0			; boolean
+
+EyeYShift				 = 0.0				; meters
+eye_range				 = 30.0				; meters
+
+MinVoiceInterval	     =  30000			; milliseconds
+MaxVoiceInterval	     = 120000			; milliseconds
+VoiceRefreshRate	     =   2500			; milliseconds
+
+MinPursuitInterval	     =   3000			; milliseconds
+MaxPursuitInterval	     =  10000			; milliseconds
+PursuitRefreshRate	     =   1000			; milliseconds
+
+ChangeActiveStateProbability = 1.0 			; range [0..1]
+ActiveCountPercent	     =    0  			; percents
+PassiveScheduleMin	     =  100			; microseconds
+PassiveScheduleMax           = 1000			; microseconds
+
+LostMemoryTime		     = 20000			; milliseconds
+AttackStraightDistance	     =    20			; meters
+StableDistance		     =    50			; meters
+WallMinTurnValue	     =    90 			; degrees
+WallMaxTurnValue	     =   270			; degrees
+
+AngleSpeed		     = 0.2	                ; radians per second
+GoalChangeDelta	 	     = 10.0			; seconds
+GoalVariation	  	     = 50.0, 0.0, 50.0		; each coordinate in meters
+MaxHealthValue		     = 200			; range [0..200]
+SoundThreshold		     = 0.06                     ; range [0..1]
+
+terrain		             = 255,255,255,255,30,40
+
+hit_type = wound
+
+;entity condition
+
+satiety_v = 0.001			;0.01			;скорость уменьшения сытости со временем
+radiation_v = 0.00001		;0.004			;скорость уменьшения радиации
+satiety_power_v = 0.001		;0.01			;увеличение силы при уменьшении сытости 
+satiety_health_v = 0.001	;0.03			;увеличение здоровья при уменьшении сытости 
+satiety_critical = 0.25						;критическое значения сытости (в процентах от 0..1) когда здоровье начианает уменьшаться
+radiation_health_v = 0.01	;0.006			;уменьшение здоровья при воздействии радиации
+bleeding_v = 0.05			;0.02			;потеря крови при максимальной ране
+wound_incarnation_v = 0.01	;0.001		    ;скорость заживания раны 
+health_hit_part = 1.0		;0.8			;процент хита, уходящий на отнимание здоровья
+power_hit_part = 1.0		;0.9			;процент хита, уходящий на отнимание силы
+
+burn_immunity = 1.0				;коэффициенты иммунитета 
+strike_immunity = 1.0
+shock_immunity = 1.0
+wound_immunity = 1.0		
+radiation_immunity = 1.0
+telepatic_immunity = 1.0
+chemical_burn_immunity = 1.0
+explosion_immunity = 1.0
+fire_wound_immunity  = 1.0
+
+sleep_health = 1.0		;1.5				;коэффициенты скоростей изменения параметров во время сна
+sleep_power = 1.0		;1.5
+sleep_satiety = 1.0		;0.8
+sleep_radiation = 1.0	;1.1
+
+
+[actor_firsteye_cam]
+lim_pitch                = -1.57, 1.57
+lim_yaw                  = 0, 0
+rot_speed                = 3.14, 3.14, 0
+ 
+[actor_free_cam]
+;----------------
+lim_pitch                = -1.5, 1.5
+lim_yaw                  = 0, 0
+lim_zoom                 = 0.4, 10
+rot_speed                = 3.14, 1.0, 10
+ 
+[actor_look_cam]
+lim_pitch                = -0.7, 1
+lim_yaw                  = 0, 0
+lim_zoom                 = 1, 5
+rot_speed                = 3.14, 6.28, 10
+
+[car_firsteye_cam]
+lim_pitch                = -0.5, 0.5
+lim_yaw                  = -2.0, 2.0
+rot_speed                = 3.14, 1.0, 0
+ 
+[car_free_cam]
+lim_pitch                = 0, 1.56
+lim_yaw                  = 0, 0
+lim_zoom                 = 1, 7
+rot_speed                = 3.14, 1.0, 10
+
+[car_look_cam]
+lim_pitch                = 0, 1.56
+lim_yaw                  = 0	, 0
+lim_zoom                 = 1, 7
+rot_speed                = 25, 1.0, 10
+
+[heli_free_cam]
+lim_pitch                = -1.5, 1.5
+lim_yaw                  = 0, 0
+lim_zoom                 = 5, 25
+rot_speed                = 3.14, 1.0, 10
+ 
+[heli_front_cam]
+;lim_yaw		= -0.01,0.01
+lim_pitch                = -1.2, 1.2
+lim_yaw                  = -1.5, 1.5
+rot_speed                = 3.14, 1.5, 0
+ 
+[heli_look_cam]
+lim_pitch                = 0, 1.56
+lim_yaw                  = 0, 0
+lim_zoom                 = 5, 15
+rot_speed                = 3.14, 1.0, 10
+ 
+[interface]
+font_game                = font_game
+font_small               = font_small
+ 
+[textures]
+glow1                    = 32
+glow1_blue               = 32                               ; means 32 bits
+glow1_red                = 32
+hud_hitmarker            = 32
+red_sky_0                = 32
+red_sky_180              = 32
+red_sky_270              = 32
+red_sky_90               = 32
+red_sky_top              = 32
+skydome                  = 32
+sun                      = 32
+ui\logo                  = 32
+ 
+[weapon]
+burn_immunity = 1.0				;коэффициенты для попаданий в оружие различными типами хитов
+strike_immunity = 1.0
+shock_immunity = 1.0
+wound_immunity = 1.0		
+radiation_immunity = 1.0
+telepatic_immunity = 1.0
+chemical_burn_immunity = 1.0
+explosion_immunity = 1.0
+fire_wound_immunity  = 1.0
+
+
+
+[postprocess_base]
+blur			= .5
+gray			= .2
+noise			= .1
+noise_scale		= 1
+noise_color		= 200,128,200,50
+;noise_color		= 200,150,40,0
+;noise_color		= 200,180,50,0
+
+
+[postprocess_base]
+duality_h		= .015
+duality_v		= .015
+blur			= 1
+gray			= .0
+noise			= .0
+noise_scale		= 1
+noise_color		= 255,255,255,70
+;noise_color		= 200,150,40,0
+;noise_color		= 200,180,50,0
+
+[postprocess_anomaly]
+duality_h		= 0
+duality_v		= 0
+blur			= 1
+gray			= .7	;.9
+noise			= .2	;.5
+noise_scale		= 1
+;noise_color		= 255,255,255,70
+;noise_color		= 100,100,100,70
+noise_color		= 155,155,155,70
+;noise_color		= 200,150,40,0
+;noise_color		= 10,10,10,0
+
+
+[postprocess_anomaly1]
+duality_h		= .0
+duality_v		= .1
+blur			= 1
+gray			= .6
+noise			= .0
+noise_scale		= 1
+;noise_color		= 255,255,255,70
+;noise_color		= 155,155,155,155
+;noise_color		= 200,150,40,0
+noise_color		= 10,10,10,0
+
+
+[postprocess_anomaly2]
+duality_h		= 0.5
+duality_v		= 0.5
+blur			= 1
+gray			= .6
+noise			= .5
+noise_scale		= 1
+;noise_color		= 255,255,255,70
+;noise_color		= 155,155,155,155
+noise_color		= 200,150,40,0
+;noise_color		= 10,10,10,0
+
+[postprocess_anomaly3]
+duality_h		= 0
+duality_v		= 0
+blur			= 1
+gray			= .6
+noise			= .5
+noise_scale		= 1
+;noise_color		= 255,255,255,70
+;noise_color		= 155,155,155,155
+noise_color		= 200,150,40,0
+;noise_color		= 10,10,10,0
+
+[postprocess_anomaly4]
+duality_h		= 0
+duality_v		= 0
+blur			= 1
+gray			= .6
+noise			= .5
+noise_scale		= 1
+;noise_color		= 255,255,255,70
+noise_color		= 155,155,155,155
+;noise_color		= 200,150,40,0
+;noise_color		= 10,10,10,0
+
+[postprocess_anomaly5]
+duality_h		= 0
+duality_v		= 0
+blur			= 1
+gray			= .6
+noise			= .5
+noise_scale		= 1
+;noise_color		= 255,255,255,70
+;noise_color		= 155,155,155,155
+;noise_color		= 200,150,40,0
+noise_color		= 10,10,10,0
+
+[actor_cs_1]
+;$spawn 			 = on
+;$ed_icon		 = ed\ed_actor
+$player 		 = on
+cform                    = skeleton
+class                    = O_ACTOR
+;jump_speed               = 15
+jump_speed               = 5.6
+crouch_coef 		 = 0.2
+run_coef                 = 2.4
+visual			 = actors\Different_stalkers\stalker_no_hood_multiplayer_black.ogf
+walk_accel               = 17 ;40 ;17  ;54 ;40
+ph_box0_center 		 = 0.0,  0.9,  0.0
+ph_box0_size 		 = 0.35, 0.9,  0.35
+ph_box1_center 		 = 0.0,  0.6,  0.0
+ph_box1_size 		 = 0.40, 0.6,  0.40
+ph_foot_center		 = 0.0,  0.2,  0.0
+ph_foot_size 		 = 0.20, 0.23, 0.20
+ph_crash_speed_min       = 16
+ph_crash_speed_max       = 30
+ph_mass 		 = 120
+ph_friction_air          = 0.05 ;0.05
+ph_friction_ground       = 8 ;16 ;8.0 ;20.0   ;16
+ph_friction_wall         = 4.0                              ; ???
+capture_bone			 = 0
+
+damage			 = actor_damage
+
+[actor_cs_2]
+;$spawn 			 = on
+;$ed_icon		 = ed\ed_actor
+$player 		 = on
+cform                    = skeleton
+class                    = O_ACTOR
+;jump_speed               = 15
+jump_speed               = 5.6
+crouch_coef 		 = 0.2
+run_coef                 = 2.4
+visual			 = actors\alpha\pidarka_urban.ogf
+walk_accel               = 17 ;40 ;17  ;54 ;40
+ph_box0_center 		 = 0.0,  0.9,  0.0
+ph_box0_size 		 = 0.35, 0.9,  0.35
+ph_box1_center 		 = 0.0,  0.6,  0.0
+ph_box1_size 		 = 0.40, 0.6,  0.40
+ph_foot_center		 = 0.0,  0.2,  0.0
+ph_foot_size 		 = 0.20, 0.23, 0.20
+ph_crash_speed_min       = 16
+ph_crash_speed_max       = 30
+ph_mass 		 = 120
+ph_friction_air          = 0.05 ;0.05
+ph_friction_ground       = 8 ;16 ;8.0 ;20.0   ;16
+ph_friction_wall         = 4.0                              ; ???
+capture_bone			 = 0
+
+damage			 = actor_damage
+
+; ALife Simulator objects - do not delete!!!
+;monsters
+[graph_point]
+    class                = AI_GRAPH
+    $spawn               = "ai\graph point"
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[m_idol_e]
+GroupControlSection	= spawn_group
+$spawn 			     = "physics\idol"; option for Level Editor
+$npc			     = on			; option for Level Editor
+$prefetch 		     = 32
+Scheduled		     = on			; option for ALife Simulator
+Human		     	 = off			; optionww for ALife Simulator
+Health			     = 100			; option for ALife Simulator
+cform                = skeleton		; collision class
+class                = AI_IDOL		; AI class
+visual				 = actors\Different_stalkers\stalker_no_hood_singleplayer.ogf
+weapon_usage		 = 0			; boolean
+DynamicObjectsCount	 = 32
+DynamicSoundsCount	 = 32 
+terrain		         = 255,255,255,255,0,1,
+going_speed          = 1.5                      ; option for ALife Simulator
+search_speed         = .5                       ; option for ALife Simulator
+going_item_detect_probability = 0.1
+search_item_detect_probability = 0.9
+rank				 = 0
+max_item_mass		 = 40.0
+MaxHealthValue		     = 100			; range [0..200]
+
+eye_fov              = 145	;170
+eye_range            = 80	;150
+
+bone_torso_weapon	 = bip01_r_hand
+bone_head_weapon	 = bip01_l_finger1
+
+bone_head		     = bip01_head
+bone_shoulder		 = bip01_spine2
+bone_spin		     = bip01_spine1
+bone_model		     = bip01
+
+ph_box0_center 		 = 0.0,  0.9,  0.0
+ph_box0_size 		 = 0.35, 0.9,  0.35
+ph_box1_center 		 = 0.0,  0.6,  0.0
+ph_box1_size 		 = 0.40, 0.6,  0.40
+ph_foot_center		 = 0.0,  0.2,  0.0
+ph_foot_size 		 = 0.20, 0.23, 0.20
+ph_crash_speed_min   = 16
+ph_crash_speed_max   = 30
+ph_mass 			 = 120
+ph_friction_air      = 0.05 ;0.05
+ph_friction_ground   = 8 ;16 ;8.0 ;20.0   ;16
+ph_friction_wall     = 4.0                              ; ???
+capture_bone		 = 0
+
+satiety_v = 0.001			;0.01			;скорость уменьшения сытости со временем
+radiation_v = 0.00001		;0.004			;скорость уменьшения радиации
+satiety_power_v = 0.001		;0.01			;увеличение силы при уменьшении сытости 
+satiety_health_v = 0.001	;0.03			;увеличение здоровья при уменьшении сытости 
+satiety_critical = 0.25						;критическое значения сытости (в процентах от 0..1) когда здоровье начианает уменьшаться
+radiation_health_v = 0.01	;0.006			;уменьшение здоровья при воздействии радиации
+bleeding_v = 0.05			;0.02			;потеря крови при максимальной ране
+wound_incarnation_v = 0.01	;0.001		    ;скорость заживания раны 
+health_hit_part = 1.0		;0.8			;процент хита, уходящий на отнимание здоровья
+power_hit_part = 1.0		;0.9			;процент хита, уходящий на отнимание силы
+
+burn_immunity = 1.0				;коэффициенты иммунитета 
+strike_immunity = 1.0
+shock_immunity = 1.0
+wound_immunity = 1.0		
+radiation_immunity = 1.0
+telepatic_immunity = 1.0
+chemical_burn_immunity = 1.0
+explosion_immunity = 1.0
+fire_wound_immunity  = 1.0
+
+sleep_health = 1.0		;1.5				;коэффициенты скоростей изменения параметров во время сна
+sleep_power = 1.0		;1.5
+sleep_satiety = 1.0		;0.8
+sleep_radiation = 1.0	;1.1
+
+;animations			 = udar_1,udar_2,rrrrrr_1,rrrrrr_2,rrrrrr_3
+
+;-----------------------------------------------------------------------------------
+; Trader
+;-----------------------------------------------------------------------------------
+[m_trader]
+GroupControlSection	= spawn_group
+$spawn						= "monsters\trader"		; option for Level Editor
+$prefetch 					= 5
+cform						= skeleton
+class						= AI_TRADE
+visual						= monsters\trader\trader
+rank						= 1
+; format : section{,section},count,min_factor,max_factor, ...
+;supplies					= m_bread,50,0.5,1.5, CANNED,30,0.5,1.5, MEDI_KIT,7,0,0.7, DETECTOR_SIMPLE,3,0,0.6, WPN_BINOC,1,0,0.70, WPN_FORT,WPN_PM,3,0.3,0.8, WPN_LR300,WPN_AK47,2,0.3,0.65, WPN_SVD,1,0,0.53, WPN_RPG7,1,0,0.53, grenade_f1,15,0,1.0, ammo_5.45x39_ap,ammo_5.45x39_fmj,50,0,1.0, ammo_5.56x45_ap,ammo_5.56х45_ss190,50,0,1.0, ammo_9x19_fmj,50,0,1.0, ammo_7.62х54_fmj,10,0,1.0, ammo_og-7b,10,0,1.0 
+supplies					= grenade_f1,15,0,1.0, ammo_5.45x39_ap,ammo_5.45x39_fmj,50,0,1.0, ammo_5.56x45_ap,ammo_5.56х45_ss190,50,0,1.0, ammo_9x19_fmj,50,0,1.0, ammo_7.62x54_ap,10,0,1.0, ammo_og-7b,10,0,1.0 
+max_item_mass				= 10000.0
+
+scheduled		     = on						; option for ALife Simulator
+Human		     	 = off						; option for ALife Simulator
+Health			     = 40						; option for ALife Simulator
+MinSpeed		     = 1.0						; option for ALife Simulator
+MaxSpeed		     = 1.5						; option for ALife Simulator
+going_speed          = 1.0                      ; option for ALife Simulator
+
+ph_box0_center 		 = 0.0,  0.9,  0.0
+ph_box0_size 		 = 0.35, 0.9,  0.35
+ph_box1_center 		 = 0.0,  0.6,  0.0
+ph_box1_size 		 = 0.40, 0.6,  0.40
+ph_foot_center		 = 0.0,  0.2,  0.0
+ph_foot_size 		 = 0.20, 0.23, 0.20
+ph_crash_speed_min   = 16
+ph_crash_speed_max   = 30
+ph_mass 		     = 170.
+cost			     = 1
+ph_friction_air      = 0.01
+ph_friction_ground   = 7.0
+ph_friction_wall     = 4.0						; ???
+capture_bone		 = 0
+
+Health				 = 100.0
+money				 = 1000000
+
+satiety_v = 0.001			;0.01			;скорость уменьшения сытости со временем
+radiation_v = 0.00001		;0.004			;скорость уменьшения радиации
+satiety_power_v = 0.001		;0.01			;увеличение силы при уменьшении сытости 
+satiety_health_v = 0.001	;0.03			;увеличение здоровья при уменьшении сытости 
+satiety_critical = 0.25						;критическое значения сытости (в процентах от 0..1) когда здоровье начианает уменьшаться
+radiation_health_v = 0.01	;0.006			;уменьшение здоровья при воздействии радиации
+bleeding_v = 0.05			;0.02			;потеря крови при максимальной ране
+wound_incarnation_v = 0.01	;0.001		    ;скорость заживания раны 
+health_hit_part = 1.0		;0.8			;процент хита, уходящий на отнимание здоровья
+power_hit_part = 1.0		;0.9			;процент хита, уходящий на отнимание силы
+
+burn_immunity = 1.0				;коэффициенты иммунитета 
+strike_immunity = 1.0
+shock_immunity = 1.0
+wound_immunity = 1.0		
+radiation_immunity = 1.0
+telepatic_immunity = 1.0
+chemical_burn_immunity = 1.0
+explosion_immunity = 1.0
+fire_wound_immunity  = 1.0
+
+sleep_health = 1.0		;1.5				;коэффициенты скоростей изменения параметров во время сна
+sleep_power = 1.0		;1.5
+sleep_satiety = 1.0		;0.8
+sleep_radiation = 1.0	;1.1
+
+;-----------------------------------------------------------------
+; Trade
+;-----------------------------------------------------------------
+[trade]
+trader_buy_price_factor					= 0.5 
+trader_sell_price_factor				= 2.0
+stalker_neutral_buy_price_factor		= 0.6
+stalker_neutral_sell_price_factor		= 1.5
+stalker_friend_buy_price_factor			= 0.9
+stalker_friend_sell_price_factor		= 1.1
+;-----------------------------------------------------------------
+
+[spawn_group_zone]
+$spawn						= "ai\group zone"									; option for Level Editor
+class						= AI_SPGRP
+
+[spawn_group]
+$spawn						= "ai\spawn group"								; option for Level Editor
+class						= AI_SPGRP
+
+[level_changer]
+GroupControlSection	= 
+$spawn 			= "ai\level changer"
+;$prefetch 		= 4
+class			= LVL_CHNG
+
+[script_zone]
+GroupControlSection	= 
+$spawn 			= "ai\script zone"
+;$prefetch 		= 4
+class			= SCRIPTZN
+
+[level_point]
+$spawn 			= "ai\level point"
+;$prefetch 		= 16
+class			= LVLPOINT
+
+[organizations]																; a list of organization sections
+	agroprom
+	militaries
+	scientists
+		
+[agroprom]
+	name					= "Agroprom Research Institute"					; organization public name
+	discoveries				= discovery_magnet,discovery_magnetic_field,discovery_electro_magnetic_force	; discoveries can be discovered
+	join_probability		= 1.0											; a probability to join zone investigations
+	left_probability		= 0.1											; a probability to left zone investigations
+	trader_rank				= 1												; rank of the trader to deal with
+
+[militaries]
+	name					= "KGB : Special Purpose Forces"				; organization public name
+	discoveries				= discovery_magnetic_field,discovery_electro_magnetic_force,discovery_magnetic_battery	; discoveries can be discovered
+	join_probability		= 1.0											; a probability to join zone investigations
+	left_probability		= 0.1											; a probability to left zone investigations
+	trader_rank				= 1												; rank of the trader to deal with
+
+[scientists]
+	name					= "NASA: Scientific Laboratory"					; organization public name
+	discoveries				= discovery_magnet,discovery_electro_magnetic_force,discovery_magnetic_battery	; discoveries can be discovered
+	join_probability		= 1.0											; a probability to join zone investigations
+	left_probability		= 0.1											; a probability to left zone investigations
+	trader_rank				= 1												; rank of the trader to deal with
+
+[Japan_Lab]
+	name					= "Japan Research Laboratories"					; organization public name
+	discoveries				= discovery_magnet,discovery_magnetic_field,discovery_electro_magnetic_force	; discoveries can be discovered
+	join_probability		= 0.2											; a probability to join zone investigations
+	left_probability		= 0.2											; a probability to left zone investigations
+	trader_rank				= 1												; rank of the trader to deal with
+
+[USA_Lab]
+	name					= "USA Research Laboratories"					; organization public name
+	discoveries				= discovery_magnet,discovery_magnetic_field,discovery_electro_magnetic_force	; discoveries can be discovered
+	join_probability		= 0.2											; a probability to join zone investigations
+	left_probability		= 0.2											; a probability to left zone investigations
+	trader_rank				= 1												; rank of the trader to deal with
+
+[Uzbekistan_Lab]
+	name					= "Uzbekistan Research Laboratories"					; organization public name
+	discoveries				= discovery_magnet,discovery_magnetic_field,discovery_electro_magnetic_force	; discoveries can be discovered
+	join_probability		= 0.2											; a probability to join zone investigations
+	left_probability		= 0.2											; a probability to left zone investigations
+	trader_rank				= 1												; rank of the trader to deal with
+
+[Soviet_Lab]
+	name					= "USSR Research Laboratories"					; organization public name
+	discoveries				= discovery_magnet,discovery_magnetic_field,discovery_electro_magnetic_force	; discoveries can be discovered
+	join_probability		= 0.4											; a probability to join zone investigations
+	left_probability		= 0.1											; a probability to left zone investigations
+	trader_rank				= 1												; rank of the trader to deal with
+
+[discovery_magnet]
+	name					= "Surrealistics effect of magnet"				; discovery public name
+	success_probability		= 0.4											; a probability to make a discovery
+	destroy_probability		= 0.1											; a probability to make an excident during investigations
+	result_probability		= 0.5											; discovery getting result probability
+	unfreeze_probability	= 0.1											; discovery freeze probability after destruction
+	demand_on_success		= af_magnet,3,15,50,350							; artefacts per week (section, count, price)
+	artefacts				= af_magnet,10,510 								; artefacts to make a discovery
+	discovery_dependence	= 												; if this discoveries are invented, then this 
+	sections				= m_detector									; sections of the objects being invented after this discovery
+	already_invented		= 0												; bool, if discovery has been already invented
+
+[discovery_magnetic_field]
+	name					= "Magnetic force field"						; discovery public name
+	success_probability		= 0.3											; a probability to make a discovery
+	destroy_probability		= 0.3											; a probability to make an excident during investigations
+	result_probability		= 0.4											; discovery getting result probability
+	unfreeze_probability	= 0.2											; discovery freeze probability after destruction
+	demand_on_success		= af_magnet,3,20,70,450							; artefacts per week (section, count, price)
+	artefacts				= af_magnet,30,630								; artefacts to make a discovery
+	discovery_dependence	= 						;discovery_magnet								; if this discoveries are invented, then this 
+	sections				= wpn_fn2000									; sections of the objects being invented after this discovery
+	already_invented		= 0												; bool, if discovery has been already invented
+
+[discovery_electro_magnetic_force]
+	name					= "Electro magnetic force"						; discovery public name
+	success_probability		= 0.2											; a probability to make a discovery
+	destroy_probability		= 0.3											; a probability to make an excident during investigations
+	result_probability		= 0.7											; discovery getting result probability
+	unfreeze_probability	= 0.2											; discovery freeze probability after destruction
+	demand_on_success		= af_magnet,4,8,50,150							; artefacts per week (section, count_min, count_max, price_min, price_max)
+	artefacts				= af_magnet,10,1000								; artefacts to make a discovery (section, count, price)
+	discovery_dependence	= 						;discovery_magnetic_field						; if this discoveries are invented, then this 
+	sections				= 												; sections of the objects being invented after this discovery
+	already_invented		= 0												; bool, if discovery has been already invented
+
+[discovery_magnetic_battery]
+	name					= "Magnetic battery"							; discovery public name
+	success_probability		= 0.3											; a probability to make a discovery
+	destroy_probability		= 0.2											; a probability to make an excident during investigations
+	result_probability		= 0.7											; discovery getting result probability
+	unfreeze_probability	= 0.2											; discovery freeze probability after destruction
+	demand_on_success		= af_magnet,4,8,50,150							; artefacts per week (section, count_min, count_max, price_min, price_max)
+	artefacts				= af_magnet,5,1200								; artefacts to make a discovery (section, count, price)
+	discovery_dependence	= discovery_magnetic_field						; if this discoveries are invented, then this 
+	sections				= wpn_rpg_7										; sections of the objects being invented after this discovery
+	already_invented		= 0												; bool, if discovery has been already invented
+
+[discovery_vintorez]
+	name					= "Weapon Vintorez with strong magnetic effects"; discovery public name
+	success_probability		= 0.3											; a probability to make a discovery
+	destroy_probability		= 0.3											; a probability to make an excident during investigations
+	result_probability		= 0.6											; discovery getting result probability
+	unfreeze_probability	= 0.2											; discovery freeze probability after destruction
+	demand_on_success		= af_magnet,4,8,50,150							; artefacts per week (section, count_min, count_max, price_min, price_max)
+	artefacts				= af_magnet,7,800								; artefacts to make a discovery (section, count, price)
+	discovery_dependence	= discovery_magnet								; if this discoveries are invented, then this 
+	sections				= m_detector									; sections of the objects being invented after this discovery
+	already_invented		= 0												; bool, if discovery has been already invented
+
+[alife]
+    schedule_min			= 1												; milliseconds
+    schedule_max			= 999											; milliseconds
+    process_time			= 900											; microseconds
+    time_factor				= 1.0											; 
+    preknown_artefacts		= af_magnet										; artefact sections
+    max_combat_iteration_count = 5	;10											; maximum combat iteration count
+    switch_distance			= 75.0											; metres
+    switch_factor			= 0.9											; 

@@ -1,0 +1,169 @@
+// xrServer.cpp: implementation of the xrServer class.
+//
+//////////////////////////////////////////////////////////////////////
+
+#include "stdafx.h"
+#include "xrServer.h"
+#include "xrMessages.h"
+
+//////////////////////////////////////////////////////////////////////
+// Construction/Destruction
+//////////////////////////////////////////////////////////////////////
+
+xrServer::xrServer()
+{
+}
+
+xrServer::~xrServer()
+{
+
+}
+
+//--------------------------------------------------------------------
+xrClientData*	xrServer::ID_to_client		(DPNID ID)
+{
+	if (0==ID)			return 0;
+	csPlayers.Enter		();
+	for (u32 client=0; client<net_Players.size(); client++)
+	{
+		if (net_Players[client]->ID==ID)	{
+			csPlayers.Leave		();
+			return (xrClientData*)net_Players[client];
+		}
+	}
+	csPlayers.Leave		();
+	return 0;
+}
+
+CSE_Abstract*	xrServer::ID_to_entity		(u16 ID)
+{
+#pragma todo("??? to all : ID_to_entity - must be replaced to 'game->entity_from_eid()'")	
+	if (0xffff==ID)				return 0;
+	xrS_entities::iterator	I	= entities.find	(ID);
+	if (I!=entities.end())		return I->second;
+	else						return 0;
+}
+
+//--------------------------------------------------------------------
+IClient*	xrServer::client_Create		()
+{
+	return xr_new<xrClientData> ();
+}
+void		xrServer::client_Replicate	()
+{
+}
+void		xrServer::client_Destroy	(IClient* C)
+{
+	// Delete assosiated entity
+	// xrClientData*	D = (xrClientData*)C;
+	// CSE_Abstract* E = D->owner;
+
+	xr_delete			(C);
+}
+
+//--------------------------------------------------------------------
+void xrServer::Update	()
+{
+	NET_Packet		Packet;
+	u32				position;
+	csPlayers.Enter	();
+
+	// game update
+	game->Update	();
+
+	// spawn queue
+	u32 svT				= Device.TimerAsync();
+	while (!(q_respawn.empty() || (svT<q_respawn.begin()->timestamp)))
+	{
+		// get
+		svs_respawn	R		= *q_respawn.begin();
+		q_respawn.erase		(q_respawn.begin());
+
+		// 
+		CSE_Abstract* E	= ID_to_entity(R.phantom);
+		E->Spawn_Write		(Packet,FALSE);
+		u16					ID;
+		Packet.r_begin		(ID);	R_ASSERT(M_SPAWN==ID);
+		Process_spawn		(Packet,0xffff);
+	}
+
+	// 
+	for (u32 client=0; client<net_Players.size(); client++)
+	{
+		// Initialize process and check for available bandwidth
+		xrClientData*	Client		= (xrClientData*) net_Players	[client];
+		if (!Client->net_Ready)		continue;
+		if (!HasBandwidth(Client))	continue;
+
+		// Send relevant entities to client
+		// CSE_Abstract*	Base	= Client->owner;
+
+		Packet.w_begin	(M_UPDATE);
+
+		// GameUpdate
+		Client->game_replicate_id	++;
+		u32		g_it				= (Client->game_replicate_id % client_Count());
+		u32		g_id				= net_Players[g_it]->ID;
+		game->net_Export_Update		(Packet,Client->ID,g_id);
+
+		// Entities
+		xrS_entities::iterator	I=entities.begin(),E=entities.end();
+		for (; I!=E; I++)
+		{
+			CSE_Abstract&	Test = *(I->second);
+
+			if (0==Test.owner)							continue;	// Phantom(?)
+			if (!Test.net_Ready)						continue;
+			if (Test.owner == Client)					continue;	// Can't be relevant
+			if (Test.s_flags.is(M_SPAWN_OBJECT_PHANTOM))	continue;	// Surely: phantom
+
+			// write specific data
+			{
+				Packet.w_u16			(Test.ID		);
+				Packet.w_chunk_open8	(position		);
+				Test.UPDATE_Write		(Packet			);
+				Packet.w_chunk_close8	(position		);
+			}
+		}
+		if (Packet.B.count > 2)	
+		{
+			SendTo			(Client->ID,Packet,net_flags(FALSE,TRUE));
+		}
+	}
+
+	if (game->sv_force_sync)	Perform_game_export		();
+
+	csPlayers.Leave	();
+}
+
+u32 xrServer::OnMessage(NET_Packet& P, DPNID sender)			// Non-Zero means broadcasting with "flags" as returned
+{
+	u16			type;
+	P.r_begin	(type);
+
+	csPlayers.Enter				();
+	switch (type)
+	{
+	case M_UPDATE:	Process_update		(P,sender);	break;		// No broadcast
+	case M_SPAWN:	Process_spawn		(P,sender);	break;
+	case M_EVENT:	Process_event		(P,sender); break;
+	}
+	csPlayers.Leave				();
+
+	return 0;
+}
+
+//--------------------------------------------------------------------
+CSE_Abstract*	xrServer::entity_Create		(LPCSTR name)
+{
+	return F_entity_Create(name);
+}
+
+void			xrServer::entity_Destroy	(CSE_Abstract *&P)
+{
+	R_ASSERT					(P);
+	m_tID_Generator.vfFreeID	(P->ID,Device.TimerAsync());
+	if (!P->m_bALifeControl)
+		F_entity_Destroy		(P);
+}
+

@@ -1,0 +1,2794 @@
+[wpn_knife]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn              = "weapons\knife"					; option for Level Editor
+$npc                = off
+$prefetch 		    = 8
+scheduled           = off								; option for ALife Simulator
+cform				= skeleton
+
+class				= W_KNIFE
+
+visual				= weapon\knife\wpn_knife.ogf
+inv_name			= Knife
+
+inv_name_short		= Knife
+inv_weight			= 1
+
+inv_icon			= ui\ui_inv_knife					; for inventory menu
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 18
+inv_grid_y			= 8
+
+slot				= 0
+hud					= wpn_knife_hud
+force_min			= 25
+force_max			= 100
+force_grow_speed	= 25
+
+cost				= 1000
+
+hand_dependence		     = 1
+
+; Random add :)
+wm_name					 =	wallmarks\wallmark_default
+resource				 = 6000
+
+cam_relax_speed          = 5.0
+cam_dispersion           = 0.9
+cam_max_angle		     = 7
+
+fire_dispersion          = 0.5
+fire_dispersion_add      = 5.3
+fire_dispersion_relax    = 0.6
+fire_dispersion_base	 = 0.5
+disp_vel_factor		     = 0.9
+disp_crouch_factor	     = 0.75
+disp_jump_factor	     = 7
+fire_dispersion_condition_factor = 0.0
+misfire_probability = 0.0
+condition_shot_dec = 0.0
+
+direction                = 0, 0, 1
+shell_point		         = 0.0, 0.0, 0.0
+fire_point               = 0.0, 0.1, 0.4
+flame_div                = 7
+flame_length             = .3
+flame_size               = 0.07
+flame			         = ShotFlame1, ShotFlame2, ShotFlame3
+rpm_empty_click 	     = 200
+
+; ttc
+hit_power                = 40 		;//WAS "60"!!!
+hit_impulse		         = 150		;60
+hit_type				 = wound
+
+fire_distance            = 1
+rpm                      = 600
+; end ttc
+
+normal                   = 0, 1, 0
+position                 = -0.05, 0.03, 0.055
+orientation              = -3.5, -6.7, -5
+startup_ammo             = 1000
+wm_size                  = 0.05
+tracer_head_speed	     = 300
+tracer_trail_scale	     = 0.75
+tracer_start_length	     = 1
+tracer_width		     = 0.07
+light_color		         = 0.17,0.13,0.12
+light_range		         = 3.0
+light_var_color		     = 0.05
+light_var_range		     = 0.1
+light_time 		         = 0.2
+
+ph_mass			         = 4
+
+ammo_limit		         = 180
+ammo_current		     = 90
+ammo_elapsed		     = 30
+
+ammo_mag_size		     = 30
+ammo_class				 = 
+
+min_radius               = 50
+max_radius               = 50
+
+[wpn_knife_hud]
+shell_point			= 0.0, 0.0, 0.0
+fire_point          = 0.05, 0.0, 0.1
+fire_bone           = wpn_knife_0
+
+orientation         = 0,0,0
+position            = 0,0,0
+visual              = weapon\knife\wpn_knife_hud.ogf
+
+[grenade_f1]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 				= "weapons\grenades\f1"
+$prefetch			= 16
+class				= G_F1
+cform				= skeleton
+visual				= weapon\grenade\wpn_f_1.ogf
+inv_name			= F1
+inv_name_short		= 
+inv_weight			= .1
+
+inv_icon			= ui\ui_inv_grenade					; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 9
+inv_grid_y			= 9
+
+
+slot				= 3
+hud					= grenade_f1_hud
+force_min			= 25
+force_max			= 100
+force_grow_speed	= 25
+
+cost				= 50
+
+blast				= 800
+blast_r				= 15
+frags				= 10
+frags_r				= 70
+frag_hit			= 100
+
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.05
+
+effects				= explosions\explosion-04 ;explosions\expl_02_flame, explosions\expl_02_smoke, explosions\expl_02_sparks, explosions\expl_02_dust
+
+light_color		         = 0.17,0.13,0.12
+light_range		         = 1.0
+light_time 		         = 200
+
+[grenade_f1_hud]
+shell_point			= 0.0, 0.0, 0.0
+fire_point          = 0.05, 0.0, 0.1
+fire_bone           = grenade_0
+orientation         = 0,0,0
+position            = 0,0,0
+visual              = weapon\grenade\wpn_f_1_hud.ogf
+
+[grenade_rgd5]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 				= "weapons\grenades\rgd5"
+class				= G_RGD5
+cform				= skeleton
+visual				= weapon\grenade\wpn_rgd_5.ogf
+inv_name			= RGD5
+inv_name_short		= 
+inv_weight			= .1
+
+inv_icon			= ui\ui_inv_grenade					; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 10
+inv_grid_y			= 9
+
+
+slot				= 3
+hud					= grenade_rgd5_hud
+force_min			= 25
+force_max			= 100
+force_grow_speed	= 25
+
+cost				= 70
+
+blast				= 800
+blast_r				= 20
+frags				= 10
+frags_r				= 10
+frag_hit			= 100
+
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.05
+
+effects				= explosions\explosion-041 ;explosions\expl_02_flame, explosions\expl_02_smoke, explosions\expl_02_sparks, explosions\expl_02_dust
+
+light_color		         = 0.17,0.13,0.12
+light_range		         = 30.0
+light_time 		         = 200
+
+[grenade_rgd5_hud]
+shell_point			= 0.0, 0.0, 0.0
+fire_point          = 0.05, 0.0, 0.1
+fire_bone           = grenade_0
+orientation         = 0,0,0
+position            = 0,0,0
+visual              = weapon\grenade\wpn_rgd_5_hud.ogf
+
+[weapon]
+burn_immunity = 1.0				;коэффициенты для попаданий в оружие различными типами хитов
+strike_immunity = 1.0
+shock_immunity = 1.0
+wound_immunity = 1.0		
+radiation_immunity = 1.0
+telepatic_immunity = 1.0
+chemical_burn_immunity = 1.0
+explosion_immunity = 1.0
+fire_wound_immunity  = 1.0
+
+
+[wpn_fn2000]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn                   = "weapons\fn-2000"					; option for Level Editor
+$npc                     = off
+$prefetch 		         = 8
+scheduled                = off                              ; option for ALife Simulator
+cform                    = skeleton
+class                    = W_FN2000
+min_radius               = 50
+max_radius               = 150
+
+cost					 = 3500
+
+ammo_limit		         = 180
+ammo_current		     = 90
+ammo_elapsed		     = 30
+
+ammo_mag_size		     = 30
+
+hand_dependence		     = 2
+ammo_class		         = ammo_5.56x45_ss190, ammo_5.56x45_ap
+
+resource		         = 6000
+
+slot 			         = 2		; // secondary
+inv_name		         = FN2000
+inv_name_short		     = FN2000
+inv_weight		         = 2
+
+inv_icon			= ui\ui_inv_lr300					; for inventory menu
+inv_grid_width		= 5
+inv_grid_height		= 2
+inv_grid_x			= 5
+inv_grid_y			= 9
+
+
+cam_relax_speed          = 5.0
+cam_dispersion           = 0.9
+cam_max_angle		     = 7
+
+fire_dispersion          = 0.5
+fire_dispersion_add      = 5.3
+fire_dispersion_relax    = 0.6
+fire_dispersion_base	 = 0.5
+disp_vel_factor		     = 0.9
+disp_crouch_factor	     = 0.75
+disp_jump_factor	     = 7
+fire_dispersion_condition_factor = 0.3
+misfire_probability = 0.5
+condition_shot_dec = 0.0003
+
+direction                = 0, 0, 1
+shell_point		         = 0.0, 0.0, 0.0
+fire_point               = 0.0, 0.1, 0.4
+flame_div                = 7
+flame_length             = .3
+flame_size               = 0.07
+flame			         = ShotFlame1, ShotFlame2, ShotFlame3
+rpm_empty_click 	     = 200
+
+; ttc
+hit_power                = 40 		;//WAS "60"!!!
+hit_impulse		         = 60
+hit_type = wound
+
+fire_distance            = 600
+rpm                      = 600
+; end ttc
+
+hud                      = wpn_fn2000_hud
+normal                   = 0, 1, 0
+position                 = -0.05, 0.03, 0.055
+orientation              = -3.5, -6.7, -5
+startup_ammo             = 1000
+visual                   = weapon\fn2000\wpn_fn2000.ogf
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.05
+ui_icon			         = ui\hud_wpn_fn2000
+tracer_head_speed	     = 300
+tracer_trail_scale	     = 0.75
+tracer_start_length	     = 1
+tracer_width		     = 0.07
+light_color		         = 0.17,0.13,0.12
+light_range		         = 3.0
+light_var_color		     = 0.05
+light_var_range		     = 0.1
+light_time 		         = 0.2
+max_zoom_factor		     = 20.f
+
+ph_mass			         = 4
+cost			         = 5000
+
+[wpn_fn2000_hud]
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = -0.04, -0.05, 0.14
+fire_bone                = rifle
+orientation              = 4.5, 0, 0
+position                 = 0.12, -0.16, 0.55
+visual                   = weapon\fn2000\wpn_fn2000_hud.ogf
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ 
+[wpn_vintorez]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn                   = "weapons\vintorez"					; option for Level Editor
+$npc                     = off
+$prefetch 		         = 8
+scheduled                = off                              ; option for ALife Simulator
+cform                    = skeleton
+class                    = W_VINT
+min_radius               = 50
+max_radius               = 150
+
+cost					 = 4000
+
+ammo_limit		         = 180
+ammo_current		     = 90
+ammo_elapsed		     = 20
+
+ammo_mag_size		     = 20
+
+hand_dependence		     = 2
+ammo_class		         = ammo_9x39_pab9, ammo_9x39_sp5, ammo_9x39_ap
+
+resource		         = 6000
+
+slot 			         = 2		; // secondary
+inv_name		         = Vintorez
+inv_name_short		     = Vintorez
+inv_weight		         = 2
+
+inv_icon			= ui\ui_inv_lr300					; for inventory menu
+inv_grid_width		= 5
+inv_grid_height		= 2
+inv_grid_x			= 10
+inv_grid_y			= 4
+
+cam_relax_speed          = 5.0
+cam_dispersion           = 0.9
+cam_max_angle		     = 7
+
+fire_dispersion          = 0.5
+fire_dispersion_add      = 5.3
+fire_dispersion_relax    = 0.6
+fire_dispersion_base	 = 0.5
+disp_vel_factor		     = 0.9
+disp_crouch_factor	     = 0.75
+disp_jump_factor	     = 7
+fire_dispersion_condition_factor = 0.3
+misfire_probability = 0.5
+condition_shot_dec = 0.0003
+
+direction                = 0, 0, 1
+shell_point		         = 0.0, 0.0, 0.0
+fire_point               = 0.0, 0.02, 0.6
+flame_div                = 7
+flame_length             = .3
+flame_size               = 0.07
+flame			         = ShotFlame1, ShotFlame2, ShotFlame3
+rpm_empty_click 	     = 200
+
+; ttc
+hit_power                = 40 		;//WAS "60"!!!
+hit_impulse		         = 60
+hit_type = wound
+
+fire_distance            = 600
+rpm                      = 600
+; end ttc
+
+hud                      = wpn_vintorez_hud
+normal                   = 0, 1, 0
+position                 = -0.06, -0.20, 0.32
+orientation              = 0, 0, 0
+startup_ammo             = 1000
+visual                   = weapon\vintorez\wpn_vintorez.ogf
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.05
+ui_icon			         = ui\ui_hud_wpn_vintorez
+tracer_head_speed	     = 300
+tracer_trail_scale	     = 0.75
+tracer_start_length	     = 1
+tracer_width		     = 0.07
+light_color		         = 0.,0.,0.
+light_range		         = .0
+light_var_color		     = 0.05
+light_var_range		     = 0.1
+light_time 		         = 0.2
+max_zoom_factor		     = 20.f
+
+ph_mass			         = 4
+cost			         = 5000
+
+[wpn_vintorez_hud]
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.2, -0.07, 0.1
+fire_bone                = wpn_body
+orientation              = 0, 0, 0
+position                 = 0, 0, 0
+visual                   = weapon\vintorez\wpn_vintorez_hud.ogf
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[wpn_lr300]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn                   = "weapons\lr-300"					; option for Level Editor
+$npc			 = on				; option for Level Editor
+$prefetch 		 = 8
+scheduled                = off              ; option for ALife Simulator
+cform                    = skeleton
+class                    = W_LR300
+min_radius               = 0
+max_radius               = 50
+
+cost					 = 2300
+
+ammo_limit		 = 210
+ammo_current		 = 30
+ammo_elapsed		 = 30
+
+ammo_mag_size		 = 30
+ammo_class		 = ammo_5.56x45_ss190, ammo_5.56x45_ap
+
+resource		= 6000
+
+hand_dependence		 = 2
+
+inv_name		= LR300
+inv_name_short		= LR300
+inv_weight		= 3.
+
+inv_icon			= ui\ui_inv_lr300					; for inventory menu
+inv_grid_width		= 5
+inv_grid_height		= 2
+inv_grid_x			= 0
+inv_grid_y			= 6
+
+slot 			 = 2		; // secondary
+
+cam_relax_speed          = 10.0
+cam_dispersion           = 2.1
+cam_max_angle		 = 9
+fire_dispersion          = 2.0
+fire_dispersion_add      = 0.8
+fire_dispersion_relax    = 0.7
+fire_dispersion_base	 = 0.8
+disp_vel_factor		 = 0.2
+disp_crouch_factor	 = 0.75
+disp_jump_factor	 = 3.7
+fire_dispersion_condition_factor = 0.3
+misfire_probability = 0.5
+condition_shot_dec = 0.0003
+
+;cam_relax                = 0.15
+;cam_dispersion           = 0.8
+direction                = 0, 0, 1
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.0, 0.065, 0.65
+flame_div                = 7
+flame_length             = .3
+flame_size               = 0.07
+flame			 = ShotFlame1, ShotFlame2, ShotFlame3
+rpm_empty_click 	 = 200
+; ttc
+
+hit_power                = 45
+hit_impulse		 = 70
+hit_type = wound
+
+fire_distance            = 300
+rpm                      = 500
+; end ttc
+hud                      = wpn_lr300_hud
+normal                   = 0, 1, 0
+position                 = -0.06, -0.20, 0.30
+orientation              = 0, 0, 0
+startup_ammo             = 1000
+visual                   = weapon\lr300\wpn_lr300.ogf
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.05
+ui_icon			 = ui\hud_wpn_lr300
+tracer_head_speed	 = 300
+tracer_trail_scale	 = 0.75
+tracer_start_length	 = 1
+tracer_width		 = 0.07
+light_color		 = 0.17,0.13,0.12
+light_range		 = 3.0
+light_var_color		 = 0.05
+light_var_range		 = 0.1
+light_time 		 = 0.2
+
+ph_mass			 = 3
+cost			 = 2500
+
+[wpn_lr300_hud]
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.07, -0.05, 0.11
+fire_bone                = wpn_body
+orientation              = 0, 0, 0
+position                 = 0, 0, 0
+visual                   = weapon\lr300\wpn_lr300_hud.ogf
+
+;;;;;;;;;;;;;;;;;;;;;;
+[wpn_val]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn                   = "weapons\val"					; option for Level Editor
+$npc			 = on				; option for Level Editor
+$prefetch 				= 8
+scheduled            = off              ; option for ALife Simulator
+cform                    = skeleton
+class                    = W_VAL
+min_radius               = 30
+max_radius               = 100
+
+cost					 = 2400
+
+ammo_limit		 = 210
+ammo_current		 = 180
+ammo_elapsed		 = 20
+
+resource		= 6000
+
+ammo_mag_size		 = 20
+ammo_class		 = ammo_9x39_pab9, ammo_9x39_sp5, ammo_9x39_ap
+
+hand_dependence		 = 2
+
+slot 			 = 2		; // secondary
+inv_name	         = VAL
+inv_name_short		 = VAL
+inv_weight		 = 2.5
+
+inv_icon			= ui\ui_inv_lr300					; for inventory menu
+inv_grid_width		= 5
+inv_grid_height		= 2
+inv_grid_x			= 15
+inv_grid_y			= 4
+
+cam_relax_speed          = 10.0
+cam_dispersion           = 2.1
+cam_max_angle		 = 9
+
+fire_dispersion          = 2.5
+fire_dispersion_add      = 1.0
+fire_dispersion_relax    = 0.5
+fire_dispersion_base	 = 1.0
+disp_vel_factor		 = 0.2
+disp_crouch_factor	 = 0.75
+disp_jump_factor	 = 3.7
+fire_dispersion_condition_factor = 0.3
+misfire_probability = 0.5
+condition_shot_dec = 0.0003
+
+direction                = 0, 0, 1
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.0, 0.0, 0.75
+flame_div                = 7
+flame_length             = .3
+flame_size               = 0.07
+flame			 = ShotFlame1, ShotFlame2, ShotFlame3
+rpm_empty_click 	 = 200
+
+; ttc
+hit_power                = 40
+hit_impulse		 = 70
+hit_type = wound
+
+fire_distance            = 300
+rpm                      = 600
+; end ttc
+
+hud                      = wpn_val_hud
+normal                   = 0, 1, 0
+
+;----------------------------------------------------------
+position                 = -0.06, -0.20, 0.30
+orientation              = 0, 0, 0
+
+startup_ammo             = 90
+visual                   = weapon\val\wpn_val.ogf
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.05
+ui_icon			 = ui\ui_hud_wpn_val
+tracer_head_speed	 = 300
+tracer_trail_scale	 = 0.75
+tracer_start_length	 = 1
+tracer_width		 = 0.07
+light_color		 = 0,0,0
+light_range		 = .0
+light_var_color		 = 0.05
+light_var_range		 = 0.5
+light_time 		 = 0.2
+
+ph_mass			 = 5
+cost			 = 2100
+ 
+[wpn_val_hud]
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.0, -0.07, 0.1
+fire_bone                = wpn_body
+orientation              = 0, 0, 0
+position                 = 0, 0, 0
+visual                   = weapon\val\wpn_val_hud.ogf
+;;;;;;;;;;;;;;;;;;;;;;
+
+[wpn_ak74]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn                   = "weapons\ak-74"					; option for Level Editor
+$npc					= on				; option for Level Editor
+$prefetch 				= 16
+scheduled				= off              ; option for ALife Simulator
+cform                   = skeleton
+class                   = W_AK74
+min_radius              = 30
+max_radius              = 100
+
+cost					 = 1800
+
+ammo_limit				= 210
+ammo_current			= 180
+ammo_elapsed			= 30
+
+resource				= 6000
+
+ammo_mag_size		 = 30
+ammo_class		 = ammo_5.45x39_fmj, ammo_5.45x39_ap
+
+hand_dependence		 = 2
+
+slot 			 = 2		; // secondary
+inv_name	         = AK74
+inv_name_short		 = AK74
+inv_weight		 = 2.5
+
+inv_icon			= ui\ui_inv_ak47					; for inventory menu
+inv_grid_width		= 5
+inv_grid_height		= 2
+inv_grid_x			= 5
+inv_grid_y			= 5
+
+cam_relax_speed          = 10.0
+cam_dispersion           = 2.1
+cam_max_angle		 = 9
+
+fire_dispersion          = 5.0	;2.5
+fire_dispersion_add      = 5.0	;1.0
+fire_dispersion_relax    = 0.5
+fire_dispersion_base	 = 1.0
+disp_vel_factor		 = 0.2
+disp_crouch_factor	 = 0.75
+disp_jump_factor	 = 3.7
+
+fire_dispersion_condition_factor = 0.3		;увеличение дисперсии в процентах при максимальном износе 
+misfire_probability = 0.5					;вероятность осечки при максимальном износе 
+condition_shot_dec = 0.0003					;увеличение износа при каждом выстреле
+
+direction                = 0, 0, 1
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.0, 0.1, 0.75
+flame_div                = 7
+flame_length             = .3
+flame_size               = 0.07
+flame			 = ShotFlame1, ShotFlame2, ShotFlame3
+rpm_empty_click 	 = 200
+
+; ttc
+hit_power                = 20	;45
+hit_impulse		 		 = 150	;70
+hit_type = wound
+
+fire_distance            = 200	;300
+rpm                      = 600
+; end ttc
+
+hud                      = wpn_ak74_hud
+normal                   = 0, 1, 0
+
+;----------------------------------------------------------
+position                 = -0.05, 0.03, 0.055
+orientation              = -3.5, -6.7, -5
+
+startup_ammo             = 90
+visual                   = weapon\ak74\wpn_ak74.ogf
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.05
+ui_icon			 = ui\hud_wpn_ak74
+tracer_head_speed	 = 300
+tracer_trail_scale	 = 0.75
+tracer_start_length	 = 1
+tracer_width		 = 0.07
+light_color		 = 0.17,0.13,0.12
+light_range		 = 3.0
+light_var_color		 = 0.05
+light_var_range		 = 0.5
+light_time 		 = 0.2
+
+ph_mass			 = 5
+cost			 = 2100
+ 
+[wpn_ak74_hud]
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.0, 0.03, 0.27
+fire_bone                = rifle
+orientation              = 5.7, 0, -1
+position                 = 0.063, -0.015, 0.02
+visual                   = weapon\ak74\wpn_ak74_hud.ogf
+
+[wpn_groza]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn                   = "weapons\groza"					; option for Level Editor
+$npc					= on				; option for Level Editor
+$prefetch 				= 16
+scheduled				= off              ; option for ALife Simulator
+cform                   = skeleton
+class                   = W_GROZA
+min_radius              = 30
+max_radius              = 100
+
+cost					= 2700
+
+ammo_limit				= 210
+ammo_current			= 180
+ammo_elapsed			= 30
+
+resource				= 6000
+
+ammo_mag_size		 = 30
+ammo_class		 = ammo_5.45x39_fmj, ammo_5.45x39_ap
+
+grenade_class		 = ammo_vog-25, ammo_vog-25p
+
+hand_dependence		 = 2
+
+slot 			 = 2		; // secondary
+inv_name	         = Groza
+inv_name_short		 = Groza
+inv_weight		 = 2.5
+
+inv_icon			= ui\ui_inv_lr300					; for inventory menu
+inv_grid_width		= 4
+inv_grid_height		= 2
+inv_grid_x			= 0
+inv_grid_y			= 14
+
+cam_relax_speed          = 10.0
+cam_dispersion           = 2.1
+cam_max_angle		 = 9
+
+fire_dispersion          = 2.5
+fire_dispersion_add      = 1.0
+fire_dispersion_relax    = 0.5
+fire_dispersion_base	 = 1.0
+disp_vel_factor		 = 0.2
+disp_crouch_factor	 = 0.75
+disp_jump_factor	 = 3.7
+fire_dispersion_condition_factor = 0.3
+misfire_probability = 0.5
+condition_shot_dec = 0.0003
+
+direction                = 0, 0, 1
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.0, 0.045, 0.55
+flame_div                = 7
+flame_length             = .3
+flame_size               = 0.07
+flame			 = ShotFlame1, ShotFlame2, ShotFlame3
+rpm_empty_click 	 = 200
+
+; ttc
+hit_power                = 45
+hit_impulse		 		 = 70
+hit_type = wound
+
+fire_distance            = 300
+rpm                      = 600
+; end ttc
+
+hud                      = wpn_groza_hud
+normal                   = 0, 1, 0
+
+;----------------------------------------------------------
+position                 = -0.06, -0.20, 0.35
+orientation              = 0, 0, 0
+
+startup_ammo             = 90
+visual                   = weapon\groza\wpn_groza.ogf
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.05
+ui_icon			 = ui\hud_wpn_groza
+tracer_head_speed	 = 300
+tracer_trail_scale	 = 0.75
+tracer_start_length	 = 1
+tracer_width		 = 0.07
+light_color		 = 0.17,0.13,0.12
+light_range		 = 3.0
+light_var_color		 = 0.05
+light_var_range		 = 0.5
+light_time 		 = 0.2
+
+ph_mass			 = 5
+cost			 = 2100
+ 
+[wpn_groza_hud]
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.07, -0.05, 0.11
+fire_bone                = wpn_body
+orientation              = 5.7, 0, -1
+position                 = 0.063, -0.015, 0.02
+visual                   = weapon\groza\wpn_groza_hud.ogf
+
+[wpn_hpsa]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn                   = "weapons\hpsa"					; option for Level Editor
+$npc			 = on				; option for Level Editor
+$prefetch 		= 8
+scheduled            = off              ; option for ALife Simulator
+cform                    = skeleton
+class                    = W_HPSA
+min_radius               = 0
+max_radius               = 30
+
+cost					 = 300
+
+ammo_limit		 = 120
+ammo_current		 = 0
+ammo_elapsed		 = 0
+
+ammo_mag_size		 = 12
+ammo_class		 = ammo_9x19_fmj, ammo_9x19_pbp
+
+resource		= 6000
+
+hand_dependence		 = 1
+
+slot 			 = 1		; // primary
+inv_name		= HPSA
+inv_name_short		= HPSA
+inv_weight		= .5
+
+inv_icon			= ui\ui_inv_binoculars					; for inventory menu
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 16
+inv_grid_y			= 7
+
+cam_relax_speed          = 5.5
+cam_dispersion           = 2
+cam_max_angle		 = 5
+fire_dispersion          = 1.0
+fire_dispersion_add      = 1
+fire_dispersion_relax    = 3
+fire_dispersion_base	 = 1.5
+disp_vel_factor		 = 0.1
+disp_crouch_factor	 = 0.75
+disp_jump_factor	 = 3
+fire_dispersion_condition_factor = 0.3
+misfire_probability = 0.5
+condition_shot_dec = 0.0003
+
+;cam_relax                = 0.37
+;cam_dispersion           = 2
+direction                = 0, 0, 1
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.0, 0.04, 0.2
+flame_div                = 5
+flame_length             = .1
+flame_size               = 0.07
+flame			 = ShotFlame1, ShotFlame2, ShotFlame3
+rpm_empty_click 	 = 200
+; ttc
+hit_power                = 30
+hit_impulse		 		 = 75
+hit_type = wound
+
+fire_distance            = 150
+rpm                      = 120
+; end ttc
+hud                      = wpn_HPSA_hud
+normal                   = 0, 1, 0
+position                 = -0.02, -0.25, 0.35
+orientation              = 0, 3, 0
+startup_ammo             = 90
+visual                   = weapon\hpsa\wpn_hpsa.ogf
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.05
+tracer_head_speed	 = 250
+tracer_trail_scale	 = 0.75
+tracer_start_length	 = 1
+tracer_width		 = 0.07
+light_color		 = 0.17,0.13,0.12
+light_range		 = 3.0
+light_var_color		 = 0.05
+light_var_range		 = 0.5
+light_time 		 = 0.2
+
+ph_mass			 = 1
+cost			 = 450
+ 
+[wpn_hpsa_hud]
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.05, 0.0, 0.1
+fire_bone                = wpn_body
+orientation              = 0,0,0
+position                 = 0,0,0
+visual                   = weapon\hpsa\wpn_hpsa_hud_banan.ogf
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[wpn_pm]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn                   = "weapons\pm"					; option for Level Editor
+$npc			 = on		; option for Level Editor
+$prefetch 		= 8
+scheduled            	= off              ; option for ALife Simulator
+cform                    = skeleton
+class                    = W_PM
+min_radius               = 0
+max_radius               = 30
+
+cost					 = 250
+
+ammo_limit		 = 120
+ammo_current		 = 96
+ammo_elapsed		 = 12
+
+ammo_mag_size		 = 12
+ammo_class		 = ammo_9x18_fmj, ammo_9x18_pbp, ammo_9x18_pmm
+
+resource		= 6000
+
+hand_dependence		 = 1
+
+slot 			 = 1
+inv_name		= PM
+inv_name_short		= PM
+inv_weight		= .5
+
+inv_icon			= ui\ui_inv_pmm					; for inventory menu
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 18
+inv_grid_y			= 6
+
+cam_relax_speed          = 5.5
+cam_dispersion           = 2
+cam_max_angle		 = 5
+
+fire_dispersion          = 1
+fire_dispersion_add      = 3
+fire_dispersion_relax    = 3
+fire_dispersion_base	 = 1.5
+disp_vel_factor		 = 0.1
+disp_crouch_factor	 = 0.75
+disp_jump_factor	 = 3
+fire_dispersion_condition_factor = 0.3
+misfire_probability = 0.5
+condition_shot_dec = 0.0003
+
+;cam_relax                = 0.37
+;cam_dispersion           = 2
+
+direction                = 0, 0, 1
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.0, 0.04, 0.2
+flame_div                = 5
+flame_length             = .1
+flame_size               = 0.09
+flame			 = ShotFlame1, ShotFlame2, ShotFlame3
+rpm_empty_click 	 = 200
+
+; ttc
+hit_power                = 30
+hit_impulse		 		 = 80
+hit_type = wound
+
+fire_distance            = 120
+rpm                      = 120
+; end ttc
+
+hud                      = wpn_PM_hud
+normal                   = 0, 1, 0
+position                 = 0.00, -0.25, 0.35
+orientation              = 0, 5, 0
+;startup_ammo             = 90
+visual                   = weapon\pm\wpn_pm.ogf
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.05
+tracer_head_speed	 = 250
+tracer_trail_scale	 = 0.75
+tracer_start_length	 = 1
+tracer_width		 = 0.07
+light_color		 = 0.17,0.13,0.12
+light_range		 = 3.0
+light_var_color		 = 0.05
+light_var_range		 = 0.5
+light_time 		 = 0.2
+
+ph_mass			 = 1
+cost			 = 350
+ 
+[wpn_pm_hud]
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.05, 0.07, 0.05
+fire_bone                = wpn_body
+orientation              = 0,0,0
+position                 = 0,0,0
+visual                   = weapon\pm\wpn_pm_hud.ogf
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[wpn_walther]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn                   = "weapons\walther"					; option for Level Editor
+$npc			 = on		; option for Level Editor
+$prefetch 		= 8
+scheduled            	= off              ; option for ALife Simulator
+cform                    = skeleton
+class                    = W_WALTHR
+min_radius               = 0
+max_radius               = 30
+
+cost					 = 300
+
+ammo_limit		 = 120
+ammo_current		 = 96
+ammo_elapsed		 = 12
+
+ammo_mag_size		 = 12
+ammo_class		 = ammo_9x18_fmj, ammo_9x18_pbp, ammo_9x18_pmm
+
+resource		= 6000
+
+hand_dependence		 = 1
+
+slot 			 = 1
+inv_name		= Walther
+inv_name_short		= Walther
+inv_weight		= .5
+
+inv_icon			= ui\ui_inv_pmm					; for inventory menu
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 19
+inv_grid_y			= 5
+
+cam_relax_speed          = 5.5
+cam_dispersion           = 2
+cam_max_angle		 = 5
+
+fire_dispersion          = 1
+fire_dispersion_add      = 3
+fire_dispersion_relax    = 3
+fire_dispersion_base	 = 1.5
+disp_vel_factor		 = 0.1
+disp_crouch_factor	 = 0.75
+disp_jump_factor	 = 3
+fire_dispersion_condition_factor = 0.3
+misfire_probability = 0.5
+condition_shot_dec = 0.0003
+
+;cam_relax                = 0.37
+;cam_dispersion           = 2
+
+direction                = 0, 0, 1
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.0, 0.04, 0.2
+flame_div                = 5
+flame_length             = .1
+flame_size               = 0.09
+flame			 = ShotFlame1, ShotFlame2, ShotFlame3
+rpm_empty_click 	 = 200
+
+; ttc
+hit_power                = 40
+hit_impulse		 		 = 80
+hit_type = wound
+
+fire_distance            = 120
+rpm                      = 120
+; end ttc
+
+hud                      = wpn_walther_hud
+normal                   = 0, 1, 0
+position                 = -0.01, -0.25, 0.35
+orientation              = 0, 3, 0
+;startup_ammo             = 90
+visual                   = weapon\walter_99\wpn_walter_99.ogf
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.05
+ui_icon			 = ui\ui_hud_wpn_walther99
+tracer_head_speed	 = 250
+tracer_trail_scale	 = 0.75
+tracer_start_length	 = 1
+tracer_width		 = 0.07
+light_color		 = 0.17,0.13,0.12
+light_range		 = 3.0
+light_var_color		 = 0.05
+light_var_range		 = 0.5
+light_time 		 = 0.2
+
+ph_mass			 = 1
+cost			 = 350
+ 
+[wpn_walther_hud]
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.05, 0.07, 0.05
+fire_bone                = wpn_body
+orientation              = 0,0,0
+position                 = 0,0,0
+visual                   = weapon\walter_99\wpn_walter_99_hud.ogf
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[wpn_usp]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn                   = "weapons\usp"					; option for Level Editor
+$npc			 = on		; option for Level Editor
+$prefetch 			= 8
+scheduled            	= off              ; option for ALife Simulator
+cform                    = skeleton
+class                    = W_USP45
+min_radius               = 0
+max_radius               = 30
+
+cost					 = 111
+
+ammo_limit		 = 120
+ammo_current		 = 96
+ammo_elapsed		 = 12
+
+ammo_mag_size		 = 12
+ammo_class		 = ammo_9x18_fmj, ammo_9x18_pbp, ammo_9x18_pmm
+
+resource		= 6000
+
+hand_dependence		 = 1
+
+slot 			 = 1
+inv_name		= USP45
+inv_name_short		= USP45
+inv_weight		= .5
+
+inv_icon			= ui\ui_inv_pmm					; for inventory menu
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 11
+inv_grid_y			= 8
+
+cam_relax_speed          = 5.5
+cam_dispersion           = 2
+cam_max_angle		 = 5
+
+fire_dispersion          = 1
+fire_dispersion_add      = 3
+fire_dispersion_relax    = 3
+fire_dispersion_base	 = 1.5
+disp_vel_factor		 = 0.1
+disp_crouch_factor	 = 0.75
+disp_jump_factor	 = 3
+fire_dispersion_condition_factor = 0.3
+misfire_probability = 0.5
+condition_shot_dec = 0.0003
+
+;cam_relax                = 0.37
+;cam_dispersion           = 2
+
+direction                = 0, 0, 1
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.0, 0.04, 0.2
+flame_div                = 5
+flame_length             = .1
+flame_size               = 0.09
+flame			 = ShotFlame1, ShotFlame2, ShotFlame3
+rpm_empty_click 	 = 200
+
+; ttc
+hit_power                = 35
+hit_impulse		 		 = 80
+hit_type = wound
+
+fire_distance            = 120
+rpm                      = 120
+; end ttc
+
+hud                      = wpn_usp_hud
+normal                   = 0, 1, 0
+position                 = 0.00, -0.25, 0.35
+orientation              = 0, 7, 0
+;startup_ammo             = 90
+visual                   = weapon\usp_45\wpn_usp_45.ogf
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.05
+ui_icon			 = ui\ui_hud_wpn_usp
+tracer_head_speed	 = 250
+tracer_trail_scale	 = 0.75
+tracer_start_length	 = 1
+tracer_width		 = 0.07
+light_color		 = 0.17,0.13,0.12
+light_range		 = 3.0
+light_var_color		 = 0.05
+light_var_range		 = 0.5
+light_time 		 = 0.2
+
+ph_mass			 = 1
+cost			 = 350
+ 
+[wpn_usp_hud]
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.05, 0.07, 0.05
+fire_bone                = wpn_body
+orientation              = 0,0,0
+position                 = 0,0,0
+visual                   = weapon\usp_45\wpn_usp_45_hud.ogf
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[wpn_rpg7]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn                   = "weapons\rpg-7"					; option for Level Editor
+$npc			 = on		; option for Level Editor
+$prefetch 		 = 16
+scheduled            	= off              ; option for ALife Simulator
+cform                    = skeleton
+class                    = W_RPG7
+min_radius               = 50
+max_radius               = 150
+
+cost					 = 4000
+
+ammo_limit		 = 120
+ammo_current		 = 96
+ammo_elapsed		 = 12
+
+ammo_mag_size		 = 1
+ammo_class		 = ammo_og-7b
+
+resource		= 6000
+
+hand_dependence		 = 2
+
+slot 			 = 2
+inv_name		= RPG7
+inv_name_short		= RPG7
+inv_weight		= .5
+
+inv_icon			= ui\ui_inv_ak47					; for inventory menu
+inv_grid_width		= 6
+inv_grid_height		= 2
+inv_grid_x			= 6
+inv_grid_y			= 0
+
+cam_relax_speed          = -4.5
+cam_dispersion           = -16
+cam_max_angle		 = 8
+max_zoom_factor		 = 30.f
+
+fire_dispersion          = 0.7
+fire_dispersion_add      = 10
+fire_dispersion_relax    = 3
+fire_dispersion_base	 = 1.5
+disp_vel_factor		 = 0.1
+disp_crouch_factor	 = 0.75
+disp_jump_factor	 = 3
+fire_dispersion_condition_factor = 0.3
+misfire_probability = 0.5
+condition_shot_dec = 0.0003
+
+;cam_relax                = 0.37
+;cam_dispersion           = 2
+
+direction                = 0, 0, 1
+shell_point				 = 0.0, 0.0, 0.0
+fire_point               = 0.0, 0.04, 0.2
+flame_div                = 5
+flame_length             = .1
+flame_size              = 0.09
+flame			 = ShotFlame1, ShotFlame2, ShotFlame3
+rpm_empty_click 	 = 200
+
+; ttc
+hit_power       = 25
+hit_impulse		= 80
+hit_type = wound ;shock\strike\burn
+
+fire_distance            = 400
+rpm                      = 600
+; end ttc
+
+hud                      = wpn_rpg7_hud
+normal                   = 0, 1, 0
+position                 = -0.05, -0.26, 0.25
+;orientation              = 0, 0, 0
+orientation              = 0, 0, 0
+;startup_ammo             = 90
+visual                   = weapon\rpg_7\wpn_rpg_7.ogf
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.05
+tracer_head_speed	 = 250
+tracer_trail_scale	 = 0.75
+tracer_start_length	 = 1
+tracer_width		 = 0.07
+light_color		 = 0.17,0.13,0.12
+light_range		 = 3.0
+light_var_color		 = 0.05
+light_var_range		 = 0.5
+light_time 		 = 0.2
+
+ph_mass			 = 1
+cost			 = 350
+ 
+[wpn_rpg7_hud]
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.05, 0.07, 0.05
+fire_bone                = wpn_body_1
+orientation              = 0,0,0
+position                 = 0,0,0
+visual                   = weapon\rpg_7\wpn_rpg_7_hud.ogf
+
+[wpn_rpg7_missile]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+visual                  = weapon\rpg_7\wpn_rpg_7_grenade.ogf
+cform                    = skeleton
+class                    = G_RPG7
+
+inv_weight				= 0
+
+inv_icon			= ui\ui_inv_grenade					; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+cost					 = 100
+
+blast				= 15000	;3000
+blast_r				= 15
+frags				= 0
+frags_r				= 50
+frag_hit			= 50
+
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.05
+
+effects				= explosions\explosion-03 ;explosions\expl_03_smoke, explosions\expl_03_sparks, explosions\expl_03_wave, explosions\expl_03_flame
+trail				= weapons\rpg_trail_01, weapons\rpg_trail_02
+
+light_color		         = 0.17,0.13,0.12
+light_range		         = 30.0
+light_time 		         = 200
+
+ph_mass			 = 5
+engine_f			= 530
+engine_u			= 90
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[wpn_fake_missile]
+visual                  = munition\vog25p.ogf
+cform                    = skeleton
+class                    = G_FAKE
+
+inv_weight				= 0
+
+inv_icon			= ui\ui_inv_grenade					; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+
+cost					 = 100
+
+blast				= 3000
+blast_r				= 15
+frags				= 0
+frags_r				= 50
+frag_hit			= 50
+
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.05
+
+effects				= explosions\expl_03_smoke, explosions\expl_03_sparks, explosions\expl_03_wave, explosions\expl_03_flame
+;trail				= weapons\rpg_trail_01, weapons\rpg_trail_02
+
+light_color		         = 0.17,0.13,0.12
+light_range		         = 30.0
+light_time 		         = 200
+
+ph_mass			 = 5
+;engine_f			= 530
+;engine_u			= 90
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[wpn_fort]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn                   = "weapons\fort"					; option for Level Editor
+$npc			 = on				; option for Level Editor
+$prefetch 		= 8
+scheduled            = off              ; option for ALife Simulator
+cform                    = skeleton
+class                    = W_FORT
+min_radius               = 5
+max_radius               = 30
+
+cost					 = 300
+
+ammo_limit		 = 120
+ammo_current		 = 90
+ammo_elapsed		 = 12
+
+ammo_mag_size		 = 12
+ammo_class		 = ammo_9x18_fmj, ammo_9x18_pbp, ammo_9x18_pmm
+
+resource		= 6000
+
+hand_dependence		 = 1
+
+slot 			 = 1		; // primary
+inv_name		= FORT
+inv_name_short		= FORT
+inv_weight		= .5
+
+inv_icon			= ui\ui_inv_pmm					; for inventory menu
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+
+cam_relax_speed          = 5.5
+cam_dispersion           = 2
+cam_max_angle		 = 5
+fire_dispersion          = 0.7
+fire_dispersion_add      = 2
+fire_dispersion_relax    = 3
+fire_dispersion_base	 = 1.5
+disp_vel_factor		 = 0.1
+disp_crouch_factor	 = 0.75
+disp_jump_factor	 = 3
+fire_dispersion_condition_factor = 0.3
+misfire_probability = 0.5
+condition_shot_dec = 0.0003
+
+;cam_relax               = 0.37
+;cam_dispersion          = 2
+direction                = 0, 0, 1
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.00, 0.04, 0.2
+flame_div                = 5
+flame_length             = .1
+flame_size               = 0.09
+flame			 = ShotFlame1, ShotFlame2, ShotFlame3, 
+rpm_empty_click 	 = 200
+; ttc
+
+hit_power                = 60 ;30
+hit_impulse		 		 = 60
+hit_type = wound
+
+fire_distance            = 150
+rpm                      = 120
+; end ttc
+hud                      = wpn_FORT_hud
+normal                   = 0, 1, 0
+position                 = -0.02, -0.25, 0.35
+orientation              = 0, 3, 0
+startup_ammo             = 90
+visual                   = weapon\fort\wpn_fort.ogf
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.05
+tracer_head_speed	 = 250
+tracer_trail_scale	 = 0.75
+tracer_start_length	 = 1
+tracer_width		 = 0.07
+light_color		 = 0.17,0.13,0.12
+light_range		 = 3.0
+light_var_color		 = 0.05
+light_var_range		 = 0.5
+light_time 		 = 0.2
+
+ph_mass			 = 1
+cost			 = 350
+
+[wpn_fort_hud]
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.05, 0.05, 0.05
+fire_bone                = wpn_body
+orientation              = 0,0,0
+position                 = 0,0,0
+visual                   = weapon\fort\wpn_fort_hud_banan.ogf
+
+[wpn_binoc]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn                   = "weapons\binocular"					; option for Level Editor
+$npc			 = on				; option for Level Editor
+$prefetch 		 = 8
+scheduled                = off              ; option for ALife Simulator
+cform                    = skeleton
+class                    = W_BINOC
+hud                      = wpn_BINOC_hud
+position                 = 0, 0, .2
+normal                   = 0, 1, 0
+direction                = 0, 0, 1
+orientation              = -12, 7, 0
+visual                   = weapon\binoculars\wpn_binoculars.ogf
+hand_dependence		 = 1
+slot 			 = 4		; // binocular
+inv_name		 = BINOCULAR
+inv_name_short		 = BINOCULAR
+inv_weight		 = .5
+
+inv_icon			= ui\ui_inv_binoculars					; for inventory menu
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+resource		= 6000
+min_radius               = 100
+max_radius               = 150
+
+cost					 = 350
+
+cam_relax_speed          = 5.5
+cam_dispersion           = 2
+cam_max_angle		 = 5
+disp_vel_factor		 = 0.1
+disp_crouch_factor	 = 0.75
+disp_jump_factor	 = 3
+max_zoom_factor		 = 40.f
+
+ph_mass			 = 1
+cost			 = 120
+
+[wpn_binoc_hud]
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.05, 0.0, 0.1
+fire_bone                = binoculars
+orientation              = 10, 0, -2
+position                 = 0.15, -0.14, 0.25
+visual                   = weapon\binoculars\wpn_binoculars_hud.ogf
+
+[wpn_m134]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn                   = "weapons\m-134"					; option for Level Editor
+$npc			 = on				; option for Level Editor
+scheduled                = off              ; option for ALife Simulator
+cform                    = skeleton
+ammo_limit		 = 9999
+ammo_current		 = 0
+ammo_elapsed		 = 1000
+ammo_class		 = ammo_9x18_fmj
+class                    = W_M134
+hand_dependence		 = 2
+slot 			 = 2		; // secondary
+inv_name		= M134
+inv_name_short		= M134
+inv_weight		= 5.
+
+inv_icon			= ui\ui_inv_ak47					; for inventory menu
+inv_grid_width		= 5
+inv_grid_height		= 2
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+min_radius               = 0
+max_radius               = 50
+
+cost					 = 3500
+
+cam_relax_speed          = 15.0
+cam_dispersion           = 5.0
+cam_max_angle		 = 1.2
+fire_dispersion          = 3.5
+fire_dispersion_add      = 0.75
+fire_dispersion_relax    = 0.4
+fire_dispersion_base	 = 0.5
+disp_vel_factor		 = 0.3
+disp_crouch_factor	 = 0.75
+disp_jump_factor	 = 3
+fire_dispersion_condition_factor = 0.3
+misfire_probability = 0.5
+condition_shot_dec = 0.0003
+
+direction                = 0, 0, 1
+shell_point		 = 0.0, 0.0, 0.0
+fire_point	         = 0.0, 0.0, 0.7
+fire_bone                = barrels
+flame_div                = 10
+flame_length             = .5
+flame_size               = 0.14
+flame			 = weapons\generic\ShotFlame1, weapons\generic\ShotFlame2, weapons\generic\ShotFlame3
+; ttc
+hit_power                = 10
+fire_distance            = 400
+ammo_mag_size		 = 1000
+rpm                      = 2000
+; end ttc
+hud                      = wpn_m134_hud
+normal                   = 0, 1, 0
+position                 = .15, .02, 0.61
+orientation              = -19, 12, 0
+rot_axis_hud             = Z
+rot_axis_wpn             = Z
+rot_bone                 = barrels
+rot_break_accel          = 17
+rot_max_speed            = 73
+rot_spinup_accel         = 49
+rpm_empty_click 	 = 500
+servo_max_freq           = 22050
+servo_min_freq           = 1000
+startup_ammo             = 9999
+visual                   = weapon\m134\wpn_m134.ogf
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.03
+ui_icon			 = ui\hud_wpn_m134
+tracer_head_speed	 = 250
+tracer_trail_scale	 = 0.75
+tracer_start_length	 = 1
+tracer_width		 = 0.07
+light_color		 = 0.07,0.03,0.02
+light_range		 = 3.0
+light_var_color		 = 0.05
+light_var_range		 = 0.5
+light_time 		 = 0.2
+
+[wpn_m134_hud]
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.0, 0, .45
+fire_bone                = barrels
+orientation              = 4, 5, 0
+position                 = .13, -.19, 0.75
+visual                   = weapon\m134\wpn_m134_hud.ogf
+
+[wpn_toz34]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn                   = "weapons\toz-34"					; option for Level Editor
+$npc			 = on				; option for Level Editor
+$prefetch 		 = 8
+scheduled                = off              ; option for ALife Simulator
+cform                    = skeleton
+class                    = W_SHOTGN
+min_radius               = 0
+max_radius               = 50
+
+cost					 = 1000
+
+ammo_limit		 = 60
+ammo_current		 = 10
+ammo_elapsed		 = 0
+
+ammo_mag_size		 = 2
+ammo_class		 = ammo_12x70_buck, ammo_12x76_dart, ammo_12x76_zhekan
+
+resource		= 6000
+
+cam_relax_speed          = 5.5
+cam_dispersion           = 2
+cam_max_angle		 = 5
+fire_dispersion          = 2
+fire_dispersion_add      = 5
+fire_dispersion_relax    = 2
+fire_dispersion_base	 = 1.1
+disp_vel_factor		 = 0.1
+disp_crouch_factor	 = 0.75
+disp_jump_factor	 = 3
+fire_dispersion_condition_factor = 0.3
+misfire_probability = 0.5
+condition_shot_dec = 0.0003
+hand_dependence 	 = 2
+
+slot 			 = 2		; // secondary
+inv_name		= TOZ34
+inv_name_short		= TOZ34
+inv_weight		= .5
+
+inv_icon			= ui\ui_inv_ak47					; for inventory menu
+inv_grid_width		= 6
+inv_grid_height		= 1
+inv_grid_x			= 12
+inv_grid_y			= 2
+
+
+;cam_relax                = 0.37
+;cam_dispersion           = 2
+direction                = 0, 0, 1
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.0, 0.11, 0.95
+fire_point2              = 0.0, 0.10, 0.95
+flame_div                = 7
+flame_length             = .5
+flame_size               = 0.10
+flame			 = ShotFlame1, ShotFlame2, ShotFlame3
+rpm_empty_click 	 = 200
+; ttc
+
+hit_power                = 50
+hit_impulse		 = 150
+hit_type = wound
+
+fire_distance            = 50
+rpm                      = 350
+; end ttc
+hud                      = wpn_shotgun_hud
+normal                   = 0, 1, 0
+;position                 = -0.05, -0.20, 0.25
+position                 = -0.05, -0.20, 0.25
+orientation              = 0, 0, 0
+startup_ammo             = 10
+visual                   = weapon\toz34\wpn_toz34_ext.ogf
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.05
+tracer_head_speed	 = 250
+tracer_trail_scale	 = 0.75
+tracer_start_length	 = 0
+tracer_width		 = 0.00
+light_color		 = 0.17,0.13,0.12
+light_range		 = 3.0
+light_var_color		 = 0.05
+light_var_range		 = 0.5
+light_time 		 = 0.2
+
+ph_mass			 = 3
+cost			 = 900
+ 
+[wpn_shotgun_hud]
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.0, 0.0, 0.06
+fire_point2              = 0.0, 0.0, 0.01
+fire_bone                = wpn_barrel_0
+orientation              = 0, 0, 0
+position                 = 0, 0, 0
+visual                   = weapon\toz34\wpn_toz34_hud_banan.ogf
+
+[wpn_svd]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn                   = "weapons\svd"					; option for Level Editor
+$npc			 = on				; option for Level Editor
+$prefetch 		 = 8
+scheduled                = off              ; option for ALife Simulator
+cform                    = skeleton
+class                    = W_SVD
+min_radius               = 0
+max_radius               = 50
+
+cost					 = 3000
+
+ammo_limit				= 60
+ammo_current			= 10
+ammo_elapsed			= 0
+
+ammo_mag_size			= 10
+ammo_class				= ammo_7.62x54_7h1, ammo_7.62x54_ap, ammo_7.62x54_7h14
+
+resource				= 6000
+
+cam_relax_speed         = 5
+cam_dispersion          = 4
+cam_max_angle			= 5
+fire_dispersion         = 0.5
+fire_dispersion_add     = 5
+fire_dispersion_relax   = 2
+fire_dispersion_base	= 1.1
+disp_vel_factor			= 0.1
+disp_crouch_factor		= 0.75
+disp_jump_factor		= 3
+fire_dispersion_condition_factor = 0.3
+misfire_probability		= 0.5
+condition_shot_dec		= 0.0003
+hand_dependence 		= 2
+
+slot 					= 2		; // secondary
+inv_name				= SVD
+inv_name_short			= SVD
+inv_weight				= 5.
+
+inv_icon				= ui\ui_inv_ak47					; for inventory menu
+inv_grid_width			= 6
+inv_grid_height			= 2
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+max_zoom_factor			= 10.f
+
+
+;cam_relax              = 0.37
+;cam_dispersion         = 2
+direction               = 0, 0, 1
+shell_point				= 0.0, 0.0, 0.0
+fire_point              = 0.0, 0.0, 0.95
+flame_div               = 7
+flame_length            = .3
+flame_size              = 0.07
+flame					= ShotFlame1, ShotFlame2, ShotFlame3
+rpm_empty_click 		= 200
+; ttc
+
+hit_power                = 65
+hit_impulse		 		 = 500		;120
+hit_type = wound
+
+fire_distance            = 800
+rpm                      = 120
+; end ttc
+hud                      = wpn_svd_hud
+normal                   = 0, 1, 0
+position                 = -0.05, -0.20, 0.30
+orientation              = 0, 0, 0
+startup_ammo             = 10
+visual                   = weapon\svd\wpn_svd.ogf
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.05
+tracer_head_speed	 = 250
+tracer_trail_scale	 = 0.75
+tracer_start_length	 = 0
+tracer_width		 = 0.00
+light_color		 = 0.17,0.13,0.12
+light_range		 = 3.0
+light_var_color		 = 0.05
+light_var_range		 = 0.5
+light_time 		 = 0.2
+
+ph_mass			 = 3
+cost			 = 900
+ 
+[wpn_svd_hud]
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.3, -0.07, 0.15
+fire_bone                = wpn_body
+orientation              = 0, 0, 0
+position                 = 0, 0, 0
+visual                   = weapon\svd\wpn_svd_hud.ogf
+
+[wpn_svu]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn                   = "weapons\svu"					; option for Level Editor
+$npc			 = on				; option for Level Editor
+$prefetch 		 = 8
+scheduled                = off              ; option for ALife Simulator
+cform                    = skeleton
+class                    = W_SVU
+min_radius               = 0
+max_radius               = 50
+
+cost					 = 3100
+
+ammo_limit		 = 60
+ammo_current		 = 10
+ammo_elapsed		 = 0
+
+ammo_mag_size		 = 10
+ammo_class		 = ammo_7.62x54_7h1, ammo_7.62x54_ap, ammo_7.62x54_7h14
+
+resource		= 6000
+
+cam_relax_speed          = 5.5
+cam_dispersion           = 4
+cam_max_angle		 = 5
+fire_dispersion          = 1
+fire_dispersion_add      = 5
+fire_dispersion_relax    = 4
+fire_dispersion_base	 = 1.1
+disp_vel_factor		 = 0.1
+disp_crouch_factor	 = 0.75
+disp_jump_factor	 = 3
+fire_dispersion_condition_factor = 0.3
+misfire_probability = 0.5
+condition_shot_dec = 0.0003
+hand_dependence 	 = 2
+slot 			 = 2		; // secondary
+inv_name		 = SVU
+inv_name_short		 = SVU
+inv_weight		 = 5.
+
+inv_icon			= ui\ui_inv_ak47					; for inventory menu
+inv_grid_width		= 6
+inv_grid_height		= 1
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+max_zoom_factor		 = 10.f
+
+
+;cam_relax                = 0.37
+;cam_dispersion           = 2
+direction                = 0, 0, 1
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.0, 0.03, 0.6
+fire_point2              = 0.0, 0.0, 0.0
+flame_div                = 3
+flame_length             = .1
+flame_size               = 0.04
+flame			 = ShotFlame1, ShotFlame2, ShotFlame3
+rpm_empty_click 	 = 200
+; ttc
+
+hit_power                = 65
+hit_impulse		 = 110
+hit_type = wound
+
+fire_distance            = 600
+rpm                      = 300
+; end ttc
+hud                      = wpn_svu_hud
+normal                   = 0, 1, 0
+position                 = -0.04, -0.20, 0.3
+orientation              = 0, 0, 0
+startup_ammo             = 10
+visual                   = weapon\svu\wpn_svu.ogf
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.05
+tracer_head_speed	 = 250
+tracer_trail_scale	 = 0.75
+tracer_start_length	 = 0
+tracer_width		 = 0.00
+light_color		 = 0.17,0.13,0.12
+light_range		 = 3.0
+light_var_color		 = 0.05
+light_var_range		 = 0.5
+light_time 		 = 0.2
+
+ph_mass			 = 3
+cost			 = 900
+ 
+[wpn_svu_hud]
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.07, -0.05, 0.11
+fire_bone                = wpn_body
+orientation              = 0, 0, 0
+position                 = 0, 0, 0
+visual                   = weapon\svu\wpn_svu_hud.ogf
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; AMUNITION
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_9x18_fmj]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn			= "weapons\ammo\9x18_fmj" ; option for Level Editor
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\patron9_18_fmj.ogf
+$prefetch 		= 64
+
+cost					 = 50
+
+box_size		= 50
+
+inv_name		= "9x18 FMJ"
+inv_name_short		= "FMJ"
+inv_weight		= .25
+
+inv_icon			= ui\ui_inv_pmm_ammo				; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+
+k_dist			= 1
+k_disp			= 1
+k_hit			= 1
+k_impulse		= 1
+k_pierce		= 1
+impair			= 1
+buck_shot		= 1
+tracer			= off
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_9x18_pbp]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn			= "weapons\ammo\9x18_pbp" ; option for Level Editor
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\patron9_pbp.ogf
+$prefetch 		= 64
+
+cost					 = 50
+
+box_size		= 50
+
+inv_name		= "9x18 PBP"
+inv_name_short		= "JSP-AP"
+inv_weight		= .25
+
+inv_icon			= ui\ui_inv_pmm_ammo				; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+k_dist			= 1
+k_disp			= 1
+k_hit			= 1.5
+k_impulse		= 2
+k_pierce		= 2.5
+impair			= 1.15
+buck_shot		= 1
+tracer			= off
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_9x18_pmm]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn			= "weapons\ammo\9x18_pmm" ; option for Level Editor
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\patron9_18_pmm.ogf
+$prefetch 		= 64
+
+cost					 = 50
+
+box_size		= 50
+
+inv_name		= "9x18 PMM"
+inv_name_short		= "+P+"
+inv_weight		= .25
+
+inv_icon			= ui\ui_inv_pmm_ammo				; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+k_dist			= 1.5
+k_disp			= 1
+k_hit			= 1.3
+k_impulse		= 1.3
+k_pierce		= 1.5
+impair			= 1.5
+buck_shot		= 1
+tracer			= off
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_9x19_fmj]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn			= "weapons\ammo\9x19_fmj" ; option for Level Editor
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\patron9_fmj.ogf
+$prefetch 		= 64
+
+cost					 = 50
+
+box_size		= 50
+
+inv_name		= "9x19 FMJ"
+inv_name_short		= "FMJ"
+inv_weight		= .3
+
+inv_icon			= ui\ui_inv_pmm_ammo				; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+k_dist			= 1
+k_disp			= 1
+k_hit			= 1
+k_impulse		= 1
+k_pierce		= 1
+impair			= 1
+buck_shot		= 1
+tracer			= off
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_9x19_pbp]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn			= "weapons\ammo\9x19_pbp" ; option for Level Editor
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\patron9_19_pbp.ogf
+$prefetch 		= 64
+
+cost					 = 50
+
+box_size		= 50
+
+inv_name		= "9x19 PBP"
+inv_name_short		= "JSP-AP"
+inv_weight		= .3
+
+inv_icon			= ui\ui_inv_pmm_ammo				; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+k_dist			= 1
+k_disp			= 1
+k_hit			= 1.5
+k_impulse		= 2
+k_pierce		= 2.5
+impair			= 1.15
+buck_shot		= 1
+tracer			= off
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_5.45x39_fmj]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn			= "weapons\ammo\5.45x39_fmj" ; option for Level Editor
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\patron545.ogf
+$prefetch 		= 64
+
+cost					 = 50
+
+box_size		= 60
+
+inv_name		= "5.45x39 FMJ"
+inv_name_short		= "FMJ"
+inv_weight		= .5
+
+inv_icon			= ui\ui_inv_pmm_ammo				; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+k_dist			= 1
+k_disp			= 1
+k_hit			= 1
+k_impulse		= 1
+k_pierce		= 1
+impair			= 1
+buck_shot		= 1
+tracer			= on
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_5.45x39_ap]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn			= "weapons\ammo\5.45x39_ap" ; option for Level Editor
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\patron545_ap.ogf
+$prefetch 		= 64
+
+cost					 = 50
+
+box_size		= 60
+
+inv_name		= "5.45x39 AP"
+inv_name_short		= "AP"
+inv_weight		= .5
+
+inv_icon			= ui\ui_inv_pmm_ammo				; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+k_dist			= 1
+k_disp			= 1
+k_hit			= 0.75
+k_impulse		= 0.5
+k_pierce		= 2
+impair			= 1.05
+buck_shot		= 1
+tracer			= on
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_5.56x45_ss190]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn			= "weapons\ammo\5.56x45_ss_190" ; option for Level Editor
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\patron556.ogf
+$prefetch 		= 64
+
+cost					 = 50
+
+box_size		= 60
+
+inv_name		= "5.56x45 SS190"
+inv_name_short		= "SS190"
+inv_weight		= .5
+
+inv_icon			= ui\ui_inv_pmm_ammo				; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+k_dist			= 1
+k_disp			= 1
+k_hit			= 1
+k_impulse		= 1
+k_pierce		= 1
+impair			= 1
+buck_shot		= 1
+tracer			= on
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_5.56x45_ap]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn			= "weapons\ammo\5.56x45_ap" ; option for Level Editor
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\patron556_ap.ogf
+$prefetch 		= 64
+
+cost					 = 50
+
+box_size		= 60
+
+inv_name		= "5.56x45 AP"
+inv_name_short		= "AP"
+inv_weight		= .5
+
+inv_icon			= ui\ui_inv_pmm_ammo				; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+k_dist			= 1
+k_disp			= 1
+k_hit			= 0.75
+k_impulse		= 0.5
+k_pierce		= 2
+impair			= 1.05
+buck_shot		= 1
+tracer			= on
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_5.7x28_fmj]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn			= "weapons\ammo\5.7x28_fmj" ; option for Level Editor
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\patron57.ogf
+$prefetch 		= 64
+
+cost					 = 50
+
+box_size		= 60
+
+inv_name		= "5.7x28 FMJ"
+inv_name_short		= "FMJ"
+inv_weight		= .5
+
+inv_icon			= ui\ui_inv_pmm_ammo				; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+
+k_dist			= 1
+k_disp			= 1
+k_hit			= 1
+k_impulse		= 1
+k_pierce		= 1
+impair			= 1
+buck_shot		= 1
+tracer			= on
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_5.7x28_ap]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn			= "weapons\ammo\5.7x28_ap" ; option for Level Editor
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\patron57_AP.ogf
+$prefetch 		= 64
+
+cost					 = 50
+
+box_size		= 60
+
+inv_name		= "5.7x28 AP"
+inv_name_short		= "AP"
+inv_weight		= .5
+
+inv_icon			= ui\ui_inv_pmm_ammo				; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+k_dist			= 1
+k_disp			= 1
+k_hit			= 0.75
+k_impulse		= 0.5
+k_pierce		= 2
+impair			= 1.05
+buck_shot		= 1
+tracer			= on
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_7.62x54_7h1]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn			= "weapons\ammo\7.62x54_7_h_1" ; option for Level Editor
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\patron762_7h1.ogf
+$prefetch 		= 64
+
+cost					 = 50
+
+box_size		= 10
+
+inv_name		= "7.62x54R 7H1"
+inv_name_short		= "FMJ"
+inv_weight		= .2
+
+inv_icon			= ui\ui_inv_pmm_ammo				; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+k_dist			= 1
+k_disp			= 1
+k_hit			= 1
+k_impulse		= 1
+k_pierce		= 1
+impair			= 1
+buck_shot		= 1
+tracer			= off
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_7.62x54_ap]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn			= "weapons\ammo\7.62x54_ap" ; option for Level Editor
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\patron762_AP.ogf
+$prefetch 		= 64
+
+cost					 = 50
+
+box_size		= 10
+
+inv_name		= "7.62x54R BTZ"
+inv_name_short		= "AP"
+inv_weight		= .2
+
+inv_icon			= ui\ui_inv_pmm_ammo				; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+k_dist			= 1
+k_disp			= 1
+k_hit			= 0.75
+k_impulse		= 0.5
+k_pierce		= 2
+impair			= 1.05
+buck_shot		= 1
+tracer			= on
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_7.62x54_7h14]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn			= "weapons\ammo\7.62x54_7_h_14" ; option for Level Editor
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\patron762_7h14.ogf
+$prefetch 		= 64
+
+cost					 = 50
+
+box_size		= 10
+
+inv_name		= "7.62x54R 7H14"
+inv_name_short		= "Sniper"
+inv_weight		= .2
+
+inv_icon			= ui\ui_inv_pmm_ammo				; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+k_dist			= 1.25
+k_disp			= 0.75
+k_hit			= 1.1
+k_impulse		= 1.1
+k_pierce		= 1.2
+impair			= 1.25
+buck_shot		= 1
+tracer			= on
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_9x39_pab9]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn			= "weapons\ammo\9x39_pab_9" ; option for Level Editor
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\patron9_pab9.ogf
+$prefetch 		= 64
+
+cost					 = 50
+
+box_size		= 60
+
+inv_name		= "9x39 PAB-9"
+inv_name_short		= "PAB-9"
+inv_weight		= .5
+
+inv_icon			= ui\ui_inv_pmm_ammo				; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+k_dist			= 1
+k_disp			= 1
+k_hit			= 1
+k_impulse		= 1
+k_pierce		= 1
+impair			= 1
+buck_shot		= 1
+tracer			= off
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_9x39_ap]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn			= "weapons\ammo\9x39_ap" ; option for Level Editor
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\patron9_AP.ogf
+$prefetch 		= 64
+
+cost					 = 50
+
+box_size		= 60
+
+inv_name		= "9x39 SP-6"
+inv_name_short		= "AP"
+inv_weight		= .5
+
+inv_icon			= ui\ui_inv_pmm_ammo				; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+k_dist			= 1
+k_disp			= 1
+k_hit			= 0.75
+k_impulse		= 0.5
+k_pierce		= 2
+impair			= 1.05
+buck_shot		= 1
+tracer			= off
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_9x39_sp5]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn			= "weapons\ammo\9x39_sp_5" ; option for Level Editor
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\patron9_sp5.ogf
+$prefetch 		= 64
+
+cost					 = 50
+
+box_size		= 60
+
+inv_name		= "9x39 SP-5"
+inv_name_short		= "Sniper"
+inv_weight		= .5
+
+inv_icon			= ui\ui_inv_pmm_ammo				; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+k_dist			= 1.25
+k_disp			= 0.75
+k_hit			= 1.1
+k_impulse		= 1.1
+k_pierce		= 1.2
+impair			= 1.25
+buck_shot		= 1
+tracer			= off
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_11.43x23_fmj]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn			= "weapons\ammo\11.43x23_fmj" ; option for Level Editor
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\patron45.ogf
+$prefetch 		= 64
+
+cost					 = 50
+
+box_size		= 50
+
+inv_name		= "11.43x23 FMJ"
+inv_name_short		= "FMJ"
+inv_weight		= .4
+
+inv_icon			= ui\ui_inv_pmm_ammo				; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+k_dist			= 1
+k_disp			= 1
+k_hit			= 1
+k_impulse		= 1
+k_pierce		= 1
+impair			= 1
+buck_shot		= 1
+tracer			= off
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_11.43x23_hydro]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn			= "weapons\ammo\11.43x23_hydro" ; option for Level Editor
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\patron45_Hydro.ogf
+$prefetch 		= 64
+
+cost					 = 50
+
+box_size		= 50
+
+inv_name		= "11.43x23 Hydro"
+inv_name_short		= "JHP-AP"
+inv_weight		= .4
+
+inv_icon			= ui\ui_inv_pmm_ammo				; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+k_dist			= 0.85
+k_disp			= 1
+k_hit			= 1.5
+k_impulse		= 2
+k_pierce		= 2.5
+impair			= 1.15
+buck_shot		= 1
+tracer			= off
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_12x70_buck]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn			= "weapons\ammo\12x70_buck" ; option for Level Editor
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\kartech.ogf
+$prefetch 		= 64
+
+cost					 = 50
+
+box_size		= 10
+
+inv_name		= "12x70 BUCK"
+inv_name_short		= "BUCK"
+inv_weight		= .2
+
+inv_icon			= ui\ui_inv_pmm_ammo				; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 13
+inv_grid_y			= 9
+
+k_dist			= 1
+k_disp			= 1
+k_hit			= 1
+k_impulse		= 1
+k_pierce		= 1
+impair			= 1
+buck_shot		= 10
+tracer			= off
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_12x76_dart]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn			= "weapons\ammo\12x76_dart" ; option for Level Editor
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\dart.ogf
+$prefetch 		= 64
+
+cost					 = 50
+
+box_size		= 10
+
+inv_name		= "12x70 DART"
+inv_name_short		= "DART"
+inv_weight		= .2
+
+inv_icon			= ui\ui_inv_pmm_ammo				; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+k_dist			= 6
+k_disp			= .1
+k_hit			= 4
+k_impulse		= 3
+k_pierce		= 5
+impair			= 1.2
+buck_shot		= 1
+tracer			= off
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_12x76_zhekan]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn			= "weapons\ammo\12x76_zhekan" ; option for Level Editor
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\zhekan.ogf
+$prefetch 		= 64
+
+cost					 = 50
+
+box_size		= 10
+
+inv_name		= "12x70 Zhekan "
+inv_name_short		= "JHP"
+inv_weight		= .2
+
+inv_icon			= ui\ui_inv_pmm_ammo				; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+k_dist			= 3
+k_disp			= .5
+k_hit			= 5
+k_impulse		= 5
+k_pierce		= 2
+impair			= 1.15
+buck_shot		= 1
+tracer			= off
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_og-7b]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn			= "weapons\ammo\og-7-b" ; option for Level Editor
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\rpg.ogf
+$prefetch 		= 64
+
+cost					 = 50
+
+box_size		= 1
+
+inv_name		= "OG-7B"
+inv_name_short	= "OG-7B"
+inv_weight		= .2
+
+inv_icon			= ui\ui_inv_pmm_ammo				; for inventory menu
+inv_grid_width		= 4
+inv_grid_height		= 1
+inv_grid_x			= 15
+inv_grid_y			= 5
+
+
+k_dist			= 3
+k_disp			= .5
+k_hit			= 5
+k_impulse		= 5
+k_pierce		= 2
+impair			= 1.15
+buck_shot		= 0
+tracer			= off
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_vog-25p]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn			= "weapons\ammo\vog-25p" ; option for Level Editor
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\vog25p.ogf
+$prefetch 		= 64
+
+cost					 = 50
+
+box_size		= 1
+
+inv_name		= "VOG-25P"
+inv_name_short	= "VOG-25P"
+inv_weight		= .2
+
+inv_icon			= ui\ui_inv_pmm_ammo				; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+k_dist			= 3
+k_disp			= .5
+k_hit			= 5
+k_impulse		= 5
+k_pierce		= 2
+impair			= 1.15
+buck_shot		= 0
+tracer			= off
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_vog-25]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn			= "weapons\ammo\vog-25" ; option for Level Editor
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\vog25.ogf
+$prefetch 		= 64
+
+cost					 = 50
+
+box_size		= 1
+
+inv_name		= "VOG-25"
+inv_name_short	= "VOG-25"
+inv_weight		= .2
+
+inv_icon			= ui\ui_inv_pmm_ammo				; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+k_dist			= 3
+k_disp			= .5
+k_hit			= 5
+k_impulse		= 5
+k_pierce		= 2
+impair			= 1.15
+buck_shot		= 0
+tracer			= off
+
