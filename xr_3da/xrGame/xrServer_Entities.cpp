@@ -1005,9 +1005,16 @@ void xrGraphPoint::STATE_Read		(NET_Packet& P, u16 size)
 {
 	P.r_string	(m_caConnectionPointName);
 	P.r_u32		(m_tLevelID);
-	P.r_u8		(m_tLocations[0]);
-	P.r_u8		(m_tLocations[1]);
-	if (!P.r_eof()) {
+	if (size - strlen(m_caConnectionPointName) - 1 - 4 == 8) {
+		u32			dwTemp;
+		P.r_u32		(dwTemp);
+		m_tLocations[0] = (u8)dwTemp;
+		P.r_u32		(dwTemp);
+		m_tLocations[1] = (u8)dwTemp;
+	}
+	else {
+		P.r_u8		(m_tLocations[0]);
+		P.r_u8		(m_tLocations[1]);
 		P.r_u8		(m_tLocations[2]);
 		P.r_u8		(m_tLocations[3]);
 	}
