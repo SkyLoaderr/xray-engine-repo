@@ -82,6 +82,8 @@ CActor::CActor() : CEntityAlive()
 	last_gmtl_id			= GAMEMTL_NONE;
 	m_phSkeleton			=NULL;
 	bDeathInit				=false;
+	m_saved_dir.set(0,0,0);
+	m_saved_impulse=0.f;
 }
 
 CActor::~CActor()
@@ -114,7 +116,9 @@ void CActor::Load		(LPCSTR section )
 	m_fJumpSpeed		= pSettings->ReadFLOAT(section,"jump_speed");
 	m_fRunFactor		= pSettings->ReadFLOAT(section,"run_coef");
 	m_fCrouchFactor		= pSettings->ReadFLOAT(section,"crouch_coef");
-
+	skel_density_factor = pSettings->ReadFLOAT(section,"ph_skeleton_mass_factor");
+	skel_airr_lin_factor=pSettings->ReadFLOAT(section,"ph_skeleton_airr_lin_factor");
+	skel_airr_ang_factor=pSettings->ReadFLOAT(section,"ph_skeleton_airr_ang_factor");
 	ph_Movement.SetJumpUpVelocity(m_fJumpSpeed);
 
 	Weapons				= xr_new<CWeaponList> (this);
@@ -336,10 +340,22 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element, float i
 
 void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector position_in_bone_space, float impulse)
 {
-	if (g_Alive()>0)ph_Movement.ApplyImpulse(dir,impulse);
+	if (g_Alive()>0){
+		ph_Movement.ApplyImpulse(dir,impulse);
+		m_saved_dir.set(dir);
+		m_saved_position.set(position_in_bone_space);
+		m_saved_impulse=impulse;
+		m_saved_element=element;
+	}
 	else if(m_phSkeleton) 
 		m_phSkeleton->applyImpulseTrace(position_in_bone_space,dir,impulse,element);
 		//m_phSkeleton->applyImpulseTrace(position_in_bone_space,dir,impulse);
+	else{
+		m_saved_dir.set(dir);
+		m_saved_impulse=impulse;
+		m_saved_element=element;
+		m_saved_position.set(position_in_bone_space);
+	}
 
 	if (g_Alive()<=0) return;
 
@@ -408,6 +424,15 @@ void CActor::Die	( )
 void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 {
 	if (!g_Alive())	{
+
+		if(m_phSkeleton)
+		if(m_phSkeleton->bActive && m_saved_impulse!=0.f)
+		{
+			m_phSkeleton->applyImpulseTrace(m_saved_position,m_saved_dir,m_saved_impulse*1.5f,m_saved_element);
+			m_saved_impulse=0.f;
+		}
+		
+
 		if(m_phSkeleton){
 			mRotate.set(m_phSkeleton->mXFORM);
 			mRotate.c.set(0,0,0);
@@ -425,6 +450,7 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 		}
 		return;
 	}
+
 	if (patch_frame<patch_frames)	return;
 
 	// Correct accel
@@ -1181,7 +1207,7 @@ float CActor::HitScale	(int element)
 
 void CActor::create_Skeleton(){
 	Fmatrix ident;
-	float density=100.f;
+	float density=100.f*skel_density_factor;
 	//u32 material=0;
 	LPCSTR material="actor";
 	ident.identity();
@@ -1238,7 +1264,7 @@ void CActor::create_Skeleton(){
 	//pelvis->add_Sphere(sphere);
 	element->setMass(density);
 	m_phSkeleton->add_Element(element);
-	element->SetMaterial(material);
+	element->SetMaterial("materials\\skel1");
 	CPhysicsElement* parent=element;
 	CPhysicsElement* root=parent;
 
@@ -1301,10 +1327,10 @@ void CActor::create_Skeleton(){
 	element->mXFORM.set(m1);
 	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
 	element->add_Box(M->LL_GetBox(id));
-	element->setMass(density);
+	element->setMass(density*5);
 	element->set_ParentElement(parent);
 	m_phSkeleton->add_Element(element);
-	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
+	joint=P_create_Joint(CPhysicsJoint::welding,parent,element);
 	joint->SetAnchorVsSecondElement(0,0,0);
 	joint->SetAxisVsSecondElement(1,0,0,0);
 	joint->SetLimits(-M_PI/3.f,M_PI/3.f,0);
@@ -1369,7 +1395,7 @@ void CActor::create_Skeleton(){
 	element->setMass(density*20.f);
 	element->set_ParentElement(parent);
 	m_phSkeleton->add_Element(element);
-	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
+	joint=P_create_Joint(CPhysicsJoint::welding,parent,element);
 	joint->SetAnchorVsSecondElement(0,0,0);
 	joint->SetAxisVsSecondElement(0,1,0,0);
 	joint->SetLimits(-M_PI*1/3.f,M_PI*1/3.f,0);
@@ -1434,7 +1460,7 @@ void CActor::create_Skeleton(){
 	element->setMass(density*20.f);
 	element->set_ParentElement(parent);
 	m_phSkeleton->add_Element(element);
-	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
+	joint=P_create_Joint(CPhysicsJoint::welding,parent,element);
 	joint->SetAnchorVsSecondElement(0,0,0);
 	joint->SetAxisVsSecondElement(0,1,0,0);
 	joint->SetLimits(-M_PI*1/3.f,M_PI*1/3.f,0);
@@ -1455,7 +1481,7 @@ void CActor::create_Skeleton(){
 	joint->SetAxisVsSecondElement(0,0,1,0);
 	joint->SetLimits(-M_PI*1/3.5f,0,0);
 	m_phSkeleton->add_Joint(joint);
-	element->SetMaterial(material);
+	element->SetMaterial("materials\\skel1");
 
 	parent=element;
 	id=M->LL_BoneID("bip01_r_calf");
@@ -1471,7 +1497,7 @@ void CActor::create_Skeleton(){
 	joint->SetAxisVsSecondElement(0,1,0,0);
 	joint->SetLimits(-M_PI*2/3.f,0,0);
 	m_phSkeleton->add_Joint(joint);
-	element->SetMaterial(material);
+	element->SetMaterial("materials\\skel1");
 
 	parent=element;
 	id=M->LL_BoneID("bip01_r_foot");
@@ -1482,12 +1508,12 @@ void CActor::create_Skeleton(){
 	element->setMass(density*5.f);
 	element->set_ParentElement(parent);
 	m_phSkeleton->add_Element(element);
-	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
+	joint=P_create_Joint(CPhysicsJoint::welding,parent,element);
 	joint->SetAnchorVsSecondElement(0,0,0);
 	joint->SetAxisVsSecondElement(0,1,0,0);
 	joint->SetLimits(-M_PI*1/6.f,M_PI*1/6.f,0);
 	m_phSkeleton->add_Joint(joint);
-	element->SetMaterial(material);
+	element->SetMaterial("materials\\skel1");
 
 	parent=root;
 	id=M->LL_BoneID("bip01_l_thigh");
@@ -1503,7 +1529,7 @@ void CActor::create_Skeleton(){
 	joint->SetAxisVsSecondElement(0,0,1,0);
 	joint->SetLimits(0,M_PI*1/3.5f,0);
 	m_phSkeleton->add_Joint(joint);
-	element->SetMaterial(material);
+	element->SetMaterial("materials\\skel1");
 
 	parent=element;
 	id=M->LL_BoneID("bip01_l_calf");
@@ -1519,7 +1545,7 @@ void CActor::create_Skeleton(){
 	joint->SetAxisVsSecondElement(0,1,0,0);
 	joint->SetLimits(-M_PI*2/3.f,0,0);
 	m_phSkeleton->add_Joint(joint);
-	element->SetMaterial(material);
+	element->SetMaterial("materials\\skel1");
 
  	parent=element;
 	id=M->LL_BoneID("bip01_l_foot");
@@ -1530,12 +1556,12 @@ void CActor::create_Skeleton(){
 	element->setMass(density*20.f);
 	element->set_ParentElement(parent);
 	m_phSkeleton->add_Element(element);
-	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
+	joint=P_create_Joint(CPhysicsJoint::welding,parent,element);
 	joint->SetAnchorVsSecondElement(0,0,0);
 	joint->SetAxisVsSecondElement(0,1,0,0);
 	joint->SetLimits(-M_PI*1/6.f,M_PI*1/6.f,0);
 	m_phSkeleton->add_Joint(joint);
-	element->SetMaterial(material);
+	element->SetMaterial("materials\\skel1");
 
 
 	//set shell start position
@@ -1543,7 +1569,8 @@ void CActor::create_Skeleton(){
 	m.set(mRotate);
 	ph_Movement.GetDeathPosition(m.c);
 	m_phSkeleton->mXFORM.set(m);
-	m_phSkeleton->SetAirResistance(0.001f,0.1f);
+	m_phSkeleton->SetAirResistance(0.002f*skel_airr_lin_factor,
+								   0.3f*skel_airr_ang_factor);
 
 }
 

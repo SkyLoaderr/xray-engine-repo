@@ -128,6 +128,10 @@ public:
 	SActorState				m_crouch;
 	SActorState				m_climb;
 protected:
+	Fvector					m_saved_dir;
+	Fvector					m_saved_position;
+	float					m_saved_impulse;
+	s16						m_saved_element;
 	// Rotation
 	SRotation				r_torso;
 	float					r_model_yaw_dest;
@@ -141,6 +145,11 @@ protected:
 	u32						patch_frame;
 	Fvector					patch_position;
 
+	//skeleton
+	float					skel_density_factor;
+	float					skel_airr_lin_factor;
+	float					skel_airr_ang_factor;
+	///////////////////////////////////////////////////
 	static void	__stdcall	SpinCallback	(CBoneInstance*);
 	static void	__stdcall	ShoulderCallback(CBoneInstance*);
 	static void	__stdcall	HeadCallback	(CBoneInstance*);
@@ -169,7 +178,7 @@ private:
 	float					cam_shift;				// for zone-effects
 	float					fPrevCamPos;
 	CEffectorBobbing*		pCamBobbing;
-
+	
 	// 
 	vector<Fvector4>		zone_areas;
 
