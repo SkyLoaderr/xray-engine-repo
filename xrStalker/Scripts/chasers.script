@@ -20,15 +20,15 @@ function main ()
                       get_level_object ("m_pseudodog_e0007"),   
                       get_level_object ("m_boar_e0000"),   
                       get_level_object ("m_boar_e0001"),   
-                      get_level_object ("m_boar_e0002"),   
-                      get_level_object ("m_bloodsucker_e0000")   
+                      get_level_object ("m_boar_e0002")   
                       }
-                      
+
     local actor = get_actor ()                      
     local scr_monster = nil                      
     local old_monster = 0
     
     printf ("Chasers started")
+    printf ("Number monsters - %d", table.getn (monsters))
     
     while true do
           
