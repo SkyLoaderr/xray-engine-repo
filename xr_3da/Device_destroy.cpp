@@ -5,10 +5,8 @@
 
 void CRenderDevice::_Destroy	(BOOL bKeepTextures)
 {
-#ifdef DEBUG
 	m_WireShader.destroy		();
 	m_SelectionShader.destroy	();
-#endif
 
 	// before destroy
 	bReady						= FALSE;

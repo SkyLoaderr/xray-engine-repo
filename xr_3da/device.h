@@ -49,7 +49,6 @@ public:
 	BOOL									bReady;
 	BOOL									bActive;
 public:
-#ifdef DEBUG
 	ref_shader								m_WireShader;
 	ref_shader								m_SelectionShader;
 
@@ -65,7 +64,6 @@ public:
 		}
 		RCache.set_xform_project			(mProject);
 	}
-#endif
 public:
 	// Registrators
 	CRegistrator	<pureRender			>			seqRender;
@@ -106,10 +104,7 @@ public:
 		bActive				= FALSE;
 		bReady				= FALSE;
 		Timer.Start			();
-#ifdef DEBUG
 		m_bNearer			= FALSE;
-#endif
-		
 	};
 	void	Pause							(BOOL bOn);
 	IC BOOL	Pause							(){return g_pauseMngr.Paused();};

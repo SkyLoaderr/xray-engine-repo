@@ -9,7 +9,7 @@
 CHUDCrosshair::CHUDCrosshair	()
 {
 	hGeomLine.create			(FVF::F_TL0uv,RCache.Vertex.Buffer(),0);
-	hShader.create				("hud\\cursor","ui\\cursor");
+	hShader.create				("editor\\wire");
 
 	//вычислить и запомнить центр экрана
 	center.set(int(Device.dwWidth)/2,int(Device.dwHeight)/2);
@@ -20,7 +20,6 @@ CHUDCrosshair::CHUDCrosshair	()
 CHUDCrosshair::~CHUDCrosshair	()
 {
 	hGeomLine.destroy			();
-	hShader.destroy				();
 }
 
 void CHUDCrosshair::Load		()
@@ -62,7 +61,7 @@ void CHUDCrosshair::SetDispersion	(float disp)
 
 void CHUDCrosshair::OnRender ()
 {
-	RCache.OnFrameEnd();
+//	RCache.OnFrameEnd();
 
 	// draw back
 	u32			dwOffset,dwCount;
@@ -98,7 +97,7 @@ void CHUDCrosshair::OnRender ()
 	dwCount 				= u32(pv-pv_start);
 	RCache.Vertex.Unlock	(dwCount,hGeomLine->vb_stride);
 
-//.	RCache.set_Shader		(Device.m_WireShader);
+	RCache.set_Shader		(hShader);
 	RCache.set_Geometry		(hGeomLine);
 	RCache.Render	   		(D3DPT_LINELIST,dwOffset,dwCount/2);
 
