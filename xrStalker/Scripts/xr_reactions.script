@@ -16,8 +16,6 @@ function evaluator_new:__init(name, storage) super()
 end
 function evaluator_new:evaluate()
 	self.a.evn:calculate()
-	self.a.evn:print()
-
 	-- если мы щас никого не обрабатываем и есть раздражители - нужно заполнить пробел
 	if self.a.id == nil and self.a.evn:isEvents() then
 		self.a.evn:get_event(self.a)
@@ -52,6 +50,43 @@ function action_wait:initialize()
 
 	self.t = nil
 	self.time = nil
+
+	self.sound_relax = {idle = 0,
+		     begin = nil,
+		     maxidle = 1, 
+		     sumidle = 1,
+   		     rnd = 100,
+		     lastsound = nil,
+		 	sounds = {      {pack = sounds["relax"], id = 0},
+					{pack = sounds["relax"], id = 1} }}
+
+	self.sound_search = {idle = 0,
+		     begin = nil,
+		     maxidle = 5, 
+		     sumidle = 3,
+   		     rnd = 100,
+		     lastsound = nil,
+		 	sounds = {      {pack = sounds["search"], id = 0},
+					{pack = sounds["search"], id = 1},
+					{pack = sounds["search"], id = 2},
+					{pack = sounds["search"], id = 3} }}
+
+	self.sound_wait = {idle = 0,
+		     begin = nil,
+		     maxidle = 5, 
+		     sumidle = 3,
+   		     rnd = 100,
+		     lastsound = nil,
+		 	sounds = {      {pack = sounds["wait"], id = 0},
+					{pack = sounds["wait"], id = 1},
+					{pack = sounds["wait"], id = 2},
+					{pack = sounds["wait"], id = 3},
+					{pack = sounds["wait"], id = 4},
+					{pack = sounds["wait"], id = 5},
+					{pack = sounds["wait"], id = 6},
+					{pack = sounds["wait"], id = 7},
+					{pack = sounds["wait"], id = 8} }}
+
 end
 function action_wait:execute ()
 	printf("[ACT] Reactions: Wait")
@@ -90,12 +125,14 @@ function action_wait:execute ()
 	      		self.object:set_item(object.idle, self.object:best_weapon())
         	end
 		-- озвучка на проверку
+		globals.set_sound(self.object, self.sound_wait, false)
 
 	else
 		-- обрабатываем приглядывание
 		self.object:set_movement_type(move.stand)
 		self.object:set_sight(look.point, level.vertex_position(self.a.position), 0)
 		-- озвучка на поиск
+		globals.set_sound(self.object, self.sound_search, false)
 
 	end
 
@@ -103,6 +140,7 @@ function action_wait:execute ()
 	-- надо проверять время на обработку раздражителя, если время закончилось - прекращать обработку
 	if device():time_global() - self.a.time > self.a.time_wait then
 		-- реплики что мы не нашли ничего
+		globals.set_sound(self.object, self.sound_relax, true)
 
 		self.a.evn:removeFromWatch(self.a.id)
 		self.a.id = nil
@@ -121,7 +159,6 @@ function action_wait:finalize ()
 	-- если у нас id = nil тогда мы не нашли чего ждали, иначе нашли врага
 	if self.a.id ~= nil then
 		-- реплики что мы что-то враждебное
-
 		self.a.id = nil
 	end
 
@@ -135,6 +172,15 @@ function add_to_binder(object)
 
 	local operators		= {}
 	local properties	= {}
+
+	sounds["wait"] 		= xr_sounds_id.stohe_reaction_base + 0
+	sounds["search"]	= xr_sounds_id.stohe_reaction_base + 1
+	sounds["relax"] 	= xr_sounds_id.stohe_reaction_base + 2
+
+	object:add_sound("script_replics\\soldier_1\\hear_something\\soldier_hear_", 10, snd_type.talk, 2, 1, sounds["wait"])
+	object:add_sound("script_replics\\soldier_1\\search_enemy\\soldier_search_", 10, snd_type.talk, 2, 1, sounds["search"])
+	object:add_sound("script_replics\\soldier_1\\idle\\soldier_idle_", 10, snd_type.talk, 2, 1, sounds["relax"])
+
 
 	local manager = object:motivation_action_manager()
 
