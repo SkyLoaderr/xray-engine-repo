@@ -59,7 +59,7 @@ void CLightDB_Static::Load			(CStream *fs)
 		if (Lights[i].type==D3DLIGHT_DIRECTIONAL)
 		{
 			Lights[i].position.invert	(Lights[i].direction);
-			Lights[i].position.mul		(10000.f);
+			Lights[i].position.mul		(1000.f);
 		}
 		CHK_DX(HW.pDevice->SetLight	(i, Lights[i].d3d()) );
 		Enabled[i]=FALSE;

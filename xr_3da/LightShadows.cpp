@@ -137,8 +137,8 @@ void CLightShadows::calculate	()
 			float		p_asp	=	1.f;
 			float		p_near	=	p_dist-p_R-eps;	if (p_near<eps)			p_near	= eps;
 			float		p_far	=	L->range;		if (p_far<(p_near+eps))	p_far	= p_near+eps;
-			if (L->type==D3DLIGHT_DIRECTIONAL)		D3DXMatrixOrthoLH		((D3DXMATRIX*)&mProject,1,1,p_near,p_far);
-			else									mProject.build_projection_HAT	(p_hat,p_asp,p_near,p_far);
+			/* if (L->type==D3DLIGHT_DIRECTIONAL)		D3DXMatrixOrthoRH				((D3DXMATRIX*)&mProject,1.f,1.f,p_near,p_far);
+			else */									mProject.build_projection_HAT	(p_hat,p_asp,p_near,p_far);
 			Device.set_xform_project		(mProject);
 			
 			// calculate view-matrix
