@@ -128,6 +128,21 @@ void _rect_register(_rect &R)
 		FillMemory(P,L,0xff);
 	}
 }
+
+// Test of per-pixel intersection (surface test)
+bool Place_Perpixel(_rect& R)
+{
+	for (int y=R.a.y; y<R.b.y; y++)
+	{
+		BYTE*	P = surface+y*512+R.a.x;
+		BYTE*	E = P + R.SizeX();
+		for (; P!=E; P++) if (*P) return false;
+	}
+	
+	// It's OK to place it
+	return true;
+}
+
 // Check for intersection
 bool Place(_rect &R, vecRIT CIT)
 {
@@ -138,25 +153,17 @@ bool Place(_rect &R, vecRIT CIT)
 	if (CIT!=collected.end()) {
 		if (R.Intersect(*(CIT+1))) return false;
 	}
-	
-	// Test surface
-	for (int y=R.a.y; y<R.b.y; y++)
-	{
-		BYTE*	P = surface+y*512+R.a.x;
-		BYTE*	E = P + R.SizeX();
-		for (; P!=E; P++) if (*P) return false;
-	}
-	
-	// It's OK to place it
-	return true;
+
+	// Degrade to surface testing
+	return Place_Perpixel(R);
 };
 
 BOOL _rect_place(_rect &r)
 {
+/*
 	_rect	R;
 	_point	S,T;
 	
-/*
 	for (vecRIT CR=collected.begin(); CR!=collected.end(); CR++) 
 	{
 		if (CR->mask == (USED_P1|USED_P2) ) continue;
@@ -203,7 +210,43 @@ BOOL _rect_place(_rect &r)
 	*/
 
 	// Normal
-	for (DWORD _Y=0; _Y<)
+	{
+		_rect R;
+		DWORD x_max = 512-r.b.x; 
+		DWORD y_max = 512-r.b.y; 
+		for (DWORD _Y=0; _Y<y_max; _Y++)
+		{
+			for (DWORD _X=0; _X<x_max; _X++)
+			{
+				if (surface[_Y*512+_X]) continue;
+				R.init(_X,_Y,_X+r.b.x,_Y+r.b.y);
+				if (Place_Perpixel(R)) {
+					_rect_register(R);
+					return TRUE;
+				}
+			}
+		}
+	}
+
+	// Rotated
+	{
+		_rect R;
+		DWORD x_max = 512-r.b.y; 
+		DWORD y_max = 512-r.b.x; 
+		for (DWORD _Y=0; _Y<y_max; _Y++)
+		{
+			for (DWORD _X=0; _X<x_max; _X++)
+			{
+				if (surface[_Y*512+_X]) continue;
+
+				R.init(_X,_Y,_X+r.b.y,_Y+r.b.x);
+				if (Place_Perpixel(R)) {
+					_rect_register(R);
+					return TRUE;
+				}
+			}
+		}
+	}
 
 	return FALSE;
 };
