@@ -244,6 +244,13 @@ void CPHWorld::Step()
 	//	for(iter=m_objects.begin();m_objects.end()!=iter;++iter)
 	//			(*iter)->StepFrameUpdate(step);
 }
+
+u32 CPHWorld::CalcNumSteps (u32 dTime)
+{
+	u32 res = iFloor((float(dTime) / 1000 / fixed_step)+0.5f);
+	return res;
+};
+
 void CPHWorld::FrameStep(dReal step)
 {
 	// compute contact joints and forces

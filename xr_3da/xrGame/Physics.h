@@ -89,6 +89,7 @@ public:
 	void Freeze		();
 	void UnFreeze	();
 	bool IsFreezed	();
+	u32		CalcNumSteps (u32 dTime);
 	void Render		();
 
 
