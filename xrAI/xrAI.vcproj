@@ -509,27 +509,6 @@
 					RelativePath="clsid_game.h">
 				</File>
 				<File
-					RelativePath="game_base.cpp">
-				</File>
-				<File
-					RelativePath="game_base.h">
-				</File>
-				<File
-					RelativePath="game_sv_base.h">
-				</File>
-				<File
-					RelativePath="xrMessages.h">
-				</File>
-				<File
-					RelativePath="xrServer.h">
-				</File>
-				<File
-					RelativePath="xrServer_Entities.cpp">
-				</File>
-				<File
-					RelativePath="xrServer_Entities.h">
-				</File>
-				<File
 					RelativePath="xr_spawn_merge.cpp">
 				</File>
 				<File
@@ -543,6 +522,15 @@
 					</File>
 					<File
 						RelativePath="NET_utils.h">
+					</File>
+					<File
+						RelativePath="xrMessages.h">
+					</File>
+					<File
+						RelativePath="xrServer_Entities.cpp">
+					</File>
+					<File
+						RelativePath="xrServer_Entities.h">
 					</File>
 				</Filter>
 			</Filter>
