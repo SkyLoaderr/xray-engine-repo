@@ -324,6 +324,9 @@ function action_follow:check_path ()
     end   
     
     local cv_id = level.vertex_in_direction (self.a.leader:level_vertex_id (), self.a.direction, self.a.distance)
+    if cv_id == -1 then 
+       cv_id = self.a.leader:level_vertex_id ()
+    end   
     if cv_id == self.current_vertex_id then return false end
     self.current_vertex_id = cv_id
     
@@ -340,6 +343,7 @@ end
 function action_follow:recalculate_position ()
     local cv_id = level.vertex_in_direction (self.a.leader:level_vertex_id (), self.a.direction, self.a.distance)
     if cv_id == self.current_vertex_id then return end
+    if cv_id == -1 then cv_id = self.a.leader:level_vertex_id () end
     self.current_vertex_id = cv_id
     self.object:set_desired_direction (self.a.leader:direction ())
     self.object:set_dest_level_vertex_id  (self.current_vertex_id)   
