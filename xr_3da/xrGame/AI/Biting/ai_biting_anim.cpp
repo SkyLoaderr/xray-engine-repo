@@ -48,6 +48,7 @@ static void __stdcall vfPlayCallBack(CBlend* B)
 
 void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, float speed )
 {
+	vfSetAnimation(true);
 	
 	if (!m_tpCurrentGlobalAnimation) {
 		m_tpCurrentGlobalAnimation = m_tAnims.A[m_tPostureAnim].A[m_tActionAnim].A[::Random.randI(m_tAnims.A[m_tPostureAnim].A[m_tActionAnim].A.size())];
@@ -150,6 +151,13 @@ void CAI_Biting::vfSetAnimation(bool bForceChange)
 		m_tActionType == eActionTypeStand ) 
 
 		m_tActionAnim = eActionScared;			// стоять испуганно
+
+	else if (m_tMovementType == eMovementTypeStand &&   
+		m_tMovementDir == eMovementDirectionNone &&
+		m_tStateType == eStateTypeNormal &&
+		m_tActionType == eActionTypeEat ) 
+
+		m_tActionAnim = eActionEat;			// обед
 
 	if ( ((PostureAnim_old != m_tPostureAnim) || (ActionAnim_old != m_tActionAnim)) && bForceChange)
 		FORCE_ANIMATION_SELECT();

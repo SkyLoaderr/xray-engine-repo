@@ -154,6 +154,8 @@ void	xrSE_Teamed::STATE_Read			(NET_Packet& P, u16 size)
 	P.r_u8				(s_team	);
 	P.r_u8				(s_squad);
 	P.r_u8				(s_group);
+	if (m_wVersion > 18)
+		P.r_float(fHealth);
 }
 
 void	xrSE_Teamed::STATE_Write		(NET_Packet& P)
@@ -162,6 +164,7 @@ void	xrSE_Teamed::STATE_Write		(NET_Packet& P)
 	P.w_u8				(s_team	);
 	P.w_u8				(s_squad);
 	P.w_u8				(s_group);
+	P.w_float			(fHealth);
 }
 
 void	xrSE_Teamed::UPDATE_Read		(NET_Packet& P)

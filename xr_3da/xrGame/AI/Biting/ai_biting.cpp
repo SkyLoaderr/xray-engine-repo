@@ -25,55 +25,55 @@ CAI_Biting::~CAI_Biting()
 void CAI_Biting::Init()
 {
 	// initializing class members
-	m_tpCurrentGlobalAnimation	= 0;
-	m_tCurGP					= _GRAPH_ID(-1);
-	m_tNextGP					= _GRAPH_ID(-1);
-	m_fGoingSpeed				= 0.f;
-	m_dwTimeToChange			= 0.f;
+	m_tpCurrentGlobalAnimation		= 0;
+	m_tCurGP						= _GRAPH_ID(-1);
+	m_tNextGP						= _GRAPH_ID(-1);
+	m_fGoingSpeed					= 0.f;
+	m_dwTimeToChange				= 0.f;
 	
-	m_tEnemy.Enemy				= 0;
-	m_tSavedEnemy				= 0;
-	m_tSavedEnemyPosition.set	(0,0,0);
-	m_tpSavedEnemyNode			= 0;
-	m_dwSavedEnemyNodeID		= u32(-1);
+	m_tEnemy.Enemy					= 0;
+	m_tSavedEnemy					= 0;
+	m_tSavedEnemyPosition.set		(0,0,0);
+	m_tpSavedEnemyNode				= 0;
+	m_dwSavedEnemyNodeID			= u32(-1);
 	m_dwSeenEnemyLastTime			= 0;
-	m_tMySavedPosition.set		(0,0,0);
-	m_dwMyNodeID				= u32(-1);
+	m_tMySavedPosition.set			(0,0,0);
+	m_dwMyNodeID					= u32(-1);
 	
-	m_dwLastRangeSearch			= 0;
+	m_dwLastRangeSearch				= 0;
 
 
 	// Инициализация параметров состояния
-	vfSetMotionActionParams(eBodyStateStand, eMovementTypeStand, 
-							eMovementDirectionNone, eStateTypeNormal, eActionTypeStand);
+	vfSetMotionActionParams			(eBodyStateStand, eMovementTypeStand, 
+									eMovementDirectionNone, eStateTypeNormal, eActionTypeStand);
 
 	// Инициализация параметров анимации
-	m_tPostureAnim	= ePostureStand;
-	m_tActionAnim	= eActionIdle;
+	m_tPostureAnim					= ePostureStand;
+	m_tActionAnim					= eActionIdle;
 
-	m_tPathType				= ePathTypeStraight;
-
-	m_tStateFSM				= eNoState;
+	m_tPathType						= ePathTypeStraight;
 
 	m_fAttackSuccessProbability0	= .8f;
 	m_fAttackSuccessProbability1	= .6f;
 	m_fAttackSuccessProbability2	= .4f;
 	m_fAttackSuccessProbability3	= .2f;
 
-	InitState = true;
+//	m_tActionState					= eMoveBackScared;
+
+	m_dwLostEnemyTime				= 0;
+
+	m_dwInertion					= 100000;
 	
-	m_tActionState = eMoveBackScared;
+	ZeroMemory						(&m_tLastSound, sizeof(SSimpleSound));
 
-	m_dwTimeLastSeenEnemy = 0;
-	m_dwTimeLastHeardEnemy = 0;
+	m_bStateChanged					= true;
+	
+	m_dwActionStartTime				= 0;
 
-	SeenInertion = 0;
-	HeardInertion = 0;
-	StateStartedTime = 0;
+	_A=_B=_C=_D=_E=_F=_H=_I=_J=_K   = false;
 
-	pStateRunAwayInPanic = new stateRunAwayInPanic(10,this);
+	m_dwLastSoundNodeID				= 0;
 
-	ZeroMemory(&m_tLastSound, sizeof(SSimpleSound));
 }
 
 void CAI_Biting::Die()
@@ -111,7 +111,11 @@ void CAI_Biting::Load(LPCSTR section)
 	eye_fov							= pSettings->r_float(section,"EyeFov");
 	eye_range						= pSettings->r_float(section,"EyeRange");
 	m_fSoundThreshold				= pSettings->r_float (section,"SoundThreshold");
-	
+
+	m_bCannibalism					= pSettings->r_bool  (section,"Cannibalism");
+	m_bEatMemberCorpses				= pSettings->r_bool  (section,"EatMemberCorpses");
+	m_dwEatCorpseInterval			= pSettings->r_s32   (section,"EatCorpseInterval");
+
 	// loading sounds
 //	g_vfLoadSounds		(m_tpSoundDie,pSettings->r_string(section,"sound_death"),100);
 //	g_vfLoadSounds		(m_tpSoundHit,pSettings->r_string(section,"sound_hit"),100);

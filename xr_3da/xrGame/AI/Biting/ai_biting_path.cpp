@@ -244,7 +244,7 @@ void CAI_Biting::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluato
 													  		 m_tPathType = ePathTypeCriteria ;
 	}
 
-	do {
+//	do {
 		
 
 		switch (m_tPathState) {
@@ -275,11 +275,11 @@ void CAI_Biting::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluato
 										}
 			case ePathStateBuildTravelLine : {
 				vfBuildTravelLine(tpDestinationPosition);
-				m_tPathState = ePathStateBuilt;
+				m_tPathState = ePathStateSearchNode;
 				break;
 											}
 		}	
-	} while (m_tPathState != ePathStateBuilt);
+//	} while (m_tPathState != ePathStateBuilt);
 
 	m_tPathType = tPathType;	// восстанавливаем текущий тип пути
 }

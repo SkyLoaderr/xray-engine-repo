@@ -16,7 +16,7 @@
 
 #define R2D(x)							(angle_normalize(x)*180.f/PI)
 
-#define SILENCE
+//#define SILENCE
 
 #ifndef SILENCE
 	#define OUT_TEXT(S)						if (g_Alive()) Msg(S);
@@ -57,6 +57,7 @@ namespace AI_Biting {
 		eActionTypeTurn,
 		eActionTypeWalk,
 		eActionTypeAttack,
+		eActionTypeEat,
 	};
 
 	// Paths
@@ -64,7 +65,7 @@ namespace AI_Biting {
 		ePathStateSearchNode = 0,
 		ePathStateBuildNodePath,
 		ePathStateBuildTravelLine,
-		ePathStateBuilt
+//		ePathStateBuilt
 	};
 
 	enum EPathType {
@@ -120,17 +121,14 @@ namespace AI_Biting {
 		eVeryDangerous,
 	};
 
-
 	enum EActionState {
-		eListenAndLookAround,
-		eGotoPlaceOfSound,
-		eStayInPlace,
-		eScaredTurnToAttacker,
-		eRunToCover,
-		eStayInPlaceScared,
-		eTurnToAttacker,
-		eMoveBackScared,
-		eRunAwayInPanic,
+		eActionStateRun = 0,
+		eActionStateStand,
+		eActionStateDontWatch,
+		eActionStateWatch,
+		eActionStateWatchGo,
+		eActionStateWatchLook,
 	};
+
 };
 
