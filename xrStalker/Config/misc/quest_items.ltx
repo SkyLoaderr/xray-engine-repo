@@ -610,26 +610,27 @@ snd_empty			= weapons\generic_empty
 snd_reload			= weapons\toz34_reload
 snd_shoot_duplet	= weapons\toz34_shoot_both
  
-[wpn_shotgun_hud]
-shell_point		 = 0.0, 0.0, 0.0
-fire_point               = 0.0, 0.0, 0.06
-fire_point2              = 0.0, 0.0, 0.06
-fire_bone                = wpn_barrel_0
-orientation              = 0, 0, 0
-position                 = 0, 0, 0
-visual                   = weapons\toz34\wpn_toz34_hud.ogf
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; RADAR
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-anim_idle		= idle
-anim_reload		= reload
-anim_draw		= draw
-anim_holster	= holster
-anim_shoot		= shoot
-anim_shoot_both = shoot_both
-anim_idle_aim	= idle_aim
+[rad_scientist_flash]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 				= "devices\quest_items\rad_scientist_flash"
+;$prefetch 			= 32
+class				= D_AFMERG
+cform				= skeleton
+visual				= equipments\item_flash_1.ogf
+radius				= 1
+;script_binding		= stalker.object_init
 
-;смещения HUD для режима приближения
-zoom_offset			= -0.127000,0.001000,0.000000
-zoom_rotate_x		= 0.004000
-zoom_rotate_y		= 0.017000
-;время поворота HUD (сек)
-;zoom_rotate_time	= 0.7
+inv_name			= Flash card
+inv_name_short		= Dead scientist's flash
+inv_weight			= 0.1
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 3
+inv_grid_y			= 19
+cost				= 0

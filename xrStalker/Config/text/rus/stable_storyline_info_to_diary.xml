@@ -69,6 +69,15 @@
 		</text>
     </string>
 
+	<string id="rad_code_door_info_name">
+		<text>Кодовая дверь
+		</text>
+	</string>
 
-    
+	<string id="rad_code_door_info">
+		<text>У учёного была какая-то карта с отметкой двери
+		</text>
+	</string>
+
+
 </string_table>

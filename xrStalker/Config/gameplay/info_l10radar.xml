@@ -7,10 +7,16 @@
 	<info_portion id="rad_wood_controller_dead">
 	</info_portion>
 
-    <info_portion id="bar_radar_turn_off_start">
-    	<task>bar_radar_turn_off</task>
-    </info_portion>
-    <info_portion id="bar_radar_turn_off_done">
-    </info_portion>
+	<info_portion id="bar_radar_turn_off_start">
+		<task>bar_radar_turn_off</task>
+	</info_portion>
+	<info_portion id="bar_radar_turn_off_done">
+	</info_portion>
+
+	<info_portion id="rad_code_door">
+		<article>rad_code_door_info</article>
+	</info_portion>
+	<info_portion id="rad_code_door_open">
+	</info_portion>
 
 </game_information_portions>
