@@ -32,7 +32,7 @@ struct _REG_INFO {
 
 ENGINE_API extern int	__cdecl	_REG_Compare(const void *, const void *);
 
-template <class T> class ENGINE_API CRegistrator		// the registrator itself
+template <class T> class CRegistrator		// the registrator itself
 {
 	friend ENGINE_API int	__cdecl	_REG_Compare(const void *, const void *);
 public:
