@@ -19,8 +19,7 @@ void CALifeObject::STATE_Write(NET_Packet &tNetPacket)
 	tNetPacket.w_u32			(m_dwSpawnGroup);
 	tNetPacket.w				(&m_tGraphID,sizeof(m_tGraphID));
 	tNetPacket.w_float			(m_fDistance);
-	if (m_wVersion >= 4)
-		tNetPacket.w_u8			(m_bDirectControl);
+	tNetPacket.w_u8				(m_bDirectControl);
 }
 
 void CALifeObject::STATE_Read(NET_Packet &tNetPacket, u16 size)
