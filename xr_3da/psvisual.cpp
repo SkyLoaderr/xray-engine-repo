@@ -268,6 +268,7 @@ DWORD CPSVisual::RenderTO	(FVF::TL* dest)
 //----------------------------------------------------
 void CPSVisual::Compile(PS::SDef_RT* source, PS::SEmitter* E)
 {
+	VERIFY				(source);
     hShader				= source->m_CachedShader;
 	m_Definition		= source;
 	hVS					= Device.Shader._CreateVS	(FVF::F_TL);

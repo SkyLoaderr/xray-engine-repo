@@ -71,6 +71,7 @@ void		CRender::set_Object			(CObject*		O )
 CVisual*	CRender::model_CreatePS		(LPCSTR name, PS::SEmitter* E)	
 { 
 	PS::SDef_RT*	source	= PSystems.FindPS	(name);
+	VERIFY					(source);
 	return Models.CreatePS	(source,E);
 }
 

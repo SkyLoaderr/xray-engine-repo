@@ -21,6 +21,7 @@ CWeapon::CWeapon(LPCSTR name)
 {
 	fTimeToFire		= 0;
 	iHitPower		= 0;
+	STATE			= 0;
 
 	SetDefaults		();
 	m_pHUD			= new CWeaponHUD();

@@ -15,6 +15,7 @@ CPSObject::CPSObject(LPCSTR ps_name, CSector* S, BOOL bAutoRemove)
 
 	// create visual
 	m_pVisual		= Render->model_CreatePS(ps_name,&m_Emitter);
+	VERIFY			(m_pVisual);
 
 	// registry
 	m_pCurSector	= S;
