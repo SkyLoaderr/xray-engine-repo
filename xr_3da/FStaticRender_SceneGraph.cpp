@@ -40,6 +40,7 @@ void CRender::InsertSG_Dynamic	(CVisual *pVisual, Fvector& Center)
 		C->val.Matrix			= *pTransform;
 		C->val.vCenter.set		(Center);
 		C->val.iLighting		= iLightLevel;
+		L_Shadows.add_element	(C);
 	}
 }
 
