@@ -32,9 +32,11 @@ CHelicopter::CHelicopter()
 CHelicopter::~CHelicopter()
 {
 //	xr_delete(m_pParticle);
-	xr_delete		(m_movMngr);
-	HUD_SOUND::DestroySound(m_sndShot);
-	HUD_SOUND::DestroySound(m_sndShotRocket);
+	if(m_pParticle)
+		m_pParticle->PSI_destroy();
+	xr_delete				(m_movMngr);
+	HUD_SOUND::DestroySound	(m_sndShot);
+	HUD_SOUND::DestroySound	(m_sndShotRocket);
 }
 
 void CHelicopter::setState(CHelicopter::EHeliState s)
@@ -368,7 +370,11 @@ void CHelicopter::net_Destroy()
 	CPHSkeleton::RespawnInit();
 	m_engineSound.stop();
 //	m_pParticle->Stop();
-	xr_delete(m_pParticle);
+//	xr_delete(m_pParticle);
+	if(m_pParticle){
+		m_pParticle->PSI_destroy();
+		m_pParticle = NULL;
+	}
 	m_light_render.destroy();
 }
 

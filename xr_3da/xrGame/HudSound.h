@@ -38,12 +38,12 @@ struct HUD_SOUND
 	void set_position(const Fvector& pos);
 
 	struct SSnd{
-		ref_sound snd;
-		float delay;	//задержка перед проигрыванием
-		float volume;	//громкость
+		ref_sound	snd;
+		float		delay;	//задержка перед проигрыванием
+		float		volume;	//громкость
 	};
 	xr_vector<SSnd> sounds;
 	
-	bool  enable;	//присутствует включен ли звук
+	bool  enable;			//присутствует включен ли звук
 };
 
