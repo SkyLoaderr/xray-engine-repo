@@ -178,7 +178,7 @@
 				OmitFramePointers="FALSE"
 				EnableFiberSafeOptimizations="TRUE"
 				OptimizeForProcessor="3"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;XRHEMISPHERE_EXPORTS"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;XRHEMISPHERE_EXPORTS;MIXED"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="FALSE"
