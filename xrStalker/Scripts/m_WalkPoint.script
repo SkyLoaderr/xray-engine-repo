@@ -152,7 +152,7 @@ end
 
 function sWalking:execute()
     if( self.memory.npc:action() == nil ) then
-        action( self.memory.npc, move( move.walk, new_point(self.point, self.memory.npc:level_vertex_id(), self.radius, self.radius) ), sound( sound.idle ), cond( cond.move_end ) )
+        action( self.memory.npc, move( move.walk, new_point(self.point, self.memory.npc:level_vertex_id(), self.radius, self.radius), 1.5 ), sound( sound.idle ), cond( cond.move_end ) )
     end
 end
 
