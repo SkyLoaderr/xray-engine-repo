@@ -397,21 +397,24 @@ CDetailManager::Slot&	CDetailManager::Query	(int sx, int sz)
 }
 
 //--------------------------------------------------- Decompression
-IC bool InterpolateAndDither(float* alpha255, DWORD x, DWORD y, DWORD size, int dither[16][16] )
+IC float	Interpolate			(float* base,		DWORD x, DWORD y, DWORD size)
 {
 	float	f	= float(size);
 	float	fx	= float(x)/f; float ifx = 1.f-fx;
 	float	fy	= float(y)/f; float ify = 1.f-fy;
 	
-	float	c01	= alpha255[0]*ifx+alpha255[1]*fx;
-	float	c23	= alpha255[2]*ifx+alpha255[3]*fx;
-	float	c02	= alpha255[0]*ify+alpha255[2]*fy;
-	float	c13	= alpha255[1]*ify+alpha255[3]*fy;
+	float	c01	= base[0]*ifx + base[1]*fx;
+	float	c23	= base[2]*ifx + base[3]*fx;
+	float	c02	= base[0]*ify + base[2]*fy;
+	float	c13	= base[1]*ify + base[3]*fy;
 	
 	float	cx	= ify*c01 + fy*c23;
 	float	cy	= ifx*c02 + fx*c13;
-	
-	int		c	= iFloor((cx+cy)/2+.5f);
+	return	(cx+cy)/2;
+}
+IC bool		InterpolateAndDither(float* alpha255,	DWORD x, DWORD y, DWORD size, int dither[16][16] )
+{
+	int		c	= iFloor(Interpolate(alpha255,x,y,size)+.5f);
 	
 	DWORD	row	= y % 16; 
 	DWORD	col	= x % 16;
@@ -523,7 +526,6 @@ void CDetailManager::UpdateCache	(int limit)
 				}
 				if (y<D.BB.min.y)	continue;
 				Item.P.y	= y;
-
 				
 				// Angles and scale
 				Item.scale	= r_scale.randF		(0.5f,1.8f);
@@ -532,7 +534,14 @@ void CDetailManager::UpdateCache	(int limit)
 				Item.mRotY.rotateY(r_yaw.randF	(0,PI_MUL_2));
 				
 				// Color
-				Item.C		= D3DCOLOR_RGBA		(255,255,255,0);
+				DetailPalette*	c_pal	= (DetailPalette*)&DS.color;
+				float gray255	[4];
+				gray255[0]		= 255.f*float(c_pal->a0)/15.f;
+				gray255[1]		= 255.f*float(c_pal->a1)/15.f;
+				gray255[2]		= 255.f*float(c_pal->a2)/15.f;
+				gray255[3]		= 255.f*float(c_pal->a3)/15.f;
+				DWORD c_dw		= iFloor(Interpolate(gray255,x,z,d_size)+.5f);
+				Item.C			= D3DCOLOR_RGBA		(c_dw,c_dw,c_dw,0);
 				
 				// Save it
 				D.G[index].items.push_back(Item);
@@ -575,6 +584,8 @@ DetailSlot&	CDetailManager::QueryDB(int sx, int sz)
 //	DS.items[1].id			= 0xff;
 //	DS.items[2].id			= 0xff;
 	DS.items[3].id			= 0xff;
+
+	DS.color				= 0xffff;
 
 	return DS;
 }
