@@ -45,7 +45,6 @@ void	CRenderTarget::phase_combine	()
 
 	// Perform blooming filter and distortion if needed
 	phase_bloom			( );
-	phase_luminance		( );
 	BOOL	bDistort	= RImplementation.b_distortion;
 	if (0==RImplementation.mapDistort.size())	bDistort	= FALSE;
 	if (bDistort)		phase_distortion		();
@@ -92,8 +91,9 @@ void	CRenderTarget::phase_combine	()
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}
 
-	//
-	RCache.set_Stencil				(FALSE);
+	//	Re-adapt luminance
+	phase_luminance			( );
+	RCache.set_Stencil		(FALSE);
 
 	// ********************* Debug
 	if (1)
