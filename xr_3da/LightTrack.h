@@ -20,7 +20,6 @@ public:
 		Collide::ray_cache	Cache;
 		float				test;			// note range: (-1[no]..1[yes])
 		float				energy;
-		DWORD				mark;
 	};
 	vector<Item>			track;
 public:
