@@ -1102,6 +1102,9 @@
 					RelativePath=".\scripts\path_old.script">
 				</File>
 				<File
+					RelativePath=".\scripts\ph_test.script">
+				</File>
+				<File
 					RelativePath=".\scripts\ptr.script">
 				</File>
 				<File
@@ -1286,8 +1289,21 @@
 						<File
 							RelativePath=".\Scripts\ph_impulse.script">
 						</File>
+					</Filter>
+					<Filter
+						Name="Restrictors"
+						Filter="">
 						<File
-							RelativePath=".\scripts\ph_test.script">
+							RelativePath=".\Scripts\sr_idle.script">
+						</File>
+						<File
+							RelativePath=".\Scripts\sr_no_weapon.script">
+						</File>
+						<File
+							RelativePath=".\Scripts\sr_sound.script">
+						</File>
+						<File
+							RelativePath=".\Scripts\sr_tip.script">
 						</File>
 					</Filter>
 				</Filter>
@@ -1381,9 +1397,6 @@
 						RelativePath=".\scripts\db.script">
 					</File>
 					<File
-						RelativePath=".\scripts\level_tips.script">
-					</File>
-					<File
 						RelativePath=".\Scripts\mob_alife_mgr.script">
 					</File>
 					<File
@@ -1397,9 +1410,6 @@
 					</File>
 					<File
 						RelativePath=".\scripts\utils.script">
-					</File>
-					<File
-						RelativePath=".\scripts\zone_no_weapon.script">
 					</File>
 				</Filter>
 				<Filter
@@ -1592,6 +1602,13 @@
 					Filter="">
 					<File
 						RelativePath=".\Scripts\se_monster.script">
+					</File>
+				</Filter>
+				<Filter
+					Name="physics"
+					Filter="">
+					<File
+						RelativePath=".\Scripts\se_car.script">
 					</File>
 				</Filter>
 			</Filter>
