@@ -19,7 +19,7 @@ void CSE_ALifeSimulator::Update			(u32 dt)
 	
 	switch (m_tZoneState) {
 		case eZoneStateSurge : {
-			vfPerformSurge				();
+			//vfPerformSurge				();
 			Save						();
 			m_tLastSurgeTime			= tfGetGameTime();
 			m_tNextSurgeTime			= m_tLastSurgeTime + 7*24*3600*1000; // a week in milliseconds
