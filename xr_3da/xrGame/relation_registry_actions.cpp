@@ -54,19 +54,21 @@ void RELATION_REGISTRY::Action (CEntityAlive* from, CEntityAlive* to, ERelationA
 	static CHARACTER_REPUTATION_VALUE enemy_fight_help_reputation	= pSettings->r_s32(ACTIONS_POINTS_SECT, "enemy_fight_help_reputation");
 
 
-	CActor*			actor	= smart_cast<CActor*>		(from);
-	CAI_Stalker*	stalker	= smart_cast<CAI_Stalker*>	(to);
+	//CActor*			actor	= smart_cast<CActor*>		(from);
+	CActor*			actor			= smart_cast<CActor*>				(from);
+	CInventoryOwner* inv_owner_from	= smart_cast<CInventoryOwner*>		(from);
+	CAI_Stalker*	stalker			= smart_cast<CAI_Stalker*>			(to);
 	//CBaseMonster*	monster	= smart_cast<CBaseMonster*>	(to);
 
 	//вычисление изменения репутации и рейтинга пока ведется 
 	//только для актера
-	if(!actor) return;
+	if(!inv_owner_from) return;
 	
 	ALife::ERelationType relation = ALife::eRelationTypeDummy;
 	if(stalker)
 	{
 		stalker->m_actor_relation_flags.set(action, TRUE);
-		relation = GetRelationType(smart_cast<CInventoryOwner*>(stalker), smart_cast<CInventoryOwner*>(actor));
+		relation = GetRelationType(smart_cast<CInventoryOwner*>(stalker), inv_owner_from);
 	}
 
 	switch(action)
@@ -119,13 +121,13 @@ void RELATION_REGISTRY::Action (CEntityAlive* from, CEntityAlive* to, ERelationA
 					//как к тому кого атаковали
 					CGroupHierarchyHolder& group = Level().seniority_holder().team(stalker->g_Team()).squad(stalker->g_Squad()).group(stalker->g_Group());
 					for(std::size_t i = 0;  i < group.members().size(); i++)
-						ChangeGoodwill(group.members()[i]->ID(), actor->ID(), delta_goodwill);
+						ChangeGoodwill(group.members()[i]->ID(), from->ID(), delta_goodwill);
 						
-					ChangeCommunityGoodwill(stalker->Community(), actor->ID(), 
+					ChangeCommunityGoodwill(stalker->Community(), from->ID(), 
 						(CHARACTER_GOODWILL)(CHARACTER_COMMUNITY::sympathy(stalker->Community())*(float)delta_goodwill));
 				}
 				if(delta_reputation)
-					actor->ChangeReputation(delta_reputation);
+					inv_owner_from->ChangeReputation(delta_reputation);
 			}
 		}
 		break;
@@ -178,16 +180,16 @@ void RELATION_REGISTRY::Action (CEntityAlive* from, CEntityAlive* to, ERelationA
 
 				if(community_goodwill)
 				{
-					ChangeCommunityGoodwill(stalker->Community(), actor->ID(), community_goodwill);
+					ChangeCommunityGoodwill(stalker->Community(), from->ID(), community_goodwill);
 				}
 
 				if(delta_reputation)
-					actor->ChangeReputation(delta_reputation);
+					inv_owner_from->ChangeReputation(delta_reputation);
 
 				CHARACTER_RANK_VALUE		delta_rank = 0;
 				delta_rank = CHARACTER_RANK::rank_kill_points(CHARACTER_RANK::ValueToIndex(stalker->Rank()));
 				if(delta_rank)
-					actor->ChangeRank(delta_rank);
+					inv_owner_from->ChangeRank(delta_rank);
 			}
 		}
 		break;
@@ -221,14 +223,14 @@ void RELATION_REGISTRY::Action (CEntityAlive* from, CEntityAlive* to, ERelationA
 					//как к тому кого атаковали
 					CGroupHierarchyHolder& group = Level().seniority_holder().team(stalker->g_Team()).squad(stalker->g_Squad()).group(stalker->g_Group());
 					for(std::size_t i = 0;  i < group.members().size(); i++)
-						ChangeGoodwill(group.members()[i]->ID(), actor->ID(), delta_goodwill);
+						ChangeGoodwill(group.members()[i]->ID(), from->ID(), delta_goodwill);
 
-					ChangeCommunityGoodwill(stalker->Community(), actor->ID(), 
+					ChangeCommunityGoodwill(stalker->Community(), from->ID(), 
 						(CHARACTER_GOODWILL)(CHARACTER_COMMUNITY::sympathy(stalker->Community())*(float)delta_goodwill));
 				}
 
 				if(delta_reputation)
-					actor->ChangeReputation(delta_reputation);
+					inv_owner_from->ChangeReputation(delta_reputation);
 			}
 		}
 		break;
