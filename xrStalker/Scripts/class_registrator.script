@@ -4,5 +4,5 @@ end
 module	("se_new_attachable_item")
 
 function register(object_factory)
-	object_factory:register	("CCE_NewAttachableItem","CSE_NewAttachableItem","II_NAI","new_attachable_item")
+	object_factory:register	("CCE_NewAttachableItem","CSE_NewAttachableItem","II_ATTCH","new_attachable_item")
 end
