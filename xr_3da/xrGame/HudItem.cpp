@@ -215,8 +215,8 @@ void CHudItem::Deactivate()
 
 void CHudItem::UpdateHudPosition	()
 {
-//	if (Device.dwFrame == dwHudUpdate_Frame) 
-//		return;
+	if (Device.dwFrame == dwHudUpdate_Frame) 
+		return;
 	
 	dwHudUpdate_Frame = Device.dwFrame;
 
@@ -228,7 +228,7 @@ void CHudItem::UpdateHudPosition	()
 		if(pActor)
 		{
 			pActor->EffectorManager().affected_Matrix	(trans);
-			m_pHUD->UpdatePosition			(trans);
+			m_pHUD->UpdatePosition						(trans);
 		}
 	}
 }

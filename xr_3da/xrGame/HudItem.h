@@ -109,5 +109,4 @@ protected:
 	u32						dwFP_Frame;
 	u32						dwXF_Frame;
 	u32						dwHudUpdate_Frame;
-
 };

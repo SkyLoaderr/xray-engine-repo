@@ -338,6 +338,7 @@ public:
 	virtual void						g_fireParams		(const CHudItem* pHudItem, Fvector& P, Fvector& D);
 	virtual BOOL						g_State				(SEntityState& state) const;
 	virtual	float						GetWeaponAccuracy	() const;
+			bool						IsZoomAimingMode	() const {return m_bZoomAimingMode;}
 
 protected:
 	//если актер целится в прицел

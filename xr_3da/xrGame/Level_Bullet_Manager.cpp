@@ -88,11 +88,9 @@ void CBulletManager::Load		()
 	m_fGravityConst = pSettings->r_float(BULLET_MANAGER_SECTION, "gravity_const");
 	m_fAirResistanceK = pSettings->r_float(BULLET_MANAGER_SECTION, "air_resistance_k");
 
-	//размер шага времени, по которому проигрываются 
 	m_dwStepTime = pSettings->r_u32(BULLET_MANAGER_SECTION,	   "time_step");
-	//минимальная скорость, на которой пуля еще считается
 	m_fMinBulletSpeed = pSettings->r_float(BULLET_MANAGER_SECTION, "min_bullet_speed");
-
+	m_fCollisionEnergyMin  = pSettings->r_float(BULLET_MANAGER_SECTION, "collision_energy_min");
 }
 
 void CBulletManager::Clear		()

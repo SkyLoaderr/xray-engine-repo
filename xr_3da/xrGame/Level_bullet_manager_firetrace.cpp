@@ -7,6 +7,7 @@
 #include "Level_Bullet_Manager.h"
 
 
+
 //callback функция 
 //	result.O;		// 0-static else CObject*
 //	result.range;	// range from start to element 
@@ -126,10 +127,6 @@ NULL:*mtl_pair->CollideParticles[::Random.randI(0,mtl_pair->CollideParticles.siz
 	vNormal = particle_dir;
 }
 
-
-#define COLLISION_K 0.99f
-
-
 void CBulletManager::StaticObjectHit(SBullet* bullet, const Fvector& end_point, Collide::rq_result& R, u16 target_material)
 {
 	Fvector hit_normal;
@@ -149,7 +146,7 @@ void CBulletManager::StaticObjectHit(SBullet* bullet, const Fvector& end_point, 
 	{
 		//уменьшение скорости полета в зависимости 
 		//от угла падения пули (чем прямее угол, тем больше потеря)
-		float scale = 1.f -_abs(bullet->dir.dotproduct(hit_normal))*COLLISION_K;
+		float scale = 1.f -_abs(bullet->dir.dotproduct(hit_normal))*m_fCollisionEnergyMin;
 		clamp(scale, 0.f, 0.9f);
 			
 		//вычисление рикошета, делается немного фейком,

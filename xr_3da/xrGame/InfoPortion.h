@@ -84,7 +84,7 @@ public:
 	int				GetIndex()			{return m_iIndex;}
 	int				GetLocationsNum()	  {return m_MapLocationVector.size();}
 	SMapLocation&	GetLocation(int index) {return	m_MapLocationVector[index];}
-	char*			GetText()		{return m_text.GetBuf();}
+	LPCSTR			GetText()		{return m_text.GetBuf();}
 
 	//загрузка структуры информацией из файла
 	void			Load(int index);

@@ -734,20 +734,6 @@ void CActor::shedule_Update	(u32 DT)
 	pCamBobbing->SetState						(mstate_real);
 
 
-	
-	//обновить положение камеры
-	if (eacFirstEye == cam_active)
-	{
-		CWeapon *pWeapon = dynamic_cast<CWeapon*>(inventory().GetActiveSlot() != NO_ACTIVE_SLOT ? 
-					inventory().m_slots[inventory().GetActiveSlot()].m_pIItem : NULL);
-		
-		cam_Update(dt,pWeapon?pWeapon->GetZoomFactor():DEFAULT_FOV);
-	}
-	else 
-	{
-		cam_Update(dt, DEFAULT_FOV);
-	}
-
 	//если в режиме HUD, то сама модель актера не рисуется
 	setVisible				(!HUDview	());
 
@@ -762,6 +748,14 @@ void CActor::shedule_Update	(u32 DT)
 
 	CWeapon* pWeapon = dynamic_cast<CWeapon*>(inventory().ActiveItem());	
 	m_bZoomAimingMode = false;
+
+
+	//обновить положение камеры
+	if (eacFirstEye == cam_active)
+		cam_Update(dt,pWeapon?pWeapon->GetZoomFactor():DEFAULT_FOV);
+	else 
+		cam_Update(dt, DEFAULT_FOV);
+
 
 	if(pWeapon)
 	{
