@@ -1,14 +1,83 @@
 
 -- Разговор. Разработчик: Andrey Fidrya (Zmey) af@svitonline.com
 
-local transitions = {
-	-- Набор фраз, номер фразы,
-	-- preconditions: 1) набор customdata секций 2)
-	{ phrase = [[script_replics\bandit_1\replics\bandit_ambush_]], num = 0, { }, { } },
+-- Настройка:
+
+local aftertalk_disable_time = 30000
+
+local transitions = {}
+
+transitions[1] = {
+	phrase = 0, -- номер фразы
+	duration = 3000,
+	-- Preconditions:
+	previous_phrase = nil
 }
+
+transitions[2] = {
+	phrase = 1, -- номер фразы
+	duration = 3000,
+	-- Preconditions:
+	previous_phrase = 1
+}
+
+transitions[3] = {
+	phrase = 2, -- номер фразы
+	duration = 3000,
+	-- Preconditions:
+	previous_phrase = 2
+}
+
+transitions[4] = {
+	phrase = 2, -- номер фразы
+	duration = 3000,
+	-- Preconditions:
+	previous_phrase = 2
+}
+
+-- Глобальные переменные:
+
+local state_none = 0
+local state_approaching = 1
+local state_talking = 2
+local state_listening = 3
+local state_waiting = 4
 
 local talkers = {
 }
+
+function has_anything_to_tell()
+	return true
+end
+
+function next_phrase(ch, vict, previous_phrase)
+	local result = nil
+
+	local n = 0
+	
+	for k, v in pairs(transitions) do
+		if v.previous_phrase == previous_phrase then
+			n = n + 1
+			if math.random(1, n) == 1 then
+				result = k
+			end
+		end
+	end
+
+	if result == nil then
+		return nil
+	end
+	return result, transitions[result].duration
+end
+
+function stop_talking(id)
+	local dis_until = device():time_global() + aftertalk_disable_time
+	talkers[id].state = state_none
+	talkers[id].disabled_until = dis_until
+	talkers[talkers[id].whom:id()].state = state_none
+	talkers[talkers[id].whom:id()].disabled_until = dis_until
+end
+
 
 ---------------------------------------------------------------------------------------------------------------------
 --Evaluators
@@ -18,37 +87,89 @@ class "evaluator_need_talker" (property_evaluator)
 
 function evaluator_need_talker:__init(storage) super ()
 	self.stor = storage
-	self.last_check_time = 0 -- время последней проверки на наличие собеседников рядом
+end
+
+function evaluator_need_talker:new_state()
+	local ns = {
+		state = state_none,
+		whom = nil,
+		expiration_time = 0,
+		previous_phrase = nil,
+		disabled_until = 0,
+	}
+	return ns
 end
 
 function evaluator_need_talker:evaluate ()
-	--printf("111");
-	for o in self.object:memory_visible_objects() do
+	if not self.stor.enabled then
+		return false
+	end
+
+	local id = self.object:id()
+	
+	if talkers[id] then
+		if talkers[id].state ~= state_none then
+			if not talkers[id].whom:alive() then
+				this.stop_talking(id)
+				return false
+			end
+			return true
+		end
+
+		if device():time_global() < talkers[id].disabled_until then
+			return false
+		end
+	end
+
+	if not this.has_anything_to_tell() then
+		return false
+	end
+
+	local vtable = self.object:not_yet_visible_objects()
+	if vtable == nil then
+		return false
+	end
+	for o in vtable do
 		local vo = o:object()
-		if is_object_online(vo:id()) then
+		local vo_id = vo:id()
+		if is_object_online(vo_id) and vo:alive() then
 			local otype = vo:clsid()
-			if otype == clsid.actor or otype == clsid.soldier or otype == clsid.stalker then
-				--printf("333[%s]: %d: vo:name() = %s", self.object:name(), device():time_global(), vo:name())
+			if otype == clsid.soldier or otype == clsid.stalker then
+				if o.value >= self.object:visibility_threshold() then
+					local distance = vo:position():distance_to(self.object:position())
+					--printf("dist: %d", distance)
+					if distance < 5 and
+					   (not talkers[vo_id] or device():time_global() >= talkers[vo_id].disabled_until) and
+					   (not talkers[vo_id] or talkers[vo_id].state == state_none) then
+						if not talkers[id] then
+							talkers[id] = self.new_state()
+						end
+						if talkers[id].state == state_none then
+							talkers[id].state = state_approaching
+							talkers[id].whom = vo
+							if not talkers[vo_id] then
+								talkers[vo_id] = self.new_state()
+							end
+							talkers[vo_id].state = state_approaching
+							talkers[vo_id].whom = self.object
+							return true
+						end
+					end
+				end
 			end
 		end
 	end
 
-	return self.stor.enabled == true
+	return false
 end
 
-----------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------
 --Actions
 ----------------------------------------------------------------------------------------------------------------------
 -- Обычное поведение
 class "action_talker_activity" (action_base)
 function action_talker_activity:__init (npc_name, action_name, storage) super (nil, action_name)
 	self.stor = storage
-
-	self.state_none = 0
-	self.state_approaching = 1
-	self.state_looking_at_vict = 2
-	
-	self.state = self.state_none
 end
 
 function action_talker_activity:initialize()
@@ -59,24 +180,11 @@ function action_talker_activity:initialize()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()
 
-	self.object:set_detail_path_type(move.line)
-	self.object:set_body_state(move.standing)
-        self.object:set_movement_type(move.stand)
-	--self.object:set_path_type(game_object.patrol_path)
-	--self.object:set_patrol_path(self.path_active, patrol.start, patrol.continue, true)
-	--self.object:set_mental_state(anim.free)
-	--self.object:set_sight(look.search, nil, 0)
-	self.object:set_sight(look.danger, nil, 0)
-
-	self.patrol_rob = patrol(self.path_rob)
-	local look_pt = xr_talker.vector_copy_by_val(self.patrol_rob:point(0)):sub(self.object:position())
-	self.object:set_sight(look.direction, look_pt, 0)
+	self.object:set_mental_state(anim.free)
+	self.object:set_sight(look.search, nil, 0)
+	--self.object:set_sight(look.danger, nil, 0)
 
 	xr_reactions.add_rule(self.object, "ignore")
-	
-	self.wpn_activated = true
-
-	self.state = self.state_waiting_for_plr_to_come
 end
 
 function action_talker_activity:say(what)
@@ -88,191 +196,70 @@ function action_talker_activity:is_weapon(active_item)
 end
 
 function action_talker_activity:execute()
-	if not self.actor then
-		self.actor = level.actor()
-		if not self.actor then
-			return
-		end
-	end
-
-	if not self.actor:alive() then
-		return
-	end
-	
-	if this.looking_at_actor then
-		local pos = self.actor:position()
-		pos.y = pos.y + 0.8
-		self.object:set_sight(look.fire_point, pos, 0)
-	end
-	
-	if self.object.health < 1 then
-		this.plr_hunt = true
-	end
-
-	local active_item = self.actor:active_item()
-	if active_item then
-		if this.plr_num_bullets and this.plr_num_bullets ~= active_item:get_ammo_in_magazine() then
-			if self:is_weapon(active_item) then
-				this.plr_hunt = true
-			end
-		end
-	end
-	
-	if this.plr_hunt then
-		if self.object:relation(self.actor) ~= game_object.enemy then
-			self.object:set_relation(game_object.enemy, self.actor)
-		end
+	printf("[%s] talker", self.object:name())
+	local id = self.object:id()
+	if not talkers[id] then
 		return
 	end
 
-	if this.plr_stop_pos then
-		local pos = self.actor:position()
-		local distance = pos:distance_to(this.plr_stop_pos)
-		if distance > 2 and self.leader then
-			self:say(xr_sounds_id.zmey_talker_will_shoot)
-			this.plr_hunt = true
-			return
-		elseif distance > 0.5 and self.helper and not this.plr_warned then
-			self:say(xr_sounds_id.zmey_talker_will_kill)
-			this.plr_warned = true
-		end
-	end
+	--if talkers[id].state == state_talking or talkers[id].state == state_listening then
+		--local pos = talkers[id].whom:position()
+		--pos.y = pos.y + 0.8
+		--self.object:set_sight(look.fire_point, pos, 0)
+		local pos = talkers[id].whom:position()
+		local look_pt = this.vector_copy_by_val(pos):sub(self.object:position())
+		self.object:set_sight(look.direction, look_pt, 0)
+	--end
 
-	if self.wpn_activated then
-		self.object:set_item(object.idle, self.object:best_weapon())
-	else
-		self.object:set_item(object.deactivate, self.object:best_weapon())
-	end
-
-	if self.state == self.state_waiting_for_plr_to_come then
-		--printf("_debug_talker [%s]: adding animations", self.object:name())
-		while self.object:animation_count() <= 1 do
-			local animate = math.random(1, 8)
-			if animate == 1 then
-				self.object:add_animation("spetsnaz_0", true)
-			elseif animate == 2 then
-				self.object:add_animation("spetsnaz_1", true)
-			elseif animate == 3 then
-				self.object:add_animation("spetsnaz_2", true)
-			elseif animate == 4 then
-				self.object:add_animation("spetsnaz_3", true)
-			elseif animate == 5 then
-				self.object:add_animation("spetsnaz_4", true)
-			elseif animate == 6 then
-				self.object:add_animation("spetsnaz_5", true)
-			elseif animate == 7 then
-				self.object:add_animation("spetsnaz_6", true)
-			elseif animate == 8 then
-				self.object:add_animation("spetsnaz_7", true)
-			end
-		end
-
-		if this.looking_at_actor or self.object:see(self.actor) then
-			-- Хватить искать игрока
-			self.object:clear_animations()
-			this.looking_at_actor = true
-
-			if self.leader then
-				self.expiration_time = device():time_global() + 3000
-				printf("_bp: leader stay")
-				self:say(xr_sounds_id.zmey_talker_stop)
-				self.state = self.state_leader_waiting_for_plr_to_stop
-			elseif self.helper then
-				self.expiration_time = device():time_global() + 1000
-				self.state = self.state_helper_waiting_for_leader
-			else
-				self.expiration_time = device():time_global() + 12000
-				self.state = self.state_third_waiting_for_plr_to_drop_weapon
-			end
-		end
+	if talkers[id].state == state_none then
 		return
 	end
 
-	if self.state == self.state_helper_waiting_for_leader then
-		if device():time_global() >= self.expiration_time then
-			self:say(xr_sounds_id.zmey_talker_do_not_move)
-			self.state = self.state_none
-		end
-		return
-	end
-	
-	if self.state == self.state_leader_waiting_for_plr_to_stop then
-		if device():time_global() >= self.expiration_time then
-			if not this.plr_stop_pos then
-				this.plr_stop_pos = self.actor:position()
-			end
-			if self:is_weapon(active_item) then
-				if active_item then
-					this.plr_num_bullets = active_item:get_ammo_in_magazine()
-				end
-				self:say(xr_sounds_id.zmey_talker_drop_weap)
-				self.expiration_time = device():time_global() + 3000
-				self.state = self.state_leader_shouting_drop_your_weapon
-			end 
-		end
-		return
-	end
+	if talkers[id].state == state_approaching then
+		printf("[%s] state_approaching", self.object:name())
+		if self.object:position():distance_to(talkers[id].whom:position()) < 1.5 then
+			printf("_bp: near")
+			--self.object:add_animation("udar_0", true)
 
-	if self.state == self.state_leader_shouting_drop_your_weapon then
-		if device():time_global() >= self.expiration_time and self:is_weapon(active_item) then
-			self:say(xr_sounds_id.zmey_talker_do_what_i_say)
-			self.expiration_time = device():time_global() + 5000
-			self.state = self.state_leader_shouting_do_what_i_say
-		end
-		return
-	end
-
-	if self.state == self.state_leader_shouting_do_what_i_say then
-		self.state = self.state_none
-		return
-	end
-
-	if self.state == self.state_third_waiting_for_plr_to_drop_weapon then
-		if not self:is_weapon(active_item) or device():time_global() >= self.expiration_time then
-			self.wpn_activated = false
-			self.object:set_path_type(game_object.level_path)
-			self.object:set_desired_direction(self.actor:direction())
-			self.object:set_dest_level_vertex_id(self.actor:level_vertex_id())
-			self.object:set_movement_type(move.run)
-			self.state = self.state_third_approaching
-		end
-		return
-	end
-
-	if self.state == self.state_third_approaching then
-		if self.object:position():distance_to(self.actor:position()) < 1.5 then
 			self.object:set_movement_type(move.stand)
-			self.object:add_animation("udar_0", true)
-			self.expiration_time = device():time_global() + 700
-			self.state = self.state_third_waiting_to_grab_money
+			local phrase, time = this.next_phrase(self.object, talkers[id].whom, nil)
+			talkers[id].previous_phrase = phrase
+			if phrase == nil then
+				printf("_bp: nil phrase")
+				this.stop_talking(id)
+				return
+			end
+			self.object:play_sound(xr_sounds_id.zmey_talker_base, 1, 0, 1, 0, phrase)
+			talkers[id].expiration_time = device():time_global() + time
+			talkers[id].state = state_talking
+
+			talkers[id].whom:set_movement_type(move.stand)
+			talkers[talkers[id].whom:id()].state = state_listening
 		else
-			self.object:set_desired_direction(self.actor:direction())
-			self.object:set_dest_level_vertex_id(self.actor:level_vertex_id())
+			local whom = talkers[id].whom
+			self.object:set_detail_path_type(move.line)
+			self.object:set_body_state(move.standing)
+			self.object:set_movement_type(move.walk)
+			self.object:set_path_type(game_object.level_path)
+			self.object:set_desired_direction(whom:direction())
+			self.object:set_dest_level_vertex_id(whom:level_vertex_id())
 		end
 		return
 	end
 
-	if self.state == self.state_third_waiting_to_grab_money then
-		if device():time_global() >= self.expiration_time then
-			local anim_count = self.object:animation_count()
-			if anim_count > 0 and self.object:position():distance_to(self.actor:position()) < 2 then
-				local h = hit()
-				h.power = 1000
-				h.direction:set(1, 0, 0)
-				h.bone = "bip01_head"
-				h.draftsman = self.object
-				h.impulse = 10
-				h.type = hit.wound
-				self.actor:hit(h)
-
-				self.state = self.state_none
-			elseif anim_count == 0 then
-				self.object:set_path_type(game_object.level_path)
-				self.object:set_desired_direction(self.actor:direction())
-				self.object:set_dest_level_vertex_id(self.actor:level_vertex_id())
-				self.object:set_movement_type(move.run)
-				self.state = self.state_third_approaching
+	if talkers[id].state == state_talking then
+		if device():time_global() >= talkers[id].expiration_time then
+			local phrase, time = this.next_phrase(self.object, talkers[id].whom, talkers[id].previous_phrase)
+			talkers[talkers[id].whom:id()].previous_phrase = phrase
+			if not phrase then
+				this.stop_talking(id)
+				return
 			end
+			talkers[id].whom:play_sound(xr_sounds_id.zmey_talker_base, 1, 0, 1, 0, phrase)
+			talkers[talkers[id].whom:id()].expiration_time = device():time_global() + time
+			talkers[talkers[id].whom:id()].state = state_talking
+			
+			talkers[id].state = state_listening
 		end
 		return
 	end
@@ -282,9 +269,9 @@ function action_talker_activity:finalize()
 	--printf("_bp: FINALIZE")
 	self.object:clear_animations()
 
-	if self.object.health < 1 then
-		printf("AGRESSION")
-		this.plr_hunt = true
+	local id = self.object:id()
+	if talkers[id] then
+		this.stop_talking(id)
 	end
 
 	action_base.finalize(self)
@@ -299,8 +286,8 @@ function add_to_binder(npc)
 	local properties  = {}
 
 	-- FIXME: тут будет talker
-	--npc:add_sound([[script_replics\bandit_1\replics\bandit_ambush_]],
-	--		20, snd_type.talk, 2, 1, xr_sounds_id.zmey_talker_base)
+	npc:add_sound([[script_replics\bandit_1\replics\bandit_ambush_]],
+			20, snd_type.talk, 2, 1, xr_sounds_id.zmey_talker_base)
 
 	local manager = npc:motivation_action_manager()
 
