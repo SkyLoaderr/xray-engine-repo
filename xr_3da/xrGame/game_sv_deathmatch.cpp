@@ -501,12 +501,13 @@ void	game_sv_Deathmatch::assign_RP				(CSE_Abstract* E, game_PlayerState* ps_who
 		inherited::assign_RP(E, ps_who);
 		return;
 	};
-//-------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------
 	xr_vector<RPoint>&	rp	= rpoints[Team];
+	float MinTeamPRointDist = rpoints_MinDist[Team];
 	//create Enemies list
 	xr_vector <u32>					pEnemies;
 	xr_vector <u32>					pFriends;
-	
+
 	u32		cnt = get_players_count();
 	for		(u32 it=0; it<cnt; ++it)	
 	{
@@ -517,14 +518,17 @@ void	game_sv_Deathmatch::assign_RP				(CSE_Abstract* E, game_PlayerState* ps_who
 		else pEnemies.push_back(it);
 	};
 
-//	if (pEnemies.empty()) 
+
+	u8 OldTeam = pA->s_team;
+	pA->s_team = u8(Team);
+	
+	bool SpawnPointFound = false;
+	int Pass = 0;
+	int PointID = 0;
+	while (!SpawnPointFound)
 	{
-		u8 OldTeam = pA->s_team;
-		pA->s_team = u8(Team);
-//		inherited::assign_RP(E, ps_who);
-		
-		u16 NumRP = u16(rp.size());
 		bool UseFreezedPoints = false;
+		u16 NumRP = u16(rp.size());
 		while(ps_who->pSpawnPointsList.empty())
 		{
 			for (u16 it=0; it < NumRP; it++)
@@ -537,80 +541,64 @@ void	game_sv_Deathmatch::assign_RP				(CSE_Abstract* E, game_PlayerState* ps_who
 		};
 		R_ASSERT(!ps_who->pSpawnPointsList.empty());
 		
-		int PointID;
 		if (!pEnemies.empty())
 		{
 			xr_deque<RPointData>			pRPDist;
 			pRPDist.clear();
 
-			u32 NumRP = ps_who->pSpawnPointsList.size();	
-
-			Fvector DistVect;
+			u32 NumRP = ps_who->pSpawnPointsList.size();
 			for (it=0; it < NumRP; it++)
 			{
 				u16 PointID = ps_who->pSpawnPointsList[it];
 				RPoint&				r	= rp[PointID];
-				pRPDist.push_back(RPointData(it, 1000000.0f));
+
+				float MinEnemyDist = 1000000.0f;
 				for (u32 p=0; p<pEnemies.size(); p++)
 				{
 					xrClientData* xrCData	=	m_server->ID_to_client(get_it_2_id(pEnemies[p]));
 					if (!xrCData || !xrCData->owner) continue;
 
 					CSE_Abstract* pOwner = xrCData->owner;
-					DistVect.sub(pOwner->o_Position, r.P);
-					float Dist = DistVect.square_magnitude();
-					if (pRPDist[it].MinEnemyDist > Dist) pRPDist[it].MinEnemyDist = Dist;
+					float Dist = r.P.distance_to_xz_sqr(pOwner->o_Position);
+
+					if (MinEnemyDist > Dist) MinEnemyDist = Dist;
 				};
+				if (MinEnemyDist>MinTeamPRointDist)
+				{
+					pRPDist.push_back(RPointData(it, MinEnemyDist, IsPointFreezed(&r)));
+				}
 			};
-			std::sort(pRPDist.begin(), pRPDist.end());
-			PointID = (pRPDist.back()).PointID;
+			if (!pRPDist.empty())
+			{
+				std::sort(pRPDist.begin(), pRPDist.end());
+				PointID = (pRPDist.back()).PointID;
+				SpawnPointFound = true;
+			}
+			else
+			{
+				R_ASSERT2(Pass==0, "Can't Find Spawn Point");
+				ps_who->pSpawnPointsList.clear();
+				Pass = 1;
+			}
 		}
 		else
 		{
 			PointID = ::Random.randI((int)ps_who->pSpawnPointsList.size());
-		};
-		ps_who->m_s16LastSRoint = ps_who->pSpawnPointsList[PointID];
-//		Msg("used %d", ps_who->m_s16LastSRoint);
-		ps_who->pSpawnPointsList.erase(ps_who->pSpawnPointsList.begin()+PointID);
-
-		RPoint&				r	= rp[ps_who->m_s16LastSRoint];
-		SetPointFreezed(&r);
-
-		E->o_Position.set	(r.P);
-		E->o_Angle.set		(r.A);
-
-		pA->s_team = OldTeam;
-		return;
-	};
-//-------------------------------------------------------------------------------	
-	/*
-	xr_deque<RPointData>			pRPDist;
-	pRPDist.clear();
-
-	u32 NumRP = rp.size();	
-
-	Fvector DistVect;
-	for (it=0; it < NumRP; it++)
-	{
-		RPoint&				r	= rp[it];
-		pRPDist.push_back(RPointData(it, 1000000.0f));
-		for (u32 p=0; p<pEnemies.size(); p++)
-		{
-			xrClientData* xrCData	=	m_server->ID_to_client(get_it_2_id(pEnemies[p]));
-			if (!xrCData || !xrCData->owner) continue;
-
-			CSE_Abstract* pOwner = xrCData->owner;
-			DistVect.sub(pOwner->o_Position, r.P);
-			float Dist = DistVect.square_magnitude();
-			if (pRPDist[it].MinEnemyDist > Dist) pRPDist[it].MinEnemyDist = Dist;
+			SpawnPointFound = true;
 		};
 	};
-	std::sort(pRPDist.begin(), pRPDist.end());
+	ps_who->m_s16LastSRoint = ps_who->pSpawnPointsList[PointID];
+	//		Msg("used %d", ps_who->m_s16LastSRoint);
+	ps_who->pSpawnPointsList.erase(ps_who->pSpawnPointsList.begin()+PointID);
 
-	RPoint&				r	= rp[(pRPDist.back()).PointID];
+	RPoint&				r	= rp[ps_who->m_s16LastSRoint];
+	SetPointFreezed(&r);
+
 	E->o_Position.set	(r.P);
 	E->o_Angle.set		(r.A);
-	*/
+
+	pA->s_team = OldTeam;		
+	
 };
 
 bool	game_sv_Deathmatch::IsBuyableItem			(LPCSTR	ItemName)

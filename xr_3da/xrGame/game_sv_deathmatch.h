@@ -12,10 +12,16 @@ protected:
 	{
 		u32		PointID;
 		float	MinEnemyDist;
+		bool	bFreezed;
 
-		RPointData(u32 ID, float Dist):
-		PointID(ID),MinEnemyDist(Dist){};
-		bool operator<(const RPointData &x)	{return MinEnemyDist < x.MinEnemyDist;};
+		RPointData(u32 ID, float Dist, bool Freezed):
+		PointID(ID),MinEnemyDist(Dist), bFreezed(Freezed){};
+		bool operator<(const RPointData &x)	
+		{
+			if (bFreezed && !x.bFreezed) return false;
+			if (!bFreezed && x.bFreezed) return true;
+			return MinEnemyDist < x.MinEnemyDist;
+		};
 	};
 
 

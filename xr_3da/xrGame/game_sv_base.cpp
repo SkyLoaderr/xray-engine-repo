@@ -251,7 +251,7 @@ void game_sv_GameState::OnPlayerDisconnect		(ClientID /**id_who/**/, LPSTR, u16 
 
 void game_sv_GameState::Create					(shared_str &options)
 {
-	string256	fn_game;
+	string256	fn_game;	
 	if (FS.exist(fn_game, "$level$", "level.game")) 
 	{
 		IReader *F = FS.r_open	(fn_game);
@@ -290,6 +290,13 @@ void game_sv_GameState::Create					(shared_str &options)
 				case rptActorSpawn:
 					{
 						rpoints[team].push_back	(R);
+						for (int i=0; i<int(rpoints[team].size())-1; i++)
+						{
+							RPoint rp = rpoints[team][i];
+							float dist = R.P.distance_to_xz_sqr(rp.P)/4;
+							if (dist<rpoints_MinDist[team])
+								rpoints_MinDist[team] = dist;
+						};
 					}break;
 				};
 			};
@@ -463,6 +470,8 @@ game_sv_GameState::game_sv_GameState()
 	m_bMapNeedRotation = false;
 	m_bFastRestart = false;
 	m_pMapRotation_List.clear();
+
+	for (int i=0; i<TEAM_COUNT; i++) rpoints_MinDist[i] = 1000.0f;
 }
 
 game_sv_GameState::~game_sv_GameState()

@@ -32,6 +32,7 @@ public:
 #define		TEAM_COUNT 4
 
 	BOOL							sv_force_sync;
+	float							rpoints_MinDist [TEAM_COUNT];
 	xr_vector<RPoint>				rpoints	[TEAM_COUNT];
 	
 	// Вектор имен скинов комманды

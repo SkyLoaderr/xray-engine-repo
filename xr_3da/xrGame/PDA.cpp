@@ -83,7 +83,7 @@ void CPda::shedule_Update(u32 dt)
 	Position().set	(H_Parent()->Position());
 
 	//обновить список дос€гаемых PDA
-	if( IsOn() && Level().CurrentEntity()->ID()==H_Parent()->ID() )
+	if( IsOn() && Level().CurrentEntity() && Level().CurrentEntity()->ID()==H_Parent()->ID() )
 	{
 		CEntityAlive* EA = smart_cast<CEntityAlive*>(H_Parent());
 		if(!EA || !EA->g_Alive())
