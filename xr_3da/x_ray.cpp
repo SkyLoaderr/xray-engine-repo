@@ -596,6 +596,8 @@ return 0;*/
 		return 1;
 
 	};
+	if(res==8)//Quit
+		return 1;
 	return 0;
 
 }
