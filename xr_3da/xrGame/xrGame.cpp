@@ -741,7 +741,8 @@ extern "C" {
 		DLL_Pure*	P	= 0;
 		switch (cls)
 		{
-		case CLSID_LEVEL:				P = xr_new<CLevel>();				break;
+		case CLSID_GAME_LEVEL:			P = xr_new<CLevel>();				break;
+		case CLSID_GAME_PERSISTANT:		P = xr_new<CGamePersistent>();		break;
 		case CLSID_HUDMANAGER:			P = xr_new<CHUDManager>();			break;
 		case CLSID_OBJECT_ACTOR:		P = xr_new<CActor>();				break;
 		case CLSID_TARGET:				P = xr_new<CCustomTarget>();		break;
