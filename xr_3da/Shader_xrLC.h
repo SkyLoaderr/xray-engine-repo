@@ -36,9 +36,10 @@ public:
 };
 
 #define						SHADER_XRLC_HEADER "shXRLC  "
+DEFINE_VECTOR(Shader_xrLC,Shader_xrLCVec,Shader_xrLCIt);
 class Shader_xrLC_LIB
 {
-	vector<Shader_xrLC>		library;
+	Shader_xrLCVec			library;
 public:
 	void					Load	(LPCSTR name)
 	{
@@ -60,19 +61,33 @@ public:
 	}
 	int						GetID	(LPCSTR name)
 	{
-		for (DWORD it=0; it<library.size(); it++)
-			if (0==stricmp(name,library[it].Name))	return it;
+		for (Shader_xrLCIt it=library.begin(); it!=library.end(); it++)
+			if (0==stricmp(name,it->Name)) return library.begin()-it;
 		return -1;
 	}
 	Shader_xrLC*			Get		(LPCSTR name)
 	{
-		for (DWORD it=0; it<library.size(); it++)
-			if (0==stricmp(name,library[it].Name))	return &library[it];
+		for (Shader_xrLCIt it=library.begin(); it!=library.end(); it++)
+			if (0==stricmp(name,it->Name)) return it;
 		return NULL;
 	}
 	Shader_xrLC*			Get		(int id)
 	{
 		return &library[id];
+	}
+	Shader_xrLC*			Append	()
+	{
+		library.push_back(Shader_xrLC());
+		return &library.back();
+	}
+	void					Remove	(LPCSTR name)
+	{
+		for (Shader_xrLCIt it=library.begin(); it!=library.end(); it++)
+			if (0==stricmp(name,it->Name)) library.erase(it);
+	}
+	void					Remove	(int id)
+	{
+		library.erase(library.begin()+id);
 	}
 };
 #endif
