@@ -3,7 +3,7 @@
 
 void CLevel::ClientReceive()
 {
-	for (NET_Packet* P = net_Retreive(); P; P=net_Retreive())
+	for (NET_Packet* P = net_msg_Retreive(); P; P=net_msg_Retreive())
 	{
 		u16			m_type;
 		u16			ID;
@@ -70,6 +70,6 @@ void CLevel::ClientReceive()
 			break;
 		}
 		
-		net_r
+		net_msg_Release();
 	}
 }

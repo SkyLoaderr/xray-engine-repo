@@ -43,7 +43,7 @@ BOOL CLevel::net_Client		( LPCSTR name_of_server )
 		BOOL bFinished		= FALSE;
 		while (!bFinished) 
 		{
-			for (NET_Packet* P = net_Retreive(); P; P=net_Retreive())
+			for (NET_Packet* P = net_msg_Retreive(); P; P=net_msg_Retreive())
 			{
 				u16			m_type;	
 				P->r_begin	(m_type);
@@ -52,6 +52,7 @@ BOOL CLevel::net_Client		( LPCSTR name_of_server )
 				case M_SV_CONFIG_FINISHED:	bFinished = TRUE;	break;
 				case M_SPAWN:				g_sv_Spawn(P);		break;
 				}
+				net_msg_Release	();
 			}
 			Sleep	(1);
 		}
