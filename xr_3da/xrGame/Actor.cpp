@@ -119,6 +119,7 @@ void CActor::Load		(LPCSTR section )
 	skel_density_factor = pSettings->ReadFLOAT(section,"ph_skeleton_mass_factor");
 	skel_airr_lin_factor=pSettings->ReadFLOAT(section,"ph_skeleton_airr_lin_factor");
 	skel_airr_ang_factor=pSettings->ReadFLOAT(section,"ph_skeleton_airr_ang_factor");
+	hinge_force_factor  =pSettings->ReadFLOAT(section,"ph_skeleton_hinger_factor");
 	ph_Movement.SetJumpUpVelocity(m_fJumpSpeed);
 
 	Weapons				= xr_new<CWeaponList> (this);
@@ -1211,6 +1212,7 @@ float CActor::HitScale	(int element)
 void CActor::create_Skeleton(){
 	Fmatrix ident;
 	float density=100.f*skel_density_factor;
+	float hinge_force=5.f*hinge_force_factor;
 	//u32 material=0;
 	LPCSTR material="actor";
 	ident.identity();
@@ -1272,7 +1274,7 @@ void CActor::create_Skeleton(){
 	CPhysicsElement* root=parent;
 
 	//spine
-	/*
+	
 	id=M->LL_BoneID("bip01_spine");
 	element=P_create_Element				();
 	element->mXFORM.set(m1);
@@ -1281,7 +1283,7 @@ void CActor::create_Skeleton(){
 	element->setMass(density);
 	element->set_ParentElement(parent);
 	m_phSkeleton->add_Element(element);
-	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
+	joint=P_create_Joint(CPhysicsJoint::welding,parent,element);
 	joint->SetAnchorVsSecondElement(0,0,0);
 	joint->SetAxisVsSecondElement(0,1,0,0);
 	joint->SetLimits(-M_PI*1.f/4.f,M_PI*1.f/2.f,0);
@@ -1292,8 +1294,8 @@ void CActor::create_Skeleton(){
 	//Fmatrix m;
 	
 	
-	parent=element;
-	*/
+	//parent=element;
+	
 	id=M->LL_BoneID("bip01_spine1");
 	element=P_create_Element				();
 	element->mXFORM.set(m1);
@@ -1302,10 +1304,14 @@ void CActor::create_Skeleton(){
 	element->setMass(density);
 	element->set_ParentElement(parent);
 	m_phSkeleton->add_Element(element);
-	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
+	joint=P_create_Joint(CPhysicsJoint::full_control,parent,element);
 	joint->SetAnchorVsSecondElement(0,0,0);
 	joint->SetAxisVsSecondElement(1,0,0,0);
+	joint->SetAxisVsSecondElement(0,1,0,2);
 	joint->SetLimits(-M_PI/4.f,M_PI/4.f,0);//
+	joint->SetLimits(-M_PI/4.f,M_PI/12.f,2);
+	joint->SetLimits(-M_PI/8.f,M_PI/8.f,1);
+	joint->SetForceAndVelocity(hinge_force);
 	m_phSkeleton->add_Joint(joint);
 	element->SetMaterial(material);
 
@@ -1339,7 +1345,7 @@ void CActor::create_Skeleton(){
 	//joint->SetLimits(0.1f,0.f,0);
 	//joint->SetLimits(0.f,0.f,1);
 	//joint->SetLimits(0.f,0.f,2);
-
+	joint->SetForceAndVelocity(hinge_force);
 	m_phSkeleton->add_Joint(joint);
 	element->SetMaterial(material);
 
@@ -1356,6 +1362,7 @@ void CActor::create_Skeleton(){
 	joint->SetAnchorVsSecondElement(0,0,0);
 	joint->SetAxisVsSecondElement(1,0,0,0);
 	joint->SetLimits(-M_PI/3.f,M_PI/3.f,0);
+	joint->SetForceAndVelocity(hinge_force);
 	m_phSkeleton->add_Joint(joint);
 	element->SetMaterial(material);
 
@@ -1374,6 +1381,7 @@ void CActor::create_Skeleton(){
 	joint->SetAnchorVsSecondElement(0,0,0);//box.m_halfsize.y box.m_halfsize.x*2.f
 	joint->SetAxisVsSecondElement(1,0,0,0);
 	joint->SetLimits(-M_PI/4.f,M_PI/3.f,0);
+	joint->SetForceAndVelocity(hinge_force);
 	m_phSkeleton->add_Joint(joint);
 	element->SetMaterial(material);
 
@@ -1395,6 +1403,7 @@ void CActor::create_Skeleton(){
 	joint->SetAxisVsSecondElement(0,1,0,2);
 	joint->SetLimits(-M_PI/4.f,M_PI/3.f,2);
 	joint->SetLimits(0.f,0.f,1);
+	joint->SetForceAndVelocity(hinge_force);
 	m_phSkeleton->add_Joint(joint);
 	element->SetMaterial(material);
 
@@ -1411,6 +1420,7 @@ void CActor::create_Skeleton(){
 	joint->SetAnchorVsSecondElement(0,0,0);
 	joint->SetAxisVsSecondElement(0,1,0,0);
 	joint->SetLimits(-M_PI*3.f/4.f,0,0);
+	joint->SetForceAndVelocity(hinge_force);
 	m_phSkeleton->add_Joint(joint);
 	element->SetMaterial(material);
 
@@ -1427,6 +1437,7 @@ void CActor::create_Skeleton(){
 	joint->SetAnchorVsSecondElement(0,0,0);
 	joint->SetAxisVsSecondElement(0,1,0,0);
 	joint->SetLimits(-M_PI*1/3.f,M_PI*1/3.f,0);
+	joint->SetForceAndVelocity(hinge_force);
 	m_phSkeleton->add_Joint(joint);
 	element->SetMaterial(material);
 
@@ -1444,6 +1455,7 @@ void CActor::create_Skeleton(){
 	joint->SetAnchorVsSecondElement(0,0,0);
 	joint->SetAxisVsSecondElement(1,0,0,0);
 	joint->SetLimits(-M_PI/3.f,M_PI/4.f,0);
+	joint->SetForceAndVelocity(hinge_force);
 	m_phSkeleton->add_Joint(joint);
 	element->SetMaterial(material);
 
@@ -1463,6 +1475,7 @@ void CActor::create_Skeleton(){
 	joint->SetAxisVsSecondElement(0,1,0,2);
 	joint->SetLimits(-M_PI/4.f,M_PI/3.f,2);
 	joint->SetLimits(0.f,0.f,1);
+	joint->SetForceAndVelocity(hinge_force);
 	m_phSkeleton->add_Joint(joint);
 	element->SetMaterial(material);
 
@@ -1479,6 +1492,7 @@ void CActor::create_Skeleton(){
 	joint->SetAnchorVsSecondElement(0,0,0);
 	joint->SetAxisVsSecondElement(0,1,0,0);
 	joint->SetLimits(-M_PI*3.f/4.f,0,0);
+	joint->SetForceAndVelocity(hinge_force);
 	m_phSkeleton->add_Joint(joint);
 	element->SetMaterial(material);
 
@@ -1495,6 +1509,7 @@ void CActor::create_Skeleton(){
 	joint->SetAnchorVsSecondElement(0,0,0);
 	joint->SetAxisVsSecondElement(0,1,0,0);
 	joint->SetLimits(-M_PI*1/3.f,M_PI*1/3.f,0);
+	joint->SetForceAndVelocity(hinge_force);
 	m_phSkeleton->add_Joint(joint);
 	element->SetMaterial(material);
 
@@ -1515,6 +1530,7 @@ void CActor::create_Skeleton(){
 	joint->SetLimits(0.f,0.f,1);
 	//joint->SetLimits(0,M_PI*1/3.5f,0);
 	joint->SetLimits(-M_PI*1/3.5f,0,0);
+	joint->SetForceAndVelocity(hinge_force);
 	m_phSkeleton->add_Joint(joint);
 	element->SetMaterial("materials\\skel1");
 
@@ -1531,6 +1547,7 @@ void CActor::create_Skeleton(){
 	joint->SetAnchorVsSecondElement(0,0,0);
 	joint->SetAxisVsSecondElement(0,1,0,0);
 	joint->SetLimits(-M_PI*2/3.f,0,0);
+	joint->SetForceAndVelocity(hinge_force);
 	m_phSkeleton->add_Joint(joint);
 	element->SetMaterial("materials\\skel1");
 
@@ -1547,6 +1564,7 @@ void CActor::create_Skeleton(){
 	joint->SetAnchorVsSecondElement(0,0,0);
 	joint->SetAxisVsSecondElement(0,1,0,0);
 	joint->SetLimits(-M_PI*1/6.f,M_PI*1/6.f,0);
+	joint->SetForceAndVelocity(hinge_force);
 	m_phSkeleton->add_Joint(joint);
 	element->SetMaterial("materials\\skel1");
 
@@ -1566,6 +1584,7 @@ void CActor::create_Skeleton(){
 	joint->SetLimits(-M_PI*1.f/6.f,M_PI*1.f/2.f,2);
 	joint->SetLimits(0.f,0.f,1);
 	joint->SetLimits(0,M_PI*1/3.5f,0);
+	joint->SetForceAndVelocity(hinge_force);
 	m_phSkeleton->add_Joint(joint);
 	element->SetMaterial("materials\\skel1");
 
@@ -1582,6 +1601,7 @@ void CActor::create_Skeleton(){
 	joint->SetAnchorVsSecondElement(0,0,0);
 	joint->SetAxisVsSecondElement(0,1,0,0);
 	joint->SetLimits(-M_PI*2/3.f,0,0);
+	joint->SetForceAndVelocity(hinge_force);
 	m_phSkeleton->add_Joint(joint);
 	element->SetMaterial("materials\\skel1");
 
@@ -1598,6 +1618,7 @@ void CActor::create_Skeleton(){
 	joint->SetAnchorVsSecondElement(0,0,0);
 	joint->SetAxisVsSecondElement(0,1,0,0);
 	joint->SetLimits(-M_PI*1/6.f,M_PI*1/6.f,0);
+	joint->SetForceAndVelocity(hinge_force);
 	m_phSkeleton->add_Joint(joint);
 	element->SetMaterial("materials\\skel1");
 
@@ -1611,7 +1632,7 @@ void CActor::create_Skeleton(){
 	m_phSkeleton->mXFORM.set(m);
 	m_phSkeleton->SetAirResistance(0.002f*skel_airr_lin_factor,
 								   0.3f*skel_airr_ang_factor);
-
+	
 }
 
 
@@ -1619,6 +1640,7 @@ void CActor::create_Skeleton(){
 void CActor::create_Skeleton1(){
 	Fmatrix ident;
 	float density=100.f;
+	float hinge_force=5.f*hinge_force_factor;
 	//u32 material=0;
 	LPCSTR material="actor";
 	ident.identity();
@@ -1705,6 +1727,7 @@ void CActor::create_Skeleton1(){
 	joint->SetAnchorVsSecondElement(0,0,0);
 	joint->SetAxisVsSecondElement(0,0,1,0);
 	joint->SetLimits(0,M_PI*1.f/2.f,0);
+	joint->SetForceAndVelocity(hinge_force);
 	m_phSkeleton->add_Joint(joint);
 	element->SetMaterial(material);
 	//Fquaternion k;

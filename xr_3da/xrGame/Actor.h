@@ -149,6 +149,7 @@ protected:
 	float					skel_density_factor;
 	float					skel_airr_lin_factor;
 	float					skel_airr_ang_factor;
+	float					hinge_force_factor;
 	///////////////////////////////////////////////////
 	static void	__stdcall	SpinCallback	(CBoneInstance*);
 	static void	__stdcall	ShoulderCallback(CBoneInstance*);
