@@ -233,15 +233,23 @@ void xrLoad(LPCSTR name)
 				IReader* THM	= FS.r_open("$game_textures$",N);
 
 				// analyze thumbnail information
-				R_ASSERT		(THM->r_chunk(THM_CHUNK_TEXTUREPARAM,&BT.THM));
+				R_ASSERT				(THM->r_chunk(THM_CHUNK_TEXTUREPARAM,&BT.THM));
+				THM->r                  (&BT.THM.fmt,sizeof(STextureParams::ETFormat));
+				BT.THM.flags.set		(THM->r_u32());
+				BT.THM.border_color		= THM->r_u32();
+				BT.THM.fade_color		= THM->r_u32();
+				BT.THM.fade_amount		= THM->r_u32();
+				BT.THM.mip_filter		= THM->r_u32();
+				BT.THM.width			= THM->r_u32();
+				BT.THM.height           = THM->r_u32();
 				BOOL			bLOD=FALSE;
 				if (N[0]=='l' && N[1]=='o' && N[2]=='d' && N[3]=='\\') bLOD = TRUE;
 
 				// load surface if it has an alpha channel or has "implicit lighting" flag
-				BT.dwWidth	= BT.THM.width;
-				BT.dwHeight	= BT.THM.height;
-				BT.bHasAlpha= BT.THM.HasAlphaChannel();
-				BT.pSurface	= 0;
+				BT.dwWidth				= BT.THM.width;
+				BT.dwHeight				= BT.THM.height;
+				BT.bHasAlpha			= BT.THM.HasAlphaChannel();
+				BT.pSurface				= 0;
 				if (!bLOD) 
 				{
 					if (BT.bHasAlpha || BT.THM.flags.test(STextureParams::flImplicitLighted))
