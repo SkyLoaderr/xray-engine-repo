@@ -7,9 +7,9 @@
 
 class "options_video_tab" (ui_options_base_tab.options_base_tab)
 
-function options_base_tab:__init() super()
+function options_video_tab:__init() super()
 end
 
-function options_base_tab:__finalize()
+function options_video_tab:__finalize()
 end
 
