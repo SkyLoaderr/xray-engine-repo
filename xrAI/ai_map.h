@@ -33,6 +33,7 @@ public:
 	float						m_fYSize2;
 	typedef u8 Cover[4];
 	Cover						*m_tpCoverPalette;
+	u32							m_row_length;
 
 								CAI_Map()
 	{
@@ -83,34 +84,52 @@ public:
 
 	IC	NodeCompressed*		Node(u32 ID) const { return vfs?m_nodes_ptr[ID]:NULL; }
 
-	IC	void PackPosition(NodePosition& Pdest, const Fvector& Psrc) const
+	IC	void PackPosition(NodePosition &Pdest, const Fvector& Psrc) const
 	{
 		float sp = 1/m_header.size;
-		int px	= iFloor(Psrc.x*sp+EPS_L + .5f);
+		int pxz	= iFloor((Psrc.x - m_header.aabb.min.x)*sp + EPS_L + .5f)*iFloor((Psrc.z - m_header.aabb.min.z)*sp   + EPS_L + .5f);
 		int py	= iFloor(65535.f*(Psrc.y-m_header.aabb.min.y)/(m_header.size_y)+EPS_L);
-		int pz	= iFloor(Psrc.z*sp+EPS_L + .5f);
-		clamp	(px,-32767,32767);	Pdest.x = s16	(px);
+		clamp	(pxz,0,(1 << 24) - 1);	Pdest.xz = pxz;
 		clamp	(py,0,     65535);	Pdest.y = u16	(py);
-		clamp	(pz,-32767,32767);	Pdest.z = s16	(pz);
 	}
 
-	IC BOOL	u_InsideNode(const NodeCompressed& N, const NodePosition& P) const
+	IC void unpack_xz(const NodePosition &node_position, int &x, int &z) const
 	{
-		return 	((P.x == N.p.x) && (P.z==N.p.z));		// Z inside
+		x = node_position.xz / m_row_length;
+		z = node_position.xz % m_row_length;
 	}
 
-	IC	void UnpackPosition(Fvector& Pdest, const NodePosition& Psrc) const
+	IC void unpack_xz(const NodeCompressed &node, int &x, int &z) const
 	{
-		Pdest.x = float(Psrc.x)*m_header.size;
+		unpack_xz(node.p,x,z);
+	}
+
+	IC void unpack_xz(const NodeCompressed *node, int &x, int &z) const
+	{
+		unpack_xz(node->p,x,z);
+	}
+
+	IC BOOL	u_InsideNode(const NodeCompressed& N, const NodePosition &P) const
+	{
+		return 	(P.xz == N.p.xz);
+	}
+
+	IC	void UnpackPosition(Fvector& Pdest, const NodePosition &Psrc) const
+	{
+		int	x,z;
+		unpack_xz(Psrc,x,z);
+		Pdest.x = float(x)*m_header.size;
 		Pdest.y = (float(Psrc.y)/65535)*m_header.size_y + m_header.aabb.min.y;
-		Pdest.z = float(Psrc.z)*m_header.size;
+		Pdest.z = float(z)*m_header.size;
 	}
 
-	IC	void UnpackPosition(Fvector& Pdest, const NodePosition& Psrc, Fbox& bb, SAIParams& params)
+	IC	void UnpackPosition(Fvector& Pdest, const NodePosition& Psrc, Fbox& bb, SAIParams& params) const
 	{
-		Pdest.x = float(Psrc.x)*params.fPatchSize;
+		int	x,z;
+		unpack_xz(Psrc,x,z);
+		Pdest.x = float(x)*params.fPatchSize;
 		Pdest.y = (float(Psrc.y)/65535)*(bb.max.y-bb.min.y) + bb.min.y;
-		Pdest.z = float(Psrc.z)*params.fPatchSize;
+		Pdest.z = float(z)*params.fPatchSize;
 	}
 
 	IC Fvector tfGetNodeCenter(NodeCompressed *tpNode) const

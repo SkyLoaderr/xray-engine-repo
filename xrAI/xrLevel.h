@@ -54,9 +54,8 @@ struct	hdrNODES
 #pragma pack(push,1)
 struct NodePosition
 {
-	s16				x:12;
-	u16				y;
-	s16				z:12;
+	u32				xz:24;
+	u32				y:16;
 };
 
 struct NodeCompressed

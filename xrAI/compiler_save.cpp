@@ -1,17 +1,13 @@
 #include "stdafx.h"
 #include "compiler.h"
 
-IC void	CompressPos	(NodePosition& Dest, Fvector& Src, hdrNODES& H)
+IC void	CompressPos	(NodePosition& Pdest, Fvector& Psrc, hdrNODES& H)
 {
 	float sp = 1/g_params.fPatchSize;
-	int px,py,pz;
-	px = iFloor(Src.x*sp+EPS_L);
-	py = iFloor(65535.f*(Src.y-H.aabb.min.y)/(H.size_y)+EPS_L);
-	pz = iFloor(Src.z*sp+EPS_L);
-	
-	clamp	(px,-32767,32767);	Dest.x = s16	(px);
-	clamp	(py,0,     65535);	Dest.y = u16	(py);
-	clamp	(pz,-32767,32767);	Dest.z = s16	(pz);
+	int pxz	= iFloor((Psrc.x - H.aabb.min.x)*sp + EPS_L + .5f)*iFloor((Psrc.z - H.aabb.min.z)*sp   + EPS_L + .5f);
+	int py	= iFloor(65535.f*(Psrc.y-H.aabb.min.y)/(H.size_y)+EPS_L);
+	clamp	(pxz,0,(1 << 24) - 1);	Pdest.xz = pxz;
+	clamp	(py,0,     65535);	Pdest.y = u16	(py);
 }
 
 IC BYTE	CompressCover(float c)

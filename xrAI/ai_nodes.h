@@ -59,15 +59,16 @@ public:
 	float		m_fSize2;
 	float		m_fYSize2;
 	NodeCompressed	*m_tpNode;
+	float		m_sqr_distance_xz;
 
 
-	IC CAIMapShortestPathNode(SAIMapData &tAIMapData)
+	IC CAIMapShortestPathNode(const SAIMapData &tAIMapData)
 	{
 		tData					= tAIMapData;
-		NodeCompressed &tNode1	= *tData.m_tpAI_Map->Node(tData.dwFinishNode);
-		x3						= (int)(tNode1.p.x);
+		const NodeCompressed	&tNode1	= *tData.m_tpAI_Map->Node(tData.dwFinishNode);
+		tData.m_tpAI_Map->unpack_xz(tNode1,x3,z3);
+		m_sqr_distance_xz		= _sqr(tData.m_tpAI_Map->m_header.size);
 		y3						= (float)(tNode1.p.y);
-		z3						= (int)(tNode1.p.z);
 		m_fSize2				= tData.m_tpAI_Map->m_fSize2;
 		m_fYSize2				= tData.m_tpAI_Map->m_fYSize2;
 	}
@@ -76,11 +77,10 @@ public:
 	{
 		tData.m_tpAI_Map->begin	(dwNode,tIterator,tEnd);
 		m_tpNode				= tData.m_tpAI_Map->Node(dwNode);
-		NodeCompressed &tNode0	= *m_tpNode;
+		const NodeCompressed	&tNode0	= *m_tpNode;
 
-		x1 = (int)(tNode0.p.x);
-		y1 = (float)(tNode0.p.y);
-		z1 = (int)(tNode0.p.z);
+//		tData.m_tpAI_Map->unpack_xz(tNode0,x1,z1);
+		y1						= (float)(tNode0.p.y);
 	}
 
 	IC u32 get_value(const_iterator &tIterator)
@@ -95,29 +95,27 @@ public:
 
 	IC float ffEvaluate(u32 dwStartNode, u32 dwFinishNode, const_iterator &tIterator)
 	{
-		NodeCompressed &tNode1 = *tData.m_tpAI_Map->Node(dwFinishNode);
+		const NodeCompressed	&tNode1 = *tData.m_tpAI_Map->Node(dwFinishNode);
 
-		x2 = (int)(tNode1.p.x);
-		y2 = (float)(tNode1.p.y);
-		z2 = (int)(tNode1.p.z);
+//		tData.m_tpAI_Map->unpack_xz(tNode1,x2,z2);
+		y2						= (float)(tNode1.p.y);
 
-		return(_sqrt((float)(m_fSize2*float(_sqr(x2 - x1) + _sqr(z2 - z1)) + m_fYSize2*_sqr(y2 - y1))));
+		return					(_sqrt(m_fYSize2*_sqr(y2 - y1) + m_sqr_distance_xz));
 	}
 
 	IC float ffAnticipate(u32 dwStartNode)
 	{
-		NodeCompressed &tNode0 = *tData.m_tpAI_Map->Node(dwStartNode);
+		const NodeCompressed	&tNode0 = *tData.m_tpAI_Map->Node(dwStartNode);
 		
-		x2 = (int)(tNode0.p.x);
-		y2 = (float)(tNode0.p.y);
-		z2 = (int)(tNode0.p.z);
-		
-		return(_sqrt((float)(m_fSize2*float(_sqr(x3 - x2) + _sqr(z3 - z2)) + m_fYSize2*_sqr(y3 - y2))));
+		tData.m_tpAI_Map->unpack_xz(tNode0,x2,z2);
+		y2						= (float)(tNode0.p.y);
+
+		return					(_sqrt((float)(m_fSize2*float(_sqr(x3 - x2) + _sqr(z3 - z2)) + m_fYSize2*_sqr(y3 - y2))));
 	}
 
 	IC float ffAnticipate()
 	{
-		return(_sqrt((float)(m_fSize2*float(_sqr(x3 - x2) + _sqr(z3 - z2)) + m_fYSize2*_sqr(y3 - y2))));
+		return					(_sqrt((float)(m_fSize2*float(_sqr(x3 - x2) + _sqr(z3 - z2)) + m_fYSize2*_sqr(y3 - y2))));
 	}
 };
 

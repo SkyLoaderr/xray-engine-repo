@@ -55,9 +55,9 @@ template <
 				_iteration_type
 			> inherited;
 protected:
-	int					x1;
+//	int					x1;
 	float				y1;
-	int					z1;
+//	int					z1;
 	int					x2;
 	float				y2;
 	int					z2;
@@ -66,8 +66,9 @@ protected:
 	int					z3;
 	float				square_size_xz;
 	float				square_size_y;
-public:
+	float				m_sqr_distance_xz;
 
+public:
 	virtual				~CPathManager	()
 	{
 	}
@@ -95,32 +96,29 @@ public:
 		);
 		square_size_xz			= graph->m_fSize2;
 		square_size_y			= graph->m_fYSize2;
+		m_sqr_distance_xz		= _sqr(graph->m_header.size);
 	}
 
 	IC	void		init			()
 	{
-		_Graph::InternalNode	&tNode1	= *graph->Node(start_node_index);
-		x2						= (int)(tNode1.p.x);
+		const _Graph::InternalNode	&tNode1	= *graph->Node(start_node_index);
+		graph->unpack_xz		(tNode1,x2,z2);
 		y2						= (float)(tNode1.p.y);
-		z2						= (int)(tNode1.p.z);
 		
-		_Graph::InternalNode	&tNode2	= *graph->Node(goal_node_index);
-		x3						= (int)(tNode2.p.x);
+		const _Graph::InternalNode	&tNode2	= *graph->Node(goal_node_index);
+		graph->unpack_xz		(tNode2,x3,z3);
 		y3						= (float)(tNode2.p.y);
-		z3						= (int)(tNode2.p.z);
 	}
 
 	IC	_dist_type	evaluate		(const _index_type node_index1, const _index_type node_index2, const _Graph::const_iterator &i)
 	{
 		VERIFY					(graph);
 		
-		_Graph::InternalNode	&tNode1 = *graph->Node(node_index2);
+		const _Graph::InternalNode	&tNode1 = *graph->Node(node_index2);
 
-		x2						= (int)(tNode1.p.x);
 		y2						= (float)(tNode1.p.y);
-		z2						= (int)(tNode1.p.z);
 
-		return					(_sqrt((float)(square_size_xz*float(_sqr(x2 - x1) + _sqr(z2 - z1)) + square_size_y*(float)_sqr(y2 - y1))));
+		return					(_sqrt(square_size_y*(float)_sqr(y2 - y1) + m_sqr_distance_xz));
 	}
 
 	IC	_dist_type	estimate		(const _index_type node_index) const
@@ -136,9 +134,7 @@ public:
 		
 		_Graph::InternalNode	&tNode0 = *graph->Node(node_index);
 
-		x1						= (int)(tNode0.p.x);
 		y1						= (float)(tNode0.p.y);
-		z1						= (int)(tNode0.p.z);
 
 		return					(false);
 	}
