@@ -448,7 +448,9 @@ function DialogueFSM:__init ()
 end
 
 -- Adds a phrase to the FSM.
--- Args: is_repeatable, from_state, to_state, sound, {delay_range_from, [delay_range_to]}, [animation], [idling_animation])
+-- Args: is_repeatable, from_state, to_state, sound, {[delay_range_from, [delay_range_to]]}, [animation], [idling_animation])
+-- Примечание: если delay_range не задан вообще, персонаж ничего не будет делать пока не доиграет до конца idling_animation
+-- Если же delay_range задан (одним числом, или двумя, т.е. интервалом) - idling_animation будет прервана по истечении этого срока.
 function DialogueFSM:set(repeatable, from, to, snd, delay_after_snd, animat, delay_animat)
 	printf("DialogueFSM:set: snd=\"%s\"", if_then_else(snd, snd, "<nil>"))
 	local snd_obj = sound_object(snd)
