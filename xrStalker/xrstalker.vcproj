@@ -1219,6 +1219,12 @@
 				RelativePath=".\scripts\ui_options_dialog.script">
 			</File>
 			<File
+				RelativePath=".\scripts\ui_options_game_tab.script">
+			</File>
+			<File
+				RelativePath=".\scripts\ui_options_sound_tab.script">
+			</File>
+			<File
 				RelativePath=".\scripts\ui_options_video_tab.script">
 			</File>
 			<File
