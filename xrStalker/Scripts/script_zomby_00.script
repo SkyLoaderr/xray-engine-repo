@@ -18,7 +18,7 @@ function main()
 		stalker1,
 		  	move	(move.standing, move.walk,move.line,patrol("way0003")),
 			anim	(anim.free),
-			cond	(cond.time_end, 10000)
+			cond	(cond.time_end, 100000000)
 		)
 
 	while stalker1:action() do	
