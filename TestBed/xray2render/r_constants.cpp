@@ -95,9 +95,10 @@ BOOL	R_constant_table::parse	(D3DXSHADER_CONSTANTTABLE* desc, u16 destination)
 			R_constant_load& L	=	(destination&1)?C->ps:C->vs;
 			L.index				=	r_index;
 			L.cls				=	r_type;
+			table.push_back		(C);
 		} else {
 			C->destination		|=	destination;
-			VERIFY	(C->type	=	type);
+			VERIFY	(C->type	==	type);
 			R_constant_load& L	=	(destination&1)?C->ps:C->vs;
 			L.index				=	r_index;
 			L.cls				=	r_type;
