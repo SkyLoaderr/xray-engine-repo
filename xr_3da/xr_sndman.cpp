@@ -391,6 +391,8 @@ void	CSoundManager::DeleteStream			( CSoundStream* pSnd )
 
 BOOL CSoundManager::IsOccluded(	Fvector& P, float R, soundOccluder& occ )
 {
+	if (0==pGeometry)	return FALSE;
+
 	// Calculate RAY params
 	Fvector base	= Device.vCameraPosition;
 	Fvector	pos,dir;
