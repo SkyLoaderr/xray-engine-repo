@@ -48,12 +48,14 @@ function hit_by_actor(actor, npc)
 	local t = db.storage[npc:id()].hit
 	local hit_by_actor = t ~= nil and t.who == actor:id()
 	printf("_bp: hit_by_actor: %s", if_then_else(hit_by_actor, "true", "false"))
+	return hit_by_actor
 end
 
 function killed_by_actor(actor, npc)
 	local t = db.storage[npc:id()].death
 	local killed_by_actor = t ~= nil and t.killer == actor:id()
 	printf("_bp: killed_by_actor: %s", if_then_else(killed_by_actor, "true", "false"))
+	return killed_by_actor
 end
 
 function actor_has_weapon (actor, npc)
@@ -78,21 +80,21 @@ function mob_actor_nearest (actor, npc)
     return distance_between (actor, npc) < 20
 end    
 
-function actor_enemy(actor, npc)
+function fighting_actor(actor, npc)
 	return db.storage[npc:id()].enemy:id() == actor:id()
 end
 
-function val_enemy_captive(actor, npc)
+function val_fighting_captive(actor, npc)
 	-- FIXME: use SID!!!
 	return db.storage[npc:id()].enemy:name() == "val_escort_captive"
 end    
 
-function val_enemy_sacrifice_victim(actor, npc)
+function val_fighting_sacrifice_victim(actor, npc)
 	-- FIXME: use SID!!!
 	return db.storage[npc:id()].enemy:name() == "val_sacrifice_victim"
 end    
 
-function val_enemy_prisoner(actor, npc)
+function val_fighting_prisoner(actor, npc)
 	-- FIXME: use SID!!!
 	return db.storage[npc:id()].enemy:name() == "val_prisoner_captive"
 end    

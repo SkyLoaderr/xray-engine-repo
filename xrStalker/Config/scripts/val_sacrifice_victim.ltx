@@ -22,3 +22,13 @@ snd = help
 combat_ignore_cond = always
 combat_ignore_keep_when_attacked = true
 on_info = {+val_sacrifice_flee} walker@flee
+
+[walker@flee]
+path_walk = val_sacrifice_victim_flee_walk
+path_look = val_sacrifice_victim_flee_look
+def_state_moving1 = sprint
+def_state_moving2 = sprint
+def_state_moving3 = sprint
+combat_ignore_cond = always
+combat_ignore_keep_when_attacked = true
+on_signal = escaped | %+val_sacrifice_victim_escaped%

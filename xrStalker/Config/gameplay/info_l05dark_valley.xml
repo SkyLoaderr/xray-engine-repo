@@ -37,12 +37,12 @@
 <!-- Жертвоприношение -->
 <info_portion id="val_sacrifice_start"></info_portion>
 <info_portion id="val_sacrifice_finish"></info_portion>
-
-<!-- Игрок нашел флешку Борова -->
-<info_portion id="val_player_knows_password"></info_portion>
-
+<info_portion id="val_sacrifice_victim_escaped"></info_portion>
 <info_portion id="val_sacrifice_flee"></info_portion>
 <info_portion id="val_sacrifice_near_pit"></info_portion>
 <info_portion id="val_sacrifice_victim_killed"></info_portion>
+
+<!-- Игрок нашел флешку Борова -->
+<info_portion id="val_player_knows_password"></info_portion>
 
 </game_information_portions>

@@ -11,9 +11,10 @@ function action_process_enemy:__init( obj, storage )
 end
 
 function action_process_enemy:enemy_callback( obj, enemy )
---	printf( "ENEMY_CALLBACK obj='%s', enemy='%s'", obj:name(), enemy:name() )
+	printf( "ENEMY_CALLBACK obj='%s', enemy='%s'", obj:name(), enemy:name() )
 
 	if not self.st.enabled then
+		printf( "true (disabled)" )
 		return true
 	end
 
@@ -34,11 +35,11 @@ function action_process_enemy:enemy_callback( obj, enemy )
 	   db.actor and
 	   xr_logic.pick_section_from_condlist( db.actor, obj, overrides.combat_ignore.condlist ) ~= nil
 	then
---		printf( "false" )
+		printf( "false" )
 		return false
 	end
 
---	printf( "true" )
+	printf( "true" )
 	return true
 end
 

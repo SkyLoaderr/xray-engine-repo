@@ -18,6 +18,7 @@ function ph_button:reset_scheme()
 
 	self.last_hit_tm = device():time_global()
 	self.object:set_callback(callback.hit, self.hit_callback, self)
+	self.object:set_callback(callback.use_object, self.use_callback, self)
 end
 
 function ph_button:update(delta)
@@ -33,6 +34,17 @@ function ph_button:hit_callback(obj, amount, local_direction, who, bone_index)
 			end
 		end
 		self.last_hit_tm = device():time_global()
+	end
+end
+
+function ph_button:use_callback(victim, who)
+	printf("_bp: ph_button:use_callback: [%s] used by [%s]",
+		victim:name(), who:name())
+
+	if db.storage[self.object:id()].active_scheme then
+		if xr_logic.try_switch_to_another_section(victim, self.st, db.actor) then
+			return
+		end
 	end
 end
 
