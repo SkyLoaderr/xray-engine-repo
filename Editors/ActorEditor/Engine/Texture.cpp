@@ -439,8 +439,9 @@ ENGINE_API IDirect3DBaseTexture9*	TWLoader2D
 	// make file name
 	char fname[_MAX_PATH];
 	strcpy(fname,fRName); if (strext(fname)) *strext(fname)=0;
-	if (FS.exist(fn,"$game_textures$",fname,	".dds"))	goto _DDS;
-//T	if (FS.Exist(fn,Path.Current,fname,	".dds"))	goto _DDS;
+	if (FS.exist(fn,"$level$",			fname,	".dds"))	goto _DDS;
+	if (FS.exist(fn,"$game_textures$",	fname,	".dds"))	goto _DDS;
+
 #ifdef _EDITOR
 	ELog.Msg(mtError,"Can't find texture '%s'",fname);
 #else
