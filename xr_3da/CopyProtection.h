@@ -1,7 +1,7 @@
 #pragma once
 
 #ifndef DEBUG
-// #define USE_COPYPROTECTION
+#define USE_COPYPROTECTION
 #endif
 
 // [4/28/2004]
