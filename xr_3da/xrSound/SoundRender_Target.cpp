@@ -116,7 +116,12 @@ void	CSoundRender_Target::render			()
 	fill_block		();
 
 	R_CHK			(pBuffer->SetCurrentPosition	(0));
-	R_CHK			(pBuffer->Play(0,0,DSBPLAY_LOOPING));
+	HRESULT _hr		= pBuffer->Play(0,0,DSBPLAY_LOOPING);
+	if (DSERR_BUFFERLOST==_hr)	{
+		R_CHK(pBuffer->Restore());
+		R_CHK(pBuffer->Play(0,0,DSBPLAY_LOOPING));
+	}
+	R_CHK			(_hr);
 	rendering		= TRUE;
 }
 

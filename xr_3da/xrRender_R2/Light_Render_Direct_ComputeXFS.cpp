@@ -26,7 +26,7 @@ void CLight_Render_Direct::compute_xfs_1	(u32 m_phase, light* L)
 
 	// Compute approximate screen area (treating it as an point light) - R*R/dist_sq
 	L->X.S.posX	= L->X.S.posY	= 0;
-	L->X.S.size					= DSM_size
+	L->X.S.size					= DSM_size;
 	float	dist				= Device.vCameraPosition.distance_to(L->position)-L->range;
 	float	ssa					= 0.5f * L->range*L->range / ((dist<=EPS)?EPS:dist*dist);
 	if		(ssa >= 1)			L->X.S.size		= DSM_size;
