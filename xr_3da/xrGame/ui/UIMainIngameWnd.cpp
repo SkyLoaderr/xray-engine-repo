@@ -24,9 +24,8 @@ using namespace InventoryUtilities;
 
 
 //hud adjust mode
-int				g_bHudAdjustMode	= 0;
-float			g_fHudAdjustValue		= 0.0f;
-
+int				g_bHudAdjustMode			= 0;
+float			g_fHudAdjustValue			= 0.0f;
 
 #define RADIATION_ABSENT 0.25f
 #define RADIATION_SMALL 0.5f
@@ -386,91 +385,148 @@ void CUIMainIngameWnd::Update()
 bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 {
 	// поддержка режима adjust hud mode
-
 	if (m_pWeapon && g_bHudAdjustMode)
 	{
 		CWeaponHUD *pWpnHud = m_pWeapon->GetHUD();
 		if (!pWpnHud) return false;
 
 		Fvector tmpV;
-		tmpV = pWpnHud->ZoomOffset();
 		bool flag = false;
 
-		switch (dik)
+		if (1 == g_bHudAdjustMode)
 		{
-			// Rotate +y
-		case DIK_K:
-			pWpnHud->SetZoomRotateX(pWpnHud->ZoomRotateX() + g_fHudAdjustValue);
-			flag = true;
-			break;
-			// Rotate -y
-		case DIK_I:
-			pWpnHud->SetZoomRotateX(pWpnHud->ZoomRotateX() - g_fHudAdjustValue);
-			flag = true;
-			break;
-			// Rotate +x
-		case DIK_L:
-			pWpnHud->SetZoomRotateY(pWpnHud->ZoomRotateY() + g_fHudAdjustValue);
-			flag = true;
-			break;
-			// Rotate -x
-		case DIK_J:
-			pWpnHud->SetZoomRotateY(pWpnHud->ZoomRotateY() - g_fHudAdjustValue);
-			flag = true;
-			break;
-			// Shift +x
-		case DIK_W:
-			tmpV.y = pWpnHud->ZoomOffset().y + g_fHudAdjustValue;
-			flag = true;
-			break;
-			// Shift -y
-		case DIK_S:
-			tmpV.y = pWpnHud->ZoomOffset().y - g_fHudAdjustValue;
-			flag = true;
-			break;
-			// Shift +x
-		case DIK_D:
-			tmpV.x = pWpnHud->ZoomOffset().x + g_fHudAdjustValue;
-			flag = true;
-			break;
-			// Shift -x
-		case DIK_A:
-			tmpV.x = pWpnHud->ZoomOffset().x - g_fHudAdjustValue;
-			flag = true;
-			break;
-			// Shift +z
-		case DIK_Q:
-			tmpV.z = pWpnHud->ZoomOffset().z + g_fHudAdjustValue;
-			flag = true;
-			break;
-			// Shift -z
-		case DIK_E:
-			tmpV.z = pWpnHud->ZoomOffset().z - g_fHudAdjustValue;
-			flag = true;
-			break;
-			// output coordinate info to the console
-		case DIK_P:
-			string256 tmpStr;
-			sprintf(tmpStr, "%s",
+			tmpV = pWpnHud->ZoomOffset();
+
+			switch (dik)
+			{
+				// Rotate +y
+			case DIK_K:
+				pWpnHud->SetZoomRotateX(pWpnHud->ZoomRotateX() + g_fHudAdjustValue);
+				flag = true;
+				break;
+				// Rotate -y
+			case DIK_I:
+				pWpnHud->SetZoomRotateX(pWpnHud->ZoomRotateX() - g_fHudAdjustValue);
+				flag = true;
+				break;
+				// Rotate +x
+			case DIK_L:
+				pWpnHud->SetZoomRotateY(pWpnHud->ZoomRotateY() + g_fHudAdjustValue);
+				flag = true;
+				break;
+				// Rotate -x
+			case DIK_J:
+				pWpnHud->SetZoomRotateY(pWpnHud->ZoomRotateY() - g_fHudAdjustValue);
+				flag = true;
+				break;
+				// Shift +x
+			case DIK_W:
+				tmpV.y += g_fHudAdjustValue;
+				flag = true;
+				break;
+				// Shift -y
+			case DIK_S:
+				tmpV.y -= g_fHudAdjustValue;
+				flag = true;
+				break;
+				// Shift +x
+			case DIK_D:
+				tmpV.x += g_fHudAdjustValue;
+				flag = true;
+				break;
+				// Shift -x
+			case DIK_A:
+				tmpV.x -= g_fHudAdjustValue;
+				flag = true;
+				break;
+				// Shift +z
+			case DIK_Q:
+				tmpV.z += g_fHudAdjustValue;
+				flag = true;
+				break;
+				// Shift -z
+			case DIK_E:
+				tmpV.z -= g_fHudAdjustValue;
+				flag = true;
+				break;
+				// output coordinate info to the console
+			case DIK_P:
+				string256 tmpStr;
+				sprintf(tmpStr, "%s",
 					*m_pWeapon->cNameSect());
-			Log(tmpStr);
-			sprintf(tmpStr, "zoom_offset\t\t\t= %f,%f,%f",
+				Log(tmpStr);
+				sprintf(tmpStr, "zoom_offset\t\t\t= %f,%f,%f",
 					pWpnHud->ZoomOffset().x,
 					pWpnHud->ZoomOffset().y,
 					pWpnHud->ZoomOffset().z);
-			Log(tmpStr);
-			sprintf(tmpStr, "zoom_rotate_x\t\t= %f",
-				pWpnHud->ZoomRotateX());
-			Log(tmpStr);
-			sprintf(tmpStr, "zoom_rotate_y\t\t= %f",
-				pWpnHud->ZoomRotateY());
-			Log(tmpStr);
-			flag = true;
-			break;
-		}
+				Log(tmpStr);
+				sprintf(tmpStr, "zoom_rotate_x\t\t= %f",
+					pWpnHud->ZoomRotateX());
+				Log(tmpStr);
+				sprintf(tmpStr, "zoom_rotate_y\t\t= %f",
+					pWpnHud->ZoomRotateY());
+				Log(tmpStr);
+				flag = true;
+				break;
+			}
 
-		if (tmpV.x || tmpV.y)
-			pWpnHud->SetZoomOffset(tmpV);
+			if (tmpV.x || tmpV.y || tmpV.z)
+				pWpnHud->SetZoomOffset(tmpV);
+		}
+		else
+		{
+			tmpV = pWpnHud->FirePoint();
+
+			switch (dik)
+			{
+				// Shift +x
+			case DIK_A:
+				tmpV.y += g_fHudAdjustValue;
+				flag = true;
+				break;
+				// Shift -x
+			case DIK_D:
+				tmpV.y -= g_fHudAdjustValue;
+				flag = true;
+				break;
+				// Shift +z
+			case DIK_Q:
+				tmpV.x += g_fHudAdjustValue;
+				flag = true;
+				break;
+				// Shift -z
+			case DIK_E:
+				tmpV.x -= g_fHudAdjustValue;
+				flag = true;
+				break;
+				// Shift +y
+			case DIK_S:
+				tmpV.z += g_fHudAdjustValue;
+				flag = true;
+				break;
+				// Shift -y
+			case DIK_W:
+				tmpV.z -= g_fHudAdjustValue;
+				flag = true;
+				break;
+				// output coordinate info to the console
+			case DIK_P:
+				string256 tmpStr;
+				sprintf(tmpStr, "%s",
+					*m_pWeapon->cNameSect());
+				Log(tmpStr);
+				sprintf(tmpStr, "fire_point\t\t\t= %f,%f,%f",
+					pWpnHud->FirePoint().x,
+					pWpnHud->FirePoint().y,
+					pWpnHud->FirePoint().z);
+				Log(tmpStr);
+				flag = true;
+				break;
+			}
+
+			if (tmpV.x || tmpV.y || tmpV.z)
+				pWpnHud->SetFirePoint(tmpV);
+		}
 
 		if (flag) return true;
 	}
@@ -556,13 +612,13 @@ void CUIMainIngameWnd::RenderQuickInfos()
 
 	UIStaticQuickHelp.SetTextColor(0x00000000);
 
-	if (pObject)
+	if (pObject && m_pActor->GetDefaultActionForObject())
 	{
 		if (fuzzyShowInfo>0.5f)
 		{
 			UIStaticQuickHelp.SetTextColor(subst_alpha(C,u8(iFloor(255.f*(fuzzyShowInfo-0.5f)*2.f))));
 			strconcat(text, *pObject->cName(), ": ");
-			strconcat(text, text, *m_strTips[0]);
+			strconcat(text, text, *m_strTips[m_pActor->GetDefaultActionForObject()]);
 			UIStaticQuickHelp.SetText(text);
 		}
 		fuzzyShowInfo += SHOW_INFO_SPEED*Device.fTimeDelta;
