@@ -39,6 +39,7 @@ DEFINE_VECTOR(AnsiString,AStringVec,AStringIt);
 #endif
 
 #define GAMEMTL_NONE		u32(-1)
+#define _game_data_ "$game_data$"
 
 #pragma comment(lib,"xrCore.lib")
 
