@@ -11,7 +11,7 @@ function main ()
 	
     wait (10000)
 
-	action (stalker1, anim ("sidya_kurit_2"), look (look.direction, stalker3), cond (cond.anim_end))
+	action (stalker1, anim ("sidya_kurit_2"), cond (cond.anim_end)) --look (look.direction, stalker3)
 	action (stalker3, anim ("spit_ 0"), look (look.direction, stalker1), cond (cond.time_end, time_infinite))
     printf ("Bazar1 start")
 	action (stalker2, sound ("scripts\\rolik\\story1", "bip01_head", vector ():set (0, 0, 0), vector ():set (0, 0, 0), false),
