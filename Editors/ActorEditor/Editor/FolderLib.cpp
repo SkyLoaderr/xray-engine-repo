@@ -139,25 +139,28 @@ TElTreeItem* CFolderHelper::FindItemInFolder(TElTree* tv, TElTreeItem* start_fol
 
 TElTreeItem* CFolderHelper::FindItem(TElTree* tv, LPCSTR full_name, TElTreeItem** last_valid_node, int* last_valid_idx)
 {
-	int cnt = _GetItemCount(full_name,'\\');
-    if (cnt<=0) return 0;
+	if (full_name&&full_name[0]){
+        int cnt = _GetItemCount(full_name,'\\');
+        if (cnt<=0) return 0;
 
-    // find folder item
-    int itm = 0;
-	char fld[64];
-	TElTreeItem* node = 0;
-    TElTreeItem* last_node = 0;
-    do{
-    	_GetItem(full_name,itm++,fld,'\\');
-        last_node = node;
-        node = FindItemInFolder(tv,node,fld);
-    }while (node&&(itm<cnt));
+        // find folder item
+        int itm = 0;
+        char fld[64];
+        TElTreeItem* node = 0;
+        TElTreeItem* last_node = 0;
+        do{
+            _GetItem(full_name,itm++,fld,'\\');
+            last_node = node;
+            node = FindItemInFolder(tv,node,fld);
+        }while (node&&(itm<cnt));
 
-    if(!node){
-		if (last_valid_node) *last_valid_node=last_node;
-        if (last_valid_idx) *last_valid_idx=--itm;
-    }
-    return node;
+        if(!node){
+            if (last_valid_node) *last_valid_node=last_node;
+            if (last_valid_idx) *last_valid_idx=--itm;
+        }
+        return node;
+    }else
+    	return 0;
 }
 //---------------------------------------------------------------------------
 
@@ -540,8 +543,8 @@ TElTreeItem* CFolderHelper::ExpandItem(TElTree* tv, LPCSTR full_name)
 }
 TElTreeItem* CFolderHelper::RestoreSelection(TElTree* tv, TElTreeItem* node)
 {
+	tv->Selected 			= node;
 	if (node){
-	    tv->Selected 		= node;
 		tv->EnsureVisible	(node);
     }
     return node;

@@ -265,6 +265,11 @@ public:
     {
     	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_GAMEMTL);
     }
+    IC ButtonValue*		CreateButton	(PropItemVec& items, LPCSTR key, AnsiString val)
+    {
+    	return			(ButtonValue*)	AppendValue		(items,key,xr_new<ButtonValue>(val),PROP_BUTTON);
+    }
+    
 	void 				DrawThumbnail	(TCanvas *Surface, TRect &R, LPCSTR fname);
 };
 //---------------------------------------------------------------------------

@@ -29,33 +29,32 @@ CShaderTools::~CShaderTools()
 }
 //---------------------------------------------------------------------------
 
-void CShaderTools::OnChangeEditor()
+void CShaderTools::OnChangeEditor(ISHTools* tools)
 {
-	switch (ActiveEditor()){
-    case aeEngine: 		SEngine.UpdateProperties(); 	break;
-    case aeCompiler: 	SCompiler.UpdateProperties(); 	break;
-    case aeMaterial:	SMaterial.UpdateProperties(); 	break;
-    case aeMaterialPair:SMaterial.UpdateProperties(); 	break;
-    };
+	if (m_Current) m_Current->OnDeactivate();
+	m_Current = tools; R_ASSERT(m_Current);
+	m_Current->OnActivate();
+	Current()->UpdateProperties();
 }
 //---------------------------------------------------------------------------
 
-EActiveEditor CShaderTools::ActiveEditor()
-{
-	if (fraLeftBar->pcShaders->ActivePageIndex==aeEngine) 			return aeEngine;
-	else if (fraLeftBar->pcShaders->ActivePageIndex==aeCompiler)	return aeCompiler;
-    else if (fraLeftBar->pcShaders->ActivePageIndex==aeMaterial) 	return aeMaterial;
-    else if (fraLeftBar->pcShaders->ActivePageIndex==aeMaterialPair)return aeMaterialPair;
+bool CShaderTools::IfModified()
+{	
+	for (ToolsIt it=m_Tools.begin(); it!=m_Tools.end(); it++)
+    	if (!(*it)->IfModified()) return false;
+	return true;
 }
-//---------------------------------------------------------------------------
 
-void CShaderTools::Modified(){
-    switch (ActiveEditor()){
-    case aeEngine: 		SEngine.Modified(); 	break;
-    case aeCompiler: 	SCompiler.Modified(); 	break;
-    case aeMaterial:	SMaterial.Modified();	break;
-    case aeMaterialPair:SMaterial.Modified();	break;
-    }
+bool CShaderTools::IsModified()
+{
+	for (ToolsIt it=m_Tools.begin(); it!=m_Tools.end(); it++)
+    	if ((*it)->IsModified()) return true;
+	return false;
+}
+
+void CShaderTools::Modified()
+{
+	Current()->Modified();
 }
 //---------------------------------------------------------------------------
 
@@ -80,10 +79,14 @@ bool CShaderTools::OnCreate(){
 	//
     Device.seqDevCreate.Add(this);
     Device.seqDevDestroy.Add(this);
-	SEngine.OnCreate();
-    SCompiler.OnCreate();
-    SMaterial.OnCreate();
-	// lock
+
+    // create tools
+    RegisterTools		();
+
+	for (ToolsIt it=m_Tools.begin(); it!=m_Tools.end(); it++)
+    	if (!(*it)->OnCreate()) return false;
+
+   	// lock
     EFS.LockFile(0,sh_fn.c_str());
     EFS.LockFile(0,lc_fn.c_str());
     EFS.LockFile(0,gm_fn.c_str());
@@ -102,32 +105,24 @@ void CShaderTools::OnDestroy()
     Lib.RemoveEditObject(m_EditObject);
     Device.seqDevCreate.Remove(this);
     Device.seqDevDestroy.Remove(this);
-	SEngine.OnDestroy();
-    SCompiler.OnDestroy();
-    SMaterial.OnDestroy();
+	for (ToolsIt it=m_Tools.begin(); it!=m_Tools.end(); it++)
+    	(*it)->OnDestroy();
 }
 
-void CShaderTools::Render(){
+void CShaderTools::Render()
+{
+	Current()->OnRender();
 	if (m_EditObject) m_EditObject->RenderSingle(Fidentity);
 }
 
-void CShaderTools::OnFrame(){
-	switch (ActiveEditor()){
-	case aeEngine:
-    	if (m_EditObject) m_EditObject->OnFrame();
-	    SEngine.Update();
-    break;
-	case aeCompiler:
-    	SCompiler.Update();
-    break;
-    case aeMaterial:
-    case aeMaterialPair:
-    	SMaterial.OnFrame();
-    break;
-    };
+void CShaderTools::OnFrame()
+{
+	Current()->OnFrame();
+	if (m_EditObject) m_EditObject->OnFrame();
 }
 
-void CShaderTools::ZoomObject(bool bOnlySel){
+void CShaderTools::ZoomObject(bool bOnlySel)
+{
 	if (m_EditObject){
         Device.m_Camera.ZoomExtents(m_EditObject->GetBox());
     }else{
@@ -137,7 +132,8 @@ void CShaderTools::ZoomObject(bool bOnlySel){
     }
 }
 
-void CShaderTools::OnDeviceCreate(){
+void CShaderTools::OnDeviceCreate()
+{
     // add directional light
     Flight L;
     ZeroMemory(&L,sizeof(Flight));
@@ -167,13 +163,19 @@ void CShaderTools::OnDeviceCreate(){
 	Device.SetLight(4,L);
 	Device.LightEnable(4,true);
 
-    SEngine.ResetShaders();
+	for (ToolsIt it=m_Tools.begin(); it!=m_Tools.end(); it++)
+    	(*it)->OnDeviceCreate();
+//.    SEngine.ResetShaders();
 }
 
-void CShaderTools::OnDeviceDestroy(){
+void CShaderTools::OnDeviceDestroy()
+{
+	for (ToolsIt it=m_Tools.begin(); it!=m_Tools.end(); it++)
+    	(*it)->OnDeviceDestroy();
 }
 
-void CShaderTools::SelectPreviewObject(int p){
+void CShaderTools::SelectPreviewObject(int p)
+{
     LPCSTR fn;
     m_bCustomEditObject	= false;
     switch(p){
@@ -220,8 +222,10 @@ void CShaderTools::OnShowHint(AStringVec& ss){
     }
 }
 
-void CShaderTools::UpdateObjectShader(){
-    // apply this shader to non custom object
+void CShaderTools::UpdateObjectShader()
+{
+//.
+/*    // apply this shader to non custom object
 	if (m_EditObject&&!m_bCustomEditObject){
     	CSurface* surf = *m_EditObject->FirstSurface(); R_ASSERT(surf);
         string512 tex; strcpy(tex,surf->_Texture());
@@ -231,14 +235,12 @@ void CShaderTools::UpdateObjectShader(){
         UI.RedrawScene();
 		m_EditObject->OnDeviceDestroy();
     }
+*/
 }
 
 void CShaderTools::ApplyChanges()
 {
-    if (ActiveEditor()==aeEngine)			SEngine.ApplyChanges();
-    else if (ActiveEditor()==aeCompiler)	SCompiler.ApplyChanges();
-    else if (ActiveEditor()==aeMaterial)	SMaterial.ApplyChanges();
-    else if (ActiveEditor()==aeMaterialPair)SMaterial.ApplyChanges();
+	Current()->ApplyChanges();
 }
 
 void CShaderTools::ShowProperties()
@@ -257,4 +259,54 @@ LPCSTR CShaderTools::GetInfo()
 {
 	return 0;
 }
+
+ISHTools* CShaderTools::FindTools(EToolsID id)
+{
+	for (ToolsIt it=m_Tools.begin(); it!=m_Tools.end(); it++)
+    	if ((*it)->ID()==id) return *it;
+    return 0;
+}
+
+ISHTools* CShaderTools::FindTools(TElTabSheet* sheet)
+{
+	for (ToolsIt it=m_Tools.begin(); it!=m_Tools.end(); it++)
+    	if ((*it)->Sheet()==sheet) return *it;
+    return 0;
+}
+
+void CShaderTools::Save()
+{
+    for (ToolsIt it=m_Tools.begin(); it!=m_Tools.end(); it++)
+        (*it)->Save();
+}
+
+void CShaderTools::Reload()
+{
+	if (!Current()->IfModified()) return;
+    if (ELog.DlgMsg(mtConfirmation,"Reload current items?")==mrYes)
+        Current()->Reload();
+}
+
+#include "SHGameMtlTools.h"
+#include "SHGameMtlPairTools.h"
+#include "SHCompilerTools.h"
+#include "SHEngineTools.h"
+#include "SHSoundEnvTools.h"
+
+void CShaderTools::RegisterTools()
+{
+	for (int k=aeFirstTool; k<aeMaxTools; k++){	
+    	ISHTools* tools = 0;
+		switch(k){
+//		case aeEngine:		tools = xr_new<CSHEngineTools>(tvEngine,aeEngine); break;
+    	case aeCompiler:	tools = xr_new<CSHCompilerTools>	(aeCompiler,fraLeftBar->tvCompiler_,	fraLeftBar->pmListCommand,	fraLeftBar->tsCompiler, m_Props);	break;
+    	case aeMtl:			tools = xr_new<CSHGameMtlTools>		(aeMtl,		fraLeftBar->tvMtl_,		fraLeftBar->pmListCommand,fraLeftBar->tsMaterial,m_Props);	break;
+    	case aeMtlPair:		tools = xr_new<CSHGameMtlPairTools>	(aeMtlPair,	fraLeftBar->tvMtlPair_,	fraLeftBar->pmListCommand,fraLeftBar->tsMaterialPair,m_Props);	break;
+    	case aeSoundEnv:	tools = xr_new<CSHSoundEnvTools>	(aeSoundEnv,fraLeftBar->tvSoundEnv_,	fraLeftBar->pmListCommand,fraLeftBar->tsSoundEnv,m_Props);	break;
+        }
+        
+		m_Tools.push_back(tools);
+    }
+}
+
 

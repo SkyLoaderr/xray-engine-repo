@@ -183,8 +183,9 @@ void EFS_Utils::MarkFile(const AnsiString& fn, bool bDeleteSource)
 
 void EFS_Utils::BackupFile(LPCSTR initial, const AnsiString& fname)
 {
-	AnsiString src_name=fname.c_str(); 
-    if (initial) FS.update_path(src_name,initial,fname.c_str());
+    R_ASSERT(initial);
+	AnsiString src_name; 
+    FS.update_path(src_name,initial,fname.c_str());
     if (FS.exist(src_name.c_str())){
         AnsiString 			dst_name;
         FS_Path* P 			= FS.get_path(initial);
@@ -274,7 +275,7 @@ BOOL EFS_Utils::LockFile(LPCSTR initial, LPSTR fname, bool bLog)
         	LPSTR lp_fn=fn;
 			std::pair<HANDLEPairIt, bool> I=m_LockFiles.insert(std::make_pair(lp_fn,handle));
             R_ASSERT(I.second);
-            RegisterAccess(fname,"Lock",bLog);
+            RegisterAccess(fn,"Lock",bLog);
             bRes=true;
         }
     }

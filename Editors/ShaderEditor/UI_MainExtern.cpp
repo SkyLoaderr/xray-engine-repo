@@ -19,34 +19,20 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 	string256 filebuffer;
 	switch (_Command){
 	case COMMAND_SAVE:
-    	Tools.SEngine.Save();
-    	Tools.SCompiler.Save();
-    	Tools.SMaterial.Save();
-		Command(COMMAND_UPDATE_CAPTION);
+    	Tools.Save	();
+		Command		(COMMAND_UPDATE_CAPTION);
     	break;
     case COMMAND_SAVE_BACKUP:
-		Command(COMMAND_SAVE);
+		Command		(COMMAND_SAVE);
     	break;
     case COMMAND_RELOAD:
-    	if (Tools.ActiveEditor()==aeEngine){
-	    	if (!Tools.SEngine.IfModified()) return false;
-            if (ELog.DlgMsg(mtConfirmation,"Reload shaders?")==mrYes)
-                Tools.SEngine.Reload();
-    	}else if (Tools.ActiveEditor()==aeCompiler){
-	    	if (!Tools.SCompiler.IfModified()) return false;
-            if (ELog.DlgMsg(mtConfirmation,"Reload shaders?")==mrYes)
-                Tools.SCompiler.Reload();
-        }else if ((Tools.ActiveEditor()==aeMaterial)||(Tools.ActiveEditor()==aeMaterialPair)){
-	    	if (!Tools.SMaterial.IfModified()) return false;
-            if (ELog.DlgMsg(mtConfirmation,"Reload materials?")==mrYes)
-                Tools.SMaterial.Reload();
-        }
-		Command(COMMAND_UPDATE_CAPTION);
+    	Tools.Save	();
+		Command		(COMMAND_UPDATE_CAPTION);
     	break;
 	case COMMAND_CLEAR:
         Device.m_Camera.Reset();
         Tools.ResetPreviewObject();
-        Command(COMMAND_UPDATE_CAPTION);
+        Command		(COMMAND_UPDATE_CAPTION);
 		break;
 	case COMMAND_RESET_ANIMATION:
    		break;

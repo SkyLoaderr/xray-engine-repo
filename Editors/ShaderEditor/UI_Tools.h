@@ -2,22 +2,13 @@
 #ifndef UI_ToolsH
 #define UI_ToolsH
 
-#include "SHEngineTools.h"
-#include "SHCompilerTools.h"
-#include "SHGameMaterialTools.h"
+#include "SHToolsInterface.h"
 
 // refs
 class CEditableObject;
 class CLibObject;
 class CBlender;
 class TProperties;
-
-enum EActiveEditor{
-	aeEngine = 0,
-    aeCompiler,
-    aeMaterial,
-    aeMaterialPair
-};
 
 enum EAction{
     eaSelect=0,
@@ -40,11 +31,15 @@ class CShaderTools: public pureDeviceCreate, public pureDeviceDestroy
 	CEditableObject*	m_EditObject;
     bool				m_bCustomEditObject;
     EAction 			m_Action;
+
+    void				RegisterTools		();
 public:
     TProperties*		m_Props;
-    CSHEngineTools		SEngine;
-    CSHCompilerTools	SCompiler;
-    CSHGameMaterialTools SMaterial;
+
+    DEFINE_VECTOR		(ISHTools*,ToolsVec,ToolsIt);
+    ToolsVec			m_Tools;
+    ISHTools*			m_Current;
+    ISHTools*			Current				(){return m_Current;}
 public:
 						CShaderTools		();
     virtual 			~CShaderTools		();
@@ -56,8 +51,8 @@ public:
     bool				OnCreate			();
     void				OnDestroy			();
 
-    bool				IfModified			(){return SEngine.IfModified()&&SCompiler.IfModified()&&SMaterial.IfModified();}
-    bool				IsModified			(){return SEngine.IsModified()||SCompiler.IsModified()||SMaterial.IsModified();}
+    bool				IfModified			();
+    bool				IsModified			();
     void				Modified			();
 
     void				ZoomObject			(bool bOnlySel=false);
@@ -71,8 +66,7 @@ public:
     void				GetCurrentFog		(u32& fog_color, float& s_fog, float& e_fog);
     LPCSTR				GetInfo				();
 
-    EActiveEditor		ActiveEditor		();
-    void				OnChangeEditor		();
+    void				OnChangeEditor		(ISHTools* tools);
 
     void				UpdateObjectShader	();
 
@@ -97,6 +91,12 @@ public:
 	void				SetNumPosition		(CCustomObject* p1){;}
 	void				SetNumRotation		(CCustomObject* p1){;}
 	void				SetNumScale			(CCustomObject* p1){;}
+
+    ISHTools*			FindTools			(EToolsID id);
+    ISHTools*			FindTools			(TElTabSheet* sheet);
+
+    void				Save				();
+	void 				Reload				();
 };
 extern CShaderTools	Tools;
 //---------------------------------------------------------------------------

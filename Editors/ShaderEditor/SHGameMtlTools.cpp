@@ -2,52 +2,50 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "SHGameMaterialTools.h"
-#include "Blender.h"
-#include "UI_Tools.h"
+#include "SHGameMtlTools.h"
+#include "PropertiesListHelper.h"
 #include "ui_main.h"
-#include "LeftBar.h"
-#include "xr_trims.h"
 #include "folderlib.h"
+#include "UI_Tools.h"
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-CSHGameMaterialTools::CSHGameMaterialTools()
+CSHGameMtlTools::CSHGameMtlTools(EToolsID id, TElTree* tv, TMxPopupMenu* mn, TElTabSheet* sheet, TProperties* props):ISHTools(id,tv,mn,sheet,props)
 {
-    m_bModified 		= FALSE;
     m_Mtl 				= 0;
-    m_MtlPair 			= 0;
-    m_bUpdateCurrent	= false;
+    m_GameMtlPairTools	= 0;
 }
 
-CSHGameMaterialTools::~CSHGameMaterialTools()
+CSHGameMtlTools::~CSHGameMtlTools()
 {
 }
 //---------------------------------------------------------------------------
 
-void CSHGameMaterialTools::Modified()
+void CSHGameMtlTools::Modified()
 {
 	m_bModified=TRUE;
 	UI.Command(COMMAND_UPDATE_CAPTION);
 }
 //---------------------------------------------------------------------------
 
-void CSHGameMaterialTools::OnFrame()
+void CSHGameMtlTools::OnFrame()
 {
 }
 //---------------------------------------------------------------------------
 
-void CSHGameMaterialTools::OnCreate()
+bool CSHGameMtlTools::OnCreate()
 {
+	m_GameMtlPairTools	= Tools.FindTools(aeMtlPair); R_ASSERT(m_GameMtlPairTools);
     Load();
+    return true;
 }
 
-void CSHGameMaterialTools::OnDestroy()
+void CSHGameMtlTools::OnDestroy()
 {
     m_bModified = FALSE;
 }
 
-bool CSHGameMaterialTools::IfModified()
+bool CSHGameMtlTools::IfModified()
 {
     if (m_bModified){
         int mr = ELog.DlgMsg(mtConfirmation, "The materials has been modified.\nDo you want to save your changes?");
@@ -60,220 +58,160 @@ bool CSHGameMaterialTools::IfModified()
     return true;
 }
 
-void CSHGameMaterialTools::Reload()
+void CSHGameMtlTools::Reload()
 {
-	fraLeftBar->ClearItemList();
-    fraLeftBar->ClearItemList(); //. pair list
-    ResetCurrentMaterial();
+	ViewClearItemList();
+    ResetCurrentItem();
     Load();
 }
 
-void CSHGameMaterialTools::FillMtlsView()
+void CSHGameMtlTools::FillItemList()
 {
-	fraLeftBar->ClearItemList();
+    tvView->IsUpdating = true;
+	ViewClearItemList();
     for (GameMtlIt m_it=GMLib.FirstMaterial(); m_it!=GMLib.LastMaterial(); m_it++)
-        fraLeftBar->AddItem((*m_it)->name);
-}
-void CSHGameMaterialTools::FillMtlPairsView()
-{
-	fraLeftBar->ClearItemList();
-    for (GameMtlPairIt p_it=GMLib.FirstMaterialPair(); p_it!=GMLib.LastMaterialPair(); p_it++)
-        fraLeftBar->AddItem(GMLib.MtlPairToName((*p_it)->GetMtl0(),(*p_it)->GetMtl1()));
-	m_MtlPair=0;
+        ViewAddItem((*m_it)->name);
+    tvView->IsUpdating = false;
 }
 
-void CSHGameMaterialTools::Load()
+void CSHGameMtlTools::Load()
 {
 	AnsiString fn;
     FS.update_path		(fn,_game_data_,"gamemtl.xr");
 
-    m_bUpdateCurrent	= false;
-    fraLeftBar->tvMaterial->IsUpdating = true;
+    m_bLockUpdate		= TRUE;
 
     if (FS.exist(fn.c_str())){
     	GMLib.Load(fn.c_str());
-
-        FillMtlsView();
-        FillMtlPairsView();
-
-        ResetCurrentMaterial	();
+        FillItemList		();
+        ResetCurrentItem	();
     }else{
     	ELog.DlgMsg(mtInformation,"Can't find file '%s'",fn.c_str());
     }
 
-    fraLeftBar->tvMaterial->IsUpdating = false;
-	m_bUpdateCurrent			= true;
+	m_bLockUpdate		= FALSE;
 }
 
-void CSHGameMaterialTools::Save()
+void CSHGameMtlTools::Save()
 {
     AnsiString name;
-    FHelper.MakeFullName		(fraLeftBar->tvMaterial->Selected,0,name);
-	ResetCurrentMaterial		();
-	m_bUpdateCurrent			= false;
+    FHelper.MakeFullName(tvView->Selected,0,name);
+	ResetCurrentItem	();
+    m_bLockUpdate		= TRUE;
 
     // save
 	AnsiString fn;
-    FS.update_path				(fn,_game_data_,"gamemtl.xr");
+    FS.update_path		(fn,_game_data_,"gamemtl.xr");
+    EFS.UnlockFile		(0,fn.c_str(),false);
     // backup file
-    EFS.BackupFile				(0,fn);
+    EFS.BackupFile		(_game_data_,"gamemtl.xr");
     // save new file
-    EFS.UnlockFile				(0,fn.c_str(),false);
-    GMLib.Save					(fn.c_str());
-    EFS.LockFile				(0,fn.c_str(),false);
-	m_bUpdateCurrent			= true;
-	SetCurrentMaterial			(name.c_str());
+    GMLib.Save			(fn.c_str());
+    EFS.LockFile		(0,fn.c_str(),false);
+	m_bLockUpdate		= FALSE;
+	SetCurrentItem		(name.c_str());
 
     m_bModified	= FALSE;
 }
 
-SGameMtl* CSHGameMaterialTools::FindMaterial(LPCSTR name)
+SGameMtl* CSHGameMtlTools::FindItem(LPCSTR name)
 {
 	if (name && name[0]){
     	return GMLib.GetMaterial(name);
     }else return 0;
 }
 
-LPCSTR CSHGameMaterialTools::GenerateMaterialName(LPSTR name, LPCSTR source)
+LPCSTR CSHGameMtlTools::GenerateItemName(LPSTR name, LPCSTR pref, LPCSTR source)
 {
     int cnt = 0;
-	char fld[128]; strcpy(fld,name);
-    if (source) strcpy(name,source); else sprintf(name,"%sgm_%02d",fld,cnt++);
-	while (FindMaterial(name))
+    if (source) strcpy(name,source); else sprintf(name,"%sgm_%02d",pref,cnt++);
+	while (FindItem(name))
     	if (source) sprintf(name,"%s_%02d",source,cnt++);
-        else sprintf(name,"%sgm_%02d",fld,cnt++);
+        else sprintf(name,"%sgm_%02d",pref,cnt++);
 	return name;
 }
 
-SGameMtl* CSHGameMaterialTools::AppendMaterial(LPCSTR folder_name, SGameMtl* parent)
+LPCSTR CSHGameMtlTools::AppendItem(LPCSTR folder_name, LPCSTR parent_name)
 {
-	// append material
-    char old_name[128]; if (parent) strcpy(old_name,parent->name);
-    SGameMtl* S = GMLib.AppendMaterial(parent);
-    string128 new_name; new_name[0]=0;
-    if (folder_name) strcpy(new_name,folder_name);
-    GenerateMaterialName(new_name,parent?old_name:0);
-    strcpy(S->name,new_name);
-	fraLeftBar->AddItem(S->name);
-    return S;              
+	SGameMtl* parent 	= FindItem(parent_name);
+    string64 new_name;
+    GenerateItemName	(new_name,folder_name,parent_name);
+    SGameMtl* S 		= GMLib.AppendMaterial(parent);
+    strcpy				(S->name,new_name);
+	ViewAddItem			(S->name);
+    return S->name;
 }
 
-SGameMtl* CSHGameMaterialTools::CloneMaterial(LPCSTR name){
-	SGameMtl* S = GMLib.GetMaterial(name); R_ASSERT(S);
-	return AppendMaterial(0,S);
-}
-
-void CSHGameMaterialTools::RenameMaterial(LPCSTR old_full_name, LPCSTR ren_part, int level)
+void CSHGameMtlTools::RenameItem(LPCSTR old_full_name, LPCSTR ren_part, int level)
 {
     VERIFY(level<_GetItemCount(old_full_name,'\\'));
     char new_full_name[255];
     _ReplaceItem(old_full_name,level,ren_part,new_full_name,'\\');
-    RenameMaterial(old_full_name, new_full_name);
+    RenameItem(old_full_name, new_full_name);
 }
 
-void CSHGameMaterialTools::RenameMaterial(LPCSTR old_full_name, LPCSTR new_full_name)
+void CSHGameMtlTools::RenameItem(LPCSTR old_full_name, LPCSTR new_full_name)
 {
-	SGameMtl* S = GMLib.GetMaterial(old_full_name); R_ASSERT(S);
+	SGameMtl* S = FindItem(old_full_name); R_ASSERT(S);
     strcpy(S->name,new_full_name);
 	if (S==m_Mtl)	UpdateProperties();
 
     // нужно переинициализировать лист пар
-    OnMaterialNameChange(0);
+	m_GameMtlPairTools->FillItemList();
 }
 
-void CSHGameMaterialTools::RemoveMaterial(LPCSTR name)
+void CSHGameMtlTools::RemoveItem(LPCSTR name)
 {
 	R_ASSERT(name && name[0]);
     GMLib.RemoveMaterial(name);
     // нужно переинициализировать лист пар
-	FillMtlPairsView	();
+	m_GameMtlPairTools->FillItemList();
 }
 
-void CSHGameMaterialTools::SetCurrentMaterial(SGameMtl* S)
+void CSHGameMtlTools::SetCurrentItem(LPCSTR name)
 {
-	if (Tools.ActiveEditor()!=aeMaterial) return;
-    if (!m_bUpdateCurrent) return;
+    if (m_bLockUpdate) return;
 
+	SGameMtl* S = FindItem(name);
     // load material
 	if (m_Mtl!=S){
         m_Mtl = S;
         UpdateProperties();
     }
-	if (S) fraLeftBar->SetCurrentItem(S->name);
+	ViewSetCurrentItem(name);
 }
 
-void CSHGameMaterialTools::ResetCurrentMaterial()
+void CSHGameMtlTools::ResetCurrentItem()
 {
 	m_Mtl=0;
-	m_MtlPair=0;
-}
-
-void CSHGameMaterialTools::SetCurrentMaterial(LPCSTR name)
-{
-	SGameMtl* S=FindMaterial(name);
-	SetCurrentMaterial(S);
-	if (!S) fraLeftBar->SetCurrentItem(name);
 }
 //---------------------------------------------------------------------------
 
-void __fastcall CSHGameMaterialTools::OnMaterialNameChange(PropValue* sender)
+void __fastcall CSHGameMtlTools::OnMaterialNameChange(PropValue* sender)
 {
     // нужно переинициализировать лист пар
-	FillMtlPairsView	();
+	m_GameMtlPairTools->FillItemList();
 }
 
-void CSHGameMaterialTools::UpdateProperties()
+void CSHGameMtlTools::UpdateProperties()
 {
-    TProperties* P		= Tools.m_Props;
 	PropItemVec items;
-	switch (Tools.ActiveEditor()){
-    case aeMaterial: 	if (m_Mtl) m_Mtl->FillProp	(items);		break;
-    case aeMaterialPair:if (m_MtlPair)	m_MtlPair->FillProp(items);	break;
+    if (m_Mtl){ 
+    	m_Mtl->FillProp			(items);
+        PropItem* I 			= PHelper.FindItem(items,"Name",PROP_TEXT);			R_ASSERT(I);
+		PropValue* P			= I->GetFrontValue();                               R_ASSERT(P);
+    	P->SetEvents			(FHelper.NameAfterEdit,FHelper.NameBeforeEdit,OnMaterialNameChange);
+	    I->SetEvents			(FHelper.NameDraw);
+    	I->tag					= (int)FHelper.FindObject(tvView,m_Mtl->name); 		R_ASSERT(I->tag);
     }
-    P->AssignItems		(items,true);
-    P->SetModifiedEvent	(Modified);
+    m_Props->AssignItems		(items,true);
+    m_Props->SetModifiedEvent	(Modified);
 }
 //---------------------------------------------------------------------------
 
-void CSHGameMaterialTools::ApplyChanges()
+void CSHGameMtlTools::ApplyChanges()
 {
 }
 //---------------------------------------------------------------------------
 
-SGameMtlPair* CSHGameMaterialTools::AppendMaterialPair(int m0, int m1, SGameMtlPair* parent)
-{
-    SGameMtlPair* S = GMLib.AppendMaterialPair(m0,m1,parent);
-    fraLeftBar->AddItem(GMLib.MtlPairToName(S->GetMtl0(),S->GetMtl1()));
-    return S;              
-}
-//---------------------------------------------------------------------------
-
-void CSHGameMaterialTools::SetCurrentMaterialPair(SGameMtlPair* S)
-{
-	if (Tools.ActiveEditor()!=aeMaterialPair) return;
-    if (!m_bUpdateCurrent) return;
-
-    // load material
-	if (m_MtlPair!=S){
-        m_MtlPair = S;
-        UpdateProperties();
-    }
-	if (S) fraLeftBar->SetCurrentItem(GMLib.MtlPairToName(S->GetMtl0(),S->GetMtl1()));
-}
-//---------------------------------------------------------------------------
-
-void CSHGameMaterialTools::SetCurrentMaterialPair(LPCSTR name)
-{
-	SGameMtlPair* S=GMLib.GetMaterialPair(name);
-	SetCurrentMaterialPair(S);
-	if (!S) fraLeftBar->SetCurrentItem(name);
-}
-//---------------------------------------------------------------------------
-
-void CSHGameMaterialTools::RemoveMaterialPair(LPCSTR name)
-{
-	R_ASSERT(name && name[0]);
-    GMLib.RemoveMaterialPair(name);
-}
-//---------------------------------------------------------------------------
 

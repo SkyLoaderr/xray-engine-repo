@@ -8,7 +8,7 @@
 #include "PropertiesList.h"
 #include "leftbar.h"
 #include "folderlib.h"
-
+/*
 #define MCSTRING_COUNT 	11
 LPCSTR MCString[MCSTRING_COUNT]={"Custom...","-","$null","$base0","$base1","$base2","$base3","$base4","$base5","$base6","$base7"};
 //---------------------------------------------------------------------------
@@ -32,6 +32,7 @@ void __fastcall CSHEngineTools::ModeOnAfterEdit(PropValue* sender, LPVOID edit_v
 //    DWORD mode=*(DWORD*)edit_val;
 //    UpdateMatrixModeProps(sender->item,M,mode);
 */
+/*
 }
 //---------------------------------------------------------------------------
 void __fastcall CSHEngineTools::FillMatrixProps(PropItemVec& items, LPCSTR pref, LPSTR name)
@@ -209,4 +210,4 @@ void CSHEngineTools::UpdateProperties()
 }
 //------------------------------------------------------------------------------
 
- 
+ */

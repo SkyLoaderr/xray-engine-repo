@@ -1,60 +1,52 @@
 //---------------------------------------------------------------------------
-#ifndef SHGameMaterialToolsH
-#define SHGameMaterialToolsH
+#ifndef SHGameMtlPairToolsH
+#define SHGameMtlPairToolsH
 
-#include "ElTree.hpp"
+#include "SHToolsInterface.h"
 #include "GameMtlLib.h"
 
 // refs
 class PropValue;
 
-class CSHGameMaterialTools
+class CSHGameMtlPairTools: public ISHTools
 {
-	BOOL				m_bModified;
-
-	SGameMtl*			FindMaterial		(LPCSTR name);
-    LPCSTR				GenerateMaterialName(LPSTR name, LPCSTR source);
-
-    bool 				m_bUpdateCurrent;	// если менялся объект непосредственно  Update____From___()
-    void				FillMtlsView		();
-    void				FillMtlPairsView	();
+	ISHTools*				m_GameMtlTools;
+    virtual LPCSTR			GenerateItemName	(LPSTR name, LPCSTR pref, LPCSTR source);
 public:
-    SGameMtl*			m_Mtl;
-    SGameMtl*			AppendMaterial		(LPCSTR folder_name, SGameMtl* parent);
-    SGameMtl*			CloneMaterial		(LPCSTR name);
-    void				RemoveMaterial		(LPCSTR name);
-	void				RenameMaterial		(LPCSTR old_full_name, LPCSTR ren_part, int level);
-	void				RenameMaterial		(LPCSTR old_full_name, LPCSTR new_full_name);
-	void __fastcall 	OnMaterialNameChange(PropValue* sender);
+    SGameMtlPair*			m_MtlPair;
+    virtual LPCSTR			AppendItem			(LPCSTR folder_name, LPCSTR parent_name);
+    virtual void			RemoveItem			(LPCSTR name);
+	virtual void			RenameItem			(LPCSTR old_full_name, LPCSTR ren_part, int level){;}
+	virtual void			RenameItem			(LPCSTR old_full_name, LPCSTR new_full_name){;}
+	virtual void 			FillItemList		();
 public:
-    SGameMtlPair*		m_MtlPair;
-    SGameMtlPair*		AppendMaterialPair	(int m0, int m1, SGameMtlPair* parent);
-    void				RemoveMaterialPair	(LPCSTR name);
-public:
-						CSHGameMaterialTools 	();
-    virtual 			~CSHGameMaterialTools	();
+							CSHGameMtlPairTools (EToolsID id, TElTree* tv, TMxPopupMenu* mn, TElTabSheet* sheet, TProperties* props);
+    virtual 				~CSHGameMtlPairTools();
 
-	void				Reload				();
-	void				Load				();
-	void				Save				();
-    void				ApplyChanges		();
+	virtual void			Reload				();
+	virtual void			Load				();
+	virtual void			Save				();
+    virtual void			ApplyChanges		();
 
-    bool				IfModified			();
-    bool				IsModified			(){return m_bModified;}
-    void _fastcall		Modified			();
+    virtual bool			IfModified			();
+    virtual void __fastcall	Modified			();
 
-    void				OnCreate			();
-    void				OnDestroy			();
+    virtual bool			OnCreate			();
+    virtual void			OnDestroy			();
+	virtual void 			OnActivate			(){;}
+	virtual void 			OnDeactivate		(){;}
 
     // misc
-    void				ResetCurrentMaterial();
-    void				SetCurrentMaterial	(SGameMtl* B);
-    void				SetCurrentMaterial	(LPCSTR name);
-    void				SetCurrentMaterialPair	(SGameMtlPair* B);
-    void				SetCurrentMaterialPair	(LPCSTR name);
+    virtual void			ResetCurrentItem	();
+    virtual void			SetCurrentItem		(LPCSTR name);
 
-	void 				UpdateProperties	();
-	void 				OnFrame				();
+	virtual void 			UpdateProperties	();
+
+	virtual void 			OnFrame				();
+    virtual void			OnRender			(){;}
+
+    virtual void			OnDeviceCreate		(){;}
+    virtual void			OnDeviceDestroy		(){;}
 };
 //---------------------------------------------------------------------------
 #endif // SHGameMaterialToolsH

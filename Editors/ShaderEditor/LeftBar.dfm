@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 277
+  Height = 435
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 260
-    Height = 277
+    Height = 435
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -32,7 +32,7 @@ object fraLeftBar: TfraLeftBar
     TabOrder = 0
     object Splitter1: TSplitter
       Left = 1
-      Top = 62
+      Top = 220
       Width = 258
       Height = 2
       Cursor = crVSplit
@@ -173,7 +173,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 69
       Width = 258
-      Height = 265
+      Height = 151
       Align = alClient
       Color = 10528425
       ParentShowHint = False
@@ -195,7 +195,7 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 14
         Width = 256
-        Height = 250
+        Height = 136
         ActiveTabColor = 10528425
         BorderWidth = 0
         Color = 10528425
@@ -208,7 +208,7 @@ object fraLeftBar: TfraLeftBar
         RaggedRight = False
         ScrollOpposite = False
         Style = etsNetTabs
-        TabIndex = 3
+        TabIndex = 4
         TabPosition = etpTop
         HotTrackFont.Charset = DEFAULT_CHARSET
         HotTrackFont.Color = 15790320
@@ -216,7 +216,7 @@ object fraLeftBar: TfraLeftBar
         HotTrackFont.Name = 'MS Sans Serif'
         HotTrackFont.Style = []
         TabBkColor = 10528425
-        ActivePage = tsMaterialPair
+        ActivePage = tsSoundEnv
         FlatTabBorderColor = clBtnShadow
         Align = alClient
         ParentColor = False
@@ -263,7 +263,7 @@ object fraLeftBar: TfraLeftBar
               Font.Style = []
               Margin = 13
               ParentFont = False
-              OnClick = ebShaderRemoveClick
+              OnClick = ebRemoveItemClick
             end
             object ebEngineShaderClone: TExtBtn
               Left = 71
@@ -283,7 +283,7 @@ object fraLeftBar: TfraLeftBar
               Font.Style = []
               Margin = 13
               ParentFont = False
-              OnClick = ebEngineShaderCloneClick
+              OnClick = ebCloneItemClick
             end
             object ebEngineShaderFile: TExtBtn
               Left = 1
@@ -350,11 +350,11 @@ object fraLeftBar: TfraLeftBar
               OnMouseDown = ebEngineShaderCreateMouseDown
             end
           end
-          object tvEngine: TElTree
+          object tvEngine_: TElTree
             Left = 0
             Top = 52
             Width = 252
-            Height = 173
+            Height = 59
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -438,8 +438,8 @@ object fraLeftBar: TfraLeftBar
             BkColor = clGray
             OnItemFocused = tvItemFocused
             OnDragDrop = OnDragDrop
-            OnMouseDown = tvEngineMouseDown
-            OnKeyDown = tvEngineKeyDown
+            OnMouseDown = tvEngine_MouseDown
+            OnKeyDown = tvEngine_KeyDown
           end
         end
         object tsCompiler: TElTabSheet
@@ -484,7 +484,7 @@ object fraLeftBar: TfraLeftBar
               Font.Style = []
               Margin = 13
               ParentFont = False
-              OnClick = ebShaderRemoveClick
+              OnClick = ebRemoveItemClick
             end
             object ebCompilerShaderClone: TExtBtn
               Left = 71
@@ -504,7 +504,7 @@ object fraLeftBar: TfraLeftBar
               Font.Style = []
               Margin = 13
               ParentFont = False
-              OnClick = ebCompilerShaderCloneClick
+              OnClick = ebCloneItemClick
             end
             object ExtBtn4: TExtBtn
               Left = 1
@@ -559,14 +559,14 @@ object fraLeftBar: TfraLeftBar
               Margin = 13
               ParentFont = False
               Spacing = 3
-              OnClick = ebCShaderCreateClick
+              OnClick = ebCreateItemClick
             end
           end
-          object tvCompiler: TElTree
+          object tvCompiler_: TElTree
             Left = 0
             Top = 52
             Width = 252
-            Height = 173
+            Height = 59
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -650,8 +650,8 @@ object fraLeftBar: TfraLeftBar
             BkColor = clGray
             OnItemFocused = tvItemFocused
             OnDragDrop = OnDragDrop
-            OnMouseDown = tvEngineMouseDown
-            OnKeyDown = tvEngineKeyDown
+            OnMouseDown = tvEngine_MouseDown
+            OnKeyDown = tvEngine_KeyDown
           end
         end
         object tsMaterial: TElTabSheet
@@ -696,7 +696,7 @@ object fraLeftBar: TfraLeftBar
               Font.Style = []
               Margin = 13
               ParentFont = False
-              OnClick = ebShaderRemoveClick
+              OnClick = ebRemoveItemClick
             end
             object ebMaterialClone: TExtBtn
               Left = 71
@@ -716,7 +716,7 @@ object fraLeftBar: TfraLeftBar
               Font.Style = []
               Margin = 13
               ParentFont = False
-              OnClick = ebMaterialCloneClick
+              OnClick = ebCloneItemClick
             end
             object ExtBtn3: TExtBtn
               Left = 1
@@ -771,14 +771,13 @@ object fraLeftBar: TfraLeftBar
               Margin = 13
               ParentFont = False
               Spacing = 3
-              OnClick = ebMaterialCreateClick
             end
           end
-          object tvMaterial: TElTree
+          object tvMtl_: TElTree
             Left = 0
             Top = 52
             Width = 252
-            Height = 173
+            Height = 59
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -862,8 +861,8 @@ object fraLeftBar: TfraLeftBar
             BkColor = clGray
             OnItemFocused = tvItemFocused
             OnDragDrop = OnDragDrop
-            OnMouseDown = tvEngineMouseDown
-            OnKeyDown = tvEngineKeyDown
+            OnMouseDown = tvEngine_MouseDown
+            OnKeyDown = tvEngine_KeyDown
           end
         end
         object tsMaterialPair: TElTabSheet
@@ -872,6 +871,7 @@ object fraLeftBar: TfraLeftBar
           TabVisible = True
           Caption = 'Material Pair'
           ParentColor = True
+          Visible = False
           object Bevel4: TBevel
             Left = 0
             Top = 50
@@ -879,11 +879,11 @@ object fraLeftBar: TfraLeftBar
             Height = 2
             Align = alTop
           end
-          object tvMaterialPair: TElTree
+          object tvMtlPair_: TElTree
             Left = 0
             Top = 52
             Width = 252
-            Height = 173
+            Height = 59
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -967,8 +967,8 @@ object fraLeftBar: TfraLeftBar
             BkColor = clGray
             OnItemFocused = tvItemFocused
             OnDragDrop = OnDragDrop
-            OnMouseDown = tvEngineMouseDown
-            OnKeyDown = tvEngineKeyDown
+            OnMouseDown = tvEngine_MouseDown
+            OnKeyDown = tvEngine_KeyDown
           end
           object Panel3: TPanel
             Left = 0
@@ -997,7 +997,7 @@ object fraLeftBar: TfraLeftBar
               Font.Style = []
               Margin = 13
               ParentFont = False
-              OnClick = ebShaderRemoveClick
+              OnClick = ebRemoveItemClick
             end
             object ebMaterialPairClone: TExtBtn
               Left = 71
@@ -1076,11 +1076,222 @@ object fraLeftBar: TfraLeftBar
             end
           end
         end
+        object tsSoundEnv: TElTabSheet
+          TabColor = 10528425
+          PageControl = pcShaders
+          ImageIndex = -1
+          TabVisible = True
+          Caption = 'Sound Env'
+          Color = 10528425
+          object Bevel5: TBevel
+            Left = 0
+            Top = 50
+            Width = 252
+            Height = 2
+            Align = alTop
+          end
+          object Panel5: TPanel
+            Left = 0
+            Top = 0
+            Width = 252
+            Height = 50
+            Align = alTop
+            BevelOuter = bvNone
+            Color = 10528425
+            TabOrder = 0
+            object ExtBtn2: TExtBtn
+              Left = 1
+              Top = 34
+              Width = 70
+              Height = 15
+              Align = alNone
+              BevelShow = False
+              HotTrack = True
+              HotColor = 15790320
+              CloseButton = False
+              Caption = 'Remove'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              Margin = 13
+              ParentFont = False
+              OnClick = ebRemoveItemClick
+            end
+            object ExtBtn7: TExtBtn
+              Left = 71
+              Top = 34
+              Width = 70
+              Height = 15
+              Align = alNone
+              BevelShow = False
+              HotTrack = True
+              HotColor = 15790320
+              CloseButton = False
+              Caption = 'Clone'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              Margin = 13
+              ParentFont = False
+              OnClick = ebCloneItemClick
+            end
+            object ExtBtn8: TExtBtn
+              Left = 1
+              Top = 2
+              Width = 140
+              Height = 15
+              Align = alNone
+              BevelShow = False
+              HotTrack = True
+              HotColor = 15790320
+              CloseButton = False
+              CloseWidth = 24
+              Caption = 'File'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              Glyph.Data = {
+                DE000000424DDE00000000000000360000002800000007000000070000000100
+                180000000000A8000000120B0000120B00000000000000000000FFFFFFFFFFFF
+                FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFF
+                FFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFF00
+                0000FFFFFFFFFFFF000000000000000000FFFFFFFFFFFF000000FFFFFF000000
+                000000000000000000000000FFFFFF0000000000000000000000000000000000
+                00000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00
+                0000}
+              Kind = knMinimize
+              Margin = 3
+              ParentFont = False
+              Spacing = 3
+              OnMouseDown = ebEngineShaderFileMouseDown
+            end
+            object ebCreateSoundEnv: TExtBtn
+              Left = 1
+              Top = 18
+              Width = 140
+              Height = 15
+              Align = alNone
+              BevelShow = False
+              HotTrack = True
+              HotColor = 15790320
+              CloseButton = False
+              CloseWidth = 24
+              Caption = 'Create'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              Kind = knMinimize
+              Margin = 13
+              ParentFont = False
+              Spacing = 3
+              OnClick = ebCreateItemClick
+            end
+          end
+          object tvSoundEnv_: TElTree
+            Left = 0
+            Top = 52
+            Width = 252
+            Height = 59
+            Cursor = crDefault
+            LeftPosition = 0
+            DragCursor = crDrag
+            Align = alClient
+            AutoCollapse = False
+            DockOrientation = doNoOrient
+            DefaultSectionWidth = 120
+            BorderStyle = bsNone
+            BorderSides = [ebsLeft, ebsRight, ebsTop, ebsBottom]
+            CustomPlusMinus = True
+            DragAllowed = True
+            DrawFocusRect = False
+            DragTrgDrawMode = dtdDownColorLine
+            ExplorerEditMode = False
+            FocusedSelectColor = 10526880
+            FocusedSelectTextColor = clBlack
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -11
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            GradientSteps = 64
+            HeaderHeight = 19
+            HeaderHotTrack = False
+            HeaderSections.Data = {F4FFFFFF00000000}
+            HeaderFont.Charset = DEFAULT_CHARSET
+            HeaderFont.Color = clWindowText
+            HeaderFont.Height = -11
+            HeaderFont.Name = 'MS Sans Serif'
+            HeaderFont.Style = []
+            HorizontalLines = True
+            HorzDivLinesColor = 7368816
+            HorzScrollBarStyles.ShowTrackHint = False
+            HorzScrollBarStyles.Width = 16
+            HorzScrollBarStyles.ButtonSize = 16
+            IgnoreEnabled = False
+            IncrementalSearch = False
+            InplaceEditorDelay = 1000
+            ItemIndent = 14
+            KeepSelectionWithinLevel = False
+            LineBorderActiveColor = clBlack
+            LineBorderInactiveColor = clBlack
+            LineHeight = 16
+            MinusPicture.Data = {
+              F6000000424DF600000000000000360000002800000008000000080000000100
+              180000000000C0000000120B0000120B00000000000000000000808080808080
+              808080808080808080808080808080808080808080808080808080E0E0E08080
+              80808080808080808080808080808080808080E0E0E080808080808080808080
+              8080808080808080E0E0E0E0E0E0E0E0E0808080808080808080808080808080
+              E0E0E0E0E0E0E0E0E0808080808080808080808080E0E0E0E0E0E0E0E0E0E0E0
+              E0E0E0E0808080808080808080E0E0E0E0E0E0E0E0E0E0E0E0E0E0E080808080
+              8080808080808080808080808080808080808080808080808080}
+            MouseFrameSelect = True
+            MultiSelect = False
+            OwnerDrawMask = '~~@~~'
+            PlusMinusTransparent = True
+            PlusPicture.Data = {
+              F6000000424DF600000000000000360000002800000008000000080000000100
+              180000000000C0000000120B0000120B00000000000000000000808080808080
+              8080808080808080808080808080808080808080808080808080808080808080
+              80808080808080808080808080E0E0E0E0E0E080808080808080808080808080
+              8080808080E0E0E0E0E0E0E0E0E0E0E0E0808080808080808080808080E0E0E0
+              E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0808080808080E0E0E0E0E0E0E0E0E0E0E0
+              E0808080808080808080808080E0E0E0E0E0E080808080808080808080808080
+              8080808080808080808080808080808080808080808080808080}
+            ScrollbarOpposite = False
+            ScrollTracking = True
+            ShowLeafButton = False
+            ShowLines = False
+            SortMode = smAddClick
+            StoragePath = '\Tree'
+            TabOrder = 1
+            TabStop = True
+            Tracking = False
+            TrackColor = 10526880
+            VertDivLinesColor = 7368816
+            VertScrollBarStyles.ShowTrackHint = True
+            VertScrollBarStyles.Width = 16
+            VertScrollBarStyles.ButtonSize = 16
+            VirtualityLevel = vlNone
+            BkColor = clGray
+            OnItemFocused = tvItemFocused
+            OnDragDrop = OnDragDrop
+            OnMouseDown = tvEngine_MouseDown
+            OnKeyDown = tvEngine_KeyDown
+          end
+        end
       end
     end
     object paShaderProperties: TPanel
       Left = 1
-      Top = 64
+      Top = 222
       Width = 258
       Height = 212
       Align = alBottom
@@ -1301,14 +1512,14 @@ object fraLeftBar: TfraLeftBar
     Top = 121
   end
   object InplaceEngineEdit: TElTreeInplaceAdvancedEdit
-    Tree = tvEngine
+    Tree = tvEngine_
     Types = [sftText]
     OnValidateResult = InplaceEditValidateResult
     Left = 10
     Top = 197
   end
   object InplaceCompilerEdit: TElTreeInplaceAdvancedEdit
-    Tree = tvCompiler
+    Tree = tvCompiler_
     Types = [sftText]
     OnValidateResult = InplaceEditValidateResult
     Left = 10
@@ -1346,10 +1557,17 @@ object fraLeftBar: TfraLeftBar
     end
   end
   object InplaceMaterialEdit: TElTreeInplaceAdvancedEdit
-    Tree = tvMaterial
+    Tree = tvMtl_
     Types = [sftText]
     OnValidateResult = InplaceEditValidateResult
     Left = 10
     Top = 229
+  end
+  object InplaceSoundEnvEdit: TElTreeInplaceAdvancedEdit
+    Tree = tvSoundEnv_
+    Types = [sftText]
+    OnValidateResult = InplaceEditValidateResult
+    Left = 10
+    Top = 261
   end
 end

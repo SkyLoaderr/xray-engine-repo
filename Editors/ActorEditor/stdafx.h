@@ -14,7 +14,6 @@
 #define O_SEQUENTIAL 0
 #endif
 
-#define DIRECTSOUND_VERSION 0x0700
 #define DIRECTINPUT_VERSION 0x0700
 
 // Std C++ headers
@@ -59,6 +58,8 @@ __inline float expf	(float val)                           	{ return ::exp(val);}
 
 // core
 #include <xrCore.h>
+#include <xrCDB.h>
+#include <Sound.h>
 
 // DirectX headers
 #include <d3d9.h>
@@ -165,17 +166,19 @@ struct astr_pred : public binary_function<AnsiString&, AnsiString&, bool>
 
 // external dependencies
 #pragma comment(lib,"xrCoreB.lib")
+#pragma comment(lib,"xrSoundB.lib")
+#pragma comment(lib,"xrCDBB.lib")
+#pragma comment(lib,"ParticleDLLB.lib")
+
 #pragma comment(lib,"dinput.lib")
 #pragma comment(lib,"freeimage.lib")
 #pragma comment(lib,"d3d9.lib")
-#pragma comment(lib,"xrCDB.lib")
 #pragma comment(lib,"dxt.lib")
 #pragma comment(lib,"xrProgressive.lib")
 #pragma comment(lib,"MagicFMDLLB.lib")
 #pragma comment(lib,"ETools.lib")
 #pragma comment(lib,"LWO.lib")
 #pragma comment(lib,"xrHemisphere.lib")
-#pragma comment(lib,"ParticleDLLB.lib")
 
 // path definition
 #define _server_root_		"$server_root$"

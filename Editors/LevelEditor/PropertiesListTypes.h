@@ -6,6 +6,7 @@
 //---------------------------------------------------------------------------
 enum EPropType{
 	PROP_CAPTION	= 0x1000,
+	PROP_BUTTON,
 	PROP_S8,
 	PROP_S16,
 	PROP_S32,
@@ -241,6 +242,16 @@ class CaptionValue: public PropValue{
 	AnsiString			value;
 public:
 						CaptionValue	(AnsiString val){value=val;}
+    virtual LPCSTR		GetText			(TOnDrawTextEvent){return value.c_str();}
+    virtual	void		ResetValue		(){;}
+    virtual	bool		Equal			(PropValue* val){return true;}
+    virtual	bool		ApplyValue		(LPVOID val){value=*(AnsiString*)val; return false;}
+};
+
+class ButtonValue: public PropValue{
+	AnsiString			value;
+public:
+						ButtonValue		(AnsiString val){value=val;}
     virtual LPCSTR		GetText			(TOnDrawTextEvent){return value.c_str();}
     virtual	void		ResetValue		(){;}
     virtual	bool		Equal			(PropValue* val){return true;}

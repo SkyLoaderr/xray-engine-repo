@@ -356,8 +356,31 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
         }else{
             TRect src_rect = R;
             switch(type){
+            case PROP_BUTTON:{
+                ButtonValue* V			= dynamic_cast<ButtonValue*>(prop->GetFrontValue()); R_ASSERT(V);
+            	TColor a 				= 1?TColor(0x00FFFFFF):TColor(0x00808080);
+            	TColor b 				= 1?TColor(0x00808080):TColor(0x00FFFFFF);
+        	    R.Bottom				+= 	1;
+                Surface->Pen->Color 	= a;                     
+                Surface->MoveTo			(R.left,R.bottom);
+                Surface->LineTo			(R.left,R.top);
+                Surface->LineTo			(R.right,R.top);
+                Surface->Pen->Color 	= b;
+                Surface->LineTo			(R.right,R.bottom);
+                Surface->LineTo			(R.left-1,R.bottom);
+	            R.Left 					+= 	1;
+    	        R.Right					-=	1;
+        	    R.Bottom				-= 	1;
+            	R.Top					+=	1;
+/*                Surface->Brush->Style 	= bsSolid;
+                Surface->Brush->Color 	= TColor(0x00A0A6A9);
+	            Surface->FillRect		(R);
+*/
+                Surface->Font->Color 	= clBlack;
+                DrawText				(Surface->Handle, prop->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_CENTER);
+            }break;
             case PROP_CAPTION:
-                Surface->Font->Color = clSilver;
+                Surface->Font->Color 	= clSilver;
                 R.Right-= 1;
                 R.Left += 1;
                 DrawText	(Surface->Handle, prop->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);

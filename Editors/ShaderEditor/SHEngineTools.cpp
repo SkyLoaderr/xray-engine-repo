@@ -9,7 +9,7 @@
 #include "LeftBar.h"
 #include "xr_trims.h"
 #include "folderlib.h"
-
+/*
 //------------------------------------------------------------------------------
 class CCollapseBlender: public CParseBlender{
 public:
@@ -166,8 +166,9 @@ void CSHEngineTools::ApplyChanges(bool bForced){
     }
 }
 
-void CSHEngineTools::Reload(){
-	fraLeftBar->ClearEShaderList();
+void CSHEngineTools::Reload()
+{
+	fraLeftBar->ClearItemList();
     ResetCurrentBlender();
     ClearData();
     Load();
@@ -231,7 +232,7 @@ void CSHEngineTools::Load()
                 LPSTR blender_name = xr_strdup(desc.cName);
                 pair<BlenderPairIt, bool> I =  m_Blenders.insert(make_pair(blender_name,B));
                 R_ASSERT2		(I.second,"shader.xr - found duplicate name!!!");
-                fraLeftBar->AddBlender(desc.cName);
+                fraLeftBar->AddItem(desc.cName);
                 chunk->close	();
                 chunk_id++;
             }
@@ -439,7 +440,7 @@ CBlender* CSHEngineTools::AppendBlender(CLASS_ID cls_id, LPCSTR folder_name, CBl
 	pair<BlenderPairIt, bool> I = m_Blenders.insert(make_pair(xr_strdup(name),B));
 	R_ASSERT2 (I.second,"shader.xr - found duplicate name!!!");
     // insert to TreeView
-	fraLeftBar->AddBlender(name);
+	fraLeftBar->AddItem(name);
 
     return B;
 }
@@ -573,13 +574,13 @@ void CSHEngineTools::SetCurrentBlender(CBlender* B){
         // apply this shader to non custom object
         Tools.UpdateObjectShader();
     }
-	if (B) fraLeftBar->SetCurrentBlender(B->getName());
+	if (B) fraLeftBar->SetCurrentItem(B->getName());
 }
 
 void CSHEngineTools::SetCurrentBlender(LPCSTR name){
 	CBlender* B=FindBlender(name);
 	SetCurrentBlender(B);
-	if (!B) fraLeftBar->SetCurrentBlender(name);
+	if (!B) fraLeftBar->SetCurrentItem(name);
 }
 
 void CSHEngineTools::ResetCurrentBlender(){
@@ -695,4 +696,4 @@ void CSHEngineTools::UpdateRefCounters(){
     	ParseBlender(b->second,ST_UpdateBlenderRefs);
 }
 
-
+*/

@@ -3,51 +3,51 @@
 #define SHCompilerToolsH
 
 #include "Shader_xrLC.h"
-#include "ElTree.hpp"
+#include "SHToolsInterface.h"
 
 // refs
 class PropValue;
 
-class CSHCompilerTools
+class CSHCompilerTools: public ISHTools
 {
-	BOOL				m_bModified;
-
-	Shader_xrLC*		FindShader			(LPCSTR name);
-    LPCSTR				GenerateShaderName	(LPSTR name, LPCSTR source);
-
-    Shader_xrLC_LIB		m_Library;
-    bool 				m_bUpdateCurrent;	// если менялся объект непосредственно  Update____From___()
+	Shader_xrLC*			FindItem			(LPCSTR name);
+    virtual LPCSTR			GenerateItemName	(LPSTR name, LPCSTR pref, LPCSTR source);
+    Shader_xrLC_LIB			m_Library;
 public:
-    Shader_xrLC*		m_LibShader;
-    Shader_xrLC*		m_EditShader;
-    Shader_xrLC*		AppendShader		(LPCSTR folder_name, Shader_xrLC* parent);
-    Shader_xrLC*		CloneShader			(LPCSTR name);
-    void				RemoveShader		(LPCSTR name);
-	void				RenameShader		(LPCSTR old_full_name, LPCSTR ren_part, int level);
-	void				RenameShader		(LPCSTR old_full_name, LPCSTR new_full_name);
+    Shader_xrLC*			m_Shader;
+    virtual LPCSTR			AppendItem			(LPCSTR folder_name, LPCSTR parent=0);
+    virtual void			RemoveItem			(LPCSTR name);
+	virtual void			RenameItem			(LPCSTR old_full_name, LPCSTR ren_part, int level);
+	virtual void			RenameItem			(LPCSTR old_full_name, LPCSTR new_full_name);
+	virtual void			FillItemList		();
 public:
-						CSHCompilerTools 	();
-    virtual 			~CSHCompilerTools	();
+							CSHCompilerTools 	(EToolsID id, TElTree* tv, TMxPopupMenu* mn, TElTabSheet* sheet, TProperties* props);
+    virtual 				~CSHCompilerTools	();
 
-	void				Reload				();
-	void				Load				();
-	void				Save				();
+	virtual void			Reload				();
+	virtual void			Load				();
+	virtual void			Save				();
 
-    bool				IfModified			();
-    bool				IsModified			(){return m_bModified;}
-    void _fastcall		Modified			();
+    virtual bool			IfModified			();
+    virtual void __fastcall	Modified			();
 
-    void				OnCreate			();
-    void				OnDestroy			();
+    virtual bool			OnCreate			();
+    virtual void			OnDestroy			();
+	virtual void 			OnActivate			(){;}
+	virtual void 			OnDeactivate		(){;}
 
     // misc
-    void				ResetCurrentShader	();
-    void				SetCurrentShader	(Shader_xrLC* B);
-    void				SetCurrentShader	(LPCSTR name);
-    void				ApplyChanges		();
+    virtual void			ResetCurrentItem	();
+    virtual void			SetCurrentItem		(LPCSTR name);
+    virtual void			ApplyChanges		();
 
-	void 				UpdateProperties	();
-	void 				Update				();
+	virtual void 			UpdateProperties	();
+
+	virtual void 			OnFrame				();
+	virtual void 			OnRender			(){;}
+
+    virtual void			OnDeviceCreate		(){;}
+    virtual void			OnDeviceDestroy		(){;}
 };
 //---------------------------------------------------------------------------
 #endif

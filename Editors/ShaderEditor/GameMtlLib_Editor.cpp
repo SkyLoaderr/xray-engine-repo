@@ -13,11 +13,7 @@
 //------------------------------------------------------------------------------
 void SGameMtl::FillProp		(PropItemVec& items)
 {
-	PropValue* P=0;
-    P=PHelper.CreateText	(items,	"Name",					name,	sizeof(name));
-    P->SetEvents			(FHelper.NameAfterEdit,FHelper.NameBeforeEdit,Tools.SMaterial.OnMaterialNameChange);
-    P->Owner()->SetEvents	(FHelper.NameDraw);
-    P->Owner()->tag			= (int)FHelper.FindObject(fraLeftBar->tvMaterial,name); VERIFY(P->Owner()->tag);
+    PHelper.CreateText		(items,	"Name",					name,	sizeof(name));
 	// flags
     PHelper.CreateFlag32	(items,	"Flags\\Breakable",		&Flags,	flBreakable);
     PHelper.CreateFlag32	(items,	"Flags\\Shootable",		&Flags,	flShootable);
