@@ -36,7 +36,13 @@ void CScriptBinder::init			()
 void CScriptBinder::clear			()
 {
 	try {
-		xr_delete			(m_object);
+		try {
+			xr_delete		(m_object);
+		}
+		catch(std::exception &e) {
+			Msg				("! exception raised %s",e.what());
+			throw;
+		}
 	}
 	catch(...) {
 		m_object			= 0;
@@ -48,7 +54,13 @@ void CScriptBinder::reinit			()
 {
 	if (m_object) {
 		try {
-			m_object->reinit	();
+			try {
+				m_object->reinit	();
+			}
+			catch(std::exception &e) {
+				Msg				("! exception raised %s",e.what());
+				throw;
+			}
 		}
 		catch(...) {
 			clear			();
@@ -76,7 +88,13 @@ void CScriptBinder::reload			(LPCSTR section)
 	CGameObject				*game_object = smart_cast<CGameObject*>(this);
 
 	try {
-		lua_function		(game_object ? game_object->lua_game_object() : 0);
+		try {
+			lua_function		(game_object ? game_object->lua_game_object() : 0);
+		}
+		catch(std::exception &e) {
+			Msg				("! exception raised %s",e.what());
+			throw;
+		}
 	}
 	catch(...) {
 		clear				();
@@ -85,7 +103,13 @@ void CScriptBinder::reload			(LPCSTR section)
 
 	if (m_object) {
 		try {
-			m_object->reload(section);
+			try {
+				m_object->reload(section);
+			}
+			catch(std::exception &e) {
+				Msg				("! exception raised %s",e.what());
+				throw;
+			}
 		}
 		catch(...) {
 			clear			();
@@ -100,7 +124,13 @@ BOOL CScriptBinder::net_Spawn		(CSE_Abstract* DC)
 	CSE_ALifeObject			*object = smart_cast<CSE_ALifeObject*>(abstract);
 	if (object && m_object) {
 		try {
-			return			((BOOL)m_object->net_Spawn(object));
+			try {
+				return		((BOOL)m_object->net_Spawn(object));
+			}
+			catch(std::exception &e) {
+				Msg				("! exception raised %s",e.what());
+				throw;
+			}
 		}
 		catch(...) {
 			clear			();
@@ -114,7 +144,13 @@ void CScriptBinder::net_Destroy		()
 {
 	if (m_object) {
 		try {
-			m_object->net_Destroy	();
+			try {
+				m_object->net_Destroy	();
+			}
+			catch(std::exception &e) {
+				Msg				("! exception raised %s",e.what());
+				throw;
+			}
 		}
 		catch(...) {
 			clear			();
@@ -136,7 +172,13 @@ void CScriptBinder::shedule_Update	(u32 time_delta)
 {
 	if (m_object) {
 		try {
-			m_object->shedule_Update	(time_delta);
+			try {
+				m_object->shedule_Update	(time_delta);
+			}
+			catch(std::exception &e) {
+				Msg				("! exception raised %s",e.what());
+				throw;
+			}
 		}
 		catch(...) {
 			clear			();
@@ -148,7 +190,13 @@ void CScriptBinder::save			(NET_Packet &output_packet)
 {
 	if (m_object) {
 		try {
-			m_object->save	(&output_packet);
+			try {
+				m_object->save	(&output_packet);
+			}
+			catch(std::exception &e) {
+				Msg				("! exception raised %s",e.what());
+				throw;
+			}
 		}
 		catch(...) {
 			clear			();
@@ -160,7 +208,13 @@ void CScriptBinder::load			(IReader &input_packet)
 {
 	if (m_object) {
 		try {
-			m_object->load	(&input_packet);
+			try {
+				m_object->load	(&input_packet);
+			}
+			catch(std::exception &e) {
+				Msg				("! exception raised %s",e.what());
+				throw;
+			}
 		}
 		catch(...) {
 			clear			();
@@ -172,7 +226,13 @@ BOOL CScriptBinder::net_SaveRelevant()
 {
 	if (m_object) {
 		try {
-			return			(m_object->net_SaveRelevant());
+			try {
+				return			(m_object->net_SaveRelevant());
+			}
+			catch(std::exception &e) {
+				Msg				("! exception raised %s",e.what());
+				throw;
+			}
 		}
 		catch(...) {
 			clear			();
@@ -186,7 +246,13 @@ void CScriptBinder::net_Relcase		(CObject *object)
 	CGameObject						*game_object = smart_cast<CGameObject*>(object);
 	if (m_object && game_object) {
 		try {
-			m_object->net_Relcase	(game_object->lua_game_object());
+			try {
+				m_object->net_Relcase	(game_object->lua_game_object());
+			}
+			catch(std::exception &e) {
+				Msg				("! exception raised %s",e.what());
+				throw;
+			}
 		}
 		catch(...) {
 			clear			();
