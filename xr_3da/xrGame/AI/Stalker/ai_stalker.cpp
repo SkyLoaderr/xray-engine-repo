@@ -549,9 +549,9 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 			for ( ; I != E; I++)
 				if ((I - B) != (int)m_inventory.m_activeSlot)
 					m_inventory.Ruck((*I).m_pIItem);
-			//			TIItemList &l_list = m_inventory.m_ruck;
-			//			for(PPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++)
-			//				(**l_it).Drop();
+			TIItemList &l_list = m_inventory.m_ruck;
+			for(PPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++)
+				(**l_it).Drop();
 		}
 	}
 
