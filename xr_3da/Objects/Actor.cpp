@@ -200,7 +200,7 @@ void CActor::Load(CInifile* ini, const char* section )
 	int spine_bone		= PKinematics(pVisual)->LL_BoneID("bip01_spine2");
 	PKinematics(pVisual)->LL_GetInstance(spine_bone).set_callback(SpinCallback,this);
 
-	Movement.SetBox		(bbStandBox);
+	Movement.ActivateBox(0);
 	
 	cam_Set				(eacFirstEye);
 
@@ -469,7 +469,7 @@ void CActor::g_cl_ValidateMState(DWORD mstate_wf)
 			if (!pCreator->ObjectSpace.EllipsoidCollide(cfModel,svTransform,start_pos,bbStandBox))
 			{
 				mstate_real &= ~mcCrouch;
-				Movement.SetBox(bbStandBox);
+				Movement.ActivateBox(0);
 			}
 		}
 	}
@@ -513,7 +513,7 @@ void CActor::g_cl_CheckControls(DWORD mstate_wf, Fvector &vControlAccel, float &
 		if ((0==(mstate_real&mcCrouch))&&(mstate_wf&mcCrouch))
 		{
 			mstate_real |= mcCrouch;
-			Movement.SetBox(bbCrouchBox);
+			Movement.ActivateBox(1);
 		}
 		
 		// mask input into "real" state

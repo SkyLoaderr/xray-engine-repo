@@ -70,7 +70,7 @@ void CFlyer::Load(CInifile* ini, const char * section)
 
 	Fbox aabb;
 	aabb.set				(cfModel->GetBBox());
-	Movement.SetBox			(aabb);
+//	Movement.SetBox			(aabb);
 	Fvector vfC,vfE;
 	vfE.set					(1.f,.25f,1.f);
 	vfC.set					(0.f,.2f,0.f);

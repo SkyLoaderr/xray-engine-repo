@@ -83,23 +83,6 @@ void CCustomMonster::Load(CInifile* ini, const char* section)
 	
 	R_ASSERT	(pVisual->Type==MT_SKELETON);
 	
-	Fbox					bbStandBox;
-	Fbox					bbCrouchBox;
-
-	bbStandBox.set			(-X_SIZE_2,0,-Z_SIZE_2, X_SIZE_2,Y_SIZE_2*2,Z_SIZE_2);
-	bbCrouchBox.set			(-X_SIZE_2,0,-Z_SIZE_2, X_SIZE_2,Y_SIZE_2,Z_SIZE_2);
-	Fvector sh; sh.set		(X_SIZE_2*0.25f,0.f,Z_SIZE_2*0.25f);
-	Fbox bbFootBox; Fvector vfC,vfE;
-	bbFootBox.set			(-X_SIZE_2,	-0.01f, -Z_SIZE_2, X_SIZE_2, Y_SIZE_2*.4f, Z_SIZE_2);
-
-	// уменьшим размер ступней что-бы чуть зависать в воздухе при запрыгивании на препятствие
-	bbFootBox.shrink		(sh); 
-	bbFootBox.getcenter		(vfC);
-	bbFootBox.getradius		(vfE);
-
-	Movement.SetParent		(this);
-	Movement.SetBox			(bbStandBox);
-	Movement.SetFoots		(vfC,vfE);
 	Movement.SetPosition	(vPosition);
 	
 	// Health & Armor
