@@ -940,7 +940,11 @@ function save_logic(obj, packet)
 	local npc_id = obj:id()
 	local cur_tm = device():time_global()
 	
- 	packet:w_s32(db.storage[npc_id].activation_time - cur_tm)
+	local activation_time = db.storage[npc_id].activation_time
+	if not activation_time then
+		activation_time = nil
+	end
+ 	packet:w_s32(activation_time - cur_tm)
 end
 
 function load_logic(obj, reader)
