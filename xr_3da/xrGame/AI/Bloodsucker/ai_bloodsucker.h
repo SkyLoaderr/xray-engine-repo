@@ -25,6 +25,7 @@ public:
 
 	virtual	void			MotionToAnim			(EMotionAnim motion, int &index1, int &index2, int &index3);
 	virtual	void			LoadAttackAnim			();
+	virtual	void			CheckTransitionAnims	();
 
 			CBoneInstance*	GetBone					(LPCTSTR bone_name);
 			CBoneInstance*	GetBone					(int bone_id);
@@ -36,9 +37,9 @@ public:
 	CBloodsuckerRest		*stateRest;
 	CBloodsuckerEat			*stateEat;
 	CBloodsuckerAttack		*stateAttack;
-	CBitingPanic			*statePanic;
 	CBloodsuckerHearDNE		*stateHearDNE;
 	CBloodsuckerHearNDE		*stateHearNDE;
+	CBloodsuckerPanic		*statePanic;
 
 	friend	class			CBloodsuckerRest;
 	friend	class			CBloodsuckerEat;
@@ -46,6 +47,8 @@ public:
 	friend	class			CBitingPanic;
 	friend	class			CBloodsuckerHearDNE;
 	friend	class			CBloodsuckerHearNDE;
+	friend	class			CBloodsuckerPanic;
+
 	
 	bonesManipulation		Bones;
 
@@ -58,6 +61,12 @@ public:
 	float					m_fPowerThreshold;				// порог силы, после которого нельзя стать невидимым
 
 	CAI_NodeEvaluatorTemplate<aiSearchRange | aiEnemyDistance> m_tSelectorHearSnd;
+
+	u32						m_dwDayTimeBegin;
+	u32						m_dwDayTimeEnd;
+	float					m_fMinSatiety;
+	float					m_fMaxSatiety;
+
 };
 
 

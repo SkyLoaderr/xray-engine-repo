@@ -92,9 +92,37 @@ private:
 };
 
 //////////////////////////////////////////////////////////////////////////
-// State Hear DNE Sound
+// State 'Hear dangerous non-expedient sound' just panic or smth of the kind
 //////////////////////////////////////////////////////////////////////////
 class CBloodsuckerHearDNE : public IState {
+	typedef	IState inherited;
+	CAI_Bloodsucker	*pMonster;
+
+	enum {
+		ACTION_RUN_AWAY,
+		ACTION_LOOK_BACK_POSITION,
+		ACTION_LOOK_AROUND,
+	} m_tAction;
+
+	SoundElem		m_tSound;
+
+	bool			flag_once_1, flag_once_2;
+	float			m_fRunAwayDist;
+	Fvector			StartPosition, SavedPosition, LastPosition;
+	TTime			m_dwLastPosSavedTime;
+	TTime			m_dwStayLastTimeCheck;
+
+public:
+					CBloodsuckerHearDNE	(CAI_Bloodsucker *p);
+private:
+	virtual	void	Init			();
+	virtual	void	Run				();
+};
+
+////////////////////////////////////////////////////////////////////////////////////////////
+// State 'Hear non-dangerous expedient sound' just go and see what is going on there
+////////////////////////////////////////////////////////////////////////////////////////////
+class CBloodsuckerHearNDE : public IState {
 	typedef	IState inherited;
 	CAI_Bloodsucker	*pMonster;
 
@@ -106,34 +134,34 @@ class CBloodsuckerHearDNE : public IState {
 	SoundElem		m_tSound;
 	bool			flag_once_1, flag_once_2;
 
-	
-
 public:
-					CBloodsuckerHearDNE	(CAI_Bloodsucker *p);
-	virtual void	Reset			();
+					CBloodsuckerHearNDE	(CAI_Bloodsucker *p);
 private:
 	virtual	void	Init			();
 	virtual	void	Run				();
-
-			void	Restart			();
 };
 
-//////////////////////////////////////////////////////////////////////////
-// State Hear NDE Sound
-//////////////////////////////////////////////////////////////////////////
-class CBloodsuckerHearNDE : public IState {
+
+////////////////////////////////////////////////////////////////////////////////////////////
+// State 'Panic' run away from the place!
+////////////////////////////////////////////////////////////////////////////////////////////
+class CBloodsuckerPanic : public IState {
 	typedef	IState inherited;
 	CAI_Bloodsucker	*pMonster;
 
-	enum {
-		ACTION_DO_NOTHING,
-	} m_tAction;
+	SEnemy		m_tEnemy;
+	
+	// implementation of 'face the most open area'
+	bool			bFacedOpenArea;
+	Fvector			cur_pos;			
+	Fvector			prev_pos;
+	TTime			m_dwStayTime;
 
 public:
-					CBloodsuckerHearNDE	(CAI_Bloodsucker *p);
-	virtual void	Reset			();
+					CBloodsuckerPanic	(CAI_Bloodsucker *p);
+	virtual	void	Reset				();
 private:
-	virtual	void	Init			();
-	virtual	void	Run				();
-};
+	virtual	void	Init				();
+	virtual	void	Run					();
 
+};

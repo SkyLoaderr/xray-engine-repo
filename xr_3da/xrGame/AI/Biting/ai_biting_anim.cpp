@@ -19,27 +19,39 @@ LPCSTR caBitingStateNames			[] = {
 };
 
 LPCSTR caBitingGlobalNames		[] = {
-	"idle_",				// 0
-	"idle_rs_",				// 1	
-	"walk_fwd_",			// 2
-	"walk_bkwd_",			// 3
-	"walk_ls_",				// 4
-	"walk_rs_",				// 5
-	"run_",					// 6
-	"run_ls_",				// 7
-	"run_rs_",				// 8
-	"attack_",				// 9
-	"attack2_",				// 10
-	"attack_ls_",			// 11
-	"eat_",					// 12
-	"damaged_",				// 13
-	"scared_",				// 14
-	"die_",					// 15	
-	"lie_down_",			// 16
-	"stand_up_",			// 17
-	"liedown_eat_",			// 18
-	"attack_jump_",			// 19
-	"idle_ls_",				// 20	
+	"idle_",				// 0			// 0	 
+	"idle_rs_",				// 1			// 1	
+	"idle_ls_",				// 20			// 2
+											
+	"walk_fwd_",			// 2			// 3
+	"walk_bkwd_",			// 3			// 4
+	"walk_ls_",				// 4			// 5
+	"walk_rs_",				// 5			// 6
+											
+	"run_",					// 6			// 7
+	"run_ls_",				// 7			// 8
+	"run_rs_",				// 8			// 9
+											
+	"attack_",				// 9			// 10
+	"attack2_",				// 10			// 11
+	"attack_jump_",			// 19			// 12
+	
+	"fast_turn_ls_",		// 11			// 13
+										
+	"eat_",					// 12			// 14
+											
+	"damaged_",				// 13			// 15
+	"scared_",				// 14			// 16
+	"die_",					// 15			// 17	
+											
+	"sit_down_",			// 23			// 18
+	"to_sleep_",			// 24			// 19
+	"lie_down_",			// 16			// 20
+	"stand_up_",			// 17			// 21
+	"liedown_eat_",			// 18			// 22
+
+	"to_sleep_",			// 21			// 23 
+	"sleep_",				// 22			// 24 
 	0
 };
 
@@ -55,7 +67,7 @@ void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, flo
 	int i1, i2, i3;
 
 	if (bShowDeath)	{
-		MotionToAnim(eMotionDie,i1,i2,i3);
+		MotionToAnim(eAnimDie,i1,i2,i3);
 		m_tpCurAnim = m_tAnimations.A[i1].A[i2].A[i3];
 		PKinematics(Visual())->PlayCycle(m_tpCurAnim,TRUE,vfPlayCallBack,this);
 		bShowDeath  = false;
@@ -84,8 +96,8 @@ void CAI_Biting::ControlAnimation()
 		// __START: Bug protection 
 		// Если нет пути и есть анимация движения, то играть анимацию отдыха
 		if (AI_Path.TravelPath.empty() || ((AI_Path.TravelPath.size() - 1) <= AI_Path.TravelStart)) {
-			if ((m_tAnim == eMotionWalkFwd) || (m_tAnim == eMotionRun)) {
-				m_tAnim = eMotionStandIdle;
+			if ((m_tAnim == eAnimWalkFwd) || (m_tAnim == eAnimRun)) {
+				m_tAnim = eAnimStandIdle;
 			}
 		}
 
@@ -94,8 +106,8 @@ void CAI_Biting::ControlAnimation()
 		if (i > 1) {
 			CObject::SavedPosition tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
 			if (tCurrentPosition.vPosition.similar(tPreviousPosition.vPosition)) {
-				if ((m_tAnim == eMotionWalkFwd) || (m_tAnim == eMotionRun)) {
-					m_tAnim = eMotionStandIdle;
+				if ((m_tAnim == eAnimWalkFwd) || (m_tAnim == eAnimRun)) {
+					m_tAnim = eAnimStandIdle;
 				}
 			}
 		}
@@ -114,9 +126,9 @@ void CAI_Biting::ControlAnimation()
 
 bool CAI_Biting::IsInMotion()
 {
-	if ((m_tAnim != eMotionStandTurnLeft) && (m_tAnim != eMotionWalkFwd) && (m_tAnim != eMotionWalkBkwd) && 
-		(m_tAnim != eMotionWalkTurnLeft) && (m_tAnim != eMotionWalkTurnRight) && (m_tAnim != eMotionRun) && 
-		(m_tAnim != eMotionRunTurnLeft) && (m_tAnim != eMotionRunTurnRight) && (m_tAnim != eMotionFastTurnLeft)) {
+	if ((m_tAnim != eAnimStandTurnLeft) && (m_tAnim != eAnimWalkFwd) && (m_tAnim != eAnimWalkBkwd) && 
+		(m_tAnim != eAnimWalkTurnLeft) && (m_tAnim != eAnimWalkTurnRight) && (m_tAnim != eAnimRun) && 
+		(m_tAnim != eAnimRunTurnLeft) && (m_tAnim != eAnimRunTurnRight) && (m_tAnim != eAnimFastTurn)) {
 		return false;
 	}
 	return true;
@@ -145,7 +157,7 @@ void CAI_Biting::CheckAttackHit()
 
 		if (Level().ObjectSpace.RayPick(trace_from, Direction(), apt_anim.dist, l_rq)) {
 			if ((l_rq.O == obj) && (l_rq.range < apt_anim.dist)) {
-				DoDamage(ve.obj, apt_anim.damage,apt_anim.dir_yaw,apt_anim.dir_pitch,apt_anim.impulse);
+				DoDamage(ve.obj, apt_anim.damage,apt_anim.dir_yaw,apt_anim.dir_pitch);
 				m_tAttackAnim.UpdateLastAttack(cur_time);
 			}
 		}
@@ -172,7 +184,7 @@ void CAttackAnim::PushAttackAnim(SAttackAnimation AttackAnim)
 	m_all.push_back(AttackAnim);
 }
 
-void CAttackAnim::PushAttackAnim(u32 i1, u32 i2, u32 i3, TTime from, TTime to, Fvector &ray, float dist, float damage, float yaw, float pitch, float impulse, u32 flags)
+void CAttackAnim::PushAttackAnim(u32 i1, u32 i2, u32 i3, TTime from, TTime to, Fvector &ray, float dist, float damage, float yaw, float pitch, u32 flags)
 {
 	SAttackAnimation anim;
 
@@ -189,7 +201,6 @@ void CAttackAnim::PushAttackAnim(u32 i1, u32 i2, u32 i3, TTime from, TTime to, F
 	anim.damage			= damage;
 	anim.dir_yaw		= yaw;
 	anim.dir_pitch		= pitch;
-	anim.impulse		= impulse;
 	anim.flags			= flags;
 
 	PushAttackAnim		(anim);

@@ -81,28 +81,28 @@ void CAI_Chimera::MotionToAnim(EMotionAnim motion, int &index1, int &index2, int
 	index3 = -1;
 	
 	switch(motion) {
-		case eMotionStandIdle:		index1 = 0; index2 = 0;	 break;
-		case eMotionLieIdle:		index1 = 2; index2 = 0;	 break;
-		case eMotionStandTurnLeft:	index1 = 0; index2 = 4;	 break;
-		case eMotionWalkFwd:		index1 = 0; index2 = 2;	 break;
-		case eMotionWalkBkwd:		index1 = 0; index2 = 2;  break;
-		case eMotionWalkTurnLeft:	index1 = 0; index2 = 4;  break;
-		case eMotionWalkTurnRight:	index1 = 0; index2 = 5;  break;
-		case eMotionRun:			index1 = 0; index2 = 6;  break;
-		case eMotionRunTurnLeft:	index1 = 0; index2 = 7;  break;
-		case eMotionRunTurnRight:	index1 = 0; index2 = 8;  break;
-		case eMotionAttack:			index1 = 0; index2 = 9;  break;
-		case eMotionAttackRat:		index1 = 0; index2 = 9;	 break;
-		case eMotionFastTurnLeft:	index1 = 0; index2 = 8;  break;
-		case eMotionEat:			index1 = 2; index2 = 12; break;
-		case eMotionStandDamaged:	index1 = 0; index2 = 0;  break;
-		case eMotionScared:			index1 = 0; index2 = 0;  break;
-		case eMotionDie:			index1 = 0; index2 = 0; break;
-		case eMotionLieDown:		index1 = 0; index2 = 16; break;
-		case eMotionStandUp:		index1 = 2; index2 = 17; break;
-		case eMotionCheckCorpse:	index1 = 2; index2 = 0;	 index3 = 0;	break;
-		case eMotionLieDownEat:		index1 = 0; index2 = 18; break;
-		case eMotionAttackJump:		index1 = 0; index2 = 0;  break;
+//		case eMotionStandIdle:		index1 = 0; index2 = 0;	 break;
+//		case eMotionLieIdle:		index1 = 2; index2 = 0;	 break;
+//		case eMotionStandTurnLeft:	index1 = 0; index2 = 4;	 break;
+//		case eMotionWalkFwd:		index1 = 0; index2 = 2;	 break;
+//		case eMotionWalkBkwd:		index1 = 0; index2 = 2;  break;
+//		case eMotionWalkTurnLeft:	index1 = 0; index2 = 4;  break;
+//		case eMotionWalkTurnRight:	index1 = 0; index2 = 5;  break;
+//		case eMotionRun:			index1 = 0; index2 = 6;  break;
+//		case eMotionRunTurnLeft:	index1 = 0; index2 = 7;  break;
+//		case eMotionRunTurnRight:	index1 = 0; index2 = 8;  break;
+//		case eMotionAttack:			index1 = 0; index2 = 9;  break;
+//		case eMotionAttackRat:		index1 = 0; index2 = 9;	 break;
+//		case eMotionFastTurnLeft:	index1 = 0; index2 = 8;  break;
+//		case eMotionEat:			index1 = 2; index2 = 12; break;
+//		case eMotionStandDamaged:	index1 = 0; index2 = 0;  break;
+//		case eMotionScared:			index1 = 0; index2 = 0;  break;
+//		case eMotionDie:			index1 = 0; index2 = 0; break;
+//		case eMotionLieDown:		index1 = 0; index2 = 16; break;
+//		case eMotionStandUp:		index1 = 2; index2 = 17; break;
+//		case eMotionCheckCorpse:	index1 = 2; index2 = 0;	 index3 = 0;	break;
+//		case eMotionLieDownEat:		index1 = 0; index2 = 18; break;
+//		case eMotionAttackJump:		index1 = 0; index2 = 0;  break;
 		///default:					NODEFAULT;
 	} 
 
@@ -146,21 +146,19 @@ void CAI_Chimera::LoadAttackAnim()
 	left_side.set	(-0.3f,0.f,0.f);
 	right_side.set	(0.3f,0.f,0.f);
 
-	float	impulse = 120.f;
-	
 	// 1 //
-	m_tAttackAnim.PushAttackAnim(0, 9, 0, 700,	800,	center,		3.f, m_fHitPower, 0.f, 0.f, impulse);
+	m_tAttackAnim.PushAttackAnim(0, 10, 0, 700,	800,	center,		3.f, m_fHitPower, 0.f, 0.f);
 	
 	// 2 //
-	m_tAttackAnim.PushAttackAnim(0, 9, 1, 500,	600,	right_side, 2.5f, m_fHitPower, 0.f, 0.f, impulse);
+	m_tAttackAnim.PushAttackAnim(0, 10, 1, 500,	600,	right_side, 2.5f, m_fHitPower, 0.f, 0.f);
 	
 	// 3 // 
-	m_tAttackAnim.PushAttackAnim(0, 9, 2, 600,	700,	center,		3.5f, m_fHitPower, 0.f, 0.f, impulse);
+	m_tAttackAnim.PushAttackAnim(0, 10, 2, 600,	700,	center,		3.5f, m_fHitPower, 0.f, 0.f);
 
 	// 4 // 
-	m_tAttackAnim.PushAttackAnim(0, 9, 3, 800,	900,	left_side,	1.0f, m_fHitPower, 0.f, 0.f, impulse);
+	m_tAttackAnim.PushAttackAnim(0, 10, 3, 800,	900,	left_side,	1.0f, m_fHitPower, 0.f, 0.f);
 
 	// 5 // 
-	m_tAttackAnim.PushAttackAnim(0, 9, 5, 1500, 1600,	right_side, 3.0f, m_fHitPower, 0.f, 0.f, impulse);
+	m_tAttackAnim.PushAttackAnim(0, 10, 5, 1500, 1600,	right_side, 3.0f, m_fHitPower, 0.f, 0.f);
 }
 

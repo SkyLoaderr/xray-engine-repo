@@ -47,7 +47,7 @@ void CAI_Biting::vfInitSelector(IBaseAI_NodeEvaluator &S, bool hear_sound)
 	S.m_tpMyNode		= AI_Node;
 	S.m_tMyPosition		= Position();
 
-	if (!hear_sound) {
+	if (!hear_sound && m_tEnemy.obj) {
 		S.m_tEnemy			= m_tEnemy.obj;
 		S.m_tEnemyPosition	= m_tEnemy.position;
 		S.m_dwEnemyNode		= m_tEnemy.node_id;

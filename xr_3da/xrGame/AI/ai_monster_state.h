@@ -18,7 +18,7 @@
 
 class CCustomMonster;
 
-#define		DEFAULT_ANIM	eMotionStandIdle
+#define		DEFAULT_ANIM	eAnimStandIdle
 
 #define		MASK_ANIM		(1 << 0)
 #define		MASK_SPEED		(1 << 1)
@@ -31,29 +31,41 @@ class CCustomMonster;
 
 
 enum EMotionAnim {
-	eMotionStandIdle = 0,
-	eMotionLieIdle,
-	eMotionStandTurnLeft,
-	eMotionStandTurnRight,
-	eMotionWalkFwd,
-	eMotionWalkBkwd,
-	eMotionWalkTurnLeft,
-	eMotionWalkTurnRight,
-	eMotionRun,
-	eMotionRunTurnLeft,
-	eMotionRunTurnRight,
-	eMotionAttack,
-	eMotionAttackRat,
-	eMotionFastTurnLeft,
-	eMotionEat,
-	eMotionStandDamaged,
-	eMotionScared,
-	eMotionDie,
-	eMotionLieDown,
-	eMotionStandUp,
-	eMotionCheckCorpse,
-	eMotionLieDownEat,
-	eMotionAttackJump
+	eAnimStandIdle = 0,
+	eAnimStandTurnLeft,
+	eAnimStandTurnRight,
+	eAnimStandDamaged,
+	
+	eAnimSitIdle,
+	eAnimLieIdle,
+
+	eAnimSitToSleep,
+	eAnimStandSitDown,
+	eAnimStandLieDown,
+	eAnimLieStandUp,
+	eAnimSitStandUp,
+	eAnimStandLieDownEat,
+
+	eAnimWalkFwd,
+	eAnimWalkBkwd,
+	eAnimWalkTurnLeft,
+	eAnimWalkTurnRight,
+	
+	eAnimRun,
+	eAnimRunTurnLeft,
+	eAnimRunTurnRight,
+	eAnimFastTurn,					//eAnimFastTurnLeft,
+
+	eAnimAttack,
+	eAnimAttackRat,
+	
+	eAnimEat,
+	eAnimSleep,
+	eAnimDie,
+	
+	eAnimCheckCorpse,
+	eAnimScared,
+	eAnimAttackJump,
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////

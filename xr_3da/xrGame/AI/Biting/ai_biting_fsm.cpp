@@ -61,6 +61,13 @@ void CAI_Biting::OnMotionSequenceEnd()
 	CurrentState->UnlockState(m_dwCurrentUpdate);
 }
 
+void CAI_Biting::CheckTransitionAnims()
+{
+	if ((m_tAnimPrevFrame == eAnimLieIdle) && (m_tAnim != eAnimLieIdle)){
+		Motion.m_tSeq.Add(eAnimLieStandUp,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED,STOP_ANIM_END);
+		Motion.m_tSeq.Switch();
+	}
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingMotion implementation
@@ -79,11 +86,8 @@ void CBitingMotion::SetFrameParams(CAI_Biting *pData)
 		m_tTurn.CheckTurning(pData);
 
 		//!- проверить необходимо ли устанавливать специфич. параметры (kinda StandUp)
-		if ((pData->m_tAnimPrevFrame == eMotionLieIdle) && (pData->m_tAnim != eMotionLieIdle)){
-			m_tSeq.Add(eMotionStandUp,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED,STOP_ANIM_END);
-			m_tSeq.Switch();
-		}
-
+		pData->CheckTransitionAnims();
+		
 		//!---
 	} else {
 		m_tSeq.ApplyData();

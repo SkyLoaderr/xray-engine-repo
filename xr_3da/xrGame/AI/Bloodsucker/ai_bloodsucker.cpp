@@ -9,7 +9,7 @@ CAI_Bloodsucker::CAI_Bloodsucker()
 	stateRest			= xr_new<CBloodsuckerRest>		(this);
 	stateEat			= xr_new<CBloodsuckerEat>		(this);
 	stateAttack			= xr_new<CBloodsuckerAttack>	(this);
-	statePanic			= xr_new<CBitingPanic>			(this);
+	statePanic			= xr_new<CBloodsuckerPanic>		(this);
 	stateHearDNE		= xr_new<CBloodsuckerHearDNE>	(this);
 	stateHearNDE		= xr_new<CBloodsuckerHearNDE>	(this);
 
@@ -50,6 +50,11 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 	m_fPowerThreshold	= pSettings->r_float(section,"PowerThreshold");	
 
 	m_tSelectorHearSnd.Load(section,"selector_hear_sound");				// like free hunting
+
+	m_dwDayTimeBegin	= pSettings->r_u32	(section,"DayTime_Begin");
+	m_dwDayTimeEnd		= pSettings->r_u32	(section,"DayTime_End");		
+	m_fMinSatiety		= pSettings->r_float(section,"Min_Satiety");
+	m_fMaxSatiety		= pSettings->r_float(section,"Max_Satiety");
 }
 
 
@@ -70,10 +75,10 @@ void CAI_Bloodsucker::UpdateCL()
 	HUD().pFontSmall->OutSet	(300,400);
 	HUD().pFontSmall->OutNext("Satiety = [%f]",GetSatiety());
 
-//	// Blink processing
-//	bool PrevVis	=	m_tVisibility.IsCurrentVisible();
-//	bool NewVis		=	m_tVisibility.Update();
-//	if (NewVis != PrevVis) setVisible(NewVis);
+	// Blink processing
+	bool PrevVis	=	m_tVisibility.IsCurrentVisible();
+	bool NewVis		=	m_tVisibility.Update();
+	if (NewVis != PrevVis) setVisible(NewVis);
 
 }
 
@@ -109,30 +114,28 @@ void CAI_Bloodsucker::Think()
 		Motion.m_tSeq.Cycle(m_dwCurrentUpdate);
 	}else {
 		
-//		//- FSM 1-level 
-//		if (C && H && I)			SetState(statePanic);
-//		else if (C && H && !I)		SetState(statePanic);
-//		else if (C && !H && I)		SetState(statePanic);
-//		else if (C && !H && !I) 	SetState(statePanic);
-//		else if (D && H && I)		SetState(stateAttack);
-//		else if (D && H && !I)		SetState(stateAttack);  
-//		else if (D && !H && I)		SetState(statePanic);
-//		else if (D && !H && !I) 	SetState(statePanic);	
-//		else if (E && H && I)		SetState(stateAttack); 
-//		else if (E && H && !I)  	SetState(stateAttack);  
-//		else if (E && !H && I) 		SetState(stateAttack); 
-//		else if (E && !H && !I)		SetState(stateAttack); 
-//		else if (F && H && I) 		SetState(stateAttack); 		
-//		else if (F && H && !I)  	SetState(stateAttack); 
-//		else if (F && !H && I)  	SetState(stateAttack); 
-//		else if (F && !H && !I) 	SetState(stateAttack);		
-//		else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < 0.85f) || flagEatNow))
-//			SetState(stateEat);	
-//		else SetState(stateRest);
-//		//-
-
-		if (A | B) SetState(stateHearDNE);
-		else SetState(stateHearNDE);
+		//- FSM 1-level 
+		if (C && H && I)			SetState(statePanic);
+		else if (C && H && !I)		SetState(statePanic);
+		else if (C && !H && I)		SetState(statePanic);
+		else if (C && !H && !I) 	SetState(statePanic);
+		else if (D && H && I)		SetState(statePanic);
+		else if (D && !H && I)		SetState(statePanic);
+		else if (D && !H && !I) 	SetState(statePanic);			// :: Hide
+		else if (D && H && !I)		SetState(stateAttack); 
+		else if (E && H && I)		SetState(stateAttack); 
+		else if (E && H && !I)  	SetState(stateAttack);  
+		else if (E && !H && I) 		SetState(stateAttack);			// :: Detour
+		else if (E && !H && !I)		SetState(stateAttack);			// :: Detour 
+		else if (F && H && I) 		SetState(stateAttack); 		
+		else if (F && H && !I)  	SetState(stateAttack); 
+		else if (F && !H && I)  	SetState(stateAttack); 
+		else if (F && !H && !I) 	SetState(stateAttack);		
+		else if (A && !K)			SetState(stateHearDNE); 
+		else if (B && !K)			SetState(stateHearNDE); 
+		else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < 0.85f) || flagEatNow))
+									SetState(stateEat);	
+		else						SetState(stateRest);
 
 		CurrentState->Execute(m_dwCurrentUpdate);
 
@@ -181,16 +184,14 @@ void CAI_Bloodsucker::LoadAttackAnim()
 	Fvector center;
 	center.set		(0.f,0.f,0.f);
 
-	float	impulse = 1200.f;
-
 	// 1 //
-	m_tAttackAnim.PushAttackAnim(0, 9, 0, 500,	600,	center,		1.3f, m_fHitPower, -PI_DIV_6, PI_DIV_6, impulse);
+	m_tAttackAnim.PushAttackAnim(0, 10, 0, 500,	600,	center,		1.3f, m_fHitPower, -PI_DIV_6, PI_DIV_6);
 
 	// 2 //
-	m_tAttackAnim.PushAttackAnim(0, 9, 1, 600,	700,	center,		1.3f, m_fHitPower, 0.f, PI_DIV_6, impulse);
+	m_tAttackAnim.PushAttackAnim(0, 10, 1, 600,	700,	center,		1.3f, m_fHitPower, 0.f, PI_DIV_6);
 
 	// 3 // 
-	m_tAttackAnim.PushAttackAnim(0, 9, 2, 500,	600,	center,		1.4f, m_fHitPower, PI_DIV_3, PI_DIV_6, impulse);
+	m_tAttackAnim.PushAttackAnim(0, 10, 2, 500,	600,	center,		1.4f, m_fHitPower, PI_DIV_3, PI_DIV_6);
 }
 
 

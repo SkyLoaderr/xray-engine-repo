@@ -109,13 +109,15 @@ public:
 			
 			void			vfUpdateParameters				();
 		
-			void			DoDamage						(CEntity *pEntity, float fDamage, float yaw, float pitch, float impulse);
+			void			DoDamage						(CEntity *pEntity, float fDamage, float yaw, float pitch);
 			void			SetState						(IState *pS, bool bSkipInertiaCheck = false);
 
 	// Animation control
 			void			OnAnimationEnd					();
 			void			ControlAnimation				();
 	virtual	void			MotionToAnim					(EMotionAnim motion, int &index1, int &index2, int &index3) = 0;
+	virtual	void			CheckTransitionAnims			();	 // проверить необходимо ли устанавливать специфич. параметры (kinda StandUp)
+	
 	// Motion control
 	virtual	bool			IsInMotion						();
 	virtual void			OnMotionSequenceStart			();
@@ -193,10 +195,14 @@ public:
 	TTime					m_timeStandIdleMax;
 	TTime					m_timeFreeWalkMin;
 	TTime					m_timeFreeWalkMax;
+	TTime					m_timeSleepMin;
+	TTime					m_timeSleepMax;
 
 	u32						m_dwProbRestWalkFree;
 	u32						m_dwProbRestStandIdle;
 	u32						m_dwProbRestLieIdle;
 	u32						m_dwProbRestTurnLeft;
 
+	float					m_fImpulseMin;
+	float					m_fImpulseMax;
 };

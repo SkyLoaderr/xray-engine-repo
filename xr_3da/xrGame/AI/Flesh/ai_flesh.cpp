@@ -135,28 +135,28 @@ void CAI_Flesh::MotionToAnim(EMotionAnim motion, int &index1, int &index2, int &
 	index3 = -1;
 
 	switch(motion) {
-		case eMotionStandIdle:		index1 = 0; index2 = 0;	 break;
-		case eMotionLieIdle:		index1 = 2; index2 = 0;	 break;
-		case eMotionStandTurnLeft:	index1 = 0; index2 = 1;	 break;
-		case eMotionWalkFwd:		index1 = 0; index2 = 2;	 break;
-		case eMotionWalkBkwd:		index1 = 0; index2 = 3;  break;
-		case eMotionWalkTurnLeft:	index1 = 0; index2 = 4;  break;
-		case eMotionWalkTurnRight:	index1 = 0; index2 = 5;  break;
-		case eMotionRun:			index1 = 0; index2 = 6;  break;
-		case eMotionRunTurnLeft:	index1 = 0; index2 = 7;  break;
-		case eMotionRunTurnRight:	index1 = 0; index2 = 8;  break;
-		case eMotionAttack:			index1 = 0; index2 = 9;  break;
-		case eMotionAttackRat:		index1 = 0; index2 = 10; break;
-		case eMotionFastTurnLeft:	index1 = 0; index2 = 11; break;
-		case eMotionEat:			index1 = 2; index2 = 12; break;
-		case eMotionStandDamaged:	index1 = 0; index2 = 13; break;
-		case eMotionScared:			index1 = 0; index2 = 14; break;
-		case eMotionDie:			index1 = 0; index2 = 15; break;
-		case eMotionLieDown:		index1 = 0; index2 = 16; break;
-		case eMotionStandUp:		index1 = 2; index2 = 17; break;
-		case eMotionCheckCorpse:	index1 = 0; index2 = 0;	 index3 = 2;	break;
-		case eMotionLieDownEat:		index1 = 0; index2 = 18; break;
-		case eMotionAttackJump:		index1 = 0; index2 = 19; break;
+//		case eAnimStandIdle:		index1 = 0; index2 = 0;	 break;
+//		case eAnimLieIdle:		index1 = 2; index2 = 0;	 break;
+//		case eAnimStandTurnLeft:	index1 = 0; index2 = 1;	 break;
+//		case eAnimWalkFwd:		index1 = 0; index2 = 2;	 break;
+//		case eAnimWalkBkwd:		index1 = 0; index2 = 3;  break;
+//		case eAnimWalkTurnLeft:	index1 = 0; index2 = 4;  break;
+//		case eAnimWalkTurnRight:	index1 = 0; index2 = 5;  break;
+//		case eAnimRun:			index1 = 0; index2 = 6;  break;
+//		case eAnimRunTurnLeft:	index1 = 0; index2 = 7;  break;
+//		case eAnimRunTurnRight:	index1 = 0; index2 = 8;  break;
+//		case eAnimAttack:			index1 = 0; index2 = 9;  break;
+//		case eAnimAttackRat:		index1 = 0; index2 = 10; break;
+//		case eAnimFastTurnLeft:	index1 = 0; index2 = 11; break;
+//		case eAnimEat:			index1 = 2; index2 = 12; break;
+//		case eAnimStandDamaged:	index1 = 0; index2 = 13; break;
+//		case eAnimScared:			index1 = 0; index2 = 14; break;
+//		case eAnimDie:			index1 = 0; index2 = 15; break;
+//		case eAnimLieDown:		index1 = 0; index2 = 16; break;
+//		case eAnimStandUp:		index1 = 2; index2 = 17; break;
+//		case eAnimCheckCorpse:	index1 = 0; index2 = 0;	 index3 = 2;	break;
+//		case eAnimLieDownEat:		index1 = 0; index2 = 18; break;
+//		case eAnimAttackJump:		index1 = 0; index2 = 19; break;
 		//default:					NODEFAULT;
 	}
 
@@ -172,25 +172,23 @@ void CAI_Flesh::LoadAttackAnim()
 	right_side.set	(0.1f,0.f,0.f);
 	special_side.set(-0.5f,0.f,0.5f);
 
-	float	impulse = 120.f;
-
 	// 1 //
-	m_tAttackAnim.PushAttackAnim(0, 9, 0, 700,	800,	center,		2.f, m_fHitPower, 0.f, 0.f, impulse);
+	m_tAttackAnim.PushAttackAnim(0, 9, 0, 700,	800,	center,		2.f, m_fHitPower, 0.f, 0.f);
 
 	// 2 //
-	m_tAttackAnim.PushAttackAnim(0, 9, 1, 600,	800,	center,		2.5f, m_fHitPower, 0.f, 0.f, impulse);
+	m_tAttackAnim.PushAttackAnim(0, 9, 1, 600,	800,	center,		2.5f, m_fHitPower, 0.f, 0.f);
 
 	// 3 // 
-	m_tAttackAnim.PushAttackAnim(0, 9, 2, 1100,	1250,	right_side,	1.5f, m_fHitPower, 0.f, 0.f, impulse);
+	m_tAttackAnim.PushAttackAnim(0, 9, 2, 1100,	1250,	right_side,	1.5f, m_fHitPower, 0.f, 0.f);
 
 	// 4 // 
-	m_tAttackAnim.PushAttackAnim(0, 9, 3, 1300,	1400,	left_side,	0.6f, m_fHitPower, 0.f, 0.f, impulse);
+	m_tAttackAnim.PushAttackAnim(0, 9, 3, 1300,	1400,	left_side,	0.6f, m_fHitPower, 0.f, 0.f);
 
 	// 5 // 
-	m_tAttackAnim.PushAttackAnim(0, 10, 0, 600, 800,	special_side,	2.6f, m_fHitPower, 0.f, 0.f, impulse, AA_FLAG_ATTACK_RAT);
+	m_tAttackAnim.PushAttackAnim(0, 10, 0, 600, 800,	special_side,	2.6f, m_fHitPower, 0.f, 0.f, AA_FLAG_ATTACK_RAT);
 
 	// 6 //
-	m_tAttackAnim.PushAttackAnim(0, 19, 0, 700, 850,	center,		2.6f, m_fHitPower, 0.f, 0.f,impulse, AA_FLAG_FIRE_ANYWAY);
+	m_tAttackAnim.PushAttackAnim(0, 19, 0, 700, 850,	center,		2.6f, m_fHitPower, 0.f, 0.f, AA_FLAG_FIRE_ANYWAY);
 
 }
 
@@ -213,7 +211,7 @@ void CAI_Flesh::CheckAttackHit()
 
 		// трассировка нужна?
 		if ((apt_anim.flags & AA_FLAG_FIRE_ANYWAY) == AA_FLAG_FIRE_ANYWAY) {
-			DoDamage(ve.obj, apt_anim.damage,apt_anim.dir_yaw, apt_anim.dir_pitch, apt_anim.impulse);	// не нужна
+			DoDamage(ve.obj, apt_anim.damage,apt_anim.dir_yaw, apt_anim.dir_pitch);	// не нужна
 			m_tAttackAnim.UpdateLastAttack(cur_time);
 		} else if ((apt_anim.flags & AA_FLAG_ATTACK_RAT) == AA_FLAG_ATTACK_RAT) {
 
@@ -222,7 +220,7 @@ void CAI_Flesh::CheckAttackHit()
 			Fvector vC;		ve.obj->Center(vC);			// центр сферы
 
 			if (ConeSphereIntersection(trace_from, PI_DIV_6, dir, vC, ve.obj->Radius())) {
-				DoDamage(ve.obj,apt_anim.damage,apt_anim.dir_yaw, apt_anim.dir_pitch, apt_anim.impulse);
+				DoDamage(ve.obj,apt_anim.damage,apt_anim.dir_yaw, apt_anim.dir_pitch);
 				m_tAttackAnim.UpdateLastAttack(cur_time);
 			}
 
@@ -232,7 +230,7 @@ void CAI_Flesh::CheckAttackHit()
 			
 			if (Level().ObjectSpace.RayPick(trace_from, Direction(), apt_anim.dist, l_rq)) {
 				if ((l_rq.O == obj) && (l_rq.range < apt_anim.dist)) {
-					DoDamage(ve.obj, apt_anim.damage,apt_anim.dir_yaw, apt_anim.dir_pitch,apt_anim.impulse);
+					DoDamage(ve.obj, apt_anim.damage,apt_anim.dir_yaw, apt_anim.dir_pitch);
 					m_tAttackAnim.UpdateLastAttack(cur_time);
 				}
 			}
@@ -469,21 +467,21 @@ void CFleshCapture::Run()
 			pMonster->AI_Path.DestNode = pCorpse->AI_NodeID;
 			pMonster->vfChoosePointAndBuildPath(0,&pCorpse->Position(), true, 0,2000);
 
-			pMonster->Motion.m_tParams.SetParams(eMotionWalkFwd,pMonster->m_ftrWalkSpeed,pMonster->m_ftrWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-			pMonster->Motion.m_tTurn.Set(eMotionWalkTurnLeft, eMotionWalkTurnRight,pMonster->m_ftrWalkTurningSpeed,pMonster->m_ftrWalkTurnRSpeed,pMonster->m_ftrWalkMinAngle);
+			pMonster->Motion.m_tParams.SetParams(eAnimWalkFwd,pMonster->m_ftrWalkSpeed,pMonster->m_ftrWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+			pMonster->Motion.m_tTurn.Set(eAnimWalkTurnLeft, eAnimWalkTurnRight,pMonster->m_ftrWalkTurningSpeed,pMonster->m_ftrWalkTurnRSpeed,pMonster->m_ftrWalkMinAngle);
 
 			if (pCorpse->Position().distance_to(pMonster->Position()) < m_fDistToCorpse) m_tAction = ACTION_CAPTURE;
 			break;
 	
 		case ACTION_CAPTURE:
 			DO_ONCE_BEGIN(flag_once_1); // если монстр подбежал к трупу, необходимо отыграть проверку трупа и лечь
-				pMonster->Motion.m_tSeq.Add(eMotionCheckCorpse,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);
+				pMonster->Motion.m_tSeq.Add(eAnimCheckCorpse,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);
 				pMonster->Motion.m_tSeq.Switch();
 
 				pMonster->Movement.PHCaptureObject(pCorpse);
 			DO_ONCE_END();
 
-			pMonster->Motion.m_tParams.SetParams(eMotionStandIdle,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+			pMonster->Motion.m_tParams.SetParams(eAnimStandIdle,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 			pMonster->Motion.m_tTurn.Clear();
 			
 			if (m_dwStateStartedTime + 2000 < m_dwCurrentTime) m_tAction = ACTION_CARRY_BACK;
@@ -492,8 +490,8 @@ void CFleshCapture::Run()
 			pMonster->AI_Path.DestNode = SavedNodeID;
 			pMonster->vfChoosePointAndBuildPath(0,&SavedPosition, true, 0,2000);
 
-			pMonster->Motion.m_tParams.SetParams(eMotionWalkFwd,pMonster->m_ftrWalkSpeed,pMonster->m_ftrWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-			pMonster->Motion.m_tTurn.Set(eMotionWalkTurnLeft, eMotionWalkTurnRight,pMonster->m_ftrWalkTurningSpeed,pMonster->m_ftrWalkTurnRSpeed,pMonster->m_ftrWalkMinAngle);
+			pMonster->Motion.m_tParams.SetParams(eAnimWalkFwd,pMonster->m_ftrWalkSpeed,pMonster->m_ftrWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+			pMonster->Motion.m_tTurn.Set(eAnimWalkTurnLeft, eAnimWalkTurnRight,pMonster->m_ftrWalkTurningSpeed,pMonster->m_ftrWalkTurnRSpeed,pMonster->m_ftrWalkMinAngle);
 			break;
 	}
 }

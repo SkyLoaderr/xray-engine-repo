@@ -66,8 +66,6 @@ To ALEX-MX:
 +O	ocasional memory corruption inside particle system (on destructor, probably?)
 	(game00/single/alife)
 +D	зоны глючат постоянно из-за партикловой-хрени! (game00/single/alife)
--J  глюк с консолью. вылетает на: 
-    Msg("[ ACTION_LOOK_DESTINATION ]  :: CurrentTime = [%i] CurYaw = [%f] TargetYaw = [%f]  SoundPos = [%f,%f,%f]", m_dwCurrentTime, pMonster->r_torso_current.yaw, pMonster->r_torso_target.yaw,VPUSH(m_tSound.position));
 
 ДЕТАЛЬНЫЕ ОБЪЕКТЫ В РЕДАКТОРЕ
 --вылет при попытке заменить объектный лист
@@ -91,6 +89,7 @@ To DIMA:
 	CSE_ALifeSimulator::vfValidatePosition :
 		if (tpALifeAbstractGroup) {
 			if (tpALifeAbstractGroup->m_tpMembers.empty())
+-J  строить путь назад на N метров(ровно на 180 град), если нельзя на N - возвратить соотв. значение (напр. на сколько можно)
 
 TO YURA
 - wallmark на материаллы. спецэффекты от попаданий (партиклы и т.д. и т.п)

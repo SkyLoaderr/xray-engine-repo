@@ -31,7 +31,7 @@ void CAI_Biting::feel_sound_new(CObject* who, int eType, const Fvector &Position
  	}
 }
 
-void CAI_Biting::DoDamage(CEntity *pEntity, float fDamage, float yaw, float pitch, float impulse)
+void CAI_Biting::DoDamage(CEntity *pEntity, float fDamage, float yaw, float pitch)
 {
 	if (!g_Alive()) return;
 	if (!pEntity) return;
@@ -52,6 +52,7 @@ void CAI_Biting::DoDamage(CEntity *pEntity, float fDamage, float yaw, float pitc
 			p += pitch;
 			dir.setHP(y,p);
 		}
+		float impulse = ::Random.randF(m_fImpulseMin,m_fImpulseMax);
 		pEntity->Hit(fDamage,dir,this,0,position_in_bone_space,impulse);
 	}
 }

@@ -115,6 +115,9 @@ void CAI_Biting::Load(LPCSTR section)
 	// prefetching
 	cNameVisual_set					(pSettings->r_string(section,"visual"));
 
+	m_fImpulseMin					= pSettings->r_float(section,"ImpulseMin");
+	m_fImpulseMax					= pSettings->r_float(section,"ImpulseMax");
+
 	m_ftrStandTurnRSpeed			= pSettings->r_float(section,"StandTurnRSpeed");
 	m_ftrWalkSpeed					= pSettings->r_float(section,"WalkSpeed");
 	m_ftrWalkTurningSpeed			= pSettings->r_float(section,"WalkTurningSpeed");
@@ -136,7 +139,9 @@ void CAI_Biting::Load(LPCSTR section)
 	m_timeStandIdleMax				= pSettings->r_u32   (section,"StandIdleTimeMax");
 	m_timeFreeWalkMin				= pSettings->r_u32   (section,"FreeWalkTimeMin");
 	m_timeFreeWalkMax				= pSettings->r_u32   (section,"FreeWalkTimeMax");
-
+	m_timeSleepMin					= pSettings->r_u32   (section,"SleepTimeMin");
+	m_timeSleepMax					= pSettings->r_u32   (section,"SleepTimeMax");
+	
 	m_dwProbRestWalkFree			= pSettings->r_u32   (section,"ProbRestWalkFree");
 	m_dwProbRestStandIdle			= pSettings->r_u32   (section,"ProbRestStandIdle");
 	m_dwProbRestLieIdle				= pSettings->r_u32   (section,"ProbRestLieIdle");

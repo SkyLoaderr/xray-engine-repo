@@ -70,7 +70,6 @@ typedef struct {
 	float	damage;				// урон при данной атаке
 	float	dir_yaw;			// угол направления приложения силы к объекту 
 	float	dir_pitch;			//  - || -
-	float	impulse;			// импульс
 } SAttackAnimation;
 
 
@@ -90,7 +89,7 @@ public:
 	void		SwitchAnimation		(TTime cur_time, u32 i1, u32 i2, u32 i3);
 	void		PushAttackAnim		(SAttackAnimation AttackAnim);
 	void		PushAttackAnim		(u32 i1, u32 i2, u32 i3, TTime from, TTime to, Fvector &ray, 
-									 float dist, float damage, float yaw, float pitch, float impulse, u32 flags = 0);
+									 float dist, float damage, float yaw, float pitch, u32 flags = 0);
 
 	bool		CheckTime			(TTime cur_time, SAttackAnimation &anim); 
 	void		UpdateLastAttack	(TTime cur_time) {time_last_attack = cur_time;}

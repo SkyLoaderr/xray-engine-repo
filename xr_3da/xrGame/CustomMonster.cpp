@@ -752,3 +752,4 @@ void CCustomMonster::SetDirectionLook()
 
 	r_target = r_torso_target;
 }
+
