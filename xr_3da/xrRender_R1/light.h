@@ -5,7 +5,7 @@
 struct	light_indirect		{
 	Fvector			P;
 	Fvector			D;
-	Fvector			C;
+	float			E;
 };
 
 class	light		:	public IRender_Light, public ISpatial
@@ -27,6 +27,8 @@ public:
 	u32				dwFrame;
 
 #if RENDER==R_R2
+	xr_vector<light_indirect>	indirect;
+
 	ref_shader		s_spot;
 	ref_shader		s_point;
 
@@ -60,6 +62,7 @@ public:
 	virtual	Fvector	spatial_sector_point	();
 
 #if RENDER==R_R2
+	void			gi_generate				();
 	void			xform_calc				();
 	void			vis_prepare				();
 	void			vis_update				();
