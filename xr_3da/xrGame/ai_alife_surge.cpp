@@ -587,10 +587,6 @@ void CSE_ALifeSimulator::vfUpdateArtefactOrders(CSE_ALifeTrader &tTrader)
 	}
 }
 
-void CSE_ALifeSimulator::vfBuySupplies(CSE_ALifeTrader &tTrader)
-{
-}
-
 void CSE_ALifeSimulator::vfPerformSurge()
 {
 	vfGenerateAnomalousZones		();
@@ -613,4 +609,9 @@ void CSE_ALifeSimulator::vfPerformSurge()
 		for ( ; I != E; I++)
 			vfUpdateArtefactOrders	(**I);
 	}
+}
+
+void CSE_ALifeSimulator::vfBuySupplies(CSE_ALifeTrader &tTrader)
+{
+	
 }
