@@ -20,6 +20,8 @@ void CBurerAttackGravi::Init()
 	m_tAction					= ACTION_GRAVI_STARTED;
 
 	time_gravi_started			= 0;
+
+	pMonster->set_script_capture			(false);
 }
 
 void CBurerAttackGravi::Run()
@@ -71,7 +73,8 @@ void CBurerAttackGravi::Run()
 
 void CBurerAttackGravi::Done()
 {
-	pMonster->DeactivateShield();
+	pMonster->DeactivateShield	();
+	pMonster->set_script_capture(true);
 }
 
 

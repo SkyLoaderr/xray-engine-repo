@@ -147,7 +147,8 @@ public:
 //	_DECLARE_FUNCTION12	(AddAction,			void,const CScriptEntityAction *,				bool);
 //	_DECLARE_FUNCTION10	(GetCurrentAction,const CScriptEntityAction *);
 	_DECLARE_FUNCTION10	(GetEnemyStrength, int);
-
+	_DECLARE_FUNCTION10	(can_script_capture, bool);
+	
 
 			CScriptEntityAction	*GetCurrentAction	() const;
 			void				AddAction			(const CScriptEntityAction *tpEntityAction, bool bHighPriority = false);
@@ -176,6 +177,7 @@ public:
 			bool				get_invisible			();
 			void				set_manual_invisibility (bool val);
 			bool				get_manual_invisibility ();
+
 
 			template <typename T>
 			IC		T	*motivation_action_manager();

@@ -49,6 +49,8 @@ private:
 	CGameObject					*m_object;
 	CCustomMonster				*m_monster;
 	bool						m_initialized;
+	
+	bool						m_can_capture;
 
 protected:
 	ACTIONS						m_tpActionQueue;
@@ -113,6 +115,8 @@ public:
 	virtual int					get_enemy_strength		();
 			void				process_sound_callbacks	();
 
+			void				set_script_capture		(bool val = true) {m_can_capture = val;}
+			bool				can_script_capture		(){return m_can_capture;}
 public:
 	IC		CGameObject			&object					() const;
 };

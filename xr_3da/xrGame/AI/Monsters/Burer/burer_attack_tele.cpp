@@ -29,6 +29,9 @@ void CBurerAttackTele::Init()
 	SelectObjects();
 
 	time_started			= 0;
+
+	// запретить взятие скриптом
+	pMonster->set_script_capture(false);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -97,6 +100,9 @@ void CBurerAttackTele::Done()
 			pMonster->StopTeleObjectParticle(pMonster->CTelekinesis::get_object_by_index(i).get_object());
 		}
 	}
+
+	// отменить запрет на взятие скриптом
+	pMonster->set_script_capture(true);
 }
 
 void CBurerAttackTele::CriticalInterrupt()

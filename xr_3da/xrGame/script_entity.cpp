@@ -87,6 +87,8 @@ void CScriptEntity::ClearActionQueue()
 void CScriptEntity::reinit()
 {
 	ResetScriptData			();
+	
+	set_script_capture		();
 }
 
 void CScriptEntity::SetScriptControl(const bool bScriptControl, shared_str caSciptName)
@@ -107,6 +109,8 @@ void CScriptEntity::SetScriptControl(const bool bScriptControl, shared_str caSci
 		ai().script_engine().script_log(eLuaMessageTypeError,"Invalid sequence of taking an entity under script control");
 		return;
 	}
+
+	if (bScriptControl && !can_script_capture()) return;
 
 	if (bScriptControl && !m_bScriptControl)
 		object().add_visual_callback			(&ActionCallback);
