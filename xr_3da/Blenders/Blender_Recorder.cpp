@@ -73,8 +73,8 @@ void	CBlender_Compile::_cpp_Compile	(ShaderElement* _SH)
 
 void	CBlender_Compile::SetParams		(int iPriority, bool bStrictB2F)
 {
-	SH->Flags.iPriority		= iPriority;
-	SH->Flags.bStrictB2F	= bStrictB2F;
+	SH->flags.iPriority		= iPriority;
+	SH->flags.bStrictB2F	= bStrictB2F;
 	//SH->Flags.bLighting		= FALSE;
 }
 
@@ -109,7 +109,7 @@ void	CBlender_Compile::PassEnd			()
 	ref_constant_list	C	= Device.Resources->_CreateConstantList	(passConstants);
 
 	ref_pass	_pass_		= Device.Resources->_CreatePass			(state,ps,vs,ct,T,M,C);
-	SH->Passes.push_back	(_pass_);
+	SH->passes.push_back	(_pass_);
 }
 
 void	CBlender_Compile::PassSET_PS		(LPCSTR name)

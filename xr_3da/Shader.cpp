@@ -56,22 +56,23 @@ BOOL	SPass::equal	(ref_state& _state, ref_ps& _ps, ref_vs& _vs, ref_ctable& _cta
 //
 ShaderElement::ShaderElement()
 {
-	Flags.iPriority		= 1;
-	Flags.bStrictB2F	= FALSE;
-	Flags.bEmissive		= FALSE;
-	Flags.bDistort		= FALSE;
-	Flags.bElevation	= FALSE;
+	flags.iPriority		= 1;
+	flags.bStrictB2F	= FALSE;
+	flags.bEmissive		= FALSE;
+	flags.bDistort		= FALSE;
+	flags.bElevation	= FALSE;
 }
 
 BOOL ShaderElement::equal	(ShaderElement& S)
 {
-	if (Flags.iPriority		!= S.Flags.iPriority)	return FALSE;
-	if (Flags.bStrictB2F	!= S.Flags.bStrictB2F)	return FALSE;
-	if (Flags.bEmissive		!= S.Flags.bEmissive)	return FALSE;
-	if (Flags.bDistort		!= S.Flags.bDistort)	return FALSE;
-	if (Passes.size() != S.Passes.size())			return FALSE;
-	for (u32 p=0; p<Passes.size(); p++)
-		if (Passes[p] != S.Passes[p])				return FALSE;
+	if (flags.iPriority		!= S.flags.iPriority)	return FALSE;
+	if (flags.bStrictB2F	!= S.flags.bStrictB2F)	return FALSE;
+	if (flags.bEmissive		!= S.flags.bEmissive)	return FALSE;
+	if (flags.bDistort		!= S.flags.bDistort)	return FALSE;
+	if (flags.bElevation	!= S.flags.bElevation)	return FALSE;
+	if (passes.size() != S.passes.size())			return FALSE;
+	for (u32 p=0; p<passes.size(); p++)
+		if (passes[p] != S.passes[p])				return FALSE;
 	return TRUE;
 }
 

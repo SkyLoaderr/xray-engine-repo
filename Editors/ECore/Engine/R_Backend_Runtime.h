@@ -134,7 +134,7 @@ IC void CBackend::set_Constants			(R_constant_table* C)
 
 IC void CBackend::set_Element			(ShaderElement* S, u32	pass)
 {
-	SPass&	P		= *(S->Passes[pass]);
+	SPass&	P		= *(S->passes[pass]);
 	set_States		(P.state);
 	set_PS			(P.ps);
 	set_VS			(P.vs);

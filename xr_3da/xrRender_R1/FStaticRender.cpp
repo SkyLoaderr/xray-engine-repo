@@ -459,10 +459,35 @@ HRESULT	CRender::shader_compile			(
 		void*							_ppErrorMsgs,
 		void*							_ppConstantTable)
 {
-        CONST D3DXMACRO*                pDefines		= (CONST D3DXMACRO*)	_pDefines;
-        LPD3DXINCLUDE                   pInclude		= (LPD3DXINCLUDE)		_pInclude;
-        LPD3DXBUFFER*                   ppShader		= (LPD3DXBUFFER*)		_ppShader;
-        LPD3DXBUFFER*                   ppErrorMsgs		= (LPD3DXBUFFER*)		_ppErrorMsgs;
-        LPD3DXCONSTANTTABLE*            ppConstantTable	= (LPD3DXCONSTANTTABLE*)_ppConstantTable;
-		return D3DXCompileShader		(pSrcData,SrcDataLen,pDefines,pInclude,pFunctionName,pTarget,Flags,ppShader,ppErrorMsgs,ppConstantTable);
+	D3DXMACRO						defines			[128];
+	int								def_it			= 0;
+	CONST D3DXMACRO*                pDefines		= (CONST D3DXMACRO*)	_pDefines;
+	if (pDefines)	{
+		// transfer existing defines
+		for (;;def_it++)	{
+			if (0==pDefines[def_it].Name)	break;
+			defines[def_it]			= pDefines[def_it];
+		}
+	}
+	// options
+	if (0==m_skinning)		{
+		defines[def_it].Name		=	"SKIN_0";
+		defines[def_it].Definition	=	"1";
+		def_it						++;
+	}
+	if (1==m_skinning)		{
+		defines[def_it].Name		=	"SKIN_1";
+		defines[def_it].Definition	=	"1";
+		def_it						++;
+	}
+	if (2==m_skinning)		{
+		defines[def_it].Name		=	"SKIN_2";
+		defines[def_it].Definition	=	"1";
+		def_it						++;
+	}
+	LPD3DXINCLUDE                   pInclude		= (LPD3DXINCLUDE)		_pInclude;
+	LPD3DXBUFFER*                   ppShader		= (LPD3DXBUFFER*)		_ppShader;
+	LPD3DXBUFFER*                   ppErrorMsgs		= (LPD3DXBUFFER*)		_ppErrorMsgs;
+	LPD3DXCONSTANTTABLE*            ppConstantTable	= (LPD3DXCONSTANTTABLE*)_ppConstantTable;
+	return D3DXCompileShader		(pSrcData,SrcDataLen,pDefines,pInclude,pFunctionName,pTarget,Flags,ppShader,ppErrorMsgs,ppConstantTable);
 }

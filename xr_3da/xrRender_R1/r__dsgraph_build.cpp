@@ -42,7 +42,7 @@ void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fve
 	// a) Allow to optimize RT order
 	// b) Should be rendered to special distort buffer in another pass
 	ShaderElement*		sh_d	= &*pVisual->hShader->E[4];
-	if (RImplementation.b_distortion && sh_d && sh_d->Flags.bDistort && pmask[sh_d->Flags.iPriority/2]) {
+	if (RImplementation.b_distortion && sh_d && sh_d->flags.bDistort && pmask[sh_d->flags.iPriority/2]) {
 		mapSorted_Node* N		= mapDistort.insertInAnyWay	(distSQ);
 		N->val.ssa				= SSA;
 		N->val.pObject			= RI.val_pObject;
@@ -54,7 +54,7 @@ void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fve
 	// Select shader
 	ShaderElement*	sh		=	RImplementation.rimp_select_sh_dynamic	(pVisual,distSQ);
 	if (0==sh)								return;
-	if (!pmask[sh->Flags.iPriority/2])		return;
+	if (!pmask[sh->flags.iPriority/2])		return;
 
 	// Create common node
 	// NOTE: Invisible elements exist only in R1
@@ -78,7 +78,7 @@ void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fve
 	if (RI.val_bInvisible)		return;
 
 	// strict-sorting selection
-	if (sh->Flags.bStrictB2F) {
+	if (sh->flags.bStrictB2F) {
 		mapSorted_Node* N		= mapSorted.insertInAnyWay	(distSQ);
 		N->val.ssa				= SSA;
 		N->val.pObject			= RI.val_pObject;
@@ -94,7 +94,7 @@ void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fve
 	// b) Allow to make them 100% lit and really bright
 	// c) Should not cast shadows
 	// d) Should be rendered to accumulation buffer in the second pass
-	if (sh->Flags.bEmissive) {
+	if (sh->flags.bEmissive) {
 		mapSorted_Node* N		= mapEmissive.insertInAnyWay	(distSQ);
 		N->val.ssa				= SSA;
 		N->val.pObject			= RI.val_pObject;
@@ -105,8 +105,8 @@ void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fve
 #endif
 
 	// the most common node
-	SPass&						pass	= *sh->Passes.front	();
-	mapMatrix_T&				map		= mapMatrix			[sh->Flags.iPriority/2];
+	SPass&						pass	= *sh->passes.front	();
+	mapMatrix_T&				map		= mapMatrix			[sh->flags.iPriority/2];
 	mapMatrixVS::TNode*			Nvs		= map.insert		(pass.vs->vs);
 	mapMatrixPS::TNode*			Nps		= Nvs->val.insert	(pass.ps->ps);
 	mapMatrixCS::TNode*			Ncs		= Nps->val.insert	(pass.constants._get());
@@ -139,7 +139,7 @@ void R_dsgraph_structure::r_dsgraph_insert_static	(IRender_Visual *pVisual)
 	// a) Allow to optimize RT order
 	// b) Should be rendered to special distort buffer in another pass
 	ShaderElement*		sh_d	= &*pVisual->hShader->E[4];
-	if (RImplementation.b_distortion && sh_d && sh_d->Flags.bDistort && pmask[sh_d->Flags.iPriority/2]) {
+	if (RImplementation.b_distortion && sh_d && sh_d->flags.bDistort && pmask[sh_d->flags.iPriority/2]) {
 		mapSorted_Node* N		= mapDistort.insertInAnyWay		(distSQ);
 		N->val.ssa				= SSA;
 		N->val.pObject			= NULL;
@@ -151,10 +151,10 @@ void R_dsgraph_structure::r_dsgraph_insert_static	(IRender_Visual *pVisual)
 	// Select shader
 	ShaderElement*		sh		= RImplementation.rimp_select_sh_static(pVisual,distSQ);
 	if (0==sh)								return;
-	if (!pmask[sh->Flags.iPriority/2])		return;
+	if (!pmask[sh->flags.iPriority/2])		return;
 
 	// strict-sorting selection
-	if (sh->Flags.bStrictB2F) {
+	if (sh->flags.bStrictB2F) {
 		mapSorted_Node* N			= mapSorted.insertInAnyWay(distSQ);
 		N->val.pObject				= NULL;
 		N->val.pVisual				= pVisual;
@@ -169,7 +169,7 @@ void R_dsgraph_structure::r_dsgraph_insert_static	(IRender_Visual *pVisual)
 	// b) Allow to make them 100% lit and really bright
 	// c) Should not cast shadows
 	// d) Should be rendered to accumulation buffer in the second pass
-	if (sh->Flags.bEmissive) {
+	if (sh->flags.bEmissive) {
 		mapSorted_Node* N		= mapEmissive.insertInAnyWay	(distSQ);
 		N->val.ssa				= SSA;
 		N->val.pObject			= NULL;
@@ -182,8 +182,8 @@ void R_dsgraph_structure::r_dsgraph_insert_static	(IRender_Visual *pVisual)
 	if	(val_feedback && counter_S==val_feedback_breakp)	val_feedback->rfeedback_static(pVisual);
 
 	counter_S					++;
-	SPass&						pass	= *sh->Passes.front	();
-	mapNormal_T&				map		= mapNormal			[sh->Flags.iPriority/2];
+	SPass&						pass	= *sh->passes.front	();
+	mapNormal_T&				map		= mapNormal			[sh->flags.iPriority/2];
 	mapNormalVS::TNode*			Nvs		= map.insert		(pass.vs->vs);
 	mapNormalPS::TNode*			Nps		= Nvs->val.insert	(pass.ps->ps);
 	mapNormalCS::TNode*			Ncs		= Nps->val.insert	(pass.constants._get());

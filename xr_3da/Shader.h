@@ -86,8 +86,8 @@ public:
 		u32	bElevation	:	1;
 	};
 public:
-	Sflags								Flags;
-	svector<ref_pass,SHADER_PASSES_MAX>	Passes;
+	Sflags								flags;
+	svector<ref_pass,SHADER_PASSES_MAX>	passes;
 
 						ShaderElement	();
 						~ShaderElement	();

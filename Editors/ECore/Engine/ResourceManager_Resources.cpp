@@ -142,8 +142,12 @@ void		CResourceManager::_DeleteDecl		(const SDeclaration* dcl)
 }
 
 //--------------------------------------------------------------------------------------------------------------
-SVS*	CResourceManager::_CreateVS		(LPCSTR name)
+SVS*	CResourceManager::_CreateVS		(LPCSTR _name)
 {
+	string_path			name;
+	strcpy				(name,_name);
+	if (1 == ::Render->m_skinning)	strcat(name,"_1");
+	if (2 == ::Render->m_skinning)	strcat(name,"_2");
 	LPSTR N				= LPSTR		(name);
 	map_VS::iterator I	= m_vs.find	(N);
 	if (I!=m_vs.end())	return I->second;
@@ -152,7 +156,7 @@ SVS*	CResourceManager::_CreateVS		(LPCSTR name)
 		SVS*	_vs					= xr_new<SVS>	();
 		_vs->dwFlags				|= xr_resource::RF_REGISTERED;
 		m_vs.insert					(mk_pair(_vs->set_name(name),_vs));
-		if (0==stricmp(name,"null"))	{
+		if (0==stricmp(_name,"null"))	{
 			_vs->vs				= NULL;
 			return _vs;
 		}
@@ -163,7 +167,7 @@ SVS*	CResourceManager::_CreateVS		(LPCSTR name)
 		LPD3DXSHADER_CONSTANTTABLE	pConstants	= NULL;
 		HRESULT						_hr			= S_OK;
 		string256					cname;
-		FS.update_path				(cname,	"$game_shaders$", strconcat(cname,::Render->getShaderPath(),name,".vs"));
+		FS.update_path				(cname,	"$game_shaders$", strconcat(cname,::Render->getShaderPath(),_name,".vs"));
 		LPCSTR						target		= NULL;
 
 		/*if (HW.Caps.geometry.dwVersion>=CAP_VERSION(3,0))			target="vs_3_0";

@@ -70,13 +70,10 @@ void	CBlender_Model::Compile	(CBlender_Compile& C)
 	} else {
 		LPCSTR	vsname		= 0;
 		LPCSTR	psname		= 0;
-		u32		mskin		= RImplementation.m_skinning;
 		switch (C.iElement)
 		{
 		case SE_R1_NORMAL_HQ:	
 			vsname = psname =	"model_def_hq";
-			if (1==mskin)		vsname		= "model_def_hq_1";
-			if (2==mskin)		vsname		= "model_def_hq_2";
 			if (oBlend.value)	C.r_Pass	(vsname,psname,TRUE,TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,	D3DBLEND_INVSRCALPHA,	TRUE,oAREF.value);
 			else				C.r_Pass	(vsname,psname,TRUE);
 			C.r_Sampler			("s_base",	C.L_textures[0]);

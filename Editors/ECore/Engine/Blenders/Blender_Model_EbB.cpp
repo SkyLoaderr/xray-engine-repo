@@ -84,7 +84,6 @@ void	CBlender_Model_EbB::Compile(CBlender_Compile& C)
 	} else {
 		LPCSTR	vsname			= 0;
 		LPCSTR	psname			= 0;
-		u32		mskin			= RImplementation.m_skinning;
 		switch (C.iElement)
 		{
 		case SE_R1_NORMAL_HQ:	

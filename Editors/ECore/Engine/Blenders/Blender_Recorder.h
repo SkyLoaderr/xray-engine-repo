@@ -51,7 +51,7 @@ public:
 
 	// R1-compiler
 	void				PassBegin			();
-	u32					Pass				()  { return SH->Passes.size(); }
+	u32					Pass				()  { return SH->passes.size(); }
 	void				PassSET_ZB			(BOOL bZTest,	BOOL bZWrite);
 	void				PassSET_ablend_mode	(BOOL bABlend,	u32 abSRC, u32 abDST);
 	void				PassSET_ablend_aref	(BOOL aTest,	u32 aRef);

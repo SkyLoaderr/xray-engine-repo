@@ -124,5 +124,5 @@ void	CBlender_Compile::r_End			()
 	dest.T					= Device.Resources->_CreateTextureList	(passTextures);
 	dest.M					= 0;
 	dest.C					= 0;
-	SH->Passes.push_back	(Device.Resources->_CreatePass(dest.state,dest.ps,dest.vs,dest.constants,dest.T,dest.M,dest.C));
+	SH->passes.push_back	(Device.Resources->_CreatePass(dest.state,dest.ps,dest.vs,dest.constants,dest.T,dest.M,dest.C));
 }
