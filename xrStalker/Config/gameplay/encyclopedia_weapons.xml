@@ -133,18 +133,18 @@
         <text>enc_weapons_ammo_ammo-12x70-buck</text>
     </article>
 
-    <!-------------------------------- ammo-12x70-zhekan ----------------------------->
+    <!-------------------------------- ammo-12x76-zhekan ----------------------------->
 
-    <article id="weapons_ammo_ammo-12x70-zhekan" name="ammo-12x70-zhekan" group="Weapons/Ammo">
-        <ltx>ammo_12x70_zhekan</ltx>
-        <text>enc_weapons_ammo_ammo-12x70-zhekan</text>
+    <article id="weapons_ammo_ammo-12x76-zhekan" name="ammo-12x76-zhekan" group="Weapons/Ammo">
+        <ltx>ammo_12x76_zhekan</ltx>
+        <text>enc_weapons_ammo_ammo-12x76-zhekan</text>
     </article>
 
-    <!-------------------------------- ammo-12x70-dart ----------------------------->
+    <!-------------------------------- ammo-12x76-dart ----------------------------->
 
-    <article id="weapons_ammo_ammo-12x70-dart" name="ammo-12x70-dart" group="Weapons/Ammo">
-        <ltx>ammo_12x70_dart</ltx>
-        <text>enc_weapons_ammo_ammo-12x70-dart</text>
+    <article id="weapons_ammo_ammo-12x76-dart" name="ammo-12x76-dart" group="Weapons/Ammo">
+        <ltx>ammo_12x76_dart</ltx>
+        <text>enc_weapons_ammo_ammo-12x76-dart</text>
     </article>
 
     <!-------------------------------- ammo-m209 ----------------------------->
