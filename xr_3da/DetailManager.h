@@ -15,7 +15,7 @@
 	const int	dm_size				= 20;
 #else
 	const int	dm_max_decompress	= 7;
-	const int	dm_size				= 10;
+	const int	dm_size				= 20;
 #endif
 const int		dm_max_objects		= 64;
 const int		dm_obj_in_slot		= 4;

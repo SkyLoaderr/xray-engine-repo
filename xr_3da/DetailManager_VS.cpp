@@ -25,7 +25,7 @@ struct	vertHW
 
 short QC (float v)
 {
-	int t=iFloor(v*float(quant)); clamp(t,-quant,quant);
+	int t=iFloor(v*float(quant)); clamp(t,-32768,32767);
 	return short(t&0xffff);
 }
 
