@@ -41,6 +41,8 @@ void CAI_ALife::vfCreateObject(CALifeDynamicObject *tpALifeDynamicObject)
 
 void CAI_ALife::vfReleaseObject(CALifeDynamicObject *tpALifeDynamicObject)
 {
+	//VERIFY(tpALifeDynamicObject->ID_Parent == 0xffff);
+	m_tpServer->Perform_destroy		(tpALifeDynamicObject,net_flags(TRUE,TRUE));
 	CALifeTraderParams				*tpTraderParams = dynamic_cast<CALifeTraderParams*>(tpALifeDynamicObject);
 	if (tpTraderParams) {
 		m_tpChildren				= tpALifeDynamicObject->children;
@@ -55,10 +57,9 @@ void CAI_ALife::vfReleaseObject(CALifeDynamicObject *tpALifeDynamicObject)
 			m_tpServer->Perform_destroy(tpItem,net_flags(TRUE,TRUE));
 			tpItem->m_bOnline		= false;
 		}
-		tpALifeDynamicObject->children = m_tpChildren;
+		//tpALifeDynamicObject->children = m_tpChildren;
 	}
 	Msg("ALife : Destroying monster %s",tpALifeDynamicObject->s_name_replace);
-	m_tpServer->Perform_destroy		(tpALifeDynamicObject,net_flags(TRUE,TRUE));
 }
 
 void CAI_ALife::vfSwitchObjectOnline(CALifeDynamicObject *tpALifeDynamicObject)

@@ -7,7 +7,7 @@ void xrServer::Perform_destroy	(xrServerEntity* tpServerEntity, u32 mode)
 	P.w_u32				(Device.dwTimeGlobal-NET_Latency*2);
 	P.w_u16				(GE_DESTROY);
 	P.w_u16				(tpServerEntity->ID);
-	Msg					("*** SERVER-destroy: %s, ID=%d",tpServerEntity->s_name, tpServerEntity->ID);
+	//Msg					("*** SERVER-destroy: %s, ID=%d",tpServerEntity->s_name, tpServerEntity->ID);
 
 	SendBroadcast		(0xffffffff,P,mode);
 	entities.erase		(tpServerEntity->ID);
