@@ -176,7 +176,7 @@ public:
 	{	int		t = iFloor(V*655.35f); clamp(t,0,65535); return WORD(t); }
 
 	void		Load		(CKinematics* P, CInifile* INI, LPCSTR section, BOOL bCycle);
-	CBlend*		PlayCycle	(CKinematics* P);
+	CBlend*		PlayCycle	(CKinematics* P, BOOL bMixIn);
 	CBlend*		PlayFX		(CKinematics* P);
 };
 
@@ -280,8 +280,8 @@ public:
 		return (*bones)[bone_id]->obb;
 	}
 
-	CBlend*						LL_PlayFX		(int bone,		int motion, float blendAccrue,	float blendFalloff, float Speed=1.f, float Power=1.f);
-	CBlend*						LL_PlayCycle	(int partition, int motion, BOOL  bMixing,		float blendAccrue,	float blendFalloff, float Speed=1.f, BOOL noloop=FALSE);
+	CBlend*						LL_PlayFX		(int bone,		int motion, float blendAccrue,	float blendFalloff, float Speed, float Power);
+	CBlend*						LL_PlayCycle	(int partition, int motion, BOOL  bMixing,		float blendAccrue,	float blendFalloff, float Speed, BOOL noloop);
 	void						LL_FadeCycle	(int partition, float falloff);
 	void						LL_CloseCycle	(int partition);
 	
@@ -291,9 +291,9 @@ public:
 	// cycles
 	CMotionDef*					ID_Cycle		(LPCSTR  N);
 	CMotionDef*					ID_Cycle_Safe	(LPCSTR  N);
-	CBlend*						PlayCycle		(LPCSTR  N);
-	CBlend*						PlayCycle		(CMotionDef* M)
-	{	VERIFY(M); return M->PlayCycle(this);	}
+	CBlend*						PlayCycle		(LPCSTR  N,  BOOL bMixIn=TRUE);
+	CBlend*						PlayCycle		(CMotionDef* M,  BOOL bMixIn=TRUE)
+	{	VERIFY(M); return M->PlayCycle(this,bMixIn); }
 
 	// fx'es
 	CMotionDef*					ID_FX			(LPCSTR  N);
