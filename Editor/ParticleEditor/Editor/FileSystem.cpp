@@ -179,6 +179,7 @@ bool CFileSystem::GetSaveName( FSPath& initial, char *buffer, LPCSTR offset ){
 	return !!GetSaveFileName( &ofn );
 }
 //----------------------------------------------------
+#ifdef M_BORLAND
 bool CFileSystem::GetOpenName(FSPath& initial, AnsiString& buffer, bool bMulti, LPCSTR offset ){
 	string4096 buf;
     strcpy(buf,buffer.c_str());
@@ -194,6 +195,8 @@ bool CFileSystem::GetSaveName( FSPath& initial, AnsiString& buffer, LPCSTR offse
     if (bRes) buffer=buf;
 	return bRes;
 }
+#endif
+//----------------------------------------------------
 
 bool CFileSystem::Exist(LPCSTR _FileName, bool bMessage){
     bool bRes = FileExists(_FileName);
