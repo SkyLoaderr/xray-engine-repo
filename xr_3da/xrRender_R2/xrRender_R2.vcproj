@@ -296,11 +296,33 @@
 			Name="Shading templates"
 			Filter="">
 			<File
-				RelativePath="blender_fat_flat.cpp">
+				RelativePath="blender_deffer_flat.cpp">
 			</File>
 			<File
-				RelativePath="blender_fat_flat.h">
+				RelativePath="blender_deffer_flat.h">
 			</File>
+			<Filter
+				Name="R1"
+				Filter="">
+				<File
+					RelativePath="Blender_Screen_SET.cpp">
+				</File>
+				<File
+					RelativePath="Blender_Screen_SET.h">
+				</File>
+				<File
+					RelativePath="Blender_detail_still.cpp">
+				</File>
+				<File
+					RelativePath="Blender_detail_still.h">
+				</File>
+				<File
+					RelativePath="Blender_tree.cpp">
+				</File>
+				<File
+					RelativePath="Blender_tree.h">
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="HOM Occlusion"
