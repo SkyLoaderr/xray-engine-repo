@@ -18,7 +18,13 @@ float CEntityAlive::m_fBloodMarkDispersion = 0.f;
 float CEntityAlive::m_fNominalHit = 0.f;
 
 //минимальный размер ожега, после которого горят партиклы
-#define BURN_WOUND_SIZE			0.01f
+//минимальное время горения
+u32	  CEntityAlive::m_dwMinBurnTime = 10000;
+//размер раны, чтоб запустить партиклы
+float CEntityAlive::m_fStartBurnWoundSize = 0.3f;
+//размер раны, чтоб остановить партиклы
+float CEntityAlive::m_fStopBurnWoundSize = 0.1f;
+
 
 STR_VECTOR CEntityAlive::m_FireParticlesVector;
 
@@ -88,6 +94,11 @@ void CEntityAlive::LoadFireParticles(LPCSTR section)
 		s  = _GetItem(particles_name,k,tmp);
 		m_FireParticlesVector.push_back	(s);
 	}
+
+	m_fStartBurnWoundSize  = pSettings->r_float(section, "start_burn_size");
+	m_fStopBurnWoundSize   = pSettings->r_float(section, "stop_burn_size");
+	
+	m_dwMinBurnTime		   = pSettings->r_u32(section, "min_burn_time");
 }
 
 void CEntityAlive::reinit			()
@@ -303,24 +314,27 @@ void CEntityAlive::BloodyWallmarks (float P, Fvector &dir, s16 element,
 
 void CEntityAlive::StartFireParticles(CWound* pWound)
 {
-	if(std::find(m_ParticlesWoundList.begin(),
-				m_ParticlesWoundList.end(),
-				pWound) == m_ParticlesWoundList.end())
+	if(pWound->TypeSize(ALife::eHitTypeBurn)>m_fStartBurnWoundSize)
 	{
-		m_ParticlesWoundList.push_back(pWound);
-	}
+		if(std::find(m_ParticlesWoundList.begin(),
+			m_ParticlesWoundList.end(),
+			pWound) == m_ParticlesWoundList.end())
+		{
+			m_ParticlesWoundList.push_back(pWound);
+		}
 
-	if(pWound->TypeSize(ALife::eHitTypeBurn)>BURN_WOUND_SIZE)
-	{
 		CKinematics* V = PKinematics(Visual());
 		u16 particle_bone = CParticlesPlayer::GetNearestBone(V, pWound->GetBoneNum());
+		VERIFY(particle_bone!=BI_NONE);
+
 		pWound->SetParticleBoneNum(particle_bone);
 		pWound->SetParticleName(m_FireParticlesVector[::Random.randI(0,m_FireParticlesVector.size())]);
-		
+
 		CParticlesPlayer::StartParticles(pWound->GetParticleName(), 
-										 pWound->GetParticleBoneNum(),
-									     Fvector().set(0,1,0),
-										 ID(), 10000);
+			pWound->GetParticleBoneNum(),
+			Fvector().set(0,1,0),
+			ID(), 
+			u32(float(m_dwMinBurnTime)*::Random.randF(0.5f,1.5f)));
 	}
 }
 void CEntityAlive::UpdateFireParticles()
@@ -332,10 +346,14 @@ void CEntityAlive::UpdateFireParticles()
 		CWound* pWound = *it;
 		WOUND_LIST_it cur_it = it;
 		
-		if(pWound->TypeSize(ALife::eHitTypeBurn)<BURN_WOUND_SIZE)
+		float burn_size = pWound->TypeSize(ALife::eHitTypeBurn);
+
+		if(burn_size>0 && (burn_size<m_fStopBurnWoundSize || !g_Alive()))
 		{
-			CParticlesPlayer::StopParticles(pWound->GetParticleName(), 
-											pWound->GetParticleBoneNum());
+			CParticlesPlayer::SBoneInfo* pBoneInfo = CParticlesPlayer::get_bone_info(pWound->GetParticleBoneNum());
+			CParticlesPlayer::SParticlesInfo* pParticleInfo = pBoneInfo->FindParticles(pWound->GetParticleName());
+			pParticleInfo->auto_stop = true;
+			
 			it = m_ParticlesWoundList.erase(cur_it);
 		}
 	}

@@ -86,11 +86,17 @@ protected:
 	virtual void LoadFireParticles(LPCSTR section);
 	//имя партиклов огня, которым может гореть EntityAlive
 	static STR_VECTOR m_FireParticlesVector;
+	//минимальное время горения
+	static u32	 m_dwMinBurnTime;
+	//размер раны, чтоб запустить партиклы
+	static float m_fStartBurnWoundSize;
+	//размер раны, чтоб остановить партиклы
+	static float m_fStopBurnWoundSize;
+
 
 
 	virtual void			BloodyWallmarks			(float P, Fvector &dir,	s16 element,Fvector position_in_object_space);
 	virtual void			LoadBloodyWallmarks		(LPCSTR section);
-
 
 	//информация о кровавых отметках на стенах, общая для всех CEntityAlive
 	static SHADER_VECTOR m_BloodMarksVector;

@@ -26,7 +26,7 @@ public:
 	u16		GetParticleBoneNum	() {return m_iParticleBoneNum;}
 	void	SetParticleBoneNum	(u16 bone_num) {m_iParticleBoneNum = bone_num;}
 
-	ref_str	GetParticleName	()						{return m_sParticleName;}
+	const ref_str& GetParticleName	()						{return m_sParticleName;}
 	void	SetParticleName	(ref_str particle_name) {m_sParticleName = particle_name;}
 
 protected:

@@ -6,13 +6,13 @@
 #include "ParticlesPlayer.h"
 //-------------------------------------------------------------------------------------
 
-CParticlesPlayer::SParticlesInfo* CParticlesPlayer::SBoneInfo::FindParticles(ref_str ps_name)
+CParticlesPlayer::SParticlesInfo* CParticlesPlayer::SBoneInfo::FindParticles(const ref_str& ps_name)
 {
 	for (ParticlesInfoListIt it=particles.begin(); it!=particles.end(); it++)
 		if (it->ps->Name()==ps_name) return &(*it);
 	return 0;
 }
-CParticlesPlayer::SParticlesInfo*	CParticlesPlayer::SBoneInfo::AppendParticles(CObject* object, ref_str ps_name)
+CParticlesPlayer::SParticlesInfo*	CParticlesPlayer::SBoneInfo::AppendParticles(CObject* object, const ref_str& ps_name)
 {
 	SParticlesInfo* pi	= FindParticles(ps_name);
 	if (pi)				return pi;
@@ -21,7 +21,7 @@ CParticlesPlayer::SParticlesInfo*	CParticlesPlayer::SBoneInfo::AppendParticles(C
 	pi->ps				= xr_new<CParticlesObject>(*ps_name, object->Sector(), false);
 	return pi;
 }
-void CParticlesPlayer::SBoneInfo::StopParticles(ref_str ps_name)
+void CParticlesPlayer::SBoneInfo::StopParticles(const ref_str& ps_name)
 {
 	SParticlesInfo* pi	= FindParticles(ps_name);
 	if (pi)				pi->ps->Stop();
@@ -76,7 +76,7 @@ CParticlesPlayer::SBoneInfo* CParticlesPlayer::get_nearest_bone_info(CKinematics
 
 
 
-void CParticlesPlayer::StartParticles(ref_str particles_name, u16 bone_num, const Fvector& dir, u16 sender_id, int life_time)
+void CParticlesPlayer::StartParticles(const ref_str& particles_name, u16 bone_num, const Fvector& dir, u16 sender_id, int life_time, bool auto_stop)
 {
 	R_ASSERT(*particles_name);
 	
@@ -93,6 +93,7 @@ void CParticlesPlayer::StartParticles(ref_str particles_name, u16 bone_num, cons
 
 	particles_info->life_time		= life_time;
 	particles_info->cur_time		= 0;
+	particles_info->auto_stop		= auto_stop;
 
 
 	//начать играть партиклы
@@ -102,7 +103,7 @@ void CParticlesPlayer::StartParticles(ref_str particles_name, u16 bone_num, cons
 	particles_info->ps->Play		();
 }
 
-void CParticlesPlayer::StartParticles(ref_str ps_name, const Fvector& dir, u16 sender_id, int life_time)
+void CParticlesPlayer::StartParticles(const ref_str& ps_name, const Fvector& dir, u16 sender_id, int life_time, bool auto_stop)
 {
 	CObject* object					= dynamic_cast<CObject*>(this);
 	VERIFY(object);
@@ -113,6 +114,7 @@ void CParticlesPlayer::StartParticles(ref_str ps_name, const Fvector& dir, u16 s
 
 		particles_info->life_time		= life_time;
 		particles_info->cur_time		= 0;
+		particles_info->auto_stop		= auto_stop;
 
 		//начать играть партиклы
 		Fmatrix xform;
@@ -133,7 +135,7 @@ void CParticlesPlayer::StopParticles(u16 sender_id, u16 bone_id)
 	}
 }
 
-void CParticlesPlayer::StopParticles(ref_str ps_name, u16 bone_id)
+void CParticlesPlayer::StopParticles(const ref_str& ps_name, u16 bone_id)
 {
 	if (BI_NONE==bone_id){
 		for(BoneInfoVecIt it=m_Bones.begin(); it!=m_Bones.end(); it++)
@@ -161,7 +163,7 @@ void CParticlesPlayer::UpdateParticles()
 
 			//обновить время существования
 			p_info.cur_time += Device.dwTimeDelta;
-			if(p_info.life_time>0 && p_info.cur_time>p_info.life_time)
+			if(p_info.life_time>0 && p_info.auto_stop && p_info.cur_time>p_info.life_time)
 				p_info.ps->Stop();
 
 			if(!p_info.ps->IsPlaying()){
@@ -181,9 +183,6 @@ void CParticlesPlayer::MakeXFORM	(CObject* pObject, u16 bone_id, const Fvector& 
 	result.j.normalize	(dir);
 	Fvector::generate_orthonormal_basis(result.j, result.k, result.i);
 
-//	result.translate_over(offset);
-//	result.mulA			(l_tBoneInstance.mTransform);
-//	result.mulA			(pObject->XFORM());
 
 	Fvector pos;
 	pos = offset;
