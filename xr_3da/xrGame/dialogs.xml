@@ -12,6 +12,7 @@
 			<phrase id="1">
 				<text>Я посмотрю что можно сделать.</text>
 				<give_info>escape_novice_need_weapon</give_info>
+				<next>5</next>
 			</phrase>
 			<phrase id="2">
 				<text>Как нибудь в другой раз.</text>
@@ -25,6 +26,10 @@
 			</phrase>
 			<phrase id="4">
 				<text>Спасибо, брат... Я не забуду твою помощь. Теперь урки поплатятся.\n          [отношение изменены до "Друга"]</text>
+			</phrase>
+			<phrase id="5">
+				<text>Ну давай, я буду тут если что.</text>
+				<action>escape.break_dialog</action>
 			</phrase>
 		</phrase_list>
 	</dialog>
