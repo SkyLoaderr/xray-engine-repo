@@ -166,9 +166,9 @@ void CUICarBodyWnd::UpdateLists()
 
 	ClearDragDrop(m_vDragDropItems);
 
-	ruck_list.clear();
+	ruck_list.clear	();
 	m_pInv->AddAvailableItems(ruck_list);
-	ruck_list.sort(GreaterRoomInRuck);
+	std::sort		(ruck_list.begin(),ruck_list.end(),GreaterRoomInRuck);
 
 	//Наш рюкзак
 	TIItemContainer::iterator it;
@@ -211,9 +211,9 @@ void CUICarBodyWnd::UpdateLists()
 	}
 
 
-	ruck_list.clear();
+	ruck_list.clear	();
 	m_pOthersInv->AddAvailableItems(ruck_list);
-	ruck_list.sort(GreaterRoomInRuck);
+	std::sort		(ruck_list.begin(),ruck_list.end(),GreaterRoomInRuck);
 
 	//Чужой рюкзак
 	for(it =  ruck_list.begin(); ruck_list.end() != it; ++it) 

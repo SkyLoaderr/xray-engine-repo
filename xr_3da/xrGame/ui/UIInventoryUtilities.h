@@ -38,9 +38,9 @@ namespace InventoryUtilities
 
 //сравнивает элементы по пространству занимаемому ими в рюкзаке
 //для сортировки
-bool GreaterRoomInRuck(PIItem item1, PIItem item2);
+bool GreaterRoomInRuck	(PIItem item1, PIItem item2);
 //для проверки свободного места
-bool FreeRoom(TIItemContainer& item_list, int width, int height);
+bool FreeRoom_inBelt	(TIItemContainer& item_list, PIItem item, int width, int height);
 
 //для надписей на иконках с оружием
 void AmmoDrawProc(CUIDragDropItem* pItem);

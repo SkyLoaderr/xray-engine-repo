@@ -527,8 +527,8 @@ void CUIInventoryWnd::InitInventory()
 	}
 
 
-	ruck_list = pInv->m_ruck;
-	ruck_list.sort(GreaterRoomInRuck);
+	ruck_list		= pInv->m_ruck;
+	std::sort		(ruck_list.begin(),ruck_list.end(),GreaterRoomInRuck);
 
 	//аўъчръ
 	for(it =  ruck_list.begin(); ruck_list.end() != it; ++it) 

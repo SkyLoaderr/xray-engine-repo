@@ -553,9 +553,9 @@ void CUITradeWnd::UpdateLists()
 
 	ClearDragDrop(m_vDragDropItems);
 
-	ruck_list.clear();
-   	m_pInv->AddAvailableItems(ruck_list, true);
-	ruck_list.sort(GreaterRoomInRuck);
+	ruck_list.clear				();
+   	m_pInv->AddAvailableItems	(ruck_list, true);
+	std::sort					(ruck_list.begin(),ruck_list.end(),GreaterRoomInRuck);
 
 	//Íàø ğşêçàê
 	TIItemContainer::iterator it;
@@ -597,10 +597,9 @@ void CUITradeWnd::UpdateLists()
 		}
 	}
 
-	ruck_list.clear();
-	m_pOthersInv->AddAvailableItems(ruck_list, true);
-	ruck_list.sort(GreaterRoomInRuck);
-
+	ruck_list.clear					();
+	m_pOthersInv->AddAvailableItems	(ruck_list, true);
+	std::sort						(ruck_list.begin(),ruck_list.end(),GreaterRoomInRuck);
 
 	//×óæîé ğşêçàê
 	for(it =  ruck_list.begin(); ruck_list.end() != it; ++it) 

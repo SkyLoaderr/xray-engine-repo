@@ -126,38 +126,26 @@ bool InventoryUtilities::GreaterRoomInRuck(PIItem item1, PIItem item2)
 }
 
 //////////////////////////////////////////////////////////////////////////
-
-bool InventoryUtilities::FreeRoom(TIItemContainer item_list, int width, int height)
+bool InventoryUtilities::FreeRoom_inBelt	(TIItemContainer& item_list, PIItem _item, int width, int height)
 {
-	//bool* ruck_room = (BOOL*)xr_malloc(width*height*sizeof(BOOL));
-	xr_vector<bool> ruck_room;
-	ruck_room.resize(width*height);
+	bool*				ruck_room	= (bool*)alloca(width*height);
 
-	int i,j,k,m;
-	int place_row = 0,  place_col = 0;
-	bool found_place;
-	bool can_place;
+	int		i,j,k,m;
+	int		place_row = 0,  place_col = 0;
+	bool	found_place;
+	bool	can_place;
 
 
 	for(i=0; i<height; ++i)
 		for(j=0; j<width; ++j)
-			ruck_room[i*width + j] = false;
+			ruck_room[i*width + j]	= false;
 
-
-	std::vector<PIItem> ruck_list;
-	ruck_list.clear();
-	ruck_list.insert(ruck_list.begin(),
-					 item_list.begin(),
-					 item_list.end());
-					
-	//ruck_list = item_list;
+	item_list.push_back	(_item);
+	std::sort			(item_list.begin(), item_list.end(),GreaterRoomInRuck);
 	
-	std::sort(ruck_list.begin(), ruck_list.end(),GreaterRoomInRuck);
-	
-	found_place = true;
+	found_place			= true;
 
-	for(std::vector<PIItem>::iterator it = ruck_list.begin(); 
-						(ruck_list.end() != it) && found_place; ++it) 
+	for(xr_vector<PIItem>::iterator it = item_list.begin(); (item_list.end() != it) && found_place; ++it) 
 	{
 		PIItem pItem = *it;
 
@@ -202,6 +190,9 @@ bool InventoryUtilities::FreeRoom(TIItemContainer item_list, int width, int heig
 			}
 		}
 	}
+
+	// remove
+	item_list.erase	(std::remove(item_list.begin(),item_list.end(),_item),item_list.end());
 
 	//для какого-то элемента места не нашлось
 	if(!found_place) return false;

@@ -929,13 +929,7 @@ bool CInventory::CanPutInBelt(PIItem pIItem) const
 	if(!pIItem || !pIItem->Belt()) return false;
 	if(m_belt.size() == BeltWidth()) return false;
 
-	TIItemContainer buf_list;
-	buf_list.clear();
-	buf_list.insert(buf_list.begin(), m_belt.begin(), m_belt.end());
-	buf_list.push_back(pIItem);
-	bool result = FreeRoom(buf_list, BeltWidth(), 1);
-	
-	return result;
+	return FreeRoom_inBelt(m_belt, pIItem, BeltWidth(), 1);
 }
 //проверяет можем ли поместить вещь в рюкзак,
 //при этом реально ничего не меняется
