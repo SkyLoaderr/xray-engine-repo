@@ -9,7 +9,6 @@
 #pragma once
 
 #include "operator_abstract.h"
-#include "condition_evaluator.h"
 
 template <
 	typename _operator_condition,
