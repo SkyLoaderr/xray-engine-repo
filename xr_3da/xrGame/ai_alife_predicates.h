@@ -8,24 +8,14 @@
 
 #pragma once
 
-IC ALife::_EVENT_ID					tfChooseEventKeyPredicate			(const CSE_ALifeEvent *T)
+IC const ALife::_EVENT_ID			tfChooseEventKeyPredicate			(const CSE_ALifeEvent *T)
 {
 	return							(T->m_tEventID);
 };
 
-IC ALife::_TASK_ID					tfChooseTaskKeyPredicate			(const CSE_ALifeTask *T)
+IC const ALife::_TASK_ID			tfChooseTaskKeyPredicate			(const CSE_ALifeTask *T)
 {
 	return							(T->m_tTaskID);
-};
-
-IC LPCSTR							cafChooseDiscoveryKeyPredicate		(const CSE_ALifeDiscovery *T)
-{
-	return							(T->m_caDiscoveryIdentifier);
-};
-
-IC LPCSTR							cafChooseOrganizationKeyPredicate	(const CSE_ALifeOrganization *T)
-{
-	return							(T->m_caOrganizationIdentifier);
 };
 
 class CCompareTraderRanksPredicate {

@@ -32,6 +32,11 @@ void CSE_ALifeSpawnHeader::Load	(IReader	&tFileStream)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeDiscovery
 ////////////////////////////////////////////////////////////////////////////
+CSE_ALifeDiscovery::CSE_ALifeDiscovery()
+{
+	R_ASSERT2					(false,"Unexpcted default constructor call!");
+}
+
 CSE_ALifeDiscovery::CSE_ALifeDiscovery(LPCSTR caSection)
 {
 	m_caDiscoveryIdentifier		= pSettings->r_string	(caSection,"name");
@@ -96,6 +101,11 @@ void CSE_ALifeDiscovery::Load	(IReader &tFileStream)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeOrganization
 ////////////////////////////////////////////////////////////////////////////
+CSE_ALifeOrganization::CSE_ALifeOrganization()
+{
+	R_ASSERT2					(false,"Unexpcted default constructor call!");
+}
+
 CSE_ALifeOrganization::CSE_ALifeOrganization(LPCSTR caSection)
 {
 	LPCSTR						S;

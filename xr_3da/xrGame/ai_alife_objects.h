@@ -151,6 +151,7 @@ public:
 	LPSTR_VECTOR					m_tpDependency;
 
 
+									CSE_ALifeDiscovery	();
 									CSE_ALifeDiscovery	(LPCSTR caSection);
 	virtual							~CSE_ALifeDiscovery	();
 	virtual void					Save				(IWriter &tMemoryStream);
@@ -172,6 +173,7 @@ public:
 
 
 
+									CSE_ALifeOrganization();
 									CSE_ALifeOrganization(LPCSTR caSection);
 									~CSE_ALifeOrganization();
 	virtual void					Save				(IWriter &tMemoryStream);

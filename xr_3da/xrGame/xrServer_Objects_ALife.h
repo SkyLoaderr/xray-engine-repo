@@ -21,7 +21,9 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeEvent,CPureServerObject)
 	CSE_ALifeEventGroup				*m_tpMonsterGroup1;
 	CSE_ALifeEventGroup				*m_tpMonsterGroup2;
 
-									CSE_ALifeEvent	(LPCSTR caSection);
+									CSE_ALifeEvent	()
+	{
+	};
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifePersonalEvent,CPureServerObject)

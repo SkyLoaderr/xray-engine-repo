@@ -141,7 +141,7 @@ void CSE_ALifeEventRegistry::Save(IWriter &tMemoryStream)
 {
 	tMemoryStream.open_chunk	(EVENT_CHUNK_DATA);
 	tMemoryStream.w				(&m_tEventID,sizeof(m_tEventID));
-//	save_data					(m_tEventRegistry,tMemoryStream);
+	save_data					(m_tEventRegistry,tMemoryStream);
 	tMemoryStream.close_chunk	();
 }
 
@@ -149,7 +149,7 @@ void CSE_ALifeEventRegistry::Load(IReader	&tFileStream)
 {
 	R_ASSERT2					(tFileStream.find_chunk(EVENT_CHUNK_DATA),"Can't find chunk EVENT_CHUNK_DATA!");
 	tFileStream.r				(&m_tEventID,sizeof(m_tEventID));
-//	load_map					(m_tEventRegistry,tFileStream,tfChooseEventKeyPredicate);
+	load_data					(m_tEventRegistry,tFileStream,tfChooseEventKeyPredicate);
 }
 
 void CSE_ALifeEventRegistry::Add(CSE_ALifeEvent	*tpEvent)
@@ -175,7 +175,7 @@ void CSE_ALifeTaskRegistry::Save(IWriter &tMemoryStream)
 {
 	tMemoryStream.open_chunk	(TASK_CHUNK_DATA);
 	tMemoryStream.w				(&m_tTaskID,sizeof(m_tTaskID));
-//	save_data					(m_tTaskRegistry,tMemoryStream);
+	save_data					(m_tTaskRegistry,tMemoryStream);
 	tMemoryStream.close_chunk	();
 }
 
@@ -183,7 +183,7 @@ void CSE_ALifeTaskRegistry::Load(IReader	&tFileStream)
 {
 	R_ASSERT2					(tFileStream.find_chunk(TASK_CHUNK_DATA),"Can't find chunk TASK_CHUNK_DATA");
 	tFileStream.r				(&m_tTaskID,sizeof(m_tTaskID));
-//	load_map					(m_tTaskRegistry,tFileStream,tfChooseTaskKeyPredicate);
+	load_data					(m_tTaskRegistry,tFileStream,tfChooseTaskKeyPredicate);
 }
 
 void CSE_ALifeTaskRegistry::Add	(CSE_ALifeTask	*tpTask)
@@ -590,8 +590,8 @@ CSE_ALifeOrganizationRegistry::~CSE_ALifeOrganizationRegistry()
 void CSE_ALifeOrganizationRegistry::Save(IWriter &tMemoryStream)
 {
 	tMemoryStream.open_chunk	(DISCOVERY_CHUNK_DATA);
-	save_data					(m_tOrganizationRegistry,tMemoryStream);
-	save_data					(m_tDiscoveryRegistry,tMemoryStream);
+	save_data					(m_tOrganizationRegistry,tMemoryStream,false);
+	save_data					(m_tDiscoveryRegistry,tMemoryStream,false);
 	save_data					(m_tArtefactRegistry,tMemoryStream);
 	tMemoryStream.close_chunk	();
 }
@@ -599,7 +599,7 @@ void CSE_ALifeOrganizationRegistry::Save(IWriter &tMemoryStream)
 void CSE_ALifeOrganizationRegistry::Load(IReader &tFileStream)
 { 
 	R_ASSERT2					(tFileStream.find_chunk(DISCOVERY_CHUNK_DATA),"Can't find chunk DISCOVERY_CHUNK_DATA!");
-	load_data					(m_tOrganizationRegistry,tFileStream);
-	load_data					(m_tDiscoveryRegistry,tFileStream);
+	load_data					(m_tOrganizationRegistry,tFileStream,false);
+	load_data					(m_tDiscoveryRegistry,tFileStream,false);
 	load_data					(m_tArtefactRegistry,tFileStream);
 }

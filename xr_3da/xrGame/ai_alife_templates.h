@@ -125,12 +125,24 @@ void save_data(T *&tpData, M &tStream, bool bSaveCount = true)
 
 // load data
 template <class T1, class T2, class T3, class M>
-void load_data(xr_map<T1,T2,T3> &tpMap, M &tStream, T1 tfGetKey(const T2))
+void load_data(xr_map<T1,T2,T3> &tpMap, M &tStream, const T1 tfGetKey(const T2))
 {
 	tpMap.clear					();
 	u32							dwCount	= tStream.r_u32();
 	for (int i=0 ; i<(int)dwCount; i++) {
 		T2						T;
+		load_data				(T,tStream);
+		tpMap.insert			(mk_pair(tfGetKey(T),T));
+	}
+};
+
+template <class T1, class T2, class T3, class M>
+void load_data(xr_map<T1,T2*,T3> &tpMap, M &tStream, const T1 tfGetKey(const T2*))
+{
+	tpMap.clear					();
+	u32							dwCount	= tStream.r_u32();
+	for (int i=0 ; i<(int)dwCount; i++) {
+		T2						*T;
 		load_data				(T,tStream);
 		tpMap.insert			(mk_pair(tfGetKey(T),T));
 	}
@@ -202,6 +214,8 @@ void load_data(T &tData, M &tStream, bool bSaveCount = true)
 template <class T, class M>
 void load_data(T *&tpData, M &tStream, bool bSaveCount = true)
 {
+	if (bSaveCount)
+		tpData = xr_new<T>();
 	load_data					(*tpData,tStream,bSaveCount);
 };
 
