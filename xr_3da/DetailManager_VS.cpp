@@ -110,14 +110,14 @@ void CDetailManager::VS_Unload()
 void CDetailManager::VS_Render()
 {
 	// Phase
-	float	fPhaseRange	= PI/16;
-	float	fPhaseX		= sinf(Device.fTimeGlobal*0.1f)	*fPhaseRange;
-	float	fPhaseZ		= sinf(Device.fTimeGlobal*0.11f)*fPhaseRange;
+	float	fPhaseRange	=	PI/16;
+	float	fPhaseX		=	sinf(Device.fTimeGlobal*0.1f)	*fPhaseRange;
+	float	fPhaseZ		=	sinf(Device.fTimeGlobal*0.11f)*fPhaseRange;
 
 	// Render-prepare
 	CVS_Constants& VSC	=	Device.Shader.VSC;
-	VSC.set						(0,255.01f,255.01f,255.01f,255.01f);
-	VSC.flush					(0,1);
+	VSC.set					(0,255.01f,255.01f,255.01f,255.01f);
+	VSC.flush				(0,1);
 	
 	// Matrices and offsets
 	Fmatrix		mXform,	mTemp;
@@ -167,6 +167,7 @@ void CDetailManager::VS_Render()
 				dwBatch	++;
 				if (dwBatch == VS_BatchSize)	
 				{
+					dwBatch	= 1;
 					// flush
 					VSC.flush						(1,dwBatch*5);
 					DWORD dwCNT_verts				= dwBatch * Object.number_vertices;
@@ -184,6 +185,7 @@ void CDetailManager::VS_Render()
 			// flush if nessecary
 			if (dwBatch)
 			{
+				dwBatch	= 1;
 				VSC.flush						(1,dwBatch*5);
 				DWORD dwCNT_verts				= dwBatch * Object.number_vertices;
 				DWORD dwCNT_prims				= (dwBatch * Object.number_indices)/3;
