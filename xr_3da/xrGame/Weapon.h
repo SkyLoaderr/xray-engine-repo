@@ -369,6 +369,10 @@ protected:
 	int						iMagazineSize;		// size (in bullets) of magazine
 	int						iBuckShot;
 
+	//для подсчета в GetAmmoCurrent
+	mutable int				iAmmoCurrent;
+	mutable u32				m_dwAmmoCurrentCalcFrame;	//кадр на котором просчитали кол-во патронов
+
 public:
 	xr_vector<ref_str>		m_ammoTypes;
 

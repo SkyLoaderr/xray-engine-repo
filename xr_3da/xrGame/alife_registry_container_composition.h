@@ -11,6 +11,7 @@
 #include "alife_abstract_registry.h"
 #include "InfoPortionDefs.h"
 #include "PdaMsg.h"
+#include "encyclopedia_article_defs.h"
 
 
 #pragma warning(push)
@@ -26,6 +27,12 @@ typedef CALifeAbstractRegistry<u16, TALK_CONTACT_VECTOR > CKnownContactsRegistry
 add_to_registry_type_list(CKnownContactsRegistry);
 #define known_contacts define_constant(CKnownContactsRegistry) 
 #define registry_type_list save_registry_type_list(CKnownContactsRegistry)
+
+//список статей энциклопедии, которые знает актер
+typedef CALifeAbstractRegistry<u16, ARTICLE_VECTOR > CEncyclopediaRegistry;
+add_to_registry_type_list(CEncyclopediaRegistry);
+#define encyclopedia_articles define_constant(CEncyclopediaRegistry) 
+#define registry_type_list save_registry_type_list(CEncyclopediaRegistry)
 
 
 #pragma warning(pop)

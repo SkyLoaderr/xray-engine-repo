@@ -90,22 +90,22 @@ public:
 	virtual void OnReceiveInfo		(INFO_ID info_index);
 	virtual void OnDisableInfo		(INFO_ID info_index);
 	virtual void ReceivePdaMessage	(u16 who, EPdaMsg msg, INFO_ID info_index);
+protected:
+	virtual void AddMapLocationsFromInfo (const CInfoPortion* info_portion);
+	virtual void AddEncyclopediaArticle	 (const CInfoPortion* info_portion);
 
+public:
 	virtual void StartTalk			(CInventoryOwner* talk_partner);
-
+	virtual	void UpdateContact		(u16 contact_id);
 	//реестр контактов общения с другими персонажами
 	typedef CALifeRegistryWrapper<CKnownContactsRegistry> KNOWN_CONTACTS_REGISTRY;
-	KNOWN_CONTACTS_REGISTRY contacts_registry;
+	KNOWN_CONTACTS_REGISTRY		contacts_registry;
+
+	//реестр контактов общения с другими персонажами
+	typedef CALifeRegistryWrapper<CEncyclopediaRegistry> ENCYCLOPEDIA_REGISTRY;
+	ENCYCLOPEDIA_REGISTRY		encyclopedia_registry;
 
 
-	virtual	void				UpdateContact	(u16 contact_id);
-protected:
-#ifdef _DEBUG
-	//для отладки без alife simulator
-	TALK_CONTACT_VECTOR m_ContactsWithoutAlife;
-#endif	
-
-	virtual void AddMapLocationsFromInfo (const CInfoPortion& info_portion);
 
 public:
 	//PhraseDialogManager

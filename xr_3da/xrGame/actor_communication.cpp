@@ -19,12 +19,13 @@
 
 
 
-void CActor::AddMapLocationsFromInfo(const CInfoPortion& info_portion)
+void CActor::AddMapLocationsFromInfo(const CInfoPortion* info_portion)
 {
+	VERIFY(info_portion);
 	//добавить отметки на карте
-	for(u32 i=0; i<info_portion.MapLocations().size(); i++)
+	for(u32 i=0; i<info_portion->MapLocations().size(); i++)
 	{
-		const SMapLocation& map_location = info_portion.MapLocations()[i];
+		const SMapLocation& map_location = info_portion->MapLocations()[i];
 		if(xr_strlen(*map_location.level_name) > 0)
 		{
 			if(map_location.level_name == Level().Name())
@@ -32,8 +33,11 @@ void CActor::AddMapLocationsFromInfo(const CInfoPortion& info_portion)
 		}
 		else
 			Level().AddMapLocation(map_location);
-
 	}
+}
+
+void CActor::AddEncyclopediaArticle	 (const CInfoPortion* info_portion)
+{
 }
 
 //information receive
@@ -46,7 +50,8 @@ void CActor::OnReceiveInfo(INFO_ID info_index)
 	CInfoPortion info_portion;
 	info_portion.Load(info_index);
 
-	AddMapLocationsFromInfo(info_portion);
+	AddMapLocationsFromInfo(&info_portion);
+	AddEncyclopediaArticle(&info_portion);
 	
 	if(pGameSP->TalkMenu.IsShown())
 	{

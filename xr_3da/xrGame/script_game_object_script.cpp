@@ -265,6 +265,7 @@ void CScriptGameObject::script_register(lua_State *L)
 
 			.def("transfer_item",				&CScriptGameObject::TransferItem)
 			.def("transfer_money",				&CScriptGameObject::TransferMoney)
+			.def("money",						&CScriptGameObject::Money)
 			.def("set_goodwill",				&CScriptGameObject::SetGoodwill)
 			.def("set_relation",				&CScriptGameObject::SetRelation)
 			.def("set_start_dialog",			&CScriptGameObject::SetStartDialog)

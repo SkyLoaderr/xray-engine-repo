@@ -571,12 +571,13 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 		{
 			CInfoPortion info_portion;
 			info_portion.Load((*it).id);
-			AddMapLocationsFromInfo(info_portion);
+			AddMapLocationsFromInfo(&info_portion);
 		}
 	}
 
 	//-------------------------------------
 	contacts_registry.init(ID());
+	encyclopedia_registry.init(ID());
 
 
 	return					TRUE;

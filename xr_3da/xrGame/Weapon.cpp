@@ -27,24 +27,6 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-//нормальное распределение с дисперсией
-//m - мат.ожидание, s - среднеквадратичное отклонение
-static float RandNormal(float m, float s)
-{
-	const float epsilon = 0.00000000001f;
-	float r1, r2;
-
-	r1 = ::Random.randF(0.f,1.0f);
-	r2 = ::Random.randF(0.f,1.0f);
-	
-	float norm_num = (-2 * log(r1<epsilon?epsilon:r1) * _cos (2 * PI * r2));
-
-	norm_num = m + norm_num*s;
-
-	return norm_num;
-};
-
-
 CWeapon::CWeapon(LPCSTR name)
 {
 	STATE				= NEXT_STATE		= eHidden;
@@ -57,6 +39,9 @@ CWeapon::CWeapon(LPCSTR name)
 	vLastFP2.set		(0,0,0);
 	vLastFD.set			(0,0,0);
 	vLastSP.set			(0,0,0);
+
+	iAmmoCurrent		= -1;
+	m_dwAmmoCurrentCalcFrame = 0;
 
 	iAmmoElapsed		= -1;
 	iMagazineSize		= -1;
@@ -730,53 +715,42 @@ void CWeapon::SpawnAmmo(u32 boxCurr, LPCSTR ammoSect, u32 ParentID)
 	F_entity_Destroy(D);
 }
 
-/*
-const char* CWeapon::Name() 
-{
-	if(*m_name) 
-		strcpy(m_tmpName, *m_name); 
-	else m_tmpName[0] = 0;
-	
-	char l_tmp[20]; 
-	sprintf(l_tmp, " %d/%d %s", iAmmoElapsed, iMagazineSize, m_ammoName);
-	strcpy(&m_tmpName[xr_strlen(m_tmpName)], l_tmp);
-	return m_tmpName;
-}
-*/
-
 int CWeapon::GetAmmoCurrent() const
 {
 	int l_count = iAmmoElapsed;
 	if(!m_pInventory) return l_count;
 
+	//чтоб не делать лишних пересчетов
+	if(m_pInventory->ModifyFrame()<=m_dwAmmoCurrentCalcFrame)
+		return l_count + iAmmoCurrent;
+
+ 	m_dwAmmoCurrentCalcFrame = Device.dwFrame;
+	iAmmoCurrent = 0;
+
 	for(int i = 0; i < (int)m_ammoTypes.size(); ++i) 
 	{
 		LPCSTR l_ammoType = *m_ammoTypes[i];
-//		if(dynamic_cast<CActor*>(H_Parent())) 
+
+		for(PPIItem l_it = m_pInventory->m_belt.begin(); m_pInventory->m_belt.end() != l_it; ++l_it) 
 		{
-			TIItemList &l_list = m_pInventory->m_belt;
-			for(PPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it) 
+			CWeaponAmmo *l_pAmmo = dynamic_cast<CWeaponAmmo*>(*l_it);
+
+			if(l_pAmmo && !xr_strcmp(l_pAmmo->cNameSect(), l_ammoType)) 
 			{
-				CWeaponAmmo *l_pAmmo = dynamic_cast<CWeaponAmmo*>(*l_it);
-				
-				if(l_pAmmo && !xr_strcmp(l_pAmmo->cNameSect(), l_ammoType)) 
-				{
-					l_count = l_count + l_pAmmo->m_boxCurr;
-				}
+				iAmmoCurrent = iAmmoCurrent + l_pAmmo->m_boxCurr;
 			}
 		}
-		
-		TIItemList &l_list = m_pInventory->m_ruck;
-		for(PPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it) 
+
+		for(PPIItem l_it = m_pInventory->m_ruck.begin(); m_pInventory->m_ruck.end() != l_it; ++l_it) 
 		{
 			CWeaponAmmo *l_pAmmo = dynamic_cast<CWeaponAmmo*>(*l_it);
 			if(l_pAmmo && !xr_strcmp(l_pAmmo->cNameSect(), l_ammoType)) 
 			{
-				l_count = l_count + l_pAmmo->m_boxCurr;
+				iAmmoCurrent = iAmmoCurrent + l_pAmmo->m_boxCurr;
 			}
 		}
 	}
-	return l_count;
+	return l_count + iAmmoCurrent;
 }
 
 float CWeapon::GetConditionMisfireProbability() const

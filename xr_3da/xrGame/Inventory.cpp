@@ -729,23 +729,7 @@ bool CInventory::Eat(PIItem pIItem)
 	CEatableItem* pItemToEat = dynamic_cast<CEatableItem*>(pIItem);
 	if(!pItemToEat) return false;
 
-	if(pItemToEat->m_iPortionsNum == 0)
-	{
-		//уничтожить вещь
-		pIItem->Drop();
-	
-		NET_Packet P;
-		CGameObject::u_EventGen(P,GE_DESTROY,pIItem->ID());
-		P.w_u16(u16(pIItem->ID()));
-		CGameObject::u_EventSend(P);
-
-//		Msg		("ge_destroy: [%d] - %s",pIItem->ID(),*pIItem->cName());
-
-		return false;
-	}
-
 	CEntityCondition *pCondition = dynamic_cast<CEntityCondition*>(m_pOwner);
-
 	if(!pCondition) return false;
 
 	pCondition->ChangeHealth(pItemToEat->m_fHealthInfluence);
@@ -759,6 +743,22 @@ bool CInventory::Eat(PIItem pIItem)
 		pItemToEat->m_iPortionsNum = 0;
 	else
 		--(pItemToEat->m_iPortionsNum);
+
+
+	if(pItemToEat->m_iPortionsNum == 0)
+	{
+		//убрать вещь из инвентаря
+		pIItem->Drop();
+/*		NET_Packet P;
+		CGameObject::u_EventGen(P,GE_OWNERSHIP_REJECT,pIItem->ID());
+		P.w_u16(u16(pIItem->ID()));
+		CGameObject::u_EventSend(P);
+
+		//		Msg		("ge_destroy: [%d] - %s",pIItem->ID(),*pIItem->cName());
+*/
+		return false;
+	}
+
 
 
 	return true;
@@ -855,6 +855,12 @@ bool CInventory::CanTakeItem(CInventoryItem *inventory_item) const
 {
 	VERIFY			(inventory_item);
 	VERIFY			(m_pOwner);
+	VERIFY			(inventory_item->H_Parent() == NULL);
+
+
+	for(TIItemSet::const_iterator it = m_all.begin(); it != m_all.end(); it++)
+		if((*it)->ID() == inventory_item->ID()) break;
+	VERIFY2(it == m_all.end(), "item already exists in inventory");
 
 	CActor* pActor = dynamic_cast<CActor*>(m_pOwner);
 	//актер всегда может взять вещь

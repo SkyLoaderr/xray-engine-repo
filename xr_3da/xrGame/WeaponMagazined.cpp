@@ -174,7 +174,7 @@ bool CWeaponMagazined::TryReload()
 			{ 
 				m_ammoType = i; 
 				m_bPending = true;
-				SwitchState(eReload); 
+				SwitchState(eReload);
 				return true; 
 			}
 		}
@@ -254,6 +254,8 @@ void CWeaponMagazined::UnloadMagazine()
 
 void CWeaponMagazined::ReloadMagazine() 
 {
+	m_dwAmmoCurrentCalcFrame = 0;
+
 	SwitchState(eIdle);
 
 	//устранить осечку при перезарядке

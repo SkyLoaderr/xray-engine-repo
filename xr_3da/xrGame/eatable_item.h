@@ -25,6 +25,8 @@ public:
 	virtual void Load(LPCSTR section);
 	virtual bool Useful() const;
 
+	virtual void OnH_B_Independent();
+
 	//влияние при поедании вещи на параметры игрока
 	float	m_fHealthInfluence;
 	float	m_fPowerInfluence;

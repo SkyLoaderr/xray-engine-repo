@@ -141,6 +141,11 @@ void CScriptGameObject::TransferItem(CScriptGameObject* pItem, CScriptGameObject
 	CGameObject::u_EventSend		(P);
 }
 
+u32 CScriptGameObject::Money	()
+{
+	CInventoryOwner* pOurOwner		= dynamic_cast<CInventoryOwner*>(m_tpGameObject); VERIFY(pOurOwner);
+	return pOurOwner->m_dwMoney;
+}
 
 void CScriptGameObject::TransferMoney(int money, CScriptGameObject* pForWho)
 {

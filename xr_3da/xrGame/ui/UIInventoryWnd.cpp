@@ -886,7 +886,7 @@ void CUIInventoryWnd::EatItem()
 		m_vDragDropItems.erase(it);
 
 		//-----------------------------------------------------------------------
-		SendEvent_ItemDrop(m_pCurrentItem);
+		//SendEvent_ItemDrop(m_pCurrentItem);
 		//-----------------------------------------------------------------------
 		SetCurrentItem(NULL);
 		m_pCurrentDragDropItem = NULL;

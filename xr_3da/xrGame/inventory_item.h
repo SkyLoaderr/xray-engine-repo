@@ -77,7 +77,8 @@ public:
 			float	Weight				() const	{return m_weight;}		
 
 public:
-	CInventory		*m_pInventory;								// Указатель на инвентарь. Всегда полезно знать где находишься :)
+	// Указатель на инвентарь. Всегда полезно знать где находишься :)
+	CInventory*		m_pInventory;
 	ref_str			m_name;
 	ref_str			m_nameShort;
 	char			m_nameComplex[255];
