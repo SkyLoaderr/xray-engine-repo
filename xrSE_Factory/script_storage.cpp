@@ -57,8 +57,10 @@ CScriptStorage::~CScriptStorage		()
 int __cdecl CScriptStorage::script_log	(ScriptStorage::ELuaMessageType tLuaMessageType, LPCSTR caFormat, ...)
 {
 #ifndef NO_XRGAME_SCRIPT_ENGINE
+#	ifdef DEBUG
 	if (!psAI_Flags.test(aiLua))
 		return(0);
+#	endif
 #endif
 
 #ifndef DEBUG

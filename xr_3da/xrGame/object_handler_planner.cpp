@@ -227,7 +227,9 @@ void CObjectHandlerPlanner::setup(CAI_Stalker *object)
 		set_use_log				(!!psAI_Flags.test(aiGOAP));
 #	endif
 #else
+#	ifdef LOG_ACTION
 	set_use_log					(false);
+#	endif
 #endif
 }
 
