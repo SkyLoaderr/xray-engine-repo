@@ -199,22 +199,22 @@ IC void CBackend::set_Indices			(IDirect3DIndexBuffer9* _ib)
 
 IC void CBackend::Render				(D3DPRIMITIVETYPE T, u32 baseV, u32 startV, u32 countV, u32 startI, u32 PC)
 {
-	PGO					(Msg("PGO:DIP:%dv/%df",countV,PC));
 	stat.calls			++;
 	stat.verts			+= countV;
 	stat.polys			+= PC;
 	constants.flush		();
 	CHK_DX				(HW.pDevice->DrawIndexedPrimitive(T,baseV, startV, countV,startI,PC));
+	PGO					(Msg("PGO:DIP:%dv/%df",countV,PC));
 }
 
 IC void CBackend::Render				(D3DPRIMITIVETYPE T, u32 startV, u32 PC)
 {
-	PGO					(Msg("PGO:DIP:%dv/%df",3*PC,PC));
 	stat.calls			++;
 	stat.verts			+= 3*PC;
 	stat.polys			+= PC;
 	constants.flush		();
 	CHK_DX				(HW.pDevice->DrawPrimitive(T, startV, PC));
+	PGO					(Msg("PGO:DIP:%dv/%df",3*PC,PC));
 }
 
 IC void CBackend::set_Shader			(Shader* S, u32 pass)

@@ -638,7 +638,7 @@ void	CRender::Render		()
 							RCache.set_Constants					(Ncs->key);
 
 							mapNormalTextures&	tex			= Ncs->val;		tex.ssa	= 0;
-							sort_tlist		(lstTextures,lstTexturesTemp,tex,sort);
+							sort_tlist			(lstTextures,lstTexturesTemp,tex,sort);
 							for (u32 tex_id=0; tex_id<lstTextures.size(); tex_id++)
 							{
 								mapNormalTextures::TNode*	Ntex = lstTextures[tex_id];
