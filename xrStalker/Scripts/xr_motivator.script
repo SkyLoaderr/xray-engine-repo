@@ -58,6 +58,9 @@ function motivator_binder:reinit()
     self.st.state = xr_state.body_state(self.object)
 	--state_mgr.bind_manager(self.object, self.st.state_mgr)
 
+    --' Создание менеджера контроля положений тела
+	self.st.state_mgr = state_mgr.bind_manager(self.object)
+	
     --' удар в морду
     xr_punch.add_to_binder (self.object)   
 
@@ -137,6 +140,17 @@ function motivator_binder:update(delta)
 	end
 
 	self.torch:update()
+    
+
+	--' Апдейт менеджера состояний тела
+	if self.st.state_mgr then
+		if self.object:alive() then
+			self.st.state_mgr:update()
+		else
+			self.st.state_mgr = nil
+		end
+	end
+    
     
 	--' Проверка ТИМ СКВАД ГРУП
 	--[[

@@ -1,79 +1,237 @@
 
 
---' Ментальное состояние тела
+--' Скриптовое положение у тела
 --' мы уже находимся в необходимом состоянии?
-class "eva_state_mgr_mental" (property_evaluator)
-function eva_state_mgr_mental:__init(name, st) super (nil, name)
+class "eva_state_mgr_animstate" (property_evaluator)
+function eva_state_mgr_animstate:__init(name, st) super (nil, name)
 	self.st = st
 end
-function eva_state_mgr_mental:evaluate()
-	return (state_lib.states[self.st.target_state].mental == nil) or
-		   (state_lib.states[self.st.target_state].mental == self.object:mental_state())
+function eva_state_mgr_animstate:evaluate()
+	return (state_lib.states[self.st.target_state].animstate == nil) or
+		   (state_lib.states[self.st.target_state].animstate == self.st.animstate:state())
 end
-
---' нужно ли нам быть в состоянии FREE
-class "eva_state_mgr_mental_free" (property_evaluator)
-function eva_state_mgr_mental_free:__init(name, st) super (nil, name)
+--' заняты ли мы
+class "eva_state_mgr_animstate_locked" (property_evaluator)
+function eva_state_mgr_animstate_locked:__init(name, st) super (nil, name)
 	self.st = st
 end
-function eva_state_mgr_mental_free:evaluate()
-	return state_lib.states[self.st.target_state].mental == anim.free
+function eva_state_mgr_animstate_locked:evaluate()
+	self.st.animstate:update()
+	return self.st.animstate:state() == "busy"
 end
 
---' нужно ли нам быть в состоянии DANGER
-class "eva_state_mgr_mental_danger" (property_evaluator)
-function eva_state_mgr_mental_danger:__init(name, st) super (nil, name)
+--' Нужно ли нам стоять
+class "eva_state_mgr_animstate_idle" (property_evaluator)
+function eva_state_mgr_animstate_idle:__init(name, st) super (nil, name)
 	self.st = st
 end
-function eva_state_mgr_mental_danger:evaluate()
-	return state_lib.states[self.st.target_state].mental == anim.danger
+function eva_state_mgr_animstate_idle:evaluate()
+	return state_lib.states[self.st.target_state].animstate == "stand"
 end
-
---' находимся ли мы сейчас во FREE
-class "eva_state_mgr_mental_free_now" (property_evaluator)
-function eva_state_mgr_mental_free_now:__init(name, st) super (nil, name)
+--' Стоим ли мы
+class "eva_state_mgr_animstate_idle_now" (property_evaluator)
+function eva_state_mgr_animstate_idle_now:__init(name, st) super (nil, name)
 	self.st = st
 end
-function eva_state_mgr_mental_free_now:evaluate()
-	return self.object:mental_state() == anim.free
+function eva_state_mgr_animstate_idle_now:evaluate()
+	return self.st.animstate:state() == "stand"
 end
 
---' находимся ли мы сейчас в DANGER
-class "eva_state_mgr_mental_danger_now" (property_evaluator)
-function eva_state_mgr_mental_danger_now:__init(name, st) super (nil, name)
+--' Нужно ли нам сидеть
+class "eva_state_mgr_animstate_sit" (property_evaluator)
+function eva_state_mgr_animstate_sit:__init(name, st) super (nil, name)
 	self.st = st
 end
-function eva_state_mgr_mental_danger_now:evaluate()
-	return self.object:mental_state() == anim.danger
+function eva_state_mgr_animstate_sit:evaluate()
+	return state_lib.states[self.st.target_state].animstate == "sit"
+end
+--' Сидим ли мы
+class "eva_state_mgr_animstate_sit_now" (property_evaluator)
+function eva_state_mgr_animstate_sit_now:__init(name, st) super (nil, name)
+	self.st = st
+end
+function eva_state_mgr_animstate_sit_now:evaluate()
+	return self.st.animstate:state() == "sit"
+end
+
+--' Нужно ли нам спать
+class "eva_state_mgr_animstate_sleep" (property_evaluator)
+function eva_state_mgr_animstate_sleep:__init(name, st) super (nil, name)
+	self.st = st
+end
+function eva_state_mgr_animstate_sleep:evaluate()
+	return state_lib.states[self.st.target_state].animstate == "sleep"
+end
+--' Спим ли мы
+class "eva_state_mgr_animstate_sleep_now" (property_evaluator)
+function eva_state_mgr_animstate_sleep_now:__init(name, st) super (nil, name)
+	self.st = st
+end
+function eva_state_mgr_animstate_sleep_now:evaluate()
+	return self.st.animstate:state() == "sleep"
+end
+
+--' Нужно ли нам быть раненым
+class "eva_state_mgr_animstate_wounded" (property_evaluator)
+function eva_state_mgr_animstate_wounded:__init(name, st) super (nil, name)
+	self.st = st
+end
+function eva_state_mgr_animstate_wounded:evaluate()
+	return state_lib.states[self.st.target_state].animstate == "wounded"
+end
+--' Ранены ли мы
+class "eva_state_mgr_animstate_wounded_now" (property_evaluator)
+function eva_state_mgr_animstate_wounded_now:__init(name, st) super (nil, name)
+	self.st = st
+end
+function eva_state_mgr_animstate_wounded_now:evaluate()
+	return self.st.animstate:state() == "wounded"
 end
 
 
---' Включаем свободное состояние
-class "act_state_mgr_mental_free" (action_base)
-function act_state_mgr_mental_free:__init(name) super (nil, name)
+--' Садимся
+class "act_state_mgr_animstate_2sit" (action_base)
+function act_state_mgr_animstate_2sit:__init(name, st) super (nil, name)
+	self.st = st
 end
-function act_state_mgr_mental_free:initialize()
+function act_state_mgr_animstate_2sit:initialize()
 	action_base.initialize(self)
-	self.object:set_mental_state(anim.free)
+	self.st.animstate:set_state("sit")
 end
-function act_state_mgr_mental_free:execute()
+function act_state_mgr_animstate_2sit:execute()
 	action_base.execute(self)
 end
-function act_state_mgr_mental_free:finalize()
+function act_state_mgr_animstate_2sit:finalize()
+	action_base.finalize(self)
+end
+--' Встаем в айдл
+class "act_state_mgr_animstate_2idle" (action_base)
+function act_state_mgr_animstate_2idle:__init(name, st) super (nil, name)
+	self.st = st
+end
+function act_state_mgr_animstate_2idle:initialize()
+	action_base.initialize(self)
+	self.st.animstate:set_state("stand")
+end
+function act_state_mgr_animstate_2idle:execute()
+	action_base.execute(self)
+end
+function act_state_mgr_animstate_2idle:finalize()
+	action_base.finalize(self)
+end
+--' Засыпаем
+class "act_state_mgr_animstate_2sleep" (action_base)
+function act_state_mgr_animstate_2sleep:__init(name, st) super (nil, name)
+	self.st = st
+end
+function act_state_mgr_animstate_2sleep:initialize()
+	action_base.initialize(self)
+	self.st.animstate:set_state("sleep")
+end
+function act_state_mgr_animstate_2sleep:execute()
+	action_base.execute(self)
+end
+function act_state_mgr_animstate_2sleep:finalize()
+	action_base.finalize(self)
+end
+--' Ранены
+class "act_state_mgr_animstate_2wounded" (action_base)
+function act_state_mgr_animstate_2wounded:__init(name, st) super (nil, name)
+	self.st = st
+end
+function act_state_mgr_animstate_2wounded:initialize()
+	action_base.initialize(self)
+	self.st.animstate:set_state("wounded")
+end
+function act_state_mgr_animstate_2wounded:execute()
+	action_base.execute(self)
+end
+function act_state_mgr_animstate_2wounded:finalize()
 	action_base.finalize(self)
 end
 
---' Включаем возбужденное состояние
-class "act_state_mgr_mental_danger" (action_base)
-function act_state_mgr_mental_danger:__init(name) super (nil, name)
+
+
+--' Класс, реализующий состояния тела
+
+class "body_state"
+function body_state:__init(npc)
+	self.npc = npc
+	self.target_state = "stand"
+	self.current_state = "stand"
+
+	self.transfer_anim = {
+		stand		= { sit			= {"idle_to_sit_0"},
+						sleep		= {"idle_to_sit_0","sit_to_sleep_0"}, 
+						wounded		= {"idle_to_wounded_0"} },
+		sit			= { stand		= {"sit_to_idle_0"},
+						sleep		= {"sit_to_sleep_0"},
+						wounded		= {"sit_to_idle_0","idle_to_wounded_0"} },
+		sleep		= {	stand		= {"sleep_to_sit_0","sit_to_idle_0"},
+						sit			= {"sleep_to_sit_0"},
+						wounded		= {"sleep_to_sit_0","sit_to_idle_0","idle_to_wounded_0"} },			
+		wounded		= {	stand		= {"wounded_to_idle_0"},
+						sit			= {"wounded_to_idle_0","idle_to_sit_0"},
+						sleep		= {"wounded_to_idle_0","idle_to_sit_0","sit_to_sleep_0"} } 
+	}
+
+	self.idle_anim = {
+		sit			= "item_0_idle_0",
+		sleep		= "sleep_idle_0",
+		wounded		= "wounded_idle_0"
+	}
+
 end
-function act_state_mgr_mental_danger:initialize()
-	action_base.initialize(self)
-	self.object:set_mental_state(anim.danger)
+--' Проверяет закончили ли мы изменение положения тела
+function body_state:update()
+	if self.target_state ~= self.current_state then
+		if self.idle_anim[self.target_state] ~= nil then
+			if self.npc:animation_count() <= 1 then
+				self.current_state = self.target_state
+			end
+		else
+			if self.npc:animation_count() == 0 then
+				self.current_state = self.target_state
+			end
+		end
+	end
 end
-function act_state_mgr_mental_danger:execute()
-	action_base.execute(self)
+--' Возвращает текущее состояние тела
+function body_state:state()
+	--printf("%s",self.current_state)
+	return self.current_state
 end
-function act_state_mgr_mental_danger:finalize()
-	action_base.finalize(self)
+--' Установка нового положения тела
+function body_state:set_state(id)
+	printf("set new target state %s", id)
+	
+	self.npc:clear_animations()
+	if self.transfer_anim[self.current_state] ~= nil and
+	   self.transfer_anim[self.current_state][id] ~= nil
+	then
+		for k,v in self.transfer_anim[self.current_state][id] do
+			self.npc:add_animation(v,true)
+		end
+	end
+	if self.idle_anim[id] ~= nil then
+		self.npc:add_animation(self.idle_anim[id],true)
+	end
+	self.current_state = "busy"
+	self.target_state = id
 end
+--' Восстанавливаем зацикленную айдловую анимацию
+function body_state:add_idle_animation()
+	if self.idle_anim[self.current_state] ~= nil then
+		self.npc:add_animation(self.idle_anim[self.current_state],true)
+	end
+end
+--' Есть ли для текущего состояния идловая анимация
+function body_state:idle_animation_present()
+	if self.idle_anim[self.current_state] ~= nil then
+		return true
+	end
+	return false
+end
+
+
+

@@ -1,1 +1,89 @@
-edw
+
+
+--' ОРУЖИЕ
+--' Соответствует ли состояние оружия требуемому
+class "eva_state_mgr_weapon" (property_evaluator)
+function eva_state_mgr_weapon:__init(name, st) super (nil, name)
+	self.st = st
+end
+function eva_state_mgr_weapon:evaluate()
+	if (state_lib.states[self.st.target_state].weapon == nil) or
+	   (state_lib.states[self.st.target_state].weapon == "strapped" and
+		self.object:weapon_strapped()) or
+	   (state_lib.states[self.st.target_state].weapon == "unstrapped" and
+		self.object:weapon_unstrapped()) 
+	then
+--		printf("eva_state_mgr_weapon:evaluate() TRUE")
+		return true
+	end
+--	printf("eva_state_mgr_weapon:evaluate() FALSE")
+	return false
+end
+--' Висит ли оружие на спине
+class "eva_state_mgr_weapon_strapped" (property_evaluator)
+function eva_state_mgr_weapon_strapped:__init(name) super (nil, name)
+end
+function eva_state_mgr_weapon_strapped:evaluate()
+--	printf("eva_state_mgr_weapon_strapped:evaluate() %s", str_bool(self.object:weapon_strapped()))
+	return self.object:weapon_strapped()
+end
+--' Держит ли он оружие в руках
+class "eva_state_mgr_weapon_unstrapped" (property_evaluator)
+function eva_state_mgr_weapon_unstrapped:__init(name) super (nil, name)
+end
+function eva_state_mgr_weapon_unstrapped:evaluate()
+--	printf("eva_state_mgr_weapon_unstrapped:evaluate() %s", str_bool(self.object:weapon_unstrapped()))
+	return self.object:weapon_unstrapped()
+end
+--' Лочим ли мы все это для оружия или нет?
+class "eva_state_mgr_weapon_locked" (property_evaluator)
+function eva_state_mgr_weapon_locked:__init(name) super (nil, name)
+end
+function eva_state_mgr_weapon_locked:evaluate()
+	return not (self.object:weapon_unstrapped() or self.object:weapon_strapped())
+end
+
+--' Достать оружие
+class "act_state_mgr_weapon_unstrapp" (action_base)
+function act_state_mgr_weapon_unstrapp:__init(name) super (nil, name)
+end
+function act_state_mgr_weapon_unstrapp:initialize()
+	action_base.initialize(self)
+	self.object:set_item(object.idle, self.object:best_weapon())
+end
+function act_state_mgr_weapon_unstrapp:execute()
+--	printf("*STATE MGR* Weapon Unstrap action")
+	action_base.execute(self)
+end
+function act_state_mgr_weapon_unstrapp:finalize()
+	action_base.finalize(self)
+end
+--' Спрятать оружие
+class "act_state_mgr_weapon_strapp" (action_base)
+function act_state_mgr_weapon_strapp:__init(name) super (nil, name)
+end
+function act_state_mgr_weapon_strapp:initialize()
+	action_base.initialize(self)
+	self.object:set_item(object.strap, self.object:best_weapon())
+end
+function act_state_mgr_weapon_strapp:execute()
+--	printf("*STATE MGR* Weapon Strap action")
+	action_base.execute(self)
+end
+function act_state_mgr_weapon_strapp:finalize()
+	action_base.finalize(self)
+end
+--' Ожидание, пока оружие достается либо прячется
+class "act_state_mgr_weapon_idle" (action_base)
+function act_state_mgr_weapon_idle:__init(name) super (nil, name)
+end
+function act_state_mgr_weapon_idle:initialize()
+	action_base.initialize(self)
+end
+function act_state_mgr_weapon_idle:execute()
+--	printf("*STATE MGR* Weapon Idle action")
+	action_base.execute(self)
+end
+function act_state_mgr_weapon_idle:finalize()
+	action_base.finalize(self)
+end

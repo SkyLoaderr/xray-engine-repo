@@ -1,79 +1,78 @@
 
 
---' ПЕРЕМЕЩЕНИЕ
+--' Движковое состояние тела
 --' мы уже находимся в необходимом состоянии?
-class "eva_state_mgr_movement" (property_evaluator)
-function eva_state_mgr_movement:__init(name, st) super (nil, name)
+class "eva_state_mgr_bodystate" (property_evaluator)
+function eva_state_mgr_bodystate:__init(name, st) super (nil, name)
 	self.st = st
 end
-function eva_state_mgr_movement:evaluate()
-	return (state_lib.states[self.st.target_state].movement == nil) or
-		   (state_lib.states[self.st.target_state].movement == self.object:movement_type())
-end
---' нужно ли нам идти
-class "eva_state_mgr_movement_walk" (property_evaluator)
-function eva_state_mgr_movement_walk:__init(name, st) super (nil, name)
-	self.st = st
-end
-function eva_state_mgr_movement_walk:evaluate()
-	return state_lib.states[self.st.target_state].movement == move.walk
-end
---' нужно ли нам бежать
-class "eva_state_mgr_movement_run" (property_evaluator)
-function eva_state_mgr_movement_run:__init(name, st) super (nil, name)
-	self.st = st
-end
-function eva_state_mgr_movement_run:evaluate()
-	return state_lib.states[self.st.target_state].movement == move.run
-end
---' нужно ли нам стоять
-class "eva_state_mgr_movement_stand" (property_evaluator)
-function eva_state_mgr_movement_stand:__init(name, st) super (nil, name)
-	self.st = st
-end
-function eva_state_mgr_movement_stand:evaluate()
-	return state_lib.states[self.st.target_state].movement == move.stand
+function eva_state_mgr_bodystate:evaluate()
+	return (state_lib.states[self.st.target_state].bodystate == nil) or
+		   (state_lib.states[self.st.target_state].bodystate == self.object:body_state())
 end
 
---' Включаем ходьбу
-class "act_state_mgr_movement_walk" (action_base)
-function act_state_mgr_movement_walk:__init(name) super (nil, name)
+--' нужно ли нам переключиться в крауч
+class "eva_state_mgr_bodystate_crouch" (property_evaluator)
+function eva_state_mgr_bodystate_crouch:__init(name, st) super (nil, name)
+	self.st = st
 end
-function act_state_mgr_movement_walk:initialize()
+function eva_state_mgr_bodystate_crouch:evaluate()
+	return state_lib.states[self.st.target_state].bodystate == move.crouch
+end
+
+--' нужно ли нам переключаться в стенд
+class "eva_state_mgr_bodystate_standing" (property_evaluator)
+function eva_state_mgr_bodystate_standing:__init(name, st) super (nil, name)
+	self.st = st
+end
+function eva_state_mgr_bodystate_standing:evaluate()
+	return state_lib.states[self.st.target_state].bodystate == move.standing
+end
+
+--' находимся ли мы сейчас в крауче
+class "eva_state_mgr_bodystate_crouch_now" (property_evaluator)
+function eva_state_mgr_bodystate_crouch_now:__init(name, st) super (nil, name)
+	self.st = st
+end
+function eva_state_mgr_bodystate_crouch_now:evaluate()
+	return  self.object:body_state() == move.crouch
+end
+
+--' находимся ли мы сейчас в стендинге
+class "eva_state_mgr_bodystate_standing_now" (property_evaluator)
+function eva_state_mgr_bodystate_standing_now:__init(name, st) super (nil, name)
+	self.st = st
+end
+function eva_state_mgr_bodystate_standing_now:evaluate()
+	return  self.object:body_state() == move.standing
+end
+
+--' Переходим в крауч
+class "act_state_mgr_bodystate_crouch" (action_base)
+function act_state_mgr_bodystate_crouch:__init(name) super (nil, name)
+end
+function act_state_mgr_bodystate_crouch:initialize()
 	action_base.initialize(self)
-	self.object:set_movement_type(move.walk)
+	self.object:set_body_state(move.crouch)
 end
-function act_state_mgr_movement_walk:execute()
+function act_state_mgr_bodystate_crouch:execute()
 	action_base.execute(self)
 end
-function act_state_mgr_movement_walk:finalize()
+function act_state_mgr_bodystate_crouch:finalize()
 	action_base.finalize(self)
 end
---' Включаем бег
-class "act_state_mgr_movement_run" (action_base)
-function act_state_mgr_movement_run:__init(name) super (nil, name)
+
+--' Переходим в стендинг
+class "act_state_mgr_bodystate_standing" (action_base)
+function act_state_mgr_bodystate_standing:__init(name) super (nil, name)
 end
-function act_state_mgr_movement_run:initialize()
+function act_state_mgr_bodystate_standing:initialize()
 	action_base.initialize(self)
-	self.object:set_movement_type(move.run)
+	self.object:set_body_state(move.standing)
 end
-function act_state_mgr_movement_run:execute()
+function act_state_mgr_bodystate_standing:execute()
 	action_base.execute(self)
 end
-function act_state_mgr_movement_run:finalize()
-	action_base.finalize(self)
-end
---' Включаем стояние на месте
-class "act_state_mgr_movement_stand" (action_base)
-function act_state_mgr_movement_stand:__init(name) super (nil, name)
-end
-function act_state_mgr_movement_stand:initialize()
-	action_base.initialize(self)
-	self.object:set_movement_type(move.stand)	
-end
-function act_state_mgr_movement_stand:execute()
-	action_base.execute(self)
-end
-function act_state_mgr_movement_stand:finalize()
+function act_state_mgr_bodystate_standing:finalize()
 	action_base.finalize(self)
 end

@@ -87,32 +87,15 @@ function action_meet_wait:initialize()
 	self.object:set_node_evaluator()
 	self.object:set_path_evaluator()
 	self.object:set_desired_position()
-	self.object:set_desired_direction()    
-
-	self.object:set_body_state(move.standing)
-	self.object:set_movement_type(move.stand)
-	self.object:set_mental_state(anim.free)
-
-   	xr_state.change_state(self.object,xr_state.stand)
-   	self.object:set_item(object.deactivate, self.object:best_weapon())
+	self.object:set_desired_direction()
 	
-   	self.a.Buyer = nil
+	self.object:enable_talk()
+	state_mgr.set_state(self.object, "wait", { obj = self, func = self.time_callback }, 5000, {look_object = db.actor})
+end
+function action_meet_wait:time_callback()
+	printf("CALLLED")
 end
 function action_meet_wait:execute ()
-	if xr_state.finish_state(self.object) == true then
-		self.object:enable_talk()
-	else
-		return
-	end
-	
-	-- нужно остановиться и посмотреть в сторону актора
-	local dir = self.a.actor:position():sub(self.object:position())
-
-	self.object:set_sight(look.direction, dir, 0)
-
-	-- Анимации
-	xr_state.anim_update("idle", self.object)
-
 	-- Звуки
 	if self.object:active_sound_count() == 0 then
 		xr_sound.sound_update(self.object, self.sound_w)		
@@ -120,8 +103,8 @@ function action_meet_wait:execute ()
 	action_base.execute (self)
 end
 function action_meet_wait:finalize ()
+	state_mgr.set_state(self.object, "idle")
 	self.object:disable_talk()
-	xr_state.anim_update(nil, self.object)
 	action_base.finalize (self)
 end
 
@@ -140,24 +123,12 @@ function action_weapon:initialize()
 	self.object:set_node_evaluator()
 	self.object:set_path_evaluator()
 	self.object:set_desired_position()
-	self.object:set_desired_direction()    
+	self.object:set_desired_direction()
 
-	self.object:set_body_state(move.standing)
-	self.object:set_movement_type(move.stand)
-	self.object:set_mental_state(anim.danger)
-
-	self.object:clear_animations()
 	stop_play_sound(self.object)
+	state_mgr.set_state(self.object, "threat", nil, nil, {look_object = db.actor})
 end
 function action_weapon:execute ()
-   	self.object:set_item(object.idle, self.object:best_weapon())
-	
-	-- нужно остановиться и посмотреть в сторону актора
-	local pos = self.a.actor:position()
-
-	local dir = self.a.actor:position():sub(self.object:position())
-	self.object:set_sight(look.direction, dir, true)
-
 	if self.object:active_sound_count() == 0 then
 		xr_sound.sound_update(self.object, self.sound_e)		
 	end	
@@ -165,6 +136,7 @@ function action_weapon:execute ()
 	action_base.execute (self)
 end
 function action_weapon:finalize ()
+	state_mgr.set_state(self.object, "idle")
 	action_base.finalize (self)
 end
 

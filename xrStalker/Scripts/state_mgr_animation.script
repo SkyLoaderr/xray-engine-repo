@@ -1,238 +1,472 @@
 
 
---' Скриптовое положение у тела
+--' Анимации персонажа
 --' мы уже находимся в необходимом состоянии?
-class "eva_state_mgr_animstate" (property_evaluator)
-function eva_state_mgr_animstate:__init(name, st) super (nil, name)
+class "eva_state_mgr_animation" (property_evaluator)
+function eva_state_mgr_animation:__init(name, st) super (nil, name)
 	self.st = st
 end
-function eva_state_mgr_animstate:evaluate()
-	return (state_lib.states[self.st.target_state].animstate == nil) or
-		   (state_lib.states[self.st.target_state].animstate == self.st.animstate:state())
+function eva_state_mgr_animation:evaluate()
+	self.st.animation:update()
+	return state_lib.states[self.st.target_state].animation == self.st.animation:state()
 end
---' заняты ли мы
-class "eva_state_mgr_animstate_busy" (property_evaluator)
-function eva_state_mgr_animstate_busy:__init(name, st) super (nil, name)
+--' нужно ли нам отыгрывать извращенную анимацию
+class "eva_state_mgr_animation_play" (property_evaluator)
+function eva_state_mgr_animation_play:__init(name, st) super (nil, name)
 	self.st = st
 end
-function eva_state_mgr_animstate_busy:evaluate()
-	self.st.animstate:update_state()
-	return self.st.animstate:state() == "busy"
+function eva_state_mgr_animation_play:evaluate()
+	return state_lib.states[self.st.target_state].animation ~= nil
+end
+--' Отыгрываем ли мы сейчас извращенную анимацию
+class "eva_state_mgr_animation_play_now" (property_evaluator)
+function eva_state_mgr_animation_play_now:__init(name, st) super (nil, name)
+	self.st = st
+end
+function eva_state_mgr_animation_play_now:evaluate()
+	return self.st.animation:state() ~= "wait" and self.st.animation:state() ~= nil
+end
+--' нужно ли нам вообще не отыгрывать анимацию
+class "eva_state_mgr_animation_none" (property_evaluator)
+function eva_state_mgr_animation_none:__init(name, st) super (nil, name)
+	self.st = st
+end
+function eva_state_mgr_animation_none:evaluate()
+	return state_lib.states[self.st.target_state].animation == nil
+end
+--' мы уже не отыгрываем никакую извращенную анимацию
+class "eva_state_mgr_animation_none_now" (property_evaluator)
+function eva_state_mgr_animation_none_now:__init(name, st) super (nil, name)
+	self.st = st
+end
+function eva_state_mgr_animation_none_now:evaluate()
+	return self.st.animation:state() ~= "wait" and self.st.animation:state() == nil
+end
+--' залочена ли схема
+class "eva_state_mgr_animation_locked" (property_evaluator)
+function eva_state_mgr_animation_locked:__init(name, st) super (nil, name)
+	self.st = st
+end
+function eva_state_mgr_animation_locked:evaluate()
+	return self.st.animation:state() == "wait"
 end
 
---' Нужно ли нам стоять
-class "eva_state_mgr_animstate_idle" (property_evaluator)
-function eva_state_mgr_animstate_idle:__init(name, st) super (nil, name)
-	self.st = st
-end
-function eva_state_mgr_animstate_idle:evaluate()
-	return state_lib.states[self.st.target_state].animstate == "stand"
-end
---' Стоим ли мы
-class "eva_state_mgr_animstate_idle_now" (property_evaluator)
-function eva_state_mgr_animstate_idle_now:__init(name, st) super (nil, name)
-	self.st = st
-end
-function eva_state_mgr_animstate_idle_now:evaluate()
-	return self.st.animstate:state() == "stand"
-end
 
---' Нужно ли нам сидеть
-class "eva_state_mgr_animstate_sit" (property_evaluator)
-function eva_state_mgr_animstate_sit:__init(name, st) super (nil, name)
+--' Играем входную анимацию
+class "act_state_mgr_animation_start" (action_base)
+function act_state_mgr_animation_start:__init(name, st) super (nil, name)
 	self.st = st
 end
-function eva_state_mgr_animstate_sit:evaluate()
-	return state_lib.states[self.st.target_state].animstate == "sit"
-end
---' Сидим ли мы
-class "eva_state_mgr_animstate_sit_now" (property_evaluator)
-function eva_state_mgr_animstate_sit_now:__init(name, st) super (nil, name)
-	self.st = st
-end
-function eva_state_mgr_animstate_sit_now:evaluate()
-	return self.st.animstate:state() == "sit"
-end
-
---' Нужно ли нам спать
-class "eva_state_mgr_animstate_sleep" (property_evaluator)
-function eva_state_mgr_animstate_sleep:__init(name, st) super (nil, name)
-	self.st = st
-end
-function eva_state_mgr_animstate_sleep:evaluate()
-	return state_lib.states[self.st.target_state].animstate == "sleep"
-end
---' Спим ли мы
-class "eva_state_mgr_animstate_sleep_now" (property_evaluator)
-function eva_state_mgr_animstate_sleep_now:__init(name, st) super (nil, name)
-	self.st = st
-end
-function eva_state_mgr_animstate_sleep_now:evaluate()
-	return self.st.animstate:state() == "sleep"
-end
-
---' Нужно ли нам быть раненым
-class "eva_state_mgr_animstate_wounded" (property_evaluator)
-function eva_state_mgr_animstate_wounded:__init(name, st) super (nil, name)
-	self.st = st
-end
-function eva_state_mgr_animstate_wounded:evaluate()
-	return state_lib.states[self.st.target_state].animstate == "wounded"
-end
---' Ранены ли мы
-class "eva_state_mgr_animstate_wounded_now" (property_evaluator)
-function eva_state_mgr_animstate_wounded_now:__init(name, st) super (nil, name)
-	self.st = st
-end
-function eva_state_mgr_animstate_wounded_now:evaluate()
-	return self.st.animstate:state() == "wounded"
-end
-
---' Заглушка-ожидание
-class "act_state_mgr_animstate_wait" (action_base)
-function act_state_mgr_animstate_wait:__init(name, st) super (nil, name)
-	self.st = st
-end
-function act_state_mgr_animstate_wait:initialize()
+function act_state_mgr_animation_start:initialize()
 	action_base.initialize(self)
+	self.st.animation:set_state(state_lib.states[self.st.target_state].animation)
 end
-function act_state_mgr_animstate_wait:execute()
+function act_state_mgr_animation_start:execute()
 	action_base.execute(self)
 end
-function act_state_mgr_animstate_wait:finalize()
+function act_state_mgr_animation_start:finalize()
 	action_base.finalize(self)
 end
-
---' Садимся из айдла
-class "act_state_mgr_animstate_2sit" (action_base)
-function act_state_mgr_animstate_2sit:__init(name, st) super (nil, name)
+--' Играем выходную анимацию
+class "act_state_mgr_animation_stop" (action_base)
+function act_state_mgr_animation_stop:__init(name, st) super (nil, name)
 	self.st = st
 end
-function act_state_mgr_animstate_2sit:initialize()
+function act_state_mgr_animation_stop:initialize()
 	action_base.initialize(self)
-	self.st.animstate:set_state("sit")
+	self.st.animation:set_state(nil)
 end
-function act_state_mgr_animstate_2sit:execute()
+function act_state_mgr_animation_stop:execute()
 	action_base.execute(self)
 end
-function act_state_mgr_animstate_2sit:finalize()
-	action_base.finalize(self)
-end
---' Встаем в айдл из сидячего
-class "act_state_mgr_animstate_2idle" (action_base)
-function act_state_mgr_animstate_2idle:__init(name, st) super (nil, name)
-	self.st = st
-end
-function act_state_mgr_animstate_2idle:initialize()
-	action_base.initialize(self)
-	self.st.animstate:set_state("stand")
-end
-function act_state_mgr_animstate_2idle:execute()
-	action_base.execute(self)
-end
-function act_state_mgr_animstate_2idle:finalize()
-	action_base.finalize(self)
-end
---' Засыпаем из сидячего
-class "act_state_mgr_animstate_2sleep" (action_base)
-function act_state_mgr_animstate_2sleep:__init(name, st) super (nil, name)
-	self.st = st
-end
-function act_state_mgr_animstate_2sleep:initialize()
-	action_base.initialize(self)
-	self.st.animstate:set_state("sleep")
-end
-function act_state_mgr_animstate_2sleep:execute()
-	action_base.execute(self)
-end
-function act_state_mgr_animstate_2sleep:finalize()
-	action_base.finalize(self)
-end
---' Ранены из айдла
-class "act_state_mgr_animstate_2wounded" (action_base)
-function act_state_mgr_animstate_2wounded:__init(name, st) super (nil, name)
-	self.st = st
-end
-function act_state_mgr_animstate_2wounded:initialize()
-	action_base.initialize(self)
-	self.st.animstate:set_state("wounded")
-end
-function act_state_mgr_animstate_2wounded:execute()
-	action_base.execute(self)
-end
-function act_state_mgr_animstate_2wounded:finalize()
+function act_state_mgr_animation_stop:finalize()
 	action_base.finalize(self)
 end
 
 
-
---' Класс, реализующий состояния тела
-
-class "body_state"
-function body_state:__init(npc)
+class "animation"
+function animation:__init(npc, mgr)
+	self.mgr = mgr
 	self.npc = npc
-	self.target_state = "stand"
-	self.current_state = "stand"
-
-	self.transfer_anim = {
-		stand		= { sit			= {"idle_to_sit_0"},
-						sleep		= {"idle_to_sit_0","sit_to_sleep_0"}, 
-						wounded		= {"idle_to_wounded_0"} },
-		sit			= { stand		= {"sit_to_idle_0"},
-						sleep		= {"sit_to_sleep_0"},
-						wounded		= {"sit_to_idle_0","idle_to_wounded_0"} },
-		sleep		= {	stand		= {"sleep_to_sit_0","sit_to_idle_0"},
-						sit			= {"sleep_to_sit_0"},
-						wounded		= {"sleep_to_sit_0","sit_to_idle_0","idle_to_wounded_0"} },			
-		wounded		= {	stand		= {"wounded_to_idle_0"},
-						sit			= {"wounded_to_idle_0","idle_to_sit_0"},
-						sleep		= {"wounded_to_idle_0","idle_to_sit_0","sit_to_sleep_0"} } 
-	}
-
-	self.idle_anim = {
-		sit			= "item_0_idle_0",
-		sleep		= "sleep_idle_0",
-		wounded		= "wounded_idle_0"
-	}
-
-end
---' Проверяет закончили ли мы изменение положения тела
-function body_state:update_state()
-	if self.target_state ~= self.current_state then
-		if self.idle_anim[self.target_state] ~= nil then
-			if self.npc:animation_count() <= 1 then
-				self.current_state = self.target_state
-			end
-		else
-			if self.npc:animation_count() == 0 then
-				self.current_state = self.target_state
-			end
-		end
-	end
-end
---' Возвращает текущее состояние тела
-function body_state:state()
-	--printf("%s",self.current_state)
-	return self.current_state
-end
---' Установка нового положения тела
-function body_state:set_state(id)
-	printf("set new target state %s", id)
 	
-	self.npc:clear_animations()
-	if self.transfer_anim[self.current_state] ~= nil and
-	   self.transfer_anim[self.current_state][id] ~= nil
-	then
-		for k,v in self.transfer_anim[self.current_state][id] do
-			self.npc:add_animation(v,true)
+	self.animations = {
+		idle		= {	prop	= { maxidle = 5,
+									sumidle = 3,
+									rnd = 80 },	
+						into	= nil,
+						out		= nil,
+						idle	= { [0]	= "idle_0_idle_1",
+									[1]	= "idle_1_idle_1",
+									[2]	= "idle_2_idle_1",
+									[3]	= "idle_3_idle_1",
+									[4]	= "idle_4_idle_1" },
+						rnd		= {	[0]	= {	"idle_0_idle_0",
+											"idle_0_idle_2",
+											"idle_0_idle_3",
+											"idle_0_idle_4" },
+									[1]	= {	"idle_1_idle_0",
+											"idle_1_idle_2",
+											"idle_1_idle_3",
+											"idle_1_idle_4" },
+									[2]	= {	"idle_2_idle_0",
+											"idle_2_idle_2",
+											"idle_2_idle_3",
+											"idle_2_idle_4",
+											"idle_2_idle_5",
+											"idle_2_idle_6",
+											"idle_2_idle_7",
+											"idle_2_idle_8",
+											"idle_2_idle_9" },	
+									[3]	= { "idle_3_idle_0",
+											"idle_3_idle_2",
+											"idle_3_idle_3",
+											"idle_3_idle_4" },
+									[4]	= {	"idle_4_idle_0",
+											"idle_4_idle_2",
+											"idle_4_idle_3",
+											"idle_4_idle_4" }}},
+		prisluh	= {		prop	= { maxidle = 5,
+									sumidle = 3,
+									rnd = 80 },	
+						into	= { [0]	= "prisluh_0_idle_0",
+									[1]	= "prisluh_1_idle_0",
+									[2]	= "prisluh_2_idle_0",
+									[3]	= "prisluh_3_idle_0",
+									[4]	= "prisluh_4_idle_0" },
+						out		= { [0]	= "prisluh_0_idle_5",
+									[1]	= "prisluh_1_idle_5",
+									[2]	= "prisluh_2_idle_6",
+									[3]	= "prisluh_3_idle_5",
+									[4]	= "prisluh_4_idle_5" },
+						idle	= { [0]	= "prisluh_0_idle_1",
+									[1]	= "prisluh_1_idle_1",
+									[2]	= "prisluh_2_idle_1",
+									[3]	= "prisluh_3_idle_1",
+									[4]	= "prisluh_4_idle_1" },
+						rnd		= { [0]	= {	"prisluh_0_idle_2",
+											"prisluh_0_idle_3",
+											"prisluh_0_idle_4" },
+									[1]	= {	"prisluh_1_idle_2",
+											"prisluh_1_idle_3",
+											"prisluh_1_idle_4" },
+									[2]	= {	"prisluh_2_idle_2",
+											"prisluh_2_idle_3",
+											"prisluh_2_idle_4",
+											"prisluh_2_idle_5" },
+									[3]	= {	"prisluh_3_idle_2",
+											"prisluh_3_idle_3",
+											"prisluh_3_idle_4" },
+									[4]	= {	"prisluh_4_idle_2",
+											"prisluh_4_idle_3",
+											"prisluh_4_idle_4" }}},										
+		poisk		= {	prop	= { maxidle = 5,
+									sumidle = 3,
+									rnd = 80 },
+						into	= nil,
+						out		= nil,
+						idle	= { [0]	= "poisk_0_idle_1",
+									[1]	= "poisk_1_idle_1",
+									[2]	= "poisk_2_idle_1",
+									[3]	= "poisk_3_idle_1",
+									[4]	= "poisk_4_idle_1" },
+						rnd		= { [0]	= {	"poisk_0_idle_0",
+											"poisk_0_idle_2",
+											"poisk_0_idle_3",
+											"poisk_0_idle_4" },
+									[1]	= {	"poisk_1_idle_0",
+											"poisk_1_idle_2",
+											"poisk_1_idle_3",
+											"poisk_1_idle_4" },
+									[2]	= {	"poisk_2_idle_0",
+											"poisk_2_idle_2",
+											"poisk_2_idle_3",
+											"poisk_2_idle_4" },
+									[3]	= { "poisk_3_idle_0",
+											"poisk_3_idle_2",
+											"poisk_3_idle_3",
+											"poisk_3_idle_4" },
+									[4]	= {	"poisk_4_idle_0",
+											"poisk_4_idle_2",
+											"poisk_4_idle_3",
+											"poisk_4_idle_4" }}},
+		hide		= {	state_id = xr_state.stand,
+						prop	= { maxidle = 5,
+									sumidle = 3,
+									rnd = 80 },
+						into	= nil,
+						out		= nil,
+						idle	= { [0]	= "d_0_idle_1",
+									[1]	= "d_1_idle_1",
+									[2]	= "d_2_idle_1",
+									[3]	= "d_3_idle_1",
+									[4]	= "d_4_idle_1" },
+						rnd		= { [0] = { "d_0_idle_0",
+											"d_0_idle_2" },
+									[1] = { "d_1_idle_0",
+											"d_1_idle_2" },
+									[2] = { "d_2_idle_0",
+											"d_2_idle_2" },
+									[3] = { "d_3_idle_0",
+											"d_3_idle_2" },
+									[4] = { "d_4_idle_0",
+											"d_4_idle_2" }}},
+		hello		= {	prop	= { maxidle = 3,
+									sumidle = 1,
+									rnd = 100 },
+						into	= {	[0]	= {	"hello_0_idle_0" },
+									[1]	= {	"hello_1_idle_0" },
+									[2]	= {	"hello_2_idle_0" },
+									[3]	= { "hello_3_idle_0" },
+									[4]	= {	"hello_4_idle_0" }},
+						out		= nil,
+						idle	= nil,
+						rnd		= nil},
+		refuse		= {	prop	= { maxidle = 3,
+									sumidle = 3,
+									rnd = 100 },
+						into	= {	[0]	= {	"net_0_0",
+											"net_0_1" },
+									[1]	= {	"net_1_0" },
+									[2]	= {	"net_2_0" },
+									[3]	= {	"net_3_0" },
+									[4]	= {	"net_4_0" }},
+						out		= nil,
+						idle	= nil,
+						rnd		= nil},
+		claim		= {	prop	= { maxidle = 5,
+									sumidle = 2,
+									rnd = 100 },
+						into	= {	[0]	= {	"gop_stop_1_0" },
+									[1]	= {	"gop_stop_1_0" },
+									[2]	= {	"gop_stop_2_0" },
+									[3]	= {	"gop_stop_3_0" },
+									[4]	= {	"gop_stop_4_0" }},
+						out		= nil,
+						idle	= nil,
+						rnd		= nil},
+		backoff		= {	prop	= { maxidle = 5,
+									sumidle = 2,
+									rnd = 100 },
+						into	= {	[0]	= {	"uhodi_1_0" },
+									[1]	= {	"uhodi_1_0" },
+									[2]	= {	"uhodi_2_0" },
+									[3]	= {	"uhodi_3_0" },
+									[4]	= {	"uhodi_4_0" }},
+						out		= nil,
+						idle	= nil,
+						rnd		= nil},
+		backoff2	= {	prop	= { maxidle = 5,
+									sumidle = 2,
+									rnd = 100 },
+						into	= {	[0]	= {	"uhodi_1_1" },
+									[1]	= {	"uhodi_1_1" },
+									[2]	= {	"uhodi_2_1" },
+									[3]	= {	"uhodi_3_1" },
+									[4]	= {	"uhodi_4_1" }},
+						out		= nil,
+						idle	= nil,
+						rnd		= nil},
+		sleeping	= {	prop	= { maxidle = 5,
+									sumidle = 10,
+									rnd = 100 },
+						into	= nil,
+						out		= nil,
+						idle	= nil,
+						rnd		= {	[0]	= {	"sleep_idle_1" },
+									[1]	= {	"sleep_idle_1" },
+									[2]	= {	"sleep_idle_1" },
+									[3]	= {	"sleep_idle_1" },
+									[4]	= {	"sleep_idle_1" }}},
+		eating		= {	prop	= { maxidle = 3,
+									sumidle = 3,
+									rnd = 80 },
+						into	= { [0]	= {"item_2_draw_0","item_2_draw_1"} },
+						out		= { [0]	= {"item_2_holster_0","item_2_holster_1"} },
+						idle	= { [0]	= "item_2_aim_0" },
+						rnd		= { [0]	= {	"item_2_prepare_0",
+											"item_2_attack_0" } }}									
+
+	}
+	
+	self.states = {
+		last_id = nil,
+		current_state = nil,
+		target_state = nil,
+		begin = nil,
+		idle = nil
+	}		
+end
+--' апдейт
+function animation:update()
+	--' ожидаем окончания перехода.
+	if self.states.current_state == "wait" then
+		local nnum = 0
+		if (self.animations[self.states.target_state] ~= nil and
+		   self.animations[self.states.target_state].idle ~= nil) or
+		   self.mgr.animstate:idle_animation_present()
+		then
+			nnum = 1
+		end
+		if self.npc:animation_count() <= nnum then
+			self.states.current_state = self.states.target_state
+		end
+	else
+		--' переход закончился, можно играть анимашки.
+		-- Первым делом инициализируем коллбек, если он нужен
+		if self.mgr.callback then
+			if self.mgr.callback.begin == nil then
+				self.mgr.callback.begin = device():time_global()
+			else
+				if device():time_global() - self.mgr.callback.begin >= self.mgr.timeout then
+					self.mgr.callback.func(self.mgr.callback.obj)
+					self.mgr.callback = nil
+				end
+			end
+		end
+	
+		--' Определяем нужно ли добавлять анимацию или ждать
+		if	self.animations[self.states.current_state] ~= nil and
+			self.animations[self.states.current_state].rnd ~= nil and
+			(self.states.begin == nil or
+			device():time_global() - self.states.begin > self.states.idle) and
+			self.states.current_state ~= nil
+		then
+			--' Определение промежутков времени между анимациями
+			self.states.begin = device():time_global()
+			self.states.idle = (math.random(self.animations[self.states.current_state].prop.maxidle) + 
+											self.animations[self.states.current_state].prop.sumidle) * 1000
+			if math.random(100) < self.animations[self.states.current_state].prop.rnd then
+				local r
+				if table.getn(self.animations[self.states.current_state].rnd[self:weapon_slot()]) > 1 then			
+					if self.states.last_id == nil then
+						r = math.random(table.getn(self.animations[self.states.current_state].rnd[self:weapon_slot()]))
+					else
+						r = math.random(table.getn(self.animations[self.states.current_state].rnd[self:weapon_slot()])-1)
+						if r >= self.states.last_id then
+							r = r + 1
+						end
+					end
+					self.states.last_id = r
+				else
+					r = 1
+				end		
+				self.npc:clear_animations()
+				if self.animations[self.states.current_state].rnd[self:weapon_slot()][r] ~= nil then
+				   self.npc:add_animation (self.animations[self.states.current_state].rnd[self:weapon_slot()][r], true)
+				else
+					printf("ANIM ERROR: Select wrong animation %d of %d, type: %s, weapon_slot: %d", r,
+								table.getn(self.animations[self.states.current_state].rnd[self:weapon_slot()]),
+								self.states.current_state, self:weapon_slot() )
+				end
+				if self.animations[self.states.current_state].idle ~= nil then
+					self.npc:add_animation (self.animations[self.states.current_state].idle[self:weapon_slot()], true)
+				else
+					-- Для политкорректности просим анимстейт отыграть свою айдловую анимацию
+					self.mgr.animstate:add_idle_animation()
+				end				
+				self.states.current_state = "wait"				
+			end
+		end		
+	
+	end
+end
+--' в каком состоянии мы находимся
+function animation:anim_callback()
+	printf("callback_called")
+	return true
+end
+--' в каком состоянии мы находимся
+function animation:state()
+	return self.states.current_state
+end
+--' установка нового состояния
+function animation:set_state(id)
+	printf("set new animation %s", utils.to_str(id))
+	printf("set callback")
+	self.npc:set_callback(callback.action_animation , self.anim_callback, self)
+	printf("set callback DONE")	
+	local nn = 0	
+	--' выход из старого состояния
+	self.npc:clear_animations()	
+	if self.animations[self.states.current_state] ~= nil then
+		if self.animations[self.states.current_state].out ~= nil then
+			if type(self.animations[self.states.current_state].out[self:weapon_slot()]) == "table" then
+				for k,v in self.animations[self.states.current_state].out[self:weapon_slot()] do
+					self.npc:add_animation(v, true)
+				end
+			else
+				self.npc:add_animation(self.animations[self.states.current_state].out[self:weapon_slot()], true)
+			end
+			nn = nn +1
 		end
 	end
-	if self.idle_anim[id] ~= nil then
-		self.npc:add_animation(self.idle_anim[id],true)
+	--' вход в новое состояние	
+	if self.animations[id] ~= nil then
+		if self.animations[id].into ~= nil then
+			if type(self.animations[id].into[self:weapon_slot()]) == "table" then
+				for k,v in self.animations[id].into[self:weapon_slot()] do
+					self.npc:add_animation(v, true)
+				end
+				nn = nn +1
+			else
+				self.npc:add_animation(self.animations[id].into[self:weapon_slot()], true)
+				nn = nn +1
+			end
+		end
+		if self.animations[id].idle ~= nil then
+			self.npc:add_animation(self.animations[id].idle[self:weapon_slot()], true)
+		end
+	else
+		-- Для политкорректности просим анимстейт отыграть свою айдловую анимацию
+		self.mgr.animstate:add_idle_animation()		
 	end
-	self.current_state = "busy"
-	self.target_state = id
+	if nn > 0 then
+		self.states.current_state = "wait"
+	else
+		self.states.current_state = id
+	end
+	self.states.target_state = id
 end
+--' оружейный слот
+function animation:weapon_slot()
+	local weapon = self.npc:active_item()
+	if weapon == nil or self.npc:weapon_strapped() == true then
+		return 0
+	end
+	local id = get_clsid(weapon)
+	if id == nil then 
+		return 0
+	end
+	if id == clsid.wpn_pm or
+       id == clsid.wpn_walther or
+	   id == clsid.wpn_hpsa or
+	   id == clsid.wpn_fort or
+	   id == clsid.wpn_usp45 then
+		return 1
+	end
+	if id == clsid.wpn_vintorez or
+	   id == clsid.wpn_val or
+	   id == clsid.wpn_groza or
+	   id == clsid.wpn_fn2000 or   
+	   id == clsid.wpn_ak74 or	
+	   id == clsid.wpn_lr300 or
+	   id == clsid.wpn_svd or
+   	   id == clsid.wpn_svu then
+		return 2
+	end
+	if id == clsid.wpn_shotgun then
+		return 3
+	end
+    if id == clsid.wpn_rpg7 then
+		return 4
+	end
+	return 0
+end
+
+
+
+
+
 
 
 
