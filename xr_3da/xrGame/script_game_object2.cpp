@@ -281,19 +281,6 @@ void CScriptGameObject::restore_sound_threshold	()
 	monster->memory().sound().restore_threshold	();
 }
 
-bool CScriptGameObject::NeedToAnswerPda		()
-{
-	CAI_PhraseDialogManager* pDialogManager = smart_cast<CAI_PhraseDialogManager*>(&object());
-	if(!pDialogManager) return false;
-	return pDialogManager->NeedAnswerOnPDA();
-}
-void CScriptGameObject::AnswerPda			()
-{
-	CAI_PhraseDialogManager* pDialogManager = smart_cast<CAI_PhraseDialogManager*>(&object());
-	if(!pDialogManager) return;
-	pDialogManager->AnswerOnPDA();
-}
-
 void CScriptGameObject::SetStartDialog(LPCSTR dialog_id)
 {
 	CAI_PhraseDialogManager* pDialogManager = smart_cast<CAI_PhraseDialogManager*>(&object());

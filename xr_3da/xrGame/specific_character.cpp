@@ -117,7 +117,11 @@ void CSpecificCharacter::load_shared	(LPCSTR)
 
 	LPCSTR start_dialog = uiXml.Read("start_dialog", 0, NULL);
 	if(start_dialog)
+	{
 		data()->m_iStartDialog	= CPhraseDialog::IdToIndex(start_dialog);
+		if(data()->m_iStartDialog == NO_PHRASE_DIALOG)
+			Debug.fatal("start dialog %s doesn't exists in specific character id=%s", start_dialog,  *shared_str(item_data.id));
+	}
 	else
 		data()->m_iStartDialog	= NO_PHRASE_DIALOG;
 

@@ -174,10 +174,6 @@ class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject
 
 
 		//////////////////////////////////////////////////////////////////////////
-
-		.def("need_to_answer_pda",			&CScriptGameObject::NeedToAnswerPda)
-		.def("answer_pda",					&CScriptGameObject::AnswerPda)
-
 		.def("profile_name",				&CScriptGameObject::ProfileName)
 		.def("character_name",				&CScriptGameObject::CharacterName)
 		.def("character_rank",				&CScriptGameObject::CharacterRank)
