@@ -180,7 +180,9 @@ BOOL CLevel::net_Client		( LPCSTR name_of_server )
 		// Signal main actor spawn
 		LPCSTR		s_cmd			= GetCommandLine();
 		string64	s_name			= "actor";
-		if (strstr(s_name,"-actor "))	sscanf(strstr(s_name,"-actor "),"%s",s_name);
+		if (strstr(s_cmd,"-actor "))	{
+			sscanf(strstr(s_cmd,"-actor ")+strlen("-actor "),"%s",s_name);
+		}
         g_cl_Spawn	(s_name, -1, 0, 0, 0);
 
 		// Spawn all other objects

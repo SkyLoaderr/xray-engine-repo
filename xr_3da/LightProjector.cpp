@@ -67,6 +67,8 @@ void CLightProjector::set_object	(CObject* O)
 	if ((0==O) || (receivers.size()>=P_o_count))	current		= 0;
 	else 
 	{
+		if (!O->ShadowReceive())	return;
+
 		Fvector		C;
 		O->clCenter	(C);
 		float		D = C.distance_to(Device.vCameraPosition)+O->Radius();

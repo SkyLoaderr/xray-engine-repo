@@ -20,7 +20,6 @@ void CPHWorld::Render()
 	return;
 	Device.Shader.OnFrameEnd		();
 	Device.set_xform_world			(Fidentity);
-	Fvector center;
 	Fmatrix M;
 	Fvector scale;
 

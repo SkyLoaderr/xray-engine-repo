@@ -42,7 +42,6 @@ public:
 			}
 	void GetTGeomWorldMX(Fmatrix& transform){
 			if(!geom) return;
-			dMatrix3 R;
 			Fmatrix NormTransform,Transform;
 			dVector3 P0={0,0,0,-1};
 			Fvector Translate,Translate1;

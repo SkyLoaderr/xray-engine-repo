@@ -82,6 +82,8 @@ void CLightShadows::set_object	(CObject* O)
 	if (0==O)	current		= 0;
 	else 
 	{
+		if (!O->ShadowGenerate())	return;
+
 		Fvector		C;
 		O->clCenter	(C);
 		float		D = C.distance_to(Device.vCameraPosition)+O->Radius();
