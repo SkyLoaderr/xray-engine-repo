@@ -338,6 +338,9 @@
 				RelativePath="shaders\D\cm_dbg_normals.s">
 			</File>
 			<File
+				RelativePath="shaders\D\cm_normal.s">
+			</File>
+			<File
 				RelativePath="shaders\D\fat_base.s">
 			</File>
 			<File
