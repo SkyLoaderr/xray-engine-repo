@@ -400,7 +400,7 @@ namespace xrLauncher
 			this->vertSyncCheck->RightToLeft = System::Windows::Forms::RightToLeft::Yes;
 			this->vertSyncCheck->Size = System::Drawing::Size(336, 16);
 			this->vertSyncCheck->TabIndex = 4;
-			this->vertSyncCheck->Text = S"Vertival syncronisation";
+			this->vertSyncCheck->Text = S"Vertical syncronisation";
 			this->vertSyncCheck->TextAlign = System::Drawing::ContentAlignment::MiddleRight;
 			// 
 			// ApplyButton
