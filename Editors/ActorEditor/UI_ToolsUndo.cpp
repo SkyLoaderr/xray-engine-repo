@@ -18,6 +18,7 @@ void CActorTools::UndoClear()
 void CActorTools::UndoSave()
 {
     UI.RedrawScene();
+    if (0==frmEditPrefs->seUndoLevels->Value) return;
 
 	UndoItem item;
 	GetTempFileName( FS.get_path(_temp_)->m_Path, "undo", 0, item.m_FileName );

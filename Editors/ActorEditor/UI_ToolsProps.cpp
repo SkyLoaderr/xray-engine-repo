@@ -337,6 +337,8 @@ void __fastcall CActorTools::OnBoneFileClick(PropValue* sender, bool& bModif)
 	    	if (m_pEditObject->LoadBoneData(*R))	ELog.DlgMsg(mtInformation,"Bone data succesfully loaded.");
             else                                    ELog.DlgMsg(mtError,"Failed to load bone data.");
             FS.r_close(R);
+        }else{
+            bModif = false;
         }
     }break;
     case 1:{ 
