@@ -127,13 +127,18 @@ function action_kill:execute ()
 	end
 
 	if self.enemy ~= nil then 
-		printf("_bp: %d: see_enemy?", device():time_global())
 		if self.object:see(self.enemy) == true then
-			printf("_bp: YES")
-			state_mgr.set_state(self.object, "hide_fire", nil, nil, {look_object = self.enemy})
+			if self.a.suggested_state.campering_fire then
+				state_mgr.set_state(self.object, self.a.suggested_state.campering_fire, nil, nil, {look_object = self.enemy})
+			else
+				state_mgr.set_state(self.object, "hide_fire", nil, nil, {look_object = self.enemy})
+			end
 		else
-			printf("_bp: NO")
-			state_mgr.set_state(self.object, "hide", nil, nil, {look_object = self.enemy, look_position = self.enemy:position()})
+			if self.a.suggested_state.campering then
+				state_mgr.set_state(self.object, self.a.suggested_state.campering, nil, nil, {look_object = self.enemy, look_position = self.enemy:position()})
+			else
+				state_mgr.set_state(self.object, "hide", nil, nil, {look_object = self.enemy, look_position = self.enemy:position()})
+			end
 		end
 	end
 end
@@ -170,9 +175,17 @@ function action_retreat:execute()
 
 	if self.object:best_enemy() then
 		if self.object:see(self.object:best_enemy()) == true then
-			state_mgr.set_state(self.object, "sneak_fire", nil, nil, {look_object = self.object:best_enemy()})
+			if self.a.suggested_state.moving_fire then
+				state_mgr.set_state(self.object, self.a.suggested_state.moving_fire, nil, nil, {look_object = self.object:best_enemy()})
+			else
+				state_mgr.set_state(self.object, "sneak_fire", nil, nil, {look_object = self.object:best_enemy()})
+			end
 		else
-			state_mgr.set_state(self.object, "sneak", nil, nil, {look_object = self.object:best_enemy(), look_position = self.object:best_enemy():position()})
+			if self.a.suggested_state.moving then
+				state_mgr.set_state(self.object, self.a.suggested_state.moving, nil, nil, {look_object = self.object:best_enemy(), look_position = self.object:best_enemy():position()})
+			else
+				state_mgr.set_state(self.object, "sneak", nil, nil, {look_object = self.object:best_enemy(), look_position = self.object:best_enemy():position()})
+			end			
 		end
 	end
 	
@@ -238,6 +251,14 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.path_walk = utils.cfg_get_string(ini, section, "path_walk", npc, true, gulag_name)
 	st.path_look = utils.cfg_get_string(ini, section, "path_look", npc, true, gulag_name)
 	st.radius = utils.cfg_get_number(ini, section, "radius", npc, false)
+	st.suggested_state = {}
+	st.suggested_state.moving = utils.cfg_get_string(ini, section, "def_state_moving", npc, false, "")
+	st.suggested_state.moving_fire = utils.cfg_get_string(ini, section, "def_state_moving_fire", npc, false, "")
+	st.suggested_state.campering = utils.cfg_get_string(ini, section, "def_state_campering", npc, false, "")
+	st.suggested_state.campering_fire = utils.cfg_get_string(ini, section, "def_state_campering_fire", npc, false, "")
+
+
+	
 	if st.radius == nil then
 		st.radius = 20
 	end
