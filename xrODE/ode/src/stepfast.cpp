@@ -637,6 +637,7 @@ void
 dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoint * const *_joints, int nj, dReal stepsize, int maxiterations)
 {
 	if ( 0 == (maxiterations%2)) maxiterations++;	// make 1 center iteration
+	//maxiterations = 2*maxiterations + 1;
 
 #   ifdef TIMING
 	dTimerNow ("preprocessing");
@@ -820,9 +821,9 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 	for (iter = 0; iter < maxiterations; iter++)	
 	{
 		float	scale	= 0;
-		if		(iter <  halfiterations )	scale = 1.f / powf(2.f,halfiterations-iter+1);
-		else if (iter == halfiterations )	scale = .5f;
-		else if (iter >	 halfiterations )	scale = .5f / float(halfiterations); // 1.f / powf(2.f,iter-halfiterations+1);
+		if		(iter <  halfiterations )	scale = .5f / powf(2.f,halfiterations-iter+1);	// lim = .25
+		else if (iter == halfiterations )	scale = .25f;									// .25 + .25 = .5
+		else if (iter >	 halfiterations )	scale = .5f / float(halfiterations);			// .5  + .5  = 1.0		// 1.f / powf(2.f,iter-halfiterations+1);
 
 		dSetZero (cforces,			nb	* 8	);
 		dSetZero ((dReal*)ccounter,	nb		);
