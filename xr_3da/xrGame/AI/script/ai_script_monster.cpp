@@ -235,8 +235,9 @@ void CScriptMonster::ProcessScripts()
 	
 	l_bCompleted	= l_tpEntityAction->m_tMovementAction.m_bCompleted;
 	bfAssignMovement(l_tpEntityAction);
-	if (l_tpEntityAction->m_tMovementAction.m_bCompleted && !l_bCompleted && m_tpCallbacks[eActionTypeMovement].m_lua_object)
-		luabind::call_member<void>(*(m_tpCallbacks[eActionTypeMovement].m_lua_object),*(m_tpCallbacks[eActionTypeMovement].m_method_name),CLuaGameObject(this),u32(eActionTypeMovement),u32(-1));
+	if (l_tpEntityAction->m_tMovementAction.m_bCompleted && !l_bCompleted && m_tpCallbacks[eActionTypeMovement].m_lua_object) {
+		luabind::call_member<void>(*(m_tpCallbacks[eActionTypeMovement].m_lua_object),*(m_tpCallbacks[eActionTypeMovement].m_method_name),CLuaGameObject(this),u32(eActionTypeMovement),-1);
+	}
 }
 
 bool CScriptMonster::bfAssignWatch(CEntityAction *tpEntityAction)
