@@ -1,6 +1,24 @@
 -- Что используется в скрипте
--- stalker_young (молодой сталкер)  путь: way_young	от костра
--- stalker_veteran (ветеран)		путь	
+-- Сталкеры
+-- stalker_young (молодой сталкер)  путь: way_young			позиция:	От костра
+-- stalker_veteran (ветеран)		путь: way_veteran		позиция:	От костра
+-- defender1						путь: way_defender1		позиция:	От гаражей со стороны памятника
+-- defender2						путь: way_defender2		позиция:	От гаражей со стороны ангаров
+-- defender3						путь: way_defender3		позиция:	Со стороны вертолетной площадки
+-- defender4						путь: нет				позиция:	На мосту
+-- defender5						путь: нет				позиция:	На мосту, ближе к баррикаде
+-- tower1							путь: нет				позиция:	На вышке, около шлагбаума
+-- tower2							путь: нет				позиция:	На дальней вышке
+-- stalker_chief					путь: нет				позиция:	На мосту
+-- Скриптовые зоны
+-- barricade_zone					срабатывает, когда мостры пройдут баррикаду
+
+-- Монстры
+-- m_boar_e0000, m_boar_e0001, m_boar_e0002, m_boar_e0003 - кабаны
+-- m_dog_e0000, m_dog_e0001, m_dog_e0002, m_dog_e0003, m_dog_e0004, m_dog_e0005 - собаки
+-- m_pseudodog_e0000, m_pseudodog_e0001, m_pseudodog_e0003 - псевдособаки
+-- m_flesh_e0000, m_flesh_e0001, m_flesh_e0002, m_flesh_e0003, m_flesh_e0004 - плоть
+-- Все монстры штурмуют баррикаду и базу
 
 -- Для защитников создан класс Defender
 -- Если не задан патрульный путь, то npc изначально находится в позиции "на корточках" с
@@ -10,10 +28,15 @@
 --			patrol_way  -   объект патрульного пути
 --			script_name	-	имя управляющего скрипта
 --			monsters	-	таблица, которая содержит монстров или еще кого, от кого надо отбиваться	
+-- 			available	-	флаг, который указывает  на то, может ли монстр атаковать сталкера
 
+
+-------------------------------------------------------------------------------------------------------------------------------------
+-- Класс защитника
+-------------------------------------------------------------------------------------------------------------------------------------
 class "Defender"
 
-function Defender:__init (npc, patrol_way, script_name, monsters)
+function Defender:__init (npc, patrol_way, script_name, monsters, available)
 	self.npc = npc
 	self.patrol_way = way
 	self.script_name = script_name
@@ -22,6 +45,9 @@ function Defender:__init (npc, patrol_way, script_name, monsters)
 	self.pre_state = true
 	self.enemy = nil
 	self.waiting = 0
+	self.available = available
+	self.attacker = nil					-- монстр, который атакует сталкера. Если не nil, то сталкер свободен :)
+	self.weapon = self.npc:active_item ()
 end
 
 function Defender:initialize ()
@@ -99,6 +125,9 @@ function Defender:process ()
 	if waiting ~= 0 then
 	   waiting = waiting - game.time ()
 	   if waiting < 0 then
+		  reset_action (self.npc, self.script_name)
+		  action (self.npc, move (move.crouch, move.stand), look (look.fire_point, enemy), object (self.weapon, object.fire1, math.random (2, 4),
+				  cond (cond.time_end, time_infinite))	
 		  waiting = game.time () + math.random (2000, 3000)
 	   end
 	end		
@@ -106,120 +135,145 @@ function Defender:process ()
 end         		  
 	   	  				
 
+-------------------------------------------------------------------------------------------------------------------------------------
+-- Класс монстра
+-------------------------------------------------------------------------------------------------------------------------------------
+class "Monster"
 
-local chief = nil
-
-function boar_callback (obj, action_type, index)
-
-  	local ptr = patrol (obj:patrol ())
-
-	printf ("Path : %s, index : %d", obj:patrol (), index) 
-
-	if index < 0 then return end
-
-	if ptr:flag (index, 1) then
-	   action_first (obj, anim ("stand_attack_2"), cond (cond.anim_end))
-  	   local h = hit()
-       h.power = 1
-       h.direction:set (-1, 0, 0)
-       h:bone ("bip01_head")
-       h.draftsman = obj
-       h.impulse = 1000
-       h.type  = hit.strike
-       chief:hit (h)
-	   printf ("Chief hit !!!")	
-       obj:clear_callback (game_object.movement)
-	   end	
-		
+function Monster:__init (npc, attack_way, script_name)
+	self.npc = npc
+	self.way = attack_way
+	self.script = script_name
+	self.moving = true
+	self.first_start = true
+	self.target = nil
+	self.targets = {}
 end
 
 
-function main ()
-	
-	chief = get_level_object ("stalker_chief")
-	chief:script (true, m_attack_wave2.script_name ())
-	printf ("Script name : %s", m_attack_wave2.script_name ())
 
-    local t = {
-               get_level_object ("m_boar_e0000"),
-               get_level_object ("m_boar_e0001"),
-               get_level_object ("m_boar_e0002"),
-               get_level_object ("m_boar_e0003"),
-               get_level_object ("m_dog_e0000"),
-               get_level_object ("m_dog_e0001"),
-               get_level_object ("m_dog_e0002"),
-               get_level_object ("m_dog_e0003"),
-               get_level_object ("m_dog_e0004"),
-               get_level_object ("m_dog_e0005"),
-               get_level_object ("m_pseudodog_e0000"),
-               get_level_object ("m_pseudodog_e0001"),
-               get_level_object ("m_pseudodog_e0002"),
-               get_level_object ("m_pseudodog_e0003"),
-               get_level_object ("m_flesh_e0000"),
-               get_level_object ("m_flesh_e0001"),
-               get_level_object ("m_flesh_e0002"),
-               get_level_object ("m_flesh_e0003"),
-               get_level_object ("m_flesh_e0004"),
-               }
-    local tways = {
-                  patrol ("way0000"),            --m_boar_e0000
-                  patrol ("way0001"),            --m_boar_e0001
-                  patrol ("way0002"),            --m_boar_e0002
-                  patrol ("way0003"),            --m_boar_e0003
-                  patrol ("way0004"),            --m_dog_e0000
-                  patrol ("way0005"),            --m_dog_e0001
-                  patrol ("way0006"),            --m_dog_e0002
-                  patrol ("way0007"),            --m_dog_e0003
-                  patrol ("way0008"),            --m_dog_e0004
-                  patrol ("way0009"),            --m_dog_e0005
-                  patrol ("way0001"),            --m_pseudodog_e0000
-                  patrol ("way0005"),            --m_pseudodog_e0001
-                  patrol ("way0003"),            --m_pseudodog_e0002
-                  patrol ("way0002"),            --m_pseudodog_e0003
-                  patrol ("way0010"),            --m_flesh_e0000
-                  patrol ("way0011"),            --m_flesh_e0001
-                  patrol ("way0003"),            --m_flesh_e0002
-                  patrol ("way0009"),            --m_flesh_e0003
-                  patrol ("way0012"),            --m_flesh_e0004
-                  }
+function Monster:initialize ()
+	self.npc:script (true, self.script)
+	action (self.npc, move (move.act_stand_idle, move.default, nil), cond (cond.time_end, time_infinite))
+end
 
+function Monster:set_enemyes (enemyes)
+	self.targets = enemyes
+end
 
-    for a = 1, table.getn (t), 1 do
-        t[a]:script (true, m_attack_wave2.script_name ())
-        action (t[a], move (move.act_stand_idle, move.default, tways[a]), cond (cond.time_end, 1000000000))
+function Monster:find_enemy ()
+	if table.getn (self.targets) == 0 return nil end	
+	local dist = 100000000
+	local enemy = nil
+	for a = 1, table.getn (self.targets) + 1, 1 do
+		if self.targets[a]:alive () == true
+		   local tdist = distance_between (self.npc, self.targets[a]) 
+		   if tdist < dist and self.targets[a].attacker == nil then
+			  dist = tdist
+			  enemy = self.targets[a]
+		   end
         end
+	end
+	if enemy ~= nil then enemy.attacker = self end
+	return enemy
+end
+
+function Monster:process ()
+
+	if self.first_start == true then
+	   self.first_start = false	
+	   reset_action (self.npc, self.script)
+	   action (self.npc, move (move.act_run, move.force_type, self.way), cond (cond.move_end))
+	end
+
+	if moving == true then 
+	   if self.npc:action () then return end
+	   moving = false
+    end	 
+
+	local enemy = nil
+	if self.target == nil or self.target:alive () == false then enemy = self:find_enemy () end
+	if enemy == nil then return 
+	else
+       if enemy ~= self.target then 
+		  reset_action (self.npc, self.script)
+		  action (self.npc, move (move.act_run, move.force_type, enemy), cond (cond.time_end))
+	   end	  
+	end   
+
+	self.target = enemy
+
+	if distance_between (self.npc, self.target) < 2 then
+       reset_action (self.npc, self.script)
+	   action_first (self.npc, move (act_attack, move.default, self.target), cond (cond.time_end, 1000))
+	end
+	
+end	   
+
+-------------------------------------------------------------------------------------------------------------------------------------
+-- Все остальное
+-------------------------------------------------------------------------------------------------------------------------------------
+
+
+function main ()
+
+	local scrname = m_attack_wave2.script_name ()
+
+    local monsters = {
+                      m_attack_wave2.Monster (get_level_object ("m_boar_e0000"), patrol ("way0000"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_boar_e0001"), patrol ("way0001"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_boar_e0002"), patrol ("way0002"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_boar_e0003"), patrol ("way0003"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_dog_e0000"),  patrol ("way0004"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_dog_e0001"),  patrol ("way0005"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_dog_e0002"),  patrol ("way0006"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_dog_e0003"),  patrol ("way0007"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_dog_e0004"),  patrol ("way0008"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_dog_e0005"),  patrol ("way0009"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_pseudodog_e0000"),  patrol ("way0001"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_pseudodog_e0001"),  patrol ("way0005"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_pseudodog_e0002"),  patrol ("way0003"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_pseudodog_e0003"),  patrol ("way0002"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_flesh_e0000"),  patrol ("way0010"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_flesh_e0001"),  patrol ("way0011"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_flesh_e0002"),  patrol ("way0003"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_flesh_e0003"),  patrol ("way0009"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("m_flesh_e0004"),  patrol ("way0012"), scrname)
+					  }
+
+	local stalkers = {
+					 m_attack_wave2.Defender (get_level_object ("stalker_young"), patrol ("way_young"), scrname, monsters, true),
+					 m_attack_wave2.Defender (get_level_object ("stalker_veteran"), patrol ("way_veteran"), scrname, monsters, true),
+					 m_attack_wave2.Defender (get_level_object ("defender1"), patrol ("way_defender1"), scrname, monsters, true),
+					 m_attack_wave2.Defender (get_level_object ("defender2"), patrol ("way_defender2"), scrname, monsters, true),
+					 m_attack_wave2.Defender (get_level_object ("defender3"), patrol ("way_defender2"), scrname, monsters, true),
+					 m_attack_wave2.Defender (get_level_object ("defender4"), nil, scrname, monsters, true),
+					 m_attack_wave2.Defender (get_level_object ("defender5"), nil, scrname, monsters, true),
+					 m_attack_wave2.Defender (get_level_object ("tower1"), nil, scrname, monsters, false),
+					 m_attack_wave2.Defender (get_level_object ("tower2"), nil, scrname, monsters, false),
+					 m_attack_wave2.Defender (get_level_object ("stalker_chief"), nil, scrname, monsters, true)
+					 }
+
+	for a = 1, table.getn (monsters), 1 do
+		monsters[a]:set_enemyes (stalkers)
+		monsters[a]:initialize ()
+	    if a <= table.getn (stalkers) then
+		   stalkers[a]:initialize ()
+		end
+	end
+	
 
     wait (20000)
 
 
-	t[1]:set_callback (m_attack_wave2.boar_callback, game_object.movement)
+	while true do 
+   		  for a = 1, table.getn (monsters), 1 do
+			  monsters[a]:process ()
+	          if a <= table.getn (stalkers) then
+		         stalkers[a]:process ()
+  		      end
+		  end	
+	end
 
-    for a = 1, table.getn (t), 1 do
-        reset_action (t[a], m_attack_wave2.script_name ())
-        action (t[a], move (move.act_run, move.force_type, tways[a]), cond (cond.move_end))
-        action (t[a], move (move.act_run, move.force_type, tways[a]), cond (cond.move_end))
-        action (t[a], move (move.act_run, move.force_type, tways[a]), cond (cond.move_end))
-        action (t[a], move (move.act_run, move.force_type, tways[a]), cond (cond.move_end))
-        action (t[a], move (move.act_run, move.force_type, tways[a]), cond (cond.move_end))
-        action (t[a], move (move.act_run, move.force_type, tways[a]), cond (cond.move_end))
-        action (t[a], move (move.act_run, move.force_type, tways[a]), cond (cond.move_end))
-        action (t[a], move (move.act_run, move.force_type, tways[a]), cond (cond.move_end))
-        action (t[a], move (move.act_run, move.force_type, tways[a]), cond (cond.move_end))
-        action (t[a], move (move.act_run, move.force_type, tways[a]), cond (cond.move_end))
-        action (t[a], move (move.act_run, move.force_type, tways[a]), cond (cond.move_end))
-        action (t[a], move (move.act_run, move.force_type, tways[a]), cond (cond.move_end))
-        action (t[a], move (move.act_run, move.force_type, tways[a]), cond (cond.move_end))
-        action (t[a], move (move.act_run, move.force_type, tways[a]), cond (cond.move_end))
-        action (t[a], move (move.act_run, move.force_type, tways[a]), cond (cond.move_end))
-        action (t[a], move (move.act_run, move.force_type, tways[a]), cond (cond.move_end))
-        action (t[a], move (move.act_run, move.force_type, tways[a]), cond (cond.move_end))
-        action (t[a], move (move.act_run, move.force_type, tways[a]), cond (cond.move_end))
-        end
-
-    wait (120000)
-
-    for a = 1, table.getn (t), 1 do
-        t[a]:script (false, m_attack_wave2.script_name ())
-        end
 
 end
