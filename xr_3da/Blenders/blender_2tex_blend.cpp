@@ -13,7 +13,7 @@
 
 CBlender_complex2::CBlender_complex2	()
 {
-	description.CLS		= B_COMPLEX2;
+	description.CLS		= B_2TEX_BLEND;
 }
 
 CBlender_complex2::~CBlender_complex2	()
