@@ -113,14 +113,14 @@ void	CROS_impl::update	(IRenderable* O)
 	float	radius;		radius = O->renderable.visual->vis.sphere.R;
 
 	// sun-tracing
+#if RENDER==R_R1
+	light*	sun		=		RImplementation.L_DB->sun_original	;
+#else
+	light*	sun		=		RImplementation.Lights.sun_adapted	;
+#endif
 	if	(MODE & IRender_ObjectSpecific::TRACE_SUN)	{
 		if  (--result_sun	< 0)	{
 			result_sun		+=		::Random.randI(lt_hemisamples/4,lt_hemisamples/2)	;
-			#if RENDER==R_R1
-			 light*	sun		=		RImplementation.L_DB->sun_original	;
-			#else
-			 light*	sun		=		RImplementation.Lights.sun_adapted	;
-			#endif
 			Fvector	direction;	direction.set	(sun->direction).invert().normalize	();
 			sun_value		=	!(g_pGameLevel->ObjectSpace.RayTest(position,direction,500.f,collide::rqtBoth,&cache_sun))?1.f:0.f;
 		}
@@ -137,6 +137,16 @@ void	CROS_impl::update	(IRenderable* O)
 		result[sample]	=	!g_pGameLevel->ObjectSpace.RayTest(position,direction,500.f,collide::rqtBoth,&cache[sample]);
 //		Msg				("%d:-- %s",sample,result[sample]?"true":"false");
 	}
+
+	// hemi & sun: update and smooth
+	float	l_f				=	dt*lt_smooth;
+	float	l_i				=	1.f-l_f;
+	int		_pass			=	0;
+	for (int it=0; it<result_count; it++)	if (result[it])	_pass	++;
+	hemi_value				=	float	(_pass)/float(result_count?result_count:1);
+	hemi_smooth				=	hemi_value*l_f + hemi_smooth*l_i;
+	sun_smooth				=	sun_value *l_f + sun_smooth *l_i;
+	// Msg						("- hemi[%f], sun[%f]", hemi_smooth, sun_smooth);
 
 	// light-tracing
 	BOOL	bTraceLights	= MODE & IRender_ObjectSpecific::TRACE_LIGHTS;
@@ -189,19 +199,20 @@ void	CROS_impl::update	(IRenderable* O)
 			}
 		}
 
+		// Sun
+		float	E			=	sun_smooth * sun->color.intensity	();
+		if (E > EPS)		{
+			// Select light
+			lights.push_back			(CROS_impl::Light())		;
+			CROS_impl::Light&	L		= lights.back()				;
+			L.source					= sun						;
+			L.color.mul_rgb				(sun->color,sun_smooth/2)	;
+			L.energy					= sun_smooth/2				;
+		}
+
 		// Sort lights by importance - important for R1-shadows
 		std::sort	(lights.begin(),lights.end(), pred_energy);
 	}
-
-	// hemi & sun: update and smooth
-	float	l_f				=	dt*lt_smooth;
-	float	l_i				=	1.f-l_f;
-	int		_pass			=	0;
-	for (int it=0; it<result_count; it++)	if (result[it])	_pass	++;
-	hemi_value				=	float	(_pass)/float(result_count?result_count:1);
-	hemi_smooth				=	hemi_value*l_f + hemi_smooth*l_i;
-	sun_smooth				=	sun_value *l_f + sun_smooth *l_i;
-	// Msg						("- hemi[%f], sun[%f]", hemi_smooth, sun_smooth);
 
 	// Process ambient lighting and approximate average lighting
 	// Process our lights to find average luminiscense
