@@ -10,10 +10,10 @@ function on_enter (zone, obj)
 	zone:clear_callback (true)
     local h = hit ()
     h.power = 1
-    h.direction = vector ():set (0, 1, 1)
+    h.direction = vector ():set (0, 1, -1)
     h:bone ("root")
     h.draftsman = obj
-    h.impulse = 1000
+    h.impulse = 300
     h.type  = hit.strike
     barricade:hit (h)
     
