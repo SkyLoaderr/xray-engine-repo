@@ -244,6 +244,8 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 		m_vCurrentShootPos = P;
 
 		// ...and trace line
+		m_vEndPoint.mad(m_vCurrentShootPos,	m_vCurrentShootDir,fireDistance*l_cartridge.m_kDist);
+
 		Collide::ray_defs RD(P, D, fireDistance*l_cartridge.m_kDist,0,Collide::rqtBoth);
 		H_Parent()->setEnabled(false);
 		bResult |= Level().ObjectSpace.RayQuery( RD, firetrace_callback, this );
@@ -253,7 +255,8 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 		if(l_cartridge.m_tracer && tracerFrame != Device.dwFrame) 
 		{
 			tracerFrame = Device.dwFrame;
-			Level().Tracers.Add	(Peff,m_vEndPoint,tracerHeadSpeed,tracerTrailCoeff,tracerStartLength,tracerWidth);
+			Level().Tracers.Add	(Peff,m_vEndPoint,tracerHeadSpeed,
+								 tracerTrailCoeff,tracerStartLength,tracerWidth);
 		}
 	}
 
