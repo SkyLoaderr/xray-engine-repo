@@ -22,9 +22,8 @@
 using namespace InventoryUtilities;
 
 
-
-//static CUIDragDropItem	UIWeaponIcon;
-//static CUIButton	UIWeaponIcon;
+//hud adjust mode
+int g_bHudAdjustMode = FALSE;
 
 
 #define RADIATION_ABSENT 0.25f

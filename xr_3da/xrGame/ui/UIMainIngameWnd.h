@@ -20,6 +20,9 @@
 #include "../actor.h"
 #include "../weapon.h"
 
+//для режима настройки HUD
+extern int				g_bHudAdjustMode;
+
 
 class CUIMainIngameWnd: public CUIWindow  
 {
