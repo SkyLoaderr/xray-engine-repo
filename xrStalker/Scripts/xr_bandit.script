@@ -79,8 +79,7 @@ function bandit:update()
 		end
 	end
 
-
---	self:updateJob()
+	self:updateJob()
 end
 function bandit:print()
 	printf("***** %s -- State: %d -- Time: %d of %d", self.name, self.state, game.time()-self.begin, self.idle)
@@ -169,7 +168,7 @@ function bandit:updateJob()
 			end
         	end
 	end
-	self:print()
+--	self:print()
 end
 function bandit:setJob(npc, job) 
 	-- удаляем у этого npc все работы (в сторадже)
