@@ -384,12 +384,12 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 		// Mender!!!!
 		NVMeshMender mender;
 		if (!mender.MungeD3DX(
-			inputAtts,								// input attributes
-			outputAtts,								// outputs attributes
-			3.141592654f / 3.0f,					// tangent space smooth angle
-			0,										// no texture matrix applied to my texture coordinates
-			NVMeshMender::FixTangents,				// fix degenerate bases & texture mirroring
-			NVMeshMender::FixCylindricalTexGen,		// handle cylindrically mapped textures via vertex duplication
+			inputAtts,									// input attributes
+			outputAtts,									// outputs attributes
+			3.141592654f / 3.0f,						// tangent space smooth angle
+			0,											// no texture matrix applied to my texture coordinates
+			NVMeshMender::FixTangents,					// fix degenerate bases & texture mirroring
+			NVMeshMender::DontFixCylindricalTexGen,		// handle cylindrically mapped textures via vertex duplication
 			NVMeshMender::DontWeightNormalsByFaceSize	// weigh vertex normals by the triangle's size
 			))
 		{
