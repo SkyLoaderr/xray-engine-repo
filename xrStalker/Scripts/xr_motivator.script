@@ -93,7 +93,7 @@ function motivator_binder:reload (section)
     operators["dead"]       = stalker_ids.action_dead
     operators["free"]       = stalker_ids.action_free
 
-        xr_motivator.storage[self.object:id()] = { tradeseller = {} }
+        xr_motivator.storage[self.object:id()] = { tradeseller = {}, followers = {} }
     xr_motivator.trade_arhive[self.object:id()] = xr_motivator.pda_storage()
 
 -- Хранение трейдселлера
