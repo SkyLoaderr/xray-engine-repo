@@ -212,7 +212,7 @@ CHelicopter::net_Spawn(LPVOID	DC)
 	m_engineSound.create(TRUE,*heli->engine_sound);
 	m_engineSound.play_at_pos(0,XFORM().c,sm_Looped);
 
-	PPhysicsShell()=P_build_Shell	(this,true);
+//	PPhysicsShell()=P_build_Shell	(this,true);
 
 	setVisible			(true);
 	setEnabled			(true);
@@ -251,7 +251,7 @@ CHelicopter::UpdateCL()
 	
 	m_movementMngr.onFrame( XFORM(),Device.fTimeDelta );
 
-	if(PPhysicsShell()&&GetfHealth() < 0.0f)
+/*	if( PPhysicsShell()&&(GetfHealth() < 0.0f) )
 	{
 		PPhysicsShell()->InterpolateGlobalTransform(&XFORM());
 		return;
@@ -260,7 +260,7 @@ CHelicopter::UpdateCL()
 	{
 		PPhysicsShell()->SetTransform(XFORM());
 		PPhysicsShell()->Disable();
-	}
+	}*/
 
 
 	m_engineSound.set_position(XFORM().c);
@@ -318,9 +318,12 @@ CHelicopter::shedule_Update(u32	time_delta)
 	{
 		m_destEnemy->Center(m_destEnemyPos);
 		updateMGunDir();
-		
+
 		if(m_allow_fire)
 		{
+			Log("CHelicopter::eMovingByAttackTraj allow=",m_allow_fire);
+			Log("CHelicopter::eMovingByAttackTraj x=",m_cur_x_rot);
+			Log("CHelicopter::eMovingByAttackTraj y=",m_cur_y_rot);
 			FireStart();
 	
 			if(m_pRocket&&m_use_rocket_on_attack)
@@ -360,7 +363,7 @@ CHelicopter::Hit(	float P,
 	if(It != m_hitBones.end() && hit_type==ALife::eHitTypeFireWound)
 	{
 		float curHealth = GetfHealth();
-		curHealth -= P*It->second*100.0f;
+		curHealth -= P*It->second*10.0f;
 		SetfHealth(curHealth);
 
 		Log("----Helicopter::PilotHit(). type=",hit_type);
@@ -409,6 +412,14 @@ CHelicopter::doHunt(CObject* dest)
 	m_destEnemy = dest;
 	dest->Center	(m_destEnemyPos);
 
+/*	updateMGunDir();
+	Log("CHelicopter::doHunt allow=",m_allow_fire);
+	Log("CHelicopter::doHunt m_cur_x_rot=",m_cur_x_rot);
+	Log("CHelicopter::doHunt m_tgt_x_rot=",m_tgt_x_rot);
+
+	Log("CHelicopter::doHunt m_cur_y_rot=",m_cur_y_rot);
+	Log("CHelicopter::doHunt m_tgt_y_rot=",m_tgt_y_rot);
+*/
 	setState(CHelicopter::eInitiateHunt);
 }
 
