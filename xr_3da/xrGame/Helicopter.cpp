@@ -323,7 +323,8 @@ CHelicopter::shedule_Update(u32	time_delta)
 				pGrenade->SetCurrentParentID(this->ID());
 				LaunchRocket(ParticlesXFORM(),  m_fire_dir, m_fire_dir);
 			}
-		}
+		}else
+			FireEnd();
 
 	}else
 		FireEnd();
