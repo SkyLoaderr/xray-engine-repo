@@ -25,6 +25,7 @@
 #define CHUNK_LEVELOP       0x7711
 #define CHUNK_OBJECT_COUNT  0x7712
 #define CHUNK_DETAILOBJECTS 0x7713
+#define CHUNK_AIMASK		0x7714
 
 // level options
 #define CHUNK_LO_VERSION		0x7801
@@ -165,6 +166,12 @@ void EScene::Save(char *_FileName, bool bUndo){
 		F.close_chunk	();
     }
 
+    if (m_AIMask.Valid()){
+    	F.open_chunk	(CHUNK_AIMASK);
+    	m_AIMask.Save	(F);
+		F.close_chunk	();
+    }
+    
 //	Msg("4: %d",F.tell());
     if (!bUndo){
 		F.open_chunk	(CHUNK_CAMERA);
@@ -337,6 +344,12 @@ bool EScene::Load(char *_FileName)
 		if (DO){
 	    	m_DetailObjects->Load(*DO);
             DO->close();
+        }
+
+        IReader* AM = F->open_chunk(CHUNK_AIMASK);
+        if (AM){
+        	m_AIMask.Load(*AM);
+            AM->close();
         }
 
         ELog.Msg( mtInformation, "EScene: %d objects loaded", ObjCount() );

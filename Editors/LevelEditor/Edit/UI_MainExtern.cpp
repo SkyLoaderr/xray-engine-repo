@@ -477,7 +477,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
     	Scene.m_AIMask.Clear();
     	break;
     case COMMAND_MAKE_AI_MAP_MASK:
-    	Scene.m_AIMask.Build();
+    	Scene.m_AIMask.Make();
     	break;
         
     default:
