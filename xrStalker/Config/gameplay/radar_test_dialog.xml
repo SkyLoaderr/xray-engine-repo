@@ -1,22 +1,59 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <game_dialogs>
+    <dialog id="rad_regular_stalker_dialog">
+        <phrase_list>
+            <phrase id="0">
+                <text>rad_regular_stalker_dialog_0</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
     <dialog id="radar_test_dialog">
         <phrase_list>
-            <phrase id="20">
-                <text>radar_test_dialog_20</text>
-                <next>2</next>
+            <phrase id="102">
+                <text>radar_test_dialog_102</text>
+            </phrase>
+            <phrase id="1">
+                <text>radar_test_dialog_1</text>
+                <next>20</next>
+            </phrase>
+            <phrase id="100">
+                <text>radar_test_dialog_100</text>
+                <next>120</next>
+            </phrase>
+            <phrase id="120">
+                <text>radar_test_dialog_120</text>
+                <next>101</next>
+                <next>102</next>
+            </phrase>
+            <phrase id="101">
+                <text>radar_test_dialog_101</text>
+                <next>130</next>
+            </phrase>
+            <phrase id="130">
+                <text>radar_test_dialog_130</text>
+            </phrase>
+            <phrase id="1100">
+                <text>radar_test_dialog_1100</text>
+            </phrase>
+            <phrase id="1000">
+                <text>radar_test_dialog_1000</text>
+                <next>1100</next>
             </phrase>
             <phrase id="2">
                 <text>radar_test_dialog_2</text>
                 <next>30</next>
             </phrase>
-            <phrase id="30">
-                <text>radar_test_dialog_30</text>
-                <next>3</next>
+            <phrase id="20">
+                <text>radar_test_dialog_20</text>
+                <next>2</next>
+                <next>22</next>
             </phrase>
-            <phrase id="3">
-                <text>radar_test_dialog_3</text>
-                <next>40</next>
+            <phrase id="22">
+                <text>radar_test_dialog_22</text>
+                <next>33</next>
+            </phrase>
+            <phrase id="33">
+                <text>radar_test_dialog_33</text>
             </phrase>
             <phrase id="40">
                 <text>radar_test_dialog_40</text>
@@ -25,21 +62,27 @@
             <phrase id="4">
                 <text>radar_test_dialog_4</text>
             </phrase>
+            <phrase id="3">
+                <text>radar_test_dialog_3</text>
+                <next>40</next>
+            </phrase>
+            <phrase id="30">
+                <text>radar_test_dialog_30</text>
+                <next>3</next>
+                <next>5</next>
+            </phrase>
             <phrase id="0">
                 <text>radar_test_dialog_0</text>
                 <next>1</next>
                 <next>100</next>
                 <next>1000</next>
             </phrase>
-            <phrase id="1000">
-                <text>radar_test_dialog_1000</text>
+            <phrase id="5">
+                <text>radar_test_dialog_5</text>
+                <next>50</next>
             </phrase>
-            <phrase id="1">
-                <text>radar_test_dialog_1</text>
-                <next>20</next>
-            </phrase>
-            <phrase id="100">
-                <text>radar_test_dialog_100</text>
+            <phrase id="50">
+                <text>radar_test_dialog_50</text>
             </phrase>
         </phrase_list>
     </dialog>
