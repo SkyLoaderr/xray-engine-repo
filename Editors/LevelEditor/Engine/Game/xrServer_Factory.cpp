@@ -141,6 +141,7 @@ CSE_Abstract *F_entity_Create			(LPCSTR caSection)
 		case CLSID_SCRIPT_OBJECT:		return xr_new<CSE_ALifeDynamicObjectVisual>		(caSection);            // Visualed
 
 		case CLSID_OBJECT_BREAKABLE:	return xr_new<CSE_ALifeObjectBreakable>			(caSection);
+        case CLSID_OBJECT_W_MOUNTED:	return xr_new<CSE_ALifeMountedWeapon>			(caSection);
 
 		default:						NODEFAULT;
 	}
