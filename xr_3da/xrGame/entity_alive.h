@@ -61,7 +61,7 @@ public:
 	virtual	float			ffGetRange				()	const			= 0;	
 	virtual	ALife::ERelationType tfGetRelationType	(const CEntityAlive *tpEntityAlive) const;
 	
-	virtual void			BuyItem					(LPCSTR buf);
+//	virtual void			BuyItem					(LPCSTR buf);
 	virtual bool			human_being				() const
 	{
 		return				(false);

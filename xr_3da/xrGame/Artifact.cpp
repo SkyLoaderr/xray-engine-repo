@@ -103,7 +103,7 @@ void CArtifact::OnH_A_Chield()
 	inherited::OnH_A_Chield		();
 
 	StopLights();
-	if (Game().type == GAME_SINGLE)
+	if (GameID() == GAME_SINGLE)
 	{
 		if (*m_sParticlesName) 
 		{	

@@ -245,14 +245,14 @@ void CEntityAlive::Hit(float P, Fvector &dir,CObject* who, s16 element,Fvector p
 
 	inherited::Hit(P,dir,who,element,position_in_object_space,impulse, hit_type);
 }
-
+/* not used
 void CEntityAlive::BuyItem(LPCSTR buf)
 {
 	NET_Packet P;
 	u_EventGen	(P,GE_BUY,ID());
 	P.w_stringZ	(buf);
 	u_EventSend	(P);
-}
+}*/
 
 //вывзывает при подсчете хита
 float CEntityAlive::CalcCondition(float /**hit/**/)
