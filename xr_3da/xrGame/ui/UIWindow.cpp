@@ -118,7 +118,7 @@ void CUIWindow::DetachAll()
 }
 
 //абсолютные координаты, от начала экрана
-Irect CUIWindow::GetAbsoluteRect()
+Irect CUIWindow::GetAbsoluteRect() 
 {
 	Irect rect;
 

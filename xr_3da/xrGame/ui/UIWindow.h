@@ -43,7 +43,7 @@ public:
 	int						GetChildNum			()								{return m_ChildWndList.size();} 
 
 	void					SetParent			(CUIWindow* pNewParent);
-	CUIWindow*				GetParent			()								{return m_pParentWnd;}
+	CUIWindow*				GetParent			()	const							{return m_pParentWnd;}
 	
 	//получить окно самого верхнего уровня
 	CUIWindow*				GetTop				()								{if(m_pParentWnd == NULL) return  this; 
@@ -108,7 +108,7 @@ public:
 	//положение и размеры окна
 
 	//относительные координаты
-	const Ivector2&			GetWndPos			() const							{return m_WndRect.lt;}
+	const Ivector2&			GetWndPos			() 							{return m_WndRect.lt;}
 
 	Irect					GetWndRect			()									{return m_WndRect;}
 	void					SetWndRect			(int x, int y, int width, int height) 		
@@ -127,9 +127,9 @@ public:
 
 
 	//абсолютные координаты
-	Ivector2				GetAbsolutePos		() const							{Irect abs = GetAbsoluteRect(); 
+	Ivector2				GetAbsolutePos		() 							{Irect abs = GetAbsoluteRect(); 
 																						return Ivector2().set(abs.x1,abs.y1);}
-	Irect					GetAbsoluteRect		();
+	Irect					GetAbsoluteRect		() ;
 
 	virtual void			SetWidth			(int width)			{m_WndRect.right = m_WndRect.left+width;}
 
