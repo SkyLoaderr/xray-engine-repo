@@ -24,7 +24,7 @@ function multiplayer_dialog:__finalize()
 end
 
 function multiplayer_dialog:InitControls()
-	ui_base_dialog.base_dialog.InitControls(self, "Options")
+	ui_base_dialog.base_dialog.InitControls(self, "Multiplayer")
 
 	----- DATA ----
 	----- BUTTONS --->>>
