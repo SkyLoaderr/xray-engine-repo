@@ -63,7 +63,7 @@ IC	T*		xr_new		(const P1& p1, const P2& p2, const P3& p3, const P4& p4, const P5
 template <bool _is_pm, typename T>
 struct xr_special_free
 {
-	void operator()(T* &ptr)
+	IC void operator()(T* &ptr)
 	{
 		void*	_real_ptr	= dynamic_cast<void*>(ptr);
 		ptr->~T			();
@@ -74,32 +74,19 @@ struct xr_special_free
 template <typename T>
 struct xr_special_free<false,T>
 {
-	void operator()(T* &ptr)
+	IC void operator()(T* &ptr)
 	{
 		ptr->~T			();
 		Memory.mem_free	(ptr);
 	}
 };
 
-//template <bool _is_pm, typename T>
-//void xr_special_free(T* &ptr)
-//{
-//	Memory.mem_free	(dynamic_cast<void*>(ptr));
-//}
-//
-//template <typename T>
-//void xr_special_free<false,T>(T* &ptr)
-//{
-//	Memory.mem_free	(ptr);
-//}
-//
 template <class T>
 IC	void	xr_delete	(T* &ptr)
 {
 	if (ptr) 
 	{
 		xr_special_free<is_polymorphic<T>::result,T>()(ptr);
-//		xr_special_free<is_polymorphic<T>::result>(ptr);
 		ptr = NULL;
 	}
 }
@@ -109,7 +96,6 @@ IC	void	xr_delete	(T* const &ptr)
 	if (ptr) 
 	{
 		xr_special_free<is_polymorphic<T>::result,T>(ptr);
-//		xr_special_free<is_polymorphic<T>::result>(ptr);
 		const_cast<T*&>(ptr) = NULL;
 	}
 }
