@@ -29,39 +29,21 @@ void xrMU_Model::calc_ogf()
 				xrMU_Model::v_faces_it	_end	= _beg + it->count;
 				for (xrMU_Model::v_faces_it Fit =_beg; Fit!=_end; Fit++)
 				{
-					OGF_Vertex			V0,V1,V2;
-
+					OGF_Vertex			V[3];
 					xrMU_Model::_face*	FF		= *Fit;
 					R_ASSERT			(FF);
-
-					// Vertices
-					xrMU_Model::_vertex*	_V0		= FF->v[0];	u32 id0	= (u32)(std::find(m_vertices.begin(),m_vertices.end(),_V0)-m_vertices.begin());
-					xrMU_Model::_vertex*	_V1		= FF->v[1];	u32 id1	= (u32)(std::find(m_vertices.begin(),m_vertices.end(),_V1)-m_vertices.begin());
-					xrMU_Model::_vertex*	_V2		= FF->v[2];	u32 id2	= (u32)(std::find(m_vertices.begin(),m_vertices.end(),_V2)-m_vertices.begin());
-
-					// Geometry - POS
-					V0.P			= _V0->P;
-					V1.P			= _V1->P;
-					V2.P			= _V2->P;	
-
-					// Geometry - NORMAL (ignore ???)
-					V0.N			= _V0->N; 
-					V1.N			= _V1->N;
-					V2.N			= _V2->N;
-
-					// Geometry - COLOR
-					V0.Color		= color[id0];
-					V1.Color		= color[id1];
-					V2.Color		= color[id2];
-
-					// Geometry - UV
-					V0.UV.push_back	(FF->tc[0]);
-					V1.UV.push_back	(FF->tc[1]);
-					V2.UV.push_back	(FF->tc[2]);
-
+					for (u32 k=0; k<3; k++){
+						xrMU_Model::_vertex*	_V		= FF->v[k];	
+						u32 id			= (u32)(std::find(m_vertices.begin(),m_vertices.end(),_V)-m_vertices.begin());
+						V[k].P			= _V->P;
+						V[k].N			= _V->N; 
+						V[k].T.set		(0,0,0);	//.
+						V[k].B.set		(0,0,0);	//.
+						V[k].UV.push_back(FF->tc[k]);
+					}
 					// build face
-					TRY				(pOGF->_BuildFace(V0,V1,V2));
-					V0.UV.clear();	V1.UV.clear();	V2.UV.clear();
+					TRY				(pOGF->_BuildFace(V[0],V[1],V[2]));
+					V[0].UV.clear();	V[1].UV.clear();	V[2].UV.clear();
 				}
 			} catch (...) {  clMsg("* ERROR: MU2OGF, model %s, *faces*",*m_name); }
 		} catch (...)
@@ -72,6 +54,7 @@ void xrMU_Model::calc_ogf()
 		try {
 			pOGF->Optimize		();
 			pOGF->CalcBounds	();
+			pOGF->MakeProgressive();
 			pOGF->Stripify		();
 		} catch (...)
 		{

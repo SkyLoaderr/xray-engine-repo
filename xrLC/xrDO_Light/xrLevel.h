@@ -14,7 +14,7 @@ enum fsL_Chunks {
 	fsL_SECTORS			=8,		//*		- All sectors on level
 	fsL_IB				=9,		//*
 	fsL_VB				=10,	//*
-	fsL_SWS				=11,	//*
+	fsL_SWIS			=11,	//*
     fsL_forcedword		= 0xFFFFFFFF
 };
 enum fsESectorChunks {

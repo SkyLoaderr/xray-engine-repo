@@ -135,4 +135,29 @@ public:
 	}
 };
 
+class SWIContainer
+{
+	xr_vector<FSlideWindowItem*>	data;
+public:
+	void	Register	(u32* id, FSlideWindowItem* item)
+	{
+		data.push_back	(item);
+		*id				= data.size()-1;
+	}
+	void	Save		(IWriter &fs)
+	{
+		fs.w_u32		((u32)data.size());
+		for (u32 i=0; i<data.size(); i++)
+		{
+			fs.w_u32	((u32)data[i]->reserved[0]);
+			fs.w_u32	((u32)data[i]->reserved[1]);
+			fs.w_u32	((u32)data[i]->reserved[2]);
+			fs.w_u32	((u32)data[i]->reserved[3]);
+			fs.w_u32	((u32)data[i]->count);
+			fs.w		(data[i]->sw,sizeof(FSlideWindow)*data[i]->count);
+		}
+		data.clear		();
+	}
+};
+
 extern VBContainer g_VB;

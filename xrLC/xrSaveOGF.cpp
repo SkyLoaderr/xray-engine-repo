@@ -2,6 +2,7 @@
 #include "build.h"
 #include "OGF_Face.h"
 
+SWIContainer			g_SWI;
 VBContainer				g_VB;
 IBContainer				g_IB;
 xr_vector<LPCSTR>		g_Shaders;
@@ -88,6 +89,13 @@ void CBuild::SaveTREE	(IWriter &fs)
 	fs.w_compressed		(MFS.pointer(),MFS.size());
 	fs.close_chunk		();
 	//mem_Compact			();
+
+	Status				("Geometry : SWIs ...");
+	MFS.clear			();
+	fs.open_chunk		(fsL_SWIS | CFS_CompressMark);
+	g_SWI.Save			(MFS);
+	fs.w_compressed		(MFS.pointer(),MFS.size());
+	fs.close_chunk		();
 
 	Status				("Geometry : indices ...");
 	MFS.clear			();

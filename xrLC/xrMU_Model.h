@@ -23,14 +23,16 @@ public:
 
 		u32		ib_id;
 		u32		ib_start;
+
+		u32		sw_id;
 	};
 
 	//** 
 	typedef	xr_vector<_vertex*>		v_vertices;
 	typedef	v_vertices::iterator	v_vertices_it;
-	typedef xr_vector<_face*>			v_faces;
+	typedef xr_vector<_face*>		v_faces;
 	typedef v_faces::iterator		v_faces_it;
-	typedef xr_vector<_subdiv>			v_subdivs;
+	typedef xr_vector<_subdiv>		v_subdivs;
 	typedef v_subdivs::iterator		v_subdivs_it;
 
 	//** 
@@ -86,6 +88,8 @@ public:
 
 	xr_vector<base_color>	color;
 private:
+	_face*					create_face			(_vertex* v0, _vertex* v1, _vertex* v2, b_face& F);
+	_vertex*				create_vertex		(Fvector& P);
 	_face*					load_create_face	(Fvector& P1, Fvector& P2, Fvector& P3, b_face& F);
 	_vertex*				load_create_vertex	(Fvector& P);
 public:

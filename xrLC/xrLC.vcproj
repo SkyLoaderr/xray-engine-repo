@@ -912,6 +912,9 @@
 					RelativePath="fitter.h">
 				</File>
 				<File
+					RelativePath=".\PropSlimTools.h">
+				</File>
+				<File
 					RelativePath="xrMU_Model.cpp">
 				</File>
 				<File

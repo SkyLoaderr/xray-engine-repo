@@ -29,7 +29,7 @@ void xrMU_Model::Load	(IReader& F)
 	F.r					(&*b_vertices.begin(),(u32)b_vertices.size()*sizeof(b_vertex));
 
 	// READ: faces
-	xr_vector<b_face>		b_faces;
+	xr_vector<b_face>	b_faces;
 	b_faces.resize		(F.r_u32());
 	m_faces.reserve		(b_faces.size());
 	F.r					(&*b_faces.begin(),(u32)b_faces.size()*sizeof(b_face));
@@ -38,17 +38,21 @@ void xrMU_Model::Load	(IReader& F)
 	F.r					(&m_lod_ID,2);
 
 	// CONVERT and OPTIMIZE
-	for (u32 it=0; it<b_faces.size(); it++)
+	for (u32 v_it=0; v_it<b_vertices.size(); v_it++)
 	{
-		b_face&	F			= b_faces[it];
-		load_create_face	(b_vertices[F.v[0]],b_vertices[F.v[1]],b_vertices[F.v[2]],F);
+		create_vertex	(b_vertices[v_it]);
+	}
+	for (u32 f_it=0; f_it<b_faces.size(); f_it++)
+	{
+		b_face&	F		= b_faces[f_it];
+		create_face		(m_vertices[F.v[0]],m_vertices[F.v[1]],m_vertices[F.v[2]],F);
 	}
 
 	// 
 	clMsg	("* Loading model: '%s' - v(%d/%d), f(%d/%d)",*m_name,m_vertices.size(),b_vertices.size(),m_faces.size(),b_faces.size());
 }
 
-xrMU_Model::_face* xrMU_Model::load_create_face(Fvector& P1, Fvector& P2, Fvector& P3, b_face& B)
+xrMU_Model::_face* xrMU_Model::create_face(_vertex* v0, _vertex* v1, _vertex* v2, b_face& B)
 {
 	_face*	_F			= mu_faces.create();
 	_F->dwMaterial		= u16(B.dwMaterial);
@@ -56,9 +60,9 @@ xrMU_Model::_face* xrMU_Model::load_create_face(Fvector& P1, Fvector& P2, Fvecto
 	R_ASSERT			(B.dwMaterialGame<65536);
 
 	// Vertices and adjacement info
-	_F->VSet			(0,load_create_vertex(P1));
-	_F->VSet			(1,load_create_vertex(P2));
-	_F->VSet			(2,load_create_vertex(P3));
+	_F->VSet			(0,v0);
+	_F->VSet			(1,v1);
+	_F->VSet			(2,v2);
 
 	// tc
 	_F->tc[0]			= B.t[0];
@@ -71,6 +75,20 @@ xrMU_Model::_face* xrMU_Model::load_create_face(Fvector& P1, Fvector& P2, Fvecto
 	return _F;
 }
 
+xrMU_Model::_face* xrMU_Model::load_create_face(Fvector& P1, Fvector& P2, Fvector& P3, b_face& B)
+{
+	return				create_face(load_create_vertex(P1),load_create_vertex(P2),load_create_vertex(P3),B);
+}
+
+xrMU_Model::_vertex* xrMU_Model::create_vertex(Fvector& P)
+{
+	_vertex*	_V		= mu_vertices.create();
+	_V->P				= P;
+	_V->N.set			(0,0,0);
+	m_vertices.push_back(_V);
+	return				_V;
+}
+
 xrMU_Model::_vertex* xrMU_Model::load_create_vertex(Fvector& P)
 {
 	// find similar
@@ -78,11 +96,6 @@ xrMU_Model::_vertex* xrMU_Model::load_create_vertex(Fvector& P)
 	{
 		if (m_vertices[it]->P.similar(P,.001f))	return m_vertices[it];
 	}
-
 	// create new
-	_vertex*	_V		= mu_vertices.create();
-	_V->P				= P;
-	_V->N.set			(0,0,0);
-	m_vertices.push_back(_V);
-	return _V;
+	return				create_vertex(P);
 }

@@ -59,7 +59,7 @@ void xrStripify		(xr_vector<u16> &indices, xr_vector<u16> &perturb, int iCacheSi
 
 void OGF::Stripify	()
 {
-	if (I_Current>=0)			return;	// Mesh already progressive - don't stripify it
+	if (m_SWI.count||(I_Current>=0))	return;	// Mesh already progressive - don't stripify it
 
 //	set_status("Stripifying",treeID,faces.size(),vertices.size());
 	try {

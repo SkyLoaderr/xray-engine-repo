@@ -8,7 +8,8 @@ void xrMU_Model::calc_normals()
 	float	p_cost  = 1.f/(Vcount);
 
 	// Clear temporary flag
-	float	sm_cos	= _cos(deg2rad(g_params.m_sm_angle));
+//	float	sm_cos	= _cos(deg2rad(g_params.m_sm_angle));
+	float	sm_cos	= _cos(deg2rad(120.f));//g_params.m_sm_angle));
 
 	for (v_faces_it it = m_faces.begin(); it!=m_faces.end(); it++)
 	{
@@ -46,7 +47,8 @@ void xrMU_Model::calc_normals()
 				_face*	Fn		= V->adjacent[NF];
 
 				float	cosa	= F->N.dotproduct(Fn->N);
-				if (cosa>sm_cos) {
+				if (cosa>sm_cos) 
+				{
 					NV->N.add		(Fn->N);
 					if (!Fn->flags.bSplitted) {
 						Fn->VReplace_NoRemove	(V,NV);

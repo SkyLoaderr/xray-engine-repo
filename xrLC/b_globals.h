@@ -30,6 +30,7 @@ typedef xr_map<Vertex*,Vertex*>			map_v2v;	// vertex to vertex translation
 typedef map_v2v::iterator				map_v2v_it;
 
 // Globals
+extern SWIContainer				g_SWI;
 extern vecVertex				g_vertices;
 extern vecFace					g_faces;
 extern vec2Face					g_XSplit;

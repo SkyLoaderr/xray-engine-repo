@@ -5,6 +5,9 @@
 #include "progmesh.h"
 #include "xrSpherical.h"
 
+#include "ArbitraryList.h"
+#include "PropSlimTools.h"
+
 struct OGF_Texture
 {
 	shared_str			name;
@@ -98,6 +101,8 @@ struct OGF : public OGF_Base
 	u32					dwMinVerts;
 	int					I_Current;
 
+	FSlideWindowItem	m_SWI;// The records of the collapses.
+
 	// for build only
 	u32					dwRelevantUV;
 	u32					dwRelevantUVMASK;
@@ -106,12 +111,22 @@ struct OGF : public OGF_Base
 	u32					vb_start;
 	u32					ib_id;
 	u32					ib_start;
+	u32					sw_id;
 
 	OGF() : OGF_Base(0) {
+		m_SWI.count			= 0;
+		m_SWI.sw			= 0;
+		m_SWI.reserved[0]	= 0;
+		m_SWI.reserved[1]	= 0;
+		m_SWI.reserved[2]	= 0;
+		m_SWI.reserved[3]	= 0;
 		dwRelevantUV		= 0;
 		dwRelevantUVMASK	= 0;
 		I_Current			= -1;
 	};
+	~OGF(){
+		xr_free			(m_SWI.sw);
+	}
 	u16					_BuildVertex	(OGF_Vertex& V1);
 	void				_BuildFace		(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3);
 
@@ -148,6 +163,7 @@ struct OGF_Reference : public OGF_Base
 	u32					vb_start;
 	u32					ib_id;
 	u32					ib_start;
+	u32					sw_id;
 
 	Fmatrix				xform;
 	base_color_c		c_scale;

@@ -20,10 +20,10 @@ void set_status(char* N, int id, int f, int v)
 BOOL OGF_Vertex::similar(OGF* ogf, OGF_Vertex& V)
 {
 	const float ntb		= _cos	(deg2rad(5.f));
-	if (!P.similar(V.P)) return FALSE;
-	if (!N.similar(V.N)) return FALSE;
-	if (!T.similar(V.T)) return FALSE;
-	if (!B.similar(V.B)) return FALSE;
+	if (!P.similar(V.P)) 		return FALSE;
+	if (!N.similar(V.N)) 		return FALSE;
+	if (!T.similar(V.T)) 		return FALSE;
+	if (!B.similar(V.B)) 		return FALSE;
 	
 	R_ASSERT(UV.size()==V.UV.size());
 	for (u32 i=0; i<V.UV.size(); i++) {
@@ -126,9 +126,48 @@ void OGF::CreateOccluder()
 	ORM_End(C,R);
 }
 */
+xrCriticalSection	progressive_cs;
 
 void OGF::MakeProgressive()
 {
+	progressive_cs.Enter();
+	// prepare progressive geom
+	VIPM_Init			();
+	for (u32 v_idx=0;  v_idx<vertices.size(); v_idx++)
+		VIPM_AppendVertex(vertices[v_idx].P,vertices[v_idx].UV[0]);
+	for (u32 f_idx=0; f_idx<faces.size(); f_idx++)
+		VIPM_AppendFace(faces[f_idx].v[0],faces[f_idx].v[1],faces[f_idx].v[2]);
+	// Convert
+	VIPM_Result* VR		= VIPM_Convert(u32(-1),1.f,1);
+	if (VR->swr_records.size()>1){
+		// Permute vertices
+		vertices_saved			= vertices;
+		for(u32 i=0; i<vertices.size(); i++)
+			vertices[VR->permute_verts[i]]=vertices_saved[i];
+		// Fill indices
+		faces_saved				= faces;
+		faces.resize			(VR->indices.size()/3);
+		for (u32 f_idx=0; f_idx<faces.size(); f_idx++){
+			faces[f_idx].v[0]	= VR->indices[f_idx*3+0];
+			faces[f_idx].v[1]	= VR->indices[f_idx*3+1];
+			faces[f_idx].v[2]	= VR->indices[f_idx*3+2];
+		}
+		// Fill SWR
+		m_SWI.count				= VR->swr_records.size();
+		m_SWI.sw				= xr_alloc<FSlideWindow>(m_SWI.count);
+		for (u32 swr_idx=0; swr_idx!=m_SWI.count; swr_idx++){
+			FSlideWindow& dst	= m_SWI.sw[swr_idx];
+			VIPM_SWR& src		= VR->swr_records[swr_idx];
+			dst.num_tris		= src.num_tris;
+			dst.num_verts		= src.num_verts;
+			dst.offset			= src.offset;
+		}
+	}
+	// cleanup
+	VIPM_Destroy		();
+	progressive_cs.Leave();
+
+/*
 	if (faces.size()>c_PM_LowVertLimit) 
 	{
 //		set_status("CLODing",treeID,faces.size(),vertices.size());
@@ -173,6 +212,7 @@ void OGF::MakeProgressive()
 			dwMinVerts = R.minVertices;
 		}
 	}
+*/
 }
 
 void OGF_Base::Save	(IWriter &fs)

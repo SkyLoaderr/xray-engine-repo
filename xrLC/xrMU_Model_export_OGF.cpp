@@ -33,6 +33,7 @@ void xrMU_Reference::export_ogf()
 			pOGF->xform.set			(xform);
 			pOGF->c_scale			= c_scale;
 			pOGF->c_bias			= c_bias;
+			pOGF->sw_id				= it->sw_id;
 
 			pOGF->CalcBounds		();
 			generated_ids.push_back	((u32)g_tree.size());

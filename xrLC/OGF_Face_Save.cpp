@@ -98,6 +98,8 @@ struct  r1v_vert	{
 };
 #pragma pack(pop)
 
+#pragma comment (lib,"x:\\ETools.lib")
+
 void OGF::Save			(IWriter &fs)
 {
 	OGF_Base::Save		(fs);
@@ -124,7 +126,7 @@ void OGF::Save			(IWriter &fs)
 	// Create header
 	ogf_header			H;
 	H.format_version	= xrOGF_FormatVersion;
-	H.type				= MT_NORMAL;
+	H.type				= m_SWI.count?MT_PROGRESSIVE:MT_NORMAL;
 	H.shader_id			= RegisterShader			(sid);
 	H.bb.min			= bbox.min;
 	H.bb.max			= bbox.max;
@@ -175,7 +177,7 @@ void OGF_Reference::Save	(IWriter &fs)
 	// Create header
 	ogf_header			H;
 	H.format_version	= xrOGF_FormatVersion;
-	H.type				= MT_TREE;
+	H.type				= model->m_SWI.count?MT_TREE_PM:MT_TREE_ST;
 	H.shader_id			= RegisterShader	(sid);
 	H.bb.min			= bbox.min;
 	H.bb.max			= bbox.max;
@@ -207,6 +209,14 @@ void OGF_Reference::Save	(IWriter &fs)
 	fs.open_chunk		(OGF_HEADER);
 	fs.w				(&H,sizeof(H));
 	fs.close_chunk		();
+
+	// progressive
+	if (H.type==MT_TREE_PM){
+		// SW
+		fs.open_chunk		(OGF_SWICONTAINER);
+		fs.w_u32			(sw_id);
+		fs.close_chunk		();
+	}
 }
 
 void	OGF::Save_Cached		(IWriter &fs, ogf_header& H, BOOL bVertexColored)
@@ -283,7 +293,20 @@ void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, BOOL bVertexColored)
 	fs.w_u32		(ib_start);
 	fs.w_u32		((u32)faces.size()*3);
 	fs.close_chunk	();
-	
+/*
+//.
+	if (m_SWR.size()){
+		fs.open_chunk(OGF_P_LODS);
+		fs.w_u32	(0);			// reserved space 16 bytes
+		fs.w_u32	(0);
+		fs.w_u32	(0);
+		fs.w_u32	(0);
+		fs.w_u32	(m_SWR.size()); // num collapses
+		for (u32 swr_idx=0; swr_idx<m_SWR.size(); swr_idx++)
+			fs.w	(&m_SWR[swr_idx],sizeof(VIPM_SWR));
+		fs.close_chunk();
+	}
+/*	
 	// PMap
 	if (I_Current>=0)
 	{
@@ -307,6 +330,7 @@ void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, BOOL bVertexColored)
 		}
 		fs.close_chunk();
 	}
+*/
 }
 
 extern	void xrStripify(xr_vector<u16> &indices, xr_vector<u16> &perturb, int iCacheSize, int iMinStripLength);
