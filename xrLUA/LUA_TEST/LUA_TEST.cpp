@@ -1785,11 +1785,14 @@ void print_help(lua_State *L)
 	print_free_functions	(L,luabind::get_globals(L),"","");
 }
 
+extern void lesha_test();
+
 int __cdecl main(int argc, char* argv[])
 {
 //	test1();
 //	test0();
-	time_smart_ptr_test();
+//	time_smart_ptr_test();
+	lesha_test();
 	return 0;
 
 	printf	("xrLuaCompiler v0.1\n");
@@ -1829,6 +1832,15 @@ int __cdecl main(int argc, char* argv[])
 
 	module(L)
 	[
+//		class_<CCustomClass,CCustomClassWrapper>("CCustomClass")
+//			.def(constructor<>())
+//			.def("foo",&CCustomClass::foo,&CCustomClassWrapper::foo_static),
+//
+//		class_<CBaseClass,CBaseClassWrapper>("CBaseClass")
+//			.def(constructor<>())
+//			.def("factory_method",&CBaseClass::factory_method,&CBaseClassWrapper::factory_method_static,adopt(result))
+//			.def("update",&CBaseClass::update),
+//
 		class_<CLuabindClass<0> >("CLuabindClass0")
 			.def(constructor<>())
 			.def("foo",&CLuabindClass<0>::foo)
@@ -1904,27 +1916,29 @@ int __cdecl main(int argc, char* argv[])
 
 //	print_help		(L);
 
-	luaL_loadfile	(L,"x:\\test_test.script");
-	if (xr_strlen(g_ca_stdout)) {
-		fputc		(0,stderr);
-		printf		("\n%s\n",g_ca_stdout);
-		fflush		(stderr);
-		strcpy		(g_ca_stdout,"");
-	}
-	lua_pcall			(L,0,0,0);
-	if (xr_strlen(g_ca_stdout)) {
-		fputc		(0,stderr);
-		printf		("\n%s\n",g_ca_stdout);
-		fflush		(stderr);
-		strcpy		(g_ca_stdout,"");
-	}
-	lua_dostring		(L,"test_test.main()");
-	if (xr_strlen(g_ca_stdout)) {
-		fputc		(0,stderr);
-		printf		("\n%s\n",g_ca_stdout);
-		fflush		(stderr);
-		strcpy		(g_ca_stdout,"");
-	}
+//	luaL_loadfile	(L,"x:\\test_test.script");
+//	if (xr_strlen(g_ca_stdout)) {
+//		fputc		(0,stderr);
+//		printf		("\n%s\n",g_ca_stdout);
+//		fflush		(stderr);
+//		strcpy		(g_ca_stdout,"");
+//	}
+//	lua_pcall			(L,0,0,0);
+	lua_dofile			(L,"x:\\test.script");
+//	lua_setgcthreshold	(L,0);
+//	if (xr_strlen(g_ca_stdout)) {
+//		fputc		(0,stderr);
+//		printf		("\n%s\n",g_ca_stdout);
+//		fflush		(stderr);
+//		strcpy		(g_ca_stdout,"");
+//	}
+//	lua_dostring		(L,"test_test.main()");
+//	if (xr_strlen(g_ca_stdout)) {
+//		fputc		(0,stderr);
+//		printf		("\n%s\n",g_ca_stdout);
+//		fflush		(stderr);
+//		strcpy		(g_ca_stdout,"");
+//	}
 //	lua_dostring		(L,"a.b.main()");
 //	if (xr_strlen(g_ca_stdout)) {
 //		fputc		(0,stderr);
@@ -1934,9 +1948,11 @@ int __cdecl main(int argc, char* argv[])
 //	}
 
 
-	luabind::object		my_class(get_globals(L)["class_name"]);
-	CLuabindClass<0>	*p = object_cast<CLuabindClass<0>*>(my_class(),adopt(result));
+//	luabind::object		my_class(get_globals(L)["class_name"]);
+//	CLuabindClass<0>	*p = object_cast<CLuabindClass<0>*>(my_class(),adopt(result));
 
+//	delete			(g_custom);
+	lua_setgcthreshold	(L,0);
 	lua_close		(L);
 
 //	check if we are yielded

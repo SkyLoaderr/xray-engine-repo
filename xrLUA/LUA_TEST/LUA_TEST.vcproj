@@ -333,6 +333,15 @@
 				RelativePath=".\FastDelegate.h">
 			</File>
 			<File
+				RelativePath=".\lesha_test.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath=".\LUA_TEST.cpp">
 			</File>
 			<File
