@@ -10,8 +10,6 @@ static const float p_spin_factor		= 0.2f;
 static const float p_shoulder_factor	= 0.7f;
 static const float p_head_factor		= 0.1f;
 
-#include "hudmanager.h"
-
 void __stdcall CActor::SpinCallback(CBoneInstance* B)
 {
 	CActor*	A			= dynamic_cast<CActor*>(static_cast<CObject*>(B->Callback_Param));	R_ASSERT(A);
@@ -24,9 +22,6 @@ void __stdcall CActor::SpinCallback(CBoneInstance* B)
 	spin.setXYZ			(-bone_pitch,bone_yaw,0);
 	B->mTransform.mulA_43(spin);
 	B->mTransform.c		= c;
-
-//	spin.setXYZ			(bone_yaw,bone_pitch,0);
-//	B->mTransform		= mulB_43(spin);
 }
 
 void __stdcall CActor::ShoulderCallback(CBoneInstance* B)
@@ -40,8 +35,6 @@ void __stdcall CActor::ShoulderCallback(CBoneInstance* B)
 	spin.setXYZ			(-bone_pitch,bone_yaw,0);
 	B->mTransform.mulA_43(spin);
 	B->mTransform.c		= c;
-//	spin.setXYZ			(bone_yaw,bone_pitch,0);
-//	B->mTransform.mulB_43(spin);
 }
 void __stdcall CActor::HeadCallback(CBoneInstance* B)
 {
@@ -54,8 +47,6 @@ void __stdcall CActor::HeadCallback(CBoneInstance* B)
 	spin.setXYZ			(-bone_pitch,bone_yaw,0);
 	B->mTransform.mulA_43(spin);
 	B->mTransform.c		= c;
-//	spin.setXYZ			(bone_yaw,bone_pitch,0);
-//	B->mTransform.mulB_43(spin);
 }
 
 void CActor::SActorState::SAnimState::Create(CKinematics* K, LPCSTR base0, LPCSTR base1){
