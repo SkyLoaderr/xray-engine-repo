@@ -104,7 +104,7 @@ void CHangingLamp::AddElement(CPhysicsElement* root_e, int id)
 	Fobb& bb			= K->LL_GetBox(id);
 	bb.m_halfsize.add	(0.05f);
 	E->add_Box			(bb);
-	E->setDensity		(1000.f);
+	E->setMass			(10.f);
 	E->set_ParentElement(root_e);
 	B.set_callback		(m_pPhysicsShell->GetBonesCallback(),E);
 	m_pPhysicsShell->add_Element	(E);
@@ -129,4 +129,6 @@ void CHangingLamp::CreateBody()
 	m_pPhysicsShell->set_Kinematics(PKinematics(pVisual));
 	AddElement			(0,PKinematics(pVisual)->LL_BoneRoot());
 	m_pPhysicsShell->mXFORM.set(svTransform);
+	m_pPhysicsShell->SetAirResistance(0.002f,
+		0.3f);
 }

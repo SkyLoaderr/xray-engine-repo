@@ -243,7 +243,7 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 	// car body
 	//dMass m;
 	dMassSetBox(&m, 1.f, jeepBox[0], jeepBox[1]/4.f, jeepBox[2]); // density,lx,ly,lz
-	dMassAdjust(&m, 800.f); // mass
+	dMassAdjust(&m, 400.f); // mass//800
 	//dMassTranslate(&m,0.f,-1.f,0.f);
 	Bodies[0] = dBodyCreate(world);
 	dBodySetMass(Bodies[0], &m);
@@ -288,7 +288,7 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 
 	// wheel bodies
 	dMassSetSphere(&m, 1, wheelRadius); // density, radius
-	dMassAdjust(&m, 20); // mass
+	dMassAdjust(&m, 100); // mass 20
 	dQuaternion q;
 	dQFromAxisAndAngle(q, 1, 0, 0, M_PI * 0.5);
 	u32 i;
@@ -354,7 +354,7 @@ bActive=true;
 }
 ////////////////////////////////////////////////////////////////
 void CPHJeep::JointTune(dReal step){
-const	dReal k_p=30000.f;//30000.f;
+const	dReal k_p=15000.f;//30000.f;
 const	dReal k_d=1000.f;//1000.f;
 	for(u32 i = 0; i < 4; ++i)
 	{
