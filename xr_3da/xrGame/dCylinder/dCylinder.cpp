@@ -1312,20 +1312,3 @@ void dGeomCylinderGetParams (dGeomID g, dReal *radius, dReal *length)
   *length = c->lz;
 }
 
-/*
-void dMassSetCylinder (dMass *m, dReal density,
-		  dReal radius, dReal length)
-{
-  dAASSERT (m);
-  dMassSetZero (m);
-  dReal M = length*M_PI*radius*radius*density;
-  m->mass = M;
-  m->_I(0,0) = M/REAL(4.0) * (ly*ly + lz*lz);
-  m->_I(1,1) = M/REAL(12.0) * (lx*lx + lz*lz);
-  m->_I(2,2) = M/REAL(4.0) * (lx*lx + ly*ly);
-
-# ifndef dNODEBUG
-  checkMass (m);
-# endif
-}
-*/
