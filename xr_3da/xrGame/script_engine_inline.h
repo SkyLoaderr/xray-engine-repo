@@ -78,26 +78,6 @@ IC	bool CScriptEngine::functor(LPCSTR function_to_call, luabind::functor<_result
 	return					(true);
 }
 
-template <typename _result_type>
-IC	luabind::functor<_result_type> CScriptEngine::create_object_creator	(LPCSTR class_name, LPCSTR arguments)
-{
-	string1024				function_body, function_name, _class_name;
-	strcpy					(_class_name,class_name);
-	LPSTR					I;
-	while (0!=(I = strchr(_class_name,'.')))
-		*I					= '_';
-	
-	sprintf					(function_name,"create_%s",_class_name);
-	if (!xr_strlen(arguments))
-		sprintf				(function_body,"function %s(object_factory) object_factory:set_instance(%s()) end",function_name,class_name);
-	else
-		sprintf				(function_body,"function %s(object_factory,%s) object_factory:set_instance(%s(%s)) end",function_name,arguments,class_name,arguments);
-	lua_dostring			(lua(),function_body);
-	luabind::functor<_result_type>	result;
-	R_ASSERT				(functor(function_name,result));
-	return					(result);
-}
-
 template <typename T>
 IC	T	CScriptEngine::get_value_from_object(luabind::object object)
 {

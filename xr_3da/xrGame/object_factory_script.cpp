@@ -20,9 +20,9 @@ void CObjectFactory::register_script_class	(LPCSTR client_class, LPCSTR server_c
 	add							(
 		xr_new<CObjectItemScript>(
 #ifndef NO_XR_GAME
-			ai().script_engine().create_object_creator<void>(client_class,""),
+			ai().script_engine().name_space(client_class),
 #endif
-			ai().script_engine().create_object_creator<void>(server_class,"section"),
+			ai().script_engine().name_space(server_class),
 			TEXT2CLSID(clsid),
 			script_clsid
 		)
@@ -31,7 +31,7 @@ void CObjectFactory::register_script_class	(LPCSTR client_class, LPCSTR server_c
 
 void CObjectFactory::register_script_class			(LPCSTR unknwon_class, LPCSTR clsid, LPCSTR script_clsid)
 {
-	luabind::functor<void>		creator = ai().script_engine().create_object_creator<void>(unknwon_class,"");
+	luabind::object				creator = ai().script_engine().name_space(unknwon_class);
 	add							(
 		xr_new<CObjectItemScript>(
 #ifndef NO_XR_GAME
@@ -44,25 +44,9 @@ void CObjectFactory::register_script_class			(LPCSTR unknwon_class, LPCSTR clsid
 	);
 }
 
-#ifndef NO_XR_GAME
-IC	void CObjectFactory::set_instance	(CLIENT_SCRIPT_BASE_CLASS *instance) const
-{
-	m_client_instance			= instance;
-}
-#endif
-
-IC	void CObjectFactory::set_instance	(SERVER_SCRIPT_BASE_CLASS *instance) const
-{
-	m_server_instance			= instance;
-}
-
 void CObjectFactory::register_script_classes()
 {
 	ai().script_engine().register_script_classes();
-#ifndef NO_XR_GAME
-	set_instance	((CLIENT_SCRIPT_BASE_CLASS*)0);
-#endif
-	set_instance	((SERVER_SCRIPT_BASE_CLASS*)0);
 }
 
 using namespace luabind;
@@ -86,11 +70,7 @@ void CObjectFactory::script_register(lua_State *L)
 	module(L)
 	[
 		class_<CObjectFactory>("object_factory")
-			.def("register",		(void (CObjectFactory::*)(LPCSTR,LPCSTR,LPCSTR,LPCSTR))(CObjectFactory::register_script_class))
-			.def("register",		(void (CObjectFactory::*)(LPCSTR,LPCSTR,LPCSTR))(CObjectFactory::register_script_class))
-#ifndef NO_XR_GAME
-			.def("set_instance",	(void (CObjectFactory::*)(CObjectFactory::CLIENT_SCRIPT_BASE_CLASS*) const)(CObjectFactory::set_instance), adopt(_2))
-#endif
-			.def("set_instance",	(void (CObjectFactory::*)(CObjectFactory::SERVER_SCRIPT_BASE_CLASS*) const)(CObjectFactory::set_instance), adopt(_2))
+			.def("register",	(void (CObjectFactory::*)(LPCSTR,LPCSTR,LPCSTR,LPCSTR))(CObjectFactory::register_script_class))
+			.def("register",	(void (CObjectFactory::*)(LPCSTR,LPCSTR,LPCSTR))(CObjectFactory::register_script_class))
 	];
 }

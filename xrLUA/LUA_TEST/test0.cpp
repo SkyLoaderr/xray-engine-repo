@@ -1133,7 +1133,8 @@ public:
 void test_object(luabind::object a)
 {
 	//	luabind::get_globals(a.lua_state())[a] = 5;
-	a = 5;
+//	printf("%s\n",luabind::object_cast<bool>(a) ? "true" : "false");
+	printf("%s\n",luabind::object_cast<LPCSTR>(a));
 }
 
 void test_object1(luabind::object a, LPCSTR name)

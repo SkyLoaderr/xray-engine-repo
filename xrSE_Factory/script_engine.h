@@ -36,6 +36,9 @@ protected:
 	ref_str						m_class_registrators;
 	luabind::object				*m_return_passed_object_functor;
 	bool						m_global_script_loaded;
+#ifdef USE_DEBUGGER
+	CScriptDebugger				*m_scriptDebugger;
+#endif
 
 public:
 								CScriptEngine				();
@@ -56,34 +59,18 @@ public:
 	IC		CScriptStackTracker	*current_thread				();
 	IC		CScriptStackTracker	&script_stack_tracker		();
 	IC		void				reload_modules				(bool flag);
-
 			bool				function_object				(LPCSTR function_to_call, luabind::object &object);
-
-//	template <typename _result_type, template <typename T> class A>
-//	IC		bool				functor						(LPCSTR function_to_call, A<_result_type> &lua_function);
+			void				register_script_classes		();
+	IC		void				parse_script_namespace		(LPCSTR function_to_call, LPSTR name_space, LPSTR functor);
+			void				initialize_return_passed_object();
+			void				load_class_registrators		();
 
 	template <typename _result_type>
 	IC		bool				functor						(LPCSTR function_to_call, luabind::functor<_result_type> &lua_function);
-			void				register_script_classes		();
-	IC		void				parse_script_namespace		(LPCSTR function_to_call, LPSTR name_space, LPSTR functor);
-
-//	template <typename _result_type, template <typename A> class T>
-//	IC		T<_result_type>		create_object_creator		(LPCSTR class_name, LPCSTR arguments);
-	template <typename _result_type>
-	IC		luabind::functor<_result_type>create_object_creator	(LPCSTR class_name, LPCSTR arguments);
-			
+	
 	template <typename T>
 	IC		T					get_value_from_object		(luabind::object object);
 
-//	template <typename T, template <typename T> class A>
-//	IC		T					get_value_from_object		(luabind::object object);
-			void				initialize_return_passed_object();
-
-			void				load_class_registrators		();
-	
-#ifdef USE_DEBUGGER
-	CScriptDebugger				*m_scriptDebugger;
-#endif
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CScriptEngine)

@@ -55,10 +55,6 @@ public:
 protected:
 	OBJECT_ITEM_STORAGE					m_clsids;
 	bool								m_initialized;
-#ifndef NO_XR_GAME
-	mutable CLIENT_SCRIPT_BASE_CLASS	*m_client_instance;
-#endif
-	mutable SERVER_SCRIPT_BASE_CLASS	*m_server_instance;
 
 protected:
 			void						register_classes				();
@@ -91,12 +87,6 @@ public:
 			void						register_script_class			(LPCSTR client_class, LPCSTR server_class, LPCSTR clsid, LPCSTR script_clsid);
 			void						register_script_class			(LPCSTR unknown_class, LPCSTR clsid, LPCSTR script_clsid);
 			void						register_script_classes			();
-#ifndef NO_XR_GAME
-	IC		void						set_instance					(CLIENT_SCRIPT_BASE_CLASS *instance) const;
-	IC		CLIENT_SCRIPT_BASE_CLASS	*client_instance				() const;
-#endif
-	IC		void						set_instance					(SERVER_SCRIPT_BASE_CLASS *instance) const;
-	IC		SERVER_SCRIPT_BASE_CLASS	*server_instance				() const;
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CObjectFactory)

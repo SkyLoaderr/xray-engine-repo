@@ -6876,97 +6876,73 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="ObjectFactories"
+					Name="ObjectFactory"
 					Filter="">
+					<File
+						RelativePath=".\clsid_game.h">
+					</File>
+					<File
+						RelativePath=".\object_factory.cpp">
+					</File>
+					<File
+						RelativePath=".\object_factory.h">
+					</File>
+					<File
+						RelativePath=".\object_factory_impl.h">
+					</File>
+					<File
+						RelativePath=".\object_factory_inline.h">
+					</File>
+					<File
+						RelativePath=".\object_factory_register.cpp">
+					</File>
+					<File
+						RelativePath=".\object_factory_script.cpp">
+					</File>
+					<File
+						RelativePath=".\object_factory_space.h">
+					</File>
 					<Filter
-						Name="ObjectFactory"
+						Name="object_item_abstract"
 						Filter="">
 						<File
-							RelativePath=".\clsid_game.h">
+							RelativePath=".\object_item_abstract.h">
 						</File>
 						<File
-							RelativePath=".\object_factory.cpp">
+							RelativePath=".\object_item_abstract_inline.h">
 						</File>
-						<File
-							RelativePath=".\object_factory.h">
-						</File>
-						<File
-							RelativePath=".\object_factory_impl.h">
-						</File>
-						<File
-							RelativePath=".\object_factory_inline.h">
-						</File>
-						<File
-							RelativePath=".\object_factory_register.cpp">
-						</File>
-						<File
-							RelativePath=".\object_factory_script.cpp">
-						</File>
-						<File
-							RelativePath=".\object_factory_space.h">
-						</File>
-						<Filter
-							Name="object_item_abstract"
-							Filter="">
-							<File
-								RelativePath=".\object_item_abstract.h">
-							</File>
-							<File
-								RelativePath=".\object_item_abstract_inline.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="object_item_client_server"
-							Filter="">
-							<File
-								RelativePath=".\object_item_client_server.h">
-							</File>
-							<File
-								RelativePath=".\object_item_client_server_inline.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="object_item_script"
-							Filter="">
-							<File
-								RelativePath=".\object_item_script.cpp">
-							</File>
-							<File
-								RelativePath=".\object_item_script.h">
-							</File>
-							<File
-								RelativePath=".\object_item_script_inline.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="object_item_single"
-							Filter="">
-							<File
-								RelativePath=".\object_item_single.h">
-							</File>
-							<File
-								RelativePath=".\object_item_single_inline.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="object_item_single"
-							Filter="">
-							<File
-								RelativePath=".\object_item_single.h">
-							</File>
-							<File
-								RelativePath=".\object_item_single_inline.h">
-							</File>
-						</Filter>
 					</Filter>
 					<Filter
-						Name="ObjectFactoryStorage"
+						Name="object_item_client_server"
 						Filter="">
 						<File
-							RelativePath=".\object_factory_storage.h">
+							RelativePath=".\object_item_client_server.h">
 						</File>
 						<File
-							RelativePath=".\object_factory_storage_inline.h">
+							RelativePath=".\object_item_client_server_inline.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="object_item_script"
+						Filter="">
+						<File
+							RelativePath=".\object_item_script.cpp">
+						</File>
+						<File
+							RelativePath=".\object_item_script.h">
+						</File>
+						<File
+							RelativePath=".\object_item_script_inline.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="object_item_single"
+						Filter="">
+						<File
+							RelativePath=".\object_item_single.h">
+						</File>
+						<File
+							RelativePath=".\object_item_single_inline.h">
 						</File>
 					</Filter>
 				</Filter>

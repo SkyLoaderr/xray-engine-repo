@@ -20,18 +20,6 @@ IC	const CObjectFactory &object_factory()
 	return						(*g_object_factory);
 }
 
-#ifndef NO_XR_GAME
-IC	CObjectFactory::CLIENT_SCRIPT_BASE_CLASS *CObjectFactory::client_instance() const
-{
-	return						(m_client_instance);
-}
-#endif
-
-IC	CObjectFactory::SERVER_SCRIPT_BASE_CLASS *CObjectFactory::server_instance() const
-{
-	return						(m_server_instance);
-}
-
 IC	bool CObjectFactory::CObjectItemPredicate::operator()	(const CObjectItemAbstract *item1, const CObjectItemAbstract *item2) const
 {
 	return				(item1->clsid() < item2->clsid());
