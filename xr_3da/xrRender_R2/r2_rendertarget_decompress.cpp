@@ -49,7 +49,11 @@ void	CRenderTarget::phase_decompress		()
 			void		set			(float x, float y, float u0, float v0, float u1, float v1)	{
 				p.set	(x,y,EPS_S,1);
 				uv0.set	(u0,v0);
-				uv1.set	(u1,v1,0,1);
+
+				float	yfov	= Device.fFOV * Device.fASPECT;
+				float	sy		= VIEWPORT_NEAR * tanf(deg2rad(yfov)*0.5f);
+				float	sx		= sy / (Device.fHeight_2 / Device.fWidth_2);
+				uv1.set	(u1*sx,v1*sy,VIEWPORT_NEAR,0);
 			}
 		};
 		VERIFY						(g_decompress->vb_stride == sizeof(v_dc));
@@ -58,16 +62,16 @@ void	CRenderTarget::phase_decompress		()
 
 		// Fill vertex buffer
 		v_dc* pv					= (v_dc*) RCache.Vertex.Lock	(4,g_decompress->vb_stride,Offset);
-		pv->set						(EPS_S,				float(_h+EPS_S),	p0.x, p1.y, -1,		-1);	pv++;
-		pv->set						(EPS_S,				EPS_S,				p0.x, p0.y, -1,		+1-h1);	pv++;
-		pv->set						(float(_w+EPS_S),	float(_h+EPS_S),	p1.x, p1.y, +1-w1,	-1);	pv++;
-		pv->set						(float(_w+EPS_S),	EPS_S,				p1.x, p0.y, +1-w1,	+1-h1);	pv++;
+		pv->set						(EPS_S,				float(_h+EPS_S),	p0.x, p1.y, -1,	+1);	pv++;
+		pv->set						(EPS_S,				EPS_S,				p0.x, p0.y, -1,	-1);	pv++;
+		pv->set						(float(_w+EPS_S),	float(_h+EPS_S),	p1.x, p1.y, +1,	+1);	pv++;
+		pv->set						(float(_w+EPS_S),	EPS_S,				p1.x, p0.y, +1,	-1);	pv++;
 		RCache.Vertex.Unlock		(4,g_decompress->vb_stride);
 		RCache.set_Geometry			(g_decompress);
 
 		// Decompress
 		Fmatrix		mUnwarp;
-		D3DXMatrixInverse			((D3DXMATRIX*)&mUnwarp,0,(D3DXMATRIX*)&Device.mProject);
+		// D3DXMatrixInverse		((D3DXMATRIX*)&mUnwarp,0,(D3DXMATRIX*)&Device.mProject);
 		// mUnwarp.invert			(Device.mProject);
 		u_setrt						(rt_Position,rt_Normal,NULL,HW.pBaseZB);
 		RCache.set_Shader			(s_decompress);
