@@ -8,7 +8,7 @@
 
 #pragma once
 
-class CSoundPlayer {
+class CSoundPlayer : public CRandom32 {
 public:
 	struct CSoundParams {
 		u32										m_priority;
@@ -16,9 +16,14 @@ public:
 		ref_str									m_bone_name;
 	};
 
-	struct CSoundCollection : public CSoundParams {
+	struct CSoundCollection : public CSoundParams, public CRandom32 {
 		xr_vector<ref_sound*>					m_sounds;
 		ref_str									m_sound_prefix;
+
+		IC				CSoundCollection		()
+		{
+			seed								(CPU::GetCycleCount() && 0xffffffff);
+		}
 
 						~CSoundCollection		()
 		{

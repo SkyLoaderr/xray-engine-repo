@@ -24,6 +24,7 @@ CSoundPlayer::~CSoundPlayer			()
 
 void CSoundPlayer::Init				()
 {
+	seed							(CPU::GetCycleCount() && 0xffffffff);
 }
 
 void CSoundPlayer::reinit			()
@@ -145,9 +146,9 @@ void CSoundPlayer::play				(u32 internal_type, u32 max_start_time, u32 min_start
 	CObject						*object = dynamic_cast<CObject*>(this);
 	VERIFY						(object);
 
-	xr_map<u32,CSoundCollection>::const_iterator	I = m_sounds.find(internal_type);
+	xr_map<u32,CSoundCollection>::iterator	I = m_sounds.find(internal_type);
 	VERIFY						(m_sounds.end() != I);
-	const CSoundCollection		&sound = (*I).second;
+	CSoundCollection			&sound = (*I).second;
 	if (sound.m_sounds.empty()) {
 		Msg						("! There are no sounds in sound collection \"%s\" with internal type %d (sound_script = %d)",*sound.m_sound_prefix,internal_type,StalkerSpace::eStalkerSoundScript);
 		return;
@@ -158,19 +159,20 @@ void CSoundPlayer::play				(u32 internal_type, u32 max_start_time, u32 min_start
 	CSoundSingle				sound_single;
 	(CSoundParams&)sound_single	= (CSoundParams&)sound;
 	sound_single.m_bone_id		= PKinematics(object->Visual())->LL_BoneID(sound.m_bone_name);
-	sound_single.m_sound		= sound.m_sounds[id == u32(-1) ? ::Random.randI(sound.m_sounds.size()) : id];
+	sound_single.m_sound		= sound.m_sounds[id == u32(-1) ? sound.random(sound.m_sounds.size()) : id];
 	VERIFY						(sound_single.m_sound->handle);
 	VERIFY						(max_start_time >= min_start_time);
 	VERIFY						(max_stop_time >= min_stop_time);
 	u32							random_time = 0;
 	
 	if (max_start_time)
-		random_time				= ::Random32.random(max_start_time - min_start_time) + min_start_time;
+		random_time				= random(max_start_time - min_start_time) + min_start_time;
+
 	sound_single.m_start_time	= Level().timeServer() + random_time;
 	
 	random_time					= 0;
 	if (max_stop_time)
-		random_time				= ::Random32.random(max_stop_time - min_stop_time) + min_stop_time;
+		random_time				= random(max_stop_time - min_stop_time) + min_stop_time;
 
 	sound_single.m_stop_time	= sound_single.m_start_time + sound_single.m_sound->handle->length_ms() + random_time;
 	m_playing_sounds.push_back	(sound_single);
