@@ -130,18 +130,18 @@ public:
 		return					(heap_head == heap_tail);
 	}
 
-	IC		void		add_opened		(CGraphNode &node)
+	IC		void		add_opened		(CGraphNode &vertex)
 	{
 		VERIFY					(heap_head <= heap_tail);
-		node.open_close_mask	= 1;
-		*heap_tail				= &node;
+		vertex.open_close_mask	= 1;
+		*heap_tail				= &vertex;
 		std::push_heap			(heap_head,++heap_tail,CGraphNodePredicate());
 	}
 
-	IC		void		decrease_opened	(CGraphNode &node, const _dist_type value)
+	IC		void		decrease_opened	(CGraphNode &vertex, const _dist_type value)
 	{
 		VERIFY					(!is_opened_empty());
-		for (CGraphNode **i = heap_head; *i != &node; ++i);
+		for (CGraphNode **i = heap_head; *i != &vertex; ++i);
 		std::push_heap			(heap_head,i + 1,CGraphNodePredicate());
 	}
 
@@ -288,20 +288,20 @@ public:
 		return					(true);
 	}
 
-	IC		void		add_opened		(CGraphNode &node)
+	IC		void		add_opened		(CGraphNode &vertex)
 	{
-		node.open_close_mask	= 1;
-		SBinaryHeap				&heap = heaps[node.index() % heap_count];
+		vertex.open_close_mask	= 1;
+		SBinaryHeap				&heap = heaps[vertex.index() % heap_count];
 		VERIFY					(heap.heap_head <= heap.heap_tail);
-		*heap.heap_tail			= &node;
+		*heap.heap_tail			= &vertex;
 		std::push_heap			(heap.heap_head,++heap.heap_tail,CGraphNodePredicate());
 	}
 
-	IC		void		decrease_opened	(CGraphNode &node, const _dist_type value)
+	IC		void		decrease_opened	(CGraphNode &vertex, const _dist_type value)
 	{
 		VERIFY					(!is_opened_empty());
-		SBinaryHeap				&heap = heaps[node.index() % heap_count];
-		for (CGraphNode **i = heap.heap_head; *i != &node; ++i);
+		SBinaryHeap				&heap = heaps[vertex.index() % heap_count];
+		for (CGraphNode **i = heap.heap_head; *i != &vertex; ++i);
 		std::push_heap			(heap.heap_head,i + 1,CGraphNodePredicate());
 	}
 
@@ -492,32 +492,32 @@ public:
 		inherited::get_path		(path,&get_best());
 	}
 	
-	IC		u32			compute_heap_index(const _index_type node_index) const
+	IC		u32			compute_heap_index(const _index_type vertex_id) const
 	{
-		return					(node_index % heap_count);
+		return					(vertex_id % heap_count);
 	}
 
-	IC		void		push_front		(CGraphNode &node)
+	IC		void		push_front		(CGraphNode &vertex)
 	{
-		for (CGraphNode *i = node.prev; ;i = i->prev)
-			if (i->f() <= node.f()) {
-				node.next		= i->next;
-				node.prev		= i;
-				i->next->prev	= &node;
-				i->next			= &node;
+		for (CGraphNode *i = vertex.prev; ;i = i->prev)
+			if (i->f() <= vertex.f()) {
+				vertex.next		= i->next;
+				vertex.prev		= i;
+				i->next->prev	= &vertex;
+				i->next			= &vertex;
 				return;
 			}
 		VERIFY					(false);
 	}
 
-	IC		void		push_back		(CGraphNode &node)
+	IC		void		push_back		(CGraphNode &vertex)
 	{
-		for (CGraphNode *i = node.next; ;i = i->next)
-			if (i->f() >= node.f()) {
-				node.next		= i;
-				node.prev		= i->prev;
-				i->prev->next	= &node;
-				i->prev			= &node;
+		for (CGraphNode *i = vertex.next; ;i = i->next)
+			if (i->f() >= vertex.f()) {
+				vertex.next		= i;
+				vertex.prev		= i->prev;
+				i->prev->next	= &vertex;
+				i->prev			= &vertex;
 				return;
 			}
 		VERIFY					(false);
@@ -543,38 +543,38 @@ public:
 			push_front			(old_head,new_head);
 	}
 
-	IC		void		add_opened		(CGraphNode &node)
+	IC		void		add_opened		(CGraphNode &vertex)
 	{
-		node.open_close_mask	= 1;
-		SBinaryHeap				&heap = heaps[compute_heap_index(node.index())];
+		vertex.open_close_mask	= 1;
+		SBinaryHeap				&heap = heaps[compute_heap_index(vertex.index())];
 		VERIFY					(heap.heap_head <= heap.heap_tail);
 		if (heap.heap_head == heap.heap_tail) {
-			*heap.heap_tail		= &node;
+			*heap.heap_tail		= &vertex;
 			++heap.heap_tail;
 			(*heap.heap_head)->next = list_head->next;
 			push_back			(**heap.heap_head);
 			return;
 		}
 		CGraphNode				*heap_head = *heap.heap_head;
-		*heap.heap_tail			= &node;
+		*heap.heap_tail			= &vertex;
 		std::push_heap			(heap.heap_head,++heap.heap_tail,CGraphNodePredicate());
 		push_front_if_needed	(heap_head, *heap.heap_head);
 	}
 
-	IC		void		decrease_opened	(CGraphNode &node, const _dist_type value)
+	IC		void		decrease_opened	(CGraphNode &vertex, const _dist_type value)
 	{
 		VERIFY					(!is_opened_empty());
-		SBinaryHeap				&heap = heaps[compute_heap_index(node.index())];
+		SBinaryHeap				&heap = heaps[compute_heap_index(vertex.index())];
 		CGraphNode				*heap_head = *heap.heap_head;
-		for (CGraphNode **i = heap.heap_head; *i != &node; ++i);
+		for (CGraphNode **i = heap.heap_head; *i != &vertex; ++i);
 		std::push_heap			(heap.heap_head,i + 1,CGraphNodePredicate());
-		if (&node != heap_head)
+		if (&vertex != heap_head)
 			push_front_if_needed(heap_head, *heap.heap_head);
 		else
-			if (heap_head->prev->f() > node.f()) {
+			if (heap_head->prev->f() > vertex.f()) {
 				heap_head->next->prev = heap_head->prev;
 				heap_head->prev->next = heap_head->next;
-				push_front			(node);
+				push_front			(vertex);
 			}
 	}
 

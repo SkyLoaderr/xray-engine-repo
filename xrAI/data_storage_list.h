@@ -121,38 +121,38 @@ public:
 		return					(list_head->next == list_tail);
 	}
 
-	IC		void		add_opened		(CGraphNode &node)
+	IC		void		add_opened		(CGraphNode &vertex)
 	{
-		node.open_close_mask	= 1;
+		vertex.open_close_mask	= 1;
 		for (CGraphNode *i = list_head; ; i = i->next)
-			if (i->next->f() >= node.f()) {
-				node.next		= i->next;
-				i->next			= &node;
+			if (i->next->f() >= vertex.f()) {
+				vertex.next		= i->next;
+				i->next			= &vertex;
 				break;
 			}
 	}
 
-	IC		void		decrease_opened	(CGraphNode &node, const _dist_type value)
+	IC		void		decrease_opened	(CGraphNode &vertex, const _dist_type value)
 	{
 		VERIFY					(!is_opened_empty());
 
 		for (CGraphNode *i = list_head; ; i = i->next)
-			if (&node == i->next) {
-				if (i->f() <= node.f())
+			if (&vertex == i->next) {
+				if (i->f() <= vertex.f())
 					return;
 				i->next			= i->next->next;
 				break;
 			}
 
-		if (node.f() <= list_head->next->f()) {
-			node.next			= list_head->next;
-			list_head->next		= &node;
+		if (vertex.f() <= list_head->next->f()) {
+			vertex.next			= list_head->next;
+			list_head->next		= &vertex;
 		}
 		else
 			for ( i = list_head; ; i = i->next)
-				if (i->next->f() >= node.f()) {
-					node.next = i->next;
-					i->next = &node;
+				if (i->next->f() >= vertex.f()) {
+					vertex.next = i->next;
+					i->next = &vertex;
 					break;
 				}
 	}
@@ -271,14 +271,14 @@ public:
 		return					(list_head->next == list_tail);
 	}
 
-	IC		void		add_opened		(CGraphNode &node)
+	IC		void		add_opened		(CGraphNode &vertex)
 	{
-		node.open_close_mask	= 1;
-		node.next				= list_head->next;
-		list_head->next			= &node;
+		vertex.open_close_mask	= 1;
+		vertex.next				= list_head->next;
+		list_head->next			= &vertex;
 	}
 
-	IC		void		decrease_opened	(CGraphNode &node, const _dist_type value)
+	IC		void		decrease_opened	(CGraphNode &vertex, const _dist_type value)
 	{
 		VERIFY					(!is_opened_empty());
 	}
@@ -441,53 +441,53 @@ public:
 		return					(list_head->next == list_tail);
 	}
 
-	IC		void		add_opened		(CGraphNode &node)
+	IC		void		add_opened		(CGraphNode &vertex)
 	{
-		node.open_close_mask	= 1;
+		vertex.open_close_mask	= 1;
 		for (CGraphNode *i = list_head->next; ; i = i->next)
-			if (i->f() >= node.f()) {
-				node.next		= i;
-				node.prev		= i->prev;
-				i->prev->next	= &node;
-				i->prev			= &node;
+			if (i->f() >= vertex.f()) {
+				vertex.next		= i;
+				vertex.prev		= i->prev;
+				i->prev->next	= &vertex;
+				i->prev			= &vertex;
 				break;
 			}
 	}
 
-	IC		void		decrease_opened	(CGraphNode &node, const _dist_type value)
+	IC		void		decrease_opened	(CGraphNode &vertex, const _dist_type value)
 	{
 		VERIFY					(!is_opened_empty());
 
-		if (node.prev->f() <= node.f())
+		if (vertex.prev->f() <= vertex.f())
 			return;
 
-		node.prev->next			= node.next;
-		node.next->prev			= node.prev;
+		vertex.prev->next			= vertex.next;
+		vertex.next->prev			= vertex.prev;
 
-		if (node.f() <= list_head->next->f()) {
-			node.prev			= list_head;
-			node.next			= list_head->next;
-			list_head->next->prev = &node;
-			list_head->next		= &node;
+		if (vertex.f() <= list_head->next->f()) {
+			vertex.prev			= list_head;
+			vertex.next			= list_head->next;
+			list_head->next->prev = &vertex;
+			list_head->next		= &vertex;
 		}
 		else {
-			if (node.prev->f() - node.f() < switch_factor*(node.f() - list_head->next->f()))
-				for (CGraphNode *i = node.prev->prev; ; i = i->prev) {
-					if (i->f() <= node.f()) {
-						node.next = i->next;
-						node.prev = i;
-						i->next->prev = &node;
-						i->next = &node;
+			if (vertex.prev->f() - vertex.f() < switch_factor*(vertex.f() - list_head->next->f()))
+				for (CGraphNode *i = vertex.prev->prev; ; i = i->prev) {
+					if (i->f() <= vertex.f()) {
+						vertex.next = i->next;
+						vertex.prev = i;
+						i->next->prev = &vertex;
+						i->next = &vertex;
 						break;
 					}
 				}
 			else
 				for (CGraphNode *i = list_head->next; ; i = i->next)
-					if (i->f() >= node.f()) {
-						node.next = i;
-						node.prev = i->prev;
-						i->prev->next = &node;
-						i->prev = &node;
+					if (i->f() >= vertex.f()) {
+						vertex.next = i;
+						vertex.prev = i->prev;
+						i->prev->next = &vertex;
+						i->prev = &vertex;
 						break;
 					}
 		}
@@ -605,16 +605,16 @@ public:
 		return					(list_head->next == list_tail);
 	}
 
-	IC		void		add_opened		(CGraphNode &node)
+	IC		void		add_opened		(CGraphNode &vertex)
 	{
-		node.open_close_mask	= 1;
-		list_head->next->prev	= &node;
-		node.next				= list_head->next;
-		list_head->next			= &node;
-		node.prev				= list_head;
+		vertex.open_close_mask	= 1;
+		list_head->next->prev	= &vertex;
+		vertex.next				= list_head->next;
+		list_head->next			= &vertex;
+		vertex.prev				= list_head;
 	}
 
-	IC		void		decrease_opened	(CGraphNode &node, const _dist_type value)
+	IC		void		decrease_opened	(CGraphNode &vertex, const _dist_type value)
 	{
 		VERIFY					(!is_opened_empty());
 	}
@@ -781,76 +781,76 @@ public:
 //		VERIFY					((cheap_count < cheap_node_count) || filled_over);
 	}
 
-	IC		void		add_opened		(CGraphNode &node)
+	IC		void		add_opened		(CGraphNode &vertex)
 	{
-		node.open_close_mask	= 1;
+		vertex.open_close_mask	= 1;
 		
 		verify_cheap			();
-		if (!add_cheap_count(node)) {
+		if (!add_cheap_count(vertex)) {
 			verify_cheap			();
-			list_head->next->prev = &node;
-			node.next			= list_head->next;
-			list_head->next		= &node;
-			node.prev			= list_head;
+			list_head->next->prev = &vertex;
+			vertex.next			= list_head->next;
+			list_head->next		= &vertex;
+			vertex.prev			= list_head;
 			verify_cheap			();
 		}
 		else
 			verify_cheap			();
 	}
 
-	IC		void		add_cheap		(CGraphNode &node)
+	IC		void		add_cheap		(CGraphNode &vertex)
 	{
-		if (cheap_list_head->f() >= node.f()) {
-			cheap_list_head->prev	= &node;
-			node.next				= cheap_list_head;
-			node.prev				= 0;
-			cheap_list_head			= &node;
+		if (cheap_list_head->f() >= vertex.f()) {
+			cheap_list_head->prev	= &vertex;
+			vertex.next				= cheap_list_head;
+			vertex.prev				= 0;
+			cheap_list_head			= &vertex;
 			cheap_count++;
 			return;
 		}
 
-//		if ((cheap_list_tail->f() - node.f())*1 < (node.f() - cheap_list_head->f())*3)
+//		if ((cheap_list_tail->f() - vertex.f())*1 < (vertex.f() - cheap_list_head->f())*3)
 			for (CGraphNode *i = cheap_list_tail->prev; ; i = i->prev) {
-				if (i->f() <= node.f()) {
-					node.next		= i->next;
-					node.prev		= i;
-					i->next->prev	= &node;
-					i->next			= &node;
+				if (i->f() <= vertex.f()) {
+					vertex.next		= i->next;
+					vertex.prev		= i;
+					i->next->prev	= &vertex;
+					i->next			= &vertex;
 					cheap_count++;
 					return;
 				}
 			}
 //		else
 //			for (CGraphNode *i = cheap_list_head->next; ; i = i->next) {
-//				if (i->f() >= node.f()) {
-//					node.next		= i;
-//					node.prev		= i->prev;
-//					i->prev->next	= &node;
-//					i->prev			= &node;
+//				if (i->f() >= vertex.f()) {
+//					vertex.next		= i;
+//					vertex.prev		= i->prev;
+//					i->prev->next	= &vertex;
+//					i->prev			= &vertex;
 //					cheap_count++;
 //					return;
 //				}
 //			}
 	}
 
-	IC		void		add_cheap_tail	(CGraphNode &node)
+	IC		void		add_cheap_tail	(CGraphNode &vertex)
 	{
-		if (cheap_list_tail->f() < node.f()) {
-			cheap_list_tail->next = &node;
-			node.prev		= cheap_list_tail;
-			node.next		= 0;
-			cheap_list_tail	= &node;
+		if (cheap_list_tail->f() < vertex.f()) {
+			cheap_list_tail->next = &vertex;
+			vertex.prev		= cheap_list_tail;
+			vertex.next		= 0;
+			cheap_list_tail	= &vertex;
 			cheap_count++;
 			return;
 		}
-		add_cheap			(node);
+		add_cheap			(vertex);
 	}
 
-	IC		bool		add_cheap_count	(CGraphNode &node)
+	IC		bool		add_cheap_count	(CGraphNode &vertex)
 	{
 		if (!cheap_list_tail) {
-			cheap_list_head		= cheap_list_tail = &node;
-			node.next			= node.prev = 0;
+			cheap_list_head		= cheap_list_tail = &vertex;
+			vertex.next			= vertex.prev = 0;
 			cheap_count			= 1;
 			verify_cheap		();
 			return				(true);
@@ -858,19 +858,19 @@ public:
 
 		if (keep_filled && !filled_over) {
 			verify_cheap		();
-			add_cheap_tail		(node);
+			add_cheap_tail		(vertex);
 			if (cheap_count == cheap_node_count)
 				filled_over		= true;
 			verify_cheap		();
 			return				(true);
 		}
 
-		if (cheap_list_tail->f() < node.f()) {
+		if (cheap_list_tail->f() < vertex.f()) {
 			verify_cheap		();
 			return				(false);
 		}
 
-		add_cheap				(node);
+		add_cheap				(vertex);
 
 		if (keep_fixed_count && (cheap_count > cheap_node_count))
 			remove_cheap_tail	();
@@ -935,42 +935,42 @@ public:
 			filled_over	= true;
 	}
 
-	IC		void		decrease_opened	(CGraphNode &node, const _dist_type value)
+	IC		void		decrease_opened	(CGraphNode &vertex, const _dist_type value)
 	{
 		VERIFY					(!is_opened_empty());
 		VERIFY					(cheap_list_head && cheap_list_tail);
 		
 //		verify_cheap			();
-		for (CGraphNode *i = cheap_list_head; i && (i != &node); i = i->next);
-		if (i == &node) {
-			if (i->prev && (i->prev->f() > node.f())) {
-				for ( ; i->prev && (i->prev->f() > node.f()); i = i->prev);
+		for (CGraphNode *i = cheap_list_head; i && (i != &vertex); i = i->next);
+		if (i == &vertex) {
+			if (i->prev && (i->prev->f() > vertex.f())) {
+				for ( ; i->prev && (i->prev->f() > vertex.f()); i = i->prev);
 				if (!i->prev) {
-					node.prev->next = node.next;
-					if (node.next)
-						node.next->prev = node.prev;
+					vertex.prev->next = vertex.next;
+					if (vertex.next)
+						vertex.next->prev = vertex.prev;
 					else
-						cheap_list_tail = node.prev;
-					node.prev		= 0;
-					node.next		= cheap_list_head;
-					cheap_list_head->prev = &node;
-					cheap_list_head	= &node;
+						cheap_list_tail = vertex.prev;
+					vertex.prev		= 0;
+					vertex.next		= cheap_list_head;
+					cheap_list_head->prev = &vertex;
+					cheap_list_head	= &vertex;
 					verify_cheap			();
 					return;
 				}
 				else {
-					if (node.prev)
-						node.prev->next = node.next;
+					if (vertex.prev)
+						vertex.prev->next = vertex.next;
 					else
-						cheap_list_tail = node.prev;
-					if (node.next)
-						node.next->prev = node.prev;
+						cheap_list_tail = vertex.prev;
+					if (vertex.next)
+						vertex.next->prev = vertex.prev;
 					else
-						cheap_list_tail = node.prev;
-					node.next		= i;
-					node.prev		= i->prev;
-					i->prev->next	= &node;
-					i->prev			= &node;
+						cheap_list_tail = vertex.prev;
+					vertex.next		= i;
+					vertex.prev		= i->prev;
+					i->prev->next	= &vertex;
+					i->prev			= &vertex;
 					verify_cheap			();
 					return;
 				}
@@ -978,16 +978,16 @@ public:
 		}
 		else {
 			if (keep_fixed_count) {
-				node.next->prev			= node.prev;
-				node.prev->next			= node.next;
-				if (!add_cheap_count(node)) {
-					node.next->prev		= &node;
-					node.prev->next		= &node;
+				vertex.next->prev			= vertex.prev;
+				vertex.prev->next			= vertex.next;
+				if (!add_cheap_count(vertex)) {
+					vertex.next->prev		= &vertex;
+					vertex.prev->next		= &vertex;
 				}
 			}
 			else {
-				CGraphNode				*next = node.next, *prev = node.prev;
-				if (add_cheap_count(node)) {
+				CGraphNode				*next = vertex.next, *prev = vertex.prev;
+				if (add_cheap_count(vertex)) {
 					next->prev			= prev;
 					prev->next			= next;
 				}
@@ -1187,20 +1187,20 @@ public:
 		return					(false);
 	}
 
-	IC		u32			compute_bucket_id(CGraphNode &node) const
+	IC		u32			compute_bucket_id(CGraphNode &vertex) const
 	{
-		if (node.f() >= max_bucket_value)
+		if (vertex.f() >= max_bucket_value)
 			return			(bucket_count - 1);
-		if (node.f() <= min_bucket_value)
+		if (vertex.f() <= min_bucket_value)
 			return			(0);
-		return				(u32(bucket_count*(node.f() - min_bucket_value)/(max_bucket_value - min_bucket_value)));
+		return				(u32(bucket_count*(vertex.f() - min_bucket_value)/(max_bucket_value - min_bucket_value)));
 	}
 
 	IC		void		verify_buckets	() const
 	{
 //		for (u32 i=0; i<bucket_count; i++) {
 //			CGraphNode	*j = buckets[i], *k;
-//			if (!j || (indexes[j->index()].path_id != cur_path_id) || (indexes[j->index()].node != j))
+//			if (!j || (indexes[j->index()].path_id != cur_path_id) || (indexes[j->index()].vertex != j))
 //				continue;
 //			u32			count = 0, count1 = 0;
 //			for ( ; j; k=j,j=j->next, count++) {
@@ -1223,64 +1223,64 @@ public:
 //		}
 	}
 
-	IC		void		add_to_bucket	(CGraphNode &node, u32 bucket_id)
+	IC		void		add_to_bucket	(CGraphNode &vertex, u32 bucket_id)
 	{
 		if (bucket_id < min_bucket_id)
 			min_bucket_id		= bucket_id;
 
 		CGraphNode				*i = buckets[bucket_id];
 		if (!i || (!clear_buckets && ((i->path_id != cur_path_id) || (i->bucket_id != bucket_id)))) {
-			node.bucket_id		= bucket_id;
-			node.path_id		= cur_path_id;
-			buckets[bucket_id]	= &node;
-			node.next			= node.prev = 0;
+			vertex.bucket_id		= bucket_id;
+			vertex.path_id		= cur_path_id;
+			buckets[bucket_id]	= &vertex;
+			vertex.next			= vertex.prev = 0;
 			verify_buckets		();
 			return;
 		}
 
-		node.bucket_id			= bucket_id;
-		node.path_id			= cur_path_id;
+		vertex.bucket_id			= bucket_id;
+		vertex.path_id			= cur_path_id;
 
-		if (i->f() >= node.f()) {
-			buckets[bucket_id]	= &node;
-			node.next			= i;
-			node.prev			= 0;
-			i->prev				= &node;
+		if (i->f() >= vertex.f()) {
+			buckets[bucket_id]	= &vertex;
+			vertex.next			= i;
+			vertex.prev			= 0;
+			i->prev				= &vertex;
 			verify_buckets		();
 			return;
 		}
 		
 		if (!i->next) {
-			node.prev			= i;
-			node.next			= 0;
-			i->next				= &node;
+			vertex.prev			= i;
+			vertex.next			= 0;
+			i->next				= &vertex;
 			verify_buckets		();
 			return;
 		}
 		
 		for (i = i->next; i->next; i = i->next) {
-			if (i->f() >= node.f()) {
-				node.next		= i;
-				node.prev		= i->prev;
-				i->prev->next	= &node;
-				i->prev			= &node;
+			if (i->f() >= vertex.f()) {
+				vertex.next		= i;
+				vertex.prev		= i->prev;
+				i->prev->next	= &vertex;
+				i->prev			= &vertex;
 				verify_buckets	();
 				return;
 			}
 		}
 		
-		if (i->f() >= node.f()) {
-			node.next		= i;
-			node.prev		= i->prev;
-			i->prev->next	= &node;
-			i->prev			= &node;
+		if (i->f() >= vertex.f()) {
+			vertex.next		= i;
+			vertex.prev		= i->prev;
+			i->prev->next	= &vertex;
+			i->prev			= &vertex;
 			verify_buckets	();
 			return;
 		}
 		else {
-			node.next		= 0;
-			node.prev		= i;
-			i->next			= &node;
+			vertex.next		= 0;
+			vertex.prev		= i;
+			i->next			= &vertex;
 			verify_buckets	();
 			return;
 		}
@@ -1288,28 +1288,28 @@ public:
 		verify_buckets	();
 	}
 
-	IC		void		add_opened		(CGraphNode &node)
+	IC		void		add_opened		(CGraphNode &vertex)
 	{
-		node.open_close_mask	= 1;
-		add_to_bucket			(node,compute_bucket_id(node));
+		vertex.open_close_mask	= 1;
+		add_to_bucket			(vertex,compute_bucket_id(vertex));
 		verify_buckets			();
 	}
 
-	IC		void		decrease_opened	(CGraphNode &node, const _dist_type value)
+	IC		void		decrease_opened	(CGraphNode &vertex, const _dist_type value)
 	{
 		VERIFY					(!is_opened_empty());
-		u32						node_bucket_id = compute_bucket_id(node);
-		if (node.prev)
-			node.prev->next		= node.next;
+		u32						node_bucket_id = compute_bucket_id(vertex);
+		if (vertex.prev)
+			vertex.prev->next		= vertex.next;
 		else {
-			VERIFY				(buckets[node.bucket_id] == &node);
-			buckets[node.bucket_id] = node.next;
+			VERIFY				(buckets[vertex.bucket_id] == &vertex);
+			buckets[vertex.bucket_id] = vertex.next;
 		}
-		if (node.next)
-			node.next->prev		= node.prev;
+		if (vertex.next)
+			vertex.next->prev		= vertex.prev;
 
 		verify_buckets			();
-		add_to_bucket			(node,node_bucket_id);
+		add_to_bucket			(vertex,node_bucket_id);
 		verify_buckets			();
 	}
 

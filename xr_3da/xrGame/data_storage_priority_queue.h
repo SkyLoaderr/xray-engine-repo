@@ -66,7 +66,7 @@ protected:
 	#pragma pack(push,4)
 	struct SGraphIndexNode {
 		typename _priority_queue::pointer	pq_node;
-		CGraphNode							*node;
+		CGraphNode							*vertex;
 		_path_id_type						path_id;
 	};
 	#pragma pack(pop)
@@ -98,8 +98,8 @@ public:
 		ZeroMemory				(indexes,byte_count);
 		memory_usage			+= byte_count;
 
-//		byte_count				= (node_count)*sizeof(_priority_queue::node);
-//		priority_queue.reserved = (_priority_queue::node*)xr_malloc(byte_count);
+//		byte_count				= (node_count)*sizeof(_priority_queue::vertex);
+//		priority_queue.reserved = (_priority_queue::vertex*)xr_malloc(byte_count);
 //		memory_usage			+= byte_count;
 
 //		Msg						("* Data storage allocated %d bytes of memory",memory_usage);
@@ -125,35 +125,35 @@ public:
 		return					(priority_queue.empty());
 	}
 
-	IC		void		add_opened		(CGraphNode &node)
+	IC		void		add_opened		(CGraphNode &vertex)
 	{
-		node.open_close_mask	= 1;
-		indexes[node.index()].pq_node = priority_queue.push(&node);
+		vertex.open_close_mask	= 1;
+		indexes[vertex.index()].pq_node = priority_queue.push(&vertex);
 	}
 
-	IC		CGraphNode	&create_node	(const _index_type node_index)
+	IC		CGraphNode	&create_node	(const _index_type vertex_id)
 	{
-		VERIFY					(node_index < max_node_count);
-		CGraphNode				*node = indexes[node_index].node = nodes + node_count++;
-		indexes[node_index].path_id = cur_path_id;
-		node->_index			= node_index;
-		return					(*node);
+		VERIFY					(vertex_id < max_node_count);
+		CGraphNode				*vertex = indexes[vertex_id].vertex = nodes + node_count++;
+		indexes[vertex_id].path_id = cur_path_id;
+		vertex->_index			= vertex_id;
+		return					(*vertex);
 	}
 
-	IC		CGraphNode	&get_node		(const _index_type node_index) const
+	IC		CGraphNode	&get_node		(const _index_type vertex_id) const
 	{
-		VERIFY					(node_index < max_node_count);
-		VERIFY					(is_visited(node_index));
-		return					(*indexes[node_index].node);
+		VERIFY					(vertex_id < max_node_count);
+		VERIFY					(is_visited(vertex_id));
+		return					(*indexes[vertex_id].vertex);
 	}
 
-	IC		void		decrease_opened	(CGraphNode &node, const _dist_type value)
+	IC		void		decrease_opened	(CGraphNode &vertex, const _dist_type value)
 	{
 		VERIFY					(!is_opened_empty());
-		VERIFY					(is_opened(node));
-//		priority_queue.remove	(indexes[node.index()].pq_node);
-//		indexes[node.index()].pq_node = priority_queue.push(&node);
-		priority_queue.increase	(indexes[node.index()].pq_node,&node);
+		VERIFY					(is_opened(vertex));
+//		priority_queue.remove	(indexes[vertex.index()].pq_node);
+//		indexes[vertex.index()].pq_node = priority_queue.push(&vertex);
+		priority_queue.increase	(indexes[vertex.index()].pq_node,&vertex);
 	}
 	
 
@@ -175,20 +175,20 @@ public:
 		return					(*priority_queue.top());
 	}
 
-	IC		bool		is_opened		(const CGraphNode &node) const
+	IC		bool		is_opened		(const CGraphNode &vertex) const
 	{
-		return					(!!node.open_close_mask);
+		return					(!!vertex.open_close_mask);
 	}
 
-	IC		bool		is_visited(const _index_type node_index) const
+	IC		bool		is_visited(const _index_type vertex_id) const
 	{
-		VERIFY					(node_index < max_node_count);
-		return					(indexes[node_index].path_id == cur_path_id);
+		VERIFY					(vertex_id < max_node_count);
+		return					(indexes[vertex_id].path_id == cur_path_id);
 	}
 
-	IC		bool		is_closed		(const CGraphNode &node) const
+	IC		bool		is_closed		(const CGraphNode &vertex) const
 	{
-		return					(is_visited(node) && !is_opened(node));
+		return					(is_visited(vertex) && !is_opened(vertex));
 	}
 
 	IC		const _index_type	get_visited_node_count() const

@@ -66,6 +66,11 @@ public:
 		VERIFY					(false);
 	}
 
+	IC		_index_type	get_max_node_count()
+	{
+		return					(max_node_count);
+	}
+
 	IC		void		get_path		(xr_vector<_index_type> &path, _GraphNode *best)
 	{
 		_GraphNode				*t1 = best, *t2 = best->back;
@@ -111,7 +116,7 @@ namespace DataStorageBaseIndex {
 		typename _path_id_type
 	>
 	struct SGraphIndexNode {
-		_GraphNode		*node;
+		_GraphNode		*vertex;
 		_path_id_type	path_id;
 	};
 	
@@ -177,27 +182,27 @@ public:
 		cur_path_id++;
 	}
 
-	IC		bool		is_opened		(const _GraphNode &node) const
+	IC		bool		is_opened		(const _GraphNode &vertex) const
 	{
-		return					(!!node.open_close_mask);
+		return					(!!vertex.open_close_mask);
 	}
 
-	IC		bool		is_visited(const _index_type node_index) const
+	IC		bool		is_visited(const _index_type vertex_id) const
 	{
-		VERIFY					(node_index < max_node_count);
-		return					(indexes[node_index].path_id == cur_path_id);
+		VERIFY					(vertex_id < max_node_count);
+		return					(indexes[vertex_id].path_id == cur_path_id);
 	}
 
-	IC		bool		is_closed		(const _GraphNode &node) const
+	IC		bool		is_closed		(const _GraphNode &vertex) const
 	{
-		return					(is_visited(node) && !is_opened(node));
+		return					(is_visited(vertex) && !is_opened(vertex));
 	}
 
-	IC		_GraphNode	&get_node		(const _index_type node_index) const
+	IC		_GraphNode	&get_node		(const _index_type vertex_id) const
 	{
-		VERIFY					(node_index < max_node_count);
-		VERIFY					(is_visited(node_index));
-		return					(*indexes[node_index].node);
+		VERIFY					(vertex_id < max_node_count);
+		VERIFY					(is_visited(vertex_id));
+		return					(*indexes[vertex_id].vertex);
 	}
 };
 
@@ -239,7 +244,7 @@ public:
 		return					(node_count);
 	}
 
-	IC		_GraphNode	&create_node	(const _index_type node_index)
+	IC		_GraphNode	&create_node	(const _index_type vertex_id)
 	{
 		return					(*(nodes + node_count++));
 	}
@@ -305,12 +310,12 @@ public:
 		inherited2::init		();
 	}
 
-	IC		_GraphNode	&create_node	(const _index_type node_index)
+	IC		_GraphNode	&create_node	(const _index_type vertex_id)
 	{
-		VERIFY					(node_index < max_node_count);
-		_GraphNode				*node = indexes[node_index].node = &inherited2::create_node(node_index);
-		indexes[node_index].path_id = cur_path_id;
-		node->_index			= node_index;
-		return					(*node);
+		VERIFY					(vertex_id < max_node_count);
+		_GraphNode				*vertex = indexes[vertex_id].vertex = &inherited2::create_node(vertex_id);
+		indexes[vertex_id].path_id = cur_path_id;
+		vertex->_index			= vertex_id;
+		return					(*vertex);
 	}
 };

@@ -1,0 +1,62 @@
+////////////////////////////////////////////////////////////////////////////
+//	Module 		: detailed_path_manager.h
+//	Created 	: 02.10.2001
+//  Modified 	: 12.11.2003
+//	Author		: Dmitriy Iassenev
+//	Description : Detail path manager
+////////////////////////////////////////////////////////////////////////////
+
+#pragma once
+
+class CDetailPathManager {
+			bool	valid					() const;
+			bool	valid					(const Fvector &position) const;
+			void	build_smooth_path		(const xr_vector<u32> &level_path);
+			void	build_dodge_path		(const xr_vector<u32> &level_path);
+			void	build_criteria_path		(const xr_vector<u32> &level_path);
+protected:
+	u32										m_detail_cur_point_index;
+	bool									m_detail_path_actual;
+public:
+	enum EMovementType {
+		eMovementTypeStand		= u32(0),
+		eMovementTypJumpUp,
+		eMovementTypJumpDown,
+		eMovementTypeWalk,
+		eMovementTypeRun,
+		eMovementTypePanic,
+	};
+
+	enum EDetailPathType {
+		eDetailPathTypeSmooth,
+		eDetailPathTypeSmoothDodge,
+		eDetailPathTypeSmoothCriteria,
+	};
+
+	struct SMovementParams {
+		float								m_linear_speed;
+		float								m_angular_speed;
+	};
+
+	struct STravelPoint : public SMovementParams {
+		Fvector								m_position;
+	};
+
+	bool									m_collision;
+
+	xr_vector<STravelPoint>					m_detail_path;
+	Fvector									m_detail_start_position;
+	Fvector									m_detail_dest_position;
+	EDetailPathType							m_detail_path_type;
+	xr_map<EMovementType,SMovementParams>	m_movement_params;
+
+	friend class CScriptMonster;
+	friend class CMotionManager;
+
+					CDetailPathManager		();
+	virtual			~CDetailPathManager		();
+	virtual void	init					();
+			void	build_detail_path		(const xr_vector<u32> &level_path);
+			const	Fvector &direction		();
+			float	speed					();
+};
