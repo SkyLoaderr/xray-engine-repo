@@ -98,8 +98,9 @@ void	CResourceManager::LS_Load			()
 	luaopen_string	(LSVM);
 	luaopen_math	(LSVM);
 
-	luabind::open					(LSVM);
-	luabind::set_error_callback		(LuaError);
+	luabind::open						(LSVM);
+	if (0==luabind::get_error_callback())
+		luabind::set_error_callback		(LuaError);
 
 	function		(LSVM, "log",	LuaLog);
 
