@@ -113,7 +113,7 @@ function main ()
 --	local bredun6 = classes.SinglePatrol (get_level_object ("stalker_ptr23"), military3_7.script_name (), "patrol_way1", anim_razv, anim_end)
 --	local bredun7 = classes.SinglePatrol (get_level_object ("stalker_ptr24"), military3_7.script_name (), "patrol_way1", anim_razv, anim_end)
 --	local bredun8 = classes.SinglePatrol (get_level_object ("stalker_ptr25"), military3_7.script_name (), "patrol_way1", anim_razv, anim_end)
--
+
 --	military3_7.add_random_phrases(bredun1)
 --	military3_7.add_random_phrases(bredun2)
 --	military3_7.add_random_phrases(bredun3)
