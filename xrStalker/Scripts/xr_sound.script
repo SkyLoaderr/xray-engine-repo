@@ -46,7 +46,9 @@ snd_files = {
 	trade_yes_stalker              = "characters_voice\\human_01\\talk\\trade\\yes\\stalker\\yes_",
 	trade_no_stalker               = "characters_voice\\human_01\\talk\\trade\\no\\stalker\\no_",
 
-	novice_camp_guards             = "characters_voice\\human_01\\scenario\\guard_novice_camp\\guard_novice_camp_tutorial_"
+	novice_camp_guards             = "characters_voice\\human_01\\scenario\\guard_novice_camp\\guard_novice_camp_tutorial_",
+	
+	military_radio                 = "characters_voice\\human_01\\scenario\\radio\\radio_voice_"
 }
 -----------------------------------------------------------------------------------------------------------------------------------
 function load_sound(obj)
@@ -156,6 +158,10 @@ function load_sound(obj)
 	------------------------------------------------------------------------------------------------
 	-- лагерь новичков на эскейп
 	theme["novice_camp_guards"] = load_theme("novice_camp_guards")
+	
+	-- radio for military stalkers
+	theme["military_radio"] = load_theme ("military_radio")
+	
 	
 	--print_table(theme)
 	--printf("All sounds loaded for %s, section %s", obj:name(), obj:section())
