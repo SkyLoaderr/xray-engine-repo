@@ -1,5 +1,5 @@
 #include "stdafx.h"
-
+ 
 void CRenderTarget::accum_spot_shadow	(light* L)
 {
 	// *** assume accumulator setted up ***
