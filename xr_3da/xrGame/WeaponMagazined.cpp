@@ -165,7 +165,7 @@ void CWeaponMagazined::ReloadMagazine() {
 			if(m_pAmmo) { m_ammoType = i; break; }
 		}
 	}
-	if(!l_lockType && m_magazine.size() && (!m_pAmmo || strcmp(m_pAmmo->cName(), m_magazine.top().m_ammoSect))) UnloadMagazine();
+	if(!l_lockType && m_magazine.size() && (!m_pAmmo || strcmp(m_pAmmo->cNameSect(), m_magazine.top().m_ammoSect))) UnloadMagazine();
 	if(m_pAmmo) {
 		CCartridge l_cartridge;
 		while(iAmmoElapsed < iMagazineSize && m_pAmmo->Get(l_cartridge)) {

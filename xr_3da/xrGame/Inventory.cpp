@@ -359,7 +359,7 @@ PIItem CInventory::Same(const PIItem pIItem) {
 	for(PPIItem l_it = m_belt.begin(); l_it != m_belt.end(); l_it++) {
 		PIItem l_pIItem = *l_it;
 		//if((l_pIItem != pIItem) && (l_pIItem->SUB_CLS_ID == pIItem->SUB_CLS_ID)) return l_pIItem;
-		if((l_pIItem != pIItem) && !strcmp(l_pIItem->cName(), pIItem->cName())) return l_pIItem;
+		if((l_pIItem != pIItem) && !strcmp(l_pIItem->cNameSect(), pIItem->cNameSect())) return l_pIItem;
 	}
 	return NULL;
 }
@@ -367,7 +367,7 @@ PIItem CInventory::Same(const PIItem pIItem) {
 PIItem CInventory::Get(const char *name) {
 	for(PPIItem l_it = m_belt.begin(); l_it != m_belt.end(); l_it++) {
 		PIItem l_pIItem = *l_it;
-		if(!strcmp(l_pIItem->cName(), name) && l_pIItem->Useful()) return l_pIItem;
+		if(!strcmp(l_pIItem->cNameSect(), name) && l_pIItem->Useful()) return l_pIItem;
 	}
 	return NULL;
 }

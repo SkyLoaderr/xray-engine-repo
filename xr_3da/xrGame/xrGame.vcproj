@@ -1124,6 +1124,16 @@
 								RelativePath="Bolt.h">
 							</File>
 						</Filter>
+						<Filter
+							Name="RPG7"
+							Filter="">
+							<File
+								RelativePath="WeaponRPG7.cpp">
+							</File>
+							<File
+								RelativePath="WeaponRPG7.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="Target"

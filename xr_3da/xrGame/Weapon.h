@@ -222,14 +222,14 @@ public:
 	void SpawnAmmo(u32 boxCurr = 0xffffffff, LPCSTR ammoSect = NULL);
 
 	CWeaponAmmo *m_pAmmo;
-	//LPCSTR m_ammoSect;
 	char m_tmpName[255], m_ammoSect[255];
 	vector<LPCSTR> m_ammoTypes;
 	u32 m_ammoType;
 	LPCSTR m_ammoName;
+	f32 m_resource, m_abrasion;
 	//
 
-	// Multy ammo support
+	// Multitype ammo support
 	stack<CCartridge> m_magazine;
 	//
 };

@@ -298,6 +298,8 @@ void CWeapon::Load		(LPCSTR section)
 	}
 	m_ammoName = pSettings->r_string(m_ammoTypes[0],"inv_name_short");
 
+	m_resource = m_abrasion = pSettings->r_float(section,"resource");
+
 	//iAmmoLimit			= pSettings->r_s32		(section,"ammo_limit"		);
 	//iAmmoCurrent		= pSettings->r_s32		(section,"ammo_current"		);
 	iAmmoElapsed		= pSettings->r_s32		(section,"ammo_elapsed"		);
@@ -750,6 +752,7 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 	
 	// Ammo
 	if(Local()) {
+		m_abrasion = __max(0, m_abrasion - l_cartridge.m_impair);
 		m_magazine.pop();
 		if(!(--iAmmoElapsed)) OnMagazineEmpty();
 	}

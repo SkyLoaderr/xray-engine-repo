@@ -19,7 +19,7 @@ void CBolt::Deactivate() {
 }
 
 bool CBolt::Attach(PIItem pIItem, bool force) {
-	if(!strcmp(cName(), pIItem->cName())) { force = true;}
+	if(!strcmp(cNameSect(), pIItem->cNameSect())) { force = true;}
 	return inherited::Attach(pIItem, force);
 }
 
@@ -42,10 +42,10 @@ void CBolt::Throw() {
 		// Спавним болты, чтоб у актера всегда было 5 болтов
 		u32 l_c = 2 - m_subs.size();
 		while(l_c--) {
-			xrServerEntity*		D	= F_entity_Create(cName());
+			xrServerEntity*		D	= F_entity_Create(cNameSect());
 			R_ASSERT			(D);
 			// Fill
-			strcpy				(D->s_name,cName());
+			strcpy				(D->s_name,cNameSect());
 			strcpy				(D->s_name_replace,"");
 			D->s_gameid			=	u8(GameID());
 			D->s_RP				=	0xff;

@@ -51,10 +51,12 @@ void CWeaponAmmo::Load(LPCSTR section) {
 }
 
 BOOL CWeaponAmmo::net_Spawn(LPVOID DC) {
+	BOOL bResult = inherited::net_Spawn	(DC);
 	xrSE_WeaponAmmo *l_pW = (xrSE_WeaponAmmo*)DC;
 	m_boxCurr = l_pW->a_elapsed;
 	R_ASSERT(m_boxCurr <= m_boxSize);
 
+	setVisible(true);
 	CKinematics* V = PKinematics(Visual());
 	if(V) V->PlayCycle("idle");
 
@@ -72,7 +74,7 @@ BOOL CWeaponAmmo::net_Spawn(LPVOID DC) {
 		m_pPhysicsShell->fDesiredStrength = 0.f;
 	}
 
-	return inherited::net_Spawn(DC);
+	return bResult;
 }
 
 void CWeaponAmmo::net_Destroy() {
@@ -137,7 +139,7 @@ s32 CWeaponAmmo::Sort(PIItem pIItem) {
 	// перед - -1. Если пофиг то 0.
 	CWeaponAmmo *l_pA = dynamic_cast<CWeaponAmmo*>(pIItem);
 	if(!l_pA) return 0;
-	if(strcmp(cName(), l_pA->cName())) return 0;
+	if(strcmp(cNameSect(), l_pA->cNameSect())) return 0;
 	if(m_boxCurr <= l_pA->m_boxCurr) return 1;
 	else return -1;
 }
@@ -147,7 +149,7 @@ bool CWeaponAmmo::Merge(PIItem pIItem) {
 	if(m_boxCurr == m_boxSize) return false;
 	CWeaponAmmo *l_pA = dynamic_cast<CWeaponAmmo*>(pIItem);
 	if(!l_pA) return false;
-	if(strcmp(cName(), l_pA->cName())) return false;
+	if(strcmp(cNameSect(), l_pA->cNameSect())) return false;
 	u16 l_free = m_boxSize - m_boxCurr;
 	m_boxCurr = m_boxCurr + (l_free < l_pA->m_boxCurr ? l_free : l_pA->m_boxCurr);
 	l_pA->m_boxCurr = l_pA->m_boxCurr - (l_free < l_pA->m_boxCurr ? l_free : l_pA->m_boxCurr);
@@ -156,7 +158,7 @@ bool CWeaponAmmo::Merge(PIItem pIItem) {
 
 bool CWeaponAmmo::Get(CCartridge &cartridge) {
 	if(!m_boxCurr) return false;
-	cartridge.m_ammoSect = cName();
+	cartridge.m_ammoSect = cNameSect();
 	cartridge.m_kDist = m_kDist;
 	cartridge.m_kDisp = m_kDisp;
 	cartridge.m_kHit = m_kHit;
