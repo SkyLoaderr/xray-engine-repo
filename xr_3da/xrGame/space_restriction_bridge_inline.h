@@ -57,7 +57,7 @@ IC	u32	CSpaceRestrictionBridge::accessible_nearest	(T &restriction, const Fvecto
 			selected		= *I;
 		}
 	}
-	VERIFY	(ai().level_graph().valid_vertex_id(selected));
+	VERIFY							(ai().level_graph().valid_vertex_id(selected));
 
 	{
 		min_dist_sqr = flt_max;
