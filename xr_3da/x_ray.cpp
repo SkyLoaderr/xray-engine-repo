@@ -329,32 +329,37 @@ void CApplication::LoadTitle	(char *S, char *S2)
 	Device.dwFrame				+= 1;
 	Device.Begin				();
 
-	// Draw logo
-	u32	Offset;
-	u32	C						= 0xffffffff;
-	u32	_w						= Device.dwWidth;
-	u32	_h						= Device.dwHeight;
-	FVF::TL* pv					= (FVF::TL*) RCache.Vertex.Lock(4,ll_hGeom.stride(),Offset);
-	pv->set						(EPS_S,				float(_h+EPS_S),	0+EPS_S, 1, C, 0, 1);	pv++;
-	pv->set						(EPS_S,				EPS_S,				0+EPS_S, 1, C, 0, 0);	pv++;
-	pv->set						(float(_w+EPS_S),	float(_h+EPS_S),	0+EPS_S, 1, C, 1, 1);	pv++;
-	pv->set						(float(_w+EPS_S),	EPS_S,				0+EPS_S, 1, C, 1, 0);	pv++;
-	RCache.Vertex.Unlock		(4,ll_hGeom.stride());
-	
-	RCache.set_Shader			(ll_hLogo);
-	RCache.set_Geometry			(ll_hGeom);
-	RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
-
-	// Draw title
 	Log							(S,S2);
-	R_ASSERT					(pFontSystem);
-	pFontSystem->Clear			();
-	pFontSystem->SetColor		(color_rgba(192,192,192,255));
-	pFontSystem->SetAligment	(CGameFont::alCenter);
-	char *F = "%s";
-	if (S2) F="%s%s";
-	pFontSystem->Out			(0.f,0.93f,F,S,S2);
-	pFontSystem->OnRender		();
+
+	if	(g_pGamePersistent->bDedicatedServer)	{
+		Console->OnRender			();
+	} else {
+		// Draw logo
+		u32	Offset;
+		u32	C						= 0xffffffff;
+		u32	_w						= Device.dwWidth;
+		u32	_h						= Device.dwHeight;
+		FVF::TL* pv					= (FVF::TL*) RCache.Vertex.Lock(4,ll_hGeom.stride(),Offset);
+		pv->set						(EPS_S,				float(_h+EPS_S),	0+EPS_S, 1, C, 0, 1);	pv++;
+		pv->set						(EPS_S,				EPS_S,				0+EPS_S, 1, C, 0, 0);	pv++;
+		pv->set						(float(_w+EPS_S),	float(_h+EPS_S),	0+EPS_S, 1, C, 1, 1);	pv++;
+		pv->set						(float(_w+EPS_S),	EPS_S,				0+EPS_S, 1, C, 1, 0);	pv++;
+		RCache.Vertex.Unlock		(4,ll_hGeom.stride());
+
+		RCache.set_Shader			(ll_hLogo);
+		RCache.set_Geometry			(ll_hGeom);
+		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
+
+		// Draw title
+		R_ASSERT					(pFontSystem);
+		pFontSystem->Clear			();
+		pFontSystem->SetColor		(color_rgba(192,192,192,255));
+		pFontSystem->SetAligment	(CGameFont::alCenter);
+		char *F = "%s";
+		if (S2) F="%s%s";
+		pFontSystem->Out			(0.f,0.93f,F,S,S2);
+		pFontSystem->OnRender		();
+	}
 
 	Device.End					();
 	CheckCopyProtection			();
