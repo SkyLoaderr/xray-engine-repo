@@ -221,13 +221,13 @@ public:
 	// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------						
 	// Monsters
 	// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-							CScriptMovementAction		(MonsterSpace::EScriptMonsterMoveAction tAct, const Fvector &tPosition, MonsterSpace::EScriptMonsterSpeedParam speed_param = MonsterSpace::eSP_Default)
+							CScriptMovementAction		(MonsterSpace::EScriptMonsterMoveAction tAct, Fvector &tPosition, MonsterSpace::EScriptMonsterSpeedParam speed_param = MonsterSpace::eSP_Default)
 	{																																			
 		m_tMoveAction		= tAct;
 		SetPosition			(tPosition);																										
 		m_tSpeedParam		= speed_param;
 	}																																			
-							CScriptMovementAction		(MonsterSpace::EScriptMonsterMoveAction tAct, const CPatrolPathParams &tPatrolPathParams, MonsterSpace::EScriptMonsterSpeedParam speed_param = MonsterSpace::eSP_Default)
+							CScriptMovementAction		(MonsterSpace::EScriptMonsterMoveAction tAct, CPatrolPathParams &tPatrolPathParams, MonsterSpace::EScriptMonsterSpeedParam speed_param = MonsterSpace::eSP_Default)
 	{																																			
 		m_tMoveAction		= tAct;
 		SetPatrolPath		(tPatrolPathParams.m_path,tPatrolPathParams.m_path_name);															
@@ -902,41 +902,41 @@ public:
 		tt					= t;
 	}
 
-	IC		void			SetAction(const CScriptMovementAction &tMovementAction)
+	IC		void			SetAction(CScriptMovementAction &tMovementAction)
 	{
 		SetAction			(tMovementAction,m_tMovementAction);
 	}
 
-	IC		void			SetAction(const CScriptWatchAction &tWatchAction)
+	IC		void			SetAction(CScriptWatchAction &tWatchAction)
 	{
 		SetAction			(tWatchAction,m_tWatchAction);
 	}
 
-	IC		void			SetAction(const CScriptAnimationAction &tAnimationAction)
+	IC		void			SetAction(CScriptAnimationAction &tAnimationAction)
 	{
 		SetAction			(tAnimationAction,m_tAnimationAction);
 	}
 
-	IC		void			SetAction(const CScriptSoundAction &tSoundAction)
+	IC		void			SetAction(CScriptSoundAction &tSoundAction)
 	{
 		SetAction			(tSoundAction,m_tSoundAction);
 	}
 
-	IC		void			SetAction(const CScriptParticleAction &tParticleAction)
+	IC		void			SetAction(CScriptParticleAction &tParticleAction)
 	{
 		SetAction			(tParticleAction,m_tParticleAction);
 	}
 
-	IC		void			SetAction(const CScriptObjectAction &tObjectAction)
+	IC		void			SetAction(CScriptObjectAction &tObjectAction)
 	{
 		SetAction			(tObjectAction,m_tObjectAction);
 	}
 
-	IC		void			SetAction(const CActionCondition &tActionCondition)
+	IC		void			SetAction(CActionCondition &tActionCondition)
 	{
 		SetAction			(tActionCondition,m_tActionCondition);
 	}
-	IC		void			SetAction(const CMonsterAction &tMonsterAction)
+	IC		void			SetAction(CMonsterAction &tMonsterAction)
 	{
 		SetAction			(tMonsterAction,m_tMonsterAction);
 	}
