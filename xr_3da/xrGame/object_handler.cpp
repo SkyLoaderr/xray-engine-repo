@@ -87,7 +87,7 @@ void CObjectHandler::OnItemDrop		(CInventoryItem *inventory_item)
 			Level().spawn_item	(*weapon_ammo->cNameSect(),planner().object().Position(),planner().object().ai_location().level_vertex_id(),planner().object().ID());
 	}
 
-	if (inventory().ActiveItem()->object().ID() == inventory_item->object()->ID())
+	if (inventory().ActiveItem()->object().ID() == inventory_item->object().ID())
 		set_goal				(MonsterSpace::eObjectActionIdle);
 
 	planner().remove_item		(inventory_item);
