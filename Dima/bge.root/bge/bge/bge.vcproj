@@ -1411,6 +1411,30 @@
 					</Filter>
 				</Filter>
 			</Filter>
+			<Filter
+				Name="extensions"
+				>
+				<File
+					RelativePath=".\generic_extensions.h"
+					>
+				</File>
+				<File
+					RelativePath=".\macros_extensions.h"
+					>
+				</File>
+				<File
+					RelativePath=".\math_extensions.h"
+					>
+				</File>
+				<File
+					RelativePath=".\script_extensions.h"
+					>
+				</File>
+				<File
+					RelativePath=".\type_extensions.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="ui"
