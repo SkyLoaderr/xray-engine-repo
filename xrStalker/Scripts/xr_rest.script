@@ -20,6 +20,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 
 
+
 ----------------------------------------------------------------------------------------------------------------------
 class "evaluator_food" (property_evaluator)
 ----------------------
@@ -94,7 +95,7 @@ function action_position:execute ()
 	end
 	--printf ("End of change state at %d", device ():time_global ())
 	self.st.on_position = true    
-	
+	self.st.standing = false
 end
 ----------------------
 function action_position:finalize ()
@@ -291,6 +292,43 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 
 
+----------------------------------------------------------------------------------------------------------------------
+class "action_stand" (action_base)
+----------------------
+function action_stand:__init (name, storage) super (nil, name)
+    self.st = storage
+    self.set = false
+end
+----------------------
+function action_stand:initialize ()
+    action_base.initialize (self)
+    self.set = false
+end
+----------------------
+function action_stand:execute ()
+    action_base.execute (self)
+    
+	if self.object:active_item () ~= nil then
+       self.object:set_item (object.deactivate, self.object:active_item ())
+       return
+    else 
+       if self.set == false then 
+          xr_state.change_state (self.object, 0)
+          self.set = true
+          return
+       end   
+    end   
+	
+	if xr_state.finish_state (self.object) ~= true then 
+	   return 
+	end
+	self.st.on_position = false
+end
+----------------------
+function action_stand:finalize ()
+    action_base.finalize (self)
+end    
+----------------------------------------------------------------------------------------------------------------------
 
 ----------------------------------------------------------------------------------------------------------------------
 function add_to_binder (npc, ini, scheme, section, st)
@@ -306,6 +344,7 @@ function add_to_binder (npc, ini, scheme, section, st)
     operators["action_position"]    = xr_actions_id.sidor_act_rest     + 0
     operators["action_rest"]        = xr_actions_id.sidor_act_rest     + 1
     operators["action_no_food"]     = xr_actions_id.sidor_act_rest     + 2 
+    operators["action_stand"]       = xr_actions_id.sidor_act_rest     + 3 
 
 	local manager  = npc:motivation_action_manager ()
    	
@@ -316,7 +355,6 @@ function add_to_binder (npc, ini, scheme, section, st)
     local action = this.action_position ("action_position", st)
     action:add_precondition     (world_property (stalker_ids.property_alive,    true))
    	action:add_precondition     (world_property (stalker_ids.property_enemy,    false))
-   	--action:add_precondition     (world_property (properties["food"],            true))
    	action:add_precondition     (world_property (properties["rest"],            true))
    	action:add_precondition     (world_property (properties["on_position"],     false))
    	action:add_effect           (world_property (properties["on_position"],     true))
@@ -341,8 +379,17 @@ function add_to_binder (npc, ini, scheme, section, st)
    	action:add_precondition     (world_property (properties["on_position"],     true))
    	action:add_effect           (world_property (properties["rest"],            false))
    	manager:add_action          (operators["action_no_food"], action)
+
+    action = this.action_stand ("action_stand", st)
+    action:add_precondition     (world_property (stalker_ids.property_alive,    true))
+   	action:add_precondition     (world_property (stalker_ids.property_enemy,    true))
+   	action:add_precondition     (world_property (properties["rest"],            true))
+   	action:add_precondition     (world_property (properties["on_position"],     true))
+   	action:add_effect           (world_property (properties["on_position"],     false))
+   	manager:add_action          (operators["action_stand"], action)
    	     	   
     manager:action (xr_actions_id.alife):add_precondition (world_property (properties["rest"],  false))
+    manager:action (stalker_ids.action_combat_planner):add_precondition (world_property (properties["on_position"],  false))
     
 end
 ----------------------------------------------------------------------------------------------------------------------
