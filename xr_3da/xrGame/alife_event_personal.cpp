@@ -7,6 +7,8 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "alife_event_personal.h"
 
 CALifeEventPersonal::~CALifeEventPersonal	()
