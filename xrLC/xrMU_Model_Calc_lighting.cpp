@@ -194,61 +194,77 @@ void xrMU_Model::calc_lighting	()
 	clMsg					("model '%s' - REF_lighted.",m_name);
 }
 
-float	simple_optimize				(xr_vector<float>& A, xr_vector<float>& B, float& scale, float& bias)
+template <typename T, typename T2>
+T	simple_optimize				(xr_vector<T>& A, xr_vector<T>& B, T2& _scale, T2& _bias)
 {
-	float	accum;
+	T		accum;
 	u32		it;
 
 
-	float	error	= flt_max;
-	float	elements= float(A.size());
+	T		scale	= _scale;
+	T		bias	= _bias;
+	T		error	= flt_max;
+	T		elements= T(A.size());
 	u32		count	= 0;
 	for (;;)
 	{
+		clMsg		("%d - %f",count,error);
 		count++;
-		if (count>64)	return error;
+		if (count>128)	{
+			_scale		= (T2)scale;
+			_bias		= (T2)bias;
+			return error;
+		}
 
-		float	old_scale	= scale;
-		float	old_bias	= bias;
+		T	old_scale	= scale;
+		T	old_bias	= bias;
 
 		//1. scale
 		u32		_ok			= 0;
 		for (accum=0, it=0; it<A.size(); it++)
-		{
 			if (_abs(A[it])>EPS_L)	
 			{
 				accum	+= (B[it]-bias)/A[it];
 				_ok		+= 1;
 			}
-		}
-		float	s	= _ok?(accum/_ok):scale;
+		T	s	= _ok?(accum/_ok):scale;
 
 		//2. bias
-		for (accum=0, it=0; it<A.size(); it++)
-			accum	+= B[it]-A[it]/scale;
-		float	b	= accum	/ elements;
+		T	b	= bias;
+		if (_abs(scale)>EPS)
+		{
+			for (accum=0, it=0; it<A.size(); it++)
+				accum	+= B[it]-A[it]/scale;
+			b	= accum	/ elements;
+		}
 
 		// mix
-		float	conv	= 10;
+		clMsg			("s:%f, b:%f",s,b);
+		T		conv	= 7;
 		scale			= ((conv-1)*scale+s)/conv;
 		bias			= ((conv-1)*bias +b)/conv;
 
 		// error
 		for (accum=0, it=0; it<A.size(); it++)
 			accum	+= B[it] - (A[it]*scale + bias);
-		float	err	= accum/elements;
+		T	err			= accum/elements;
 
 		if (err<error)	
 		{
 			// continue?
 			error	= err;
-			if (error<EPS)	return error;
+			if (error<EPS)	
+			{
+				_scale		= (T2)scale;
+				_bias		= (T2)bias;
+				return error;
+			}
 		}
 		else
 		{
 			// exit
-			scale	= old_scale;
-			bias	= old_bias;
+			_scale	= (T2)old_scale;
+			_bias	= (T2)old_bias;
 			return	error;
 		}
 	}
@@ -256,7 +272,7 @@ float	simple_optimize				(xr_vector<float>& A, xr_vector<float>& B, float& scale
 
 void	o_test (int iA, int iB, int count, base_color* A, base_color* B, float& C, float& D)
 {
-	xr_vector<float>	_A,_B;
+	xr_vector<double>	_A,_B;
 	_A.resize			(count);
 	_B.resize			(count);
 	for (int it=0; it<count; it++)
@@ -266,7 +282,7 @@ void	o_test (int iA, int iB, int count, base_color* A, base_color* B, float& C, 
 		_A[it]			= f_a[iA];
 		_B[it]			= f_b[iB];
 	}
-	C=1, D=0;
+	// C=1, D=0;
 	simple_optimize		(_A,_B,C,D);
 }
 
@@ -280,49 +296,102 @@ void xrMU_Reference::calc_lighting	()
 	// A*C + D = B
 	// build data
 	{
-		float*	_s=(float*)&c_scale;
-		float*	_b=(float*)&c_bias;
+		FPU::m64r			();
+		xr_vector<double>	A;	A.resize(color.size());
+		xr_vector<double>	B;	B.resize(color.size());
+		float*				_s=(float*)&c_scale;
+		float*				_b=(float*)&c_bias;
+		for (u32 i=0; i<5; i++) {
+			for (u32 it=0; it<color.size(); it++) {
+				base_color&		__A		= model->color	[it];
+				base_color&		__B		= color			[it];
+				A[it]		= 	(__A.hemi);
+				B[it]		=	((float*)&__B)[i];
+			}
+			vfComputeLinearRegression(A,B,_s[i],_b[i]);
+		}
+
 		for (u32 index=0; index<5; index++)
 			o_test	(4,index,color.size(),&model->color.front(),&color.front(),_s[index],_b[index]);
 
-		/*
+		/**/
+		/**
+		static int iii = 0;
 		xr_vector<xr_vector<REAL> >	A;	A.resize(color.size());
 		xr_vector<xr_vector<REAL> >	B;	B.resize(color.size());
 		xr_vector<REAL>					C;
 		xr_vector<REAL>					D;
-		for (u32 it=0; it<color.size(); it++)
-		{
-		base_color&		__A		= model->color	[it];
-		A[it].push_back		(__A.hemi);
-		A[it].push_back		(__A.hemi);
-		A[it].push_back		(__A.hemi);
-		A[it].push_back		(__A.hemi);
-		A[it].push_back		(__A.hemi);
+		for (u32 i=0; i<5; i++) {
+			string256 S;
+			sprintf(S,"x:\\dima\\test%d.txt",iii++);
+			FILE *f = fopen(S,"wt");
+			for (u32 it=0; it<color.size(); it++) {
+				base_color&		__A		= model->color	[it];
+				base_color&		__B		= color			[it];
+				A[it].clear();
+				B[it].clear();
+				
+				A[it].push_back		(__A.hemi);
 
-		base_color&		__B		= color			[it];
-		B[it].push_back		(__B.rgb.x);
-		B[it].push_back		(__B.rgb.y);
-		B[it].push_back		(__B.rgb.z);
-		B[it].push_back		(__B.hemi);
-		B[it].push_back		(__B.sun);
+				switch (i) {
+					case 0 : {
+						B[it].push_back		(__B.rgb.x);
+						break;
+					}
+					case 1 : {
+						B[it].push_back		(__B.rgb.y);
+						break;
+					}
+					case 2 : {
+						B[it].push_back		(__B.rgb.z);
+						break;
+					}
+					case 3 : {
+						B[it].push_back		(__B.hemi);
+						break;
+					}
+					case 4 : {
+						B[it].push_back		(__B.sun);
+						break;
+					}
+				}
+				fprintf(f,"%f %f\n",A[it][0],B[it][0]);
+			}
+			fclose(f);
+			
+			vfOptimizeParameters	(A,B,C,D,REAL(0.000001));
+
+			switch (i) {
+				case 0 : {
+					c_scale.rgb.x		= C[0];
+					c_bias.rgb.x		= D[0];
+					break;
+				}
+				case 1 : {
+					c_scale.rgb.y		= C[0];
+					c_bias.rgb.y		= D[0];
+					break;
+				}
+				case 2 : {
+					c_scale.rgb.z		= C[0];
+					c_bias.rgb.z		= D[0];
+					break;
+				}
+				case 3 : {
+					c_scale.hemi		= C[0];
+					c_bias.hemi			= D[0];
+					break;
+				}
+				case 4 : {
+					c_scale.sun			= C[0];
+					c_bias.sun			= D[0];
+					break;
+				}
+			}
 		}
-		vfOptimizeParameters	(A,B,C,D,REAL(0.000001));
+		/**/
 
-		// 
-		c_scale.rgb.x		= C[0];
-		c_scale.rgb.y		= C[1];
-		c_scale.rgb.z		= C[2];
-		c_scale.hemi		= C[3];
-		c_scale.sun			= C[4];
-
-		c_bias.rgb.x		= D[0];
-		c_bias.rgb.y		= D[1];
-		c_bias.rgb.z		= D[2];
-		c_bias.hemi			= D[3];
-		c_bias.sun			= D[4];
-		*/
-
-		clMsg				("	scale[%2.2f, %2.2f, %2.2f, %2.2f, %2.2f], bias[%2.2f, %2.2f, %2.2f, %2.2f, %2.2f]",
+		clMsg				("\tscale[%2.2f, %2.2f, %2.2f, %2.2f, %2.2f], bias[%2.2f, %2.2f, %2.2f, %2.2f, %2.2f]",
 								c_scale.rgb.x,c_scale.rgb.y,c_scale.rgb.z,c_scale.hemi,c_scale.sun,
 								c_bias.rgb.x,c_bias.rgb.y,c_bias.rgb.z,c_bias.hemi,c_bias.sun
 							);

@@ -26,7 +26,7 @@ REAL dfComputeEvalResults(xr_vector<xr_vector<REAL> >	&daEvalResults, xr_vector<
 			
 			daEvalResults[i][j] = dfEvaluation(A[i][j],C[j],D[j]);
 			REAL dTemp			= B[i][j] - daEvalResults[i][j];
-			dResult				+= _abs(dTemp); //*dTemp
+			dResult				+= dTemp*dTemp;
 		}
 	}
 	return					(dResult);
@@ -65,7 +65,7 @@ void vfOptimizeParameters(xr_vector<xr_vector<REAL> > &A, xr_vector<xr_vector<RE
 	}
 	
 	u32						dwParameterCount = (u32)B[0].size();
-	C.assign				(dwParameterCount,0.0f);
+	C.assign				(dwParameterCount,1.0f);
 	D.assign				(dwParameterCount,0.0f);
 	daDelta.assign			(dwParameterCount,0);
 	daGradient.assign		(dwParameterCount,0);
