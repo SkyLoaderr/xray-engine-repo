@@ -201,7 +201,7 @@ void CEditableObject::RenderLOD(const Fmatrix& parent)
     }
 }
 
-void CEditableObject::CreateLODShader()
+void CEditableObject::UpdateLODShader()
 {
 	AnsiString l_name;
     string256 nm; strcpy(nm,m_LibName.c_str()); _ChangeSymbol(nm,'\\','_');
@@ -220,7 +220,7 @@ void CEditableObject::OnDeviceCreate()
 	// создать заново shaders
     for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
        (*s_it)->CreateShader();
-    CreateLODShader();
+    UpdateLODShader();
 }
 
 void CEditableObject::OnDeviceDestroy(){

@@ -43,7 +43,7 @@
       intermediate\interp.obj intermediate\Envelope.obj intermediate\motion.obj 
       intermediate\bone.obj intermediate\clsid.obj intermediate\WayPoint.obj 
       intermediate\FrameWayPoint.obj intermediate\DetailObjects.obj 
-      intermediate\FrameDetObj.obj intermediate\xr_ini.obj 
+      intermediate\FrameDetObj.obj intermediate\Xr_ini.obj 
       intermediate\ColorPicker.obj intermediate\LzHuf.obj 
       intermediate\UI_WayPointTools.obj intermediate\UI_Camera.obj 
       intermediate\ui_control.obj intermediate\UI_CustomTools.obj 

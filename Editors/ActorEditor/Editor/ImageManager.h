@@ -19,6 +19,7 @@ public:
 	void		SafeCopyLocalToServer(FileMap& files);
 	void		SynchronizeThumbnail(EImageThumbnail* THM, LPCSTR src_name);
 	void		SynchronizeTextures	(bool sync_thm, bool sync_game, bool bForceGame, FileMap* source_map, LPSTRVec* sync_list_without_extention, FileMap* modif_map=0);
+    void 		SynchronizeTexture	(LPCSTR tex_name, int age);
     void		FreeModifVec		(LPSTRVec& vect){for (LPSTRIt it=vect.begin(); it!=vect.end(); it++) _FREE(*it);};
 	// make/update routines
     void		CreateLODTexture	(Fbox bbox, LPCSTR out_name, int tgt_w, int tgt_h, int samples, int age);

@@ -247,6 +247,16 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
     UI.ProgressEnd();
 }
 
+void CImageManager::SynchronizeTexture(LPCSTR tex_name, int age)
+{
+    LPSTRVec modif;
+    FileMap t_map;
+    t_map[tex_name]=age;
+    SynchronizeTextures(true,true,true,&t_map,&modif);
+   	Device.RefreshTextures(&modif);
+    ImageManager.FreeModifVec(modif);
+}
+
 int	CImageManager::GetServerModifiedTextures(FileMap& files)
 {
 	FileMap M_BASE;
@@ -459,7 +469,7 @@ BOOL ApplyBorders(DWORDVec& pixels, int w, int h, DWORD ref)
     return bNeedContinue;
 }
 
-void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR out_name, int tgt_w, int tgt_h, int samples, int age)
+void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR tex_name, int tgt_w, int tgt_h, int samples, int age)
 {
     int src_w=tgt_w,src_h=tgt_h;
 	DWORDVec pixels;
@@ -498,28 +508,18 @@ void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR out_name, int tgt_w, int 
         ApplyBorders(new_pixels,pitch,src_h,ref);
     for (int t=0; t<new_pixels.size(); t++)
         new_pixels[t]=subst_alpha(new_pixels[t],RGBA_GETALPHA(border_pixels[t]));
-/*
-                    DWORDVec final_pixels;
-                    final_pixels.resize(src_h*src_w*4);
-                    // scale down(lanczos3) and up (bilinear, as video board)
-                    try {
-                        imf_Process     (final_pixels.begin(),	tgt_w*2,tgt_h*2,new_pixels.begin(),src_w*2,src_h*2,imf_lanczos3);
-                    } catch (...)
-                    {
-                        ELog.DlgMsg(mtError,"* ERROR: imf_Process");
-                        return;
-                    }
-*/
+
+    AnsiString out_name=tex_name;
+    Engine.FS.m_Textures.Update(out_name);
     CImage* I = new CImage();
     I->Create	(tgt_w*samples,tgt_h,new_pixels.begin());
     I->Vflip	();
-    I->SaveTGA	(out_name);
+    I->SaveTGA	(out_name.c_str());
     _DELETE		(I);
-    Engine.FS.SetFileAge(out_name, age);
+    Engine.FS.SetFileAge(out_name.c_str(), age);
     ELog.Msg(mtInformation,"LOD texture created.");
-//    }else{
-//        ELog.DlgMsg(mtError,"Can't make screenshot.");
-//    }
+
+    SynchronizeTexture(tex_name,age);
 
 	Device.m_Camera.SetStyle(save_style);
     Device.SetTransform	(D3DTS_PROJECTION,save_projection);

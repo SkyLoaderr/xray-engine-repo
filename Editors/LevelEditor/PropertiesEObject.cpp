@@ -86,7 +86,7 @@ void TfrmPropertiesEObject::FillBasicProps()
     	CEditableObject* 	O = S->GetReference();
 		m_Basic->AddItem	(0,PROP_MARKER2,"Name",(LPVOID)S->GetRefName());
 		m_Basic->AddItem	(0,PROP_FLAG,	"Dynamic",		m_Basic->MakeFlagValue(&O->m_dwFlags,CEditableObject::eoDynamic));
-        m_Basic->AddItem	(0,PROP_FLAG,	"Using LOD", 	m_Basic->MakeFlagValue(&O->m_dwFlags,CEditableObject::eoUsingLOD));
+        m_Basic->AddItem	(0,PROP_FLAG,	"Use LOD", 		m_Basic->MakeFlagValue(&O->m_dwFlags,CEditableObject::eoUsingLOD));
         TElTreeItem* M;
 		M=m_Basic->AddItem	(0,PROP_MARKER,	"Transformation");
 		m_Basic->AddItem	(M,PROP_VECTOR,	"Position",		m_Basic->MakeVectorValue(&S->FPosition,	-10000,	10000,0.01,2,OnAfterTransformation));

@@ -182,7 +182,7 @@ protected:
 
 	void 			UpdateBoneParenting		();
 
-    void			CreateLODShader			();
+    void			UpdateLODShader			();
 public:
     DWORD			m_LoadState;
 

@@ -342,7 +342,8 @@ void __fastcall TfrmEditLibrary::ebMakeLODClick(TObject *Sender)
             Engine.FS.VerifyPath(full_tex_name.c_str());
             Engine.FS.m_Objects.Update(obj_name);
             ImageManager.CreateLODTexture(m_pEditObject->GetReference()->GetBox(), full_tex_name.c_str(),64,64,8,age);
-            ImageManager.CreateGameTexture(tex_name);
+            m_pEditObject->GetReference()->UpdateLODShader();
+//            ImageManager.
         	tvObjectsItemFocused(Sender);
 	    }else{
             ELog.DlgMsg(mtError,"Can't create LOD texture. Set preview mode.");
