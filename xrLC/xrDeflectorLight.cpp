@@ -215,7 +215,7 @@ IC DWORD	rms_diff	(DWORD a, DWORD b)
 	if (a>b)	return a-b;
 	else		return b-a;
 }
-IC BOOL		rms_test	(b_texture& lm, DWORD w, DWORD h, DWORD rms)
+BOOL	__stdcall rms_test	(b_texture& lm, DWORD w, DWORD h, DWORD rms)
 {
 	if ((0==w) || (0==h))	return FALSE;
 
@@ -252,7 +252,7 @@ fail:
 	return	FALSE;
 }
 
-IC BOOL		rms_test	(b_texture&	lm, DWORD _r, DWORD _g, DWORD _b, DWORD rms)
+BOOL	__stdcall rms_test	(b_texture&	lm, DWORD _r, DWORD _g, DWORD _b, DWORD rms)
 {
 	DWORD x,y;
 	for (y=0; y<lm.dwHeight; y++)
@@ -270,7 +270,7 @@ IC BOOL		rms_test	(b_texture&	lm, DWORD _r, DWORD _g, DWORD _b, DWORD rms)
 	return TRUE;
 }
 
-IC	DWORD	rms_average	(b_texture& lm, DWORD& _r, DWORD& _g, DWORD& _b)
+DWORD	__stdcall rms_average	(b_texture& lm, DWORD& _r, DWORD& _g, DWORD& _b)
 {
 	DWORD x,y,_count;
 	_r=0, _g=0, _b=0, _count=0;
