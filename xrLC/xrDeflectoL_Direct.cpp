@@ -72,7 +72,6 @@ void CDeflector::L_Direct	(HASH& H)
 		{
 			DWORD		Fcount	= 0;
 			
-			/*
 			try {
 				for (J=0; J<Jcount; J++) 
 				{
@@ -110,7 +109,6 @@ void CDeflector::L_Direct	(HASH& H)
 			{
 				Msg("* Access violation. Possibly recovered. ");
 			}
-			*/
 			
 			FPU::m24r	();
 			

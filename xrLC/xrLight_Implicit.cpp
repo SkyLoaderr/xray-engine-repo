@@ -200,7 +200,6 @@ public:
 			{
 				DWORD		Fcount	= 0;
 				
-				/*
 				try {
 					for (J=0; J<Jcount; J++) 
 					{
@@ -235,7 +234,6 @@ public:
 				{
 					Msg("* THREAD #%d: Access violation. Possibly recovered.",thID);
 				}
-				*/
 				
 				FPU::m24r	();
 				if (Fcount) {
