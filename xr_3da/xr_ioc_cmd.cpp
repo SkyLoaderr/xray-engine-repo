@@ -364,10 +364,11 @@ void CCC_Register()
 	CMD2(CCC_Float,		"snd_volume_master",	&psSoundVMaster);
 	CMD4(CCC_Float,		"snd_occlusion_scale",	&psSoundOcclusionScale, 0.f,1.f		);
 	CMD4(CCC_Float,		"snd_cull",				&psSoundCull,			0.01f,0.20f	);
-	CMD3(CCC_Token,		"snd_freq",				&psSoundFreq,	snd_freq_token		);
-	CMD3(CCC_Token,		"snd_model",			&psSoundModel,	snd_model_token		);
+	CMD3(CCC_Token,		"snd_freq",				&psSoundFreq,		snd_freq_token		);
+	CMD3(CCC_Token,		"snd_model",			&psSoundModel,		snd_model_token		);
 	CMD1(CCC_SND_Restart,"snd_restart"			);
-	CMD3(CCC_Mask,		"snd_occlusion",		&psSoundFlags,	ssWaveTrace);
+	CMD3(CCC_Mask,		"snd_occlusion",		&psSoundFlags,		ssWaveTrace);
+	CMD3(CCC_Mask,		"snd_acceleration",		&psSoundFlags,		ssSoftware);
 	CMD4(CCC_Integer,	"snd_targets",			&psSoundTargets,	4,24);
 	CMD4(CCC_Integer,	"snd_cache_size",		&psSoundCacheSizeMB,4,32);
 	
