@@ -40,7 +40,7 @@
 	</relation_caption>
 
 	<!-- BIO -->
-	<biography_list x="0" y="143" width="267" height="242" item_height="15">
+	<biography_list x="0" y="143" width="267" height="235" item_height="15">
 		<font font="letterica16" r="190" g="190" b="225"></font>
 	</biography_list>
 	
