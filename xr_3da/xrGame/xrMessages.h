@@ -105,6 +105,11 @@ M_SPAWN
 			...
 		}
 	}
+	object
+	{
+		u8		bActive;
+	}
+
 	zone
 	{
 		cform {
