@@ -40,6 +40,6 @@ namespace AgentManager {
 		eOrderTypeNoOrder		= u32(0),
 		eOrderTypeAction,
 		eOrderTypeGoal,
-		eOrderTypeNoDummy		= u32(-1),
+		eOrderTypeDummy			= u32(-1),
 	};
 };
