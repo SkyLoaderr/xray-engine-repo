@@ -33,6 +33,13 @@ CHUDManager::~CHUDManager()
 	_DELETE			(pHUDFont);
 }
 //--------------------------------------------------------------------
+void CHUDManager::ClientToScreenScaled(Irect& r, DWORD align)
+{
+	r.x1 = ClientToScreenScaledX(r.x1,align); 
+	r.y1 = ClientToScreenScaledY(r.y1,align); 
+	r.x2 = ClientToScreenScaledX(r.x2,align); 
+	r.y2 = ClientToScreenScaledY(r.y2,align); 
+}
 
 void CHUDManager::ClientToScreenScaled(Ivector2& dest, int left, int top, DWORD align)
 {
@@ -54,6 +61,14 @@ int CHUDManager::ClientToScreenScaledY(int top, DWORD align)
 void CHUDManager::ClientToScreen(Ivector2& dest, int left, int top, DWORD align)
 {
 	dest.set(ClientToScreenX(left,align),	ClientToScreenY(top,align));
+}
+
+void CHUDManager::ClientToScreen(Irect& r, DWORD align)
+{
+	r.x1 = ClientToScreenX(r.x1,align); 
+	r.y1 = ClientToScreenY(r.y1,align); 
+	r.x2 = ClientToScreenX(r.x2,align); 
+	r.y2 = ClientToScreenY(r.y2,align); 
 }
 
 int CHUDManager::ClientToScreenX(int left, DWORD align)

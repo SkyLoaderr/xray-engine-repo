@@ -58,9 +58,11 @@ public:
 	float					GetScale			(){return fScale;}
 	void					SetScale			(float s);
 
+	void					ClientToScreenScaled(Irect& r, DWORD align);
 	void					ClientToScreenScaled(Ivector2& dest, int left, int top, DWORD align);
 	int						ClientToScreenScaledX(int left, DWORD align);
 	int						ClientToScreenScaledY(int top, DWORD align);
+	void					ClientToScreen		(Irect& r, DWORD align);
 	void					ClientToScreen		(Ivector2& dest, int left, int top, DWORD align);
 	int						ClientToScreenX		(int left, DWORD align);
 	int						ClientToScreenY		(int top, DWORD align);

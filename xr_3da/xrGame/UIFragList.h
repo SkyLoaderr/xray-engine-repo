@@ -7,7 +7,7 @@
 
 class CUIFragList
 {
-	Frect			list_rect;
+	Irect			list_rect;
 	CUIFrameRect	frame;
 public:
 					CUIFragList		();

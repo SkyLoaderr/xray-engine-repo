@@ -20,7 +20,7 @@ class CUIFrameRect
 	CUIStaticItem	back;
 	CUIStaticItem	frame[8];
 public:
-	Frect			rect;
+	Irect			rect;
 public:
 					CUIFrameRect	();
 	void			Init			(LPCSTR base_name, int x, int y, int sx, int sy, int tex_x, int tex_y, DWORD align);
