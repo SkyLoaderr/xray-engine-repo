@@ -1,3 +1,6 @@
+module ("stalker")
+module ("xr_patrol")
+
 function printf(fmt,...)
 	log(string.format(fmt,unpack(arg)))
 end
