@@ -54,12 +54,14 @@ void FLOD::Render		(float LOD		)
 	// Fill VB
 	_face&		F			= facets[best_id];
 	DWORD		vOffset		= 0;
-	_vertex*	V			=	(_vertex*) Device.Streams.Vertex.Lock(4,hVS->dwStride,vOffset);
-	CopyMemory	(V,F.v,4*sizeof(_vertex));
+	FVF::LIT*	V			= (FVF::LIT*) Device.Streams.Vertex.Lock(4,hVS->dwStride,vOffset);
+	V[0].set	(F.v[0].v,F.v[0].c,F.v[0].t.x,F.v[0].t.y);
+	V[1].set	(F.v[1].v,F.v[1].c,F.v[1].t.x,F.v[1].t.y);
+	V[2].set	(F.v[2].v,F.v[2].c,F.v[2].t.x,F.v[2].t.y);
+	V[3].set	(F.v[3].v,F.v[3].c,F.v[3].t.x,F.v[3].t.y);
 	Device.Streams.Vertex.Unlock(4,hVS->dwStride);
 
 	// Draw IT
 	Device.Primitive.setVertices	(hVS->dwHandle,hVS->dwStride,Device.Streams.Vertex.Buffer());
-	Device.Primitive.setIndices		(vOffset,Device.Streams.QuadIB);
-	Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
+	Device.Primitive.Render			(D3DPT_TRIANGLEFAN,vOffset,2);
 }
