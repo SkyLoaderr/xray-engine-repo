@@ -32,7 +32,7 @@ public:
 	// Utilities
 	virtual		u32					get_alive_count			(u32 team);
 	virtual		s32					get_option_i			(LPCSTR lst, LPCSTR name, s32 def = 0);
-	virtual		string64&			get_option_s			(LPCSTR lst, LPCSTR name, LPCSTR def = 0);
+	virtual		string64			get_option_s			(LPCSTR lst, LPCSTR name, LPCSTR def = 0);
 
 	// Events
 	virtual		void				OnPlayerConnect			(u32 id_who);
