@@ -57,7 +57,6 @@ void Startup(LPSTR     lpCmdLine)
 	Sleep					(150);
 	
 	// Faster FPU 
-	CTimer	dwStartupTime;	dwStartupTime.Start();
 	SetPriorityClass		(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
 
 	/*
@@ -119,12 +118,12 @@ void Startup(LPSTR     lpCmdLine)
 	
 	// Call for builder
 	string256				lfn;
+	CTimer	dwStartupTime;	dwStartupTime.Start();
 	pBuild->Run				(strconcat(lfn,"gamedata\\levels\\",name));
 	xr_delete				(pBuild);
 
 	// Show statistic
 	extern	std::string make_time(u32 sec);
-
 	u32	dwEndTime			= dwStartupTime.GetElapsed_ms();
 	sprintf					(inf,"Time elapsed: %s",make_time(dwEndTime/1000).c_str());
 	clMsg					("Build succesful!\n%s",inf);
