@@ -2395,6 +2395,56 @@ SOURCE=.\WallmarksEngine.cpp
 SOURCE=.\WallmarksEngine.h
 # End Source File
 # End Group
+# Begin Group "Visibility"
+
+# PROP Default_Filter ""
+# Begin Group "Sector - portal"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\Portal.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Portal.h
+# End Source File
+# End Group
+# Begin Group "HOM occlusion"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\HOM.cpp
+
+!IF  "$(CFG)" == "XR_3DA - Win32 Release"
+
+# ADD CPP /FAs
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\HOM.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\occRasterizer.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\occRasterizer.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\occRasterizer_core.cpp
+# End Source File
+# End Group
 # Begin Group "Frustum"
 
 # PROP Default_Filter ""
@@ -2407,21 +2457,22 @@ SOURCE=.\Frustum.cpp
 SOURCE=.\Frustum.h
 # End Source File
 # End Group
-# Begin Group "Portals & Sectors"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\Portal.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Portal.h
-# End Source File
 # End Group
 # Begin Group "Particle system"
 
 # PROP Default_Filter ""
+# Begin Group "Particle Sorter"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\ParticleSorter.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ParticleSorter.h
+# End Source File
+# End Group
 # Begin Source File
 
 SOURCE=.\Particle.h
@@ -2486,53 +2537,6 @@ SOURCE=.\DetailManager_soft.cpp
 # Begin Source File
 
 SOURCE=.\DetailManager_VS.cpp
-# End Source File
-# End Group
-# Begin Group "Particle Sorter"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\ParticleSorter.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\ParticleSorter.h
-# End Source File
-# End Group
-# Begin Group "HOM occlusion"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\HOM.cpp
-
-!IF  "$(CFG)" == "XR_3DA - Win32 Release"
-
-# ADD CPP /FAs
-
-!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=.\HOM.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\occRasterizer.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\occRasterizer.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\occRasterizer_core.cpp
 # End Source File
 # End Group
 # Begin Group "Lighting"

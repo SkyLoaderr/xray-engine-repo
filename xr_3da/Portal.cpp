@@ -80,8 +80,8 @@ void CSector::Render(CFrustum &F)
 				O->clXFORM().transform_tiny(Tpos, pV->bv_Position);
 				if (F.testSphere_dirty(Tpos,pV->bv_Radius))	
 				{
-					
-					O->OnVisible	();
+					::Render.set_Object	(O);
+					O->OnVisible		();
 				}
 			}
 		}

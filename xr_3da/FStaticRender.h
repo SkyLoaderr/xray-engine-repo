@@ -59,16 +59,18 @@ public:
 	vector<IDirect3DVertexBuffer8*>	VB;
 
 	vecGEO							Visuals;
-	vector<CPortal>					Portals;
-	vector<CSector*>				Sectors;
-	CLightDB_Static					Lights;
-	CLightPPA_Manager				Lights_Dynamic;
+	CLightDB_Static					L_DB;
+	CLightPPA_Manager				L_Dynamic;
+	CLightShadows					L_Shadows;
 	CGlowManager					Glows;
 	CWallmarksEngine				Wallmarks;
 	CDetailManager					Details;
 	CModelPool						Models;
 
 	CRenderTarget					Target;			// Render-target
+
+	vector<CPortal>					Portals;
+	vector<CSector*>				Sectors;
 	CFrustum						ViewBase;
 	CFrustum*						View;
 	CHOM							HOM;
@@ -91,8 +93,9 @@ public:
 	CSector*		detectSector(Fvector& P);
 
 	// Main 
-	IC void	set_Occluders			(CFrustum* O)			{ VERIFY(O); View = O; }
+	IC void	set_Frustum				(CFrustum* O)			{ VERIFY(O); View = O; }
 	IC void	set_Transform			(Fmatrix* pM)			{ VERIFY(pM); pTransform = pM; }
+	IC void set_Object				(CObject* O)			{ L_Shadows.set_object(O); }
 	IC void set_LightLevel			(int L)					{ iLightLevel = L; }
 	IC void add_Lights				(vector<WORD> &V)		{ Lights.add_sector_lights(V);	}
 	IC void add_Glows				(vector<WORD> &V)		{ Glows.add(V);		}
