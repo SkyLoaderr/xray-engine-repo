@@ -597,7 +597,7 @@ static void	LegsPlayCallback(CBlend *B)
 #ifdef DEBUG
 	CAI_Stalker							*m_object = (CAI_Stalker*)B->CallbackParam;
 	VERIFY								(m_object);
-	//	m_object->m_tpCurrentLegsAnimation	= 0;
+	m_object->m_tpCurrentLegsAnimation	= 0;
 #endif
 }
 
