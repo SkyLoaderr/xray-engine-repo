@@ -22,7 +22,7 @@ CRT::~CRT			()
 void CRT::create	(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f)
 {
 	R_ASSERT	(HW.pDevice && Name && Name[0] && w && h);
-	_order		= Device->GetTimerGlobal()->GetElapsed_clk();
+	_order		= Device.GetTimerGlobal()->GetElapsed_clk();
 
 	HRESULT		_hr;
 
@@ -115,7 +115,7 @@ CRTC::~CRTC			()
 void CRTC::create	(LPCSTR Name, u32 size,	D3DFORMAT f)
 {
 	R_ASSERT	(HW.pDevice && Name && Name[0] && size && btwIsPow2(size));
-	_order		= Device->GetTimerGlobal()->GetElapsed_clk();
+	_order		= Device.GetTimerGlobal()->GetElapsed_clk();
 
 	HRESULT		_hr;
 
@@ -162,11 +162,11 @@ void CRTC::destroy		()
 		_RELEASE	(pRT[face]	);
 	_RELEASE	(pSurface	);
 }
-void CRT::reset_begin	()
+void CRTC::reset_begin	()
 {
 	destroy		();
 }
-void CRT::reset_end		()
+void CRTC::reset_end	()
 {
 	create		(*cName,dwSize,fmt);
 }

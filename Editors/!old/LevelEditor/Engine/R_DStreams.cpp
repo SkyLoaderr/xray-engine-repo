@@ -141,7 +141,7 @@ u16*	_IndexStream::Lock	( u32 Count, u32& vOffset )
 	return					LPWORD(pLockedData);
 }
 
-void	_IndexStream::Unlock(u32 RealCount);
+void	_IndexStream::Unlock(u32 RealCount)
 {
 	PGO						(Msg("PGO:IB_UNLOCK:%d",RealCount));
 	mPosition				+=	RealCount;

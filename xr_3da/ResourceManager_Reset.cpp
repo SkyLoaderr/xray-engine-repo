@@ -2,6 +2,7 @@
 #pragma hdrstop
 
 #include "ResourceManager.h"
+#include "Render.h"
 
 void	CResourceManager::reset_begin			()
 {
@@ -18,7 +19,7 @@ void	CResourceManager::reset_begin			()
 	// destroy RTs
 	for (map_RTIt rt_it=m_rtargets.begin(); rt_it!=m_rtargets.end(); rt_it++)
 		rt_it->second->reset_begin();
-	for (map_RTCIt rtc_it=m_rtargets.begin(); rtc_it!=m_rtargets.end(); rtc_it++)
+	for (map_RTCIt rtc_it=m_rtargets_c.begin(); rtc_it!=m_rtargets_c.end(); rtc_it++)
 		rtc_it->second->reset_begin();
 
 	// destroy everything, renderer may use
@@ -44,7 +45,7 @@ void	CResourceManager::reset_end				()
 	{
 		// RTc
 		xr_vector<CRTC*>	rt;
-		for (map_RTCIt rt_it=m_rtargets.begin(); rt_it!=m_rtargets.end(); rt_it++)	rt.push_back(rt_it->second);
+		for (map_RTCIt rt_it=m_rtargets_c.begin(); rt_it!=m_rtargets_c.end(); rt_it++)	rt.push_back(rt_it->second);
 		std::sort(rt.begin(),rt.end(),cmp_rtc);
 		for (u32 _it=0; _it<rt.size(); _it++)	rt[_it]->reset_end	();
 	}
@@ -61,7 +62,7 @@ void	CResourceManager::reset_end				()
 		{
 			SGeometry*	_G = v_geoms[_it];
 			if			(_G->vb == RCache.Vertex.old_pVB)	_G->vb = RCache.Vertex.Buffer	();
-			if			(_G->ib == RCache.Vertex.old_pIB)	_G->ib = RCache.Index.Buffer	();
+			if			(_G->ib == RCache.Index.old_pIB)	_G->ib = RCache.Index.Buffer	();
 			if			(_G->ib == RCache.old_QuadIB)		_G->ib = RCache.QuadIB;
 		}
 	}
