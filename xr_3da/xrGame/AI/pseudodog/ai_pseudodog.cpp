@@ -4,6 +4,7 @@
 #include "../ai_monster_effector.h"
 #include "../../actor.h"
 #include "../../ActorEffector.h"
+#include "../stalker/ai_stalker.h"
 
 CAI_PseudoDog::CAI_PseudoDog()
 {
@@ -146,22 +147,49 @@ void CAI_PseudoDog::Load(LPCSTR section)
 
 	// --------------------------------------------------------------------------------
 
+	m_anger_hunger_threshold	= pSettings->r_float(section, "anger_hunger_threshold");
+	m_anger_loud_threshold		= pSettings->r_float(section, "anger_loud_threshold");
+
 }
 
 void CAI_PseudoDog::StateSelector()
 {	
+	float snd_loud_value	= m_anger_loud_threshold;
+	float hunger_value		= m_anger_hunger_threshold;
 
-	if (EnemyMan.get_enemy()) {
-		switch (EnemyMan.get_danger_type()) {
-			case eVeryStrong:	SetState(statePanic); break;
-			case eStrong:		
-			case eNormal:
-			case eWeak:			SetState(stateAttack); break;
-		}
-	} else if (hear_dangerous_sound || hear_interesting_sound) {
-		if (hear_dangerous_sound)			SetState(stateExploreNDE);		
-		if (hear_interesting_sound)			SetState(stateExploreNDE);	
-	} else						SetState(stateRest); 
+	m_bAngry = false;
+
+	if (HitMemory.is_hit())														m_bAngry = true;
+	if (SoundMemory.is_loud_sound(snd_loud_value) || hear_dangerous_sound)		m_bAngry = true;
+	if (CEntityCondition::GetSatiety() < hunger_value)							m_bAngry = true;
+	
+	m_bGrowling = false;
+	
+	const CEntityAlive	*enemy		= EnemyMan.get_enemy();
+	const CAI_Stalker	*pStalker	= dynamic_cast<const CAI_Stalker *>(enemy);
+	const CActor		*pActor		= dynamic_cast<const CActor *>(enemy);
+
+	if (m_bAngry || (!pActor && !pStalker)) {
+		if (enemy) {
+			switch (EnemyMan.get_danger_type()) {
+				case eVeryStrong:	SetState(statePanic); break;
+				case eStrong:		
+				case eNormal:
+				case eWeak:			SetState(stateAttack); break;
+			}
+		} else if (hear_dangerous_sound || hear_interesting_sound) {
+			if (hear_dangerous_sound)			SetState(stateExploreNDE);		
+			if (hear_interesting_sound)			SetState(stateExploreNDE);	
+		} else if (CorpseMemory.get_corpse() && ((GetSatiety() < _sd->m_fMinSatiety) || flagEatNow))					
+												SetState(stateEat);	
+		else									SetState(stateRest);
+	} else {
+		// враг является актером или сталкером
+		if (enemy) m_bGrowling = true;
+		
+		if (CorpseMemory.get_corpse() && ((GetSatiety() < _sd->m_fMinSatiety) || flagEatNow)) SetState(stateEat);	
+		else SetState(stateRest);
+	}
 
 }
 
@@ -239,6 +267,5 @@ void CAI_PseudoDog::CheckSpecParams(u32 spec_params)
 		}
 	}
 }
-
 
 

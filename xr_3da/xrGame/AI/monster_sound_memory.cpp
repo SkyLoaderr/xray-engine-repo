@@ -182,3 +182,10 @@ void CMonsterSoundMemory::UpdateHearing()
 
 }
 
+bool CMonsterSoundMemory::is_loud_sound(float val)
+{
+	for (u32 i=0; i<Sounds.size(); i++) 
+		if (Sounds[i].power > val) return true;
+
+	return false;
+}

@@ -125,7 +125,9 @@ void CAI_Boar::StateSelector()
 	} else if (hear_dangerous_sound || hear_interesting_sound) {
 		if (hear_dangerous_sound)			state = stateExploreNDE;		
 		if (hear_interesting_sound)			state = stateExploreNDE;	
-	} else									state = stateRest; 
+	} else if (CorpseMemory.get_corpse() && ((GetSatiety() < _sd->m_fMinSatiety) || flagEatNow))					
+											state= stateEat;	
+	else									state = stateRest;
 
 	if (state == stateAttack) {
 		look_at_enemy = true;

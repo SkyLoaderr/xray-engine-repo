@@ -9,6 +9,10 @@ class CAI_PseudoDog : public CAI_Biting, public CJumping {
 	bool			strike_in_jump;
 
 	SAttackEffector m_psi_effector;
+
+	float			m_anger_hunger_threshold;
+	float			m_anger_loud_threshold;
+
 public:
 					CAI_PseudoDog		();
 	virtual			~CAI_PseudoDog		();	

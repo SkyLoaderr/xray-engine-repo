@@ -17,6 +17,8 @@ void CAI_Biting::vfUpdateParameters()
 	EnemyMemory.update			();
 	EnemyMan.update				();	
 	SoundMemory.UpdateHearing	();	
+	CorpseMemory.update			();
+	HitMemory.update			();
 
 		
 	hear_dangerous_sound = hear_interesting_sound = false;

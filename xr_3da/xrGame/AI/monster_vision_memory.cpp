@@ -2,24 +2,24 @@
 #include "monster_vision_memory.h"
 #include "biting/ai_biting.h"
 
-CMonsterMemoryEnemy::CMonsterMemoryEnemy()
+CMonsterEnemyMemory::CMonsterEnemyMemory()
 {
 	monster			= 0;
 	time_memory		= 10000; 
 }
 
-CMonsterMemoryEnemy::~CMonsterMemoryEnemy()
+CMonsterEnemyMemory::~CMonsterEnemyMemory()
 {
 }
 
-void CMonsterMemoryEnemy::init_external(CAI_Biting *M, TTime mem_time) 
+void CMonsterEnemyMemory::init_external(CAI_Biting *M, TTime mem_time) 
 {
 	monster = M; 
 	time_memory = mem_time;
 }
 
 
-void CMonsterMemoryEnemy::update() 
+void CMonsterEnemyMemory::update() 
 {
 	// Обновить врагов
 	for (xr_set<const CEntityAlive *>::const_iterator I = monster->enemies().begin(); I != monster->enemies().end(); ++I) {
@@ -36,7 +36,7 @@ void CMonsterMemoryEnemy::update()
 	}
 }
 
-void CMonsterMemoryEnemy::add_enemy(const CEntityAlive *enemy)
+void CMonsterEnemyMemory::add_enemy(const CEntityAlive *enemy)
 {
 	SMonsterEnemy enemy_info;
 	enemy_info.position = enemy->Position();
@@ -54,7 +54,7 @@ void CMonsterMemoryEnemy::add_enemy(const CEntityAlive *enemy)
 	}
 }
 
-void CMonsterMemoryEnemy::remove_non_actual() 
+void CMonsterEnemyMemory::remove_non_actual() 
 {
 	TTime cur_time = Level().timeServer();
 
@@ -72,14 +72,14 @@ void CMonsterMemoryEnemy::remove_non_actual()
 	}
 }
 
-const CEntityAlive *CMonsterMemoryEnemy::get_enemy()
+const CEntityAlive *CMonsterEnemyMemory::get_enemy()
 {
 	ENEMIES_MAP_IT	it = find_best_enemy();
 	if (it != m_objects.end()) return it->first;
 	return (0);
 }
 
-SMonsterEnemy CMonsterMemoryEnemy::get_enemy_info()
+SMonsterEnemy CMonsterEnemyMemory::get_enemy_info()
 {
 	SMonsterEnemy ret_val;
 	ret_val.time = 0;
@@ -90,7 +90,7 @@ SMonsterEnemy CMonsterMemoryEnemy::get_enemy_info()
 	return ret_val;
 }
 
-ENEMIES_MAP_IT CMonsterMemoryEnemy::find_best_enemy()
+ENEMIES_MAP_IT CMonsterEnemyMemory::find_best_enemy()
 {
 	ENEMIES_MAP_IT	it = m_objects.end();
 	float			min_dist = flt_max;

@@ -484,6 +484,26 @@ struct SMonsterEnemy {
 
 DEFINE_MAP(const CEntityAlive *,SMonsterEnemy,ENEMIES_MAP, ENEMIES_MAP_IT);
 
+struct SMonsterCorpse {
+	Fvector position;
+	u32		vertex;
+	TTime	time;
+};
+
+DEFINE_MAP(const CEntityAlive *,SMonsterCorpse,CORPSE_MAP, CORPSE_MAP_IT);
+
+struct SMonsterHit {
+	CObject *object;
+	TTime	time;
+
+	bool	operator==(const CObject *obj) {
+		return (object == obj);
+	}
+};
+
+DEFINE_VECTOR(SMonsterHit,MONSTER_HIT_VECTOR, MONSTER_HIT_VECTOR_IT);
+
+
 enum EDangerType {
 	eWeak,
 	eNormal,

@@ -71,7 +71,7 @@ class CBitingEat : public IState {
 		ACTION_LITTLE_REST,
 	} m_tAction;
 
-	CEntity			*pCorpse;
+	CEntityAlive	*pCorpse;
 	float			m_fDistToCorpse;			//!< дистанция до трупа
 
 	TTime			m_dwLastTimeEat;

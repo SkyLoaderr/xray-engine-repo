@@ -38,9 +38,9 @@ void CBitingEat::Init()
 	IState::Init();
 
 	// Получить инфо о трупе
-//	VisionElem ve;
-//	if (!pMonster->GetCorpse(ve)) R_ASSERT(false);
-//	pCorpse = const_cast<CEntity*>(ve.obj);
+	const CEntityAlive *p_corpse = pMonster->CorpseMemory.get_corpse();
+	if (!p_corpse) R_ASSERT(false);
+	pCorpse = const_cast<CEntityAlive *>(p_corpse);
 
 	bEatRat = (dynamic_cast<CAI_Rat *>(pCorpse) ? true : false);
 	m_fDistToCorpse = ((bEatRat)? 1.0f : pMonster->_sd->m_fDistToCorpse); 
@@ -74,15 +74,15 @@ void CBitingEat::Init()
 void CBitingEat::Run()
 {
 	// Если новый труп, снова инициализировать состояние 
-//	VisionElem ve;
-//	if (!pMonster->GetCorpse(ve) || (!pCorpse->m_pPhysicsShell)) {Done(); return;}
-//	if (pCorpse != ve.obj) Init();
+	const CEntityAlive *cur_corpse = pMonster->CorpseMemory.get_corpse();
+	if (!cur_corpse || !pCorpse->m_pPhysicsShell) {Done(); return;}
+	if (pCorpse != const_cast<CEntityAlive *>(cur_corpse)) Init();
 
 	// Определить позицию ближайшей боны у трупа
 	Fvector nearest_bone_pos;
-	if (dynamic_cast<CGameObject *>(pCorpse)->m_pPhysicsShell == NULL) {
+	if (pCorpse->m_pPhysicsShell == NULL) {
 		nearest_bone_pos	= pCorpse->Position(); 
-	} else nearest_bone_pos = pMonster->m_PhysicMovementControl->PHCaptureGetNearestElemPos(const_cast<CEntity*>(pCorpse));
+	} else nearest_bone_pos = pMonster->m_PhysicMovementControl->PHCaptureGetNearestElemPos(pCorpse);
 	
 	float cur_dist = nearest_bone_pos.distance_to(pMonster->Position());
 
@@ -118,7 +118,6 @@ void CBitingEat::Run()
 
 		if (cur_dist < DIST_SLOW_APPROACH_TO_CORPSE) m_tAction = ACTION_CORPSE_APPROACH_WALK;
 
-		pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundIdle, 0,0,pMonster->_sd->m_dwIdleSndDelay);
 		break;
 	case ACTION_CORPSE_APPROACH_WALK:
 		pMonster->MotionMan.accel_activate		(eAT_Calm);
@@ -140,7 +139,6 @@ void CBitingEat::Run()
 
 		}
 
-		pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundIdle, 0,0,pMonster->_sd->m_dwIdleSndDelay);
 		break;
 
 	case ACTION_EAT:
@@ -177,7 +175,7 @@ void CBitingEat::Run()
 //		
 //		DO_IN_TIME_INTERVAL_END();
 
-		pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundEat, 0,0,pMonster->_sd->m_dwEatSndDelay);
+		
 
 		break;
 	
@@ -193,7 +191,6 @@ void CBitingEat::Run()
 			bRestAfterLunch	= true;
 			m_dwTimeStartRest = m_dwCurrentTime;
 		}
-		pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundIdle, 0,0,pMonster->_sd->m_dwIdleSndDelay);		
 		break;
 	case ACTION_LITTLE_REST:
 		pMonster->MotionMan.m_tAction = ACT_REST; 
@@ -204,7 +201,6 @@ void CBitingEat::Run()
 			//pMonster->AddIgnoreObject(pCorpse);
 		}
 
-		pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundIdle, 0,0,pMonster->_sd->m_dwIdleSndDelay);
 		break;
 
 	case ACTION_WALK:
@@ -215,7 +211,6 @@ void CBitingEat::Run()
 		if (cur_dist < m_fDistToCorpse) {
 			m_tAction = ACTION_EAT;
 		}
-		pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundIdle, 0,0,pMonster->_sd->m_dwIdleSndDelay);
 		break;
 	case ACTION_PREPARE_DRAG:
 
@@ -237,7 +232,6 @@ void CBitingEat::Run()
 		}
 
 		pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
-		pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundIdle, 0,0,pMonster->_sd->m_dwIdleSndDelay);
 		break;
 
 	case ACTION_DRAG:
@@ -259,10 +253,14 @@ void CBitingEat::Run()
 			bDragging = false; 
 			m_tAction = ACTION_EAT;
 		}
-		pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundIdle, 0,0,pMonster->_sd->m_dwIdleSndDelay);
 		break;
 	}
-	
+
+
+	(pMonster->MotionMan.m_tAction == ACT_EAT) ?
+		pMonster->State_PlaySound(MonsterSpace::eMonsterSoundEat, pMonster->_sd->m_dwEatSndDelay)	:
+		pMonster->State_PlaySound(MonsterSpace::eMonsterSoundIdle, pMonster->_sd->m_dwIdleSndDelay) ;		
+
 }
 
 void CBitingEat::Done()
@@ -279,9 +277,6 @@ void CBitingEat::Done()
 
 bool CBitingEat::CheckCompletion()
 {
-//	VisionElem ve;
-//	if (!pMonster->GetCorpse(ve) || (!ve.obj->m_pPhysicsShell)) return true;
-//	if (ve.obj->m_fFood < EPS_L)								return true;
 
 	return false;
 }

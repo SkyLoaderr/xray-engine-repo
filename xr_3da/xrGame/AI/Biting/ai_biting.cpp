@@ -51,6 +51,7 @@ void CAI_Biting::Init()
 
 	flagEatNow						= false;
 	m_bDamaged						= false;
+	m_bAngry						= false;
 
 	// Attack-stops init
 	AS_Init							();
@@ -70,6 +71,8 @@ void CAI_Biting::Init()
 	EnemyMemory.init_external		(this, 20000);
 	EnemyMan.init_external			(this);
 	SoundMemory.init_external		(this, 20000);
+	CorpseMemory.init_external		(this, 20000);
+	HitMemory.init_external			(this, 50000);
 
 	for (u32 i = 0; i < eLegsMaxNumber; i++) m_FootBones[i] = BI_NONE;
 }
@@ -135,6 +138,7 @@ void CAI_Biting::Load(LPCSTR section)
 	CSoundPlayer::add(pSettings->r_string(section,"sound_landing"),		16,		SOUND_TYPE_MONSTER_STEP,		4,	u32(1 << 31) | 1,	MonsterSpace::eMonsterSoundLanding,		"bip01_head");
 	CSoundPlayer::add(pSettings->r_string(section,"sound_steal"),		16,		SOUND_TYPE_MONSTER_STEP,		4,	u32(1 << 31) | 5,	MonsterSpace::eMonsterSoundSteal,		"bip01_head");	
 	CSoundPlayer::add(pSettings->r_string(section,"sound_panic"),		16,		SOUND_TYPE_MONSTER_STEP,		4,	u32(1 << 31) | 6,	MonsterSpace::eMonsterSoundPanic,		"bip01_head");	
+	CSoundPlayer::add(pSettings->r_string(section,"sound_growling"),	16,		SOUND_TYPE_MONSTER_STEP,		5,	u32(1 << 31) | 7,	MonsterSpace::eMonsterSoundGrowling,	"bip01_head");	
 
 
 	LoadFootBones();

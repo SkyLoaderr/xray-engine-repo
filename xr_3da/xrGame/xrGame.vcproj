@@ -1829,6 +1829,18 @@
 							Name="Memory"
 							Filter="">
 							<File
+								RelativePath=".\ai\monster_corpse_memory.cpp">
+							</File>
+							<File
+								RelativePath=".\ai\monster_corpse_memory.h">
+							</File>
+							<File
+								RelativePath=".\ai\monster_hit_memory.cpp">
+							</File>
+							<File
+								RelativePath=".\ai\monster_hit_memory.h">
+							</File>
+							<File
 								RelativePath=".\ai\monster_sound_memory.cpp">
 							</File>
 							<File

@@ -281,7 +281,9 @@ void CAI_Bloodsucker::StateSelector()
 	} else if (hear_dangerous_sound || hear_interesting_sound) {
 		if (hear_dangerous_sound)			pState = stateExploreNDE;		
 		if (hear_interesting_sound)			pState = stateExploreNDE;	
-	} else									pState = stateRest; 
+	} else	if (CorpseMemory.get_corpse() && ((GetSatiety() < _sd->m_fMinSatiety) || flagEatNow))					
+											pState= stateEat;	
+	else									pState = stateRest;
 	
 	SetState(pState);
 }

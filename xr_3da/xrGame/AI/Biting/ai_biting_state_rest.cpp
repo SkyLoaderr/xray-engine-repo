@@ -99,7 +99,7 @@ void CBitingRest::Run()
 			break;
 	}
 
-	pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundIdle, 0,0,pMonster->_sd->m_dwIdleSndDelay);
+	pMonster->State_PlaySound(MonsterSpace::eMonsterSoundIdle, pMonster->_sd->m_dwIdleSndDelay);
 }
 
 TTime CBitingRest::UnlockState(TTime cur_time)

@@ -26,7 +26,7 @@ public:
 
 			void	SetUpperState		(bool state = true) {b_upper_state = state;}
 
-	virtual u8		get_legs_number		() {return BIPEDAL;}
+	virtual u8		get_legs_number		() {return QUADRUPEDAL;}
 
 };
 

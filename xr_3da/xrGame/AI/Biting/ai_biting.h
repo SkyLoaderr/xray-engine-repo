@@ -14,8 +14,12 @@
 #include "../ai_monster_movement.h"
 
 #include "../monster_vision_memory.h"
+#include "../monster_corpse_memory.h"
 #include "../monster_sound_memory.h"
+#include "../monster_hit_memory.h"
 #include "../monster_enemy_manager.h"
+
+
 
 #include "ai_biting_state.h"
 
@@ -199,10 +203,7 @@ public:
 			void			MoraleBroadcast					(float fValue);
 			void			LoadShared						(LPCSTR section);
 
-	// Step sounds
-			void			AddStepSound					(LPCSTR section, EMotionAnim a, LPCSTR name);
-			void			GetStepSound					(EMotionAnim a, float &vol, float &freq);
-	
+
 // members
 public:
 
@@ -213,6 +214,9 @@ public:
 
 	// State flags
 	bool					m_bDamaged;
+	bool					m_bAngry;
+	bool					m_bGrowling;
+	bool					flagEatNow;				// true - сейчас монстр ест
 
 	float					m_fCurMinAttackDist;		// according to attack stops
 
@@ -240,9 +244,22 @@ public:
 
 	IState					*CurrentState;
 
-	// -------------------------------------------------------
-	// State flags
-	bool					flagEatNow;				// true - сейчас монстр ест
+	void					State_PlaySound(u32 internal_type, u32 max_stop_time);
+	
+	// -----------------------------------------------------------------------------	
+	
+
+	
+	CMonsterEnemyMemory		EnemyMemory;
+	CMonsterSoundMemory		SoundMemory;
+	CMonsterEnemyManager	EnemyMan;
+	CMonsterCorpseMemory	CorpseMemory;
+	CMonsterHitMemory		HitMemory;
+
+	bool					hear_dangerous_sound;
+	bool					hear_interesting_sound;
+
+	// -----------------------------------------------------------------------------
 
 	CMotionManager			MotionMan; 
 
@@ -266,14 +283,6 @@ public:
 	bool					state_invisible;
 
 
-	CMonsterMemoryEnemy		EnemyMemory;
-	CMonsterSoundMemory		SoundMemory;
-	CMonsterEnemyManager	EnemyMan;
-
-	bool					hear_dangerous_sound;
-	bool					hear_interesting_sound;
-
-	
 
 
 #ifdef DEBUG
@@ -285,16 +294,6 @@ public:
 	TTime	time_next_update;
 #endif
 
-
-// To Delete
-
-	// Combat flags 
-	//u32						flagsEnemy; 
-	// m_object
-	//SEnemy					m_tEnemy;				// Current frame enemy 
-	//SEnemy					m_tEnemyPrevFrame;		// Previous frame enemy 
-
-	// bool					A,B,C,D,E,F,G,H,I,J,K,L,M;
 };
 
 #include "ai_biting_inline.h"
