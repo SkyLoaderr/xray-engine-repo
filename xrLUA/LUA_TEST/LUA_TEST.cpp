@@ -5,7 +5,7 @@
 
 #pragma warning(disable:4530)
 #include "xrCore.h"
-#pragma comment(lib,"x:\\xrCore.lib")
+#pragma comment(lib,"x:/xrCore.lib")
 #pragma warning(default:4530)
 
 // Lua
@@ -15,18 +15,22 @@
 	#include "lualib.h"
 	#include "lauxlib.h"
 //}
-#pragma comment(lib,"x:\\xrLUA.lib")
+#pragma comment(lib,"x:/xrLUA.lib")
 
 // Lua-bind
+#pragma warning(disable:4995)
+#pragma warning(disable:4530)
 #pragma warning(disable:4244)
-#include "luabind\\luabind.hpp""
-#include "luabind\\adopt_policy.hpp"
-#include "luabind\\dependency_policy.hpp"
-#include "luabind\\return_reference_to_policy.hpp"
-#include "luabind\\out_value_policy.hpp"
-#include "luabind\\discard_result_policy.hpp"
-#include "luabind\\iterator_policy.hpp"
+#include "luabind/luabind.hpp"
+#include "luabind/adopt_policy.hpp"
+#include "luabind/dependency_policy.hpp"
+#include "luabind/return_reference_to_policy.hpp"
+#include "luabind/out_value_policy.hpp"
+#include "luabind/discard_result_policy.hpp"
+#include "luabind/iterator_policy.hpp"
 #pragma warning(default:4244)
+#pragma warning(default:4995)
+#pragma warning(default:4530)
 
 //extern "C" {
 	__declspec(dllimport) LPSTR g_ca_stdout;
@@ -456,9 +460,9 @@ void print_stack(lua_State *L)
 //
 //bool create_namespace_table(lua_State *L, LPCSTR N)
 //{
-//	if (!strlen(N))
+//	if (!xr_strlen(N))
 //		return			(false);
-//	LPSTR			S = (char*)xr_malloc((strlen(N) + 1)*sizeof(char));
+//	LPSTR			S = (char*)xr_malloc((xr_strlen(N) + 1)*sizeof(char));
 //	strcpy			(S,N);
 //	LPSTR			S1 = strchr(S,'.');
 //	if (S1)
@@ -491,10 +495,10 @@ bool create_namespace_table(lua_State *L, LPCSTR N)
 {
 	lua_pushstring	(L,"_G");
 	lua_gettable	(L,LUA_GLOBALSINDEX);
-	LPSTR			S2 = (char*)xr_malloc((strlen(N) + 1)*sizeof(char)), S = S2;
+	LPSTR			S2 = (char*)xr_malloc((xr_strlen(N) + 1)*sizeof(char)), S = S2;
 	strcpy			(S,N);
 	for (;;) {
-		if (!strlen(S)) {
+		if (!xr_strlen(S)) {
 			xr_free		(S2);
 			return		(false);
 		}
@@ -784,7 +788,7 @@ bool load_file_into_namespace(lua_State *L, LPCSTR S, LPCSTR N, bool bCall = tru
 //
 //	luaL_loadfile	(L,"s:\\gamedata\\scripts\\.script");
 //
-//	if (strlen(SSS))
+//	if (xr_strlen(SSS))
 //		printf		("%s\n",SSS);
 //
 //	lua_close		(L);
@@ -795,10 +799,10 @@ bool get_namespace_table(lua_State *L, LPCSTR N)
 {
 	lua_pushstring	(L,"_G");
 	lua_gettable	(L,LUA_GLOBALSINDEX);
-	LPSTR			S2 = (char*)xr_malloc((strlen(N) + 1)*sizeof(char)), S = S2;
+	LPSTR			S2 = (char*)xr_malloc((xr_strlen(N) + 1)*sizeof(char)), S = S2;
 	strcpy			(S,N);
 	for (;;) {
-		if (!strlen(S)) {
+		if (!xr_strlen(S)) {
 			xr_free		(S2);
 			return		(false);
 		}
@@ -884,9 +888,9 @@ int __cdecl main(int argc, char* argv[])
 		printf		("File %s : ",l_caScriptName);
 		lua_pushstring(L,"test");
 		print_stack	(L);
-		bool		b = load_file_into_namespace(L,l_caScriptName,strlen(argv[i]) ? argv[i] : "_G",true);
+		bool		b = load_file_into_namespace(L,l_caScriptName,xr_strlen(argv[i]) ? argv[i] : "_G",true);
 		print_stack	(L);
-		if (strlen(SSS)) {
+		if (xr_strlen(SSS)) {
 			printf		("\n%s\n",SSS);
 			strcpy		(SSS,"");
 		}

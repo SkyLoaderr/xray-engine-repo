@@ -1378,7 +1378,7 @@ void luabind::detail::class_rep::add_static_constant(const char* name, int val)
 
 	if (j != crep->m_static_constants.end())
 	{
-		lua_pushnumber(L, j->second);
+		lua_pushnumber(L, (lua_Number)j->second);
 		return 1;
 	}
 
