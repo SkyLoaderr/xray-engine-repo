@@ -243,7 +243,6 @@ void CDetailManager::Render		(Fvector& EYE)
 		}
 	}
 
-//	HW.pDevice->SetTransform(D3DTS_WORLD,precalc_identity.d3d());
 	HW.pDevice->SetRenderState(D3DRS_CULLMODE,D3DCULL_NONE);
 
 	// Render itself
@@ -304,7 +303,7 @@ void CDetailManager::Render		(Fvector& EYE)
 				SlotItem&	Instance	= *(vis[item]);
 				float	scale			= Instance.scale_calculated;
 
-				// Build matrix and xform vertices
+				// Build matrix
 				mScale.scale			(scale,scale,scale);
 				if (scale>0.7f)	
 				{
@@ -316,7 +315,6 @@ void CDetailManager::Render		(Fvector& EYE)
 					mXform.mul_43			(Instance.mRotY,mScale);
 					mXform.translate_over	(Instance.P);
 				}
-//				Object.Transfer			(mXform, vDest, Instance.C, iDest, iOffset);
 				
 				// Transfer vertices
 				{
@@ -363,7 +361,7 @@ void CDetailManager::Render		(Fvector& EYE)
 		// Clean up
 		vis.clear	();
 	}
-	HW.pDevice->SetRenderState(D3DRS_CULLMODE,D3DCULL_CCW);
+	CHK_DX(HW.pDevice->SetRenderState(D3DRS_CULLMODE,D3DCULL_CCW));
 }
 
 CDetailManager::Slot&	CDetailManager::Query	(int sx, int sz)
