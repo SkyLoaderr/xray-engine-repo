@@ -117,7 +117,8 @@ bool SceneBuilder::BuildLTX(){
                 bResult=false;
                 goto end_ltx_build;
             }
-            pIni->WriteVector("static_sounds",s->m_fName,s->m_Position);
+            AnsiString ln; ln.sprintf("%s,%f,%f,%f",s->m_fName,s->m_Position.x,s->m_Position.y,s->m_Position.z);
+            pIni->WriteString("static_sounds",s->GetName(),ln.c_str());
 		}
 	}
 

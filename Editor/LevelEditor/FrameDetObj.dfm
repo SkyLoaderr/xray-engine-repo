@@ -12,7 +12,7 @@ object fraDetailObject: TfraDetailObject
   TabOrder = 0
   object paSelect: TPanel
     Left = 0
-    Top = 115
+    Top = 146
     Width = 123
     Height = 34
     Align = alTop
@@ -76,7 +76,7 @@ object fraDetailObject: TfraDetailObject
     Left = 0
     Top = 0
     Width = 123
-    Height = 115
+    Height = 146
     Align = alTop
     Constraints.MaxWidth = 123
     Constraints.MinWidth = 123
@@ -198,20 +198,41 @@ object fraDetailObject: TfraDetailObject
     end
     object Label2: TLabel
       Left = 16
-      Top = 97
+      Top = 128
       Width = 38
       Height = 13
       Caption = 'Density:'
     end
     object Bevel2: TBevel
       Left = 1
-      Top = 92
+      Top = 123
       Width = 121
       Height = 2
     end
-    object ebInvalidateCache: TExtBtn
+    object ebResetSlots: TExtBtn
       Left = 2
       Top = 77
+      Width = 119
+      Height = 15
+      Align = alNone
+      AllowAllUp = True
+      BevelShow = False
+      HotTrack = True
+      HotColor = 15790320
+      CloseButton = False
+      Caption = 'Reset Slots'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      Margin = 13
+      ParentFont = False
+      OnClick = ebResetSlotsClick
+    end
+    object ExtBtn7: TExtBtn
+      Left = 2
+      Top = 107
       Width = 119
       Height = 15
       Align = alNone
@@ -230,9 +251,30 @@ object fraDetailObject: TfraDetailObject
       ParentFont = False
       OnClick = ebInvalidateCacheClick
     end
+    object ebClearDetails: TExtBtn
+      Left = 2
+      Top = 92
+      Width = 119
+      Height = 15
+      Align = alNone
+      AllowAllUp = True
+      BevelShow = False
+      HotTrack = True
+      HotColor = 15790320
+      CloseButton = False
+      Caption = 'Clear Details'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      Margin = 13
+      ParentFont = False
+      OnClick = ebClearDetailsClick
+    end
     object seDensity: TMultiObjSpinEdit
       Left = 56
-      Top = 95
+      Top = 126
       Width = 66
       Height = 19
       LWSensitivity = 0.01
@@ -253,7 +295,7 @@ object fraDetailObject: TfraDetailObject
   object fsStorage: TFormStorage
     IniSection = 'FrameDO'
     Options = []
-    Version = 6
+    Version = 8
     StoredProps.Strings = (
       'paSelect.Height'
       'paSelect.Tag'

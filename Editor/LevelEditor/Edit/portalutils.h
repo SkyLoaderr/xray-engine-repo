@@ -1,6 +1,7 @@
 #ifndef _INCDEF_PortalUtils_H_
 #define _INCDEF_PortalUtils_H_
 
+#include "CustomObject.h";
 //refs
 class CEditableMesh;
 class CEditableObject;
@@ -27,11 +28,11 @@ DEFINE_VECTOR(SVertex,SVertexVec,SVertexIt)
 
 class CPortalUtils{
 //	void FindSVertexLinks(int id, CSector* S, SVertexVec& V);
-	int  CalculateSelectedPortals(vector<CSector*>& sectors);
+	int  CalculateSelectedPortals(ObjectList& sectors);
 public:
 	bool CalculateConvexHull(FvectorVec& points);
 	int  CalculatePortals(CSector* SF, CSector* SB);
-	int  CalculatePortals(char* s_front, char* s_back);
+	int  CalculateSelectedPortals();
 	int  CalculateAllPortals();
 	int  CalculateAllPortals2();
 	void RemoveAllPortals();

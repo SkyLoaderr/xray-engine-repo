@@ -16,6 +16,7 @@
 void __fastcall TfrmPropertiesObject::tsInfoShow(TObject *Sender)
 {
 	if (!m_LibObject) return;
+	bLoadMode = true;
 // Set up info
     paBB->Visible = true;
 
@@ -24,9 +25,9 @@ void __fastcall TfrmPropertiesObject::tsInfoShow(TObject *Sender)
     sePositionY->Value = P.y;
     sePositionZ->Value = P.z;
     const Fvector& R=m_LibObject->t_vRotate;
-    seRotateX->Value = R.x;
-    seRotateY->Value = R.y;
-    seRotateZ->Value = R.z;
+    seRotateX->Value = rad2deg(R.x);
+    seRotateY->Value = rad2deg(R.y);
+    seRotateZ->Value = rad2deg(R.z);
     const Fvector& S=m_LibObject->t_vScale;
     seScaleX->Value = S.x;
     seScaleY->Value = S.y;
@@ -46,6 +47,7 @@ void __fastcall TfrmPropertiesObject::tsInfoShow(TObject *Sender)
             sgBB->Cells[col][row] = n;
         }
     }
+	bLoadMode = false;
 }
 //---------------------------------------------------------------------------
 

@@ -67,6 +67,24 @@ void __fastcall TfraDetailObject::ebInvalidateCacheClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraDetailObject::ebResetSlotsClick(TObject *Sender)
+{
+	if (ELog.DlgMsg(mtConfirmation,"Are you sure to reset slots?")==mrYes){
+		Scene.m_DetailObjects->Clear(true);
+		Scene.UndoSave();
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraDetailObject::ebClearDetailsClick(TObject *Sender)
+{
+	if (ELog.DlgMsg(mtConfirmation,"Are you sure to clear details?")==mrYes){
+		Scene.m_DetailObjects->Clear();
+		Scene.UndoSave();
+    }
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfraDetailObject::ebReinitializeSlotObjectsClick(
       TObject *Sender)
 {
@@ -112,5 +130,7 @@ void __fastcall TfraDetailObject::seDensityLWChange(TObject *Sender,
 	Scene.m_DetailObjects->m_fDensity = seDensity->Value;
 }
 //---------------------------------------------------------------------------
+
+
 
 

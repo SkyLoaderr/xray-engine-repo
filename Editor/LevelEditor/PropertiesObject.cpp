@@ -137,7 +137,7 @@ void TfrmPropertiesObject::ApplyObjectsInfo(){
         m_LibObject->GetClassScript() 	= mmScript->Text;
         // modify transformation
 	    m_LibObject->t_vPosition.set	(sePositionX->Value,sePositionY->Value,	sePositionZ->Value);
-		m_LibObject->t_vRotate.set		(seRotateX->Value,	seRotateY->Value,	seRotateZ->Value);
+		m_LibObject->t_vRotate.set		(deg2rad(seRotateX->Value),deg2rad(seRotateY->Value),deg2rad(seRotateZ->Value));
 	    m_LibObject->t_vScale.set		(seScaleX->Value,	seScaleY->Value,	seScaleZ->Value);
         m_LibObject->Modified			();
         // set "Modify" library flag

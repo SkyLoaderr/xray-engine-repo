@@ -13,14 +13,16 @@
 #include "texture.h"
 #include "D3DUtils.h"
 
-#define EVENT_VERSION		   				0x0010
+#define EVENT_VERSION		   				0x0011
 //----------------------------------------------------
 #define EVENT_CHUNK_VERSION					0x0310
-#define EVENT_CHUNK_TYPE					0x0311
-#define EVENT_PARAMS                        0x0312
-#define EVENT_CHUNK_BOX						0x0313
-#define EVENT_CHUNK_EXECUTE_ONCE			0x0314
+#define EVENT_CHUNK_FORMS					0x0311
+#define EVENT_CHUNK_ACTIONS					0x0312
 //----------------------------------------------------
+
+void CEvent::SForm::Render()
+{
+}
 
 CEvent::CEvent( char *name ):CCustomObject(){
 	Construct();
@@ -35,36 +37,57 @@ CEvent::~CEvent(){
 }
 
 void CEvent::Construct(){
-	m_ClassID = OBJCLASS_EVENT;
-    eEventType= eetBox;
-
-	mTransform.identity();
-    vScale.set(1,1,1);
-    vRotate.set(0,0,0);
-    vPosition.set(0,0,0);
-
-    bExecuteOnce = true;
+	m_ClassID 		= OBJCLASS_EVENT;
+    m_Actions.clear	();
+    m_Forms.clear	();
 }
+
+void CEvent::AppendForm(EFormType type)
+{
+	m_Forms.push_back(SForm());
+    SForm& F 	= m_Forms.back();
+    F.m_eType   = type;
+    F.vSize.set	(1.f,1.f,1.f);
+    F.vRotate.set(0.f,0.f,0.f);
+	F.vPosition.set(0.f,0.f,0.f);
+    F.m_Selected= false;
+}
+
+void CEvent::RemoveSelectedForm()
+{
+	for (int i=0; i<m_Forms.size(); i++)
+    	if (m_Forms[i].m_Selected){
+			m_Forms.erase(m_Forms.begin()+i);
+            i--;
+        }
+}
+
 //------------------------------------------------------------------------------------------------
+/*
 void CEvent::UpdateTransform(){
     // update transform matrix
 	Fmatrix	mScale,mTranslate,mRotate;
 
-	mRotate.setHPB			(vRotate.y, vRotate.x, vRotate.z);
+	mRotate.setHPB	(vRotate.y, vRotate.x, vRotate.z);
 
-	mScale.scale			(vScale);
-	mTranslate.translate	(vPosition);
-	mTransform.mul			(mTranslate,mRotate);
-	mTransform.mul			(mScale);
+	mScale.scale	(vScale);
+	mTranslate.translate(vPosition);
+	mTransform.mul	(mTranslate,mRotate);
+	mTransform.mul	(mScale);
 }
+*/
 
 bool CEvent::GetBox( Fbox& box ){
-	box.min.set(-0.5f,-0.5f,-0.5f);
-	box.max.set( 0.5f, 0.5f, 0.5f);
-    box.transform(mTransform);
+	// calc for all forms
+/*
+	box.min.set		(-0.5f,-0.5f,-0.5f);
+	box.max.set		( 0.5f, 0.5f, 0.5f);
+    box.transform	(mTransform);
+*/
 	return true;
 }
 
+/*
 void CEvent::RenderBox(bool bAlpha ){
 	FVF::L v;
 	FLvertexVec V;
@@ -92,13 +115,10 @@ void CEvent::RenderBox(bool bAlpha ){
         }
     }
 }
-
+*/
 void CEvent::Render( int priority, bool strictB2F ){
-	if (priority==1){
-		switch(eEventType){
-    	case eetBox: RenderBox(strictB2F); break;
-	    }
-    }
+	if ((priority==1)&&(true==strictB2F))
+        for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) it->Render();
 }
 
 typedef BYTE T_IDX[3];
@@ -110,9 +130,9 @@ void GetBoxTri(int index, Fvector* v){
 	box_identity.getpoint(idx[index][1],v[1]);
 	box_identity.getpoint(idx[index][2],v[2]);
 }
-
 bool CEvent::FrustumPick(const CFrustum& frustum){
-	if (eEventType==eetBox){
+/*
+	if (m_eForm==efBox){
         Fvector v[3];
         for (int i=0; i<12; i++){
             GetBoxTri(i,v);
@@ -123,14 +143,15 @@ bool CEvent::FrustumPick(const CFrustum& frustum){
             if (frustum.testPoly(s)) return true;
         }
     }
+*/
     return false;
 }
 
 bool CEvent::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf){
     float range;
     bool bPick=false;
-
-	if (eEventType==eetBox){
+/*
+	if (m_eForm==efBox){
         Fvector v[3];
         for (int i=0; i<12; i++){
             GetBoxTri(i,v);
@@ -146,6 +167,7 @@ bool CEvent::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPi
             }
         }
     }
+*/
     return bPick;
 }
 
@@ -155,8 +177,7 @@ void CEvent::Move(Fvector& amount){
         return;
     }
     UI.UpdateScene();
-	vPosition.add( amount );
-    UpdateTransform();
+//S
 }
 
 void CEvent::Rotate(Fvector& center, Fvector& axis, float angle){
@@ -165,7 +186,7 @@ void CEvent::Rotate(Fvector& center, Fvector& axis, float angle){
         return;
     }
     UI.UpdateScene();
-
+/*
 	Fmatrix m;
 	m.rotation( axis, angle );
 
@@ -174,8 +195,7 @@ void CEvent::Rotate(Fvector& center, Fvector& axis, float angle){
 	vPosition.add( center );
 
     vRotate.direct(vRotate,axis,angle);
-
-    UpdateTransform();
+*/
 }
 
 void CEvent::LocalRotate(Fvector& axis, float angle){
@@ -184,8 +204,10 @@ void CEvent::LocalRotate(Fvector& axis, float angle){
         return;
     }
     UI.UpdateScene();
+/*
     vRotate.direct(vRotate,axis,angle);
     UpdateTransform();
+*/
 }
 
 void CEvent::Scale( Fvector& center, Fvector& amount ){
@@ -194,11 +216,11 @@ void CEvent::Scale( Fvector& center, Fvector& amount ){
         return;
     }
     UI.UpdateScene();
-	vScale.add(amount);
+/*	vScale.add(amount);
     if (vScale.x<EPS) vScale.x=EPS;
     if (vScale.y<EPS) vScale.y=EPS;
     if (vScale.z<EPS) vScale.z=EPS;
-    UpdateTransform();
+*/
 }
 
 void CEvent::LocalScale( Fvector& amount ){
@@ -207,16 +229,18 @@ void CEvent::LocalScale( Fvector& amount ){
         return;
     }
     UI.UpdateScene();
+/*
 	vScale.add(amount);
     if (vScale.x<EPS) vScale.x=EPS;
     if (vScale.y<EPS) vScale.y=EPS;
     if (vScale.z<EPS) vScale.z=EPS;
-    UpdateTransform();
+*/
 }
 //----------------------------------------------------
 
 bool CEvent::Load(CStream& F){
 	DWORD version = 0;
+    string4096 buf;
 
     R_ASSERT(F.ReadChunk(EVENT_CHUNK_VERSION,&version));
     if( version!=EVENT_VERSION ){
@@ -226,27 +250,19 @@ bool CEvent::Load(CStream& F){
 
 	CCustomObject::Load(F);
 
-    R_ASSERT(F.ReadChunk(EVENT_CHUNK_TYPE,&eEventType));
+	R_ASSERT(F.FindChunk(EVENT_CHUNK_FORMS));
+	m_Forms.resize	(F.Rdword());
+    F.Read			(m_Forms.begin(),sizeof(SForm)*m_Forms.size());
 
-    switch(eEventType){
-    case eetBox:
-	    R_ASSERT(F.FindChunk(EVENT_CHUNK_BOX));
-    	F.Rvector(vPosition);
-	    F.Rvector(vRotate);
-    	F.Rvector(vScale);
-    break;
+	R_ASSERT(F.FindChunk(EVENT_CHUNK_ACTIONS));
+	m_Actions.resize(F.Rdword());
+	for (ActionIt it=m_Actions.begin(); it!=m_Actions.end(); it++){
+    	it->type	= F.Rdword();
+    	it->count	= F.Rword();
+    	F.Read		(&it->clsid,sizeof(it->clsid));
+    	F.RstringZ	(buf); it->event=buf;
     }
 
-    char buf[4096];
-    R_ASSERT(F.FindChunk(EVENT_PARAMS));
-    F.RstringZ		(buf); sTargetClass = buf;
-    F.RstringZ		(buf); sOnEnter 	= buf;
-    F.RstringZ		(buf); sOnExit 		= buf;
-
-    if(F.FindChunk(EVENT_CHUNK_EXECUTE_ONCE))
-		bExecuteOnce = F.Rdword();
-
-    UpdateTransform();
     return true;
 }
 
@@ -257,26 +273,19 @@ void CEvent::Save(CFS_Base& F){
 	F.Wword			(EVENT_VERSION);
 	F.close_chunk	();
 
-    F.write_chunk	(EVENT_CHUNK_TYPE,&eEventType,sizeof(EEventType));
-
-    switch(eEventType){
-    case eetBox:
-	    F.open_chunk(EVENT_CHUNK_BOX);
-    	F.Wvector(vPosition);
-	    F.Wvector(vRotate);
-    	F.Wvector(vScale);
-		F.close_chunk	();
-    break;
-    }
-
-    F.open_chunk	(EVENT_PARAMS);
-    F.WstringZ		(sTargetClass.c_str());
-    F.WstringZ		(sOnEnter.c_str());
-    F.WstringZ		(sOnExit.c_str());
+	F.open_chunk	(EVENT_CHUNK_FORMS);
+	F.Wdword		(m_Forms.size());
+    F.write			(m_Forms.begin(),sizeof(SForm)*m_Forms.size());
 	F.close_chunk	();
 
-	F.open_chunk	(EVENT_CHUNK_EXECUTE_ONCE);
-    F.Wdword		(bExecuteOnce);
+	F.open_chunk	(EVENT_CHUNK_ACTIONS);
+	F.Wdword		(m_Actions.size());
+	for (ActionIt it=m_Actions.begin(); it!=m_Actions.end(); it++){
+    	F.Wdword	(it->type);
+    	F.Wword		(it->count);
+    	F.write		(&it->clsid,sizeof(it->clsid));
+    	F.WstringZ	(it->event.c_str());
+    }
 	F.close_chunk	();
 }
 //----------------------------------------------------

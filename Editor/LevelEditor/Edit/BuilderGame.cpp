@@ -35,10 +35,13 @@ bool SceneBuilder::BuildGame()
                 WORD fl 			= (rpt->m_Flags.bActive)?M_SPAWN_OBJECT_ACTIVE:0;
                 Packet.w_u16		(fl);
 
+				Packet.w_u16		(0);
                 u32	position		= Packet.w_tell	();
+                // spawn info
                 Packet.w_u8 		(u8(rpt->m_dwTeamID));
                 Packet.w_u8 		(u8(rpt->m_dwSquadID));
                 Packet.w_u8 		(u8(rpt->m_dwGroupID));
+                // data size
 				u16 size			= u16(Packet.w_tell()-position);
                 Packet.w_seek		(position,&size,sizeof(u16));
 
@@ -50,9 +53,11 @@ bool SceneBuilder::BuildGame()
             }
 		}
 	}
-    AnsiString lev_spawn="level.spawn";
-    m_LevelPath.Update(lev_spawn);
-    F.SaveTo(lev_spawn.c_str(),0);
+    if (chunk){
+	    AnsiString lev_spawn="level.spawn";
+    	m_LevelPath.Update(lev_spawn);
+	    F.SaveTo(lev_spawn.c_str(),0);
+    }
 }
 
  

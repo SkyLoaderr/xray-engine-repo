@@ -438,7 +438,7 @@ object fraBottomBar: TfraBottomBar
       Caption = 'Sectors'
       GroupIndex = 4
       object miDrawSectorEdgedSFaces: TMenuItem
-        Caption = 'Draw Edged Sector Faces'
+        Caption = 'Draw Solid'
         Checked = True
         GroupIndex = 1
         OnClick = ClickOptionsMenuItem

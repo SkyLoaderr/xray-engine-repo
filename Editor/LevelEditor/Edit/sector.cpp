@@ -112,28 +112,34 @@ bool CSector::GetBox( Fbox& box ){
 
 void CSector::Render(int priority, bool strictB2F){
     if ((1==priority)&&(true==strictB2F)){
-        Fmatrix matrix;
-        Fcolor color;
-        float k = Selected()?0.4f:0.2f;
-		color.set(sector_color.r,sector_color.g,sector_color.b,k);
-        Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
-        for (SItemIt it=sector_items.begin();it!=sector_items.end();it++){
-            it->object->GetFullTransformToWorld(matrix);
-            it->mesh->RenderSelection( matrix, color.get() );
+        if (!fraBottomBar->miDrawSectorEdgedSFaces->Checked){
+            Fmatrix matrix;
+            Fcolor color;
+            float k = Selected()?0.4f:0.2f;
+            color.set(sector_color.r,sector_color.g,sector_color.b,k);
+            Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
+            for (SItemIt it=sector_items.begin();it!=sector_items.end();it++){
+                it->object->GetFullTransformToWorld(matrix);
+                it->mesh->RenderSelection( matrix, color.get() );
+            }
+            Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
         }
-        Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
     }else if ((1==priority)&&(false==strictB2F)){
         Fmatrix matrix;
         Fcolor color;
-        float k = Selected()?0.4f:0.2f;
+        Fcolor color2;
+        float k = Selected()?0.8f:0.5f;
+        float k2 = Selected()?0.5f:0.2f;
 		color.set(sector_color.r*k,sector_color.g*k,sector_color.b*k,1.f);
+		color2.set(sector_color.r*k2,sector_color.g*k2,sector_color.b*k2,1.f);
         if (fraBottomBar->miDrawSectorEdgedSFaces->Checked){
 			Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
             for (SItemIt it=sector_items.begin();it!=sector_items.end();it++){
                 it->object->GetFullTransformToWorld(matrix);
-                it->mesh->RenderEdge( matrix, color.get() );
+        	    it->mesh->RenderSelection( matrix, color.get() );
+        	    it->mesh->RenderEdge( matrix, color2.get() );
             }
-			Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
+	        Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
         }
 
 //        DU::DrawSelectionBox(m_Box);
@@ -333,11 +339,11 @@ void CSector::LoadSectorDef( CStream* F ){
         m_bHasLoadError = true;
         return;
     }
-    if (!sitem.object->CheckVersion()){
-    	ELog.Msg(mtError,"Sector Item contains object '%s' - can't load.\nDifferent object version.",o_name);
-        m_bHasLoadError = true;
-     	return;
-    }
+//    if (!sitem.object->CheckVersion()){
+//    	ELog.Msg(mtError,"Sector Item contains object '%s' - can't load.\nDifferent object version.",o_name);
+//        m_bHasLoadError = true;
+//     	return;
+//    }
 	F->RstringZ(m_name);
 	sitem.mesh=sitem.object->GetReference()->FindMeshByName(m_name);
     if (sitem.mesh==0){

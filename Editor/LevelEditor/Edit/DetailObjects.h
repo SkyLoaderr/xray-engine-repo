@@ -220,7 +220,7 @@ public:
 
     int					ObjCount				(){return m_Slots.size();}
     void				Render					(int priority, bool strictB2F);
-    void				Clear					();
+    void				Clear					(bool bOnlySlots=false);
 
 	void				RayPickSelect			(float& distance, Fvector& start, Fvector& direction);
 	int					FrustumSelect			(bool flag);

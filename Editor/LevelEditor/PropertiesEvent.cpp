@@ -4,12 +4,18 @@
 #include "PropertiesEvent.h"
 #include "SceneClassList.h"
 #include "Event.h"
+#include "PropertiesList.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
 TfrmPropertiesEvent *frmPropertiesEvent=0;
 //---------------------------------------------------------------------------
 int frmPropertiesEventRun(ObjectList* pObjects, bool& bChange){
+	VERIFY(pObjects);
+    if (pObjects->size()!=1){
+    	ELog.DlgMsg(mtError,"Multiple selection not supported.");
+    	return mrCancel;
+    }
 	frmPropertiesEvent = new TfrmPropertiesEvent(0);
     int res = frmPropertiesEvent->Run(pObjects,bChange);
     _DELETE(frmPropertiesEvent);
@@ -20,32 +26,39 @@ int frmPropertiesEventRun(ObjectList* pObjects, bool& bChange){
 __fastcall TfrmPropertiesEvent::TfrmPropertiesEvent(TComponent* Owner)
     : TForm(Owner)
 {
+    m_Props = TfrmProperties::CreateProperties(paProps,alClient);
 }
 //---------------------------------------------------------------------------
 
 
+void __fastcall TfrmPropertiesEvent::FormClose(TObject *Sender,
+      TCloseAction &Action)
+{
+	TfrmProperties::DestroyProperties(m_Props);
+}
+//---------------------------------------------------------------------------
+
 void TfrmPropertiesEvent::GetObjectsInfo(){
 	VERIFY(!m_Objects->empty());
 
-	ObjectIt _F = m_Objects->begin();	VERIFY( (*_F)->ClassID()==OBJCLASS_EVENT );
-	CEvent *_E = (CEvent*)(*_F);
+	ObjectIt _F = m_Objects->begin();
+	CEvent * E = (CEvent*)(*_F);
 
-    if (m_Objects->size()>1) gbEventParams->Hide();
-    else{
-    	gbEventParams->Show();
-		cbTargetClass->ItemIndex = cbTargetClass->Items->IndexOf(_E->sTargetClass);
-        edOnEnter->Text 	= _E->sOnEnter;
-        edOnExit->Text 		= _E->sOnExit;
-        edOnExit->Text 		= _E->sOnExit;
-        cbExecuteOnce->Checked = _E->bExecuteOnce;
+    m_Props->Enabled = true;
+    m_Props->BeginFillMode();
+    TElTreeItem* M=0;
+    TElTreeItem* N=0;
+    M = m_Props->AddItem(0,PROP_MARKER,	"Actions");
+        m_Props->AddItem(M,PROP_FLAG,	"Enabled",	m_Props->MakeFlagValue(&F.m_Flags,CEditFlare::flFlare));
+    for (CEditFlare::FlareIt it=F.m_Flares.begin(); it!=F.m_Flares.end(); it++){
+        AnsiString nm; nm.sprintf("Flare %d",it-F.m_Flares.begin());
+    N = m_Props->AddItem(M,PROP_MARKER,	nm.c_str());
+        m_Props->AddItem(N,PROP_TEXTURE,"Texture",	&it->texture);
+        m_Props->AddItem(N,PROP_FLOAT,	"Radius", 	m_Props->MakeFloatValue(&it->fRadius,0.f,10.f));
+        m_Props->AddItem(N,PROP_FLOAT,	"Opacity", 	m_Props->MakeFloatValue(&it->fOpacity,0.f,1.f));
+        m_Props->AddItem(N,PROP_FLOAT,	"Position",	m_Props->MakeFloatValue(&it->fPosition,-10.f,10.f));
     }
-/*
-	_F++;
-	for(;_F!=m_Objects->end();_F++){
-		VERIFY( (*_F)->ClassID()==OBJCLASS_SECTOR );
-    	_O = (CSector *)(*_F);
-	}
-*/
+	m_Props->EndFillMode();
 }
 
 bool TfrmPropertiesEvent::ApplyObjectsInfo(){

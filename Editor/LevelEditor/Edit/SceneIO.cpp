@@ -127,24 +127,29 @@ void EScene::Save(char *_FileName, bool bUndo){
 	VERIFY( _FileName );
     CFS_Memory F;
 
+//	Msg("0: %d",F.tell());
     F.open_chunk	(CHUNK_VERSION);
     F.Wdword		(CURRENT_FILE_VERSION);
     F.close_chunk	();
 
+//	Msg("1: %d",F.tell());
     F.open_chunk	(CHUNK_LEVELOP);
 	m_LevelOp.Save	(F);
 	F.close_chunk	();
 
+//	Msg("2: %d",F.tell());
     F.open_chunk	(CHUNK_OBJECT_COUNT);
     F.Wdword		(ObjCount());
 	F.close_chunk	();
 
+//	Msg("3: %d",F.tell());
     if (m_DetailObjects->Valid()){
 		F.open_chunk	(CHUNK_DETAILOBJECTS);
     	m_DetailObjects->Save(F);
 		F.close_chunk	();
     }
 
+//	Msg("4: %d",F.tell());
     if (!bUndo){
 		F.open_chunk	(CHUNK_CAMERA);
         F.Wvector		(Device.m_Camera.GetHPB());
@@ -152,6 +157,7 @@ void EScene::Save(char *_FileName, bool bUndo){
         F.close_chunk	();
     }
 
+//	Msg("5: %d",F.tell());
 	// snap list
     F.open_chunk	(CHUNK_SNAPOBJECTS);
     F.Wdword		(m_SnapObjects.size());
@@ -159,9 +165,11 @@ void EScene::Save(char *_FileName, bool bUndo){
         F.WstringZ	((*_F)->GetName());
     F.close_chunk	();
 
+//	Msg("6: %d",F.tell());
     F.open_chunk	(CHUNK_OBJECT_LIST);
     int count = 0;
     for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
+        int sz0 = F.tell();
         ObjectList& lst = (*it).second;
     	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
             F.open_chunk(count); count++;
@@ -173,8 +181,11 @@ void EScene::Save(char *_FileName, bool bUndo){
             	F.close_chunk	();
             F.close_chunk();
         }
+        int sz1 = F.tell();
+//    	Msg("TARGET: %s, size: %d",GetNameByClassID(it->first),sz1-sz0);
     }
 	F.close_chunk	();
+//	Msg("TOTAL: %d",F.tell());
 
     // back up previous
     if (!bUndo) FS.BackupFile	(_FileName);

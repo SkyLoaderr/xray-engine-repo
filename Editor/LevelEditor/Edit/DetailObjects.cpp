@@ -697,14 +697,17 @@ bool CDetailManager::UpdateObjects(bool bUpdateTex, bool bUpdateSelectedOnly){
     return true;
 }
 
-void CDetailManager::Clear(){
-	RemoveObjects		();
-	m_ColorIndices.clear();
-    m_Slots.clear		();
-    if (m_pBaseShader){ Device.Shader.Delete(m_pBaseShader); m_pBaseShader = 0;}
-    _DELETE				(m_pBase);
+void CDetailManager::Clear(bool bOnlySlots){
+	if (!bOnlySlots){
+		RemoveObjects		();
+		m_ColorIndices.clear();
+	    if (m_pBaseShader)	Device.Shader.Delete(m_pBaseShader);
+    	_DELETE				(m_pBase);
+   		m_SnapObjects.clear	();
+    }
+    ZeroMemory			(&m_Header,sizeof(DetailHeader));
 	m_Selected.clear	();
-    m_SnapObjects.clear	();
+    m_Slots.clear		();
     InvalidateCache		();
 }
 
@@ -905,7 +908,6 @@ void CDetailManager::Save(CFS_Base& F){
     F.Wdword			(m_Slots.size());
 	F.write				(m_Slots.begin(),m_Slots.size()*sizeof(DetailSlot));
     F.close_chunk		();
-
     // internal
     // bbox
 	F.write_chunk		(DETMGR_CHUNK_BBOX,&m_BBox,sizeof(Fbox));

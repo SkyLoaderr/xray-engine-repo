@@ -17,23 +17,15 @@
 #include "multi_check.hpp"
 #include "MXCtrls.hpp"
 
+class TfrmProperties;
+
 class TfrmPropertiesEvent : public TForm
 {
 __published:	// IDE-managed Components
-    TPanel *Panel1;
+	TPanel *paProps;
     TExtBtn *ebOk;
     TExtBtn *ebCancel;
     TPanel *paBottom;
-	TGroupBox *gbEventParams;
-	TRadioGroup *rgType;
-	TLabel *RxLabel5;
-	TComboBox *cbTargetClass;
-	TLabel *RxLabel1;
-	TLabel *RxLabel2;
-	TEdit *edOnExit;
-	TEdit *edOnEnter;
-	TLabel *RxLabel3;
-	TMultiObjCheck *cbExecuteOnce;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
     void __fastcall ebCancelClick(TObject *Sender);
@@ -42,8 +34,10 @@ __published:	// IDE-managed Components
     void __fastcall OnModified(TObject *Sender);
 	void __fastcall cbTargetClassChange(TObject *Sender);
 	void __fastcall edOnEnterChange(TObject *Sender);
+	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 private:	// User declarations
-    list<CCustomObject*>* m_Objects;
+    ObjectList* m_Objects;
+	TfrmProperties* m_Props;
     void GetObjectsInfo     ();
     bool ApplyObjectsInfo   ();
 public:		// User declarations

@@ -63,7 +63,7 @@ bool CPortal::GetBox( Fbox& box ){
 
 void CPortal::Render(int priority, bool strictB2F){
 	if ((1==priority)&&(false==strictB2F)){
-        FvectorVec& src 	= (fraBottomBar->miDrawPortalSimpleModel->Checked)?m_SimplifyVertices:m_Vertices;
+        FvectorVec& src 	= m_SimplifyVertices;//(fraBottomBar->miDrawPortalSimpleModel->Checked)?m_SimplifyVertices:m_Vertices;
         if (src.size()<2) 	return;
         DWORD 				i;
         FvectorVec	 		V;
@@ -77,7 +77,7 @@ void CPortal::Render(int priority, bool strictB2F){
         // front
 		if (m_SectorFront){
 			col.set			(m_SectorFront->sector_color);
-	        if (!Selected())col.mul_rgb(0.5f);
+	        if (!Selected())col.mul_rgb(0.7f);
 		    Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
     	    DU::DrawPrimitiveL	(D3DPT_TRIANGLEFAN, V.size()-2, V.begin(), V.size(), col.get(), true, false);
 		    Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
@@ -85,7 +85,7 @@ void CPortal::Render(int priority, bool strictB2F){
         // back
 		if (m_SectorBack){
 			col.set			(m_SectorBack->sector_color);
-	        if (!Selected())col.mul_rgb(0.5f);
+	        if (!Selected())col.mul_rgb(0.7f);
 		    Device.SetRS(D3DRS_CULLMODE,D3DCULL_CW);
     	    DU::DrawPrimitiveL	(D3DPT_TRIANGLEFAN, V.size()-2, V.begin(), V.size(), col.get(), true, false);
 		    Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
@@ -94,8 +94,9 @@ void CPortal::Render(int priority, bool strictB2F){
 		Device.RenderNearer(0.0002);
         if (!Selected())	col.mul_rgb(0.5f);
     	// render portal edges
+        FvectorVec& src_ln 	= (fraBottomBar->miDrawPortalSimpleModel->Checked)?m_SimplifyVertices:m_Vertices;
         Device.SetShader	(Device.m_WireShader);
-        DU::DrawPrimitiveL	(D3DPT_LINESTRIP, src.size(), src.begin(), src.size(), col.get(), true, true);
+        DU::DrawPrimitiveL	(D3DPT_LINESTRIP, src_ln.size(), src_ln.begin(), src_ln.size(), col.get(), true, true);
         Device.ResetNearer	();
    	}
 }
@@ -427,17 +428,13 @@ bool CPortal::Load(CStream& F){
         ELog.Msg( mtError, "Portal: Can't find required sectors.\nObject '%s' can't load.", m_Name);
     	return false;
     }
-    if (m_SectorBack->m_bHasLoadError||m_SectorFront->m_bHasLoadError){
-        ELog.Msg( mtError, "Portal: '%s' can't create.", m_Name);
-    	return false;
-    }
 
     R_ASSERT(F.FindChunk(PORTAL_CHUNK_VERTICES));
 	m_Vertices.resize(F.Rword());
 	F.Read			(m_Vertices.begin(), m_Vertices.size()*sizeof(Fvector));
 
     if (m_Vertices.size()<3){
-        ELog.Msg( mtError, "Portal: '%s' can't create.\nInvalid portal.", m_Name);
+        ELog.Msg( mtError, "Portal: '%s' can't create.\nInvalid portal. (m_Vertices.size()<3)", m_Name);
     	return false;
     }
 

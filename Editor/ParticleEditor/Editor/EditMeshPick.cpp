@@ -72,7 +72,7 @@ bool CEditableMesh::RayPick(float& distance, Fvector& start, Fvector& direction,
 	if (!m_Visible) return false;
 
     if (!m_CFModel) GenerateCFModel();
-    float m_r = pinf?pinf->rp_inf.range:UI.ZFar();
+    float m_r = UI.ZFar();//pinf?pinf->rp_inf.range: (bugs: не всегда выбирает)
 
     XRC.RayPick	(&parent, m_CFModel, start, direction, m_r);
     float new_dist;

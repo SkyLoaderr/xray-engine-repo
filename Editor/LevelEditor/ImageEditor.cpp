@@ -169,7 +169,7 @@ void __fastcall TfrmImageLib::tvItemsItemFocused(TObject *Sender)
     	FOLDER::MakeName(Item,0,m_SelectedName,false);
 		_DELETE(m_Thm);
         // get new texture
-        m_Thm = new EImageThumbnail(m_SelectedName.c_str(),EImageThumbnail::EITTexture,true,true);
+        m_Thm = new EImageThumbnail(m_SelectedName.c_str(),EImageThumbnail::EITTexture,true,bCheckMode);
         if (!m_Thm->Valid())	pbImage->Repaint();
         else	 				pbImagePaint(Sender);
         lbFileName->Caption 	= "\""+ChangeFileExt(m_SelectedName,"")+"\"";

@@ -51,7 +51,8 @@ struct IntValue{
 	int		lim_mn;
     int		lim_mx;
     int 	inc;
-    IntValue(int* value, int mn, int mx, int increm):val(value),lim_mn(mn),lim_mx(mx),inc(increm){};
+    void*	OnAfterOperation;
+    IntValue(int* value, int mn, int mx, int increm, void* after):val(value),lim_mn(mn),lim_mx(mx),inc(increm),OnAfterOperation(after){};
 };
 struct FloatValue{
 	float*	val;
@@ -59,17 +60,20 @@ struct FloatValue{
     float	lim_mx;
     float 	inc;
     int 	dec;
-    FloatValue(float* value, float mn, float mx, float increment, int decimal):val(value),lim_mn(mn),lim_mx(mx),inc(increment),dec(decimal){};
+    void*	OnAfterOperation;
+    FloatValue(float* value, float mn, float mx, float increment, int decimal, void* after):val(value),lim_mn(mn),lim_mx(mx),inc(increment),dec(decimal),OnAfterOperation(after){};
 };
 struct FlagValue{
 	DWORD*	val;
 	DWORD	mask;
-	FlagValue(DWORD* value, DWORD _mask):val(value),mask(_mask){};
+    void*	OnAfterOperation;
+	FlagValue(DWORD* value, DWORD _mask, void* after):val(value),mask(_mask),OnAfterOperation(after){};
 };
 struct TokenValue{
 	DWORD*	val;
 	xr_token* token;
-	TokenValue(DWORD* value, xr_token* _token):val(value),token(_token){};
+    void*	OnAfterOperation;
+	TokenValue(DWORD* value, xr_token* _token, void* after):val(value),token(_token),OnAfterOperation(after){};
 };
 //---------------------------------------------------------------------------
 class TfrmProperties : public TForm
@@ -125,27 +129,27 @@ public:		// User declarations
     void __fastcall EndFillMode				(bool bFullExpand=true);
 	TElTreeItem* __fastcall AddItem			(TElTreeItem* parent, DWORD type, LPCSTR key, LPVOID value=0);
 
-	FlagValue* 		MakeFlagValue			(LPVOID val, DWORD mask)
+	FlagValue* 		MakeFlagValue			(LPVOID val, DWORD mask, void* after=0)
     {
-    	FlagValue* V=new FlagValue((LPDWORD)val,mask);
+    	FlagValue* V=new FlagValue((LPDWORD)val,mask,after);
         m_Params.push_back(V);
         return V;
     }
-	TokenValue* 	MakeTokenValue			(LPVOID val, xr_token* token)
+	TokenValue* 	MakeTokenValue			(LPVOID val, xr_token* token, void* after=0)
     {
-    	TokenValue* V=new TokenValue((LPDWORD)val,token);
+    	TokenValue* V=new TokenValue((LPDWORD)val,token,after);
         m_Params.push_back(V);
     	return V;
     }
-	IntValue* 		MakeIntValue			(LPVOID val, int mn=0, int mx=100, int inc=1)
+	IntValue* 		MakeIntValue			(LPVOID val, int mn=0, int mx=100, int inc=1, void* after=0)
     {
-    	IntValue* V	=new IntValue((int*)val,mn,mx,inc);;
+    	IntValue* V	=new IntValue((int*)val,mn,mx,inc,after);
         m_Params.push_back(V);
     	return V;
     }
-	FloatValue* 	MakeFloatValue			(LPVOID val, float mn=0.f, float mx=1.f, float inc=0.01f, int dec=2)
+	FloatValue* 	MakeFloatValue			(LPVOID val, float mn=0.f, float mx=1.f, float inc=0.01f, int dec=2, void* after=0)
     {
-    	FloatValue* V=new FloatValue((float*)val,mn,mx,inc,dec);
+    	FloatValue* V=new FloatValue((float*)val,mn,mx,inc,dec,after);
         m_Params.push_back(V);
     	return V;
     }
