@@ -1724,6 +1724,28 @@ HRESULT CMyD3DApplication::RenderOverlay()
 //-----------------------------------------------------------------------------
 HRESULT CMyD3DApplication::UpdateTransform()
 {
+	// Light direction
+	static	DWORD			tm_base, tm_next;
+	static	D3DXVECTOR3		vLightDir0	= D3DXVECTOR3( 2.0f, .5f, -1.0f );
+	static	D3DXVECTOR3		vLightDir1	= D3DXVECTOR3( 2.0f, .5f, -1.0f );
+
+	DWORD t					= timeGetTime();
+	if (t>tm_next) 
+	{
+		tm_base					= t;
+		tm_next					= t+10000;
+
+		vLightDir0				= vLightDir1;
+		vLightDir1				= D3DXVECTOR3(rnd(),rnd(),rnd());
+		D3DXVec3Normalize		( &vLightDir1, &vLightDir1 );
+	}
+
+	float l_f				= float(t-tm_base)/float(tm_next-tm_base);
+	float l_i				= 1.f - l_f;
+
+	D3DXVECTOR3 vLightDir	= l_i*vLightDir0 + l_f*vLightDir1;
+	D3DXVec3Normalize		( &vLightDir, &vLightDir );
+
 	// Model offset
 	D3DXVECTOR3 vModelOffs		= D3DXVECTOR3(0.0f, 2.0f, 0.0f);
 
