@@ -53,7 +53,7 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 void CRenderDevice::overdrawBegin	()
 {
     // Turn stenciling
-    CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILENABLE,	TRUE				));
+    CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILENABLE,		TRUE			));
     CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILFUNC,		D3DCMP_ALWAYS	));
     CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILREF,		0				));
     CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILMASK,		0x00000000		));
@@ -75,38 +75,35 @@ void CRenderDevice::overdrawEnd		()
     CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILMASK,		0xff				));
 
     // Set the background to black
-	CHK_DX(HW.pDevice->Clear(0,0,D3DCLEAR_TARGET,	0,1,0));
+	CHK_DX(HW.pDevice->Clear(0,0,D3DCLEAR_TARGET,0,0,0));
 
 	// Draw a rectangle wherever the count equal I
 	Primitive.Reset	();
 	Shader.SetNULL	();
 	Shader.SetupPass(0);
 
-    // Set render states for drawing a rectangle that covers the viewport.
-    // The color of the rectangle will be passed in D3DRS_TEXTUREFACTOR
-    HW.pDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE );
-    HW.pDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
-
-	for (int I=1; I<16; I++ ) {
-		DWORD	c = I*256/17;
+	for (int I=1; I<16; I++ ) 
+	{
+		DWORD	_c	= I*256/17;
+		DWORD	c	= D3DCOLOR_XRGB(c,c,c);
 		
 		FVF::TL	pv[4];
-		pv[0].set(float(0),float(dwHeight),c,0,0);			
-		pv[1].set(float(0),float(0),c,0,0);					
-		pv[2].set(float(dwWidth),float(dwHeight),c,0,0);	
-		pv[3].set(float(dwWidth),float(0),c,0,0);
+		pv[0].set(float(0),			float(dwHeight),	c,0,0);			
+		pv[1].set(float(0),			float(0),			c,0,0);					
+		pv[2].set(float(dwWidth),	float(dwHeight),	c,0,0);	
+		pv[3].set(float(dwWidth),	float(0),			c,0,0);
 		
-		HW.pDevice->SetRenderState	( D3DRS_STENCILREF,		I	);
-		HW.pDevice->SetVertexShader	( FVF::F_TL );
-		HW.pDevice->DrawPrimitiveUP	( D3DPT_TRIANGLESTRIP,	2,	pv, sizeof(pv) );
+		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILREF,		I	));
+		CHK_DX(HW.pDevice->SetVertexShader	( FVF::F_TL ));
+		CHK_DX(HW.pDevice->DrawPrimitiveUP	( D3DPT_TRIANGLESTRIP,	2,	pv, sizeof(FVF::TL) ));
 	}
 
-    HW.pDevice->SetRenderState( D3DRS_STENCILENABLE,    FALSE );
+	CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILENABLE,    FALSE ));
 }
 
 void CRenderDevice::Begin(void)
 {
-	HW.Validate();
+	HW.Validate	();
     if (HW.pDevice->TestCooperativeLevel()!=D3D_OK)
 	{
 		Sleep	(500);
