@@ -8,8 +8,8 @@
 #include "UIHealth.h"
 #include "UIGroup.h"
 
-#define UI_BASE_WIDTH	640
-#define UI_BASE_HEIGHT	480
+#define UI_BASE_WIDTH	800
+#define UI_BASE_HEIGHT	600
 
 // refs
 class CHUDManager;
