@@ -115,6 +115,61 @@
 			<Tool
 				Name="VCWebDeploymentTool"/>
 		</Configuration>
+		<Configuration
+			Name="Mixed|Win32"
+			OutputDirectory="x:\"
+			IntermediateDirectory="Mixed"
+			ConfigurationType="2"
+			CharacterSet="2"
+			WholeProgramOptimization="FALSE">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="3"
+				GlobalOptimizations="TRUE"
+				InlineFunctionExpansion="2"
+				EnableIntrinsicFunctions="TRUE"
+				FavorSizeOrSpeed="1"
+				OmitFramePointers="FALSE"
+				EnableFiberSafeOptimizations="TRUE"
+				OptimizeForProcessor="2"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;XRSOUND_EXPORTS"
+				StringPooling="TRUE"
+				ExceptionHandling="FALSE"
+				RuntimeLibrary="2"
+				BufferSecurityCheck="FALSE"
+				EnableFunctionLevelLinking="FALSE"
+				UsePrecompiledHeader="3"
+				WarningLevel="3"
+				Detect64BitPortabilityProblems="TRUE"
+				DebugInformationFormat="3"
+				CallingConvention="2"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				OutputFile="$(OutDir)/xrSound.dll"
+				LinkIncremental="1"
+				GenerateDebugInformation="FALSE"
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				ImportLibrary="$(OutDir)/xrSound.lib"
+				TargetMachine="1"/>
+			<Tool
+				Name="VCMIDLTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+		</Configuration>
 	</Configurations>
 	<Files>
 		<Filter
