@@ -52,10 +52,10 @@ function set_scheme(obj, ini, scheme, section, gulag_name)
 	local st = xr_logic.assign_storage_and_bind(obj, ini, scheme, section)
 	st.logic = xr_logic.cfg_get_switch_conditions(ini, section, obj)
 
-	self.info   = utils.cfg_get_string( ini, "tips", "name",   obj, true,  "", "" )
-	self.type   = utils.cfg_get_string( ini, "tips", "type",   obj, false, "", "news" )
-	self.sender = utils.cfg_get_string( ini, "tips", "sender", obj, false, "", nil )
+	self.info   = utils.cfg_get_string( ini, section, "name",   obj, true,  "", "" )
+	self.type   = utils.cfg_get_string( ini, section, "type",   obj, false, "", "news" )
+	self.sender = utils.cfg_get_string( ini, section, "sender", obj, false, "", nil )
 
-	self.conditions = xr_logic.cfg_get_condlist( ini, "tips", "cond", obj )
+	self.conditions = xr_logic.cfg_get_condlist( ini, section, "cond", obj )
 end
 
