@@ -231,6 +231,13 @@
         <text>enc_weapons1_wpn-beretta</text>
     </article>
 
+    <!-------------------------------- wpn-sig220 ----------------------------->
+
+    <article id="weapons1_wpn-sig220" name="wpn-sig220" group="Weapons1">
+        <ltx>wpn_sig220</ltx>
+        <text>enc_weapons1_wpn-sig220</text>
+    </article>
+
     <!-------------------------------- wpn-colt1911 ----------------------------->
 
     <article id="weapons1_wpn-colt1911" name="wpn-colt1911" group="Weapons1">
