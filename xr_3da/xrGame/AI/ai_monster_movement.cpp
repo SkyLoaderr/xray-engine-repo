@@ -28,13 +28,9 @@ void CMonsterMovement::Init()
 	
 	MotionStats		= xr_new<CMotionStats> (pMonster);
 
-	reinit();
-}
-
-void CMonsterMovement::reinit()
-{
 	b_try_min_time		= false;
 	time_last_approach	= 0;
+
 }
 
 //////////////////////////////////////////////////////////////////////////

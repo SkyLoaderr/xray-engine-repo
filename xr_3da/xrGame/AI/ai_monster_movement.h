@@ -55,7 +55,6 @@ public:
 
 			void	Init			();
 	virtual void	Load			(LPCSTR section);
-	virtual void	reinit			();
 			
 	void		Frame_Init				();
 	void		Frame_Update			();
