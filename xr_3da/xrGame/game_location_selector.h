@@ -12,10 +12,10 @@
 
 class CGameLocationSelector : virtual public CGameObject {
 protected:
-	u32						m_game_locate_query_time;
-	u32						m_game_location_query_interval;
-	bool					m_game_selector_failed;
-	CAbstractNodeEvaluator	*m_game_selector_evaluator;
+	u32										m_game_locate_query_time;
+	u32										m_game_location_query_interval;
+	bool									m_game_selector_failed;
+	PathManagers::CAbstractNodeEvaluator	*m_game_selector_evaluator;
 
 public:
 					CGameLocationSelector	();

@@ -8,20 +8,21 @@
 
 #pragma once
 
-#include "game_path_manager.h"
 #include "game_location_selector.h"
-#include "level_path_manager.h"
+#include "game_path_manager.h"
 #include "level_location_selector.h"
+#include "level_path_manager.h"
 #include "detail_path_manager.h"
 #include "enemy_predictor.h"
 
 class CPHMovementControl;
 
 class CMovementManager : 
+	public CGameLocationSelector,
 	public CGamePathManager,
+	public CLevelLocationSelector,
 	public CLevelPathManager,
 	public CDetailPathManager,
-	public CLocationSelector,
 	public CEnemyPredictor
 {
 private:

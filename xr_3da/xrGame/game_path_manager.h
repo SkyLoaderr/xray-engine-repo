@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "path_manager_selector.h"
+
 class CGamePathManager {
 protected:
 	bool									m_game_path_actual;
