@@ -44,7 +44,7 @@ void EScene::UndoSave(){
 		unlink( m_RedoStack.back().m_FileName );
 		m_RedoStack.pop_back(); }
 
-	if( frmEditorPreferences&&(m_UndoStack.size() > frmEditorPreferences->seUndoLevels->Value) ){
+	if( frmEditPrefs&&(m_UndoStack.size() > frmEditPrefs->seUndoLevels->Value) ){
 		unlink( m_UndoStack.front().m_FileName );
 		m_UndoStack.pop_front(); }
 
@@ -57,7 +57,7 @@ bool EScene::Undo(){
 		m_RedoStack.push_back( m_UndoStack.back() );
 		m_UndoStack.pop_back();
 
-		if( m_RedoStack.size() > frmEditorPreferences->seUndoLevels->Value ){
+		if( m_RedoStack.size() > frmEditPrefs->seUndoLevels->Value ){
 			unlink( m_RedoStack.front().m_FileName );
 			m_RedoStack.pop_front();
         }
@@ -83,7 +83,7 @@ bool EScene::Redo(){
 		m_UndoStack.push_back( m_RedoStack.back() );
 		m_RedoStack.pop_back();
 
-		if( m_UndoStack.size() > frmEditorPreferences->seUndoLevels->Value ){
+		if( m_UndoStack.size() > frmEditPrefs->seUndoLevels->Value ){
 			unlink( m_UndoStack.front().m_FileName );
 			m_UndoStack.pop_front(); }
 

@@ -15,22 +15,22 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
-TfrmEditorPreferences *frmEditorPreferences;
+TfrmEditPrefs *frmEditPrefs;
 //---------------------------------------------------------------------------
-__fastcall TfrmEditorPreferences::TfrmEditorPreferences(TComponent* Owner)
+__fastcall TfrmEditPrefs::TfrmEditPrefs(TComponent* Owner)
     : TForm(Owner)
 {
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmEditorPreferences::FormCreate(TObject *Sender)
+void __fastcall TfrmEditPrefs::FormCreate(TObject *Sender)
 {
 	DEFINE_INI(fsStorage);
     fsStorage->RestoreFormPlacement();
 }
 //---------------------------------------------------------------------------
 static TStaticText* temp_text=0;
-void __fastcall TfrmEditorPreferences::stLMTexturesClick(TObject *Sender)
+void __fastcall TfrmEditPrefs::stLMTexturesClick(TObject *Sender)
 {
 	if (temp_text) temp_text->Caption=((TMenuItem*)Sender)->Caption;
     temp_text = 0;
@@ -38,7 +38,7 @@ void __fastcall TfrmEditorPreferences::stLMTexturesClick(TObject *Sender)
 //---------------------------------------------------------------------------
 
 static TTabSheet* TS=0;
-int __fastcall TfrmEditorPreferences::Run(TTabSheet* ts){
+int __fastcall TfrmEditPrefs::Run(TTabSheet* ts){
     // activate
     TS = ts;
 	int res=ShowModal();
@@ -46,7 +46,7 @@ int __fastcall TfrmEditorPreferences::Run(TTabSheet* ts){
     return res;
 }
 
-void __fastcall TfrmEditorPreferences::FormKeyDown(TObject *Sender,
+void __fastcall TfrmEditPrefs::FormKeyDown(TObject *Sender,
       WORD &Key, TShiftState Shift)
 {
     if (Key==VK_ESCAPE) ebCancel->Click();
@@ -55,7 +55,7 @@ void __fastcall TfrmEditorPreferences::FormKeyDown(TObject *Sender,
 
 //----------------------------------------------------
 
-void __fastcall TfrmEditorPreferences::ebOkClick(TObject *Sender)
+void __fastcall TfrmEditPrefs::ebOkClick(TObject *Sender)
 {
     Close();
     ModalResult = mrOk;
@@ -64,14 +64,14 @@ void __fastcall TfrmEditorPreferences::ebOkClick(TObject *Sender)
 //---------------------------------------------------------------------------
 
 
-void __fastcall TfrmEditorPreferences::ebCancelClick(TObject *Sender)
+void __fastcall TfrmEditPrefs::ebCancelClick(TObject *Sender)
 {
     Close();
     ModalResult = mrCancel;
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmEditorPreferences::fsStorageRestorePlacement(
+void __fastcall TfrmEditPrefs::fsStorageRestorePlacement(
       TObject *Sender)
 {
 	UI.m_AngleSnap = deg2rad(seSnapAngle->Value);
@@ -100,7 +100,7 @@ void __fastcall TfrmEditorPreferences::fsStorageRestorePlacement(
 //---------------------------------------------------------------------------
 
 
-void __fastcall TfrmEditorPreferences::mcColorDialogClick(
+void __fastcall TfrmEditPrefs::mcColorDialogClick(
       TObject *Sender, TMouseButton Button, TShiftState Shift, int X,
       int Y)
 {
@@ -109,7 +109,7 @@ void __fastcall TfrmEditorPreferences::mcColorDialogClick(
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmEditorPreferences::seNavNetConectDistChange(
+void __fastcall TfrmEditPrefs::seNavNetConectDistChange(
       TObject *Sender)
 {
 	UI.UpdateScene();
@@ -119,7 +119,7 @@ void __fastcall TfrmEditorPreferences::seNavNetConectDistChange(
 
 
 
-void __fastcall TfrmEditorPreferences::FormShow(TObject *Sender)
+void __fastcall TfrmEditPrefs::FormShow(TObject *Sender)
 {
 	// check window position
 	UI.CheckWindowPos(this);

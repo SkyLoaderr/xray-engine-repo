@@ -299,16 +299,16 @@ void CLight::FillProp(LPCSTR pref, PropItemVec& items)
 
     PropValue* V=0;
 
-    V=PHelper.CreateToken	(items,	PHelper.PrepareKey(pref,"Type"),			&m_D3D.type,token_light_type,4);
+    V=PHelper.CreateToken	(items,	FHelper.PrepareKey(pref,"Type"),			&m_D3D.type,token_light_type,4);
     V->OnChangeEvent		= OnTypeChange;
-    V=PHelper.CreateFColor	(items,	PHelper.PrepareKey(pref,"Color"),			&m_D3D.diffuse);
+    V=PHelper.CreateFColor	(items,	FHelper.PrepareKey(pref,"Color"),			&m_D3D.diffuse);
 	V->OnChangeEvent		= OnNeedUpdate;
-    PHelper.CreateFloat		(items,	PHelper.PrepareKey(pref,"Brightness"),		&m_Brightness,-3.f,3.f,0.1f,2);
-    PHelper.CreateBOOL		(items,	PHelper.PrepareKey(pref,"Use In D3D"),		&m_UseInD3D);
-    PHelper.CreateFlag32	(items,	PHelper.PrepareKey(pref,"Usage\\LightMap"),	&m_Flags,	CLight::flAffectStatic);
-    PHelper.CreateFlag32	(items,	PHelper.PrepareKey(pref,"Usage\\Dynamic"),	&m_Flags,	CLight::flAffectDynamic);
-    PHelper.CreateFlag32	(items,	PHelper.PrepareKey(pref,"Usage\\Animated"),	&m_Flags,	CLight::flProcedural);
-    PHelper.CreateFlag32	(items,	PHelper.PrepareKey(pref,"Flags\\Breakable"),&m_Flags,	CLight::flBreaking);
+    PHelper.CreateFloat		(items,	FHelper.PrepareKey(pref,"Brightness"),		&m_Brightness,-3.f,3.f,0.1f,2);
+    PHelper.CreateBOOL		(items,	FHelper.PrepareKey(pref,"Use In D3D"),		&m_UseInD3D);
+    PHelper.CreateFlag32	(items,	FHelper.PrepareKey(pref,"Usage\\LightMap"),	&m_Flags,	CLight::flAffectStatic);
+    PHelper.CreateFlag32	(items,	FHelper.PrepareKey(pref,"Usage\\Dynamic"),	&m_Flags,	CLight::flAffectDynamic);
+    PHelper.CreateFlag32	(items,	FHelper.PrepareKey(pref,"Usage\\Animated"),	&m_Flags,	CLight::flProcedural);
+    PHelper.CreateFlag32	(items,	FHelper.PrepareKey(pref,"Flags\\Breakable"),&m_Flags,	CLight::flBreaking);
 
     switch(m_D3D.type){
     case D3DLIGHT_DIRECTIONAL: 	FillSunProp		(pref, items);	break;
@@ -328,30 +328,30 @@ void CLight::FillSunProp(LPCSTR pref, PropItemVec& items)
 {
 	CEditFlare& F 			= m_LensFlare;
     PropValue* prop			= 0;
-    PHelper.CreateFlag32	(items, PHelper.PrepareKey(pref,"Sun\\Source\\Enabled"),		&F.m_Flags,				CEditFlare::flSource);
-    PHelper.CreateFloat		(items, PHelper.PrepareKey(pref,"Sun\\Source\\Radius"),			&F.m_Source.fRadius,	0.f,10.f);
-    prop 					= PHelper.CreateTexture	(items, PHelper.PrepareKey(pref,"Sun\\Source\\Texture"),		F.m_Source.texture,		sizeof(F.m_Source.texture));
+    PHelper.CreateFlag32	(items, FHelper.PrepareKey(pref,"Sun\\Source\\Enabled"),		&F.m_Flags,				CEditFlare::flSource);
+    PHelper.CreateFloat		(items, FHelper.PrepareKey(pref,"Sun\\Source\\Radius"),			&F.m_Source.fRadius,	0.f,10.f);
+    prop 					= PHelper.CreateTexture	(items, FHelper.PrepareKey(pref,"Sun\\Source\\Texture"),		F.m_Source.texture,		sizeof(F.m_Source.texture));
 	prop->OnChangeEvent		= OnNeedUpdate;
 
-    PHelper.CreateFlag32	(items, PHelper.PrepareKey(pref,"Sun\\Gradient\\Enabled"),		&F.m_Flags,				CEditFlare::flGradient);
-    PHelper.CreateFloat		(items, PHelper.PrepareKey(pref,"Sun\\Gradient\\Radius"),		&F.m_Gradient.fRadius,	0.f,100.f);
-    PHelper.CreateFloat		(items, PHelper.PrepareKey(pref,"Sun\\Gradient\\Opacity"),		&F.m_Gradient.fOpacity,	0.f,1.f);
-	prop					= PHelper.CreateTexture	(items, PHelper.PrepareKey(pref,"Sun\\Gradient\\Texture"),	F.m_Gradient.texture,	sizeof(F.m_Gradient.texture));
+    PHelper.CreateFlag32	(items, FHelper.PrepareKey(pref,"Sun\\Gradient\\Enabled"),		&F.m_Flags,				CEditFlare::flGradient);
+    PHelper.CreateFloat		(items, FHelper.PrepareKey(pref,"Sun\\Gradient\\Radius"),		&F.m_Gradient.fRadius,	0.f,100.f);
+    PHelper.CreateFloat		(items, FHelper.PrepareKey(pref,"Sun\\Gradient\\Opacity"),		&F.m_Gradient.fOpacity,	0.f,1.f);
+	prop					= PHelper.CreateTexture	(items, FHelper.PrepareKey(pref,"Sun\\Gradient\\Texture"),	F.m_Gradient.texture,	sizeof(F.m_Gradient.texture));
 	prop->OnChangeEvent		= OnNeedUpdate;
 
-    PHelper.CreateFlag32	(items, PHelper.PrepareKey(pref,"Sun\\Flares\\Enabled"),		&F.m_Flags,				CEditFlare::flFlare);
+    PHelper.CreateFlag32	(items, FHelper.PrepareKey(pref,"Sun\\Flares\\Enabled"),		&F.m_Flags,				CEditFlare::flFlare);
 	for (CEditFlare::FlareIt it=F.m_Flares.begin(); it!=F.m_Flares.end(); it++){
 		AnsiString nm; nm.sprintf("%s\\Sun\\Flares\\Flare %d",pref,it-F.m_Flares.begin());
-		PHelper.CreateFloat	(items, PHelper.PrepareKey(nm.c_str(),"Radius"), 	&it->fRadius,  	0.f,10.f);
-        PHelper.CreateFloat	(items, PHelper.PrepareKey(nm.c_str(),"Opacity"),	&it->fOpacity,	0.f,1.f);
-        PHelper.CreateFloat	(items, PHelper.PrepareKey(nm.c_str(),"Position"),	&it->fPosition,	-10.f,10.f);
-        prop				= PHelper.CreateTexture	(items, PHelper.PrepareKey(nm.c_str(),"Texture"),	it->texture,	sizeof(it->texture));
+		PHelper.CreateFloat	(items, FHelper.PrepareKey(nm.c_str(),"Radius"), 	&it->fRadius,  	0.f,10.f);
+        PHelper.CreateFloat	(items, FHelper.PrepareKey(nm.c_str(),"Opacity"),	&it->fOpacity,	0.f,1.f);
+        PHelper.CreateFloat	(items, FHelper.PrepareKey(nm.c_str(),"Position"),	&it->fPosition,	-10.f,10.f);
+        prop				= PHelper.CreateTexture	(items, FHelper.PrepareKey(nm.c_str(),"Texture"),	it->texture,	sizeof(it->texture));
         prop->OnChangeEvent	= OnNeedUpdate;
 	}
 }
 //----------------------------------------------------
 
-void __fastcall	CLight::OnAutoClick(PropValue* value)
+void __fastcall	CLight::OnAutoClick(PropValue* value, bool& bModif)
 {
 	ButtonValue* B = dynamic_cast<ButtonValue*>(value); R_ASSERT(B);
 	switch(B->btn_num){
@@ -368,25 +368,25 @@ void __fastcall	CLight::OnAutoClick(PropValue* value)
         clamp(m_D3D.attenuation2,0.f,1.f);
     }
     }
+    bModif = true;
 }
 void CLight::FillPointProp(LPCSTR pref, PropItemVec& items)
 {
-    PHelper.CreateFloat		(items,	PHelper.PrepareKey(pref, "Point", "Range"),					&m_D3D.range,		0.1f,1000.f);
-    PHelper.CreateFloat		(items,	PHelper.PrepareKey(pref, "Point", "Attenuation\\Constant"),	&m_D3D.attenuation0,0.f,1.f,0.0001f,6);
-    PHelper.CreateFloat		(items,	PHelper.PrepareKey(pref, "Point", "Attenuation\\Linear"),	&m_D3D.attenuation1,0.f,1.f,0.0001f,6);
-    PHelper.CreateFloat		(items,	PHelper.PrepareKey(pref, "Point", "Attenuation\\Quadratic"),&m_D3D.attenuation2,0.f,1.f,0.0001f,6);
+    PHelper.CreateFloat		(items,	FHelper.PrepareKey(pref, "Point", "Range"),					&m_D3D.range,		0.1f,1000.f);
+    PHelper.CreateFloat		(items,	FHelper.PrepareKey(pref, "Point", "Attenuation\\Constant"),	&m_D3D.attenuation0,0.f,1.f,0.0001f,6);
+    PHelper.CreateFloat		(items,	FHelper.PrepareKey(pref, "Point", "Attenuation\\Linear"),	&m_D3D.attenuation1,0.f,1.f,0.0001f,6);
+    PHelper.CreateFloat		(items,	FHelper.PrepareKey(pref, "Point", "Attenuation\\Quadratic"),&m_D3D.attenuation2,0.f,1.f,0.0001f,6);
 	ButtonValue* V=0;
-    V=PHelper.CreateButton	(items,	PHelper.PrepareKey(pref, "Point", "Attenuation\\Auto"),"Linear,Quadratic");
+    V=PHelper.CreateButton	(items,	FHelper.PrepareKey(pref, "Point", "Attenuation\\Auto"),"Linear,Quadratic");
     V->OnBtnClickEvent		= OnAutoClick;
 }
 //----------------------------------------------------
 
 void CLight::FillSpotProp(LPCSTR pref, PropItemVec& items)
 {
-	PropValue* V=0;
-	PHelper.CreateFloat		(items,	PHelper.PrepareKey(pref, "Spot", "Range"),					&m_D3D.range,	0.1f,1000.f);
-	V=PHelper.CreateAngle	(items,	PHelper.PrepareKey(pref, "Spot", "Cone Angle"),				&m_D3D.phi,		0.1f,120.f,0.01f,2);
-	PHelper.CreateATexture	(items,	PHelper.PrepareKey(pref, "Spot", "Attenuation\\Texture"),	&m_SpotAttTex);
+	PHelper.CreateFloat		(items,	FHelper.PrepareKey(pref, "Spot", "Range"),					&m_D3D.range,	0.1f,1000.f);
+	PHelper.CreateAngle		(items,	FHelper.PrepareKey(pref, "Spot", "Cone Angle"),				&m_D3D.phi,		0.1f,120.f,0.01f,2);
+	PHelper.CreateATexture	(items,	FHelper.PrepareKey(pref, "Spot", "Attenuation\\Texture"),	&m_SpotAttTex);
 }
 //----------------------------------------------------
 

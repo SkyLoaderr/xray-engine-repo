@@ -19,6 +19,7 @@
 #pragma link "mxPlacemnt"
 #pragma resource "*.dfm"
 TfraLeftBar *fraLeftBar;
+
 //---------------------------------------------------------------------------
 __fastcall TfraLeftBar::TfraLeftBar(TComponent* Owner)
         : TFrame(Owner)
@@ -39,11 +40,6 @@ __fastcall TfraLeftBar::TfraLeftBar(TComponent* Owner)
     ebTargetAIMap->Tag		= etAIMap;
 
     DEFINE_INI(fsStorage);
-    for (int i=5; i>=0; i--)
-    {
-		AnsiString recent_fn= fsStorage->ReadString	(AnsiString("RecentFiles")+AnsiString(i),"");
-        if (!recent_fn.IsEmpty()) AppendRecentFile(recent_fn.c_str());
-    }
 }
 //---------------------------------------------------------------------------
 
@@ -339,7 +335,7 @@ void __fastcall TfraLeftBar::ebHideUnselectedClick(TObject *Sender)
 void __fastcall TfraLeftBar::ebRandomAddClick(TObject *Sender)
 {
 	if (ebRandomAdd->Down)
-	    if (frmEditorPreferences->Run(frmEditorPreferences->tsEdit)==mrCancel)
+	    if (frmEditPrefs->Run(frmEditPrefs->tsEdit)==mrCancel)
         	ebRandomAdd->Down=false;
 }
 //---------------------------------------------------------------------------
@@ -577,7 +573,7 @@ LPCSTR TfraLeftBar::FirstRecentFile()
 
 void TfraLeftBar::AppendRecentFile(LPCSTR name)
 {
-	R_ASSERT(miRecentFiles->Count<=5);
+	R_ASSERT(miRecentFiles->Count<=frmEditPrefs->seRecentFilesCount->Value);
 
 	for (int i = 0; i < miRecentFiles->Count; i++)
     	if (miRecentFiles->Items[i]->Caption==name){
@@ -585,22 +581,15 @@ void TfraLeftBar::AppendRecentFile(LPCSTR name)
             return;
 		}
 
-	if (miRecentFiles->Count==5) miRecentFiles->Remove(miRecentFiles->Items[4]);
+	if (miRecentFiles->Count==frmEditPrefs->seRecentFilesCount->Value) miRecentFiles->Remove(miRecentFiles->Items[frmEditPrefs->seRecentFilesCount->Value-1]);
 
-    TMenuItem *MI = xr_new<TMenuItem>((TComponent*)0);
-    MI->Caption = name;
-    MI->OnClick = miRecentFilesClick;
-    MI->Tag		= 0x1001;
+    TMenuItem *MI 	= xr_new<TMenuItem>((TComponent*)0);
+    MI->Caption 	= name;
+    MI->OnClick 	= miRecentFilesClick;
+    MI->Tag			= 0x1001;
     miRecentFiles->Insert(0,MI);
 
     miRecentFiles->Enabled = true;
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraLeftBar::fsStorageSavePlacement(TObject *Sender)
-{
-	for (int i = 0; i < miRecentFiles->Count; i++)
-		fsStorage->WriteString(AnsiString("RecentFiles")+AnsiString(i),miRecentFiles->Items[i]->Caption);
 }
 //---------------------------------------------------------------------------
 

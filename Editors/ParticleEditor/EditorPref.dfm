@@ -1,4 +1,4 @@
-object frmEditorPreferences: TfrmEditorPreferences
+object frmEditPrefs: TfrmEditPrefs
   Left = 380
   Top = 272
   BorderStyle = bsDialog
@@ -33,9 +33,9 @@ object frmEditorPreferences: TfrmEditorPreferences
       Top = 0
       Width = 396
       Height = 243
-      ActivePage = tsCamera
+      ActivePage = tsScene
       Align = alClient
-      TabIndex = 0
+      TabIndex = 2
       TabOrder = 0
       object tsCamera: TTabSheet
         Caption = 'Camera'
@@ -421,6 +421,13 @@ object frmEditorPreferences: TfrmEditorPreferences
           Height = 13
           Caption = 'Undo Levels'
         end
+        object Label2: TLabel
+          Left = 189
+          Top = 22
+          Width = 90
+          Height = 13
+          Caption = 'Recent Files Count'
+        end
         object seUndoLevels: TMultiObjSpinEdit
           Left = 283
           Top = 1
@@ -609,6 +616,19 @@ object frmEditorPreferences: TfrmEditorPreferences
             AutoSize = False
             TabOrder = 0
           end
+        end
+        object seRecentFilesCount: TMultiObjSpinEdit
+          Left = 283
+          Top = 20
+          Width = 103
+          Height = 18
+          LWSensitivity = 0.1
+          ButtonKind = bkLightWave
+          Decimal = 1
+          MaxValue = 20
+          Value = 10
+          AutoSize = False
+          TabOrder = 4
         end
       end
       object tsEdit: TTabSheet
@@ -997,7 +1017,8 @@ object frmEditorPreferences: TfrmEditorPreferences
       'seSnapMove.Value'
       'seCameraFlyAltitude.Value'
       'seCameraFlySpeed.Value'
-      'seSnapMoveTo.Value')
+      'seSnapMoveTo.Value'
+      'seRecentFilesCount.Value')
     StoredValues = <>
     Left = 273
     Top = 9

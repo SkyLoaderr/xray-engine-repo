@@ -5,6 +5,7 @@
 
 #include "main.h"
 #include "ui_main.h"
+#include "editorpref.h"
 TfrmMain *frmMain;
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -161,12 +162,20 @@ void __fastcall TfrmMain::fsStorageRestorePlacement(TObject *Sender)
     fraBottomBar->fsStorage->RestoreFormPlacement();
     fraTopBar->fsStorage->RestoreFormPlacement();
 	psDeviceFlags.set(fsStorage->ReadInteger("Device Flags",rsStatistic|rsFilterLinear|rsFog|rsDrawGrid));
+	// read recent list    
+    for (int i=frmEditPrefs->seRecentFilesCount->Value; i>=0; i--){
+		AnsiString recent_fn= frmMain->fsStorage->ReadString	(AnsiString("RecentFiles")+AnsiString(i),"");
+        if (!recent_fn.IsEmpty()) fraLeftBar->AppendRecentFile(recent_fn.c_str());
+    }
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmMain::fsStorageSavePlacement(TObject *Sender)
 {
 	fsStorage->WriteInteger("Device Flags",psDeviceFlags.get());
+	// save recent files
+	for (int i = 0; i < fraLeftBar->miRecentFiles->Count; i++)
+		fsStorage->WriteString(AnsiString("RecentFiles")+AnsiString(i),fraLeftBar->miRecentFiles->Items[i]->Caption);
 }
 //---------------------------------------------------------------------------
 

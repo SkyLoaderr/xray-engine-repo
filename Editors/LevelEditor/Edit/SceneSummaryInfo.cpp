@@ -48,15 +48,15 @@ void SSceneSummary::FillProp(PropItemVec& items)
             int tex_mem		= T->MemoryUsage();
             base_mem_usage	+= tex_mem;
             AnsiString pref	= AnsiString("Textures\\Base\\")+*t_it;
-            PHelper.CreateCaption(items,PHelper.PrepareKey(pref.c_str(),"Format"),			T->FormatString());
-            PHelper.CreateCaption(items,PHelper.PrepareKey(pref.c_str(),"Size"), 			AnsiString().sprintf("%d x %d x %s",T->_Width(),T->_Height(),T->_Format().HasAlpha()?"32b":"24b"));
-            PHelper.CreateCaption(items,PHelper.PrepareKey(pref.c_str(),"Memory Usage"),	AnsiString().sprintf("%d Kb",iFloor(tex_mem/1024)));
+            PHelper.CreateCaption(items,FHelper.PrepareKey(pref.c_str(),"Format"),			T->FormatString());
+            PHelper.CreateCaption(items,FHelper.PrepareKey(pref.c_str(),"Size"), 			AnsiString().sprintf("%d x %d x %s",T->_Width(),T->_Height(),T->_Format().HasAlpha()?"32b":"24b"));
+            PHelper.CreateCaption(items,FHelper.PrepareKey(pref.c_str(),"Memory Usage"),	AnsiString().sprintf("%d Kb",iFloor(tex_mem/1024)));
         	if (T->_Format().flags.is(STextureParams::flHasDetailTexture)){
             	det_textures.insert(T->_Format().detail_name);
-	            PHelper.CreateCaption(items,PHelper.PrepareKey(pref.c_str(),"Detail Texture"),	T->_Format().detail_name);
-	            PHelper.CreateCaption(items,PHelper.PrepareKey(pref.c_str(),"Detail Scale"),	T->_Format().detail_scale);
+	            PHelper.CreateCaption(items,FHelper.PrepareKey(pref.c_str(),"Detail Texture"),	T->_Format().detail_name);
+	            PHelper.CreateCaption(items,FHelper.PrepareKey(pref.c_str(),"Detail Scale"),	T->_Format().detail_scale);
             }
-//            PHelper.CreateCaption(items,PHelper.PrepareKey(pref.c_str(),"Used In"),			objects);
+//            PHelper.CreateCaption(items,FHelper.PrepareKey(pref.c_str(),"Used In"),			objects);
         }
         xr_delete			(T);
     }
@@ -76,9 +76,9 @@ void SSceneSummary::FillProp(PropItemVec& items)
             int tex_mem		= T->MemoryUsage();
             det_mem_usage	+= tex_mem;
             AnsiString pref	= AnsiString("Textures\\Detail\\")+*t_it;
-            PHelper.CreateCaption(items,PHelper.PrepareKey(pref.c_str(),"Format"),			T->FormatString());
-            PHelper.CreateCaption(items,PHelper.PrepareKey(pref.c_str(),"Size"), 			AnsiString().sprintf("%d x %d x %s",T->_Width(),T->_Height(),T->_Format().HasAlpha()?"32b":"24b"));
-            PHelper.CreateCaption(items,PHelper.PrepareKey(pref.c_str(),"Memory Usage"),	AnsiString().sprintf("%d Kb",iFloor(tex_mem/1024)));
+            PHelper.CreateCaption(items,FHelper.PrepareKey(pref.c_str(),"Format"),			T->FormatString());
+            PHelper.CreateCaption(items,FHelper.PrepareKey(pref.c_str(),"Size"), 			AnsiString().sprintf("%d x %d x %s",T->_Width(),T->_Height(),T->_Format().HasAlpha()?"32b":"24b"));
+            PHelper.CreateCaption(items,FHelper.PrepareKey(pref.c_str(),"Memory Usage"),	AnsiString().sprintf("%d Kb",iFloor(tex_mem/1024)));
         }
         xr_delete			(T);
     }
@@ -95,12 +95,12 @@ void SSceneSummary::FillProp(PropItemVec& items)
     PHelper.CreateCaption(items,"Sounds\\Sources",				sound_source_cnt);
     PHelper.CreateCaption(items,"Sounds\\Waves\\Count",			waves.size());
     for (AStringSetIt w_it=waves.begin(); w_it!=waves.end(); w_it++)
-        PHelper.CreateCaption(items,PHelper.PrepareKey("Sounds\\Waves",w_it->c_str()),"-");
+        PHelper.CreateCaption(items,FHelper.PrepareKey("Sounds\\Waves",w_it->c_str()),"-");
 
     // particles
     PHelper.CreateCaption(items,"Particle System\\Sources",			pg_static_cnt);
     PHelper.CreateCaption(items,"Particle System\\Refs\\Count",		pg_static.size());
     for (AStringSetIt pg_it=pg_static.begin(); pg_it!=pg_static.end(); pg_it++)
-        PHelper.CreateCaption(items,PHelper.PrepareKey("Particle System\\Refs",pg_it->c_str()),"-");
+        PHelper.CreateCaption(items,FHelper.PrepareKey("Particle System\\Refs",pg_it->c_str()),"-");
 }
  

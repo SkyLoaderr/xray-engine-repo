@@ -172,11 +172,11 @@ void TfrmEditLightAnim::GetItemData()
 {
     PropItemVec items;
 	if (m_CurrentItem){
-        PHelper.CreateName	(items,	"Name",			m_CurrentItem->cName,		sizeof(m_CurrentItem->cName), (int)tvItems->Items->LookForItem(0,m_CurrentItem->cName,0,0,false,true,false,true,true));
-        PHelper.CreateFloat	(items,	"FPS",			&m_CurrentItem->fFPS,		0.1f,1000,1.f,1);
-        PHelper.CreateS32	(items,	"Frame Count",	&m_CurrentItem->iFrameCount,1,100000,1);
+        PHelper.CreateName_TI	(items,	"Name",			m_CurrentItem->cName,		sizeof(m_CurrentItem->cName), tvItems->Items->LookForItem(0,m_CurrentItem->cName,0,0,false,true,false,true,true));
+        PHelper.CreateFloat		(items,	"FPS",			&m_CurrentItem->fFPS,		0.1f,1000,1.f,1);
+        PHelper.CreateS32		(items,	"Frame Count",	&m_CurrentItem->iFrameCount,1,100000,1);
     }
-    m_Props->AssignItems	(items,true);
+    m_Props->AssignItems		(items,true);
     UpdateView();
 }
 //---------------------------------------------------------------------------

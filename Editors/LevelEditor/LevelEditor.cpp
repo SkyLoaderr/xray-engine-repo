@@ -11,7 +11,7 @@ USEFORM("FrameSector.cpp", fraSector);
 USEFORM("FramePortal.cpp", fraPortal);
 USEFORM("SceneProperties.cpp", frmSceneProperties);
 USEFORM("ObjectList.cpp", frmObjectList);
-USEFORM("EditorPref.cpp", frmEditorPreferences);
+USEFORM("EditorPref.cpp", frmEditPrefs);
 USEFORM("Splash.cpp", frmSplash);
 USEFORM("main.cpp", frmMain);
 USEFORM("LogForm.cpp", frmLog);
@@ -62,7 +62,6 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 // startup create
 		Application->Title 			= _EDITOR_NAME_;
 		Application->CreateForm(__classid(TfrmMain), &frmMain);
-		Application->CreateForm(__classid(TfrmEditorPreferences), &frmEditorPreferences);
 		frmMain->SetHInst			(hInst);
 
         xr_delete					(frmSplash);

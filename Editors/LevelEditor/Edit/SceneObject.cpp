@@ -19,11 +19,13 @@
 #define BLINK_TIME 300.f
 
 //----------------------------------------------------
-CSceneObject::CSceneObject(LPVOID data, LPCSTR name):CCustomObject(data,name){
+CSceneObject::CSceneObject(LPVOID data, LPCSTR name):CCustomObject(data,name)
+{
 	Construct	(data);
 }
 
-void CSceneObject::Construct(LPVOID data){
+void CSceneObject::Construct(LPVOID data)
+{
 	ClassID		= OBJCLASS_SCENEOBJECT;
 
     m_ReferenceName = "";
@@ -34,18 +36,11 @@ void CSceneObject::Construct(LPVOID data){
     m_iBlinkTime	= 0;
 
     m_Flags.zero	();
-
-    m_ActiveOMotion = 0;
-    m_vMotionPosition.set(0,0,0);
-    m_vMotionRotation.set(0,0,0);
 }
 
-CSceneObject::~CSceneObject(){
+CSceneObject::~CSceneObject()
+{
 	Lib.RemoveEditObject(m_pReference);
-    // object motions
-    for(OMotionIt o_it=m_OMotions.begin(); o_it!=m_OMotions.end();o_it++)xr_delete(*o_it);
-    m_OMotions.clear();
-    m_ActiveOMotion = 0;
 }
 //----------------------------------------------------
 
@@ -62,7 +57,8 @@ void CSceneObject::Select(BOOL flag)
 }
 
 //----------------------------------------------------
-void CSceneObject::GetFaceWorld(CEditableMesh* M, int idx, Fvector* verts){
+void CSceneObject::GetFaceWorld(CEditableMesh* M, int idx, Fvector* verts)
+{
 	const Fvector* PT[3];
 	M->GetFacePT(idx, PT);
 	_Transform().transform_tiny(verts[0],*PT[0]);
@@ -70,19 +66,23 @@ void CSceneObject::GetFaceWorld(CEditableMesh* M, int idx, Fvector* verts){
 	_Transform().transform_tiny(verts[2],*PT[2]);
 }
 
-int CSceneObject::GetFaceCount(){
+int CSceneObject::GetFaceCount()
+{
 	return m_pReference?m_pReference->GetFaceCount():0;
 }
 
-int CSceneObject::GetSurfFaceCount(const char* surf_name){
+int CSceneObject::GetSurfFaceCount(const char* surf_name)
+{
 	return m_pReference?m_pReference->GetSurfFaceCount(surf_name):0;
 }
 
-int CSceneObject::GetVertexCount(){
+int CSceneObject::GetVertexCount()
+{
 	return m_pReference?m_pReference->GetVertexCount():0;
 }
 
-void CSceneObject::OnUpdateTransform(){
+void CSceneObject::OnUpdateTransform()
+{
 	inherited::OnUpdateTransform();
     // update bounding volume
     if (m_pReference){
@@ -98,7 +98,8 @@ bool CSceneObject::GetBox( Fbox& box )
 	return true;
 }
 
-bool CSceneObject::GetUTBox( Fbox& box ){
+bool CSceneObject::GetUTBox( Fbox& box )
+{
 	if (!m_pReference) return false;
     box.set(m_pReference->GetBox());
 	return true;
@@ -107,11 +108,11 @@ bool CSceneObject::GetUTBox( Fbox& box ){
 bool __inline CSceneObject::IsRender()
 {
 	if (!m_pReference) return false;
-    if (fraBottomBar->miDrawObjectAnimPath->Checked&&IsDynamic()&&IsOMotionActive()) RenderAnimation();
     return ::Render->occ_visible(m_TBBox);
 }
 
-void CSceneObject::Render(int priority, bool strictB2F){
+void CSceneObject::Render(int priority, bool strictB2F)
+{
 	inherited::Render(priority,strictB2F);
     if (!m_pReference) return;
     Scene.TurnLightsForObject(this);
@@ -133,45 +134,27 @@ void CSceneObject::Render(int priority, bool strictB2F){
     }
 }
 
-void CSceneObject::RenderSingle(){
+void CSceneObject::RenderSingle()
+{
 	if (!m_pReference) return;
 	m_pReference->RenderSingle(_Transform());
 }
 
-void CSceneObject::RenderAnimation(){
-    // motion path
-    {
-        float fps = m_ActiveOMotion->FPS();
-        float min_t=(float)m_ActiveOMotion->FrameStart()/fps;
-        float max_t=(float)m_ActiveOMotion->FrameEnd()/fps;
-
-        Fvector T,r;
-        FvectorVec v;
-        u32 clr=0xffffffff;
-        for (float t=min_t; t<max_t; t+=0.1f){
-            m_ActiveOMotion->Evaluate(t,T,r);
-//            T.add(FPosition);
-            v.push_back(T);
-        }
-
-        Device.SetShader		(Device.m_WireShader);
-        RCache.set_xform_world	(Fidentity);
-        DU.DrawPrimitiveL		(D3DPT_LINESTRIP,v.size()-1,v.begin(),v.size(),clr,true,false);
-    }
-}
-
-void CSceneObject::RenderBones(){
+void CSceneObject::RenderBones()
+{
 	if (!m_pReference) return;
 	m_pReference->RenderBones(_Transform());
 }
 
-void CSceneObject::RenderEdge(CEditableMesh* mesh, u32 color){
+void CSceneObject::RenderEdge(CEditableMesh* mesh, u32 color)
+{
 	if (!m_pReference) return;
     if (::Render->occ_visible(m_TBBox))
 		m_pReference->RenderEdge(_Transform(), mesh, color);
 }
 
-void CSceneObject::RenderSelection(u32 color){
+void CSceneObject::RenderSelection(u32 color)
+{
 	if (!m_pReference) return;
 	m_pReference->RenderSelection(_Transform(),0,color);
 }
@@ -252,155 +235,12 @@ void CSceneObject::OnFrame()
 	inherited::OnFrame();
 	if (!m_pReference) return;
 	if (m_pReference) m_pReference->OnFrame();
-
-    if (IsDynamic()&&IsOMotionActive()){
-        Fvector R,P,r;
-		m_ActiveOMotion->Evaluate(m_OMParam.Frame(),P,r);
-        R.set(-r.y,-r.x,-r.z);
-//        P.add(FPosition);
-//        R.add(FRotation);
-        PPosition = P;
-        PRotation = R;
-        m_OMParam.Update(Device.fTimeDelta);
-        UpdateTransform(true);
-	}
 	if (psDeviceFlags.is(rsStatistic)){
     	if (IsStatic()||IsMUStatic()||Selected()){
             Device.Statistic.dwLevelSelFaceCount 	+= GetFaceCount();
             Device.Statistic.dwLevelSelVertexCount 	+= GetVertexCount();
         }
     }
-}
-//S	SetActiveOMotion(0,false);
-
-//----------------------------------------------------
-// Object sound
-//----------------------------------------------------
-void CSceneObject::SetActiveSound(LPCSTR snd)
-{
-	m_ActiveSound = snd;
-}
-
-bool CSceneObject::AppendSound(LPCSTR fname)
-{
-	if (std::find(m_Sounds.begin(),m_Sounds.end(),AnsiString(fname))!=m_Sounds.end()){
-    	return false;
-    }else{
-    	m_Sounds.push_back(fname);
-        return true;
-    }
-}
-
-void CSceneObject::RemoveSound(LPCSTR name)
-{
-    AStringVec& lst = m_Sounds;
-    for(AStringIt m=lst.begin(); m!=lst.end(); m++)
-        if ((stricmp(m->c_str(),name)==0)){
-        	if (m_ActiveSound==*m) SetActiveSound(0);
-        	lst.erase(m);
-            break;
-        }
-}
-
-void CSceneObject::ClearSounds()
-{
-	ResetActiveSound();
-    m_Sounds.clear();
-}
-
-//----------------------------------------------------
-// Object motion
-//----------------------------------------------------
-void CSceneObject::ResetAnimation(bool upd_t)
-{
-	ResetActiveOMotion();
-}
-
-void CSceneObject::SetActiveOMotion(COMotion* mot)
-{
-	if (mot){
-    	m_OMParam.Set(mot,true);
-        m_OMParam.Play();
-    }
-	m_ActiveOMotion=mot;
-    UpdateTransform();
-    UI.RedrawScene();
-}
-
-COMotion* CSceneObject::FindOMotionByName	(const char* name, const COMotion* Ignore)
-{
-    OMotionVec& lst = m_OMotions;
-    for(OMotionIt m=lst.begin(); m!=lst.end(); m++)
-        if ((Ignore!=(*m))&&(stricmp((*m)->Name(),name)==0)) return (*m);
-    return 0;
-}
-
-void CSceneObject::RemoveOMotion(const char* name)
-{
-    OMotionVec& lst = m_OMotions;
-    for(OMotionIt m=lst.begin(); m!=lst.end(); m++)
-        if ((stricmp((*m)->Name(),name)==0)){
-        	if (m_ActiveOMotion==*m) SetActiveOMotion(0);
-            xr_delete(*m);
-        	lst.erase(m);
-            break;
-        }
-}
-
-bool CSceneObject::RenameOMotion(const char* old_name, const char* new_name)
-{
-	if (stricmp(old_name,new_name)==0) return true;
-    if (FindOMotionByName(new_name)) return false;
-	COMotion* M = FindOMotionByName(old_name); VERIFY(M);
-    M->SetName(new_name);
-    return true;
-}
-
-void CSceneObject::GenerateOMotionName(char* buffer, const char* start_name, const COMotion* M)
-{
-	strcpy(buffer,start_name);
-    int idx = 0;
-	while(FindOMotionByName(buffer,M)){
-		sprintf( buffer, "%s_%d", start_name, idx );
-    	idx++;
-    }
-    strlwr(buffer);
-}
-
-COMotion* CSceneObject::AppendOMotion(const char* fname)
-{
-	COMotion* M = LoadOMotion(fname);
-    if (M) m_OMotions.push_back(M);
-    return M;
-}
-
-void CSceneObject::ClearOMotions()
-{
-	SetActiveOMotion(0);
-    for(OMotionIt m_it=m_OMotions.begin(); m_it!=m_OMotions.end();m_it++)xr_delete(*m_it);
-    m_OMotions.clear();
-}
-
-void CSceneObject::LoadOMotions(const char* fname)
-{
-	IReader* F = FS.r_open(fname);
-    ClearOMotions();
-    // object motions
-    m_OMotions.resize(F->r_u32());
-	SetActiveOMotion(0);
-    for (OMotionIt m_it=m_OMotions.begin(); m_it!=m_OMotions.end(); m_it++){
-        *m_it = xr_new<COMotion>();
-        (*m_it)->Load(*F);
-    }
-    FS.r_close	(F);
-}
-
-void CSceneObject::SaveOMotions(const char* fname)
-{
-	CMemoryWriter F;
-    F.w_u32		(m_OMotions.size());
-    for (OMotionIt m_it=m_OMotions.begin(); m_it!=m_OMotions.end(); m_it++) (*m_it)->Save(F);
-    F.save_to		(fname);
 }
 
 void __fastcall CSceneObject::ReferenceChange(PropValue* sender)
@@ -411,7 +251,7 @@ void __fastcall CSceneObject::ReferenceChange(PropValue* sender)
 void CSceneObject::FillProp(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp	(pref,items);
-    PropValue* V		= PHelper.CreateALibObject	(items,PHelper.PrepareKey(pref,"Reference"),	&m_ReferenceName); 
+    PropValue* V		= PHelper.CreateALibObject	(items,FHelper.PrepareKey(pref,"Reference"),	&m_ReferenceName); 
     V->OnChangeEvent 	= ReferenceChange;
 }
 

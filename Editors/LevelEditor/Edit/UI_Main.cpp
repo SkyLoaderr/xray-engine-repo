@@ -14,9 +14,13 @@
 
 #include "ui_main.h"
 #include "d3dutils.h"
-#include "editorpref.h"
 #include "SoundManager.h"
 #include "PSLibrary.h"
+
+#include "topbar.h"
+#include "leftbar.h"
+#include "bottombar.h"
+#include "editorpref.h"
 
 TUI UI;
 
@@ -73,10 +77,15 @@ void TUI::OnDeviceDestroy()
     ::Render->PSystems.OnDeviceDestroy();
 }
 
-bool TUI::OnCreate(){
+bool TUI::OnCreate()
+{
 // create base class
 	Device.InitTimer();
 
+    fraBottomBar	= xr_new<TfraBottomBar>((TComponent*)0);
+    fraLeftBar  	= xr_new<TfraLeftBar>((TComponent*)0);
+    fraTopBar   	= xr_new<TfraTopBar>((TComponent*)0);
+    
     m_D3DWindow 	= frmMain->D3DWindow;
     VERIFY(m_D3DWindow);
     Device.Initialize();
@@ -84,6 +93,7 @@ bool TUI::OnCreate(){
 #ifdef _LEVEL_EDITOR
     m_Cursor        = xr_new<C3DCursor>();
 #endif
+	frmEditPrefs	= xr_new<TfrmEditPrefs>((TComponent*)0);
 	// Creation
 	XRC.ray_options	(CDB::OPT_ONLYNEAREST | CDB::OPT_CULL);
 
@@ -103,7 +113,6 @@ bool TUI::OnCreate(){
     	ELog.DlgMsg	(mtError,"Undefined Editor local directory.");
         return 		false;
     }
-    
 
 	BeginEState		(esEditScene);
 
@@ -121,6 +130,12 @@ void TUI::OnDestroy()
     EndEState		();
 
     Device.ShutDown	();
+    
+    //----------------
+    xr_delete(frmEditPrefs);
+    xr_delete(fraLeftBar);
+    xr_delete(fraTopBar);
+    xr_delete(fraBottomBar);
 }
 
 bool TUI::IsModified()
@@ -420,7 +435,7 @@ void TUI::OutGridSize()
 {
 	VERIFY(m_bReady);
     AnsiString s;
-    s.sprintf("Grid: %1.1f",float(frmEditorPreferences->seGridSquareSize->Value));
+    s.sprintf("Grid: %1.1f",float(frmEditPrefs->seGridSquareSize->Value));
     fraBottomBar->paGridSquareSize->Caption=s; fraBottomBar->paGridSquareSize->Repaint();
 }
 //---------------------------------------------------------------------------

@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 674
+  Height = 277
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -1609,7 +1609,6 @@ object fraLeftBar: TfraLeftBar
     Options = []
     RegistryRoot = prLocalMachine
     Version = 11
-    OnSavePlacement = fsStorageSavePlacement
     StoredProps.Strings = (
       'paEdit.Tag'
       'paEdit.Height'

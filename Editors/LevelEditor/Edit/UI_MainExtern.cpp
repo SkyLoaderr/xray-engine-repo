@@ -648,14 +648,14 @@ bool TUI::SelectionFrustum(CFrustum& frustum){
     SRayPickInfo pinf;
     for (int i=0; i<4; i++){
 	    Device.m_Camera.MouseRayFromPoint(st, d, pt[i]);
-        if (frmEditorPreferences->cbBoxPickLimitedDepth->Checked){
+        if (frmEditPrefs->cbBoxPickLimitedDepth->Checked){
 			pinf.inf.range = Device.m_Camera.m_Zfar; // max pick range
             if (Scene.RayPick(st, d, OBJCLASS_SCENEOBJECT, &pinf, false, 0))
 	            if (pinf.inf.range > depth) depth = pinf.inf.range;
         }
     }
     if (depth<Device.m_Camera.m_Znear) depth = Device.m_Camera.m_Zfar;
-    else depth += frmEditorPreferences->seBoxPickDepthTolerance->Value;
+    else depth += frmEditPrefs->seBoxPickDepthTolerance->Value;
 
     for (i=0; i<4; i++){
 	    Device.m_Camera.MouseRayFromPoint(st, d, pt[i]);

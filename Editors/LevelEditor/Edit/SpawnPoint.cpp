@@ -470,7 +470,7 @@ void CSpawnPoint::FillProp(LPCSTR pref, PropItemVec& items)
     }else{
     	switch (m_Type){
         case ptRPoint:{
-			PHelper.CreateU32(items, PHelper.PrepareKey(pref,"Respawn Point","Team"), &m_dwTeamID, 0,64,1);
+			PHelper.CreateU32(items, FHelper.PrepareKey(pref,"Respawn Point","Team"), &m_dwTeamID, 0,64,1);
         }break;
         default: THROW;
         }

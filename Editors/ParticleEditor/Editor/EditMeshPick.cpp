@@ -204,7 +204,7 @@ void CEditableMesh::FrustumPickFaces(const CFrustum& frustum, const Fmatrix& par
 
 	u32 i=0;
 	Fvector p[3];
-    bool bCulling=frmEditorPreferences->cbBoxPickFaceCulling->Checked;
+    bool bCulling=frmEditPrefs->cbBoxPickFaceCulling->Checked;
     for(FaceIt p_it=m_Faces.begin();p_it!=m_Faces.end();p_it++,i++){
         for( int k=0;k<3;k++) parent.transform_tiny(p[k],m_Points[p_it->pv[k].pindex]);
         if (bCulling){

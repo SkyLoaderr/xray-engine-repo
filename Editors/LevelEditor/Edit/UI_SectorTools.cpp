@@ -38,12 +38,13 @@ __fastcall TUI_ControlSectorAdd::TUI_ControlSectorAdd(int st, int act, TUI_Custo
 void __fastcall TUI_ControlSectorAdd::OnEnter()
 {
     m_Action = saNone;
-    fraSector = (TfraSector*)parent_tool->pFrame; VERIFY(fraSector);
+    TfraSector* fraSector = (TfraSector*)parent_tool->pFrame; VERIFY(fraSector);
     fraSector->paSectorActions->Show();
 }
 
 void __fastcall TUI_ControlSectorAdd::OnExit()
 {
+    TfraSector* fraSector = (TfraSector*)parent_tool->pFrame; VERIFY(fraSector);
     fraSector->paSectorActions->Hide();
 	fraSector = 0;
 }
@@ -86,6 +87,7 @@ bool TUI_ControlSectorAdd::AddSector(){
 bool __fastcall TUI_ControlSectorAdd::Start(TShiftState Shift)
 {
     if (Shift==ssRBOnly){ UI.Command(COMMAND_SHOWCONTEXTMENU,OBJCLASS_SECTOR); return false;}
+    TfraSector* fraSector = (TfraSector*)parent_tool->pFrame; VERIFY(fraSector);
     if (fraSector->ebCreateNew->Down){
     	if (AddSector()&&(!Shift.Contains(ssAlt))) fraSector->ebCreateNew->Down=false;
         return false;
@@ -117,6 +119,7 @@ void __fastcall TUI_ControlSectorAdd::Move(TShiftState _Shift)
 
 bool __fastcall TUI_ControlSectorAdd::End(TShiftState _Shift)
 {
+    TfraSector* fraSector = (TfraSector*)parent_tool->pFrame; VERIFY(fraSector);
     CSector* sector=PortalUtils.GetSelectedSector();
 	if (sector){
         if (m_Action==saMeshBoxSelection){

@@ -20,9 +20,9 @@ void CCustomObject::SnapMove(Fvector& pos, Fvector& rot, const Fmatrix& rotRP, c
     up.invert(dn);
     Fvector s2,s1=pos;
     s1.add(amount);
-    s2.mad(s1,up,frmEditorPreferences->seSnapMoveTo->Value);
+    s2.mad(s1,up,frmEditPrefs->seSnapMoveTo->Value);
 
-    pinf.inf.range=frmEditorPreferences->seSnapMoveTo->Value;
+    pinf.inf.range=frmEditPrefs->seSnapMoveTo->Value;
     if (Scene.RayPick( s1, dn, OBJCLASS_SCENEOBJECT, &pinf, false, Scene.GetSnapList())||
         Scene.RayPick( s2, dn, OBJCLASS_SCENEOBJECT, &pinf, false, Scene.GetSnapList())){
             pos.set(pinf.pt);
@@ -206,7 +206,7 @@ void __fastcall CCustomObject::OnObjectNameAfterEdit(PropItem* sender, LPVOID ed
 
 void CCustomObject::FillProp(LPCSTR pref, PropItemVec& items)
 {
-    PropValue* V = PHelper.CreateText(items,PHelper.PrepareKey(pref, "Name"),FName,sizeof(FName));
+    PropValue* V = PHelper.CreateText(items,FHelper.PrepareKey(pref, "Name"),FName,sizeof(FName));
     V->Owner()->OnAfterEditEvent = OnObjectNameAfterEdit;
     if (V->Owner()->m_Flags.is(PropItem::flMixed)) V->Owner()->m_Flags.set(PropItem::flDisabled,TRUE);
 }

@@ -22,7 +22,7 @@
 class CEditObject;
 class Mesh;
 //---------------------------------------------------------------------------
-class TfrmEditorPreferences : public TForm
+class TfrmEditPrefs : public TForm
 {
 __published:	// IDE-managed Components
     TPanel *Panel1;
@@ -116,6 +116,8 @@ __published:	// IDE-managed Components
 	TMultiObjSpinEdit *seGridSquareSize;
 	TLabel *Label1;
 	TMultiObjSpinEdit *seSnapMoveTo;
+	TLabel *Label2;
+	TMultiObjSpinEdit *seRecentFilesCount;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
     void __fastcall ebCancelClick(TObject *Sender);
@@ -129,10 +131,10 @@ __published:	// IDE-managed Components
 	void __fastcall FormShow(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
-    __fastcall TfrmEditorPreferences(TComponent* Owner);
+    __fastcall TfrmEditPrefs(TComponent* Owner);
     int Run(TTabSheet* ts=0);
 };
 //---------------------------------------------------------------------------
-extern PACKAGE TfrmEditorPreferences *frmEditorPreferences;
+extern PACKAGE TfrmEditPrefs *frmEditPrefs;
 //---------------------------------------------------------------------------
 #endif

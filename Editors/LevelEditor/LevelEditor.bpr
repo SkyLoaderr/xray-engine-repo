@@ -120,7 +120,7 @@
       intermediate\xrServer_Objects_ALife_Items.obj 
       intermediate\EditObjectProps.obj intermediate\du_cylinder.obj 
       intermediate\ItemListTypes.obj intermediate\ItemList.obj 
-      intermediate\ItemListHelper.obj"/>
+      intermediate\ItemListHelper.obj intermediate\CustomObjectAnimation.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -218,7 +218,7 @@
       <FILE FILENAME="FramePortal.cpp" FORMNAME="fraPortal" UNITNAME="FramePortal" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="SceneProperties.cpp" FORMNAME="frmSceneProperties" UNITNAME="SceneProperties" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="ObjectList.cpp" FORMNAME="frmObjectList" UNITNAME="ObjectList" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="EditorPref.cpp" FORMNAME="frmEditorPreferences" UNITNAME="EditorPref" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="EditorPref.cpp" FORMNAME="frmEditPrefs" UNITNAME="EditorPref" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Splash.cpp" FORMNAME="frmSplash" UNITNAME="Splash" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="main.cpp" FORMNAME="frmMain" UNITNAME="main" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="LogForm.cpp" FORMNAME="frmLog" UNITNAME="LogForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -414,6 +414,7 @@
       <FILE FILENAME="edit\ItemListTypes.cpp" FORMNAME="" UNITNAME="ItemListTypes.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\ItemList.cpp" FORMNAME="ItemList" UNITNAME="ItemList" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\ItemListHelper.cpp" FORMNAME="" UNITNAME="ItemListHelper.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\CustomObjectAnimation.cpp" FORMNAME="" UNITNAME="CustomObjectAnimation" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -425,7 +426,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=2
-Build=61
+Build=62
 Debug=1
 PreRelease=0
 Special=0
@@ -437,7 +438,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=
 FileDescription=
-FileVersion=1.0.2.61
+FileVersion=1.0.2.62
 InternalName=
 LegalCopyright=
 LegalTrademarks=

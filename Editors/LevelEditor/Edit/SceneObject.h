@@ -20,49 +20,6 @@ private:
 	// options
     Flags32			m_Flags;
 public:
-	// sounds
-    AStringVec		m_Sounds;
-    AnsiString		m_ActiveSound;
-    IC bool			IsSoundable				()	{return !m_Sounds.empty();}
-    IC bool			IsSoundActive			()	{return IsSoundable()&&!m_ActiveSound.IsEmpty(); }
-    void			RemoveSound				(LPCSTR name);
-    void			ClearSounds				();
-    bool			AppendSound				(const char* fname);
-
-	void			SetActiveSound			(LPCSTR snd);
-	void			ResetActiveSound		(){SetActiveSound("");}
-
-	// motions
-    st_AnimParam	m_OMParam;
-	OMotionVec		m_OMotions;
-    COMotion*		m_ActiveOMotion;
-    Fvector			m_vMotionPosition;
-    Fvector			m_vMotionRotation;
-
-    COMotion* 		FindOMotionByName		(const char* name, const COMotion* Ignore=0);
-    void			GenerateOMotionName		(char* buffer, const char* start_name, const COMotion* M);
-    void			RemoveOMotion			(const char* name);
-    bool			RenameOMotion			(const char* old_name, const char* new_name);
-    COMotion*		AppendOMotion			(const char* fname);
-    void			ClearOMotions			();
-    void			LoadOMotions			(const char* fname);
-    void			SaveOMotions			(const char* fname);
-    COMotion*		LoadOMotion				(const char* fname);
-
-    // object motions
-    IC OMotionIt	FirstOMotion			()	{return m_OMotions.begin();}
-    IC OMotionIt	LastOMotion				()	{return m_OMotions.end();}
-    IC int			OMotionCount 			()	{return m_OMotions.size();}
-    IC bool			IsOMotionable			()	{return !m_OMotions.empty();}
-    IC bool			IsOMotionActive			()	{return IsOMotionable()&&m_ActiveOMotion; }
-
-	void			SetActiveOMotion		(COMotion* mot);
-	void			ResetActiveOMotion		(){SetActiveOMotion(0);}
-
-    virtual Fvector& GetPosition			()	{return m_ActiveOMotion?m_vMotionPosition:FPosition; }
-    virtual Fvector& GetRotation			()	{return m_ActiveOMotion?m_vMotionRotation:FRotation; }
-    virtual void 	SetPosition				(const Fvector& pos)	{ if (m_ActiveOMotion) m_vMotionPosition.set(pos); else FPosition.set(pos);	UpdateTransform();}
-	virtual void 	SetRotation				(const Fvector& rot)	{ if (m_ActiveOMotion) m_vMotionRotation.set(rot); else FRotation.set(rot);	UpdateTransform();}
     virtual void 	SetScale				(const Fvector& scale)
     {
     	if (m_pReference&&m_pReference->IsDynamic()){
@@ -108,7 +65,6 @@ public:
 	void 			RenderSelection			(u32 color=0x40E64646);
 	void 			RenderEdge				(CEditableMesh* m=0, u32 color=0xFFC0C0C0);
 	void 			RenderBones				();
-	void 			RenderAnimation			();
 	void 			RenderSingle			();
 
     // update methods
@@ -117,7 +73,6 @@ public:
 
     // misc
 	void		    EvictObject				();
-    virtual void 	ResetAnimation			(bool upd_t=true);
 
     // pick methods
     bool 			BoxPick					(const Fbox& box, SBoxPickInfoVec& pinf);

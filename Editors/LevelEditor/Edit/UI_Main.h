@@ -25,7 +25,7 @@ typedef xr_vector<EEditorState> EStateList;
 typedef EStateList::iterator EStateIt;
 
 class TUI: public CController{
-    friend class TfrmEditorPreferences;
+    friend class TfrmEditPrefs;
     friend class CRenderDevice;
 	char m_LastFileName[MAX_PATH];
     TD3DWindow* m_D3DWindow;

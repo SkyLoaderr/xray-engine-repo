@@ -51,7 +51,7 @@ public:
     virtual void	OnUpdateTransform();
     void __fastcall	OnTypeChange	(PropValue* value);
 
-    void __fastcall	OnAutoClick		(PropValue* value);
+    void __fastcall	OnAutoClick		(PropValue* value, bool& bModif);
     void __fastcall	OnNeedUpdate	(PropValue* value);
 protected:
     virtual Fvector& GetPosition	()						{ return m_D3D.position; 	}

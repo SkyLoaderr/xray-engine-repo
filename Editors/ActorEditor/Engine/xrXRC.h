@@ -26,9 +26,9 @@ public:
 	{
     	// transform
         Fvector S,D;
-	    inv_parent.transform_tiny(S,r_start);
-    	inv_parent.transform_dir(D,r_dir);
-		ray_query(m_def,S,D,r_range);
+	    inv_parent.transform_tiny	(S,r_start);
+    	inv_parent.transform_dir	(D,r_dir);
+		ray_query					(m_def,S,D,D.magnitude()*r_range);
 	}
 
 	IC void			box_options		(DWORD f)

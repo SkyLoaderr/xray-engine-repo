@@ -31,9 +31,6 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	case COMMAND_INITIALIZE:{
 		Engine.Initialize	();
         // make interface
-	    fraBottomBar		= xr_new<TfraBottomBar>((TComponent*)0);
-    	fraLeftBar  		= xr_new<TfraLeftBar>((TComponent*)0);
-	    fraTopBar   		= xr_new<TfraTopBar>((TComponent*)0);
 		//----------------
         if (UI.OnCreate()){
             ::Render->PSystems.OnCreate	();
@@ -62,16 +59,12 @@ bool TUI::Command( int _Command, int p1, int p2 ){
         UI.OnDestroy		();
 		Engine.Destroy		();
 		//----------------
-        xr_delete(fraLeftBar);
-	    xr_delete(fraTopBar);
-    	xr_delete(fraBottomBar);
-		//----------------
     	break;
 	case COMMAND_QUIT:
     	Quit();
     	break;
 	case COMMAND_EDITOR_PREF:
-	    frmEditorPreferences->Run();
+	    frmEditPrefs->Run();
         break;
 	case COMMAND_CHANGE_ACTION:
 		Tools.ChangeAction((EAction)p1);
@@ -161,23 +154,23 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     	psDeviceFlags.set(rsDrawGrid,!psDeviceFlags.is(rsDrawGrid));
     	break;
 	case COMMAND_UPDATE_GRID:
-    	DU.UpdateGrid(frmEditorPreferences->seGridNumberOfCells->Value,frmEditorPreferences->seGridSquareSize->Value);
+    	DU.UpdateGrid(frmEditPrefs->seGridNumberOfCells->Value,frmEditPrefs->seGridSquareSize->Value);
 	    OutGridSize();
     	break;
     case COMMAND_GRID_NUMBER_OF_SLOTS:
-    	if (p1)	frmEditorPreferences->seGridNumberOfCells->Value += frmEditorPreferences->seGridNumberOfCells->Increment;
-        else	frmEditorPreferences->seGridNumberOfCells->Value -= frmEditorPreferences->seGridNumberOfCells->Increment;
+    	if (p1)	frmEditPrefs->seGridNumberOfCells->Value += frmEditPrefs->seGridNumberOfCells->Increment;
+        else	frmEditPrefs->seGridNumberOfCells->Value -= frmEditPrefs->seGridNumberOfCells->Increment;
         Command(COMMAND_UPDATE_GRID);
     	break;
     case COMMAND_GRID_SLOT_SIZE:{
-    	float step = frmEditorPreferences->seGridSquareSize->Increment;
-        float val = frmEditorPreferences->seGridSquareSize->Value;
+    	float step = frmEditPrefs->seGridSquareSize->Increment;
+        float val = frmEditPrefs->seGridSquareSize->Value;
     	if (p1){
 	    	if (val<1) step/=10.f;
-        	frmEditorPreferences->seGridSquareSize->Value += step;
+        	frmEditPrefs->seGridSquareSize->Value += step;
         }else{
 	    	if (fsimilar(val,1.f)||(val<1)) step/=10.f;
-        	frmEditorPreferences->seGridSquareSize->Value -= step;
+        	frmEditPrefs->seGridSquareSize->Value -= step;
         }
         Command(COMMAND_UPDATE_GRID);
     	}break;

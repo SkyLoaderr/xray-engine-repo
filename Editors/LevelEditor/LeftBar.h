@@ -240,7 +240,6 @@ __published:	// IDE-managed Components
 	void __fastcall miPropertiesClick(TObject *Sender);
 	void __fastcall RefreshLibrary1Click(TObject *Sender);
 	void __fastcall miRecentFilesClick(TObject *Sender);
-	void __fastcall fsStorageSavePlacement(TObject *Sender);
 	void __fastcall Quit1Click(TObject *Sender);
 	void __fastcall ebPropertiesClick(TObject *Sender);
 	void __fastcall ebLightAnimationEditorClick(TObject *Sender);

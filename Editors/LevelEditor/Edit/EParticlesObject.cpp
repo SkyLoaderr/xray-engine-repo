@@ -225,7 +225,7 @@ void EParticlesObject::FillProp(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp(pref, items);
     PropValue* V;
-    V=PHelper.CreateALibPG	(items,PHelper.PrepareKey(pref, "Reference"),&m_RefName);
+    V=PHelper.CreateALibPG	(items,FHelper.PrepareKey(pref, "Reference"),&m_RefName);
     V->OnChangeEvent		= OnRefChange;
 }
 //----------------------------------------------------
