@@ -8,7 +8,15 @@
 
 #pragma once
 
-template <typename _dist_type = float, typename _index_type = u32, typename _epoch_type = u32, bool bEuclidianHeuristics = true, u8 index_bits = 24, u8 mask_bits = 8> class CDataStorage {
+template <
+	typename	_dist_type				= float, 
+	typename	_index_type				= u32, 
+	typename	_epoch_type				= u32, 
+	bool		bEuclidianHeuristics	= true, 
+	u8			index_bits				= 24, 
+	u8			mask_bits				= 8
+>	class CDataStorage 
+{
 	#pragma pack(push,4)
 	struct SGraphNode {
 		_index_type		open_close_mask	: mask_bits;

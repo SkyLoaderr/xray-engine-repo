@@ -136,15 +136,24 @@ protected:
 	_dist_type			max_range;
 	_iteration_type		max_iteration_count;
 	_index_type			max_visited_node_count;
-	float				x1;
-	float				y1;
-	float				z1;
-	float				x2;
-	float				y2;
-	float				z2;
-	float				x3;
-	float				y3;
-	float				z3;
+//	float				x1;
+//	float				y1;
+//	float				z1;
+//	float				x2;
+//	float				y2;
+//	float				z2;
+//	float				x3;
+//	float				y3;
+//	float				z3;
+	int					x1;
+	float					y1;
+	int					z1;
+	int					x2;
+	float					y2;
+	int					z2;
+	int					x3;
+	float					y3;
+	int					z3;
 	float				m_fSize2;
 	float				m_fYSize2;
 public:
@@ -168,15 +177,15 @@ public:
 	{
 		{
 			_Graph::InternalNode&tNode1	= *graph->Node(start_node_index);
-			x2					= (float)(tNode1.p1.x) + (float)(tNode1.p0.x);
+			x2					= (int)(tNode1.p1.x) + (int)(tNode1.p0.x);
 			y2					= (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
-			z2					= (float)(tNode1.p1.z) + (float)(tNode1.p0.z);
+			z2					= (int)(tNode1.p1.z) + (int)(tNode1.p0.z);
 		}
 		{
 			_Graph::InternalNode&tNode1	= *graph->Node(goal_node_index);
-			x3					= (float)(tNode1.p1.x) + (float)(tNode1.p0.x);
+			x3					= (int)(tNode1.p1.x) + (int)(tNode1.p0.x);
 			y3					= (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
-			z3					= (float)(tNode1.p1.z) + (float)(tNode1.p0.z);
+			z3					= (int)(tNode1.p1.z) + (int)(tNode1.p0.z);
 		}
 	}
 
@@ -202,17 +211,17 @@ public:
 		VERIFY					(graph);
 		_Graph::InternalNode &tNode1 = *graph->Node(node_index2);
 
-		x2 = (float)(tNode1.p1.x) + (float)(tNode1.p0.x);
+		x2 = (int)(tNode1.p1.x) + (int)(tNode1.p0.x);
 		y2 = (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
-		z2 = (float)(tNode1.p1.z) + (float)(tNode1.p0.z);
+		z2 = (int)(tNode1.p1.z) + (int)(tNode1.p0.z);
 
-		return(_sqrt((float)(m_fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + m_fYSize2*_sqr(y2 - y1))));
+		return					(_sqrt((float)(m_fSize2*float(_sqr(x2 - x1) + _sqr(z2 - z1)) + m_fYSize2*(float)_sqr(y2 - y1))));
 	}
 
 	IC	_dist_type	estimate		(const _index_type node_index)
 	{
 		VERIFY					(graph);
-		return					(_sqrt((float)(m_fSize2*(_sqr(x3 - x2) + _sqr(z3 - z2)) + m_fYSize2*_sqr(y3 - y2))));
+		return					(_sqrt((float)(m_fSize2*float(_sqr(x3 - x2) + _sqr(z3 - z2)) + m_fYSize2*(float)_sqr(y3 - y2))));
 	}
 
 	IC	void		create_path		()
@@ -233,9 +242,9 @@ public:
 		
 		_Graph::InternalNode	&tNode0 = *graph->Node(node_index);
 
-		x1 = (float)(tNode0.p1.x) + (float)(tNode0.p0.x);
+		x1 = (int)(tNode0.p1.x) + (int)(tNode0.p0.x);
 		y1 = (float)(tNode0.p1.y) + (float)(tNode0.p0.y);
-		z1 = (float)(tNode0.p1.z) + (float)(tNode0.p0.z);
+		z1 = (int)(tNode0.p1.z) + (int)(tNode0.p0.z);
 
 		return					(false);
 	}

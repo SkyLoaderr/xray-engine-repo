@@ -489,6 +489,9 @@
 						RelativePath=".\path_machine.h">
 					</File>
 					<File
+						RelativePath=".\path_manager.h">
+					</File>
+					<File
 						RelativePath=".\path_test.cpp">
 					</File>
 					<File
@@ -500,13 +503,6 @@
 					<File
 						RelativePath=".\path_test_old.h">
 					</File>
-					<Filter
-						Name="path_manager"
-						Filter="">
-						<File
-							RelativePath=".\path_manager.h">
-						</File>
-					</Filter>
 				</Filter>
 			</Filter>
 			<Filter
