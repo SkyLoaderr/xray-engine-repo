@@ -2123,6 +2123,26 @@
 				<File
 					RelativePath=".\XR_SmallFont.h"/>
 			</Filter>
+			<Filter
+				Name="Stripifier"
+				Filter="">
+				<File
+					RelativePath="NvTriStrip.cpp"/>
+				<File
+					RelativePath="NvTriStrip.h"/>
+				<File
+					RelativePath="NvTriStripObjects.cpp"/>
+				<File
+					RelativePath="NvTriStripObjects.h"/>
+				<File
+					RelativePath="VertexCache.cpp"/>
+				<File
+					RelativePath="VertexCache.h"/>
+				<File
+					RelativePath="xrStripify.cpp"/>
+				<File
+					RelativePath="xrStripify.h"/>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Interface"

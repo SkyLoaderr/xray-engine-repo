@@ -1,4 +1,3 @@
-
 #ifndef VERTEX_CACHE_H
 
 #define VERTEX_CACHE_H
@@ -12,13 +11,13 @@ public:
   VertexCache();
   ~VertexCache();
 
-  bool InCache(int entry);
-  int AddEntry(int entry);
-  void Clear();
+  bool			InCache	(int entry);
+  int			AddEntry(int entry);
+  void			Clear	();
 
-  void Copy(VertexCache* inVcache);
-  int At(int index);
-  void Set(int index, int value);
+  void			Copy	(VertexCache* inVcache);
+  int			At		(int index);
+  void			Set		(int index, int value);
 
 private:
 
@@ -26,8 +25,6 @@ private:
   int numEntries;
 
 };
-
-
 
 inline bool VertexCache::InCache(int entry)
 {

@@ -28,6 +28,7 @@ public:
 	DWORD		number_indices;
 	
 	void		Load		(CStream* S);
+	void		Optimize	();
 	void		Unload		();
 	void		Transfer	(Fmatrix& mXform, fvfVertexOut* vDest, DWORD C, WORD* iDest, DWORD iOffset);
 };

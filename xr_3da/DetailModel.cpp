@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "detailmodel.h"
- 
+#include "xrstripify.h"
+
 void CDetail::Load		(CStream* S)
 {
 	// Shader
@@ -16,7 +17,6 @@ void CDetail::Load		(CStream* S)
 	number_vertices	= S->Rdword	();
 	number_indices	= S->Rdword	();
 	R_ASSERT		(0==(number_indices%3));
-	Msg				("DM: %d verts, %d indices",number_vertices,number_indices);
 	
 	// Vertices
 	DWORD			size_vertices		= number_vertices*sizeof(fvfVertexIn); 
@@ -37,6 +37,30 @@ void CDetail::Load		(CStream* S)
 	for (DWORD i=0; i<number_vertices; i++)
 		bv_bb.modify	(vertices[i].P);
 	bv_bb.getsphere		(bv_sphere.P,bv_sphere.R);
+
+	Optimize	();
+}
+
+void CDetail::Optimize	()
+{
+	vector<WORD>		vec_indices, vec_permute;
+	const int			cache	= 14;
+
+	// Stripify
+	vec_indices.assign	(indices,indices+number_indices);
+	vec_permute.resize	(number_vertices);
+	int vt_old			= xrSimulate(vec_indices,cache);
+	xrStripify			(vec_indices,vec_permute,cache,0);
+	int vt_new			= xrSimulate(vec_indices,cache);
+	Msg					("DM: %d verts, %d indices, VT: %d/%d",number_vertices,number_indices,vt_old,vt_new);
+
+	// Copy faces
+	PSGP.memCopy		(indices,vec_indices.begin(),vec_indices.size()*sizeof(WORD));
+
+	// Permute vertices
+	vector<fvfVertexIn>	verts	(vertices,vertices+number_vertices);
+	for(DWORD i=0; i<verts.size(); i++)
+		vertices[i]=verts[vec_permute[i]];
 }
 
 void CDetail::Unload	()
