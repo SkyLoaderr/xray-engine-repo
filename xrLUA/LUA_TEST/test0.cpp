@@ -949,73 +949,73 @@ void print_local_variables(lua_State *L)
 //		lua_pop(L, 1);  /* remove upvalue value */
 //	}
 }
-//
-//struct CInternal {
-//	IC		CInternal	()
-//	{
-//		printf	("Internal constructor is called!\n");
-//	}
-//
-//	virtual ~CInternal()
-//	{
-//		printf	("Internal destructor is called!\n");
-//	}
-//
-//	virtual void update()
-//	{
-//		printf	("Internal update is called!\n");
-//	}
-//};
-//
-//struct CInternalWrapper : public CInternal, public wrap_base {
-//	virtual void update()
-//	{
-//		printf	("InternalWrapper update is called!\n");
-//		call_member<void>("update");
-//	}
-//
-//	static void update_static(CInternal *self)
-//	{
-//		self->update();
-//	}
-//};
-//
-//struct CExternal : public CInternal {
-//	IC		CExternal	()
-//	{
-//		printf	("External constructor is called!\n");
-//	}
-//
-//	virtual ~CExternal()
-//	{
-//		printf	("External destructor is called!\n");
-//	}
-//};
-//
-//struct CInternalStorage {
-//	typedef CExternal _type;
-//	xr_map<u32,_type*>	m_objects;
-//
-//	void	add			(_type *object, u32 id)
-//	{
-//		m_objects.insert	(std::make_pair(id,object));
-//	}
-//
-//	_type *get	(u32 id)
-//	{
-//		xr_map<u32,_type*>::iterator	I = m_objects.find(id);
-//		if (I != m_objects.end())
-//			return	((*I).second);
-//		return		(0);
-//	}
-//};
-//
-//CInternalStorage *get_internals()
-//{
-//	static CInternalStorage storage;
-//	return					(&storage);
-//}
-//
+
+struct CInternal {
+	IC		CInternal	()
+	{
+		printf	("Internal constructor is called!\n");
+	}
+
+	virtual ~CInternal()
+	{
+		printf	("Internal destructor is called!\n");
+	}
+
+	virtual void update()
+	{
+		printf	("Internal update is called!\n");
+	}
+};
+
+struct CInternalWrapper : public CInternal, public wrap_base {
+	virtual void update()
+	{
+		printf	("InternalWrapper update is called!\n");
+		call<void>("update");
+	}
+
+	static void update_static(CInternal *self)
+	{
+		self->CInternal::update();
+	}
+};
+
+struct CExternal : public CInternal {
+	IC		CExternal	()
+	{
+		printf	("External constructor is called!\n");
+	}
+
+	virtual ~CExternal()
+	{
+		printf	("External destructor is called!\n");
+	}
+};
+
+struct CInternalStorage {
+	typedef CInternal _type;
+	xr_map<u32,_type*>	m_objects;
+
+	void	add			(_type *object, u32 id)
+	{
+		m_objects.insert	(std::make_pair(id,object));
+	}
+
+	_type *get	(u32 id)
+	{
+		xr_map<u32,_type*>::iterator	I = m_objects.find(id);
+		if (I != m_objects.end())
+			return	((*I).second);
+		return		(0);
+	}
+};
+
+CInternalStorage *get_internals()
+{
+	static CInternalStorage storage;
+	return					(&storage);
+}
+
 //struct CSomeClass {
 //	int	some_function(int x)
 //	{
@@ -1061,43 +1061,6 @@ extern void abstract_registry_test();
 extern void broker_test();
 extern void box_collision_test();
 
-
-//struct MI0 {
-//	virtual ~MI0(){}
-//};
-//
-struct MI2;
-
-struct MI1 {
-//	virtual ~MI1(){}
-	void add(MI2 *){}
-};
-
-struct MI2 : public MI1 {//, public MI0 {
-//	virtual ~MI2(){};
-	virtual void vf(int &a)
-	{
-		a = a + 1;
-	}
-};
-
-struct MI2W : public MI2, public wrap_base
-{
-	virtual void vf(int &a)
-	{
-		call_member<void>("vf",a);
-	}
-	
-	static int vf_static(MI2 *self, int &a)
-	{
-		self->MI2::vf(a);
-		return	(a);
-	}
-};
-
-template <typename T>
-struct AW : public T, public wrap_base {};
-
 class CLuaValue {
 protected:
 	luabind::object	m_object;
@@ -1123,14 +1086,14 @@ private:
 
 public:
 	IC				CLuaValueWrapper	(luabind::object &object, LPCSTR name) :
-						inherited		(object,name)
-	{
-	}
+	  inherited		(object,name)
+	  {
+	  }
 
-	virtual	void	assign		()
-	{
-		m_object[m_name] = m_value;
-	}
+	  virtual	void	assign		()
+	  {
+		  m_object[m_name] = m_value;
+	  }
 };
 
 class CLuaValueHolder {
@@ -1139,7 +1102,7 @@ protected:
 
 public:
 	template <typename T>
-	IC	void	add			(luabind::object object, LPCSTR name)
+		IC	void	add			(luabind::object object, LPCSTR name)
 	{
 		CLuaValue			*value = 0;
 		xr_vector<CLuaValue*>::const_iterator	I = m_values.begin();
@@ -1150,14 +1113,14 @@ public:
 				break;
 			}
 
-		if (value)
-			return;
+			if (value)
+				return;
 
-		m_values.push_back	(xr_new<CLuaValueWrapper<T> >(object,name));
+			m_values.push_back	(xr_new<CLuaValueWrapper<T> >(object,name));
 	}
 
 	template <typename T>
-	IC	void	assign		()
+		IC	void	assign		()
 	{
 		xr_vector<CLuaValue*>::iterator	I = m_values.begin();
 		xr_vector<CLuaValue*>::iterator	E = m_values.end();
@@ -1168,7 +1131,7 @@ public:
 
 void test_object(luabind::object a)
 {
-//	luabind::get_globals(a.lua_state())[a] = 5;
+	//	luabind::get_globals(a.lua_state())[a] = 5;
 	a = 5;
 }
 
@@ -1182,10 +1145,50 @@ void test_object2(luabind::object a, luabind::object b)
 	a[b] = 5;
 }
 
+//struct MI0 {
+//	virtual ~MI0(){}
+//};
+//
+struct MI2;
+
+struct MI1 {
+//	virtual ~MI1(){}
+	void add(MI2 *obj)
+	{
+		obj;
+	}
+};
+
+struct MI2 : public MI1 {//, public MI0 {
+//	virtual ~MI2(){};
+	virtual void vf(int a)
+	{
+		a = a + 1;
+	}
+};
+
+struct MI2W : public MI2, public wrap_base
+{
+	virtual void vf(int a)
+	{
+		call<void>("vf",a);
+	}
+	
+	static int vf_static(MI2 *self, int a)
+	{
+		self->MI2::vf(a);
+		return	(a);
+	}
+};
+
+template <typename T>
+struct AW : public T, public wrap_base {};
+
 void test1()
 {
-	box_collision_test	();
-	broker_test		();
+//	test0();
+//	box_collision_test	();
+//	broker_test		();
 	string4096		SSS;
 	strcpy			(SSS,"");
 	g_ca_stdout		= SSS;
@@ -1205,21 +1208,34 @@ void test1()
 
 	module(L)
 	[
+		class_<CInternal,CInternalWrapper>("internal")
+			.def(constructor<>())
+			.def("update",&CInternal::update,&CInternalWrapper::update_static),
+
+		class_<CExternal,CInternal>("external")
+			.def(constructor<>()),
+
+		class_<CInternalStorage>("internal_storage")
+			.def("add",&CInternalStorage::add,adopt(_2))
+			.def("get",&CInternalStorage::get),
+
 		class_<MI1>("mi1")
 			.def(constructor<>())
 			.def("add",&MI1::add,adopt(_2)),
 
 		class_<MI2,MI2W,MI1>("mi2")
 			.def(constructor<>())
-			.def("vf",&MI2W::vf,&MI2W::vf_static,out_value(_2)),
+			.def("vf",&MI2::vf,&MI2W::vf_static),
 
 		def("test_object",&test_object),
 		def("test_object",&test_object1),
-		def("test_object",&test_object2)
+		def("test_object",&test_object2),
+		def("get_internals",&get_internals)
 	];
 
 	lua_sethook		(L,hook,LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKCOUNT, 1);
-	lua_dofile		(L,"x:\\heritage_test2.script");
+//	lua_dofile		(L,"x:\\beta7_rc4_test.script");
+	lua_dofile		(L,"x:\\heritage_test.script");
 	if (xr_strlen(SSS)) {
 		printf		("\n%s\n",SSS);
 		strcpy		(SSS,"");

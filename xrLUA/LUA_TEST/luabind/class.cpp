@@ -371,15 +371,29 @@ namespace luabind { namespace detail {
         m_registration->m_scope.operator,(s);
     }
 
+	template<class T>
+	void add_custom_name(T i, std::string& s) {}
+
+	void add_custom_name(std::type_info const* i, std::string& s)
+	{
+		s += " [";
+		s += i->name();
+		s += "]";
+	}
+
     std::string get_class_name(lua_State* L, LUABIND_TYPE_INFO i)
     {
         std::string ret;
-        class_registry* r = class_registry::get_registry(L);
+
+		assert(L);
+
+		class_registry* r = class_registry::get_registry(L);
         class_rep* crep = r->find_class(i);
 
         if (crep == 0)
         {
             ret = "custom";
+			add_custom_name(i, ret);
         }
         else
         {
