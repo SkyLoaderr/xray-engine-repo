@@ -100,8 +100,8 @@ void CAI_Chimera::FillAttackStructure(u32 i, TTime t)
 
 	switch (m_tAttack.i_anim) {
 		case 0:
-			m_tAttack.time_from = 800;
-			m_tAttack.time_to	= 900;
+			m_tAttack.time_from = 700;
+			m_tAttack.time_to	= 800;
 			m_tAttack.dist		= 3.f;
 			
 			Center(m_tAttack.TraceFrom);
@@ -115,8 +115,8 @@ void CAI_Chimera::FillAttackStructure(u32 i, TTime t)
 			m_tAttack.TraceFrom.add(tempV);
 			break;
 		case 2:
-			m_tAttack.time_from = 800;
-			m_tAttack.time_to	= 900;
+			m_tAttack.time_from = 600;
+			m_tAttack.time_to	= 700;
 			m_tAttack.dist		= 3.5f;
 			Center(m_tAttack.TraceFrom);
 			break;

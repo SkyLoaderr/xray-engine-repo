@@ -14,14 +14,14 @@ class CAI_Chimera;
 
 const float m_cfChimeraStandTurnRSpeed	=	PI_DIV_3;
 
-const float m_cfChimeraWalkSpeed		=	1.7f;
+const float m_cfChimeraWalkSpeed		=	3.0f;
 const float m_cfChimeraWalkTurningSpeed =	1.0f;
 const float m_cfChimeraWalkRSpeed		=	PI_DIV_4;		// когда SetDirLook
 const float m_cfChimeraWalkTurnRSpeed	=	PI_DIV_2;		// когда необходим поворот
 const float m_cfChimeraWalkMinAngle		=   PI_DIV_6;
 
 
-const float m_cfChimeraRunAttackSpeed		=	7.0f;
+const float m_cfChimeraRunAttackSpeed		=	8.5f;
 const float m_cfChimeraRunAttackTurnSpeed	=	3.5f;
 const float m_cfChimeraRunAttackTurnRSpeed	=	5* PI_DIV_6;
 const float m_cfChimeraRunRSpeed			=	PI_DIV_2;
@@ -78,7 +78,7 @@ public:
 private:
 	virtual void Run();
 	virtual	void Init();
-	void Replanning();
+			void Replanning();
 };
 
 
@@ -93,10 +93,10 @@ class CChimeraAttack : public IState {
 	enum {
 		ACTION_RUN,
 		ACTION_ATTACK_MELEE,
+		ACTION_FIND_ENEMY
 	} m_tAction;
 
 	VisionElem		m_tEnemy;
-	bool			m_bAttackRat;
 
 	float			m_fDistMin;						//!< минимально допустимое рассто€ни€ дл€ аттаки
 	float			m_fDistMax;						//!< максимально допустимое рассто€ние дл€ аттаки
@@ -104,9 +104,10 @@ class CChimeraAttack : public IState {
 	TTime			m_dwFaceEnemyLastTime;
 	TTime			m_dwFaceEnemyLastTimeInterval;
 
-	u32				nStartStop;						
-	u32				nDoDamage;						//!<  оличество нанесЄнных повреждений
+	// регулировка приближением во врем€ атаки
+	u32				nStartStop;						//!< количество	старт-стопов
 
+	TTime			m_dwSuperMeleeStarted;
 public:
 	CChimeraAttack(CAI_Chimera *p);
 
@@ -183,7 +184,6 @@ public:
 					CChimeraDetour			(CAI_Chimera *p);
 
 	virtual void	Reset			();	
-	virtual	bool	CheckCompletion	();
 
 private:
 	virtual void	Init			();
@@ -198,12 +198,17 @@ class CChimeraPanic : public IState {
 
 	VisionElem		m_tEnemy;
 
+	// implementation of 'face the most open area'
+	bool			bFacedOpenArea;
+	Fvector			cur_pos;			
+	Fvector			prev_pos;
+	TTime			m_dwStayTime;
+
 	typedef IState inherited;
 public:
 					CChimeraPanic			(CAI_Chimera *p);
 
 	virtual void	Reset			();	
-	virtual	bool	CheckCompletion	();
 
 private:
 	virtual void	Init			();
@@ -216,6 +221,12 @@ private:
 class CChimeraExploreDNE : public IState {
 	CAI_Chimera		*pMonster;
 	VisionElem		m_tEnemy;
+	
+	// implementation of 'face the most open area'
+	bool			bFacedOpenArea;
+	Fvector			cur_pos;			
+	Fvector			prev_pos;
+	TTime			m_dwStayTime;
 
 	typedef IState inherited;
 public:
@@ -235,6 +246,9 @@ class CChimeraExploreDE : public IState {
 	CAI_Chimera		*pMonster;
 	VisionElem		m_tEnemy;
 
+	TTime			m_dwTimeToTurn;
+	TTime			m_dwSoundTime;
+
 	enum {
 		ACTION_LOOK_AROUND,
 		ACTION_HIDE,
@@ -246,6 +260,7 @@ public:
 					CChimeraExploreDE	(CAI_Chimera *p);
 
 	virtual void	Reset				();	
+	virtual	bool	CheckCompletion		();
 
 private:
 	virtual void	Init				();

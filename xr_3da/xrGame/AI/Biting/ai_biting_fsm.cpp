@@ -12,18 +12,6 @@
 #include "..\\..\\actor.h"
 
 using namespace AI_Biting;
-#define SILENCE
-
-
-#undef	WRITE_TO_LOG
-#ifdef SILENCE
-#define WRITE_TO_LOG(s) ;
-
-#else
-#define WRITE_TO_LOG(s) {\
-	Msg("Monster %s : \n* State : %s",cName(),s);\
-}
-#endif
 
 void CAI_Biting::Think()
 {

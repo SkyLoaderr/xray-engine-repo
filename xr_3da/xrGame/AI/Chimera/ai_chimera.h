@@ -16,6 +16,21 @@
 #include "..\\ai_monster_mem.h"
 
 
+#define SILENCE
+
+#undef	WRITE_TO_LOG
+#ifdef SILENCE
+#define WRITE_TO_LOG(s) ;
+
+#else
+#define WRITE_TO_LOG(s) {\
+	Msg("Monster %s : \n* State : %s",cName(),s);\
+}
+#endif
+
+
+typedef VisionElem SEnemy;
+
 class CAI_Chimera : public CCustomMonster, 
 				   public CChimeraAnimations,
 				   public CMonsterMemory
@@ -215,5 +230,21 @@ private:
 
 	SAttackAnimation	m_tAttack;
 	void				FillAttackStructure(u32 i, TTime t);
+
+	SEnemy				m_tEnemy;
+	SEnemy				m_tEnemyPrevFrame;
+
+	// combat flags 
+	bool	flagEnemyDie;
+	bool	flagEnemyLostSight;
+	bool	flagEnemyGoCloser;
+	bool	flagEnemyGoFarther;
+	bool	flagEnemyGoCloserFast;
+	bool	flagEnemyGoFartherFast;
+	bool	flagEnemyStanding;
+	bool	flagEnemyDoesntKnowAboutMe;
+	bool	flagEnemyHiding;
+	bool	flagEnemyRunAway;
+
 
 };

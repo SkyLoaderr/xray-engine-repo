@@ -12,18 +12,6 @@
 #include "..\\..\\actor.h"
 
 using namespace AI_Chimera;
-#define SILENCE
-
-
-#undef	WRITE_TO_LOG
-#ifdef SILENCE
-#define WRITE_TO_LOG(s) ;
-
-#else
-#define WRITE_TO_LOG(s) {\
-	Msg("Monster %s : \n* State : %s",cName(),s);\
-}
-#endif
 
 void CAI_Chimera::Think()
 {
@@ -51,20 +39,21 @@ void CAI_Chimera::Think()
 	// J - A | B
 	// K - C | D | E | F 
 
-	VisionElem	ve;
+	VisionElem ve;
 
 	if (Motion.m_tSeq.Active())	{
 		Motion.m_tSeq.Cycle(m_dwCurrentUpdate);
 	}else {
 		//- FSM 1-level 
 
-		if (C && H && I)			SetState(statePanic);
+		//if (flagEnemyLostSight && H && (E || F) && !A) SetState(stateFindEnemy);	// поиск врага
+		if (C && H && I)		SetState(statePanic);
 		else if (C && H && !I)		SetState(statePanic);
 		else if (C && !H && I)		SetState(statePanic);
 		else if (C && !H && !I) 	SetState(statePanic);
-		else if (D && H && I)		SetState(statePanic);
+		else if (D && H && I)		SetState(stateAttack);
 		else if (D && H && !I)		SetState(stateAttack);  //тихо подобраться и начать аттаку
-		else if (D && !H && I)		SetState(stateAttack);
+		else if (D && !H && I)		SetState(statePanic);
 		else if (D && !H && !I) 	SetState(stateHide);	// отход перебежками через укрытия
 		else if (E && H && I)		SetState(stateAttack); 
 		else if (E && H && !I)  	SetState(stateAttack);  //тихо подобраться и начать аттаку
@@ -73,20 +62,21 @@ void CAI_Chimera::Think()
 		else if (F && H && I) 		SetState(stateAttack); 		
 		else if (F && H && !I)  	SetState(stateAttack); 
 		else if (F && !H && I)  	SetState(stateDetour); 
-		else if (F && !H && !I) 	SetState(stateHide);	
-		else if (A && !K && !H)		SetState(stateExploreDNE); // слышу опасный звук, но не вижу, враг не выгодный		(ExploreDNE)
-		else if (A && !K && H)		SetState(stateExploreDE); // слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)
-		else if (B && !K && !H)		SetState(stateExploreNDE); // слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)
-		else if (B && !K && H)		SetState(stateExploreNDE); // слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
+		else if (F && !H && !I) 	SetState(stateHide);
+		else if (A && !K && !H)		SetState(stateExploreNDE);  //SetState(stateExploreDNE);  // слышу опасный звук, но не вижу, враг не выгодный		(ExploreDNE)
+		else if (A && !K && H)		SetState(stateExploreNDE);  //SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
+		else if (B && !K && !H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)
+		else if (B && !K && H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
 		else if (GetCorpse(ve) && ve.obj->m_fFood > 1)	
-									SetState(stateEat);
+			SetState(stateEat);
 		else						SetState(stateRest); 
+
 		//---
-		
+
 		CurrentState->Execute(m_dwCurrentUpdate);
-		
+
 		// проверяем на завершённость
-		//if (CurrentState->CheckCompletion()) {SetState(stateRest, true);
+		if (CurrentState->CheckCompletion()) SetState(stateRest, true);
 	}
 
 	Motion.SetFrameParams(this);

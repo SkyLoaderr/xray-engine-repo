@@ -56,6 +56,7 @@ void CAI_Chimera::Init()
 	m_tAnim							= DEFAULT_ANIM;
 
 	m_tPathType						= ePathTypeStraight;
+	m_tPathState					= ePathStateSearchNode;
 
 	m_fAttackSuccessProbability0	= .8f;
 	m_fAttackSuccessProbability1	= .6f;
@@ -139,7 +140,7 @@ void CAI_Chimera::Load(LPCSTR section)
 	m_dwHealth						= pSettings->r_u32   (section,"Health");
 	m_fHitPower						= pSettings->r_float (section,"HitPower");
 	// temp
-	// m_fHitPower						= 1.f;
+	//m_fHitPower						= 1.f;
 	fHealth							= (float)m_dwHealth;
 
 	// prefetching

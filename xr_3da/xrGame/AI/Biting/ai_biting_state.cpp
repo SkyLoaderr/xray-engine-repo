@@ -124,7 +124,7 @@ void CBitingRest::Run()
 void CBitingRest::Replanning()
 {
 	// Test
-	Msg("_ Rest replanning _");
+	WRITE_TO_LOG("_ Rest replanning _");
 
 	m_dwLastPlanTime = m_dwCurrentTime;	
 	u32		rand_val = ::Random.randI(100);
@@ -234,7 +234,7 @@ void CBitingAttack::Init()
 	pMonster->SetMemoryTimeDef();
 
 	// Test
-	Msg("_ Attack Init _");
+	WRITE_TO_LOG("_ Attack Init _");
 }
 
 void CBitingAttack::Run()
@@ -367,7 +367,7 @@ void CBitingEat::Init()
 	m_fDistToCorpse = ((tpRat)? 1.0f : 1.5f);
 
 	// Test
-	//Msg("_ Eat Init _");
+	WRITE_TO_LOG("_ Eat Init _");
 }
 
 void CBitingEat::Run()
@@ -412,7 +412,6 @@ void CBitingEat::Run()
 			if (m_dwLastTimeEat + m_dwEatInterval < m_dwCurrentTime) {
 				pCorpse->m_fFood -= pMonster->m_fHitPower/5.f;
 				m_dwLastTimeEat = m_dwCurrentTime;
-				//Msg("Food = [%f]",pCorpse->m_fFood);
 			}
 			break;
 	}
@@ -447,7 +446,7 @@ void CBitingHide::Init()
 	pMonster->SetMemoryTime(20000);
 
 	// Test
-	//Msg("_ Hide Init _");
+	WRITE_TO_LOG("_ Hide Init _");
 }
 
 void CBitingHide::Reset()
@@ -509,12 +508,12 @@ void CBitingDetour::Init()
 	SetInertia(15000);
 	pMonster->SetMemoryTime(15000);
 
-	//Msg(" DETOUR init!");
+	WRITE_TO_LOG(" DETOUR init!");
 }
 
 void CBitingDetour::Run()
 {
-	//Msg("--- DETOUR ---");
+	WRITE_TO_LOG("--- DETOUR ---");
 
 	VisionElem tempEnemy;
 	if (pMonster->GetEnemy(tempEnemy)) m_tEnemy = tempEnemy;
@@ -571,7 +570,7 @@ void CBitingPanic::Init()
 	pMonster->SetMemoryTime(15000);
 
 	// Test
-	Msg("_ Panic Init _");
+	WRITE_TO_LOG("_ Panic Init _");
 }
 
 void CBitingPanic::Run()
@@ -644,7 +643,7 @@ void CBitingExploreDNE::Reset()
 void CBitingExploreDNE::Init()
 {
 	// Test
-	Msg("_ ExploreDNE Init _");
+	WRITE_TO_LOG("_ ExploreDNE Init _");
 
 	inherited::Init();
 
@@ -735,7 +734,7 @@ void CBitingExploreDE::Reset()
 void CBitingExploreDE::Init()
 {
 	// Test
-	Msg("_ ExploreDE Init _");
+	WRITE_TO_LOG("_ ExploreDE Init _");
 
 	inherited::Init();
 
@@ -823,7 +822,7 @@ void CBitingExploreNDE::Reset()
 void CBitingExploreNDE::Init()
 {
 	// Test
-	Msg("_ ExploreNDE Init _");
+	WRITE_TO_LOG("_ ExploreNDE Init _");
 
 	inherited::Init();
 
@@ -872,7 +871,7 @@ void CFindEnemy::Reset()
 void CFindEnemy::Init()
 {
 	// Test
-	Msg("_ FindEnemy Init _");
+	WRITE_TO_LOG("_ FindEnemy Init _");
 	
 	inherited::Init();
 	SetInertia(2000);

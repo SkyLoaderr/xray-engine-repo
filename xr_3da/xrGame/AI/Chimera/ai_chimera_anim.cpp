@@ -35,7 +35,7 @@ namespace AI_Chimera {
 		"attack2_",				// 10
 		"attack_ls_",			// 11
 		"eat_",					// 12
-		"damage_",				// 13
+		"damaged_",				// 13
 		"scared_",				// 14
 		"die_",					// 15	
 		"lie_down_",			// 16
@@ -120,6 +120,7 @@ void CAI_Chimera::MotionToAnim(EMotionAnim motion, int &index1, int &index2, int
 		case eMotionStandUp:		index1 = 2; index2 = 17; index3 = -1;	break;
 		case eMotionCheckCorpse:	index1 = 2; index2 = 0;	 index3 = 0;	break;
 		case eMotionLieDownEat:		index1 = 0; index2 = 18; index3 = -1;	break;
+		case eMotionAttackJump:		index1 = 0; index2 = 0;  index3 = -1;	break;
 		//default:					NODEFAULT;
 	} 
 }

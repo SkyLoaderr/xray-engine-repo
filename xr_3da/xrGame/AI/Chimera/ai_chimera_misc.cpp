@@ -60,7 +60,7 @@ void CAI_Chimera::vfUpdateParameters()
 
 	VisionElem ve;
 	if (GetEnemy(ve)) {
-		//VisibleEnemies.insert(ve.obj);
+		VisibleEnemies.insert(ve.obj);
 	
 		float			yaw1 = 0.f, pitch1 =0.f, yaw2, pitch2, fYawFov = 0.f, fPitchFov = 0.f, fRange = 0.f;
 		
@@ -138,21 +138,52 @@ void CAI_Chimera::vfUpdateParameters()
 	}
 
 	H= true;
+
+	// Fill flags, properties and vars for attack mode
+	flagEnemyDie				= false;
+	flagEnemyLostSight			= false;
+
+	flagEnemyGoCloser			= false;
+	flagEnemyGoFarther			= false;
+	flagEnemyGoCloserFast		= false;
+	flagEnemyGoFartherFast		= false;
+	flagEnemyStanding			= false;
+	flagEnemyDoesntKnowAboutMe	= false;
+	flagEnemyHiding				= false;			// todo
+	flagEnemyRunAway			= false;			// todo
+
+	// Set current enemy
+	m_tEnemy = ve;
+
+	if (m_tEnemy.obj && (m_tEnemyPrevFrame.obj == m_tEnemy.obj) && (m_tEnemy.time != m_dwCurrentUpdate)) {
+		flagEnemyLostSight = true;
+	}
+
+	if (m_tEnemyPrevFrame.obj && !m_tEnemyPrevFrame.obj->g_Alive()) {
+		flagEnemyDie = true;
+	}
+
+	float dist_now, dist_prev;
+	if (m_tEnemy.obj && (m_tEnemyPrevFrame.obj == m_tEnemy.obj)) {
+		dist_now	= m_tEnemy.position.distance_to(Position());
+		dist_prev	= m_tEnemyPrevFrame.position.distance_to(Position());
+
+		if (_abs(dist_now - dist_prev) < 0.2f) flagEnemyStanding	= true;
+		else {
+			if (dist_now < dist_prev) flagEnemyGoCloser = true;
+			else flagEnemyGoFarther = true;
+
+			if (_abs(dist_now - dist_prev) < 1.2f) {
+				if (dist_now < dist_prev)  flagEnemyGoCloserFast = true;
+				else flagEnemyGoFartherFast = true;
+			}
+		}
+
+		if (flagEnemyStanding && !I) flagEnemyDoesntKnowAboutMe = true;
+	}
+
+	// Save current enemy (only if valid)
+	if (m_tEnemy.obj)
+		m_tEnemyPrevFrame = m_tEnemy;
+
 }
-
-
-
-
-//bool CAI_Chimera::IsLeftSide(const Fvector &Position)
-//{
-//	Fvector iV; // i-состовл€юща€ матрицы mRotate
-//	Fvector temp;
-//
-//	iV		= XFORM().i;
-//	temp	= XFORM().c;
-//	temp.sub(Position);
-//	float f = temp.dotproduct(iV);
-//
-//	if (f >= 0) return true;
-//	else return false;
-//}
