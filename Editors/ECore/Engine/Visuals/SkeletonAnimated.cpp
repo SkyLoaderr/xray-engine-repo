@@ -738,7 +738,7 @@ void CBoneDataAnimated::Calculate(CKinematics* _K, Fmatrix *parent)
                     float w;
                     if (fis_zero(ws))	w = 0;
                     else				w = w1/ws;
-                    KEY_Interp		(Result,R[0],R[1],w);
+                    KEY_Interp	(Result,R[0],R[1], clamp(w,0.f,1.f));
                 }
                 break;
             default:
@@ -746,7 +746,7 @@ void CBoneDataAnimated::Calculate(CKinematics* _K, Fmatrix *parent)
                     int count = BLEND_INST.Blend.size();
                     for (int i=0; i<count; i++)		S[i].set(R+i,BI[i]->blendAmount);
                     std::sort	(S,S+count);
-                    KEY_Interp	(Result,*S[0].K, *S[1].K, S[1].w/(S[0].w+S[1].w));
+                    KEY_Interp	(Result,*S[0].K, *S[1].K, clamp(S[1].w/(S[0].w+S[1].w),0.f,1.f) );
                 }
                 break;
             }

@@ -148,16 +148,16 @@ void CPHWorld::Create()
 	level_box				.	getcenter	(level_center);
 	dVector3 extensions		=	{ level_size.x ,256.f,level_size.z};
 	dVector3 center			=	{level_center.x,0.f,level_center.z};
-	Space=dQuadTreeSpaceCreate (0, center,extensions, 8);
+	Space					=	dQuadTreeSpaceCreate (0, center,extensions, 6);
 
-	dSpaceSetCleanup(Space,0);
+	dSpaceSetCleanup			(Space,0);
 #ifdef ODE_SLOW_SOLVER
 #else
 	dWorldSetAutoEnableDepthSF1(phWorld, 15);
 #endif
-	ContactGroup = dJointGroupCreate(0);		
-	dWorldSetGravity(phWorld, 0,-world_gravity, 0);//-2.f*9.81f
-	Mesh.Create(Space,phWorld);
+	ContactGroup			= dJointGroupCreate(0);		
+	dWorldSetGravity		(phWorld, 0,-world_gravity, 0);//-2.f*9.81f
+	Mesh.Create				(Space,phWorld);
 	//Jeep.Create(Space,phWorld);//(Space,phWorld)
 	//Gun.Create(Space);
 #ifdef PH_PLAIN
