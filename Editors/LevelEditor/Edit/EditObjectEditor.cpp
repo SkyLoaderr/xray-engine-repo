@@ -260,7 +260,7 @@ void CEditableObject::DefferedLoadRP()
     EditMeshIt _M=m_Meshes.begin();
     EditMeshIt _E=m_Meshes.end();
     AnsiString tmp;
-    tmp.sprintf("Load RB: '%s'",GetName());
+    tmp.sprintf("Creating RB: '%s'",GetName());
     UI.ProgressStart((float)m_Meshes.size(),tmp.c_str());
 	for (; _M!=_E; _M++){
 	    UI.ProgressInc();

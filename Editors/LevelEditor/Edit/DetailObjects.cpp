@@ -446,12 +446,14 @@ void EDetailManager::SBase::Render()
     div_t cnt = div(mesh.size(),MAX_BUF_SIZE);
     DWORD vBase;
     for (int k=0; k<cnt.quot; k++){
+    	Device.Streams.BeginFrame();
 		FVF::V*	pv	 	= (FVF::V*)Device.Streams.Vertex.Lock(MAX_BUF_SIZE,stream->dwStride,vBase);
 		CopyMemory		(pv,mesh.begin()+k*MAX_BUF_SIZE,sizeof(FVF::V)*MAX_BUF_SIZE);
 		Device.Streams.Vertex.Unlock(MAX_BUF_SIZE,stream->dwStride);
 		Device.DP		(D3DPT_TRIANGLELIST,stream,vBase,MAX_BUF_SIZE/3);
     }
     if (cnt.rem){
+    	Device.Streams.BeginFrame();
 		FVF::V*	pv	 	= (FVF::V*)Device.Streams.Vertex.Lock(cnt.rem,stream->dwStride,vBase);
 		CopyMemory		(pv,mesh.begin()+cnt.quot*MAX_BUF_SIZE,sizeof(FVF::V)*cnt.rem);
 		Device.Streams.Vertex.Unlock(cnt.rem,stream->dwStride);

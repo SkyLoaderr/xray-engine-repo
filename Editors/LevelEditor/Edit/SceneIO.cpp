@@ -287,7 +287,7 @@ bool EScene::Load(char *_FileName){
         }
 
         CStream* OBJ = F->OpenChunk(CHUNK_OBJECT_LIST);
-	    UI.ProgressStart(obj_cnt,"Load scene...");
+	    UI.ProgressStart(obj_cnt,"Loading scene...");
         if (OBJ){
 	        CStream* O   = OBJ->OpenChunk(0);
     	    for (int count=1; O; count++) {
