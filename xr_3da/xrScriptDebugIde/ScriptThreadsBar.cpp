@@ -71,7 +71,7 @@ void CScriptThreadsBar::AddThread(const SScriptThread* st)
 	CString sID;
 	sID.Format("%d",st->scriptID);
 	m_scriptThreads.SetItem(idx, 2, LVIF_TEXT, sID, 0, LVIF_TEXT, LVIF_TEXT, 0);
-	m_scriptThreads.SetItem(idx, 3, LVIF_TEXT, st->processor, 0, LVIF_TEXT, LVIF_TEXT, 0);
+	m_scriptThreads.SetItem(idx, 3, LVIF_TEXT, st->process, 0, LVIF_TEXT, LVIF_TEXT, 0);
 }
 
 void CScriptThreadsBar::RemoveAll()

@@ -2,7 +2,7 @@
 
 #pragma once
 
-class SScriptThread;
+struct SScriptThread;
 class CScintillaView;
 struct SCNotification;
 
