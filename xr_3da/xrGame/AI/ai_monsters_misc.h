@@ -253,3 +253,4 @@ extern Fvector		tfGetNextCollisionPosition		(CCustomMonster *tpCustomMonster, Fv
 
 DEFINE_VECTOR										(ref_sound,SOUND_VECTOR,SOUND_IT);
 extern void			g_vfLoadSounds					(SOUND_VECTOR &tpSounds, LPCSTR	prefix, u32 dwMaxCount);
+
