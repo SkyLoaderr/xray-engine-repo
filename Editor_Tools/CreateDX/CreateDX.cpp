@@ -5,8 +5,8 @@
 #include	"d3dx.h"
 #include	"dds.h"
 
-HWND					m_hWnd		= 0;
-ID3DXContext*           m_pD3DX;
+__declspec(thread) HWND					m_hWnd		= 0;
+__declspec(thread) ID3DXContext*        m_pD3DX;
 
 struct strDX{
 	LPDIRECT3D7				pD3D;
@@ -16,12 +16,12 @@ struct strDX{
 	DDSURFACEDESC2			BackDesc;
 };
 
-strDX*					m_dx;
+__declspec(thread) strDX*	m_dx;
 
-bool					bInScene	= false;
+__declspec(thread) bool		bInScene	= false;
 
-HRESULT                 InitRenderer();
-HRESULT					HandleWindowedModeChanges();
+HRESULT						InitRenderer();
+HRESULT						HandleWindowedModeChanges();
 
 BOOL APIENTRY DllMain( HANDLE hModule, 
                        DWORD  ul_reason_for_call, 
@@ -36,9 +36,15 @@ HRESULT CreateTexture(LPDIRECTDRAWSURFACE7& pTexture, LPSTR pSrcName, int* w, in
 	HRESULT hr;
 	D3DX_SURFACEFORMAT fmt = D3DX_SF_UNKNOWN; 
 	DWORD mip_num=D3DX_DEFAULT;
-	hr=D3DXCreateTextureFromFile(	m_dx->pD3DDev, 0, (DWORD*)w, (DWORD*)h, &fmt, 0, 
-									&pTexture, &mip_num, pSrcName, D3DX_FT_LINEAR );
-	if (hr==D3D_OK){
+	__try {
+		hr=D3DXCreateTextureFromFile(	m_dx->pD3DDev, 0, (DWORD*)w, (DWORD*)h, &fmt, 0, 
+										&pTexture, &mip_num, pSrcName, D3DX_FT_LINEAR );
+	} __except(EXCEPTION_EXECUTE_HANDLER)
+	{
+		return D3DERR_TEXTURE_CREATE_FAILED;
+	}
+	if (!FAILED(hr))
+	{
 		switch (fmt){
 		case D3DX_SF_A8R8G8B8:
 		case D3DX_SF_A1R5G5B5:
@@ -133,6 +139,8 @@ HRESULT InitRenderer()
     m_dx->pDD = m_pD3DX->GetDD();
     if( m_dx->pDD == NULL )
         return E_FAIL;
+
+	m_dx->pDD->SetCooperativeLevel(m_hWnd,DDSCL_FPUPRESERVE|DDSCL_MULTITHREADED|DDSCL_NORMAL);
 
 	m_dx->pBackBuffer = m_pD3DX->GetBackBuffer(0);
     if( m_dx->pBackBuffer == NULL )
