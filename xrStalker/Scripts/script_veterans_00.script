@@ -1,0 +1,288 @@
+is_creature_entered = false
+is_actor_entered = false
+stalkers_already_saw_actor = false
+
+function main()
+
+	stalker1	= get_level_object("m_stalker_e0000")
+	stalker2	= get_level_object("m_stalker_e0001")
+
+	actor   	= get_actor()
+
+			wait(1000)			
+
+			stalker1:script	(true,  pr_script_02.script_name())
+			stalker2:script	(true,  pr_script_02.script_name())
+
+			action(
+				stalker1,
+			  	move	(move.standing, move.walk,move.line,patrol("way0000")),
+				look	(look.fire_point, stalker2),
+				anim	(anim.free),
+				cond	(cond.move_end)
+			)
+			action(
+				stalker2,
+			  	move	(move.standing, move.walk,move.line,patrol("way0000")),
+				anim	(anim.free),
+				cond	(cond.move_end)
+			)
+			action(
+				stalker1,
+			  	move	(move.standing, move.walk,move.line,patrol("way0001")),
+				look	(look.fire_point, stalker2),
+				anim	(anim.free),
+				cond	(cond.move_end)
+			)
+			action(
+				stalker2,
+			  	move	(move.standing, move.walk,move.line,patrol("way0001")),
+				anim	(anim.free),
+				cond	(cond.move_end)
+			)
+			action(
+				stalker1,
+			  	move	(move.standing, move.walk,move.line,patrol("way0002")),
+				look	(look.fire_point, stalker2),
+				anim	(anim.free),
+				cond	(cond.move_end)
+			)
+			action(
+				stalker2,
+			  	move	(move.standing, move.walk,move.line,patrol("way0002")),
+				anim	(anim.free),
+				cond	(cond.move_end)
+			)
+
+		if stalker1:see(actor) == false and stalker2:see(actor) == false then
+			printf("see = false!")
+			flush()
+		end
+
+		if stalker1:see(actor) or stalker2:see(actor) then
+			printf("see = true!")
+			flush()
+		end
+
+		if stalker1:see(actor) == false and stalker2:see(actor) == false then
+			wait(2000)			
+			prof_kgm4:play_at_pos				(stalker1,stalker1:position(),0);
+			wait(3000)			
+		end
+		wait()			
+
+		if stalker1:see(actor) == false and stalker2:see(actor) == false then
+			prof_nashel_taynik_a:play_at_pos	(stalker1,stalker1:position(),0);
+			wait(4000)			
+		end
+		wait()			
+
+		if stalker1:see(actor) == false and stalker2:see(actor) == false then
+			prof_kgm3:play_at_pos				(stalker1,stalker1:position(),0);
+			wait(2000)			
+		end
+		wait()			
+
+		if stalker1:see(actor) == false and stalker2:see(actor) == false then
+			prof_nashel_taynik_b:play_at_pos	(stalker1,stalker1:position(),0);
+			wait(6000)			
+		end
+		wait()			
+
+		if stalker1:see(actor) == false and stalker2:see(actor) == false then		
+			rainbow_ya_bi_pomalkival:play_at_pos				(stalker2,stalker2:position(),0);
+			wait(4000)			
+		end
+		wait()			
+
+		if stalker1:see(actor) == false and stalker2:see(actor) == false then
+			rainbow_mojet_sidet_stalker:play_at_pos	(stalker2,stalker2:position(),0);
+			wait(4000)			
+		end
+		wait()			
+
+		if stalker1:see(actor) == false and stalker2:see(actor) == false then		
+			prof_kgm2:play_at_pos				(stalker1,stalker1:position(),0);
+			wait(2000)			
+		end
+		wait()			
+
+		if stalker1:see(actor) == false and stalker2:see(actor) == false then		
+			prof_chert:play_at_pos				(stalker1,stalker1:position(),0);
+			wait(2000)			
+		end
+		wait()			
+
+		if stalker1:see(actor) == false and stalker2:see(actor) == false then
+			prof_blin_tochno:play_at_pos	(stalker1,stalker1:position(),0);
+			wait(3000)			
+		end
+		wait()			
+
+		if stalker1:see(actor) == false and stalker2:see(actor) == false then
+			prof_proveru_ya_vagonchik:play_at_pos				(stalker1,stalker1:position(),0);
+			wait(4000)			
+		end
+		wait()			
+
+		if stalker1:see(actor) == false and stalker2:see(actor) == false then		
+			rainbow_poshutil_ya:play_at_pos				(stalker2,stalker2:position(),0);
+			wait(4000)			
+		end
+		wait()			
+
+		if stalker1:see(actor) == false and stalker2:see(actor) == false then		
+			prof_teper_ne_uspokous:play_at_pos				(stalker1,stalker1:position(),0);
+			wait(4000)			
+		end
+		wait()			
+
+		if stalker1:see(actor) == false and stalker2:see(actor) == false then
+			prof_prikroy:play_at_pos	(stalker1,stalker1:position(),0);
+			wait(8000)			
+		end
+		wait()			
+
+		if stalker1:see(actor) == false and stalker2:see(actor) == false then		
+			rainbow_nda:play_at_pos				(stalker2,stalker2:position(),0);
+			wait(8000)			
+		end
+		wait()			
+
+		if stalker1:see(actor) == false and stalker2:see(actor) == false then		
+			prof_vrode_nikogo:play_at_pos				(stalker1,stalker1:position(),0);
+			wait(5000)			
+		end
+		wait()			
+
+		if stalker1:see(actor) == false and stalker2:see(actor) == false then
+			prof_kgm2:play_at_pos	(stalker1,stalker1:position(),0);
+			wait(2000)			
+		end
+		wait()			
+
+		if stalker1:see(actor) == false and stalker2:see(actor) == false then
+			prof_valim_otsuda:play_at_pos	(stalker1,stalker1:position(),0);
+			wait(10000)			
+		end
+		wait()			
+
+		if stalker1:see(actor) == false and stalker2:see(actor) == false then
+			prof_chto_za_chert:play_at_pos	(stalker1,stalker1:position(),0);
+			wait(4000)			
+		end
+		wait()			
+
+		if stalker1:see(actor) == false and stalker2:see(actor) == false then		
+			rainbow_za_namy_sledyat:play_at_pos				(stalker2,stalker2:position(),0);
+			wait(5000)			
+		end
+		wait()			
+
+		if stalker1:see(actor) == false and stalker2:see(actor) == false then		
+			prof_u_menya_toje:play_at_pos				(stalker1,stalker1:position(),0);
+			wait(4000)			
+		end
+		wait()			
+
+		if stalker1:see(actor) == false and stalker2:see(actor) == false then
+			prof_blin:play_at_pos				(stalker1,stalker1:position(),0);
+			wait(2000)			
+		end
+		wait()			
+
+		if stalker1:see(actor) == false and stalker2:see(actor) == false then		
+			prof_kgm2:play_at_pos				(stalker1,stalker1:position(),0);
+			wait(12000)			
+		end
+		wait()			
+
+		if stalker1:see(actor) == false and stalker2:see(actor) == false then		
+			prof_do_basi_bi_dobratsya:play_at_pos				(stalker1,stalker1:position(),0);
+			wait(3000)			
+		end
+		wait()			
+
+	while true do
+		if stalker1:see(actor) or stalker2:see(actor) then
+			printf("script 2!")
+			flush()
+			stalker1:script	(false, pr_script_02.script_name())
+			stalker1:script	(true,  pr_script_02.script_name())
+			stalker2:script	(false, pr_script_02.script_name())
+			stalker2:script	(true,  pr_script_02.script_name())
+
+			action(
+				stalker1,
+			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
+				look	(look.fire_point, actor),
+				anim	(anim.danger),
+				cond	(cond.time_end, 50000)
+			)
+			action(
+				stalker2,
+			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
+				look	(look.fire_point, actor),
+				anim	(anim.danger),
+				cond	(cond.time_end, 50000)
+			)
+			prof_stoyat_pristrelu:play_at_pos		(stalker1,stalker1:position(),0);
+			wait(7000)			
+			prof_padla_podslushivala:play_at_pos	(stalker1,stalker1:position(),0);
+			wait(4000)			
+
+			rainbow_tak_i_znal_ktoto_pryatalsya2:play_at_pos		(stalker2,stalker2:position(),0);
+			wait(4000)			
+
+			prof_chert:play_at_pos				(stalker1,stalker1:position(),0);
+			wait(2000)		
+			prof_dermo:play_at_pos				(stalker1,stalker1:position(),0);
+			wait(3000)		
+			prof_siviy_che_delat_budem:play_at_pos	(stalker1,stalker1:position(),0);
+			wait(3000)			
+
+			rainbow_otpusti_ego:play_at_pos		(stalker2,stalker2:position(),0);
+			wait(2000)			
+			rainbow_suchenok_s_pistoletikom:play_at_pos		(stalker2,stalker2:position(),0);
+			wait(5000)			
+
+			prof_luche_ne_privlekat_vnimanie:play_at_pos	(stalker1,stalker1:position(),0);
+			wait(5000)			
+			prof_mi_tebya_otpuskaem:play_at_pos	(stalker1,stalker1:position(),0);
+			wait(4000)			
+			prof_kgm4:play_at_pos	(stalker1,stalker1:position(),0);
+			wait(1500)			
+			prof_blin:play_at_pos	(stalker1,stalker1:position(),0);
+			wait(1000)			
+			prof_uviju_pristrelu:play_at_pos	(stalker1,stalker1:position(),0);
+			wait(8000)			
+			prof_1_2_3:play_at_pos	(stalker1,stalker1:position(),0);
+			wait(3000)			
+			prof_sam_naprosilsya:play_at_pos	(stalker1,stalker1:position(),0);
+			wait(1000)			
+
+			rainbow_mochi_ego:play_at_pos		(stalker2,stalker2:position(),0);
+			stalker2:script	(false, pr_script_02.script_name())
+		end
+		wait()
+		break
+	end
+
+	stalker1:script	(false, pr_script_02.script_name())
+	stalker2:script	(false, pr_script_02.script_name())
+
+	while true do
+		if actor.health <= 0 and stalker1.health > 0 then
+		wait(2000)			
+			prof_zaslujil_eto_zasranec:play_at_pos		(stalker1,stalker1:position(),0);
+		wait(4000)			
+			prof_tupie_novichki:play_at_pos		(stalker1,stalker1:position(),0);
+		wait(3000)			
+		break
+		end
+		wait()			
+	end
+
+end
+
+
