@@ -74,7 +74,7 @@ local g_monsters_id 	= {}
 
 function main()
 	
-	printf("___start")
+	printf("___start garbage_monster_attack")
 	while(monster_on_line() == false) do
 		printf("wait monster...")
 		wait()
