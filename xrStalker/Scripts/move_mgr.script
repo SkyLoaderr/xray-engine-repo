@@ -104,7 +104,7 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 	self.object:set_sight(look.danger, nil, 0)
 	self.state = state_moving
 
-	self.highest_sync_val = self:get_highest_sync_val()
+	self.lowest_sync_val, self.highest_sync_val = self:get_lowest_highest_sync_val()
 	self.team = team
 	if self.team then
 		local s = sync[self.team]
@@ -166,10 +166,11 @@ function move_mgr:update_sound()
 	end
 end
 
-function move_mgr:get_highest_sync_val()
+function move_mgr:get_lowest_highest_sync_val()
 	local ptr = patrol(self.path_walk)
 	local num_points = ptr:count()
 	local v
+	local lowest = 100000000
 	local highest = -1
 	for i = 0, num_points - 1 do
 		v = self.path_walk_info[i]["n"]
@@ -178,9 +179,12 @@ function move_mgr:get_highest_sync_val()
 			if v > highest then
 				highest = v
 			end
+			if v < lowest then
+				lowest = v
+			end
 		end
 	end
-	return highest
+	return lowest, highest
 end
 
 -- Сравнивает порядок двух вейпоинтов, считая, что последний вейпоинт меньше первого (для зацикленных маршрутов с
@@ -188,9 +192,9 @@ end
 function move_mgr:wayp_lesser(arg1, arg2)
 	local ptr = patrol(self.path_walk)
 	local num_points = ptr:count()
-	if arg1 == self.highest_sync_val and arg2 == 0 then
+	if arg1 == self.highest_sync_val and arg2 == self.lowest_sync_val then
 		return true
-	elseif arg1 == 0 and arg2 == self.highest_sync_val then
+	elseif arg1 == self.lowest_sync_val and arg2 == self.highest_sync_val then
 		return false
 	else
 		return arg1 < arg2
@@ -273,7 +277,7 @@ function move_mgr:update()
 
 		--printf("_debug_guard [%s]: adding animations", self.object:name())
 		if self.play_sound_after_anim_start then
-			-- Проиграть звук после анимации:
+			-- Проиграть звук после старта анимации:
 			self:update_sound()
 		end
 
