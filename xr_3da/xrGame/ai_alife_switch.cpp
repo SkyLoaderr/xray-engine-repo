@@ -258,6 +258,8 @@ void CSE_ALifeSimulator::vfFurlObjectOffline(CSE_ALifeDynamicObject *I)
 
 void CSE_ALifeSimulator::vfValidatePosition(CSE_ALifeDynamicObject *I)
 {
+	VERIFY					(ai().level_graph().level_id() == ai().game_graph().vertex(I->m_tGraphID)->level_id());
+
 	// check if we do not use ai locations
 	if (!I->used_ai_locations())
 		return;
@@ -266,14 +268,12 @@ void CSE_ALifeSimulator::vfValidatePosition(CSE_ALifeDynamicObject *I)
 	if (0xffff != I->ID_Parent)
 		return;
 
-	// check if we are not online and 
-	// we are not on the current level or 
-	// we have a valid level vertex id
-	if	(!I->m_bOnline && ((ai().level_graph().level_id() != ai().game_graph().vertex(I->m_tGraphID)->level_id()) || !ai().level_graph().valid_vertex_id(I->m_tNodeID)))
+	// check if we are not online and have an invalid level vertex id
+	if	(!I->m_bOnline && !ai().level_graph().valid_vertex_id(I->m_tNodeID))
 		return;
 
 	// checking if it is a group of objects
-	CSE_ALifeGroupAbstract *tpALifeGroupAbstract = dynamic_cast<CSE_ALifeGroupAbstract*>(I);
+	CSE_ALifeGroupAbstract	*tpALifeGroupAbstract = dynamic_cast<CSE_ALifeGroupAbstract*>(I);
 	if (tpALifeGroupAbstract) {
 		// checking if group is empty then remove it
 		if (tpALifeGroupAbstract->m_tpMembers.empty())
