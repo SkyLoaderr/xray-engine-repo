@@ -113,6 +113,21 @@ function main()
 				cond	(cond.move_end)
 			)
 
+	while true do
+		if stalker1:see(actor) == false and stalker2:see(actor) == false then
+			printf("see = false!")
+			flush()
+		end
+		break
+	end
+
+	while true do
+		if stalker1:see(actor) or stalker2:see(actor) then
+			printf("see = true!")
+			flush()
+		end
+		break
+	end
 
 	while true do
 		if stalker1:see(actor) == false and stalker2:see(actor) == false then
