@@ -86,20 +86,20 @@ void CStateManagerCat::execute()
 
 	if (object->CriticalActionInfo->is_fsm_locked()) return;
 	
-	if (state_id == eStateAttack_AttackRat) {
-		// check angle
-		float yaw, pitch;
-		Fvector().sub(enemy->Position(), object->Position()).getHP(yaw,pitch);
-		if (angle_difference(-yaw,object->movement().m_body.current.yaw) > 2*PI_DIV_3) {
-			
-			if (m_rot_jump_last_time + ROTATION_JUMP_DELAY < Device.dwTimeGlobal) {
-				object->MotionMan.SetSpecParams(ASP_ROTATION_JUMP);
-				m_rot_jump_last_time = Device.dwTimeGlobal;
-				return;
-			}
-			
-		}
-	}
+	//if (state_id == eStateAttack_AttackRat) {
+	//	// check angle
+	//	float yaw, pitch;
+	//	Fvector().sub(enemy->Position(), object->Position()).getHP(yaw,pitch);
+	//	if (angle_difference(-yaw,object->movement().m_body.current.yaw) > 2*PI_DIV_3) {
+	//		
+	//		if (m_rot_jump_last_time + ROTATION_JUMP_DELAY < Device.dwTimeGlobal) {
+	//			object->MotionMan.SetSpecParams(ASP_ROTATION_JUMP);
+	//			m_rot_jump_last_time = Device.dwTimeGlobal;
+	//			return;
+	//		}
+	//		
+	//	}
+	//}
 
 	select_state(state_id); 
 

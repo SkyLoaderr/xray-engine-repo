@@ -53,10 +53,12 @@ void CMotionManager::SelectAnimation()
 
 void CMotionManager::SetTurnAnimation()
 {
-	float delta_yaw = angle_difference(pMonster->movement().m_body.target.yaw, pMonster->movement().m_body.current.yaw);
+	const CDirectionManager::SAxis &yaw = pMonster->DirMan.heading();
+
+	float delta_yaw	= angle_difference(yaw.target, yaw.current);
 
 	bool turn_left = true;
-	if (from_right(pMonster->movement().m_body.target.yaw, pMonster->movement().m_body.current.yaw)) turn_left = false; 
+	if (from_right(yaw.target, yaw.current)) turn_left = false; 
 
 	if (IsStandCurAnim() && (delta_yaw > STAND_TURN_ANGLE)) {
 		pMonster->SetTurnAnimation(turn_left);
@@ -95,7 +97,7 @@ void CMotionManager::SelectVelocities()
 		// если сейчас стоит на месте и есть след точка (т.е. должен быть в движении),
 		// то реализовать поворот на месте, а дальше форсировать скорость со следующей точки
 		if ((cur_point_velocity_index == MonsterMovement::eVelocityParameterStand) && (next_point_velocity_index != u32(-1))) {
-			if (angle_difference(pMonster->movement().m_body.current.yaw, pMonster->movement().m_body.target.yaw) < deg(1)) 
+			if (!pMonster->DirMan.is_turning()) 
 				cur_point_velocity_index = next_point_velocity_index;
 		} 
 
@@ -151,7 +153,7 @@ void CMotionManager::SelectVelocities()
 		item_it = get_sd()->m_tAnims.find(cur_anim_info().motion);
 		VERIFY(get_sd()->m_tAnims.end() != item_it);
 
-		pMonster->movement().m_velocity_angular = item_it->second.velocity->velocity.angular_real;
+		pMonster->DirMan.set_angular_speed(item_it->second.velocity->velocity.angular_real);
 	}
 
 	// применить 

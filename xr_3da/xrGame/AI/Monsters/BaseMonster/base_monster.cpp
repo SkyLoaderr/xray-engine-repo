@@ -88,14 +88,12 @@ void CBaseMonster::UpdateCL()
 		// Проверка состояния анимации (атака)
 		AA_CheckHit							();
 
-		// Поправка Pitch
-		PitchCorrection						();
+		// Обновить линейную скорости движения
+		movement().update_velocity			();
 
-		// Обновить угловую и линейную скорости движения
-		movement().update_velocity	();
+		// Обновить угловую скорости движения
+		DirMan.update_frame					();
 
-		Exec_Look							(Device.fTimeDelta);
-		
 		CStepManager::update				();
 	}
 
@@ -171,14 +169,6 @@ float CBaseMonster::evaluate(const CItemManager *manager, const CGameObject *obj
 	return (0.f);
 }
 
-float CBaseMonster::get_custom_pitch_speed(float def_speed)
-{
-	float cur_speed = angle_difference(movement().m_body.current.pitch, movement().m_body.target.pitch) * 4.0f;
-	clamp(cur_speed, PI_DIV_6, 5 * PI_DIV_6);
-
-	return cur_speed;
-}
-
 //////////////////////////////////////////////////////////////////////////
 
 void CBaseMonster::ChangeTeam(int team, int squad, int group)
@@ -203,33 +193,15 @@ bool CBaseMonster::IsVisibleObject(const CGameObject *object)
 	return memory().visual().visible_now(object);
 }
 
-
-void CBaseMonster::Exec_Look		( float dt )
-{
-	movement().m_body.current.yaw		= angle_normalize			(movement().m_body.current.yaw);
-	movement().m_body.target.yaw		= angle_normalize			(movement().m_body.target.yaw);
-	movement().m_body.current.pitch		= angle_normalize_signed	(movement().m_body.current.pitch);
-	movement().m_body.target.pitch		= angle_normalize_signed	(movement().m_body.target.pitch);
-
-	float pitch_speed		= get_custom_pitch_speed(movement().m_body.speed);
-	angle_lerp_bounds		(movement().m_body.current.yaw,movement().m_body.target.yaw,movement().m_body.speed,dt);
-	angle_lerp_bounds		(movement().m_body.current.pitch,movement().m_body.target.pitch,pitch_speed,dt);
-
-	Fvector P				= Position();
-	XFORM().setHPB			(-movement().m_body.current.yaw,-movement().m_body.current.pitch,0);
-	Position()				= P;
-
-}
-
-void CBaseMonster::PitchCorrection()
-{
-	bool b_need_pitch_correction = true;
-	
-	if (ability_can_jump()) {
-		if (m_jumping && m_jumping->IsActive()) b_need_pitch_correction = false;
-	}
-	if (b_need_pitch_correction) inherited::PitchCorrection();
-}
+//void CBaseMonster::PitchCorrection()
+//{
+//	bool b_need_pitch_correction = true;
+//	
+//	if (ability_can_jump()) {
+//		if (m_jumping && m_jumping->IsActive()) b_need_pitch_correction = false;
+//	}
+//	if (b_need_pitch_correction) inherited::PitchCorrection();
+//}
 
 void CBaseMonster::set_state_sound(u32 type, bool once)
 {

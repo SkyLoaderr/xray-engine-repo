@@ -3,7 +3,7 @@
 #include "ai_monster_defs.h"
 #include "../../../SkeletonAnimated.h"
 
-class CCustomMonster;
+class CBaseMonster;
 
 enum EJumpStateType {
 	JT_GLIDE,				
@@ -26,7 +26,7 @@ class CJumping {
 	
 	DEFINE_VECTOR(SJumpState, JUMP_STATE_VECTOR, JUMP_STATE_VECTOR_IT);
 
-	CCustomMonster *pMonster;
+	CBaseMonster *pMonster;
 
 	JUMP_STATE_VECTOR		bank;
 	JUMP_STATE_VECTOR_IT	ptr_cur;
@@ -54,7 +54,7 @@ public:
 					CJumping				();
 				
 	// Инициализация параметров прыжка. Необходимо вызывать в Monster::Init
-			void	Init					(CCustomMonster *pM); 
+			void	Init					(CBaseMonster *pM); 
 	// Загрузка параметров из ltx. Необходимо вызывать в Monster::Load
 			void	Load					(LPCSTR section);
 	

@@ -31,7 +31,7 @@ void CBaseMonster::LookPosition(Fvector to_point, float angular_speed)
 	dir.getHP(yaw,p);
 
 	// установить текущий угол
-	movement().m_body.target.yaw = angle_normalize(-yaw);
+	DirMan.set_heading(angle_normalize(-yaw));
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -4,11 +4,23 @@
 #include "../../detail_path_manager.h"
 #include "ai_monster_movement.h"
 #include "ai_monster_utils.h"
+#include "../../level_navigation_graph.h"
+#include "../../ai_space.h"
+#include "../../ai_object_location.h"
 
 void CDirectionManager::reinit()
 {
 	m_delay				= 0;
 	m_time_last_faced	= 0;
+
+	m_heading.init		();
+	m_heading.current	= m_object->movement().m_body.current.yaw;
+	m_heading.target	= m_object->movement().m_body.target.yaw;
+
+	m_pitch.init		();	
+	m_pitch.current		= m_object->movement().m_body.current.pitch;
+	m_pitch.target		= m_object->movement().m_body.target.pitch;
+	
 }
 
 void CDirectionManager::face_target(const Fvector &position, u32 delay)
@@ -25,9 +37,9 @@ void CDirectionManager::face_target(const Fvector &position, u32 delay)
 	yaw			*= -1;
 	yaw			= angle_normalize(yaw);
 	
-	m_object->movement().m_body.target.yaw	= yaw;
+	m_heading.target	= yaw;
 
-	m_time_last_faced			= Device.dwTimeGlobal;
+	m_time_last_faced	= Device.dwTimeGlobal;
 }
 
 void CDirectionManager::use_path_direction(bool reversed)
@@ -37,7 +49,7 @@ void CDirectionManager::use_path_direction(bool reversed)
 
 	if (fsimilar(yaw,0.f,EPS_S)) return;
 
-	m_object->movement().m_body.target.yaw = angle_normalize((reversed) ? (-yaw + PI) : (-yaw));
+	m_heading.target = angle_normalize((reversed) ? (-yaw + PI) : (-yaw));
 }
 
 bool CDirectionManager::is_face_target(const Fvector &position, float eps_angle)
@@ -71,8 +83,7 @@ void CDirectionManager::force_direction(const Fvector &dir)
 	yaw			*= -1;
 	yaw			= angle_normalize(yaw);
 
-	m_object->movement().m_body.current.yaw		= yaw;
-	m_object->movement().m_body.target.yaw		= yaw;
+	m_heading.current = m_heading.target = yaw;
 }
 
 bool CDirectionManager::is_from_right(const Fvector &position)
@@ -81,14 +92,92 @@ bool CDirectionManager::is_from_right(const Fvector &position)
 	Fvector().sub	(position, m_object->Position()).getHP(yaw,pitch);
 	yaw				*= -1;
 
-	return (from_right(yaw,m_object->movement().m_body.current.yaw));
+	return (from_right(yaw,m_heading.current));
+}
+bool CDirectionManager::is_from_right(float yaw)
+{
+	return (from_right(yaw,m_heading.current));
 }
 
-float CDirectionManager::angle_between(const Fvector &position)
+bool CDirectionManager::is_turning()
 {
-	float			yaw, pitch;
-	Fvector().sub	(position, m_object->Position()).getHP(yaw,pitch);
-	yaw				*= -1;
-	
-	return angle_difference(yaw, m_object->movement().m_body.current.yaw);
+	return (!fsimilar(m_heading.current,m_heading.target));
 }
+
+//////////////////////////////////////////////////////////////////////////
+//
+//////////////////////////////////////////////////////////////////////////
+void CDirectionManager::update_frame()
+{
+	pitch_correction			();	
+
+	// difference
+	float diff = angle_difference(m_pitch.current, m_pitch.target) * 4.0f;
+	clamp(diff, PI_DIV_6, 5 * PI_DIV_6);
+
+	m_pitch.speed.target = m_pitch.speed.current = diff;
+	
+	// поправка угловой скорости в соответствии с текущей и таргетовой линейной скоростями
+	// heading speed correction
+	if (!fis_zero(m_object->movement().m_velocity_linear.current) && !fis_zero(m_object->movement().m_velocity_linear.target))
+		m_heading.speed.target	= m_heading.speed.target * m_object->movement().m_velocity_linear.current / (m_object->movement().m_velocity_linear.target + EPS_L);
+
+	// update heading
+	velocity_lerp				(m_heading.speed.current, m_heading.speed.target, m_heading.acceleration, Device.fTimeDelta);
+	
+	m_heading.current			= angle_normalize(m_heading.current);
+	m_heading.target			= angle_normalize(m_heading.target);
+	angle_lerp					(m_heading.current, m_heading.target, m_heading.speed.current, Device.fTimeDelta);
+	
+	// update pitch
+	velocity_lerp				(m_pitch.speed.current, m_pitch.speed.target, m_pitch.acceleration, Device.fTimeDelta);
+
+	m_pitch.current				= angle_normalize_signed	(m_pitch.current);
+	m_pitch.target				= angle_normalize_signed	(m_pitch.target);
+	
+	angle_lerp					(m_pitch.current, m_pitch.target, m_pitch.speed.current, Device.fTimeDelta);
+
+	// set
+	m_object->movement().m_body.speed			= m_heading.speed.current;
+	m_object->movement().m_body.current.yaw		= m_heading.current;
+	m_object->movement().m_body.target.yaw		= m_heading.current;
+	m_object->movement().m_body.current.pitch	= m_pitch.current;
+	m_object->movement().m_body.target.pitch	= m_pitch.current;
+
+	// set object position
+	Fvector P					= m_object->Position();
+	m_object->XFORM().setHPB	(-m_object->movement().m_body.current.yaw,-m_object->movement().m_body.current.pitch,0);
+	m_object->Position()		= P;
+}
+
+void CDirectionManager::pitch_correction()
+{
+	CLevelGraph::SContour	contour;
+	ai().level_graph().contour(contour, m_object->ai_location().level_vertex_id());
+
+	Fplane				P;
+	P.build				(contour.v1,contour.v2,contour.v3);
+
+	Fvector				position_on_plane;
+	P.project			(position_on_plane,m_object->Position());
+
+	// находим проекцию точки, лежащей на векторе текущего направления
+	Fvector				dir_point, proj_point;
+	dir_point.mad		(position_on_plane, m_object->Direction(), 1.f);
+	P.project			(proj_point,dir_point);
+
+	// получаем искомый вектор направления
+	Fvector				target_dir;
+	target_dir.sub		(proj_point,position_on_plane);
+
+	float				yaw,pitch;
+	target_dir.getHP	(yaw,pitch);
+
+	m_pitch.target		= -pitch;
+}
+
+void CDirectionManager::set_angular_speed(float value)
+{
+	m_heading.speed.target = value;
+}
+

@@ -124,7 +124,6 @@ public:
 
 	virtual	void			SetAttackEffector				();
 	
-	virtual float			get_custom_pitch_speed			(float def_speed);
 	virtual void			load_shared						(LPCSTR section);
 	virtual void			update_fsm						();
 			
@@ -158,9 +157,6 @@ public:
 
 	//----------------------------------------------------------------------------------
 
-
-	virtual void			Exec_Look						( float dt );
-
 	virtual void			SetTurnAnimation				(bool turn_left);
 	virtual void			AA_CheckHit						();
 	
@@ -168,8 +164,6 @@ public:
 	virtual	void			CheckSpecParams					(u32 /**spec_params/**/) {}
 	virtual void			ForceFinalAnimation				() {}
 	virtual void			LookPosition					(Fvector to_point, float angular_speed = PI_DIV_3);		// каждый монстр может по-разному реализвать эту функ (e.g. кровосос с поворотом головы и т.п.)
-
-	virtual	void			PitchCorrection					();
 
 	// Team	
 	virtual void			ChangeTeam						(int team, int squad, int group);

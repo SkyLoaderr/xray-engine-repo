@@ -486,6 +486,11 @@ ALife::ERelationType CEntityAlive::tfGetRelationType	(const CEntityAlive *tpEnti
 	}
 };
 
+bool CEntityAlive::is_relation_enemy(const CEntityAlive *tpEntityAlive) const
+{
+	return ((tfGetRelationType(tpEntityAlive) == ALife::eRelationTypeEnemy) ||  
+		(tfGetRelationType(tpEntityAlive) == ALife::eRelationTypeWorstEnemy));
+}
 
 void CEntityAlive::StartBloodDrops			(CWound* pWound)
 {

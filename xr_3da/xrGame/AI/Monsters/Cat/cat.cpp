@@ -133,32 +133,32 @@ void CCat::CheckSpecParams(u32 spec_params)
 	if ((spec_params & ASP_ATTACK_RAT) == ASP_ATTACK_RAT) MotionMan.SetCurAnim(eAnimAttackRat);
 
 	if ((spec_params & ASP_ROTATION_JUMP) == ASP_ROTATION_JUMP) {
-		float yaw, pitch;
-		Fvector().sub(EnemyMan.get_enemy()->Position(), Position()).getHP(yaw,pitch);
-		yaw *= -1;
-		yaw = angle_normalize(yaw);
+		//float yaw, pitch;
+		//Fvector().sub(EnemyMan.get_enemy()->Position(), Position()).getHP(yaw,pitch);
+		//yaw *= -1;
+		//yaw = angle_normalize(yaw);
 
-		EMotionAnim anim = eAnimJumpLeft;
-		if (from_right(yaw,movement().m_body.current.yaw)) {
-			anim = eAnimJumpRight;
-			yaw = angle_normalize(yaw + PI / 20);	
-		} else yaw = angle_normalize(yaw - PI / 20);
+		//EMotionAnim anim = eAnimJumpLeft;
+		//if (from_right(yaw,movement().m_body.current.yaw)) {
+		//	anim = eAnimJumpRight;
+		//	yaw = angle_normalize(yaw + PI / 20);	
+		//} else yaw = angle_normalize(yaw - PI / 20);
 
-		MotionMan.Seq_Add(anim);
-		MotionMan.Seq_Switch();
+		//MotionMan.Seq_Add(anim);
+		//MotionMan.Seq_Switch();
 
-		movement().stop_linear		();
-		movement().m_body.target.yaw = yaw;
+		//movement().stop_linear		();
+		//movement().m_body.target.yaw = yaw;
 
-		// calculate angular speed
-		float new_angular_velocity; 
-		float delta_yaw = angle_difference(yaw,movement().m_body.current.yaw);
-		float time = MotionMan.GetCurAnimTime();
-		new_angular_velocity = delta_yaw / time; 
+		//// calculate angular speed
+		//float new_angular_velocity; 
+		//float delta_yaw = angle_difference(yaw,movement().m_body.current.yaw);
+		//float time = MotionMan.GetCurAnimTime();
+		//new_angular_velocity = delta_yaw / time; 
 
-		MotionMan.ForceAngularSpeed(new_angular_velocity);
+		//MotionMan.ForceAngularSpeed(new_angular_velocity);
 
-		return;
+		//return;
 	}
 
 

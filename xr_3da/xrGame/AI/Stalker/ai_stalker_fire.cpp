@@ -324,7 +324,7 @@ bool CAI_Stalker::can_kill_member		(const Fvector &position, const Fvector &dire
 	if (!entity_alive || (entity_alive->ID() == ID()))
 		return				(false);
 
-	if (tfGetRelationType(entity_alive) != ALife::eRelationTypeEnemy)
+	if (!is_relation_enemy(entity_alive))
 		return				(true);
 
 	return					(false);

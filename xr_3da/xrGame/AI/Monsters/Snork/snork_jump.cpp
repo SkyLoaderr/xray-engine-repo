@@ -77,13 +77,14 @@ void CSnorkJump::try_to_jump(u32 velocity_mask)
 
 	// получить вектор направления и его мир угол
 	Fvector		dir;
-	float		yaw, pitch;
+	float		dir_yaw, dir_pitch;
 
 	dir.sub		(target_position, source_position);
-	dir.getHP	(yaw, pitch);
+	dir.getHP	(dir_yaw, dir_pitch);
 
 	// проверка на angle и на dist
-	if (angle_difference(m_object->movement().m_body.current.yaw, -yaw) < PI_DIV_6) {
+	const CDirectionManager::SAxis &yaw = m_object->DirMan.heading();
+	if (angle_difference(yaw.current, -dir_yaw) < PI_DIV_6) {
 		try_jump_normal();
 		return;
 	}

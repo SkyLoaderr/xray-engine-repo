@@ -115,7 +115,7 @@ bool CBaseMonster::bfAssignWatch(CScriptEntityAction *tpEntityAction)
 	}
 
 
-	if (angle_difference(movement().m_body.target.yaw,movement().m_body.current.yaw) < deg(2))
+	if (!DirMan.is_turning())
 		l_tWatchAction.m_bCompleted = true;
 	else
 		l_tWatchAction.m_bCompleted = false;

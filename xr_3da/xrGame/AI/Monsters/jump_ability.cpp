@@ -80,7 +80,7 @@ void CJumpingAbility::start_jump(const Fvector &point)
 	m_blend_speed					= -1.f;
 	m_target_position				= point;
 
-	m_object->movement().m_velocity_angular	= 3.f;
+	m_object->DirMan.set_angular_speed(3.f);
 	m_object->DirMan.face_target	(point);
 
 	m_active			= true;
@@ -286,15 +286,16 @@ bool CJumpingAbility::can_jump(CObject *target)
 	
 	// получить вектор направления и его мир угол
 	Fvector		dir;
-	float		yaw, pitch;
+	float		dir_yaw, dir_pitch;
 
 	dir.sub		(target_position, source_position);
-	dir.getHP	(yaw, pitch);
-	yaw			*= -1;
-	yaw			= angle_normalize(yaw);
+	dir.getHP	(dir_yaw, dir_pitch);
+	dir_yaw		*= -1;
+	dir_yaw		= angle_normalize(dir_yaw);
 
 	// проверка на angle и на dist
-	if (angle_difference(m_object->movement().m_body.current.yaw, yaw) > m_max_angle) return false;
+	const CDirectionManager::SAxis &yaw = m_object->DirMan.heading();
+	if (angle_difference(yaw.current, dir_yaw) > m_max_angle) return false;
 
 	return true;
 }
@@ -319,13 +320,14 @@ Fvector CJumpingAbility::predict_position(CObject *obj, const Fvector &pos)
 	
 	// получить вектор направления и его мир угол
 	Fvector		dir;
-	float		yaw, pitch;
+	float		dir_yaw, dir_pitch;
 
 	dir.sub		(prediction_pos, m_object->Position());
-	dir.getHP	(yaw, pitch);
+	dir.getHP	(dir_yaw, dir_pitch);
 
 	// проверка на angle и на dist
-	if (angle_difference(m_object->movement().m_body.current.yaw, -yaw) > m_max_angle) return pos;
+	const CDirectionManager::SAxis &yaw = m_object->DirMan.heading();
+	if (angle_difference(yaw.current, -dir_yaw) > m_max_angle) return pos;
 	
 	return prediction_pos;
 }

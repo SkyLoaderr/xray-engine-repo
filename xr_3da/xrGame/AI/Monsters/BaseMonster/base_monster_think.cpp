@@ -96,15 +96,15 @@ void CBaseMonster::post_fsm_update()
 	
 	if (is_state(state, eStateAttack)) {
 		
-		float				yaw,pitch;
-		Fvector().sub		(EnemyMan.get_enemy_position(), Position()).getHP(yaw,pitch);
-		yaw					= angle_normalize(-yaw);
+		float	dir_yaw = Fvector().sub(EnemyMan.get_enemy_position(), Position()).getH();
+		dir_yaw	= angle_normalize(-dir_yaw);
 
-		float angle_diff	= angle_difference(yaw, movement().m_body.current.yaw);
+		const CDirectionManager::SAxis &yaw = DirMan.heading();
+		float angle_diff	= angle_difference(yaw.current, dir_yaw);
 
 		if ((angle_diff > PI_DIV_3) && (angle_diff < 5 * PI_DIV_6)) {
-			if (from_right(yaw, movement().m_body.current.yaw)) m_bRunTurnRight = true;
-			else												m_bRunTurnLeft	= true;
+			if (from_right(-dir_yaw, yaw.current))	m_bRunTurnRight = true;
+			else									m_bRunTurnLeft	= true;
 		}
 	}
 
@@ -157,8 +157,11 @@ void CBaseMonster::check_rotation_jump()
 	DirMan.face_target				(enemy_position);
 	
 	// calculate angular speed according to animation speed and angle difference
+	float	dir_yaw = Fvector().sub(enemy_position, Position()).getH();
+	const CDirectionManager::SAxis &yaw = DirMan.heading();	
+
 	float new_angular_velocity; 
-	float delta_yaw					= DirMan.angle_between		(enemy_position);
+	float delta_yaw					= angle_difference(yaw.current, dir_yaw);
 	float time						= MotionMan.GetCurAnimTime	();
 	new_angular_velocity			= delta_yaw / time;
 

@@ -74,7 +74,6 @@ void CMonsterMovement::reinit()
 	m_velocity_reset				= false;
 
 	m_velocity_linear.set			(0.f,0.f);
-	m_velocity_angular				= 0.f;
 
 	m_dest_dir.set					(0.f, 0.f, 0.f);
 	
@@ -193,12 +192,6 @@ void CMonsterMovement::update_velocity()
 	
 	// установить линейную скорость движения
 	set_desirable_speed	(object().m_fCurSpeed = m_velocity_linear.current);
-
-	// установить угловую скорость движения
-	if (!fis_zero(m_velocity_linear.current) && !fis_zero(m_velocity_linear.target))
-		m_body.speed	= m_velocity_angular * m_velocity_linear.current / (m_velocity_linear.target + EPS_L);
-	else 
-		m_body.speed	= m_velocity_angular;
 }
 
 void CMonsterMovement::set_dest_direction(const Fvector &dir)
@@ -288,10 +281,10 @@ void CMonsterMovement::set_velocity_from_path()
 	if (fis_zero(current_velocity.linear_velocity) && (next_point_velocity_index != u32(-1))) {
 		const CDetailPathManager::STravelParams &next_velocity	= detail().velocity(next_point_velocity_index);
 		m_velocity_linear.target	= _abs(next_velocity.linear_velocity);
-		m_velocity_angular			= next_velocity.real_angular_velocity;
+		m_object->DirMan.set_angular_speed(next_velocity.real_angular_velocity);
 	} else {
 		m_velocity_linear.target	= _abs(current_velocity.linear_velocity);
-		m_velocity_angular			= current_velocity.real_angular_velocity;
+		m_object->DirMan.set_angular_speed(current_velocity.real_angular_velocity);
 	}
 
 	if (fis_zero(m_velocity_linear.target)) stop_linear();

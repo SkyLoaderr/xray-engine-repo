@@ -31,6 +31,7 @@
 #include "stalker_movement_manager.h"
 #include "movement_manager_space.h"
 #include "detail_path_manager_space.h"
+#include "level_debug.h"
 
 namespace MemorySpace {
 	struct CVisibleObject;
@@ -678,3 +679,19 @@ Fvector	CScriptGameObject::head_orientation		() const
 	const SRotation	&r = stalker->movement().head_orientation().current;
 	return			(Fvector().setHP(-r.yaw,-r.pitch));
 }
+
+void CScriptGameObject::info_add(LPCSTR text)
+{
+#ifdef DEBUG
+	DBG().object_info(&object(),this).add_item	(text, D3DCOLOR_XRGB(255,0,0), 0);
+#endif
+}
+
+void CScriptGameObject::info_clear()
+{
+#ifdef DEBUG
+	DBG().object_info(&object(),this).clear		();
+#endif
+}
+
+

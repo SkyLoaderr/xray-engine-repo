@@ -149,6 +149,7 @@ protected:
 	//отношения между существами и персонажами в зоне
 public:
 	virtual	ALife::ERelationType tfGetRelationType	(const CEntityAlive *tpEntityAlive) const;
+			bool				 is_relation_enemy	(const CEntityAlive *tpEntityAlive) const;	
 protected:	
 	MONSTER_COMMUNITY*		monster_community;
 

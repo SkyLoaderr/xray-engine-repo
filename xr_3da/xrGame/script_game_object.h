@@ -453,6 +453,9 @@ public:
 
 			Fvector				head_orientation		() const;
 			u32					vertex_in_direction		(u32 level_vertex_id, Fvector direction, float max_distance) const;
+			
+			void				info_add				(LPCSTR text);
+			void				info_clear				();
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

@@ -195,7 +195,7 @@ bool CMonsterEnemyManager::is_faced(const CEntityAlive *object0, const CEntityAl
 
 bool CMonsterEnemyManager::is_enemy(const CEntityAlive *obj) 
 {
-	return ((monster->g_Team() != obj->g_Team()) && ((monster->tfGetRelationType(obj) == ALife::eRelationTypeEnemy) || (monster->tfGetRelationType(obj) == ALife::eRelationTypeWorstEnemy)) && obj->g_Alive());
+	return ((monster->g_Team() != obj->g_Team()) && monster->is_relation_enemy(obj) && obj->g_Alive());
 }
 
 void CMonsterEnemyManager::transfer_enemy(CBaseMonster *friend_monster)

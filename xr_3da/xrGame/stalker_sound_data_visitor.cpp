@@ -22,13 +22,13 @@ CStalkerSoundDataVisitor::~CStalkerSoundDataVisitor	()
 
 void CStalkerSoundDataVisitor::visit				(CStalkerSoundData *data)
 {
-	if (object().tfGetRelationType(&data->object()) == ALife::eRelationTypeEnemy)
+	if (object().is_relation_enemy(&data->object()))
 		return;
 
 	if (!data->object().memory().enemy().selected() || data->object().memory().enemy().selected()->getDestroy())
 		return;
 
-	if (object().tfGetRelationType(data->object().memory().enemy().selected()) != ALife::eRelationTypeEnemy)
+	if (!object().is_relation_enemy(data->object().memory().enemy().selected()))
 		return;
 
 //	Msg			("%s : Adding fiction hit by sound info from stalker %s",*object().cName(),*data->object().cName());

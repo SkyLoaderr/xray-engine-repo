@@ -195,7 +195,7 @@ void CMotionManager::set_velocities_from_anim()
 	VERIFY(get_sd()->m_tAnims.end() != item_it);
 
 	pMonster->movement().m_velocity_linear.target	= item_it->second.velocity->velocity.linear;
-	if (!b_forced_velocity) pMonster->movement().m_velocity_angular = item_it->second.velocity->velocity.angular_real;
+	if (!b_forced_velocity) pMonster->DirMan.set_angular_speed(item_it->second.velocity->velocity.angular_real);
 }
 
 // Callback на завершение анимации
@@ -392,7 +392,7 @@ float CMotionManager::GetAnimSpeed(EMotionAnim anim)
 
 void CMotionManager::ForceAngularSpeed(float vel)
 {
-	pMonster->movement().m_velocity_angular = vel;
+	pMonster->DirMan.set_angular_speed(vel);
 	b_forced_velocity = true;
 }
 
@@ -434,7 +434,7 @@ EAction CMotionManager::GetActionFromPath()
 		next_point_velocity_index = pMonster->movement().detail().path()[pMonster->movement().detail().curr_travel_point_index() + 1].velocity;
 
 	if ((cur_point_velocity_index == MonsterMovement::eVelocityParameterStand) && (next_point_velocity_index != u32(-1))) {
-		if (angle_difference(pMonster->movement().m_body.current.yaw, pMonster->movement().m_body.target.yaw) < deg(1)) 
+		if (!pMonster->DirMan.is_turning()) 
 			action = VelocityIndex2Action(next_point_velocity_index);
 	}
 
@@ -518,8 +518,7 @@ void CMotionManager::ValidateAnimation()
 		return;
 	}
 
-	float angle_diff = angle_difference(pMonster->movement().m_body.target.yaw, pMonster->movement().m_body.current.yaw);
-	if (angle_diff < deg(1) && ((item_it->first == eAnimStandTurnLeft) || (item_it->first == eAnimStandTurnRight))) {
+	if (!pMonster->DirMan.is_turning() && ((item_it->first == eAnimStandTurnLeft) || (item_it->first == eAnimStandTurnRight))) {
 		m_tpCurAnim.invalidate		();
 		cur_anim_info().motion		= eAnimStandIdle;
 		return;
