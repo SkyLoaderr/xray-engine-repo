@@ -9,6 +9,7 @@
 #include "xr_ioconsole.h"
 #include "xr_creator.h"
 #include "xr_input.h"
+#include "xr_object.h"
 
 #include <io.h>
 #include <fcntl.h>
@@ -74,7 +75,7 @@ void CDemoRecord::Process(Fvector &P, Fvector &D, Fvector &N)
 		pApp->pFont->OutSet	(0,+.05f);
 		pApp->pFont->OutNext("~%s","RECORDING");
 		pApp->pFont->OutNext("~Key frames count: %d",iCount);
-		pApp->pFont->OutNext("~(SPACE=key-frame, BACK=CubeMap, ENTER=quit)");
+		pApp->pFont->OutNext("~(SPACE=key-frame, BACK=CubeMap, ENTER=Place&Quit, ESC=Quit)");
 	}
 
 
@@ -84,6 +85,7 @@ void CDemoRecord::Process(Fvector &P, Fvector &D, Fvector &N)
 	float acc = 1.f, acc_angle = 1.f;
 	if (Console.iGetKeyState(DIK_LSHIFT)){ acc=.025f; acc_angle=.025f;}
 	else if (Console.iGetKeyState(DIK_LALT)) acc=4.0;
+	else if (Console.iGetKeyState(DIK_LCONTROL)) acc=10.0;
     m_vT.mul				(m_vVelocity, Device.fTimeDelta * g_fSpeed * acc);
     m_vR.mul				(m_vAngularVelocity, Device.fTimeDelta * g_fAngularSpeed * acc_angle);
 
@@ -130,7 +132,14 @@ void CDemoRecord::OnKeyboardPress	(int dik)
 {
 	if (dik == DIK_SPACE)	RecordKey();
 	if (dik == DIK_BACK)	MakeCubemap();
-	if (dik == DIK_RETURN)	pCreator->Cameras.RemoveEffector(cefDemo);
+	if (dik == DIK_ESCAPE)	pCreator->Cameras.RemoveEffector(cefDemo);
+	if (dik == DIK_RETURN){	
+		if (pCreator->CurrentEntity()){
+			pCreator->CurrentEntity()->Position().set(m_Position);
+			pCreator->CurrentEntity()->Rotation().set(m_Camera);
+			pCreator->Cameras.RemoveEffector(cefDemo);
+		}
+	}
 }
 
 void CDemoRecord::OnKeyboardHold	(int dik)
@@ -144,8 +153,6 @@ void CDemoRecord::OnKeyboardHold	(int dik)
 	case DIK_RIGHT:		m_vT.x += 1.0f; break; // Slide Right
 	case DIK_S:			m_vT.y -= 1.0f; break; // Slide Down
 	case DIK_W:			m_vT.y += 1.0f; break; // Slide Up
-//	case DIK_S:			m_vT.z -= 1.0f; break; // Move Forward
-//	case DIK_W:			m_vT.z += 1.0f; break; // Move Backward
 	// rotate	
 	case DIK_NUMPAD2:	m_vR.x -= 1.0f; break; // Pitch Down
 	case DIK_NUMPAD8:	m_vR.x += 1.0f; break; // Pitch Up

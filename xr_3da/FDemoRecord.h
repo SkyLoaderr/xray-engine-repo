@@ -17,9 +17,6 @@ class CDemoRecord :
 private:
 	int			iCount;
 	int			hFile;
-///	D3DXMATRIX	g_matPosition;
-///	D3DXVECTOR3 g_vecVelocity;
-///	D3DXVECTOR3 g_vecAngularVelocity;
 	Fvector		m_HPB;
 	Fvector		m_Position;
 	Fmatrix		m_Camera;
