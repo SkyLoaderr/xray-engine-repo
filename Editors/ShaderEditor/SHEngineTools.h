@@ -3,9 +3,7 @@
 #define SHEngineToolsH
 
 #include "ElTree.hpp"
-
-// refs
-class PropItem; 
+#include "PropertiesListTypes.h"
 
 DEFINE_VECTOR(CBlender*,TemplateVec,TemplateIt);
 DEFINE_MAP_PRED(LPSTR,CConstant*,ConstantMap,ConstantPairIt,str_pred);
@@ -86,6 +84,9 @@ friend class TfrmShaderProperties;
 	void __fastcall 	NameOnDraw			(PropItem* sender, LPVOID draw_val);
 
     void				RealResetShaders	();
+
+	void __fastcall 	FillMatrix			(PropValueVec& values, LPCSTR pref, CMatrix* m);
+    void __fastcall		RefreshProperties	();
 public:
 	CFS_Memory 			m_RenderShaders;
 

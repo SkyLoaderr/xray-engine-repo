@@ -22,27 +22,30 @@ xr_token							mode_token					[ ]={
 	{ 0,							0							}           
 };
 //---------------------------------------------------------------------------
-void __fastcall CSHEngineTools::UpdateMatrixModeProps(TElTreeItem* item, CMatrix* m, DWORD mode)
+void __fastcall CSHEngineTools::FillMatrix(PropValueVec& values, LPCSTR pref, CMatrix* m)
 {
 	TProperties* P = Tools.m_Props;
-	P->BeginEditMode();
-    if (mode==CMatrix::modeTCM){
-        P->AddFlagItem(item,"Scale enabled",	&m->tcm,CMatrix::tcmScale);
-        P->AddWaveItem(item,"Scale U",			&m->scaleU);
-        P->AddWaveItem(item,"Scale V",			&m->scaleV);
-        P->AddFlagItem(item,"Rotate enabled",	&m->tcm,CMatrix::tcmRotate);
-        P->AddWaveItem(item,"Rotate",			&m->rotate);
-        P->AddFlagItem(item,"Scroll enabled",	&m->tcm,CMatrix::tcmScroll);
-        P->AddWaveItem(item,"Scroll U",			&m->scrollU);
-        P->AddWaveItem(item,"Scroll V",			&m->scrollV);
-    }else{
-        for (TElTreeItem* itm=item->GetLastChild(); itm;){
-            TElTreeItem* node=item->GetPrevChild(itm);
-            itm->Delete();
-            itm=node;
-        }
+
+    if (m->dwMode==CMatrix::modeTCM){
+	    FILL_PROP(values, pref,	"Scale enabled",	&m->tcm,  	PROP::CreateFlagValue(CMatrix::tcmScale));
+	    FILL_PROP(values, pref, "Scale U",			&m->scaleU, PROP::CreateWaveValue());
+	    FILL_PROP(values, pref, "Scale V",			&m->scaleV, PROP::CreateWaveValue());
+
+	    FILL_PROP(values, pref, "Rotate enabled",	&m->tcm,  	PROP::CreateFlagValue(CMatrix::tcmRotate));
+	    FILL_PROP(values, pref, "Rotate",			&m->rotate, PROP::CreateWaveValue());
+
+	    FILL_PROP(values, pref, "Scroll enabled",	&m->tcm,  	PROP::CreateFlagValue(CMatrix::tcmScroll));
+	    FILL_PROP(values, pref, "Scroll U",			&m->scrollU,PROP::CreateWaveValue());
+	    FILL_PROP(values, pref, "Scroll V",			&m->scrollV,PROP::CreateWaveValue());
     }
-	P->EndEditMode();
+}
+//---------------------------------------------------------------------------
+void __fastcall CSHEngineTools::RefreshProperies()
+{
+	PropValueVec values;
+	if (m_CurrentBlender){
+    }
+    Tools.m_Props->AssignValues(values);
 }
 //---------------------------------------------------------------------------
 void __fastcall CSHEngineTools::ModeOnAfterEdit(TElTreeItem* item, PropItem* sender, LPVOID edit_val)
@@ -53,18 +56,17 @@ void __fastcall CSHEngineTools::ModeOnAfterEdit(TElTreeItem* item, PropItem* sen
     string128 nm; strcpy(nm,V->GetValue());
     CMatrix* M = FindMatrix(nm,false); R_ASSERT(M);
     V->ApplyValue(nm);
-    DWORD mode=*(DWORD*)edit_val;
-    UpdateMatrixModeProps(item,M,mode);
+    RefreshProperies();
 }
 //---------------------------------------------------------------------------
 void __fastcall CSHEngineTools::AddMatrixProps(TElTreeItem* item, LPSTR name)
 {
     CMatrix* M = FindMatrix(name,true);
     R_ASSERT(M);
-	Tools.m_Props->BeginEditMode();
-    TElTreeItem* node = Tools.m_Props->AddTokenItem(item,"Mode",&M->dwMode,mode_token,&ModeOnAfterEdit)->item;
-    UpdateMatrixModeProps(node,M,M->dwMode);
-	Tools.m_Props->EndEditMode(item);
+//s	Tools.m_Props->BeginEditMode();
+//s    TElTreeItem* node = Tools.m_Props->AddTokenItem(item,"Mode",&M->dwMode,mode_token,&ModeOnAfterEdit)->item;
+//s    UpdateMatrixModeProps(node,M,M->dwMode);
+//s	Tools.m_Props->EndEditMode(item);
 }
 //---------------------------------------------------------------------------
 
