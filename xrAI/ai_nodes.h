@@ -265,6 +265,7 @@ public:
 	virtual void Execute()
 	{
 		u32 dwSize = m_dwEnd - m_dwStart + 1;
+		u32 dwMaxNodeCount = m_header.count + 2;
 		float fDistance;
 
 		u32 N = tpaGraph.size() - 1, M = N + 1, K = N*M/2;
@@ -292,7 +293,8 @@ public:
 								m_fMaxDistance,
 								tCurrentGraphVertex.tPoint,
 								tNeighbourGraphVertex.tPoint,
-								tpaNodes);
+								tpaNodes,
+								dwMaxNodeCount);
 						}
 						if (fDistance < m_fMaxDistance) {
 							m_tpCriticalSection->Enter();
