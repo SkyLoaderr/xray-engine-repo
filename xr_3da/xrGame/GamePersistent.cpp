@@ -11,12 +11,12 @@ CGamePersistent::~CGamePersistent(void)
 
 void CGamePersistent::OnAppCycleStart()
 {
-	__super::OnAppCycleStart	();
-
 	// load game materials
 	string256		fn_mtl;
 	if (FS.exist(fn_mtl, "$game_data$","gamemtl.xr"))
 		GMLib.Load	(fn_mtl);
+
+	__super::OnAppCycleStart	();
 }
 
 void CGamePersistent::OnAppCycleEnd()
