@@ -5,7 +5,6 @@
 #endif
 
 #include "hash2D.h"
-#include "cl_defs.h"
 
 struct UVtri : public _TCF 
 {
@@ -75,10 +74,10 @@ public:
 	Layer*	GetLayer			(b_light* base);
 	DWORD	GetFaceCount()		{ return UVpolys.size();	};
 		
-	VOID	Light				(RAPID::XRCollide* DB, LSelection* LightsSelected, HASH& H	);
-	VOID	L_Direct			(RAPID::XRCollide* DB, LSelection* LightsSelected, HASH& H  );
-	VOID	L_Direct_Edge		(RAPID::XRCollide* DB, LSelection* LightsSelected, UVpoint& p1, UVpoint& p2, Fvector& v1, Fvector& v2, Fvector& N, float texel_size);
-	VOID	L_Calculate			(RAPID::XRCollide* DB, LSelection* LightsSelected, HASH& H  );
+	VOID	Light				(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H	);
+	VOID	L_Direct			(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H  );
+	VOID	L_Direct_Edge		(CDB::COLLIDER* DB, LSelection* LightsSelected, UVpoint& p1, UVpoint& p2, Fvector& v1, Fvector& v2, Fvector& N, float texel_size);
+	VOID	L_Calculate			(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H  );
 
 	WORD	GetBaseMaterial		() { return UVpolys.front().owner->dwMaterial;	}
 

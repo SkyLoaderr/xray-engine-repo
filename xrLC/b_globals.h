@@ -3,7 +3,7 @@
 const	int						lmap_size	= 1024;
 
 #include "xrFace.h"
-#include "cl_rapid.h"
+#include "xrCDB.h"
 #include "xrDeflector.h"
 #include "vbm.h"
 #include "OGF_Face.h"
@@ -24,7 +24,7 @@ extern vecVertex				g_vertices;
 extern vecFace					g_faces;
 extern vec2Face					g_XSplit;
 extern vecDefl					g_deflectors;
-extern RAPID::Model				RCAST_Model;
+extern CDB::MODEL				RCAST_Model;
 extern CDeflector*				Deflector;
 extern VBContainer				g_VB;
 
