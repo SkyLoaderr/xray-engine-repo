@@ -45,6 +45,7 @@ extern float		ps_r2_ls_dynamic_range;		// r2-only
 extern float		ps_r2_ls_bloom_kernel_g;	// r2-only	// gauss
 extern float		ps_r2_ls_bloom_kernel_b;	// r2-only	// bilinear
 extern float		ps_r2_ls_bloom_threshold;	// r2-only
+extern float		ps_r2_ls_bloom_speed;		// r2-only
 extern float		ps_r2_ls_dsm_kernel;		// r2-only
 extern float		ps_r2_ls_psm_kernel;		// r2-only
 extern float		ps_r2_ls_ssm_kernel;		// r2-only

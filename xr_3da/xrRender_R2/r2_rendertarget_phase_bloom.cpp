@@ -96,9 +96,8 @@ void CRenderTarget::phase_bloom	()
 		RCache.Vertex.Unlock		(4,g_bloom_build->vb_stride);
 
 		// Perform combine (all scalers must account for 4 samples + final diffuse multiply);
-		float lscale				= ps_r2_ls_bloom_threshold;		// must be .25 infact
-		float s						= .25f;	// scale
-		float sp					= .5f;	// speed
+		float s						= ps_r2_ls_bloom_threshold;					// scale
+		float sp					= ps_r2_ls_bloom_speed*Device.fTimeDelta;	// speed
 		RCache.set_Element			(s_bloom->E[0]);
 		RCache.set_c				("b_params", s,s,s,sp);
 		RCache.set_Geometry			(g_bloom_build		);
