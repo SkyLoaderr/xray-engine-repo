@@ -26,8 +26,6 @@ function fract:__init(smrttrn_id, name, type, squad, groups)
 
 	self.ObjectJob = {}
 
-	self.music = gulag_tasks.get_megafone(type, name) --' матюгальник
-	
 	gulag_tasks.loadJob(self.Job, name, type, squad, self.groups)
 	table.sort(self.Job, function(a,b) return a.prior > b.prior end)
 	self.calculateStates = gulag_tasks.loadStates(name, type)
@@ -97,9 +95,6 @@ function fract:calculate()
 	self:print()
 end
 function fract:changeState(state)
-	if self.music ~= nil then
-		self.music:event(state)
-	end
 	self.state = state
 end
 function fract:updateJob()
