@@ -558,10 +558,12 @@ CGraphMerger::CGraphMerger(LPCSTR name)
 			l_tpLevelPoints.insert(l_tpLevelPoints.end(),(*I).second->m_tpLevelPoints.begin(),(*I).second->m_tpLevelPoints.end());
 	}
 	R_ASSERT2						(l_dwStartPointOffset == F.size() - l_dwOffset,"Graph file format is corrupted");
-	xr_vector<CGameGraph::CLevelPoint>::const_iterator	I = l_tpLevelPoints.begin();
-	xr_vector<CGameGraph::CLevelPoint>::const_iterator	E = l_tpLevelPoints.end();
-	for ( ; I != E; ++I)
-		save_data					(*I,F);
+	{
+		xr_vector<CGameGraph::CLevelPoint>::const_iterator	I = l_tpLevelPoints.begin();
+		xr_vector<CGameGraph::CLevelPoint>::const_iterator	E = l_tpLevelPoints.end();
+		for ( ; I != E; ++I)
+			save_data				(*I,F);
+	}
 	
 	string256						l_caFileName;
 	FS.update_path					(l_caFileName,"$game_data$","game.graph");
