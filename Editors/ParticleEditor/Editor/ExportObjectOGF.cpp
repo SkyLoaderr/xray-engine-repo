@@ -289,7 +289,7 @@ bool CExportObjectOGF::ExportGeometry(CFS_Base& F)
 	// create OGF
 
 	// Saving geometry...
-    Fbox BBox;
+    Fbox BBox;   	BBox.invalidate	();
 
     // Header
     ogf_header 		H;

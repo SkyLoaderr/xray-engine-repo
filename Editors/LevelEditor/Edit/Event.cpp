@@ -243,7 +243,8 @@ void CEvent::RemoveSelectedForm()
 }
 
 //------------------------------------------------------------------------------------------------
-void CEvent::GetRenderBox(Fbox& box){
+void CEvent::GetRenderBox(Fbox& box)
+{
 	// calc for all forms
     box.invalidate();
     Fbox bb;

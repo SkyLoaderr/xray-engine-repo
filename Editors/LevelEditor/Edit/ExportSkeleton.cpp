@@ -354,7 +354,7 @@ bool CExportSkeleton::ExportGeometry(CFS_Base& F)
 	// create OGF
 
 	// Saving geometry...
-    Fbox rootBB;
+    Fbox rootBB;    rootBB.invalidate();
 
     // Header
     ogf_header 		H;

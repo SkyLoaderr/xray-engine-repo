@@ -707,25 +707,25 @@ int EScene::GetQueryObjects(ObjectList& objset, EObjClass classfilter, int iSel,
     return objset.size();
 }
 
-void EScene::ZoomExtents( BOOL bSel ){
+void EScene::ZoomExtents( BOOL bSel )
+{
 	EObjClass cls = Tools.CurrentClassID();
-	Fbox BB;
+	Fbox BB;	BB.invalidate();
 	Fbox bb;
     BB.set(-5,-5,-5,5,5,5);
-    bool bFirstInit = true;
 	if (cls==OBJCLASS_DUMMY){
         for(ObjectPairIt it=FirstClass(); it!=LastClass(); it++){
             ObjectList& lst = (*it).second;
             for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
                 if ((*_F)->Visible()&&((bSel&&(*_F)->Selected())||(!bSel)))
-                    if ((*_F)->GetBox(bb)) if (bFirstInit){ BB.set(bb); bFirstInit=false; }else{ BB.merge(bb);}
+                    if ((*_F)->GetBox(bb)) BB.merge(bb);
         }
     }else{
     	ObjectIt _F = FirstObj(cls);
 	    ObjectIt _E = LastObj(cls);
     	for(;_F!=_E;_F++)
             if ((*_F)->Visible()&&((bSel&&(*_F)->Selected())||(!bSel)))
-				if ((*_F)->GetBox(bb)) if (bFirstInit){ BB.set(bb); bFirstInit=false; }else{ BB.merge(bb);}
+				if ((*_F)->GetBox(bb)) BB.merge(bb);
     }
     Device.m_Camera.ZoomExtents(BB);
 //    else ELog.Msg(mtError,"Can't calculate bounding box. Nothing selected or some object unsupported this function.");
