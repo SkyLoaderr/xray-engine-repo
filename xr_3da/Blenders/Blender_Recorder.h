@@ -41,12 +41,12 @@ public:
 	void				PassBegin			();
 	DWORD				Pass				()  { return SH->Passes.size(); }
 	void				PassSET_ZB			(BOOL bZTest, BOOL bZWrite);
-	void				PassSET_LightFog	(BOOL bLight, BOOL bFog);
 	void				PassSET_Blend		(BOOL bABlend, DWORD abSRC, DWORD abDST, BOOL aTest, DWORD aRef);
 	void				PassSET_Blend_SET	()	{ PassSET_Blend	(FALSE,D3DBLEND_ONE,D3DBLEND_ZERO,FALSE,0);				}
 	void				PassSET_Blend_ADD	()	{ PassSET_Blend	(TRUE, D3DBLEND_ONE,D3DBLEND_ONE, FALSE,0);				}
 	void				PassSET_Blend_MUL	()	{ PassSET_Blend	(TRUE, D3DBLEND_DESTCOLOR,D3DBLEND_ZERO,FALSE,0);		}
 	void				PassSET_Blend_MUL2X	()	{ PassSET_Blend	(TRUE, D3DBLEND_DESTCOLOR,D3DBLEND_SRCCOLOR,FALSE,0);	}
+	void				PassSET_LightFog	(BOOL bLight, BOOL bFog);
 	void				PassEnd				();
 	void				PassTemplate_Detail	(LPCSTR T);
 
