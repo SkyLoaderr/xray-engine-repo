@@ -39,6 +39,10 @@ void	CBlender_BmmD::Load		(IReader& fs, u16 version )
 	xrPREAD_PROP	(fs,xrPID_MATRIX,	oT2_xform);
 }
 
+#if RENDER==R_R1
+//////////////////////////////////////////////////////////////////////////
+// R1
+//////////////////////////////////////////////////////////////////////////
 void	CBlender_BmmD::Compile	(CBlender_Compile& C)
 {
 	IBlender::Compile		(C);
@@ -105,3 +109,31 @@ void	CBlender_BmmD::Compile	(CBlender_Compile& C)
 		}
 	}
 }
+#else
+//////////////////////////////////////////////////////////////////////////
+// R2
+//////////////////////////////////////////////////////////////////////////
+#include "uber_deffer.h"
+void	CBlender_BmmD::Compile	(CBlender_Compile& C)
+{
+	IBlender::Compile		(C);
+	// codepath is the same, only the shaders differ
+	// ***only pixel shaders differ***
+	switch(C.iElement) 
+	{
+	case 0: 	// deffer
+		uber_deffer		(C,"base","impl",false);
+		break;
+	case CRender::PHASE_SMAP_D:	// smap-direct
+	case CRender::PHASE_SMAP_P:	// smap-point
+	case CRender::PHASE_SMAP_S:	// smap-spot							//. !!!! dumb
+		if (RImplementation.o.HW_smap)	C.r_Pass	("shadow_direct_base","dumb",				FALSE,TRUE,TRUE,FALSE);
+		else							C.r_Pass	("shadow_direct_base","shadow_direct_base",	FALSE);
+		C.r_Sampler		("s_base",C.L_textures[0]);
+		C.r_End			();
+		break;
+	case 4: 	// deffer-emap
+		break;
+	}
+}
+#endif

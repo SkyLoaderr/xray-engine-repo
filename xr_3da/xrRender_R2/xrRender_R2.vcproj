@@ -457,6 +457,12 @@
 				RelativePath="blender_bloom_build.h">
 			</File>
 			<File
+				RelativePath=".\Blender_BmmD.cpp">
+			</File>
+			<File
+				RelativePath=".\Blender_BmmD.h">
+			</File>
+			<File
 				RelativePath="blender_combine.cpp">
 			</File>
 			<File
