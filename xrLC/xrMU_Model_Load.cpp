@@ -38,7 +38,9 @@ xrMU_Model::_face* xrMU_Model::load_create_face(Fvector& P1, Fvector& P2, Fvecto
 	_F->VSet			(2,load_create_vertex(P3));
 
 	// tc
-	_F->tc				= B.t;
+	_F->tc[0]			= B.t[0];
+	_F->tc[1]			= B.t[1];
+	_F->tc[2]			= B.t[2];
 	_F->CalcNormal		();
 
 	// register
@@ -50,7 +52,7 @@ xrMU_Model::_vertex* xrMU_Model::load_create_vertex(Fvector& P)
 	// find similar
 	for (u32 it=0; it<m_vertices.size(); it++)
 	{
-		if (m_vertices[it]->P.similar(P,0.001))	return m_vertices[it];
+		if (m_vertices[it]->P.similar(P,.001f))	return m_vertices[it];
 	}
 
 	// create new
