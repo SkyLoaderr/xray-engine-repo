@@ -47,6 +47,7 @@ using namespace InventoryUtilities;
 
 CUIInventoryWnd::CUIInventoryWnd()
 {
+	m_iCurrentActiveSlot = NO_ACTIVE_SLOT;
 	Hide();
 
 	m_pCurrentItem = NULL;
@@ -56,6 +57,8 @@ CUIInventoryWnd::CUIInventoryWnd()
 	Init();
 
 	SetFont(HUD().pFontMedium);
+
+
 }
 
 CUIInventoryWnd::~CUIInventoryWnd()
@@ -769,8 +772,38 @@ void CUIInventoryWnd::EatItem()
 
 void CUIInventoryWnd::Show() 
 { 
+/*	//спрятать вещь из активного слота в инвентарь на время вызова менюшки
+	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+	if(pActor)
+	{
+		m_iCurrentActiveSlot = pActor->m_inventory.GetActiveSlot();
+
+		if(pActor->m_inventory.ActiveItem())
+		{
+			CWeapon* pWeapon = dynamic_cast<CWeapon*>(pActor->m_inventory.ActiveItem());
+			if(pWeapon) pWeapon->ResetPending();
+		}
+		pActor->m_inventory.Activate(NO_ACTIVE_SLOT);
+	}
+
+
+*/
 	InitInventory();
 	inherited::Show();
+}
+
+void CUIInventoryWnd::Hide()
+{
+	//достать вещь в активный слот
+	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+	if(pActor && m_iCurrentActiveSlot != NO_ACTIVE_SLOT)
+	{
+		pActor->m_inventory.Activate(m_iCurrentActiveSlot);
+		m_iCurrentActiveSlot = NO_ACTIVE_SLOT;
+	}
+
+
+	inherited::Hide();
 }
 
 
@@ -790,7 +823,7 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 	CScope* pScope = dynamic_cast<CScope*>(m_pCurrentItem);
 	CSilencer* pSilencer = dynamic_cast<CSilencer*>(m_pCurrentItem);
 	CGrenadeLauncher* pGrenadeLauncher = dynamic_cast<CGrenadeLauncher*>(m_pCurrentItem);
-	
+	/*
 
 	if(m_pCurrentItem->GetSlot()<SLOTS_NUM && m_pInv->CanPutInSlot(m_pCurrentItem))
 	{
@@ -810,7 +843,7 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 	if(pOutfit && m_pInv->CanPutInSlot(m_pCurrentItem))
 	{
 		UIPropertiesBox.AddItem("Dress in outfit",  NULL, TO_SLOT_ACTION);
-	}
+	}*/
 	
 	//отсоединение аддонов от вещи
 	if(pWeapon)
@@ -897,7 +930,7 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 	}
 
 	
-		
+
 	UIPropertiesBox.AutoUpdateHeight();
 	UIPropertiesBox.BringAllToTop();
 	UIPropertiesBox.Show(x-rect.left, y-rect.top);
@@ -1023,6 +1056,21 @@ void CUIInventoryWnd::AttachAddon()
 	R_ASSERT(m_pItemToUpgrade);
 	m_pItemToUpgrade->Attach(m_pCurrentItem);
 
+
+	//спрятать вещь из активного слота в инвентарь на время вызова менюшки
+	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+	if(pActor)
+	{
+		if(m_pItemToUpgrade == pActor->m_inventory.ActiveItem())
+		{
+			m_iCurrentActiveSlot = pActor->m_inventory.GetActiveSlot();
+			pActor->m_inventory.Activate(NO_ACTIVE_SLOT);
+		}
+	}
+
+
+
+
 	(dynamic_cast<CUIDragDropList*>(m_pCurrentDragDropItem->GetParent()))->
 									DetachChild(m_pCurrentDragDropItem);
 	m_pCurrentItem = NULL;
@@ -1033,4 +1081,16 @@ void CUIInventoryWnd::AttachAddon()
 void CUIInventoryWnd::DetachAddon(const char* addon_name)
 {
 	m_pCurrentItem->Detach(addon_name);
+
+
+	//спрятать вещь из активного слота в инвентарь на время вызова менюшки
+	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+	if(pActor)
+	{
+		if(m_pCurrentItem == pActor->m_inventory.ActiveItem())
+		{
+			m_iCurrentActiveSlot = pActor->m_inventory.GetActiveSlot();
+			pActor->m_inventory.Activate(NO_ACTIVE_SLOT);
+		}
+	}
 }

@@ -49,7 +49,8 @@ public:
 	virtual void Update();
 	virtual void Draw();
 
-	void Show();
+	virtual void Show();
+	virtual void Hide();
 
 	//для работы с сочетателем артефактом извне
 	bool IsArtifactMergeShown() {return UIArtifactMergerWnd.IsShown();}
@@ -170,4 +171,7 @@ protected:
 	
 	//вещь к которой мы присоединяем add-on
 	PIItem	m_pItemToUpgrade;
+
+	//слот который был активным перед вызовом менюшки
+	u32	m_iCurrentActiveSlot;
 };

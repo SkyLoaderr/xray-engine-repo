@@ -280,7 +280,7 @@ public:
 	virtual bool Action(s32 cmd, u32 flags);
 	virtual bool Attach(PIItem pIItem);
 	virtual bool Detach(const char* item_section_name);
-	
+
 	virtual bool IsGrenadeLauncherAttached();
 	virtual bool IsScopeAttached();
 	virtual bool IsSilencerAttached();

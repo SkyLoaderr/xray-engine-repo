@@ -964,6 +964,8 @@ bool CWeaponMagazinedWGrenade::Detach(const char* item_section_name)
 	   !strcmp(*m_sGrenadeLauncherName, item_section_name))
 	{
 		m_flagsAddOnState &= ~CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher;
+		m_bGrenadeMode = false;
+
 		UpdateAddonsVisibility();
 		return CInventoryItem::Detach(item_section_name);
 	}
@@ -1004,7 +1006,12 @@ void CWeaponMagazinedWGrenade::SpawFakeGrenade(const char* grenade_section_name)
 void CWeaponMagazinedWGrenade::PlayAnimShow()
 {
 	if(IsGrenadeLauncherAttached())
-		m_pHUD->animPlay(mhud_show_w_gl[Random.randI(mhud_idle.size())],FALSE,this);
+	{
+		if(!m_bGrenadeMode)
+			m_pHUD->animPlay(mhud_show_w_gl[Random.randI(mhud_idle.size())],FALSE,this);
+		else
+			m_pHUD->animPlay(mhud_show_g[Random.randI(mhud_idle.size())],FALSE,this);
+	}	
 	else
 		m_pHUD->animPlay(mhud_show[Random.randI(mhud_show.size())],FALSE,this);
 }
