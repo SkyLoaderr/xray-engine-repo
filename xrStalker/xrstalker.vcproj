@@ -1396,6 +1396,9 @@
 							RelativePath=".\Scripts\xr_combat_ignore.script">
 						</File>
 						<File
+							RelativePath=".\Scripts\xr_combat_zombied.script">
+						</File>
+						<File
 							RelativePath=".\scripts\xr_death.script">
 						</File>
 						<File
