@@ -89,7 +89,7 @@ function game_cl_LastStanding:OnKeyboardPress(key)
 		
 
 		b_need_to_send_ready =	
-		( is_actor and  (ps:testFlag(game_player_flags.flags.GAME_PLAYER_FLAG_VERY_VERY_DEAD)) )		or
+		( is_actor and  (ps_local:testFlag(game_player_flags.flags.GAME_PLAYER_FLAG_VERY_VERY_DEAD)) )		or
 		( self:Phase() == game_phases.game_phases.GAME_PHASE_PENDING		)								or
 		( is_spectator and self:CanBeReady()	)
 		
@@ -100,14 +100,19 @@ function game_cl_LastStanding:OnKeyboardPress(key)
 				self:EventSend	(P)
             return true
 		
-		else
-			return false
+         else
+           return false
       end
 
 	end
 
    if key_bindings.keys.kINVENTORY == key then
       self:StartStopMenu(self.m_inventory_wnd)
+      return true
+   end
+
+   if key_bindings.keys.kSCORES == key then
+      self.m_game_ui:ShowFragList(true)
       return true
    end
 
@@ -122,5 +127,10 @@ function game_cl_LastStanding:OnKeyboardPress(key)
 end
 
 function game_cl_LastStanding:OnKeyboardRelease(key)
-   return false
+   if key_bindings.keys.kSCORES == key then
+      self.m_game_ui:ShowFragList(false)
+      return true
+   end
+
+	return game_cl_mp_script.OnKeyboardRelease(self, key)
 end
