@@ -11,6 +11,9 @@ const float snd_fade		= 0.1f;
 const int	desired_items	= 1000;
 const float	drop_length		= 0.5f;
 const float drop_width		= 0.1f;
+const float drop_angle		= 1.f;
+const float drop_speed_min	= 10.f;
+const float drop_speed_max	= 20.f;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -71,7 +74,15 @@ void	CEffect_Rain::OnEvent	(EVENT E, DWORD P1, DWORD P2)
 
 void	CEffect_Rain::Born		(Item& dest, float radius, float height)
 {
-
+	Fvector		axis;	axis.set			(0,-1,0);
+	Fvector&	view	= Device.vCameraPosition;
+	float		angle	= ::Random.randF	(0,PI_MUL_2);
+	float		x		= radius*cosf		(angle);
+	float		z		= radius*sinf		(angle);
+	dest.P.set			(x+view.x,height+view.y,z+view.z);
+	dest.D.random_dir	(axis,deg2rad(drop_angle));
+	dest.fSpeed			= ::Random.randF	(drop_speed_min,drop_speed_max);
+	dest.fLifetime		= (height*2)/dest.fSpeed;
 }
 
 void	CEffect_Rain::Render	()
@@ -103,7 +114,7 @@ void	CEffect_Rain::Render	()
 	
 	// Born new if needed
 	float	b_radius		= 30.f;	// Need to ask from heightmap
-	float	b_height		= Device.vCameraPosition.y+50.f;
+	float	b_height		= 50.f;
 	if (bBornNewItems && (items.size()<desired_items))	{
 		items.reserve	(desired_items);
 		while (items.size()<desired_items)	{
