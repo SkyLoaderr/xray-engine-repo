@@ -306,51 +306,51 @@ function main ()
 					  
 	--monsters[1]:set_callback (m_attack_wave2.boar_callback)					  
     
-	local stalkers = {
-					 m_attack_wave2.Defender (get_level_object ("stalker_young"), scrname, patrol ("way_young"), monsters, true),
-					 m_attack_wave2.Defender (get_level_object ("stalker_veteran"), scrname, patrol ("way_veteran"), monsters, true),
-					 m_attack_wave2.Defender (get_level_object ("defender1"), scrname, patrol ("way_defender1"), monsters, true),
-					 m_attack_wave2.Defender (get_level_object ("defender2"), scrname, patrol ("way_defender2"),monsters, true),
-					 m_attack_wave2.Defender (get_level_object ("defender3"), scrname, patrol ("way_defender2"), monsters, true),
-					 m_attack_wave2.Defender (get_level_object ("defender4"), scrname, nil, monsters, false),
-					 m_attack_wave2.Defender (get_level_object ("defender5"), scrname, nil, monsters, false),
-					 m_attack_wave2.Defender (get_level_object ("tower1"), scrname, nil, monsters, false),
-					 m_attack_wave2.Defender (get_level_object ("tower2"), scrname, nil, monsters, false),
-					 m_attack_wave2.Defender (get_level_object ("stalker_chief"), scrname, nil, monsters, false)
-					 }
+--	local stalkers = {
+--					 m_attack_wave2.Defender (get_level_object ("stalker_young"), scrname, patrol ("way_young"), monsters, true),
+--					 m_attack_wave2.Defender (get_level_object ("stalker_veteran"), scrname, patrol ("way_veteran"), monsters, true),
+--					 m_attack_wave2.Defender (get_level_object ("defender1"), scrname, patrol ("way_defender1"), monsters, true),
+--					 m_attack_wave2.Defender (get_level_object ("defender2"), scrname, patrol ("way_defender2"),monsters, true),
+--					 m_attack_wave2.Defender (get_level_object ("defender3"), scrname, patrol ("way_defender2"), monsters, true),
+--					 m_attack_wave2.Defender (get_level_object ("defender4"), scrname, nil, monsters, false),
+--					 m_attack_wave2.Defender (get_level_object ("defender5"), scrname, nil, monsters, false),
+--					 m_attack_wave2.Defender (get_level_object ("tower1"), scrname, nil, monsters, false),
+--					 m_attack_wave2.Defender (get_level_object ("tower2"), scrname, nil, monsters, false),
+--					 m_attack_wave2.Defender (get_level_object ("stalker_chief"), scrname, nil, monsters, false)
+--					 }
 					 
-    local enter_zone = get_level_object ("barricade_zone")
-    enter_zone:set_callback (m_attack_wave2.on_zone_enter, true)
+--    local enter_zone = get_level_object ("barricade_zone")
+--    enter_zone:set_callback (m_attack_wave2.on_zone_enter, true)
     
-    monsters[1]:set_target (stalkers[10].npc, vector ():set (1, 1, 0))
-    monsters[2]:set_target (stalkers[7].npc, vector ():set (0, 1, -1))
-    monsters[3]:set_target (stalkers[6].npc, vector ():set (0, 1, -1))
+--    monsters[1]:set_target (stalkers[10].npc, vector ():set (1, 1, 0))
+--    monsters[2]:set_target (stalkers[7].npc, vector ():set (0, 1, -1))
+--    monsters[3]:set_target (stalkers[6].npc, vector ():set (0, 1, -1))
 
 	for a = 1, table.getn (monsters), 1 do
 		monsters[a]:initialize ()
 	end
 	
 
-    wait (60000)
+    wait (20000)
 
-	while entered == false do
-	      for a = 1, table.getn (monsters), 1 do   
-		      monsters[a]:process ()
-		  end
-          wait ()
-	end
+--	while entered == false do
+--	      for a = 1, table.getn (monsters), 1 do   
+--		      monsters[a]:process ()
+--		  end
+--          wait ()
+--	end
 
 
-	for a = 1, table.getn (stalkers), 1 do
-	    stalkers[a]:initialize ()
-    end	    
+--	for a = 1, table.getn (stalkers), 1 do
+--	    stalkers[a]:initialize ()
+--    end	    
 
 	while true do 
    		  for a = 1, table.getn (monsters), 1 do
 			  monsters[a]:process ()
-	          if a <= table.getn (stalkers) then
-		         stalkers[a]:process ()
-  		      end
+--	          if a <= table.getn (stalkers) then
+--		         stalkers[a]:process ()
+--  		      end
 		  end	
 		  wait ()
 	end
