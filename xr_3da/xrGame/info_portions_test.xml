@@ -95,7 +95,7 @@
 		<task>task1</task>
 		<task>task2</task>
 		
-		<dialog>pda_trade</dialog>
+		<dialog>general_pda_trade</dialog>
 		<dialog>escape_trader_talk_flame</dialog>
 		
 		<article>three</article>
