@@ -140,7 +140,15 @@ float CHM_Static::Query	(Fvector2& pos)
 }
 
 //
-float CHeightMap::Query	()
+void	CHM_Dynamic::Update	()
+{
+}
+float	CHM_Dynamic::Query	(Fvector2& pos)
+{
+}
+
+//
+float CHeightMap::Query	(Fvector2& pos)
 {
 	if (dwFrame!=Device.dwFrame)
 	{
@@ -148,4 +156,7 @@ float CHeightMap::Query	()
 		hm_static.Update	();
 		hm_dynamic.Update	();
 	}
+	float q1 = hm_static.Query(pos);
+	float q2 = hm_dynamic.Query(pos);
+	return _MAX(q1,q2)
 }
