@@ -29,25 +29,26 @@ void CBuild::Light()
 		string(" lighting)...")).c_str()
 		);
 
-	// Main process
-	CLMThread*	threads[3] = {0,0,0};
+	// Main process (4 threads)
+	CLMThread*	threads[4] = {0,0,0};
 	DWORD		N=0;
 	for (;;) {
-		for (int L=0; L<3; L++) {
+		for (int L=0; L<4; L++) {
 			if ((0==threads[L]) || threads[L]->thCompleted)
 			{
-				Msg("   surface #%d calculated.",threads[L]->thID);
 				_DELETE	(threads[L]);
 				if (N>=g_deflectors.size())	continue;
-				threads[L] = new CLMThread(N,g_deflectors[N]);	N++;
+				threads[L]			= new CLMThread(N,g_deflectors[N]);	N++;
+				threads[L]->Start	();
 				
 				// Info
 				float	P = float(N)/float(g_deflectors.size());
 				Progress(P);
-				Status("Calculating surface up to #%d...",N);
+				Status	("Calculating surface up to #%d...",N);
 			}
 		}
-		if ((0==threads[0])&&(0==threads[1])&&(0==threads[2]))	break;
+		if ((0==threads[0])&&(0==threads[1])&&(0==threads[2])&&(0==threads[4]))	break;
+		Sleep	(300);
 	}
 
 	Phase("Saving shadowmaps...");
