@@ -303,7 +303,7 @@ void CAI_Space::vfChoosePoint(Fvector &tStartPoint, Fvector &tFinishPoint, PCont
 //	PSegment tSegment;
 //	u32 dwCurNode, dwPrevNode, dwPrevPrevNode;
 //	int i, j, iCurrentPatrolPoint, iCount, iNodeIndex, iSavedIndex = -1, iStartI;
-//	float fSuitAngleCosinus = cosf(fSuitableAngle), fHalfSubNodeSize = (Header().size)*.5f, fSegmentSize, fDistance, fRadius, fAlpha0, fAlpha, fTemp, fRoundedDistance = ::Random.randF(fRoundedDistanceMin,fRoundedDistanceMax), fPreviousRoundedDistance = fRoundedDistance;
+//	float fSuitAngleCosinus = _cos(fSuitableAngle), fHalfSubNodeSize = (Header().size)*.5f, fSegmentSize, fDistance, fRadius, fAlpha0, fAlpha, fTemp, fRoundedDistance = ::Random.randF(fRoundedDistanceMin,fRoundedDistanceMax), fPreviousRoundedDistance = fRoundedDistance;
 //	bool bStop = false, bOk = false;
 //
 //	// init deviation points
@@ -830,7 +830,7 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, u32 dwStar
 	PSegment tSegment;
 	u32 dwCurNode, dwPrevNode, dwPrevPrevNode;
 	int i, j, iCurrentPatrolPoint, iCount, iNodeIndex, iSavedIndex = -1, iStartI;
-	float fSuitAngleCosinus = cosf(fSuitableAngle), fHalfSubNodeSize = (Header().size)*.5f, fSegmentSize, fDistance, fRadius, fAlpha0, fAlpha, fTemp, fRoundedDistance = ::Random.randF(fRoundedDistanceMin,fRoundedDistanceMax), fPreviousRoundedDistance = fRoundedDistance;
+	float fSuitAngleCosinus = _cos(fSuitableAngle), fHalfSubNodeSize = (Header().size)*.5f, fSegmentSize, fDistance, fRadius, fAlpha0, fAlpha, fTemp, fRoundedDistance = ::Random.randF(fRoundedDistanceMin,fRoundedDistanceMax), fPreviousRoundedDistance = fRoundedDistance;
 	bool bStop = false, bOk = false;
 
 	// init deviation points

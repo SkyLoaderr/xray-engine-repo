@@ -776,7 +776,7 @@ void CActor::Update	(u32 DT)
 	//********************** just for vitya's pleasure
 	//CRender_target*		T	= ::Render->getTarget();
 	////T->set_duality_h		(.015f*_sin(1.f*Device.fTimeGlobal));
-	////T->set_duality_v		(.017f*cosf(1.1f*Device.fTimeGlobal));
+	////T->set_duality_v		(.017f*_cos(1.1f*Device.fTimeGlobal));
 	//T->set_duality_h		(.0f);
 	//T->set_duality_v		(.0f);
 	//T->set_noise			(.5f);//(.5f);

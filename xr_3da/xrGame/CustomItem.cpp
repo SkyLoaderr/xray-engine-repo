@@ -71,7 +71,7 @@ void	CCustomItem::OnMove()
 	fTime+=Device.fTimeDelta*2.5f; //*.1f;
 	vPosition.y	= start_pos.y +	_sin(fTime)*.1f;
 	Fvector	D,N;
-	D.set(-_sin(fTime),0.f,-cosf(fTime));
+	D.set(-_sin(fTime),0.f,-_cos(fTime));
 	N.set(0,1,0);
 	mRotate.rotation(D,N);
 

@@ -65,7 +65,7 @@ void CMincer::UpdateCL() {
 		f32 l_h = m_pp_time < g_pp_fade ? m_pp.duality_h * ((f32)m_pp_time / g_pp_fade) : m_pp.duality_h;
 		f32 l_v = m_pp_time < g_pp_fade ? m_pp.duality_v * ((f32)m_pp_time / g_pp_fade) : m_pp.duality_v;
 		T->set_duality_h		(l_h*_sin(1.f*Device.fTimeGlobal));
-		T->set_duality_v		(l_v*cosf(1.1f*Device.fTimeGlobal));
+		T->set_duality_v		(l_v*_cos(1.1f*Device.fTimeGlobal));
 		//T->set_duality_h		(.0f);
 		//T->set_duality_v		(.0f);
 		T->set_blur				(m_pp_time < g_pp_fade ? m_pp.blur * ((f32)m_pp_time / g_pp_fade) : m_pp.noise);
@@ -82,7 +82,7 @@ void CMincer::UpdateCL() {
 		f32 l_h = m_pp_time < g_pp_fade ? m_pp.duality_h * ((f32)m_pp_time / g_pp_fade) : m_pp.duality_h;
 		f32 l_v = m_pp_time < g_pp_fade ? m_pp.duality_v * ((f32)m_pp_time / g_pp_fade) : m_pp.duality_v;
 		T->set_duality_h		(l_h*_sin(1.f*Device.fTimeGlobal));
-		T->set_duality_v		(l_v*cosf(1.1f*Device.fTimeGlobal));
+		T->set_duality_v		(l_v*_cos(1.1f*Device.fTimeGlobal));
 		T->set_blur				(m_pp_time < g_pp_fade ? m_pp.blur * ((f32)m_pp_time / g_pp_fade) : m_pp.blur);
 		T->set_gray				(m_pp_time < g_pp_fade ? m_pp.gray * ((f32)m_pp_time / g_pp_fade) : m_pp.gray);
 		T->set_noise			(m_pp_time < g_pp_fade ? m_pp.noise * ((f32)m_pp_time / g_pp_fade) : m_pp.noise);

@@ -275,11 +275,11 @@ public:
 	// makes unit rotation
 	IC	void	rotationYawPitchRoll(float _x, float _y, float _z) {
 		float fSinYaw   = _sin(_x*.5f);
-		float fCosYaw   = cosf(_x*.5f);
+		float fCosYaw   = _cos(_x*.5f);
 		float fSinPitch = _sin(_y*.5f);
-		float fCosPitch = cosf(_y*.5f);
+		float fCosPitch = _cos(_y*.5f);
 		float fSinRoll  = _sin(_z*.5f);
-		float fCosRoll  = cosf(_z*.5f);
+		float fCosRoll  = _cos(_z*.5f);
 
 		x = fSinRoll * fCosPitch * fCosYaw - fCosRoll * fSinPitch * fSinYaw;
 		y = fCosRoll * fSinPitch * fCosYaw + fSinRoll * fCosPitch * fSinYaw;
@@ -296,7 +296,7 @@ public:
 	{
 		float	sinTheta;
 
-		w		= cosf(angle*0.5f);
+		w		= _cos(angle*0.5f);
 		sinTheta= _sin(angle*0.5f);
 		x = sinTheta * axis.x;
 		y = sinTheta * axis.y;
@@ -404,7 +404,7 @@ public:
 		x = s*Q.x;
 		y = s*Q.y;
 		z = s*Q.z;
-		w = et*cosf(r);
+		w = et*_cos(r);
 	}
 } Fquaternion;
 

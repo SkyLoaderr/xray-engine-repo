@@ -52,7 +52,7 @@ BOOL CEffectorBobbing::Process		(Fvector &p, Fvector &d, Fvector &n, float& fFov
 		float ST	= ((CActor::isAccelerated(dwMState)?SPEED_RUN:SPEED_WALK)*fTime)*k;
 	
 		float _sin	= _abs(_sin(ST)*A)*fReminderFactor;
-		float _cos	= cosf(ST)*A*fReminderFactor;
+		float _cos	= _cos(ST)*A*fReminderFactor;
 
 		p.y			+=	_sin;
 		dangle.x	=	_cos;
