@@ -43,7 +43,7 @@ protected:
 	INetQueue				net_Queue;
 	IClientStatistic		net_Statistic;
 	
-	u32					net_Time_LastUpdate;
+	u32						net_Time_LastUpdate;
 	s32						net_TimeDelta;
 	s32						net_TimeDelta_Calculated;
 	
@@ -72,8 +72,8 @@ public:
 	BOOL					net_HasBandwidth		();
 	
 	// time management
-	IC u32	timeServer			()	{ return Device.dwTimeGlobal + net_TimeDelta; }
-	IC u32	timeServer_Async	()	{ return Device.TimerAsync() + net_TimeDelta; }
-	IC u32	timeServer_Delta	()	{ return net_TimeDelta; }
-	IC void		timeServer_Correct	(u32 sv_time, u32 cl_time);
+	IC u32					timeServer				()	{ return Device.dwTimeGlobal + net_TimeDelta; }
+	IC u32					timeServer_Async		()	{ return Device.TimerAsync() + net_TimeDelta; }
+	IC u32					timeServer_Delta		()	{ return net_TimeDelta; }
+	IC void					timeServer_Correct		(u32 sv_time, u32 cl_time);
 };
