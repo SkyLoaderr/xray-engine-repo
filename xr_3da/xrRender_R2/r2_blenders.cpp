@@ -8,6 +8,7 @@
 #include "blender_screen_set.h"
 #include "blender_tree.h"
 #include "blender_detail_still.h"
+#include "blender_particle.h"
 
 IBlender*	CRender::blender_create	(CLASS_ID cls)
 {	
@@ -34,6 +35,7 @@ IBlender*	CRender::blender_create	(CLASS_ID cls)
 	case B_MODEL_EbB:		return xr_new<CBlender_deffer_model>	();	
 	case B_DETAIL:			return xr_new<CBlender_Detail_Still>	();	
 	case B_TREE:			return xr_new<CBlender_Tree>			();	
+	case B_PARTICLE:		return xr_new<CBlender_Particle>		();
 	}
 	return 0;
 }

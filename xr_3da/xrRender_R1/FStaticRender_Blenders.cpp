@@ -39,6 +39,7 @@ IBlender*	CRender::blender_create	(CLASS_ID cls)
 	case B_MODEL_EbB:		return xr_new<CBlender_Model_EbB>		();	
 	case B_DETAIL:			return xr_new<CBlender_Detail_Still>	();	
 	case B_TREE:			return xr_new<CBlender_Tree>			();	
+	case B_PARTICLE:		return xr_new<CBlender_Particle>		();
 	}
 	return 0;
 }

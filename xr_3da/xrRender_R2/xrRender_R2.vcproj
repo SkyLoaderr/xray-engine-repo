@@ -526,6 +526,12 @@
 				RelativePath=".\blender_luminance.h">
 			</File>
 			<File
+				RelativePath=".\Blender_Particle.cpp">
+			</File>
+			<File
+				RelativePath=".\Blender_Particle.h">
+			</File>
+			<File
 				RelativePath=".\uber_deffer.cpp">
 			</File>
 			<File
