@@ -36,7 +36,8 @@ void CRender::Render		()
 				ViewBase,
 				Device.vCameraPosition,
 				Device.mFullTransform,
-				CPortalTraverser::VQ_HOM + CPortalTraverser::VQ_SSA + CPortalTraverser::VQ_SCISSOR
+				CPortalTraverser::VQ_HOM + CPortalTraverser::VQ_SSA + 
+					(HW.Caps.bScissor?CPortalTraverser::VQ_SCISSOR:0)	// generate scissoring info
 				);
 
 			// Determine visibility for static geometry hierrarhy
