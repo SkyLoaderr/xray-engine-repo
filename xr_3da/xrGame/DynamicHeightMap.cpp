@@ -6,7 +6,7 @@
 #include "DynamicHeightMap.h"
 #include "..\collide\cl_intersect.h"
 
-const int	tasksPerFrame	= 1;
+const int	tasksPerFrame	= 2;
 const float limit_up		= 100.f;
 const float limit_down		= 20.f;
 
@@ -24,6 +24,7 @@ CHM_Static::CHM_Static()
 
 	// Center
 	c_x=c_z=0;
+	task.clear();
 }
 
 void CHM_Static::Update	()
