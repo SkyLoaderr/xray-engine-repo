@@ -64,6 +64,38 @@ public:
 	IC void			w_ivector3(const Ivector3 &v)	{	w(&v,sizeof(Ivector3));	}
 	IC void			w_ivector2(const Ivector2 &v)	{	w(&v,sizeof(Ivector2));	}
 
+    // quant writing functions
+	IC void 		w_float_q16	(float a, float min, float max)
+	{
+		VERIFY		(a>=min && a<=max);
+		float eps	= ((max-min)/65535.f)/2.f;
+		float q		= (a-min)/(max-min);
+		w_u16		( u16(iFloor(q*65535.f+eps)));
+	}
+	IC void 		w_float_q8	(float a, float min, float max)
+	{
+		VERIFY		(a>=min && a<=max);
+		float eps	= ((max-min)/255.f)/2.f;
+		float q		= (a-min)/(max-min);
+		w_u8( u8(iFloor(q*255.f+eps)));
+	}
+	IC void 		w_angle16	(float a)		    {	w_float_q16	(angle_normalize(a),0,PI_MUL_2);}
+	IC void 		w_angle8	(float a)		    {	w_float_q8	(angle_normalize(a),0,PI_MUL_2);}
+	IC void 		w_dir		(const Fvector& D) 	{	w_u16(pvCompress(D));	}
+	IC void 		w_sdir		(const Fvector& D) 
+    {
+		Fvector C;
+		float mag		= D.magnitude();
+		if (mag>EPS_S)	{
+			C.div		(D,mag);
+		} else {
+			C.set		(0,0,1);
+			mag			= 0;
+		}
+		w_dir	(C);
+		w_float (mag);
+	}
+
 	// generalized chunking
 	u32				align		();
 	void			open_chunk	(u32 type);
@@ -169,6 +201,32 @@ public:
 	IC void			r_ivector4	(Ivector2 &v){	r(&v,sizeof(Ivector2));	}
 	IC void			r_fcolor	(Fcolor &v)	{	r(&v,sizeof(Fcolor));	}
 	
+	IC float		r_float_q16	(float min, float max, BOOL h_error=FALSE)
+	{
+		u16	val 	= r_u16();
+		float A		= (float(val)/65535.f)*(max-min) + min;
+		VERIFY		((A >= min - EPS) && (A <= max + EPS));
+		if (h_error)A += ((max-min)/65535.f)/2.f;
+        return A;
+	}
+	IC float		r_float_q8	(float min, float max, BOOL h_error=FALSE)
+	{
+		u8 val		= r_u8();
+		float A		= (float(val)/255.f)*(max-min) + min;
+		VERIFY		((A >= min - EPS) && (A <= max + EPS));
+		if (h_error)A += ((max-min)/255.f)/2.f;
+        return A;
+	}
+	IC float		r_angle16	()			{ return r_float_q16(0,PI_MUL_2);	}
+	IC float		r_angle8	()			{ return r_float_q8	(0,PI_MUL_2);	}
+	IC void			r_dir		(Fvector& A){ u16 t=r_u16(); pvDecompress(A,t); }
+	IC void			r_sdir		(Fvector& A)
+	{
+		u16	t		= r_u16();
+		float s		= r_float();
+		pvDecompress(A,t);
+		A.mul		(s);
+	}
 	// Set file pointer to start of chunk data (0 for root chunk)
 	IC void			rewind		()			{	seek(0); }
 	
