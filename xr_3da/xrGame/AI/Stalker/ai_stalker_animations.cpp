@@ -69,12 +69,31 @@ LPCSTR caGlobalNames		[dwGlobalCount] = {
 
 void CAI_Stalker::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
 {
-	PKinematics(pVisual)->PlayCycle(m_tAnims.A[1]->m_tTorso.A[0]->A[0]->A[0]);
-	PKinematics(pVisual)->PlayCycle(m_tAnims.A[1]->m_tInPlace.A[0]);
-//	CKinematics	*tpVisualObject		=	PKinematics(pVisual);
-//	CMotionDef	*tpLegsAnimation	=	0;
-//	CMotionDef	*tpTorsoAnimation	=	0;
-//	CMotionDef	*tpGlobalAnimation	=	0;
+	CKinematics	&tVisualObject		=	*(PKinematics(pVisual));
+	CMotionDef	*tpGlobalAnimation	=	0;
+	CMotionDef	*tpTorsoAnimation	=	0;
+	CMotionDef	*tpLegsAnimation	=	0;
+
+	if (g_Health() <= 0) {
+		tpGlobalAnimation = m_tAnims.A[1]->m_tGlobal.A[0]->A[0];
+	}
+	else {
+		if (!tpTorsoAnimation)
+			tpTorsoAnimation = m_tAnims.A[1]->m_tTorso.A[0]->A[0]->A[0];
+
+		if (!tpLegsAnimation)
+			tpLegsAnimation = m_tAnims.A[1]->m_tInPlace.A[0];
+	}
+	
+	if ((tpGlobalAnimation) && (m_tpCurrentGlobalAnimation != tpGlobalAnimation)) {
+		tVisualObject.PlayCycle(m_tpCurrentGlobalAnimation = tpGlobalAnimation);
+	}
+	else {
+		if ((tpTorsoAnimation) && (m_tpCurrentTorsoAnimation != tpTorsoAnimation))
+			tVisualObject.PlayCycle(m_tpCurrentTorsoAnimation = tpTorsoAnimation);
+		if ((tpLegsAnimation) && (m_tpCurrentLegsAnimation != tpLegsAnimation))
+			tVisualObject.PlayCycle(m_tpCurrentLegsAnimation = tpLegsAnimation);
+	}
 //
 //	if (fHealth <= 0) {
 //		switch (m_cBodyState) {

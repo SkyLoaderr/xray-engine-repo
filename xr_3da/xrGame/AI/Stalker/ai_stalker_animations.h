@@ -110,6 +110,16 @@ public:
 class CStalkerAnimations {
 public:
 	CAniCollection<CStateAnimations,dwStateCount,caStateNames>				m_tAnims;
+	CMotionDef*		m_tpCurrentGlobalAnimation;
+	CMotionDef*		m_tpCurrentTorsoAnimation;
+	CMotionDef*		m_tpCurrentLegsAnimation;
+	
+					CStalkerAnimations()
+	{
+		m_tpCurrentGlobalAnimation = 
+		m_tpCurrentTorsoAnimation = 
+		m_tpCurrentLegsAnimation = 0;
+	};
 	
 	virtual			~CStalkerAnimations()
 	{

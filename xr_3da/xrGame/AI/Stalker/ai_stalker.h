@@ -61,7 +61,7 @@ public:
 	virtual void			Death					();
 	virtual void			OnDeviceCreate			();
 	virtual void			Load					(LPCSTR	section );				
-	virtual void			HitSignal				(float P,	Fvector& vLocalDir, CObject* who, s16 element){};
+	virtual void			HitSignal				(float P,	Fvector& vLocalDir, CObject* who, s16 element);
 	virtual void			g_WeaponBones			(int& L,	int& R	){};
 	virtual void			Think					(){};
 	virtual void			Die						(){};
