@@ -57,6 +57,7 @@ void CVisual::Load(const char* N, CStream *data, DWORD dwFlags)
 		bv_Position.div	(2);
 		bv_Radius		= bv_Position.magnitude();
 		bv_Position.add	(bbox.min);
+		bv_BBox.grow	(EPS);
 	} else {
 		THROW;
 	}
