@@ -68,19 +68,32 @@ IC BOOL shared(occTri* T1, occTri* T2)
 
 /* Rasterize a scan line between given X point values, corresponding Z values and current color
 */
-void i_scan		(int curY, float startT, float endT, float startX, float endX, float startR, float endR, float startZ, float endZ)
+void i_scan		(int curY, float leftX, float lhx, float rightX, float rhx, float startZ, float endZ)
 {
 	occTri**	pFrame	= Raster.get_frame();
 	float*		pDepth	= Raster.get_depth();
 
+	// calculate span(s)
+	float	start_c	= leftX+lhx;
+	float	end_c	= rightX+rhx;
+	
+	float	startR	= leftX-lhx;
+	float	endR	= rightX-rhx;
+	
+	float	startT	= minp(start_c,startR);
+	float	endT	= maxp(end_c,endR);
+
+	float	startX	= maxp(start_c,startR);
+	float	endX	= minp(end_c,endR);
+	
 	// guard-banding and clipping
-	int minX	= minPixel(startX), maxX = maxPixel(endX);
-	int minT	= maxPixel(startT), maxT = minPixel(endT);
-	Vclamp		(minT,1,occ_dim0-1);
-	Vclamp		(maxT,1,occ_dim0-1);
+	int minX		= minPixel(startX), maxX = maxPixel(endX);
+	int minT		= maxPixel(startT), maxT = minPixel(endT);
+	Vclamp			(minT,1,occ_dim0-1);
+	Vclamp			(maxT,1,occ_dim0-1);
 	if (minT >= maxT)		return;
-	Vclamp		(minX,0,occ_dim0);
-	Vclamp		(maxX,0,occ_dim0);
+	Vclamp			(minX,0,occ_dim0);
+	Vclamp			(maxX,0,occ_dim0);
 	int limLeft,limRight;
 	if (minX >  maxX)	{ limLeft=maxX; limRight=minX;	}
 	else				{ limLeft=minX; limRight=maxX;	}
@@ -279,11 +292,7 @@ IC void i_section	(int Sect, BOOL bMiddle)
 	float rhx = right_dX/2;	rightX	+= rhx;	// half pixel
 	for (; startY<=endY; startY++) 
 	{
-		float	minT	= minp(leftX-lhx,leftX+lhx);
-		float	maxT	= maxp(rightX-rhx,rightX+rhx);
-		float	minX	= maxp(leftX-lhx,leftX+lhx);
-		float	maxX	= minp(rightX-rhx,rightX+rhx);
-		i_scan	(startY, minT,maxT,minX,maxX, leftX-lhx, rightX-rhx, leftZ, rightZ);
+		i_scan	(startY, leftX, lhx, rightX, rhx, leftZ, rightZ);
 		leftX	+= left_dX; rightX += right_dX;
 		leftZ	+= left_dZ; rightZ += right_dZ;
 	}
