@@ -296,8 +296,7 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="rad_tes">
-        <precondition>dialogs.dialog_allowed</precondition>
+    <dialog id="rad_test">
         <phrase_list>
             <phrase id="1">
                 <text></text>
@@ -306,29 +305,29 @@
                 <next>300</next>
             </phrase>
             <phrase id="100">
-                <text>rad_tes_100</text>
+                <text>rad_test_100</text>
                 <next>1111</next>
             </phrase>
             <phrase id="1111">
-                <text>rad_tes_1111</text>
+                <text>rad_test_1111</text>
             </phrase>
             <phrase id="200">
-                <text>rad_tes_200</text>
+                <text>rad_test_200</text>
                 <next>2222</next>
             </phrase>
             <phrase id="2222">
-                <text>rad_tes_2222</text>
+                <text>rad_test_2222</text>
+            </phrase>
+            <phrase id="300">
+                <text>rad_test_300</text>
+                <next>3333</next>
             </phrase>
             <phrase id="0">
                 <text></text>
                 <next>1</next>
             </phrase>
-            <phrase id="300">
-                <text>rad_tes_300</text>
-                <next>3333</next>
-            </phrase>
             <phrase id="3333">
-                <text>rad_tes_3333</text>
+                <text>rad_test_3333</text>
             </phrase>
         </phrase_list>
     </dialog>
