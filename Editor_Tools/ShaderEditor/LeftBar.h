@@ -127,6 +127,7 @@ private:	// User declarations
     TElTree*		CurrentView		(){ if (pcShaders->ActivePage==tsEngine) 		return tvEngine;
 									    else if (pcShaders->ActivePage==tsCompiler)	return tvCompiler;
                                         THROW;
+                                        return 0;
     								  }
     TElTreeItem*	DragItem;
 public:		// User declarations

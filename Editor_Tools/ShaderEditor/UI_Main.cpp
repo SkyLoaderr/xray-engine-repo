@@ -245,6 +245,6 @@ void TUI::OnMouseMove(int x, int y){
 }
 
 bool TUI::IsModified(){
-	SHTools.IsModified();
+	return SHTools.IsModified();
 }
 

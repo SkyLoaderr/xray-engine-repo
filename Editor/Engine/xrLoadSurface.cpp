@@ -7,6 +7,12 @@
 static	vector<string>	exts;
 string	formats;
 
+bool IsFormatRegister(LPCSTR ext){
+	for (DWORD i=0; i<exts.size(); i++)
+    	if (exts[i]==ext) return true;
+    return false;
+}
+
 void	Format_Register	(string& F)
 {
 	if (0==F.length()) return;

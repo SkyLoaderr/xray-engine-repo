@@ -378,6 +378,7 @@ CBlender* CSHEngineTools::CloneBlender(LPCSTR name){
 }
 
 void CSHEngineTools::RenameBlender(LPCSTR old_full_name, LPCSTR new_full_name){
+    ApplyChanges();
     LPSTR N = LPSTR(old_full_name);
 	BlenderPairIt I = m_Blenders.find	(N);
     R_ASSERT(I!=m_Blenders.end());
