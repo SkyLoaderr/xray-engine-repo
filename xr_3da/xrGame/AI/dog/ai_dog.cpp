@@ -134,7 +134,7 @@ void CAI_Dog::StateSelector()
 
 	if (C)						SetState(statePanic);
 	else if (D || E || F)		SetState(stateAttack);
-	else if (A && !K)			SetState(stateExploreDNE);		//SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
+	else if (A && !K)			SetState(stateExploreNDE);		//SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
 	else if (B && !K)			SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
 	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < 0.85f) || flagEatNow))	
 		SetState(stateEat);
@@ -143,15 +143,6 @@ void CAI_Dog::StateSelector()
 	EMotionAnim anim = MotionMan.Seq_CurAnim();
 	if ((anim == eAnimCheckCorpse) && K) MotionMan.Seq_Finish();
 	
-//	if (m_tEnemy.obj) {
-//		float h,p;
-//		Fvector().sub(m_tEnemy.obj->Position(), Position()).getHP(h,p);
-//		
-//		if ((anim == eAnimThreaten)	&& ( ((flagsEnemy & FLAG_ENEMY_GO_FARTHER_FAST) == FLAG_ENEMY_GO_FARTHER_FAST) || (angle_difference(h, m_body.current.yaw) > PI_DIV_4))) 
-//			MotionMan.Seq_Finish();
-//	}
-
-
 	BonesInMotion(); 
 
 	// Temp
@@ -203,7 +194,7 @@ void CAI_Dog::CheckSpecParams(u32 spec_params)
 
 void CAI_Dog::OnSoundPlay()
 {
-	if (!Bones.IsActive()) Bones.SetMotion(GetBoneInstance("bip01_head"),AXIS_Y, PI_DIV_6, PI_MUL_2, 1);
+	//if (!Bones.IsActive()) Bones.SetMotion(GetBoneInstance("bip01_head"),AXIS_Y, PI_DIV_6, PI_MUL_2, 1);
 }
 
 void CAI_Dog::LookPosition(Fvector /**pos/**/, float angular_speed)

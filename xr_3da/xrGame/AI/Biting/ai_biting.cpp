@@ -95,6 +95,8 @@ void CAI_Biting::Die()
 	SetSoundOnce(SND_TYPE_DIE, m_dwCurrentTime);
 
 	MotionMan.ForceAnimSelect();
+	
+	Level().SquadMan.RemoveMember((u8)g_Squad(), this);
 }
 
 void CAI_Biting::Load(LPCSTR section)

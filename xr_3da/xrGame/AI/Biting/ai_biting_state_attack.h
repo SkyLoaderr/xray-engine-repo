@@ -36,6 +36,10 @@ class CBitingAttack : public IState {
 	u32				frame_flags;
 	u32				flags;
 
+	bool			b_silent_run;					// не издавать звука во время бега
+
+	bool			b_in_threaten;
+
 	CJumping		*pJumping;
 
 public:	
@@ -45,7 +49,11 @@ public:
 	virtual void	Run					();
 	virtual void	Done				();
 
+			bool	CheckStartThreaten	();
+			bool	CheckEndThreaten	();
 			bool	CheckThreaten		();
+
+			bool	CheckSteal			();
 			Fvector RandomPos			(Fvector pos, float R);
 
 			bool	CanAttackFromBack	();

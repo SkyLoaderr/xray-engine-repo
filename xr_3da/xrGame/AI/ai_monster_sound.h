@@ -10,6 +10,7 @@ enum ESoundType {								// sound types
 	SND_TYPE_ATTACK_HIT,
 	SND_TYPE_TAKE_DAMAGE,
 	SND_TYPE_DIE,
+	SND_TYPE_THREATEN,
 };	
 
 enum ESoundPriority {
@@ -30,6 +31,7 @@ class CMonsterSound  {
 	SOUND_VECTOR 	sndTakeDamage;
 	SOUND_VECTOR	sndDie;
 	SOUND_VECTOR	sndBkground;
+	SOUND_VECTOR	sndThreaten;
 
 	ref_sound		*current;						// pointer to current sound
 	ref_sound		*bkgnd;

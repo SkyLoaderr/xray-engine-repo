@@ -89,7 +89,7 @@ void bonesManipulation::SetMotion(CBoneInstance *bone, u8 axis, float target_yaw
 
 	m_Bones[index].params.target_yaw	= target_yaw;
 	m_Bones[index].params.r_speed		= r_speed;
-	m_Bones[index].params.dist_yaw		= _abs(target_yaw - m_Bones[index].params.cur_yaw);
+	m_Bones[index].params.dist_yaw		= angle_difference(target_yaw,m_Bones[index].params.cur_yaw);
 	if (t > freeze_time) freeze_time = t;
 
 	bActive				= true;

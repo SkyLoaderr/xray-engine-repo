@@ -92,7 +92,7 @@ void CMonsterSquad::RegisterMember(CEntity *pE)
 void CMonsterSquad::RemoveMember(CEntity *pE)
 {
 	SQUAD_MAP_IT it = squad.find(pE);
-	R_ASSERT(it != squad.end());
+	if (it == squad.end()) return;
 	
 	squad.erase(it);
 
@@ -379,6 +379,10 @@ void CMonsterSquad::UpdateDecentralized()
 {
 	vect_copy.reserve(states.size());
 	for (ENTITY_STATE_MAP_IT i = states.begin(); i != states.end(); i++) {
+		
+		// не учитывать мертвых врагов
+		if (!i->first->g_Alive()) continue;
+
 		SMemberEnemy me;
 		me.member	= i->first;
 		me.enemy	= i->second.pEnemy;

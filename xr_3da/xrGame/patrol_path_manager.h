@@ -57,6 +57,9 @@ public:
 	IC	virtual	void	reinit						();
 	IC	virtual	void	set_callback				(const CScriptMonster::SMemberCallback &callback);
 	IC			void	make_inactual				();
+	
+	// for test only
+	const CLevel::SPath* get_path					() {return m_path;}
 };
 
 #include "patrol_path_manager_inline.h"

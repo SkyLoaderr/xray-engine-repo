@@ -66,7 +66,8 @@ void CBitingAttack::Init()
 
 	
 	m_dwFaceEnemyLastTime		= 0; 
-	bCanThreaten				= true;
+
+	b_in_threaten				= false;
 	ThreatenTimeStarted			= 0;
 	ThreatenMinDelay			= 0;
 	LastTimeRebuild				= 0;
@@ -82,7 +83,7 @@ void CBitingAttack::Init()
 #define BUILD_FULL_PATH_MAX_DIST			10.0f		// макс дистанция до врага, при которой будет строится полный путь
 #define BUILD_HALF_PATH_DIST				5.f			// дистанция не полного пути
 
-#define THREATEN_DISTANCE					3.f
+#define THREATEN_DISTANCE					2.5f
 
 void CBitingAttack::Run()
 {
@@ -108,27 +109,16 @@ void CBitingAttack::Run()
 	
 	// определить переменные машины состояний
 	bool b_attack_melee		= false;
-	bool b_can_steal		= false;
-	bool b_can_threaten		= false;
 	
 	if ((m_tPrevAction == ACTION_ATTACK_MELEE) && (dist < m_fDistMax)) m_tAction = ACTION_ATTACK_MELEE;
 	else m_tAction = ((dist > m_fDistMin) ? ACTION_RUN : ACTION_ATTACK_MELEE);
 
-	if (m_tAction == ACTION_ATTACK_MELEE) 
-		b_attack_melee = true; 
-	
-	// проверить на возможность подкрадывания
-	if (not_(AF_ATTACK_RAT) &&  is_(AF_THIS_IS_THE_ONLY_ENEMY) && is_(AF_ENEMY_DOESNT_SEE_ME) && not_(AF_ENEMY_GO_FARTHER_FAST) && (dist > (m_fDistMax + 2.f) && (dist < 10.f))) 
-		b_can_steal = true;
-	
-	// проверить на возможность пугания
-	if (CheckThreaten()) 
-		b_can_threaten = true;
+	if (m_tAction == ACTION_ATTACK_MELEE) b_attack_melee = true; 
 	
 	
-	if (b_can_threaten) m_tAction	= ACTION_THREATEN;
-	else if (b_can_steal) m_tAction = ACTION_STEAL;
-	
+	// проверить на возможность пугания и подкрадывания
+	if (CheckThreaten()) m_tAction	= ACTION_THREATEN;
+	else if (CheckSteal()) m_tAction = ACTION_STEAL;
 	
 	
 	// если враг не виден на протяжении 1 сек - бежать к нему
@@ -138,7 +128,7 @@ void CBitingAttack::Run()
 	if (is_(AF_ENEMY_IS_NOT_REACHABLE) && !b_attack_melee) m_tAction = ACTION_ENEMY_POSITION_APPROACH;
 	
 	// проверить на возможность прыжка
-	//if (is_(AF_HAS_JUMP_ABILITY)) pJumping->Check(pMonster->Position(),m_tEnemy.obj->Position(),m_tEnemy.obj);
+	if (is_(AF_HAS_JUMP_ABILITY)) pJumping->Check(pMonster->Position(),m_tEnemy.obj->Position(),m_tEnemy.obj);
 	
 	// восстановить некоторые переменные
 	if (!b_attack_melee) bEnableBackAttack = true;
@@ -192,6 +182,8 @@ void CBitingAttack::Run()
 
 				}
 			}
+			
+			if (!b_silent_run) pMonster->SetSound(SND_TYPE_ATTACK, pMonster->_sd->m_dwAttackSndDelay, SND_PRIORITY_NORMAL);
 
 			break;
 
@@ -228,8 +220,9 @@ void CBitingAttack::Run()
 
 			if (is_(AF_ATTACK_RAT)) pMonster->MotionMan.SetSpecParams(ASP_ATTACK_RAT);
 
-			break;
+			pMonster->SetSound(SND_TYPE_ATTACK, pMonster->_sd->m_dwAttackSndDelay, SND_PRIORITY_NORMAL);
 
+			break;
 
 		// ****************
 		case ACTION_STEAL:
@@ -258,10 +251,9 @@ void CBitingAttack::Run()
 
 			pMonster->MotionMan.SetSpecParams(ASP_THREATEN);
 
-			if (ThreatenMinDelay == 0) ThreatenMinDelay = Random.randI(10000,20000);
-
+			pMonster->SetSound(SND_TYPE_THREATEN, 10);
+			
 			break;
-
 
 		// **********************************
 		case ACTION_ENEMY_POSITION_APPROACH:
@@ -278,14 +270,13 @@ void CBitingAttack::Run()
 				pMonster->SetPathParams(pMonster->level_vertex_id(), pMonster->Position()); 
 				pMonster->set_use_dest_orientation	(false);
 			}
+			
+			pMonster->SetSound(SND_TYPE_ATTACK, pMonster->_sd->m_dwAttackSndDelay, SND_PRIORITY_NORMAL);
 
 			break;
 	}
 
 
-	pMonster->SetSound(SND_TYPE_ATTACK, pMonster->_sd->m_dwAttackSndDelay);
-
-	
 	// Проверить возможность невидимости
 	if (is_(AF_HAS_INVISIBILITY_ABILITY) && (ACTION_THREATEN != m_tAction)) {
 		CAI_Bloodsucker *pBS =	dynamic_cast<CAI_Bloodsucker *>(pMonster);
@@ -306,11 +297,7 @@ void CBitingAttack::Run()
 
 	init_flags		^= AF_NEW_ENEMY;
 	m_tPrevAction	= m_tAction; 
-	if (((m_tAction == ACTION_RUN) || (m_tAction == ACTION_STEAL)) && (ThreatenTimeStarted + ThreatenMinDelay < m_dwCurrentTime)) {
-		bCanThreaten		= true;
-		ThreatenMinDelay	= 0;
-		ThreatenTimeStarted	= 0;
-	}
+	
 }
 
 
@@ -329,28 +316,106 @@ void CBitingAttack::Done()
 // на протяжении N мин не был атакован этим монстром
 // враг стоит не бежит, видит
 // если состояния ATTACK_MELEE ещё не было
-bool CBitingAttack::CheckThreaten()
+bool CBitingAttack::CheckStartThreaten()
 {
+	if (b_in_threaten) return false;
+
+	// проверка флагов
 	if (not_(AF_LOW_MORALE) || is_(AF_ENEMY_DOESNT_SEE_ME) || is_(AF_ENEMY_GO_FARTHER_FAST) || is_(AF_REMEMBER_HIT_FROM_THIS_ENEMY)) {
 		return false;
 	}
 
+	// проверка дистанции
 	if ((dist < m_fDistMin) || (dist > THREATEN_DISTANCE)) {
 		return false;
 	}
 
-	if (!bCanThreaten) {
+	// проверка угла
+	float h,p;
+	Fvector().sub(m_tEnemy.obj->Position(),pMonster->Position()).getHP(h,p);
+	if (angle_difference(angle_normalize(-pMonster->m_body.current.yaw),h) > PI / 15) {
 		return false;
 	}
 
-	if (ThreatenTimeStarted == 0) ThreatenTimeStarted = m_dwCurrentTime;
-	if (ThreatenTimeStarted + THREATEN_TIME < m_dwCurrentTime) return false;
-	
-	Fvector dir; float h,p;
-	dir.sub(m_tEnemy.obj->Position(),pMonster->Position()).getHP(h,p);
-	if (angle_difference(pMonster->m_body.current.yaw,h) > PI_DIV_4) return false;
+	// проверка задержки после последнего пугания
+	if (ThreatenTimeStarted + ThreatenMinDelay > m_dwCurrentTime) {
+		return false;
+	}
 
 	return true;
+}
+
+bool CBitingAttack::CheckEndThreaten()
+{
+	if (!b_in_threaten) return false;
+	if (ThreatenTimeStarted + THREATEN_TIME < m_dwCurrentTime) return true;
+
+	float h,p;
+	Fvector().sub(m_tEnemy.obj->Position(),pMonster->Position()).getHP(h,p);
+	if (angle_difference(angle_normalize(-pMonster->m_body.current.yaw),h) > PI_DIV_6) return true;
+	
+	// проверка флагов
+	if (not_(AF_LOW_MORALE) || is_(AF_ENEMY_DOESNT_SEE_ME) || is_(AF_ENEMY_GO_FARTHER_FAST) || is_(AF_REMEMBER_HIT_FROM_THIS_ENEMY)) {
+		return true;
+	}
+
+	// проверка дистанции
+	if ((dist < m_fDistMin) || (dist > THREATEN_DISTANCE)) {
+		return true;
+	}
+
+	return false;
+}
+
+bool CBitingAttack::CheckThreaten()
+{
+	if (b_in_threaten) {
+		if (CheckEndThreaten()) {
+			b_in_threaten			= false;
+			ThreatenTimeStarted		= 0;
+			ThreatenMinDelay		= 0;
+		}
+	} else {
+		if (CheckStartThreaten()) {
+			b_in_threaten			= true;
+			ThreatenTimeStarted		= m_dwCurrentTime;
+			ThreatenMinDelay		= Random.randI(5000,10000);
+		}
+	}
+	return b_in_threaten;
+}
+
+
+
+#define STEAL_MAX_ANGLE		PI_DIV_3
+
+bool CBitingAttack::CheckSteal()
+{
+	if (not_(AF_ATTACK_RAT) &&  is_(AF_THIS_IS_THE_ONLY_ENEMY) &&  is_(AF_ENEMY_DOESNT_SEE_ME) && not_(AF_ENEMY_GO_FARTHER_FAST)) {
+		b_silent_run = true;
+		
+		// Вычислить отклонение по пути
+		float path_angle = 0.f;
+		if (pMonster->IsMovingOnPath() && (pMonster->CDetailPathManager::curr_travel_point_index() < pMonster->CDetailPathManager::path().size()-3)) {
+			const xr_vector<CDetailPathManager::STravelPathPoint> &path = pMonster->CDetailPathManager::path();
+
+			float prev_yaw, prev_h;
+			pMonster->CDetailPathManager::direction().getHP(prev_yaw,prev_h);
+			for (u32 i=pMonster->CDetailPathManager::curr_travel_point_index()+1; i<path.size()-1;i++) {
+				float h,p;
+				Fvector().sub(path[i+1].position, path[i].position).getHP(h,p);
+
+				path_angle += angle_difference(prev_yaw,h);
+				prev_yaw = h;
+
+				if (path_angle > STEAL_MAX_ANGLE) break;
+			}
+		}
+
+		if ((path_angle < STEAL_MAX_ANGLE) && 	(dist > (m_fDistMax + 2.f) && (dist < 10.f))) return true;
+	} else b_silent_run = false;
+	
+	return false;
 }
 
 Fvector CBitingAttack::RandomPos(Fvector pos, float R)

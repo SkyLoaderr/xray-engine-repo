@@ -199,6 +199,25 @@ bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
 
 	m_body = m_body;
 
+	CDetailPathManager::set_use_dest_orientation(false);
+	// Show patrol path
+	
+	HDebug->L_Clear();
+	const CLevel::SPath *m_path = CPatrolPathManager::get_path();
+	if (m_path) {
+		for (u32 i=0; i<m_path->tpaWayPoints.size();i++){
+			Fvector P;
+			P = m_path->tpaWayPoints[i].tWayPoint;
+			HDebug->L_AddPoint(P,0.50f,D3DCOLOR_XRGB(0,255,0));
+			Fvector p2;
+			p2 = P;
+			p2.y += 5.f;
+			HDebug->L_AddLine(P,p2,D3DCOLOR_XRGB(0,255,0));
+		}
+	}
+
+	HDebug->SetActive(true);
+
 	return			(true);		
 }
 

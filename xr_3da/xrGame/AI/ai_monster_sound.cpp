@@ -24,6 +24,8 @@ void CMonsterSound::LoadSounds(LPCTSTR section)
 	g_vfLoadSounds(sndTakeDamage,	pSettings->r_string(section,"sound_take_damage"),	16,		SOUND_TYPE_MONSTER_INJURING);
 	g_vfLoadSounds(sndDie,			pSettings->r_string(section,"sound_die"),			16,		SOUND_TYPE_MONSTER_DYING);
 	g_vfLoadSounds(sndBkground,		pSettings->r_string(section,"sound_bkgnd"),			16,		SOUND_TYPE_MONSTER_STEP);
+	g_vfLoadSounds(sndThreaten,		pSettings->r_string(section,"sound_threaten"),		16,		SOUND_TYPE_MONSTER_ATTACKING);
+
 }
 
 void CMonsterSound::ControlSound(TTime time)
@@ -69,6 +71,7 @@ void CMonsterSound::PlaySound(ESoundType sound_type)
 		case SND_TYPE_ATTACK_HIT:	sv = &sndAttackHit;		break;
 		case SND_TYPE_TAKE_DAMAGE:	sv = &sndTakeDamage;	break;
 		case SND_TYPE_DIE:			sv = &sndDie;			break;
+		case SND_TYPE_THREATEN:		sv = &sndThreaten;		break;
 	}
 
 	current = &sv->at(::Random.randI((int)sv->size()));

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ai/script/ai_script_monster.h"
+#include "ai/ai_monster_bones.h"
 
 class CLAItem;
 
@@ -14,6 +15,14 @@ class CSearchlight: public CScriptMonster {
 	IRender_Glow*	glow_render;
 	Fvector			m_focus;
 
+	bonesManipulation		Bones;
+	CBoneInstance			*bone;
+
+	struct SRot {
+		float yaw;
+		float pitch;
+	} _start, _cur, _target;
+
 public:
 					CSearchlight	();
 	virtual			~CSearchlight	();
@@ -25,6 +34,17 @@ public:
 	virtual void	renderable_Render( );
 
 	virtual BOOL	UsedAI_Locations();
+
+	virtual	bool	bfAssignWatch(CEntityAction	*tpEntityAction);
+
+
+private:
+	static void __stdcall  BoneCallback(CBoneInstance *B);
+	void			UpdateBones		();
+	void			SetTarget		(const Fvector &target_pos);
+	
+	float			bone_vel_x;
+	float			bone_vel_y;
 };
 
 
