@@ -145,7 +145,7 @@ function action_follow:execute ()
        --end   
     end
     
-    printf ("!_!FOLLOWER %s, LEADER SECTION %s", self.object:name (), self.st.leader_section)
+    printf ("!_!FOLLOWER %s, LEADER SECTION %s, LEADER NEW SECTION", self.object:name (), self.st.leader_section, db.storage[self.st.leader_id].active_section)
        
     if db.storage[self.st.leader_id].active_section ~= self.st.leader_section then
        self.st.signals["leader_section_changed"] = true 
