@@ -857,7 +857,7 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 			//modification: the calculated forces are added back to the facc and tacc
 			//vectors instead of applying them to the bodies and moving them.
 			if (info[j].m > 0)	{
-				dInternalStepFast (world, bodyPair, GIPair, GinvIPair, joint, info[j], Jinfo[j], stepsize /*???*/, cforces, ccounter);
+				dInternalStepFast (world, bodyPair, GIPair, GinvIPair, joint, info[j], Jinfo[j],  stepsize /* stepsize ???*/, cforces, ccounter);
 			}
 		}
 
@@ -872,7 +872,7 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 		for (b = 0; b < nb; b++) {
 			body = bodies[b];
 			if (0==ccounter[b])		continue;
-			dReal	invcounter		= dReal(1) / dReal(ccounter[b]);
+			dReal	invcounter		= 1; //dReal(1) / dReal(ccounter[b]);
 			for (j = 0; j < 4; j++)	{
 				body->facc[j] += scale*cforces[j + b*8]		* invcounter;
 				body->tacc[j] += scale*cforces[j + b*8 + 4]	* invcounter;
@@ -1043,7 +1043,7 @@ quickstart:
 		if(jcount>3)
 			dInternalStepIslandFast (world, body, bcount, joint, jcount, stepsize, maxiterations);
 		else
-			dInternalStepIsland (world,body,bcount,joint,jcount,stepsize);
+			dInternalStepIsland		(world ,body, bcount, joint, jcount, stepsize);
 		// what we've just done may have altered the body/joint tag values.
 		// we must make sure that these tags are nonzero.
 		// also make sure all bodies are in the enabled state.
