@@ -244,7 +244,7 @@ LONG UnhandledFilter	( struct _EXCEPTION_POINTERS *pExceptionInfo )
 				ExInfo.ClientPointers		= NULL;
 
 				// write the dump
-				MINIDUMP_TYPE	dump_flags	= MINIDUMP_TYPE(MiniDumpNormal | MiniDumpWithDataSegs | MiniDumpWithFullMemory | MiniDumpFilterMemory | MiniDumpScanMemory );
+				MINIDUMP_TYPE	dump_flags	= MINIDUMP_TYPE(MiniDumpNormal | MiniDumpFilterMemory | MiniDumpScanMemory );
 
 				BOOL bOK = pDump( GetCurrentProcess(), GetCurrentProcessId(), hFile, dump_flags, &ExInfo, NULL, NULL );
 				if (bOK)
