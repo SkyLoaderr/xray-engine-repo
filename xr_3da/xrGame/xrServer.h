@@ -78,8 +78,9 @@ public:
 	void					Spawn_Read		(NET_Packet& P)
 	{
 		u8					dummy8;
+		u16					dummy16;
 		// generic
-		P.r_begin			(M_SPAWN		);
+		P.r_begin			(dummy16		);
 		P.r_string			(s_name			);
 		P.r_string			(s_name_replace	);
 		P.r_u8				(s_team			);
@@ -150,15 +151,9 @@ public:
 	}
 	IC xrServerEntity*		ID_to_entity		(u16 ID)
 	{
-		xrS_entities::iterator	I=entities.begin(),E=entities.end();
-		for (; I!=E; I++)
-		{
-			xrServerEntity*	Test = *I;
-			if (Test->ID==ID)	{
-				return Test;
-			}
-		}
-		return 0;
+		xrS_entities::iterator	I	= entities.find	(ID);
+		if (I!=entities.end())		return I->second;
+		else						return 0;
 	}
 
 	// main
