@@ -155,7 +155,7 @@ class CAI_Soldier : public CCustomMonster
 
 		// miscellanious funtions	
 		void vfCreateStraightForwardPath(Fvector &tStartPoint, Fvector tFinishPoint, DWORD dwStartNode, DWORD dwFinishNode, vector<CTravelNode> &tpaPath);
-		void vfCreateRealisticPath(vector<Fvector> &tpaPoints, vector<DWORD> &dwaNodes, vector<CTravelNode> &tpaPath, float fRoundedDistance = 2.f, float fSegmentSize = Level().AI.GetHeader().size);
+		void vfCreateRealisticPath(vector<Fvector> &tpaPoints, vector<DWORD> &dwaNodes, vector<CTravelNode> &tpaPath, float fRoundedDistance = 2.f, float fSegmentSize = Level().AI.GetHeader().size*.5f);
 		void vfComputeCircle(Fvector tPosition, Fvector tPoint0, Fvector tPoint1, float &fRadius, Fvector &tCircleCentre, Fvector &tFinalPosition);
 	IC	bool bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);
 		bool bfCheckPath(AI::Path &Path);

@@ -132,7 +132,7 @@ void CAI_Soldier::Load(CInifile* ini, const char* section)
 		for ( i=0; i<path_count; i++)
 			vfCreateStraightForwardPath(tpaPatrolPoints[i], tpaPatrolPoints[(i < path_count - 1) ? (i + 1) : 0], tpaPatrolNodes[i], tpaPatrolNodes[(i < path_count - 1) ? (i + 1) : 0], tpaPatrolPathes[i]);
 		/**/
-		vfCreateRealisticPath(tpaPatrolPoints, dwaPatrolNodes, tpaPatrolPath,5,.3);
+		vfCreateRealisticPath(tpaPatrolPoints, dwaPatrolNodes, tpaPatrolPath);
 	}
 }
 
