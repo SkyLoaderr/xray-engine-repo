@@ -853,7 +853,7 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 	CreateRT						(m_pd3dDevice,w,h,D3DFMT_A16B16G16R16F,	&d_Normal,&d_Normal_S);
 	CreateRT						(m_pd3dDevice,w,h,D3DFMT_A16B16G16R16,	&d_Color,&d_Color_S);
 	CreateRT						(m_pd3dDevice,w,h,D3DFMT_A8R8G8B8,		&d_Accumulator,&d_Accumulator_S);
-	CreateRT						(m_pd3dDevice,SHADOW_MAP_SIZE,SHADOW_MAP_SIZE,D3DFMT_R32F,&sm_ShadowMap,&sm_ShadowMap_S);
+	CreateRT						(m_pd3dDevice,SHADOW_MAP_SIZE,SHADOW_MAP_SIZE,D3DFMT_R16F,&sm_ShadowMap,&sm_ShadowMap_S);
 	CreateRT						(m_pd3dDevice,w/2,h/2,D3DFMT_X8R8G8B8,	&d_Bloom_1,&d_Bloom_1_S);
 	CreateRT						(m_pd3dDevice,w/2,h/2,D3DFMT_X8R8G8B8,	&d_Bloom_2,&d_Bloom_2_S);
 
