@@ -563,7 +563,7 @@ bool bfIsAnyAlive(objVisible &VisibleEnemies)
 
 u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability0, float fMinProbability1, float fMinProbability2, float fMinProbability3, u32 dwTeam, u32 dwSquad, u32 dwGroup, u32 a0, u32 a1, u32 a2, u32 a3, u32 a4, CEntity *tpEntity, float fGroupDistance)
 {
-	return(a0);
+//	return(a0);
 	CGroup		&Group = Level().Teams[dwTeam].Squads[dwSquad].Groups[dwGroup];
 	
 	if (Level().timeServer() - Group.m_dwLastActionTime < dwActionRefreshRate) {
