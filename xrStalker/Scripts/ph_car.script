@@ -99,6 +99,8 @@ function action_car:reset_scheme()
 	end
 
 	self:go_to_waypoint(self.target_pt)
+
+	self.object:set_fastcall(self.fastcall, self)
 end
 
 function action_car:get_nearest_waypoint()
@@ -226,19 +228,32 @@ function action_car:go_to_waypoint()
 	end
 end
 
+function action_car:fastcall()
+	if db.storage[self.object:id()].active_scheme ~= "ph_car" then
+		-- Если активная схема - не машина, снять быстрый апдейт
+		return true
+	end
+	self:fast_update()
+	return false
+end
+
 function action_car:update(delta)
+	if xr_logic.try_switch_to_another_section(self.object, self.st, db.actor) then
+		return
+	end
+end
+
+function action_car:fast_update()
 	printf("_bp: action_car:update(): state=%d", self.state)
 
-	if not xr_logic.is_active(self.object, self.st) then
+	-- Может вызваться с запозданием, поэтому здесь нужна проверка на активность
+	--if not xr_logic.is_active(self.object, self.st) then
+	--	return
+	--end
+	if db.storage[self.object:id()].active_scheme ~= "ph_car" then
 		return
 	end
 
-	local actor = db.actor
-
-	if xr_logic.try_switch_to_another_section(self.object, self.st, actor) then
-		return
-	end
-	
 	--if not self.object:action() then
 	--	printf("_bp: CAR EXPLODE")
 	--	self.object:explode(0)
