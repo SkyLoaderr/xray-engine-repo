@@ -99,11 +99,12 @@ public:
 	SPathMap					m_PatrolPaths;
 
 	// Starting/Loading
-	void						vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath);
-	virtual BOOL				net_Server				( LPCSTR name_of_level	);
+	virtual BOOL				net_Server				( LPCSTR name, BOOL SLS_Load);
 	virtual BOOL				net_Client				( LPCSTR name_of_server );
+	virtual void				net_Save				( LPCSTR name );
 	virtual void				net_Disconnect			( );
 
+	void						vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath);
 	virtual BOOL				Load_GameSpecific_Before( );
 	virtual BOOL				Load_GameSpecific_After ( );
 
@@ -164,7 +165,6 @@ public:
 	CHUDManager*				HUD						()	{ return (CHUDManager*)pHUD; }
 
 	// Save/Load/State
-	void						SLS_Save				(LPCSTR name);		// Game Save
 	void						SLS_Load				(LPCSTR name);		// Game Load
 	void						SLS_Default				();					// Default/Editor Load
 

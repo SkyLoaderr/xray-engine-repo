@@ -59,8 +59,9 @@ public:
 								CCreator				( );
 	virtual						~CCreator				( );
 
-	virtual BOOL				net_Server				( LPCSTR name_of_level	);
+	virtual BOOL				net_Server				( LPCSTR name_of_level, BOOL SLS_Load	);
 	virtual BOOL				net_Client				( LPCSTR name_of_server );
+	virtual void				net_Save				( LPCSTR name );
 	virtual void				net_Disconnect			( );
 
 	virtual BOOL				Load					( DWORD dwNum );
