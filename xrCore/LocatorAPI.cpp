@@ -25,7 +25,7 @@ FS_Path::FS_Path	(LPCSTR _Root, LPCSTR _Add, LPCSTR _DefExt, LPCSTR _FilterCapti
 	string256		temp;
     strcpy			(temp,_Root);
     if (_Add) 		strcat(temp,_Add);
-	if (temp[xr_strlen(temp)-1]!='\\') strcat(temp,"\\");
+	if (temp[0] && temp[xr_strlen(temp)-1]!='\\') strcat(temp,"\\");
 	m_Path			= xr_strdup(temp);
 	m_DefExt		= _DefExt?xr_strdup(_DefExt):0;
 	m_FilterCaption	= _FilterCaption?xr_strdup(_FilterCaption):0;
