@@ -11,20 +11,16 @@ type
     TMxHotKey = class(TCustomEdit)
     private
     	FHotKey:	TShortCut;
-//	    FOnChange: 	TNotifyEvent;
     protected
     	procedure 	KeyDown		(var Key: Word; Shift: TShiftState); override;
     	procedure 	KeyUp		(var Key: Word; Shift: TShiftState); override;
 	    procedure 	KeyPress	(var Key: Char); override;
 	    procedure 	SetHotKey	(Value: TShortCut);
-    procedure SetSelLength(Value: Integer); override;
-    procedure SetSelStart(Value: Integer); override;
     public
 	    constructor Create(AOwner: TComponent); override;
 	    destructor 	Destroy; override;
     published
         property 	HotKey: 	TShortCut read FHotKey write SetHotKey;
-//		property 	OnChange: 	TNotifyEvent read FOnChange write FOnChange;
         property Anchors;
         property AutoSelect;
         property AutoSize;
@@ -73,12 +69,15 @@ type
         property OnStartDrag;
     end;
 
+function MxShortCutToText	(ShortCut: TShortCut): string;
+function MxMakeShortCut		(Key: Word; Shift: TShiftState): TShortCut;
+
 implementation
 
 uses
 	menus;
 
-function ShortCut(Key: Word; Shift: TShiftState): TShortCut;
+function MxMakeShortCut(Key: Word; Shift: TShiftState): TShortCut;
 begin
     Result := 0;
     if WordRec(Key).Hi <> 0 then Exit;
@@ -99,7 +98,7 @@ var
     SmkcPgDn, SmkcEnd, SmkcHome, SmkcLeft, SmkcUp, SmkcRight,
     SmkcDown, SmkcIns, SmkcDel, SmkcShift, SmkcCtrl, SmkcAlt);
 
-function GetSpecialName(ShortCut: TShortCut): string;
+function MxGetSpecialName(ShortCut: TShortCut): string;
 var
   ScanCode: Integer;
   KeyName: array[0..255] of Char;
@@ -109,11 +108,11 @@ begin
   if ScanCode <> 0 then
   begin
     GetKeyNameText(ScanCode, KeyName, SizeOf(KeyName));
-    GetSpecialName := KeyName;
+    MxGetSpecialName := KeyName;
   end;
 end;
 
-function ShortCutToText(ShortCut: TShortCut): string;
+function MxShortCutToText(ShortCut: TShortCut): string;
 var
   Name: string;
 begin
@@ -127,7 +126,7 @@ begin
     $41..$5A: 	Name:= Chr(WordRec(ShortCut).Lo - $41 + Ord('A'));
     $60..$69: 	Name:= Chr(WordRec(ShortCut).Lo - $60 + Ord('0'));
     $70..$87: 	Name:= 'F' + IntToStr(WordRec(ShortCut).Lo - $6F);
-    else    	Name:= GetSpecialName(ShortCut);
+    else    	Name:= MxGetSpecialName(ShortCut);
     end;
     if ((0=ShortCut) and (Name='')) then Name := 'None';
     
@@ -144,7 +143,7 @@ begin
     ReadOnly		:= true;
     TabStop			:= false;
     FHotKey		 	:= 0;
-    Text			:= ShortCutToText	(FHotKey);
+    Text			:= MxShortCutToText	(FHotKey);
     PopupMenu		:= TPopupMenu.Create(self);
 	ControlStyle 	:= ControlStyle - [csSetCaption,csDoubleClicks,csClickEvents];
     HideSelection	:= false;
@@ -160,18 +159,16 @@ begin
 	if (FHotKey<>Value) then
     begin
     	FHotKey 	:= Value;
-        Text 		:= ShortCutToText(FHotKey);
+        Text 		:= MxShortCutToText(FHotKey);
     end;
 end;
 
-    procedure TMxHotKey.SetSelLength(Value: Integer);begin end;
-    procedure TMxHotKey.SetSelStart(Value: Integer); begin end;
 procedure TMxHotKey.KeyDown	(var Key: Word; Shift: TShiftState);
 var 
 	HK: 	TShortCut;
 begin
 	inherited;
-    HK				:= ShortCut(Key,Shift);
+    HK				:= MxMakeShortCut(Key,Shift);
     SetHotKey		(HK);
 end; 
 
