@@ -153,6 +153,17 @@ public:
 	IC void		r_s16			(s16& A)		{ r(&A,2);						} // word (2b)
 	IC void		r_u8			(u8&  A)		{ r(&A,1);						} // byte (1b)
 	IC void		r_s8			(s8&  A)		{ r(&A,1);						} // byte (1b)
+	// IReader compatibility
+	IC float	r_float			()		{ float A; r(&A,4);						} // float
+	IC u64 		r_u64			()		{ u64 	A; r(&A,8);						} // qword (8b)
+	IC s64 		r_s64			()		{ s64 	A; r(&A,8);						} // qword (8b)
+	IC u32 		r_u32			()		{ u32 	A; r(&A,4);						} // dword (4b)
+	IC s32		r_s32			()		{ s32	A; r(&A,4);						} // dword (4b)
+	IC u32		r_u24			()		{ u32	A=0; r(&A,3);					} // dword (3b)
+	IC u16		r_u16			()		{ u16	A; r(&A,2);						} // word (2b)
+	IC s16		r_s16			()		{ s16	A; r(&A,2);						} // word (2b)
+	IC u8		r_u8			()		{ u8	A; r(&A,1);						} // byte (1b)
+	IC s8		r_s8			()		{ s8	A; r(&A,1);						} // byte (1b)
 
 	IC void		r_float_q16		(float& A, float min, float max, BOOL h_error=FALSE)
 	{
