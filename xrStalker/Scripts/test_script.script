@@ -14,10 +14,13 @@ function main()
 	
 	local dt2 = game.CTime()
 	dt2:setHMS(2,3,4)
-	dump_time(dt2)
-	dump_time(dt)
-	local s  = dt2:diffSec(dt)
+	
+	local dt3 = game.CTime()
+	dt2:setHMS(2,5,4)
+
+	local s  = dt2:diffSec(dt3)
 	printf("difference = %f",s)
+	
 	
 	if dt>dt2 then
 		printf("dt>dt2")
