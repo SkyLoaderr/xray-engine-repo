@@ -408,7 +408,7 @@ end
 function cfg_get_overrides(ini, section, npc)
 	local l = {}
 
-	l.meet_enabled = utils.cfg_get_string(ini, section, "meet_enabled", npc, false, "")
+	l.meet_enabled = utils.cfg_get_bool(ini, section, "meet_enabled", npc, false)
 
 	return l
 end
