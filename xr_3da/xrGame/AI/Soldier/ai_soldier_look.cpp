@@ -464,11 +464,11 @@ void CAI_Soldier::vfAimAtEnemy()
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	// for making soldiers not so precise :-)))
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	SRotation sRot;
-	mk_rotation(pos1,sRot);
-	sRot.pitch += ::Random.randF(-PI/10,+PI/10);
-	sRot.yaw += ::Random.randF(-PI/10,+PI/10);
-	pos1.setHP(sRot.yaw,sRot.pitch);
+//	SRotation sRot;
+//	mk_rotation(pos1,sRot);
+//	sRot.pitch += ::Random.randF(-PI/10,+PI/10);
+//	sRot.yaw += ::Random.randF(-PI/10,+PI/10);
+//	pos1.setHP(sRot.yaw,sRot.pitch);
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	
 	svCenter(pos2);
