@@ -17,8 +17,8 @@ public:
 	IC	void	setpos	(float x1, float y1, float x2, float y2){ lb.p.x=x1;	lb.p.y=y2;	lt.p.x=x1;	lt.p.y=y1;	rb.p.x=x2;	rb.p.y=y2;	rt.p.x=x2;	rt.p.y=y1;}
 	IC	void	setdepth(float z = 0.f, float rhw = 1.f)		{ lb.p.z=z;		rb.p.z= z;	lt.p.z = z;	rt.p.z = z;	lb.p.w = rhw; rb.p.w = rhw; lt.p.w = rhw; rt.p.w = rhw;};
 	IC	void	setcolor(DWORD c)								{ lb.color=c; rb.color=c; lt.color=c; rt.color=c; };
-	IC	void	settex	(Frect &r)								{ lb.tu = r.x1; lb.tv = r.y2; lt.tu = r.x1; lt.tv = r.y1; rb.tu = r.x2; rb.tv = r.y2;	rt.tu = r.x2; rt.tv = r.y1; }
-	IC	void	settex	(float x1, float y1, float x2, float y2){ lb.tu=x1;		lb.tv=y2;	lt.tu=x1;	lt.tv=y1;	rb.tu=x2;	rb.tv=y2;	rt.tu=x2;	rt.tv=y1;}
+	IC	void	settex	(Frect &r)								{ lb.uv.x = r.x1; 	lb.uv.y = r.y2; lt.uv.x = r.x1; lt.uv.y = r.y1; rb.uv.x = r.x2; rb.uv.y = r.y2;	rt.uv.x = r.x2; rt.uv.y = r.y1; }
+	IC	void	settex	(float x1, float y1, float x2, float y2){ lb.uv.x=x1;		lb.uv.y=y2;		lt.uv.x=x1;		lt.uv.y=y1;		rb.uv.x=x2;		rb.uv.y=y2;		rt.uv.x=x2;		rt.uv.y=y1;}
 
 	IC	void	to_real	(int w, int h)
 	{
