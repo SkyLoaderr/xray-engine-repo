@@ -39,8 +39,10 @@ public:
 				size_t W = fwrite(ptr,mb_sz,1,hf);
 				R_ASSERT2(W==1,"Can't write mem block to file.");
 			}
-			size_t W = fwrite(ptr,req_size,1,hf); 
-			R_ASSERT2(W==1,"Can't write mem block to file.");
+			if (req_size)	{
+				size_t W = fwrite(ptr,req_size,1,hf); 
+				R_ASSERT2(W==1,"Can't write mem block to file.");
+			}
 		}
     };
 	virtual void	seek		(u32 pos)	{	fseek(hf,pos,SEEK_SET);		};
