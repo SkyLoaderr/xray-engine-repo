@@ -80,3 +80,11 @@ LPCSTR	CPatrolPathParams::name	(u32 index) const
 	VERIFY				(m_path->vertex(index));
 	return				(*m_path->vertex(index)->data().name());
 }
+
+bool CPatrolPathParams::terminal (u32 index) const
+{
+	VERIFY				(m_path->vertex(index));
+
+	return (m_path->vertex(index)->edges().size() == 0);
+}
+
