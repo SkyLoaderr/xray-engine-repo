@@ -142,7 +142,6 @@ end
 
 
 -- Расшифровка документов
-
 function have_documents_to_decoding(first_speaker, second_speaker)
 	local darklab_documents = second_speaker:object("bar_darklab_documents")
 	second_speaker:transfer_item(darklab_documents, first_speaker)
