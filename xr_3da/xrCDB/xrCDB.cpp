@@ -70,11 +70,13 @@ MODEL::~MODEL()
 
 struct	BTHREAD_params
 {
-	MODEL*		M;
-	Fvector*	V;
-	int			Vcnt;
-	TRI*		T;
-	int			Tcnt;
+	MODEL*				M;
+	Fvector*			V;
+	int					Vcnt;
+	TRI*				T;
+	int					Tcnt;
+	build_callback*		BC;
+	void*				BCP;
 };
 
 void	MODEL::build_thread		(void *params)
@@ -82,26 +84,26 @@ void	MODEL::build_thread		(void *params)
 	FPU::m64r					();
 	BTHREAD_params	P			= *( (BTHREAD_params*)params );
 	P.M->cs.Enter				();
-	P.M->build_internal			(P.V,P.Vcnt,P.T,P.Tcnt);
+	P.M->build_internal			(P.V,P.Vcnt,P.T,P.Tcnt,P.BC,P.BCP);
 	P.M->status					= S_READY;
 	P.M->cs.Leave				();
 }
 
-void	MODEL::build			(Fvector* V, int Vcnt, TRI* T, int Tcnt)
+void	MODEL::build			(Fvector* V, int Vcnt, TRI* T, int Tcnt, build_callback* bc=NULL, void* bcp=NULL)
 {
 	R_ASSERT					(S_INIT == status);
     R_ASSERT					((Vcnt>=4)&&(Tcnt>=2));
 
 #ifdef _EDITOR    
-	build_internal				(V,Vcnt,T,Tcnt);
+	build_internal				(V,Vcnt,T,Tcnt,bc,bcp);
 #else
-	BTHREAD_params				P = { this, V, Vcnt, T, Tcnt };
+	BTHREAD_params				P = { this, V, Vcnt, T, Tcnt, bc, bcp };
 	R_ASSERT					(_beginthread(build_thread,0,&P) >= 0);
 	while						(S_INIT	== status)	Sleep	(5);
 #endif
 }
 
-void	MODEL::build_internal	(Fvector* V, int Vcnt, TRI* T, int Tcnt)
+void	MODEL::build_internal	(Fvector* V, int Vcnt, TRI* T, int Tcnt, build_callback* bc, void* bcp)
 {
 	// verts
 	verts_count	= Vcnt;
@@ -112,6 +114,9 @@ void	MODEL::build_internal	(Fvector* V, int Vcnt, TRI* T, int Tcnt)
 	tris_count	= Tcnt;
 	tris		= xr_alloc<TRI>		(tris_count);
 	CopyMemory	(tris,T,tris_count*sizeof(TRI));
+
+	// callback
+	if (bc)		bc	(verts,Vcnt,tris,Tcnt,bcp);
 
 	// Release data pointers
 	status		= S_BUILD;

@@ -24,6 +24,8 @@ namespace Opcode {
 #pragma pack(push,4)
 namespace CDB
 {
+	typedef		void __stdcall	build_callback	(Fvector* V, int Vcnt, TRI* T, int Tcnt, void* params);
+
 	// Triangle
 	class XRCDB_API TRI
 	{
@@ -81,8 +83,8 @@ namespace CDB
 		}
 
 		static	void	__cdecl	build_thread	(void*);
-		void					build_internal	(Fvector* V, int Vcnt, TRI* T, int Tcnt);
-		void					build			(Fvector* V, int Vcnt, TRI* T, int Tcnt);
+		void					build_internal	(Fvector* V, int Vcnt, TRI* T, int Tcnt, build_callback* bc=NULL, void* bcp=NULL);
+		void					build			(Fvector* V, int Vcnt, TRI* T, int Tcnt, build_callback* bc=NULL, void* bcp=NULL);
 		u32						memory			();
 	};
 
@@ -183,7 +185,7 @@ namespace CDB
 	public:
 		CollectorPacked	(const Fbox &bb, int apx_vertices=5000, int apx_faces=5000);
 
-		void			add_face(
+		void				add_face(
 			Fvector& v0, Fvector& v1, Fvector& v2,	// vertices
 			u32 e01, u32 e12, u32 e20,				// edges
 			WORD material, WORD sector, u32 dummy	// misc
