@@ -1311,8 +1311,8 @@ const char * CUIBuyWeaponWnd::GetWeaponNameByIndex(u32 grpNum, u8 idx)
 
 void CUIBuyWeaponWnd::GetWeaponIndexByName(const std::string sectionName, u8 &grpNum, u8 &idx)
 {
-	grpNum	= static_cast<u32>(-1);
-	idx		= static_cast<u32>(-1);
+	grpNum	= (u8)(-1);
+	idx		= (u8)(-1);
 
 	for (u8 i = 0; i < wpnSectStorage.size(); ++i)
 	{
