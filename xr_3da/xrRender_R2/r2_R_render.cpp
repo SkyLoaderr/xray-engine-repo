@@ -147,8 +147,8 @@ void CRender::Render		()
 	if (ps_r2_ls_flags.test(R2FLAG_ZFILL))		{
 		RCache.set_ColorWriteEnable					(FALSE);
 		Device.Statistic.RenderCALC.Begin			();
-		float		z_distance	= 0.1f;
-		Fmatrix		m_zfill, m_project;
+		float		z_distance	= ps_r2_zfill		;
+		Fmatrix		m_zfill, m_project				;
 		m_project.build_projection	(
 			deg2rad(Device.fFOV*Device.fASPECT), 
 			Device.fASPECT, VIEWPORT_NEAR, 
