@@ -878,7 +878,7 @@ private:
 int	value;
 public:
 		CCC_PHIterations(LPCSTR N) :
-		CCC_Integer(N,&value,0,500)
+		CCC_Integer(N,&value,5,50)
 		{};
 	  virtual void	Execute	(LPCSTR args)
 	  {
