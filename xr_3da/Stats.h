@@ -6,8 +6,6 @@
 #define AFX_STATS_H__4C8D1860_0EE2_11D4_B4E3_4854E82A090D__INCLUDED_
 #pragma once
 
-#include "stats_timer.h"
-
 class ENGINE_API CGameFont;
 
 class ENGINE_API CStats
