@@ -16,6 +16,7 @@
 #include "MgcCont3DMinBox.h"         
 
 #include "ui_main.h"
+#include "ui_toolscustom.h"
 #include "SkeletonAnimated.h"
 #include "nvMeshMender.h"
 
@@ -149,6 +150,16 @@ void CExportSkeleton::SSplit::Save(IWriter& F)
             F.w			(&pV.B,sizeof(Fvector));		// B        
             F.w			(&pV.UV,sizeof(Fvector2));		// tu,tv
             F.w_u32		(pV.B0);
+/*
+            Fvector p0, p1;
+            p0			= pV.O;
+            p1.mad		(pV.O,pV.N,0.1f);
+            Tools->m_Errors.AppendLine(p0,p1,0xFFFF0000,false);
+            p1.mad		(pV.O,pV.T,0.1f);
+            Tools->m_Errors.AppendLine(p0,p1,0xFF00FF00,false);
+            p1.mad		(pV.O,pV.B,0.1f);
+            Tools->m_Errors.AppendLine(p0,p1,0xFF0000FF,false);
+*/
         }
     }
     F.close_chunk		();

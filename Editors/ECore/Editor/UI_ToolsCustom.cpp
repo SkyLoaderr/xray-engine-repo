@@ -14,6 +14,7 @@
 #include "library.h"
 #include "fmesh.h"
 #include "folderlib.h"
+#include "d3dutils.h"
 
 //------------------------------------------------------------------------------
 CToolsCustom* Tools=0;
@@ -195,3 +196,39 @@ void CToolsCustom::Clear()
 {
 	ClearErrors			();
 }
+
+void CToolsCustom::Render()
+{
+	// render errors
+    Device.SetShader		(Device.m_SelectionShader);
+    RCache.set_xform_world	(Fidentity);
+    Device.RenderNearer		(0.0003f);
+    Device.SetRS			(D3DRS_CULLMODE,D3DCULL_NONE);
+    AnsiString temp;
+    int cnt=0;
+    for (ERR::PointIt vit=m_Errors.m_Points.begin(); vit!=m_Errors.m_Points.end(); vit++){
+        temp.sprintf		("P: %d",cnt++);
+        DU.dbgDrawVert(vit->p[0],						vit->c,	vit->i?temp.c_str():"");
+    }
+    cnt=0;
+    for (ERR::LineIt eit=m_Errors.m_Lines.begin(); eit!=m_Errors.m_Lines.end(); eit++){
+        temp.sprintf		("L: %d",cnt++);
+        DU.dbgDrawEdge(eit->p[0],eit->p[1],				eit->c,	eit->i?temp.c_str():"");
+    }
+    cnt=0;
+    for (ERR::FaceIt fit=m_Errors.m_Faces.begin(); fit!=m_Errors.m_Faces.end(); fit++){
+        temp.sprintf		("F: %d",cnt++);
+        DU.dbgDrawFace(fit->p[0],fit->p[1],fit->p[2],	fit->c,	fit->i?temp.c_str():"");
+    }
+    cnt=0;
+    for (ERR::OBBVecIt oit=m_Errors.m_OBB.begin(); oit!=m_Errors.m_OBB.end(); oit++)
+    {
+        temp.sprintf		("OBB: %d",cnt++);
+        DU.DrawOBB			(Fidentity,*oit,0x2F00FF00,0xFF00FF00);
+        DU.DrawTextA		(oit->m_translate,temp.c_str(),0xffff0000,0x0000000);
+    }
+    Device.SetRS			(D3DRS_CULLMODE,D3DCULL_CCW);
+    Device.ResetNearer		();
+}
+//------------------------------------------------------------------------------
+

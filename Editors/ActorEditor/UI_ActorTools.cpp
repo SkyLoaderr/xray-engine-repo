@@ -269,6 +269,7 @@ void CActorTools::Render()
     		m_pEditObject->RenderSkeletonSingle(m_AVTransform);
         }
     }
+    inherited::Render		();
 }
 //---------------------------------------------------------------------------
 
@@ -359,6 +360,7 @@ void CActorTools::OnDeviceDestroy(){
 
 void CActorTools::Clear()
 {
+	inherited::Clear	();
     m_CurrentMotion		= "";
     // delete visuals
     xr_delete(m_pEditObject);

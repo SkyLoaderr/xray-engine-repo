@@ -80,45 +80,57 @@ public:
     struct ERR{
 	    struct Face{
     		Fvector		p[3];
+            u32			c;
+            bool		i;
 	    };
-	    struct Edge{
+	    struct Line{
     		Fvector		p[2];
+            u32			c;
+            bool		i;
 	    };
-	    struct Vert{
+	    struct Point{
     		Fvector		p[1];
+            u32			c;
+            bool		i;
 	    };
 	    DEFINE_VECTOR(Face,FaceVec,FaceIt);
-	    DEFINE_VECTOR(Edge,EdgeVec,EdgeIt);
-	    DEFINE_VECTOR(Vert,VertVec,VertIt);
+	    DEFINE_VECTOR(Line,LineVec,LineIt);
+	    DEFINE_VECTOR(Point,PointVec,PointIt);
 		DEFINE_VECTOR(Fobb,OBBVec,OBBVecIt);
-    	FaceVec			m_InvalidFaces;
-	    EdgeVec			m_MultiEdges;
-	    VertVec			m_TJVerts;
+    	FaceVec			m_Faces;
+	    LineVec			m_Lines;
+	    PointVec		m_Points;
 		OBBVec 			m_OBB;
         void			Clear()
         {
-        	m_InvalidFaces.clear();
-	    	m_MultiEdges.clear	();
-	    	m_TJVerts.clear		();
-            m_OBB.clear			();
+        	m_Faces.clear	();
+	    	m_Lines.clear	();
+	    	m_Points.clear	();
+            m_OBB.clear		();
         }
-        void AppendPoint(const Fvector& p0)
+        void AppendPoint(const Fvector& p0, u32 c=0xff0000ff, bool i=true)
         {
-        	m_TJVerts.push_back(Vert());
-            m_TJVerts.back().p[0].set(p0);
+        	m_Points.push_back(Point());
+            m_Points.back().p[0].set(p0);
+            m_Points.back().c	= c;
+            m_Points.back().i	= i;
         }
-        void AppendEdge	(const Fvector& p0, const Fvector& p1)
+        void AppendLine	(const Fvector& p0, const Fvector& p1, u32 c=0xff00ff00, bool i=true)
         {
-        	m_MultiEdges.push_back(Edge());
-        	m_MultiEdges.back().p[0].set(p0);
-        	m_MultiEdges.back().p[1].set(p1);
+        	m_Lines.push_back(Line());
+        	m_Lines.back().p[0].set(p0);
+        	m_Lines.back().p[1].set(p1);
+            m_Lines.back().c	= c;
+            m_Lines.back().i	= i;
         }
-        void AppendFace	(const Fvector& p0, const Fvector& p1, const Fvector& p2)
+        void AppendFace	(const Fvector& p0, const Fvector& p1, const Fvector& p2, u32 c=0xffff0000, bool i=true)
         {
-        	m_InvalidFaces.push_back(Face());
-        	m_InvalidFaces.back().p[0].set(p0);
-        	m_InvalidFaces.back().p[1].set(p1);
-        	m_InvalidFaces.back().p[2].set(p2);
+        	m_Faces.push_back(Face());
+        	m_Faces.back().p[0].set(p0);
+        	m_Faces.back().p[1].set(p1);
+        	m_Faces.back().p[2].set(p2);
+            m_Faces.back().c	= c;
+            m_Faces.back().i	= i;
         }
         void AppendOBB	(const Fobb& obb)
         {
