@@ -135,6 +135,7 @@ public:
 public:
 	virtual	CCharacterPhysicsSupport*	character_physics_support	()						{return m_pPhysics_support;}
 	virtual CPHDestroyable*				ph_destroyable				()						;
+	virtual CAttachmentOwner*			cast_attachment_owner		()						{return this;}
 	virtual CInventoryOwner*			cast_inventory_owner		()						{return this;}
 	virtual CEntityAlive*				cast_entity_alive			()						{return this;}
 	virtual CEntity*					cast_entity					()						{return this;}

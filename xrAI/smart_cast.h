@@ -199,6 +199,10 @@
 #		undef cast_type_list
 #		define cast_type_list save_cast_list	(CHolderCustom,	CGameObject)
 
+		DECLARE_SPECIALIZATION	(CAttachmentOwner,	CGameObject,	cast_attachment_owner);
+#		undef cast_type_list
+#		define cast_type_list save_cast_list	(CAttachmentOwner,	CGameObject)
+
 #	endif
 	
 	DECLARE_SPECIALIZATION	(CSE_Abstract,		CSE_ALifeInventoryItem,	cast_abstract);
