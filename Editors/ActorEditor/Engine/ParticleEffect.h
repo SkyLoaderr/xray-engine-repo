@@ -122,6 +122,8 @@ protected:
 	int					m_HandleActionList;
 
 	s32					m_MemDT;
+	
+	Fvector				m_InitialPosition;
 public:
     enum{
     	flPlaying		= (1<<0),
@@ -147,7 +149,6 @@ public:
     void 				OnDeviceCreate		();
     void 				OnDeviceDestroy		();
 
-    void				SetTransform		(const Fmatrix& m);
     void				UpdateParent		(const Fmatrix& m, const Fvector& velocity);
 
     BOOL				Compile				(CPEDef* def);

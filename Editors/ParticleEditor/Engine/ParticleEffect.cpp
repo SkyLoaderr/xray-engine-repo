@@ -179,18 +179,19 @@ void CPEDef::Save(IWriter& F)
 //------------------------------------------------------------------------------
 CParticleEffect::CParticleEffect():IRender_Visual()
 {
-	m_HandleEffect 		= pGenParticleEffects(1, 1);
-    m_HandleActionList	= pGenActionLists();
-    m_Flags.zero		();
-    m_Def				= 0;
-    m_ElapsedLimit		= 0;
-	m_MemDT				= 0;
+	m_HandleEffect 			= pGenParticleEffects(1, 1);
+    m_HandleActionList		= pGenActionLists();
+    m_Flags.zero			();
+    m_Def					= 0;
+    m_ElapsedLimit			= 0;
+	m_MemDT					= 0;
+	m_InitialPosition.set	(0,0,0);
 }
 CParticleEffect::~CParticleEffect()
 {
-	OnDeviceDestroy		();
-	pDeleteParticleEffects(m_HandleEffect);
-	pDeleteActionLists	(m_HandleActionList);
+	OnDeviceDestroy			();
+	pDeleteParticleEffects	(m_HandleEffect);
+	pDeleteActionLists		(m_HandleActionList);
 }
 
 void CParticleEffect::OnDeviceCreate()
@@ -230,13 +231,18 @@ void CParticleEffect::ResetParticles()
 }
 void CParticleEffect::UpdateParent(const Fmatrix& m, const Fvector& velocity)
 {
-	pSetActionListParenting(m_HandleActionList,m,velocity);
+	m_InitialPosition		= m.c;
+	pSetActionListParenting	(m_HandleActionList,m,velocity);
 }
 
 static const u32	uDT_STEP = 33;
 static const float	fDT_STEP = float(uDT_STEP)/1000.f;
 void CParticleEffect::OnFrame(u32 frame_dt)
 {
+	vis.box.set			(m_InitialPosition,m_InitialPosition);
+	vis.box.grow		(EPS_L);
+	vis.box.getsphere	(vis.sphere.P,vis.sphere.R);
+
 	if (m_Def&&m_Flags.is(flPlaying)){
 		m_MemDT			+= frame_dt;
 		for (;m_MemDT>=uDT_STEP; m_MemDT-=uDT_STEP){
@@ -257,18 +263,22 @@ void CParticleEffect::OnFrame(u32 frame_dt)
 			// our actions
 			if (m_Def->m_Flags.is(CPEDef::dfFramed))    		  		m_Def->pFrameInitExecute(pg);
 			if (m_Def->m_Flags.is(CPEDef::dfFramed|CPEDef::dfAnimated))	m_Def->pAnimateExecute	(pg,fDT_STEP);
+
 			//-move action
-			vis.box.invalidate	();
-			float p_size = 0.f;
-			for(int i = 0; i < pg->p_count; i++){
-				Particle &m 	= pg->list[i]; 
-				if (m.flags.is(Particle::DYING)){}
-				if (m.flags.is(Particle::BIRTH))m.flags.set(Particle::BIRTH,FALSE);
-				vis.box.modify((Fvector&)m.pos);
-				if (m.size.x>p_size) p_size = m.size.x;
+			if (pg->p_count)	
+			{
+				vis.box.invalidate	();
+				float p_size = 0.f;
+				for(int i = 0; i < pg->p_count; i++){
+					Particle &m 	= pg->list[i]; 
+					if (m.flags.is(Particle::DYING)){}
+					if (m.flags.is(Particle::BIRTH))m.flags.set(Particle::BIRTH,FALSE);
+					vis.box.modify((Fvector&)m.pos);
+					if (m.size.x>p_size) p_size = m.size.x;
+				}
+				vis.box.grow		(p_size);
+				vis.box.getsphere	(vis.sphere.P,vis.sphere.R);
 			}
-			vis.box.grow		(p_size);
-			vis.box.getsphere	(vis.sphere.P,vis.sphere.R);
 		}
 	}
 }
@@ -411,6 +421,7 @@ void CParticleEffect::Render(float LOD)
 	ParticleEffect *pe 		= _GetEffectPtr(m_HandleEffect);
 	FVF::TL*	pv			= (FVF::TL*)RCache.Vertex.Lock(pe->p_count*4,hGeom->vb_stride,vOffset);
 	u32			dwCount		= RenderTO(pv);
+	VERIFY		(dwCount<=u32(pe->p_count*4));
 	RCache.Vertex.Unlock(dwCount,hGeom->vb_stride);
 	if (dwCount)    {
 		RCache.set_Geometry		(hGeom);

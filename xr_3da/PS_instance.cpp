@@ -17,6 +17,7 @@ CPS_Instance::CPS_Instance			()
 //----------------------------------------------------
 CPS_Instance::~CPS_Instance			()
 {
+	Log									("CPS_Instance::destroy");
 	spatial_unregister					();
 	shedule_unregister					();
 }

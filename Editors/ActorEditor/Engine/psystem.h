@@ -552,7 +552,7 @@ namespace PAPI
 		ParticleEffect*	GetEffectPtr	(int p_effect_num);
 		PAHeader*		GetListPtr		(int action_list_num);
 		// 
-		void		ResetState		();
+		void			ResetState		();
 	};
 
 	// All entry points call this to get their particle state.

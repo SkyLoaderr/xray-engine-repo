@@ -25,6 +25,23 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 }
 
 namespace PAPI{
+
+class _auto_check
+{
+public:
+	_auto_check()
+	{
+		R_ASSERT(sizeof(PAAvoid)<sizeof(PAHeader));
+		R_ASSERT(sizeof(PABounce)<sizeof(PAHeader));
+		R_ASSERT(sizeof(PAExplosion)<sizeof(PAHeader));
+		R_ASSERT(sizeof(PAJet)<sizeof(PAHeader));
+		R_ASSERT(sizeof(PAOrbitLine)<sizeof(PAHeader));
+		R_ASSERT(sizeof(PAOrbitPoint)<sizeof(PAHeader));
+		R_ASSERT(sizeof(PASource)<sizeof(PAHeader));
+	}
+}	_auto_checker;
+
+
 float ParticleAction::dt;
 
 _ParticleState::ParticleEffectVec	_ParticleState::effect_vec;

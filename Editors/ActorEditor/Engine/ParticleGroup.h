@@ -56,7 +56,6 @@ public:
     void 				OnDeviceCreate	(){;}
     void 				OnDeviceDestroy	(){;}
 
-    void				SetTransform	(const Fmatrix& m){;}
     void				UpdateParent	(const Fmatrix& m, const Fvector& velocity){;}
 
     BOOL				Compile			(CPGDef* def){;}
