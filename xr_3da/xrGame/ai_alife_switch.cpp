@@ -241,11 +241,8 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 		}
 		else {
 			OBJECT_PAIR_IT		J = m_tObjectRegistry.find(I->ID_Parent);
-			VERIFY				(J != m_tObjectRegistry.end());
-			if (!(*J).second->m_bOnline) {
-				VERIFY			(false);
-				vfSwitchObjectOffline(I);
-			}
+			R_ASSERT2			(J != m_tObjectRegistry.end(),"Invalid parent object ID!");
+			R_ASSERT2			((*J).second->m_bOnline,"Parent offline, item online...");
 		}
 	else
 		if (I->ID_Parent == 0xffff) {
@@ -266,7 +263,7 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 		}
 		else {
 			OBJECT_PAIR_IT		J = m_tObjectRegistry.find(I->ID_Parent);
-			VERIFY				(J != m_tObjectRegistry.end());
+			R_ASSERT2			(J != m_tObjectRegistry.end(),"Invalid parent object ID!");
 			if ((*J).second->m_bOnline) {
 				CSE_ALifeDynamicObject	*tpALifeDynamicObject = (*J).second;
 				OBJECT_IT				i = tpALifeDynamicObject->children.begin();
@@ -276,8 +273,7 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 						i=i;
 					}
 				
-				VERIFY				(false);
-				vfSwitchObjectOnline(I);
+				R_ASSERT2				(!(*J).second->m_bOnline,"Parent online, item offline...");
 			}
 		}
 	
