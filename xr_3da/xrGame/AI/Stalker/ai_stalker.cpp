@@ -223,6 +223,8 @@ void CAI_Stalker::Load				(LPCSTR section)
 	cNameVisual_set					("actors\\different_stalkers\\stalker_svoboda2");
 	cNameVisual_set					("actors\\different_stalkers\\stalker_svoboda3");
 	cNameVisual_set					("actors\\different_stalkers\\stalker_svoboda4");
+	cNameVisual_set					("actors\\different_stalkers\\stalker_ik_test");
+	cNameVisual_set					("actors\\different_stalkers\\stalker_ik_test_koan");
 }
 
 BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
