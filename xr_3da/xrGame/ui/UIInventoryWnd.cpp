@@ -10,19 +10,24 @@
 #include "UIXmlInit.h"
 
 
-#include "..\\actor.h"
-#include "..\\WeaponAmmo.h"
-#include "..\\CustomOutfit.h"
-#include "..\\hudmanager.h"
-#include "..\\ArtifactMerger.h"
+#include "../actor.h"
+#include "../WeaponAmmo.h"
+#include "../CustomOutfit.h"
+#include "../hudmanager.h"
+#include "../ArtifactMerger.h"
 
-#include "..\\weapon.h"
-#include "..\\silencer.h"
-#include "..\\scope.h"
-#include "..\\grenadelauncher.h"
+#include "../weapon.h"
+#include "../silencer.h"
+#include "../scope.h"
+#include "../grenadelauncher.h"
 
-#include "..\\ai_script_space.h"
-#include "..\\ai_script_processor.h"
+#include "../weapon.h"
+#include "../silencer.h"
+#include "../scope.h"
+#include "../grenadelauncher.h"
+
+#include "../ai_script_space.h"
+#include "../ai_script_processor.h"
 
 
 
@@ -30,7 +35,9 @@
 using namespace InventoryUtilities;
 
 
-#include "..\\InfoPortion.h"
+#include "../InfoPortion.h"
+
+#define MAX_ITEMS	70
 
 #define MAX_ITEMS	70
 
@@ -49,6 +56,9 @@ CUIInventoryWnd::CUIInventoryWnd()
 	Init();
 
 	SetFont(HUD().pFontMedium);
+
+	m_vDragDropItems.clear();
+	m_vDragDropItems.reserve(MAX_ITEMS);
 }
 
 CUIInventoryWnd::~CUIInventoryWnd()
@@ -87,7 +97,7 @@ void CUIInventoryWnd::Init()
 	UIStaticDesc.Init("ui\\ui_inv_info_over_b", 
 						5, UIDescWnd.GetHeight() - 310 ,260,310);
 	
-	//UIStaticDesc.SetText("\\n\\n\\nYou say %c99,99,255Yes \\n  %c9,255,9I say no\\n%c255,255,255You say stop And I say\\nGo    go    go...................\\nYou say goodbye and I say hello..");
+	//UIStaticDesc.SetText("\\n\\n\\nYou say %c99,99,255Yes \\n  %c9,255,9I say no\\n%c255,255,255You say stop And I say\\nGo    go    go.................../\nYou say goodbye and I say hello..");
 
 
 	UIDescWnd.AttachChild(&UIStaticText);
@@ -236,7 +246,7 @@ void CUIInventoryWnd::InitInventory()
 	UIBagList.DropAll();
 
 
-	for(u32 i = 0; i <MAX_ITEMS; i++) 
+	for(u32 i = 0; i <MAX_ITEMS; ++i) 
 	{
 		m_vDragDropItems[i].SetData(NULL);
 		m_vDragDropItems[i].SetWndRect(0,0,0,0);
@@ -246,7 +256,7 @@ void CUIInventoryWnd::InitInventory()
 
 
 	//Slots
-	for( i = 0; i < SLOTS_NUM; i++) 
+	for( i = 0; i < SLOTS_NUM; ++i) 
 	{
         if(pInv->m_slots[i].m_pIItem) 
 		{
@@ -267,7 +277,7 @@ void CUIInventoryWnd::InitInventory()
 			UITopList[i].AttachChild(&UIDragDropItem);
 			UIDragDropItem.SetData(pInv->m_slots[i].m_pIItem);
 
-			m_iUsedItems++;
+			++m_iUsedItems;
 			R_ASSERT(m_iUsedItems<MAX_ITEMS);
 		}
 	}
@@ -293,12 +303,12 @@ void CUIInventoryWnd::InitInventory()
 		UIOutfitSlot.AttachChild(&UIDragDropItem);
 		UIDragDropItem.SetData(pInv->m_slots[OUTFIT_SLOT].m_pIItem);
 
-		m_iUsedItems++;
+		++m_iUsedItems;
 		R_ASSERT(m_iUsedItems<MAX_ITEMS);
 	}
 
 	//Пояс
-	for(PPIItem it =  pInv->m_belt.begin(); it !=  pInv->m_belt.end(); it++) 
+	for(PPIItem it =  pInv->m_belt.begin(); pInv->m_belt.end() != it; ++it) 
 	{
 		if((*it)) 
 		{
@@ -326,7 +336,7 @@ void CUIInventoryWnd::InitInventory()
 			UIBeltList.AttachChild(&UIDragDropItem);
 			UIDragDropItem.SetData((*it));
 
-			m_iUsedItems++;
+			++m_iUsedItems;
 			R_ASSERT(m_iUsedItems<MAX_ITEMS);
 		}
 	}
@@ -336,7 +346,7 @@ void CUIInventoryWnd::InitInventory()
 	ruck_list.sort(GreaterRoomInRuck);
 
 	//Рюкзак
-	for(it =  ruck_list.begin(); it !=  ruck_list.end(); it++) 
+	for(it =  ruck_list.begin(); ruck_list.end() != it; ++it) 
 	{
 		if((*it)) 
 		{
@@ -700,7 +710,11 @@ void CUIInventoryWnd::Update()
 
 		
 		//убрать объект drag&drop для уже использованной вещи
-		for(int i = 0; i <m_iUsedItems; i++) 
+		//for(int i = 0; i <m_iUsedItems; ++i) 
+		int i = 0;
+		for(DRAG_DROP_VECTOR_it it = m_vDragDropItems.begin(); 
+			m_vDragDropItems.end() != it; 
+			++it, ++i) 
 		{
 			CInventoryItem* pItem = (CInventoryItem*)m_vDragDropItems[i].GetData();
 			if(pItem && !pItem->Useful())
@@ -714,6 +728,9 @@ void CUIInventoryWnd::Update()
 					m_pCurrentItem = NULL;
 					m_pCurrentDragDropItem = NULL;
 				}
+
+				i = 0;
+				it = m_vDragDropItems.begin(); 
 			}
 		}
 	}
@@ -963,8 +980,8 @@ void CUIInventoryWnd::StopArtifactMerger()
 	
 	//скинуть все элементы из усторйства артефактов в рюкзак
 	for(DRAG_DROP_LIST_it it = UIArtifactMergerWnd.UIArtifactList.GetDragDropItemsList().begin(); 
- 						  it!= UIArtifactMergerWnd.UIArtifactList.GetDragDropItemsList().end();
-						  it++)
+ 						  UIArtifactMergerWnd.UIArtifactList.GetDragDropItemsList().end() != it;
+						  ++it)
 	{
 		CUIDragDropItem* pDragDropItem = *it;
 		UIBagList.AttachChild(pDragDropItem);
@@ -978,7 +995,7 @@ void CUIInventoryWnd::StopArtifactMerger()
 void CUIInventoryWnd::AddArtifactToMerger(CArtifact* pArtifact)
 {
 	CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];
-	m_iUsedItems++; R_ASSERT(m_iUsedItems<MAX_ITEMS);
+	++m_iUsedItems; R_ASSERT(m_iUsedItems<MAX_ITEMS);
 
 	UIDragDropItem.CUIStatic::Init(0,0, 50,50);
 	UIDragDropItem.SetShader(GetEquipmentIconsShader());
