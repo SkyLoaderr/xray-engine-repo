@@ -74,7 +74,7 @@ function novice_enemy( s )
 end
 
 function check_actor( npc1, a )
-	if npc1:see( the_actor ) then
+	if the_actor and npc1:see( the_actor ) then
 		a.enabled = false
 		xr_motivator.storage[a.partner:id()].escape_factory_bandit.enabled = false
 
