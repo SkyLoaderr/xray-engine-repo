@@ -12,6 +12,10 @@ CUIDMFragList::CUIDMFragList()
 {
 //	for (int i=0; i<32; i++)
 //		AddItem();
+	SetHeaderColumnText(0, "Name");
+	SetHeaderColumnText(1, "Frags");
+	SetHeaderColumnText(2, "Deaths");
+	SetHeaderColumnText(3, "Ping");
 }
 
 CUIDMFragList::~CUIDMFragList()
@@ -62,9 +66,9 @@ bool	CUIDMFragList::SetItemData		(u32 ItemID, CUIStatsListItem *pItem)
 	char Text[1024];
 	pItem->FieldsVector[0]->SetText(P->name);
 	sprintf(Text, "%d", P->kills); pItem->FieldsVector[1]->SetText(Text);
-//	sprintf(Text, "%d", P->deaths); pItem->FieldsVector[2]->SetText(Text);
-//	sprintf(Text, "%d", P->ping); pItem->FieldsVector[3]->SetText(Text);
-	sprintf(Text, "%d", P->ping); pItem->FieldsVector[2]->SetText(Text);
+	sprintf(Text, "%d", P->deaths); pItem->FieldsVector[2]->SetText(Text);
+	sprintf(Text, "%d", P->ping); pItem->FieldsVector[3]->SetText(Text);
+//	sprintf(Text, "%d", P->ping); pItem->FieldsVector[2]->SetText(Text);
 
 	return true;
 };
