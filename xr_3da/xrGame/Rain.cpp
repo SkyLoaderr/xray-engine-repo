@@ -6,6 +6,7 @@
 #include "Rain.h"
 #include "..\2dsound.h"
 #include "..\fstaticrender.h"
+#include "..\psvisual.h"
 
 const float snd_fade		= 0.1f;
 const int	desired_items	= 1000;
@@ -118,7 +119,8 @@ void CEffect_Rain::p_destroy	()
 	for (DWORD it=0; it<particle_pool.size(); it++)
 	{
 		Particle&	P	= particle_pool[it];
-		::Render.Models.Delete	(P.visual);
+		FBasicVisual* V = (FBasicVisual*)P.visual;
+		::Render.Models.Delete	(V);
 	}
 	particle_pool.clear	();
 }
