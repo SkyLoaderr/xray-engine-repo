@@ -58,7 +58,7 @@ public:
 	virtual CSector*				getSector				(int id)						= 0;
 	virtual CSector*				getSectorActive			()								= 0;
 	virtual CVisual*				getVisual				(int id)						= 0;
-	virtual u32						getFVF					(int id)						= 0;
+	virtual D3DVERTEXELEMENT9*		getVB_Format			(int id)						= 0;
 	virtual IDirect3DVertexBuffer9*	getVB					(int id)						= 0;
 	virtual IDirect3DIndexBuffer9*	getIB					(int id)						= 0;
 	virtual CSector*				detectSector			(Fvector& P)					= 0;

@@ -56,7 +56,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386 "
-				AdditionalDependencies="odbc32.lib odbccp32.lib msacm32.lib vfw32.lib"
+				AdditionalDependencies="msacm32.lib vfw32.lib"
 				ShowProgress="0"
 				OutputFile="x:\XR_3DA.exe"
 				LinkIncremental="2"
@@ -123,7 +123,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386 "
-				AdditionalDependencies="odbc32.lib odbccp32.lib msacm32.lib vfw32.lib"
+				AdditionalDependencies="msacm32.lib vfw32.lib"
 				OutputFile="x:\XR_3DA.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -198,7 +198,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386 "
-				AdditionalDependencies="odbc32.lib odbccp32.lib msacm32.lib vfw32.lib"
+				AdditionalDependencies="msacm32.lib vfw32.lib"
 				OutputFile="x:\XR_3DA.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -1253,6 +1253,9 @@
 				RelativePath=".\FStaticRender_Loader.cpp">
 			</File>
 			<File
+				RelativePath="FStaticRender_Loader_Trees.cpp">
+			</File>
+			<File
 				RelativePath=".\FStaticRender_SceneGraph.cpp">
 			</File>
 			<File
@@ -1599,6 +1602,16 @@
 					</File>
 					<File
 						RelativePath="FLOD.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="Waving or tree model"
+					Filter="">
+					<File
+						RelativePath="FTreeVisual.cpp">
+					</File>
+					<File
+						RelativePath="FTreeVisual.h">
 					</File>
 				</Filter>
 			</Filter>

@@ -58,7 +58,8 @@ enum MT {
 	MT_CACHED,
 	MT_PARTICLE_SYSTEM,
 	MT_PROGRESSIVE_STRIPS,
-	MT_LOD
+	MT_LOD,
+	MT_TREE
 };
 
 enum OGF_Chuncks {
@@ -83,6 +84,7 @@ enum OGF_Chuncks {
 	OGF_ICONTAINER	= 19,
 	OGF_SMPARAMS2	= 20,	// * For skeletons only
 	OGF_LODDEF		= 21,
+	OGF_TREEDEF		= 22,
     OGF_forcedword	= 0xFFFFFFFF
 };
 
@@ -157,5 +159,10 @@ struct ogf_bsphere {
 // OGF_BONES
 // BYTE			Count;
 // BYTE			Indices[...]
+
+// OGF_TREEDEF
+// xform : matrix4x4
+// scale : vec4
+// bias  : vec4
 
 #endif // _F_MESH_H_

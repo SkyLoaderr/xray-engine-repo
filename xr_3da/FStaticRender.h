@@ -60,7 +60,8 @@ public:
 	CHOM											HOM;
 	
 	// Global vertex-buffer container
-	vector<u32>										FVF;
+	typedef svector<D3DVERTEXELEMENT9,MAX_FVF_DECL_SIZE> VertexDeclarator;
+	vector<VertexDeclarator>						DCL;
 	vector<IDirect3DVertexBuffer9*>					VB;
 	vector<IDirect3DIndexBuffer9*>					IB;
 	vector<CVisual*>								Visuals;
@@ -86,6 +87,7 @@ private:
 	void							LoadLights				(CStream	*fs);
 	void							LoadPortals				(CStream	*fs);
 	void							LoadSectors				(CStream	*fs);
+	void							LoadTrees				(CStream	*fs);
 
 	BOOL							add_Dynamic				(CVisual	*pVisual, u32 planes);	// normal processing
 	void							add_Static				(CVisual	*pVisual, u32 planes);
@@ -112,7 +114,7 @@ public:
 	virtual CSector*				getSector				(int id);
 	virtual CSector*				getSectorActive			();
 	virtual CVisual*				getVisual				(int id);
-	virtual u32						getFVF					(int id);
+	virtual D3DVERTEXELEMENT9*		getVB_Format			(int id);
 	virtual IDirect3DVertexBuffer9*	getVB					(int id);
 	virtual IDirect3DIndexBuffer9*	getIB					(int id);
 	virtual CSector*				detectSector			(Fvector& P);

@@ -100,7 +100,7 @@ void CRender::level_Unload()
 	//*** VB/IB
 	for (I=0; I<VB.size(); I++)	_RELEASE(VB[I]);
 	for (I=0; I<IB.size(); I++)	_RELEASE(IB[I]);
-	FVF.clear				();
+	DCL.clear				();
 	VB.clear				();
 	IB.clear				();
 }
@@ -114,7 +114,7 @@ void CRender::LoadBuffers	(CStream *base_fs)
 	{
 		destructor<CStream>		fs	(base_fs->OpenChunk(fsL_VBUFFERS));
 		u32 count				= fs().Rdword();
-		FVF.resize				(count);
+		DCL.resize				(count);
 		VB.resize				(count);
 		for (u32 i=0; i<count; i++)
 		{
@@ -123,7 +123,8 @@ void CRender::LoadBuffers	(CStream *base_fs)
 			u32 vSize			= D3DXGetFVFVertexSize(vFVF);
 			Msg("* [Loading VB] %d verts, %d Kb",vCount,(vCount*vSize)/1024);
 
-			FVF[i]				= vFVF;
+			D3DVERTEXELEMENT9*	dcl_dst	= DCL[i].begin();
+			CHK_DX				(D3DXDeclaratorFromFVF(vFVF,dcl_dst));
 
 			// Create and fill
 			BYTE*	pData		= 0;

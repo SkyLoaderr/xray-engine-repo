@@ -29,12 +29,12 @@ CPortal*	CRender::getPortal			(int id)			{ VERIFY(id<int(Portals.size()));	retur
 CSector*	CRender::getSector			(int id)			{ VERIFY(id<int(Sectors.size()));	return Sectors[id];	}
 CSector*	CRender::getSectorActive	()					{ return pLastSector;									}
 CVisual*	CRender::getVisual			(int id)			{ VERIFY(id<int(Visuals.size()));	return Visuals[id];	}
-u32			CRender::getFVF				(int id)			{ VERIFY(id<int(FVF.size()));		return FVF[id];		}
+D3DVERTEXELEMENT9*		CRender::getVB_Format(int id)		{ VERIFY(id<int(DCL.size()));		return DCL[id].begin();	}
 IDirect3DVertexBuffer9*	CRender::getVB	(int id)			{ VERIFY(id<int(VB.size()));		return VB[id];		}
 IDirect3DIndexBuffer9*	CRender::getIB	(int id)			{ VERIFY(id<int(IB.size()));		return IB[id];		}
 CRender_target* CRender::getTarget		()					{ return &Target;										}
 
-void		CRender::L_add				(CLightPPA* L)		{ VERIFY(L); L_Dynamic.Add(L);						}
+void		CRender::L_add				(CLightPPA* L)		{ VERIFY(L); L_Dynamic.Add(L);							}
 void		CRender::L_select			(Fvector &pos, float fRadius, vector<xrLIGHT*>& dest)
 {	L_DB.Select	(pos,fRadius,dest);		}
 

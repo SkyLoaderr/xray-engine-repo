@@ -36,7 +36,8 @@ void Fvisual::Load		(const char* N, CStream *data, u32 dwFlags)
 {
 	CVisual::Load		(N,data,dwFlags);
 
-	DWORD				vFormat;
+	D3DVERTEXELEMENT9	dcl		[MAX_FVF_DECL_SIZE];
+	D3DVERTEXELEMENT9*	vFormat	= 0;
 
 	// read vertices
 	if ((dwFlags&VLOAD_NOVERTICES)==0) {
@@ -47,14 +48,16 @@ void Fvisual::Load		(const char* N, CStream *data, u32 dwFlags)
 			vCount				= data->Rdword				();
 			pVertices			= ::Render->getVB			(ID);
 			pVertices->AddRef	();
-			vFormat				= ::Render->getFVF			(ID);
+			vFormat				= ::Render->getVB_Format	(ID);
 #endif
 		} else {
 			R_ASSERT			(data->FindChunk(OGF_VERTICES));
 			vBase				= 0;
-			vFormat				= data->Rdword				();
+			u32 fvf				= data->Rdword				();
+			CHK_DX				(D3DXDeclaratorFromFVF(fvf,dcl));
+			vFormat				= dcl;
 			vCount				= data->Rdword				();
-			u32 vStride			= D3DXGetFVFVertexSize		(vFormat);
+			u32 vStride			= D3DXGetFVFVertexSize		(fvf);
 
 			BOOL	bSoft		= HW.Caps.vertex.bSoftware || (dwFlags&VLOAD_FORCESOFTWARE);
 			u32		dwUsage		= D3DUSAGE_WRITEONLY | (bSoft?D3DUSAGE_SOFTWAREPROCESSING:0);

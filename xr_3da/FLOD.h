@@ -9,7 +9,7 @@ public:
 	{
 		Fvector		v;
 		Fvector2	t;
-		u32		c;
+		u32			c;
 	};
 	struct _face
 	{
