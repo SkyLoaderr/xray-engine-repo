@@ -135,17 +135,11 @@ class ENGINE_API CSharedStreams
 public:
 	_VertexStream			Vertex;
 	_IndexStream			Index;
+	IDirect3DIndexBuffer8*	QuadIB;
 public:
-	void	OnDeviceCreate	()
-	{
-		Vertex.Create		();
-		Index.Create		();
-	}
-	void	OnDeviceDestroy	()
-	{
-		Index.Destroy		();
-		Vertex.Destroy		();
-	}
+	void	OnDeviceCreate	();
+	void	OnDeviceDestroy	();
+
 	void	BeginFrame		()
 	{
 		Vertex.Flush		();

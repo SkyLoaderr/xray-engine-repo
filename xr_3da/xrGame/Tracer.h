@@ -23,7 +23,7 @@ class CTracer : public pureDeviceDestroy, public pureDeviceCreate
 
 protected:
 	Shader*				sh_Tracer;
-	CVertexStream*		VS;
+	CVS*				VS;
 
 	vector<Bullet>		bullets;
 public:

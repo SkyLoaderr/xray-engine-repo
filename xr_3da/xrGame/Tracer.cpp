@@ -30,12 +30,13 @@ CTracer::~CTracer()
 void	CTracer::OnDeviceCreate()
 {
 	REQ_CREATE	();
-	sh_Tracer	= Device.Shader.Create	("effects\\bullet_tracer","effects\\bullet_tracer");
-	VS			= Device.Streams.Create	(FVF::F_V, MAX_TRACERS*4);
+	sh_Tracer	= Device.Shader.Create		("effects\\bullet_tracer","effects\\bullet_tracer");
+	VS			= Device.Shader._CreateVS	(FVF::F_V);
 }
 void	CTracer::OnDeviceDestroy()
 {
 	Device.Shader.Delete	(sh_Tracer);
+	Device.Shader._DeleteVS	(VS);
 }
 
 void	CTracer::Add	(const Fvector& from, const Fvector& to, float bullet_speed, float trail_speed_factor, float start_length, float width)
@@ -62,7 +63,7 @@ void	CTracer::Render	()
 	if (bullets.empty())	return;
 	
 	DWORD	vOffset;
-	FVF::V	*verts		=	(FVF::V	*) VS->Lock(bullets.size()*4,vOffset);
+	FVF::V	*verts		=	(FVF::V	*) Device.Streams.Vertex.Lock(bullets.size()*4,VS->dwStride,vOffset);
 	FVF::V	*start		=	verts;
 	float	dt			=	Device.fTimeDelta;
 
@@ -105,14 +106,17 @@ void	CTracer::Render	()
 		P.mad(B.pos_head, lineTop,w);	verts->set(P,1,0);	verts++;
 	}
 
-	DWORD vCount			= verts-start;
-	VS->Unlock				(vCount);
+	DWORD vCount					= verts-start;
+	Device.Streams.Vertex.Unlock	(vCount,VS->dwStride);
 	
 	if (vCount)	{
 		Device.set_xform_world		(Fidentity);
 		HW.pDevice->SetRenderState	(D3DRS_CULLMODE,D3DCULL_NONE);
 		Device.Shader.set_Shader	(sh_Tracer);
-		Device.Primitive.Draw		(VS,vCount,vCount/2,vOffset,Device.Streams_QuadIB);
+		Device.Primitive.setVertices(VS->dwHandle,VS->dwStride,Device.Streams.Vertex.Buffer());
+		Device.Primitive.setIndices	(vOffset,Device.Streams_QuadIB);;
+		Device.Primitive.Render		(D3DPT_TRIANGLELIST,0,vCount,0,vCount/2);
+		UPDATEC						(vCount,vCount/2,1);
 		HW.pDevice->SetRenderState	(D3DRS_CULLMODE,D3DCULL_CCW);
 	}
 }

@@ -213,34 +213,6 @@ void CRenderDevice::_Create	(LPCSTR shName)
 	Statistic.OnDeviceCreate	();
 	Streams.OnDeviceCreate		();
 	dwFrame						= 0;
-	
-	// Create TL-primitive
-	{
-		const DWORD dwTriCount = 4*1024;
-		const DWORD dwIdxCount = dwTriCount*2*3;
-		WORD	*Indices	= 0;
-		DWORD	dwUsage		= D3DUSAGE_WRITEONLY;
-		if (HW.Caps.vertex.bSoftware)	dwUsage|=D3DUSAGE_SOFTWAREPROCESSING;
-		R_CHK(HW.pDevice->CreateIndexBuffer(dwIdxCount*2,dwUsage,D3DFMT_INDEX16,D3DPOOL_DEFAULT,&Streams_QuadIB));
-		R_CHK(Streams_QuadIB->Lock(0,0,(BYTE**)&Indices,0));
-		{
-			int		Cnt = 0;
-			int		ICnt= 0;
-			for (int i=0; i<dwTriCount; i++)
-			{
-				Indices[ICnt++]=Cnt+0;
-				Indices[ICnt++]=Cnt+1;
-				Indices[ICnt++]=Cnt+2;
-				
-				Indices[ICnt++]=Cnt+3;
-				Indices[ICnt++]=Cnt+2;
-				Indices[ICnt++]=Cnt+1;
-				
-				Cnt+=4;
-			}
-		}
-		R_CHK(Streams_QuadIB->Unlock());
-	}
 }
 
 void CRenderDevice::Create	() 
@@ -290,7 +262,6 @@ void CRenderDevice::_Destroy	(BOOL bKeepTextures)
 	seqDevDestroy.Process		(rp_DeviceDestroy);
 	Streams.OnDeviceDestroy		();
 	Shader.OnDeviceDestroy		(bKeepTextures);
-	_RELEASE					(Streams_QuadIB);
 
 	Engine.mem_Compact			();
 }
