@@ -82,6 +82,7 @@ void CMemoryManager::update			(const xr_vector<T> &objects)
 const CMemoryInfo	CMemoryManager::memory(const CObject *object) const
 {
 	CMemoryInfo							result;
+	result.m_object						= 0;
 	_TIME_ID							game_time = 0;
 	const CGameObject					*game_object = dynamic_cast<const CGameObject*>(object);
 	VERIFY								(game_object);

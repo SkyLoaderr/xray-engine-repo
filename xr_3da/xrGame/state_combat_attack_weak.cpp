@@ -54,6 +54,10 @@ void CStateAttackWeak::execute			()
 		return;
 	
 	CMemoryInfo									mem_object = m_object->memory(m_object->enemy());
+
+	if (!mem_object.m_object)
+		return;
+
 	if (m_object->visible(m_object->enemy()))
 		m_object->CObjectHandler::set_dest_state(eObjectActionFire1,m_object->best_weapon());
 	else
