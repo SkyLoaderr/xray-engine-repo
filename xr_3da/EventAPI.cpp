@@ -50,7 +50,7 @@ CEvent::CEvent(const char* S)
 	dwRefCount=1; 
 }
 CEvent::~CEvent()
-{	_FREE(Name); }
+{	xr_free(Name); }
 
 //-----------------------------------------
 IC bool ev_sort(CEvent*E1, CEvent*E2)
@@ -91,7 +91,7 @@ void	CEventAPI::Destroy(EVENT& E)
 		vector<CEvent*>::iterator I = find(Events.begin(),Events.end(),E);
 		R_ASSERT(I!=Events.end());
 		Events.erase(I);
-		delete E; E=0;
+		xr_delete	(E);
 	}
 	CS.Leave	();
 }

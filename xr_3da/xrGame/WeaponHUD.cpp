@@ -27,7 +27,7 @@ CWeaponHUD::~CWeaponHUD()
 	Device.seqDevCreate.Remove	(this);
 	Device.seqDevDestroy.Remove	(this);
 
-	_FREE						(pVisualName);
+	xr_free						(pVisualName);
 	::Render->model_Delete		(pVisual);
 }
 

@@ -171,8 +171,8 @@ void CApplication::OnEvent(EVENT E, u32 P1, u32 P2)
 		
 		for (u32 i=0; i<Levels.size(); i++)
 		{
-			_FREE(Levels[i].folder	);
-			_FREE(Levels[i].name	);
+			xr_free(Levels[i].folder	);
+			xr_free(Levels[i].name	);
 		}
 	} else if (E==eStart) {
 		Console.Hide();
@@ -181,8 +181,8 @@ void CApplication::OnEvent(EVENT E, u32 P1, u32 P2)
 		R_ASSERT	(0==pCreator);
 		pCreator	= (CCreator*)	NEW_INSTANCE(CLSID_LEVEL);
 		R_ASSERT	(pCreator->net_Start(op_server,op_client));
-		_FREE		(op_server);
-		_FREE		(op_client);
+		xr_free		(op_server);
+		xr_free		(op_client);
 
 		// start any console command
 		if (strstr(Engine.Params,"-$")) {

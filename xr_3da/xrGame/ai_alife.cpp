@@ -320,7 +320,7 @@ void CAI_ALife::vfRandomizeGraphTerrain()
 	FILE *F = fopen("level.graph","wb");
 	fwrite(tpaGraph,1,Level().AI.m_tpGraphVFS->Length(),F);
 	fclose(F);
-	_FREE(tpaGraph);
+	xr_free(tpaGraph);
 }
 #endif
 

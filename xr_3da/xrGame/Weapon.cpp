@@ -63,11 +63,11 @@ CWeapon::CWeapon(LPCSTR name)
 
 CWeapon::~CWeapon		()
 {
-	_FREE				(m_WpnName);
+	xr_free				(m_WpnName);
 	_DELETE				(pVisual);
 	_DELETE				(m_pHUD);
 	_DELETE				(m_pPhysicsShell);
-	_FREE				(pstrWallmark);
+	xr_free				(pstrWallmark);
 
 	Device.Shader.Delete(hUIIcon);
 	if (hWallmark)		Device.Shader.Delete(hWallmark);

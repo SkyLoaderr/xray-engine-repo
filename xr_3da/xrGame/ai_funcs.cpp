@@ -41,14 +41,14 @@ CPatternFunction::CPatternFunction(const char *caFileName)
 
 CPatternFunction::~CPatternFunction()
 {
-	_FREE(m_dwaVariableTypes);
-	_FREE(m_dwaAtomicFeatureRange);
-	_FREE(m_dwaPatternIndexes);
+	xr_free(m_dwaVariableTypes);
+	xr_free(m_dwaAtomicFeatureRange);
+	xr_free(m_dwaPatternIndexes);
 	for (u32 i=0; i<m_dwPatternCount; i++)
-		_FREE(m_tpPatterns[i].dwaVariableIndexes);
-	_FREE(m_tpPatterns);
-	_FREE(m_faParameters);
-	_FREE(m_dwaVariableValues);
+		xr_free(m_tpPatterns[i].dwaVariableIndexes);
+	xr_free(m_tpPatterns);
+	xr_free(m_faParameters);
+	xr_free(m_dwaVariableValues);
 }
 
 void CPatternFunction::vfLoadEF(const char *caFileName)
@@ -115,7 +115,7 @@ void CPatternFunction::vfLoadEF(const char *caFileName)
 
 	m_dwaVariableValues = (u32 *)xr_malloc(m_dwVariableCount*sizeof(u32));
 	
-	_FREE(m_dwaAtomicIndexes);
+	xr_free(m_dwaAtomicIndexes);
     
 	Level().m_tpAI_DDD->fpaBaseFunctions[m_dwFunctionType] = this;
 	

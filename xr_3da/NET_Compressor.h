@@ -50,7 +50,7 @@ public:
 	typedef u32			code_value;		/* Type of an rangecode value			*/
 	typedef u32			freq;			
 private:
-	CCriticalSection		CS;
+	xrCriticalSection		CS;
 
 	// main structure
 	struct rangecoder {

@@ -16,7 +16,7 @@ void CImage::Create(u32 w, u32 h, u32* data)
 
 void CImage::Create(u32 w, u32 h)
 {
-	_FREE		(pData);
+	xr_free		(pData);
 	dwWidth		= w;
 	dwHeight	= h;
 	pData		= (u32*)(xr_malloc(w*h*sizeof(u32)));

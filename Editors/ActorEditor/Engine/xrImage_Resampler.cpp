@@ -54,8 +54,8 @@ Image *	new_image(int xsize, int ysize)		/* create a blank image */
 
 void	free_image(Image* image)
 {
-	_FREE(image->data);
-	_FREE(image);
+	xr_free(image->data);
+	xr_free(image);
 }
 
 Pixel	get_pixel	(Image* image, int x, int y)
@@ -352,13 +352,13 @@ void	imf_Process	(u32* dstI, u32 dstW, u32 dstH, u32* srcI, u32 srcW, u32 srcH, 
 				put_pixel(tmp, i, k, RGBA_MAKE(CC(w_r),CC(w_g),CC(w_b),CC(w_a+.5)));
 			}
 		}
-		_FREE(raster);
+		xr_free(raster);
 	} catch (...) {	Msg		("imf_Process::5");	};
 
-	/* _FREE the memory allocated for horizontal filter weights */
+	/* xr_free the memory allocated for horizontal filter weights */
 	try	{
-		for(i = 0; i < tmp->xsize; ++i) _FREE(contrib[i].p);
-		_FREE(contrib);
+		for(i = 0; i < tmp->xsize; ++i) xr_free(contrib[i].p);
+		xr_free(contrib);
 	} catch (...) {	Msg		("imf_Process::6");	};
 
 	/* pre-calculate filter contributions for a column */
@@ -449,13 +449,13 @@ void	imf_Process	(u32* dstI, u32 dstW, u32 dstH, u32* srcI, u32 srcW, u32 srcH, 
 			}
 
 		}
-		_FREE(raster);
+		xr_free(raster);
 	} catch (...) {	Msg		("imf_Process::A");	};
 
-	/* _FREE the memory allocated for vertical filter weights */
+	/* xr_free the memory allocated for vertical filter weights */
 	try	{
-		for	(i = 0; i < dst.ysize; ++i) _FREE(contrib[i].p);
-		_FREE(contrib);
+		for	(i = 0; i < dst.ysize; ++i) xr_free(contrib[i].p);
+		xr_free(contrib);
 	} catch (...) {	Msg		("imf_Process::B");	};
 
 	free_image(tmp);

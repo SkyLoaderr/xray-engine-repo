@@ -4,12 +4,12 @@
 #include "resource.h"
 #include "log.h"
 
-static string64			logFName		= "engine.log";
-static HWND				logWindow		= NULL;
-static HWND				logoWindow		= NULL;
-static HWND				logControl		= NULL;
-static CCriticalSection	logCS;
-std::vector <LPCSTR>	LogFile;
+static string64				logFName		= "engine.log";
+static HWND					logWindow		= NULL;
+static HWND					logoWindow		= NULL;
+static HWND					logControl		= NULL;
+static xrCriticalSection	logCS;
+std::vector <LPCSTR>		LogFile;
 
 void AddOne				(const char *split) 
 {
@@ -187,7 +187,7 @@ void CloseLog(void)
 	// Don't cleanup log
 	/*
 	for (u32 i=0; i<LogFile.size(); i++) {
-		_FREE(LogFile[i]);
+		xr_free(LogFile[i]);
 	}
 	*/
 	LogFile.clear();

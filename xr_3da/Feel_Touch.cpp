@@ -58,7 +58,7 @@ void Touch::feel_touch_update	(Fvector& C, float R)
 		CObject* O	= feel_touch[d];
 		if (O->getDestroy() || (find(n_begin,n_end,O) == n_end))	// Don't touch candidates for destroy
 		{
-			// delete
+			// _delete_
 			feel_touch_delete		(O);
 			feel_touch.erase		(feel_touch.begin()+d);
 			d--;

@@ -204,10 +204,10 @@ xrSE_Dummy::xrSE_Dummy()
 }
 xrSE_Dummy::~xrSE_Dummy()
 {
-	_FREE				(s_Animation	);
-	_FREE				(s_Model		);
-	_FREE				(s_Particles	);
-	_FREE				(s_Sound		);
+	xr_free				(s_Animation	);
+	xr_free				(s_Model		);
+	xr_free				(s_Particles	);
+	xr_free				(s_Sound		);
 }
 void xrSE_Dummy::STATE_Read			(NET_Packet& P, u16 size)
 {
@@ -565,7 +565,7 @@ public:	// actions
 	void					Actions_clear()
 	{
 		for (u32 a=0; a<Actions.size(); a++)
-			_FREE(Actions[a].event);
+			xr_free(Actions[a].event);
 		Actions.clear	();
 	}
 public:	

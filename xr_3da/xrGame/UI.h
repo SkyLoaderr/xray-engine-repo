@@ -35,8 +35,8 @@ struct SUIMessage
 	}
 	~SUIMessage()
 	{
-		_FREE(sender);
-		_FREE(msg);
+		xr_free(sender);
+		xr_free(msg);
 	}
 };
 

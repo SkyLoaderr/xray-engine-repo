@@ -36,8 +36,8 @@ CAStar::CAStar(u32 dwMaxNodes)
 
 CAStar::~CAStar()
 {
-	_FREE(m_tpHeap);
-	_FREE(m_tpIndexes);
+	xr_free(m_tpHeap);
+	xr_free(m_tpIndexes);
 	_DELETE(m_tpMapPath);
 	_DELETE(m_tpLCDPath);
 	_DELETE(m_tpEnemyPath);

@@ -107,7 +107,7 @@ CInifile::CInifile( LPCSTR szFileName, BOOL ReadOnly, BOOL bLoad, BOOL SaveAtEnd
 
             if (str[0] && (str[0]=='['))
             {
-                _FREE(comment);
+                xr_free(comment);
                 if (Current.Name && Current.Name[0])
                 {
                     RootIt I		= std::lower_bound(DATA.begin(),DATA.end(),Current,sect_pred());
@@ -118,7 +118,7 @@ CInifile::CInifile( LPCSTR szFileName, BOOL ReadOnly, BOOL bLoad, BOOL SaveAtEnd
 				Current.Name = strlwr(xr_strdup(str+1));
             } else {
                 if (0==Current.Name)	{
-                    _FREE(comment);
+                    xr_free(comment);
                 } else {
                     char*		name	= str;
                     char*		t		= strchr(name,'=');
@@ -137,12 +137,12 @@ CInifile::CInifile( LPCSTR szFileName, BOOL ReadOnly, BOOL bLoad, BOOL SaveAtEnd
 
                     if (bReadOnly) {
                         if (I.first) {
-                            _FREE(I.comment);
+                            xr_free(I.comment);
                             SectIt	it	= std::lower_bound(Current.begin(),Current.end(),I,item_pred());
                             Current.Data.insert(it,I);
                         } else {
-                            _FREE(I.second);
-                            _FREE(I.comment);
+                            xr_free(I.second);
+                            xr_free(I.comment);
                         }
                     } else {
                         if (I.first || I.second || I.comment) {
@@ -166,16 +166,16 @@ CInifile::~CInifile( )
 {
  	if (!bReadOnly&&bSaveAtEnd) SaveAs();
 	// release memory
-	_FREE(fName);
+	xr_free(fName);
 
 	for (RootIt S = DATA.begin(); S!=DATA.end(); S++)
 	{
-		_FREE(S->Name);
+		xr_free(S->Name);
 		for (SectIt I=S->begin(); I!=S->end(); I++)
 		{
-			_FREE(I->first	);
-			_FREE(I->second	);
-			_FREE(I->comment);
+			xr_free(I->first	);
+			xr_free(I->second	);
+			xr_free(I->comment);
 		}
 	}
 }
@@ -184,7 +184,7 @@ void	CInifile::SaveAs( LPCSTR new_fname )
 {
 	// save if needed
     if (new_fname&&new_fname[0]){
-        _FREE(fName);
+        xr_free(fName);
         fName		= xr_strdup(new_fname);
     }
     R_ASSERT(fName&&fName[0]);
@@ -396,9 +396,9 @@ void	CInifile::WriteString	( LPCSTR S, LPCSTR L, LPCSTR			V, LPCSTR comment)
     if (it != data.end()) {
 	    // Check for "first" matching
     	if (0==strcmp(it->first,I.first)) {
-        	_FREE(it->first);
-        	_FREE(it->second);
-        	_FREE(it->comment);
+        	xr_free(it->first);
+        	xr_free(it->second);
+        	xr_free(it->comment);
             *it  = I;
         } else {
 			data.Data.insert(it,I);

@@ -13,7 +13,7 @@
 //---------------------------------------------------
 // memory
 CFS_Memory::~CFS_Memory() 
-{	_FREE(data);	}
+{	xr_free(data);	}
 void CFS_Memory::write	(const void* ptr, u32 count)
 {
 	if (position+count > mem_size) {
@@ -130,15 +130,15 @@ void	CStream::Read	(void *p,int cnt)
 //---------------------------------------------------
 // temp stream
 CTempStream::~CTempStream()
-{	_FREE(data);	};
+{	xr_free(data);	};
 //---------------------------------------------------
 // file stream
 CFileStream::~CFileStream()
-{	_FREE(data);	};
+{	xr_free(data);	};
 //---------------------------------------------------
 // compressed stream
 CCompressedStream::~CCompressedStream()
-{	_FREE(data);	};
+{	xr_free(data);	};
 
 
 //---------------------------------------------------

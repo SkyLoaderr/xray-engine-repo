@@ -100,14 +100,14 @@ void CSkeletonX::_Render	(CVS* hVS, u32 vCount, u32 pCount, IDirect3DIndexBuffer
 //////////////////////////////////////////////////////////////////////
 void CSkeletonX::_Release()
 {
-	_FREE		(Vertices1W);
-	_FREE		(Vertices2W);
+	xr_free		(Vertices1W);
+	xr_free		(Vertices2W);
 }
 void CSkeletonX_PM::Release()
 {
 	inherited::Release();
 	_Release	();
-	_FREE		(indices);
+	xr_free		(indices);
 }
 void CSkeletonX_ST::Release()
 {

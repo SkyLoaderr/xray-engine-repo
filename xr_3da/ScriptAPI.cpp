@@ -20,7 +20,7 @@ CScriptAPI::~CScriptAPI()
 {
 #ifndef DEBUG
 	vector<SScriptDef>::iterator i = Scripts.begin();
-	for (;i<Scripts.end();i++)	_FREE(i->S);
+	for (;i<Scripts.end();i++)	xr_free(i->S);
 #endif
 }
 
@@ -99,7 +99,7 @@ void CScriptAPI::Initialize()
 			char *file_text = (char *)FileDownload(fname, &size);
 			file_text[size-1]=0;
 			S.S=scCompile_Text(file_text);
-			_FREE(file_text);
+			xr_free(file_text);
 
 			// Save compiled code to disk
 			size = scGet_Script_Size(S.S);
@@ -135,7 +135,7 @@ void CScriptAPI::Initialize()
 void CScriptAPI::Destroy()
 {
 	for (u32 i=0; i<Scripts.size(); i++)
-		_FREE(Scripts[i].S);
+		xr_free(Scripts[i].S);
 	Scripts.clear	();
 }
 

@@ -149,7 +149,7 @@ void CLocatorAPI::Destroy		()
 	for		(set_files_it I=files.begin(); I!=files.end(); I++)
 	{
 		char* str = LPSTR(I->name);
-		_FREE(str);
+		xr_free(str);
 	}
 	files.clear();
 }

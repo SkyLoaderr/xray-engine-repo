@@ -691,7 +691,7 @@ _TGA:
 			}
 		}
 		// in the most cases it is not freed now
-		_FREE(pImagePixels);
+		xr_free(pImagePixels);
 	}
 
 	return pTexture2D;

@@ -18,7 +18,7 @@ CCustomEvent::~CCustomEvent		()
 	for (tActions_it it=Actions.begin(); it!=Actions.end(); it++) 
 	{
 		Engine.Event.Destroy(it->E);
-		_FREE(it->P1);
+		xr_free(it->P1);
 	}
 	Actions.clear();
 }

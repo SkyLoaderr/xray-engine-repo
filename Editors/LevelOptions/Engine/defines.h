@@ -18,7 +18,6 @@ struct ENGINE_API			FS_Defs
 };
 extern ENGINE_API FS_Defs	Path;
 
-// 'cause delete(NULL) is valid - there is no sence to check for NULL :)
 #define _RELEASE(x)			{ if(x) { (x)->Release();       (x)=NULL; } }
 #define THROW				throw 123456789
 #define _SHOW_REF(msg, x)   { if(x) { x->AddRef(); Log(msg,u32(x->Release()));}}

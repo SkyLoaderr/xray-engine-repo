@@ -35,7 +35,7 @@ C2DSound::C2DSound()
 C2DSound::~C2DSound()
 {
 	_RELEASE	( pBuffer );
-	_FREE		( fName )
+	xr_free		( fName )
 }
 
 extern void* ParseWave(CStream *data, LPWAVEFORMATEX &wfx, u32 &len);

@@ -34,7 +34,7 @@ CAI_Space::~CAI_Space	()
 	Device.Shader.Delete		(sh_debug);
 	OnDeviceDestroy				();
 
-	_FREE	(m_nodes_ptr);
+	xr_free	(m_nodes_ptr);
 	_DELETE	(vfs);
 	_DELETE	(m_tpGraphVFS);
 	_DELETE	(m_tpAStar);

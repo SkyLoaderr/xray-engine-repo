@@ -15,7 +15,7 @@ public:
 	u32*	pData;
 
 	CImage	()			{ ZeroMemory(this,sizeof(*this)); }
-	~CImage	()			{ _FREE(pData); }
+	~CImage	()			{ xr_free(pData); }
 
 	void	Create		(u32 w, u32 h);
 	void	Create		(u32 w, u32 h, u32* data);

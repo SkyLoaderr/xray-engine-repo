@@ -95,8 +95,8 @@ FCached::~FCached()
 void FCached::Release()
 {
 	CVisual::Release();
-	_FREE			(pVertices);
-	_FREE			(pIndices);
+	xr_free			(pVertices);
+	xr_free			(pIndices);
 }
 
 void FCached::Load(const char* N, CStream *data, u32 dwFlags)

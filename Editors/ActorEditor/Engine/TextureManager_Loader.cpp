@@ -22,7 +22,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 		R_ASSERT	(0==r->second->dwReference);
 		xr_free		(r->first);
 		r->second->Destroy	();
-		delete		r->second;
+		xr_delete   (r->second);
 	}
 	rtargets.clear	();
 	
@@ -88,7 +88,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 		{
 			R_ASSERT	(0==t->second->dwReference);
 			xr_free		(t->first);
-			delete		t->second;
+			xr_delete	(t->second);
 		}
 		textures.clear	();
 	}
@@ -98,7 +98,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 	{
 		if (m->second->dwMode!=CMatrix::modeDetail)	R_ASSERT(0==m->second->dwReference);
 		xr_free		(m->first);
-		delete		m->second;
+		xr_delete	(m->second);
 	}
 	matrices.clear	();
 	
@@ -107,7 +107,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 	{
 		R_ASSERT	(0==c->second->dwReference);
 		xr_free		(c->first);
-		delete		c->second;
+		xr_delete	(c->second);
 	}
 	constants.clear	();
 
@@ -118,15 +118,15 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 			Msg("! WARNING: Vertex shader still referenced [%d]: '%s'",v->second->dwReference,v->first);
 		xr_free		(v->first);
 		if (!v->second->bFFP)	R_CHK		(HW.pDevice->DeleteVertexShader(v->second->dwHandle));
-		delete		v->second;
+		xr_delete	(v->second);
 	}
 	vs.clear	();
 	
 	// Release blenders
 	for (map<LPSTR,CBlender*,str_pred>::iterator b=blenders.begin(); b!=blenders.end(); b++)
 	{
-		xr_free	(b->first);
-		delete	b->second;
+		xr_free		(b->first);
+		xr_delete	(b->second);
 	}
 	blenders.clear	();
 

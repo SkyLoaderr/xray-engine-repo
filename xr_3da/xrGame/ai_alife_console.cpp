@@ -150,7 +150,7 @@ void CAI_ALife::vfListTerrain()
 		if (j)
 			vfPrintLargeString("Terrain location ID",S,i,j,105);
 	}
-	_FREE(S);
+	xr_free(S);
 	Msg("Total %d terrain locations",i);
 }
 

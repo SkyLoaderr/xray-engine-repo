@@ -34,17 +34,17 @@ public:
 	}
 	~CUICustomMenuItem	()
 	{
-		_FREE			(value0);
-		_FREE			(value1);
-		_FREE			(caption);
-		_FREE			(title);
+		xr_free			(value0);
+		xr_free			(value1);
+		xr_free			(caption);
+		xr_free			(title);
 		for (MIIt it=items.begin(); it!=items.end(); it++)
 			_DELETE		(*it);
 	}
 	IC CUICustomMenu*	Owner				(){return m_Owner;}
 	void				SetTitle			(LPCSTR text)
 	{
-		_FREE			(title);
+		xr_free			(title);
 		title			= text?xr_strdup(text):0;
 	}
 	void				AppendItem			(CUICustomMenuItem* I)

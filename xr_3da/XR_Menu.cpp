@@ -113,7 +113,7 @@ CXR_Menu::CXR_Menu()
 	// mask
 	char *m = (char *)DownloadFile((char *)szBMask);
 	CopyMemory(mask,m,sizeof(mask));
-	_FREE(m);
+	xr_free(m);
 	UpdateRects();
 
 	// Levels

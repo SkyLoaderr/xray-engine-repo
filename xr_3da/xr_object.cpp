@@ -24,17 +24,17 @@ void CObject::StatusBegin	()
 
 void CObject::cName_set			(LPCSTR N)
 { 
-	_FREE					(NameObject);
+	xr_free					(NameObject);
 	NameObject=xr_strdup	(N); 
 }
 void CObject::cNameSect_set		(LPCSTR N)
 { 
-	_FREE					(NameSection);
+	xr_free					(NameSection);
 	NameSection=xr_strdup	(N); 
 }
 void CObject::cNameVisual_set	(LPCSTR N)
 { 
-	_FREE					(NameVisual);
+	xr_free					(NameVisual);
 	NameVisual=xr_strdup	(N); 
 }
 void CObject::setEnabled		(BOOL _enabled)
@@ -79,9 +79,9 @@ CObject::~CObject( )
 {
 	OnDeviceDestroy				();
 	_DELETE						( cfModel		);
-	_FREE						( NameObject	);
-	_FREE						( NameSection	);
-	_FREE						( NameVisual	);
+	xr_free						( NameObject	);
+	xr_free						( NameSection	);
+	xr_free						( NameVisual	);
 }
 
 void CObject::UpdateTransform( )

@@ -22,7 +22,7 @@ CDemoActor::~CDemoActor()
 {	
 	_DELETE			(animator);
 	_DELETE			(camera);
-	_FREE			(attached);
+	xr_free			(attached);
 }
 
 void CDemoActor::Load	(LPCSTR section)

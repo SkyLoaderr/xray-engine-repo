@@ -41,7 +41,7 @@ CEnvironment::CEnvironment()
 
 CEnvironment::~CEnvironment()
 {
-	for(u32 i=0; i<Suns.size(); i++) delete Suns[i];
+	for(u32 i=0; i<Suns.size(); i++) xr_delete(Suns[i]);
 	Device.seqDevCreate.Remove	(this);
 	Device.seqDevDestroy.Remove	(this);
 	OnDeviceDestroy				();

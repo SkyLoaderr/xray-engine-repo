@@ -7,10 +7,10 @@ const float fade_speed = 8.0f;
 CContextMenu::~CContextMenu(){
 	for (vector<MenuItem>::iterator I=Items.begin(); I!=Items.end(); I++){
 		Engine.Event.Destroy(I->Event);
-		_FREE(I->Name);
-		_FREE(I->Param);
+		xr_free(I->Name);
+		xr_free(I->Param);
 	}
-	_FREE(Name);
+	xr_free(Name);
 }
 void CContextMenu::Load(CInifile* INI, LPCSTR SECT){
 	CInifile::Sect& S = INI->ReadSection(SECT);
