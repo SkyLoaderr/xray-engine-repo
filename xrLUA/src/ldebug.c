@@ -579,3 +579,30 @@ void luaG_runerror (lua_State *L, const char *fmt, ...) {
   luaG_errormsg(L);
 }
 
+int	lua_getlineinfofromproto(Proto* p,int* lines)
+{
+	int size=0;
+	int i;
+
+ 	if(lines!=NULL)
+ 		Memory.mem_copy(lines,p->lineinfo,sizeof(int)*p->sizelineinfo);	
+ 	size+=p->sizelineinfo;	
+ 	
+ 	for (i=0; i<p->sizep; i++)
+ 	{			
+ 		size+=lua_getlineinfofromproto(
+ 									p->p[i],
+ 									(lines!=NULL)?lines+size:NULL);
+ 	}
+ 	return size;
+}
+ 
+LUA_API int lua_getlineinfo(lua_State* L,int* lines)
+{
+ 	const Closure* c = (const union Closure *)lua_topointer(L,-1);
+ 	int size;
+ 	lua_lock(L);
+ 	size=lua_getlineinfofromproto(c->l.p,lines);
+ 	lua_unlock(L);
+ 	return size;	
+}

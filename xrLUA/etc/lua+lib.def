@@ -108,3 +108,4 @@ EXPORTS
 	luaL_addstring
 	luaL_addvalue
 	luaL_pushresult
+	lua_getlineinfo
