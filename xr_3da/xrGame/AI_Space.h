@@ -157,6 +157,11 @@ public:
 		return(v1.y);
 	}
 
+	IC	bool bfTooBigAngle(float fAngle0, float fAngle1, float fDelta)
+	{
+		return(fabsf(fAngle0 - fAngle1) < fDelta) || ((fabsf(fabsf(fAngle0 - fAngle1) - PI_MUL_2) < fDelta));
+	}
+
 	Fvector	tfGetNodeCenter(DWORD dwNodeID);
 	Fvector	tfGetNodeCenter(NodeCompressed *tpNode);
 	

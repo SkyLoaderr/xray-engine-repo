@@ -1104,7 +1104,7 @@ void CAI_Soldier::OnTurnOver()
 		
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(bfCheckForDanger(),aiSoldierFight)
 
-	if (bfTooBigAngle(r_torso_target.yaw,r_torso_current.yaw,PI_DIV_6)) {
+	if (Level().AI.bfTooBigAngle(r_torso_target.yaw,r_torso_current.yaw,PI_DIV_6)) {
 		ESoldierStates eDummy = tStateStack.top();
 		tStateStack.pop();
 		m_ePreviousState = tStateStack.top();
@@ -1482,7 +1482,7 @@ void CAI_Soldier::OnPatrol()
 		SRotation tRotation;
 		mk_rotation(tTemp,tRotation);
 		r_torso_target.yaw = tRotation.yaw;
-		if (bfTooBigAngle(r_torso_current.yaw,tRotation.yaw,EPS_L)) {
+		if (Level().AI.bfTooBigAngle(r_torso_current.yaw,tRotation.yaw,EPS_L)) {
 			tStateStack.push(aiSoldierPatrolWait);
 			vfAddStateToList(aiSoldierPatrolWait);
 			SWITCH_TO_NEW_STATE(aiSoldierTurnOver);

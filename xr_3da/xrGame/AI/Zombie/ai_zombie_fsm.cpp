@@ -83,57 +83,6 @@ void CAI_Zombie::FreeHunting()
 //		SWITCH_TO_NEW_STATE(aiZombieUnderFire);
 //	}
 	
-	INIT_SQUAD_AND_LEADER;
-	
-	CGroup &Group = Squad.Groups[g_Group()];
-	
-//	vfInitSelector(SelectorFreeHunting,Squad,Leader);
-
-	/**
-	if ((AI_Path.TravelPath.empty()) || (AI_Path.TravelStart >= AI_Path.TravelPath.size() - 2) || (!AI_Path.fSpeed)) {
-	//if (vPosition.distance_to(tSavedEnemyPosition) < .40f) {
-		if (ps_Size() > 1)
-			if (ps_Element(ps_Size() - 1).dwTime - ps_Element(ps_Size() - 2).dwTime < 500)
-				SelectorFreeHunting.m_tDirection.sub(ps_Element(ps_Size() - 2).vPosition,ps_Element(ps_Size() - 1).vPosition);
-			else {
-				Fvector tDistance;
-				tDistance.sub(ps_Element(ps_Size() - 1).vPosition,ps_Element(ps_Size() - 2).vPosition);
-				if (tDistance.magnitude() < .05f)
-					SelectorFreeHunting.m_tDirection.sub(ps_Element(ps_Size() - 2).vPosition,ps_Element(ps_Size() - 1).vPosition);
-				else
-					SelectorFreeHunting.m_tDirection.sub(ps_Element(ps_Size() - 1).vPosition,ps_Element(ps_Size() - 2).vPosition);
-			}
-		else
-			SelectorFreeHunting.m_tDirection.set(::Random.randF(0,1),0,::Random.randF(0,1));
-		SelectorFreeHunting.m_tDirection.normalize_safe();
-		vfSearchForBetterPosition(SelectorFreeHunting,Squad,Leader);
-		vfBuildPathToDestinationPoint(0);
-//		GoToPointViaSubnodes(tSavedEnemyPosition = Level().Ai.tfGetNodeCenter(AI_Path.DestNode));
-	}
-	else
-		if (ps_Size() > 1)
-			if (ps_Element(ps_Size() - 1).dwTime - ps_Element(ps_Size() - 2).dwTime > 0) {
-				SelectorFreeHunting.m_tDirection.sub(ps_Element(ps_Size() - 2).vPosition,ps_Element(ps_Size() - 1).vPosition);
-				SelectorFreeHunting.m_tDirection.normalize_safe();
-				vfSearchForBetterPosition(SelectorFreeHunting,Squad,Leader);
-//				GoToPointViaSubnodes(tSavedEnemyPosition = Level().Ai.tfGetNodeCenter(AI_Path.DestNode));
-				//vfBuildPathToDestinationPoint(0);
-			}
-			else {
-				Fvector tDistance;
-				tDistance.sub(ps_Element(ps_Size() - 1).vPosition,ps_Element(ps_Size() - 2).vPosition);
-				if (tDistance.magnitude() < .01f) {
-					SelectorFreeHunting.m_tDirection.sub(ps_Element(ps_Size() - 2).vPosition,ps_Element(ps_Size() - 1).vPosition);
-					SelectorFreeHunting.m_tDirection.normalize_safe();
-					vfSearchForBetterPosition(SelectorFreeHunting,Squad,Leader);
-//					GoToPointViaSubnodes(tSavedEnemyPosition = Level().Ai.tfGetNodeCenter(AI_Path.DestNode));
-					//vfBuildPathToDestinationPoint(0);
-				}
-			}
-		else
-			tSavedEnemyPosition = vPosition;
-	/**/
-
 	if (ps_Size() > 1)
 		if ((m_bStateChanged) || ((ps_Element(ps_Size() - 1).dwTime - ps_Element(ps_Size() - 2).dwTime < 500)/** && (ps_Element(ps_Size() - 1).vPosition.distance_to(vPosition) < .1f)/**/))
 			;//tSavedEnemyPosition.sub(ps_Element(ps_Size() - 1).vPosition,ps_Element(ps_Size() - 2).vPosition);
@@ -156,34 +105,14 @@ void CAI_Zombie::FreeHunting()
 	tSavedEnemyPosition.mul(1000.f);
 	tSavedEnemyPosition.add(vPosition);
 
-//	if (ps_Size() > 1)
-//		if (ps_Element(ps_Size() - 1).dwTime - ps_Element(ps_Size() - 2).dwTime >= 500)	{
-//			Fvector tDistance;
-//			tDistance.sub(ps_Element(ps_Size() - 1).vPosition,ps_Element(ps_Size() - 2).vPosition);
-//			if (tDistance.magnitude() < .05f)
-//				tSavedEnemyPosition.sub(ps_Element(ps_Size() - 2).vPosition,ps_Element(ps_Size() - 1).vPosition);
-//			else
-//				tSavedEnemyPosition.sub(ps_Element(ps_Size() - 1).vPosition,ps_Element(ps_Size() - 2).vPosition);
-//			
-//			tSavedEnemyPosition.normalize();
-//			tSavedEnemyPosition.mul(7.f);
-//			tSavedEnemyPosition.add(vPosition);
-//		}
-//	else {
-//		tSavedEnemyPosition.set(::Random.randF(0,1),0,::Random.randF(0,1));
-//		tSavedEnemyPosition.normalize();
-//		tSavedEnemyPosition.mul(1000.f);
-//		tSavedEnemyPosition.add(vPosition);
-//	}
-
 	GoToPointViaSubnodes(tSavedEnemyPosition);
 
 	if (!m_bStateChanged)
 		SetDirectionLook();
 
-	//CHECK_IF_SWITCH_TO_NEW_STATE(!((fabsf(r_torso_target.yaw - r_torso_current.yaw) < PI_DIV_6) || ((fabsf(fabsf(r_torso_target.yaw - r_torso_current.yaw) - PI_MUL_2) < PI_DIV_6))),aiZombieTurnOver);
+	CHECK_IF_SWITCH_TO_NEW_STATE(Level().AI.bfTooBigAngle(r_torso_target.yaw, r_torso_current.yaw, PI_DIV_6),aiZombieTurnOver);
 
-	vfSetFire(false,Group);
+	vfStopFire();
 
 //	if	(!m_tpSoundBeingPlayed || !m_tpSoundBeingPlayed->feedback) {
 //		if (m_tpSoundBeingPlayed && !m_tpSoundBeingPlayed->feedback) {
@@ -203,7 +132,6 @@ void CAI_Zombie::FreeHunting()
 //	}
 
 	vfSetMovementType(BODY_STATE_STAND,m_fMinSpeed);
-/**/
 }
 
 void CAI_Zombie::AttackFire()
