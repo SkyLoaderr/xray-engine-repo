@@ -92,7 +92,8 @@ xrSE_DECLARE_END
 
 // Physyc Object ////////////////////////////////////////////////////
 enum EPOType {
-	epotBox
+	epotBox,
+	epotFixedChain
 };
 xrSE_DECLARE_BEGIN2(xrSE_PhysicObject,xrServerEntity,xrSE_Visualed)
 	u32								type;

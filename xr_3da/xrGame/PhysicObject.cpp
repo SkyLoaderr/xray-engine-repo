@@ -66,9 +66,11 @@ void CPhysicObject::CreateBody() {
 			m_pPhysicsShell->mDesired.identity();
 			m_pPhysicsShell->fDesiredStrength = 0.f;
 		} break;
-		default : {
+		case epotFixedChain : {
 			m_pPhysicsShell->set_Kinematics(PKinematics(pVisual));
-			AddElement			(0,PKinematics(pVisual)->LL_BoneRoot());
+			AddElement(0,PKinematics(pVisual)->LL_BoneRoot());
+		} break;
+		default : {
 		} break;
 	}
 	m_pPhysicsShell->mXFORM.set(svTransform);
