@@ -313,13 +313,28 @@ void CAI_Biting::net_Import(NET_Packet& P)
 	P.r_angle8				(N.o_torso.pitch);
 
 	ALife::_GRAPH_ID		l_game_vertex_id = game_vertex_id();
-	P.w						(&l_game_vertex_id,			sizeof(l_game_vertex_id));
-	P.w						(&l_game_vertex_id,			sizeof(l_game_vertex_id));
+	P.r						(&l_game_vertex_id,			sizeof(l_game_vertex_id));
+	P.r						(&l_game_vertex_id,			sizeof(l_game_vertex_id));
 
 	if (NET.empty() || (NET.back().dwTimeStamp<N.dwTimeStamp))	{
 		NET.push_back			(N);
 		NET_WasInterpolating	= TRUE;
 	}
+
+	P.r						(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
+	P.r						(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
+	float					f1 = 0;
+	if (ai().game_graph().valid_vertex_id(l_game_vertex_id)) {
+		f1					= Position().distance_to	(ai().game_graph().vertex(l_game_vertex_id)->level_point());
+		P.r					(&f1,						sizeof(f1));
+		f1					= Position().distance_to	(ai().game_graph().vertex(l_game_vertex_id)->level_point());
+		P.r					(&f1,						sizeof(f1));
+	}
+	else {
+		P.r					(&f1,						sizeof(f1));
+		P.r					(&f1,						sizeof(f1));
+	}
+
 
 	setVisible				(TRUE);
 	setEnabled				(TRUE);
