@@ -126,7 +126,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 //		}
 //		luabind::functor<void>	functor;
 //		ai().script_engine().functor("alife_test.set_switch_online",functor);
-//		functor("af_mercury_ball",true);
+//		functor(0,true);
 	}
 		return;
 	case DIK_F10:{
@@ -139,7 +139,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 //		}
 //		luabind::functor<void>	functor;
 //		ai().script_engine().functor("alife_test.set_switch_online",functor);
-//		functor("af_mercury_ball",false);
+//		functor(0,false);
 	}
 		return;
 	case DIK_F11:
