@@ -203,11 +203,11 @@ function Trader:animation()
             self.mem.repeats = self.mem.repeats - 1
         else                                           --Проигруем анимацию со звуком
 	        if( self.mem.all_anim ) then                        --Анимация, где двигается все тело
-    	        this.action2( self.npc, anim( self.mem.last_anim ), sound( self.mem.anim_snd, "bip01_head"),
+    	        action( self.npc, anim( self.mem.last_anim ), sound( self.mem.anim_snd, "bip01_head"),
         		                                                    cond( cond.sound_end ) )
             	self.mem.all_anim = false
             else
-	            this.action2( self.npc, anim( self.mem.last_anim ), sound( self.mem.anim_snd, "bip01_head", MonsterSpace.head_anim_normal ),
+	            action( self.npc, anim( self.mem.last_anim ), sound( self.mem.anim_snd, "bip01_head", MonsterSpace.head_anim_normal ),
     	                                                            cond( cond.sound_end ) )
      		end
 
@@ -219,14 +219,14 @@ function Trader:animation()
     else
      --Устанавливаем торговца в нужное положение
         if( self.mem.state == spinka ) then
-            this.action2( self.npc, anim( "spinka_idle" ), cond( cond.anim_end ) )
+            action( self.npc, anim( "spinka_idle" ), cond( cond.anim_end ) )
             self.mem.state = idle
         elseif( self.mem.state == idle ) then
             if( self.mem.new_state == spinka ) then
-                this.action2( self.npc, anim( "idle_spinka" ), cond( cond.anim_end ) )
+                action( self.npc, anim( "idle_spinka" ), cond( cond.anim_end ) )
                 self.mem.state = spinka
             else
-                this.action2( self.npc, anim( "idle_chitaet" ), cond( cond.anim_end ) )
+                action( self.npc, anim( "idle_chitaet" ), cond( cond.anim_end ) )
                 self.mem.state = chitaet
             end
         else          --state == chitaet

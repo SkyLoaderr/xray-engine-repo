@@ -9,7 +9,7 @@ end
 function waiter:execute()
 	if( self:is_on_line() == false ) then return end
     if( self.npc:action() == nil ) then
-        this.action2( self.npc, anim( anim.sit_idle, 0 ), cond( cond.time_end, 100000000000000000 ) )
+        action( self.npc, anim( anim.sit_idle, 0 ), cond( cond.time_end, 100000000000000000 ) )
     end
 end
 
@@ -18,7 +18,7 @@ function waiter:is_on_line()
         if( self.on_line ) then return true end
         self.npc = level.object( self.npc_name )
         self.npc:script( true, self.scr_name )
-        this.action2( self.npc, anim( anim.sit_idle, 0 ), cond( cond.time_end, 100000000000000000 ) )
+        action( self.npc, anim( anim.sit_idle, 0 ), cond( cond.time_end, 100000000000000000 ) )
         self.on_line = true
     else
     	if( self.on_line == true ) then self.on_line = false end
