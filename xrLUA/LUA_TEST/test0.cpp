@@ -1225,6 +1225,7 @@ extern void print_help(lua_State *);
 
 void test1()
 {
+	broker_test();
 //	printf("%s",y(__LINE__));
 //	aa(z(x));
 //	test0();

@@ -195,7 +195,7 @@ void broker_test()
 {
 	printf	("%s : %d\n",typeid(xr_vector<u16>).name(),object_type_traits::is_stl_container<xr_multimap<u16,u16> >::value);
 //	printf	("%s : %d\n",typeid(CTemplate<u16>).name(),object_type_traits::has_iterator<CTemplate<u16> >::value);
-//	traits_test();
+	traits_test();
 #ifdef TEST_SAVE_LOAD_DELETE
 	{
 #ifdef INIT_CORE
@@ -557,7 +557,7 @@ void broker_test()
 #define pointer_type(a)				typeid(a).name(),object_type_traits::is_pointer<a >::value
 
 void traits_test()
-{	
+{
 //	printf	("%s : %d\n",pointer_type(char*));
 //	printf	("%s : %d\n",pointer_type(char));
 //	printf	("%s : %d\n",pointer_type(xr_set<CTestObject*>*));

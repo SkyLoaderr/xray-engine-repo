@@ -426,6 +426,21 @@
 			<File
 				RelativePath=".\object_type_traits.h">
 			</File>
+			<File
+				RelativePath=".\time_intrusive_ptr.h">
+			</File>
+			<File
+				RelativePath=".\time_intrusive_ptr_inline.h">
+			</File>
+			<File
+				RelativePath=".\time_smart_ptr.cpp">
+			</File>
+			<File
+				RelativePath=".\time_smart_ptr.h">
+			</File>
+			<File
+				RelativePath=".\time_smart_ptr_inline.h">
+			</File>
 		</Filter>
 	</Files>
 	<Globals>
