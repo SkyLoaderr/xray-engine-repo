@@ -247,6 +247,8 @@ BOOL CActor::Spawn		( BOOL bLocal, int sid, int team, int squad, int group, Fvec
 	NET_SavedAccel.set	(0,0,0);
 	NET_WasInterpolating= TRUE;
 
+	bActive				= TRUE;
+
 	return				TRUE;
 }
 

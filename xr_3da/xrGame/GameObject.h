@@ -13,11 +13,16 @@ public:
 	DWORD								AI_NodeID;
 	NodeCompressed*						AI_Node;
 	float								AI_Lighting;
+	BOOL								bActive;		// was it activated or not - sleeping, not updating, no network messages etc.
 	
 	// Methods
 	virtual BOOL						Spawn			(BOOL bLocal, int server_id, Fvector4& o_pos);
 	virtual void						Sector_Detect	();
 	virtual float						OnVisible		();
+
+	// State flags
+	virtual BOOL						net_Relevant	()	{ return net_Local && bActive;	}	// send messages only if active and local
+	virtual BOOL						Ready			()	{ return net_Ready && bActive;	}	// update only if active and fully initialized by/for network
 
 	CGameObject();
 	virtual ~CGameObject();

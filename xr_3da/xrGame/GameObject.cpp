@@ -15,6 +15,7 @@ CGameObject::CGameObject()
 	AI_NodeID	= 0;
 	AI_Node		= 0;
 	AI_Lighting	= 0;
+	bActive		= FALSE;
 }
 
 CGameObject::~CGameObject()
