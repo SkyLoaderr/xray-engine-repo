@@ -64,6 +64,25 @@ void __cdecl	Intro	( void* fn )
 	while	(0);
 	g_bIntroFinished	= TRUE;
 }
+
+#include <dshow.h> 
+void  __cdecl	IntroDSHOW	( void* fn )
+{ 
+	char *filename		= (char*)fn;
+	IGraphBuilder	*pGraph			;
+	IMediaControl	*pMediaControl	;
+	IMediaEvent		*pEvent			;
+	CoInitialize	(NULL);			// Create the filter graph manager and query for interfaces. CoCreateInstance(CLSID_FilterGraph, NULL, CLSCTX_INPROC_SERVER, IID_IGraphBuilder, (void **)&pGraph); 
+	pGraph->QueryInterface		(IID_IMediaControl,	(void **)&pMediaControl	); 
+	pGraph->QueryInterface		(IID_IMediaEvent,	(void **)&pEvent		);
+	// Build the graph. IMPORTANT: Change string to a file on your system. 
+	pGraph->RenderFile			(filename, NULL);		// Run the graph. pMediaControl->Run(); // Wait for completion. long evCode; 
+	pEvent->WaitForCompletion	(INFINITE, &evCode);	// Clean up. pMediaControl->Release(); 
+	pEvent->Release				(); 
+	pGraph->Release				(); 
+//	CoUninitialize				(); 
+} 
+
 //---------------------------------------------------------------------
 // 2446363
 // umbt@ukr.net
