@@ -205,30 +205,23 @@ void CBuild::Run	(string& P)
 
 	//****************************************** Saving MISC stuff
 	FPU::m64r		();
-	Phase			("Saving lights, glows, occlusion planes...");
+	Phase			("Saving...");
 	mem_Compact		();
 	SaveLights		(*fs);
+	SaveTREE		(*fs);
 
-	// Glows
-	fs->open_chunk(fsL_GLOWS);
+	fs->open_chunk	(fsL_GLOWS);
 	for (u32 i=0; i<glows.size(); i++)
 	{
-		b_glow&	G = glows[i];
-		fs->w(&G,4*sizeof(float));
-		string T = textures		[materials[G.dwMaterial].surfidx].name;
-		string S = shader_render[materials[G.dwMaterial].shader].name;
-		fs->w_u32(RegisterString(T));
-		fs->w_u32(RegisterString(S));
+		b_glow&	G	= glows[i];
+		fs->w		(&G,4*sizeof(float));
+		string T	= textures		[materials[G.dwMaterial].surfidx].name;
+		string S	= shader_render[materials[G.dwMaterial].shader].name;
+		fs->w_u32	(RegisterString(T));
+		fs->w_u32	(RegisterString(S));
 	}
 	fs->close_chunk	();
 
-	FPU::m64r		();
-	Phase			("Saving static geometry...");
-	mem_Compact		();
-	SaveTREE		(*fs);
-
-	Phase			("Saving sectors...");
-	mem_Compact		();
 	SaveSectors		(*fs);
 
 	err_save		();
@@ -236,10 +229,8 @@ void CBuild::Run	(string& P)
 
 void CBuild::err_save	()
 {
-	string256		log_name,log_user;
-	u32				buffer_size		= 128;
-	GetUserName		(log_user,(DWORD*)&buffer_size);
-	strconcat		(log_name,"build_",strlwr(log_user),".err");
+	string256		log_name;
+	strconcat		(log_name,"logs\\build_",Core.UserName,".err");
 
 	IWriter*		fs	= FS.w_open(log_name);
 	IWriter&		err = *fs;
