@@ -35,6 +35,7 @@ void	CBlender_LmBmmD::Load(	CStream& FS )
 	xrPREAD_PROP	(FS,xrPID_TEXTURE,	oT_Name);
 	xrPREAD_PROP	(FS,xrPID_MATRIX,	oT_xform);
 }
+
 void	CBlender_LmBmmD::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param, BOOL bEditor)
 {
 	if (bEditor)	{
@@ -71,7 +72,7 @@ void	CBlender_LmBmmD::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_lis
 		}
 		RS.PassEnd			();
 	} else {
-		switch (HW.Caps.caps_Texturing.dwStages)
+		switch (HW.Caps.pixel.dwStages)
 		{
 		case 2:		// Geforce1/2/MX
 			RS.PassBegin		();
