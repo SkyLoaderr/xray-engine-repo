@@ -27,8 +27,11 @@ CSE_ALifeObjectRegistry::~CSE_ALifeObjectRegistry()
 	// to delete them properly
 	D_OBJECT_PAIR_IT			I = m_tObjectRegistry.begin();
 	D_OBJECT_PAIR_IT			E = m_tObjectRegistry.end();
-	for ( ; I != E; I++)
-		xr_delete				(dynamic_cast<CSE_Abstract*>((*I).second));
+	for ( ; I != E; I++)	
+	{
+		CSE_Abstract*			A	= dynamic_cast<CSE_Abstract*>((*I).second);
+		xr_delete				(A);
+	}
 }
 
 void CSE_ALifeObjectRegistry::Save(IWriter &tMemoryStream)
