@@ -100,7 +100,6 @@ void					CRender::destroy				()
 {
 	_RELEASE					(q_sync_point);
 	HWOCC.occq_destroy			();
-	PSLibrary.OnDeviceDestroy	();
 	PSLibrary.OnDestroy			();
 
 	LR.Destroy					();
