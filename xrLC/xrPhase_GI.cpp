@@ -85,7 +85,7 @@ public:
 			} else {
 				src				= (*task)[task_it];
 				dst				= src;
-				//if (LT_POINT==src.type)	(*task)[task_it].energy		= 0.f;
+				if (LT_POINT==src.type)	(*task)[task_it].energy		= 0.f;
 				dst.type		= LT_SECONDARY;
 				dst.level		++;
 				task_it			++;
@@ -188,7 +188,7 @@ void	CBuild::xrPhase_Radiosity	()
 			else						{ task->erase	(task->begin()+l); l--; }
 		}
 	}
-	float	_scale			= _energy_before / _energy_after;
+	float	_scale			= 2*_energy_before / _energy_after;
 	for (int l=0; l<task->size(); l++)
 	{
 		R_Light&	L = (*task)[l];
