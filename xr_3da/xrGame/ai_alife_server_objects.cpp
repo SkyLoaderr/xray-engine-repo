@@ -58,7 +58,6 @@ void CALifeObject::FillProp	(LPCSTR pref, PropItemVec& items)
 	inherited::FillProp			(pref, items);
 	PHelper.CreateU8			(items,	PHelper.PrepareKey(pref, "ALife\\Probability"),		&m_ucProbability,	0,100);
 	PHelper.CreateU32			(items,	PHelper.PrepareKey(pref, "ALife\\Spawn group ID"),	&m_dwSpawnGroup,	0,0xffffffff);
-	PHelper.CreateU16			(items,	PHelper.PrepareKey(pref, "ALife\\Count"),			&m_wCount,			0,0xff);
 }
 #endif
 // CALifeMonsterParams
