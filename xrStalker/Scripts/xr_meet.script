@@ -419,6 +419,21 @@ function set_anim(npc, anim)
 		end
 	end		
 end
+function disable_meet(npc)
+	if npc ~= nil and
+	   is_object_online(npc) == true 
+	then
+		xr_motivator.storage[npc:id()].meet.enabled = false
+	end
+end
+function enable_meet(npc)
+	if npc ~= nil and
+	   is_object_online(npc) == true 
+	then
+		xr_motivator.storage[npc:id()].meet.enabled = true
+	end
+end
+
 
 ----------------------------------------------------------------------------------------------------------------------
 -- binder
