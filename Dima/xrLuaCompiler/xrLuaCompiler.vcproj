@@ -138,76 +138,28 @@
 			Name="lua_bind"
 			Filter="">
 			<File
-				RelativePath=".\luabind\class_rep.cpp">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"/>
-				</FileConfiguration>
+				RelativePath=".\class_rep.cpp">
 			</File>
 			<File
-				RelativePath=".\luabind\create_class.cpp">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"/>
-				</FileConfiguration>
+				RelativePath=".\create_class.cpp">
 			</File>
 			<File
-				RelativePath=".\luabind\find_best_match.cpp">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"/>
-				</FileConfiguration>
+				RelativePath=".\find_best_match.cpp">
 			</File>
 			<File
-				RelativePath=".\luabind\function.cpp">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"/>
-				</FileConfiguration>
+				RelativePath=".\function.cpp">
 			</File>
 			<File
-				RelativePath=".\luabind\implicit_cast.cpp">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"/>
-				</FileConfiguration>
+				RelativePath=".\implicit_cast.cpp">
 			</File>
 			<File
-				RelativePath=".\luabind\object.cpp">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"/>
-				</FileConfiguration>
+				RelativePath=".\object.cpp">
 			</File>
 			<File
-				RelativePath=".\luabind\open.cpp">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"/>
-				</FileConfiguration>
+				RelativePath=".\open.cpp">
 			</File>
 			<File
-				RelativePath=".\luabind\stack_content_by_name.cpp">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"/>
-				</FileConfiguration>
+				RelativePath=".\stack_content_by_name.cpp">
 			</File>
 		</Filter>
 		<Filter
