@@ -146,20 +146,20 @@ BOOL	game_sv_Deathmatch::OnTouch			(u16 eid_who, u16 eid_what)
 			return TRUE;
 		};
 
-		CSE_ALifeItemGrenade* pIGrenade			=	dynamic_cast<CSE_ALifeItemGrenade*> (e_what);
+		CSE_ALifeItemGrenade* pIGrenade		=	dynamic_cast<CSE_ALifeItemGrenade*> (e_what);
 		if (pIGrenade)
 		{
 			//Ammo
 			return TRUE;
 		};
-	}
+	};
 
 	// We don't know what the hell is it, so disallow ownership just for safety 
-	return TRUE;
+	return FALSE;
 }
 
 BOOL	game_sv_Deathmatch::OnDetach		(u16 eid_who, u16 eid_what)
-{
+{	
 	return TRUE;
 }
 

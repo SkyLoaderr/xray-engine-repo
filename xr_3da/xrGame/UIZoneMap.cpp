@@ -200,15 +200,25 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 
 						if (pActor->id_Team == pObjActor->id_Team)
 							EntityOut(pObjActor->Position().y-Actor->Position().y,COLOR_SELF,P);
-//						else
-//							EntityOut(pObjActor->Position().y-Actor->Position().y,COLOR_ENEMY,P);
+						continue;
 					};
 				};
 				CInventoryItem* pItem = dynamic_cast<CInventoryItem*>(pObj);
 				if (pItem && !pItem->H_Parent())
 				{
+					if (GameID() == GAME_ARTEFACTHUNT)
+					{
+						CArtifact* pArtefact = dynamic_cast<CArtifact*>(pObj);
+						if (pArtefact)
+						{
+							ConvertToLocal(LM,pItem->Position(),P);
+							EntityOut(pItem->Position().y-Actor->Position().y,COLOR_FRIEND,P);
+							continue;
+						};
+					};
 					ConvertToLocal(LM,pItem->Position(),P);
 					EntityOut(pItem->Position().y-Actor->Position().y,COLOR_TARGET,P);
+					continue;
 				};
 			};
 	};

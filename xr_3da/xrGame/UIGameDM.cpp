@@ -176,7 +176,8 @@ bool CUIGameDM::IR_OnKeyboardPress(int dik)
 			case DIK_9:
 			case DIK_0:
 				{
-					if (pCurBuyMenu->IsShown() || pCurSkinMenu->IsShown())
+					if ((pCurBuyMenu && pCurBuyMenu->IsShown()) || 
+						(pCurSkinMenu && pCurSkinMenu->IsShown()))
 						return true;
 				}break;
 		case DIK_TAB:	

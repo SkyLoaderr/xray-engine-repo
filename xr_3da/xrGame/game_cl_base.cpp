@@ -98,6 +98,7 @@ void	game_cl_GameState::OnGameMessage	(NET_Packet& P)
 	string512 Text;
 	char	Color_Weapon[]	= "%c0,255,0";
 	char	Color_Main[]	= "%c192,192,192";
+	char	Color_Artefact[]	= "%c255,255,0";
 	LPSTR	Color_Teams[3]	= {"%c255,255,255", "%c255,0,0", "%c0,0,255"};
 	LPSTR	TeamsNames[3]	= {"Zero Team", "Team Red", "Team Blue"};
 
@@ -178,11 +179,58 @@ void	game_cl_GameState::OnGameMessage	(NET_Packet& P)
 			if (!pPlayer) break;
 
 			sprintf(Text, "%s%s %shas switched to %s%s", 
-							Color_Teams[0], 
+							Color_Teams[OldTeam], 
 							pPlayer->name, 
 							Color_Main, 
 							Color_Teams[NewTeam], 
 							TeamsNames[NewTeam]);
+			HUD().GetUI()->UIMainIngameWnd.AddGameMessage(NULL, Text);
+		}break;
+	case GMSG_ARTEFACT_TAKEN:
+		{
+			u16 PlayerID, Team;
+			P.r_u16 (PlayerID);
+			P.r_u16 (Team);
+
+			game_cl_GameState::Player* pPlayer = GetPlayerByGameID(PlayerID);
+			if (!pPlayer) break;
+
+			sprintf(Text, "%s%s %shas taken the %sArtefact", 
+				Color_Teams[Team], 
+				pPlayer->name, 
+				Color_Main,
+				Color_Artefact);
+			HUD().GetUI()->UIMainIngameWnd.AddGameMessage(NULL, Text);
+		}break;
+	case GMSG_ARTEFACT_DROPPED:
+		{
+			u16 PlayerID, Team;
+			P.r_u16 (PlayerID);
+			P.r_u16 (Team);
+
+			game_cl_GameState::Player* pPlayer = GetPlayerByGameID(PlayerID);
+			if (!pPlayer) break;
+
+			sprintf(Text, "%s%s %shas dropped the %sArtefact", 
+				Color_Teams[Team], 
+				pPlayer->name, 
+				Color_Main,
+				Color_Artefact);
+			HUD().GetUI()->UIMainIngameWnd.AddGameMessage(NULL, Text);
+		}break;
+	case GMSG_ARTEFACT_ONBASE:
+		{
+			u16 PlayerID, Team;
+			P.r_u16 (PlayerID);
+			P.r_u16 (Team);
+
+			game_cl_GameState::Player* pPlayer = GetPlayerByGameID(PlayerID);
+			if (!pPlayer) break;
+
+			sprintf(Text, "%s%s %sscores", 
+				Color_Teams[Team], 
+				TeamsNames[Team], 
+				Color_Main);
 			HUD().GetUI()->UIMainIngameWnd.AddGameMessage(NULL, Text);
 		}break;
 	default:

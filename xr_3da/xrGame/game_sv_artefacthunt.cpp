@@ -200,3 +200,132 @@ void	game_sv_ArtefactHunt::OnPlayerBuyFinished		(u32 id_who, NET_Packet& P)
 		SpawnWeapon4Actor(e_Actor->ID, GetItemForSlot(DItem.SlotID, DItem.ItemID,  ps), GetItemAddonsForSlot(DItem.SlotID, DItem.ItemID,  ps));
 	};
 };
+
+BOOL	game_sv_ArtefactHunt::OnTouch				(u16 eid_who, u16 eid_what)
+{
+	xrServer*			S		= Level().Server;
+	CSE_Abstract*		e_who	= S->ID_to_entity(eid_who);		VERIFY(e_who	);
+	CSE_Abstract*		e_what	= S->ID_to_entity(eid_what);	VERIFY(e_what	);
+
+	CSE_ALifeCreatureActor*			A		= dynamic_cast<CSE_ALifeCreatureActor*> (e_who);
+	if (A)
+	{
+		CSE_ALifeItemArtefact* pIArtefact	=	dynamic_cast<CSE_ALifeItemArtefact*> (e_what);
+		if (pIArtefact)
+		{
+			m_dwArtefactID = eid_what;
+			xrClientData* xrCData	= e_who->owner;
+			game_PlayerState*	ps_who	=	&xrCData->ps;
+			if (ps_who)
+			{
+				NET_Packet			P;
+				P.w_begin			(M_GAMEMESSAGE);
+				P.w_u32				(GMSG_ARTEFACT_TAKEN);
+				P.w_u16				(ps_who->GameID);
+				P.w_u16				(ps_who->team);
+				u_EventSend(P);
+			};
+			return TRUE;
+		};
+	}
+	return inherited::OnTouch(eid_who, eid_what);
+};
+
+BOOL	game_sv_ArtefactHunt::OnDetach				(u16 eid_who, u16 eid_what)
+{
+	xrServer*			S		= Level().Server;
+	CSE_Abstract*		e_who	= S->ID_to_entity(eid_who);		VERIFY(e_who	);
+	CSE_Abstract*		e_what	= S->ID_to_entity(eid_what);	VERIFY(e_what	);
+
+	CSE_ALifeCreatureActor*			A		= dynamic_cast<CSE_ALifeCreatureActor*> (e_who);
+	if (A)
+	{
+		CSE_ALifeItemArtefact* pIArtefact	=	dynamic_cast<CSE_ALifeItemArtefact*> (e_what);
+		if (pIArtefact)
+		{	
+			m_dwArtefactID = eid_what;
+			xrClientData* xrCData	= e_who->owner;
+			game_PlayerState*	ps_who	=	&xrCData->ps;
+			if (ps_who)
+			{
+				NET_Packet			P;
+				P.w_begin			(M_GAMEMESSAGE);
+				P.w_u32				(GMSG_ARTEFACT_DROPPED);
+				P.w_u16				(ps_who->GameID);
+				P.w_u16				(ps_who->team);
+				u_EventSend(P);
+			};
+			return TRUE;
+		};
+	}
+	return inherited::OnDetach(eid_who, eid_what);
+};
+
+void		game_sv_ArtefactHunt::OnObjectEnterTeamBase	(u16 id, u16 id_zone)
+{
+	xrServer*			S		= Level().Server;
+	CSE_Abstract*		e_who	= S->ID_to_entity(id);		VERIFY(e_who	);
+	CSE_Abstract*		e_zone	= S->ID_to_entity(id_zone);	VERIFY(e_zone	);
+
+	CSE_ALifeCreatureActor* eActor = dynamic_cast<CSE_ALifeCreatureActor*> (e_who);
+	CSE_ALifeTeamBaseZone*	eZoneBase = dynamic_cast<CSE_ALifeTeamBaseZone*> (e_zone);
+	if (eActor && eZoneBase)
+	{
+		if (eActor->g_team() == eZoneBase->m_team)
+		{
+			xr_vector<u16>& C			= eActor->children;
+			xr_vector<u16>::iterator c	= std::find	(C.begin(),C.end(),m_dwArtefactID);
+			if (C.end()!=c)
+			{
+				OnArtefactOnBase(eActor->owner->ID);
+			};
+		}
+		else
+		{
+		};
+	};
+};
+
+void		game_sv_ArtefactHunt::OnObjectLeaveTeamBase	(u16 id, u16 id_zone)
+{
+	xrServer*			S		= Level().Server;
+	CSE_Abstract*		e_who	= S->ID_to_entity(id);		VERIFY(e_who	);
+	CSE_Abstract*		e_zone	= S->ID_to_entity(id_zone);	VERIFY(e_zone	);
+
+	CSE_ALifeCreatureActor* eActor = dynamic_cast<CSE_ALifeCreatureActor*> (e_who);
+	CSE_ALifeTeamBaseZone*	eZoneBase = dynamic_cast<CSE_ALifeTeamBaseZone*> (e_zone);
+	if (eActor && eZoneBase)
+	{
+		if (eActor->g_team() == eZoneBase->m_team)
+		{
+		}
+		else
+		{
+		};
+	};
+};
+
+void		game_sv_ArtefactHunt::OnArtefactOnBase		(u32 id_who)
+{
+	game_PlayerState*	ps	=	get_id	(id_who);
+	if (!ps) return;
+	//-----------------------------------------------
+	//add player's points
+	ps->kills += 5;
+	teams[ps->team].score++;
+	//-----------------------------------------------
+	//remove artefact from player
+	NET_Packet	P;
+	P.w_begin				(M_EVENT);
+	P.w_u32					(Device.dwTimeGlobal);
+	P.w_u16					(GE_OWNERSHIP_REJECT);
+	P.w_u16					(ps->GameID);
+	P.w_u16					(m_dwArtefactID);
+	u_EventSend(P);
+	//-----------------------------------------------
+	P.w_begin			(M_GAMEMESSAGE);
+	P.w_u32				(GMSG_ARTEFACT_ONBASE);
+	P.w_u16				(ps->GameID);
+	P.w_u16				(ps->team);
+	u_EventSend(P);
+};

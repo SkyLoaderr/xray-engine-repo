@@ -465,6 +465,14 @@ void CActor::Die	( )
 		TIItemList &l_list = inventory().m_ruck;
 		for(PPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it)
 		{
+			if (Game().type == GAME_ARTEFACTHUNT)
+			{
+				if ((*l_it)->SUB_CLS_ID == CLSID_ARTEFACT)
+				{
+					continue;
+				};
+			};
+
 			//пока у нас нельзя обыскивать трупы, удаляем все объекты из инвентаря
 //			if ((*l_it)->SUB_CLS_ID == CLSID_DEVICE_PDA)
 			{

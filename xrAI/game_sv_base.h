@@ -76,6 +76,8 @@ public:
 	virtual		void				OnHit					(u16 id_hitter, u16 id_hitted, NET_Packet& P);	//кто-то получил Hit
 	virtual		void				OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, NET_Packet& P) = 0; //игрок получил Hit
 
+	virtual		void				OnObjectEnterTeamBase	(u16 id, u16 id_zone)	{};
+	virtual		void				OnObjectLeaveTeamBase	(u16 id, u16 id_zone)	{};
 	// Main
 	virtual		void				Create					(LPSTR &options);
 	virtual		void				Update					();
@@ -87,4 +89,5 @@ public:
 	virtual		void				SetGameTime				(ALife::_TIME_ID GameTime);
 	virtual		void				SetGameTimeFactor		(const float fTimeFactor);
 	virtual		bool				change_level			(NET_Packet &net_packet, DPNID sender);
+
 };

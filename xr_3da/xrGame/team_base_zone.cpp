@@ -86,11 +86,13 @@ void CTeamBaseZone::UpdateCL	()
 void CTeamBaseZone::feel_touch_new	(CObject *tpObject)
 {
 	HUD().GetUI()->UIGame()->OnObjectEnterTeamBase(tpObject, this);
+	if (OnServer()) Level().Server->game->OnObjectEnterTeamBase(tpObject->ID(), ID());
 }
 
 void CTeamBaseZone::feel_touch_delete	(CObject *tpObject)
 {
 	HUD().GetUI()->UIGame()->OnObjectLeaveTeamBase(tpObject, this);
+	if (OnServer()) Level().Server->game->OnObjectLeaveTeamBase(tpObject->ID(), ID());
 }
 
 BOOL CTeamBaseZone::feel_touch_contact	(CObject* O)
