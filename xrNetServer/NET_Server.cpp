@@ -123,6 +123,7 @@ void IPureServer::config_Save	()
 {
 	// traffic in
 	IWriter*		fs	= FS.w_open(nameTraffic);
+	if(fs==NULL) return;
 	fs->w				(&traffic_in,sizeof(traffic_in));
 	fs->w				(&traffic_out,sizeof(traffic_out));
 	FS.w_close		(fs);
