@@ -63,4 +63,8 @@ public:
 	void			Load		(IReader* fs);
 	void			Save		(IWriter* fs);
 };
+
+typedef	resptr_core<CConstant,resptr_base<CConstant> >	
+	ref_constant;
+
 #endif

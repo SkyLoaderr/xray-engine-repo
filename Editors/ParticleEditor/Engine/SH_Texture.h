@@ -2,6 +2,8 @@
 #define SH_TEXTURE_H
 #pragma once
 
+#include "xr_resource.h"
+
 class ENGINE_API CAviPlayerCustom;
 
 class ENGINE_API CTexture
@@ -44,4 +46,7 @@ public:
 	CTexture						();
 	virtual ~CTexture				();
 };
+typedef	resptr_core<CTexture,resptr_base<CTexture> >	
+	ref_texture;
+
 #endif
