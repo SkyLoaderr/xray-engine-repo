@@ -28,10 +28,15 @@ void CAI_Biting::feel_sound_new(CObject* who, int eType, const Fvector &Position
 
 	if ((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING)
 		power = 1.f;//expf(.1f*log(power));
+	//else power = expf(.1f*log(power));
 
 	if (power >= _sd->m_fSoundThreshold) {
 		if (this != who) {
 			HearSound(who,eType,Position,power,m_current_update);
+			if (who)
+				LOG_EX2("%s Hear: %s type = %u", *"*/ cName(), who->cName(), eType /*"*);
+			else 
+				LOG_EX2("%s Hear: WORLD type = %u", *"*/ cName(), eType /*"*);
 		}
  	}
 }

@@ -67,8 +67,6 @@ void CBitingSearchEnemy::Init()
 	if (search_vertex_id == u32(-1)) search_vertex_id = m_tEnemy.node_id;
 
 	pMonster->HDebug->M_Add(0,"INIT !!! SEARCH ENEMY ",D3DCOLOR_XRGB(255,0,0));
-	pMonster->HDebug->L_Add(ai().level_graph().vertex_position(search_vertex_id),D3DCOLOR_XRGB(255,0,0));
-	pMonster->HDebug->L_Add(next_pos,D3DCOLOR_XRGB(0,0,255));
 
 	pMonster->MoveToTarget(ai().level_graph().vertex_position(search_vertex_id),search_vertex_id);
 	m_tAction = ACTION_SEARCH_ENEMY_INIT;

@@ -10,10 +10,18 @@ class CMonsterDebug {
 		u32			col;
 	};
 	
-	struct _elem_line {
+	struct _elem_point {
 		Fvector pos;
 		u32		col;
+		float	box_size;
 	};
+
+	struct _elem_line {
+		Fvector p1;
+		Fvector p2;
+		u32		col;
+	};
+
 
 	struct _elem_const {
 		string128	text;
@@ -22,8 +30,9 @@ class CMonsterDebug {
 	};
 
 	xr_vector<_elem>		_data;
-	xr_vector<_elem_line>	_lines;
+	xr_vector<_elem_point>	_points;
 	xr_vector<_elem_const>	_text;
+	xr_vector<_elem_line>	_lines;
 
 	float	floor_height;
 	Fvector shift;
@@ -44,7 +53,8 @@ public:
 	
 	// -------------------------------------------------------------------
 	// Level lines
-	void	L_Add				(const Fvector &pos, u32 col);
+	void	L_AddPoint			(const Fvector &pos, float box_size, u32 col);
+	void	L_AddLine			(const Fvector &pos, const Fvector &pos2, u32 col);				
 	void	L_Update			();
 	void	L_Clear				();
 

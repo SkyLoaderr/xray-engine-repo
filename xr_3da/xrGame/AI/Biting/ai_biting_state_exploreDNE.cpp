@@ -34,7 +34,6 @@ void CBitingExploreDNE::Init()
 
 	m_tAction				= ACTION_RUN_AWAY;
 
-	SetInertia				(20000);
 }
 
 void CBitingExploreDNE::Run()
@@ -44,6 +43,7 @@ void CBitingExploreDNE::Run()
 	bool		bTemp;
 	pMonster->GetSound(se, bTemp);
 	if (m_tSound.time + 2000 < se.time) Init();
+
 
 	// нивидимость
 #pragma todo("Jim to Jim: fix nesting: Bloodsucker in Biting state")
@@ -63,9 +63,9 @@ void CBitingExploreDNE::Run()
 	
 	switch (m_tAction) {
 	case ACTION_RUN_AWAY: // убегать на N метров от звука
-
-		pMonster->Path_GetAwayFromPoint (0, m_tSound.position, m_fRunAwayDist);
+		
 		pMonster->MotionMan.m_tAction = ACT_RUN;
+		pMonster->Path_GetAwayFromPoint (0, m_tSound.position, m_fRunAwayDist);
 
 		// каждую минуту сохранять текущую позицию, а затем развернуться и посмотреть в последнюю позицию
 		// т.е. развернуться назад
@@ -83,13 +83,13 @@ void CBitingExploreDNE::Run()
 
 		break;
 	case ACTION_LOOK_BACK_POSITION:			// повернуться в сторону звука
+		pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
+
 		DO_ONCE_BEGIN(flag_once_1);
 			pMonster->enable_movement(false);
 			pMonster->LookPosition(SavedPosition);
 		DO_ONCE_END();
 
-		pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
-		
 		// если уже повернулся, перейти в след. состояние
 		if (angle_difference(pMonster->m_body.current.yaw, pMonster->m_body.target.yaw) <= PI_DIV_6/6) m_tAction = ACTION_LOOK_AROUND;
 		break;
@@ -99,5 +99,6 @@ void CBitingExploreDNE::Run()
 		break;
 	}
 	
+	pMonster->SetPathParams(pMonster->level_vertex_id(), pMonster->Position()); 
 	pMonster->SetSound(SND_TYPE_IDLE, pMonster->_sd->m_dwIdleSndDelay);
 }

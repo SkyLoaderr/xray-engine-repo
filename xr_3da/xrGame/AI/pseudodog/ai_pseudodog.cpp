@@ -11,6 +11,7 @@ CAI_PseudoDog::CAI_PseudoDog()
 	stateDetour			= xr_new<CBitingDetour>		(this);
 	statePanic			= xr_new<CBitingPanic>		(this, false);
 	stateExploreNDE		= xr_new<CBitingExploreNDE>	(this);
+	stateExploreDNE		= xr_new<CBitingExploreDNE>	(this, false);
 
 	CurrentState		= stateRest;
 
@@ -28,6 +29,7 @@ CAI_PseudoDog::~CAI_PseudoDog()
 	xr_delete(stateDetour);
 	xr_delete(statePanic);
 	xr_delete(stateExploreNDE);
+	xr_delete(stateExploreDNE);
 
 	xr_delete(stateTest);
 }
@@ -124,7 +126,7 @@ void CAI_PseudoDog::StateSelector()
 
 	if (C)						SetState(statePanic);
 	else if (D || E || F)		SetState(stateAttack);
-	else if (A && !K)			SetState(statePanic);		//SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
+	else if (A && !K)			SetState(stateExploreDNE);		//SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
 	else if (B && !K)			SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
 	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < 0.85f) || flagEatNow))	
 		SetState(stateEat);

@@ -11,6 +11,7 @@ CAI_Dog::CAI_Dog()
 	stateDetour			= xr_new<CBitingDetour>		(this);
 	statePanic			= xr_new<CBitingPanic>		(this, false);
 	stateExploreNDE		= xr_new<CBitingExploreNDE>	(this);
+	stateExploreDNE		= xr_new<CBitingExploreDNE>	(this, false);
 	
 	CurrentState		= stateRest;
 
@@ -29,6 +30,7 @@ CAI_Dog::~CAI_Dog()
 	xr_delete(stateDetour);
 	xr_delete(statePanic);
 	xr_delete(stateExploreNDE);
+	xr_delete(stateExploreDNE);
 
 	xr_delete(stateTest);
 }
@@ -122,9 +124,6 @@ void CAI_Dog::Load(LPCSTR section)
 
 void CAI_Dog::StateSelector()
 {	
-	
-	//HDebug->M_Add(0,cName(),D3DCOLOR_XRGB(255,0,128));
-	
 	VisionElem ve;
 
 	if (C || D || E || F) SetBkgndSound();
@@ -132,11 +131,24 @@ void CAI_Dog::StateSelector()
 
 	if (C)						SetState(statePanic);
 	else if (D || E || F)		SetState(stateAttack);
-	else if (A && !K)			SetState(statePanic);		//SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
+	else if (A && !K)			SetState(stateExploreDNE);		//SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
 	else if (B && !K)			SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
 	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < 0.85f) || flagEatNow))	
 		SetState(stateEat);
 	else						SetState(stateRest); 
+
+	
+//	string128 s1;
+//	strcpy(s1,"NO STATE");
+//
+//	if (CurrentState == statePanic) strcpy(s1,"PANIC");
+//	else if (CurrentState == stateAttack) strcpy(s1,"ATTACK");
+//	else if (CurrentState == stateEat) strcpy(s1,"EAT");
+//	else if (CurrentState == stateRest) strcpy(s1,"REST");
+//	else if (CurrentState == stateExploreNDE) strcpy(s1,"EXPLORE_SOUND");
+
+	HDebug->SetActive(true);
+	UpdateLocation();
 }
 
 
@@ -265,4 +277,25 @@ void CAI_Dog::OnJumpStop()
 }
 
 ///////////////////////////////////////////////////////
+
+void CAI_Dog::UpdateLocation()
+{
+
+	u32 level_vertex_id = dynamic_cast<CAI_ObjectLocation*>(Level().CurrentEntity())->level_vertex_id();
+
+	Fvector center_V;
+	center_V = ai().level_graph().vertex_position(level_vertex_id);
+
+	CLevelGraph::SContour contour;
+	ai().level_graph().contour(contour, level_vertex_id);
+
+	HDebug->L_AddLine(contour.v1,contour.v2,D3DCOLOR_XRGB(0,255,255));
+	HDebug->L_AddLine(contour.v2,contour.v3,D3DCOLOR_XRGB(0,255,255));
+	HDebug->L_AddLine(contour.v3,contour.v4,D3DCOLOR_XRGB(0,255,255));
+	HDebug->L_AddLine(contour.v4,contour.v1,D3DCOLOR_XRGB(0,255,255));
+
+	//void	nearest(Fvector &destination, const Fvector &position, const SContour &contour);
+}
+
+
 

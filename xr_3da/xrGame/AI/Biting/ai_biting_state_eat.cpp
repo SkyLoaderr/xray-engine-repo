@@ -111,8 +111,6 @@ void CBitingEat::Run()
 		
 		if (bNeedRebuild) pMonster->MoveToTarget(approach_pos,approach_vertex_id);
 
-		pMonster->HDebug->L_Add(approach_pos,D3DCOLOR_XRGB(255,0,128));
-
 		if (cur_dist < DIST_SLOW_APPROACH_TO_CORPSE) m_tAction = ACTION_CORPSE_APPROACH_WALK;
 		break;
 	case ACTION_CORPSE_APPROACH_WALK:

@@ -227,4 +227,3 @@ bool CAI_Biting::bfAssignObject(CEntityAction *tpEntityAction)
 }
 
 
-

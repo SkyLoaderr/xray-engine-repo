@@ -3,7 +3,7 @@
 #include "../entity_alive.h"
 #include "../hudmanager.h"
 
-#define DISABLE_MONSTER_DEBUG
+//#define DISABLE_MONSTER_DEBUG
 
 
 
@@ -65,22 +65,41 @@ void CMonsterDebug::M_Update()
 
 }
 
-void CMonsterDebug::L_Add(const Fvector &pos, u32 col)
+//-------------------------------------------------------------------------------------
+
+void CMonsterDebug::L_AddPoint(const Fvector &pos, float box_size, u32 col)
 {
-	for	(u32 i=0; i<_lines.size(); i++) {
-		if (_lines[i].pos.similar(pos)) return;
+	for	(u32 i=0; i<_points.size(); i++) {
+		if (_points[i].pos.similar(pos)) return;
 	}
 	
+	_elem_point new_point;
+
+	new_point.pos		= pos;
+	new_point.col		= col;
+	new_point.box_size	= box_size;
+
+	_points.push_back(new_point);
+}
+
+void CMonsterDebug::L_AddLine(const Fvector &pos, const Fvector &pos2, u32 col)
+{
+	for	(u32 i=0; i<_lines.size(); i++) {
+		if (_lines[i].p1.similar(pos) && _lines[i].p2.similar(pos2)) return;
+	}
+
 	_elem_line new_line;
 
-	new_line.pos = pos;
-	new_line.col = col;
-	
+	new_line.p1		= pos;
+	new_line.p2		= pos2;
+	new_line.col	= col;
+
 	_lines.push_back(new_line);
 }
 
 void CMonsterDebug::L_Clear()
 {
+	_points.clear();
 	_lines.clear();
 }
 
@@ -92,18 +111,23 @@ void CMonsterDebug::L_Update()
 	if (active) return;
 #endif
 
-
-	for (u32 i=0; i<_lines.size(); i++) {
-		RCache.dbg_DrawAABB(_lines[i].pos,0.35f,0.35f,0.35f,_lines[i].col);
+	for (u32 i=0; i<_points.size(); i++) {
+		RCache.dbg_DrawAABB(_points[i].pos,_points[i].box_size,_points[i].box_size,_points[i].box_size,_points[i].col);
 
 		Fvector upV;
-		upV = _lines[i].pos;
+		upV = _points[i].pos;
 		upV.y += 5.0f;
 
-		RCache.dbg_DrawLINE(Fidentity,_lines[i].pos,upV,_lines[i].col);
+		RCache.dbg_DrawLINE(Fidentity,_points[i].pos,upV,_points[i].col);
+	}
+	
+
+	for (i=0; i<_lines.size(); i++) {
+		RCache.dbg_DrawLINE(Fidentity,_lines[i].p1,_lines[i].p2,_lines[i].col);		
 	}
 }
 
+//-------------------------------------------------------------------------------------
 
 void CMonsterDebug::HT_Add(float x, float y, LPCSTR str)
 {
@@ -139,5 +163,4 @@ void CMonsterDebug::HT_Update()
 		HUD().pFontSmall->OutNext(_text[i].text);
 	}
 }
-
 

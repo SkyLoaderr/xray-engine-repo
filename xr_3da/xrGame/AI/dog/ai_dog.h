@@ -33,4 +33,6 @@ private:
 	static	void __stdcall	BoneCallback			(CBoneInstance *B);
 	
 	CBitingNull		*stateTest;
+
+			void	UpdateLocation 		();
 };
