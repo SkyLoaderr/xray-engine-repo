@@ -6,18 +6,18 @@ on_hit = hit
 combat_ignore = combat_ignore
 
 ;[death]
-;on_info = {=killed_by_actor} walker@leave_while_fighting %+val_sacrifice_flee%
+;on_info = {=killed_by_actor} walker@leave_while_fighting %+val_sacrifice_plr_detected%
 
 [hit]
-;on_info = {=hit_by_actor} walker@leave_while_fighting %+val_sacrifice_flee%
-on_info = {=hit_by_actor} %+val_sacrifice_flee%
+on_info = {=hit_by_actor} walker@leave_while_fighting %+val_sacrifice_plr_detected%
+;on_info = {=hit_by_actor} %+val_sacrifice_plr_detected%
 
 ;[combat]
-;on_info = %+val_sacrifice_flee%
+;on_info = %+val_sacrifice_plr_detected%
 
 [follower1]
 leader = 401
-combat_ignore_cond = {+val_sacrifice_flee} never, {=fighting_actor}, {=val_fighting_sacrifice_victim}, {=val_fighting_prisoner}
+combat_ignore_cond = {+val_sacrifice_plr_detected} never, {=fighting_actor}, {=val_fighting_sacrifice_victim}, {=val_fighting_prisoner}
 ;on_signal = leader_dead | walker@leave
 ;on_info = {+val_sacrifice_near_pit} camper@near_pit
 
@@ -40,4 +40,5 @@ combat_ignore_cond = {+val_sacrifice_flee} never, {=fighting_actor}, {=val_fight
 [walker@leave_while_fighting]
 path_walk = val_sacrifice_guard1_leave_walk 
 path_look = val_sacrifice_guard1_leave_look
-combat_ignore_cond = {=val_fighting_prisoner}
+;combat_ignore_cond = {+val_sacrifice_plr_detected} never, {=val_fighting_prisoner}
+;combat_ignore_cond = {=val_fighting_prisoner}

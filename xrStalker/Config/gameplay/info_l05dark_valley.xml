@@ -38,7 +38,7 @@
 <info_portion id="val_sacrifice_start"></info_portion>
 <info_portion id="val_sacrifice_finish"></info_portion>
 <info_portion id="val_sacrifice_victim_escaped"></info_portion>
-<info_portion id="val_sacrifice_flee"></info_portion>
+<info_portion id="val_sacrifice_plr_detected"></info_portion>
 <info_portion id="val_sacrifice_near_pit"></info_portion>
 <info_portion id="val_sacrifice_victim_killed"></info_portion>
 
