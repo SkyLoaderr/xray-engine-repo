@@ -378,7 +378,7 @@ void CCar::Hit(float P,Fvector &dir,CObject * who,s16 element,Fvector p_in_objec
 	WheelHit(P,element,hit_type);
 	DoorHit(P,element,hit_type);
 	float hitScale=1.f,woundScale=1.f;
-	if(hit_type!=ALife::eHitTypeStrike) HitScale(element, hitScale, woundScale);
+	if(hit_type!=ALife::eHitTypeStrike) CDamageManager::HitScale(element, hitScale, woundScale);
 	P *= m_HitTypeK[hit_type]*hitScale;
 	inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
 	HitEffect();

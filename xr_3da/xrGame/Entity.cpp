@@ -100,24 +100,7 @@ float CEntity::CalcCondition(float hit)
 }
 
 
-void  CEntity::HitScale			(const int element, float& hit_scale, float& wound_scale)
-{
-	if(BI_NONE == u16(element))
-	{
-		//считаем что параметры для BI_NONE заданы как 1.f 
-		hit_scale = 1.f * m_default_hit_factor;
-		wound_scale = 1.f * m_default_wound_factor;
-		return;
-	}
-	
-	CKinematics* V		= smart_cast<CKinematics*>(Visual());			VERIFY(V);
-	float scale			= /*fis_zero(V->LL_GetBoneInstance(u16(element)).get_param(0))?1.f:*/V->LL_GetBoneInstance(u16(element)).get_param(0);
-	//hit_scale			= m_default_hit_factor*scale;
-	hit_scale			= scale;
-	scale				= /*fis_zero(V->LL_GetBoneInstance(u16(element)).get_param(2))?1.f:*/V->LL_GetBoneInstance(u16(element)).get_param(2);
-	//wound_scale			= m_default_wound_factor*scale;
-	wound_scale			= scale;
-}
+
 
 void CEntity::Hit			(float perc, Fvector &dir, CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type) 
 {

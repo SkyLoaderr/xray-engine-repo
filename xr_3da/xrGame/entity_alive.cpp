@@ -250,7 +250,7 @@ void CEntityAlive::Hit(float P, Fvector &dir,CObject* who, s16 element,Fvector p
 		RELATION_REGISTRY().Action(EA, this, RELATION_REGISTRY::ATTACK);
 	}
 		
-	HitScale(element, conditions().hit_bone_scale(), conditions().wound_bone_scale());
+	CDamageManager::HitScale(element, conditions().hit_bone_scale(), conditions().wound_bone_scale());
 
 	//изменить состояние, перед тем как родительский класс обработает хит
 	CWound* pWound = conditions().ConditionHit(who, P, hit_type, element);
