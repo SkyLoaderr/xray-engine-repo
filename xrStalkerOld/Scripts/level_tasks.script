@@ -477,11 +477,9 @@ function process_map_spot(info_id)
 		remove_location(506, "bar_dolg_petrenko_location")
 		add_location(505, "bar_dolg_captain_ivancov_location")
 	
-	elseif info_id == "bar_dolg_veteran_gain" then
-		remove_location(501, "bar_dolg_arhive_document_location")
-
 	elseif info_id == "bar_dolg_community_leader" then
 		remove_location(505, "bar_dolg_captain_ivancov_location")
+		remove_location(501, "bar_dolg_arhive_document_location")
 		add_location(507, "bar_dolg_voronin_location")
 	
 	elseif info_id == "bar_kill_veteran_start" then
