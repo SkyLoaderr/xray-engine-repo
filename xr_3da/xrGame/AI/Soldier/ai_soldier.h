@@ -153,6 +153,7 @@ class CAI_Soldier : public CCustomMonster
 	#define MAX_DYNAMIC_SOUNDS  32
 	#define MAX_HURT_COUNT		32
 
+	#define	MAX_HEAD_TURN_ANGLE				(2.f*PI_DIV_6)
 	typedef struct tagSSoldierStates {
 		ESoldierStates	eState;
 		DWORD			dwTime;
@@ -518,6 +519,7 @@ class CAI_Soldier : public CCustomMonster
 		// miscellanious funtions	
 		int	 ifFindDynamicObject(CEntity *tpEntity);
 		bool bfSaveFromEnemy(CEntity *tpEntity);
+		bool bfSetLookToDangerPlace();
 		bool bfCheckForDangerPlace();
 		DWORD tfGetAloneFightType();
 		DWORD tfGetGroupFightType();
@@ -561,8 +563,10 @@ class CAI_Soldier : public CCustomMonster
 			else
 				if ((m_bLessCoverLook) && (dwCurTime - Group.m_dwLastViewChange > 5000))
 					Group.m_bLessCoverLook = m_bLessCoverLook = false;
-			if (m_bLessCoverLook)
-				SetLessCoverLook();
+			if (m_bLessCoverLook) {
+				if (!bfSetLookToDangerPlace())
+					SetLessCoverLook();
+			}
 			else
 				SetDirectionLook();
 			vfSetFire(a,Group);

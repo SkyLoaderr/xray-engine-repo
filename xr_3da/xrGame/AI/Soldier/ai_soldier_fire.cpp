@@ -917,3 +917,42 @@ bool CAI_Soldier::bfCheckForDangerPlace()
 	else
 		return(false);
 }
+
+bool CAI_Soldier::bfSetLookToDangerPlace()
+{
+	if ((AI_Path.TravelPath.empty()) || (AI_Path.TravelPath.size() - 1 <= AI_Path.TravelStart))
+		return(false);
+	NodeCompressed *tpCurrentNode = AI_Node;
+	NodeCompressed *tpNextNode = 0;
+	
+	bool bOk = false;
+	NodeLink *taLinks = (NodeLink *)((BYTE *)AI_Node + sizeof(NodeCompressed));
+	int iCount = AI_Node->links;
+	for (int i=0; i<iCount; i++) {
+		tpNextNode = Level().AI.Node(Level().AI.UnpackLink(taLinks[i]));
+ 		if (bfInsideNode(Level().AI,tpNextNode,AI_Path.TravelPath[AI_Path.TravelStart + 1].P,.35f)) {
+			bOk = true;
+			break;
+		}
+	}
+	if (!bOk)
+		return(false);
+ 	
+	float fAngleOfView = eye_fov*PI/180.f;
+	float fMaxSquare = .0f, fBestAngle = -1.f;
+	for (float fIncrement = r_torso_current.yaw - MAX_HEAD_TURN_ANGLE; fIncrement <= r_torso_current.yaw + MAX_HEAD_TURN_ANGLE; fIncrement += 2*MAX_HEAD_TURN_ANGLE/60) {
+		float fSquare0 = ffCalcSquare(fIncrement,fAngleOfView,FNN(0,tpCurrentNode),FNN(1,tpCurrentNode),FNN(2,tpCurrentNode),FNN(3,tpCurrentNode));
+		float fSquare1 = ffCalcSquare(fIncrement,fAngleOfView,FNN(0,tpNextNode),FNN(1,tpNextNode),FNN(2,tpNextNode),FNN(3,tpNextNode));
+		if (fSquare1 - fSquare0 > fMaxSquare) {
+			fMaxSquare = fSquare1 - fSquare0;
+			fBestAngle = fIncrement;
+		}
+	}
+	
+	if (fBestAngle >= -EPS_L) {
+		r_target.yaw = fBestAngle;
+		return(true);
+	}
+	else
+		return(false);
+}

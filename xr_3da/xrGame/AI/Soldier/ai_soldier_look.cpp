@@ -10,7 +10,6 @@
 #include "ai_soldier.h"
 #include "..\\..\\xr_weapon_list.h"
 
-#define	MAX_HEAD_TURN_ANGLE				(2.f*PI_DIV_6)
 #define MIN_SPINE_TURN_ANGLE			PI_DIV_6
 #define EYE_WEAPON_DELTA				(0*PI/30.f)
 #define WEAPON_DISTANCE					(.35f)
