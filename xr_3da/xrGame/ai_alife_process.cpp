@@ -103,22 +103,9 @@ void CSE_ALifeSimulator::Update			(u32 dt)
 
 void CSE_ALifeSimulator::vfProcessNPC(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract)
 {
-//	CSE_ALifeHumanAbstract *tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract *>(tpALifeMonsterAbstract);
-//	if (tpALifeHumanAbstract) {
-//		CSE_ALifeHumanAbstract *tpALifeHuman = dynamic_cast<CSE_ALifeHumanAbstract *>(tpALifeMonsterAbstract);
-//		if (tpALifeHuman)
-//			vfUpdateHuman(tpALifeHuman);
-//		//else
-//		//	vfUpdateHumanGroup(dynamic_cast<CSE_ALifeHumanGroup *>(tpALifeMonsterAbstract));
-//	}
-//	else
-//		vfUpdateMonster(tpALifeMonsterAbstract);
 	CSE_ALifeHumanAbstract *tpHuman = dynamic_cast<CSE_ALifeHumanAbstract *>(tpALifeMonsterAbstract);
-	if (tpHuman) {
+	if (tpHuman)
 		vfUpdateHuman(tpHuman);
-		//else
-		//	vfUpdateHumanGroup(dynamic_cast<CSE_ALifeHumanGroup *>(tpALifeMonsterAbstract));
-	}
 	else
 		vfUpdateMonster(tpALifeMonsterAbstract);
 	tpALifeMonsterAbstract->m_tTimeID = tfGetGameTime();
