@@ -172,7 +172,6 @@ BOOL _rect_place(_rect &r)
 				return TRUE;
 			}
 			
-			/*
 			// Now rotate
 			R.init(S.x,S.y,S.x + r.b.y,S.y + r.b.x);
 			if (Place(R,CR)) {
@@ -180,7 +179,6 @@ BOOL _rect_place(_rect &r)
 				_rect_register(R);
 				return TRUE;
 			}
-			*/
 		}
 		
 		if ((CR->mask & USED_P2) == 0) {
@@ -192,7 +190,6 @@ BOOL _rect_place(_rect &r)
 				return TRUE;
 			}
 			
-			/*
 			// Now rotate - second
 			R.init(T.x,T.y,T.x + r.b.y,T.y + r.b.x);
 			if (Place(R,CR)) {
@@ -200,7 +197,6 @@ BOOL _rect_place(_rect &r)
 				_rect_register(R);
 				return TRUE;
 			}
-			*/
 		}
 	}
 	return FALSE;
