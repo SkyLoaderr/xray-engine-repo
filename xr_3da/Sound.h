@@ -105,7 +105,7 @@ struct	ref_sound
 		\param from Source to clone.
 		\param leave_type Controls whenewer to leave game/AI type as is
 	*/
-	IC void					clone					( const ref_sound& from, bool leave_type=true);
+	IC void					clone					( const ref_sound& from,	int		type=st_SourceType);
 
 	//! Destroys and unload wave
 	/*!
@@ -257,12 +257,11 @@ IC void	ref_sound::set_params					( CSound_params* p )
         feedback->set_volume   	(p->volume);
     }
 }
-IC void	ref_sound::clone						( const ref_sound& from, bool leave_type)		
+IC void	ref_sound::clone						( const ref_sound& from, int type )		
 {
 	feedback	= 0;
 	g_object	= 0;
 	handle		= from.handle;
-	if (!leave_type) 
-		g_type	= from.g_type;
+	g_type		= (type==st_SourceType)?handle->game_type():type;
 }
 #endif
