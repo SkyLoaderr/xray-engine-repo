@@ -10,6 +10,7 @@
 
 #include "abstract_location_selector.h"
 #include "game_graph.h"
+#include "ai_object_location.h"
 
 template <
 	typename _VertexEvaluator,
@@ -25,28 +26,36 @@ class
 		CGameGraph,
 		typename _VertexEvaluator,
 		typename _vertex_id_type
-	>
+	>,
+	virtual public CAI_ObjectLocation
 {
+	typedef CGameGraph _Graph;
 	typedef CAbstractLocationSelector <
-		CGameGraph,
+		_Graph,
 		typename _VertexEvaluator,
 		typename _vertex_id_type
 	> inherited;
 public:
 	enum ESelectionType {
-		eSelectionTypeMask				= u32(1),
-		eSelectionTypeRandomBranching	= u32(1) << 1,
-		eSelectionTypeDummy				= u32(-1),
+		eSelectionTypeMask = u32(0),
+		eSelectionTypeRandomBranching,
+		eSelectionTypeDummy = u32(-1),
 	};
 
 private:
 	ESelectionType			m_selection_type;
+	_vertex_id_type			m_previous_vertex_id;
+	ALife::TERRAIN_VECTOR	m_vertex_types;
+	u32						m_time_to_change;
+
+				void		select_random_location	() const;
 public:
 	IC						CBaseLocationSelector	();
 	IC	virtual				~CBaseLocationSelector	();
-	IC	virtual void		Init					(_Graph *graph = 0);
-	IC				void	set_selection_type		(const ESelectionType selection_type);
-	IC				void	get_selection_type		() const;
+		virtual void		Init					(_Graph *graph = 0);
+	IC			void		set_selection_type		(const ESelectionType selection_type);
+	IC			void		get_selection_type		(const _vertex_id_type start_vertex_id, _vertex_id_type &dest_vertex_id) const;
+				void		select_location			(const _vertex_id_type start_vertex_id, _vertex_id_type &dest_vertex_id);
 };
 
 #include "game_location_selector_inline.h"
