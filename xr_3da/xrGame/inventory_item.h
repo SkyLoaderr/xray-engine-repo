@@ -24,6 +24,7 @@ class CFoodItem;
 class CMissile;
 class CHudItem;
 class CWeaponAmmo;
+class CWeapon;
 
 class CInventoryItem : public CPhysicItem, public CHitImmunity
 {

@@ -6,6 +6,7 @@
 //#include "../fbasicvisual.h"
 
 class CMotionDef;
+class CSkeletonAnimated;
 
 #define ACTOR_HEIGHT 1.75f
 

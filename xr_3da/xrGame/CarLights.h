@@ -5,6 +5,7 @@
 class CCarLights;
 class CCar;
 class IRender_Glow;
+class IRender_Light;
 
 struct SCarLight
 {

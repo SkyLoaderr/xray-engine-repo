@@ -19,6 +19,7 @@ class CPhysicsShellHolder;
 class CGameObject;
 class NET_Packet;
 struct SBoneShape;
+class CKinematics;
 
 struct physicsBone
 {

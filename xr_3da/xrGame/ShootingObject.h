@@ -11,6 +11,7 @@
 class CCartridge;
 class CParticlesObject;
 class IRender_Sector;
+class IRender_Light;
 
 extern const Fvector zero_vel;
 

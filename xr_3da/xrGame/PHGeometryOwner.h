@@ -6,6 +6,7 @@
 DEFINE_VECTOR(CODEGeom*,GEOM_STORAGE,GEOM_I)
 
 struct SBoneShape;
+class CKinematics;
 
 class CPHGeometryOwner
 {

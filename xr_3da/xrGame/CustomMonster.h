@@ -26,6 +26,7 @@ using namespace MonsterSpace;
 
 class CAI_Rat;
 class CMotionDef;
+class CSkeletonAnimated;
 
 class CCustomMonster : 
 			public CEntityAlive, 

@@ -27,6 +27,8 @@ class CInventoryOwner;
 class CActor;
 class CPhysicsShellHolder;
 class CParticlesPlayer;
+class CCustomZone;
+class IInputReceiver;
 
 class CGameObject : 
 	public CObject, 
