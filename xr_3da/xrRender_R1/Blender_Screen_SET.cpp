@@ -128,6 +128,7 @@ void	CBlender_Screen_SET::Compile	(CBlender_Compile& C)
 			break;
 		}
 		C.PassSET_LightFog	(oLighting.value,oFog.value);
+		// C.PassSET_LightFog	(FALSE,FALSE);
 
 		if (oBlend.IDselected==6)	
 		{
