@@ -107,21 +107,20 @@ function garbage_monster_death(actor, npc)
        db.storage[db.actor:id ()] = {}
     end    
     
-    if db.storage[db.actor:id ()].gar_rush == nil then
-       db.storage[db.actor:id ()].gar_rush = {}
-       db.storage[db.actor:id ()].gar_rush["killed"] = 0
-       db.storage[db.actor:id ()].gar_rush["killed_by_actor"] = 0
+    if db.storage[db.actor:id ()].gar_rush_killed == nil then
+       db.storage[db.actor:id ()].gar_rush_killed = 0
+       db.storage[db.actor:id ()].gar_rush_killed_by_actor = 0
     end    
     
     -- remove from spawner 
     --xr_spawner.remove_from_list (npc:id ())
-    db.storage[db.actor:id ()].gar_rush["killed"] = db.storage[db.actor:id ()].gar_rush["killed"] + 1
+    db.storage[db.actor:id ()].gar_rush_killed = db.storage[db.actor:id ()].gar_rush_killed + 1
     -- no actor kill monster - simple remove
     if actor == nil or actor:id () ~= st.death.killer then 
        return 
     end
     
-    db.storage[db.actor:id ()].gar_rush["killed_by_actor"] = db.storage[db.actor:id ()].gar_rush["killed_by_actor"] + 1
+    db.storage[db.actor:id ()].gar_rush_killed_by_actor = db.storage[db.actor:id ()].gar_rush_killed_by_actor + 1
     
     printf ("Monster %s killed by actor", npc:name ())
     
@@ -130,22 +129,22 @@ function garbage_monster_death(actor, npc)
     --need_monsters = need_monsters + 1
     
     -- check for set gulag to normal mode
-    if db.storage[db.actor:id ()].gar_rush["killed"] > 10 then
+    if db.storage[db.actor:id ()].gar_rush_killed > 10 then
        -- set gulag to normal state
        if actor:has_info ("gar_monsters_rush_wave1") then
           actor:disable_info_portion ("gar_monsters_rush_wave1") 
           --printf ("Return GULAG to start state")
        end   
     end
-    if db.storage[db.actor:id ()].gar_rush["killed_by_actor"] >= 10 then
+    if db.storage[db.actor:id ()].gar_rush_killed_by_actor >= 10 then
        actor:give_info_portion ("gar_dolg_help_kill_rush")
        actor:give_info_portion ("gar_dolg_access_rostok")
     end   
-    if db.storage[db.actor:id ()].gar_rush["killed_by_actor"] >= 15 then
+    if db.storage[db.actor:id ()].gar_rush_killed_by_actor >= 15 then
        actor:give_info_portion ("gar_dolg_help_kill_rush_good")
        xr_gulag.setGulagRelation ("gar_dolg", game_object.friend, actor)
     end   
-    if db.storage[db.actor:id ()].gar_rush["killed_by_actor"] >= 20 then
+    if db.storage[db.actor:id ()].gar_rush_killed_by_actor >= 20 then
        actor:give_info_portion ("gar_dolg_help_kill_rush_perfect")
     end    
     
@@ -272,13 +271,12 @@ function military_dolg_dead (actor, npc)
        db.storage[db.actor:id ()] = {}
     end    
     
-    if db.storage[db.actor:id ()].mil_dolg == nil then
-       db.storage[db.actor:id ()].mil_dolg = {}
-       db.storage[db.actor:id ()].mil_dolg["killed"] = 0
-       db.storage[db.actor:id ()].mil_dolg["killed_by_actor"] = false
+    if db.storage[db.actor:id ()].mil_dolg_killed == nil then
+       db.storage[db.actor:id ()].mil_dolg_killed = 0
+       db.storage[db.actor:id ()].mil_dolg_killed_by_actor = false
     end    
     -- проапдейтим количество мертвых долговцев
-    db.storage[db.actor:id ()].mil_dolg["killed"] = db.storage[db.actor:id ()].mil_dolg["killed"] + 1
+    db.storage[db.actor:id ()].mil_dolg_killed = db.storage[db.actor:id ()].mil_dolg_killed + 1
 
     --printf ("!!! DOLG STALKER IS DEAD, KILLED %d STALKERS !!!", db.storage[db.actor:id ()].mil_dolg["killed"])
 
@@ -286,12 +284,12 @@ function military_dolg_dead (actor, npc)
     local st = db.storage[npc:id ()]
     if st.death.killer == -1 then return end
     if actor:id () == st.death.killer then 
-       db.storage[db.actor:id ()].mil_dolg["killed_by_actor"] = true
+       db.storage[db.actor:id ()].mil_dolg_killed_by_actor = true
     end
     
     -- если все умерли и была задача мочить снайпера, но сообщать не кому, то
     -- ставим задачу, как не выполненую
-    if db.storage[db.actor:id ()].mil_dolg["killed"] == 6 then
+    if db.storage[db.actor:id ()].mil_dolg_killed == 6 then
        if db.actor:has_info ("mil_sniper_get_job") and db.actor:dont_has_info ("mil_sniper_job_complete") then 
           level_tasks.set_task_state (task.fail, "mil_kill_sniper", 0)
           level_tasks.set_task_state (task.fail, "mil_kill_sniper", 2)
