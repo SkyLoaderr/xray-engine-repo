@@ -626,7 +626,7 @@ void __fastcall			xrSE_Visualed::OnChangeVisual(PropValue* sender)
         visual				= Device.Models.Create(visual_name);
         // play idle motion if skeleton
         if (PKinematics(visual)){ 
-            CMotionDef* M	= PKinematics(visual)->ID_Cycle_Safe("idle");
+            CMotionDef* M	= PKinematics(visual)->ID_Cycle_Safe("$editor");
             if (M) PKinematics(visual)->PlayCycle(M); 
             PKinematics(visual)->Calculate();
         }
