@@ -3,11 +3,9 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "frustum.h"
 #include "HOM.h"
 #include "occRasterizer.h"
 #include "cl_collector.h"
-#include "xr_creator.h"
  
 float	psOSSR		= .001f;
 
