@@ -133,7 +133,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 				AI_Node				= NULL;
 			}
 			else {
-				AI_Node				= AI.Node(AI_NodeID);s
+				AI_Node				= AI.Node(AI_NodeID);
 				//Msg					("REF_ADD (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] + 1);
 				getAI().ref_add		(AI_NodeID);
 				Position().y		= getAI().ffGetY(*AI_Node,Position().x,Position().z);
