@@ -1,4 +1,14 @@
+function on_enter(zone,object)
+	printf("Object %s entered zone %s",object:name(),zone:name())
+end
+
+function on_exit(zone,object)
+	printf("Object %s exited zone %s",object:name(),zone:name())
+end
+
 function main()
+
+	local event	= get_level_object("script_zone0000")
 
 	local stalker1	= get_level_object("m_stalker_e0000")
 	local stalker2	= get_level_object("m_stalker_e0001")
@@ -24,13 +34,21 @@ function main()
 		cond	(cond.time_end, 100000)
 	)
 
-	while stalker1:action() and stalker2:action() do
+	event:clear_callback(true)
+	event:clear_callback(false)
 
+	event:set_callback(script_01.on_enter,true)
+	event:set_callback(script_01.on_exit,false)
+	
+	while stalker1:action() and stalker2:action() do
 	    wait	()
 
 	end
 
 	stalker1:script	(false, script_01.script_name())
 	stalker2:script	(false, script_01.script_name())
+
+	event:clear_callback(true)
+	event:clear_callback(false)
 
 end
