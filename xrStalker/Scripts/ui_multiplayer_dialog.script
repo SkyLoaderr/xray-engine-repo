@@ -18,6 +18,7 @@ class "multiplayer_dialog" (ui_base_dialog.base_dialog)
 
 function multiplayer_dialog:__init() super()
 	self:InitControls()
+	self:InitCallbacks()
 end
 
 function multiplayer_dialog:__finalize()
@@ -81,4 +82,12 @@ function multiplayer_dialog:InitControls()
 	self:Register(btn)
 	self.main_frame:AttachChild(btn)
 
+end
+
+function mutliplayer_dialog:InitCallbacks()
+	self:AddCallback("btn_back",   ui_events.BUTTON_CLICKED, self, "OnButton_back")
+end
+
+function multiplayer_dialog:OnButton_back()
+	level.start_stop_menu(self, true)
 end
