@@ -146,8 +146,8 @@ private:
 	Fbox			base_box;
 	vector<xOBB>	model;
 
-	u32			dwFrame;		// The model itself
-	u32			dwFrameTL;		// Top level
+	u32				dwFrame;		// The model itself
+	u32				dwFrameTL;		// Top level
 
 	void			BuildState		();
 	void			BuildTopLevel	();
