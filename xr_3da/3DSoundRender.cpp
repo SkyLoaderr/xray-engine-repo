@@ -22,7 +22,6 @@ C3DSoundRender::C3DSoundRender()
 {
 	pListener					= NULL;
 	pExtensions					= NULL;
-	pGeometry					= NULL;
 
     // Get listener interface.
 	R_ASSERT					(pSounds);
@@ -45,11 +44,6 @@ C3DSoundRender::~C3DSoundRender()
 {
 	_RELEASE		( pExtensions );
 	_RELEASE		( pListener );
-}
-
-void C3DSoundRender::SetGeometry( RAPID::Model* M )
-{
-	pGeometry		= M;
 }
 
 void C3DSoundRender::OnMove()

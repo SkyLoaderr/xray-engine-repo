@@ -33,6 +33,7 @@ CSoundManager::CSoundManager(BOOL bCDA )
 	
 	pDevice			= NULL;
     pBuffer			= NULL;
+	pGeometry		= NULL;
 	
 	Initialize		( );
 	
@@ -74,15 +75,6 @@ CSoundManager::~CSoundManager( )
 	
 	_RELEASE		( pBuffer		);
 	_RELEASE		( pDevice		);
-}
-
-void CSoundManager::SetGeometry	( RAPID::Model* M )
-{
-	pSoundRender->SetGeometry	(M);
-}
-RAPID::Model*	CSoundManager::GetGeometry( )
-{
-
 }
 
 void CSoundManager::Restart()
