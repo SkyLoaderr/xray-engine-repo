@@ -351,10 +351,6 @@ SOURCE=.\std_classes.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\xr_func.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\xr_list.h
 # End Source File
 # End Group

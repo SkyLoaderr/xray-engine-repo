@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "compiler.h"
-#include "xr_func.h"
 
 IC void	CompressPos	(NodePosition& Dest, Fvector& Src, hdrNODES& H)
 {

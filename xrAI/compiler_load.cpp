@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "compiler.h"
-#include "xr_func.h"
 #include "xr_ini.h"
 #include "communicate.h"
 
