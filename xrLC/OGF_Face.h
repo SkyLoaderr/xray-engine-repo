@@ -7,7 +7,7 @@
 
 struct OGF_Texture
 {
-	ref_str				name;
+	shared_str			name;
 	b_texture*			pSurface;
 };
 typedef svector<OGF_Texture,2>	vecOGF_T;

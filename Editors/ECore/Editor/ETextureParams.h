@@ -90,7 +90,7 @@ struct XR_EPROPS_API STextureParams{
     int			        width;
     int			        height;
     // detail ext
-    ref_str		        detail_name;
+    shared_str			detail_name;
     float		        detail_scale;
     ETType		        type;
     // material
@@ -99,7 +99,7 @@ struct XR_EPROPS_API STextureParams{
     // bump	
 	float 				bump_virtual_height;
     ETBumpMode			bump_mode;
-    ref_str		        bump_name;
+    shared_str			bump_name;
 
     STextureParams		()
 	{
