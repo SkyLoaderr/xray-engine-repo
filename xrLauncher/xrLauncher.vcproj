@@ -74,7 +74,14 @@
 			ManagedExtensions="TRUE">
 			<Tool
 				Name="VCCLCompilerTool"
-				PreprocessorDefinitions="WIN32;NDEBUG"
+				Optimization="3"
+				GlobalOptimizations="TRUE"
+				InlineFunctionExpansion="2"
+				EnableIntrinsicFunctions="TRUE"
+				FavorSizeOrSpeed="1"
+				OptimizeForProcessor="3"
+				PreprocessorDefinitions="WIN32;NDEBUG;_USRDLL;dSINGLE;MSVC"
+				StringPooling="TRUE"
 				MinimalRebuild="FALSE"
 				ExceptionHandling="FALSE"
 				RuntimeLibrary="2"
@@ -90,8 +97,9 @@
 				AdditionalDependencies="xrCore.lib xr_3da.lib"
 				OutputFile="x:\xrLauncher.dll"
 				LinkIncremental="1"
-				GenerateDebugInformation="TRUE"
-				SubSystem="2"/>
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
