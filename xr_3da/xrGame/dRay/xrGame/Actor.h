@@ -18,6 +18,8 @@
 #include "damage_manager.h"
 #include "material_manager.h"
 #include "StatGraph.h"
+#include "PhraseDialogManager.h"
+ 
 
 using namespace ACTOR_DEFS;
 
@@ -46,7 +48,8 @@ class CActor:
 	public CInventoryOwner,
 	public CActorCondition,
 	public CDamageManager,
-	public CMaterialManager
+	public CMaterialManager,
+	public CPhraseDialogManager
 #ifdef DEBUG
 	,public pureRender
 #endif
@@ -79,9 +82,11 @@ public:
 	/////////////////////////////////////////////////////////////////
 	// Inventory Owner 
 
-	//information receive
+	//information receive & dialogs
 	virtual void OnReceiveInfo		(int info_index);
 	virtual void ReceivePdaMessage	(u16 who, EPdaMsg msg, int info_index);
+	//PhraseDialogManager
+	virtual void ReceivePhrase		(DIALOG_SHARED_PRT phrase_dialog);
 
 	virtual void reinit			();
 	virtual void reload			(LPCSTR section);
