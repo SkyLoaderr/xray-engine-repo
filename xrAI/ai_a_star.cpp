@@ -71,7 +71,7 @@ IC void vfUpdateSuccessors(TNode *tpList, float dDifference)
 	}
 }
 
-void vfFindTheShortestPath(TNode *taHeap, TIndexNode *tpaIndexes, u32 &dwAStarStaticCounter, u32 dwStartNode, u32 dwGoalNode, float &fDistance, float fMaxDistance, Fvector tStartPosition, Fvector tFinishPosition, vector<u32> &tpaNodes)
+void vfFindTheShortestPath(TNode *taHeap, TIndexNode *tpaIndexes, u32 &dwAStarStaticCounter, u32 dwStartNode, u32 dwGoalNode, float &fDistance, float fMaxDistance, Fvector tStartPosition, Fvector tFinishPosition, vector<u32> &tpaNodes, CCriticalSection &tCriticalSection)
 {
 	// initialization
 	dwAStarStaticCounter++;
@@ -118,6 +118,8 @@ void vfFindTheShortestPath(TNode *taHeap, TIndexNode *tpaIndexes, u32 &dwAStarSt
 		if (tpBestNode->iIndex == (int)dwGoalNode) {
 			fDistance = tpBestNode->g;
 			/**/
+			float fStraightDistance = fDistance;
+
 			tpTemp1 = tpBestNode;
 			tpTemp = tpTemp1->tpBack;
 
@@ -131,12 +133,35 @@ void vfFindTheShortestPath(TNode *taHeap, TIndexNode *tpaIndexes, u32 &dwAStarSt
 			for (u32 j=1; tpTemp; tpTemp = tpTemp->tpBack, j++)
 				tpaNodes[i - j] = tpTemp->iIndex;
 
-			float fCumulativeDistance = 0;
-			u32 dwStartNode = tpaNodes[0];
+			float fCumulativeDistance = 0, fLastDirectDistance = 0, fDirectDistance;
+			Fvector tPosition = tStartPosition;
+			u32 dwNode = tpaNodes[0];
 			for (i=1; i<(int)tpaNodes.size(); i++) {
-				float fDirectDistance = ffCheckPositionInDirection(dwStartNode,tStartPosition,tfGetNodeCenter(tpaNodes[i]),fMaxDistance)
+				fDirectDistance = ffCheckPositionInDirection(dwNode,tPosition,tfGetNodeCenter(tpaNodes[i]),fMaxDistance);
+				if (fDirectDistance == MAX_VALUE) {
+					if (fLastDirectDistance == 0) {
+						fCumulativeDistance += ffGetDistanceBetweenNodeCenters(dwNode,tpaNodes[i]);
+						dwNode = tpaNodes[i];
+					}
+					else {
+						fCumulativeDistance += fLastDirectDistance;
+						fLastDirectDistance = 0;
+						dwNode = tpaNodes[i-- - 1];
+					}
+					tPosition = tfGetNodeCenter(dwNode);
+				}
+				else 
+					fLastDirectDistance = fDirectDistance;
 			}
+			fDirectDistance = ffCheckPositionInDirection(dwNode,tPosition,tFinishPosition,fMaxDistance);
+			if (fDirectDistance == MAX_VALUE)
+				fDistance = fCumulativeDistance + fLastDirectDistance + tFinishPosition.distance_to(tfGetNodeCenter(tpaNodes[tpaNodes.size() - 1]));
+			else
+				fDistance = fCumulativeDistance + fDirectDistance;
 			/**/
+			tCriticalSection.Enter();
+			Msg("[%6d][%6d] : %6.2f -> %6.2f (%6.2f%c)",dwStartNode,tpBestNode->iIndex,fStraightDistance,fDistance,(fStraightDistance - fDistance)/fStraightDistance*100,'%');
+			tCriticalSection.Leave();
 			return;
 		}
 		

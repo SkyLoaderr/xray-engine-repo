@@ -235,7 +235,9 @@ float ffCheckPositionInDirection(u32 dwStartNode, Fvector tStartPosition, Fvecto
 	dwCurNode = dwStartNode;
 	tTempPoint = tTravelNode = tPrevPoint = tStartPoint;
 
-	while (!bfInsideNode(m_nodes_ptr[dwCurNode],tFinishPosition) && (fCumulativeDistance < fMaxDistance)) {
+	while (!bfInsideNode(m_nodes_ptr[dwCurNode],tFinishPosition)) {
+		if (fCumulativeDistance > fMaxDistance)
+			return(fCumulativeDistance);
 		UnpackContour(tCurContour,dwCurNode);
 		tpNode = Node(dwCurNode);
 		taLinks = (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
@@ -291,7 +293,7 @@ float ffCheckPositionInDirection(u32 dwStartNode, Fvector tStartPosition, Fvecto
 			else
 				return(MAX_VALUE);
 	}
-	if (bfInsideNode(m_nodes_ptr[dwCurNode],tFinishPosition) && (fCumulativeDistance < fMaxDistance)) {
+	if (bfInsideNode(m_nodes_ptr[dwCurNode],tFinishPosition)) {
 		fCumulativeDistance += tPrevPoint.distance_to(tFinishPoint);
 		return(fCumulativeDistance);
 	}
