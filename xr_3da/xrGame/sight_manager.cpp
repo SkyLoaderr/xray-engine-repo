@@ -51,6 +51,7 @@ void CSightManager::SetFirePointLookAngles(const Fvector &tPosition, float &yaw,
 	Fvector			tTemp;
 	m_object->Center(tTemp);
 	tTemp.sub		(tPosition,Fvector(tTemp));
+//	tTemp.sub		(tPosition,m_object->eye_matrix.c);
 	tTemp.getHP		(yaw,pitch);
 	VERIFY			(_valid(yaw));
 	VERIFY			(_valid(pitch));

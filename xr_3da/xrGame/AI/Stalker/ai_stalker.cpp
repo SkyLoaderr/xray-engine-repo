@@ -160,14 +160,14 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	if (!inherited::net_Spawn(DC) || !CInventoryOwner::net_Spawn(DC) || !CStalkerMovementManager::net_Spawn(DC))
 		return						(FALSE);
 
-	CStalkerAnimations::reload		(Visual(),pSettings,*cNameSect());
-
 	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
-	CSE_ALifeHumanAbstract			*tpHuman = dynamic_cast<CSE_ALifeHumanAbstract*>(e);
-
 	m_pPhysics_support->in_NetSpawn	(e);
+	
+	CSE_ALifeHumanAbstract			*tpHuman = dynamic_cast<CSE_ALifeHumanAbstract*>(e);
 	R_ASSERT						(tpHuman);
 	m_dwMoney						= tpHuman->m_dwMoney;
+
+	CStalkerAnimations::reload		(Visual(),pSettings,*cNameSect());
 
 	m_head.current.yaw = m_head.target.yaw = m_body.current.yaw = m_body.target.yaw	= angle_normalize_signed(-tpHuman->o_Angle.y);
 	m_body.current.pitch			= m_body.target.pitch	= 0;
