@@ -9,6 +9,8 @@ const int	idx2edge	[3][3]  = {
 	{ 2,  1, -1}
 };
 
+DWORD			dwInvalidFaces	= 0;
+
 extern CBuild*	pBuild;
 
 bool			g_bUnregister = true;
@@ -72,6 +74,32 @@ Shader_xrLC&	Face::Shader()
 	return *(pBuild->shaders.Get(shader_id));
 }
 
+void	Face::Failure		()
+{
+	dwInvalidFaces			++;
+
+	Msg		("* ERROR: Invalid face. (A=%f,e0=%f,e1=%f,e2=%f)",
+		CalcArea(),
+		v[0]->P.distance_to(v[1]->P),
+		v[0]->P.distance_to(v[2]->P),
+		v[1]->P.distance_to(v[2]->P)
+		);
+	Msg		("*        v0[%f,%f,%f], v1[%f,%f,%f], v2[%f,%f,%f]",
+		VPUSH(v[0]->P),
+		VPUSH(v[1]->P),
+		VPUSH(v[2]->P)
+		);
+}
+
+void	Face::Verify		()
+{
+	// 1st area
+	if	(CalcArea()<EPS)	{ Failure(); return; }
+
+	// 2nd possibility to calc normal
+	CalcNormal				();
+}
+
 void	Face::CalcNormal	()
 {
 	Fvector t1,t2;
@@ -85,7 +113,7 @@ void	Face::CalcNormal	()
 	float mag		= N.magnitude();
 	if (mag<EPS_S)
 	{
-		CalcNormal2();
+		CalcNormal2	();
 	} else {
 		N.div(mag);
 	}
@@ -105,18 +133,7 @@ void	Face::CalcNormal2	()
 	double mag		= dN.magnitude();
 	if (mag<dbl_zero)
 	{
-		Msg		("* ERROR: Invalid face: Can't calc normal. (A=%f,e0=%f,e1=%f,e2=%f)",
-			CalcArea(),
-			v[0]->P.distance_to(v[1]->P),
-			v[0]->P.distance_to(v[2]->P),
-			v[1]->P.distance_to(v[2]->P)
-			);
-		Msg		("*        v0[%f,%f,%f], v1[%f,%f,%f], v2[%f,%f,%f]",
-			VPUSH(v[0]->P),
-			VPUSH(v[1]->P),
-			VPUSH(v[2]->P)
-			);
-
+		Failure		();
 		Dvector Nabs;
 		Nabs.abs	(dN);
 

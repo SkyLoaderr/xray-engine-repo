@@ -104,6 +104,7 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 				uv2.set				(B.t[1].x,B.t[1].y);
 				uv3.set				(B.t[2].x,B.t[2].y);
 				_F->AddChannel		( uv1, uv2, uv3 );
+				_F->Verify			( );
 			} catch (...)
 			{
 				Msg			("* ERROR: Can't process face #%d",i);
@@ -113,6 +114,13 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 		Progress			(p_total+=p_cost);
 		Msg					("* %16s: %d","faces",g_faces.size());
 		F->Close			();
+
+		extern DWORD		dwInvalidFaces;
+		if (dwInvalidFaces)	
+		{
+			Msg				("* FATAL: %d invalid faces. Compilation aborted");
+			R_ASSERT		(0);
+		}
 	}
 
 	//*******

@@ -121,8 +121,8 @@ public:
 	void			CalcNormal2		();
 
 	//------------------------------//
-	IC void Failure	(void)
-	{	R_ASSERT(0=="Invalid face"); }
+	void Failure					();
+	void Verify						();
 
 	// Does the face contains this vertex?
 	IC bool	VContains	(Vertex* pV)
