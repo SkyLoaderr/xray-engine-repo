@@ -525,7 +525,7 @@ void CMissile::activate_physic_shell()
 
 	XFORM().set(m_throw_matrix);
 	m_pPhysicsShell->Activate	(XFORM(), l_vel, zero_vel);
-	m_pPhysicsShell->Update		();
+
 }
 
 void CMissile::create_physic_shell	()
