@@ -52,7 +52,6 @@ bool CAI_Biting::AA_CheckHit()
 		// делаем поправку на pitch (fix it)
 		Fvector new_dir;
 		Fvector C1, C2;
-		float y1,p1,y2,p2;
 		Center(C1);
 		obj->Center(C2);
 		new_dir.sub(C2,C1);

@@ -41,9 +41,9 @@ void CBitingTest::Run()
 	pMonster->SetPathParams(
 		CMovementManager::ePathTypeLevelPath, 
 		vertex_id, 
-		ai().level_graph().vertex_position(vertex_id),
-		pMonster->eVelocityParamsRun,
-		pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterRunNormal
+		ai().level_graph().vertex_position(vertex_id)
+//		pMonster->eVelocityParamsRun,
+//		pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterRunNormal
 	);
 
 }

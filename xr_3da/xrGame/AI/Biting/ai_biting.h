@@ -196,13 +196,13 @@ public:
 			void			Path_ApproachPoint				(CEntity *pE, Fvector position);
 			void			Path_WalkAroundObj				(CEntity *pE, Fvector position);
 			
-			void			SetPathParams					(CMovementManager::EPathType path_type, u32 dest_vertex_id, const Fvector &dest_pos, u32 velocity_mask, u32 desirable_vel);
+			void			SetPathParams					(CMovementManager::EPathType path_type, u32 dest_vertex_id, const Fvector &dest_pos);
 			
 			void			SetVelocity						();
 			void			PreprocessAction				();
 
 			bool			IsObstacle						(TTime time);
-
+			void			SetupVelocityMasks				();
 
 
 	// Other

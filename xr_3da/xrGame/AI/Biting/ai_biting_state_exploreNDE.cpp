@@ -62,9 +62,9 @@ void CBitingExploreNDE::Run()
 	pMonster->SetPathParams(
 		CMovementManager::ePathTypeLevelPath, 
 		pMonster->level_vertex_id(), 
-		pMonster->Position(),
-		pMonster->eVelocityParamsWalk,
-		pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterStand
+		pMonster->Position()
+//		pMonster->eVelocityParamsWalk,
+//		pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterStand
 	); 
 
 	pMonster->SetSound(SND_TYPE_IDLE, pMonster->_sd->m_dwIdleSndDelay);

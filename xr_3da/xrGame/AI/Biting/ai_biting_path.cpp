@@ -156,9 +156,9 @@ void CAI_Biting::MoveToTarget(CEntity *entity, u32 vel_mask, u32 des_mask)
 	SetPathParams(
 		CMovementManager::ePathTypeLevelPath, 
 		entity->level_vertex_id(),
-		GetValidPosition(entity, entity->Position()),
-		vel_mask,
-		des_mask
+		GetValidPosition(entity, entity->Position())
+//		vel_mask,
+//		des_mask
 	);
 
 }
@@ -168,9 +168,9 @@ void CAI_Biting::MoveToTarget(const Fvector &pos, u32 node_id, u32 vel_mask, u32
 	SetPathParams(
 		CMovementManager::ePathTypeLevelPath, 
 		node_id,
-		pos,
-		vel_mask,
-		des_mask
+		pos
+//		vel_mask,
+//		des_mask
 	);
 }
 
@@ -286,76 +286,66 @@ Fvector CAI_Biting::RandomPosInR(const Fvector &p, float R)
 	return v;
 }
 
-void CAI_Biting::SetPathParams(CMovementManager::EPathType path_type, u32 dest_vertex_id, const Fvector &dest_pos, u32 velocity_mask, u32 desirable_vel)
+void CAI_Biting::SetPathParams(CMovementManager::EPathType path_type, u32 dest_vertex_id, const Fvector &dest_pos)
 {
 	set_level_dest_vertex(dest_vertex_id);
 	set_dest_position(dest_pos);
 	set_path_type (path_type);
 	
-//	SetupVelocityMasks();
+	SetupVelocityMasks();
 }
 
 
-//void CAI_Biting::SetupVelocityMasks()
-//{
-//	bool bEnablePath = true;
-//	u32 vel_mask = 0;
-//	u32 des_mask = 0;
-//
-//	switch (MotionMan.m_tAction) {
-//	case ACT_STAND_IDLE: 
-//	case ACT_SIT_IDLE:	 
-//	case ACT_LIE_IDLE:
-//	case ACT_EAT:
-//	case ACT_SLEEP:
-//	case ACT_REST:
-//	case ACT_LOOK_AROUND:
-//	case ACT_ATTACK:
-//		bEnablePath = false;
-//		break;
-//	
-//	case ACT_WALK_FWD:
-//		vel_mask = eVelocityParamsWalk;
-//		des_mask = eVelocityParameterWalkNormal;
-//		break;
-//	case ACT_WALK_BKWD:
-//		break;
-//	case ACT_RUN:
-//		vel_mask = eVelocityParamsRun;
-//		des_mask = eVelocityParameterRunNormal;
-//		break;
-//	case ACT_DRAG:
-//		vel_mask = eVelocityParameterDrag;
-//		des_mask = eVelocityParameterDrag;
-//
-//		MotionMan.SetSpecParams(ASP_MOVE_BKWD);
-//
-//		break;
-//	case ACT_STEAL:
-//		vel_mask = eVelocityParameterSteal;
-//		des_mask = eVelocityParameterSteal;
-//		break;
-//	case ACT_JUMP:
-//		break;
-//	}
-//
-//	if (bEnablePath) {
-//		set_velocity_mask(vel_mask);	
-//		set_desirable_mask(des_vel);
-//	} else {
-//		enable_movement(false);
-//	}
-//}
+void CAI_Biting::SetupVelocityMasks()
+{
+	bool bEnablePath = true;
+	u32 vel_mask = 0;
+	u32 des_mask = 0;
 
+	switch (MotionMan.m_tAction) {
+	case ACT_STAND_IDLE: 
+	case ACT_SIT_IDLE:	 
+	case ACT_LIE_IDLE:
+	case ACT_EAT:
+	case ACT_SLEEP:
+	case ACT_REST:
+	case ACT_LOOK_AROUND:
+	case ACT_ATTACK:
+		bEnablePath = false;
+		break;
+	
+	case ACT_WALK_FWD:
+		vel_mask = eVelocityParamsWalk;
+		des_mask = eVelocityParameterWalkNormal;
+		break;
+	case ACT_WALK_BKWD:
+		break;
+	case ACT_RUN:
+		vel_mask = eVelocityParamsRun;
+		des_mask = eVelocityParameterRunNormal;
+		break;
+	case ACT_DRAG:
+		vel_mask = eVelocityParameterDrag;
+		des_mask = eVelocityParameterDrag;
 
+		MotionMan.SetSpecParams(ASP_MOVE_BKWD);
 
-//bool CAI_Biting::IsGoodMovement() 
-//{
-//	if (IsMoveAlongPathFinished() || CDetailPathManager) {
-//
-//	}
-//}
+		break;
+	case ACT_STEAL:
+		vel_mask = eVelocityParameterSteal;
+		des_mask = eVelocityParameterSteal;
+		break;
+	case ACT_JUMP:
+		break;
+	}
 
+	if (bEnablePath) {
+		set_velocity_mask(vel_mask);	
+		set_desirable_mask(des_mask);
+	} else {
+		enable_movement(false);
+	}
+}
 
 
 // возвращает вершину level_graph, соответствующую случайной вершине game_graph в радиусе R

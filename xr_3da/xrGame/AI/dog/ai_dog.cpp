@@ -143,10 +143,6 @@ void CAI_Dog::StateSelector()
 {	
 	VisionElem ve;
 
-	SetState(stateTest);
-	return;
-
-	
 	if (C || D || E || F) SetBkgndSound();
 	else SetBkgndSound(false);
 

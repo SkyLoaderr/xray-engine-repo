@@ -105,9 +105,9 @@ void CBitingRest::Run()
 				pMonster->SetPathParams(
 					CMovementManager::ePathTypeLevelPath, 
 					vertex_id, 
-					ai().level_graph().vertex_position(vertex_id),
-					pMonster->eVelocityParamsWalk,
-					pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterStand
+					ai().level_graph().vertex_position(vertex_id)
+//					pMonster->eVelocityParamsWalk,
+//					pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterStand
 				);
 			}
 
@@ -131,9 +131,9 @@ void CBitingRest::Run()
 				pMonster->SetPathParams(
 					CMovementManager::ePathTypeLevelPath, 
 					vertex_id, 
-					ai().level_graph().vertex_position(vertex_id),
-					pMonster->eVelocityParamsWalk,
-					pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterStand
+					ai().level_graph().vertex_position(vertex_id)
+//					pMonster->eVelocityParamsWalk,
+//					pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterStand
 					);
 			}
 

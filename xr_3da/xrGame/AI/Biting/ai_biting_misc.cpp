@@ -222,43 +222,7 @@ bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
 	u32 vel_mask = 0;
 	u32 des_mask = 0;
 
-	switch (MotionMan.m_tAction) {
-	case ACT_STAND_IDLE: 
-	case ACT_SIT_IDLE:	 
-	case ACT_LIE_IDLE:
-	case ACT_EAT:
-	case ACT_SLEEP:
-	case ACT_REST:
-	case ACT_LOOK_AROUND:
-	case ACT_ATTACK:
-		bEnablePath = false;
-		break;
-	
-	case ACT_WALK_FWD:
-		vel_mask = eVelocityParamsWalk;
-		des_mask = eVelocityParameterWalkNormal;
-		break;
-	case ACT_WALK_BKWD:
-		break;
-	case ACT_RUN:
-		vel_mask = eVelocityParamsRun;
-		des_mask = eVelocityParameterRunNormal;
-		break;
-	case ACT_DRAG:
-		vel_mask = eVelocityParameterDrag;
-		des_mask = eVelocityParameterDrag;
-
-
-		MotionMan.SetSpecParams(ASP_MOVE_BKWD);
-
-		break;
-	case ACT_STEAL:
-		vel_mask = eVelocityParameterSteal;
-		des_mask = eVelocityParameterSteal;
-		break;
-	case ACT_JUMP:
-		break;
-	}
+	SetupVelocityMasks();
 
 	if (bEnablePath) {
 		CDetailPathManager::set_velocity_mask(vel_mask);

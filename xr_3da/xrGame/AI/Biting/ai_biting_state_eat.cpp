@@ -268,9 +268,9 @@ void CBitingEat::Run()
 			pMonster->SetPathParams(
 				CMovementManager::ePathTypeLevelPath, 
 				pMonster->level_vertex_id(), 
-				pMonster->Position(),
-				pMonster->eVelocityParameterDrag | pMonster->eVelocityParameterStand,
-				pMonster->eVelocityParameterDrag
+				pMonster->Position()
+//				pMonster->eVelocityParameterDrag | pMonster->eVelocityParameterStand,
+//				pMonster->eVelocityParameterDrag
 			); 
 
 			pMonster->Path_GetAwayFromPoint(pCorpse, pCorpse->Position(), saved_dist);

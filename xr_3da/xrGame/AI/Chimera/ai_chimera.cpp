@@ -50,10 +50,6 @@ void CAI_Chimera::Init()
 void CAI_Chimera::StateSelector()
 {
 
-	SetState(stateTest);
-	return;
-
-
 	VisionElem ve;
 
 	if (C && H && I)			SetState(statePanic);

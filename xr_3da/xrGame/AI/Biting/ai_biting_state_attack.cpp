@@ -179,7 +179,7 @@ void CBitingAttack::Run()
 		}
 	}
 
-	bool bNeedRebuildPath = false;
+	//bool bNeedRebuildPath = false;
 	
 	if (m_tAction != ACTION_ATTACK_MELEE) bEnableBackAttack = true;
 

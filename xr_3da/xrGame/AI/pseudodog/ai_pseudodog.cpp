@@ -114,10 +114,6 @@ void CAI_PseudoDog::StateSelector()
 {	
 	VisionElem ve;
 
-	SetState(stateTest);
-	return;
-	
-
 	if (C || D || E || F) SetBkgndSound();
 	else SetBkgndSound(false);
 
@@ -144,6 +140,7 @@ void CAI_PseudoDog::StateSelector()
 	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < 0.85f) || flagEatNow))	
 		SetState(stateEat);
 	else						SetState(stateRest); 
+
 }
 
 void CAI_PseudoDog::UpdateCL()
