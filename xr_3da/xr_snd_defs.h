@@ -1,6 +1,8 @@
 #pragma once
 
-const	int SND_UNDEFINED = -1;
+const	u32 soundEventPulse			= 500;	// ms
+const	s32 soundUndefinedHandle	= -1;
+
 
 // refs
 class	ENGINE_API	CCDA;
@@ -27,7 +29,5 @@ struct 	sound_defer
 
 	sound_defer(LPDIRECTSOUNDBUFFER _P, u32 _F) : P(_P), F(_F) {};
 };
-
-const u32 soundEventPulse	= 500;	// ms
 
 typedef Fvector soundOccluder[3];
