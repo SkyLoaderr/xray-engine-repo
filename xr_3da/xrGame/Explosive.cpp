@@ -21,6 +21,7 @@
 #include "level_bullet_manager.h"
 #include "xrmessages.h"
 #include "gamemtllib.h"
+#include "clsid_game.h"
 
 #define EFFECTOR_RADIUS 30.f
 
@@ -225,9 +226,20 @@ void CExplosive::Explode()
 	Fvector l_dir;
 	float l_dst;
 
-	m_blasted.clear();
-	feel_touch_update(pos, m_fBlastRadius);
+	//---------------------------------------------------------------------
+	xr_vector<ISpatial*>	ISpatialResult;
+	g_SpatialSpace->q_sphere(ISpatialResult,0,STYPE_COLLIDEABLE,pos,m_fBlastRadius);
 	
+	m_blasted.clear();
+	for (u32 o_it=0; o_it<ISpatialResult.size(); o_it++)
+	{
+		ISpatial*		spatial	= ISpatialResult[o_it];
+		feel_touch_new(spatial->dcast_CObject());
+	}
+	//---------------------------------------------------------------------
+//	m_blasted.clear();	
+//	feel_touch_update(pos, m_fBlastRadius);
+
 	xr_list<s16>		l_elements;
 	xr_list<Fvector>	l_bs_positions;
 	

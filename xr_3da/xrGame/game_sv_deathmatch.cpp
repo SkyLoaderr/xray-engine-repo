@@ -679,7 +679,7 @@ void	game_sv_Deathmatch::CheckItem		(game_PlayerState*	ps, PIItem pItem, xr_vect
 void	game_sv_Deathmatch::OnPlayerBuyFinished		(ClientID id_who, NET_Packet& P)
 {
 	game_PlayerState*	ps	=	get_id	(id_who);
-	if (!ps || ps->Skip) return;
+	if (!ps || ps->Skip) return;	
 	
 	P.r_s32(ps->LastBuyAcount);
 
@@ -763,9 +763,9 @@ void	game_sv_Deathmatch::OnPlayerBuyFinished		(ClientID id_who, NET_Packet& P)
 		ps->pItemList.push_back(ItemsDesired[it]);
 	};
 	//-------------------------------------------------------------
-	if (!e_Actor) return;
+	if (!pActor) return;
 
-	SpawnWeaponsForActor(e_Actor, ps);
+ 	SpawnWeaponsForActor(e_Actor, ps);
 };
 
 //void	game_sv_Deathmatch::SpawnWeapon4Actor		(u32 actorId,  LPCSTR N, u8 Addons)
