@@ -99,7 +99,7 @@ function motivator_binder:reload (section)
 -- Настройка реакций
 xr_motivator.storage[self.object:id()].reactions = {
         	enabled = true,
-		evn = xr_reactions.events(self.object)
+--		evn = xr_reactions.events(self.object)
 	}
 -- Хранение трейдселлера
 xr_motivator.storage[self.object:id()].tradeseller = 
