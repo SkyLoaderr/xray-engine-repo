@@ -41,32 +41,68 @@
 	<info_portion id="escape_artefact_start">
 		<location>
 			<level>l01_escape</level>
-			<x>206</x>
-			<y>68</y>
-			<icon name="Ящик" x="5" y="1" width="1" height="1" r="255" g="255" b="255" marker="1"></icon>
-			<text>Скопление аномалий "Электра"</text>
+			<x>199</x>
+			<y>74</y>
+			<icon name="Аномалия" x="5" y="1" width="1" height="1" r="255" g="255" b="255" marker="1"></icon>
+			<text>Скопление аномалий</text>
 		</location>	
 		<location>
 			<level>l01_escape</level>
-			<x>168</x>
-			<y>70</y>
-			<icon name="Ящик" x="5" y="1" width="1" height="1" r="255" g="255" b="255" marker="1"></icon>
-			<text>Скопление аномалий "Электра"</text>
+			<x>223</x>
+			<y>82</y>
+			<icon name="Аномалия" x="5" y="1" width="1" height="1" r="255" g="255" b="255" marker="1"></icon>
+			<text>Скопление аномалий</text>
 		</location>	
 		<location>
 			<level>l01_escape</level>
-			<x>179</x>
-			<y>107</y>
-			<icon name="Ящик" x="5" y="1" width="1" height="1" r="255" g="255" b="255" marker="1"></icon>
-			<text>Скопление аномалий "Электра"</text>
+			<x>227</x>
+			<y>100</y>
+			<icon name="Аномалия" x="5" y="1" width="1" height="1" r="255" g="255" b="255" marker="1"></icon>
+			<text>Скопление аномалий</text>
 		</location>	
 		<location>
 			<level>l01_escape</level>
-			<x>162</x>
-			<y>111</y>
-			<icon name="Ящик" x="5" y="1" width="1" height="1" r="255" g="255" b="255" marker="1"></icon>
-			<text>Скопление аномалий "Электра"</text>
+			<x>188</x>
+			<y>64</y>
+			<icon name="Аномалия" x="5" y="1" width="1" height="1" r="255" g="255" b="255" marker="1"></icon>
+			<text>Скопление аномалий</text>
 		</location>	
+		<location>
+			<level>l01_escape</level>
+			<x>208</x>
+			<y>106</y>
+			<icon name="Аномалия" x="5" y="1" width="1" height="1" r="255" g="255" b="255" marker="1"></icon>
+			<text>Скопление аномалий</text>
+		</location>	
+		<location>
+			<level>l01_escape</level>
+			<x>193</x>
+			<y>124</y>
+			<icon name="Аномалия" x="5" y="1" width="1" height="1" r="255" g="255" b="255" marker="1"></icon>
+			<text>Скопление аномалий</text>
+		</location>	
+		<location>
+			<level>l01_escape</level>
+			<x>185</x>
+			<y>110</y>
+			<icon name="Аномалия" x="5" y="1" width="1" height="1" r="255" g="255" b="255" marker="1"></icon>
+			<text>Скопление аномалий</text>
+		</location>	
+		<location>
+			<level>l01_escape</level>
+			<x>183</x>
+			<y>96</y>
+			<icon name="Аномалия" x="5" y="1" width="1" height="1" r="255" g="255" b="255" marker="1"></icon>
+			<text>Скопление аномалий</text>
+		</location>	
+		<location>
+			<level>l01_escape</level>
+			<x>181</x>
+			<y>78</y>
+			<icon name="Аномалия" x="5" y="1" width="1" height="1" r="255" g="255" b="255" marker="1"></icon>
+			<text>Скопление аномалий</text>
+		</location>	
+		
 		<task>esc_trader_need_electra_artefact</task>
 	</info_portion>
 
