@@ -46,44 +46,26 @@ void	CBlender_Model::Compile	(CBlender_Compile& C)
 		}
 		C.PassEnd			();
 	} else {
-		C.PassBegin		();
+		switch (C.iElement)	
 		{
+		case 0:	// Highest LOD
+			C.r_Pass			("r1_model_def_hq","r1_model_def_hq",TRUE);
+			C.r_Sampler			("s_base",C.L_textures[0]);
+			C.r_Sampler			("s_lmap","$user$projector");
+			C.r_End				();
+			break;
+		case 1:	// Lowest LOD
+			C.PassBegin			();
 			C.PassSET_ZB		(TRUE,TRUE);
 			C.PassSET_Blend_SET	();
 			C.PassSET_LightFog	(TRUE,TRUE);
-
-			switch (C.iElement)	
-			{
-			case 0:	// Highest LOD
-				C.StageBegin		();
-				C.StageSET_Color	(D3DTA_TEXTURE,	D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-				C.StageSET_Alpha	(D3DTA_TEXTURE,	D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-				C.StageSET_TMC		("$user$projector", "$user$projector", "$null", 0	);
-				C.StageEnd			();
-
-				/*
-				C.StageBegin		();
-				C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_ADD,			D3DTA_DIFFUSE);
-				C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-				C.StageSET_TMC		("$user$projector", "$user$projector", "$null", 0	);
-				C.StageEnd			();
-
-				C.StageBegin		();
-				C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE2X,	D3DTA_CURRENT);
-				C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_CURRENT);
-				C.StageSET_TMC		(oT_Name, "$null", "$null", 0			);
-				C.StageEnd			();
-				*/
-				break;
-			case 1:	// Lowest LOD
-				C.StageBegin		();
-				C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE2X,	D3DTA_DIFFUSE);
-				C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-				C.StageSET_TMC		(oT_Name, "$null", "$null", 0			);
-				C.StageEnd			();
-				break;
-			}
+			C.StageBegin		();
+			C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE2X,	D3DTA_DIFFUSE);
+			C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
+			C.StageSET_TMC		(oT_Name, "$null", "$null", 0			);
+			C.StageEnd			();
+			C.PassEnd			();
+			break;
 		}
-		C.PassEnd			();
 	}
 }
