@@ -255,7 +255,43 @@
 					RelativePath=".\Config\gameplay\game_tasks.xml">
 				</File>
 				<File
-					RelativePath=".\Config\gameplay\info_escape.xml">
+					RelativePath=".\Config\gameplay\info_l01escape.xml">
+				</File>
+				<File
+					RelativePath=".\info_l02garbage.xml">
+				</File>
+				<File
+					RelativePath=".\info_l03agroprom.xml">
+				</File>
+				<File
+					RelativePath=".\info_l04darkdolina.xml">
+				</File>
+				<File
+					RelativePath=".\info_l05rostok.xml">
+				</File>
+				<File
+					RelativePath=".\info_l06yantar.xml">
+				</File>
+				<File
+					RelativePath=".\info_l07military.xml">
+				</File>
+				<File
+					RelativePath=".\info_l08deadcity.xml">
+				</File>
+				<File
+					RelativePath=".\info_l09marshes.xml">
+				</File>
+				<File
+					RelativePath=".\info_l10radar.xml">
+				</File>
+				<File
+					RelativePath=".\info_l11pripyat.xml">
+				</File>
+				<File
+					RelativePath=".\info_l12stanciya.xml">
+				</File>
+				<File
+					RelativePath=".\info_l13generators.xml">
 				</File>
 				<File
 					RelativePath=".\Config\gameplay\info_lchanger_ico.xml">
