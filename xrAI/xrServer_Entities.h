@@ -76,6 +76,7 @@ public:
 	ALife::_GRAPH_ID		m_tGraphID;
 	float					m_fDistance;
 
+
 	virtual void			UPDATE_Read		(NET_Packet& P)				= 0;
 	virtual void			UPDATE_Write	(NET_Packet& P)				= 0;
 	virtual void			STATE_Read		(NET_Packet& P, u16 size)	= 0;
@@ -357,6 +358,8 @@ xrSE_DECLARE_BEGIN(xrGraphPoint,xrServerEntity)
 public:
 	xrGraphPoint();
 	string32				m_caConnectionPointName;
+	u8						m_tTerrainID;
+	u8						m_tTerrainSubID;
 xrSE_DECLARE_END
 
 // 
