@@ -23,7 +23,7 @@ public:
     void		FreeModifVec		(LPSTRVec& vect){for (LPSTRIt it=vect.begin(); it!=vect.end(); it++) _FREE(*it);};
 	// make/update routines
     void		CreateTextureThumbnail(EImageThumbnail* THM, const AnsiString& src_name, FSPath* path=0, bool bSetDefParam=true); 
-    BOOL		CreateOBJThumbnail	(LPCSTR tex_name, int age);
+    BOOL		CreateOBJThumbnail	(LPCSTR tex_name, CEditableObject* obj, int age);
     void		CreateLODTexture	(Fbox bbox, LPCSTR tex_name, int tgt_w, int tgt_h, int samples, int age);
     void		CreateGameTexture	(const AnsiString& src_name, EImageThumbnail* thumb=0);
     bool		LoadTextureData		(const AnsiString& src_name, DWORDVec& data, int& w, int& h);

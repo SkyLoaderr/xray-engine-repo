@@ -162,6 +162,10 @@ xrSE_DECLARE_END
 xrSE_DECLARE_BEGIN(xrSE_Car,xrSE_Teamed)
 xrSE_DECLARE_END
 
+//***** Crow
+xrSE_DECLARE_BEGIN(xrSE_Crow,xrServerEntity)
+xrSE_DECLARE_END
+
 //***** Actor
 xrSE_DECLARE_BEGIN(xrSE_Actor,xrSE_Teamed)
 	u32						timestamp;

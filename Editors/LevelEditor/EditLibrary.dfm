@@ -4,11 +4,11 @@ object frmEditLibrary: TfrmEditLibrary
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Object Library'
-  ClientHeight = 362
-  ClientWidth = 308
+  ClientHeight = 378
+  ClientWidth = 324
   Color = 10528425
-  Constraints.MinHeight = 389
-  Constraints.MinWidth = 316
+  Constraints.MinHeight = 405
+  Constraints.MinWidth = 332
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
@@ -28,16 +28,16 @@ object frmEditLibrary: TfrmEditLibrary
   object Panel1: TPanel
     Left = 192
     Top = 0
-    Width = 116
-    Height = 362
+    Width = 132
+    Height = 378
     Align = alClient
     BevelOuter = bvNone
     ParentColor = True
     TabOrder = 1
     object ebCancel: TExtBtn
-      Left = 4
-      Top = 342
-      Width = 109
+      Left = 2
+      Top = 360
+      Width = 129
       Height = 17
       Align = alNone
       BevelShow = False
@@ -49,9 +49,9 @@ object frmEditLibrary: TfrmEditLibrary
       OnClick = ebCancelClick
     end
     object ebMakeThm: TExtBtn
-      Left = 4
-      Top = 140
-      Width = 109
+      Left = 2
+      Top = 190
+      Width = 129
       Height = 17
       Align = alNone
       BevelShow = False
@@ -64,9 +64,9 @@ object frmEditLibrary: TfrmEditLibrary
       OnClick = ebMakeThmClick
     end
     object ebProperties: TExtBtn
-      Left = 4
-      Top = 121
-      Width = 109
+      Left = 2
+      Top = 171
+      Width = 129
       Height = 18
       Align = alNone
       BevelShow = False
@@ -78,9 +78,9 @@ object frmEditLibrary: TfrmEditLibrary
       OnClick = ebPropertiesClick
     end
     object ebSave: TExtBtn
-      Left = 4
-      Top = 324
-      Width = 109
+      Left = 2
+      Top = 342
+      Width = 129
       Height = 17
       Align = alNone
       BevelShow = False
@@ -93,9 +93,9 @@ object frmEditLibrary: TfrmEditLibrary
       OnClick = ebSaveClick
     end
     object ebExportDO: TExtBtn
-      Left = 4
-      Top = 212
-      Width = 109
+      Left = 2
+      Top = 262
+      Width = 129
       Height = 17
       Align = alNone
       BevelShow = False
@@ -109,9 +109,9 @@ object frmEditLibrary: TfrmEditLibrary
       OnClick = ebExportDOClick
     end
     object ebImport: TExtBtn
-      Left = 4
-      Top = 289
-      Width = 109
+      Left = 2
+      Top = 307
+      Width = 129
       Height = 17
       Align = alNone
       BevelShow = False
@@ -123,9 +123,9 @@ object frmEditLibrary: TfrmEditLibrary
       OnClick = ebImportClick
     end
     object ebExportHOM: TExtBtn
-      Left = 4
-      Top = 230
-      Width = 109
+      Left = 2
+      Top = 280
+      Width = 129
       Height = 17
       Align = alNone
       BevelShow = False
@@ -139,9 +139,9 @@ object frmEditLibrary: TfrmEditLibrary
       OnClick = ebExportHOMClick
     end
     object ExtBtn1: TExtBtn
-      Left = 4
-      Top = 194
-      Width = 109
+      Left = 2
+      Top = 244
+      Width = 129
       Height = 17
       Align = alNone
       BevelShow = False
@@ -155,9 +155,9 @@ object frmEditLibrary: TfrmEditLibrary
       OnClick = ExtBtn1Click
     end
     object ebMakeLOD: TExtBtn
-      Left = 4
-      Top = 158
-      Width = 109
+      Left = 2
+      Top = 208
+      Width = 129
       Height = 17
       Align = alNone
       BevelShow = False
@@ -169,10 +169,18 @@ object frmEditLibrary: TfrmEditLibrary
       FlatAlwaysEdge = True
       OnClick = ebMakeLODClick
     end
+    object Bevel4: TBevel
+      Left = 0
+      Top = 166
+      Width = 132
+      Height = 2
+      Align = alTop
+      Shape = bsBottomLine
+    end
     object cbPreview: TCheckBox
-      Left = 4
-      Top = 176
-      Width = 108
+      Left = 2
+      Top = 226
+      Width = 128
       Height = 17
       Caption = 'Preview'
       TabOrder = 0
@@ -180,9 +188,10 @@ object frmEditLibrary: TfrmEditLibrary
     end
     object paImage: TPanel
       Left = 0
-      Top = 1
-      Width = 116
-      Height = 116
+      Top = 0
+      Width = 132
+      Height = 132
+      Align = alTop
       BevelOuter = bvLowered
       Caption = '<no image>'
       ParentColor = True
@@ -190,10 +199,72 @@ object frmEditLibrary: TfrmEditLibrary
       object pbImage: TPaintBox
         Left = 1
         Top = 1
-        Width = 114
-        Height = 114
+        Width = 130
+        Height = 130
         Align = alClient
         OnPaint = pbImagePaint
+      end
+    end
+    object Panel3: TPanel
+      Left = 0
+      Top = 132
+      Width = 132
+      Height = 34
+      Align = alTop
+      BevelOuter = bvNone
+      Color = 10528425
+      TabOrder = 2
+      object lbFaces: TLabel
+        Left = 81
+        Top = 2
+        Width = 9
+        Height = 13
+        Caption = '...'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clNavy
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object RxLabel2: TLabel
+        Left = 4
+        Top = 2
+        Width = 69
+        Height = 13
+        Caption = 'Face count:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object RxLabel3: TLabel
+        Left = 4
+        Top = 18
+        Width = 77
+        Height = 13
+        Caption = 'Vertex count:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lbVertices: TLabel
+        Left = 81
+        Top = 18
+        Width = 9
+        Height = 13
+        Caption = '...'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clNavy
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
       end
     end
   end
@@ -201,7 +272,7 @@ object frmEditLibrary: TfrmEditLibrary
     Left = 0
     Top = 0
     Width = 192
-    Height = 362
+    Height = 378
     Cursor = crDefault
     LeftPosition = 0
     DragCursor = crDrag
@@ -231,41 +302,41 @@ object frmEditLibrary: TfrmEditLibrary
     HeaderHeight = 19
     HeaderHotTrack = False
     HeaderSections.Data = {
-      F4FFFFFF07000000DC412C1100000000FFFFFFFF000001010100295C78000000
-      000000001027000000010050C0CA5305000000000000623B0000000000000167
-      000000000000000000010000000000006970653B456E67696E655C416E696D61
-      74696F6E733B456E67696E655C426C656E646572733B523A5C426F726C616E64
-      5C436F6D706F6E656E7473365C616C6590000000010000000001000000000000
-      000000000000DC412C1100000000FFFFFFFF000001010100295C780000000000
-      00001027000000010050702B4905010000000000623B00000000000001670000
-      00000000000000010000000000006970653B456E67696E655C416E696D617469
-      6F6E733B456E67696E655C426C656E646572733B523A5C426F726C616E645C43
-      6F6D706F6E656E7473365C616C65900000000100000000010000000000000000
-      00000000DC412C1100000000FFFFFFFF000001010100295C7800000000000000
-      1027000000010050504F150E020000000000623B000000000000016700000000
-      0000000000010000000000006970653B456E67696E655C416E696D6174696F6E
-      733B456E67696E655C426C656E646572733B523A5C426F726C616E645C436F6D
-      706F6E656E7473365C616C659000000001000000000100000000000000000000
-      0000DC412C1100000000FFFFFFFF000001010100295C78000000000000001027
-      00000001005084DF650E030000000000623B0000000000000167000000000000
-      000000010000000000006970653B456E67696E655C416E696D6174696F6E733B
-      456E67696E655C426C656E646572733B523A5C426F726C616E645C436F6D706F
-      6E656E7473365C616C6590000000010000000001000000000000000000000000
-      DC412C1100000000FFFFFFFF000001010100295C780000000000000010270000
-      0001005070981404040000000000623B00000000000001670000000000000000
-      00010000000000006970653B456E67696E655C416E696D6174696F6E733B456E
-      67696E655C426C656E646572733B523A5C426F726C616E645C436F6D706F6E65
-      6E7473365C616C6590000000010000000001000000000000000000000000DC41
-      2C1100000000FFFFFFFF000001010100295C7800000000000000102700000001
-      00500427B619050000000000623B000000000000016700000000000000000001
-      0000000000006970653B456E67696E655C416E696D6174696F6E733B456E6769
-      6E655C426C656E646572733B523A5C426F726C616E645C436F6D706F6E656E74
-      73365C616C6590000000010000000001000000000000000000000000DC412C11
-      00000000FFFFFFFF000001010100295C78000000000000001027000000010050
-      54C54504060000000000623B0000000000000167000000000000000000010000
-      000000006970653B456E67696E655C416E696D6174696F6E733B456E67696E65
-      5C426C656E646572733B523A5C426F726C616E645C436F6D706F6E656E747336
-      5C616C6590000000010000000001000000000000000000000000}
+      F4FFFFFF07000000284E2F0600000000FFFFFFFF000001010100880578000000
+      00000000102700000001004CC0CA53050000000000005C690000000000000169
+      00000000000000000001000000000000732E6F62440000003F00000000000000
+      2D000000503A5C456469746F72735C4C6576656C456469746F725C656469745C
+      55495F536F756E64546F6F6C732E637090000000010000000001000000000000
+      000000000000284E2F0600000000FFFFFFFF0000010101008805780000000000
+      0000102700000001004C702B49050100000000005C6900000000000001690000
+      0000000000000001000000000000732E6F62440000003F000000000000002D00
+      0000503A5C456469746F72735C4C6576656C456469746F725C656469745C5549
+      5F536F756E64546F6F6C732E6370900000000100000000010000000000000000
+      00000000284E2F0600000000FFFFFFFF00000101010088057800000000000000
+      102700000001004C504F150E0200000000005C69000000000000016900000000
+      000000000001000000000000732E6F62440000003F000000000000002D000000
+      503A5C456469746F72735C4C6576656C456469746F725C656469745C55495F53
+      6F756E64546F6F6C732E63709000000001000000000100000000000000000000
+      0000284E2F0600000000FFFFFFFF000001010100880578000000000000001027
+      00000001004C84DF650E0300000000005C690000000000000169000000000000
+      00000001000000000000732E6F62440000003F000000000000002D000000503A
+      5C456469746F72735C4C6576656C456469746F725C656469745C55495F536F75
+      6E64546F6F6C732E637090000000010000000001000000000000000000000000
+      284E2F0600000000FFFFFFFF0000010101008805780000000000000010270000
+      0001004C709814040400000000005C6900000000000001690000000000000000
+      0001000000000000732E6F62440000003F000000000000002D000000503A5C45
+      6469746F72735C4C6576656C456469746F725C656469745C55495F536F756E64
+      546F6F6C732E637090000000010000000001000000000000000000000000284E
+      2F0600000000FFFFFFFF00000101010088057800000000000000102700000001
+      004C0427B6190500000000005C69000000000000016900000000000000000001
+      000000000000732E6F62440000003F000000000000002D000000503A5C456469
+      746F72735C4C6576656C456469746F725C656469745C55495F536F756E64546F
+      6F6C732E637090000000010000000001000000000000000000000000284E2F06
+      00000000FFFFFFFF00000101010088057800000000000000102700000001004C
+      54C545040600000000005C690000000000000169000000000000000000010000
+      00000000732E6F62440000003F000000000000002D000000503A5C456469746F
+      72735C4C6576656C456469746F725C656469745C55495F536F756E64546F6F6C
+      732E637090000000010000000001000000000000000000000000}
     HeaderFont.Charset = DEFAULT_CHARSET
     HeaderFont.Color = clWindowText
     HeaderFont.Height = -11

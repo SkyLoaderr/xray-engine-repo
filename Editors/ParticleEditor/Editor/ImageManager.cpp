@@ -8,6 +8,7 @@
 #include "freeimage.h"
 #include "Image.h"
 #include "ui_main.h"
+#include "EditObject.h"
 CImageManager ImageManager;
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -172,7 +173,7 @@ void CImageManager::SafeCopyLocalToServer(FileMap& files)
 		fn 			= it->first;
 		src_name 	= p_import	+ AnsiString(fn);
 		Engine.FS.UpdateTextureNameWithFolder(fn);
-		dest_name 	= p_textures+ AnsiString(fn);
+		dest_name 	= p_textures+ AnsiString(fn);                      
         Engine.FS.BackupFile	(&Engine.FS.m_Textures,AnsiString(fn));
 		Engine.FS.CopyFileTo	(src_name.c_str(),dest_name.c_str(),true);
         Engine.FS.WriteAccessLog(dest_name.c_str(),"Replace");
@@ -549,7 +550,7 @@ void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR tex_name, int tgt_w, int 
     Device.m_Camera.SetDepth(save_far,false);
 }
 
-BOOL CImageManager::CreateOBJThumbnail(LPCSTR tex_name, int age)
+BOOL CImageManager::CreateOBJThumbnail(LPCSTR tex_name, CEditableObject* obj, int age)
 {
 	BOOL bResult = TRUE;
     // save render params
@@ -562,7 +563,7 @@ BOOL CImageManager::CreateOBJThumbnail(LPCSTR tex_name, int age)
     DWORD w=256,h=256;
     if (Device.MakeScreenshot(pixels,w,h)){
         EImageThumbnail tex(tex_name,EImageThumbnail::EITObject,false);
-        tex.CreateFromData(pixels.begin(),w,h);
+        tex.CreateFromData(pixels.begin(),w,h,obj->GetFaceCount(),obj->GetVertexCount());
         tex.Save(age);
     }else{
     	bResult = FALSE;

@@ -57,7 +57,9 @@ EImageThumbnail::~EImageThumbnail()
 	m_Pixels.clear();
 }
 
-void EImageThumbnail::CreateFromData(LPDWORD p, int w, int h){
+void EImageThumbnail::CreateFromData(LPDWORD p, int w, int h)
+{
+	R_ASSERT(IsTexture()); 
 	R_ASSERT(p&&(w>0)&&(h>0));
 //	imf_filter	imf_box  imf_triangle  imf_bell  imf_b_spline  imf_lanczos3  imf_mitchell
 	m_Pixels.resize(THUMB_SIZE);
@@ -65,6 +67,15 @@ void EImageThumbnail::CreateFromData(LPDWORD p, int w, int h){
     m_TexParams.width = w;
     m_TexParams.height= h;
     m_TexParams.flag&=~STextureParams::flHasAlpha;
+}
+
+void EImageThumbnail::CreateFromData(LPDWORD p, int w, int h, int fc, int vc)
+{
+	R_ASSERT(p&&(w>0)&&(h>0));
+	m_Pixels.resize(THUMB_SIZE);
+	imf_Process(m_Pixels.begin(),THUMB_WIDTH,THUMB_HEIGHT,p,w,h,imf_box);
+    m_TexParams.vertex_count = vc;
+    m_TexParams.face_count	 = fc;
 }
 
 bool EImageThumbnail::Load(LPCSTR src_name, FSPath* path)
@@ -99,27 +110,34 @@ bool EImageThumbnail::Load(LPCSTR src_name, FSPath* path)
     m_Pixels.resize(THUMB_SIZE);
     F.Read(m_Pixels.begin(),THUMB_SIZE*sizeof(DWORD));
 
-    R_ASSERT(F.FindChunk(THM_CHUNK_TEXTUREPARAM));
-    F.Read			(&m_TexParams.fmt,sizeof(STextureParams::ETFormat));
-    m_TexParams.flag		= F.Rdword();
-    m_TexParams.border_color= F.Rdword();
-    m_TexParams.fade_color	= F.Rdword();
-    m_TexParams.fade_amount	= F.Rdword();
-    m_TexParams.mip_filter	= F.Rdword();
-    m_TexParams.width		= F.Rdword();
-    m_TexParams.height		= F.Rdword();
-
-    if (F.FindChunk(THM_CHUNK_TEXTURE_TYPE)){
-    	m_TexParams.type	= F.Rdword();
-    }
-    
-    if (F.FindChunk(THM_CHUNK_DETAIL_EXT)){
-        F.RstringZ			(m_TexParams.detail_name);
-        m_TexParams.detail_scale = F.Rfloat();
-    }
-
     R_ASSERT(F.FindChunk(THM_CHUNK_TYPE));
     m_Type	= THMType(F.Rdword());
+
+    if (IsTexture()){
+        R_ASSERT(F.FindChunk(THM_CHUNK_TEXTUREPARAM));
+        F.Read			(&m_TexParams.fmt,sizeof(STextureParams::ETFormat));
+        m_TexParams.flag		= F.Rdword();
+        m_TexParams.border_color= F.Rdword();
+        m_TexParams.fade_color	= F.Rdword();
+        m_TexParams.fade_amount	= F.Rdword();
+        m_TexParams.mip_filter	= F.Rdword();
+        m_TexParams.width		= F.Rdword();
+        m_TexParams.height		= F.Rdword();
+
+        if (F.FindChunk(THM_CHUNK_TEXTURE_TYPE)){
+            m_TexParams.type	= F.Rdword();
+        }
+    
+        if (F.FindChunk(THM_CHUNK_DETAIL_EXT)){
+            F.RstringZ			(m_TexParams.detail_name);
+            m_TexParams.detail_scale = F.Rfloat();
+        }
+    }else{
+        if (F.FindChunk(THM_CHUNK_OBJECTPARAM)){
+            m_TexParams.face_count 		= F.Rdword();
+            m_TexParams.vertex_count 	= F.Rdword();
+        }
+    }
 
     m_Age = Engine.FS.GetFileAge(fn);
 
@@ -138,30 +156,37 @@ void EImageThumbnail::Save(int age, FSPath* path){
     F.write			(m_Pixels.begin(),m_Pixels.size()*sizeof(DWORD));
 	F.close_chunk	();
 
-	F.open_chunk	(THM_CHUNK_TEXTUREPARAM);
-    F.write			(&m_TexParams.fmt,sizeof(STextureParams::ETFormat));
-    F.Wdword		(m_TexParams.flag);
-    F.Wdword		(m_TexParams.border_color);
-    F.Wdword		(m_TexParams.fade_color);
-    F.Wdword		(m_TexParams.fade_amount);
-    F.Wdword		(m_TexParams.mip_filter);
-    F.Wdword		(m_TexParams.width);
-    F.Wdword		(m_TexParams.height);
-	F.close_chunk	();
-
-	F.open_chunk	(THM_CHUNK_TEXTURE_TYPE);
-    F.Wdword		(m_TexParams.type);
-	F.close_chunk	();
-
-    
-	F.open_chunk	(THM_CHUNK_DETAIL_EXT);
-    F.WstringZ		(m_TexParams.detail_name);
-    F.Wfloat		(m_TexParams.detail_scale);
-	F.close_chunk	();
-
     F.open_chunk	(THM_CHUNK_TYPE);
     F.Wdword		(m_Type);
 	F.close_chunk	();
+    
+	if (IsTexture()){
+        F.open_chunk	(THM_CHUNK_TEXTUREPARAM);
+        F.write			(&m_TexParams.fmt,sizeof(STextureParams::ETFormat));
+        F.Wdword		(m_TexParams.flag);
+        F.Wdword		(m_TexParams.border_color);
+        F.Wdword		(m_TexParams.fade_color);
+        F.Wdword		(m_TexParams.fade_amount);
+        F.Wdword		(m_TexParams.mip_filter);
+        F.Wdword		(m_TexParams.width);
+        F.Wdword		(m_TexParams.height);
+        F.close_chunk	();
+
+        F.open_chunk	(THM_CHUNK_TEXTURE_TYPE);
+        F.Wdword		(m_TexParams.type);
+        F.close_chunk	();
+
+    
+        F.open_chunk	(THM_CHUNK_DETAIL_EXT);
+        F.WstringZ		(m_TexParams.detail_name);
+        F.Wfloat		(m_TexParams.detail_scale);
+        F.close_chunk	();
+    }else{
+        F.open_chunk	(THM_CHUNK_OBJECTPARAM);
+        F.Wdword		(m_TexParams.face_count);
+        F.Wdword		(m_TexParams.vertex_count);
+        F.close_chunk	();
+    }
 
 	AnsiString fn 	= m_Name;
     if (path) path->Update(fn);
@@ -178,48 +203,60 @@ void EImageThumbnail::Save(int age, FSPath* path){
     Engine.FS.SetFileAge	(fn,age?age:m_Age);
 }
 
-bool EImageThumbnail::FillProp(PropValueVec& values)
+void EImageThumbnail::FillProp(PropValueVec& values)
 {
 	STextureParams& F	= m_TexParams;
-    FILL_PROP(values,	"Format",				(LPVOID)&F.fmt,			PROP::CreateToken	(tfmt_token,4));
-    FILL_PROP(values,	"Type",					(LPVOID)&F.type,		PROP::CreateToken	(ttype_token,4));
+	if (IsTexture()){
+        FILL_PROP(values,	"Format",				(LPVOID)&F.fmt,			PROP::CreateToken	(tfmt_token,4));
+        FILL_PROP(values,	"Type",					(LPVOID)&F.type,		PROP::CreateToken	(ttype_token,4));
             
-    FILL_PROP(values,	"MipMaps\\Enabled",		&F.flag,				PROP::CreateFlag	(STextureParams::flGenerateMipMaps));
-    FILL_PROP(values,	"MipMaps\\Filter",		(LPVOID)&F.mip_filter,	PROP::CreateToken	(tparam_token,4));
+        FILL_PROP(values,	"MipMaps\\Enabled",		&F.flag,				PROP::CreateFlag	(STextureParams::flGenerateMipMaps));
+        FILL_PROP(values,	"MipMaps\\Filter",		(LPVOID)&F.mip_filter,	PROP::CreateToken	(tparam_token,4));
 
-    FILL_PROP(values,	"Details\\Enabled",		&F.flag,				PROP::CreateFlag	(STextureParams::flHasDetailTexture));
-    FILL_PROP(values,	"Details\\Texture",		F.detail_name,			PROP::CreateTexture	(sizeof(F.detail_name)));
-    FILL_PROP(values,	"Details\\Scale",		&F.detail_scale,		PROP::CreateFloat	(0.1f,10000.f,0.1f,2));
+        FILL_PROP(values,	"Details\\Enabled",		&F.flag,				PROP::CreateFlag	(STextureParams::flHasDetailTexture));
+        FILL_PROP(values,	"Details\\Texture",		F.detail_name,			PROP::CreateTexture	(sizeof(F.detail_name)));
+        FILL_PROP(values,	"Details\\Scale",		&F.detail_scale,		PROP::CreateFloat	(0.1f,10000.f,0.1f,2));
 
-    FILL_PROP(values,	"Flags\\Grayscale",		&F.flag,				PROP::CreateFlag	(STextureParams::flGreyScale));
-    FILL_PROP(values,	"Flags\\Binary Alpha",	&F.flag,				PROP::CreateFlag	(STextureParams::flBinaryAlpha));
-    FILL_PROP(values,	"Flags\\Dither",		&F.flag,				PROP::CreateFlag	(STextureParams::flDitherColor));
-    FILL_PROP(values,	"Flags\\Dither Each MIP",&F.flag,				PROP::CreateFlag	(STextureParams::flDitherEachMIPLevel));
-    FILL_PROP(values,	"Flags\\Implicit Lighted",&F.flag,				PROP::CreateFlag	(STextureParams::flImplicitLighted));
+        FILL_PROP(values,	"Flags\\Grayscale",		&F.flag,				PROP::CreateFlag	(STextureParams::flGreyScale));
+        FILL_PROP(values,	"Flags\\Binary Alpha",	&F.flag,				PROP::CreateFlag	(STextureParams::flBinaryAlpha));
+        FILL_PROP(values,	"Flags\\Dither",		&F.flag,				PROP::CreateFlag	(STextureParams::flDitherColor));
+        FILL_PROP(values,	"Flags\\Dither Each MIP",&F.flag,				PROP::CreateFlag	(STextureParams::flDitherEachMIPLevel));
+        FILL_PROP(values,	"Flags\\Implicit Lighted",&F.flag,				PROP::CreateFlag	(STextureParams::flImplicitLighted));
 
-    FILL_PROP(values,	"Fade\\Enabled Color",	&F.flag,				PROP::CreateFlag	(STextureParams::flFadeToColor));
-    FILL_PROP(values,	"Fade\\Enabled Alpha",	&F.flag,				PROP::CreateFlag	(STextureParams::flFadeToAlpha));
-    FILL_PROP(values,	"Fade\\Amount",			&F.fade_amount,			PROP::CreateU32		(0,1000,0));
-    FILL_PROP(values,	"Fade\\Color",			&F.fade_color,			PROP::CreateColor	());
+        FILL_PROP(values,	"Fade\\Enabled Color",	&F.flag,				PROP::CreateFlag	(STextureParams::flFadeToColor));
+        FILL_PROP(values,	"Fade\\Enabled Alpha",	&F.flag,				PROP::CreateFlag	(STextureParams::flFadeToAlpha));
+        FILL_PROP(values,	"Fade\\Amount",			&F.fade_amount,			PROP::CreateU32		(0,1000,0));
+        FILL_PROP(values,	"Fade\\Color",			&F.fade_color,			PROP::CreateColor	());
             
-    FILL_PROP(values,	"Border\\Enabled Color",&F.flag,				PROP::CreateFlag	(STextureParams::flColorBorder));
-    FILL_PROP(values,	"Border\\Enabled Alpha",&F.flag,				PROP::CreateFlag	(STextureParams::flAlphaBorder));
-    FILL_PROP(values,	"Border\\Color",		&F.border_color,		PROP::CreateColor	());
-    return true;
+        FILL_PROP(values,	"Border\\Enabled Color",&F.flag,				PROP::CreateFlag	(STextureParams::flColorBorder));
+        FILL_PROP(values,	"Border\\Enabled Alpha",&F.flag,				PROP::CreateFlag	(STextureParams::flAlphaBorder));
+        FILL_PROP(values,	"Border\\Color",		&F.border_color,		PROP::CreateColor	());
+    }else{
+        FILL_PROP(values,	"Face Count",			AnsiString(F.face_count).c_str(),	PROP::CreateMarker());
+        FILL_PROP(values,	"Vertex Count",			AnsiString(F.vertex_count).c_str(),	PROP::CreateMarker());
+    }
 }
 
 void EImageThumbnail::Draw(TPanel* panel, TPaintBox* pbox, bool bStretch)
 {
-    RECT r;
-    r.left = 2; r.top = 2;
-    float w, h;
-    w = _Width();
-    h = _Height();
-    if (w!=h)	pbox->Canvas->FillRect(pbox->BoundsRect);
-    if (w>h){   r.right = pbox->Width-1; r.bottom = h/w*pbox->Height-1;
-    }else{      r.right = w/h*pbox->Width-1; r.bottom = pbox->Height-1;}
-    HDC hdc 	= GetDC	(panel->Handle);
-	DrawThumbnail(hdc,m_Pixels,r.left,r.top,r.right-r.left,r.bottom-r.top,THUMB_WIDTH,THUMB_HEIGHT);
-   	ReleaseDC	(panel->Handle,hdc);
+	if (IsTexture()){
+        RECT r;
+        r.left = 2; r.top = 2;
+        float w, h;
+        w = _Width();
+        h = _Height();
+        if (w!=h)	pbox->Canvas->FillRect(pbox->BoundsRect);
+        if (w>h){   r.right = pbox->Width-1; r.bottom = h/w*pbox->Height-1;
+        }else{      r.right = w/h*pbox->Width-1; r.bottom = pbox->Height-1;}
+        HDC hdc 	= GetDC	(panel->Handle);
+        DrawThumbnail(hdc,m_Pixels,r.left,r.top,r.right-r.left,r.bottom-r.top,THUMB_WIDTH,THUMB_HEIGHT);
+        ReleaseDC	(panel->Handle,hdc);
+    }else{
+        RECT r;		r.left = 2; r.top = 2;
+        r.right 	= pbox->Width-1; r.bottom = pbox->Height-1;
+        HDC hdc 	= GetDC	(panel->Handle);
+        DrawThumbnail(hdc,m_Pixels,r.left,r.top,r.right-r.left,r.bottom-r.top,THUMB_WIDTH,THUMB_HEIGHT);
+        ReleaseDC	(panel->Handle,hdc);
+    }
 }
 

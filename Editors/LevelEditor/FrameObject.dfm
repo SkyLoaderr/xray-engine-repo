@@ -1,7 +1,7 @@
 object fraObject: TfraObject
   Left = 0
   Top = 0
-  Width = 443
+  Width = 123
   Height = 277
   VertScrollBar.Visible = False
   Align = alClient
@@ -19,7 +19,7 @@ object fraObject: TfraObject
   object paSelectObject: TPanel
     Left = 0
     Top = 33
-    Width = 443
+    Width = 123
     Height = 64
     Align = alTop
     ParentColor = True
@@ -34,7 +34,7 @@ object fraObject: TfraObject
     end
     object ebSelectByRefs: TExtBtn
       Left = 60
-      Top = 16
+      Top = 15
       Width = 26
       Height = 14
       Align = alNone
@@ -46,13 +46,13 @@ object fraObject: TfraObject
       Font.Color = clWindowText
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
-      Font.Style = [fsBold]
+      Font.Style = []
       ParentFont = False
       OnClick = ebSelectByRefsClick
     end
     object ebDeselectByRefs: TExtBtn
       Left = 93
-      Top = 16
+      Top = 15
       Width = 26
       Height = 14
       Align = alNone
@@ -64,14 +64,14 @@ object fraObject: TfraObject
       Font.Color = clWindowText
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
-      Font.Style = [fsBold]
+      Font.Style = []
       ParentFont = False
       OnClick = ebDeselectByRefsClick
     end
     object APHeadLabel3: TLabel
       Left = 1
       Top = 1
-      Width = 441
+      Width = 121
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -106,7 +106,7 @@ object fraObject: TfraObject
     end
     object ebMultiSelectByRefMove: TExtBtn
       Left = 60
-      Top = 31
+      Top = 29
       Width = 26
       Height = 14
       Align = alNone
@@ -118,7 +118,7 @@ object fraObject: TfraObject
       Font.Color = clWindowText
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
-      Font.Style = [fsBold]
+      Font.Style = []
       ParentFont = False
       OnClick = ebMultiSelectByRefMoveClick
     end
@@ -131,19 +131,19 @@ object fraObject: TfraObject
     object Label1: TLabel
       Left = 112
       Top = 47
-      Width = 10
+      Width = 8
       Height = 13
       Caption = '%'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
-      Font.Style = [fsBold]
+      Font.Style = []
       ParentFont = False
     end
     object ebMultiSelectByRefAppend: TExtBtn
       Left = 93
-      Top = 31
+      Top = 29
       Width = 26
       Height = 14
       Align = alNone
@@ -155,7 +155,7 @@ object fraObject: TfraObject
       Font.Color = clWindowText
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
-      Font.Style = [fsBold]
+      Font.Style = []
       ParentFont = False
       OnClick = ebMultiSelectByRefAppendClick
     end
@@ -179,7 +179,7 @@ object fraObject: TfraObject
   object paCommands: TPanel
     Left = 0
     Top = 0
-    Width = 443
+    Width = 123
     Height = 33
     Align = alTop
     ParentColor = True
@@ -206,7 +206,7 @@ object fraObject: TfraObject
     object APHeadLabel1: TLabel
       Left = 1
       Top = 1
-      Width = 441
+      Width = 121
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -243,7 +243,7 @@ object fraObject: TfraObject
   object paAddObject: TPanel
     Left = 0
     Top = 97
-    Width = 443
+    Width = 123
     Height = 32
     Align = alTop
     ParentColor = True
@@ -270,7 +270,7 @@ object fraObject: TfraObject
     object APHeadLabel2: TLabel
       Left = 1
       Top = 1
-      Width = 441
+      Width = 121
       Height = 13
       Align = alTop
       Alignment = taCenter

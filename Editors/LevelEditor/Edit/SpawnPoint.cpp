@@ -76,6 +76,8 @@ bool CSpawnPoint::CreateSpawnData(LPCSTR entity_ref)
 		m_SpawnClassID = pSettings->ReadCLSID(entity_ref,"class");
     	strcpy(m_SpawnData->s_name,entity_ref);
         OnDeviceCreate();
+    }else{
+    	ELog.Msg(mtError,"Can't create entity: '%s'",entity_ref);
     }
     return !!m_SpawnData;
 }

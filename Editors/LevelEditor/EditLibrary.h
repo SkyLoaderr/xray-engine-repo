@@ -44,6 +44,12 @@ __published:	// IDE-managed Components
 	TExtBtn *ebExportHOM;
 	TExtBtn *ExtBtn1;
 	TExtBtn *ebMakeLOD;
+	TPanel *Panel3;
+	TLabel *lbFaces;
+	TLabel *RxLabel2;
+	TLabel *RxLabel3;
+	TLabel *lbVertices;
+	TBevel *Bevel4;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall ebCancelClick(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);

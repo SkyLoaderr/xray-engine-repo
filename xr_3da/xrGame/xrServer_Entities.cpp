@@ -73,7 +73,7 @@ void	xrServerEntity::FillProp	(LPCSTR pref, PropValueVec& values)
 {
 	FILL_PROP_EX(values,	pref, "Game Type",		&s_gameid, 		PROP::CreateToken(game_types,1));
 	FILL_PROP_EX(values,	pref, "Active",			&s_flags, 		PROP::CreateFlag(M_SPAWN_OBJECT_ACTIVE));
-	FILL_PROP_EX(values,	pref, "Respawn Time(s)",&RespawnTime,	PROP::CreateU16(0,43200));
+	FILL_PROP_EX(values,	pref, "Respawn Time (s)",&RespawnTime,	PROP::CreateU16(0,43200));
 }
 #endif
 
@@ -237,6 +237,17 @@ void xrSE_Car::FillProp				(LPCSTR pref, PropValueVec& values)
 }
 #endif
 
+//***** Crow
+void xrSE_Crow::STATE_Read			(NET_Packet& P, u16 size)	{};
+void xrSE_Crow::STATE_Write			(NET_Packet& P)				{};
+void xrSE_Crow::UPDATE_Read			(NET_Packet& P)				{};
+void xrSE_Crow::UPDATE_Write		(NET_Packet& P)				{};
+#ifdef _EDITOR
+void xrSE_Crow::FillProp			(LPCSTR pref, PropValueVec& values)
+{
+  	inherited::FillProp(pref,values);
+}
+#endif
 //***** Actor
 void xrSE_Actor::STATE_Read			(NET_Packet& P, u16 size)	{inherited::STATE_Read(P,size); };
 void xrSE_Actor::STATE_Write		(NET_Packet& P)				{inherited::STATE_Write(P);		};
@@ -429,7 +440,7 @@ xrServerEntity*	F_entity_Create		(LPCSTR name)
 	case CLSID_AI_RAT:				return new	xrSE_Enemy;
 	case CLSID_AI_SOLDIER:			return new	xrSE_Enemy;
 	case CLSID_AI_ZOMBIE:			return new	xrSE_Enemy;
-//	case CLSID_AI_CROW:				return new	xrSE_Crow;
+	case CLSID_AI_CROW:				return new	xrSE_Crow;
 	case CLSID_EVENT:				return new  xrSE_Event;
 	case CLSID_CAR_NIVA:			return new  xrSE_Car;
 	case CLSID_OBJECT_W_M134:		return new	xrSE_Weapon;

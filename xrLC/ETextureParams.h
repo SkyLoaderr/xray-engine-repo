@@ -51,30 +51,38 @@ struct STextureParams{
 		flHasAlpha			= (1<<25)
 	};
 
-	ETFormat		fmt;
-	DWORD			flag;
-	DWORD			border_color;
-    DWORD			fade_color;
-    DWORD			fade_amount;
-	DWORD			mip_filter;
-    int				width;
-    int				height;
+    // texture part
+    struct{
+        ETFormat	fmt;
+        DWORD		flag;
+        DWORD		border_color;
+        DWORD		fade_color;
+        DWORD		fade_amount;
+        DWORD		mip_filter;
+        int			width;
+        int			height;
+        // detail ext
+        string128	detail_name;
+        float		detail_scale;
+        ETType		type;
+    };
+    // object part
+    struct{
+        int			face_count;
+        int			vertex_count;
+    };
 
-    ETType			type;
-    
-    // detail ext
-    string128		detail_name;
-    float			detail_scale;
-    
-    STextureParams	()
+    STextureParams		()
 	{
-		ZeroMemory(this,sizeof(STextureParams));
-		flag		|=	flGenerateMipMaps;
-		flag		|=	flDitherColor;
-		mip_filter	= 	dMIPFilterBox;
-        width		= 	0;
-        height		= 	0;
-        detail_scale= 	1;
+		ZeroMemory		(this,sizeof(STextureParams));
+		flag			|=	flGenerateMipMaps;
+		flag			|=	flDitherColor;
+		mip_filter		= dMIPFilterBox;
+        width			= 0;
+        height			= 0;
+        detail_scale	= 1;             
+        face_count		= 0;
+        vertex_count	= 0;                       
 	}
     IC BOOL HasAlpha(){ // исходная текстура содержит альфа канал
     	return flag&flHasAlpha;
@@ -111,6 +119,7 @@ extern xr_token	ttype_token[];
 #define THM_CHUNK_TYPE					0x0813
 #define THM_CHUNK_TEXTURE_TYPE			0x0814
 #define THM_CHUNK_DETAIL_EXT			0x0815
+#define THM_CHUNK_OBJECTPARAM			0x0816
 //----------------------------------------------------
 #define THM_SIGN 		"THM_FILE"
 #define THUMB_WIDTH 	128

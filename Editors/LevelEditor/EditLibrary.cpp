@@ -211,8 +211,15 @@ void __fastcall TfrmEditLibrary::tvObjectsItemFocused(TObject *Sender)
     }else{
 		ChangeReference(0);
     }
-    if (m_Thm&&m_Thm->Valid())	pbImagePaint(Sender);
-    else                        pbImage->Repaint();
+    if (m_Thm&&m_Thm->Valid()){
+        pbImagePaint(Sender);
+        lbFaces->Caption 	= m_Thm->_FaceCount()?AnsiString(m_Thm->_FaceCount()):AnsiString("?");
+        lbVertices->Caption = m_Thm->_VertexCount()?AnsiString(m_Thm->_VertexCount()):AnsiString("?");
+    }else{
+        pbImage->Repaint();
+        lbFaces->Caption 	= "?";
+        lbVertices->Caption = "?";
+    }
     UpdateObjectProperties();
     UI.RedrawScene();
     ebMakeThm->Enabled = mt;
@@ -299,7 +306,7 @@ void __fastcall TfrmEditLibrary::ebMakeThmClick(TObject *Sender)
     	if (obj&&cbPreview->Checked){
             AnsiString tex_name;
             tex_name = ChangeFileExt(obj->GetName(),".thm");
-            if (ImageManager.CreateOBJThumbnail(tex_name.c_str(),src_age)){
+            if (ImageManager.CreateOBJThumbnail(tex_name.c_str(),obj,src_age)){
 	            ELog.Msg(mtInformation,"Thumbnail successfully created.");
                 tvObjectsItemFocused(Sender);
             }
@@ -468,6 +475,7 @@ void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
                     O->SaveObject(save_nm.c_str());
                     Engine.FS.MarkFile(*it,true);
                     bNeedUpdate=true;
+                    Engine.FS.WriteAccessLog(save_nm.c_str(),"Import");
                 }else bNeedBreak=true;
             }else{
             	ELog.DlgMsg(mtError,"Can't load file '%s'.",it->c_str());
@@ -573,4 +581,5 @@ void __fastcall TfrmEditLibrary::FormActivate(TObject *Sender)
 	tvObjects->SetFocus();
 }
 //---------------------------------------------------------------------------
+
 
