@@ -13,16 +13,6 @@
 #include "ESceneAIMapTools.h"
 //----------------------------------------------------
 // some types
-bool SceneBuilder::BuildSkyModel(){
-	// build sky ogf
-    if (Scene.m_SkyDome){
-	    AnsiString ogf_name = m_LevelPath+Scene.m_SkyDome->Name+".ogf";
-        CEditableObject* O = Scene.m_SkyDome->GetReference(); R_ASSERT(O);
-        return O->ExportOGF(ogf_name.c_str());
-    }
-	return false;
-}
-
 bool SceneBuilder::BuildHOMModel()
 {
 	CMemoryWriter F;

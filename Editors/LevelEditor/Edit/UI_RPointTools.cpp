@@ -47,7 +47,7 @@ bool __fastcall TUI_ControlSpawnPointAdd::Start(TShiftState Shift)
     TfraSpawnPoint* F = (TfraSpawnPoint*)parent_tool->pFrame;
 	if (F->ebAttachObject->Down){
 		CCustomObject* from = Scene.RayPickObject(UI.m_CurrentRStart, UI.m_CurrentRNorm, OBJCLASS_DUMMY, 0, 0);
-        if (IsGroupClassID(from->ClassID)&&(from->ClassID!=OBJCLASS_SPAWNPOINT)){
+        if (from->ClassID!=OBJCLASS_SPAWNPOINT){
             ObjectList 	lst;
             int cnt 	= Scene.GetQueryObjects(lst,OBJCLASS_SPAWNPOINT,1,1,0);
             if (1!=cnt)	ELog.DlgMsg(mtError,"Select one shape.");

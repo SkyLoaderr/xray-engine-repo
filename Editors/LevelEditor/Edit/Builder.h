@@ -62,9 +62,9 @@ class SceneBuilder{
     void    ResetStructures ();
 
     int		BuildLightControl(LPCSTR name);
-    void 	BuildHemiLights	();
+    void 	BuildHemiLights	(u8 quality);
 	void	AppendLight		();
-    BOOL 	BuildSun		(b_light* b, const Flags32& usage, svector<WORD,16>* sectors);
+    BOOL 	BuildSun		(u8 quality, Fvector2 dir);
     BOOL 	BuildPointLight	(b_light* b, const Flags32& usage, svector<WORD,16>* sectors, FvectorVec* soft_points, const Fmatrix* soft_transform=0);
     BOOL    BuildLight		(CLight* e);
 
@@ -103,7 +103,6 @@ protected:
     BOOL	ParseGAME				(IWriter& game, IWriter& spawn, ObjectList& lst, LPCSTR prefix=0);
     BOOL 	BuildGame				();
 
-    bool 	BuildSkyModel			();
     bool 	BuildHOMModel			();
     bool	BuildAIMap				();
     BOOL	ParseStaticObjects		(ObjectList& lst, LPCSTR prefix=0);
@@ -120,7 +119,6 @@ public:
 	BOOL 	MakeGame				();
     BOOL 	MakeDetails				();
     BOOL 	MakeHOM					();
-    BOOL 	MakeSkydome				();
     BOOL	MakeAIMap				();
 };
 

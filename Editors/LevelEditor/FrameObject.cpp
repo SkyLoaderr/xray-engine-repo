@@ -175,7 +175,12 @@ void __fastcall TfraObject::ebMultiAppendClick(TObject *Sender)
                 xr_delete(obj);
                 return;
             }
-
+/*            if (ref->IsDynamic()){
+                ELog.DlgMsg(mtError,"TfraObject:: Can't assign dynamic object.");
+                xr_delete(obj);
+                return;
+            }
+*/
             obj->MoveTo(pos,up);
             Scene.AppendObject( obj );
         }

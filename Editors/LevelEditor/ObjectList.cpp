@@ -89,7 +89,7 @@ TElTreeItem* TfrmObjectList::FindObjectByType(int type, void *obj)
 TElTreeItem* TfrmObjectList::AddFolder(int type)
 {
     AnsiString name;
-    name.sprintf("%ss",GetNameByClassID((EObjClass)type));
+    name.sprintf("%ss",Scene.GetMTools(type)->ClassDesc());
     TElTreeItem* node = tvItems->Items->AddObject(0,name,(void*)type);
     node->ParentStyle = false;
     node->Bold = true;
@@ -108,7 +108,7 @@ void __fastcall TfrmObjectList::InitListBox()
     cur_cls = Tools.CurrentClassID();
     for(SceneToolsMapPairIt it=Scene.FirstTools(); it!=Scene.LastTools(); it++){
     	ESceneCustomOTools* ot = dynamic_cast<ESceneCustomOTools*>(it->second);
-        if (ot&&IsObjectListClassID(ot->ClassID)&&((cur_cls==OBJCLASS_DUMMY)||(it->first==cur_cls))){
+        if (ot&&((cur_cls==OBJCLASS_DUMMY)||(it->first==cur_cls))){
             TElTreeItem* node = FindFolderByType(it->first);
             if (!node) node = AddFolder(it->first);
             VERIFY(node);

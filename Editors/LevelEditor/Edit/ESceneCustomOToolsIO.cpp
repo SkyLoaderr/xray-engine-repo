@@ -37,14 +37,14 @@ bool ESceneCustomOTools::LoadSelection(IReader& F)
 
     R_ASSERT(F.r_chunk(CHUNK_VERSION,&version));
     if( version!=TOOLS_VERSION ){
-        ELog.DlgMsg( mtError, "%s tools: Unsupported version.",GetClassNameByClassID(ClassID));
+        ELog.DlgMsg( mtError, "%s tools: Unsupported version.",ClassDesc());
         return false;
     }
 
     int count		= 0;
 	F.r_chunk		(CHUNK_OBJECT_COUNT,&count);
 
-    UI.ProgressStart(count,AnsiString().sprintf("Loading %s...",GetClassNameByClassID(ClassID)).c_str());
+    UI.ProgressStart(count,AnsiString().sprintf("Loading %s's...",ClassDesc()).c_str());
     Scene.ReadObjects(F,CHUNK_OBJECTS,OnLoadSelectionAppendObject);
     UI.ProgressEnd	();
 
@@ -77,14 +77,14 @@ bool ESceneCustomOTools::Load(IReader& F)
 
     R_ASSERT(F.r_chunk(CHUNK_VERSION,&version));
     if( version!=TOOLS_VERSION ){
-        ELog.DlgMsg( mtError, "%s tools: Unsupported version.",GetClassNameByClassID(ClassID));
+        ELog.DlgMsg( mtError, "%s tools: Unsupported version.",ClassDesc());
         return false;
     }
 
     int count		= 0;
 	F.r_chunk		(CHUNK_OBJECT_COUNT,&count);
 
-    UI.ProgressStart(count,AnsiString().sprintf("Loading %s...",GetClassNameByClassID(ClassID)).c_str());
+    UI.ProgressStart(count,AnsiString().sprintf("Loading %s...",ClassDesc()).c_str());
     Scene.ReadObjects(F,CHUNK_OBJECTS,OnLoadAppendObject);
     UI.ProgressEnd	();
 

@@ -31,6 +31,7 @@ ObjectList*	ESceneCustomOTools::GetSnapList()
 BOOL ESceneCustomOTools::_AppendObject(CCustomObject* object)
 {
 	m_Objects.push_back(object);
+    object->ParentTools = this;
     return TRUE;
 }
 //----------------------------------------------------
@@ -91,6 +92,13 @@ void ESceneCustomOTools::OnDeviceDestroy()
     	(*it)->OnDeviceDestroy();
 }
 //----------------------------------------------------
+
+bool ESceneCustomOTools::Validate()
+{
+	for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
+    	if (!(*it)->Validate()) return false;
+    return true;
+}
 
 bool ESceneCustomOTools::Valid()
 {
@@ -278,12 +286,15 @@ CCustomObject* ESceneCustomOTools::FindObjectByName(LPCSTR name, CCustomObject* 
 
 void ESceneCustomOTools::FillProp(LPCSTR pref, PropItemVec& items)
 {
-    for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
-    	if ((*it)->Selected()){
-            LPCSTR pref	   	= GetClassNameByClassID((*it)->ClassID);
-            (*it)->FillProp	(pref,items);
-        }
-    }
+    for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
+    	if ((*it)->Selected()) (*it)->FillProp	(FHelper.PrepareKey(pref,"Items").c_str(),items);
+}
+
+bool ESceneCustomOTools::GetSummaryInfo(SSceneSummary* inf)
+{
+    for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
+    	(*it)->GetSummaryInfo(inf);
+    return true;
 }
 
 

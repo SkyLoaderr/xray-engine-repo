@@ -17,7 +17,6 @@ struct SSceneSummary{
     int			hom_vert_cnt;
     int 		object_mu_ref_cnt;
     int 		object_lod_ref_cnt;
-    int 		light_sun_cnt;
     int 		light_point_cnt;
     int 		light_spot_cnt;
     int 		light_dynamic_cnt;
@@ -46,7 +45,6 @@ struct SSceneSummary{
                     hom_vert_cnt		= 0;
                     object_mu_ref_cnt	= 0;
                     object_lod_ref_cnt	= 0;
-                    light_sun_cnt		= 0;
                     light_point_cnt		= 0;
                     light_spot_cnt		= 0;
                     light_dynamic_cnt	= 0;

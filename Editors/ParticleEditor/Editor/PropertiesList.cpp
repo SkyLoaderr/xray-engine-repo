@@ -510,6 +510,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                 OutText(prop->GetText(),Surface,R,prop->Enabled(),m_BMEllipsis);
             break;
             case PROP_TOKEN:
+            case PROP_A_TOKEN:
             case PROP_TOKEN2:
             case PROP_TOKEN3:
             case PROP_TOKEN4:
@@ -641,6 +642,21 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                         pmEnum->Items->Add(mi);
                     }
                 }break;
+                case PROP_A_TOKEN:{
+                    pmEnum->Items->Clear();
+                    ATokenValue* T				= dynamic_cast<ATokenValue*>(prop->GetFrontValue()); R_ASSERT(T);
+                    ATokenVec* token_list 		= T->token;
+                    TMenuItem* mi 				= xr_new<TMenuItem>((TComponent*)0);
+                    mi->Caption 				= "-";
+                    pmEnum->Items->Add			(mi);
+                    for(ATokenIt it=token_list->begin(); it!=token_list->end(); it++){
+                        mi 			= xr_new<TMenuItem>((TComponent*)0);
+                        mi->Tag		= it-token_list->begin();
+                        mi->Caption = it->name;
+                        mi->OnClick = PMItemClick;
+                        pmEnum->Items->Add(mi);
+                    }
+                }break;
                 case PROP_TOKEN2:{
                     pmEnum->Items->Clear();
                     TokenValue2* T	= dynamic_cast<TokenValue2*>(prop->GetFrontValue()); R_ASSERT(T);
@@ -759,6 +775,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                 };
                 switch(prop->type){
                 case PROP_TOKEN:
+                case PROP_A_TOKEN:
                 case PROP_TOKEN2:
                 case PROP_TOKEN3:
                 case PROP_TOKEN4:
@@ -821,9 +838,11 @@ void __fastcall TProperties::tvPropertiesMouseUp(TObject *Sender,
 				bool bRes = false;
                 for (PropItem::PropValueIt it=prop->Values().begin(); it!=prop->Values().end(); it++){
                     ButtonValue* V			= dynamic_cast<ButtonValue*>(*it); R_ASSERT(V);
-                    bRes 					|= V->OnBtnClick();
-                    V->btn_num				= -1;
-                    if (V->m_Flags.is(ButtonValue::flFirstOnly)) break;
+                    if (V->btn_num>-1){
+	                    bRes 				|= V->OnBtnClick();
+    	                V->btn_num			= -1;
+        	            if (V->m_Flags.is(ButtonValue::flFirstOnly)) break;
+                    }
                 }
                 if (bRes){
                     Modified			();
@@ -847,6 +866,16 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
 			TokenValue* T			= dynamic_cast<TokenValue*>(prop->GetFrontValue()); R_ASSERT(T);
             xr_token* token_list   	= T->token;
             u32 new_val				= token_list[mi->Tag].id;
+			prop->OnAfterEdit(&new_val);
+            if (prop->ApplyValue(&new_val)){
+            	Modified			();
+            }
+			item->ColumnText->Strings[0]= prop->GetText();
+        }break;
+		case PROP_A_TOKEN:{
+			ATokenValue* T			= dynamic_cast<ATokenValue*>(prop->GetFrontValue()); R_ASSERT(T);
+            ATokenVec* token_list   = T->token;
+            u32 new_val				= (*token_list)[mi->Tag].id;
 			prop->OnAfterEdit(&new_val);
             if (prop->ApplyValue(&new_val)){
             	Modified			();

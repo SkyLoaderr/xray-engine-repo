@@ -23,6 +23,8 @@
 #include "editorpref.h"
 
 #include "itemlist.h"
+
+#include "igame_persistent.h"
 TUI UI;
 
 TUI::TUI()
@@ -88,7 +90,7 @@ bool TUI::OnCreate()
     m_D3DWindow 	= frmMain->D3DWindow;
     VERIFY(m_D3DWindow);
     Device.Initialize();
-
+    
 #ifdef _LEVEL_EDITOR
     m_Cursor        = xr_new<C3DCursor>();
 #endif
@@ -457,7 +459,10 @@ void TUI::CheckWindowPos(TForm* form)
 
 void TUI::Redraw(){
 	VERIFY(m_bReady);
-	if (m_Flags.is(flResize)) Device.Resize(m_D3DWindow->Width,m_D3DWindow->Height); m_Flags.set(flResize,FALSE);
+	if (m_Flags.is(flResize)){ 
+    	Device.Resize(m_D3DWindow->Width,m_D3DWindow->Height); m_Flags.set(flResize,FALSE);
+        return;
+    }
 // set render state
     Device.SetRS(D3DRS_TEXTUREFACTOR,	0xffffffff);
     // fog
@@ -478,13 +483,13 @@ void TUI::Redraw(){
     // filter
     for (u32 k=0; k<HW.Caps.pixel.dwStages; k++){
         if( psDeviceFlags.is(rsFilterLinear)){
-            Device.SetTSS(k,D3DSAMP_MAGFILTER,D3DTEXF_LINEAR);
-            Device.SetTSS(k,D3DSAMP_MINFILTER,D3DTEXF_LINEAR);
-            Device.SetTSS(k,D3DSAMP_MIPFILTER,D3DTEXF_LINEAR);
+            Device.SetSS(k,D3DSAMP_MAGFILTER,D3DTEXF_LINEAR);
+            Device.SetSS(k,D3DSAMP_MINFILTER,D3DTEXF_LINEAR);
+            Device.SetSS(k,D3DSAMP_MIPFILTER,D3DTEXF_LINEAR);
         } else {
-            Device.SetTSS(k,D3DSAMP_MAGFILTER,D3DTEXF_POINT);
-            Device.SetTSS(k,D3DSAMP_MINFILTER,D3DTEXF_POINT);
-            Device.SetTSS(k,D3DSAMP_MIPFILTER,D3DTEXF_POINT);
+            Device.SetSS(k,D3DSAMP_MAGFILTER,D3DTEXF_POINT);
+            Device.SetSS(k,D3DSAMP_MINFILTER,D3DTEXF_POINT);
+            Device.SetSS(k,D3DSAMP_MIPFILTER,D3DTEXF_POINT);
         }
     }
 	// ligthing
@@ -502,6 +507,18 @@ void TUI::Redraw(){
 		Device.SetRS			(D3DRS_SHADEMODE,Device.dwShadeMode);
 
         Tools.RenderEnvironment	();
+        //. temporary reset filter (уберется после того как Олесь сделает шейдеры)
+        for (u32 k=0; k<HW.Caps.pixel.dwStages; k++){
+            if( psDeviceFlags.is(rsFilterLinear)){
+                Device.SetSS(k,D3DSAMP_MAGFILTER,D3DTEXF_LINEAR);
+                Device.SetSS(k,D3DSAMP_MINFILTER,D3DTEXF_LINEAR);
+                Device.SetSS(k,D3DSAMP_MIPFILTER,D3DTEXF_LINEAR);
+            } else {
+                Device.SetSS(k,D3DSAMP_MAGFILTER,D3DTEXF_POINT);
+                Device.SetSS(k,D3DSAMP_MINFILTER,D3DTEXF_POINT);
+                Device.SetSS(k,D3DSAMP_MIPFILTER,D3DTEXF_POINT);
+            }
+        }
 
     	// draw grid
     	if (psDeviceFlags.is(rsDrawGrid)){
@@ -539,7 +556,7 @@ void TUI::Idle()
     pInput->OnFrame();
     Sleep(1);
     if (ELog.in_use) return;
-	Device.UpdateTimer	();
+	Device.FrameMove();
     SndLib.OnFrame();
     // tools on frame
     if (m_Flags.is(flUpdateScene)){

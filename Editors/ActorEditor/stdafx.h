@@ -79,8 +79,18 @@ __inline float expf	(float val)                           	{ return ::exp(val);}
 #include "D3DX_Wrapper.h"
 #include "ETools.h"
 
-DEFINE_VECTOR(AnsiString,AStringVec,AStringIt);
-DEFINE_VECTOR(AnsiString*,LPAStringVec,LPAStringIt);
+struct xr_a_token{
+    AnsiString		name;
+    int				id;
+                    xr_a_token	(LPCSTR _nm, int _id){name=_nm;id=_id;}
+public:
+    void			rename		(LPCSTR _nm)		{name=_nm;}
+    bool			equal		(LPCSTR _nm)		{return (name==_nm);}
+};
+
+DEFINE_VECTOR		(xr_a_token,ATokenVec,ATokenIt);
+DEFINE_VECTOR		(AnsiString,AStringVec,AStringIt);
+DEFINE_VECTOR		(AnsiString*,LPAStringVec,LPAStringIt);
 
 #include "Log.h"
 #include "engine.h"

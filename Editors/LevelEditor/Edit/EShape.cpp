@@ -164,7 +164,7 @@ void CEditShape::Detach()
         for (; it!=shapes.end(); it++){
             string256 namebuffer;
             Scene.GenObjectName	(OBJCLASS_SHAPE, namebuffer, Name);
-            CEditShape* shape 	= (CEditShape*)NewObjectFromClassID(OBJCLASS_SHAPE, 0, namebuffer);
+            CEditShape* shape 	= (CEditShape*)Scene.GetOTools(ClassID)->CreateObject(0, namebuffer);
             switch (it->type){
             case cfSphere:{
                 Fsphere	T		= it->data.sphere;

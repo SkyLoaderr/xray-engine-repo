@@ -77,7 +77,7 @@ int EScene::RemoveSelection( EObjClass classfilter )
         ESceneCustomMTools* mt = GetMTools(classfilter);
         if (mt) 			count+=mt->RemoveSelection();
     }
-    UndoSave		();
+
     UI.UpdateScene	(true);
 	return count;
 }

@@ -65,7 +65,7 @@ void CGroupObject::OnFrame()
 
 bool CGroupObject::AppendObject(CCustomObject* object)
 {
-	if (!IsGroupClassID(object->ClassID)) return false;
+	if (object->ClassID==ClassID) return false;
     if (object->GetOwner()){
         if (mrNo==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Object '%s' already in group '%s'. Change group?",object->Name,object->GetOwner()->Name))
         	return false;
@@ -343,7 +343,7 @@ void CGroupObject::FillProp(LPCSTR pref, PropItemVec& items)
 	inherited::FillProp(pref, items);
 
 	for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
-	    PHelper.CreateCaption	(items,	FHelper.PrepareKey(pref,AnsiString().sprintf("%s: objects",Name).c_str(),GetClassNameByClassID((*it)->ClassID),(*it)->Name), "");
+	    PHelper.CreateCaption	(items,	FHelper.PrepareKey(pref,AnsiString().sprintf("%s: objects",Name).c_str(),ParentTools->ClassDesc(),(*it)->Name), "");
 }
 //----------------------------------------------------
 

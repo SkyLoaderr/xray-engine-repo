@@ -89,6 +89,8 @@ public:
 	CRegistrator <pureDeviceDestroy>	seqDevDestroy;
 	CRegistrator <pureDeviceCreate>		seqDevCreate;
 	CRegistrator <pureFrame>			seqFrame;
+	CRegistrator <pureAppCycleStart>	seqAppCycleStart;
+	CRegistrator <pureAppCycleEnd>		seqAppCycleEnd;
 public:
 							CRenderDevice 	();
     virtual 				~CRenderDevice	();
@@ -124,7 +126,7 @@ public:
 
     IC void					SetRS			(D3DRENDERSTATETYPE p1, u32 p2)
     { VERIFY(bReady); CHK_DX(HW.pDevice->SetRenderState(p1,p2)); }
-    IC void					SetTSS			(u32 sampler, D3DSAMPLERSTATETYPE type, u32 value)
+    IC void					SetSS			(u32 sampler, D3DSAMPLERSTATETYPE type, u32 value)
     { VERIFY(bReady); CHK_DX(HW.pDevice->SetSamplerState(sampler,type,value)); }
 
     // light&material
@@ -139,7 +141,7 @@ public:
 
 	// update
     void					UpdateView		();
-	void					UpdateTimer		();
+	void					FrameMove		();
 
     bool					MakeScreenshot	(U32Vec& pixels, u32& width, u32& height);
 
@@ -166,6 +168,7 @@ enum {
     rsDrawGrid			= (1ul<<26ul),
     rsDrawSafeRect		= (1ul<<27ul),
     rsMuteSounds		= (1ul<<28ul),
+    rsEnvironment		= (1ul<<29ul),
 };
 
 #define DEFAULT_CLEARCOLOR 0x00555555

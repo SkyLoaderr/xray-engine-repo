@@ -13,7 +13,7 @@
 // file: SceneChunks.h
 #define CURRENT_FILE_VERSION    	0x00000005
 #define CURRENT_LEVELOP_VERSION 	0x00000008
-#define CURRENT_LEVELOP_BP_VERSION 	0x00000008
+#define CURRENT_LEVELOP_BP_VERSION 	0x00000009
 #define CURRENT_ENV_VERSION	 		0x00000007
 
 #define CHUNK_VERSION       0x9df3
@@ -34,30 +34,9 @@
 #define CHUNK_LO_VERSION		0x7801
 #define CHUNK_LO_NAMES 			0x7802
 #define CHUNK_LO_BOP		 	0x7803
-#define CHUNK_LO_SKYDOME	 	0x7804
-#define CHUNK_LO_ENVS		 	0x7805
-#define CHUNK_LO_DOCLUSTERSIZE	0x7806
 #define CHUNK_LO_BP_VERSION		0x7849
 #define CHUNK_BUILD_PARAMS		0x7850
 
-//------------------------------------------------------------------------------------------------
-// Environment
-//------------------------------------------------------------------------------------------------
-void st_Environment::Save( IWriter& F ){
-    F.w_float	( m_ViewDist );
-    F.w_float	( m_Fogness );
-    F.w_fcolor	( m_FogColor );
-    F.w_fcolor	( m_AmbColor );
-    F.w_fcolor	( m_SkyColor );
-}
-
-void st_Environment::Read(IReader& F){
-    m_ViewDist 	= F.r_float();
-    m_Fogness  	= F.r_float();
-    F.r_fcolor 	( m_FogColor );
-    F.r_fcolor 	( m_AmbColor );
-    F.r_fcolor 	( m_SkyColor );
-}
 //------------------------------------------------------------------------------------------------
 // Level Options
 //------------------------------------------------------------------------------------------------
@@ -68,26 +47,10 @@ void st_LevelOptions::Save( IWriter& F ){
 
     F.open_chunk( CHUNK_LO_NAMES );
 	F.w_stringZ	( m_FNLevelPath.c_str() );
-	F.w_stringZ	( m_LevelName.c_str() );
     F.close_chunk();
 
     F.open_chunk( CHUNK_LO_BOP );
 	F.w_stringZ	( m_BOPText.c_str() );
-    F.close_chunk();
-
-    F.open_chunk( CHUNK_LO_SKYDOME );
-    F.w_stringZ	( m_SkydomeObjName.c_str() );
-    F.close_chunk();
-
-    F.open_chunk( CHUNK_LO_ENVS );
-	F.w_u32		( m_CurEnv );
-	F.w_u32		( m_Envs.size() );
-	for (EnvIt e_it=m_Envs.begin(); e_it!=m_Envs.end(); e_it++)
-    	e_it->Save(F);
-    F.close_chunk();
-
-    F.open_chunk( CHUNK_LO_DOCLUSTERSIZE );
-	F.w_float	( m_DOClusterSize );
     F.close_chunk();
 
     F.open_chunk( CHUNK_LO_BP_VERSION );
@@ -111,33 +74,20 @@ void st_LevelOptions::Read(IReader& F)
     char buf[4096];
     R_ASSERT(F.find_chunk(CHUNK_LO_NAMES));
     F.r_stringZ 	(m_FNLevelPath);
-    F.r_stringZ 	(m_LevelName);
 
     R_ASSERT(F.find_chunk(CHUNK_LO_BOP));
     F.r_stringZ 	(m_BOPText); 
-
-    R_ASSERT(F.find_chunk(CHUNK_LO_SKYDOME));
-	F.r_stringZ		(m_SkydomeObjName);
-
-    R_ASSERT(F.find_chunk(CHUNK_LO_ENVS));
-	m_CurEnv	= F.r_u32( );
-    m_Envs.resize(F.r_u32( ));
-	for (EnvIt e_it=m_Envs.begin(); e_it!=m_Envs.end(); e_it++)
-    	e_it->Read(F);
-
-    R_ASSERT(F.find_chunk(CHUNK_LO_DOCLUSTERSIZE));
-    m_DOClusterSize = F.r_float();
 
     vers = 0;
     if (F.find_chunk(CHUNK_LO_BP_VERSION))
 	    vers = F.r_u32( );
 
     if (CURRENT_LEVELOP_BP_VERSION==vers){
-	    if (F.find_chunk(CHUNK_BUILD_PARAMS)){
-			F.r		( &m_BuildParams, sizeof(m_BuildParams) );
-        }
+	    if (F.find_chunk(CHUNK_BUILD_PARAMS)) 	
+        	F.r(&m_BuildParams, sizeof(m_BuildParams));
     }else{
-        ELog.DlgMsg( mtError, "Skipping bad version of build params." );
+        ELog.DlgMsg	(mtError, "Skipping bad version of build params.");
+    	m_BuildParams.Init();
     }
 }
 //------------------------------------------------------------------------------------------------
@@ -145,7 +95,7 @@ void st_LevelOptions::Read(IReader& F)
 //------------------------------------------------------------------------------------------------
 void EScene::Save(LPCSTR initial, LPCSTR map_name, bool bUndo)
 {
-	VERIFY( map_name );
+	VERIFY(map_name);
 
     AnsiString full_name = (initial)?FS.update_path(full_name,initial,map_name):AnsiString(map_name);
     
@@ -227,11 +177,12 @@ void EScene::SaveObjects( ObjectList& lst, u32 chunk_id, IWriter& F )
 }
 //--------------------------------------------------------------------------------------------------
 
-bool EScene::ReadObject(IReader& F, CCustomObject*& O){
-    DWORD clsid=0;
+bool EScene::ReadObject(IReader& F, CCustomObject*& O)
+{
+    EObjClass clsid=OBJCLASS_DUMMY;
     R_ASSERT(F.find_chunk(CHUNK_OBJECT_CLASS));
     clsid = F.r_u32();
-	O = NewObjectFromClassID(clsid,0,0);
+	O = GetOTools(clsid)->CreateObject(0,0);
 
     IReader* S = F.open_chunk(CHUNK_OBJECT_BODY);
     R_ASSERT(S);
@@ -294,7 +245,6 @@ bool EScene::Load(LPCSTR initial, LPCSTR map_name, bool bUndo)
         IReader* LOP = F->open_chunk(CHUNK_LEVELOP);
         if (LOP){
 	        m_LevelOp.Read	(*LOP);
-    	    UpdateSkydome	();
         	LOP->close		();
         }else{
 			ELog.DlgMsg( mtError, "Skipping old version of level options.\nCheck level options after loading." );

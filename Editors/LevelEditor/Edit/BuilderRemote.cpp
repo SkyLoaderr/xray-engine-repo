@@ -18,6 +18,7 @@
 #include "xrHemisphere.h"
 #include "ResourceManager.h"
 
+#include "ESceneLightTools.h"
 //------------------------------------------------------------------------------
 // !!! использовать prefix если нужно имя !!! (Связано с группами)
 //------------------------------------------------------------------------------
@@ -357,19 +358,18 @@ void __stdcall 	hemi_callback(float x, float y, float z, float E, LPVOID P)
     H->T.light.direction.set(x,y,z);
     H->dest->push_back  (H->T);
 }
-void SceneBuilder::BuildHemiLights()
+void SceneBuilder::BuildHemiLights(u8 quality)
 {
     BLVec 				dest;
     Flight				RL;
-    b_params& P			= Scene.m_LevelOp.m_BuildParams;
     // set def params
     RL.type				= D3DLIGHT_DIRECTIONAL;
-    RL.diffuse			= P.area_color;
-    if (P.area_quality){
+    RL.diffuse.set		(1.f,1.f,1.f,1.f);
+    if (quality){
         SHemiData		h_data;
         h_data.dest 	= &dest;
         h_data.T.light	= RL;
-        xrHemisphereBuild(P.area_quality,FALSE,0.5f,P.area_energy_summary,hemi_callback,&h_data);
+        xrHemisphereBuild(quality,FALSE,0.5f,1.f,hemi_callback,&h_data);
         int control_ID	= BuildLightControl(LCONTROL_HEMI);
         for (BLIt it=dest.begin(); it!=dest.end(); it++){
             l_light_static.push_back(b_light_static());
@@ -380,60 +380,52 @@ void SceneBuilder::BuildHemiLights()
         }
     }
 }
-BOOL SceneBuilder::BuildSun(b_light* b, const Flags32& usage, svector<WORD,16>* sectors)
+BOOL SceneBuilder::BuildSun(u8 quality, Fvector2 dir)
 {
-    b->controller_ID			= BuildLightControl(LCONTROL_SUN);
-    if (usage.is(CLight::flAffectStatic)){
-	    b_params& P			= Scene.m_LevelOp.m_BuildParams;
-    	if (!P.area_quality){
-        	// single light
-            l_light_static.push_back(b_light_static());
-    	    b_light_static& sl	= l_light_static.back();
-	        sl.controller_ID 	= b->controller_ID;
-    	    sl.data			    = b->data;
-        }else{
-            // soft light
-            float base_h,base_p;
-            b->data.direction.getHP(base_h,base_p);
+    int controller_ID		= BuildLightControl(LCONTROL_SUN);
+    // static
+    {
+        // soft light
+        int samples;
+        switch(quality){
+        case 1: samples = 3; break;
+        case 2: samples = 4; break;
+        case 3: samples = 7; break;
+        default:
+            THROW2("Invalid case.");
+        }
 
-            int samples;
-            switch(P.area_quality){
-            case 1: samples = 3; break;
-            case 2: samples = 4; break;
-            default:
-            	THROW2("Invalid case.");
-            }
+        Fcolor color;		color.set(1.f,1.f,1.f,1.f);
+        float sample_energy	= 1.f/float(samples*samples);
+        color.mul_rgb		(sample_energy);
 
-            Fcolor color		= b->data.diffuse;
-            color.normalize_rgb(b->data.diffuse);
-            float sample_energy	= (b->data.diffuse.magnitude_rgb())/float(samples*samples);
-            color.mul_rgb		(sample_energy);
-
-            float disp			= deg2rad(P.area_dispersion);
-            float da 			= disp/float(samples);
-            float mn_h  		= base_h-disp/2;
-            float mn_p  		= base_p-disp/2;
-            for (int x=0; x<samples; x++){
-            	float h = mn_h+x*da;
-	            for (int y=0; y<samples; y++){
-	            	float p = mn_p+y*da;
-                    l_light_static.push_back(b_light_static());
-                    b_light_static& sl	= l_light_static.back();
-                    sl.controller_ID 	= b->controller_ID;
-                    sl.data				= b->data;
-                    sl.data.diffuse.set	(color);
-                    sl.data.direction.setHP(h,p);
-                }
+        float disp			= deg2rad(3.f); // dispersion of sun
+        float da 			= disp/float(samples);
+        float mn_x  		= dir.x-disp/2;
+        float mn_y  		= dir.y-disp/2;
+        for (int x=0; x<samples; x++){
+            float x = mn_x+x*da;
+            for (int y=0; y<samples; y++){
+                float y = mn_y+y*da;
+                l_light_static.push_back(b_light_static());
+                b_light_static& sl	= l_light_static.back();
+                sl.controller_ID 	= controller_ID;
+                sl.data.type		= D3DLIGHT_DIRECTIONAL;
+                sl.data.position.set(0,0,0);
+                sl.data.diffuse.set	(color);
+                sl.data.direction.setHP(y,x);
             }
         }
     }
-    if (usage.is(CLight::flAffectDynamic)){
-        R_ASSERT			(sectors);
+    // dynamic
+    {
 		l_light_dynamic.push_back(b_light_dynamic());
         b_light_dynamic& dl	= l_light_dynamic.back();
-        dl.controller_ID 	= b->controller_ID;
-        dl.data			    = b->data;
-        dl.sectors			= *sectors;
+        dl.controller_ID 	= controller_ID;
+        dl.data.type		= D3DLIGHT_DIRECTIONAL;
+        dl.data.position.set(0,0,0);
+        dl.data.diffuse.set	(1.f,1.f,1.f,1.f);
+        dl.data.direction.setHP(dir.y,dir.x);
     }
 
 	return TRUE;
@@ -483,10 +475,15 @@ BOOL SceneBuilder::BuildLight(CLight* e)
     if (!e->m_Flags.is_any(CLight::flAffectStatic|CLight::flAffectDynamic))
     	return FALSE;
 
+    if (e->GetLControlName()){
+    	ELog.Msg(mtError,"Invalid light control name: '%s'.",e->Name);
+    	return FALSE;
+    }
+        
     b_light	L;
     L.data			= e->m_D3D;
     L.data.mul		(e->m_Brightness);
-    L.controller_ID	= BuildLightControl(LCONTROL_STATIC); // e->controller_name?e->controller_name:"all"
+    L.controller_ID	= BuildLightControl(e->GetLControlName()); //BuildLightControl(LCONTROL_STATIC); 
 
 	svector<WORD,16>* lpSectors;
     if (e->m_Flags.is(CLight::flAffectDynamic)){
@@ -522,7 +519,6 @@ BOOL SceneBuilder::BuildLight(CLight* e)
 
 
     switch (e->m_D3D.type){
-    case D3DLIGHT_DIRECTIONAL: 	return BuildSun			(&L,e->m_Flags,lpSectors);
     case D3DLIGHT_POINT:		return BuildPointLight	(&L,e->m_Flags,lpSectors,e->m_FuzzyData?&e->m_FuzzyData->m_Positions:0,&e->_Transform());
     default:
     	THROW2("Invalid light type.");
@@ -810,7 +806,10 @@ BOOL SceneBuilder::CompileStatic()
 	l_verts		= xr_alloc<b_vertex>(l_vert_cnt);
 
 // make hemisphere
-	BuildHemiLights();
+	ESceneLightTools* lt = dynamic_cast<ESceneLightTools*>(Scene.GetOTools(OBJCLASS_LIGHT));
+	BuildHemiLights	(lt->m_HemiQuality);
+// make sun
+	BuildSun		(lt->m_SunShadowQuality,lt->m_SunShadowDir);
 // parse scene
     UI.ProgressStart(Scene.ObjCount(),"Parse scene objects...");
     SceneToolsMapPairIt t_it 	= Scene.FirstTools();

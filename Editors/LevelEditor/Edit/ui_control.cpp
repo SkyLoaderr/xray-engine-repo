@@ -72,7 +72,7 @@ CCustomObject* __fastcall TUI_CustomControl::DefaultAddObject(TShiftState Shift,
 
 		string256 namebuffer;
 		Scene.GenObjectName(parent_tool->ClassID, namebuffer, P.name_prefix.c_str());
-		obj = NewObjectFromClassID(parent_tool->ClassID, P.data, namebuffer);
+		obj=Scene.GetOTools(parent_tool->ClassID)->CreateObject(P.data, namebuffer);
         if (!obj->Valid()){
         	xr_delete(obj);
             return 0;

@@ -1,6 +1,6 @@
 object frmEditPrefs: TfrmEditPrefs
-  Left = 380
-  Top = 272
+  Left = 390
+  Top = 445
   BorderStyle = bsDialog
   Caption = 'Editor preferences'
   ClientHeight = 266
@@ -33,16 +33,16 @@ object frmEditPrefs: TfrmEditPrefs
       Top = 0
       Width = 396
       Height = 243
-      ActivePage = tsScene
+      ActivePage = tsCamera
       Align = alClient
-      TabIndex = 2
+      TabIndex = 0
       TabOrder = 0
       object tsCamera: TTabSheet
         Caption = 'Camera'
         ImageIndex = 5
         object GroupBox8: TGroupBox
           Left = 196
-          Top = 56
+          Top = 75
           Width = 192
           Height = 61
           Caption = ' Sensitivity '
@@ -62,7 +62,7 @@ object frmEditPrefs: TfrmEditPrefs
             Caption = 'Move, %'
           end
           object seCameraSR: TMultiObjSpinEdit
-            Left = 93
+            Left = 117
             Top = 18
             Width = 65
             Height = 18
@@ -77,7 +77,7 @@ object frmEditPrefs: TfrmEditPrefs
             TabOrder = 0
           end
           object seCameraSM: TMultiObjSpinEdit
-            Left = 93
+            Left = 117
             Top = 37
             Width = 65
             Height = 18
@@ -95,9 +95,8 @@ object frmEditPrefs: TfrmEditPrefs
         object GroupBox4: TGroupBox
           Left = 0
           Top = 0
-          Width = 388
-          Height = 56
-          Align = alTop
+          Width = 192
+          Height = 75
           Caption = ' Viewport '
           TabOrder = 1
           object RxLabel11: TLabel
@@ -108,15 +107,15 @@ object frmEditPrefs: TfrmEditPrefs
             Caption = 'Near plane, m'
           end
           object RxLabel1: TLabel
-            Left = 206
-            Top = 16
+            Left = 6
+            Top = 35
             Width = 58
             Height = 13
             Caption = 'Far plane, m'
           end
           object RxLabel22: TLabel
             Left = 6
-            Top = 34
+            Top = 54
             Width = 104
             Height = 13
             Caption = 'Perspective FOV, deg'
@@ -137,8 +136,8 @@ object frmEditPrefs: TfrmEditPrefs
             TabOrder = 0
           end
           object seZFar: TMultiObjSpinEdit
-            Left = 289
-            Top = 14
+            Left = 117
+            Top = 33
             Width = 65
             Height = 18
             LWSensitivity = 0.1
@@ -152,7 +151,7 @@ object frmEditPrefs: TfrmEditPrefs
           end
           object seFOV: TMultiObjSpinEdit
             Left = 117
-            Top = 32
+            Top = 52
             Width = 65
             Height = 18
             LWSensitivity = 0.01
@@ -168,7 +167,7 @@ object frmEditPrefs: TfrmEditPrefs
         end
         object GroupBox5: TGroupBox
           Left = 0
-          Top = 56
+          Top = 75
           Width = 192
           Height = 61
           Caption = ' Fly Style '
@@ -215,6 +214,69 @@ object frmEditPrefs: TfrmEditPrefs
             Value = 1.8
             AutoSize = False
             TabOrder = 1
+          end
+        end
+        object GroupBox6: TGroupBox
+          Left = 196
+          Top = 0
+          Width = 192
+          Height = 75
+          Caption = ' Fog '
+          TabOrder = 3
+          object RxLabel30: TLabel
+            Left = 6
+            Top = 35
+            Width = 40
+            Height = 13
+            Caption = 'Fogness'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+          end
+          object RxLabel32: TLabel
+            Left = 6
+            Top = 16
+            Width = 24
+            Height = 13
+            Caption = 'Color'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+          end
+          object mcFogColor: TMultiObjColor
+            Left = 117
+            Top = 16
+            Width = 65
+            Height = 16
+            Brush.Color = 5592405
+            OnMouseDown = mcColorDialogClick
+          end
+          object seFogness: TMultiObjSpinEdit
+            Left = 117
+            Top = 33
+            Width = 65
+            Height = 18
+            LWSensitivity = 0.01
+            ButtonKind = bkLightWave
+            Decimal = 1
+            Increment = 0.1
+            MaxValue = 100
+            ValueType = vtFloat
+            Value = 0.9
+            AutoSize = False
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+            TabOrder = 0
           end
         end
       end
@@ -1030,7 +1092,8 @@ object frmEditPrefs: TfrmEditPrefs
       'seCameraFlySpeed.Value'
       'seSnapMoveTo.Value'
       'seRecentFilesCount.Value'
-      'cbLeaveEmptyRef.Checked')
+      'cbLeaveEmptyRef.Checked'
+      'seFogness.Value')
     StoredValues = <>
     Left = 273
     Top = 9

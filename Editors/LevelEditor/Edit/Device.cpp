@@ -122,7 +122,8 @@ void CRenderDevice::ResetNearer(){
     RCache.set_xform_project(mProjection);
 }
 //---------------------------------------------------------------------------
-bool CRenderDevice::Create(){
+bool CRenderDevice::Create()
+{
 	if (bReady)	return false;
 	ELog.Msg(mtInformation,"Starting RENDER device...");
 
@@ -167,6 +168,7 @@ void CRenderDevice::Destroy(){
 void CRenderDevice::_Create(IReader* F)
 {
 	bReady				= TRUE;
+	Resources->SetHLSL_path("R1\\");
 
 	// General Render States
 	HW.Caps.Update();
@@ -299,7 +301,7 @@ void CRenderDevice::UpdateView()
     ::Render->ViewBase.CreateFromMatrix(mFullTransform,FRUSTUM_P_ALL);
 }
 
-void CRenderDevice::UpdateTimer()
+void CRenderDevice::FrameMove()
 {
 	dwFrame++;
 
@@ -315,6 +317,9 @@ void CRenderDevice::UpdateTimer()
 	dwTimeDelta		= iFloor(fTimeDelta*1000.f+0.5f);
 
     m_Camera.Update(fTimeDelta);
+
+    // process objects
+	seqFrame.Process(rp_Frame);
 }
 
 void CRenderDevice::DP(D3DPRIMITIVETYPE pt, ref_geom geom, u32 vBase, u32 pc)
@@ -435,4 +440,5 @@ void CRenderDevice::Reset(IReader* F, BOOL bKeepTextures)
     tm.Stop();
 	Msg				("*** RESET [%d ms]",tm.GetElapsed_ms());
 }
+
 

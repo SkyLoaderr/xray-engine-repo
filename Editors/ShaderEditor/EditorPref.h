@@ -119,6 +119,11 @@ __published:	// IDE-managed Components
 	TLabel *Label2;
 	TMultiObjSpinEdit *seRecentFilesCount;
 	TCheckBox *cbLeaveEmptyRef;
+	TGroupBox *GroupBox6;
+	TLabel *RxLabel30;
+	TLabel *RxLabel32;
+	TMultiObjColor *mcFogColor;
+	TMultiObjSpinEdit *seFogness;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
     void __fastcall ebCancelClick(TObject *Sender);

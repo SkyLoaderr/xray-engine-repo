@@ -35,29 +35,9 @@ int __cdecl _CompareByDist( const void *a, const void *b)
 }
 */
 
-struct st_Environment{
-    float 		m_ViewDist;
-    float 		m_Fogness;
-    Fcolor 		m_FogColor;
-    Fcolor 		m_AmbColor;
-    Fcolor 		m_SkyColor;
-
-    st_Environment();
-    void		Reset();
-	void 		Save			(IWriter&);
-	void 		Read			(IReader&);
-};
-
-DEFINE_VECTOR(st_Environment,EnvList,EnvIt);
-
 struct st_LevelOptions{
 	AnsiString	m_FNLevelPath;
-	AnsiString	m_LevelName;   // obsolette
 	AnsiString 	m_BOPText;
-	AnsiString 	m_SkydomeObjName;
-    EnvList		m_Envs;
-    int 		m_CurEnv;
-    float		m_DOClusterSize;
 
     b_params	m_BuildParams;
 
@@ -67,26 +47,13 @@ struct st_LevelOptions{
 	void 		Read			(IReader&);
     void		Reset			();
 	void 		InitDefaultText	();
-    void		WriteToLTX		(CInifile* pIni);
 };
-
-struct st_GroupItem{
-	u32			dwUpdateFrame;
-	Fbox		box;
-	ObjectList	objects;
-    st_GroupItem(){box.set(0,0,0,0,0,0);}
-};
-
-DEFINE_MAP(int,st_GroupItem,GroupMap,GroupPairIt);
 
 class EScene:
 	public pureDeviceCreate,
 	public pureDeviceDestroy
 {
 public:
-	// addition objects
-    CSceneObject*		m_SkyDome;
-
 	typedef	FixedMAP<float,CCustomObject*>	mapObject_D;
 	typedef mapObject_D::TNode	 	    	mapObject_Node;
 	mapObject_D						    	mapRenderObjects;
@@ -155,7 +122,7 @@ protected:
     bool 			OnLoadAppendObject			(CCustomObject* O);
     bool 			OnLoadSelectionAppendObject(CCustomObject* O);
 protected:
-	void			RegisterSceneTools			(ESceneCustomMTools* mt, int render_priority);
+	void			RegisterSceneTools			(ESceneCustomMTools* mt, int rp, LPCSTR cls_name, LPCSTR cls_desc);
 public:
 	enum{
     	flRT_Unsaved 	= (1<<0),
@@ -261,8 +228,6 @@ public:
 
     bool 			GetBox				(Fbox& box, EObjClass classfilter);
     bool 			GetBox				(Fbox& box, ObjectList& lst);
-	void 			UpdateSkydome		();
-    void 			WriteToLTX			(CInifile* pIni);
 
 public:
 	int  			GetQueryObjects		(ObjectList& objset, EObjClass classfilter, int iSel=1, int iVis=1, int iLock=0);

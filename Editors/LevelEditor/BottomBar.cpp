@@ -30,6 +30,7 @@ void __fastcall TfraBottomBar::ClickOptionsMenuItem(TObject *Sender)
         mi->Checked = !mi->Checked;
         if (mi==miDrawGrid)     			UI.Command(COMMAND_TOGGLE_GRID);
         else if (mi==miRenderWithTextures)	psDeviceFlags.set(rsRenderTextures,mi->Checked);
+        else if (mi==miEnvironment)			psDeviceFlags.set(rsEnvironment,mi->Checked);
         else if (mi==miMuteSounds)			psDeviceFlags.set(rsMuteSounds,mi->Checked);
         else if (mi==miLightScene)  		psDeviceFlags.set(rsLighting,mi->Checked);
         else if (mi==miRenderLinearFilter)	psDeviceFlags.set(rsFilterLinear,mi->Checked);
@@ -113,6 +114,7 @@ void __fastcall TfraBottomBar::ebOptionsMouseDown(TObject *Sender,
 void __fastcall TfraBottomBar::pmOptionsPopup(TObject *Sender)
 {
     miRenderWithTextures->Checked	= psDeviceFlags.is(rsRenderTextures);
+    miEnvironment->Checked			= psDeviceFlags.is(rsEnvironment);
     miLightScene->Checked			= psDeviceFlags.is(rsLighting);
     miMuteSounds->Checked			= psDeviceFlags.is(rsMuteSounds);
     miRenderLinearFilter->Checked	= psDeviceFlags.is(rsFilterLinear);

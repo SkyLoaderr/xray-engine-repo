@@ -92,6 +92,8 @@ __published:	// IDE-managed Components
 	TMenuItem *miDrawSafeRect;
 	TMenuItem *miMuteSounds;
 	TMenuItem *miDrawObjectLOD;
+	TMenuItem *N5;
+	TMenuItem *miEnvironment;
     void __fastcall ClickOptionsMenuItem(TObject *Sender);
     void __fastcall QualityClick(TObject *Sender);
     void __fastcall fsStorageRestorePlacement(TObject *Sender);

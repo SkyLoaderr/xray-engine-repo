@@ -65,6 +65,9 @@ class TUI_Tools{
     void			RealUpdateProperties();
     void			RealUpdateObjectList();
 public:
+    float 			fFogness;
+    u32				dwFogColor;
+public:
                     TUI_Tools		();
     virtual         ~TUI_Tools		();
 
@@ -76,6 +79,7 @@ public:
 	bool			IsModified		();
 
     void			ZoomObject		(bool bSelectedOnly);
+    void			SetFog			(u32 fog_color, float fogness){dwFogColor=fog_color;fFogness=fogness;}
     void			GetCurrentFog	(u32& fog_color, float& s_fog, float& e_fog);
     LPCSTR			GetInfo			();
 

@@ -1,6 +1,4 @@
 //---------------------------------------------------------------------------
-
-
 #ifndef LeftBarH
 #define LeftBarH
 //---------------------------------------------------------------------------
@@ -150,7 +148,6 @@ __published:	// IDE-managed Components
 	TMenuItem *MenuItem25;
 	TMenuItem *MenuItem26;
 	TMenuItem *MenuItem27;
-	TMenuItem *MenuItem28;
 	TMenuItem *MenuItem29;
 	TMenuItem *MenuItem32;
 	TMenuItem *MenuItem33;
@@ -273,7 +270,6 @@ __published:	// IDE-managed Components
 	void __fastcall miClearErrorListClick(TObject *Sender);
 	void __fastcall miSceneSummaryClick(TObject *Sender);
 	void __fastcall MakeHOM1Click(TObject *Sender);
-	void __fastcall miMakeSkyDomeClick(TObject *Sender);
 	void __fastcall UpdateEnvironmentGeometry1Click(TObject *Sender);
 	void __fastcall MenuItem14Click(TObject *Sender);
 	void __fastcall ebSoundsMouseDown(TObject *Sender, TMouseButton Button,

@@ -21,6 +21,7 @@
 
 #include "SoundManager.h"
 #include "ResourceManager.h"
+#include "igame_persistent.h"
 
 bool TUI::Command( int _Command, int p1, int p2 ){
 	if ((_Command!=COMMAND_INITIALIZE)&&!m_bReady) return false;
@@ -34,6 +35,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
         // make interface
 		//----------------
         if (UI.OnCreate()){
+			g_pGamePersistent= xr_new<IGame_Persistent>();
             ::Render->PSLibrary.OnCreate	();
             Lib.OnCreate	();
             LALib.OnCreate	();
@@ -42,6 +44,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
                 bRes=false;
             	break;
             }
+			Device.seqAppCycleStart.Process(rp_AppCycleStart);
 
 		    Command			(COMMAND_CLEAR);
 			Command			(COMMAND_RENDER_FOCUS);
@@ -52,6 +55,8 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     	}break;
 	case COMMAND_DESTROY:
 		Command				(COMMAND_CLEAR);
+		Device.seqAppCycleEnd.Process(rp_AppCycleEnd);
+        xr_delete			(g_pGamePersistent);
         LALib.OnDestroy		();
     	::Render->PSLibrary.OnDestroy();
 		Tools.OnDestroy		();

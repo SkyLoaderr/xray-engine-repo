@@ -7,76 +7,36 @@
 
 #include "Scene.h"
 #include "SceneObject.h"
-#include "DetailObjects.h"
-#include "ESceneAIMapTools.h"
 #include "ui_main.h"
 #include "PropertiesList.h"
 #include "Sector.h"
 #include "SoundManager.h"
 #include "EParticlesObject.h"
 #include "ui_tools.h"
+
+#include "ESceneAIMapTools.h"
+#include "DetailObjects.h"
+#include "ESceneLightTools.h"
 //----------------------------------------------------
 EScene Scene;
 //----------------------------------------------------
-void st_Environment::Reset()
-{
-    m_ViewDist		= 500;
-    m_Fogness		= 0.9f;
-    m_FogColor.set	(0.5f,0.5f,0.5f,0.f);
-    m_AmbColor.set	(0,0,0,0);
-    m_SkyColor.set	(1,1,1,1);
-}
-
-st_Environment::st_Environment()
+st_LevelOptions::st_LevelOptions()
 {
 	Reset();
 }
 
-void st_LevelOptions::WriteToLTX(CInifile* pIni){
-	AnsiString temp, ln;
-	for (EnvIt e_it=m_Envs.begin(); e_it!=m_Envs.end(); e_it++){
-    	ln.sprintf("env%d",e_it-m_Envs.begin());
-    	temp.sprintf("%.3f,%.3f,%.3f,  %.3f,%.3f,%.3f,  %.3f,  %.3f,  %.3f,%.3f,%.3f,%.3f",
-        			e_it->m_AmbColor.r,e_it->m_AmbColor.g,e_it->m_AmbColor.b,
-        			e_it->m_FogColor.r,e_it->m_FogColor.g,e_it->m_FogColor.b,
-                    e_it->m_Fogness, e_it->m_ViewDist,
-        			e_it->m_SkyColor.r,e_it->m_SkyColor.g,e_it->m_SkyColor.b, e_it->m_SkyColor.a);
-		pIni->w_string("environment", ln.c_str(), temp.c_str());
-    }
-}
-
-void EScene::WriteToLTX(CInifile* pIni){
-	m_LevelOp.WriteToLTX(pIni);
-    if (m_SkyDome){
-        AnsiString name = m_SkyDome->Name;
-        name = ChangeFileExt(name,".ogf");
-        pIni->w_string("environment", "sky", name.c_str() );
-    }
-}
-
-st_LevelOptions::st_LevelOptions(){
-	Reset();
-}
-
-void st_LevelOptions::InitDefaultText(){
+void st_LevelOptions::InitDefaultText()
+{
 	char deffilename[MAX_PATH];
 	int handle;
 	m_BOPText="";
 }
 
-void st_LevelOptions::Reset(){
+void st_LevelOptions::Reset()
+{
 	m_FNLevelPath	= "level";
-	m_LevelName		= "Unnamed place";
-
-    m_Envs.resize	(1);
-
-    m_SkydomeObjName= "";
 
     InitDefaultText	();
-
-    m_CurEnv		= 0;
-
-	m_DOClusterSize = 8.f;
 
     m_BuildParams.Init();
 }
@@ -95,7 +55,6 @@ EScene::EScene()
     // first init scene graph for objects
     mapRenderObjects.init(MAX_VISUALS);
 // Build options
-    m_SkyDome 		= 0;
     m_SummaryInfo	= 0;
     ClearSnapList	(false);
 }
@@ -106,10 +65,10 @@ EScene::~EScene()
     m_ESO_SnapObjects.clear	();
 }
 
-void EScene::RegisterSceneTools(ESceneCustomMTools* mt, int render_priority)
+void EScene::RegisterSceneTools(ESceneCustomMTools* mt, int rp, LPCSTR cls_name, LPCSTR cls_desc)
 {
     m_SceneTools[mt->ClassID]=mt;
-    mt->render_priority		= render_priority;
+    mt->SetDefinition		(cls_name,cls_desc,rp);
 }
 
 void EScene::OnCreate()
@@ -117,20 +76,20 @@ void EScene::OnCreate()
 	Device.seqDevCreate.Add	(this,REG_PRIORITY_NORMAL);
 	Device.seqDevDestroy.Add(this,REG_PRIORITY_NORMAL);
 
-    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_SCENEOBJECT),	0);
-    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_LIGHT),		1);
-    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_SOUND_SRC),	2);
-    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_SOUND_ENV),	3);
-	RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_GROUP),		4);
-    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_SHAPE),		5);
-    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_GLOW),		6);
-    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_SPAWNPOINT),	7);
-    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_WAY),			8);
-    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_SECTOR),		9);
-    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_PORTAL),		10);
-    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_PS),			11);
-    RegisterSceneTools	   	(xr_new<EDetailManager>		(),						1);
-    RegisterSceneTools	   	(xr_new<ESceneAIMapTools>	(),						100);
+    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_SCENEOBJECT),	0,"scene_object",	"Scene Object");
+    RegisterSceneTools	   	(xr_new<ESceneLightTools>	(),						1,"light",			"Light");
+    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_SOUND_SRC),	2,"sound_source",	"Sound Source");
+    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_SOUND_ENV),	3,"sound_env",		"Sound Environment");
+	RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_GROUP),		4,"group",			"Group");
+    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_SHAPE),		5,"shape",			"Shape");
+    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_GLOW),		6,"glow",			"Glow");
+    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_SPAWNPOINT),	7,"spawn_point",	"Spawn Point");
+    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_WAY),			8,"way",			"Way");
+    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_SECTOR),		9,"sector",			"Sector");
+    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_PORTAL),		10,"portal",		"Portal");
+    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_PS),			11,"particle_system","Particle System");
+    RegisterSceneTools	   	(xr_new<EDetailManager>		(),						1,"detail_objects",	"Detail Objects");
+    RegisterSceneTools	   	(xr_new<ESceneAIMapTools>	(),						100,"ai_map",		"AI Map");
 
 	m_LastAvailObject 		= 0;
     m_LevelOp.Reset			();
@@ -151,7 +110,6 @@ void EScene::OnDestroy()
 	ELog.Msg				( mtInformation, "Scene: cleared" );
 	m_LastAvailObject 		= 0;
 	m_Valid 				= false;
-    xr_delete				(m_SkyDome);
 
     for (int i=0; i<OBJCLASS_COUNT; i++)
     	xr_delete			(m_SceneTools[(EObjClass)i]);
@@ -163,7 +121,7 @@ void EScene::AppendObject( CCustomObject* object, bool bUndo )
 	VERIFY			  	(object);
 	VERIFY				(m_Valid);
     
-    ESceneCustomOTools* mt	= GetOTools(object->ClassID); VERIFY3(mt,"Can't find Object Tools:",GetClassNameByClassID(object->ClassID));
+    ESceneCustomOTools* mt	= GetOTools(object->ClassID); VERIFY3(mt,"Can't find Object Tools:",GetMTools(object->ClassID)->ClassDesc());
     mt->_AppendObject	(object);
     UI.UpdateScene		();
     if (bUndo){	
@@ -198,19 +156,6 @@ bool EScene::RemoveObject( CCustomObject* object, bool bUndo )
     return true;
 }
 
-void EScene::UpdateSkydome()
-{
-	xr_delete(m_SkyDome);
-    if (!m_LevelOp.m_SkydomeObjName.IsEmpty()){
-        m_SkyDome = xr_new<CSceneObject>((LPVOID)0,"$sky");
-        CEditableObject* EO = m_SkyDome->SetReference(m_LevelOp.m_SkydomeObjName.c_str());
-        if (!EO){
-        	ELog.DlgMsg(mtError,"Object %s can't find in library.",m_LevelOp.m_SkydomeObjName.c_str());
-            xr_delete(m_SkyDome);
-        }
-    }
-}
-
 void EScene::OnFrame( float dT )
 {
 	if( !valid() ) return;
@@ -232,7 +177,6 @@ void EScene::Clear()
     for (; t_it!=t_end; t_it++)
         if (t_it->second)		t_it->second->Clear();
         
-    xr_delete				(m_SkyDome);
     m_CompilerErrors.Clear	();
 
     m_RTFlags.set			(flRT_Unsaved|flRT_Modified,FALSE);
@@ -300,10 +244,61 @@ void EScene::Unload()
 	if (m_SummaryInfo) m_SummaryInfo->HideProperties();
 }
 
+void EScene::OnObjectsUpdate()
+{
+    SceneToolsMapPairIt t_it 	= m_SceneTools.begin();
+    SceneToolsMapPairIt t_end 	= m_SceneTools.end();
+    for (; t_it!=t_end; t_it++)
+        if (t_it->second)		t_it->second->OnSceneUpdate();
+}
+
+void EScene::OnDeviceCreate()
+{
+    SceneToolsMapPairIt t_it 	= m_SceneTools.begin();
+    SceneToolsMapPairIt t_end 	= m_SceneTools.end();
+    for (; t_it!=t_end; t_it++)
+        if (t_it->second)		t_it->second->OnDeviceCreate();
+}
+
+void EScene::OnDeviceDestroy()
+{
+    SceneToolsMapPairIt t_it 	= m_SceneTools.begin();
+    SceneToolsMapPairIt t_end 	= m_SceneTools.end();
+    for (; t_it!=t_end; t_it++)
+        if (t_it->second)		t_it->second->OnDeviceDestroy();
+}
+//------------------------------------------------------------------------------
+
+void EScene::OnShowHint(AStringVec& dest)
+{
+    CCustomObject* obj = RayPickObject(UI.m_CurrentRStart,UI.m_CurrentRNorm,Tools.CurrentClassID(),0,0);
+    if (obj) obj->OnShowHint(dest);
+}
+//------------------------------------------------------------------------------
+
+void EScene::ExportGame(SExportStreams& F)
+{
+    SceneToolsMapPairIt t_it 	= m_SceneTools.begin();
+    SceneToolsMapPairIt t_end 	= m_SceneTools.end();
+    for (; t_it!=t_end; t_it++)
+        if (t_it->second)		t_it->second->ExportGame(F);
+}
+//------------------------------------------------------------------------------
 
 bool EScene::Validate(bool bNeedOkMsg, bool bTestPortal, bool bTestHOM, bool bTestGlow, bool bTestShaderCompatible)
 {
 	bool bRes = true;
+    SceneToolsMapPairIt t_it 	= m_SceneTools.begin();
+    SceneToolsMapPairIt t_end 	= m_SceneTools.end();
+    for (; t_it!=t_end; t_it++){
+        if (t_it->second){
+        	if (!t_it->second->Validate()){
+				ELog.Msg(mtError,"ERROR: Validate '%s' failed!",t_it);
+                bRes = false;
+            }
+        }
+    }
+
 	if (bTestPortal){
 		if (!PortalUtils.Validate(false)){
 			ELog.Msg(mtError,"*ERROR: Scene has non associated face (face without sector)!");
@@ -392,46 +387,5 @@ bool EScene::Validate(bool bNeedOkMsg, bool bTestPortal, bool bTestHOM, bool bTe
     }
     return bRes;
 }
-
-void EScene::OnObjectsUpdate()
-{
-    SceneToolsMapPairIt t_it 	= m_SceneTools.begin();
-    SceneToolsMapPairIt t_end 	= m_SceneTools.end();
-    for (; t_it!=t_end; t_it++)
-        if (t_it->second)		t_it->second->OnSceneUpdate();
-}
-
-void EScene::OnDeviceCreate()
-{
-    SceneToolsMapPairIt t_it 	= m_SceneTools.begin();
-    SceneToolsMapPairIt t_end 	= m_SceneTools.end();
-    for (; t_it!=t_end; t_it++)
-        if (t_it->second)		t_it->second->OnDeviceCreate();
-}
-
-void EScene::OnDeviceDestroy()
-{
-    SceneToolsMapPairIt t_it 	= m_SceneTools.begin();
-    SceneToolsMapPairIt t_end 	= m_SceneTools.end();
-    for (; t_it!=t_end; t_it++)
-        if (t_it->second)		t_it->second->OnDeviceDestroy();
-}
-//------------------------------------------------------------------------------
-
-void EScene::OnShowHint(AStringVec& dest)
-{
-    CCustomObject* obj = RayPickObject(UI.m_CurrentRStart,UI.m_CurrentRNorm,Tools.CurrentClassID(),0,0);
-    if (obj) obj->OnShowHint(dest);
-}
-//------------------------------------------------------------------------------
-
-void EScene::ExportGame(SExportStreams& F)
-{
-    SceneToolsMapPairIt t_it 	= m_SceneTools.begin();
-    SceneToolsMapPairIt t_end 	= m_SceneTools.end();
-    for (; t_it!=t_end; t_it++)
-        if (t_it->second)		t_it->second->ExportGame(F);
-}
-//------------------------------------------------------------------------------
 
 

@@ -576,9 +576,9 @@ bool ESceneAIMapTools::GenerateMap()
                     for (IntIt it=face_lst.begin(); it!=face_lst.end(); it++){
 //                        st_Face&	F = _faces[*it];
 			        	S->GetFaceWorld	(*m_it,*it,verts);
-                        CL->add_face(verts[0],verts[1],verts[2], 0,0,0, 0,0,*it);
+                        CL->add_face_D(verts[0],verts[1],verts[2], *it);
                         if (sp_it->first->m_Flags.is(CSurface::sf2Sided))
-                            CL->add_face(verts[2],verts[1],verts[0], 0,0,0, 0,0,*it);
+                            CL->add_face_D(verts[2],verts[1],verts[0], *it);
                     }
                 }
             }

@@ -553,6 +553,21 @@ object fraBottomBar: TfraBottomBar
       Caption = '-'
       GroupIndex = 4
     end
+    object miEnvironment: TMenuItem
+      Caption = 'Environment'
+      GroupIndex = 4
+      OnClick = ClickOptionsMenuItem
+    end
+    object miFog: TMenuItem
+      Caption = 'Fog'
+      Checked = True
+      GroupIndex = 4
+      OnClick = ClickOptionsMenuItem
+    end
+    object N5: TMenuItem
+      Caption = '-'
+      GroupIndex = 4
+    end
     object miMuteSounds: TMenuItem
       Caption = 'Mute Sounds'
       GroupIndex = 4
@@ -560,12 +575,6 @@ object fraBottomBar: TfraBottomBar
     end
     object miLightScene: TMenuItem
       Caption = 'Light Scene'
-      Checked = True
-      GroupIndex = 4
-      OnClick = ClickOptionsMenuItem
-    end
-    object miFog: TMenuItem
-      Caption = 'Fog'
       Checked = True
       GroupIndex = 4
       OnClick = ClickOptionsMenuItem

@@ -10,43 +10,56 @@ static const u16 LIGHT_TOOLS_VERSION  	= 0x0000;
 //----------------------------------------------------
 static const u32 CHUNK_VERSION			= 0x1001;
 static const u32 CHUNK_LCONTROLS		= 0x1002;
+static const u32 CHUNK_LCONTROLS_LAST	= 0x1003;
 //----------------------------------------------------
 
-bool ESceneCustomOTools::Load(IReader& F)
+bool ESceneLightTools::Load(IReader& F)
 {
-	if (!inherited::Load(F)) return false;
-
 	u16 version 	= 0;
     R_ASSERT(F.r_chunk(CHUNK_VERSION,&version));
-    if( version!=LIGHTTOOLS_VERSION ){
-        ELog.DlgMsg( mtError, "%s tools: Unsupported version.",GetClassNameByClassID(ClassID));
+    if( version!=LIGHT_TOOLS_VERSION ){
+        ELog.DlgMsg( mtError, "%s tools: Unsupported version.",ClassDesc());
         return false;
     }
 
-	IReader* R 		= F.open_chunk(CHUNK_LCONTROLS); R_ASSERT(R);
-    R->
+	if (!inherited::Load(F)) return false;
+
+    if (F.find_chunk(CHUNK_LCONTROLS_LAST))
+		lcontrol_last_idx	= F.r_u32();
+    
+	IReader* R 		= F.open_chunk(CHUNK_LCONTROLS); 
+    if (R){
+        while (!R->eof()){
+            AnsiString	l_name;
+            R->r_stringZ(l_name);
+            u32 l_idx	= R->r_u32();
+            AppendLightControl(l_name.c_str(),&l_idx);
+        }
+        R->close		();
+    }
 
     return true;
 }
 //----------------------------------------------------
 
-void ESceneCustomOTools::Save(IWriter& F)
+void ESceneLightTools::Save(IWriter& F)
 {
 	inherited::Save	(F);
 
-	F.w_chunk		(CHUNK_VERSION,(u16*)&LIGHTTOOLS_VERSION,sizeof(TOOLS_VERSION));
+	F.w_chunk		(CHUNK_VERSION,(u16*)&LIGHT_TOOLS_VERSION,sizeof(LIGHT_TOOLS_VERSION));
 
-    int count		= m_Objects.size();
-	F.w_chunk		(CHUNK_OBJECT_COUNT,&count,sizeof(count));
+	F.open_chunk	(CHUNK_LCONTROLS);
+	F.w_u32			(lcontrol_last_idx);
+    F.close_chunk	();
 
-	F.open_chunk	(CHUNK_OBJECTS);
-    count			= 0;
-    for(ObjectIt it = m_Objects.begin();it!=m_Objects.end();it++){
-        F.open_chunk(count++);
-        Scene.SaveObject(*it,F);
-        F.close_chunk();
+	F.open_chunk	(CHUNK_LCONTROLS);
+	ATokenIt		_I 	= lcontrols.begin();
+    ATokenIt		_E 	= lcontrols.end();
+    for (;_I!=_E; _I++){
+        F.w_stringZ	(_I->name.c_str());
+        F.w_u32		(_I->id);
     }
-	F.close_chunk	();
+    F.close_chunk	();
 }
 //----------------------------------------------------
  

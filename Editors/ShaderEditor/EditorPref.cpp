@@ -10,6 +10,7 @@
 #endif
 #ifdef _EDITOR
 	#include "ui_main.h"
+	#include "ui_tools.h"
 #endif
 #include "ColorPicker.h"
 //---------------------------------------------------------------------------
@@ -71,20 +72,20 @@ void __fastcall TfrmEditPrefs::ebCancelClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmEditPrefs::fsStorageRestorePlacement(
-      TObject *Sender)
+void __fastcall TfrmEditPrefs::fsStorageRestorePlacement(TObject *Sender)
 {
 	UI.m_AngleSnap = deg2rad(seSnapAngle->Value);
 	UI.m_MoveSnap  = seSnapMove->Value;
 
     Device.m_Camera.SetViewport(seZNear->Value, seZFar->Value, seFOV->Value);
+    Tools.SetFog	(bgr2rgb(mcFogColor->Get()),seFogness->Value);
 
-    UI.m_MouseSM= 0.2*(float(seSM->Value)/100.f)*(float(seSM->Value)/100.f);
-    UI.m_MouseSR= 0.02f*(float(seSR->Value)/100.f)*(float(seSR->Value)/100.f);
-    UI.m_MouseSS= 0.02f*(float(seSS->Value)/100.f)*(float(seSS->Value)/100.f);
+    UI.m_MouseSM	= 0.2*(float(seSM->Value)/100.f)*(float(seSM->Value)/100.f);
+    UI.m_MouseSR	= 0.02f*(float(seSR->Value)/100.f)*(float(seSR->Value)/100.f);
+    UI.m_MouseSS	= 0.02f*(float(seSS->Value)/100.f)*(float(seSS->Value)/100.f);
 
-    Device.m_Camera.SetSensitivity(float(seCameraSM->Value)/100.f, float(seCameraSR->Value)/100.f);
-	Device.m_Camera.SetFlyParams(seCameraFlySpeed->Value,seCameraFlyAltitude->Value);
+    Device.m_Camera.SetSensitivity	(float(seCameraSM->Value)/100.f, float(seCameraSR->Value)/100.f);
+	Device.m_Camera.SetFlyParams	(seCameraFlySpeed->Value,seCameraFlyAltitude->Value);
 
 #ifdef _LEVEL_EDITOR
     UI.m_Cursor->SetBrushSegment(seBrushSegment->Value);
@@ -115,9 +116,6 @@ void __fastcall TfrmEditPrefs::seNavNetConectDistChange(
 	UI.UpdateScene();
 }
 //---------------------------------------------------------------------------
-
-
-
 
 void __fastcall TfrmEditPrefs::FormShow(TObject *Sender)
 {

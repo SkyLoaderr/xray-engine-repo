@@ -26,6 +26,7 @@
 CCustomObject::CCustomObject(LPVOID data, LPCSTR name)
 {
     ClassID 	= OBJCLASS_DUMMY;
+    ParentTools	= 0;
     FName[0] 	= 0;
     if (name) 	strcpy(FName, name);
     m_CO_Flags.set	(flVisible);
@@ -63,7 +64,7 @@ void CCustomObject::OnUpdateTransform()
 {
 	m_RT_Flags.set			(flRT_UpdateTransform,FALSE);
     // update transform matrix
-	FTransformR.setHPB		(PRotation.y, PRotation.x, PRotation.z);
+	FTransformR.setXYZi		(-PRotation.x, -PRotation.y, -PRotation.z);
 
 	FTransformS.scale		(PScale);
 	FTransformP.translate	(PPosition);

@@ -305,15 +305,9 @@ void CSpawnPoint::Render( int priority, bool strictB2F )
                     default: THROW2("CSpawnPoint:: Unknown Type");
                     }
                 }
-                FVF::TL	P;
-                float 			cx,cy;
-                P.transform		( PPosition, Device.mFullTransform );
-                cx				= iFloor(Device._x2real(P.p.x));
-                cy				= iFloor(Device._y2real(P.p.y));
-                Device.pSystemFont->SetColor(0xffffffff);
-                Device.pSystemFont->Out		(cx,cy,s_name.c_str());
+                DU.DrawText		(PPosition,s_name.c_str(),0xffffffff,0xff000000);
             }
-            if( Selected() ){
+            if(Selected()){
                 RCache.set_xform_world(Fidentity);
                 Fbox bb; GetBox(bb);
                 u32 clr = Locked()?0xFFFF0000:0xFFFFFFFF;

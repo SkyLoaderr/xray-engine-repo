@@ -30,6 +30,15 @@ LPCSTR 	TokenValue::GetText(TOnDrawTextEvent OnDrawText)
 }
 //------------------------------------------------------------------------------
 
+LPCSTR 	ATokenValue::GetText(TOnDrawTextEvent OnDrawText)
+{
+	u32 draw_val 	= GetValue();
+    if (OnDrawText)OnDrawText(this, &draw_val);
+	for(ATokenIt it=token->begin(); it!=token->end(); it++) if (0==memcmp(&it->id,&draw_val,p_size)) return it->name.c_str();
+    return 0;
+}
+//------------------------------------------------------------------------------
+
 LPCSTR 	TokenValue2::GetText(TOnDrawTextEvent OnDrawText)
 {
 	u32 draw_val 	= GetValue();

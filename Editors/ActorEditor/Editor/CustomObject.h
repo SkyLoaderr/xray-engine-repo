@@ -18,6 +18,7 @@ class COMotion;
 class CCustomMotion;
 class SAnimParams;
 struct SSceneSummary;
+class ESceneCustomOTools;
 
 struct SExportStreamItem{
 	int					chunk;
@@ -36,6 +37,7 @@ struct SExportStreams{
 
 class CCustomObject {
 	EObjClass 		FClassID;
+    ESceneCustomOTools* FParentTools;
 
 	SAnimParams*	m_MotionParams;
     COMotion*		m_Motion;
@@ -110,6 +112,7 @@ public:
     IC BOOL			Valid			(){return m_RT_Flags.is(flRT_Valid);}
 
 	// editor integration
+    virtual bool	Validate		(){return true;}
 	virtual void	FillProp		(LPCSTR pref, PropItemVec& items);
 	void			AnimationFillProp(LPCSTR pref, PropItemVec& items);
 	virtual bool 	GetSummaryInfo	(SSceneSummary* inf){return false;}
@@ -190,6 +193,7 @@ public:
     PropertyGP(GetRotation,SetRotation)		Fvector PRotation;
     PropertyGP(GetScale,SetScale)			Fvector PScale;
 
+    PropertyGP(FParentTools,FParentTools)	ESceneCustomOTools* ParentTools;
     PropertyGP(FClassID,FClassID)			EObjClass ClassID;
     PropertyGP(GetName,SetName) 			LPSTR  	Name;
 public:

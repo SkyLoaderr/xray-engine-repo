@@ -23,8 +23,7 @@ void SSceneSummary::FillProp(PropItemVec& items)
     PHelper.CreateCaption(items,"Visibility\\HOM Vertices",		hom_vert_cnt);
     PHelper.CreateCaption(items,"Visibility\\Sectors",			sector_cnt);
     PHelper.CreateCaption(items,"Visibility\\Portals",			portal_cnt);
-    PHelper.CreateCaption(items,"Lights\\Count",				light_sun_cnt+light_point_cnt+light_spot_cnt);
-    PHelper.CreateCaption(items,"Lights\\By Type\\Sun",			light_sun_cnt);
+    PHelper.CreateCaption(items,"Lights\\Count",				light_point_cnt+light_spot_cnt);
     PHelper.CreateCaption(items,"Lights\\By Type\\Point",		light_point_cnt);
     PHelper.CreateCaption(items,"Lights\\By Type\\Spot",		light_spot_cnt);
     PHelper.CreateCaption(items,"Lights\\By Usage\\Dynamic",	light_dynamic_cnt);
@@ -147,9 +146,6 @@ void EScene::ShowSummaryInfo()
     for (; _I!=_E; _I++)
         if (_I->second)	_I->second->GetSummaryInfo(&s_summary);
     
-    // append sky dome
-	if (m_SkyDome) m_SkyDome->GetSummaryInfo(&s_summary);
-
 	PropItemVec items;
 	if (bRes){
         // fill items

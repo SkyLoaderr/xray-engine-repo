@@ -11,6 +11,7 @@
 #include "d3dutils.h"
 #include "LightAnimLibrary.h"
 #include "scene.h"
+#include "escenelighttools.h"
 #include "PropertiesListHelper.h"
 
 #define LIGHT_VERSION   				0x0011
@@ -34,8 +35,6 @@
 //----------------------------------------------------
 
 #define VIS_RADIUS 		0.25f
-#define DIR_SELRANGE 	250
-#define DIR_RANGE 		1.5
 #define SEL_COLOR 		0x00FFFFFF
 #define NORM_COLOR 		0x00FFFF00
 #define NORM_DYN_COLOR 	0x0000FF00
@@ -63,11 +62,13 @@ void CLight::Construct(LPVOID data)
     m_D3D.phi		= PI_DIV_8;
 
     m_Brightness 	= 1;
+    m_SunQuality	= 1;
 
 	m_D3DIndex 		= -1;
     m_Enabled 		= TRUE;
 
     m_pAnimRef		= 0;
+    m_LControl		= 0;
 
     m_Flags.set		(flAffectStatic);
 }
@@ -75,11 +76,10 @@ void CLight::Construct(LPVOID data)
 CLight::~CLight(){
 }
 
-void CLight::OnUpdateTransform(){
+void CLight::OnUpdateTransform()
+{
     FScale.set(1.f,1.f,1.f);
 	inherited::OnUpdateTransform();
-	m_D3D.direction.setHP(PRotation.y,PRotation.x);
-	if (D3DLIGHT_DIRECTIONAL==m_D3D.type) m_LensFlare.Update(m_D3D.direction, m_D3D.diffuse);
 }
 
 void CLight::CopyFrom(CLight* src)
@@ -93,12 +93,8 @@ void CLight::AffectD3D(BOOL flag){
 }
 //----------------------------------------------------
 
-bool CLight::GetBox( Fbox& box ){
-	if( m_D3D.type==D3DLIGHT_DIRECTIONAL){
-		box.set( m_D3D.position, m_D3D.position );
-        box.grow(VIS_RADIUS);
-    	return true;
-    }
+bool CLight::GetBox( Fbox& box )
+{
 	box.set( m_D3D.position, m_D3D.position );
 	box.min.sub(m_D3D.range);
 	box.max.add(m_D3D.range);
@@ -123,10 +119,6 @@ void CLight::Render(int priority, bool strictB2F)
 		            DU.DrawPointLight(tmp,VIS_RADIUS/2, clr);
 	            }
 			}
-        break;
-        case D3DLIGHT_DIRECTIONAL:
-            if (Selected()) DU.DrawDirectionalLight( m_D3D.position, m_D3D.direction, VIS_RADIUS, DIR_SELRANGE, clr );
-            else			DU.DrawDirectionalLight( m_D3D.position, m_D3D.direction, VIS_RADIUS, DIR_RANGE, clr );
         break;
         case D3DLIGHT_SPOT:{
 //        	Fmatrix m;
@@ -158,13 +150,10 @@ void CLight::Render(int priority, bool strictB2F)
                 }
 			}
         break;
-        case D3DLIGHT_DIRECTIONAL:        break;
         case D3DLIGHT_SPOT:               break;
         default: THROW;
         }
-	}else if ((3==priority)&&(true==strictB2F)){
-		if (D3DLIGHT_DIRECTIONAL==m_D3D.type) m_LensFlare.Render();
-    }
+	}
 }
 
 void CLight::Enable( BOOL flag )
@@ -190,12 +179,14 @@ void CLight::UnSet(){
 	Device.LightEnable(m_D3DIndex,FALSE);
 }
 
-bool CLight::FrustumPick(const CFrustum& frustum){
+bool CLight::FrustumPick(const CFrustum& frustum)
+{
 //    return (frustum.testSphere(m_Position,m_Range))?true:false;
     return (frustum.testSphere_dirty(m_D3D.position,VIS_RADIUS))?true:false;
 }
 
-bool CLight::RayPick(float& distance, const Fvector& start, const Fvector& direction, SRayPickInfo* pinf){
+bool CLight::RayPick(float& distance, const Fvector& start, const Fvector& direction, SRayPickInfo* pinf)
+{
 	Fvector ray2;
 	ray2.sub( m_D3D.position, start );
 
@@ -218,13 +209,9 @@ void CLight::OnFrame	(){
 }
 //----------------------------------------------------
 
-void CLight::Update(){
+void CLight::Update()
+{
 	UpdateTransform();
-	if (D3DLIGHT_DIRECTIONAL==m_D3D.type){
-    	m_LensFlare.Update(m_D3D.direction, m_D3D.diffuse);
-	    m_LensFlare.DeleteShaders();
-    	m_LensFlare.CreateShaders();
-    }
 }
 //----------------------------------------------------
 
@@ -233,7 +220,7 @@ void CLight::OnShowHint(AStringVec& dest){
     AnsiString temp;
     temp.sprintf("Type:  ");
     switch(m_D3D.type){
-    case D3DLIGHT_DIRECTIONAL:  temp+="direct"; break;
+    case D3DLIGHT_DIRECTIONAL:  THROW; break;
     case D3DLIGHT_POINT:        temp+="point"; break;
     case D3DLIGHT_SPOT:			temp+="spot"; break;
     default: temp+="undef";
@@ -248,7 +235,8 @@ void CLight::OnShowHint(AStringVec& dest){
     dest.push_back(temp);
 }
 
-bool CLight::Load(IReader& F){
+bool CLight::Load(IReader& F)
+{
 	u32 version = 0;
 
     string1024 buf;
@@ -267,19 +255,18 @@ bool CLight::Load(IReader& F){
     	if (F.find_chunk(LIGHT_CHUNK_ROTATE)){
         	F.r_fvector3(FRotation);
         }else{
-	    	if (D3DLIGHT_DIRECTIONAL==m_D3D.type){
-		    	// generate from direction
-        	    Fvector& dir= m_D3D.direction;
-                dir.getHP(FRotation.y,FRotation.x);
-            }else{
-	        	FRotation.set(0,0,0);
-            }
+            FRotation.set(0,0,0);
         }
     }
 
     if (F.find_chunk(LIGHT_CHUNK_FLAG)) F.r(&m_Flags.flags,sizeof(m_Flags));
 
-	if (D3DLIGHT_DIRECTIONAL==m_D3D.type) m_LensFlare.Load(F);
+	if (D3DLIGHT_DIRECTIONAL==m_D3D.type){
+    	ESceneLightTools* lt = dynamic_cast<ESceneLightTools*>(ParentTools); VERIFY(lt);
+        lt->m_SunShadowDir.set(FRotation.x,FRotation.y);
+        ELog.DlgMsg( mtError, "CLight: Can't load sun.");
+    	return false;
+    } 
 
     if (F.find_chunk(LIGHT_CHUNK_ANIMREF)){
     	F.r_stringZ(buf);
@@ -309,8 +296,6 @@ void CLight::Save(IWriter& F){
 	F.w_u16			(LIGHT_VERSION);
 	F.close_chunk	();
 
-	if (D3DLIGHT_DIRECTIONAL==m_D3D.type) m_LensFlare.Save(F);
-
 	F.w_chunk		(LIGHT_CHUNK_BRIGHTNESS,&m_Brightness,sizeof(m_Brightness));
 	F.w_chunk		(LIGHT_CHUNK_D3D_PARAMS,&m_D3D,sizeof(m_D3D));
     F.w_chunk		(LIGHT_CHUNK_USE_IN_D3D,&m_UseInD3D,sizeof(m_UseInD3D));
@@ -338,7 +323,6 @@ void CLight::Save(IWriter& F){
 //----------------------------------------------------
 
 xr_token			token_light_type[ ]	=	{
-    { "Sun",		D3DLIGHT_DIRECTIONAL	},
     { "Point",		D3DLIGHT_POINT			},
     { "Spot",		D3DLIGHT_SPOT			},
     { 0,			0						}
@@ -357,49 +341,34 @@ void CLight::FillProp(LPCSTR pref, PropItemVec& items)
     V=PHelper.CreateFloat	(items,	FHelper.PrepareKey(pref,"Brightness"),		&m_Brightness,-3.f,3.f,0.1f,2);
     V->OnChangeEvent 		= OnPointDataChange;
     PHelper.CreateBOOL		(items,	FHelper.PrepareKey(pref,"Use In D3D"),		&m_UseInD3D);
+
+    ESceneLightTools* lt	= dynamic_cast<ESceneLightTools*>(ParentTools); VERIFY(lt);
+	PHelper.CreateAToken	(items,	FHelper.PrepareKey(pref,"Light Control"),	&m_LControl, &lt->lcontrols,	4);
+
     PHelper.CreateFlag32	(items,	FHelper.PrepareKey(pref,"Usage\\LightMap"),	&m_Flags,	CLight::flAffectStatic);
     PHelper.CreateFlag32	(items,	FHelper.PrepareKey(pref,"Usage\\Dynamic"),	&m_Flags,	CLight::flAffectDynamic);
     PHelper.CreateFlag32	(items,	FHelper.PrepareKey(pref,"Usage\\Animated"),	&m_Flags,	CLight::flProcedural);
     PHelper.CreateFlag32	(items,	FHelper.PrepareKey(pref,"Flags\\Breakable"),&m_Flags,	CLight::flBreaking);
 
     switch(m_D3D.type){
-    case D3DLIGHT_DIRECTIONAL: 	FillSunProp		(pref, items);	break;
     case D3DLIGHT_POINT: 		FillPointProp	(pref, items);	break;
     case D3DLIGHT_SPOT: 		FillSpotProp 	(pref, items);	break;
+    default: THROW;
     }
+}
+//----------------------------------------------------
+
+LPCSTR CLight::GetLControlName()
+{
+    ESceneLightTools* lt	= dynamic_cast<ESceneLightTools*>(ParentTools); VERIFY(lt);
+    xr_a_token* lc			= lt->FindLightControl(m_LControl);
+	return lc?lc->name.c_str():0;
 }
 //----------------------------------------------------
 
 void __fastcall	CLight::OnNeedUpdate(PropValue* value)
 {
 	Update();
-}
-//----------------------------------------------------
-
-void CLight::FillSunProp(LPCSTR pref, PropItemVec& items)
-{
-	CEditFlare& F 			= m_LensFlare;
-    PropValue* prop			= 0;
-    PHelper.CreateFlag32	(items, FHelper.PrepareKey(pref,"Sun\\Source\\Enabled"),		&F.m_Flags,				CEditFlare::flSource);
-    PHelper.CreateFloat		(items, FHelper.PrepareKey(pref,"Sun\\Source\\Radius"),			&F.m_Source.fRadius,	0.f,10.f);
-    prop 					= PHelper.CreateTexture	(items, FHelper.PrepareKey(pref,"Sun\\Source\\Texture"),		F.m_Source.texture,		sizeof(F.m_Source.texture));
-	prop->OnChangeEvent		= OnNeedUpdate;
-
-    PHelper.CreateFlag32	(items, FHelper.PrepareKey(pref,"Sun\\Gradient\\Enabled"),		&F.m_Flags,				CEditFlare::flGradient);
-    PHelper.CreateFloat		(items, FHelper.PrepareKey(pref,"Sun\\Gradient\\Radius"),		&F.m_Gradient.fRadius,	0.f,100.f);
-    PHelper.CreateFloat		(items, FHelper.PrepareKey(pref,"Sun\\Gradient\\Opacity"),		&F.m_Gradient.fOpacity,	0.f,1.f);
-	prop					= PHelper.CreateTexture	(items, FHelper.PrepareKey(pref,"Sun\\Gradient\\Texture"),	F.m_Gradient.texture,	sizeof(F.m_Gradient.texture));
-	prop->OnChangeEvent		= OnNeedUpdate;
-
-    PHelper.CreateFlag32	(items, FHelper.PrepareKey(pref,"Sun\\Flares\\Enabled"),		&F.m_Flags,				CEditFlare::flFlare);
-	for (CEditFlare::FlareIt it=F.m_Flares.begin(); it!=F.m_Flares.end(); it++){
-		AnsiString nm; nm.sprintf("%s\\Sun\\Flares\\Flare %d",pref,it-F.m_Flares.begin());
-		PHelper.CreateFloat	(items, FHelper.PrepareKey(nm.c_str(),"Radius"), 	&it->fRadius,  	0.f,10.f);
-        PHelper.CreateFloat	(items, FHelper.PrepareKey(nm.c_str(),"Opacity"),	&it->fOpacity,	0.f,1.f);
-        PHelper.CreateFloat	(items, FHelper.PrepareKey(nm.c_str(),"Position"),	&it->fPosition,	-10.f,10.f);
-        prop				= PHelper.CreateTexture	(items, FHelper.PrepareKey(nm.c_str(),"Texture"),	it->texture,	sizeof(it->texture));
-        prop->OnChangeEvent	= OnNeedUpdate;
-	}
 }
 //----------------------------------------------------
 
@@ -582,23 +551,11 @@ void __fastcall	CLight::OnTypeChange(PropValue* value)
 	Update			();
 }
 
-void CLight::OnDeviceCreate()
-{
-	if (D3DLIGHT_DIRECTIONAL==m_D3D.type) m_LensFlare.DDLoad();
-}
-//----------------------------------------------------
-
-void CLight::OnDeviceDestroy()
-{
-//	if (D3DLIGHT_DIRECTIONAL==m_D3D.type)
-    m_LensFlare.DDUnload();
-}
 //----------------------------------------------------
 
 bool CLight::GetSummaryInfo(SSceneSummary* inf)
 {
     switch (m_D3D.type){
-    case D3DLIGHT_DIRECTIONAL:	inf->light_sun_cnt++; 	break;
     case D3DLIGHT_POINT:		inf->light_point_cnt++; break;
     case D3DLIGHT_SPOT:			inf->light_spot_cnt++; 	break;
     }
@@ -609,100 +566,4 @@ bool CLight::GetSummaryInfo(SSceneSummary* inf)
     if (m_Flags.is(flBreaking))			inf->light_breakable_cnt++;
 	return true;
 }
-
-//----------------------------------------------------
-// Edit Flare
-//----------------------------------------------------
-CEditFlare::CEditFlare()
-{
-    m_Flags.set(flFlare|flSource|flGradient,TRUE);
-	// flares
-    m_Flares.resize		(6);
-    FlareIt it=m_Flares.begin();
-	it->fRadius=0.08f; it->fOpacity=0.18f; it->fPosition=1.3f; strcpy(it->texture,"fx\\fx_flare1"); it++;
-	it->fRadius=0.12f; it->fOpacity=0.12f; it->fPosition=1.0f; strcpy(it->texture,"fx\\fx_flare2"); it++;
-	it->fRadius=0.04f; it->fOpacity=0.30f; it->fPosition=0.5f; strcpy(it->texture,"fx\\fx_flare2"); it++;
-	it->fRadius=0.08f; it->fOpacity=0.24f; it->fPosition=-0.3f; strcpy(it->texture,"fx\\fx_flare2"); it++;
-	it->fRadius=0.12f; it->fOpacity=0.12f; it->fPosition=-0.6f; strcpy(it->texture,"fx\\fx_flare3"); it++;
-	it->fRadius=0.30f; it->fOpacity=0.12f; it->fPosition=-1.0f; strcpy(it->texture,"fx\\fx_flare1"); it++;
-	// source
-    strcpy(m_Source.texture,"fx\\fx_sun");
-    m_Source.fRadius 	= 0.15f;
-    // gradient
-    strcpy(m_Gradient.texture,"fx\\fx_gradient");
-    m_Gradient.fOpacity = 0.9f;
-    m_Gradient.fRadius 	= 4.f;
-}
-
-void CEditFlare::Load(IReader& F){
-	if (!F.find_chunk(FLARE_CHUNK_FLAG)) return;
-
-    R_ASSERT(F.find_chunk(FLARE_CHUNK_FLAG));
-    F.r				(&m_Flags.flags,sizeof(m_Flags));
-
-    R_ASSERT(F.find_chunk(FLARE_CHUNK_SOURCE));
-    F.r_stringZ		(m_Source.texture);
-    m_Source.fRadius= F.r_float();
-
-    if (F.find_chunk(FLARE_CHUNK_GRADIENT2)){
-	    F.r_stringZ	(m_Gradient.texture);
-	    m_Gradient.fOpacity = F.r_float();
-	    m_Gradient.fRadius  = F.r_float();
-    }else{
-		R_ASSERT(F.find_chunk(FLARE_CHUNK_GRADIENT));
-	    m_Gradient.fOpacity = F.r_float();
-    }
-
-    // flares
-    if (F.find_chunk(FLARE_CHUNK_FLARES2)){
-	    DeleteShaders();
-	    u32 deFCnt	= F.r_u32(); VERIFY(deFCnt==6);
-	   	F.r				(m_Flares.begin(),m_Flares.size()*sizeof(SFlare));
-    	for (FlareIt it=m_Flares.begin(); it!=m_Flares.end(); it++) it->hShader._clear();
-    	CreateShaders();
-    }
-}
-//----------------------------------------------------
-
-void CEditFlare::Save(IWriter& F)
-{
-	F.open_chunk	(FLARE_CHUNK_FLAG);
-    F.w				(&m_Flags.flags,sizeof(m_Flags));
-	F.close_chunk	();
-
-	F.open_chunk	(FLARE_CHUNK_SOURCE);
-    F.w_stringZ		(m_Source.texture);
-    F.w_float		(m_Source.fRadius);
-	F.close_chunk	();
-
-	F.open_chunk	(FLARE_CHUNK_GRADIENT2);
-    F.w_stringZ		(m_Gradient.texture);
-    F.w_float		(m_Gradient.fOpacity);
-    F.w_float		(m_Gradient.fRadius);
-	F.close_chunk	();
-
-	F.open_chunk	(FLARE_CHUNK_FLARES2);
-    F.w_u32			(m_Flares.size());
-    F.w				(m_Flares.begin(),m_Flares.size()*sizeof(SFlare));
-	F.close_chunk	();
-}
-//----------------------------------------------------
-
-void CEditFlare::Render()
-{
-	CLensFlare::Render(m_Flags.is(flSource),m_Flags.is(flFlare),m_Flags.is(flGradient));
-}
-//----------------------------------------------------
-
-void CEditFlare::DeleteShaders()
-{
-    CLensFlare::DDUnload();
-}
-
-void CEditFlare::CreateShaders()
-{
-    CLensFlare::DDLoad();
-}
-//----------------------------------------------------
-
 

@@ -58,7 +58,12 @@ bool __fastcall TUI_ControlObjectAdd::Start(TShiftState Shift)
         	xr_delete(obj);
         	return false;
         }
-        if (fraLeftBar->ebRandomAdd->Down){
+/*        if (ref->IsDynamic()){
+            ELog.DlgMsg(mtError,"TUI_ControlObjectAdd:: Can't assign dynamic object.");
+            xr_delete(obj);
+            return false;
+        }
+*/        if (fraLeftBar->ebRandomAdd->Down){
             Fvector S;
             if (frmEditPrefs->cbRandomRotation->Checked){
             	Fvector p;

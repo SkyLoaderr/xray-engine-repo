@@ -5,6 +5,7 @@
 #include "SceneObject.h"
 #include "bottombar.h"
 #include "d3dutils.h"
+
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
@@ -34,6 +35,8 @@ void EScene::RenderSky(const Fmatrix& camera)
 {
 	if( !valid() )	return;
 //	draw sky
+/*
+//.
 	if (m_SkyDome&&fraBottomBar->miDrawSky->Checked){
         st_Environment& E = m_LevelOp.m_Envs[m_LevelOp.m_CurEnv];
         m_SkyDome->PPosition = camera.c;
@@ -42,13 +45,14 @@ void EScene::RenderSky(const Fmatrix& camera)
     	m_SkyDome->RenderSingle();
 	    Device.SetRS(D3DRS_TEXTUREFACTOR,	0xffffffff);
     }
+*/
 }
 //------------------------------------------------------------------------------
 
 struct tools_rp_pred : public std::binary_function<ESceneCustomMTools*, ESceneCustomMTools*, bool>
 {
     IC bool operator()(ESceneCustomMTools* x, ESceneCustomMTools* y) const
-    {	return x->render_priority<y->render_priority;	}
+    {	return x->RenderPriority()<y->RenderPriority();	}
 };
 
 DEFINE_SET_PRED(ESceneCustomMTools*,SceneMToolsSet,SceneMToolsIt,tools_rp_pred);
@@ -71,7 +75,7 @@ void EScene::Render( const Fmatrix& camera )
             if (t_it->second){
                 ESceneCustomOTools* mt = dynamic_cast<ESceneCustomOTools*>(t_it->second);
                 if (mt)           	object_tools.insert(mt);
-                else				scene_tools.insert(t_it->second);
+                scene_tools.insert	(t_it->second);
             }
     }
 
@@ -99,6 +103,7 @@ void EScene::Render( const Fmatrix& camera )
     // alpha
     mapRenderObjects.traverseRL		(object_StrictB2F_0);
     RENDER_SCENE_TOOLS				(0,true);
+
 // priority #1
     // normal
     mapRenderObjects.traverseLR		(object_Normal_1);

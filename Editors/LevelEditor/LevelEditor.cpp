@@ -31,7 +31,6 @@ USEFORM("LogForm.cpp", frmLog);
 USEFORM("main.cpp", frmMain);
 USEFORM("NumericVector.cpp", frmNumericVector);
 USEFORM("ObjectList.cpp", frmObjectList);
-USEFORM("OneEnvironment.cpp", frmOneEnvironment);
 USEFORM("previewimage.cpp", frmPreviewImage);
 USEFORM("PropertiesEObject.cpp", frmPropertiesEObject);
 USEFORM("PropertiesList.cpp", Properties);

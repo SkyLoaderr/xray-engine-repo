@@ -336,15 +336,6 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 			bRes = false;
         }
 		break;
-    case COMMAND_MAKE_SKYDOME:
-		if( !Scene.locked() ){
-			if (mrYes==ELog.DlgMsg(mtConfirmation, TMsgDlgButtons()<<mbYes<<mbNo, "Are you sure to export skydome?"))
-                Builder.MakeSkydome( );
-        }else{
-			ELog.DlgMsg( mtError, "Scene sharing violation" );
-			bRes = false;
-        }
-		break;
     case COMMAND_MAKE_AIMAP:
 		if( !Scene.locked() ){
 			if (mrYes==ELog.DlgMsg(mtConfirmation, TMsgDlgButtons()<<mbYes<<mbNo, "Are you sure to export ai-map?"))

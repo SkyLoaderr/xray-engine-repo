@@ -14,6 +14,8 @@
 #include "render.h"
 #include "ObjectList.h"
 
+#include "igame_persistent.h"
+
 #define DETACH_FRAME(a) if (a){ (a)->Parent = NULL;}
 #define ATTACH_FRAME(a,b) if (a){ (a)->Parent = (b);}
 
@@ -23,6 +25,8 @@ TShiftState ssRBOnly;
 //---------------------------------------------------------------------------
 TUI_Tools::TUI_Tools()
 {
+    fFogness	= 0.9f;
+    dwFogColor	= 0xffffffff;
     m_Flags.zero();
     for (int i=0; i<OBJCLASS_COUNT; i++)
         UITools.insert(mk_pair((EObjClass)i,(TUI_CustomTools*)NULL));
@@ -296,23 +300,16 @@ void TUI_Tools::RealUpdateProperties()
 	if (m_Props->Visible){
 		if (m_Props->IsModified()) Scene.UndoSave();
         ObjectList lst;
-        EObjClass cls_id				= CurrentClassID();
+        EObjClass cls_id			= CurrentClassID();
         PropItemVec items;
-        if (Scene.GetQueryObjects(lst,cls_id)){
-            for (ObjectIt it=lst.begin(); it!=lst.end(); it++){
-                LPCSTR pref				= GetClassNameByClassID((*it)->ClassID);
-                (*it)->FillProp	 		(pref,items);
-            }
-        }
-
         if (OBJCLASS_DUMMY==cls_id){
-            SceneToolsMapPairIt _I 		= Scene.FirstTools();
-            SceneToolsMapPairIt _E	 	= Scene.LastTools();
+            SceneToolsMapPairIt _I 	= Scene.FirstTools();
+            SceneToolsMapPairIt _E	= Scene.LastTools();
             for (; _I!=_E; _I++)
-                if (_I->second)			_I->second->FillProp(GetClassNameByClassID(_I->first),items);
+                if (_I->second)		_I->second->FillProp(_I->second->ClassDesc(),items);
         }else{
-            ESceneCustomMTools* mt		= Scene.GetMTools(cls_id);
-            if (mt) mt->FillProp		(GetClassNameByClassID(cls_id),items);
+            ESceneCustomMTools* mt	= Scene.GetMTools(cls_id);
+            if (mt) mt->FillProp	(mt->ClassDesc(),items);
         }
 
 		m_Props->AssignItems		(items,true,"Object Inspector");
@@ -363,10 +360,21 @@ void TUI_Tools::ZoomObject(bool bSelectedOnly)
 
 void TUI_Tools::GetCurrentFog(u32& fog_color, float& s_fog, float& e_fog)
 {
-	st_Environment& E 	= Scene.m_LevelOp.m_Envs[Scene.m_LevelOp.m_CurEnv];
-	s_fog				= psDeviceFlags.is(rsFog)?(1.0f - E.m_Fogness)* 0.85f * E.m_ViewDist:0.99f*UI.ZFar();
-	e_fog				= psDeviceFlags.is(rsFog)?0.91f * E.m_ViewDist:UI.ZFar();
-	fog_color 			=  E.m_FogColor.get();
+	if (psDeviceFlags.is(rsEnvironment)&&psDeviceFlags.is(rsFog)){
+        s_fog				= g_pGamePersistent->Environment.Current.fog_near;
+        e_fog				= g_pGamePersistent->Environment.Current.fog_far;
+        Fvector& f_clr		= g_pGamePersistent->Environment.Current.fog_color;
+        fog_color 			= color_rgba_f(f_clr.x,f_clr.y,f_clr.z,1.f);
+    }else{
+        s_fog				= psDeviceFlags.is(rsFog)?(1.0f - fFogness)* 0.85f * UI.ZFar():0.99f*UI.ZFar();
+        e_fog				= psDeviceFlags.is(rsFog)?0.91f * UI.ZFar():UI.ZFar();
+        fog_color 			= dwFogColor;
+    }
+/*
+//.
+    f_near	= g_pGamePersistent->Environment.Current.fog_near;
+    f_far	= 1/(g_pGamePersistent->Environment.Current.fog_far - f_near);
+*/
 }
 //---------------------------------------------------------------------------
 
@@ -402,7 +410,7 @@ void __fastcall TUI_Tools::RenderEnvironment()
     EEditorState est 		= UI.GetEState();
     switch(est){
     case esEditLightAnim:
-    case esEditScene:		Scene.RenderSky(Device.m_Camera.GetTransform()); break;
+    case esEditScene:		if (psDeviceFlags.is(rsEnvironment)) g_pGamePersistent->Environment.RenderFirst	();
     }
 }
 
@@ -417,7 +425,10 @@ void __fastcall TUI_Tools::Render()
     switch(est){
     case esEditLibrary: 	TfrmEditLibrary::OnRender(); break;
     case esEditLightAnim:
-    case esEditScene:		Scene.Render(Device.m_Camera.GetTransform()); break;
+    case esEditScene:
+    	Scene.Render(Device.m_Camera.GetTransform()); 
+	    if (psDeviceFlags.is(rsEnvironment)) g_pGamePersistent->Environment.RenderLast	();
+    break;
     }
     // draw cursor
     UI.m_Cursor->Render();

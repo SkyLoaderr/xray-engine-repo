@@ -133,8 +133,6 @@ class TUI_CustomTools;
 #endif
 
 //----------------------------------------------------
-class CCustomObject;
-
 enum EObjClass{
     OBJCLASS_DUMMY     	= -1,
     OBJCLASS_GROUP		= 0,
@@ -154,14 +152,6 @@ enum EObjClass{
     OBJCLASS_COUNT,
     OBJCLASS_force_dword = -1
 };
-
-//----------------------------------------------------
-CCustomObject*	NewObjectFromClassID	(int _ClassID, LPVOID data, LPCSTR name);
-LPSTR 			GetNameByClassID		(EObjClass cls_id);
-LPSTR 			GetClassNameByClassID	(EObjClass cls_id);
-bool 			IsClassID				(EObjClass cls_id);
-bool 			IsObjectListClassID		(EObjClass cls_id);
-bool 			IsGroupClassID			(EObjClass cls_id);
 //----------------------------------------------------
 #endif /*_INCDEF_SceneClassList_H_*/
 

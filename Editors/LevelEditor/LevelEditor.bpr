@@ -84,7 +84,7 @@
       intermediate\ParticleEffectEditor.obj intermediate\portal.obj 
       intermediate\portalutils.obj intermediate\PSLibrary.obj 
       intermediate\PSLibraryEditor.obj intermediate\render.obj 
-      intermediate\Scene.obj intermediate\SceneIO.obj 
+      intermediate\scene.obj intermediate\SceneIO.obj 
       intermediate\SceneObject.obj intermediate\SceneObjectIO.obj 
       intermediate\SceneSummaryInfo.obj intermediate\SceneUndo.obj 
       intermediate\SceneUtil.obj intermediate\sector.obj 
@@ -113,11 +113,11 @@
       intermediate\ImageEditor.obj intermediate\LeftBar.obj 
       intermediate\LogForm.obj intermediate\main.obj 
       intermediate\NumericVector.obj intermediate\ObjectList.obj 
-      intermediate\OneEnvironment.obj intermediate\previewimage.obj 
-      intermediate\PropertiesEObject.obj intermediate\PropertiesList.obj 
-      intermediate\PropertiesListHelper.obj intermediate\PropertiesListTypes.obj 
-      intermediate\SceneProperties.obj intermediate\ShaderFunction.obj 
-      intermediate\Splash.obj intermediate\stdafx.obj intermediate\TextForm.obj 
+      intermediate\previewimage.obj intermediate\PropertiesEObject.obj 
+      intermediate\PropertiesList.obj intermediate\PropertiesListHelper.obj 
+      intermediate\PropertiesListTypes.obj intermediate\SceneProperties.obj 
+      intermediate\ShaderFunction.obj intermediate\Splash.obj 
+      intermediate\stdafx.obj intermediate\TextForm.obj 
       intermediate\FrameObject.obj intermediate\SceneClassList.obj 
       intermediate\SceneSnap.obj intermediate\SH_Atomic.obj 
       intermediate\ResourceManager_Resources.obj 
@@ -126,7 +126,10 @@
       intermediate\DetailModel.obj intermediate\ImageManagerDO.obj 
       intermediate\ESceneCustomOTools.obj intermediate\ESceneCustomOToolsIO.obj 
       intermediate\SceneSelection.obj intermediate\ScenePick.obj 
-      intermediate\SceneRender.obj"/>
+      intermediate\SceneRender.obj intermediate\ESceneLightToolsIO.obj 
+      intermediate\ESceneLightTools.obj intermediate\Environment.obj 
+      intermediate\IGame_Persistent.obj intermediate\rain.obj 
+      intermediate\ESceneCustomOToolsFactory.obj"/>
     <RESFILES value="resource.res LevelEditor.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -137,9 +140,9 @@
       FrameGroup.dfm FrameLight.dfm FramePortal.dfm FramePS.dfm FrameRPoint.dfm 
       FrameSector.dfm FrameShape.dfm FrameWayPoint.dfm ImageEditor.dfm 
       LeftBar.dfm LogForm.dfm main.dfm NumericVector.dfm ObjectList.dfm 
-      OneEnvironment.dfm previewimage.dfm PropertiesEObject.dfm 
-      PropertiesList.dfm SceneProperties.dfm ShaderFunction.dfm Splash.dfm 
-      TextForm.dfm FrameObject.dfm"/>
+      previewimage.dfm PropertiesEObject.dfm PropertiesList.dfm 
+      SceneProperties.dfm ShaderFunction.dfm Splash.dfm TextForm.dfm 
+      FrameObject.dfm"/>
     <LIBFILES value=""/>
     <LIBRARIES value="elpackB6.lib editor.lib bcbsmp.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib bcbsmp.lib vclx.lib editor.lib elpackB6.lib"/>
@@ -340,7 +343,7 @@
       <FILE FILENAME="edit\PSLibrary.cpp" FORMNAME="" UNITNAME="PSLibrary.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\PSLibraryEditor.cpp" FORMNAME="" UNITNAME="PSLibraryEditor.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\render.cpp" FORMNAME="" UNITNAME="render.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\Scene.cpp" FORMNAME="" UNITNAME="Scene" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\scene.cpp" FORMNAME="" UNITNAME="Scene" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\SceneIO.cpp" FORMNAME="" UNITNAME="SceneIO.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\SceneObject.cpp" FORMNAME="" UNITNAME="SceneObject.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\SceneObjectIO.cpp" FORMNAME="" UNITNAME="SceneObjectIO.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -398,7 +401,6 @@
       <FILE FILENAME="main.cpp" FORMNAME="frmMain" UNITNAME="main" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="NumericVector.cpp" FORMNAME="frmNumericVector" UNITNAME="NumericVector" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="ObjectList.cpp" FORMNAME="frmObjectList" UNITNAME="ObjectList" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="OneEnvironment.cpp" FORMNAME="frmOneEnvironment" UNITNAME="OneEnvironment" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="previewimage.cpp" FORMNAME="frmPreviewImage" UNITNAME="previewimage" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="PropertiesEObject.cpp" FORMNAME="frmPropertiesEObject" UNITNAME="PropertiesEObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="PropertiesList.cpp" FORMNAME="Properties" UNITNAME="PropertiesList" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -426,6 +428,12 @@
       <FILE FILENAME="edit\SceneSelection.cpp" FORMNAME="" UNITNAME="SceneSelection" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\ScenePick.cpp" FORMNAME="" UNITNAME="ScenePick" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\SceneRender.cpp" FORMNAME="" UNITNAME="SceneRender" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\ESceneLightToolsIO.cpp" FORMNAME="" UNITNAME="ESceneLightToolsIO.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\ESceneLightTools.cpp" FORMNAME="" UNITNAME="ESceneLightTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Environment.cpp" FORMNAME="" UNITNAME="Environment" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Game\IGame_Persistent.cpp" FORMNAME="" UNITNAME="IGame_Persistent" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\rain.cpp" FORMNAME="" UNITNAME="rain" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\ESceneCustomOToolsFactory.cpp" FORMNAME="" UNITNAME="ESceneCustomOToolsFactory" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

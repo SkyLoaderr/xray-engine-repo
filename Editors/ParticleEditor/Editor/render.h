@@ -9,6 +9,7 @@
 #include "xrRender_console.h"
 #include "PSLibrary.h"
 #include "IRenderDetailModel.H"
+#include "DetailModel.H"
 
 // definition (Renderer)
 class IRender_Target{
@@ -41,6 +42,23 @@ public:
 
 	virtual IRender_Visual*	model_CreatePE			(LPCSTR name);
 	virtual IRender_Visual*	model_CreateParticles	(LPCSTR name);
+    
+    virtual IRender_DetailModel*	model_CreateDM	(IReader* R);
+    void					model_Delete	(IRender_DetailModel* & F)
+    {
+        if (F)
+        {
+            CDetail*	D	= (CDetail*)F;
+            D->Unload		();
+            xr_delete		(D);
+            F				= NULL;
+        }
+    }
+
+	// Render mode
+	virtual void			rmNear					();
+	virtual void			rmFar					();
+	virtual void			rmNormal				();
 };
 
 IC  float   CalcSSA(Fvector& C, float R)

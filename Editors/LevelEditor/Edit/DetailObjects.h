@@ -96,6 +96,7 @@ public:
 
     // validation
     virtual bool		Valid					(){return dtSlots||objects.size();}
+    virtual bool		Validate				(){return true;}
 
     // events
 	virtual void		OnDeviceCreate			();

@@ -124,6 +124,8 @@ public:
     {   return			(VectorValue*)	AppendValue		(items,key,xr_new<VectorValue>(val,mn,mx,inc,decim),PROP_VECTOR);}
 	IC TokenValue* 		CreateToken		(PropItemVec& items, AnsiString key, LPVOID val, xr_token* token, int p_size)
     {   return			(TokenValue*)	AppendValue		(items,key,xr_new<TokenValue>((u32*)val,token,p_size),PROP_TOKEN);}
+	IC ATokenValue* 	CreateAToken	(PropItemVec& items, AnsiString key, LPVOID val, ATokenVec* token, int p_size)
+    {   return			(ATokenValue*)	AppendValue		(items,key,xr_new<ATokenValue>((u32*)val,token,p_size),PROP_A_TOKEN);}
 	IC TokenValue2*   	CreateToken2	(PropItemVec& items, AnsiString key, u32* val, AStringVec* lst)
     {   return			(TokenValue2*)	AppendValue		(items,key,xr_new<TokenValue2>(val,lst),PROP_TOKEN2);	}
 	IC TokenValue3*   	CreateToken3	(PropItemVec& items, AnsiString key, u32* val, u32 cnt, const TokenValue3::Item* lst)

@@ -1,6 +1,6 @@
 object frmSceneProperties: TfrmSceneProperties
-  Left = 569
-  Top = 651
+  Left = 337
+  Top = 448
   BorderStyle = bsDialog
   Caption = 'Build options'
   ClientHeight = 300
@@ -48,7 +48,6 @@ object frmSceneProperties: TfrmSceneProperties
     end
     object tsLevelOptions: TTabSheet
       Caption = 'Level options'
-      OnShow = tsLevelOptionsShow
       object Panel2: TPanel
         Left = 0
         Top = 0
@@ -72,209 +71,6 @@ object frmSceneProperties: TfrmSceneProperties
           AutoSize = False
           TabOrder = 0
         end
-      end
-      object GroupBox2: TGroupBox
-        Left = 3
-        Top = 35
-        Width = 350
-        Height = 65
-        Caption = ' Hemisphere lighting '
-        TabOrder = 1
-        object RxLabel34: TLabel
-          Left = 5
-          Top = 19
-          Width = 76
-          Height = 13
-          Caption = 'Dispersion (deg)'
-        end
-        object RxLabel36: TLabel
-          Left = 5
-          Top = 42
-          Width = 95
-          Height = 13
-          Caption = 'Summary energy (%)'
-        end
-        object Bevel2: TBevel
-          Left = 248
-          Top = 13
-          Width = 97
-          Height = 17
-        end
-        object mcLMAreaColor: TMultiObjColor
-          Left = 250
-          Top = 15
-          Width = 94
-          Height = 14
-          Pen.Style = psClear
-          OnMouseDown = mcLMAmbientMouseDown
-        end
-        object RxLabel24: TLabel
-          Left = 197
-          Top = 15
-          Width = 24
-          Height = 13
-          Caption = 'Color'
-        end
-        object RxLabel39: TLabel
-          Left = 197
-          Top = 42
-          Width = 32
-          Height = 13
-          Caption = 'Quality'
-        end
-        object seLMAreaDispersion: TMultiObjSpinEdit
-          Left = 104
-          Top = 17
-          Width = 83
-          Height = 18
-          LWSensitivity = 0.1
-          ButtonKind = bkLightWave
-          Decimal = 1
-          Increment = 0.1
-          MaxValue = 360
-          ValueType = vtFloat
-          Value = 7.5
-          AutoSize = False
-          TabOrder = 0
-        end
-        object seLMAreaSummaryEnergy: TMultiObjSpinEdit
-          Left = 104
-          Top = 40
-          Width = 83
-          Height = 18
-          LWSensitivity = 0.01
-          ButtonKind = bkLightWave
-          Decimal = 0
-          MaxValue = 1000
-          ValueType = vtFloat
-          Value = 100
-          AutoSize = False
-          TabOrder = 1
-        end
-        object rgAreaQuality: TRadioGroup
-          Left = 248
-          Top = 30
-          Width = 98
-          Height = 30
-          Columns = 2
-          ItemIndex = 1
-          Items.Strings = (
-            '1'
-            '2')
-          TabOrder = 2
-        end
-      end
-    end
-    object tsLevelEnvironment: TTabSheet
-      Caption = 'Level environment'
-      ImageIndex = 10
-      OnShow = tsLevelEnvironmentShow
-      object Panel3: TPanel
-        Left = 0
-        Top = 0
-        Width = 354
-        Height = 50
-        Align = alTop
-        BevelOuter = bvNone
-        TabOrder = 0
-        object RxLabel3: TLabel
-          Left = 2
-          Top = 12
-          Width = 76
-          Height = 13
-          Caption = 'Skydome object'
-        end
-        object ebChooseSkydome: TExtBtn
-          Left = 265
-          Top = 9
-          Width = 42
-          Height = 18
-          Align = alNone
-          BevelShow = False
-          CloseButton = False
-          Caption = 'Select'
-          Transparent = False
-          FlatAlwaysEdge = True
-          OnClick = ebChooseSkydomeClick
-        end
-        object ebClearSkydome: TExtBtn
-          Left = 309
-          Top = 9
-          Width = 42
-          Height = 18
-          Align = alNone
-          BevelShow = False
-          CloseButton = False
-          Caption = 'Clear'
-          Transparent = False
-          FlatAlwaysEdge = True
-          OnClick = ebClearSkydomeClick
-        end
-        object RxLabel10: TLabel
-          Left = 2
-          Top = 31
-          Width = 89
-          Height = 13
-          Caption = 'Environment count'
-        end
-        object RxLabel29: TLabel
-          Left = 181
-          Top = 31
-          Width = 95
-          Height = 13
-          Caption = 'Current environment'
-        end
-        object edSkydomeObjectName: TEdit
-          Left = 98
-          Top = 9
-          Width = 164
-          Height = 18
-          AutoSize = False
-          ReadOnly = True
-          TabOrder = 0
-        end
-        object seEnvCount: TMultiObjSpinEdit
-          Left = 98
-          Top = 29
-          Width = 70
-          Height = 18
-          LWSensitivity = 0.001
-          ButtonKind = bkDiagonal
-          Decimal = 1
-          EditorEnabled = False
-          MaxValue = 32
-          MinValue = 1
-          Value = 1
-          AutoSize = False
-          TabOrder = 1
-          OnChange = seEnvCountChange
-        end
-        object seCurEnv: TMultiObjSpinEdit
-          Left = 281
-          Top = 29
-          Width = 70
-          Height = 18
-          LWSensitivity = 0.001
-          ButtonKind = bkDiagonal
-          Decimal = 1
-          EditorEnabled = False
-          MaxValue = 32
-          AutoSize = False
-          TabOrder = 2
-        end
-      end
-      object sbEnvs: TScrollBox
-        Left = 0
-        Top = 50
-        Width = 354
-        Height = 201
-        HorzScrollBar.Visible = False
-        VertScrollBar.Increment = 10
-        VertScrollBar.Style = ssHotTrack
-        VertScrollBar.Tracking = True
-        Align = alClient
-        BorderStyle = bsNone
-        TabOrder = 1
       end
     end
     object tsLevelScript: TTabSheet
@@ -343,28 +139,21 @@ object frmSceneProperties: TfrmSceneProperties
       ImageIndex = 4
       object RxLabel5: TLabel
         Left = 2
-        Top = 27
+        Top = 10
         Width = 74
         Height = 13
         Caption = 'Pixels per meter'
       end
-      object RxLabel12: TLabel
-        Left = 2
-        Top = 47
-        Width = 98
-        Height = 13
-        Caption = 'Deflectors split angle'
-      end
       object RxLabel32: TLabel
         Left = 2
-        Top = 66
+        Top = 29
         Width = 111
         Height = 13
         Caption = 'Error (for LM collapsing)'
       end
       object MxLabel1: TLabel
         Left = 2
-        Top = 86
+        Top = 49
         Width = 84
         Height = 13
         Caption = 'Error (for LM zero)'
@@ -372,7 +161,7 @@ object frmSceneProperties: TfrmSceneProperties
       end
       object seLMPixelsPerMeter: TMultiObjSpinEdit
         Left = 114
-        Top = 25
+        Top = 8
         Width = 78
         Height = 18
         LWSensitivity = 0.1
@@ -385,255 +174,21 @@ object frmSceneProperties: TfrmSceneProperties
         AutoSize = False
         TabOrder = 0
       end
-      object seLMDeflSplitAngle: TMultiObjSpinEdit
+      object seLMRMS: TMultiObjSpinEdit
         Left = 114
-        Top = 45
+        Top = 28
         Width = 78
         Height = 18
-        LWSensitivity = 0.1
+        LWSensitivity = 0.01
         ButtonKind = bkLightWave
-        Decimal = 1
-        Increment = 0.1
-        MaxValue = 179
-        ValueType = vtFloat
-        Value = 89
+        MaxValue = 255
+        Value = 8
         AutoSize = False
         TabOrder = 1
       end
-      object cbLMLightmaps: TCheckBox
-        Left = 0
-        Top = 8
-        Width = 127
-        Height = 17
-        Alignment = taLeftJustify
-        Caption = 'Calculate lightmaps'
-        Checked = True
-        State = cbChecked
-        TabOrder = 2
-      end
-      object seLMRMS: TMultiObjSpinEdit
-        Left = 114
-        Top = 65
-        Width = 78
-        Height = 18
-        LWSensitivity = 0.01
-        ButtonKind = bkLightWave
-        MaxValue = 255
-        Value = 8
-        AutoSize = False
-        TabOrder = 3
-      end
-      object GroupBox3: TGroupBox
-        Left = 0
-        Top = 162
-        Width = 192
-        Height = 86
-        Caption = ' Jittering '
-        TabOrder = 4
-        object RxLabel9: TLabel
-          Left = 5
-          Top = 62
-          Width = 43
-          Height = 13
-          Caption = 'Samples '
-        end
-        object RxLabel13: TLabel
-          Left = 5
-          Top = 17
-          Width = 28
-          Height = 13
-          Caption = 'Dither'
-        end
-        object RxLabel14: TLabel
-          Left = 5
-          Top = 36
-          Width = 44
-          Height = 13
-          Caption = 'Distortion'
-        end
-        object rgLMJitterSamples: TRadioGroup
-          Left = 58
-          Top = 51
-          Width = 127
-          Height = 30
-          Columns = 3
-          ItemIndex = 1
-          Items.Strings = (
-            '1'
-            '4'
-            '9')
-          TabOrder = 0
-        end
-        object seLMDither: TMultiObjSpinEdit
-          Left = 115
-          Top = 15
-          Width = 71
-          Height = 18
-          LWSensitivity = 0.1
-          ButtonKind = bkLightWave
-          Increment = 0.01
-          MaxValue = 1
-          ValueType = vtFloat
-          Value = 0.02
-          AutoSize = False
-          TabOrder = 1
-        end
-        object seLMJitter: TMultiObjSpinEdit
-          Left = 115
-          Top = 35
-          Width = 71
-          Height = 18
-          LWSensitivity = 0.1
-          ButtonKind = bkLightWave
-          Increment = 0.01
-          MaxValue = 0.5
-          ValueType = vtFloat
-          Value = 0.49
-          AutoSize = False
-          TabOrder = 2
-        end
-      end
-      object GroupBox4: TGroupBox
-        Left = 0
-        Top = 104
-        Width = 192
-        Height = 57
-        Caption = ' Ambient '
-        TabOrder = 5
-        object Bevel1: TBevel
-          Left = 115
-          Top = 13
-          Width = 72
-          Height = 17
-        end
-        object mcLMAmbient: TMultiObjColor
-          Left = 117
-          Top = 15
-          Width = 69
-          Height = 14
-          Pen.Style = psClear
-          OnMouseDown = mcLMAmbientMouseDown
-        end
-        object RxLabel22: TLabel
-          Left = 5
-          Top = 15
-          Width = 24
-          Height = 13
-          Caption = 'Color'
-        end
-        object RxLabel23: TLabel
-          Left = 5
-          Top = 35
-          Width = 57
-          Height = 13
-          Caption = 'Fogness (%)'
-        end
-        object seLMAmbFogness: TMultiObjSpinEdit
-          Left = 115
-          Top = 33
-          Width = 72
-          Height = 18
-          LWSensitivity = 0.01
-          ButtonKind = bkLightWave
-          Decimal = 0
-          MaxValue = 100
-          MinValue = 1
-          ValueType = vtFloat
-          Value = 1
-          AutoSize = False
-          TabOrder = 0
-        end
-      end
-      object GroupBox5: TGroupBox
-        Left = 195
-        Top = 109
-        Width = 159
-        Height = 139
-        Caption = ' Fuzzy point light '
-        TabOrder = 6
-        Visible = False
-        object RxLabel35: TLabel
-          Left = 5
-          Top = 33
-          Width = 40
-          Height = 13
-          Caption = 'Samples'
-        end
-        object RxLabel40: TLabel
-          Left = 5
-          Top = 52
-          Width = 34
-          Height = 13
-          Caption = 'Min (m)'
-        end
-        object RxLabel41: TLabel
-          Left = 5
-          Top = 72
-          Width = 37
-          Height = 13
-          Caption = 'Max (m)'
-        end
-        object cbLMFuzzyEnabled: TCheckBox
-          Left = 4
-          Top = 14
-          Width = 95
-          Height = 17
-          Alignment = taLeftJustify
-          Caption = 'Enabled'
-          Checked = True
-          State = cbChecked
-          TabOrder = 0
-        end
-        object seLMFuzzySamples: TMultiObjSpinEdit
-          Left = 86
-          Top = 31
-          Width = 71
-          Height = 18
-          LWSensitivity = 0.1
-          ButtonKind = bkLightWave
-          Decimal = 0
-          Increment = 0.01
-          MaxValue = 256
-          ValueType = vtFloat
-          Value = 16
-          AutoSize = False
-          TabOrder = 1
-        end
-        object seLMFuzzyMin: TMultiObjSpinEdit
-          Left = 86
-          Top = 51
-          Width = 71
-          Height = 18
-          LWSensitivity = 0.1
-          ButtonKind = bkLightWave
-          Increment = 0.01
-          MaxValue = 10
-          ValueType = vtFloat
-          Value = 0.3
-          AutoSize = False
-          TabOrder = 2
-          OnLWChange = seLMFuzzyMinLWChange
-          OnExit = seLMFuzzyMinExit
-          OnKeyDown = seLMFuzzyMinKeyDown
-        end
-        object seLMFuzzyMax: TMultiObjSpinEdit
-          Left = 86
-          Top = 71
-          Width = 71
-          Height = 18
-          LWSensitivity = 0.1
-          ButtonKind = bkLightWave
-          Increment = 0.01
-          MaxValue = 100
-          ValueType = vtFloat
-          Value = 1
-          AutoSize = False
-          TabOrder = 3
-        end
-      end
       object seLMRMSZero: TMultiObjSpinEdit
         Left = 114
-        Top = 85
+        Top = 48
         Width = 78
         Height = 18
         LWSensitivity = 0.01
@@ -641,7 +196,7 @@ object frmSceneProperties: TfrmSceneProperties
         MaxValue = 255
         Value = 8
         AutoSize = False
-        TabOrder = 7
+        TabOrder = 2
       end
     end
     object tsProgressive: TTabSheet
@@ -789,209 +344,6 @@ object frmSceneProperties: TfrmSceneProperties
         TabOrder = 6
       end
     end
-    object tsStrippifier: TTabSheet
-      Caption = 'Strippifier'
-      ImageIndex = 8
-      object RxLabel18: TLabel
-        Left = 2
-        Top = 27
-        Width = 52
-        Height = 13
-        Caption = 'Cache size'
-      end
-      object RxLabel37: TLabel
-        Left = 130
-        Top = 43
-        Width = 217
-        Height = 26
-        Caption = 
-          '15-17 ge1, ge2, ge2MX, radeon1, radeon7xxx'#13#10'23-25 geforce3, rade' +
-          'on8xxx'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        ParentFont = False
-      end
-      object cbStrippify: TCheckBox
-        Left = 0
-        Top = 7
-        Width = 141
-        Height = 17
-        Alignment = taLeftJustify
-        Caption = 'Convert to strips'
-        TabOrder = 0
-      end
-      object seStripCacheSize: TMultiObjSpinEdit
-        Left = 128
-        Top = 25
-        Width = 81
-        Height = 18
-        LWSensitivity = 0.1
-        ButtonKind = bkLightWave
-        Decimal = 1
-        MaxValue = 64
-        MinValue = 8
-        Value = 16
-        AutoSize = False
-        TabOrder = 1
-      end
-    end
-    object tsVertexBuffers: TTabSheet
-      Caption = 'Vertex buffers'
-      ImageIndex = 6
-      object RxLabel6: TLabel
-        Left = 2
-        Top = 10
-        Width = 79
-        Height = 13
-        Caption = 'VB max size (kB)'
-      end
-      object RxLabel7: TLabel
-        Left = 2
-        Top = 30
-        Width = 76
-        Height = 13
-        Caption = 'VB max vertices'
-      end
-      object seVBMaxSize: TMultiObjSpinEdit
-        Left = 114
-        Top = 8
-        Width = 121
-        Height = 18
-        LWSensitivity = 0.1
-        ButtonKind = bkLightWave
-        MaxValue = 1000000
-        Value = 8192
-        AutoSize = False
-        TabOrder = 0
-      end
-      object seVBMaxVertices: TMultiObjSpinEdit
-        Left = 114
-        Top = 28
-        Width = 121
-        Height = 18
-        LWSensitivity = 0.1
-        ButtonKind = bkLightWave
-        MaxValue = 100000
-        Value = 65535
-        AutoSize = False
-        TabOrder = 1
-      end
-    end
-    object tsSubdivision: TTabSheet
-      Caption = 'Subdivision'
-      ImageIndex = 7
-      object RxLabel8: TLabel
-        Left = 2
-        Top = 10
-        Width = 90
-        Height = 13
-        Caption = 'Max object size (m)'
-      end
-      object RxLabel19: TLabel
-        Left = 2
-        Top = 30
-        Width = 121
-        Height = 13
-        Caption = 'Perform addititional merge'
-      end
-      object RxLabel21: TLabel
-        Left = 2
-        Top = 50
-        Width = 159
-        Height = 13
-        Caption = 'Spatial subdivisions low limit (poly)'
-      end
-      object RxLabel30: TLabel
-        Left = 2
-        Top = 70
-        Width = 166
-        Height = 13
-        Caption = 'Spatial subdivisions hight limit (poly)'
-      end
-      object RxLabel31: TLabel
-        Left = 2
-        Top = 84
-        Width = 175
-        Height = 27
-        AutoSize = False
-        Caption = 'Dedicate to cached pipeline if less than # faces'
-        WordWrap = True
-      end
-      object seSSMaxSize: TMultiObjSpinEdit
-        Left = 178
-        Top = 8
-        Width = 121
-        Height = 18
-        LWSensitivity = 0.1
-        ButtonKind = bkLightWave
-        Decimal = 1
-        Increment = 0.1
-        MaxValue = 1000
-        ValueType = vtFloat
-        Value = 48
-        AutoSize = False
-        TabOrder = 0
-      end
-      object seSSMergeCoef: TMultiObjSpinEdit
-        Left = 178
-        Top = 28
-        Width = 121
-        Height = 18
-        LWSensitivity = 0.1
-        ButtonKind = bkLightWave
-        Increment = 0.01
-        MaxValue = 1
-        ValueType = vtFloat
-        Value = 0.5
-        AutoSize = False
-        TabOrder = 1
-      end
-      object seSSLowLimit: TMultiObjSpinEdit
-        Left = 178
-        Top = 48
-        Width = 121
-        Height = 18
-        LWSensitivity = 0.1
-        ButtonKind = bkLightWave
-        Decimal = 1
-        MaxValue = 2024
-        MinValue = 12
-        Value = 12
-        AutoSize = False
-        TabOrder = 2
-        OnChange = seSSLowLimitChange
-      end
-      object seSSHighLimit: TMultiObjSpinEdit
-        Left = 178
-        Top = 68
-        Width = 121
-        Height = 18
-        LWSensitivity = 0.1
-        ButtonKind = bkLightWave
-        Decimal = 1
-        MaxValue = 2048
-        MinValue = 36
-        Value = 2048
-        AutoSize = False
-        TabOrder = 3
-        OnChange = seSSHighLimitChange
-      end
-      object seSSDedicatedCashed: TMultiObjSpinEdit
-        Left = 178
-        Top = 88
-        Width = 121
-        Height = 18
-        LWSensitivity = 0.1
-        ButtonKind = bkLightWave
-        MaxValue = 1000000
-        Value = 32
-        AutoSize = False
-        TabOrder = 4
-      end
-    end
   end
   object tvOptions: TElTree
     Left = 0
@@ -1027,41 +379,41 @@ object frmSceneProperties: TfrmSceneProperties
     HeaderHeight = 19
     HeaderHotTrack = False
     HeaderSections.Data = {
-      F4FFFFFF070000007C5EDA1300000000FFFFFFFF000001010100295C78000000
-      00000000102700000001005020E1C605000000000000623B0000000000000167
-      0000000000000000000100000000000074696F6E733B456E67696E655C426C65
-      6E646572733B456E67696E655C47616D653B523A5C426F726C616E645C436F6D
-      706F6E656E7473365C616C65786D783B90000000010000000001000000000000
-      0000000000007C5EDA1300000000FFFFFFFF000001010100295C780000000000
-      00001027000000010050E8E5C605010000000000623B00000000000001670000
-      000000000000000100000000000074696F6E733B456E67696E655C426C656E64
-      6572733B456E67696E655C47616D653B523A5C426F726C616E645C436F6D706F
-      6E656E7473365C616C65786D783B900000000100000000010000000000000000
-      000000007C5EDA1300000000FFFFFFFF000001010100295C7800000000000000
-      1027000000010050ACE6C605020000000000623B000000000000016700000000
-      00000000000100000000000074696F6E733B456E67696E655C426C656E646572
-      733B456E67696E655C47616D653B523A5C426F726C616E645C436F6D706F6E65
-      6E7473365C616C65786D783B9000000001000000000100000000000000000000
-      00007C5EDA1300000000FFFFFFFF000001010100295C78000000000000001027
-      00000001005070E7C605030000000000623B0000000000000167000000000000
-      0000000100000000000074696F6E733B456E67696E655C426C656E646572733B
-      456E67696E655C47616D653B523A5C426F726C616E645C436F6D706F6E656E74
-      73365C616C65786D783B90000000010000000001000000000000000000000000
-      7C5EDA1300000000FFFFFFFF000001010100295C780000000000000010270000
-      0001005034E8C605040000000000623B00000000000001670000000000000000
-      000100000000000074696F6E733B456E67696E655C426C656E646572733B456E
-      67696E655C47616D653B523A5C426F726C616E645C436F6D706F6E656E747336
-      5C616C65786D783B900000000100000000010000000000000000000000007C5E
-      DA1300000000FFFFFFFF000001010100295C7800000000000000102700000001
-      0050F8E8C605050000000000623B000000000000016700000000000000000001
-      00000000000074696F6E733B456E67696E655C426C656E646572733B456E6769
-      6E655C47616D653B523A5C426F726C616E645C436F6D706F6E656E7473365C61
-      6C65786D783B900000000100000000010000000000000000000000007C5EDA13
-      00000000FFFFFFFF000001010100295C78000000000000001027000000010050
-      BCE9C605060000000000623B0000000000000167000000000000000000010000
-      0000000074696F6E733B456E67696E655C426C656E646572733B456E67696E65
-      5C47616D653B523A5C426F726C616E645C436F6D706F6E656E7473365C616C65
-      786D783B90000000010000000001000000000000000000000000}
+      F4FFFFFF0700000084C3750600000000FFFFFFFF000001010100543A78000000
+      00000000102700000001006E20E1C6050000000000003A470000000000000165
+      0000000000000000000100000000000065640D202050726F63657373204C6576
+      656C456469746F722E657865202830783636382900005B009C286906CC2D2206
+      1C00000050617363616C436F6D70696C90000000010000000001000000000000
+      00000000000084C3750600000000FFFFFFFF000001010100543A780000000000
+      0000102700000001006EE8E5C6050100000000003A4700000000000001650000
+      000000000000000100000000000065640D202050726F63657373204C6576656C
+      456469746F722E657865202830783636382900005B009C286906CC2D22061C00
+      000050617363616C436F6D70696C900000000100000000010000000000000000
+      0000000084C3750600000000FFFFFFFF000001010100543A7800000000000000
+      102700000001006EACE6C6050200000000003A47000000000000016500000000
+      00000000000100000000000065640D202050726F63657373204C6576656C4564
+      69746F722E657865202830783636382900005B009C286906CC2D22061C000000
+      50617363616C436F6D70696C9000000001000000000100000000000000000000
+      000084C3750600000000FFFFFFFF000001010100543A78000000000000001027
+      00000001006E70E7C6050300000000003A470000000000000165000000000000
+      0000000100000000000065640D202050726F63657373204C6576656C45646974
+      6F722E657865202830783636382900005B009C286906CC2D22061C0000005061
+      7363616C436F6D70696C90000000010000000001000000000000000000000000
+      84C3750600000000FFFFFFFF000001010100543A780000000000000010270000
+      0001006E34E8C6050400000000003A4700000000000001650000000000000000
+      000100000000000065640D202050726F63657373204C6576656C456469746F72
+      2E657865202830783636382900005B009C286906CC2D22061C00000050617363
+      616C436F6D70696C9000000001000000000100000000000000000000000084C3
+      750600000000FFFFFFFF000001010100543A7800000000000000102700000001
+      006EF8E8C6050500000000003A47000000000000016500000000000000000001
+      00000000000065640D202050726F63657373204C6576656C456469746F722E65
+      7865202830783636382900005B009C286906CC2D22061C00000050617363616C
+      436F6D70696C9000000001000000000100000000000000000000000084C37506
+      00000000FFFFFFFF000001010100543A7800000000000000102700000001006E
+      BCE9C6050600000000003A470000000000000165000000000000000000010000
+      0000000065640D202050726F63657373204C6576656C456469746F722E657865
+      202830783636382900005B009C286906CC2D22061C00000050617363616C436F
+      6D70696C90000000010000000001000000000000000000000000}
     HeaderFont.Charset = DEFAULT_CHARSET
     HeaderFont.Color = clWindowText
     HeaderFont.Height = -11
@@ -1166,7 +518,6 @@ object frmSceneProperties: TfrmSceneProperties
     IniSection = 'Build Options'
     Options = [fpPosition]
     RegistryRoot = prLocalMachine
-    OnRestorePlacement = fsScenePropsRestorePlacement
     StoredProps.Strings = (
       'pcBuildOptions.ActivePage')
     StoredValues = <>

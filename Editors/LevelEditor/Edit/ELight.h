@@ -5,20 +5,8 @@
 #ifndef ELightH
 #define ELightH
 
-#include "xr_efflensflare.h"
-
 // refs
 class CLAItem;
-
-class CEditFlare: public CLensFlare{
-public:
-					CEditFlare();
-  	void 			Load(IReader& F);
-	void 			Save(IWriter& F);
-    void			Render();
-    void			DeleteShaders();
-    void			CreateShaders();
-};
 
 class CLight : public CCustomObject{
 	// d3d's light parameters (internal use)
@@ -40,6 +28,8 @@ public:
 	// build options
     BOOL 			m_UseInD3D;
     float 			m_Brightness;
+
+    u8				m_SunQuality;
 
     // fuzzy
     struct SFuzzyData{
@@ -93,14 +83,11 @@ public:
 
     CLAItem*		m_pAnimRef;
 
-    // flares
-    CEditFlare		m_LensFlare;
-
     // spot light
     AnsiString		m_SpotAttTex;
 
     // controller
-    AnsiString		m_ControlName;
+    u32				m_LControl;
 
     virtual void	OnUpdateTransform();
     void __fastcall	OnTypeChange	(PropValue* value);
@@ -139,6 +126,8 @@ public:
     // file system function
   	virtual bool 	Load			(IReader&);
 	virtual void 	Save			(IWriter&);
+
+    
 	virtual void	FillProp		(LPCSTR pref, PropItemVec& items);
 	void			FillSunProp		(LPCSTR pref, PropItemVec& items);
 	void			FillPointProp	(LPCSTR pref, PropItemVec& items);
@@ -155,12 +144,11 @@ public:
 	virtual void 	OnFrame			();
     void 			Update			();
 
+    LPCSTR			GetLControlName	();
+    
     // events
     virtual void    OnShowHint  	(AStringVec& dest);
-
-	virtual void 	OnDeviceCreate	();
-	virtual void 	OnDeviceDestroy	();
-};
+};                                                     
 
 #endif /*_INCDEF_Light_H_*/
 

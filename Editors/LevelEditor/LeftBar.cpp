@@ -456,11 +456,6 @@ void __fastcall TfraLeftBar::MakeHOM1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::miMakeSkyDomeClick(TObject *Sender)
-{
-	UI.Command( COMMAND_MAKE_SKYDOME );
-}
-//---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::MakeAIMap1Click(TObject *Sender)
 {

@@ -52,7 +52,14 @@ void CRender::Render()
 {
 }
 
-IRender_Visual*	CRender::model_CreatePE			(LPCSTR name)	
+IRender_DetailModel*	CRender::model_CreateDM(IReader* F)
+{
+	CDetail*	D		= xr_new<CDetail> ();
+	D->Load				(F);
+	return D;
+}
+
+IRender_Visual*	CRender::model_CreatePE(LPCSTR name)	
 { 
 	PS::CPEDef*	source		= PSLibrary.FindPED	(name);
 	return Device.Models.CreatePE	(source);
@@ -66,5 +73,24 @@ IRender_Visual*			CRender::model_CreateParticles	(LPCSTR name)
 		PS::CPGDef*	SG	= PSLibrary.FindPGD	(name);		R_ASSERT(SG);
 		return			Device.Models.CreatePG	(SG);
 	}
+}
+
+void	CRender::rmNear		()
+{
+	IRender_Target* T	=	getTarget	();
+	D3DVIEWPORT9 VP		=	{0,0,T->get_width(),T->get_height(),0,0.02f };
+	CHK_DX				(HW.pDevice->SetViewport(&VP));
+}
+void	CRender::rmFar		()
+{
+	IRender_Target* T	=	getTarget	();
+	D3DVIEWPORT9 VP		=	{0,0,T->get_width(),T->get_height(),0.99999f,1.f };
+	CHK_DX				(HW.pDevice->SetViewport(&VP));
+}
+void	CRender::rmNormal	()
+{
+	IRender_Target* T	=	getTarget	();
+	D3DVIEWPORT9 VP		= {0,0,T->get_width(),T->get_height(),0,1.f };
+	CHK_DX				(HW.pDevice->SetViewport(&VP));
 }
 
