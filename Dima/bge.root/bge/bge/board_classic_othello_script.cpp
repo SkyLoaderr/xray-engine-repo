@@ -18,8 +18,11 @@ void CBoardClassicOthello::script_register(lua_State *L)
 	[
 		class_<CBoardClassicOthello>("bco")//("board_classic_othello")
 			.def(constructor<>())
-			.def("move", (bool (CBoardClassicOthello::*)(const u8 &,const u8 &))(&CBoardClassicOthello::do_move))
-			.def("undo", (void (CBoardClassicOthello::*)())(&CBoardClassicOthello::undo_move))
-			.def("show", &CBoardClassicOthello::show)
+			.def("start_position",	&CBoardClassicOthello::start_position)
+			.def("show",			&CBoardClassicOthello::show)
+			.def("move",			(bool (CBoardClassicOthello::*)(const u8 &,const u8 &))(&CBoardClassicOthello::do_move))
+			.def("undo",			(void (CBoardClassicOthello::*)())(&CBoardClassicOthello::undo_move))
+			.def("can_move",		(bool (CBoardClassicOthello::*)(const u8 &,const u8 &) const)(&CBoardClassicOthello::can_move))
+			.def("can_move",		(bool (CBoardClassicOthello::*)() const)(&CBoardClassicOthello::can_move))
 	];
 }
