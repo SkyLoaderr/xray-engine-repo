@@ -1928,6 +1928,9 @@
 			</Filter>
 		</Filter>
 		<File
+			RelativePath="Error.txt">
+		</File>
+		<File
 			RelativePath=".\Shedule.txt">
 		</File>
 		<File
