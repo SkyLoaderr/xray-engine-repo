@@ -89,13 +89,13 @@ function base_dialog:InitControls(caption)
 	
 	-- MAIN FRAME WINDOW
 	self.main_frame = CUIFrameWindow()
-	main_frame:SetAutoDelete(true)
-	main_frame:SetWindowName("main_frame")
-	main_frame:Init("ui\\ui_frame", self.main_rect.x, 
-									self.main_rect.y, 
-									self.main_rect.width, 
-									self.main_rect.height)
-	main_frame:InitLeftTop("ui\\ui_frame_over_lt", 20, 45)
+	self.main_frame:SetAutoDelete(true)
+	self.main_frame:SetWindowName("main_frame")
+	self.main_frame:Init("ui\\ui_frame", self.main_rect.x, 
+										 self.main_rect.y, 
+										 self.main_rect.width, 
+										 self.main_rect.height)
+	self.main_frame:InitLeftTop("ui\\ui_frame_over_lt", 20, 45)
 	self:AttachChild(self.main_frame)
 	
 	-- CAPTION --
@@ -109,7 +109,7 @@ function base_dialog:InitControls(caption)
 						  self.caption_text_rect.y,
 						  self.caption_text_rect.width, 
 						  self.caption_text_rect.height)
-	main_frame:AttachChild(self.txt_caption)		
+	self.main_frame:AttachChild(self.txt_caption)		
 	-- CODE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	
 	
 end
