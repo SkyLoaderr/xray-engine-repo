@@ -70,7 +70,7 @@ extern BOOL	hasImplicitLighting(Face* F);
 
 typedef	multimap<float,vecVertex>	mapVert;
 typedef	mapVert::iterator			mapVertIt;
-mapVert								g_trans;
+mapVert*							g_trans;
 CCriticalSection					g_trans_CS;
 
 void	g_trans_register			(Vertex* V)
@@ -82,13 +82,13 @@ void	g_trans_register			(Vertex* V)
 	
 	// Search
 	const float key		= V->P.x;
-	mapVertIt	it		= g_trans.lower_bound	(key);
+	mapVertIt	it		= g_trans->lower_bound	(key);
 	mapVertIt	it2		= it;
 
 	// Decrement to the start and inc to end
-	while (it!=g_trans.begin() && ((it->first+eps2)>key)) it--;
-	while (it2!=g_trans.end() && ((it2->first-eps2)<key)) it2++;
-	if (it2!=g_trans.end())	it2++;
+	while (it!=g_trans->begin() && ((it->first+eps2)>key)) it--;
+	while (it2!=g_trans->end() && ((it2->first-eps2)<key)) it2++;
+	if (it2!=g_trans->end())	it2++;
 	// Msg		("K:%f, L:%f, U:%f",key,it->first,it2->first);
 	
 	// Search
@@ -108,13 +108,13 @@ void	g_trans_register			(Vertex* V)
 
 	// Register
 	g_trans_CS.Enter		();
-	mapVertIt	ins			= g_trans.insert(make_pair(key,vecVertex()));
+	mapVertIt	ins			= g_trans->insert(make_pair(key,vecVertex()));
 	ins->second.reserve		(32);
 	ins->second.push_back	(V);
 	g_trans_CS.Leave		();
 }
 
-vecFace	VL_faces;
+vecFace*	VL_faces;
 
 class CVertexLightThread : public CThread
 {
@@ -137,7 +137,7 @@ public:
 		
 		for (DWORD I = faceStart; I<faceEnd; I++)
 		{
-			Face* F		= VL_faces[I];
+			Face* F		= (*VL_faces)[I];
 			R_ASSERT	(F);
 			
 			float v_amb	= F->Shader().vert_ambient;
@@ -167,9 +167,12 @@ public:
 #define NUM_THREADS	12
 void CBuild::LightVertex()
 {
+	VL_faces				= new vecFace();
+	g_trans					= new mapVert();
+
 	// Select faces
 	Status					("Selecting...");
-	VL_faces.reserve					(g_faces.size()/2);
+	VL_faces->reserve		(g_faces.size()/2);
 	for (DWORD I = 0; I<g_faces.size(); I++)
 	{
 		Face* F = g_faces[I];
@@ -177,16 +180,16 @@ void CBuild::LightVertex()
 		if (hasImplicitLighting(F))			continue;
 		if (!F->Shader().flags.bRendering)	continue;
 
-		VL_faces.push_back					(F);
+		VL_faces->push_back					(F);
 	}
-	Msg("%d/%d selected.",VL_faces.size(),g_faces.size());
+	Msg("%d/%d selected.",VL_faces->size(),g_faces.size());
 
 	// Start threads, wait, continue --- perform all the work
 	Status					("Calculating...");
 	DWORD	start_time		= timeGetTime();
 	CThreadManager			Threads;
-	DWORD	stride			= VL_faces.size()/NUM_THREADS;
-	DWORD	last			= VL_faces.size()-stride*(NUM_THREADS-1);
+	DWORD	stride			= VL_faces->size()/NUM_THREADS;
+	DWORD	last			= VL_faces->size()-stride*(NUM_THREADS-1);
 	for (DWORD thID=0; thID<NUM_THREADS; thID++)
 		Threads.start(new CVertexLightThread(thID,thID*stride,thID*stride+((thID==(NUM_THREADS-1))?last:stride)));
 	Threads.wait			();
@@ -194,7 +197,7 @@ void CBuild::LightVertex()
 
 	// Process all groups
 	Status					("Transluenting...");
-	for (mapVertIt it=g_trans.begin(); it!=g_trans.end(); it++)
+	for (mapVertIt it=g_trans->begin(); it!=g_trans->end(); it++)
 	{
 		// Unique
 		vecVertex&	VL		= it->second;
@@ -228,4 +231,7 @@ void CBuild::LightVertex()
 			VL[v]->Color.a		= 1.f;
 		}
 	}
+
+	_DELETE(VL_faces);
+	_DELETE(g_trans);
 }
