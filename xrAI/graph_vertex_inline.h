@@ -30,7 +30,11 @@ IC	CSGraphVertex::CGraphVertex													(
 TEMPLATE_SPECIALIZATION
 IC	CSGraphVertex::~CGraphVertex												()
 {
-	delete_data				(m_data);
+	try {
+		delete_data			(m_data);
+	}
+	catch(...) {
+	}
 }
 
 TEMPLATE_SPECIALIZATION

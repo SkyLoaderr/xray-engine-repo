@@ -33,7 +33,7 @@ IC	u32	CSoundPlayer::active_sound_count(bool only_playing) const
 	xr_vector<CSoundSingle>::const_iterator	E = m_playing_sounds.end();
 	if (!only_playing) {
 		for ( ; I != E; ++I)
-			if ((*I).m_sound->feedback || ((*I).m_start_time <= Level().timeServer()))
+			if ((*I).m_sound->feedback || ((*I).m_start_time <= Device.dwTimeGlobal))
 				++count;
 	}
 	else {
