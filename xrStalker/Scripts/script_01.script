@@ -9,7 +9,6 @@ function main()
 
 	wait		(1000)
 
-	ps2:play_at_pos		("af_mercury_ball0000":position());
 	ps2:play_at_pos		("af_mercury_ball0001":position());
 	ps2:play_at_pos		("af_mercury_ball0002":position());
 	ps2:play_at_pos		("af_mercury_ball0003":position());
