@@ -153,8 +153,8 @@ dialog_enabled = true
 ;meet_dialog = escape_trader_tutorial
 anim = idle
 on_signal = action_end | {=talking} mob_remark@talking, {~10} mob_remark@to_reading, {~20} mob_remark@to_spinka, {~25} mob_remark@palci, {~30} mob_remark@zatylok, {~35} mob_remark@cheshit, {~40} mob_remark@idle_0, {~45} mob_remark@idle_1, mob_remark@talking
-on_info = {-esc_trader_monolog_1_played +esc_trader_monolog_1} mob_remark@monolog_1 %+esc_trader_monolog_1_played%
-on_info2 = {-esc_trader_tutorial_choice_played +esc_trader_tutorial_choice} mob_remark@tut_choice %+esc_trader_tutorial_choice_played%
+on_info = {-esc_trader_monolog_1_played +esc_trader_monolog_1} mob_remark@monolog_1 %+esc_trader_monolog_1_played%,            {-esc_trader_tutorial_choice_played +esc_trader_tutorial_choice} mob_remark@tut_choice %+esc_trader_tutorial_choice_played%
+on_info2 = {+esc_trader_experienced} %+tutorial_artefact_start%, {+esc_trader_newbie} %+tutorial_artefact_start%
 
 ; ------------------------------------------------------------------------------------------------------
 ; ÎÇÂÓ×ÊÀ ÔÐÀÇ
@@ -176,3 +176,5 @@ anim = idle_non_stop
 anim_head = head_anim_normal
 snd = trader_tut_choice
 on_signal = action_end | mob_remark@talking
+on_info = {+esc_trader_experienced} mob_remark@talking, {+esc_trader_newbie} mob_remark@talking
+
