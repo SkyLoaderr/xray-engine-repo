@@ -97,7 +97,7 @@ void CBuild::xrPhase_TangentBasis()
 			// Register new if not found
 			if (!bFound)
 			{
-				u32		m_id			= v_position.size()/3;
+				u32				m_id			= v_position.size()/3;
 				v_position.push_back(V->P.x);	v_position.push_back(V->P.y);	v_position.push_back(V->P.z);
 				v_normal.push_back(V->N.x);		v_normal.push_back(V->N.y);		v_normal.push_back(V->N.z);
 				v_tc.push_back(Ftc.x);			v_tc.push_back(Ftc.y);			v_tc.push_back(0);
