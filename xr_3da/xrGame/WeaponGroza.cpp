@@ -66,11 +66,10 @@ void CWeaponGroza::FireStart()
 	if (!IsWorking() && IsValid()){ 
 		CWeapon::FireStart();
 		st_target	= eFire;
-		fTime		= fTimeToFire;
 	}
 }
 
-void CWeaponGroza::FireEnd()
+void CWeaponGroza::FireEnd	()
 {
 	if (IsWorking())
 	{
@@ -164,6 +163,8 @@ void CWeaponGroza::Update(float dt, BOOL bHUDView)
 	switch (st_current)
 	{
 	case eIdle:
+		fTime	-= dt;
+		if (fTime<0)	fTime = 0;
 		break;
 	case eFire:
 		{
