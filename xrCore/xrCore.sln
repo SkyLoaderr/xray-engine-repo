@@ -13,13 +13,16 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
 		ConfigName.0 = Debug
-		ConfigName.1 = Release
+		ConfigName.1 = Mixed
+		ConfigName.2 = Release
 	EndGlobalSection
 	GlobalSection(ProjectDependencies) = postSolution
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
 		{A0F7D1FB-59A7-4717-A7E4-96F37E91998E}.Debug.ActiveCfg = Debug|Win32
 		{A0F7D1FB-59A7-4717-A7E4-96F37E91998E}.Debug.Build.0 = Debug|Win32
+		{A0F7D1FB-59A7-4717-A7E4-96F37E91998E}.Mixed.ActiveCfg = Mixed|Win32
+		{A0F7D1FB-59A7-4717-A7E4-96F37E91998E}.Mixed.Build.0 = Mixed|Win32
 		{A0F7D1FB-59A7-4717-A7E4-96F37E91998E}.Release.ActiveCfg = Release|Win32
 		{A0F7D1FB-59A7-4717-A7E4-96F37E91998E}.Release.Build.0 = Release|Win32
 	EndGlobalSection
