@@ -94,7 +94,7 @@ void CALifeSimulatorBase::reload			(LPCSTR section)
 	m_graph_objects				= xr_new<CALifeGraphRegistry>		(server_command_line());
 	m_traders					= xr_new<CALifeTraderRegistry>		();
 	m_scheduled					= xr_new<CALifeScheduleRegistry>	();
-	m_story_objects			= xr_new<CALifeStoryRegistry>		();
+	m_story_objects				= xr_new<CALifeStoryRegistry>		();
 	m_initialized				= true;
 }
 

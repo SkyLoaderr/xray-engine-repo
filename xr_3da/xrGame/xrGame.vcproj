@@ -1687,6 +1687,16 @@
 								RelativePath=".\alife_trader_registry_inline.h">
 							</File>
 						</Filter>
+						<Filter
+							Name="abstract_registry"
+							Filter="">
+							<File
+								RelativePath=".\alife_abstract_registry.h">
+							</File>
+							<File
+								RelativePath=".\alife_abstract_registry_inline.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="object_broker"
