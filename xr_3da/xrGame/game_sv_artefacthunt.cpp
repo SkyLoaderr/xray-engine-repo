@@ -125,10 +125,18 @@ void	game_sv_ArtefactHunt::OnPlayerKillPlayer		(ClientID id_killer, ClientID id_
 		ps_killer->kills			+=	1;
 
 		if (pTeam)
+		{
+			s16 ResMoney = 0;
 			if (ps_killed->GameID == artefactBearerID)
-				Player_AddMoney(ps_killer, pTeam->m_iM_TargetRival);
+				ResMoney = pTeam->m_iM_TargetRival;
 			else
-				Player_AddMoney(ps_killer, pTeam->m_iM_KillRival);
+				ResMoney = pTeam->m_iM_KillRival;
+
+			if (ps_killer->testFlag(GAME_PLAYER_FLAG_INVINCIBLE))
+				ResMoney = s16(ResMoney * pTeam->m_fInvinsibleKillModifier);
+
+			Player_AddMoney(ps_killer, ResMoney);
+		};
 	}
 	// Send Message About Player Killed
 	SendPlayerKilledMessage(id_killer, id_killed);

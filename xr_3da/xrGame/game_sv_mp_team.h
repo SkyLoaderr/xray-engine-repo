@@ -49,6 +49,8 @@
 		s16					m_iM_RoundWin_Minor		;
 		s16					m_iM_RoundLoose_Minor	;
 		s16					m_iM_RivalsWipedOut		;
+		//---------------------------------------------
+		float				m_fInvinsibleKillModifier;
 
 	};
 

@@ -149,7 +149,12 @@ void	game_sv_Deathmatch::OnPlayerKillPlayer		(ClientID id_killer, ClientID id_ki
 		// Opponent killed - frag 
 		ps_killer->kills			+=	1;
 		if (pTeam)
-			Player_AddMoney(ps_killer, pTeam->m_iM_KillRival);
+		{
+			s16 ResMoney = pTeam->m_iM_KillRival;
+			if (ps_killer->testFlag(GAME_PLAYER_FLAG_INVINCIBLE))
+				ResMoney = s16(ResMoney * pTeam->m_fInvinsibleKillModifier);
+			Player_AddMoney(ps_killer, ResMoney);
+		};
 
 //		if (fraglimit && (ps_killer->kills >= fraglimit) )OnFraglimitExceed();
 	}
@@ -1055,6 +1060,12 @@ void	game_sv_Deathmatch::LoadTeamData			(char* caSection)
 		NewTeam.m_iM_RoundLoose_Minor	= GetMoneyAmount(caSection, "round_loose_minor");
 
 		NewTeam.m_iM_RivalsWipedOut		= GetMoneyAmount(caSection, "rivals_wiped_out");
+
+		//---------------------------------------------------------------------------
+		if (pSettings->line_exist(caSection, "kill_while_invincible"))
+			NewTeam.m_fInvinsibleKillModifier = pSettings->r_float(caSection, "kill_while_invincible");
+		else
+			NewTeam.m_fInvinsibleKillModifier = 0.5f;
 	};
 	//-------------------------------------------------------------
 	TeamList.push_back(NewTeam);

@@ -186,7 +186,12 @@ void	game_sv_TeamDeathmatch::OnPlayerKillPlayer		(ClientID id_killer, ClientID i
 		ps_killer->kills			+=	1;
 
 		if (pTeam)
-			Player_AddMoney(ps_killer, pTeam->m_iM_KillRival);
+		{
+			s16 ResMoney = pTeam->m_iM_KillRival;
+			if (ps_killer->testFlag(GAME_PLAYER_FLAG_INVINCIBLE))
+				ResMoney = s16(ResMoney * pTeam->m_fInvinsibleKillModifier);
+			Player_AddMoney(ps_killer, ResMoney);
+		};
 	}
 	
 //	teams[ps_killer->team-1].score = 0;
