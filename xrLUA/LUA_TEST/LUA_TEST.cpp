@@ -1793,10 +1793,10 @@ int __cdecl main(int argc, char* argv[])
 {
 //	test1();
 //	test0();
-//	time_smart_ptr_test();
+	time_smart_ptr_test();
 //	lesha_test();
 //	bug_test();
-	test_smart_container();
+//	test_smart_container();
 	return 0;
 
 	printf	("xrLuaCompiler v0.1\n");
