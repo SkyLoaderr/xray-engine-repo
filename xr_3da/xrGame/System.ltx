@@ -4345,12 +4345,19 @@ ph_skeleton_hinge_vel	     =10
 ph_skeleton_ddelay	     	 =20
 ph_skel_fatal_impulse_factor =7.0
 
+ph_friction_air					= 0.05		
+ph_friction_ground				= 8			
+ph_friction_wall				= 4.0              
+
 SoundThreshold		 = 0.06						; range [0..1]
 
 EyeFov				 = 80
 eye_range			 = 30
 
 hit_power			 = 30.0
+
+ImpulseMin			 = 1000.0
+ImpulseMax			 = 1500.0 
 
 ; motion factors
 StandTurnRSpeed		= 0.79						; PI_DIV_4
@@ -4375,6 +4382,8 @@ StandIdleTimeMin	= 3000
 StandIdleTimeMax	= 5000
 FreeWalkTimeMin		= 3000
 FreeWalkTimeMax		= 5000
+SleepTimeMin		= 2000
+SleepTimeMax		= 3000
 
 ; "Rest" state specific 
 ProbRestWalkFree	= 50    ; при выборе действия, в 50% случаях монстр будет ходить
@@ -4462,12 +4471,19 @@ ph_skeleton_hinge_vel	     =10
 ph_skeleton_ddelay	     	 =20
 ph_skel_fatal_impulse_factor =7.0
 
+ph_friction_air					= 0.05		
+ph_friction_ground				= 8			
+ph_friction_wall				= 4.0              
+
 SoundThreshold		 = 0.06             ; range [0..1]
 
 EyeFov				 = 100;
 eye_range			 = 70;
 
 hit_power			 = 70.0;
+
+ImpulseMin			 = 1000.0
+ImpulseMax			 = 1500.0 
 
 ; motion factors
 StandTurnRSpeed		= 1.05						; PI_DIV_3
@@ -4492,6 +4508,9 @@ StandIdleTimeMin	= 3000
 StandIdleTimeMax	= 5000
 FreeWalkTimeMin		= 5000
 FreeWalkTimeMax		= 7000
+SleepTimeMin		= 2000
+SleepTimeMax		= 3000
+
 
 ; "Rest" state specific 
 ProbRestWalkFree	= 50    ; при выборе действия, в 50% случаях монстр будет ходить
@@ -4594,7 +4613,6 @@ EyeFov				 = 100;
 eye_range			 = 70;
 
 hit_power			 = 70.0;
-hit_impulse		     = 60.0
 
 ImpulseMin			 = 1000.0
 ImpulseMax			 = 1500.0 
@@ -4733,6 +4751,11 @@ ph_skeleton_hinge_vel	     =10
 ph_skeleton_ddelay	     	 =20
 ph_skel_fatal_impulse_factor =7.0
 
+ph_friction_air					= 0.05		
+ph_friction_ground				= 8			
+ph_friction_wall				= 4.0              
+
+
 SoundThreshold		 = 0.06             ; range [0..1]
 
 EyeFov				 = 100;
@@ -4763,6 +4786,8 @@ StandIdleTimeMin	= 3000
 StandIdleTimeMax	= 5000
 FreeWalkTimeMin		= 3000
 FreeWalkTimeMax		= 5000
+SleepTimeMin		= 2000
+SleepTimeMax		= 3000
 
 ; "Rest" state specific 
 ProbRestWalkFree	= 30    ; при выборе действия, в 50% случаях монстр будет ходить
