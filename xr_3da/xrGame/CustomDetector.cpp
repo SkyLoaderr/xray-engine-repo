@@ -317,7 +317,11 @@ void CCustomDetector::UpdateMapLocations() // called on turn on/off only
 void CCustomDetector::UpdateNightVisionMode()
 {
 	bool bNightVision = ( Level().Cameras.GetEffector(EEffectorPPType(NIGHT_VISION_EFFECTOR_TYPE_ID))!=NULL );
-	bool bOn = bNightVision && m_pCurrentActor && IsWorking() && xr_strlen(*m_nightvision_particle)!=0;
+	bool bOn =	bNightVision && 
+				m_pCurrentActor &&
+				m_pCurrentActor==Level().CurrentViewEntity()&& 
+				IsWorking() && 
+				xr_strlen(*m_nightvision_particle)!=0;
 
 	ZONE_INFO_MAP_IT it;
 	for(it = m_ZoneInfoMap.begin(); m_ZoneInfoMap.end() != it; ++it) 
