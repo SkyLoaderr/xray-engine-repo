@@ -124,16 +124,12 @@ public:
 			// finding the node being estimated as the cheapest among the opened ones
 			tpBestNode = tpOpenedList->tpOpenedNext;
 			
+			// checking if the distance is not too large
 			if (tpBestNode->f >= fMaxValue) {
 				fValue = fMaxValue;
 				tpaNodes.clear();
 				return;
 			}
-			// remove that node from the opened list and put that node to the closed list
-			tpOpenedList->tpOpenedNext = tpBestNode->tpOpenedNext;
-			if (tpBestNode->tpOpenedNext)
-				tpBestNode->tpOpenedNext->tpOpenedPrev = tpOpenedList;
-			tpBestNode->ucOpenCloseMask = 0;
 
 			// check if that node is our goal
 			int iBestIndex = tpBestNode->iIndex;
@@ -157,6 +153,13 @@ public:
 				return;
 			}
 			
+			// remove that node from the opened list and put that node to the closed list
+			tpOpenedList->tpOpenedNext = tpBestNode->tpOpenedNext;
+			if (tpBestNode->tpOpenedNext)
+				tpBestNode->tpOpenedNext->tpOpenedPrev = tpOpenedList;
+			tpBestNode->ucOpenCloseMask = 0;
+
+			// iterating on children/neighbours
 			CTemplateNode::iterator tIterator;
 			CTemplateNode::iterator tEnd;
 			tTemplateNode.begin(iBestIndex,tIterator,tEnd);
@@ -169,19 +172,6 @@ public:
 				// checking if that node is in the path of the BESTNODE ones
 				if (tpIndexes[iNodeIndex].dwTime == dwAStarStaticCounter) {
 					tpTemp = tpIndexes[iNodeIndex].tpNode;
-//					bool bOk = true;
-//					if (!(tpTemp->ucOpenCloseMask)) {
-//						tpTemp2 = tpTemp->tpForward;
-//						while (tpTemp2) {
-//							if (tpTemp2->iIndex == iBestIndex) {
-//								bOk = false;
-//								break;
-//							}
-//							tpTemp2 = tpTemp2->tpForward;
-//						}
-//						if (!bOk)
-//							continue;
-//					}
 					
 					// initialize node
 					float dG = tpBestNode->g + tTemplateNode.ffEvaluate(iBestIndex,iNodeIndex,tIterator);
