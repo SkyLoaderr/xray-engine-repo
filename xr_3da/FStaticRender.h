@@ -32,55 +32,55 @@ class CRender	:
 {
 public:
 	// Dynamic scene graph
-	SceneGraph::mapNormal_T							mapNormal	[4];
-	SceneGraph::mapMatrix_T							mapMatrix;
-	SceneGraph::mapSorted_T							mapSorted;
-	SceneGraph::mapHUD_T							mapHUD;
-	SceneGraph::mapLOD_T							mapLOD;
-	SceneGraph::vecPatches_T						vecPatches;
+	SceneGraph::mapNormal_T									mapNormal	[4];
+	SceneGraph::mapMatrix_T									mapMatrix;
+	SceneGraph::mapSorted_T									mapSorted;
+	SceneGraph::mapHUD_T									mapHUD;
+	SceneGraph::mapLOD_T									mapLOD;
+	SceneGraph::vecPatches_T								vecPatches;
 
-	vector<int>										vecGroups;
-	vector<SceneGraph::mapNormalCodes::TNode*>		lstCodes;
-	vector<SceneGraph::mapNormalTextures::TNode*>	lstTextures;
-	vector<SceneGraph::mapNormalTextures::TNode*>	lstTexturesTemp;
-	vector<SceneGraph::mapNormalVS::TNode*>			lstVS;
-	vector<SceneGraph::mapNormalVB::TNode*>			lstVB;
-	vector<SceneGraph::mapNormalMatrices::TNode*>	lstMatrices;
-	vector<SceneGraph::mapNormalConstants::TNode*>	lstConstants;
-	vector<SceneGraph::_LodItem>					lstLODs;
-	vector<CVisual*>								lstVisuals;
+	vector<int>												vecGroups;
+	vector<SceneGraph::mapNormalCodes::TNode*>				lstCodes;
+	vector<SceneGraph::mapNormalTextures::TNode*>			lstTextures;
+	vector<SceneGraph::mapNormalTextures::TNode*>			lstTexturesTemp;
+	vector<SceneGraph::mapNormalVS::TNode*>					lstVS;
+	vector<SceneGraph::mapNormalVB::TNode*>					lstVB;
+	vector<SceneGraph::mapNormalMatrices::TNode*>			lstMatrices;
+	vector<SceneGraph::mapNormalConstants::TNode*>			lstConstants;
+	vector<SceneGraph::_LodItem>							lstLODs;
+	vector<CVisual*>										lstVisuals;
 
-	SGeometry*										hGeomPatches;
+	SGeometry*												hGeomPatches;
 
 	// Sector detection and visibility
-	CSector*										pLastSector;
-	Fvector											vLastCameraPos;
-	vector<CPortal>									Portals;
-	vector<CSector*>								Sectors;
-	CDB::MODEL*										rmPortals;
-	CHOM											HOM;
+	CSector*												pLastSector;
+	Fvector													vLastCameraPos;
+	vector<CPortal>											Portals;
+	vector<CSector*>										Sectors;
+	CDB::MODEL*												rmPortals;
+	CHOM													HOM;
 	
 	// Global vertex-buffer container
-	typedef svector<D3DVERTEXELEMENT9,MAX_FVF_DECL_SIZE> VertexDeclarator;
-	vector<VertexDeclarator>						DCL;
-	vector<IDirect3DVertexBuffer9*>					VB;
-	vector<IDirect3DIndexBuffer9*>					IB;
-	vector<CVisual*>								Visuals;
-	CPSLibrary										PSystems;
+	typedef svector<D3DVERTEXELEMENT9,MAX_FVF_DECL_SIZE>	VertexDeclarator;
+	vector<VertexDeclarator>								DCL;
+	vector<IDirect3DVertexBuffer9*>							VB;
+	vector<IDirect3DIndexBuffer9*>							IB;
+	vector<CVisual*>										Visuals;
+	CPSLibrary												PSystems;
 
-	CLightDB_Static									L_DB;
-	CLightPPA_Manager								L_Dynamic;
-	CLightShadows									L_Shadows;
-	CLightProjector									L_Projector;
-	CGlowManager									Glows;
-	CWallmarksEngine*								Wallmarks;
-	CDetailManager									Details;
-	CModelPool										Models;
+	CLightDB_Static											L_DB;
+	CLightPPA_Manager										L_Dynamic;
+	CLightShadows											L_Shadows;
+	CLightProjector											L_Projector;
+	CGlowManager											Glows;
+	CWallmarksEngine*										Wallmarks;
+	CDetailManager											Details;
+	CModelPool												Models;
 
-	CRenderTarget									Target;			// Render-target
+	CRenderTarget											Target;			// Render-target
 
-	CMatrix*										matDetailTexturing;
-	CMatrix*										matFogPass;
+	CMatrix*												matDetailTexturing;
+	CMatrix*												matFogPass;
 private:
 	// Loading / Unloading
 	void							LoadBuffers				(IReader	*fs);
