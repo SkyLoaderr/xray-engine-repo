@@ -57,7 +57,14 @@ void Vclamp(int& v, int a, int b)
 {
 	if (v<a)	v=a; else if (v>=b) v=b-1;
 }
-
+BOOL shared(occTri* T1, occTri* T2)
+{
+	if (T1==T2)					return TRUE;
+	if (T1->adjacent[0]==T2)	return TRUE;
+	if (T1->adjacent[1]==T2)	return TRUE;
+	if (T1->adjacent[1]==T2)	return TRUE;
+	return FALSE;
+}
 /* Rasterize a scan line between given X point values, corresponding Z values
 and current color
 */
@@ -71,8 +78,8 @@ void i_scan	(occRasterizer* OCC, occTri* T, int curY, float startT, float endT, 
 	int minT	= maxPixel(startT), maxT = minPixel(endT);
 	Vclamp		(minX,0,occ_dim0);
 	Vclamp		(maxX,0,occ_dim0);
-	Vclamp		(minT,0,occ_dim0);
-	Vclamp		(maxT,0,occ_dim0);
+	Vclamp		(minT,1,occ_dim0-1);
+	Vclamp		(maxT,1,occ_dim0-1);
 	if (minT >= maxT)		return;
 
 	// interpolate
@@ -88,9 +95,9 @@ void i_scan	(occRasterizer* OCC, occTri* T, int curY, float startT, float endT, 
 	// left connector
 	for (; X<minX; X++, i++, Z+=dZ)
 	{
+		occTri* test = pFrame[i-1];
 		float ZR = Z; if (ZR<0)	ZR=0; else if (ZR>1) ZR = 1;
-		if (ZR < pDepth[i]) 
-		{	
+		if (shared(T,test) && ZR<pDepth[i])	{
 			// update Z buffer + Frame buffer
 			pFrame[i]	= T;
 			pDepth[i]	= ZR;
@@ -111,9 +118,9 @@ void i_scan	(occRasterizer* OCC, occTri* T, int curY, float startT, float endT, 
 	// right connector
 	for (; X<maxT; X++, i++, Z+=dZ)
 	{
+		occTri* test = pFrame[i+1];
 		float ZR = Z; if (ZR<0)	ZR=0; else if (ZR>1) ZR = 1;
-		if (ZR < pDepth[i]) 
-		{	
+		if (shared(T,test) && ZR<pDepth[i])	{
 			// update Z buffer + Frame buffer
 			pFrame[i]	= T;
 			pDepth[i]	= ZR;
