@@ -57,6 +57,12 @@ public:
 	ref_str							m_ini_string;
 	xr_vector<u16>					children;
 
+	//client object custom data serialization
+	xr_vector<u8>					client_data;
+	virtual void					load			(NET_Packet	&tNetPacket);
+
+	//////////////////////////////////////////////////////////////////////////
+	
 									CSE_Abstract	(LPCSTR caSection);
 	virtual							~CSE_Abstract	();
 	virtual void					OnEvent			(NET_Packet &tNetPacket, u16 type, u32 time, u32 sender ){};

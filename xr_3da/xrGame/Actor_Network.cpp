@@ -1071,8 +1071,17 @@ void	CActor::CalculateInterpolationParams()
 	m_bInInterpolation = true;
 
 	if (m_pPhysicsShell) m_pPhysicsShell->NetInterpolationModeON();
-
 }
+
+void CActor::save(NET_Packet &output_packet)
+{
+	inherited::save(output_packet);
+}
+void CActor::load(IReader &input_packet)
+{
+	inherited::load(input_packet);
+}
+
 
 #ifdef DEBUG
 void	CActor::OnRender_Network()

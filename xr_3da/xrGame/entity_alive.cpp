@@ -206,8 +206,13 @@ BOOL CEntityAlive::net_Spawn	(LPVOID DC)
 {
 	inherited::net_Spawn	(DC);
 
-	//m_PhysicMovementControl->SetPosition	(Position());
-	//m_PhysicMovementControl->SetVelocity	(0,0,0);
+	//добавить кровь и огонь на партиклы, если нужно
+	for(WOUND_VECTOR_IT it = m_WoundVector.begin(); m_WoundVector.end() != it; ++it)
+	{
+		CWound* pWound = *it;
+		StartFireParticles(pWound);
+		StartBloodDrops(pWound);
+	}
 	return					TRUE;
 }
 
@@ -217,8 +222,6 @@ void CEntityAlive::net_Destroy	()
 	if (l_tpInventoryOwner) {
 		l_tpInventoryOwner->inventory().ClearAll();
 	}
-
-
 
 	inherited::net_Destroy		();
 }
@@ -486,4 +489,23 @@ void CEntityAlive::UpdateBloodDrops()
 		}
 		it++;
 	}
+}
+
+
+
+void CEntityAlive::save	(NET_Packet &output_packet)
+{
+	inherited::save(output_packet);
+	CEntityCondition::save(output_packet);
+}
+
+void CEntityAlive::load	(IReader &input_packet)
+{
+	inherited::load(input_packet);
+	CEntityCondition::load(input_packet);
+}
+
+BOOL	CEntityAlive::net_SaveRelevant		()
+{
+	return TRUE;
 }

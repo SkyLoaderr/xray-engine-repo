@@ -13,6 +13,10 @@ public:
 	CWound				(u16 bone_num);
 	virtual ~CWound		(void);
 
+	//serialization
+	virtual void save	(NET_Packet &output_packet);
+	virtual void load	(IReader &input_packet);
+
 	float	TotalSize	();
 	float	TypeSize	(ALife::EHitType hit_type);
 	float	BloodSize	();

@@ -83,6 +83,11 @@ CEntityCondition::CEntityCondition(void)
 
 CEntityCondition::~CEntityCondition(void)
 {
+	ClearWounds();
+}
+
+void CEntityCondition::ClearWounds()
+{
 	for(WOUND_VECTOR_IT it = m_WoundVector.begin(); m_WoundVector.end() != it; ++it)
 		xr_delete(*it);
 	m_WoundVector.clear();
@@ -522,4 +527,43 @@ void CEntityCondition::Awoke()
 bool CEntityCondition::IsLimping() const
 {
 	return (false);//m_fPower*m_fHealth <= .5f);
+}
+
+void CEntityCondition::save	(NET_Packet &output_packet)
+{
+	output_packet.w_float_q8		(m_fHealth,			0.f,1.f);
+	output_packet.w_float_q8		(m_fPower,			0.f,1.f);
+	output_packet.w_float_q8		(m_fSatiety,		0.f,1.f);
+	output_packet.w_float_q8		(m_fRadiation,		0.f,1.f);
+
+	output_packet.w_float_q8		(m_fEntityMorale,	0.f,1.f);
+	output_packet.w_float_q8		(m_fCircumspection,	0.f,1.f);
+
+	output_packet.w_u8				((u8)m_WoundVector.size());
+	for(WOUND_VECTOR_IT it = m_WoundVector.begin(); m_WoundVector.end() != it; it++)
+	{
+		(*it)->save(output_packet);
+	}
+}
+void CEntityCondition::load	(IReader &input_packet)
+{
+	m_fHealth			= input_packet.r_float_q8	(0.f,1.f);
+	m_fPower			= input_packet.r_float_q8	(0.f,1.f);
+	m_fSatiety			= input_packet.r_float_q8	(0.f,1.f);
+	m_fRadiation		= input_packet.r_float_q8	(0.f,1.f);
+	
+	m_fEntityMorale		= input_packet.r_float_q8	(0.f,1.f);
+	m_fCircumspection	= input_packet.r_float_q8	(0.f,1.f);
+
+	ClearWounds();
+	m_WoundVector.resize(input_packet.r_u8());
+	if(!m_WoundVector.empty())
+	{
+		for(u32 i=0; i<m_WoundVector.size(); i++)
+		{
+			CWound* pWound = xr_new<CWound>(BI_NONE);
+			pWound->load(input_packet);
+			m_WoundVector[i] = pWound;
+		}
+	}
 }

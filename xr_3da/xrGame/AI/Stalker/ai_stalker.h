@@ -98,6 +98,11 @@ public:
 	virtual void				net_Destroy						();
 	virtual void				net_Save						(NET_Packet& P);
 	virtual	BOOL				net_SaveRelevant				();
+
+	//save/load server serialization
+	virtual void				save							(NET_Packet &output_packet) {inherited::save(output_packet);}
+	virtual void				load							(IReader &input_packet)		{inherited::load(input_packet);}
+
 	virtual void				UpdateCL						();
 	virtual void				shedule_Update					(u32 dt);
 	virtual void				Think							();
@@ -188,6 +193,7 @@ public:
 			bool				can_kill_member			();
 			bool				can_kill_member			(const Fvector &position, const Fvector &direction) const;
 			void				dbg_animation			(LPCSTR caption, CMotionDef *animation);
+
 };
 
 #include "ai_stalker_inline.h"

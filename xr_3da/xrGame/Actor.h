@@ -432,6 +432,11 @@ public:
 	virtual void						net_ImportInput		( NET_Packet& P);				// import input from remote client
 	virtual BOOL						net_Relevant		()	{ return getSVU() | getLocal(); };		// relevant for export to server
 	virtual	void						net_Relcase			( CObject* O );					//
+
+	//object serialization
+	virtual void						save				(NET_Packet &output_packet);
+	virtual void						load				(IReader &input_packet);
+
 protected:
 	xr_deque<net_update>	NET;
 	Fvector					NET_SavedAccel;

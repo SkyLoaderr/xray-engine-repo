@@ -208,6 +208,13 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 	reload						(*cNameSect());
 	reinit						();
 
+	//load custom user data from server
+	if(!E->client_data.empty())
+	{	
+		IReader ireader = IReader(&*E->client_data.begin(), E->client_data.size());
+		load(ireader);
+	}
+
 	// if we have a parent
 	if (0xffff != E->ID_Parent) {
 		
@@ -252,7 +259,14 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 
 void CGameObject::net_Save		(NET_Packet &net_packet)
 {
+	u32	position;
+	net_packet.w_chunk_open8(position);
+	save(net_packet);
+	net_packet.w_chunk_close8(position);
 }
+
+void CGameObject::save		(NET_Packet &output_packet) {}
+void CGameObject::load		(IReader &input_packet) {}
 
 void CGameObject::spawn_supplies()
 {

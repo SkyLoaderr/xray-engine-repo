@@ -23,9 +23,28 @@ CWound::CWound(u16 bone_num)
 	m_fUpdateTime = 0.f;
 }
 
+
 CWound::~CWound(void)
 {
 }
+
+#define  WOUND_MAX 10.f
+
+
+//serialization
+void  CWound::save	(NET_Packet &output_packet)
+{
+	output_packet.w_u8((u8)m_iBoneNum);
+	for(int i=0; i<ALife::eHitTypeMax; i++)
+		output_packet.w_float_q8 (m_Wounds[i],0.f, WOUND_MAX);
+}
+void  CWound::load	(IReader &input_packet)
+{
+	m_iBoneNum = (u8)input_packet.r_u8();
+	for(int i=0; i<ALife::eHitTypeMax; i++)
+			m_Wounds[i] = input_packet.r_float_q8 (0.f, WOUND_MAX);
+}
+
 
 float CWound::TotalSize()
 {

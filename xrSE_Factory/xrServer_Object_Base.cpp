@@ -81,6 +81,8 @@ CSE_Abstract::CSE_Abstract					(LPCSTR caSection)
 	m_bALifeControl				= false;
 	m_wVersion					= 0;
 	m_script_version			= 0;
+
+	client_data.clear			();
 }
 
 CSE_Abstract::~CSE_Abstract					()
@@ -116,7 +118,7 @@ void CSE_Abstract::Spawn_Write				(NET_Packet	&tNetPacket, BOOL bLocal)
 	tNetPacket.w_u16			(ID				);
 	tNetPacket.w_u16			(ID_Parent		);
 	tNetPacket.w_u16			(ID_Phantom		);
-	
+
 	s_flags.set					(M_SPAWN_VERSION,TRUE);
 	if (bLocal)
 		tNetPacket.w_u16		(u16(s_flags.flags|M_SPAWN_OBJECT_LOCAL) );
@@ -126,6 +128,13 @@ void CSE_Abstract::Spawn_Write				(NET_Packet	&tNetPacket, BOOL bLocal)
 	tNetPacket.w_u16			(SPAWN_VERSION);
 	
 	tNetPacket.w_u16			(script_server_object_version());
+
+
+	//client object custom data serialization SAVE
+	u8 client_data_size			= (u8)client_data.size(); //не может быть больше 256 байт
+	tNetPacket.w_u8				(client_data_size);
+	if(client_data_size>0)
+		tNetPacket.w			(&*client_data.begin(),client_data_size);
 
 #ifdef XRSE_FACTORY_EXPORTS
 	CScriptValueContainer::assign();
@@ -155,6 +164,7 @@ BOOL CSE_Abstract::Spawn_Read				(NET_Packet	&tNetPacket)
 	tNetPacket.r_u16			(ID				);
 	tNetPacket.r_u16			(ID_Parent		);
 	tNetPacket.r_u16			(ID_Phantom		);
+
 	tNetPacket.r_u16			(s_flags.flags	); 
 	
 	// dangerous!!!!!!!!!
@@ -166,17 +176,47 @@ BOOL CSE_Abstract::Spawn_Read				(NET_Packet	&tNetPacket)
 		m_wVersion				= 0;
         return					FALSE;
 	}
+
 	// this is "zaplatka"
 
 	if (m_wVersion > 69)
 		m_script_version		= tNetPacket.r_u16();
 
 	// read specific data
+
+	//client object custom data serialization LOAD
+	if (m_wVersion > 70)
+	{
+		u8 client_data_size		= tNetPacket.r_u8(); //не может быть больше 256 байт
+		if(client_data_size>0)
+		{
+			client_data.resize	(client_data_size);
+			tNetPacket.r		(&*client_data.begin(),client_data_size);
+		}
+		else
+			client_data.clear();
+	}else
+		client_data.clear		();
+
+
 	u16							size;
 	tNetPacket.r_u16			(size			);	// size
 	STATE_Read					(tNetPacket,size);
     
 	return						TRUE;
+}
+
+void	CSE_Abstract::load			(NET_Packet	&tNetPacket)
+{
+	CPureServerObject::load	(tNetPacket);
+	u8 client_data_size		= tNetPacket.r_u8(); //не может быть больше 256 байт
+	if(client_data_size>0)
+	{
+		client_data.resize	(client_data_size);
+		tNetPacket.r		(&*client_data.begin(),client_data_size);
+	}
+	else
+        client_data.clear();
 }
 
 CSE_Abstract *CSE_Abstract::base	()

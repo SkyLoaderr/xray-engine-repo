@@ -22,6 +22,10 @@ public:
 
 	virtual void Load(LPCSTR section);
 
+	//serialization
+	virtual void save	(NET_Packet &output_packet);
+	virtual void load	(IReader &input_packet);
+
 	float GetHealth() const {return m_fHealth;}
 	float GetPower() const {return m_fPower;}
 	float GetSatiety() const {return m_fSatiety;}
@@ -83,6 +87,8 @@ protected:
 	//и скорость потери крови из раны
 	DEFINE_VECTOR(CWound*, WOUND_VECTOR, WOUND_VECTOR_IT);
 	WOUND_VECTOR m_WoundVector;
+	//очистка массива ран
+	void ClearWounds();
 
 	//все величины от 0 до 1			
 	float m_fHealth;				//здоровье

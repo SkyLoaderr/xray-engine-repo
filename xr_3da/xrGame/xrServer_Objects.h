@@ -87,8 +87,9 @@
 //		CSE_ALifeObjectHangingLamp,				
 //		CSE_ALifeHelicopter				heritage changed
 // 70 -	CSE_Abstract					appended with m_script_version, script version support
+// 71 -	CSE_Abstract					appended with m_client_data, ability to save/load client data
 //------------------------------------------------------------------------------
-#define SPAWN_VERSION	u16(70)
+#define SPAWN_VERSION	u16(71)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Shape,ISE_Shape,CShapeData)
 public:

@@ -29,8 +29,14 @@ public:
 	virtual void			reinit					();
 	virtual void			reload					(LPCSTR section);
 
+	//object serialization
+	virtual void			save				(NET_Packet &output_packet);
+	virtual void			load				(IReader &input_packet);
+
+
 	virtual BOOL			net_Spawn				(LPVOID DC);
 	virtual void			net_Destroy				();
+	virtual	BOOL			net_SaveRelevant		();
 
 	virtual void			shedule_Update			(u32 dt);
 
