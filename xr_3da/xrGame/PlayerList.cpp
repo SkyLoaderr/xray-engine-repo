@@ -30,5 +30,5 @@ void CPlayers::remove(NET_Packet& P)
 
 CPlayers::Item& CPlayers::access(DWORD ID)
 {
-	return items.find	(ID);
+	return items.find	(ID)->second;
 }

@@ -75,6 +75,7 @@ M_PLIST_ADD
 	stringZ		name;
 	s16			frags;
 }
+
 M_PLIST_REMOVE
 {
 	u32			ID;
