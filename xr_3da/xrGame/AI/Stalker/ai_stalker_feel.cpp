@@ -12,7 +12,6 @@
 #include "..\\..\\hudmanager.h"
 #include "..\\..\\actor.h"
 
-#define LOG_PARAMETERS
 #define MIN_SOUND_VOLUME				.05f
 #define SOUND_UPDATE_DELAY				3000
 
@@ -45,9 +44,9 @@ bool CAI_Stalker::bfCheckForVisibility(CEntity* tpEntity)
 //	if (Level().iGetKeyState(DIK_RCONTROL))
 //		return(false);
 #ifdef LOG_PARAMETERS
-	bool		bMessage = g_Alive() && !!dynamic_cast<CActor*>(tpEntity);//!!Level().iGetKeyState(DIK_LALT);
-//	int			iLogParameters = Level().iGetKeyState(DIK_1) ? 2 : Level().iGetKeyState(DIK_0) ? 1 : 0;
-//	string4096	S = "";
+//	bool		bMessage = g_Alive() && !!dynamic_cast<CActor*>(tpEntity);//!!Level().iGetKeyState(DIK_LALT);
+	int			iLogParameters = (g_Alive() && !!dynamic_cast<CActor*>(tpEntity)) ? (Level().iGetKeyState(DIK_1) ? 2 : Level().iGetKeyState(DIK_0) ? 1 : 0) : 0;
+	string4096	S = "";
 #endif
 	float fResult = 0.f;
 	
@@ -84,10 +83,11 @@ bool CAI_Stalker::bfCheckForVisibility(CEntity* tpEntity)
 		fResult += m_fShadowWeight*fTemp;
 	
 #ifdef LOG_PARAMETERS
-	if (bMessage)
+	if (iLogParameters)
 		HUD().outMessage(0xffffffff,cName(),"%s : %d",fResult >= m_fVisibilityThreshold ? "I see actor" : "I don't see actor",Level().timeServer());
-//	if (iLogParameters)
-//		Msg("%6.2f %6.2f %6.2f %6.2f %6.2f %6.2f %6.2f %6.2f",fDistance,fAlpha,fSpeed,AI_Path.fSpeed,float(tpEntity->AI_Node->light)/255.f,float(AI_Node->light)/255.f,tpEntity->Radius(),float(iLogParameters - 1));
+	if (iLogParameters) {
+		fprintf(ST_VF,"%6.2f %6.2f %6.2f %6.2f %6.2f %6.2f %6.2f %6.2f\n",fDistance,fAlpha,fSpeed,AI_Path.fSpeed,float(tpEntity->AI_Node->light)/255.f,float(AI_Node->light)/255.f,tpEntity->Radius(),float(iLogParameters - 1));
+	}
 #endif
 	return(fResult >= m_fVisibilityThreshold);
 }

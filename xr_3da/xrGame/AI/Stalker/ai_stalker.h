@@ -13,6 +13,12 @@
 #include "ai_stalker_animations.h"
 #include "ai_stalker_space.h"
 
+#define LOG_PARAMETERS
+
+#ifdef LOG_PARAMETERS
+extern FILE	*ST_VF;
+#endif
+
 class CAI_Stalker : public CCustomMonster, public CStalkerAnimations, public CInventoryOwner {
 private:
 	typedef CCustomMonster inherited;
