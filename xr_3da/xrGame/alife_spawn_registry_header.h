@@ -14,9 +14,9 @@ class CALifeSpawnHeader {
 protected:
 	u32						m_version;
 	xrGUID					m_guid;
+	xrGUID					m_graph_guid;
 	u32						m_count;
 	u32						m_level_count;
-	xrGUID					m_graph_guid;
 
 public:
 	virtual					~CALifeSpawnHeader	();
