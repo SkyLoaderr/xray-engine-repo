@@ -91,8 +91,6 @@ protected:
 
 #else
 
-//#define USE_COMPUTED
-
 class CLevelNavigationGraph : public CLevelGraph {
 private:
 	typedef CLevelGraph									inherited;
@@ -147,14 +145,12 @@ protected:
 	IC		u32					vertex_id				(const CCellVertex *vertex) const;
 	IC		u32					vertex_id				(const CROSS_TABLE::const_iterator &vertex) const;
 	IC		u32					vertex_id				(const CROSS_PTABLE::const_iterator &vertex) const;
+	ICF		u64					cell_id					(CCellVertex *cell) const;
 	ICF		bool				check_left				(u32 vertex_id, u32 left_vertex_id) const;
 	IC		void				fill_cell				(u32 start_vertex_id, u32 link);
 	IC		void				fill_cell				(u32 start_vertex_id);
 	IC		void				fill_cells				();
 	IC		void				fast_sort				();
-#ifdef USE_COMPUTED
-	IC		void				update_cell_computed	(u32 start_vertex_id, u32 link);
-#endif
 	IC		void				update_cell				(u32 start_vertex_id, u32 link);
 	IC		void				update_cells			(u32 vertex_id, u32 right, u32 down);
 	IC		void				select_sector			(CCellVertex *v, u32 &right, u32 &down, u32 max_square);

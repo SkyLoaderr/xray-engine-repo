@@ -46,17 +46,6 @@ namespace LevelNavigationGraph {
 			u32			m_all_dirs;
 		};
 		
-#ifdef USE_COMPUTED
-		union {
-			struct {
-				u16		m_right_computed;
-				u16		m_down_computed;
-			};
-			u16			m_dirs_computed[2];
-			u32			m_all_dirs_computed;
-		};
-#endif
-
 		union {
 			typedef u8	_use_type;
 
@@ -73,9 +62,6 @@ namespace LevelNavigationGraph {
 		ICF CCellVertexEx	() :
 			m_data		(0),
 			m_all_dirs	(0),
-#ifdef USE_COMPUTED
-			m_all_dirs_computed(0),
-#endif
 			m_down_left	(0),
 			m_right_next(0)
 		{
