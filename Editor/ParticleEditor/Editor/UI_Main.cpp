@@ -185,12 +185,6 @@ void TUI::OnMousePress(int btn){
 void TUI::OnMouseRelease(int btn){
 	if (!m_bReady) return;
 
-    // test owner
-    Ipoint pt;
-	iGetMousePosScreen(pt);
-    TWinControl* ctr 	= FindVCLWindow(*pt.d3d());
-    if (ctr!=m_D3DWindow) return;
-
     if (iGetBtnState(0)) m_ShiftState << ssLeft; else m_ShiftState >> ssLeft;
     if (iGetBtnState(1)) m_ShiftState << ssRight;else m_ShiftState >> ssRight;
 

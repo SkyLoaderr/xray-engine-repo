@@ -80,7 +80,7 @@ void CEvent::RenderBox(bool bAlpha ){
         C=D3DCOLOR_RGBA( 32, 32, 32, 255 );
         Device.RenderNearer(0.0003);
         Device.SetTransform(D3DTS_WORLD,mTransform);
-	    Device.SetShader(Device.m_WireShader);
+	    Device.SetShader(Device.m_SelectionShader);
         Device.ResetNearer();
         DU::DrawIdentBox(false,true,&C);
         if(Selected()){
