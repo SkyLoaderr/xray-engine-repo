@@ -12,4 +12,18 @@
 			<text>Help novice find weapon</text>
 		</objective>
 	</game_task>
+
+	<game_task id="storyline_eliminate_gunslinger">
+		<objective>
+			<text>Eliminate Gunslinger</text>
+		</objective>
+		<objective>
+			<text>Find Gunslinger</text>
+		</objective>
+		<objective>
+			<text>Kill Gunslinger</text>
+		</objective>
+	</game_task>
+
+
 </game_tasks_data>
