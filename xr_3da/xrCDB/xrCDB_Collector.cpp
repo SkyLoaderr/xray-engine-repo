@@ -39,7 +39,7 @@ namespace CDB
 		Fvector& v0, Fvector& v1, Fvector& v2,	// vertices
 		u32 e01, u32 e12, u32 e20,				// edges
 		WORD material, WORD sector, u32 dummy,	// misc
-		float eps = EPS
+		float eps
 		)
 	{
 		TRI T;
