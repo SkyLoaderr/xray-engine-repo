@@ -146,6 +146,7 @@ void CSoundRender_Core::env_unload	()
 
 void CSoundRender_Core::_restart		()
 {
+	env_apply					();
 }
 
 void CSoundRender_Core::set_geometry_occ(CDB::MODEL* M)
@@ -195,6 +196,10 @@ void CSoundRender_Core::set_geometry_env(IReader* I)
 	geom_ENV			= xr_new<CDB::MODEL> ();
 	geom_ENV->build		(verts, H.vertcount, tris, H.facecount );
 	geom->close			();
+
+#ifdef _EDITOR
+	env_apply			();
+#endif
 }
 
 void	CSoundRender_Core::create				( sound& S, BOOL _3D, const char* fName, int type )
@@ -304,6 +309,18 @@ CSoundRender_Environment*	CSoundRender_Core::get_environment			( Fvector& P )
 	}
 }
 
+void						CSoundRender_Core::env_apply		()
+{
+	// Force all sounds to change their environment
+	// (set their positions to signal changes in environment)
+	for (u32 it=0; it<s_emitters.size(); it++)
+	{
+		CSoundRender_Emitter*	pEmitter	= s_emitters[it];
+		const CSound_params*	pParams		= pEmitter->get_params	();
+		pEmitter->set_position	(pParams->position);
+	}
+}
+
 #ifdef _EDITOR
 void						CSoundRender_Core::set_user_env		( CSound_environment* E)
 {
@@ -318,29 +335,13 @@ void						CSoundRender_Core::set_user_env		( CSound_environment* E)
 	{
 		bUserEnvironment	= FALSE;
 	}
-
-	// Force all sounds to change their environment
-	// (set their positions to signal changes in environment)
-	for (u32 it=0; it<s_emitters.size(); it++)
-	{
-		CSoundRender_Emitter*	pEmitter	= s_emitters[it];
-		const CSound_params*	pParams		= pEmitter->get_params	();
-		pEmitter->set_position	(pParams->position);
-	}
+	env_apply			();
 }
 
 void						CSoundRender_Core::refresh_env_library()
 {
 	env_unload			();
 	env_load			();
-
-	// Force all sounds to change their environment
-	// (set their positions to signal changes in environment)
-	for (u32 it=0; it<s_emitters.size(); it++)
-	{
-		CSoundRender_Emitter*	pEmitter	= s_emitters[it];
-		const CSound_params*	pParams		= pEmitter->get_params	();
-		pEmitter->set_position	(pParams->position);
-	}
+	env_apply			();
 }
 #endif

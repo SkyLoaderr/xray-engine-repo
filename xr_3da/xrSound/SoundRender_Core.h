@@ -84,6 +84,7 @@ public:
 
 	void								env_load				();
 	void								env_unload				();
+	void								env_apply				();
 };
 
 extern CSoundRender_Core	SoundRender;
