@@ -222,6 +222,11 @@ void	CRenderTarget::OnDeviceCreate	()
 		g_accum_spot.create			(D3DFVF_XYZ,				g_accum_spot_vb, g_accum_spot_ib);
 	}
 
+	// REFLECTED
+	{
+		s_accum_reflected.create	(b_accum_reflected,			"r2\\accum_refl");
+	}
+
 	// BLOOM
 	{
 		u32	w=BLOOM_size_X, h=BLOOM_size_Y;

@@ -21,6 +21,7 @@ public:
 	IBlender*					b_accum_direct;
 	IBlender*					b_accum_point;
 	IBlender*					b_accum_spot;
+	IBlender*					b_accum_reflected;
 	IBlender*					b_bloom;
 	IBlender*					b_combine;
 	IBlender*					b_decompress;

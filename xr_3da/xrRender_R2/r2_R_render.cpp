@@ -364,8 +364,10 @@ void CRender::Render		()
 
 void	CRender::render_indirect			(light* L)
 {
+	if (!ps_r2_ls_flags.test(R2FLAG_GI))	return;
+
 	light									LIGEN;
-	LIGEN.set_type							(IRender_Light::INDIRECT);
+	LIGEN.set_type							(IRender_Light::REFLECTED);
 	LIGEN.set_shadow						(false);
 	LIGEN.set_cone							(PI_DIV_2);
 
