@@ -254,7 +254,10 @@ function proceed(actor)
 	end  
 	
 	if actor:has_info ("mil_khutor_visited") and actor:has_info ("mil_courier_start") then
-	   level_tasks.set_task_state (task.completed, "mil_courier_job", 1)  
+	   if actor:dont_has_info ("mil_courier_visited") then 
+	      level_tasks.set_task_state (task.completed, "mil_courier_job", 1)  
+	      actor:give_info_portion ("mil_courier_visited")
+	   end   
 	end   
 	   
 		
