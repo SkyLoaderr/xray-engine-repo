@@ -18,7 +18,7 @@ CUICustomMenuItem* UIParseMenu	(CUICustomMenu* owner, CInifile* ini, CUICustomMe
 	string64	buf2;
 	int ln_cnt = ini->LineCount(sect);
 	if (ln_cnt){
-		if (!root)	root		= xr_new<CUICustomMenuItem> (owner,0,"root",0);
+		if (!root)	root		= xr_new<CUICustomMenuItem> (owner,NULL,"root",NULL);
 		if (ini->LineExists(sect,"title"))	root->SetTitle(ini->ReadSTRING(sect,"title"));
 		for (int i=1; i<=ln_cnt; i++){
 			// append if exist menu item
