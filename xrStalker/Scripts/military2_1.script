@@ -134,10 +134,10 @@ function main ()
     while stalker3:action () do wait () end
 
     --check move
-    reset_action (stalker1, military2_1.script_name ())
-    reset_action (stalker2, military2_1.script_name ())
-	action (stalker1, look (look.fire_point, stalker3), anim ("stalker_1_2"), cond (cond.anim_end))
-	action (stalker2, look (look.fire_point, stalker3), anim ("stalker_2_1"), cond (cond.anim_end))
+--    reset_action (stalker1, military2_1.script_name ())
+--    reset_action (stalker2, military2_1.script_name ())
+--	action (stalker1, anim ("stalker_1_2"), cond (cond.anim_end))
+--	action (stalker2, anim ("stalker_2_1"), cond (cond.anim_end))
 
     reset_action (stalker3, military2_1.script_name ())
     action (stalker3, move (pos, 0.20), look (look.path_dir), anim ("walk_fwd_crawl"), cond (cond.move_end))
