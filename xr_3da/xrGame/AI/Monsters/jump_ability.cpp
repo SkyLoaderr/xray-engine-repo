@@ -100,7 +100,7 @@ void CJumpingAbility::update_frame()
 	if (!m_active) return;
 	
 	if (!m_object->MotionMan.TA_IsActive())	stop();
-	if (m_velocity_bounced && m_object->movement().enabled() && m_object->movement().detail_path_manager().completed(m_object->Position())) stop();
+	if (m_velocity_bounced && m_object->movement().enabled() && m_object->movement().detail().completed(m_object->Position())) stop();
 
 	if (is_landing()) pointbreak();
 	

@@ -330,7 +330,7 @@ void CScriptGameObject::set_previous_point	(int point_index)
 	if (!monster)
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member set_previous_point!");
 	else
-		monster->movement().patrol_path_manager().set_previous_point(point_index);
+		monster->movement().patrol().set_previous_point(point_index);
 }
 
 void CScriptGameObject::set_start_point	(int point_index)
@@ -339,7 +339,7 @@ void CScriptGameObject::set_start_point	(int point_index)
 	if (!monster)
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member set_start_point!");
 	else
-		monster->movement().patrol_path_manager().set_start_point(point_index);
+		monster->movement().patrol().set_start_point(point_index);
 }
 
 u32 CScriptGameObject::get_current_patrol_point_index()
@@ -349,7 +349,7 @@ u32 CScriptGameObject::get_current_patrol_point_index()
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot call [get_current_patrol_point_index()]!");
 		return			(u32(-1));
 	}
-	return				(monster->movement().patrol_path_manager().get_current_point_index());
+	return				(monster->movement().patrol().get_current_point_index());
 }
 
 

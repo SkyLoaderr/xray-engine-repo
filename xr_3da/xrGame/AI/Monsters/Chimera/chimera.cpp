@@ -112,9 +112,9 @@ void CChimera::reinit()
 	inherited::reinit();
 	b_upper_state					= false;
 
-	movement().detail_path_manager().add_velocity(eVelocityParameterUpperWalkFwd,	CDetailPathManager::STravelParams(m_fsVelocityWalkUpper.velocity.linear,	m_fsVelocityWalkUpper.velocity.angular_path, m_fsVelocityWalkUpper.velocity.angular_real));
-	movement().detail_path_manager().add_velocity(eVelocityParameterJumpOne,	CDetailPathManager::STravelParams(m_fsVelocityJumpOne.velocity.linear,	m_fsVelocityJumpOne.velocity.angular_path, m_fsVelocityJumpOne.velocity.angular_real));
-	movement().detail_path_manager().add_velocity(eVelocityParameterJumpTwo,	CDetailPathManager::STravelParams(m_fsVelocityJumpTwo.velocity.linear,	m_fsVelocityJumpTwo.velocity.angular_path, m_fsVelocityJumpTwo.velocity.angular_real));
+	movement().detail().add_velocity(eVelocityParameterUpperWalkFwd,	CDetailPathManager::STravelParams(m_fsVelocityWalkUpper.velocity.linear,	m_fsVelocityWalkUpper.velocity.angular_path, m_fsVelocityWalkUpper.velocity.angular_real));
+	movement().detail().add_velocity(eVelocityParameterJumpOne,	CDetailPathManager::STravelParams(m_fsVelocityJumpOne.velocity.linear,	m_fsVelocityJumpOne.velocity.angular_path, m_fsVelocityJumpOne.velocity.angular_real));
+	movement().detail().add_velocity(eVelocityParameterJumpTwo,	CDetailPathManager::STravelParams(m_fsVelocityJumpTwo.velocity.linear,	m_fsVelocityJumpTwo.velocity.angular_path, m_fsVelocityJumpTwo.velocity.angular_real));
 
 	CMotionDef			*def1, *def2, *def3;
 	CSkeletonAnimated	*pSkel = smart_cast<CSkeletonAnimated*>(Visual());
@@ -237,8 +237,8 @@ void CChimera::TranslateActionToPathParams()
 	if (force_real_speed) vel_mask = des_mask;
 
 	if (bEnablePath) {
-		movement().detail_path_manager().set_velocity_mask	(vel_mask);	
-		movement().detail_path_manager().set_desirable_mask	(des_mask);
+		movement().detail().set_velocity_mask	(vel_mask);	
+		movement().detail().set_desirable_mask	(des_mask);
 		movement().enable_path	();		
 	} else {
 		movement().disable_path	();

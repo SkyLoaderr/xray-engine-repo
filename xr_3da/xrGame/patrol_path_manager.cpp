@@ -30,7 +30,7 @@ bool show_restrictions(CRestrictedObject *object)
 }
 #endif
 
-void CPatrolPathManager::reinit				(CRestrictedObject *object)
+void CPatrolPathManager::reinit				()
 {
 	m_path					= 0;
 	m_start_type			= ePatrolStartTypeDummy;
@@ -42,8 +42,6 @@ void CPatrolPathManager::reinit				(CRestrictedObject *object)
 	m_prev_point_index		= u32(-1);
 	m_start_point_index		= u32(-1);
 	m_callback				= 0;
-	m_object				= object;
-	VERIFY					(m_object);
 }
 
 IC	bool CPatrolPathManager::accessible	(const Fvector &position) const
@@ -122,7 +120,7 @@ void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_
 
 		// если выбранная нода не соответствует текущей ноде - все ок
 		// иначе выбрать следующую вершину патрульного пути
-		if (vertex->data().level_vertex_id() != m_object->object().ai_location().level_vertex_id()) {
+		if (vertex->data().level_vertex_id() != m_game_object->ai_location().level_vertex_id()) {
 			dest_vertex_id		= vertex->data().level_vertex_id();
 			m_dest_position		= vertex->data().position();
 			VERIFY				(accessible(m_dest_position) || show_restrictions(m_object));
@@ -134,7 +132,7 @@ void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_
 	VERIFY3					(m_path->vertex(m_curr_point_index) || show_restrictions(m_object),*m_path_name,*m_game_object->cName());
 
 	if (m_callback)
-		SCRIPT_CALLBACK_EXECUTE_3((*m_callback), m_object->object().lua_game_object(),u32(ScriptEntity::eActionTypeMovement),m_curr_point_index);
+		SCRIPT_CALLBACK_EXECUTE_3((*m_callback), m_game_object->lua_game_object(),u32(ScriptEntity::eActionTypeMovement),m_curr_point_index);
 
 	u32							count = 0;		// количество разветвлений
 	float						sum = 0.f;		// сумма весов разветвления
@@ -218,7 +216,7 @@ void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_
 shared_str	CPatrolPathManager::path_name	() const
 {
 	if (!m_path) {
-		ai().script_engine().script_log(eLuaMessageTypeError,"Path not specified (object %s)!",*m_object->object().cName());
+		ai().script_engine().script_log(eLuaMessageTypeError,"Path not specified (object %s)!",*m_game_object->cName());
 		return				("");
 	}
 	VERIFY					(m_path);
@@ -228,12 +226,12 @@ shared_str	CPatrolPathManager::path_name	() const
 void CPatrolPathManager::set_previous_point	(int point_index)
 {
 	if (!m_path) {
-		ai().script_engine().script_log(eLuaMessageTypeError,"Path not specified (object %s)!",*m_object->object().cName());
+		ai().script_engine().script_log(eLuaMessageTypeError,"Path not specified (object %s)!",*m_game_object->cName());
 		return;
 	}
 	
 	if (!m_path->vertex(point_index)) {
-		ai().script_engine().script_log(eLuaMessageTypeError,"Start point violates path bounds %s (object %s)!",*m_path_name,*m_object->object().cName());
+		ai().script_engine().script_log(eLuaMessageTypeError,"Start point violates path bounds %s (object %s)!",*m_path_name,*m_game_object->cName());
 		return;
 	}
 	VERIFY					(m_path);
@@ -244,11 +242,11 @@ void CPatrolPathManager::set_previous_point	(int point_index)
 void CPatrolPathManager::set_start_point	(int point_index)
 {
 	if (!m_path) {
-		ai().script_engine().script_log(eLuaMessageTypeError,"Path not specified (object %s)!",*m_object->object().cName());
+		ai().script_engine().script_log(eLuaMessageTypeError,"Path not specified (object %s)!",*m_game_object->cName());
 		return;
 	}
 	if (!m_path->vertex(point_index)) {
-		ai().script_engine().script_log(eLuaMessageTypeError,"Start point violates path bounds %s (object %s)!",*m_path_name,*m_object->object().cName());
+		ai().script_engine().script_log(eLuaMessageTypeError,"Start point violates path bounds %s (object %s)!",*m_path_name,*m_game_object->cName());
 		return;
 	}
 	VERIFY					(m_path);

@@ -44,9 +44,9 @@ protected:
 	IC	virtual	bool	check_vertex				(const _vertex_id_type vertex_id) const;
 
 public:
-	IC					CAbstractPathManager		();
+	IC					CAbstractPathManager		(CRestrictedObject *object);
 	IC	virtual			~CAbstractPathManager		();
-	IC			void	reinit						(CRestrictedObject *object, const _Graph *graph = 0);
+	IC			void	reinit						(const _Graph *graph = 0);
 	IC			bool	actual						(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id) const;
 	IC			void	set_evaluator				(_VertexEvaluator *evaluator);
 	IC			void	set_dest_vertex				(const _vertex_id_type vertex_id);

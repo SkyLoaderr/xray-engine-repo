@@ -17,7 +17,7 @@ bool CBaseMonster::bfAssignMovement (CScriptEntityAction *tpEntityAction)
 	CScriptMovementAction	&l_tMovementAction	= tpEntityAction->m_tMovementAction;
 	if (l_tMovementAction.completed()) return false;
 
-	if (movement().detail_path_manager().time_path_built() >= tpEntityAction->m_tActionCondition.m_tStartTime) {
+	if (movement().detail().time_path_built() >= tpEntityAction->m_tActionCondition.m_tStartTime) {
 		if ((l_tMovementAction.m_fDistToEnd > 0) && movement().IsPathEnd(l_tMovementAction.m_fDistToEnd))  {
 			l_tMovementAction.m_bCompleted = true;
 			return false;

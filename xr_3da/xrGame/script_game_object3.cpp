@@ -200,7 +200,7 @@ LPCSTR CScriptGameObject::GetPatrolPathName()
 			return		(script_monster->GetPatrolPathName());
 	}
 	else
-		return			(*stalker->movement().patrol_path_manager().path_name());
+		return			(*stalker->movement().patrol().path_name());
 }
 
 void CScriptGameObject::add_animation			(LPCSTR animation, bool hand_usage)
@@ -290,7 +290,7 @@ void CScriptGameObject::set_patrol_path		(LPCSTR path_name, const PatrolPathMana
 	if (!stalker)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
 	else
-		stalker->movement().patrol_path_manager().set_path		(path_name,patrol_start_type,patrol_route_type,random);
+		stalker->movement().patrol().set_path		(path_name,patrol_start_type,patrol_route_type,random);
 }
 
 void CScriptGameObject::set_dest_level_vertex_id(u32 level_vertex_id)
@@ -588,5 +588,5 @@ void CScriptGameObject::patrol_path_make_inactual	()
 		ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"CScriptGameObject : cannot access class member patrol_path_make_inactual!");
 		return;
 	}
-	monster->movement().patrol_path_manager().make_inactual();
+	monster->movement().patrol().make_inactual();
 }

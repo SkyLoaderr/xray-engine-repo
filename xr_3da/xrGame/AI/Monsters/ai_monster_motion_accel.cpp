@@ -129,10 +129,10 @@ bool CMotionManager::accel_check_braking(float before_interval)
 
 	// проверить точки пути, где необходимо остановиться
 	float dist = 0.f;	// дистанция до найденной точки	
-	for (u32 i=pMonster->movement().detail_path_manager().curr_travel_point_index()+1; i < pMonster->movement().detail_path_manager().path().size(); i++) {
-		dist += pMonster->movement().detail_path_manager().path()[i].position.distance_to(pMonster->movement().detail_path_manager().path()[i-1].position);
+	for (u32 i=pMonster->movement().detail().curr_travel_point_index()+1; i < pMonster->movement().detail().path().size(); i++) {
+		dist += pMonster->movement().detail().path()[i].position.distance_to(pMonster->movement().detail().path()[i-1].position);
 
-		if ((pMonster->movement().detail_path_manager().path()[i].velocity == pMonster->eVelocityParameterStand) && (dist < braking_dist)) {
+		if ((pMonster->movement().detail().path()[i].velocity == pMonster->eVelocityParameterStand) && (dist < braking_dist)) {
 			return true;
 		}
 	}

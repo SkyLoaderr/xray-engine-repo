@@ -12,15 +12,16 @@
 #include "level.h"
 #include "ai_object_location.h"
 
-CDetailPathManager::CDetailPathManager	()
+CDetailPathManager::CDetailPathManager	(CRestrictedObject *object)
 {
+	m_restricted_object		= object;
 }
 
 CDetailPathManager::~CDetailPathManager	()
 {
 }
 
-void CDetailPathManager::reinit			(CRestrictedObject *object)
+void CDetailPathManager::reinit			()
 {
 	m_actuality				= false;
 	m_failed				= false;
@@ -35,7 +36,6 @@ void CDetailPathManager::reinit			(CRestrictedObject *object)
 	m_use_dest_orientation	= false;
 	m_state_patrol_path		= false;
 	m_time_path_built		= 0;
-	m_restricted_object		= object;
 }
 
 bool CDetailPathManager::valid			() const

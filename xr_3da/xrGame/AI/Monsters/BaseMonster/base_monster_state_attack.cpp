@@ -445,12 +445,12 @@ bool CBaseMonsterAttack::CheckSteal()
 		
 		// Вычислить отклонение по пути
 		float path_angle = 0.f;
-		if (pMonster->movement().IsMovingOnPath() && (pMonster->movement().detail_path_manager().curr_travel_point_index() < pMonster->movement().detail_path_manager().path().size()-3)) {
-			const xr_vector<DetailPathManager::STravelPathPoint> &path = pMonster->movement().detail_path_manager().path();
+		if (pMonster->movement().IsMovingOnPath() && (pMonster->movement().detail().curr_travel_point_index() < pMonster->movement().detail().path().size()-3)) {
+			const xr_vector<DetailPathManager::STravelPathPoint> &path = pMonster->movement().detail().path();
 
 			float prev_yaw, prev_h;
-			pMonster->movement().detail_path_manager().direction().getHP(prev_yaw,prev_h);
-			for (u32 i=pMonster->movement().detail_path_manager().curr_travel_point_index()+1; i<path.size()-1;i++) {
+			pMonster->movement().detail().direction().getHP(prev_yaw,prev_h);
+			for (u32 i=pMonster->movement().detail().curr_travel_point_index()+1; i<path.size()-1;i++) {
 				float h,p;
 				Fvector().sub(path[i+1].position, path[i].position).getHP(h,p);
 

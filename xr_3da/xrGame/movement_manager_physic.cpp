@@ -27,9 +27,9 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 	// Если нет движения по пути
 	if (	!enabled() || 
 //			path_completed() || 
-			detail_path_manager().path().empty() ||
-			detail_path_manager().completed(dest_position,true) || 
-			(detail_path_manager().curr_travel_point_index() >= detail_path_manager().path().size() - 1) ||
+			detail().path().empty() ||
+			detail().completed(dest_position,true) || 
+			(detail().curr_travel_point_index() >= detail().path().size() - 1) ||
 			fis_zero(old_desirable_speed())
 		)
 	{
@@ -42,7 +42,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 			movement_control->SetVelocity		(velocity);
 		}
 		if(movement_control->IsCharacterEnabled()) {
-			movement_control->Calculate(detail_path_manager().path(),0.f,detail_path_manager().m_current_travel_point,precision);
+			movement_control->Calculate(detail().path(),0.f,detail().m_current_travel_point,precision);
 			movement_control->GetPosition(dest_position);
 		}
 
@@ -63,7 +63,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 	
 	
 	// Вычислить пройденную дистанцию, определить целевую позицию на маршруте, 
-	//			 изменить detail_path_manager().m_current_travel_point
+	//			 изменить detail().m_current_travel_point
 	
 	float				desirable_speed		=	old_desirable_speed();				// желаемая скорость объекта
 	float				dist				=	desirable_speed * time_delta;		// пройденное расстояние в соостветствие с желаемой скоростью 
@@ -72,21 +72,21 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 	// определить целевую точку
 	Fvector				target;
 	
-	u32 prev_cur_point_index = detail_path_manager().curr_travel_point_index();
+	u32 prev_cur_point_index = detail().curr_travel_point_index();
 
-	// обновить detail_path_manager().m_current_travel_point в соответствие с текущей позицией
-	while (detail_path_manager().m_current_travel_point < detail_path_manager().path().size() - 2) {
+	// обновить detail().m_current_travel_point в соответствие с текущей позицией
+	while (detail().m_current_travel_point < detail().path().size() - 2) {
 
-		float pos_dist_to_cur_point			= dest_position.distance_to(detail_path_manager().path()[detail_path_manager().m_current_travel_point].position);
-		float pos_dist_to_next_point		= dest_position.distance_to(detail_path_manager().path()[detail_path_manager().m_current_travel_point+1].position);
-		float cur_point_dist_to_next_point	= detail_path_manager().path()[detail_path_manager().m_current_travel_point].position.distance_to(detail_path_manager().path()[detail_path_manager().m_current_travel_point+1].position);
+		float pos_dist_to_cur_point			= dest_position.distance_to(detail().path()[detail().m_current_travel_point].position);
+		float pos_dist_to_next_point		= dest_position.distance_to(detail().path()[detail().m_current_travel_point+1].position);
+		float cur_point_dist_to_next_point	= detail().path()[detail().m_current_travel_point].position.distance_to(detail().path()[detail().m_current_travel_point+1].position);
 		
 		if ((pos_dist_to_cur_point > cur_point_dist_to_next_point) && (pos_dist_to_cur_point > pos_dist_to_next_point)) {
-			++detail_path_manager().m_current_travel_point;			
+			++detail().m_current_travel_point;			
 		} else break;
 	}
 
-	target.set			(detail_path_manager().path()[detail_path_manager().curr_travel_point_index() + 1].position);
+	target.set			(detail().path()[detail().curr_travel_point_index() + 1].position);
 	// определить направление к целевой точке
 	Fvector				dir_to_target;
 	dir_to_target.sub	(target, dest_position);
@@ -97,23 +97,23 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 	while (dist > dist_to_target) {
 		dest_position.set	(target);
 
-		if (detail_path_manager().curr_travel_point_index() + 1 >= detail_path_manager().path().size())	break;
+		if (detail().curr_travel_point_index() + 1 >= detail().path().size())	break;
 		else {
 			dist			-= dist_to_target;
-			++detail_path_manager().m_current_travel_point;
-			if ((detail_path_manager().curr_travel_point_index()+1) >= detail_path_manager().path().size())
+			++detail().m_current_travel_point;
+			if ((detail().curr_travel_point_index()+1) >= detail().path().size())
 				break;
-			target.set			(detail_path_manager().path()[detail_path_manager().curr_travel_point_index() + 1].position);
+			target.set			(detail().path()[detail().curr_travel_point_index() + 1].position);
 			dir_to_target.sub	(target, dest_position);
 			dist_to_target		= dir_to_target.magnitude();
 		}
 	}
 	
-	if (prev_cur_point_index != detail_path_manager().curr_travel_point_index()) on_travel_point_change();
+	if (prev_cur_point_index != detail().curr_travel_point_index()) on_travel_point_change();
 
 	if (dist_to_target < EPS_L) {
 #pragma todo("Dima to ? : is this correct?")
-		detail_path_manager().m_current_travel_point = detail_path_manager().path().size() - 1;
+		detail().m_current_travel_point = detail().path().size() - 1;
 		m_speed			= 0.f;
 		return;
 	}
@@ -140,7 +140,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 	if ((tpNearestList.empty())) {  // нет физ. объектов
 		
 		if(!movement_control->TryPosition(dest_position)) {
-			movement_control->Calculate		(detail_path_manager().path(),desirable_speed,detail_path_manager().m_current_travel_point,precision);
+			movement_control->Calculate		(detail().path(),desirable_speed,detail().m_current_travel_point,precision);
 			movement_control->GetPosition	(dest_position);
 			// проверка на хит
 			if (!fsimilar(0.f,movement_control->gcontact_HealthLost)) object().Hit	(movement_control->gcontact_HealthLost,dir_to_target,m_object,movement_control->ContactBone(),dest_position,0);
@@ -152,7 +152,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 			//movement_control->SetVelocity		(velocity);
 		}
 	} else { // есть физ. объекты
-		movement_control->Calculate				(detail_path_manager().path(), desirable_speed, detail_path_manager().m_current_travel_point, precision);
+		movement_control->Calculate				(detail().path(), desirable_speed, detail().m_current_travel_point, precision);
 		movement_control->GetPosition			(dest_position);
 		
 		// проверка на хит

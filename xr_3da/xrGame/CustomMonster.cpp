@@ -376,7 +376,7 @@ void CCustomMonster::UpdateCL	()
 			}
 			else {
 				if (!bfScriptAnimation())
-					SelectAnimation	(XFORM().k,movement().detail_path_manager().direction(),movement().speed());
+					SelectAnimation	(XFORM().k,movement().detail().direction(),movement().speed());
 			}
 
 			// Signal, that last time we used interpolation
@@ -408,7 +408,7 @@ void CCustomMonster::UpdatePositionAnimation()
 {
 	movement().move_along_path	(m_PhysicMovementControl,NET_Last.p_pos,Device.fTimeDelta);
 	if (!bfScriptAnimation())
-		SelectAnimation		(XFORM().k,movement().detail_path_manager().direction(),movement().speed());
+		SelectAnimation		(XFORM().k,movement().detail().direction(),movement().speed());
 }
 
 BOOL CCustomMonster::feel_visible_isRelevant (CObject* O)
@@ -499,8 +499,8 @@ void CCustomMonster::OnRender()
 
 	RCache.OnFrameEnd				();
 	for (int i=0; i<1; ++i) {
-		const xr_vector<CDetailPathManager::STravelPoint>		&keys	= !i ? movement().detail_path_manager().m_key_points					: movement().detail_path_manager().m_key_points;
-		const xr_vector<DetailPathManager::STravelPathPoint>	&path	= !i ? movement().detail_path_manager().path()	: movement().detail_path_manager().path();
+		const xr_vector<CDetailPathManager::STravelPoint>		&keys	= !i ? movement().detail().m_key_points					: movement().detail().m_key_points;
+		const xr_vector<DetailPathManager::STravelPathPoint>	&path	= !i ? movement().detail().path()	: movement().detail().path();
 		u32									color0	= !i ? D3DCOLOR_XRGB(0,255,0)		: D3DCOLOR_XRGB(0,0,255);
 		u32									color1	= !i ? D3DCOLOR_XRGB(255,0,0)		: D3DCOLOR_XRGB(255,255,0);
 		u32									color2	= !i ? D3DCOLOR_XRGB(0,0,255)		: D3DCOLOR_XRGB(0,255,255);
@@ -553,12 +553,12 @@ void CCustomMonster::OnRender()
 	*/
 	{
 
-		//	for (int I=0, N = (int)movement().detail_path_manager().path().size(); I<N - 1; ++I)
+		//	for (int I=0, N = (int)movement().detail().path().size(); I<N - 1; ++I)
 		//	{
-		//		Fvector P1 = movement().detail_path_manager().path()[I].position;		P1.y+=0.1f;
-		//		Fvector P2 = movement().detail_path_manager().path()[I + 1].position;	P2.y+=0.1f;
+		//		Fvector P1 = movement().detail().path()[I].position;		P1.y+=0.1f;
+		//		Fvector P2 = movement().detail().path()[I + 1].position;	P2.y+=0.1f;
 		//		{
-		//			const STravelParams&		i = velocity(movement().detail_path_manager().path()[I].velocity);
+		//			const STravelParams&		i = velocity(movement().detail().path()[I].velocity);
 		//			float	r = i.linear_velocity/i.angular_velocity;
 		//			Fmatrix						V = Fidentity;
 		//			V.c							= P1;
@@ -569,7 +569,7 @@ void CCustomMonster::OnRender()
 		//			RCache.dbg_DrawEllipse		(V,D3DCOLOR_XRGB(255,0,0));
 		//		}
 		//		{
-		//			const STravelParams&		i = velocity(movement().detail_path_manager().path()[I + 1].velocity);
+		//			const STravelParams&		i = velocity(movement().detail().path()[I + 1].velocity);
 		//			float	r = i.linear_velocity/i.angular_velocity;
 		//			Fmatrix						V = Fidentity;
 		//			V.c							= P2;
@@ -679,7 +679,7 @@ BOOL CCustomMonster::net_Spawn	(CSE_Abstract* DC)
 			Fvector					dest_position;
 			u32						level_vertex_id = movement().restrictions().accessible_nearest(Position(),dest_position);
 			movement().set_level_dest_vertex	(level_vertex_id);
-			movement().detail_path_manager().set_dest_position		(dest_position);
+			movement().detail().set_dest_position		(dest_position);
 		}
 	}
 

@@ -38,9 +38,7 @@ private:
 	Fvector						m_dest_position;
 	CScriptCallback				*m_callback;
 	CRestrictedObject			*m_object;
-#ifdef DEBUG
 	CGameObject					*m_game_object;
-#endif
 
 protected:
 	IC			bool				random					() const;
@@ -49,9 +47,9 @@ protected:
 	IC			bool				accessible				(const CPatrolPath::CVertex *vertex) const;
 
 public:
-	IC								CPatrolPathManager		(CGameObject *game_object);
+	IC								CPatrolPathManager		(CRestrictedObject *object, CGameObject *game_object);
 	IC	virtual						~CPatrolPathManager		();
-		virtual	void				reinit					(CRestrictedObject *object);
+		virtual	void				reinit					();
 	IC	virtual	void				set_callback			(CScriptCallback &callback);
 	IC			void				make_inactual			();
 	IC			const CPatrolPath	*get_path				() const;

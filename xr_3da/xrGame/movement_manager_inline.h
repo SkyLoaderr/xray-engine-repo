@@ -112,56 +112,50 @@ IC	void CMovementManager::set_build_path_at_once()
 	m_build_at_once			= true;
 }
 
-IC	CMovementManager::CBaseParameters	*CMovementManager::base_game_selector() const
+IC	CMovementManager::CBaseParameters	*CMovementManager::base_game_params() const
 {
 	return					(m_base_game_selector);
 }
 
-IC	CMovementManager::CBaseParameters	*CMovementManager::base_level_selector() const
+IC	CMovementManager::CBaseParameters	*CMovementManager::base_level_params() const
 {
 	return					(m_base_level_selector);
 }
 
-IC	CMovementManager::CGameLocationSelector		&CMovementManager::game_location_selector	() const
+IC	CMovementManager::CGameLocationSelector		&CMovementManager::game_selector	() const
 {
 	VERIFY					(m_game_location_selector);
 	return					(*m_game_location_selector);
 }
 
-IC	CMovementManager::CGamePathManager			&CMovementManager::game_path_manager		() const
+IC	CMovementManager::CGamePathManager			&CMovementManager::game_path		() const
 {
 	VERIFY					(m_game_path_manager);
 	return					(*m_game_path_manager);
 }
 
-IC	CMovementManager::CLevelLocationSelector	&CMovementManager::level_location_selector	() const
+IC	CMovementManager::CLevelLocationSelector	&CMovementManager::level_selector	() const
 {
 	VERIFY					(m_level_location_selector);
 	return					(*m_level_location_selector);
 }
 
-IC	CMovementManager::CLevelPathManager			&CMovementManager::level_path_manager		() const
+IC	CMovementManager::CLevelPathManager			&CMovementManager::level_path		() const
 {
 	VERIFY					(m_level_path_manager);
 	return					(*m_level_path_manager);
 }
 
-IC	CDetailPathManager		&CMovementManager::detail_path_manager		() const
+IC	CDetailPathManager		&CMovementManager::detail	() const
 {
 	VERIFY					(m_detail_path_manager);
 	return					(*m_detail_path_manager);
 }
 
-IC	CPatrolPathManager		&CMovementManager::patrol_path_manager		() const
+IC	CPatrolPathManager		&CMovementManager::patrol		() const
 {
 	VERIFY					(m_patrol_path_manager);
 	return					(*m_patrol_path_manager);
-}
-
-IC	CEnemyLocationPredictor	&CMovementManager::enemy_location_predictor	() const
-{
-	VERIFY					(m_enemy_location_predictor);
-	return					(*m_enemy_location_predictor);
 }
 
 IC	CRestrictedObject &CMovementManager::restrictions					() const

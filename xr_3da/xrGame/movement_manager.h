@@ -169,7 +169,6 @@ public:
 	CLevelPathManager		*m_level_path_manager;
 	CDetailPathManager		*m_detail_path_manager;
 	CPatrolPathManager		*m_patrol_path_manager;
-	CEnemyLocationPredictor	*m_enemy_location_predictor;
 	CRestrictedObject		*m_restricted_object;
 	CSelectorManager		*m_selector_manager;
 	CLocationManager		*m_location_manager;
@@ -180,7 +179,6 @@ private:
 	IC		bool	time_over				() const;
 			void	process_game_path		();
 			void	process_level_path		();
-			void	process_enemy_search	();
 			void	process_patrol_path		();
 			void	verify_detail_path		();
 
@@ -229,15 +227,14 @@ public:
 	IC		bool	extrapolate_path		() const;
 
 public:
-	IC		CBaseParameters			*base_game_selector			() const;
-	IC		CBaseParameters			*base_level_selector		() const;
-	IC		CGameLocationSelector	&game_location_selector		() const;
-	IC		CGamePathManager		&game_path_manager			() const;
-	IC		CLevelLocationSelector	&level_location_selector	() const;
-	IC		CLevelPathManager		&level_path_manager			() const;
-	IC		CDetailPathManager		&detail_path_manager		() const;
-	IC		CPatrolPathManager		&patrol_path_manager		() const;
-	IC		CEnemyLocationPredictor	&enemy_location_predictor	() const;
+	IC		CBaseParameters			*base_game_params			() const;
+	IC		CBaseParameters			*base_level_params			() const;
+	IC		CGameLocationSelector	&game_selector				() const;
+	IC		CGamePathManager		&game_path					() const;
+	IC		CLevelLocationSelector	&level_selector				() const;
+	IC		CLevelPathManager		&level_path					() const;
+	IC		CDetailPathManager		&detail						() const;
+	IC		CPatrolPathManager		&patrol						() const;
 	IC		CRestrictedObject		&restrictions				() const;
 	IC		CSelectorManager		&selectors					() const;
 	IC		CLocationManager		&locations					() const;

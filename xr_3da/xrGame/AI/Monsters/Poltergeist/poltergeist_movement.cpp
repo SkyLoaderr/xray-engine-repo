@@ -15,9 +15,9 @@ void CPoltergeist::move_along_path(CPHMovementControl *movement_control, Fvector
 	// Если нет движения по пути
 	if (!movement().enabled() || 
 		movement().path_completed() || 
-		movement().detail_path_manager().path().empty() ||
-		movement().detail_path_manager().completed(m_current_position,true) || 
-		(movement().detail_path_manager().curr_travel_point_index() >= movement().detail_path_manager().path().size() - 1) ||
+		movement().detail().path().empty() ||
+		movement().detail().completed(m_current_position,true) || 
+		(movement().detail().curr_travel_point_index() >= movement().detail().path().size() - 1) ||
 		fis_zero(movement().old_desirable_speed())
 		)
 	{
@@ -32,7 +32,7 @@ void CPoltergeist::move_along_path(CPHMovementControl *movement_control, Fvector
 	}
 
 	// Вычислить пройденную дистанцию, определить целевую позицию на маршруте, 
-	//			 изменить movement().detail_path_manager().curr_travel_point_index()
+	//			 изменить movement().detail().curr_travel_point_index()
 
 	float				desirable_speed		=	movement().old_desirable_speed();				// желаемая скорость объекта
 	float				dist				=	desirable_speed * time_delta;		// пройденное расстояние в соостветствие с желаемой скоростью 
@@ -41,21 +41,21 @@ void CPoltergeist::move_along_path(CPHMovementControl *movement_control, Fvector
 	// определить целевую точку
 	Fvector				target;
 
-	u32 prev_cur_point_index = movement().detail_path_manager().curr_travel_point_index();
+	u32 prev_cur_point_index = movement().detail().curr_travel_point_index();
 
-	// обновить movement().detail_path_manager().curr_travel_point_index() в соответствие с текущей позицией
-	while (movement().detail_path_manager().curr_travel_point_index() < movement().detail_path_manager().path().size() - 2) {
+	// обновить movement().detail().curr_travel_point_index() в соответствие с текущей позицией
+	while (movement().detail().curr_travel_point_index() < movement().detail().path().size() - 2) {
 
-		float pos_dist_to_cur_point			= dest_position.distance_to(movement().detail_path_manager().path()[movement().detail_path_manager().curr_travel_point_index()].position);
-		float pos_dist_to_next_point		= dest_position.distance_to(movement().detail_path_manager().path()[movement().detail_path_manager().curr_travel_point_index()+1].position);
-		float cur_point_dist_to_next_point	= movement().detail_path_manager().path()[movement().detail_path_manager().curr_travel_point_index()].position.distance_to(movement().detail_path_manager().path()[movement().detail_path_manager().curr_travel_point_index()+1].position);
+		float pos_dist_to_cur_point			= dest_position.distance_to(movement().detail().path()[movement().detail().curr_travel_point_index()].position);
+		float pos_dist_to_next_point		= dest_position.distance_to(movement().detail().path()[movement().detail().curr_travel_point_index()+1].position);
+		float cur_point_dist_to_next_point	= movement().detail().path()[movement().detail().curr_travel_point_index()].position.distance_to(movement().detail().path()[movement().detail().curr_travel_point_index()+1].position);
 
 		if ((pos_dist_to_cur_point > cur_point_dist_to_next_point) && (pos_dist_to_cur_point > pos_dist_to_next_point)) {
-			++movement().detail_path_manager().m_current_travel_point;			
+			++movement().detail().m_current_travel_point;			
 		} else break;
 	}
 
-	target.set			(movement().detail_path_manager().path()[movement().detail_path_manager().curr_travel_point_index() + 1].position);
+	target.set			(movement().detail().path()[movement().detail().curr_travel_point_index() + 1].position);
 	// определить направление к целевой точке
 	Fvector				dir_to_target;
 	dir_to_target.sub	(target, dest_position);
@@ -66,22 +66,22 @@ void CPoltergeist::move_along_path(CPHMovementControl *movement_control, Fvector
 	while (dist > dist_to_target) {
 		dest_position.set	(target);
 
-		if (movement().detail_path_manager().curr_travel_point_index() + 1 >= movement().detail_path_manager().path().size())	break;
+		if (movement().detail().curr_travel_point_index() + 1 >= movement().detail().path().size())	break;
 		else {
 			dist			-= dist_to_target;
-			++movement().detail_path_manager().m_current_travel_point;
-			if ((movement().detail_path_manager().curr_travel_point_index()+1) >= movement().detail_path_manager().path().size())
+			++movement().detail().m_current_travel_point;
+			if ((movement().detail().curr_travel_point_index()+1) >= movement().detail().path().size())
 				break;
-			target.set			(movement().detail_path_manager().path()[movement().detail_path_manager().curr_travel_point_index() + 1].position);
+			target.set			(movement().detail().path()[movement().detail().curr_travel_point_index() + 1].position);
 			dir_to_target.sub	(target, dest_position);
 			dist_to_target		= dir_to_target.magnitude();
 		}
 	}
 
-	if (prev_cur_point_index != movement().detail_path_manager().curr_travel_point_index()) on_travel_point_change();
+	if (prev_cur_point_index != movement().detail().curr_travel_point_index()) on_travel_point_change();
 
 	if (dist_to_target < EPS_L) {
-		movement().detail_path_manager().m_current_travel_point = movement().detail_path_manager().path().size() - 1;
+		movement().detail().m_current_travel_point = movement().detail().path().size() - 1;
 		movement().m_speed			= 0.f;
 		dest_position	= CalculateRealPosition();
 		return;

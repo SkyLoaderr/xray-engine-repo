@@ -60,7 +60,6 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 		[
 			value("game_path",				int(MovementManager::ePathTypeGamePath)),
 			value("level_path",				int(MovementManager::ePathTypeLevelPath)),
-			value("enemy_search",			int(MovementManager::ePathTypeEnemySearch)),
 			value("patrol_path",			int(MovementManager::ePathTypePatrolPath)),
 			value("no_path",				int(MovementManager::ePathTypeNoPath))
 		]

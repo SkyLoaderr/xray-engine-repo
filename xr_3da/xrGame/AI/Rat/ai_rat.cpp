@@ -86,7 +86,7 @@ void CAI_Rat::Die(CObject* who)
 	inherited::Die(who);
 	m_eCurrentState = aiRatDie;
 
-	SelectAnimation(XFORM().k,movement().detail_path_manager().direction(),movement().speed());
+	SelectAnimation(XFORM().k,movement().detail().direction(),movement().speed());
 
 	CSoundPlayer::play		(eRatSoundDie);
 

@@ -16,6 +16,12 @@
 #define CLevelLocationSelector CBaseLocationSelector<CLevelGraph,_VertexEvaluator,_vertex_id_type>
 
 TEMPLATE_SPECIALIZATION
+IC	CLevelLocationSelector::CBaseLocationSelector	(CRestrictedObject *object, CSelectorManager *selector_manager) :
+	inherited(object,selector_manager)
+{
+}
+
+TEMPLATE_SPECIALIZATION
 IC	void CLevelLocationSelector::before_search	(_vertex_id_type &vertex_id)
 {
 	if (m_restricted_object) {

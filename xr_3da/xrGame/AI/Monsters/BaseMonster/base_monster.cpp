@@ -369,8 +369,8 @@ void CBaseMonster::TranslateActionToPathParams()
 	if (force_real_speed) vel_mask = des_mask;
 
 	if (bEnablePath) {
-		movement().detail_path_manager().set_velocity_mask	(vel_mask);	
-		movement().detail_path_manager().set_desirable_mask	(des_mask);
+		movement().detail().set_velocity_mask	(vel_mask);	
+		movement().detail().set_desirable_mask	(des_mask);
 		movement().enable_path	();		
 	} else {
 		movement().disable_path	();

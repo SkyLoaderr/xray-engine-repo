@@ -8,12 +8,11 @@
 
 #pragma once
 
-IC	CPatrolPathManager::CPatrolPathManager			(CGameObject *game_object)
+IC	CPatrolPathManager::CPatrolPathManager			(CRestrictedObject *object, CGameObject *game_object)
 {
-#ifdef DEBUG
+	m_object				= object;
 	VERIFY					(game_object);
 	m_game_object			= game_object;
-#endif
 }
 
 IC	CPatrolPathManager::~CPatrolPathManager			()

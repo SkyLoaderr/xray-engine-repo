@@ -34,16 +34,16 @@ IC	void CStalkerMovementManager::setup_head_speed		()
 
 IC	void CStalkerMovementManager::add_velocity		(int mask, float linear, float compute_angular, float angular)
 {
-	detail_path_manager().add_velocity(mask,CDetailPathManager::STravelParams(linear,compute_angular,angular));
+	detail().add_velocity(mask,CDetailPathManager::STravelParams(linear,compute_angular,angular));
 }
 
 IC	float CStalkerMovementManager::path_direction_angle	()
 {
-	if (!path().empty() && (path().size() > detail_path_manager().curr_travel_point_index() + 1)) {
+	if (!path().empty() && (path().size() > detail().curr_travel_point_index() + 1)) {
 		Fvector					t;
 		t.sub					(
-			path()[detail_path_manager().curr_travel_point_index() + 1].position,
-			path()[detail_path_manager().curr_travel_point_index()].position
+			path()[detail().curr_travel_point_index() + 1].position,
+			path()[detail().curr_travel_point_index()].position
 		);
 		float					y,p;
 		t.getHP					(y,p);
@@ -90,11 +90,11 @@ void CStalkerMovementManager::set_desired_position(const Fvector *desired_positi
 
 IC	void CStalkerMovementManager::setup_body_orientation	()
 {
-	if (!path().empty() && (path().size() > detail_path_manager().curr_travel_point_index() + 1)) {
+	if (!path().empty() && (path().size() > detail().curr_travel_point_index() + 1)) {
 		Fvector					t;
 		t.sub					(
-			path()[detail_path_manager().curr_travel_point_index() + 1].position,
-			path()[detail_path_manager().curr_travel_point_index()].position
+			path()[detail().curr_travel_point_index() + 1].position,
+			path()[detail().curr_travel_point_index()].position
 		);
 		float					y,p;
 		t.getHP					(y,p);
@@ -236,25 +236,25 @@ bool CStalkerMovementManager::script_control		()
 void CStalkerMovementManager::setup_movement_params	()
 {
 	inherited::set_path_type				(path_type());
-	detail_path_manager().set_path_type		(detail_path_type());
-	level_location_selector().set_evaluator	(node_evaluator());
-	level_path_manager().set_evaluator		(path_evaluator() ? path_evaluator() : base_level_selector());
+	detail().set_path_type		(detail_path_type());
+	level_selector().set_evaluator	(node_evaluator());
+	level_path().set_evaluator		(path_evaluator() ? path_evaluator() : base_level_params());
 
 	if (use_desired_position()) {
 		VERIFY											(_valid(desired_position()));
-		detail_path_manager().set_dest_position			(desired_position());
+		detail().set_dest_position			(desired_position());
 	}
 	else
 		if ((path_type() != MovementManager::ePathTypePatrolPath) && (path_type() != MovementManager::ePathTypeGamePath)  && (path_type() != MovementManager::ePathTypeNoPath))
-			detail_path_manager().set_dest_position		(ai().level_graph().vertex_position(level_path_manager().dest_vertex_id()));
+			detail().set_dest_position		(ai().level_graph().vertex_position(level_path().dest_vertex_id()));
 
 	if (use_desired_direction()) {
 		VERIFY											(_valid(desired_direction()));
-		detail_path_manager().set_dest_direction		(desired_direction());
-		detail_path_manager().set_use_dest_orientation	(true);
+		detail().set_dest_direction		(desired_direction());
+		detail().set_use_dest_orientation	(true);
 	}
 	else
-		detail_path_manager().set_use_dest_orientation	(false);
+		detail().set_use_dest_orientation	(false);
 }
 
 void CStalkerMovementManager::setup_velocities		()
@@ -319,16 +319,16 @@ void CStalkerMovementManager::setup_velocities		()
 
 	// setup all the possible velocities
 	if (velocity_mask & eVelocityDanger) {
-		detail_path_manager().set_desirable_mask		(velocity_mask);
-		detail_path_manager().set_velocity_mask	(
+		detail().set_desirable_mask		(velocity_mask);
+		detail().set_velocity_mask	(
 			velocity_mask | 
 			eVelocityStanding
 		);
 	}
 	else {
-		detail_path_manager().set_try_min_time		(true);
-		detail_path_manager().set_desirable_mask		(velocity_mask | eVelocityStanding);
-		detail_path_manager().set_velocity_mask	(
+		detail().set_try_min_time		(true);
+		detail().set_desirable_mask		(velocity_mask | eVelocityStanding);
+		detail().set_velocity_mask	(
 			velocity_mask | 
 			eVelocityWalk | 
 			eVelocityStanding
@@ -338,7 +338,7 @@ void CStalkerMovementManager::setup_velocities		()
 
 void CStalkerMovementManager::parse_velocity_mask	()
 {
-	if (path().empty() || (detail_path_manager().curr_travel_point_index() != m_last_turn_index))
+	if (path().empty() || (detail().curr_travel_point_index() != m_last_turn_index))
 		m_last_turn_index		= u32(-1);
 
 	object().sight().enable		(true);
@@ -348,7 +348,7 @@ void CStalkerMovementManager::parse_velocity_mask	()
 			m_body.target.yaw	= m_head.current.yaw;
 	}
 
-	if ((movement_type() == eMovementTypeStand) || path().empty() || (path().size() <= detail_path_manager().curr_travel_point_index())) {
+	if ((movement_type() == eMovementTypeStand) || path().empty() || (path().size() <= detail().curr_travel_point_index())) {
 		object().m_fCurSpeed	= 0;
 		if (mental_state() != eMentalStateDanger)
 			m_body.speed		= 1*PI_DIV_2;
@@ -359,20 +359,20 @@ void CStalkerMovementManager::parse_velocity_mask	()
 		return;
 	}
 
-	DetailPathManager::STravelPathPoint	point = path()[detail_path_manager().curr_travel_point_index()];
-	CDetailPathManager::STravelParams	current_velocity = detail_path_manager().velocity(point.velocity);
+	DetailPathManager::STravelPathPoint	point = path()[detail().curr_travel_point_index()];
+	CDetailPathManager::STravelParams	current_velocity = detail().velocity(point.velocity);
 
 	if (fis_zero(current_velocity.linear_velocity)) {
 		if (mental_state() != eMentalStateDanger) {
 			setup_body_orientation			();
 			object().sight().enable(false);
 		}
-		if ((mental_state() == eMentalStateDanger) || fis_zero(path_direction_angle(),EPS_L) || (m_last_turn_index == detail_path_manager().curr_travel_point_index())) {
-			m_last_turn_index			= detail_path_manager().curr_travel_point_index();
+		if ((mental_state() == eMentalStateDanger) || fis_zero(path_direction_angle(),EPS_L) || (m_last_turn_index == detail().curr_travel_point_index())) {
+			m_last_turn_index			= detail().curr_travel_point_index();
 			object().sight().enable(true);
-			if (detail_path_manager().curr_travel_point_index() + 1 < path().size()) {
-				point				= path()[detail_path_manager().curr_travel_point_index() + 1];
-				current_velocity	= detail_path_manager().velocity(point.velocity);
+			if (detail().curr_travel_point_index() + 1 < path().size()) {
+				point				= path()[detail().curr_travel_point_index() + 1];
+				current_velocity	= detail().velocity(point.velocity);
 			}
 		}
 	}

@@ -12,7 +12,6 @@ namespace MovementManager {
 	enum EPathType {
 		ePathTypeGamePath = u32(0),
 		ePathTypeLevelPath,
-		ePathTypeEnemySearch,
 		ePathTypePatrolPath,
 		ePathTypeNoPath,
 		ePathTypeDummy = u32(-1),

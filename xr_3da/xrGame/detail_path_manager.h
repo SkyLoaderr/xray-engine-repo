@@ -144,9 +144,9 @@ protected:
 #endif
 
 public:
-					CDetailPathManager			();
+					CDetailPathManager			(CRestrictedObject *object);
 	virtual			~CDetailPathManager			();
-	virtual	void	reinit						(CRestrictedObject *object);
+	virtual	void	reinit						();
 			bool	valid						() const;
 			Fvector direction					() const;
 			bool	actual						() const;

@@ -402,12 +402,12 @@ EAction CMotionManager::GetActionFromPath()
 {
 	EAction action;
 	
-	u32 cur_point_velocity_index = pMonster->movement().detail_path_manager().path()[pMonster->movement().detail_path_manager().curr_travel_point_index()].velocity;
+	u32 cur_point_velocity_index = pMonster->movement().detail().path()[pMonster->movement().detail().curr_travel_point_index()].velocity;
 	action = VelocityIndex2Action(cur_point_velocity_index);
 
 	u32 next_point_velocity_index = u32(-1);
-	if (pMonster->movement().detail_path_manager().path().size() > pMonster->movement().detail_path_manager().curr_travel_point_index() + 1) 
-		next_point_velocity_index = pMonster->movement().detail_path_manager().path()[pMonster->movement().detail_path_manager().curr_travel_point_index() + 1].velocity;
+	if (pMonster->movement().detail().path().size() > pMonster->movement().detail().curr_travel_point_index() + 1) 
+		next_point_velocity_index = pMonster->movement().detail().path()[pMonster->movement().detail().curr_travel_point_index() + 1].velocity;
 
 	if ((cur_point_velocity_index == pMonster->eVelocityParameterStand) && (next_point_velocity_index != u32(-1))) {
 		if (angle_difference(pMonster->movement().m_body.current.yaw, pMonster->movement().m_body.target.yaw) < deg(1)) 

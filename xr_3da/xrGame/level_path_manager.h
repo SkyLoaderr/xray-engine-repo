@@ -45,7 +45,8 @@ protected:
 	IC	virtual	bool	check_vertex				(const _vertex_id_type vertex_id) const;
 
 public:
-	IC			void	reinit						(CRestrictedObject *object, const CLevelGraph *graph = 0);
+	IC					CBasePathManager			(CRestrictedObject *object);
+	IC			void	reinit						(const CLevelGraph *graph = 0);
 	IC			bool	actual						() const;
 };
 

@@ -32,7 +32,7 @@ void CDirectionManager::face_target(const Fvector &position, u32 delay)
 void CDirectionManager::use_path_direction(bool reversed)
 {
 	float yaw,pitch;
-	m_object->movement().detail_path_manager().direction().getHP	(yaw,pitch);
+	m_object->movement().detail().direction().getHP	(yaw,pitch);
 
 	if (fsimilar(yaw,0.f,EPS_S)) return;
 

@@ -123,7 +123,7 @@ bool CMonsterMovement::target_point_need_update()
 	m_wait_path_end	= false;
 
 	// если путь ещё не построен - выход
-	if (!detail_path_manager().actual() && (detail_path_manager().time_path_built() < m_last_time_target_set)) return false;
+	if (!detail().actual() && (detail().time_path_built() < m_last_time_target_set)) return false;
 	return true;
 }
 
@@ -213,14 +213,14 @@ void CMonsterMovement::find_target()
 void CMonsterMovement::set_found_target()
 {
 	// установить direction
-	detail_path_manager().set_use_dest_orientation	(b_use_dest_orient);
+	detail().set_use_dest_orientation	(b_use_dest_orient);
 	if (b_use_dest_orient) {
-		detail_path_manager().set_dest_direction	(m_dest_dir);
+		detail().set_dest_direction	(m_dest_dir);
 	}
 
 	// известна нода - устанавливаем параметры
 	if (m_target_found.node != u32(-1)) {
-		detail_path_manager().set_dest_position		(m_target_found.position);
+		detail().set_dest_position		(m_target_found.position);
 		set_level_dest_vertex						(m_target_found.node);
 		return;
 	}
@@ -234,15 +234,15 @@ void CMonsterMovement::set_found_target()
 			m_target_found.node						= point->m_level_vertex_id;
 			m_target_found.position					= point->m_position;	
 			
-			detail_path_manager().set_dest_position		(m_target_found.position);
+			detail().set_dest_position		(m_target_found.position);
 			set_level_dest_vertex						(m_target_found.node);
 			return;
 		}
 	}
 
 	// находим с помощью селектора
-	level_location_selector().set_evaluator			(m_selector_approach);
-	level_location_selector().set_query_interval	(0);
+	level_selector().set_evaluator			(m_selector_approach);
+	level_selector().set_query_interval	(0);
 	InitSelector									(*m_selector_approach, m_target_found.position);
 	use_selector_path								(true);		// использовать при установке селектора: true - использовать путь найденный селектором, false - селектор находит тольтко ноду, путь строит BuildLevelPath
 }

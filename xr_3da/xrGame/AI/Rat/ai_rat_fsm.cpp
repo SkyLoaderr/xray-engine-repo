@@ -115,7 +115,7 @@ void CAI_Rat::Death()
 
 	vfSetFire		(false);
 	
-	SelectAnimation	(XFORM().k,movement().detail_path_manager().direction(),0);
+	SelectAnimation	(XFORM().k,movement().detail().direction(),0);
 
 	if (m_fFood <= 0) {
 		if (m_previous_query_time <= GetLevelDeathTime())

@@ -16,8 +16,11 @@
 #define CGameLocationSelector CBaseLocationSelector<CGameGraph,_VertexEvaluator,_vertex_id_type>
 
 TEMPLATE_SPECIALIZATION
-IC	CGameLocationSelector::CBaseLocationSelector	()
+IC	CGameLocationSelector::CBaseLocationSelector	(CRestrictedObject *object, CSelectorManager *selector_manager, CLocationManager *location_manager) :
+	inherited	(object,selector_manager)
 {
+	m_location_manager				= location_manager;
+	VERIFY							(location_manager);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -32,13 +35,10 @@ IC	void CGameLocationSelector::set_selection_type	(const ESelectionType selectio
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CGameLocationSelector::reinit			(CRestrictedObject *object, CSelectorManager *selector_manager, CLocationManager *location_manager, const CGameGraph *graph)
+IC	void CGameLocationSelector::reinit			(const CGameGraph *graph)
 {
-	inherited::reinit				(object,selector_manager,graph);
-	m_location_manager				= location_manager;
-	VERIFY							(location_manager);
+	inherited::reinit				(graph);
 	m_selection_type				= eSelectionTypeRandomBranching;
-	VERIFY							(m_location_manager);
 	m_time_to_change				= 0;
 	if (graph)
 		graph->set_invalid_vertex	(m_previous_vertex_id);

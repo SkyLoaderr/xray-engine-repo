@@ -17,7 +17,7 @@
 void CMonsterMovement::detour_graph_points()
 {
 	set_path_type		(MovementManager::ePathTypeGamePath);
-	game_location_selector().set_selection_type	(eSelectionTypeRandomBranching);
+	game_selector().set_selection_type	(eSelectionTypeRandomBranching);
 }
 
 CMonsterMovement::CMonsterMovement(CBaseMonster *base_monster) :
@@ -78,7 +78,7 @@ void CMonsterMovement::InitSelector(CAbstractVertexEvaluator &S, Fvector target_
 
 bool CMonsterMovement::IsMoveAlongPathFinished()
 {
-	return (detail_path_manager().completed(object().Position()));
+	return (detail().completed(object().Position()));
 }
 
 bool CMonsterMovement::IsMovingOnPath()
@@ -90,18 +90,18 @@ bool CMonsterMovement::IsMovingOnPath()
 
 bool CMonsterMovement::IsPathEnd(u32 n_points)
 {
-	if (detail_path_manager().path().empty() || !IsMovingOnPath() || (detail_path_manager().curr_travel_point_index() + n_points >= detail_path_manager().path().size())) return true;
+	if (detail().path().empty() || !IsMovingOnPath() || (detail().curr_travel_point_index() + n_points >= detail().path().size())) return true;
 	return false;
 }
 
 bool CMonsterMovement::IsPathEnd(float dist_to_end)
 {
-	if (detail_path_manager().path().size() < 2) return true;
+	if (detail().path().size() < 2) return true;
 	if (path_completed())						 return true;
 
 	float cur_dist_to_end = 0.f;
-	for (u32 i=detail_path_manager().curr_travel_point_index(); i<detail_path_manager().path().size()-1; i++) {
-		cur_dist_to_end += detail_path_manager().path()[i].position.distance_to(detail_path_manager().path()[i+1].position);
+	for (u32 i=detail().curr_travel_point_index(); i<detail().path().size()-1; i++) {
+		cur_dist_to_end += detail().path()[i].position.distance_to(detail().path()[i+1].position);
 		if (cur_dist_to_end > dist_to_end) break;
 	}
 
@@ -131,7 +131,7 @@ bool CMonsterMovement::ObjectNotReachable(const CEntity *entity)
 void CMonsterMovement::SetPathParams(u32 dest_vertex_id, const Fvector &dest_pos)
 {
 	set_level_dest_vertex(dest_vertex_id);
-	detail_path_manager().set_dest_position(dest_pos);
+	detail().set_dest_position(dest_pos);
 	set_path_type (MovementManager::ePathTypeLevelPath);
 }
 
@@ -192,17 +192,17 @@ bool CMonsterMovement::build_special(const Fvector &target, u32 node, u32 vel_ma
 	
 	enable_movement									(true);
 	
-	detail_path_manager().set_velocity_mask			(vel_mask);	
-	detail_path_manager().set_desirable_mask		(vel_mask);
+	detail().set_velocity_mask			(vel_mask);	
+	detail().set_desirable_mask		(vel_mask);
 
-	detail_path_manager().set_try_min_time			(false); 
-	detail_path_manager().set_use_dest_orientation	(false);
+	detail().set_try_min_time			(false); 
+	detail().set_use_dest_orientation	(false);
 	
-	level_location_selector().set_evaluator			(0);
-	detail_path_manager().set_path_type				(eDetailPathTypeSmooth);
+	level_selector().set_evaluator			(0);
+	detail().set_path_type				(eDetailPathTypeSmooth);
 	set_path_type									(MovementManager::ePathTypeLevelPath);
 
-	detail_path_manager().set_dest_position			(target);
+	detail().set_dest_position			(target);
 	set_level_dest_vertex							(node);
 	
 	set_build_path_at_once							();
@@ -218,14 +218,14 @@ bool CMonsterMovement::build_special(const Fvector &target, u32 node, u32 vel_ma
 
 float CMonsterMovement::get_path_angle()
 {
-	if (detail_path_manager().path().size() < 3) return 0.f;
+	if (detail().path().size() < 3) return 0.f;
 
 	Fvector		dir;
 	float		h1,h2,p;
 
-	dir.sub		(detail_path_manager().path()[1].position, detail_path_manager().path()[0].position);
+	dir.sub		(detail().path()[1].position, detail().path()[0].position);
 	dir.getHP	(h1,p);
-	dir.sub		(detail_path_manager().path()[detail_path_manager().path().size() - 1].position, detail_path_manager().path()[0].position);
+	dir.sub		(detail().path()[detail().path().size() - 1].position, detail().path()[0].position);
 	dir.getHP	(h2,p);
 
 	return	(angle_difference(h1,h2));
@@ -233,22 +233,22 @@ float CMonsterMovement::get_path_angle()
 
 bool CMonsterMovement::is_path_built()
 {
-	return (!path_completed() && (detail_path_manager().time_path_built() >= Level().timeServer()));
+	return (!path_completed() && (detail().time_path_built() >= Level().timeServer()));
 }
 
 void CMonsterMovement::set_velocity_from_path() 
 {
 	if (!IsMovingOnPath()) return;
 	
-	u32 cur_point_velocity_index	= detail_path_manager().path()[detail_path_manager().curr_travel_point_index()].velocity;
+	u32 cur_point_velocity_index	= detail().path()[detail().curr_travel_point_index()].velocity;
 	u32 next_point_velocity_index	= u32(-1);
 
-	if (detail_path_manager().path().size() > detail_path_manager().curr_travel_point_index() + 1) 
-		next_point_velocity_index = detail_path_manager().path()[detail_path_manager().curr_travel_point_index() + 1].velocity;
+	if (detail().path().size() > detail().curr_travel_point_index() + 1) 
+		next_point_velocity_index = detail().path()[detail().curr_travel_point_index() + 1].velocity;
 
-	const CDetailPathManager::STravelParams &current_velocity	= detail_path_manager().velocity(cur_point_velocity_index);
+	const CDetailPathManager::STravelParams &current_velocity	= detail().velocity(cur_point_velocity_index);
 	if (fis_zero(current_velocity.linear_velocity) && (next_point_velocity_index != u32(-1))) {
-		const CDetailPathManager::STravelParams &next_velocity	= detail_path_manager().velocity(next_point_velocity_index);
+		const CDetailPathManager::STravelParams &next_velocity	= detail().velocity(next_point_velocity_index);
 		m_velocity_linear.target	= _abs(next_velocity.linear_velocity);
 		m_velocity_angular			= next_velocity.real_angular_velocity;
 	} else {

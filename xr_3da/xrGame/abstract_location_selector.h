@@ -37,10 +37,9 @@ protected:
 	IC			bool			accessible					(const _vertex_id_type vertex_id);
 
 public:
-	IC							CAbstractLocationSelector	();
+	IC							CAbstractLocationSelector	(CRestrictedObject *object, CSelectorManager *selector_manager);
 	IC	virtual					~CAbstractLocationSelector	();
-	IC			void			init						();
-	IC	virtual void			reinit						(CRestrictedObject *object, CSelectorManager *selector_manager, const _Graph *graph = 0);
+	IC	virtual void			reinit						(const _Graph *graph = 0);
 
 	IC			_vertex_id_type get_selected_vertex_id		() const;
 

@@ -81,7 +81,7 @@ bool CStateMonsterStealAbstract::check_conditions()
 	if (object->HitMemory.is_hit())								return false;
 
 	// Path with minimal deviation
-	if (object->movement().detail_path_manager().time_path_built() >= time_state_started) {
+	if (object->movement().detail().time_path_built() >= time_state_started) {
 		if (object->movement().get_path_angle() > STEAL_MAX_PATH_ANGLE)	return false;
 	}
 	

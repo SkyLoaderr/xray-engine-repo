@@ -12,8 +12,8 @@ void CMonsterMovement::Update_Initialize()
 {
 	if (m_object->CriticalActionInfo->is_path_locked()) return;
 
-	level_location_selector().set_evaluator			(0);
-	detail_path_manager().set_path_type				(eDetailPathTypeSmooth);
+	level_selector().set_evaluator			(0);
+	detail().set_path_type				(eDetailPathTypeSmooth);
 	b_try_min_time									= true;
 	b_enable_movement								= true;
 	set_path_targeted								(false);
@@ -29,7 +29,7 @@ void CMonsterMovement::Update_Execute()
 {	
 	if (m_object->CriticalActionInfo->is_path_locked()) return;
 
-	detail_path_manager().set_try_min_time			(b_try_min_time); 
+	detail().set_try_min_time			(b_try_min_time); 
 	enable_movement									(b_enable_movement);
 	
 	// обновить / установить целевую позицию
@@ -76,13 +76,13 @@ void CMonsterMovement::check_failure()
 {
 	m_failed		= false;
 
-	//bool new_path = detail_path_manager().time_path_built() >= m_last_time_target_set;
+	//bool new_path = detail().time_path_built() >= m_last_time_target_set;
 	if (IsPathEnd(m_distance_to_path_end) && actual() && !m_wait_path_end && (m_target_selected.position.similar(m_target_set.position))) {
 		m_failed	= true;	
 	}
 
 	// если level_path_manager failed
-	if (level_path_manager().failed()) {
+	if (level_path().failed()) {
 		m_failed	= true;
 	}
 }

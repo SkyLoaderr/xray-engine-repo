@@ -96,7 +96,7 @@ void CStalkerActionReachTaskLocation::initialize	()
 	object().movement().set_path_evaluator		(0);
 	object().movement().set_desired_position		(0);
 	object().movement().set_desired_direction		(0);
-	object().movement().game_location_selector().set_selection_type		(eSelectionTypeMask);
+	object().movement().game_selector().set_selection_type		(eSelectionTypeMask);
 	object().movement().set_path_type				(MovementManager::ePathTypeGamePath);
 	object().movement().set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
 	object().movement().set_body_state			(eBodyStateStand);
@@ -112,7 +112,7 @@ void CStalkerActionReachTaskLocation::initialize	()
 void CStalkerActionReachTaskLocation::finalize	()
 {
 	inherited::finalize					();
-	object().movement().game_location_selector().set_selection_type		(eSelectionTypeRandomBranching);
+	object().movement().game_selector().set_selection_type		(eSelectionTypeRandomBranching);
 }
 
 void CStalkerActionReachTaskLocation::execute		()
@@ -224,7 +224,7 @@ void CStalkerActionReachCustomerLocation::initialize	()
 	object().movement().set_path_evaluator		(0);
 	object().movement().set_desired_position		(0);
 	object().movement().set_desired_direction		(0);
-	object().movement().game_location_selector().set_selection_type		(eSelectionTypeMask);
+	object().movement().game_selector().set_selection_type		(eSelectionTypeMask);
 	object().movement().set_path_type				(MovementManager::ePathTypeGamePath);
 	object().movement().set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
 	object().movement().set_body_state			(eBodyStateStand);
@@ -240,7 +240,7 @@ void CStalkerActionReachCustomerLocation::initialize	()
 void CStalkerActionReachCustomerLocation::finalize	()
 {
 	inherited::finalize					();
-	object().movement().game_location_selector().set_selection_type		(eSelectionTypeRandomBranching);
+	object().movement().game_selector().set_selection_type		(eSelectionTypeRandomBranching);
 }
 
 void CStalkerActionReachCustomerLocation::execute		()

@@ -20,11 +20,11 @@ void CMovementManager::process_patrol_path()
 	for (;;) {
 		switch (m_path_state) {
 			case ePathStateSelectPatrolPoint : {
-				patrol_path_manager().select_point(object().Position(),level_path_manager().m_dest_vertex_id);
-				if (patrol_path_manager().failed())
+				patrol().select_point(object().Position(),level_path().m_dest_vertex_id);
+				if (patrol().failed())
 					break;
 
-				if (patrol_path_manager().completed()) {
+				if (patrol().completed()) {
 					m_path_state	= ePathStatePathCompleted;
 					break;
 				}
@@ -34,30 +34,30 @@ void CMovementManager::process_patrol_path()
 					break;
 			}
 			case ePathStateBuildLevelPath : {
-				level_path_manager().build_path(object().ai_location().level_vertex_id(),level_dest_vertex_id());
-				if (level_path_manager().failed())
+				level_path().build_path(object().ai_location().level_vertex_id(),level_dest_vertex_id());
+				if (level_path().failed())
 					break;
 				m_path_state		= ePathStateContinueLevelPath;
 				if (time_over())
 					break;
 			}
 			case ePathStateContinueLevelPath : {
-				level_path_manager().select_intermediate_vertex();
+				level_path().select_intermediate_vertex();
 				m_path_state		= ePathStateBuildDetailPath;
 				if (time_over())
 					break;
 			}
 			case ePathStateBuildDetailPath : {
-				detail_path_manager().set_state_patrol_path(true);
-				detail_path_manager().set_start_position(object().Position());
-				detail_path_manager().set_start_direction(Fvector().setHP(-m_body.current.yaw,0));
-				detail_path_manager().set_dest_position(patrol_path_manager().destination_position());
-				detail_path_manager().build_path(
-					level_path_manager().path(),
-					level_path_manager().intermediate_index()
+				detail().set_state_patrol_path(true);
+				detail().set_start_position(object().Position());
+				detail().set_start_direction(Fvector().setHP(-m_body.current.yaw,0));
+				detail().set_dest_position(patrol().destination_position());
+				detail().build_path(
+					level_path().path(),
+					level_path().intermediate_index()
 				);
 				
-				if (detail_path_manager().failed()) {
+				if (detail().failed()) {
 					m_path_state	= ePathStateBuildLevelPath;
 					break;
 				}
@@ -68,27 +68,27 @@ void CMovementManager::process_patrol_path()
 					break;
 			}
 			case ePathStatePathVerification : {
-				if (!patrol_path_manager().actual())
+				if (!patrol().actual())
 					m_path_state	= ePathStateSelectPatrolPoint;
 				else
-				if (!level_path_manager().actual())
+				if (!level_path().actual())
 					m_path_state	= ePathStateBuildLevelPath;
 				else
-				if (!detail_path_manager().actual())
+				if (!detail().actual())
 					m_path_state	= ePathStateBuildLevelPath;
 				else
-					if (detail_path_manager().completed(object().Position(),!detail_path_manager().state_patrol_path())) {
+					if (detail().completed(object().Position(),!detail().state_patrol_path())) {
 						m_path_state	= ePathStateContinueLevelPath;
-						if (level_path_manager().completed()) {
+						if (level_path().completed()) {
 							m_path_state	= ePathStateSelectPatrolPoint;
-							if (patrol_path_manager().completed()) 
+							if (patrol().completed()) 
 								m_path_state	= ePathStatePathCompleted;
 						}
 					}
 				break;
 			}
 			case ePathStatePathCompleted : {
-				if (!patrol_path_manager().actual())
+				if (!patrol().actual())
 					m_path_state	= ePathStateSelectPatrolPoint;
 				break;
 			}

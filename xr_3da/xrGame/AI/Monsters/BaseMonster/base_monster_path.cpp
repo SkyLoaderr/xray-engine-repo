@@ -35,7 +35,7 @@ void CBaseMonster::LookPosition(Fvector to_point, float angular_speed)
 void CBaseMonster::on_travel_point_change()
 {
 	if (movement().IsMovingOnPath()) {
-		u32 cur_point_velocity_index = movement().detail_path_manager().path()[movement().detail_path_manager().curr_travel_point_index()].velocity;		
+		u32 cur_point_velocity_index = movement().detail().path()[movement().detail().curr_travel_point_index()].velocity;		
 		if ((cur_point_velocity_index == eVelocityParameterStand) && !fis_zero(movement().m_velocity_linear.current) && !b_velocity_reset) {
 			movement().stop_linear		();
 			b_velocity_reset = true;

@@ -150,7 +150,7 @@ void CAI_Stalker::reload			(LPCSTR section)
 
 void CAI_Stalker::Die				(CObject* who)
 {
-	SelectAnimation					(XFORM().k,movement().detail_path_manager().direction(),movement().speed());
+	SelectAnimation					(XFORM().k,movement().detail().direction(),movement().speed());
 
 	set_sound_mask					(0);
 	if (is_special_killer(who))

@@ -20,9 +20,12 @@
 #define CSelectorTemplate CAbstractLocationSelector<_Graph,_VertexEvaluator,_vertex_id_type>
 
 TEMPLATE_SPECIALIZATION
-IC	CSelectorTemplate::CAbstractLocationSelector	()
+IC	CSelectorTemplate::CAbstractLocationSelector	(CRestrictedObject *object, CSelectorManager *selector_manager)
 {
-	init					();
+	m_restricted_object		= object;
+	m_selector_manager		= selector_manager;
+	VERIFY					(m_restricted_object);
+	VERIFY					(m_selector_manager);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -31,12 +34,7 @@ IC	CSelectorTemplate::~CAbstractLocationSelector	()
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CSelectorTemplate::init					()
-{
-}
-
-TEMPLATE_SPECIALIZATION
-IC	void CSelectorTemplate::reinit					(CRestrictedObject *object, CSelectorManager *selector_manager, const _Graph *graph)
+IC	void CSelectorTemplate::reinit					(const _Graph *graph)
 {
 	m_failed				= true;
 	m_selected_vertex_id	= _vertex_id_type(-1);
@@ -46,10 +44,6 @@ IC	void CSelectorTemplate::reinit					(CRestrictedObject *object, CSelectorManag
 	m_graph					= graph;
 	m_path					= 0;
 	dest_vertex_id			= 0;
-	m_restricted_object		= object;
-	m_selector_manager		= selector_manager;
-	VERIFY					(m_restricted_object);
-	VERIFY					(m_selector_manager);
 }	
 
 TEMPLATE_SPECIALIZATION

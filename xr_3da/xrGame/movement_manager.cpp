@@ -14,7 +14,6 @@
 #include "game_path_manager.h"
 #include "level_path_manager.h"
 #include "detail_path_manager.h"
-#include "enemy_location_predictor.h"
 #include "patrol_path_manager.h"
 #include "xrmessages.h"
 #include "ai_object_location.h"
@@ -32,16 +31,17 @@ CMovementManager::CMovementManager	(CCustomMonster *object)
 
 	m_base_game_selector		= xr_new<CBaseParameters>		 ();
 	m_base_level_selector		= xr_new<CBaseParameters>		 ();
-	m_game_location_selector	= xr_new<CGameLocationSelector	>();
-	m_game_path_manager			= xr_new<CGamePathManager		>();
-	m_level_location_selector	= xr_new<CLevelLocationSelector	>();
-	m_level_path_manager		= xr_new<CLevelPathManager		>();
-	m_detail_path_manager		= xr_new<CDetailPathManager		>();
-	m_patrol_path_manager		= xr_new<CPatrolPathManager		>(m_object);
-	m_enemy_location_predictor	= xr_new<CEnemyLocationPredictor>();
+	
 	m_restricted_object			= xr_new<CRestrictedObject>		 (m_object);
 	m_selector_manager			= xr_new<CSelectorManager>		 (m_object);
 	m_location_manager			= xr_new<CLocationManager>		 (m_object);
+
+	m_game_location_selector	= xr_new<CGameLocationSelector	>(m_restricted_object,m_selector_manager,m_location_manager);
+	m_game_path_manager			= xr_new<CGamePathManager		>(m_restricted_object);
+	m_level_location_selector	= xr_new<CLevelLocationSelector	>(m_restricted_object,m_selector_manager);
+	m_level_path_manager		= xr_new<CLevelPathManager		>(m_restricted_object);
+	m_detail_path_manager		= xr_new<CDetailPathManager		>(m_restricted_object);
+	m_patrol_path_manager		= xr_new<CPatrolPathManager		>(m_restricted_object,m_object);
 
 	extrapolate_path			(false);
 }
@@ -56,7 +56,6 @@ CMovementManager::~CMovementManager	()
 	xr_delete					(m_level_path_manager		);
 	xr_delete					(m_detail_path_manager		);
 	xr_delete					(m_patrol_path_manager		);
-	xr_delete					(m_enemy_location_predictor	);
 	xr_delete					(m_restricted_object		);
 	xr_delete					(m_selector_manager			);
 	xr_delete					(m_location_manager			);
@@ -69,31 +68,30 @@ void CMovementManager::Load			(LPCSTR section)
 
 void CMovementManager::reinit		()
 {
-	m_time_work								= 300*CPU::cycles_per_microsec;
-	m_speed									= 0.f;
-	m_path_type								= ePathTypeNoPath;
-	m_path_state							= ePathStateDummy;
-	m_path_actuality						= true;
-	m_speed									= 0.f;
-	m_selector_path_usage					= false;//true;
-	m_old_desirable_speed					= 0.f;
-	m_refresh_rate							= 0;
-	m_last_update							= Level().timeServer();
-	m_build_at_once							= false;
+	m_time_work						= 300*CPU::cycles_per_microsec;
+	m_speed							= 0.f;
+	m_path_type						= ePathTypeNoPath;
+	m_path_state					= ePathStateDummy;
+	m_path_actuality				= true;
+	m_speed							= 0.f;
+	m_selector_path_usage			= false;//true;
+	m_old_desirable_speed			= 0.f;
+	m_refresh_rate					= 0;
+	m_last_update					= Level().timeServer();
+	m_build_at_once					= false;
 
-	enable_movement								(true);
-	game_location_selector().reinit				(&restrictions(),&selectors(),&locations(),&ai().game_graph());
-	level_location_selector().reinit			(&restrictions(),&selectors(),ai().get_level_graph());
-	detail_path_manager().reinit				(&restrictions());
-	game_path_manager().reinit					(&restrictions(),&ai().game_graph());
-	level_path_manager().reinit					(&restrictions(),ai().get_level_graph());
-	patrol_path_manager().reinit				(&restrictions());
-	enemy_location_predictor().reinit			(&restrictions());
-	selectors().reinit							();
+	enable_movement					(true);
+	game_selector().reinit			(&ai().game_graph());
+	level_selector().reinit			(ai().get_level_graph());
+	detail().reinit					();
+	game_path().reinit				(&ai().game_graph());
+	level_path().reinit				(ai().get_level_graph());
+	patrol().reinit					();
+	selectors().reinit				();
 
-	game_location_selector().set_dest_path		(game_path_manager().m_path);
-	level_location_selector().set_dest_path		(level_path_manager().m_path);
-	level_location_selector().set_dest_vertex	(level_path_manager().m_dest_vertex_id);
+	game_selector().set_dest_path	(game_path().m_path);
+	level_selector().set_dest_path	(level_path().m_path);
+	level_selector().set_dest_vertex(level_path().m_dest_vertex_id);
 }
 
 void CMovementManager::reload		(LPCSTR section)
@@ -114,30 +112,30 @@ CMovementManager::EPathType CMovementManager::path_type() const
 
 void CMovementManager::set_game_dest_vertex	(const GameGraph::_GRAPH_ID game_vertex_id)
 {
-	game_path_manager().set_dest_vertex(game_vertex_id);
-	m_path_actuality		= m_path_actuality && game_path_manager().actual();
+	game_path().set_dest_vertex(game_vertex_id);
+	m_path_actuality		= m_path_actuality && game_path().actual();
 }
 
 GameGraph::_GRAPH_ID CMovementManager::game_dest_vertex_id() const
 {
-	return					(GameGraph::_GRAPH_ID(game_path_manager().dest_vertex_id()));
+	return					(GameGraph::_GRAPH_ID(game_path().dest_vertex_id()));
 }
 
 void CMovementManager::set_level_dest_vertex(const u32 level_vertex_id)
 {
 	VERIFY					(restrictions().accessible(level_vertex_id));
-	level_path_manager().set_dest_vertex(level_vertex_id);
-	m_path_actuality		= m_path_actuality && level_path_manager().actual();
+	level_path().set_dest_vertex(level_vertex_id);
+	m_path_actuality		= m_path_actuality && level_path().actual();
 }
 
 u32	 CMovementManager::level_dest_vertex_id() const
 {
-	return					(level_path_manager().dest_vertex_id());
+	return					(level_path().dest_vertex_id());
 }
 
 const xr_vector<DetailPathManager::STravelPathPoint>	&CMovementManager::path	() const
 {
-	return					(detail_path_manager().path());
+	return					(detail().path());
 }
 
 void CMovementManager::update_path	()
@@ -149,17 +147,17 @@ void CMovementManager::update_path	()
 
 	time_start				();
 	
-	if (!game_path_manager().evaluator()) 		
-		game_path_manager().set_evaluator	(base_game_selector());
+	if (!game_path().evaluator()) 		
+		game_path().set_evaluator	(base_game_params());
 
-	if (!level_path_manager().evaluator()) 
-		level_path_manager().set_evaluator	(base_level_selector());
+	if (!level_path().evaluator()) 
+		level_path().set_evaluator	(base_level_params());
 
 	if (!actual()) {
 
-		game_path_manager().make_inactual();
-		level_path_manager().make_inactual();
-		patrol_path_manager().make_inactual();
+		game_path().make_inactual();
+		level_path().make_inactual();
+		patrol().make_inactual();
 		switch (m_path_type) {
 			case ePathTypeGamePath : {
 				m_path_state	= ePathStateSelectGameVertex;
@@ -167,10 +165,6 @@ void CMovementManager::update_path	()
 			}
 			case ePathTypeLevelPath : {
 				m_path_state	= ePathStateSelectLevelVertex;
-				break;
-			}
-			case ePathTypeEnemySearch : {
-				m_path_state	= ePathStatePredictEnemyVertices;
 				break;
 			}
 			case ePathTypePatrolPath : {
@@ -195,10 +189,6 @@ void CMovementManager::update_path	()
 			process_level_path	();
 			break;
 		}
-		case ePathTypeEnemySearch : {
-			process_enemy_search();
-			break;
-									}
 		case ePathTypePatrolPath : {
 			process_patrol_path();
 			break;
@@ -222,30 +212,24 @@ bool CMovementManager::actual_all() const
 	switch (m_path_type) {
 		case ePathTypeGamePath : 
 			return			(
-				game_path_manager().actual() && 
-				level_path_manager().actual() &&
-				detail_path_manager().actual()
+				game_path().actual() && 
+				level_path().actual() &&
+				detail().actual()
 			);
 		case ePathTypeLevelPath :
 			return			(
-				level_path_manager().actual() &&
-				detail_path_manager().actual()
-			);
-		case ePathTypeEnemySearch :
-			return			(
-//				enemy_location_predictor().actual() && 
-				level_path_manager().actual() &&
-				detail_path_manager().actual()
+				level_path().actual() &&
+				detail().actual()
 			);
 		case ePathTypePatrolPath :
 			return			(
-				patrol_path_manager().actual() && 
-				level_path_manager().actual() &&
-				detail_path_manager().actual()
+				patrol().actual() && 
+				level_path().actual() &&
+				detail().actual()
 			);
 		case ePathTypeNoPath :
 			return			(
-				detail_path_manager().actual()
+				detail().actual()
 			);
 		default : NODEFAULT;
 	}
@@ -256,16 +240,16 @@ bool CMovementManager::actual_all() const
 
 void CMovementManager::verify_detail_path	()
 {
-	if (detail_path_manager().path().empty() || detail_path_manager().completed(detail_path_manager().dest_position()))
+	if (detail().path().empty() || detail().completed(detail().dest_position()))
 		return;
 
 	float distance = 0.f;
-	for (u32 i=detail_path_manager().curr_travel_point_index() + 1, n=detail_path_manager().path().size(); i<n; ++i) {
-		if (!restrictions().accessible(detail_path_manager().path()[i].position,EPS_L)) {
+	for (u32 i=detail().curr_travel_point_index() + 1, n=detail().path().size(); i<n; ++i) {
+		if (!restrictions().accessible(detail().path()[i].position,EPS_L)) {
 			m_path_actuality	= false;
 			return;
 		}
-		distance	+= detail_path_manager().path()[i].position.distance_to(detail_path_manager().path()[i-1].position);
+		distance	+= detail().path()[i].position.distance_to(detail().path()[i-1].position);
 		if (distance >= verify_distance)
 			break;
 	}
