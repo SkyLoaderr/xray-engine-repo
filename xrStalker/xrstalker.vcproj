@@ -998,12 +998,6 @@
 				Name="scripts"
 				Filter="">
 				<File
-					RelativePath=".\Config\scripts\bar_barman.ltx">
-				</File>
-				<File
-					RelativePath=".\Config\scripts\bar_entry_zone.ltx">
-				</File>
-				<File
 					RelativePath=".\Config\scripts\door.ltx">
 				</File>
 				<File
@@ -1186,6 +1180,19 @@
 					</File>
 					<File
 						RelativePath=".\config\scripts\dar\dar_sound_zone.ltx">
+					</File>
+				</Filter>
+				<Filter
+					Name="Rostok"
+					Filter="">
+					<File
+						RelativePath=".\Config\scripts\bar_barman.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\scripts\bar_crush_spam.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\scripts\bar_entry_zone.ltx">
 					</File>
 				</Filter>
 			</Filter>
