@@ -21,8 +21,8 @@ enum COMBINE_MODE
 #define SHADOW_MAP_SIZE		1024
 #define OUT_WIDTH			800
 #define OUT_HEIGHT			600
-#define OVERLAY_WIDTH		400
-#define OVERLAY_HEIGHT		300
+#define OVERLAY_WIDTH		200
+#define OVERLAY_HEIGHT		150
 #define DEPTH_RANGE			4.0f
 
 // Light direction
@@ -809,7 +809,6 @@ void	CalcGauss	(
 		// w.push_back		(1.f);
 		float weight	=	expf	(-float(i*i)/(2*r*r));
 		w.push_back		(weight);	// weight
-		fpreset			();
 
 		float offset	= bs*float(-i); 
 		H.push_back		(D3DXVECTOR4(offset/tw,0,0,0));
