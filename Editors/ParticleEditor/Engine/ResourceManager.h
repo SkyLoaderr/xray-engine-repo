@@ -21,15 +21,15 @@ private:
 		R_constant_setup*	cs;
 	};
 public:
-	DEFINE_MAP_PRED(LPSTR,IBlender*,		map_Blender,	map_BlenderIt,		str_pred);
-	DEFINE_MAP_PRED(LPSTR,CTexture*,		map_Texture,	map_TextureIt,		str_pred);
-	DEFINE_MAP_PRED(LPSTR,CMatrix*,			map_Matrix,		map_MatrixIt,		str_pred);
-	DEFINE_MAP_PRED(LPSTR,CConstant*,		map_Constant,	map_ConstantIt,		str_pred);
-	DEFINE_MAP_PRED(LPSTR,CRT*,				map_RT,			map_RTIt,			str_pred);
-	DEFINE_MAP_PRED(LPSTR,CRTC*,			map_RTC,		map_RTCIt,			str_pred);
-	DEFINE_MAP_PRED(LPSTR,SVS*,				map_VS,			map_VSIt,			str_pred);
-	DEFINE_MAP_PRED(LPSTR,SPS*,				map_PS,			map_PSIt,			str_pred);
-	DEFINE_MAP_PRED(LPSTR,texture_detail,	map_TD,			map_TDIt,			str_pred);
+	DEFINE_MAP_PRED(const char*,IBlender*,		map_Blender,	map_BlenderIt,		str_pred);
+	DEFINE_MAP_PRED(const char*,CTexture*,		map_Texture,	map_TextureIt,		str_pred);
+	DEFINE_MAP_PRED(const char*,CMatrix*,		map_Matrix,		map_MatrixIt,		str_pred);
+	DEFINE_MAP_PRED(const char*,CConstant*,		map_Constant,	map_ConstantIt,		str_pred);
+	DEFINE_MAP_PRED(const char*,CRT*,			map_RT,			map_RTIt,			str_pred);
+	DEFINE_MAP_PRED(const char*,CRTC*,			map_RTC,		map_RTCIt,			str_pred);
+	DEFINE_MAP_PRED(const char*,SVS*,			map_VS,			map_VSIt,			str_pred);
+	DEFINE_MAP_PRED(const char*,SPS*,			map_PS,			map_PSIt,			str_pred);
+	DEFINE_MAP_PRED(const char*,texture_detail,	map_TD,			map_TDIt,			str_pred);
 private:
 	// data
 	map_Blender						m_blenders;

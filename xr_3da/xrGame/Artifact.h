@@ -25,11 +25,11 @@ public:
 
 protected:
 	//расстояние обнаружения артифакта детектором
-	float m_fDetectionDist;
+	float		m_fDetectionDist;
 	
 	//звуки
-	LPCSTR m_detectorSoundName;
-	ref_sound m_detectorSound;
+	ref_str		m_detectorSoundName;
+	ref_sound	m_detectorSound;
 	
 	static xr_set<CArtifact*> m_all;
 };

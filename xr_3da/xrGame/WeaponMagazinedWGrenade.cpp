@@ -96,6 +96,7 @@ void CWeaponFakeGrenade::Load(LPCSTR section) {
 	//m_engine_f = pSettings->r_float(section,"engine_f");
 	//m_engine_u = pSettings->r_float(section,"engine_u");
 
+	string512 m_effectsSTR;
 	strcpy(m_effectsSTR, pSettings->r_string(section,"effects"));
 	char* l_effectsSTR = m_effectsSTR; R_ASSERT(l_effectsSTR);
 	m_effects.clear(); m_effects.push_back(l_effectsSTR);
@@ -217,7 +218,7 @@ void CWeaponFakeGrenade::Explode(const Fvector &pos, const Fvector &normal)
 	CParticlesObject* pStaticPG; s32 l_c = (s32)m_effects.size();
 	Fmatrix l_m; l_m.identity(); l_m.c.set(pos);l_m.j.set(normal); GetBasis(normal, l_m.k, l_m.i);
 	for(s32 i = 0; i < l_c; i++) {
-		pStaticPG = xr_new<CParticlesObject>(m_effects[i],Sector());
+		pStaticPG = xr_new<CParticlesObject>(*m_effects[i],Sector());
 		pStaticPG->SetTransform(l_m);
 		pStaticPG->Play();
 	}
@@ -515,24 +516,27 @@ void CWeaponMagazinedWGrenade::Load	(LPCSTR section)
 	//SoundCreate			(sndRicochet[4],"ric5"    ,m_eSoundRicochet);
 	// HUD :: Anims
 	R_ASSERT			(m_pHUD);
-	animGet				(mhud_idle_g,		"idle_g");
+	animGet				(mhud_idle_g,	"idle_g");
 	animGet				(mhud_reload_g,	"reload_g");
 	animGet				(mhud_shots_g,	"shoot_g");
 	animGet				(mhud_switch_g,	"switch_g");
 	animGet				(mhud_switch,	"switch");
 
-	strcpy(m_ammoSect2, pSettings->r_string(section,"grenade_class"));
-	char* l_ammoSect = m_ammoSect2; R_ASSERT(l_ammoSect);
-	m_ammoTypes2.clear(); m_ammoTypes2.push_back(l_ammoSect);
-	while(*l_ammoSect) {
-		if(*l_ammoSect == ',') {
-			*l_ammoSect = 0; l_ammoSect++;
-			while(*l_ammoSect == ' ' || *l_ammoSect == '\t') l_ammoSect++;
-			m_ammoTypes2.push_back(l_ammoSect);
+	// load ammo classes SECOND (grenade_class)
+	m_ammoTypes2.clear	(); 
+	LPCSTR				S = pSettings->r_string(section,"grenade_class");
+	if (S && S[0]) {
+		string128		_ammoItem;
+		int				count		= _GetItemCount	(S);
+		for (int it=0; it<count; it++)	{
+			_GetItem				(S,it,_ammoItem);
+			m_ammoTypes2.push_back	(_ammoItem);
 		}
-		l_ammoSect++;
+		m_ammoName2 = pSettings->r_string(*m_ammoTypes2[0],"inv_name_short");
 	}
-	m_ammoName2 = pSettings->r_string(m_ammoTypes2[0],"inv_name_short");
+	else
+		m_ammoName2 = 0;
+
 	iMagazineSize2 = iMagazineSize;
 }
 
@@ -636,9 +640,8 @@ void CWeaponMagazinedWGrenade::SwitchMode() {
 
 	m_ammoTypes.swap(m_ammoTypes2);
 
-	u32 iTmp = m_ammoType; m_ammoType = m_ammoType2; m_ammoType2 = iTmp;
-
-	LPCSTR sTmp = m_ammoName; m_ammoName = m_ammoName2; m_ammoName2 = sTmp;
+	swap		(m_ammoType,m_ammoType2);
+	swap		(m_ammoName,m_ammoName2);
 
 	xr_stack<CCartridge> l_magazine;
 	while(m_magazine.size()) { l_magazine.push(m_magazine.top()); m_magazine.pop(); }
@@ -646,7 +649,6 @@ void CWeaponMagazinedWGrenade::SwitchMode() {
 	while(l_magazine.size()) { m_magazine2.push(l_magazine.top()); l_magazine.pop(); }
 	iAmmoElapsed = (int)m_magazine.size();
 	
-
 	if(m_grenadeMode) m_pHUD->animPlay(mhud_switch_g[Random.randI(mhud_switch_g.size())],FALSE,this);
 	else m_pHUD->animPlay(mhud_switch[Random.randI(mhud_switch.size())],FALSE,this);
 }

@@ -20,6 +20,7 @@ class	CLightR_Manager
 {
 	ref_shader						hShader;
 	ref_geom						hGeom;
+	xrXRC							xrc;
 
 	xr_vector<light*>				selected_point;
 	xr_vector<light*>				selected_spot;

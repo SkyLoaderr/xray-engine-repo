@@ -18,8 +18,9 @@ class	ENGINE_API	IRender_Light		{
 public:
 	enum LT
 	{
-		POINT	= 0,
-		SPOT	= 1
+		DIRECT	= 0,
+		POINT	= 1,
+		SPOT	= 2
 	};
 public:
 	virtual void					set_type			(LT type)							= 0;

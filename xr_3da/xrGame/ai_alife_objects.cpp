@@ -180,7 +180,7 @@ void CSE_ALifeOrganization::Load(IReader &tFileStream)
 			tFileStream.r_string(S);
 			LPSTR				l_caArtefactSection = (char*)xr_malloc(32*sizeof(char));
 			strcpy				(l_caArtefactSection,S);
-			m_tpPurchasedArtefacts.insert(std::make_pair(l_caArtefactSection,tFileStream.r_u32()));
+			m_tpPurchasedArtefacts.insert(mk_pair(l_caArtefactSection,tFileStream.r_u32()));
 		}
 	}
 }

@@ -17,7 +17,7 @@ protected:
 	typedef CGameObject inherited;
 	xr_deque<CEntityAction*>	m_tpActionQueue;
 	bool						m_bScriptControl;
-	string64					m_caScriptName;
+	ref_str						m_caScriptName;
 	int							m_iCurrentPatrolPoint;
 	int							m_iPreviousPatrolPoint;
 	CMotionDef					*m_tpScriptAnimation;

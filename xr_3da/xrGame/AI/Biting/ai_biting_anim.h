@@ -7,9 +7,9 @@
 ////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-class CAI_Biting;
+class		 CAI_Biting;
 
-typedef string64 anim_string;
+typedef		ref_str			anim_string;
 
 #define		DEFAULT_ANIM	eAnimStandIdle
 

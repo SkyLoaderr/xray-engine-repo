@@ -237,7 +237,7 @@ BOOL CLevel::Load_GameSpecific_Before()
 				}
 				while (!bOk);
 
-				m_PatrolPaths.insert(std::make_pair(sName,tPatrolPath));
+				m_PatrolPaths.insert(mk_pair(sName,tPatrolPath));
 				
 				vfCreateAllPossiblePaths(sName, m_PatrolPaths[sName]);
 			}

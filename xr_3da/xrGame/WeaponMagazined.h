@@ -14,12 +14,12 @@ private:
 	typedef CWeapon inherited;
 protected:
 	// Media :: sounds
-	ref_sound			sndShow;
-	ref_sound			sndHide;
-	ref_sound			sndShot;
-	ref_sound			sndEmptyClick;
-	ref_sound			sndReload;
-	ref_sound			sndRicochet		[SND_RIC_COUNT];
+	ref_sound		sndShow;
+	ref_sound		sndHide;
+	ref_sound		sndShot;
+	ref_sound		sndEmptyClick;
+	ref_sound		sndReload;
+	ref_sound		sndRicochet		[SND_RIC_COUNT];
 
 	ESoundTypes		m_eSoundShow;
 	ESoundTypes		m_eSoundHide;
@@ -34,6 +34,7 @@ protected:
 	MotionSVec		mhud_hide;
 	MotionSVec		mhud_show;
 	MotionSVec		mhud_shots;
+
 	// General
 	float			fTime;
 	BOOL			bFlame;
@@ -95,11 +96,11 @@ public:
 
 
 
-	virtual bool Action(s32 cmd, u32 flags);
+	virtual bool	Action			(s32 cmd, u32 flags);
 	bool			IsAmmoAvailable	();
 
-	u32 m_queueSize, m_shotNum;
-	void SetQueueSize(u32 size) { m_queueSize = size; }
+	u32				m_queueSize, m_shotNum;
+	void			SetQueueSize	(u32 size) { m_queueSize = size; }
 };
 
 #endif //__XR_WEAPON_MAG_H__

@@ -66,7 +66,7 @@ private:
 	}
 	IC TNode*	CreateChild	(TNode* &parent, const K& key)
 	{
-		u32 PID	= parent-nodes;
+		u32 PID		= parent-nodes;
 		TNode*	N	= Alloc(key);
 		parent		= nodes+PID;
 		return	N;

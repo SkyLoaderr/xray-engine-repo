@@ -9,7 +9,8 @@
 //refs
 class ENGINE_API IRender_DetailModel;
 
-struct CThunderboltDesc{
+struct CThunderboltDesc
+{
 	// geom
 	IRender_DetailModel*		l_model;
     // sound

@@ -84,7 +84,7 @@ LPSTR _GetItem ( LPCSTR src, int index, LPSTR dst, char separator, LPCSTR def )
 	ptr			= _SetPos	( src, index, separator );
 	if( ptr )	_CopyVal	( ptr, dst, separator );
 		else	strcpy		( dst, def );
-	_Trim( dst );
+	_Trim		( dst );
 	return		dst;
 }
 

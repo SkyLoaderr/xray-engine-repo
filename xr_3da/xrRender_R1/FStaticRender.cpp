@@ -19,8 +19,8 @@ CRender													RImplementation;
 void					CRender::create					()
 {
 	::Device.Resources->SetHLSL_path("R1\\");
-	Models						= xr_new<CModelPool>			();
-	L_Dynamic					= xr_new<CLightPPA_Manager>		();
+	Models						= xr_new<CModelPool>		();
+	L_Dynamic					= xr_new<CLightR_Manager>	();
 
 	PSLibrary.OnCreate			();
 	PSLibrary.OnDeviceCreate	();
@@ -83,14 +83,14 @@ IDirect3DVertexBuffer9*	CRender::getVB					(int id)			{ VERIFY(id<int(VB.size())
 IDirect3DIndexBuffer9*	CRender::getIB					(int id)			{ VERIFY(id<int(IB.size()));		return IB[id];		}
 IRender_Target*			CRender::getTarget				()					{ return Target;										}
 
-IRender_Light*			CRender::light_create			()					{ return L_Dynamic->Create();							}
-void					CRender::light_destroy			(IRender_Light* &L)	{ if (L) { L_Dynamic->Destroy((CLightPPA*)L); L=0; }		}
+IRender_Light*			CRender::light_create			()					{ return L_DB->Create();								}
+void					CRender::light_destroy			(IRender_Light* &L)	{ if (L) { L_DB->Destroy((light*)L); L=0; }				}
 
-void					CRender::flush					()					{ flush_Models();									}
+void					CRender::flush					()					{ flush_Models();										}
 
-BOOL					CRender::occ_visible			(vis_data& P)		{ return HOM.visible(P);							}
-BOOL					CRender::occ_visible			(sPoly& P)			{ return HOM.visible(P);							}
-BOOL					CRender::occ_visible			(Fbox& P)			{ return HOM.visible(P);							}
+BOOL					CRender::occ_visible			(vis_data& P)		{ return HOM.visible(P);								}
+BOOL					CRender::occ_visible			(sPoly& P)			{ return HOM.visible(P);								}
+BOOL					CRender::occ_visible			(Fbox& P)			{ return HOM.visible(P);								}
 
 void					CRender::add_Visual				(IRender_Visual*		V )	{ add_leafs_Dynamic(V);								}
 void					CRender::add_Geometry			(IRender_Visual*		V )	{ add_Static(V,View->getMask());					}
@@ -103,8 +103,12 @@ void					CRender::set_Object				(IRenderable*		O )
 	val_pObject				= O;		// NULL is OK, trust me :)
 	L_Shadows->set_object	(O);
 	L_Projector->set_object	(O);
-	L_DB->Track				(O);
-	if (O)					VERIFY	(O->renderable.ROS);
+	if (O)
+	{
+		VERIFY				(O->renderable.ROS);
+		CLightTrack*		T = (CLightTrack*)O->renderable.ROS;
+		T->ltrack			(O);
+	}
 }
 void					CRender::ApplyObject			(IRenderable*		O )
 {
@@ -118,7 +122,6 @@ void					CRender::ApplyObject			(IRenderable*		O )
 }
 
 // Misc
-_FpsController			QualityControl;
 static	float			g_fGLOD, g_fFarSq, g_fPOWER;
 float					g_fSCREEN;
 float					g_fLOD,g_fLOD_scale=1.f;
@@ -283,11 +286,11 @@ void CRender::Calculate				()
 						set_Object						(0);	//? is it needed at all
 					}
 				} else {
-					VERIFY							(spatial->spatial.type & STYPE_LIGHTSOURCE);
+					VERIFY								(spatial->spatial.type & STYPE_LIGHTSOURCE);
 					// lightsource
-					light*			L				= dynamic_cast<light*>		(spatial);
-					VERIFY							(L);
-					Lights.add_light				(L);
+					light*			L					= dynamic_cast<light*>		(spatial);
+					VERIFY								(L);
+					L_DB->add_light						(L);
 				}
 				break;	// exit loop on frustums
 			}
@@ -701,7 +704,7 @@ void	CRender::Render		()
 			Wallmarks->Render		();		// Wallmarks has priority as normal geometry
 
 			RCache.set_xform_world	(Fidentity);
-			L_Dynamic->Render		();		// L_DB has priority the same as normal geom
+			L_Dynamic->render		();		// L_DB has priority the same as normal geom
 
 			RCache.set_xform_world	(Fidentity);
 			L_Shadows->render		();

@@ -62,22 +62,22 @@ ref_shader CLensFlareDescriptor::CreateShader(LPCSTR tex_name, LPCSTR sh_name)
 
 void CLensFlareDescriptor::load(CInifile* pIni, LPCSTR sect)
 {
-	strcpy		(section,sect);
-	m_Flags.set	(flSource,pIni->r_bool(section,"source" ));
+	section		= sect;
+	m_Flags.set	(flSource,pIni->r_bool(sect,"source" ));
 	if (m_Flags.is(flSource)){
-		LPCSTR S= pIni->r_string 	( section,"source_shader" );
-		LPCSTR T= pIni->r_string 	( section,"source_texture" );
-		float r = pIni->r_float		( section,"source_radius" );
-		BOOL i 	= pIni->r_bool		( section,"source_ignore_color" );
+		LPCSTR S= pIni->r_string 	( sect,"source_shader" );
+		LPCSTR T= pIni->r_string 	( sect,"source_texture" );
+		float r = pIni->r_float		( sect,"source_radius" );
+		BOOL i 	= pIni->r_bool		( sect,"source_ignore_color" );
 		SetSource(r,i,T,S);
 	}
-	m_Flags.set	(flFlare,pIni->r_bool ( section,"flares" ));
+	m_Flags.set	(flFlare,pIni->r_bool ( sect,"flares" ));
 	if (m_Flags.is(flFlare)){
-	    LPCSTR S= pIni->r_string 	( section,"flare_shader" );
-		LPCSTR T= pIni->r_string 	( section,"flare_textures" );
-		LPCSTR R= pIni->r_string 	( section,"flare_radius" );
-		LPCSTR O= pIni->r_string 	( section,"flare_opacity");
-		LPCSTR P= pIni->r_string 	( section,"flare_position");
+	    LPCSTR S= pIni->r_string 	( sect,"flare_shader" );
+		LPCSTR T= pIni->r_string 	( sect,"flare_textures" );
+		LPCSTR R= pIni->r_string 	( sect,"flare_radius" );
+		LPCSTR O= pIni->r_string 	( sect,"flare_opacity");
+		LPCSTR P= pIni->r_string 	( sect,"flare_position");
 		u32 tcnt= _GetItemCount(T);
         string256 name;
 		for (u32 i=0; i<tcnt; i++){
@@ -88,16 +88,16 @@ void CLensFlareDescriptor::load(CInifile* pIni, LPCSTR sect)
 			AddFlare(r,o,p,name,S);
 		}
 	}
-	m_Flags.set	(flGradient,CInifile::IsBOOL(pIni->r_string( section, "gradient")));
+	m_Flags.set	(flGradient,CInifile::IsBOOL(pIni->r_string( sect, "gradient")));
 	if (m_Flags.is(flGradient)){
-		LPCSTR S= pIni->r_string 	( section,"gradient_shader" );
-		LPCSTR T= pIni->r_string	( section,"gradient_texture" );
-		float r	= pIni->r_float		( section,"gradient_radius"  );
-		float o = pIni->r_float		( section,"gradient_opacity" );
+		LPCSTR S= pIni->r_string 	( sect,"gradient_shader" );
+		LPCSTR T= pIni->r_string	( sect,"gradient_texture" );
+		float r	= pIni->r_float		( sect,"gradient_radius"  );
+		float o = pIni->r_float		( sect,"gradient_opacity" );
 		SetGradient(r,o,T,S);
 	}
-    m_StateBlendUpSpeed	= 1.f/(_max(pIni->r_float( section,"blend_rise_time" ),0.f)+EPS_S);
-    m_StateBlendDnSpeed	= 1.f/(_max(pIni->r_float( section,"blend_down_time" ),0.f)+EPS_S);
+    m_StateBlendUpSpeed	= 1.f/(_max(pIni->r_float( sect,"blend_rise_time" ),0.f)+EPS_S);
+    m_StateBlendDnSpeed	= 1.f/(_max(pIni->r_float( sect,"blend_down_time" ),0.f)+EPS_S);
 
 	OnDeviceCreate();
 }
@@ -369,10 +369,11 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
 int	CLensFlare::AppendDef(CInifile* pIni, LPCSTR sect)
 {
 	if (!sect||(0==sect[0])) return -1;
-    for (LensFlareDescIt it=m_Palette.begin(); it!=m_Palette.end(); it++){
-    	if (0==strcmp(it->section,sect)) return it-m_Palette.begin();
+    for (LensFlareDescIt it=m_Palette.begin(); it!=m_Palette.end(); it++)
+	{
+    	if (0==strcmp(*it->section,sect)) return it-m_Palette.begin();
     }
-    m_Palette.push_back	(CLensFlareDescriptor());
+    m_Palette.push_back			(CLensFlareDescriptor());
     CLensFlareDescriptor& lf 	= m_Palette.back();
     lf.load						(pIni,sect);
     return m_Palette.size()-1;

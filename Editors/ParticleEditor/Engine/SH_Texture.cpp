@@ -84,15 +84,15 @@ void CTexture::Load()
 
 	bUser							= FALSE;
 	dwMemoryUsage					= 0;
-	if (0==stricmp(cName,"$null"))	return;
-	if (0!=strstr(cName,"$user$"))	{
+	if (0==stricmp(*cName,"$null"))	return;
+	if (0!=strstr(*cName,"$user$"))	{
 		bUser	= TRUE;
 		return;
 	}
 
 	// Check for AVI
 	string256 fn;
-	if (FS.exist(fn,"$game_textures$",cName,".avi")){
+	if (FS.exist(fn,"$game_textures$",*cName,".avi")){
 		// AVI
 		pAVI = xr_new<CAviPlayerCustom>();
 		if (!pAVI->Load(fn)) {
@@ -118,7 +118,7 @@ void CTexture::Load()
 
 		}
 	} else
-    if (FS.exist(fn,"$game_textures$",cName,".seq")){
+    if (FS.exist(fn,"$game_textures$",*cName,".seq")){
 		// Sequence
 		char buffer[256];
 		destructor<IReader>	fs(FS.r_open(fn));
@@ -170,7 +170,7 @@ void CTexture::Load()
 		pSurface = TWLoader2D
 			(
 			M,
-			cName,
+			*cName,
 			tpf32,
 			tmBOX4,
 			psTextureLOD,

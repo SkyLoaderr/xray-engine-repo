@@ -110,7 +110,7 @@ public:
 		VERIFY					(l_tID_Block.m_tCount < tBlockSize);
 
 		if (!l_tID_Block.m_tCount)
-			m_tpTimeMap.insert	(std::make_pair(tTimeID,l_tBlockID));
+			m_tpTimeMap.insert	(mk_pair(tTimeID,l_tBlockID));
 		else {
 			bool				bOk = false;
 			TIME_BLOCK_PAIR_IT	I = m_tpTimeMap.find(l_tID_Block.m_tTimeID);
@@ -118,7 +118,7 @@ public:
 			for ( ; I != E; I++)
 				if ((*I).second == l_tBlockID) {
 					m_tpTimeMap.erase	(I);
-					m_tpTimeMap.insert	(std::make_pair(tTimeID,l_tBlockID));
+					m_tpTimeMap.insert	(mk_pair(tTimeID,l_tBlockID));
 					bOk					= true;
 					break;
 				}

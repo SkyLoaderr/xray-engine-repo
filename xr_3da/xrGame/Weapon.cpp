@@ -299,16 +299,15 @@ void CWeapon::Load		(LPCSTR section)
 	R_ASSERT			(load_cls==SUB_CLS_ID);
 
 	//станадртные настройки коэффициентов хитов попадания для всех типов оружия
-	m_fK_Burn = pSettings->r_float("weapon","burn_immunity");
-	m_fK_Strike = pSettings->r_float("weapon","strike_immunity");
-	m_fK_Shock = pSettings->r_float("weapon","shock_immunity");
-	m_fK_Wound = pSettings->r_float("weapon","wound_immunity");
-	m_fK_Radiation = pSettings->r_float("weapon","radiation_immunity");
-	m_fK_Telepatic = pSettings->r_float("weapon","telepatic_immunity");
-	m_fK_ChemicalBurn = pSettings->r_float("weapon","chemical_burn_immunity");
-	m_fK_Explosion = pSettings->r_float("weapon","explosion_immunity");
-	m_fK_FireWound = pSettings->r_float("weapon","fire_wound_immunity");
-	
+	m_fK_Burn			= pSettings->r_float("weapon","burn_immunity");
+	m_fK_Strike			= pSettings->r_float("weapon","strike_immunity");
+	m_fK_Shock			= pSettings->r_float("weapon","shock_immunity");
+	m_fK_Wound			= pSettings->r_float("weapon","wound_immunity");
+	m_fK_Radiation		= pSettings->r_float("weapon","radiation_immunity");
+	m_fK_Telepatic		= pSettings->r_float("weapon","telepatic_immunity");
+	m_fK_ChemicalBurn	= pSettings->r_float("weapon","chemical_burn_immunity");
+	m_fK_Explosion		= pSettings->r_float("weapon","explosion_immunity");
+	m_fK_FireWound		= pSettings->r_float("weapon","fire_wound_immunity");
 	
 	inherited::Load		(section);
 
@@ -317,8 +316,8 @@ void CWeapon::Load		(LPCSTR section)
 	ypr					= pSettings->r_fvector3		(section,"orientation");
 	ypr.mul				(PI/180.f);
 
-	m_Offset.setHPB		(ypr.x,ypr.y,ypr.z);
-	m_Offset.translate_over(pos);
+	m_Offset.setHPB			(ypr.x,ypr.y,ypr.z);
+	m_Offset.translate_over	(pos);
 
 	fTimeToFire			= pSettings->r_float		(section,"rpm");
 	fTimeToFire			= 60 / fTimeToFire;
@@ -330,30 +329,23 @@ void CWeapon::Load		(LPCSTR section)
 	LPCSTR hud_sect		= pSettings->r_string		(section,"hud");
 	m_pHUD->Load		(hud_sect);
 
-	//m_ammoSect	= pSettings->r_string		(section,"ammo_class");
+	// load ammo classes
 	m_ammoTypes.clear	(); 
 	LPCSTR				S = pSettings->r_string(section,"ammo_class");
-	if (S) {
-		strcpy(m_ammoSect, S);
-		char* l_ammoSect = m_ammoSect; R_ASSERT(l_ammoSect);
-		m_ammoTypes.push_back(l_ammoSect);
-		while(*l_ammoSect) {
-			if(*l_ammoSect == ',') {
-				*l_ammoSect = 0; l_ammoSect++;
-				while(*l_ammoSect == ' ' || *l_ammoSect == '\t') l_ammoSect++;
-				m_ammoTypes.push_back(l_ammoSect);
-			}
-			l_ammoSect++;
+	if (S && S[0]) {
+		string128		_ammoItem;
+		int				count		= _GetItemCount	(S);
+		for (int it=0; it<count; it++)	{
+			_GetItem				(S,it,_ammoItem);
+			m_ammoTypes.push_back	(_ammoItem);
 		}
-		m_ammoName = pSettings->r_string(m_ammoTypes[0],"inv_name_short");
+		m_ammoName = pSettings->r_string(*m_ammoTypes[0],"inv_name_short");
 	}
 	else
 		m_ammoName = 0;
 
 	m_resource = m_abrasion = pSettings->r_float(section,"resource");
 
-	//iAmmoLimit			= pSettings->r_s32		(section,"ammo_limit"		);
-	//iAmmoCurrent		= pSettings->r_s32		(section,"ammo_current"		);
 	iAmmoElapsed		= pSettings->r_s32		(section,"ammo_elapsed"		);
 	iMagazineSize		= pSettings->r_s32		(section,"ammo_mag_size"	);
 	
@@ -404,7 +396,7 @@ void CWeapon::Load		(LPCSTR section)
 	vShellPoint			= pSettings->r_fvector3		(section,"shell_point"		);
 
 	// flames
-	iFlameDiv			= pSettings->r_s32		(section,"flame_div"		);
+	iFlameDiv			= pSettings->r_s32			(section,"flame_div"		);
 	fFlameLength		= pSettings->r_float		(section,"flame_length"		);
 	fFlameSize			= pSettings->r_float		(section,"flame_size"		);
 
@@ -414,8 +406,6 @@ void CWeapon::Load		(LPCSTR section)
 	// slot
 	iSlotBinding = m_slot = pSettings->r_s32		(section,"slot");
 
-	//setVisible			(FALSE);
-	
 	m_fMinRadius		= pSettings->r_float		(section,"min_radius");
 	m_fMaxRadius		= pSettings->r_float		(section,"max_radius");
 }
@@ -429,7 +419,7 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 	//iAmmoCurrent					= E->a_current;
 	iAmmoElapsed					= E->a_elapsed;
 	if(iAmmoElapsed) {
-		CCartridge l_cartridge; l_cartridge.Load(m_ammoTypes[m_ammoType]);
+		CCartridge l_cartridge; l_cartridge.Load(*m_ammoTypes[m_ammoType]);
 		for(int i = 0; i < iAmmoElapsed; i++) m_magazine.push(l_cartridge);
 	}
 	
@@ -959,7 +949,7 @@ bool CWeapon::Action(s32 cmd, u32 flags)
 				u32 l_newType = m_ammoType;
 				do {
 					l_newType = (l_newType+1)%m_ammoTypes.size();
-				} while(l_newType != m_ammoType && !m_pInventory->Get(m_ammoTypes[l_newType],
+				} while(l_newType != m_ammoType && !m_pInventory->Get(*m_ammoTypes[l_newType],
 																	 !dynamic_cast<CActor*>(H_Parent())));
 				
 				if(l_newType != m_ammoType) 
@@ -1000,7 +990,7 @@ void CWeapon::SpawnAmmo(u32 boxCurr, LPCSTR ammoSect)
 	
 	static l_type = 0; l_type %= m_ammoTypes.size();
 	if(!ammoSect) 
-		ammoSect = m_ammoTypes[l_type/*m_ammoType*/]; //m_ammoType++; m_ammoType %= m_ammoTypes.size();
+		ammoSect = *m_ammoTypes[l_type/*m_ammoType*/]; //m_ammoType++; m_ammoType %= m_ammoTypes.size();
 	
 	l_type++; 
 	l_type %= m_ammoTypes.size();
@@ -1055,7 +1045,7 @@ int CWeapon::GetAmmoCurrent()
 
 	for(int i = 0; i < (int)m_ammoTypes.size(); i++) 
 	{
-		LPCSTR l_ammoType = m_ammoTypes[i];
+		LPCSTR l_ammoType = *m_ammoTypes[i];
 //		if(dynamic_cast<CActor*>(H_Parent())) 
 		{
 			TIItemList &l_list = m_pInventory->m_belt;

@@ -14,16 +14,15 @@ public:
 };
 class	ENGINE_API	xr_resource_named	:	public xr_resource		{
 public:
-	char *			cName;
+	ref_str			cName;
 
-	char *			set_name			( const char * name)	
+	const char *	set_name			( const char * name)	
 	{
-		xr_free		(cName);
-		cName		= xr_strdup(name);
-		return		cName;
+		cName		= name;
+		return		*cName;
 	}
 	xr_resource_named()	: cName(0)		{ }
-	~xr_resource_named()				{ xr_free(cName);	}
+	~xr_resource_named()				{ }
 };
 
 

@@ -30,11 +30,11 @@ struct st_BoneMotion
 	enum {
 		flWorldOrient = 1<<0,
 	};
-	LPSTR		name;
-	CEnvelope*	envs[ctMaxChannel];
+	ref_str		name;
+	CEnvelope*	envs			[ctMaxChannel];
 	Flags8		m_Flags;
-    			st_BoneMotion(){name=0; m_Flags.zero(); ZeroMemory(envs,sizeof(CEnvelope*)*ctMaxChannel);}
-    void        SetName(LPCSTR nm){xr_free(name); name=xr_strdup(nm);}
+    			st_BoneMotion()	{name=0; m_Flags.zero(); ZeroMemory(envs,sizeof(CEnvelope*)*ctMaxChannel);}
+    void        SetName(LPCSTR nm)	{	name=nm;	}
 };
 // vector по костям
 DEFINE_VECTOR(st_BoneMotion,BoneMotionVec,BoneMotionIt);
@@ -50,7 +50,7 @@ protected:
 		ForceDWORD	= u32(-1)
 	};
 	EMotionType		mtype;
-	string256		name;
+	string128		name;
 	int				iFrameStart, iFrameEnd;
 	float			fFPS;
 public:
@@ -59,7 +59,7 @@ public:
 	virtual			~CCustomMotion	();
 
 	void			SetName			(const char* n)	{if(n) strcpy(name,n); strlwr(name);}
-	string256&		Name			()				{return name;}
+	string128&		Name			()				{return name;}
     int				FrameStart		()				{return iFrameStart;}
     int				FrameEnd		()				{return iFrameEnd;}
     float			FPS				()				{return fFPS;}

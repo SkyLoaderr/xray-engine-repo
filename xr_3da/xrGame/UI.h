@@ -43,15 +43,15 @@ class CWeapon;
 
 struct SUIMessage
 {
-	LPSTR sender;
-	LPSTR msg;
-	u32 color;
-	int life_time;
+	LPSTR	sender;
+	LPSTR	msg;
+	u32		color;
+	int		life_time;
 	SUIMessage(LPCSTR S, LPCSTR M, u32 clr, float lt)
 	{
-		sender		= xr_strdup(S);
-		msg			= xr_strdup(M);
-		life_time	= iFloor(lt*1000);
+		sender		= xr_strdup(	S);
+		msg			= xr_strdup	(M);
+		life_time	= iFloor	(lt*1000);
 		color		= clr;
 	}
 	~SUIMessage()

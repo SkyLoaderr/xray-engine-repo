@@ -13,7 +13,7 @@
 
 class CLevelChanger : public CGameObject, public Feel::Touch {
 private:
-	string32		m_caLevelToChange;
+	ref_str			m_caLevelToChange;
 public:
 	typedef	CGameObject	inherited;
 

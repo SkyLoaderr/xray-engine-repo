@@ -45,7 +45,7 @@ struct	R_constant_load
 
 struct	R_constant
 {
-	string64				name;		// HLSL-name
+	ref_str					name;		// HLSL-name
 	u16						type;		// float=0/integer=1/boolean=2
 	u16						destination;// pixel/vertex/(or both)/sampler
 
@@ -54,11 +54,11 @@ struct	R_constant
 	R_constant_load			samp;
 	R_constant_setup*		handler;
 
-	R_constant() : type(u16(-1)), destination(0), handler(NULL) { name[0]=0; };
+	R_constant() : type(u16(-1)), destination(0), handler(NULL) { };
 
 	IC BOOL					equal		(R_constant& C)
 	{
-		return (0==strcmp(name,C.name)) && (type==C.type) && (destination==C.destination) && ps.equal(C.ps) && vs.equal(C.vs) && samp.equal(C.samp) && handler==C.handler;
+		return (0==strcmp(*name,*C.name)) && (type==C.type) && (destination==C.destination) && ps.equal(C.ps) && vs.equal(C.vs) && samp.equal(C.samp) && handler==C.handler;
 	}
 	IC BOOL					equal		(R_constant* C)
 	{

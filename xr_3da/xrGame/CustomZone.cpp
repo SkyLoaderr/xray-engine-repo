@@ -56,7 +56,7 @@ BOOL CCustomZone::net_Spawn(LPVOID DC)
 		for(s32 i = 0; i < l_c; i++) {
 			Fvector c; c.set(l_m.c.x,l_m.c.y+EPS,l_m.c.z);
 			IRender_Sector *l_pRS = ::Render->detectSector(c);
-			pStaticPG = xr_new<CParticlesObject>(m_effects[i],l_pRS,false);
+			pStaticPG = xr_new<CParticlesObject>(*m_effects[i],l_pRS,false);
 			pStaticPG->SetTransform(l_m);
 			pStaticPG->Play();
 			m_effectsPSs.push_back(pStaticPG);
@@ -79,14 +79,15 @@ void CCustomZone::Load(LPCSTR section)
 	if (self)		self->spatial.type	|=	STYPE_COLLIDEABLE;
 //////////////////////////////////////////////////////////////////////////
 
-	LPCSTR l_PSnd = pSettings->r_string(section,"sound");
-	SoundCreate(m_ambient, l_PSnd);
+	LPCSTR l_PSnd	= pSettings->r_string(section,"sound");
+	SoundCreate		(m_ambient, l_PSnd);
 
-	strcpy(m_effectsSTR, pSettings->r_string(section,"effects"));
+	string512		m_effectsSTR;
+	strcpy			(m_effectsSTR,pSettings->r_string(section,"effects"));
 	
-	char* l_effectsSTR = m_effectsSTR; 
+	char* l_effectsSTR	= m_effectsSTR; 
 	
-	R_ASSERT(l_effectsSTR);
+	R_ASSERT		(l_effectsSTR);
 	
 
 	//no particles, that distinguish zone
@@ -99,8 +100,8 @@ void CCustomZone::Load(LPCSTR section)
 		return;
 	}
 	
-	m_effects.clear(); 
-	m_effects.push_back(l_effectsSTR);
+	m_effects.clear		(); 
+	m_effects.push_back	(l_effectsSTR);
 
 	//parse the string
 	while(*l_effectsSTR)

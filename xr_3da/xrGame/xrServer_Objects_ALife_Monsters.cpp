@@ -148,7 +148,7 @@ void CSE_ALifeTrader::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 			tNetPacket.r_string	(l_tpArtefactOrder->m_caSection);
 			tNetPacket.r_u32	(l_tpArtefactOrder->m_dwTotalCount);
 			load_data			(l_tpArtefactOrder->m_tpOrders,tNetPacket);
-			m_tpOrderedArtefacts.insert(std::make_pair(l_tpArtefactOrder->m_caSection,l_tpArtefactOrder));
+			m_tpOrderedArtefacts.insert(mk_pair(l_tpArtefactOrder->m_caSection,l_tpArtefactOrder));
 		}
 	}
 	if (m_wVersion > 30) {

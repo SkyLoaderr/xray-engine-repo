@@ -16,7 +16,7 @@ DEFINE_VECTOR(CLuaVirtualMachine*,LUA_VM_VECTOR,LUA_VM_IT);
 class CScript {
 	CLuaVirtualMachine	*m_tpLuaVirtualMachine;
 	CLuaVirtualMachine	*m_tpLuaThread;
-	string256			m_caScriptFileName;
+	ref_str				m_caScriptFileName;
 public:
 	bool				m_bActive;
 

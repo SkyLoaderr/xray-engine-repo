@@ -1,6 +1,8 @@
 #include "StdAfx.h"
 #include "..\_d3d_extensions.h"
 #include "..\xrLevel.h"
+#include "..\igame_persistent.h"
+#include "..\environment.h"
 #include "light_db.h"
 
 CLight_DB::CLight_DB()
@@ -18,9 +20,6 @@ void CLight_DB::Load			(IReader *fs)
 	// Lights itself
 	{
 		F				= fs->open_chunk		(fsL_LIGHT_DYNAMIC);
-
-		sun_dir.set		(0,	-1,	0);
-		sun_color.set	(1,	 1,	1);
 
 		u32 size		= F->length();
 		u32 element		= sizeof(Flight)+4;
@@ -40,12 +39,8 @@ void CLight_DB::Load			(IReader *fs)
 			if (Ldata.type==D3DLIGHT_DIRECTIONAL)
 			{
 				// directional
-				v_static.push_back	(NULL);
-				Destroy				(L);
-				sun_dir.set			(Ldata.direction);
-				sun_dir.y			+= -1.f;
-				sun_dir.normalize	();
-				sun_color.set		(Ldata.diffuse.r,Ldata.diffuse.g,Ldata.diffuse.b);
+				L->set_type			(IRender_Light::DIRECT);
+				L->set_shadow		(true);
 			}
 			else
 			{
@@ -61,13 +56,13 @@ void CLight_DB::Load			(IReader *fs)
 
 		F->close			();
 	}
-	// Msg	("* Layers/Lights : %d / %d",v_static_controls.size(),v_static.size());
 }
 
 void			CLight_DB::Unload	()
 {
 	for	(u32 it=0; it<v_static.size(); it++)	Destroy(v_static[it]);
 	v_static.clear			();
+	Destroy					(sun);
 }
 
 light*			CLight_DB::Create	()
@@ -89,7 +84,7 @@ void			CLight_DB::add_light		(light* L)
 {
 	if (Device.dwFrame==L->dwFrame)	return;
 	L->dwFrame	=	Device.dwFrame;
-	if (L->flags.bStatic)			return;
+	if (L->flags.bStatic)			return;	// skip static lighting, 'cause they are in lmaps
 
 	RImplementation.L_Dynamic->add	(L);
 }
@@ -115,6 +110,18 @@ void			CLight_DB::add_light		(light* L)
 
 void			CLight_DB::Update			()
 {
+	// set sun params
+	if (sun)
+	{
+		CEnvDescriptor&	E			= g_pGamePersistent->Environment.CurrentEnv;
+		Fvector						P;
+		P.mad						(Device.vCameraPosition,E.sun_dir,-500.f);
+		sun->set_direction			(E.sun_dir);
+		sun->set_color				(E.sun_color.x,E.sun_color.y,E.sun_color.z);
+		sun->set_position			(P);
+		sun->set_range				(600.f);
+	}
+
 	// Clear selection
 	v_selected_shadowed.clear	();
 	v_selected_unshadowed.clear	();

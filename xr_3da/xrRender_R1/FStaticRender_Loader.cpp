@@ -39,7 +39,7 @@ void CRender::level_Load()
 	Target						= xr_new<CRenderTarget>		();
 	L_Shadows					= xr_new<CLightShadows>		();
 	L_Projector					= xr_new<CLightProjector>	();
-	L_DB						= xr_new<CLightDB_Static>	();
+	L_DB						= xr_new<CLight_DB>			();
 	L_Glows						= xr_new<CGlowManager>		();
 	Wallmarks					= xr_new<CWallmarksEngine>	();
 	Details						= xr_new<CDetailManager>	();

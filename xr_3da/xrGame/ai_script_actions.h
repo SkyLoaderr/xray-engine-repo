@@ -41,14 +41,14 @@ public:
 		ePatrolPathInvalid = u32(-1),
 	};
 
-	string32						m_caPatrolPathToGo;
+	ref_str							m_caPatrolPathToGo;
 	EPatrolPathStart				m_tPatrolPathStart;
 	EPatrolPathStop					m_tPatrolPathStop;
 	bool							m_bRandom;
 
 							CPatrolPathParams	(LPCSTR caPatrolPathToGo, const EPatrolPathStart tPatrolPathStart = ePatrolPathNearest, const EPatrolPathStop tPatrolPathStop = ePatrolPathContinue, bool bRandom = true)
 	{
-		strcpy				(m_caPatrolPathToGo,caPatrolPathToGo);
+		m_caPatrolPathToGo	= caPatrolPathToGo;
 		m_tPatrolPathStart	= tPatrolPathStart;
 		m_tPatrolPathStop	= tPatrolPathStop;
 		m_bRandom			= bRandom;
@@ -90,7 +90,7 @@ public:
 	MonsterSpace::EMovementType		m_tMovementType;
 	MonsterSpace::EPathType			m_tPathType;
 	CObject							*m_tpObjectToGo;
-	string32						m_caPatrolPathToGo;
+	ref_str							m_caPatrolPathToGo;
 	CPatrolPathParams::EPatrolPathStart	m_tPatrolPathStart;
 	CPatrolPathParams::EPatrolPathStop	m_tPatrolPathStop;
 	Fvector							m_tDestinationPosition;
@@ -131,7 +131,7 @@ public:
 		SetBodyState		(tBodyState);
 		SetMovementType		(tMovementType);
 		SetPathType			(tPathType);
-		SetPatrolPath		(tPatrolPathParams.m_caPatrolPathToGo);
+		SetPatrolPath		(*tPatrolPathParams.m_caPatrolPathToGo);
 		SetPatrolStart		(tPatrolPathParams.m_tPatrolPathStart);
 		SetPatrolStop		(tPatrolPathParams.m_tPatrolPathStop);
 		SetPatrolRandom		(tPatrolPathParams.m_bRandom);
@@ -190,7 +190,7 @@ public:
 
 			void			SetPatrolPath		(LPCSTR caPatrolPath)
 	{
-		strcpy				(m_caPatrolPathToGo,caPatrolPath);
+		m_caPatrolPathToGo	= caPatrolPath;
 		m_tGoalType			= eGoalTypePatrolPath;
 		m_bCompleted		= false;
 	}
@@ -301,13 +301,12 @@ public:
 		eGoalTypeMental,
 		eGoalTypeDummy = u32(-1),
 	};
-	string64						m_caAnimationToPlay;
+	ref_str							m_caAnimationToPlay;
 	MonsterSpace::EMentalState		m_tMentalState;
 	EGoalType						m_tGoalType;
 
 							CAnimationAction	()
 	{
-		strcpy				(m_caAnimationToPlay,"");
 		m_tMentalState		= MonsterSpace::eMentalStateDanger;
 		m_tGoalType			= eGoalTypeMental;
 		m_bCompleted		= false;
@@ -325,7 +324,7 @@ public:
 
 			void			SetAnimation		(LPCSTR caAnimationToPlay)
 	{
-		strcpy				(m_caAnimationToPlay,caAnimationToPlay);
+		m_caAnimationToPlay	= caAnimationToPlay;
 		m_tMentalState		= MonsterSpace::eMentalStateDanger;
 		m_tGoalType			= eGoalTypeAnimation;
 		m_bCompleted		= false;
@@ -346,8 +345,8 @@ public:
 		eGoalTypeSoundPosition,
 		eGoalTypeDummy = u32(-1),
 	};
-	string256						m_caSoundToPlay;
-	string64						m_caBoneName;
+	ref_str							m_caSoundToPlay;
+	ref_str							m_caBoneName;
 	EGoalType						m_tGoalType;
 	ref_sound						*m_tpSound;
 	bool							m_bLooped;
@@ -357,8 +356,8 @@ public:
 
 							CSoundAction		()
 	{
-		strcpy				(m_caSoundToPlay,"");
-		strcpy				(m_caBoneName,"");
+		m_caSoundToPlay		= "";
+		m_caBoneName		= "";
 		m_tGoalType			= eGoalTypeDummy;
 		m_bCompleted		= false;
 		m_bStartedToPlay	= false;
@@ -395,12 +394,12 @@ public:
 
 			void			SetSound			(LPCSTR caSoundToPlay)
 	{
-		strcpy				(m_caSoundToPlay,caSoundToPlay);
+		m_caSoundToPlay		= caSoundToPlay;
 		m_tGoalType			= eGoalTypeSoundAttached;
 		m_tpSound			= 0;
 		m_bStartedToPlay	= false;
 		string256			l_caFileName;
-		if (FS.exist(l_caFileName,"$game_sounds$",m_caSoundToPlay,".wav")) {
+		if (FS.exist(l_caFileName,"$game_sounds$",*m_caSoundToPlay,".wav")) {
 			m_bStartedToPlay= false;
 			m_bCompleted	= false;
 		}
@@ -419,7 +418,7 @@ public:
 
 			void			SetBone				(LPCSTR caBoneName)
 	{
-		strcpy				(m_caBoneName,caBoneName);
+		m_caBoneName		= caBoneName;
 		m_bStartedToPlay	= false;
 	}
 	
@@ -455,8 +454,8 @@ public:
 		eGoalTypeParticlePosition,
 		eGoalTypeDummy = u32(-1),
 	};
-	string32						m_caParticleToRun;
-	string32						m_caBoneName;
+	ref_str							m_caParticleToRun;
+	ref_str							m_caBoneName;
 	EGoalType						m_tGoalType;
 	CParticlesObject				*m_tpParticleSystem;
 	bool							m_bStartedToPlay;
@@ -467,8 +466,8 @@ public:
 
 							CParticleAction		()
 	{
-		strcpy				(m_caParticleToRun,"");
-		strcpy				(m_caBoneName,"");
+		m_caParticleToRun	= "";
+		m_caBoneName		= "";
 		m_tGoalType			= eGoalTypeDummy;
 		m_bCompleted		= false;
 		m_bStartedToPlay	= false;
@@ -510,7 +509,7 @@ public:
 
 			void			SetBone				(LPCSTR caBoneName)
 	{
-		strcpy				(m_caBoneName,caBoneName);
+		m_caBoneName		= caBoneName;
 		m_bStartedToPlay	= false;
 		m_bCompleted		= false;
 	}
@@ -535,7 +534,7 @@ public:
 	CObject							*m_tpObject;
 	MonsterSpace::EObjectAction		m_tGoalType;
 	u32								m_dwQueueSize;
-	string32						m_caBoneName;
+	ref_str							m_caBoneName;
 
 							CObjectAction		()
 	{
@@ -561,7 +560,7 @@ public:
 
 			void			SetObject			(LPCSTR	caBoneName)
 	{
-		strcpy				(m_caBoneName,caBoneName);
+		m_caBoneName		= caBoneName;
 		m_bCompleted		= false;
 	}
 

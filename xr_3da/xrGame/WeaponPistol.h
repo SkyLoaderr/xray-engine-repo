@@ -6,7 +6,7 @@ class CWeaponPistol :
 {
 	typedef CWeaponCustomPistol inherited;
 public:
-	CWeaponPistol(LPCSTR name);
+	CWeaponPistol	(LPCSTR name);
 	virtual ~CWeaponPistol(void);
 
 	virtual void	Load			(LPCSTR section);
@@ -18,7 +18,7 @@ public:
 	virtual void	net_Destroy		();
 	virtual void	OnH_B_Chield	();
 
-	ref_sound			sndClose;
+	ref_sound		sndClose;
 	ESoundTypes		m_eSoundClose;
 
 	MotionSVec		mhud_empty;

@@ -131,7 +131,7 @@ void CWeaponKnife::OnAnimationEnd()
 			Fvector					p1, d; p1.set(vLastFP); d.set(vLastFD);
 			if(H_Parent()) dynamic_cast<CEntity*>(H_Parent())->g_fireParams(p1,d);
 			else break;
-			CCartridge l_cartridge; l_cartridge.Load(m_ammoTypes[m_ammoType]);
+			CCartridge l_cartridge; l_cartridge.Load(*m_ammoTypes[m_ammoType]);
 			while(m_magazine.size() < 2) m_magazine.push(l_cartridge);
 			FireTrace(p1,vLastFP,d);
 		} else SwitchState(eIdle);
@@ -143,7 +143,7 @@ void CWeaponKnife::OnAnimationEnd()
 			Fvector					p1, d; p1.set(vLastFP); d.set(vLastFD);
 			if(H_Parent()) dynamic_cast<CEntity*>(H_Parent())->g_fireParams(p1,d);
 			else break;
-			CCartridge l_cartridge; l_cartridge.Load(m_ammoTypes[m_ammoType]);
+			CCartridge l_cartridge; l_cartridge.Load(*m_ammoTypes[m_ammoType]);
 			while(m_magazine.size() < 2) m_magazine.push(l_cartridge);
 			FireTrace(p1,vLastFP,d);
 		} else SwitchState(eIdle);

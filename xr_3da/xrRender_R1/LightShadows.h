@@ -6,12 +6,10 @@
 #define AFX_LIGHTSHADOWS_H__CFA216D9_CACB_4515_9FBE_7C531649168F__INCLUDED_
 #pragma once
 
+#include "light.h"
 #include "fstaticrender_scenegraph.h"
 
-class	ENGINE_API			CObject;
-struct	ENGINE_API			Flight;
-
-class CLightShadows			
+class	CLightShadows			
 {
 	friend class pred_casters;
 private:
@@ -22,14 +20,14 @@ private:
 		IRenderable*		O;
 		Fvector				C;
 		float				D;
-		svector<NODE,32>	nodes;
+		svector<NODE,16>	nodes;
 	};
 	struct	shadow 
 	{
 		int					slot;
 		Fvector				C;
 		Fmatrix				M;
-		Flight*				L;
+		light*				L;
 	};
 	struct	tess_tri
 	{

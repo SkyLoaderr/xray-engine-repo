@@ -110,7 +110,7 @@ public:
 		PATH_BIDIRECTIONAL	= u32(2),
 	};
 	
-	DEFINE_MAP_PRED				(LPSTR,SPath,SPathMap,SPathPairIt,pred_str);
+	DEFINE_MAP_PRED				(LPCSTR,SPath,SPathMap,SPathPairIt,pred_str);
 	SPathMap					m_PatrolPaths;
 
 	// Starting/Loading

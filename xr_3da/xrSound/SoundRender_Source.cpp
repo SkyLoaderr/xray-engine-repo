@@ -12,5 +12,4 @@ CSoundRender_Source::CSoundRender_Source	()
 CSoundRender_Source::~CSoundRender_Source	()
 {
 	xr_free	(wave);
-	xr_free	(fname);
 }

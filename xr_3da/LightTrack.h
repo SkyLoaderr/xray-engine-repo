@@ -10,8 +10,6 @@ const	float				lt_inc			= 4.f;
 const	float				lt_dec			= 2.f;
 const	float				lt_smooth		= 4.f;
 
-class	R1_light;
-
 class	CLightTrack			: public IRender_ObjectSpecific
 {
 public:
@@ -26,6 +24,7 @@ public:
 	{
 		light*				source;
 		float				energy;
+		Fcolor				color;
 	};
 	xr_vector<Item>			track;
 	xr_vector<Light>		lights;

@@ -44,9 +44,9 @@ public:
     void				AddFlare		(float fRadius, float fOpacity, float fPosition, LPCSTR tex_name, LPCSTR sh_name);
     ref_shader			CreateShader	(LPCSTR tex_name, LPCSTR sh_name);
 
-	string64			section;
+	ref_str				section;
 public:
-    					CLensFlareDescriptor(){m_Flags.zero();section[0]=0;m_StateBlendUpSpeed=m_StateBlendDnSpeed=0.1f;}
+    					CLensFlareDescriptor(){m_Flags.zero();section=0;m_StateBlendUpSpeed=m_StateBlendDnSpeed=0.1f;}
     void				load				(CInifile* pIni, LPCSTR section);
 	void 				OnDeviceCreate	();
 	void 				OnDeviceDestroy	();

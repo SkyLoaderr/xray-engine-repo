@@ -202,7 +202,7 @@ SVS*	CResourceManager::_CreateVS		(LPCSTR name)
 void	CResourceManager::_DeleteVS			(const SVS* vs)
 {
 	if (0==(vs->dwFlags&xr_resource::RF_REGISTERED))	return;
-	LPSTR N				= LPSTR		(vs->cName);
+	LPSTR N				= LPSTR		(*vs->cName);
 	map_VS::iterator I	= m_vs.find	(N);
 	if (I!=m_vs.end())	{
 		m_vs.erase(I);
@@ -278,7 +278,7 @@ SPS*	CResourceManager::_CreatePS			(LPCSTR name)
 void	CResourceManager::_DeletePS			(const SPS* ps)
 {
 	if (0==(ps->dwFlags&xr_resource::RF_REGISTERED))	return;
-	LPSTR N				= LPSTR		(ps->cName);
+	LPSTR N				= LPSTR		(*ps->cName);
 	map_PS::iterator I	= m_ps.find	(N);
 	if (I!=m_ps.end())	{
 		m_ps.erase(I);
@@ -324,7 +324,7 @@ CRT*	CResourceManager::_CreateRT		(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f)
 void	CResourceManager::_DeleteRT		(const CRT* RT)
 {
 	if (0==(RT->dwFlags&xr_resource::RF_REGISTERED))	return;
-	LPSTR N				= LPSTR		(RT->cName);
+	LPSTR N				= LPSTR		(*RT->cName);
 	map_RT::iterator I	= m_rtargets.find	(N);
 	if (I!=m_rtargets.end())	{
 		m_rtargets.erase(I);
@@ -353,7 +353,7 @@ CRTC*	CResourceManager::_CreateRTC		(LPCSTR Name, u32 size,	D3DFORMAT f)
 void	CResourceManager::_DeleteRTC		(const CRTC* RT)
 {
 	if (0==(RT->dwFlags&xr_resource::RF_REGISTERED))	return;
-	LPSTR N				= LPSTR		(RT->cName);
+	LPSTR N				= LPSTR		(*RT->cName);
 	map_RTC::iterator I	= m_rtargets_c.find	(N);
 	if (I!=m_rtargets_c.end())	{
 		m_rtargets_c.erase(I);
@@ -445,7 +445,7 @@ void	CResourceManager::_DeleteTexture		(const CTexture* T)
 	// DBG_VerifyTextures	();
 
 	if (0==(T->dwFlags&xr_resource::RF_REGISTERED))	return;
-	LPSTR N					= LPSTR		(T->cName);
+	LPSTR N					= LPSTR		(*T->cName);
 	map_Texture::iterator I	= m_textures.find	(N);
 	if (I!=m_textures.end())	{
 		m_textures.erase(I);
@@ -464,7 +464,7 @@ void	CResourceManager::DBG_VerifyTextures	()
 		R_ASSERT(I->first);
 		R_ASSERT(I->second);
 		R_ASSERT(I->second->cName);
-		R_ASSERT(0==strcmp(I->first,I->second->cName));
+		R_ASSERT(0==strcmp(I->first,*I->second->cName));
 	}
 }
 #endif
@@ -476,7 +476,7 @@ CMatrix*	CResourceManager::_CreateMatrix	(LPCSTR Name)
 	if (0==stricmp(Name,"$null"))	return NULL;
 
 	LPSTR N = LPSTR(Name);
-	xr_map<LPSTR,CMatrix*,str_pred>::iterator I = m_matrices.find	(N);
+	map_Matrix::iterator I = m_matrices.find	(N);
 	if (I!=m_matrices.end())	return I->second;
 	else
 	{
@@ -490,7 +490,7 @@ CMatrix*	CResourceManager::_CreateMatrix	(LPCSTR Name)
 void	CResourceManager::_DeleteMatrix		(const CMatrix* M)
 {
 	if (0==(M->dwFlags&xr_resource::RF_REGISTERED))	return;
-	LPSTR N					= LPSTR		(M->cName);
+	LPSTR N					= LPSTR		(*M->cName);
 	map_Matrix::iterator I	= m_matrices.find	(N);
 	if (I!=m_matrices.end())	{
 		m_matrices.erase(I);
@@ -510,7 +510,7 @@ CConstant*	CResourceManager::_CreateConstant	(LPCSTR Name)
 	if (0==stricmp(Name,"$null"))	return NULL;
 
 	LPSTR N = LPSTR(Name);
-	xr_map<LPSTR,CConstant*,str_pred>::iterator I = m_constants.find	(N);
+	map_Constant::iterator I	= m_constants.find	(N);
 	if (I!=m_constants.end())	return I->second;
 	else
 	{
@@ -524,7 +524,7 @@ CConstant*	CResourceManager::_CreateConstant	(LPCSTR Name)
 void	CResourceManager::_DeleteConstant		(const CConstant* C)
 {
 	if (0==(C->dwFlags&xr_resource::RF_REGISTERED))	return;
-	LPSTR N				= LPSTR				(C->cName);
+	LPSTR N				= LPSTR				(*C->cName);
 	map_Constant::iterator I	= m_constants.find	(N);
 	if (I!=m_constants.end())	{
 		m_constants.erase(I);

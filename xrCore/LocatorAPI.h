@@ -7,7 +7,7 @@
 #pragma once
 
 // refs 
-class TShellChangeThread;
+class	TShellChangeThread;
 
 enum FS_List
 {

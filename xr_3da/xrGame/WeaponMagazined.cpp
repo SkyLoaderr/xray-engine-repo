@@ -133,7 +133,7 @@ void CWeaponMagazined::TryReload()
 {
 	if(m_pInventory) 
 	{
-		m_pAmmo = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(m_ammoTypes[m_ammoType],
+		m_pAmmo = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(*m_ammoTypes[m_ammoType],
 											!dynamic_cast<CActor*>(H_Parent())));
 
 		
@@ -150,7 +150,7 @@ void CWeaponMagazined::TryReload()
 		} 
 		else for(u32 i = 0; i < m_ammoTypes.size(); i++) 
 		{
-			m_pAmmo = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(m_ammoTypes[i],
+			m_pAmmo = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(*m_ammoTypes[i],
 																   !dynamic_cast<CActor*>(H_Parent())));
 			if(m_pAmmo) 
 			{ 
@@ -176,11 +176,11 @@ void CWeaponMagazined::TryReload()
 
 bool CWeaponMagazined::IsAmmoAvailable()
 {
-	if (dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(m_ammoTypes[m_ammoType],!dynamic_cast<CActor*>(H_Parent()))))
+	if (dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(*m_ammoTypes[m_ammoType],!dynamic_cast<CActor*>(H_Parent()))))
 		return	(true);
 	else
 		for(u32 i = 0; i < m_ammoTypes.size(); i++)
-			if (dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(m_ammoTypes[i],!dynamic_cast<CActor*>(H_Parent()))))
+			if (dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(*m_ammoTypes[i],!dynamic_cast<CActor*>(H_Parent()))))
 				return	(true);
 	return		(false);
 }
@@ -199,13 +199,13 @@ void CWeaponMagazined::UnloadMagazine()
 		CCartridge &l_cartridge = m_magazine.top();
 		xr_map<LPCSTR, u16>::iterator l_it;
 		for(l_it = l_ammo.begin(); l_it != l_ammo.end(); l_it++) 
-            if(!strcmp(l_cartridge.m_ammoSect, l_it->first)) 
+            if(!strcmp(*l_cartridge.m_ammoSect, l_it->first)) 
             { 
 				 l_it->second++; 
 				 break; 
 			}
 
-		if(l_it == l_ammo.end()) l_ammo[l_cartridge.m_ammoSect] = 1;
+		if(l_it == l_ammo.end()) l_ammo[*l_cartridge.m_ammoSect] = 1;
 		m_magazine.pop(); 
 		iAmmoElapsed--;
 	}
@@ -237,14 +237,14 @@ void CWeaponMagazined::ReloadMagazine()
 	
 	if(m_pInventory) 
 	{
-		m_pAmmo = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(m_ammoTypes[m_ammoType],
+		m_pAmmo = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(*m_ammoTypes[m_ammoType],
 														   !dynamic_cast<CActor*>(H_Parent())));
 		
 		if(!m_pAmmo && !l_lockType) 
 		{
 			for(u32 i = 0; i < m_ammoTypes.size(); i++) 
 			{
-				m_pAmmo = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(m_ammoTypes[i],
+				m_pAmmo = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(*m_ammoTypes[i],
 													!dynamic_cast<CActor*>(H_Parent())));
 				if(m_pAmmo) 
 				{ 
@@ -260,7 +260,7 @@ void CWeaponMagazined::ReloadMagazine()
 	//разрядить магазин, если загружаемя патронами другого типа
 	if(!l_lockType && m_magazine.size() && 
 		(!m_pAmmo || strcmp(m_pAmmo->cNameSect(), 
-					 m_magazine.top().m_ammoSect))) 
+					 *m_magazine.top().m_ammoSect))) 
 		UnloadMagazine();
 	
 	

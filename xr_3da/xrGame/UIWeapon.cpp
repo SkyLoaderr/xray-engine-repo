@@ -37,7 +37,8 @@ void CUIWeapon::Render()
 		weapon.Render(cur_shader);
 }
 //--------------------------------------------------------------------
-void CUIWeapon::Out(CWeapon* W){
+void CUIWeapon::Out(CWeapon* W)
+{
 	if (W){
 		CGameFont* H= HUD().pFontSmall;
 		H->SetColor	(0x80ffffff);
@@ -46,7 +47,7 @@ void CUIWeapon::Out(CWeapon* W){
 		int	AC		= W->GetAmmoCurrent();
 		//int	AC		= W->GetAmmoMagSize();
 		if((AE>=0)&&(AC>0))
-			H->Out	(float(position.x+3),	float(position.y+2),"%d/%d %s",AE,AC, W->m_ammoName?W->m_ammoName:"");
+			H->Out	(float(position.x+3),	float(position.y+2),"%d/%d %s",AE,AC, *W->m_ammoName?*W->m_ammoName:"");
 		cur_shader	= W->GetUIIcon();
 	}else{
 		cur_shader	= 0;

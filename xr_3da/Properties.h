@@ -55,7 +55,7 @@ struct	xrP_BOOL
 struct	xrP_TOKEN
 {
 	struct Item {
-		u32		ID;
+		u32			ID;
 		string64	str;
 	};
 

@@ -64,7 +64,7 @@ public:
 	CPSLibrary												PSLibrary;
 
 	CLight_DB*												L_DB;
-	CLightPPA_Manager*										L_Dynamic;
+	CLightR_Manager*										L_Dynamic;
 	CLightShadows*											L_Shadows;
 	CLightProjector*										L_Projector;
 	CGlowManager*											L_Glows;

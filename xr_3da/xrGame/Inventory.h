@@ -139,8 +139,8 @@ public:
 	CInventorySlot();
 	virtual ~CInventorySlot();
 
-	PIItem m_pIItem;
-	LPCSTR m_name;
+	PIItem	m_pIItem;
+	ref_str m_name;
 };
 typedef xr_vector<CInventorySlot> TISlotArr;
 

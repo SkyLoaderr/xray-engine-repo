@@ -117,7 +117,7 @@ void CLightShadows::add_element	(NODE* N)
 IC float PLC_energy	(Fvector& P, Fvector& N, light* L, float E)
 {
 	Fvector Ldir;
-	if (L->type==D3DLIGHT_DIRECTIONAL)
+	if (L->flags.type==IRender_Light::DIRECT)
 	{
 		// Cos
 		Ldir.invert	(L->direction);
@@ -139,13 +139,14 @@ IC float PLC_energy	(Fvector& P, Fvector& N, light* L, float E)
 		if( D <=0 )						return 0;
 		
 		// Trace Light
-		float R		= _sqrt	(sqD);
-		float A		= D*E / (L->attenuation0 + L->attenuation1*R + L->attenuation2*sqD);
+		float R		= _sqrt		(sqD);
+		float att	= 1-(1/(1+R));
+		float A		= D * E * att;
 		return A;
 	}
 }
 
-IC int PLC_calc	(Fvector& P, Fvector& N, Flight* L, float energy, Fvector& O)
+IC int PLC_calc	(Fvector& P, Fvector& N, light* L, float energy, Fvector& O)
 {
 	float	E		= PLC_energy(P,N,L,energy);
 	float	C1		= Device.vCameraPosition.distance_to_sqr(P)/S_distance2;
@@ -193,11 +194,11 @@ void CLightShadows::calculate	()
 			}
 
 			// calculate light center
-			Fvector		Lpos	= L.L.position;
-			float		Lrange	= L.L.range;
-			if (L.L.type==D3DLIGHT_DIRECTIONAL)
+			Fvector		Lpos	= L.source->position;
+			float		Lrange	= L.source->range;
+			if (L.source->flags.type==IRender_Light::DIRECT)
 			{
-				Lpos.mul	(L.L.direction,-100);
+				Lpos.mul	(L.source->direction,-100);
 				Lpos.add	(C.C);
 				Lrange		= 120;
 			} else {
@@ -264,7 +265,7 @@ void CLightShadows::calculate	()
 			shadows.back().slot	=	slot_id;
 			shadows.back().C	=	C.C;
 			shadows.back().M	=	mCombineR;
-			shadows.back().L	=	&L.L;
+			shadows.back().L	=	L.source;
 			slot_id	++;
 		}
 	}
@@ -354,7 +355,7 @@ void CLightShadows::render	()
 	for (u32 s_it=0; s_it<shadows.size(); s_it++)
 	{
 		shadow&		S			=	shadows[s_it];
-		float		Le			=	S.L->diffuse.magnitude_rgb();
+		float		Le			=	S.L->color.magnitude_rgb();
 		int			s_x			=	S.slot%slot_line;
 		int			s_y			=	S.slot/slot_line;
 		Fvector2	t_scale, t_offset;
@@ -450,29 +451,6 @@ void CLightShadows::render	()
 	
 	// Clear all shadows
 	shadows.clear				();
-	// Debug
-/*
-	{
-		// UV
-		Fvector2				p0,p1;
-		p0.set					(.5f/S_rt_size, .5f/S_rt_size);
-		p1.set					((S_rt_size+.5f)/S_rt_size, (S_rt_size+.5f)/S_rt_size);
-		
-		// Fill vertex buffer
-		C			=	0xffffffff;
-		u32 _w	=	S_rt_size/2, _h = S_rt_size/2;
-		FVF::TL* pv =	(FVF::TL*) geom_Screen->Lock(4,Offset);
-		pv->set(0,			float(_h),	.0001f,.9999f, C, p0.x, p1.y);	pv++;
-		pv->set(0,			0,			.0001f,.9999f, C, p0.x, p0.y);	pv++;
-		pv->set(float(_w),	float(_h),	.0001f,.9999f, C, p1.x, p1.y);	pv++;
-		pv->set(float(_w),	0,			.0001f,.9999f, C, p1.x, p0.y);	pv++;
-		geom_Screen->Unlock			(4);
-		
-		// Actual rendering
-		RCache.set_Shader(sh_Screen);
-		RCache.Draw	(geom_Screen,4,2,Offset,Device.Streams_QuadIB);
-	}
-//*/
 
 	// Projection
 	Device.mProject._43 = _43;

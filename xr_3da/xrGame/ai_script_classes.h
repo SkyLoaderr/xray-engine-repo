@@ -185,7 +185,7 @@ class CLuaHit {
 public:
 	float				m_fPower; 
 	Fvector				m_tDirection;
-	LPCSTR				m_caBoneName;
+	ref_str				m_caBoneName;
 	CLuaGameObject		*m_tpDraftsman;
 	float				m_fImpulse;
 	int					m_tHitType;

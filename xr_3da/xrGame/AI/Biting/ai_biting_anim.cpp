@@ -113,15 +113,15 @@ void CMotionManager::AddAnim(EMotionAnim ma, LPCTSTR tn, int s_id, float speed, 
 {
 	SAnimItem new_item;
 
-	strcpy					(new_item.target_name,tn);
+	new_item.target_name	= tn;
 	new_item.spec_id		= s_id;
 	new_item.speed.linear	= speed;
 	new_item.speed.angular	= r_speed;
 	new_item.pos_state		= p_s;
 
-	Load					(new_item.target_name, &new_item.pMotionVect);
+	Load					(*new_item.target_name, &new_item.pMotionVect);
 
-	m_tAnims.insert			(std::make_pair(ma, new_item));
+	m_tAnims.insert			(mk_pair(ma, new_item));
 }
 
 void CMotionManager::AddTransition_A2A(EMotionAnim from, EMotionAnim to, EMotionAnim trans, bool chain)
@@ -200,7 +200,7 @@ void CMotionManager::LinkAction(EAction act, EMotionAnim pmt_motion, EMotionAnim
 	new_item.turn.anim_right	= pmt_right;
 	new_item.turn.min_angle		= pmt_angle;
 
-	m_tMotions.insert	(std::make_pair(act, new_item));
+	m_tMotions.insert	(mk_pair(act, new_item));
 }
 
 void CMotionManager::LinkAction(EAction act, EMotionAnim pmt_motion)
@@ -210,13 +210,13 @@ void CMotionManager::LinkAction(EAction act, EMotionAnim pmt_motion)
 	new_item.anim				= pmt_motion;
 	new_item.is_turn_params		= false;
 
-	m_tMotions.insert	(std::make_pair(act, new_item));
+	m_tMotions.insert	(mk_pair(act, new_item));
 }
 
 // загрузка анимаций из модели начинающиеся с pmt_name в вектор pMotionVect
 void CMotionManager::Load(LPCTSTR pmt_name, ANIM_VECTOR	*pMotionVect)
 {
-	anim_string	S1, S2;
+	string256	S1, S2; 
 	CMotionDef	*tpMotionDef;
 	for (int i=0; ; i++) {
 		if (0 != (tpMotionDef = tpKinematics->ID_Cycle_Safe(strconcat(S1,pmt_name,itoa(i,S2,10)))))  pMotionVect->push_back(tpMotionDef);

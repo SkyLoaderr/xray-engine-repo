@@ -4,7 +4,6 @@
 
 #include "stdafx.h"
 #include "LightTrack.h"
-#include "FLightsController.h"
 #include "..\xr_object.h"
 
 //////////////////////////////////////////////////////////////////////
@@ -18,7 +17,7 @@ CLightTrack::CLightTrack()
 	Shadowed_Slot		= -1;
 }
 
-void CLightTrack::add	(R1_light* source)
+void CLightTrack::add	(light* source)
 {
 	// Search
 	for (xr_vector<Item>::iterator I=track.begin(); I!=track.end(); I++)	if (source == I->source)	return;
@@ -34,7 +33,7 @@ void CLightTrack::add	(R1_light* source)
 	L.energy			= 0.f;
 }
 
-void CLightTrack::remove(R1_light* source)
+void CLightTrack::remove(light* source)
 {
 	// Search
 	for (xr_vector<Item>::iterator I=track.begin(); I!=track.end(); I++)
@@ -73,39 +72,37 @@ void	CLightTrack::ltrack	(IRenderable* O)
 	float	dt				= Device.fTimeDelta;
 	float	l_f				= dt*lt_smooth;
 	float	l_i				= 1.f-l_f;
-	ambient			= l_i*ambient + l_f*O->renderable_Ambient();
+	ambient					= l_i*ambient + l_f*O->renderable_Ambient();
 	clamp					(ambient,0.f,255.f);
 	
 	// Select nearest lights
 	Fvector					bb_size	=	{fRadius,fRadius,fRadius};
 	g_SpatialSpace->q_box				(0,STYPE_LIGHTSOURCE,pos,bb_size);
-	g_SpatialSpace->q_result.push_back	(dynamic_cast<ISpatial*>(LDirect));
+	g_SpatialSpace->q_result.push_back	(RImplementation.L_DB->sun);
 
 	// Process selected lights
 	for (u32 o_it=0; o_it<g_SpatialSpace->q_result.size(); o_it++)
 	{
 		ISpatial*	spatial		= g_SpatialSpace->q_result[o_it];
-		R1_light*	source		= dynamic_cast<R1_light*>(spatial);
+		light*		source		= dynamic_cast<light*>	(spatial);
 		if (0==source)			continue;
-		Flight &L				= source->data;
-		if (L.type == D3DLIGHT_DIRECTIONAL)				add	(source);
+		if (source->flags.type	== IRender_Light::DIRECT)		add		(source);
 		else {
-			float	R	= fRadius+L.range;
-			if (pos.distance_to_sqr(L.position) < R*R)	add	(source);
-			else										remove	(source);
+			float	R	= fRadius+source->range;
+			if (pos.distance_to_sqr(source->position) < R*R)	add		(source);
+			else												remove	(source);
 		}
 	}
 	
 	// Trace visibility
 	lights.clear	();
-	xr_vector<CLightTrack::Item>& track			= track;
 	xr_vector<CLightTrack::Item>::iterator I	= track.begin(), E=track.end();
 	float R										= fRadius*.5f;
 	for (; I!=E; I++)
 	{
-		float	amount	= 0;
-		Flight&		xrL	= I->source->data;
-		Fvector&	LP	= xrL.position;
+		float		amount	= 0;
+		light*		xrL		= I->source;
+		Fvector&	LP		= xrL->position;
 
 		for (int it=0; it<1; it++)
 		{
@@ -127,14 +124,14 @@ void	CLightTrack::ltrack	(IRenderable* O)
 		clamp			(I->test,-.5f,1.f);
 		I->energy		= .9f*I->energy + .1f*I->test;
 
-		float	E		= I->energy * xrL.diffuse.magnitude_rgb();
-		if (E > EPS)	
+		float	E		= I->energy * xrL->color.magnitude_rgb();
+		if (E > EPS)
 		{
 			// Select light
-			lights.push_back	(CLightTrack::Light());
+			lights.push_back		(CLightTrack::Light());
 			CLightTrack::Light&	L	= lights.back();
-			L.L						= xrL;
-			L.L.diffuse.mul_rgb		(I->energy/2);
+			L.source				= xrL;
+			L.color.mul_rgb			(xrL->color,I->energy/2);
 			L.energy				= E;
 		}
 	}

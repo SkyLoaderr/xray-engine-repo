@@ -74,6 +74,7 @@ void CGrenade::Load(LPCSTR section)
 	pstrWallmark = name;
 	fWallmarkSize = pSettings->r_float(section,"wm_size");
 
+	string256	m_effectsSTR;
 	strcpy(m_effectsSTR, pSettings->r_string(section,"effects"));
 	char* l_effectsSTR = m_effectsSTR; R_ASSERT(l_effectsSTR);
 	m_effects.clear(); m_effects.push_back(l_effectsSTR);
@@ -315,7 +316,7 @@ void CGrenade::Explode()
 
 	for(s32 i = 0; i < l_c; i++) 
 	{
-		pStaticPG = xr_new<CParticlesObject>(m_effects[i],Sector()); pStaticPG->play_at_pos(Position());
+		pStaticPG = xr_new<CParticlesObject>(*m_effects[i],Sector()); pStaticPG->play_at_pos(Position());
 	}
 	m_pLight->set_position(Position()); 
 	m_pLight->set_active(true);

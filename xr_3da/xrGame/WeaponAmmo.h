@@ -6,11 +6,11 @@ public:
 	CCartridge();
 	void Load(LPCSTR section);
 
-	LPCSTR m_ammoSect;
-	f32 m_kDist, m_kDisp, m_kHit, m_kImpulse, m_kPierce;
-	bool m_tracer;
-	int	m_buckShot;
-	f32 m_impair;
+	ref_str	m_ammoSect;
+	f32		m_kDist, m_kDisp, m_kHit, m_kImpulse, m_kPierce;
+	bool	m_tracer;
+	int		m_buckShot;
+	f32		m_impair;
 };
 
 class CWeaponAmmo :
@@ -45,7 +45,7 @@ public:
 	int	m_buckShot;
 	f32 m_impair;
 
-	u16 m_boxSize;				// Размер коробки (Сколько патронов игрок берет за раз)
-	u16 m_boxCurr;				// Сколько патронов осталось в коробке (включая текущий магазин)
-	char m_tmpName[255];
+	u16			m_boxSize;			// Размер коробки (Сколько патронов игрок берет за раз)
+	u16			m_boxCurr;			// Сколько патронов осталось в коробке (включая текущий магазин)
+	string64	m_tmpName;
 };

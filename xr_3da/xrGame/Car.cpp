@@ -42,8 +42,8 @@ CCar::CCar(void)
 	///////////////////////////////
 	//////////////////////////////
 	/////////////////////////////
-	Memory.mem_copy(m_exhaust_particles,"vehiclefx\\exhaust_1",sizeof("vehiclefx\\exhaust_1"));
-	m_car_sound=xr_new<SCarSound>(this);
+	m_exhaust_particles	="vehiclefx\\exhaust_1";
+	m_car_sound			=xr_new<SCarSound>	(this);
 
 	//у машины слотов в инвентаре нет
 	m_inventory.m_bSlotsUseful = false;
@@ -55,11 +55,9 @@ CCar::~CCar(void)
 	xr_delete			(camera[1]);
 	xr_delete			(camera[2]);
 	m_car_sound->Destroy();
-	xr_delete(m_car_sound);
+	xr_delete			(m_car_sound);
 	ClearExhausts();
 }
-
-
 
 void __stdcall  CCar::cb_Steer(CBoneInstance* B)
 {
@@ -382,9 +380,7 @@ void CCar::ParseDefinitions()
 	m_fuel_consumption=ini->r_float("car_definition","fuel_consumption");
 	m_fuel_consumption/=100000.f;
 	if(ini->line_exist("car_definition","exhaust_particles"))
-	{
-		Memory.mem_copy(m_exhaust_particles,ini->r_string("car_definition","exhaust_particles"),sizeof(string64));
-	}
+		m_exhaust_particles = ini->r_string("car_definition","exhaust_particles");
 }
 
 void CCar::CreateSkeleton()
@@ -1080,7 +1076,7 @@ void CCar::SExhaust::Init()
 	pelement->InterpolateGlobalTransform(&element_transform);
 	element_transform.invert();
 	transform.mulA(element_transform);
-	p_pgobject=xr_new<CParticlesObject>(pcar->m_exhaust_particles,pcar->Sector(),false);
+	p_pgobject=xr_new<CParticlesObject>(*pcar->m_exhaust_particles,pcar->Sector(),false);
 	p_pgobject->SetTransform(pcar->XFORM());
 }
 

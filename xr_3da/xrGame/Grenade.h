@@ -46,9 +46,8 @@ public:
 	ref_sound	sndRicochet[SND_RIC_COUNT], sndExplode, sndCheckout;
 	ESoundTypes m_eSoundRicochet, m_eSoundExplode, m_eSoundCheckout;
 	u32			m_expoldeTime;
-	char		m_effectsSTR[255];
-	xr_vector<LPCSTR> m_effects;
-	IRender_Light* m_pLight;
+	xr_vector<ref_str>	m_effects;
+	IRender_Light*		m_pLight;
 	Fcolor m_lightColor;
 	f32 m_lightRange;
 	u32 m_lightTime;

@@ -17,7 +17,7 @@
 CScriptMonster::CScriptMonster()
 {
 	m_tpActionQueue.clear	();
-	strcpy					(m_caScriptName,"");
+	m_caScriptName			= "";
 	m_bScriptControl		= false;
 	InitScript				();
 }
@@ -29,7 +29,7 @@ CScriptMonster::~CScriptMonster()
 void CScriptMonster::SetScriptControl(const bool bScriptControl, LPCSTR caSciptName)
 {
 	m_bScriptControl	= bScriptControl;
-	strcpy				(m_caScriptName,caSciptName);
+	m_caScriptName		= caSciptName;
 #ifdef DEBUG
 	if (bScriptControl)
 		LuaOut			(Lua::eLuaMessageTypeInfo,"Script %s set object %s under its control",caSciptName,cName());
@@ -47,7 +47,7 @@ bool CScriptMonster::GetScriptControl() const
 
 LPCSTR CScriptMonster::GetScriptControlName() const
 {
-	return				(m_caScriptName);
+	return				*(m_caScriptName);
 }
 
 bool CScriptMonster::CheckObjectVisibility(const CObject *tpObject)
@@ -97,7 +97,7 @@ void __stdcall ActionCallback(CKinematics *tpKinematics)
 void CScriptMonster::vfUpdateParticles()
 {
 	CParticleAction	&l_tParticleAction = GetCurrentAction()->m_tParticleAction;
-	LPCSTR			l_caBoneName = l_tParticleAction.m_caBoneName;
+	LPCSTR			l_caBoneName = *l_tParticleAction.m_caBoneName;
 	if (strlen(l_caBoneName)) {
 		CParticlesObject	*l_tpParticlesObject = l_tParticleAction.m_tpParticleSystem;
 		l_tpParticlesObject->UpdateParent(GetUpdatedMatrix(l_caBoneName,l_tParticleAction.m_tParticlePosition,l_tParticleAction.m_tParticleAngles),l_tParticleAction.m_tParticleVelocity);
@@ -107,7 +107,7 @@ void CScriptMonster::vfUpdateParticles()
 void CScriptMonster::vfUpdateSounds()
 {
 	CSoundAction	&l_tSoundAction = GetCurrentAction()->m_tSoundAction;
-	LPCSTR			l_caBoneName = l_tSoundAction.m_caBoneName;
+	LPCSTR			l_caBoneName	= *l_tSoundAction.m_caBoneName;
 	if (strlen(l_caBoneName) && l_tSoundAction.m_tpSound && l_tSoundAction.m_tpSound->feedback)
 		l_tSoundAction.m_tpSound->feedback->set_position(GetUpdatedMatrix(l_caBoneName,l_tSoundAction.m_tSoundPosition,Fvector().set(0,0,0)).c);
 }
@@ -189,7 +189,7 @@ bool CScriptMonster::bfAssignSound(CEntityAction *tpEntityAction)
 	if (l_tSoundAction.m_tpSound) {
 		if (!l_tSoundAction.m_tpSound->feedback)
 			if (!l_tSoundAction.m_bStartedToPlay) {
-				const Fmatrix	&l_tMatrix = GetUpdatedMatrix(l_tSoundAction.m_caBoneName,l_tSoundAction.m_tSoundPosition,l_tSoundAction.m_tSoundAngles);
+				const Fmatrix	&l_tMatrix = GetUpdatedMatrix(*l_tSoundAction.m_caBoneName,l_tSoundAction.m_tSoundPosition,l_tSoundAction.m_tSoundAngles);
 				l_tSoundAction.m_tpSound->play_at_pos(this,l_tMatrix.c,l_tSoundAction.m_bLooped ? TRUE : FALSE);
 				l_tSoundAction.m_bStartedToPlay = true;
 			}
@@ -197,8 +197,8 @@ bool CScriptMonster::bfAssignSound(CEntityAction *tpEntityAction)
 				l_tSoundAction.m_bCompleted = true;
 	}
 	else {
-		if (strlen(l_tSoundAction.m_caSoundToPlay))
-			::Sound->create	(*(l_tSoundAction.m_tpSound = xr_new<ref_sound>()),TRUE,l_tSoundAction.m_caSoundToPlay);
+		if (strlen(*l_tSoundAction.m_caSoundToPlay))
+			::Sound->create	(*(l_tSoundAction.m_tpSound = xr_new<ref_sound>()),TRUE,*l_tSoundAction.m_caSoundToPlay);
 		else
 			l_tSoundAction.m_bCompleted = true;
 	}
@@ -213,7 +213,7 @@ bool CScriptMonster::bfAssignParticles(CEntityAction *tpEntityAction)
 	if (l_tParticleAction.m_tpParticleSystem) {
 		if (true/** !l_tParticleAction.m_tpParticleSystem/**/)
 			if (!l_tParticleAction.m_bStartedToPlay) {
-				const Fmatrix	&l_tMatrix = GetUpdatedMatrix(l_tParticleAction.m_caBoneName,l_tParticleAction.m_tParticlePosition,l_tParticleAction.m_tParticleAngles);
+				const Fmatrix	&l_tMatrix = GetUpdatedMatrix(*l_tParticleAction.m_caBoneName,l_tParticleAction.m_tParticlePosition,l_tParticleAction.m_tParticleAngles);
 				l_tParticleAction.m_tpParticleSystem->SetTransform(l_tMatrix);
 				l_tParticleAction.m_tpParticleSystem->play_at_pos(l_tMatrix.c);
 				l_tParticleAction.m_bStartedToPlay = true;
@@ -239,7 +239,7 @@ void CScriptMonster::vfChoosePatrolPathPoint(CEntityAction *tpEntityAction)
 	if (l_tMovementAction.m_bCompleted)
 		return;
 
-	CLevel::SPathPairIt	I = Level().m_PatrolPaths.find(l_tMovementAction.m_caPatrolPathToGo);
+	CLevel::SPathPairIt	I = Level().m_PatrolPaths.find(*l_tMovementAction.m_caPatrolPathToGo);
 	if (I == Level().m_PatrolPaths.end()) {
 		LuaOut		(Lua::eLuaMessageTypeError,"Patrol path %s not found!",l_tMovementAction.m_caPatrolPathToGo);
 		l_tMovementAction.m_bCompleted = true;

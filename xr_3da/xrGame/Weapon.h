@@ -247,14 +247,14 @@ public:
 	virtual bool Detach(PIItem pIItem, bool force = true);
 	virtual const char* Name();
 
-	void SpawnAmmo(u32 boxCurr = 0xffffffff, LPCSTR ammoSect = NULL);
+	void SpawnAmmo		(u32 boxCurr = 0xffffffff, LPCSTR ammoSect = NULL);
 
-	CWeaponAmmo *m_pAmmo;
-	char m_tmpName[255], m_ammoSect[255];
-	xr_vector<LPCSTR> m_ammoTypes;
-	u32 m_ammoType;
-	LPCSTR m_ammoName;
-	f32 m_resource, m_abrasion;
+	CWeaponAmmo *		m_pAmmo;
+	xr_vector<ref_str>	m_ammoTypes;
+	u32					m_ammoType;
+	ref_str				m_ammoName;
+	f32					m_resource, m_abrasion;
+	string64			m_tmpName;
 	//
 
 	// Multitype ammo support

@@ -4,12 +4,10 @@
 
 class CLight_DB
 {
-public:
-	Fvector3				sun_dir;
-	Fvector3				sun_color;
 private:
 	xr_vector<light*>		v_static;
 public:
+	light*					sun;
 	xr_vector<light*>		v_selected_shadowed;
 	xr_vector<light*>		v_selected_unshadowed;
 public:

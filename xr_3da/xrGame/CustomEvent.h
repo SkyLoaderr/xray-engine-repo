@@ -21,7 +21,7 @@ protected:
 		u16			count;
 		CLASS_ID	CLS;
 		EVENT		E;
-		LPSTR		P1;
+		ref_str		P1;
 	};
 	typedef xr_vector<DEF_EVENT>	tActions;
 	typedef tActions::iterator		tActions_it;

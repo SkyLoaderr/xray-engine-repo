@@ -249,8 +249,8 @@ CSMotion::~CSMotion(){
 
 void CSMotion::Clear()
 {
-	for(BoneMotionIt bm_it=bone_mots.begin(); bm_it!=bone_mots.end(); bm_it++){
-	    xr_free(bm_it->name);
+	for(BoneMotionIt bm_it=bone_mots.begin(); bm_it!=bone_mots.end(); bm_it++)
+	{
 		for (int ch=0; ch<ctMaxChannel; ch++) xr_delete(bm_it->envs[ch]);
     }
 	bone_mots.clear();
@@ -259,7 +259,7 @@ void CSMotion::Clear()
 st_BoneMotion* CSMotion::FindBoneMotion(LPCSTR name)
 {
 	for(BoneMotionIt bm_it=bone_mots.begin(); bm_it!=bone_mots.end(); bm_it++)
-    	if (0==stricmp(bm_it->name,name)) return &*bm_it;
+    	if (0==stricmp(*bm_it->name,name)) return &*bm_it;
     return 0;
 }
 
@@ -329,8 +329,8 @@ void CSMotion::Save(IWriter& F)
     F.w_float	(fPower);
 	F.w_u16		((u16)bone_mots.size());
 	for(BoneMotionIt bm_it=bone_mots.begin(); bm_it!=bone_mots.end(); bm_it++){
-    	F.w_stringZ(bm_it->name);
-		F.w_u8	(bm_it->m_Flags.get());
+    	F.w_stringZ	(*bm_it->name);
+		F.w_u8		(bm_it->m_Flags.get());
 		for (int ch=0; ch<ctMaxChannel; ch++)
 			bm_it->envs[ch]->Save(F);
 	}

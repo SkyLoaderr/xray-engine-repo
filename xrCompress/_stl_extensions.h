@@ -1,6 +1,8 @@
 #ifndef _STL_EXT_internal
 #define _STL_EXT_internal
 
+using std::swap;
+
 #ifdef __BORLANDC__
 
 #define xr_vector std::vector

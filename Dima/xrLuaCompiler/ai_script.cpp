@@ -15,9 +15,9 @@ using namespace Script;
 
 CScript::CScript(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caFileName)
 {
-	m_bActive		= false;
-	strcpy			(m_caScriptFileName,caFileName);
-	Msg				("* Loading design script %s",caFileName);
+	m_bActive			= false;
+	m_caScriptFileName	= caFileName;
+	Msg					("* Loading design script %s",caFileName);
 
 	if (!bfLoadFile(tpLuaVirtualMachine,caFileName,true))
 		return;
@@ -65,7 +65,7 @@ bool CScript::Update()
 	int				l_iErrorCode = lua_resume(m_tpLuaThread,0);
 	if (l_iErrorCode) {
 #ifdef DEBUG
-		if (!bfPrintOutput(m_tpLuaThread,m_caScriptFileName,l_iErrorCode))
+		if (!bfPrintOutput(m_tpLuaThread,*m_caScriptFileName,l_iErrorCode))
 			vfPrintError(m_tpLuaThread,l_iErrorCode);
 		m_bActive	= false;
 		return		(false);

@@ -23,18 +23,18 @@ void	R_constant_table::fatal			(LPCSTR S)
 // predicates
 IC bool	p_search	(R_constant* C, LPCSTR S)
 {
-	return strcmp(C->name,S)<0;
+	return strcmp(*C->name,S)<0;
 }
 IC bool	p_sort		(R_constant* C1, R_constant* C2)
 {
-	return strcmp(C1->name,C2->name)<0;
+	return strcmp(*C1->name,*C2->name)<0;
 }
 
 R_constant* R_constant_table::get	(LPCSTR S)
 {
 	// assumption - sorted by name
 	c_table::iterator I	= std::lower_bound(table.begin(),table.end(),S,p_search);
-	if (I==table.end() || (0!=strcmp((*I)->name,S)))	return 0;
+	if (I==table.end() || (0!=strcmp(*(*I)->name,S)))	return 0;
 	else												return *I;
 }
 BOOL	R_constant_table::parse	(void* _desc, u16 destination)
@@ -104,7 +104,7 @@ BOOL	R_constant_table::parse	(void* _desc, u16 destination)
 						R_constant*	C		=	get	(name);
 						if (0==C)	{
 							C					=	g_constant_allocator.create();
-							strcpy				(C->name,name);
+							C->name				=	name;
 							C->destination		=	RC_dest_sampler;
 							C->type				=	RC_sampler;
 							R_constant_load& L	=	C->samp;
@@ -137,7 +137,7 @@ BOOL	R_constant_table::parse	(void* _desc, u16 destination)
 		R_constant*	C		=	get	(name);
 		if (0==C)	{
 			C					=	g_constant_allocator.create();
-			strcpy				(C->name,name);
+			C->name				=	name;
 			C->destination		=	destination;
 			C->type				=	type;
 			R_constant_load& L	=	(destination&1)?C->ps:C->vs;
@@ -164,10 +164,10 @@ void R_constant_table::merge(R_constant_table* T)
 	for (u32 it=0; it<T->table.size(); it++)
 	{
 		R_constant*	src			=	T->table[it];
-		R_constant*	C			=	get	(src->name);
+		R_constant*	C			=	get	(*src->name);
 		if (0==C)	{
 			C					=	g_constant_allocator.create();
-			strcpy				(C->name,src->name);
+			C->name				=	src->name;
 			C->destination		=	src->destination;
 			C->type				=	src->type;
 			C->ps				=	src->ps;

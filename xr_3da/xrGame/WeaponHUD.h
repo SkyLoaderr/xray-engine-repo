@@ -28,7 +28,7 @@ public:
 	// misc
 	virtual void		Load			(LPCSTR section);
 
-	IC IRender_Visual*			Visual			()	{ return pVisual; }
+	IC IRender_Visual*	Visual			()	{ return pVisual; }
 	IC Fmatrix&			Transform		()	{ return mTransform; }
 
 	// Animations

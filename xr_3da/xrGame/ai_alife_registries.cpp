@@ -94,7 +94,7 @@ void CSE_ALifeObjectRegistry::Add(CSE_ALifeDynamicObject *tpALifeDynamicObject)
 		R_ASSERT2				((*(m_tObjectRegistry.find(tpALifeDynamicObject->ID))).second != tpALifeDynamicObject,"Object with the specified ID is already presented in the Object Registry!");
 	}
 	
-	m_tObjectRegistry.insert	(std::make_pair(tpALifeDynamicObject->ID,tpALifeDynamicObject));
+	m_tObjectRegistry.insert	(mk_pair(tpALifeDynamicObject->ID,tpALifeDynamicObject));
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -132,7 +132,7 @@ void CSE_ALifeEventRegistry::Add(CSE_ALifeEvent	*tpEvent)
 		R_ASSERT2				((*(m_tEventRegistry.find(tpEvent->m_tEventID))).second == tpEvent,"The specified event is already presented in the Event Registry!");
 		R_ASSERT2				((*(m_tEventRegistry.find(tpEvent->m_tEventID))).second != tpEvent,"Event with the specified ID is already presented in the Event Registry!");
 	}
-	m_tEventRegistry.insert		(std::make_pair(tpEvent->m_tEventID = m_tEventID++,tpEvent));
+	m_tEventRegistry.insert		(mk_pair(tpEvent->m_tEventID = m_tEventID++,tpEvent));
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -173,7 +173,7 @@ void CSE_ALifeTaskRegistry::Add	(CSE_ALifeTask	*tpTask)
 {
 	if (m_tTaskRegistry.find(tpTask->m_tTaskID) != m_tTaskRegistry.end())
 		R_ASSERT2				(true,"The specified task is already presented in the Task Registry!");
-	m_tTaskRegistry.insert		(std::make_pair(tpTask->m_tTaskID = m_tTaskID++,tpTask));
+	m_tTaskRegistry.insert		(mk_pair(tpTask->m_tTaskID = m_tTaskID++,tpTask));
 	Update						(tpTask);
 }
 
@@ -182,7 +182,7 @@ void CSE_ALifeTaskRegistry::Update(CSE_ALifeTask	*tpTask)
 	R_ASSERT2					(tpTask == tpfGetTaskByID(tpTask->m_tTaskID),"Cannot find a specified task in the Task registry!");
 	OBJECT_TASK_PAIR_IT			J = m_tTaskCrossMap.find(tpTask->m_tCustomerID);
 	if (J == m_tTaskCrossMap.end()) {
-		m_tTaskCrossMap.insert	(std::make_pair(tpTask->m_tCustomerID,TASK_SET()));
+		m_tTaskCrossMap.insert	(mk_pair(tpTask->m_tCustomerID,TASK_SET()));
 		J						= m_tTaskCrossMap.find(tpTask->m_tCustomerID);
 	}
 	(*J).second.insert			(tpTask->m_tTaskID);
@@ -246,7 +246,7 @@ void CSE_ALifeGraphRegistry::Update(CSE_ALifeDynamicObject *tpALifeDynamicObject
 				D_OBJECT_PAIR_IT	I = m_tpGraphObjects[i].tpObjects.begin();
 				D_OBJECT_PAIR_IT	E = m_tpGraphObjects[i].tpObjects.end();
 				for ( ; I != E; I++)
-					m_tpCurrentLevel->insert(std::make_pair((*I).first,(*I).second));
+					m_tpCurrentLevel->insert(mk_pair((*I).first,(*I).second));
 			}
 	}
 
@@ -264,7 +264,7 @@ void CSE_ALifeGraphRegistry::vfAddObjectToCurrentLevel(CSE_ALifeDynamicObject *t
 #endif
 	D_OBJECT_PAIR_IT			I = m_tpCurrentLevel->find(tpALifeDynamicObject->ID);
 	R_ASSERT2					(I == m_tpCurrentLevel->end(),"Specified object has been already found in the current level map");
-	m_tpCurrentLevel->insert	(std::make_pair(tpALifeDynamicObject->ID,tpALifeDynamicObject));
+	m_tpCurrentLevel->insert	(mk_pair(tpALifeDynamicObject->ID,tpALifeDynamicObject));
 	m_bSwitchChanged			= true;
 	if (m_tNextFirstSwitchObjectID == _OBJECT_ID(-1))
 		m_tNextFirstSwitchObjectID = tpALifeDynamicObject->ID;
@@ -302,7 +302,7 @@ void CSE_ALifeGraphRegistry::vfAddObjectToGraphPoint(CSE_ALifeDynamicObject *tpA
 		R_ASSERT2					(!dynamic_cast<CSE_ALifeTrader *>(tpALifeDynamicObject),"Can't add a trader to the graph point!");
 		D_OBJECT_PAIR_IT			I = m_tpGraphObjects[tNextGraphPointID].tpObjects.find(tpALifeDynamicObject->ID);
 		R_ASSERT3					(I == m_tpGraphObjects[tNextGraphPointID].tpObjects.end(),"Specified object has already found on the given graph point!",tpALifeDynamicObject->s_name_replace);
-		m_tpGraphObjects[tNextGraphPointID].tpObjects.insert(std::make_pair(tpALifeDynamicObject->ID,tpALifeDynamicObject));
+		m_tpGraphObjects[tNextGraphPointID].tpObjects.insert(mk_pair(tpALifeDynamicObject->ID,tpALifeDynamicObject));
 		tpALifeDynamicObject->m_tGraphID = tNextGraphPointID;
 	}
 	
@@ -354,7 +354,7 @@ void CSE_ALifeGraphRegistry::vfAddEventToGraphPoint(CSE_ALifeEvent *tpEvent, _GR
 {
 	EVENT_PAIR_IT				I = m_tpGraphObjects[tNextGraphPointID].tpEvents.find(tpEvent->m_tEventID);
 	R_ASSERT2					(I == m_tpGraphObjects[tNextGraphPointID].tpEvents.end(),"Specified object has been already found on the given graph point!");
-	m_tpGraphObjects[tNextGraphPointID].tpEvents.insert(std::make_pair(tpEvent->m_tEventID,tpEvent));
+	m_tpGraphObjects[tNextGraphPointID].tpEvents.insert(mk_pair(tpEvent->m_tEventID,tpEvent));
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
 		Msg						("[LSS] adding event [%d] from graph point %d",tpEvent->m_tEventID,tNextGraphPointID);
@@ -499,7 +499,7 @@ void CSE_ALifeScheduleRegistry::vfAddObjectToScheduled(CSE_ALifeDynamicObject *t
 		return;
 	SCHEDULE_P_PAIR_IT			I = m_tpScheduledObjects.find(tpALifeDynamicObject->ID);
 	R_ASSERT2					(I == m_tpScheduledObjects.end(),"Specified object has been already found in the scheduled objects registry");
-	m_tpScheduledObjects.insert	(std::make_pair(l_tpALifeSchedulable->ID,l_tpALifeSchedulable));
+	m_tpScheduledObjects.insert	(mk_pair(l_tpALifeSchedulable->ID,l_tpALifeSchedulable));
 	m_bUpdateChanged			= true;
 
 	if (m_tNextFirstProcessObjectID == _OBJECT_ID(-1))
@@ -618,7 +618,7 @@ void CSE_ALifeSpawnRegistry::Load(IReader	&tFileStream)
 				if (I != m_tArtefactAnomalyMap.end())
 					(*I).second.insert(l_tAnomalousZoneType);
 				else {
-					m_tArtefactAnomalyMap.insert(std::make_pair(l_tpALifeAnomalousZone->m_cppArtefactSections[i],U32_SET()));
+					m_tArtefactAnomalyMap.insert(mk_pair(l_tpALifeAnomalousZone->m_cppArtefactSections[i],U32_SET()));
 					I = m_tArtefactAnomalyMap.find(l_tpALifeAnomalousZone->m_cppArtefactSections[i]);
 					if ((*I).second.find(l_tAnomalousZoneType) == (*I).second.end())
 						(*I).second.insert(l_tAnomalousZoneType);
@@ -668,7 +668,7 @@ CSE_ALifeOrganizationRegistry::CSE_ALifeOrganizationRegistry()
 	R_ASSERT2					(pSettings->section_exist("organizations"),"There is no section 'organizations' in the 'system.ltx'!");
 	LPCSTR						N,V;
 	for (u32 k = 0; pSettings->r_line("organizations",k,&N,&V); k++)
-		m_tOrganizationRegistry.insert(std::make_pair(N,xr_new<CSE_ALifeOrganization>(N)));
+		m_tOrganizationRegistry.insert(mk_pair(N,xr_new<CSE_ALifeOrganization>(N)));
 
 	ORGANIZATION_P_PAIR_IT		I = m_tOrganizationRegistry.begin();
 	ORGANIZATION_P_PAIR_IT		E = m_tOrganizationRegistry.end();
@@ -678,7 +678,7 @@ CSE_ALifeOrganizationRegistry::CSE_ALifeOrganizationRegistry()
 		for ( ; i != e; i++) {
 			DISCOVERY_P_PAIR_IT j = m_tDiscoveryRegistry.find(*i);
 			if (j == m_tDiscoveryRegistry.end())
-				m_tDiscoveryRegistry.insert(std::make_pair(*i,xr_new<CSE_ALifeDiscovery>(*i)));
+				m_tDiscoveryRegistry.insert(mk_pair(*i,xr_new<CSE_ALifeDiscovery>(*i)));
 		}
 	}
 	LPCSTR						S = pSettings->r_string("alife","preknown_artefacts");
@@ -687,7 +687,7 @@ CSE_ALifeOrganizationRegistry::CSE_ALifeOrganizationRegistry()
 		_GetItem				(S,i,S1);
 		LPSTR					S2 = (LPSTR)xr_malloc((strlen(S1) + 1)*sizeof(char));
 		strcpy					(S2,S1);
-		m_tArtefactRegistry.insert(std::make_pair(S2,false));
+		m_tArtefactRegistry.insert(mk_pair(S2,false));
 	}
 }
 

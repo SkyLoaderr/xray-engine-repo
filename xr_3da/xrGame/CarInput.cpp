@@ -49,10 +49,10 @@ bool CCar::bfAssignMovement(CEntityAction *tpEntityAction)
 bool CCar::bfAssignObject(CEntityAction *tpEntityAction)
 {
 	CObjectAction	&l_tObjectAction = tpEntityAction->m_tObjectAction;
-	if (l_tObjectAction.m_bCompleted || !l_tObjectAction.m_caBoneName || !strlen(l_tObjectAction.m_caBoneName))
+	if (l_tObjectAction.m_bCompleted || !*l_tObjectAction.m_caBoneName || !strlen(*l_tObjectAction.m_caBoneName))
 		return((l_tObjectAction.m_bCompleted = true) == false);
 
-	s16	l_sBoneID = PKinematics(Visual())->LL_BoneID(l_tObjectAction.m_caBoneName);
+	s16	l_sBoneID = PKinematics(Visual())->LL_BoneID(*l_tObjectAction.m_caBoneName);
 	switch(l_tObjectAction.m_tGoalType) {
 		case MonsterSpace::eObjectActionActivate : {
 			if (!DoorOpen(l_sBoneID))

@@ -219,9 +219,9 @@ public:
 		void Drive();
 		SCarSound(CCar* car);
 		~SCarSound();
-		u32 time_state_start;
-		float volume;
-		CCar* pcar;
+		u32		time_state_start;
+		float	 volume;
+		CCar*	pcar;
 	} *m_car_sound;
 
 private:
@@ -244,10 +244,9 @@ private:
 	xr_vector <SWheelSteer> m_steering_wheels;
 	xr_vector <SWheelBreak> m_breaking_wheels;
 	xr_vector <SExhaust>	m_exhausts;
-	string64				m_exhaust_particles;
+	ref_str					m_exhaust_particles;
 	xr_map	  <u32,SDoor>	m_doors;
 	xr_vector <SDoor*>		m_doors_update;
-	//xr_list   <SDoor*>		m_doors_opened;
 	xr_vector <Fvector>		m_gear_ratious;
 	xr_vector <Fmatrix>		m_sits_transforms;// m_sits_transforms[0] - driver_place
 	float					m_current_gear_ratio;

@@ -127,6 +127,7 @@ void CWeaponRPG7Grenade::Load(LPCSTR section)
 	m_engine_f = pSettings->r_float(section,"engine_f");
 	m_engine_u = pSettings->r_float(section,"engine_u");
 
+	string512	m_effectsSTR;
 	strcpy(m_effectsSTR, pSettings->r_string(section,"effects"));
 	char* l_effectsSTR = m_effectsSTR; R_ASSERT(l_effectsSTR);
 	m_effects.clear(); m_effects.push_back(l_effectsSTR);
@@ -141,6 +142,7 @@ void CWeaponRPG7Grenade::Load(LPCSTR section)
 		l_effectsSTR++;
 	}
 
+	string512 m_trailEffectsSTR;
 	strcpy(m_trailEffectsSTR, pSettings->r_string(section,"trail"));
 	char* l_trailEffectsSTR = m_trailEffectsSTR; 
 	R_ASSERT(l_trailEffectsSTR);
@@ -329,7 +331,7 @@ void CWeaponRPG7Grenade::Explode(const Fvector &pos, const Fvector &normal)
 	
 	for(s32 i = 0; i < l_c; i++) 
 	{
-		pStaticPG = xr_new<CParticlesObject>(m_effects[i],Sector());
+		pStaticPG = xr_new<CParticlesObject>(*m_effects[i],Sector());
 		pStaticPG->SetTransform(l_m);
 		pStaticPG->Play();
 	}
@@ -527,7 +529,7 @@ void CWeaponRPG7Grenade::OnH_B_Independent()
 		Fmatrix l_m; l_m.set(XFORM());// GetBasis(normal, l_m.k, l_m.i);
 		for(s32 i = 0; i < l_c; i++) 
 		{
-			pStaticPG = xr_new<CParticlesObject>(m_trailEffects[i],Sector(),false);
+			pStaticPG = xr_new<CParticlesObject>(*m_trailEffects[i],Sector(),false);
 			pStaticPG->SetTransform(l_m);
 			pStaticPG->Play();
 			m_trailEffectsPSs.push_back(pStaticPG);

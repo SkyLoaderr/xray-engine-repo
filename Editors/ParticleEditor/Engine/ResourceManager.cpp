@@ -31,7 +31,7 @@ IBlender* CResourceManager::_GetBlender		(LPCSTR Name)
 	R_ASSERT(Name && Name[0]);
 
 	LPSTR N = LPSTR(Name);
-	xr_map<LPSTR,IBlender*,str_pred>::iterator I = m_blenders.find	(N);
+	map_Blender::iterator I = m_blenders.find	(N);
 #ifdef _EDITOR
 	if (I==m_blenders.end())	return 0;
 #else
@@ -45,7 +45,7 @@ IBlender* CResourceManager::_FindBlender		(LPCSTR Name)
 	if (!(Name && Name[0])) return 0;
 
 	LPSTR N = LPSTR(Name);
-	xr_map<LPSTR,IBlender*,str_pred>::iterator I = m_blenders.find	(N);
+	map_Blender::iterator I = m_blenders.find	(N);
 	if (I==m_blenders.end())	return 0;
 	else						return I->second;
 }
@@ -53,7 +53,7 @@ IBlender* CResourceManager::_FindBlender		(LPCSTR Name)
 void	CResourceManager::ED_UpdateBlender	(LPCSTR Name, IBlender* data)
 {
 	LPSTR N = LPSTR(Name);
-	xr_map<LPSTR,IBlender*,str_pred>::iterator I = m_blenders.find	(N);
+	map_Blender::iterator I = m_blenders.find	(N);
 	if (I!=m_blenders.end())	{
 		R_ASSERT	(data->getDescription().CLS == I->second->getDescription().CLS);
 		xr_delete	(I->second);
@@ -70,9 +70,9 @@ void	CResourceManager::_ParseList(sh_list& dest, LPCSTR names)
 {
 	if (0==names) 		names 	= "$null";
 
-	ZeroMemory(&dest, sizeof(dest));
-	char*	P = (char*) names;
-	svector<char,64>	N;
+	ZeroMemory			(&dest, sizeof(dest));
+	char*	P			= (char*) names;
+	svector<char,128>	N;
 
 	while (*P)
 	{
@@ -268,12 +268,13 @@ void	CResourceManager::ED_UpdateTextures(AStringVec* names)
 	DeferredUpload	();
 }
 #endif
+
 void	CResourceManager::_GetMemoryUsage(u32& m_base, u32& c_base, u32& m_lmaps, u32& c_lmaps)
 {
 	m_base=c_base=m_lmaps=c_lmaps=0;
 
-	xr_map<LPSTR,CTexture*,str_pred>::iterator I = m_textures.begin	();
-	xr_map<LPSTR,CTexture*,str_pred>::iterator E = m_textures.end		();
+	map_Texture::iterator I = m_textures.begin	();
+	map_Texture::iterator E = m_textures.end	();
 	for (; I!=E; I++)
 	{
 		u32 m = I->second->dwMemoryUsage;
@@ -296,7 +297,7 @@ void	CResourceManager::Evict()
 BOOL	CResourceManager::_GetDetailTexture(LPCSTR Name,LPCSTR& T, R_constant_setup* &CS)
 {
 	LPSTR N = LPSTR(Name);
-	xr_map<LPSTR,texture_detail,str_pred>::iterator I = m_td.find	(N);
+	map_TD::iterator I = m_td.find	(N);
 	if (I!=m_td.end())
 	{
 		T	= I->second.T;

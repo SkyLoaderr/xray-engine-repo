@@ -518,7 +518,7 @@ void CSE_ALifeSimulator::vfSellArtefacts(CSE_ALifeTrader &tTrader)
 			// adding item to the temporary artefact map
 			ITEM_COUNT_PAIR_IT		k = m_tpTraderItems.find(l_tpALifeItemArtefact->s_name);
 			if (k == m_tpTraderItems.end())
-				m_tpTraderItems.insert(std::make_pair(l_tpALifeItemArtefact->s_name,1));
+				m_tpTraderItems.insert(mk_pair(l_tpALifeItemArtefact->s_name,1));
 			else
 				(*k).second++;
 		}
@@ -545,7 +545,7 @@ void CSE_ALifeSimulator::vfSellArtefacts(CSE_ALifeTrader &tTrader)
 							SOrganizationOrder							l_tOrganizationOrder;
 							l_tOrganizationOrder.m_tpALifeOrganization	= (*I).second;
 							l_tOrganizationOrder.m_dwCount				= (*ii).m_dwCount;
-							m_tpSoldArtefacts.insert					(std::make_pair((*ii).m_dwPrice,l_tOrganizationOrder));
+							m_tpSoldArtefacts.insert					(mk_pair((*ii).m_dwPrice,l_tOrganizationOrder));
 							break;
 						}
 				}
@@ -559,7 +559,7 @@ void CSE_ALifeSimulator::vfSellArtefacts(CSE_ALifeTrader &tTrader)
 				// checking if organization has already bought these artefacts
 				ITEM_COUNT_PAIR_IT		j = (*I).second.m_tpALifeOrganization->m_tpPurchasedArtefacts.find((*i).first);
 				if (j == (*I).second.m_tpALifeOrganization->m_tpPurchasedArtefacts.end())
-					(*I).second.m_tpALifeOrganization->m_tpPurchasedArtefacts.insert(std::make_pair((*i).first,(*I).second.m_dwCount));
+					(*I).second.m_tpALifeOrganization->m_tpPurchasedArtefacts.insert(mk_pair((*i).first,(*I).second.m_dwCount));
 				else
 					(*j).second			+= (*I).second.m_dwCount;
 				// adding money to trader
@@ -619,12 +619,12 @@ void CSE_ALifeSimulator::vfUpdateArtefactOrders(CSE_ALifeTrader &tTrader)
 					l_tArtefactOrder.m_dwPrice	= (*i).m_dwPrice;
 					strcpy						(l_tArtefactOrder.m_caSection,(*I).first);
 					l_tpTraderArtefactOrder->m_tpOrders.push_back(l_tArtefactOrder);
-					tTrader.m_tpOrderedArtefacts.insert(std::make_pair(l_tpTraderArtefactOrder->m_caSection,l_tpTraderArtefactOrder));
+					tTrader.m_tpOrderedArtefacts.insert(mk_pair(l_tpTraderArtefactOrder->m_caSection,l_tpTraderArtefactOrder));
 					R_ASSERT				(tTrader.m_tpOrderedArtefacts.find(l_tpTraderArtefactOrder->m_caSection) != tTrader.m_tpOrderedArtefacts.end());
 					// updating cross traders table
 					TRADER_SET_PAIR_IT	J = m_tpCrossTraders.find((*i).m_caSection);
 					if (J == m_tpCrossTraders.end()) {
-						m_tpCrossTraders.insert(std::make_pair((*i).m_caSection,TRADER_SET()));
+						m_tpCrossTraders.insert(mk_pair((*i).m_caSection,TRADER_SET()));
 						J = m_tpCrossTraders.find((*i).m_caSection);
 						R_ASSERT2	(J != m_tpCrossTraders.end(),"Cannot append the cross trader map!");
 					}
@@ -657,7 +657,7 @@ void CSE_ALifeSimulator::vfBuySupplies(CSE_ALifeTrader &tTrader)
 			// adding item to the temporary item map
 			ITEM_COUNT_PAIR_IT		k = m_tpTraderItems.find(l_tpALifeInventoryItem->s_name);
 			if (k == m_tpTraderItems.end())
-				m_tpTraderItems.insert(std::make_pair(l_tpALifeInventoryItem->s_name,1));
+				m_tpTraderItems.insert(mk_pair(l_tpALifeInventoryItem->s_name,1));
 			else
 				(*k).second++;
 		}

@@ -85,24 +85,14 @@ CLevel::~CLevel()
 
 	//by Dandy
 	//destroy fog of war
-	if(m_pFogOfWar) xr_delete(m_pFogOfWar);
-
-	xr_vector<LPSTR>	T;
-	T.resize			(m_PatrolPaths.size());
+	xr_delete			(m_pFogOfWar);
 	{
 		SPathPairIt			I = m_PatrolPaths.begin();
 		SPathPairIt			E = m_PatrolPaths.end();
 		for (int i=0; I != E; ++I, ++i)
-			T[i] = (*I).first;
+			xr_free((char*&)(*I).first);
 	}
 	m_PatrolPaths.clear();
-	{
-		xr_vector<LPSTR>::iterator	I = T.begin();
-		xr_vector<LPSTR>::iterator	E = T.end();
-		for ( ; I != E; ++I)
-			xr_free(*I);
-	}
-	T.clear();
 	
 	xr_delete			(m_tpScriptProcessor);
 	xr_delete			(g_tpAI_Space);

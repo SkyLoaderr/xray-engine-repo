@@ -20,5 +20,5 @@ public:
 	u32 m_pp_time;
 	float m_hitImpulseScale;
 	SZonePPInfo m_pp;
-	LPCSTR m_pHitEffect;
+	ref_str m_pHitEffect;
 };
