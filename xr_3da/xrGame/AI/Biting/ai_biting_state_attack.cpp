@@ -143,9 +143,9 @@ void CBitingAttack::Run()
 
 	// проверить на возможность подкрадывания
 	if (!m_bAttackRat && (pMonster->GetEnemyNumber()==1)) {
-		if ((pMonster->flagsEnemy & FLAG_ENEMY_DOESNT_SEE_ME) != FLAG_ENEMY_DOESNT_SEE_ME) bEnemyDoesntSeeMe = false;
+		if ((pMonster->flagsEnemy & FLAG_ENEMY_DOESNT_SEE_ME) != FLAG_ENEMY_DOESNT_SEE_ME) bEnemyDoesntSeeMe = false; 
 		if (((pMonster->flagsEnemy & FLAG_ENEMY_GO_FARTHER_FAST) == FLAG_ENEMY_GO_FARTHER_FAST) && (m_dwStateStartedTime + 4000 < m_dwCurrentTime)) bEnemyDoesntSeeMe = false;
-		if ((ACTION_RUN == m_tAction) && bEnemyDoesntSeeMe) m_tAction = ACTION_STEAL;
+		if ((ACTION_RUN == m_tAction) && bEnemyDoesntSeeMe) m_tAction = ACTION_STEAL; 
 	}
 
 	// Проверить, достижим ли противник
@@ -189,45 +189,17 @@ void CBitingAttack::Run()
 						pMonster->set_use_dest_orientation	(false);
 					}
 				} else {
-					if (dist < BUILD_FULL_PATH_MAX_DIST) {
-						pMonster->set_dest_direction		(target);
-						pMonster->set_use_dest_orientation	(true);
-						
+					pMonster->set_dest_direction		(target);
+					pMonster->set_use_dest_orientation	(true);
 
-						pMonster->MoveToTarget(m_tEnemy.obj);
-						squad_target_selected = true;
-					}
+					pMonster->MoveToTarget(m_tEnemy.obj);
+					squad_target_selected = true;
 				}
 				
 				if (!squad_target_selected) {
-					
 					pMonster->set_use_dest_orientation	(false);
+					pMonster->MoveToTarget(m_tEnemy.obj);
 
-					// Враг далеко? Строить полный путь?
-					if (dist < BUILD_FULL_PATH_MAX_DIST) {
-						// squad_ai выбрал оптимальную позицию, соответствующую позиции врага	
-						
-						// использовать ли предсказание позиции
-						Fvector dir;
-						dir.sub(m_tEnemy.obj->Position(),EnemySavedPos);
-
-						if ((dist > PREDICT_POSITION_MIN_THRESHOLD) && (dir.square_magnitude() > 1)) {
-							Fvector target_point;
-							target_point.add(m_tEnemy.obj->Position(),dir);
-							pMonster->Path_ApproachPoint(target_point);
-							pMonster->SetPathParams(pMonster->level_vertex_id(), pMonster->Position()); 
-						} else {
-							pMonster->MoveToTarget(m_tEnemy.obj);
-						}
-					} else { // построить неполный путь на расстояние BUILD_HALF_PATH_DIST
-						Fvector pos;
-						Fvector dir;
-						dir.sub(m_tEnemy.obj->Position(), pMonster->Position()); 
-						dir.normalize();
-						pos.mad(pMonster->Position(), dir, BUILD_HALF_PATH_DIST);
-						pMonster->Path_ApproachPoint(pos);
-						pMonster->SetPathParams(pMonster->level_vertex_id(), pMonster->Position()); 
-					}
 				}
 			}
 

@@ -36,6 +36,11 @@ struct SEntityState {
 	u32		last_repos;		// время последнего обновления target со стороны Squad (если 0 - то не брать target)
 };
 
+struct SMemberEnemy {
+	CEntity *member;
+	CEntity *enemy;
+};
+
 // Задача
 struct GTask {
 	struct {
@@ -65,6 +70,8 @@ class CMonsterSquad {
 	DEFINE_VECTOR	(CEntity*, ENTITY_VEC,	ENTITY_VEC_IT);
 	DEFINE_MAP		(CEntity*, SEntityState, ENTITY_STATE_MAP, ENTITY_STATE_MAP_IT);
 
+	DEFINE_VECTOR	(SMemberEnemy, MEMBER_ENEMY_VEC, MEMBER_ENEMY_VEC_IT);
+
 	CEntity				*leader;
 	ELeaderState		leader_state;
 	
@@ -75,6 +82,9 @@ class CMonsterSquad {
 	ENTITY_STATE_MAP	states;
 
 	ESquadAttackAlg		squad_attack_algorithm;
+	
+	MEMBER_ENEMY_VEC	vect_copy;
+	MEMBER_ENEMY_VEC	general_enemy;		
 
 public:
 				CMonsterSquad(u8 i) : id(i), leader(0), squad_attack_algorithm(SAA_DESTINATION_DIRECTION) {}
@@ -136,8 +146,8 @@ private:
 	CEntity		*GetNearestEnemy	(CEntity *t, ENTITY_VEC *ev);
 	
 	// decentralized
-	void		SetupMemeberPositions_Deviation (ENTITY_STATE_MAP &cur_map, CEntity *enemy);
-	void		SetupMemeberPositions_TargetDir (ENTITY_STATE_MAP &cur_map, CEntity *enemy);
+	void		SetupMemeberPositions_Deviation (MEMBER_ENEMY_VEC &members, CEntity *enemy);
+	void		SetupMemeberPositions_TargetDir (MEMBER_ENEMY_VEC &members, CEntity *enemy);
 
 };
 

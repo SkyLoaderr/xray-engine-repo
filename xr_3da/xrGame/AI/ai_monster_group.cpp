@@ -365,42 +365,54 @@ Fvector CMonsterSquad::GetTargetPoint(CEntity *pE, TTime &time)
 	return it->second.target;
 }
 
+
+struct remove_predicate {
+	CEntity *pO;
+	
+			remove_predicate	(CEntity *o)	{pO = o;}
+	bool	operator()			(SMemberEnemy &e)	{return (e.enemy == pO);}
+};
+
+
+
 void CMonsterSquad::UpdateDecentralized()
 {
-
-	// работаем только с копией new_map
-	ENTITY_STATE_MAP	new_map	= states;
-	// map только для NPC, у которых общий враг
-	ENTITY_STATE_MAP	cur_map;
+	vect_copy.reserve(states.size());
+	for (ENTITY_STATE_MAP_IT i = states.begin(); i != states.end(); i++) {
+		SMemberEnemy me;
+		me.member	= i->first;
+		me.enemy	= i->second.pEnemy;
+		vect_copy.push_back(me);
+	}
 	
-	while (!new_map.empty()) {
-		ENTITY_STATE_MAP_IT	it	= new_map.begin();
-		CEntity	*pGeneralEnemy	= it->second.pEnemy;
+	general_enemy.reserve(vect_copy.size());
+	
+	while (!vect_copy.empty()) {
+		MEMBER_ENEMY_VEC_IT it	= vect_copy.begin();
+		CEntity	*pGeneralEnemy	= it->enemy;
 
-		// заполнить cur_map
-		for (;it != new_map.end(); it++) {
-			if (it->second.pEnemy == pGeneralEnemy) {
+		// заполнить general_enemy
+		for (;it != vect_copy.end(); it++) {
+			if (it->enemy == pGeneralEnemy) {
 				// проверить, являются ли данные актуальными
-				TTime cur_time = Level().timeServer();
-				if (it->second.last_updated + 1000 > cur_time) 	cur_map.insert(*it);
+				general_enemy.push_back(*it);
 			}
 		}
 
 		if (pGeneralEnemy != 0) {
-			if (squad_attack_algorithm == SAA_DESTINATION_DIRECTION)
-				SetupMemeberPositions_TargetDir(cur_map,pGeneralEnemy);
-			else 
-				SetupMemeberPositions_Deviation(cur_map,pGeneralEnemy);
+			if (squad_attack_algorithm == SAA_DESTINATION_DIRECTION) SetupMemeberPositions_TargetDir(general_enemy,pGeneralEnemy);
+			else SetupMemeberPositions_Deviation(general_enemy,pGeneralEnemy);
 		}
 
-		cur_map.clear();
+		//R_ASSERT(general_enemy.empty());
 		
-		// удалить все элементы из new_map, у которых враг = pGeneralEnemy
-		for (ENTITY_STATE_MAP_IT iter = new_map.begin(), temp_it; iter != new_map.end(); iter = temp_it) {
-			temp_it = iter; ++temp_it;
-			if (iter->second.pEnemy == pGeneralEnemy) new_map.erase(iter);
-		}
+		// удалить все элементы из temp_v, у которых враг = pGeneralEnemy
+		MEMBER_ENEMY_VEC_IT iter = std::remove_if(vect_copy.begin(), vect_copy.end(), remove_predicate(pGeneralEnemy));
+		vect_copy.erase(iter, vect_copy.end());
 	}
+
+	vect_copy.clear		();
+	general_enemy.clear	();
 }
 
 struct sort_predicate {
@@ -408,10 +420,10 @@ struct sort_predicate {
 
 			sort_predicate	(CEntity *pEnemy) : enemy(pEnemy) {}
 
-	bool	operator()		(CEntity *pE1, CEntity *pE2) const
+	bool	operator()		(SMemberEnemy &pE1, SMemberEnemy &pE2) const
 	{
-		return	(pE1->Position().distance_to(enemy->Position()) > 
-				 pE2->Position().distance_to(enemy->Position()));
+		return	(pE1.member->Position().distance_to(enemy->Position()) > 
+				 pE2.member->Position().distance_to(enemy->Position()));
 	};
 };
 
@@ -423,6 +435,12 @@ struct _line {
 	bool	b_changed;
 };
 
+struct _elem {
+	CEntity *pE;
+	Fvector p_from;
+	float	yaw;
+};
+
 
 #define MIN_ANGLE						PI_DIV_6
 #define MAX_DIST_THRESHOLD				10.f
@@ -430,27 +448,14 @@ struct _line {
 #define MIN_DIST_TO_SKIP_ANGLE_CHECK	2.5f
 #define ENABLE_RANDOM_SIDE	
 
-
-struct _elem {
-	CEntity *pE;
-	Fvector p_from;
-	float	yaw;
-};
-
-void CMonsterSquad::SetupMemeberPositions_TargetDir(ENTITY_STATE_MAP &cur_map, CEntity *enemy)
+void CMonsterSquad::SetupMemeberPositions_TargetDir(MEMBER_ENEMY_VEC &members, CEntity *enemy)
 {
 	xr_vector<_elem>		lines;
-	xr_vector<CEntity *>	members;
 	_elem					first;
 	_elem					last;
 
-	members.reserve(cur_map.size());
-	lines.reserve(cur_map.size());
+	lines.reserve(members.size());
 
-	// заполнить вектор npc
-	for (ENTITY_STATE_MAP_IT it = cur_map.begin(); it != cur_map.end(); it++) 
-		members.push_back(it->first);
-	
 	// сортировать по убыванию расстояния от npc до врага 
 	std::sort(members.begin(), members.end(), sort_predicate(enemy));
 
@@ -459,16 +464,16 @@ void CMonsterSquad::SetupMemeberPositions_TargetDir(ENTITY_STATE_MAP &cur_map, C
 	float delta_yaw = PI_MUL_2 / members.size();
 
 	// обработать ближний элемент
-	first.pE		= members.back();
+	first.pE		= members.back().member;
 	first.p_from	= first.pE->Position();
-	first.yaw		= 0;
+	first.yaw		= PI;
 	members.pop_back();
 
 	lines.push_back(first);
 
 	// обработать дальний элемент
 	if (!members.empty()) {
-		last.pE			= members[0];
+		last.pE			= members[0].member;
 		last.p_from		= last.pE->Position();
 		last.yaw		= PI;
 		members.erase	(members.begin());
@@ -484,7 +489,7 @@ void CMonsterSquad::SetupMemeberPositions_TargetDir(ENTITY_STATE_MAP &cur_map, C
 	while (!members.empty()) {
 		CEntity *pCur;
 
-		pCur = members.back();
+		pCur = members.back().member;
 		members.pop_back();
 		
 		_elem cur_line;
@@ -523,10 +528,8 @@ void CMonsterSquad::SetupMemeberPositions_TargetDir(ENTITY_STATE_MAP &cur_map, C
 
 
 	// Пройти по всем линиям и заполнить таргеты у npc
-	TTime cur_time = Level().timeServer();
-
 	float first_h, first_p;
-	Fvector d; d.sub(target_pos,lines[0].p_from);
+	Fvector d; d.sub(target_pos,first.p_from);
 	d.getHP(first_h, first_p);
 
 	for (u32 i = 0; i < lines.size(); i++){
@@ -538,19 +541,11 @@ void CMonsterSquad::SetupMemeberPositions_TargetDir(ENTITY_STATE_MAP &cur_map, C
 	}
 }
 
-void CMonsterSquad::SetupMemeberPositions_Deviation(ENTITY_STATE_MAP &cur_map, CEntity *enemy)
+void CMonsterSquad::SetupMemeberPositions_Deviation(MEMBER_ENEMY_VEC &members, CEntity *enemy)
 {
-	
-	xr_vector<_line>		lines;
-	xr_vector<CEntity *>	members;
+	xr_vector<_line> lines;
+	lines.reserve(members.size());
 
-	members.reserve(cur_map.size());
-	lines.reserve(cur_map.size());
-
-	// заполнить вектор npc
-	for (ENTITY_STATE_MAP_IT it = cur_map.begin(); it != cur_map.end(); it++) 
-		members.push_back(it->first);
-	
 	// сортировать по убыванию расстояния от npc до врага 
 	std::sort(members.begin(), members.end(), sort_predicate(enemy));
 
@@ -558,7 +553,7 @@ void CMonsterSquad::SetupMemeberPositions_Deviation(ENTITY_STATE_MAP &cur_map, C
 	while (!members.empty()) {
 		CEntity *pCur;
 
-		pCur = members.back();
+		pCur = members.back().member;
 		members.pop_back();
 		
 		// построить текущую линию
