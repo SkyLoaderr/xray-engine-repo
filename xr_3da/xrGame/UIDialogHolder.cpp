@@ -60,7 +60,7 @@ void CDialogHolder::RemoveDialogToRender(CUIWindow* pDialog)
 	{
 		(*it)->Show(false);
 		(*it)->Enable(false);
-		m_dialogsToRender.erase(it);
+//		m_dialogsToRender.erase(it);
 		m_dialogsToErase.push_back(*it);
 	}
 }
