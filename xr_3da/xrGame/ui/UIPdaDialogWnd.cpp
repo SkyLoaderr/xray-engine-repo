@@ -32,17 +32,30 @@ void CUIPdaDialogWnd::Init(int x, int y, int width, int height)
 	R_ASSERT2(xml_result, "xml file not found");
 	CUIXmlInit xml_init;
 
-	AttachChild(&UILogListWnd);
+
+	// Декоративное оформление
+	AttachChild(&UICharIconFrame);
+	xml_init.InitFrameWindow(uiXml, "chicon_frame_window", 0, &UICharIconFrame);
+
+	AttachChild(&UIPhrasesFrame);
+	xml_init.InitFrameWindow(uiXml, "ph_frame_window", 0, &UIPhrasesFrame);
+
+	AttachChild(&UIMsglogFrame);
+	xml_init.InitFrameWindow(uiXml, "msglog_frame_window", 0, &UIMsglogFrame);
+
+	UIMsglogFrame.AttachChild(&UILogListWnd);
+	UILogListWnd.SetMessageTarget(this);
 	xml_init.InitListWnd(uiXml, "list", 0, &UILogListWnd);
 	UILogListWnd.ActivateList(false);
 	UILogListWnd.EnableScrollBar(true);
 
-	AttachChild(&UIPhrasesListWnd);
+	UIPhrasesFrame.AttachChild(&UIPhrasesListWnd);
+	UIPhrasesListWnd.SetMessageTarget(this);
 	xml_init.InitListWnd(uiXml, "list", 1, &UIPhrasesListWnd);
 	UIPhrasesListWnd.EnableScrollBar(true);
 
-
-	AttachChild(&UICharacterWindow);
+	UICharIconFrame.AttachChild(&UICharacterWindow);
+	UICharacterWindow.SetMessageTarget(this);
 	xml_init.InitWindow(uiXml, "character_info", 0, &UICharacterWindow);
 	
 	UICharacterWindow.AttachChild(&UICharacterInfo);
@@ -51,7 +64,7 @@ void CUIPdaDialogWnd::Init(int x, int y, int width, int height)
 							 PDA_DIALOG_CHAR_XML);
 
 	//Элементы автоматического добавления
-	xml_init.InitAutoStatic(uiXml, "auto_static", this);
+//	xml_init.InitAutoStatic(uiXml, "auto_static", this);
 
 	inherited::Init(x, y, width, height);
 }

@@ -12,6 +12,8 @@
 
 #define PDA_CONTACT_HEIGHT 70
 
+const char * const PDA_CONTACTS_XML	= "pda_contacts.xml";
+
 
 CUIPdaContactsWnd::CUIPdaContactsWnd()
 {
@@ -37,6 +39,19 @@ void CUIPdaContactsWnd::Hide()
 void CUIPdaContactsWnd::Init(int x, int y, int width, int height)
 {
 	inherited::Init(x, y, width, height);
+
+	CUIXml uiXml;
+	bool xml_result =uiXml.Init("$game_data$", PDA_CONTACTS_XML);
+	R_ASSERT2(xml_result, "xml file not found");
+	CUIXmlInit xml_init;
+
+	AttachChild(&UIFrameContacts);
+	xml_init.InitFrameWindow(uiXml, "contacts_frame_window", 0, &UIFrameContacts);
+
+	AttachChild(&UIListWnd);
+	xml_init.InitListWnd(uiXml, "list", 0, &UIListWnd);
+	UIListWnd.EnableActiveBackground(true);
+	UIListWnd.EnableScrollBar(true);
 }
 
 

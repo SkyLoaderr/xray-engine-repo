@@ -10,6 +10,7 @@
 #include "UIButton.h"
 #include "UIEditBox.h"
 #include "UIListWnd.h"
+#include "UIFrameWindow.h"
 
 
 class CPda;
@@ -46,4 +47,7 @@ public:
 protected:
 	//ID выбранного контакта InventoryOwner
 	u32 m_idContact;
+
+	// Фрейм для обрамоения контактов
+	CUIFrameWindow		UIFrameContacts;
 };

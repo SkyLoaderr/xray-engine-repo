@@ -49,7 +49,7 @@ public:
 
 protected:
 	// Бэкграунд
-	CUIFrameWindow UIMainPdaFrame;
+	CUIStatic UIMainPdaFrame;
 
 	// Текущий активный диалог
 	CUIDialogWnd *m_pActiveDialog;
@@ -63,6 +63,7 @@ protected:
 	//элементы декоративного интерфейса
 	CUIStatic			UIStaticTop;
 	CUIStatic			UIStaticBottom;
+	CUIFrameWindow		UIMainButtonsBackground;
 
 //	//верхушка PDA для кнопочек переключения режима
 //	CUIStatic			UIPDAHeader;

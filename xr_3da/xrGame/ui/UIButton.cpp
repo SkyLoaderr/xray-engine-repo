@@ -58,14 +58,22 @@ void CUIButton::Reset()
 
 void CUIButton::Init(LPCSTR tex_name, int x, int y, int width, int height)
 {
-
 	m_eButtonState = BUTTON_NORMAL;
 	m_ePressMode = NORMAL_PRESS;
 	m_bButtonClicked = false;
 	m_bCursorOverButton = false;
 
-
 	inherited::Init(tex_name, x, y, width, height);
+}
+
+void CUIButton::Init(int x, int y, int width, int height)
+{
+	m_eButtonState = BUTTON_NORMAL;
+	m_ePressMode = NORMAL_PRESS;
+	m_bButtonClicked = false;
+	m_bCursorOverButton = false;
+
+	inherited::Init(x, y, width, height);
 }
 
 

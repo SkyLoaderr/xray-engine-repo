@@ -26,6 +26,7 @@ public:
 
 
 	virtual void Init(LPCSTR tex_name, int x, int y, int width, int height);
+	virtual void Init(int x, int y, int width, int height);
 	
 	virtual void OnMouse(int x, int y, E_MOUSEACTION mouse_action);
 

@@ -34,6 +34,7 @@ public:
 					CUIFrameRect	();
 	void			Init			(LPCSTR base_name, int x, int y, int w, int h, DWORD align);
 	void			Render			();
+	void			SetColor		(u32 cl);
 	IC void			SetPos			(int left, int top)		{iPos.set(left,top);		uFlags &=~ flValidSize; }
 	IC void			SetSize			(int width, int height)	{iSize.set(width,height);	uFlags &=~ flValidSize; }
 };

@@ -53,10 +53,17 @@ bool CUIXmlInit::InitFrameWindow(CUIXml& xml_doc, LPCSTR path,
 
 	string256 buf;
 
-	int x = xml_doc.ReadAttribInt(path, index, "x");
-	int y = xml_doc.ReadAttribInt(path, index, "y");
-	int width = xml_doc.ReadAttribInt(path, index, "width");
-	int height = xml_doc.ReadAttribInt(path, index, "height");
+	int x		= xml_doc.ReadAttribInt(path, index, "x");
+	int y		= xml_doc.ReadAttribInt(path, index, "y");
+	int width	= xml_doc.ReadAttribInt(path, index, "width");
+	int height	= xml_doc.ReadAttribInt(path, index, "height");
+
+	int	r		= xml_doc.ReadAttribInt(path, index, "r", 0xff);
+	int	g		= xml_doc.ReadAttribInt(path, index, "g", 0xff);
+	int	b		= xml_doc.ReadAttribInt(path, index, "b", 0xff);
+	int	a		= xml_doc.ReadAttribInt(path, index, "a", 0xff);
+
+	pWnd->SetColor(color_rgba(r, g, b, a));
 	
 	ref_str base_name = xml_doc.Read(strconcat(buf,path,":base_texture"), index, NULL);
 
@@ -157,9 +164,11 @@ bool CUIXmlInit::InitButton(CUIXml& xml_doc, LPCSTR path,
 	
 	LPCSTR  texture = xml_doc.Read(strconcat(buf,path,":texture"), index, NULL);
 
-	if(!texture) return false;
+	if(texture)
+		pWnd->Init(texture, x, y, width, height);
+	else
+		pWnd->Init(x, y, width, height);
 	
-	pWnd->Init(texture, x, y, width, height);
 	pWnd->SetAccelerator(accel);
 
 	// Init font from xml config file
@@ -176,7 +185,7 @@ bool CUIXmlInit::InitButton(CUIXml& xml_doc, LPCSTR path,
 
 	LPCSTR  text = xml_doc.Read(buf, index, NULL);
 	pWnd->SetText(text);
-
+	
 	return true;
 }
 

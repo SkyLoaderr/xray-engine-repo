@@ -144,3 +144,9 @@ void CUIFrameRect::Render()
 }
 //--------------------------------------------------------------------
 
+void CUIFrameRect::SetColor(u32 cl)
+{
+	for (int i = 0; i < fmMax; ++i)
+		frame[i].SetColor(cl);
+	back.SetColor(cl);
+}

@@ -106,14 +106,27 @@ void CUIFrameWindow::Draw()
 	inherited::Draw();
 }
 
+//////////////////////////////////////////////////////////////////////////
 
 void CUIFrameWindow::SetWidth(int width)
 {
 	inherited::SetWidth(width);
 	m_UIWndFrame.SetSize(GetWidth(), GetHeight());
 }
+
+//////////////////////////////////////////////////////////////////////////
+
 void CUIFrameWindow::SetHeight(int height)
 {
 	inherited::SetHeight(height);
 	m_UIWndFrame.SetSize(GetWidth(), GetHeight());
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIFrameWindow::SetColor(u32 cl)
+{
+	m_UIWndFrame.SetColor(cl);
+	m_UIStaticOverLeftBottom.SetColor(cl);
+	m_UIStaticOverLeftTop.SetColor(cl);
 }

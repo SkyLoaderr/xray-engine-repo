@@ -37,6 +37,9 @@ public:
 
 	virtual void SetWidth(int width);
 	virtual void SetHeight(int height);
+	
+	// Устанавливаем цвет всего фрейма
+	void SetColor(u32 cl);
 
 	////////////////////////////////////
 	//прорисовка окна

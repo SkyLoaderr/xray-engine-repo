@@ -55,6 +55,10 @@ public:
 	//список фраз которые может говорить игрок
 	CUIListWnd UIPhrasesListWnd;
 
+	// Фреймы дикоративного оформления
+	CUIFrameWindow		UIMsglogFrame;
+	CUIFrameWindow		UICharIconFrame;
+	CUIFrameWindow		UIPhrasesFrame;
 
 	//информация о персонаже
 	CUIWindow		 UICharacterWindow;

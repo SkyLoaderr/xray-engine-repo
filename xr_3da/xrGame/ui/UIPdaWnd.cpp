@@ -13,7 +13,7 @@
 #include "../HUDManager.h"
 #include "../level.h"
 
-#define PDA_XML "pda.xml"
+#define PDA_XML "pda_new.xml"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -44,18 +44,22 @@ void CUIPdaWnd::Init()
 
 	inherited::Init(0,0, Device.dwWidth, Device.dwHeight);
 
-	AttachChild(&UIStaticTop);
-	UIStaticTop.Init("ui\\ui_top_background", 0,0,UI_BASE_WIDTH,128);
-	AttachChild(&UIStaticBottom);
-	UIStaticBottom.Init("ui\\ui_bottom_background", 0,UI_BASE_HEIGHT-32,UI_BASE_HEIGHT,32);
+//	AttachChild(&UIStaticTop);
+//	UIStaticTop.Init("ui\\ui_top_background", 0,0,UI_BASE_WIDTH,128);
+//	AttachChild(&UIStaticBottom);
+//	UIStaticBottom.Init("ui\\ui_bottom_background", 0,UI_BASE_HEIGHT-32,UI_BASE_HEIGHT,32);
 	
 	AttachChild(&UIMainPdaFrame);
-	xml_init.InitFrameWindow(uiXml, "frame_window", 0, &UIMainPdaFrame);
+	xml_init.InitStatic(uiXml, "background_static", 0, &UIMainPdaFrame);
 
 	//Элементы автоматического добавления
 	xml_init.InitAutoStatic(uiXml, "auto_static", this);
 
-	// Tab control
+	// Main buttons background
+	AttachChild(&UIMainButtonsBackground);
+	xml_init.InitFrameWindow(uiXml, "mbbackground_frame_window", 0, &UIMainButtonsBackground);
+
+ 	// Tab control
 	AttachChild(&UITabControl);
 	xml_init.InitTabControl(uiXml, "tab", 0, &UITabControl);
 
@@ -89,16 +93,16 @@ void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 			switch (UITabControl.GetActiveIndex()) 
 			{
 			case 0:
-				m_pActiveDialog = dynamic_cast<CUIDialogWnd*>(&UIPdaCommunication);
+				m_pActiveDialog = dynamic_cast<CUIDialogWnd*>(&UITaskWnd);
 				break;
 			case 1:
-				m_pActiveDialog = dynamic_cast<CUIDialogWnd*>(&UIMapWnd);
+				m_pActiveDialog = dynamic_cast<CUIDialogWnd*>(&UIPdaCommunication);
 				break;
 			case 2:
-				m_pActiveDialog = dynamic_cast<CUIDialogWnd*>(&UIDiaryWnd);
+				m_pActiveDialog = dynamic_cast<CUIDialogWnd*>(&UIMapWnd);
 				break;
 			case 3:
-				m_pActiveDialog = dynamic_cast<CUIDialogWnd*>(&UITaskWnd);
+				m_pActiveDialog = dynamic_cast<CUIDialogWnd*>(&UIDiaryWnd);
 				break;
 			}
 			m_pActiveDialog->Reset();
