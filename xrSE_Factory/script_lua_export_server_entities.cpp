@@ -19,7 +19,20 @@ void CScriptEngine::export_server_entities()
 {
 	module(lua())
 	[
-		class_<CSE_ALifeObject>("se_alife_object")
-			.def(				constructor<LPCSTR>())
+//		class_<CSE_Abstract>("abstract_object")
+//			.def("id",						&abstract_id)
+//			.def("parent_id",				&abstract_parent_id),
+//
+//		class_<CSE_ALifeObject,CSE_Abstract>("alife_object")
+		class_<CSE_ALifeObject>("alife_object")
+			.def(							constructor<LPCSTR>())
+			.def("id",						&abstract_id)
+			.def("parent_id",				&abstract_parent_id)
+			.def("can_switch_online",		(bool (CSE_ALifeObject::*)	() const)(CSE_ALifeObject::can_switch_online))
+			.def("can_switch_offline",		(bool (CSE_ALifeObject::*)	() const)(CSE_ALifeObject::can_switch_offline))
+			.def("interactive",				(bool (CSE_ALifeObject::*)	() const)(CSE_ALifeObject::interactive)),
+
+		class_<CSE_ALifeDynamicObject,CSE_ALifeObject>("alife_dynamic_object")
+			.def(							constructor<LPCSTR>())
 	];
 }
