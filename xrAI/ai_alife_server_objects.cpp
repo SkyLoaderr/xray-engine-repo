@@ -24,7 +24,7 @@ void CALifeObject::STATE_Write(NET_Packet &tNetPacket)
 
 void CALifeObject::STATE_Read(NET_Packet &tNetPacket, u16 size)
 {
-	if (size == 13) {
+	if (m_ucVersion == 1) {
 		tNetPacket.r_u8				(m_ucProbability);
 		tNetPacket.r_u32			(m_dwSpawnGroup);
 		tNetPacket.r_u16			(m_wCount);

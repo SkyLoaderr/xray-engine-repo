@@ -7,7 +7,8 @@
 void	xrServerEntity::Spawn_Write		(NET_Packet& P, BOOL bLocal)
 {
 	// generic
-	P.w_begin			(M_SPAWN);
+	P.w_u8				(M_SPAWN);
+	P.w_u8				(SPAWN_VERSION);
 	P.w_string			(s_name			);
 	P.w_string			(s_name_replace	);
 	P.w_u8				(s_gameid		);
@@ -18,8 +19,12 @@ void	xrServerEntity::Spawn_Write		(NET_Packet& P, BOOL bLocal)
 	P.w_u16				(ID				);
 	P.w_u16				(ID_Parent		);
 	P.w_u16				(ID_Phantom		);
+	
+	s_flags.set			(M_SPAWN_VERSION,TRUE);
 	if (bLocal)			P.w_u16(u16(s_flags.flags|M_SPAWN_OBJECT_LOCAL) );
 	else				P.w_u16(u16(s_flags.flags&~(M_SPAWN_OBJECT_LOCAL|M_SPAWN_OBJECT_ASPLAYER)));
+	
+	P.w_u8				(m_ucVersion = SPAWN_VERSION);
 
 	// write specific data
 	u32	position		= P.w_tell		();
@@ -33,9 +38,8 @@ void	xrServerEntity::Spawn_Read		(NET_Packet& P)
 {
 	u16					dummy16;
 	// generic
-	P.r_begin			(dummy16		);	
+	P.r_begin			(dummy16);	
 	R_ASSERT			(M_SPAWN==dummy16);
-	m_ucVersion			= u8(dummy16 >> 8);
 	P.r_string			(s_name			);
 	P.r_string			(s_name_replace	);
 	P.r_u8				(s_gameid		);
@@ -47,7 +51,8 @@ void	xrServerEntity::Spawn_Read		(NET_Packet& P)
 	P.r_u16				(ID_Parent		);
 	P.r_u16				(ID_Phantom		);
 	P.r_u16				(s_flags.flags	); 
-
+	if (s_flags.is(M_SPAWN_VERSION))
+		P.r_u8			(m_ucVersion);	
 	// read specific data
 	u16					size;
 	P.r_u16				(size			);	// size

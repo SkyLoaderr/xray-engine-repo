@@ -4,6 +4,8 @@
 #include "xrMessages.h"
 #include "ai_alife_interfaces.h"
 
+#define SPAWN_VERSION	u8(1)
+
 class xrClientData;
 
 class xrServerEntity : public IPureServerObject {
@@ -50,6 +52,7 @@ public:
         o_Angle.set					(0.f,0.f,0.f);
         o_Position.set				(0.f,0.f,0.f);
 		m_bALifeControl				= false;
+		m_ucVersion					= SPAWN_VERSION;
 	}
 	
 	virtual							~xrServerEntity()
