@@ -27,7 +27,10 @@ CTorch::~CTorch(void)
 void CTorch::Load(LPCSTR section) 
 {
 	inherited::Load(section);
-	m_pos		= pSettings->r_fvector3(section,"position");
+
+	m_pos = pSettings->r_fvector3(section,"position");
+	
+	light_trace_bone = pSettings->r_string(section,"light_trace_bone");
 }
 
 void CTorch::Switch()
@@ -35,12 +38,18 @@ void CTorch::Switch()
 	bool bActive			= !light_render->get_active();
 	light_render->set_active(bActive);
 	glow_render->set_active	(bActive);
+
+	CKinematics* pVisual = PKinematics(Visual()); R_ASSERT(pVisual);
+	pVisual->LL_SetBoneVisible(pVisual->LL_BoneID(*light_trace_bone),bActive,TRUE);
 }
 
 void CTorch::Switch	(bool light_on)
 {
 	light_render->set_active(light_on);
 	glow_render->set_active	(light_on);
+
+	CKinematics* pVisual = PKinematics(Visual()); R_ASSERT(pVisual);
+	pVisual->LL_SetBoneVisible(pVisual->LL_BoneID(*light_trace_bone),light_on,TRUE);
 }
 
 BOOL CTorch::net_Spawn(LPVOID DC) 
@@ -74,29 +83,15 @@ BOOL CTorch::net_Spawn(LPVOID DC)
 
 	guid_bone				= torch->guid_bone; VERIFY(guid_bone!=BI_NONE);
 
-	VERIFY					(m_pPhysicsShell);
+	VERIFY (m_pPhysicsShell);
 	CSE_Abstract *l_pE = (CSE_Abstract*)DC;
 	if(l_pE->ID_Parent==0xffff) m_pPhysicsShell->Activate(XFORM(),0,XFORM());
-	/*
-	if (0==m_pPhysicsShell) {
-		
-		// Physics (Box)
-		Fobb obb; Visual()->vis.box.get_CD(obb.m_translate,obb.m_halfsize); obb.m_rotate.identity();
-		// Physics (Elements)
-		CPhysicsElement* E = P_create_Element(); R_ASSERT(E); E->add_Box(obb);
-		// Physics (Shell)
-		m_pPhysicsShell = P_create_Shell(); R_ASSERT(m_pPhysicsShell);
-		m_pPhysicsShell->add_Element(E);
-		m_pPhysicsShell->setDensity(2000.f);
-		CSE_Abstract *l_pE = (CSE_Abstract*)DC;
-		if(l_pE->ID_Parent==0xffff) m_pPhysicsShell->Activate(XFORM(),0,XFORM());
-		m_pPhysicsShell->mDesired.identity();
-		m_pPhysicsShell->fDesiredStrength = 0.f;
 
-	}
-	*/
 	setVisible(true);
 	setEnabled(true);
+
+	//выключить фонарик
+	Switch	(false);
 
 	return TRUE;
 }
