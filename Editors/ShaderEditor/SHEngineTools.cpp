@@ -140,7 +140,7 @@ void CSHEngineTools::RealResetShaders()
     AnsiString name;
     FOLDER::MakeFullName(fraLeftBar->tvEngine->Selected,0,name);
 
-	Tools.UpdateObjectShader(true);
+	Tools.UpdateObjectShader();
 	ResetCurrentBlender	();
     // save to temp file
     PrepareRender		();
@@ -294,6 +294,10 @@ void CSHEngineTools::Save()
 {
     // set name
 	AnsiString fn 				= "shaders.xr";
+
+    // backup file
+    Engine.FS.BackupFile		(&Engine.FS.m_GameRoot,fn);
+
     Engine.FS.m_GameRoot.Update	(fn);
 
     // collapse reference
@@ -304,13 +308,10 @@ void CSHEngineTools::Save()
 
     Save(F);
 
-    // copy exist file
-    Engine.FS.MarkFile(fn);
-
     // save new file
-    Engine.FS.UnlockFile(0,fn.c_str(),false);
-    F.SaveTo(fn.c_str(), "shENGINE");
-    Engine.FS.LockFile(0,fn.c_str(),false);
+    Engine.FS.UnlockFile		(0,fn.c_str(),false);
+    F.SaveTo					(fn.c_str(), "shENGINE");
+    Engine.FS.LockFile			(0,fn.c_str(),false);
 
     m_bModified	= FALSE;
 	Tools.m_Props->ResetModified();

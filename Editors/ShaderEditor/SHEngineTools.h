@@ -68,19 +68,19 @@ friend class TfrmShaderProperties;
     void 				PrepareRender		();
 
     // matrix props
-	void __fastcall 	ModeOnAfterEdit		(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
-	void __fastcall 	MatrixOnAfterEdit	(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+	void __fastcall 	ModeOnAfterEdit		(PropValue* sender, LPVOID edit_val);
+	void __fastcall 	MatrixOnAfterEdit	(PropValue* sender, LPVOID edit_val);
 	void __fastcall 	AddMatrixProps		(TElTreeItem* parent, LPSTR name);
 	void __fastcall 	RemoveMatrixProps	(TElTreeItem* parent);
 	void __fastcall 	UpdateMatrixModeProps(TElTreeItem* parent, CMatrix* M, DWORD mode);
 	void __fastcall 	MCOnDraw			(PropValue* sender, LPVOID draw_val);
     // constant props
-	void __fastcall 	ConstOnAfterEdit	(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+	void __fastcall 	ConstOnAfterEdit	(PropValue* sender, LPVOID edit_val);
 	void __fastcall 	AddConstProps		(TElTreeItem* parent, LPSTR name);
 	void __fastcall 	RemoveConstProps	(TElTreeItem* parent);
     // name
-	void __fastcall 	NameOnAfterEdit		(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
-	void __fastcall 	NameOnBeforeEdit	(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+	void __fastcall 	NameOnAfterEdit		(PropValue* sender, LPVOID edit_val);
+	void __fastcall 	NameOnBeforeEdit	(PropValue* sender, LPVOID edit_val);
 	void __fastcall 	NameOnDraw			(PropValue* sender, LPVOID draw_val);
 
     void				RealResetShaders	();

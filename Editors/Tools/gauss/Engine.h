@@ -6,7 +6,7 @@
 #define AFX_ENGINE_H__22802DD7_D7EB_4234_9781_E237657471AC__INCLUDED_
 #pragma once
 
-#ifndef	M_BORLAND
+/*
     // xr_malloc
     IC void*	xr_malloc	(size_t size)
     {	return	_aligned_malloc(size,16); }
@@ -29,12 +29,11 @@
         else				CopyMemory		(memory,string,len);
         return memory;
     }
-#else
-	#define		xr_malloc	malloc
-	#define		xr_free		free
-	#define		xr_realloc	realloc
-	#define		xr_strdup	strdup
-#endif
+*/
+#define		xr_malloc	malloc
+#define		xr_free		free
+#define		xr_realloc	realloc
+#define		xr_strdup	strdup
 
 #include "FS.h"
 #include "FileSystem.h"

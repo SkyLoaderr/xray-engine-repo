@@ -194,18 +194,16 @@ void CShaderTools::OnShowHint(AStringVec& ss){
     }
 }
 
-void CShaderTools::UpdateObjectShader(bool bClearOnly){
+void CShaderTools::UpdateObjectShader(){
     // apply this shader to non custom object
 	if (m_EditObject&&!m_bCustomEditObject){
     	CSurface* surf = *m_EditObject->FirstSurface(); R_ASSERT(surf);
-//	    if (0!=strcmp(surf->_ShaderName(),Engine.m_CurrentBlender->getName())){
-    	    Device.Shader.Delete(surf->_Shader());
-            string512 tex; strcpy(tex,surf->_Texture());
-            for (int i=0; i<7; i++){ strcat(tex,","); strcat(tex,surf->_Texture());}
-            if (SEngine.m_CurrentBlender)	surf->SetShader(SEngine.m_CurrentBlender->getName(),bClearOnly?0:Device.Shader.Create(SEngine.m_CurrentBlender->getName(),tex));
-            else							surf->SetShader("editor\\wire",bClearOnly?0:Device.Shader.Create("editor\\wire",tex));
-            UI.RedrawScene();
-//    	}
+        string512 tex; strcpy(tex,surf->_Texture());
+        for (int i=0; i<7; i++){ strcat(tex,","); strcat(tex,surf->_Texture());}
+        if (SEngine.m_CurrentBlender)	surf->ED_SetShader(SEngine.m_CurrentBlender->getName());
+        else							surf->ED_SetShader("editor\\wire");
+        UI.RedrawScene();
+		m_EditObject->OnDeviceDestroy();
     }
 }
 

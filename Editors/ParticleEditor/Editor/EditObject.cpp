@@ -77,8 +77,11 @@ CEditableMesh* CEditableObject::FindMeshByName	(const char* name, CEditableMesh*
     return 0;
 }
 
-void CEditableObject::ClearGeometry (){
+void CEditableObject::ClearGeometry ()
+{
+#ifdef _EDITOR
     OnDeviceDestroy();
+#endif
     if (!m_Meshes.empty())
         for(EditMeshIt 	m=m_Meshes.begin(); m!=m_Meshes.end();m++)_DELETE(*m);
     if (!m_Surfaces.empty())
@@ -145,7 +148,9 @@ void CEditableObject::TranslateToWorld(const Fmatrix& parent)
 {
 	EditMeshIt m = m_Meshes.begin();
 	for(;m!=m_Meshes.end();m++) (*m)->Transform( parent );
-    OnDeviceDestroy();
+#ifdef _EDITOR
+	OnDeviceDestroy();
+#endif
 	UpdateBox();
 }
 

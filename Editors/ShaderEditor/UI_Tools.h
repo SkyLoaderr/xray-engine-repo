@@ -66,7 +66,7 @@ public:
     EActiveEditor		ActiveEditor		();
     void				OnChangeEditor		();
 
-    void				UpdateObjectShader	(bool bClearOnly=false);
+    void				UpdateObjectShader	();
 
     void				OnShowHint			(AStringVec& ss);
 

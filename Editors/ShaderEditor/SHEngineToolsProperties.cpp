@@ -45,16 +45,16 @@ void __fastcall CSHEngineTools::UpdateMatrixModeProps(TElTreeItem* item, CMatrix
 	P->EndEditMode();
 }
 //---------------------------------------------------------------------------
-void __fastcall CSHEngineTools::ModeOnAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+void __fastcall CSHEngineTools::ModeOnAfterEdit(PropValue* sender, LPVOID edit_val)
 {
-	TElTreeItem* parent=item->Parent; R_ASSERT(parent);
+	TElTreeItem* parent=sender->item->Parent; R_ASSERT(parent);
     ListValue* V = (ListValue*)parent->Tag;
     R_ASSERT(V->type==PROP_LIST);
     string128 nm; strcpy(nm,V->GetValue());
     CMatrix* M = FindMatrix(nm,false); R_ASSERT(M);
     V->ApplyValue(nm);
     DWORD mode=*(DWORD*)edit_val;
-    UpdateMatrixModeProps(item,M,mode);
+    UpdateMatrixModeProps(sender->item,M,mode);
 }
 //---------------------------------------------------------------------------
 void __fastcall CSHEngineTools::AddMatrixProps(TElTreeItem* item, LPSTR name)
@@ -88,7 +88,7 @@ void __fastcall CSHEngineTools::MCOnDraw(PropValue* sender, LPVOID draw_val)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall CSHEngineTools::MatrixOnAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+void __fastcall CSHEngineTools::MatrixOnAfterEdit(PropValue* sender, LPVOID edit_val)
 {
 	ListValue* V = (ListValue*)sender;
 	LPSTR nm=(LPSTR)edit_val;	VERIFY(nm&&nm[0]);
@@ -96,7 +96,7 @@ void __fastcall CSHEngineTools::MatrixOnAfterEdit(TElTreeItem* item, PropValue* 
 	if (*nm!='$'){
         if (*V->GetValue()=='$'){
             strcpy(nm,AppendMatrix());
-            AddMatrixProps(item,nm);
+            AddMatrixProps(sender->item,nm);
         }else{
             strcpy(nm,V->GetValue());
         }
@@ -105,7 +105,7 @@ void __fastcall CSHEngineTools::MatrixOnAfterEdit(TElTreeItem* item, PropValue* 
         	string128 nmm; strcpy(nmm,V->GetValue());
             RemoveMatrix(nmm);
             V->ApplyValue(nmm);
-            RemoveMatrixProps(item);
+            RemoveMatrixProps(sender->item);
         }
     }
 }
@@ -137,7 +137,7 @@ void __fastcall CSHEngineTools::RemoveConstProps(TElTreeItem* parent){
 }
 //---------------------------------------------------------------------------
 
-void __fastcall CSHEngineTools::ConstOnAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+void __fastcall CSHEngineTools::ConstOnAfterEdit(PropValue* sender, LPVOID edit_val)
 {
 	ListValue* V = dynamic_cast<ListValue*>(sender); R_ASSERT(V);
 	LPSTR nm=(LPSTR)edit_val;	VERIFY(nm&&nm[0]);
@@ -145,7 +145,7 @@ void __fastcall CSHEngineTools::ConstOnAfterEdit(TElTreeItem* item, PropValue* s
 	if (*nm!='$'){
         if (*V->GetValue()=='$'){
             strcpy(nm,AppendConstant());
-            AddConstProps(item,nm);
+            AddConstProps(sender->item,nm);
         }else{
             strcpy(nm,V->GetValue());
         }
@@ -154,12 +154,12 @@ void __fastcall CSHEngineTools::ConstOnAfterEdit(TElTreeItem* item, PropValue* s
         	string128 nmm; strcpy(nmm,V->GetValue());
             RemoveConstant(nmm);
             V->ApplyValue(nmm);
-            RemoveConstProps(item);
+            RemoveConstProps(sender->item);
         }
     }
 }
 //------------------------------------------------------------------------------
-void __fastcall CSHEngineTools::NameOnAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+void __fastcall CSHEngineTools::NameOnAfterEdit(PropValue* sender, LPVOID edit_val)
 {
 	TextValue* V = (TextValue*)sender;
     AnsiString* new_name = (AnsiString*)edit_val;
@@ -167,7 +167,7 @@ void __fastcall CSHEngineTools::NameOnAfterEdit(TElTreeItem* item, PropValue* se
     	RemoteRenameBlender(V->GetValue(),new_name->c_str());
 }
 //------------------------------------------------------------------------------
-void __fastcall CSHEngineTools::NameOnBeforeEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+void __fastcall CSHEngineTools::NameOnBeforeEdit(PropValue* sender, LPVOID edit_val)
 {
 	FOLDER::BeforeTextEdit(((TextValue*)sender)->GetValue(),*(AnsiString*)edit_val);
 }
@@ -227,7 +227,7 @@ void CSHEngineTools::UpdateProperties()
             case xrPID_INTEGER:{
             	sz=sizeof(xrP_Integer);
                 xrP_Integer* V=(xrP_Integer*)data.Pointer();
-                P->AddItem	(marker_node,key,&V->value,PROP::CreateInt(V->min,V->max,1));
+                P->AddItem	(marker_node,key,&V->value,PROP::CreateS32(V->min,V->max,1));
             }break;
             case xrPID_FLOAT:{
             	sz=sizeof(xrP_Float);
