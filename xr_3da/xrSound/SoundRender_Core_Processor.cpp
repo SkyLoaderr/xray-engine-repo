@@ -20,6 +20,8 @@ void CSoundRender_Core::update	( const Fvector& P, const Fvector& D, const Fvect
 {
 	u32 it;
 
+	if (0==pDevice)				return;
+
 	s_emitters_u	++;
 
 	// Firstly update emitters, which are now being rendered
