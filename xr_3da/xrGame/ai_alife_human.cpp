@@ -652,6 +652,25 @@ EMeetActionType	CSE_ALifeHumanAbstract::tfGetActionType(CSE_ALifeSchedulable *tp
 CSE_ALifeDynamicObject *CSE_ALifeHumanAbstract::tpfGetBestDetector()
 {
 	m_tpBestDetector				= 0;
+	CSE_ALifeAbstractGroup			*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(this);
+	if (l_tpALifeAbstractGroup) {
+		u32							l_dwBestValue = 0;
+		R_ASSERT					(l_tpALifeAbstractGroup->m_wCount);
+		OBJECT_IT					I = l_tpALifeAbstractGroup->m_tpMembers.begin();
+		OBJECT_IT					E = l_tpALifeAbstractGroup->m_tpMembers.end();
+		for ( ; I != E; I++) {
+			CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>(m_tpALife->tpfGetObjectByID(l_tpALifeAbstractGroup->m_tpMembers[0]));
+			R_ASSERT				(l_tpALifeHumanAbstract);
+			getAI().m_tpCurrentALifeObject = l_tpALifeHumanAbstract->tpfGetBestDetector();
+			u32						l_dwCurrentValue = iFloor(getAI().m_pfDetectorType->ffGetValue()+.5f);
+			if (l_dwCurrentValue > l_dwBestValue) {
+				l_dwBestValue		= l_dwCurrentValue;
+				m_tpBestDetector	= dynamic_cast<CSE_ALifeItem*>(getAI().m_tpCurrentALifeObject);
+			}
+		}
+		return						(m_tpBestDetector);
+	}
+	
 	OBJECT_IT						I = children.begin();
 	OBJECT_IT						E = children.end();
 	for ( ; I != E; I++) {

@@ -119,5 +119,11 @@ bool CSE_ALifeMonsterAbstract::bfActive()
 
 CSE_ALifeDynamicObject *CSE_ALifeMonsterAbstract::tpfGetBestDetector()
 {
-	return						(this);
+	CSE_ALifeAbstractGroup		*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(this);
+	if (!l_tpALifeAbstractGroup)
+		return					(this);
+	else {
+		R_ASSERT				(l_tpALifeAbstractGroup->m_wCount);
+		return					(m_tpALife->tpfGetObjectByID(l_tpALifeAbstractGroup->m_tpMembers[0]));
+	}
 }
