@@ -102,6 +102,11 @@ void CScriptZone::feel_touch_delete	(CObject *tpObject)
 		(*m_tpOnExit)(xr_new<CLuaGameObject>(this),xr_new<CLuaGameObject>(l_tpGameObject));
 }
 
+BOOL CScriptZone::feel_touch_contact	(CObject* O)
+{
+	return						(TRUE);
+}
+
 void CScriptZone::set_callback(const luabind::functor<void> &tpZoneCallback, bool bOnEnter)
 {
 	if (bOnEnter) {
