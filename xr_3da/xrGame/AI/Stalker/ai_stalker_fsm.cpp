@@ -715,7 +715,6 @@ void CAI_Stalker::Think()
 		I = _I;
 		vfUpdateVisibilityBySensitivity();
 	}
-	//if (!K && !J && !M && _M && (tpItemToTake)) 
 
 	if (m_tEnemy.Enemy && (_K != K))
 		AI_Path.TravelPath.clear();
