@@ -84,6 +84,7 @@ public:
 
 	void	mem_Compact				();
 	void	mem_CompactSubdivs		();
+	vector<R_Layer>*				LLayer_by_name	(LPCSTR N);
 public:
 	void	Load					(const b_params& P, const CStream&  FS);
 	void	Run						(string& path);

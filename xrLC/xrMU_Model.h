@@ -82,6 +82,7 @@ public:
 	void				calc_normals		();
 	void				calc_materials		();
 	void				calc_faceopacity	();
+	void				calc_lighting		(vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL* M, );
 };
 
 class xrMU_Reference
