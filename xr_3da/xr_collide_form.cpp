@@ -310,7 +310,7 @@ CCF_Rigid::CCF_Rigid(CObject* O) : ICollisionForm(O)
 		bv_box.set		(pH->vis.box);
 		bv_box.getsphere(bv_sphere.P,bv_sphere.R);
 	}else{ 
-		Fvisual* pV			= dynamic_cast<Fvisual*>(O->Visual());
+		IRender_Visual* pV	= O->Visual();
 		if (pV){
 			model.resize	(1);
 			base_box.set	(pV->vis.box);
@@ -349,15 +349,15 @@ void CCF_Rigid::BuildState()
 		for (u32 i=0; i<model.size(); i++)
 			UpdateModel		(model[i],pH->children[i]->vis.box);
 	}else{
-		Fvisual* pV	= dynamic_cast<Fvisual*>(owner->Visual());
-		UpdateModel	(model[0],pV->vis.box);
+		IRender_Visual* pV	= owner->Visual();
+		UpdateModel			(model[0],pV->vis.box);
 	}
 }
 
 void CCF_Rigid::BuildTopLevel()
 {
 	dwFrameTL			= Device.dwFrame;
-	IRender_Visual* K			= owner->Visual();
+	IRender_Visual* K	= owner->Visual();
 	Fbox& B				= K->vis.box;
 	bv_box.min.average	(B.min);
 	bv_box.max.average	(B.max);

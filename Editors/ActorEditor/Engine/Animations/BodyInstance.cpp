@@ -13,6 +13,40 @@
 int			psSkeletonUpdate	= 32;
 const float	fAA					= 1.5f;	// anim-change acceleration
 
+//////////////////////////////////////////////////////////////////////////
+// BoneInstance methods
+void		CBoneInstance::construct	()
+{
+	ZeroMemory			(this,sizeof(*this));
+	mTransform.identity	();
+	Callback_overwrite	= FALSE;
+}
+void		CBoneInstance::blend_add	(CBlend* H)
+{	
+	Blend.push_back(H);	
+}
+void		CBoneInstance::blend_remove	(CBlend* H)
+{
+	CBlend** I = std::find(Blend.begin(),Blend.end(),H);
+	if (I!=Blend.end())	Blend.erase(I);
+}
+void		CBoneInstance::set_callback	(BoneCallback C, void* Param)
+{	
+	Callback		= C; 
+	Callback_Param	= Param; 
+}
+void		CBoneInstance::set_param	(u32 idx, float data)
+{
+	VERIFY		(idx<MAX_BONE_PARAMS);
+	param[idx]	= data;
+}
+float		CBoneInstance::get_param	(u32 idx)
+{
+	VERIFY		(idx<MAX_BONE_PARAMS);
+	return		param[idx];
+}
+
+//////////////////////////////////////////////////////////////////////////
 // High level control
 void CMotionDef::Load(CKinematics* P, IReader* MP, u32 fl)
 {
@@ -114,6 +148,15 @@ void	CBoneData::Motion_Stop	(CKinematics* K, CBlend* handle)
 void	CBoneData::Motion_Stop_IM	(CKinematics* K, CBlend* handle) 
 {
 	K->LL_GetInstance(SelfID).blend_remove	(handle);
+}
+void	CBoneData::DebugQuery		(BoneDebug& L)
+{
+	for (u32 i=0; i<children.size(); i++)
+	{
+		L.push_back(SelfID);
+		L.push_back(children[i]->SelfID);
+		children[i]->DebugQuery(L);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////

@@ -5,6 +5,12 @@
 
 extern int	psSkeletonUpdate;
 
+IC void	KEY_Interp(CKey& D, CKey& K1, CKey& K2, float delta)
+{
+	D.Q.slerp	(K1.Q,K2.Q,delta);
+	D.T.lerp	(K1.T,K2.T,delta);
+}
+
 struct ConsistantKey
 {
 	CKey*	K;
