@@ -92,7 +92,6 @@ void CRenderDevice::Run			()
 	Log			("Starting engine...");
 
 	// Startup timers and calculate timer delta
-	TimerGlobal.Start			();
 	dwTimeGlobal				= 0;
 	Timer_MM_Delta				= 0;
 	{
@@ -100,7 +99,7 @@ void CRenderDevice::Run			()
 		while (timeGetTime()==time_mm);			// wait for next tick
 		u32 time_system		= timeGetTime	();
 		u32 time_local		= TimerAsync	();
-		Timer_MM_Delta			= time_system-time_local;
+		Timer_MM_Delta		= time_system-time_local;
 	}
 
 	// Start all threads

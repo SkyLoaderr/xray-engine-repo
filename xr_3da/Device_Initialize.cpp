@@ -6,7 +6,9 @@ extern LRESULT CALLBACK WndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 void CRenderDevice::Initialize()
 {
 	Log("Initializing Engine...");
-    // Unless a substitute hWnd has been specified, create a window to render into
+	TimerGlobal.Start			();
+
+	// Unless a substitute hWnd has been specified, create a window to render into
     if( m_hWnd == NULL)
     {
 		const char*	wndclass ="_XRAY_";
