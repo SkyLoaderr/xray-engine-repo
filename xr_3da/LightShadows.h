@@ -29,6 +29,7 @@ private:
 	vector<caster>			casters;
 	vector<int>				id;
 	vector<xrLIGHT*>		lights;
+	CRT*					
 private:
 public:
 	void					set_object	(CObject*	O);
