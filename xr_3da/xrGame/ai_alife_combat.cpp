@@ -15,7 +15,7 @@ void CSE_ALifeSimulator::vfFillCombatGroup(CSE_ALifeSchedulable *tpALifeSchedula
 	EHitType				l_tHitType;
 	float					l_fHitPower;
 	SCHEDULE_P_VECTOR		&tpGroupVector = m_tpaCombatGroups[iGroupIndex];
-	CSE_ALifeAbstractGroup	*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(tpALifeSchedulable);
+	CSE_ALifeGroupAbstract	*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeGroupAbstract*>(tpALifeSchedulable);
 	tpGroupVector.clear		();
 	if (l_tpALifeAbstractGroup) {
 		OBJECT_IT			I = l_tpALifeAbstractGroup->m_tpMembers.begin();
@@ -317,7 +317,7 @@ void CSE_ALifeSimulator::vfFinishCombat(ECombatResult tCombatResult)
 	_GRAPH_ID				l_tGraphID = l_tpALifeDynamicObject->m_tGraphID;
 	m_tpItemVector.clear();
 	for (int i=0; i<2; i++) {
-		CSE_ALifeAbstractGroup	*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(m_tpaCombatObjects[i]);
+		CSE_ALifeGroupAbstract	*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeGroupAbstract*>(m_tpaCombatObjects[i]);
 		if (l_tpALifeAbstractGroup) {
 			for (int I=0, N=l_tpALifeAbstractGroup->m_tpMembers.size() ; I<N; I++) {
 				CSE_ALifeMonsterAbstract	*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(tpfGetObjectByID(l_tpALifeAbstractGroup->m_tpMembers[I]));

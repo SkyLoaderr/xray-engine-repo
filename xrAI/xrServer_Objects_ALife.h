@@ -122,30 +122,30 @@ public:
 									CSE_ALifeObject	(LPCSTR caSection);
 SERVER_ENTITY_DECLARE_END
 
-class CSE_ALifeAbstractGroup : virtual public CSE_Abstract {
+class CSE_ALifeGroupAbstract : virtual public CSE_Abstract {
 public:
 	OBJECT_VECTOR					m_tpMembers;
 	bool							m_bCreateSpawnPositions;
 	u16								m_wCount;
 
-									CSE_ALifeAbstractGroup(LPCSTR caSection) : CSE_Abstract(caSection)
+									CSE_ALifeGroupAbstract(LPCSTR caSection) : CSE_Abstract(caSection)
 	{
 		m_tpMembers.clear			();
 		m_bCreateSpawnPositions		= true;
 		m_wCount					= 1;
 	};
 
-	virtual							~CSE_ALifeAbstractGroup()
+	virtual							~CSE_ALifeGroupAbstract()
 	{
 	};
 	
 SERVER_ENTITY_DECLARE_END
 
-template<class __A> class CSE_ALifeGroupTemplate : public __A, public CSE_ALifeAbstractGroup {
+template<class __A> class CSE_ALifeGroupTemplate : public __A, public CSE_ALifeGroupAbstract {
 	typedef __A					inherited1;
-	typedef CSE_ALifeAbstractGroup inherited2;
+	typedef CSE_ALifeGroupAbstract inherited2;
 public:
-									CSE_ALifeGroupTemplate(LPCSTR caSection) : __A(caSection), CSE_ALifeAbstractGroup(caSection), CSE_Abstract(caSection)
+									CSE_ALifeGroupTemplate(LPCSTR caSection) : __A(pSettings->line_exist(caSection,"monster_section") ? pSettings->r_string(caSection,"monster_section") : caSection), CSE_ALifeGroupAbstract(caSection), CSE_Abstract(pSettings->line_exist(caSection,"monster_section") ? pSettings->r_string(caSection,"monster_section") : caSection)
 	{
 	};
 	

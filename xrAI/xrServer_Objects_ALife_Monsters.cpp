@@ -464,7 +464,7 @@ void CSE_ALifeCreatureAbstract::FillProp	(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeMonsterAbstract
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeMonsterAbstract::CSE_ALifeMonsterAbstract(LPCSTR caSection)	: CSE_ALifeCreatureAbstract(pSettings->line_exist(caSection,"monster_section") ? pSettings->r_string(caSection,"monster_section") : caSection), CSE_ALifeSchedulable(pSettings->line_exist(caSection,"monster_section") ? pSettings->r_string(caSection,"monster_section") : caSection), CSE_Abstract(caSection)
+CSE_ALifeMonsterAbstract::CSE_ALifeMonsterAbstract(LPCSTR caSection)	: CSE_ALifeCreatureAbstract(caSection), CSE_ALifeSchedulable(caSection), CSE_Abstract(caSection)
 {
 	m_tNextGraphID				= m_tGraphID;
 	m_tPrevGraphID				= m_tGraphID;
@@ -472,9 +472,6 @@ CSE_ALifeMonsterAbstract::CSE_ALifeMonsterAbstract(LPCSTR caSection)	: CSE_ALife
 	m_fDistanceFromPoint		= 0.0f;
 	m_fDistanceToPoint			= 0.0f;
 	m_tpaTerrain.clear			();
-
-	if (pSettings->line_exist(caSection,"monster_section"))
-		caSection				= pSettings->r_string(caSection,"monster_section");
 
 	m_fMaxHealthValue	 		= pSettings->r_float	(caSection,"MaxHealthValue");
 	if (pSettings->line_exist(caSection,"hit_power")) {
@@ -663,7 +660,7 @@ void CSE_ALifeCreatureCrow::FillProp			(LPCSTR pref, PropItemVec& values)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeMonsterRat
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeMonsterRat::CSE_ALifeMonsterRat	(LPCSTR caSection) : CSE_ALifeMonsterAbstract(caSection), CSE_ALifeInventoryItem(pSettings->line_exist(caSection,"monster_section") ? pSettings->r_string(caSection,"monster_section") : caSection), CSE_Abstract(caSection)
+CSE_ALifeMonsterRat::CSE_ALifeMonsterRat	(LPCSTR caSection) : CSE_ALifeMonsterAbstract(caSection), CSE_ALifeInventoryItem(caSection), CSE_Abstract(caSection)
 {
 	set_visual					("monsters\\rat\\rat_1");
 	// personal charactersitics
@@ -795,7 +792,7 @@ void CSE_ALifeMonsterRat::FillProp			(LPCSTR pref, PropItemVec& items)
 
 bool CSE_ALifeMonsterRat::bfUseful		()
 {
-	return						(!dynamic_cast<CSE_ALifeAbstractGroup*>(this) && (fHealth <= EPS_L));
+	return						(!dynamic_cast<CSE_ALifeGroupAbstract*>(this) && (fHealth <= EPS_L));
 }
 
 

@@ -42,7 +42,7 @@ void CSE_ALifeSimulator::vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject *&i
 	if (l_tpALifeMonsterAbstract)
 		vfAssignGraphPosition	(l_tpALifeMonsterAbstract);
 
-	CSE_ALifeAbstractGroup		*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(i);
+	CSE_ALifeGroupAbstract		*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeGroupAbstract*>(i);
 	if (l_tpALifeAbstractGroup) {
 		l_tpALifeAbstractGroup->m_tpMembers.resize(l_tpALifeAbstractGroup->m_wCount);
 		OBJECT_IT				I = l_tpALifeAbstractGroup->m_tpMembers.begin();
@@ -206,7 +206,7 @@ void CSE_ALifeSimulator::vfBallanceCreatures()
 		D_OBJECT_PAIR_IT				E = m_tObjectRegistry.end();
 		for ( ; I != E; I++) {
 			CSE_ALifeCreatureAbstract *l_tpALifeCreatureAbstract = dynamic_cast<CSE_ALifeCreatureAbstract*>((*I).second);
-			CSE_ALifeAbstractGroup	  *l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>((*I).second);
+			CSE_ALifeGroupAbstract	  *l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeGroupAbstract*>((*I).second);
 			if (l_tpALifeCreatureAbstract)
 				if (l_tpALifeAbstractGroup) {
 					if (l_tpALifeAbstractGroup->m_wCount) {
@@ -274,7 +274,7 @@ void CSE_ALifeSimulator::vfKillCreatures()
 	for ( ; I != E; I++) {
 		CSE_ALifeCreatureAbstract *l_tpALifeCreatureAbstract = dynamic_cast<CSE_ALifeCreatureAbstract*>((*I).second);
 		if (l_tpALifeCreatureAbstract && (l_tpALifeCreatureAbstract->m_bDirectControl) && (l_tpALifeCreatureAbstract->fHealth > 0.f)) {
-			CSE_ALifeAbstractGroup *l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>((*I).second);
+			CSE_ALifeGroupAbstract *l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeGroupAbstract*>((*I).second);
 			getAI().m_tpCurrentALifeObject = (*I).second;
 			if (l_tpALifeAbstractGroup) {
 				_GRAPH_ID			l_tGraphID = l_tpALifeCreatureAbstract->m_tGraphID;

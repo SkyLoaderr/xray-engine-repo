@@ -133,7 +133,7 @@ void CSE_ALifeSimulator::vfSwitchObjectOnline(CSE_ALifeDynamicObject *tpALifeDyn
 
 	tpALifeDynamicObject->m_bOnline	= true;
 
-	CSE_ALifeAbstractGroup			*tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(tpALifeDynamicObject);
+	CSE_ALifeGroupAbstract			*tpALifeAbstractGroup = dynamic_cast<CSE_ALifeGroupAbstract*>(tpALifeDynamicObject);
 	if (tpALifeAbstractGroup) {
 		OBJECT_IT					I = tpALifeAbstractGroup->m_tpMembers.begin(), B = I;
 		OBJECT_IT					E = tpALifeAbstractGroup->m_tpMembers.end();
@@ -169,7 +169,7 @@ void CSE_ALifeSimulator::vfSwitchObjectOffline(CSE_ALifeDynamicObject *tpALifeDy
 		return;
 
 	tpALifeDynamicObject->m_bOnline	= false;
-	CSE_ALifeAbstractGroup			*tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(tpALifeDynamicObject);
+	CSE_ALifeGroupAbstract			*tpALifeAbstractGroup = dynamic_cast<CSE_ALifeGroupAbstract*>(tpALifeDynamicObject);
 	if (tpALifeAbstractGroup) {
 		OBJECT_IT					I = tpALifeAbstractGroup->m_tpMembers.begin();
 		OBJECT_IT					E = tpALifeAbstractGroup->m_tpMembers.end();
@@ -204,7 +204,7 @@ void CSE_ALifeSimulator::vfFurlObjectOffline(CSE_ALifeDynamicObject *I)
 {
 	if (I->m_bOnline)
 		if (I->ID_Parent == 0xffff) {
-			CSE_ALifeAbstractGroup *tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(I);
+			CSE_ALifeGroupAbstract *tpALifeAbstractGroup = dynamic_cast<CSE_ALifeGroupAbstract*>(I);
 			if (tpALifeAbstractGroup)
 				for (u32 i=0, N = (u32)tpALifeAbstractGroup->m_tpMembers.size(); i<N; i++) {
 					CSE_ALifeMonsterAbstract	*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(tpfGetObjectByID(tpALifeAbstractGroup->m_tpMembers[i]));
@@ -230,7 +230,7 @@ void CSE_ALifeSimulator::vfValidatePosition(CSE_ALifeDynamicObject *I)
 	// updating node if it is invalid and object is not attached and online
 	if ((I->m_bOnline || (I->m_tNodeID <= 0) || (I->m_tNodeID >= getAI().Header().count)) && (I->ID_Parent == 0xffff)) {
 		// checking if it is a group of objects
-		CSE_ALifeAbstractGroup *tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(I);
+		CSE_ALifeGroupAbstract *tpALifeAbstractGroup = dynamic_cast<CSE_ALifeGroupAbstract*>(I);
 		if (tpALifeAbstractGroup) {
 			// checking if group is empty then remove it
 			if (tpALifeAbstractGroup->m_tpMembers.empty())
@@ -283,7 +283,7 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 		// checking if the object is not attached
 		if (I->ID_Parent == 0xffff) {
 			// checking if the object is not a group of objects
-			CSE_ALifeAbstractGroup *tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(I);
+			CSE_ALifeGroupAbstract *tpALifeAbstractGroup = dynamic_cast<CSE_ALifeGroupAbstract*>(I);
 			if (!tpALifeAbstractGroup) {
 				// checking if the object is ready to switch offline
 				if (m_tpActor->o_Position.distance_to(I->o_Position) > m_fOfflineDistance)
@@ -353,7 +353,7 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 		// checking if the object is not attached
 		if (I->ID_Parent == 0xffff) {
 			// checking if the object is not an empty group of objects
-			CSE_ALifeAbstractGroup *tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(I);
+			CSE_ALifeGroupAbstract *tpALifeAbstractGroup = dynamic_cast<CSE_ALifeGroupAbstract*>(I);
 			if (tpALifeAbstractGroup && (!tpALifeAbstractGroup->m_tpMembers.size())) {
 				// relase empty group of objects
 				vfReleaseObject(tpALifeAbstractGroup);

@@ -389,7 +389,7 @@ void CSE_ALifeHumanAbstract::vfDetachAll()
 void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
 {
 	R_ASSERT2						(fHealth >= EPS_L,"Cannot attach items to dead human");
-	CSE_ALifeAbstractGroup			*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(this);
+	CSE_ALifeGroupAbstract			*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeGroupAbstract*>(this);
 	if (l_tpALifeAbstractGroup) {
 		{
 			OBJECT_IT					I = l_tpALifeAbstractGroup->m_tpMembers.begin();
@@ -656,7 +656,7 @@ EMeetActionType	CSE_ALifeHumanAbstract::tfGetActionType(CSE_ALifeSchedulable *tp
 CSE_ALifeDynamicObject *CSE_ALifeHumanAbstract::tpfGetBestDetector()
 {
 	m_tpBestDetector				= 0;
-	CSE_ALifeAbstractGroup			*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(this);
+	CSE_ALifeGroupAbstract			*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeGroupAbstract*>(this);
 	if (l_tpALifeAbstractGroup) {
 		u32							l_dwBestValue = 0;
 		if (!l_tpALifeAbstractGroup->m_wCount)

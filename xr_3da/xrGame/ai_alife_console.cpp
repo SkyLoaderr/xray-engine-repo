@@ -192,7 +192,7 @@ void CSE_ALifeSimulator::vfObjectInfo(_OBJECT_ID	tObjectID)
 //		Msg("* Health        : %d",tpALifeMonsterParams->m_iHealth);
 //	}
 //		
-	CSE_ALifeAbstractGroup *tpALifeMonsterGroup = dynamic_cast<CSE_ALifeAbstractGroup *>(tpALifeDynamicObject);
+	CSE_ALifeGroupAbstract *tpALifeMonsterGroup = dynamic_cast<CSE_ALifeGroupAbstract *>(tpALifeDynamicObject);
 	if (tpALifeMonsterGroup) {
 		OBJECT_IT				I = tpALifeMonsterGroup->m_tpMembers.begin();
 		OBJECT_IT				E = tpALifeMonsterGroup->m_tpMembers.end();

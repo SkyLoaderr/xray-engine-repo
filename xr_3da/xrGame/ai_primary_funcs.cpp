@@ -555,7 +555,7 @@ float CPersonalMaxHealth::ffGetValue()
 	
 	CSE_ALifeMonsterAbstract		*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(getAI().m_tpCurrentALifeMember);
 	R_ASSERT3						(l_tpALifeMonsterAbstract,"Invalid object passed to the evaluation function ",m_caName);
-	CSE_ALifeAbstractGroup			*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(getAI().m_tpCurrentALifeMember);
+	CSE_ALifeGroupAbstract			*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeGroupAbstract*>(getAI().m_tpCurrentALifeMember);
 	if (!l_tpALifeAbstractGroup)
 		return						(m_fLastValue = l_tpALifeMonsterAbstract->m_fMaxHealthValue);
 	else

@@ -398,9 +398,9 @@ void CSE_ALifeObject::FillProp				(LPCSTR pref, PropItemVec& items)
 #endif
 
 ////////////////////////////////////////////////////////////////////////////
-// CSE_ALifeAbstractGroup
+// CSE_ALifeGroupAbstract
 ////////////////////////////////////////////////////////////////////////////
-void CSE_ALifeAbstractGroup::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
+void CSE_ALifeGroupAbstract::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
 	u32							dwDummy;
 	tNetPacket.r_u32			(dwDummy);
@@ -410,27 +410,27 @@ void CSE_ALifeAbstractGroup::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 		load_data				(m_tpMembers,tNetPacket);
 };
 
-void CSE_ALifeAbstractGroup::STATE_Write	(NET_Packet	&tNetPacket)
+void CSE_ALifeGroupAbstract::STATE_Write	(NET_Packet	&tNetPacket)
 {
 	tNetPacket.w_u32			(m_bCreateSpawnPositions);
 	tNetPacket.w_u16			(m_wCount);
 	save_data					(m_tpMembers,tNetPacket);
 };
 
-void CSE_ALifeAbstractGroup::UPDATE_Read	(NET_Packet	&tNetPacket)
+void CSE_ALifeGroupAbstract::UPDATE_Read	(NET_Packet	&tNetPacket)
 {
 	u32							dwDummy;
 	tNetPacket.r_u32			(dwDummy);
 	m_bCreateSpawnPositions		= !!dwDummy;
 };
 
-void CSE_ALifeAbstractGroup::UPDATE_Write	(NET_Packet	&tNetPacket)
+void CSE_ALifeGroupAbstract::UPDATE_Write	(NET_Packet	&tNetPacket)
 {
 	tNetPacket.w_u32			(m_bCreateSpawnPositions);
 };
 
 #ifdef _EDITOR
-void CSE_ALifeAbstractGroup::FillProp		(LPCSTR pref, PropItemVec& items)
+void CSE_ALifeGroupAbstract::FillProp		(LPCSTR pref, PropItemVec& items)
 {
 	PHelper.CreateU16			(items,	FHelper.PrepareKey(pref, "ALife\\Count"),			&m_wCount,			0,0xff);
 };	

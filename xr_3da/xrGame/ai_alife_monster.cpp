@@ -13,11 +13,9 @@
 
 void CSE_ALifeMonsterAbstract::Update		()
 {
-	bool				bContinue;
-	do {
+	bool				bContinue = true;
+	while (bContinue && bfActive() && (m_tpALife->m_tpActor->o_Position.distance_to(o_Position) > m_tpALife->m_fSwitchDistance)) {
 		bContinue		= false;
-		if (fHealth <= 0)
-			return;
 		if (m_tNextGraphID != m_tGraphID) {
 			_TIME_ID					tCurTime = m_tpALife->tfGetGameTime();
 			m_fDistanceFromPoint		+= float(tCurTime - m_tTimeID)/1000.f * m_fCurSpeed;
@@ -28,7 +26,7 @@ void CSE_ALifeMonsterAbstract::Update		()
 				m_fDistanceToPoint		= m_fDistanceFromPoint	= 0.0f;
 				m_tPrevGraphID			= m_tGraphID;
 				m_tpALife->vfChangeObjectGraphPoint(this,m_tGraphID,m_tNextGraphID);
-				CSE_ALifeAbstractGroup	*tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(this);
+				CSE_ALifeGroupAbstract	*tpALifeAbstractGroup = dynamic_cast<CSE_ALifeGroupAbstract*>(this);
 				if (tpALifeAbstractGroup)
 					tpALifeAbstractGroup->m_bCreateSpawnPositions = true;
 			}
@@ -89,7 +87,6 @@ void CSE_ALifeMonsterAbstract::Update		()
 		}
 		m_tpALife->vfCheckForInteraction(this);
 	}
-	while (bContinue && bfActive() && (m_tpALife->m_tpActor->o_Position.distance_to(o_Position) > m_tpALife->m_fSwitchDistance));
 	m_tTimeID					= m_tpALife->tfGetGameTime();
 }
 
@@ -114,13 +111,13 @@ EMeetActionType	CSE_ALifeMonsterAbstract::tfGetActionType(CSE_ALifeSchedulable *
 
 bool CSE_ALifeMonsterAbstract::bfActive()
 {
-	CSE_ALifeAbstractGroup		*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(this);
+	CSE_ALifeGroupAbstract		*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeGroupAbstract*>(this);
 	return						((l_tpALifeAbstractGroup && (l_tpALifeAbstractGroup->m_wCount > 0)) || (!l_tpALifeAbstractGroup && (fHealth > EPS_L)));
 }
 
 CSE_ALifeDynamicObject *CSE_ALifeMonsterAbstract::tpfGetBestDetector()
 {
-	CSE_ALifeAbstractGroup		*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(this);
+	CSE_ALifeGroupAbstract		*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeGroupAbstract*>(this);
 	if (!l_tpALifeAbstractGroup)
 		return					(this);
 	else {
