@@ -119,7 +119,7 @@ class CAI_Soldier : public CCustomMonster
 		#define	AMMO_NEED_RELOAD				6
 		#define	MAX_HEAD_TURN_ANGLE				(PI/3.f)
 		#define EYE_WEAPON_DELTA				(0*PI/30.f)
-		#define TORSO_ANGLE_DELTA				(PI/20.f)
+		#define TORSO_ANGLE_DELTA				(PI/30.f)
 		#define NEXT_POINT(m_iCurrentPoint)		(m_iCurrentPoint) == tpaPatrolPoints.size() - 1 ? 0 : (m_iCurrentPoint) + 1
 		#define PREV_POINT(m_iCurrentPoint)		(m_iCurrentPoint) == 0 ? tpaPatrolPoints.size() - 1 : (m_iCurrentPoint) - 1
 		#define MAX_PATROL_DISTANCE				6.f
