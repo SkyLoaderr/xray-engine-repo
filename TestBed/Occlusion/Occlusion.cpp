@@ -152,7 +152,8 @@ void RasterizeSection(unsigned char *Color, float *Depth,
 		float t;
 		float leftX, leftZ, rightX, rightZ, left_dX, right_dX, left_dZ, right_dZ;
 		// find initial values, step values
-		if ( ((mE1<mE2)&&(Sect==BOTTOM)) || ((mE1>mE2)&&(Sect==TOP)) ) { 
+		if ( ((mE1<mE2)&&(Sect==BOTTOM)) || ((mE1>mE2)&&(Sect==TOP)) ) 
+		{ 
 			// E1 is on the Left
 			// Initial Starting values for left (from E1)
 			t		= e1_init_dY/E1[1]; // Initial fraction of offset
