@@ -83,6 +83,8 @@ void __fastcall TfrmSceneProperties::FormShow(TObject *Sender)
     edLevelPrefix->Text		= Scene->m_LevelOp.m_LevelPrefix.c_str();
 	mmText->Text			= Scene->m_LevelOp.m_BOPText.c_str();
 
+	rgLODQuality->ItemIndex	= LODQ2[iFloor(Scene->m_LevelOp.m_LOD_Quality+0.5f)];
+
     tsLevelScript->Enabled 	= true;
     tsLevelOptions->Enabled = true;
 
@@ -143,7 +145,6 @@ void __fastcall TfrmSceneProperties::SetEditParams(){
     // Light maps
     seLMPixelsPerMeter->Value      	= m_BuildParams->m_lm_pixels_per_meter;
     rgLMJitterSamples->ItemIndex   	= JS2[m_BuildParams->m_lm_jitter_samples];
-	rgLODQuality->ItemIndex			= LODQ2[iFloor(Scene->m_LevelOp.m_LOD_Quality+0.5f)];
 
     seLMRMS->Value				   	= m_BuildParams->m_lm_rms;
 	seLMRMSZero->Value				= m_BuildParams->m_lm_rms_zero;
