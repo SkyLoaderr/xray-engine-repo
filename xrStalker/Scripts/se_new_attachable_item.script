@@ -90,11 +90,11 @@ function CSE_NewAttachableItem:FillProps	(pref,items)
 	// vcolor
 	properties_helper():create_vcolor(items,"script\\vcolor\\0",self._vcolor)
 	// vector
-	properties_helper():create_vector(items,"script\\vangle\\0",self._vangle0)
-	properties_helper():create_vector(items,"script\\vangle\\1",self._vangle1,-1)
-	properties_helper():create_vector(items,"script\\vangle\\2",self._vangle2,-10,10)
-	properties_helper():create_vector(items,"script\\vangle\\3",self._vangle3,-10,10,0.5)
-	properties_helper():create_vector(items,"script\\vangle\\4",self._vangle4,-10,10,0.5,4)
+	properties_helper():create_vangle(items,"script\\vangle\\0",self._vangle0)
+	properties_helper():create_vangle(items,"script\\vangle\\1",self._vangle1,-1)
+	properties_helper():create_vangle(items,"script\\vangle\\2",self._vangle2,-10,10)
+	properties_helper():create_vangle(items,"script\\vangle\\3",self._vangle3,-10,10,0.5)
+	properties_helper():create_vangle(items,"script\\vangle\\4",self._vangle4,-10,10,0.5,4)
 	// flags16
 	properties_helper():create_flag16(items,"script\\flags16\\0",self._flag16,1)
 	properties_helper():create_flag16(items,"script\\flags16\\1",self._flag16,2)
