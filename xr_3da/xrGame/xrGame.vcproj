@@ -1167,6 +1167,9 @@
 				RelativePath="NET_Queue.h">
 			</File>
 			<File
+				RelativePath="PropertiesListTypes.h">
+			</File>
+			<File
 				RelativePath=".\xrMessages.h">
 			</File>
 			<File
