@@ -118,7 +118,7 @@ void FTreeVisual::Render	(float LOD)
 	RCache.set_c			(c_m_w2v2p,	Device.mFullTransform);															// view-projection
 	RCache.set_c			(c_eye,		plane.x*denom,	plane.y*denom,	plane.z*denom,	plane.w*denom);					// view-pos
 	RCache.set_c			(c_fog,		f_near,	f_far,	0,		0);														// fog-params
-	RCache.set_c			(c_l_dir,	sun.Direction().x,	sun.Direction().y,	sun.Direction().z,	0);						// L-dir
+	RCache.set_c			(c_l_dir,	-sun.Direction().x,	-sun.Direction().y,	-sun.Direction().z,	0);						// L-dir
 	RCache.set_c			(c_l_color,	sun.Color().r,		sun.Color().g,		sun.Color().b,		0);
 
 	// render
