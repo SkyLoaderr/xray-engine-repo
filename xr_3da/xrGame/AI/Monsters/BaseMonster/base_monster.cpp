@@ -128,9 +128,7 @@ void CBaseMonster::shedule_Update(u32 dt)
 		m_first_update_initialized	= true;
 	}
 
-	Msg("PRE:: Test Monster = [%s]", *cName());
 	inherited::shedule_Update	(dt);
-	Msg("POST:: Test Monster = [%s]", *cName());
 	Morale.update_schedule		(dt);
 	
 	m_pPhysics_support->in_shedule_Update(dt);
