@@ -53,13 +53,23 @@ end
 --------------------------------------------------------------------------------------------------------
 -- Dialog & InfoPortions Function                                                                                                    
 --------------------------------------------------------------------------------------------------------
-function give_weapon_to_loser(first_speaker, second_speaker)
-	local weap = first_speaker:active_item()
-	if isWeapon(weap) == true then
-		first_speaker:transfer_item (weap, second_speaker)
-	end
-end
-
 function break_dialog(first_speaker, second_speaker)
 		second_speaker:stop_talk()
 end
+
+function give_kalash_to_loser(first_speaker, second_speaker)
+	local weap = first_speaker:object("wpn_ak74")
+	first_speaker:transfer_item (weap, second_speaker)
+end
+function give_toz_to_loser(first_speaker, second_speaker)
+	local weap = first_speaker:object("wpn_toz34")
+	first_speaker:transfer_item (weap, second_speaker)
+end
+function haveAK(first_speaker, second_speaker)
+	return( first_speaker:object("wpn_ak74") ~= nil )
+end
+function haveTOZ()
+	return( first_speaker:object("wpn_toz34") ~= nil )
+end
+
+

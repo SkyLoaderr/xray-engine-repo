@@ -8,6 +8,7 @@
 				<next>1</next>
 				<next>2</next>
 				<next>3</next>
+				<next>6</next>
 			</phrase>
 			<phrase id="1">
 				<text>Я посмотрю что можно сделать.</text>
@@ -19,9 +20,17 @@
 				<action>escape.break_dialog</action>
 			</phrase>
 			<phrase id="3">
-				<text>Возьми эту пушку, может тебе она подойдет...</text>
+				<precondition>escape.haveAK</precondition>
+				<text>На, возьми калаш, может он тебе подойдет...</text>
 				<next>4</next>
-				<action>escape.give_weapon_to_loser</action>
+				<action>escape.give_kalash_to_loser</action>
+				<give_info>escape_novice_has_weapon</give_info>
+			</phrase>
+			<phrase id="6">
+				<precondition>escape.haveTOZ</precondition>
+				<text>На, возьми винтовку, может она тебе подойдет...</text>
+				<next>4</next>
+				<action>escape.give_toz_to_loser</action>
 				<give_info>escape_novice_has_weapon</give_info>
 			</phrase>
 			<phrase id="4">
