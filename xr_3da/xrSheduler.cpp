@@ -30,7 +30,7 @@ void CSheduler::Destroy			()
 			it	--;
 		}
 	}
-	
+#ifdef DEBUG	
 	if (!Items.empty())
 	{
 		string1024	_objects; _objects[0]=0;
@@ -46,6 +46,8 @@ void CSheduler::Destroy			()
 		}
 		Debug.fatal		("Sheduler work-list is not empty\n%s",_objects);
 	}
+#endif
+
 	DeleteFiber			(fiber_thread);
 }
 

@@ -67,15 +67,6 @@ void	CLightTrack::ltrack	(IRenderable* O)
 	O->renderable.xform.transform_tiny	(pos,O->renderable.visual->vis.sphere.P);
 	fRadius					= O->renderable.visual->vis.sphere.R;
 
-	// *******DEBUG
-	/*
-	CObject*	O1			= dynamic_cast<CObject*>(g_pGameLevel->CurrentEntity());
-	CObject*	O2			= dynamic_cast<CObject*>(O);
-	BOOL		bActor		= (O1==O2);
-	if			(bActor)	Msg	("* [%X]LTRACK-sizes(%s): %d / %d",Device.dwFrame,O2->cName(),lights.size(),track.size());
-	*/
-	// *******DEBUG
-
 	// Timing
 	float	dt				= Device.fTimeDelta;
 	float	l_f				= dt*lt_smooth;
