@@ -2,6 +2,15 @@
 #include "fstaticrender.h"
 #include "fstaticrender_rendertarget.h"
 
+CRenderTarget::CRenderTarget()
+{
+	bAvailable	= FALSE;
+	pSurface	= 0;
+	pRT			= 0;
+	pBaseRT		= 0;
+	pBaseZB		= 0;
+}
+
 BOOL CRenderTarget::Create	()
 {
 	R_ASSERT	(HW.pDevice);
@@ -34,10 +43,28 @@ BOOL CRenderTarget::Create	()
 	if (FAILED(_hr) || (0==pSurface))									return FALSE;
 	
 	// OK
-	return TRUE;
+	R_CHK	(pSurface->GetSurfaceLevel			(0,&pRT));
+	R_CHK	(HW.pDevice->GetRenderTarget		(&pBaseRT));
+	R_CHK	(HW.pDevice->GetDepthStencilSurface	(&pBaseZB));
+	return	TRUE;
 }
-
 void CRenderTarget::OnDeviceCreate()
 {
-	bAvailable	= Create	();
+	bAvailable	= FALSE;
+	if (psDeviceFlags&rsAntialiasBlurred)	bAvailable	= Create	();
+}
+void CRenderTarget::OnDeviceDestroy()
+{
+	_RELEASE	(pBaseZB);
+	_RELEASE	(pBaseRT);
+	_RELEASE	(pRT);
+	_RELEASE	(pSurface);
+}
+void CRenderTarget::Begin()
+{
+	R_CHK		(HW.pDevice->SetRenderTarget	(pRT,		pBaseZB));
+}
+void CRenderTarget::End(float blur)
+{
+	R_CHK		(HW.pDevice->SetRenderTarget	(pBaseRT,	pBaseZB));
 }
