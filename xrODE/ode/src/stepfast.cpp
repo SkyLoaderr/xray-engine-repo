@@ -544,7 +544,7 @@ inline void SwapJoints(int i,int j,dxJoint** joints,dxJoint::Info1* info,dxJoint
 }
 
 void
-dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoint * const *_joints, int nj, dReal stepsize, int maxiterations)
+dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoint **joints, int nj, dReal stepsize, int maxiterations)
 {
 #   ifdef TIMING
 	dTimerNow ("preprocessing");
@@ -558,8 +558,8 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 	// make a local copy of the joint array, because we might want to modify it.
 	// (the "dxJoint *const*" declaration says we're allowed to modify the joints
 	// but not the joint array, because the caller might need it unchanged).
-	dxJoint **joints = (dxJoint **) ALLOCA (nj * sizeof (dxJoint *));
-	memcpy (joints, _joints, nj * sizeof (dxJoint *));
+	//dxJoint **joints = (dxJoint **) ALLOCA (nj * sizeof (dxJoint *));
+	//memcpy (joints, _joints, nj * sizeof (dxJoint *));
 
 	// get m = total constraint dimension, nub = number of unbounded variables.
 	// create constraint offset array and number-of-rows array for all joints.
