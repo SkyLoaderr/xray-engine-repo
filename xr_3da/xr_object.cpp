@@ -144,6 +144,18 @@ BOOL CObject::net_Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_
 	mRotate.setXYZ		(o_angle.x,o_angle.y,o_angle.z);
 	UpdateTransform		();
 
+	// Adapt to sphere
+	Fvector				svC;
+	float				svR		= Radius();
+	svCenter			(svC);
+	if ((svC.y-svR)<o_pos.y)
+	{
+		float diff			=	o_pos.y - (svC.y-svR);
+		o_pos.y				+=	diff;
+		vPosition.set		(o_pos);
+		UpdateTransform		();
+	}
+
 	// Net params
 	net_Local			= bLocal;
 	net_ID				= server_id;
