@@ -371,6 +371,108 @@ going_speed                  = 1.5                      ; option for ALife Simul
 eye_fov                      = 145	;170
 eye_range                    = 80	;150
 
+; State                = 7
+; 0 - бежать пр€мо на врага
+; 1 - бежать на врага петл€€
+; 2 - бежать на врага по укрыти€м
+; 3 - бежать от врага по укрыти€м
+; 4 - паника
+; 5 - пр€татьс€ от врага
+; 6 - обходить врага
+
+cform                        = skeleton			; collision class
+class                        = AI_STL			; AI class
+
+visual			 = actors\Different_stalkers\stalker_no_hood_singleplayer.ogf
+
+ph_box0_center 		 = 0.0,  0.9,  0.0
+ph_box0_size 		 = 0.35, 0.9,  0.35
+ph_box1_center 		 = 0.0,  0.6,  0.0
+ph_box1_size 		 = 0.40, 0.6,  0.40
+ph_foot_center		 = 0.0,  0.2,  0.0
+ph_foot_size 		 = 0.20, 0.23, 0.20
+ph_crash_speed_min       = 16
+ph_crash_speed_max       = 30
+ph_mass 		 = 120
+ph_friction_air          = 0.05 ;0.05
+ph_friction_ground       = 8 ;16 ;8.0 ;20.0   ;16
+ph_friction_wall         = 4.0                              ; ???
+
+weapon_usage		     = 1			; boolean
+bone_torso_weapon	     = bip01_r_hand
+bone_head_weapon	     = bip01_l_finger1
+
+bone_head		     = bip01_head
+bone_shoulder		     = bip01_spine2
+bone_spin		     = bip01_spine1
+bone_model		     = bip01
+DynamicObjectsCount	     = 32
+DynamicSoundsCount	     = 32 
+
+ph_skeleton_mass_factor	 = 3.0
+ph_skeleton_airr_lin_factor = 0.7
+ph_skeleton_airr_ang_factor = 5.0
+ph_skeleton_hinger_factor    =15.
+ph_skeleton_hinger_factor1   =1.
+ph_skeleton_hinger_factor2   =0
+ph_skeleton_hinge_vel	     =0
+ph_skeleton_ddelay	     =20
+ph_skel_fatal_impulse_factor = 1.0
+
+; selectors
+;                           fSearchRange,fEnemySurround,fTotalCover,fTravelWeight,fLightWeight,fLaziness,fTotalViewVectorWeight,fCoverFromMemberWeight,fOptMemberDistance,fOptMemberDistanceWeight,fMinMemberDistance,fMinMemberDistanceWeight,fMaxMemberDistance,fMaxMemberDistanceWeight,fMemberViewDeviationWeight,fCoverFromEnemyWeight,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight,fEnemyViewDeviationWeight
+selector_attack          =      20.0,        300.0,         50.0,         0.0,         10.0,       200.0,            100.0,                40.0,                 40.0,                  10.0,                 10.0,                  450.0,              80.0,                150.0,                     1000.0,                   300.0,               10.0,                1000.0,                10.0,                 500.0,           120.0,               100.0,                   2000.0
+;                           fSearchRange,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
+selector_free_hunting    =      20.0,              0.1,                1000.0,                 0.0,               10000.0,               1000.0,               10000.0,      
+;                           fSearchRange,fCoverFromEnemyWeight
+selector_reload          =      20.0,              -2000.0,
+;                           fSearchRange,fCoverFromEnemyWeight,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
+selector_cover           =      20.0,            -1000.0,                30.0,                 0.0,                  0.0,              100000.0,             100000.0,               1000.0,
+;                           fSearchRange,fCoverFromEnemyWeight,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight,fEnemyViewDeviationWeight
+selector_retreat         =      20.0,             -100.0,            1000.0,                 1000.0,                0.0,                   0.0,        100000.0,                 0.0,                   000.0
+
+MovementIdleTime 	 	 =    1500			; врем€ неподвижности объекта, после которого его скорость считаетс€ нулевой
+MaxInvisibleSpeed 	 	 =     1.0			; максимальна€ скорость, при которой объект невидимый
+MaxViewableSpeed 	 	 =    10.0			; скорость, при которой объект уже ничего не видит
+MovementSpeedWeight 	 =    40.0			; вес скорости передвижени€ объекта
+DistanceWeight 		 	 =    20.0			; вес рассто€ни€ от персонажа до объекта
+SpeedWeight 			 =    -0.0			; вес скорости персонажа
+VisibilityThreshold 	 =     0.0			; порог видимости (если сумма весов больше него, то персонаж видит объект)
+LateralMultiplier	 	 =     1.5			; множитель бокового зрени€ персонажа
+ShadowWeight	 	 	 =    -5.0			; вес освещени€ объекта
+
+CrouchFactor             =     0.2
+WalkFactor               =     2.15
+RunFactor                =     4.5
+WalkFreeFactor           =     1.0
+RunFreeFactor            =     2.5
+PanicFactor              =     6.5
+
+FireRandomMin 		 =     1
+FireRandomMax 		 =     5
+NoFireTimeMin 		 =   200
+NoFireTimeMax 		 =   750
+MinMissDistance		 =     6.0
+MinMissFactor		 =     0.0
+MaxMissDistance		 =    50.0
+MaxMissFactor		 =     0.0
+
+terrain		             = 255,255,255,255,0,1          ;1,255,255,255,0,1, 2,255,255,255,0,1, 3,255,255,255,0,1, 4,255,255,255,0,1
+
+
+[m_stalker_demo]
+$spawn 			     = on			; option for Level Editor
+$npc			     = on			; option for Level Editor
+$prefetch 		     = 32
+Scheduled		     = on			; option for ALife Simulator
+Human		     	 = on			; optionww for ALife Simulator
+Health			     = 100			; option for ALife Simulator
+MinSpeed		     = 1.0			; option for ALife Simulator
+MaxSpeed		     = 5.0			; option for ALife Simulator
+going_speed                  = 1.5                      ; option for ALife Simulator
+eye_fov                      = 145	;170
+eye_range                    = 80	;150
+
 State                = 7
 ; 0 - бежать пр€мо на врага
 ; 1 - бежать на врага петл€€
