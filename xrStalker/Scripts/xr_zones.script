@@ -378,14 +378,12 @@ function zone_gulags:on_enter( obj )
 	if get_clsid( obj ) == clsid.stalker then
 		local ini = obj:spawn_ini()
 
-		if ini and ini:section_exist( "zones" ) then
-			if self.gulag then
-				self:add_stalker( obj )
-			else
-				if not self.idle_end or self.idle_end < game.time() then
-					if self:create_gulag() then
-						self:add_stalker( obj )
-					end
+		if self.gulag then
+			self:add_stalker( obj )
+		else
+			if not self.idle_end or self.idle_end < game.time() then
+				if self:create_gulag() then
+					self:add_stalker( obj )
 				end
 			end
 		end
