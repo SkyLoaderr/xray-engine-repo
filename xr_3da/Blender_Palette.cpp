@@ -12,6 +12,7 @@ IC bool		p_sort			(CBlender* A, CBlender* B)
 
 void		CBlender::CreatePalette(vector<CBlender*> &palette)
 {
+	// Create palette itself
 	R_ASSERT(palette.empty());
 	palette.push_back(Create(B_DEFAULT));
 	palette.push_back(Create(B_DEFAULT_AREF));
@@ -35,12 +36,34 @@ void		CBlender::CreatePalette(vector<CBlender*> &palette)
 	palette.push_back(Create(B_DETAIL));
 	palette.push_back(Create(B_TREE));
 
+	// Remove duplicated classes (some of them are really the same in different renderers)
+	for (u32 i=0; i<palette.size(); i++)
+	{
+		CBlender* A		= palette[i];
+		for (u32 j=i+1; j<palette.size(); j++)
+		{
+			CBlender* B		= palette[j];
+			if (typeid(*A).raw_name() == typeid(*B).raw_name())
+			{
+				xr_delete(palette[j]);
+				j--;
+			}
+		}
+	}
+
+	// Sort by desc and return
 	std::sort		(palette.begin(),palette.end(),p_sort);
 }
 
 #ifndef _EDITOR
-	
+// Engine
+CBlender*	CBlender::Create	(CLASS_ID cls)
+{
+	return ::Render->blender_create	(cls);
+}
 #else
+
+// Editor
 #include "blenderdefault.h"
 #include "blender_default_aref.h"
 #include "blender_vertex.h"
