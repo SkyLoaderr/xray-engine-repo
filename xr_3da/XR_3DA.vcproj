@@ -1547,6 +1547,9 @@
 				RelativePath=".\FStaticRender_DetectSector.cpp">
 			</File>
 			<File
+				RelativePath="FStaticRender_LODs.cpp">
+			</File>
+			<File
 				RelativePath=".\FStaticRender_Loader.cpp">
 			</File>
 			<File

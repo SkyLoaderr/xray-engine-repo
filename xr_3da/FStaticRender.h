@@ -92,6 +92,7 @@ private:
 
 	void							flush_Patches			();
 	void							flush_Models			();
+	void							flush_LODs				();
 public:
 	// Loading / Unloading
 	virtual	void					level_Load				();

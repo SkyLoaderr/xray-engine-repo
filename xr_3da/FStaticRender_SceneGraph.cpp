@@ -241,8 +241,13 @@ void CRender::add_leafs_Static(CVisual *pVisual)
 			FLOD		* pV	= (FLOD*) pVisual;
 			float		D;
 			float		ssa		= CalcSSA(D,pV->bv_Position,pV);
-			if (ssa<ssaLOD_B)	InsertSG_Static		(pVisual);
-			else										
+			if (ssa<ssaLOD_A)	
+			{
+				SceneGraph::mapLOD_Node*	N	= mapLOD.insertInAnyWay(D);
+				N->val.ssa						= ssa;
+				N->val.pVisual					= pVisual;
+			}
+			if (ssa>ssaLOD_B)
 			{
 				// Add all children, doesn't perform any tests
 				I = pV->children.begin	();
@@ -358,8 +363,13 @@ void CRender::add_Static(CVisual *pVisual, DWORD planes)
 			FLOD		* pV	= (FLOD*) pVisual;
 			float		D;
 			float		ssa		= CalcSSA(D,pV->bv_Position,pV);
-			if (ssa<ssaLOD_B)	InsertSG_Static		(pVisual);
-			else										
+			if (ssa<ssaLOD_A)	
+			{
+				SceneGraph::mapLOD_Node*	N	= mapLOD.insertInAnyWay(D);
+				N->val.ssa						= ssa;
+				N->val.pVisual					= pVisual;
+			}
+			if (ssa>ssaLOD_B)
 			{
 				// Add all children, perform tests
 				I = pV->children.begin	();
