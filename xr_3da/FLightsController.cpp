@@ -183,38 +183,6 @@ void CLightsController::BuildSelection()
 		SelectedDynamic.begin(),
 		SelectedDynamic.end(),
 		lights_compare);
-
-	// ***** depth enhance
-	DWORD	DE_LightID	= 1024;
-	if (psDeviceFlags&rsDepthEnhance) {
-		Flight	DE;
-		DE_Time	-= DE_Speed*Device.fTimeDelta;
-		if (DE_Time<0) {
-			// create new key
-			DE_Time		+=	1.f;
-			DE_Data[0]	=	DE_Data[1];
-			DE_Data[1]	=	DE_Data[2];
-			DE_Data[2]	=	DE_Data[3];
-			DE_Data[3].random_dir();
-		}
-		Fcolor	clr;
-		clr.set	(.2f,.2f,.2f,.2f);
-
-		float	M[4]; t_spline(1.f - DE_Time,M);
-
-		DE.type			= D3DLIGHT_DIRECTIONAL;
-		DE.ambient.set	(0,0,0,0);
-		DE.diffuse.set	(clr);
-		DE.specular.set	(clr);
-		DE.direction.x	= spline(M, DE_Data[0].x, DE_Data[1].x, DE_Data[2].x, DE_Data[3].x);
-		DE.direction.y	= spline(M, DE_Data[0].y, DE_Data[1].y, DE_Data[2].y, DE_Data[3].y);
-		DE.direction.z	= spline(M, DE_Data[0].z, DE_Data[1].z, DE_Data[2].z, DE_Data[3].z);
-		DE.direction.normalize_safe();
-		CHK_DX			(HW.pDevice->SetLight(DE_LightID,DE.d3d()));
-		CHK_DX			(HW.pDevice->LightEnable(DE_LightID,TRUE));
-	} else {
-		CHK_DX			(HW.pDevice->LightEnable(DE_LightID,FALSE));
-	}
 }
 
 void	CLightsController::add_sector_lights(vector<WORD> &L)

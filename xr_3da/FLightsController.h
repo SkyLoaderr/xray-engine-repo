@@ -24,10 +24,6 @@ class ENGINE_API CLightsController {
 	vecI			SelectedDynamic;	// Selected (dynamic only)
 	vecI			SelectedProcedural;	// Selected (both) - applyed to both types
 
-	// Depth enhance
-	Fvector			DE_Data[4];
-	float			DE_Time;
-
 	IC	void	Disable(int num) {
 		if (Enabled[num]) {
 			Enabled[num]=false;

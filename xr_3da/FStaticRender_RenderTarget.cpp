@@ -28,7 +28,7 @@ BOOL CRenderTarget::Create	()
 	if (Device.dwHeight>caps.MaxTextureHeight)							return FALSE;
 	
 	// Validate render-target usage
-	_hr = HW.pDevice->CheckDeviceFormat(
+	_hr = HW.pD3D->CheckDeviceFormat(
 		D3DADAPTER_DEFAULT,
 		D3DDEVTYPE_HAL,
 		HW.Caps.fTarget,
