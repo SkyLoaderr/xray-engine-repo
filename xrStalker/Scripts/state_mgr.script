@@ -452,7 +452,13 @@ function state_manager:set_state(state_name, callback, timeout, target)
 	end
 	
 	self.callback = callback
-	self.timeout = timeout
+	if timeout ~= nil and
+	   timeout > 0 
+	then
+		self.timeout = timeout
+	else
+		self.timeout = 0
+	end
 end
 function state_manager:update()
 	--printf("Update called")
