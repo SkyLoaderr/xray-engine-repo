@@ -21,11 +21,39 @@ local snd = {
 	},
 
 	trader_tut_choice = {
-		[[characters_voice\human_01\scenario\trader\trader_script1b_5.ogg]]
+		[[characters_voice\human_01\scenario\trader\trader_script1b_5]]
 	},
 
 	trader_map_quest_1 = {
-		[[characters_voice\human_01\scenario\trader\trader_tutorial_map_quest_1.ogg]]
+		[[characters_voice\human_01\scenario\trader\trader_tutorial_map_quest_1]]
+	},
+
+	trader_pda_on_1 = {
+		[[characters_voice\human_01\scenario\trader\trader_tutorial_pda_on_1]]
+	},
+
+	trader_pda_on_2 = {
+		[[characters_voice\human_01\scenario\trader\trader_tutorial_pda_on_2]]
+	},
+
+	trader_pda_on_3 = {
+		[[characters_voice\human_01\scenario\trader\trader_tutorial_pda_on_3]]
+	},
+
+	trader_pda_1 = {
+		[[characters_voice\human_01\scenario\trader\trader_tutorial_pda_1]]
+	},
+	
+	trader_map_on_1 = {
+		[[characters_voice\human_01\scenario\trader\trader_tutorial_map_on_1]]
+	},
+
+	trader_map_on_2 = {
+		[[characters_voice\human_01\scenario\trader\trader_tutorial_map_on_2]]
+	},
+
+	trader_map_on_3 = {
+		[[characters_voice\human_01\scenario\trader\trader_tutorial_map_on_3]]
 	},
 
 	hello = {
