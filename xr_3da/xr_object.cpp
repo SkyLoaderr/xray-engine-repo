@@ -111,11 +111,8 @@ void CObject::Load				( CInifile* ini, const char *section )
 	cNameSect_set				(section);
 	
 	// Geometry and transform
-	Fvector dir,norm;
-	vPosition					= ini->ReadVECTOR(section,"position");
-	dir							= ini->ReadVECTOR(section,"direction");
-	norm						= ini->ReadVECTOR(section,"normal");
-	mRotate.rotation			(dir,norm);
+	vPosition.set				(0,0,0);
+	mRotate.identity			();
 	UpdateTransform				();
 
 	// Actual loading
