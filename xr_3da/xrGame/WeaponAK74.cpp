@@ -43,11 +43,19 @@ CWeaponAK74::~CWeaponAK74()
 
 void CWeaponAK74::Load	(CInifile* ini, const char* section){
 	inherited::Load		(ini, section);
-	R_ASSERT			(m_pHUD);
 	
 	iFlameDiv			= ini->ReadINT	(section,"flame_div");
 	fFlameLength		= ini->ReadFLOAT(section,"flame_length");
 	fFlameSize			= ini->ReadFLOAT(section,"flame_size");
+	
+	R_ASSERT			(m_pHUD);
+	mhud_idle			= m_pHUD->animGet("idle");
+	mhud_reload			= m_pHUD->animGet("reload");
+	mhud_show			= m_pHUD->animGet("draw");
+	mhud_hide			= m_pHUD->animGet("holster");
+	mhud_shots.push_back( m_pHUD->animGet("shoot0"));
+	mhud_shots.push_back( m_pHUD->animGet("shoot1"));
+	mhud_shots.push_back( m_pHUD->animGet("shoot2"));
 }
 
 void CWeaponAK74::MediaLOAD		()
@@ -71,6 +79,7 @@ void CWeaponAK74::switch2_Idle	(BOOL bHUDView)
 {
 	if (sndFireLoop.feedback) sndFireLoop.feedback->Stop();
 	if (bHUDView)	Level().Cameras.RemoveEffector	(cefShot);
+	m_pHUD->animPlay(mhud_idle);
 }
 void CWeaponAK74::switch2_Fire	(BOOL bHUDView)
 {
@@ -85,6 +94,7 @@ void CWeaponAK74::switch2_Empty	(BOOL bHUDView)
 void CWeaponAK74::switch2_Reload(BOOL bHUDView)
 {
 	pSounds->Play3DAtPos		(sndReload,vLastFP);
+	m_pHUD->animPlay			(mhud_reload);
 }
 void CWeaponAK74::OnShot		(BOOL bHUDView)
 {
@@ -92,6 +102,7 @@ void CWeaponAK74::OnShot		(BOOL bHUDView)
 		CEffectorShot*	S = dynamic_cast<CEffectorShot*>(Level().Cameras.GetEffector(cefShot));
 		if (S)			S->Shot();
 	}
+	m_pHUD->animPlay	(mhud_shots[Random.randI(mhud_shots.size())]);
 }
 void CWeaponAK74::OnEmptyClick	(BOOL bHUDView)
 {
@@ -139,5 +150,6 @@ void CWeaponAK74::Update		(float dt, BOOL bHUDView)
 {
 	// sound fire loop
 	inherited::Update			(dt,bHUDView);
-	if (sndFireLoop.feedback) sndFireLoop.feedback->SetPosition(vLastFP);
+	if (sndFireLoop.feedback)	sndFireLoop.feedback->SetPosition(vLastFP);
+	if (sndReload.feedback)		sndReload.feedback->SetPosition(vLastFP);
 }

@@ -12,16 +12,23 @@ private:
 	typedef CWeaponMagazined inherited;
 private:
 	// Media :: sounds
-	sound3D			sndFireLoop;
-	sound3D			sndEmptyClick;
-	sound3D			sndReload;
-	sound3D			sndRicochet		[SND_RIC_COUNT];
+	sound3D					sndFireLoop;
+	sound3D					sndEmptyClick;
+	sound3D					sndReload;
+	sound3D					sndRicochet		[SND_RIC_COUNT];
 
 	// Media :: flames
-	vector<Shader*>	hFlames;
-	int				iFlameDiv;
-	float			fFlameLength;
-	float			fFlameSize;
+	svector<Shader*,8>		hFlames;
+	int						iFlameDiv;
+	float					fFlameLength;
+	float					fFlameSize;
+	
+	// HUD :: Animations
+	CMotionDef*				mhud_idle;
+	CMotionDef*				mhud_reload;
+	CMotionDef*				mhud_hide;
+	CMotionDef*				mhud_show;
+	svector<CMotionDef*,8>	mhud_shots;
 protected:
 	virtual void	MediaLOAD		();
 	virtual void	MediaUNLOAD		();
