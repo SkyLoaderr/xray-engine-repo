@@ -364,6 +364,34 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
     FS.unlock_rescan	();
 }
 
+void CImageManager::ChangeFileAgeTo(FS_QueryMap* tgt_map, int age)
+{
+	VERIFY(tgt_map);
+	FS_QueryMap* 	M_BASE 		= tgt_map;
+    
+    // lock rescanning
+    FS.lock_rescan	();
+    // change
+	SPBItem* pb=0;
+    if (M_BASE->size()>1) pb	= UI->ProgressStart(M_BASE->size(),"Change textures age...");
+    FS_QueryPairIt it			= M_BASE->begin();
+	FS_QueryPairIt _E 			= M_BASE->end();
+	for (; it!=_E; it++){
+        std::string base_name	= EFS.ChangeFileExt(it->first,""); xr_strlwr(base_name);
+        std::string	tga_fn,thm_fn,dds_fn;
+        FS.update_path			(tga_fn,_textures_,		EFS.ChangeFileExt(base_name,".tga").c_str());
+        FS.update_path			(thm_fn,_textures_,		EFS.ChangeFileExt(base_name,".thm").c_str());
+        FS.update_path			(dds_fn,_game_textures_,EFS.ChangeFileExt(base_name,".dds").c_str());
+        FS.set_file_age			(tga_fn.c_str(),age);
+        FS.set_file_age			(thm_fn.c_str(),age);
+        FS.set_file_age			(dds_fn.c_str(),age);
+        if (pb) 			    pb->Inc();
+    }
+    if (pb) 					UI->ProgressEnd(pb);
+    // lock rescanning
+    FS.unlock_rescan			();
+}
+
 void CImageManager::WriteAssociation(CInifile* ltx_ini, LPCSTR base_name, const STextureParams& fmt)
 {
 	if (STextureParams::ttImage==fmt.type){

@@ -263,7 +263,7 @@ void CSoundManager::SynchronizeSounds(bool sync_thm, bool sync_game, bool bForce
         if (bProgress) 
 		    pb->Inc		(bUpdated?std::string(base_name+" - UPDATED.").c_str():"",bUpdated);
     }
-/*    
+    if (bProgress) UI->ProgressEnd(pb);
     // check source exist
     it	= M_GAME.begin();
 	_E 	= M_GAME.end();
@@ -273,6 +273,7 @@ void CSoundManager::SynchronizeSounds(bool sync_thm, bool sync_game, bool bForce
     	if (bs==M_BASE.end())
         	M_GAME_DEL.insert	(mk_pair(it->first,it->second));
     }
+    if (bProgress) pb = UI->ProgressStart(M_GAME_DEL.size(),"Mark as delete sounds...");
     // mark game del sounds
     it	= M_GAME_DEL.begin();
 	_E 	= M_GAME_DEL.end();
@@ -281,11 +282,39 @@ void CSoundManager::SynchronizeSounds(bool sync_thm, bool sync_game, bool bForce
         std::string 			fn;
         FS.update_path			(fn,_game_sounds_,EFS.ChangeFileExt(base_name,".ogg").c_str());
         EFS.MarkFile			(fn.c_str(),true);
+        if (bProgress) 		    pb->Inc	();
     }
-*/
     if (bProgress) UI->ProgressEnd(pb);
     // lock rescanning
     FS.unlock_rescan	();
+}
+
+void CSoundManager::ChangeFileAgeTo(FS_QueryMap* tgt_map, int age)
+{
+	VERIFY(tgt_map);
+	FS_QueryMap* 	M_BASE 		= tgt_map;
+    
+    // lock rescanning
+    FS.lock_rescan	();
+    // change
+	SPBItem* pb=0;
+    if (M_BASE->size()>1) pb	= UI->ProgressStart(M_BASE->size(),"Change sounds age...");
+    FS_QueryPairIt it			= M_BASE->begin();
+	FS_QueryPairIt _E 			= M_BASE->end();
+	for (; it!=_E; it++){
+        std::string base_name	= EFS.ChangeFileExt(it->first,""); xr_strlwr(base_name);
+        std::string	wav_fn,thm_fn,ogg_fn;
+        FS.update_path			(wav_fn,_sounds_,		EFS.ChangeFileExt(base_name,".wav").c_str());
+        FS.update_path			(thm_fn,_sounds_,		EFS.ChangeFileExt(base_name,".thm").c_str());
+        FS.update_path			(ogg_fn,_game_sounds_,	EFS.ChangeFileExt(base_name,".ogg").c_str());
+        FS.set_file_age			(wav_fn.c_str(),age);
+        FS.set_file_age			(thm_fn.c_str(),age);
+        FS.set_file_age			(ogg_fn.c_str(),age);
+        if (pb) 			    pb->Inc();
+    }
+    if (pb) 					UI->ProgressEnd(pb);
+    // lock rescanning
+    FS.unlock_rescan			();
 }
 
 //------------------------------------------------------------------------------

@@ -76,7 +76,8 @@ void __fastcall TfrmSoundLib::UpdateLib()
     if (modif_map.size()){
         AStringVec 			modif;
         LockForm			();
-        SndLib->SynchronizeSounds(true,true,true,&modif_map,0);
+        SndLib->SynchronizeSounds	(true,true,true,&modif_map,0);
+        SndLib->ChangeFileAgeTo		(&modif_map,time(NULL));
         UnlockForm			();
         SndLib->RefreshSounds(false);
 		modif_map.clear		();

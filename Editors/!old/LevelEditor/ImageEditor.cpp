@@ -121,6 +121,7 @@ void __fastcall TfrmImageLib::UpdateLib()
             AStringVec modif;
 	        LockForm();
             ImageLib.SynchronizeTextures(true,true,true,&modif_map,&modif);
+            ImageLib.ChangeFileAgeTo	(&modif_map,time(NULL));
             UnlockForm();
 	        ImageLib.RefreshTextures(&modif);
         }
