@@ -146,11 +146,9 @@ function switch_online (a, b)
        sim:set_switch_online  (patrols[a][b].id, true) 
        sim:set_switch_offline (patrols[a][b].id, false)
        local npc = get_level_object (patrols[a][b].name)
-       --xr_sleeper.set_sleeper (npc, false)
-       if b == 1 then 
-          xr_patrol.set_patrol (npc, true)  
-       else   
-          xr_follower.set_follower (npc, true)  
+       if b == 1 then xr_patrol.set_patrol (npc, true)
+       else xr_follower.set_follower (npc, true) 
+       patrols[a][b].npc = npc
        end   
     else
        if b == 1 then 
@@ -158,8 +156,8 @@ function switch_online (a, b)
        else   
           xr_motivator.storage[patrols[a][b].id].follower.enabled = true
        end   
-    patrols[a][b].npc = get_level_object (patrols[a][b].name)
-    xr_sleeper.set_sleeper (patrols[a][b].npc, false)
+       patrols[a][b].npc = get_level_object (patrols[a][b].name)
+       xr_sleeper.set_sleeper (patrols[a][b].npc, false)
     end   
 end
 -------------------------------------------------------------------------------------------
@@ -177,7 +175,7 @@ function switch_offline (npc, a, b)
        else   
           xr_motivator.storage[patrols[a][b].id].follower.enabled = false
        end   
-    xr_sleeper.set_sleeper (npc, true)
+       xr_sleeper.set_sleeper (npc, true)
     end   
 end
 -------------------------------------------------------------------------------------------
