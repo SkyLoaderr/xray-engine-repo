@@ -8,9 +8,9 @@ void	game_sv_ArtefactHunt::Create					(LPSTR &options)
 {
 	inherited::Create					(options);
 
-	m_dwArtefactRespawnDelta = get_option_i		(options,"artefactrdelta",0);
-	m_ArtefactsNum	= u8(get_option_i		(options,"numberartefacts",1));
-	m_dwArtefactStayTime	= u32(get_option_i		(options,"artefactstaytime",5))*60000;
+	m_dwArtefactRespawnDelta = get_option_i		(options,"ardelta",0);
+	m_ArtefactsNum	= u8(get_option_i		(options,"anum",1));
+	m_dwArtefactStayTime	= u32(get_option_i		(options,"astime",5))*60000;
 	fraglimit = 0;	
 
 	m_delayedRoundEnd = false;
