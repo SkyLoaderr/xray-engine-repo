@@ -9,6 +9,7 @@
 #include "ai_space.h"
 #include "CustomMonster.h"
 #include "physicobject.h"
+#include "HangingLamp.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -144,8 +145,11 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 					//Msg					("REF_ADD (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] + 1);
 					getAI().ref_add		(AI_NodeID);
 					CPhysicObject		*l_tpPhysicObject = dynamic_cast<CPhysicObject*>(this);
-					if (!l_tpPhysicObject)
-						Position().y	= getAI().ffGetY(*AI_Node,Position().x,Position().z);
+					if (!l_tpPhysicObject) {
+						CHangingLamp	*l_tpHangingLamp = dynamic_cast<CHangingLamp*>(this);
+						if (!l_tpHangingLamp)
+							Position().y	= getAI().ffGetY(*AI_Node,Position().x,Position().z);
+					}
 				}
 			}
 			else {
@@ -157,13 +161,18 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 					R_ASSERT3			(!getAI().bfCheckIfMapLoaded(),"Cannot find a proper node for object ",cName());
 					AI_NodeID			= u32(-1);
 					AI_Node				= NULL;
-				} else {
+				}
+				else {
 					AI_NodeID			= u32(node);
 					AI_Node				= getAI().Node(AI_NodeID);
 					getAI().ref_add		(AI_NodeID);
 					CPhysicObject		*l_tpPhysicObject = dynamic_cast<CPhysicObject*>(this);
-					if (!l_tpPhysicObject)
-						Position().y	= getAI().ffGetY(*AI_Node,Position().x,Position().z);
+					if (!l_tpPhysicObject) {
+						CHangingLamp	*l_tpHangingLamp = dynamic_cast<CHangingLamp*>(this);
+						if (!l_tpHangingLamp) {
+							Position().y	= getAI().ffGetY(*AI_Node,Position().x,Position().z);
+						}
+					}
 				}
 			}
 		}
