@@ -210,8 +210,17 @@ void CBuild::LightVertex()
 		// Calculate final vertex color
 		for (v=0; v<VL.size(); v++)
 		{
+			// trans-level
+			float	level	= 0.f;
+			for (vecAdjIt adj = VL[v]->adjacent.begin(); adj != VL[v]->adjacent.end(); adj++)
+			{
+				Face*	F		= (*adj);
+				level = _max	(level,F->Shader().vert_translucency);
+			}
+
+			// 
 			Fcolor				R;
-			R.lerp				(VL[v]->Color,C,.5f);
+			R.lerp				(VL[v]->Color,C,level);
 			R.r					= _max(R.r,VL[v]->Color.r);
 			R.g					= _max(R.g,VL[v]->Color.g);
 			R.b					= _max(R.b,VL[v]->Color.b);
