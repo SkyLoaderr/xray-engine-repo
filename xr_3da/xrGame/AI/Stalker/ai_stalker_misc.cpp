@@ -195,17 +195,19 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 void CAI_Stalker::vfCheckForItems()
 {
 	float fDistance = ffGetRange();
+	CInventoryItem *tpSavedItem = m_tpItemToTake;
 	m_tpItemToTake = 0;
 	for (u32 i=0, n=m_tpaVisibleObjects.size(); i<n; i++) {
 		CInventoryItem	*tpInventoryItem	= dynamic_cast<CInventoryItem*>	(m_tpaVisibleObjects[i]);
 		CBolt			*tpBolt				= dynamic_cast<CBolt*>			(m_tpaVisibleObjects[i]);
-
 #pragma todo("Check if rukzak is not full!!")
 		if (tpInventoryItem && !tpBolt && (tpInventoryItem->Position().distance_to(vPosition) < fDistance) && getAI().bfInsideNode(tpInventoryItem->AI_Node,tpInventoryItem->Position())) {
 			fDistance		= tpInventoryItem->Position().distance_to(vPosition);
 			m_tpItemToTake	= tpInventoryItem;
 		}
 	}
+	if (!m_tpItemToTake && tpSavedItem && !tpSavedItem->H_Parent())
+		m_tpItemToTake = tpSavedItem;
 }
 
 void CAI_Stalker::vfUpdateSearchPosition()
@@ -333,7 +335,7 @@ void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E
 			if (ifFindHurtIndex(getAI().m_tpCurrentEnemy) != -1)
 				H = true;
 	}
-	H = true;
+	//H = true;
 	
 	// is there any items to pick up?
 	L = false;

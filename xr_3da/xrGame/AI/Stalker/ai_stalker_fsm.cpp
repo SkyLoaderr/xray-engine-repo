@@ -421,7 +421,7 @@ void CAI_Stalker::SearchEnemy()
 					}
 				if (!bOk)
 					if (getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,m_tSavedEnemyPosition) == -1)
-						vfSetParameters		(0,&m_tSavedEnemyPosition,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeSearch);
+						vfSetParameters		(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeSearch);
 					else
 						vfSetParameters		(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID));
 			}
@@ -650,6 +650,9 @@ void CAI_Stalker::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 	// going via graph nodes
 	WRITE_TO_LOG			("Accomplishing task");
 	vfUpdateSearchPosition	();
+	if (m_bStateChanged)
+		AI_Path.TravelPath.clear();
+
 	AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
 	float					yaw,pitch;
 	GetDirectionAngles		(yaw,pitch);
@@ -682,6 +685,7 @@ void CAI_Stalker::Think()
 		I = _I;
 		vfUpdateVisibilityBySensitivity();
 	}
+	//if (!K && !J && !M && _M && (tpItemToTake)) 
 
 	if (m_tEnemy.Enemy && (_K != K))
 		AI_Path.TravelPath.clear();
