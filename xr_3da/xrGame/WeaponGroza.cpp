@@ -120,6 +120,8 @@ void CWeaponGroza::UpdateFP(BOOL bHUDView)
 	{
 		dwFP_Frame = Device.dwFrame;
 		
+		UpdateXForm		(bHUDView);
+
 		if (bHUDView)	
 		{
 			// 1st person view - skeletoned
@@ -127,7 +129,6 @@ void CWeaponGroza::UpdateFP(BOOL bHUDView)
 			V->Calculate			();
 			
 			// fire point&direction
-			UpdateXForm				(bHUDView);
 			Fmatrix& fire_mat		= V->LL_GetTransform(m_pHUD->iFireBone);
 			Fmatrix& parent			= m_pHUD->Transform();
 			Fvector& fp				= m_pHUD->vFirePoint;
@@ -137,7 +138,8 @@ void CWeaponGroza::UpdateFP(BOOL bHUDView)
 			parent.transform_dir	(vLastFD);
 		} else {
 			// 3rd person
-
+			Fmatrix& parent			= clTransform;
+			Fvector& fp				= vFirePoint;
 		}
 	}
 }
