@@ -2,7 +2,7 @@
 
 class ENGINE_API CThread
 {
-	static void __cdecl startup(void* P);
+	static void			startup(void* P);
 public:
 	volatile u32		thID;
 	volatile float		thProgress;
