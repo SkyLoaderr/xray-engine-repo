@@ -14,6 +14,8 @@ private:
 
 	void					cam_Update			(float dt);
 
+	sound					snd_engine;
+
 	bool					HUDview				( ) { return IsFocused(); }
 
 	static void __stdcall	cb_WheelFL			(CBoneInstance* B);

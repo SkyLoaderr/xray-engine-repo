@@ -16,7 +16,8 @@ CCar::CCar(void)
 
 CCar::~CCar(void)
 {
-	_DELETE		(camera);
+	_DELETE				(camera);
+	pSounds->Delete		(snd_engine);
 }
 
 void __stdcall CCar::cb_WheelFL	(CBoneInstance* B)
@@ -101,6 +102,8 @@ void	CCar::Load					( LPCSTR section )
 	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_rearl")).set_callback	(cb_WheelBL,this);
 	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_rearr")).set_callback	(cb_WheelBR,this);
 	clTransform.set( ph_world->Jeep.DynamicData.BoneTransform	);
+
+	pSounds->Create					(snd_engine,TRUE,"car\\car1",TRUE);
 }
 
 BOOL	CCar::Spawn					( BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags )
@@ -110,8 +113,9 @@ BOOL	CCar::Spawn					( BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_an
 	//o_pos.y=1;
 	//o_pos.z=-10;
 	//o_pos.x=0;
-	ph_world->Jeep.SetPosition(o_pos);
-	//ph_world->Jeep.Create(Space,phWorld);
+	ph_world->Jeep.SetPosition		(o_pos);
+	//ph_world->Jeep.Create			(Space,phWorld);
+	pSounds->PlayAtPos				(snd_engine,this,o_pos,true);
 	return R;
 }
 
@@ -133,13 +137,22 @@ void	CCar::Update				( DWORD T )
 
 void	CCar::UpdateCL				( )
 {
+	// Transform
 	Fmatrix mY,Tr;
 	Tr.translate		(0,-1.f,0);
 	mY.rotateY			(deg2rad(90.f));
 	clTransform.mul		(ph_world->Jeep.DynamicData.BoneTransform,mY);
 	clTransform.mulB	(Tr);
 
-	if (IsMyCamera())				cam_Update(Device.fTimeDelta);
+	// Sound
+	Fvector		C;
+	clCenter	(C);
+	float		velocity						= 20;
+	snd_engine.feedback->SetPosition			(C);
+	snd_engine.feedback->SetFrequencyScale		(velocity/10.f);
+
+	// Camera
+	if (IsMyCamera())				cam_Update	(Device.fTimeDelta);
 }
 
 void	CCar::OnVisible				( )
