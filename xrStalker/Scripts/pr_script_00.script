@@ -164,7 +164,6 @@ function main()
 			wait(4000)			
 		break
 		end
-	wait()
 	end
 
 	while true do
@@ -173,7 +172,6 @@ function main()
 			wait(2000)			
 		break
 		end
-	wait()
 	end
 
 	while true do
@@ -182,7 +180,6 @@ function main()
 			wait(2000)			
 		break
 		end
-	wait()
 	end
 
 	while true do
@@ -191,7 +188,6 @@ function main()
 			wait(3000)			
 		break
 		end
-	wait()
 	end
 
 	while true do
@@ -200,7 +196,6 @@ function main()
 			wait(4000)			
 		break
 		end
-	wait()
 	end
 
 	while true do
@@ -209,7 +204,6 @@ function main()
 			wait(4000)			
 		break
 		end
-	wait()
 	end
 
 	while true do
@@ -218,7 +212,6 @@ function main()
 			wait(4000)			
 		break
 		end
-	wait()
 	end
 
 	while true do
@@ -227,7 +220,6 @@ function main()
 			wait(8000)			
 		break
 		end
-	wait()
 	end
 
 	while true do
@@ -236,7 +228,6 @@ function main()
 			wait(8000)			
 		break
 		end
-	wait()
 	end
 
 	while true do
@@ -245,7 +236,6 @@ function main()
 			wait(5000)			
 		break
 		end
-	wait()
 	end
 
 	while true do
@@ -254,7 +244,6 @@ function main()
 			wait(2000)			
 		break
 		end
-	wait()
 	end
 
 	while true do
@@ -263,7 +252,6 @@ function main()
 			wait(10000)			
 		break
 		end
-	wait()
 	end
 
 	while true do
@@ -272,7 +260,6 @@ function main()
 			wait(4000)			
 		break
 		end
-	wait()
 	end
 
 	while true do
@@ -281,7 +268,6 @@ function main()
 			wait(5000)			
 		break
 		end
-	wait()
 	end
 
 	while true do
@@ -290,7 +276,6 @@ function main()
 			wait(4000)			
 		break
 		end
-	wait()
 	end
 
 	while true do
@@ -299,7 +284,6 @@ function main()
 			wait(2000)			
 		break
 		end
-	wait()
 	end
 
 	while true do
@@ -308,7 +292,6 @@ function main()
 			wait(12000)			
 		break
 		end
-	wait()
 	end
 
 	while true do
@@ -317,7 +300,6 @@ function main()
 			wait(3000)			
 		break
 		end
-	wait()
 	end
 
 	while true do
@@ -382,7 +364,6 @@ function main()
 			stalker2:script	(false, this.script_name())
 		end
 		break
-		wait()
 	end
 
 	stalker1:script	(false, this.script_name())
