@@ -20,7 +20,7 @@ bool r_eof(IReader *self)
 
 LPCSTR r_stringZ(IReader *self)
 {
-	ref_str			temp;
+	shared_str		temp;
 	self->r_stringZ	(temp);
 	return			(*temp);
 }
