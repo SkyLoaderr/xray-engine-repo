@@ -69,6 +69,7 @@ void CHWCaps::Update()
 	case D3DFMT_D24X4S4:	bStencil = TRUE;	break;
 	}
 
+	// Scissoring
 
 	// Stencil relative caps
     u32 dwStencilCaps = caps.StencilCaps;

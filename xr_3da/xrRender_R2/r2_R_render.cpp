@@ -36,7 +36,7 @@ void CRender::Render		()
 				ViewBase,
 				Device.vCameraPosition,
 				Device.mFullTransform,
-				CPortalTraverser::VQ_HOM + CPortalTraverser::VQ_SSA
+				CPortalTraverser::VQ_HOM + CPortalTraverser::VQ_SSA + CPortalTraverser::VQ_SCISSOR
 				);
 
 			// Determine visibility for static geometry hierrarhy
