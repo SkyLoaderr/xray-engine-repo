@@ -120,7 +120,7 @@ function motivator_binder:reload (section)
 	-- Настройка схемы реакции
     	xr_motivator.storage[self.object:id()].reactions = {
         	enabled = true,
-    		time_wait = 60000, -- 15 секунд ждем повтора
+    		time_wait = 30000, -- 15 секунд ждем повтора
        		evn = xr_reactions.events(self.object),
 		-- объект раздражения
 		obj = { -- позицию раздражителя
