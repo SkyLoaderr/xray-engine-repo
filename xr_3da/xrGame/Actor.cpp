@@ -13,6 +13,8 @@
 #include "Actor_Flags.h"
 #include "UI.h"
 
+const DWORD    patch_frames = 100;
+
 // breakpoints
 #include "..\xr_input.h"
 
@@ -328,6 +330,8 @@ BOOL CActor::TakeItem		( DWORD CID )
 
 void CActor::g_Physics(Fvector& accel, float jump, float dt)
 {
+	if (patch_frame<patch_frames)	return;
+
 	// Calculate physics
 	Movement.SetPosition	(vPosition);
 	float step = 0.1f;
@@ -405,7 +409,7 @@ void CActor::Update	(DWORD DT)
 {
 	if (!bEnabled)	return;
 
-	if (patch_frame<100)	{
+	if (patch_frame<patch_frames)	{
 		vPosition.set		(patch_position);
 		patch_frame			+= 1;
 	}

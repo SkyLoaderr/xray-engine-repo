@@ -11,7 +11,7 @@ extern CPHWorld*	ph_world;
 
 CCar::CCar(void)
 {
-	camera		= new CCameraLook		(this, pSettings, "actor_look_cam",		false);
+	camera		= new CCameraLook		(this, pSettings, "car_look_cam",		false);
 }
 
 CCar::~CCar(void)
@@ -85,9 +85,13 @@ void	CCar::cam_Update			(float dt)
 	clCenter						(P);
 	Da.set							(0,0,0);
 
-	float yaw	= 0,p;
-	clXFORM().k.getHP(yaw,p);
-	camera->yaw						= -yaw;
+	float yaw_dest	= 0,p;
+	clXFORM().k.getHP				(yaw_dest,p);
+
+	// Process ambient lighting
+	float   l_f                     = dt*10.f;
+	float   l_i                     = 1.f-l_f;
+	camera->yaw						= l_i*camera->yaw + l_f*(-yaw);
 	camera->Update					(P,Da);
 	Level().Cameras.Update			(camera);
 }
