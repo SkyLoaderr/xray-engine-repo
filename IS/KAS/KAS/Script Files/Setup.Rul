@@ -12,14 +12,11 @@
 
 // Included header files ----------------------------------------------------
 #include "ifx.h"
-//#include "featureevents.rul"
 
 //---------------------------------------------------------------------------
 // Global variables
 //---------------------------------------------------------------------------
 string 	g_sSerial;
-BOOL	g_bNeedReboot; 
-BOOL	g_bServer;
 //---------------------------------------------------------------------------
             
 //---------------------------------------------------------------------------
@@ -207,9 +204,11 @@ begin
 	    endif;                  
 	    
 	    SQL_CONFIG.initLibrary();
-	        
+	                      
 	    // Enable the progress bar.
 	    Enable			(STATUS);
+
+		PlaceWindow		(STATUS,0,0,CENTERED);	                      
     
 	    // Set the limit of the progress bar to 99% completion.
 	    StatusUpdate 	(ON, 99);
@@ -333,16 +332,16 @@ label_end:
 	    if (nResult < 0) then
 	   //     MessageBox ("Невозможно выгрузить: "+DLL_FILE, SEVERE);
 	    endif;
-
-		if (bRes=TRUE) then
-			g_bNeedReboot = TRUE;
-		endif;
 	else
         MessageBox (@IDSL_ERROR_MSDE_INSTALL_FAILED, SEVERE);
 		bRes=FALSE;	    
 	endif;
     // if error found -> abort instalation          
-    if (bRes=FALSE) then abort; endif;
+    if (bRes=FALSE) then 
+    	abort;
+    else
+		MessageBox("Конфигурация сервера успешно завершена.",INFORMATION);
+    endif;
 end;
 //---------------------------------------------------------------------------                                                                        
           
@@ -363,16 +362,6 @@ begin
 			mdac_need_install = FALSE;
 	 	endif;
 	endif;     
-/*	                              
-	if (mdac_need_install=TRUE) then
-		if (SYSINFO.WIN9X.bWinMe) then
-			LaunchAppAndWait ("mdac_typ.exe", "", WAIT);
-		else
-			LaunchAppAndWait ("mdac_typ.exe", " /Q:A /C:\"dasetup /Q:D /N\"", WAIT);
-		endif;
-		g_bNeedReboot 		= TRUE;
-	endif;
-*/
 	return mdac_need_install;
 end;
           
@@ -381,8 +370,6 @@ end;
 //---------------------------------------------------------------------------                                                                        
 function OnBegin()
 begin     
-	g_bNeedReboot 	= FALSE;
-	g_bServer 		= FALSE;
 	// check admin rights
 	if (FALSE=CheckAdminRights()) then abort; endif;
 end;
@@ -434,21 +421,19 @@ Dlg_SdLicense2:
 Dlg_SetupType:
     sTitle = "";
     sMsg   = "";
-    nResult = SetupType(sTitle, sMsg, "", nSetupType, 0);
+    nResult = SdSetupType(sTitle, sMsg, sDir, 0);
     if (nResult = BACK) then
         goto Dlg_SdLicense2;
     else
+	    TARGETDIR 		= sDir;
 	    nSetupType 		= nResult;  
         sTargetPath 	= TARGETDIR;
 		if (nSetupType 	= 301) then     
 			sSetupType 	= "ClientServer";
-			g_bServer	= TRUE;
 		elseif(nSetupType = 302) then
 			sSetupType 	= "Client";
-			g_bServer	= FALSE;
 		else
 			sSetupType 	= "Server";
-			g_bServer	= TRUE;
 		endif;
 		if (FeatureSetupTypeSet (MEDIA, sSetupType) < 0) then
 			MessageBox (@IDSL_FEATURE_SETUP_FAILED, SEVERE);
@@ -499,17 +484,17 @@ Dlg_SdSelectedFolder:
 		goto Dlg_SdCustomerInformation;
 	endif;     
 	SHELL_OBJECT_FOLDER	= sMainDir;
-	
+/*	
 Dlg_SdAskDestPath2:
 	sTitle = "";
     sMsg = "";
 	nResult = SdAskDestPath2( sTitle, sMsg, sDir );
     TARGETDIR = sDir;
     if (nResult = BACK) goto Dlg_SdSelectedFolder;
-
+*/
 Dlg_SQLServer:
     nResult 	= OnSQLServerInitialize( nResult );
-    if( nResult = BACK ) goto Dlg_SdAskDestPath2;
+    if( nResult = BACK ) goto Dlg_SdSelectedFolder;
 
 Dlg_ObjDialogs:
     nResult 	= ShowObjWizardPages( nResult );
@@ -539,7 +524,7 @@ Dlg_SdStartCopy:
 	ListDestroy(listStartCopy);
 
 	if (nResult = BACK) then
-		goto Dlg_SdAskDestPath2;    
+		goto Dlg_SdSelectedFolder;    
 	endif; 
                            
 	// clear target folders 
@@ -663,9 +648,6 @@ function OnFirstUIAfter()
     NUMBER bvOpt1, bvOpt2;
 	NUMBER bShowUpdateServiceDlg;
 begin     
-	// configure server (if needed)           
-	if (g_bServer) then 	ConfigureServer(); endif;
-	
 	// insert registry keys
 	// client & server
 	RegDBSetDefaultRoot		(HKEY_LOCAL_MACHINE);
@@ -678,9 +660,6 @@ begin
          
     // set folder everyone access
     SetTargetFolderAccess();
-         
-	// set reboot flag 
-	if (g_bNeedReboot=TRUE) then BATCH_INSTALL = TRUE; endif;
         
 	// 
     ShowObjWizardPages(NEXT);
@@ -700,11 +679,16 @@ begin
 
 	// Delete ServiceManager icon
     DeleteFolderIcon(FOLDER_STARTUP, "Service Manager");
-
+         
+//.	BATCH_INSTALL = TRUE;
+         
     //{{IS_SCRIPT_TAG(Dlg_SdDinishEx)	
     if ( BATCH_INSTALL ) then
     	SdFinishReboot ( szTitle , szMsg1 , SYS_BOOTMACHINE , szMsg2 , 0 );
-    else
+    else   
+    	// configure
+		if (FeatureIsItemSelected(MEDIA,"MSDE")) then ConfigureServer(); endif;
+		// finish
 		SdFinish ( szTitle , szMsg1 , szMsg2 , szOpt1 , szOpt2 , bvOpt1 , bvOpt2 );
     endif;
     //}}IS_SCRIPT_TAG(Dlg_SdDinishEx)	
@@ -751,4 +735,18 @@ begin
     else    
        	SdFinish ( szTitle , szMsg1 , szMsg2 , szOpt1 , szOpt2 , bvOpt1 , bvOpt2 );
     endif;
+end;
+//---------------------------------------------------------------------------
+// OnRebooted
+//
+// The OnRebooted event is called when the setup is run automatically after
+// rebooting the system. This is the only event that will be called in this
+// case.
+//---------------------------------------------------------------------------
+function OnRebooted()
+begin
+	// configure server (if needed)           
+	if (FeatureIsItemSelected(MEDIA,"MSDE")) then
+		ConfigureServer();
+	endif;
 end;
