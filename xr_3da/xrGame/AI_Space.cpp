@@ -276,7 +276,7 @@ void CAI_Space::Render()
 {
 	// temporary
 	for (int i=0; i<3; i++) {
-		vector<Fvector> &tpaVector = Level().m_PatrolPaths["path01"].tpaVectors[i];
+		vector<Fvector> &tpaVector = Level().m_PatrolPaths["path02"].tpaVectors[i];
 		for (int j=0; j<(int)tpaVector.size(); j++) {
 			Fvector tP1 = tpaVector[j];
 			tP1.y += .11f;

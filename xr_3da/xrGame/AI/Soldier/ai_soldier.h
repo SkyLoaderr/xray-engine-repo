@@ -34,9 +34,11 @@ class CAI_Soldier : public CCustomMonster
 		aiSoldierWaitForTime,
 		aiSoldierRecharge,
 		aiSoldierLookingOver,
-		aiSoldierPatrolReturnToRoute,
+		aiSoldierPatrolTurnOver,
+		aiSoldierPatrolReturn,
 		aiSoldierPatrolRoute,
-		aiSoldierFollowLeaderPatrol,
+		aiSoldierPatrolFollow,
+		aiSoldierPatrolWait,
 		aiSoldierFight,
 		aiSoldierFightAlone,
 		aiSoldierFightGroup,
@@ -455,9 +457,13 @@ class CAI_Soldier : public CCustomMonster
 		void OnWaitForTime();
 		void OnRecharge();
 		void OnLookingOver();
-		void OnPatrolReturnToRoute();
+		
+		void OnPatrolTurnOver();
+		void OnPatrolReturn();
 		void OnPatrolRoute();
-		void OnFollowLeaderPatrol();
+		void OnPatrolFollow();
+		void OnPatrolWait();
+
 		void OnFight();
 		void OnFightAlone();
 		void OnFightGroup();

@@ -70,15 +70,28 @@ float CSoldierSelectorDefend::Estimate(NodeCompressed* tNode, float fDistance, B
 	// computations
 	vfAddTravelCost();
 	CHECK_RESULT;
-	vfAddLightCost();
-	CHECK_RESULT;
-	vfAddTotalCoverCost();
-	CHECK_RESULT;
-	vfAddDistanceToEnemyCost();
-	CHECK_RESULT;
+	//vfAddLightCost();
+	//CHECK_RESULT;
+	//vfAddTotalCoverCost();
+	//CHECK_RESULT;
+	//vfAddDistanceToEnemyCost();
+	//CHECK_RESULT;
 	vfAddCoverFromEnemyCost();
 	CHECK_RESULT;
 	// checking for epsilon
+	if (taMemberPositions.size()) {
+		if (m_iAliveMemberCount) {
+			for ( m_iCurrentMember=0 ; m_iCurrentMember<(int)taMemberPositions.size(); m_iCurrentMember++) {
+				vfAssignMemberPositionAndNode();
+				vfComputeMemberDirection();
+				vfAddDistanceToMemberCost();
+				vfComputeSurroundEnemy();
+				vfAddCoverFromMemberCost();
+				vfAddDeviationFromMemberViewCost();
+			}
+			vfAddSurroundEnemyCost();
+		}
+	}
 	vfCheckForEpsilon(bStop);
 	// returning a value
 	return(m_fResult);

@@ -136,21 +136,28 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 
 			Fvector tTemp;
 			
-			if (tpPatrolPath.dwType & PATH_LOOPED)
+			if (tpPatrolPath.dwType & PATH_LOOPED) {
 				tTemp.sub(tpaVector0[i < (int)M - 1 ? i + 1 : 0], tpaVector0[i]);
-			else
+				tTemp.y = 0.f;
+				if (tTemp.magnitude() < EPS_L) {
+					tTemp.sub(tpaVector0[i < (int)M - 2 ? i + 2 : 1], tpaVector0[i]);
+					tTemp.y = 0.f;
+				}
+			}
+			else {
 				if (i < (int)M - 1)
 					tTemp.sub(tpaVector0[i < (int)M - 1 ? i + 1 : 0], tpaVector0[i]);
 				else
 					tTemp.sub(tpaVector0[i], tpaVector0[i - 1]);
+				tTemp.y = 0.f;
+			}
+			tTemp.normalize();
 
 //			if (tTemp.magnitude() < .1f) {
 //				j--;
 //				continue;
 //			}
 
-			tTemp.y = 0.f;
-			tTemp.normalize();
 
 			if (I == 1)
 				tTemp.set(tTemp.z,0,-tTemp.x);
@@ -193,8 +200,14 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 			AI.q_Range_Bit_X(tpaNodes[k],tpaVector0[i],4*fHalfSubnodeSize,&tNodePosition,dwBestNode,fBestCost);
 			tpaVector1[j].y = AI.ffGetY(*(AI.Node(dwBestNode)),tpaVector1[j].x,tpaVector1[j].z);
 		}
+		if (tpaVector1[0].distance_to(tpaVector1[j - 1]) > EPS_L) {
+			tpaVector1.push_back(tpaVector1[0]);
+			j++;
+		}
 		tpaVector1.resize(j);
 	}
+	if ((tpPatrolPath.dwType & PATH_LOOPED) && (tpaVector0[0].distance_to(tpaVector0[tpaVector0.size() - 1]) > EPS_L))
+		tpaVector0.push_back(tpaVector0[0]);
 }
 
 BOOL CLevel::Load_GameSpecific_Before()
