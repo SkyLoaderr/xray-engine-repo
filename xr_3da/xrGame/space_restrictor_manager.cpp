@@ -35,8 +35,6 @@ CSpaceRestriction *CSpaceRestrictorManager::restriction	(ref_str space_restricto
 
 void CSpaceRestrictorManager::associate					(ALife::_OBJECT_ID id, ref_str space_restrictors)
 {
-//	VERIFY					(m_clients.end() == m_clients.find(id));
-//	m_clients.insert		(std::make_pair(id,restriction(space_restrictors)));
 	m_clients[id]			= restriction(space_restrictors);
 }
 
