@@ -5,7 +5,9 @@
 	/ EFFECTS
 		+ TODO: Sound-rolloff
 		+ TODO: Blurred output, gray output
-		. TODO: Rain with collisions
+		+ TODO: Static HeightMap
+		. TODO: Dynamic HeightMap
+		+ TODO: Rain with collisions
 		. TODO: Sound-wave-tracing
 		. TODO: Sound-manager-volume
 		. TODO: Ground Fog
