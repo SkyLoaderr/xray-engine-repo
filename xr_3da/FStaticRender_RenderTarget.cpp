@@ -78,6 +78,7 @@ void CRenderTarget::OnDeviceDestroy	()
 	Device.Shader.Delete		(pShaderBlend);
 	Device.Shader.Delete		(pShaderGray);
 	Device.Shader.Delete		(pShaderSet);
+	pTexture->surface_set		(0);
 	Device.Shader._DeleteTexture(pTexture);
 	
 	_RELEASE	(pBaseZB);
