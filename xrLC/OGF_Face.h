@@ -81,7 +81,7 @@ struct OGF_Base
 
 	IC BOOL				IsNode()	{ return iLevel; }
 
-	virtual void		Save		(CFS_Base &fs) = 0;
+	virtual void		Save		(CFS_Base &fs);
 	virtual void		GetGeometry	(vector<Fvector> &RES) = 0;
 	void				CalcBounds	() 
 	{
@@ -210,7 +210,6 @@ struct	OGF_LOD		: public OGF_Node
 	struct _face
 	{
 		_vertex		v[4];
-		Fvector		N;
 	};
 
 	_face			lod_faces	[8];

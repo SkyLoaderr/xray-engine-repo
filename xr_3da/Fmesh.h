@@ -82,6 +82,7 @@ enum OGF_Chuncks {
 	OGF_SMPARAMS	= 18,	// * For skeletons only
 	OGF_ICONTAINER	= 19,
 	OGF_SMPARAMS2	= 20,	// * For skeletons only
+	OGF_LODDEF		= 21,
     OGF_forcedword	= 0xFFFFFFFF
 };
 

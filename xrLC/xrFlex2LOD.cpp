@@ -7,8 +7,23 @@ void	CBuild::Flex2LOD()
 	{
 		Progress(float(it)/float(lods.size()));
 
+		// Create Node and fill it with information
+		b_lod&		LOD		= lods[it];
+		OGF_LOD*	pNode	= new OGF_LOD(1,pBuild->materials[LOD.dwMaterial].sector);
+		pNode->lod_Material	= LOD.dwMaterial;
+		for (int lf=0; lf<8; lf++)
+		{
+			b_lod_face&		F = LOD.faces[lf];
+			OGF_LOD::_face& D = pNode->lod_faces[lf];
+			for (int lv=0; lv<4; lv++)
+			{
+				D.v[lv].v	= F.v[lv];
+				D.v[lv].t	= F.t[lv];
+				D.v[lv].c	= 0xffffffff;
+			}
+		}
+
 		// Search all 'OGFs' with such LOD-id
-		OGF_LOD* pNode					= new OGF_LOD(1,pBuild->materials[lods[it].dwMaterial].sector);
 		for (int o=0; o<complete; o++)
 		{
 			OGF*	P		= (OGF*)g_tree[o];

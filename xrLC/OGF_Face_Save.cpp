@@ -9,6 +9,8 @@ extern int	RegisterString	(string &T);
 
 void OGF::Save(CFS_Base &fs)
 {
+	OGF_Base::Save		(fs);
+
 	Msg					("%3d: %d faces",treeID,faces.size());
 
 	// Create header
@@ -29,17 +31,6 @@ void OGF::Save(CFS_Base &fs)
 	}
 	fs.Wdword			(RegisterString(Tname));
 	fs.Wdword			(RegisterString(string(pBuild->shader_render[pBuild->materials[material].shader].name)));
-	fs.close_chunk		();
-
-	// BBox (already computed)
-	fs.open_chunk		(OGF_BBOX);
-	fs.write			(&bbox,sizeof(Fvector)*2);
-	fs.close_chunk		();
-	
-	// Sphere (already computed)
-	fs.open_chunk		(OGF_BSPHERE);
-	fs.write			(&C,sizeof(Fvector));
-	fs.write			(&R,sizeof(float));
 	fs.close_chunk		();
 
 	// Vertices
