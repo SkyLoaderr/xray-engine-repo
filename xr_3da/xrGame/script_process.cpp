@@ -51,7 +51,7 @@ void CScriptProcess::run_scripts()
 		CScriptThread		*l_tpScript = xr_new<CScriptThread>(S);
 		xr_free		(S);
 
-		if (l_tpScript->m_bActive)
+		if (l_tpScript->active())
 			m_scripts.push_back(l_tpScript);
 		else
 			xr_delete(l_tpScript);

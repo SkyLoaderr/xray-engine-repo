@@ -30,11 +30,11 @@ public:
 protected:
 	CScriptProcessStorage		m_script_processes;
 	xr_deque<LPSTR>				m_load_queue;
-	CScriptStackTracker 		*m_current_thread;
 	int							m_stack_level;
 	bool						m_reload_modules;
 	shared_str					m_class_registrators;
 	bool						m_global_script_loaded;
+	CScriptThread				*m_current_thread;
 #ifdef USE_DEBUGGER
 	CScriptDebugger				*m_scriptDebugger;
 #endif
@@ -43,7 +43,6 @@ public:
 								CScriptEngine				();
 	virtual						~CScriptEngine				();
 	virtual	void				unload						();
-	static	void				lua_hook_call				(lua_State *L, lua_Debug *tpLuaDebug);
 	static	int					lua_panic					(lua_State *L);
 	static	void				lua_error					(lua_State *L);
 	static	int					lua_pcall_failed			(lua_State *L);
@@ -56,22 +55,22 @@ public:
 			void				add_file					(LPCSTR file_name);
 			void				process						();
 			void				script_export				();
-	IC		void				set_current_thread			(CScriptStackTracker *new_thread);
-	IC		CScriptStackTracker	*current_thread				();
-	IC		CScriptStackTracker	&script_stack_tracker		();
 	IC		void				reload_modules				(bool flag);
 			bool				function_object				(LPCSTR function_to_call, luabind::object &object);
 			void				register_script_classes		();
 	IC		void				parse_script_namespace		(LPCSTR function_to_call, LPSTR name_space, LPSTR functor);
 			void				load_class_registrators		();
+	IC		void				current_thread				(CScriptThread *thread);
+	IC		CScriptThread		*current_thread				() const;
+
+	template <typename _result_type>
+	IC		bool				functor						(LPCSTR function_to_call, luabind::functor<_result_type> &lua_function);
 
 #ifdef USE_DEBUGGER
 			void				stopDebugger				();
 			void				restartDebugger				();
-			CScriptDebugger*	debugger					();
+			CScriptDebugger		*debugger					();
 #endif
-	template <typename _result_type>
-	IC		bool				functor						(LPCSTR function_to_call, luabind::functor<_result_type> &lua_function);
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

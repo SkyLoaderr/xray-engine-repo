@@ -8,16 +8,21 @@
 
 #pragma once
 
-#include "script_stack_tracker.h"
+class CScriptThread {
+private:
+	lua_State			*m_virtual_machine;
+	shared_str			m_script_name;
+	int					m_thread_reference;
+	bool				m_active;
 
-class CScriptThread : public CScriptStackTracker {
 public:
-	LPSTR			m_script_name;
-	int				m_thread_reference;
-	bool			m_bActive;
-
-public:
-					CScriptThread		(LPCSTR caNamespaceName);
-	virtual			~CScriptThread		();
-			bool	Update				();
+						CScriptThread		(LPCSTR caNamespaceName);
+	virtual				~CScriptThread		();
+			bool		Update				();
+	IC		lua_State	*lua				() const;
+	IC		bool		active				() const;
+	IC		shared_str	script_name			() const;
+	IC		int			thread_reference	() const;
 };
+
+#include "script_thread_inline.h"

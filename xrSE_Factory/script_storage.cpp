@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "script_storage.h"
 #include "script_space.h"
+#include "script_thread.h"
 #include <stdarg.h>
 
 #ifndef ENGINE_BUILD
@@ -131,6 +132,21 @@ int CScriptStorage::vscript_log			(ScriptStorage::ELuaMessageType tLuaMessageTyp
 	return	(l_iResult);
 }
 
+void CScriptStorage::print_stack		(lua_State *L)
+{
+	lua_Debug				l_tDebugInfo;
+	for (int i=0; lua_getstack(L,i,&l_tDebugInfo);++i ) {
+		lua_getinfo			(L,"nSlu",&l_tDebugInfo);
+		if (!l_tDebugInfo.name)
+			script_log		(ScriptStorage::eLuaMessageTypeError,"%2d : [%s] %s(%d) : %s",i,l_tDebugInfo.what,l_tDebugInfo.short_src,l_tDebugInfo.currentline,"");
+		else
+			if (!xr_strcmp(l_tDebugInfo.what,"C"))
+				script_log	(ScriptStorage::eLuaMessageTypeError,"%2d : [C  ] %s",i,l_tDebugInfo.name);
+			else
+				script_log	(ScriptStorage::eLuaMessageTypeError,"%2d : [%s] %s(%d) : %s",i,l_tDebugInfo.what,l_tDebugInfo.short_src,l_tDebugInfo.currentline,l_tDebugInfo.name);
+	}
+}
+
 int __cdecl CScriptStorage::script_log	(ScriptStorage::ELuaMessageType tLuaMessageType, LPCSTR caFormat, ...)
 {
 
@@ -142,10 +158,9 @@ int __cdecl CScriptStorage::script_log	(ScriptStorage::ELuaMessageType tLuaMessa
 #ifndef ENGINE_BUILD
 	static bool	reenterability = false;
 	if (!reenterability) {
-		bool		condition = ((eLuaMessageTypeError == tLuaMessageType) && ai().script_engine().script_stack_tracker().lua());
 		reenterability = true;
-		if (condition)
-			ai().script_engine().script_stack_tracker().print_stack	(ai().script_engine().script_stack_tracker().lua());
+		if (eLuaMessageTypeError == tLuaMessageType)
+			ai().script_engine().print_stack	(ai().script_engine().current_thread() ? ai().script_engine().current_thread()->lua() : ai().script_engine().lua());
 		reenterability = false;
 	}
 #endif
@@ -446,109 +461,10 @@ void CScriptStorage::print_error(CLuaVirtualMachine *L, int iErrorCode)
 	}
 }
 
-IC	LPCSTR CScriptStorage::event2string(int iEventCode)
-{
-	switch (iEventCode) {
-		case LUA_HOOKCALL		: return("hook call");
-		case LUA_HOOKRET		: return("hook return");
-		case LUA_HOOKLINE		: return("hook line");
-		case LUA_HOOKCOUNT		: return("hook count");
-		case LUA_HOOKTAILRET	: return("hook tail return");
-		default					: NODEFAULT;
-	}
-#ifdef DEBUG
-	return(0);
-#endif
-}
-
-bool CScriptStorage::print_stack_level(CLuaVirtualMachine *L, int iStackLevel)
-{
-	lua_Debug	l_tDebugInfo;
-	int			i;
-	LPCSTR		name;
-
-	if (lua_getstack(L, iStackLevel, &l_tDebugInfo) == 0)
-		return	(false);
-
-	Msg			("! Stack level %d",iStackLevel);
-
-	lua_getinfo	(L,"nSluf",&l_tDebugInfo);
-
-//	Msg			("  Event			: %d",event2string(l_tDebugInfo.event));
-//	Msg			("  Name			: %s",l_tDebugInfo.name);
-//	Msg			("  Name what		: %s",l_tDebugInfo.namewhat);
-	Msg			("  What            : %s",l_tDebugInfo.what);
-	Msg			("  Source          : %s",l_tDebugInfo.source);
-//	Msg			("  Source (short)	: %s",l_tDebugInfo.short_src);
-	Msg			("  Current line    : %d",l_tDebugInfo.currentline);
-//	Msg			("  Nups			: %d",l_tDebugInfo.nups);
-//	Msg			("  Line defined	: %d",l_tDebugInfo.linedefined);
-	i			= 1;
-	while (NULL != (name = lua_getlocal(L, &l_tDebugInfo, i++))) {
-		Msg		("    local   %d %s", i-1, name);
-		lua_pop	(L, 1);  /* remove variable value */
-	}
-
-	i = 1;
-	while (NULL != (name = lua_getupvalue(L, -1, i++))) {
-		Msg		("    upvalue %d %s", i-1, name);
-		lua_pop	(L, 1);  /* remove upvalue value */
-	}
-	return		(true);
-}
-
 void CScriptStorage::flush_log()
 {
 	string256			log_file_name;
 	strconcat           (log_file_name,Core.ApplicationName,"_",Core.UserName,"_lua.log");
 	FS.update_path      (log_file_name,"$logs$",log_file_name);
 	m_output.save_to	(log_file_name);
-}
-
-void CScriptStorage::print_stack	(CLuaVirtualMachine *L)
-{
-	int					start = lua_gettop(L);
-	Msg					("Lua stack");
-	for (int i=0, n=lua_gettop(L); i<n; ++i)
-		Msg				("%2d : %s",-i-1,lua_typename(L, lua_type(L, -i-1)));
-	VERIFY				(lua_gettop(L) == start);
-}
-
-void CScriptStorage::print_table	(lua_State *L, LPCSTR S, bool bRecursive)
-{
-	int					start = lua_gettop(L);
-	int t				= -2;
-	lua_pushstring		(L, S);
-	lua_gettable		(L, LUA_GLOBALSINDEX);
-	
-	if (!lua_istable(L,-1))
-		lua_error		(L);
-	
-	Msg					("\nContent of the table \"%s\" :",S);
-	
-	lua_pushnil			(L);
-	while (lua_next(L, t) != 0) {
-		Msg				("%16s - %s", lua_tostring(L, -2), lua_typename(L, lua_type(L, -1)));
-		lua_pop			(L, 1);
-	}
-
-//	print_stack			(L);
-
-	VERIFY				(lua_gettop(L) >= 1);
-	lua_pop				(L,1); 
-	VERIFY				(lua_gettop(L) == start);
-
-	if (!bRecursive)
-		return;
-
-	lua_pushnil			(L);
-	while (lua_next(L, t) != 0) {
-		if (lua_istable(L, lua_type(L, -1)))
-			print_table	(L,lua_tostring(L, -2),false);
-		lua_pop			(L, 1);
-	}
-
-	VERIFY				(lua_gettop(L) >= 1);
-	lua_pop				(L,1); 
-	VERIFY				(lua_gettop(L) == start);
 }

@@ -23,26 +23,6 @@ CScriptProcess *CScriptEngine::script_process	(LPCSTR process_name) const
 	return									(0);
 }
 
-IC	void CScriptEngine::set_current_thread		(CScriptStackTracker *new_thread)
-{
-#ifdef DEBUG
-	VERIFY									((!m_current_thread && new_thread) || (m_current_thread && !new_thread));
-#endif
-	m_current_thread						= new_thread;
-}
-
-IC	CScriptStackTracker *CScriptEngine::current_thread			()
-{
-	return									(m_current_thread);
-}
-
-IC	CScriptStackTracker	&CScriptEngine::script_stack_tracker	()
-{
-	if (!current_thread())
-		return								(*this);
-	return									(*current_thread());
-}
-
 IC	void CScriptEngine::reload_modules		(bool flag)
 {
 	m_reload_modules						= flag;
@@ -78,8 +58,19 @@ IC	bool CScriptEngine::functor(LPCSTR function_to_call, luabind::functor<_result
 	return					(true);
 }
 
+IC	void CScriptEngine::current_thread				(CScriptThread *thread)
+{
+	VERIFY					(!m_current_thread);
+	m_current_thread		= thread;
+}
+
+IC	CScriptThread *CScriptEngine::current_thread	() const
+{
+	return					(m_current_thread);
+}
+
 #ifdef USE_DEBUGGER
-IC CScriptDebugger*	CScriptEngine::debugger					()
+IC CScriptDebugger *CScriptEngine::debugger			()
 {
 	return m_scriptDebugger;
 }

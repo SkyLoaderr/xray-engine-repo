@@ -54,11 +54,6 @@ int CScriptEngine::lua_panic			(CLuaVirtualMachine *L)
 	return			(0);
 }
 
-void CScriptEngine::lua_hook_call		(CLuaVirtualMachine *L, lua_Debug *tpLuaDebug)
-{
-	ai().script_engine().script_stack_tracker().script_hook(L,tpLuaDebug);
-}
-
 void CScriptEngine::lua_error			(CLuaVirtualMachine *L)
 {
 	print_output			(L,"",LUA_ERRRUN);
@@ -122,13 +117,6 @@ void CScriptEngine::script_export		()
 
 	load_class_registrators				();
 	object_factory().register_script	();
-
-#ifdef DEBUG
-#	ifdef USE_DEBUGGER
-		if( !debugger() || !debugger()->Active()  )
-#	endif
-			lua_sethook					(lua(),CScriptEngine::lua_hook_call,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);
-#endif
 
 #ifdef XRGAME_EXPORTS
 	load_common_scripts					();

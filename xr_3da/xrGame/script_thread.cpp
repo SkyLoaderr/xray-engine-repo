@@ -24,8 +24,8 @@ CScriptThread::CScriptThread(LPCSTR caNamespaceName)
 {
 	try {
 		string256			S;
-		m_bActive			= false;
-		m_script_name		= xr_strdup(caNamespaceName);
+		m_active			= false;
+		m_script_name		= caNamespaceName;
 
 		ai().script_engine().add_file(caNamespaceName);
 		ai().script_engine().process();
@@ -36,11 +36,7 @@ CScriptThread::CScriptThread(LPCSTR caNamespaceName)
 		
 #ifdef DEBUG
 #	ifdef USE_DEBUGGER
-		if( !ai().script_engine().debugger() || !ai().script_engine().debugger()->Active() )
-#	endif
-			lua_sethook		(lua(),CScriptEngine::lua_hook_call,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);
-#	ifdef USE_DEBUGGER
-		else
+		if(ai().script_engine().debugger() && ai().script_engine().debugger()->Active())
 			lua_sethook		(lua(), CDbgLuaHelper::hookLua,			LUA_MASKLINE|LUA_MASKCALL|LUA_MASKRET, 0);
 #	endif
 #endif
@@ -49,10 +45,10 @@ CScriptThread::CScriptThread(LPCSTR caNamespaceName)
 		if (!ai().script_engine().load_buffer(lua(),S,xr_strlen(S),"@_thread_main"))
 			return;
 
-		m_bActive			= true;
+		m_active			= true;
 	}
 	catch(...) {
-		m_bActive			= false;
+		m_active			= false;
 	}
 }
 
@@ -65,7 +61,6 @@ CScriptThread::~CScriptThread()
 #ifndef LUABIND_HAS_BUGS_WITH_LUA_THREADS
 		luaL_unref			(ai().script_engine().lua(),LUA_REGISTRYINDEX,m_thread_reference);
 #endif
-		xr_delete			(m_script_name);
 	}
 	catch(...) {
 	}
@@ -73,38 +68,31 @@ CScriptThread::~CScriptThread()
 
 bool CScriptThread::Update()
 {
-	if (!m_bActive)
+	if (!m_active)
 		R_ASSERT2		(false,"Cannot resume dead Lua thread!");
 	
 	try {
-		ai().script_engine().set_current_thread	(this);
+		ai().script_engine().current_thread	(this);
 		
 		int					l_iErrorCode = lua_resume(lua(),0);
 		
 		if (l_iErrorCode) {
-			ai().script_engine().print_output(lua(),m_script_name,l_iErrorCode);
-			m_bActive		= false;
+			ai().script_engine().print_output(lua(),*script_name(),l_iErrorCode);
+			m_active		= false;
 		}
 		else
 			if (!(lua()->ci->state & CI_YIELD)) {
-				m_bActive	= false;
+				m_active	= false;
 				ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeInfo,"Script %s is finished!",m_script_name);
 			}
 			else {
-	#ifdef USE_DEBUGGER
-				if( !ai().script_engine().debugger() || !ai().script_engine().debugger()->Active() ) 
-	#endif
-				{
-					VERIFY		(m_current_stack_level);
-					--m_current_stack_level;
-				}
 				VERIFY2		(!lua_gettop(lua()),"Do not pass any value to coroutine.yield()!");
 			}
 		
-		ai().script_engine().set_current_thread	(0);
+		ai().script_engine().current_thread	(0);
 	}
 	catch(...) {
-		m_bActive		= false;
+		m_active		= false;
 	}
-	return				(m_bActive);
+	return				(m_active);
 }

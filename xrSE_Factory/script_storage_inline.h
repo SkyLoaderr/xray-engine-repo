@@ -8,3 +8,7 @@
 
 #pragma once
 
+IC	lua_State *CScriptStorage::lua	()
+{
+	return				(m_virtual_machine);
+}
