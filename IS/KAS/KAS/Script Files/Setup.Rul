@@ -19,6 +19,8 @@
 string 	g_sSerial;
 //---------------------------------------------------------------------------
             
+//.
+#define CURRENT_BUILD_DATE		"26.01.2005"
 //---------------------------------------------------------------------------
 // Definition
 //---------------------------------------------------------------------------
@@ -369,8 +371,9 @@ end;
 //---------------------------------------------------------------------------                                                                        
 // InstallShield Events
 //---------------------------------------------------------------------------                                                                        
-function OnBegin()
-begin     
+function OnBegin()             
+begin      
+	MessageBox("BUILD DATE:\n\n"+CURRENT_BUILD_DATE,INFORMATION);
 	// check admin rights
 	if (FALSE=CheckAdminRights()) then abort; endif;
 end;
@@ -681,11 +684,6 @@ begin
 	// only set this to true if you have at least the ISUS Professional Edition.
 	bShowUpdateServiceDlg = FALSE;
 
-	// configure server           
-	if (FeatureIsItemSelected(MEDIA,"MSDE")) then
-		ConfigureServer();
-	endif;
-         
 	// Delete ServiceManager icon
     DeleteFolderIcon(FOLDER_STARTUP, "Service Manager");
 
@@ -694,7 +692,7 @@ begin
     	SdFinishReboot ( szTitle , szMsg1 , SYS_BOOTMACHINE , szMsg2 , 0 );
     else   
     	// configure
-//		if (FeatureIsItemSelected(MEDIA,"MSDE")) then ConfigureServer(); endif;
+		if (FeatureIsItemSelected(MEDIA,"MSDE")) then ConfigureServer(); endif;
 		// finish
 		SdFinish ( szTitle , szMsg1 , szMsg2 , szOpt1 , szOpt2 , bvOpt1 , bvOpt2 );
     endif;
@@ -752,10 +750,8 @@ end;
 //---------------------------------------------------------------------------
 function OnRebooted()
 begin
-/*
 	// configure server           
 	if (FeatureIsItemSelected(MEDIA,"MSDE")) then
 		ConfigureServer();
 	endif;
-*/
 end;
