@@ -122,7 +122,6 @@ public:
 	void						u_setrt					(u32 W, u32 H, IDirect3DSurface9* _1, IDirect3DSurface9* _2, IDirect3DSurface9* _3, IDirect3DSurface9* zb);
 
 	void						phase_scene				();
-	void						phase_decompress		();
 	void						phase_occq				();
 	void						phase_wallmarks			();
 	void						phase_smap_direct		(light* L);

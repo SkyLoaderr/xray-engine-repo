@@ -205,9 +205,11 @@ CRender::CRender()
 	b_nvstecil			= (strstr(Core.Params,"-nonvstencil"))?FALSE:TRUE;
 	b_nvstecil			= FALSE;
 	b_disasm			= (strstr(Core.Params,"-disasm"))?TRUE:FALSE;
+
 	b_HW_smap			= HW.support	(D3DFMT_D24X8,			D3DRTYPE_TEXTURE,D3DUSAGE_DEPTHSTENCIL);
 	b_fp16_filter		= HW.support	(D3DFMT_A16B16G16R16F,	D3DRTYPE_TEXTURE,D3DUSAGE_QUERY_FILTER);
 	b_fp16_blend		= HW.support	(D3DFMT_A16B16G16R16F,	D3DRTYPE_SURFACE,D3DUSAGE_QUERY_POSTPIXELSHADER_BLENDING);
+	VERIFY2				(b_mrt&&b_HW_smap&&b_fp16_filter&&b_fp16_blend,"Hardware doesn't meet minimum level");
 }
 
 CRender::~CRender()
@@ -266,23 +268,28 @@ HRESULT	CRender::shader_compile			(
 		}
 	}
 	// options
-	if (b_fp16)		{
-		defines[def_it].Name		=	"FP16_DEFER";
+	if (b_fp16_filter)		{
+		defines[def_it].Name		=	"FP16_FILTER";
 		defines[def_it].Definition	=	"1";
 		def_it						++;
 	}
-	if (b_HW_smap)	{
+	if (b_fp16_blend)		{
+		defines[def_it].Name		=	"FP16_BLEND";
+		defines[def_it].Definition	=	"1";
+		def_it						++;
+	}
+	if (b_HW_smap)			{
 		defines[def_it].Name		=	"USE_HWSMAP";
-		defines[def_it].Definition	=	"1";
-		def_it						++;
-	}
-	if (b_Tshadows)		{
-		defines[def_it].Name		=	"USE_TSHADOWS";
 		defines[def_it].Definition	=	"1";
 		def_it						++;
 	}
 	if (HW.Caps.raster_major >= 3)	{
 		defines[def_it].Name		=	"USE_SHADER3";
+		defines[def_it].Definition	=	"1";
+		def_it						++;
+	}
+	if (b_Tshadows)			{
+		defines[def_it].Name		=	"USE_TSHADOWS";
 		defines[def_it].Definition	=	"1";
 		def_it						++;
 	}
