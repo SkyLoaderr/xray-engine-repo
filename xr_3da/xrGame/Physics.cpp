@@ -139,7 +139,7 @@ void CPHWorld::Create()
 	else								Device.seqFrame.Add		(this,REG_PRIORITY_LOW);
 
 	phWorld = dWorldCreate();
-	Space = dHashSpaceCreate(0);
+	//Space = dHashSpaceCreate(0);
 	
 	//dVector3 extensions={2048,256,2048};
 	Fbox	level_box		=	Level().ObjectSpace.GetBoundingVolume();
@@ -148,7 +148,7 @@ void CPHWorld::Create()
 	level_box				.	getcenter	(level_center);
 	dVector3 extensions		=	{ level_size.x ,256.f,level_size.z};
 	dVector3 center			=	{level_center.x,0.f,level_center.z};
-	//Space					=	dQuadTreeSpaceCreate (0, center,extensions, 6);
+	Space					=	dQuadTreeSpaceCreate (0, center,extensions, 6);
 
 	dSpaceSetCleanup			(Space,0);
 #ifdef ODE_SLOW_SOLVER
@@ -263,6 +263,7 @@ u32 CPHWorld::CalcNumSteps (u32 dTime)
 void CPHWorld::FrameStep(dReal step)
 {
 	VERIFY	(_valid(step));
+	//step*=0.1f;
 	// compute contact joints and forces
 
 	//step+=astep;
