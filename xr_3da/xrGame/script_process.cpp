@@ -41,39 +41,20 @@ CScriptProcess::~CScriptProcess()
 
 void CScriptProcess::run_scripts()
 {
-	LPSTR			S;
+	LPSTR						S;
 	for ( ; !m_scripts_to_run.empty(); ) {
-		LPSTR		I = m_scripts_to_run.back();
-		S			= xr_strdup(I);
-		xr_free		(I);
+		LPSTR					I = m_scripts_to_run.back().m_script_name;
+		bool					do_string = m_scripts_to_run.back().m_do_string;
+		S						= xr_strdup(I);
 		m_scripts_to_run.pop_back();
 
-		CScriptThread		*l_tpScript = xr_new<CScriptThread>(S);
-		xr_free		(S);
+		CScriptThread			*script = xr_new<CScriptThread>(S,do_string);
+		xr_free					(S);
 
-		if (l_tpScript->active())
-			m_scripts.push_back(l_tpScript);
+		if (script->active())
+			m_scripts.push_back	(script);
 		else
-			xr_delete(l_tpScript);
-	}
-}
-
-void CScriptProcess::run_strings()
-{
-	LPSTR			S;
-	for ( ; !m_strings_to_run.empty(); ) {
-		LPSTR		I = m_strings_to_run.back();
-		S			= xr_strdup(I);
-		xr_free		(I);
-		m_strings_to_run.pop_back();
-
-		CScriptThread		*l_tpScript = xr_new<CScriptThread>(S,true);
-		xr_free		(S);
-
-		if (l_tpScript->active())
-			m_scripts.push_back(l_tpScript);
-		else
-			xr_delete(l_tpScript);
+			xr_delete			(script);
 	}
 }
 
@@ -89,7 +70,6 @@ void CScriptProcess::update()
 #endif
 
 	run_scripts			();
-	run_strings			();
 
 	if (m_scripts.empty())
 		return;
@@ -120,10 +100,12 @@ void CScriptProcess::update()
 
 void CScriptProcess::add_script	(LPCSTR	script_name)
 {
-	m_scripts_to_run.push_back(xr_strdup(script_name));
+	m_scripts_to_run.push_back(CScriptToRun(script_name,false));
 }
 
+#ifdef DEBUG
 void CScriptProcess::add_string	(LPCSTR	string_to_run)
 {
-	m_strings_to_run.push_back(xr_strdup(string_to_run));
+	m_scripts_to_run.push_back(CScriptToRun(string_to_run,true));
 }
+#endif

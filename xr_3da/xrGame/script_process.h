@@ -14,10 +14,35 @@ class CScriptProcess {
 public:
 	typedef xr_vector<CScriptThread*> SCRIPT_REGISTRY;
 
+private:
+	struct CScriptToRun {
+		LPSTR						m_script_name;
+		bool						m_do_string;
+
+		IC		CScriptToRun		(LPCSTR script_name, bool do_string)
+		{
+			m_script_name			= xr_strdup(script_name);
+			m_do_string				= do_string;
+		}
+
+		IC		CScriptToRun		(const CScriptToRun &script)
+		{
+			m_script_name			= xr_strdup(script.m_script_name);
+			m_do_string				= script.m_do_string;
+		}
+
+		virtual ~CScriptToRun		()
+		{
+			xr_free					(m_script_name);
+		}
+	};
+
+public:
+	typedef xr_vector<CScriptToRun> SCRIPTS_TO_RUN;
+
 protected:
 	SCRIPT_REGISTRY					m_scripts;
-	xr_vector<LPSTR>				m_scripts_to_run;
-	xr_vector<LPSTR>				m_strings_to_run;
+	SCRIPTS_TO_RUN					m_scripts_to_run;
 	shared_str						m_name;
 
 protected:
@@ -25,16 +50,17 @@ protected:
 
 protected:
 			void					run_scripts		();
-			void					run_strings		();
 
 public:
 									CScriptProcess	(shared_str anme, shared_str scripts);
 	virtual							~CScriptProcess	();
 			void					update			();
 			void					add_script		(LPCSTR	script_name);
-			void					add_string		(LPCSTR	string_to_run);
 	IC		const SCRIPT_REGISTRY	&scripts		() const;
-	IC		shared_str					name			() const;
+	IC		shared_str				name			() const;
+#ifdef DEBUG
+			void					add_string		(LPCSTR	string_to_run);
+#endif
 };
 
 #include "script_process_inline.h"
