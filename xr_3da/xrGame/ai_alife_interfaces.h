@@ -24,21 +24,26 @@ public:
 interface IPureALifeLSObject : public IPureALifeLObject, public IPureALifeSObject {
 };
 
-interface IPureServerObject {
+interface IPureServerObject : public IPureALifeLSObject {
 public:
 	virtual void					STATE_Write	(NET_Packet &tNetPacket)				= 0;
 	virtual void					STATE_Read	(NET_Packet &tNetPacket, u16 size)		= 0;
 	virtual void					UPDATE_Write(NET_Packet &tNetPacket)				= 0;
 	virtual void					UPDATE_Read	(NET_Packet &tNetPacket)				= 0;
-	// for template compatibility only
-	IC		void					Save		(NET_Packet &tNetPacket)
+	virtual void					Save		(IWriter	&tMemoryStream)
 	{
-		UPDATE_Write				(tNetPacket);
+		NET_Packet					l_tNetPacket;
+		UPDATE_Write				(l_tNetPacket);
+		tMemoryStream.w_u32			(l_tNetPacket.B.count);
+		tMemoryStream.w				(l_tNetPacket.B.data,l_tNetPacket.B.count);
 	}
 	
-	IC		void					Load		(NET_Packet &tNetPacket)
+	virtual void					Load		(IReader	&tFileStream)
 	{
-		UPDATE_Read					(tNetPacket);
+		NET_Packet					l_tNetPacket;
+		l_tNetPacket.B.count		= tFileStream.r_u32();
+		tFileStream.r				(l_tNetPacket.B.data,l_tNetPacket.B.count);
+		UPDATE_Read					(l_tNetPacket);
 	}
 };
 #endif
