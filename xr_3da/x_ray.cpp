@@ -91,6 +91,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 
 	CreateLog	(!(strstr(lpCmdLine,"-Q") || strstr(lpCmdLine,"-q")));
 	Debug.Start	();
+	Sleep		(500);
 
 #ifndef DEBUG
 	__try {
