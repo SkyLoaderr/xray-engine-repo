@@ -592,7 +592,7 @@
         <phrase_list>
             <phrase id="62">
                 <text>escape_trader_jobs_62</text>
-                <give_info>escape_need_agroprom_documents</give_info>
+                <give_info>eagroprom_military_case</give_info>
                 <next>82</next>
             </phrase>
             <phrase id="72">
@@ -607,7 +607,7 @@
             </phrase>
             <phrase id="61">
                 <text>escape_trader_jobs_61</text>
-                <give_info>escape_need_blockpost_case</give_info>
+                <give_info>escape_blockpost_case</give_info>
                 <next>81</next>
             </phrase>
             <phrase id="71">
@@ -622,7 +622,7 @@
             </phrase>
             <phrase id="6">
                 <text>escape_trader_jobs_6</text>
-                <give_info>escape_trader_need_artefact</give_info>
+                <give_info>escape_artefact_start</give_info>
                 <next>8</next>
             </phrase>
             <phrase id="8">
