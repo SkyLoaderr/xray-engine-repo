@@ -6,6 +6,9 @@ void FLOD::Load			(LPCSTR N, CStream *data, u32 dwFlags)
 {
 	inherited::Load		(N,data,dwFlags);
 
+	// 
+	Msg		("* %d",children.size());
+
 	// LOD-def
 	R_ASSERT			(data->FindChunk(OGF_LODDEF));
 	for (int f=0; f<8; f++)
