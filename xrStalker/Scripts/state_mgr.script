@@ -12,6 +12,16 @@ function evaluator_state_mgr:evaluate()
 	return self.st.planner:evaluator(self.st.properties["animstate_idle_now"]):evaluate() and
 		   self.st.planner:evaluator(self.st.properties["animation_none_now"]):evaluate()
 end
+--' Мы уже в безраличном состоянии idle или нет
+class "evaluator_state_mgr_idle" (property_evaluator)
+function evaluator_state_mgr_idle:__init(name, state_manager) super (nil, name)
+	self.st = state_manager
+end
+function evaluator_state_mgr_idle:evaluate()
+	return self.st.target_state == "idle"
+end
+
+
 --' Затычка перед нежелательными выходами в комбат или свободногуляние
 class "act_state_mgr" (action_base)
 function act_state_mgr:__init(name) super (nil, name)	
@@ -25,6 +35,23 @@ end
 function act_state_mgr:finalize()
 	action_base.finalize(self)
 end
+
+--' Переход в idle
+class "act_state_mgr_to_idle" (action_base)
+function act_state_mgr_to_idle:__init(name,state_manager) super (nil, name)	
+	self.st = state_manager
+end
+function act_state_mgr_to_idle:initialize()
+	action_base.initialize(self)
+	self.st:set_state("idle")	
+end
+function act_state_mgr_to_idle:execute()
+	action_base.execute(self)
+end
+function act_state_mgr_to_idle:finalize()
+	action_base.finalize(self)
+end
+
 
 --'-------------------------------------------------------------------------------------
 --' Эвалуаторы и экшены менеджера
@@ -106,6 +133,7 @@ end
 --' Сам менеджер
 class "state_manager"
 function state_manager:__init(npc)
+	self.npc = npc
 	self.planner = state_mgr.action_planner()
 	self.planner:setup(npc)
 	
@@ -461,11 +489,11 @@ function state_manager:__init(npc)
 	self.target_state = "idle"
 end
 function state_manager:set_state(state_name, callback, timeout, target)
-	printf("Set Stated called: %s", state_name)
+	printf("Set Stated called: %s for %s", state_name, self.npc:name())
 	if state_lib.states[state_name] == nil then
 		printf("ERROR: ILLEGAL SET STATE CALLED!!!")
 	end
---[[
+
 	if target then
 		if target.look_position then
 			printf("look position: %s %s %s", target.look_position.x,
@@ -482,8 +510,7 @@ function state_manager:set_state(state_name, callback, timeout, target)
 	else
 		printf("look target NIL")
 	end
-	]]
---	printf(nil)
+
 --	printf("Timeout %s", utils.to_str(timeout))
 	
 	self.target_state = state_name
@@ -535,23 +562,33 @@ function bind_manager(object)
 
 	local properties	= {}
 	properties["state_mgr"] 		= xr_evaluators_id.state_mgr
+	properties["state_mgr_idle"] 	= xr_evaluators_id.state_mgr + 1
 
 	local operators		= {}
 	operators["state_mgr"] 			= xr_actions_id.state_mgr
+	operators["state_mgr_to_idle"]  = xr_actions_id.state_mgr + 1
 
 	local state_manager = state_mgr.state_manager(object)
 	
-	manager:add_evaluator(properties["state_mgr"], 	evaluator_state_mgr("state_mgr_allow", state_manager))
+	manager:add_evaluator(properties["state_mgr"], 			evaluator_state_mgr("state_mgr_allow", state_manager))
+	manager:add_evaluator(properties["state_mgr_idle"], 	evaluator_state_mgr_idle("state_mgr_idle", state_manager))
 
 	local action = this.act_state_mgr("state_mgr")
 	action:add_precondition		(world_property(properties["state_mgr"],	false))
 	action:add_effect 			(world_property(properties["state_mgr"],	true))
 	manager:add_action(operators["state_mgr"], action)
 
-	action = manager:action(xr_actions_id.alife)	
+	action = this.act_state_mgr_to_idle("state_mgr_to_idle", state_manager)
+	action:add_precondition		(world_property(properties["state_mgr_idle"],	false))
+	action:add_effect 			(world_property(properties["state_mgr_idle"],	true))
+	manager:add_action(operators["state_mgr_to_idle"], action)
+
+	action = manager:action(xr_actions_id.alife)
+	action:add_precondition(world_property(properties["state_mgr_idle"],true))
 	action:add_precondition(world_property(properties["state_mgr"],		true))
 
   	action = manager:action(stalker_ids.action_combat_planner)
+  	action:add_precondition(world_property(properties["state_mgr_idle"],true))
 	action:add_precondition(world_property(properties["state_mgr"],		true))
 	
 	return state_manager
