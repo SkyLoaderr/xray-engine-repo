@@ -231,7 +231,7 @@ BOOL	__stdcall rms_test	(b_texture& lm, DWORD w, DWORD h, DWORD rms)
 		imf_Process	(pRestored,	lm.dwWidth,lm.dwHeight,pScaled,w,h,imf_filter		);
 	} catch (...)
 	{
-		Msg		("* ERROR: Access violation in imf_Process");
+		Msg		("* ERROR: imf_Process");
 		_FREE	(pScaled);
 		_FREE	(pRestored);
 		return	FALSE;
@@ -375,39 +375,49 @@ BOOL	compress_RMS			(b_texture& lm, DWORD rms, DWORD& w, DWORD& h)
 
 VOID CDeflector::L_Calculate(HASH& H)
 {
-	b_texture&		lm = layers.back().lm;
-	
-	// UV & HASH
-	RemapUV			(0,0,lm.dwWidth,lm.dwHeight,lm.dwWidth,lm.dwHeight,FALSE);
-	Fbox2			bounds;
-	Bounds_Summary	(bounds);
-	H.initialize	(bounds);
-	for (DWORD fid=0; fid<UVpolys.size(); fid++)
+	try {
+		b_texture&		lm = layers.back().lm;
+		
+		// UV & HASH
+		RemapUV			(0,0,lm.dwWidth,lm.dwHeight,lm.dwWidth,lm.dwHeight,FALSE);
+		Fbox2			bounds;
+		Bounds_Summary	(bounds);
+		H.initialize	(bounds);
+		for (DWORD fid=0; fid<UVpolys.size(); fid++)
+		{
+			UVtri* T	= &(UVpolys[fid]);
+			Bounds		(fid,bounds);
+			H.add		(bounds,T);
+		}
+		
+		// Calculate
+		{
+			DWORD size = lm.dwWidth*lm.dwHeight*4;
+			lm.pSurface = (DWORD *)malloc(size);
+			ZeroMemory	(lm.pSurface,size);
+		}
+		L_Direct		(H);
+	} catch (...)
 	{
-		UVtri* T	= &(UVpolys[fid]);
-		Bounds		(fid,bounds);
-		H.add		(bounds,T);
+		Msg("* ERROR: CDeflector::L_Calculate");
 	}
-	
-	// Calculate
-	{
-		DWORD size = lm.dwWidth*lm.dwHeight*4;
-		lm.pSurface = (DWORD *)malloc(size);
-		ZeroMemory	(lm.pSurface,size);
-	}
-	L_Direct		(H);
 }
 
 VOID CDeflector::Light(HASH& H)
 {
 	// Geometrical bounds
 	Fbox bb;		bb.invalidate	();
-	for (DWORD fid=0; fid<UVpolys.size(); fid++)
+	try {
+		for (DWORD fid=0; fid<UVpolys.size(); fid++)
+		{
+			Face*	F		= UVpolys[fid].owner;
+			for (int i=0; i<3; i++)	bb.modify(F->v[i]->P);
+		}
+		bb.getsphere(Sphere.P,Sphere.R);
+	} catch (...)
 	{
-		Face*	F		= UVpolys[fid].owner;
-		for (int i=0; i<3; i++)	bb.modify(F->v[i]->P);
+		Msg("* ERROR: CDeflector::Light - sphere calc");
 	}
-	bb.getsphere(Sphere.P,Sphere.R);
 	
 	// Iterate on layers
 	for (b_LightLayer* layer=pBuild->lights.begin(); layer!=pBuild->lights.end(); layer++)

@@ -22,7 +22,12 @@ public:
 	{
 		while (bContinue) 
 		{
-			defl->Light	(H);
+			try {
+				defl->Light	(H);
+			} catch (...)
+			{
+				Msg("* ERROR: CLMThread::Execute - light");
+			}
 			defl = 0;
 			
 			while ((0==defl) && bContinue) Sleep(1);
