@@ -101,9 +101,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DXT", "..\xrDXT\DXT.vcproj"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrStalker", "X:\gamedata\xrstalker.vcproj", "{90F938A1-176A-4379-A3D1-DD516E8A6DC1}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 17
+		SccNumberOfProjects = 18
 		SccLocalPath0 = .
 		CanCheckoutShared = true
 		SolutionUniqueID = {6F8E4AE3-CB8E-4760-8086-796FE333A467}
@@ -171,6 +175,10 @@ Global
 		SccProjectUniqueName16 = ..\\xrDXT\\DXT.vcproj
 		SccProjectName16 = \u0022$/Editors/Tools/DXT\u0022,\u0020DDFAAAAA
 		SccLocalPath16 = ..\\xrDXT
+		CanCheckoutShared = true
+		SccProjectUniqueName17 = X:\\gamedata\\xrstalker.vcproj
+		SccProjectName17 = \u0022$/xrStalker\u0022,\u0020JSYAAAAA
+		SccLocalPath17 = X:\\gamedata
 		CanCheckoutShared = true
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
@@ -275,6 +283,12 @@ Global
 		{EBF9B543-0830-4866-9B48-DC0740E87E8A}.Mixed.Build.0 = Release|Win32
 		{EBF9B543-0830-4866-9B48-DC0740E87E8A}.Release.ActiveCfg = Release|Win32
 		{EBF9B543-0830-4866-9B48-DC0740E87E8A}.Release.Build.0 = Release|Win32
+		{90F938A1-176A-4379-A3D1-DD516E8A6DC1}.Debug.ActiveCfg = Debug|Win32
+		{90F938A1-176A-4379-A3D1-DD516E8A6DC1}.Debug.Build.0 = Debug|Win32
+		{90F938A1-176A-4379-A3D1-DD516E8A6DC1}.Mixed.ActiveCfg = Release|Win32
+		{90F938A1-176A-4379-A3D1-DD516E8A6DC1}.Mixed.Build.0 = Release|Win32
+		{90F938A1-176A-4379-A3D1-DD516E8A6DC1}.Release.ActiveCfg = Release|Win32
+		{90F938A1-176A-4379-A3D1-DD516E8A6DC1}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
 	EndGlobalSection

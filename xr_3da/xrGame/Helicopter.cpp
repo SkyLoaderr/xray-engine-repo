@@ -37,6 +37,7 @@ void CHelicopter::setState(CHelicopter::EHeliState s)
 {
 	m_curState = s;
 	
+#ifdef DEBUG
 	LPCSTR str;
 	switch(m_curState) {
 	case CHelicopter::eIdleState:
@@ -101,8 +102,8 @@ void CHelicopter::setState(CHelicopter::EHeliState s)
 		str = "unknown";
 		break;
 	};
-
-	Msg("---CHelicopter::state[%d]==(%s)", Device.dwTimeGlobal, str);
+	if (bDebug)	Msg("---CHelicopter::state[%d]==(%s)", Device.dwTimeGlobal, str);
+#endif
 }
 
 
