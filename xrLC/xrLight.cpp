@@ -50,19 +50,6 @@ void CBuild::Light()
 		Sleep	(50);
 	}
 	Msg("%d seconds",(timeGetTime()-dwTimeStart)/1000);
-
-	/*
-	vecDeflIt it;
-
-	Phase("Saving shadowmaps...");
-	for (it = g_deflectors.begin(); it!=g_deflectors.end(); it++)
-	{
-		DWORD	N = it-g_deflectors.begin();
-		Status("Compressing surface #%d...",N);
-		Progress(float(N)/float(g_deflectors.size()));
-		(*it)->Save();
-	}
-	*/
 }
 
 //-----------------------------------------------------------------------
