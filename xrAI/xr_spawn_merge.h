@@ -14,4 +14,4 @@ typedef struct tagSSPawnHeader {
 	u32		dwLevelCount;
 } SSpawnHeader;
 
-extern void xrMergeSpawns();
+extern void xrMergeSpawns(LPCSTR name);

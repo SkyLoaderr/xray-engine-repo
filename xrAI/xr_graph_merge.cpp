@@ -108,8 +108,8 @@ public:
 		{
 			pSettings								= xr_new<CInifile>(SYSTEM_LTX);
 			string256								fName;
-			strconcat								(fName,"$game_levels$\\",tLevel.caLevelName);
-			strconcat								(fName,fName,"\\level.spawn");
+			//strconcat								(fName,name,tLevel.caLevelName);
+			strconcat								(fName,S,"level.spawn");
 			IReader									*F = FS.r_open(fName);
 			IReader									*O = 0;
 			for (int id=0, i=0; 0!=(O = F->open_chunk(id)); id++)	{
@@ -215,7 +215,7 @@ public:
 	};
 };
 
-void xrMergeGraphs()
+void xrMergeGraphs(LPCSTR name)
 {
 	// load all the graphs
 	Phase("Reading level graphs");
@@ -234,7 +234,7 @@ void xrMergeGraphs()
 		V							= Ini->r_string(N,"name");
 		Memory.mem_copy				(tLevel.caLevelName,V,strlen(V) + 1);
 		Memory.mem_copy				(S1,V,strlen(V) + 1);
-		strconcat					(S2,"$game_levels$\\",S1);
+		strconcat					(S2,name,S1);
 		strconcat					(S1,S2,"\\");//level.graph");
 		u32							id = Ini->r_s32(N,"id");
 		tpGraphs.insert				(make_pair(id,xr_new<CLevelGraph>(tLevel,S1,dwOffset,id)));

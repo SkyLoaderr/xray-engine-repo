@@ -66,7 +66,8 @@ void Startup(LPSTR     lpCmdLine)
 			if (strstr(cmd,"-c"))
 				sscanf	(strstr(cmd,"-c")+2,"%s",name);
 
-	strcat				(name,"\\");
+	if (strlen(name))
+		strcat			(name,"\\");
 	char				prjName[256];
 	prjName				[0] = 0;
 	FS.update_path		(prjName,"$game_levels$",name);
@@ -85,12 +86,12 @@ void Startup(LPSTR     lpCmdLine)
 				xrBuildCrossTable	(prjName);
 			else {
 				if (strstr(cmd,"-m")) {
-					xrMergeGraphs		();
+					xrMergeGraphs		(prjName);
 				}
 				else
 					if (strstr(cmd,"-s")) {
 						pSettings	= xr_new<CInifile>(SYSTEM_LTX);
-						xrMergeSpawns		();
+						xrMergeSpawns		(prjName);
 					}
 		}
 	// Show statistic

@@ -55,19 +55,19 @@ public:
 	DWORD_VECTOR				m_tpGraphNodes;
 	CAI_Map						*m_tpAI_Map;
 
-								CSpawn(const CALifeGraph::SLevel &tLevel, u32 dwLevelID, u32 *dwGroupOffset) : CThread(dwLevelID)
+								CSpawn(LPCSTR name, const CALifeGraph::SLevel &tLevel, u32 dwLevelID, u32 *dwGroupOffset) : CThread(dwLevelID)
 	{
 		thDestroyOnComplete		= FALSE;
 		// loading AI map
 		m_tLevel				= tLevel;
 		m_dwLevelID				= dwLevelID;
 		string256				fName;
-		strconcat				(fName,"$game_levels$\\",m_tLevel.caLevelName);
+		strconcat				(fName,name,m_tLevel.caLevelName);
 		strconcat				(fName,fName,"\\");
 		m_tpAI_Map				= xr_new<CAI_Map>(fName);
 		// loading spawn points
 		fName[0]				= 0;
-		strconcat				(fName,"$game_levels$\\",m_tLevel.caLevelName);
+		strconcat				(fName,name,m_tLevel.caLevelName);
 		strconcat				(fName,fName,"\\level.spawn");
 		IReader					*SP = FS.r_open(fName);
 		IReader					*S = 0;
@@ -258,11 +258,13 @@ public:
 	};
 };
 
-void xrMergeSpawns()
+void xrMergeSpawns(LPCSTR name)
 {
 	// load all the graphs
 	Phase						("Loading game graph");
-	tpGraph						= xr_new<CALifeGraph>("gamedata\\game.graph");
+	char						S[256];
+	FS.update_path				(S,"$game_data$","game.graph");
+	tpGraph						= xr_new<CALifeGraph>(S);
 	
 	Phase						("Reading level graphs");
 	CInifile 					*Ini = xr_new<CInifile>(INI_FILE);
@@ -281,7 +283,7 @@ void xrMergeSpawns()
 		Memory.mem_copy			(tLevel.caLevelName,V,strlen(V) + 1);
 		Msg						("Reading level %s...",tLevel.caLevelName);
 		u32						id = Ini->r_s32(N,"id");
-		tpLevels.push_back		(xr_new<CSpawn>(tLevel,id,&dwGroupOffset));
+		tpLevels.push_back		(xr_new<CSpawn>(name,tLevel,id,&dwGroupOffset));
     }
 	R_ASSERT					(tpLevels.size());
 	

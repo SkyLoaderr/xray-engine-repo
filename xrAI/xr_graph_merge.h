@@ -8,4 +8,4 @@
 
 #pragma once
 
-void xrMergeGraphs();
+void xrMergeGraphs(LPCSTR name);
