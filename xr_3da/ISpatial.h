@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xrPool.h"
+#include "xr_collide_defs.h"
 
 #pragma pack(push,4)
 
@@ -56,12 +57,13 @@ public:
 	ISpatial_NODE*				parent;					// parent node for "empty-members" optimization
 	ISpatial_NODE*				children		[8];	// children nodes
 	xr_vector<ISpatial*>		items;					// own items
+	Fbox						bb;						// lazy updated BB
 public:
-	void						_init			(ISpatial_NODE* _parent);
+	void						_init			(ISpatial_NODE* _parent, Fbox& BB);
 	void						_remove			(ISpatial*		_S);
 	void						_insert			(ISpatial*		_S);
 	BOOL						_empty			()						
-	{	
+	{
 		return items.empty() && 
 			0!=(
 				ptrt(children[0])|ptrt(children[1])|
@@ -74,24 +76,77 @@ public:
 
 class ENGINE_API ISpatial_DB
 {
-public:
-	poolSS<ISpatial_NODE,128>	allocator;
-	xr_vector<ISpatial_NODE*>	allocator_pool;
-	Fvector						v_center;
-	float						f_bounds;
-	ISpatial_NODE*				root;
 private:
-	ISpatial*					rt_insert_object;
-	IC u32						_octant			(u32 x, u32 y, u32 z)	{	return z*4 + y*2 + x;	}
+	poolSS<ISpatial_NODE,128>		allocator;
+	xr_vector<ISpatial_NODE*>		allocator_pool;
+	Fvector							v_center;
+	float							f_bounds;
+	ISpatial*						rt_insert_object;
 
-	ISpatial_NODE*				_node_create	();
-	void 						_node_destroy	(ISpatial_NODE* &P);
-
-	void						_insert			(ISpatial_NODE* N, Fvector& n_center, float n_radius);
-	void						_remove			(ISpatial_NODE* N, ISpatial_NODE* N_sub);
 public:
-	void						insert			(ISpatial* S);
-	void						remove			(ISpatial* S);
+	ISpatial_NODE*					m_root;
+	u32								stat_nodes;
+	CStatTimer						stat_insert;
+	CStatTimer						stat_remove;
+private:
+	IC u32							_octant			(u32 x, u32 y, u32 z)	{	return z*4 + y*2 + x;	}
+
+	ISpatial_NODE*					_node_create	();
+	void 							_node_destroy	(ISpatial_NODE* &P);
+
+	void							_insert			(ISpatial_NODE* N, Fvector& n_center, float n_radius);
+	void							_remove			(ISpatial_NODE* N, ISpatial_NODE* N_sub);
+public:
+	void							initialize		(Fbox& BB);
+	void							insert			(ISpatial* S);
+	void							remove			(ISpatial* S);
+	void							update			(u32 nodes=8);
 };
+
+extern ISpatial_DB					SpatialSpace;
+
+/*
+class ENGINE_API ISpatial_SPACE
+{
+public:
+	typedef xr_vector<ISpatial*>	NL_TYPE;
+	typedef CObject**				NL_IT;
+public:
+	ISpatial_NODE*					m_dynamic;
+	CDB::MODEL*						m_static;
+
+	NL_TYPE							q_nearest;
+	clQueryCollision				q_result;
+private:
+	poolSS<ISpatial_NODE,128>		allocator;
+	xr_vector<ISpatial_NODE*>		allocator_pool;
+	Fvector							v_center;
+	float							f_bounds;
+	ISpatial*						rt_insert_object;
+
+	IC u32							_octant			(u32 x, u32 y, u32 z)	{	return z*4 + y*2 + x;	}
+
+	ISpatial_NODE*					_node_create	();
+	void 							_node_destroy	(ISpatial_NODE* &P);
+
+	void							_insert			(ISpatial_NODE* N, Fvector& n_center, float n_radius);
+	void							_remove			(ISpatial_NODE* N, ISpatial_NODE* N_sub);
+public:
+	void							insert			(ISpatial* S);
+	void							remove			(ISpatial* S);
+
+	// Occluded/No
+	BOOL							RayTest				( const Fvector &start, const Fvector &dir, float range=MAX_TEST_RANGE, BOOL bDynamic=TRUE, Collide::ray_cache* cache=NULL);
+
+	// Game raypick (nearest) - returns object and addititional params
+	BOOL							RayPick				( const Fvector &start, const Fvector &dir, float range, Collide::ray_query& R);
+
+	// General collision query
+	void							BoxQuery			( const Fbox& B, const Fmatrix& M, u32 flags=clGET_TRIS|clGET_BOXES|clQUERY_STATIC|clQUERY_DYNAMIC);
+	int								GetNearest			( const Fvector &point, float range );
+	CDB::TRI*						GetStaticTris		() { return Static.get_tris();  }
+	CDB::MODEL*						GetStaticModel		() { return &Static; }
+};
+*/
 
 #pragma pack(pop)

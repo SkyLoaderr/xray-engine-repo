@@ -8,9 +8,6 @@
 const float CL_SLOT_SIZE		= 16.f;
 const float CL_INV_SLOT_SIZE	= 1.f/CL_SLOT_SIZE;
 
-ENGINE_API extern int			psCollideActDepth;
-ENGINE_API extern int			psCollideActStuckDepth;
-
 // refs
 class ENGINE_API CCFModel;
 class ENGINE_API CObject;
@@ -100,6 +97,5 @@ public:
 	void							dbgRender			();
 	Shader*							dbgGetShader		()	{ return sh_debug;	}
 };
-
 
 #endif //__XR_AREA_H__

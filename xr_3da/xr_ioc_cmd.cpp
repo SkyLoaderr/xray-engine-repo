@@ -379,10 +379,6 @@ void CCC_Register()
 	CMD2(CCC_Float,		"cam_inert",			&psCamInert);
 	CMD2(CCC_Float,		"cam_slide_inert",		&psCamSlideInert);
 
-	// Collision
-	CMD4(CCC_Integer,	"cl_act_depth",			&psCollideActDepth,			4,	32);
-	CMD4(CCC_Integer,	"cl_act_stuck_depth",	&psCollideActStuckDepth,	2,	32);
-
 	// Physic
 	CMD4(CCC_Float,		"ph_gravity",			&psGravity,					1,	100);
 

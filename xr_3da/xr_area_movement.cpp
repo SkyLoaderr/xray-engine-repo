@@ -7,11 +7,6 @@
 
 using namespace	Collide;
 
-int	ENGINE_API psCollideActDepth		= 4;
-int	ENGINE_API psCollideActStuckDepth	= 8;
-
-static float cl_epsilon;
-
 // ----------------------------------------------------------------------
 // Name  : classifyPoint()
 // Input : point - point we wish to classify 

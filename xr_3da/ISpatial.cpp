@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "ispatial.h"
 
+ISpatial_DB		SpatialSpace;
+
 static	Fvector	c_spatial_offset	[8]	= 
 {
 	{ -1, -1, -1	},
@@ -46,12 +48,12 @@ void	ISpatial::spatial_move	()
 	//*** check if we are supposed to correct it's spatial location
 	VERIFY		(spatial_node_ptr);
 	if			(spatial_inside())	return;
-	//DB->remove(this);
-	//DB->insert(this);
+	SpatialSpace->remove(this);
+	SpatialSpace->insert(this);
 }
 
 //////////////////////////////////////////////////////////////////////////
-void			ISpatial_NODE::_init			(ISpatial_NODE* _parent)				
+void			ISpatial_NODE::_init			(ISpatial_NODE* _parent, Fbox& BB)				
 {
 	parent		=	_parent;
 	children[0]	=	children[1]	=	children[2]	=	children[3]	=
@@ -71,8 +73,21 @@ void			ISpatial_NODE::_remove			(ISpatial* S)
 }
 
 //////////////////////////////////////////////////////////////////////////
+void			ISpatial_DB::initialize(Fbox& BB)
+{
+	Fvector bbc,bbd;
+	BB.get_CD				(bbc,bbd);
+
+	allocator_pool.reserve	(128);
+	v_center.set			(bbc);
+	f_bounds				= _max(_max(bbd.x,bbd.y),bbd.z);
+	rt_insert_object		= NULL;
+	m_root					= _node_create();
+	m_root->_init			(NULL,BB);
+}
 ISpatial_NODE*	ISpatial_DB::_node_create		()
 {
+	stat_nodes	++;
 	if (allocator_pool.empty())			return allocator.create();
 	else								
 	{
@@ -83,6 +98,7 @@ ISpatial_NODE*	ISpatial_DB::_node_create		()
 }
 void			ISpatial_DB::_node_destroy(ISpatial_NODE* &P)
 {
+	stat_nodes	--;
 	allocator_pool.push_back	(P);
 	P							= NULL;
 }
@@ -127,12 +143,16 @@ void			ISpatial_DB::_insert	(ISpatial_NODE* N, Fvector& n_center, float n_radius
 
 void			ISpatial_DB::insert		(ISpatial* S)
 {
+	stat_insert.Begin	();
 	rt_insert_object	= S;
 	_insert				(root,v_center,f_bounds);
+	stat_insert.End		();
 }
 
 void			ISpatial_DB::_remove	(ISpatial_NODE* N, ISpatial_NODE* N_sub)
 {
+	if (0==N)							return;
+
 	//*** we are assured that node contains N_sub and this subnode is empty
 	u32 octant	= u32(-1);
 	if (N_sub==N->children[0])			octant = 0;
@@ -151,9 +171,11 @@ void			ISpatial_DB::_remove	(ISpatial_NODE* N, ISpatial_NODE* N_sub)
 
 void			ISpatial_DB::remove		(ISpatial* S)
 {
+	stat_remove.Begin	();
 	ISpatial_NODE* N	= S->spatial_node_ptr;
 	N->_remove			(S);
 
 	// Recurse
 	if (N->_empty())					_remove(N->parent,N);
+	stat_remove.End		();
 }
