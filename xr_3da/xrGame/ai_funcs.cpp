@@ -167,6 +167,7 @@ float CPersonalHealthFunction::ffGetValue()
 		return(m_fLastValue);
 	m_dwLastUpdate = Level().timeServer();
 	m_tpLastMonster = Level().m_tpAI_DDD->m_tpCurrentMember;
+	m_fMaxResultValue = Level().m_tpAI_DDD->m_tpCurrentMember->g_MaxHealth();
 	return(m_fLastValue = Level().m_tpAI_DDD->m_tpCurrentMember->g_Health());
 };
 

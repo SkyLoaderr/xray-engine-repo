@@ -221,6 +221,8 @@ void CEntityAlive::Load		(LPCSTR section)
 
 	// BOX activate
 	Movement.ActivateBox	(0);
+	
+	m_fMaxHealthValue = fHealth = pSettings->ReadFLOAT(section,"health");
 }
 
 BOOL CEntityAlive::net_Spawn	(LPVOID DC)

@@ -2,13 +2,10 @@
 #include "level.h"
 #include "entity.h"
 #include "custommonster.h"
+#include "ai_funcs.h"
 
 CGroup::CGroup()
 {
-	SetState	(gsFollowMe);
-	SetFlag		(gtAgressive,	true	);
-	SetFlag		(gtQuiet,		false	);
-
 	vTargetDirection.set(0,0,1);
 	vTargetPosition.set	(0,0,0);
 	vCentroid.set		(0,0,0);

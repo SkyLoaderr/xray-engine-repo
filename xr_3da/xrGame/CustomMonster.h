@@ -113,7 +113,6 @@ public:
 
 	// Motions
 	DWORD				dwMoveState;
-	int					m_iHealth;
 
 	CMotionDef*			m_current;
 	
@@ -132,7 +131,6 @@ public:
 	char				m_cBodyState;
 	
 	float				m_fTimeUpdateDelta;
-	//float				m_fTorsoAngle;
 	DWORD				m_dwLoopCount;
 	int					m_iCurrentPatrolIndex;
 	bool				m_bPatrolPathInverted;

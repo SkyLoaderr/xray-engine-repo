@@ -10,6 +10,7 @@
 #include "ai_monsters_misc.h"
 #include "..\\custommonster.h"
 #include "..\\actor.h"
+#include "..\\ai_funcs.h"
 
 extern void	UnpackContour(PContour& C, DWORD ID);
 extern void	IntersectContours(PSegment& Dest, PContour& C1, PContour& C2);
@@ -492,4 +493,103 @@ int ifFindNearestPatrolPoint(vector<Fvector> &tpaVector, const Fvector &tPositio
 			iIndex = i;
 		}
 	return(iIndex);
+}
+
+bool bfGetActionSuccessProbability(EntityVec &Members, objVisible &VisibleEnemies, float fMinProbability, CBaseFunction &fSuccessProbabilityFunction)
+{
+	int i = 0, j = 0, I = (int)Members.size(), J = (int)VisibleEnemies.size();
+	while ((i < I) && (j < J)) {
+		Level().m_tpAI_DDD->m_tpCurrentMember = dynamic_cast<CEntityAlive *>(Members[i]);
+		if (!(Level().m_tpAI_DDD->m_tpCurrentMember) || !(Level().m_tpAI_DDD->m_tpCurrentMember->g_Alive())) {
+			i++;
+			continue;
+		}
+		Level().m_tpAI_DDD->m_tpCurrentEnemy = dynamic_cast<CEntityAlive *>(VisibleEnemies[j].key);
+		if (!(Level().m_tpAI_DDD->m_tpCurrentEnemy) || !(Level().m_tpAI_DDD->m_tpCurrentEnemy->g_Alive())) {
+			j++;
+			continue;
+		}
+		float fProbability = fSuccessProbabilityFunction.ffGetValue()/100.f, fCurrentProbability;
+		if (fProbability > fMinProbability) {
+			fCurrentProbability = fProbability;
+			for (j++; (i < I) && (j < J); j++) {
+				Level().m_tpAI_DDD->m_tpCurrentEnemy = dynamic_cast<CEntityAlive *>(VisibleEnemies[j].key);
+				if (!(Level().m_tpAI_DDD->m_tpCurrentEnemy) || !(Level().m_tpAI_DDD->m_tpCurrentEnemy->g_Alive())) {
+					j++;
+					continue;
+				}
+				fProbability = fSuccessProbabilityFunction.ffGetValue()/100.f;
+				if (fCurrentProbability*fProbability < fMinProbability) {
+					i++;
+					break;
+				}
+				else
+					fCurrentProbability *= fProbability;
+			}
+		}
+		else {
+			fCurrentProbability = 1.0f - fProbability;
+			for (i++; (i < I) && (j < J); i++) {
+				Level().m_tpAI_DDD->m_tpCurrentMember = dynamic_cast<CEntityAlive *>(Members[i]);
+				if (!(Level().m_tpAI_DDD->m_tpCurrentMember) || !(Level().m_tpAI_DDD->m_tpCurrentMember->g_Alive())) {
+					i++;
+					continue;
+				}
+				fProbability = 1.0f - fSuccessProbabilityFunction.ffGetValue()/100.f;
+				if (fCurrentProbability*fProbability < fMinProbability) {
+					j++;
+					break;
+				}
+				else
+					fCurrentProbability *= fProbability;
+			}
+		}
+	}
+	return(j >= J);
+}
+
+DWORD dwfChooseAction(DWORD dwActionRefreshRate, float fMinProbability, DWORD dwTeam, DWORD dwSquad, DWORD dwGroup, DWORD a1, DWORD a2, DWORD a3)
+{
+	CGroup &Group = Level().Teams[dwTeam].Squads[dwSquad].Groups[dwGroup];
+	
+	if (Level().timeServer() - Group.m_dwLastActionTime < dwActionRefreshRate) {
+		switch (Group.m_dwLastAction) {
+			case 0: return(a1);
+			case 1: return(a2);
+			default: return(a3);
+		}
+	}
+
+	objVisible &VisibleEnemies = Level().Teams[dwTeam].KnownEnemys;
+	
+	if (!VisibleEnemies.size())
+		switch (Group.m_dwLastAction) {
+			case 0: return(a1);
+			case 1: return(a2);
+			default: return(a3);
+		}
+
+	EntityVec	Members;
+	Members.push_back(Level().Teams[dwTeam].Squads[dwSquad].Leader);
+	for (int k=0; k<(int)Group.Members.size(); k++) {
+		if (Group.Members[k]->g_Alive())
+			Members.push_back(Group.Members[k]);
+	}
+
+	if (bfGetActionSuccessProbability(Members,VisibleEnemies,fMinProbability,Level().m_tpAI_DDD->pfAttackSuccessProbability)) {
+		Group.m_dwLastActionTime = Level().timeServer();
+		Group.m_dwLastAction = 0;
+		return(a1);
+	}
+	else
+		if (bfGetActionSuccessProbability(Members,VisibleEnemies,fMinProbability,Level().m_tpAI_DDD->pfDefendSuccessProbability)) {
+			Group.m_dwLastActionTime = Level().timeServer();
+			Group.m_dwLastAction = 1;
+			return(Group.m_dwLastAction = a2);
+		}
+		else {
+			Group.m_dwLastActionTime = Level().timeServer();
+			Group.m_dwLastAction = 2;
+			return(Group.m_dwLastAction = a3);
+		}
 }

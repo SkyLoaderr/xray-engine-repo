@@ -13,8 +13,6 @@
 #include "ai_space.h"
 #include "ai_sounds.h"
 #include "playerlist.h"
-#include "..\fixedset.h"
-// #include "ai_funcs.h"
 
 class CAI_DDD;
 class CHUDManager;
@@ -36,7 +34,6 @@ public:
 
 const int maxTeams				= 32;
 const int maxRP					= 64;
-typedef FixedSET<CObject*>		objVisible;
 class CTeam
 {
 public:

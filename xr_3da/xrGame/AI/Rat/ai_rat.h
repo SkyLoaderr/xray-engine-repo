@@ -12,8 +12,6 @@
 #include "..\\ai_monsters.h"
 #include "..\\..\\CustomMonster.h"
 
-class CBaseFunction;
-
 namespace NAI_Rat_Constants
 {
 	const float TORSO_ANGLE_DELTA		= EPS_L;
@@ -202,8 +200,6 @@ class CAI_Rat : public CCustomMonster
 		// MISCELLANIOUS FUNCTIONS
 		//////////////////////////
 		void	vfComputeNewPosition();
-		DWORD	dwfChooseAction(DWORD a1, DWORD a2, DWORD a3);
-		bool	bfGetActionSuccessProbability(EntityVec &Members, objVisible &VisibleEnemies, CBaseFunction &tBaseFunction);
 		void	vfLoadSounds();
 		void	vfLoadAnimations();
 		void	SetDirectionLook();

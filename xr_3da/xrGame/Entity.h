@@ -29,6 +29,7 @@ protected:
 	float				fHealth,	fMAX_Health;
 	float				fArmor,		fMAX_Armor;
 	float				fAccuracy;
+	float				m_fMaxHealthValue;
 public:
 	// Team params
 	int					id_Team;
@@ -58,6 +59,7 @@ public:
 
 	float					g_Armor				()	{ return fArmor;	}
 	float					g_Health			()	{ return fHealth;	}
+	float					g_MaxHealth			()	{ return m_fMaxHealthValue;	}
 	float					g_Accuracy			()	{ return fAccuracy;	}
 	BOOL					g_Alive				()	{ return g_Health()>0; }
 	virtual BOOL			g_State				(SEntityState& state)	{return FALSE;}

@@ -14,6 +14,8 @@
 #include "..\\Entity.h"
 #include "..\\CustomMonster.h"
 #include "..\\Group.h"
+
+class CBaseFunction;
 		   
 	// Fuzzy State Machine
 	#define ASSIGN_PROPORTIONAL_POWER(a,b)	if ((eType & a) == a) power*=b;
@@ -236,7 +238,7 @@
 		bool	bEmpty;
 	} SSubNode;
 
-	extern void vfGoToPointViaNodes(vector<CTravelNode> &tpaPath, DWORD dwCurNode, Fvector tStartPoint, Fvector tFinishPoint);
+	extern void  vfGoToPointViaNodes(vector<CTravelNode> &tpaPath, DWORD dwCurNode, Fvector tStartPoint, Fvector tFinishPoint);
 	extern float ffCalcSquare(float fAngle, float fAngleOfView, float _b0, float _b1, float _b2, float _b3);
 	extern float ffCalcSquare(float fAngle, float fAngleOfView, NodeCompressed *tpNode);
 	extern float ffCalcSquare(float fAngle, float fAngleOfView, DWORD dwNodeID);
@@ -245,4 +247,6 @@
 	extern float ffGetCoverInDirection(float fAngle, DWORD dwNodeID);
 	extern SRotation tfGetOrientation(CEntity *tpEntity);
 	extern int   ifFindNearestPatrolPoint(vector<Fvector> &tpaVector, const Fvector &tPosition);
+	extern bool	 bfGetActionSuccessProbability(EntityVec &Members, objVisible &VisibleEnemies, float fMinProbability, CBaseFunction &fSuccessProbabilityFunction);
+	extern DWORD dwfChooseAction(DWORD dwActionRefreshRate, float fMinProbability, DWORD dwTeam, DWORD dwSquad, DWORD dwGroup, DWORD a1, DWORD a2, DWORD a3);
 #endif

@@ -110,9 +110,6 @@ void CCustomMonster::Load		(LPCSTR section)
 		// Weapons->TakeItem	(CLSID_OBJECT_W_AK74, 0);
 	}
 
-	//
-	m_iHealth = pSettings->ReadINT(section,"health");
-
 	// Sheduler
 	shedule_Min	= 50;
 	shedule_Max	= 500; // 30 * NET_Latency / 4;
@@ -584,7 +581,7 @@ BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 	if (!inherited::net_Spawn(DC))	return FALSE;
 	xrSE_Enemy* E			= (xrSE_Enemy*)DC;
 
-	fHealth					= float(m_iHealth);
+	//fHealth					= float(m_iHealth);
 	AI_Path.DestNode		= AI_NodeID;
 
 	eye_matrix.identity		();

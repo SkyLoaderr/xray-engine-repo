@@ -235,7 +235,7 @@ void CAI_Rat::AttackFire()
 	
 	SelectEnemy(m_Enemy);
 	
-	ERatStates eState = ERatStates(dwfChooseAction(eCurrentState,eCurrentState,aiRatRetreat));
+	ERatStates eState = ERatStates(dwfChooseAction(ACTION_REFRESH_RATE,MIN_PROBABILITY,g_Team(),g_Squad(),g_Group(),eCurrentState,eCurrentState,aiRatRetreat));
 	if (eState != eCurrentState)
 		GO_TO_NEW_STATE_THIS_UPDATE(eState);
 
@@ -276,7 +276,7 @@ void CAI_Rat::AttackRun()
 	
 	SelectEnemy(m_Enemy);
 
-	ERatStates eState = ERatStates(dwfChooseAction(eCurrentState,eCurrentState,aiRatRetreat));
+	ERatStates eState = ERatStates(dwfChooseAction(ACTION_REFRESH_RATE,MIN_PROBABILITY,g_Team(),g_Squad(),g_Group(),eCurrentState,eCurrentState,aiRatRetreat));
 	if (eState != eCurrentState) {
 		GO_TO_NEW_STATE_THIS_UPDATE(eState);
 	}
@@ -356,7 +356,7 @@ void CAI_Rat::Retreat()
 	
 	if (m_Enemy.Enemy) {
 		vfSaveEnemy();
-		ERatStates eState = ERatStates(dwfChooseAction(aiRatAttackRun,aiRatAttackRun,aiRatRetreat));
+		ERatStates eState = ERatStates(dwfChooseAction(ACTION_REFRESH_RATE,MIN_PROBABILITY,g_Team(),g_Squad(),g_Group(),aiRatAttackRun,aiRatAttackRun,aiRatRetreat));
 		if (eState != eCurrentState)
 			GO_TO_NEW_STATE_THIS_UPDATE(eState);
 		m_dwLostEnemyTime = Level().timeServer();
@@ -383,7 +383,7 @@ void CAI_Rat::Retreat()
 	bfCheckIfGoalChanged();
 	
 	if ((!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8)) || m_bNoWay) {
-		m_fSpeed = 0.f;//EPS_S;
+		m_fSpeed = EPS_S;
 		vfUpdateTime(m_fTimeUpdateDelta);
 		vfComputeNewPosition();
 	}

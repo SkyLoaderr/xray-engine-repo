@@ -1,25 +1,8 @@
 #pragma once
 
+#include "..\fixedset.h"
+
 class	CEntity;
-
-enum	EGroupState
-{
-	gsFreeHunting=0,			//	свободная охота					
-	gsFollowMe,					//	идти ко мне (нужна помощь)		
-	gsGoInThisDirection,		//	идти по направлению: "бесконечно" 
-	gsGoToThisPosition,			//	идти в заданную позицию:			
-	gsHoldPosition,				//	удерживать позицию				
-
-	gsLast,
-	gsForceDWORD = DWORD(-1)
-};
-
-enum	EGroupTriggers
-{
-	gtAgressive		= (1<<0),	// всегда при обнаружении врага / стрелять только для защиты
-	gtQuiet			= (1<<1),	// тихо но более медленно пробираться / быстро (особо не прикрываясь) но более шумно
-	gtForceDWORD	= DWORD(-1)
-};
 
 DEFINE_VECTOR(CEntity*,EntityVec,EntityIt);
 
@@ -37,11 +20,11 @@ typedef svector<Fvector,MAX_GROUP_SIZE>						MemberPlacement;
 typedef svector<DWORD,MAX_GROUP_SIZE>						MemberNodes;
 typedef svector<SSearchPlace,MAX_SUSPICIOUS_NODE_COUNT>		SuspiciousNodes;
 typedef svector<bool,MAX_SUSPICIOUS_NODE_COUNT>				SuspiciousGroups;
+typedef FixedSET<CObject*>									objVisible;
 
 class CGroup
 {
 public:
-	EGroupState					State;
 	DWORD						Flags;
 
 	Fvector						vTargetDirection;
@@ -72,10 +55,6 @@ public:
 	// Constructor
 								CGroup				();
 	
-								void						SetState			(EGroupState S)				{ State=S; }
-	void						SetFlag				(EGroupTriggers T, BOOL f)	{ if (f) Flags|=DWORD(T); else Flags &= ~DWORD(T);}
-	void						InvertFlag			(EGroupTriggers T)			{ if (Flags&DWORD(T)) Flags&=~DWORD(T); else Flags|=DWORD(T);}
-
 	void						Member_Add			(CEntity* E);
 	void						Member_Remove		(CEntity* E);
 
@@ -100,5 +79,5 @@ public:
 	void						GetAliveMemberPlacementNWithLeader(MemberNodes& P, CEntity* Me, CEntity* Leader);
 	void						GetAliveMemberDedicationNWithLeader(MemberNodes& P, CEntity* Me, CEntity* Leader);
 	void						GetAliveMemberInfoWithLeader(MemberPlacement& P0, MemberNodes& P1, MemberPlacement& P2, MemberNodes& P3, CEntity* Me, CEntity* Leader);
-	const Fvector&				GetCentroid			();
+	const Fvector&				GetCentroid();
 };
