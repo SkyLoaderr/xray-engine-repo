@@ -294,11 +294,7 @@ BOOL	CResourceManager::_GetDetailTexture(LPCSTR Name,LPCSTR& T, R_constant_setup
 	}
 }
 
-void	CResourceManager::SetHLSL_path(LPCSTR path)
+void	CResourceManager::SetShaderPath	(LPCSTR path)
 {
-	Path_HLSL	= path;
-}
-void	CResourceManager::SetSCRIPT_path(LPCSTR path)
-{
-	Path_LUA	= path;
+	ShaderPath	= path;
 }
