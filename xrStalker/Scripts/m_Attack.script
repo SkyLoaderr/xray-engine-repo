@@ -223,7 +223,7 @@ function stateAttackArtful:check_complited()
        		return true
        	end
 
-		if(self.angry == false and device():time_global() > self.time + 40000)then
+		if(self.time ~= 0 and self.angry == false and device():time_global() > self.time + 40000)then
 			printf( "completed. Device time = %d  nedd time = %d", device():time_global(), self.time + 40000 )
         	return true
         end
