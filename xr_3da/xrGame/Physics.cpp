@@ -2786,17 +2786,34 @@ default:pos.set(anchor);
 if(!(body1&&body2)) 
 {
 	m_joint=dJointCreateHinge(phWorld,0);
-
+	
 	dJointAttach(m_joint,body1,body2);
 
-	dJointSetHingeAnchor(m_joint,pos.x,pos.y,pos.z);
-	
+	dJointSetHingeAnchor(m_joint,pos.x-1.f,pos.y,pos.z);
+	dJointSetHingeAxis(m_joint,0.f,0.f,1.f);
 	dJointSetHingeParam(m_joint,dParamLoStop ,0.00f);
 	dJointSetHingeParam(m_joint,dParamHiStop ,0.00f);
 
 	dJointSetHingeParam(m_joint,dParamCFM,world_cfm);
 	dJointSetHingeParam(m_joint,dParamStopERP,world_erp);
 	dJointSetHingeParam(m_joint,dParamStopCFM,world_cfm);
+
+
+
+
+	m_joint1=dJointCreateHinge(phWorld,0);
+
+	dJointAttach(m_joint1,body1,body2);
+
+	dJointSetHingeAnchor(m_joint1,pos.x+1.f,pos.y,pos.z);
+	dJointSetHingeAxis(m_joint1,0.f,0.f,1.f);
+
+	dJointSetHingeParam(m_joint1,dParamLoStop ,0.00f);
+	dJointSetHingeParam(m_joint1,dParamHiStop ,0.00f);
+
+	dJointSetHingeParam(m_joint1,dParamCFM,world_cfm);
+	dJointSetHingeParam(m_joint1,dParamStopERP,world_erp);
+	dJointSetHingeParam(m_joint1,dParamStopCFM,world_cfm);
 	return;
 }
 
