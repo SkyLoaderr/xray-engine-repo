@@ -60,6 +60,7 @@ private:
 			void			WaitForTime();
 			void			Recharge();
 			void			LookingOver();
+			void			DropItem();
 
 public:
 	typedef CCustomMonster inherited;

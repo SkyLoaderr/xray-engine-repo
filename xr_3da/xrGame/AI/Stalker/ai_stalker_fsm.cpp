@@ -65,6 +65,7 @@ void CAI_Stalker::Death()
 {
 	WRITE_TO_LOG("Death");
 	
+	DropItem();
 	Fvector	dir;
 	AI_Path.Direction(dir);
 	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
@@ -104,4 +105,6 @@ void CAI_Stalker::LookingOver()
 			CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(!Weapons->ActiveWeapon()->GetAmmoElapsed(),eStalkerStateRecharge);
 			Weapons->ActiveWeapon()->FireStart();
 		}
+	if (!::Random.randI(10000))
+		DropItem();
 }

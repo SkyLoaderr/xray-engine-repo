@@ -123,3 +123,15 @@ void CAI_Stalker::feel_touch_new				(CObject* O)
 		u_EventSend		(P);
 	}
 }
+
+void CAI_Stalker::DropItem()
+{
+	CObject*		O		= Weapons->ActiveWeapon();
+	if (0==O)				return;
+
+	// We doesn't have similar weapon - pick up it
+	NET_Packet				P;
+	u_EventGen				(P,GE_OWNERSHIP_REJECT,ID());
+	P.w_u16					(u16(O->ID()));
+	u_EventSend				(P);
+}
