@@ -29,7 +29,7 @@ BOOL CHangingLamp::net_Spawn(LPVOID DC)
 	cNameVisual_set			(lamp->caModel);
 	// set bone id
 	light_bone_idx			= lamp->spot_bone[0]?PKinematics(pVisual)->LL_BoneID(lamp->spot_bone):-1;
-	
+//	PALib.
 //	lamp->animator;
 //	lamp->color;
 //	lamp->spot_cone_angle;

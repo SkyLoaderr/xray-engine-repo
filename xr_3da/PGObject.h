@@ -18,7 +18,8 @@ public:
 	virtual void		Update			(u32 dt);
 	virtual Fvector&	Position		();
 	void				UpdateSector	(IRender_Sector* sect);
-	void				UpdateParent	(const Fmatrix& m, const Fvector* vel=0);
+	void				SetTransform	(const Fmatrix& m);
+	void				UpdateParent	(const Fmatrix& m, const Fvector& vel);
 	void				play_at_pos		(const Fvector& pos);
 	void				Play			();
 	void				Stop			();

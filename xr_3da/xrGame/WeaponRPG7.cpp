@@ -213,7 +213,7 @@ void CWeaponRPG7Grenade::Explode(const Fvector &pos, const Fvector &normal) {
 	Fmatrix l_m; l_m.identity(); l_m.c.set(pos);l_m.j.set(normal); GetBasis(normal, l_m.k, l_m.i);
 	for(s32 i = 0; i < l_c; i++) {
 		pStaticPG = xr_new<CPGObject>(m_effects[i],Sector());
-		pStaticPG->UpdateParent(l_m);
+		pStaticPG->SetTransform(l_m);
 		pStaticPG->Play();
 	}
 	m_pLight->set_position(vPosition); m_pLight->set_active(true);
@@ -375,7 +375,7 @@ void CWeaponRPG7Grenade::OnH_B_Independent() {
 		Fmatrix l_m; l_m.set(svTransform);// GetBasis(normal, l_m.k, l_m.i);
 		for(s32 i = 0; i < l_c; i++) {
 			pStaticPG = xr_new<CPGObject>(m_trailEffects[i],Sector(),false);
-			pStaticPG->UpdateParent(l_m);
+			pStaticPG->SetTransform(l_m);
 			pStaticPG->Play();
 			m_trailEffectsPSs.push_back(pStaticPG);
 		}
@@ -409,7 +409,7 @@ void CWeaponRPG7Grenade::UpdateCL() {
 			l_force = m_engine_u * Device.dwTimeDelta / 1000.f;
 			m_pPhysicsShell->applyImpulse(l_dir, l_force);
 			list<CPGObject*>::iterator l_it;
-			for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); l_it++) (*l_it)->UpdateParent(svTransform);
+			for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); l_it++) (*l_it)->SetTransform(svTransform);
 		} else {
 			list<CPGObject*>::iterator l_it;
 			for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); l_it++) (*l_it)->Stop();
@@ -579,7 +579,7 @@ void CWeaponRPG7::switch2_Fire	()
 		CPGObject* pStaticPG;/* s32 l_c = m_effects.size();*/
 		pStaticPG = xr_new<CPGObject>("weapons\\rpg_shoot_01",Sector());
 		Fmatrix l_pos; l_pos.set(svTransform); //l_pos.c.set(p1);
-		pStaticPG->UpdateParent(l_pos); pStaticPG->Play();
+		pStaticPG->SetTransform(l_pos); pStaticPG->Play();
 	//for(s32 i = 0; i < l_c; i++) {
 	//}
 

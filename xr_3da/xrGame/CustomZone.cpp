@@ -49,7 +49,7 @@ BOOL CCustomZone::net_Spawn(LPVOID DC) {
 			Fvector c; c.set(l_m.c.x,l_m.c.y+EPS,l_m.c.z);
 			IRender_Sector *l_pRS = ::Render->detectSector(c);
 			pStaticPG = xr_new<CPGObject>(m_effects[i],l_pRS,false);
-			pStaticPG->UpdateParent(l_m);
+			pStaticPG->SetTransform(l_m);
 			pStaticPG->Play();
 			m_effectsPSs.push_back(pStaticPG);
 		}
