@@ -152,7 +152,7 @@ function mob_walker:waypoint_callback(obj, action_type, index)
 	
 	local beh = self.path_walk_info[index]["b"]
 	if beh then
-		mob_state_mgr.set_state(self.object, db.actor, beg)
+		mob_state_mgr.set_state(self.object, db.actor, beh)
 	else
 		mob_state_mgr.set_state(self.object, db.actor, self.st.state)
 	end
@@ -191,7 +191,7 @@ function mob_walker:waypoint_callback(obj, action_type, index)
 
 		local beh = self.path_walk_info[index]["b"]
 		if beh then
-			mob_state_mgr.set_state(self.object, db.actor, beg)
+			mob_state_mgr.set_state(self.object, db.actor, beh)
 		else
 			mob_state_mgr.set_state(self.object, db.actor, self.st.state)
 		end

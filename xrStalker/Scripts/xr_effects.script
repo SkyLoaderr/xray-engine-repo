@@ -73,6 +73,13 @@ function disable_combat_handler(actor, npc)
 	end
 end
 
+-- Вызов этой функции отключит обработчик [combat_ignore] перехвата боя для персонажа.
+function disable_combat_ignore_handler(actor, npc)
+	if db.storage[npc:id()].combat_ignore then
+		db.storage[npc:id()].combat_ignore.enabled = false
+	end
+end
+
 function log_bp1(actor, npc)
 	printf("xr_effects: log_bp1 (actor='%s', npc='%s'", actor:name(), npc:name())
 end

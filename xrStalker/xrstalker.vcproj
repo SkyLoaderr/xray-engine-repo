@@ -933,6 +933,36 @@
 				<File
 					RelativePath=".\Config\scripts\gar_dm_novice.ltx">
 				</File>
+				<File
+					RelativePath=".\Config\scripts\test_hit_in_actor_dir1.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\scripts\test_hit_in_actor_dir2.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\scripts\val_bs_killer1.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\scripts\val_bs_killer2.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\scripts\val_bs_victim.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\scripts\val_escort_captive.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\scripts\val_escort_guard1.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\scripts\val_escort_guard2.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\scripts\val_escort_guard3.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\scripts\val_sos_bs.ltx">
+				</File>
 			</Filter>
 		</Filter>
 		<Filter

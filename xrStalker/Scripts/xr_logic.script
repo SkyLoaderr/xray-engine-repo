@@ -491,7 +491,11 @@ function pick_section_from_condlist(actor, npc, condlist)
 					end
 				end
 			end
-			return cond.section
+			if cond.section == "never" then
+				return nil
+			else
+				return cond.section
+			end
 		end
 	end
 
