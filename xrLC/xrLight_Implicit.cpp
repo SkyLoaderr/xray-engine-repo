@@ -137,7 +137,8 @@ public:
 
 DEF_MAP(Implicit,u32,ImplicitDeflector);
 
-static hash2D <Face*,384,384>	ImplicitHash;
+typedef hash2D <Face*,384,384>		IHASH;
+static IHASH*						ImplicitHash;
 
 class ImplicitThread : public CThread
 {
@@ -187,7 +188,7 @@ public:
 						UVpoint P;
 						P.u = float(U)/dim.u + half.u + Jitter[J].u * JS.u;
 						P.v	= float(V)/dim.v + half.v + Jitter[J].v * JS.v;
-						vector<Face*>&	space	= ImplicitHash.query(P.u,P.v);
+						vector<Face*>&	space	= ImplicitHash->query(P.u,P.v);
 						
 						// World space
 						Fvector wP,wN,B;
@@ -267,7 +268,8 @@ void VerifyPath	(LPCSTR path)
 #define	NUM_THREADS	8
 void CBuild::ImplicitLighting()
 {
-	Implicit	calculator;
+	Implicit		calculator;
+	ImplicitHash	= xr_new<IHASH>	();
 	
 	// Sorting
 	Status("Sorting faces...");
@@ -307,12 +309,12 @@ void CBuild::ImplicitLighting()
 		Progress					(0);
 		Fbox2 bounds;
 		defl.Bounds_Summary			(bounds);
-		ImplicitHash.initialize		(bounds,defl.faces.size());
+		ImplicitHash->initialize	(bounds,defl.faces.size());
 		for (u32 fid=0; fid<defl.faces.size(); fid++)
 		{
 			Face* F				= defl.faces[fid];
 			defl.Bounds			(fid,bounds);
-			ImplicitHash.add	(bounds,F);
+			ImplicitHash->add	(bounds,F);
 		}
 
 		// Start threads
@@ -390,6 +392,7 @@ void CBuild::ImplicitLighting()
 		*/
 	}
 
-	ImplicitHash.clear	();
+	ImplicitHash->clear	();
+	xr_delete			(ImplicitHash);
 	calculator.clear	();
 }
