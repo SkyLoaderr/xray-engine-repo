@@ -9,6 +9,12 @@
 #define		PRIORITY_NORMAL	8
 #define		PRIORITY_LOW	4
 
+void resptrcode_texture::create(LPCSTR _name)
+{
+	_set(Device.Resources->_CreateTexture(_name));
+}
+
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -100,7 +106,7 @@ void CTexture::Load()
 		if ((bmode[0]=='u')&&(bmode[1]=='s')&&(bmode[2]=='e')&&(bmode[3]==':'))
 		{
 			// bump-map specified
-			m_bumpmap				=	&(bmode[4]);
+			m_bumpmap		=	&(bmode[4]);
 		}
 	}
 

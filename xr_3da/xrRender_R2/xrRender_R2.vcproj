@@ -525,6 +525,12 @@
 			<File
 				RelativePath=".\blender_luminance.h">
 			</File>
+			<File
+				RelativePath=".\uber_deffer.cpp">
+			</File>
+			<File
+				RelativePath=".\uber_deffer.h">
+			</File>
 			<Filter
 				Name="R1"
 				Filter="">

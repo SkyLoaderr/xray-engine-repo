@@ -7,7 +7,7 @@
 #define	r2_RT_D_G			"$user$color_gloss"		// MRT
 
 // other
-#define	r2_RT_accum			"$user$accum"			// ---	16 bit fp or 8 bit
+#define	r2_RT_accum			"$user$accum"			// ---	16 bit fp or 16 bit fx
 
 #define	r2_RT_generic0		"$user$generic0"		// ---
 #define	r2_RT_generic1		"$user$generic1"		// ---
@@ -24,7 +24,6 @@
 #define	r2_RT_smap_p		"$user$smap_p"			// ---	point
 
 #define r2_material			"$user$material"						// ---
-#define r2_ncm				"$user$ncm"								// --- normal encode
 #define r2_float2RG			"$user$float2rg"						// --- compression/encoding table
 #define r2_float2B			"$user$float2b"							// --- compression/encoding table
 #define r2_ds2_fade			"$user$ds2_fade"						// ---

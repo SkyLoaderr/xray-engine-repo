@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+#include "uber_deffer.h"
+
 #include "blender_deffer_flat.h"
 #include "blender_deffer_model.h"
 #include "blender_deffer_aref.h"

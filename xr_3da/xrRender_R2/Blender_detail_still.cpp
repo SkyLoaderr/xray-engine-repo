@@ -59,7 +59,7 @@ void	CBlender_Detail_Still::Compile	(CBlender_Compile& C)
 		switch (C.iElement)
 		{
 		case SE_R1_NORMAL_HQ:
-			C.r_Pass	("detail_wave",	"detail",FALSE,TRUE,TRUE,FALSE, D3DBLEND_ONE,D3DBLEND_ZERO,oBlend.value?TRUE:FALSE,oBlend.value?200:0);
+			C.r_Pass	("detail_wave",		"detail",FALSE,TRUE,TRUE,FALSE, D3DBLEND_ONE,D3DBLEND_ZERO,oBlend.value?TRUE:FALSE,oBlend.value?200:0);
 			C.r_Sampler	("s_base",	C.L_textures[0]);
 			C.r_End		();
 			break;
