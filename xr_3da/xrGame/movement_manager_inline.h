@@ -2,7 +2,41 @@
 
 IC	bool CMovementManager::actual() const
 {
-	return					(m_path_actuality);
+	if (!m_path_actuality)
+		return			(false);
+	switch (m_path_type) {
+		case ePathTypeGamePath : 
+			return			(
+				CGamePathManager::actual() && 
+				CLevelPathManager::actual() &&
+				CDetailPathManager::actual()
+			);
+		case ePathTypeLevelPath :
+			return			(
+				CLevelPathManager::actual() &&
+				CDetailPathManager::actual()
+			);
+		case ePathTypeEnemySearch :
+			return			(
+//				CEnemyLocationPredictor::actual() && 
+				CLevelPathManager::actual() &&
+				CDetailPathManager::actual()
+			);
+		case ePathTypePatrolPath :
+			return			(
+				CPatrolPathManager::actual() && 
+				CLevelPathManager::actual() &&
+				CDetailPathManager::actual()
+			);
+		case ePathTypeNoPath :
+			return			(
+				CDetailPathManager::actual()
+			);
+		default : NODEFAULT;
+	}
+#ifdef DEBUG
+	return					(true);
+#endif
 }
 
 IC	void CMovementManager::set_path_type(EPathType path_type)
