@@ -67,8 +67,8 @@ __published:	// IDE-managed Components
 private:	// User declarations
     bool bLoadMode;
 
-	WaveForm* m_CurFunc;
-    WaveForm* m_SaveFunc;
+	static WaveForm* m_CurFunc;
+    static WaveForm* m_SaveFunc;
 
     void GetFuncData();
     void UpdateFuncData();

@@ -82,6 +82,11 @@ void CSHEngineTools::OnDestroy(){
     // hide properties window
 	TfrmShaderProperties::HideProperties();
     m_bModified = FALSE;
+
+    // remove temp $shader$
+	AnsiString sh		= SHADER_FILENAME_TEMP;
+    FS.m_Temp.Update	(sh);
+    FS.DeleteFileByName	(sh.c_str());
 }
 
 void CSHEngineTools::ClearData(){

@@ -140,7 +140,9 @@ bool CRenderDevice::Create(){
 	// after creation
 	dwFrame				= 0;
 
-    _Create				("shaders.xr");
+	AnsiString sh		= "shaders.xr";
+    FS.m_GameRoot.Update(sh);
+    _Create				(sh.c_str());
 
 	ELog.Msg			(mtInformation, "D3D: initialized");
 	return true;

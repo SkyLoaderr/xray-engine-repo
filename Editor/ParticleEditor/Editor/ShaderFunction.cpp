@@ -9,6 +9,8 @@
 #pragma package(smart_init)
 #pragma resource "*.dfm"
 TfrmShaderFunction *TfrmShaderFunction::form=0;
+WaveForm* TfrmShaderFunction::m_CurFunc=0;
+WaveForm* TfrmShaderFunction::m_SaveFunc=0;
 //---------------------------------------------------------------------------
 xr_token							function_token			[ ]={
 	{ "Constant",				  	WaveForm::fCONSTANT	  	},
@@ -127,6 +129,8 @@ void __fastcall TfrmShaderFunction::ebCancelClick(TObject *Sender)
 {
     Close();
     ModalResult = mrCancel;
+    CopyMemory(m_CurFunc,m_SaveFunc,sizeof(WaveForm));
+//	*m_CurFunc = *m_SaveFunc;
 }
 //---------------------------------------------------------------------------
 
@@ -140,7 +144,6 @@ int __fastcall TfrmShaderFunction::Run(WaveForm* func)
     form->GetFuncData	();
     form->UpdateFuncData();
     int res 	= form->ShowModal();
-    if (res!=mrOk)CopyMemory(form->m_CurFunc,form->m_SaveFunc,sizeof(WaveForm));
     _DELETE(form->m_SaveFunc);
     return res;
 }
@@ -211,7 +214,7 @@ void __fastcall TfrmShaderFunction::FormClose(TObject *Sender,
       TCloseAction &Action)
 {
 	Action 	= caFree;
-//    form 	= 0;
+    form 	= 0;
 }
 //---------------------------------------------------------------------------
 
