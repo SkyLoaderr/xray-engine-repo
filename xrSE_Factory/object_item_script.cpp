@@ -11,12 +11,15 @@
 #include "object_factory.h"
 
 #ifndef NO_XR_GAME
+#	include "attachable_item.h"
+
 ObjectFactory::CLIENT_BASE_CLASS *CObjectItemScript::client_object	() const
 {
 	object_factory().set_instance((ObjectFactory::CLIENT_SCRIPT_BASE_CLASS*)0);
 	m_client_creator			(const_cast<CObjectFactory*>(&object_factory()));
 	return						(object_factory().client_instance());
 }
+
 #endif
 
 ObjectFactory::SERVER_BASE_CLASS *CObjectItemScript::server_object	(LPCSTR section) const

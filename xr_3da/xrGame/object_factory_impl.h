@@ -17,6 +17,23 @@
 #include "object_item_single.h"
 
 #ifndef NO_XR_GAME
+/**
+template <typename a, typename b, typename c>
+struct CType {
+	template <bool value>
+	struct CInternalType {
+		typedef b type;
+	};
+
+	template <>
+	struct CInternalType<true> {
+		typedef a type;
+	};
+
+	typedef typename CInternalType<boost::is_base_and_derived<c,a>::value>::type type;
+};
+/**/
+
 template <typename _client_type, typename _server_type>
 IC	void CObjectFactory::add	(const CLASS_ID &clsid, LPCSTR script_clsid)
 {
