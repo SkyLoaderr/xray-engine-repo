@@ -101,7 +101,7 @@ function proceed(actor)
 
 	if actor:has_info("agroprom_military_case_done") 
 	then
-		set_task_state(task.completed, "agroprom_get_military_documents", 2)
+		set_task_state(task.completed, "agroprom_get_military_documents", 0)
 	end
 
 	if actor:has_info("agr_find_gunslinger_cache") and
