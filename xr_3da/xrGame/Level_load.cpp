@@ -345,7 +345,7 @@ void CLevel::Load_GameSpecific_CFORM	( CDB::TRI* tris, u32 count )
 	{
 		CDB::TRI* T						= tris + it;
 		map<u32,u16>::iterator index	= translator.find(T->dummy);
-		if (index==translator.end())	Device.Fatal	("Game material '%d' not found",T->dummy);
+		if (index==translator.end())	Debug.fatal	("Game material '%d' not found",T->dummy);
 		T->material						= index->second;
 	}
 }

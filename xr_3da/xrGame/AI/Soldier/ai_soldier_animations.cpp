@@ -165,7 +165,7 @@ void CAI_Soldier::vfLoadAnimations()
 	//tSoldierAnimations.tLie.tGlobal.tpGoAheadSign = tpVisualObject->ID_Cycle("lie_sign_1");
 	//tSoldierAnimations.tLie.tGlobal.tpPointSign = tpVisualObject->ID_Cycle("lie_sign_2");
 
-	memset(m_tpaMovementAnimations,0,sizeof(m_tpaMovementAnimations));
+	ZeroMemory				(m_tpaMovementAnimations,sizeof(m_tpaMovementAnimations));
 	
 	m_tpaMovementAnimations[BODY_STATE_STAND][WALK_FORWARD_0] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[0];
 	m_tpaMovementAnimations[BODY_STATE_STAND][WALK_FORWARD_1] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[1];

@@ -20,7 +20,7 @@ u16		xrServer::PerformIDgen		(u16 ID)
 			}
 		}
 
-		Device.Fatal	("Requesting ID already used.");
+		Debug.fatal		("Requesting ID already used.");
 		return		0xffff;
 	}
 }

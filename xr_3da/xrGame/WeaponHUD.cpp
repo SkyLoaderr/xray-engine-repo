@@ -50,7 +50,7 @@ void CWeaponHUD::Load			(LPCSTR section)
 	// fire bone	
 	LPCSTR fire_bone			= pSettings->ReadSTRING					(section,"fire_bone");
 	iFireBone					= PKinematics(Visual())->LL_BoneID	(fire_bone);
-	if (iFireBone<0)			Device.Fatal("There is no 'fire_bone' for weapon '%s'.",section);
+	if (iFireBone<0)			Debug.fatal	("There is no 'fire_bone' for weapon '%s'.",section);
 	vFirePoint					= pSettings->ReadVECTOR					(section,"fire_point");
 	if(pSettings->LineExists(section,"fire_point2")) vFirePoint2 = pSettings->ReadVECTOR(section,"fire_point2");
 	else vFirePoint2 = vFirePoint;

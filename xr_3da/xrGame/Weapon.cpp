@@ -102,7 +102,7 @@ void CWeapon::SoundCreate(sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq)
 		Sound->Create(dest,TRUE,name,bCtrlFreq,iType);
 		return;
 	}
-	Device.Fatal("Can't find sound '%s' for weapon '%s'",name,GetName());
+	Debug.fatal	("Can't find sound '%s' for weapon '%s'",name,GetName());
 }
 
 void CWeapon::SoundDestroy	(	sound& dest)
@@ -142,7 +142,7 @@ void CWeapon::ShaderCreate	(Shader* &dest, LPCSTR S, LPCSTR T)
 		dest = Device.Shader.Create(S,name);
 		return;
 	}
-	Device.Fatal("Can't find texture '%s' for weapon '%s'",T,GetName());
+	Debug.fatal	("Can't find texture '%s' for weapon '%s'",T,GetName());
 }
 
 void CWeapon::ShaderDestroy	(Shader* &dest)
