@@ -168,7 +168,20 @@ protected:
 	u32 m_dwBlowoutSoundTime;
 	u32 m_dwBlowoutExplosionTime;
 	void UpdateBlowout();
-
+	
+	//ветер
+	bool m_bBlowoutWindEnable;
+	bool m_bBlowoutWindActive;
+	u32 m_dwBlowoutWindTimeStart;
+	u32 m_dwBlowoutWindTimePeak;
+	u32 m_dwBlowoutWindTimeEnd;
+	//сила ветра (увеличение текущего) (0,1) когда в аномалию попадает актер
+	float m_fBlowoutWindPowerMax;
+	float m_fBlowoutWindPowerCur;
+	float m_fRealWindPower;
+	void StartWind();
+	void StopWind();
+	void UpdateWind();
 
 
 	//игнорирование воздействия зоны на виды объектов
@@ -324,4 +337,7 @@ protected:
 
 	DEFINE_VECTOR(ARTEFACT_SPAWN, ARTEFACT_SPAWN_VECTOR, ARTEFACT_SPAWN_IT);
 	ARTEFACT_SPAWN_VECTOR m_ArtefactSpawn;
+
+	//расстояние от зоны до текущего актера
+	float m_fDistanceToCurEntity;
 };

@@ -124,11 +124,14 @@ void CActor::AddGameTask			 (const CInfoPortion* info_portion)
 }
 
 
-void CActor::OnReceiveInfo(INFO_INDEX info_index)
+bool CActor::OnReceiveInfo(INFO_INDEX info_index)
 {
 	//только если находимся в режиме single
 	CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-	if(!pGameSP) return;
+	if(!pGameSP) return false;
+	
+	if(!CInventoryOwner::OnReceiveInfo(info_index))
+		return false;
 
 	CInfoPortion info_portion;
 	info_portion.Load(info_index);
@@ -142,7 +145,7 @@ void CActor::OnReceiveInfo(INFO_INDEX info_index)
 		pGameSP->TalkMenu.UpdateQuestions();
 	}
 
-	CInventoryOwner::OnReceiveInfo(info_index);
+	return true;
 }
 
 

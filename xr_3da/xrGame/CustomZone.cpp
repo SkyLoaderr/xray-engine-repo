@@ -15,6 +15,8 @@
 //////////////////////////////////////////////////////////////////////////
 //количество предварительно проспавненых артефактов
 #define PREFETCHED_ARTEFACTS_NUM 4
+//расстояние до актера, когда появляется ветер 
+#define WIND_RADIUS (4*Radius())
 
 CCustomZone::CCustomZone(void) 
 {
@@ -63,6 +65,11 @@ CCustomZone::CCustomZone(void)
 
 	m_fThrowOutPower = 0.f;
 	m_fArtefactSpawnHeight = 0.f;
+
+	m_fBlowoutWindPowerCur = m_fBlowoutWindPowerMax = m_fRealWindPower = 0.f;
+	m_bBlowoutWindActive = false;
+
+	m_fDistanceToCurEntity = flt_max;
 
 }
 
@@ -192,12 +199,24 @@ void CCustomZone::Load(LPCSTR section)
 	else
 		m_dwBlowoutExplosionTime = 0;
 
-	
+
+	m_bBlowoutWindEnable = !!pSettings->r_bool(section,"blowout_wind"); 
+	if(m_bBlowoutWindEnable) 
+	{
+		m_dwBlowoutWindTimeStart = pSettings->r_u32(section,"blowout_wind_time_start"); 
+		m_dwBlowoutWindTimePeak = pSettings->r_u32(section,"blowout_wind_time_peak"); 
+		m_dwBlowoutWindTimeEnd = pSettings->r_u32(section,"blowout_wind_time_end"); 
+		R_ASSERT(m_dwBlowoutWindTimeStart < m_dwBlowoutWindTimePeak);
+		R_ASSERT(m_dwBlowoutWindTimePeak < m_dwBlowoutWindTimeEnd);
+		R_ASSERT((s32)m_dwBlowoutWindTimeEnd < m_StateTime[eZoneStateBlowout]);
+		
+		m_fBlowoutWindPowerMax = pSettings->r_float(section,"blowout_wind_power");
+	}
 
 	//загрузить параметры световой вспышки от взрыва
 	m_bBlowoutLight = !!pSettings->r_bool (section, "blowout_light");
 
-	if(m_bBlowoutLight) 
+	if(m_bBlowoutLight)
 	{
 		sscanf(pSettings->r_string(section,"light_color"), "%f,%f,%f", &m_LightColor.r, &m_LightColor.g, &m_LightColor.b);
 		m_fLightRange			= pSettings->r_float(section,"light_range");
@@ -319,6 +338,10 @@ BOOL CCustomZone::net_Spawn(LPVOID DC)
 
 	PrefetchArtefacts ();
 
+	m_fRealWindPower = g_pGamePersistent->Environment.wind_strength;
+	m_fDistanceToCurEntity = flt_max;
+	m_bBlowoutWindActive = false;
+
 	return						(TRUE);
 }
 
@@ -327,6 +350,7 @@ void CCustomZone::net_Destroy()
 	inherited::net_Destroy();
 	
 	StopIdleParticles();
+	StopWind();
 
 	if(m_pLight)
 	{
@@ -435,9 +459,10 @@ void CCustomZone::UpdateCL()
 		m_bZoneReady = true;
 	}
 
+	m_fDistanceToCurEntity = Level().CurrentEntity()->Position().distance_to(Position());
 
 	if (EnableEffector())// && Level().CurrentEntity() && Level().CurrentEntity()->SUB_CLS_ID != CLSID_SPECTATOR)
-		m_effector.Update(Level().CurrentEntity()->Position().distance_to(Position()));
+		m_effector.Update(m_fDistanceToCurEntity);
 
 	UpdateBlowoutLight	();
 }
@@ -874,6 +899,13 @@ void CCustomZone::UpdateBlowout()
 		m_dwBlowoutSoundTime<(u32)m_iStateTime)
 		m_blowout_sound.play_at_pos	(this, Position());
 
+	if(m_bBlowoutWindEnable && m_dwBlowoutWindTimeStart>=(u32)m_iPreviousStateTime && 
+		m_dwBlowoutWindTimeStart<(u32)m_iStateTime)
+		StartWind();
+
+	UpdateWind();
+
+
 	if(m_dwBlowoutExplosionTime>=(u32)m_iPreviousStateTime && 
 		m_dwBlowoutExplosionTime<(u32)m_iStateTime)
 	{
@@ -1111,5 +1143,47 @@ void CCustomZone::PrefetchArtefacts()
 	for(std::size_t i = m_SpawnedArtefacts.size(); i < PREFETCHED_ARTEFACTS_NUM; i++)
 	{
 		SpawnArtefact();
+	}
+}
+
+void CCustomZone::StartWind()
+{
+	if(m_fDistanceToCurEntity>WIND_RADIUS) return;
+
+	m_bBlowoutWindActive = true;
+	m_fRealWindPower = g_pGamePersistent->Environment.wind_strength;
+	clamp(g_pGamePersistent->Environment.wind_strength, 0.f, 1.f);
+}
+
+void CCustomZone::StopWind()
+{
+	if(!m_bBlowoutWindActive) return;
+	m_bBlowoutWindActive = false;
+	g_pGamePersistent->Environment.wind_strength = m_fRealWindPower;
+}
+
+void CCustomZone::UpdateWind()
+{
+	if(!m_bBlowoutWindActive) return;
+
+	if(m_dwBlowoutWindTimeEnd<(u32)m_iStateTime)
+	{
+		StopWind();
+		return;
+	}
+
+	if(m_dwBlowoutWindTimePeak > (u32)m_iStateTime)
+	{
+		g_pGamePersistent->Environment.wind_strength = m_fBlowoutWindPowerMax + ( m_fRealWindPower - m_fBlowoutWindPowerMax)*
+								float(m_dwBlowoutWindTimePeak - (u32)m_iStateTime)/
+								float(m_dwBlowoutWindTimePeak - m_dwBlowoutWindTimeStart);
+		clamp(g_pGamePersistent->Environment.wind_strength, 0.f, 1.f);
+	}
+	else
+	{
+		g_pGamePersistent->Environment.wind_strength = m_fBlowoutWindPowerMax + (m_fRealWindPower - m_fBlowoutWindPowerMax)*
+			float((u32)m_iStateTime - m_dwBlowoutWindTimePeak)/
+			float(m_dwBlowoutWindTimeEnd - m_dwBlowoutWindTimePeak);
+		clamp(g_pGamePersistent->Environment.wind_strength, 0.f, 1.f);
 	}
 }

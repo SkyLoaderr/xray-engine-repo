@@ -88,7 +88,7 @@ public:
 
 public:
 	//information receive & dialogs
-	virtual void OnReceiveInfo		(INFO_INDEX info_index);
+	virtual bool OnReceiveInfo		(INFO_INDEX info_index);
 	virtual void OnDisableInfo		(INFO_INDEX info_index);
 	virtual void ReceivePdaMessage	(u16 who, EPdaMsg msg, INFO_INDEX info_index);
 

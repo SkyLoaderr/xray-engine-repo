@@ -101,7 +101,7 @@ protected:
 	// сюжетная информация
 public:
 	//персонаж получил новую порцию информации
-	virtual void OnReceiveInfo	(INFO_INDEX info_index);
+	virtual bool OnReceiveInfo	(INFO_INDEX info_index);
 	//убрать информацию
 	virtual void OnDisableInfo	(INFO_INDEX info_index);
 	//передать/удалить информацию через сервер

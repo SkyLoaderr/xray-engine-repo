@@ -49,8 +49,16 @@ private:
 };
 
 
-void CInventoryOwner::OnReceiveInfo(INFO_INDEX info_index)
+bool CInventoryOwner::OnReceiveInfo(INFO_INDEX info_index)
 {
+	//добавить запись в реестр
+	KNOWN_INFO_VECTOR& known_info = known_info_registry.objects();
+	KNOWN_INFO_VECTOR_IT it = std::find_if(known_info.begin(), known_info.end(), CFindByIDPred(info_index));
+	if( known_info.end() == it)
+		known_info.push_back(INFO_DATA(info_index, Level().GetGameTime()));
+	else
+		return false;
+
 	//«апустить скриптовый callback
 	CGameObject* pThisGameObject = dynamic_cast<CGameObject*>(this);
 	VERIFY(pThisGameObject);
@@ -67,13 +75,8 @@ void CInventoryOwner::OnReceiveInfo(INFO_INDEX info_index)
 	for(u32 i=0; i<info_portion.DisableInfos().size(); i++)
 		TransferInfo(info_portion.DisableInfos()[i], false);
 
-	//добавить запись в реестр
-	KNOWN_INFO_VECTOR& known_info = known_info_registry.objects();
-	KNOWN_INFO_VECTOR_IT it = std::find_if(known_info.begin(), known_info.end(), CFindByIDPred(info_index));
-	if( known_info.end() == it)
-	{
-		known_info.push_back(INFO_DATA(info_index, Level().GetGameTime()));
-	}
+
+	return true;
 }
 
 void CInventoryOwner::OnDisableInfo(INFO_INDEX info_id)
