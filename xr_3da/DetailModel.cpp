@@ -4,6 +4,9 @@
    
 void CDetail::Load		(CStream* S)
 {
+	DWORD			aaa		= 0xf0f0f0f0;
+	DWORD			a		= color_get_A_(aaa);
+
 	// Shader
 	FILE_NAME		fnT,fnS;
 	S->RstringZ		(fnS);
@@ -19,12 +22,12 @@ void CDetail::Load		(CStream* S)
 	R_ASSERT		(0==(number_indices%3));
 	
 	// Vertices
-	u32			size_vertices		= number_vertices*sizeof(fvfVertexIn); 
+	u32				size_vertices		= number_vertices*sizeof(fvfVertexIn); 
 	vertices		= (CDetail::fvfVertexIn *)	_aligned_malloc	(size_vertices,64);
 	S->Read			(vertices,size_vertices);
 	
 	// Indices
-	u32			size_indices		= number_indices*sizeof(WORD);
+	u32				size_indices		= number_indices*sizeof(WORD);
 	indices			= (WORD*)					_aligned_malloc	(size_indices,64);
 	S->Read			(indices,size_indices);
 	
