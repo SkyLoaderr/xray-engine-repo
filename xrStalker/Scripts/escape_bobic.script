@@ -2,11 +2,11 @@ module("m_monster_ai")
 
 local sounds = {}
 
-local bobik_home = vector():set(-204, -37, -280)
+local bobik_home = vector():set(-204.99, -37.75, -280.7)
 --local bobik_home = vector():set(10, 10, 10)
 
 function main()
-	local dog = m_monster_ai.m_MonsterBobic("dog_bobic", this.script_name(), bobik_home )
+	local dog = m_monster_ai.m_MonsterBobic("dog_bobic", this.script_name(), bobik_home, 3 )
 
     while(dog:execute()) do
     	wait()
@@ -38,7 +38,7 @@ function evaluator_bobik:evaluate ()
 
 	if this.alarm == true or this.die == true then
 		return true
-	else 
+	else
 		return false
 	end
 end
@@ -60,7 +60,7 @@ function action_bobik:initialize()
 
 	self.sound_alarm = {idle = 0,
 		     begin = nil,
-		     maxidle = 1, 
+		     maxidle = 1,
 		     sumidle = 1,
    		     rnd = 100,
 		     lastsound = nil,
@@ -69,7 +69,7 @@ function action_bobik:initialize()
 					{pack = sounds["bobik"], id = 2}}}
 	self.sound_die = {idle = 0,
 		     begin = nil,
-		     maxidle = 1, 
+		     maxidle = 1,
 		     sumidle = 1,
    		     rnd = 100,
 		     lastsound = nil,
