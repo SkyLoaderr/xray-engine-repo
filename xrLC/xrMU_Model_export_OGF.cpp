@@ -15,24 +15,24 @@ void xrMU_Reference::export_ogf()
 			R_ASSERT	(M);
 
 			// Common data
-			pOGF->Sector		= sector;
-			pOGF->material		= it->material;
+			pOGF->Sector			= sector;
+			pOGF->material			= it->material;
 
 			// Collect textures
-			OGF_Texture			T;
+			OGF_Texture				T;
 			TRY(strcpy(T.name,pBuild->textures[M->surfidx].name));
 			TRY(T.pSurface = &(pBuild->textures[M->surfidx]));
 			TRY(pOGF->textures.push_back(T));
 
 			// Special
-			pOGF->model			= it->ogf;
-			pOGF->vb_id			= it->vb_id;
-			pOGF->vb_start		= it->vb_start;
-			pOGF->ib_id			= it->ib_id;
-			pOGF->ib_start		= it->ib_start;
-			pOGF->xform.set		(xform);
-			pOGF->c_scale		= c_scale;
-			pOGF->c_bias		= c_bias;
+			pOGF->model				= it->ogf;
+			pOGF->vb_id				= it->vb_id;
+			pOGF->vb_start			= it->vb_start;
+			pOGF->ib_id				= it->ib_id;
+			pOGF->ib_start			= it->ib_start;
+			pOGF->xform.set			(xform);
+			pOGF->c_scale			= c_scale;
+			pOGF->c_bias			= c_bias;
 
 			pOGF->CalcBounds		();
 			generated_ids.push_back	((u32)g_tree.size());
