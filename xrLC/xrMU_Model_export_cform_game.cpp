@@ -2,6 +2,8 @@
 #include "xrMU_model.h"
 void xrMU_Reference::export_cform_game	(_mesh& mesh, xr_vector<cform_FailFace>& failedfaces)
 {
+	Log	("model:",*(model->m_name));
+
 	// verts 
 	for (u32 V=0; V<model->m_vertices.size(); V++)	model->m_vertices[V]->handle	= _mesh::InvalidVertexHandle.idx();
 

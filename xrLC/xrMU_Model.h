@@ -79,7 +79,7 @@ public:
 		virtual ~_face()	{ };
 	};
 public:
-	string128				m_name;
+	ref_str					m_name;
 	u16						m_lod_ID;
 	v_vertices				m_vertices;
 	v_faces					m_faces;
