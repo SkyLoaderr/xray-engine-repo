@@ -345,3 +345,11 @@ IC	bool CLevelGraph::is_accessible		(const u32 vertex_id) const
 	VERIFY				(valid_vertex_id(vertex_id));
 	return				(!m_ref_counts[vertex_id]);
 }
+
+IC	void CLevelGraph::set_invalid_vertex(u32 &vertex_id, CVertex **vertex) const
+{
+	vertex_id			= u32(-1);
+	VERIFY				(!valid_vertex_id(vertex_id));
+	if (vertex)
+		*vertex			= NULL;
+}

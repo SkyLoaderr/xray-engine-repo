@@ -197,3 +197,9 @@ IC	void CGameGraph::begin_spawn(u32 vertex_id, const_spawn_iterator &start, cons
 {
 	end = (start = (const_spawn_iterator)((u8*)m_tpaGraph + vertex(vertex_id).dwPointOffset) + vertex(vertex_id).death_point_count());
 }
+
+IC	void CGameGraph::set_invalid_vertex(u32 &vertex_id) const
+{
+	vertex_id	= ALife::_GRAPH_ID(-1);
+	VERIFY		(!valid_vertex_id(vertex_id));
+}
