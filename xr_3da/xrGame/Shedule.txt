@@ -15,7 +15,8 @@
 
 	/ GAME
 		+ TODO: Universal spawn
-		+ TODO: Events
+		+ TODO: cl_Events
+		. TODO: sv_Events
 		. TODO: event: Activate
 		. TODO: event: Deactivate
 		. TODO: Zone(s)

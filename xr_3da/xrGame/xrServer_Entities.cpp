@@ -119,7 +119,12 @@ public:
 		return TRUE;
 	};
 };
-
+//---------------------------------------------------------------------------------------------
+class xrSE_Event : public xrServerEntity
+{
+public:
+	
+};
 
 //--------------------------------------------------------------------
 xrServerEntity*	xrServer::entity_Create		(LPCSTR name)
@@ -132,6 +137,7 @@ xrServerEntity*	xrServer::entity_Create		(LPCSTR name)
 	//case CLSID_AI_HUMAN:		return new	xrSE_Enemy;
 	case CLSID_AI_HEN:			return new	xrSE_Enemy;
 	case CLSID_AI_RAT:			return new	xrSE_Enemy;
+	case CLSID_EVENT:			return new  xrSE_Event;
 	}
 	return 0;
 }
