@@ -204,26 +204,26 @@ CAI_DDD::CAI_DDD()
 	m_fpaBaseFunctions[50]				= m_pfEnemyDistanceToGraphPoint= xr_new<CEnemyDistanceToGraphPoint>	();	
 
 	m_pfWeaponEffectiveness				= xr_new<CPatternFunction>	("common\\WeaponEffectiveness.efd",		this);
-	m_pfCreatureEffectiveness			= xr_new<CPatternFunction>	("common\\CreatureEffectiveness.efd",		this);
-	m_pfIntellectCreatureEffectiveness	= xr_new<CPatternFunction>	("common\\IntCreatureEffectiveness.efd",	this);
+	m_pfCreatureEffectiveness			= xr_new<CPatternFunction>	("common\\CreatureEffectiveness.efd",	this);
+	m_pfIntellectCreatureEffectiveness	= xr_new<CPatternFunction>	("common\\IntCreatureEffectiveness.efd",this);
 	m_pfAccuracyWeaponEffectiveness		= xr_new<CPatternFunction>	("common\\AccWeaponEffectiveness.efd",	this);
-	m_pfFinalCreatureEffectiveness		= xr_new<CPatternFunction>	("common\\FinCreatureEffectiveness.efd",	this);
+	m_pfFinalCreatureEffectiveness		= xr_new<CPatternFunction>	("common\\FinCreatureEffectiveness.efd",this);
 	m_pfVictoryProbability				= xr_new<CPatternFunction>	("common\\VictoryProbability.efd",		this);
 	m_pfEntityCost						= xr_new<CPatternFunction>	("common\\EntityCost.efd",				this);
 	m_pfExpediency						= xr_new<CPatternFunction>	("common\\Expediency.efd",				this);
-	m_pfSurgeDeathProbability			= xr_new<CPatternFunction>	("common\\SurgeDeathProbability.efd",		this);
+	m_pfSurgeDeathProbability			= xr_new<CPatternFunction>	("common\\SurgeDeathProbability.efd",	this);
 	m_pfEquipmentValue					= xr_new<CPatternFunction>	("common\\EquipmentValue.efd",			this);
 	m_pfMainWeaponValue					= xr_new<CPatternFunction>	("common\\MainWeaponValue.efd",			this);
-	m_pfSmallWeaponValue				= xr_new<CPatternFunction>	("common\\SmallWeaponValue.efd",			this);
+	m_pfSmallWeaponValue				= xr_new<CPatternFunction>	("common\\SmallWeaponValue.efd",		this);
 	m_pfTerrainType						= xr_new<CPatternFunction>	("alife\\TerrainType.efd",				this);
-	m_pfWeaponAttackTimes				= xr_new<CPatternFunction>	("alife\\WeaponAttackTimes.efd",			this);
+	m_pfWeaponAttackTimes				= xr_new<CPatternFunction>	("alife\\WeaponAttackTimes.efd",		this);
 	m_pfWeaponSuccessProbability		= xr_new<CPatternFunction>	("alife\\WeaponSuccessProbability.efd",	this);
-	m_pfEnemyDetectability				= xr_new<CPatternFunction>	("alife\\EnemyDetectability.efd",			this);
-	m_pfEnemyDetectProbability			= xr_new<CPatternFunction>	("alife\\EnemyDetectProbability.efd",		this);
+	m_pfEnemyDetectability				= xr_new<CPatternFunction>	("alife\\EnemyDetectability.efd",		this);
+	m_pfEnemyDetectProbability			= xr_new<CPatternFunction>	("alife\\EnemyDetectProbability.efd",	this);
 	m_pfEnemyRetreatProbability			= xr_new<CPatternFunction>	("alife\\EnemyRetreatProbability.efd",	this);
 	m_pfAnomalyDetectProbability		= xr_new<CPatternFunction>	("alife\\AnomalyDetectProbability.efd",	this);
-	m_pfAnomalyInteractProbability		= xr_new<CPatternFunction>	("alife\\AnomalyDetectability.efd",		this);
-	m_pfAnomalyRetreatProbability		= xr_new<CPatternFunction>	("alife\\AnomalyRetreatProbability.efd",	this);
+	m_pfAnomalyInteractProbability		= xr_new<CPatternFunction>	("alife\\AnomalyInteractProbability.efd",		this);
+	m_pfAnomalyRetreatProbability		= xr_new<CPatternFunction>	("alife\\AnomalyRetreatProbability.efd",this);
 }
 
 CAI_DDD::~CAI_DDD()
