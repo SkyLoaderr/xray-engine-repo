@@ -93,9 +93,9 @@ struct b_params
 	// Subdivision & PVS
 	float		m_SS_maxsize;		// max object size - by default: 48m
 	float		m_SS_merge_coeff;	// perform addititional merge - 0..1
-	int			m_SS_Low;			// spatial subdivisions low limit - 12
+	int			m_SS_Low;			// spatial subdivisions low limit - 32
 	int			m_SS_High;			// spatial subdivisions high limit - 2048
-	int			m_SS_DedicateCached;// dedicate to cached pipeline if less than # faces, 32
+	int			m_SS_DedicateCached;// dedicate to cached pipeline if less than # faces, 16
 
 	// Light maps
 	BOOL		m_bLightMaps;
@@ -153,9 +153,9 @@ struct b_params
         // Subdivision & PVS
         m_SS_maxsize            = 48;
 		m_SS_merge_coeff		= 0.5f;
-		m_SS_Low				= 24;
+		m_SS_Low				= 32;
 		m_SS_High				= 2048;
-		m_SS_DedicateCached		= 32;
+		m_SS_DedicateCached		= 16;
 
         // Light maps
         m_bLightMaps            = TRUE;
