@@ -106,12 +106,12 @@ void CParticleTools::Modified(){
 void CParticleTools::Render(){
 	if (!m_bReady) return;
 
+	if (m_EditObject)	m_EditObject->RenderSingle(Fidentity);
 	// Draw the particles.
+	RCache.set_xform_world		(Fidentity);
     if (m_LibPGD) m_EditPG->Render(1.f);
     else if (m_LibPS){
-        if (m_EditObject)	m_EditObject->RenderSingle(Fidentity);
         if (m_TestObject){	
-	        RCache.set_xform_world		(Fidentity);
         	m_TestObject->RenderSingle	();
         }
     }
@@ -192,9 +192,7 @@ void CParticleTools::SelectPreviewObject(int p){
     LPCSTR fn;
     if (!TfrmChoseItem::SelectItem(TfrmChoseItem::smObject,fn,1,m_EditObject?m_EditObject->GetName():0)) return;
     Lib.RemoveEditObject(m_EditObject);
-    m_EditObject = Lib.CreateEditObject(fn);
-    if (!m_EditObject)
-        ELog.DlgMsg(mtError,"Object '%s' can't find in object library.",fn);
+    m_EditObject = fn?Lib.CreateEditObject(fn):0;
 	ZoomObject(TRUE);
     UI.RedrawScene();
 }
