@@ -47,7 +47,7 @@ protected:
 	IC	float				ConvertSize		(float sz)	{return (dwFlags&fsDeviceIndependent)?sz*Device.dwWidth:sz*fScale;}
 	IC	float				GetCurrentSize	()			{return (dwFlags&fsDeviceIndependent)?2*fCurrentSize:fCurrentSize*fScale;}
 public:
-							CGameFont		(LPCSTR shader, LPCSTR texture, int tsize, int iCPL, DWORD flags);
+							CGameFont		(LPCSTR shader, LPCSTR texture, int tsize, int iCPL=16, DWORD flags=0);
 							~CGameFont		();
 
 	IC void					Color			(DWORD C)	{dwCurrentColor=C;};
