@@ -219,7 +219,7 @@ void __cdecl CGameFont::OutNext(char *fmt,...)
 	va_list p;
 	va_start(p,fmt);
 	vsprintf(rs.string,fmt,p);
-	VERIFY(strlen(rs.string)<127);
+	VERIFY(strlen(rs.string)<255);
 	va_end(p);
 
 	strings.push_back(rs);
