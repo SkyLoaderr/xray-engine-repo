@@ -71,7 +71,7 @@ function main ()
 	stalker:script (true, s_test2.script_name ())
 	action (stalker, anim (anim.free), cond (cond.time_end, time_infinite))
 	local azone = get_level_object ("attack_zone")
-	azone:set_callback (s_test.zone_callback, true)
+	azone:set_callback (s_test2.zone_callback, true)
 	
 	wait (10000)		
 	
@@ -85,7 +85,7 @@ function main ()
 	
 	while stalker:action () do wait () end
 	
-	stalker:script (false, s_test.script_name())
+	stalker:script (false, s_test2.script_name())
 			  
 end
 
