@@ -24,7 +24,11 @@ class CAI_Zombie : public CCustomMonster
 
 	enum EZombieStates 	{
 		aiZombieDie = 0,
+		
 		aiZombieJumping,
+		
+		aiZombieAttackFire,
+		aiZombieAttackRun,
 		aiZombieFreeHunting,
 	};
 	
@@ -162,10 +166,15 @@ class CAI_Zombie : public CCustomMonster
 		bool					m_bStateChanged;
 
 		CZombieSelectorFreeHunting	SelectorFreeHunting;
+		CZombieSelectorAttack		SelectorAttack;
 		
 		void Die();
+		
 		void Jumping();
+		
 		void FreeHunting();
+		void AttackFire();
+		void AttackRun();
 		
 		// miscellanious funtions	
 	IC  CGroup getGroup() {return Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];};

@@ -125,10 +125,11 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 						}
 					}
 					switch (eCurrentState) {
-						/**
+						/**/
 						case aiZombieAttackFire : {
 							switch (m_cBodyState) {
 								case BODY_STATE_STAND : {
+									tpGlobalAnimation = 0;
 									for (int i=0 ;i<2; i++)
 										if (tZombieAnimations.tNormal.tGlobal.tpaAttack[i] == m_tpCurrentGlobalAnimation) {
 											tpGlobalAnimation = m_tpCurrentGlobalAnimation;
@@ -201,10 +202,11 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 							tpGlobalAnimation = AState->back;
 
 					switch (eCurrentState) {
-						/**
+						/**/
 						case aiZombieAttackFire : {
 							switch (m_cBodyState) {
 								case BODY_STATE_STAND : {
+									tpGlobalAnimation = 0;
 									for (int i=0 ;i<2; i++)
 										if (tZombieAnimations.tNormal.tGlobal.tpaAttack[i] == m_tpCurrentGlobalAnimation) {
 											tpGlobalAnimation = m_tpCurrentGlobalAnimation;

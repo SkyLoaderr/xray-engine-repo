@@ -67,7 +67,7 @@ void CAI_Zombie::FreeHunting()
 		
 	SelectEnemy(Enemy);
 	
-	//CHECK_IF_SWITCH_TO_NEW_STATE(Enemy.Enemy,aiSoldierAttackFire)
+	CHECK_IF_SWITCH_TO_NEW_STATE(Enemy.Enemy,aiZombieAttackFire)
 	
 	DWORD dwCurTime = Level().timeServer();
 	
@@ -162,12 +162,121 @@ void CAI_Zombie::FreeHunting()
 	vfSetMovementType(BODY_STATE_STAND,m_fMinSpeed);
 }
 
+void CAI_Zombie::AttackFire()
+{
+	WRITE_TO_LOG("Attacking enemy...");
+
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiZombieDie)
+	
+	SelectEnemy(Enemy);
+	
+	DWORD dwCurTime = Level().timeServer();
+	
+	/**
+	if (!(Enemy.Enemy)) {
+		CHECK_IF_GO_TO_PREV_STATE(((tSavedEnemy) && (tSavedEnemy->g_Health() <= 0)) || (!tSavedEnemy))
+		dwLostEnemyTime = Level().timeServer();
+		GO_TO_NEW_STATE(aiZombiePursuit);
+	}
+	/**/
+	
+	//CHECK_IF_SWITCH_TO_NEW_STATE(!(Enemy.bVisible),aiZombieFindEnemy)
+	CHECK_IF_GO_TO_PREV_STATE(!(Enemy.Enemy))
+		
+	CHECK_IF_GO_TO_NEW_STATE((Enemy.Enemy->Position().distance_to(vPosition) > 2.f),aiZombieAttackRun)
+
+	Fvector tTemp;
+	tTemp.sub(Enemy.Enemy->Position(),vPosition);
+	vfNormalizeSafe(tTemp);
+	SRotation sTemp;
+	mk_rotation(tTemp,sTemp);
+	
+	CHECK_IF_GO_TO_NEW_STATE(fabsf(r_torso_current.yaw - sTemp.yaw) > 2*PI_DIV_6,aiZombieAttackRun)
+		
+	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+
+	Fvector tDistance;
+	tDistance.sub(Position(),Enemy.Enemy->Position());
+
+	AI_Path.TravelPath.clear();
+	
+	vfSaveEnemy();
+
+	vfAimAtEnemy();
+
+	vfSetFire(true,Group);
+
+	vfSetMovementType(m_cBodyState,0);
+}
+
+void CAI_Zombie::AttackRun()
+{
+	WRITE_TO_LOG("Attack enemy");
+
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiZombieDie)
+	
+	SelectEnemy(Enemy);
+	
+	DWORD dwCurTime = Level().timeServer();
+	
+	//CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime),aiZombieLyingDown)
+	
+	/**
+	if (!(Enemy.Enemy)) {
+		CHECK_IF_GO_TO_PREV_STATE(((tSavedEnemy) && (tSavedEnemy->g_Health() <= 0)) || (!tSavedEnemy))
+		dwLostEnemyTime = Level().timeServer();
+		GO_TO_NEW_STATE(aiZombiePursuit);
+	}
+	/**/
+	
+	//CHECK_IF_SWITCH_TO_NEW_STATE(!(Enemy.bVisible),aiZombieFindEnemy)
+	CHECK_IF_GO_TO_PREV_STATE(!(Enemy.Enemy))
+		
+	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+
+	Fvector tDistance;
+	tDistance.sub(Position(),Enemy.Enemy->Position());
+	
+	Fvector tTemp;
+	tTemp.sub(Enemy.Enemy->Position(),vPosition);
+	vfNormalizeSafe(tTemp);
+	SRotation sTemp;
+	mk_rotation(tTemp,sTemp);
+
+	CHECK_IF_GO_TO_NEW_STATE((fabsf(r_torso_current.yaw - sTemp.yaw) < 2*PI_DIV_6) && (tDistance.square_magnitude() <= 2.f),aiZombieAttackFire);
+
+	INIT_SQUAD_AND_LEADER;
+	
+	vfInitSelector(SelectorAttack,Squad,Leader);
+	
+	/**
+	if (AI_Path.bNeedRebuild)
+		vfBuildPathToDestinationPoint(&SelectorAttack);
+	else
+		vfSearchForBetterPosition(SelectorAttack,Squad,Leader);
+	/**/
+
+	GoToPointViaSubnodes(Enemy.Enemy->Position());
+	
+	vfAimAtEnemy();
+	
+	vfSetMovementType(m_cBodyState,m_fMaxSpeed);
+}
+
 void CAI_Zombie::Think()
 {
 	bStopThinking = false;
 	do {
 		m_ePreviousState = eCurrentState;
 		switch(eCurrentState) {
+			case aiZombieAttackFire : {
+				AttackFire();
+				break;
+			}
+			case aiZombieAttackRun : {
+				AttackRun();
+				break;
+			}
 			case aiZombieDie : {
 				Die();
 				break;

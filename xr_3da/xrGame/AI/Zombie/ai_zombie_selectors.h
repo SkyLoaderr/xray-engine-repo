@@ -18,4 +18,11 @@ class CZombieSelectorFreeHunting : public CAISelectorBase
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 
+class CZombieSelectorAttack : public CAISelectorBase
+{
+	public:
+		CZombieSelectorAttack();
+		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
+};
+
 #endif
