@@ -8,6 +8,7 @@
 #include "UIGameCS.h"
 #include "UIGameDM.h"
 #include "UIGameTDM.h"
+#include "UIGameAHunt.h"
 #include "actor.h"
 
 #define MSGS_OFFS 510
@@ -52,7 +53,7 @@ void CUI::Load()
 	case GAME_ASSAULT:												break;
 	case GAME_DEATHMATCH:		pUIGame = xr_new<CUIGameDM> (this);	break;
 	case GAME_TEAMDEATHMATCH:	pUIGame = xr_new<CUIGameTDM> (this);	break;
-	case GAME_ARTEFACTHUNT:		pUIGame = xr_new<CUIGameTDM> (this);	break;
+	case GAME_ARTEFACTHUNT:		pUIGame = xr_new<CUIGameAHunt> (this);	break;
 	}
 }
 //--------------------------------------------------------------------

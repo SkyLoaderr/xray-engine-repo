@@ -6350,6 +6350,28 @@
 						RelativePath=".\UITDMPlayerList.h">
 					</File>
 				</Filter>
+				<Filter
+					Name="ArtefactHunt"
+					Filter="">
+					<File
+						RelativePath=".\UIAHuntFragList.cpp">
+					</File>
+					<File
+						RelativePath=".\UIAHuntFragList.h">
+					</File>
+					<File
+						RelativePath=".\UIAHuntPlayerList.cpp">
+					</File>
+					<File
+						RelativePath=".\UIAHuntPlayerList.h">
+					</File>
+					<File
+						RelativePath=".\UIGameAHunt.cpp">
+					</File>
+					<File
+						RelativePath=".\UIGameAHunt.h">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Multiplayer"
