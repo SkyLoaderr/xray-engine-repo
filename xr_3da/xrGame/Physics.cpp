@@ -618,4 +618,11 @@ void ApplyGravityAccel(dBodyID body,const dReal* accel)
 	dBodyAddForce(body,accel[0]*m.mass,accel[1]*m.mass,accel[2]*m.mass);
 }
 
+const dReal* dJointGetPositionContact(dJointID joint)
+{
+	VERIFY2(dJointGetType(joint)==dJointTypeContact,"not a contact!");
+	dxJointContact* c_joint=(dxJointContact*)joint;
+	return c_joint->contact.geom.pos;
+
+}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////

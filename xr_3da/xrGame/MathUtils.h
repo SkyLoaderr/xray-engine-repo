@@ -160,6 +160,24 @@ IC float fsignum(float val)
 	return val<0.f ? -1.f : 1.f ;
 }
 
+IC void save_max(float& max,float val)
+{
+	if(val>max)max=val;
+}
+IC void save_min(float& min,float val)
+{
+	if(val<min)min=val;
+}
+
+IC void limit_above(float& val,float limit)
+{
+	if(val>limit)val=limit;
+}
+
+IC void limit_below(float& val,float limit)
+{
+	if(val<limit)val=limit;
+}
 #define  MAX_OF(x,on_x,y,on_y,z,on_z)\
 	if(x>y){\
 	if	(x>z)	{on_x;}\
