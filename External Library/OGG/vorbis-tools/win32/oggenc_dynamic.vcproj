@@ -78,7 +78,7 @@
 			Name="Release|Win32"
 			OutputDirectory="x:"
 			IntermediateDirectory=".\Release\oggenc\dynamic"
-			ConfigurationType="1"
+			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
 			CharacterSet="2">
@@ -104,7 +104,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="ogg.lib vorbis.lib vorbisenc.lib"
-				OutputFile="$(OutDir)/oggenc.exe"
+				OutputFile="$(OutDir)/oggenc.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
 				AdditionalLibraryDirectories=""

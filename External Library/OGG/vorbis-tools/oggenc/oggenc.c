@@ -63,23 +63,105 @@ struct option long_options[] = {
 	{"discard-comments", 0, 0, 0},
 	{NULL,0,0,0}
 };
-	
+
 static char *generate_name_string(char *format, char *remove_list, 
-        char *replace_list, char *artist, char *title, char *album, 
-        char *track, char *date, char *genre);
+								  char *replace_list, char *artist, char *title, char *album, 
+								  char *track, char *date, char *genre);
 static void parse_options(int argc, char **argv, oe_options *opt);
 static void build_comments(vorbis_comment *vc, oe_options *opt, int filenum, 
-		char **artist,char **album, char **title, char **tracknum, char **date,
-        char **genre);
+						   char **artist,char **album, char **title, char **tracknum, char **date,
+						   char **genre);
 static void usage(void);
 
-int main(int argc, char **argv)
+int ogg_enc(const char* in_fn, const char* out_fn, float quality, void* comment, int comment_size)
+{
+	/* Default values */
+	oe_options opt = {NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 
+		0, NULL, 0, NULL, 0, NULL, 0, 1, 0, 0,16,44100,2, 0, NULL,
+		DEFAULT_NAMEFMT_REMOVE, DEFAULT_NAMEFMT_REPLACE, 
+		NULL, 0, -1,-1,-1,-.3f,-1,0, 0,0.f, 0}; 
+
+	oe_enc_opt      enc_opts;
+	vorbis_comment  vc;
+	FILE *in, *out	= NULL;
+	int foundformat = 0;
+	int closeout	= 0, closein = 0;
+	input_format	*format;
+	int res			= 1;
+
+	/* Set various encoding defaults */
+	enc_opts.serialno			= 0;
+	enc_opts.progress_update	= update_statistics_full;
+	enc_opts.start_encode		= start_encode_full;
+	enc_opts.end_encode			= final_statistics;
+	enc_opts.error				= encode_error;
+	enc_opts.comments			= &vc;
+
+	in							= fopen(in_fn, "rb");
+
+	if(in == NULL)				return 0;
+
+	format						= open_audio_file(in, &enc_opts);
+	if(!format){
+		fclose					(in);
+		return 0;
+	};
+
+	out							= fopen(out_fn, "wb");
+	if(out == NULL){
+		fclose					(out);
+		return 0;
+	}	
+
+	/* OK, let's build the vorbis_comments structure */
+//	build_comments				(&vc, &opt, comment, size);
+	memset						(&vc,0,sizeof(vc));
+
+	vc.user_comments			= _ogg_malloc	(sizeof(*vc.user_comments));
+	vc.comment_lengths			= _ogg_malloc	(sizeof(*vc.comment_lengths));
+	vc.comments					= 1;
+	vc.user_comments[0]			= _ogg_malloc	(comment_size);
+	memcpy						(vc.user_comments[0],comment,comment_size);
+	vc.comment_lengths[0]		= comment_size;
+
+	/* Now, set the rest of the options */
+	enc_opts.out				= out;
+	enc_opts.comments			= &vc;
+	enc_opts.filename			= (char*)out_fn;
+	enc_opts.infilename			= (char*)in_fn;
+	enc_opts.quality			= quality;
+	enc_opts.quality_set		= opt.quality_set;
+	enc_opts.managed			= opt.managed;
+	enc_opts.bitrate			= opt.nominal_bitrate; 
+	enc_opts.min_bitrate		= opt.min_bitrate;
+	enc_opts.max_bitrate		= opt.max_bitrate;
+	enc_opts.advopt				= opt.advopt;
+	enc_opts.advopt_count		= opt.advopt_count;
+
+	// encode
+	if(oe_encode(&enc_opts))
+		res						= 0;
+
+	// clear comment
+	if(vc.user_comments[0])		_ogg_free(vc.user_comments[0]);
+	if(vc.user_comments)		_ogg_free(vc.user_comments);
+	if(vc.comment_lengths)		_ogg_free(vc.comment_lengths);
+	if(vc.vendor)				_ogg_free(vc.vendor);
+	memset						(&vc,0,sizeof(vc));
+	// close files
+	fclose						(in);
+	fclose						(out);
+
+	return res;
+}
+	
+int __cdecl main(int argc, char **argv)
 {
 	/* Default values */
 	oe_options opt = {NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 
 			  0, NULL, 0, NULL, 0, NULL, 0, 1, 0, 0,16,44100,2, 0, NULL,
 			  DEFAULT_NAMEFMT_REMOVE, DEFAULT_NAMEFMT_REPLACE, 
-			  NULL, 0, -1,-1,-1,-.3,-1,0, 0,0.f, 0}; 
+			  NULL, 0, -1,-1,-1,-.3f,-1,0, 0,0.f, 0}; 
 
 	int i;
 
@@ -606,7 +688,7 @@ static void parse_options(int argc, char **argv, oe_options *opt)
                     opt->downmix = 1;
                 }
                 else if(!strcmp(long_options[option_index].name, "scale")) {
-                    opt->scale = atof(optarg);
+                    opt->scale = (float)atof(optarg);
 				    if(sscanf(optarg, "%f", &opt->scale) != 1) {
                         opt->scale = 0;
                         fprintf(stderr, _("Warning: Couldn't parse scaling factor \"%s\"\n"), 
@@ -717,7 +799,7 @@ static void parse_options(int argc, char **argv, oe_options *opt)
 					break;
 				}
 				opt->quality_set=1;
-				opt->quality *= 0.1;
+				opt->quality *= 0.1f;
 				if(opt->quality > 1.0f)
 				{
 					opt->quality = 1.0f;
@@ -829,7 +911,7 @@ static void add_tag(vorbis_comment *vc, oe_options *opt,char *name, char *value)
 	if(utf8_encode(value, &utf8) >= 0)
 	{
 		if(name == NULL)
-			vorbis_comment_add(vc, utf8);
+			vorbis_comment_add( vc, utf8);
 		else
 			vorbis_comment_add_tag(vc, name, utf8);
 		free(utf8);
@@ -917,4 +999,5 @@ static void build_comments(vorbis_comment *vc, oe_options *opt, int filenum,
 		add_tag(vc, opt, "tracknumber", opt->tracknum[i]);
 	}
 }
+
 

@@ -56,6 +56,7 @@ typedef struct
 	int genre_count;
     adv_opt *advopt;
     int advopt_count;
+	int copy_comments;
 
 	int quiet;
 
@@ -78,10 +79,11 @@ typedef struct
 
 	/* Float from 0 to 1 (low->high) */
 	float quality;
-        int   quality_set;
+    int quality_set;
 
     int resamplefreq;
     int downmix;
+    float scale;
 
 	unsigned int serial;
 } oe_options;
@@ -105,6 +107,7 @@ typedef struct
 	int samplesize;
     int endianness;
     int resamplefreq;
+	int copy_comments;
 
 	/* Various bitrate/quality options */
     int managed;
@@ -112,7 +115,7 @@ typedef struct
 	int min_bitrate;
 	int max_bitrate;
 	float quality;
-        int quality_set;
+    int quality_set;
     adv_opt *advopt;
     int advopt_count;
 
@@ -120,6 +123,7 @@ typedef struct
 	char *filename;
 	char *infilename;
 } oe_enc_opt;
+
 
 int oe_encode(oe_enc_opt *opt);
 
