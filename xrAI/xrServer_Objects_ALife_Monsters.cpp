@@ -28,6 +28,68 @@
 #	include "ef_primary.h"
 #endif
 
+void setup_location_types_section(GameGraph::TERRAIN_VECTOR &m_vertex_types, CInifile *ini, LPCSTR section)
+{
+	VERIFY							(ini->section_exist(section));
+	GameGraph::STerrainPlace		terrain_mask;
+	terrain_mask.tMask.resize		(GameGraph::LOCATION_TYPE_COUNT);
+	CInifile::SectIt				I = ini->r_section(section).begin();
+	CInifile::SectIt				E = ini->r_section(section).end();
+	for ( ; I != E; ++I) {
+		LPCSTR						S = *(*I).first;
+		string16					I;
+		u32							N = _GetItemCount(S);
+		
+		if (N != GameGraph::LOCATION_TYPE_COUNT)
+			continue;
+
+		for (u32 j=0; j<GameGraph::LOCATION_TYPE_COUNT; ++j)
+			terrain_mask.tMask[j]	= GameGraph::_LOCATION_ID(atoi(_GetItem(S,j,I)));
+		
+		m_vertex_types.push_back	(terrain_mask);
+	}
+	
+	if (!m_vertex_types.empty())
+		return;
+
+	for (u32 j=0; j<GameGraph::LOCATION_TYPE_COUNT; ++j)
+		terrain_mask.tMask[j]		= 255;
+	
+	m_vertex_types.push_back		(terrain_mask);
+}
+
+void setup_location_types_line(GameGraph::TERRAIN_VECTOR &m_vertex_types, LPCSTR string)
+{
+	string16						I;
+	GameGraph::STerrainPlace		terrain_mask;
+	terrain_mask.tMask.resize		(GameGraph::LOCATION_TYPE_COUNT);
+	
+	u32								N = _GetItemCount(string)/GameGraph::LOCATION_TYPE_COUNT*GameGraph::LOCATION_TYPE_COUNT;
+	
+	if (!N) {
+		for (u32 j=0; j<GameGraph::LOCATION_TYPE_COUNT; ++j)
+			terrain_mask.tMask[j]	= 255;
+		m_vertex_types.push_back	(terrain_mask);
+		return;
+	}
+
+	m_vertex_types.reserve			(32);
+
+	for (u32 i=0; i<N;) {
+		for (u32 j=0; j<GameGraph::LOCATION_TYPE_COUNT; ++j, ++i)
+			terrain_mask.tMask[j]	= GameGraph::_LOCATION_ID(atoi(_GetItem(string,i,I)));
+		m_vertex_types.push_back	(terrain_mask);
+	}
+}
+
+void setup_location_types(GameGraph::TERRAIN_VECTOR &m_vertex_types, CInifile *ini, LPCSTR string)
+{
+	m_vertex_types.clear			();
+	if (ini->section_exist(string) && ini->line_count(string))
+		setup_location_types_section(m_vertex_types,ini,string);
+	else 
+		setup_location_types_line	(m_vertex_types,string);
+}
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -1028,7 +1090,6 @@ CSE_ALifeMonsterAbstract::CSE_ALifeMonsterAbstract(LPCSTR caSection)	: CSE_ALife
 	m_fCurSpeed					= 0.0f;
 	m_fDistanceFromPoint		= 0.0f;
 	m_fDistanceToPoint			= 0.0f;
-	m_tpaTerrain.clear			();
 
 	m_fMaxHealthValue	 		= pSettings->r_float	(caSection,"MaxHealthValue");
 	if (pSettings->line_exist(caSection,"hit_power")) {
@@ -1060,23 +1121,8 @@ CSE_ALifeMonsterAbstract::CSE_ALifeMonsterAbstract(LPCSTR caSection)	: CSE_ALife
 	m_fEyeRange					= pSettings->r_float(caSection,"eye_range");
 
 	m_fGoingSpeed				= pSettings->r_float(caSection, "going_speed");
-	LPCSTR						S = pSettings->r_string(caSection,"terrain");
-	u32							N = _GetItemCount(S)/GameGraph::LOCATION_TYPE_COUNT*GameGraph::LOCATION_TYPE_COUNT;
-	GameGraph::STerrainPlace	terrain_mask;
-	terrain_mask.tMask.resize	(GameGraph::LOCATION_TYPE_COUNT);
-	if (!N) {
-		for (u32 j=0; j<GameGraph::LOCATION_TYPE_COUNT; ++j)
-			terrain_mask.tMask[j]	= 255;
-		m_tpaTerrain.push_back		(terrain_mask);
-	}
-	else {
-		string16					I;
-		for (u32 i=0; i<N;) {
-			for (u32 j=0; j<GameGraph::LOCATION_TYPE_COUNT; ++j, ++i)
-				terrain_mask.tMask[j] = GameGraph::_LOCATION_ID(atoi(_GetItem(S,i,I)));
-			m_tpaTerrain.push_back	(terrain_mask);
-		}
-	}
+	
+	setup_location_types		(m_tpaTerrain,pSettings,pSettings->r_string(caSection,"terrain"));
 
 	m_tpBestDetector			= this;
 }
@@ -1089,6 +1135,10 @@ CSE_Abstract *CSE_ALifeMonsterAbstract::init			()
 {
 	inherited1::init			();
 	inherited2::init			();
+	
+	if (spawn_ini().section_exist("alife") && spawn_ini().line_exist("alife","terrain"))
+		setup_location_types	(m_tpaTerrain,&spawn_ini(),spawn_ini().r_string("alife","terrain"));
+
 	return						(base());
 }
 
