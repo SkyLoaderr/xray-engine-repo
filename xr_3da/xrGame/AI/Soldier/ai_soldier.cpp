@@ -56,7 +56,7 @@ CAI_Soldier::CAI_Soldier()
 	m_fDistanceWent = 0.f;
 	m_cStep = 0;
 	AI_Path.fSpeed = 0;
-	q_look.o_look_speed = r_torso_speed;
+	r_torso_speed = q_look.o_look_speed = PI_DIV_2;
 }
 
 CAI_Soldier::~CAI_Soldier()

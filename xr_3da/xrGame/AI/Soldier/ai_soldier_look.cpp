@@ -11,7 +11,7 @@
 #include "..\\..\\xr_weapon_list.h"
 #include "..\\..\\actor.h"
 
-#define	MAX_HEAD_TURN_ANGLE				PI_DIV_2
+#define	MAX_HEAD_TURN_ANGLE				PI_DIV_4
 #define MIN_SPINE_TURN_ANGLE			PI_DIV_6
 #define EYE_WEAPON_DELTA				(0*PI/30.f)
 #define WEAPON_DISTANCE					(.35f)
