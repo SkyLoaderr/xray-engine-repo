@@ -221,17 +221,15 @@ IC	BOOL	xform_b		(Fmatrix& X, Fvector& D, Fvector& S)
 	float z = S.x*X._13 + S.y*X._23 + S.z*X._33 + X._43;
 	if (z<EPS) return TRUE;
 	float w	= S.x*X._14 + S.y*X._24 + S.z*X._34 + X._44;
-//	if (w<EPS) return TRUE;
+	//	if (w<EPS) return TRUE;
 	D.x	= 1.f+(S.x*X._11 + S.y*X._21 + S.z*X._31 + X._41)/w;
 	D.y	= 1.f-(S.x*X._12 + S.y*X._22 + S.z*X._32 + X._42)/w;
 	D.z	= 0.f+z/w;
 	return FALSE;
 }
 
-BOOL CHOM::Visible		(Fbox& B)
+IC	BOOL	_visible	(Fbox& B)
 {
-	if (0==m_pModel)	return TRUE;
-
 	// Find min/max points of xformed-box
 	Fmatrix&	XF		= Device.mFullTransform;
 	Fbox		rect;
@@ -246,4 +244,13 @@ BOOL CHOM::Visible		(Fbox& B)
 	B.getpoint(7,src);	if (xform_b(XF,test,src)) return TRUE;	rect.modify	(test);
 	
 	return Raster.test	(rect.min.x,rect.min.y,rect.max.x,rect.max.y,rect.min.z);
+}
+
+BOOL CHOM::Visible		(Fbox& B)
+{
+	if (0==m_pModel)	return TRUE;
+	Device.Statistic.TEST.Begin	();
+	BOOL bResult		= _visible(B);
+	Device.Statistic.TEST.End	();
+	return bResult;
 }
