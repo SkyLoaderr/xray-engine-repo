@@ -325,13 +325,15 @@ public:
 	// CCustomMonster
 //	BIND_FUNCTION11	(m_tpGameObject,	CheckObjectVisibility,CCustomMonster,CheckObjectVisibility,	bool,							false,					const CLuaGameObject*,	const CObject*);
 
-	IC		void			CheckObjectVisibility(const CLuaGameObject *tpLuaGameObject)
+	IC		bool			CheckObjectVisibility(const CLuaGameObject *tpLuaGameObject)
 	{
 		CCustomMonster		*l_tpCustomMonster = dynamic_cast<CCustomMonster*>(m_tpGameObject);
 		if (l_tpCustomMonster)
-			l_tpCustomMonster->KillEntity(tpLuaGameObject->m_tpGameObject);
-		else
+			return			(l_tpCustomMonster->CheckObjectVisibility(tpLuaGameObject->m_tpGameObject));
+		else {
 			LuaOut			(Lua::eLuaMessageTypeError,"CLuaGameObject : cannot access class member CheckObjectVisibility!");
+			return			(false);
+		}
 	}
 
 	// CAI_Stalker
