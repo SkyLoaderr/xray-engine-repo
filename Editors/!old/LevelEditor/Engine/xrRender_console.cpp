@@ -29,7 +29,7 @@ float		ps_r1_ssaDONTSORT			= 32.f	;
 float		ps_r1_ssaLOD_A				= 64.f	;
 float		ps_r1_ssaLOD_B				= 48.f	;
 float		ps_r1_ssaHZBvsTEX			= 256.f	;
-int			ps_r1_tf_Anisotropic		= 2		;
+int			ps_r1_tf_Anisotropic		= 0		;
 float		ps_r1_tf_Mipbias			= -0.5f	;
 
 // R1-specific
