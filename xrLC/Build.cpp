@@ -93,7 +93,7 @@ CBuild::CBuild	(const b_params& Params, const CStream& _in_FS)
 				}
 
 				// transfer TC
-				UVpoint				uv1,uv2,uv3;
+				Fvector2				uv1,uv2,uv3;
 				uv1.set				(B.t[0].x,B.t[0].y);
 				uv2.set				(B.t[1].x,B.t[1].y);
 				uv3.set				(B.t[2].x,B.t[2].y);

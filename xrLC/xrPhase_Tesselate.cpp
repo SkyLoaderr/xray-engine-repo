@@ -40,7 +40,7 @@ void CBuild::Tesselate	()
 		// lerp
 		Vertex*		V		= VertexPool.create();
 		V->P.lerp			(F->v[id1]->P, F->v[id2]->P, .5f);
-		UVpoint		UV;
+		Fvector2			UV;
 		UV.averageA			(F->tc.front().uv[id1],F->tc.front().uv[id2]);
 		
 		// F1

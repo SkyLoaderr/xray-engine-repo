@@ -108,7 +108,7 @@ void CBuild::Tesselate()
 			vector<_TCF>::iterator it=F->tc.begin();
 			for (;it!=F->tc.end();it++)
 			{
-				UVpoint p1,p2,p3;	// for V1,V2,V3
+				Fvector2 p1,p2,p3;	// for V1,V2,V3
 
 				p1.averageA(it->uv[0], it->uv[1]); // edge 0-1
 				p2.averageA(it->uv[1], it->uv[2]); // edge 1-2

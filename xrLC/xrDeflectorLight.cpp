@@ -8,15 +8,15 @@
 #define rms_shrink	((8+g_params.m_lm_rms)/2)
 const	u32	rms_discard		= 8;
 
-void Jitter_Select(UVpoint* &Jitter, u32& Jcount)
+void Jitter_Select(Fvector2* &Jitter, u32& Jcount)
 {
-	static UVpoint Jitter1[1] = {
+	static Fvector2 Jitter1[1] = {
 		{0,0}
 	};
-	static UVpoint Jitter4[4] = {
+	static Fvector2 Jitter4[4] = {
 		{-1,-1}, {1,-1}, {1,1}, {-1,1}
 	};
-	static UVpoint Jitter9[9] = {
+	static Fvector2 Jitter9[9] = {
 		{-1,-1},	{0,-1},		{1,-1}, 
 		{-1,0},		{0,0},		{1,0},
 		{-1,1},		{0,1},		{1,1}
@@ -118,7 +118,7 @@ float getLastRP_Scale(CDB::COLLIDER* DB, R_Light& L, Face* skip)
 			
 			// Access to texture
 			CDB::TRI& clT								= RCAST_Model->get_tris()[rpinf.id];
-			Face* F										= (Face*)(clT.dummy);
+			base_Face* F								= (base_Face*) clT.dummy;
 			if (0==F)									continue;
 			if (skip==F)								continue;
 			
@@ -138,11 +138,11 @@ float getLastRP_Scale(CDB::COLLIDER* DB, R_Light& L, Face* skip)
 			
 			// barycentric coords
 			// note: W,U,V order
-			B.set(1.0f - rpinf.u - rpinf.v,rpinf.u,rpinf.v);
+			B.set	(1.0f - rpinf.u - rpinf.v,rpinf.u,rpinf.v);
 			
 			// calc UV
 			_TCF	&C = F->tc[0];
-			UVpoint uv;
+			Fvector2 uv;
 			uv.u = C.uv[0].u*B.x + C.uv[1].u*B.y + C.uv[2].u*B.z;
 			uv.v = C.uv[0].v*B.x + C.uv[1].v*B.y + C.uv[2].v*B.z;
 			

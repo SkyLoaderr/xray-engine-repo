@@ -70,13 +70,13 @@ public:
 	void	OA_Place			(vecFace& lst);
 	void	OA_Export			();
 		
-	void	GetRect				(UVpoint &min, UVpoint &max);
+	void	GetRect				(Fvector2 &min, Fvector2 &max);
 	Layer*	GetLayer			(int base_id);
 	u32		GetFaceCount()		{ return UVpolys.size();	};
 		
 	VOID	Light				(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H	);
 	VOID	L_Direct			(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H  );
-	VOID	L_Direct_Edge		(CDB::COLLIDER* DB, LSelection* LightsSelected, UVpoint& p1, UVpoint& p2, Fvector& v1, Fvector& v2, Fvector& N, float texel_size, Face* skip);
+	VOID	L_Direct_Edge		(CDB::COLLIDER* DB, LSelection* LightsSelected, Fvector2& p1, Fvector2& p2, Fvector& v1, Fvector& v2, Fvector& N, float texel_size, Face* skip);
 	VOID	L_Calculate			(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H  );
 
 	WORD	GetBaseMaterial		() { return UVpolys.front().owner->dwMaterial;	}
@@ -84,10 +84,10 @@ public:
 	void	Bounds				(u32 ID, Fbox2& dest)
 	{
 		UVtri& TC		= UVpolys[ID];
-		dest.min.set	(TC.uv[0].conv());
-		dest.max.set	(TC.uv[0].conv());
-		dest.modify		(TC.uv[1].conv());
-		dest.modify		(TC.uv[2].conv());
+		dest.min.set	(TC.uv[0]);
+		dest.max.set	(TC.uv[0]);
+		dest.modify		(TC.uv[1]);
+		dest.modify		(TC.uv[2]);
 	}
 	void	Bounds_Summary		(Fbox2& bounds)
 	{
@@ -105,7 +105,7 @@ public:
 
 typedef vector<UVtri>::iterator UVIt;
 
-extern void		Jitter_Select	(UVpoint* &Jitter, u32& Jcount);
+extern void		Jitter_Select	(Fvector2* &Jitter, u32& Jcount);
 extern void		blit			(u32* dest, u32 ds_x, u32 ds_y, u32* src, u32 ss_x, u32 ss_y, u32 px, u32 py, u32 aREF);
 extern void		blit_r			(u32* dest, u32 ds_x, u32 ds_y, u32* src, u32 ss_x, u32 ss_y, u32 px, u32 py, u32 aREF);
 extern void		LightPoint		(CDB::COLLIDER* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light* begin, R_Light* end, Face* skip);

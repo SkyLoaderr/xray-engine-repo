@@ -3,16 +3,16 @@
 #include "std_classes.h"
 #include "xrThread.h"
 
-extern void Jitter_Select	(UVpoint* &Jitter, u32& Jcount);
+extern void Jitter_Select	(Fvector2* &Jitter, u32& Jcount);
 
-void CDeflector::L_Direct_Edge (CDB::COLLIDER* DB, LSelection* LightsSelected, UVpoint& p1, UVpoint& p2, Fvector& v1, Fvector& v2, Fvector& N, float texel_size, Face* skip)
+void CDeflector::L_Direct_Edge (CDB::COLLIDER* DB, LSelection* LightsSelected, Fvector2& p1, Fvector2& p2, Fvector& v1, Fvector& v2, Fvector& N, float texel_size, Face* skip)
 {
 	Fvector		vdir;
 	vdir.sub	(v2,v1);
 	
 	b_texture&	lm = layers.back().lm;
 	
-	UVpoint		size; 
+	Fvector2		size; 
 	size.u		= p2.u-p1.u;
 	size.v		= p2.v-p1.v;
 	int	du		= iCeil(_abs(size.u)/texel_size);
@@ -23,7 +23,7 @@ void CDeflector::L_Direct_Edge (CDB::COLLIDER* DB, LSelection* LightsSelected, U
 	for (int I=0; I<=steps; I++)
 	{
 		float	time = float(I)/float(steps);
-		UVpoint	uv;
+		Fvector2	uv;
 		uv.u	= size.u*time+p1.u;
 		uv.v	= size.v*time+p1.v;
 		int	_x  = iFloor(uv.u*float(lm.dwWidth)); 
@@ -56,16 +56,16 @@ void CDeflector::L_Direct	(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& 
 	b_texture&	lm = layers.back().lm;
 
 	// Setup variables
-	UVpoint		dim,half;
+	Fvector2		dim,half;
 	dim.set		(float(lm.dwWidth),float(lm.dwHeight));
 	half.set	(.5f/dim.u,.5f/dim.v);
 	
 	// Jitter data
-	UVpoint		JS;
+	Fvector2		JS;
 	JS.set		(.499f/dim.u, .499f/dim.v);
 	
 	u32		Jcount;
-	UVpoint*	Jitter;
+	Fvector2*	Jitter;
 	Jitter_Select(Jitter, Jcount);
 	
 	// Lighting itself
@@ -83,7 +83,7 @@ void CDeflector::L_Direct	(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& 
 				for (J=0; J<Jcount; J++) 
 				{
 					// LUMEL space
-					UVpoint P;
+					Fvector2 P;
 					P.u = float(U)/dim.u + half.u + Jitter[J].u * JS.u;
 					P.v = float(V)/dim.v + half.v + Jitter[J].v * JS.v;
 					

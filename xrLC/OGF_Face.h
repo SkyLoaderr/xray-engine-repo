@@ -24,7 +24,7 @@ struct OGF_Vertex
 	Fvector				P;
 	Fvector				N;
 	DWORD				Color;
-	svector<UVpoint,4>	UV;
+	svector<Fvector2,4>	UV;
 
 	BOOL		similar(OGF* p, OGF_Vertex&	other);
 };

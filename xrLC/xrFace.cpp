@@ -4,6 +4,22 @@
 base_Vertex::~base_Vertex() {};
 base_Face::~base_Face()		{};
 
+Shader_xrLC&	base_Face::Shader		()
+{
+	u32 shader_id = pBuild->materials[dwMaterial].reserved;
+	return *(pBuild->shaders.Get(shader_id));
+}
+void			base_Face::CacheOpacity	()
+{
+	bOpaque				= false;
+
+	b_material& M		= pBuild->materials		[dwMaterial];
+	b_texture&	T		= pBuild->textures		[M.surfidx];
+	if (T.bHasAlpha)	bOpaque = FALSE;
+	else				bOpaque = TRUE;
+}
+
+//
 const int	edge2idx	[3][2]	= { {0,1},		{1,2},		{2,0}	};
 const int	edge2idx3	[3][3]	= { {0,1,2},	{1,2,0},	{2,0,1}	};
 const int	idx2edge	[3][3]  = {
@@ -70,11 +86,6 @@ Face::~Face()
 	// Remove 'this' from adjacency info in vertices
 	for (int i=0; i<3; i++)
 		v[i]->prep_remove(this);
-}
-Shader_xrLC&	Face::Shader()
-{
-	u32 shader_id = pBuild->materials[dwMaterial].reserved;
-	return *(pBuild->shaders.Get(shader_id));
 }
 
 #define VPUSH(a) a.x,a.y,a.z
@@ -182,14 +193,4 @@ BOOL Face::RenderEqualTo(Face *F)
 	if (F->dwMaterial	!= dwMaterial		)	return FALSE;
 	if (F->tc.size()	!= F->tc.size()		)	return FALSE;	// redundant???
 	return TRUE;
-}
-
-void Face::CacheOpacity()
-{
-	bOpaque	= false;
-	
-	b_material& M		= pBuild->materials		[dwMaterial];
-	b_texture&	T		= pBuild->textures		[M.surfidx];
-	if (T.bHasAlpha)	bOpaque = FALSE;
-	else				bOpaque = TRUE;
 }

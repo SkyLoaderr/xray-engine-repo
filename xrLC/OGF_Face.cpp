@@ -76,11 +76,11 @@ void OGF::Optimize()
 
 	// Optimize texture coordinates
 	// 1. Calc bounds
-	UVpoint Tdelta[8];
+	Fvector2 Tdelta[8];
 	for (DWORD i=0; i<8; i++)
 	{
 		if (0==(dwRelevantUVMASK&(1<<i))) continue;	// skip unneeded UV
-		UVpoint Tmin,Tmax;
+		Fvector2 Tmin,Tmax;
 		Tmin.set(flt_max,flt_max);
 		Tmax.set(flt_min,flt_min);
 		for (DWORD j=0; j<vertices.size(); j++)
@@ -96,7 +96,7 @@ void OGF::Optimize()
 	// 2. Recalc UV mapping
 	for (i=0; i<vertices.size(); i++)
 	{
-		svector<UVpoint,4>& UV = vertices[i].UV;
+		svector<Fvector2,4>& UV = vertices[i].UV;
 		for (int j=0; j<4; j++)
 		{
 			if (dwRelevantUVMASK&(1<<j))	UV[j].sub(Tdelta[j]);

@@ -160,15 +160,15 @@ public:
 		CDB::COLLIDER			DB;
 		
 		// Setup variables
-		UVpoint		dim,half;
+		Fvector2	dim,half;
 		dim.set		(float(defl.Width()),float(defl.Height()));
 		half.set	(.5f/dim.u,.5f/dim.v);
 		
 		// Jitter data
-		UVpoint		JS;
+		Fvector2	JS;
 		JS.set		(g_params.m_lm_jitter/dim.u, g_params.m_lm_jitter/dim.v);
 		u32		Jcount;
-		UVpoint*	Jitter;
+		Fvector2*	Jitter;
 		Jitter_Select(Jitter, Jcount);
 		
 		// Lighting itself
@@ -185,7 +185,7 @@ public:
 					for (J=0; J<Jcount; J++) 
 					{
 						// LUMEL space
-						UVpoint P;
+						Fvector2 P;
 						P.u = float(U)/dim.u + half.u + Jitter[J].u * JS.u;
 						P.v	= float(V)/dim.v + half.v + Jitter[J].v * JS.v;
 						vector<Face*>&	space	= ImplicitHash->query(P.u,P.v);

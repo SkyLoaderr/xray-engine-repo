@@ -36,7 +36,7 @@ void blit_r	(u32* dest, u32 ds_x, u32 ds_y, u32* src, u32 ss_x, u32 ss_y, u32 px
 vecDefl					g_deflectors;
 CDeflector*				Deflector = 0;
 
-IC BOOL UVpointInside(UVpoint &P, UVtri &T)
+IC BOOL UVpointInside(Fvector2 &P, UVtri &T)
 {
 	Fvector B;
 	return T.isInside(P,B);
@@ -111,7 +111,7 @@ VOID CDeflector::OA_Export()
 	bb.getsphere(Sphere.P,Sphere.R);
 
 	// UV rect
-	UVpoint		min,max,size;
+	Fvector2		min,max,size;
 	GetRect		(min,max);
 	size.sub	(max,min);
 
@@ -146,7 +146,7 @@ void CDeflector::OA_Place	(vecFace& lst)
 	}
 }
 
-VOID CDeflector::GetRect	(UVpoint &min, UVpoint &max)
+VOID CDeflector::GetRect	(Fvector2 &min, Fvector2 &max)
 {
 	// Calculate bounds
 	vector<UVtri>::iterator it=UVpolys.begin();
@@ -166,12 +166,12 @@ void CDeflector::RemapUV	(vector<UVtri>& dest, u32 base_u, u32 base_v, u32 size_
 	dest.reserve(UVpolys.size());
 	
 	// UV rect (actual)
-	UVpoint		a_min,a_max,a_size;
+	Fvector2		a_min,a_max,a_size;
 	GetRect		(a_min,a_max);
 	a_size.sub	(a_max,a_min);
 	
 	// UV rect (dedicated)
-	UVpoint		d_min,d_max,d_size;
+	Fvector2		d_min,d_max,d_size;
 	d_min.u		= (float(base_u)+.5f)/float(lm_u);
 	d_min.v		= (float(base_v)+.5f)/float(lm_v);
 	d_max.u		= (float(base_u+size_u)-.5f)/float(lm_u);
@@ -181,7 +181,7 @@ void CDeflector::RemapUV	(vector<UVtri>& dest, u32 base_u, u32 base_v, u32 size_
 	d_size.sub	(d_max,d_min);
 	
 	// Remapping
-	UVpoint		tc;
+	Fvector2		tc;
 	UVtri		tnew;
 	if (bRotate)	{
 		for (UVIt it = UVpolys.begin(); it!=UVpolys.end(); it++)

@@ -26,11 +26,6 @@ void	xrMU_Model::_vertex::calc_normal_adjacent	()
 
 
 // face utilities
-Shader_xrLC&	xrMU_Model::_face::Shader		()
-{
-	u32 shader_id = pBuild->materials[dwMaterial].reserved;
-	return *(pBuild->shaders.Get(shader_id));
-}
 void			xrMU_Model::_face::CalcNormal	()
 {
 	Fvector t1,t2;
@@ -146,14 +141,4 @@ BOOL			xrMU_Model::_face::RenderEqualTo	(Face *F)
 	if (F->dwMaterial	!= dwMaterial		)	return FALSE;
 	if (F->tc.size()	!= F->tc.size()		)	return FALSE;	// redundant???
 	return TRUE;
-}
-
-void			xrMU_Model::_face::CacheOpacity()
-{
-	bOpaque	= false;
-	
-	b_material& M		= pBuild->materials		[dwMaterial];
-	b_texture&	T		= pBuild->textures		[M.surfidx];
-	if (T.bHasAlpha)	bOpaque = FALSE;
-	else				bOpaque = TRUE;
 }

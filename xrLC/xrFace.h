@@ -20,6 +20,9 @@ public:
 		bool				bProcessed;
 	};
 
+	virtual	Shader_xrLC&	Shader				( );
+	virtual void			CacheOpacity		( );
+
 	virtual ~base_Face() = 0; 
 };		
 
@@ -81,13 +84,13 @@ public:
 };
 
 struct _TCF {
-	UVpoint uv[3];
+	Fvector2		uv	[3];
 
-	IC void	barycentric	(UVpoint &P, float &u, float &v, float &w)
+	IC void	barycentric	(Fvector2 &P, float &u, float &v, float &w)
 	{
-		UVpoint		kV02; kV02.sub(uv[0],uv[2]);
-		UVpoint		kV12; kV12.sub(uv[1],uv[2]);
-		UVpoint		kPV2; kPV2.sub(P,    uv[2]);
+		Fvector2 	kV02; kV02.sub(uv[0],uv[2]);
+		Fvector2 	kV12; kV12.sub(uv[1],uv[2]);
+		Fvector2 	kPV2; kPV2.sub(P,    uv[2]);
 		
 		float		fM00 = kV02.dot(kV02);
 		float		fM01 = kV02.dot(kV12);
@@ -100,13 +103,13 @@ struct _TCF {
 		v			= (fM00*fR1 - fM01*fR0)/fDet;
 		w			= 1.0f - u - v;
 	}
-	IC void	barycentric	(UVpoint &P, Fvector &B)
+	IC void	barycentric	(Fvector2 &P, Fvector &B)
 	{	barycentric(P,B.x,B.y,B.z); }
 	IC bool	isInside	(float u, float v, float w)
 	{	return (u>=0 && u<=1) && (v>=0 && v<=1) && (w>=0 && w<=1); }
 	IC bool	isInside	(Fvector &B)
 	{	return	isInside	(B.x,B.y,B.z); }
-	IC bool	isInside	(UVpoint &P, Fvector &B) {
+	IC bool	isInside	(Fvector2 &P, Fvector &B) {
 		barycentric(P,B);
 		return isInside(B);
 	}
@@ -123,9 +126,6 @@ public:
 	svector<CLightmap*,4>	lmap_layers;
 
 
-
-	Shader_xrLC&	Shader			();
-	void			CacheOpacity	();
 
 	void			CalcNormal		();
 	void			CalcNormal2		();
@@ -202,9 +202,9 @@ public:
 	void		Unwarp(int connect_edge, float u1, float v1, float u2, float v2);
 	void		OA_Unwarp();
 
-	IC void		AddChannel(UVpoint &p1, UVpoint &p2, UVpoint &p3) 
+	IC void		AddChannel	(Fvector2 &p1, Fvector2 &p2, Fvector2 &p3) 
 	{
-		_TCF TC;
+		_TCF	TC;
 		TC.uv[0] = p1;	TC.uv[1] = p2;	TC.uv[2] = p3;
 		tc.push_back(TC);
 	}

@@ -47,8 +47,6 @@ public:
 		Fvector2	tc	[3];
 		Fvector		N;
 	public:
-		Shader_xrLC&	Shader				( );
-		void			CacheOpacity		( );
 		bool			VContains			( _vertex* pV);					// Does the face contains this vertex?
 		void			VReplace			( _vertex* what, _vertex* to);	// Replace ONE vertex by ANOTHER
 		void			VReplace_NoRemove	( _vertex* what, _vertex* to);
