@@ -198,8 +198,9 @@ struct astr_pred : public binary_function<AnsiString&, AnsiString&, bool>
 	DEFINE_VECTOR(FVF::L,FLvertexVec,FLvertexIt);
 	DEFINE_VECTOR(FVF::TL,FTLvertexVec,FTLvertexIt);
 	DEFINE_VECTOR(FVF::LIT,FLITvertexVec,FLITvertexIt);
+
+	#include "xrXRC.h"
 #endif
-#include "xrXRC.h"
 
 #define MAX_FOLDER_NAME    255
 #define MAX_OBJ_NAME       64
