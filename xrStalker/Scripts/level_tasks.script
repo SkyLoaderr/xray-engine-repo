@@ -99,11 +99,6 @@ function proceed(actor)
 		set_task_state(task.completed, "agroprom_get_military_documents", 1)
 	end
 
-	if actor:has_info("agroprom_military_case_done") 
-	then
-		set_task_state(task.completed, "agroprom_get_military_documents", 0)
-	end
-
 	if actor:has_info("agr_find_gunslinger_cache") and
 	   actor:object("gunslinger_flash") ~= nil
 	then
@@ -550,6 +545,9 @@ function process_map_spot(info_id)
 		remove_location(300, "agr_military_case_location")
 
 	-- bar_rostok
+	elseif info_id == "agroprom_military_case_done" then
+		set_task_state(task.completed, "agroprom_get_military_documents", 0)
+
 	elseif info_id == "bar_bar_hunter_quest_start" then
 		add_location(502, "bar_hunter_toz_location")
 
