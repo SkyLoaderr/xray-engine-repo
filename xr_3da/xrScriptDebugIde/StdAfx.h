@@ -21,3 +21,7 @@
 #include <crtdbg.h>
 #include <process.h>
 
+#include <platform.h>
+#include <scintilla.h>
+#include <SciLexer.h>
+

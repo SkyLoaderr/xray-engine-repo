@@ -41,6 +41,7 @@ public:
 
 	// Generated message map functions
 protected:
+	bool m_bEvalEnabled;
 	CStringArray m_exps;
 
 	//{{AFX_MSG(CWatchList)

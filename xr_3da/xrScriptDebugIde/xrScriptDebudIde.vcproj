@@ -92,7 +92,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\include\cj60,.\include\scintilla"
+				AdditionalIncludeDirectories=".\include\cj60"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -177,6 +177,9 @@
 			</File>
 			<File
 				RelativePath=".\DebugDialog.cpp">
+			</File>
+			<File
+				RelativePath=".\FindReplaceDlg.cpp">
 			</File>
 			<File
 				RelativePath=".\GotoLineDialog.cpp">
@@ -445,6 +448,9 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\ScintillaCtrl.cpp">
+			</File>
+			<File
 				RelativePath="ScintillaView.cpp">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -603,6 +609,9 @@
 				RelativePath=".\DebugDialog.h">
 			</File>
 			<File
+				RelativePath=".\FindReplaceDlg.h">
+			</File>
+			<File
 				RelativePath=".\GotoLineDialog.h">
 			</File>
 			<File
@@ -646,6 +655,9 @@
 			</File>
 			<File
 				RelativePath="ScintillaBar.h">
+			</File>
+			<File
+				RelativePath=".\ScintillaCtrl.h">
 			</File>
 			<File
 				RelativePath="ScintillaView.h">
@@ -795,37 +807,6 @@
 				</File>
 				<File
 					RelativePath=".\include\cj60\Subclass.h">
-				</File>
-			</Filter>
-			<Filter
-				Name="scintilla"
-				Filter="">
-				<File
-					RelativePath=".\include\scintilla\Accessor.h">
-				</File>
-				<File
-					RelativePath=".\include\scintilla\KeyWords.h">
-				</File>
-				<File
-					RelativePath=".\include\scintilla\Platform.h">
-				</File>
-				<File
-					RelativePath=".\include\scintilla\PropSet.h">
-				</File>
-				<File
-					RelativePath=".\include\scintilla\SciLexer.h">
-				</File>
-				<File
-					RelativePath=".\include\scintilla\Scintilla.h">
-				</File>
-				<File
-					RelativePath=".\include\scintilla\ScintillaWidget.h">
-				</File>
-				<File
-					RelativePath=".\include\scintilla\SString.h">
-				</File>
-				<File
-					RelativePath=".\include\scintilla\WindowAccessor.h">
 				</File>
 			</Filter>
 		</Filter>

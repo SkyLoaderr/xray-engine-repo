@@ -18,6 +18,7 @@ static char THIS_FILE[] = __FILE__;
 
 CWatchList::CWatchList()
 {
+	m_bEvalEnabled = true;
 }
 
 CWatchList::~CWatchList()
@@ -58,7 +59,10 @@ void CWatchList::OnLButtonDblClk(UINT nFlags, CPoint point)
 	SubItemHitTest(&lvhti);
 
 	if (lvhti.flags & LVHT_ONITEMLABEL){
+		m_bEvalEnabled = false;
 		EditLabel(lvhti.iItem);
+
+
 	}else
 		CCJListCtrl::OnLButtonDblClk(nFlags, point);
 }
@@ -108,6 +112,7 @@ void CWatchList::AddEditItem(LVITEM &item)
 			UpdateRow(item.iItem);
 		}
 	}
+	m_bEvalEnabled = true;
 }
 
 void CWatchList::UpdateRow(int iItem)
@@ -126,6 +131,9 @@ void CWatchList::UpdateRow(int iItem)
 
 void CWatchList::Redraw()
 {
+	if (!m_bEvalEnabled)
+		return;
+
 	CMainFrame* pFrame = g_mainFrame;
 	for ( int i=0; i<m_exps.GetSize(); ++i )
 //		SetItemText(i, 1, pFrame->GetDebugger()->Eval(m_exps[i]));
@@ -134,5 +142,7 @@ void CWatchList::Redraw()
 }
 void CWatchList::SetResult(int iItem, LPSTR str)
 {
+	if (!m_bEvalEnabled)
+		return;
 	SetItemText(iItem, 1, str);
 }

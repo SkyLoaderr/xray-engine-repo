@@ -331,7 +331,10 @@ LRESULT CMainFrame::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 		break;
 
 	case DMSG_ACTIVATE_IDE:
-			SendMessage(SW_SHOW,0,0);
+			
+//			SendMessage(SW_SHOW,0,0);
+			ShowWindow(SW_SHOWNORMAL);
+//			BringWindowToTop();
 			m_needAnswer = TRUE;
 			OnUpdateFrameTitle(TRUE);
 			SetMode(modeDebugBreak);

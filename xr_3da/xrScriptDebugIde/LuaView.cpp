@@ -20,6 +20,8 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNCREATE(CLuaView, CView)
 
+const UINT _ScintillaMsgFindReplace = ::RegisterWindowMessage(FINDMSGSTRING);
+
 BEGIN_MESSAGE_MAP(CLuaView, CView)
 	//{{AFX_MSG_MAP(CLuaView)
 	ON_WM_CREATE()
@@ -42,10 +44,12 @@ BEGIN_MESSAGE_MAP(CLuaView, CView)
 	ON_COMMAND(ID_EDIT_GOTOLINE, OnGotoLineNumber)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_GOTOLINE, OnUpdateGotoLineNumber)
 
-	ON_COMMAND(ID_EDIT_FIND, OnFind)
+	ON_COMMAND(ID_EDIT_FIND, OnEditFind)
+	ON_COMMAND(ID_EDIT_REPLACE, OnEditReplace)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_FIND, OnUpdateGotoLineNumber)
 	
 	//}}AFX_MSG_MAP
+	ON_REGISTERED_MESSAGE(_ScintillaMsgFindReplace, OnFindReplaceCmd)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -53,13 +57,26 @@ END_MESSAGE_MAP()
 
 CLuaView::CLuaView()
 {
-	// TODO: add construction code here
-
+	m_pFindReplaceDlg = NULL;
+	m_bFindOnly = TRUE;
+	m_bCase = FALSE;
+	m_bNext = TRUE;
+	m_bWord = FALSE;
+	m_bFirstSearch = TRUE;
+	m_bRegularExpression = FALSE;
 }
 
 CLuaView::~CLuaView()
 {
 }
+
+CScintillaCtrl& CLuaView::GetCtrl()
+{ 
+  CScintillaCtrl& ctrl = m_Edit;
+
+  return ctrl; 
+}
+
 
 BOOL CLuaView::PreCreateWindow(CREATESTRUCT& cs)
 {
@@ -110,10 +127,15 @@ int CLuaView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	if ( !m_editor.Create(this, ID_EDIT_CTRL) )
 		return -1;
+
 	
 	m_editor.SetEditorMargins();
 	m_editor.SetLuaLexer();
 
+/*	CRect r;
+	if (!m_Edit.Create(WS_CHILD|WS_VISIBLE|WS_TABSTOP, r, this, 0))
+		return -1;
+*/
 	return 0;
 }
 
@@ -123,6 +145,12 @@ void CLuaView::OnSize(UINT nType, int cx, int cy)
 	
 	if ( ::IsWindow(m_editor.m_hWnd) )
 		m_editor.SetWindowPos(NULL, 0, 0, cx, cy, 0);
+
+
+/*	CRect r;
+	GetClientRect(&r);
+	m_Edit.MoveWindow(&r);	
+*/
 }
 
 BOOL CLuaView::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult) 
@@ -303,7 +331,384 @@ void CLuaView::OnGotoLineNumber()
 {
 	m_editor.GotoLineDlg();
 }
-void CLuaView::OnFind()
+
+
+void CLuaView::Serialize(CArchive& ar)
 {
-//	m_editor.FindText("main");
+	if (ar.IsStoring())
+	{
+		CLuaEditor* pEditor = GetEditor();
+		pEditor->Save(ar.GetFile());
+	}
+	else
+	{
+		CLuaEditor* pEditor = GetEditor();
+		pEditor->Load(ar.GetFile());
+	}
+/*
+  CScintillaCtrl& rCtrl = GetCtrl();
+  if (ar.IsLoading())
+  {
+    //Tell the control now to maintain any undo info while we stream the data 
+    rCtrl.Cancel();
+    rCtrl.SetUndoCollection(FALSE);
+
+    //Read the data in from the file in blocks
+    CFile* pFile = ar.GetFile();
+    char Buffer[4096];
+    int nBytesRead = 0;
+    do
+    {
+      nBytesRead = pFile->Read(Buffer, 4096);
+      if (nBytesRead)
+        rCtrl.AddText(nBytesRead, Buffer);
+    }
+    while (nBytesRead);
+
+    //Reinitialize the control settings
+    rCtrl.SetUndoCollection(TRUE);
+    rCtrl.EmptyUndoBuffer();
+    rCtrl.SetSavePoint();
+    rCtrl.GotoPos(0);
+  }
+  else
+  {
+    //Get the length of the document
+    int nDocLength = rCtrl.GetLength();
+
+    //Write the data in blocks to disk
+    CFile* pFile = ar.GetFile();
+    for (int i=0; i<nDocLength; i += 4095) //4095 because data will be returned NULL terminated
+    {
+      int nGrabSize = nDocLength - i;
+      if (nGrabSize > 4095)
+        nGrabSize = 4095;
+
+      //Get the data from the control
+	    TextRange tr;
+	    tr.chrg.cpMin = i;
+	    tr.chrg.cpMax = i + nGrabSize;
+      char Buffer[4096];
+	    tr.lpstrText = Buffer;
+	    rCtrl.GetTextRange(&tr);
+
+      //Write it to disk
+      pFile->Write(Buffer, nGrabSize);
+    }
+
+    //Tell the control that the document has now been saved
+    rCtrl.SetSavePoint();
+  }
+*/
+}
+///////////////////////////////////////////////////////////////////////////////////
+void CLuaView::OnFindNext(LPCTSTR lpszFind, BOOL bNext, BOOL bCase, BOOL bWord, BOOL bRegularExpression)
+{
+	ASSERT_VALID(this);
+
+	m_strFind = lpszFind;
+	m_bCase = bCase;
+	m_bWord = bWord;
+	m_bNext = bNext;
+  m_bRegularExpression = bRegularExpression;
+
+	if (!FindText(m_strFind, m_bNext, m_bCase, m_bWord, m_bRegularExpression))
+		TextNotFound(m_strFind, m_bNext, m_bCase, m_bWord, m_bRegularExpression);
+	else
+		AdjustFindDialogPosition();
+	ASSERT_VALID(this);
+}
+
+void CLuaView::TextNotFound(LPCTSTR /*lpszFind*/, BOOL /*bNext*/, BOOL /*bCase*/, BOOL /*bWord*/, BOOL /*bRegularExpression*/)
+{
+	ASSERT_VALID(this);
+	m_bFirstSearch = TRUE;
+	AfxMessageBox("Text not found");
+//	MessageBeep(MB_ICONHAND);
+}
+
+BOOL CLuaView::FindText(LPCTSTR lpszFind, BOOL bNext, BOOL bCase, BOOL bWord, BOOL bRegularExpression)
+{
+	ASSERT_VALID(this);
+	CWaitCursor wait;
+	return FindTextSimple(lpszFind, bNext, bCase, bWord, bRegularExpression);
+}
+
+void CLuaView::OnEditFindReplace(BOOL bFindOnly)
+{
+	ASSERT_VALID(this);
+
+	m_bFirstSearch = TRUE;
+	if (m_pFindReplaceDlg != NULL)
+	{
+		if (m_bFindOnly == bFindOnly)
+		{
+			m_pFindReplaceDlg->SetActiveWindow();
+			m_pFindReplaceDlg->ShowWindow(SW_SHOW);
+			return;
+		}
+		else
+		{
+			ASSERT(m_bFindOnly != bFindOnly);
+			m_pFindReplaceDlg->SendMessage(WM_CLOSE);
+			ASSERT(m_pFindReplaceDlg == NULL);
+			ASSERT_VALID(this);
+		}
+	}
+  CScintillaCtrl& rCtrl = GetCtrl();
+	CString strFind = rCtrl.GetSelText();
+	//if selection is empty or spans multiple lines use old find text
+	if (strFind.IsEmpty() || (strFind.FindOneOf(_T("\n\r")) != -1))
+		strFind = m_strFind;
+
+	CString strReplace = m_strReplace;
+	m_pFindReplaceDlg = CreateFindReplaceDialog();
+	ASSERT(m_pFindReplaceDlg != NULL);
+	DWORD dwFlags = NULL;
+	if (m_bNext)
+		dwFlags |= FR_DOWN;
+	if (m_bCase)
+		dwFlags |= FR_MATCHCASE;
+	if (m_bWord)
+		dwFlags |= FR_WHOLEWORD;
+  if (m_bRegularExpression)
+    m_pFindReplaceDlg->SetRegularExpression(TRUE);
+
+	if (!m_pFindReplaceDlg->Create(bFindOnly, strFind, strReplace, dwFlags, this))
+	{
+		m_pFindReplaceDlg = NULL;
+		ASSERT_VALID(this);
+		return;
+	}
+	ASSERT(m_pFindReplaceDlg != NULL);
+	m_bFindOnly = bFindOnly;
+	m_pFindReplaceDlg->SetActiveWindow();
+	m_pFindReplaceDlg->ShowWindow(SW_SHOW);
+	ASSERT_VALID(this);
+}
+
+BOOL CLuaView::FindTextSimple(LPCTSTR lpszFind, BOOL bNext, BOOL bCase, BOOL bWord, BOOL bRegularExpression)
+{
+	USES_CONVERSION;
+
+  CScintillaCtrl& rCtrl = GetCtrl();
+
+	ASSERT(lpszFind != NULL);
+	TextToFind ft;
+  ft.chrg.cpMin = rCtrl.GetSelectionStart();
+  ft.chrg.cpMax = rCtrl.GetSelectionEnd();
+	if (m_bFirstSearch)
+		m_bFirstSearch = FALSE;
+
+	ft.lpstrText = T2A((LPTSTR)lpszFind);
+	if (ft.chrg.cpMin != ft.chrg.cpMax) // i.e. there is a selection
+	{
+#ifndef _UNICODE
+		// If byte at beginning of selection is a DBCS lead byte,
+		// increment by one extra byte.
+		TEXTRANGE textRange;
+		TCHAR ch[2];
+		textRange.chrg.cpMin = ft.chrg.cpMin;
+		textRange.chrg.cpMax = ft.chrg.cpMin + 1;
+		textRange.lpstrText = ch;
+		rCtrl.SendMessage(EM_GETTEXTRANGE, 0, (LPARAM)&textRange);
+		if (_istlead(ch[0]))
+		{
+			ASSERT(ft.chrg.cpMax - ft.chrg.cpMin >= 2);
+
+      if (bNext)
+  			ft.chrg.cpMin++;
+      else
+        ft.chrg.cpMax = ft.chrg.cpMin - 1;
+		}
+#endif
+
+    if (bNext)  
+		  ft.chrg.cpMin++;
+    else
+      ft.chrg.cpMax = ft.chrg.cpMin - 1;
+	}
+
+  int nLength = rCtrl.GetLength();
+  if (bNext)
+    ft.chrg.cpMax = nLength;
+	else
+ 	  ft.chrg.cpMin = 0;
+
+	DWORD dwFlags = bCase ? SCFIND_MATCHCASE : 0;
+	dwFlags |= bWord ? SCFIND_WHOLEWORD : 0;
+  dwFlags |= bRegularExpression ? SCFIND_REGEXP : 0;
+
+  if (!bNext)
+  {
+    //Swap the start and end positions which Scintilla uses to flag backward searches
+    int ncpMinTemp = ft.chrg.cpMin;
+    ft.chrg.cpMin = ft.chrg.cpMax;
+    ft.chrg.cpMax = ncpMinTemp;
+  }
+
+	// if we find the text return TRUE
+	return (FindAndSelect(dwFlags, ft) != -1);
+}
+
+void CLuaView::OnReplaceSel(LPCTSTR lpszFind, BOOL bNext, BOOL bCase,	BOOL bWord, BOOL bRegularExpression, LPCTSTR lpszReplace)
+{
+	ASSERT_VALID(this);
+
+	m_strFind = lpszFind;
+	m_strReplace = lpszReplace;
+	m_bCase = bCase;
+	m_bWord = bWord;
+	m_bNext = bNext;
+  m_bRegularExpression = bRegularExpression;
+
+	if (!SameAsSelected(m_strFind, m_bCase, m_bWord, m_bRegularExpression))
+	{
+		if (!FindText(m_strFind, m_bNext, m_bCase, m_bWord, m_bRegularExpression))
+			TextNotFound(m_strFind, m_bNext, m_bCase, m_bWord, m_bRegularExpression);
+		else
+			AdjustFindDialogPosition();
+		return;
+	}
+
+	GetCtrl().ReplaceSel(m_strReplace);
+	if (!FindText(m_strFind, m_bNext, m_bCase, m_bWord, m_bRegularExpression))
+		TextNotFound(m_strFind, m_bNext, m_bCase, m_bWord, m_bRegularExpression);
+	else
+		AdjustFindDialogPosition();
+	ASSERT_VALID(this);
+}
+
+void CLuaView::OnReplaceAll(LPCTSTR lpszFind, LPCTSTR lpszReplace, BOOL bCase, BOOL bWord, BOOL bRegularExpression)
+{
+	ASSERT_VALID(this);
+
+	m_strFind = lpszFind;
+	m_strReplace = lpszReplace;
+	m_bCase = bCase;
+	m_bWord = bWord;
+	m_bNext = TRUE;
+  m_bRegularExpression = bRegularExpression;
+
+	CWaitCursor wait;
+	// no selection or different than what looking for
+	if (!SameAsSelected(m_strFind, m_bCase, m_bWord, bRegularExpression))
+	{
+		if (!FindText(m_strFind, m_bNext, m_bCase, m_bWord, m_bRegularExpression))
+		{
+			TextNotFound(m_strFind, m_bNext, m_bCase, m_bWord, m_bRegularExpression);
+			return;
+		}
+	}
+
+  CScintillaCtrl& rCtrl = GetCtrl();
+	rCtrl.HideSelection(TRUE, FALSE);
+	do
+	{
+		rCtrl.ReplaceSel(m_strReplace);
+	} 
+  while (FindTextSimple(m_strFind, m_bNext, m_bCase, m_bWord, m_bRegularExpression));
+
+	TextNotFound(m_strFind, m_bNext, m_bCase, m_bWord, m_bRegularExpression);
+	rCtrl.HideSelection(FALSE, FALSE);
+
+	ASSERT_VALID(this);
+}
+
+BOOL CLuaView::SameAsSelected(LPCTSTR lpszCompare, BOOL bCase, BOOL /*bWord*/, BOOL bRegularExpression)
+{
+  //if we are doing a regular expression Find / Replace, then it they match!!
+  if (bRegularExpression)
+    return TRUE;
+
+	// check length first
+	size_t nLen = lstrlen(lpszCompare);
+  CScintillaCtrl& rCtrl = GetCtrl();
+	int nStartChar = rCtrl.GetSelectionStart();
+  int nEndChar = rCtrl.GetSelectionEnd();
+	if (nLen != (size_t)(nEndChar - nStartChar))
+		return FALSE;
+
+	// length is the same, check contents
+	CString strSelect = rCtrl.GetSelText();
+	return (bCase && lstrcmp(lpszCompare, strSelect) == 0) || (!bCase && lstrcmpi(lpszCompare, strSelect) == 0);
+}
+
+long CLuaView::FindAndSelect(DWORD dwFlags, TextToFind& ft)
+{
+  CScintillaCtrl& rCtrl = GetCtrl();
+	long index = rCtrl.FindText(dwFlags, &ft);
+	if (index != -1) // i.e. we found something
+    rCtrl.SetSel(ft.chrgText.cpMin, ft.chrgText.cpMax);
+	return index;
+}
+
+void CLuaView::AdjustFindDialogPosition()
+{
+	ASSERT(m_pFindReplaceDlg);
+  CScintillaCtrl& rCtrl = GetCtrl();
+  int nStart = rCtrl.GetSelectionStart();
+	CPoint point;
+  point.x = rCtrl.PointXFromPosition(nStart);
+  point.y = rCtrl.PointYFromPosition(nStart);
+	ClientToScreen(&point);
+	CRect rectDlg;
+	m_pFindReplaceDlg->GetWindowRect(&rectDlg);
+	if (rectDlg.PtInRect(point))
+	{
+		if (point.y > rectDlg.Height())
+			rectDlg.OffsetRect(0, point.y - rectDlg.bottom - 20);
+		else
+		{
+			int nVertExt = GetSystemMetrics(SM_CYSCREEN);
+			if (point.y + rectDlg.Height() < nVertExt)
+				rectDlg.OffsetRect(0, 40 + point.y - rectDlg.top);
+		}
+		m_pFindReplaceDlg->MoveWindow(&rectDlg);
+	}
+}
+
+CScintillaFindReplaceDlg* CLuaView::CreateFindReplaceDialog()
+{
+  return new CScintillaFindReplaceDlg;
+}
+
+void CLuaView::OnEditFind()
+{
+	ASSERT_VALID(this);
+	OnEditFindReplace(TRUE);
+}
+
+void CLuaView::OnEditReplace()
+{
+	ASSERT_VALID(this);
+	OnEditFindReplace(FALSE);
+}
+
+
+LRESULT CLuaView::OnFindReplaceCmd(WPARAM /*wParam*/, LPARAM lParam)
+{
+	ASSERT_VALID(this);
+
+	CScintillaFindReplaceDlg* pDialog = (CScintillaFindReplaceDlg*) CFindReplaceDialog::GetNotifier(lParam);
+	ASSERT(pDialog != NULL);
+	ASSERT(pDialog == m_pFindReplaceDlg);
+
+	if (pDialog->IsTerminating())
+		m_pFindReplaceDlg = NULL;
+	else if (pDialog->FindNext())
+		OnFindNext(pDialog->GetFindString(), pDialog->SearchDown(), pDialog->MatchCase(), pDialog->MatchWholeWord(), pDialog->GetRegularExpression());
+	else if (pDialog->ReplaceCurrent())
+	{
+		ASSERT(!m_bFindOnly);
+		OnReplaceSel(pDialog->GetFindString(), pDialog->SearchDown(), pDialog->MatchCase(), pDialog->MatchWholeWord(), pDialog->GetRegularExpression(), pDialog->GetReplaceString());
+	}
+	else if (pDialog->ReplaceAll())
+	{
+		ASSERT(!m_bFindOnly);
+		OnReplaceAll(pDialog->GetFindString(), pDialog->GetReplaceString(), pDialog->MatchCase(), pDialog->MatchWholeWord(), pDialog->GetRegularExpression());
+	}
+	ASSERT_VALID(this);
+
+	return 0;
 }

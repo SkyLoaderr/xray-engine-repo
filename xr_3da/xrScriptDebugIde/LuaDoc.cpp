@@ -58,18 +58,7 @@ BOOL CLuaDoc::OnNewDocument()
 
 void CLuaDoc::Serialize(CArchive& ar)
 {
-	if (ar.IsStoring())
-	{
-		// TODO: add storing code here
-		CLuaEditor* pEditor = GetView()->GetEditor();
-		pEditor->Save(ar.GetFile());
-	}
-	else
-	{
-		// TODO: add loading code here
-		CLuaEditor* pEditor = GetView()->GetEditor();
-		pEditor->Load(ar.GetFile());
-	}
+	GetView()->Serialize(ar);
 }
 
 /////////////////////////////////////////////////////////////////////////////

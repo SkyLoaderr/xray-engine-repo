@@ -10,6 +10,8 @@
 #endif // _MSC_VER > 1000
 
 #include "LuaEditor.h"
+#include "ScintillaCtrl.h"
+#include "FindReplaceDlg.h"
 
 class CLuaView : public CView
 {
@@ -39,6 +41,8 @@ public:
 
 // Implementation
 public:
+	virtual void Serialize(CArchive& ar);
+
 	void ToggleBreakPoint(int nLine);
 	void CloseFrame();
 	void Activate();
@@ -47,10 +51,35 @@ public:
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
 #endif
-
+	CScintillaCtrl& GetCtrl();
 protected:
+	CScintillaCtrl            m_Edit;               //The scintilla control
 	CLuaEditor m_editor;
 	int OnSci(SCNotification* pNotify);
+//member for search?replace
+	CString                   m_strFind;            //last find string
+	CString                   m_strReplace;         //last replace string
+	BOOL                      m_bCase;              //TRUE==case sensitive, FALSE==not
+	BOOL                      m_bWord;              //TRUE==match whole word, FALSE==not
+	BOOL                      m_bRegularExpression; //TRUE== regular expression, FALSE==not
+	BOOL                      m_bFirstSearch;       //Is this the first search
+	int                       m_bNext;              //TRUE==search down, FALSE== search up
+	CScintillaFindReplaceDlg* m_pFindReplaceDlg;    //find or replace dialog
+	BOOL                      m_bFindOnly;          //Is pFindReplace the find or replace?
+
+
+//Search and replace support
+	virtual void OnFindNext(LPCTSTR lpszFind, BOOL bNext, BOOL bCase, BOOL bWord, BOOL bRegularExpression);
+	virtual void TextNotFound(LPCTSTR lpszFind, BOOL bNext, BOOL bCase, BOOL bWord, BOOL bRegularExpression);
+  virtual BOOL FindText(LPCTSTR lpszFind, BOOL bNext, BOOL bCase, BOOL bWord, BOOL bRegularExpression);
+	virtual void OnEditFindReplace(BOOL bFindOnly);
+	virtual BOOL FindTextSimple(LPCTSTR lpszFind, BOOL bNext, BOOL bCase, BOOL bWord, BOOL bRegularExpression);
+	virtual void OnReplaceSel(LPCTSTR lpszFind, BOOL bNext, BOOL bCase,	BOOL bWord, BOOL bRegularExpression, LPCTSTR lpszReplace);
+	virtual void OnReplaceAll(LPCTSTR lpszFind, LPCTSTR lpszReplace, BOOL bCase, BOOL bWord, BOOL bRegularExpression);
+	virtual BOOL SameAsSelected(LPCTSTR lpszCompare, BOOL bCase, BOOL bWord, BOOL m_bRegularExpression);
+	virtual long FindAndSelect(DWORD dwFlags, TextToFind& ft);
+  virtual void AdjustFindDialogPosition();
+  virtual CScintillaFindReplaceDlg* CreateFindReplaceDialog();
 
 // Generated message map functions
 protected:
@@ -73,8 +102,10 @@ protected:
 	afx_msg void OnToggleBreakpoint();
 	afx_msg void OnUpdateGotoLineNumber(CCmdUI* pCmdUI);
 	afx_msg void OnGotoLineNumber();
-	afx_msg void OnFind();
+	afx_msg void OnEditFind();
+	afx_msg void OnEditReplace();
 	//}}AFX_MSG
+	afx_msg LRESULT OnFindReplaceCmd(WPARAM, LPARAM lParam);
 	DECLARE_MESSAGE_MAP()
 };
 

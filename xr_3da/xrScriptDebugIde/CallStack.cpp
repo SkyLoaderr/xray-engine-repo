@@ -47,9 +47,10 @@ int CCallStack::OnSci(CScintillaView* pView, SCNotification* pNotify)
 {
 	CLuaEditor* pEditor = ((CScintillaView*)GetView(0))->GetEditor();
 
+//	CScintillaCtrl& rCtrl = (CScintillaView*)GetView(0)->GetCtrl();
 	CPoint pt;
 	int nLine;
-	CString strLine;
+//	CString strLine;
 	switch (pNotify->nmhdr.code)
 	{
 		case SCN_DOUBLECLICK:
@@ -57,6 +58,11 @@ int CCallStack::OnSci(CScintillaView* pView, SCNotification* pNotify)
 			pEditor->ScreenToClient(&pt);
 			nLine = pEditor->LineFromPoint(pt);
 			GotoStackTraceLevel(nLine-1);
+
+//			int nPos = rCtrl.GetCurrentPos();
+//			int nLine = rCtrl.LineFromPosition(nPos);
+//			GotoStackTraceLevel(nLine-1);
+
 		break;
 	};
 

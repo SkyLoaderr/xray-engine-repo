@@ -45,6 +45,9 @@
 #define IDC_EDIT_CMD                    1012
 #define IDC_EDIT_WDIR                   1013
 #define IDC_EDIT_ARGS                   1014
+#define IDD_SCINTILLA_FINDDLGORD        1020
+#define IDD_SCINTILLA_REPLACEDLGORD     1021
+#define IDC_REGULAR_EXPRESSION          1022
 #define ID_DEBUG_RUNTOCURSOR            32742
 #define ID_PROJECT_ADD_FILES            32771
 #define ID_FILE_OPENPROJECT             32773
@@ -86,8 +89,8 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        138
-#define _APS_NEXT_COMMAND_VALUE         32820
+#define _APS_NEXT_RESOURCE_VALUE        139
+#define _APS_NEXT_COMMAND_VALUE         32823
 #define _APS_NEXT_CONTROL_VALUE         1013
 #define _APS_NEXT_SYMED_VALUE           112
 #endif
