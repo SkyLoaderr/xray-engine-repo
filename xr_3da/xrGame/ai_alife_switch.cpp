@@ -323,6 +323,7 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 							// and remove it from the graph point but do not remove it from the current level map
 							vfRemoveObjectFromGraphPoint	(tpGroupMember,tpGroupMember->m_tGraphID,false);
 							tpGroupMember->m_bOnline		= true;
+							tpALifeAbstractGroup->m_wCount--;
 							i--;
 							N--;
 							continue;
