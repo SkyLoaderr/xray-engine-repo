@@ -86,8 +86,8 @@ public:
 	CGameFont* 				pSystemFont;
 
 	// registrators
-	CRegistrator <pureDeviceDestroy>	seqDevDestroy;
-	CRegistrator <pureDeviceCreate>		seqDevCreate;
+//	CRegistrator <pureDeviceDestroy>	seqDevDestroy;
+//	CRegistrator <pureDeviceCreate>		seqDevCreate;
 	CRegistrator <pureFrame>			seqFrame;
 	CRegistrator <pureRender>			seqRender;
 	CRegistrator <pureAppCycleStart>	seqAppCycleStart;

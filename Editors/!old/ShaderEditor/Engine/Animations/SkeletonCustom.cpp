@@ -458,10 +458,11 @@ void CKinematics::AddWallmark(const Fmatrix* parent_xform, const Fvector3& start
 	Fvector cp;	cp.mad		(S,D,dist);
 
 	// collect collide boxes
-	Fsphere test_sphere		= {cp,size}; 
+	Fsphere test_sphere;
+    test_sphere.set			(cp,size); 
 	U16Vec					test_bones;
 	test_bones.reserve		(LL_BoneCount());
-	for (u16 k=0; k<LL_BoneCount(); k++){
+	for (k=0; k<LL_BoneCount(); k++){
 		if (LL_GetBoneVisible(k)){
 			Fobb& obb		= cache_obb[k];
 			if (CDB::TestSphereOBB(test_sphere, obb))
@@ -507,6 +508,10 @@ void CKinematics::AddWallmark(const Fmatrix* parent_xform, const Fvector3& start
 }
 
 static const float LIFE_TIME=30.f;
+struct zero_wm_pred : public std::unary_function<CSkeletonWallmark*, bool>
+{
+	bool operator()(const CSkeletonWallmark* x){ return x==0; }
+};
 
 void CKinematics::CalculateWallmarks()
 {
@@ -527,7 +532,7 @@ void CKinematics::CalculateWallmarks()
 			}
 		}
 		if (need_remove){
-			SkeletonWMVecIt new_end= std::remove(wallmarks.begin(),wallmarks.end(),(CSkeletonWallmark*)0);
+			SkeletonWMVecIt new_end= std::remove_if(wallmarks.begin(),wallmarks.end(),zero_wm_pred());
 			wallmarks.erase	(new_end,wallmarks.end());
 		}
 	}

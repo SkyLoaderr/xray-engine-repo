@@ -30,9 +30,9 @@ DEFINE_MAP			(u32,DOVec,ColorIndexMap,ColorIndexPairIt);
 
 class EDetailManager:
 	public CDetailManager,
-    public ESceneCustomMTools,
-	public pureDeviceCreate,
-	public pureDeviceDestroy
+    public ESceneCustomMTools
+//	,public pureDeviceCreate,
+//	public pureDeviceDestroy
 {
 	friend class TfrmDOShuffle;
 	typedef ESceneCustomMTools inherited;

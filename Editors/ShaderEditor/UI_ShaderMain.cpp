@@ -81,16 +81,16 @@ void CShaderMain::RegisterCommands()
 {
 	inherited::RegisterCommands();
     // tools
-	RegisterCommand(COMMAND_SAVE,              	SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(STools,CShaderTools::CommandSave)));
-	RegisterCommand(COMMAND_SAVE_BACKUP,		SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(STools,CShaderTools::CommandSaveBackup)));
-	RegisterCommand(COMMAND_RELOAD,				SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(STools,CShaderTools::CommandReload)));
-	RegisterCommand(COMMAND_CLEAR,				SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(STools,CShaderTools::CommandClear)));
-    RegisterCommand(COMMAND_UPDATE_LIST,	    SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(STools,CShaderTools::CommandUpdateList)));
-    RegisterCommand(COMMAND_REFRESH_UI_BAR,		SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandRefreshUIBar)));
-    RegisterCommand(COMMAND_RESTORE_UI_BAR,     SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandRestoreUIBar)));
-    RegisterCommand(COMMAND_SAVE_UI_BAR,        SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandSaveUIBar)));
-	RegisterCommand(COMMAND_UPDATE_TOOLBAR,     SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandUpdateToolBar)));
-    RegisterCommand(COMMAND_UPDATE_CAPTION,     SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandUpdateCaption)));
+	RegisterCommand(COMMAND_SAVE,              	xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(STools,CShaderTools::CommandSave)));
+	RegisterCommand(COMMAND_SAVE_BACKUP,		xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(STools,CShaderTools::CommandSaveBackup)));
+	RegisterCommand(COMMAND_RELOAD,				xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(STools,CShaderTools::CommandReload)));
+	RegisterCommand(COMMAND_CLEAR,				xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(STools,CShaderTools::CommandClear)));
+    RegisterCommand(COMMAND_UPDATE_LIST,	    xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(STools,CShaderTools::CommandUpdateList)));
+    RegisterCommand(COMMAND_REFRESH_UI_BAR,		xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandRefreshUIBar)));
+    RegisterCommand(COMMAND_RESTORE_UI_BAR,     xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandRestoreUIBar)));
+    RegisterCommand(COMMAND_SAVE_UI_BAR,        xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandSaveUIBar)));
+	RegisterCommand(COMMAND_UPDATE_TOOLBAR,     xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandUpdateToolBar)));
+    RegisterCommand(COMMAND_UPDATE_CAPTION,     xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandUpdateCaption)));
 }
 
 char* CShaderMain::GetCaption()

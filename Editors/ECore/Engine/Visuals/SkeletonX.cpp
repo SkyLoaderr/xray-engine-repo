@@ -148,6 +148,11 @@ struct	vertHW_2W
 //////////////////////////////////////////////////////////////////////
 // Body Part
 //////////////////////////////////////////////////////////////////////
+void CSkeletonX::AfterLoad	(CKinematics* parent, u16 child_idx)
+{
+	SetParent				(parent);
+    ChildIDX				= child_idx;
+}
 void CSkeletonX::_Copy		(CSkeletonX *B)
 {
 	Parent					= NULL;

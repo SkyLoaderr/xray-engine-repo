@@ -89,7 +89,7 @@ public:
 							CSkeletonX		()	{ Parent = 0; ChildIDX = u16(-1); }
 
 	virtual void			SetParent		(CKinematics* K)					{ Parent = K; }
-	virtual void			AfterLoad		(CKinematics* parent, u16 child_idx)=0{SetParent(parent);ChildIDX=child_idx;}
+	virtual void			AfterLoad		(CKinematics* parent, u16 child_idx)=0;
 	virtual BOOL			PickBone		(Fvector& normal, float& dist, const Fvector& start, const Fvector& dir, u16 bone_id)=0;
 	virtual void			FillVertices	(const Fmatrix& view, CSkeletonWallmark& wm, const Fvector& normal, float size, u16 bone_id)=0;
 };

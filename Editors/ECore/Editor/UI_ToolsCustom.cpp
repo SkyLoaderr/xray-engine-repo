@@ -29,15 +29,15 @@ CToolsCustom::CToolsCustom()
     fFogness			= 0.9f;
     dwFogColor			= 0xffffffff;
 
-    Device.seqDevCreate.Add(this);
-    Device.seqDevDestroy.Add(this);
+//    Device.seqDevCreate.Add(this);
+//    Device.seqDevDestroy.Add(this);
 }
 //---------------------------------------------------------------------------
 
 CToolsCustom::~CToolsCustom()        
 {
-    Device.seqDevCreate.Remove(this);
-    Device.seqDevDestroy.Remove(this);
+//    Device.seqDevCreate.Remove(this);
+//    Device.seqDevDestroy.Remove(this);
 }
 //---------------------------------------------------------------------------
 

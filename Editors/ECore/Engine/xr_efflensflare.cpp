@@ -134,9 +134,11 @@ CLensFlare::CLensFlare()
     m_State						= lfsNone;
     m_StateBlend				= 0.f;
 
+#ifndef _EDITOR
 	m_ray_cache.verts[0].set	(0,0,0);
 	m_ray_cache.verts[1].set	(0,0,0);
 	m_ray_cache.verts[2].set	(0,0,0);
+#endif
 
 	OnDeviceCreate				();	
 }
@@ -147,6 +149,7 @@ CLensFlare::~CLensFlare()
 	OnDeviceDestroy				();
 }
 
+#ifndef _EDITOR
 struct STranspParam{
 	const Fvector&				P;
 	const Fvector&				D;
@@ -179,6 +182,7 @@ IC BOOL __stdcall material_callback(Collide::rq_result& result, LPVOID params)
 	fp->vis			*=vis;
 	return (fp->vis>fp->vis_threshold); 
 }
+#endif
 
 IC void	blend_lerp	(float& cur, float tgt, float speed, float dt)
 {

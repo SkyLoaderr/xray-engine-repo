@@ -46,9 +46,9 @@ struct st_LevelOptions{
 	void 		InitDefaultText	();
 };
 
-class EScene: public ISceneCustom,
-	public pureDeviceCreate,
-	public pureDeviceDestroy
+class EScene: public ISceneCustom
+//	,public pureDeviceCreate,
+//	public pureDeviceDestroy
 {
 public:
 	typedef	FixedMAP<float,CCustomObject*>	mapObject_D;

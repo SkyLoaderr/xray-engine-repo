@@ -43,7 +43,7 @@ enum ETFlags{
 	etfMSnap      	= (1<<8),
 };
 
-class ECORE_API CToolsCustom: public pureDeviceCreate, public pureDeviceDestroy
+class ECORE_API CToolsCustom//: public pureDeviceCreate, public pureDeviceDestroy
 {
 	friend class CEditorPreferences;
 protected:

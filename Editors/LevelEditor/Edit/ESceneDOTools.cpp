@@ -45,14 +45,14 @@ EDetailManager::EDetailManager():ESceneCustomMTools(OBJCLASS_DO)
     ZeroMemory			(&dtH,sizeof(dtH));
     m_Selected.clear	();
     InitRender			();
-	Device.seqDevCreate.Add	(this,REG_PRIORITY_LOW);
-	Device.seqDevDestroy.Add(this,REG_PRIORITY_NORMAL);
+//.	Device.seqDevCreate.Add	(this,REG_PRIORITY_LOW);
+//.	Device.seqDevDestroy.Add(this,REG_PRIORITY_NORMAL);
     m_Flags.assign		(flObjectsDraw);
 }
 
 EDetailManager::~EDetailManager(){
-	Device.seqDevCreate.Remove(this);
-	Device.seqDevDestroy.Remove(this);
+//.	Device.seqDevCreate.Remove(this);
+//.	Device.seqDevDestroy.Remove(this);
 	Clear	();
     Unload	();
 }

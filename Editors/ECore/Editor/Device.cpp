@@ -207,7 +207,7 @@ void CRenderDevice::_Create(IReader* F)
 
 	// signal another objects
     UI->OnDeviceCreate			();           
-	seqDevCreate.Process		(rp_DeviceCreate);
+//.	seqDevCreate.Process		(rp_DeviceCreate);
 
 	pSystemFont					= xr_new<CGameFont>("hud_font_small");
 }
@@ -224,7 +224,7 @@ void CRenderDevice::_Destroy(BOOL	bKeepTextures)
 	m_WireShader.destroy		();
 	m_SelectionShader.destroy	();
 
-	seqDevDestroy.Process		(rp_DeviceDestroy);
+//.	seqDevDestroy.Process		(rp_DeviceDestroy);
 	::Render->Models->OnDeviceDestroy	();
 
 	Resources->OnDeviceDestroy	(bKeepTextures);
