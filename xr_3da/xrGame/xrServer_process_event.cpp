@@ -56,8 +56,12 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 					game->OnPlayerReady		(C->ID);
 				}
 			}
-		}
-		break;
+		}break;
+	case GEG_PLAYER_BUY_FINISHED:
+		{
+			xrClientData *l_pC = ID_to_client(sender);
+			game->OnPlayerBuyFinished(l_pC->ID, P);
+		}break;
 	case GE_INFO_TRANSFER:
 		SendBroadcast			(0xffffffff,P,MODE);
 		break;

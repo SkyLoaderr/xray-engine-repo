@@ -238,12 +238,7 @@ protected:
 	string64	m_SectionName;
 	// Кнопки OK и Cancel
 	CUIButton	UIBtnOK, UIBtnCancel;
-	// calllback function for OK button
-	typedef void (*ButtonClickCallback) (int);
-	ButtonClickCallback pCallbackFunc;
 public:
-	// Установить функцию callback'а
-	void SetCallbackFunc(ButtonClickCallback pFunc) { pCallbackFunc = pFunc; }
 	// Получить имя секции в weapon.ltx соответствующий оружию в слоте
 	const char *GetWeaponName(u32 slotNum);
 	// Получить индекс оружия в массиве доступных, из заданного слота.

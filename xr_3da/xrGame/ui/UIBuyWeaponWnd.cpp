@@ -59,8 +59,6 @@ CUIBuyWeaponWnd::CUIBuyWeaponWnd()
 
 	Init("deathmatch");
 
-	pCallbackFunc = NULL;
-
 	SetFont(HUD().pFontMedium);
 }
 
@@ -728,16 +726,13 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	// Кнопки ОК и Отмена
 	else if (&UIBtnOK == pWnd && CUIButton::BUTTON_CLICKED == msg)
 	{
-		if (pCallbackFunc) 
-		{
-			// Если надо вызвать с каким-то осознанным значением, то определи сам :)	
-			pCallbackFunc(1);
-		}
 		HUD().GetUI()->UIGame()->StartStopMenu(this);
+		HUD().GetUI()->UIGame()->OnBuyMenu_Ok();
 	}
 	else if (&UIBtnCancel == pWnd && CUIButton::BUTTON_CLICKED == msg)
 	{
 		HUD().GetUI()->UIGame()->StartStopMenu(this);
+		HUD().GetUI()->UIGame()->OnBuyMenu_Cancel();
 	}
 
 	CUIWindow::SendMessage(pWnd, msg, pData);
