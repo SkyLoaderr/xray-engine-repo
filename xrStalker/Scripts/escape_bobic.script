@@ -1,7 +1,10 @@
 module("m_monster_ai")
 
+local sounds = {}
+
+-- БОБИК
 function main()
-	local dog = m_monster_ai.m_MonsterBobic("m_dog1", this.script_name(), vector():set(10, 10, 10) )
+	local dog = m_monster_ai.m_MonsterBobic("dog_bobic", this.script_name(), vector():set(10, 10, 10) )
 
     while(dog:execute()) do
     	wait()
@@ -10,3 +13,102 @@ function main()
     dog:finalize()
 end
 
+
+---------------------------------------------------------------------------------------------------------------------
+--Evaluators
+----------------------------------------------------------------------------------------------------------------------
+class "evaluator_bobik" (property_evaluator)
+function evaluator_bobik:__init() super ()
+	self.timer = 60000
+	self.time = 0
+end
+function evaluator_bobik:evaluate ()
+	-- слышим ли мы бобика
+
+	-- определяем что нам известно о звуке объекта
+	local stable = self.object:memory_sound_objects()
+	if stable == nil then return false end
+	for s in stable do
+		local so = s:object()
+		if continue then
+                        if is_object_online(so:id()) then
+				so_id = so:clsid()
+			else
+				continue = false
+			end
+		end
+		if continue then
+			printf("%s", so:name())
+			if so:name() ~= "escape_bobic" or 
+			   bit_and(s:type(), snd_type.attack) ~= snd_type.attack or
+			   bit_and(s:type(), snd_type.monster) ~= snd_type.monster
+			then
+				continue = false
+			end
+		end
+		if continue then
+			printf("GAF GAF")
+		end
+	end
+      	return false
+end
+
+----------------------------------------------------------------------------------------------------------------------
+--Actions
+----------------------------------------------------------------------------------------------------------------------
+class "action_bobik" (action_base)
+function action_bobik:__init (npc_name,action_name) super (nil, action_name)
+end
+function action_bobik:initialize()
+    	action_base.initialize(self)
+    	self.object:set_node_evaluator()
+    	self.object:set_path_evaluator()
+    	self.object:set_desired_position()
+    	self.object:set_desired_direction()
+end
+function action_bobik:execute()
+   	action_base.execute(self)
+end
+function action_bobik:finalize()
+    	action_base.finalize(self)
+end
+
+----------------------------------------------------------------------------------------------------------------------
+-- binder
+----------------------------------------------------------------------------------------------------------------------
+function add_to_binder(object)
+	local operators		= {}
+	local properties	= {}
+
+	local manager = object:motivation_action_manager()
+
+	properties["bobik"] 		= xr_evaluators_id.stohe_bobik_base + 0
+
+	operators["bobik"] 		= xr_actions_id.stohe_bobik_base + 0
+
+	-- Evaluators
+	manager:add_evaluator (properties["bobik"], 		this.evaluator_bobik())
+
+	-- Actions
+	local action = this.action_bobik (object:name(),"action_bobik")
+	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
+	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
+	action:add_precondition		(world_property(properties["bobik"],		true))
+	action:add_effect		(world_property(properties["bobik"],		false))
+	manager:add_action (operators["bobik"], action)
+
+	action = manager:action (stalker_ids.action_puzzle_solver)	
+	action:add_precondition		(world_property(properties["bobik"],		false))
+
+	object:set_hear_callback(this.bobik_callback)
+end
+
+function bobik_callback(self, who, sound_type, sound_position, sound_power)
+	printf("BOBIK")
+end
+
+function bobik_alarm()
+end
+
+function bobik_die()
+end
