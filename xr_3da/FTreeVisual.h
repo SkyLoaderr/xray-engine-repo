@@ -34,5 +34,5 @@ public:
 	virtual ~FTreeVisual(void);
 };
 
-const int		FTreeVisual_tile	= 8;
+const int		FTreeVisual_tile	= 16;
 const int		FTreeVisual_quant	= 32768/FTreeVisual_tile;
