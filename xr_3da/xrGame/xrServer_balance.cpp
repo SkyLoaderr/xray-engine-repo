@@ -5,7 +5,7 @@ xrClientData* xrServer::SelectBestClientToMigrateTo	(CSE_Abstract* E, BOOL bForc
 	if (bForceAnother)
 	{
 		// DUMB SELECTION - NOT THE CURRENT OWNER
-		for (u32 it=0; it<net_Players.size(); it++)
+		for (u32 it=0; it<net_Players.size(); ++it)
 		{
 			if (E->owner!=net_Players[it])	return (xrClientData*)net_Players[it];
 		}

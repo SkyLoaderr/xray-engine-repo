@@ -58,7 +58,7 @@ class CID_Generator {
 			return				(VALUE_ID(l_tID_Block.m_tpIDs[--l_tID_Block.m_tCount]) + l_tBlockID*tBlockSize + tMinValue);
 
 		TYPE_ID					*l_tpBlockID = std::find(l_tID_Block.m_tpIDs, l_tID_Block.m_tpIDs + l_tID_Block.m_tCount, TYPE_ID((tValueID - tMinValue)%tBlockSize));	
-		R_ASSERT2				(l_tpBlockID != l_tID_Block.m_tpIDs + l_tID_Block.m_tCount,"Requesting ID has already been used!");
+		R_ASSERT2				(l_tID_Block.m_tpIDs + l_tID_Block.m_tCount != l_tpBlockID,"Requesting ID has already been used!");
 		*l_tpBlockID			= *(l_tID_Block.m_tpIDs + --l_tID_Block.m_tCount);
 		return					(tValueID);
 	}
@@ -69,12 +69,12 @@ public:
 								CID_Generator	()
 	{
 		m_tInvalidValueID		= tInvalidValueID;
-		for (VALUE_ID i=0; ; i++) {
+		for (VALUE_ID i=0; ; ++i) {
 			vfFreeID			(i,tStartTime);
 			if (i >= tMaxValue)
 				break;
 		}
-		for (u32 j=0; j<m_tBlockCount; j++)
+		for (u32 j=0; j<m_tBlockCount; ++j)
 			std::reverse		(m_tppBlocks[j].m_tpIDs,m_tppBlocks[j].m_tpIDs + m_tppBlocks[j].m_tCount);
 	}
 
@@ -86,7 +86,7 @@ public:
 	{
 		if (tInvalidValueID == tValueID) {
 			TIME_BLOCK_PAIR_IT	I = m_tpTimeMap.begin();
-			R_ASSERT2			(I != m_tpTimeMap.end(),"Not enough IDs");
+			R_ASSERT2			(m_tpTimeMap.end() != I,"Not enough IDs");
 			return				(tfGetFromBlock(I,tValueID));
 		}
 		else {
@@ -94,7 +94,7 @@ public:
 			TIME_ID				l_tTimeID = m_tppBlocks[l_tBlockID].m_tTimeID;
 			TIME_BLOCK_PAIR_IT	I = m_tpTimeMap.find(l_tTimeID);
 			TIME_BLOCK_PAIR_IT	E = m_tpTimeMap.end();
-			for ( ; I != E; I++)
+			for ( ; I != E; ++I)
 				if ((*I).second == l_tBlockID)
 					return		(tfGetFromBlock(I,tValueID));
 			R_ASSERT2			(false,"Requesting ID has already been used!");
@@ -115,7 +115,7 @@ public:
 			bool				bOk = false;
 			TIME_BLOCK_PAIR_IT	I = m_tpTimeMap.find(l_tID_Block.m_tTimeID);
 			TIME_BLOCK_PAIR_IT	E = m_tpTimeMap.end();
-			for ( ; I != E; I++)
+			for ( ; I != E; ++I)
 				if ((*I).second == l_tBlockID) {
 					m_tpTimeMap.erase	(I);
 					m_tpTimeMap.insert	(mk_pair(tTimeID,l_tBlockID));

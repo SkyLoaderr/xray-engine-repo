@@ -24,7 +24,7 @@ xrClientData*	xrServer::ID_to_client		(DPNID ID)
 {
 	if (0==ID)			return 0;
 	csPlayers.Enter		();
-	for (u32 client=0; client<net_Players.size(); client++)
+	for (u32 client=0; client<net_Players.size(); ++client)
 	{
 		if (net_Players[client]->ID==ID)	{
 			csPlayers.Leave		();
@@ -40,7 +40,7 @@ CSE_Abstract*	xrServer::ID_to_entity		(u16 ID)
 #pragma todo("??? to all : ID_to_entity - must be replaced to 'game->entity_from_eid()'")	
 	if (0xffff==ID)				return 0;
 	xrS_entities::iterator	I	= entities.find	(ID);
-	if (I!=entities.end())		return I->second;
+	if (entities.end()!=I)		return I->second;
 	else						return 0;
 }
 
@@ -88,7 +88,7 @@ void xrServer::Update	()
 	}
 
 	// 
-	for (u32 client=0; client<net_Players.size(); client++)
+	for (u32 client=0; client<net_Players.size(); ++client)
 	{
 		// Initialize process and check for available bandwidth
 		xrClientData*	Client		= (xrClientData*) net_Players	[client];
@@ -101,14 +101,14 @@ void xrServer::Update	()
 		Packet.w_begin	(M_UPDATE);
 
 		// GameUpdate
-		Client->game_replicate_id	++;
+		++(Client->game_replicate_id);
 		u32		g_it				= (Client->game_replicate_id % client_Count());
 		u32		g_id				= net_Players[g_it]->ID;
 		game->net_Export_Update		(Packet,Client->ID,g_id);
 
 		// Entities
 		xrS_entities::iterator	I=entities.begin(),E=entities.end();
-		for (; I!=E; I++)
+		for (; I!=E; ++I)
 		{
 			CSE_Abstract&	Test = *(I->second);
 

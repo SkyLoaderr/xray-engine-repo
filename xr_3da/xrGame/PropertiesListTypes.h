@@ -173,14 +173,14 @@ public:
 						PropItem		(EPropType _type):type(_type),item(0),key(0),tag(0),subitem(1),OnClickEvent(0),OnAfterEditEvent(0),OnBeforeEditEvent(0),OnDrawTextEvent(0),OnItemFocused(0){m_Flags.zero();}
 	virtual 			~PropItem		()
     {
-    	for (PropValueIt it=values.begin(); it!=values.end(); it++)
+    	for (PropValueIt it=values.begin(); values.end() != it; ++it)
         	xr_delete	(*it);
     };
     void				SetItemHeight	(int height){item->OwnerHeight=false; item->Height=height;}
     void				SetName			(const AnsiString& name){key=name;}
     IC void				ResetValues		()
     {
-    	for (PropValueIt it=values.begin(); it!=values.end(); it++)
+    	for (PropValueIt it=values.begin(); values.end() != it; ++it)
         	(*it)->ResetValue();
         CheckMixed		();
     }
@@ -200,8 +200,8 @@ public:
 		m_Flags.set		(flMixed,FALSE);
         if (values.size()>1){
             PropValueIt F	= values.begin();
-        	PropValueIt it	= F; it++;
-	    	for (; it!=values.end(); it++){
+        	PropValueIt it	= F; ++it;
+	    	for (; values.end() != it; ++it){
     	    	if (!(*it)->Equal(*F)){
                 	m_Flags.set(flMixed,TRUE);
                     break;
@@ -213,7 +213,7 @@ public:
     IC bool 			ApplyValue		(LPVOID val)
     {
     	bool bChanged	= false;
-    	for (PropValueIt it=values.begin(); it!=values.end(); it++)
+    	for (PropValueIt it=values.begin(); values.end() != it; ++it)
         	if ((*it)->ApplyValue(val)){
             	bChanged = true;
                 if ((*it)->OnChangeEvent) (*it)->OnChangeEvent(*it);
@@ -240,7 +240,7 @@ public:
     }
 	IC void				OnChange		()
     {
-    	for (PropValueIt it=values.begin(); it!=values.end(); it++)
+    	for (PropValueIt it=values.begin(); values.end() != it; ++it)
         	if ((*it)->OnChangeEvent) 	(*it)->OnChangeEvent(*it);
     }
 };
@@ -298,7 +298,7 @@ public:
     	btn_num			= -1;
     	AnsiString 		v;
         int cnt=_GetItemCount(val.c_str()); 
-        for (int k=0; k<cnt; k++)
+        for (int k=0; k<cnt; ++k)
         	value.push_back(_GetItem(val.c_str(),k,v));
     }
     virtual LPCSTR		GetText			(TOnDrawTextEvent){return 0;}
@@ -608,13 +608,13 @@ public:
 	AStringVec 			items;
 public:                                   
 						ListValue		(LPSTR val, int lim, AStringVec* _items):TextValue(val,lim),items(*_items){};
-						ListValue		(LPSTR val, int lim, u32 cnt, LPCSTR* _items):TextValue(val,lim){items.resize(cnt); int i=0; for (AStringIt it=items.begin(); it!=items.end(); it++,i++) *it=_items[i]; };
+						ListValue		(LPSTR val, int lim, u32 cnt, LPCSTR* _items):TextValue(val,lim){items.resize(cnt); int i=0; for (AStringIt it=items.begin(); items.end() != it; ++it,++i) *it=_items[i]; };
 	virtual bool		Equal			(PropValue* val)
     {
     	if (OnTestEqual) return OnTestEqual(this,val);
     	AStringIt s_it	= items.begin();
     	AStringIt d_it	= ((ListValue*)val)->items.begin();
-    	for (; s_it!=items.end(); s_it++,d_it++)
+    	for (; items.end()!=s_it; ++s_it,++d_it)
         	if ((*s_it)!=(*d_it)) {m_Owner->m_Flags.set(PropItem::flDisabled,TRUE); return false;}
         return TextValue::Equal(val);
     }
