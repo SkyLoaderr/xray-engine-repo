@@ -42,7 +42,7 @@ extern "C" {
 		T->transfer = xrTransfer_x86;
 		T->memCopy	= xrMemCopy_x86;
 		T->memFill	= NULL;
-		T->memFill32= NULL;
+		T->memFill32= xrMemFill32_MMX;
 		
 		// SSE
 		if (dwFeatures & _CPU_FEATURE_SSE) {
