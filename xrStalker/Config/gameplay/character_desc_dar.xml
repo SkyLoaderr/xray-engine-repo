@@ -18,6 +18,7 @@
 			[spawn] \n
 			wpn_ak74 \n
 			ammo_5.45x39_fmj \n
+			device_torch \n
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>

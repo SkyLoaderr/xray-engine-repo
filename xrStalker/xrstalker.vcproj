@@ -195,7 +195,7 @@
 					RelativePath=".\Config\gameplay\character_desc_bar.xml">
 				</File>
 				<File
-					RelativePath=".\Config\gameplay\character_desc_dar.xml">
+					RelativePath=".\config\gameplay\character_desc_dar.xml">
 				</File>
 				<File
 					RelativePath=".\Config\gameplay\character_desc_dolg.xml">
@@ -256,6 +256,9 @@
 				</File>
 				<File
 					RelativePath=".\Config\gameplay\storyline_info_to_diary.xml">
+				</File>
+				<File
+					RelativePath=".\config\gameplay\tasks_radar.xml">
 				</File>
 				<Filter
 					Name="Dialogs"
@@ -1535,6 +1538,9 @@
 					<Filter
 						Name="Physics"
 						Filter="">
+						<File
+							RelativePath=".\scripts\fx_sound.script">
+						</File>
 						<File
 							RelativePath=".\Scripts\ph_button.script">
 						</File>
