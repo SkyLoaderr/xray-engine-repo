@@ -194,7 +194,7 @@ namespace PathManagers {
 
 			LPCSTR		S = pSettings->r_string(section,Name);
 			string16	I;
-			for (u32 i=0, j=0; i<dwSelectorVarCount; i++)
+			for (u32 i=0, j=0; i<dwSelectorVarCount; ++i)
 				if ((qwFlags & (u64(1) << i)) == (u64(1) << i))
 					*(m_tpVarValues[i]) = float(atof(_GetItem(S,j++,I)));
 		}
@@ -214,7 +214,7 @@ namespace PathManagers {
 			if (CHECK_CONDITION(aiMemberDistance) || CHECK_CONDITION(aiCoverFromMemberWeight) || CHECK_CONDITION(aiMemberViewDeviationWeight) || CHECK_CONDITION(aiEnemySurround)) {
 				if (m_taMemberPositions.size()) {
 					if (m_iAliveMemberCount) {
-						for ( m_iCurrentMember=0 ; m_iCurrentMember<(int)m_taMemberPositions.size(); m_iCurrentMember++) {
+						for ( m_iCurrentMember=0 ; m_iCurrentMember<(int)m_taMemberPositions.size(); ++m_iCurrentMember) {
 							vfAssignMemberPositionAndNode();
 							vfComputeMemberDirection();
 							CALL_FUNCTION(aiMemberDistance,vfAddDistanceToMemberCost);
@@ -523,7 +523,7 @@ namespace PathManagers {
 
 		IC		void vfAddMemberDanger						()
 		{
-			for (int i=0; i<(int)m_taMemberPositions.size(); i++) {
+			for (int i=0; i<(int)m_taMemberPositions.size(); ++i) {
 				float fAlpha = m_tEnemyDirection.dotproduct(m_taMemberPositions[i]);
 				clamp(fAlpha,-.99999f,+.99999f);
 				fAlpha = acosf(fAlpha);
