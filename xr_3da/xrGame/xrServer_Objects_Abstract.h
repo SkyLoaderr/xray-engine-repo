@@ -11,6 +11,7 @@
 
 #include "alife_interfaces.h"
 #include "xrServer_Space.h"
+#include "script_export_space.h"
 
 class CPureServerObject : public IPureServerObject {
 public:
@@ -19,7 +20,11 @@ public:
 	virtual void					save(IWriter	&tMemoryStream);
 	virtual void					load(NET_Packet	&tNetPacket);
 	virtual void					save(NET_Packet	&tNetPacket);
+//	static  void					script_register(lua_State *L);
 };
+add_to_type_list(CPureServerObject)
+#undef script_type_list
+#define script_type_list save_type_list(CPureServerObject)
 
 class xrClientData;
 
@@ -68,6 +73,9 @@ public:
     virtual void					FillProp		(LPCSTR pref, PropItemVec &items);
 #endif
 };
+add_to_type_list(CSE_Abstract)
+#undef script_type_list
+#define script_type_list save_type_list(CSE_Abstract)
 
 class CSE_Shape
 {
@@ -94,6 +102,9 @@ public:
 									CSE_Shape		();
 	virtual							~CSE_Shape		();
 };
+add_to_type_list(CSE_Shape)
+#undef script_type_list
+#define script_type_list save_type_list(CSE_Shape)
 
 class CSE_Visual
 {
@@ -119,6 +130,9 @@ public:
     void 							FillProp		(LPCSTR pref, PropItemVec& values);
 #endif
 };
+add_to_type_list(CSE_Visual)
+#undef script_type_list
+#define script_type_list save_type_list(CSE_Visual)
 
 #ifdef _EDITOR
 	class CObjectAnimator;
@@ -147,5 +161,8 @@ public:
     void 							FillProp		(LPCSTR pref, PropItemVec& values);
 #endif
 };
+add_to_type_list(CSE_Motion)
+#undef script_type_list
+#define script_type_list save_type_list(CSE_Motion)
 
 #endif // xrServer_Objects_AbstractH

@@ -88,16 +88,25 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_Spectator,CSE_Abstract)
 	virtual							~CSE_Spectator	();
 	virtual u8						g_team			();
 SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_Spectator)
+#undef script_type_list
+#define script_type_list save_type_list(CSE_Spectator)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_Target,CSE_Abstract)
 									CSE_Target		(LPCSTR caSection);
 	virtual							~CSE_Target		();
 SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_Target)
+#undef script_type_list
+#define script_type_list save_type_list(CSE_Target)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_TargetAssault,CSE_Target)
 									CSE_TargetAssault(LPCSTR caSection);
 	virtual							~CSE_TargetAssault();
 SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_TargetAssault)
+#undef script_type_list
+#define script_type_list save_type_list(CSE_TargetAssault)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_Target_CS_Base,CSE_Target)
 	float							radius;
@@ -106,24 +115,36 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_Target_CS_Base,CSE_Target)
 	virtual							~CSE_Target_CS_Base();
 	virtual u8						g_team			();
 SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_Target_CS_Base)
+#undef script_type_list
+#define script_type_list save_type_list(CSE_Target_CS_Base)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_Target_CS_Cask,CSE_Target)
 	string64						s_Model;
 									CSE_Target_CS_Cask(LPCSTR caSection);
 	virtual							~CSE_Target_CS_Cask();
 SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_Target_CS_Cask)
+#undef script_type_list
+#define script_type_list save_type_list(CSE_Target_CS_Cask)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_Target_CS,CSE_Target)
 	string64						s_Model;
 									CSE_Target_CS	(LPCSTR caSection);
 	virtual							~CSE_Target_CS	();
 SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_Target_CS)
+#undef script_type_list
+#define script_type_list save_type_list(CSE_Target_CS)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_Temporary,CSE_Abstract)
 	u32								m_tNodeID;
 									CSE_Temporary	(LPCSTR caSection);
 	virtual							~CSE_Temporary	();
 SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_Temporary)
+#undef script_type_list
+#define script_type_list save_type_list(CSE_Temporary)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Event,CSE_Shape,CSE_Abstract)
 	struct tAction
@@ -139,6 +160,9 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_Event,CSE_Shape,CSE_Abstract)
 	virtual							~CSE_Event		();
 			void					Actions_clear	();
 SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_Event)
+#undef script_type_list
+#define script_type_list save_type_list(CSE_Event)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_SpawnGroup,CSE_Abstract)
 	float							m_fGroupProbability;
@@ -147,9 +171,12 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_SpawnGroup,CSE_Abstract)
 									CSE_SpawnGroup	(LPCSTR caSection);
 	virtual							~CSE_SpawnGroup	();
 SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_SpawnGroup)
+#undef script_type_list
+#define script_type_list save_type_list(CSE_SpawnGroup)
 
 #ifndef AI_COMPILER
-extern CSE_Abstract		*F_entity_Create	(LPCSTR caSection);
+extern CSE_Abstract	*F_entity_Create	(LPCSTR caSection);
 #endif
 
 #endif

@@ -58,6 +58,9 @@ public:
 	SPHNetState						State;
 	///////////////////////////////////
 SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_ALifeInventoryItem)
+#undef script_type_list
+#define script_type_list save_type_list(CSE_ALifeInventoryItem)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeItem,CSE_ALifeDynamicObjectVisual,CSE_ALifeInventoryItem)
 									CSE_ALifeItem	(LPCSTR caSection);
@@ -66,24 +69,18 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeItem,CSE_ALifeDynamicObjectVisual,CSE_ALif
 	virtual const CSE_Abstract		*base			() const;
 	virtual CSE_Abstract			*init					();
 SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_ALifeItem)
+#undef script_type_list
+#define script_type_list save_type_list(CSE_ALifeItem)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemTorch,CSE_ALifeItem)
-/*
-	u32								color;
-	string64						animator;
-	string64						spot_texture;
-	float							spot_range;
-	float							spot_cone_angle;
-    float							spot_brightness;
-	string64						glow_texture;
-	float							glow_radius;
-    u16								guid_bone;
-*/
 	bool							m_active;
-
 									CSE_ALifeItemTorch	(LPCSTR caSection);
     virtual							~CSE_ALifeItemTorch	();
 SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_ALifeItemTorch)
+#undef script_type_list
+#define script_type_list save_type_list(CSE_ALifeItemTorch)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemAmmo,CSE_ALifeItem)
 	u16								a_elapsed;
@@ -92,6 +89,9 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemAmmo,CSE_ALifeItem)
 									CSE_ALifeItemAmmo	(LPCSTR caSection);
 	virtual							~CSE_ALifeItemAmmo	();
 SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_ALifeItemAmmo)
+#undef script_type_list
+#define script_type_list save_type_list(CSE_ALifeItemAmmo)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemWeapon,CSE_ALifeItem)
 
@@ -135,17 +135,26 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemWeapon,CSE_ALifeItem)
 	u16								get_ammo_elapsed();
 	u16								get_ammo_magsize();
 SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_ALifeItemWeapon)
+#undef script_type_list
+#define script_type_list save_type_list(CSE_ALifeItemWeapon)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemDetector,CSE_ALifeItem)
 									CSE_ALifeItemDetector(LPCSTR caSection);
 	virtual							~CSE_ALifeItemDetector();
 SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_ALifeItemDetector)
+#undef script_type_list
+#define script_type_list save_type_list(CSE_ALifeItemDetector)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemArtefact,CSE_ALifeItem)
 	float							m_fAnomalyValue;
 									CSE_ALifeItemArtefact(LPCSTR caSection);
 	virtual							~CSE_ALifeItemArtefact();
 SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_ALifeItemArtefact)
+#undef script_type_list
+#define script_type_list save_type_list(CSE_ALifeItemArtefact)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemPDA,CSE_ALifeItem)
 	u16								m_original_owner;
@@ -153,32 +162,50 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemPDA,CSE_ALifeItem)
 									CSE_ALifeItemPDA(LPCSTR caSection);
 	virtual							~CSE_ALifeItemPDA();
 SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_ALifeItemPDA)
+#undef script_type_list
+#define script_type_list save_type_list(CSE_ALifeItemPDA)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemDocument,CSE_ALifeItem)
 	u16								m_wDocIndex;
 									CSE_ALifeItemDocument(LPCSTR caSection);
 	virtual							~CSE_ALifeItemDocument();
 SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_ALifeItemDocument)
+#undef script_type_list
+#define script_type_list save_type_list(CSE_ALifeItemDocument)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemGrenade,CSE_ALifeItem)
 									CSE_ALifeItemGrenade(LPCSTR caSection);
 	virtual							~CSE_ALifeItemGrenade();
 SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_ALifeItemGrenade)
+#undef script_type_list
+#define script_type_list save_type_list(CSE_ALifeItemGrenade)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemExplosive,CSE_ALifeItem)
 									CSE_ALifeItemExplosive(LPCSTR caSection);
 	virtual							~CSE_ALifeItemExplosive();
 SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_ALifeItemExplosive)
+#undef script_type_list
+#define script_type_list save_type_list(CSE_ALifeItemExplosive)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemBolt,CSE_ALifeItem)
 									CSE_ALifeItemBolt(LPCSTR caSection);
 	virtual							~CSE_ALifeItemBolt();
 	virtual bool					can_save			() const;
 SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_ALifeItemBolt)
+#undef script_type_list
+#define script_type_list save_type_list(CSE_ALifeItemBolt)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemCustomOutfit,CSE_ALifeItem)
 									CSE_ALifeItemCustomOutfit(LPCSTR caSection);
 	virtual							~CSE_ALifeItemCustomOutfit();
 SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_ALifeItemCustomOutfit)
+#undef script_type_list
+#define script_type_list save_type_list(CSE_ALifeItemCustomOutfit)
 
 #endif

@@ -35,6 +35,9 @@ public:
 	virtual void					spawn_supplies			();
 #endif
 SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_ALifeTraderAbstract)
+#undef script_type_list
+#define script_type_list save_type_list(CSE_ALifeTraderAbstract)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeTrader,CSE_ALifeDynamicObjectVisual,CSE_ALifeTraderAbstract)
 	ALife::_ORGANIZATION_ID				m_tOrgID;
@@ -57,6 +60,9 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeTrader,CSE_ALifeDynamicObjectVisual,CSE_AL
 	virtual void					spawn_supplies			();
 #endif
 SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_ALifeTrader)
+#undef script_type_list
+#define script_type_list save_type_list(CSE_ALifeTrader)
 
 SERVER_ENTITY_DECLARE_BEGIN3(CSE_ALifeAnomalousZone,CSE_ALifeDynamicObject,CSE_ALifeSchedulable,CSE_Shape)
 	f32								m_maxPower;
@@ -89,7 +95,9 @@ SERVER_ENTITY_DECLARE_BEGIN3(CSE_ALifeAnomalousZone,CSE_ALifeDynamicObject,CSE_A
 #endif
 	virtual bool					need_update				(CSE_ALifeDynamicObject *object);
 SERVER_ENTITY_DECLARE_END
-
+add_to_type_list(CSE_ALifeAnomalousZone)
+#undef script_type_list
+#define script_type_list save_type_list(CSE_ALifeAnomalousZone)
 
 //---------------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------
@@ -105,7 +113,6 @@ SERVER_ENTITY_DECLARE_END
 //---------------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------
-
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCreatureAbstract,CSE_ALifeDynamicObjectVisual)
 	u8								s_team;
@@ -132,6 +139,9 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCreatureAbstract,CSE_ALifeDynamicObjectVisu
 	virtual bool					can_switch_online		() const;
 	virtual bool					can_switch_offline		() const;
 SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_ALifeCreatureAbstract)
+#undef script_type_list
+#define script_type_list save_type_list(CSE_ALifeCreatureAbstract)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,CSE_ALifeSchedulable)
 	ALife::_GRAPH_ID				m_tNextGraphID;
@@ -167,6 +177,9 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,
 #endif
 	virtual bool					need_update				(CSE_ALifeDynamicObject *object);
 SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_ALifeMonsterAbstract)
+#undef script_type_list
+#define script_type_list save_type_list(CSE_ALifeMonsterAbstract)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeCreatureActor,CSE_ALifeCreatureAbstract,CSE_ALifeTraderAbstract)
 	u16								mstate;
@@ -190,12 +203,18 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeCreatureActor,CSE_ALifeCreatureAbstract,CS
 	virtual void					spawn_supplies			();
 #endif
 SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_ALifeCreatureActor)
+#undef script_type_list
+#define script_type_list save_type_list(CSE_ALifeCreatureActor)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCreatureCrow,CSE_ALifeCreatureAbstract)
 									CSE_ALifeCreatureCrow	(LPCSTR caSection);
 	virtual							~CSE_ALifeCreatureCrow	();
 	virtual bool					used_ai_locations		() const;
 SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_ALifeCreatureCrow)
+#undef script_type_list
+#define script_type_list save_type_list(CSE_ALifeCreatureCrow)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterRat,CSE_ALifeMonsterAbstract,CSE_ALifeInventoryItem)
 	// Personal characteristics:
@@ -229,6 +248,9 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterRat,CSE_ALifeMonsterAbstract,CSE_AL
 	virtual CSE_Abstract			*base				();
 	virtual const CSE_Abstract		*base				() const;
 SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_ALifeMonsterRat)
+#undef script_type_list
+#define script_type_list save_type_list(CSE_ALifeMonsterRat)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeMonsterZombie,CSE_ALifeMonsterAbstract)
 	// Personal characteristics:
@@ -248,14 +270,19 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeMonsterZombie,CSE_ALifeMonsterAbstract)
 									CSE_ALifeMonsterZombie	(LPCSTR caSection);				// constructor for variable initialization
 	virtual							~CSE_ALifeMonsterZombie	();
 SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_ALifeMonsterZombie)
+#undef script_type_list
+#define script_type_list save_type_list(CSE_ALifeMonsterZombie)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeMonsterBiting,CSE_ALifeMonsterAbstract)
 									CSE_ALifeMonsterBiting	(LPCSTR caSection);				// constructor for variable initialization
 	virtual							~CSE_ALifeMonsterBiting	();
 SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_ALifeMonsterBiting)
+#undef script_type_list
+#define script_type_list save_type_list(CSE_ALifeMonsterBiting)
 
 //-------------------------------
-
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_ALifeMonsterAbstract)
 	DWORD_VECTOR					m_tpPath;
 	u32								m_dwCurNode;
@@ -331,11 +358,17 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 	virtual void					spawn_supplies			();
 #endif
 SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_ALifeHumanAbstract)
+#undef script_type_list
+#define script_type_list save_type_list(CSE_ALifeHumanAbstract)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeHumanStalker,CSE_ALifeHumanAbstract)
 									CSE_ALifeHumanStalker	(LPCSTR caSection);
 	virtual							~CSE_ALifeHumanStalker	();
 SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_ALifeHumanStalker)
+#undef script_type_list
+#define script_type_list save_type_list(CSE_ALifeHumanStalker)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectIdol,CSE_ALifeHumanAbstract)
 	string256						m_caAnimations;
@@ -343,5 +376,8 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectIdol,CSE_ALifeHumanAbstract)
 									CSE_ALifeObjectIdol		(LPCSTR caSection);
 	virtual							~CSE_ALifeObjectIdol	();
 SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_ALifeObjectIdol)
+#undef script_type_list
+#define script_type_list save_type_list(CSE_ALifeObjectIdol)
 
 #endif

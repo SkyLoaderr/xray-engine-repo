@@ -8,11 +8,9 @@
 
 #include "stdafx.h"
 #include "script_engine.h"
-
-#pragma warning(push)
-#pragma warning(disable:4005)
+#define SCRIPT_REGISTRATOR
+#include "script_export_space.h"
 #include "script_engine_export.h"
-#pragma warning(pop)
 
 template <typename TList> struct Register
 {
