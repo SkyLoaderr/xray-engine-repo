@@ -30,7 +30,7 @@ void CPhraseDialogManager::InitDialog (CPhraseDialogManager* dialog_partner, DIA
 void CPhraseDialogManager::AddDialog(DIALOG_SHARED_PTR& phrase_dialog)
 {
 	DIALOG_VECTOR_IT it = std::find(m_ActiveDialogs.begin(), m_ActiveDialogs.end(), phrase_dialog);
-	VERIFY(m_ActiveDialogs.end() == it);
+	THROW(m_ActiveDialogs.end() == it);
 	m_ActiveDialogs.push_back(phrase_dialog);
 }
 
@@ -41,9 +41,9 @@ void CPhraseDialogManager::SayPhrase(DIALOG_SHARED_PTR& phrase_dialog,
 									 PHRASE_ID phrase_id)
 {
 	DIALOG_VECTOR_IT it = std::find(m_ActiveDialogs.begin(), m_ActiveDialogs.end(), phrase_dialog);
-	VERIFY(m_ActiveDialogs.end() != it);
+	THROW(m_ActiveDialogs.end() != it);
 
-	VERIFY(phrase_dialog->IsWeSpeaking(this));
+	THROW(phrase_dialog->IsWeSpeaking(this));
 	bool coninue_talking = CPhraseDialog::SayPhrase(phrase_dialog, phrase_id);
 
 	if(!coninue_talking)

@@ -1700,9 +1700,6 @@
 								Name="level_registry"
 								Filter="">
 								<File
-									RelativePath=".\alife_level_registry.cpp">
-								</File>
-								<File
 									RelativePath=".\alife_level_registry.h">
 								</File>
 								<File

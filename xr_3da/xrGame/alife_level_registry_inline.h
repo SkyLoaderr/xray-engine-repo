@@ -62,7 +62,7 @@ IC	CSE_ALifeDynamicObject *CALifeLevelRegistry::object	(const ALife::_OBJECT_ID 
 {
 	_REGISTRY::const_iterator	I = objects().find(id);
 	if (I == objects().end()) {
-		R_ASSERT2		(no_assert,"The spesified object hasn't been found in the current level!");
+		THROW2			(no_assert,"The spesified object hasn't been found in the current level!");
 		return			(0);
 	}
 	return				((*I).second);

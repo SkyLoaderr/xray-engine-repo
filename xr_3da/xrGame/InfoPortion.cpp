@@ -61,11 +61,11 @@ void CInfoPortion::load_shared	(LPCSTR)
 	strconcat(xml_file_full, *shared_str(item_data.file_name), ".xml");
 
 	bool xml_result = uiXml.Init(CONFIG_PATH, GAME_PATH, xml_file_full);
-	R_ASSERT3(xml_result, "xml file not found", xml_file_full);
+	THROW3(xml_result, "xml file not found", xml_file_full);
 
 	//loading from XML
 	XML_NODE* pNode = uiXml.NavigateToNode(id_to_index::tag_name, item_data.pos_in_file);
-	R_ASSERT3(pNode, "info_portion id=", *shared_str(item_data.id));
+	THROW3(pNode, "info_portion id=", *shared_str(item_data.id));
 
 
 	int defer_init = uiXml.ReadAttribInt(pNode, "defer_init", 0);
@@ -115,7 +115,7 @@ void CInfoPortion::load_shared	(LPCSTR)
 	for(i=0; i<articles_num; ++i)
 	{
 		LPCSTR article_str_id = uiXml.Read(pNode, "article", i, NULL);
-		R_ASSERT(article_str_id);
+		THROW(article_str_id);
 		info_data()->m_Articles.push_back(CEncyclopediaArticle::IdToIndex(article_str_id));
 	}
 	//индексы статей, которые уберутся из реестра
@@ -124,7 +124,7 @@ void CInfoPortion::load_shared	(LPCSTR)
 	for(i=0; i<articles_num; ++i)
 	{
 		LPCSTR article_str_id = uiXml.Read(pNode, "article_disable", i, NULL);
-		R_ASSERT(article_str_id);
+		THROW(article_str_id);
 		info_data()->m_ArticlesDisable.push_back(CEncyclopediaArticle::IdToIndex(article_str_id));
 	}
 	
@@ -134,7 +134,7 @@ void CInfoPortion::load_shared	(LPCSTR)
 	for(i=0; i<task_num; ++i)
 	{
 		LPCSTR task_str_id = uiXml.Read(pNode, "task", i, NULL);
-		R_ASSERT(task_str_id);
+		THROW(task_str_id);
 		info_data()->m_GameTasks.push_back(CGameTask::IdToIndex(task_str_id));
 	}
 
@@ -195,7 +195,7 @@ void CInfoPortion::load_shared	(LPCSTR)
 				if (story_id != -1 && ai().get_alife())
 				{
 					CSE_ALifeDynamicObject	*object	= ai().alife().story_objects().object(ALife::_STORY_ID(story_id));
-					VERIFY(object);
+					THROW(object);
 
 					map_location.attached_to_object = true;
 					map_location.object_id = object->ID;

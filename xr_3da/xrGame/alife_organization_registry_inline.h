@@ -17,7 +17,7 @@ IC	CALifeDiscovery	*CALifeOrganizationRegistry::discovery	(LPCSTR discovery_name
 {
 	ALife::DISCOVERY_P_MAP::const_iterator	I = m_discoveries.find(discovery_name);
 	if (I == m_discoveries.end()) {
-		R_ASSERT3			(no_assert,"Cannot find ther specified discovery",discovery_name);
+		THROW3				(no_assert,"Cannot find ther specified discovery",discovery_name);
 		return				(0);
 	}
 	return					((*I).second);

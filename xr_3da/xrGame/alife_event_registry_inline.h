@@ -22,7 +22,7 @@ IC	CALifeEvent *CALifeEventRegistry::event				(const ALife::_EVENT_ID &event_id,
 {
 	ALife::EVENT_MAP::const_iterator	I = events().find(event_id);
 	if (events().end() == I) {
-		R_ASSERT2					(no_assert,"Specified event hasn't been found in the Event registry!");
+		THROW2						(no_assert,"Specified event hasn't been found in the Event registry!");
 		return						(0);
 	}
 	return							((*I).second);
@@ -31,17 +31,17 @@ IC	CALifeEvent *CALifeEventRegistry::event				(const ALife::_EVENT_ID &event_id,
 IC	void CALifeEventRegistry::add						(CALifeEvent *event)
 {
 	if (m_events.find(event->m_tEventID) != m_events.end()) {
-		R_ASSERT2					((*(m_events.find(event->m_tEventID))).second == event,"The specified event is already presented in the Event Registry!");
-		R_ASSERT2					((*(m_events.find(event->m_tEventID))).second != event,"Event with the specified ID is already presented in the Event Registry!");
+		THROW2						((*(m_events.find(event->m_tEventID))).second == event,"The specified event is already presented in the Event Registry!");
+		THROW2						((*(m_events.find(event->m_tEventID))).second != event,"Event with the specified ID is already presented in the Event Registry!");
 	}
-	m_events.insert				(mk_pair(event->m_tEventID = m_id++,event));
+	m_events.insert					(mk_pair(event->m_tEventID = m_id++,event));
 }
 
 IC	void CALifeEventRegistry::remove					(const ALife::_EVENT_ID &event_id, bool no_assert)
 {
 	ALife::EVENT_MAP::iterator		I = m_events.find(event_id);
 	if (m_events.end() == I) {
-		R_ASSERT2					(no_assert,"The specified event is not found in the Event Registry!");
+		THROW2						(no_assert,"The specified event is not found in the Event Registry!");
 		return;
 	}
 	m_events.erase					(I);

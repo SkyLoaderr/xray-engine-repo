@@ -107,7 +107,7 @@ const typename CSXML_IdToIndex::ITEM_DATA* CSXML_IdToIndex::GetById (const T_ID&
 
 	if(ItemDataVector().end() == it)
 	{
-		R_ASSERT3(no_assert, "item not found, id", *str_id);
+		THROW3(no_assert, "item not found, id", *str_id);
 		return NULL;
 	}
 		
@@ -122,7 +122,7 @@ const typename CSXML_IdToIndex::ITEM_DATA* CSXML_IdToIndex::GetByIndex(T_INDEX i
 
 	if((size_t)index>=ItemDataVector().size())
 	{
-		R_ASSERT3(no_assert, "item by index not found in files", file_str);
+		THROW3(no_assert, "item by index not found in files", file_str);
 		return NULL;
 	}
 	return &ItemDataVector()[index];
@@ -159,7 +159,7 @@ typename CSXML_IdToIndex::T_VECTOR&	CSXML_IdToIndex::ItemDataVector ()
 			xml_file_full += ".xml";
 			//strconcat(xml_file_full, *shared_str(xml_file), ".xml");
 			bool xml_result = uiXml.Init(CONFIG_PATH, GAME_PATH, xml_file_full.c_str());
-			R_ASSERT3(xml_result, "xml file not found", xml_file_full.c_str());
+			THROW3(xml_result, "xml file not found", xml_file_full.c_str());
 
 			//общий список
 			int items_num = uiXml.GetNodesNum(uiXml.GetRoot(), tag_name);
@@ -169,7 +169,7 @@ typename CSXML_IdToIndex::T_VECTOR&	CSXML_IdToIndex::ItemDataVector ()
 
 				string256 buf;
 				sprintf(buf, "id for item don't set, number %d in %s", i, xml_file);
-				R_ASSERT2(item_name, buf);
+				THROW2(item_name, buf);
 
 
 				//проверетить ID на уникальность
@@ -180,7 +180,7 @@ typename CSXML_IdToIndex::T_VECTOR&	CSXML_IdToIndex::ItemDataVector ()
 						break;
 				}
 
-				R_ASSERT3(m_pItemDataVector->end() == t_it, "duplicate item id", item_name);
+				THROW3(m_pItemDataVector->end() == t_it, "duplicate item id", item_name);
 
 				ITEM_DATA data;
 				data.id = item_name;

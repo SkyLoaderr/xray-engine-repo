@@ -30,7 +30,7 @@ public:
 	IC		void					remove				(CSE_ALifeDynamicObject *tpALifeDynamicObject, bool no_assert = false);
 	template <typename _update_predicate>
 	IC		void					update				(const _update_predicate &predicate);
-	IC		GameGraph::_LEVEL_ID		level_id			() const;
+	IC		GameGraph::_LEVEL_ID	level_id			() const;
 	IC		CSE_ALifeDynamicObject	*object				(const ALife::_OBJECT_ID &id, bool no_assert = false) const;
 };
 

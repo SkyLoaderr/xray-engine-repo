@@ -66,8 +66,8 @@ LPCSTR GAME_NEWS_DATA::FullText()
 
 	if(news_id == NOT_SIMULATION_NEWS)
 	{
-		VERIFY(news_text != NO_STRING);
-		VERIFY(xr_strlen(*CStringTable()((STRING_INDEX)news_text))<sizeof(newsPhrase));
+		THROW(news_text != NO_STRING);
+		THROW(xr_strlen(*CStringTable()((STRING_INDEX)news_text))<sizeof(newsPhrase));
 		strcpy(newsPhrase, *CStringTable()((STRING_INDEX)news_text)) ;
 	}
 	else

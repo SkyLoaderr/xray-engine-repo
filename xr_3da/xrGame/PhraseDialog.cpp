@@ -45,7 +45,7 @@ CPhraseDialog::~CPhraseDialog(void)
 void CPhraseDialog::Init(CPhraseDialogManager* speaker_first, 
 						 CPhraseDialogManager* speaker_second)
 {
-	VERIFY(!IsInit());
+	THROW(!IsInit());
 
 	m_pSpeakerFirst = speaker_first;
 	m_pSpeakerSecond = speaker_second;
@@ -54,7 +54,7 @@ void CPhraseDialog::Init(CPhraseDialogManager* speaker_first,
 	m_PhraseVector.clear();
 
 	CPhraseGraph::CVertex* phrase_vertex = data()->m_PhraseGraph.vertex(START_PHRASE);
-	VERIFY(phrase_vertex);
+	THROW(phrase_vertex);
 	m_PhraseVector.push_back(phrase_vertex->data());
 
 	m_bFinished = false;
@@ -93,7 +93,7 @@ static bool PhraseGoodwillPred(const CPhrase* phrase1, const CPhrase* phrase2)
 
 bool CPhraseDialog::SayPhrase (DIALOG_SHARED_PTR& phrase_dialog, PHRASE_ID phrase_id)
 {
-	VERIFY(phrase_dialog->IsInit());
+	THROW(phrase_dialog->IsInit());
 
 	phrase_dialog->m_iSaidPhraseID = phrase_id;
 
@@ -105,7 +105,7 @@ bool CPhraseDialog::SayPhrase (DIALOG_SHARED_PTR& phrase_dialog, PHRASE_ID phras
 	if(!first_is_speaking) std::swap(pSpeakerGO1, pSpeakerGO2);
 
 	CPhraseGraph::CVertex* phrase_vertex = phrase_dialog->data()->m_PhraseGraph.vertex(phrase_dialog->m_iSaidPhraseID);
-	VERIFY(phrase_vertex);
+	THROW(phrase_vertex);
 
 	CPhrase* last_phrase = phrase_vertex->data();
 
@@ -124,13 +124,13 @@ bool CPhraseDialog::SayPhrase (DIALOG_SHARED_PTR& phrase_dialog, PHRASE_ID phras
 		{
 			const CPhraseGraph::CEdge& edge = *it;
 			CPhraseGraph::CVertex* next_phrase_vertex = phrase_dialog->data()->m_PhraseGraph.vertex(edge.vertex_id());
-			VERIFY(next_phrase_vertex);
+			THROW(next_phrase_vertex);
 
 			if(next_phrase_vertex->data()->m_PhraseScript.Precondition(pSpeakerGO2, pSpeakerGO1, *CPhraseDialog::IndexToId(phrase_dialog->m_DialogIndex), (int)phrase_id))
 				phrase_dialog->m_PhraseVector.push_back(next_phrase_vertex->data());
 		}
 
-		R_ASSERT3(!phrase_dialog->m_PhraseVector.empty(), "No available phrase to say.", *shared_str(CPhraseDialog::IndexToId(phrase_dialog->m_DialogIndex)));
+		THROW3(!phrase_dialog->m_PhraseVector.empty(), "No available phrase to say.", *shared_str(CPhraseDialog::IndexToId(phrase_dialog->m_DialogIndex)));
 
 		//упорядочить списко по убыванию благосклонности
 		std::sort(phrase_dialog->m_PhraseVector.begin(),
@@ -157,7 +157,7 @@ LPCSTR CPhraseDialog::GetPhraseText	(PHRASE_ID phrase_id, bool current_speaking)
 {
 	
 	CPhraseGraph::CVertex* phrase_vertex = data()->m_PhraseGraph.vertex(phrase_id);
-	VERIFY(phrase_vertex);
+	THROW(phrase_vertex);
 	
 	//если есть скриптовый текст, то он и будет задан
 	const CGameObject*	pSpeakerGO1 = smart_cast<const CGameObject*>(CurrentSpeaker());
@@ -209,11 +209,11 @@ void CPhraseDialog::load_shared	(LPCSTR)
 	strconcat(xml_file_full, *shared_str(item_data.file_name), ".xml");
 
 	bool xml_result = uiXml.Init(CONFIG_PATH, GAME_PATH, xml_file_full);
-	R_ASSERT3(xml_result, "xml file not found", xml_file_full);
+	THROW3(xml_result, "xml file not found", xml_file_full);
 
 	//loading from XML
 	XML_NODE* dialog_node = uiXml.NavigateToNode(id_to_index::tag_name, item_data.pos_in_file);
-	R_ASSERT3(dialog_node, "dialog id=", *shared_str(item_data.id));
+	THROW3(dialog_node, "dialog id=", *shared_str(item_data.id));
 
 	uiXml.SetLocalRoot(dialog_node);
 
@@ -243,17 +243,17 @@ void CPhraseDialog::load_shared	(LPCSTR)
 
 	phrase_list_node = uiXml.NavigateToNode(dialog_node, "phrase_list", 0);
 	int phrase_num = uiXml.GetNodesNum(phrase_list_node, "phrase");
-	R_ASSERT3(phrase_num, "dialog %s has no phrases at all", *shared_str(item_data.id));
+	THROW3(phrase_num, "dialog %s has no phrases at all", *shared_str(item_data.id));
 
 	uiXml.SetLocalRoot(phrase_list_node);
 
 	LPCSTR wrong_phrase_id = uiXml.CheckUniqueAttrib(phrase_list_node, "phrase", "id");
-	R_ASSERT3(wrong_phrase_id == NULL, *shared_str(item_data.id), wrong_phrase_id);
+	THROW3(wrong_phrase_id == NULL, *shared_str(item_data.id), wrong_phrase_id);
 	
 
 	//ищем стартовую фразу
 	XML_NODE* phrase_node = uiXml.NavigateToNodeWithAttribute("phrase", "id", START_PHRASE_STR);
-	VERIFY(phrase_node);
+	THROW(phrase_node);
 	AddPhrase(phrase_node, START_PHRASE);
 }
 
@@ -288,7 +288,7 @@ void CPhraseDialog::AddPhrase	(XML_NODE* phrase_node, PHRASE_ID phrase_id)
 	{
 		LPCSTR next_phrase_id_str = uiXml.Read(phrase_node, "next", i, "");
 		XML_NODE* next_phrase_node = uiXml.NavigateToNodeWithAttribute("phrase", "id", next_phrase_id_str);
-		VERIFY(next_phrase_node);
+		THROW(next_phrase_node);
 		int next_phrase_id = atoi(next_phrase_id_str);
 
 		AddPhrase (next_phrase_node, next_phrase_id);

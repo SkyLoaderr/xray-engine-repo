@@ -18,10 +18,14 @@
 #include "script_entity_space.h"
 
 #ifdef DEBUG
+#	include "space_restriction_manager.h"
+
 bool show_restrictions(CRestrictedObject *object)
 {
-	Msg		("OUT RESTRICTIONS : %s",*object->out_restrictions() ? *object->out_restrictions() : "");
-	Msg		("IN RESTRICTIONS  : %s",*object->in_restrictions()  ? *object->in_restrictions()  : "");
+	Msg		("DEFAULT OUT RESTRICTIONS : %s",*Level().space_restriction_manager().default_out_restrictions() ? *Level().space_restriction_manager().default_out_restrictions() : "");
+	Msg		("DEFAULT IN RESTRICTIONS  : %s",*Level().space_restriction_manager().default_in_restrictions()  ? *Level().space_restriction_manager().default_in_restrictions()  : "");
+	Msg		("OUT RESTRICTIONS         : %s",*object->out_restrictions() ? *object->out_restrictions() : "");
+	Msg		("IN RESTRICTIONS          : %s",*object->in_restrictions()  ? *object->in_restrictions()  : "");
 	return	(false);
 }
 #endif
