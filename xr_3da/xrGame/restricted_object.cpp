@@ -18,7 +18,7 @@
 bool RestrictedObject::CShapeRestriction::accessible	(const Fvector &position) const
 {
 	VERIFY							(m_restrictor);
-	return							(!m_restrictor->inside(position));
+	return							(m_restrictor->inside(position));
 }
 
 CRestrictedObject::~CRestrictedObject	()
