@@ -361,8 +361,9 @@ void CActor::Update	(DWORD DT)
 	if (!bEnabled)	return;
 
 	Msg				("ACTOR: %f,%f,%f",vPosition.x,vPosition.y,vPosition.z);
+	clamp			(DT,0ul,66ul);
 	float	dt		= float(DT)/1000.f;
-
+	
 	// Check controls, create accel, prelimitary setup "mstate_real"
 	float	Jump	= 0;
 	if (Local())	{
