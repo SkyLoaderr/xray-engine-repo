@@ -54,9 +54,9 @@ void CWeaponMagazined::StopHUDSounds		()
 	HUD_SOUND::StopSound(sndEmptyClick);
 	HUD_SOUND::StopSound(sndReload);
 
-	//HUD_SOUND::StopSound(sndShot);
-	if(sndShot.enable && sndShot.snd.feedback)
-		sndShot.snd.feedback->switch_to_3D();
+	HUD_SOUND::StopSound(sndShot);
+//.	if(sndShot.enable && sndShot.snd.feedback)
+//.		sndShot.snd.feedback->switch_to_3D();
 
 	inherited::StopHUDSounds();
 }
@@ -439,20 +439,22 @@ void CWeaponMagazined::UpdateSounds	()
 	
 	dwUpdateSounds_Frame = Device.dwFrame;
 
-	// ref_sound positions
+/*	// ref_sound positions
 	if (sndShow.snd.feedback || 
 		sndHide.snd.feedback || 
 		sndShot.snd.feedback || 
 		sndReload.snd.feedback || 
 		sndEmptyClick.snd.feedback)
+*/
+	if(true)
 	{
 		UpdateFP					();
 
-		if (sndShow.snd.feedback)		sndShow.set_position		(vLastFP);
-		if (sndHide.snd.feedback)		sndHide.set_position		(vLastFP);
-		if (sndShot.snd.feedback)		sndShot.set_position		(vLastFP);
-		if (sndReload.snd.feedback)		sndReload.set_position		(vLastFP);
-		if (sndEmptyClick.snd.feedback)	sndEmptyClick.set_position	(vLastFP);
+		if (true/*sndShow.snd.feedback*/)		sndShow.set_position		(vLastFP);
+		if (true/*sndHide.snd.feedback*/)		sndHide.set_position		(vLastFP);
+		if (true/*sndShot.snd.feedback*/)		sndShot.set_position		(vLastFP);
+		if (true/*sndReload.snd.feedback*/)		sndReload.set_position		(vLastFP);
+		if (true/*sndEmptyClick.snd.feedback*/)	sndEmptyClick.set_position	(vLastFP);
 	}
 }
 

@@ -589,17 +589,19 @@ void  CWeaponMagazinedWGrenade::PlayAnimModeSwitch()
 void CWeaponMagazinedWGrenade::UpdateSounds	()
 {
 	inherited::UpdateSounds();
-
-	// ref_sound positions
-	if (sndShotG.snd.feedback || 
+#pragma todo("Andy to Andy: fix it")
+// ref_sound positions
+/*	if (sndShotG.snd.feedback || 
 		sndReloadG.snd.feedback || 
 		sndSwitch.snd.feedback)
+*/
+	if(true)
 	{
 		UpdateFP					();
 
-		if (sndShotG.snd.feedback)		sndShotG.set_position		(vLastFP);
-		if (sndReloadG.snd.feedback)	sndReloadG.set_position		(vLastFP);
-		if (sndSwitch.snd.feedback)		sndSwitch.set_position		(vLastFP);
+		if (true/*sndShotG.snd.feedback*/)		sndShotG.set_position		(vLastFP);
+		if (true/*sndReloadG.snd.feedback*/)	sndReloadG.set_position		(vLastFP);
+		if (true/*sndSwitch.snd.feedback*/)		sndSwitch.set_position		(vLastFP);
 	}
 }
 

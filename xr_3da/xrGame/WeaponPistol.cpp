@@ -162,5 +162,5 @@ void CWeaponPistol::UpdateSounds()
 	inherited::UpdateSounds();
 
 	UpdateFP();
-	if (sndClose.snd.feedback) sndClose.set_position(vLastFP);
+	if (true/*sndClose.snd.feedback*/) sndClose.set_position(vLastFP);
 }
