@@ -2,6 +2,8 @@
 #pragma hdrstop
 
 #include "HangingLamp.h"
+#include "..\LightAnimLibrary.h"
+#include "PhysicsShell.h"
  
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -9,8 +11,11 @@
 
 CHangingLamp::CHangingLamp	()
 {
-	light_render				= ::Render->light_create();
-	light_render->set_shadow	(true);
+	body					= 0;
+	light_bone_idx			= -1;
+	lanim					= 0;
+	light_render			= ::Render->light_create();
+	light_render->set_shadow(true);
 }
 
 CHangingLamp::~CHangingLamp	()
@@ -40,8 +45,12 @@ BOOL CHangingLamp::net_Spawn(LPVOID DC)
 
 	R_ASSERT				(pVisual&&PKinematics(pVisual));
 	PKinematics(pVisual)->PlayCycle("idle");
-//	PALib.
-//	lamp->animator;
+	lanim					= LALib.FindItem(lamp->animator);
+
+	CreateBody				();
+
+	setVisible(true);
+	setEnabled(true);
 
 	return TRUE;
 }
@@ -51,19 +60,23 @@ void CHangingLamp::Update	(u32 dt)
 	inherited::Update		(dt);
 }
 
-void CHangingLamp::UpdateCL		()
+void CHangingLamp::UpdateCL	()
 {
 	inherited::UpdateCL		();
 }
 
-void CHangingLamp::OnVisible	()
+void CHangingLamp::OnVisible()
 {
-	inherited::OnVisible();
+	inherited::OnVisible	();
 
-	Fmatrix& M = PKinematics(pVisual)->LL_GetTransform(light_bone_idx);
+	Fmatrix& M = (light_bone_idx>=0)?PKinematics(pVisual)->LL_GetTransform(light_bone_idx):clXFORM();
 	light_render->set_direction	(M.k);
 	light_render->set_position	(M.c);
-//	light_render->set_color		(light_color);
+	if (lanim){
+		int frame;
+		u32 clr		= lanim->Calculate(Device.fTimeGlobal,frame); // возвращает в формате BGR
+		light_render->set_color(color_get_B(clr),color_get_G(clr),color_get_R(clr));
+	}
 }
 
 void CHangingLamp::Hit(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space, float impulse)
@@ -72,3 +85,7 @@ void CHangingLamp::Hit(float P, Fvector &dir,	CObject* who, s16 element,Fvector 
 	light_render->set_active(false);
 }
 
+void CHangingLamp::CreateBody()
+{
+//	body					= PCreateShell xr_new<CPhysicsShell>();
+}

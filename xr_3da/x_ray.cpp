@@ -14,6 +14,7 @@
 #include "GameFont.h"
 #include <crtdbg.h>
 #include "resource.h"
+#include "LightAnimLibrary.h"
    
 // global variables
 ENGINE_API	CApplication*	pApp			= NULL;
@@ -59,6 +60,7 @@ void Startup				()
 
 	// Initialize APP
 	Device.Create				( );
+	LALib.OnCreate				( );
 	pApp						= xr_new<CApplication>	();
 
 	// Destroy LOGO
@@ -77,6 +79,7 @@ void Startup				()
 	xr_delete					( pInput		);
 	xr_delete					( pSettings		);
 
+	LALib.OnDestroy				( );
 	Console.Destroy				( );
 	Device.Destroy				( );
 	Engine.Destroy				( );

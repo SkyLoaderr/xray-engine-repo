@@ -8,12 +8,18 @@
 
 #include "gameobject.h"
 
+// refs
+class CLAItem;
+
 class CHangingLamp: public CGameObject
 {
 	typedef	CGameObject		inherited;
 private:
 	int				light_bone_idx;
 	IRender_Light*	light_render;
+	CLAItem*		lanim;
+	CPhysicsShell*	body;
+	void			CreateBody		();
 public:
 					CHangingLamp	();
 	virtual			~CHangingLamp	();
