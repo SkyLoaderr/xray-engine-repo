@@ -113,6 +113,7 @@ void CLightR_Manager::render_spot	()
 	//		2. Calculate visibility for light
 	//		3. Set global light-params to be used by shading
 	//		4. Dump sorting tree
+	//		??? grass ???
 }
 
 void CLightR_Manager::render		()
