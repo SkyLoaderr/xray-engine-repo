@@ -596,6 +596,12 @@
 					RelativePath=".\xrLoadSurface.cpp">
 				</File>
 				<File
+					RelativePath="xrMU_Model.cpp">
+				</File>
+				<File
+					RelativePath="xrMU_Model.h">
+				</File>
+				<File
 					RelativePath=".\xrUVpoint.h">
 				</File>
 				<Filter

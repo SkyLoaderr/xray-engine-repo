@@ -21,10 +21,10 @@ typedef vecUnroll::iterator		vecUnrollIt;
 struct OGF;
 struct OGF_Vertex
 {
-	Fvector		P;
-	Fvector		N;
-	DWORD		Color;
-	svector<UVpoint,8>	UV;
+	Fvector				P;
+	Fvector				N;
+	DWORD				Color;
+	svector<UVpoint,4>	UV;
 
 	BOOL		similar(OGF* p, OGF_Vertex&	other);
 };
