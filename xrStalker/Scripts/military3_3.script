@@ -9,18 +9,18 @@ function main ()
 	--тут мы сидим и чистим ружжо :)
 
 	action (stalker, move (move.standing, move.stand, move.line, patrol ("way_sh")),
-			look (), anim ("chistit ruje_1", true), cond (cond.anim_end))
+			look (), anim ("stul", true), cond (cond.anim_end))
 
-    while stalker:action () do wait () end
+--    while stalker:action () do wait () end
 
-	reset_action (stalker, military3_3.script_name ())
+--	reset_action (stalker, military3_3.script_name ())
 	action (stalker, move (move.standing, move.stand, move.line, patrol ("way_sh")),
-			look (), anim ("chistit ruje_1", true), cond (cond.anim_end))
+			look (), anim ("stul", true), cond (cond.anim_end))
 
-    while stalker:action () do wait () end
+--    while stalker:action () do wait () end
 
 	--подъем !!!
-	reset_action (stalker, military3_3.script_name ())
+--	reset_action (stalker, military3_3.script_name ())
 
 	action (stalker, move (move.standing, move.stand, move.line, patrol ("way_sh")),
 			look (), anim ("stul_podyem", true), cond (cond.anim_end))

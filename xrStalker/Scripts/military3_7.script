@@ -11,6 +11,9 @@ function main ()
 	anim_end:add_animation ("proverka_dver", false)
 	anim_end:add_animation ("uslishal", false)
 
+	local actor = get_actor ()
+  	local horror_sound = sound_object("rnd_the_horror4")
+
 	local bredun1 = classes.SinglePatrol (get_level_object ("stalker_ptr3"), military3_7.script_name (), "patrol_way1", anim_razv, anim_end)
 	local bredun2 = classes.SinglePatrol (get_level_object ("stalker_ptr4"), military3_7.script_name (), "patrol_way1", anim_razv, anim_end)
 	local bredun3 = classes.SinglePatrol (get_level_object ("stalker_ptr6"), military3_7.script_name (), "patrol_way1", anim_razv, anim_end)
@@ -19,6 +22,9 @@ function main ()
 	local bredun6 = classes.SinglePatrol (get_level_object ("stalker_ptr1"), military3_7.script_name (), "patrol_way2", anim_razv, anim_end)
 	local bredun7 = classes.SinglePatrol (get_level_object ("stalker_ptr2"), military3_7.script_name (), "patrol_way2", anim_razv, anim_end)
 	local bredun8 = classes.SinglePatrol (get_level_object ("stalker_ptr5"), military3_7.script_name (), "patrol_way2", anim_razv, anim_end)
+
+	local old_time = game.time ()
+	local played = false
 
 	while true do 
 		  bredun1:process ()		
@@ -30,6 +36,29 @@ function main ()
 		  bredun7:process ()		
 		  bredun8:process ()		
 		  wait ()
+		  local t = game.time () - old_time
+		  if t > 30000 and math.random (1, 100) > 50 and played == false then
+			 action_first (bredun1.npc, move (move.standing, move.stand, move.line, patrol ("patrol_way2")),
+						   anim_end:get_animation (), cond (cond.anim_end))		  	
+			 action_first (bredun2.npc, move (move.standing, move.stand, move.line, patrol ("patrol_way2")),
+						   anim_end:get_animation (), cond (cond.anim_end))		  	
+			 action_first (bredun3.npc, move (move.standing, move.stand, move.line, patrol ("patrol_way2")),
+						   anim_end:get_animation (), cond (cond.anim_end))		  	
+			 action_first (bredun4.npc, move (move.standing, move.stand, move.line, patrol ("patrol_way2")),
+						   anim_end:get_animation (), cond (cond.anim_end))		  	
+			 action_first (bredun5.npc, move (move.standing, move.stand, move.line, patrol ("patrol_way2")),
+						   anim_end:get_animation (), cond (cond.anim_end))		  	
+			 action_first (bredun6.npc, move (move.standing, move.stand, move.line, patrol ("patrol_way2")),
+						   anim_end:get_animation (), cond (cond.anim_end))		  	
+			 action_first (bredun7.npc, move (move.standing, move.stand, move.line, patrol ("patrol_way2")),
+						   anim_end:get_animation (), cond (cond.anim_end))		  	
+			 action_first (bredun8.npc, move (move.standing, move.stand, move.line, patrol ("patrol_way2")),
+						   anim_end:get_animation (), cond (cond.anim_end))		  	
+			 
+	      	 horror_sound:play_at_pos (actor, actor:position (), 0);
+			 old_time = game.time ()
+			 played = true
+			 end
 		  end
 
   bredun1:finish ()
