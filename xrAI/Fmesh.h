@@ -77,6 +77,7 @@ enum OGF_Chuncks {
 	OGF_MOTIONS,	// * For skeletons only
 	OGF_DPATCH,		// --- DPatches only
 	OGF_P_LODS,
+    OGF_CHILDREN,
     OGF_forcedword	= 0xFFFFFFFF
 };
 
