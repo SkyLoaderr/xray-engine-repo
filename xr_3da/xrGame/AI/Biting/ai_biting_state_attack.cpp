@@ -539,7 +539,7 @@ bool CBitingAttack::CheckRotationJump()
 {
 	//if (MotionMan.Seq_Active()) return false;
 	
-	if (flags.is(AF_HAS_JUMP_ABILITY) && pJumping->IsActive()) return false;
+	if (pJumping && pJumping->IsActive()) return false;
 	
 	// check angle
 	float yaw, pitch;
