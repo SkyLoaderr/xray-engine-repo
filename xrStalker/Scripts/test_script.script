@@ -2,10 +2,12 @@ module("ui_save_dialog")
 module("ui_load_dialog")
 
 function main()
-local dlg = ui_main_menu.main_menu()
-level.start_stop_menu(dlg,true)
+--local dlg = ui_main_menu.main_menu()
+--level.start_stop_menu(dlg,true)
 --	while (1) do
 	--	wait(1000)
 	--end
-printf("dddddddddddddddddd")
+	local t = game.time()
+	wait(10000)
+	local dt = game.time() - t
 end
