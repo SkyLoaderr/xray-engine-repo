@@ -106,7 +106,7 @@ void bwdithermap	(int levels, double gamma, int bwmap[], int divN[256], int modN
     int gammamap[256];
     
     for ( i = 0; i < 256; i++ )
-	gammamap[i] = (int)(0.5 + 255 * pow( i / 255.0, 1.0/gamma ));
+		gammamap[i] = (int)(0.5 + 255 * pow( i / 255.0, 1.0/gamma ));
 
     N = 255.0 / (levels - 1);    /* Get size of each step */
 
@@ -114,7 +114,7 @@ void bwdithermap	(int levels, double gamma, int bwmap[], int divN[256], int modN
      * Set up the color map entries.
      */
     for(i = 0; i < levels; i++)
-	bwmap[i] = gammamap[(int)(0.5 + i * N)];
+		bwmap[i] = gammamap[(int)(0.5 + i * N)];
 
 
     make_square( N, divN, modN, magic );
@@ -220,6 +220,7 @@ int dithergb( int x, int y, int r, int g, int b, int levels, int divN[256], int 
  * Algorithm:
  * 	see "Note:" in bwdithermap comment.
  */
+
 int ditherbw( int x, int y, int val, int divN[256], int modN[256], int magic[16][16] )
 {
     int col = x % 16, row = y % 16;
@@ -229,9 +230,28 @@ int ditherbw( int x, int y, int val, int divN[256], int modN[256], int magic[16]
 
 int main(int argc, char* argv[])
 {
-	CImage tex("x:\\dbg\\in.tga");
+	CImage tex;
+	tex.LoadTGA("x:\\dbg\\in.tga");
 	
+	int			bwmap[2];
+	int			divN [256];
+	int			modN [256];
+	int			magic[16][16];
+	bwdithermap	(2,1,bwmap,divN,modN,magic);
 
+	for (DWORD y=0; y<tex.dwHeight; y++)
+		for (DWORD x=0; x<tex.dwWidth; x++)
+		{
+			DWORD c		= tex.GetPixel(x,y);
+			DWORD val	= c&255;
+
+		    int row		= y % 16; int col = x % 16;
+ 			int new_c	= divN[val] > magic[col][row] ? 255 : 0;
+			
+			tex.PutPixel(x,y,RGB(new_c,new_c,new_c));
+			// ditherbw(x,y,c&255,divN,modN,magic);
+		}
+	
 	printf("Hello World!\n");
 	return 0;
 }
