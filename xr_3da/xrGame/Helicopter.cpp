@@ -166,6 +166,8 @@ CHelicopter::net_Spawn(LPVOID	DC)
 	if (!inherited::net_Spawn(DC))
 		return			(FALSE);
 
+//	PPhysicsShell()=P_build_Shell	(this,true);
+
 	CRocketLauncher::SpawnRocket(*m_sRocketSection, dynamic_cast<CGameObject*>(this/*H_Parent()*/));
 	CRocketLauncher::SpawnRocket(*m_sRocketSection, dynamic_cast<CGameObject*>(this/*H_Parent()*/));
 	CRocketLauncher::SpawnRocket(*m_sRocketSection, dynamic_cast<CGameObject*>(this/*H_Parent()*/));
@@ -229,7 +231,6 @@ CHelicopter::net_Spawn(LPVOID	DC)
 	m_engineSound.create(TRUE,*heli->engine_sound);
 	m_engineSound.play_at_pos(0,XFORM().c,sm_Looped);
 
-//	PPhysicsShell()=P_build_Shell	(this,true);
 
 	setVisible			(true);
 	setEnabled			(true);
@@ -268,7 +269,7 @@ CHelicopter::UpdateCL()
 	
 	m_movementMngr.onFrame( XFORM(),Device.fTimeDelta );
 
-/*	if( PPhysicsShell()&&(GetfHealth() < 0.0f) )
+/*	if( PPhysicsShell()&&(GetfHealth() < 99.97f) )
 	{
 		PPhysicsShell()->InterpolateGlobalTransform(&XFORM());
 		return;
