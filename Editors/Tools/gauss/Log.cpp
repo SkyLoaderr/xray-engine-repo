@@ -59,7 +59,8 @@ void CLog::Create(LPCSTR _FileName, bool bContinue){
     bReady = TRUE;
 }
 
-int CLog::DlgMsg (TMsgDlgType mt, TMsgDlgButtons btn, LPCSTR _Format, ...){
+int CLog::DlgMsg (TMsgDlgType mt, TMsgDlgButtons btn, LPCSTR _Format, ...)
+{
 	if(!bReady) return -1;
     g_ErrorMode = true;
 	char buf[4096];
@@ -83,8 +84,8 @@ int CLog::DlgMsg (TMsgDlgType mt, TMsgDlgButtons btn, LPCSTR _Format, ...){
 #ifdef _MAX_PLUGIN
 	switch(mt){
 	case mtError:		MessageBox(0,buf,"Error",		MB_OK|MB_ICONERROR);		break;
-	case mtInformation: MessageBox(0,buf,"Information",	MB_OK|MB_ICONINFORMATION); break;
-	default:			MessageBox(0,buf,"Information",	MB_OK|MB_ICONINFORMATION); break;
+	case mtInformation: MessageBox(0,buf,"Information",	MB_OK|MB_ICONINFORMATION);	break;
+	default:			MessageBox(0,buf,"Information",	MB_OK|MB_ICONINFORMATION);	break;
 	}
 #endif
 
