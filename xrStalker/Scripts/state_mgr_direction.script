@@ -25,6 +25,7 @@ function eva_state_mgr_direction:evaluate()
 	if self.target_position == nil then
 		-- если текущая позиция нулевая
 		if self.st.current_direction == nil then
+			self:callback()
 			return true
 		else
 			return false
@@ -39,10 +40,19 @@ function eva_state_mgr_direction:evaluate()
 			self.st.planner:action(self.st.operators["direction_turn"]).target_position = self.target_position
 			return false
 		else
+			self:callback()	
 			return true
 		end
 	end	
 	return true
+end
+function eva_state_mgr_direction:callback()
+	if self.st.callback ~= nil and
+	   self.st.callback.turn_end_func ~= nil 
+	then
+		self.st.callback.turn_end_func(self.st.callback.obj)
+		self.st.callback.turn_end_func = nil		
+	end
 end
 
 class "eva_state_mgr_direction_search" (property_evaluator)
