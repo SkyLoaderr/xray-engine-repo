@@ -53,21 +53,35 @@ void CRender::InsertSG_Static(FBasicVisual *pVisual)
 
 		// Select List and add to it
 		Shader*		sh	= pVisual->hShader;
-		CXRShader*	shr = sh->shader;
-		if (shr->Flags.bStrictB2F) {
+		if (sh->Flags.bStrictB2F) {
 			SceneGraph::mapSorted_Node* N		= mapSorted.insertInAnyWay(distSQ);
 			N->val.pVisual			= pVisual;
 			N->val.Matrix			= precalc_identity;
 			N->val.vCenter.set		(pVisual->bv_Position);
 		} else {
-			SceneGraph::mapNormal_Node*	N		= mapNormal[shr->Flags.iPriority].insert(sh);
-			if (!N->val.ssa_valid)	{
-				N->val.ssa_valid	= TRUE;
-				N->val.ssa			= SSA;
-			} else if (SSA<N->val.ssa)	N->val.ssa=SSA;
-
-			if (SSA<ssaDONTSORT)		N->val.direct.unsorted.push_back	(pVisual);
-			else						N->val.direct.sorted.insertInAnyWay	(distSQ,pVisual);
+			for (DWORD pass_id=0; pass_id<sh->Passes.size(); pass_id++)
+			{
+				mapNormal_Code&				code	= mapNormal	[sh->Flags.iPriority][pass_id];
+				CPass&						pass	= sh->Passes[pass_id];
+				mapNormal_Code::TNode*		Ncode	= code.insert		(pass.dwStateBlock);
+				mapNormal_Textures::TNode*	Ntex	= Ncode->val.insert	(pass.T);
+				mapNormal_Matrices::TNode*	Nmat	= Ntex->val.insert	(pass.M);
+				mapNormal_Constants::TNode*	Nconst	= Nmat->val.insert	(pass.C);
+				mapNormalItem&	item				= Nconst->val;
+				if (pass)	{
+					// No need to sort - ZB already setted up
+					item.direct.unsorted.push_back	(pVisual);
+				} else {
+					// Need to sort for HZB efficient use
+					if (!item.ssa_valid)		{
+						item.ssa_valid	= TRUE;
+						item.ssa		= SSA;
+					} else if (SSA>item.ssa)	item.ssa=SSA;
+					
+					if (SSA<ssaDONTSORT)		item.direct.unsorted.push_back		(pVisual);
+					else						item.direct.sorted.insertInAnyWay	(distSQ,pVisual);
+				}
+			}
 		}
 	}
 }
@@ -79,20 +93,34 @@ void CRender::InsertSG_Cached(FCached *pVisual)
 		
 		float distSQ;
 		float SSA    = CalcSSA(distSQ,pVisual->bv_Position,pVisual);
-
+		
 		if (SSA<=ssaLIMIT)	return;
-
+		
 		// Select List and add to it
 		Shader*		sh	= pVisual->hShader;
-		CXRShader*	shr = sh->shader;
-		SceneGraph::mapNormal_Node*		N	= mapNormal[shr->Flags.iPriority].insert(sh);
-		if (!N->val.ssa_valid)	{
-			N->val.ssa_valid	= TRUE;
-			N->val.ssa			= SSA;
-		} else if (SSA<N->val.ssa)	N->val.ssa=SSA;
-
-		if (SSA<ssaDONTSORT)			N->val.cached.unsorted.push_back	(pVisual);
-		else							N->val.cached.sorted.insertInAnyWay	(distSQ,pVisual);
+		for (DWORD pass_id=0; pass_id<sh->Passes.size(); pass_id++)
+		{
+			mapNormal_Code&				code	= mapNormal	[sh->Flags.iPriority][pass_id];
+			CPass&						pass	= sh->Passes[pass_id];
+			mapNormal_Code::TNode*		Ncode	= code.insert		(pass.dwStateBlock);
+			mapNormal_Textures::TNode*	Ntex	= Ncode->val.insert	(pass.T);
+			mapNormal_Matrices::TNode*	Nmat	= Ntex->val.insert	(pass.M);
+			mapNormal_Constants::TNode*	Nconst	= Nmat->val.insert	(pass.C);
+			mapNormalItem&	item				= Nconst->val;
+			if (pass)	{
+				// No need to sort - ZB already setted up
+				item.cached.unsorted.push_back	(pVisual);
+			} else {
+				// Need to sort for HZB efficient use
+				if (!item.ssa_valid)		{
+					item.ssa_valid	= TRUE;
+					item.ssa		= SSA;
+				} else if (SSA>item.ssa)	item.ssa=SSA;
+				
+				if (SSA<ssaDONTSORT)		item.cached.unsorted.push_back		(pVisual);
+				else						item.cached.sorted.insertInAnyWay	(distSQ,pVisual);
+			}
+		}
 	}
 }
 
