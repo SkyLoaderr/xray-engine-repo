@@ -127,7 +127,7 @@ bool EScene::RemoveObject( CCustomObject* object, bool bUndo )
             SceneToolsMapPairIt _I = m_SceneTools.begin();
             SceneToolsMapPairIt _E = m_SceneTools.end();
             for (; _I!=_E; _I++){
-                ESceneCustomOTools* mt = dynamic_cast<ESceneCustomOTools*>(_I->second);
+                ESceneCustomMTools* mt = dynamic_cast<ESceneCustomMTools*>(_I->second);
                 if (mt) mt->OnObjectRemove(object);
             }
             UpdateSnapList						();

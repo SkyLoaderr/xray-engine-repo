@@ -222,13 +222,13 @@ bool ESceneAIMapTools::Load(IReader& F)
     
 	// snap objects
     if (F.find_chunk(AIMAP_CHUNK_SNAP_OBJECTS)){
-    	string128 	buf;
+    	AnsiString 	buf;
 		int cnt 	= F.r_u32();
         if (cnt){
 	        for (int i=0; i<cnt; i++){
     	    	F.r_stringZ	(buf);
-        	    CCustomObject* O = Scene.FindObjectByName(buf,OBJCLASS_SCENEOBJECT);
-            	if (!O)		ELog.Msg(mtError,"AIMap: Can't find snap object '%s'.",buf);
+        	    CCustomObject* O = Scene.FindObjectByName(buf.c_str(),OBJCLASS_SCENEOBJECT);
+            	if (!O)		ELog.Msg(mtError,"AIMap: Can't find snap object '%s'.",buf.c_str());
 	            else		m_SnapObjects.push_back(O);
     	    }
         }

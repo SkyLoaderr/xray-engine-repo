@@ -144,10 +144,10 @@ void CLight::Render(int priority, bool strictB2F)
                 VERIFY(m_FuzzyData);
                 switch (m_FuzzyData->m_ShapeType){
                 case CLight::SFuzzyData::fstSphere: 
-                	DU.DrawSphere	(_Transform(),zero,m_FuzzyData->m_SphereRadius,clr);
+                	DU.DrawSphere	(_Transform(),zero,m_FuzzyData->m_SphereRadius,clr,clr,true,true);
                 break;
                 case CLight::SFuzzyData::fstBox:
-                	DU.DrawAABB		(_Transform(),zero,m_FuzzyData->m_BoxDimension,clr);
+                	DU.DrawAABB		(_Transform(),zero,m_FuzzyData->m_BoxDimension,clr,clr,true,true);
                 break;
                 }
 			}

@@ -924,7 +924,7 @@ void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
     // bones
     if (visual && PKinematics(visual))
     {
-    	CSkeletonAnimated::accel		*ll_bones	= PSkeletonAnimated(visual)->LL_Bones();
+    	CSkeletonAnimated::accel		*ll_bones	= PKinematics(visual)->LL_Bones();
         CSkeletonAnimated::accel::iterator _I, _E;
         AStringVec				vec;
         bool					bFound;

@@ -326,16 +326,16 @@ void CEditShape::Render(int priority, bool strictB2F)
                     Device.SetShader	(Device.m_WireShader);
                     DU.DrawLineSphere	(zero,1.f,m_DrawEdgeColor,true);
                     Device.SetShader	(Device.m_SelectionShader);
-                    DU.DrawIdentSphere	(clr);
+                    DU.DrawIdentSphere	(clr,clr,true,true);
                 }break;
                 case cfBox:
                     Fmatrix B			= it->data.box;
                     B.mulA				(_Transform());
                     RCache.set_xform_world(B);
                     Device.SetShader	(Device.m_SelectionShader);
-                    DU.DrawIdentBox		(true,false,clr);
+                    DU.DrawIdentBox		(true,false,clr,m_DrawEdgeColor);
                     Device.SetShader	(Device.m_WireShader);
-                    DU.DrawIdentBox		(false,true,m_DrawEdgeColor);
+                    DU.DrawIdentBox		(false,true,clr,m_DrawEdgeColor);
                 break;
                 }
             }
