@@ -168,7 +168,7 @@ void CRenderTarget::phase_bloom	()
 
 		// Perform combine (all scalers must account for 4 samples + final diffuse multiply);
 		Fvector4	w0,w1;
-		CalcGauss_k7				(w0,w1,5.3f,1.f);
+		CalcGauss_k7				(w0,w1,ps_r2_ls_bloom_kernel,1.f);
 		RCache.set_RT				(rt_Bloom_2->pRT,		0);
 		RCache.set_Element			(s_bloom->E[1]);
 		RCache.set_ca				("weight", 0,			w0);
