@@ -29,7 +29,8 @@ function FSM:add_transition(from_state_num, to_state_num, cond_func)
 	
 	if transition_vector == nil then
 		log("create new")
-		transition_vector = {[to_state_num] = cond_func}
+		transition_vector = {}
+		transition_vector[to_state_num] = cond_func
 	else
 		log("add to existing")
 		transition_vector[to_state_num] = cond_func
