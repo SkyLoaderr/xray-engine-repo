@@ -25,6 +25,7 @@ enum ECommands{
 	COMMAND_APPLY_CHANGES,
 
     COMMAND_CHANGE_ACTION,
+    COMMAND_CHANGE_AXIS,
     // unused (only for compatibility)
     COMMAND_UNDO,
     COMMAND_REDO

@@ -128,6 +128,9 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     case COMMAND_CHANGE_ACTION:
     	Tools.ChangeAction(p1);
     	break;
+	case COMMAND_CHANGE_AXIS:
+    	fraTopBar->ChangeAxis(p1);
+        break;
     case COMMAND_UNDO:
     case COMMAND_REDO:
     	// fake
@@ -152,6 +155,15 @@ void __fastcall TUI::ApplyShortCut(WORD Key, TShiftState Shift)
         	if (Key=='P')			Command(COMMAND_EDITOR_PREF);
             else if (Key==VK_OEM_4)	Command(COMMAND_GRID_SLOT_SIZE,false);
             else if (Key==VK_OEM_6)	Command(COMMAND_GRID_SLOT_SIZE,true);
+        	else if (Key=='S')		Command(COMMAND_CHANGE_ACTION, eaSelect);
+        	else if (Key=='A')		Command(COMMAND_CHANGE_ACTION, eaAdd);
+        	else if (Key=='T')		Command(COMMAND_CHANGE_ACTION, eaMove);
+        	else if (Key=='Y')		Command(COMMAND_CHANGE_ACTION, eaRotate);
+        	else if (Key=='H')		Command(COMMAND_CHANGE_ACTION, eaScale);
+        	else if (Key=='Z')		Command(COMMAND_CHANGE_AXIS,   eAxisX);
+        	else if (Key=='X')		Command(COMMAND_CHANGE_AXIS,   eAxisY);
+        	else if (Key=='C')		Command(COMMAND_CHANGE_AXIS,   eAxisZ);
+        	else if (Key=='V')		Command(COMMAND_CHANGE_AXIS,   eAxisZX);
         }
     }
 }

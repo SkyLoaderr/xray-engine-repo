@@ -1459,7 +1459,7 @@ object frmPropertiesPSDef: TfrmPropertiesPSDef
         BevelOuter = bvNone
         Color = 10528425
         TabOrder = 0
-        inline fraEmitter1: TfraEmitter
+        inline fraEmitter: TfraEmitter
           Width = 199
           Height = 286
           Align = alClient

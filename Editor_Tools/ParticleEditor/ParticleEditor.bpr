@@ -50,7 +50,7 @@
       Intermediate\xrParticlesLib.obj Intermediate\PSObject.obj 
       Intermediate\PropertiesPSDef.obj Intermediate\FrameEmitter.obj 
       Intermediate\TLSPRITE.obj Intermediate\CustomObject.obj 
-      Intermediate\TopBar.obj"/>
+      Intermediate\TopBar.obj Intermediate\EditMeshPick.obj"/>
     <RESFILES value="ParticleEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>

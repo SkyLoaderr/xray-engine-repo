@@ -146,7 +146,7 @@ __published:	// IDE-managed Components
 	TMultiObjCheck *cbAnimAnimate;
 	TMultiObjCheck *cbAnimRandomInitialFrame;
 	TMultiObjCheck *cbAnimRandomPlaybackDir;
-	TfraEmitter *fraEmitter1;
+	TfraEmitter *fraEmitter;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
     void __fastcall FormShow(TObject *Sender);

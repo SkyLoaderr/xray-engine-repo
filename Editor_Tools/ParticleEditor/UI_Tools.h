@@ -37,6 +37,17 @@ class CParticleTools: public pureDeviceCreate, public pureDeviceDestroy
     bool				m_bReady;
 
     EAction				m_Action;
+    bool				m_bHiddenMode;
+	// move
+    Fvector				m_MovingXVector;
+    Fvector				m_MovingYVector;
+    Fvector				m_MovingReminder;
+	// scale
+    Fvector				m_ScaleCenter;
+    // rotate
+    Fvector				m_RotateCenter;
+    Fvector				m_RotateVector;
+    float				m_fRotateSnapAngle;
 public:
 						CParticleTools		();
     virtual 			~CParticleTools		();
@@ -85,7 +96,7 @@ public:
     bool __fastcall 	MouseStart  		(TShiftState Shift);
     bool __fastcall 	MouseEnd    		(TShiftState Shift);
     void __fastcall 	MouseMove   		(TShiftState Shift);
-	bool __fastcall 	HiddenMode  		(){return false;}
+	bool __fastcall 	HiddenMode  		(){return m_bHiddenMode;}
     bool __fastcall 	KeyDown     		(WORD Key, TShiftState Shift){return false;}
     bool __fastcall 	KeyUp       		(WORD Key, TShiftState Shift){return false;}
     bool __fastcall 	KeyPress    		(WORD Key, TShiftState Shift){return false;}
