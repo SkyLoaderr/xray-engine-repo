@@ -9,9 +9,6 @@
 #pragma once
 
 #include "script_space.h"
-#include "ai_space.h"
-#include "script_engine.h"
-#include "script_storage_space.h"
 
 IC	bool compare_safe(const luabind::object &o1 , const luabind::object &o2)
 {
@@ -31,16 +28,11 @@ IC	bool compare_safe(const luabind::object &o1 , const luabind::object &o2)
 	IC return_type operator() (_4) _c\
 	{\
 		try {					\
-			try {				\
-				if (m_functor) {\
-					if (m_object)\
-						macros_return_operator ((*m_functor)(*m_object _5 _6));\
-					else\
-						macros_return_operator ((*m_functor)(_6));\
-				}\
-			}\
-			catch(std::exception &e) {\
-				ai().script_engine().script_log(ScriptStorage::eLuaMessageTypeError,"exception raised %s",e.what());\
+			if (m_functor) {\
+				if (m_object)\
+					macros_return_operator ((*m_functor)(*m_object _5 _6));\
+				else\
+					macros_return_operator ((*m_functor)(_6));\
 			}\
 		}\
 		catch (...) {\
