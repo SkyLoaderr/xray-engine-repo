@@ -296,4 +296,45 @@
             </phrase>
         </phrase_list>
     </dialog>  
+           
+        <dialog id="stalker_wounded_friend">
+        <phrase_list>
+            <phrase id="0">
+                <text>Брат, поделись аптечкой, помираю!</text>
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+            </phrase>
+            <phrase id="1">
+                <precondition>dialogs.medikit_yes</precondition>
+                <text>Возьми, потом сочтемся</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="11">
+                <text>Спасибо, браток.</text>
+                <action>dialogs.transfer_medikit</action>
+                <action>dialogs.disable_wounded</action>
+            </phrase>
+            <phrase id="2">
+                <precondition>dialogs.medikit_yes</precondition>
+                <text>Могу только продать.</text>
+                <next>21</next>
+                <next>22</next>
+            </phrase>
+            <phrase id="21">
+                <precondition>dialogs.have_money</precondition>
+                <text>Давай, на том свете мне деньги не понадобятся...</text>
+                <action>dialogs.wounded_trade</action
+                <action>dialogs.sell_medikit</action>>
+            <phrase id="22">
+                <precondition>dialogs.not_have_money</precondition>
+                <text>Нету, у меня денег.</text>
+            </phrase>
+            <phrase id="3">
+                <precondition>dialogs.medikit_no</precondition>
+                <text>Увы, нет у меня аптечки...</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
+
 </game_dialogs>
