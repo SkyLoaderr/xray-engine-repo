@@ -6,7 +6,7 @@
 #define AFX_GLOWMANAGER_H__EC35911F_479B_469A_845C_1A64D81D0326__INCLUDED_
 #pragma once
 
-#include "xr_collide_defs.h"
+#include "..\xr_collide_defs.h"
 
 class CGlow  
 {
@@ -22,9 +22,9 @@ public:
 	Collide::ray_cache	RayCache;
 };
 
-#define MAX_GlowsPerFrame	512
+#define MAX_GlowsPerFrame	64
 
-class ENGINE_API CGlowManager 
+class CGlowManager 
 {
 	vector<CGlow>			Glows;
 	CGlow*					Selected[MAX_GlowsPerFrame];

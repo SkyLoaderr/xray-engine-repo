@@ -8,8 +8,6 @@
 
 #include "..\render.h"
 #include "..\FLightsController.h"
-#include "..\glowmanager.h"
-#include "..\wallmarksengine.h"
 #include "..\portal.h"
 #include "..\modelpool.h"
 #include "..\hom.h"
@@ -19,6 +17,8 @@
 #include "lightShadows.h"
 #include "lightProjector.h"
 #include "detailmanager.h"
+#include "glowmanager.h"
+#include "wallmarksengine.h"
 #include "fstaticrender_types.h"
 #include "fstaticrender_scenegraph.h"
 #include "fstaticrender_rendertarget.h"
