@@ -1353,6 +1353,8 @@ void PASinkVelocity::Transform(const Fmatrix& m)
 // Randomly add particles to the system
 void PASource::Execute(ParticleGroup *group)
 {
+	if (flags.is(flStopPlaying)) return;
+
 	int rate = int(floor(particle_rate * dt));
 	
 	// Dither the fraction particle in time.
