@@ -32,6 +32,9 @@ public:
 	float					ambient;
 	DWORD					dwFrame;
 public:
+	DWORD					Shadowed_dwFrame;
+	int						Shadowed_Slot;
+
 	void					add				(int id);
 	void					remove			(int id);
 };

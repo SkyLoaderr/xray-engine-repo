@@ -21,12 +21,11 @@ private:
 		CObject*			O;
 		Fvector				C;
 		float				D;
-		svector<NODE,32>	nodes;
+		Fmatrix				UVgen;
 	};
 private:
 	CObject*				current;
 	vector<recv>			receivers;
-	vector<int>				id;
 
 	CRT*					RT;
 	CRT*					RT_temp;
@@ -37,8 +36,10 @@ private:
 	CVertexStream*			vs_Screen;
 public:
 	void					set_object		(CObject*	O);
-	void					add_element		(NODE*		N);
+	BOOL					shadowing		()			{ return current!=0; }
 	void					calculate		();
+	void					setup			(int slot);
+
 	void					render			();
 
 	virtual	void			OnDeviceCreate	();

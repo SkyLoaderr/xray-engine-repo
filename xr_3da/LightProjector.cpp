@@ -64,7 +64,7 @@ void CLightProjector::OnDeviceDestroy	()
 
 void CLightProjector::set_object	(CObject* O)
 {
-	if ((0==O) || (id.size()>=P_o_line))	current		= 0;
+	if ((0==O) || (receivers.size()>=P_o_count))	current		= 0;
 	else 
 	{
 		Fvector		C;
@@ -75,49 +75,31 @@ void CLightProjector::set_object	(CObject* O)
 		
 		if (current)
 		{
-			id.push_back		(receivers.size());
-			receivers.push_back	(recv());
-			receivers.back().O	= current;
-			receivers.back().C	= C;
-			receivers.back().D	= D;
+			current->Lights()->Shadowed_dwFrame	= Device.dwFrame;
+			current->Lights()->Shadowed_Slot	= receivers.size();
+			receivers.push_back			(recv());
+			receivers.back().O			= current;
+			receivers.back().C			= C;
+			receivers.back().D			= D;
 		}
 	}
 }
 
-void CLightProjector::add_element	(NODE* N)
-{
-	if (0==current)	return;
-	receivers.back().nodes.push_back(*N);
-}
-
-//
-class	pred_sorter
-{
-	CLightProjector*		S;
-public:
-	pred_sorter(CLightProjector* _S) : S(_S) {};
-	IC bool operator () (int c1, int c2)
-	{ return S->receivers[c1].D<S->receivers[c2].D; }
-};
 //
 void CLightProjector::calculate	()
 {
-	if (id.empty())	return;
+	if (receivers.empty())		return;
 	
 	Device.Statistic.RenderDUMP_Pcalc.Begin	();
 	Device.Shader.set_RT		(RT_temp->pRT,HW.pTempZB);
 	CHK_DX(HW.pDevice->Clear	(0,0, D3DCLEAR_ZBUFFER | (HW.Caps.bStencil?D3DCLEAR_STENCIL:0), 0,1,0 ));
 	Device.set_xform_world		(Fidentity);
 	
-	// sort by distance
-	std::sort	(id.begin(),id.end(),pred_sorter(this));
-	
 	// iterate on objects
 	int	slot_id		= 0;
-	for (u32 o_it=0; o_it<id.size(); o_it++)
+	for (u32 o_it=0; o_it<receivers.size(); o_it++)
 	{
-		recv&	C	= receivers	[id[o_it]];
-		// if (C.nodes.empty())	continue;
+		recv&	C	= receivers	[o_it];
 
 		// calculate projection-matrix
 		Fmatrix		mProject;
@@ -172,7 +154,6 @@ void CLightProjector::calculate	()
 */
 	}
 	receivers.clear	();
-	id.clear		();
 	
 	// Blur
 	{

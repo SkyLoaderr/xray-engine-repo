@@ -90,7 +90,6 @@ void CLightShadows::set_object	(CObject* O)
 		
 		if (current)
 		{
-			id.push_back		(casters.size());
 			casters.push_back	(caster());
 			casters.back().O	= current;
 			casters.back().C	= C;
@@ -146,17 +145,9 @@ IC int PLC_calc	(Fvector& P, Fvector& N, Flight* L, float energy, Fvector& O)
 }
 
 //
-class	pred_casters
-{
-	CLightShadows*		S;
-public:
-	pred_casters(CLightShadows* _S) : S(_S) {};
-	IC bool operator () (int c1, int c2)
-	{ return S->casters[c1].D<S->casters[c2].D; }
-};
 void CLightShadows::calculate	()
 {
-	if (id.empty())	return;
+	if (casters.empty())		return;
 
 	Device.Statistic.RenderDUMP_Scalc.Begin	();
 	Device.Shader.set_RT		(RT_temp->pRT,0);
@@ -165,17 +156,14 @@ void CLightShadows::calculate	()
 	// set shader
 	Device.Shader.set_Shader	(sh_Texture);
 
-	// sort by distance
-	std::sort	(id.begin(),id.end(),pred_casters(this));
-	
 	// iterate on objects
 	int	slot_id		= 0;
 	int slot_line	= S_rt_size/S_size;
 	int slot_max	= slot_line*slot_line;
 	const float	eps = 2*EPS_L;
-	for (u32 o_it=0; o_it<id.size(); o_it++)
+	for (u32 o_it=0; o_it<casters.size(); o_it++)
 	{
-		caster&	C	= casters[id[o_it]];
+		caster&	C	= casters	[o_it];
 		if (C.nodes.empty())	continue;
 		
 		// Select lights and calc importance
@@ -255,7 +243,6 @@ void CLightShadows::calculate	()
 		}
 	}
 	casters.clear	();
-	id.clear		();
 	
 	// Blur
 	{

@@ -40,7 +40,6 @@ private:
 	CObject*				current;
 	vector<caster>			casters;
 	vector<shadow>			shadows;
-	vector<int>				id;
 	vector<tess_tri>		tess;
 
 	CRT*					RT;
