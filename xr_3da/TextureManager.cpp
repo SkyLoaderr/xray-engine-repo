@@ -284,14 +284,14 @@ void	CShaderManager::OnDeviceDestroy(void)
 	// Constant List
 	for (it=0; it<lst_constants.size(); it++)	R_ASSERT(0==lst_constants[it]->dwReference);
 	lst_constants.clear	();
-
+	
 	// Codes
 	for (it=0; it<codes.size(); it++)			{
 		R_ASSERT(0==codes[it].Reference);
 		CHK_DX	(HW.pDevice->DeleteStateBlock(codes[it].SB));
 	}
 	codes.clear	();
-
+	
 	//************************************************************************************
 	// Textures
 	for (map<LPSTR,CTexture*,str_pred>::iterator t=textures.begin(); t!=textures.end(); t++)
@@ -301,7 +301,7 @@ void	CShaderManager::OnDeviceDestroy(void)
 		_DELETE		(t->second);
 	}
 	textures.clear	();
-
+	
 	// Matrices
 	for (map<LPSTR,CMatrix*,str_pred>::iterator m=matrices.begin(); m!=matrices.end(); m++)
 	{
@@ -335,23 +335,8 @@ void	CShaderManager::OnFrameEnd	()
 	cache.Invalidate	();
 }
 
-void CShaderManager::TexturesLoad	()
+void CShaderManager::DeferredUpload	()
 {
-	// load textures
-	for (DWORD i=0; i<textures.size(); i++) 
-		textures[i]->Load();
-}
-
-void CShaderManager::TexturesUnload	()
-{
-	// unload textures
-	for (DWORD i=0; i<textures.size(); i++) 
-	{
-		textures[i]->Unload();
-		if (textures[i]->dwRefCount == 0) {
-			_DELETE(textures[i]);
-			textures.erase(textures.begin()+i);
-			i--;
-		}
-	}
+	for (map<LPSTR,CTexture*,str_pred>::iterator t=textures.begin(); t!=textures.end(); t++)
+		t->second->Load(t->first);
 }

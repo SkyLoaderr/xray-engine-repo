@@ -94,9 +94,7 @@ public:
 	Shader	Create			(LPCSTR s_shader="null", LPCSTR s_textures = "$null", LPCSTR s_constants = "", LPCSTR s_matrices = "");
 	void	Delete			(Shader	&S);
 	void	DeferredLoad	(BOOL E)	{ bDeferredLoad=E;	}
-
-	void	TexturesLoad	();
-	void	TexturesUnload	();
+	void	DeferredUpload	();
 
 	// API
 	IC void	set_Code		(DWORD dwCode)
