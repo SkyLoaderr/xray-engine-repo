@@ -320,8 +320,9 @@ void __fastcall TfraLeftBar::Preferences1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-
-
-
-
+void __fastcall TfraLeftBar::ExportDM1Click(TObject *Sender)
+{
+	UI.Command( COMMAND_EXPORT_DM );
+}
+//---------------------------------------------------------------------------
 

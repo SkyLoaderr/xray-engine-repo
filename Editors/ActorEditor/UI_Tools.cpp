@@ -246,10 +246,7 @@ void CActorTools::Render()
     m_PreviewObject.Render();
 	if (m_pEditObject){
         if (m_RenderObject.IsRenderable()&&fraLeftBar->ebRenderEngineStyle->Down){
-			for (int k=0; k<4; k++){ 
-            	Device.Models.Render(m_RenderObject.m_pVisual,Fidentity,k,false,m_RenderObject.m_fLOD);
-            	Device.Models.Render(m_RenderObject.m_pVisual,Fidentity,k,true,m_RenderObject.m_fLOD);
-            }
+        	::Render->model_RenderSingle(m_RenderObject.m_pVisual,Fidentity,m_RenderObject.m_fLOD);
         }else{
 	        // update transform matrix
     		m_pEditObject->RenderSkeletonSingle(m_AVTransform);
@@ -419,6 +416,19 @@ bool CActorTools::ExportOGF(LPCSTR name)
 {
 	VERIFY(m_bReady);
     if (m_pEditObject&&m_pEditObject->ExportOGF(name)) return true;
+    return false;
+}
+
+#include "EDetailModel.h"
+bool CActorTools::ExportDM(LPCSTR name)
+{
+	VERIFY(m_bReady);
+    if (m_pEditObject){
+    	EDetail DM;
+        if (!DM.Update(m_pEditObject->GetName())) return false;
+        DM.Export(name);
+        return true;
+    }
     return false;
 }
 
@@ -677,5 +687,30 @@ LPCSTR CActorTools::GetInfo()
 bool CActorTools::Pick(TShiftState Shift)
 {
     return false;
+}
+
+bool CActorTools::RayPick(const Fvector& start, const Fvector& dir, float& dist, Fvector* pt, Fvector* n)
+{
+    if (m_PreviewObject.m_pObject)
+    {
+		SRayPickInfo pinf;
+		if (m_PreviewObject.m_pObject->RayPick(dist,start,dir,Fidentity,&pinf)){
+        	if (pt) pt->set(pinf.pt); 
+            if (n){	
+                const Fvector* PT[3];
+                pinf.e_mesh->GetFacePT(pinf.inf.id, PT);
+            	n->mknormal(*PT[0],*PT[1],*PT[2]);
+            }
+            return true;
+        }else return false;
+    }else
+    {
+    	Fvector np; np.mad(start,dir,dist);
+    	if ((start.y>0)&&(np.y<0.f)){
+            if (pt) pt->set(start); 
+            if (n)	n->set(0.f,1.f,0.f);
+            return true;
+        }else return false;
+    }
 }
 

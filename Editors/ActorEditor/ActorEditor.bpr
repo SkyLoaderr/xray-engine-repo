@@ -63,13 +63,12 @@
       Intermediate\ImageThumbnail.obj Intermediate\ItemList.obj 
       Intermediate\ItemListHelper.obj Intermediate\ItemListTypes.obj 
       Intermediate\Library.obj Intermediate\LightAnimLibrary.obj 
-      Intermediate\ModelPool.obj Intermediate\NumericVector.obj 
-      Intermediate\PropertiesList.obj Intermediate\PropertiesListHelper.obj 
-      Intermediate\PropertiesListTypes.obj Intermediate\PSLibrary.obj 
-      Intermediate\render.obj Intermediate\ShaderFunction.obj 
-      Intermediate\SoundManager.obj Intermediate\TextForm.obj 
-      Intermediate\TLSPRITE.obj Intermediate\TopBar.obj 
-      Intermediate\UI_Camera.obj Intermediate\UI_Main.obj 
+      Intermediate\NumericVector.obj Intermediate\PropertiesList.obj 
+      Intermediate\PropertiesListHelper.obj Intermediate\PropertiesListTypes.obj 
+      Intermediate\PSLibrary.obj Intermediate\render.obj 
+      Intermediate\ShaderFunction.obj Intermediate\SoundManager.obj 
+      Intermediate\TextForm.obj Intermediate\TLSPRITE.obj 
+      Intermediate\TopBar.obj Intermediate\UI_Camera.obj Intermediate\UI_Main.obj 
       Intermediate\UI_MainCommand.obj Intermediate\UI_MainMail.obj 
       Intermediate\ResourceManager_Resources.obj 
       Intermediate\ResourceManager.obj Intermediate\ResourceManager_Loader.obj 
@@ -77,7 +76,8 @@
       Intermediate\Blender_Recorder_StandartBinding.obj 
       Intermediate\IGame_Persistent.obj Intermediate\DetailModel.obj 
       Intermediate\Environment.obj Intermediate\xr_efflensflare.obj 
-      Intermediate\Rain.obj"/>
+      Intermediate\Rain.obj Intermediate\EDetailModel.obj 
+      Intermediate\ModelPool.obj Intermediate\thunderbolt.obj"/>
     <RESFILES value="resource.res ActorEditor.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -254,7 +254,6 @@
       <FILE FILENAME="Editor\ItemListTypes.cpp" FORMNAME="" UNITNAME="ItemListTypes.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\Library.cpp" FORMNAME="" UNITNAME="Library.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\LightAnimLibrary.cpp" FORMNAME="" UNITNAME="LightAnimLibrary.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\ModelPool.cpp" FORMNAME="" UNITNAME="ModelPool.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\NumericVector.cpp" FORMNAME="frmNumericVector" UNITNAME="NumericVector" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\PropertiesList.cpp" FORMNAME="Properties" UNITNAME="PropertiesList" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\PropertiesListHelper.cpp" FORMNAME="" UNITNAME="PropertiesListHelper.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -282,6 +281,9 @@
       <FILE FILENAME="Engine\Environment.cpp" FORMNAME="" UNITNAME="Environment" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\xr_efflensflare.cpp" FORMNAME="" UNITNAME="xr_efflensflare" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Rain.cpp" FORMNAME="" UNITNAME="Rain" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\EDetailModel.cpp" FORMNAME="" UNITNAME="EDetailModel" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\ModelPool.cpp" FORMNAME="" UNITNAME="ModelPool" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\thunderbolt.cpp" FORMNAME="" UNITNAME="thunderbolt" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

@@ -83,6 +83,7 @@ __published:	// IDE-managed Components
 	TBevel *Bevel1;
 	TPanel *paItemProps;
 	TSplitter *Splitter1;
+	TMenuItem *ExportDM1;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall PanelMimimizeClick(TObject *Sender);
     void __fastcall PanelMaximizeClick(TObject *Sender);
@@ -121,6 +122,7 @@ __published:	// IDE-managed Components
 	void __fastcall ebSceneCommands1MouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
 	void __fastcall ImageEditor1Click(TObject *Sender);
+	void __fastcall ExportDM1Click(TObject *Sender);
 private:	// User declarations
 	void __fastcall ShowPPMenu		(TMxPopupMenu* M, TObject* btn);
 	void __fastcall RenameItem		(LPCSTR p0, LPCSTR p1, EItemType tp);

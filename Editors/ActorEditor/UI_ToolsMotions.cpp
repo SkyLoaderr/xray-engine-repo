@@ -65,8 +65,8 @@ bool CActorTools::EngineModel::UpdateVisual(CEditableObject* source, bool bUpdGe
         F.w(m_GeometryStream.pointer(),m_GeometryStream.size());
     }
     IReader R(F.pointer(), F.size());
-    Device.Models.Delete(m_pVisual);
-    m_pVisual = Device.Models.Create(&R);
+    ::Render->model_Delete(m_pVisual);
+    m_pVisual = ::Render->model_Create(0,&R);
     m_pBlend = 0;
     return bRes;
 }

@@ -45,12 +45,13 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
 {
     class PreviewModel{
 	    TProperties*	m_Props;
-		CEditableObject*m_pObject;
         float			m_fSpeed;
         float			m_fSegment;
         Flags32			m_Flags;
         Fvector			m_vPosition;
         AnsiString 		m_LastObjectName;
+    public:
+		CEditableObject*m_pObject;
     public:
     	enum{
         	pmScroll	= (1<<0),
@@ -93,7 +94,7 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
         AnsiString		m_BPPlayCache[MAX_PARTS];
     public:
         				EngineModel			(){m_pVisual=0;m_fLOD=1.f;m_pBlend=0;}
-        void			DeleteVisual		(){Device.Models.Delete(m_pVisual);m_pBlend=0;}
+        void			DeleteVisual		(){::Render->model_Delete(m_pVisual);m_pBlend=0;}
         void			Clear				()
         {
         	DeleteVisual			(); 
@@ -243,6 +244,7 @@ public:
     bool				Load				(LPCSTR path, LPCSTR name);
     bool				Save				(LPCSTR path, LPCSTR name, bool bInternal=false);
     bool				ExportOGF			(LPCSTR name);
+    bool				ExportDM			(LPCSTR name);
     bool				SaveMotions			(LPCSTR name, bool bSelOnly);
     bool				AppendMotion		(LPCSTR fn);
     bool				RemoveMotion		(LPCSTR name);
@@ -265,6 +267,7 @@ public:
     bool __fastcall 	KeyPress    		(WORD Key, TShiftState Shift){return false;}
 
     bool				Pick				(TShiftState Shift);
+	bool 				RayPick				(const Fvector& start, const Fvector& dir, float& dist, Fvector* pt, Fvector* n);
 
     void 				SelectPreviewObject	(bool bClear);
     void				SetPreviewObjectPrefs();

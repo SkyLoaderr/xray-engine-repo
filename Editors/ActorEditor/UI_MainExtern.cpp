@@ -91,6 +91,12 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
             }
         }
     	}break;
+    case COMMAND_EXPORT_DM:{
+    	AnsiString fn;
+    	if (EFS.GetSaveName("$game_dm$",fn))
+            if (Tools.ExportDM(fn.c_str()))		ELog.DlgMsg(mtInformation,"Export complete.");
+            else		        		    	ELog.DlgMsg(mtError,"Export failed.");
+    	}break;
     case COMMAND_EXPORT_OGF:{
     	AnsiString fn;
     	if (EFS.GetSaveName("$game_meshes$",fn))

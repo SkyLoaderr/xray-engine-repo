@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 277
+  Height = 550
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 300
-    Height = 277
+    Height = 550
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -34,14 +34,14 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 1
       Width = 298
-      Height = 275
+      Height = 548
       Align = alClient
       BevelOuter = bvNone
       ParentColor = True
       TabOrder = 0
       object Splitter1: TSplitter
         Left = 0
-        Top = 34
+        Top = 307
         Width = 298
         Height = 2
         Cursor = crVSplit
@@ -251,7 +251,7 @@ object fraLeftBar: TfraLeftBar
         Left = 0
         Top = 131
         Width = 298
-        Height = 188
+        Height = 176
         Align = alClient
         Color = 10528425
         ParentShowHint = False
@@ -281,7 +281,7 @@ object fraLeftBar: TfraLeftBar
           Left = 1
           Top = 15
           Width = 296
-          Height = 172
+          Height = 160
           Align = alClient
           BevelOuter = bvNone
           Color = 10528425
@@ -449,7 +449,7 @@ object fraLeftBar: TfraLeftBar
       end
       object paCurrentMotion: TPanel
         Left = 0
-        Top = 36
+        Top = 309
         Width = 298
         Height = 239
         Align = alBottom
@@ -597,6 +597,10 @@ object fraLeftBar: TfraLeftBar
     object miExportOGF: TMenuItem
       Caption = 'Export OGF...'
       OnClick = miExportOGFClick
+    end
+    object ExportDM1: TMenuItem
+      Caption = 'Export DM...'
+      OnClick = ExportDM1Click
     end
   end
   object pmShaderList: TMxPopupMenu
