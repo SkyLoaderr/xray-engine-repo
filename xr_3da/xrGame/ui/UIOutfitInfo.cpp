@@ -10,10 +10,12 @@
 #include "UIOutfitInfo.h"
 #include "../HUDManager.h"
 #include "../MainUI.h"
+#include "../level.h"
+#include "../game_base_space.h"
 
 #define LIST_ITEM_HEIGHT	15
-#define TITLE_INDENT_Y		32
-#define TITLE_INDENT_X		10
+#define TITLE_INDENT_Y		30
+#define TITLE_INDENT_X		-8
 
 CUIOutfitInfo::CUIOutfitInfo(){
 	AttachChild(&m_listWnd);
@@ -35,16 +37,22 @@ void CUIOutfitInfo::Init(int x, int y, int width, int height){
 	m_listWnd.Enable(false);
 		
 	// header
-	m_staticTitle.SetFont(UI()->Font()->pFontLetterica25);
+	m_staticTitle.SetFont(UI()->Font()->pFontGraffiti22Russian);
 	m_staticTitle.SetTextColor(0xfff0f0f0);
+	
+	m_itemBurnProtection = xr_new<CUIListItem>();
+	m_itemChemicalBurnProtection = xr_new<CUIListItem>();
+	if (GameID() == GAME_SINGLE)
+	{
+		m_listWnd.AddItem(m_itemBurnProtection);		
+		m_itemBurnProtection->SetFont(m_pFont);
+		m_itemBurnProtection->SetTextColor(m_textColor);
 
-	m_listWnd.AddItem(m_itemBurnProtection = xr_new<CUIListItem>());		
-	m_itemBurnProtection->SetFont(m_pFont);
-	m_itemBurnProtection->SetTextColor(m_textColor);
+		m_listWnd.AddItem(m_itemChemicalBurnProtection);
+		m_itemChemicalBurnProtection->SetFont(m_pFont);
+		m_itemChemicalBurnProtection->SetTextColor(m_textColor);
+	}
 
-	m_listWnd.AddItem(m_itemChemicalBurnProtection = xr_new<CUIListItem>());
-	m_itemChemicalBurnProtection->SetFont(m_pFont);
-	m_itemChemicalBurnProtection->SetTextColor(m_textColor);
 
 	m_listWnd.AddItem(m_itemExplosionProtection = xr_new<CUIListItem>());
 	m_itemExplosionProtection->SetFont(m_pFont);
@@ -125,20 +133,50 @@ void CUIOutfitInfo::Update(CCustomOutfit& outfit){
 	SetItem(ALife::eHitTypeStrike,		 outfit, m_itemStrikeProtection,		m_strStrikeProtection);
 }
 
+void CUIOutfitInfo::Update(shared_str section_name){
+	int vals[6] = {0, 0, 0, 0, 0, 0};
+
+	if (xr_strlen(section_name) != 0)
+		GetInfoFromSettings(vals, section_name);
+
+	SetItem(ALife::eHitTypeBurn,		 vals[0], m_itemBurnProtection,			m_strBurnProtection);
+	SetItem(ALife::eHitTypeChemicalBurn, vals[1], m_itemChemicalBurnProtection,	m_strChemicalBurnProtection);
+	SetItem(ALife::eHitTypeExplosion,	 vals[2], m_itemExplosionProtection,	m_strExplosionProtection);
+	SetItem(ALife::eHitTypeFireWound,	 vals[3], m_itemFireWoundProtection,	m_strFireWoundProtection);
+	SetItem(ALife::eHitTypeShock,		 vals[4], m_itemShockProtection,		m_strShockProtection);
+	SetItem(ALife::eHitTypeStrike,		 vals[5], m_itemStrikeProtection,		m_strStrikeProtection);
+}
+
+void CUIOutfitInfo::GetInfoFromSettings(int values[], shared_str section_name){
+	values[0] = (int)(100.0*pSettings->r_float(section_name, "burn_immunity"));
+	values[1] = (int)(100.0*pSettings->r_float(section_name, "chemical_burn_immunity"));
+	values[2] = (int)(100.0*pSettings->r_float(section_name, "explosion_immunity"));
+	values[3] = (int)(100.0*pSettings->r_float(section_name, "fire_wound_immunity"));
+	values[4] = (int)(100.0*pSettings->r_float(section_name, "shock_immunity"));
+	values[5] = (int)(100.0*pSettings->r_float(section_name, "strike_immunity"));
+}
+
 void CUIOutfitInfo::SetItem(ALife::EHitType hitType, CCustomOutfit& outfit, CUIListItem* listItem, shared_str sstr){
 	char	str[256];
 	float	fValue;
 	int		iValue; char	strIVal[10];
-//	int		decimal,   sign;
-//	char*	buffer;
-//	int		precision = 2;
 
 	strcpy(str, *sstr);
 	fValue = &outfit ? outfit.GetHitTypeProtection(hitType) : 0;
 	iValue = (int)(fValue*100);
-//	buffer = _ecvt(fValue, precision, &decimal, &sign );
 	strcat(str, "  +");
 	strcat(str, itoa(iValue, strIVal, 10));
+	strcat(str, "%");
+	listItem->SetText(str);
+}
+
+void CUIOutfitInfo::SetItem(ALife::EHitType hitType, int value,			 CUIListItem* listItem, shared_str sstr){
+	char	str[256];
+	char	buff[16];
+
+	strcpy(str, *sstr);
+	strcat(str, "  +");
+	strcat(str, itoa(value, buff, 10));
 	strcat(str, "%");
 	listItem->SetText(str);
 }

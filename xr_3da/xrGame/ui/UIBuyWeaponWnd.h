@@ -14,6 +14,7 @@
 
 #include "UIPropertiesBox.h"
 #include "UIOutfitSlot.h"
+#include "UIOutfitInfo.h"
 
 #include "UICharacterInfo.h"
 #include "UIItemInfo.h"
@@ -65,7 +66,7 @@ protected:
 	CUIStatic			UIStaticBelt;
 	CUIStatic			UIStaticBottom;
 	CUIStatic			UIStaticDesc;
-	CUIStatic			UIStaticPersonal;
+//	CUIStatic			UIStaticPersonal;
 	// Индикаторы денег
 	CUIStatic			UITotalMoneyHeader;
 	CUIStatic			UITotalMoney;
@@ -141,6 +142,9 @@ protected:
 
 	int			m_iMoneyAmount;
 	bool		m_bIgnoreMoney;
+
+    // Detailed info about outfit
+	CUIOutfitInfo UIOutfitInfo;
 
 	
 	// Координаты дефолтного скина на текстуре с иконками сталкеров.
