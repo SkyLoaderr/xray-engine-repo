@@ -42,10 +42,12 @@ void game_cl_Deathmatch::OnBuyMenu_Ok	()
 
 	for (u8 s =0; s<6; s++)
 	{
-		u8 ItemID = pCurBuyMenu->GetWeaponIndex(SlotsToCheck[s]);
+//		u8 ItemID = pCurBuyMenu->GetWeaponIndex(SlotsToCheck[s]);
+		u8 SectionID = 0xff;
+		u8 ItemID = pCurBuyMenu->GetItemIndex(SlotsToCheck[s], 0, SectionID);
 		if (ItemID == 0xff) continue;
 		u16 SlotID = SlotsToCheck[s];
-		s16 ID = GetBuyMenuItemIndex(u8(SlotID), ItemID);
+		s16 ID = GetBuyMenuItemIndex(u8((SectionID != 0xff)?SectionID:SlotID), ItemID);
 		pCurPresetItems->push_back(ID);
 	}
 

@@ -218,11 +218,6 @@ protected:
 	//			idx		- порядковый индекс оружия в слоте (для всех слотов кроме пояса должно быть == 0)
 	// Return:	Указатель на затребованную вещь, либо NULL, если не найдено
 	CUIDragDropItemMP * GetWeapon(u32 slotNum, u32 idx = 0);
-	// Params:	slotNum		- см. предыдущую функцию
-	//			idx			- см. предыдущую функцию
-	//			sectionNum	- возвращаем порядковый номер секции в списке секций
-	// Return:	Индекс затребованной вещи, либо 0xff(-1), если не найдено
-	const u8 GetItemIndex(u32 slotNum, u32 idx, u8 &sectionNum);
 
 	// Поддержка клавиатурного режима покупки оружия
 
@@ -323,6 +318,11 @@ public:
 	// Первое оружие имеет индекс 0. Если в слоте нет ничего, то возвращаем -1
 	const u8	GetWeaponIndex(u32 slotNum);
 	const u8	GetWeaponIndexInBelt(u32 indexInBelt, u8 &sectionId, u8 &itemId);
+	// Params:	slotNum		- см. предыдущую функцию
+	//			idx			- см. предыдущую функцию
+	//			sectionNum	- возвращаем порядковый номер секции в списке секций
+	// Return:	Индекс затребованной вещи, либо 0xff(-1), если не найдено
+	const u8 GetItemIndex(u32 slotNum, u32 idx, u8 &sectionNum);
 	
 	// Получить имя оружия по индексу, и номеру слота
 	const char	*GetWeaponNameByIndex(u32 grpNum, u8 idx);
