@@ -12,6 +12,7 @@
 #include "VariablesBar.h"
 #include "WatchBar.h"
 #include "ScriptThreadsBar.h"
+#include "LuaDirectWnd.h"
 
 #define R_ASSERT(x) ASSERT(x)
 #include "../xrGame/mslotutils.h"
@@ -40,6 +41,7 @@ protected:
 	CVariablesBar			m_wndLocals;
 	CWatchBar				m_wndWatches;
 	CScriptThreadsBar		m_wndThreads;
+//	CLuaRuntimeBar			m_runtimeBar;
 	HACCEL					m_hAccelDebug, m_hAccelDebugBreak, m_hAccelNoProject;
 	int						m_nAppMode;
 	BOOL					m_needAnswer;

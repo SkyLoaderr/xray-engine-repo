@@ -85,6 +85,7 @@
 #define ID_PROJECT_DEBUGGING            32818
 #define ID_PROJECT_RUNPROJECT           32819
 #define IDR_TOOLS_OPTIONS               32824
+#define ID_VIEW_LUARUNTIME              32825
 
 // Next default values for new objects
 // 

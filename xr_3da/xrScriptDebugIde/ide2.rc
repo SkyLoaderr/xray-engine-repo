@@ -580,7 +580,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDR_MAINFRAME           "xRayScriptDebugger v1.0 Beta"
+    IDR_MAINFRAME           "xRayScriptDebugger v1.3 Beta"
     IDR_IDE2TYPE            "xrScriptDebugger\nScript\nScript\nScript(*.script)\n.script\nxrScriptDebugger.Document\nxrScriptDebugger Document"
 END
 

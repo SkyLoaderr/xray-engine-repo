@@ -208,6 +208,9 @@
 				RelativePath="ide2.rc">
 			</File>
 			<File
+				RelativePath=".\LuaDirectWnd.cpp">
+			</File>
+			<File
 				RelativePath="LuaDoc.cpp">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -579,6 +582,9 @@
 			</File>
 			<File
 				RelativePath="ide2.h">
+			</File>
+			<File
+				RelativePath=".\LuaDirectWnd.h">
 			</File>
 			<File
 				RelativePath="LuaDoc.h">

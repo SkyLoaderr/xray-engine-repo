@@ -229,13 +229,21 @@ BOOL CMainFrame::InitDockingWindows()
 		return -1;		// fail to create
 	}
 	
-
+/*	if (!m_runtimeBar.Create(this, ID_VIEW_LUARUNTIME,
+		_T("Lua Runtime"), CSize(200,100), CBRS_BOTTOM))
+	{
+		TRACE0("Failed to create dialog bar m_runtimeBar\n");
+		return -1;		// fail to create
+	}
+	
+*/
 	m_wndWorkspace.EnableDockingOnSizeBar(CBRS_ALIGN_ANY);
 	m_wndOutput.EnableDockingOnSizeBar(CBRS_ALIGN_ANY);
 	m_wndCallStack.EnableDockingOnSizeBar(CBRS_ALIGN_ANY);
 	m_wndLocals.EnableDockingOnSizeBar(CBRS_ALIGN_ANY);
 	m_wndWatches.EnableDockingOnSizeBar(CBRS_ALIGN_ANY);
 	m_wndThreads.EnableDockingOnSizeBar(CBRS_ALIGN_ANY);
+//	m_runtimeBar.EnableDockingOnSizeBar(CBRS_ALIGN_ANY);
 
 	EnableDockingSizeBar(CBRS_ALIGN_ANY);
 	DockSizeBar(&m_wndWorkspace);
@@ -244,6 +252,7 @@ BOOL CMainFrame::InitDockingWindows()
 	DockSizeBar(&m_wndLocals);
 	DockSizeBar(&m_wndWatches);
 	DockSizeBar(&m_wndThreads);
+//	DockSizeBar(&m_runtimeBar);
 
 	return TRUE;
 }

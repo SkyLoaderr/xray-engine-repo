@@ -7,6 +7,7 @@
 #include "OutputWnd.h"
 #include "ScintillaView.h"
 #include "MainFrame.h"
+
 #ifdef _DEBUG
 #undef THIS_FILE
 static char THIS_FILE[]=__FILE__;
@@ -36,6 +37,7 @@ BOOL COutputWnd::Create(CWnd *pParentWnd, UINT nID, LPCTSTR lpszWindowName, CSiz
 //	AddView(_T("Build"),    RUNTIME_CLASS(CScintillaView));
 	AddView(_T("Debug"),    RUNTIME_CLASS(CScintillaView));
 //	AddView(_T("Find in Files"),    RUNTIME_CLASS(CScintillaView));
+//	AddView(_T("Lua runtime"),    RUNTIME_CLASS(CRichEditView));
 
 	return TRUE;
 }
