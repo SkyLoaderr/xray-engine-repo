@@ -7,8 +7,6 @@
 	#include "sceneobject.h"
 #endif
 
-float		psDetailDensity		= 0.15f;
-
 //--------------------------------------------------- Decompression
 IC float	Interpolate			(float* base,		u32 x, u32 y, u32 size)
 {
@@ -75,7 +73,7 @@ void		CDetailManager::cache_Decompress(Slot* S)
 	}
 
 	// Prepare to selection
-	float		density		= psDetailDensity;
+	float		density		= ps_r__Detail_density;
 	float		jitter		= density/1.7f;
 	u32			d_size		= iCeil	(dm_slot_size/density);
 	svector<int,dm_obj_in_slot>		selected;

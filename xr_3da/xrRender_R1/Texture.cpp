@@ -12,7 +12,7 @@
 // #include "std_classes.h"
 // #include "xr_avi.h"
  
-
+const float		_BUMPHEIGH = 8.f;
 //////////////////////////////////////////////////////////////////////
 // Utility pack
 //////////////////////////////////////////////////////////////////////
@@ -310,7 +310,7 @@ _BUMP:
 		// Create HW-surface, compute normal map
 		IDirect3DTexture9*	T_normal_1	= 0;
 		R_CHK(D3DXCreateTexture		(HW.pDevice,IMG.Width,IMG.Height,D3DX_DEFAULT,0,D3DFMT_A8R8G8B8,D3DPOOL_SYSTEMMEM,&T_normal_1));
-		R_CHK(D3DXComputeNormalMap	(T_normal_1,T_height_gloss,0,0,D3DX_CHANNEL_RED,4.f));
+		R_CHK(D3DXComputeNormalMap	(T_normal_1,T_height_gloss,0,0,D3DX_CHANNEL_RED,_BUMPHEIGH));
 		//TW_Save						(T_normal_1,fname,"debug-1","normal");
 
 		// Transfer gloss-map
@@ -379,7 +379,7 @@ _BUMP_from_base:
 		// Create HW-surface
 		IDirect3DTexture9*	T_normal_1	= 0;
 		R_CHK(D3DXCreateTexture		(HW.pDevice,IMG.Width,IMG.Height,D3DX_DEFAULT,0,D3DFMT_A8R8G8B8,D3DPOOL_SYSTEMMEM, &T_normal_1));
-		R_CHK(D3DXComputeNormalMap	(T_normal_1,T_base,0,D3DX_NORMALMAP_COMPUTE_OCCLUSION,D3DX_CHANNEL_LUMINANCE,4.f));
+		R_CHK(D3DXComputeNormalMap	(T_normal_1,T_base,0,D3DX_NORMALMAP_COMPUTE_OCCLUSION,D3DX_CHANNEL_LUMINANCE,_BUMPHEIGH));
 
 		// Transfer gloss-map
 		TW_Iterate_1OP				(T_normal_1,T_base,it_gloss_rev_base);
@@ -410,7 +410,7 @@ _BUMP_from_base:
 		// 
 		string256			fnameB;
 		strconcat			(fnameB,"$user$",fname,"_bumpX");
-		ref_texture			t_temp		= Device.Resources->_CreateTexture	(fnameB);
+		ref_texture			t_temp			= Device.Resources->_CreateTexture	(fnameB);
 		t_temp->surface_set	(T_normal_2C	);
 		_RELEASE			(T_normal_2C	);	// texture should keep reference to it by itself
 #endif
