@@ -160,7 +160,7 @@ void CHOM::Render_DB			(CFrustum& base)
 	CFrustum					clip;
 	clip.CreateFromMatrix		(Device.mFullTransform,FRUSTUM_P_NEAR);
 	sPoly						src,dst;
-	u32							_frame	= Device.dwFrame;
+	u32		_frame				= Device.dwFrame	;
 
 	// Perfrom selection, sorting, culling
 	for (; it!=end; it++)

@@ -4,20 +4,23 @@
 
 int			psSheduler				= 3000;
 float		psShedulerLoadBalance	= 1.f;
+/*
 LPVOID 		fiber_main				= 0;
 LPVOID		fiber_thread			= 0;
+*/
 
 //-------------------------------------------------------------------------------------
+/*
 VOID CALLBACK t_process			(LPVOID p)
 {
 	Engine.Sheduler.Process		();
 }
-
+*/
 void CSheduler::Initialize		()
 {
-	fiber_main			= ConvertThreadToFiber	(0);
-	fiber_thread		= CreateFiber			(0,t_process,0);
-	fibered				= FALSE;
+//	fiber_main			= ConvertThreadToFiber	(0);
+//	fiber_thread		= CreateFiber			(0,t_process,0);
+//	fibered				= FALSE;
 }
 
 void CSheduler::Destroy			()
@@ -48,7 +51,7 @@ void CSheduler::Destroy			()
 	}
 #endif
 
-	DeleteFiber			(fiber_thread);
+//	DeleteFiber			(fiber_thread);
 }
 
 void CSheduler::Register		(ISheduled* O, BOOL RT)
@@ -129,10 +132,10 @@ void CSheduler::Pop		()
 void CSheduler::ProcessStep			()
 {
 	// Normal priority
+	u32		dwTime					= Device.dwTimeGlobal;
 	CTimer							eTimer;
-	while (!Items.empty() && Top().dwTimeForExecute < Device.dwTimeGlobal)
+	while (!Items.empty() && Top().dwTimeForExecute < dwTime)
 	{
-		u32		dwTime				= Device.dwTimeGlobal;
 		u32		delta_ms			= dwTime - Top().dwTimeForExecute;
 
 		// Update
@@ -146,11 +149,11 @@ void CSheduler::ProcessStep			()
 		}
 
 		// Calc next update interval
-		u32		dwMin				= iFloor					(psShedulerLoadBalance*T.Object->shedule.t_min);
-		u32		dwMax				= iFloor					(psShedulerLoadBalance*T.Object->shedule.t_max);
+		u32		dwMin				= iFloor					(1.f*T.Object->shedule.t_min);
+		u32		dwMax				= iFloor					(1.f*T.Object->shedule.t_max);
 		float	scale				= T.Object->shedule_Scale	(); 
 		u32		dwUpdate			= dwMin+iFloor(float(dwMax-dwMin)*scale);
-		clamp	(dwUpdate,dwMin,dwMax);
+		clamp	(dwUpdate,u32(_max(dwMin,u32(10))),dwMax);
 
 		// Fill item structure
 		Item	TNext;
@@ -160,10 +163,10 @@ void CSheduler::ProcessStep			()
 
 		// Insert into priority Queue
 		Pop							();
-		Push						(TNext);
+		ItemsProcessed.push_back	(TNext);
 
 		// Real update call
-		// Msg							("------- %d:",Device.dwFrame);
+		// Msg						("------- %d:",Device.dwFrame);
 #ifdef DEBUG
 		T.Object->dbg_startframe	= Device.dwFrame;
 		eTimer.Start				();
@@ -187,10 +190,16 @@ void CSheduler::ProcessStep			()
 		}
 #endif
 
-		// Slice					();
+		if (CPU::GetCycleCount() > cycles_limit)	break;
+	}
+
+	// Push "processed" back
+	while (ItemsProcessed.size())	{
+		Push	(ItemsProcessed.back())	;
+		ItemsProcessed.pop_back		()	;
 	}
 }
-
+/*
 void CSheduler::Switch				()
 {
 	if (fibered)	
@@ -199,10 +208,10 @@ void CSheduler::Switch				()
 		SwitchToFiber				(fiber_main);
 	}
 }
-
+*/
 void CSheduler::Update				()
 {
-	u32	mcs							= psSheduler;
+//	u32	mcs							= psSheduler;
 	u32	dwTime						= Device.dwTimeGlobal;
 
 	// Log				("------------- CSheduler::Update: ",u32(Device.dwFrame));
@@ -221,18 +230,8 @@ void CSheduler::Update				()
 
 	// Normal (sheduled)
 	Device.Statistic.Sheduler.Begin	();
-	cycles_limit					= CPU::cycles_per_milisec * u64	(mcs);
 	cycles_start					= CPU::GetCycleCount			();
-	fibered							= TRUE;
-	SwitchToFiber					(fiber_thread);
+	cycles_limit					= CPU::cycles_per_milisec * u64	(10) + cycles_start;
+	ProcessStep						();
 	Device.Statistic.Sheduler.End	();
-}
-
-void CSheduler::Process				()
-{
-	for (;;)
-	{
-		ProcessStep	();
-		Switch		();
-	}
 }

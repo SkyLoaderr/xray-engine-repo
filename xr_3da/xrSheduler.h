@@ -16,8 +16,9 @@ private:
 		{	return dwTimeForExecute > I.dwTimeForExecute; }
 	};
 private:
-	xr_vector<Item>	ItemsRT;
-	xr_vector<Item>	Items;
+	xr_vector<Item>	ItemsRT			;
+	xr_vector<Item>	Items			;
+	xr_vector<Item> ItemsProcessed	;
 
 	IC void			Push	(Item& I);
 	IC void			Pop		();
@@ -28,18 +29,20 @@ private:
 public:
 	u64				cycles_start;
 	u64				cycles_limit;
-	BOOL			fibered;
+	//BOOL			fibered;
 public:
 	void			ProcessStep	();
 	void			Process		();
 	void			Update		();
 
+	/*
 	void			Switch		();
 	IC void			Slice		()
 	{
 		if ((CPU::GetCycleCount()-cycles_start)>cycles_limit)
 			Switch();
 	}
+	*/
 
 	void			Register	(ISheduled* A, BOOL RT=FALSE );
 	void			Unregister	(ISheduled* A	);
