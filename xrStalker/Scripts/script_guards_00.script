@@ -89,6 +89,9 @@ function main()
 
 	while true do
 		if actor.health <= 0 then
+			guard01:script	(true,script_guards_00.script_name())
+			guard02:script	(true,script_guards_00.script_name())
+
 			action(
 				guard01,
 			  	move	(move.standing, move.stand,move.line,patrol("way0001")),
