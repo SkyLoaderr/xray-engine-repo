@@ -15,7 +15,7 @@ enIC u32	color					(Fvector& N, u32 rgbh, u8 sun, u32 Alpha)
 {
 	CEnvDescriptor&	desc		= g_pGamePersistent->Environment.CurrentEnv;
 	Fvector						c_sun,c_ambient,c_lmap,c_hemi,c_sun_dir;
-	c_sun_dir.set				(desc.sun_dir).invert	();
+	c_sun_dir.set				(desc.sun_dir);
 	c_sun.set					(desc.sun_color.x,	desc.sun_color.y,	desc.sun_color.z);
 	c_lmap.set					(desc.lmap_color.x,	desc.lmap_color.y,	desc.lmap_color.z);
 	c_ambient.set				(desc.ambient.x,	desc.ambient.y,		desc.ambient.z);
@@ -23,15 +23,15 @@ enIC u32	color					(Fvector& N, u32 rgbh, u8 sun, u32 Alpha)
 	float	sun_factor			= .5f * clampr	(c_sun_dir.dotproduct(N),0.f,1.f);	//. hack to immitate sun
 C,	Fvector C,rgb; 
 			(float(color_get_R(rgbh)),float(color_get_G(rgbh)),float(color_get_B(rgbh)));
-	rgb.div				rgb.div						(255.f);
-	float h						= float(color_get_A(rgbh))/255.f;
-	float s						= float(sun)/255.f;
-	(c_ambient);
+	rgb.div						(127.f);
+	float h						= float(color_get_A(rgbh))/127.f;
+	float s						= float(sun)/127.f;
+	C.set						(c_ambient);
 	C.mad						(c_lmap,rgb);
 	C.mad						(c_hemi,h);
 	C.mad						(c_sun,	s + sun_factor);
 
-	return s	C.mul						(1.1f);		//. hack to make lods look better/brighter - +10% total energy
+	return s	C.mul						(1.0f);		//. hack to make lods look better/brighter - +10% total energy
 ub	return subst_alpha			(color_rgba_f(C.x,C.y,C.z,0),Alpha);
 _dsgraph_structure::r_dsgraph_render_lods	()
 {
