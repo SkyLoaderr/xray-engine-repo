@@ -135,6 +135,8 @@ void CMainUI::Activate	(bool bActivate)
 		m_Flags.set					(flRestorePause,Device.Pause());
 		Console->Hide				();
 
+		m_Flags.set					(flRestoreCursor,GetUICursor()->IsVisible());
+
 		if(!m_Flags.is(flRestorePause))
 			Device.Pause			(TRUE);
 
@@ -170,7 +172,9 @@ void CMainUI::Activate	(bool bActivate)
 
 		if(!m_Flags.is(flRestorePause))
 			Device.Pause(FALSE);
-
+	
+		if(m_Flags.is(flRestoreCursor))
+			GetUICursor()->Show();
 	}
 }
 bool CMainUI::IsActive	()

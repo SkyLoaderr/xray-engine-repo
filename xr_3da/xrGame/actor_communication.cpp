@@ -418,13 +418,14 @@ void CActor::UpdateContact		(u16 contact_id)
 
 void CActor::NewPdaContact		(CInventoryOwner* pInvOwner)
 {	
-	CGameObject* GO = smart_cast<CGameObject*>(pInvOwner);
+//	CGameObject* GO = smart_cast<CGameObject*>(pInvOwner);
 
 	HUD().GetUI()->UIMainIngameWnd->AnimateContacts();
 
-	ALife::ERelationType relation = ALife::eRelationTypeDummy;
+//	ALife::ERelationType relation = ALife::eRelationTypeDummy;
 	if(Game().Type() == GAME_SINGLE)
-		relation =  RELATION_REGISTRY().GetRelationType(pInvOwner, static_cast<CInventoryOwner*>(this));
+//		relation =  RELATION_REGISTRY().GetRelationType(pInvOwner, static_cast<CInventoryOwner*>(this));
+		Level().MapManager().AddRelationLocation( pInvOwner );
 	else
 	{
 ///		CEntityAlive* EA = smart_cast<CEntityAlive*>(GO); VERIFY(EA);
@@ -432,7 +433,7 @@ void CActor::NewPdaContact		(CInventoryOwner* pInvOwner)
 		return;
 	}
 
-	Level().MapManager().AddMapLocation(RELATION_REGISTRY().GetSpotName(relation), GO->ID() );
+//	Level().MapManager().AddMapLocation(RELATION_REGISTRY().GetSpotName(relation), GO->ID() );
 
 /*
 	static LPCSTR	m_sMapSpotAnimEnemy		= pSettings->r_string("game_map", "map_spots_enemy");	
@@ -484,10 +485,13 @@ void CActor::LostPdaContact		(CInventoryOwner* pInvOwner)
 
 	CGameObject* GO = smart_cast<CGameObject*>(pInvOwner);
 	if (GO){
-		Level().MapManager().RemoveMapLocation("enemy_location",	GO->ID());
-		Level().MapManager().RemoveMapLocation("neutral_location",	GO->ID());
-		Level().MapManager().RemoveMapLocation("friend_location",	GO->ID());
+
+		for(int t = ALife::eRelationTypeFriend; t<ALife::eRelationTypeLast; ++t){
+			ALife::ERelationType tt = (ALife::ERelationType)t;
+			Level().MapManager().RemoveMapLocation(RELATION_REGISTRY().GetSpotName(tt),	GO->ID());
+		}
 	};
+
 }
 
 void CActor::AddGameNews_deffered	 (GAME_NEWS_DATA& news_data, u32 delay)

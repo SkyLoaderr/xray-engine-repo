@@ -56,6 +56,7 @@ _keybind  keybind[]		= {
 	{ "wpn_ammo",		kWPN_AMMO		},
 	{ "wpn_func",		kWPN_FUNC		},
 	
+	{ "pause",			kPAUSE			},	
 	{ "drop",			kDROP			},	
 	{ "use",			kUSE			},	
 	{ "scores",			kSCORES			},	

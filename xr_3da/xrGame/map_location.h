@@ -6,7 +6,7 @@ class CMapSpot;
 class CMiniMapSpot;
 class CMapSpotPointer;
 class CUICustomMap;
-
+class CInventoryOwner;
 
 class CMapLocation
 {
@@ -34,11 +34,12 @@ private:
 private:
 							CMapLocation					(const CMapLocation&){}; //disable copy ctor
 
-	void					LoadSpot						(LPCSTR type); 
-
+protected :
+	void					LoadSpot						(LPCSTR type, bool bReload); 
 	void					UpdateSpot						(CUICustomMap* map, CMapSpot* sp );
 	void					UpdateSpotPointer				(CUICustomMap* map, CMapSpotPointer* sp );
 	CMapSpotPointer*		GetSpotPointer					(CMapSpot* sp);
+
 public:
 							CMapLocation					(LPCSTR type, u16 object_id);
 	virtual					~CMapLocation					();
@@ -55,7 +56,19 @@ public:
 	void					SetRefCount						(u16 c)		{m_refCount=c;}
 	u16						AddRef							() {++m_refCount; return m_refCount;}
 	u16						Release							() {--m_refCount; return m_refCount;}
-	bool					Update							(); //returns actual
+	virtual		bool		Update							(); //returns actual
 	Fvector2				GetLastPosition					() {return m_position_global;};
 	bool					Serializable					() const {return !!m_flags.test(eSerailizable);}
+};
+
+class CRelationMapLocation :public CMapLocation
+{
+	typedef CMapLocation inherited;
+	shared_str				m_curr_spot_name;
+	CInventoryOwner*		m_pInvOwnerEntity;
+	CInventoryOwner*		m_pInvOwnerActor;
+public:
+							CRelationMapLocation			(const shared_str& type, u16 object_id, CInventoryOwner* pInvOwnerActor, CInventoryOwner* pInvOwnerEntity);
+	virtual					~CRelationMapLocation			();
+	virtual bool			Update							(); //returns actual
 };

@@ -127,10 +127,15 @@ bool CUI::Render()
 }
 bool	CUI::IR_OnMouseWheel			(int direction)
 {
-	if ( MainInputReceiver()&&MainInputReceiver()->IR_OnMouseWheel(direction)) 
-		return true;
+	if ( MainInputReceiver() ){
+		if( MainInputReceiver()->IR_OnMouseWheel(direction) )
+			return true;
+	}
 
 	if (pUIGame&&pUIGame->IR_OnMouseWheel(direction)) 
+		return true;
+
+	if( MainInputReceiver() )
 		return true;
 
 	return false;
@@ -142,10 +147,15 @@ bool CUI::IR_OnKeyboardPress(int dik)
 	if(UIMainIngameWnd->OnKeyboardPress(dik))
 		return true;
 
-	if ( MainInputReceiver()&&MainInputReceiver()->IR_OnKeyboardPress(dik)) 
-		return true;
+	if ( MainInputReceiver() ) {
+		if( MainInputReceiver()->IR_OnKeyboardPress(dik) )
+			return true;
+	}
 
 	if (pUIGame && pUIGame->IR_OnKeyboardPress(dik)) 
+		return true;
+
+	if( MainInputReceiver() )
 		return true;
 
 	return false;
@@ -154,10 +164,15 @@ bool CUI::IR_OnKeyboardPress(int dik)
 
 bool CUI::IR_OnKeyboardRelease(int dik)
 {
-	if ( MainInputReceiver()&&MainInputReceiver()->IR_OnKeyboardRelease(dik)) 
-		return true;
+	if ( MainInputReceiver() ){
+		if( MainInputReceiver()->IR_OnKeyboardRelease(dik) )
+			return true;
+	}
 
 	if (pUIGame&&pUIGame->IR_OnKeyboardRelease(dik)) 
+		return true;
+
+	if( MainInputReceiver() )
 		return true;
 
 	return false;
@@ -166,10 +181,15 @@ bool CUI::IR_OnKeyboardRelease(int dik)
 
 bool CUI::IR_OnMouseMove(int dx,int dy)
 {
-	if ( MainInputReceiver()&&MainInputReceiver()->IR_OnMouseMove(dx,dy)) 
-		return true;
+	if ( MainInputReceiver() ){
+		if ( MainInputReceiver()->IR_OnMouseMove(dx,dy) )
+			return true;
+	}
 	
 	if (pUIGame&&pUIGame->IR_OnMouseMove(dx,dy)) 
+		return true;
+
+	if( MainInputReceiver() )
 		return true;
 	
 	return false;

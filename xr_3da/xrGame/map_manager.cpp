@@ -1,6 +1,10 @@
 #include "stdafx.h"
 #include "map_manager.h"
 #include "alife_registry_wrappers.h"
+#include "inventoryowner.h"
+#include "level.h"
+#include "relation_registry.h"
+#include "GameObject.h"
 
 struct FindLocationBySpotID{
 	shared_str	spot_id;
@@ -93,6 +97,27 @@ CMapLocation* CMapManager::AddMapLocation(const shared_str& spot_type, u16 id)
 	return (*it).location;
 }
 
+CMapLocation* CMapManager::AddRelationLocation(CInventoryOwner* pInvOwner)
+{
+	if(!Level().CurrentViewEntity())return NULL;
+
+	ALife::ERelationType relation = ALife::eRelationTypeFriend;
+	CInventoryOwner* pActor = smart_cast<CInventoryOwner*>(Level().CurrentViewEntity());
+	relation =  RELATION_REGISTRY().GetRelationType(pInvOwner, pActor);
+	shared_str sname = RELATION_REGISTRY().GetSpotName(relation);
+
+	FindLocationBySpotID key(sname, pInvOwner->object_id());
+	Locations_it it = std::find_if(Locations().begin(),Locations().end(),key);
+	if( it == Locations().end() ){
+		CMapLocation* l = xr_new<CRelationMapLocation>(*key.spot_id, key.object_id, pActor, pInvOwner);
+		Locations().push_back( SLocationKey(key.spot_id, key.object_id) );
+		Locations().back().location = l;
+		return l;
+	}else
+		(*it).location->AddRef();
+
+	return (*it).location;
+}
 
 void CMapManager::RemoveMapLocation(const shared_str& spot_type, u16 id)
 {

@@ -12,6 +12,7 @@
 #include "ui/UIMapWnd.h"
 #include "alife_simulator.h"
 #include "alife_object_registry.h"
+#include "relation_registry.h"
 
 //////////////////////////////////////////////////
 CMapLocation::CMapLocation(LPCSTR type, u16 object_id)
@@ -25,7 +26,7 @@ CMapLocation::CMapLocation(LPCSTR type, u16 object_id)
 	m_objectID				= object_id;
 	m_actual_time			= 0;
 
-	LoadSpot				(type);
+	LoadSpot				(type, false);
 	m_refCount				= 1;
 }
 
@@ -40,7 +41,7 @@ CMapLocation::~CMapLocation()
 
 CUIXml	g_uiSpotXml;
 bool	g_uiSpotXmlInited = false;
-void CMapLocation::LoadSpot(LPCSTR type)
+void CMapLocation::LoadSpot(LPCSTR type, bool bReload)
 {
 	if(!g_uiSpotXmlInited){
 		bool xml_result			= g_uiSpotXml.Init(CONFIG_PATH, UI_PATH, "map_spots.xml");
@@ -80,14 +81,21 @@ void CMapLocation::LoadSpot(LPCSTR type)
 	if(node){
 		LPCSTR str = g_uiSpotXml.ReadAttrib(path, 0, "spot", "");
 		if( xr_strlen(str) ){
-			m_level_spot = xr_new<CMapSpot>(this);
+			if(!bReload)
+				m_level_spot = xr_new<CMapSpot>(this);
 			m_level_spot->Load(&g_uiSpotXml,str);
-		};
+		}else{
+			VERIFY( !(bReload&&m_level_spot) );
+		}
+
 		str = g_uiSpotXml.ReadAttrib(path, 0, "pointer", "");
 		if( xr_strlen(str) ){
-			m_level_spot_pointer = xr_new<CMapSpotPointer>(this);
+			if(!bReload)
+				m_level_spot_pointer = xr_new<CMapSpotPointer>(this);
 			m_level_spot_pointer->Load(&g_uiSpotXml,str);
-		};
+		}else{
+			VERIFY( !(bReload&&m_level_spot_pointer) );
+		}
 	};
 
 	strconcat(path,path_base,":mini_map");
@@ -95,14 +103,21 @@ void CMapLocation::LoadSpot(LPCSTR type)
 	if(node){
 		LPCSTR str = g_uiSpotXml.ReadAttrib(path, 0, "spot", "");
 		if( xr_strlen(str) ){
-			m_minimap_spot = xr_new<CMiniMapSpot>(this);
+			if(!bReload)
+				m_minimap_spot = xr_new<CMiniMapSpot>(this);
 			m_minimap_spot->Load(&g_uiSpotXml,str);
-		};
+		}else{
+			VERIFY( !(bReload&&m_minimap_spot) );
+		}
+
 		str = g_uiSpotXml.ReadAttrib(path, 0, "pointer", "");
 		if( xr_strlen(str) ){
-			m_minimap_spot_pointer = xr_new<CMapSpotPointer>(this);
+			if(!bReload)
+				m_minimap_spot_pointer = xr_new<CMapSpotPointer>(this);
 			m_minimap_spot_pointer->Load(&g_uiSpotXml,str);
-		};
+		}else{
+			VERIFY( !(bReload&&m_minimap_spot_pointer) );
+		}
 	};
 }
 
@@ -288,4 +303,29 @@ CMapSpotPointer* CMapLocation::GetSpotPointer(CMapSpot* sp)
 		return m_minimap_spot_pointer;
 
 	return NULL;
+}
+
+CRelationMapLocation::CRelationMapLocation			(const shared_str& type, u16 object_id, CInventoryOwner* pInvOwnerActor, CInventoryOwner* pInvOwnerEntity)
+:CMapLocation(*type,object_id)
+{
+	m_curr_spot_name	= type;
+	m_pInvOwnerEntity	= pInvOwnerEntity;
+	m_pInvOwnerActor	= pInvOwnerActor;
+}
+
+CRelationMapLocation::~CRelationMapLocation			()
+{}
+
+bool CRelationMapLocation::Update()
+{
+	if (false==inherited::Update() ) return false;
+
+	ALife::ERelationType relation = ALife::eRelationTypeFriend;
+	relation =  RELATION_REGISTRY().GetRelationType(m_pInvOwnerEntity, m_pInvOwnerActor);
+	const shared_str& sname = RELATION_REGISTRY().GetSpotName(relation);
+	if(m_curr_spot_name != sname){
+		LoadSpot(*sname, true);
+		m_curr_spot_name = sname;
+	}
+	return true;
 }

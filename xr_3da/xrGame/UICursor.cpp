@@ -33,6 +33,7 @@ CUICursor::~CUICursor	()
 //--------------------------------------------------------------------
 void CUICursor::Render	()
 {
+#ifdef DEBUG
 	CGameFont* F		= UI()->Font()->pFontDI;
 	F->SetAligment		(CGameFont::alCenter);
 	F->SetSize			(0.02f);
@@ -45,7 +46,7 @@ void CUICursor::Render	()
 		F->OutNext		("Hold Mode");
 		return;
 	};
-
+#endif
 
 	_VertexStream*	Stream	= &RCache.Vertex; 
 	// actual rendering

@@ -29,8 +29,29 @@ void CLevel::IR_OnMouseWheel( int direction )
 // Обработка нажатия клавиш
 void CLevel::IR_OnKeyboardPress(int key)
 {
+
+	switch (key_binding[key]) {
+	case kCONSOLE:
+		Console->Show				();
+		return;
+		break;
+
+	case kQUIT:	{
+		if( HUD().GetUI()->MainInputReceiver() )
+				HUD().GetUI()->StartStopMenu( HUD().GetUI()->MainInputReceiver(), true);
+		else
+			Console->Execute			("main_menu");
+		return;
+		}break;
+
+	case kPAUSE:
+		Device.Pause(!Device.Pause());
+		return;
+		break;
+	};
 	
-//	if (pHUD->IsUIActive())			
+	if( Device.Pause() ) return;
+
 	if (pHUD->GetUI()->IR_OnKeyboardPress(key)) return;
 	if ( Game().IR_OnKeyboardPress(key) ) return;
 
@@ -220,8 +241,8 @@ void CLevel::IR_OnKeyboardPress(int key)
 		break;
 	default:{
 	
-		if(bindConsoleCmds.execute(key))
-			break;
+	if(bindConsoleCmds.execute(key))
+		break;
 
 		if (CurrentEntity())		{
 			IInputReceiver*		IR	= smart_cast<IInputReceiver*>	(smart_cast<CGameObject*>(CurrentEntity()));
@@ -268,7 +289,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 
 void CLevel::IR_OnKeyboardRelease(int key)
 {
-//	if (pHUD->IsUIActive()) 
+	if( Device.Pause() ) return;
 	if (pHUD->GetUI()->IR_OnKeyboardRelease(key)) return;
 	if ( Game().OnKeyboardRelease(key_binding[key]) ) return;
 
@@ -280,6 +301,7 @@ void CLevel::IR_OnKeyboardRelease(int key)
 
 void CLevel::IR_OnKeyboardHold(int key)
 {
+	if( Device.Pause() ) return;
 	if (CurrentEntity())		{
 		IInputReceiver*		IR	= smart_cast<IInputReceiver*>	(smart_cast<CGameObject*>(CurrentEntity()));
 		if (IR)				IR->IR_OnKeyboardHold				(key_binding[key]);

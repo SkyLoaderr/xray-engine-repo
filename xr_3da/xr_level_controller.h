@@ -48,6 +48,7 @@ enum	EKeyBinding
 	kWPN_FUNC		,
 
 	kUSE			,
+	kPAUSE			,
 	kDROP			,
 	kSCORES			,
 	kCHAT			,

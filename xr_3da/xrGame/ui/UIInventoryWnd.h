@@ -75,6 +75,7 @@ public:
 	// Проверить принадлежность вещи к нужному слоту и попробовать освободить для нее место
 	// переместив текущую вещь в слоте в сумку
 	bool SlotToBag(PIItem pItem, CUIDragDropList *pList, const u32 SlotNum);
+	virtual bool			OnKeyboard			(int dik, EUIMessages keyboard_action);
 
 protected:
 	friend class CUITradeWnd;

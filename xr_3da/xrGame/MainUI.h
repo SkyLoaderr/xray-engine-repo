@@ -54,6 +54,7 @@ class CMainUI :
 		flRestorePause		= (1<<1),
 		flActive			= (1<<2),
 		flNeedChangeCapture	= (1<<3),
+		flRestoreCursor		= (1<<4),
 	};
 	Flags8			m_Flags;
 	xr_stack<Irect> m_Scissors;
