@@ -3,11 +3,11 @@
 ;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, top, bottom) |	Test Dist
 ;---------------------------------------------------------------------------------------------------------------------------------------------
 ;Left hand Strike
-stand_attack_0 =	  	0.30,		25,		    800,        3.5, 2.0, 0.5,		 -1.2, 1.2, -1.2, 1.2,				  3.2
+stand_attack_0 =	  	0.30,		25,		    400,        3.5, 2.0, 0.5,		 -1.2, 1.2, -1.2, 1.2,				  3.2
 ;Both hands Strike
-stand_attack_1 =	  	0.30,		20,		    800,        0.0, 2.0, 4.0,		 -1.6, 1.6, -1.6, 1.6,				  3.2
+stand_attack_1 =	  	0.30,		20,		    500,        0.0, 2.0, 4.0,		 -1.6, 1.6, -1.6, 1.6,				  3.2
 ;Right hand Strike
-stand_attack_2 =	  	0.30,		40,		    900,        -4.0, 2.5, 0.50,		 -1.6, 1.6, -1.6, 1.6,				  3.2
+stand_attack_2 =	  	0.30,		40,		    400,        -4.0, 2.5, 0.50,	 -1.6, 1.6, -1.6, 1.6,				  3.2
 
 
 [m_bloodsucker_attack_effector]
@@ -27,10 +27,10 @@ time_attack		= 0.05		; fade in
 time_release	= 0.45		; fade out
 
 ; camera effects
-ce_time				= 1.2;0.65 ;time 
+ce_time				= 0.65 ;time 
 ce_amplitude		= 30;12.0 
-ce_period_number	= 3.0 
-ce_power			= 1.0 ;0.7 ; power 
+ce_period_number	= 1.0;3.0 
+ce_power			= 3.0 ;0.7 ; power 
 
 [m_bloodsucker_step_params]
 ; order: front_left, front_right, back_right, back_left
