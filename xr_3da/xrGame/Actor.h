@@ -51,9 +51,11 @@ protected:
 	CWeaponList*		Weapons;
 
 	// media
-	int					sndStep[2];
 	BOOL				bStep;
+	int					sndStep[2];
 	int					sndLanding;
+	int					sndZoneHeart;
+	int					sndZoneDetector;
 	sound3D				sndWeaponChange;
 	sound3D				sndRespawn;
 	sound3D				sndHit[SND_HIT_COUNT];
