@@ -72,10 +72,12 @@ class CCC_SaveCFG : public CConsoleCommand
 {
 public:
 	CCC_SaveCFG(LPCSTR N) : CConsoleCommand(N) { bEmptyArgsHandled = TRUE; };
-	virtual void Execute(LPCSTR args) {
-		SetFileAttributes("user.ltx",FILE_ATTRIBUTE_NORMAL);
-		FILE *F = fopen("user.ltx","wt");
-		R_ASSERT(F);
+	virtual void Execute(LPCSTR args) 
+	{
+		LPCSTR	c_name		= Console.ConfigFile;
+		SetFileAttributes	(c_name,FILE_ATTRIBUTE_NORMAL);
+		FILE *F = fopen		(c_name,"wt");
+		R_ASSERT			(F);
 
 		CConsole::vecCMD_IT it;
 		for (it=Console.Commands.begin(); it!=Console.Commands.end(); it++)
