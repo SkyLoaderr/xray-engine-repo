@@ -13,7 +13,7 @@
 #include "ai_soldier_selectors.h"
 #include "..\\..\\..\\bodyinstance.h"
 
-//#define WRITE_LOG
+#define WRITE_LOG
 #define MIN_RANGE_SWITCH 500
 
 CAI_Soldier::CAI_Soldier()
@@ -71,6 +71,12 @@ void CAI_Soldier::Load(CInifile* ini, const char* section)
 
 	m_tpaDeathAnimations[0] = m_death;
 	m_tpaDeathAnimations[1] = PKinematics(pVisual)->ID_Cycle_Safe("norm_death_2");
+	
+	m_crouch_walk.Create(PKinematics(pVisual),"cr_walk");
+	m_crouch_run.Create(PKinematics(pVisual),"cr_run");
+	m_crouch_run;
+	m_crouch_idle = PKinematics(pVisual)->ID_Cycle_Safe("cr_idle");
+	m_tpaDeathCrouchAnimations[0] = PKinematics(pVisual)->ID_Cycle_Safe("cr_death");
 
 }
 
@@ -458,6 +464,7 @@ void CAI_Soldier::Attack()
 					tpSavedEnemyNode = Enemy.Enemy->AI_Node;
 					dwSavedEnemyNodeID = Enemy.Enemy->AI_NodeID;
 				}
+				/**/
 				if ((dwSavedEnemyNodeID != AI_Path.DestNode) || (!bBuildPathToLostEnemy)) {
 					// determining the team
 					CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
@@ -1358,31 +1365,47 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 	bool bCrouched = false; 
 
 	if (iHealth<=0) {
-		for (int i=0 ;i<2; i++)
-			if (m_tpaDeathAnimations[i] == m_current) {
-				S = m_current;
-				break;
-			}
-		if (!S)
-			S = m_tpaDeathAnimations[::Random.randI(0,2)];
+		if (bCrouched) {
+			for (int i=0 ;i<1; i++)
+				if (m_tpaDeathCrouchAnimations[i] == m_current) {
+					S = m_current;
+					break;
+				}
+			if (!S)
+				S = m_tpaDeathCrouchAnimations[::Random.randI(0,1)];
+		}
+		else {
+			for (int i=0 ;i<2; i++)
+				if (m_tpaDeathAnimations[i] == m_current) {
+					S = m_current;
+					break;
+				}
+			if (!S)
+				S = m_tpaDeathAnimations[::Random.randI(0,2)];
+		}
 	} else {
 		if (speed<0.2f) {
 			// idle
-			S = m_idle;
+			if (bCrouched)	
+				S = m_crouch_idle;
+			else
+				S = m_idle;
 		} else {
 			Fvector view = _view; view.y=0; view.normalize_safe();
 			Fvector move = _move; move.y=0; move.normalize_safe();
 			float	dot  = view.dotproduct(move);
 			
-			SAnimState* AState = &m_walk;
-//			if (bCrouched)	AState = &m_crouch_walk;
-//			else			
-			AState = &m_walk;
+			SAnimState* AState = 0;
+			if (bCrouched)	
+				AState = &m_crouch_walk;
+			else 
+				AState = &m_walk;
 			
 			if (speed>2.f){
-//				if (bCrouched)	AState = &m_crouch_run;
-//				else			
-				AState = &m_run;
+				if (bCrouched)	
+					AState = &m_crouch_run;
+				else		
+					AState = &m_run;
 			}
 			
 			if (dot>0.7f){

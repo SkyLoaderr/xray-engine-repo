@@ -62,6 +62,10 @@ class CAI_Soldier : public CCustomMonster
 		bool			bBuildPathToLostEnemy;
 		
 		CMotionDef* 	m_tpaDeathAnimations[2];
+		CMotionDef* 	m_tpaDeathCrouchAnimations[1];
+		CMotionDef* 	m_crouch_idle;
+		SAnimState 		m_crouch_walk;
+		SAnimState 		m_crouch_run;
 		
 		DWORD			m_dwLastRangeSearch;
 
