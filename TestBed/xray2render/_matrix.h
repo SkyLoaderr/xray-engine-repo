@@ -492,10 +492,10 @@ public:
 	}
 	IC	void	transform			(Tvector &dest, const Tvector &v)	const 	// preferred to use
 	{
-		T w	= v.x*_14 + v.y*_24 + v.z*_34 + _44;
-		dest.x	= (v.x*_11 + v.y*_21 + v.z*_31 + _41)/w;
-		dest.y	= (v.x*_12 + v.y*_22 + v.z*_32 + _42)/w;
-		dest.z	= (v.x*_13 + v.y*_23 + v.z*_33 + _43)/w;
+		T iw	= 1.f/(v.x*_14 + v.y*_24 + v.z*_34 + _44);
+		dest.x	= (v.x*_11 + v.y*_21 + v.z*_31 + _41)*iw;
+		dest.y	= (v.x*_12 + v.y*_22 + v.z*_32 + _42)*iw;
+		dest.z	= (v.x*_13 + v.y*_23 + v.z*_33 + _43)*iw;
 	}
 
 	IC	void	transform_tiny		(Tvector &v) const

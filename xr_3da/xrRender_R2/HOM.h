@@ -12,6 +12,8 @@ private:
 	CDB::MODEL*				m_pModel;
 	occTri*					m_pTris;
 	BOOL					bEnabled;
+	Fmatrix					m_xform;
+	Fmatrix					m_xform_01;
 
 	void					Render_DB	(CFrustum&	base);
 public:
@@ -25,9 +27,10 @@ public:
 	void					Disable		();
 	void					Enable		();
 
-	BOOL					visible		(vis_data& vis);
-	BOOL					visible		(Fbox& B);
-	BOOL					visible		(sPoly& P);
+	BOOL					visible		(vis_data&	vis);
+	BOOL					visible		(Fbox3&		B);
+	BOOL					visible		(sPoly&		P);
+	BOOL					visible		(Fbox2&		B, float depth);	// viewport-space (0..1)
 	
 	CHOM();
 	~CHOM();

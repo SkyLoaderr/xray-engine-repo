@@ -100,18 +100,6 @@ void CHOM::Unload		()
 	bEnabled	= FALSE;
 }
 
-IC	void	xform		(Fmatrix& X, Fvector& D, Fvector& S, float dim_2)
-{
-	float x	= S.x*X._11 + S.y*X._21 + S.z*X._31 + X._41;
-	float y	= S.x*X._12 + S.y*X._22 + S.z*X._32 + X._42;
-	float z	= S.x*X._13 + S.y*X._23 + S.z*X._33 + X._43;
-	float w	= S.x*X._14 + S.y*X._24 + S.z*X._34 + X._44;
-	
-	D.x = (1.f+x/w)*dim_2;
-	D.y = (1.f-y/w)*dim_2;
-	D.z	= z/w;
-}
-
 void CHOM::Render_DB	(CFrustum& base)
 {
 	// Query DB
@@ -120,16 +108,29 @@ void CHOM::Render_DB	(CFrustum& base)
 	if (0==xrc.r_count())	return;
 
 	// Prepare
-	CDB::RESULT*	it		= xrc.r_begin	();
-	CDB::RESULT*	end		= xrc.r_end		();
-	Fvector			COP		= Device.vCameraPosition;
-	Fmatrix			XF		= Device.mFullTransform;
-	float			dim		= occ_dim_0/2;
+	CDB::RESULT*	it			= xrc.r_begin	();
+	CDB::RESULT*	end			= xrc.r_end		();
+	Fvector			COP			= Device.vCameraPosition;
+	float			view_dim	= occ_dim_0;
+	Fmatrix			m_viewport		= {
+		view_dim/2.f,			0.0f,					0.0f,		0.0f,
+		0.0f,					-view_dim/2.f,			0.0f,		0.0f,
+		0.0f,					0.0f,					1.0f,		0.0f,
+		view_dim/2.f + 0 + 0,	view_dim/2.f + 0 + 0,	0.0f,		1.0f
+	};
+	Fmatrix			m_viewport_01	= {
+		1.f/2.f,			0.0f,				0.0f,		0.0f,
+		0.0f,				-1.f/2.f,			0.0f,		0.0f,
+		0.0f,				0.0f,				1.0f,		0.0f,
+		1.f/2.f + 0 + 0,	1.f/2.f + 0 + 0,	0.0f,		1.0f
+	};
+	m_xform.mul					(m_viewport,	Device.mFullTransform);
+	m_xform_01.mul				(m_viewport_01,	Device.mFullTransform);
 
 	// Build frustum with near plane only
-	CFrustum		clip;
-	clip.CreateFromMatrix(XF,FRUSTUM_P_NEAR);
-	sPoly			src,dst;
+	CFrustum					clip;
+	clip.CreateFromMatrix		(Device.mFullTransform,FRUSTUM_P_NEAR);
+	sPoly						src,dst;
 
 	// Perfrom selection, sorting, culling
 	for (; it!=end; it++)
@@ -156,11 +157,10 @@ void CHOM::Render_DB	(CFrustum& base)
 		// XForm and Rasterize
 		u32		pixels	= 0;
 		int		limit	= int(P->size())-1;
-		for (int v=1; v<limit; v++)
-		{
-			xform			(XF,T.raster[0],(*P)[0],	dim);
-			xform			(XF,T.raster[1],(*P)[v+0],	dim);
-			xform			(XF,T.raster[2],(*P)[v+1],	dim);
+		for (int v=1; v<limit; v++)	{
+			m_xform.transform(T.raster[0],(*P)[0]);
+			m_xform.transform(T.raster[1],(*P)[v+0]);
+			m_xform.transform(T.raster[2],(*P)[v+1]);
 			pixels	+=		Raster.rasterize(&T);
 		}
 		if (0==pixels)
@@ -182,43 +182,48 @@ void CHOM::Render		(CFrustum& base)
 IC	BOOL	xform_b0	(Fvector2& min, Fvector2& max, float& minz, Fmatrix& X, float _x, float _y, float _z)
 {
 	float z		= _x*X._13 + _y*X._23 + _z*X._33 + X._43;			if (z<EPS) return TRUE;
-	float w		= 1/(_x*X._14 + _y*X._24 + _z*X._34 + X._44);		
-	min.x=max.x	= 1.f+(_x*X._11 + _y*X._21 + _z*X._31 + X._41)*w;
-	min.y=max.y	= 1.f-(_x*X._12 + _y*X._22 + _z*X._32 + X._42)*w;	
-	minz		= 0.f+z*w;
+	float iw	= 1.f/(_x*X._14 + _y*X._24 + _z*X._34 + X._44);		
+	min.x=max.x	= (_x*X._11 + _y*X._21 + _z*X._31 + X._41)*iw;
+	min.y=max.y	= (_x*X._12 + _y*X._22 + _z*X._32 + X._42)*iw;	
+	minz		= 0.f+z*iw;
 	return FALSE;
 }
 IC	BOOL	xform_b1	(Fvector2& min, Fvector2& max, float& minz, Fmatrix& X, float _x, float _y, float _z)
 {
 	float t;
-	float z		= _x*X._13 + _y*X._23 + _z*X._33 + X._43;			if (z<EPS)	return TRUE;
-	float w		= 1/(_x*X._14 + _y*X._24 + _z*X._34 + X._44);		
-	t 			= 1.f+(_x*X._11 + _y*X._21 + _z*X._31 + X._41)*w;	if (t<min.x) min.x=t; else if (t>max.x) max.x=t;
-	t			= 1.f-(_x*X._12 + _y*X._22 + _z*X._32 + X._42)*w;	if (t<min.y) min.y=t; else if (t>max.y) max.y=t;
-	t			= 0.f+z*w;											if (t<minz)			minz  =t;
+	float z		= _x*X._13 + _y*X._23 + _z*X._33 + X._43;		if (z<EPS)	return TRUE;
+	float iw	= 1.f/(_x*X._14 + _y*X._24 + _z*X._34 + X._44);
+	t 			= (_x*X._11 + _y*X._21 + _z*X._31 + X._41)*iw;	if (t<min.x) min.x=t; else if (t>max.x) max.x=t;
+	t			= (_x*X._12 + _y*X._22 + _z*X._32 + X._42)*iw;	if (t<min.y) min.y=t; else if (t>max.y) max.y=t;
+	t			= 0.f+z*iw;										if (t<minz)	 minz =t;
 	return FALSE;
 }
 IC	BOOL	_visible	(Fbox& B)
 {
 	// Find min/max points of xformed-box
-	Fmatrix&	XF		= Device.mFullTransform;
 	Fvector2	min,max;
 	float		z;
-	if (xform_b0(min,max,z,XF,B.min.x, B.min.y, B.min.z)) return TRUE;
-	if (xform_b1(min,max,z,XF,B.min.x, B.min.y, B.max.z)) return TRUE;
-	if (xform_b1(min,max,z,XF,B.max.x, B.min.y, B.max.z)) return TRUE;
-	if (xform_b1(min,max,z,XF,B.max.x, B.min.y, B.min.z)) return TRUE;
-	if (xform_b1(min,max,z,XF,B.min.x, B.max.y, B.min.z)) return TRUE;
-	if (xform_b1(min,max,z,XF,B.min.x, B.max.y, B.max.z)) return TRUE;
-	if (xform_b1(min,max,z,XF,B.max.x, B.max.y, B.max.z)) return TRUE;
-	if (xform_b1(min,max,z,XF,B.max.x, B.max.y, B.min.z)) return TRUE;
+	if (xform_b0(min,max,z,m_xform_01,B.min.x, B.min.y, B.min.z)) return TRUE;
+	if (xform_b1(min,max,z,m_xform_01,B.min.x, B.min.y, B.max.z)) return TRUE;
+	if (xform_b1(min,max,z,m_xform_01,B.max.x, B.min.y, B.max.z)) return TRUE;
+	if (xform_b1(min,max,z,m_xform_01,B.max.x, B.min.y, B.min.z)) return TRUE;
+	if (xform_b1(min,max,z,m_xform_01,B.min.x, B.max.y, B.min.z)) return TRUE;
+	if (xform_b1(min,max,z,m_xform_01,B.min.x, B.max.y, B.max.z)) return TRUE;
+	if (xform_b1(min,max,z,m_xform_01,B.max.x, B.max.y, B.max.z)) return TRUE;
+	if (xform_b1(min,max,z,m_xform_01,B.max.x, B.max.y, B.min.z)) return TRUE;
 	return Raster.test	(min.x,min.y,max.x,max.y,z);
 }
 
-BOOL CHOM::visible		(Fbox& B)
+BOOL CHOM::visible		(Fbox3& B)
 {
 	if (!bEnabled)		return TRUE;
 	return _visible		(B);
+}
+
+BOOL CHOM::visible		(Fbox2& B, float depth)
+{
+	if (!bEnabled)		return TRUE;
+	return Raster.test	(B.min.x,B.min.y,B.max.x,B.max.y,depth);
 }
 
 BOOL CHOM::visible		(vis_data& vis)
@@ -277,13 +282,12 @@ BOOL CHOM::visible		(sPoly& P)
 	if (!bEnabled)		return TRUE;
 
 	// Find min/max points of xformed-box
-	Fmatrix&	XF		= Device.mFullTransform;
 	Fvector2	min,max;
 	float		z;
 	
-	if (xform_b0(min,max,z,XF, P.front().x, P.front().y, P.front().z)) return TRUE;
+	if (xform_b0(min,max,z,m_xform_01,P.front().x,P.front().y,P.front().z)) return TRUE;
 	for (u32 it=1; it<P.size(); it++)
-		if (xform_b1(min,max,z,XF, P[it].x, P[it].y, P[it].z)) return TRUE;
+		if (xform_b1(min,max,z,m_xform_01,P[it].x,P[it].y,P[it].z)) return TRUE;
 	return Raster.test	(min.x,min.y,max.x,max.y,z);
 }
 

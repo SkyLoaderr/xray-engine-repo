@@ -41,11 +41,12 @@ protected:
 	xr_vector<CPortal*>				m_portals;
 public:
 	xr_vector<CFrustum>				r_frustums;
+	xr_vector<Fbox2>				r_scissors;
 	u32								r_marker;
 public:
 	// Main interface
 	IRender_Visual*					root			()				{ return m_root; }
-	void							traverse		(CFrustum& F);
+	void							traverse		(CFrustum& F,	Fbox2& R);
 	void							load			(IReader& fs);
 
 	CSector							()				{ m_root = NULL;	}
@@ -57,8 +58,9 @@ class	CPortalTraverser
 public:
 	enum
 	{
-		VQ_HOM	= (1<<0),
-		VQ_SSA	= (1<<1),
+		VQ_HOM		= (1<<0),
+		VQ_SSA		= (1<<1),
+		VQ_SCISSOR	= (1<<2),
 	};
 public:
 	u32								i_marker;		// input

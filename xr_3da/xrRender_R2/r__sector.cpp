@@ -59,16 +59,17 @@ CSector::~CSector()
 //
 extern float r_ssaDISCARD;
 
-void CSector::traverse			(CFrustum &F)
+void CSector::traverse			(CFrustum &F, Fbox2& R)
 {
 	// Register traversal process
-	if (r_marker	!=	PortalTraverser.i_marker)	
-	{
+	if (r_marker	!=	PortalTraverser.i_marker)	{
 		r_marker							=	PortalTraverser.i_marker;
 		PortalTraverser.r_sectors.push_back	(this);
 		r_frustums.clear					();
+		r_scissors.clear					();
 	}
 	r_frustums.push_back		(F);
+	r_scissors.push_back		(R);
 
 	// Search visible portals and go through them
 	sPoly	S,D;
@@ -92,7 +93,7 @@ void CSector::traverse			(CFrustum &F)
 		if (PortalTraverser.i_options&CPortalTraverser::VQ_SSA)
 		{
 			Fvector	dir2portal;
-			dir2portal.sub		(PORTAL->S.P,		PortalTraverser.i_vBase);
+			dir2portal.sub		(PORTAL->S.P,	PortalTraverser.i_vBase);
 			float R				=	PORTAL->S.R;
 			float distSQ		=	dir2portal.square_magnitude();
 			float ssa			=	R*R/distSQ;
