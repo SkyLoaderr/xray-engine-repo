@@ -94,6 +94,7 @@ void CAI_ALife::vfSwitchObjectOffline(CALifeDynamicObject *tpALifeDynamicObject)
 
 void CAI_ALife::ProcessOnlineOfflineSwitches(CALifeDynamicObject *I)
 {
+	I->m_tNodeID = getAI().q_Node(I->m_tNodeID,I->o_Position);
 	if (I->m_bOnline)
 		if (I->ID_Parent == 0xffff) {
 			if (I->m_dwLastSwitchTime) {

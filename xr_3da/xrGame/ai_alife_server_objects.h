@@ -27,6 +27,7 @@ public:
 	u8								m_ucProbability;
 	u32								m_dwSpawnGroup;
 	bool							m_bDirectControl;
+	u32								m_tNodeID;
 
 									CALifeObject()
 	{
@@ -38,6 +39,7 @@ public:
 		m_ucProbability				= 1;
 		m_dwSpawnGroup				= 0;
 		m_bDirectControl			= true;
+		m_tNodeID					= u32(-1);
 	};
 
 	virtual void					STATE_Write	(NET_Packet &tNetPacket);

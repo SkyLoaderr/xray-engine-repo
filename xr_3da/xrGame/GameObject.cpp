@@ -97,6 +97,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 	{
 		CAI_Space&	AI		= getAI();
 		R_ASSERT			(AI.bfCheckIfGraphLoaded());
+		Msg					("G2L : %f",getAI().m_tpaGraph[a_obj->m_tGraphID].tLocalPoint.distance_to(vPosition));
 		AI_NodeID			=	AI.q_Node	(getAI().m_tpaGraph[a_obj->m_tGraphID].tNodeID,vPosition);
 		AI_Node				=	AI.Node		(AI_NodeID);
 		getAI().ref_add		(AI_NodeID);
