@@ -157,7 +157,6 @@ public:
 	virtual IRender_Light*			light_create			()										= 0;
 	virtual void					light_destroy			(IRender_Light* &)						= 0;
 
-
 	// Models
 	virtual IVisual*				model_CreatePS			(LPCSTR name, PS::SEmitter* E)			= 0;
 	virtual IRender_DetailModel*	model_CreateDM			(IReader*	F)							= 0;
