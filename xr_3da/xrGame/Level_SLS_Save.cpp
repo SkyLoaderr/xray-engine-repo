@@ -27,4 +27,5 @@ void	CLevel::SLS_Save				(LPCSTR name)		// Game Save
 	fs.close_chunk		();
 
 	// Save it to file
+	fs.SaveTo			(name,0);
 }

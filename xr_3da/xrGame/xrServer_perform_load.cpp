@@ -1,5 +1,5 @@
 #include "stdafx.h"
 
-void xrServer::Load	(CStream& FS)
+void xrServer::SLS_Load	(CStream& FS)
 {
 }

@@ -84,8 +84,8 @@ public:
 
 	// main
 	void					Update				();
-	void					Save				(CFS_Base& FS);
-	void					Load				(CStream&  FS);
+	void					SLS_Save			(CFS_Base& FS);
+	void					SLS_Load			(CStream&  FS);
 };
 
 #endif // !defined(AFX_XRSERVER_H__65728A25_16FC_4A7B_8CCE_D798CA5EC64E__INCLUDED_)
