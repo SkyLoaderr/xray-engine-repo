@@ -85,7 +85,7 @@ void CAI_PseudoDog::Load(LPCSTR section)
 	MotionMan.AddAnim(eAnimSitStandUp,		"sit_stand_up_",		-1, &inherited::_sd->m_fsVelocityNone,				PS_SIT);
 	MotionMan.AddAnim(eAnimLieToSleep,		"lie_to_sleep_",		-1,	&inherited::_sd->m_fsVelocityNone,				PS_LIE);
 	MotionMan.AddAnim(eAnimSleepStandUp,	"lie_to_stand_up_",		-1, &inherited::_sd->m_fsVelocityNone,				PS_LIE);
-	MotionMan.AddAnim(eAnimAttackPsi,		"stand_howling_",		-1, &inherited::_sd->m_fsVelocityStandTurn,			PS_STAND);
+	MotionMan.AddAnim(eAnimAttackPsi,		"stand_psi_attack_",	-1, &inherited::_sd->m_fsVelocityStandTurn,			PS_STAND);
 
 	// define transitions
 	// order : 1. [anim -> anim]	2. [anim->state]	3. [state -> anim]		4. [state -> state]
@@ -183,7 +183,9 @@ void CAI_PseudoDog::UpdateCL()
 
 		if (Level().ObjectSpace.RayPick(trace_from, Direction(), trace_dist , Collide::rqtBoth, l_rq)) {
 			if ((l_rq.O == CJumping::GetEnemy()) && (l_rq.range < trace_dist)) {
-				//HitEntity(pE, inherited::_sd->m_fHitPower,Direction());
+				SAAParam params;
+				MotionMan.AA_GetParams(params, "jump_glide_0");
+				HitEntity(pE, params.hit_power, params.impulse, params.impulse_dir);
 				strike_in_jump = true;
 			}
 		}
@@ -194,6 +196,7 @@ void CAI_PseudoDog::UpdateCL()
 void CAI_PseudoDog::OnJumpStop()
 {
 	MotionMan.Update();
+	strike_in_jump = false;
 }
 
 

@@ -269,6 +269,16 @@ bool CMotionManager::AA_TimeTest(SAAParam &params)
 	return false;
 }
 
+void CMotionManager::AA_GetParams(SAAParam &params, LPCSTR anim_name)
+{
+	ref_str st = anim_name;
+
+	// искать текущую анимацию в AA_MAP
+	AA_MAP_IT it = _sd->aa_map.find(st);
+	if (it == _sd->aa_map.end()) return;
+	
+	params = it->second;
+}
 //////////////////////////////////////////////////////////////////////////
 
 

@@ -72,10 +72,8 @@ bool CMotionManager::accel_chain_get(float cur_speed, EMotionAnim target_anim, E
 					best_param	= item_it->second.velocity;
 				}
 
-				if ((*IT) == target_anim) {
-					found = true;
-					break;
-				}
+				if ((*IT) == target_anim) found = true;
+				if (found && best_param) break;
 		}
 
 		if (!found) continue;

@@ -133,6 +133,7 @@ public:
 	void		AA_Load					(LPCSTR section);
 	bool		AA_TimeTest				(SAAParam &params);
 	void		AA_UpdateLastAttack		(TTime cur_time) {aa_time_last_attack = cur_time;}
+	void		AA_GetParams			(SAAParam &params, LPCSTR anim_name);
 
 	// Steps
 	void		STEPS_Load				(LPCSTR section, u8 legs_num);
