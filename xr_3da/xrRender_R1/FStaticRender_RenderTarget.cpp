@@ -183,7 +183,7 @@ void CRenderTarget::End		()
 	curHeight			= Device.dwHeight;
 	
 	if (!Perform())		return;
-	RCache.set_Element	(bDistort ? s_postprocess->E[1] : s_postprocess->E[0]);
+	RCache.set_Element	(bDistort ? s_postprocess->E[0] : s_postprocess->E[1]);
 
 	int		gblend		= clampr		(iFloor((1-param_gray)*255.f),0,255);
 	int		nblend		= clampr		(iFloor((1-param_noise)*255.f),0,255);
