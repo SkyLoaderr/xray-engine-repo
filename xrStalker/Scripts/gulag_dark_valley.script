@@ -7,11 +7,17 @@
 local state_normal = 0
 local state_alarm = 1
 
-function load_job (sj, gname, type, squad, groups)
-	if type ~= "val_lager_bandits" then
-		return
+function load_job(sj, gname, type, squad, groups)
+	if type == "val_lager_bandits" then
+		return load_job_lager_bandits(sj, gname, type, squad, groups)
+	elseif type == "val_monolith_base" then
+		return load_job_monolith_base(sj, gname, type, squad, groups)
 	end
 	
+	return
+end
+
+function load_job_lager_bandits(sj, gname, type, squad, groups)
 	-----------------------------------------------------------------------
 	-- œ–»Œ–»“≈“ 7 - ¡Œ–Œ¬
 	-----------------------------------------------------------------------
@@ -475,15 +481,251 @@ function load_job (sj, gname, type, squad, groups)
 	table.insert(sj, t)
 end
 
-function load_states (gname, type)
-	if type ~= "val_lager_bandits" then
-		return nil
-	end
+function load_job_monolith_base(sj, gname, type, squad, groups)
+	-----------------------------------------------------------------------
+	-- œ–»Œ–»“≈“ 4 - Zoneguard-˚, ÍÓÚÓ˚Â ÒÔ‡¯Ë‚‡˛Ú Ô‡ÓÎ¸, ËÌ‡˜Â Ò‡„Ë‚‡˛ÚÒˇ
+	-----------------------------------------------------------------------
+	t = { section = "logic@val_monolith_base_guard_normal1",
+		idle = 0,
+		prior = 4, state = { state_normal },
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "val_monolith_base_restrictor",
+		predicate = function(obj) 
+		            	return obj:profile_name() == "monolit_regular"
+		            end
+	}
+	table.insert(sj, t)
 	
-	return check_state(gulag)
+	t = { section = "logic@val_monolith_base_guard_normal2",
+		idle = 0,
+		prior = 4, state = { state_normal },
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "val_monolith_base_restrictor",
+		predicate = function(obj) 
+		            	return obj:profile_name() == "monolit_regular"
+		            end
+	}
+	table.insert(sj, t)
+	
+	t = { section = "logic@val_monolith_base_guard_normal3",
+		idle = 0,
+		prior = 4, state = { state_normal },
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "val_monolith_base_restrictor",
+		predicate = function(obj) 
+		            	return obj:profile_name() == "monolit_regular"
+		            end
+	}
+	table.insert(sj, t)
+
+	-----------------------------------------------------------------------
+	-- œ–»Œ–»“≈“ 3 - œ¿“–”À» Õ¿ “≈––»“Œ–»»
+	-----------------------------------------------------------------------
+	t = { section = "logic@val_monolith_base_patrol_normal1",
+		idle = 0,
+		prior = 3, state = { state_normal },
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "val_monolith_base_restrictor",
+		predicate = function(obj) 
+		            	return obj:profile_name() == "monolit_regular"
+		            end
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_monolith_base_patrol_normal2",
+		idle = 0,
+		prior = 3, state = { state_normal },
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "val_monolith_base_restrictor",
+		predicate = function(obj) 
+		            	return obj:profile_name() == "monolit_regular"
+		            end
+	}
+	table.insert(sj, t)
+	
+	t = { section = "logic@val_monolith_base_patrol_normal3",
+		idle = 0,
+		prior = 3, state = { state_normal },
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "val_monolith_base_restrictor",
+		predicate = function(obj) 
+		            	return obj:profile_name() == "monolit_regular"
+		            end
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_monolith_base_patrol_normal4",
+		idle = 0,
+		prior = 3, state = { state_normal },
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "val_monolith_base_restrictor",
+		predicate = function(obj) 
+		            	return obj:profile_name() == "monolit_regular"
+		            end
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_monolith_base_patrol_normal5",
+		idle = 0,
+		prior = 3, state = { state_normal },
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "val_monolith_base_restrictor",
+		predicate = function(obj) 
+		            	return obj:profile_name() == "monolit_regular"
+		            end
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_monolith_base_patrol_normal6",
+		idle = 0,
+		prior = 3, state = { state_normal },
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "val_monolith_base_restrictor",
+		predicate = function(obj) 
+		            	return obj:profile_name() == "monolit_regular"
+		            end
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_monolith_base_patrol_normal7",
+		idle = 0,
+		prior = 3, state = { state_normal },
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "val_monolith_base_restrictor",
+		predicate = function(obj) 
+		            	return obj:profile_name() == "monolit_regular"
+		            end
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_monolith_base_patrol_normal8",
+		idle = 0,
+		prior = 3, state = { state_normal },
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "val_monolith_base_restrictor",
+		predicate = function(obj) 
+		            	return obj:profile_name() == "monolit_regular"
+		            end
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_monolith_base_patrol_normal9",
+		idle = 0,
+		prior = 3, state = { state_normal },
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "val_monolith_base_restrictor",
+		predicate = function(obj) 
+		            	return obj:profile_name() == "monolit_regular"
+		            end
+	}
+	table.insert(sj, t)
+
+	-----------------------------------------------------------------------
+	-- œ–»Œ–»“≈“ 2 - —Õ¿…œ≈–€
+	-----------------------------------------------------------------------
+	t = { section = "logic@val_monolith_base_sniper_normal1",
+		idle = 0,
+		prior = 2, state = { state_normal },
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "val_monolith_base_restrictor",
+		predicate = function(obj) 
+		            	return obj:profile_name() == "monolit_regular"
+		            end
+	}
+	table.insert(sj, t)
+	
+	t = { section = "logic@val_monolith_base_sniper_normal2",
+		idle = 0,
+		prior = 2, state = { state_normal },
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "val_monolith_base_restrictor",
+		predicate = function(obj) 
+		            	return obj:profile_name() == "monolit_regular"
+		            end
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_monolith_base_sniper_normal3",
+		idle = 0,
+		prior = 2, state = { state_normal },
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "val_monolith_base_restrictor",
+		predicate = function(obj) 
+		            	return obj:profile_name() == "monolit_regular"
+		            end
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_monolith_base_sniper_normal4",
+		idle = 0,
+		prior = 2, state = { state_normal },
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "val_monolith_base_restrictor",
+		predicate = function(obj) 
+		            	return obj:profile_name() == "monolit_regular"
+		            end
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_monolith_base_sniper_normal5",
+		idle = 0,
+		prior = 2, state = { state_normal },
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "val_monolith_base_restrictor",
+		predicate = function(obj) 
+		            	return obj:profile_name() == "monolit_regular"
+		            end
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_monolith_base_sniper_normal6",
+		idle = 0,
+		prior = 2, state = { state_normal },
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "val_monolith_base_restrictor",
+		predicate = function(obj) 
+		            	return obj:profile_name() == "monolit_regular"
+		            end
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_monolith_base_sniper_normal7",
+		idle = 0,
+		prior = 2, state = { state_normal },
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "val_monolith_base_restrictor",
+		predicate = function(obj) 
+		            	return obj:profile_name() == "monolit_regular"
+		            end
+	}
+	table.insert(sj, t)
+
+	-----------------------------------------------------------------------
+	-- œ–»Œ–»“≈“ 1 - “–Œ… ¿, œ–»≈’¿¬ÿ¿ﬂ Õ¿ Ã¿ÿ»Õ≈
+	-----------------------------------------------------------------------
+	t = { section = "logic@val_monolith_base_kamp1_normal1",
+		idle = 0,
+		prior = 1, state = { state_normal },
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "val_monolith_base_restrictor",
+		predicate = function(obj) 
+		            	return obj:profile_name() == "monolit_regular"
+		            end
+	}
+	table.insert(sj, t)
 end
 
-function check_state (gulag)
+function load_states(gname, type)
+	if type == "val_lager_bandits" then
+		return check_state_lager_bandits(gulag)
+	elseif type == "val_monolith_base" then
+		return check_state_monolith_base(gulag)
+	end
+
+	return nil
+end
+
+function check_state_lager_bandits(gulag)
 	return function(gulag)
 		for k,v in gulag.Object do
 			enemy = v:best_enemy()
@@ -504,5 +746,11 @@ function check_state (gulag)
 			return state_normal -- Ó·˚˜ÌÓÂ ÒÓÒÚÓˇÌËÂ
 		end
 		return state_alarm -- ÚÂ‚Ó„‡
+	end
+end
+
+function check_state_monolith_base(gulag)
+	return function(gulag)
+		return state_normal
 	end
 end
