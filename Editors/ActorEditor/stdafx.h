@@ -62,8 +62,6 @@ __inline float expf	(float val)                           	{ return ::exp(val);}
 #define ENGINE_API
 #define DLL_API			__declspec(dllimport)
 #define PropertyGP(a,b)	__declspec( property( get=a, put=b ) )
-#define THROW		 	Debug.fail("THROW",__FILE__, __LINE__)
-#define THROW2(expr) 	if (!expr) Debug.fail(#expr,__FILE__, __LINE__)
 
 // core
 #include <xrCore.h>
