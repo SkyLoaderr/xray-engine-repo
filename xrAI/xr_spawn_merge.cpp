@@ -391,7 +391,7 @@ void xrMergeSpawns(LPCSTR name)
 		tpLevels[i]->Save		(tMemoryStream,dwID,l_tpLevelPoints);
 	
 	tMemoryStream.open_chunk	(dwID++);
-	save_base_vector			(l_tpLevelPoints,tMemoryStream);
+	save_vector					(l_tpLevelPoints,tMemoryStream);
 	tMemoryStream.close_chunk	();
 
 	string256					l_caFileName;
