@@ -753,7 +753,7 @@ void CSE_ALifeMonsterAbstract::FillProps		(LPCSTR pref, PropItemVec& items)
   	inherited1::FillProps		(pref,items);
 	if (pSettings->line_exist(s_name,"SpaceRestrictionSection")) {
 		LPCSTR					gcs = pSettings->r_string(s_name,"SpaceRestrictionSection");
-		PHelper().CreateChoose	(items, PrepareKey(pref,s_name,"space restrictions"),&m_caGroupControl, smSpawnItem, 0, (void*)gcs);
+		PHelper().CreateChoose	(items, PrepareKey(pref,s_name,"space restrictions"),&m_caGroupControl, smSpawnItem, 0, (void*)gcs, 16);
 	}
 }
 
