@@ -168,23 +168,25 @@ void CRender::add_leafs_Static(IVisual *pVisual)
 	case MT_LOD:
 		{
 			FLOD		* pV	= (FLOD*) pVisual;
+			/*
 			float		D;
 			float		ssa		= CalcSSA	(D,pV->vis.sphere.P,pV);
 			if (ssa<r_ssaLOD_A)
 			{
-				/*
 				SceneGraph::mapLOD_Node*	N	= mapLOD.insertInAnyWay(D);
 				N->val.ssa						= ssa;
 				N->val.pVisual					= pVisual;
-				*/
 			}
 			if (ssa>r_ssaLOD_B)
 			{
+			*/
 				// Add all children, doesn't perform any tests
 				I = pV->children.begin	();
 				E = pV->children.end	();
 				for (; I!=E; I++)	add_leafs_Static (*I);
+			/*
 			}
+			*/
 		}
 		break;
 	default:
@@ -298,23 +300,25 @@ void CRender::add_Static(IVisual *pVisual, u32 planes)
 	case MT_LOD:
 		{
 			FLOD		* pV	= (FLOD*) pVisual;
+			/*
 			float		D;
 			float		ssa		= CalcSSA	(D,pV->vis.sphere.P,pV);
 			if (ssa<r_ssaLOD_A)	
 			{
-				/*
 				SceneGraph::mapLOD_Node*	N	= mapLOD.insertInAnyWay(D);
 				N->val.ssa						= ssa;
 				N->val.pVisual					= pVisual;
-				*/
 			}
 			if (ssa>r_ssaLOD_B)
 			{
+			*/
 				// Add all children, perform tests
 				I = pV->children.begin	();
 				E = pV->children.end	();
 				for (; I!=E; I++)	add_leafs_Static	(*I);
+			/*
 			}
+			*/
 		}
 		break;
 	default:
