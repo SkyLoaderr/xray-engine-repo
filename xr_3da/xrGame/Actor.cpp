@@ -559,7 +559,14 @@ void CActor::Update	(u32 DT)
 	cam_shift				= 0.f;
 	cam_gray				= 0.f;
 
-	// just for vitya's pleasure
+	//********************** just for vitya's pleasure
+	CRender_target*		T	= ::Render->getTarget();
+	T->set_duality_h		(.015f*sinf(1.f*Device.fTimeGlobal));
+	T->set_duality_v		(.017f*cosf(1.1f*Device.fTimeGlobal));
+	T->set_noise			(.5f);
+	T->set_noise_scale		(1.f);
+	T->set_noise_color		(color_rgba(255,255,127,0));
+	T->set_noise_fps		(10.f);
 
 	// 
 	clamp					(DT,0u,100u);
