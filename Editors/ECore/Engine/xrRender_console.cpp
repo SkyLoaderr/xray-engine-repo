@@ -142,6 +142,7 @@ void		xrRender_initconsole	()
 
 	CMD4(CCC_Integer,	"r2_emap_slices",		&ps_r2_emap_slices,			2,		256		);
 	CMD4(CCC_Float,		"r2_emap_height",		&ps_r2_emap_height,			0.01f,	0.1f	);
+	CMD4(CCC_Float,		"r2_emap_range",		&ps_r2_emap_range,			10.f,	100.f	);
 
 	CMD3(CCC_Mask,		"r2_parallax",			&ps_r2_ls_flags,			R2FLAG_PARALLAX);
 	CMD4(CCC_Float,		"r2_parallax_h",		&ps_r2_df_parallaxh,		.0f,	.5f		);
