@@ -25,6 +25,7 @@ CScriptMonster::CScriptMonster()
 CScriptMonster::~CScriptMonster()
 {
 	FreeAll								();
+	ResetScriptData						();
 }
 
 void CScriptMonster::Init()
@@ -43,12 +44,16 @@ void CScriptMonster::Init()
 	m_tHitCallback.m_lua_function		= 0;
 	m_tHitCallback.m_lua_object			= 0;
 	m_tHitCallback.m_method_name		= "";
+	m_current_sound						= 0;
 
 	ResetScriptData						();
 }
 
 void CScriptMonster::ResetScriptData(void *pointer)
 {
+	if (!m_tpActionQueue.empty())
+		vfFinishAction					(m_tpActionQueue.front());
+
 	while (!m_tpActionQueue.empty()) {
 		xr_delete						(m_tpActionQueue.front());
 		m_tpActionQueue.erase			(m_tpActionQueue.begin());
@@ -226,14 +231,16 @@ void CScriptMonster::vfUpdateParticles()
 void CScriptMonster::vfUpdateSounds()
 {
 	CSoundAction	&l_tSoundAction = GetCurrentAction()->m_tSoundAction;
-	if (xr_strlen(l_tSoundAction.m_caBoneName) && l_tSoundAction.m_tpSound && l_tSoundAction.m_tpSound->feedback)
-		l_tSoundAction.m_tpSound->feedback->set_position(GetUpdatedMatrix(l_tSoundAction.m_caBoneName,l_tSoundAction.m_tSoundPosition,Fvector().set(0,0,0)).c);
+	if (xr_strlen(l_tSoundAction.m_caBoneName) && m_current_sound && m_current_sound->feedback)
+		m_current_sound->feedback->set_position(GetUpdatedMatrix(l_tSoundAction.m_caBoneName,l_tSoundAction.m_tSoundPosition,Fvector().set(0,0,0)).c);
 }
 
 void CScriptMonster::vfFinishAction(CEntityAction *tpEntityAction)
 {
-	if (tpEntityAction->m_tSoundAction.m_bLooped)
-		tpEntityAction->m_tSoundAction.m_tpSound->destroy();
+	if (tpEntityAction->m_tSoundAction.m_bLooped) {
+		m_current_sound->destroy	();
+		xr_delete					(m_current_sound);
+	}
 	if (!tpEntityAction->m_tParticleAction.m_bAutoRemove)
 		xr_delete(tpEntityAction->m_tParticleAction.m_tpParticleSystem);
 }
@@ -349,20 +356,24 @@ bool CScriptMonster::bfAssignSound(CEntityAction *tpEntityAction)
 	CSoundAction	&l_tSoundAction = tpEntityAction->m_tSoundAction;
 	if (l_tSoundAction.m_bCompleted)
 		return		(false);
-	if (l_tSoundAction.m_tpSound) {
-		if (!l_tSoundAction.m_tpSound->feedback)
+	if (m_current_sound) {
+		if (!m_current_sound->feedback)
 			if (!l_tSoundAction.m_bStartedToPlay) {
 				const Fmatrix	&l_tMatrix = GetUpdatedMatrix(l_tSoundAction.m_caBoneName,l_tSoundAction.m_tSoundPosition,l_tSoundAction.m_tSoundAngles);
-				l_tSoundAction.m_tpSound->play_at_pos(this,l_tMatrix.c,l_tSoundAction.m_bLooped ? TRUE : FALSE);
+				m_current_sound->play_at_pos(this,l_tMatrix.c,l_tSoundAction.m_bLooped ? TRUE : FALSE);
 				l_tSoundAction.m_bStartedToPlay = true;
 			}
-			else
-				l_tSoundAction.m_bCompleted = true;
+			else {
+				VERIFY							(m_current_sound);
+				m_current_sound->destroy		();
+				xr_delete						(m_current_sound);
+				l_tSoundAction.m_bCompleted		= true;
+			}
 	}
 	else {
 		if (xr_strlen(l_tSoundAction.m_caSoundToPlay)) {
-			l_tSoundAction.m_tpSound			= xr_new<ref_sound>();
-			l_tSoundAction.m_tpSound->create	(TRUE,*l_tSoundAction.m_caSoundToPlay,l_tSoundAction.m_sound_type);
+			m_current_sound						= xr_new<ref_sound>();
+			m_current_sound->create				(TRUE,*l_tSoundAction.m_caSoundToPlay,l_tSoundAction.m_sound_type);
 		}
 		else
 			l_tSoundAction.m_bCompleted = true;

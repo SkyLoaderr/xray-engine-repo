@@ -43,6 +43,7 @@ protected:
 	SMemberCallback				m_tpCallbacks[eActionTypeCount];
 	SMemberCallback				m_tSoundCallback;
 	SMemberCallback				m_tHitCallback;
+	ref_sound					*m_current_sound;
 public:
 								CScriptMonster			();
 	virtual						~CScriptMonster			();
