@@ -10,7 +10,6 @@
 #include "UIContracts.h"
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
-#include "../UI.h"
 #include "../Level.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -23,7 +22,7 @@ const char * const	CONTRACTS_CHAR_XML		= "contracts_character.xml";
 
 CUIContractsWnd::CUIContractsWnd()
 {
-	SetWindowName("Contracts");
+	SetWindowName("");
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -40,8 +39,15 @@ void CUIContractsWnd::Init()
 	xml_init.InitListWnd(uiXml, "list", 0, &UIListWnd);
 	UIListWnd.EnableScrollBar(true);
 
+	CUIWindow wnd;
+	xml_init.InitWindow(uiXml, "window", 0, &wnd);
+
+	RECT r = wnd.GetWndRect();
 	AttachChild(&UICharInfo);
-	UICharInfo.Init(0, 0, UI_BASE_WIDTH, UI_BASE_HEIGHT, CONTRACTS_CHAR_XML);
+	UICharInfo.Init(r.left, r.top, r.right, r.bottom, CONTRACTS_CHAR_XML);
+	UICharInfo.m_bInfoAutoAdjust = false;
+
+	xml_init.InitFrameWindow(uiXml, "mask_frame_window", 0, &UIMask);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -49,12 +55,5 @@ void CUIContractsWnd::Init()
 void CUIContractsWnd::Show(bool status)
 {
 	inherited::Show(status);
-
-	if (status)
-	{
-		CInventoryOwner * pInvOwner  = dynamic_cast<CInventoryOwner*>(Level().CurrentEntity());;
-
-		//инициализировать окошко с информацие о собеседнике
-		UICharInfo.InitCharacter(pInvOwner);
-	}
+	status ? UICharInfo.UIIcon.SetMask(&UIMask) : UICharInfo.UIIcon.SetMask(NULL);
 }

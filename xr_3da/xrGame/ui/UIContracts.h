@@ -32,7 +32,8 @@ public:
 	CUICharacterInfo	UICharInfo;
 protected:
 	// Название окна
-	CUIStatic		UIStaticCaption;
+	CUIStatic			UIStaticCaption;
+	CUIFrameWindow		UIMask;
 };
 
 #endif

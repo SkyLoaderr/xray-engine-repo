@@ -31,7 +31,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 const char * const	DIARY_XML			= "events_new.xml";
-const int			contractsOffset		= 60;
+const int			contractsOffset		= 100;
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -267,9 +267,13 @@ void CUIDiaryWnd::SetContractTrader()
 			bool functor_exists = ai().script_engine().functor(artefact_list_func ,lua_function);
 			R_ASSERT3(functor_exists, "Cannot find artefacts tasks func", artefact_list_func);
 			LPCSTR artefact_list = lua_function	(NULL, m_TraderID);
+			UIContractsWnd.UIListWnd.RemoveAll();
 			if(artefact_list)
 			{
-				UIContractsWnd.UIListWnd.AddParsedItem<CUIListItem>(artefact_list, 0, UIContractsWnd.UIListWnd.GetTextColor());
+				CUIString str;
+				str.SetText(artefact_list);
+				CUIStatic::PreprocessText(str.m_str, UIContractsWnd.UIListWnd.GetItemWidth() - 5, UIContractsWnd.UIListWnd.GetFont());
+				UIContractsWnd.UIListWnd.AddParsedItem<CUIListItem>(&str.m_str.front(), 0, UIContractsWnd.UIListWnd.GetTextColor());
 			}
 		}
 	}
