@@ -119,8 +119,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 --Guard binder
 ----------------------------------------------------------------------------------------------------------------------
-function add_to_binder(npc, char_ini)
-    if char_ini == nil or char_ini:section_exist ("sleeper") == true then
+function add_to_binder(npc)
   	local operators    = {}
   	local properties  = {}
 
@@ -148,20 +147,21 @@ function add_to_binder(npc, char_ini)
 
   	action = manager:action(stalker_ids.action_puzzle_solver)
   	action:add_precondition(world_property(properties["need_sleeper"], false))
-
-	if char_ini ~= nil then xr_sleeper.set_sleeper(npc) end
-    end
 end
-function set_sleeper(object, enable, point)
+function set_sleeper(section, object, enable, point)
 	-- enable - будет ли работать схема в принципе
 	-- point - точка где спать
 
 	local char_ini = object:spawn_ini()
+    xr_motivator.storage[object:id()].sleeper = {
+		enabled = false,
+		path_main = nil
+	}
 	local st = xr_motivator.storage[object:id()].sleeper
-
+		
 	if enable == nil then
-       		if char_ini:section_exist ("sleeper") == true and char_ini:line_exist("sleeper", "enabled") == true then
-               		st.enabled = char_ini:r_bool("sleeper", "enabled")
+       		if char_ini:section_exist (section) == true and char_ini:line_exist(section, "enabled") == true then
+               		st.enabled = char_ini:r_bool(section, "enabled")
 		else
 			st.enabled = false
 	        end
@@ -170,8 +170,8 @@ function set_sleeper(object, enable, point)
 	end	
 	if st.enabled == true then
 		if point == nil then
-        		if char_ini:section_exist ("sleeper") == true and char_ini:line_exist("sleeper", "path_main") == true then
-	        	        st.path_main = char_ini:r_string("sleeper", "path_main")
+        		if char_ini:section_exist (section) == true and char_ini:line_exist(section, "path_main") == true then
+	        	        st.path_main = char_ini:r_string(section, "path_main")
         		else
 	        	    	st.enabled = false
 		        end
@@ -179,5 +179,7 @@ function set_sleeper(object, enable, point)
 			st.path_main = point
 		end
 	end
-	xr_motivator.checkStorage(object)
+	if st.enabled then
+		xr_sleeper.add_to_binder(object)
+	end
 end
