@@ -297,6 +297,7 @@ function action_contact:execute ()
 
 	if isweap then
 		if isww == false then
+			self.object:clear_animations()			
 			self.object:set_item(object.idle, self.object:best_weapon())			
 		end
 		self.object:set_mental_state(anim.danger)
