@@ -44,13 +44,12 @@ void CRender::level_Load(IReader* fs)
 	Details						= xr_new<CDetailManager>	();
 
 	if	(!g_pGamePersistent->bDedicatedServer)	{
-		//Sliding window
-		pApp->LoadTitle				("Loading SWIs...");
-		LoadSWIs					(fs);
-
-		// VB
+		// VB,IB,SWI
 		pApp->LoadTitle				("Loading geometry...");
-		LoadBuffers					(fs);
+		IReader*	geom			= FS.r_open	("$level$","level.geom");
+		LoadBuffers					(geom);
+		LoadSWIs					(geom);
+		FS.r_close					(geom);
 
 		// Visuals
 		pApp->LoadTitle				("Loading spatial-DB...");
