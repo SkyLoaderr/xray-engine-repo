@@ -33,11 +33,7 @@ __published:	// IDE-managed Components
 	TSplitter *Splitter1;
 	TImageList *ImageList;
 	TExtBtn *ebCancel;
-	TExtBtn *ebRemoveCurrent;
-	TExtBtn *ebImportSound;
-	TExtBtn *ebRenameCurrent;
 	TPanel *Panel1;
-	TPanel *Panel2;
 	TPanel *Panel3;
     void __fastcall ebOkClick(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);
@@ -48,10 +44,7 @@ __published:	// IDE-managed Components
 	void __fastcall fsStorageSavePlacement(TObject *Sender);
 	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall ebCancelClick(TObject *Sender);
-	void __fastcall ebRemoveCurrentClick(TObject *Sender);
 	void __fastcall FormDestroy(TObject *Sender);
-	void __fastcall ebImportSoundClick(TObject *Sender);
-	void __fastcall ebRenameCurrentClick(TObject *Sender);
 private:
 // list functions
     void 				InitItemsList		();
@@ -98,7 +91,7 @@ private:	// User declarations
 public:		// User declarations
     __fastcall 			TfrmSoundLib		(TComponent* Owner);
 // static function
-    static void __fastcall EditLib			(AnsiString& title, bool bImport=false);
+    static void __fastcall EditLib			(AnsiString& title);
     static bool __fastcall HideLib			();
     static bool __fastcall Visible			(){return !!form;}
     static void 		OnFrame				();

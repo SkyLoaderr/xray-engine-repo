@@ -511,7 +511,7 @@ void __fastcall TItemList::tvItemsDragDrop(TObject *Sender,
       TObject *Source, int X, int Y)
 {
 	R_ASSERT(m_Flags.is(ilEditMenu));
-	FHelper.DragDrop(Sender,Source,X,Y,TOnItemRename(this,&TItemList::RenameItem));
+    FHelper.DragDrop(Sender,Source,X,Y,TOnItemRename(this,&TItemList::RenameItem));
 	if (tvItems->OnAfterSelectionChange) tvItems->OnAfterSelectionChange(0);
 }
 //---------------------------------------------------------------------------
@@ -537,12 +537,9 @@ void __fastcall TItemList::Delete1Click(TObject *Sender)
 void __fastcall TItemList::tvItemsKeyDown(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
-	if (m_Flags.is(ilEditMenu)){
-		if (Key==VK_DELETE){
-			if (FHelper.RemoveItem(tvItems,tvItems->Selected,OnItemRemoveEvent))
-            	if (!OnModifiedEvent.empty()) OnModifiedEvent();
-        }
-    }
+	if (m_Flags.is(ilEditMenu))
+		if (Key==VK_DELETE)
+            RemoveSelItems();
 }
 //---------------------------------------------------------------------------
 
@@ -594,29 +591,31 @@ void __fastcall TItemList::tvItemsHeaderResize(TObject *Sender)
 
 void TItemList::RemoveSelItems(TOnItemRemove on_remove)
 {
-	on_remove 	= on_remove.empty()?OnItemRemoveEvent:on_remove;
-	VERIFY		(!on_remove.empty());
-    RStringVec sel_items;
-    if (GetSelected(sel_items)){
-    	tvItems->IsUpdating = true; // LockUpdating нельзя
-    	DeselectAll					();
-        tvItemsAfterSelectionChange	(0);
-        bool bSelChanged=false;
-        bool bRes=false;
-        for (RStringVecIt it=sel_items.begin(); it!=sel_items.end(); it++){
-        	TElTreeItem* pNode	= FHelper.FindItem(tvItems,**it);
-			if (!FHelper.RemoveItem(tvItems,pNode,on_remove.empty()?OnItemRemoveEvent:on_remove)){
-            	SelectItem(**it,true,true,false);
-                bSelChanged=true;
-            }else{
-            	bRes = true;
-            }
-        }
-        if (bSelChanged||bRes){
+	if (mrYes==MessageDlg("Remove selected item(s)?", mtConfirmation, TMsgDlgButtons() << mbYes << mbNo, 0)){
+        on_remove 	= on_remove.empty()?OnItemRemoveEvent:on_remove;
+        VERIFY		(!on_remove.empty());
+        RStringVec sel_items;
+        if (GetSelected(sel_items)){
+            tvItems->IsUpdating = true; // LockUpdating нельзя
+            DeselectAll					();
             tvItemsAfterSelectionChange	(0);
-            if (bRes&&!OnModifiedEvent.empty())	OnModifiedEvent(); 
+            bool bSelChanged=false;
+            bool bRes=false;
+            for (RStringVecIt it=sel_items.begin(); it!=sel_items.end(); it++){
+                TElTreeItem* pNode	= FHelper.FindItem(tvItems,**it);
+                if (!FHelper.RemoveItem(tvItems,pNode,on_remove.empty()?OnItemRemoveEvent:on_remove)){
+                    SelectItem(**it,true,true,false);
+                    bSelChanged=true;
+                }else{
+                    bRes = true;
+                }
+            }
+            if (bSelChanged||bRes){
+                tvItemsAfterSelectionChange	(0);
+                if (bRes&&!OnModifiedEvent.empty())	OnModifiedEvent(); 
+            }
+            tvItems->IsUpdating 		= false;
         }
-    	tvItems->IsUpdating 		= false;
     }
 }
 //---------------------------------------------------------------------------

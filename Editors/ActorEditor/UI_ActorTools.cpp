@@ -158,17 +158,19 @@ CActorTools::~CActorTools()
 
 bool CActorTools::OnCreate()
 {
-	inherited::OnCreate();
+	inherited::OnCreate	();
     // props
-	m_ClipMaker		= TClipMaker::CreateForm();
-    m_ObjectItems 	= TItemList::CreateForm("",fraLeftBar->paObjectProps,alClient,TItemList::ilDragCustom|TItemList::ilMultiSelect|TItemList::ilSuppressStatus);
+	m_ClipMaker			= TClipMaker::CreateForm();
+    m_ObjectItems 		= TItemList::CreateForm("",fraLeftBar->paObjectProps,alClient,TItemList::ilDragCustom|TItemList::ilMultiSelect|TItemList::ilSuppressStatus);
 	m_ObjectItems->SetOnItemsFocusedEvent(TOnILItemsFocused(this,&CActorTools::OnObjectItemFocused));
-    m_Props 		= TProperties::CreateForm("",fraLeftBar->paItemProps,alClient,TOnModifiedEvent().bind(this,&CActorTools::OnItemModified));
+    m_Props 			= TProperties::CreateForm("",fraLeftBar->paItemProps,alClient,TOnModifiedEvent().bind(this,&CActorTools::OnItemModified));
     m_PreviewObject.OnCreate();
 
     // key bar
-	m_KeyBar 		= TfrmKeyBar::CreateKeyBar(frmMain->paMain);
+	m_KeyBar 			= TfrmKeyBar::CreateKeyBar(frmMain->paMain);
 
+    OnDeviceCreate		();
+    
     return true;
 }
 

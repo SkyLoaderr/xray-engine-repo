@@ -27,7 +27,7 @@ struct ECORE_API SPBItem{
     float 		max;
     float 		progress;
 public:
-                SPBItem				(LPCSTR txt, LPCSTR inf, float mx):text(txt),info(inf),max(mx){}
+                SPBItem				(LPCSTR txt, LPCSTR inf, float mx):text(txt),info(inf),max(mx),progress(0.f){}
     void		GetInfo				(AnsiString& txt, float& p, float& m);
     void		Inc					(LPCSTR info=0, bool bWarn=false);
     void		Update				(float val);

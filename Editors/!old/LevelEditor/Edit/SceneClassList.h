@@ -23,26 +23,38 @@ class CCustomObject;
 		public:            
         	Fvector			verts[3];      
             float			range;
+            CEditableObject*e_obj;
+            CEditableMesh*	e_mesh;
+            u32				tag;
             SResult			(const SResult& F)
             {
                 verts[0]	= F.verts[0];
                 verts[1]	= F.verts[1];
                 verts[2]	= F.verts[2];
                 range		= F.range;
+                tag			= F.tag;
+                e_obj		= F.e_obj;
+                e_mesh		= F.e_mesh;
             }
-            SResult			(const Fmatrix& parent, CDB::RESULT* r)
+            SResult			(const Fmatrix& parent, CDB::RESULT* r, CEditableObject* obj, CEditableMesh* mesh)
             {
                 parent.transform_tiny(verts[0],r->verts[0]);
                 parent.transform_tiny(verts[1],r->verts[1]);
                 parent.transform_tiny(verts[2],r->verts[2]);
                 range		= r->range;
+                tag			= r->dummy;
+                e_obj		= obj;
+                e_mesh		= mesh;
             }
-            SResult			(CDB::RESULT* r)
+            SResult			(CDB::RESULT* r, CEditableObject* obj, CEditableMesh* mesh)
             { 
             	verts[0]	= r->verts[0];
             	verts[1]	= r->verts[1];
             	verts[2]	= r->verts[2];
                 range		= r->range;
+                tag			= r->dummy;
+                e_obj		= obj;
+                e_mesh		= mesh;
             }
         };
 		DEFINE_VECTOR(SResult,ResultVec,ResultIt);
@@ -63,17 +75,17 @@ class CCustomObject;
             m_Flags.assign	(flags);
         	results.clear	();
         }
-		IC void append_mtx	(const Fmatrix& parent, CDB::RESULT* R)
+		IC void append_mtx	(const Fmatrix& parent, CDB::RESULT* R, CEditableObject* obj, CEditableMesh* mesh)
         {
-            SResult	D		(parent, R);
+            SResult	D		(parent, R, obj, mesh);
             if (m_Flags.is(CDB::OPT_ONLYNEAREST)&&!results.empty()){
 	            SResult& S	= results.back();
                 if (D.range<S.range) S = D;
             }else			results.push_back	(D);
         }
-		IC void append		(CDB::RESULT* R)
+		IC void append		(CDB::RESULT* R, CEditableObject* obj, CEditableMesh* mesh)
         {
-            SResult	D		(R);
+            SResult	D		(R,obj,mesh);
             if (m_Flags.is(CDB::OPT_ONLYNEAREST)&&!results.empty()){
 	            SResult& S	= results.back();
                 if (D.range<S.range) S = D;

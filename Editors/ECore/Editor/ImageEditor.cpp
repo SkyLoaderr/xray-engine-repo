@@ -271,7 +271,9 @@ void __fastcall TfrmImageLib::ebRebuildAssociationClick(TObject *Sender)
 
 void __fastcall TfrmImageLib::ebRemoveTextureClick(TObject *Sender)
 {
+    FS.lock_rescan();
 	m_ItemList->RemoveSelItems(0);
+    FS.unlock_rescan();
 }
 //---------------------------------------------------------------------------
 

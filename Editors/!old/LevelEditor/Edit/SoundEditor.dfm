@@ -46,16 +46,16 @@ object frmSoundLib: TfrmSoundLib
     TabOrder = 0
     object paCommand: TPanel
       Left = 1
-      Top = 352
+      Top = 405
       Width = 170
-      Height = 89
+      Height = 36
       Align = alBottom
       BevelOuter = bvNone
       Color = 10528425
       TabOrder = 0
       object ebOk: TExtBtn
         Left = 0
-        Top = 55
+        Top = 2
         Width = 170
         Height = 17
         Align = alTop
@@ -67,7 +67,7 @@ object frmSoundLib: TfrmSoundLib
       end
       object ebCancel: TExtBtn
         Left = 0
-        Top = 72
+        Top = 19
         Width = 170
         Height = 17
         Align = alTop
@@ -77,45 +77,9 @@ object frmSoundLib: TfrmSoundLib
         FlatAlwaysEdge = True
         OnClick = ebCancelClick
       end
-      object ebRemoveCurrent: TExtBtn
-        Left = 0
-        Top = 36
-        Width = 170
-        Height = 17
-        Align = alTop
-        BevelShow = False
-        CloseButton = False
-        Caption = 'Remove'
-        FlatAlwaysEdge = True
-        OnClick = ebRemoveCurrentClick
-      end
-      object ebImportSound: TExtBtn
-        Left = 0
-        Top = 0
-        Width = 170
-        Height = 17
-        Align = alTop
-        BevelShow = False
-        CloseButton = False
-        Caption = 'Import Sound...'
-        FlatAlwaysEdge = True
-        OnClick = ebImportSoundClick
-      end
-      object ebRenameCurrent: TExtBtn
-        Left = 0
-        Top = 19
-        Width = 170
-        Height = 17
-        Align = alTop
-        BevelShow = False
-        CloseButton = False
-        Caption = 'Rename'
-        FlatAlwaysEdge = True
-        OnClick = ebRenameCurrentClick
-      end
       object Panel1: TPanel
         Left = 0
-        Top = 17
+        Top = 0
         Width = 170
         Height = 2
         Align = alTop
@@ -133,22 +97,12 @@ object frmSoundLib: TfrmSoundLib
           TabOrder = 0
         end
       end
-      object Panel2: TPanel
-        Left = 0
-        Top = 53
-        Width = 170
-        Height = 2
-        Align = alTop
-        BevelOuter = bvNone
-        ParentColor = True
-        TabOrder = 1
-      end
     end
     object paProperties: TPanel
       Left = 1
       Top = 1
       Width = 170
-      Height = 351
+      Height = 404
       Align = alClient
       BevelOuter = bvNone
       Color = 10528425

@@ -34,7 +34,7 @@ __fastcall TfrmSoundLib::TfrmSoundLib(TComponent* Owner)
 void __fastcall TfrmSoundLib::FormCreate(TObject *Sender)
 {
 	m_ItemProps = TProperties::CreateForm	("SoundED",paProperties,alClient);
-    m_ItemList	= TItemList::CreateForm		("Items",paItems,alClient,TItemList::ilEditMenu|TItemList::ilMultiSelect|TItemList::ilDragAllowed);
+    m_ItemList	= TItemList::CreateForm		("Items",paItems,alClient,TItemList::ilMultiSelect);
     m_ItemList->SetOnItemsFocusedEvent		(TOnILItemsFocused(this,&TfrmSoundLib::OnItemsFocused));
     TOnItemRemove on_remove; on_remove.bind	(this,&TfrmSoundLib::RemoveSound);
     TOnItemRename on_rename; on_rename.bind	(this,&TfrmSoundLib::RenameSound);
@@ -53,15 +53,14 @@ void __fastcall TfrmSoundLib::FormDestroy(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmSoundLib::EditLib(AnsiString& title, bool bImport)
+void __fastcall TfrmSoundLib::EditLib(AnsiString& title)
 {
 	if (!form){
         form 				= xr_new<TfrmSoundLib>((TComponent*)0);
         form->Caption 		= title;
-        form->ebRemoveCurrent->Enabled = !bImport;
-        form->ebRenameCurrent->Enabled = !bImport;
-		form->modif_map.clear	();
+		form->modif_map.clear();
         m_Flags.zero		();
+	    form->InitItemsList	();
     }
 
     form->ShowModal			();
@@ -75,11 +74,12 @@ void __fastcall TfrmSoundLib::UpdateLib()
     SaveUsedTHM				();
     // save game sounds
     if (modif_map.size()){
-        AStringVec modif;
-        LockForm();
+        AStringVec 			modif;
+        LockForm			();
         SndLib->SynchronizeSounds(true,true,true,&modif_map,0);
-        UnlockForm();
+        UnlockForm			();
         SndLib->RefreshSounds(false);
+		modif_map.clear		();
     }
 }
 
@@ -111,7 +111,7 @@ void TfrmSoundLib::RemoveSound(LPCSTR fname, EItemType type, bool& res)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmSoundLib::RenameSound(LPCSTR p0, LPCSTR p1, EItemType type)
+void TfrmSoundLib::RenameSound(LPCSTR p0, LPCSTR p1, EItemType type)
 {
     // rename sound source
 	SndLib->RenameSound(p0,p1,type);
@@ -126,7 +126,6 @@ void __fastcall TfrmSoundLib::RenameSound(LPCSTR p0, LPCSTR p1, EItemType type)
 
 void __fastcall TfrmSoundLib::FormShow(TObject *Sender)
 {
-    InitItemsList		();
 	// check window position
 	UI->CheckWindowPos	(this);
 }
@@ -204,8 +203,10 @@ ESoundThumbnail* TfrmSoundLib::FindUsedTHM(LPCSTR name)
 
 void TfrmSoundLib::SaveUsedTHM()
 {
+	FS.lock_rescan	();
 	for (THMIt t_it=m_THM_Used.begin(); t_it!=m_THM_Used.end(); t_it++)
 		(*t_it)->Save(0,0);
+	FS.unlock_rescan();
 }
 //---------------------------------------------------------------------------
 
@@ -223,7 +224,7 @@ void __fastcall TfrmSoundLib::fsStorageRestorePlacement(TObject *Sender)
 {
 	m_ItemProps->RestoreParams(fsStorage);
     m_ItemList->LoadParams(fsStorage);
-    bAutoPlay = fsStorage->ReadInteger("auto_play",TRUE);
+    bAutoPlay = fsStorage->ReadInteger("auto_play",FALSE);
 }
 //---------------------------------------------------------------------------
 
@@ -232,72 +233,6 @@ void __fastcall TfrmSoundLib::fsStorageSavePlacement(TObject *Sender)
 	m_ItemProps->SaveParams(fsStorage);
     m_ItemList->SaveParams(fsStorage);
     fsStorage->WriteInteger("auto_play",bAutoPlay);
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmSoundLib::ebRemoveCurrentClick(TObject *Sender)
-{
-	m_ItemList->RemoveSelItems();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmSoundLib::ebRenameCurrentClick(TObject *Sender)
-{
-	m_ItemList->RenameSelItem();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmSoundLib::ebImportSoundClick(TObject *Sender)
-{
-    std::string open_nm;
-    if (EFS.GetOpenName(_import_,open_nm,true,0,4)){
-		// load
-    	AStringVec lst;
-        _SequenceToList(lst,open_nm.c_str());
-		bool bNeedUpdate=false;
-        // folder name
-        AnsiString folder;
-
-        RStringVec sel_items;
-        if (m_ItemList->GetSelected(sel_items)>1){
-            ELog.DlgMsg(mtInformation,"Select only one item and retry again.");
-        	return;
-        }
-        
-        if (!sel_items.empty()){
-	        TElTreeItem* item 	= 0;
-        	item				= FHelper.FindItem(m_ItemList->tvItems,*sel_items.back());
-	        if (item) 			FHelper.MakeName(item,0,folder,true);
-        }
-
-		AnsiString m_LastSelection;
-        for (AStringIt it=lst.begin(); it!=lst.end(); it++){
-            AnsiString 			dest_name = AnsiString(folder+ExtractFileName(*it));
-            std::string			dest_full_name;
-            FS.update_path		(dest_full_name,_sounds_,dest_name.c_str());
-            if (FS.exist(dest_full_name.c_str())){
-            	int res = ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"File '%s' already exist. Owerwrite it?",ExtractFileName(*it).c_str());
-                if (res==mrCancel) 	break;
-                if (res==mrNo)		continue;
-            }
-            FS.file_copy		(it->c_str(),dest_full_name.c_str());
-            FS_QueryMap 		QM; 
-            FS.file_list		(QM,_sounds_,FS_ListFiles|FS_ClampExt,dest_name.c_str());
-            SndLib->SynchronizeSounds(true, true, true, &QM, 0);
-            EFS.MarkFile		(it->c_str(),true);
-            EFS.BackupFile		(_sounds_,dest_name.c_str());
-            EFS.WriteAccessLog	(dest_full_name.c_str(),"Import");
-            bNeedUpdate			= true;
-            m_LastSelection 	= ChangeFileExt(dest_name,"");
-        }
-        if (bNeedUpdate){
-        	SndLib->RefreshSounds(false);
-			InitItemsList		();
-			m_ItemList->SelectItem	(m_LastSelection.c_str(),true,false,true);
-        }
-        // refresh selected
-//		RefreshSelected();
-    }
 }
 //---------------------------------------------------------------------------
 
@@ -359,6 +294,7 @@ void __fastcall TfrmSoundLib::OnItemsFocused(ListItemsVec& items)
         }
     }
 
+	ButtonValue* B=0;
     if (m_THM_Current.size()==1)
     {
         ESoundThumbnail* thm=m_THM_Current.back();
@@ -367,11 +303,11 @@ void __fastcall TfrmSoundLib::OnItemsFocused(ListItemsVec& items)
 		PlaySound(thm->SrcName(), size, time);
         PHelper().CreateCaption(props,"File Length",	shared_str().sprintf("%.2f Kb",float(size)/1024.f));
         PHelper().CreateCaption(props,"Total Time",		shared_str().sprintf("%.2f sec",float(time)/1000.f));
-        ButtonValue* B=PHelper().CreateButton	(props, "Control",	"Play,Stop",ButtonValue::flFirstOnly);
+        B=PHelper().CreateButton	(props, "Control",	"Play,Stop",ButtonValue::flFirstOnly);
         B->OnBtnClickEvent.bind(this,&TfrmSoundLib::OnControlClick);
-        B=PHelper().CreateButton	(props, "Auto Play",bAutoPlay?"on":"off",ButtonValue::flFirstOnly);
-        B->OnBtnClickEvent.bind(this,&TfrmSoundLib::OnControl2Click);
     }
+    B=PHelper().CreateButton		(props, "Auto Play",bAutoPlay?"on":"off",ButtonValue::flFirstOnly);
+    B->OnBtnClickEvent.bind			(this,&TfrmSoundLib::OnControl2Click);
     
 	m_ItemProps->AssignItems		(props);
 }
