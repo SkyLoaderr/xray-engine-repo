@@ -1,5 +1,5 @@
 	/ CORE
-		. TODO: Blender compiling for editor
+		+ TODO: Blender compiling for editor
 		. TODO: Blender compiling for different number of layers
 
 	/ OPTIMIZATION
