@@ -74,3 +74,8 @@ IC	bool CStalkerAnimationPair::global_animation	() const
 {
 	return					(m_global_animation);
 }
+
+IC	void CStalkerAnimationPair::make_inactual		()
+{
+	m_actual				= false;
+}

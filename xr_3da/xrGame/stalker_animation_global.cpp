@@ -22,7 +22,7 @@ void	CStalkerAnimationManager::global_play_callback(CBlend *blend)
 		object->animation().setup_storage()->set_property(object->animation().property_id(),object->animation().property_value());
 		return;
 	}
-	object->animation().global().reset();
+	object->animation().global().make_inactual();
 }
 
 const CAnimationPair *CStalkerAnimationManager::assign_global_animation	()

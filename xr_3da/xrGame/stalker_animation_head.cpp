@@ -14,7 +14,7 @@ void CStalkerAnimationManager::head_play_callback		(CBlend *blend)
 {
 	CAI_Stalker	*object = (CAI_Stalker*)blend->CallbackParam;
 	VERIFY		(object);
-	object->animation().head().reset();
+	object->animation().head().make_inactual();
 }
 
 const CAnimationPair *CStalkerAnimationManager::assign_head_animation	()

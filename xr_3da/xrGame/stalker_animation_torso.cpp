@@ -32,7 +32,7 @@ void CStalkerAnimationManager::torso_play_callback	(CBlend *blend)
 		object->animation().setup_storage()->set_property(object->animation().property_id(),object->animation().property_value());
 		return;
 	}
-	object->animation().torso().reset();
+	object->animation().torso().make_inactual();
 }
 
 void CStalkerAnimationManager::fill_object_info		()

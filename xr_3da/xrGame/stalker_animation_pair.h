@@ -44,6 +44,7 @@ public:
 	IC		bool			step_dependence			() const;
 	IC		void			global_animation		(bool global_animation);
 	IC		bool			global_animation		() const;
+	IC		void			make_inactual			();
 			void			play					(CSkeletonAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object);
 #ifdef DEBUG
 	IC		void			set_dbg_info			(LPCSTR object_name, LPCSTR animation_type_name);
