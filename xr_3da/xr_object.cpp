@@ -73,9 +73,9 @@ void CObject::setVisible		(BOOL _visible)
 	}
 }
 
-void	CObject::Center					(Fvector& C)	const	{ VERIFY(renderable.visual); renderable.xform.transform_tiny(C,renderable.visual->vis.sphere.P);	}
-float	CObject::Radius					()				const	{ VERIFY(renderable.visual); return renderable.visual->vis.sphere.R;								}
-const	Fbox&	CObject::BoundingBox	()				const	{ VERIFY(renderable.visual); return renderable.visual->vis.box;								}
+void	CObject::Center					(Fvector& C)	const	{ VERIFY2(renderable.visual,cName()); renderable.xform.transform_tiny(C,renderable.visual->vis.sphere.P);	}
+float	CObject::Radius					()				const	{ VERIFY2(renderable.visual,cName()); return renderable.visual->vis.sphere.R;								}
+const	Fbox&	CObject::BoundingBox	()				const	{ VERIFY2(renderable.visual,cName()); return renderable.visual->vis.box;									}
 
 //----------------------------------------------------------------------
 // Class	: CXR_Object
