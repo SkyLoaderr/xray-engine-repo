@@ -69,8 +69,8 @@ void CBone::Save(IWriter& F)
 
 void CBone::Load_0(IReader& F)
 {
-	F.r_stringZ		(name);
-	F.r_stringZ		(parent_name);
+	F.r_stringZ		(name);        	xr_strlwr(name);
+	F.r_stringZ		(parent_name);	xr_strlwr(parent_name);
 	F.r_stringZ		(wmap);
 	F.r_fvector3	(rest_offset);
 	F.r_fvector3	(rest_rotate);
@@ -88,8 +88,8 @@ void CBone::Load_1(IReader& F)
     	return;
     
 	R_ASSERT(F.find_chunk(BONE_CHUNK_DEF));
-	F.r_stringZ		(name);
-	F.r_stringZ		(parent_name);
+	F.r_stringZ		(name);			xr_strlwr(name);
+	F.r_stringZ		(parent_name);	xr_strlwr(parent_name);
 	F.r_stringZ		(wmap);
 
 	R_ASSERT(F.find_chunk(BONE_CHUNK_BIND_POSE));
@@ -106,7 +106,7 @@ void CBone::Load_1(IReader& F)
 void CBone::SaveData(IWriter& F)
 {
 	F.open_chunk	(BONE_CHUNK_DEF);
-	F.w_stringZ		(name);
+	F.w_stringZ		(name);	
     F.close_chunk	();
 
 	F.open_chunk	(BONE_CHUNK_MATERIAL);
@@ -146,7 +146,7 @@ void CBone::SaveData(IWriter& F)
 void CBone::LoadData(IReader& F)
 {
 	R_ASSERT(F.find_chunk(BONE_CHUNK_DEF));
-	F.r_stringZ		(name);
+	F.r_stringZ		(name); xr_strlwr(name);
 
 	R_ASSERT(F.find_chunk(BONE_CHUNK_MATERIAL));
     F.r_stringZ		(game_mtl);

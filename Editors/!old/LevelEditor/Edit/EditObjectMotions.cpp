@@ -424,8 +424,8 @@ void CEditableObject::GetBoneWorldTransform(u32 bone_idx, float t, CSMotion* mot
 bool CEditableObject::CheckBoneCompliance(CSMotion* M)
 {
 	VERIFY(M);
-    BoneMotionVec& lst = M->BoneMotions();
 /*
+    BoneMotionVec& lst = M->BoneMotions();
 	if (m_Bones.size()!=lst.size()){
 		Log		("!Different bone count.\nObject has '%d' bones. Motion has '%d' bones.",m_Bones.size(),lst.size());
     	return false;

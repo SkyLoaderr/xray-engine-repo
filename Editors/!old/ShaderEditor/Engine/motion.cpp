@@ -350,6 +350,7 @@ void CSMotion::Save(IWriter& F)
     F.w_float	(fPower);
 	F.w_u16		((u16)bone_mots.size());
 	for(BoneMotionIt bm_it=bone_mots.begin(); bm_it!=bone_mots.end(); bm_it++){
+    	xr_strlwr	(bm_it->name);
     	F.w_stringZ	(bm_it->name);
 		F.w_u8		(bm_it->m_Flags.get());
 		for (int ch=0; ch<ctMaxChannel; ch++)
@@ -419,6 +420,8 @@ bool CSMotion::Load(IReader& F)
             }
         }
 	}
+	for(BoneMotionIt bm_it=bone_mots.begin(); bm_it!=bone_mots.end(); bm_it++)
+    	xr_strlwr		(bm_it->name);
 	return true;
 }
 
