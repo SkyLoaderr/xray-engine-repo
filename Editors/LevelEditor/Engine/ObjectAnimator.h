@@ -12,7 +12,7 @@ private:
 protected:
 	bool				bLoop;
 
-    shared_str				m_Name;
+    shared_str			m_Name;
     
 	Fmatrix				m_XFORM;
     SAnimParams			m_MParam;
