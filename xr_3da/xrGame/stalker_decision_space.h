@@ -14,6 +14,9 @@ namespace StalkerDecisionSpace {
 		eMotivationAlive,
 		eMotivationDead,
 		eMotivationSolveZonePuzzle,
+		eMotivationSquadCommand,
+		eMotivationSquadGoal,
+		eMotivationSquadAction,
 		eMotivationScript,
 		eMotivationDummy			= u32(-1)
 	};
@@ -39,6 +42,9 @@ namespace StalkerDecisionSpace {
 		eWorldPropertyEnemyAimed,
 		eWorldPropertySafeToKill,
 		eWorldPropertyFireEnough,
+
+		eWorldPropertySquadAction,
+		eWorldPropertySquadGoal,
 
 		eWorldPropertyScript,
 		eWorldPropertyDummy			= u32(-1),
@@ -78,6 +84,8 @@ namespace StalkerDecisionSpace {
 		eWorldOperatorGetEnemySeenModerate,
 		eWorldOperatorKillEnemyLostModerate,
 		eWorldOperatorTakeCover,
+
+		eWorldOperatorSquadAction,
 
 		eWorldOperatorScript,
 		eWorldOperatorDummy			= u32(-1),

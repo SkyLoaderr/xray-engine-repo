@@ -46,7 +46,6 @@ protected:
 	MEMBER_STORAGE				m_members;
 
 protected:
-	IC		const CMemberOrder		&member			(CAI_Stalker *object) const;
 			void					add_motivations	();
 			void					add_evaluators	();
 			void					add_actions		();
@@ -61,6 +60,7 @@ public:
 			void					add				(CEntity *member);
 			void					remove			(CEntity *member);
 	IC		const CSetupAction		&action			(CAI_Stalker *object) const;
+	IC		const CMemberOrder		&member			(CAI_Stalker *object) const;
 	IC		const MEMBER_STORAGE	&members		() const;
 };
 

@@ -180,6 +180,9 @@ void CScriptEngine::export_motivation_management()
 				value("motivation_alive",			StalkerDecisionSpace::eMotivationAlive),
 				value("motivation_dead",			StalkerDecisionSpace::eMotivationDead),
 				value("motivation_solve_zone_puzzle",StalkerDecisionSpace::eMotivationSolveZonePuzzle),
+				value("motivation_squad_command",	StalkerDecisionSpace::eMotivationSquadCommand),
+				value("motivation_squad_goal",		StalkerDecisionSpace::eMotivationSquadGoal),
+				value("motivation_squad_action",	StalkerDecisionSpace::eMotivationSquadAction),
 				value("motivation_script",			StalkerDecisionSpace::eMotivationScript)
 			]
 			
@@ -202,6 +205,7 @@ void CScriptEngine::export_motivation_management()
 				value("property_enemy_aimed",		StalkerDecisionSpace::eWorldPropertyEnemyAimed),
 				value("property_safe_to_kill",		StalkerDecisionSpace::eWorldPropertySafeToKill),
 				value("property_fire_enough",		StalkerDecisionSpace::eWorldPropertyFireEnough),
+				value("property_squad_action",		StalkerDecisionSpace::eWorldPropertySquadAction),
 				value("property_script",			StalkerDecisionSpace::eWorldPropertyScript)
 			]
 			
@@ -231,7 +235,8 @@ void CScriptEngine::export_motivation_management()
 				value("action_camping",								StalkerDecisionSpace::eWorldOperatorCamping),
 				value("action_get_ready_to_kill_avoid",				StalkerDecisionSpace::eWorldOperatorGetReadyToKillAvoid),
 				value("action_kill_enemy_avoid",					StalkerDecisionSpace::eWorldOperatorKillEnemyAvoid),
-				value("action_retreat_from_enemy",					StalkerDecisionSpace::eWorldOperatorRetreatFromEnemy)
+				value("action_retreat_from_enemy",					StalkerDecisionSpace::eWorldOperatorRetreatFromEnemy),
+				value("action_squad_action",						StalkerDecisionSpace::eWorldOperatorSquadAction)
 			]
 
 			.enum_("sounds")

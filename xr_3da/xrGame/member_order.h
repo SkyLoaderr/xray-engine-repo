@@ -18,21 +18,21 @@ class CMemberOrder {
 protected:
 	CAI_Stalker								*m_object;
 	AgentManager::EOrderType				m_order_type;
-	StalkerDecisionSpace::EWorldProperties	m_goal;
+	CGraphEngine::CWorldState				m_goal;
 	CSetupAction							m_action;
 	bool									m_initialized;
 
 public:
-	IC														CMemberOrder	(CAI_Stalker *object);
-	IC		bool											initialized		() const;
-	IC		CAI_Stalker										*object			() const;
-	IC		const CSetupAction								&action			() const;
-	IC		const AgentManager::EOrderType					&order_type		() const;
-	IC		const StalkerDecisionSpace::EWorldProperties	&goal			() const;
-	IC		CSetupAction									&action			();
-	IC		void											action			(const CSetupAction	&action);
-	IC		void											order_type		(const AgentManager::EOrderType &order_type);
-	IC		void											goal			(const StalkerDecisionSpace::EWorldProperties &goal);
+	IC										CMemberOrder	(CAI_Stalker *object);
+	IC		bool							initialized		() const;
+	IC		CAI_Stalker						*object			() const;
+	IC		const CSetupAction				&action			() const;
+	IC		const AgentManager::EOrderType	&order_type		() const;
+	IC		const CGraphEngine::CWorldState	&goal			() const;
+	IC		CSetupAction					&action			();
+	IC		void							action			(const CSetupAction	&action);
+	IC		void							order_type		(const AgentManager::EOrderType &order_type);
+	IC		void							goal			(const CGraphEngine::CWorldState &goal);
 };
 
 #include "member_order_inline.h"

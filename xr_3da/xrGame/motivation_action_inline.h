@@ -8,14 +8,25 @@
 
 #pragma once
 
-template <typename _object_type>
-IC	CMotivationAction<_object_type>::CMotivationAction	(const CWorldState &goal) :
+#define TEMPLATE_SPECIALIZATION template <typename _object_type>
+#define CSMotivationAction		CMotivationAction<_object_type>
+
+TEMPLATE_SPECIALIZATION
+IC	CSMotivationAction::CMotivationAction	(const CWorldState &goal) :
 	m_goal			(goal)
 {
 }
 
-template <typename _object_type>
-IC	const typename CMotivationAction<_object_type>::CWorldState	&CMotivationAction<_object_type>::goal	() const
+TEMPLATE_SPECIALIZATION
+IC	const typename CSMotivationAction::CWorldState	&CSMotivationAction::goal	() const
 {
 	return			(m_goal);
 }
+
+TEMPLATE_SPECIALIZATION
+void CSMotivationAction::update	()
+{
+}
+
+#undef TEMPLATE_SPECIALIZATION
+#undef CSMotivationAction

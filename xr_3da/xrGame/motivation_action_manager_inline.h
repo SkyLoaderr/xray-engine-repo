@@ -52,12 +52,7 @@ TEMPLATE_SPECIALIZATION
 void CSMotivationActionManager::update	(u32 time_delta)
 {
 	CSMotivationManager::update			(time_delta);
-	
-	const CSMotivation					*motivation = CSMotivationManager::selected	();
-	const CSMotivationAction			*action		= dynamic_cast<const CSMotivationAction*>(motivation);
-	VERIFY								(action);
-	CSActionPlanner::set_target_state	(action->goal());
-
+	CSActionPlanner::set_target_state	(CSMotivationManager::selected()->goal());
 	CSActionPlanner::update				(time_delta);
 }
 

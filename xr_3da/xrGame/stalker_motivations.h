@@ -15,7 +15,7 @@
 
 class CAI_Stalker;
 
-typedef CWrapperAbstract<CAI_Stalker,CMotivation>			CStalkerMotivation;
+typedef CWrapperAbstract<CAI_Stalker,CMotivation>		CStalkerMotivation;
 typedef CWrapperAbstract<CAI_Stalker,CMotivationAction>	CStalkerMotivationAction;
 
 //////////////////////////////////////////////////////////////////////////
@@ -25,6 +25,37 @@ typedef CWrapperAbstract<CAI_Stalker,CMotivationAction>	CStalkerMotivationAction
 class CMotivationGlobal : public CStalkerMotivation {
 public:
 	virtual float	evaluate		(u32 sub_motivation_id);
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CMotivationAlive
+//////////////////////////////////////////////////////////////////////////
+
+class CMotivationAlive : public CStalkerMotivation {
+public:
+	virtual float	evaluate		(u32 sub_motivation_id);
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CMotivationSquad
+//////////////////////////////////////////////////////////////////////////
+
+class CMotivationSquad : public CStalkerMotivation {
+public:
+	virtual float	evaluate		(u32 sub_motivation_id);
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CMotivationSquadGoal
+//////////////////////////////////////////////////////////////////////////
+
+class CMotivationSquadGoal : public CStalkerMotivationAction {
+protected:
+	typedef CStalkerMotivationAction inherited;
+
+public:
+	IC				CMotivationSquadGoal	(const CWorldState &state);
+	virtual void	update					();
 };
 
 #include "stalker_motivations_inline.h"

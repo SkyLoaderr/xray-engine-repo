@@ -11,9 +11,10 @@
 #define TEMPLATE_SPECIALIZATION \
 	template<\
 		typename _object_type,\
-		template <typename _object_type> class _motivation_type\
+		template <typename _object_type> class _motivation_type,\
+		template <typename _object_type> class _motivation_action_type\
 	>
-#define CSMotivationManager		CMotivationManager<_object_type,_motivation_type>
+#define CSMotivationManager		CMotivationManager<_object_type,_motivation_type,_motivation_action_type>
 
 TEMPLATE_SPECIALIZATION
 IC	CSMotivationManager::CMotivationManager		()
@@ -122,11 +123,11 @@ IC	typename CSMotivationManager::CSMotivation *CSMotivationManager::motivation	(
 }
 
 TEMPLATE_SPECIALIZATION
-IC	typename CSMotivationManager::CSMotivation *CSMotivationManager::selected	() const
+IC	typename CSMotivationManager::CSMotivationAction *CSMotivationManager::selected	() const
 {
 	xr_map<u32,float>::const_iterator	I = m_actions.find(m_selected_id);
 	VERIFY				(m_actions.end() != I);
-	return				(motivation(m_selected_id));
+	return				(dynamic_cast<CSMotivationAction*>(motivation(m_selected_id)));
 }
 
 TEMPLATE_SPECIALIZATION
@@ -150,6 +151,8 @@ IC	void CSMotivationManager::update			(u32 time_delta)
 	}
 
 	select_action			();
+
+	selected()->update		();
 }
 
 TEMPLATE_SPECIALIZATION

@@ -35,6 +35,7 @@ class CCoverEvaluatorCloseToEnemy;
 class CCoverEvaluatorFarFromEnemy;
 class CCoverEvaluatorBest;
 class CCoverEvaluatorAngle;
+class CAgentManager;
 
 //#define LOG_PARAMETERS
 
@@ -202,7 +203,7 @@ public:
 	virtual bool				use_model_pitch					() const;
 
 	//////////////////////////////////////////////////////////////////////////
-	// action/evaluators/motivations suppoort functions
+	// action/evaluators/motivations support functions
 	//////////////////////////////////////////////////////////////////////////
 public:
 	virtual void				OnItemTake						(CInventoryItem *inventory_item);
@@ -217,6 +218,7 @@ public:
 	virtual float				GetWeaponAccuracy				() const;
 	virtual	void				spawn_supplies					();
 			void				adjust_speed_to_animation		(const EMovementDirection movement_direction);
+	IC		const CAgentManager	&agent_manager					() const;
 	virtual bool				human_being						() const
 	{
 		return					(true);

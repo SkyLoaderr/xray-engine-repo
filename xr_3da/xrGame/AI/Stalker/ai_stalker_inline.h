@@ -13,3 +13,7 @@ IC	BOOL CAI_Stalker::UsedAI_Locations				()
 	return				(TRUE);
 }
 
+IC	const CAgentManager	&CAI_Stalker::agent_manager	() const
+{
+	return				(Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()].agent_manager());
+}

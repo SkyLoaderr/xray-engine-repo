@@ -122,13 +122,29 @@ void CMotivationActionManagerStalker::add_motivations	()
 	add_condition			(goal,eWorldPropertyAlreadyDead,	true);
 	add_motivation			(eMotivationDead,			xr_new<CStalkerMotivationAction>(goal));
 
+	add_motivation			(eMotivationAlive,			xr_new<CMotivationAlive>());
+	
 	goal.clear				();
 	add_condition			(goal,eWorldPropertyPuzzleSolved,	true);
-	add_motivation			(eMotivationAlive,			xr_new<CStalkerMotivationAction>(goal));
+	add_motivation			(eMotivationSolveZonePuzzle,xr_new<CStalkerMotivationAction>(goal));
+
+	add_motivation			(eMotivationSquadCommand,	xr_new<CMotivationSquad>());
+
+	goal.clear				();
+	add_condition			(goal,eWorldPropertySquadGoal,		true);
+	add_motivation			(eMotivationSquadGoal,		xr_new<CMotivationSquadGoal>(goal));
+
+	goal.clear				();
+	add_condition			(goal,eWorldPropertySquadAction,	true);
+	add_motivation			(eMotivationSquadAction,	xr_new<CStalkerMotivationAction>(goal));
 
 	// connect motivations
 	add_connection			(eMotivationGlobal,			eMotivationDead);
 	add_connection			(eMotivationGlobal,			eMotivationAlive);
+	add_connection			(eMotivationAlive,			eMotivationSolveZonePuzzle);
+	add_connection			(eMotivationAlive,			eMotivationSquadCommand);
+	add_connection			(eMotivationSquadCommand,	eMotivationSquadGoal);
+	add_connection			(eMotivationSquadCommand,	eMotivationSquadAction);
 }
 
 void CMotivationActionManagerStalker::add_evaluators		()

@@ -23,6 +23,7 @@ protected:
 public:
 	IC							CMotivationAction	(const CWorldState &goal);
 	IC		const CWorldState	&goal				() const;
+	virtual void				update				();
 };
 
 #include "motivation_action_inline.h"
