@@ -206,12 +206,12 @@ void xrPalettizeCovers(u32 *data, u32 N)
 	double					iterations = compute_formula(clusters.size(),256);
 	double					portion = iterations/100;
 	double					accumulator = 0;
-	printf					("\t\tIteration : %5.2f%",0.f);
+	printf					("\t\tIteration : %6.2f%%",0.f);
 	for (int ii=0, nn = clusters.size(); clusters.size() > 256; ) {
 		if (accumulator >= portion) {
 			for (int j=0; j<32; j++)
 				printf		("\b \b");
-			printf			("\t\tIteration : %6.2f%",100.f*compute_percents(nn,nn - ii,256));
+			printf			("\t\tIteration : %6.2f%%",100.f*compute_percents(nn,nn - ii,256));
 			accumulator		= 0;
 		}
 		// choosing the nearest pair
@@ -326,7 +326,7 @@ void xrPalettizeCovers(u32 *data, u32 N)
 	
 	for (int j=0; j<32; j++)
 		printf				("\b \b");
-	printf					("\t\tIteration : %6.2f%\n\tTotal clusters : %d\n",100.f,clusters.size());
+	printf					("\t\tIteration : %6.2f%%\n\tTotal clusters : %d\n",100.f,clusters.size());
 
 	Memory.mem_fill			(data,0,N*sizeof(u32));
 
