@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-void xrServer::Perform_transfer(CAbstractServerObject* what, CAbstractServerObject* from, CAbstractServerObject* to)
+void xrServer::Perform_transfer(CSE_Abstract* what, CSE_Abstract* from, CSE_Abstract* to)
 {
 	// Sanity check
 	R_ASSERT	(what && from && to);
@@ -39,7 +39,7 @@ void xrServer::Perform_transfer(CAbstractServerObject* what, CAbstractServerObje
 	//Log						("C");
 }
 
-void xrServer::Perform_reject(CAbstractServerObject* what, CAbstractServerObject* from)
+void xrServer::Perform_reject(CSE_Abstract* what, CSE_Abstract* from)
 {
 	R_ASSERT	(what && from);
 	R_ASSERT	(what->ID_Parent == from->ID);

@@ -14,8 +14,8 @@ BOOL CTargetCSBase::net_Spawn		(LPVOID DC)
 	BOOL res	= inherited::net_Spawn(DC);
 
 	if (res){
-		CAbstractServerObject				*e	= (CAbstractServerObject*)(DC);
-		CServerObjectTarget_CS_Base			*T	= dynamic_cast<CServerObjectTarget_CS_Base*>(e);
+		CSE_Abstract				*e	= (CSE_Abstract*)(DC);
+		CSE_Target_CS_Base			*T	= dynamic_cast<CSE_Target_CS_Base*>(e);
 		radius	= T->radius;
 		team	= T->s_team;
 		setVisible					(true);

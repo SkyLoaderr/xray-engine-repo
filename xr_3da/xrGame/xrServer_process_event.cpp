@@ -25,7 +25,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 	P.r_u16		(type		);
 	P.r_u16		(destination);
 
-	CAbstractServerObject*	receiver	= game->get_entity_from_eid	(destination);
+	CSE_Abstract*	receiver	= game->get_entity_from_eid	(destination);
 	if (receiver)	receiver->OnEvent						(P,type,timestamp,sender);
 
 	switch		(type)
@@ -39,7 +39,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 		break;
 	case GEG_PLAYER_READY:
 		{
-			CAbstractServerObject*		E			= game->get_entity_from_eid	(destination);
+			CSE_Abstract*		E			= game->get_entity_from_eid	(destination);
 			if (E) {
 				xrClientData*		C			= E->owner;
 				if (C && (C->owner == E))
@@ -53,7 +53,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 		{
 			string64			i_name;
 			P.r_string			(i_name);
-			CAbstractServerObject*		E			= game->get_entity_from_eid	(destination);
+			CSE_Abstract*		E			= game->get_entity_from_eid	(destination);
 			if (E) {
 				xrClientData*		C			= E->owner;
 				if (C && (C->owner == E))
@@ -65,7 +65,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 		break;
 	case GE_RESPAWN:
 		{
-			CAbstractServerObject*		E	= game->get_entity_from_eid	(destination);
+			CSE_Abstract*		E	= game->get_entity_from_eid	(destination);
 			if (E) 
 			{
 				R_ASSERT			(E->s_flags.is(M_SPAWN_OBJECT_PHANTOM));
@@ -90,8 +90,8 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 		{
 			u16					id_parent=destination,id_entity;
 			P.r_u16				(id_entity);
-			CAbstractServerObject*		e_parent	= game->get_entity_from_eid	(id_parent);	// кто забирает (для своих нужд)
-			CAbstractServerObject*		e_entity	= game->get_entity_from_eid	(id_entity);	// кто отдает
+			CSE_Abstract*		e_parent	= game->get_entity_from_eid	(id_parent);	// кто забирает (для своих нужд)
+			CSE_Abstract*		e_entity	= game->get_entity_from_eid	(id_entity);	// кто отдает
 			if (!e_entity)		break;
 			if (0xffff != e_entity->ID_Parent)	break;						// this item already taken
 			xrClientData*		c_parent	= e_parent->owner;
@@ -111,8 +111,8 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			// Parse message
 			u16					/*id_dest		=	destination,*/ id_src;
 			P.r_u16				(id_src);
-			/*CAbstractServerObject*	e_dest		= game->get_entity_from_eid	(id_dest);*/	// кто повредился
-			CAbstractServerObject*		e_src		= game->get_entity_from_eid	(id_src	); if(!e_src) break; // @@@ WT		// благодаря кому
+			/*CSE_Abstract*	e_dest		= game->get_entity_from_eid	(id_dest);*/	// кто повредился
+			CSE_Abstract*		e_src		= game->get_entity_from_eid	(id_src	); if(!e_src) break; // @@@ WT		// благодаря кому
 			xrClientData*		c_src		= e_src->owner;
 			xrClientData*		c_from		= ID_to_client	(sender);
 			R_ASSERT			(c_src == c_from);							// assure client ownership of event
@@ -126,8 +126,8 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			// Parse message
 			u16					id_dest		=	destination, id_src;
 			P.r_u16				(id_src);
-			CAbstractServerObject*		e_dest		= game->get_entity_from_eid	(id_dest);	// кто умер
-			CAbstractServerObject*		e_src		= game->get_entity_from_eid	(id_src	);	// кто убил
+			CSE_Abstract*		e_dest		= game->get_entity_from_eid	(id_dest);	// кто умер
+			CSE_Abstract*		e_src		= game->get_entity_from_eid	(id_src	);	// кто убил
 			R_ASSERT2			(e_dest && e_src, "Killer or/and being killed are offline or not exist at all :(");
 
 			xrClientData*		c_dest		= e_dest->owner;			// клиент, чей юнит умер
@@ -158,7 +158,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 		{
 			// Parse message
 			u16					id_dest		=	destination;
-			CAbstractServerObject*		e_dest		=	game->get_entity_from_eid	(id_dest);	// кто должен быть уничтожен
+			CSE_Abstract*		e_dest		=	game->get_entity_from_eid	(id_dest);	// кто должен быть уничтожен
 			R_ASSERT			(e_dest			);
 			xrClientData*		c_dest		=	e_dest->owner;				// клиент, чей юнит
 			R_ASSERT			(c_dest			);

@@ -53,11 +53,11 @@ u16					game_sv_GameState::get_id_2_eid				(u32 id)
 	xrServer*		S	= Level().Server;
 	xrClientData*	C	= (xrClientData*)S->ID_to_client	(id);
 	if (0==C)			return 0xffff;
-	CAbstractServerObject*	E	= C->owner;
+	CSE_Abstract*	E	= C->owner;
 	if (0==E)			return 0xffff;
 	return E->ID;
 }
-CAbstractServerObject*		game_sv_GameState::get_entity_from_eid		(u16 id)
+CSE_Abstract*		game_sv_GameState::get_entity_from_eid		(u16 id)
 {
 	xrServer*		S	= Level().Server;
 	return				S->ID_to_entity(id);
@@ -81,7 +81,7 @@ xr_vector<u16>*		game_sv_GameState::get_children				(u32 id)
 	xrServer*		S	= Level().Server;
 	xrClientData*	C	= (xrClientData*)S->ID_to_client	(id);
 	if (0==C)			return 0;
-	CAbstractServerObject* E	= C->owner;
+	CSE_Abstract* E	= C->owner;
 	if (0==E)			return 0;
 	return	&(E->children);
 }
@@ -156,7 +156,7 @@ void game_sv_GameState::net_Export_State						(NET_Packet& P, u32 to)
 		if (0==C)	strcpy(p_name,"Unknown");
 		else 
 		{
-			CAbstractServerObject* C_e		= C->owner;
+			CSE_Abstract* C_e		= C->owner;
 			if (0==C_e)		strcpy(p_name,"Unknown");
 			else 
 			{
@@ -257,16 +257,16 @@ void game_sv_GameState::Create					(LPCSTR options)
 	}
 }
 
-void				game_sv_GameState::assign_RP				(CAbstractServerObject* E)
+void				game_sv_GameState::assign_RP				(CSE_Abstract* E)
 {
 	VERIFY				(E);
 
 	u8					l_uc_team = u8(-1);
-	CServerObjectSpectator		*tpSpectator = dynamic_cast<CServerObjectSpectator*>(E);
+	CSE_Spectator		*tpSpectator = dynamic_cast<CSE_Spectator*>(E);
 	if (tpSpectator)
 		l_uc_team = tpSpectator->g_team();
 	else {
-		CALifeMonsterAbstract	*tpTeamed = dynamic_cast<CALifeMonsterAbstract*>(E);
+		CSE_ALifeMonsterAbstract	*tpTeamed = dynamic_cast<CSE_ALifeMonsterAbstract*>(E);
 		if (tpTeamed)
 			l_uc_team = tpTeamed->g_team();
 		else
@@ -278,9 +278,9 @@ void				game_sv_GameState::assign_RP				(CAbstractServerObject* E)
 	E->o_Angle.set		(r.A);
 }
 
-CAbstractServerObject*		game_sv_GameState::spawn_begin				(LPCSTR N)
+CSE_Abstract*		game_sv_GameState::spawn_begin				(LPCSTR N)
 {
-	CAbstractServerObject*	A	= F_entity_Create(N);	R_ASSERT(A);	// create SE
+	CSE_Abstract*	A	= F_entity_Create(N);	R_ASSERT(A);	// create SE
 	strcpy				(A->s_name,N);							// ltx-def
 	A->s_gameid			=	u8(type);							// game-type
 	A->s_RP				=	0xFE;								// use supplied
@@ -290,7 +290,7 @@ CAbstractServerObject*		game_sv_GameState::spawn_begin				(LPCSTR N)
 	A->RespawnTime		=	0;									// no-respawn
 	return A;
 }
-void				game_sv_GameState::spawn_end				(CAbstractServerObject* E, u32 id)
+void				game_sv_GameState::spawn_end				(CSE_Abstract* E, u32 id)
 {
 	NET_Packet						P;
 	u16								skip_header;

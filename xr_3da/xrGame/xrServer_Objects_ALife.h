@@ -12,18 +12,26 @@
 #include "xrServer_Objects.h"
 #include "ai_alife_templates.h"
 
-SERVER_OBJECT_DECLARE_BEGIN(CALifeEvent,IPureServerObject)
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeGraphPoint,CSE_Abstract)
+public:
+	string32						m_caConnectionPointName;
+	u32								m_tLevelID;
+	u8								m_tLocations[LOCATION_TYPE_COUNT];
+									CSE_ALifeGraphPoint(LPCSTR caSection);
+SERVER_ENTITY_DECLARE_END
+
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeEvent,IPureServerObject)
 	_EVENT_ID						m_tEventID;
 	_TIME_ID						m_tTimeID;
 	_GRAPH_ID						m_tGraphID;
 	EBattleResult					m_tBattleResult;
-	CALifeEventGroup				*m_tpMonsterGroup1;
-	CALifeEventGroup				*m_tpMonsterGroup2;
+	CSE_ALifeEventGroup				*m_tpMonsterGroup1;
+	CSE_ALifeEventGroup				*m_tpMonsterGroup2;
 
-									CALifeEvent(LPCSTR caSection);
-SERVER_OBJECT_DECLARE_END
+									CSE_ALifeEvent(LPCSTR caSection);
+SERVER_ENTITY_DECLARE_END
 
-SERVER_OBJECT_DECLARE_BEGIN(CALifePersonalEvent,IPureServerObject)
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifePersonalEvent,IPureServerObject)
 	_EVENT_ID						m_tEventID;
 	_TIME_ID						m_tTimeID;
 	_TASK_ID						m_tTaskID;
@@ -31,12 +39,12 @@ SERVER_OBJECT_DECLARE_BEGIN(CALifePersonalEvent,IPureServerObject)
 	ERelation						m_tRelation;
 	OBJECT_VECTOR					m_tpItemIDs;
 
-									CALifePersonalEvent()
+									CSE_ALifePersonalEvent()
 	{
 	};
-SERVER_OBJECT_DECLARE_END
+SERVER_ENTITY_DECLARE_END
 
-SERVER_OBJECT_DECLARE_BEGIN(CALifeTask,IPureServerObject)
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeTask,IPureServerObject)
 	_TASK_ID						m_tTaskID;
 	_TIME_ID						m_tTimeID;
 	_OBJECT_ID						m_tCustomerID;
@@ -51,23 +59,23 @@ SERVER_OBJECT_DECLARE_BEGIN(CALifeTask,IPureServerObject)
 		_GRAPH_ID					m_tGraphID;
 	};
 
-									CALifeTask()
+									CSE_ALifeTask()
 	{
 	};
-SERVER_OBJECT_DECLARE_END
+SERVER_ENTITY_DECLARE_END
 
-SERVER_OBJECT_DECLARE_BEGIN(CALifePersonalTask,CALifeTask)
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifePersonalTask,CSE_ALifeTask)
 	u32								m_dwTryCount;
 
-									CALifePersonalTask()
+									CSE_ALifePersonalTask()
 	{
 		m_dwTryCount				= 0;
 	};
-SERVER_OBJECT_DECLARE_END
+SERVER_ENTITY_DECLARE_END
 
-class CALifeObject : virtual public CAbstractServerObject {
+class CSE_ALifeObject : virtual public CSE_Abstract {
 public:
-	typedef CAbstractServerObject inherited;
+	typedef CSE_Abstract inherited;
 	_CLASS_ID						m_tClassID;
 	_OBJECT_ID						m_tObjectID;
 	_GRAPH_ID						m_tGraphID;
@@ -78,7 +86,7 @@ public:
 	bool							m_bDirectControl;
 	u32								m_tNodeID;
 
-									CALifeObject(LPCSTR caSection) : CAbstractServerObject(caSection)
+									CSE_ALifeObject(LPCSTR caSection) : CSE_Abstract(caSection)
 	{
 		m_bOnline					= false;
 		m_fDistance					= 0.0f;
@@ -100,20 +108,20 @@ public:
 #endif
 };
 
-class CALifeAbstractGroup : virtual public CAbstractServerObject {
+class CSE_ALifeAbstractGroup : virtual public CSE_Abstract {
 public:
 	OBJECT_VECTOR					m_tpMembers;
 	bool							m_bCreateSpawnPositions;
 	u16								m_wCount;
 
-									CALifeAbstractGroup(LPCSTR caSection) : CAbstractServerObject(caSection)
+									CSE_ALifeAbstractGroup(LPCSTR caSection) : CSE_Abstract(caSection)
 	{
 		m_tpMembers.clear			();
 		m_bCreateSpawnPositions		= true;
 		m_wCount					= 1;
 	};
 
-	virtual							~CALifeAbstractGroup()
+	virtual							~CSE_ALifeAbstractGroup()
 	{
 	};
 	
@@ -154,15 +162,15 @@ public:
 	#endif
 };
 
-template<class __A> class CALifeGroupTemplate : public __A, public CALifeAbstractGroup {
+template<class __A> class CSE_ALifeGroupTemplate : public __A, public CSE_ALifeAbstractGroup {
 	typedef __A					inherited1;
-	typedef CALifeAbstractGroup inherited2;
+	typedef CSE_ALifeAbstractGroup inherited2;
 public:
-									CALifeGroupTemplate(LPCSTR caSection) : __A(caSection), CALifeAbstractGroup(caSection), CAbstractServerObject(caSection)
+									CSE_ALifeGroupTemplate(LPCSTR caSection) : __A(caSection), CSE_ALifeAbstractGroup(caSection), CSE_Abstract(caSection)
 	{
 	};
 	
-	virtual							~CALifeGroupTemplate()
+	virtual							~CSE_ALifeGroupTemplate()
 	{
 	};
 	
@@ -199,49 +207,49 @@ public:
 	#endif
 };
 
-SERVER_OBJECT_DECLARE_BEGIN(CALifeEventGroup,CALifeObject)
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeEventGroup,CSE_ALifeObject)
 	u16								m_wCountBefore;
 	u16								m_wCountAfter;
 	
-									CALifeEventGroup(LPCSTR caSection) : CALifeObject(caSection), CAbstractServerObject(caSection)
+									CSE_ALifeEventGroup(LPCSTR caSection) : CSE_ALifeObject(caSection), CSE_Abstract(caSection)
 	{
 		m_wCountAfter				= m_wCountBefore;
 	};
-SERVER_OBJECT_DECLARE_END
+SERVER_ENTITY_DECLARE_END
 
-SERVER_OBJECT_DECLARE_BEGIN(CALifeDynamicObject,CALifeObject)
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeDynamicObject,CSE_ALifeObject)
 	_TIME_ID						m_tTimeID;
 	u32								m_dwLastSwitchTime;
 	
-									CALifeDynamicObject(LPCSTR caSection) : CALifeObject(caSection), CAbstractServerObject(caSection)
+									CSE_ALifeDynamicObject(LPCSTR caSection) : CSE_ALifeObject(caSection), CSE_Abstract(caSection)
 	{
 		m_tTimeID					= 0;
 		m_dwLastSwitchTime			= 1;
 	}
-SERVER_OBJECT_DECLARE_END
+SERVER_ENTITY_DECLARE_END
 
-SERVER_OBJECT_DECLARE_BEGIN2(CALifeDynamicObjectVisual,CALifeDynamicObject,CServerObjectVisual)
-									CALifeDynamicObjectVisual(LPCSTR caSection) : CALifeDynamicObject(caSection), CServerObjectVisual(), CAbstractServerObject(caSection)
+SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeDynamicObjectVisual,CSE_ALifeDynamicObject,CSE_Visual)
+									CSE_ALifeDynamicObjectVisual(LPCSTR caSection) : CSE_ALifeDynamicObject(caSection), CSE_Visual(), CSE_Abstract(caSection)
 	{
 	}
-SERVER_OBJECT_DECLARE_END
+SERVER_ENTITY_DECLARE_END
 
-SERVER_OBJECT_DECLARE_BEGIN2(CALifeAnomalousZone,CALifeDynamicObject,CServerObjectShape)
+SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeAnomalousZone,CSE_ALifeDynamicObject,CSE_Shape)
 	f32								m_maxPower;
 	f32								m_attn;
 	u32								m_period;
-									CALifeAnomalousZone	(LPCSTR caSection);
-SERVER_OBJECT_DECLARE_END
+									CSE_ALifeAnomalousZone	(LPCSTR caSection);
+SERVER_ENTITY_DECLARE_END
 
-SERVER_OBJECT_DECLARE_BEGIN(CALifeObjectPhysic,CALifeDynamicObjectVisual)
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectPhysic,CSE_ALifeDynamicObjectVisual)
 	u32 							type;
 	f32 							mass;
     string32 						fixed_bone;
-									CALifeObjectPhysic	(LPCSTR caSection);
-    virtual 						~CALifeObjectPhysic	();
-SERVER_OBJECT_DECLARE_END
+									CSE_ALifeObjectPhysic	(LPCSTR caSection);
+    virtual 						~CSE_ALifeObjectPhysic	();
+SERVER_ENTITY_DECLARE_END
 
-SERVER_OBJECT_DECLARE_BEGIN(CALifeObjectHangingLamp,CALifeDynamicObjectVisual)
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectHangingLamp,CSE_ALifeDynamicObjectVisual)
 #ifdef _EDITOR
 	void __fastcall					OnChangeAnim	(PropValue* sender);
 #endif
@@ -258,8 +266,8 @@ SERVER_OBJECT_DECLARE_BEGIN(CALifeObjectHangingLamp,CALifeDynamicObjectVisual)
 	float							spot_range;
 	float							spot_cone_angle;
     float							spot_brightness;
-									CALifeObjectHangingLamp	(LPCSTR caSection);
-    virtual							~CALifeObjectHangingLamp	();
-SERVER_OBJECT_DECLARE_END
+									CSE_ALifeObjectHangingLamp	(LPCSTR caSection);
+    virtual							~CSE_ALifeObjectHangingLamp	();
+SERVER_ENTITY_DECLARE_END
 
 #endif

@@ -10,17 +10,121 @@
 #include "xrServer_Objects_ALife.h"
 
 ////////////////////////////////////////////////////////////////////////////
-// CALifeEvent
+// CSE_ALifeGraphPoint
 ////////////////////////////////////////////////////////////////////////////
-void CALifeEvent::STATE_Write				(NET_Packet &tNetPacket)
+#ifdef _EDITOR
+	static TokenValue4::ItemVec locations[4];
+	static TokenValue4::ItemVec	level_ids;
+#endif
+
+CSE_ALifeGraphPoint::CSE_ALifeGraphPoint(LPCSTR caSection) : CSE_Abstract(caSection)
+{
+	s_gameid					= GAME_DUMMY;
+	m_caConnectionPointName[0]	= 0;
+	m_tLevelID					= 0;
+	m_tLocations[0]				= 0;
+	m_tLocations[1]				= 0;
+	m_tLocations[2]				= 0;
+	m_tLocations[3]				= 0;
+}
+
+void CSE_ALifeGraphPoint::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
+{
+	tNetPacket.r_string			(m_caConnectionPointName);
+	tNetPacket.r_u32			(m_tLevelID);
+	tNetPacket.r_u8				(m_tLocations[0]);
+	tNetPacket.r_u8				(m_tLocations[1]);
+	tNetPacket.r_u8				(m_tLocations[2]);
+	tNetPacket.r_u8				(m_tLocations[3]);
+	if (!tNetPacket.r_eof()) {
+		tNetPacket.r_pos		-= 4;
+		u32						dwTemp;
+		tNetPacket.r_u32		(dwTemp);
+		m_tLocations[0]			= (u8)dwTemp;
+		tNetPacket.r_u32		(dwTemp);
+		m_tLocations[1]			= (u8)dwTemp;
+	}
+};
+
+void CSE_ALifeGraphPoint::STATE_Write			(NET_Packet	&tNetPacket)
+{
+	tNetPacket.w_string			(m_caConnectionPointName);
+	tNetPacket.w_u32			(m_tLevelID);
+	tNetPacket.w_u8				(m_tLocations[0]);
+	tNetPacket.w_u8				(m_tLocations[1]);
+	tNetPacket.w_u8				(m_tLocations[2]);
+	tNetPacket.w_u8				(m_tLocations[3]);
+};
+void CSE_ALifeGraphPoint::UPDATE_Read			(NET_Packet	&tNetPacket)
 {
 }
 
-void CALifeEvent::STATE_Read				(NET_Packet &tNetPacket, u16 size)
+void CSE_ALifeGraphPoint::UPDATE_Write			(NET_Packet	&tNetPacket)
 {
 }
 
-void CALifeEvent::UPDATE_Write				(NET_Packet &tNetPacket)
+#ifdef _EDITOR              
+void CSE_ALifeGraphPoint::FillProp				(LPCSTR pref, PropItemVec& items)
+{
+    CInifile					*Ini = 0;
+    
+	if(locations[0].empty()||locations[1].empty()||locations[2].empty()||locations[3].empty()||level_ids.empty()){
+	    string256				gm_name;
+        FS.update_path			(gm_name,_game_data_,"game.ltx");
+    	R_ASSERT2				(FS.exist(gm_name),"Couldn't find file 'game.ltx'");
+		Ini						= xr_new<CInifile>(gm_name);
+    }
+    
+	for (int i=0; i<LOCATION_TYPE_COUNT; i++)
+		if(locations[i].empty()) {
+			string256			caSection, T;
+			strconcat			(caSection,SECTION_HEADER,itoa(i,T,10));
+			R_ASSERT			(Ini->section_exist(caSection));
+			LPCSTR				N,V;
+			for (u32 k = 0; Ini->r_line(caSection,k,&N,&V); k++) {
+   				locations[i].push_back	(TokenValue4::Item());
+				TokenValue4::Item		&val = locations[i].back();
+				val.str					= V;
+				val.ID					= atoi(N);
+			}
+		}
+	
+	if(level_ids.empty()) {
+		R_ASSERT				(Ini->section_exist("levels"));
+        LPCSTR					N,V;
+        for (u32 k = 0; Ini->r_line("levels",k,&N,&V); k++) {
+			R_ASSERT			(Ini->section_exist(N));
+   			level_ids.push_back	(TokenValue4::Item());
+            TokenValue4::Item	&val = level_ids.back();
+			LPCSTR				S = Ini->r_string(N,"caption");
+			val.str				= S;
+            val.ID				= Ini->r_u32(N,"id");
+        }
+    }
+    if (Ini)
+		xr_delete				(Ini);
+	
+	PHelper.CreateToken4		(items,	PHelper.PrepareKey(pref,s_name,"Location\\1"),				(u32*)&m_tLocations[0],			&locations[0],					1);
+	PHelper.CreateToken4		(items,	PHelper.PrepareKey(pref,s_name,"Location\\2"),				(u32*)&m_tLocations[1],			&locations[1],					1);
+	PHelper.CreateToken4		(items,	PHelper.PrepareKey(pref,s_name,"Location\\3"),				(u32*)&m_tLocations[2],			&locations[2],					1);
+	PHelper.CreateToken4		(items,	PHelper.PrepareKey(pref,s_name,"Location\\4"),				(u32*)&m_tLocations[3],			&locations[3],					1);
+	PHelper.CreateToken4		(items,	PHelper.PrepareKey(pref,s_name,"Connection\\Level name"),	(u32*)&m_tLevelID,				&level_ids,						1);
+	PHelper.CreateText			(items,	PHelper.PrepareKey(pref,s_name,"Connection\\Point name"),	m_caConnectionPointName,		sizeof(m_caConnectionPointName));
+}
+#endif
+
+////////////////////////////////////////////////////////////////////////////
+// CSE_ALifeEvent
+////////////////////////////////////////////////////////////////////////////
+void CSE_ALifeEvent::STATE_Write				(NET_Packet &tNetPacket)
+{
+}
+
+void CSE_ALifeEvent::STATE_Read				(NET_Packet &tNetPacket, u16 size)
+{
+}
+
+void CSE_ALifeEvent::UPDATE_Write				(NET_Packet &tNetPacket)
 {
 	tNetPacket.w				(&m_tEventID,		sizeof(m_tEventID));
 	tNetPacket.w				(&m_tTimeID,		sizeof(m_tTimeID));
@@ -30,7 +134,7 @@ void CALifeEvent::UPDATE_Write				(NET_Packet &tNetPacket)
 	m_tpMonsterGroup2->UPDATE_Write(tNetPacket);
 };
 
-void CALifeEvent::UPDATE_Read				(NET_Packet &tNetPacket)
+void CSE_ALifeEvent::UPDATE_Read				(NET_Packet &tNetPacket)
 {
 	tNetPacket.r				(&m_tEventID,		sizeof(m_tEventID));
 	tNetPacket.r				(&m_tTimeID,		sizeof(m_tTimeID));
@@ -41,19 +145,19 @@ void CALifeEvent::UPDATE_Read				(NET_Packet &tNetPacket)
 };
 
 ////////////////////////////////////////////////////////////////////////////
-// CALifePersonalEvent
+// CSE_ALifePersonalEvent
 ////////////////////////////////////////////////////////////////////////////
-void CALifePersonalEvent::STATE_Write		(NET_Packet &tNetPacket)
+void CSE_ALifePersonalEvent::STATE_Write		(NET_Packet &tNetPacket)
 {
 	save_base_vector			(m_tpItemIDs,		tNetPacket);
 }
 
-void CALifePersonalEvent::STATE_Read		(NET_Packet &tNetPacket, u16 size)
+void CSE_ALifePersonalEvent::STATE_Read		(NET_Packet &tNetPacket, u16 size)
 {
 	load_base_vector			(m_tpItemIDs,		tNetPacket);
 }
 
-void CALifePersonalEvent::UPDATE_Write		(NET_Packet &tNetPacket)
+void CSE_ALifePersonalEvent::UPDATE_Write		(NET_Packet &tNetPacket)
 {
 	tNetPacket.w				(&m_tEventID,		sizeof(m_tEventID));
 	tNetPacket.w				(&m_tTimeID,		sizeof(m_tTimeID));
@@ -62,7 +166,7 @@ void CALifePersonalEvent::UPDATE_Write		(NET_Packet &tNetPacket)
 	tNetPacket.w				(&m_tRelation,		sizeof(m_tRelation));
 };
 
-void CALifePersonalEvent::UPDATE_Read		(NET_Packet &tNetPacket)
+void CSE_ALifePersonalEvent::UPDATE_Read		(NET_Packet &tNetPacket)
 {
 	tNetPacket.r				(&m_tEventID,		sizeof(m_tEventID));
 	tNetPacket.r				(&m_tTimeID,		sizeof(m_tTimeID));
@@ -72,17 +176,17 @@ void CALifePersonalEvent::UPDATE_Read		(NET_Packet &tNetPacket)
 };
 
 ////////////////////////////////////////////////////////////////////////////
-// CALifeTask
+// CSE_ALifeTask
 ////////////////////////////////////////////////////////////////////////////
-void CALifeTask::STATE_Write				(NET_Packet &tNetPacket)
+void CSE_ALifeTask::STATE_Write				(NET_Packet &tNetPacket)
 {
 }
 
-void CALifeTask::STATE_Read					(NET_Packet &tNetPacket, u16 size)
+void CSE_ALifeTask::STATE_Read					(NET_Packet &tNetPacket, u16 size)
 {
 }
 
-void CALifeTask::UPDATE_Write				(NET_Packet &tNetPacket)
+void CSE_ALifeTask::UPDATE_Write				(NET_Packet &tNetPacket)
 {
 	tNetPacket.w				(&m_tTaskID,		sizeof(m_tTaskID));
 	tNetPacket.w				(&m_tTimeID,		sizeof(m_tTimeID));
@@ -116,7 +220,7 @@ void CALifeTask::UPDATE_Write				(NET_Packet &tNetPacket)
 	}
 }
 
-void CALifeTask::UPDATE_Read				(NET_Packet &tNetPacket)
+void CSE_ALifeTask::UPDATE_Read				(NET_Packet &tNetPacket)
 {
 	tNetPacket.r				(&m_tTaskID,	sizeof(m_tTaskID));
 	tNetPacket.r				(&m_tTimeID,	sizeof(m_tTimeID));
@@ -151,34 +255,34 @@ void CALifeTask::UPDATE_Read				(NET_Packet &tNetPacket)
 }
 
 ////////////////////////////////////////////////////////////////////////////
-// CALifePersonalTask
+// CSE_ALifePersonalTask
 ////////////////////////////////////////////////////////////////////////////
-void CALifePersonalTask::STATE_Write		(NET_Packet &tNetPacket)
+void CSE_ALifePersonalTask::STATE_Write		(NET_Packet &tNetPacket)
 {
 	inherited::STATE_Write		(tNetPacket);
 }
 
-void CALifePersonalTask::STATE_Read			(NET_Packet &tNetPacket, u16 size)
+void CSE_ALifePersonalTask::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 {
 	inherited::STATE_Read		(tNetPacket,size);
 }
 
-void CALifePersonalTask::UPDATE_Write		(NET_Packet &tNetPacket)
+void CSE_ALifePersonalTask::UPDATE_Write		(NET_Packet &tNetPacket)
 {
 	inherited::UPDATE_Write		(tNetPacket);
 	tNetPacket.w_u32			(m_dwTryCount);
 };
 
-void CALifePersonalTask::UPDATE_Read		(NET_Packet &tNetPacket)
+void CSE_ALifePersonalTask::UPDATE_Read		(NET_Packet &tNetPacket)
 {
 	inherited::UPDATE_Read		(tNetPacket);
 	tNetPacket.r_u32			(m_dwTryCount);
 };
 
 ////////////////////////////////////////////////////////////////////////////
-// CALifeObject
+// CSE_ALifeObject
 ////////////////////////////////////////////////////////////////////////////
-void CALifeObject::STATE_Write				(NET_Packet &tNetPacket)
+void CSE_ALifeObject::STATE_Write				(NET_Packet &tNetPacket)
 {
 	tNetPacket.w_u8				(m_ucProbability);
 	tNetPacket.w_u32			(m_dwSpawnGroup);
@@ -188,7 +292,7 @@ void CALifeObject::STATE_Write				(NET_Packet &tNetPacket)
 	tNetPacket.w_u32			(m_tNodeID);
 }
 
-void CALifeObject::STATE_Read				(NET_Packet &tNetPacket, u16 size)
+void CSE_ALifeObject::STATE_Read				(NET_Packet &tNetPacket, u16 size)
 {
 	if (m_wVersion >= 1) {
 		tNetPacket.r_u8			(m_ucProbability);
@@ -210,17 +314,17 @@ void CALifeObject::STATE_Read				(NET_Packet &tNetPacket, u16 size)
 		tNetPacket.r_u32		(m_tNodeID);
 }
 
-void CALifeObject::UPDATE_Write				(NET_Packet &tNetPacket)
+void CSE_ALifeObject::UPDATE_Write				(NET_Packet &tNetPacket)
 {
 }
 
-void CALifeObject::UPDATE_Read				(NET_Packet &tNetPacket)
+void CSE_ALifeObject::UPDATE_Read				(NET_Packet &tNetPacket)
 {
 };
 
 #ifdef _EDITOR
 #include "PropertiesListHelper.h"
-void CALifeObject::FillProp					(LPCSTR pref, PropItemVec& items)
+void CSE_ALifeObject::FillProp					(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp			(pref, items);
 	PHelper.CreateU8			(items,	PHelper.PrepareKey(pref, "ALife\\Probability"),		&m_ucProbability,	0,100);
@@ -229,78 +333,78 @@ void CALifeObject::FillProp					(LPCSTR pref, PropItemVec& items)
 #endif
 
 ////////////////////////////////////////////////////////////////////////////
-// CALifeEventGroup
+// CSE_ALifeEventGroup
 ////////////////////////////////////////////////////////////////////////////
-void CALifeEventGroup::STATE_Write			(NET_Packet &tNetPacket)
+void CSE_ALifeEventGroup::STATE_Write			(NET_Packet &tNetPacket)
 {
 	inherited::STATE_Write		(tNetPacket);
 }
 
-void CALifeEventGroup::STATE_Read			(NET_Packet &tNetPacket, u16 size)
+void CSE_ALifeEventGroup::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 {
 	inherited::STATE_Read		(tNetPacket, size);
 }
 
-void CALifeEventGroup::UPDATE_Write			(NET_Packet &tNetPacket)
+void CSE_ALifeEventGroup::UPDATE_Write			(NET_Packet &tNetPacket)
 {
 	inherited::UPDATE_Write		(tNetPacket);
 	tNetPacket.w				(&m_wCountAfter,sizeof(m_wCountAfter));
 };
 
-void CALifeEventGroup::UPDATE_Read			(NET_Packet &tNetPacket)
+void CSE_ALifeEventGroup::UPDATE_Read			(NET_Packet &tNetPacket)
 {
 	inherited::UPDATE_Read		(tNetPacket);
 	tNetPacket.r				(&m_wCountAfter,sizeof(m_wCountAfter));
 };
 
 ////////////////////////////////////////////////////////////////////////////
-// CALifeDynamicObject
+// CSE_ALifeDynamicObject
 ////////////////////////////////////////////////////////////////////////////
-void CALifeDynamicObject::STATE_Write		(NET_Packet &tNetPacket)
+void CSE_ALifeDynamicObject::STATE_Write		(NET_Packet &tNetPacket)
 {
 	inherited::STATE_Write		(tNetPacket);
 }
 
-void CALifeDynamicObject::STATE_Read		(NET_Packet &tNetPacket, u16 size)
+void CSE_ALifeDynamicObject::STATE_Read		(NET_Packet &tNetPacket, u16 size)
 {
 	inherited::STATE_Read		(tNetPacket, size);
 }
 
-void CALifeDynamicObject::UPDATE_Write		(NET_Packet &tNetPacket)
+void CSE_ALifeDynamicObject::UPDATE_Write		(NET_Packet &tNetPacket)
 {
 	inherited::UPDATE_Write		(tNetPacket);
 };
 
-void CALifeDynamicObject::UPDATE_Read		(NET_Packet &tNetPacket)
+void CSE_ALifeDynamicObject::UPDATE_Read		(NET_Packet &tNetPacket)
 {
 	inherited::UPDATE_Read		(tNetPacket);
 };
 
 ////////////////////////////////////////////////////////////////////////////
-// CALifeDynamicObjectVisual
+// CSE_ALifeDynamicObjectVisual
 ////////////////////////////////////////////////////////////////////////////
-void CALifeDynamicObjectVisual::STATE_Write	(NET_Packet &tNetPacket)
+void CSE_ALifeDynamicObjectVisual::STATE_Write	(NET_Packet &tNetPacket)
 {
 	inherited1::STATE_Write		(tNetPacket);
 }
 
-void CALifeDynamicObjectVisual::STATE_Read	(NET_Packet &tNetPacket, u16 size)
+void CSE_ALifeDynamicObjectVisual::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 {
 	inherited1::STATE_Read		(tNetPacket, size);
 }
 
-void CALifeDynamicObjectVisual::UPDATE_Write(NET_Packet &tNetPacket)
+void CSE_ALifeDynamicObjectVisual::UPDATE_Write(NET_Packet &tNetPacket)
 {
 	inherited1::UPDATE_Write	(tNetPacket);
 };
 
-void CALifeDynamicObjectVisual::UPDATE_Read	(NET_Packet &tNetPacket)
+void CSE_ALifeDynamicObjectVisual::UPDATE_Read	(NET_Packet &tNetPacket)
 {
 	inherited1::UPDATE_Read		(tNetPacket);
 };
 
 #ifdef _EDITOR
-void CALifeDynamicObjectVisual::FillProp	(LPCSTR pref, PropItemVec& items)
+void CSE_ALifeDynamicObjectVisual::FillProp	(LPCSTR pref, PropItemVec& items)
 {
 	inherited1::FillProp		(pref,items);
 	inherited2::FillProp		(PHelper.PrepareKey(pref,s_name),values);
@@ -308,16 +412,16 @@ void CALifeDynamicObjectVisual::FillProp	(LPCSTR pref, PropItemVec& items)
 #endif
 
 ////////////////////////////////////////////////////////////////////////////
-// CALifeAnomalousZone
+// CSE_ALifeAnomalousZone
 ////////////////////////////////////////////////////////////////////////////
-CALifeAnomalousZone::CALifeAnomalousZone	(LPCSTR caSection) : CALifeDynamicObject(caSection), CAbstractServerObject(caSection)
+CSE_ALifeAnomalousZone::CSE_ALifeAnomalousZone	(LPCSTR caSection) : CSE_ALifeDynamicObject(caSection), CSE_Abstract(caSection)
 {
 	m_maxPower					= 100.f;
 	m_attn						= 1.f;
 	m_period					= 1000;
 }
 
-void CALifeAnomalousZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)	{
+void CSE_ALifeAnomalousZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)	{
 	// CForm
 	if (m_wVersion >= 15)
 		inherited1::STATE_Read	(tNetPacket,size);
@@ -327,7 +431,7 @@ void CALifeAnomalousZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)	{
 	tNetPacket.r_float			(m_attn);
 	tNetPacket.r_u32			(m_period);
 };
-void CALifeAnomalousZone::STATE_Write		(NET_Packet	&tNetPacket)				{
+void CSE_ALifeAnomalousZone::STATE_Write		(NET_Packet	&tNetPacket)				{
 	inherited1::STATE_Write		(tNetPacket);
 	// CForm
 	cform_write					(tNetPacket);
@@ -336,18 +440,18 @@ void CALifeAnomalousZone::STATE_Write		(NET_Packet	&tNetPacket)				{
 	tNetPacket.w_float			(m_attn);
 	tNetPacket.w_u32			(m_period);
 };
-void CALifeAnomalousZone::UPDATE_Read		(NET_Packet	&tNetPacket)
+void CSE_ALifeAnomalousZone::UPDATE_Read		(NET_Packet	&tNetPacket)
 {
 	inherited1::UPDATE_Read		(tNetPacket);
 }
 
-void CALifeAnomalousZone::UPDATE_Write		(NET_Packet	&tNetPacket)
+void CSE_ALifeAnomalousZone::UPDATE_Write		(NET_Packet	&tNetPacket)
 {
 	inherited1::UPDATE_Write	(tNetPacket);
 }
 
 #ifdef _EDITOR
-void CALifeAnomalousZone::FillProp			(LPCSTR pref, PropItemVec& items)
+void CSE_ALifeAnomalousZone::FillProp			(LPCSTR pref, PropItemVec& items)
 {
 	inherited1::FillProp		(pref,items);
 	inherited2::FillProp		(pref,items);
@@ -358,9 +462,9 @@ void CALifeAnomalousZone::FillProp			(LPCSTR pref, PropItemVec& items)
 #endif
 
 ////////////////////////////////////////////////////////////////////////////
-// CALifeObjectPhysic
+// CSE_ALifeObjectPhysic
 ////////////////////////////////////////////////////////////////////////////
-CALifeObjectPhysic::CALifeObjectPhysic		(LPCSTR caSection) : CALifeDynamicObjectVisual(caSection) , CAbstractServerObject(caSection)
+CSE_ALifeObjectPhysic::CSE_ALifeObjectPhysic		(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection) , CSE_Abstract(caSection)
 {
 	type 						= epotBox;
 	mass 						= 10.f;
@@ -369,11 +473,11 @@ CALifeObjectPhysic::CALifeObjectPhysic		(LPCSTR caSection) : CALifeDynamicObject
     	set_visual				(pSettings->r_string(caSection,"visual"));
 }
 
-CALifeObjectPhysic::~CALifeObjectPhysic		() 
+CSE_ALifeObjectPhysic::~CSE_ALifeObjectPhysic		() 
 {
 }
 
-void CALifeObjectPhysic::STATE_Read			(NET_Packet	&tNetPacket, u16 size) 
+void CSE_ALifeObjectPhysic::STATE_Read			(NET_Packet	&tNetPacket, u16 size) 
 {
 	if (m_wVersion >= 14)
 		if (m_wVersion >= 16) {
@@ -381,7 +485,7 @@ void CALifeObjectPhysic::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
 			visual_read			(tNetPacket);
 		}
 		else {
-			CALifeObject::STATE_Read(tNetPacket,size);
+			CSE_ALifeObject::STATE_Read(tNetPacket,size);
 			visual_read			(tNetPacket);
 		}
 	tNetPacket.r_u32			(type);
@@ -393,7 +497,7 @@ void CALifeObjectPhysic::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
 	strlwr						(fixed_bone);
 }
 
-void CALifeObjectPhysic::STATE_Write		(NET_Packet	&tNetPacket)
+void CSE_ALifeObjectPhysic::STATE_Write		(NET_Packet	&tNetPacket)
 {
 	inherited::STATE_Write		(tNetPacket);
 	visual_write				(tNetPacket);
@@ -402,12 +506,12 @@ void CALifeObjectPhysic::STATE_Write		(NET_Packet	&tNetPacket)
 	tNetPacket.w_string			(fixed_bone);
 }
 
-void CALifeObjectPhysic::UPDATE_Read		(NET_Packet	&tNetPacket)
+void CSE_ALifeObjectPhysic::UPDATE_Read		(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Read		(tNetPacket);
 }
 
-void CALifeObjectPhysic::UPDATE_Write		(NET_Packet	&tNetPacket)
+void CSE_ALifeObjectPhysic::UPDATE_Write		(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Write		(tNetPacket);
 }
@@ -421,7 +525,7 @@ xr_token po_types[]={
 	{ 0,				0				}
 };
 
-void CALifeObjectPhysic::FillProp			(LPCSTR pref, PropItemVec& values) {
+void CSE_ALifeObjectPhysic::FillProp			(LPCSTR pref, PropItemVec& values) {
 	inherited::FillProp			(pref,	 values);
 	PHelper.CreateToken			(values, PHelper.PrepareKey(pref,s_name,"Type"), &type,	po_types, 1);
 	PHelper.CreateFloat			(values, PHelper.PrepareKey(pref,s_name,"Mass"), &mass, 0.1f, 10000.f);
@@ -430,9 +534,9 @@ void CALifeObjectPhysic::FillProp			(LPCSTR pref, PropItemVec& values) {
 #endif
 
 ////////////////////////////////////////////////////////////////////////////
-// CALifeObjectHangingLamp
+// CSE_ALifeObjectHangingLamp
 ////////////////////////////////////////////////////////////////////////////
-CALifeObjectHangingLamp::CALifeObjectHangingLamp(LPCSTR caSection) : CALifeDynamicObjectVisual(caSection), CAbstractServerObject(caSection)
+CSE_ALifeObjectHangingLamp::CSE_ALifeObjectHangingLamp(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection)
 {
 	flags.set					(flPhysic,TRUE);
     mass						= 10.f;
@@ -446,11 +550,11 @@ CALifeObjectHangingLamp::CALifeObjectHangingLamp(LPCSTR caSection) : CALifeDynam
     spot_brightness				= 1.f;
 }
 
-CALifeObjectHangingLamp::~CALifeObjectHangingLamp()
+CSE_ALifeObjectHangingLamp::~CSE_ALifeObjectHangingLamp()
 {
 }
 
-void CALifeObjectHangingLamp::STATE_Read	(NET_Packet	&tNetPacket, u16 size)
+void CSE_ALifeObjectHangingLamp::STATE_Read	(NET_Packet	&tNetPacket, u16 size)
 {
 	if (m_wVersion > 20)
 		inherited::STATE_Read	(tNetPacket,size);
@@ -480,7 +584,7 @@ void CALifeObjectHangingLamp::STATE_Read	(NET_Packet	&tNetPacket, u16 size)
 	strlwr						(spot_bone);
 }
 
-void CALifeObjectHangingLamp::STATE_Write	(NET_Packet	&tNetPacket)
+void CSE_ALifeObjectHangingLamp::STATE_Write	(NET_Packet	&tNetPacket)
 {
 	inherited::STATE_Write		(tNetPacket);
 	visual_write				(tNetPacket);
@@ -497,23 +601,23 @@ void CALifeObjectHangingLamp::STATE_Write	(NET_Packet	&tNetPacket)
 	tNetPacket.w_string			(startup_animation);
 }
 
-void CALifeObjectHangingLamp::UPDATE_Read	(NET_Packet	&tNetPacket)
+void CSE_ALifeObjectHangingLamp::UPDATE_Read	(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Read		(tNetPacket);
 }
 
-void CALifeObjectHangingLamp::UPDATE_Write	(NET_Packet	&tNetPacket)
+void CSE_ALifeObjectHangingLamp::UPDATE_Write	(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Write		(tNetPacket);
 }
 
 #ifdef _EDITOR
-void __fastcall	CALifeObjectHangingLamp::OnChangeAnim(PropValue* sender)
+void __fastcall	CSE_ALifeObjectHangingLamp::OnChangeAnim(PropValue* sender)
 {
 	PlayAnimation				(startup_animation);
 }
 
-void CALifeObjectHangingLamp::FillProp		(LPCSTR pref, PropItemVec& values)
+void CSE_ALifeObjectHangingLamp::FillProp		(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProp			(pref,values);
 	PHelper.CreateColor			(values, PHelper.PrepareKey(pref,s_name,"Color"),			&color);

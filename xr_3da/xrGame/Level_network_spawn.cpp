@@ -5,7 +5,7 @@
 void CLevel::g_cl_Spawn		(LPCSTR name, u8 rp, u16 flags)
 {
 	// Create
-	CAbstractServerObject*		E	= F_entity_Create(name);
+	CSE_Abstract*		E	= F_entity_Create(name);
 	R_ASSERT			(E);
 
 	// Fill
@@ -28,7 +28,7 @@ void CLevel::g_cl_Spawn		(LPCSTR name, u8 rp, u16 flags)
 	F_entity_Destroy	(E);
 }
 
-void CLevel::g_sv_Spawn		(CAbstractServerObject* E)
+void CLevel::g_sv_Spawn		(CSE_Abstract* E)
 {
 	CTimer		T;
 

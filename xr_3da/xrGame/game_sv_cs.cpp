@@ -37,11 +37,11 @@ void game_sv_CS::SavePlayerWeapon(u32 it, CMemoryWriter &store) {
 	u32 l_chunk = 0;
 	NET_Packet l_packet;
 	CMemoryWriter &l_mem = store;
-	CALifeCreatureActor *l_pActor = dynamic_cast<CALifeCreatureActor*>(l_pServer->ID_to_entity(get_id_2_eid(get_it_2_id(it))));
+	CSE_ALifeCreatureActor *l_pActor = dynamic_cast<CSE_ALifeCreatureActor*>(l_pServer->ID_to_entity(get_id_2_eid(get_it_2_id(it))));
 	if(!l_pActor) return;
 	xr_vector<u16>* l_pCilds = get_children(get_it_2_id(it));
 	for(u32 cit = 0; cit < l_pCilds->size(); cit++) {
-		CALifeItemWeapon *l_pWeapon = dynamic_cast<CALifeItemWeapon*>(l_pServer->ID_to_entity((*l_pCilds)[cit]));
+		CSE_ALifeItemWeapon *l_pWeapon = dynamic_cast<CSE_ALifeItemWeapon*>(l_pServer->ID_to_entity((*l_pCilds)[cit]));
 		if(!l_pWeapon) continue;
 		//l_pWeapon->flags
 		u16 id_save = l_pWeapon->ID;			// save wpn entity ID 
@@ -61,9 +61,9 @@ void game_sv_CS::SaveDefaultWeapon(CMemoryWriter &store) {		//@@@ WT: Ёто надо п
 		u32 prim_ammo = ini->r_s32("cs_start_Arms","primary_ammo");
 		LPCSTR pistol = ini->r_string("cs_start_Arms","pistol");
 		u32 pistol_ammo = ini->r_s32("cs_start_Arms","pistol_ammo");
-		CALifeItemWeapon *W_prim = 0, *W_pistol = 0;
+		CSE_ALifeItemWeapon *W_prim = 0, *W_pistol = 0;
 		if(prim) {
-			W_prim = dynamic_cast<CALifeItemWeapon*>(spawn_begin(prim));
+			W_prim = dynamic_cast<CSE_ALifeItemWeapon*>(spawn_begin(prim));
 			if(W_prim) {
 				strcpy(W_prim->s_name_replace,prim);
 				W_prim->s_flags.set(M_SPAWN_OBJECT_ACTIVE|M_SPAWN_OBJECT_LOCAL);
@@ -75,7 +75,7 @@ void game_sv_CS::SaveDefaultWeapon(CMemoryWriter &store) {		//@@@ WT: Ёто надо п
 			}
 		}
 		if(pistol) {
-			W_pistol = dynamic_cast<CALifeItemWeapon*>(spawn_begin(pistol));
+			W_pistol = dynamic_cast<CSE_ALifeItemWeapon*>(spawn_begin(pistol));
 			if(W_pistol) {
 				strcpy(W_pistol->s_name_replace,pistol);
 				W_pistol->s_flags.set(M_SPAWN_OBJECT_ACTIVE|M_SPAWN_OBJECT_LOCAL);
@@ -106,8 +106,8 @@ void game_sv_CS::SaveDefaultWeapon(CMemoryWriter &store) {		//@@@ WT: Ёто надо п
 		//////////////////////////////////////////////////////////////////////////
 		// конец полного јЅ«ј÷ј (ƒима)
 		//////////////////////////////////////////////////////////////////////////
-		CAbstractServerObject *A;
-		if(W_prim) F_entity_Destroy(/*A = */*(CAbstractServerObject**)&W_prim);
+		CSE_Abstract *A;
+		if(W_prim) F_entity_Destroy(/*A = */*(CSE_Abstract**)&W_prim);
 		if(W_pistol) F_entity_Destroy(A = W_pistol);
 	}
 }
@@ -117,8 +117,8 @@ void game_sv_CS::SpawnArtifacts() {
 	srand				( (unsigned)time( NULL ) );
 	std::random_shuffle	( rp.begin( ), rp.end( ) );
 	for(s32 i = 0; i < 3; i++) {
-		CAbstractServerObject*		E	=	spawn_begin	("m_target_cs");								// create SE
-		CServerObjectTarget_CS*	A		=	(CServerObjectTarget_CS*) E;					
+		CSE_Abstract*		E	=	spawn_begin	("m_target_cs");								// create SE
+		CSE_Target_CS*	A		=	(CSE_Target_CS*) E;					
 		A->s_flags.set			(M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL);				// flags
 		RPoint&				r	= rp[i];
 		A->o_Position.set	(r.P);
@@ -131,13 +131,13 @@ void game_sv_CS::SpawnPlayer(u32 it, CMemoryWriter &weapon) {
 	game_PlayerState *l_pPS = get_it(it);
 
 	LPCSTR	options = get_name_it(it);
-	CAbstractServerObject *E;
+	CSE_Abstract *E;
 	if(l_pPS->flags&GAME_PLAYER_FLAG_CS_SPECTATOR) {
 		l_pPS->flags |= GAME_PLAYER_FLAG_VERY_VERY_DEAD;
 		E = spawn_begin("spectator");
 	} else {
 		E = spawn_begin("actor"/*l_pPS->team?"actor_cs_2":"actor_cs_1"*/);
-		CALifeCreatureActor *A = dynamic_cast<CALifeCreatureActor*>(E);					
+		CSE_ALifeCreatureActor *A = dynamic_cast<CSE_ALifeCreatureActor*>(E);					
 		A->s_team = u8(l_pPS->team);
 	}
 	strcpy(E->s_name_replace,get_option_s(options,"name","Player"));
@@ -226,7 +226,7 @@ void game_sv_CS::OnRoundStart() {
 //			CMemoryWriter &l_mem = l_memAr[it];
 //			xr_vector<u16>* l_pCilds = get_children(get_it_2_id(it));
 //			for(u32 cit = 0; cit < l_pCilds->size(); cit++) {
-//				CALifeItemWeapon *l_pWeapon = dynamic_cast<CALifeItemWeapon*>(l_pServer->ID_to_entity((*l_pCilds)[cit]));
+//				CSE_ALifeItemWeapon *l_pWeapon = dynamic_cast<CSE_ALifeItemWeapon*>(l_pServer->ID_to_entity((*l_pCilds)[cit]));
 //				if(!l_pWeapon) continue;
 //				u16 id_save = l_pWeapon->ID;			// save wpn entity ID 
 //				l_pWeapon->ID = 0xffff;					// set 0xffff to get _new gen ID
@@ -244,9 +244,9 @@ void game_sv_CS::OnRoundStart() {
 //			u32 prim_ammo = ini->r_s32("cs_start_Arms","primary_ammo");
 //			LPCSTR pistol = ini->r_string("cs_start_Arms","pistol");
 //			u32 pistol_ammo = ini->r_s32("cs_start_Arms","pistol_ammo");
-//			CALifeItemWeapon *W_prim = 0, *W_pistol = 0;
+//			CSE_ALifeItemWeapon *W_prim = 0, *W_pistol = 0;
 //			if(prim) {
-//				W_prim = dynamic_cast<CALifeItemWeapon*>(spawn_begin(prim));
+//				W_prim = dynamic_cast<CSE_ALifeItemWeapon*>(spawn_begin(prim));
 //				if(W_prim) {
 //					strcpy(W_prim->s_name_replace,prim);
 //					W_prim->s_flags = M_SPAWN_OBJECT_ACTIVE|M_SPAWN_OBJECT_LOCAL;
@@ -257,7 +257,7 @@ void game_sv_CS::OnRoundStart() {
 //				}
 //			}
 //			if(pistol) {
-//				W_pistol = dynamic_cast<CALifeItemWeapon*>(spawn_begin(pistol));
+//				W_pistol = dynamic_cast<CSE_ALifeItemWeapon*>(spawn_begin(pistol));
 //				if(W_pistol) {
 //					strcpy(W_pistol->s_name_replace,pistol);
 //					W_pistol->s_flags = M_SPAWN_OBJECT_ACTIVE|M_SPAWN_OBJECT_LOCAL;
@@ -321,8 +321,8 @@ void game_sv_CS::OnRoundStart() {
 //	srand				( (unsigned)time( NULL ) );
 //	random_shuffle		( rp.begin( ), rp.end( ) );
 //	for(s32 i = 0; i < 3; i++) {
-//		CAbstractServerObject*		E	=	spawn_begin	("m_target_cs");									// create SE
-//		CServerObjectTarget_CS*	A		=	(CServerObjectTarget_CS*) E;					
+//		CSE_Abstract*		E	=	spawn_begin	("m_target_cs");									// create SE
+//		CSE_Target_CS*	A		=	(CSE_Target_CS*) E;					
 //		A->s_flags				=	M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL;				// flags
 //		RPoint&				r	= rp[i];
 //		A->o_Position.set	(r.P);
@@ -341,8 +341,8 @@ void game_sv_CS::OnRoundStart() {
 //
 //		// spawn
 //		LPCSTR	options			=	get_name_it	(it);
-//		CAbstractServerObject*		E	=	spawn_begin	(ps->team==2?"spectator":(ps->team?"actor_cs_2":"actor_cs_1"));						// create SE
-//		CALifeCreatureActor*	A			=	(CALifeCreatureActor*) E;					
+//		CSE_Abstract*		E	=	spawn_begin	(ps->team==2?"spectator":(ps->team?"actor_cs_2":"actor_cs_1"));						// create SE
+//		CSE_ALifeCreatureActor*	A			=	(CSE_ALifeCreatureActor*) E;					
 //		strcpy					(A->s_name_replace,get_option_s(options,"name","Player"));					// name
 //		A->s_team				=	u8(ps->team);															// team
 //		A->s_flags				=	M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER;// flags
@@ -441,13 +441,13 @@ void	game_sv_CS::OnPlayerKillPlayer	(u32 id_killer, u32 id_killed)
 	{
 		u16		eid						= (*C)[0];
 
-		CAbstractServerObject*		from		= S->ID_to_entity(get_id_2_eid(id_killed));
-		CAbstractServerObject*		what		= S->ID_to_entity(eid);
+		CSE_Abstract*		from		= S->ID_to_entity(get_id_2_eid(id_killed));
+		CSE_Abstract*		what		= S->ID_to_entity(eid);
 		S->Perform_reject				(what,from);
 	}
 
 	// spectator
-	CServerObjectSpectator*		A			=	(CServerObjectSpectator*)spawn_begin	("spectator");															// create SE
+	CSE_Spectator*		A			=	(CSE_Spectator*)spawn_begin	("spectator");															// create SE
 	strcpy							(A->s_name_replace,get_option_s(get_name_id(id_killed),"name","Player"));					// name
 	A->s_flags.set					(M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);					// flags
 	A->o_Position					=	S->ID_to_entity(get_id_2_eid(id_killed))->o_Position;
@@ -467,8 +467,8 @@ void	game_sv_CS::OnPlayerDisconnect	(u32 id_who)
 	{
 		u16		eid						= (*C)[0];
 
-		CAbstractServerObject*		from		= S->ID_to_entity(get_id_2_eid(id_who));
-		CAbstractServerObject*		what		= S->ID_to_entity(eid);
+		CSE_Abstract*		from		= S->ID_to_entity(get_id_2_eid(id_who));
+		CSE_Abstract*		what		= S->ID_to_entity(eid);
 		S->Perform_reject				(what,from);
 	}
 }
@@ -485,10 +485,10 @@ void	game_sv_CS::OnTimelimitExceed	()
 BOOL	game_sv_CS::OnTouch			(u16 eid_who, u16 eid_what)
 {
 	xrServer*			S		= Level().Server;
-	CAbstractServerObject*		e_who	= S->ID_to_entity(eid_who);		VERIFY(e_who	);
-	CAbstractServerObject*		e_what	= S->ID_to_entity(eid_what);	VERIFY(e_what	);
+	CSE_Abstract*		e_who	= S->ID_to_entity(eid_who);		VERIFY(e_who	);
+	CSE_Abstract*		e_what	= S->ID_to_entity(eid_what);	VERIFY(e_what	);
 
-	CALifeCreatureActor*			A		= dynamic_cast<CALifeCreatureActor*> (e_who);
+	CSE_ALifeCreatureActor*			A		= dynamic_cast<CSE_ALifeCreatureActor*> (e_who);
 	if (A) 	{
 		// player_id = entity->owner->ID			-- 
 		// entity->owner->owner == entity			-- is this entity player
@@ -498,7 +498,7 @@ BOOL	game_sv_CS::OnTouch			(u16 eid_who, u16 eid_what)
 		if(ps_who->flags&GAME_PLAYER_FLAG_VERY_VERY_DEAD) return false;
 
 		// Actor touches something
-		CALifeItemWeapon*	W			=	dynamic_cast<CALifeItemWeapon*> (e_what);
+		CSE_ALifeItemWeapon*	W			=	dynamic_cast<CSE_ALifeItemWeapon*> (e_what);
 		if (W) 
 		{
 			// Weapon
@@ -506,9 +506,9 @@ BOOL	game_sv_CS::OnTouch			(u16 eid_who, u16 eid_what)
 			//u8 slot						=	W->get_slot	();
 			for (u32 it=0; it<C.size(); it++)
 			{
-				CAbstractServerObject*		Et	= S->ID_to_entity				(C[it]);
+				CSE_Abstract*		Et	= S->ID_to_entity				(C[it]);
 				if (0==Et)				continue;
-				CALifeItemWeapon*		T	= dynamic_cast<CALifeItemWeapon*>	(Et);
+				CSE_ALifeItemWeapon*		T	= dynamic_cast<CSE_ALifeItemWeapon*>	(Et);
 				if (0==T)				continue;
 				//if (slot == T->get_slot())	
 				//{
@@ -521,7 +521,7 @@ BOOL	game_sv_CS::OnTouch			(u16 eid_who, u16 eid_what)
 			return TRUE;
 		}
 
-		CServerObjectTarget_CS_Base *l_pCSBase	=	dynamic_cast<CServerObjectTarget_CS_Base*>(e_what);
+		CSE_Target_CS_Base *l_pCSBase	=	dynamic_cast<CSE_Target_CS_Base*>(e_what);
 		if(l_pCSBase) {
 			// Ѕаза
 			if(ps_who->team == -1) ps_who->team = l_pCSBase->g_team(); // @@@ WT : ѕока не сделан респавн
@@ -531,7 +531,7 @@ BOOL	game_sv_CS::OnTouch			(u16 eid_who, u16 eid_what)
 			return false;
 		}
 
-		CServerObjectTarget_CS *l_pMBall =  dynamic_cast<CServerObjectTarget_CS*>(e_what);
+		CSE_Target_CS *l_pMBall =  dynamic_cast<CSE_Target_CS*>(e_what);
 		if(l_pMBall) {
 			// ћ€ч
 			if(ps_who->flags&GAME_PLAYER_FLAG_CS_HAS_ARTEFACT)		return false;
@@ -539,7 +539,7 @@ BOOL	game_sv_CS::OnTouch			(u16 eid_who, u16 eid_what)
 			return true;
 		}
 
-		CServerObjectTarget_CS_Cask *l_pCSCask =  dynamic_cast<CServerObjectTarget_CS_Cask*>(e_what);
+		CSE_Target_CS_Cask *l_pCSCask =  dynamic_cast<CSE_Target_CS_Cask*>(e_what);
 		if(l_pCSCask) {
 			// Ѕочка
 			// ≈сли игрок на своей базе и у него есть м€ч
@@ -547,7 +547,7 @@ BOOL	game_sv_CS::OnTouch			(u16 eid_who, u16 eid_what)
 				l_pMBall = NULL;									// ќтбираем у игрока м€ч
 				xr_vector<u16>&	C			=	A->children;
 				for (u32 it=0; it<C.size(); it++) {
-					l_pMBall = dynamic_cast<CServerObjectTarget_CS*>(S->ID_to_entity(C[it]));
+					l_pMBall = dynamic_cast<CSE_Target_CS*>(S->ID_to_entity(C[it]));
 					if (l_pMBall) break;
 				}
 				R_ASSERT(l_pMBall);
@@ -571,7 +571,7 @@ BOOL	game_sv_CS::OnTouch			(u16 eid_who, u16 eid_what)
 				l_pMBall = NULL;									// ƒостаем м€ч из бочки
 				xr_vector<u16>&	C			=	l_pCSCask->children;
 				for (u32 it=0; it<C.size(); it++) {
-					l_pMBall = dynamic_cast<CServerObjectTarget_CS*>(S->ID_to_entity(C[it]));
+					l_pMBall = dynamic_cast<CSE_Target_CS*>(S->ID_to_entity(C[it]));
 					if(l_pMBall) break;
 				}
 				if (l_pMBall){
@@ -592,15 +592,15 @@ BOOL	game_sv_CS::OnTouch			(u16 eid_who, u16 eid_what)
 BOOL	game_sv_CS::OnDetach		(u16 eid_who, u16 eid_what)
 {
 	xrServer*			S		= Level().Server;
-	CAbstractServerObject*		e_who	= S->ID_to_entity(eid_who);		VERIFY(e_who	);
-	CAbstractServerObject*		e_what	= S->ID_to_entity(eid_what);	VERIFY(e_what	);
+	CSE_Abstract*		e_who	= S->ID_to_entity(eid_who);		VERIFY(e_who	);
+	CSE_Abstract*		e_what	= S->ID_to_entity(eid_what);	VERIFY(e_what	);
 
-	CALifeCreatureActor*			A		= dynamic_cast<CALifeCreatureActor*> (e_who);
+	CSE_ALifeCreatureActor*			A		= dynamic_cast<CSE_ALifeCreatureActor*> (e_who);
 	if (A) 	{
 		game_PlayerState*	ps_who	=	get_id			(e_who->owner->ID);
 
 
-		CServerObjectTarget_CS *l_pMBall =  dynamic_cast<CServerObjectTarget_CS*>(e_what);
+		CSE_Target_CS *l_pMBall =  dynamic_cast<CSE_Target_CS*>(e_what);
 		if(l_pMBall) {
 			// ћ€ч
 			if(ps_who->flags&GAME_PLAYER_FLAG_CS_HAS_ARTEFACT)	{
@@ -610,7 +610,7 @@ BOOL	game_sv_CS::OnDetach		(u16 eid_who, u16 eid_what)
 			return false;
 		}
 
-		CServerObjectTarget_CS_Base *l_pCSBase	=	dynamic_cast<CServerObjectTarget_CS_Base*>(e_what);
+		CSE_Target_CS_Base *l_pCSBase	=	dynamic_cast<CSE_Target_CS_Base*>(e_what);
 		if(l_pCSBase) {
 			if(l_pCSBase->s_team == ps_who->team) {				// ≈сли игрок пришел на свою базу
 				ps_who->flags &= ~GAME_PLAYER_FLAG_CS_ON_BASE;
@@ -618,7 +618,7 @@ BOOL	game_sv_CS::OnDetach		(u16 eid_who, u16 eid_what)
 			return false;
 		}
 
-		CServerObjectTarget_CS_Cask *l_pCSCask =  dynamic_cast<CServerObjectTarget_CS_Cask*>(e_what);
+		CSE_Target_CS_Cask *l_pCSCask =  dynamic_cast<CSE_Target_CS_Cask*>(e_what);
 		if(l_pCSCask) return false;
 	}
 	return TRUE;
@@ -699,7 +699,7 @@ void game_sv_CS::OnPlayerConnect	(u32 id_who)
 	ps_who->deaths				=	0;
 
 	// Spawn "actor"
-	CServerObjectSpectator*		A	=	(CServerObjectSpectator*)spawn_begin	("spectator");															// create SE
+	CSE_Spectator*		A	=	(CSE_Spectator*)spawn_begin	("spectator");															// create SE
 	strcpy					(A->s_name_replace,get_option_s(options,"name","Player"));					// name
 	A->s_flags.set			(M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);	// flags
 	assign_RP				(A);
@@ -713,9 +713,9 @@ void game_sv_CS::OnPlayerConnect	(u32 id_who)
 		u32 prim_ammo = ini->r_s32("cs_start_Arms","primary_ammo");
 		LPCSTR pistol = ini->r_string("cs_start_Arms","pistol");
 		u32 pistol_ammo = ini->r_s32("cs_start_Arms","pistol_ammo");
-		CALifeItemWeapon *W_prim = 0, *W_pistol = 0;
+		CSE_ALifeItemWeapon *W_prim = 0, *W_pistol = 0;
 		if(prim) {
-			W_prim = dynamic_cast<CALifeItemWeapon*>(spawn_begin(prim));
+			W_prim = dynamic_cast<CSE_ALifeItemWeapon*>(spawn_begin(prim));
 			if(W_prim) {
 				strcpy(W_prim->s_name_replace,prim);
 				W_prim->s_flags = M_SPAWN_OBJECT_ACTIVE|M_SPAWN_OBJECT_LOCAL;
@@ -731,7 +731,7 @@ void game_sv_CS::OnPlayerConnect	(u32 id_who)
 			}
 		}
 		if(pistol) {
-			W_pistol = dynamic_cast<CALifeItemWeapon*>(spawn_begin(pistol));
+			W_pistol = dynamic_cast<CSE_ALifeItemWeapon*>(spawn_begin(pistol));
 			if(W_pistol) {
 				strcpy(W_pistol->s_name_replace,pistol);
 				W_pistol->s_flags = M_SPAWN_OBJECT_ACTIVE|M_SPAWN_OBJECT_LOCAL;
@@ -768,16 +768,16 @@ void game_sv_CS::OnPlayerBuy		(u32 id_who, u16 eid_who, LPCSTR what)
 		if (0==C)				return;
 		for (u32 it=0; it<C->size(); it++)
 		{
-			CAbstractServerObject*		Et	= S->ID_to_entity				((*C)[it]);
+			CSE_Abstract*		Et	= S->ID_to_entity				((*C)[it]);
 			if (0==Et)				continue;
-			CALifeItemWeapon*		T	= dynamic_cast<CALifeItemWeapon*>	(Et);
+			CSE_ALifeItemWeapon*		T	= dynamic_cast<CSE_ALifeItemWeapon*>	(Et);
 			if (0==T)				continue;
 //			if (true || slot == T->get_slot())	
 			{
 				// We've found this slot - buy something :) |  491 05 36 - Andy
 
 				// TO: VITYA: I didn't bother to check all conditions, money, etc. Sorry :)))
-				CALifeItemWeapon*		W	= T;
+				CSE_ALifeItemWeapon*		W	= T;
 				u16		a_limit			= W->get_ammo_limit		();
 				u16		a_total			= W->get_ammo_total		();
 				u16		a_magsize		= W->get_ammo_magsize	();
@@ -808,13 +808,13 @@ void game_sv_CS::OnPlayerBuy		(u32 id_who, u16 eid_who, LPCSTR what)
 		if ( strchr(name,'/') )	*strchr(name,'/') = 0;
 
 		// initialize spawn
-		CAbstractServerObject*		E	=	spawn_begin	(name);														// create SE
+		CSE_Abstract*		E	=	spawn_begin	(name);														// create SE
 		strcpy					(E->s_name_replace,name);													// name
 		E->s_flags.set			(M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL);							// flags
 		E->ID_Parent			=	u16(eid_who);
 
 		// check if has same-slot-weapon(s)
-		CALifeItemWeapon*		W	=	dynamic_cast<CALifeItemWeapon*>(E);
+		CSE_ALifeItemWeapon*		W	=	dynamic_cast<CSE_ALifeItemWeapon*>(E);
 		W->state = 4;
 		if (W)
 		{
@@ -828,9 +828,9 @@ void game_sv_CS::OnPlayerBuy		(u32 id_who, u16 eid_who, LPCSTR what)
 			//u8 slot					=	W->get_slot	();
 			for (u32 it=0; it<C->size(); it++)
 			{
-				CAbstractServerObject*		Et	= S->ID_to_entity				((*C)[it]);
+				CSE_Abstract*		Et	= S->ID_to_entity				((*C)[it]);
 				if (0==Et)				continue;
-				CALifeItemWeapon*		T	= dynamic_cast<CALifeItemWeapon*>	(Et);
+				CSE_ALifeItemWeapon*		T	= dynamic_cast<CSE_ALifeItemWeapon*>	(Et);
 				if (0==T)				continue;
 				//if (slot == T->get_slot())	
 				//{

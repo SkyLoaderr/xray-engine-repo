@@ -21,23 +21,23 @@
 //------------------------------------------------------------------------------
 // Version history
 //------------------------------------------------------------------------------
-// 10 - CALifeObjectPhysic append 	'fixed_bone'
-// 11 - CALifeObjectHangingLamp append 	'spot_brightness'
-// 12 - CALifeObjectHangingLamp append 	'flags'
-// 13 - CALifeObjectHangingLamp append 	'mass'
-// 14 - CALifeObjectPhysic append 	inherited from CALifeObject
-// 15 - CALifeAnomalousZone append 			inherited calls from CALifeDynamicObject
-// 16 - CALifeObjectPhysic append 	inherited from CALifeDynamicObject
-// 17 - xrSE_...		  append 	inherited from CServerObjectVisual for smart Level Editor
-// 18 - CALifeObjectHangingLamp  append 	'startup_animation'
+// 10 - CSE_ALifeObjectPhysic append 	'fixed_bone'
+// 11 - CSE_ALifeObjectHangingLamp append 	'spot_brightness'
+// 12 - CSE_ALifeObjectHangingLamp append 	'flags'
+// 13 - CSE_ALifeObjectHangingLamp append 	'mass'
+// 14 - CSE_ALifeObjectPhysic append 	inherited from CSE_ALifeObject
+// 15 - CSE_ALifeAnomalousZone append 			inherited calls from CSE_ALifeDynamicObject
+// 16 - CSE_ALifeObjectPhysic append 	inherited from CSE_ALifeDynamicObject
+// 17 - xrSE_...		  append 	inherited from CSE_Visual for smart Level Editor
+// 18 - CSE_ALifeObjectHangingLamp  append 	'startup_animation'
 // 19 - xrSE_Teamed		  didn't save health parameter
-// 20 - CALife...		  saving vectors in UPDATE_Read/UPDATE_Write changed to STATE_Read/STATE_Write
+// 20 - CSE_ALife...		  saving vectors in UPDATE_Read/UPDATE_Write changed to STATE_Read/STATE_Write
 // 21 - Global class hierarchy update
 //------------------------------------------------------------------------------
 
 class xrClientData;
 
-class CAbstractServerObject : public IPureServerObject {
+class CSE_Abstract : public IPureServerObject {
 public:
 	BOOL							net_Ready;
 	BOOL							net_Processed;	// Internal flag for connectivity-graph
@@ -65,7 +65,7 @@ public:
 	// for ALife control
 	bool							m_bALifeControl;
 
-									CAbstractServerObject(LPCSTR caSection)
+									CSE_Abstract(LPCSTR caSection)
 	{
 		RespawnTime					= 0;
 		net_Ready					= FALSE;
@@ -84,7 +84,7 @@ public:
 		m_wVersion					= 0;
 	}
 	
-	virtual							~CAbstractServerObject()
+	virtual							~CSE_Abstract()
 	{
 	}
 	
@@ -98,7 +98,7 @@ public:
 #endif
 };
 
-class CServerObjectShape
+class CSE_Shape
 {
 public:
 	enum{
@@ -122,7 +122,7 @@ public:
 	void							cform_write			(NET_Packet& P);
 };
 
-class CServerObjectVisual
+class CSE_Visual
 {
 	string64						visual_name;
 public:
@@ -133,7 +133,7 @@ public:
     void 							PlayAnimation		(LPCSTR name);
 #endif
 public:
-									CServerObjectVisual		(LPCSTR name=0)
+									CSE_Visual		(LPCSTR name=0)
     {
     	strcpy						(visual_name,name?name:"");
 #ifdef _EDITOR
@@ -153,15 +153,7 @@ public:
 #endif
 };
 
-SERVER_OBJECT_DECLARE_BEGIN(CALifeGraphPoint,CAbstractServerObject)
-public:
-	string32						m_caConnectionPointName;
-	u32								m_tLevelID;
-	u8								m_tLocations[LOCATION_TYPE_COUNT];
-									CALifeGraphPoint(LPCSTR caSection);
-SERVER_OBJECT_DECLARE_END
-
-SERVER_OBJECT_DECLARE_BEGIN(CServerObjectDummy,CAbstractServerObject)
+SERVER_ENTITY_DECLARE_BEGIN(CSE_Dummy,CSE_Abstract)
 	enum SStyle{
 		esAnimated					=	1<<0,	
 		esModel						=	1<<1, 
@@ -174,52 +166,52 @@ SERVER_OBJECT_DECLARE_BEGIN(CServerObjectDummy,CAbstractServerObject)
 	char*							s_Model;
 	char*							s_Particles;
 	char*							s_Sound;
-									CServerObjectDummy		(LPCSTR caSection);
-    virtual							~CServerObjectDummy		();
-SERVER_OBJECT_DECLARE_END
+									CSE_Dummy		(LPCSTR caSection);
+    virtual							~CSE_Dummy		();
+SERVER_ENTITY_DECLARE_END
 
-SERVER_OBJECT_DECLARE_BEGIN(CServerObjectSpectator,CAbstractServerObject)
-									CServerObjectSpectator	(LPCSTR caSection) : CAbstractServerObject(caSection)
+SERVER_ENTITY_DECLARE_BEGIN(CSE_Spectator,CSE_Abstract)
+									CSE_Spectator	(LPCSTR caSection) : CSE_Abstract(caSection)
 	{
 	};
 	
 	virtual u8						g_team() {return 0;};
-SERVER_OBJECT_DECLARE_END
+SERVER_ENTITY_DECLARE_END
 
-SERVER_OBJECT_DECLARE_BEGIN(CServerObjectTarget,CAbstractServerObject)
-									CServerObjectTarget		(LPCSTR caSection) : CAbstractServerObject(caSection)
+SERVER_ENTITY_DECLARE_BEGIN(CSE_Target,CSE_Abstract)
+									CSE_Target		(LPCSTR caSection) : CSE_Abstract(caSection)
 	{
 	};
-SERVER_OBJECT_DECLARE_END
+SERVER_ENTITY_DECLARE_END
 
-SERVER_OBJECT_DECLARE_BEGIN(CServerObjectTargetAssault,CServerObjectTarget)
-									CServerObjectTargetAssault(LPCSTR caSection) : CServerObjectTarget(caSection)
+SERVER_ENTITY_DECLARE_BEGIN(CSE_TargetAssault,CSE_Target)
+									CSE_TargetAssault(LPCSTR caSection) : CSE_Target(caSection)
 	{
 	};
-SERVER_OBJECT_DECLARE_END
+SERVER_ENTITY_DECLARE_END
 
-SERVER_OBJECT_DECLARE_BEGIN(CServerObjectTarget_CS_Base,CServerObjectTarget)
+SERVER_ENTITY_DECLARE_BEGIN(CSE_Target_CS_Base,CSE_Target)
 	float							radius;
 	u8								s_team;
 	virtual u8						g_team() {return s_team;};
-									CServerObjectTarget_CS_Base(LPCSTR caSection);
-SERVER_OBJECT_DECLARE_END
+									CSE_Target_CS_Base(LPCSTR caSection);
+SERVER_ENTITY_DECLARE_END
 
-SERVER_OBJECT_DECLARE_BEGIN(CServerObjectTarget_CS_Cask,CServerObjectTarget)
+SERVER_ENTITY_DECLARE_BEGIN(CSE_Target_CS_Cask,CSE_Target)
 	string64						s_Model;
-									CServerObjectTarget_CS_Cask(LPCSTR caSection);
-SERVER_OBJECT_DECLARE_END
+									CSE_Target_CS_Cask(LPCSTR caSection);
+SERVER_ENTITY_DECLARE_END
 
-SERVER_OBJECT_DECLARE_BEGIN(CServerObjectTarget_CS,CServerObjectTarget)
+SERVER_ENTITY_DECLARE_BEGIN(CSE_Target_CS,CSE_Target)
 	string64						s_Model;
-									CServerObjectTarget_CS	(LPCSTR caSection);
-SERVER_OBJECT_DECLARE_END
+									CSE_Target_CS	(LPCSTR caSection);
+SERVER_ENTITY_DECLARE_END
 
-SERVER_OBJECT_DECLARE_BEGIN(CServerObjectTemporary,CAbstractServerObject)
-									CServerObjectTemporary(LPCSTR caSection);
-SERVER_OBJECT_DECLARE_END
+SERVER_ENTITY_DECLARE_BEGIN(CSE_Temporary,CSE_Abstract)
+									CSE_Temporary(LPCSTR caSection);
+SERVER_ENTITY_DECLARE_END
 
-SERVER_OBJECT_DECLARE_BEGIN2(CServerObjectEvent,CServerObjectShape,CAbstractServerObject)
+SERVER_ENTITY_DECLARE_BEGIN2(CSE_Event,CSE_Shape,CSE_Abstract)
 	struct tAction
 	{
 		u8		type;
@@ -236,11 +228,11 @@ SERVER_OBJECT_DECLARE_BEGIN2(CServerObjectEvent,CServerObjectShape,CAbstractServ
 		Actions.clear				();
 	}
 							
-									CServerObjectEvent	(LPCSTR caSection) : CServerObjectShape(), CAbstractServerObject(caSection)
+									CSE_Event	(LPCSTR caSection) : CSE_Shape(), CSE_Abstract(caSection)
 	{
 	};
-SERVER_OBJECT_DECLARE_END
+SERVER_ENTITY_DECLARE_END
 
-extern CAbstractServerObject		*F_entity_Create	(LPCSTR caSection);
+extern CSE_Abstract		*F_entity_Create	(LPCSTR caSection);
 
 #endif

@@ -15,7 +15,7 @@ void xrServer::Process_update(NET_Packet& P, DPNID sender)
 
 		P.r_u16			(ID);
 		P.r_u8			(size);
-		CAbstractServerObject* E	= ID_to_entity(ID);
+		CSE_Abstract* E	= ID_to_entity(ID);
 		if (E)				
 		{
 			E->net_Ready	= TRUE;

@@ -536,7 +536,7 @@ BOOL CWeaponMagazinedWGrenade::net_Spawn(LPVOID DC) {
 	//V->LL_GetInstance(V->LL_BoneID("grenade")).set_callback(GrenadeCallback, this);
 	m_hideGrenade = !iAmmoElapsed;
 	if(iAmmoElapsed && !m_pGrenade) {
-		CAbstractServerObject*		D	= F_entity_Create("wpn_fake_missile");
+		CSE_Abstract*		D	= F_entity_Create("wpn_fake_missile");
 		R_ASSERT			(D);
 		// Fill
 		strcpy				(D->s_name,"wpn_fake_missile");
@@ -714,7 +714,7 @@ void CWeaponMagazinedWGrenade::OnEvent(NET_Packet& P, u16 type) {
 void CWeaponMagazinedWGrenade::ReloadMagazine() {
 	inherited::ReloadMagazine();
 	if(iAmmoElapsed && !m_pGrenade) {
-		CAbstractServerObject*		D	= F_entity_Create("wpn_fake_missile");
+		CSE_Abstract*		D	= F_entity_Create("wpn_fake_missile");
 		R_ASSERT			(D);
 		// Fill
 		strcpy				(D->s_name,"wpn_fake_missile");

@@ -293,7 +293,7 @@ void CAI_Biting::vfChooseNextGraphPoint()
 {
 	_GRAPH_ID						tGraphID		= m_tNextGP;
 	u16								wNeighbourCount = (u16)getAI().m_tpaGraph[tGraphID].tNeighbourCount;
-	CALifeGraph::SGraphEdge			*tpaEdges		= (CALifeGraph::SGraphEdge *)((BYTE *)getAI().m_tpaGraph + getAI().m_tpaGraph[tGraphID].dwEdgeOffset);
+	CSE_ALifeGraph::SGraphEdge			*tpaEdges		= (CSE_ALifeGraph::SGraphEdge *)((BYTE *)getAI().m_tpaGraph + getAI().m_tpaGraph[tGraphID].dwEdgeOffset);
 
 	int								iPointCount		= (int)m_tpaTerrain.size();
 	int								iBranches		= 0;	// количество различных вариантов

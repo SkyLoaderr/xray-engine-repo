@@ -10,7 +10,7 @@
 #include "ai_alife.h"
 #include "GameObject.h"
 
-void CAI_ALife::vfCreateObject(CALifeDynamicObject *tpALifeDynamicObject)
+void CAI_ALife::vfCreateObject(CSE_ALifeDynamicObject *tpALifeDynamicObject)
 {
 	NET_Packet						tNetPacket;
 	
@@ -19,14 +19,14 @@ void CAI_ALife::vfCreateObject(CALifeDynamicObject *tpALifeDynamicObject)
 	tpALifeDynamicObject->s_flags.and(u16(-1) ^ M_SPAWN_UPDATE);
 //.	Msg("ALife : Spawning object %s",tpALifeDynamicObject->s_name_replace);
 
-	CALifeTraderAbstract			*tpTraderParams = dynamic_cast<CALifeTraderAbstract*>(tpALifeDynamicObject);
+	CSE_ALifeTraderAbstract			*tpTraderParams = dynamic_cast<CSE_ALifeTraderAbstract*>(tpALifeDynamicObject);
 	if (tpTraderParams) {
 		m_tpChildren				= tpALifeDynamicObject->children;
 		tpALifeDynamicObject->children.clear();
 		OBJECT_IT					I = m_tpChildren.begin();
 		OBJECT_IT					E = m_tpChildren.end();
 		for ( ; I != E; I++) {
-			CALifeItem				*tpItem = dynamic_cast<CALifeItem*>(m_tObjectRegistry[*I]);
+			CSE_ALifeItem				*tpItem = dynamic_cast<CSE_ALifeItem*>(m_tObjectRegistry[*I]);
 			if (!tpItem)
 				continue;
 			tpItem->s_flags.or		(M_SPAWN_UPDATE);
@@ -38,17 +38,17 @@ void CAI_ALife::vfCreateObject(CALifeDynamicObject *tpALifeDynamicObject)
 	}
 }
 
-void CAI_ALife::vfReleaseObject(CALifeDynamicObject *tpALifeDynamicObject)
+void CAI_ALife::vfReleaseObject(CSE_ALifeDynamicObject *tpALifeDynamicObject)
 {
 	//VERIFY(tpALifeDynamicObject->ID_Parent == 0xffff);
 	m_tpServer->Perform_destroy		(tpALifeDynamicObject,net_flags(TRUE,TRUE));
-	CALifeTraderAbstract			*tpTraderParams = dynamic_cast<CALifeTraderAbstract*>(tpALifeDynamicObject);
+	CSE_ALifeTraderAbstract			*tpTraderParams = dynamic_cast<CSE_ALifeTraderAbstract*>(tpALifeDynamicObject);
 	if (tpTraderParams) {
 		m_tpChildren				= tpALifeDynamicObject->children;
 		OBJECT_IT					I = tpALifeDynamicObject->children.begin();
 		OBJECT_IT					E = tpALifeDynamicObject->children.end();
 		for ( ; I != E; I++) {
-			CALifeItem				*tpItem = dynamic_cast<CALifeItem*>(m_tObjectRegistry[*I]);
+			CSE_ALifeItem				*tpItem = dynamic_cast<CSE_ALifeItem*>(m_tObjectRegistry[*I]);
 			if (!tpItem)
 				continue;
 //.			Msg("ALife : Destroying item %s",tpItem->s_name_replace);
@@ -60,10 +60,10 @@ void CAI_ALife::vfReleaseObject(CALifeDynamicObject *tpALifeDynamicObject)
 //.	Msg("ALife : Destroying monster %s",tpALifeDynamicObject->s_name_replace);
 }
 
-void CAI_ALife::vfSwitchObjectOnline(CALifeDynamicObject *tpALifeDynamicObject)
+void CAI_ALife::vfSwitchObjectOnline(CSE_ALifeDynamicObject *tpALifeDynamicObject)
 {
 	VERIFY							(!tpALifeDynamicObject->m_bOnline);
-	CALifeAbstractGroup				*tpALifeAbstractGroup = dynamic_cast<CALifeAbstractGroup*>(tpALifeDynamicObject);
+	CSE_ALifeAbstractGroup				*tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(tpALifeDynamicObject);
 	if (tpALifeAbstractGroup) {
 		OBJECT_IT					I = tpALifeAbstractGroup->m_tpMembers.begin(), B = I;
 		OBJECT_IT					E = tpALifeAbstractGroup->m_tpMembers.end();
@@ -74,7 +74,7 @@ void CAI_ALife::vfSwitchObjectOnline(CALifeDynamicObject *tpALifeDynamicObject)
 			if (tpALifeAbstractGroup->m_bCreateSpawnPositions) {
 				(*J).second->o_Position	= tpALifeDynamicObject->o_Position;
 				(*J).second->m_tNodeID	= tpALifeDynamicObject->m_tNodeID;
-				CALifeMonsterAbstract	*tpEnemy = dynamic_cast<CALifeMonsterAbstract*>((*J).second);
+				CSE_ALifeMonsterAbstract	*tpEnemy = dynamic_cast<CSE_ALifeMonsterAbstract*>((*J).second);
 				if (tpEnemy)
 					tpEnemy->o_torso.yaw = angle_normalize_signed((I - B)/N*PI_MUL_2);
 			}
@@ -89,18 +89,18 @@ void CAI_ALife::vfSwitchObjectOnline(CALifeDynamicObject *tpALifeDynamicObject)
 //.	Msg								("ALife : Going online [%d] '%s'(%d,%d,%d) as #%d, on '%s'",Device.dwTimeGlobal,tpALifeDynamicObject->s_name_replace, tpALifeDynamicObject->g_team(), tpALifeDynamicObject->g_squad(), tpALifeDynamicObject->g_group(), tpALifeDynamicObject->ID, "*SERVER*");
 }
 
-void CAI_ALife::vfSwitchObjectOffline(CALifeDynamicObject *tpALifeDynamicObject)
+void CAI_ALife::vfSwitchObjectOffline(CSE_ALifeDynamicObject *tpALifeDynamicObject)
 {
 	VERIFY							(tpALifeDynamicObject->m_bOnline);
-	CALifeAbstractGroup				*tpALifeAbstractGroup = dynamic_cast<CALifeAbstractGroup*>(tpALifeDynamicObject);
+	CSE_ALifeAbstractGroup				*tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(tpALifeDynamicObject);
 	if (tpALifeAbstractGroup) {
 		OBJECT_IT I = tpALifeAbstractGroup->m_tpMembers.begin();
 		OBJECT_IT E = tpALifeAbstractGroup->m_tpMembers.end();
 		if (I != E) {
 			OBJECT_PAIR_IT			J = m_tObjectRegistry.find(*I);
 			VERIFY					(J != m_tObjectRegistry.end());
-			CALifeMonsterAbstract	*tpEnemy = dynamic_cast<CALifeMonsterAbstract*>((*J).second);
-			CALifeMonsterAbstract	*tpALifeMonsterAbstract = dynamic_cast<CALifeMonsterAbstract*>(tpALifeAbstractGroup);
+			CSE_ALifeMonsterAbstract	*tpEnemy = dynamic_cast<CSE_ALifeMonsterAbstract*>((*J).second);
+			CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(tpALifeAbstractGroup);
 			if (tpEnemy && tpALifeMonsterAbstract) {
 				tpALifeMonsterAbstract->m_fCurSpeed		= tpALifeMonsterAbstract->m_fGoingSpeed;
 				tpALifeMonsterAbstract->o_Position		= tpEnemy->o_Position;
@@ -109,7 +109,7 @@ void CAI_ALife::vfSwitchObjectOffline(CALifeDynamicObject *tpALifeDynamicObject)
 				tpALifeMonsterAbstract->m_fDistanceToPoint = getAI().m_tpaCrossTable[dwNodeID].fDistance;
 				tpALifeMonsterAbstract->m_tNextGraphID	= tpALifeMonsterAbstract->m_tGraphID;
 				u16					wNeighbourCount = (u16)getAI().m_tpaGraph[tpALifeMonsterAbstract->m_tGraphID].tNeighbourCount;
-				CALifeGraph::SGraphEdge			*tpaEdges		= (CALifeGraph::SGraphEdge *)((BYTE *)getAI().m_tpaGraph + getAI().m_tpaGraph[tpALifeMonsterAbstract->m_tGraphID].dwEdgeOffset);
+				CSE_ALifeGraph::SGraphEdge			*tpaEdges		= (CSE_ALifeGraph::SGraphEdge *)((BYTE *)getAI().m_tpaGraph + getAI().m_tpaGraph[tpALifeMonsterAbstract->m_tGraphID].dwEdgeOffset);
 				tpALifeMonsterAbstract->m_tPrevGraphID	= _GRAPH_ID(tpaEdges[::Random.randI(0,wNeighbourCount)].dwVertexNumber);
 			}
 			vfReleaseObject			((*J).second);
@@ -128,7 +128,7 @@ void CAI_ALife::vfSwitchObjectOffline(CALifeDynamicObject *tpALifeDynamicObject)
 //.	Msg								("ALife : Going offline [%d] '%s'(%d,%d,%d) as #%d, on '%s'",Device.dwTimeGlobal,tpALifeDynamicObject->s_name_replace, tpALifeDynamicObject->g_team(), tpALifeDynamicObject->g_squad(), tpALifeDynamicObject->g_group(), tpALifeDynamicObject->ID, "*SERVER*");
 }
 
-void CAI_ALife::ProcessOnlineOfflineSwitches(CALifeDynamicObject *I)
+void CAI_ALife::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 {
 	if ((I->m_bOnline || (I->m_tNodeID < 0) || (I->m_tNodeID >= getAI().Header().count)) && (I->ID_Parent == 0xffff)) {
 //		u32 dwLastNodeID = (u32)I->m_tNodeID;
@@ -148,7 +148,7 @@ void CAI_ALife::ProcessOnlineOfflineSwitches(CALifeDynamicObject *I)
 	if (I->m_bOnline)
 		if (I->ID_Parent == 0xffff) {
 			if (I->m_dwLastSwitchTime) {
-				CALifeAbstractGroup *tpALifeAbstractGroup = dynamic_cast<CALifeAbstractGroup*>(I);
+				CSE_ALifeAbstractGroup *tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(I);
 				if (!tpALifeAbstractGroup) {
 					if (m_tpActor->o_Position.distance_to(I->o_Position) > m_fOnlineDistance) {
 						if (Device.dwTimeGlobal -  I->m_dwLastSwitchTime > m_dwSwitchDelay)
@@ -162,7 +162,7 @@ void CAI_ALife::ProcessOnlineOfflineSwitches(CALifeDynamicObject *I)
 					for (u32 i=0, N = (u32)tpALifeAbstractGroup->m_tpMembers.size(); i<N; i++) {
 						OBJECT_PAIR_IT			J = m_tObjectRegistry.find(tpALifeAbstractGroup->m_tpMembers[i]);
 						VERIFY					(J != m_tObjectRegistry.end());
-						CALifeMonsterAbstract	*tpEnemy = dynamic_cast<CALifeMonsterAbstract*>((*J).second);
+						CSE_ALifeMonsterAbstract	*tpEnemy = dynamic_cast<CSE_ALifeMonsterAbstract*>((*J).second);
 						if (tpEnemy)
 							if (tpEnemy->fHealth <= 0) {
 								(*J).second->m_bDirectControl	= true;
@@ -199,7 +199,7 @@ void CAI_ALife::ProcessOnlineOfflineSwitches(CALifeDynamicObject *I)
 	else
 		if (I->ID_Parent == 0xffff) {
 			if (I->m_dwLastSwitchTime) {
-				CALifeAbstractGroup *tpALifeAbstractGroup = dynamic_cast<CALifeAbstractGroup*>(I);
+				CSE_ALifeAbstractGroup *tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(I);
 				if (tpALifeAbstractGroup && (!tpALifeAbstractGroup->m_tpMembers.size()))
 					return;
 				
@@ -217,7 +217,7 @@ void CAI_ALife::ProcessOnlineOfflineSwitches(CALifeDynamicObject *I)
 			OBJECT_PAIR_IT		J = m_tObjectRegistry.find(I->ID_Parent);
 			VERIFY				(J != m_tObjectRegistry.end());
 			if ((*J).second->m_bOnline) {
-				CALifeDynamicObject *tpALifeDynamicObject = (*J).second;
+				CSE_ALifeDynamicObject *tpALifeDynamicObject = (*J).second;
 				OBJECT_IT					i = tpALifeDynamicObject->children.begin();
 				OBJECT_IT					e = tpALifeDynamicObject->children.end();
 				for ( ; i != e; i++)
@@ -230,7 +230,7 @@ void CAI_ALife::ProcessOnlineOfflineSwitches(CALifeDynamicObject *I)
 			}
 		}
 	
-	CALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CALifeMonsterAbstract*>(I);
+	CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(I);
 	if (tpALifeMonsterAbstract && (tpALifeMonsterAbstract->fHealth <= 0)) {
 		ALIFE_MONSTER_P_IT	i = m_tpScheduledObjects.begin();
 		ALIFE_MONSTER_P_IT	e = m_tpScheduledObjects.end();

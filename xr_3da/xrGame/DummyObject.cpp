@@ -54,8 +54,8 @@ void CDummyObject::Load		(LPCSTR section)
 BOOL CDummyObject::net_Spawn(LPVOID DC)
 {
 	inherited::net_Spawn	(DC);
-	CAbstractServerObject			*e	= (CAbstractServerObject*)(DC);
-	CServerObjectDummy				*E	= dynamic_cast<CServerObjectDummy*>(e);
+	CSE_Abstract			*e	= (CSE_Abstract*)(DC);
+	CSE_Dummy				*E	= dynamic_cast<CSE_Dummy*>(e);
 
 	// 
 	setVisible				(TRUE);

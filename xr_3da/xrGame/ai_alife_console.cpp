@@ -142,7 +142,7 @@ void CAI_ALife::vfListSpawnPoints()
 //	SPAWN_P_IT	E = m_tpSpawnPoints.end();
 //	Msg("%s->Listing spawn points :",cName());
 //	for (int i=0; I != E; I++, i++) {
-//		CALifeCreatureSpawnPoint *tpALifeCreatureSpawnPoint = dynamic_cast<CALifeCreatureSpawnPoint *>(*I);
+//		CSE_ALifeCreatureSpawnPoint *tpALifeCreatureSpawnPoint = dynamic_cast<CSE_ALifeCreatureSpawnPoint *>(*I);
 //		if (tpALifeCreatureSpawnPoint)
 //			Msg("* %4d : [MDL=%10s][GID=%d]",i,(*I)->m_caModel,tpALifeCreatureSpawnPoint->m_wGroupID);
 //		else
@@ -162,7 +162,7 @@ void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 //		return;
 //	}
 //	
-//	CALifeDynamicObject	*tpALifeDynamicObject = (*I).second;
+//	CSE_ALifeDynamicObject	*tpALifeDynamicObject = (*I).second;
 //	string64		tString;
 //	Memory.mem_copy	(tString,&(tpALifeDynamicObject->m_tClassID),sizeof(tpALifeDynamicObject->m_tClassID));
 //	tString[sizeof(tpALifeDynamicObject->m_tClassID)] = 0;
@@ -174,14 +174,14 @@ void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 //	vfPrintTime("* Update        :",tpALifeDynamicObject->m_tTimeID);
 //	//Msg("* Update        : %d",tpALifeDynamicObject->m_tTimeID);
 //	
-//	CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>(tpALifeDynamicObject);
+//	CSE_ALifeItem *tpALifeItem = dynamic_cast<CSE_ALifeItem *>(tpALifeDynamicObject);
 //	if (tpALifeItem) {
 //		Msg("* Mass          : %7.2f",tpALifeItem->m_fMass);
 //		Msg("* Price         : %d",tpALifeItem->m_dwCost);
 //		return;
 //	}
 //	
-//	CALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CALifeMonsterAbstract *>(tpALifeDynamicObject);
+//	CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract *>(tpALifeDynamicObject);
 //	if (tpALifeMonsterAbstract) {
 //		Msg("* Graph m_tObjectID next : %d",tpALifeMonsterAbstract->m_tNextGraphID);
 //		Msg("* Graph m_tObjectID prev : %d",tpALifeMonsterAbstract->m_tPrevGraphID);
@@ -191,12 +191,12 @@ void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 //		Msg("* Distance to   : %7.2f",tpALifeMonsterAbstract->m_fDistanceToPoint);
 //	}
 //	
-//	CALifeMonsterParams *tpALifeMonsterParams = dynamic_cast<CALifeMonsterParams *>(tpALifeDynamicObject);
+//	CSE_ALifeMonsterParams *tpALifeMonsterParams = dynamic_cast<CSE_ALifeMonsterParams *>(tpALifeDynamicObject);
 //	if (tpALifeMonsterParams) {
 //		Msg("* Health        : %d",tpALifeMonsterParams->m_iHealth);
 //	}
 //		
-//	CALifeMonsterGroup *tpALifeMonsterGroup = dynamic_cast<CALifeMonsterGroup *>(tpALifeDynamicObject);
+//	CSE_ALifeMonsterGroup *tpALifeMonsterGroup = dynamic_cast<CSE_ALifeMonsterGroup *>(tpALifeDynamicObject);
 //	if (tpALifeMonsterGroup) {
 //		MONSTER_PARAMS_P_IT		I = tpALifeMonsterGroup->m_tpMembers.begin();
 //		MONSTER_PARAMS_P_IT		E = tpALifeMonsterGroup->m_tpMembers.end();
@@ -205,7 +205,7 @@ void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 //		return;
 //	}
 //	
-//	CALifeTraderParams *tpALifeTraderParams = dynamic_cast<CALifeTraderParams *>(tpALifeDynamicObject);
+//	CSE_ALifeTraderParams *tpALifeTraderParams = dynamic_cast<CSE_ALifeTraderParams *>(tpALifeDynamicObject);
 //	if (tpALifeTraderParams) {
 //		Msg("* Rank          : %d",tpALifeTraderParams->m_tRank);
 //		Msg("* Money         : %d",tpALifeTraderParams->m_dwMoney);
@@ -223,7 +223,7 @@ void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 //		}
 //	}
 //		
-//	CALifeTraderAbstract *tpALifeTraderAbstract = dynamic_cast<CALifeTraderAbstract *>(tpALifeDynamicObject);
+//	CSE_ALifeTraderAbstract *tpALifeTraderAbstract = dynamic_cast<CSE_ALifeTraderAbstract *>(tpALifeDynamicObject);
 //	if (tpALifeTraderAbstract) {
 //		{
 //			PERSONAL_EVENT_P_IT	I = tpALifeTraderAbstract->m_tpEvents.begin();
@@ -251,7 +251,7 @@ void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 //		Msg("* Max item mass : %7.2f",tpALifeTraderAbstract->m_fMaxItemMass);
 //	}
 //		
-//	CALifeHumanAbstract *tpALifeHumanAbstract = dynamic_cast<CALifeHumanAbstract *>(tpALifeDynamicObject);
+//	CSE_ALifeHumanAbstract *tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract *>(tpALifeDynamicObject);
 //	if (tpALifeHumanAbstract) {
 //		Msg("* Search speed  : %7.2f",tpALifeHumanAbstract->m_fSearchSpeed);
 //		Msg("* Task state    : %7.2f",tpALifeHumanAbstract->m_tTaskState);
@@ -259,7 +259,7 @@ void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 //		Msg("* Current point : %7.2f",tpALifeHumanAbstract->m_dwCurTaskLocation);
 //		Msg("* Current task  :");
 //		if (tpALifeHumanAbstract->m_tpTaskIDs.size()) {
-//			CALifePersonalTask	&tTask = *(tpALifeHumanAbstract->m_tpTasks[tpALifeHumanAbstract->m_dwCurTask]);
+//			CSE_ALifePersonalTask	&tTask = *(tpALifeHumanAbstract->m_tpTasks[tpALifeHumanAbstract->m_dwCurTask]);
 //			Msg("* Task  m_tObjectID    : %d",tTask.m_tTaskID);
 //			vfPrintTime("* Time  m_tObjectID  :",tTask.m_tTimeID);
 //			Msg("* Customer m_tObjectID : %d",tTask.m_tCustomerID);
@@ -298,7 +298,7 @@ void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 //			}
 //		}
 //	}
-//	CALifeHumanAbstract *tpALifeHuman = dynamic_cast<CALifeHumanAbstract *>(tpALifeDynamicObject);
+//	CSE_ALifeHumanAbstract *tpALifeHuman = dynamic_cast<CSE_ALifeHumanAbstract *>(tpALifeDynamicObject);
 //	if (tpALifeHuman) {
 //		{
 //			TASK_IT				I = tpALifeHuman->m_tpTaskIDs.begin();
@@ -314,7 +314,7 @@ void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 //		return;
 //	}
 //	
-//	CALifeHumanGroup *tpALifeHumanGroup = dynamic_cast<CALifeHumanGroup *>(tpALifeDynamicObject);
+//	CSE_ALifeHumanGroup *tpALifeHumanGroup = dynamic_cast<CSE_ALifeHumanGroup *>(tpALifeDynamicObject);
 //	if (tpALifeHumanGroup) {
 //		Msg("* Members       :");
 //		{
@@ -348,14 +348,14 @@ void CAI_ALife::vfEventInfo(_EVENT_ID &tEventID)
 		Msg("* Invalid event m_tObjectID! (%d)",tEventID);
 		return;
 	}
-	CALifeEvent &tEvent = *((*I).second);
+	CSE_ALifeEvent &tEvent = *((*I).second);
 	Msg("* Event information");
 	Msg("* Event m_tObjectID  : %d",tEvent.m_tEventID);
 	Msg("* Graph m_tObjectID  : %d",tEvent.m_tGraphID);
 	vfPrintTime("* Time  m_tObjectID  :",tEvent.m_tTimeID);
 	Msg("* Battle    : %d",tEvent.m_tBattleResult);
 	Msg("* Monster 1 :");
-	CALifeEventGroup *tpMG = tEvent.m_tpMonsterGroup1;
+	CSE_ALifeEventGroup *tpMG = tEvent.m_tpMonsterGroup1;
 	Msg("*     Class  m_tObjectID    : %d",tpMG->m_tClassID);
 	Msg("*     Object m_tObjectID    : %d",tpMG->m_tObjectID);
 //	Msg("*     Spawn  m_tObjectID    : %d",tpMG->m_tSpawnID);
@@ -375,7 +375,7 @@ void CAI_ALife::vfEventInfo(_EVENT_ID &tEventID)
 		OBJECT_PAIR_IT I = m_tObjectRegistry.begin();
 		OBJECT_PAIR_IT E = m_tObjectRegistry.end();
 		for (int j=0; I != E; I++) {
-			CALifeHumanAbstract *tpALifeHuman = dynamic_cast<CALifeHumanAbstract *>((*I).second);
+			CSE_ALifeHumanAbstract *tpALifeHuman = dynamic_cast<CSE_ALifeHumanAbstract *>((*I).second);
 			if (!tpALifeHuman)
 				continue;
 			PERSONAL_EVENT_P_IT i = tpALifeHuman->m_tpEvents.begin();
@@ -399,7 +399,7 @@ void CAI_ALife::vfTaskInfo(_TASK_ID &tTaskID)
 		Msg("* Invalid task m_tObjectID! (%d)",tTaskID);
 		return;
 	}
-	CALifeTask &tTask = *((*I).second);
+	CSE_ALifeTask &tTask = *((*I).second);
 	Msg("* Task information");
 	Msg("* Task  m_tObjectID    : %d",tTask.m_tTaskID);
 	vfPrintTime("* Time  m_tObjectID  :",tTask.m_tTimeID);
@@ -435,7 +435,7 @@ void CAI_ALife::vfTaskInfo(_TASK_ID &tTaskID)
 		OBJECT_PAIR_IT I = m_tObjectRegistry.begin();
 		OBJECT_PAIR_IT E = m_tObjectRegistry.end();
 		for (int j=0; I != E; I++) {
-			CALifeHumanAbstract *tpALifeHuman = dynamic_cast<CALifeHumanAbstract *>((*I).second);
+			CSE_ALifeHumanAbstract *tpALifeHuman = dynamic_cast<CSE_ALifeHumanAbstract *>((*I).second);
 			if (!tpALifeHuman)
 				continue;
 			TASK_IT i = tpALifeHuman->m_tpTaskIDs.begin();
@@ -454,17 +454,17 @@ void CAI_ALife::vfTaskInfo(_TASK_ID &tTaskID)
 
 void CAI_ALife::vfSpawnPointInfo(_SPAWN_ID &tSpawnID)
 {
-//	CALifeSpawnPoint &tSpawnPoint = *(m_tpSpawnPoints[tSpawnID]);
+//	CSE_ALifeSpawnPoint &tSpawnPoint = *(m_tpSpawnPoints[tSpawnID]);
 //	Msg("%s->Spawn-point information :",cName());
 //	Msg("* Model                   : %s",tSpawnPoint.m_caModel);
 //	Msg("* GraphID                 : %s",tSpawnPoint.m_tNearestGraphPointID);
 //	Msg("* Position                : [%7.2f][%7.2f][%7.2f]",tSpawnPoint.m_tPosition.x,tSpawnPoint.m_tPosition.y,tSpawnPoint.m_tPosition.z);
 //	
-//	CALifeZoneSpawnPoint *tpZoneSpawnPoint = dynamic_cast<CALifeZoneSpawnPoint *>(&tSpawnPoint);
+//	CSE_ALifeZoneSpawnPoint *tpZoneSpawnPoint = dynamic_cast<CSE_ALifeZoneSpawnPoint *>(&tSpawnPoint);
 //	if (tpZoneSpawnPoint) {
 //		Msg("* Zone type               : %d",tpZoneSpawnPoint->m_tAnomalousZoneType);
 //	}
-//	CALifeCreatureSpawnPoint *tpCreatureSpawnPoint = dynamic_cast<CALifeCreatureSpawnPoint *>(&tSpawnPoint);
+//	CSE_ALifeCreatureSpawnPoint *tpCreatureSpawnPoint = dynamic_cast<CSE_ALifeCreatureSpawnPoint *>(&tSpawnPoint);
 //	if (tpCreatureSpawnPoint) {
 //		Msg("* Team                    : %d",tpCreatureSpawnPoint->m_ucTeam);
 //		Msg("* Squad                   : %d",tpCreatureSpawnPoint->m_ucSquad);
@@ -491,12 +491,12 @@ void CAI_ALife::vfSpawnPointInfo(_SPAWN_ID &tSpawnID)
 
 void CAI_ALife::vfGraphVertexInfo(_GRAPH_ID &tGraphID)
 {
-	CALifeGraph::SGraphVertex &tGraphVertex = getAI().m_tpaGraph[tGraphID];
+	CSE_ALifeGraph::SGraphVertex &tGraphVertex = getAI().m_tpaGraph[tGraphID];
 	Msg("%s->Graph vertex information :",cName());
 	Msg("* Level point                : [%7.2f][%7.2f][%7.2f]",tGraphVertex.tGlobalPoint.x,tGraphVertex.tGlobalPoint.y,tGraphVertex.tGlobalPoint.z);
 //	Msg("* Location m_tObjectID                : %d",tGraphVertex.tVertexType);
 	Msg("* Neighbours                 :");
-	CALifeGraph::SGraphEdge	*tpaEdges = (CALifeGraph::SGraphEdge *)((BYTE *)getAI().m_tpaGraph + tGraphVertex.dwEdgeOffset);
+	CSE_ALifeGraph::SGraphEdge	*tpaEdges = (CSE_ALifeGraph::SGraphEdge *)((BYTE *)getAI().m_tpaGraph + tGraphVertex.dwEdgeOffset);
 	for (int i=0; i<(int)tGraphVertex.tNeighbourCount; i++)
 		Msg("*   Vertex %d -> distance %7.2f",tpaEdges[i].dwVertexNumber, tpaEdges[i].fPathDistance);
 }

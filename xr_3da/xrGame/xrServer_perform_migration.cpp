@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 // Initiate migration
-void xrServer::PerformMigration(CAbstractServerObject* E, xrClientData* from, xrClientData* to)
+void xrServer::PerformMigration(CSE_Abstract* E, xrClientData* from, xrClientData* to)
 {
 	R_ASSERT	(from != to);
 	NET_Packet	P;

@@ -127,8 +127,8 @@ BOOL CAI_Zombie::net_Spawn	(LPVOID DC)
 	if (!inherited::net_Spawn(DC))	return FALSE;
 	
 	//////////////////////////////////////////////////////////////////////////
-	CAbstractServerObject					*e	= (CAbstractServerObject*)(DC);
-	CALifeMonsterZombie						*tpSE_Zombie = dynamic_cast<CALifeMonsterZombie*>(e);
+	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
+	CSE_ALifeMonsterZombie						*tpSE_Zombie = dynamic_cast<CSE_ALifeMonsterZombie*>(e);
 	// model
 	cNameVisual_set					(tpSE_Zombie->get_visual());
 	// personal characteristics

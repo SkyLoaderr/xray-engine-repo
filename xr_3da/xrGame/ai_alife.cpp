@@ -41,9 +41,9 @@ LPCSTR CAI_ALife::cName()
 
 void CAI_ALife::vfNewGame()
 {
-	CALifeGraphRegistry::Init	();
-	CALifeTraderRegistry::Init	();
-	CALifeScheduleRegistry::Init();
+	CSE_ALifeGraphRegistry::Init	();
+	CSE_ALifeTraderRegistry::Init	();
+	CSE_ALifeScheduleRegistry::Init();
 
 	u16							l_wGenID = 0x8000;
 	ALIFE_ENTITY_P_IT			B = m_tpSpawnPoints.begin();
@@ -68,9 +68,9 @@ void CAI_ALife::vfNewGame()
 			}
 		}
 		
-		CAbstractServerObject			*tpServerEntity = F_entity_Create	((*I)->s_name);
+		CSE_Abstract			*tpServerEntity = F_entity_Create	((*I)->s_name);
 		R_ASSERT2				(tpServerEntity,"Can't create entity.");
-		CALifeDynamicObject		*i = dynamic_cast<CALifeDynamicObject*>(tpServerEntity);
+		CSE_ALifeDynamicObject		*i = dynamic_cast<CSE_ALifeDynamicObject*>(tpServerEntity);
 		R_ASSERT2				(i,"Non-ALife object in the 'game.spawn'");
 		
 		NET_Packet				tNetPacket;
@@ -82,7 +82,7 @@ void CAI_ALife::vfNewGame()
 		tNetPacket.r_begin		(id);
 		i->UPDATE_Read			(tNetPacket);
 		i->ID					= l_wGenID++;
-		CALifeAbstractGroup		*tpALifeAbstractGroup = dynamic_cast<CALifeAbstractGroup*>(i);
+		CSE_ALifeAbstractGroup		*tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(i);
 		if (tpALifeAbstractGroup) {
 			i->ID				= m_tpServer->PerformIDgen(l_wGenID++);
 			i->m_tObjectID		= i->ID;
@@ -95,9 +95,9 @@ void CAI_ALife::vfNewGame()
 			for ( ; II != EE; II++) {
 				NET_Packet			tNetPacket;
 				LPCSTR				S = pSettings->r_string((*I)->s_name,"monster_section");
-				CAbstractServerObject		*tp1 = F_entity_Create	(S);
+				CSE_Abstract		*tp1 = F_entity_Create	(S);
 				R_ASSERT2			(tp1,"Can't create entity.");
-				CALifeDynamicObject	*tp2 = dynamic_cast<CALifeDynamicObject*>(tp1);
+				CSE_ALifeDynamicObject	*tp2 = dynamic_cast<CSE_ALifeDynamicObject*>(tp1);
 				R_ASSERT2			(tp2,"Non-ALife object in the 'game.spawn'");
 				
 				(*I)->Spawn_Write	(tNetPacket,TRUE);
@@ -113,12 +113,12 @@ void CAI_ALife::vfNewGame()
 				vfCreateObject		(tp2);
 				*II					= tp2->m_tObjectID = tp2->ID;
 				m_tObjectRegistry.insert(std::make_pair(tp2->m_tObjectID,tp2));
-				CALifeMonsterAbstract *tp3 = dynamic_cast<CALifeMonsterAbstract*>(tp2);
+				CSE_ALifeMonsterAbstract *tp3 = dynamic_cast<CSE_ALifeMonsterAbstract*>(tp2);
 				if (tp3) 
 					vfAssignGraphPosition(tp3);
 			}
 			
-			CALifeMonsterAbstract	*tp3 = dynamic_cast<CALifeMonsterAbstract*>(i);
+			CSE_ALifeMonsterAbstract	*tp3 = dynamic_cast<CSE_ALifeMonsterAbstract*>(i);
 			
 			if (tp3)
 				vfAssignGraphPosition(tp3);
@@ -127,7 +127,7 @@ void CAI_ALife::vfNewGame()
             vfCreateObject			(i);
 			i->m_tObjectID			= i->ID;
 			m_tObjectRegistry.insert(std::make_pair(i->m_tObjectID,i));
-			CALifeMonsterAbstract	*tp3 = dynamic_cast<CALifeMonsterAbstract*>(i);
+			CSE_ALifeMonsterAbstract	*tp3 = dynamic_cast<CSE_ALifeMonsterAbstract*>(i);
 			if (tp3)
 				vfAssignGraphPosition(tp3);
 		}
@@ -140,11 +140,11 @@ void CAI_ALife::vfNewGame()
 void CAI_ALife::Save(LPCSTR caSaveName)
 {
 	CMemoryWriter				tStream;
-	CALifeHeader::Save			(tStream);
-	CALifeGameTime::Save		(tStream);
-	CALifeObjectRegistry::Save	(tStream);
-	CALifeEventRegistry::Save	(tStream);
-	CALifeTaskRegistry::Save	(tStream);
+	CSE_ALifeHeader::Save			(tStream);
+	CSE_ALifeGameTime::Save		(tStream);
+	CSE_ALifeObjectRegistry::Save	(tStream);
+	CSE_ALifeEventRegistry::Save	(tStream);
+	CSE_ALifeTaskRegistry::Save	(tStream);
 	string256					S;
 	strconcat					(S,SAVE_PATH,caSaveName);
 	tStream.save_to				(S);
@@ -175,7 +175,7 @@ void CAI_ALife::Load(LPCSTR caSaveName)
 		R_ASSERT2				(FS.exist(caFileName, "$game_data$", SPAWN_NAME),"Can't find file 'game.spawn'");
 		tpStream				= FS.r_open(caFileName);
 		Log						("* Loading spawn registry");
-		CALifeSpawnRegistry::Load(*tpStream);
+		CSE_ALifeSpawnRegistry::Load(*tpStream);
 		FS.r_close				(tpStream);
 		vfNewGame				();
 		Save					();
@@ -188,14 +188,14 @@ void CAI_ALife::Load(LPCSTR caSaveName)
 		R_ASSERT2				(false,S);
 	}
 	Log							("* Loading simulator...");
-	CALifeHeader::Load			(*tpStream);
-	CALifeGameTime::Load		(*tpStream);
+	CSE_ALifeHeader::Load			(*tpStream);
+	CSE_ALifeGameTime::Load		(*tpStream);
 	Log							("* Loading objects...");
-	CALifeObjectRegistry::Load	(*tpStream);
+	CSE_ALifeObjectRegistry::Load	(*tpStream);
 	Log							("* Loading events...");
-	CALifeEventRegistry::Load	(*tpStream);
+	CSE_ALifeEventRegistry::Load	(*tpStream);
 	Log							("* Loading tasks...");
-	CALifeTaskRegistry::Load	(*tpStream);
+	CSE_ALifeTaskRegistry::Load	(*tpStream);
 	Log							("* Building dynamic objects...");
 	vfUpdateDynamicData			();
 	m_tpChildren.reserve		(128);
@@ -203,19 +203,19 @@ void CAI_ALife::Load(LPCSTR caSaveName)
 	Msg							("* Loading ALife Simulator is successfully completed (%7.3f Mb)",float(Memory.mem_usage() - dwMemUsage)/1048576.0);
 }
 
-void CAI_ALife::vfUpdateDynamicData(CALifeDynamicObject *tpALifeDynamicObject)
+void CAI_ALife::vfUpdateDynamicData(CSE_ALifeDynamicObject *tpALifeDynamicObject)
 {
-	CALifeGraphRegistry::Update		(tpALifeDynamicObject);
-	CALifeTraderRegistry::Update	(tpALifeDynamicObject);
-	CALifeScheduleRegistry::Update	(tpALifeDynamicObject);
+	CSE_ALifeGraphRegistry::Update		(tpALifeDynamicObject);
+	CSE_ALifeTraderRegistry::Update	(tpALifeDynamicObject);
+	CSE_ALifeScheduleRegistry::Update	(tpALifeDynamicObject);
 }
 
 void CAI_ALife::vfUpdateDynamicData()
 {
 	// initialize
-	CALifeGraphRegistry::Init	();
-	CALifeTraderRegistry::Init	();
-	CALifeScheduleRegistry::Init();
+	CSE_ALifeGraphRegistry::Init	();
+	CSE_ALifeTraderRegistry::Init	();
+	CSE_ALifeScheduleRegistry::Init();
 	// update objects
 	{
 		OBJECT_PAIR_IT			I = m_tObjectRegistry.begin();
@@ -232,30 +232,30 @@ void CAI_ALife::vfUpdateDynamicData()
 	}
 }
 
-void CAI_ALife::vfCreateNewTask(CALifeTrader *tpTrader)
+void CAI_ALife::vfCreateNewTask(CSE_ALifeTrader *tpTrader)
 {
 	OBJECT_PAIR_IT						I = m_tObjectRegistry.begin();
 	OBJECT_PAIR_IT						E = m_tObjectRegistry.end();
 	for ( ; I != E; I++) {
-		CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>((*I).second);
+		CSE_ALifeItem *tpALifeItem = dynamic_cast<CSE_ALifeItem *>((*I).second);
 		if (tpALifeItem && !tpALifeItem->bfAttached()) {
-			CALifeTask					*tpTask = xr_new<CALifeTask>();
+			CSE_ALifeTask					*tpTask = xr_new<CSE_ALifeTask>();
 			tpTask->m_tCustomerID		= tpTrader->m_tObjectID;
 			Memory.mem_copy				(tpTask->m_tLocationID,getAI().m_tpaGraph[tpALifeItem->m_tGraphID].tVertexTypes,LOCATION_TYPE_COUNT*sizeof(_LOCATION_ID));
 			tpTask->m_tObjectID			= tpALifeItem->m_tObjectID;
 			tpTask->m_tTimeID			= tfGetGameTime();
 			tpTask->m_tTaskType			= eTaskTypeSearchForItemOL;
-			CALifeTaskRegistry::Add		(tpTask);
+			CSE_ALifeTaskRegistry::Add		(tpTask);
 			tpTrader->m_tpTaskIDs.push_back(tpTask->m_tTaskID);
 			break;
 		}
 	}
 }
 
-CALifeTrader* CAI_ALife::tpfGetNearestSuitableTrader(CALifeHumanAbstract *tpALifeHuman)
+CSE_ALifeTrader* CAI_ALife::tpfGetNearestSuitableTrader(CSE_ALifeHumanAbstract *tpALifeHuman)
 {
 	float			fBestDistance = MAX_NODE_ESTIMATION_COST;
-	CALifeTrader *	tpBestTrader = 0;
+	CSE_ALifeTrader *	tpBestTrader = 0;
 	TRADER_P_IT		I = m_tpTraders.begin();
 	TRADER_P_IT		E = m_tpTraders.end();
 	Fvector			&tGlobalPoint = getAI().m_tpaGraph[tpALifeHuman->m_tGraphID].tGlobalPoint;
@@ -271,9 +271,9 @@ CALifeTrader* CAI_ALife::tpfGetNearestSuitableTrader(CALifeHumanAbstract *tpALif
 	return			(tpBestTrader);
 }
 
-void CAI_ALife::vfRemoveObject(CAbstractServerObject *tpServerEntity)
+void CAI_ALife::vfRemoveObject(CSE_Abstract *tpServerEntity)
 {
-	CALifeDynamicObject			*tpALifeDynamicObject = m_tObjectRegistry[tpServerEntity->ID];
+	CSE_ALifeDynamicObject			*tpALifeDynamicObject = m_tObjectRegistry[tpServerEntity->ID];
 	VERIFY						(tpALifeDynamicObject);
 	m_tObjectRegistry.erase		(tpServerEntity->ID);
 	
@@ -320,23 +320,23 @@ void CAI_ALife::vfGenerateArtefacts()
 {
 }
 
-void CAI_ALife::vfSellArtefacts(CALifeTrader &tTrader)
+void CAI_ALife::vfSellArtefacts(CSE_ALifeTrader &tTrader)
 {
 }
 
-void CAI_ALife::vfUpdateArtefactOrders(CALifeTrader &tTrader)
+void CAI_ALife::vfUpdateArtefactOrders(CSE_ALifeTrader &tTrader)
 {
 }
 
-void CAI_ALife::vfGiveMilitariesBribe(CALifeTrader &tTrader)
+void CAI_ALife::vfGiveMilitariesBribe(CSE_ALifeTrader &tTrader)
 {
 }
 
-void CAI_ALife::vfBuySupplies(CALifeTrader &tTrader)
+void CAI_ALife::vfBuySupplies(CSE_ALifeTrader &tTrader)
 {
 }
 
-void CAI_ALife::vfAssignPrices(CALifeTrader &tTrader)
+void CAI_ALife::vfAssignPrices(CSE_ALifeTrader &tTrader)
 {
 }
 

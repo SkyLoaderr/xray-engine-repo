@@ -46,7 +46,7 @@ typedef struct tagSAIMapDataF {
 } SAIMapDataF;
 
 typedef struct tagSAIMapDataG {
-	CALifeGraph	*tpGraph;
+	CSE_ALifeGraph	*tpGraph;
 	u32			dwFinishNode;
 } SAIMapDataG;
 
@@ -69,7 +69,7 @@ public:
 class CAIGraphTemplateNode {
 public:
 	u32			m_dwLastBestNode;
-	typedef		CALifeGraph::SGraphEdge* iterator;
+	typedef		CSE_ALifeGraph::SGraphEdge* iterator;
 	u32			get_value				(iterator &tIterator)
 	{
 		return(tIterator->dwVertexNumber);
@@ -424,7 +424,7 @@ public:
 class CAIGraphShortestPathNode : public CAIGraphTemplateNode {
 public:
 	SAIMapDataG	tData;
-	CALifeGraph::SGraphVertex			*m_tpaGraph;
+	CSE_ALifeGraph::SGraphVertex			*m_tpaGraph;
 
 				CAIGraphShortestPathNode(SAIMapDataG &tAIMapData)
 	{
@@ -435,7 +435,7 @@ public:
 
 	IC	void	begin					(u32 dwNode, CAIGraphTemplateNode::iterator &tIterator, CAIGraphTemplateNode::iterator &tEnd)
 	{
-		tIterator = (CALifeGraph::SGraphEdge *)((BYTE *)m_tpaGraph + m_tpaGraph[dwNode].dwEdgeOffset);
+		tIterator = (CSE_ALifeGraph::SGraphEdge *)((BYTE *)m_tpaGraph + m_tpaGraph[dwNode].dwEdgeOffset);
 		tEnd = tIterator + m_tpaGraph[dwNode].tNeighbourCount;
 	}
 

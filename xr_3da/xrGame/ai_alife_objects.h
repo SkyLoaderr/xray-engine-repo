@@ -14,7 +14,7 @@
 #include "ai_alife_interfaces.h"
 #include "ai_alife_templates.h"
 
-class CALifeGameTime : public IPureALifeLSObject {
+class CSE_ALifeGameTime : public IPureALifeLSObject {
 public:
 	_TIME_ID						m_tGameTime;
 	_TIME_ID						m_tTimeAfterSurge;
@@ -56,12 +56,12 @@ public:
 	};
 };
 
-class CALifeHeader : public IPureALifeLSObject {
+class CSE_ALifeHeader : public IPureALifeLSObject {
 public:
 	u32								m_tALifeVersion;
 	EZoneState						m_tZoneState;
 	
-									CALifeHeader()
+									CSE_ALifeHeader()
 	{
 		m_tALifeVersion				= ALIFE_VERSION;
 		m_tZoneState				= eZoneStateAfterSurge;
@@ -84,7 +84,7 @@ public:
 	};
 };
 
-class CALifeSpawnHeader : public IPureALifeLObject {
+class CSE_ALifeSpawnHeader : public IPureALifeLObject {
 public:
 	u32								m_tSpawnVersion;
 	u32								m_dwSpawnCount;

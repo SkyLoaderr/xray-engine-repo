@@ -17,14 +17,14 @@ void xrServer::OnCL_Disconnected	(IClient* CL)
 		// Migrate entities
 		for (; I!=E; I++)
 		{
-			CAbstractServerObject*	entity		= I->second;
+			CSE_Abstract*	entity		= I->second;
 			if (entity->owner == CL)	PerformMigration	(entity,(xrClientData*)CL,SelectBestClientToMigrateTo(entity,TRUE));
 		}
 	} else {
 		// Destroy entities
 		for (; I!=E; I++)
 		{
-			CAbstractServerObject*	entity		= I->second;
+			CSE_Abstract*	entity		= I->second;
 			entities.erase	(entity->ID);
 			entity_Destroy	(entity);
 		}

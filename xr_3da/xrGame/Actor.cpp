@@ -313,8 +313,8 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	ph_Movement.SetPosition	(vPosition);
 	ph_Movement.SetVelocity	(0,0,0);
 
-	CAbstractServerObject			*e	= (CAbstractServerObject*)(DC);
-	CALifeCreatureActor				*E	= dynamic_cast<CALifeCreatureActor*>(e);
+	CSE_Abstract			*e	= (CSE_Abstract*)(DC);
+	CSE_ALifeCreatureActor				*E	= dynamic_cast<CSE_ALifeCreatureActor*>(e);
 
 	// Dima : 24.02.2003
 	cNameVisual_set			(E->get_visual());
@@ -353,9 +353,9 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 // @@@: WT - !!!ВРЕМЕННО!!! - спавним каждому актеру детектор
 	if(Local()) for(u32 i = 0; i < 1; i++) {
 		// Create
-		//CAbstractServerObject*		D	= F_entity_Create("detector_simple");
-		//CAbstractServerObject*		D	= F_entity_Create("grenade_f1");
-		CAbstractServerObject*		D	= F_entity_Create("bolt");
+		//CSE_Abstract*		D	= F_entity_Create("detector_simple");
+		//CSE_Abstract*		D	= F_entity_Create("grenade_f1");
+		CSE_Abstract*		D	= F_entity_Create("bolt");
 		R_ASSERT			(D);
 		// Fill
 		strcpy				(D->s_name,"bolt");

@@ -169,8 +169,8 @@ void CAI_Rat::Load(LPCSTR section)
 BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 {
 	//////////////////////////////////////////////////////////////////////////
-	CAbstractServerObject					*e	= (CAbstractServerObject*)(DC);
-	CALifeMonsterRat						*tpSE_Rat = dynamic_cast<CALifeMonsterRat*>(e);
+	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
+	CSE_ALifeMonsterRat						*tpSE_Rat = dynamic_cast<CSE_ALifeMonsterRat*>(e);
 	// model
 	cNameVisual_set					(tpSE_Rat->get_visual());
 	if (!inherited::net_Spawn(DC))

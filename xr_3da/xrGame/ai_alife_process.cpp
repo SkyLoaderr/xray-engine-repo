@@ -102,41 +102,41 @@ void CAI_ALife::Update(u32 dt)
 	}
 }
 
-void CAI_ALife::vfProcessNPC(CALifeMonsterAbstract	*tpALifeMonsterAbstract)
+void CAI_ALife::vfProcessNPC(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract)
 {
-//	CALifeHumanAbstract *tpALifeHumanAbstract = dynamic_cast<CALifeHumanAbstract *>(tpALifeMonsterAbstract);
+//	CSE_ALifeHumanAbstract *tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract *>(tpALifeMonsterAbstract);
 //	if (tpALifeHumanAbstract) {
-//		CALifeHumanAbstract *tpALifeHuman = dynamic_cast<CALifeHumanAbstract *>(tpALifeMonsterAbstract);
+//		CSE_ALifeHumanAbstract *tpALifeHuman = dynamic_cast<CSE_ALifeHumanAbstract *>(tpALifeMonsterAbstract);
 //		if (tpALifeHuman)
 //			vfUpdateHuman(tpALifeHuman);
 //		//else
-//		//	vfUpdateHumanGroup(dynamic_cast<CALifeHumanGroup *>(tpALifeMonsterAbstract));
+//		//	vfUpdateHumanGroup(dynamic_cast<CSE_ALifeHumanGroup *>(tpALifeMonsterAbstract));
 //	}
 //	else
 //		vfUpdateMonster(tpALifeMonsterAbstract);
-	CALifeHumanAbstract *tpHuman = dynamic_cast<CALifeHumanAbstract *>(tpALifeMonsterAbstract);
+	CSE_ALifeHumanAbstract *tpHuman = dynamic_cast<CSE_ALifeHumanAbstract *>(tpALifeMonsterAbstract);
 	if (tpHuman) {
 		vfUpdateHuman(tpHuman);
 		//else
-		//	vfUpdateHumanGroup(dynamic_cast<CALifeHumanGroup *>(tpALifeMonsterAbstract));
+		//	vfUpdateHumanGroup(dynamic_cast<CSE_ALifeHumanGroup *>(tpALifeMonsterAbstract));
 	}
 	else
 		vfUpdateMonster(tpALifeMonsterAbstract);
 	tpALifeMonsterAbstract->m_tTimeID = tfGetGameTime();
 }
 
-void CAI_ALife::vfUpdateMonster(CALifeMonsterAbstract *tpALifeMonsterAbstract)
+void CAI_ALife::vfUpdateMonster(CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract)
 {
 	vfChooseNextRoutePoint	(tpALifeMonsterAbstract);
 	vfCheckForTheBattle		(tpALifeMonsterAbstract);
 }
 
-void CAI_ALife::vfUpdateHuman(CALifeHumanAbstract *tpALifeHuman)
+void CAI_ALife::vfUpdateHuman(CSE_ALifeHumanAbstract *tpALifeHuman)
 {
 //	switch (tpALifeHuman->m_tTaskState) {
 //		case eTaskStateNoTask : {
 //			if (!tpALifeHuman->m_tpTaskIDs.size()) {
-//				CALifeTrader *tpTrader = tpfGetNearestSuitableTrader(tpALifeHuman);
+//				CSE_ALifeTrader *tpTrader = tpfGetNearestSuitableTrader(tpALifeHuman);
 //				ffFindMinimalPath(tpALifeHuman->m_tGraphID,tpTrader->m_tGraphID,tpALifeHuman->m_tpaVertices);
 //				tpALifeHuman->m_dwCurNode = 0;
 //				tpALifeHuman->m_tTaskState = eTaskStateGoToTrader;
@@ -152,9 +152,9 @@ void CAI_ALife::vfUpdateHuman(CALifeHumanAbstract *tpALifeHuman)
 //				tpALifeHuman->m_dwCurNode = u32(-1);
 //				if (tpALifeHuman->m_tpTaskIDs.size()) {
 //					OBJECT_PAIR_IT I = m_tObjectRegistry.find(tpALifeHuman->m_tpTasks[tpALifeHuman->m_dwCurTask]->m_tCustomerID);
-//					CALifeTrader *tpTrader = 0;
+//					CSE_ALifeTrader *tpTrader = 0;
 //					if (I != m_tObjectRegistry.end())
-//						tpTrader = dynamic_cast<CALifeTrader *>(I->second);
+//						tpTrader = dynamic_cast<CSE_ALifeTrader *>(I->second);
 //					if (tpTrader)
 //						vfCommunicateWithTrader(tpALifeHuman,tpTrader);
 //					else

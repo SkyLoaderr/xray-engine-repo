@@ -11,12 +11,12 @@
 
 #include "xrServer_Objects_ALife.h"
 
-SERVER_OBJECT_DECLARE_BEGIN(CALifeItem,CALifeDynamicObjectVisual)
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItem,CSE_ALifeDynamicObjectVisual)
 	float							m_fMass;
 	u32								m_dwCost;
 	s32								m_iHealthValue;
 	
-									CALifeItem		(LPCSTR caSection) : CALifeDynamicObjectVisual(caSection), CAbstractServerObject(caSection)
+									CSE_ALifeItem		(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection)
 	{
 		m_fMass						= pSettings->r_float(caSection, "inv_weight");
 		m_dwCost					= pSettings->r_u32(caSection, "cost");
@@ -30,27 +30,27 @@ SERVER_OBJECT_DECLARE_BEGIN(CALifeItem,CALifeDynamicObjectVisual)
 	{
 		return						(ID < 0xffff);
 	};
-SERVER_OBJECT_DECLARE_END
+SERVER_ENTITY_DECLARE_END
 
-SERVER_OBJECT_DECLARE_BEGIN(CALifeItemTorch,CALifeItem)
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemTorch,CSE_ALifeItem)
 	u32								color;
 	string64						animator;
 	string64						spot_texture;
 	float							spot_range;
 	float							spot_cone_angle;
     float							spot_brightness;
-									CALifeItemTorch	(LPCSTR caSection);
-    virtual							~CALifeItemTorch();
-SERVER_OBJECT_DECLARE_END
+									CSE_ALifeItemTorch	(LPCSTR caSection);
+    virtual							~CSE_ALifeItemTorch();
+SERVER_ENTITY_DECLARE_END
 
-SERVER_OBJECT_DECLARE_BEGIN(CALifeItemAmmo,CALifeItem)
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemAmmo,CSE_ALifeItem)
 	u16								a_elapsed;
 	u16								m_boxSize;
 							
-									CALifeItemAmmo	(LPCSTR caSection);
-SERVER_OBJECT_DECLARE_END
+									CSE_ALifeItemAmmo	(LPCSTR caSection);
+SERVER_ENTITY_DECLARE_END
 
-SERVER_OBJECT_DECLARE_BEGIN(CALifeItemWeapon,CALifeItem)
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemWeapon,CSE_ALifeItem)
 	u32								timestamp;
 	u8								flags;
 	u8								state;
@@ -58,7 +58,7 @@ SERVER_OBJECT_DECLARE_BEGIN(CALifeItemWeapon,CALifeItem)
 	u16								a_current;
 	u16								a_elapsed;
 
-									CALifeItemWeapon(LPCSTR caSection);
+									CSE_ALifeItemWeapon(LPCSTR caSection);
 
 	virtual void					OnEvent			(NET_Packet& P, u16 type, u32 time, u32 sender );
 
@@ -67,20 +67,20 @@ SERVER_OBJECT_DECLARE_BEGIN(CALifeItemWeapon,CALifeItem)
 	u16								get_ammo_total	();
 	u16								get_ammo_elapsed();
 	u16								get_ammo_magsize();
-SERVER_OBJECT_DECLARE_END
+SERVER_ENTITY_DECLARE_END
 
-SERVER_OBJECT_DECLARE_BEGIN(CALifeItemCar,CALifeItem)
-									CALifeItemCar	(LPCSTR caSection) : CALifeItem(caSection), CAbstractServerObject(caSection)
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemCar,CSE_ALifeItem)
+									CSE_ALifeItemCar	(LPCSTR caSection) : CSE_ALifeItem(caSection), CSE_Abstract(caSection)
 	{
 		if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
     	    set_visual				(pSettings->r_string(caSection,"visual"));
 	};
-SERVER_OBJECT_DECLARE_END
+SERVER_ENTITY_DECLARE_END
 
-SERVER_OBJECT_DECLARE_BEGIN(CALifeItemDetector,CALifeItem)
-									CALifeItemDetector(LPCSTR caSection) : CALifeItem(caSection), CAbstractServerObject(caSection)
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemDetector,CSE_ALifeItem)
+									CSE_ALifeItemDetector(LPCSTR caSection) : CSE_ALifeItem(caSection), CSE_Abstract(caSection)
 	{
 	};
-SERVER_OBJECT_DECLARE_END
+SERVER_ENTITY_DECLARE_END
 
 #endif

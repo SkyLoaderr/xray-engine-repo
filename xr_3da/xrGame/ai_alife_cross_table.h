@@ -13,7 +13,7 @@
 #define CROSS_TABLE_CHUNK_VERSION			0
 #define CROSS_TABLE_CHUNK_DATA				1
 
-class CALifeCrossTable {
+class CSE_ALifeCrossTable {
 public:
 	#pragma pack(push,2)
 	typedef struct tagSCrossTableHeader {
@@ -32,20 +32,20 @@ public:
 	IReader									*m_tpCrossTableVFS;
 	SCrossTableCell							*m_tpaCrossTable;
 
-	CALifeCrossTable						()
+	CSE_ALifeCrossTable						()
 	{
 		m_tpCrossTableVFS					= 0;
 		m_tpaCrossTable						= 0;
 	};
 
-	CALifeCrossTable						(LPCSTR fName)
+	CSE_ALifeCrossTable						(LPCSTR fName)
 	{
 		m_tpCrossTableVFS					= 0;
 		m_tpaCrossTable						= 0;
 		Load								(fName);
 	};
 
-	virtual ~CALifeCrossTable				()
+	virtual ~CSE_ALifeCrossTable				()
 	{
 		Unload();
 	};

@@ -631,8 +631,8 @@ BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 {
 	if (!inherited::net_Spawn(DC))	return FALSE;
 
-	CAbstractServerObject			*e	= (CAbstractServerObject*)(DC);
-	CALifeMonsterAbstract			*E	= dynamic_cast<CALifeMonsterAbstract*>(e);
+	CSE_Abstract			*e	= (CSE_Abstract*)(DC);
+	CSE_ALifeMonsterAbstract			*E	= dynamic_cast<CSE_ALifeMonsterAbstract*>(e);
 
 	AI_Path.DestNode		= AI_NodeID;
 

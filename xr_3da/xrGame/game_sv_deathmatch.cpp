@@ -24,8 +24,8 @@ void	game_sv_Deathmatch::OnRoundStart			()
 
 		// spawn
 		LPCSTR					options	=	get_name_it	(it);
-		CAbstractServerObject			*E		=	spawn_begin	("actor");													// create SE
-		CALifeCreatureActor				*A		=	dynamic_cast<CALifeCreatureActor*>(E);
+		CSE_Abstract			*E		=	spawn_begin	("actor");													// create SE
+		CSE_ALifeCreatureActor				*A		=	dynamic_cast<CSE_ALifeCreatureActor*>(E);
 		strcpy					(A->s_name_replace,get_option_s(options,"name","Player"));					// name
 		A->s_team				=	u8(0);																	// no-team
 		A->s_flags.set			(M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);	// flags
@@ -85,14 +85,14 @@ void	game_sv_Deathmatch::Update					()
 BOOL	game_sv_Deathmatch::OnTouch			(u16 eid_who, u16 eid_what)
 {
 	xrServer*			S		= Level().Server;
-	CAbstractServerObject*		e_who	= S->ID_to_entity(eid_who);		VERIFY(e_who	);
-	CAbstractServerObject*		e_what	= S->ID_to_entity(eid_what);	VERIFY(e_what	);
+	CSE_Abstract*		e_who	= S->ID_to_entity(eid_who);		VERIFY(e_who	);
+	CSE_Abstract*		e_what	= S->ID_to_entity(eid_what);	VERIFY(e_what	);
 
-	CALifeCreatureActor*			A		= dynamic_cast<CALifeCreatureActor*> (e_who);
+	CSE_ALifeCreatureActor*			A		= dynamic_cast<CSE_ALifeCreatureActor*> (e_who);
 	if (A)
 	{
 		// Actor touches something
-		CALifeItemWeapon*	W			=	dynamic_cast<CALifeItemWeapon*> (e_what);
+		CSE_ALifeItemWeapon*	W			=	dynamic_cast<CSE_ALifeItemWeapon*> (e_what);
 		if (W) 
 		{
 			// Weapon
@@ -100,9 +100,9 @@ BOOL	game_sv_Deathmatch::OnTouch			(u16 eid_who, u16 eid_what)
 			u8 slot						=	W->get_slot	();
 			for (u32 it=0; it<C.size(); it++)
 			{
-				CAbstractServerObject*		Et	= S->ID_to_entity				(C[it]);
+				CSE_Abstract*		Et	= S->ID_to_entity				(C[it]);
 				if (0==Et)				continue;
-				CALifeItemWeapon*		T	= dynamic_cast<CALifeItemWeapon*>	(Et);
+				CSE_ALifeItemWeapon*		T	= dynamic_cast<CSE_ALifeItemWeapon*>	(Et);
 				if (0==T)				continue;
 				if (slot == T->get_slot())	
 				{
@@ -162,8 +162,8 @@ void game_sv_Deathmatch::OnPlayerConnect	(u32 id_who)
 	LPCSTR	options			=	get_name_id	(id_who);
 
 	// Spawn "actor"
-	CAbstractServerObject			*E	=	spawn_begin	("actor");													// create SE
-	CALifeCreatureActor				*A	=	dynamic_cast<CALifeCreatureActor*>(E);
+	CSE_Abstract			*E	=	spawn_begin	("actor");													// create SE
+	CSE_ALifeCreatureActor				*A	=	dynamic_cast<CSE_ALifeCreatureActor*>(E);
 	strcpy					(A->s_name_replace,get_option_s(options,"name","Player"));					// name
 	A->s_team				=	u8(0);																	// no-team
 	A->s_flags.set			(M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);	// flags

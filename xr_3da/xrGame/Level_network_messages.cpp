@@ -17,7 +17,7 @@ void CLevel::ClientReceive()
 				P->r_string			(s_name);
 
 				// Create DC (xrSE)
-				CAbstractServerObject*		E	= F_entity_Create	(s_name);
+				CSE_Abstract*		E	= F_entity_Create	(s_name);
 				R_ASSERT			(E);
 				E->Spawn_Read		(*P);
 				if (E->s_flags.is(M_SPAWN_UPDATE))

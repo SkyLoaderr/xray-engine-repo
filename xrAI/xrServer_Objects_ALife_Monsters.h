@@ -11,7 +11,7 @@
 
 #include "xrServer_Objects_ALife.h"
 
-class CALifeTraderAbstract : virtual public CAbstractServerObject {
+class CSE_ALifeTraderAbstract : virtual public CSE_Abstract {
 public:
 	float							m_fCumulativeItemMass;
 	u32								m_dwMoney;
@@ -20,7 +20,7 @@ public:
 	PERSONAL_EVENT_P_VECTOR			m_tpEvents;
 	TASK_VECTOR						m_tpTaskIDs;
 	
-									CALifeTraderAbstract(LPCSTR caSection) : CAbstractServerObject(caSection)
+									CSE_ALifeTraderAbstract(LPCSTR caSection) : CSE_Abstract(caSection)
 	{
 		m_fCumulativeItemMass		= 0.0f;
 		m_dwMoney					= 0;
@@ -32,7 +32,7 @@ public:
 		m_tpTaskIDs.clear			();
 	};
 
-	virtual							~CALifeTraderAbstract()
+	virtual							~CSE_ALifeTraderAbstract()
 	{
 		free_vector					(m_tpEvents);
 	};
@@ -46,13 +46,13 @@ public:
 #endif
 };
 
-SERVER_OBJECT_DECLARE_BEGIN2(CALifeTrader,CALifeDynamicObjectVisual,CALifeTraderAbstract)
-									CALifeTrader	(LPCSTR caSection) : CALifeDynamicObjectVisual(caSection), CALifeTraderAbstract(caSection), CAbstractServerObject(caSection)
+SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeTrader,CSE_ALifeDynamicObjectVisual,CSE_ALifeTraderAbstract)
+									CSE_ALifeTrader	(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_ALifeTraderAbstract(caSection), CSE_Abstract(caSection)
 	{
 	};
-SERVER_OBJECT_DECLARE_END
+SERVER_ENTITY_DECLARE_END
 
-SERVER_OBJECT_DECLARE_BEGIN(CALifeCreatureAbstract,CALifeDynamicObjectVisual)
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCreatureAbstract,CSE_ALifeDynamicObjectVisual)
 	u8								s_team;
 	u8								s_squad;
 	u8								s_group;
@@ -63,7 +63,7 @@ SERVER_OBJECT_DECLARE_BEGIN(CALifeCreatureAbstract,CALifeDynamicObjectVisual)
 	float							o_model;				// model yaw
 	SRotation						o_torso;				// torso in world coords
 									
-									CALifeCreatureAbstract(LPCSTR caSection)	: CALifeDynamicObjectVisual(caSection), CAbstractServerObject(caSection)
+									CSE_ALifeCreatureAbstract(LPCSTR caSection)	: CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection)
 	{
 		s_team = s_squad = s_group	= 0;
 		fHealth						= 100;
@@ -83,9 +83,9 @@ SERVER_OBJECT_DECLARE_BEGIN(CALifeCreatureAbstract,CALifeDynamicObjectVisual)
 	{
 		return s_group;
 	}
-SERVER_OBJECT_DECLARE_END
+SERVER_ENTITY_DECLARE_END
 
-SERVER_OBJECT_DECLARE_BEGIN(CALifeMonsterAbstract,CALifeCreatureAbstract)
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract)
 	_GRAPH_ID						m_tNextGraphID;
 	_GRAPH_ID						m_tPrevGraphID;
 	float							m_fGoingSpeed;
@@ -94,7 +94,7 @@ SERVER_OBJECT_DECLARE_BEGIN(CALifeMonsterAbstract,CALifeCreatureAbstract)
 	float							m_fDistanceToPoint;
 	TERRAIN_VECTOR					m_tpaTerrain;
 	
-									CALifeMonsterAbstract(LPCSTR caSection)	: CALifeCreatureAbstract(caSection), CAbstractServerObject(caSection)
+									CSE_ALifeMonsterAbstract(LPCSTR caSection)	: CSE_ALifeCreatureAbstract(caSection), CSE_Abstract(caSection)
 	{
 		m_tNextGraphID				= m_tGraphID;
 		m_tPrevGraphID				= m_tGraphID;
@@ -124,26 +124,26 @@ SERVER_OBJECT_DECLARE_BEGIN(CALifeMonsterAbstract,CALifeCreatureAbstract)
 			m_tpaTerrain.push_back	(tTerrainPlace);
 		}
 	};
-SERVER_OBJECT_DECLARE_END
+SERVER_ENTITY_DECLARE_END
 
-SERVER_OBJECT_DECLARE_BEGIN2(CALifeCreatureActor,CALifeCreatureAbstract,CALifeTraderAbstract)
+SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeCreatureActor,CSE_ALifeCreatureAbstract,CSE_ALifeTraderAbstract)
 	u16								mstate;
 	Fvector							accel;
 	Fvector							velocity;
 	float							fArmor;
 	u8								weapon;
-									CALifeCreatureActor		(LPCSTR caSection);
-SERVER_OBJECT_DECLARE_END
+									CSE_ALifeCreatureActor		(LPCSTR caSection);
+SERVER_ENTITY_DECLARE_END
 
-SERVER_OBJECT_DECLARE_BEGIN(CALifeMonsterCrow,CALifeCreatureAbstract)
-									CALifeMonsterCrow		(LPCSTR caSection) : CALifeCreatureAbstract(caSection), CAbstractServerObject(caSection)
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeMonsterCrow,CSE_ALifeCreatureAbstract)
+									CSE_ALifeMonsterCrow		(LPCSTR caSection) : CSE_ALifeCreatureAbstract(caSection), CSE_Abstract(caSection)
 	{
 		if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
     	    set_visual				(pSettings->r_string(caSection,"visual"));
 	};
-SERVER_OBJECT_DECLARE_END
+SERVER_ENTITY_DECLARE_END
 
-SERVER_OBJECT_DECLARE_BEGIN(CALifeMonsterRat,CALifeMonsterAbstract)
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeMonsterRat,CSE_ALifeMonsterAbstract)
 	// Personal characteristics:
 	float							fEyeFov;
 	float							fEyeRange;
@@ -168,10 +168,10 @@ SERVER_OBJECT_DECLARE_BEGIN(CALifeMonsterRat,CALifeMonsterAbstract)
 	float							fAttackAngle;
 	float							fAttackSuccessProbability;
 
-									CALifeMonsterRat	(LPCSTR caSection);				// constructor for variable initialization
-SERVER_OBJECT_DECLARE_END
+									CSE_ALifeMonsterRat	(LPCSTR caSection);				// constructor for variable initialization
+SERVER_ENTITY_DECLARE_END
 
-SERVER_OBJECT_DECLARE_BEGIN(CALifeMonsterZombie,CALifeMonsterAbstract)
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeMonsterZombie,CSE_ALifeMonsterAbstract)
 	// Personal characteristics:
 	float							fEyeFov;
 	float							fEyeRange;
@@ -186,14 +186,14 @@ SERVER_OBJECT_DECLARE_BEGIN(CALifeMonsterZombie,CALifeMonsterAbstract)
 	float							fAttackDistance;
 	float							fAttackAngle;
 
-									CALifeMonsterZombie	(LPCSTR caSection);				// constructor for variable initialization
-SERVER_OBJECT_DECLARE_END
+									CSE_ALifeMonsterZombie	(LPCSTR caSection);				// constructor for variable initialization
+SERVER_ENTITY_DECLARE_END
 
-SERVER_OBJECT_DECLARE_BEGIN(CALifeMonsterBiting,CALifeMonsterAbstract)
-									CALifeMonsterBiting	(LPCSTR caSection);				// constructor for variable initialization
-SERVER_OBJECT_DECLARE_END
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeMonsterBiting,CSE_ALifeMonsterAbstract)
+									CSE_ALifeMonsterBiting	(LPCSTR caSection);				// constructor for variable initialization
+SERVER_ENTITY_DECLARE_END
 
-SERVER_OBJECT_DECLARE_BEGIN2(CALifeHumanAbstract,CALifeTraderAbstract,CALifeMonsterAbstract)
+SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_ALifeMonsterAbstract)
 	DWORD_VECTOR					m_tpaVertices;
 	BOOL_VECTOR						m_baVisitedVertices;
 	PERSONAL_TASK_P_VECTOR			m_tpTasks;
@@ -202,7 +202,7 @@ SERVER_OBJECT_DECLARE_BEGIN2(CALifeHumanAbstract,CALifeTraderAbstract,CALifeMons
 	u32								m_dwCurTask;
 	float							m_fSearchSpeed;
 
-									CALifeHumanAbstract(LPCSTR caSection) : CALifeTraderAbstract(caSection), CALifeMonsterAbstract(caSection), CAbstractServerObject(caSection)
+									CSE_ALifeHumanAbstract(LPCSTR caSection) : CSE_ALifeTraderAbstract(caSection), CSE_ALifeMonsterAbstract(caSection), CSE_Abstract(caSection)
 	{
 		m_tpaVertices.clear			();
 		m_baVisitedVertices.clear	();
@@ -213,22 +213,22 @@ SERVER_OBJECT_DECLARE_BEGIN2(CALifeHumanAbstract,CALifeTraderAbstract,CALifeMons
 		m_fSearchSpeed				= pSettings->r_float(caSection, "search_speed");
 	};
 
-	virtual							~CALifeHumanAbstract()
+	virtual							~CSE_ALifeHumanAbstract()
 	{
 		free_vector					(m_tpTasks);
 	};
-SERVER_OBJECT_DECLARE_END
+SERVER_ENTITY_DECLARE_END
 
-SERVER_OBJECT_DECLARE_BEGIN(CALifeHumanStalker,CALifeHumanAbstract)
-									CALifeHumanStalker	(LPCSTR caSection) : CALifeHumanAbstract(caSection), CAbstractServerObject(caSection)
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeHumanStalker,CSE_ALifeHumanAbstract)
+									CSE_ALifeHumanStalker	(LPCSTR caSection) : CSE_ALifeHumanAbstract(caSection), CSE_Abstract(caSection)
 	{
 	};
-SERVER_OBJECT_DECLARE_END
+SERVER_ENTITY_DECLARE_END
 
-SERVER_OBJECT_DECLARE_BEGIN(CALifeObjectIdol,CALifeHumanAbstract)
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectIdol,CSE_ALifeHumanAbstract)
 	string256						m_caAnimations;
 	u32								m_dwAniPlayType;
-									CALifeObjectIdol	(LPCSTR caSection);
-SERVER_OBJECT_DECLARE_END
+									CSE_ALifeObjectIdol	(LPCSTR caSection);
+SERVER_ENTITY_DECLARE_END
 
 #endif

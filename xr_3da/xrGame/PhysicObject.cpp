@@ -11,8 +11,8 @@ CPhysicObject::~CPhysicObject(void) {
 
 BOOL CPhysicObject::net_Spawn(LPVOID DC)
 {
-	CAbstractServerObject			*e	= (CAbstractServerObject*)(DC);
-	CALifeObjectPhysic		*po	= dynamic_cast<CALifeObjectPhysic*>(e);
+	CSE_Abstract			*e	= (CSE_Abstract*)(DC);
+	CSE_ALifeObjectPhysic		*po	= dynamic_cast<CSE_ALifeObjectPhysic*>(e);
 	R_ASSERT				(po);
 	cNameVisual_set			(po->get_visual());
 	inherited::net_Spawn	(DC);

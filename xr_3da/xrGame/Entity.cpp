@@ -124,12 +124,12 @@ BOOL CEntity::net_Spawn		(LPVOID DC)
 {
 	inherited::net_Spawn	(DC);
 
-	CAbstractServerObject	*e	= (CAbstractServerObject*)(DC);
-	CALifeCreatureAbstract	*E	= dynamic_cast<CALifeCreatureAbstract*>(e);
+	CSE_Abstract	*e	= (CSE_Abstract*)(DC);
+	CSE_ALifeCreatureAbstract	*E	= dynamic_cast<CSE_ALifeCreatureAbstract*>(e);
 	if (!E) {
 		// Car only!!!!
-		CALifeItemCar		*C	= dynamic_cast<CALifeItemCar*>(e);
-		R_ASSERT2			(C,"Invalid entity (no inheritance from xrSE_Teamed and CALifeItemCar)!");
+		CSE_ALifeItemCar		*C	= dynamic_cast<CSE_ALifeItemCar*>(e);
+		R_ASSERT2			(C,"Invalid entity (no inheritance from xrSE_Teamed and CSE_ALifeItemCar)!");
 		id_Team				= id_Squad = id_Group = 0;
 	}
 	else {

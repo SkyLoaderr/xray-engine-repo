@@ -21,10 +21,10 @@ BOOL CCustomZone::net_Spawn(LPVOID DC) {
 	if(res) {
 		CCF_Shape *l_pShape = xr_new<CCF_Shape>(this);
 		cfModel = l_pShape;
-		CAbstractServerObject			*e	= (CAbstractServerObject*)(DC);
-		CALifeAnomalousZone				*Z	= dynamic_cast<CALifeAnomalousZone*>(e);
+		CSE_Abstract			*e	= (CSE_Abstract*)(DC);
+		CSE_ALifeAnomalousZone				*Z	= dynamic_cast<CSE_ALifeAnomalousZone*>(e);
 		for (u32 i=0; i < Z->shapes.size(); i++) {
-			CServerObjectShape::shape_def& S = Z->shapes[i];
+			CSE_Shape::shape_def& S = Z->shapes[i];
 			switch (S.type) {
 				case 0 : l_pShape->add_sphere(S.data.sphere); break;
 				case 1 : l_pShape->add_box(S.data.box); break;

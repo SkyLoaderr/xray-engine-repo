@@ -14,16 +14,16 @@
 
 using namespace ALife;
 
-class CALifeObjectRegistry : public IPureALifeLSObject {
+class CSE_ALifeObjectRegistry : public IPureALifeLSObject {
 public:
 	OBJECT_MAP						m_tObjectRegistry;		// список событий игры
 
-	CALifeObjectRegistry()
+	CSE_ALifeObjectRegistry()
 	{
 		m_tObjectRegistry.clear		();
 	};
 
-	virtual							~CALifeObjectRegistry()
+	virtual							~CSE_ALifeObjectRegistry()
 	{
 		free_map					(m_tObjectRegistry);
 	};
@@ -51,7 +51,7 @@ public:
 		tMemoryStream.close_chunk	();
 	};
 	
-	void CALifeObjectRegistry::Load(IReader	&tFileStream)
+	void CSE_ALifeObjectRegistry::Load(IReader	&tFileStream)
 	{ 
 		R_ASSERT2					(tFileStream.find_chunk(OBJECT_CHUNK_DATA),"Can't find chunk OBJECT_CHUNK_DATA!");
 		m_tObjectRegistry.clear();
@@ -68,9 +68,9 @@ public:
 			string64				s_name;
 			tNetPacket.r_string		(s_name);
 			// create entity
-			CAbstractServerObject			*tpServerEntity = F_entity_Create	(s_name);
+			CSE_Abstract			*tpServerEntity = F_entity_Create	(s_name);
 			R_ASSERT2				(tpServerEntity,"Can't create entity.");
-			CALifeDynamicObject		*tpALifeDynamicObject = dynamic_cast<CALifeDynamicObject*>(tpServerEntity);
+			CSE_ALifeDynamicObject		*tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(tpServerEntity);
 			R_ASSERT2				(tpALifeDynamicObject,"Non-ALife object in the saved game!");
 			tpALifeDynamicObject->Spawn_Read(tNetPacket);
 
@@ -86,13 +86,13 @@ public:
 		}
 	};
 
-	IC bool bfCheckIfTaskCompleted(CAbstractServerObject &tServerEntity, CALifeHumanAbstract *tpALifeHumanAbstract, OBJECT_IT &I)
+	IC bool bfCheckIfTaskCompleted(CSE_Abstract &tServerEntity, CSE_ALifeHumanAbstract *tpALifeHumanAbstract, OBJECT_IT &I)
 	{
 		if (tpALifeHumanAbstract->m_dwCurTask >= tpALifeHumanAbstract->m_tpTasks.size())
 			return(false);
 		I = tServerEntity.children.begin();
 		OBJECT_IT	E = tServerEntity.children.end();
-		CALifePersonalTask	&tPersonalTask = *(tpALifeHumanAbstract->m_tpTasks[tpALifeHumanAbstract->m_dwCurTask]);
+		CSE_ALifePersonalTask	&tPersonalTask = *(tpALifeHumanAbstract->m_tpTasks[tpALifeHumanAbstract->m_dwCurTask]);
 		for ( ; I != E; I++) {
 			switch (tPersonalTask.m_tTaskType) {
 				case eTaskTypeSearchForItemCL :
@@ -112,30 +112,30 @@ public:
 		return(false);
 	};
 
-	IC bool bfCheckIfTaskCompleted(CALifeHumanAbstract *tpALifeHuman, OBJECT_IT &I)
+	IC bool bfCheckIfTaskCompleted(CSE_ALifeHumanAbstract *tpALifeHuman, OBJECT_IT &I)
 	{
 		return(bfCheckIfTaskCompleted(*tpALifeHuman,tpALifeHuman,I));
 	};
 
-	IC bool bfCheckIfTaskCompleted(CALifeHumanAbstract *tpALifeHuman)
+	IC bool bfCheckIfTaskCompleted(CSE_ALifeHumanAbstract *tpALifeHuman)
 	{
 		OBJECT_IT I;
 		return(bfCheckIfTaskCompleted(tpALifeHuman,I));
 	};
 };
 
-class CALifeEventRegistry : public IPureALifeLSObject {
+class CSE_ALifeEventRegistry : public IPureALifeLSObject {
 public:
 	_EVENT_ID						m_tEventID;				// идентификатор карты событий
 	EVENT_MAP						m_tEventRegistry;		// список событий игры
 
-	CALifeEventRegistry()
+	CSE_ALifeEventRegistry()
 	{
 		m_tEventID					= 0;
 		m_tEventRegistry.clear		();
 	};
 
-	virtual							~CALifeEventRegistry()
+	virtual							~CSE_ALifeEventRegistry()
 	{
 		free_map					(m_tEventRegistry);
 	};
@@ -155,24 +155,24 @@ public:
 		//load_map					(m_tEventRegistry,tFileStream,tfChooseEventKeyPredicate);
 	};
 	
-	virtual	void					Add	(CALifeEvent	*tpEvent)
+	virtual	void					Add	(CSE_ALifeEvent	*tpEvent)
 	{
 		m_tEventRegistry.insert		(std::make_pair(tpEvent->m_tEventID = m_tEventID++,tpEvent));
 	};
 };
 
-class CALifeTaskRegistry : public IPureALifeLSObject {
+class CSE_ALifeTaskRegistry : public IPureALifeLSObject {
 public:
 	_TASK_ID						m_tTaskID;				// идентификатор карты событий
 	TASK_MAP						m_tTaskRegistry;		// список событий игры
 
-	CALifeTaskRegistry()
+	CSE_ALifeTaskRegistry()
 	{
 		m_tTaskID					= 0;
 		m_tTaskRegistry.clear		();
 	};
 
-	virtual							~CALifeTaskRegistry()
+	virtual							~CSE_ALifeTaskRegistry()
 	{
 		free_map					(m_tTaskRegistry);
 	};
@@ -192,23 +192,23 @@ public:
 //		load_map					(m_tTaskRegistry,tFileStream,tfChooseTaskKeyPredicate);
 	};
 	 
-	virtual	void					Add	(CALifeTask	*tpTask)
+	virtual	void					Add	(CSE_ALifeTask	*tpTask)
 	{
 		m_tTaskRegistry.insert		(std::make_pair(tpTask->m_tTaskID = m_tTaskID++,tpTask));
 	};
 };
 
-class CALifeGraphRegistry : public CALifeAStar {
+class CSE_ALifeGraphRegistry : public CSE_ALifeAStar {
 public:
-	typedef CALifeAStar inherited;
+	typedef CSE_ALifeAStar inherited;
 	ALIFE_ENTITY_P_VECTOR_MAP		m_tLevelMap;
-	CALifeDynamicObject				*m_tpActor;
+	CSE_ALifeDynamicObject				*m_tpActor;
 	ALIFE_ENTITY_P_VECTOR			*m_tpCurrentLevel;
 	GRAPH_POINT_VECTOR				m_tpGraphObjects;		// по точке графа получить все 
 	GRAPH_VECTOR_SVECTOR			m_tpTerrain[LOCATION_TYPE_COUNT];			// массив списков: по идетнификатору 
     														//	местности получить список точек 
 															//  графа
-									CALifeGraphRegistry() : CALifeAStar()
+									CSE_ALifeGraphRegistry() : CSE_ALifeAStar()
 	{
 	}
 	
@@ -241,7 +241,7 @@ public:
 		m_tpActor					= 0;
 	};
 
-	IC void							Update(CALifeDynamicObject *tpALifeDynamicObject)
+	IC void							Update(CSE_ALifeDynamicObject *tpALifeDynamicObject)
 	{
 		if (!tpALifeDynamicObject->m_bDirectControl)
 			return;
@@ -265,18 +265,18 @@ public:
 			m_tpCurrentLevel = (*I).second;
 		}
 		
-		CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>(tpALifeDynamicObject);
+		CSE_ALifeItem *tpALifeItem = dynamic_cast<CSE_ALifeItem *>(tpALifeDynamicObject);
 		if (tpALifeItem) {
 			if (!tpALifeItem->bfAttached())
 				m_tpGraphObjects[tpALifeItem->m_tGraphID].tpObjects.push_back(tpALifeItem);
 			return;
 		}
 	
-		if (!dynamic_cast<CALifeTrader *>(tpALifeDynamicObject))
+		if (!dynamic_cast<CSE_ALifeTrader *>(tpALifeDynamicObject))
 			m_tpGraphObjects[tpALifeDynamicObject->m_tGraphID].tpObjects.push_back(tpALifeDynamicObject);
 	}
 
-	IC void vfRemoveObjectFromGraphPoint(CALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID tGraphID)
+	IC void vfRemoveObjectFromGraphPoint(CSE_ALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID tGraphID)
 	{
 		ALIFE_ENTITY_P_IT				I = m_tpGraphObjects[tGraphID].tpObjects.begin();
 		ALIFE_ENTITY_P_IT				E = m_tpGraphObjects[tGraphID].tpObjects.end();
@@ -291,14 +291,14 @@ public:
 //.		Msg("ALife : removing object %s from graph point %d",tpALifeDynamicObject->s_name_replace,tGraphID);
 	};
 	
-	IC void vfAddObjectToGraphPoint(CALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID tNextGraphPointID)
+	IC void vfAddObjectToGraphPoint(CSE_ALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID tNextGraphPointID)
 	{
 		m_tpGraphObjects[tNextGraphPointID].tpObjects.push_back(tpALifeDynamicObject);
 		tpALifeDynamicObject->m_tGraphID = tNextGraphPointID;
 //.		Msg("ALife : adding object %s to graph point %d",tpALifeDynamicObject->s_name_replace,tNextGraphPointID);
 	};
 
-	IC void vfChangeObjectGraphPoint(CALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID tGraphPointID, _GRAPH_ID tNextGraphPointID)
+	IC void vfChangeObjectGraphPoint(CSE_ALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID tGraphPointID, _GRAPH_ID tNextGraphPointID)
 	{
 		vfRemoveObjectFromGraphPoint	(tpALifeDynamicObject,tGraphPointID);
 		vfAddObjectToGraphPoint			(tpALifeDynamicObject,tNextGraphPointID);
@@ -308,7 +308,7 @@ public:
 	};
 
 	// events
-	IC void vfRemoveEventFromGraphPoint(CALifeEvent *tpEvent, _GRAPH_ID tGraphID)
+	IC void vfRemoveEventFromGraphPoint(CSE_ALifeEvent *tpEvent, _GRAPH_ID tGraphID)
 	{
 		EVENT_P_IT						I = m_tpGraphObjects[tGraphID].tpEvents.begin();
 		EVENT_P_IT						E = m_tpGraphObjects[tGraphID].tpEvents.end();
@@ -319,18 +319,18 @@ public:
 			}
 	};
 	
-	IC void vfAddEventToGraphPoint(CALifeEvent *tpEvent, _GRAPH_ID tNextGraphPointID)
+	IC void vfAddEventToGraphPoint(CSE_ALifeEvent *tpEvent, _GRAPH_ID tNextGraphPointID)
 	{
 		m_tpGraphObjects[tNextGraphPointID].tpEvents.push_back(tpEvent);
 	};
 
-	IC void vfChangeEventGraphPoint(CALifeEvent *tpEvent, _GRAPH_ID tGraphPointID, _GRAPH_ID tNextGraphPointID)
+	IC void vfChangeEventGraphPoint(CSE_ALifeEvent *tpEvent, _GRAPH_ID tGraphPointID, _GRAPH_ID tNextGraphPointID)
 	{
 		vfRemoveEventFromGraphPoint	(tpEvent,tGraphPointID);
 		vfAddEventToGraphPoint		(tpEvent,tNextGraphPointID);
 	};
 
-	IC void vfAttachItem(CAbstractServerObject &tServerEntity, CALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bAddChild = true)
+	IC void vfAttachItem(CSE_Abstract &tServerEntity, CSE_ALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bAddChild = true)
 	{
 		if (bAddChild) {
 //.			Msg("ALife : (OFFLINE) Attaching item %s to object %s",tpALifeItem->s_name_replace,tServerEntity.s_name_replace);
@@ -342,12 +342,12 @@ public:
 
 		vfRemoveObjectFromGraphPoint(tpALifeItem,tGraphID);
 		
-		CALifeTraderAbstract *tpALifeTraderParams = dynamic_cast<CALifeTraderAbstract*>(&tServerEntity);
+		CSE_ALifeTraderAbstract *tpALifeTraderParams = dynamic_cast<CSE_ALifeTraderAbstract*>(&tServerEntity);
 		VERIFY(tpALifeTraderParams);
 		tpALifeTraderParams->m_fCumulativeItemMass += tpALifeItem->m_fMass;
 	}
 
-	IC void vfDetachItem(CAbstractServerObject &tServerEntity, CALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bRemoveChild = true)
+	IC void vfDetachItem(CSE_Abstract &tServerEntity, CSE_ALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bRemoveChild = true)
 	{
 		if (bRemoveChild) {
 			xr_vector<u16>				&tChildren = tServerEntity.children;
@@ -359,13 +359,13 @@ public:
 
 		vfAddObjectToGraphPoint(tpALifeItem,tGraphID);
 		
-		CALifeTraderAbstract *tpTraderParams = dynamic_cast<CALifeTraderAbstract*>(&tServerEntity);
+		CSE_ALifeTraderAbstract *tpTraderParams = dynamic_cast<CSE_ALifeTraderAbstract*>(&tServerEntity);
 		VERIFY(tpTraderParams);
 		tpTraderParams->m_fCumulativeItemMass -= tpALifeItem->m_fMass;
 	}
 };
 
-class CALifeTraderRegistry {
+class CSE_ALifeTraderRegistry {
 public:
 	TRADER_P_VECTOR					m_tpTraders;			// массив торговцев
 
@@ -374,9 +374,9 @@ public:
 		m_tpTraders.clear			();
 	};
 	
-	IC void							Update(CALifeDynamicObject *tpALifeDynamicObject)
+	IC void							Update(CSE_ALifeDynamicObject *tpALifeDynamicObject)
 	{
-		CALifeTrader *tpALifeTrader = dynamic_cast<CALifeTrader *>(tpALifeDynamicObject);
+		CSE_ALifeTrader *tpALifeTrader = dynamic_cast<CSE_ALifeTrader *>(tpALifeDynamicObject);
 		if (tpALifeTrader) {
 			m_tpTraders.push_back(tpALifeTrader);
 			std::sort(m_tpTraders.begin(),m_tpTraders.end(),CCompareTraderRanksPredicate());
@@ -384,7 +384,7 @@ public:
 	};
 };
 
-class CALifeScheduleRegistry {
+class CSE_ALifeScheduleRegistry {
 public:
 	ALIFE_MONSTER_P_VECTOR			m_tpScheduledObjects;	// массив обновляемых объектов
 
@@ -393,25 +393,25 @@ public:
 		m_tpScheduledObjects.clear	();
 	};
 
-	IC void							Update(CALifeDynamicObject *tpALifeDynamicObject)
+	IC void							Update(CSE_ALifeDynamicObject *tpALifeDynamicObject)
 	{
 		if (!tpALifeDynamicObject->m_bDirectControl)
 			return;
 		
-		CALifeMonsterAbstract		*tpALifeMonsterAbstract = dynamic_cast<CALifeMonsterAbstract *>(tpALifeDynamicObject);
+		CSE_ALifeMonsterAbstract		*tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract *>(tpALifeDynamicObject);
 		
 		if (tpALifeMonsterAbstract && (tpALifeMonsterAbstract->fHealth > 0))
 			m_tpScheduledObjects.push_back	(tpALifeMonsterAbstract);
 	};	
 };
 
-class CALifeSpawnRegistry : public CALifeSpawnHeader {
+class CSE_ALifeSpawnRegistry : public CSE_ALifeSpawnHeader {
 public:
-	typedef CALifeSpawnHeader inherited;
+	typedef CSE_ALifeSpawnHeader inherited;
 	
 	ALIFE_ENTITY_P_VECTOR			m_tpSpawnPoints;
 	
-	virtual							~CALifeSpawnRegistry()
+	virtual							~CSE_ALifeSpawnRegistry()
 	{
 		free_vector					(m_tpSpawnPoints);
 	};
@@ -435,7 +435,7 @@ public:
 			
 			string64				s_name;
 			tNetPacket.r_string		(s_name);
-			CAbstractServerObject			*E = F_entity_Create(s_name);
+			CSE_Abstract			*E = F_entity_Create(s_name);
 
 			R_ASSERT2				(E,"Can't create entity.");
 			E->Spawn_Read			(tNetPacket);
@@ -447,11 +447,11 @@ public:
 			E->UPDATE_Read			(tNetPacket);
 			
 			E->Init					(E->s_name);
-			CALifeObject			*tpALifeObject = dynamic_cast<CALifeObject*>(E);
+			CSE_ALifeObject			*tpALifeObject = dynamic_cast<CSE_ALifeObject*>(E);
 			VERIFY					(tpALifeObject);
 
 			R_ASSERT2				((E->s_gameid == GAME_SINGLE) || (E->s_gameid == GAME_ANY),"Invalid game type!");
-			R_ASSERT2				((*I = dynamic_cast<CALifeDynamicObject*>(E)) != 0,"Non-ALife object in the 'game.spawn'");
+			R_ASSERT2				((*I = dynamic_cast<CSE_ALifeDynamicObject*>(E)) != 0,"Non-ALife object in the 'game.spawn'");
 		}
 	};
 };

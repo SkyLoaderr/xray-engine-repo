@@ -7,8 +7,8 @@ void xrServer::Process_event_ownership(NET_Packet& P, DPNID sender, u32 time, u1
 	// Parse message
 	u16					id_parent=ID,id_entity;
 	P.r_u16				(id_entity);
-	CAbstractServerObject*		e_parent	= game->get_entity_from_eid	(id_parent);
-	CAbstractServerObject*		e_entity	= game->get_entity_from_eid	(id_entity);
+	CSE_Abstract*		e_parent	= game->get_entity_from_eid	(id_parent);
+	CSE_Abstract*		e_entity	= game->get_entity_from_eid	(id_entity);
 	if (0		==	e_parent)				return;
 	if (0		==	e_entity)				return;
 	if (0xffff	!=	e_entity->ID_Parent)	return;

@@ -19,7 +19,7 @@
 
 using namespace ALife;
 
-class CALifeGraph {
+class CSE_ALifeGraph {
 public:
 	#pragma pack(push,4)
 	typedef struct tagSGraphEdge {
@@ -55,20 +55,20 @@ public:
 	IReader									*m_tpGraphVFS;	// virtual file
 	SGraphVertex							*m_tpaGraph;
 
-	CALifeGraph								()
+	CSE_ALifeGraph								()
 	{
 		m_tpGraphVFS						= 0;
 		m_tpaGraph							= 0;
 	};
 
-	CALifeGraph								(LPCSTR fName)
+	CSE_ALifeGraph								(LPCSTR fName)
 	{
 		m_tpGraphVFS						= 0;
 		m_tpaGraph							= 0;
 		Load								(fName);
 	};
 
-	virtual ~CALifeGraph					()
+	virtual ~CSE_ALifeGraph					()
 	{
 		xr_delete							(m_tpGraphVFS);
 		m_tpaGraph							= 0;

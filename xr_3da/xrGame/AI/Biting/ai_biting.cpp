@@ -165,8 +165,8 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 	if (!inherited::net_Spawn(DC))
 		return(FALSE);
 
-	CAbstractServerObject					*e	= (CAbstractServerObject*)(DC);
-	CALifeMonsterBiting						*l_tpSE_Biting	= dynamic_cast<CALifeMonsterBiting*>(e);
+	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
+	CSE_ALifeMonsterBiting						*l_tpSE_Biting	= dynamic_cast<CSE_ALifeMonsterBiting*>(e);
 	
 	cNameVisual_set					(l_tpSE_Biting->get_visual());
 	

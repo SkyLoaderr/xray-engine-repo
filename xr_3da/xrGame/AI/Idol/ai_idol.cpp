@@ -29,8 +29,8 @@ void CAI_Idol::Load					(LPCSTR section)
 
 BOOL CAI_Idol::net_Spawn			(LPVOID DC)
 {
-	CAbstractServerObject					*e	= (CAbstractServerObject*)(DC);
-	CALifeObjectIdol						*tpIdol	= dynamic_cast<CALifeObjectIdol*>(e);
+	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
+	CSE_ALifeObjectIdol						*tpIdol	= dynamic_cast<CSE_ALifeObjectIdol*>(e);
 	
 	R_ASSERT						(tpIdol);
 	cNameVisual_set					(tpIdol->get_visual());

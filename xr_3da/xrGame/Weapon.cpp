@@ -366,8 +366,8 @@ void CWeapon::Load		(LPCSTR section)
 BOOL CWeapon::net_Spawn		(LPVOID DC)
 {
 	BOOL bResult					= inherited::net_Spawn	(DC);
-	CAbstractServerObject					*e	= (CAbstractServerObject*)(DC);
-	CALifeItemWeapon						*E	= dynamic_cast<CALifeItemWeapon*>(e);
+	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
+	CSE_ALifeItemWeapon						*E	= dynamic_cast<CSE_ALifeItemWeapon*>(e);
 
 	//iAmmoCurrent					= E->a_current;
 	iAmmoElapsed					= E->a_elapsed;
@@ -910,8 +910,8 @@ void CWeapon::SpawnAmmo(u32 boxCurr, LPCSTR ammoSect) {
 	l_type++; l_type %= m_ammoTypes.size();
 
 	// Create
-	CAbstractServerObject	*D		= F_entity_Create(ammoSect);
-	CALifeItemAmmo			*l_pA	= dynamic_cast<CALifeItemAmmo*>(D);
+	CSE_Abstract	*D		= F_entity_Create(ammoSect);
+	CSE_ALifeItemAmmo			*l_pA	= dynamic_cast<CSE_ALifeItemAmmo*>(D);
 	R_ASSERT(l_pA);
 	// Fill
 	l_pA->m_boxSize = (u16)pSettings->r_s32(ammoSect, "box_size");

@@ -518,7 +518,7 @@ BOOL CWeaponRPG7::net_Spawn(LPVOID DC) {
 	V->LL_GetInstance(V->LL_BoneID("grenade")).set_callback(GrenadeCallback, this);
 	m_hideGrenade = !iAmmoElapsed;
 	if(iAmmoElapsed && !m_pGrenade) {
-		CAbstractServerObject*		D	= F_entity_Create("wpn_rpg7_missile");
+		CSE_Abstract*		D	= F_entity_Create("wpn_rpg7_missile");
 		R_ASSERT			(D);
 		// Fill
 		strcpy				(D->s_name,"wpn_rpg7_missile");
@@ -553,7 +553,7 @@ void CWeaponRPG7::OnStateSwitch(u32 S) {
 void CWeaponRPG7::ReloadMagazine() {
 	inherited::ReloadMagazine();
 	if(iAmmoElapsed && !m_pGrenade) {
-		CAbstractServerObject*		D	= F_entity_Create("wpn_rpg7_missile");
+		CSE_Abstract*		D	= F_entity_Create("wpn_rpg7_missile");
 		R_ASSERT			(D);
 		// Fill
 		strcpy				(D->s_name,"wpn_rpg7_missile");

@@ -31,14 +31,14 @@
 #define SAVE_NAME					"game.sav"
 #define SPAWN_NAME					"game.spawn"
 
-class CALifeEventGroup;
-class CALifeDynamicObject;
-class CALifeMonsterAbstract;
-class CALifeTrader;
-class CALifeEvent;
-class CALifeTask;
-class CALifePersonalEvent;
-class CALifePersonalTask;
+class CSE_ALifeEventGroup;
+class CSE_ALifeDynamicObject;
+class CSE_ALifeMonsterAbstract;
+class CSE_ALifeTrader;
+class CSE_ALifeEvent;
+class CSE_ALifeTask;
+class CSE_ALifePersonalEvent;
+class CSE_ALifePersonalTask;
 
 namespace ALife {
 	typedef u64	_CLASS_ID;									// Class ID
@@ -60,20 +60,20 @@ namespace ALife {
 	DEFINE_VECTOR	(_TASK_ID,					TASK_VECTOR,					TASK_IT);
 	DEFINE_VECTOR	(_GRAPH_ID,					GRAPH_VECTOR,					GRAPH_IT);
 	DEFINE_VECTOR	(OBJECT_VECTOR,				OBJECT_VECTOR_VECTOR,			OBJECT_VECTOR_IT);
-	DEFINE_VECTOR	(CALifeDynamicObject *,		DYNAMIC_OBJECT_P_VECTOR,		DYNAMIC_OBJECT_P_IT);
-	DEFINE_VECTOR	(CALifeMonsterAbstract *,	ALIFE_MONSTER_P_VECTOR,			ALIFE_MONSTER_P_IT);
-	DEFINE_VECTOR	(CALifeTrader *,			TRADER_P_VECTOR,				TRADER_P_IT);
-	DEFINE_VECTOR	(CALifeEvent *,				EVENT_P_VECTOR,					EVENT_P_IT);
-	DEFINE_VECTOR	(CALifePersonalEvent *,		PERSONAL_EVENT_P_VECTOR,		PERSONAL_EVENT_P_IT);
-	DEFINE_VECTOR	(CALifePersonalTask *,		PERSONAL_TASK_P_VECTOR,			PERSONAL_TASK_P_IT);
+	DEFINE_VECTOR	(CSE_ALifeDynamicObject *,		DYNAMIC_OBJECT_P_VECTOR,		DYNAMIC_OBJECT_P_IT);
+	DEFINE_VECTOR	(CSE_ALifeMonsterAbstract *,	ALIFE_MONSTER_P_VECTOR,			ALIFE_MONSTER_P_IT);
+	DEFINE_VECTOR	(CSE_ALifeTrader *,			TRADER_P_VECTOR,				TRADER_P_IT);
+	DEFINE_VECTOR	(CSE_ALifeEvent *,				EVENT_P_VECTOR,					EVENT_P_IT);
+	DEFINE_VECTOR	(CSE_ALifePersonalEvent *,		PERSONAL_EVENT_P_VECTOR,		PERSONAL_EVENT_P_IT);
+	DEFINE_VECTOR	(CSE_ALifePersonalTask *,		PERSONAL_TASK_P_VECTOR,			PERSONAL_TASK_P_IT);
 	DEFINE_VECTOR	(ALIFE_MONSTER_P_VECTOR,	ALIFE_MONSTER_P_VECTOR_VECTOR,	ALIFE_MONSTER_P_VECTOR_IT);
-	DEFINE_VECTOR	(CALifeDynamicObject*,		ALIFE_ENTITY_P_VECTOR,			ALIFE_ENTITY_P_IT);
+	DEFINE_VECTOR	(CSE_ALifeDynamicObject*,		ALIFE_ENTITY_P_VECTOR,			ALIFE_ENTITY_P_IT);
 	
 	DEFINE_SVECTOR	(GRAPH_VECTOR,				LOCATION_COUNT,					GRAPH_VECTOR_SVECTOR,		GRAPH_VECTOR_IT);
 	
-	DEFINE_MAP		(_OBJECT_ID,				CALifeDynamicObject *,			OBJECT_MAP,					OBJECT_PAIR_IT);
-	DEFINE_MAP		(_EVENT_ID,					CALifeEvent *,					EVENT_MAP,					EVENT_PAIR_IT);
-	DEFINE_MAP		(_TASK_ID,					CALifeTask *,					TASK_MAP,					TASK_PAIR_IT);
+	DEFINE_MAP		(_OBJECT_ID,				CSE_ALifeDynamicObject *,			OBJECT_MAP,					OBJECT_PAIR_IT);
+	DEFINE_MAP		(_EVENT_ID,					CSE_ALifeEvent *,					EVENT_MAP,					EVENT_PAIR_IT);
+	DEFINE_MAP		(_TASK_ID,					CSE_ALifeTask *,					TASK_MAP,					TASK_PAIR_IT);
 	DEFINE_MAP		(u8,						ALIFE_ENTITY_P_VECTOR *,		ALIFE_ENTITY_P_VECTOR_MAP,	ALIFE_ENTITY_P_VECTOR_PAIR_IT);
 
 	typedef struct tagSGraphPoint {

@@ -79,7 +79,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 
 	setDestroy	(FALSE);	// @@@ WT
 
-	CAbstractServerObject*		E			= (CAbstractServerObject*)DC;
+	CSE_Abstract*		E			= (CSE_Abstract*)DC;
 	R_ASSERT						(E);
 
 	// Naming
@@ -100,7 +100,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 
 	// AI-DB connectivity
 	CTimer		T; T.Start		();
-	CALifeObject*		a_obj	= dynamic_cast<CALifeObject*>(E);
+	CSE_ALifeObject*		a_obj	= dynamic_cast<CSE_ALifeObject*>(E);
 	if (a_obj)
 	{
 		CAI_Space&	AI		= getAI();

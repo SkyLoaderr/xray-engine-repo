@@ -2,11 +2,11 @@
 #include "xrServer.h"
 #include "hudmanager.h"
 
-void xrServer::Process_spawn(NET_Packet& P, DPNID sender, BOOL bSpawnWithClientsMainEntityAsParent, CAbstractServerObject* tpExistedEntity)
+void xrServer::Process_spawn(NET_Packet& P, DPNID sender, BOOL bSpawnWithClientsMainEntityAsParent, CSE_Abstract* tpExistedEntity)
 {
 	// create server entity
 	xrClientData* CL	= ID_to_client	(sender);
-	CAbstractServerObject*	E	= tpExistedEntity;
+	CSE_Abstract*	E	= tpExistedEntity;
 	if (!E){
 		// read spawn information
 		string64			s_name;
@@ -34,7 +34,7 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender, BOOL bSpawnWithClients
 	if (E->RespawnTime && (0xffff==E->ID_Phantom))
 	{
 		// Create phantom
-		CAbstractServerObject* Phantom	=	entity_Create	(E->s_name); R_ASSERT(Phantom);
+		CSE_Abstract* Phantom	=	entity_Create	(E->s_name); R_ASSERT(Phantom);
 		Phantom->Spawn_Read		(P);
 		Phantom->ID				=	PerformIDgen	(0xffff);
 		Phantom->ID_Phantom		=	Phantom->ID;						// Self-linked to avoid phantom-breeding
@@ -61,7 +61,7 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender, BOOL bSpawnWithClients
 			if (bSpawnWithClientsMainEntityAsParent)
 			{
 				R_ASSERT				(CL);
-				CAbstractServerObject* P		= CL->owner;
+				CSE_Abstract* P		= CL->owner;
 				R_ASSERT				(P);
 				E->ID_Parent			= P->ID;
 			}
@@ -85,7 +85,7 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender, BOOL bSpawnWithClients
 	// Parent-Connect
 	if (E->ID_Parent!=0xffff)
 	{
-		CAbstractServerObject*		e_parent	= ID_to_entity(E->ID_Parent);
+		CSE_Abstract*		e_parent	= ID_to_entity(E->ID_Parent);
 		R_ASSERT						(e_parent);
 		e_parent->children.push_back	(E->ID);
 	}

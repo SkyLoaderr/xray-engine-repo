@@ -10,15 +10,15 @@
 #include "xrServer_Objects_ALife_Monsters.h"
 
 ////////////////////////////////////////////////////////////////////////////
-// CALifeTraderAbstract
+// CSE_ALifeTraderAbstract
 ////////////////////////////////////////////////////////////////////////////
-void CALifeTraderAbstract::STATE_Write		(NET_Packet &tNetPacket)
+void CSE_ALifeTraderAbstract::STATE_Write		(NET_Packet &tNetPacket)
 {
 	save_vector					(m_tpEvents,tNetPacket);
 	save_base_vector			(m_tpTaskIDs,tNetPacket);
 }
 
-void CALifeTraderAbstract::STATE_Read		(NET_Packet &tNetPacket, u16 size)
+void CSE_ALifeTraderAbstract::STATE_Read		(NET_Packet &tNetPacket, u16 size)
 {
 	if (m_wVersion > 19) {
 		load_vector				(m_tpEvents,tNetPacket);
@@ -26,14 +26,14 @@ void CALifeTraderAbstract::STATE_Read		(NET_Packet &tNetPacket, u16 size)
 	}
 }
 
-void CALifeTraderAbstract::UPDATE_Write		(NET_Packet &tNetPacket)
+void CSE_ALifeTraderAbstract::UPDATE_Write		(NET_Packet &tNetPacket)
 {
 	tNetPacket.w_float			(m_fCumulativeItemMass);
 	tNetPacket.w_u32			(m_dwMoney);
 	tNetPacket.w_u32			(m_tRank);
 };
 
-void CALifeTraderAbstract::UPDATE_Read		(NET_Packet &tNetPacket)
+void CSE_ALifeTraderAbstract::UPDATE_Read		(NET_Packet &tNetPacket)
 {
 	tNetPacket.r_float			(m_fCumulativeItemMass);
 	tNetPacket.r_u32			(m_dwMoney);
@@ -43,36 +43,36 @@ void CALifeTraderAbstract::UPDATE_Read		(NET_Packet &tNetPacket)
 };
 
 ////////////////////////////////////////////////////////////////////////////
-// CALifeTrader
+// CSE_ALifeTrader
 ////////////////////////////////////////////////////////////////////////////
-void CALifeTrader::STATE_Write				(NET_Packet &tNetPacket)
+void CSE_ALifeTrader::STATE_Write				(NET_Packet &tNetPacket)
 {
 	inherited1::STATE_Write		(tNetPacket);
 	inherited2::STATE_Write		(tNetPacket);
 }
 
-void CALifeTrader::STATE_Read				(NET_Packet &tNetPacket, u16 size)
+void CSE_ALifeTrader::STATE_Read				(NET_Packet &tNetPacket, u16 size)
 {
 	inherited1::STATE_Read		(tNetPacket, size);
 	inherited2::STATE_Read		(tNetPacket, size);
 }
 
-void CALifeTrader::UPDATE_Write				(NET_Packet &tNetPacket)
+void CSE_ALifeTrader::UPDATE_Write				(NET_Packet &tNetPacket)
 {
 	inherited1::UPDATE_Write	(tNetPacket);
 	inherited2::UPDATE_Write	(tNetPacket);
 };
 
-void CALifeTrader::UPDATE_Read				(NET_Packet &tNetPacket)
+void CSE_ALifeTrader::UPDATE_Read				(NET_Packet &tNetPacket)
 {
 	inherited1::UPDATE_Read		(tNetPacket);
 	inherited2::UPDATE_Read		(tNetPacket);
 };
 
 ////////////////////////////////////////////////////////////////////////////
-// CALifeCreatureAbstract
+// CSE_ALifeCreatureAbstract
 ////////////////////////////////////////////////////////////////////////////
-void CALifeCreatureAbstract::STATE_Write	(NET_Packet &tNetPacket)
+void CSE_ALifeCreatureAbstract::STATE_Write	(NET_Packet &tNetPacket)
 {
 	inherited::STATE_Write		(tNetPacket);
 	tNetPacket.w_u8				(s_team	);
@@ -82,7 +82,7 @@ void CALifeCreatureAbstract::STATE_Write	(NET_Packet &tNetPacket)
 	visual_write				(tNetPacket);
 }
 
-void CALifeCreatureAbstract::STATE_Read		(NET_Packet &tNetPacket, u16 size)
+void CSE_ALifeCreatureAbstract::STATE_Read		(NET_Packet &tNetPacket, u16 size)
 {
 	inherited::STATE_Read		(tNetPacket, size);
 	tNetPacket.r_u8				(s_team	);
@@ -93,7 +93,7 @@ void CALifeCreatureAbstract::STATE_Read		(NET_Packet &tNetPacket, u16 size)
 	visual_read					(tNetPacket);
 }
 
-void CALifeCreatureAbstract::UPDATE_Write	(NET_Packet &tNetPacket)
+void CSE_ALifeCreatureAbstract::UPDATE_Write	(NET_Packet &tNetPacket)
 {
 	inherited::UPDATE_Write		(tNetPacket);
 	
@@ -107,7 +107,7 @@ void CALifeCreatureAbstract::UPDATE_Write	(NET_Packet &tNetPacket)
 	tNetPacket.w_angle8			(o_torso.pitch	);
 };
 
-void CALifeCreatureAbstract::UPDATE_Read	(NET_Packet &tNetPacket)
+void CSE_ALifeCreatureAbstract::UPDATE_Read	(NET_Packet &tNetPacket)
 {
 	inherited::UPDATE_Read		(tNetPacket);
 	
@@ -122,7 +122,7 @@ void CALifeCreatureAbstract::UPDATE_Read	(NET_Packet &tNetPacket)
 };
 
 #ifdef _EDITOR
-void CALifeCreatureAbstract::FillProp		(LPCSTR pref, PropItemVec& items)
+void CSE_ALifeCreatureAbstract::FillProp		(LPCSTR pref, PropItemVec& items)
 {
   	inherited::FillProp			(pref,items);
     PHelper.CreateU8			(items,PHelper.PrepareKey(pref,s_name, "Team"),		&s_team, 	0,64,1);
@@ -133,19 +133,19 @@ void CALifeCreatureAbstract::FillProp		(LPCSTR pref, PropItemVec& items)
 #endif
 
 ////////////////////////////////////////////////////////////////////////////
-// CALifeMonsterAbstract
+// CSE_ALifeMonsterAbstract
 ////////////////////////////////////////////////////////////////////////////
-void CALifeMonsterAbstract::STATE_Write		(NET_Packet &tNetPacket)
+void CSE_ALifeMonsterAbstract::STATE_Write		(NET_Packet &tNetPacket)
 {
 	inherited::STATE_Write		(tNetPacket);
 }
 
-void CALifeMonsterAbstract::STATE_Read		(NET_Packet &tNetPacket, u16 size)
+void CSE_ALifeMonsterAbstract::STATE_Read		(NET_Packet &tNetPacket, u16 size)
 {
 	inherited::STATE_Read		(tNetPacket, size);
 }
 
-void CALifeMonsterAbstract::UPDATE_Write	(NET_Packet &tNetPacket)
+void CSE_ALifeMonsterAbstract::UPDATE_Write	(NET_Packet &tNetPacket)
 {
 	inherited::UPDATE_Write		(tNetPacket);
 	tNetPacket.w				(&m_tNextGraphID,			sizeof(m_tNextGraphID));
@@ -156,7 +156,7 @@ void CALifeMonsterAbstract::UPDATE_Write	(NET_Packet &tNetPacket)
 	tNetPacket.w				(&m_fDistanceToPoint,		sizeof(m_fDistanceToPoint));
 };
 
-void CALifeMonsterAbstract::UPDATE_Read		(NET_Packet &tNetPacket)
+void CSE_ALifeMonsterAbstract::UPDATE_Read		(NET_Packet &tNetPacket)
 {
 	inherited::UPDATE_Read		(tNetPacket);
 	tNetPacket.r				(&m_tNextGraphID,			sizeof(m_tNextGraphID));
@@ -168,24 +168,24 @@ void CALifeMonsterAbstract::UPDATE_Read		(NET_Packet &tNetPacket)
 };
 
 #ifdef _EDITOR
-void CALifeMonsterAbstract::FillProp		(LPCSTR pref, PropItemVec& items)
+void CSE_ALifeMonsterAbstract::FillProp		(LPCSTR pref, PropItemVec& items)
 {
   	inherited::FillProp			(pref,items);
 }
 #endif
 
 ////////////////////////////////////////////////////////////////////////////
-// CALifeCreatureActor
+// CSE_ALifeCreatureActor
 ////////////////////////////////////////////////////////////////////////////
-CALifeCreatureActor::CALifeCreatureActor	(LPCSTR caSection) : CALifeCreatureAbstract(caSection), CALifeTraderAbstract(caSection), CAbstractServerObject(caSection)
+CSE_ALifeCreatureActor::CSE_ALifeCreatureActor	(LPCSTR caSection) : CSE_ALifeCreatureAbstract(caSection), CSE_ALifeTraderAbstract(caSection), CSE_Abstract(caSection)
 {
 	set_visual					("actors\\Different_stalkers\\stalker_hood_multiplayer.ogf");
 }
 
-void CALifeCreatureActor::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
+void CSE_ALifeCreatureActor::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
 	if (m_wVersion < 21) {
-		CALifeDynamicObject::STATE_Read(tNetPacket,size);
+		CSE_ALifeDynamicObject::STATE_Read(tNetPacket,size);
 		tNetPacket.r_u8			(s_team	);
 		tNetPacket.r_u8			(s_squad);
 		tNetPacket.r_u8			(s_group);
@@ -201,14 +201,14 @@ void CALifeCreatureActor::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 	}
 };
 
-void CALifeCreatureActor::STATE_Write		(NET_Packet	&tNetPacket)
+void CSE_ALifeCreatureActor::STATE_Write		(NET_Packet	&tNetPacket)
 {
 	inherited1::STATE_Write		(tNetPacket);
 	inherited2::STATE_Write		(tNetPacket);
 	visual_write				(tNetPacket);
 };
 
-void CALifeCreatureActor::UPDATE_Read		(NET_Packet	&tNetPacket)
+void CSE_ALifeCreatureActor::UPDATE_Read		(NET_Packet	&tNetPacket)
 {
 	inherited1::UPDATE_Read		(tNetPacket);
 	inherited2::UPDATE_Read		(tNetPacket);
@@ -218,7 +218,7 @@ void CALifeCreatureActor::UPDATE_Read		(NET_Packet	&tNetPacket)
 	tNetPacket.r_float_q16		(fArmor,	-1000,1000);
 	tNetPacket.r_u8				(weapon		);
 };
-void CALifeCreatureActor::UPDATE_Write		(NET_Packet	&tNetPacket)
+void CSE_ALifeCreatureActor::UPDATE_Write		(NET_Packet	&tNetPacket)
 {
 	inherited1::UPDATE_Write	(tNetPacket);
 	inherited2::UPDATE_Write	(tNetPacket);
@@ -230,7 +230,7 @@ void CALifeCreatureActor::UPDATE_Write		(NET_Packet	&tNetPacket)
 }
 
 #ifdef _EDITOR
-void CALifeCreatureActor::FillProp			(LPCSTR pref, PropItemVec& items)
+void CSE_ALifeCreatureActor::FillProp			(LPCSTR pref, PropItemVec& items)
 {
   	inherited1::FillProp		(pref,items);
   	inherited2::FillProp		(pref,items);
@@ -238,9 +238,9 @@ void CALifeCreatureActor::FillProp			(LPCSTR pref, PropItemVec& items)
 #endif
 
 ////////////////////////////////////////////////////////////////////////////
-// CALifeMonsterCrow
+// CSE_ALifeMonsterCrow
 ////////////////////////////////////////////////////////////////////////////
-void CALifeMonsterCrow::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
+void CSE_ALifeMonsterCrow::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
 {
 	if (m_wVersion > 20) {
 		inherited::STATE_Read	(tNetPacket,size);
@@ -248,33 +248,33 @@ void CALifeMonsterCrow::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
 	}
 }
 
-void CALifeMonsterCrow::STATE_Write			(NET_Packet	&tNetPacket)
+void CSE_ALifeMonsterCrow::STATE_Write			(NET_Packet	&tNetPacket)
 {
 	inherited::STATE_Write		(tNetPacket);
 	visual_write				(tNetPacket);
 }
 
-void CALifeMonsterCrow::UPDATE_Read			(NET_Packet	&tNetPacket)
+void CSE_ALifeMonsterCrow::UPDATE_Read			(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Read		(tNetPacket);
 }
 
-void CALifeMonsterCrow::UPDATE_Write		(NET_Packet	&tNetPacket)
+void CSE_ALifeMonsterCrow::UPDATE_Write		(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Write		(tNetPacket);
 }
 
 #ifdef _EDITOR
-void CALifeMonsterCrow::FillProp			(LPCSTR pref, PropItemVec& values)
+void CSE_ALifeMonsterCrow::FillProp			(LPCSTR pref, PropItemVec& values)
 {
   	inherited::FillProp			(pref,values);
 }
 #endif
 
 ////////////////////////////////////////////////////////////////////////////
-// CALifeMonsterRat
+// CSE_ALifeMonsterRat
 ////////////////////////////////////////////////////////////////////////////
-CALifeMonsterRat::CALifeMonsterRat			(LPCSTR caSection) : CALifeMonsterAbstract(caSection), CAbstractServerObject(caSection)
+CSE_ALifeMonsterRat::CSE_ALifeMonsterRat			(LPCSTR caSection) : CSE_ALifeMonsterAbstract(caSection), CSE_Abstract(caSection)
 {
 	set_visual					("monsters\\rat\\rat_1");
 	// personal charactersitics
@@ -303,7 +303,7 @@ CALifeMonsterRat::CALifeMonsterRat			(LPCSTR caSection) : CALifeMonsterAbstract(
 	fAttackSuccessProbability	= 0.5f;
 }
 
-void CALifeMonsterRat::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
+void CSE_ALifeMonsterRat::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
 {
 	// inherited properties
 	inherited::STATE_Read		(tNetPacket,size);
@@ -334,7 +334,7 @@ void CALifeMonsterRat::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
 	tNetPacket.r_float			(fAttackSuccessProbability);
 }
 
-void CALifeMonsterRat::STATE_Write			(NET_Packet	&tNetPacket)
+void CSE_ALifeMonsterRat::STATE_Write			(NET_Packet	&tNetPacket)
 {
 	// inherited properties
 	inherited::STATE_Write		(tNetPacket);
@@ -363,18 +363,18 @@ void CALifeMonsterRat::STATE_Write			(NET_Packet	&tNetPacket)
 	tNetPacket.w_float			(fAttackSuccessProbability);
 }
 
-void CALifeMonsterRat::UPDATE_Read			(NET_Packet	&tNetPacket)
+void CSE_ALifeMonsterRat::UPDATE_Read			(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Read		(tNetPacket);
 }
 
-void CALifeMonsterRat::UPDATE_Write			(NET_Packet	&tNetPacket)
+void CSE_ALifeMonsterRat::UPDATE_Write			(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Write		(tNetPacket);
 }
 
 #ifdef _EDITOR
-void CALifeMonsterRat::FillProp				(LPCSTR pref, PropItemVec& items)
+void CSE_ALifeMonsterRat::FillProp				(LPCSTR pref, PropItemVec& items)
 {
    	inherited::FillProp			(pref, items);
 	// personal characteristics
@@ -404,9 +404,9 @@ void CALifeMonsterRat::FillProp				(LPCSTR pref, PropItemVec& items)
 #endif
 
 ////////////////////////////////////////////////////////////////////////////
-// CALifeMonsterZombie
+// CSE_ALifeMonsterZombie
 ////////////////////////////////////////////////////////////////////////////
-CALifeMonsterZombie::CALifeMonsterZombie	(LPCSTR caSection) : CALifeMonsterAbstract(caSection), CAbstractServerObject(caSection)
+CSE_ALifeMonsterZombie::CSE_ALifeMonsterZombie	(LPCSTR caSection) : CSE_ALifeMonsterAbstract(caSection), CSE_Abstract(caSection)
 {
 	set_visual					("monsters\\zombie\\zombie_1");
 	// personal charactersitics
@@ -425,7 +425,7 @@ CALifeMonsterZombie::CALifeMonsterZombie	(LPCSTR caSection) : CALifeMonsterAbstr
 	fAttackAngle				= 15;
 }
 
-void CALifeMonsterZombie::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
+void CSE_ALifeMonsterZombie::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
 	// inherited properties
 	inherited::STATE_Read		(tNetPacket,size);
@@ -446,7 +446,7 @@ void CALifeMonsterZombie::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 	tNetPacket.r_float			(fAttackAngle);
 }
 
-void CALifeMonsterZombie::STATE_Write		(NET_Packet	&tNetPacket)
+void CSE_ALifeMonsterZombie::STATE_Write		(NET_Packet	&tNetPacket)
 {
 	// inherited properties
 	inherited::STATE_Write		(tNetPacket);
@@ -465,18 +465,18 @@ void CALifeMonsterZombie::STATE_Write		(NET_Packet	&tNetPacket)
 	tNetPacket.w_float			(fAttackAngle);
 }
 
-void CALifeMonsterZombie::UPDATE_Read		(NET_Packet	&tNetPacket)
+void CSE_ALifeMonsterZombie::UPDATE_Read		(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Read		(tNetPacket);
 }
 
-void CALifeMonsterZombie::UPDATE_Write		(NET_Packet	&tNetPacket)
+void CSE_ALifeMonsterZombie::UPDATE_Write		(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Write		(tNetPacket);
 }
 
 #ifdef _EDITOR
-void CALifeMonsterZombie::FillProp			(LPCSTR pref, PropItemVec& items)
+void CSE_ALifeMonsterZombie::FillProp			(LPCSTR pref, PropItemVec& items)
 {
    	inherited::FillProp			(pref, items);
 	// personal characteristics
@@ -496,37 +496,37 @@ void CALifeMonsterZombie::FillProp			(LPCSTR pref, PropItemVec& items)
 #endif
 
 //////////////////////////////////////////////////////////////////////////
-// CALifeMonsterBiting
+// CSE_ALifeMonsterBiting
 //////////////////////////////////////////////////////////////////////////
-CALifeMonsterBiting::CALifeMonsterBiting	(LPCSTR caSection) : CALifeMonsterAbstract(caSection), CAbstractServerObject(caSection)
+CSE_ALifeMonsterBiting::CSE_ALifeMonsterBiting	(LPCSTR caSection) : CSE_ALifeMonsterAbstract(caSection), CSE_Abstract(caSection)
 {
     set_visual					(pSettings->r_string(caSection,"visual"));
 }
 
-void CALifeMonsterBiting::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
+void CSE_ALifeMonsterBiting::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
 	inherited::STATE_Read		(tNetPacket,size);
 }
 
-void CALifeMonsterBiting::STATE_Write		(NET_Packet	&tNetPacket)
+void CSE_ALifeMonsterBiting::STATE_Write		(NET_Packet	&tNetPacket)
 {
 	inherited::STATE_Write		(tNetPacket);
 }
 
-void CALifeMonsterBiting::UPDATE_Read		(NET_Packet	&tNetPacket)
+void CSE_ALifeMonsterBiting::UPDATE_Read		(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Read		(tNetPacket);
 }
 
-void CALifeMonsterBiting::UPDATE_Write		(NET_Packet	&tNetPacket)
+void CSE_ALifeMonsterBiting::UPDATE_Write		(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Write		(tNetPacket);
 }
 
 //////////////////////////////////////////////////////////////////////////
-// CALifeHumanAbstract
+// CSE_ALifeHumanAbstract
 //////////////////////////////////////////////////////////////////////////
-void CALifeHumanAbstract::STATE_Write		(NET_Packet &tNetPacket)
+void CSE_ALifeHumanAbstract::STATE_Write		(NET_Packet &tNetPacket)
 {
 	inherited1::STATE_Write		(tNetPacket);
 	inherited2::STATE_Write		(tNetPacket);
@@ -535,7 +535,7 @@ void CALifeHumanAbstract::STATE_Write		(NET_Packet &tNetPacket)
 	save_vector					(m_tpTasks,tNetPacket);
 }
 
-void CALifeHumanAbstract::STATE_Read		(NET_Packet &tNetPacket, u16 size)
+void CSE_ALifeHumanAbstract::STATE_Read		(NET_Packet &tNetPacket, u16 size)
 {
 	inherited1::STATE_Read		(tNetPacket, size);
 	inherited2::STATE_Read		(tNetPacket, size);
@@ -546,7 +546,7 @@ void CALifeHumanAbstract::STATE_Read		(NET_Packet &tNetPacket, u16 size)
 	}
 }
 
-void CALifeHumanAbstract::UPDATE_Write		(NET_Packet &tNetPacket)
+void CSE_ALifeHumanAbstract::UPDATE_Write		(NET_Packet &tNetPacket)
 {
 	// calling inherited
 	inherited1::UPDATE_Write	(tNetPacket);
@@ -556,7 +556,7 @@ void CALifeHumanAbstract::UPDATE_Write		(NET_Packet &tNetPacket)
 	tNetPacket.w_u32			(m_dwCurTask);
 };
 
-void CALifeHumanAbstract::UPDATE_Read		(NET_Packet &tNetPacket)
+void CSE_ALifeHumanAbstract::UPDATE_Read		(NET_Packet &tNetPacket)
 {
 	// calling inherited
 	inherited1::UPDATE_Read		(tNetPacket);
@@ -567,7 +567,7 @@ void CALifeHumanAbstract::UPDATE_Read		(NET_Packet &tNetPacket)
 };
 
 #ifdef _EDITOR
-void CALifeHumanAbstract::FillProp			(LPCSTR pref, PropItemVec& items)
+void CSE_ALifeHumanAbstract::FillProp			(LPCSTR pref, PropItemVec& items)
 {
   	inherited1::FillProp		(pref,items);
   	inherited2::FillProp		(pref,items);
@@ -575,61 +575,61 @@ void CALifeHumanAbstract::FillProp			(LPCSTR pref, PropItemVec& items)
 #endif
 
 //////////////////////////////////////////////////////////////////////////
-// CALifeHumanStalker
+// CSE_ALifeHumanStalker
 //////////////////////////////////////////////////////////////////////////
-void CALifeHumanStalker::STATE_Write		(NET_Packet &tNetPacket)
+void CSE_ALifeHumanStalker::STATE_Write		(NET_Packet &tNetPacket)
 {
 	inherited::STATE_Write		(tNetPacket);
 }
 
-void CALifeHumanStalker::STATE_Read			(NET_Packet &tNetPacket, u16 size)
+void CSE_ALifeHumanStalker::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 {
 	inherited::STATE_Read		(tNetPacket, size);
 }
 
-void CALifeHumanStalker::UPDATE_Write		(NET_Packet &tNetPacket)
+void CSE_ALifeHumanStalker::UPDATE_Write		(NET_Packet &tNetPacket)
 {
 	inherited::UPDATE_Write		(tNetPacket);
 };
 
-void CALifeHumanStalker::UPDATE_Read		(NET_Packet &tNetPacket)
+void CSE_ALifeHumanStalker::UPDATE_Read		(NET_Packet &tNetPacket)
 {
 	inherited::UPDATE_Read		(tNetPacket);
 };
 
 //////////////////////////////////////////////////////////////////////////
-// CALifeObjectIdol
+// CSE_ALifeObjectIdol
 //////////////////////////////////////////////////////////////////////////
-CALifeObjectIdol::CALifeObjectIdol			(LPCSTR caSection) : CALifeHumanAbstract(caSection), CAbstractServerObject(caSection)
+CSE_ALifeObjectIdol::CSE_ALifeObjectIdol			(LPCSTR caSection) : CSE_ALifeHumanAbstract(caSection), CSE_Abstract(caSection)
 {
 	m_dwAniPlayType				= 0;
 	m_caAnimations[0]			= 0;
 }
 
-void CALifeObjectIdol::STATE_Read			(NET_Packet& tNetPacket, u16 size)
+void CSE_ALifeObjectIdol::STATE_Read			(NET_Packet& tNetPacket, u16 size)
 {
 	inherited::STATE_Read		(tNetPacket,size);
 	tNetPacket.r_string			(m_caAnimations);
 	tNetPacket.r_u32			(m_dwAniPlayType);
 }
 
-void CALifeObjectIdol::STATE_Write			(NET_Packet& tNetPacket)
+void CSE_ALifeObjectIdol::STATE_Write			(NET_Packet& tNetPacket)
 {
 	inherited::STATE_Write		(tNetPacket);
 	tNetPacket.w_string			(m_caAnimations);
 	tNetPacket.w_u32			(m_dwAniPlayType);
 }
 
-void CALifeObjectIdol::UPDATE_Read			(NET_Packet& tNetPacket)
+void CSE_ALifeObjectIdol::UPDATE_Read			(NET_Packet& tNetPacket)
 {
 }
 
-void CALifeObjectIdol::UPDATE_Write			(NET_Packet& tNetPacket)
+void CSE_ALifeObjectIdol::UPDATE_Write			(NET_Packet& tNetPacket)
 {
 }
 
 #ifdef _EDITOR
-void CALifeObjectIdol::FillProp(LPCSTR pref, PropItemVec& items)
+void CSE_ALifeObjectIdol::FillProp(LPCSTR pref, PropItemVec& items)
 {
    	inherited::FillProp			(pref, items);
     PHelper.CreateText			(items, PHelper.PrepareKey(pref,s_name,"Idol", "Animations"),m_caAnimations,sizeof(m_caAnimations));

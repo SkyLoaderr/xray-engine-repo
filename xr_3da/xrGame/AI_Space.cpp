@@ -32,7 +32,7 @@ CAI_Space::CAI_Space	()
 	
 	string256					caFileName;
 	if (FS.exist(caFileName,"$game_data$",GRAPH_NAME))
-		CALifeGraph::Load		(caFileName);
+		CSE_ALifeGraph::Load		(caFileName);
 }
 
 CAI_Space::~CAI_Space	()
@@ -65,7 +65,7 @@ void CAI_Space::Unload()
 
 void CAI_Space::Load()
 {
-	CALifeCrossTable::Unload();
+	CSE_ALifeCrossTable::Unload();
 	Unload		();
 
 	string256	fName;
@@ -112,7 +112,7 @@ void CAI_Space::Load()
 	if (!FS.exist(fName,"$level$",CROSS_TABLE_NAME))
 		return;
 
-	CALifeCrossTable::Load	(fName);
+	CSE_ALifeCrossTable::Load	(fName);
 
 	bool bOk = false;
 	u32 N = m_tGraphHeader.dwLevelCount, I = (u32)(-1);
@@ -152,7 +152,7 @@ void CAI_Space::Render()
 				NORMALIZE_VECTOR(t1);
 				RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
 				for (int j=0; j<(int)m_tpaGraph[i].tNeighbourCount; j++) {
-					Fvector t2 = m_tpaGraph[((CALifeGraph::SGraphEdge *)((BYTE *)m_tpaGraph + m_tpaGraph[i].dwEdgeOffset) + j)->dwVertexNumber].tGlobalPoint;
+					Fvector t2 = m_tpaGraph[((CSE_ALifeGraph::SGraphEdge *)((BYTE *)m_tpaGraph + m_tpaGraph[i].dwEdgeOffset) + j)->dwVertexNumber].tGlobalPoint;
 					t2.y += .6f;
 					NORMALIZE_VECTOR(t2);
 					RCache.dbg_DrawLINE(Fidentity,t1,t2,D3DCOLOR_XRGB(0,255,0));
@@ -201,9 +201,9 @@ void CAI_Space::Render()
 						//						RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,0));
 						//					}
 						{
-							CALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CALifeMonsterAbstract *>((*I).second);
+							CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract *>((*I).second);
 							if (tpALifeMonsterAbstract && tpALifeMonsterAbstract->m_bDirectControl && !tpALifeMonsterAbstract->m_bOnline) {
-								CALifeHumanAbstract *tpALifeHuman = dynamic_cast<CALifeHumanAbstract *>(tpALifeMonsterAbstract);
+								CSE_ALifeHumanAbstract *tpALifeHuman = dynamic_cast<CSE_ALifeHumanAbstract *>(tpALifeMonsterAbstract);
 								if (tpALifeHuman && tpALifeHuman->m_tpaVertices.size()) {
 									Fvector t1 = m_tpaGraph[tpALifeHuman->m_tpaVertices[0]].tGlobalPoint;
 									t1.y += .6f;
@@ -236,7 +236,7 @@ void CAI_Space::Render()
 								}
 							}
 							else {
-								CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>((*I).second);
+								CSE_ALifeItem *tpALifeItem = dynamic_cast<CSE_ALifeItem *>((*I).second);
 								if (tpALifeItem && !tpALifeItem->bfAttached()) {
 									Fvector t1 = m_tpaGraph[(*I).second->m_tGraphID].tGlobalPoint;
 									t1.y += .6f;

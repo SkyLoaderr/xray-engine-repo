@@ -11,7 +11,7 @@
 #include "a_star_template.h"
 #include "a_star_interfaces.h"
 
-class CALifeAStar {
+class CSE_ALifeAStar {
 public:
 	SNode													*m_tpHeap;
 	SIndexNode												*m_tpIndexes;
@@ -20,7 +20,7 @@ public:
 	SAIMapDataG												m_tAIGraphData;
 	CAStarSearch<CAIGraphShortestPathNode,SAIMapDataG>		*m_tpGraphPath;
 
-											CALifeAStar()
+											CSE_ALifeAStar()
 	{
 		m_tpHeap							= 0;
 		m_tpIndexes							= 0;
@@ -28,7 +28,7 @@ public:
 		m_tpaNodes.clear					();
 	};
 
-	virtual									~CALifeAStar()
+	virtual									~CSE_ALifeAStar()
 	{
 		xr_free								(m_tpHeap);
 		xr_free								(m_tpIndexes);
