@@ -164,7 +164,7 @@ void CCustomObject::RotateLocal(Fvector& axis, float angle)
     m.rotation(axis,angle);
     FTransformRP.mulB(m);
     FTransformRP.getXYZ(r);
-    PRotation		= r;
+    PRotation		= r;    
 }
 
 void CCustomObject::PivotScale( const Fmatrix& prev_inv, const Fmatrix& current, Fvector& amount )

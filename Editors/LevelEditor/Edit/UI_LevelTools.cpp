@@ -80,7 +80,7 @@ bool __fastcall CLevelTools::MouseStart(TShiftState Shift)
     return false;
 }
 //---------------------------------------------------------------------------
-void __fastcall CLevelTools::MouseMove(TShiftState Shift)
+void __fastcall CLevelTools::MouseMove(TShiftState Shift) 
 {
     if(pCurTools&&pCurTools->pCurControl) pCurTools->pCurControl->Move(Shift);
 }

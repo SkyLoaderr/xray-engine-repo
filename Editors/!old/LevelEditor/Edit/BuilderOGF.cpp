@@ -37,7 +37,8 @@ bool SceneBuilder::BuildHOMModel()
 	return bValid;
 }
 
-bool SceneBuilder::BuildAIMap(){
+bool SceneBuilder::BuildAIMap()
+{
 	// build sky ogf
     if (Scene.GetMTools(OBJCLASS_AIMAP)->Valid()){
 	    AnsiString fname = m_LevelPath+"build.aimap";
