@@ -18,8 +18,8 @@ void __fastcall render_Cached(CList<FCached*>& cache)
 		for (DWORD End=Start; End<cache.size(); End++)
 		{
 			FCached& V	=	*(cache[End]);
-			t			=	v_count+V.vCount;
 			if (V.VS!=vs)		break;
+			t			=	v_count+V.vCount;
 			if (t>v_limit)		break;
 			v_count		=	t;
 			i_count		+=	V.iCount;
