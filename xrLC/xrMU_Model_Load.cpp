@@ -63,5 +63,6 @@ xrMU_Model::_vertex* xrMU_Model::load_create_vertex(Fvector& P)
 	_vertex*	_V		= mu_vertices.create();
 	_V->P				= P;
 	_V->N.set			(0,0,0);
+	m_vertices.push_back(_V);
 	return _V;
 }
