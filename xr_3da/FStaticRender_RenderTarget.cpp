@@ -58,7 +58,7 @@ BOOL CRenderTarget::Create	()
 	R_CHK	(HW.pDevice->GetDepthStencilSurface	(&pBaseZB));
 	
 	// Texture and shader
-	pStream		= Device.Streams.Create			(FVF::F_TL,6);
+	pStream		= Device.Streams.Create			(FVF::F_TL,8);
 	pTexture	= Device.Shader._CreateTexture	(RTname);
 	pShaderSet	= Device.Shader.Create			("effects\\screen_set",		RTname);
 	pShaderGray	= Device.Shader.Create			("effects\\screen_gray",	RTname);
@@ -104,8 +104,9 @@ void CRenderTarget::End		()
 	
 	// Draw full-screen quad textured with our scene image
 	DWORD	Offset;
-	DWORD	C		= D3DCOLOR_RGBA	(120,120,120,0);
-	// DWORD	C		= 0xffffffff;
+	DWORD	Cgray	= D3DCOLOR_RGBA	(120,120,120,0);
+	int		A		= iFloor		((1-param_gray)*255.f); clamp(A,0,255);
+	DWORD	Calpha	= D3DCOLOR_RGBA	(255,255,255,A);
 	float	tw		= float(Device.dwWidth);
 	float	th		= float(Device.dwHeight);
 	DWORD	_w		= Device.dwWidth;
@@ -121,14 +122,30 @@ void CRenderTarget::End		()
 	p1.add			(shift);
 	
 	// Fill vertex buffer
-	FVF::TL* pv = (FVF::TL*) pStream->Lock(4,Offset);
-	pv->set(0,			float(_h),	.0001f,.9999f, C, p0.x, p1.y);	pv++;
-	pv->set(0,			0,			.0001f,.9999f, C, p0.x, p0.y);	pv++;
-	pv->set(float(_w),	float(_h),	.0001f,.9999f, C, p1.x, p1.y);	pv++;
-	pv->set(float(_w),	0,			.0001f,.9999f, C, p1.x, p0.y);	pv++;
-	pStream->Unlock			(4);
+	FVF::TL* pv = (FVF::TL*) pStream->Lock(8,Offset);
+	pv->set(0,			float(_h),	.0001f,.9999f, Cgray, p0.x, p1.y);	pv++;
+	pv->set(0,			0,			.0001f,.9999f, Cgray, p0.x, p0.y);	pv++;
+	pv->set(float(_w),	float(_h),	.0001f,.9999f, Cgray, p1.x, p1.y);	pv++;
+	pv->set(float(_w),	0,			.0001f,.9999f, Cgray, p1.x, p0.y);	pv++;
+	pv->set(0,			float(_h),	.0001f,.9999f, Calpha,p0.x, p1.y);	pv++;
+	pv->set(0,			0,			.0001f,.9999f, Calpha,p0.x, p0.y);	pv++;
+	pv->set(float(_w),	float(_h),	.0001f,.9999f, Calpha,p1.x, p1.y);	pv++;
+	pv->set(float(_w),	0,			.0001f,.9999f, Calpha,p1.x, p0.y);	pv++;
+	pStream->Unlock			(8);
 
 	// Actual rendering
-	Device.Shader.set_Shader(pShaderGray);
-	Device.Primitive.Draw	(pStream,4,2,Offset,Device.Streams_QuadIB);
+	if (param_gray>0.01f) {
+		// Draw GRAY
+		Device.Shader.set_Shader(pShaderGray);
+		Device.Primitive.Draw	(pStream,4,2,Offset+0,Device.Streams_QuadIB);
+		if (param_gray<0.09f) {
+			// Blend COLOR
+			Device.Shader.set_Shader(pShaderBlend);
+			Device.Primitive.Draw	(pStream,4,2,Offset+4,Device.Streams_QuadIB);
+		}
+	} else {
+		// Draw COLOR
+		Device.Shader.set_Shader(pShaderSet);
+		Device.Primitive.Draw	(pStream,4,2,Offset+4,Device.Streams_QuadIB);
+	}
 }

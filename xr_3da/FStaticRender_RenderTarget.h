@@ -12,6 +12,7 @@ private:
 	CTexture*			pTexture;
 	Shader*				pShaderSet;
 	Shader*				pShaderGray;
+	Shader*				pShaderBlend;
 	CVertexStream*		pStream;
 	
 	BOOL				Create				();
@@ -24,7 +25,7 @@ public:
 	void				OnDeviceCreate		();
 	void				OnDeviceDestroy		();
 
-	BOOL				NeedPostProcess		()	{ return (param_blur>EPS)||(param_gray>EPS); }
+	BOOL				NeedPostProcess		()	{ return (param_blur>0.01f)||(param_gray>0.01f); }
 	BOOL				Available			()	{ return bAvailable; }
 
 	void				Begin				();
