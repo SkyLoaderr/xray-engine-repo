@@ -97,9 +97,10 @@ void CAI_ALife::ProcessOnlineOfflineSwitches(CALifeDynamicObject *I)
 						if (m_tpActor->o_Position.distance_to(tpEnemy->o_Position) > m_fOnlineDistance)
 							dwCount++;
 					}
-					if (dwCount == tpALifeAbstractGroup->m_tpMembers.size())
-						if (Device.dwTimeGlobal -  I->m_dwLastSwitchTime > m_dwSwitchDelay)
-							vfSwitchObjectOffline(I);
+					if (tpALifeAbstractGroup->m_tpMembers.size())
+						if (dwCount == tpALifeAbstractGroup->m_tpMembers.size())
+							if (Device.dwTimeGlobal -  I->m_dwLastSwitchTime > m_dwSwitchDelay)
+								vfSwitchObjectOffline(I);
 				}
 			}
 			else
@@ -115,35 +116,15 @@ void CAI_ALife::ProcessOnlineOfflineSwitches(CALifeDynamicObject *I)
 		if (I->ID_Parent == 0xffff) {
 			if (I->m_dwLastSwitchTime) {
 				CALifeAbstractGroup *tpALifeAbstractGroup = dynamic_cast<CALifeAbstractGroup*>(I);
-				if (!tpALifeAbstractGroup) {
-					if (m_tpActor->o_Position.distance_to(I->o_Position) <= m_fOnlineDistance) {
-						if (Device.dwTimeGlobal -  I->m_dwLastSwitchTime > m_dwSwitchDelay)
-							vfSwitchObjectOnline(I);
-					}
-					else
-						I->m_dwLastSwitchTime = 0;
+				if (tpALifeAbstractGroup && (!tpALifeAbstractGroup->m_tpMembers.size()))
+					return;
+				
+				if (m_tpActor->o_Position.distance_to(I->o_Position) <= m_fOnlineDistance) {
+					if (Device.dwTimeGlobal -  I->m_dwLastSwitchTime > m_dwSwitchDelay)
+						vfSwitchObjectOnline(I);
 				}
-				else {
-					u32		  dwCount = 0;
-					for (u32 i=0, N = tpALifeAbstractGroup->m_tpMembers.size(); i<N; i++) {
-						OBJECT_PAIR_IT			J = m_tObjectRegistry.find(tpALifeAbstractGroup->m_tpMembers[i]);
-						VERIFY					(J != m_tObjectRegistry.end());
-						xrSE_Enemy				*tpEnemy = dynamic_cast<xrSE_Enemy*>((*J).second);
-						if (tpEnemy && (tpEnemy->fHealth <= 0)) {
-							tpEnemy->m_bDirectControl = true;
-							tpALifeAbstractGroup->m_tpMembers.erase(tpALifeAbstractGroup->m_tpMembers.begin() + i);
-							CALifeScheduleRegistry::Update(tpEnemy);
-							i--;
-							N--;
-							continue;
-						}
-						if (m_tpActor->o_Position.distance_to(tpEnemy->o_Position) <= m_fOnlineDistance)
-							dwCount++;
-					}
-					if (dwCount == tpALifeAbstractGroup->m_tpMembers.size())
-						if (Device.dwTimeGlobal -  I->m_dwLastSwitchTime > m_dwSwitchDelay)
-							vfSwitchObjectOnline(I);
-				}
+				else
+					I->m_dwLastSwitchTime = 0;
 			}
 			else
 				I->m_dwLastSwitchTime = Device.dwTimeGlobal;

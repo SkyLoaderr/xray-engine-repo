@@ -240,6 +240,8 @@ public:
 
 	IC void							Update(CALifeDynamicObject *tpALifeDynamicObject)
 	{
+		if (!tpALifeDynamicObject->m_bDirectControl)
+			return;
 		if (tpALifeDynamicObject->s_flags.is(M_SPAWN_OBJECT_ASPLAYER))
 			m_tpActor = tpALifeDynamicObject;
 		
@@ -368,8 +370,10 @@ public:
 
 	IC void							Update(CALifeDynamicObject *tpALifeDynamicObject)
 	{
+		if (!tpALifeDynamicObject->m_bDirectControl)
+			return;
 		CALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CALifeMonsterAbstract *>(tpALifeDynamicObject);
-		if (tpALifeMonsterAbstract && tpALifeMonsterAbstract->m_bDirectControl)
+		if (tpALifeMonsterAbstract)
 			m_tpScheduledObjects.push_back	(tpALifeMonsterAbstract);
 	};	
 };

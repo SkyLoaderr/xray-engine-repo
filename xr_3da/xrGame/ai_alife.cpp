@@ -85,7 +85,8 @@ void CAI_ALife::vfNewGame()
 			OBJECT_IT			EE = tpALifeAbstractGroup->m_tpMembers.end();
 			for ( ; II != EE; II++) {
 				NET_Packet			tNetPacket;
-				xrServerEntity		*tp1 = F_entity_Create	(pSettings->ReadSTRING((*I)->s_name,"monster_section"));
+				LPCSTR				S = pSettings->ReadSTRING((*I)->s_name,"monster_section");
+				xrServerEntity		*tp1 = F_entity_Create	(S);
 				R_ASSERT2			(tp1,"Can't create entity.");
 				CALifeDynamicObject	*tp2 = dynamic_cast<CALifeDynamicObject*>(tpServerEntity);
 				R_ASSERT			(tp2);
@@ -96,6 +97,7 @@ void CAI_ALife::vfNewGame()
 				u16					id;
 				tNetPacket.r_begin	(id);
 				tp2->UPDATE_Read	(tNetPacket);
+				Memory.mem_copy		(tp2->s_name,S,(strlen(S) + 1)*sizeof(char));
 				tp2->m_bDirectControl	= false;
 				tp2->ID				= 0xffff;
 				vfCreateObject		(tp2);
@@ -179,6 +181,7 @@ void CAI_ALife::vfUpdateDynamicData(CALifeDynamicObject *tpALifeDynamicObject)
 	CALifeGraphRegistry::Update		(tpALifeDynamicObject);
 	CALifeTraderRegistry::Update	(tpALifeDynamicObject);
 	CALifeScheduleRegistry::Update	(tpALifeDynamicObject);
+	m_tpServer->PerformIDgen		(tpALifeDynamicObject->ID);
 }
 
 void CAI_ALife::vfUpdateDynamicData()
