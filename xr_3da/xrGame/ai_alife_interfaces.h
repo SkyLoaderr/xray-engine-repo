@@ -30,5 +30,15 @@ public:
 	virtual void					STATE_Read	(NET_Packet &tNetPacket, u16 size)		= 0;
 	virtual void					UPDATE_Write(NET_Packet &tNetPacket)				= 0;
 	virtual void					UPDATE_Read	(NET_Packet &tNetPacket)				= 0;
+	// for template compatibility only
+	IC		void					Save		(NET_Packet &tNetPacket)
+	{
+		UPDATE_Write				(tNetPacket);
+	}
+	
+	IC		void					Load		(NET_Packet &tNetPacket)
+	{
+		UPDATE_Read					(tNetPacket);
+	}
 };
 #endif

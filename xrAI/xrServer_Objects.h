@@ -81,16 +81,6 @@ public:
 	virtual void					OnEvent			(NET_Packet &tNetPacket, u16 type, u32 time, u32 sender ){};
 	void							Spawn_Write		(NET_Packet &tNetPacket, BOOL bLocal);
 	BOOL							Spawn_Read		(NET_Packet &tNetPacket);
-	// for template compatibility only
-	IC		void					Save			(NET_Packet &tNetPacket)
-	{
-		UPDATE_Write				(tNetPacket);
-	}
-	
-	IC		void					Load			(NET_Packet &tNetPacket)
-	{
-		UPDATE_Read					(tNetPacket);
-	}
 	// editor integration
 #ifdef _EDITOR
     virtual void					FillProp		(LPCSTR pref, PropItemVec &items);

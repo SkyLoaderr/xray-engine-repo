@@ -139,7 +139,7 @@ void CSE_ALifeEventRegistry::Save(IWriter &tMemoryStream)
 {
 	tMemoryStream.open_chunk	(EVENT_CHUNK_DATA);
 	tMemoryStream.w				(&m_tEventID,sizeof(m_tEventID));
-	save_map					(m_tEventRegistry,tMemoryStream);
+//	save_map					(m_tEventRegistry,tMemoryStream);
 	tMemoryStream.close_chunk	();
 }
 
@@ -147,7 +147,7 @@ void CSE_ALifeEventRegistry::Load(IReader	&tFileStream)
 {
 	R_ASSERT2					(tFileStream.find_chunk(EVENT_CHUNK_DATA),"Can't find chunk EVENT_CHUNK_DATA!");
 	tFileStream.r				(&m_tEventID,sizeof(m_tEventID));
-	load_map					(m_tEventRegistry,tFileStream,tfChooseEventKeyPredicate);
+//	load_map					(m_tEventRegistry,tFileStream,tfChooseEventKeyPredicate);
 }
 
 void CSE_ALifeEventRegistry::Add(CSE_ALifeEvent	*tpEvent)
@@ -173,7 +173,7 @@ void CSE_ALifeTaskRegistry::Save(IWriter &tMemoryStream)
 {
 	tMemoryStream.open_chunk	(TASK_CHUNK_DATA);
 	tMemoryStream.w				(&m_tTaskID,sizeof(m_tTaskID));
-	save_map					(m_tTaskRegistry,tMemoryStream);
+//	save_map					(m_tTaskRegistry,tMemoryStream);
 	tMemoryStream.close_chunk	();
 }
 
@@ -181,7 +181,7 @@ void CSE_ALifeTaskRegistry::Load(IReader	&tFileStream)
 {
 	R_ASSERT2					(tFileStream.find_chunk(TASK_CHUNK_DATA),"Can't find chunk TASK_CHUNK_DATA");
 	tFileStream.r				(&m_tTaskID,sizeof(m_tTaskID));
-	load_map					(m_tTaskRegistry,tFileStream,tfChooseTaskKeyPredicate);
+//	load_map					(m_tTaskRegistry,tFileStream,tfChooseTaskKeyPredicate);
 }
 
 void CSE_ALifeTaskRegistry::Add	(CSE_ALifeTask	*tpTask)
@@ -537,7 +537,7 @@ void CSE_ALifeAnomalyRegistry::Save(IWriter &tMemoryStream)
 	ANOMALY_P_VECTOR_IT			I = m_tpAnomalies.begin();
 	ANOMALY_P_VECTOR_IT			E = m_tpAnomalies.end();
 	for ( ; I != E; I++)
-		save_object_vector		(*I,tMemoryStream);
+		save_vector				(*I,tMemoryStream);
 	tMemoryStream.close_chunk	();
 }
 
@@ -548,7 +548,7 @@ void CSE_ALifeAnomalyRegistry::Load(IReader &tFileStream)
 	ANOMALY_P_VECTOR_IT			I = m_tpAnomalies.begin();
 	ANOMALY_P_VECTOR_IT			E = m_tpAnomalies.end();
 	for ( ; I != E; I++)
-		load_object_vector		(*I,tFileStream);
+		load_vector				(*I,tFileStream);
 }
 
 ////////////////////////////////////////////////////////////////////////////
