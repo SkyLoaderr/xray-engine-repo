@@ -52,7 +52,7 @@ CDeflector::CDeflector()
 	dwHeight	= 0;
 	bMerged		= FALSE;
 	UVpolys.reserve	(32);
-	layers.reserve	(16);
+	layers.reserve	(2);
 }
 CDeflector::~CDeflector()
 {
