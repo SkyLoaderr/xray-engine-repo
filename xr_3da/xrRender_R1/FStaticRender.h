@@ -1,6 +1,5 @@
 #pragma once
 
-#include "..\modelpool.h"
 #include "..\PSLibrary.h"
 
 #include "portal.h"
@@ -11,6 +10,7 @@
 #include "fstaticrender_types.h"
 #include "fstaticrender_scenegraph.h"
 #include "fstaticrender_rendertarget.h"
+#include "modelpool.h"
 
 #include "lightShadows.h"
 #include "lightProjector.h"

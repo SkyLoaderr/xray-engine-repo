@@ -5,16 +5,15 @@
 #include "stdafx.h"
 #include "ModelPool.h"
 #include "fmesh.h"
-#include "fvisual.h"
-#include "fprogressivefixedvisual.h"
-#include "fhierrarhyvisual.h"
-#include "bodyinstance.h"
-#include "PSVisual.h"
-#include "fcached.h"
-#include "flod.h"
-#include "ftreevisual.h"
 
-#include "x_ray.h"
+#include "..\fvisual.h"
+#include "..\fprogressivefixedvisual.h"
+#include "..\fhierrarhyvisual.h"
+#include "..\bodyinstance.h"
+#include "..\PSVisual.h"
+#include "..\fcached.h"
+#include "..\flod.h"
+#include "..\ftreevisual.h"
 
 IVisual*	CModelPool::Instance_Create(u32 type)
 {
@@ -208,3 +207,4 @@ IVisual* CModelPool::CreatePS	(PS::SDef_RT* source, PS::SEmitter* E)
 	V->Compile		(source,E);
 	return V;
 }
+

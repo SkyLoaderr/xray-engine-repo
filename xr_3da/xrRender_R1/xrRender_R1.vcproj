@@ -546,6 +546,16 @@
 				RelativePath="occRasterizer_core.cpp">
 			</File>
 		</Filter>
+		<Filter
+			Name="Models"
+			Filter="">
+			<File
+				RelativePath="ModelPool.cpp">
+			</File>
+			<File
+				RelativePath="ModelPool.h">
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
