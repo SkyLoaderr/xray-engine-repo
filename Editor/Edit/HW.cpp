@@ -93,7 +93,7 @@ void CHW::CreateDevice		(HWND m_hWnd,DWORD &dwWidth,DWORD &dwHeight)
 	P.BackBufferCount		= 1;
 
 	// Multisample
-	P.MultiSampleType	= D3DMULTISAMPLE_NONE;
+	P.MultiSampleType		= D3DMULTISAMPLE_NONE;
 
 	// Windoze
     P.SwapEffect			= D3DSWAPEFFECT_DISCARD;

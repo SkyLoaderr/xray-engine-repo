@@ -181,6 +181,7 @@ USEUNIT("shared\pure.cpp");
 USEUNIT("edit\CustomObject.cpp");
 USEUNIT("edit\SceneObject.cpp");
 USEUNIT("edit\SceneObjectIO.cpp");
+USEUNIT("shared\xrImage_Resampler.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

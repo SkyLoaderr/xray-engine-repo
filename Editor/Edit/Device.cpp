@@ -413,8 +413,47 @@ struct clr_16{
 bool CRenderDevice::MakeScreenshot(DWORDVec& pixels, DWORD& width, DWORD& height){
 	if (!bReady) return false;
 
+    width 	= 256;
+    height 	= 256;
+
+    IDirect3DSurface8* pZB=0;
+    IDirect3DSurface8* pRT=0;
+    IDirect3DSurface8* poldRT=0;
+    HW.pDevice->GetRenderTarget(&poldRT);
+	HW.pDevice->GetDepthStencilSurface(&pZB);
+	HW.pDevice->CreateRenderTarget(width,height,D3DFMT_A8R8G8B8,D3DMULTISAMPLE_NONE,TRUE,&pRT);
+    HW.pDevice->SetRenderTarget(pRT,pZB);
+
+    DWORD old_flag = psDeviceFlags;
+	psDeviceFlags &=~rsStatistic;
+	UI->Redraw();
+    psDeviceFlags = old_flag;
+
+	D3DLOCKED_RECT	D;
+	R_CHK(pRT->LockRect(&D,0,D3DLOCK_NOSYSLOCK));
+	pixels.resize(width*height);
+	// Image processing
+	DWORD* pPixel	= (DWORD*)D.pBits;
+
+    UI->ProgressStart(height,"Screenshot making");
+    DWORDIt it 		= pixels.begin();
+    for (DWORD h=0; h<height; h++,it+=width){
+        LPDWORD dt 	= LPDWORD(DWORD(pPixel)+DWORD(D.Pitch*h));
+        CopyMemory	(it,dt,sizeof(DWORD)*width);
+	    UI->ProgressInc();
+    }
+    UI->ProgressEnd();
+
+    R_CHK(pRT->UnlockRect());
+    HW.pDevice->SetRenderTarget(poldRT,pZB);
+
+    _RELEASE(pZB);
+    _RELEASE(pRT);
+    _RELEASE(poldRT);
+
+    return true;
+/*
     IDirect3DSurface8* pFB=0;
-	//GetSystemMetrics
 	R_CHK(HW.pDevice->CreateImageSurface(Screen->DesktopWidth,Screen->DesktopHeight,D3DFMT_A8R8G8B8,&pFB));
     if (FAILED(HW.pDevice->GetFrontBuffer(pFB))) return false;
 
@@ -434,8 +473,8 @@ bool CRenderDevice::MakeScreenshot(DWORDVec& pixels, DWORD& width, DWORD& height
 	DWORD* pEnd		= pPixel+(Screen->DesktopWidth*Screen->DesktopHeight);
     UI->ProgressStart(height,"Screenshot making");
     DWORDIt it = pixels.begin();
-    for (DWORD h=0; h<height; h++,it+=width){//offs.y
-        LPDWORD dt 	= LPDWORD(DWORD(pPixel)+DWORD(D.Pitch*h)+DWORD(offs.x));
+    for (DWORD h=offs.y; h<height+offs.y; h++,it+=width){
+        LPDWORD dt 	= LPDWORD(DWORD(pPixel)+DWORD(D.Pitch*h))+offs.x;
         CopyMemory	(it,dt,sizeof(DWORD)*width);
 	    UI->ProgressInc();
     }

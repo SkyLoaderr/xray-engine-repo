@@ -8,6 +8,7 @@
 #include "Texture.h"
 #include "Log.h"
 #include "ui_main.h"
+#include "xrImage_Resampler.h"
 
 #define THM_SIGN "THM"
 
@@ -43,6 +44,25 @@ bool ETextureThumbnail::CreateFromData(DWORDVec& p, int width, int height, int s
     AnsiString name=m_LoadName;
     FS.m_TexturesThumbnail.Update(name);
 
+/*
+	imf_filter=0,
+	imf_box,
+	imf_triangle,
+	imf_bell,
+	imf_b_spline,
+	imf_lanczos3,
+	imf_mitchell,
+*/
+    if ((!check)||(check&&(!FS.Exist(name.c_str())||(FS.GetFileAge(name)!=src_age)))){
+		UI->ProgressStart(2,"Tthumbnail creating...");
+		m_Pixels.resize(THUMB_SIZE);
+		UI->ProgressInc();
+    	imf_Process(m_Pixels.begin(),THUMB_WIDTH,THUMB_HEIGHT,p.begin(),width,height,imf_box);
+		UI->ProgressEnd();
+        return true;
+    }
+
+/*
     if ((!check)||(check&&(!FS.Exist(name.c_str())||(FS.GetFileAge(name)!=src_age)))){
 		UI->ProgressStart(4,"Creating thumbnail...");
         DWORDVec im_s;
@@ -78,6 +98,7 @@ bool ETextureThumbnail::CreateFromData(DWORDVec& p, int width, int height, int s
 		UI->ProgressEnd();
         return true;
     }
+*/
     return false;
 }
 

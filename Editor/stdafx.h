@@ -171,6 +171,7 @@ DEFINE_VECTOR(FVF::LIT,FLITvertexVec,FLITvertexIt);
 #define RGBA_GETRED(rgb)        DWORD(((rgb) >> 16) & 0xff)
 #define RGBA_GETGREEN(rgb)      DWORD(((rgb) >> 8) & 0xff)
 #define RGBA_GETBLUE(rgb)       DWORD((rgb) & 0xff)
+#define RGBA_MAKE(r,g,b,a)		D3DCOLOR_ARGB(a,r,g,b)
 #endif
 
 extern ENGINE_API Fmatrix precalc_identity;;
