@@ -194,7 +194,7 @@ void xrBuildGraph(LPCSTR name)
 
 	Phase("Building graph");
 	for (u32 thID=0, dwThreadCount = NUM_THREADS, N = tpaGraph.size(), M = 0, K; thID<dwThreadCount; M += K, thID++)
-		tThreadManager.start(new CGraphThread(thID,M, M + (K = GET_INDEX((N - M),(dwThreadCount - thID))),MAX_DISTANCE_TO_CONNECT,tCriticalSection));
+		tThreadManager.start(new CGraphThread(thID,M, ((thID + 1) == dwThreadCount) ? N - 1 : M + (K = GET_INDEX((N - M),(dwThreadCount - thID))),MAX_DISTANCE_TO_CONNECT,tCriticalSection));
 	tThreadManager.wait();
 	for (int i=0, j=0; i<(int)tpaGraph.size(); i++)
 		j += tpaGraph[i].dwNeighbourCount;
