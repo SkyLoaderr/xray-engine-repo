@@ -115,7 +115,7 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 	}
 
 	//*******
-	Status	("Models");
+	Status	("Models and References");
 	{
 		F = FS.OpenChunk		(EB_MU_models);
 		R_ASSERT				(F);
