@@ -9,6 +9,9 @@
 // other
 #define		r2_RT_accum			"$user$accum"			// ---	16 bit fp or 16 bit fx
 
+#define		r2_T_envs0			"$user$env_s0"			// ---
+#define		r2_T_envs1			"$user$env_s1"			// ---
+
 #define		r2_RT_generic0		"$user$generic0"		// ---
 #define		r2_RT_generic1		"$user$generic1"		// ---
 

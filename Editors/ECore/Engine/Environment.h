@@ -36,10 +36,12 @@ class ENGINE_API	CEnvDescriptor
 public:
     float				exec_time;
 	
-	STextureList		sky_r_textures;	// C
-	float				sky_factor;		// C
+	STextureList		sky_r_textures;		// C
+	STextureList		sky_r_textures_env;	// C
+	float				sky_factor;			// C
 
 	ref_texture			sky_texture;
+	ref_texture			sky_texture_env;
 	Fvector3			sky_color;
 
 	float				far_plane;

@@ -23,10 +23,15 @@ void	CRenderTarget::phase_combine	()
 	{
 		// RCache.set_Stencil		(TRUE,D3DCMP_LESSEQUAL,0x01,0xff,0x00);	// stencil should be >= 1
 
+		// Compute params
+		Fmatrix		m_v2w;			m_v2w.invert				(Device.mView		);
+		CEnvDescriptor&		envdesc	= g_pGamePersistent->Environment.CurrentEnv;
+		Fvector4	envclr			= { envdesc.sky_color.x, envdesc.sky_color.y, envdesc.sky_color.z, envdesc.sky_factor };
+
+		// Fill VB
 		u32		C					= color_rgba	(255,255,255,255);
 		float	_w					= float(Device.dwWidth);
 		float	_h					= float(Device.dwHeight);
-
 		p0.set						(.5f/_w, .5f/_h);
 		p1.set						((_w+.5f)/_w, (_h+.5f)/_h );
 
@@ -38,12 +43,11 @@ void	CRenderTarget::phase_combine	()
 		pv->set						(float(_w+EPS),	EPS,			EPS,	1.f, C, p1.x, p0.y);	pv++;
 		RCache.Vertex.Unlock		(4,g_combine->vb_stride);
 
-		// Draw COLOR
-		Fmatrix	m_v2w;
-		m_v2w.invert				(Device.mView		);
-		RCache.set_Element			(s_combine->E[0]	);
-		RCache.set_c				("m_v2w",	m_v2w	);
-		RCache.set_Geometry			(g_combine			);
+		// Draw
+		RCache.set_Element			(s_combine->E[0]		);
+		RCache.set_c				("m_v2w",		m_v2w	);
+		RCache.set_c				("env_color",	envclr	);
+		RCache.set_Geometry			(g_combine				);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}
 

@@ -113,7 +113,11 @@ void CEnvDescriptor::load	(LPCSTR exec_tm, LPCSTR S, CEnvironment* parent)
 	sscanf					(exec_tm,"%d:%d:%d",&tm.x,&tm.y,&tm.z);
     R_ASSERT3				((tm.x>=0)&&(tm.x<24)&&(tm.y>=0)&&(tm.y<60)&&(tm.z>=0)&&(tm.z<60),"Incorrect weather time",S);
 	exec_time				= tm.x*3600.f+tm.y*60.f+tm.z;
-	sky_texture				= Device.Resources->_CreateTexture(pSettings->r_string(S,"sky_texture"));
+	string_path	st,st_env;
+	strcpy					(st,pSettings->r_string	(S,"sky_texture"));
+	strconcat				(st_env,st,"#small"		);
+	sky_texture.create		(st);
+	sky_texture_env.create	(st_env);
 	sky_color				= pSettings->r_fvector3	(S,"sky_color");		sky_color.mul(.5f);
 	far_plane				= pSettings->r_float	(S,"far_plane");
 	fog_color				= pSettings->r_fvector3	(S,"fog_color");
@@ -134,18 +138,29 @@ void CEnvDescriptor::load	(LPCSTR exec_tm, LPCSTR S, CEnvironment* parent)
 }
 void CEnvDescriptor::unload	()
 {
-	sky_r_textures.clear	();
-	sky_r_textures.push_back(0);
-	sky_r_textures.push_back(0);
-	sky_r_textures.push_back(0);
+	sky_r_textures.clear		();
+	sky_r_textures.push_back	(0);
+	sky_r_textures.push_back	(0);
+	sky_r_textures.push_back	(0);
+
+	sky_r_textures_env.clear	();
+	sky_r_textures_env.push_back(0);
+	sky_r_textures_env.push_back(0);
+	sky_r_textures_env.push_back(0);
 }
 void CEnvDescriptor::lerp	(CEnvironment* parent, CEnvDescriptor& A, CEnvDescriptor& B, float f, CEnvModifier& M, float m_power)
 {
 	float	_power			=	1.f/(m_power+1);	// the environment itself
 	float	fi				=	1-f;
+
 	sky_r_textures.clear	();
 	sky_r_textures.push_back(A.sky_texture);
 	sky_r_textures.push_back(B.sky_texture);
+
+	sky_r_textures_env.clear	();
+	sky_r_textures_env.push_back(A.sky_texture_env);
+	sky_r_textures_env.push_back(B.sky_texture_env);
+
 	sky_factor				= f;
 	sky_color.lerp			(A.sky_color,B.sky_color,f);
 	far_plane				= (fi*A.far_plane + f*B.far_plane + M.far_plane)*psVisDistance*_power;
@@ -438,7 +453,8 @@ void CEnvironment::OnFrame()
 
 	// final lerp
 	CurrentEnv.lerp						(this,*CurrentA,*CurrentB,t_fact,EM,mpower);
-	CurrentEnv.sky_r_textures.push_back	(tonemap);		//. hack
+	CurrentEnv.sky_r_textures.push_back		(tonemap);		//. hack
+	CurrentEnv.sky_r_textures_env.push_back	(tonemap);		//. hack
     int id								= (t_fact<0.5f)?CurrentA->lens_flare_id:CurrentB->lens_flare_id;
 	eff_LensFlare->OnFrame				(id);
     BOOL tb_enabled						= (t_fact<0.5f)?CurrentA->thunderbolt:CurrentB->thunderbolt;
