@@ -280,6 +280,7 @@ void CEntity::renderable_Render()
 
 void CEntity::KillEntity(CObject* who)
 {
+	VERIFY			(who);
 	if (who && (who->ID() != ID())) {
 		VERIFY		(m_killer_id == ALife::_OBJECT_ID(-1));
 		m_killer_id	= who->ID();
