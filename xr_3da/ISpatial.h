@@ -51,7 +51,7 @@ class ENGINE_API				ISpatial_DB;
 class ENGINE_API				ISpatial
 {
 public:
-	struct 
+	struct	_spatial
 	{
 		u32						type;			
 		Fvector					center;			// OWN:
@@ -60,6 +60,8 @@ public:
 		float					node_radius;	// Cached node bounds for TBV optimization
 		ISpatial_NODE*			node_ptr;		// Cached parent node for "empty-members" optimization
 		IRender_Sector*			sector;
+
+		_spatial() : type(0)	{}				// safe way to enhure type is zero before any contstructors takes place
 	}							spatial;
 public:
 	BOOL						spatial_inside		();

@@ -17,7 +17,7 @@ Fvector	c_spatial_offset	[8]	=
 };
 
 //////////////////////////////////////////////////////////////////////////
-ISpatial::ISpatial(void)	: spatial.type(0)
+ISpatial::ISpatial			(void)
 {
 	spatial.center.set		(0,0,0);
 	spatial.radius			= 0;
