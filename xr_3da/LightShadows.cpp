@@ -7,6 +7,7 @@
 #include "xr_object.h"
 
 const	float	S_distance	= 32;
+const	int		S_size		= 64;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -35,6 +36,7 @@ void CLightShadows::set_object	(CObject* O)
 		id.push_back		(casters.size());
 		casters.push_back	(caster());
 		casters.back().O	= current;
+		casters.back().C	= C;
 		casters.back().D	= D;
 	}
 }
@@ -61,4 +63,11 @@ void CLightShadows::calculate	()
 	// sort by distance
 	std::sort(id.begin(),id.end(),pred_casters(this));
 
+	// iterate on objects
+	int	slot_id		= 0;
+	int slot_max	= (512/S_size)*(512/S_size);
+	for (int o_it=0; o_it<id.size(); o_it++)
+	{
+		caster&	C	= casters[id[o_it]];
+	}
 }

@@ -19,6 +19,7 @@ private:
 	struct	caster
 	{
 		CObject*			O;
+		Fvector				C;
 		float				D;
 		svector<NODE*,32>	nodes;
 	};

@@ -35,29 +35,6 @@ void CLightsController::UnselectAll(void) {
 	SelectedDynamic.clear();
 }
 
-// for static - selects from dynamic lights
-void CLightsController::Select(Fvector &pos, float fRadius)
-{
-//	for (vecI_it it=Selected.begin(); it!=Selected.end(); it++)
-//		Disable(*it);
-	for (vecI_it it=SelectedDynamic.begin(); it!=SelectedDynamic.end(); it++)
-	{
-		int		num = *it;
-		xrLIGHT &L	= LightsDynamic[num-Lights.size()];
-		float	R	= fRadius+L.range;
-		if (pos.distance_to_sqr(L.position) < R*R)	Enable(num);
-		else										Disable(num);
-	}
-	for (it = SelectedProcedural.begin(); it!=SelectedProcedural.end(); it++)
-	{
-		int		num = *it;
-		xrLIGHT &L	= Lights[num];
-		float	R	= fRadius+L.range;
-		if (pos.distance_to_sqr(L.position) < R*R)	Enable	(num);
-		else										Disable	(num);
-	}
-}
-
 // for dynamic
 void	CLightsController::SelectDynamic(Fvector &pos, float fRadius)
 {
@@ -104,20 +81,9 @@ void CLightsController::Load(CStream *fs)
 
 	for (DWORD i=0; i<count; i++) 
 	{
-		/*
-		if (Lights[i].flags&XRLIGHT_PROCEDURAL) {
-			DWORD first_key = Lights[i].p_key_start; 
-			R_ASSERT(first_key<Keyframes.size());
-			CopyMemory(
-				&(Lights[i]),
-				&Keyframes[first_key],
-				sizeof(Flight));
-		}
-		*/
-
-		Lights[i].specular.set(Lights[i].diffuse);
-		Lights[i].specular.mul_rgb(0.2f);
-		CHK_DX(HW.pDevice->SetLight(i, Lights[i].d3d()) );
+		Lights[i].specular.set		(Lights[i].diffuse);
+		Lights[i].specular.mul_rgb	(0.2f);
+		CHK_DX(HW.pDevice->SetLight	(i, Lights[i].d3d()) );
 		Enabled[i]=FALSE;
 	}
 	Log("* Total number of light sources on level: ",count);
@@ -136,19 +102,19 @@ IC BOOL lights_compare(int a, int b) {
 	CLightsController &L = Render.Lights;
 	return L.Distance[a]<L.Distance[b];
 }
-	IC float spline(float *m, float p0, float p1, float p2, float p3)
-	{	return p0 * m[0] + p1 * m[1] + p2 * m[2] + p3 * m[3]; }
+IC float spline(float *m, float p0, float p1, float p2, float p3)
+{	return p0 * m[0] + p1 * m[1] + p2 * m[2] + p3 * m[3]; }
 
-	IC void t_spline(float t, float *m) 
-	{
-		float     t2  = t * t;
-		float     t3  = t2 * t;
-		
-		m[0] = ( 0.5f * ( (-1.0f * t3) + ( 2.0f * t2) + (-1.0f * t) ) );
-		m[1] = ( 0.5f * ( ( 3.0f * t3) + (-5.0f * t2) + ( 0.0f * t) + 2.0f ) );
-		m[2] = ( 0.5f * ( (-3.0f * t3) + ( 4.0f * t2) + ( 1.0f * t) ) );
-		m[3] = ( 0.5f * ( ( 1.0f * t3) + (-1.0f * t2) + ( 0.0f * t) ) );
-	}
+IC void t_spline(float t, float *m) 
+{
+	float     t2  = t * t;
+	float     t3  = t2 * t;
+	
+	m[0] = ( 0.5f * ( (-1.0f * t3) + ( 2.0f * t2) + (-1.0f * t) ) );
+	m[1] = ( 0.5f * ( ( 3.0f * t3) + (-5.0f * t2) + ( 0.0f * t) + 2.0f ) );
+	m[2] = ( 0.5f * ( (-3.0f * t3) + ( 4.0f * t2) + ( 1.0f * t) ) );
+	m[3] = ( 0.5f * ( ( 1.0f * t3) + (-1.0f * t2) + ( 0.0f * t) ) );
+}
 void CLightsController::BuildSelection()
 {
 	DWORD	i;

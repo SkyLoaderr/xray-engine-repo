@@ -48,7 +48,6 @@ public:
 
 	// warning all static lights must be disabled
 	// for static - selects from dynamic lights
-	void	Select			(Fvector &pos, float fRadius);
 	void	SelectDynamic	(Fvector &pos, float fRadius);
 
 	IC	void	BeginStatic	(void) {
