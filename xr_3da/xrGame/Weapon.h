@@ -225,6 +225,8 @@ public:
 	//показывает, что оружие находится в соостоянии поворота для приближенного прицеливания
 	virtual bool			IsRotatingToZoom	() const		{	return (m_fZoomRotationFactor<1.f);}
 
+			void			LoadZoomOffset		(LPCSTR section, LPCSTR prefix);
+
 //////////////////////////////////////////////////////////////////////////
 //  Weapon generic logic
 //////////////////////////////////////////////////////////////////////////

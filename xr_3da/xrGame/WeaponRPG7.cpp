@@ -42,7 +42,7 @@ BOOL CWeaponRPG7::net_Spawn(LPVOID DC)
 	V->LL_GetBoneInstance(V->LL_BoneID(*m_sGrenadeBoneName)).set_callback(GrenadeCallback, this);
 
 	m_hideGrenade = !iAmmoElapsed;
-	if(iAmmoElapsed && !m_pGrenade) 
+	if(iAmmoElapsed && !m_pGrenade)
 	{
 		CSE_Abstract*		D	= F_entity_Create("wpn_rpg7_missile");
 		R_ASSERT			(D);
@@ -205,6 +205,7 @@ void CWeaponRPG7::OnEvent(NET_Packet& P, u16 type)
 			CWeaponRPG7Grenade *l_pG = dynamic_cast<CWeaponRPG7Grenade*>(Level().Objects.net_Find(id));
 			m_pGrenade = l_pG;
 			l_pG->H_SetParent(this);
+			l_pG->m_iCurrentParentID = H_Parent()->ID();
 		} break;
 		case GE_OWNERSHIP_REJECT : {
 			P.r_u16(id);

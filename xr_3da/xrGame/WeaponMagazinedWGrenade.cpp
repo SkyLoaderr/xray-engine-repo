@@ -190,6 +190,19 @@ void  CWeaponMagazinedWGrenade::PerformSwitch()
 	while(m_magazine2.size()) { m_magazine.push(m_magazine2.top()); m_magazine2.pop(); }
 	while(l_magazine.size()) { m_magazine2.push(l_magazine.top()); l_magazine.pop(); }
 	iAmmoElapsed = (int)m_magazine.size();
+
+	if(m_bZoomEnabled && m_pHUD)
+	{
+		if(m_bGrenadeMode)
+			LoadZoomOffset(*hud_sect, "grenade_");
+		else 
+		{
+			if(GrenadeLauncherAttachable())
+				LoadZoomOffset(*hud_sect, "grenade_normal_");
+			else
+				LoadZoomOffset(*hud_sect, "");
+		}
+	}
 }
 
 bool CWeaponMagazinedWGrenade::Action(s32 cmd, u32 flags) 
@@ -424,6 +437,9 @@ bool CWeaponMagazinedWGrenade::Detach(const char* item_section_name)
 		return inherited::Detach(item_section_name);;
 }
 
+
+
+
 void CWeaponMagazinedWGrenade::InitAddons()
 {	
 	inherited::InitAddons();
@@ -435,20 +451,12 @@ void CWeaponMagazinedWGrenade::InitAddons()
 			m_fGrenadeVel = pSettings->r_float(*m_sGrenadeLauncherName,"grenade_vel");
 
 			if(m_bZoomEnabled && m_pHUD)
-			{
-				m_pHUD->SetZoomOffset(pSettings->r_fvector3(hud_sect, "grenade_zoom_offset"));
-				m_pHUD->SetZoomRotateX(pSettings->r_float(hud_sect, "grenade_zoom_rotate_x"));
-				m_pHUD->SetZoomRotateY(pSettings->r_float(hud_sect, "grenade_zoom_rotate_y"));
-			}
+				LoadZoomOffset(*hud_sect, "grenade_normal_");
 		}
 		else
 		{	
 			if(m_bZoomEnabled && m_pHUD)
-			{
-				m_pHUD->SetZoomOffset(pSettings->r_fvector3(hud_sect, "zoom_offset"));
-				m_pHUD->SetZoomRotateX(pSettings->r_float(hud_sect, "zoom_rotate_x"));
-				m_pHUD->SetZoomRotateY(pSettings->r_float(hud_sect, "zoom_rotate_y"));
-			}
+				LoadZoomOffset(*hud_sect, "");
 		}
 	}
 }

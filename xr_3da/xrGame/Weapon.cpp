@@ -275,12 +275,7 @@ void CWeapon::Load		(LPCSTR section)
 
 	m_bZoomEnabled = !!pSettings->r_bool(section,"zoom_enabled");
 
-	if(m_bZoomEnabled && m_pHUD)
-	{
-		m_pHUD->SetZoomOffset(pSettings->r_fvector3(hud_sect, "zoom_offset"));
-		m_pHUD->SetZoomRotateX(pSettings->r_float(hud_sect, "zoom_rotate_x"));
-		m_pHUD->SetZoomRotateY(pSettings->r_float(hud_sect, "zoom_rotate_y"));
-	}
+	if(m_bZoomEnabled && m_pHUD) LoadZoomOffset(*hud_sect, "");
 
 	if(m_eScopeStatus == ALife::eAddonAttachable)
 	{
@@ -315,6 +310,15 @@ void CWeapon::Load		(LPCSTR section)
 		m_dwWeaponRemoveTime = WEAPON_REMOVE_TIME;
 	//////////////////////////////////////
 
+}
+
+
+void CWeapon::LoadZoomOffset (LPCSTR section, LPCSTR prefix)
+{
+	string256 full_name;
+	m_pHUD->SetZoomOffset(pSettings->r_fvector3	(hud_sect, strconcat(full_name, prefix, "zoom_offset")));
+	m_pHUD->SetZoomRotateX(pSettings->r_float	(hud_sect, strconcat(full_name, prefix, "zoom_rotate_x")));
+	m_pHUD->SetZoomRotateY(pSettings->r_float	(hud_sect, strconcat(full_name, prefix, "zoom_rotate_y")));
 }
 
 void CWeapon::animGet	(MotionSVec& lst, LPCSTR prefix)

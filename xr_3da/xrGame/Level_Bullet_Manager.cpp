@@ -31,7 +31,8 @@ void SBullet::Init(const Fvector& position,
 				   u16 sendersweapon_id,
 				   ALife::EHitType e_hit_type,
 				   float maximum_distance,
-				   const CCartridge& cartridge)
+				   const CCartridge& cartridge,
+				   float tracer_length)
 {
 	flags.zero();
 
@@ -58,6 +59,8 @@ void SBullet::Init(const Fvector& position,
 	impulse_k		= cartridge.m_kImpulse;
 	pierce_k		= cartridge.m_kPierce;
 	wallmark_size	= cartridge.fWallmarkSize;
+
+	tracer_max_length = tracer_length;
 
 	flags.set(TRACER_FLAG, cartridge.m_tracer);
 	flags.set(RICOCHET_ENABLED_FLAG);
@@ -111,11 +114,12 @@ void CBulletManager::AddBullet(const Fvector& position,
 							   u16 sendersweapon_id,
 							   ALife::EHitType e_hit_type,
 							   float maximum_distance,
-							   const CCartridge& cartridge)
+							   const CCartridge& cartridge,
+							   float tracer_length)
 {
 	m_Bullets.push_back(SBullet());
 	SBullet& bullet	= m_Bullets.back();
-	bullet.Init		(position, direction, starting_speed, power, impulse, sender_id, sendersweapon_id, e_hit_type, maximum_distance, cartridge);
+	bullet.Init		(position, direction, starting_speed, power, impulse, sender_id, sendersweapon_id, e_hit_type, maximum_distance, cartridge, tracer_length);
 	bullet.frame_num = Device.dwFrame;
 }
 
@@ -238,8 +242,12 @@ void CBulletManager::Render	()
 		if(length<m_fTracerLengthMin)
 			continue;
 
-		if(length>m_fTracerLength)
-			length = m_fTracerLength;
+		//вычислить максимально допустимую длину трассера
+		//выбираем между общими настройками и настройками пули
+		//(по умолчанию в пуле такая равна flt_max),
+		float max_length = _min(m_fTracerLength, bullet->tracer_max_length);
+		if(length>max_length)
+			length = max_length;
 
 		//изменить размер трассера в зависимости от расстояния до камеры
 		Fvector to_camera;
@@ -251,7 +259,7 @@ void CBulletManager::Render	()
 		else if(dist_to_camera<m_fMaxViewDist)
 		{
 			float length_max = m_fTracerLengthMin + 
-							  (m_fTracerLength - m_fTracerLengthMin)*
+							  (max_length - m_fTracerLengthMin)*
 							  (dist_to_camera-m_fMinViewDist)/
 							  (m_fMaxViewDist-m_fMinViewDist);
 

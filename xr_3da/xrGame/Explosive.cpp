@@ -42,6 +42,9 @@ CExplosive::CExplosive(void)
 	m_eHitTypeBlast = ALife::eHitTypeExplosion;
 	m_eHitTypeFrag = ALife::eHitTypeFireWound;
 
+
+	m_iCurrentParentID = 0xffff;
+
 }
 
 CExplosive::~CExplosive(void) 
@@ -77,11 +80,7 @@ void CExplosive::Load(LPCSTR section)
 
 	//трассы для разлета осколков
 	tracerHeadSpeed		= pSettings->r_float		(section,"tracer_head_speed"	);
-	tracerTrailCoeff	= pSettings->r_float		(section,"tracer_trail_scale"	);
-	tracerStartLength	= pSettings->r_float		(section,"tracer_start_length"	);
-	tracerWidth			= pSettings->r_float		(section,"tracer_width"			);
-	tracerDist			= pSettings->r_float		(section,"tracer_distance"		);
-
+	tracerMaxLength		= pSettings->r_float		(section,"tracer_max_length"	);
 
 	ref_str				snd_name = pSettings->r_string(section,"snd_explode");
 	sndExplode.create	(TRUE,*snd_name, m_eSoundExplode);
@@ -110,6 +109,8 @@ void CExplosive::net_Destroy	()
 /////////////////////////////////////////////////////////
 void CExplosive::Explode() 
 {
+	VERIFY(0xffff != m_iCurrentParentID);
+
 	setVisible(false);
 	setEnabled(false);
 
@@ -164,7 +165,7 @@ void CExplosive::Explode()
 
 		Level().BulletManager().AddBullet(	m_vCurrentShootPos, m_vCurrentShootDir, tracerHeadSpeed,
 											m_fCurrentHitPower, m_fCurrentHitImpulse, m_iCurrentParentID,
-											ID(), m_eCurrentHitType, m_fCurrentFireDist, cartridge);
+											ID(), m_eCurrentHitType, m_fCurrentFireDist, cartridge, tracerMaxLength);
 	}	
 
 	if (Remote()) return;

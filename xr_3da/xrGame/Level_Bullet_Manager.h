@@ -23,7 +23,8 @@ struct SBullet
 		u16 sendersweapon_id,
 		ALife::EHitType e_hit_type,
 		float maximum_distance,
-		const CCartridge& cartridge);
+		const CCartridge& cartridge,
+		float tracer_length);
 
 	//номер кадра на котором была запущена пуля
 	u32				frame_num;
@@ -65,6 +66,10 @@ struct SBullet
 	float			impulse_k;
 	float			pierce_k;
 	float			wallmark_size;
+
+	//максимальная длина трассера для данной пули
+	float			tracer_max_length;
+
 	//тип наносимого хита
 	ALife::EHitType hit_type;
 
@@ -89,7 +94,8 @@ public:
 
 	void AddBullet	(const Fvector& position, const Fvector& direction, float starting_speed,
 					float power, float impulse, u16	sender_id, u16 sendersweapon_id,
-					ALife::EHitType e_hit_type, float maximum_distance, const CCartridge& cartridge);
+					ALife::EHitType e_hit_type, float maximum_distance, const CCartridge& cartridge,
+					float tracer_length = flt_max);
 	void Update		();
 
 	void Render		();

@@ -82,10 +82,7 @@ protected:
 	//////////////////////////////////////////////
 	//для разлета осколков
 	float					tracerHeadSpeed;
-	float					tracerTrailCoeff;
-	float					tracerStartLength;
-	float					tracerWidth;
-	float					tracerDist;
+	float					tracerMaxLength;
 
 	//звуки
 	ref_sound	sndExplode;
