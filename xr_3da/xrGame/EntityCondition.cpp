@@ -10,6 +10,7 @@
 #include "wound.h"
 #include "level.h"
 #include "game_cl_base.h"
+#include "entity_alive.h"
 
 
 #define MAX_HEALTH 1.0f
@@ -566,6 +567,11 @@ void CEntityCondition::save	(NET_Packet &output_packet)
 		{
 			(*it)->save(output_packet);
 		}
+
+#ifdef _DEBUG
+		Msg("[%s] wounds saved %d", *m_object->cName(), m_WoundVector.size());
+#endif
+
 	}
 }
 void CEntityCondition::load	(IReader &input_packet)
@@ -593,5 +599,10 @@ void CEntityCondition::load	(IReader &input_packet)
 				m_WoundVector[i] = pWound;
 			}
 		}
+#ifdef _DEBUG
+		Msg("[%s] wounds loaded %d", *m_object->cName(), m_WoundVector.size());
+#endif
+
+
 	}
 }
