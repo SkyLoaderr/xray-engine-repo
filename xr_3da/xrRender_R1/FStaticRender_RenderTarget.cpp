@@ -89,16 +89,6 @@ CRenderTarget::~CRenderTarget	()
 	pGeom2.destroy				();
 }
 
-void CRenderTarget::eff_load	(LPCSTR n)
-{
-	/*
-	param_blur					= pSettings->r_float	(n,"blur");
-	param_gray					= pSettings->r_float	(n,"gray");
-	param_noise					= pSettings->r_float	(n,"noise");
-	param_noise_scale			= pSettings->r_float	(n,"noise_scale");
-	param_noise_color			= pSettings->r_color	(n,"noise_color");
-	*/
-}
 
 void CRenderTarget::e_render_noise	()
 {

@@ -61,7 +61,6 @@ public:
 // definition (Target)
 class	ENGINE_API	IRender_Target				{
 public:
-	virtual void					eff_load			(LPCSTR n)							= 0;
 	virtual	void					set_blur			(float f)							= 0;
 	virtual	void					set_gray			(float f)							= 0;
 	virtual void					set_duality_h		(float f)							= 0;
