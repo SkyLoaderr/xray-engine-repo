@@ -306,7 +306,7 @@ void OGF::MakeProgressive	(float metric_limit)
 		for (u32 f_idx=0;  f_idx<faces.size();    f_idx++)	VIPM_AppendFace		(faces[f_idx].v[0],	faces[f_idx].v[1],	faces[f_idx].v[2]	);
 
 		// Convert
-		VIPM_Result* VR			= VIPM_Convert(u32(-1),1.f,1);
+		VIPM_Result* VR			= VIPM_Convert			(u32(30),1.f,1);
 		while (VR->swr_records.size()>0)	{
 			// test metric
 			u32		_full	=	vertices.size	()		;
