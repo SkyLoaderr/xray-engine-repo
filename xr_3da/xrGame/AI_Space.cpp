@@ -111,6 +111,8 @@ void CAI_Space::Load(LPCSTR name)
 	m_tpIndexes				= (SIndexNode *)xr_malloc(S2);
 	ZeroMemory				(m_tpIndexes,S2);
 	Msg						("* AI path-finding structures: %d K",(S1 + S2)/(1024));
+
+
 }
 
 void CAI_Space::Render()

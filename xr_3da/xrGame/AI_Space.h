@@ -121,10 +121,7 @@ public:
 	IC float	ffEvaluate			(u32 dwStartNode, u32 dwFinishNode);
 	IC float	ffAnticipate		(u32 dwStartNode, u32 dwFinishNode) {return(ffEvaluate(dwStartNode,dwFinishNode));};
 	IC void		begin				(u32 dwNode, iterator &tStart, iterator &tEnd);
-	IC u32		get_value			(iterator &tIterator)
-	{
-		return((*LPDWORD(tIterator))&0x00ffffff);
-	}
+	IC u32		get_value			(iterator &tIterator);
 	IC bool bfCheckIfAccessible(u32 dwNode)
 	{
 		return(true);
@@ -139,7 +136,7 @@ public:
 	IC void		begin				(u32 dwNode, iterator &tStart, iterator &tEnd);
 	IC u32		get_value			(iterator &tIterator)
 	{
-		return(tIterator->fPathDistance);
+		return(tIterator->dwVertexNumber);
 	}
 	IC bool bfCheckIfAccessible(u32 dwNode)
 	{

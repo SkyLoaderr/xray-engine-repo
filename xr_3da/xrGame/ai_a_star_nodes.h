@@ -104,6 +104,11 @@ IC void CAIMapEnemyPathNode::begin(u32 dwNode, CAIMapEnemyPathNode::iterator &tI
 	tEnd = tIterator + tpNode->links;
 }
 
+IC u32 CAIMapEnemyPathNode::get_value(CAIMapEnemyPathNode::iterator &tIterator)
+{
+	return(Level().AI.UnpackLink(*tIterator));
+}
+
 //////////////////////////////////////////////////////////////////////////
 // CAIGraphShortestPathNode
 //////////////////////////////////////////////////////////////////////////
