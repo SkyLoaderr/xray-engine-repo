@@ -491,7 +491,7 @@ HRESULT CMyD3DApplication::FinalCleanup()
 HRESULT CMyD3DApplication::ConfirmDevice( D3DCAPS9* pCaps, DWORD dwBehavior,
                                           D3DFORMAT Format )
 {
-	BOOL	bDebug	= TRUE;
+	BOOL	bDebug	= FALSE;
 
 	if (bDebug)
 	{
