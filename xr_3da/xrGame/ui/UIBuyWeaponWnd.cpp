@@ -634,6 +634,8 @@ void CUIBuyWeaponWnd::OnBtnClearClicked(){
 	for (it = list.begin(); it != list.end(); ++it)
 		BeltToSection(static_cast<CUIDragDropItemMP*>(*it));
 
+	// put free pistol
+	GetTop()->SendMessage(UIBagWnd.GetItemByKey(DIK_1, GROUP_2), DRAG_DROP_ITEM_DB_CLICK);
 }
 
 void CUIBuyWeaponWnd::OnDDItemDrag(){
@@ -1250,7 +1252,7 @@ int CUIBuyWeaponWnd::GetPriceOfItemInSlot(int slot){
 	if (!UITopList[slot].GetDragDropItemsList().empty())
 	{
 		CUIDragDropItemMP *pDDItemMP = smart_cast<CUIDragDropItemMP*>(*UITopList[slot].GetDragDropItemsList().begin());
-		if (!pDDItemMP->IsEnabled())
+		if (!pDDItemMP->m_bAlreadyPaid)
 			return 0;
         return GetItemPrice(pDDItemMP);	
 	}

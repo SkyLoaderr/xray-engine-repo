@@ -69,6 +69,7 @@ CUIDragDropItemMP*	GetItemBySectoin(const u8 grpNum, u8 uIndexInSlot);
 CUIDragDropItemMP*	GetAddonByID(CUIDragDropItemMP *pAddonOwner, CUIDragDropItemMP::AddonIDs ID);
 
 CUIDragDropItemMP*	CreateCopy(CUIDragDropItemMP *pDDItem);
+CUIDragDropItemMP*	GetItemByKey(int dik, int section);
 			void	DeleteCopy(CUIDragDropItemMP *pDDItem);
 			bool	IsItemAnAddonSimple(CUIDragDropItemMP *pPossibleAddon) const;
 			

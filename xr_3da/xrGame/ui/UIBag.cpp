@@ -418,23 +418,28 @@ bool CUIBag::OnKeyboard(int dik, EUIMessages keyboard_action){
 
 		if (dik <= DIK_0 && dik >= DIK_1)
 		{
-            CUIDragDropList* pDDList = GetCurrentGroup();
-			unsigned int index = static_cast<u32>(dik - 2);
-			if (pDDList->GetDragDropItemsList().size() >= index)
-			{
-				DRAG_DROP_LIST_it it = pDDList->GetDragDropItemsList().begin();
-				
-				for (; it != pDDList->GetDragDropItemsList().end(); ++it)
-				{
-					CUIDragDropItemMP *pDDItemMP = static_cast<CUIDragDropItemMP*>(*it);
-					
-					if (pDDItemMP->GetPosInSubSection() == index)
-					{
-						GetTop()->SendMessage(pDDItemMP, DRAG_DROP_ITEM_DB_CLICK, NULL);
-						return true;
-					}
-				}
-			}
+			CUIDragDropItemMP* pDDItemMP = GetItemByKey(dik,GetCurrentGroupIndex());
+
+			if (pDDItemMP)
+				GetTop()->SendMessage(pDDItemMP, DRAG_DROP_ITEM_DB_CLICK, NULL);
+
+   //         CUIDragDropList* pDDList = GetCurrentGroup();
+			//unsigned int index = static_cast<u32>(dik - 2);
+			//if (pDDList->GetDragDropItemsList().size() >= index)
+			//{
+			//	DRAG_DROP_LIST_it it = pDDList->GetDragDropItemsList().begin();
+			//	
+			//	for (; it != pDDList->GetDragDropItemsList().end(); ++it)
+			//	{
+			//		CUIDragDropItemMP *pDDItemMP = static_cast<CUIDragDropItemMP*>(*it);
+			//		
+			//		if (pDDItemMP->GetPosInSubSection() == index)
+			//		{
+			//			GetTop()->SendMessage(pDDItemMP, DRAG_DROP_ITEM_DB_CLICK, NULL);
+			//			return true;
+			//		}
+			//	}
+			//}
 		}
 		break;
 	default:
@@ -442,6 +447,25 @@ bool CUIBag::OnKeyboard(int dik, EUIMessages keyboard_action){
 	}
 
 	return false;
+}
+
+CUIDragDropItemMP* CUIBag::GetItemByKey(int dik, int section){
+	R_ASSERT2((GROUP_2 <= section) && (section <= GROUP_34), "CUIBag::GetItemByKey() - invalid section number");
+	CUIDragDropList* pDDList = &m_groups[section];
+	unsigned int index = static_cast<u32>(dik - 2);
+	if (pDDList->GetDragDropItemsList().size() >= index)
+	{
+		DRAG_DROP_LIST_it it = pDDList->GetDragDropItemsList().begin();
+		
+		for (; it != pDDList->GetDragDropItemsList().end(); ++it)
+		{
+			CUIDragDropItemMP *pDDItemMP = static_cast<CUIDragDropItemMP*>(*it);
+			
+			if (pDDItemMP->GetPosInSubSection() == index)
+				return pDDItemMP;
+		}
+	}
+	return NULL;
 }
 
 CUIDragDropList* CUIBag::GetCurrentGroup(){
