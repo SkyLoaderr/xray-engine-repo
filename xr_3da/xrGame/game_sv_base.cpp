@@ -62,6 +62,14 @@ u32					game_sv_GameState::get_alive_count			(u32 team)
 	Device.Fatal	("Not implemented");
 	return 0;
 }
+s32					game_sv_GameState::get_option_i				(LPCSTR lst, LPCSTR name, s32 def)
+{
+	string64		op;
+	strconcat		(op,"//",name,"=");
+	if (strstr(lst,op))	return atoi	(strstr(lst,op)+strlen(op));
+	else				return def;
+}
+
 
 // Network
 void game_sv_GameState::net_Export_State						(NET_Packet& P)

@@ -10,7 +10,7 @@ void	game_sv_CS::Create			(LPCSTR options)
 {
 }
 
-void	game_sv_CS::OnStartRound	()
+void	game_sv_CS::OnRoundStart	()
 {
 	round	++;
 	if (0==round)	
@@ -37,6 +37,10 @@ void	game_sv_CS::OnStartRound	()
 		}
 		Unlock	();
 	}
+}
+
+void	game_sv_CS::OnRoundEnd		()
+{
 }
 
 void	game_sv_CS::OnTeamScore		(u32 team)
@@ -87,7 +91,7 @@ void	game_sv_CS::OnPlayerKillPlayer	(u32 id_killer, u32 id_killed)
 	Unlock	();
 }
 
-void	game_sv_CS::OnTimeElapsed	()
+void	game_sv_CS::OnTimelimitExceed	()
 {
 	// Artifacts count
 	// if ()

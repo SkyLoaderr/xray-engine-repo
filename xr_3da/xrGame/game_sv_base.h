@@ -18,14 +18,19 @@ public:
 
 	// Utilities
 	virtual		u32					get_alive_count			(u32 team);
+	virtual		s32					get_option_i			(LPCSTR lst, LPCSTR name, s32 def = 0);
 
 	// Events
-	virtual		void				OnStartRound			()								= 0;	// старт раунда
+	virtual		void				OnRoundStart			()								= 0;	// старт раунда
+	virtual		void				OnRoundEnd				(LPCSTR reason);						// конец раунда
+
 	virtual		void				OnTeamScore				(u32 team)						= 0;	// команда выиграла
 	virtual		void				OnTeamsInDraw			()								= 0;	// ничья
 	virtual		void				OnTargetTouched			(u32 id_who, u32 id_target)		= 0;
 	virtual		void				OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)	= 0;
-	virtual		void				OnTimeElapsed			()								= 0;
+
+	virtual		void				OnFraglimitExceed		()								= 0;
+	virtual		void				OnTimelimitExceed		()								= 0;
 
 	// Main
 	virtual		void				Update					()								= 0;
