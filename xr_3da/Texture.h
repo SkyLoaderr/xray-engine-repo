@@ -21,6 +21,7 @@ public:
 	// Sequence data
 	DWORD						seqMSPF;	// milliseconds per frame
 	vector<IDirect3DTexture8*>	seqDATA;
+	BOOL						seqCycles;
 
 	DWORD					Calculate_MemUsage(IDirect3DTexture8* T);
 public:

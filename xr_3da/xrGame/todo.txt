@@ -75,6 +75,7 @@ Oles:
 	. BUG:  Motion blending
 
 	+ TODO: Sequences (AVI-like)
+	. TODO: Sequences cycling
 	+ TODO: Sorted cached pipeline
 	+ TODO: Unsorted normal pipeline
 	+ TODO: Sort/Dont-Sort based on screen space metrics (some speedup, from CPU only)

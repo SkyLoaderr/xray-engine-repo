@@ -51,8 +51,15 @@ void CTexture::Apply(DWORD dwStage)
 	} else if (!seqDATA.empty()) {
 		// SEQ
 		DWORD	frame		= Device.dwTimeGlobal/seqMSPF;
-		DWORD	frame_id	= frame%seqDATA.size();
-		pSurface 			= seqDATA[frame_id];
+		DWORD	frame_data	= seqDATA.size();
+		if (seqCycles)		{
+			DWORD	frame_id	= frame%(frame_data*2);
+			if (frame_id>=frame_data)	frame_id = (frame_data-1) - (frame_id%frame_data);
+			pSurface 			= seqDATA[frame_id];
+		} else {
+			DWORD	frame_id	= frame%frame_data;
+			pSurface 			= seqDATA[frame_id];
+		}
 	}
 	CHK_DX(HW.pDevice->SetTexture(dwStage,pSurface));
 	Device.Statistic.dwTexture_Changes++;
@@ -97,7 +104,13 @@ void CTexture::Load()
 		char buffer[256];
 		CFileStream fs(fn);
 
+		seqCycles	= FALSE;
 		fs.Rstring	(buffer);
+		if (0==stricmp	(buffer,"cycled"))
+		{
+			seqCycles	= TRUE;
+			fs.Rstring	(buffer);
+		}
 		DWORD fps	= atoi(buffer);
 		seqMSPF		= 1000/fps;
 
