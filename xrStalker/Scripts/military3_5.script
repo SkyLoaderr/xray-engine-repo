@@ -64,7 +64,7 @@ function Patrol:reset ()
 end
 
 function Patrol:start ()
-	self:reset ()
+	self.npc:script (true, self.script)
 	if table.getn (self.paths) == 0 then return end
 	action (self.npc, move (move.standing, move.walk, move.line, patrol (self.paths[self.current_path])),
 			look (look.search), anim (anim.free), cond (cond.move_end))

@@ -3,6 +3,7 @@
 function main ()
 
 	local stand = get_level_object ("stalker_stand")
+
 	stand:script (true, military3_6.script_name ())
 	action (stand, move (move.standing, move.stand, move.line, patrol ("way_ptr50")),
 			anim ("k stene"), cond (cond.time_end, 100000000))
