@@ -290,16 +290,26 @@ void xrMergeGraphs(LPCSTR name)
 
 	dwOffset						*= sizeof(CALifeGraph::SGraphVertex);
 	{
-		GRAPH_P_PAIR_IT				I = tpGraphs.begin();
-		GRAPH_P_PAIR_IT				E = tpGraphs.end();
-		for ( ; I != E; I++)
-			(*I).second->vfSaveVertices	(F,dwOffset);
+//		GRAPH_P_PAIR_IT				I = tpGraphs.begin();
+//		GRAPH_P_PAIR_IT				E = tpGraphs.end();
+//		for ( ; I != E; I++)
+//			(*I).second->vfSaveVertices	(F,dwOffset);
+		vector<CALifeGraph::SLevel>::iterator	I = tGraphHeader.tpLevels.begin();
+		vector<CALifeGraph::SLevel>::iterator	E = tGraphHeader.tpLevels.end();
+		for ( ; I != E; I++) {
+			GRAPH_P_PAIR_IT			i = tpGraphs.find((*I).dwLevelID);
+			R_ASSERT				(i != tpGraphs.end());
+			(*i).second->vfSaveVertices	(F,dwOffset);
+		}
 	}
 	{
-		GRAPH_P_PAIR_IT				I = tpGraphs.begin();
-		GRAPH_P_PAIR_IT				E = tpGraphs.end();
-		for ( ; I != E; I++)
-			(*I).second->vfSaveEdges		(F);
+		vector<CALifeGraph::SLevel>::iterator	I = tGraphHeader.tpLevels.begin();
+		vector<CALifeGraph::SLevel>::iterator	E = tGraphHeader.tpLevels.end();
+		for ( ; I != E; I++) {
+			GRAPH_P_PAIR_IT			i = tpGraphs.find((*I).dwLevelID);
+			R_ASSERT				(i != tpGraphs.end());
+			(*i).second->vfSaveEdges(F);
+		}
 	}
 	F.save_to("game.graph");
 	

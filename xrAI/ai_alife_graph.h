@@ -40,6 +40,7 @@ public:
 	typedef struct tagSLevel {
 		string256							caLevelName;
 		Fvector								tOffset;
+		u32									dwLevelID;
 	} SLevel;
 
 	typedef struct tagSGraphHeader {
