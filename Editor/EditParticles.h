@@ -19,6 +19,7 @@
 #include "MXCtrls.hpp"
 #include "mxPlacemnt.hpp"
 #include <Menus.hpp>
+#include "MxMenus.hpp"
 //---------------------------------------------------------------------------
 // refs
 class CParticleSystem;
@@ -30,7 +31,6 @@ class TfrmEditParticles : public TForm
 {
 __published:	// IDE-managed Components
     TPanel *Panel1;
-	TElTree *tvItems;
 	TPopupMenu *pmShaders;
     TMenuItem *miNewFolder;
     TMenuItem *miEditFolder;
@@ -59,6 +59,17 @@ __published:	// IDE-managed Components
 	TMxLabel *lbParticleCount;
 	TMxLabel *RxLabel1;
 	TMxLabel *RxLabel2;
+	TElTree *tvItems;
+	TMxPopupMenu *pmEnum;
+	TMenuItem *N4;
+	TMenuItem *CreateFolder1;
+	TMenuItem *N5;
+	TMenuItem *Rename1;
+	TMenuItem *PS1;
+	TMenuItem *Properties1;
+	TMenuItem *N3;
+	TMenuItem *Remove1;
+	TMenuItem *Append1;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall ebCancelClick(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);
@@ -68,7 +79,7 @@ __published:	// IDE-managed Components
     void __fastcall ebPropertiesPSClick(TObject *Sender);
     void __fastcall ebRemovePSClick(TObject *Sender);
     void __fastcall tvItemsDblClick(TObject *Sender);
-    void __fastcall ebNewPSClick(TObject *Sender);
+    void __fastcall ebAppendPSClick(TObject *Sender);
     void __fastcall miNewFolderClick(TObject *Sender);
     void __fastcall miEditFolderClick(TObject *Sender);
     void __fastcall tvItemsDragDrop(TObject *Sender, TObject *Source,
@@ -77,8 +88,6 @@ __published:	// IDE-managed Components
           int X, int Y, TDragState State, bool &Accept);
     void __fastcall tvItemsStartDrag(TObject *Sender,
           TDragObject *&DragObject);
-    void __fastcall tvItemsItemSelectedChange(TObject *Sender,
-          TElTreeItem *Item);
     void __fastcall tvItemsItemChange(TObject *Sender, TElTreeItem *Item,
           TItemChangeMode ItemChangeMode);
 	void __fastcall tvItemsKeyPress(TObject *Sender, char &Key);
@@ -87,6 +96,7 @@ __published:	// IDE-managed Components
 	void __fastcall ebMergeClick(TObject *Sender);
 	void __fastcall ExtBtn2Click(TObject *Sender);
 	void __fastcall ExtBtn5Click(TObject *Sender);
+	void __fastcall tvItemsItemFocused(TObject *Sender);
 private:
 // list functions
     void InitItemsList(const char* nm=0);

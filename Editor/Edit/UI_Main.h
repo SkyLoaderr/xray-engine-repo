@@ -10,13 +10,11 @@
 #include "FController.h"
 extern bool g_bEditorValid;
 
-
 // refs
 class CCustomObject;
 class TUI_Tools;
 class TUI_Tools;
 class C3DCursor;
-//class CTexturizer;
 //------------------------------------------------------------------------------
 
 enum EEditorState{
@@ -68,7 +66,6 @@ protected:
     void D3D_DestroyStateBlocks();
 public:
     TUI_Tools*          m_Tools;
-//    CTexturizer*        m_pTexturizer;
 
 	// non-hidden ops
 	Ipoint m_StartCp;
@@ -120,6 +117,9 @@ public:
     void OnDestroy						();
 
     char* GetEditFileName()             {   return m_LastFileName; }
+    char* GetCaption()					{   return GetEditFileName(); }
+
+    bool IsModified						();
 
     void __fastcall Idle();
     void Resize()                       {   bResize = true; bRedraw = true; }
@@ -181,6 +181,15 @@ public:
     bool    NeedAbort               	(){Application->ProcessMessages(); return bNeedAbort;}
     void 	NeedBreak					(){bNeedAbort = true;}
     void 	ResetBreak					(){bNeedAbort = false;}
+
+    void 	ApplyShortCut				(WORD Key, TShiftState Shift);
+    void 	ApplyGlobalShortCut			(WORD Key, TShiftState Shift);
+
+	void 	ShowContextMenu				(int cls);
 };
-extern TUI* UI;
+//---------------------------------------------------------------------------
+extern TUI UI;
+//---------------------------------------------------------------------------
+void ResetActionToSelect();
+//---------------------------------------------------------------------------
 #endif

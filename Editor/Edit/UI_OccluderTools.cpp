@@ -39,13 +39,13 @@ __fastcall TUI_ControlOccluderAdd::TUI_ControlOccluderAdd(int st, int act, TUI_C
     pFrame = 0;
 }
 void TUI_ControlOccluderAdd::OnEnter(){
-    UI->m_Cursor->Style(csPoint);
-    UI->m_Cursor->Visible(true);
+    UI.m_Cursor->Style(csPoint);
+    UI.m_Cursor->Visible(true);
     pFrame = (TfraOccluder*)parent_tool->pFrame; VERIFY(pFrame);
 }
 void TUI_ControlOccluderAdd::OnExit (){
-    UI->m_Cursor->Visible(false);
-    UI->UpdateScene();
+    UI.m_Cursor->Visible(false);
+    UI.UpdateScene();
 }
 bool __fastcall TUI_ControlOccluderAdd::Start(TShiftState Shift){
 	if (pFrame->ebModePlane->Down){
@@ -117,16 +117,16 @@ bool __fastcall TUI_ControlOccluderSelect::Start(TShiftState Shift){
     }else{
         obj 	= (COccluder*)Scene->GetQueryObject(OBJCLASS_OCCLUDER);
   		if (obj){
-	        bBoxSelection	= !obj->SelectPoint(UI->m_CurrentRStart,UI->m_CurrentRNorm,Shift.Contains(ssCtrl));
+	        bBoxSelection	= !obj->SelectPoint(UI.m_CurrentRStart,UI.m_CurrentRNorm,Shift.Contains(ssCtrl));
 
     	    if( bBoxSelection ){
-        	    UI->EnableSelectionRect( true );
-            	UI->UpdateSelectionRect(UI->m_StartCp,UI->m_CurrentCp);
+        	    UI.EnableSelectionRect( true );
+            	UI.UpdateSelectionRect(UI.m_StartCp,UI.m_CurrentCp);
 	            return true;
     	    }
         }
 
-        UI->RedrawScene();
+        UI.RedrawScene();
     	return false;
     }
 }
@@ -139,11 +139,11 @@ bool __fastcall TUI_ControlOccluderSelect::End(TShiftState Shift){
     	return SelectEnd(Shift);
     }else{
         if (bBoxSelection){
-            UI->EnableSelectionRect( false );
+            UI.EnableSelectionRect( false );
             bBoxSelection = false;
   			if (obj){
 				CFrustum frustum;
-			    if (UI->SelectionFrustum(frustum))
+			    if (UI.SelectionFrustum(frustum))
 	                obj->SelectPoint(frustum,Shift.Contains(ssCtrl));
             }
         }

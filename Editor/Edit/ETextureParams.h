@@ -60,11 +60,11 @@ struct STextureParams{
 	DWORD			border_color;
     DWORD			fade_color;
     DWORD			fade_amount;
-	DWORD			mip_filter;		
+	DWORD			mip_filter;
     DWORD			reserved[2];
     STextureParams	()
 	{
-		ZeroMemory(this,sizeof(STextureParams)); 
+		ZeroMemory(this,sizeof(STextureParams));
 		flag.bGenerateMipMaps	= TRUE;
 		flag.bDitherColor		= TRUE;
 		mip_filter				= dMIPFilterBox;

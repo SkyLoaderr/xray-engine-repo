@@ -52,15 +52,6 @@ void CImageManager::MakeThumbnail(EImageThumbnail* THM, FIBITMAP* bm)
 }
 
 //------------------------------------------------------------------------------
-// создает игровую текстуру
-//------------------------------------------------------------------------------
-void CImageManager::MakeGameTexture(EImageThumbnail* THM, LPCSTR game_name, FIBITMAP* bm){
-    // time check
-    bool bRes 	= DXTCompress(game_name, FreeImage_GetScanLine(bm,0), THM->m_Width, THM->m_Height, THM->m_Width*4, &THM->m_TexParams, 4);
-    R_ASSERT(bRes&&FS.FileLength(game_name));
-}
-
-//------------------------------------------------------------------------------
 // создает новый тхм
 // использовать в случае если не было такого файла
 //------------------------------------------------------------------------------
@@ -73,6 +64,16 @@ void CImageManager::CreateThumbnail(EImageThumbnail* THM, LPCSTR src_name){
 	THM->m_Age = FS.GetFileAge(base_name);
 	THM->m_TexParams.fmt = (FIC_RGBALPHA==FreeImage_GetColorType(bm))?STextureParams::tfDXT3:STextureParams::tfDXT1;
     if (bm) FreeImage_Free(bm);
+}
+
+//------------------------------------------------------------------------------
+// создает игровую текстуру
+//------------------------------------------------------------------------------
+void CImageManager::MakeGameTexture(EImageThumbnail* THM, LPCSTR game_name, FIBITMAP* bm)
+{
+    // time check
+    bool bRes 	= DXTCompress(game_name, FreeImage_GetScanLine(bm,0), THM->m_Width, THM->m_Height, THM->m_Width*4, &THM->m_TexParams, 4);
+    R_ASSERT(bRes&&FS.FileLength(game_name));
 }
 
 //------------------------------------------------------------------------------
@@ -112,5 +113,52 @@ void CImageManager::Synchronize(LPCSTR name)
     	FS.SetFileAge(game_name, base_age);
     }
     if (bm) FreeImage_Free(bm);
+}
+
+//------------------------------------------------------------------------------
+// синхронизиция каталогов
+//------------------------------------------------------------------------------
+void CImageManager::SynchronizePath()
+{
+	FSPath P;
+    AStringVec& lst	= FS.GetDirectories(FS.m_Textures.m_Path);
+    AnsiString thm	= FS.m_TexturesThumbnail.m_Path;
+    for (AStringIt it=lst.begin(); it!=lst.end(); it++){
+        if (it->Pos(thm)==1) continue;
+    	*it = it->Delete(1,strlen(FS.m_Textures.m_Path));
+	   	P.Init  ( FS.m_GameTextures.m_Path, it->c_str(), "", "" ); 		P.VerifyPath();
+	   	P.Init  ( FS.m_TexturesThumbnail.m_Path, it->c_str(), "", "" ); P.VerifyPath();
+    }
+}
+
+//------------------------------------------------------------------------------
+// возвращает список не синхронизированных (модифицированных) текстур
+//------------------------------------------------------------------------------
+int CImageManager::GetModifiedFiles(AStringVec& files)
+{
+    int count = strlen(FS.m_Textures.m_Path);
+    AStringVec& lst = FS.GetFiles(FS.m_Textures.m_Path);
+    AnsiString thm=FS.m_TexturesThumbnail.m_Path;
+    for (AStringIt it=lst.begin(); it!=lst.end(); it++){
+        if (it->Pos(thm)==1) continue;
+        AnsiString t = it->Delete(1,count);
+		if (IfChanged(t.c_str())) files.push_back(t);
+    }
+    return files.size();
+}
+
+//------------------------------------------------------------------------------
+// возвращает список всех текстур
+//------------------------------------------------------------------------------
+int CImageManager::GetFiles(AStringVec& files)
+{
+    int count = strlen(FS.m_Textures.m_Path);
+    AStringVec& lst = FS.GetFiles(FS.m_Textures.m_Path);
+    AnsiString thm=FS.m_TexturesThumbnail.m_Path;
+    for (AStringIt it=lst.begin(); it!=lst.end(); it++){
+        if (it->Pos(thm)==1) continue;
+        files.push_back(it->Delete(1,count));
+    }
+    return files.size();
 }
 

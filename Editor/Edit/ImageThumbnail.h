@@ -6,7 +6,7 @@
 
 //----------------------------------------------------
 class EImageThumbnail{
-friend class CImageManager; 
+friend class CImageManager;
 	AnsiString		m_Name;
     int				m_Age;
 	DWORDVec 		m_Pixels;
@@ -20,7 +20,7 @@ public:
     // thumbnail public routines
     IC int			_Width			(){return m_Width;}
     IC int			_Height			(){return m_Height;}
-    IC STextureParams& _Format		(){return m_TexParams;}
+    IC STextureParams& _Format		(){R_ASSERT(Valid());return m_TexParams;}
 	bool 			Load			();
 	void 			Save			(int age=0);
 	void 			DrawNormal		(HANDLE handle, RECT *rect);

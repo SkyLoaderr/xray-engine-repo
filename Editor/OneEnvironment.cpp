@@ -37,6 +37,7 @@ void __fastcall TfrmOneEnvironment::ShowEnv(st_Environment* env){
 //---------------------------------------------------------------------------
 void TfrmOneEnvironment::UpdateEnvData(){
 	if (bLoadMode) return;
+    if (!m_CurEnv) return;
     seViewDistance->ObjApplyFloat	(m_CurEnv->m_ViewDist);
     seFogness->ObjApplyFloat  		(m_CurEnv->m_Fogness);
 	int c;
@@ -78,4 +79,5 @@ void __fastcall TfrmOneEnvironment::seFognessKeyDown(TObject *Sender,
 	if (Key==VK_RETURN) UpdateEnvData();
 }
 //---------------------------------------------------------------------------
+
 

@@ -100,7 +100,7 @@ void __fastcall TfrmEditLibrary::FormShow(TObject *Sender)
 {
     InitObjectFolder();
     ebSave->Enabled = false;
-    UI->BeginEState(esEditLibrary);
+    UI.BeginEState(esEditLibrary);
     m_SelectedObject = 0;
     // add directional light
     Flight L;
@@ -125,8 +125,8 @@ void __fastcall TfrmEditLibrary::FormClose(TObject *Sender, TCloseAction &Action
 	Scene->unlock();
     Lib->ResetAnimation();
     Lib->m_Current = 0;
-    UI->EndEState(esEditLibrary);
-    UI->Command(COMMAND_CLEAR);
+    UI.EndEState(esEditLibrary);
+    UI.Command(COMMAND_CLEAR);
 	frmEditLibrary = 0;
     // remove directional light
 	Device.LightEnable(0,false);
@@ -140,9 +140,9 @@ bool TfrmEditLibrary::CloseEditLibrary(bool bReload){
 		if (res==mrYes) ebSaveClick(0);
     }
     if (bReload){
-        UI->SetStatus("Library reloading...");
-        UI->Command(COMMAND_RELOAD_LIBRARY);
-        UI->SetStatus("");
+        UI.SetStatus("Library reloading...");
+        UI.Command(COMMAND_RELOAD_LIBRARY);
+        UI.SetStatus("");
     }
     Close();
     return true;
@@ -174,7 +174,7 @@ void __fastcall TfrmEditLibrary::tvObjectsItemSelectedChange(
 
     CLibObject* new_selection=0;
     ebMakeThm->Enabled = false;
-    if (Item->Data&&UI->ContainEState(esEditLibrary)){
+    if (Item->Data&&UI.ContainEState(esEditLibrary)){
         new_selection = (CLibObject*)Item->Data;
         new_selection->Refresh();
 	    ebMakeThm->Enabled = true;
@@ -182,7 +182,7 @@ void __fastcall TfrmEditLibrary::tvObjectsItemSelectedChange(
 	TfrmPropertiesObject::SetCurrent(new_selection);
     m_SelectedObject = new_selection;
 
-    UI->RedrawScene();
+    UI.RedrawScene();
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLibrary::cbPreviewClick(TObject *Sender)
@@ -190,11 +190,11 @@ void __fastcall TfrmEditLibrary::cbPreviewClick(TObject *Sender)
     TElTreeItem *itm = tvObjects->Selected;
 	m_SelectedObject = 0;
     ebMakeThm->Enabled = false;
-    if (cbPreview->Checked&&itm&&itm->Data&&UI->ContainEState(esEditLibrary)){
+    if (cbPreview->Checked&&itm&&itm->Data&&UI.ContainEState(esEditLibrary)){
         m_SelectedObject = (CLibObject*)itm->Data;
 	    ebMakeThm->Enabled = true;
     }
-    UI->RedrawScene();
+    UI.RedrawScene();
 }
 //---------------------------------------------------------------------------
 TElTreeItem* TfrmEditLibrary::FindFolder(const char* s)
@@ -604,7 +604,7 @@ void __fastcall TfrmEditLibrary::ebMakeThmClick(TObject *Sender)
 void __fastcall TfrmEditLibrary::ebUnloadClick(TObject *Sender)
 {
 	if (ebSave->Enabled) ebSaveClick(Sender);
-	UI->Command(COMMAND_UNLOAD_LIBMESHES);
+	UI.Command(COMMAND_UNLOAD_LIBMESHES);
 }
 //---------------------------------------------------------------------------
 

@@ -22,16 +22,6 @@ class CSurface;
 struct st_DPSurface;
 //----------------------------------------------------
 // some types
-// some types
-class SSTR{
-public:
-	char filename[MAX_PATH];
-	SSTR(){filename[0]=0;};
-	SSTR(const SSTR& source){strcpy(filename,source.filename);};
-	SSTR(const char *source){strcpy(filename,source);};
-	~SSTR(){}; };
-
-typedef std::vector<SSTR> SSTRLIST;
 typedef Fvector b_vnormal;
 
 class SceneBuilder{
@@ -84,7 +74,7 @@ protected:
 	Fvector m_LevelShift;
 	Fbox m_LevelBox;
 
-	SSTRLIST m_TexNames;
+	AStringVec m_TexNames;
 
 protected:
 	bool LightenObjects				();
@@ -99,7 +89,6 @@ protected:
 
 	bool WriteTextures              ();
 	void AddUniqueTexName           (const char *name);
-    void AddUniqueTexName			(CSceneObject* O);
 
     // OGF
 	bool BuildObjectOGF             (CFS_Base& F, CEditableObject *obj, const char* base_name, FSPath& path);

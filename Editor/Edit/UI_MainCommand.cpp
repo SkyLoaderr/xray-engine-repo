@@ -42,7 +42,7 @@ bool TUI::Command( int _Command, int p1 ){
         m_Tools->ShowProperties();
         break;
 	case COMMAND_SHOWCONTEXTMENU:
-    	frmMain->ShowContextMenu(EObjClass(p1));
+    	ShowContextMenu(EObjClass(p1));
         break;
 	case COMMAND_EDITOR_PREF:
 	    frmEditorPreferences->ShowModal();
@@ -109,7 +109,7 @@ bool TUI::Command( int _Command, int p1 ){
               	Scene->UndoClear();
 				Scene->UndoSave();
                 Scene->m_Modified = false;
-			    UI->Command(COMMAND_UPDATE_CAPTION);
+			    Command(COMMAND_UPDATE_CAPTION);
                 Command(COMMAND_CHANGE_ACTION,eaSelect);
 			}
 		} else {
@@ -120,7 +120,7 @@ bool TUI::Command( int _Command, int p1 ){
 
 	case COMMAND_RELOAD:
 		if( !Scene->locked() ){
-        	UI->Command(COMMAND_LOAD,(int)m_LastFileName);
+        	Command(COMMAND_LOAD,(int)m_LastFileName);
 		} else {
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
@@ -135,7 +135,7 @@ bool TUI::Command( int _Command, int p1 ){
 				Scene->Save( m_LastFileName, false );
                 SetStatus("");
                 Scene->m_Modified = false;
-			    UI->Command(COMMAND_UPDATE_CAPTION);
+			    Command(COMMAND_UPDATE_CAPTION);
                 EndEState();
 			}else{
 				bRes = Command( COMMAND_SAVEAS ); }
@@ -153,7 +153,7 @@ bool TUI::Command( int _Command, int p1 ){
 				Scene->Save( filebuffer, false );
 				strcpy(m_LastFileName,filebuffer);
 	            EndEState();
-			    bRes = UI->Command(COMMAND_UPDATE_CAPTION);
+			    bRes = Command(COMMAND_UPDATE_CAPTION);
 			}else
             	bRes = false;
 		} else {
@@ -174,7 +174,7 @@ bool TUI::Command( int _Command, int p1 ){
             EndEState();
            	Scene->UndoClear();
             Scene->m_Modified = false;
-			UI->Command(COMMAND_UPDATE_CAPTION);
+			Command(COMMAND_UPDATE_CAPTION);
 			Command(COMMAND_CHANGE_ACTION,eaSelect);
 		    Scene->UndoSave();
 		} else {
@@ -214,7 +214,7 @@ bool TUI::Command( int _Command, int p1 ){
 			Scene->CutSelection(CurrentClassID());
         	EndEState();
             fraLeftBar->miPaste->Enabled = true;
-            frmMain->miPaste->Enabled = true;
+            fraLeftBar->miPaste2->Enabled = true;
 			Scene->UndoSave();
 		} else {
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
@@ -228,7 +228,7 @@ bool TUI::Command( int _Command, int p1 ){
 			Scene->CopySelection(CurrentClassID());
         	EndEState();
             fraLeftBar->miPaste->Enabled = true;
-            frmMain->miPaste->Enabled = true;
+            fraLeftBar->miPaste2->Enabled = true;
 		} else {
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
@@ -251,7 +251,7 @@ bool TUI::Command( int _Command, int p1 ){
 		if( !Scene->locked() ){
 			if( !Scene->Undo() ) ELog.DlgMsg( mtInformation, "Undo buffer empty" );
             m_Tools->Reset();
-		    UI->Command(COMMAND_CHANGE_ACTION, eaSelect);
+		    Command(COMMAND_CHANGE_ACTION, eaSelect);
 		} else {
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
@@ -262,7 +262,7 @@ bool TUI::Command( int _Command, int p1 ){
 		if( !Scene->locked() ){
 			if( !Scene->Redo() ) ELog.DlgMsg( mtInformation, "Redo buffer empty" );
             m_Tools->Reset();
-		    UI->Command(COMMAND_CHANGE_ACTION, eaSelect);
+		    Command(COMMAND_CHANGE_ACTION, eaSelect);
 		} else {
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
@@ -431,10 +431,9 @@ bool TUI::Command( int _Command, int p1 ){
     case COMMAND_UPDATE_CAPTION:
     	frmMain->UpdateCaption();
     	break;
-	case COMMAND_BREAK_LAST_OPERATION:{
-		EEditorState est = GetEState();
-		if (Builder&&(est==esBuildLevel)) UI->NeedBreak();
-    	}break;
+	case COMMAND_BREAK_LAST_OPERATION:
+    	NeedBreak();
+    	break;
     case COMMAND_GROUP_CREATE:
 		if( !Scene->locked() ){
 	    	Scene->GroupCreate(true);
@@ -532,5 +531,71 @@ bool TUI::Command( int _Command, int p1 ){
     return bRes;
 }
 
+void TUI::ApplyShortCut(WORD Key, TShiftState Shift)
+{
+    if (Key==VK_ESCAPE)   		Command(COMMAND_CHANGE_ACTION, eaSelect);
+    if (Shift.Contains(ssCtrl)){
+        if (Key=='V')    		Command(COMMAND_PASTE);
+        else if (Key=='C')    	Command(COMMAND_COPY);
+        else if (Key=='X')    	Command(COMMAND_CUT);
+        else if (Key=='Z')    	Command(COMMAND_UNDO);
+        else if (Key=='Y')    	Command(COMMAND_REDO);
+        else if (Key==VK_F5)    Command(COMMAND_BUILD);
+        else if (Key==VK_F7)    Command(COMMAND_OPTIONS);
+        else if (Key=='A')    	Command(COMMAND_SELECT_ALL);
+        else if (Key=='I')    	Command(COMMAND_INVERT_SELECTION_ALL);
+        else if (Key=='O')   	Command(COMMAND_LOAD);
+        else if (Key=='N')   	Command(COMMAND_CLEAR);
+        else if (Key=='S'){ 	if (Shift.Contains(ssAlt))  Command(COMMAND_SAVEAS);
+					            else                        Command(COMMAND_SAVE);}
+       	else if (Key=='1') 	 	Command(COMMAND_CHANGE_TARGET, etEvent);
+		else if (Key=='2')		Command(COMMAND_CHANGE_TARGET, etPS);
+    }else{
+        if (Shift.Contains(ssAlt)){
+        }else{
+            if (Key=='1')     	Command(COMMAND_CHANGE_TARGET, etObject);
+        	else if (Key=='2')  Command(COMMAND_CHANGE_TARGET, etLight);
+        	else if (Key=='3')  Command(COMMAND_CHANGE_TARGET, etSound);
+        	else if (Key=='4')  Command(COMMAND_CHANGE_TARGET, etOccluder);
+        	else if (Key=='5')  Command(COMMAND_CHANGE_TARGET, etGlow);
+        	else if (Key=='6')  Command(COMMAND_CHANGE_TARGET, etDO);
+        	else if (Key=='7')  Command(COMMAND_CHANGE_TARGET, etRPoint);
+        	else if (Key=='8')  Command(COMMAND_CHANGE_TARGET, etAITPoint);
+        	else if (Key=='9')  Command(COMMAND_CHANGE_TARGET, etSector);
+        	else if (Key=='0')  Command(COMMAND_CHANGE_TARGET, etPortal);
+            // simple press
+        	else if (Key=='S')	Command(COMMAND_CHANGE_ACTION, eaSelect);
+        	else if (Key=='A')	Command(COMMAND_CHANGE_ACTION, eaAdd);
+        	else if (Key=='T')	Command(COMMAND_CHANGE_ACTION, eaMove);
+        	else if (Key=='Y')	Command(COMMAND_CHANGE_ACTION, eaRotate);
+        	else if (Key=='H')	Command(COMMAND_CHANGE_ACTION, eaScale);
+        	else if (Key=='Z')	Command(COMMAND_CHANGE_AXIS,   eAxisX);
+        	else if (Key=='X')	Command(COMMAND_CHANGE_AXIS,   eAxisY);
+        	else if (Key=='C')	Command(COMMAND_CHANGE_AXIS,   eAxisZ);
+        	else if (Key=='V')	Command(COMMAND_CHANGE_AXIS,   eAxisZX);
+        	else if (Key=='O')	Command(COMMAND_CHANGE_SNAP,   (int)fraTopBar->ebOSnap);
+        	else if (Key=='G')	Command(COMMAND_CHANGE_SNAP,   (int)fraTopBar->ebGSnap);
+        	else if (Key=='P')	Command(COMMAND_EDITOR_PREF);
+        	else if (Key=='W')	Command(COMMAND_OBJECT_LIST);
+        	else if (Key==VK_DELETE)	Command(COMMAND_DELETE_SELECTION);
+        	else if (Key==VK_RETURN)    Command(COMMAND_SHOWPROPERTIES);
+        }
+    }
+}
+//---------------------------------------------------------------------------
+
+void TUI::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
+{
+    if (Shift.Contains(ssCtrl)){
+        if (Key=='S'){
+            if (Shift.Contains(ssAlt))  Command(COMMAND_SAVEAS);
+            else                        Command(COMMAND_SAVE);
+        }
+        else if (Key=='O')   			Command(COMMAND_LOAD);
+        else if (Key=='N')   			Command(COMMAND_CLEAR);
+    }
+    if (Key==VK_OEM_3)		  			Command(COMMAND_RENDER_FOCUS);
+}
+//---------------------------------------------------------------------------
 
 

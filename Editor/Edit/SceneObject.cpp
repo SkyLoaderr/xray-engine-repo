@@ -148,7 +148,7 @@ void CSceneObject::Move(Fvector& amount){
     	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
-    UI->UpdateScene();
+    UI.UpdateScene();
 	vPosition.add( amount );
     UpdateTransform();
 }
@@ -158,7 +158,7 @@ void CSceneObject::Rotate(Fvector& center, Fvector& axis, float angle){
     	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
-    UI->UpdateScene();
+    UI.UpdateScene();
 
 	Fmatrix m;
 	m.rotation(axis, -angle);
@@ -176,7 +176,7 @@ void CSceneObject::LocalRotate(Fvector& axis, float angle){
     	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
-    UI->UpdateScene();
+    UI.UpdateScene();
     vRotate.direct(vRotate,axis,angle);
     UpdateTransform();
 }
@@ -190,7 +190,7 @@ void CSceneObject::Scale( Fvector& center, Fvector& amount ){
     	ELog.DlgMsg(mtInformation,"Dynamic object %s - can't scale.", GetName());
         return;
     }
-    UI->UpdateScene();
+    UI.UpdateScene();
 	vScale.add(amount);
 	if (vScale.x<EPS) vScale.x=EPS;
 	if (vScale.y<EPS) vScale.y=EPS;
@@ -214,7 +214,7 @@ void CSceneObject::LocalScale( Fvector& amount ){
     	ELog.DlgMsg(mtInformation,"Dynamic object %s - can't scale.", GetName());
         return;
     }
-    UI->UpdateScene();
+    UI.UpdateScene();
 	vScale.add(amount);
     if (vScale.x<EPS) vScale.x=EPS;
     if (vScale.y<EPS) vScale.y=EPS;

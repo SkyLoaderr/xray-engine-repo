@@ -23,7 +23,7 @@ bool CreateBitmap(HBITMAP& th, DWORDVec& data, int w, int h){
     bi.biCompression = BI_RGB;
     bi.biSizeImage = w*h*4;
 
-	HDC hdc = GetDC(UI->GetHWND());
+	HDC hdc = GetDC(UI.GetHWND());
 //	th = CreateDIBitmap( hdc, &bi, CBM_INIT, (BYTE*)data.begin(), (LPBITMAPINFO)&bi, DIB_RGB_COLORS );
 //	th = CreateBitmap( w, h, 1, 32, (BYTE*)data.begin() );
 	th = CreateCompatibleBitmap( hdc,w,h );
@@ -38,7 +38,7 @@ bool CreateBitmap(HBITMAP& th, DWORDVec& data, int w, int h){
 		FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM,0,GetLastError(),0,lpMsgBuf,1024,0);
         ELog.Msg(mtError, lpMsgBuf);
     }
-	ReleaseDC( UI->GetHWND(), hdc );
+	ReleaseDC( UI.GetHWND(), hdc );
 	return (!err);
 }
 //----------------------------------------------------

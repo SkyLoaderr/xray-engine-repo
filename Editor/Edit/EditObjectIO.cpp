@@ -62,10 +62,10 @@ void CEditableObject::SaveObject(const char* fname){
     F.close_chunk();
 
     F.SaveTo(fname,0);
-//    UI->ProgressStart(2,"Compressing...");
-//    UI->ProgressUpdate(1);
+//    UI.ProgressStart(2,"Compressing...");
+//    UI.ProgressUpdate(1);
 //    F.SaveTo(fname,"OBJECT");
-//    UI->ProgressEnd();
+//    UI.ProgressEnd();
 }
 
 

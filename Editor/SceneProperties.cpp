@@ -4,7 +4,7 @@
 #include "SceneProperties.h"
 #include "OneEnvironment.h"
 #include "xrLevel.h"
-#ifdef _LEVEL_EDITOR 
+#ifdef _LEVEL_EDITOR
  #include "Scene.h"
  #include "ui_main.h"
  #include "library.h"
@@ -228,10 +228,8 @@ void __fastcall TfrmSceneProperties::btContinueClick(TObject *Sender)
 	Scene->m_LevelOp.m_FNLevelPath 	= edLevelPath->Text;	// Path
 	Scene->m_LevelOp.m_BOPText		= mmText->Text;			// Text
 	Scene->m_LevelOp.m_CurEnv		= seCurEnv->Value;
-//	Scene->m_LevelOp.m_ViewDist		= seViewDistance->Value;
-//	Scene->m_LevelOp.m_Fogness		= seFogness->Value;
-//	Scene->m_LevelOp.m_FogColor.set_windows(mcFogColor->Brush->Color);
-//	Scene->m_LevelOp.m_AmbColor.set_windows(mcAmbientColor->Brush->Color);
+    for (FrmEnvIt f_it=m_frmEnvs.begin(); f_it!=m_frmEnvs.end(); f_it++)
+    	(*f_it)->UpdateEnvData();
 	Scene->m_LevelOp.m_SkydomeObjName = edSkydomeObjectName->Text;
     Scene->UpdateSkydome();
 #endif

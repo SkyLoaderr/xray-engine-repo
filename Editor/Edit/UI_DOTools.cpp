@@ -41,9 +41,9 @@ void __fastcall TUI_ControlDOAdd::OnExit()
 }
 
 bool __fastcall TUI_ControlDOAdd::Start(TShiftState Shift){
-/*	if (Shift==ssRBOnly){ UI->Command(COMMAND_SHOWCONTEXTMENU,OBJCLASS_DOCLUSTER); return 0;}
+/*	if (Shift==ssRBOnly){ UI.Command(COMMAND_SHOWCONTEXTMENU,OBJCLASS_DOCLUSTER); return 0;}
     Fvector p;
-    if (UI->PickGround(p,UI->m_CurrentRStart,UI->m_CurrentRNorm)){
+    if (UI.PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm)){
         char namebuffer[MAX_OBJ_NAME];
         CDOCluster* obj=0;
         Scene->GenObjectName(OBJCLASS_DOCLUSTER, namebuffer);
@@ -53,7 +53,7 @@ bool __fastcall TUI_ControlDOAdd::Start(TShiftState Shift){
         Scene->SelectObjects(false,OBJCLASS_DOCLUSTER);
 //        if (obj->AppendCluster(fraDO->seClusterDensity->Value)){
 //            Scene->AddObject(obj);
-//            if (Shift.Contains(ssCtrl)) UI->Command(COMMAND_SHOWPROPERTIES);
+//            if (Shift.Contains(ssCtrl)) UI.Command(COMMAND_SHOWPROPERTIES);
 //            if (!Shift.Contains(ssAlt)) ResetActionToSelect();
 //        }else{
             _DELETE(obj);

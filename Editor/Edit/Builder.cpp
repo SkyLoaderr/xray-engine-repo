@@ -31,12 +31,12 @@ SceneBuilder::~SceneBuilder(){
 }
 
 bool SceneBuilder::Execute( ){
-	UI->ResetBreak();
+	UI.ResetBreak();
 	if( m_InProgress ) return false;
 	ELog.Msg( mtInformation, "Building started..." );
 
     // save scene
-	UI->Command(COMMAND_SAVE);
+	UI.Command(COMMAND_SAVE);
 
     // check debug
 	if ((Scene->ObjCount(OBJCLASS_SECTOR)==0)&&(Scene->ObjCount(OBJCLASS_PORTAL)==0))
@@ -47,51 +47,51 @@ bool SceneBuilder::Execute( ){
     // validate scene
     if (!Scene->Validate()){
     	ELog.DlgMsg( mtError, "Invalid scene. Building failed." );
-		UI->Command(COMMAND_RELOAD);
+		UI.Command(COMMAND_RELOAD);
         return false;
     }
 
     // build
 	m_InProgress = true;
 	//---------------
-	UI->BeginEState(esBuildLevel);
+	UI.BeginEState(esBuildLevel);
     Thread();
-	UI->EndEState();
+	UI.EndEState();
 	//---------------
-	UI->ProgressStart(2, "Restoring scene...");
-	UI->ProgressUpdate(1);
-	UI->Command(COMMAND_RELOAD);
-	UI->ProgressEnd();
+	UI.ProgressStart(2, "Restoring scene...");
+	UI.ProgressUpdate(1);
+	UI.Command(COMMAND_RELOAD);
+	UI.ProgressEnd();
 
 	return true;
 }
 
 bool SceneBuilder::MakeLTX( ){
-	UI->ResetBreak();
+	UI.ResetBreak();
 	if( m_InProgress ) return false;
 	ELog.Msg( mtInformation, "Making started..." );
 
     // save scene
-	UI->Command(COMMAND_SAVE);
+	UI.Command(COMMAND_SAVE);
 
     // validate scene
     if (!Scene->Validate(false,false)){
     	ELog.DlgMsg( mtError, "Invalid scene. Building failed." );
-		UI->Command(COMMAND_RELOAD);
+		UI.Command(COMMAND_RELOAD);
         return false;
     }
 
     // build
 	m_InProgress = true;
 	//---------------
-	UI->BeginEState(esBuildLevel);
+	UI.BeginEState(esBuildLevel);
     ThreadMakeLTX();
-	UI->EndEState();
+	UI.EndEState();
 	//---------------
-	UI->ProgressStart(2, "Restoring scene...");
-	UI->ProgressUpdate(1);
-	UI->Command(COMMAND_RELOAD);
-	UI->ProgressEnd();
+	UI.ProgressStart(2, "Restoring scene...");
+	UI.ProgressUpdate(1);
+	UI.Command(COMMAND_RELOAD);
+	UI.ProgressEnd();
 
 	return true;
 }
@@ -123,37 +123,37 @@ DWORD SceneBuilder::Thread(){
 	bool error_flag = false;
 	AnsiString error_text;
 	do{
-		UI->Command( COMMAND_RESET_ANIMATION );
+		UI.Command( COMMAND_RESET_ANIMATION );
 
-        if (UI->NeedAbort()) break;
+        if (UI.NeedAbort()) break;
 		if( !PreparePath() ){
 			error_text="*ERROR: Failed to prepare level path....";
 			error_flag = true;
 			break;
 		}
 
-        if (UI->NeedAbort()) break;
+        if (UI.NeedAbort()) break;
 		if( !LightenObjects() ){
 			error_text="*ERROR: Failed to prepare level folders....";
 			error_flag = true;
 			break;
 		}
 
-        if (UI->NeedAbort()) break;
+        if (UI.NeedAbort()) break;
 		if( !PrepareFolders() ){
 			error_text="*ERROR: Failed to prepare level folders....";
 			error_flag = true;
 			break;
 		}
 
-        if (UI->NeedAbort()) break;
+        if (UI.NeedAbort()) break;
 		if( !UngroupAndUnlockObjects() ){
 			error_text="*ERROR: Failed to ungroup and unlock objects...";
 			error_flag = true;
 			break;
 		}
 
-        if (UI->NeedAbort()) break;
+        if (UI.NeedAbort()) break;
 		if( !GetShift() ){
 			error_text="*ERROR: Failed to acquire level shift....";
 			error_flag = true;
@@ -161,42 +161,42 @@ DWORD SceneBuilder::Thread(){
 		}
 
 
-        if (UI->NeedAbort()) break;
+        if (UI.NeedAbort()) break;
 		if( !ShiftLevel() ){
 			error_text="*ERROR: Failed to shift level....";
 			error_flag = true;
 			break;
 		}
 
-        if (UI->NeedAbort()) break;
+        if (UI.NeedAbort()) break;
 		if( !RenumerateSectors() ){
 			error_text="*ERROR: Failed to renumerate sectors....";
 			error_flag = true;
 			break;
 		}
 
-        if (UI->NeedAbort()) break;
+        if (UI.NeedAbort()) break;
 		if( !RemoteStaticBuild() ){
 			error_text="*ERROR: Failed static remote build....";
 			error_flag = true;
 			break;
 		}
 
-        if (UI->NeedAbort()) break;
+        if (UI.NeedAbort()) break;
 		if( !BuildLTX() ){
 			error_text="*ERROR: Failed to build level description....";
 			error_flag = true;
 			break;
 		}
 
-        if (UI->NeedAbort()) break;
+        if (UI.NeedAbort()) break;
 		if( !BuildSkyModel() ){
 			error_text="*ERROR: Failed to build OGF model....";
 			error_flag = true;
 			break;
 		}
 
-        if (UI->NeedAbort()) break;
+        if (UI.NeedAbort()) break;
 		// only implicit lighted
 		if( !WriteTextures() ){
 			error_text="*ERROR: Failed to write textures....";
@@ -207,7 +207,7 @@ DWORD SceneBuilder::Thread(){
 	} while(0);
 
 	if( error_flag ) 		ELog.DlgMsg(mtError,error_text.c_str());
-	else if ( UI->NeedAbort())ELog.DlgMsg(mtInformation,"Building terminated...");
+	else if ( UI.NeedAbort())ELog.DlgMsg(mtInformation,"Building terminated...");
     else					ELog.DlgMsg(mtInformation,"Building OK...");
 
 	m_InProgress = false;
@@ -222,23 +222,23 @@ DWORD SceneBuilder::ThreadMakeLTX(){
 	bool error_flag = false;
 	AnsiString error_text;
 	do{
-		UI->Command( COMMAND_RESET_ANIMATION );
+		UI.Command( COMMAND_RESET_ANIMATION );
 
-        if (UI->NeedAbort()) break;
+        if (UI.NeedAbort()) break;
 		if( !PreparePath() ){
 			error_text="*ERROR: Failed to prepare level path....";
 			error_flag = true;
 			break;
 		}
 
-        if (UI->NeedAbort()) break;
+        if (UI.NeedAbort()) break;
 		if( !UngroupAndUnlockObjects() ){
 			error_text="*ERROR: Failed to ungroup and unlock objects...";
 			error_flag = true;
 			break;
 		}
 
-        if (UI->NeedAbort()) break;
+        if (UI.NeedAbort()) break;
 		if( !GetShift() ){
 			error_text="*ERROR: Failed to acquire level shift....";
 			error_flag = true;
@@ -246,14 +246,14 @@ DWORD SceneBuilder::ThreadMakeLTX(){
 		}
 
 
-        if (UI->NeedAbort()) break;
+        if (UI.NeedAbort()) break;
 		if( !ShiftLevel() ){
 			error_text="*ERROR: Failed to shift level....";
 			error_flag = true;
 			break;
 		}
 
-        if (UI->NeedAbort()) break;
+        if (UI.NeedAbort()) break;
 		if( !BuildLTX() ){
 			error_text="*ERROR: Failed to build level description....";
 			error_flag = true;
@@ -262,7 +262,7 @@ DWORD SceneBuilder::ThreadMakeLTX(){
 	} while(0);
 
 	if( error_flag ) 		ELog.DlgMsg(mtError,error_text.c_str());
-	else if ( UI->NeedAbort())ELog.DlgMsg(mtInformation,"Building terminated...");
+	else if ( UI.NeedAbort())ELog.DlgMsg(mtInformation,"Building terminated...");
     else					ELog.DlgMsg(mtInformation,"Building OK...");
 
 	m_InProgress = false;

@@ -19,12 +19,12 @@
 bool SceneBuilder::SaveObjectOGF(const char* name, CEditableObject* obj){
 	CFS_Memory F;
     m_iDefaultSectorNum = 0;
-    UI->ProgressStart(3,"Building OGF...");
-	UI->ProgressUpdate(1);
+    UI.ProgressStart(3,"Building OGF...");
+	UI.ProgressUpdate(1);
     bool bRes = BuildObjectOGF(F, obj, name, FS.m_GameMeshes);
-	UI->ProgressUpdate(2);
+	UI.ProgressUpdate(2);
     F.SaveTo(name,0);
-    UI->ProgressEnd();
+    UI.ProgressEnd();
     return bRes;
 }
 
@@ -37,8 +37,6 @@ bool SceneBuilder::BuildSkyModel(){
         CFS_Memory F;
         BuildObjectOGF(F, Scene->m_SkyDome->GetRef(), Scene->m_SkyDome->GetName(),m_LevelPath);
         F.SaveTo(ogf_name.c_str(),0);
-        // add textures
-        AddUniqueTexName(Scene->m_SkyDome);
     }
 	return true;
 }
@@ -63,12 +61,12 @@ bool SceneBuilder::BuildObjectOGF( CFS_Base& F, CEditableObject *obj, const char
         DWORD fid_start=0;
         DWORD cnt;
         DWORD sub_index=0;
-    	SSTRLIST children;
+    	AStringVec children;
         char sub_name[MAX_PATH];
         for (int i=0; i<=l_faces_cnt; i++){
             if ((cur_mid!=l_faces[i].dwMaterial)||((i==l_faces_cnt)&&(i-fid_start))){
                 sprintf(sub_name, "%s#%d.ogf", base_name,sub_index);
-                children.push_back( SSTR(sub_name) );
+                children.push_back( sub_name );
                 path.Update(sub_name);
 				CFS_Memory FM;
                 BuildSingleOGF( FM, fid_start, i-fid_start, cur_mid );
@@ -90,7 +88,7 @@ bool SceneBuilder::BuildObjectOGF( CFS_Base& F, CEditableObject *obj, const char
         F.open_chunk	(OGF_CHIELDS);
         F.Wdword		(children.size());
         for(DWORD k=0; k<children.size(); k++)
-            F.WstringZ	(children[k].filename);
+            F.WstringZ	(children[k].c_str());
         F.close_chunk	();
 
         Fbox& box		= obj->GetBox();

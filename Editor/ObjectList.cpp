@@ -81,7 +81,7 @@ void __fastcall TfrmObjectList::InitListBox()
 {
     tvItems->IsUpdating = true;
     tvItems->Items->Clear();
-    cur_cls = UI->CurrentClassID();
+    cur_cls = UI.CurrentClassID();
     for(ObjectPairIt it=Scene->FirstClass(); it!=Scene->LastClass(); it++){
         ObjectList& lst = it->second;
         if ((cur_cls==OBJCLASS_DUMMY)||(it->first==cur_cls)){
@@ -142,7 +142,7 @@ void TfrmObjectList::UpdateSelection()
 	Scene->SelectObjects( false, cur_cls );
     for (TElTreeItem* node = tvItems->GetNextSelected(0); node; node=tvItems->GetNextSelected(node))
         if (node->Parent) ((CCustomObject*)(node->Data))->Select(true);
-    UI->RedrawScene();
+    UI.RedrawScene();
 }
 //---------------------------------------------------------------------------
 
@@ -174,7 +174,7 @@ void __fastcall TfrmObjectList::ebShowSelClick(TObject *Sender)
 
 void __fastcall TfrmObjectList::sbRefreshListClick(TObject *Sender)
 {
-    if ((Scene->ObjCount()!=obj_count)||(cur_cls!=UI->CurrentClassID()))
+    if ((Scene->ObjCount()!=obj_count)||(cur_cls!=UI.CurrentClassID()))
 	    InitListBox();
     else
     	UpdateState();
@@ -192,7 +192,7 @@ void __fastcall TfrmObjectList::tmRefreshSelectionTimer(TObject *Sender)
     // disable UpdateSelection
     tvItems->OnItemSelectedChange = 0;
 
-    if ((Scene->ObjCount()!=obj_count)||(cur_cls!=UI->CurrentClassID()))
+    if ((Scene->ObjCount()!=obj_count)||(cur_cls!=UI.CurrentClassID()))
 		InitListBox();
 //    UpdateListBox();
 

@@ -32,14 +32,14 @@ __fastcall TUI_ControlPSAdd::TUI_ControlPSAdd(int st, int act, TUI_CustomTools* 
 }
 
 bool __fastcall TUI_ControlPSAdd::Start(TShiftState Shift){
-    if (Shift==ssRBOnly){ UI->Command(COMMAND_SHOWCONTEXTMENU,OBJCLASS_PS); return false;}
+    if (Shift==ssRBOnly){ UI.Command(COMMAND_SHOWCONTEXTMENU,OBJCLASS_PS); return false;}
 	Fvector p;
-	if(!UI->PickGround(p,UI->m_CurrentRStart,UI->m_CurrentRNorm)) return false;
+	if(!UI.PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm)) return false;
     PS::SDef* PS = PSLib->GetCurrentPS();
     if(!PS) PS = PSLib->ChoosePS();
     if(!PS) return false;
 
-    if (UI->PickGround(p,UI->m_CurrentRStart,UI->m_CurrentRNorm)){
+    if (UI.PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm)){
         char namebuffer[MAX_OBJ_NAME];
         Scene->GenObjectName( OBJCLASS_PS, namebuffer, PS->m_Name );
         CPSObject *obj = new CPSObject( namebuffer );
@@ -47,7 +47,7 @@ bool __fastcall TUI_ControlPSAdd::Start(TShiftState Shift){
         obj->Move(p);
         Scene->SelectObjects(false,OBJCLASS_PS);
         Scene->AddObject( obj );
-        if (Shift.Contains(ssCtrl)) UI->Command(COMMAND_SHOWPROPERTIES);
+        if (Shift.Contains(ssCtrl)) UI.Command(COMMAND_SHOWPROPERTIES);
         if (!Shift.Contains(ssAlt)) ResetActionToSelect();
     }
     return false;

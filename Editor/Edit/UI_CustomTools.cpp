@@ -99,7 +99,7 @@ void TUI_CustomTools::ShowProperties(){
     	default:{ ELog.DlgMsg(mtError, "Can't find properties form."); throw -1;}
 	    }
         if (bChange) Scene->UndoSave();
-        UI->RedrawScene();
+        UI.RedrawScene();
 	}
 }
 

@@ -37,13 +37,13 @@ void TfraTopBar::OnTimer(){
 
 void __fastcall TfraTopBar::ebEditUndoClick(TObject *Sender)
 {
- 	UI->Command( COMMAND_UNDO );
+ 	UI.Command( COMMAND_UNDO );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraTopBar::ebEditRedoClick(TObject *Sender)
 {
- 	UI->Command( COMMAND_REDO );
+ 	UI.Command( COMMAND_REDO );
 }
 //---------------------------------------------------------------------------
 
@@ -51,7 +51,7 @@ void __fastcall TfraTopBar::ActionClick(TObject *Sender)
 {
     TExtBtn* btn=dynamic_cast<TExtBtn*>(Sender);
     VERIFY(btn);
-    UI->Command(COMMAND_CHANGE_ACTION, btn->Tag);
+    UI.Command(COMMAND_CHANGE_ACTION, btn->Tag);
 }
 //---------------------------------------------------------------------------
 
@@ -66,7 +66,7 @@ void __fastcall TfraTopBar::ebViewClick(TObject *Sender)
         if (btn==ebViewTop)     Device.m_Camera.ViewTop();
         if (btn==ebViewBottom)  Device.m_Camera.ViewBottom();
     }
-    UI->RedrawScene();
+    UI.RedrawScene();
 }
 //---------------------------------------------------------------------------
 
@@ -82,7 +82,7 @@ void __fastcall TfraTopBar::ChangeAction(int act){
         default: throw -1;
     }
 	btn->Down = true;
-    UI->RedrawScene();
+    UI.RedrawScene();
 }
 //---------------------------------------------------------------------------
 
@@ -99,13 +99,13 @@ void __fastcall TfraTopBar::ChangeAxis(int ax){
 }
 void __fastcall TfraTopBar::ebZoomExtentsClick(TObject *Sender)
 {
- 	UI->Command( COMMAND_ZOOM_EXTENTS, FALSE );
+ 	UI.Command( COMMAND_ZOOM_EXTENTS, FALSE );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraTopBar::ebZoomExtentsSelectedClick(TObject *Sender)
 {
- 	UI->Command( COMMAND_ZOOM_EXTENTS, TRUE );
+ 	UI.Command( COMMAND_ZOOM_EXTENTS, TRUE );
 }
 //---------------------------------------------------------------------------
 

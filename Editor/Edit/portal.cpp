@@ -109,7 +109,7 @@ bool CPortal::RayPick(float& distance, Fvector& start, Fvector& direction, SRayP
     for(FvectorIt it=src.begin(); it!=src.end(); it++){
 		p[1].set(*it);
 		p[2].set(((it+1)==src.end())?src.front():*(it+1));
-        range=UI->ZFar();
+        range=UI.ZFar();
 		if (RAPID::TestRayTri2(start,direction,p,range)){
         	if ((range>=0)&&(range<distance)){
             	distance=range;
@@ -190,7 +190,7 @@ bool CPortal::Update(bool bLoadMode){
 void CPortal::InvertOrientation(){
     reverse(m_Vertices.begin(),m_Vertices.end());
     m_Normal.invert();
-    UI->RedrawScene();
+    UI.RedrawScene();
 }
 //------------------------------------------------------------------------------
 
@@ -241,7 +241,6 @@ bool Isect2DLvs2DL (Fvector2& P1, Fvector2& P2, Fvector2& P3, Fvector2& P4, Fvec
 
 void SimplifyVertices(Fvector2Vec& vertices)
 {
-	//FPU::m64r();
     // 1. Select smallest edge
     double  min_size = dbl_max;
     int     edge_id  = -1;
@@ -272,7 +271,6 @@ void SimplifyVertices(Fvector2Vec& vertices)
     int L2a = edge_id+1; if (L2a>=int(vertices.size())) L2a -= vertices.size();
     vertices[L1b] = P;
     vertices.erase(vertices.begin()+L2a);
-    //FPU::m24r();
 }
 
 void CPortal::Simplify(){

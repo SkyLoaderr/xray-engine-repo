@@ -116,6 +116,31 @@ __published:	// IDE-managed Components
 	TMenuItem *Checknewtextures1;
 	TMenuItem *RefreshObjects1;
 	TMenuItem *MakeDetails;
+	TMxPopupMenu *pmObjectContext;
+	TMenuItem *miVisibility;
+	TMenuItem *HideSelected2;
+	TMenuItem *HideUnselected2;
+	TMenuItem *HideAll2;
+	TMenuItem *N5;
+	TMenuItem *UnhideAll2;
+	TMenuItem *Locking1;
+	TMenuItem *LockSelected1;
+	TMenuItem *MenuItem1;
+	TMenuItem *MenuItem2;
+	TMenuItem *N6;
+	TMenuItem *MenuItem5;
+	TMenuItem *MenuItem6;
+	TMenuItem *MenuItem7;
+	TMenuItem *Edit1;
+	TMenuItem *miCopy;
+	TMenuItem *miPaste2;
+	TMenuItem *miCut;
+	TMenuItem *Numeric1;
+	TMenuItem *Position1;
+	TMenuItem *Rotation1;
+	TMenuItem *Scale1;
+	TMenuItem *N4;
+	TMenuItem *miProperties;
     void __fastcall ebClearClick(TObject *Sender);
     void __fastcall ebLoadClick(TObject *Sender);
     void __fastcall ebSaveClick(TObject *Sender);
@@ -185,6 +210,10 @@ __published:	// IDE-managed Components
 	void __fastcall RefreshObjects1Click(TObject *Sender);
 	void __fastcall Checknewtextures1Click(TObject *Sender);
 	void __fastcall MakeDetailsClick(TObject *Sender);
+	void __fastcall Position1Click(TObject *Sender);
+	void __fastcall Rotation1Click(TObject *Sender);
+	void __fastcall Scale1Click(TObject *Sender);
+	void __fastcall miPropertiesClick(TObject *Sender);
 private:	// User declarations
 	void __fastcall ShowPPMenu(TMxPopupMenu* M, TObject* btn);
 public:		// User declarations

@@ -30,7 +30,7 @@ TShiftState ssRBOnly;
 //---------------------------------------------------------------------------
 TUI_Tools::TUI_Tools(TPanel* p)
 {
-    UI->m_Tools      = this;
+    UI.m_Tools      = this;
     target          = -1;
     action          = -1;
     ZeroMemory      (m_pTools,sizeof(TUI_CustomTools*)*etMaxTarget);
@@ -100,7 +100,7 @@ bool __fastcall TUI_Tools::MouseEnd(TShiftState Shift){
 }
 //---------------------------------------------------------------------------
 void __fastcall TUI_Tools::Update(){
-	if(!UI->IsMouseCaptured()){
+	if(!UI.IsMouseCaptured()){
         // если нужно изменить target выполняем после того как мышь освободится
         if(bNeedChangeTarget){
             SetTarget(iNeedTarget);
@@ -143,22 +143,22 @@ void __fastcall TUI_Tools::SetAction   (int act)
 {
     action = act;
     switch(act){
-        case eaSelect:  UI->GetD3DWindow()->Cursor = crCross;     break;
-        case eaAdd:     UI->GetD3DWindow()->Cursor = crArrow;     break;
-        case eaMove:    UI->GetD3DWindow()->Cursor = crSizeAll;   break;
-        case eaRotate:  UI->GetD3DWindow()->Cursor = crSizeWE;    break;
-        case eaScale:   UI->GetD3DWindow()->Cursor = crVSplit;    break;
-        default:        UI->GetD3DWindow()->Cursor = crHelp;
+        case eaSelect:  UI.GetD3DWindow()->Cursor = crCross;     break;
+        case eaAdd:     UI.GetD3DWindow()->Cursor = crArrow;     break;
+        case eaMove:    UI.GetD3DWindow()->Cursor = crSizeAll;   break;
+        case eaRotate:  UI.GetD3DWindow()->Cursor = crSizeWE;    break;
+        case eaScale:   UI.GetD3DWindow()->Cursor = crVSplit;    break;
+        default:        UI.GetD3DWindow()->Cursor = crHelp;
     }
     if (pCurTools) pCurTools->SetAction(action);
-    UI->RedrawScene();
+    UI.RedrawScene();
     fraTopBar->ChangeAction(act);
-    UI->Command(COMMAND_UPDATE_TOOLBAR);
+    UI.Command(COMMAND_UPDATE_TOOLBAR);
 }
 
 void __fastcall TUI_Tools::ChangeAction(int act){
 	// если мышь захвачена - изменим action после того как она освободится
-	if (UI->IsMouseCaptured()||UI->IsMouseInUse()){
+	if (UI.IsMouseCaptured()||UI.IsMouseInUse()){
 		bNeedChangeAction=true;
         iNeedAction=act;
     }else
@@ -180,9 +180,9 @@ void __fastcall TUI_Tools::SetTarget   (int tgt,bool bForced)
         pCurTools->ResetSubTarget();
         ATTACH_FRAME(pCurTools->pFrame, paParent);
     }
-    UI->RedrawScene();
+    UI.RedrawScene();
     fraLeftBar->ChangeTarget(tgt);
-    UI->Command(COMMAND_UPDATE_TOOLBAR);
+    UI.Command(COMMAND_UPDATE_TOOLBAR);
 }
 //---------------------------------------------------------------------------
 void __fastcall TUI_Tools::SetSubTarget(int tgt)
@@ -197,7 +197,7 @@ void __fastcall TUI_Tools::UnsetSubTarget(int tgt)
 //---------------------------------------------------------------------------
 void __fastcall TUI_Tools::ChangeTarget(int tgt){
 	// если мышь захвачена - изменим target после того как она освободится
-	if (UI->IsMouseCaptured()||UI->IsMouseInUse()){
+	if (UI.IsMouseCaptured()||UI.IsMouseInUse()){
 		bNeedChangeTarget=true;
         iNeedTarget=tgt;
     }else
@@ -233,7 +233,7 @@ void __fastcall PanelMinimizeClick(TObject *Sender)
         pa->Tag    = pa->Height;
         pa->Height = MIN_PANEL_HEIGHT;
     }
-    UI->Command(COMMAND_UPDATE_TOOLBAR);
+    UI.Command(COMMAND_UPDATE_TOOLBAR);
 }
 void __fastcall PanelMaximizeOnlyClick(TObject *Sender)
 {
@@ -242,7 +242,7 @@ void __fastcall PanelMaximizeOnlyClick(TObject *Sender)
         pa->Height = pa->Tag;
         pa->Tag    = 0;
     }
-    UI->Command(COMMAND_UPDATE_TOOLBAR);
+    UI.Command(COMMAND_UPDATE_TOOLBAR);
 }
 //---------------------------------------------------------------------------
 

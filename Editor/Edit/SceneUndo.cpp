@@ -31,8 +31,8 @@ void EScene::UndoClear(){
 }
 
 void EScene::UndoSave(){
-    if (UI->GetEState()!=esEditScene) return;
-    UI->RedrawScene();
+    if (UI.GetEState()!=esEditScene) return;
+    UI.RedrawScene();
 
 	UndoItem item;
 	GetTempFileName( FS.m_Temp.m_Path, "undo", 0, item.m_FileName );
@@ -63,13 +63,13 @@ bool EScene::Undo(){
         }
 
 		if( !m_UndoStack.empty() ){
-	        UI->BeginEState(esSceneLocked);
+	        UI.BeginEState(esSceneLocked);
 			Unload();
          	Load( m_UndoStack.back().m_FileName );
-	    	UI->EndEState(esSceneLocked);
+	    	UI.EndEState(esSceneLocked);
         }
 
-        UI->UpdateScene();
+        UI.UpdateScene();
         Modified();
 
 		return true;
@@ -79,10 +79,10 @@ bool EScene::Undo(){
 
 bool EScene::Redo(){
 	if( !m_RedoStack.empty() ){
-        UI->BeginEState(esSceneLocked);
+        UI.BeginEState(esSceneLocked);
         Unload();
 		Load( m_RedoStack.back().m_FileName );
-        UI->EndEState(esSceneLocked);
+        UI.EndEState(esSceneLocked);
 
 		m_UndoStack.push_back( m_RedoStack.back() );
 		m_RedoStack.pop_back();
@@ -91,7 +91,7 @@ bool EScene::Redo(){
 			unlink( m_UndoStack.front().m_FileName );
 			m_UndoStack.pop_front(); }
 
-        UI->UpdateScene();
+        UI.UpdateScene();
         Modified();
 
 		return true;

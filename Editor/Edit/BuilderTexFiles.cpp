@@ -10,55 +10,42 @@
 
 #include "Scene.h"
 #include "SceneClassList.h"
-#include "Texture.h"
+#include "ImageThumbnail.h"
 #include "EditObject.h"
 #include "SceneObject.h"
 //----------------------------------------------------
 
-void SceneBuilder::AddUniqueTexName(CSceneObject* obj){
-	CEditableObject *O = obj->GetRef();
-    for (SurfaceIt s_it=O->FirstSurface(); s_it!=O->LastSurface(); s_it++)
-		AddUniqueTexName((*s_it)->_Texture());
-}
-//----------------------------------------------------
-
-void SceneBuilder::AddUniqueTexName( const char *name ){
-	VERIFY( name );
-	if( name[0] != 0 ){
-		if( m_TexNames.empty() ){
-			m_TexNames.push_back( SSTR(name) );
-		} else {
-			bool found = false;
-			for( DWORD i=0; i<m_TexNames.size(); i++)
-				if( 0==stricmp(m_TexNames[i].filename,name) ){
-					found = true;
-					break;
-				}
-			if( !found )
-				m_TexNames.push_back( SSTR(name) );
-		}
-	}
+void SceneBuilder::AddUniqueTexName( const char *nm ){
+	VERIFY( nm&&nm[0] );
+    char name[255];
+    strcpy(name,nm);
+    strlwr(name);
+	for (AStringIt it=m_TexNames.begin(); it!=m_TexNames.end(); it++)
+    	if (*it==name) return;
+	m_TexNames.push_back(name);
 }
 //----------------------------------------------------
 
 //----------------------------------------------------
-// only implicit lighted
+// write only implicit textures to level folder
 //----------------------------------------------------
 bool SceneBuilder::WriteTextures(){
 	if( m_TexNames.empty() )
 		return true;
     bool bRes = true;
-    UI->ProgressStart(m_TexNames.size(),"Save textures...");
+    UI.ProgressStart(m_TexNames.size(),"Save textures...");
 	for( DWORD i=0; i<m_TexNames.size(); i++){
-        if (UI->NeedAbort()) break;
-		char out_filename[MAX_PATH];
-		_splitpath(m_TexNames[i].filename,0,0,out_filename,0);
-//S		ETextureCore *t = new ETextureCore( out_filename );
-//S        if(!t->MakeGameTexture(out_filename)) bRes = false;
-//S		_DELETE(t);
-	    UI->ProgressInc();
+        if (UI.NeedAbort()) break;
+        AnsiString src_nm = m_TexNames[i];
+        AnsiString dst_nm = src_nm;
+        m_LevelPath.Update(dst_nm);
+        EImageThumbnail* m_Thm = new EImageThumbnail(src_nm.c_str());
+        STextureParams& F=m_Thm->_Format();
+		if (F.flag.bImplicitLighted)
+	        FS.CopyFileTo(src_nm.c_str(),dst_nm.c_str(),true);
+	    UI.ProgressInc();
 	}
-    UI->ProgressEnd();
+    UI.ProgressEnd();
 	m_TexNames.clear();
 	return bRes;
 }

@@ -90,7 +90,7 @@ void CLight::CopyFrom(CLight* src){
 
 void CLight::AffectD3D(BOOL flag){
 	m_UseInD3D = flag;
-    UI->UpdateScene();
+    UI.UpdateScene();
 }
 
 void CLight::InitDefaultFlaresText(){
@@ -189,7 +189,7 @@ void CLight::Move( Fvector& amount ){
     }
 	m_D3D.position.add(amount);
     Update();
-    UI->UpdateScene();
+    UI.UpdateScene();
 }
 
 void CLight::Rotate(Fvector& center, Fvector& axis, float angle){
@@ -208,7 +208,7 @@ void CLight::Rotate(Fvector& center, Fvector& axis, float angle){
     vRotate.direct		(vRotate,axis,angle);
 
     UpdateTransform();
-    UI->UpdateScene();
+    UI.UpdateScene();
 }
 //----------------------------------------------------
 void CLight::LocalRotate(Fvector& axis, float angle){
@@ -218,7 +218,7 @@ void CLight::LocalRotate(Fvector& axis, float angle){
     }
     vRotate.direct(vRotate,axis,angle);
     UpdateTransform();
-    UI->UpdateScene();
+    UI.UpdateScene();
 }
 //----------------------------------------------------
 

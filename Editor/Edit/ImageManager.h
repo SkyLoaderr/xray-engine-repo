@@ -16,11 +16,12 @@ public:
 				~CImageManager		(){;}
     BOOL		IfChanged			(LPCSTR name);
 	void		Synchronize			(LPCSTR name);  // return some as IfUpdated
-    void		CheckUniqueName		();	
     void		CreateThumbnail		(EImageThumbnail* THM, LPCSTR src_name);
+	void		SynchronizePath		();
+    int			GetModifiedFiles	(AStringVec& files);
+    int			GetFiles			(AStringVec& files);
 };
 
 extern CImageManager ImageManager;
-//    void		Synchronize			();				// удаляет текстуры в game которых нет в редакторе
 //---------------------------------------------------------------------------
 #endif

@@ -35,12 +35,12 @@ void CDetailManager::RayPickSelect(float& distance, Fvector& start, Fvector& dir
         }
     }
     if ((sx>=0)||(sz>=0)) m_Selected[sz*m_Header.size_x+sx] = true;
-    UI->RedrawScene();
+    UI.RedrawScene();
 }
 
 int CDetailManager::FrustumSelect(bool flag){
 	CFrustum frustum;
-    if (!UI->SelectionFrustum(frustum)) return 0;
+    if (!UI.SelectionFrustum(frustum)) return 0;
 
     int count=0;
 
@@ -62,7 +62,7 @@ int CDetailManager::FrustumSelect(bool flag){
             }
         }
     }
-    UI->RedrawScene();
+    UI.RedrawScene();
     return count;
 }
 

@@ -246,8 +246,8 @@ bool SceneBuilder::SaveObjectSkeletonLTX(const char* name, CEditableObject* obj)
 
 const float KEY_Quant	= 32767.f;
 bool SceneBuilder::SaveObjectSkeletonOGF(const char* fn, CEditableObject* obj){
-    UI->ProgressStart(10,"Export skeleton...");
-    UI->ProgressInc();
+    UI.ProgressStart(10,"Export skeleton...");
+    UI.ProgressInc();
 
 	vector<FvectorVec>	bone_points;
 
@@ -288,7 +288,7 @@ bool SceneBuilder::SaveObjectSkeletonOGF(const char* fn, CEditableObject* obj){
         }
         g_faces.push_back(nF);
     }
-    UI->ProgressInc();
+    UI.ProgressInc();
 
     // create OGF
     // materials
@@ -311,21 +311,21 @@ bool SceneBuilder::SaveObjectSkeletonOGF(const char* fn, CEditableObject* obj){
 			}
 		}
 	}
-    UI->ProgressInc();
+    UI.ProgressInc();
 
     // converting face&vertices
 	for (SFACEIt f_it=g_faces.begin(); f_it!=g_faces.end(); f_it++){
     	st_SFACE* F = *f_it;
 		g_splits[F->m].Flist.push_back(F);
 	}
-    UI->ProgressInc();
+    UI.ProgressInc();
 
 	// VB+IB+PMesh...
 	for (i=0; i<int(g_splits.size()); i++){
 		g_splits[i].MakeValidToRender();
 		g_splits[i].MakeProgressive();
 	}
-    UI->ProgressInc();
+    UI.ProgressInc();
 
 	// Saving geometry...
 	AnsiString	root_name,base_name;
@@ -364,7 +364,7 @@ bool SceneBuilder::SaveObjectSkeletonOGF(const char* fn, CEditableObject* obj){
 		F.WstringZ(N);
 	}
 	F.close_chunk();
-    UI->ProgressInc();
+    UI.ProgressInc();
 
 	// BBox (already computed)
 	F.open_chunk(OGF_BBOX);
@@ -383,7 +383,7 @@ bool SceneBuilder::SaveObjectSkeletonOGF(const char* fn, CEditableObject* obj){
 		F.write	(&obb,sizeof(Fobb));
 	}
 	F.close_chunk();
-    UI->ProgressInc();
+    UI.ProgressInc();
 
 	// Motions
 	F.open_chunk(OGF_MOTIONS);
@@ -461,16 +461,16 @@ bool SceneBuilder::SaveObjectSkeletonOGF(const char* fn, CEditableObject* obj){
 		F.close_chunk();
     }
 	F.close_chunk();
-    UI->ProgressInc();
+    UI.ProgressInc();
 
 	WriteTextures();
-    UI->ProgressInc();
+    UI.ProgressInc();
 
 	sfinalize();
     ResetStructures();
 
-    UI->ProgressInc();
-	UI->ProgressEnd();
+    UI.ProgressInc();
+	UI.ProgressEnd();
 
     return true;
 }

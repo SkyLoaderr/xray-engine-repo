@@ -2,7 +2,7 @@
 #pragma hdrstop
 
 #include "LogForm.h"
-#include "main.h"
+#include "ui_main.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "mxPlacemnt"
@@ -12,7 +12,7 @@ TfrmLog *TfrmLog::form=0;
 __fastcall TfrmLog::TfrmLog(TComponent* Owner)
     : TForm(Owner)
 {
-    char buf[MAX_PATH] = {"shader_ed.ini"};  FS.m_ExeRoot.Update(buf);
+    char buf[MAX_PATH] = {"ed.ini"};  FS.m_ExeRoot.Update(buf);
     fsStorage->IniFileName = buf;
 }
 //---------------------------------------------------------------------------
@@ -75,7 +75,7 @@ void __fastcall TfrmLog::FormKeyDown(TObject *Sender, WORD &Key,
 {
 	if (Key==VK_ESCAPE)	Close();
     else{
-    	frmMain->ApplyGlobalShortCut(Key, Shift);
+    	UI.ApplyGlobalShortCut(Key, Shift);
     }
 }
 //---------------------------------------------------------------------------

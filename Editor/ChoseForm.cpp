@@ -8,7 +8,7 @@
 #include "shader_xrlc.h"
 #include "texture.h"
 #include "xr_trims.h"
-#include "Library.h"            
+#include "Library.h"
 #include "EditObject.h"
 #include "D3DUtils.h"
 

@@ -227,7 +227,7 @@ void SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
 void SceneBuilder::BuildObject(CSceneObject* obj){
 	CEditableObject *O = obj->GetRef();
     AnsiString temp; temp.sprintf("Building object: %s",O->GetName());
-    UI->SetStatus(temp.c_str());
+    UI.SetStatus(temp.c_str());
 
     Fmatrix& T = obj->GetTransform();
     for(EditMeshIt M=O->FirstMesh();M!=O->LastMesh();M++){
@@ -463,7 +463,7 @@ bool SceneBuilder::RemoteStaticBuild()
     	TSData.lights   = new b_light[TSData.light_count];
     }
 
-    UI->ProgressStart(Scene->ObjCount(OBJCLASS_SCENEOBJECT),"Allocating memory for static faces and vertices...");
+    UI.ProgressStart(Scene->ObjCount(OBJCLASS_SCENEOBJECT),"Allocating memory for static faces and vertices...");
 // compute vertex/face count
     l_vertices_cnt	= 0;
     l_faces_cnt 	= 0;
@@ -473,7 +473,7 @@ bool SceneBuilder::RemoteStaticBuild()
     ObjectIt _E = Scene->LastObj(OBJCLASS_SCENEOBJECT);
     for(;_O!=_E;_O++){
     	CSceneObject* obj = (CSceneObject*)(*_O);
-	    UI->ProgressInc();
+	    UI.ProgressInc();
 		if (!obj->IsDynamic()){
 			l_faces_cnt		+= obj->GetFaceCount();
     	    l_vertices_cnt  += obj->GetVertexCount();
@@ -482,14 +482,14 @@ bool SceneBuilder::RemoteStaticBuild()
 	l_faces		= new b_face[l_faces_cnt];
 	l_vertices	= new b_vertex[l_vertices_cnt];
 
-    UI->ProgressStart(Scene->ObjCount(OBJCLASS_SCENEOBJECT),"Filling static mesh data...");
+    UI.ProgressStart(Scene->ObjCount(OBJCLASS_SCENEOBJECT),"Filling static mesh data...");
 // parse scene
 	int i=0;
     for(ObjectPairIt it=Scene->FirstClass(); it!=Scene->LastClass(); it++){
         ObjectList& lst = (*it).second;
     	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
-		    UI->ProgressUpdate(i++);
-            if (UI->NeedAbort()) break;
+		    UI.ProgressUpdate(i++);
+            if (UI.NeedAbort()) break;
             switch((*_F)->ClassID()){
             case OBJCLASS_LIGHT:
                 BuildLight(&(TSData.lights[cur_light]),(CLight*)(*_F));
@@ -509,94 +509,79 @@ bool SceneBuilder::RemoteStaticBuild()
                 break;
             case OBJCLASS_SCENEOBJECT:{
                 CSceneObject *obj = (CSceneObject*)(*_F);
-                if (!obj->IsDynamic()){
-                    BuildObject(obj);
-                }else{
-                	// add all textures from dynamic objects
-					AddUniqueTexName(obj);
-                }
+                if (!obj->IsDynamic()) BuildObject(obj);
             }break;
             }// end switch
         }
 	}// end scene cycle
-	UI->ProgressEnd();
+	UI.ProgressEnd();
 
-    // add to used shader textures to texture export list
-//S
-/*    for (DWORD k=0; k<l_shaders.size(); k++){
-    	SH_ShaderDef* sh = SHLib->FindShader(AnsiString(l_shaders[k].name));
-        VERIFY(sh);
-        for (DWORD ps=0; ps<sh->Passes_Count; ps++)
-	        for (DWORD st=0; st<sh->Passes[ps].Stages_Count; st++)
-            	 if (sh->Passes[ps].Stages[st].Tname[0]!='$') AddUniqueTexName(sh->Passes[ps].Stages[st].Tname);
-    }
-*/
-    if (!UI->NeedAbort()){
-	    UI->ProgressStart(11,"Saving geometry to file...");
+    if (!UI.NeedAbort()){
+	    UI.ProgressStart(11,"Saving geometry to file...");
     // shaders
         TSData.shader_count = l_shaders.size();
         TSData.shaders      = new b_shader[TSData.shader_count+1];
         CopyMemory(TSData.shaders,l_shaders.begin(),sizeof(b_shader)*TSData.shader_count);
-	    UI->ProgressUpdate(1);
+	    UI.ProgressUpdate(1);
 
     // shaders xrlc
         TSData.shader_xrlc_count = l_shaders_xrlc.size();
         TSData.shaders_xrlc      = new b_shader[TSData.shader_xrlc_count+1];
         CopyMemory(TSData.shaders_xrlc,l_shaders_xrlc.begin(),sizeof(b_shader)*TSData.shader_xrlc_count);
 
-	    UI->ProgressUpdate(2);
+	    UI.ProgressUpdate(2);
     // materials
         TSData.mtl_count    = l_materials.size();
         TSData.material     = new b_material[TSData.mtl_count+1];
         CopyMemory(TSData.material,l_materials.begin(),sizeof(b_material)*TSData.mtl_count);
 
-	    UI->ProgressUpdate(3);
+	    UI.ProgressUpdate(3);
 		VERIFY(l_vertices_cnt==l_vertices_it);
     // vertices
         TSData.vertex_count = l_vertices_cnt;
         TSData.vertices     = l_vertices;
 
-	    UI->ProgressUpdate(4);
+	    UI.ProgressUpdate(4);
 		VERIFY(l_faces_cnt==l_faces_it);
     // faces
         TSData.face_count   = l_faces_cnt;
         TSData.faces        = l_faces;
 
-	    UI->ProgressUpdate(5);
+	    UI.ProgressUpdate(5);
     // textures
         TSData.tex_count    = l_textures.size();
         TSData.textures     = new b_texture[TSData.tex_count+1];
         CopyMemory(TSData.textures,l_textures.begin(),sizeof(b_texture)*TSData.tex_count);
 
-	    UI->ProgressUpdate(6);
+	    UI.ProgressUpdate(6);
     // glows
         TSData.glow_count   = l_glows.size();
         TSData.glows        = new b_glow[TSData.glow_count+1];
         CopyMemory(TSData.glows,l_glows.begin(),sizeof(b_glow)*TSData.glow_count);
 
-	    UI->ProgressUpdate(7);
+	    UI.ProgressUpdate(7);
     // occluders
         TSData.occluder_count= l_occluders.size();
         TSData.occluders    = new b_occluder[TSData.occluder_count+1];
         CopyMemory(TSData.occluders,l_occluders.begin(),sizeof(b_occluder)*TSData.occluder_count);
 
-	    UI->ProgressUpdate(8);
+	    UI.ProgressUpdate(8);
     // light keys
         TSData.light_keys_count= l_light_keys.size();
         TSData.light_keys = new Flight[TSData.light_keys_count+1];
         CopyMemory(TSData.light_keys,l_light_keys.begin(),sizeof(Flight)*TSData.light_keys_count);
 
-	    UI->ProgressUpdate(9);
+	    UI.ProgressUpdate(9);
     // portals
         TSData.portal_count	= l_portals.size();
         TSData.portals    = new b_portal[TSData.portal_count+1];
         CopyMemory(TSData.portals,l_portals.begin(),sizeof(b_portal)*TSData.portal_count);
 
-	    UI->ProgressUpdate(10);
+	    UI.ProgressUpdate(10);
     // save data
         SaveBuild(&TSData);
 
-        UI->ProgressEnd();
+        UI.ProgressEnd();
     }
 
     _DELETEARRAY(TSData.material);

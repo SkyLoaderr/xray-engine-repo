@@ -90,6 +90,7 @@ void st_LevelOptions::Reset(){
 #define MAX_VISUALS 4096
 
 EScene::EScene(){
+	Scene = this;
 	m_Valid = false;
 	m_Locked = 0;
     for (int i=0; i<OBJCLASS_COUNT; i++){
@@ -121,7 +122,7 @@ void EScene::Init(){
 	ELog.Msg( mtInformation, "Scene: initialized" );
 	m_Valid = true;
     m_Modified = false;
-	UI->Command(COMMAND_UPDATE_CAPTION);
+	UI.Command(COMMAND_UPDATE_CAPTION);
 }
 
 void EScene::Clear(){
@@ -137,7 +138,7 @@ void EScene::AddObject( CCustomObject* object, bool bManual ){
 	VERIFY( m_Valid );
     ObjectList& lst = ListObj(object->ClassID());
     lst.push_back( object );
-    UI->UpdateScene();
+    UI.UpdateScene();
 	if (bManual){
 	    object->Select(true);
     	UndoSave();
@@ -154,7 +155,7 @@ void EScene::RemoveObject( CCustomObject* object, bool bUndo ){
     // remove from scene list
     lst.remove( object );
     if (object->IsInGroup()) m_Groups[object->GetGroupIndex()].objects.remove(object);
-    UI->UpdateScene();
+    UI.UpdateScene();
 	if (bUndo) UndoSave();
 }
 
@@ -176,7 +177,7 @@ int EScene::ObjCount(){
 
 int EScene::FrustumSelect( bool flag, EObjClass classfilter ){
 	CFrustum frustum;
-    if (!UI->SelectionFrustum(frustum)) return 0;
+    if (!UI.SelectionFrustum(frustum)) return 0;
 
 	if ((classfilter==OBJCLASS_DUMMY)||(classfilter==OBJCLASS_DO)) return m_DetailObjects->FrustumSelect(flag);
 
@@ -195,7 +196,7 @@ int EScene::FrustumSelect( bool flag, EObjClass classfilter ){
                 }
         }
     }
-    UI->RedrawScene();
+    UI.RedrawScene();
 	return count;
 }
 int EScene::FrustumPick( const CFrustum& frustum, EObjClass classfilter, ObjectList& ol ){
@@ -239,7 +240,7 @@ int EScene::SelectObjects( bool flag, EObjClass classfilter ){
             	    count++;
 	            }
     }
-    UI->RedrawScene();
+    UI.RedrawScene();
 	return count;
 }
 
@@ -259,7 +260,7 @@ int EScene::LockObjects( bool flag, EObjClass classfilter, bool bAllowSelectionF
                     count++;
                 }
     }
-    UI->RedrawScene();
+    UI.RedrawScene();
 	return count;
 }
 
@@ -280,7 +281,7 @@ int EScene::ShowObjects( bool flag, EObjClass classfilter, bool bAllowSelectionF
                 }
             }
     }
-    UI->RedrawScene();
+    UI.RedrawScene();
 	return count;
 }
 
@@ -301,7 +302,7 @@ int EScene::InvertSelection( EObjClass classfilter ){
                 }
     }
 
-    UI->RedrawScene();
+    UI.RedrawScene();
 	return count;
 }
 
@@ -334,7 +335,7 @@ int EScene::RemoveSelection( EObjClass classfilter ){
         }
     }
 
-    UI->UpdateScene(true);
+    UI.UpdateScene(true);
 	return count;
 }
 
@@ -389,7 +390,7 @@ int EScene::SelectionCount(bool testflag, EObjClass classfilter){
     }
 	return count;
 }
-                             
+
 //----------------------------------------------------
 void __fastcall object_Normal_0(EScene::mapObject_Node *N){ ((CSceneObject*)N->val)->Render( 0, false ); }
 void __fastcall object_Normal_1(EScene::mapObject_Node *N){ ((CSceneObject*)N->val)->Render( 1, false ); }
@@ -570,18 +571,18 @@ bool EScene::GetBox(Fbox& box, ObjectList& lst){
 
 void EScene::Modified(){
 	m_Modified = true;
-    UI->Command(COMMAND_UPDATE_CAPTION);
+    UI.Command(COMMAND_UPDATE_CAPTION);
 }
 
 bool EScene::IsModified(){
-    return (m_Modified && (ObjCount()||UI->GetEditFileName()[0]));
+    return (m_Modified && (ObjCount()||UI.GetEditFileName()[0]));
 }
 
 bool EScene::IfModified(){
-    if (m_Modified && (ObjCount()||UI->GetEditFileName()[0])){
+    if (m_Modified && (ObjCount()||UI.GetEditFileName()[0])){
         int mr = ELog.DlgMsg(mtConfirmation, "The scene has been modified. Do you want to save your changes?");
         switch(mr){
-        case mrYes: if (!UI->Command(COMMAND_SAVE)) return false; else m_Modified = false; break;
+        case mrYes: if (!UI.Command(COMMAND_SAVE)) return false; else m_Modified = false; break;
         case mrNo: m_Modified = false; break;
         case mrCancel: return false;
         }
@@ -747,7 +748,7 @@ void EScene::ZoomExtents( BOOL bSel ){
                     if ((*_F)->GetBox(bb)) if (bFirstInit){ BB.set(bb); bFirstInit=false; }else{ BB.merge(bb);}
         }
     }else{
-    	EObjClass cls = UI->CurrentClassID();
+    	EObjClass cls = UI.CurrentClassID();
     	ObjectIt _F = FirstObj(cls);
 	    ObjectIt _E = LastObj(cls);
     	for(;_F!=_E;_F++)
@@ -812,7 +813,7 @@ void EScene::GroupCreate(bool bMsg){
 		if (bMsg) ELog.DlgMsg(mtError,"Ignore groups checked. Group can't created.");
     	return;
 	}
-    EObjClass cls = UI->CurrentClassID();
+    EObjClass cls = UI.CurrentClassID();
 	// validate objects
     for(ObjectPairIt it=FirstClass(); it!=LastClass(); it++){
         ObjectList& lst = (*it).second;
@@ -949,7 +950,7 @@ int EScene::AddToSnapList(){
 	            count++;
     	    }
         if (count){
-		    UI->RedrawScene();
+		    UI.RedrawScene();
     		UpdateSnapList();
         }
     }
@@ -965,7 +966,7 @@ int EScene::SetSnapList(){
 	        m_SnapObjects.push_back(*_F);
             count++;
         }
-    UI->RedrawScene();
+    UI.RedrawScene();
     UpdateSnapList();
 	return count;
 }
@@ -988,7 +989,7 @@ void EScene::SynchronizeObjects(){
 }
 
 void EScene::OnShowHint(AStringVec& dest){
-    CCustomObject* obj = RayPick(UI->m_CurrentRStart,UI->m_CurrentRNorm,UI->CurrentClassID(),0,true,false);
+    CCustomObject* obj = RayPick(UI.m_CurrentRStart,UI.m_CurrentRNorm,UI.CurrentClassID(),0,true,false);
     if (obj) obj->OnShowHint(dest);
 }
 

@@ -67,7 +67,7 @@ int CLog::DlgMsg (TMsgDlgType mt, TMsgDlgButtons btn, LPCSTR _Format, ...){
 	vsprintf( buf, _Format, l );
 
 #ifdef _EDITOR
-    if (UI) UI->Command(COMMAND_RENDER_FOCUS);
+    UI.Command(COMMAND_RENDER_FOCUS);
 #endif
 
     int res=MessageDlg(buf, mt, btn, 0);
@@ -88,7 +88,7 @@ int CLog::DlgMsg (TMsgDlgType mt, LPCSTR _Format, ...){
 	vsprintf( buf, _Format, l );
 
 #ifdef _EDITOR
-    if (UI) UI->Command(COMMAND_RENDER_FOCUS);
+    UI.Command(COMMAND_RENDER_FOCUS);
 #endif
 
     int res=mrNone;

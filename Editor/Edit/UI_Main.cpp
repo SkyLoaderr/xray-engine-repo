@@ -19,15 +19,15 @@
 #include "EditLibrary.h"
 #include "EditParticles.h"
 #include "ImageEditor.h"
+#include "ImageManager.h"
 #include "main.h"
 #include "xr_trims.h"
 
-TUI* UI=0;
+TUI UI;
 
 bool g_bEditorValid = false;
 TUI::TUI()
 {
-    UI = this;
     m_D3DWindow = 0;
     bNeedAbort   = false;
 
@@ -64,12 +64,6 @@ TUI::TUI()
 
 // create base class
     ELog.Create		("ed.log");
-    FS.Init			();
-    Scene           = new EScene();
-    Lib             = new ELibrary();
-//S    SHLib			= new CShaderLibrary();
-    PSLib			= new CPSLibrary();
-    Builder         = new SceneBuilder();
 }
 //---------------------------------------------------------------------------
 TUI::~TUI()
@@ -79,17 +73,22 @@ TUI::~TUI()
     _DELETE(m_Cursor);
 // clear globals
     _DELETE(Scene);
-//S    _DELETE(SHLib);
     _DELETE(PSLib);
     _DELETE(Lib);
     _DELETE(Builder);
 }
 
 bool TUI::OnCreate(TD3DWindow* wnd){
+    FS.Init			();
+	ImageManager.SynchronizePath();
+    Scene           = new EScene();
+    Lib             = new ELibrary();
+    PSLib			= new CPSLibrary();
+    Builder         = new SceneBuilder();
+
     m_D3DWindow = wnd;
     VERIFY(m_D3DWindow);
 	InitMath		();
-//S    SHLib->Init		();
     PSLib->Init		();
     Device.Initialize();
 
@@ -108,6 +107,8 @@ bool TUI::OnCreate(TD3DWindow* wnd){
     Command			(COMMAND_CLEAR);
 	Command			(COMMAND_CHECK_TEXTURES);
 	Command			(COMMAND_RENDER_FOCUS);
+	Command			(COMMAND_CHANGE_TARGET, etObject);
+	Command			(COMMAND_CHANGE_ACTION, eaSelect);
 
     return true;
 }
@@ -123,9 +124,7 @@ void TUI::OnDestroy()
     Scene->UndoClear();
     Scene->Clear();
     Lib->Clear();
-//S    SHLib->Clear();
     PSLib->Clear();
-//    TM->Clear();
     Device.ShutDown	();
     g_bEditorValid = false;
 }
@@ -177,6 +176,11 @@ bool TUI::PickGround(Fvector& hitpoint, const Fvector& start, const Fvector& dir
         hitpoint.y = 0.f;
     }
 	return true;
+}
+
+bool TUI::IsModified()
+{
+	return Scene->IsModified();
 }
 
 //----------------------------------------------------
@@ -323,7 +327,7 @@ void TUI::Redraw(){
 
     if (!(psDeviceFlags&rsRenderRealTime)) bRedraw = false;
 
-    fraBottomBar->paSel->Caption = AnsiString(AnsiString(" Sel: ")+AnsiString(Scene->SelectionCount(true,UI->CurrentClassID())));
+    fraBottomBar->paSel->Caption = AnsiString(AnsiString(" Sel: ")+AnsiString(Scene->SelectionCount(true,CurrentClassID())));
 }
 //---------------------------------------------------------------------------
 void TUI::Idle()
@@ -346,7 +350,7 @@ void TUI::Idle()
 		m_Tools->Update();
     }
         // show hint
-    UI->ShowObjectHint();
+    ShowObjectHint();
 
 	ResetBreak();
 }
@@ -489,7 +493,7 @@ void TUI::OnMousePress(int btn){
                 Device.m_Camera.MouseRayFromPoint(m_StartRStart, m_StartRNorm, m_StartCp );
                 Device.m_Camera.MouseRayFromPoint(m_CurrentRStart, m_CurrentRNorm, m_CurrentCp );
 				SRayPickInfo pinf;
-                frmEditLibrary->RayPick(UI->m_CurrentRStart,UI->m_CurrentRNorm,&pinf);
+                frmEditLibrary->RayPick(m_CurrentRStart,m_CurrentRNorm,&pinf);
             }break;
             case esEditParticles: 	break;
             case esEditImages: 		break;
@@ -564,7 +568,7 @@ void TUI::OnMouseMove(int x, int y){
                 Device.m_Camera.MouseRayFromPoint(m_CurrentRStart,m_CurrentRNorm,m_CurrentCp);
                 m_Tools->MouseMove(m_ShiftState);
             }
-		    UI->RedrawScene();
+		    RedrawScene();
             bRayUpdated = true;
         }
     }
@@ -572,9 +576,28 @@ void TUI::OnMouseMove(int x, int y){
 		iGetMousePosReal(Device.m_hRenderWnd, m_CurrentCp);
         Device.m_Camera.MouseRayFromPoint(m_CurrentRStart,m_CurrentRNorm,m_CurrentCp);
     }
-    if (m_Cursor->GetVisible()) UI->RedrawScene();
+    if (m_Cursor->GetVisible()) RedrawScene();
     // Out cursor pos
     OutUICursorPos();
 }
+
+void TUI::ShowContextMenu(int cls)
+{
+    if (g_bEditorValid){
+        POINT pt;
+        GetCursorPos(&pt);
+		fraLeftBar->miProperties->Enabled = false;
+        if (Scene->SelectionCount( true, cls )) fraLeftBar->miProperties->Enabled = true;
+        RedrawScene(true);
+	    fraLeftBar->pmObjectContext->TrackButton = tbRightButton;
+        fraLeftBar->pmObjectContext->Popup(pt.x,pt.y);
+    }
+}
+
+void ResetActionToSelect()
+{
+    UI.Command(COMMAND_CHANGE_ACTION, eaSelect);
+}
+//---------------------------------------------------------------------------
 
 

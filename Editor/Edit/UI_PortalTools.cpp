@@ -47,11 +47,11 @@ void __fastcall TUI_ControlPortalAdd::OnExit()
 
 bool __fastcall TUI_ControlPortalAdd::Start(TShiftState Shift)
 {
-    if (Shift==ssRBOnly){ UI->Command(COMMAND_SHOWCONTEXTMENU,OBJCLASS_PORTAL); return false;}
+    if (Shift==ssRBOnly){ UI.Command(COMMAND_SHOWCONTEXTMENU,OBJCLASS_PORTAL); return false;}
     TfraPortal* fraPortal = (TfraPortal*)parent_tool->pFrame; VERIFY(fraPortal);
 
     if (fraPortal->ebPickSectors->Down){
-	    CCustomObject *obj = Scene->RayPick( UI->m_CurrentRStart,UI->m_CurrentRNorm, OBJCLASS_SECTOR, 0, false, false);
+	    CCustomObject *obj = Scene->RayPick( UI.m_CurrentRStart,UI.m_CurrentRNorm, OBJCLASS_SECTOR, 0, false, false);
 		if( obj ){
      		obj->Select(true);
 	        fraPortal->SetSector((CSector*)obj);

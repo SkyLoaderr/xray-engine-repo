@@ -91,7 +91,7 @@ void __fastcall TfrmPropertiesPortal::ebInvertOrientationClick(TObject *Sender)
 {
 	m_CurPortal->InvertOrientation();
     m_CurPortal->Simplify();
-    UI->RedrawScene();
+    UI.RedrawScene();
 	OnModified(Sender);
 }
 //---------------------------------------------------------------------------

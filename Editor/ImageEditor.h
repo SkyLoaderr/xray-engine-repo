@@ -56,16 +56,11 @@ __published:	// IDE-managed Components
 private:
 // list functions
     void InitItemsList(const char* nm=0);
-	TElTreeItem* FindItem(const char* s);
-    TElTreeItem* FindFolder(const char* s);
-    TElTreeItem* AddFolder(const char* s);
-    TElTreeItem* AddItem(TElTreeItem* node, const char* name);
-    TElTreeItem* AddItemToFolder(const char* folder, const char* name);
 private:	// User declarations
 	static TfrmImageLib* form;
 
 	EImageThumbnail* m_Thm;
-    
+
     Fvector init_cam_hpb;
     Fvector init_cam_pos;
     void OnModified();

@@ -61,7 +61,7 @@ void TfrmPropertiesNavPoint::ApplyObjectsInfo(){
         if(cbTypeStandart->Checked)     _L->m_Type = NP_Standart;
         else if(cbTypeItem->Checked)    _L->m_Type = NP_Item;
 	}
-    UI->UpdateScene();
+    UI.UpdateScene();
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmPropertiesNavPoint::btApplyClick(TObject *Sender)

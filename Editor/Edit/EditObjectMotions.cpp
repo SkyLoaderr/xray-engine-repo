@@ -64,7 +64,7 @@ void CEditableObject::SetActiveOMotion(COMotion* mot, bool upd_t){
     if (m_ActiveOMotion) m_OMParam.Set(m_ActiveOMotion);
 ///	ELog.DlgMsg(mtError,"TODO: CEditableObject::SetActiveOMotion");
 ///    if (upd_t) UpdateTransform();
-    UI->RedrawScene();
+    UI.RedrawScene();
 }
 
 COMotion* CEditableObject::FindOMotionByName	(const char* name, const COMotion* Ignore){
@@ -187,7 +187,7 @@ void CEditableObject::SetActiveSMotion(CSMotion* mot){
     BoneVec& lst = m_Bones;
     for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++) (*b_it)->Reset();
 	CalculateAnimation();
-    UI->RedrawScene();
+    UI.RedrawScene();
 }
 
 void CEditableObject::RemoveSMotion(const char* name){

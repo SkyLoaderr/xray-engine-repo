@@ -76,7 +76,7 @@ void TfrmPropertiesSound::ApplyObjectsInfo(){
 
 		seRange->ObjApplyFloat( _L->m_Range );
 	}
-    UI->UpdateScene();
+    UI.UpdateScene();
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmPropertiesSound::btApplyClick(TObject *Sender)

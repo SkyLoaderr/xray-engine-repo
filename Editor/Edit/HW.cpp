@@ -112,7 +112,7 @@ void CHW::CreateDevice		(HWND m_hWnd,DWORD &dwWidth,DWORD &dwHeight)
     R_CHK(HW.pD3D->CreateDevice(D3DADAPTER_DEFAULT,
 								D3DDEVTYPE_HAL,
                                 m_hWnd,
-								GPU|D3DCREATE_FPU_PRESERVE,
+								GPU,//|D3DCREATE_FPU_PRESERVE,
 								&P,
                                 &pDevice ));
 

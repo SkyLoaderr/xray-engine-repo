@@ -196,7 +196,7 @@ void CSector::UpdatePlanes(){
 void CSector::MakeCHull	(){
     m_CHSectorFaces.clear();
 
-    UI->ProgressStart(5,"Making convex hull...");
+    UI.ProgressStart(5,"Making convex hull...");
     //1. (BB)
     Fmatrix parent;
     Fbox bbox; bbox.invalidate();
@@ -207,7 +207,7 @@ void CSector::MakeCHull	(){
         bb.transform(parent);
         bbox.merge(bb);
     }
-	UI->ProgressInc();
+	UI.ProgressInc();
 
     //2. XForm
     FvectorVec Points;
@@ -219,9 +219,9 @@ void CSector::MakeCHull	(){
             parent.transform_tiny(Points.back(),*p_it);
         }
     }
-	UI->ProgressInc();
+	UI.ProgressInc();
     if (Points.size()<4){
-		UI->ProgressEnd();
+		UI.ProgressEnd();
     	return;
     }
 
@@ -240,15 +240,15 @@ void CSector::MakeCHull	(){
         	bbox.getcenter(m_SectorCenter);
 	        m_SectorRadius=bbox.getradius();
         	_DELETE(chull);
-        	UI->ProgressInc();
+        	UI.ProgressInc();
 
             //4. Vertices+Faces remapping
             OptimizeVertices(m_CHSectorFaces,Points,m_CHSectorVertices);
-			UI->ProgressInc();
+			UI.ProgressInc();
 
             //5. Planes
             UpdatePlanes();
-			UI->ProgressInc();
+			UI.ProgressInc();
 
             for(FvectorIt it=m_CHSectorVertices.begin(); it!=m_CHSectorVertices.end(); it++)
                 for(PlaneIt p_it=m_CHSectorPlanes.begin(); p_it!=m_CHSectorPlanes.end(); p_it++){
@@ -267,10 +267,10 @@ void CSector::MakeCHull	(){
         }
     } catch (...) {
         _DELETE(chull);
-    	UI->ProgressEnd();
+    	UI.ProgressEnd();
         return;
     }
-	UI->ProgressEnd();
+	UI.ProgressEnd();
 }
 
 bool CSector::RenderCHull(DWORD color, bool bSolid, bool bEdge, bool bCull){
@@ -300,7 +300,7 @@ bool CSector::RenderCHull(DWORD color, bool bSolid, bool bEdge, bool bCull){
 	        Device.DIPS(D3DPT_TRIANGLELIST, FVF::F_L,
     				        &dt, m_CHSectorVertices.size(),
                             indices.begin(),indices.size());
-	        Device.SetRS(D3DRENDERSTATE_FILLMODE,UI->dwRenderFillMode);
+	        Device.SetRS(D3DRENDERSTATE_FILLMODE,UI.dwRenderFillMode);
         }else if (bSolid){
 	        Device.DIPS(D3DPT_TRIANGLELIST, FVF::F_L,
     				        &dt, m_CHSectorVertices.size(),
@@ -373,7 +373,7 @@ bool CSector::RayPick(float& distance, Fvector& start, Fvector& direction, SRayP
     bool bPick=false;
     for(CHFaceIt it=m_CHSectorFaces.begin(); it!=m_CHSectorFaces.end(); it++){
     	for(int k=0; k<3; k++) p[k].set(m_CHSectorVertices[it->p[k]]);
-        range=UI->ZFar();
+        range=UI.ZFar();
 		if (RAPID::TestRayTri(start,direction,p,u,v,range,false)){
         	if ((range>=0)&&(range<distance)){
             	distance=range;
@@ -393,11 +393,11 @@ void CSector::SectorChanged(bool bNeedCreateCHull){
 
 void CSector::Update(bool bNeedCreateCHull){
 	if (bNeedCreateCHull){
-    	UI->SetStatus("Sector updating...");
+    	UI.SetStatus("Sector updating...");
     	MakeCHull();
-    	UI->SetStatus("...");
+    	UI.SetStatus("...");
     }
-    UI->RedrawScene();
+    UI.RedrawScene();
 }
 //----------------------------------------------------
 void CSector::OnDestroy( ){
@@ -452,7 +452,7 @@ void CSector::CaptureInsideVolume(){
             }
         }
         MakeCHull();
-		UI->RedrawScene();
+		UI.RedrawScene();
     }
 }
 //----------------------------------------------------
@@ -462,18 +462,18 @@ void CSector::CaptureAllUnusedMeshes(){
     CSceneObject *obj=NULL;
     ObjectList& lst=Scene->ListObj(OBJCLASS_SCENEOBJECT);
     // ignore dynamic objects
-    UI->ProgressStart(lst.size(),"Capturing unused face...");
+    UI.ProgressStart(lst.size(),"Capturing unused face...");
     for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
-		UI->ProgressInc();
+		UI.ProgressInc();
         obj = (CSceneObject*)(*_F);
         if (obj->IsDynamic()) continue;
         EditMeshVec& M = obj->Meshes();
         for(EditMeshIt m_def = M.begin(); m_def!=M.end();m_def++)
         	AddMesh(obj,*m_def);
     }
-    UI->ProgressEnd();
+    UI.ProgressEnd();
     MakeCHull();
-    UI->RedrawScene();
+    UI.RedrawScene();
 }
 
 //----------------------------------------------------

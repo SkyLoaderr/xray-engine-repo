@@ -27,7 +27,7 @@ void CEditableMesh::ClearRenderBuffers(){
 void CEditableMesh::UpdateRenderBuffers(){
 	ClearRenderBuffers();
 
-	UI->ProgressStart(m_SurfFaces.size(),"Update RB:");
+	UI.ProgressStart(m_SurfFaces.size(),"Update RB:");
 
     if (!(m_LoadState&EMESH_LS_PNORMALS)) GeneratePNormals();
     VERIFY(m_PNormals.size());
@@ -55,10 +55,10 @@ void CEditableMesh::UpdateRenderBuffers(){
             start_face			+= (_S->_2Sided())?rb.dwNumVertex/6:rb.dwNumVertex/3;
         }while(v_cnt>0);
         if (num_verts>0) m_RenderBuffers.insert(make_pair(_S,rb_vec));
-		UI->ProgressInc();
+		UI.ProgressInc();
     }
     UnloadPNormals();
-	UI->ProgressEnd();
+	UI.ProgressEnd();
 }
 //----------------------------------------------------
 void CEditableMesh::FillRenderBuffer(INTVec& face_lst, int start_face, int num_face, const CSurface* surf, LPBYTE& src_data){

@@ -392,7 +392,7 @@ bool CDetailManager::UpdateBaseTexture(LPCSTR tex_name){
     }
     if (m_pBaseShader) Device.Shader.Delete(m_pBaseShader);
     m_pBaseShader = Device.Shader.Create("def_trans",fn.c_str(),false);
-    UI->Command(COMMAND_REFRESH_TEXTURES);
+    UI.Command(COMMAND_REFRESH_TEXTURES);
 */
     return true;
 }
@@ -457,17 +457,17 @@ bool CDetailManager::UpdateBBox(){
     m_Slots.clear		();
     m_Slots.resize		(m_Header.size_x*m_Header.size_z);
 
-    UI->ProgressStart	(m_Header.size_x*m_Header.size_z,"Updating bounding boxes...");
+    UI.ProgressStart	(m_Header.size_x*m_Header.size_z,"Updating bounding boxes...");
     for (DWORD z=0; z<m_Header.size_z; z++){
         for (DWORD x=0; x<m_Header.size_x; x++){
         	DSIt slot	= m_Slots.begin()+z*m_Header.size_x+x;
         	slot->y_min	= m_BBox.min.y;
         	slot->y_max	= m_BBox.max.y;
         	UpdateSlotBBox(x,z,*slot);
-			UI->ProgressInc();
+			UI.ProgressInc();
         }
     }
-    UI->ProgressEnd		();
+    UI.ProgressEnd		();
 
     m_Selected.resize	(m_Header.size_x*m_Header.size_z);
 
@@ -623,14 +623,14 @@ bool CDetailManager::UpdateObjects(bool bUpdateTex, bool bUpdateSelectedOnly){
     // reload base texture
     if (bUpdateTex&&!UpdateBaseTexture(0)) 	return false;
     // update objects
-    UI->ProgressStart	(m_Header.size_x*m_Header.size_z,"Updating objects...");
+    UI.ProgressStart	(m_Header.size_x*m_Header.size_z,"Updating objects...");
     for (DWORD z=0; z<m_Header.size_z; z++)
         for (DWORD x=0; x<m_Header.size_x; x++){
         	if (!bUpdateSelectedOnly||(bUpdateSelectedOnly&&m_Selected[z*m_Header.size_x+x]))
 	        	UpdateSlotObjects(x,z);
-		    UI->ProgressInc();
+		    UI.ProgressInc();
         }
-    UI->ProgressEnd		();
+    UI.ProgressEnd		();
 
     InvalidateCache		();
 
@@ -942,13 +942,13 @@ void CDetailManager::Save(CFS_Base& F){
 }
 
 void CDetailManager::Export(LPCSTR fn){
-    UI->ProgressStart	(4,"Making details...");
+    UI.ProgressStart	(4,"Making details...");
     m_Header.version	= DETAIL_VERSION;
 	CFS_Memory F;
     m_Header.object_count=m_Objects.size();
 	// header
 	F.write_chunk		(DETMGR_CHUNK_HEADER,&m_Header,sizeof(DetailHeader));
-	UI->ProgressInc();
+	UI.ProgressInc();
 
     // objects
 	F.open_chunk		(DETMGR_CHUNK_OBJECTS);
@@ -958,16 +958,16 @@ void CDetailManager::Export(LPCSTR fn){
 	    F.close_chunk	();
     }
     F.close_chunk		();
-	UI->ProgressInc();
+	UI.ProgressInc();
 
     // slots
 	F.open_chunk		(DETMGR_CHUNK_SLOTS);
 	F.write				(m_Slots.begin(),m_Slots.size()*sizeof(DetailSlot));
     F.close_chunk		();
-	UI->ProgressInc();
+	UI.ProgressInc();
 
     F.SaveTo			(fn,0);
-	UI->ProgressInc();
-    UI->ProgressEnd		();
+	UI.ProgressInc();
+    UI.ProgressEnd		();
 }
 

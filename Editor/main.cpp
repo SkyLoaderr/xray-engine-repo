@@ -34,8 +34,6 @@ void __fastcall TfrmMain::FormShow(TObject *Sender)
     fraBottomBar->Parent    = paBottomBar;
     fraTopBar->Parent       = paTopBar;
     fraLeftBar->Parent      = paLeftBar;
-    UI.Command(COMMAND_CHANGE_TARGET, etObject);
-    UI.Command(COMMAND_CHANGE_ACTION, eaSelect);
     if (paLeftBar->Tag > 0) paLeftBar->Parent = paTopBar;
     else paLeftBar->Parent = frmMain;
 

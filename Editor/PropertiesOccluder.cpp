@@ -67,7 +67,7 @@ void TfrmPropertiesOccluder::ApplyObjectsInfo(){
 		_L = (COccluder*)(*_F);
         _L->ResizePoints(sePointCount->Value);
 	}
-    UI->UpdateScene();
+    UI.UpdateScene();
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmPropertiesOccluder::FormKeyDown(TObject *Sender,

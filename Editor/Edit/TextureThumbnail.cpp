@@ -54,27 +54,27 @@ bool ETextureThumbnail::CreateFromData(DWORDVec& p, int width, int height, int s
 	imf_mitchell,
 */
     if ((!check)||(check&&(!FS.Exist(name.c_str())||(FS.GetFileAge(name)!=src_age)))){
-		UI->ProgressStart(2,"Tthumbnail creating...");
+		UI.ProgressStart(2,"Tthumbnail creating...");
 		m_Pixels.resize(THUMB_SIZE);
-		UI->ProgressInc();
+		UI.ProgressInc();
     	imf_Process(m_Pixels.begin(),THUMB_WIDTH,THUMB_HEIGHT,p.begin(),width,height,imf_box);
-		UI->ProgressEnd();
+		UI.ProgressEnd();
         return true;
     }
 
 /*
     if ((!check)||(check&&(!FS.Exist(name.c_str())||(FS.GetFileAge(name)!=src_age)))){
-		UI->ProgressStart(4,"Creating thumbnail...");
+		UI.ProgressStart(4,"Creating thumbnail...");
         DWORDVec im_s;
         if ((width>THUMB_WIDTH)&&(height>THUMB_HEIGHT)&&blur){
             im_s.resize(width*height);
             // smooth
             float my_gauss[7*7];
-			UI->ProgressInc();
+			UI.ProgressInc();
             ip_BuildKernel(my_gauss,(float*)gauss,3,1);
-			UI->ProgressInc();
+			UI.ProgressInc();
             ip_ProcessKernel(im_s.begin(), p.begin(), width, height, my_gauss, 3);
-			UI->ProgressInc();
+			UI.ProgressInc();
         }else{
             im_s = p;
         }
@@ -95,7 +95,7 @@ bool ETextureThumbnail::CreateFromData(DWORDVec& p, int width, int height, int s
                 m_Pixels[h*THUMB_WIDTH+w] = im_s[(height-H[h]-1)*width+W[w]];
 
         Save(src_age);
-		UI->ProgressEnd();
+		UI.ProgressEnd();
         return true;
     }
 */

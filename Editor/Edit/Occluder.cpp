@@ -217,7 +217,7 @@ bool COccluder::RayPick(float& distance, Fvector& start, Fvector& direction, SRa
     for(FvectorIt it=m_3DPoints.m_Points.begin()+1; it!=m_3DPoints.m_Points.end()-1; it++){
         p[1].set(*it);
         p[2].set(*(it+1));
-        range=UI->ZFar();
+        range=UI.ZFar();
         if (RAPID::TestRayTri2(start,direction,p,range)){
             if ((range>=0)&&(range<distance)){
                 distance=range;
@@ -235,7 +235,7 @@ bool COccluder::SelectPoint(Fvector& start, Fvector& direction, bool bLeaveSel){
     if(RayPick(distance,start, direction,0)){
         Fvector I;
         I.direct(start,direction,distance);
-        TfraOccluder* F = (TfraOccluder*)UI->m_Tools->GetFrame();
+        TfraOccluder* F = (TfraOccluder*)UI.m_Tools->GetFrame();
         VERIFY(F);
         // select point
         float dist=flt_max;

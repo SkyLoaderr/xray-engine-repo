@@ -122,7 +122,7 @@ void CAITPoint::Move( Fvector& amount ){
     	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
-    UI->UpdateScene();
+    UI.UpdateScene();
 	m_Position.add( amount );
 }
 //----------------------------------------------------
@@ -137,7 +137,7 @@ void CAITPoint::Rotate( Fvector& center, Fvector& axis, float angle ){
 	m_Position.sub		(center);
 	m.transform_tiny	(m_Position);
 	m_Position.add		(center);
-    UI->UpdateScene		();
+    UI.UpdateScene		();
 }
 //----------------------------------------------------
 
@@ -206,7 +206,7 @@ bool CAITPoint::AddLink(CAITPoint* P){
 	if (find(m_Links.begin(),m_Links.end(),P)==m_Links.end()){
     	AppendLink(P);
         P->AppendLink(this);
-        UI->RedrawScene();
+        UI.RedrawScene();
     	return true;
     }
 	return false;
@@ -217,7 +217,7 @@ bool CAITPoint::DeleteLink(CAITPoint* P){
 	ObjectIt it = find(m_Links.begin(),m_Links.end(),P);
 	if (it!=m_Links.end()){
 		m_Links.erase(it);
-        UI->RedrawScene();
+        UI.RedrawScene();
         P->RemoveLink(this);
     	return true;
     }

@@ -124,7 +124,7 @@ public:
 
     IC EditMeshIt	FirstMesh				()	{return m_Meshes.begin();}
     IC EditMeshIt	LastMesh				()	{return m_Meshes.end();}
-    IC EditMeshVec& Meshes					()	{return m_Meshes; }	
+    IC EditMeshVec& Meshes					()	{return m_Meshes; }
     IC int			MeshCount				()	{return m_Meshes.size();}
     IC SurfaceIt	FirstSurface			()	{return m_Surfaces.begin();}
     IC SurfaceIt	LastSurface				()	{return m_Surfaces.end();}

@@ -21,7 +21,7 @@ CCustomObject::~CCustomObject(){
 void CCustomObject::Select( BOOL flag ){
     if (m_Visible&&(m_Selected!=flag)){
         m_Selected = flag;
-        UI->RedrawScene();
+        UI.RedrawScene();
 //		Scene->UndoSave();
     }
 };
@@ -29,7 +29,7 @@ void CCustomObject::Select( BOOL flag ){
 void CCustomObject::Show( BOOL flag ){
     m_Visible = flag;
     if (!m_Visible) m_Selected = false;
-    UI->RedrawScene();
+    UI.RedrawScene();
 };
 
 void CCustomObject::Lock( BOOL flag ){

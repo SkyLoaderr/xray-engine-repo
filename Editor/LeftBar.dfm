@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 277
+  Height = 617
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -1692,6 +1692,115 @@ object fraLeftBar: TfraLeftBar
     object MenuItem4: TMenuItem
       Caption = 'Clear List'
       OnClick = ebClearSnapClick
+    end
+  end
+  object pmObjectContext: TMxPopupMenu
+    Alignment = paCenter
+    AutoPopup = False
+    MenuAnimation = [maTopToBottom]
+    MarginEndColor = clBlack
+    LeftMargin = 15
+    Style = msBtnLowered
+    Left = 125
+    Top = 1
+    object miVisibility: TMenuItem
+      Caption = 'Visibility'
+      GroupIndex = 1
+      object HideSelected2: TMenuItem
+        Caption = 'Hide Selected'
+        OnClick = ebHideSelectedClick
+      end
+      object HideUnselected2: TMenuItem
+        Caption = 'Hide Unselected'
+        OnClick = ebHideUnselectedClick
+      end
+      object HideAll2: TMenuItem
+        Caption = 'Hide All'
+        OnClick = ebHideAllClick
+      end
+      object N5: TMenuItem
+        Caption = '-'
+      end
+      object UnhideAll2: TMenuItem
+        Caption = 'Unhide All'
+        OnClick = ebUnhideAllClick
+      end
+    end
+    object Locking1: TMenuItem
+      Caption = 'Locking'
+      GroupIndex = 1
+      object LockSelected1: TMenuItem
+        Caption = 'Lock Selected'
+        OnClick = ebLockSelClick
+      end
+      object MenuItem1: TMenuItem
+        Caption = 'Lock Unselected'
+        OnClick = ebLockUnselClick
+      end
+      object MenuItem2: TMenuItem
+        Caption = 'Lock All'
+        OnClick = ebLockAllClick
+      end
+      object N6: TMenuItem
+        Caption = '-'
+      end
+      object MenuItem5: TMenuItem
+        Caption = 'Unlock Selected'
+        OnClick = ebUnlockSelClick
+      end
+      object MenuItem6: TMenuItem
+        Caption = 'Unlock Unselected'
+        OnClick = ebUnlockUnselClick
+      end
+      object MenuItem7: TMenuItem
+        Caption = 'Unlock All'
+        OnClick = ebUnlockAllClick
+      end
+    end
+    object Edit1: TMenuItem
+      Caption = 'Edit'
+      GroupIndex = 1
+      OnClick = ebCopyClick
+      object miCopy: TMenuItem
+        Caption = 'Copy (selection)'
+        GroupIndex = 1
+      end
+      object miPaste2: TMenuItem
+        Caption = 'Paste (selection)'
+        Enabled = False
+        GroupIndex = 1
+        OnClick = ebPasteClick
+      end
+      object miCut: TMenuItem
+        Caption = 'Cut (selection)'
+        GroupIndex = 1
+        OnClick = ebCutClick
+      end
+    end
+    object Numeric1: TMenuItem
+      Caption = 'Numeric Set'
+      GroupIndex = 1
+      object Position1: TMenuItem
+        Caption = 'Position'
+        OnClick = Position1Click
+      end
+      object Rotation1: TMenuItem
+        Caption = 'Rotation'
+        OnClick = Rotation1Click
+      end
+      object Scale1: TMenuItem
+        Caption = 'Scale'
+        OnClick = Scale1Click
+      end
+    end
+    object N4: TMenuItem
+      Caption = '-'
+      GroupIndex = 1
+    end
+    object miProperties: TMenuItem
+      Caption = 'Properties...'
+      GroupIndex = 1
+      OnClick = miPropertiesClick
     end
   end
 end

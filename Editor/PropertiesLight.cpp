@@ -185,7 +185,7 @@ bool TfrmPropertiesLight::ApplyObjectsInfo(){
 	    cbTargetAnimated->ObjApply(c); 	 _L->m_Flags.bProcedural=c;
 	}
 
-    UI->UpdateScene();
+    UI.UpdateScene();
     return bResult;
 }
 //---------------------------------------------------------------------------

@@ -122,7 +122,7 @@ bool TfrmPropertiesGlow::ApplyObjectsInfo(){
         if (bValidShader&&bValidTex) _G->Compile();
 	}
 	pbImagePaint(0); paImage->Repaint();
-    UI->UpdateScene();
+    UI.UpdateScene();
     return true;
 }
 //---------------------------------------------------------------------------

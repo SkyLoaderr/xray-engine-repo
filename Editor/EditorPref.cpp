@@ -72,22 +72,22 @@ void __fastcall TfrmEditorPreferences::ebCancelClick(TObject *Sender)
 void __fastcall TfrmEditorPreferences::fsEditorPrefRestorePlacement(
       TObject *Sender)
 {
-	UI->m_AngleSnap = deg2rad(seSnapAngle->Value);
-	UI->m_MoveSnap  = seSnapMove->Value;
+	UI.m_AngleSnap = deg2rad(seSnapAngle->Value);
+	UI.m_MoveSnap  = seSnapMove->Value;
 
     Device.m_Camera.SetViewport(seZNear->Value, seZFar->Value, seFOV->Value);
 
-    UI->m_MouseSM= 0.2*(float(seSM->Value)/100.f)*(float(seSM->Value)/100.f);
-    UI->m_MouseSR= 0.02f*(float(seSR->Value)/100.f)*(float(seSR->Value)/100.f);
-    UI->m_MouseSS= 0.02f*(float(seSS->Value)/100.f)*(float(seSS->Value)/100.f);
+    UI.m_MouseSM= 0.2*(float(seSM->Value)/100.f)*(float(seSM->Value)/100.f);
+    UI.m_MouseSR= 0.02f*(float(seSR->Value)/100.f)*(float(seSR->Value)/100.f);
+    UI.m_MouseSS= 0.02f*(float(seSS->Value)/100.f)*(float(seSS->Value)/100.f);
 
     Device.m_Camera.SetSensitivity(float(seCameraSM->Value)/100.f, float(seCameraSR->Value)/100.f);
 	Device.m_Camera.SetFlyParams(seCameraFlySpeed->Value,seCameraFlyAltitude->Value);
 
-    UI->m_Cursor->SetBrushSegment(seBrushSegment->Value);
-    UI->m_Cursor->SetBrushRadius(seBrushSize->Value);
-    UI->m_Cursor->SetBrushDepth(seBrushUpDepth->Value,seBrushDnDepth->Value);
-    Fcolor c; c.set_windows(mc3DCursorColor->Brush->Color); UI->m_Cursor->SetColor(c);
+    UI.m_Cursor->SetBrushSegment(seBrushSegment->Value);
+    UI.m_Cursor->SetBrushRadius(seBrushSize->Value);
+    UI.m_Cursor->SetBrushDepth(seBrushUpDepth->Value,seBrushDnDepth->Value);
+    Fcolor c; c.set_windows(mc3DCursorColor->Brush->Color); UI.m_Cursor->SetColor(c);
 
 	if (TS) pcObjects->ActivePage=TS;
 }
@@ -106,7 +106,7 @@ void __fastcall TfrmEditorPreferences::mcColorDialogClick(
 void __fastcall TfrmEditorPreferences::seNavNetConectDistChange(
       TObject *Sender)
 {
-	UI->UpdateScene();
+	UI.UpdateScene();
 }
 //---------------------------------------------------------------------------
 

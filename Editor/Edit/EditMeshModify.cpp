@@ -38,7 +38,7 @@ void CEditableMesh::Transform(const Fmatrix& parent){
 
 bool CEditableMesh::UpdateAdjacency(){
 	if (m_Faces.empty()) return false;
-    UI->SetStatus("Update Adjacency:");
+    UI.SetStatus("Update Adjacency:");
     m_Adjs.clear();
     m_Adjs.resize(m_Points.size());
 	for (FaceIt f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++)
@@ -136,7 +136,7 @@ void CEditableMesh::Optimize(){
     m_NewPoints.clear();
     m_NewPoints.reserve(m_Points.size());
 
-    UI->SetStatus("Optimize...");
+    UI.SetStatus("Optimize...");
 
 	INTVec mark_for_del;
 	mark_for_del.clear();

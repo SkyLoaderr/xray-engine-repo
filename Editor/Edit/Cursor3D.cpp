@@ -63,10 +63,10 @@ void C3DCursor::Render(){
         Fvector start, dir, N, D;
         POINT start_pt;
         Ipoint pt;
-        GetCursorPos(&start_pt); start_pt=UI->GetD3DWindow()->ScreenToClient(start_pt);
+        GetCursorPos(&start_pt); start_pt=UI.GetD3DWindow()->ScreenToClient(start_pt);
         pt.set(float(start_pt.x),float(start_pt.y));
         Device.m_Camera.MouseRayFromPoint(start,dir,pt);
-        if (UI->PickGround(pinf.pt,start,dir, -1)){
+        if (UI.PickGround(pinf.pt,start,dir, -1)){
             N.set(0,1,0);
             D.set(0,0,1);
 
@@ -84,11 +84,11 @@ void C3DCursor::Render(){
                     GetPickPoint(p, m_RenderBuffer[idx], NULL);
                 }
 
-//                UI->D3D_RenderNearer(0.0001);
+//                UI.D3D_RenderNearer(0.0001);
                 Device.SetTransform(D3DTS_WORLD,precalc_identity);
 				Device.SetShader(Device.m_WireShader);
                 DU::DrawPrimitiveL(D3DPT_LINESTRIP,m_RenderBuffer.size(),m_RenderBuffer.begin(),m_RenderBuffer.size(),dwColor,true,true);
-//                UI->D3D_ResetNearer();
+//                UI.D3D_ResetNearer();
             }break;
             case csPoint:{
             	FVF::TL pt[5];
@@ -118,11 +118,11 @@ bool C3DCursor::PrepareBrush(){
     Fvector N, D;
     POINT start_pt;
     Ipoint pt;
-    GetCursorPos(&start_pt); start_pt=UI->GetD3DWindow()->ScreenToClient(start_pt);
+    GetCursorPos(&start_pt); start_pt=UI.GetD3DWindow()->ScreenToClient(start_pt);
     pt.set(float(start_pt.x),float(start_pt.y));
     Device.m_Camera.MouseRayFromPoint(brush_start,brush_dir,pt);
     bPickObject = !!Scene->RayPick( brush_start, brush_dir, OBJCLASS_SCENEOBJECT, &pinf, false, true);
-    if (!bPickObject) bPickGround = UI->PickGround(pinf.pt, brush_start, brush_dir);
+    if (!bPickObject) bPickGround = UI.PickGround(pinf.pt, brush_start, brush_dir);
     if (bPickObject||bPickGround){
         N.set(0,1,0); D.set(0,0,1);
         Fvector at;   at.sub(pinf.pt, N);

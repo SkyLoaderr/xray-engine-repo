@@ -24,13 +24,13 @@ bool CompareFunc(st_VMapPt& vm0, st_VMapPt& vm1){
 
 bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
 	lwObject *I=0;
-    UI->SetStatus("Importing...");
-	UI->ProgressStart(100,"Read file:");
-	UI->ProgressUpdate(1);
+    UI.SetStatus("Importing...");
+	UI.ProgressStart(100,"Read file:");
+	UI.ProgressUpdate(1);
     char fname[MAX_PATH];
     strcpy(fname,fn);
 	I=LWO_ImportObject(fname,I);
-	UI->ProgressUpdate(100);
+	UI.ProgressUpdate(100);
 	if (I){
         bool bResult=true;
         ELog.Msg( mtInformation, "CEditableObject: import lwo %s...", fname );
@@ -44,9 +44,9 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
             st_lwSurface* Isf=0;
             {
                 int i=0;
-                UI->ProgressStart(I->nsurfs,"Check surf:");
+                UI.ProgressStart(I->nsurfs,"Check surf:");
                 for (Isf=I->surf; Isf; Isf=Isf->next){
-                    UI->ProgressUpdate(i);
+                    UI.ProgressUpdate(i);
                     Isf->alpha_mode=i; // перетираем для внутренних целей !!!
                     CSurface* Osf = new CSurface();
                     m_Surfaces.push_back(Osf);
@@ -182,14 +182,14 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
                     }
                     if (!bResult) break;
                     // points
-					UI->ProgressStart(Ilr->point.count,"Fill points:");
+					UI.ProgressStart(Ilr->point.count,"Fill points:");
                     {
                         MESH->m_Points.resize(Ilr->point.count);
                         MESH->m_Adjs.resize(Ilr->point.count);
 	                    int id = Ilr->polygon.count/50;
 	                    if (id==0) id = 1;
                         for (int i=0; i<Ilr->point.count; i++){
-	                    	if ((i%id)==0) UI->ProgressUpdate(i);
+	                    	if ((i%id)==0) UI.ProgressUpdate(i);
                             st_lwPoint& Ipt = Ilr->point.pt[i];
                             Fvector& Mpt	= MESH->m_Points[i];
                             INTVec& a_lst	= MESH->m_Adjs[i];
@@ -200,7 +200,7 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
                     }
                     if (!bResult) break;
                     // polygons
-					UI->ProgressStart(Ilr->polygon.count,"Fill polygons:");
+					UI.ProgressStart(Ilr->polygon.count,"Fill polygons:");
                     MESH->m_Faces.resize(Ilr->polygon.count);
                     MESH->m_VMRefs.reserve(Ilr->polygon.count*3);
                     INTVec surf_ids;
@@ -208,7 +208,7 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
                     int id = Ilr->polygon.count/50;
                     if (id==0) id = 1;
                     for (int i=0; i<Ilr->polygon.count; i++){
-                    	if ((i%id)==0) UI->ProgressUpdate(i);
+                    	if ((i%id)==0) UI.ProgressUpdate(i);
                         st_Face&		Mpol=MESH->m_Faces[i];
                         st_lwPolygon&   Ipol=Ilr->polygon.pol[i];
                         if (Ipol.nverts!=3) {
@@ -290,15 +290,15 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
     		}
         }
         LWO_CloseFile(I);
-		UI->ProgressEnd();
-	    UI->SetStatus("");
+		UI.ProgressEnd();
+	    UI.SetStatus("");
     	if (bResult) 	VerifyMeshNames();
         else			ELog.DlgMsg(mtError,"Can't parse LWO object.");
         return bResult;
     }else
 		ELog.DlgMsg(mtError,"Can't import LWO object file.");
-	UI->ProgressEnd();
-	UI->SetStatus("");
+	UI.ProgressEnd();
+	UI.SetStatus("");
     return false;
 }
 

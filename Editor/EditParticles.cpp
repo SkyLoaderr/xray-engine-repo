@@ -14,6 +14,7 @@
 #include "PropertiesPS.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
+#pragma link "MxMenus"
 #pragma resource "*.dfm"
 TfrmEditParticles* TfrmEditParticles::form = 0;
 //---------------------------------------------------------------------------
@@ -39,8 +40,8 @@ void __fastcall TfrmEditParticles::ShowEditor(){
     }
 
     form->Show();
-    UI->RedrawScene();
-//    UI->Command(COMMAND_RENDER_FOCUS);
+    UI.RedrawScene();
+//    UI.Command(COMMAND_RENDER_FOCUS);
 }
 //---------------------------------------------------------------------------
 
@@ -53,9 +54,9 @@ bool __fastcall TfrmEditParticles::HideEditor(bool bNeedReload){
     	        form->ebSaveClick(0);
         	}else{
 	            if (bNeedReload){
-			        UI->SetStatus("Library reloading...");
+			        UI.SetStatus("Library reloading...");
 					PSLib->Reload();// RestoreBackup();
-		    	    UI->SetStatus("");
+		    	    UI.SetStatus("");
 	            }
             }
         }
@@ -145,7 +146,7 @@ void __fastcall TfrmEditParticles::FormShow(TObject *Sender)
 {
     InitItemsList();
     ebSave->Enabled = false;
-    UI->BeginEState(esEditParticles);
+    UI.BeginEState(esEditParticles);
 
     // add directional light
     Flight L;
@@ -168,8 +169,8 @@ void __fastcall TfrmEditParticles::FormClose(TObject *Sender, TCloseAction &Acti
 	form = 0;
 	Device.m_Camera.Set(init_cam_hpb,init_cam_pos);
 	Scene->unlock();
-    UI->EndEState(esEditParticles);
-    UI->Command(COMMAND_CLEAR);
+    UI.EndEState(esEditParticles);
+    UI.Command(COMMAND_CLEAR);
     // remove directional light
 	Device.LightEnable(0,false);
 	Device.LightEnable(1,false);
@@ -184,14 +185,6 @@ void TfrmEditParticles::OnModified(){
 
 //---------------------------------------------------------------------------
 // Folder routines
-//---------------------------------------------------------------------------
-void __fastcall TfrmEditParticles::tvItemsItemSelectedChange(TObject *Sender, TElTreeItem *Item)
-{
-	if (Item==tvItems->Selected) return;
-	ResetCurrent();
-	if (Item->Data) SetCurrent(PSLib->FindPS(AnsiString(Item->Text).c_str()));
-    UI->RedrawScene();
-}
 //---------------------------------------------------------------------------
 TElTreeItem* TfrmEditParticles::FindFolder(const char* s)
 {
@@ -311,7 +304,7 @@ void __fastcall TfrmEditParticles::ebSaveClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmEditParticles::ebNewPSClick(TObject *Sender)
+void __fastcall TfrmEditParticles::ebAppendPSClick(TObject *Sender)
 {
 	string64 name;
     PSLib->GenerateName(name);
@@ -442,7 +435,7 @@ void __fastcall TfrmEditParticles::tvItemsStartDrag(TObject *Sender,
 void __fastcall TfrmEditParticles::tvItemsKeyPress(TObject *Sender, char &Key)
 {
 	if (Key==VK_DELETE)		ebRemovePSClick(Sender);
-	else if (Key==VK_INSERT)ebNewPSClick(Sender);
+	else if (Key==VK_INSERT)ebAppendPSClick(Sender);
 }
 //---------------------------------------------------------------------------
 
@@ -483,6 +476,14 @@ void __fastcall TfrmEditParticles::ExtBtn5Click(TObject *Sender)
 {
 	VERIFY(form->m_TestObject);
 	m_TestObject->Stop();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmEditParticles::tvItemsItemFocused(TObject *Sender)
+{
+	ResetCurrent();
+	if (tvItems->Selected) SetCurrent(PSLib->FindPS(AnsiString(tvItems->Selected->Text).c_str()));
+    UI.RedrawScene();
 }
 //---------------------------------------------------------------------------
 

@@ -228,7 +228,7 @@ void CPSObject::Move( Fvector& amount ){
     	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
-    UI->UpdateScene();
+    UI.UpdateScene();
 	m_Emitter.m_Position.add( amount );
 }
 //----------------------------------------------------
@@ -244,7 +244,7 @@ void CPSObject::Rotate( Fvector& center, Fvector& axis, float angle ){
 	m.transform_tiny	(m_Emitter.m_Position);
 	m_Emitter.m_Position.add(center);
 	m.transform_dir		(m_Emitter.m_ConeDirection);
-    UI->UpdateScene		();
+    UI.UpdateScene		();
 }
 //----------------------------------------------------
 
@@ -256,7 +256,7 @@ void CPSObject::LocalRotate(Fvector& axis, float angle ){
 	Fmatrix m;
 	m.rotation			(axis, (axis.y)?-angle:angle);
 	m.transform_tiny	(m_Emitter.m_ConeDirection);
-    UI->UpdateScene		();
+    UI.UpdateScene		();
 }
 //----------------------------------------------------
 void CPSObject::Scale( Fvector& center, Fvector& amount ){
@@ -274,7 +274,7 @@ void CPSObject::Scale( Fvector& center, Fvector& amount ){
 		m_Emitter.m_SphereRadius += amount.magnitude();
     	if (m_Emitter.m_SphereRadius<EPS) m_Emitter.m_SphereRadius=EPS;
     }
-    UI->UpdateScene();
+    UI.UpdateScene();
 }
 
 void CPSObject::LocalScale( Fvector& amount ){
@@ -292,7 +292,7 @@ void CPSObject::LocalScale( Fvector& amount ){
 		m_Emitter.m_SphereRadius += amount.magnitude();
     	if (m_Emitter.m_SphereRadius<EPS) m_Emitter.m_SphereRadius=EPS;
     }
-    UI->UpdateScene();
+    UI.UpdateScene();
 }
 //----------------------------------------------------
 

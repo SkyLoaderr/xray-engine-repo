@@ -55,7 +55,7 @@ void TUI_ControlSectorAdd::AddMesh(){
     CSector* sector=(CSector*)fraSector->cbItems->Items->Objects[fraSector->cbItems->ItemIndex];
     VERIFY(sector);
     SRayPickInfo pinf;
-    if (Scene->RayPick( UI->m_CurrentRStart,UI->m_CurrentRNorm, OBJCLASS_SCENEOBJECT, &pinf, false, false))
+    if (Scene->RayPick( UI.m_CurrentRStart,UI.m_CurrentRNorm, OBJCLASS_SCENEOBJECT, &pinf, false, false))
 		sector->AddMesh(pinf.s_obj,pinf.e_mesh);
 }
 
@@ -63,20 +63,20 @@ void TUI_ControlSectorAdd::DelMesh(){
     m_Action = saDelMesh;
     CSector* sector=(CSector*)fraSector->cbItems->Items->Objects[fraSector->cbItems->ItemIndex];
     SRayPickInfo pinf;
-    if (Scene->RayPick( UI->m_CurrentRStart,UI->m_CurrentRNorm, OBJCLASS_SCENEOBJECT, &pinf, false, false))
+    if (Scene->RayPick( UI.m_CurrentRStart,UI.m_CurrentRNorm, OBJCLASS_SCENEOBJECT, &pinf, false, false))
 		sector->DelMesh(pinf.s_obj,pinf.e_mesh);
 }
 
 bool __fastcall TUI_ControlSectorAdd::Start(TShiftState Shift)
 {
-    if (Shift==ssRBOnly){ UI->Command(COMMAND_SHOWCONTEXTMENU,OBJCLASS_SECTOR); return false;}
+    if (Shift==ssRBOnly){ UI.Command(COMMAND_SHOWCONTEXTMENU,OBJCLASS_SECTOR); return false;}
 	if (fraSector->ebAddMesh->Down||fraSector->ebDelMesh->Down){
 		if (fraSector->cbItems->ItemIndex==-1) return false;
 		bool bBoxSelection = Shift.Contains(ssCtrl) || fraSector->ebFaceBoxPick->Down;
 
         if( bBoxSelection ){
-            UI->EnableSelectionRect( true );
-            UI->UpdateSelectionRect(UI->m_StartCp,UI->m_CurrentCp);
+            UI.EnableSelectionRect( true );
+            UI.UpdateSelectionRect(UI.m_StartCp,UI.m_CurrentCp);
 			m_Action = saMeshBoxSelection;
             return true;
         } else {
@@ -93,7 +93,7 @@ void __fastcall TUI_ControlSectorAdd::Move(TShiftState _Shift)
     switch (m_Action){
     case saAddMesh:	AddMesh();	break;
     case saDelMesh:	DelMesh();	break;
-    case saMeshBoxSelection:UI->UpdateSelectionRect(UI->m_StartCp,UI->m_CurrentCp); break;
+    case saMeshBoxSelection:UI.UpdateSelectionRect(UI.m_StartCp,UI.m_CurrentCp); break;
     }
 }
 
@@ -102,7 +102,7 @@ bool __fastcall TUI_ControlSectorAdd::End(TShiftState _Shift)
 	if (fraSector->cbItems->ItemIndex>-1){
         CSector* sector=(CSector*)fraSector->cbItems->Items->Objects[fraSector->cbItems->ItemIndex];
         if (m_Action==saMeshBoxSelection){
-            UI->EnableSelectionRect( false );
+            UI.EnableSelectionRect( false );
             DWORDVec fl;
             Fmatrix matrix;
             CSceneObject* O_ref=NULL;
@@ -110,7 +110,7 @@ bool __fastcall TUI_ControlSectorAdd::End(TShiftState _Shift)
 
             CFrustum frustum;
             ObjectList lst;
-            if (UI->SelectionFrustum(frustum)){;
+            if (UI.SelectionFrustum(frustum)){;
                 Scene->FrustumPick(frustum, OBJCLASS_SCENEOBJECT, lst);
                 for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
                     O_ref = (CSceneObject*)(*_F);

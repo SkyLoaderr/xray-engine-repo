@@ -19,7 +19,7 @@ CPortalUtils PortalUtils;
 #define EPS_P 0.001f
 
 void CPortalUtils::RemoveSectorPortal(CSector* S){
-	UI->BeginEState(esSceneLocked);
+	UI.BeginEState(esSceneLocked);
 
     // remove existence sector portal
     ObjectList& lst = Scene->ListObj(OBJCLASS_PORTAL);
@@ -35,7 +35,7 @@ void CPortalUtils::RemoveSectorPortal(CSector* S){
         }
     }
 
-	UI->EndEState();
+	UI.EndEState();
 }
 
 int CPortalUtils::CalculatePortals(char* s_front, char* s_back){
@@ -48,19 +48,19 @@ int CPortalUtils::CalculatePortals(char* s_front, char* s_back){
 //---------------------------------------------------------------------------
 
 void CPortalUtils::RemoveAllPortals(){
-	UI->BeginEState(esSceneLocked);
+	UI.BeginEState(esSceneLocked);
 
     // remove all existence portal
 	ObjectList& p_lst = Scene->ListObj(OBJCLASS_PORTAL);
     for (ObjectIt _F=p_lst.begin(); _F!=p_lst.end(); _F++) delete (*_F);
 	p_lst.erase(p_lst.begin(),p_lst.end());
 
-	UI->EndEState();
+	UI.EndEState();
 }
 //---------------------------------------------------------------------------
 
 bool CPortalUtils::CreateDefaultSector(){
-	UI->BeginEState(esSceneLocked);
+	UI.BeginEState(esSceneLocked);
 
     Fbox box;
 	if (Scene->GetBox(box,OBJCLASS_SCENEOBJECT)){
@@ -71,34 +71,34 @@ bool CPortalUtils::CreateDefaultSector(){
 		if (sector_def->GetSectorFacesCount()>0){
          	Scene->AddObject(sector_def,false);
             Scene->UndoSave();
-	        UI->UpdateScene();
-			UI->EndEState();
+	        UI.UpdateScene();
+			UI.EndEState();
             return true;
         } else delete sector_def;
     }
-	UI->EndEState();
+	UI.EndEState();
     return false;
 }
 //---------------------------------------------------------------------------
 
 bool CPortalUtils::RemoveDefaultSector(){
-	UI->BeginEState(esSceneLocked);
+	UI.BeginEState(esSceneLocked);
     CCustomObject* O=Scene->FindObjectByName(DEFAULT_SECTOR_NAME,OBJCLASS_SECTOR);
     if (O){
     	Scene->RemoveObject(O,false);
         _DELETE(O);
 		Scene->UndoSave();
-		UI->EndEState();
-        UI->UpdateScene();
+		UI.EndEState();
+        UI.UpdateScene();
         return true;
     }
-	UI->EndEState();
+	UI.EndEState();
     return false;
 }
 //---------------------------------------------------------------------------
 
 int CPortalUtils::CalculateAllPortals2(){
-	UI->BeginEState(esSceneLocked);
+	UI.BeginEState(esSceneLocked);
 
     int bResult=0;
     if (Validate(false)){
@@ -118,7 +118,7 @@ int CPortalUtils::CalculateAllPortals2(){
                 bResult+=CalculatePortals(sectors[f],sectors[b]);
                 AnsiString t;
                 t.sprintf("Calculate %d of %d",f,sectors.size());
-                UI->SetStatus(t.c_str());
+                UI.SetStatus(t.c_str());
             }
 
         Scene->UndoSave();
@@ -126,8 +126,8 @@ int CPortalUtils::CalculateAllPortals2(){
 		ELog.DlgMsg(mtError,"*ERROR: Scene has non associated face!");
     }
 
-	UI->SetStatus("...");
-	UI->EndEState();
+	UI.SetStatus("...");
+	UI.EndEState();
     return bResult;
 }
 //---------------------------------------------------------------------------
@@ -141,7 +141,7 @@ CSector* CPortalUtils::FindSector(CSceneObject* o, CEditableMesh* m){
 }
 
 bool CPortalUtils::Validate(bool bMsg){
-	UI->BeginEState(esSceneLocked);
+	UI.BeginEState(esSceneLocked);
 
     Fbox box;
     bool bResult = false;
@@ -178,29 +178,29 @@ bool CPortalUtils::Validate(bool bMsg){
     }else{
 		if (bMsg) ELog.DlgMsg(mtInformation,"Validation failed! Can't compute bbox.");
     }
-	UI->EndEState();
+	UI.EndEState();
     return bResult;
 }
 
 void CPortalUtils::CreateDebugCollection(){
 	VERIFY((Scene->ObjCount(OBJCLASS_SECTOR)==0)&&(Scene->ObjCount(OBJCLASS_PORTAL)==0));
 
-    UI->ProgressStart(6,"Create debug sectors and portal...");
-	UI->ProgressInc();
+    UI.ProgressStart(6,"Create debug sectors and portal...");
+	UI.ProgressInc();
 
     // create default sector
     CreateDefaultSector();
     CSector* DEF=(CSector*)Scene->FindObjectByName(DEFAULT_SECTOR_NAME,OBJCLASS_SECTOR);
     if (!DEF) return;
-	UI->ProgressInc();
+	UI.ProgressInc();
 
 	// create debug object
     CSceneObject* O = new CSceneObject("$debug_object_0x247d05e9");
     CEditableObject* EO = Lib->SearchEditObject("$debug_sector");
-    if (!EO){ _DELETE(O); UI->ProgressEnd(); return; }
+    if (!EO){ _DELETE(O); UI.ProgressEnd(); return; }
     O->SetRef(EO);
 
-	UI->ProgressInc();
+	UI.ProgressInc();
 
     Fbox lev_box, obj_box;
     Fvector offs; offs.set(0,0,0);
@@ -211,12 +211,12 @@ void CPortalUtils::CreateDebugCollection(){
     }
     O->Move(offs);
     Scene->AddObject(O,false);
-	UI->ProgressInc();
+	UI.ProgressInc();
     // create debug sector
     CSector* S = new CSector("$debug_sector_0x247d05e9");
     S->CaptureAllUnusedMeshes();
     Scene->AddObject(S,false);
-	UI->ProgressInc();
+	UI.ProgressInc();
     // create debug portal
     CPortal* P = new CPortal("$debug_portal_0x247d05e9");
     P->m_SectorFront = DEF;
@@ -228,9 +228,9 @@ void CPortalUtils::CreateDebugCollection(){
     P->m_SimplifyVertices[2].set(0,1,0);
     P->Move(offs);
     Scene->AddObject(P,false);
-	UI->ProgressInc();
+	UI.ProgressInc();
 
-	UI->ProgressEnd();
+	UI.ProgressEnd();
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -541,7 +541,7 @@ int CPortalUtils::CalculateSelectedPortals(vector<CSector*>& sectors){
     Fmatrix T;
 
     //1. xform + weld
-    UI->SetStatus("xform + weld...");
+    UI.SetStatus("xform + weld...");
     for (DWORD i=0; i<sectors.size(); i++){
         CSector* S=sectors[i];
         for (SItemIt s_it=S->sector_items.begin();s_it!=S->sector_items.end();s_it++){
@@ -560,19 +560,19 @@ int CPortalUtils::CalculateSelectedPortals(vector<CSector*>& sectors){
         }
     }
     //2. update pervertex adjacency
-    UI->SetStatus("updating per-vertex adjacency...");
+    UI.SetStatus("updating per-vertex adjacency...");
     CL->update_adjacency();
     //3. find edges
-    UI->SetStatus("searching edges...");
+    UI.SetStatus("searching edges...");
     CL->find_edges();
     //4. sort edges
-    UI->SetStatus("sorting edges...");
+    UI.SetStatus("sorting edges...");
     CL->sort_edges();
     //5. make portals
-    UI->SetStatus("calculating portals...");
+    UI.SetStatus("calculating portals...");
     CL->make_portals();
     //6. export portals
-    UI->SetStatus("building portals...");
+    UI.SetStatus("building portals...");
     CL->export_portals(sectors);
 
     Scene->UndoSave();
@@ -585,11 +585,11 @@ int CPortalUtils::CalculateSelectedPortals(vector<CSector*>& sectors){
 }
 
 int CPortalUtils::CalculateAllPortals(){
-	UI->BeginEState(esSceneLocked);
+	UI.BeginEState(esSceneLocked);
 
     int iPCount=0;
     if (Validate(false)){
-		UI->SetStatus("Prepare...");
+		UI.SetStatus("Prepare...");
         RemoveAllPortals();
         // transfer from list to vector
         vector<CSector*> sectors;
@@ -601,17 +601,17 @@ int CPortalUtils::CalculateAllPortals(){
 		ELog.DlgMsg(mtError,"*ERROR: Scene has non associated face!");
     }
 
-	UI->SetStatus("...");
-	UI->EndEState();
+	UI.SetStatus("...");
+	UI.EndEState();
     return iPCount;
 }
 
 int CPortalUtils::CalculatePortals(CSector* SF, CSector* SB){
-	UI->BeginEState(esSceneLocked);
+	UI.BeginEState(esSceneLocked);
 
     int iPCount=0;
     if (Validate(false)){
-		UI->SetStatus("Prepare...");
+		UI.SetStatus("Prepare...");
         RemoveAllPortals();
         // transfer from list to vector
         vector<CSector*> sectors;
@@ -623,7 +623,7 @@ int CPortalUtils::CalculatePortals(CSector* SF, CSector* SB){
 		ELog.DlgMsg(mtError,"*ERROR: Scene has non associated face!");
     }
 
-	UI->SetStatus("...");
-	UI->EndEState();
+	UI.SetStatus("...");
+	UI.EndEState();
     return iPCount;
 }

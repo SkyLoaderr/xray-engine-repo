@@ -39,7 +39,7 @@ void TfraLight::UseInD3D(bool bAll, bool bFlag){
 			if(L->Selected() && L->Visible()) L->AffectD3D(bFlag);
         }
     }
-    UI->RedrawScene();
+    UI.RedrawScene();
 }
 
 //----------------------------------------------------

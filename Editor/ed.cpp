@@ -199,6 +199,7 @@ USELIB("lib\FreeImage.lib");
 USEUNIT("edit\ETextureParams.cpp");
 USERES("resource.res");
 USEUNIT("Engine\Blenders\blender_light.cpp");
+USEUNIT("edit\FolderLib.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

@@ -69,7 +69,7 @@ void CNavPoint::DrawNavPoint  (Fcolor& c){
 	v[5].z += NAVPOINT_SIZE;
 	v[6].z -= NAVPOINT_SIZE;
 
-	CDX( UI->d3d()->DrawIndexedPrimitive(
+	CDX( UI.d3d()->DrawIndexedPrimitive(
 		D3DPT_LINELIST,D3DFVF_LVERTEX,
 		v, 7, j, 12, 0 ));
 */
@@ -122,7 +122,7 @@ void CNavPoint::Move( Fvector& amount ){
     	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
-    UI->UpdateScene();
+    UI.UpdateScene();
 	m_Position.add( amount );
 }
 //----------------------------------------------------

@@ -111,7 +111,7 @@ void CGlow::Move( Fvector& amount ){
     	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
-    UI->UpdateScene();
+    UI.UpdateScene();
 	m_Position.add( amount );
 }
 //----------------------------------------------------
@@ -126,7 +126,7 @@ void CGlow::Rotate( Fvector& center, Fvector& axis, float angle ){
 	m_Position.sub		(center);
 	m.transform_tiny	(m_Position);
 	m_Position.add		(center);
-    UI->UpdateScene		();
+    UI.UpdateScene		();
 }
 
 bool CGlow::Load(CStream& F){

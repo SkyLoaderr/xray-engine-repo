@@ -92,7 +92,7 @@ void CSound::Move( Fvector& amount ){
     	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
-    UI->UpdateScene();
+    UI.UpdateScene();
 	m_Position.add( amount );
 }
 
@@ -106,7 +106,7 @@ void CSound::Rotate( Fvector& center, Fvector& axis, float angle ){
 	m_Position.sub		(center);
 	m.transform_tiny	(m_Position);
 	m_Position.add		(center);
-    UI->UpdateScene		();
+    UI.UpdateScene		();
 }
 
 void CSound::LocalRotate( Fvector& axis, float angle ){
@@ -114,7 +114,7 @@ void CSound::LocalRotate( Fvector& axis, float angle ){
     	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
-    UI->UpdateScene();
+    UI.UpdateScene();
 }
 
 //----------------------------------------------------

@@ -95,7 +95,7 @@ void CRPoint::Move( Fvector& amount ){
     	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
-    UI->UpdateScene();
+    UI.UpdateScene();
 	m_Position.add( amount );
 }
 //----------------------------------------------------
@@ -106,7 +106,7 @@ void CRPoint::LocalRotate( Fvector& axis, float angle ){
         return;
     }
     m_fHeading			-= axis.y*angle;
-    UI->UpdateScene		();
+    UI.UpdateScene		();
 }
 //----------------------------------------------------
 
@@ -121,7 +121,7 @@ void CRPoint::Rotate( Fvector& center, Fvector& axis, float angle ){
 	m.transform_tiny	(m_Position);
 	m_Position.add		(center);
     m_fHeading			-= axis.y*angle;
-    UI->UpdateScene		();
+    UI.UpdateScene		();
 }
 //----------------------------------------------------
 

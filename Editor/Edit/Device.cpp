@@ -261,16 +261,15 @@ void CRenderDevice::OnDeviceDestroy(){
 #include "scene.h"
 void CRenderDevice::UpdateFog(){
 	st_Environment& E	= Scene->m_LevelOp.m_Envs[Scene->m_LevelOp.m_CurEnv];
-    UpdateFog (E.m_FogColor.get(),(psDeviceFlags&rsFog)?E.m_Fogness:0,(psDeviceFlags&rsFog)?E.m_ViewDist:UI->ZFar());
+    UpdateFog (E.m_FogColor.get(),(psDeviceFlags&rsFog)?E.m_Fogness:0,(psDeviceFlags&rsFog)?E.m_ViewDist:UI.ZFar());
 }
 #endif
 
 void CRenderDevice::UpdateFog(DWORD color, float fogness, float view_dist){
 	//Fog parameters
-	SetRS( D3DRS_FOGCOLOR,	color);
 	float start	= (1.0f - fogness)* 0.85f * view_dist;
 	float end	= 0.91f * view_dist;
-	SetRS( D3DRS_FOGCOLOR,			0					);
+	SetRS( D3DRS_FOGCOLOR,	color);
 	SetRS( D3DRS_RANGEFOGENABLE,	FALSE				);
 	if (HW.Caps.bTableFog)	{
 		ELog.Msg(mtInformation,"* Using hardware fog...");
@@ -308,7 +307,7 @@ void __fastcall CRenderDevice::Resize(int w, int h)
     SetTransform	(D3DTS_PROJECTION,mProjection);
     SetTransform	(D3DTS_WORLD,precalc_identity);
 
-    UI->RedrawScene();
+    UI.RedrawScene();
 }
 
 void CRenderDevice::Begin( ){
@@ -452,9 +451,9 @@ void CRenderDevice::ReloadShaders(){
 }
 
 void CRenderDevice::RefreshTextures(bool bOnlyNew){
-	UI->SetStatus("Reload textures...");
+	UI.SetStatus("Reload textures...");
 //S	Shader.RefreshTextures(bOnlyNew);
-	UI->SetStatus("");
+	UI.SetStatus("");
 }
 
 struct clr_16{
@@ -484,7 +483,7 @@ bool CRenderDevice::MakeScreenshot(DWORDVec& pixels, DWORD& width, DWORD& height
 
     DWORD old_flag = psDeviceFlags;
 	psDeviceFlags &=~rsStatistic;
-	UI->Redraw();
+	UI.Redraw();
     psDeviceFlags = old_flag;
 
 	D3DLOCKED_RECT	D;
@@ -493,14 +492,14 @@ bool CRenderDevice::MakeScreenshot(DWORDVec& pixels, DWORD& width, DWORD& height
 	// Image processing
 	DWORD* pPixel	= (DWORD*)D.pBits;
 
-    UI->ProgressStart(height,"Screenshot making");
+    UI.ProgressStart(height,"Screenshot making");
     DWORDIt it 		= pixels.begin();
     for (int h=height-1; h>=0; h--,it+=width){
         LPDWORD dt 	= LPDWORD(DWORD(pPixel)+DWORD(D.Pitch*h));
         CopyMemory	(it,dt,sizeof(DWORD)*width);
-	    UI->ProgressInc();
+	    UI.ProgressInc();
     }
-    UI->ProgressEnd();
+    UI.ProgressEnd();
 
     R_CHK(pRT->UnlockRect());
     HW.pDevice->SetRenderTarget(poldRT,pZB);

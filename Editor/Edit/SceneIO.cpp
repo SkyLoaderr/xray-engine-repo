@@ -216,7 +216,7 @@ bool EScene::Load(char *_FileName){
         R_ASSERT(F->ReadChunk(CHUNK_VERSION, &version));
         if (version!=CURRENT_FILE_VERSION){
             ELog.DlgMsg( mtError, "EScene: unsupported file version. Can't load Level.");
-            UI->UpdateScene();
+            UI.UpdateScene();
         	_DELETE(F);
             return false;
         }
@@ -247,11 +247,11 @@ bool EScene::Load(char *_FileName){
         }
 
         CStream* OBJ = F->OpenChunk(CHUNK_OBJECT_LIST);
-	    UI->ProgressStart(obj_cnt,"Load scene...");
+	    UI.ProgressStart(obj_cnt,"Load scene...");
         if (OBJ){
 	        CStream* O   = OBJ->OpenChunk(0);
     	    for (int count=1; O; count++) {
-			    UI->ProgressInc();
+			    UI.ProgressInc();
         	    CCustomObject* obj = ReadObject(O);
                 if (obj) AddObject(obj, false);
             	O->Close();
@@ -280,14 +280,14 @@ bool EScene::Load(char *_FileName){
             DO->Close();
         }
 
-	    UI->ProgressEnd();
+	    UI.ProgressEnd();
 
         // update scene groups list
         UpdateGroups();
 
         ELog.Msg( mtInformation, "EScene: %d objects loaded", ObjCount() );
 
-        UI->UpdateScene();
+        UI.UpdateScene();
         Device.UpdateFog();
 
 		_DELETE(F);
@@ -349,7 +349,7 @@ bool EScene::LoadSelection(const char *_FileName,ObjectList& lst){
         R_ASSERT(F.ReadChunk(CHUNK_VERSION, &version));
         if (version!=CURRENT_FILE_VERSION){
             ELog.DlgMsg( mtError, "EScene: unsupported file version. Can't load Level.");
-            UI->UpdateScene();
+            UI.UpdateScene();
             return false;
         }
 

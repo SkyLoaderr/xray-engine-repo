@@ -48,7 +48,7 @@ void CStats::Show(CFontBase* font)
 	}
 
 	// Show them
-	if (psDeviceFlags & rsStatistic) 
+	if (psDeviceFlags & rsStatistic)
 	{
 	    CFontBase& 	F = *font;
 		F.Color		(0xFFFFFFFF	);
@@ -70,7 +70,7 @@ void CStats::Show(CFontBase* font)
 
 	{
 		RenderTOTAL.FrameStart		();
-		
+
 		Input.FrameStart			();
 		clRAY.FrameStart			();
 		clBOX.FrameStart			();
