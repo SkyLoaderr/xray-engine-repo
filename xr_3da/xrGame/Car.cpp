@@ -7,13 +7,24 @@
 #include "..\camerafirsteye.h"
 #include "..\xr_level_controller.h"
 #include "Actor.h"
+
+static float car_snd_volume=1.f;
+static float car_drive_force					= 1000.f;
+static float car_drive_speed_accel				= M_PI*15;
+static float car_drive_speed					= M_PI*5;
+
+extern dReal car_neutral_drive_resistance;
+extern dReal car_breaks_resistance;
+extern dReal steeringRate;
+extern dReal steeringLimit;
+
 enum ECarCamType{
 	ectFirst	= 0,
 	ectChase,
 	ectFree
 };
 
-const float drive_force		= 1000;
+
 
 extern CPHWorld*	ph_world;
 
@@ -180,7 +191,15 @@ void	CCar::cam_Update			(float dt)
 void	CCar::Load					( LPCSTR section )
 {
 	inherited::Load					(section);
-
+	car_snd_volume  				= pSettings->r_float(section,"snd_volume");
+	car_drive_force					= pSettings->r_float(section,"drive_force");
+	car_drive_speed_accel			= pSettings->r_float(section,"drive_speed_accel");
+	car_drive_speed					= pSettings->r_float(section,"drive_speed");
+	car_neutral_drive_resistance	=pSettings->r_float(section,"neutral_drive_resistance");
+    car_breaks_resistance			=pSettings->r_float(section,"breaks_resistance");
+	steeringRate					=pSettings->r_float(section,"steering_rate");
+	steeringLimit					=pSettings->r_float(section,"steering_limit");
+	m_jeep.MassShift				=pSettings->r_float(section,"mass_shift");
 	snd_engine.create				(TRUE,"car\\car1");
 
 
@@ -260,7 +279,7 @@ void	CCar::UpdateCL				( )
 
 	snd_engine.set_position			(C);
 	snd_engine.set_frequency		(scale);
-	snd_engine.set_volume			(0.5f);
+	snd_engine.set_volume			(car_snd_volume);
 
 	// Camera
 	if (IsMyCamera())				
@@ -325,7 +344,7 @@ void	CCar::OnKeyboardPress		(int cmd)
 	case kCAM_1:	OnCameraChange(ectFirst);	break;
 	case kCAM_2:	OnCameraChange(ectChase);	break;
 	case kCAM_3:	OnCameraChange(ectFree);	break;
-	case kACCEL:	m_jeep.DriveVelocity=5*M_PI;
+	case kACCEL:	m_jeep.DriveVelocity=car_drive_speed;
 					m_jeep.Drive();
 					break;
 	case kRIGHT:	m_jeep.Steer(1);
@@ -335,13 +354,13 @@ void	CCar::OnKeyboardPress		(int cmd)
 					m_owner->steer_Vehicle(-1);
 					break;
 	case kUP:		m_jeep.DriveDirection=1;
-					m_jeep.DriveForce=drive_force;
+					m_jeep.DriveForce=car_drive_force;
 					m_jeep.Drive();
 					m_pExhaustPG2->Play				();
 					m_pExhaustPG1->Play				();
 					break;
 	case kDOWN:		m_jeep.DriveDirection=-1;
-					m_jeep.DriveForce=drive_force;
+					m_jeep.DriveForce= car_drive_force;
 					m_jeep.Drive();
 					m_pExhaustPG2->Play				();
 					m_pExhaustPG1->Play				();
@@ -361,7 +380,7 @@ void	CCar::OnKeyboardRelease		(int cmd)
 	if (Remote())					return;
 		switch (cmd)	
 	{
-	case kACCEL:	m_jeep.DriveVelocity=15*M_PI;
+	case kACCEL:	m_jeep.DriveVelocity=car_drive_speed_accel;
 					m_jeep.Drive();
 					break;
 	case kLEFT:	

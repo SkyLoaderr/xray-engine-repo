@@ -39,7 +39,7 @@ class CPHJeep {
 	static const	u32 NofBodies=5;
 	static const	u32 NofJoints=4;
 
-	dReal MassShift;
+
 	dBodyID Bodies[NofBodies];
 	dGeomID Geoms[NofGeoms];
 	dJointID Joints[NofJoints];
@@ -49,11 +49,15 @@ class CPHJeep {
 	bool	 bActive;
 	void CreateDynamicData();
 public:
+
+	dReal MassShift;
+
 	CPHJeep()
 	{
 		weels_limited=true;
 		bActive=false;
 		m_ref_object=NULL;
+		MassShift=0.25f;
 	}
 	void SetPhRefObject(CPhysicsRefObject * ref_object);
 	void applyImpulseTrace		(int part,const Fvector& pos, const Fvector& dir, float val){

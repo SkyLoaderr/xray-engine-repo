@@ -217,6 +217,7 @@ bActive=true;
 
 void __stdcall CarHitCallback(bool& do_colide,dContact& c);
 /////////////////////////////////////////////////////////////////////////////
+
 void CPHJeep::Create(dSpaceID space, dWorldID world){
 	if(bActive) return;
 	static const dReal scaleParam=1.f;
@@ -238,7 +239,7 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 	//static const dReal weelSepX=scaleBox[0]*2.74f/2.f,weelSepZ=scaleBox[2]*1.7f/2.f,weelSepY=scaleBox[1]*0.6f;
 	static const dReal weelSepXF=scaleBox[0]*1.32f,weelSepXB=scaleBox[0]*1.155f,weelSepZ=scaleBox[2]*1.53f/2.f,weelSepY=scaleBox[1]*0.463f;
 	static const dReal cabinSepX=scaleBox[0]*0.61f,cabinSepY=scaleBox[1]*0.55f;
-	MassShift=0.25f;
+	//MassShift=0.25f;
 	dMass m;
 
 	// car body
@@ -265,6 +266,8 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 	
 	dGeomUserDataSetObjectContactCallback(Geoms[0],CarHitCallback);
 	dGeomUserDataSetObjectContactCallback(Geoms[6],CarHitCallback);
+	dGeomUserDataSetContactCallback(Geoms[0],ContactShotMark);
+	dGeomUserDataSetContactCallback(Geoms[6],ContactShotMark);
 	if(m_ref_object)
 	{
 	dGeomUserDataSetPhysicsRefObject(Geoms[0],m_ref_object);
@@ -479,12 +482,12 @@ DynamicData.SetZeroTransform(Translate);
 
 }
 
-
+dReal steeringRate = M_PI * 4 / 5;
+dReal steeringLimit = M_PI / 4;
 void CPHJeep::Steer(const char& steering)
 {
 	if(!bActive) return;
-	static const dReal steeringRate = M_PI * 4 / 5;
-	static const dReal steeringLimit = M_PI / 4;
+
 	
 	ULONG i;
 	switch(steering)
@@ -575,10 +578,14 @@ void CPHJeep::Drive(const char& velocity,dReal force)
 			dJointSetHinge2Param(Joints[i], dParamFMax2, force);
 }
 //////////////////////////////////////////////////////////
+
+dReal car_neutral_drive_resistance=100.f;
+dReal car_breaks_resistance		  =5000.f;
+
 void CPHJeep::Drive()
 {
 
-	static const dReal wheelVelocity = 12.f * M_PI;//3*18.f * M_PI;
+//	static const dReal wheelVelocity = 12.f * M_PI;//3*18.f * M_PI;
 	ULONG i;
 
 if(!Breaks)
@@ -596,14 +603,14 @@ if(!Breaks)
 	case 0:
 		for(i = 0; i < 4; ++i){
 			dJointSetHinge2Param(Joints[i], dParamVel2, 0.f);
-			dJointSetHinge2Param(Joints[i], dParamFMax2, 100);
+			dJointSetHinge2Param(Joints[i], dParamFMax2, car_neutral_drive_resistance);
 		}
 		return;
 	}
 	else {
 		for(i = 0; i < 2; ++i){
 
-			dJointSetHinge2Param(Joints[i], dParamFMax2, 5000);
+			dJointSetHinge2Param(Joints[i], dParamFMax2,car_breaks_resistance);
 			dJointSetHinge2Param(Joints[i], dParamVel2, 0);
 			}
 		/////////////
@@ -635,11 +642,12 @@ if(!Breaks)
 			dJointSetHinge2Param(Joints[i], dParamFMax2, DriveForce);
 }
 /////////////////////////////////////////
+
 void CPHJeep::NeutralDrive(){
 if(!bActive) return;
 	//////////////////
 	for(u32 i = 0; i < 4; ++i){
-			dJointSetHinge2Param(Joints[i], dParamFMax2, 10);
+			dJointSetHinge2Param(Joints[i], dParamFMax2, 10.f);
 			dJointSetHinge2Param(Joints[i], dParamVel2, 0);
 			}
 }
