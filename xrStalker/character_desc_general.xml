@@ -24,7 +24,7 @@
 		<actor_dialog>escape_trader_jobs</actor_dialog>
 	</specific_character>
 
-	<specific_character id="rostok_barman" team_default = "1">
+	<specific_character id="rostok_barman">
 		<name>Панас Федорович</name>
 		<icon x="0" y="9"></icon>
 		<map_icon x="0" y="4"></map_icon>
