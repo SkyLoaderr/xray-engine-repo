@@ -139,7 +139,7 @@ function save_dialog:InitCallBacks()
 end
 
 function save_dialog:OnButton_ok_clicked()	
-	level.start_stop_menu(self,true)
+	self:AddItemToList("item1")
 end
 
 function save_dialog:OnButton_cancel_clicked()
@@ -154,5 +154,15 @@ function save_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
       level.start_stop_menu(self,true)
    end
    return true
+end
+
+function save_dialog:AddItemToList(item)
+	local list_box = self:GetListWnd("list_wnd")
+	local shift = 50
+	local color = GetARGB(255,0,255,0)
+	local parse = false
+	
+	list_box:AddText(item, shift, color, GetFontDI(), parse)
+	
 end
 
