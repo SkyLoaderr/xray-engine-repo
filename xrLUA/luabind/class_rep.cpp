@@ -721,7 +721,7 @@ int luabind::detail::class_rep::function_dispatcher(lua_State* L)
 	return 0; // will never be reached
 }
 
-#ifndef NDEBUG
+#if 0//ndef NDEBUG
 
 #ifndef BOOST_NO_STRINGSTREAM
 #include <sstream>
