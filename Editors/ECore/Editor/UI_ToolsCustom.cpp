@@ -190,3 +190,8 @@ void CToolsCustom::GetCurrentFog(u32& fog_color, float& s_fog, float& e_fog)
 void CToolsCustom::RenderEnvironment()
 {
 }
+
+void CToolsCustom::Clear()
+{
+	ClearErrors			();
+}

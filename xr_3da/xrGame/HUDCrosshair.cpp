@@ -20,6 +20,7 @@ CHUDCrosshair::CHUDCrosshair	()
 CHUDCrosshair::~CHUDCrosshair	()
 {
 	hGeomLine.destroy			();
+	hShader.destroy				();
 }
 
 void CHUDCrosshair::Load		()
@@ -61,8 +62,6 @@ void CHUDCrosshair::SetDispersion	(float disp)
 
 void CHUDCrosshair::OnRender ()
 {
-//	RCache.OnFrameEnd();
-
 	// draw back
 	u32			dwOffset,dwCount;
 	FVF::TL0uv* pv_start				= (FVF::TL0uv*)RCache.Vertex.Lock(8,hGeomLine->vb_stride,dwOffset);
@@ -100,7 +99,6 @@ void CHUDCrosshair::OnRender ()
 	RCache.set_Shader		(hShader);
 	RCache.set_Geometry		(hGeomLine);
 	RCache.Render	   		(D3DPT_LINELIST,dwOffset,dwCount/2);
-
 	
 	if(target_radius - radius>radius_speed)
 		radius += radius_speed;
