@@ -121,7 +121,7 @@ public:
 	// main
 	virtual BOOL			Connect				(ref_str& session_name);
 	virtual void			Disconnect			();
-	void					Update				();
+	virtual void			Update				();
 	void					SLS_Default			();
 	void					SLS_Clear			();
 	void					SLS_Save			(IWriter&	fs);

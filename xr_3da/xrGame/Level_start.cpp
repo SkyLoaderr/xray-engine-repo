@@ -5,6 +5,7 @@
 #include "xrserver.h"
 #include "game_cl_base.h"
 #include "xrmessages.h"
+#include "xrGameSpyServer.h"
 
 BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 {
@@ -31,7 +32,8 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 		pApp->LoadTitle			("SERVER: Starting...");
 
 		// Connect
-		Server					= xr_new<xrServer>();
+//		Server					= xr_new<xrServer>();
+		Server					= xr_new<xrGameSpyServer>();
 
 		if (!strstr(*m_caServerOptions,"/alife")) {
 			string64			l_name;
@@ -64,6 +66,11 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 		NET_Packet		NP;
 		NP.w_begin		(M_CLIENTREADY);
 		Send(NP,net_flags(TRUE,TRUE));
+
+		if (OnClient() && Server)
+		{
+			Server->SLS_Clear();
+		};
 	};
 
 	//init the fog of war for the current level
