@@ -3457,22 +3457,19 @@
 							RelativePath=".\ai\Monsters\Poltergeist\poltergeist_movement.cpp">
 						</File>
 						<File
+							RelativePath=".\ai\Monsters\Poltergeist\poltergeist_movement.h">
+						</File>
+						<File
 							RelativePath=".\ai\Monsters\Poltergeist\poltergeist_state_manager.cpp">
 						</File>
 						<File
 							RelativePath=".\ai\Monsters\Poltergeist\poltergeist_state_manager.h">
 						</File>
 						<Filter
-							Name="Abilities"
+							Name="Script"
 							Filter="">
 							<File
-								RelativePath=".\ai\Monsters\Poltergeist\poltergeist_ability.cpp">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\Poltergeist\poltergeist_flame_thrower.cpp">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\Poltergeist\poltergeist_telekinesis.cpp">
+								RelativePath=".\ai\Monsters\Poltergeist\poltergeist_script.cpp">
 							</File>
 						</Filter>
 						<Filter
@@ -3486,10 +3483,16 @@
 							</File>
 						</Filter>
 						<Filter
-							Name="Script"
+							Name="Abilities"
 							Filter="">
 							<File
-								RelativePath=".\ai\Monsters\Poltergeist\poltergeist_script.cpp">
+								RelativePath=".\ai\Monsters\Poltergeist\poltergeist_ability.cpp">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Poltergeist\poltergeist_flame_thrower.cpp">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Poltergeist\poltergeist_telekinesis.cpp">
 							</File>
 						</Filter>
 					</Filter>

@@ -26,6 +26,11 @@ struct CBorderMergePredicate {
 		if (m_restriction->inside(ai().level_graph().vertex_id(&vertex),true) && !m_restriction->inside(ai().level_graph().vertex_id(&vertex),false))
 			m_restriction->m_border.push_back	(ai().level_graph().vertex_id(&vertex));
 	}
+
+	IC	bool operator()					(u32 level_vertex_id) const
+	{
+		return						(m_restriction->inside(level_vertex_id,false));
+	}
 };
 
 
@@ -104,6 +109,11 @@ void CSpaceRestrictionShape::build_border	()
 	for ( ; I != E; ++I)
 		fill_shape					(*I);
 	
+	{
+		xr_vector<u32>::iterator	I = remove_if(m_border.begin(),m_border.end(),CBorderMergePredicate(this));
+		m_border.erase				(I,m_border.end());
+	}
+
 	process_borders					();
 
 #ifdef DEBUG

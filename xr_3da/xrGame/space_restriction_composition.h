@@ -15,6 +15,9 @@ class CSpaceRestrictionBridge;
 class CSpaceRestrictionHolder;
 
 class CSpaceRestrictionComposition : public CSpaceRestrictionBase {
+public:
+	using CSpaceRestrictionBase::inside;
+
 protected:
 	typedef SpaceRestrictionHolder::CBaseRestrictionPtr CBaseRestrictionPtr;
 	typedef xr_vector<CBaseRestrictionPtr> RESTRICTIONS;

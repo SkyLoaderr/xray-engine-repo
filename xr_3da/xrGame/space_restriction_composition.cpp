@@ -25,7 +25,7 @@ struct CMergePredicate {
 
 	IC	bool operator()	(u32 level_vertex_id) const
 	{
-		return			(m_restriction->CSpaceRestrictionBase::inside(level_vertex_id,false));
+		return			(m_restriction->inside(level_vertex_id,false));
 	}
 };
 

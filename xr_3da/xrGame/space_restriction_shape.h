@@ -14,7 +14,9 @@
 class CSpaceRestrictor;
 
 class CSpaceRestrictionShape : public CSpaceRestrictionBase {
+private:
 	friend struct CBorderMergePredicate;
+
 public:
 	using CSpaceRestrictionBase::inside;
 
