@@ -280,7 +280,7 @@ public:
 		return TRUE;
 	}
 	virtual void						g_PerformDrop		( );
-	virtual void						g_WeaponBones		( int& L, int& R);
+	virtual void						g_WeaponBones		(int &L, int &R1, int &R2);
 	
 	SRotation							Orientation()		{ return r_torso; };
 

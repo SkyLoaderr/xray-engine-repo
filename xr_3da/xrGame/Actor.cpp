@@ -1195,11 +1195,12 @@ void CActor::g_PerformDrop	( )
 	}
 }
 
-void CActor::g_WeaponBones	(int& L, int& R)
+void CActor::g_WeaponBones	(int &L, int &R1, int &R2)
 {
 	CKinematics* V	= PKinematics(Visual());
-	R = V->LL_BoneID("bip01_r_hand");
-	L = V->LL_BoneID("bip01_l_finger1");
+	R1	= V->LL_BoneID("bip01_r_hand");
+	R2	= V->LL_BoneID("bip01_r_finger2");
+	L	= V->LL_BoneID("bip01_l_finger1");
 
 	////VERIFY	(Weapons);
 	//L		=	0;//Weapons->m_iACTboneL;

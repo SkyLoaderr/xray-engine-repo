@@ -101,7 +101,7 @@ public:
 	virtual void	net_Import		(NET_Packet& P);
 
 	virtual void	g_fireParams	(Fvector& P, Fvector& D)	{};
-	virtual void	g_WeaponBones	(int& L, int& R)			{};
+	virtual void	g_WeaponBones	(int &L, int &R1, int &R2)	{};
 
 	virtual void	HitSignal		(float	HitAmount,	Fvector& local_dir, CObject* who, s16 element);
 	virtual void	HitImpulse		(float	amount,		Fvector& vWorldDir, Fvector& vLocalDir);

@@ -107,7 +107,7 @@ public:
 	virtual BOOL			net_Spawn				(LPVOID DC);
 	virtual void			HitImpulse				(float amount, Fvector& vWorldDir, Fvector& vLocalDir);
 
-	virtual void			g_WeaponBones			(int& L, int& R)										= 0;
+	virtual void			g_WeaponBones			(int &L, int &R1, int &R2)										= 0;
 
 	// Visibility related
 	virtual void			GetVisible				(objVisible& R)	{};

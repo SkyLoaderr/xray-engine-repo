@@ -39,11 +39,12 @@ void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 
 //	}
 }
 
-void CAI_Stalker::g_WeaponBones	(int& L, int& R)
+void CAI_Stalker::g_WeaponBones	(int &L, int &R1, int &R2)
 {
-	CKinematics	*V	= PKinematics(Visual());
-	R			= V->LL_BoneID("bip01_r_hand");
-	L			= V->LL_BoneID("bip01_l_finger1");
+	CKinematics *V	= PKinematics(Visual());
+	R1				= V->LL_BoneID("bip01_r_hand");
+	R2				= V->LL_BoneID("bip01_r_finger2");
+	L				= V->LL_BoneID("bip01_l_finger1");
 }
 
 float CAI_Stalker::EnemyHeuristics(CEntity* E)
@@ -171,6 +172,7 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 					if (bfCheckIfCanKillEnemy())
 						if (!bfCheckIfCanKillMember()) {
 							m_dwStartFireAmmo = tpWeapon->GetAmmoElapsed();
+							m_inventory.Action(kWPN_FIRE, CMD_STOP);
 							m_inventory.Action(kWPN_FIRE, CMD_START);
 							m_bFiring = true;
 						}
@@ -186,13 +188,19 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 					}
 				}
 			else {
-				if ((int)m_dwCurrentUpdate - (int)m_dwNoFireTime > ::Random.randI(m_dwNoFireTimeMin,m_dwNoFireTimeMax + 1))
-					if (bfCheckIfCanKillEnemy())
-						if (!bfCheckIfCanKillMember()) {
-							m_dwStartFireAmmo = tpWeapon->GetAmmoElapsed();
-							m_inventory.Action(kWPN_FIRE, CMD_START);
-							m_bFiring = true;
-						}
+				if (tpWeapon->STATE == CWeapon::eIdle) {
+					if ((int)m_dwCurrentUpdate - (int)m_dwNoFireTime > ::Random.randI(m_dwNoFireTimeMin,m_dwNoFireTimeMax + 1))
+						if (bfCheckIfCanKillEnemy())
+							if (!bfCheckIfCanKillMember()) {
+								m_dwStartFireAmmo = tpWeapon->GetAmmoElapsed();
+								m_inventory.Action(kWPN_FIRE, CMD_STOP);
+								m_inventory.Action(kWPN_FIRE, CMD_START);
+								m_bFiring = true;
+							}
+							else {
+								m_inventory.Action(kWPN_FIRE, CMD_STOP);
+								m_bFiring = false;
+							}
 						else {
 							m_inventory.Action(kWPN_FIRE, CMD_STOP);
 							m_bFiring = false;
@@ -201,9 +209,6 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 						m_inventory.Action(kWPN_FIRE, CMD_STOP);
 						m_bFiring = false;
 					}
-				else {
-					m_inventory.Action(kWPN_FIRE, CMD_STOP);
-					m_bFiring = false;
 				}
 			}
 		}
@@ -214,12 +219,19 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 			
 	switch(tpWeapon->STATE) {
 		case CWeapon::eIdle		: Msg("%s : idle",tpWeapon->cNameSect());
+			break;
 		case CWeapon::eFire		: Msg("%s : fire",tpWeapon->cNameSect());
+			break;
 		case CWeapon::eFire2	: Msg("%s : fire 2",tpWeapon->cNameSect());
+			break;
 		case CWeapon::eReload	: Msg("%s : recharge",tpWeapon->cNameSect());
+			break;
 		case CWeapon::eShowing	: Msg("%s : show",tpWeapon->cNameSect());
+			break;
 		case CWeapon::eHiding	: Msg("%s : hide",tpWeapon->cNameSect());
+			break;
 		case CWeapon::eHidden	: Msg("%s : hidden",tpWeapon->cNameSect());
+			break;
 	}
 	CWeaponMagazined *tpWeaponMagazined = dynamic_cast<CWeaponMagazined*>(tpWeapon);
 	if (tpWeaponMagazined) {
@@ -236,7 +248,7 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 					for ( ; I != E; I++)
 						if ((*I).m_pIItem && ((I - B) != m_inventory.m_activeSlot) && (!dynamic_cast<CWeaponMagazined*>((*I).m_pIItem) || dynamic_cast<CWeaponMagazined*>((*I).m_pIItem)->IsAmmoAvailable()))
 							best_slot = I - B;
-					if (best_slot != -1)
+					if (best_slot != -1)														   
 						m_inventory.Activate(best_slot);
 				}
 	}

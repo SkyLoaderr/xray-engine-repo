@@ -230,10 +230,6 @@ void CCustomMonster::Exec_Physics( float dt )
 	Engine.Sheduler.Slice	();
 }
 
-void CCustomMonster::g_WeaponBones(int& L, int& R)
-{
-}
- 
 void CCustomMonster::Update	( u32 DT )
 {
 	// Queue shrink

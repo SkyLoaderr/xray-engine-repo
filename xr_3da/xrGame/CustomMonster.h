@@ -213,7 +213,7 @@ public:
 	virtual void		Die						( );
 
 	virtual void		HitSignal				( float P,	Fvector& vLocalDir, CObject* who);
-	virtual void		g_WeaponBones			( int& L,	int& R	);
+	virtual void		g_WeaponBones			(int &L, int &R1, int &R2) {};
 	virtual void		Load					( LPCSTR	section );				
 	virtual void		Update					( u32		DT		);
 	virtual void		UpdateCL				( );

@@ -189,12 +189,13 @@ void CWeapon::UpdateXForm	()
 		VERIFY			(V);
 
 		// Get matrices
-		int				boneL,boneR;
-		E->g_WeaponBones(boneL,boneR);
+		int				boneL,boneR,boneR2;
+		E->g_WeaponBones(boneL,boneR,boneR2);
+		if (STATE == eReload)
+			boneL = boneR2;
 		V->Calculate	();
 		Fmatrix& mL		= V->LL_GetTransform(boneL);
 		Fmatrix& mR		= V->LL_GetTransform(boneR);
-
 		// Calculate
 		Fmatrix			mRes;
 		Fvector			R,D,N;
