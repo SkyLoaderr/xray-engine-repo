@@ -70,7 +70,7 @@ end
 
 function main()
 
-	stalker			= get_level_object("m_stalker_e0000")
+	stalker			= get_level_object("m_stalker_e")
 	stalker:script	(true,this.script_name())
 	
 	action(
