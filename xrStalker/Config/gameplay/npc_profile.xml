@@ -333,6 +333,10 @@
 		<class>Svoboda_cook</class>
 	</character>
 
+	<character id="svoboda_trader">
+		<class>Svoboda_trader</class>
+	</character>
+
 	<!-- Radar  -->
 	<character id="stalker_rad_jaw">
 		<class>stalker_rad_jaw</class>

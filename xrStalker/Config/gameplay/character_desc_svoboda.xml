@@ -344,6 +344,7 @@
 			
 		<start_dialog>mil_max_dialog</start_dialog>
 		<actor_dialog>mil_max_dialog_common2</actor_dialog>
+        <actor_dialog>mil_max_dialog_common1</actor_dialog>
 		<actor_dialog>mil_max_dialog_common3</actor_dialog>
 	</specific_character>
 
@@ -416,6 +417,35 @@
         <actor_dialog>mil_cook_drunk_question_about_rg6_1</actor_dialog>
         <actor_dialog>mil_cook_drunk_question_about_rg6_2</actor_dialog>
         <actor_dialog>mil_cook_drunk_question_about_rg6_3</actor_dialog>
+
+	</specific_character>
+
+<!---------------------------SVOBODA TRADER----------------------->
+	<specific_character id="svoboda_trader" team_default = "1">
+		<name>"—кр€га"</name>
+		<icon x="12" y="0"></icon>
+		<map_icon x="5" y="0"></map_icon>
+		<bio>»звестен своей жадностью и неуступчивостью, но говор€т у него можно достать все что угодно.</bio>
+
+		<team>Svoboda_master</team>
+		
+		<class>Svoboda_trader</class>
+		<community>freedom</community>
+
+		
+		<rank>90</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\svoboda\stalker_sv_nauchniy</visual>
+		<supplies>
+			[spawn] \n
+			wpn_desert_eagle \n
+			ammo_11.43x23_hydro = 1 \n
+			wpn_sig550 \n
+			ammo_5.56x45_ap = 1 \n
+		</supplies>
+			
+		<start_dialog>mil_trader_dialog</start_dialog>
 
 	</specific_character>
 
