@@ -7,8 +7,8 @@ function main()
 	GiveInfoViaPda(actor, actor, "location_test2")
 	GiveInfoViaPda(actor, actor, "actor_start")
 
-	actor:set_task_state("task1", 0, task.fail)
-	actor:set_task_state("task2", 1, task.completed)
+	actor:set_task_state(task.fail, "task1", 0)
+	actor:set_task_state(task.completed, "task2", 1)
 
 
 
