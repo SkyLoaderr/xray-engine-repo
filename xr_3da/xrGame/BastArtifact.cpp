@@ -7,16 +7,23 @@
 #include "BastArtifact.h"
 #include "PhysicsShell.h"
 #include "extendedgeom.h"
+#include "ParticlesObject.h"
 
 
 CBastArtifact::CBastArtifact(void) 
 {
 	m_fImpulseThreshold = 10.f;
-	m_fEnergy = 0.f;
-	m_fEnergyDecreasePerTime = 1.1f;
 	
 	m_fRadius = 10.f;
-	m_fStrikeImpulse = 50.f;
+	m_fStrikeImpulse = 15.f;
+
+	m_bStrike = false;
+	m_AttakingEntity = NULL;
+
+	m_fEnergy = 0.f;
+	m_fEnergyMax = m_fStrikeImpulse * 100.f;
+	m_fEnergyDecreasePerTime = 1.1f;
+
 }
 
 CBastArtifact::~CBastArtifact(void) 
@@ -98,6 +105,10 @@ BOOL CBastArtifact::net_Spawn(LPVOID DC)
 		m_pPhysicsShell->set_ContactCallback(NULL);
 	}
 
+	m_bStrike = false;
+	m_AttakingEntity = NULL;
+	m_AliveList.clear();
+
 	return TRUE;
 }
 
@@ -110,8 +121,15 @@ void CBastArtifact::Load(LPCSTR section)
 
 	inherited::Load(section);
 
-//	m_fImpulseThreshold = pSettings->r_float(section,"impulse_threshold");
-//	m_fEnergy = pSettings->r_float(section,"energy");
+	m_fImpulseThreshold = pSettings->r_float(section,"impulse_threshold");
+	m_fRadius = pSettings->r_float(section,"radius");
+	m_fStrikeImpulse = pSettings->r_float(section,"strike_impulse");
+	
+	m_fEnergyMax = pSettings->r_float(section,"energy_max");
+	m_fEnergyDecreasePerTime = pSettings->r_float(section,"energy_decrease_speed");
+
+	m_sParticleName = pSettings->r_string(section,"particle");
+
 }
 
 void CBastArtifact::shedule_Update(u32 dt) 
@@ -185,6 +203,22 @@ void CBastArtifact::UpdateCL()
 
 
 
+		if(m_fEnergy>0 && ::Random.randF(0.f, 1.0f)<(m_fEnergy/(m_fStrikeImpulse*100.f)))
+		{
+			CParticlesObject* pStaticPG;
+			//pStaticPG = xr_new<CParticlesObject>("ghoul\\fx-01-camp-fire_00",Sector());
+			pStaticPG = xr_new<CParticlesObject>(*m_sParticleName,Sector());
+			//pStaticPG = xr_new<CParticlesObject>("weapons\\generic_shoot", Sector());
+			Fmatrix pos; 
+			pos.set(XFORM()); 
+			Fvector vel; 
+			//vel.sub(Position(),ps_Element(0).vPosition); 
+			//vel.div((Level().timeServer()-ps_Element(0).dwTime)/1000.f);
+			vel.set(0,0,0);
+			pStaticPG->UpdateParent(pos, vel); 
+			pStaticPG->Play();
+		}
+
 	} 
 	else if(H_Parent()) XFORM().set(H_Parent()->XFORM());
 }
@@ -202,6 +236,8 @@ void CBastArtifact::Hit(float P, Fvector &dir,
 		m_AttakingEntity = m_pHitedEntity = NULL;
 		
 		m_fEnergy += m_fStrikeImpulse*impulse;
+
+		if(m_fEnergy>m_fEnergyMax) m_fEnergy = m_fEnergyMax;
 
 		//чтоб выстрел не повлиял на траекторию полета артефакта
 		impulse = 0;
