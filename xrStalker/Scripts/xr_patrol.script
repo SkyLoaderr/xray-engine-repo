@@ -203,6 +203,6 @@ end
 
 function AddToPatrol (npc, group, command, member)
     npc:bind_object	(this.patrol_binder (npc))
-    --this.PrintTable ()
+    this.PrintTable ()
 end
 
