@@ -92,7 +92,7 @@ void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 
 		if (tHurt.tpEntity = dynamic_cast<CEntity*>(who))
 			vfUpdateHurt(tHurt);
 
-		feel_sound_new(who,SOUND_TYPE_MONSTER_ATTACKING,who->Position(),1.f);
+		feel_sound_new(who,SOUND_TYPE_WEAPON_SHOOTING,who->Position(),1.f);
 
 		// Play hit-sound
 		sound& S = m_tpSoundHit[::Random.randI(m_tpSoundHit.size())];
