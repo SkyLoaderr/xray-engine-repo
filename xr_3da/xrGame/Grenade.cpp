@@ -69,6 +69,7 @@ void CGrenade::OnH_B_Independent()
 
 				///////////////////////////////
 
+				m_dwDestroyTime = 0xffffffff;
 				NET_Packet			P;
 				u_EventGen			(P,GE_DESTROY,ID());
 				u_EventSend			(P);
@@ -111,7 +112,7 @@ u32 CGrenade::State(u32 state)
 					m_pPhysicsShell->Deactivate();
 				xr_delete(m_pPhysicsShell);
 
-				m_dwDestroyTime = 0;
+				m_dwDestroyTime = 0xffffffff;
 
 				PutNextToSlot();
 
