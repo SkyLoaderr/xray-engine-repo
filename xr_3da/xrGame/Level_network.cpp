@@ -67,16 +67,16 @@ u32	CLevel::Objects_net_Save	(NET_Packet* _Packet, u32 start, u32 count)
 		CGameObject *P = smart_cast<CGameObject*>(_P);
 		if (P && !P->getDestroy() && P->net_SaveRelevant())	{
 			Packet.w_u16			(u16(P->ID())	);
-			Packet.w_chunk_open8	(position);
+			Packet.w_chunk_open16	(position);
 			P->net_Save				(Packet);
 #ifdef DEBUG
-			u32 size				= u32		(Packet.w_tell()-position)-sizeof(u8);
-			if				(size>=256)			{
+			u32 size				= u32		(Packet.w_tell()-position)-sizeof(u16);
+			if				(size>=65536)			{
 				Debug.fatal	("Object [%s][%d] exceed network-data limit\n size=%d, Pend=%d, Pstart=%d",
 					*P->cName(), P->ID(), size, Packet.w_tell(), position);
 			}
 #endif
-			Packet.w_chunk_close8	(position);
+			Packet.w_chunk_close16	(position);
 			if (0==(--count))		break;
 		}
 	}

@@ -1844,7 +1844,7 @@ void CSE_ALifeHumanStalker::UPDATE_Read		(NET_Packet &tNetPacket)
 	inherited2::UPDATE_Read		(tNetPacket);
 }
 
-void CSE_ALifeHumanStalker::load(NET_Packet &tNetPacket)
+void CSE_ALifeHumanStalker::load			(NET_Packet &tNetPacket)
 {
 	inherited1::load			(tNetPacket);
 	inherited2::load			(tNetPacket);

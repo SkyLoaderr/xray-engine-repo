@@ -285,15 +285,14 @@ BOOL CSE_Abstract::Spawn_Read				(NET_Packet	&tNetPacket)
 
 void	CSE_Abstract::load			(NET_Packet	&tNetPacket)
 {
-	CPureServerObject::load	(tNetPacket);
-	u8 client_data_size		= tNetPacket.r_u8(); //не может быть больше 256 байт
-	if(client_data_size>0)
-	{
-		client_data.resize	(client_data_size);
-		tNetPacket.r		(&*client_data.begin(),client_data_size);
+	CPureServerObject::load		(tNetPacket);
+	u8 client_data_size			= tNetPacket.r_u16(); //не может быть больше 65536 байт
+	if (client_data_size > 0) {
+		client_data.resize		(client_data_size);
+		tNetPacket.r			(&*client_data.begin(),client_data_size);
 	}
 	else
-        client_data.clear();
+        client_data.clear		();
 }
 
 CSE_Abstract *CSE_Abstract::base	()

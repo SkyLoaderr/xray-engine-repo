@@ -111,16 +111,31 @@ public:
 	{
 		w_u32(C.value());
 	}
+	
 	IC void	w_chunk_open8		(u32& position)
 	{
 		position			= w_tell	();
 		w_u8				(0);
 	}
+	
 	IC void w_chunk_close8		(u32 position)
 	{
 		u32 size			= u32		(w_tell()-position)-sizeof(u8);
 		VERIFY				(size<256	);
 		w_seek				(position,&size,sizeof(u8));
+	}
+
+	IC void	w_chunk_open16		(u32& position)
+	{
+		position			= w_tell	();
+		w_u16				(0);
+	}
+
+	IC void w_chunk_close16		(u32 position)
+	{
+		u32 size			= u32		(w_tell()-position)-sizeof(u16);
+		VERIFY				(size<65536);
+		w_seek				(position,&size,sizeof(u16));
 	}
 
 	// reading

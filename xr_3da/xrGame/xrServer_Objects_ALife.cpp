@@ -560,7 +560,7 @@ void CSE_ALifePHSkeletonObject::STATE_Write		(NET_Packet	&tNetPacket)
 }
 
 
-void CSE_ALifePHSkeletonObject::load(NET_Packet &tNetPacket)
+void CSE_ALifePHSkeletonObject::load			(NET_Packet &tNetPacket)
 {
 	inherited1::load				(tNetPacket);
 	inherited2::load				(tNetPacket);
