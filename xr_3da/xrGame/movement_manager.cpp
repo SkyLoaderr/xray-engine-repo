@@ -206,7 +206,9 @@ void CMovementManager::process_game_path()
 		case ePathStateBuildLevelPath : {
 			CLevelPathManager::build_path(
 				m_dwLevelVertexID,
-				CGamePathManager::get_intermediate_vertex_id()
+				ai().game_graph().vertex(
+					CGamePathManager::get_intermediate_vertex_id()
+				).level_vertex_id()
 			);
 			if (CLevelPathManager::failed())
 				break;

@@ -54,7 +54,7 @@ const Fvector &CDetailPathManager::direction()
 
 void CDetailPathManager::build_path(const xr_vector<u32> &level_path, u32 intermediate_index, const Fvector &dest_position)
 {
-	if (!actual() && valid(m_start_position) && valid(m_dest_position)) {
+	if (valid(m_start_position) && valid(m_dest_position)) {
 		switch (m_path_type) {
 			case eDetailPathTypeSmooth : {
 				build_smooth_path(level_path,intermediate_index,dest_position);
