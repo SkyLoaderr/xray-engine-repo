@@ -24,6 +24,10 @@ function main()
 	local s2  = dt3:diffSec(dt2)
 	printf("---difference dt3-dt2= %f",s2)
 
+	local s3  = dt:diffSec(dt2)
+	printf("---difference dt-dt2= %f",s3)
+
+
 
 	if dt>dt2 then
 		printf("dt>dt2")
