@@ -48,12 +48,14 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 		RCache.set_Element			(s_accum_spot_s->E	[0]);
 
 		// Constants
-		Fvector		L_dir,L_clr;	float L_spec;
+		Fvector		L_dir,L_clr,L_pos;	float L_spec;
 		L_clr.set					(L->color.r,L->color.g,L->color.b);
 		L_clr.div					(ps_r2_ls_dynamic_range);
 		L_spec						= L_clr.magnitude()/_sqrt(3.f);
+		Device.mView.transform_tiny	(L_pos,L->position);
 		Device.mView.transform_dir	(L_dir,L->direction);
 		L_dir.normalize				();
+		RCache.set_c				("light_position",	L_pos.x,L_pos.y,L_pos.z,1/L->range);
 		RCache.set_c				("light_direction",	L_dir.x,L_dir.y,L_dir.z,0.f);
 		RCache.set_c				("light_color",		L_clr.x,L_clr.y,L_clr.z,L_spec);
 

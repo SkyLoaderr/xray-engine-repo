@@ -67,11 +67,11 @@ void xrMU_Model::calc_lighting	(vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL
 	// Perform lighting
 	for (I = 0; I<m_vertices.size(); I++)
 	{
-		_vertex*	V	= m_vertices[I];
+		_vertex*	V			= m_vertices[I];
 
 		// Get ambient factor
-		float		v_amb	= 0.f;
-		float		v_trans	= 0.f;
+		float		v_amb		= 0.f;
+		float		v_trans		= 0.f;
 		for (u32 f=0; f<V->adjacent.size(); f++)
 		{
 			_face*	F			=	V->adjacent[f];
