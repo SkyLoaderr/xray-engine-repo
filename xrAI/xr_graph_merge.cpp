@@ -449,6 +449,10 @@ CGraphMerger::CGraphMerger(LPCSTR name)
 					CGameGraph::CEdge			tGraphEdge;
 					SConnectionVertex			&tConnectionVertex = (*i).second;
 					K							= tpGraphs.find(tConnectionVertex.dwLevelID);
+					if (K == tpGraphs.end()) {
+						Msg						("Cannot find level with level_id %d. Connection point will not be generated!",tConnectionVertex.dwLevelID);
+						continue;
+					}
 					R_ASSERT					(K != tpGraphs.end());
 					M							= (*K).second->m_tVertexMap.find(tConnectionVertex.caConnectName);
 					R_ASSERT3					(M != (*K).second->m_tVertexMap.end(),tConnectionVertex.caConnectName,(*K).second->m_tLevel.name());
