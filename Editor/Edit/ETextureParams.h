@@ -48,8 +48,7 @@ struct STextureParams{
 		DWORD bFadeToColor		: 1;
 		DWORD bFadeToAlpha		: 1;
 		DWORD bDitherColor		: 1;
-		DWORD eMIPFilter		: 3;
-		DWORD reserved0			: 12;
+		DWORD reserved0			: 15;
 
 		DWORD bImplicitLighted	: 1;
 	};
@@ -58,7 +57,8 @@ struct STextureParams{
 	Flags			flag;
 	DWORD			border_color;
     DWORD			fade_color;
-    int				fade_amount;
+    WORD			fade_amount;
+	WORD			mip_filter;		
     DWORD			reserved[4];
     STextureParams	()
 	{
@@ -84,6 +84,16 @@ struct STextureParams{
 	}
 };
 #pragma pack( pop )
+
+xr_token							tparam_token					[ ]={
+	{ "Box",				STextureParams::dMIPFilterBox				},
+	{ "Cubic",				STextureParams::dMIPFilterCubic				},
+	{ "Full DFT",			STextureParams::dMIPFilterFullDFT			},
+	{ "Kaiser",				STextureParams::dMIPFilterKaiser			},
+	{ "Linear light Kaiser",STextureParams::dMIPFilterLinearLightKaiser	},
+	{ "Advanced",			STextureParams::dMIPFilterAdvanced			},
+	{ 0,					0											}
+};
 
 //----------------------------------------------------
 #define THM_CURRENT_VERSION				0x0011
