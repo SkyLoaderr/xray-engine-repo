@@ -81,7 +81,7 @@ void	smapvis::flushoccq	()
 	}
 	if (test_current==test_count)	{
 		// we are at the end of list
-		state	= state_usingTC;
+		if (state==state_working)	state	= state_usingTC;
 	}
 }
 
