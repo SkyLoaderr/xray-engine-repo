@@ -95,6 +95,7 @@ void CLightShadows::calculate	()
 			float		p_near	=	p_dist-p_R-EPS_L; if (p_near<EPS_L)	p_near=EPS_L;
 			float		p_far	=	p_dist+p_R+EPS_L;
 			mProject.build_projection_HAT	(p_hat,p_asp,p_near,p_far);
+			CHK_DX					(HW.pDevice->SetTransform(D3DTS_PROJECTION,mProject.d3d()));
 			
 			// calculate view-matrix
 			Fmatrix		mView;
@@ -105,12 +106,13 @@ void CLightShadows::calculate	()
 			v_R.crossproduct		(v_N,v_D);
 			v_N.crossproduct		(v_D,v_R);
 			mView.build_camera		(L->position,C.C,v_N);
+			CHK_DX					(HW.pDevice->SetTransform(D3DTS_VIEW,mView.d3d()));
 			
 			// combine and build frustum
 			Fmatrix		mCombine;
 			mCombine.mul			(mProject,mView);
 			CFrustum	F;
-			F.CreateFromMatrix		(mCombine,FRUSTUM_P_ALL);
+			F.CreateFromMatrix		(mCombine,FRUSTUM_P_LRTB+FRUSTUM_P_NEAR);
 
 			// Select slot and set viewport
 			int		s_x			=	slot_id%slot_line;
@@ -126,6 +128,9 @@ void CLightShadows::calculate	()
 				CHK_DX				(HW.pDevice->SetTransform(D3DTS_WORLD,N->val.Matrix.d3d()));
 				V->Render			(.5f);
 			}
+
+			// increment slot
+			slot_id	++;
 		}
 	}
 }
