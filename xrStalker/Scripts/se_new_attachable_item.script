@@ -12,22 +12,22 @@ function CSE_NewAttachableItem:init()
 	return	(self)
 end
 
-function CSE_NewAttachableItem:STATE_Write(packet)
+function CSE_NewAttachableItem:STATE_Write	(packet)
 	cse_alife_item.STATE_Write	(packet)
 end
 
-function CSE_NewAttachableItem:STATE_Read(packet, size)
+function CSE_NewAttachableItem:STATE_Read	(packet, size)
 	cse_alife_item.STATE_Read	(packet)
 end
 
-function CSE_NewAttachableItem:UPDATE_Write(packet)
+function CSE_NewAttachableItem:UPDATE_Write	(packet)
 	cse_alife_item.UPDATE_Write	(packet)
 end
 
-function CSE_NewAttachableItem:UPDATE_Read(packet)
+function CSE_NewAttachableItem:UPDATE_Read	(packet)
 	cse_alife_item.UPDATE_Read	(packet)
 end
 
-function CSE_NewAttachableItem:FillProps(pref,items)
+function CSE_NewAttachableItem:FillProps	(pref,items)
 	cse_alife_item.FillProps	(pref,items)
 end
