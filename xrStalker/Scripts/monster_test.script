@@ -31,7 +31,7 @@ function main()
 				stage = 0
 			end
 		end
-
+		wait();
 	 end
 	
 	monster:script( false, script_name() )
