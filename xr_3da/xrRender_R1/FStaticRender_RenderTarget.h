@@ -44,9 +44,7 @@ public:
 	IDirect3DSurface9*	pTempZB;
 public:
 	CRenderTarget		();
-
-	void				OnDeviceCreate		();
-	void				OnDeviceDestroy		();
+	~CRenderTarget		();
 
 	BOOL				NeedPostProcess		()	{ return (param_blur>0.01f)||(param_gray>0.01f)||(param_noise>0.01f)||(param_duality_h>0.001f)||(param_duality_v>0.001f); }
 	BOOL				Available			()	{ return bAvailable; }

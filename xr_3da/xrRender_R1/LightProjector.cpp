@@ -24,19 +24,12 @@ CLightProjector::CLightProjector()
 {
 	current	= 0;
 	RT		= 0;
-}
 
-CLightProjector::~CLightProjector()
-{
-}
-
-void CLightProjector::OnDeviceCreate	()
-{
 	LPCSTR	RTname		= "$user$projector";
 	LPCSTR	RTtemp		= "$user$temp";
 	string128 RTname2;	strconcat(RTname2,RTname,",",RTname);
 	string128 RTtemp2;	strconcat(RTtemp2,RTtemp,",",RTtemp);
-	
+
 	// 
 	RT.create			(RTname,P_rt_size,P_rt_size,HW.Caps.fTarget);
 	RT_temp.create		(RTtemp,P_rt_size,P_rt_size,HW.Caps.fTarget);
@@ -49,18 +42,18 @@ void CLightProjector::OnDeviceCreate	()
 	geom_Screen.create	(FVF::F_TL,		RCache.Vertex.Buffer(), RCache.QuadIB);
 }
 
-void CLightProjector::OnDeviceDestroy	()
+CLightProjector::~CLightProjector()
 {
 	// Debug
-	sh_Screen.destroy							();
-	geom_Screen.destroy							();
-	
+	sh_Screen.destroy	();
+	geom_Screen.destroy	();
+
 	// 
-	sh_BlurRT.destroy							();
-	sh_BlurTR.destroy							();
-	geom_Screen.destroy							();
-	RT_temp.destroy								();
-	RT.destroy									();
+	sh_BlurRT.destroy	();
+	sh_BlurTR.destroy	();
+	geom_Screen.destroy	();
+	RT_temp.destroy		();
+	RT.destroy			();
 }
 
 void CLightProjector::set_object	(IRenderable* O)

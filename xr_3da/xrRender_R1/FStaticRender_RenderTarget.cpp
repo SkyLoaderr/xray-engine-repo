@@ -24,6 +24,9 @@ CRenderTarget::CRenderTarget()
 	im_noise_time		= 1/100;
 	im_noise_shift_w	= 0;
 	im_noise_shift_h	= 0;
+
+	bAvailable			= Create	();
+	Msg					("* SSample: %s",bAvailable?"enabled":"disabled");
 }
 
 BOOL CRenderTarget::Create	()
@@ -72,13 +75,7 @@ BOOL CRenderTarget::Create	()
 	return	RT->Valid	();
 }
 
-void CRenderTarget::OnDeviceCreate	()
-{
-	bAvailable					= Create	();
-	Msg							("* SSample: %s",bAvailable?"enabled":"disabled");
-}
-
-void CRenderTarget::OnDeviceDestroy	()
+CRenderTarget::~CRenderTarget	()
 {
 	_RELEASE					(pTempZB);
 	_RELEASE					(ZB);

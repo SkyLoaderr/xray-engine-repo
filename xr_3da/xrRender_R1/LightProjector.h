@@ -8,7 +8,7 @@
 
 #include "fstaticrender_scenegraph.h"
 
-class CLightProjector		: public pureDeviceCreate, public pureDeviceDestroy
+class CLightProjector
 {
 	friend class			pred_sorter;
 private:
@@ -41,9 +41,6 @@ public:
 
 	void					render			();
 
-	virtual	void			OnDeviceCreate	();
-	virtual	void			OnDeviceDestroy	();
-	
 	CLightProjector			();
 	~CLightProjector		();
 };

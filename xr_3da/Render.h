@@ -112,9 +112,7 @@ public:
 
 //////////////////////////////////////////////////////////////////////////
 // definition (Renderer)
-class	ENGINE_API	IRender_interface	:
-	public pureDeviceCreate,
-	public pureDeviceDestroy
+class	ENGINE_API	IRender_interface
 {
 public:
 	// Data

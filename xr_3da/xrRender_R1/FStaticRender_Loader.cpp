@@ -6,12 +6,30 @@
 
 void CRender::level_Load()
 {
-	if (0==g_pGameLevel)	return;
+	R_ASSERT			(0!=g_pGameLevel);
 
 	// Begin
 	pApp->LoadBegin		();
 	IReader*	fs		= g_pGameLevel->LL_Stream;
 	IReader*	chunk;
+
+	// Components
+	Target				= xr_new<CRenderTarget>		();
+	L_Shadows			= xr_new<CLightShadows>		();
+	L_Projector			= xr_new<CLightProjector>	();
+
+	PSLibrary.OnCreate			();
+	PSLibrary.OnDeviceCreate	();
+	level_Load					();
+	L_Dynamic->Initialize		();
+
+	gm_Nearer					= FALSE;
+	rmNormal					();
+
+	matDetailTexturing			= Device.Resources->_CreateMatrix("$user$detail");
+	matFogPass					= Device.Resources->_CreateMatrix("$user$fog");
+
+	marker						= 0;
 
 	// VB
 	pApp->LoadTitle		("Loading geometry...");
@@ -97,6 +115,11 @@ void CRender::level_Unload()
 	DCL.clear				();
 	VB.clear				();
 	IB.clear				();
+
+	//*** Components
+	xr_delete				(L_Projector);
+	xr_delete				(L_Shadows);
+	xr_delete				(Target);
 }
 
 void CRender::LoadBuffers	(IReader *base_fs)

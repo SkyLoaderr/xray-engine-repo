@@ -16,12 +16,10 @@ CRender													RImplementation;
 void					CRender::create					()
 {
 	Models				= xr_new<CModelPool>			();
+	L_Dynamic			= xr_new<CLightPPA_Manager>		();
 	/*
 	Models		
 	L_DB				= xr_new<CLightDB_Static>		();
-	L_Dynamic			= xr_new<CLightPPA_Manager>		();
-	L_Shadows			= xr_new<CLightShadows>			();
-	L_Projector			= xr_new<CLightProjector>		();
 	Glows				= xr_new<CGlowManager>			();
 	Wallmarks			= xr_new<CWallmarksEngine>		();
 	Details				= xr_new<CDetailManager>		();
@@ -29,6 +27,7 @@ void					CRender::create					()
 }
 void					CRender::destroy				()
 {
+	xr_delete			(L_Dynamic);
 	xr_delete			(Models);
 }
 
@@ -801,28 +800,6 @@ void	CRender::Render		()
 	Device.Statistic.RenderDUMP_HUD.End		();
 
 	Device.Statistic.RenderDUMP.End();
-}
-
-// Device events
-void CRender::OnDeviceCreate	()
-{
-	REQ_CREATE					();
-	Target->OnDeviceCreate		();
-	L_Shadows->OnDeviceCreate	();
-	L_Projector->OnDeviceCreate	();
-
-	PSLibrary.OnCreate			();
-	PSLibrary.OnDeviceCreate	();
-	level_Load					();
-	L_Dynamic->Initialize		();
-
-	gm_Nearer					= FALSE;
-	rmNormal					();
-
-	matDetailTexturing			= Device.Resources->_CreateMatrix("$user$detail");
-	matFogPass					= Device.Resources->_CreateMatrix("$user$fog");
-
-	marker						= 0;
 }
 
 void CRender::OnDeviceDestroy	()

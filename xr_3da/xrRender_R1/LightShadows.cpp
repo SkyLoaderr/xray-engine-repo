@@ -31,51 +31,42 @@ CLightShadows::CLightShadows()
 {
 	current	= 0;
 	RT		= 0;
+
+	LPCSTR	RTname			= "$user$shadow";
+	LPCSTR	RTtemp			= "$user$temp";
+	string128 RTname2;		strconcat(RTname2,RTname,",",RTname);
+	string128 RTtemp2;		strconcat(RTtemp2,RTtemp,",",RTtemp);
+
+	// 
+	RT.create				(RTname,S_rt_size,S_rt_size,HW.Caps.fTarget);
+	RT_temp.create			(RTtemp,S_rt_size,S_rt_size,HW.Caps.fTarget);
+	sh_Texture.create		("effects\\shadow_texture");
+	sh_World.create			("effects\\shadow_world",	RTname);
+	geom_World.create		(FVF::F_LIT,	RCache.Vertex.Buffer(), NULL);
+	sh_BlurTR.create		("effects\\blur",			RTtemp2);
+	sh_BlurRT.create		("effects\\blur",			RTname2);
+	geom_Blur.create		(FVF::F_TL2uv,	RCache.Vertex.Buffer(), RCache.QuadIB);
+
+	// Debug
+	sh_Screen.create		("effects\\screen_set",RTname);
+	geom_Screen.create		(FVF::F_TL,		RCache.Vertex.Buffer(), RCache.QuadIB);
 }
 
 CLightShadows::~CLightShadows()
 {
-}
-
-void CLightShadows::OnDeviceCreate	()
-{
-	LPCSTR	RTname		= "$user$shadow";
-	LPCSTR	RTtemp		= "$user$temp";
-	string128 RTname2;	strconcat(RTname2,RTname,",",RTname);
-	string128 RTtemp2;	strconcat(RTtemp2,RTtemp,",",RTtemp);
-	
-	// 
-	RT.create			(RTname,S_rt_size,S_rt_size,HW.Caps.fTarget);
-	RT_temp.create		(RTtemp,S_rt_size,S_rt_size,HW.Caps.fTarget);
-	sh_Texture.create	("effects\\shadow_texture");
-	sh_World.create		("effects\\shadow_world",	RTname);
-	geom_World.create	(FVF::F_LIT,	RCache.Vertex.Buffer(), NULL);
-	sh_BlurTR.create	("effects\\blur",			RTtemp2);
-	sh_BlurRT.create	("effects\\blur",			RTname2);
-	geom_Blur.create	(FVF::F_TL2uv,	RCache.Vertex.Buffer(), RCache.QuadIB);
-
 	// Debug
-	sh_Screen.create	("effects\\screen_set",RTname);
-	geom_Screen.create	(FVF::F_TL,		RCache.Vertex.Buffer(), RCache.QuadIB);
-}
+	sh_Screen.destroy		();
+	geom_Screen.destroy		();
 
-void CLightShadows::OnDeviceDestroy	()
-{
-	// Debug
-	sh_Screen.destroy					();
-	geom_Screen.destroy					();
-	
-	
-	geom_Blur.destroy					();
-	geom_World.destroy					();
+	geom_Blur.destroy		();
+	geom_World.destroy		();
 
-	
-	sh_BlurRT.destroy					();
-	sh_BlurTR.destroy					();
-	sh_World.destroy					();
-	sh_Texture.destroy					();
-	RT_temp.destroy						();
-	RT.destroy							();
+	sh_BlurRT.destroy		();
+	sh_BlurTR.destroy		();
+	sh_World.destroy		();
+	sh_Texture.destroy		();
+	RT_temp.destroy			();
+	RT.destroy				();
 }
 
 void CLightShadows::set_object	(IRenderable* O)

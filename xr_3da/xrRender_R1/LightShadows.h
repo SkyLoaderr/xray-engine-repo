@@ -8,10 +8,10 @@
 
 #include "fstaticrender_scenegraph.h"
 
-class	ENGINE_API	CObject;
-struct	ENGINE_API	Flight;
+class	ENGINE_API			CObject;
+struct	ENGINE_API			Flight;
 
-class CLightShadows			: public pureDeviceCreate, public pureDeviceDestroy
+class CLightShadows			
 {
 	friend class pred_casters;
 private:
@@ -59,9 +59,6 @@ public:
 	void					calculate		();
 	void					render			();
 
-	virtual	void			OnDeviceCreate	();
-	virtual	void			OnDeviceDestroy	();
-	
 	CLightShadows			();
 	~CLightShadows			();
 };
