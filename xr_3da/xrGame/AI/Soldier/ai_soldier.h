@@ -88,7 +88,8 @@ class CAI_Soldier : public CCustomMonster
 				Msg("%s,%s,%d,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f",cName(),S,Level().timeServer(),vPosition.x,vPosition.y,vPosition.z,r_current.yaw,r_current.pitch,r_torso_current.yaw,r_torso_current.pitch);\
 				bStopThinking = true;
 		#else
-			#define WRITE_TO_LOG(S)
+			#define WRITE_TO_LOG(S) \
+				bStopThinking = true;
 		#endif
 
 		#define CHECK_FOR_STATE_TRANSITIONS(S) \
