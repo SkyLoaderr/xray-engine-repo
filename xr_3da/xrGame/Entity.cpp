@@ -206,7 +206,7 @@ void CEntityAlive::Load		(LPCSTR section)
 {
 	inherited::Load			(section);
 
-	//m_fFood					= 100*pSettings->r_float	(section,"ph_mass"			);
+	m_fFood					= 100*pSettings->r_float	(section,"ph_mass");
 
 	/*
 	// Movement: General
