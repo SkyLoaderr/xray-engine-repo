@@ -101,10 +101,17 @@ void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_
 				break;
 			}
 			case ePatrolStartTypeNext : {
-				if (m_prev_point_index != u32(-1))
-					vertex		= m_path->vertex(m_prev_point_index+1);
+				if (m_prev_point_index != u32(-1)) {
+					if ((m_prev_point_index + 1) < m_path->vertex_count()) {
+						vertex		= m_path->vertex(m_prev_point_index+1);
+					} else {
+						u32 next_point_id	= get_next_point(m_prev_point_index);
+						vertex				= m_path->vertex(next_point_id);
+					}
+				}
+				
 				if (!vertex)
-					vertex		= m_path->point(position);
+					vertex		= m_path->point(position, CAccessabilityEvaluator(this));
 
 				VERIFY3		(accessible(vertex) || show_restrictions(m_object),*m_path_name,*m_game_object->cName());
 				break;
@@ -212,6 +219,52 @@ void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_
 	m_actuality			= true;
 	m_completed			= false;
 }
+
+u32 CPatrolPathManager::get_next_point(u32 prev_point_index)
+{
+	u32							count	= 0;		// количество разветвлений
+	float						sum		= 0.f;		// сумма весов разветвления
+	const CPatrolPath::CVertex *vertex	= m_path->vertex(prev_point_index);
+	
+	CPatrolPath::const_iterator	I		= vertex->edges().begin(), E = vertex->edges().end();
+	u32							target	= u32(-1);
+
+	// вычислить количество разветвлений
+	for ( ; I != E; ++I) {
+		if (!accessible(m_path->vertex((*I).vertex_id())))
+			continue;
+		
+		sum				+= (*I).weight();		
+		++count;
+	}
+
+	// проверить количество
+	if (count != 0) {
+
+		float fChoosed = 0.f;
+
+		if (random() && (count > 1))	fChoosed = ::Random.randF(sum);
+
+		sum				= 0.f;
+		I				= vertex->edges().begin();
+
+		for ( ; I != E; ++I) {
+
+			if (!accessible(m_path->vertex((*I).vertex_id())))
+				continue;
+
+			sum			+= (*I).weight();
+
+			if (sum >= fChoosed) {
+				target	= (*I).vertex_id();
+				break;
+			}
+		}
+	}
+	
+	return target;
+}
+
 
 shared_str	CPatrolPathManager::path_name	() const
 {

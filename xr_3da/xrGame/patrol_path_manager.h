@@ -69,6 +69,9 @@ public:
 	IC			const Fvector		&destination_position	() const;
 	IC			u32					get_current_point_index	() const;
 	IC			CRestrictedObject	&object					() const;
+
+private:
+				u32					get_next_point			(u32 prev_point_index);
 };
 
 #include "patrol_path_manager_inline.h"
