@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../../../effectorPP.h"
-#include "../../../CameraEffector.h"
+#include "../../CameraEffector.h"
 #include "../../../cameramanager.h"
 
 //////////////////////////////////////////////////////////////////////////
