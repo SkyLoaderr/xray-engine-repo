@@ -31,6 +31,12 @@ function main()
 	local sound_01 = sound_object("scripts\\alarm\\f_side_rustle")
 	local sound_cough = sound_object("scripts\\idle\\cough1")
 	local sound_holodno = sound_object("scripts\\idle\\say_holodno")
+
+	local sound_chto_s_toboy = sound_object("scripts\\idle\\say_chto_s_toboy")
+	local sound_dai_vipit = sound_object("scripts\\idle\\say_dai_vipit")
+	local sound_ti_pyuaniy = sound_object("scripts\\idle\\say_ti_pyuaniy")
+	local sound_skuchno = sound_object("scripts\\idle\\say_skuchno")
+
 	local sound_baran = sound_object("scripts\\idle\\say_baran")
 	local sound_wind = sound_object("scripts\\idle\\ew_gusty_over1")
 
@@ -52,6 +58,14 @@ function main()
 	sound_cough:play_at_pos		(stalker1,stalker1:position(),0);
 	wait		(4500)
 	sound_holodno:play_at_pos		(stalker1,stalker1:position(),0);
+	wait		(2000)
+	sound_chto_s_toboy:play_at_pos		(stalker1,stalker1:position(),0);
+	wait		(2000)
+	sound_dai_vipit:play_at_pos		(stalker1,stalker1:position(),0);
+	wait		(2000)
+	sound_ti_pyuaniy:play_at_pos		(stalker1,stalker1:position(),0);
+	wait		(2000)
+	sound_skuchno:play_at_pos		(stalker1,stalker1:position(),0);
 
 	event:clear_callback(true)
 	event:clear_callback(false)
