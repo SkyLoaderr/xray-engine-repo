@@ -217,12 +217,24 @@ void xrSE_Dummy::STATE_Write		(NET_Packet& P)
 }
 void xrSE_Dummy::UPDATE_Read		(NET_Packet& P)	{};
 void xrSE_Dummy::UPDATE_Write		(NET_Packet& P)	{};
+#ifdef _EDITOR
+void	xrSE_Dummy::FillProp			(LPCSTR pref, PropValueVec& values)
+{
+  	inherited::FillProp(pref,values);
+}
+#endif
 
 //***** Car
 void xrSE_Car::STATE_Read			(NET_Packet& P, u16 size)	{inherited::STATE_Read(P,size); };
 void xrSE_Car::STATE_Write			(NET_Packet& P)				{inherited::STATE_Write(P);		};
 void xrSE_Car::UPDATE_Read			(NET_Packet& P)	{};
 void xrSE_Car::UPDATE_Write			(NET_Packet& P)	{};
+#ifdef _EDITOR
+void xrSE_Car::FillProp				(LPCSTR pref, PropValueVec& values)
+{
+  	inherited::FillProp(pref,values);
+}
+#endif
 
 //***** Actor
 void xrSE_Actor::STATE_Read			(NET_Packet& P, u16 size)	{inherited::STATE_Read(P,size); };
@@ -255,6 +267,12 @@ void xrSE_Actor::UPDATE_Write		(NET_Packet& P)
 	P.w_float_q16		(fHealth,	-1000,1000);
 	P.w_float_q16		(fArmor,	-1000,1000);
 }
+#ifdef _EDITOR
+void	xrSE_Actor::FillProp			(LPCSTR pref, PropValueVec& values)
+{
+  	inherited::FillProp(pref,values);
+}
+#endif
 
 //***** Enemy
 void xrSE_Enemy::STATE_Read			(NET_Packet& P, u16 size)	{inherited::STATE_Read(P,size); };
@@ -277,6 +295,12 @@ void xrSE_Enemy::UPDATE_Write		(NET_Packet& P)
 	P.w_angle8			(o_torso.yaw	);
 	P.w_angle8			(o_torso.pitch	);
 }
+#ifdef _EDITOR
+void	xrSE_Enemy::FillProp			(LPCSTR pref, PropValueVec& values)
+{
+  	inherited::FillProp(pref,values);
+}
+#endif
 
 //***** CFormed (Base)
 class xrSE_CFormed

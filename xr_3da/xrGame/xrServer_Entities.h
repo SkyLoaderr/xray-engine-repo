@@ -125,6 +125,7 @@ xrSE_DECLARE_BEGIN(xrSE_Weapon,xrServerEntity)
 
 	Fvector					f_pos;
 	Fvector					f_dir;
+    xrSE_Weapon				();
 xrSE_DECLARE_END
 
 //***** Teamed
@@ -136,6 +137,7 @@ xrSE_DECLARE_BEGIN(xrSE_Teamed,xrServerEntity)
 	virtual u8				g_team()			{ return s_team;	}
 	virtual u8				g_squad()			{ return s_squad;	}
 	virtual u8				g_group()			{ return s_group;	}
+    xrSE_Teamed				();
 xrSE_DECLARE_END
 
 //***** Dummy
@@ -152,6 +154,8 @@ xrSE_DECLARE_BEGIN(xrSE_Dummy,xrServerEntity)
 	char*					s_Model;
 	char*					s_Particles;
 	char*					s_Sound;
+    xrSE_Dummy				();
+    ~xrSE_Dummy				();
 xrSE_DECLARE_END
 
 //***** Car
