@@ -34,7 +34,7 @@
     </frame_window>
     
     <!-- DESCRIPTION WINDOW -->
-    <descr_static x="440" y="260" width="267" height="500">
+    <descr_static x="380" y="260" width="267" height="500">
         <texture> ui\ui_dg_info</texture>
     </descr_static>
 
@@ -78,7 +78,7 @@
             rows_num="1" cols_num="18"></dragdrop_list>
     <!-- BAG LIST -->
     <dragdrop_list x="20" y="30" width="400" height="350"
-            cell_width = "50" cell_height="50"
+            cell_width = "40" cell_height="40"
             rows_num="18" cols_num="7" rows_num_view="8"></dragdrop_list>
 
     <!-- SLOTS LISTS -->
