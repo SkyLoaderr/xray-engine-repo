@@ -225,5 +225,11 @@ extern TUI UI;
 void ResetActionToSelect();
 #define COMMAND0(cmd)		{Command(cmd);bExec=true;}
 #define COMMAND1(cmd,p0)	{Command(cmd,p0);bExec=true;}
+extern void __fastcall PanelMinMax	(TPanel *pa);
+extern void __fastcall PanelMinimize(TPanel *pa);
+extern void __fastcall PanelMaximize(TPanel *pa);
+extern void __fastcall PanelMinMaxClick		(TObject *sender);
+extern void __fastcall PanelMinimizeClick	(TObject *sender);
+extern void __fastcall PanelMaximizeClick	(TObject *sender);
 //---------------------------------------------------------------------------
 #endif

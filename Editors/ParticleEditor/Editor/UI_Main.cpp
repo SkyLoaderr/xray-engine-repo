@@ -615,4 +615,52 @@ LPCSTR TUI::FirstRecentFile()
     return 0;
 }
 
+#define MIN_PANEL_HEIGHT 15
+void __fastcall PanelMinMax(TPanel *pa)
+{
+	if (pa){
+        if (pa->Tag > 0){
+            pa->Height = pa->Tag;
+            pa->Tag    = 0;
+        }else{
+            pa->Tag    = pa->Height;
+            pa->Height = MIN_PANEL_HEIGHT;
+        }
+        UI.Command(COMMAND_UPDATE_TOOLBAR);
+    }
+}
+void __fastcall PanelMinimize(TPanel *pa)
+{
+	if (pa){
+        if (pa->Tag <= 0){
+            pa->Tag    = pa->Height;
+            pa->Height = MIN_PANEL_HEIGHT;
+        }
+        UI.Command(COMMAND_UPDATE_TOOLBAR);
+    }
+}
+void __fastcall PanelMaximize(TPanel *pa)
+{
+	if (pa){
+        if (pa->Tag > 0){
+            pa->Height = pa->Tag;
+            pa->Tag    = 0;
+        }
+        UI.Command(COMMAND_UPDATE_TOOLBAR);
+    }
+}
+void __fastcall PanelMinMaxClick(TObject* Sender)
+{
+    PanelMinMax(((TPanel*)((TControl*)Sender)->Parent));
+}
+void __fastcall PanelMinimizeClick(TObject* Sender)
+{
+    PanelMinimize(((TPanel*)((TControl*)Sender)->Parent));
+}
+void __fastcall PanelMaximizeClick(TObject* Sender)
+{
+    PanelMaximize(((TPanel*)((TControl*)Sender)->Parent));
+}
+//---------------------------------------------------------------------------
+
 
