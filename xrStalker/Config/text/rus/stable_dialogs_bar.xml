@@ -210,14 +210,14 @@
     <string id="bar_bar_barmen_jobs_room_3112111">
         <text>Подумай над этим, Меченый. Кроме тебя действительно некому.</text>
     </string>
-    <string id="bar_bar_barmen_jobs_room_666">
-        <text>Пошли обратно, посетители ждут.</text>
-    </string>
     <string id="bar_bar_barmen_jobs_room_complete_0">
-        <text>Да, есть кое-что. Пошли, поговорим.</text>
+        <text>Да, есть кое-что.</text>
     </string>
     <string id="bar_bar_barmen_jobs_room_complete_1">
         <text>Идем.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_room_complete_11">
+        <text>Хорошо, пошли.</text>
     </string>
     <string id="bar_bar_barmen_jobs_room_darklabdoc_done_0">
         <text>Принес я тебе бумаги, но вот разберешься ли ты в них - не факт.</text>
