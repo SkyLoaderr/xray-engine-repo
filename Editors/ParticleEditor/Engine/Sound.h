@@ -61,11 +61,15 @@ enum {
 	sq_HIGH,
 	sq_forcedword = u32(-1)
 };
-
 enum {
 	st_Undefined		= 0,
 	st_SourceType		= u32(-1),
 	st_forcedword		= u32(-1),
+};
+enum {
+	sm_Looped			= (1ul<<0ul),	//!< Looped
+	sm_2D				= (1ul<<1ul),	//!< 2D mode
+	sm_forcedword		= u32(-1),
 };
 /*! \class ref_sound
 	\brief Sound source + control
@@ -119,10 +123,10 @@ struct	ref_sound
 	/*!
 		\sa stop()
 	*/
-	IC void					play					( CObject* O /*!< Object */,											BOOL bLoop=false  /*!< Looping */, float delay=0.f /*!< Delay */);
-	IC void					play_unlimited			( CObject* O /*!< Object */,											BOOL bLoop=false  /*!< Looping */, float delay=0.f /*!< Delay */);
-	IC void					play_at_pos				( CObject* O /*!< Object */,	const Fvector &pos /*!< 3D position */,	BOOL bLoop=false  /*!< Looping */, float delay=0.f /*!< Delay */);
-	IC void					play_at_pos_unlimited	( CObject* O /*!< Object */,	const Fvector &pos /*!< 3D position */,	BOOL bLoop=false  /*!< Looping */, float delay=0.f /*!< Delay */);
+	IC void					play					( CObject* O /*!< Object */,											u32 flags=0 /*!< Looping */, float delay=0.f /*!< Delay */);
+	IC void					play_unlimited			( CObject* O /*!< Object */,											u32 flags=0 /*!< Looping */, float delay=0.f /*!< Delay */);
+	IC void					play_at_pos				( CObject* O /*!< Object */,	const Fvector &pos /*!< 3D position */,	u32 flags=0 /*!< Looping */, float delay=0.f /*!< Delay */);
+	IC void					play_at_pos_unlimited	( CObject* O /*!< Object */,	const Fvector &pos /*!< 3D position */,	u32 flags=0 /*!< Looping */, float delay=0.f /*!< Delay */);
 	//@}
 
 	//! Stops playing this source
@@ -130,7 +134,6 @@ struct	ref_sound
 		\sa play(), etc
 	*/
 	IC void					stop 					( );
-	IC void					set_2D_mode				( );
 	IC void					set_position			( const Fvector &pos);
 	IC void					set_frequency			( float freq);
 	IC void					set_range				( float min, float max );
@@ -170,7 +173,6 @@ public:
 class XRSOUND_API	CSound_interface
 {
 public:
-	virtual	void					set_2D_mode				()															= 0;
 	virtual void					set_position			(const Fvector &pos)										= 0;
 	virtual void					set_frequency			(float freq)												= 0;
 	virtual void					set_range				(float min, float max)										= 0;
@@ -213,10 +215,10 @@ public:
 	/// Sound interface
 	virtual void					create					( ref_sound& S, BOOL _3D,	LPCSTR fName,	int		type=st_SourceType)					= 0;
 	virtual void					destroy					( ref_sound& S)																			= 0;
-	virtual void					play					( ref_sound& S, CObject* O,								BOOL bLoop=false, float delay=0.f)	= 0;
-	virtual void					play_unlimited			( ref_sound& S, CObject* O,								BOOL bLoop=false, float delay=0.f)	= 0;
-	virtual void					play_at_pos				( ref_sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false, float delay=0.f)	= 0;
-	virtual void					play_at_pos_unlimited	( ref_sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false, float delay=0.f)	= 0;
+	virtual void					play					( ref_sound& S, CObject* O,								u32 flags=0, float delay=0.f)	= 0;
+	virtual void					play_unlimited			( ref_sound& S, CObject* O,								u32 flags=0, float delay=0.f)	= 0;
+	virtual void					play_at_pos				( ref_sound& S, CObject* O,		const Fvector &pos,		u32 flags=0, float delay=0.f)	= 0;
+	virtual void					play_at_pos_unlimited	( ref_sound& S, CObject* O,		const Fvector &pos,		u32 flags=0, float delay=0.f)	= 0;
 
 	virtual void					set_geometry_env		( IReader* I )																			= 0;
 	virtual void					set_geometry_occ		( CDB::MODEL* M )																		= 0;
@@ -239,11 +241,10 @@ extern XRSOUND_API CSound_manager_interface*		Sound;
 /// ********* Sound ********* (utils, accessors, helpers)
 IC void	ref_sound::create						( BOOL _3D,	LPCSTR name,	int		type)				{	::Sound->create					(*this,_3D,name,type);				}
 IC void	ref_sound::destroy						( )														{	::Sound->destroy				(*this);							}
-IC void	ref_sound::play							( CObject* O,						BOOL bLoop, float d){	::Sound->play					(*this,O,bLoop,d);					}
-IC void ref_sound::play_unlimited				( CObject* O,						BOOL bLoop, float d){	::Sound->play_unlimited			(*this,O,bLoop,d);					}
-IC void	ref_sound::play_at_pos					( CObject* O,	const Fvector &pos,	BOOL bLoop, float d){	::Sound->play_at_pos			(*this,O,pos,bLoop,d);				}
-IC void	ref_sound::play_at_pos_unlimited		( CObject* O,	const Fvector &pos,	BOOL bLoop, float d){	::Sound->play_at_pos_unlimited	(*this,O,pos,bLoop,d);				}
-IC void	ref_sound::set_2D_mode					( )														{	VERIFY(feedback);feedback->set_2D_mode();							}
+IC void	ref_sound::play							( CObject* O,						u32 flags, float d)	{	::Sound->play					(*this,O,flags,d);					}
+IC void ref_sound::play_unlimited				( CObject* O,						u32 flags, float d)	{	::Sound->play_unlimited			(*this,O,flags,d);					}
+IC void	ref_sound::play_at_pos					( CObject* O,	const Fvector &pos,	u32 flags, float d)	{	::Sound->play_at_pos			(*this,O,pos,flags,d);				}
+IC void	ref_sound::play_at_pos_unlimited		( CObject* O,	const Fvector &pos,	u32 flags, float d)	{	::Sound->play_at_pos_unlimited	(*this,O,pos,flags,d);				}
 IC void	ref_sound::set_position					( const Fvector &pos)									{	VERIFY(feedback);feedback->set_position(pos);						}
 IC void	ref_sound::set_frequency				( float freq)											{	if (feedback)	feedback->set_frequency(freq);						}
 IC void	ref_sound::set_range					( float min, float max )								{	if (feedback)	feedback->set_range(min,max);						}
