@@ -1,0 +1,37 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PracticalPSM", "PracticalPSM.vcproj", "{F4403A80-5ECE-4D98-8AD2-C81569ED98B6}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(DPCodeReviewSolutionGUID) = preSolution
+		DPCodeReviewSolutionGUID = {00000000-0000-0000-0000-000000000000}
+	EndGlobalSection
+	GlobalSection(SourceCodeControl) = preSolution
+		SccNumberOfProjects = 2
+		SccProjectName0 = \u0022$/TestBed/SunShadow\u0022,\u0020MWUAAAAA
+		SccLocalPath0 = ..\\..\\..\\..
+		SccProvider0 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = true
+		SccProjectFilePathRelativizedFromConnection0 = DEMOS\\Direct3D9\\src\\PracticalPSM\\
+		SolutionUniqueID = {8B9A620E-2D2C-4E8D-B15E-4BE8008C517F}
+		SccProjectUniqueName1 = PracticalPSM.vcproj
+		SccLocalPath1 = ..\\..\\..\\..
+		CanCheckoutShared = true
+		SccProjectFilePathRelativizedFromConnection1 = DEMOS\\Direct3D9\\src\\PracticalPSM\\
+	EndGlobalSection
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{F4403A80-5ECE-4D98-8AD2-C81569ED98B6}.Debug.ActiveCfg = Debug|Win32
+		{F4403A80-5ECE-4D98-8AD2-C81569ED98B6}.Debug.Build.0 = Debug|Win32
+		{F4403A80-5ECE-4D98-8AD2-C81569ED98B6}.Release.ActiveCfg = Release|Win32
+		{F4403A80-5ECE-4D98-8AD2-C81569ED98B6}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
