@@ -22,6 +22,10 @@
 			ammo_9x39_sp5 = 2 \n
 			ammo_vog-25p = 2 \n
 		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 	
 <!---------------------------DOLG REGULAR----------------------->
