@@ -767,6 +767,7 @@ HRESULT CMyD3DApplication::RenderLight_Direct	()
 	D3DXVec3Normalize						(&vLightDir, &vLightDir);
 	D3DXMatrixInverse						(mInvView,0,dm_2view);
 	D3DXVec3TransformNormal					(vLightDir,vLightDir);
+	Fvector									light_color;
 	cc.set									(s_Scene2fat.constants.get("m_model2view"),				*((Fmatrix*)&dm_model2world2view));
 	cc.set									(s_Scene2fat.constants.get("m_model2view2projection"),	*((Fmatrix*)&dm_model2world2view2projection));
 	cc.flush								(m_pd3dDevice);
