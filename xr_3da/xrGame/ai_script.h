@@ -21,5 +21,4 @@ public:
 						CScript						(LPCSTR				caFileName);
 	virtual				~CScript					();
 			void		Update						();
-			void		vfShowOutput				(CLuaVirtualMachine *tpLuaVirtualMachine);
 };

@@ -39,11 +39,11 @@ CScript::CScript(LPCSTR caFileName)
 
 	int				i = luaL_loadbuffer(l_tpThread,static_cast<LPCSTR>(l_tpFileReader->pointer()),(size_t)l_tpFileReader->length(),static_cast<LPCSTR>(l_tpFileReader->pointer()));
 	
-	vfShowOutput	(l_tpThread);
-
 #ifdef DEBUG
-	if (i)
+	if (i) {
+		vfPrintOutput(l_tpThread,m_caScriptFileName);
 		vfPrintError(l_tpThread,i);
+	}
 #endif
 	m_tpThreads.push_back	(l_tpThread);
 
@@ -59,9 +59,9 @@ void CScript::Update()
 {
 	for (int i=0, n = int(m_tpThreads.size()); i<n; i++) {
 		int				l_iErrorCode = lua_resume	(m_tpThreads[i],0);
-		vfShowOutput	(m_tpThreads[i]);
 		if (l_iErrorCode) {
 #ifdef DEBUG
+			vfPrintOutput(m_tpThreads[i],m_caScriptFileName);
 			vfPrintError(m_tpThreads[i],l_iErrorCode);
 #endif
 			m_tpThreads.erase(m_tpThreads.begin() + i);
@@ -69,16 +69,4 @@ void CScript::Update()
 			n--;
 		}
 	}
-}
-
-void CScript::vfShowOutput(CLuaVirtualMachine *tpLuaVirtualMachine)
-{
-	for (int i=0; ; i++)
-		if (lua_isstring(tpLuaVirtualMachine,i)) {
-			if (!i)
-				Msg("* [LUA] Output from %s",m_caScriptFileName);
-			Msg		("* [LUA] %s",lua_tostring(tpLuaVirtualMachine,i));
-		}
-		else
-			return;
 }
