@@ -59,7 +59,7 @@ class CPatternFunction : public CBaseFunction {
 	
 private:
 	typedef CBaseFunction inherited;
-	static const u32	EFC_VERSION	= 1;
+	enum {EFC_VERSION	= 1};
 	typedef struct tagSEFHeader {
 		u32			dwBuilderVersion;
 		u32			dwDataFormat;
