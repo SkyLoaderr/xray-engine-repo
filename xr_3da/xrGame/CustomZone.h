@@ -22,6 +22,9 @@ public:
 	virtual void feel_touch_delete(CObject* O);
 	virtual BOOL feel_touch_contact(CObject* O);
 
+	void SoundCreate(sound& dest, LPCSTR name, int iType=0, BOOL bCtrlFreq=FALSE);
+	void SoundDestroy(sound& dest);
+
 
 	// debug
 //#ifdef DEBUG
@@ -34,6 +37,7 @@ public:
 	f32 m_maxPower, m_attn;
 	u32 m_period;
 	BOOL m_ready;
+	sound m_ambient;
 
 
 	//virtual	void Hit(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space){}

@@ -13,7 +13,7 @@ CCustomZone::CCustomZone(void) {
 
 CCustomZone::~CCustomZone(void) {}
 
-BOOL CCustomZone::net_Spawn		(LPVOID DC) {
+BOOL CCustomZone::net_Spawn(LPVOID DC) {
 	BOOL res = inherited::net_Spawn(DC);
 
 	if(res) {
@@ -27,12 +27,16 @@ BOOL CCustomZone::net_Spawn		(LPVOID DC) {
 				case 1 : l_pShape->add_box(S.data.box); break;
 			}
 		}
+
 		l_pShape->ComputeBounds();
 		pCreator->ObjectSpace.Object_Register(this);
 		cfModel->OnMove();
 		m_maxPower = Z->m_maxPower;
 		m_attn = Z->m_attn;
 		m_period = Z->m_period;
+
+		Fvector P; clXFORM().transform_tiny(P,cfModel->getSphere().P);
+		Sound->PlayAtPos(m_ambient,this, vPosition, true);
 
 //		setVisible(true);
 		setEnabled(true);
@@ -41,18 +45,22 @@ BOOL CCustomZone::net_Spawn		(LPVOID DC) {
 	return res;
 }
 
-void CCustomZone::Load		(LPCSTR section) {
+void CCustomZone::Load(LPCSTR section) {
 	// verify class
 	LPCSTR Class = pSettings->ReadSTRING(section,"class");
 	CLASS_ID load_cls = TEXT2CLSID(Class);
 	R_ASSERT(load_cls==SUB_CLS_ID);
 
-	inherited::Load		(section);
+	inherited::Load(section);
+
+	LPCSTR l_PSnd = pSettings->ReadSTRING(section,"sound");
+	SoundCreate(m_ambient, l_PSnd);
 
 }
 
 void CCustomZone::net_Destroy() {
 	inherited::net_Destroy();
+	SoundDestroy(m_ambient);
 }
 
 void CCustomZone::Update(u32 dt) {
@@ -91,6 +99,19 @@ BOOL CCustomZone::feel_touch_contact(CObject* O) {
 f32 CCustomZone::Power(f32 dist) {
 	f32 l_r = cfModel->getRadius();
 	return l_r < dist ? 0 : m_maxPower * (1.f - m_attn*dist/l_r);
+}
+
+void CCustomZone::SoundCreate(sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq) {
+	string256 temp;
+	if (Engine.FS.Exist(temp,Path.Sounds,s_name)) {
+		Sound->Create(dest,TRUE,s_name,bCtrlFreq,iType);
+		return;
+	}
+	Debug.fatal	("Can't find sound '%s'",s_name,cName());
+}
+
+void CCustomZone::SoundDestroy(sound& dest) {
+	Sound->Delete			(dest);
 }
 
 //#ifdef DEBUG
