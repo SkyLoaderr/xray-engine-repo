@@ -292,12 +292,17 @@ class CPHJoint: public CPhysicsJoint{
 
 
 dJointID m_joint;
-
+enum eVs {
+vs_first,
+vs_second,
+vs_global
+};
 struct SPHAxis {
 float high;
 float low;
 float erp;
 float cfm;
+eVs   vs;
 Fvector direction;
 IC void set_limits(float h, float l) {high=h; low=l;}
 IC void set_direction(const Fvector& v){direction.set(v);}
@@ -311,10 +316,12 @@ SPHAxis(){
 	erp=0.8f;
 	cfm=0.000001f;
 	direction.set(0,0,1);
+	vs=vs_first;
 	}
 };
 vector<SPHAxis> axes;
 Fvector anchor;
+eVs vs_anchor;
 
 void CreateBall();
 void CreateHinge();

@@ -1725,16 +1725,20 @@ void CPHJoint::CreateUniversalHinge()
 
 void CPHJoint::SetAnchor(const float x,const float y,const float z)
 {
+vs_anchor=vs_global;
+anchor.set(x,y,z);
 }
 
 void CPHJoint::SetAnchorVsFirstElement(const float x,const float y,const float z)
 {
+	vs_anchor=vs_first;
 	anchor.set(x,y,z);
 }
 
 void CPHJoint::SetAnchorVsSecondElement(const float x,const float y,const float z)
 {
-	
+vs_anchor=vs_second;
+anchor.set(x,y,z);	
 }
 
 void CPHJoint::SetAxis(const float x,const float y,const float z,const int axis_num)
@@ -1786,6 +1790,7 @@ eType=type;
 bActive=false;
 SPHAxis axis,axis2;
 axis2.set_direction(1,0,0);
+vs_anchor=vs_first;
 
 	switch(eType){
 	case ball:					;						break;
