@@ -39,6 +39,7 @@ CCar::CCar(void)
 	/////////////////////////////
 	DriveDirection=0;
 	Breaks=false;
+	b_wheels_limited=false;
 	///////////////////////////////
 	//////////////////////////////
 	/////////////////////////////
@@ -122,6 +123,7 @@ BOOL	CCar::net_Spawn				(LPVOID DC)
 	ParseDefinitions				();//parse ini filling in m_driving_wheels,m_steering_wheels,m_breaking_wheels
 	CreateSkeleton					();//creates m_pPhysicsShell & fill in bone_map
 	InitWheels						();//inits m_driving_wheels,m_steering_wheels,m_breaking_wheels values using recieved in ParceDefinitions & from bone_map
+	m_ident=ph_world->AddObject(dynamic_cast<CPHObject*>(this));
 
 	m_pExhaustPG1					= xr_new<CPGObject>			("vehiclefx\\exhaust_1",Sector(),false);
 	m_pExhaustPG2					= xr_new<CPGObject>			("vehiclefx\\exhaust_1",Sector(),false);
@@ -136,6 +138,7 @@ void	CCar::net_Destroy()
 {
 	inherited::net_Destroy();
 	if(m_pPhysicsShell)m_pPhysicsShell->Deactivate();
+	ph_world->RemoveObject(m_ident);
 	xr_delete(m_pExhaustPG1);
 	xr_delete(m_pExhaustPG2);
 }
