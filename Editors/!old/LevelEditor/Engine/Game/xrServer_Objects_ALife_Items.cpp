@@ -63,13 +63,15 @@ CSE_ALifeInventoryItem::~CSE_ALifeInventoryItem	()
 
 void CSE_ALifeInventoryItem::STATE_Write	(NET_Packet &tNetPacket)
 {
-	tNetPacket.w_float				(m_fCondition);
+	tNetPacket.w_float			(m_fCondition);
 }
 
 void CSE_ALifeInventoryItem::STATE_Read		(NET_Packet &tNetPacket, u16 size)
 {
 	if (m_wVersion > 52)
-		tNetPacket.r_float				(m_fCondition);
+		tNetPacket.r_float		(m_fCondition);
+
+	State.position				= o_Position;
 }
 
 void CSE_ALifeInventoryItem::UPDATE_Write	(NET_Packet &tNetPacket)
