@@ -12,6 +12,7 @@
 #include "actor.h"
 #include "script_game_object.h"
 #include "patrol_path_storage.h"
+#include "xrServer.h"
 
 using namespace luabind;
 
@@ -55,7 +56,10 @@ void set_weather	(LPCSTR weather_name)
 
 void set_time_factor(float time_factor)
 {
-	Level().SetGameTimeFactor(time_factor);
+	if (!OnServer())
+		return;
+
+	Level().Server->game->SetGameTimeFactor(time_factor);
 }
 
 float get_time_factor()

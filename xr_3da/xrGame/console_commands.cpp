@@ -506,8 +506,12 @@ public:
 		sscanf(args ,"%f",&id1);
 		if (id1 < EPS_L)
 			Msg("Invalid time factor! (%.4f)",id1);
-		else
-			Level().SetGameTimeFactor(id1);
+		else {
+			if (!OnServer())
+				return;
+
+			Level().Server->game->SetGameTimeFactor(id1);
+		}
 	}
 };
 

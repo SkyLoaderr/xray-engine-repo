@@ -12,6 +12,8 @@
 #include "xrmessages.h"
 #include "game_cl_base.h"
 
+#include "xrServer.h"
+
 
 #define ONLINE_RADIUS				2.f
 #define MIN_SPRING_TO_SLEEP			0.8f	
@@ -96,12 +98,13 @@ EActorSleep CActor::GoSleep(ALife::_TIME_ID sleep_time, bool without_check)
 
 	return easCanSleep;
 }
+
 void CActor::Awoke()
 {
 	if(!IsSleeping()) return;
 	CActorCondition::Awoke();
 
-	Level().SetGameTimeFactor(m_fOldTimeFactor);
+	Level().Server->game->SetGameTimeFactor(m_fOldTimeFactor);
 
 	if ((GameID() == GAME_SINGLE)  &&ai().get_alife()) {
 		NET_Packet		P;
@@ -136,7 +139,8 @@ void CActor::UpdateSleep()
 	if(CSleepEffectorPP::BEFORE_SLEEPING == m_pSleepEffectorPP->m_eSleepState)
 	{
 		m_fOldTimeFactor = Level().GetGameTimeFactor();
-		Level().SetGameTimeFactor(m_fSleepTimeFactor*m_fOldTimeFactor);
+		
+		Level().Server->game->SetGameTimeFactor(m_fSleepTimeFactor*m_fOldTimeFactor);
 
 		if ((GameID() == GAME_SINGLE) && ai().get_alife()) {
 			m_fOldOnlineRadius = ai().alife().switch_distance();
