@@ -557,7 +557,7 @@ end
 
 function CStateAmbush:initialize()
     reset_action(self.npc, this.script_name())
-    self.npc:set_manual_invisiblity(true)
+    self.npc:set_manual_invisibility(true)
     self.npc:set_invisible(false)
 end
 
@@ -577,7 +577,7 @@ function CStateAmbush:on_position()
 end
 
 function CStateAmbush:finalize()
-	self.npc:set_manual_invisibility(false)
+    self.npc:set_manual_invisibility(false)
 end
 
 function CStateAmbush:id()
