@@ -82,6 +82,7 @@ public:
 class CSE_ALifeTraderRegistry {
 public:
 	TRADER_P_VECTOR					m_tpTraders;			// массив торговцев
+	TRADER_SET_MAP					m_tpCrossTraders;
 
 			void					Init						();
 			void					Update						(CSE_ALifeDynamicObject *tpALifeDynamicObject);
@@ -105,6 +106,8 @@ public:
 	ALIFE_ENTITY_P_VECTOR			m_tpSpawnPoints;
 	LEVEL_POINT_VECTOR				m_tpArtefactSpawnPositions;
 	xr_vector<bool>					m_baAliveSpawnObjects;
+	ITEM_SET_MAP					m_tArtefactAnomalyMap;
+
 
 									CSE_ALifeSpawnRegistry		();
 	virtual							~CSE_ALifeSpawnRegistry		();
@@ -115,6 +118,7 @@ public:
 class CSE_ALifeAnomalyRegistry : public IPureALifeLSObject {
 public:
 	ANOMALY_P_VECTOR_VECTOR			m_tpAnomalies;
+	ANOMALY_P_VECTOR_SVECTOR		m_tpCrossAnomalies;
 
 									CSE_ALifeAnomalyRegistry	();
 	virtual							~CSE_ALifeAnomalyRegistry	();

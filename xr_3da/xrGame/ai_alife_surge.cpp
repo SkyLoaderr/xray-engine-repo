@@ -30,6 +30,7 @@ void CSE_ALifeSimulator::vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject *&i
 	m_tObjectRegistry.insert	(std::make_pair(i->ID,i));
 	vfUpdateDynamicData			(i);
 	i->m_bALifeControl			= true;
+	m_tpServer->entity_Destroy	(tpSE_Abstract);
 
 	CSE_ALifeMonsterAbstract	*l_tpALifeMonsterAbstract	= dynamic_cast<CSE_ALifeMonsterAbstract*>(i);
 	if (l_tpALifeMonsterAbstract)
@@ -62,6 +63,7 @@ void CSE_ALifeSimulator::vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject *&i
 			k->m_bALifeControl			= true;
 			m_tObjectRegistry.insert	(std::make_pair(k->ID,k));
 			vfUpdateDynamicData			(k);
+			m_tpServer->entity_Destroy	(l_tpAbstract);
 		}
 	}
 }
@@ -103,7 +105,7 @@ void CSE_ALifeSimulator::vfGenerateAnomalousZones()
 				break;
 			else
 				fSum += (*j)->m_fProbability;
-		R_ASSERT2				(fSum > 1 + EPS_L,"Group probability more than 1!");
+		R_ASSERT2				(fSum < 1 + EPS_L,"Group probability more than 1!");
 
 		// computing probability of the anomalous zone activation
 		float					fProbability = randF(1.f);
@@ -151,6 +153,7 @@ void CSE_ALifeSimulator::vfGenerateAnomalousZones()
 				i->m_tNodeID	= m_tpArtefactSpawnPositions[l_dwIndex].tNodeID;
 				i->m_fDistance	= m_tpArtefactSpawnPositions[l_dwIndex].fDistance;
 				i->m_bALifeControl = true;
+				m_tpServer->entity_Destroy	(l_tpSE_Abstract);
 
 				CSE_ALifeItemArtefact *l_tpALifeItemArtefact = dynamic_cast<CSE_ALifeItemArtefact*>(i);
 				R_ASSERT2		(l_tpALifeItemArtefact,"Anomalous zone can't generate non-artefact objects since they don't have an 'anomaly property'!");
@@ -166,6 +169,13 @@ void CSE_ALifeSimulator::vfGenerateAnomalousZones()
 
 void CSE_ALifeSimulator::vfGenerateAnomalyMap()
 {
+	{
+		ANOMALY_P_VECTOR_SIT	I = m_tpCrossAnomalies.begin();
+		ANOMALY_P_VECTOR_SIT	E = m_tpCrossAnomalies.end();
+		for ( ; I != E; I++)
+			(*I).clear();
+	}
+
 	m_tpAnomalies.resize		(getAI().GraphHeader().dwVertexCount);
 	OBJECT_PAIR_IT				I = m_tObjectRegistry.begin();
 	OBJECT_PAIR_IT				E = m_tObjectRegistry.end();
@@ -179,6 +189,9 @@ void CSE_ALifeSimulator::vfGenerateAnomalyMap()
 		l_tpALifeKnownAnomaly->m_fAnomalyPower			= randF(l_tpALifeAnomalousZone->m_maxPower*.5f,l_tpALifeAnomalousZone->m_maxPower*1.5f);
 		l_tpALifeKnownAnomaly->m_fDistance				= randF(l_tpALifeAnomalousZone->m_fDistance*.5f,l_tpALifeAnomalousZone->m_fDistance*1.5f);
 		m_tpAnomalies[l_tpALifeAnomalousZone->m_tGraphID].push_back(l_tpALifeKnownAnomaly);
+
+		// updating known anomaly data
+		m_tpCrossAnomalies[l_tpALifeKnownAnomaly->m_tAnomalousZoneType].push_back(l_tpALifeKnownAnomaly);
 	}
 }
 
@@ -552,6 +565,16 @@ void CSE_ALifeSimulator::vfUpdateArtefactOrders(CSE_ALifeTrader &tTrader)
 					l_tArtefactOrder.m_dwCount = (*i).m_dwCount;
 					l_tArtefactOrder.m_dwPrice = (*i).m_dwPrice;
 					tTrader.m_tpOrderedArtefacts.push_back(l_tArtefactOrder);
+					// updating cross traders table
+					TRADER_SET_PAIR_IT	J = m_tpCrossTraders.find((*i).m_caSection);
+					if (J == m_tpCrossTraders.end()) {
+						m_tpCrossTraders.insert(std::make_pair((*i).m_caSection,TRADER_SET()));
+						J = m_tpCrossTraders.find((*i).m_caSection);
+						R_ASSERT2	(J != m_tpCrossTraders.end(),"Cannot append the cross trader map!");
+					}
+					TRADER_SET_IT	K = (*J).second.find(&tTrader);
+					if (K == (*J).second.end())
+						(*J).second.insert(&tTrader);
 				}
 			}
 		}
@@ -638,6 +661,7 @@ void CSE_ALifeSimulator::vfBuySupplies(CSE_ALifeTrader &tTrader)
 				l_tpALifeItem->m_bALifeControl = true;
 				m_tObjectRegistry.insert	(std::make_pair(i->ID,i));
 				vfUpdateDynamicData			(i);
+				m_tpServer->entity_Destroy	(l_tpSE_Abstract);
 			}
 		}
 	}
@@ -645,22 +669,36 @@ void CSE_ALifeSimulator::vfBuySupplies(CSE_ALifeTrader &tTrader)
 
 void CSE_ALifeSimulator::vfUpdateTasks()
 {
-//	TRADER_P_IT					I = m_tpTraders.begin();
-//	TRADER_P_IT					E = m_tpTraders.end();
-//	for ( ; I != E; I++) {
-//		ARTEFACT_ORDER_IT		i = (*I).m_tpOrderedArtefacts.begin();
-//		ARTEFACT_ORDER_IT		e = (*I).m_tpOrderedArtefacts.end();
-//		for ( ; i != e; i++) {
-//			ANOMALY_P_VECTOR_IT	II = m_tpAnomalies.begin();
-//			ANOMALY_P_VECTOR_IT	EE = m_tpAnomalies.end();
-//			for ( ; II != EE; II++) {
-//				ANOMALY_P_IT	ii = (*II)->begin();
-//				ANOMALY_P_IT	ee = (*II)->end();
-//				for ( ; ii != ee; ii++)
-//					(*ii).
-//			}
-//		}
-//	}
+	m_tTaskRegistry.clear		();
+	m_tTaskID					= 0;
+	
+	// iterating on the ordered artefacts (this map is constructed from all the traders orders)
+	TRADER_SET_PAIR_IT			I = m_tpCrossTraders.begin();
+	TRADER_SET_PAIR_IT			E = m_tpCrossTraders.end();
+	for ( ; I != E; I++) {
+		ITEM_SET_PAIR_IT		J = m_tArtefactAnomalyMap.find((*I).first);
+		R_ASSERT2				(J != m_tArtefactAnomalyMap.end(),"Unknown artefact!");
+		// iterating on the anomaly types that can generate this type of artefact
+		U32_SET_IT				i = (*J).second.begin();
+		U32_SET_IT				e = (*J).second.end();
+		for ( ; i != e; i++) {
+			// iterating on all the active anomalies by the particular type
+			ANOMALY_P_IT		II = m_tpCrossAnomalies[*i].begin();
+			ANOMALY_P_IT		EE = m_tpCrossAnomalies[*i].end();
+			for ( ; II != EE; II++) {
+				// creating new task
+				CSE_ALifeTask	*l_tpALifeTask = xr_new<CSE_ALifeTask>();
+				l_tpALifeTask->m_tTaskType = eTaskTypeSearchForItemCG;
+				
+				// itarting on all the traders who ordered this type of artefact
+				TRADER_SET_IT	ii = (*I).second.begin();
+				TRADER_SET_IT	ee = (*I).second.end();
+				for ( ; ii != ee; ii++) {
+					
+				}
+			}
+		}
+	}
 }
 
 void CSE_ALifeSimulator::vfPerformSurge()
@@ -685,5 +723,8 @@ void CSE_ALifeSimulator::vfPerformSurge()
 		for ( ; I != E; I++)
 			vfUpdateArtefactOrders	(**I);
 	}
-	vfUpdateTasks					();
+	//vfUpdateTasks					();
+	
+	// updating dynamic data
+	vfUpdateDynamicData				();
 }

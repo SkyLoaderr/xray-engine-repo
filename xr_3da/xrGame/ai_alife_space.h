@@ -144,6 +144,13 @@ namespace ALife {
 
 	DEFINE_VECTOR		(STraderSupply,					TRADER_SUPPLY_VECTOR,			TRADER_SUPPLY_IT);
 
+//	typedef struct tagSOwner {
+//		float					m_fDistance;
+//		CSE_ALifeDynamicObject	*m_tpOwner;
+//	} SOwner;
+//
+//	DEFINE_VECTOR		(SOwner,						OWNER_GRAPH_VECTOR,				OWNER_GRAPH_IT);
+
 	enum EInjureType {
 		eInjureTypeNone = u32(0),
 		eInjureTypeEat,
@@ -238,6 +245,12 @@ namespace ALife {
 		eResearchStateFreeze,
 		eResearchStateDummy = u32(-1),
 	};
+	
+	DEFINE_SET		(EAnomalousZoneType,		U32_SET,						U32_SET_IT);
+	DEFINE_MAP_PRED	(LPSTR,						U32_SET,						ITEM_SET_MAP,				ITEM_SET_PAIR_IT,	pred_str);
+	DEFINE_SET		(CSE_ALifeTrader*,			TRADER_SET,						TRADER_SET_IT);
+	DEFINE_MAP_PRED	(LPSTR,						TRADER_SET,						TRADER_SET_MAP,				TRADER_SET_PAIR_IT,	pred_str);
+	DEFINE_SVECTOR	(ANOMALY_P_VECTOR,			eAnomalousZoneTypeDummy,		ANOMALY_P_VECTOR_SVECTOR,	ANOMALY_P_VECTOR_SIT)
 };
 
 #endif

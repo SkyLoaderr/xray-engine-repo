@@ -223,6 +223,7 @@ void CSE_ALifeGraphRegistry::Init()
 			(*I).tpEvents.clear	();
 		}
 	}
+	
 	m_tpCurrentLevel			= 0;
 	m_tpActor					= 0;
 }
@@ -386,6 +387,7 @@ void CSE_ALifeGraphRegistry::vfDetachItem(CSE_Abstract &CSE_Abstract, CSE_ALifeI
 void CSE_ALifeTraderRegistry::Init()
 {
 	m_tpTraders.clear			();
+	m_tpCrossTraders.clear		();
 }
 
 void CSE_ALifeTraderRegistry::Update(CSE_ALifeDynamicObject *tpALifeDynamicObject)
@@ -482,6 +484,7 @@ void CSE_ALifeSpawnRegistry::Load(IReader	&tFileStream)
 	inherited::Load				(tFileStream);
 	m_tpSpawnPoints.resize		(m_dwSpawnCount);
 	m_baAliveSpawnObjects.assign(m_dwSpawnCount,false);
+	m_tArtefactAnomalyMap.clear	();
 	ALIFE_ENTITY_P_IT			I = m_tpSpawnPoints.begin();
 	ALIFE_ENTITY_P_IT			E = m_tpSpawnPoints.end();
 	NET_Packet					tNetPacket;
@@ -513,6 +516,23 @@ void CSE_ALifeSpawnRegistry::Load(IReader	&tFileStream)
 
 		R_ASSERT2				((E->s_gameid == GAME_SINGLE) || (E->s_gameid == GAME_ANY),"Invalid game type!");
 		R_ASSERT2				((*I = dynamic_cast<CSE_ALifeDynamicObject*>(E)) != 0,"Non-ALife object in the 'game.spawn'");
+		
+		// building map of sets : get all the zone types which can generate given artefact
+		CSE_ALifeAnomalousZone	*l_tpALifeAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(E);
+		if (l_tpALifeAnomalousZone) {
+			EAnomalousZoneType	l_tAnomalousZoneType = l_tpALifeAnomalousZone->m_tAnomalyType;
+			for (u16 i=0, n = l_tpALifeAnomalousZone->m_wItemCount; i<n; i++) {
+				ITEM_SET_PAIR_IT	I = m_tArtefactAnomalyMap.find(l_tpALifeAnomalousZone->m_cppArtefactSections[i]);
+				if (I != m_tArtefactAnomalyMap.end())
+					(*I).second.insert(l_tAnomalousZoneType);
+				else {
+					m_tArtefactAnomalyMap.insert(std::make_pair(l_tpALifeAnomalousZone->m_cppArtefactSections[i],U32_SET()));
+					I = m_tArtefactAnomalyMap.find(l_tpALifeAnomalousZone->m_cppArtefactSections[i]);
+					if ((*I).second.find(l_tAnomalousZoneType) == (*I).second.end())
+						(*I).second.insert(l_tAnomalousZoneType);
+				}
+			}
+		}
 	}
 	{
 		R_ASSERT2				(0!=(S = tFileStream.open_chunk(id++)),"Can't find artefact spawn points chunk in the 'game.spawn'");
@@ -526,6 +546,7 @@ void CSE_ALifeSpawnRegistry::Load(IReader	&tFileStream)
 CSE_ALifeAnomalyRegistry::CSE_ALifeAnomalyRegistry()
 {
 	m_tpAnomalies.clear			();
+	m_tpCrossAnomalies.resize	(eAnomalousZoneTypeDummy);
 }
 
 CSE_ALifeAnomalyRegistry::~CSE_ALifeAnomalyRegistry()
