@@ -97,8 +97,8 @@ void CRenderTarget::phase_accumulator_init()
 		RCache.set_Element			(s_accum_mask->E[2]);
 
 		// Calculate light-brightness
-		Fvector		L_clr;
-		L_clr.div					(RImplementation.Lights.sun_color, ps_r2_ls_dynamic_range);
+		Fcolor		L_sunc			= RImplementation.Lights.sun->color; 
+		Fvector		L_clr;			L_clr.set(L_sunc.r,L_sunc.g,L_sunc.b).div(ps_r2_ls_dynamic_range);
 		float		L_max			= _max(_max(L_clr.x,L_clr.y),L_clr.z);
 		float		L_mag			= L_clr.magnitude()/_sqrt(3.f);
 		float		L_gray			= (L_clr.x + L_clr.y + L_clr.z)/3.f;
@@ -106,7 +106,7 @@ void CRenderTarget::phase_accumulator_init()
 
 		// Constants
 		Fvector		L_dir;
-		Device.mView.transform_dir	(L_dir,RImplementation.Lights.sun_dir);
+		Device.mView.transform_dir	(L_dir,RImplementation.Lights.sun->direction);
 		L_dir.invert				();
 		L_dir.set_length			(L_brightness);
 		RCache.set_c				("light_direction",	L_dir.x,L_dir.y,L_dir.z,0.f);
