@@ -19,11 +19,9 @@ To SLIPCH:
 -S			колеса жестко не фиксируются (интегратор?)
 
 To OLES : 
----D	"pure.h" : 
-		template <class T> class CRegistrator
-		void Process(RP_FUNC *f)
-		f(R[i].Object);
-		ASSERT(strlen(string) > 127)
+---D	***STOP*** file '.\GameFont.cpp', line 202.
+		***Reason***: *** Assertion failed ***
+		Expression: strlen(rs.string)<127
 		вылетает консоль
 		
 ---D	[CLevel::ClientSend][Objects.net_Export(&P)][NET_Packet.w] :
