@@ -106,10 +106,10 @@ void CRender::level_Unload()
 	vLastCameraPos.set			(0,0,0);
 	// 2.
 	for (I=0; I<Sectors.size(); I++)	xr_delete(Sectors[I]);
-	Sectors.clear				();
+	Sectors.clear_and_free		();
 	// 3.
 	for (I=0; I<Portals.size(); I++)	xr_delete(Portals[I]);
-	Portals.clear				();
+	Portals.clear_and_free		();
 
 	//*** Lights
 	L_Glows->Unload				();
@@ -121,14 +121,14 @@ void CRender::level_Unload()
 		Visuals[I]->Release();
 		xr_delete(Visuals[I]);
 	}
-	Visuals.clear				();
+	Visuals.clear_and_free		();
 
 	//*** VB/IB
 	for (I=0; I<VB.size(); I++)	_RELEASE(VB[I]);
 	for (I=0; I<IB.size(); I++)	_RELEASE(IB[I]);
-	DCL.clear					();
-	VB.clear					();
-	IB.clear					();
+	DCL.clear_and_free			();
+	VB.clear_and_free			();
+	IB.clear_and_free			();
 
 	//*** Components
 	xr_delete					(Details);
@@ -138,6 +138,9 @@ void CRender::level_Unload()
 	xr_delete					(L_Projector);
 	xr_delete					(L_Shadows);
 	xr_delete					(Target);
+
+	//*** Shaders
+	Shaders.clear_and_free		();
 
 	matFogPass._set				(NULL);
 	matDetailTexturing._set		(NULL);
