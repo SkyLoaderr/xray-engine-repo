@@ -933,13 +933,13 @@ end
 
 class "CObjectHit"
 function CObjectHit:__init(_hit_object)
-	self.object1  = level.object(_hit_object)
-    local ini    = self.object1:spawn_ini()
-    self.zone    = level.object(ini:r_string("hit", "zone") )
-    self.dir    = ini:r_vector("hit", "direction"       )
+	self.object1  	= level.object(_hit_object)
+    local ini    	= self.object1:spawn_ini()
+    self.zone    	= level.object(ini:r_string("hit", "zone") )
+    self.dir    	= ini:r_vector("hit", "direction"       )
     self.bone       = ini:r_string("hit", "bone"         )
-	self.sound    = ini:r_string("hit", "sound"         )
-	self.impulse   = ini:r_float ("hit", "impulse"         )
+	self.sound    	= ini:r_string("hit", "sound"         )
+	self.impulse   	= ini:r_float ("hit", "impulse"         )
 	printf("%d",self.impulse)
     printf("%s",self.bone)
     printf("%s",self.sound)
@@ -957,7 +957,7 @@ function CObjectHit:execute()
 		local snd     = sound_object(self.sound)
         snd:play_at_pos(self.object1, self.object1:position(), 0, sound_object.s3d)
         local h              = hit()
-        h.power       = 1
+        h.power       = 100
         h.impulse     = self.impulse
         h.direction   = self.dir
         h.bone        = self.bone
