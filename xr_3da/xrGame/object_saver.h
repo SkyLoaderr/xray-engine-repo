@@ -29,8 +29,9 @@ struct CSaver {
 	};
 
 	template <typename T>
-	struct CHelper2 {
-		template <bool a>
+	struct CHelper {
+
+		template <bool pointer>
 		IC	static void save_data(const T &data, M &stream, const P &p)
 		{
 			CHelper1<T>::save_data<
@@ -40,26 +41,6 @@ struct CSaver {
 					M
 				>::value
 			>(data,stream,p);
-		}
-
-		template <>
-		IC	static void save_data<true>(const T &data, M &stream, const P &p)
-		{
-			T* data1 = const_cast<T*>(&data);
-			data1->UPDATE_Write	(stream);
-		}
-	};
-
-	template <typename T>
-	struct CHelper {
-
-		template <bool pointer>
-		IC	static void save_data(const T &data, M &stream, const P &p)
-		{
-			CHelper2<T>::save_data<
-				object_type_traits::is_base_and_derived<IPureServerObject,T>::value &&
-				(object_type_traits::is_base_and_derived<NET_Packet,M>::value || object_type_traits::is_same<NET_Packet,M>::value)
-			>	(data,stream,p);
 		}
 
 		template <>

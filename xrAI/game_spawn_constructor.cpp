@@ -206,8 +206,7 @@ void CGameSpawnConstructor::save_spawn		(LPCSTR name, LPCSTR output)
 	stream.close_chunk				();
 	
 	stream.open_chunk				(1);
-	save_data						(spawn_graph(),*(IWriter*)&stream);
-//	save_data						(spawn_graph(),stream);
+	save_data						(spawn_graph(),stream);
 	stream.close_chunk				();
 
 	stream.open_chunk				(2);

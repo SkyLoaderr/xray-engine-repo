@@ -29,30 +29,18 @@ struct CLoader {
 	};
 
 	template <typename T>
-	struct CHelper2 {
-		template <bool a>
-		IC	static void load_data(T &data, M &stream, const P &p)
-		{
-			CHelper1<T>::load_data<object_type_traits::is_base_and_derived<IPureLîadableObject<M>,T>::value>(data,stream,p);
-		}
-
-		template <>
-		IC	static void load_data<true>(T &data, M &stream, const P &p)
-		{
-			data.UPDATE_Read	(stream);
-		}
-	};
-
-	template <typename T>
 	struct CHelper {
 
 		template <bool pointer>
 		IC	static void load_data(T &data, M &stream, const P &p)
 		{
-			CHelper2<T>::load_data<
-				object_type_traits::is_base_and_derived<IPureServerObject,T>::value &&
-				(object_type_traits::is_base_and_derived<NET_Packet,M>::value || object_type_traits::is_same<NET_Packet,M>::value)
-			>	(data,stream,p);
+			CHelper1<T>::load_data<
+				object_type_traits::is_base_and_derived_or_same_for_template_template_1_1<
+					IPureLîadableObject,
+					T,
+					M
+				>::value
+			>(data,stream,p);
 		}
 
 		template <>
