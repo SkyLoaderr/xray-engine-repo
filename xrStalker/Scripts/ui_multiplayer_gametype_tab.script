@@ -36,7 +36,7 @@ function gametype_tab:InitControls(x_pos, y_pos, width, height)
 						width	= rbtn_rect.widht,
 						height	= rbtn_rect.height}
 	rbtn_ah_rect	= { x		= rbnt_group_rect.x,
-						y		= rbtn_group_rect.y + rbtn_rect.height* + self.indent*2,
+						y		= rbtn_group_rect.y + rbtn_rect.height + self.indent*2,
 						width	= rbtn_rect.widht,
 						height	= rbtn_rect.height}
 	

@@ -25,9 +25,16 @@ function map_tab:InitControls(x_pos, y_pos, width, height)
 	ui_multiplayer_base_tab.multiplayer_base_tab.InitControls(self, "Map", x_pos, y_pos, width, height)
 	
 	----- DATA ----
-	----- BUTTONS --->>>
+	list_map_rect.x = 100
+	
+	list_map_l_rect = {}
+	list_map_l_rect.x = list_map_rect.x
+	
+	list_map_r_rect = {}
+	list_map_r_rect.x = list_map_rect.x
 	
 	
+	----- BUTTONS --->>>	
 	-- Bottom align
 	local btn_back_rect   = {0,
 							 y = self.bottom_align_y - self.btn_rect.height,							 
