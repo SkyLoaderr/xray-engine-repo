@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "fstaticrender.h"
+#include "..\environment.h"
 #include "..\fbasicvisual.h"
 #include "..\fcached.h"
 #include "..\xr_object.h"

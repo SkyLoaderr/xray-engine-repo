@@ -3,14 +3,13 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "GlowManager.h"
-
-// font
+#include "..\environment.h"
 #include "..\x_ray.h"
 #include "..\GameFont.h"
+#include "GlowManager.h"
 
 #define FADE_SCALE			1024.f
-#define MAX_GlowsDist1		float(g_pGameLevel->Environment.Current.Far)
+#define MAX_GlowsDist1		float(g_pGameLevel->Environment->Current.Far)
 #define MAX_GlowsDist2		float(MAX_GlowsDist1*MAX_GlowsDist1)
 
 //////////////////////////////////////////////////////////////////////

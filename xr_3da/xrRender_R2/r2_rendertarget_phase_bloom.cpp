@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "..\environment.h"
 
 #pragma pack(push,4)
 struct v_build	{

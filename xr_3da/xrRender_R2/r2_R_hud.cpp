@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "..\environment.h"
 using namespace SceneGraph;
 
 void __fastcall hud_L1		(mapSorted_Node *N)
