@@ -47,7 +47,7 @@ typedef CDataStorageBucketList<6*1024,_dist_type,u32,u32,true,24,8>				CDataStor
 typedef CPathManager<CGraph,CDataStorage,_dist_type,u32,u32>				CDistancePathManager;
 typedef CAStar<CDataStorage,CDistancePathManager,CGraph,u32,_dist_type>		CAStarSearch;
 
-#define TIME_TEST
+//#define TIME_TEST
 
 void path_test(LPCSTR caLevelName)
 {
@@ -138,7 +138,7 @@ void path_test(LPCSTR caLevelName)
 			Msg				("[%6d] Path lengths : %d[%f][%d] -> %d[%f][%d] (%f -> %f)",I,path.size(),data_storage->get_best().f(),v,path1.size(),f,v1,v_,v_1);
 		}
 		else
-			if (I % 100 == 0)
+			if (I % 1 == 0)
 				Msg			("%6d",I);
 //		u32					n = _min(path.size(),path1.size());
 //		for (u32 i=0; i<n; ++i)
