@@ -16,7 +16,7 @@ function main ()
                       get_level_object ("m_pseudodog_e0002"),   
                       get_level_object ("m_pseudodog_e0003"),   
                       get_level_object ("m_pseudodog_e0004"),   
-                      get_level_object ("m_pseudodog_e0005"),   
+--                      get_level_object ("m_pseudodog_e0005"),   
                       get_level_object ("m_pseudodog_e0007"),   
                       get_level_object ("m_boar_e0000"),   
                       get_level_object ("m_boar_e0001"),   
