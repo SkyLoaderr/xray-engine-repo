@@ -132,14 +132,19 @@ void CAI_ALife::vfSwitchObjectOffline(CALifeDynamicObject *tpALifeDynamicObject)
 
 void CAI_ALife::ProcessOnlineOfflineSwitches(CALifeDynamicObject *I)
 {
-	if (I->m_bOnline || !I->m_tNodeID || (I->m_tNodeID >= getAI().Header().count)) {
-		I->m_tNodeID = getAI().q_Node(I->m_tNodeID,I->o_Position);
-		_GRAPH_ID tGraphID = getAI().m_tpaCrossTable[I->m_tNodeID].tGraphIndex;
-		if ((tGraphID != I->m_tGraphID) && (I->ID_Parent == 0xffff))
-			vfChangeObjectGraphPoint(I,I->m_tGraphID,tGraphID);
-		I->m_fDistance = getAI().m_tpaCrossTable[I->m_tNodeID].fDistance;
+	if ((I->m_bOnline || (I->m_tNodeID < 0) || (I->m_tNodeID >= getAI().Header().count)) && (I->ID_Parent == 0xffff)) {
+		u64 qwStart = CPU::GetCycleCount();
+		if (!getAI().bfInsideNode(getAI().Node(I->m_tNodeID),I->o_Position)) {
+			I->m_tNodeID = getAI().q_Node(I->m_tNodeID,I->o_Position);
+			_GRAPH_ID tGraphID = getAI().m_tpaCrossTable[I->m_tNodeID].tGraphIndex;
+			if ((tGraphID != I->m_tGraphID) && (I->ID_Parent == 0xffff))
+				vfChangeObjectGraphPoint(I,I->m_tGraphID,tGraphID);
+			I->m_fDistance = getAI().m_tpaCrossTable[I->m_tNodeID].fDistance;
+		}
+		u64 qwFinish = CPU::GetCycleCount();
+		Msg("* ALife : synchronizing (%f) for object %s with node ID %d",(qwFinish - qwStart)*CPU::cycles2microsec/1000000.f,I->s_name_replace,I->m_tNodeID);
 	}
-	if (!I->m_tNodeID || (I->m_tNodeID >= getAI().Header().count))
+	if ((I->m_tNodeID < 0) || (I->m_tNodeID >= getAI().Header().count))
 		Msg("! ALife : Corresponding node hasn't been found for object %s",I->s_name_replace);
 	if (I->m_bOnline)
 		if (I->ID_Parent == 0xffff) {

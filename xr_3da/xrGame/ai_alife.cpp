@@ -267,10 +267,14 @@ void CAI_ALife::vfRemoveObject(xrServerEntity *tpServerEntity)
 
 	{
 		bool bOk = false;
-		ALIFE_ENTITY_P_IT	I = m_tpCurrentLevel->begin();
+		ALIFE_ENTITY_P_IT	B = m_tpCurrentLevel->begin(), I = B;
 		ALIFE_ENTITY_P_IT	E = m_tpCurrentLevel->end();
 		for ( ; I != E; I++)
 			if (*I == tpALifeDynamicObject) {
+				if (I - B >= m_dwObjectsBeingSwitched) {
+					if (m_dwObjectsBeingSwitched)
+						m_dwObjectsBeingSwitched--;
+				}
 				m_tpCurrentLevel->erase(I);
 				bOk			= true;
 				break;

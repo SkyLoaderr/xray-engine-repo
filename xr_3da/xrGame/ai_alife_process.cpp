@@ -45,7 +45,7 @@ void CAI_ALife::Update(u32 dt)
 			ALIFE_ENTITY_P_IT				M = B + m_dwObjectsBeingSwitched, I;
 			ALIFE_ENTITY_P_IT				E = m_tpCurrentLevel->end();
 			int i=1;
-			for (I = M ; I < E; I++, i++) {
+			for (I = M ; I != E; I++, i++) {
 				ProcessOnlineOfflineSwitches(*I);
 				if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= m_qwMaxProcessTime) {
 					m_dwObjectsBeingSwitched = I - B + 1;
@@ -53,7 +53,7 @@ void CAI_ALife::Update(u32 dt)
 					return;
 				}
 			}
-			for (I = B; I < M; I++, i++) {
+			for (I = B; I != M; I++, i++) {
 				ProcessOnlineOfflineSwitches(*I);
 				if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= m_qwMaxProcessTime) {
 					m_dwObjectsBeingSwitched = I - B + 1;
