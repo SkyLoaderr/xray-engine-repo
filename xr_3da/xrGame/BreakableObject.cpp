@@ -302,8 +302,16 @@ void CBreakableObject::ApplyExplosion(const Fvector &dir,float impulse)
 	if(!m_pPhysicsShell) return;
 	Fvector pos;pos.set(0.f,0.f,0.f);
 	u16 el_num=m_pPhysicsShell->get_ElementsNumber();
-	for(u16 i=0;i<el_num;i++)	
-		m_pPhysicsShell->get_ElementByStoreOrder(i)->applyImpulseTrace(pos,dir,impulse/el_num,0);
+	for(u16 i=0;i<el_num;i++)
+	{	
+		
+		Fvector max_area_dir;
+		CPhysicsElement* element=m_pPhysicsShell->get_ElementByStoreOrder(i);
+		element->get_MaxAreaDir(max_area_dir);
+		float	sign=max_area_dir.dotproduct(dir)>0.f ? 1.f : -1.f;
+		max_area_dir.mul(sign);
+		element->applyImpulseTrace(pos,max_area_dir,impulse/el_num,0);
+	}
 }
 
 void CBreakableObject::Init()

@@ -45,6 +45,7 @@ public:
 				void		get_local_form_bt	(Fmatrix& form)														 ;	    //for built
 				void		get_global_form_bt	(Fmatrix& form)														 ;		//for built
 				void		set_static_ref_form	(const Fmatrix& form)												 ;		//for built
+	virtual		void		get_max_area_dir_bt	(Fvector& dir)														=0;
 	virtual		float		radius				()																	=0;
 	virtual		void		get_extensions_bt	(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext) =0;
 	IC			dGeomID		geometry_transform   ()
@@ -96,6 +97,7 @@ public:
 	virtual		float		volume				()																	;
 	virtual		float		radius				()																	;
 	virtual		void		get_extensions_bt	(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext) ;
+	virtual		void		get_max_area_dir_bt	(Fvector& dir)														;
 	virtual		void		get_mass			(dMass& m)															;//unit dencity mass;
 virtual const	Fvector&	local_center		()																	;
 	virtual		void		get_local_form		(Fmatrix& form)														;
@@ -113,6 +115,7 @@ public:
 	virtual		float		volume				()																	;
 	virtual		float		radius				()																	;
 	virtual		void		get_extensions_bt	(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext) ;
+	virtual		void		get_max_area_dir_bt	(Fvector& dir)													  {};
 	virtual		void		get_mass			(dMass& m)															;//unit dencity mass;
 virtual const	Fvector&	local_center		()																	;
 	virtual		void		get_local_form		(Fmatrix& form)														;
@@ -129,6 +132,7 @@ public:
 	virtual		float		volume				()																	;
 	virtual		float		radius				()																	;
 	virtual		void		get_extensions_bt	(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext) ;
+	virtual		void		get_max_area_dir_bt	(Fvector& dir)													  {};
 virtual const	Fvector&	local_center		()																	;
 	virtual		void		get_mass			(dMass& m)															;//unit dencity mass;
 	virtual		void		get_local_form		(Fmatrix& form)														;

@@ -80,6 +80,7 @@ public:
 	virtual const Fvector&	local_mass_Center						()		{return CPHGeometryOwner::local_mass_Center();}							//aux
 	virtual float			getVolume								()		{return CPHGeometryOwner::get_volume();}								//aux
 	virtual void			get_Extensions							(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext);			//aux
+	virtual	void			get_MaxAreaDir							(Fvector& dir){CPHGeometryOwner::get_MaxAreaDir(dir);}
 	virtual float			getRadius								();
 ////////////////////////////////////////////////////Mass/////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

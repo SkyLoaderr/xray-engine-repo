@@ -329,6 +329,50 @@ void CBoxGeom::get_extensions_bt(const Fvector& axis,float center_prg,float& lo_
 	else GetBoxExtensions(geom(),(const float*)&axis,center_prg,&lo_ext,&hi_ext);
 }
 
+void CBoxGeom::get_max_area_dir_bt(Fvector& dir)
+{
+	dVector3 length,ddir;
+	dGeomBoxGetLengths (geometry(),length);
+	dReal S1=length[0]*length[1],S2=length[0]*length[2],S3=length[1]*length[2];
+	const dReal* R= dGeomGetRotation(geometry());
+	if(S1>S2)
+	{
+		if(S1>S3)
+		{
+			ddir[0]=R[2];ddir[1]=R[6];ddir[2]=R[10];//S1
+		}
+		else
+		{
+			ddir[0]=R[0];ddir[1]=R[4];ddir[2]=R[8];//S3
+		}
+	}
+	else
+	{
+		if(S2>S3)
+		{
+			ddir[0]=R[1];ddir[1]=R[5];ddir[2]=R[9];//S2
+		}
+		else
+		{
+			ddir[0]=R[0];ddir[1]=R[4];ddir[2]=R[8];//S3
+		}
+	}
+
+	if(geom())
+	{
+		const dReal* TR=dGeomGetRotation(geometry_transform());
+		dir.x=dDOT(ddir,TR);
+		dir.y=dDOT(ddir,TR+4);
+		dir.z=dDOT(ddir,TR+8);
+	}
+	else
+	{
+		dir.x=ddir[0];
+		dir.y=ddir[1];
+		dir.z=ddir[2];
+	}
+}
+
 const Fvector& CBoxGeom::local_center()
 {
 	return m_box.m_translate;

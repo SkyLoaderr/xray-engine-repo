@@ -263,6 +263,11 @@ void CPHGeometryOwner::get_Extensions(const Fvector& axis,float center_prg,float
 
 }
 
+void CPHGeometryOwner::get_MaxAreaDir(Fvector& dir)
+{
+	if(m_geoms.empty())return;
+	(*m_geoms.begin())->get_max_area_dir_bt(dir);
+}
 float CPHGeometryOwner::getRadius()
 {
 	if(!m_geoms.empty()) return m_geoms.back()->radius();

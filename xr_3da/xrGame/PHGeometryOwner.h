@@ -40,6 +40,7 @@ public:
 const	Fvector&				local_mass_Center						()		{return m_mass_center;}													//aux
 		float					get_volume								()		{calc_volume_data();return m_volume;};									//aux
 		void					get_Extensions							(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext);			//aux
+		void					get_MaxAreaDir							(Fvector& dir);
 		float					getRadius								();	
 		void					setStaticForm							(const Fmatrix& form);
 		void					setPosition								(const Fvector& pos);
