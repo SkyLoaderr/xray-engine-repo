@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "..\resourcemanager.h"
 #include "blender_light_mask.h"
 #include "blender_light_direct.h"
 #include "blender_light_point.h"
@@ -60,7 +61,7 @@ void	CRenderTarget::u_setrt			(u32 W, u32 H, IDirect3DSurface9* _1, IDirect3DSur
 void	CRenderTarget::OnDeviceCreate	()
 {
 	dwAccumulatorClearMark			= 0;
-	Device.Shader.Evict				();
+	Device.Resources->Evict			();
 
 	// Blenders
 	b_accum_mask					= xr_new<CBlender_accum_direct_mask>	();
@@ -185,7 +186,7 @@ void	CRenderTarget::OnDeviceCreate	()
 		{
 			// Surface
 			R_CHK						(D3DXCreateTexture(HW.pDevice,TEX_material_LdotN,TEX_material_LdotH,1,0,D3DFMT_A8R8G8B8,D3DPOOL_MANAGED,&t_material_surf));
-			t_material					= Device.Shader._CreateTexture(r2_material);
+			t_material					= Device.Resources->_CreateTexture(r2_material);
 			t_material->surface_set		(t_material_surf);
 
 			// Fill it (addr: x=dot(L,N),y=dot(L,H))
@@ -211,7 +212,7 @@ void	CRenderTarget::OnDeviceCreate	()
 		{
 			// Surface
 			R_CHK						(D3DXCreateTexture(HW.pDevice,TEX_ds2_fade_size,1,1,0,D3DFMT_A8R8G8B8,D3DPOOL_MANAGED,&t_ds2fade_surf));
-			t_ds2fade					= Device.Shader._CreateTexture(r2_ds2_fade);
+			t_ds2fade					= Device.Resources->_CreateTexture(r2_ds2_fade);
 			t_ds2fade->surface_set		(t_ds2fade_surf);
 
 			// Fill it (addr:depth/DSM_distance_2; res:x=mul,w=add)

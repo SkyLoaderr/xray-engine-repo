@@ -5,6 +5,18 @@
 #include "PHdynamicdata.h"
 #include "Physics.h"
 
+// Physics in single-threaded mode
+//////////////////////////////////////////////////////////////////////////
+struct _PhysicsProcessor	: public pureFrame
+{
+	virtual void OnFrame	( )
+	{
+		Device.Statistic.Physics.Begin		();
+		if (ph_world) ph_world->Step		(Device.fTimeDelta);
+		Device.Statistic.Physics.End		();
+	}
+}	PhysicsProcessor;
+
 BOOL CLevel::net_Start_client	( LPCSTR options )
 {
 	pApp->LoadBegin	();
@@ -36,8 +48,12 @@ BOOL CLevel::net_Start_client	( LPCSTR options )
 
 		// Load level
 		R_ASSERT2(Load						(level_id),"Loading failed.");
+
+		// Send physics to single or multithreaded mode
 		ph_world							= xr_new<CPHWorld>();
 		ph_world->Create					();
+		if (psDeviceFlags.test(mtPhysics))	Device.seqFrameMT.Add	(&PhysicsProcessor,REG_PRIORITY_HIGH);
+		else								Device.seqFrame.Add		(&PhysicsProcessor,REG_PRIORITY_LOW);
 
 		// Waiting for connection/configuration completition
 		pApp->LoadTitle						("CLIENT: Spawning...");

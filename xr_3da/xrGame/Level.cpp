@@ -170,9 +170,15 @@ void CLevel::OnFrame	()
 	inherited::OnFrame					();
 
 	// Physics
-	Device.Statistic.Physics.Begin		();
-	if (ph_world) ph_world->Step		(Device.fTimeDelta);
-	Device.Statistic.Physics.End		();
+	/*
+	if (!psDeviceFlags.test(mtPhysics))
+	{
+		// Physics in single-threaded mode
+		Device.Statistic.Physics.Begin		();
+		if (ph_world) ph_world->Step		(Device.fTimeDelta);
+		Device.Statistic.Physics.End		();
+	}
+	*/
 
 	// If we have enought bandwidth - replicate client data on to server
 	Device.Statistic.netClient.Begin();

@@ -18,7 +18,7 @@ void DestroyMarks(ShaderSVec4& lst)
 void DestroyPSs(PSSVec4& lst)
 {
 //	for (ShaderS4It it=lst.begin(); it!=lst.end(); it++)
-//		Device.Shader.Delete(*it);
+//		Device.Resources->Delete(*it);
 }
 
 void CreateSounds(SoundSVec4& lst, LPCSTR buf)

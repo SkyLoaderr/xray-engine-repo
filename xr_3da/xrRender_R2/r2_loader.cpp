@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "r2.h"
+#include "..\resourcemanager.h"
 #include "..\fbasicvisual.h"
 #include "..\fmesh.h"
 #include "..\xrLevel.h"
@@ -89,7 +90,7 @@ void CRender::level_Unload()
 
 void CRender::LoadBuffers	(IReader *base_fs)
 {
-	Device.Shader.Evict		();
+	Device.Resources->Evict		();
 	u32	dwUsage				= D3DUSAGE_WRITEONLY | (HW.Caps.vertex.bSoftware?D3DUSAGE_SOFTWAREPROCESSING:0);
 
 	// Vertex buffers
