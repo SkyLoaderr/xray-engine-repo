@@ -293,9 +293,8 @@ function Monster:process ()
 	end
 
 	--если монстр еще двигается по пути, то выйдем
-	if self.moving == true then return end
-
-	if true then
+	if self.moving == true then return
+	else
 	   printf ("FREE OBJECT %s", self.npc:name ())	
    	   self.npc:script (false, self.script)
 	   self.freemove = true
