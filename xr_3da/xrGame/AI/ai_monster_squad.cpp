@@ -69,20 +69,29 @@ void CMonsterSquad::UpdateCommand(CEntity *pE, const SSquadCommand &com)
 	it->second = com;
 }
 
-void CMonsterSquad::GetGoal(CEntity *pE, SMemberGoal &goal)
+SMemberGoal &CMonsterSquad::GetGoal(CEntity *pE)
 {
 	MEMBER_GOAL_MAP_IT it = m_goals.find(pE);
 	VERIFY(it != m_goals.end());
 
-	goal = it->second;
+	return it->second;
+}
+
+SSquadCommand &CMonsterSquad::GetCommand(CEntity *pE)
+{
+	MEMBER_COMMAND_MAP_IT it = m_commands.find(pE);
+	VERIFY(it != m_commands.end());
+	return it->second;
+}
+
+void CMonsterSquad::GetGoal(CEntity *pE, SMemberGoal &goal)
+{
+	goal = GetGoal(pE);
 }
 
 void CMonsterSquad::GetCommand(CEntity *pE, SSquadCommand &com)
 {
-	MEMBER_COMMAND_MAP_IT it = m_commands.find(pE);
-	VERIFY(it != m_commands.end());
-
-	com = it->second;
+	com	= GetCommand(pE);
 }
 
 void CMonsterSquad::UpdateSquadCommands()

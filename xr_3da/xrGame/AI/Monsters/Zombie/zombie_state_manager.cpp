@@ -10,6 +10,7 @@
 #include "../states/monster_state_hear_int_sound.h"
 #include "zombie_state_attack_run.h"
 #include "../states/monster_state_squad_rest.h"
+#include "../states/monster_state_squad_rest_follow.h"
 #include "../../ai_monster_debug.h"
 
 CStateManagerZombie::CStateManagerZombie(CZombie *obj) : inherited(obj)
@@ -25,6 +26,7 @@ CStateManagerZombie::CStateManagerZombie(CZombie *obj) : inherited(obj)
 	add_state(eStateEat,				xr_new<CStateMonsterEat<CZombie> >(obj));
 	add_state(eStateInterestingSound,	xr_new<CStateMonsterHearInterestingSound<CZombie> >(obj));
 	add_state(eStateSquadRest,			xr_new<CStateMonsterSquadRest<CZombie> >(obj));
+	add_state(eStateSquadRestFollow,	xr_new<CStateMonsterSquadRestFollow<CZombie> >(obj));
 }
 
 CStateManagerZombie::~CStateManagerZombie()
@@ -41,11 +43,6 @@ void CStateManagerZombie::execute()
 	u32 state_id = u32(-1);
 	const CEntityAlive* enemy	= object->EnemyMan.get_enemy();
 	const CEntityAlive* corpse	= object->CorpseMan.get_corpse();
-
-	CMonsterSquad	*squad = monster_squad().get_squad(object);
-	SSquadCommand	command;
-	squad->GetCommand(object, command);
-
 
 	if (enemy) {
 		state_id = eStateAttack;
@@ -65,8 +62,12 @@ void CStateManagerZombie::execute()
 
 		if (can_eat) state_id = eStateEat;
 		else {
-			if (squad && squad->SquadActive() && (command.type == SC_REST)) {
+			
+			// Rest & Idle states here 
+			if (monster_squad().get_squad(object)->GetCommand(object).type == SC_REST) {
 				state_id = eStateSquadRest;
+			} else if (monster_squad().get_squad(object)->GetCommand(object).type == SC_FOLLOW) {
+				state_id = eStateSquadRestFollow;
 			} else 
 				state_id = eStateRest;
 		}
@@ -83,9 +84,9 @@ void CStateManagerZombie::execute()
 	// информировать squad о своих целях
 	squad_notify();
 
-	if (squad->GetLeader() == object) {
+	if (monster_squad().get_squad(object)->GetLeader() == object) {
 		object->HDebug->L_Clear();
-		object->HDebug->L_AddPoint(squad->GetLeader()->Position(), 0.35f, D3DCOLOR_XRGB(0,255,0));
+		object->HDebug->L_AddPoint(monster_squad().get_squad(object)->GetLeader()->Position(), 0.35f, D3DCOLOR_XRGB(0,255,0));
 	}
 }
 
@@ -116,7 +117,7 @@ void CStateManagerZombie::squad_notify()
 			goal.type	= MG_WalkGraph;
 
 		}
-	} else if (current_substate == eStateSquadRest) {
+	} else if ((current_substate == eStateSquadRest) || (current_substate == eStateSquadRestFollow)) {
 		
 		goal.type	= MG_Rest;
 

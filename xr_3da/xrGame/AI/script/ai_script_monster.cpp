@@ -223,6 +223,9 @@ void CScriptMonster::vfFinishAction(CScriptEntityAction *tpEntityAction)
 	}
 	if (!tpEntityAction->m_tParticleAction.m_bAutoRemove)
 		xr_delete(tpEntityAction->m_tParticleAction.m_tpParticleSystem);
+
+	//if (tpEntityAction->m_tAnimationAction.) {
+	//}
 }
 
 void CScriptMonster::ProcessScripts()
@@ -278,7 +281,11 @@ void CScriptMonster::ProcessScripts()
 	if (l_tpEntityAction->m_tWatchAction.m_bCompleted && !l_bCompleted && m_tpCallbacks[eActionTypeWatch].get_object())
 		callback(eActionTypeWatch);
 
+	l_bCompleted	= l_tpEntityAction->m_tAnimationAction.m_bCompleted;
 	bfAssignAnimation(l_tpEntityAction);
+	if (l_tpEntityAction->m_tAnimationAction.m_bCompleted && !l_bCompleted)
+		bfFinalizeAnimation();
+
 
 	l_bCompleted	= l_tpEntityAction->m_tSoundAction.m_bCompleted;
 	bfAssignSound	(l_tpEntityAction);
@@ -300,6 +307,7 @@ void CScriptMonster::ProcessScripts()
 	if (l_tpEntityAction->m_tMovementAction.m_bCompleted && !l_bCompleted)
 		SCRIPT_CALLBACK_EXECUTE_3(m_tpCallbacks[eActionTypeMovement], lua_game_object(),u32(eActionTypeMovement),-1);
 
+	// Установить выбранную анимацию
 	if (!l_tpEntityAction->m_tAnimationAction.m_bCompleted)
 		bfScriptAnimation	();
 

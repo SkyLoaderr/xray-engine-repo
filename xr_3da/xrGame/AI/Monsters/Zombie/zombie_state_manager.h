@@ -16,6 +16,7 @@ class CStateManagerZombie : public CState<CZombie> {
 		eStateFindEnemy,
 		eStateFakeDeath,
 		eStateSquadRest,
+		eStateSquadRestFollow
 	};
 
 public:

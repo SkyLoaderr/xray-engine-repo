@@ -77,16 +77,20 @@ public:
 
 	// -----------------------------------------------------------------
 
-	void		SetLeader			(CEntity *pE) {leader = pE;}
-	CEntity		*GetLeader			() {return leader;}
+	void			SetLeader			(CEntity *pE) {leader = pE;}
+	CEntity			*GetLeader			() {return leader;}
+
+	// -----------------------------------------------------------------
+	
+	void			UpdateGoal			(CEntity *pE, const SMemberGoal	&goal);
+	void			UpdateCommand		(CEntity *pE, const SSquadCommand &com);
 
 	
-	void		UpdateGoal			(CEntity *pE, const SMemberGoal	&goal);
-	void		UpdateCommand		(CEntity *pE, const SSquadCommand &com);
+	void			GetGoal				(CEntity *pE, SMemberGoal &goal);
+	void			GetCommand			(CEntity *pE, SSquadCommand &com);
+	SMemberGoal		&GetGoal			(CEntity *pE);
+	SSquadCommand	&GetCommand			(CEntity *pE);
 
-	void		GetGoal				(CEntity *pE, SMemberGoal &goal);
-	void		GetCommand			(CEntity *pE, SSquadCommand &com);
-		
 	// -----------------------------------------------------------------
 	
 	

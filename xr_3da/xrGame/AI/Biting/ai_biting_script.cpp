@@ -354,4 +354,10 @@ int	CAI_Biting::get_enemy_strength()
 	return (0);
 }
 
+void CAI_Biting::bfFinalizeAnimation()
+{
+	inherited::bfFinalizeAnimation();
+	MotionMan.ForceAnimSelect();
+}
+
 

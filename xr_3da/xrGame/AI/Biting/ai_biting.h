@@ -149,6 +149,8 @@ public:
 	virtual	bool			bfAssignMonsterAction			(CScriptEntityAction	*tpEntityAction);
 	virtual bool			bfAssignSound					(CScriptEntityAction *tpEntityAction);
 	
+	virtual void			bfFinalizeAnimation				();
+	
 	virtual void			ProcessScripts					();
 
 	virtual	CEntity			*GetCurrentEnemy				();

@@ -2465,6 +2465,12 @@
 									RelativePath=".\ai\Monsters\States\monster_state_squad_rest.h">
 								</File>
 								<File
+									RelativePath=".\ai\Monsters\States\monster_state_squad_rest_follow.h">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\States\monster_state_squad_rest_follow_inline.h">
+								</File>
+								<File
 									RelativePath=".\ai\Monsters\States\monster_state_squad_rest_inline.h">
 								</File>
 							</Filter>
