@@ -29,6 +29,7 @@ CSoundRender_Emitter::CSoundRender_Emitter(void)
 	dwTimeToStop		= 0;
 	dwTimeToPropagade	= 0;
 	marker				= 0xabababab;
+	starting_delay		= 0.f;
 }
 
 CSoundRender_Emitter::~CSoundRender_Emitter(void)

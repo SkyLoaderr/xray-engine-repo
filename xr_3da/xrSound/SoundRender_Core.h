@@ -66,10 +66,10 @@ public:
 	// Sound interface
 	virtual void						create					( ref_sound& S, BOOL _3D,	LPCSTR fName,	int		type=0);
 	virtual void						destroy					( ref_sound& S);
-	virtual void						play					( ref_sound& S, CObject* O,								BOOL bLoop=false);
-	virtual void						play_unlimited			( ref_sound& S, CObject* O,								BOOL bLoop=false);
-	virtual void						play_at_pos				( ref_sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false);
-	virtual void						play_at_pos_unlimited	( ref_sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false);
+	virtual void						play					( ref_sound& S, CObject* O,								BOOL bLoop=false, float delay=0.f);
+	virtual void						play_unlimited			( ref_sound& S, CObject* O,								BOOL bLoop=false, float delay=0.f);
+	virtual void						play_at_pos				( ref_sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false, float delay=0.f);
+	virtual void						play_at_pos_unlimited	( ref_sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false, float delay=0.f);
 	virtual void						set_geometry_env		( IReader* I );
 	virtual void						set_geometry_occ		( CDB::MODEL* M );
 	virtual void						set_handler				( sound_event* E );
@@ -87,7 +87,7 @@ public:
 public:
 	CSoundRender_Source*				i_create_source			( LPCSTR name, BOOL _3D		);
 	void								i_destroy_source		( CSoundRender_Source*  S	);
-	CSoundRender_Emitter*				i_play					( ref_sound* S, BOOL _loop		);
+	CSoundRender_Emitter*				i_play					( ref_sound* S, BOOL _loop, float delay	);
 	void								i_start					( CSoundRender_Emitter* E	);
 	void								i_stop					( CSoundRender_Emitter* E	);
 	void								i_rewind				( CSoundRender_Emitter* E	);

@@ -8,10 +8,14 @@
 
 class CSoundRender_Emitter		:	public CSound_interface
 {
+	float						starting_delay;
 public:
 	enum State
 	{
 		stStopped		= 0,
+
+		stStartingDelayed,
+		stStartingLoopedDelayed,
 
 		stStarting,
 		stStartingLooped,
@@ -61,7 +65,7 @@ public:
 	void						fill_data				(u8*	ptr, u32 offset, u32 size);
 
 	float						priority				();
-	void						start					(ref_sound* _owner, BOOL _loop);
+	void						start					(ref_sound* _owner, BOOL _loop, float delay);
 	void						cancel					();						// manager forces out of rendering
 	void						update					(float dt);
 	BOOL						update_culling			(float dt);

@@ -119,10 +119,10 @@ struct	ref_sound
 	/*!
 		\sa stop()
 	*/
-	IC void					play					( CObject* O /*!< Object */,											BOOL bLoop=false  /*!< Looping */);
-	IC void					play_unlimited			( CObject* O /*!< Object */,											BOOL bLoop=false  /*!< Looping */);
-	IC void					play_at_pos				( CObject* O /*!< Object */,	const Fvector &pos /*!< 3D position */,	BOOL bLoop=false  /*!< Looping */);
-	IC void					play_at_pos_unlimited	( CObject* O /*!< Object */,	const Fvector &pos /*!< 3D position */,	BOOL bLoop=false  /*!< Looping */);
+	IC void					play					( CObject* O /*!< Object */,											BOOL bLoop=false  /*!< Looping */, float delay=0.f /*!< Delay */);
+	IC void					play_unlimited			( CObject* O /*!< Object */,											BOOL bLoop=false  /*!< Looping */, float delay=0.f /*!< Delay */);
+	IC void					play_at_pos				( CObject* O /*!< Object */,	const Fvector &pos /*!< 3D position */,	BOOL bLoop=false  /*!< Looping */, float delay=0.f /*!< Delay */);
+	IC void					play_at_pos_unlimited	( CObject* O /*!< Object */,	const Fvector &pos /*!< 3D position */,	BOOL bLoop=false  /*!< Looping */, float delay=0.f /*!< Delay */);
 	//@}
 
 	//! Stops playing this source
@@ -211,10 +211,10 @@ public:
 	/// Sound interface
 	virtual void					create					( ref_sound& S, BOOL _3D,	LPCSTR fName,	int		type=st_SourceType)					= 0;
 	virtual void					destroy					( ref_sound& S)																			= 0;
-	virtual void					play					( ref_sound& S, CObject* O,								BOOL bLoop=false)				= 0;
-	virtual void					play_unlimited			( ref_sound& S, CObject* O,								BOOL bLoop=false)				= 0;
-	virtual void					play_at_pos				( ref_sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false)				= 0;
-	virtual void					play_at_pos_unlimited	( ref_sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false)				= 0;
+	virtual void					play					( ref_sound& S, CObject* O,								BOOL bLoop=false, float delay=0.f)	= 0;
+	virtual void					play_unlimited			( ref_sound& S, CObject* O,								BOOL bLoop=false, float delay=0.f)	= 0;
+	virtual void					play_at_pos				( ref_sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false, float delay=0.f)	= 0;
+	virtual void					play_at_pos_unlimited	( ref_sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false, float delay=0.f)	= 0;
 
 	virtual void					set_geometry_env		( IReader* I )																			= 0;
 	virtual void					set_geometry_occ		( CDB::MODEL* M )																		= 0;
@@ -237,10 +237,10 @@ extern XRSOUND_API CSound_manager_interface*		Sound;
 /// ********* Sound ********* (utils, accessors, helpers)
 IC void	ref_sound::create						( BOOL _3D,	LPCSTR name,	int		type)				{	::Sound->create					(*this,_3D,name,type);				}
 IC void	ref_sound::destroy						( )														{	::Sound->destroy				(*this);							}
-IC void	ref_sound::play							( CObject* O,						BOOL bLoop)			{	::Sound->play					(*this,O,bLoop);					}
-IC void ref_sound::play_unlimited				( CObject* O,						BOOL bLoop)			{	::Sound->play_unlimited			(*this,O,bLoop);					}
-IC void	ref_sound::play_at_pos					( CObject* O,	const Fvector &pos,	BOOL bLoop)			{	::Sound->play_at_pos			(*this,O,pos,bLoop);				}
-IC void	ref_sound::play_at_pos_unlimited		( CObject* O,	const Fvector &pos,	BOOL bLoop)			{	::Sound->play_at_pos_unlimited	(*this,O,pos,bLoop);				}
+IC void	ref_sound::play							( CObject* O,						BOOL bLoop, float d){	::Sound->play					(*this,O,bLoop);					}
+IC void ref_sound::play_unlimited				( CObject* O,						BOOL bLoop, float d){	::Sound->play_unlimited			(*this,O,bLoop);					}
+IC void	ref_sound::play_at_pos					( CObject* O,	const Fvector &pos,	BOOL bLoop, float d){	::Sound->play_at_pos			(*this,O,pos,bLoop);				}
+IC void	ref_sound::play_at_pos_unlimited		( CObject* O,	const Fvector &pos,	BOOL bLoop, float d){	::Sound->play_at_pos_unlimited	(*this,O,pos,bLoop);				}
 IC void	ref_sound::set_position					( const Fvector &pos)									{	VERIFY(feedback);feedback->set_position(pos);						}
 IC void	ref_sound::set_frequency				( float freq)											{	if (feedback)	feedback->set_frequency(freq);						}
 IC void	ref_sound::set_range					( float min, float max )								{	if (feedback)	feedback->set_range(min,max);						}

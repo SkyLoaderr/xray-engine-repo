@@ -13,6 +13,11 @@ void CSoundRender_Emitter::update	(float dt)
 	{
 	case stStopped:
 		break;
+	case stStartingDelayed:
+	    starting_delay		-= dt;
+    	if (starting_delay<=0) 
+        	state			= stStarting;
+    	break;
 	case stStarting:
 		dwTimeStarted		= dwTime;
 		dwTimeToStop		= dwTime + source->dwTimeTotal;
@@ -22,12 +27,17 @@ void CSoundRender_Emitter::update	(float dt)
 		e_current = e_target= *SoundRender.get_environment	(p_source.position);
 		if (update_culling(dt))	
 		{
-			state				=	stPlaying;
-			position			=	0;
+			state			=	stPlaying;
+			position		=	0;
 			SoundRender.i_start(this);
 		}
-		else state				=	stSimulating;
+		else state			=	stSimulating;
 		break;
+	case stStartingLoopedDelayed:
+	    starting_delay		-= dt;
+    	if (starting_delay<=0) 
+	    	state			= stStartingLooped;
+    	break;
 	case stStartingLooped:
 		dwTimeStarted		= dwTime;
 		dwTimeToStop		= 0xffffffff;
@@ -37,11 +47,11 @@ void CSoundRender_Emitter::update	(float dt)
 		e_current = e_target= *SoundRender.get_environment	(p_source.position);
 		if (update_culling(dt))	
 		{
-			state				=	stPlayingLooped;
-			position			=	0;
+			state		  	=	stPlayingLooped;
+			position	  	=	0;
 			SoundRender.i_start(this);
 		}
-		else state				=	stSimulatingLooped;
+		else state		  	=	stSimulatingLooped;
 		break;
 	case stPlaying:
 		if (dwTime>=dwTimeToStop)	

@@ -5,8 +5,9 @@
 #include "SoundRender_Emitter.h"
 #include "SoundRender_Source.h"
 
-void CSoundRender_Emitter::start(ref_sound* _owner, BOOL _loop)
+void CSoundRender_Emitter::start(ref_sound* _owner, BOOL _loop, float delay)
 {
+	starting_delay			= delay;
 	source					= (CSoundRender_Source*)_owner->handle;
 	owner					= _owner;
 	p_source.position.set	(0,0,0);
@@ -15,7 +16,11 @@ void CSoundRender_Emitter::start(ref_sound* _owner, BOOL _loop)
 	p_source.freq			= 1.f;
 	p_source.volume			= 1.f;
 
-	state					= _loop?stStartingLooped:stStarting;
+    if (fis_zero(delay,EPS_L)){
+		state				= _loop?stStartingLooped:stStarting;
+    }else{
+		state				= _loop?stStartingLoopedDelayed:stStartingDelayed;
+    }
 }
 
 void CSoundRender_Emitter::stop	()

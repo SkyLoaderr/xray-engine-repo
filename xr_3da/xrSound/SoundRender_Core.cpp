@@ -247,7 +247,7 @@ void	CSoundRender_Core::create				( ref_sound& S, BOOL _3D, const char* fName, i
 	S.g_type	= (type==st_SourceType)?S.handle->game_type():type;
 }
 
-void	CSoundRender_Core::play					( ref_sound& S, CObject* O, BOOL bLoop)
+void	CSoundRender_Core::play					( ref_sound& S, CObject* O, BOOL bLoop, float delay)
 {
 	if (!bPresent || 0==S.handle)	return;
 
@@ -257,14 +257,14 @@ void	CSoundRender_Core::play					( ref_sound& S, CObject* O, BOOL bLoop)
 		CSoundRender_Emitter* E = (CSoundRender_Emitter*)S.feedback;
 		E->rewind	();
 	}	
-	else			i_play	(&S,bLoop);
+	else			i_play	(&S,bLoop,delay);
 }
-void	CSoundRender_Core::play_unlimited		( ref_sound& S, CObject* O, BOOL bLoop)
+void	CSoundRender_Core::play_unlimited		( ref_sound& S, CObject* O, BOOL bLoop, float delay)
 {
 	if (!bPresent || 0==S.handle) return;
-	i_play				(&S,bLoop);
+	i_play				(&S,bLoop,delay);
 }
-void	CSoundRender_Core::play_at_pos			( ref_sound& S, CObject* O, const Fvector &pos, BOOL bLoop)
+void	CSoundRender_Core::play_at_pos			( ref_sound& S, CObject* O, const Fvector &pos, BOOL bLoop, float delay)
 {
 	if (!bPresent || 0==S.handle) return;
 	S.g_object		= O;
@@ -273,13 +273,13 @@ void	CSoundRender_Core::play_at_pos			( ref_sound& S, CObject* O, const Fvector 
 		CSoundRender_Emitter* E = (CSoundRender_Emitter*)S.feedback;
 		E->rewind	();
 	}	
-	else				i_play				(&S,bLoop);
+	else				i_play				(&S,bLoop,delay);
 	S.feedback->set_position				(pos);
 }
-void	CSoundRender_Core::play_at_pos_unlimited	( ref_sound& S, CObject* O, const Fvector &pos, BOOL bLoop)
+void	CSoundRender_Core::play_at_pos_unlimited	( ref_sound& S, CObject* O, const Fvector &pos, BOOL bLoop, float delay)
 {
 	if (!bPresent || 0==S.handle) return;
-	i_play						(&S,bLoop);
+	i_play						(&S,bLoop,delay);
 	S.feedback->set_position	(pos);
 }
 void	CSoundRender_Core::destroy(ref_sound& S )
