@@ -476,6 +476,14 @@ SOURCE=.\Blender.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\Blender_Recorder.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Blender_Recorder.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\tss.h
 # End Source File
 # Begin Source File
