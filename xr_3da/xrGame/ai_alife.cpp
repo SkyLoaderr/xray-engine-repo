@@ -296,8 +296,9 @@ void CSE_ALifeSimulator::vfGenerateAnomalousZones()
 		// we assume that zones in the spawn groups are generated in a row 
 		// therefore they _must_ have their IDs in a row, since we starts their ID generation with a fullfilled
 		// ID deque id_free in the class xrServer
-		// here we use this information by iterating on vector m_tpSpawnPoints and map m_tObjectRegistry
-		// if this condition is not guaranteed we have to rewrite this piece of code
+		// here we use this information by iterating on vector m_tpSpawnPoints and map m_tObjectRegistry 
+		// (because this map is ordered by ID in ascending order)
+		// if this condition is _not_ guaranteed we have to rewrite this piece of code
 		// !
 		float					fSum = 0;
 		ALIFE_ENTITY_P_IT		i = m_tpSpawnPoints.begin() + l_tpALifeAnomalousZone->m_tSpawnID, j = i, e = m_tpSpawnPoints.end(), b = m_tpSpawnPoints.begin();
@@ -459,9 +460,9 @@ void CSE_ALifeSimulator::vfPerformSurge()
 	for ( ; I != E; I++) {
 		vfSellArtefacts			(**I);
 		vfUpdateArtefactOrders	(**I);
-		vfGiveMilitariesBribe	(**I);
 		vfBuySupplies			(**I);
 		vfAssignPrices			(**I);
+		vfGiveMilitariesBribe	(**I);
 	}
 	vfKillCreatures				();
 	vfBallanceCreatures			();

@@ -125,7 +125,7 @@ cform				= skeleton
 
 class				= W_KNIFE
 
-visual				= weapon\knife\wpn_knife.ogf
+visual				= weapon\wpn\wpn_knife.ogf
 inv_name			= Knife
 
 inv_name_short		= Knife
@@ -3941,6 +3941,29 @@ class						= AI_SPGRP
 [spawn_group]
 $spawn						= on			; option for Level Editor
 class						= AI_SPGRP
+
+[organizations]
+	agroprom
+	navy
+	scientists
+	
+[agroprom]
+	name					= "Agroprom"
+	artefacts				= af_magnet,discovery_magnet,0.2,0.2
+
+[navy]
+	name					= "Agroprom"
+	artefacts				= af_magnet,discovery_magnet,0.2,0.2
+
+[scientists]
+	name					= "Agroprom"
+	artefacts				= af_magnet,discovery_magnet,0.2,0.2
+
+[discovery_magnet]
+	name					= "Super-puper-hyper-turbo force field"
+	probability				= 0.3
+	demand					= 
+	5
 
 [alife]
     schedule_min         = 1                ; milliseconds
