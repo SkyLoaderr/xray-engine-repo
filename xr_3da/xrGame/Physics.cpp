@@ -17,9 +17,28 @@ static void FUNCCALL NearCallback(void* /*data*/, dGeomID o1, dGeomID o2);
 
 void CPHWorld::Render()
 {
-//	Device.Shader.OnFrameEnd		();
-//	Device.Primitive.dbg_DrawAABB	(vCenter,sx,sy,sz,0xffffffff);
-//	Device.Primitive.dbg_DrawEllipse(M, 0xfffffff);
+	Device.Shader.OnFrameEnd		();
+	Fvector center;
+	memcpy(&center,Jeep.DynamicData.pos,sizeof(Fvector));
+	Device.Primitive.dbg_DrawAABB	(center,Jeep.jeepBox[0],Jeep.jeepBox[1],Jeep.jeepBox[2],0xffffffff);
+	center.x-=Jeep.jeepBox[0]/2.;
+	center.x+=Jeep.cabinBox[0]/2.;
+	center.y-=Jeep.jeepBox[1]/2.;
+	center.y+=Jeep.cabinBox[1]/2.;
+	Device.Primitive.dbg_DrawAABB	(center,Jeep.cabinBox[0],Jeep.cabinBox[1],Jeep.cabinBox[2],0xffffffff);
+	Fmatrix M;
+	Jeep.DynamicData[0].GetWorldMX(M);
+	M.mul(1.6f/0.8f*0.28f);
+	Device.Primitive.dbg_DrawEllipse(M, 0xfffffff);
+	Jeep.DynamicData[1].GetWorldMX(M);
+	M.mul(1.6f/0.8f*0.28f);
+	Device.Primitive.dbg_DrawEllipse(M, 0xfffffff);
+	Jeep.DynamicData[2].GetWorldMX(M);
+	M.mul(1.6f/0.8f*0.28f);
+	Device.Primitive.dbg_DrawEllipse(M, 0xfffffff);
+	Jeep.DynamicData[3].GetWorldMX(M);
+	M.mul(1.6f/0.8f*0.28f);
+	Device.Primitive.dbg_DrawEllipse(M, 0xfffffff);
 }
 
 //////////////////////////////////////////////////////////////
@@ -46,11 +65,12 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 	
 	static const dReal scaleParam=1.6/0.8;
 	static const dVector3 scaleBox={REAL(2.4)*scaleParam, REAL(0.4)*scaleParam, REAL(1.5)*scaleParam};
-	static const dVector3 jeepBox={scaleBox[0],scaleBox[0],scaleBox[0]};
-	static const dVector3 cabinBox={scaleBox[0]/1.7,scaleBox[1]*2.,scaleBox[2]/1.01};
+	//jeepBox={scaleBox[0],scaleBox[0],scaleBox[0]};
+	jeepBox[0]=scaleBox[0];jeepBox[1]=scaleBox[1];jeepBox[2]=scaleBox[2];
+	cabinBox[0]=scaleBox[0]/1.7;cabinBox[1]=scaleBox[1]*2.;cabinBox[2]=scaleBox[2]/1.01;
 
 	static const dReal wheelRadius = REAL(0.28)* scaleParam, wheelWidth = REAL(0.25)* scaleParam;
-	static const wheelSegments = 24;
+	
 
 	static const dVector3 startPosition={0.f,15.f,0.f};
 	static const dReal weelSepX=jeepBox[0]/2.f-jeepBox[0]/8.f,weelSepZ=jeepBox[2]/2.f-wheelRadius/2.f,weelSepY=jeepBox[2];

@@ -29,6 +29,8 @@ public:
 	void Steer(const char& velocity, const char& steering);
 
 	PHDynamicData DynamicData;
+	dVector3 jeepBox;
+	dVector3 cabinBox;
 };
 
 //////////////////////////////////////////////////////////////////////////////////

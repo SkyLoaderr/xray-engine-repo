@@ -32,10 +32,10 @@ public:
 	PHDynamicData();
 	virtual ~PHDynamicData();
 	void GetWorldMX(Fmatrix& transform){
-	
-	//DMXPStoFMX(QtoR(dBodyGetQuaternion(body)),dBodyGetPosition(body),transform);
-
-	}
+			dMatrix3 R;
+			dQtoR(dBodyGetQuaternion(body),R);
+			DMXPStoFMX(R,dBodyGetPosition(body),transform);
+			}
 	static inline DMXPStoFMX(const dReal* R,const dReal* pos,Fmatrix& transform){
 
 			memcpy(&transform,R,sizeof(Fmatrix));
