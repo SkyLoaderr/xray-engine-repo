@@ -225,9 +225,8 @@ void CSE_ALifeTraderAbstract::set_specific_character	(SPECIFIC_CHARACTER_INDEX n
 		if(ai().get_alife())
 			ai().alife().registry(specific_characters).remove(m_iSpecificCharacter, true);
 	}
-#endif
-
 	m_iSpecificCharacter = new_spec_char;
+#endif
 
 
 #ifdef XRGAME_EXPORTS
@@ -240,7 +239,7 @@ void CSE_ALifeTraderAbstract::set_specific_character	(SPECIFIC_CHARACTER_INDEX n
 #endif
 
 	CSpecificCharacter selected_char;
-	selected_char.Load(m_iSpecificCharacter);
+	selected_char.Load(new_spec_char);
 	if(selected_char.Visual())
 	{
 		CSE_Visual* visual = smart_cast<CSE_Visual*>(base()); VERIFY(visual);
