@@ -104,6 +104,7 @@ __inline float expf	(float val)                           	{ return ::exp(val);}
 DEFINE_VECTOR		(AnsiString,AStringVec,AStringIt);
 DEFINE_VECTOR		(AnsiString*,LPAStringVec,LPAStringIt);
 
+#include "xrEProps.h"
 #include "Log.h"
 #include "engine.h"
 #include "defines.h"
@@ -146,6 +147,8 @@ struct astr_pred : public std::binary_function<const AnsiString&, const AnsiStri
 // external dependencies
 
 #pragma comment(lib,"ECoreB_static.lib")
+
+#pragma comment(lib,"xrEPropsB.lib")
 
 #pragma comment(lib,"xrCoreB.lib")
 #pragma comment(lib,"xrSoundB.lib")
