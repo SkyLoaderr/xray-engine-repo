@@ -28,11 +28,12 @@ void CSpawn::Load	(CStream& FS)
 	FS.Read			(&description,sizeof(description));
 }
 
+#include "spawn_event.h"
 CSpawn* CSpawn::Create		(CLASS_ID cls)
 {
 	switch (cls)
 	{
-	case CLSID_SPAWN_EVENT:		return 0;
+	case CLSID_SPAWN_EVENT:		return new CSpawn_Event;
 	case CLSID_SPAWN_ZONE:		return 0;
 	case CLSID_SPAWN_ENTITY:	return 0;
 	default:					return 0;

@@ -11,7 +11,8 @@
 
 CSpawn_Event::CSpawn_Event()
 {
-	Commands.push_back	(Pair());
+	description.CLS					= CLSID_SPAWN_EVENT;
+	Commands.push_back				(Pair());
 	Commands.back().Target.Count	= 2;
 }
 

@@ -37,6 +37,7 @@ public:
 // Base class
 class CSpawn : public CPropertyBase
 {
+protected:	
 	CSpawn_DESC				description;
 public:
 	static		CSpawn*		Create			(CLASS_ID cls);
