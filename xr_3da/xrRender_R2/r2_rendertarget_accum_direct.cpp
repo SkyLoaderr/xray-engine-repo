@@ -2,6 +2,7 @@
 
 void CRenderTarget::accum_direct		(u32 sub_phase)
 {
+	phase_accumulator					();
 	RImplementation.stats.l_visible		++;
 
 	// *** assume accumulator setted up ***
@@ -117,6 +118,13 @@ void CRenderTarget::accum_direct		(u32 sub_phase)
 		// setup stencil
 		RCache.set_Stencil			(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0xff,0x00);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
+
+		// blend-copy
+		if (!RImplementation.o.fp16_blend)	{
+			u_setrt						(rt_Accumulator,NULL,NULL,HW.pBaseZB);
+			RCache.set_Element			(s_accum_mask->E[SE_MASK_ACCUM_2D]	);
+			RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2	);
+		}
 	}
 }
 

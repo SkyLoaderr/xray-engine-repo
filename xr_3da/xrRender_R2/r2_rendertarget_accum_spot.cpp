@@ -4,6 +4,7 @@ extern Fvector du_cone_vertices[DU_CONE_NUMVERTEX];
 
 void CRenderTarget::accum_spot	(light* L)
 {
+	phase_accumulator				();
 	RImplementation.stats.l_visible	++;
 
 	// *** assume accumulator setted up ***
@@ -131,6 +132,14 @@ void CRenderTarget::accum_spot	(light* L)
 		RCache.set_ca				("m_lmap",		1,	m_Lmap._12, m_Lmap._22, m_Lmap._32, m_Lmap._42	);
 
 		RCache.set_Stencil			(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0xff,0x00);
+		draw_volume					(L);
+	}
+	// blend-copy
+	if (!RImplementation.o.fp16_blend)	{
+		u_setrt						(rt_Accumulator,NULL,NULL,HW.pBaseZB);
+		RCache.set_Element			(s_accum_mask->E[SE_MASK_ACCUM_VOL]	);
+		RCache.set_c				("m_texgen",		m_Texgen);
+		RCache.set_c				("m_texgen_J",		m_Texgen_J	);
 		draw_volume					(L);
 	}
 	dwLightMarkerID					+=	2;	// keep lowest bit always setted up

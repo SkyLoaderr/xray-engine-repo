@@ -21,6 +21,7 @@ void	CBlender_accum_direct::Compile(CBlender_Compile& C)
 		C.r_Sampler_rtf		("s_position",		r2_RT_P			);
 		C.r_Sampler_rtf		("s_normal",		r2_RT_N			);
 		C.r_Sampler_clw		("s_material",		r2_material		);
+		C.r_Sampler_rtf		("s_accumulator",	r2_RT_accum		);
 		if (b_HW_smap)		C.r_Sampler_clf		("s_smap",r2_RT_smap_depth	);
 		else				C.r_Sampler_rtf		("s_smap",r2_RT_smap_surf	);
 		jitter				(C);
@@ -31,6 +32,7 @@ void	CBlender_accum_direct::Compile(CBlender_Compile& C)
 		C.r_Sampler_rtf		("s_position",		r2_RT_P			);
 		C.r_Sampler_rtf		("s_normal",		r2_RT_N			);
 		C.r_Sampler_clw		("s_material",		r2_material		);
+		C.r_Sampler_rtf		("s_accumulator",	r2_RT_accum		);
 		if (b_HW_smap)		C.r_Sampler_clf		("s_smap",r2_RT_smap_depth	);
 		else				C.r_Sampler_rtf		("s_smap",r2_RT_smap_surf	);
 		jitter				(C);

@@ -2,6 +2,7 @@
 
 void CRenderTarget::accum_reflected		(light* L)
 {
+	phase_accumulator				();
 	RImplementation.stats.l_visible	++;
 
 	// *** assume accumulator setted up ***
@@ -57,6 +58,14 @@ void CRenderTarget::accum_reflected		(light* L)
 		RCache.set_c				("m_texgen",		m_Texgen);
 
 		RCache.set_Stencil			(TRUE,D3DCMP_LESSEQUAL,0x01,0xff,0x00,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP);
+		draw_volume					(L);
+	}
+
+	// blend-copy
+	if (!RImplementation.o.fp16_blend)	{
+		u_setrt						(rt_Accumulator,NULL,NULL,HW.pBaseZB);
+		RCache.set_Element			(s_accum_mask->E[SE_MASK_ACCUM_VOL]	);
+		RCache.set_c				("m_texgen",		m_Texgen);
 		draw_volume					(L);
 	}
 }

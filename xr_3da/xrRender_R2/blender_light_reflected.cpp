@@ -16,5 +16,6 @@ void	CBlender_accum_reflected::Compile(CBlender_Compile& C)
 	C.r_Sampler_rtf		("s_position",		r2_RT_P);
 	C.r_Sampler_rtf		("s_normal",		r2_RT_N);
 	C.r_Sampler_clw		("s_material",		r2_material);
+	C.r_Sampler_rtf		("s_accumulator",	r2_RT_accum		);
 	C.r_End				();
 }

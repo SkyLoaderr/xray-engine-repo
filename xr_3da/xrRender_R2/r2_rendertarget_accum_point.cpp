@@ -2,6 +2,7 @@
 
 void CRenderTarget::accum_point		(light* L)
 {
+	phase_accumulator				();
 	RImplementation.stats.l_visible	++;
 
 	ref_shader		shader			= L->s_point;
@@ -78,6 +79,15 @@ void CRenderTarget::accum_point		(light* L)
 		// Render if (stencil >= light_id && z-pass)
 		RCache.set_Stencil				(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0xff,0x00,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP);
 		draw_volume						(L);
+
+	}
+
+	// blend-copy
+	if (!RImplementation.o.fp16_blend)	{
+		u_setrt						(rt_Accumulator,NULL,NULL,HW.pBaseZB);
+		RCache.set_Element			(s_accum_mask->E[SE_MASK_ACCUM_VOL]	);
+		RCache.set_c				("m_texgen",		m_Texgen);
+		draw_volume					(L);
 	}
 
 	dwLightMarkerID					+=	2;	// keep lowest bit always setted up
