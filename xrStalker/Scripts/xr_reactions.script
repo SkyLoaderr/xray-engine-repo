@@ -13,7 +13,7 @@ local sounds = {}
 ----------------------------------------------------------------------------------------------------------------------
 -- Ёвалуатор указывает что есть новый раздражитель
 class "evaluator_new" (property_evaluator)
-function evaluator_new:__init(name, storage) super()
+function evaluator_new:__init(name, storage) super (nil, name)
 	self.a = storage
 end
 function evaluator_new:evaluate()
@@ -290,7 +290,7 @@ function add_to_binder(object, char_ini)
 	operators["wait"] 		= xr_actions_id.stohe_reactions_base + 0
 
 	-- Evaluators
-	manager:add_evaluator (properties["event"], 		this.evaluator_new		("evaluator_new", xr_motivator.storage[object:id()].reactions))
+	manager:add_evaluator (properties["event"], 		this.evaluator_new		("reaction_event", xr_motivator.storage[object:id()].reactions))
 
 	-- Actions
 	local action = this.action_reaction_wait (object:name(),"action_reaction_wait", xr_motivator.storage[object:id()].reactions)

@@ -15,7 +15,7 @@ local state_sleeping = 1
 ----------------------------------------------------------------------------------------------------------------------
 -- Константа
 class "evaluator_need_sleeper" (property_evaluator)
-function evaluator_need_sleeper:__init(storage) super ()
+function evaluator_need_sleeper:__init(name, storage) super (nil, name)
 	self.st = storage
 end
 
@@ -193,7 +193,7 @@ function add_to_binder(npc, ini, scheme, section, storage)
   	operators["action_sleeper"]   	= xr_actions_id.zmey_sleeper_base + 1
 
   	-- // evaluators
-  	manager:add_evaluator (properties["need_sleeper"],   this.evaluator_need_sleeper  (xr_motivator.storage[npc:id()].sleeper))
+  	manager:add_evaluator (properties["need_sleeper"],   this.evaluator_need_sleeper  ("sleeper_need_sleep", xr_motivator.storage[npc:id()].sleeper))
 
   	local action = this.action_sleeper_activity(npc, "action_sleeper_activity", xr_motivator.storage[npc:id()].sleeper)
   	action:add_precondition		(world_property(stalker_ids.property_alive,   	true))

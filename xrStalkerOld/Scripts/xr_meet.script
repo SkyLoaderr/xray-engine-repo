@@ -10,7 +10,7 @@ local sounds = {}
 ----------------------------------------------------------------------------------------------------------------------
 --' Возвращает есть ли у нас контакт с другим сталкером
 class "evaluator_contact" (property_evaluator)
-function evaluator_contact:__init(storage) super()
+function evaluator_contact:__init(name, storage) super (nil, name)
 	self.a = storage
 end
 function evaluator_contact:evaluate()
@@ -48,7 +48,7 @@ function evaluator_contact:evaluate()
 end
 --' имеет ли клиент оружие
 class "evaluator_weapon" (property_evaluator)
-function evaluator_weapon:__init(storage) super()
+function evaluator_weapon:__init(name, storage) super (nil, name)
 	self.a = storage
 end
 function evaluator_weapon:evaluate()
@@ -68,7 +68,7 @@ function evaluator_weapon:evaluate()
 end
 --' нужно ли отпугивать клиента
 class "evaluator_threat" (property_evaluator)
-function evaluator_threat:__init(storage) super()
+function evaluator_threat:__init(name, storage) super (nil, name)
 	self.a = storage
 end
 function evaluator_threat:evaluate()
@@ -89,7 +89,7 @@ function evaluator_threat:evaluate()
 end
 --' ждать появления клиента
 class "evaluator_wait" (property_evaluator)
-function evaluator_wait:__init(storage) super()
+function evaluator_wait:__init(name, storage) super (nil, name)
 	self.a = storage
 end
 function evaluator_wait:evaluate()
@@ -404,10 +404,10 @@ function add_to_binder(object, char_ini)
 	operators["talk"]				= xr_actions_id.stohe_meet_base + 6
 
 	-- Evaluators
-	manager:add_evaluator (properties["wait_buyer"], 	evaluator_wait		(xr_motivator.storage[object:id()].meet))
-	manager:add_evaluator (properties["contact"], 		evaluator_contact	(xr_motivator.storage[object:id()].meet))
-	manager:add_evaluator (properties["weapon"], 		evaluator_weapon	(xr_motivator.storage[object:id()].meet))
-	manager:add_evaluator (properties["threat"], 		evaluator_threat	(xr_motivator.storage[object:id()].meet))
+	manager:add_evaluator (properties["wait_buyer"], 	evaluator_wait		("meet_wait_buyer", xr_motivator.storage[object:id()].meet))
+	manager:add_evaluator (properties["contact"], 		evaluator_contact	("meet_contact", xr_motivator.storage[object:id()].meet))
+	manager:add_evaluator (properties["weapon"], 		evaluator_weapon	("meet_weapon", xr_motivator.storage[object:id()].meet))
+	manager:add_evaluator (properties["threat"], 		evaluator_threat	("meet_threat", xr_motivator.storage[object:id()].meet))
 
 	-- Actions
 	local action = action_meet_wait (object:name(),"action_meet_wait", xr_motivator.storage[object:id()].meet, char_ini)

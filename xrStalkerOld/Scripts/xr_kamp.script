@@ -11,7 +11,7 @@ local speeks = {} -- говорит ли кто либо в лагере, чтобы вместе не болтали
 ----------------------------------------------------------------------------------------------------------------------
 --' Условие завершения скрипта
 class "evaluator_kamp_end" (property_evaluator)
-function evaluator_kamp_end:__init(storage) super()
+function evaluator_kamp_end:__init(name, storage) super (nil, name)
 	self.a = storage
 end
 function evaluator_kamp_end:evaluate()
@@ -19,7 +19,7 @@ function evaluator_kamp_end:evaluate()
 end
 --' Находимся ли мы на заданной позиции
 class "evaluator_on_position" (property_evaluator)
-function evaluator_on_position:__init(storage) super()
+function evaluator_on_position:__init(name, storage) super (nil, name)
 	self.a = storage
 	--' таблица векторов, содержащих направления на точки рассадки
 	self.vectors = {{1,		0,		0},
@@ -56,7 +56,7 @@ function evaluator_on_position:evaluate()
 end
 --' Необходимо ли нам идти вокруг лагеря
 class "evaluator_need_patrol" (property_evaluator)
-function evaluator_need_patrol:__init(storage) super()
+function evaluator_need_patrol:__init((name, storage) super (nil, name)
 	self.a = storage
 end
 function evaluator_need_patrol:evaluate()
@@ -356,9 +356,9 @@ function add_to_binder(object, ini, scheme, section, storage)
 	operators["wait"]		= xr_actions_id.stohe_kamp_base + 3
 
 	-- Evaluators                                                                            
-	manager:add_evaluator (properties["kamp_end"], 		this.evaluator_kamp_end		(xr_motivator.storage[object:id()].kamp))
-	manager:add_evaluator (properties["on_position"],	this.evaluator_on_position	(xr_motivator.storage[object:id()].kamp))
-	manager:add_evaluator (properties["need_patrol"],	this.evaluator_need_patrol	(xr_motivator.storage[object:id()].kamp))
+	manager:add_evaluator (properties["kamp_end"], 		this.evaluator_kamp_end		("kamp_end", xr_motivator.storage[object:id()].kamp))
+	manager:add_evaluator (properties["on_position"],	this.evaluator_on_position	("kamp_on_position", xr_motivator.storage[object:id()].kamp))
+	manager:add_evaluator (properties["need_patrol"],	this.evaluator_need_patrol	("kamp_need_patrol", xr_motivator.storage[object:id()].kamp))
 
 	-- Actions
 	local action = this.action_go_patrol (object:name(),"action_go_patrol", xr_motivator.storage[object:id()].kamp)
