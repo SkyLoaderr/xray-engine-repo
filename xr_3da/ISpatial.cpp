@@ -53,6 +53,7 @@ void	ISpatial::spatial_register	()
 	} else {
 		// register
 		g_SpatialSpace.insert	(this);
+		spatial.sector			= ::Render->detectSector(spatial.center);
 	}
 }
 
@@ -63,6 +64,7 @@ void	ISpatial::spatial_unregister()
 		// remove
 		g_SpatialSpace.remove	(this);
 		spatial.node_ptr		= NULL;
+		spatial.sector			= NULL;
 	} else {
 		// already unregistered
 	}
