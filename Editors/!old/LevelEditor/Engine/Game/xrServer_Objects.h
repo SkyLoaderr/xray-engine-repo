@@ -13,10 +13,6 @@
 #include "xrServer_Objects_Abstract.h"
 #include "phnetstate.h"
 
-#ifdef _EDITOR
-	#include "PropertiesListHelper.h"
-#endif
-
 #pragma warning(push)
 #pragma warning(disable:4005)
 

@@ -7,20 +7,9 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#pragma hdrstop
-
-#ifndef XRGAME_EXPORTS
-#	include "net_utils.h"
-#endif
-
+#include "net_utils.h"
 #include "xrServer_Objects.h"
 #include "game_base_space.h"
-
-#ifdef _EDITOR
-#	include "ui_main.h"
-#	include "SkeletonAnimated.h"
-#endif
-
 #include "xrMessages.h"
 
 ////////////////////////////////////////////////////////////////////////////
@@ -151,7 +140,6 @@ CSE_Abstract *CSE_Abstract::init	()
 	return						(this);
 }
 
-#ifdef _EDITOR
 xr_token game_types[]={
 	{ "Any game",		GAME_ANY		},
 	{ "Single",			GAME_SINGLE		},
@@ -169,7 +157,6 @@ void CSE_Abstract::FillProp					(LPCSTR pref, PropItemVec& items)
 	PHelper().CreateToken8		(items,	PHelper().PrepareKey(pref,"Game Type"),			&s_gameid,		game_types);
     PHelper().CreateU16			(items,	PHelper().PrepareKey(pref, "Respawn Time (s)"),	&RespawnTime,	0,43200);
 }
-#endif
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_Shape
@@ -289,15 +276,17 @@ void CSE_Visual::OnChangeVisual	(PropValue* sender)
         visual					= ::Render->model_Create(visual_name.c_str());
         PlayAnimation			(play_animation.c_str());
     }
-	UI->Command					(COMMAND_UPDATE_PROPERTIES);
+//.	UI->Command					(COMMAND_UPDATE_PROPERTIES);
 }
+#endif
 
 void CSE_Visual::FillProp		(LPCSTR pref, PropItemVec& values)
 {
+#ifdef _EDITOR
 	ChooseValue *V 				= PHelper().CreateChoose(values, PHelper().PrepareKey(pref,"Model"),&visual_name, smGameObject);
 	V->OnChangeEvent.bind		(this,&CSE_Visual::OnChangeVisual);
-}
 #endif
+}
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_Animated
@@ -354,13 +343,15 @@ void CSE_Motion::OnChangeMotion	(PropValue* sender)
     }
 	UI->Command					(COMMAND_UPDATE_PROPERTIES);
 }
+#endif
 
 void CSE_Motion::FillProp		(LPCSTR pref, PropItemVec& values)
 {
+#ifdef _EDITOR
     PropValue					*V = PHelper().CreateChoose(values, PHelper().PrepareKey(pref,"Motion"),&motion_name, smGameAnim);
     V->OnChangeEvent.bind		(this,&CSE_Motion::OnChangeMotion);
-}
 #endif
+}
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_Event
@@ -426,11 +417,9 @@ void CSE_Event::STATE_Write					(NET_Packet	&tNetPacket)
 	}
 }
 
-#ifdef _EDITOR
 void CSE_Event::FillProp	(LPCSTR pref, PropItemVec& values)
 {
 }
-#endif
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_Spectator
@@ -464,12 +453,10 @@ void CSE_Spectator::UPDATE_Write			(NET_Packet	&tNetPacket)
 {
 }
 
-#ifdef _EDITOR
 void CSE_Spectator::FillProp				(LPCSTR pref, PropItemVec& items)
 {
   	inherited::FillProp			(pref,items);
 }
-#endif
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_Target
@@ -498,12 +485,10 @@ void CSE_Target::UPDATE_Write				(NET_Packet	&tNetPacket)
 {
 }
 
-#ifdef _EDITOR
 void CSE_Target::FillProp					(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProp			(pref,values);
 }
-#endif
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_TargetAssault
@@ -532,12 +517,10 @@ void CSE_TargetAssault::UPDATE_Write		(NET_Packet &tNetPacket)
 {
 }
 
-#ifdef _EDITOR
 void CSE_TargetAssault::FillProp			(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProp			(pref,values);
 }
-#endif
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_Target_CS_Base
@@ -578,14 +561,12 @@ void CSE_Target_CS_Base::UPDATE_Write		(NET_Packet	&tNetPacket)
 {
 }
 
-#ifdef _EDITOR
 void CSE_Target_CS_Base::FillProp			(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp			(pref,items);
     PHelper().CreateFloat			(items,PHelper().PrepareKey(pref,s_name,"Radius"),	&radius,1.f,100.f);
     PHelper().CreateU8			(items,PHelper().PrepareKey(pref,s_name,"Team"),		&s_team,0,1);
 }
-#endif
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_Target_CS_Cask
@@ -616,12 +597,10 @@ void CSE_Target_CS_Cask::STATE_Write		(NET_Packet	&tNetPacket)
 	tNetPacket.w_stringZ			(s_Model);
 }
 
-#ifdef _EDITOR
 void CSE_Target_CS_Cask::FillProp			(LPCSTR pref, PropItemVec& items)
 {
 	PHelper().CreateChoose		(items, PHelper().PrepareKey(pref,s_name,"Model"),	&s_Model,	smGameObject);
 }
-#endif
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_Target_CS
@@ -652,12 +631,10 @@ void CSE_Target_CS::STATE_Write				(NET_Packet	&tNetPacket)
 	tNetPacket.w_stringZ			(s_Model);
 }
 
-#ifdef _EDITOR
 void CSE_Target_CS::FillProp				(LPCSTR pref, PropItemVec& items)
 {
 	PHelper().CreateChoose		(items, PHelper().PrepareKey(pref,s_name,"Model"),	&s_Model,	smGameObject);
 }
-#endif
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_Temporary
@@ -689,12 +666,9 @@ void CSE_Temporary::UPDATE_Write			(NET_Packet	&tNetPacket)
 {
 };
 
-#ifdef _EDITOR
 void CSE_Temporary::FillProp				(LPCSTR pref, PropItemVec& values)
 {
 };
-
-#endif
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_SpawnGroup
@@ -727,13 +701,11 @@ void CSE_SpawnGroup::UPDATE_Write			(NET_Packet	&tNetPacket)
 {
 };
 
-#ifdef _EDITOR
 void CSE_SpawnGroup::FillProp				(LPCSTR pref, PropItemVec& values)
 {
-	inherited::FillProp			(pref,values);
+	inherited::FillProp				(pref,values);
 	PHelper().CreateFloat			(values,PHelper().PrepareKey(pref,s_name,"ALife\\Group probability"),	&m_fGroupProbability,0.f,1.f);
 };
-#endif
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_PHSkeleton
@@ -799,9 +771,7 @@ void CSE_PHSkeleton::UPDATE_Read(NET_Packet &tNetPacket)
 
 };
 
-#ifdef _EDITOR
 void CSE_PHSkeleton::FillProp				(LPCSTR pref, PropItemVec& values)
 {
 
 };
-#endif

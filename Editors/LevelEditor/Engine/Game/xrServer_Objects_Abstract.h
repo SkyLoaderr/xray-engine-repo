@@ -11,6 +11,10 @@
 
 #include "alife_interfaces.h"
 #include "xrServer_Space.h"
+#include "xrCDB.h"
+#include "Sound.h"
+#include "xrEProps.h"
+#include "PropertiesListHelper.h"
 
 #pragma warning(push)
 #pragma warning(disable:4005)
@@ -68,9 +72,7 @@ public:
 	virtual CSE_Abstract			*init			();
 	// end of the virtual inheritance dependant code
 	// editor integration
-#ifdef _EDITOR
     virtual void					FillProp		(LPCSTR pref, PropItemVec &items);
-#endif
 };
 add_to_type_list(CSE_Abstract)
 #define script_type_list save_type_list(CSE_Abstract)
@@ -105,12 +107,14 @@ SERVER_ENTITY_DECLARE_BEGIN0(CSE_Visual)
 private:
 	ref_str							visual_name;
 public:
+
 #ifdef _EDITOR
 	AnsiString						play_animation;
 	IRender_Visual*		   			visual;
     void __stdcall					OnChangeVisual	(PropValue* sender);
     void 							PlayAnimation	(LPCSTR name);
 #endif
+
 public:
 									CSE_Visual		(LPCSTR name=0);
 	virtual							~CSE_Visual		();
@@ -121,9 +125,7 @@ public:
     void							set_visual		(LPCSTR name, bool load=true);
 	LPCSTR							get_visual		() const {return *visual_name;};
     
-#ifdef _EDITOR
     void 							FillProp		(LPCSTR pref, PropItemVec& values);
-#endif
 };
 add_to_type_list(CSE_Visual)
 #define script_type_list save_type_list(CSE_Visual)
@@ -136,11 +138,13 @@ SERVER_ENTITY_DECLARE_BEGIN0(CSE_Motion)
 private:
 	ref_str							motion_name;
 public:
+
 #ifdef _EDITOR
 	CObjectAnimator*	   			animator;
     void __stdcall 					OnChangeMotion	(PropValue* sender);
     void 							PlayMotion		(LPCSTR name=0);
 #endif
+
 public:
 									CSE_Motion 		(LPCSTR name=0);
 	virtual							~CSE_Motion		();
@@ -151,9 +155,7 @@ public:
     void							set_motion		(LPCSTR name);
 	LPCSTR							get_motion		() const {return *motion_name;};
     
-#ifdef _EDITOR
     void 							FillProp		(LPCSTR pref, PropItemVec& values);
-#endif
 };
 add_to_type_list(CSE_Motion)
 #define script_type_list save_type_list(CSE_Motion)
