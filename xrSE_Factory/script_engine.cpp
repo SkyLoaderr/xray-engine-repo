@@ -55,7 +55,7 @@ void CScriptEngine::lua_error			(CLuaVirtualMachine *L)
 {
 	print_output			(L,"",LUA_ERRRUN);
 
-#ifndef XRAY_EXCEPTIONS
+#if !XRAY_EXCEPTIONS
 	Debug.fatal				("LUA error: %s",lua_tostring(L,-1));
 #else
 	throw					lua_tostring(L,-1);
@@ -65,7 +65,7 @@ void CScriptEngine::lua_error			(CLuaVirtualMachine *L)
 int  CScriptEngine::lua_pcall_failed	(CLuaVirtualMachine *L)
 {
 	print_output			(L,"",LUA_ERRRUN);
-#ifndef XRAY_EXCEPTIONS
+#if !XRAY_EXCEPTIONS
 	Debug.fatal				("LUA error: %s",lua_isstring(L,-1) ? lua_tostring(L,-1) : "");
 #endif
 	if (lua_isstring(L,-1))
@@ -91,13 +91,13 @@ void CScriptEngine::setup_callbacks		()
 	if (!debugger() || !debugger()->Active() ) 
 #endif
 	{
-#ifndef XRAY_EXCEPTIONS
+#if !XRAY_EXCEPTIONS
 		luabind::set_error_callback		(CScriptEngine::lua_error);
 #endif
 		luabind::set_pcall_callback		(CScriptEngine::lua_pcall_failed);
 	}
 
-#ifndef XRAY_EXCEPTIONS
+#if !XRAY_EXCEPTIONS
 	luabind::set_cast_failed_callback	(lua_cast_failed);
 #endif
 	lua_atpanic							(lua(),CScriptEngine::lua_panic);

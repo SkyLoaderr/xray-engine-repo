@@ -26,7 +26,7 @@ IC	bool compare_safe(const luabind::object &o1 , const luabind::object &o2)
 #define right_comment				concatenizer(*,/)
 #define param_generator(a,b,c,d)	a##b##c d##b
 
-#ifdef XRAY_EXCEPTIONS
+#if XRAY_EXCEPTIONS
 #	define process_error \
 		catch(luabind::error &e) {\
 			if (e.state())\
@@ -64,8 +64,6 @@ IC	bool compare_safe(const luabind::object &o1 , const luabind::object &o2)
 		}			\
 		macros_return_operator (0);\
 	}
-
-#undef process_error
 
 #define function_body(_1,_2,_3,_4,_5,_6) \
 	function_body_ex(_1,_2,_3,_4,const,_5,_6)\
@@ -113,3 +111,4 @@ public:
 #undef param_generator
 #undef function_body_ex
 #undef function_body
+#undef process_error
