@@ -874,8 +874,7 @@ DWORD CAI_Soldier::tfGetGroupFightType()
 
 bool CAI_Soldier::bfSaveFromEnemy(CEntity *tpEntity)
 {
-	NodeCompressed *tNode = AI_Node;
-	float fSquare = ffCalcSquare(r_torso_current.yaw,eye_fov/180.f*PI,FN(1),FN(2),FN(3),FN(0));
+	float fSquare = ffCalcSquare(r_torso_current.yaw,eye_fov/180.f*PI,AI_Node);
 	return(fSquare < .1f);
 }
 
@@ -902,8 +901,8 @@ bool CAI_Soldier::bfCheckForDangerPlace()
 	float fAngleOfView = eye_fov*PI/180.f;
 	float fMaxSquare = .20f, fBestAngle = -1.f;
 	for (float fIncrement = 0; fIncrement < PI_MUL_2; fIncrement += PI/40.f) {
-		float fSquare0 = ffCalcSquare(fIncrement,fAngleOfView,FNN(0,tpCurrentNode),FNN(1,tpCurrentNode),FNN(2,tpCurrentNode),FNN(3,tpCurrentNode));
-		float fSquare1 = ffCalcSquare(fIncrement,fAngleOfView,FNN(0,tpNextNode),FNN(1,tpNextNode),FNN(2,tpNextNode),FNN(3,tpNextNode));
+		float fSquare0 = ffCalcSquare(fIncrement,fAngleOfView,tpCurrentNode);
+		float fSquare1 = ffCalcSquare(fIncrement,fAngleOfView,tpNextNode);
 		if (fSquare1 - fSquare0 > fMaxSquare) {
 			fMaxSquare = fSquare1 - fSquare0;
 			fBestAngle = fIncrement;
@@ -941,8 +940,8 @@ bool CAI_Soldier::bfSetLookToDangerPlace()
 	float fAngleOfView = eye_fov*PI/180.f;
 	float fMaxSquare = .0f, fBestAngle = -1.f;
 	for (float fIncrement = r_torso_current.yaw - MAX_HEAD_TURN_ANGLE; fIncrement <= r_torso_current.yaw + MAX_HEAD_TURN_ANGLE; fIncrement += 2*MAX_HEAD_TURN_ANGLE/60) {
-		float fSquare0 = ffCalcSquare(fIncrement,fAngleOfView,FNN(0,tpCurrentNode),FNN(1,tpCurrentNode),FNN(2,tpCurrentNode),FNN(3,tpCurrentNode));
-		float fSquare1 = ffCalcSquare(fIncrement,fAngleOfView,FNN(0,tpNextNode),FNN(1,tpNextNode),FNN(2,tpNextNode),FNN(3,tpNextNode));
+		float fSquare0 = ffCalcSquare(fIncrement,fAngleOfView,tpCurrentNode);
+		float fSquare1 = ffCalcSquare(fIncrement,fAngleOfView,tpNextNode);
 		if (fSquare1 - fSquare0 > fMaxSquare) {
 			fMaxSquare = fSquare1 - fSquare0;
 			fBestAngle = fIncrement;
@@ -964,7 +963,7 @@ float CAI_Soldier::ffGetCoverFromNode(CAI_Space &AI, Fvector &tPosition, NodeCom
 	tP1.normalize();
 	SRotation tRotation;
 	mk_rotation(tP1,tRotation);
-	return(ffCalcSquare(tRotation.yaw,fEyeFov,FN(0),FN(1),FN(2),FN(3)));
+	return(ffCalcSquare(tRotation.yaw,fEyeFov,tNode));
 }
 
 void CAI_Soldier::vfFindAllSuspiciousNodes(DWORD StartNode, Fvector tPointPosition, const Fvector& BasePos, float Range, CGroup &Group)
@@ -1014,7 +1013,7 @@ void CAI_Soldier::vfFindAllSuspiciousNodes(DWORD StartNode, Fvector tPointPositi
 	for (DWORD it=0; it<AI.q_stack.size(); it++) {
 		DWORD ID = AI.q_stack[it];
 
-		if (bfCheckForVisibility(ID,tMyRotation,bRotation) && (ID != StartNode))
+ 		if (bfCheckForVisibility(ID,tMyRotation,bRotation) && (ID != StartNode))
 			continue;
 
 		NodeCompressed*	N = AI.Node(ID);
@@ -1047,7 +1046,7 @@ void CAI_Soldier::vfFindAllSuspiciousNodes(DWORD StartNode, Fvector tPointPositi
 			tDirection.normalize_safe();
 			SRotation tRotation;
 			mk_rotation(tDirection,tRotation);
-			float fCost = ffGetCoverInDirection(tRotation.yaw,FNN(0,T),FNN(1,T),FNN(2,T),FNN(3,T));
+			float fCost = ffGetCoverInDirection(tRotation.yaw,T);
 			Msg("%d %.2f",Test,fCost);
 			if (fCost < .35f) {
 				bool bOk = false;
@@ -1067,7 +1066,7 @@ void CAI_Soldier::vfFindAllSuspiciousNodes(DWORD StartNode, Fvector tPointPositi
 						tDirection.sub(tP0,tNodePosition);
 						tDirection.normalize_safe();
 						mk_rotation(tDirection,tRotation);
-						if (ffGetCoverInDirection(tRotation.yaw,FNN(0,T),FNN(1,T),FNN(2,T),FNN(3,T)) > .3f) {
+						if (ffGetCoverInDirection(tRotation.yaw,T) > .3f) {
 							if (fCost < Group.m_tpaSuspiciousNodes[i].fCost) {
 								Group.m_tpaSuspiciousNodes[i].dwNodeID = Test;
 								Group.m_tpaSuspiciousNodes[i].fCost = fCost;
@@ -1115,44 +1114,39 @@ void CAI_Soldier::vfFindAllSuspiciousNodes(DWORD StartNode, Fvector tPointPositi
 	Device.Statistic.AI_Range.End();
 }
 
-#define GROUP_RADIUS	10.f
+#define GROUP_RADIUS	15.f
 
 void CAI_Soldier::vfClasterizeSuspiciousNodes(CGroup &Group)
 {
-//	DWORD N = Group.m_tpaSuspiciousNodes.size();
-//	for (int i=0; i<N; i++) {
-//		SSearchGroup tSearchGroup;
-//		tSearchGroup.cGroup = 0;
-//		tSearchGroup.cIndex = i;
-//		tSearchGroup.tPoint = Level().Ai.tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID);
-//		Group.m_tpaSuspiciousGroups.push_back(tSearchGroup);
-//		Fvector tDummy;
-//		tDummy.set(0,0,0);
-//		Group.m_tpaSuspiciousForces.push_back(tDummy);
-//	}
-//	float fK = .5f;
-//	for (int k=0; k<3; k++) {
-//		for (int i=0; i<N; i++) {
-//			for (int j=0; j<N; j++)
-//				if (j != i) {
-//					Fvector tDummy;
-//					tDummy.sub(Group.m_tpaSuspiciousGroups[j],Group.m_tpaSuspiciousGroups[i]);
-//					tDummy.mul(tDummy.magnitude()*K);
-//					Group.m_tpaSuspiciousForces[i].add(tDummy);
-//				}
-//		}
-//		for (int i=0; i<Group.m_tpaSuspiciousGroups.size(); i++) {
-//			Group.m_tpaSuspiciousForces[i].div(N);
-//			Group.m_tpaSuspiciousGroups[i].add(Group.m_tpaSuspiciousForces[i]);
-//			Group.m_tpaSuspiciousForces[i].set(0,0,0);
-//		}
-//	}
- 	DWORD N = Group.m_tpaSuspiciousNodes.size();
+	DWORD N = Group.m_tpaSuspiciousNodes.size();
+	m_tpaSuspiciousPoints.resize(N);
+	m_tpaSuspiciousForces.resize(N);
+	for (int i=0; i<N; i++) {
+		m_tpaSuspiciousPoints[i] = Level().AI.tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID);
+		m_tpaSuspiciousForces[i].set(0,0,0);
+	}
+	float fK = .05f;
+	for (int k=0; k<3; k++) {
+		for (int i=0; i<N; i++) {
+			for (int j=0; j<N; j++)
+				if (j != i) {
+					Fvector tDummy;
+					tDummy.sub(m_tpaSuspiciousPoints[j],m_tpaSuspiciousPoints[i]);
+					tDummy.mul(tDummy.magnitude()*fK);
+					m_tpaSuspiciousForces[i].add(tDummy);
+				}
+		}
+		for (int i=0; i<m_tpaSuspiciousPoints.size(); i++) {
+			m_tpaSuspiciousForces[i].div(N);
+			m_tpaSuspiciousPoints[i].add(m_tpaSuspiciousForces[i]);
+			m_tpaSuspiciousForces[i].set(0,0,0);
+		}
+	}
 	for (int i=0, iGroupCounter = 1; i<N; i++, iGroupCounter++) {
 		if (!Group.m_tpaSuspiciousNodes[i].dwGroup) 
 			Group.m_tpaSuspiciousNodes[i].dwGroup = iGroupCounter;
 		for (int j=0; j<N; j++)
-			if (!Group.m_tpaSuspiciousNodes[j].dwGroup && (Level().AI.ffGetDistanceBetweenNodeCenters(Group.m_tpaSuspiciousNodes[j].dwNodeID,Group.m_tpaSuspiciousNodes[i].dwNodeID) < GROUP_RADIUS))
+			if (!Group.m_tpaSuspiciousNodes[j].dwGroup && (m_tpaSuspiciousPoints[j].distance_to(m_tpaSuspiciousPoints[i]) < GROUP_RADIUS))
 				Group.m_tpaSuspiciousNodes[j].dwGroup = iGroupCounter;
 	}
 	for ( i=0; i<N; i++)
@@ -1160,6 +1154,20 @@ void CAI_Soldier::vfClasterizeSuspiciousNodes(CGroup &Group)
 	Group.m_tpaSuspiciousGroups.resize(--iGroupCounter);
 	for ( i=0; i<iGroupCounter; i++)
 		Group.m_tpaSuspiciousGroups[i] = 0;
+
+// 	DWORD N = Group.m_tpaSuspiciousNodes.size();
+//	for (int i=0, iGroupCounter = 1; i<N; i++, iGroupCounter++) {
+//		if (!Group.m_tpaSuspiciousNodes[i].dwGroup) 
+//			Group.m_tpaSuspiciousNodes[i].dwGroup = iGroupCounter;
+//		for (int j=0; j<N; j++)
+//			if (!Group.m_tpaSuspiciousNodes[j].dwGroup && (Level().AI.ffGetDistanceBetweenNodeCenters(Group.m_tpaSuspiciousNodes[j].dwNodeID,Group.m_tpaSuspiciousNodes[i].dwNodeID) < GROUP_RADIUS))
+//				Group.m_tpaSuspiciousNodes[j].dwGroup = iGroupCounter;
+//	}
+//	for ( i=0; i<N; i++)
+//		Group.m_tpaSuspiciousNodes[i].dwGroup--;
+//	Group.m_tpaSuspiciousGroups.resize(--iGroupCounter);
+//	for ( i=0; i<iGroupCounter; i++)
+//		Group.m_tpaSuspiciousGroups[i] = 0;
 }
 
 int CAI_Soldier::ifGetSuspiciousAvailableNode(int iLastIndex, CGroup &Group)

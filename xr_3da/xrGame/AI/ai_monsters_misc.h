@@ -200,8 +200,6 @@
 	#define NEXT_POINT(m_iCurrentPoint)			(m_iCurrentPoint) == tpaPatrolPoints.size() - 1 ? 0 : (m_iCurrentPoint) + 1
 	#define PREV_POINT(m_iCurrentPoint)			(m_iCurrentPoint) == 0 ? tpaPatrolPoints.size() - 1 : (m_iCurrentPoint) - 1
 	#define COMPUTE_DISTANCE_2D(t,p)			(sqrtf(_sqr((t).x - (p).x) + _sqr((t).z - (p).z)))
-	#define FN(i)								(float(tNode->cover[(i)])/255.f)
-	#define FNN(x,tpNode)						(float(tpNode->cover[x]/255.f))
 
 	IC float ffGetY(NodeCompressed &tNode, float X, float Z)
 	{
@@ -249,8 +247,14 @@
 	//extern void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, vector<Fvector> &tpaDeviations, vector<CTravelNode> &tpaPath, vector<DWORD> &dwaNodes, bool bLooped, bool bUseDeviations = false, float fRoundedDistanceMin = 1.5f, float fRoundedDistanceMax = 3.0f, float fRadiusMin = 1.5f, float fRadiusMax = 3.0f, float fSuitableAngle = PI_DIV_8*.375f, float fSegmentSizeMin = Level().AI.GetHeader().size*.5f, float fSegmentSizeMax = Level().AI.GetHeader().size*2.f);
 	extern void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, vector<Fvector> &tpaDeviations, vector<CTravelNode> &tpaPath, vector<DWORD> &dwaNodes, bool bLooped, bool bUseDeviations = false, float fRoundedDistanceMin = 1.5f, float fRoundedDistanceMax = 1.5f, float fRadiusMin = 3.0f, float fRadiusMax = 3.0f, float fSuitableAngle = PI_DIV_8*.375f, float fSegmentSizeMin = Level().AI.GetHeader().size*.5f, float fSegmentSizeMax = Level().AI.GetHeader().size*2.f);
 	extern void vfCreatePointSequence(CLevel::SPatrolPath &tpPatrolPath,vector<Fvector> &tpaPoints, bool &bLooped);
+	
 	extern float ffCalcSquare(float fAngle, float fAngleOfView, float _b0, float _b1, float _b2, float _b3);
+	extern float ffCalcSquare(float fAngle, float fAngleOfView, NodeCompressed *tpNode);
+	extern float ffCalcSquare(float fAngle, float fAngleOfView, DWORD dwNodeID);
 	extern float ffGetCoverInDirection(float fAngle, float b0, float b1, float b2, float b3);
+	extern float ffGetCoverInDirection(float fAngle, NodeCompressed *tpNode);
+	extern float ffGetCoverInDirection(float fAngle, DWORD dwNodeID);
+	
 	extern SRotation tfGetOrientation(CEntity *tpEntity);
 	extern void vfTestNode(int iTestNode);
 #endif

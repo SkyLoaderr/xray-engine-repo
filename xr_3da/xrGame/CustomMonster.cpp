@@ -538,9 +538,39 @@ void CCustomMonster::OnRender()
 			Device.Primitive.dbg_DrawAABB(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(255,0,0));
 		else
 			if (Group.m_tpaSuspiciousNodes[i].dwSearched == 1)		
-				Device.Primitive.dbg_DrawAABB(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(0,255,255));
+				Device.Primitive.dbg_DrawAABB(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(0,255,0));
 			else
 				Device.Primitive.dbg_DrawAABB(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(255,255,0));
+		switch (Group.m_tpaSuspiciousNodes[i].dwGroup) {
+			case 0 : {
+				Device.Primitive.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,0,0));
+				break;
+			}
+			case 1 : {
+				Device.Primitive.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(0,255,0));
+				break;
+			}
+			case 2 : {
+				Device.Primitive.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(0,0,255));
+				break;
+			}
+			case 3 : {
+				Device.Primitive.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,255,0));
+				break;
+			}
+			case 4 : {
+				Device.Primitive.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,0,255));
+				break;
+			}
+			case 5 : {
+				Device.Primitive.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(0,255,255));
+				break;
+			}
+			default : {
+				Device.Primitive.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,255,255));
+				break;
+			}
+		}
 	}
 
 	if (psAI_Flags&aiFrustum) 

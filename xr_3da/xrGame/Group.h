@@ -33,16 +33,10 @@ typedef struct tagSSearchPlace {
 	float	fCost;
 } SSearchPlace;
 
-typedef struct tagSSearchGroup {
-	BYTE		cIndex;
-	Fvector		tPoint;
-	BYTE		cGroup;
-} SSearchGroup;
-
-typedef svector<Fvector,MAX_GROUP_SIZE>				MemberPlacement;
-typedef svector<DWORD,MAX_GROUP_SIZE>				MemberNodes;
-typedef svector<SSearchPlace,MAX_SUSPICIOUS_NODE_COUNT>	SuspiciousNodes;
-typedef svector<bool,MAX_SUSPICIOUS_NODE_COUNT>		SuspiciousGroups;
+typedef svector<Fvector,MAX_GROUP_SIZE>						MemberPlacement;
+typedef svector<DWORD,MAX_GROUP_SIZE>						MemberNodes;
+typedef svector<SSearchPlace,MAX_SUSPICIOUS_NODE_COUNT>		SuspiciousNodes;
+typedef svector<bool,MAX_SUSPICIOUS_NODE_COUNT>				SuspiciousGroups;
 
 class CGroup
 {

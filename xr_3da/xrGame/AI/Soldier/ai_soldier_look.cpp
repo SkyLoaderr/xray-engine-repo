@@ -128,7 +128,7 @@ void CAI_Soldier::SetLessCoverLook(NodeCompressed *tNode, bool bSpine)
 			float fAngleOfView = eye_fov/180.f*PI, fMaxSquare = -1.f, fBestAngle;
 			
 			for (float fIncrement = r_torso_current.yaw - MAX_HEAD_TURN_ANGLE; fIncrement <= r_torso_current.yaw + MAX_HEAD_TURN_ANGLE; fIncrement += 2*MAX_HEAD_TURN_ANGLE/60.f) {
-				float fSquare = ffCalcSquare(fIncrement,fAngleOfView,FN(0),FN(1),FN(2),FN(3));
+				float fSquare = ffCalcSquare(fIncrement,fAngleOfView,tNode);
 				if (fSquare > fMaxSquare) {
 					fMaxSquare = fSquare;
 					fBestAngle = fIncrement;
@@ -172,8 +172,8 @@ void CAI_Soldier::SetLessCoverLook()
 			float fAngleOfView = eye_fov/180.f*PI, fMaxSquare = 0.f;
 			
 			for (float fIncrement = r_torso_current.yaw - MAX_HEAD_TURN_ANGLE; fIncrement <= r_torso_current.yaw + MAX_HEAD_TURN_ANGLE; fIncrement += 2*MAX_HEAD_TURN_ANGLE/60.f) {
-				float fSquare0 = ffCalcSquare(fIncrement,fAngleOfView,FNN(0,AI_Node),FNN(1,AI_Node),FNN(2,AI_Node),FNN(3,AI_Node));
-				float fSquare1 = ffCalcSquare(fIncrement,fAngleOfView,FNN(0,tpNextNode),FNN(1,tpNextNode),FNN(2,tpNextNode),FNN(3,tpNextNode));
+				float fSquare0 = ffCalcSquare(fIncrement,fAngleOfView,AI_Node);
+				float fSquare1 = ffCalcSquare(fIncrement,fAngleOfView,tpNextNode);
 				if (fSquare1 - fSquare0 > fMaxSquare) {
 					fMaxSquare = fSquare1 - fSquare0;
 					r_target.yaw = fIncrement;
@@ -584,7 +584,8 @@ bool CAI_Soldier::bfCheckForVisibility(int iTestNode, SRotation tMyRotation, boo
 //	return(bVisible);
 
 	Fvector tDirection, tNodePosition = Level().AI.tfGetNodeCenter(iTestNode);
-	float fEyeFov = ffGetFov()*PI/180.f, fEyeRange = ffGetRange();
+	//float fEyeFov = ffGetFov()*PI/180.f, fEyeRange = ffGetRange();
+	float fEyeRange = ffGetRange();
 	NodeCompressed *tpNode = Level().AI.Node(iTestNode);
 
 	tDirection.sub(vPosition,tNodePosition);
@@ -595,14 +596,8 @@ bool CAI_Soldier::bfCheckForVisibility(int iTestNode, SRotation tMyRotation, boo
 	tDirection.normalize_safe();
 	SRotation tRotation;
 	mk_rotation(tDirection,tRotation);
-	float fResult = ffGetCoverInDirection(tRotation.yaw,FNN(0,tpNode),FNN(1,tpNode),FNN(2,tpNode),FNN(3,tpNode));
-	tDirection.sub(vPosition,tNodePosition);
-	
-	tDirection.sub(tNodePosition,vPosition);
-	tDirection.normalize_safe();
-	tRotation;
-	mk_rotation(tDirection,tRotation);
-	float fResult1 = ffGetCoverInDirection(tRotation.yaw,FNN(0,AI_Node),FNN(1,AI_Node),FNN(2,AI_Node),FNN(3,AI_Node));
+	float fResult = ffGetCoverInDirection(tRotation.yaw,tpNode);
+	float fResult1 = ffGetCoverInDirection(-tRotation.yaw,AI_Node);
 
 	if (tMyRotation.yaw >= tRotation.yaw) {
 		if (tMyRotation.yaw - tRotation.yaw > PI)
@@ -617,16 +612,32 @@ bool CAI_Soldier::bfCheckForVisibility(int iTestNode, SRotation tMyRotation, boo
 		if (tMyRotation.yaw >= tRotation.yaw)
 			if (fResult > .3f)
 				return(true);
-			else
-				return(false);
+		//return((fDistance < 15.f) && (min(fResult1,fResult) > 3.f));
 		return(false);
 	}
 	else {
 		if (tMyRotation.yaw <= tRotation.yaw)
 			if (fResult > .3f)
 				return(true);
-			else
-				return(false);
+		//return((fDistance < 15.f) && (min(fResult1,fResult) > 3.f));
 		return(false);
 	}
+}
+
+bool CAI_Soldier::bfCheckForNodeVisibility(DWORD dwNodeID)
+{
+	Fvector tPosition = Level().AI.tfGetNodeCenter(dwNodeID), tDirection;
+	NodeCompressed *tpNode = Level().AI.Node(dwNodeID);
+	SRotation tRotation;
+	
+	tDirection.sub(vPosition,tPosition);
+	if (tDirection.magnitude() >= 15.f)
+		return(false);
+
+	tDirection.normalize_safe();
+	mk_rotation(tDirection,tRotation);
+	float fResult0 = ffGetCoverInDirection(tRotation.yaw,tpNode);
+	float fResult1 = ffGetCoverInDirection(-tRotation.yaw,AI_NodeID);
+
+	return(min(fResult0,fResult1) > .9f);
 }

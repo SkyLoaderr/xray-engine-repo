@@ -1012,6 +1012,18 @@ float ffCalcSquare(float fAngle, float fAngleOfView, float b0, float b1, float b
 	return(fSquare);
 }
 
+#define FNN(x,tpNode)						(float(tpNode->cover[x]/255.f))
+
+float ffCalcSquare(float fAngle, float fAngleOfView, NodeCompressed *tpNode)
+{
+	return(ffCalcSquare(fAngle,fAngleOfView,FNN(0,tpNode),FNN(1,tpNode),FNN(2,tpNode),FNN(3,tpNode)));
+}
+
+float ffCalcSquare(float fAngle, float fAngleOfView, DWORD dwNodeID)
+{
+	return(ffCalcSquare(fAngle,fAngleOfView,Level().AI.Node(dwNodeID)));
+}
+
 float ffGetCoverInDirection(float fAngle, float b0, float b1, float b2, float b3)
 {
 	fAngle -= PI_DIV_2;
@@ -1055,6 +1067,16 @@ float ffGetCoverInDirection(float fAngle, float b0, float b1, float b2, float b3
 			}
 	fResult = (b1 - b2)*fAngle/PI_DIV_2 + b2;
 	return(fResult);
+}
+
+float ffGetCoverInDirection(float fAngle, NodeCompressed *tpNode)
+{
+	return(ffGetCoverInDirection(fAngle,FNN(0,tpNode),FNN(1,tpNode),FNN(2,tpNode),FNN(3,tpNode)));
+}
+
+float ffGetCoverInDirection(float fAngle, DWORD dwNodeID)
+{
+	return(ffGetCoverInDirection(fAngle,Level().AI.Node(dwNodeID)));
 }
 
 IC bool bfIntersectContours(PSegment &tSegment, PContour &tContour0, PContour &tContour1)

@@ -18,6 +18,8 @@
 
 class CAI_Soldier : public CCustomMonster
 {
+	typedef	CCustomMonster inherited;
+
 	enum ESoundCcount {
 		SND_HIT_COUNT=4,
 		SND_DIE_COUNT=4,
@@ -173,7 +175,13 @@ class CAI_Soldier : public CCustomMonster
 	DWORD m_tActionType;
 	DWORD m_tFightType;
 
-	typedef	CCustomMonster inherited;
+//	typedef struct tagSSearchPoint {
+//		BYTE		cIndex;
+//		Fvector		tPoint;
+//	} SSearchPoint;
+
+	typedef svector<Fvector,MAX_SUSPICIOUS_NODE_COUNT>	SuspiciousPoints;
+	typedef svector<Fvector,MAX_SUSPICIOUS_NODE_COUNT>	SuspiciousForces;
 
 	protected:
 		
@@ -366,14 +374,17 @@ class CAI_Soldier : public CCustomMonster
 		objSET			tpaVisibleObjects;
 		
 		// saved enemy
-		SEnemySelected	Enemy;
-		CEntity*		tSavedEnemy;
-		Fvector			tSavedEnemyPosition;
-		DWORD			dwLostEnemyTime;
-		NodeCompressed* tpSavedEnemyNode;
-		DWORD			dwSavedEnemyNodeID;
-		bool			bBuildPathToLostEnemy;
-		int				m_iCurrentSuspiciousNodeIndex;
+		SEnemySelected		Enemy;
+		CEntity*			tSavedEnemy;
+		Fvector				tSavedEnemyPosition;
+		DWORD				dwLostEnemyTime;
+		NodeCompressed*		tpSavedEnemyNode;
+		DWORD				dwSavedEnemyNodeID;
+		bool				bBuildPathToLostEnemy;
+		int					m_iCurrentSuspiciousNodeIndex;
+		SuspiciousPoints	m_tpaSuspiciousPoints;
+		SuspiciousForces	m_tpaSuspiciousForces;
+
 		
 		// performance data
 		DWORD			m_dwLastRangeSearch;
@@ -527,9 +538,11 @@ class CAI_Soldier : public CCustomMonster
 		// miscellanious funtions	
 		bool bfAddEnemyToDynamicObjects(CAI_Soldier *tpSoldier);
 		float ffGetCoverFromNode(CAI_Space &AI, Fvector &tPosition, NodeCompressed *tpNode, float fEyeFov);
+		bool bfCheckForNodeVisibility(DWORD dwNodeID);
 		int  ifGetSuspiciousAvailableNode(int iLastIndex, CGroup &Group);
 		void vfClasterizeSuspiciousNodes(CGroup &Group);
 		void vfFindAllSuspiciousNodes(DWORD StartNode, Fvector tPointPosition, const Fvector& BasePos, float Range, CGroup &Group);
+		
 		int	 ifFindDynamicObject(CEntity *tpEntity);
 		bool bfSaveFromEnemy(CEntity *tpEntity);
 		bool bfSetLookToDangerPlace();
