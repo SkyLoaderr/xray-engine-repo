@@ -51,7 +51,12 @@ void	xrServerEntity::Spawn_Read		(NET_Packet& P)
 	P.r_u16				(ID_Phantom		);
 	P.r_u16				(s_flags.flags	); 
 	if (s_flags.is(M_SPAWN_VERSION))
-		P.r_u8			(m_ucVersion);	
+		P.r_u8			(m_ucVersion);
+	if (m_ucVersion > SPAWN_VERSION) {
+		P.r_pos--;
+		m_ucVersion = 0;
+	}
+
 	// read specific data
 	u16					size;
 	P.r_u16				(size			);	// size
