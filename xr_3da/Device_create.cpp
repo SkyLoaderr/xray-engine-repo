@@ -120,7 +120,9 @@ void CRenderDevice::Create	()
 	string256 fname; 
 	FS.update_path	(fname,"$game_data$","shaders.xr");
 
+	//////////////////////////////////////////////////////////////////////////
 	Resources		= xr_new<CResourceManager>	();
+	::Render->create();
 
 	_Create			(fname);
 

@@ -10,7 +10,25 @@
 #include "..\xr_object.h"
 #include "lighttrack.h"
 
-CRender										RImplementation;
+CRender													RImplementation;
+
+//////////////////////////////////////////////////////////////////////////
+void					CRender::create					()
+{
+	/*
+	Models		
+	L_DB				= xr_new<CLightDB_Static>		();
+	L_Dynamic			= xr_new<CLightPPA_Manager>		();
+	L_Shadows			= xr_new<CLightShadows>			();
+	L_Projector			= xr_new<CLightProjector>		();
+	Glows				= xr_new<CGlowManager>			();
+	Wallmarks			= xr_new<CWallmarksEngine>		();
+	Details				= xr_new<CDetailManager>		();
+	*/
+}
+void					CRender::destroy				()
+{
+}
 
 // Implementation
 IRender_ObjectSpecific*	CRender::ros_create				(IRenderable* parent)			{ return xr_new<CLightTrack>();			}

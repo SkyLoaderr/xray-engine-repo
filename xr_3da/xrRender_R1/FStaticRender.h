@@ -99,6 +99,9 @@ private:
 	void							calc_FogPass			();
 public:
 	// Loading / Unloading
+	virtual	void					create					();
+	virtual	void					destroy					();
+
 	virtual	void					level_Load				();
 	virtual void					level_Unload			();
 	

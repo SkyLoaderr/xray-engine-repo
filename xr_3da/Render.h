@@ -127,6 +127,9 @@ public:
 	u32								marker;
 public:
 	// Loading / Unloading
+	virtual	void					create					()								= 0;
+	virtual	void					destroy					()								= 0;
+
 	virtual	void					level_Load				()								= 0;
 	virtual void					level_Unload			()								= 0;
 
@@ -192,9 +195,6 @@ public:
 	virtual void					rmNear					()										= 0;
 	virtual void					rmFar					()										= 0;
 	virtual void					rmNormal				()										= 0;
-
-	// Particle library
-//	virtual CPSLibrary*				ps_library				()										= 0;
 
 	// Constructor/destructor
 	virtual ~IRender_interface();

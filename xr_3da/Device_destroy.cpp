@@ -24,6 +24,7 @@ void CRenderDevice::Destroy	(void) {
 
 	_Destroy					(FALSE);
 
+	::Render->destroy			();
 	xr_delete					(Resources);
 
 	// real destroy
