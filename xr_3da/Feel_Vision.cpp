@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "feel_vision.h"
+#include "xr_object.h"
 
 namespace Feel {
 	void	Vision::o_new(CObject* E)
@@ -22,9 +23,8 @@ namespace Feel {
 				return;
 			}
 	}
-	void	Vision::o_update(objSET& seen, CEntity* parent, Fvector& P, float dt)
+	void	Vision::o_update(objSET& seen, CObject* parent, Fvector& P, float dt)
 	{
-		//Level().HUD()->outMessage(0xffffffff,"track","%d",track.size());	
 		if (seen.size()>1) 
 		{
 			std::sort		(seen.begin(),seen.end());

@@ -1,36 +1,37 @@
 #include "stdafx.h"
 #include "feel_touch.h"
+#include "xr_creator.h"
 using namespace Feel;
 
 void CTouch::feel_touch_process	(Fvector& C, float R)
 {
 	// Find nearest objects
-	Level().ObjectSpace.GetNearest						(C,R);
-	CObjectSpace::NL_IT		n_begin						= Level().ObjectSpace.q_nearest.begin	();
-	CObjectSpace::NL_IT		n_end						= Level().ObjectSpace.q_nearest.end		();
+	pCreator->ObjectSpace.GetNearest					(C,R);
+	CObjectSpace::NL_IT		n_begin						= pCreator->ObjectSpace.q_nearest.begin	();
+	CObjectSpace::NL_IT		n_end						= pCreator->ObjectSpace.q_nearest.end	();
 	if (n_end==n_begin)		return;
 
 	// Process results (NEW)
 	for (CObjectSpace::NL_IT it = n_begin; it!=n_end; it++)
 	{
 		CObject* O = *it;
-		if (find(Nearest.begin(),Nearest.end(),O) == Nearest.end())
+		if (find(feel_touch.begin(),feel_touch.end(),O) == feel_touch.end())
 		{
 			// new 
-			g_sv_Feel_near_new		(O);
-			Nearest.push_back		(O);
+			feel_touch_new			(O);
+			feel_touch.push_back	(O);
 		}
 	}
 
 	// Process results (DELETE)
-	for (int d = 0; d<int(Nearest.size()); d++)
+	for (int d = 0; d<int(feel_touch.size()); d++)
 	{
-		CObject* O	= Nearest[d];
+		CObject* O	= feel_touch[d];
 		if (find(n_begin,n_end,O) == n_end)
 		{
 			// delete
-			g_sv_Feel_near_delete	(O);
-			Nearest.erase			(Nearest.begin()+d);
+			feel_touch_delete		(O);
+			feel_touch.erase		(feel_touch.begin()+d);
 			d--;
 		}
 	}

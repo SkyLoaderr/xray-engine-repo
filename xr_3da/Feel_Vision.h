@@ -1,5 +1,7 @@
 #pragma once
 
+#include "xr_collide_defs.h"
+
 class ENGINE_API CObject;
 
 namespace Feel
