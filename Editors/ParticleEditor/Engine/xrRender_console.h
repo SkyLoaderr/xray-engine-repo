@@ -50,7 +50,8 @@ enum
 {
 	R2FLAG_SUN		= (1<<0),
 	R2FLAG_SKY		= (1<<1),
-	R2FLAG_BUMP_AF	= (1<<2)
+	R2FLAG_BUMP_AF	= (1<<2),
+	R2FLAG_SPOTPRJ	= (1<<3)
 };
 
 extern void			xrRender_initconsole	();
