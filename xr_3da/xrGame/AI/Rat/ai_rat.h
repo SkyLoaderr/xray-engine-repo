@@ -296,6 +296,8 @@ class CAI_Rat : public CCustomMonster
 		//////////////////////////
 		// MISCELLANIOUS FUNCTIONS
 		//////////////////////////
+		float	CorpHeuristics(CEntity* E);
+		void	SelectCorp(SEnemySelected& S);
 		void	vfUpdateMoraleBroadcast(float fValue, float fRadius);
 		void	vfComputeNextDirectionPosition();
 		void	vfUpdateMorale();

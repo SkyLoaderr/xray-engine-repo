@@ -178,16 +178,10 @@ void CAI_Rat::FreeHuntingActive()
 
 	SelectEnemy(m_Enemy);
 	
-	if (m_Enemy.Enemy) {
-		m_fGoalChangeTime = 0;
-		if ((m_Enemy.Enemy->Position().distance_to(m_tSafeSpawnPosition) < m_fMaxPursuitRadius) || (vPosition.distance_to(m_tSafeSpawnPosition) > m_fMaxHomeRadius))
-			if (m_Enemy.Enemy->g_Alive()) {
-				SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatAttackRun);
-			}
-			else {
-				SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatEatCorp);
-			}
-	}
+	if ((m_Enemy.Enemy) && ((m_Enemy.Enemy->Position().distance_to(m_tSafeSpawnPosition) < m_fMaxPursuitRadius) || (vPosition.distance_to(m_tSafeSpawnPosition) > m_fMaxHomeRadius)))
+			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatAttackRun);
+
+	SelectCorp(m_Enemy);
 
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(m_fMorale < m_fMoraleNormalValue,aiRatUnderFire);
 	
@@ -763,6 +757,8 @@ void CAI_Rat::EatCorp()
 
 	vfComputeNewPosition();
 
+	m_fSpeed = m_fMaxSpeed;
+
 	SetDirectionLook();
 
 	Fvector tTemp;
@@ -781,25 +777,8 @@ void CAI_Rat::EatCorp()
 		}
 	}
 	else 
-		if (m_fSafeSpeed != m_fSpeed) {
-			int iRandom = ::Random.randI(0,2);
-			switch (iRandom) {
-				case 0 : {
-					m_fSpeed = m_fMaxSpeed;
-					break;
-				}
-				case 1 : {
-					m_fSpeed = m_fMinSpeed;
-					break;
-				}
-				case 2 : {
-					if (::Random.randI(0,4) == 0)
-						m_fSpeed = EPS_S;
-					break;
-				}
-			}
-			m_fSafeSpeed = m_fSpeed;
-		}
+		if (m_fSafeSpeed != m_fSpeed)
+			m_fSafeSpeed = m_fSpeed = m_fMaxSpeed;
 	
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 	

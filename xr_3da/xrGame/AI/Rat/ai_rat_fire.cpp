@@ -73,24 +73,17 @@ void CAI_Rat::HitSignal(float amount, Fvector& vLocalDir, CObject* who)
 
 float CAI_Rat::EnemyHeuristics(CEntity* E)
 {
-//	if (E->g_Team()  == g_Team())	
-//		return flt_max;		// don't attack our team
+	if (E->g_Team()  == g_Team())	
+		return flt_max;		// don't attack our team
 	
-	if (!E->g_Alive()) {
-		CEntityAlive *tpEntityAlive = dynamic_cast<CEntityAlive *>(E);
-		if (tpEntityAlive && (Level().timeServer() - tpEntityAlive->m_dwDeathTime < m_dwEatCorpInterval) && (m_bEatMemberCorps || (E->g_Team() != g_Team())) && (m_bCannibalism || (E->SUB_CLS_ID != SUB_CLS_ID)))
-			return flt_max - 2;
-		else
-			return flt_max;
-	}
+	if (!E->g_Alive())
+		return flt_max;		// don't attack dead enemies
 	
 	float	g_strength = E->g_Armor()+E->g_Health();
 	
 	float	f1	= Position().distance_to_sqr(E->Position());
 	float	f2	= float(g_strength);
-	//float   f3  = 1;
-	//if (E==Level().CurrentEntity())  f3 = .5f;
-	return  f1*f2;//*f3;
+	return  f1*f2;
 }
 
 void CAI_Rat::SelectEnemy(SEnemySelected& S)
@@ -112,6 +105,56 @@ void CAI_Rat::SelectEnemy(SEnemySelected& S)
 	for (u32 i=0; i<Known.size(); i++) {
 		CEntity*	E = dynamic_cast<CEntity*>(Known[i].key);
 		float		H = EnemyHeuristics(E);
+		if (H<S.fCost) {
+			bool bVisible = false;
+			for (int i=0; i<(int)m_tpaVisibleObjects.size(); i++)
+				if (m_tpaVisibleObjects[i] == E) {
+					bVisible = true;
+					break;
+				}
+			float	cost	 = H*(bVisible?1:_FB_invisible_hscale);
+			if (cost<S.fCost)	{
+				S.Enemy		= E;
+				S.bVisible	= bVisible;
+				S.fCost		= cost;
+				Group.m_bEnemyNoticed = true;
+			}
+		}
+	}
+}
+
+float CAI_Rat::CorpHeuristics(CEntity* E)
+{
+	if (!E->g_Alive()) {
+		CEntityAlive *tpEntityAlive = dynamic_cast<CEntityAlive *>(E);
+		if (tpEntityAlive && (Level().timeServer() - tpEntityAlive->m_dwDeathTime < m_dwEatCorpInterval) && (m_bEatMemberCorps || (E->g_Team() != g_Team())) && (m_bCannibalism || (E->SUB_CLS_ID != SUB_CLS_ID)))
+			return (float)(Level().timeServer() - tpEntityAlive->m_dwDeathTime);
+		else
+			return flt_max;
+	}
+	else
+		return flt_max;
+}
+
+void CAI_Rat::SelectCorp(SEnemySelected& S)
+{
+	// Initiate process
+	objVisible&	Known	= Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
+	S.Enemy					= 0;
+	S.bVisible			= FALSE;
+	S.fCost				= flt_max-1;
+	
+	if (Known.size()==0)
+		return;
+	// Get visible list
+	feel_vision_get	(m_tpaVisibleObjects);
+	std::sort		(m_tpaVisibleObjects.begin(),m_tpaVisibleObjects.end());
+	
+	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+	
+	for (u32 i=0; i<Known.size(); i++) {
+		CEntity*	E = dynamic_cast<CEntity*>(Known[i].key);
+		float		H = CorpHeuristics(E);
 		if (H<S.fCost) {
 			bool bVisible = false;
 			for (int i=0; i<(int)m_tpaVisibleObjects.size(); i++)
