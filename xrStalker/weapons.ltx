@@ -3797,6 +3797,68 @@ $spawn 				= "weapons\explosive\fuelcan"
 $prefetch			= 16
 class				= II_EXPLO
 cform				= skeleton
+visual				= physics\balon\butil_3.ogf
+inv_name			= Fuelcan
+inv_name_short		= 
+inv_weight			= .1
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 9
+inv_grid_y			= 9
+
+cost				= 50
+
+blast				= 500
+blast_r				= 8
+frags				= 5
+frags_r				= 10
+frag_hit			= 100
+
+up_throw_factor		 = 0
+blast_impulse_factor = 0.5	;доля хита от взрыва которая пойдет на физ.импульс
+
+hit_type_blast		= burn
+hit_type_frag		= burn
+
+wm_size                  = 0.1
+
+explode_particles		 = explosions\explosion_03
+
+light_color		         = 0.6,0.5,0.3
+light_range		         = 30.0
+light_time 		         = 0.35
+
+;трассы от осколков
+tracer_head_speed	     = 200
+tracer_trail_scale	     = 0.75
+tracer_start_length	     = 0.5
+tracer_width		     = 0.03
+tracer_distance			 = 20
+
+;звуки
+snd_explode = weapons\f1_explode
+
+;коэффициенты для попаданий различными типами хитов
+burn_immunity			= 5.0
+strike_immunity			= 1.0
+shock_immunity			= 1.0
+wound_immunity			= 1.0
+radiation_immunity		= 1.0
+telepatic_immunity		= 1.0
+chemical_burn_immunity	= 1.0
+explosion_immunity		= 1.0
+fire_wound_immunity		= 1.0
+
+
+[explosive_tank]
+
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 				= "weapons\explosive\tank"
+$prefetch			= 16
+class				= II_EXPLO
+cform				= skeleton
 visual				= physics\balon\bomb_01.ogf
 inv_name			= Fuelcan
 inv_name_short		= 
