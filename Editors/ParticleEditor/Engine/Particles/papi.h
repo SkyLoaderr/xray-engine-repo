@@ -86,11 +86,6 @@ extern "C"{
 
 	PARTICLEDLL_API void __stdcall pVelocity(float x, float y, float z);
 
-	PARTICLEDLL_API void __stdcall pVelocityD(PDomainEnum dtype,
-		float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f,
-		float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f,
-		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);
-
 	PARTICLEDLL_API void __stdcall pVertexB(float x, float y, float z);
 
 	PARTICLEDLL_API void __stdcall pVertexBD(PDomainEnum dtype,
@@ -111,6 +106,8 @@ extern "C"{
 	PARTICLEDLL_API int __stdcall pGenActionLists(int action_list_count = 1);
 
 	PARTICLEDLL_API void __stdcall pNewActionList(int action_list_num);
+
+	PARTICLEDLL_API void __stdcall pSetActionListTransform(int action_list_num, const Fmatrix& m);
 
 
 	// Particle Group Calls
@@ -137,17 +134,17 @@ extern "C"{
 	PARTICLEDLL_API int __stdcall pSetMaxParticles(int max_count);
 
 	// Actions
-	PARTICLEDLL_API void __stdcall pAvoid(float magnitude, float epsilon, float look_ahead, 
+	PARTICLEDLL_API void __stdcall pAvoid(float magnitude, float epsilon, float look_ahead,
 		PDomainEnum dtype,
 		float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f,
 		float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f,
-		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);
+		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_transform=TRUE);
 
 	PARTICLEDLL_API void __stdcall pBounce(float friction, float resilience, float cutoff,
 		PDomainEnum dtype,
 		float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f,
 		float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f,
-		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);
+		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_transform=TRUE);
 
 	PARTICLEDLL_API void __stdcall pCopyVertexB(BOOL copy_pos = TRUE, BOOL copy_vel = FALSE);
 
@@ -155,16 +152,16 @@ extern "C"{
 		float vlow = 0.0f, float vhigh = P_MAXFLOAT);
 
 	PARTICLEDLL_API void __stdcall pExplosion(float center_x, float center_y, float center_z, float velocity,
-		float magnitude, float stdev, float epsilon = P_EPS, float age = 0.0f);
+		float magnitude, float stdev, float epsilon = P_EPS, float age = 0.0f, BOOL allow_transform=TRUE);
 
 	PARTICLEDLL_API void __stdcall pFollow(float magnitude = 1.0f, float epsilon = P_EPS, float max_radius = P_MAXFLOAT);
 
 	PARTICLEDLL_API void __stdcall pGravitate(float magnitude = 1.0f, float epsilon = P_EPS, float max_radius = P_MAXFLOAT);
 
-	PARTICLEDLL_API void __stdcall pGravity(float dir_x, float dir_y, float dir_z);
+	PARTICLEDLL_API void __stdcall pGravity(float dir_x, float dir_y, float dir_z, BOOL allow_transform=TRUE);
 
 	PARTICLEDLL_API void __stdcall pJet(float center_x, float center_y, float center_z, float magnitude = 1.0f,
-		float epsilon = P_EPS, float max_radius = P_MAXFLOAT);
+		float epsilon = P_EPS, float max_radius = P_MAXFLOAT, BOOL allow_transform=TRUE);
 
 	PARTICLEDLL_API void __stdcall pKillOld(float age_limit, BOOL kill_less_than = FALSE);
 
@@ -175,43 +172,43 @@ extern "C"{
 
 	PARTICLEDLL_API void __stdcall pOrbitLine(float p_x, float p_y, float p_z,
 		float axis_x, float axis_y, float axis_z, float magnitude = 1.0f,
-		float epsilon = P_EPS, float max_radius = P_MAXFLOAT);
+		float epsilon = P_EPS, float max_radius = P_MAXFLOAT, BOOL allow_transform=TRUE);
 
 	PARTICLEDLL_API void __stdcall pOrbitPoint(float center_x, float center_y, float center_z,
 		float magnitude = 1.0f, float epsilon = P_EPS,
-		float max_radius = P_MAXFLOAT);
+		float max_radius = P_MAXFLOAT, BOOL allow_transform=TRUE);
 
 	PARTICLEDLL_API void __stdcall pRandomAccel(PDomainEnum dtype,
 		float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f,
 		float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f,
-		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);
+		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_transform=TRUE);
 
 	PARTICLEDLL_API void __stdcall pRandomDisplace(PDomainEnum dtype,
 		float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f,
 		float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f,
-		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);
+		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_transform=TRUE);
 
 	PARTICLEDLL_API void __stdcall pRandomVelocity(PDomainEnum dtype,
 		float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f,
 		float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f,
-		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);
+		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_transform=TRUE);
 
 	PARTICLEDLL_API void __stdcall pRestore(float time);
 
 	PARTICLEDLL_API void __stdcall pSink(BOOL kill_inside, PDomainEnum dtype,
 		float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f,
 		float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f,
-		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);
+		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_transform=TRUE);
 
 	PARTICLEDLL_API void __stdcall pSinkVelocity(BOOL kill_inside, PDomainEnum dtype,
 		float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f,
 		float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f,
-		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);
+		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_transform=TRUE);
 
 	PARTICLEDLL_API void __stdcall pSource(float particle_rate, PDomainEnum dtype,
 		float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f,
 		float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f,
-		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);
+		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_transform=TRUE);
 
 	PARTICLEDLL_API void __stdcall pSpeedLimit(float min_speed, float max_speed = P_MAXFLOAT);
 
@@ -231,18 +228,18 @@ extern "C"{
 		float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f,
 		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);
 
-	PARTICLEDLL_API void __stdcall pTargetVelocity(float vel_x, float vel_y, float vel_z, float scale);
+	PARTICLEDLL_API void __stdcall pTargetVelocity(float vel_x, float vel_y, float vel_z, float scale, BOOL allow_transform=TRUE);
 
 	PARTICLEDLL_API void __stdcall pTargetVelocityD(float scale, PDomainEnum dtype,
 		float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f,
 		float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f,
-		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);
+		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_transform=TRUE);
 
 	PARTICLEDLL_API void __stdcall pVertex(float x, float y, float z);
 
 	PARTICLEDLL_API void __stdcall pVortex(float center_x, float center_y, float center_z,
 		float axis_x, float axis_y, float axis_z,
 		float magnitude = 1.0f, float epsilon = P_EPS,
-		float max_radius = P_MAXFLOAT);
+		float max_radius = P_MAXFLOAT, BOOL allow_transform=TRUE);
 };
 #endif

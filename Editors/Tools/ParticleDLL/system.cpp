@@ -474,16 +474,6 @@ PARTICLEDLL_API void __stdcall pVelocity(float x, float y, float z)
 	_ps.Vel = pDomain(PDPoint, x, y, z);
 }
 
-PARTICLEDLL_API void __stdcall pVelocityD(PDomainEnum dtype,
-				float a0, float a1, float a2,
-				float a3, float a4, float a5,
-				float a6, float a7, float a8)
-{
-	_ParticleState &_ps = _GetPState();
-
-	_ps.Vel = pDomain(dtype, a0, a1, a2, a3, a4, a5, a6, a7, a8);
-}
-
 PARTICLEDLL_API void __stdcall pVertexB(float x, float y, float z)
 {
 	_ParticleState &_ps = _GetPState();
@@ -679,6 +669,91 @@ PARTICLEDLL_API void __stdcall pCallActionList(int action_list_num)
 		_pCallActionList(pa+1, pa->count-1, _ps.pgrp);
 		
 		_ps.in_call_list = FALSE;
+	}
+}
+
+PARTICLEDLL_API void __stdcall pSetActionListTransform(int action_list_num, const Fmatrix& m)
+{
+	_ParticleState &_ps = _GetPState();
+
+	if(_ps.in_new_list)
+		return; // ERROR
+
+	// Execute the specified action list.
+	PAHeader *pa	= _ps.GetListPtr(action_list_num);
+
+	if(pa == NULL)
+		return; // ERROR
+
+	int num_actions = pa->count-1;
+	PAHeader *action= pa+1;
+
+	// Step through all the actions in the action list.
+	for(int action = 0; action < num_actions; action++, pa++)
+	{
+		switch(pa->type)
+		{
+		case PAAvoidID:
+			((PAAvoid *)pa)->Transform(m);
+			break;
+		case PABounceID:
+			((PABounce *)pa)->Transform(m);
+			break;
+		case PACallActionListID:			break;
+		case PACopyVertexBID:				break;
+		case PADampingID:					break;
+		case PAExplosionID:
+			((PAExplosion *)pa)->Transform(m);
+			break;
+		case PAFollowID:					break;
+		case PAGravitateID:					break;
+		case PAGravityID:					break;
+		case PAJetID:
+			((PAJet *)pa)->Transform(m);
+			break;
+		case PAKillOldID:					break;
+		case PAMatchVelocityID:				break;
+		case PAMoveID:						break;
+		case PAOrbitLineID:
+			((PAOrbitLine *)pa)->Transform(m);
+			break;
+		case PAOrbitPointID:
+			((PAOrbitPoint *)pa)->Transform(m);
+			break;
+		case PARandomAccelID:
+			((PARandomAccel *)pa)->Transform(m);
+			break;
+		case PARandomDisplaceID:
+			((PARandomDisplace *)pa)->Transform(m);
+			break;
+		case PARandomVelocityID:
+			((PARandomVelocity *)pa)->Transform(m);
+			break;
+		case PARestoreID:					break;
+		case PASinkID:
+			((PASink *)pa)->Transform(m);
+			break;
+		case PASinkVelocityID:
+			((PASinkVelocity *)pa)->Transform(m);
+			break;
+		case PASourceID:
+			((PASource *)pa)->Transform(m);
+			break;
+		case PASpeedLimitID:			break;
+		case PATargetColorID:			break;
+		case PATargetSizeID:			break;
+		case PATargetRotateID:			break;
+		case PATargetRotateDID:			break;
+		case PATargetVelocityID:
+			((PATargetVelocity *)pa)->Transform(m);
+			break;
+		case PATargetVelocityDID:
+			((PATargetVelocity *)pa)->Transform(m);
+			break;
+		case PAVortexID:
+			((PAVortex *)pa)->Transform(m);
+			break;
+		}
 	}
 }
 

@@ -40,12 +40,7 @@ static inline float NRand(float sigma = 1.0f)
 	else
 		return -y * sigma * ONE_OVER_SIGMA_EXP;
 }
-/*
-void PAAvoid::Transform(const Fmatrix& m)
-{
-	position.Transform(m);
-}
-*/
+
 void PAAvoid::Execute(ParticleGroup *group)
 {
 	float magdt = magnitude * dt;
@@ -383,6 +378,11 @@ void PAAvoid::Execute(ParticleGroup *group)
 		break;
 	}
 }
+void PAAvoid::Transform(const Fmatrix& m)
+{
+	position.Transform(positionL,m);
+}
+//-------------------------------------------------------------------------------------------------
 
 void PABounce::Execute(ParticleGroup *group)
 {
@@ -700,12 +700,18 @@ void PABounce::Execute(ParticleGroup *group)
 		}
 	}
 }
+void PABounce::Transform(const Fmatrix& m)
+{
+	position.Transform(positionL,m);
+}
+//-------------------------------------------------------------------------------------------------
 
 // Set the secondary position of each particle to be its position.
 void PACallActionList::Execute(ParticleGroup *group)
 {
 	pCallActionList(action_list_num);
 }
+//-------------------------------------------------------------------------------------------------
 
 // Set the secondary position of each particle to be its position.
 void PACopyVertexB::Execute(ParticleGroup *group)
@@ -730,6 +736,7 @@ void PACopyVertexB::Execute(ParticleGroup *group)
 		}
 	}
 }
+//-------------------------------------------------------------------------------------------------
 
 // Dampen velocities
 void PADamping::Execute(ParticleGroup *group)
@@ -751,6 +758,7 @@ void PADamping::Execute(ParticleGroup *group)
 		}
 	}
 }
+//-------------------------------------------------------------------------------------------------
 
 // Exert force on each particle away from explosion center
 void PAExplosion::Execute(ParticleGroup *group)
@@ -778,6 +786,11 @@ void PAExplosion::Execute(ParticleGroup *group)
 	
 	age += dt;
 }
+void PAExplosion::Transform(const Fmatrix& m)
+{
+	m.transform_tiny(center.xr(),centerL.xr());
+}
+//-------------------------------------------------------------------------------------------------
 
 // Follow the next particle in the list
 void PAFollow::Execute(ParticleGroup *group)
@@ -817,6 +830,7 @@ void PAFollow::Execute(ParticleGroup *group)
 		}
 	}
 }
+//-------------------------------------------------------------------------------------------------
 
 // Inter-particle gravitation
 void PAGravitate::Execute(ParticleGroup *group)
@@ -872,6 +886,7 @@ void PAGravitate::Execute(ParticleGroup *group)
 		}
 	}
 }
+//-------------------------------------------------------------------------------------------------
 
 // Acceleration in a constant direction
 void PAGravity::Execute(ParticleGroup *group)
@@ -884,6 +899,7 @@ void PAGravity::Execute(ParticleGroup *group)
 		group->list[i].vel += ddir;
 	}
 }
+//-------------------------------------------------------------------------------------------------
 
 // Accelerate particles along a line
 void PAJet::Execute(ParticleGroup *group)
@@ -935,6 +951,12 @@ void PAJet::Execute(ParticleGroup *group)
 		}
 	}
 }
+void PAJet::Transform(const Fmatrix& m)
+{
+	m.transform_tiny(center.xr(),center.xr());
+	acc.Transform(accL,m);
+}
+//-------------------------------------------------------------------------------------------------
 
 // Get rid of older particles
 void PAKillOld::Execute(ParticleGroup *group)
@@ -1071,6 +1093,12 @@ void PAOrbitLine::Execute(ParticleGroup *group)
 		}
 	}
 }
+void PAOrbitLine::Transform(const Fmatrix& m)
+{
+	m.transform_tiny(p.xr(),pL.xr());
+	m.transform_dir(axis.xr(),axis.xr());
+}
+//-------------------------------------------------------------------------------------------------
 
 // Accelerate particles towards a point
 void PAOrbitPoint::Execute(ParticleGroup *group)
@@ -1115,6 +1143,11 @@ void PAOrbitPoint::Execute(ParticleGroup *group)
 		}
 	}
 }
+void PAOrbitPoint::Transform(const Fmatrix& m)
+{
+	m.transform_tiny(center.xr(),centerL.xr());
+}
+//-------------------------------------------------------------------------------------------------
 
 // Accelerate in random direction each time step
 void PARandomAccel::Execute(ParticleGroup *group)
@@ -1132,6 +1165,11 @@ void PARandomAccel::Execute(ParticleGroup *group)
 		m.vel += acceleration * dt;
 	}
 }
+void PARandomAccel::Transform(const Fmatrix& m)
+{
+	gen_acc.Transform(gen_accL,m);
+}
+//-------------------------------------------------------------------------------------------------
 
 // Immediately displace position randomly
 void PARandomDisplace::Execute(ParticleGroup *group)
@@ -1149,6 +1187,11 @@ void PARandomDisplace::Execute(ParticleGroup *group)
 		m.pos += displacement * dt;
 	}
 }
+void PARandomDisplace::Transform(const Fmatrix& m)
+{
+	gen_disp.Transform(gen_dispL,m);
+}
+//-------------------------------------------------------------------------------------------------
 
 // Immediately assign a random velocity
 void PARandomVelocity::Execute(ParticleGroup *group)
@@ -1165,6 +1208,12 @@ void PARandomVelocity::Execute(ParticleGroup *group)
 		m.vel = velocity;
 	}
 }
+void PARandomVelocity::Transform(const Fmatrix& m)
+{
+	gen_vel.Transform(gen_velL,m);
+}
+//-------------------------------------------------------------------------------------------------
+
 
 #if 0
 // Produce coefficients of a velocity function v(t)=at^2 + bt + c
@@ -1275,6 +1324,11 @@ void PASink::Execute(ParticleGroup *group)
 			group->Remove(i);
 	}
 }
+void PASink::Transform(const Fmatrix& m)
+{
+	position.Transform(positionL,m);
+}
+//-------------------------------------------------------------------------------------------------
 
 // Kill particles with velocities on wrong side of the specified domain
 void PASinkVelocity::Execute(ParticleGroup *group)
@@ -1289,6 +1343,11 @@ void PASinkVelocity::Execute(ParticleGroup *group)
 			group->Remove(i);
 	}
 }
+void PASinkVelocity::Transform(const Fmatrix& m)
+{
+	velocity.Transform(velocityL,m);
+}
+//-------------------------------------------------------------------------------------------------
 
 // Randomly add particles to the system
 void PASource::Execute(ParticleGroup *group)
@@ -1324,7 +1383,6 @@ void PASource::Execute(ParticleGroup *group)
 		for(int i = 0; i < rate; i++)
 		{
 			position.Generate(pos);
-			positionB.Generate(posB);
 			size.Generate(siz);
 			rot.Generate(rt);
 			velocity.Generate(vel);
@@ -1335,6 +1393,13 @@ void PASource::Execute(ParticleGroup *group)
 		}
 	}
 }
+void PASource::Transform(const Fmatrix& m)
+{
+	position.Transform(positionL,m);
+	velocity.Transform(velocityL,m);
+}
+//-------------------------------------------------------------------------------------------------
+
 
 void PASpeedLimit::Execute(ParticleGroup *group)
 {
@@ -1417,6 +1482,11 @@ void PATargetVelocity::Execute(ParticleGroup *group)
 		m.vel += (velocity - m.vel) * scaleFac;
 	}
 }
+void PATargetVelocity::Transform(const Fmatrix& m)
+{
+	m.transform_dir(velocity.xr(),velocityL.xr());
+}
+//-------------------------------------------------------------------------------------------------
 
 // Immediately displace position using vortex
 // Vortex tip at center, around axis, with magnitude
@@ -1511,6 +1581,12 @@ void PAVortex::Execute(ParticleGroup *group)
 		}
 	}
 }
+void PAVortex::Transform(const Fmatrix& m)
+{
+	m.transform_tiny(center.xr(),centerL.xr());
+	m.transform_dir(axis.xr(),axisL.xr());
+}
+//-------------------------------------------------------------------------------------------------
 
 ////////////////////////////////////////////////////////////////////////////////
 // Stuff for the pDomain.
@@ -1867,44 +1943,60 @@ void pDomain::Generate(pVector &pos) const
 void pDomain::Transform(const Fmatrix& m)
 {
 	pDomain domain=*this;
-	Transform(&domain,m);
+	Transform(domain,m);
 }
 
-void pDomain::Transform(const pDomain* domain, const Fmatrix& m)
+void pDomain::Transform(const pDomain& domain, const Fmatrix& m)
 {
 	switch (type)
 	{
-	case PDBox:
-		break;
+	case PDBox:{
+		Fbox* bb=(Fbox*)&p1;
+		bb->xform(m);
+		}break;
 	case PDPlane:
+		m.transform_tiny(p1.xr(),domain.p1.xr());
+		m.transform_dir(p2.xr(),domain.p2.xr());
+		// radius1 stores the d of the plane eqn.
+		radius1 = -(p1 * p2);
 		break;
 	case PDSphere:
-		m.transform_tiny(p1.xr(),domain->p1.xr());
+		m.transform_tiny(p1.xr(),domain.p1.xr());
 		break;
 	case PDCylinder:
-		m.transform_tiny(p1.xr(),domain->p1.xr());
-		m.transform_tiny(p2.xr(),domain->p2.xr());
-		break;
 	case PDCone:
+		m.transform_tiny(p1.xr(),domain.p1.xr());
+		m.transform_dir(p2.xr(),domain.p2.xr());
+		m.transform_dir(u.xr(),domain.u.xr());
+		m.transform_dir(v.xr(),domain.v.xr());
 		break;
 	case PDBlob:
+		m.transform_tiny(p1.xr(),domain.p1.xr());
 		break;
 	case PDPoint:
-		m.transform_tiny(p1.xr(),domain->p1.xr());
+		m.transform_tiny(p1.xr(),domain.p1.xr());
 		break;
 	case PDLine:
-		m.transform_tiny(p1.xr(),domain->p1.xr());
-		m.transform_tiny(p2.xr(),domain->p2.xr());
+		m.transform_tiny(p1.xr(),domain.p1.xr());
+		m.transform_dir(p2.xr(),domain.p2.xr());
 		break;
 	case PDRectangle:
+		m.transform_tiny(p1.xr(),domain.p1.xr());
+		m.transform_dir(p2.xr(),domain.p2.xr());
+		m.transform_dir(u.xr(),domain.u.xr());
+		m.transform_dir(v.xr(),domain.v.xr());
 		break;
 	case PDTriangle:
-		m.transform_tiny(p1.xr(),domain->p1.xr());
-		m.transform_dir(p2.xr(),domain->p2.xr());
-		m.transform_dir(u.xr(),domain->u.xr());
-		m.transform_dir(v.xr(),domain->v.xr());
+		m.transform_tiny(p1.xr(),domain.p1.xr());
+		m.transform_dir(p2.xr(),domain.p2.xr());
+		m.transform_dir(u.xr(),domain.u.xr());
+		m.transform_dir(v.xr(),domain.v.xr());
 		break;
 	case PDDisc:
+		m.transform_tiny(p1.xr(),domain.p1.xr());
+		m.transform_dir(p2.xr(),domain.p2.xr());
+		m.transform_dir(u.xr(),domain.u.xr());
+		m.transform_dir(v.xr(),domain.v.xr());
 		break;
 	default:
 		R_ASSERT2(0,"Unknown domain type.");

@@ -92,7 +92,7 @@ struct pDomain
 	BOOL Within(const pVector &) const;
 	void Generate(pVector &) const;
 	void Transform(const Fmatrix& m);
-	void Transform(const pDomain* domain, const Fmatrix& m);
+	void Transform(const pDomain& domain, const Fmatrix& m);
 	// This constructor is used when default constructing a
 	// ParticleAction that has a pDomain.
 	inline pDomain()
@@ -148,13 +148,17 @@ enum PActionEnum
 // Data types derived from Action.
 struct ParticleAction
 {
-	static float dt;	// This is copied to here from global state.
-	PActionEnum type;	// Type field
+	enum{
+		ALLOW_TRANSFORM = (1<<0),
+	};
+	static float	dt;	// This is copied to here from global state.
+	Flags32			flags;
+	PActionEnum		type;	// Type field
 };
 
 // This method actually does the particle's action.
 #define ExecMethod	void Execute	(ParticleGroup *pg);\
-					void Transform	(const ParticleAction* from, const Fmatrix& m);
+					void Transform	(const Fmatrix& m);
 
 struct PAHeader : public ParticleAction
 {
@@ -167,6 +171,7 @@ struct PAHeader : public ParticleAction
 
 struct PAAvoid : public ParticleAction
 {
+	pDomain positionL;	// Avoid region (in local space)
 	pDomain position;	// Avoid region
 	float look_ahead;	// how many time units ahead to look
 	float magnitude;	// what percent of the way to go each time
@@ -177,6 +182,7 @@ struct PAAvoid : public ParticleAction
 
 struct PABounce : public ParticleAction
 {
+	pDomain positionL;	// Bounce region (in local space)
 	pDomain position;	// Bounce region
 	float oneMinusFriction;	// Friction tangent to surface
 	float resilience;	// Resilence perpendicular to surface
@@ -211,6 +217,7 @@ struct PADamping : public ParticleAction
 
 struct PAExplosion : public ParticleAction
 {
+	pVector centerL;	// The center of the explosion (in local space)
 	pVector center;		// The center of the explosion
 	float velocity;		// Of shock wave
 	float magnitude;	// At unit radius
@@ -241,6 +248,7 @@ struct PAGravitate : public ParticleAction
 
 struct PAGravity : public ParticleAction
 {
+	pVector directionL;	// Amount to increment velocity (in local space)
 	pVector direction;	// Amount to increment velocity
 	
 	ExecMethod
@@ -248,6 +256,8 @@ struct PAGravity : public ParticleAction
 
 struct PAJet : public ParticleAction
 {
+	pVector	centerL;	// Center of the fan (in local space)
+	pDomain accL;		// Acceleration vector domain  (in local space)
 	pVector	center;		// Center of the fan
 	pDomain acc;		// Acceleration vector domain
 	float magnitude;	// Scales acceleration
@@ -282,6 +292,7 @@ struct PAMove : public ParticleAction
 
 struct PAOrbitLine : public ParticleAction
 {
+	pVector pL, axisL;	// Endpoints of line to which particles are attracted (in local space)
 	pVector p, axis;	// Endpoints of line to which particles are attracted
 	float magnitude;	// Scales acceleration
 	float epsilon;		// Softening parameter
@@ -292,6 +303,7 @@ struct PAOrbitLine : public ParticleAction
 
 struct PAOrbitPoint : public ParticleAction
 {
+	pVector centerL;	// Point to which particles are attracted (in local space)
 	pVector center;		// Point to which particles are attracted
 	float magnitude;	// Scales acceleration
 	float epsilon;		// Softening parameter
@@ -302,6 +314,7 @@ struct PAOrbitPoint : public ParticleAction
 
 struct PARandomAccel : public ParticleAction
 {
+	pDomain gen_accL;	// The domain of random accelerations.(in local space)
 	pDomain gen_acc;	// The domain of random accelerations.
 	
 	ExecMethod
@@ -309,6 +322,7 @@ struct PARandomAccel : public ParticleAction
 
 struct PARandomDisplace : public ParticleAction
 {
+	pDomain gen_dispL;	// The domain of random displacements.(in local space)
 	pDomain gen_disp;	// The domain of random displacements.
 	
 	ExecMethod
@@ -316,6 +330,7 @@ struct PARandomDisplace : public ParticleAction
 
 struct PARandomVelocity : public ParticleAction
 {
+	pDomain gen_velL;	// The domain of random velocities.(in local space)
 	pDomain gen_vel;	// The domain of random velocities.
 	
 	ExecMethod
@@ -331,6 +346,7 @@ struct PARestore : public ParticleAction
 struct PASink : public ParticleAction
 {
 	BOOL kill_inside;	// True to dispose of particles *inside* domain
+	pDomain positionL;	// Disposal region (in local space)
 	pDomain position;	// Disposal region
 	
 	ExecMethod
@@ -339,6 +355,7 @@ struct PASink : public ParticleAction
 struct PASinkVelocity : public ParticleAction
 {
 	BOOL kill_inside;	// True to dispose of particles with vel *inside* domain
+	pDomain velocityL;	// Disposal region (in local space)
 	pDomain velocity;	// Disposal region
 	
 	ExecMethod
@@ -354,11 +371,12 @@ struct PASpeedLimit : public ParticleAction
 
 struct PASource : public ParticleAction
 {
+	pDomain positionL;	// Choose a position in this domain. (local_space)
+	pDomain velocityL;	// Choose a velocity in this domain. (local_space)
 	pDomain position;	// Choose a position in this domain.
-	pDomain positionB;	// Choose a positionB in this domain.
+	pDomain velocity;	// Choose a velocity in this domain.
 	pDomain rot;		// Choose a rotation in this domain.
 	pDomain size;		// Choose a size in this domain.
-	pDomain velocity;	// Choose a velocity in this domain.
 	pDomain color;		// Choose a color in this domain.
 	float alpha;		// Alpha of all generated particles
 	float particle_rate;// Particles to generate per unit time
@@ -396,6 +414,7 @@ struct PATargetRotate : public ParticleAction
 
 struct PATargetVelocity : public ParticleAction
 {
+	pVector velocityL;	// Velocity to shift towards (in local space)
 	pVector velocity;	// Velocity to shift towards
 	float scale;		// Amount to shift by (1 == all the way)
 	
@@ -404,6 +423,8 @@ struct PATargetVelocity : public ParticleAction
 
 struct PAVortex : public ParticleAction
 {
+	pVector centerL;	// Center of vortex (in local space)
+	pVector axisL;		// Axis around which vortex is applied (in local space)
 	pVector center;		// Center of vortex
 	pVector axis;		// Axis around which vortex is applied
 	float magnitude;	// Scale for rotation around axis
