@@ -1054,9 +1054,11 @@ struct CMemCallbackHolder {
 
 extern void script_test();
 extern void delegate_test();
+extern void registry_test();
 
 void test1()
 {
+	registry_test();
 //	script_test();
 ////	printf	("%s\n",typeid(final::Head).name());
 ////	printf	("%s\n",typeid(final::Tail::Head).name());

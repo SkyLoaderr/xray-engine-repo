@@ -25,7 +25,7 @@
 				Optimization="0"
 				EnableFiberSafeOptimizations="TRUE"
 				OptimizeForProcessor="2"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;DEBUG;_WINDOWS;_USRDLL;XRGAME_EXPORTS;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;DEBUG;_WINDOWS;_USRDLL;"
 				MinimalRebuild="TRUE"
 				ExceptionHandling="FALSE"
 				BasicRuntimeChecks="3"
@@ -429,10 +429,19 @@
 			Name="Lua-test"
 			Filter="">
 			<File
+				RelativePath=".\alife_abstract_registry.h">
+			</File>
+			<File
+				RelativePath=".\alife_abstract_registry_inline.h">
+			</File>
+			<File
 				RelativePath=".\delegate_test.cpp">
 			</File>
 			<File
 				RelativePath=".\LUA_TEST.cpp">
+			</File>
+			<File
+				RelativePath=".\registry_test.cpp">
 			</File>
 			<File
 				RelativePath=".\script_class.cpp">
