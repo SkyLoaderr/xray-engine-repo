@@ -59,8 +59,7 @@ void CAI_Biting::feel_sound_new(CObject* who, int eType, const Fvector &Position
 
 	if (power >= m_fSoundThreshold) {
 		if (this != who) {
-#pragma todo("Oles to Jim: CMonsterMemory - commented out")
-			// Mem.HearSound(who,eType,Position,power,m_dwCurrentUpdate);
+			HearSound(who,eType,Position,power,m_dwCurrentUpdate);
 		}
  	}
 
@@ -109,10 +108,7 @@ void CAI_Biting::DoDamage(CEntity *pEntity)
 	if (!pEntity) return;
 
 	VisionElem ve;
-#pragma todo("MONSTER MEMORY REFACTORING...")
-//	if (!Mem.SelectEnemy(ve)) return;
-//	VisionElem &ve = Mem.GetNearestObject(vPosition);
-
+	if (!SelectEnemy(ve)) return;
 
 	if ((ve.obj->CLS_ID == CLSID_ENTITY) && (ve.obj == pEntity)) {
 		Fvector tDirection;
@@ -147,7 +143,7 @@ void CAI_Biting::vfAssignPitch			()
 		Fvector l_tDirection, l_tEdgePosition, l_tEdgePosition1;
 		float fRadius;
 		u32 l_dwNodeID;
-		Movement.GetBoundingSphere	(l_tDirection,fRadius);
+		//Movement.GetBoundingSphere	(l_tDirection,fRadius);
 		l_tDirection.setHP			(-r_torso_current.yaw,0);
 		l_tDirection.normalize		();
 		l_tDirection.mul			(fRadius);
