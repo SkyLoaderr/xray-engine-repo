@@ -18,7 +18,7 @@
 	<!-- TIME DISPLAY BACKGROUND -->
 	<timer_frame_line x="730" y="585" width="150" height="30">
 		<base_texture>ui\ui_string_01</base_texture>
-		<title x="10" y="6" width="435" height="18">
+		<title x="10" y="8" width="435" height="18">
 			<text font="letterica18" r="255" g="255" b="255"></text>
 		</title>
 	</timer_frame_line>
