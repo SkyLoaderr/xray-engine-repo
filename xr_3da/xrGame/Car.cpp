@@ -19,6 +19,8 @@ extern CPHWorld*	ph_world;
 
 CCar::CCar(void)
 {
+	m_pExhaustPG1	=NULL;
+	m_pExhaustPG2	=NULL;
 	active_camera	= 0;
 	m_vCamDeltaHP.set(0.f,0.f,0.f);
 	camera[ectFirst]= xr_new<CCameraFirstEye>	(this, pSettings, "car_firsteye_cam",	false); camera[ectFirst]->tag	= ectFirst;
@@ -47,7 +49,8 @@ CCar::~CCar(void)
 	xr_delete			(camera[0]);
 	xr_delete			(camera[1]);
 	xr_delete			(camera[2]);
-	xr_delete			(m_pExhaustPG);
+	xr_delete			(m_pExhaustPG1);
+	xr_delete			(m_pExhaustPG2);
 	snd_engine.destroy	();
 	m_jeep.Destroy();
 
@@ -180,9 +183,7 @@ void	CCar::Load					( LPCSTR section )
 
 	snd_engine.create				(TRUE,"car\\car1");
 
-	m_pExhaustPG					= xr_new<CPGObject>			("vehiclefx\\exhaust_1",Sector(),false);
-	m_pExhaustPG->SetTransform		(clTransform);
-	m_pExhaustPG->Play				();
+
 }
 
 BOOL	CCar::net_Spawn				(LPVOID DC)
@@ -196,6 +197,10 @@ BOOL	CCar::net_Spawn				(LPVOID DC)
 	Sound->play_at_pos				(snd_engine,this,vPosition,true);
 	ActivateJeep();
 	//
+	m_pExhaustPG1					= xr_new<CPGObject>			("vehiclefx\\exhaust_1",Sector(),false);
+	m_pExhaustPG2					= xr_new<CPGObject>			("vehiclefx\\exhaust_1",Sector(),false);
+	m_pExhaustPG1->SetTransform		(clTransform);
+	m_pExhaustPG2->SetTransform		(clTransform);
 
 
 	return R;
@@ -245,10 +250,11 @@ void	CCar::UpdateCL				( )
 	//clTransform.mul		(m_jeep.DynamicData.BoneTransform,mY);
 	clTransform.mul		(b_t,mY);
 
+	 Fvector lin_vel=m_jeep.GetVelocity	();
 	// Sound
 	Fvector		C,V;
 	clCenter	(C);
-	V.set		(m_jeep.GetVelocity	());
+	V.set		(lin_vel);
 	float		velocity						= V.magnitude();
 	float		scale							= 1.5f + 1.f*(velocity/10.f);
 
@@ -270,7 +276,21 @@ void	CCar::UpdateCL				( )
 		cam_Update	(Device.fTimeDelta);
 	}
 
-	m_pExhaustPG->UpdateParent(clTransform,m_jeep.GetVelocity());
+	Fvector ang_vel,res_vel;
+	Fmatrix exhast;
+	lin_vel=m_jeep.GetVelocity();
+	ang_vel=m_jeep.GetAngularVelocity();
+	
+	
+	exhast.mul(clTransform,PKinematics(pVisual)->LL_GetTransform(m_exhaust_ids[0]));
+	res_vel.crossproduct(ang_vel,exhast.c);
+	res_vel.add(lin_vel);
+	m_pExhaustPG1->UpdateParent(exhast,res_vel);
+
+	exhast.mul(clTransform,PKinematics(pVisual)->LL_GetTransform(m_exhaust_ids[1]));
+	res_vel.crossproduct(ang_vel,exhast.c);
+	res_vel.add(lin_vel);
+	m_pExhaustPG2->UpdateParent(exhast,m_jeep.GetVelocity());
 }
 
 void	CCar::OnVisible				( )
@@ -312,10 +332,14 @@ void	CCar::OnKeyboardPress		(int cmd)
 	case kUP:		m_jeep.DriveDirection=1;
 					m_jeep.DriveForce=drive_force;
 					m_jeep.Drive();
+					m_pExhaustPG2->Play				();
+					m_pExhaustPG1->Play				();
 					break;
 	case kDOWN:		m_jeep.DriveDirection=-1;
 					m_jeep.DriveForce=drive_force;
 					m_jeep.Drive();
+					m_pExhaustPG2->Play				();
+					m_pExhaustPG1->Play				();
 					break;
 	case kJUMP:		m_jeep.Breaks=true;
 					m_jeep.Drive();
@@ -343,6 +367,8 @@ void	CCar::OnKeyboardRelease		(int cmd)
 	case kDOWN:		m_jeep.DriveDirection=0;
 					m_jeep.DriveForce=0;
 					m_jeep.Drive();
+					m_pExhaustPG1->Stop		();
+					m_pExhaustPG2->Stop		();
 					break;
 	case kREPAIR:	m_repairing=false; break;
 	case kJUMP:		m_jeep.Breaks=false;
@@ -423,7 +449,7 @@ void CCar::Hit(float P,Fvector &dir,CObject *who,s16 element,Fvector p_in_object
 	case 2: m_jeep.applyImpulseTrace(1,p_in_object_space,dir,impulse); break;
 	case 3: m_jeep.applyImpulseTrace(4,p_in_object_space,dir,impulse); break;
 	case 4: m_jeep.applyImpulseTrace(3,p_in_object_space,dir,impulse); break;
-
+	default: m_jeep.applyImpulseTrace(0,p_in_object_space,dir,impulse); break;
 	}
 	inherited::Hit(P,dir,who,element,p_in_object_space, 0);
 }
@@ -479,8 +505,8 @@ void CCar::ActivateJeep()
 	M->LL_GetInstance				(M->LL_BoneID("steer")).set_callback			(cb_Steer,this);
 	m_doors_ids[1]					=M->LL_BoneID("phy_door_left");
 	m_doors_ids[0]					=M->LL_BoneID("phy_door_right");
-	m_exhaust_ids[0]				=M->LL_BoneID("exhaust1");
-	m_exhaust_ids[1]				=M->LL_BoneID("exhaust2");
+	m_exhaust_ids[0]				=M->LL_BoneID("pos_exhaust_1");
+	m_exhaust_ids[1]				=M->LL_BoneID("pos_exhaust_2");
 	
 
 	

@@ -1383,12 +1383,12 @@ return mc;
 }
 void CPHElement::set_BoxMass(const Fobb& box, float mass)
 {
-	dMass m;
+
 	dMassSetZero(&m_mass);
 	
 		m_mass_center.set(box.m_translate);
 		const Fvector& hside=box.m_halfsize;
-		dMassSetBox(&m,1,hside.x*2.f,hside.y*2.f,hside.z*2.f);
+		dMassSetBox(&m_mass,1,hside.x*2.f,hside.y*2.f,hside.z*2.f);
 		dMassAdjust(&m_mass,mass);
 		dMatrix3 DMatx;
 		PHDynamicData::FMX33toDMX(box.m_rotate,DMatx);

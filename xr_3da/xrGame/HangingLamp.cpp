@@ -108,10 +108,15 @@ void CHangingLamp::AddElement(CPhysicsElement* root_e, int id)
 	CBoneInstance& B	= K->LL_GetInstance(id);
 	E->mXFORM.set		(K->LL_GetTransform(id));
 	Fobb bb			= K->LL_GetBox(id);
-	//if(bb.m_halfsize.magnitude()<0.05f)
-		bb.m_halfsize.add(0.05f);
+
 	E->add_Box			(bb);
-	E->setMass			(10.f);
+	if(bb.m_halfsize.magnitude()<0.05f)
+	{
+		bb.m_halfsize.add(0.05f);
+		E->set_BoxMass(bb,10.f);
+	}
+	else
+		E->setMass			(10.f);
 	E->set_ParentElement(root_e);
 	B.set_callback		(m_pPhysicsShell->GetBonesCallback(),E);
 	m_pPhysicsShell->add_Element	(E);

@@ -136,6 +136,22 @@ public:
 		ret.z=vel[2];
 		return ret;
 	}
+	Fvector GetAngularVelocity(){
+
+		if(!bActive) 
+		{
+			Fvector ret;
+			ret.set(0,0,0);
+			return ret;
+		}
+		Fvector ret;
+		const dReal* vel=dBodyGetAngularVel(Bodies[0]);
+		ret.x=vel[0];
+		ret.y=vel[1];
+		ret.z=vel[2];
+		return ret;
+	}
+
 	PHDynamicData DynamicData;
 	dVector3 jeepBox;
 	dVector3 cabinBox;
