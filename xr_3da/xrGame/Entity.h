@@ -55,8 +55,8 @@ public:
 	virtual void			Update				(u32 dt);	
 	virtual void			OnVisible			();
 
-	bool					IsFocused			()const	{ return ((const CEntity*)pCreator->CurrentEntity()==this);		}
-	bool					IsMyCamera			()const	{ return ((const CEntity*)pCreator->CurrentViewEntity()==this);	}
+	bool					IsFocused			()const	{ return ((const CEntity*)g_pGameLevel->CurrentEntity()==this);		}
+	bool					IsMyCamera			()const	{ return ((const CEntity*)g_pGameLevel->CurrentViewEntity()==this);	}
 
 	float					g_Armor				()	{ return fArmor;	}
 	float					g_Health			()	{ return fHealth;	}

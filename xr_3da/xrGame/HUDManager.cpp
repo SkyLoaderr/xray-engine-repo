@@ -105,7 +105,7 @@ void CHUDManager::Render_First()
 {
 	if (!psHUD_Flags.test(HUD_WEAPON))return;
 	if (0==pUI)						return;
-	CObject*	O					= pCreator->CurrentViewEntity();
+	CObject*	O					= g_pGameLevel->CurrentViewEntity();
 	if (0==O)						return;
 	CActor*		A					= dynamic_cast<CActor*> (O);
 	if (A && !A->HUDview())			return;
@@ -121,7 +121,7 @@ void CHUDManager::Render_Last()
 {
 	if (!psHUD_Flags.test(HUD_WEAPON))return;
 	if (0==pUI)						return;
-	CObject*	O					= pCreator->CurrentViewEntity();
+	CObject*	O					= g_pGameLevel->CurrentViewEntity();
 	if (0==O)						return;
 	CActor*		A					= dynamic_cast<CActor*> (O);
 	if (A && !A->HUDview())			return;

@@ -111,7 +111,7 @@ void CObject::Load				(LPCSTR section )
 	UpdateTransform				();
 
 	// Actual loading
-	R_ASSERT					( pCreator );
+	R_ASSERT					( g_pGameLevel );
 
 	// Visual and light-track
 	if (pSettings->line_exist(section,"visual")) 
@@ -137,7 +137,7 @@ BOOL CObject::net_Spawn			(LPVOID data)
 					((CCF_Polygonal*)(cfModel))->LoadModel(pSettings, cNameSect());
 				}
 			}
-			pCreator->ObjectSpace.Object_Register	(this);
+			g_pGameLevel->ObjectSpace.Object_Register	(this);
 			cfModel->OnMove		();
 		}
 	}
@@ -260,7 +260,7 @@ CObject* CObject::H_SetParent	(CObject* O)
 void CObject::OnH_A_Chield		()
 {
 	// Become chield
-	pCreator->ObjectSpace.Object_Unregister	(this);
+	g_pGameLevel->ObjectSpace.Object_Unregister	(this);
 	Sector_Move								(0);
 }
 void CObject::OnH_B_Chield		()
@@ -270,7 +270,7 @@ void CObject::OnH_B_Chield		()
 void CObject::OnH_A_Independent	()
 {
 	// Become independent
-	pCreator->ObjectSpace.Object_Register	(this);
+	g_pGameLevel->ObjectSpace.Object_Register	(this);
 	Sector_Detect							();
 }
 void CObject::OnH_B_Independent	()

@@ -380,7 +380,7 @@ void CWeaponM134::FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collid
 
 	// particles
 	Fvector N,D;
-	CDB::TRI* pTri		= pCreator->ObjectSpace.GetStaticTris()+R.element;
+	CDB::TRI* pTri		= g_pGameLevel->ObjectSpace.GetStaticTris()+R.element;
 	N.mknormal			(pTri->V(0),pTri->V(1),pTri->V(2));
 	D.reflect			(vDir,N);
 

@@ -3,8 +3,9 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#include "igame_level.h"
+
 #include "x_ray.h"
-#include "xr_creator.h"
 #include "xr_ioconsole.h"
 #include "xr_input.h"
 #include "xr_ioc_cmd.h"
@@ -68,7 +69,7 @@ void CConsole::OnRender	()
 	if (0==pFont)
 		pFont		= xr_new<CGameFont>	("console_font",CGameFont::fsDeviceIndependent);
 
-	bGame=false; if (pCreator && pCreator->bReady) bGame=true;
+	bGame=false; if (g_pGameLevel && g_pGameLevel->bReady) bGame=true;
 
 	VERIFY(HW.pDevice);
 
@@ -126,11 +127,11 @@ void CConsole::OnPressKey(int dik, BOOL bHold)
 	switch (dik) {
 	case DIK_ESCAPE:
 		if (!bHold) {
-			if  (pCreator) Hide();
+			if  (g_pGameLevel) Hide();
 		}
 		break;
 	case DIK_GRAVE:
-		if (pCreator && !bHold) Hide();
+		if (g_pGameLevel && !bHold) Hide();
 		break;
 	case DIK_PRIOR:
 		scroll_delta++;

@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "igame_level.h"
 
+#include "Environment.h"
 #include "CameraBase.h"
 #include "CameraManager.h"
 #include "Effector.h"
@@ -98,7 +99,9 @@ void CCameraManager::RemoveEffector(EEffectorPPType type){
 }
 
 void CCameraManager::Update(const CCameraBase* C)
-{	Update(C->vPosition,C->vDirection,C->vNormal, C->f_fov, C->f_aspect, pCreator->Environment.Current.Far); }
+{	
+	Update(C->vPosition,C->vDirection,C->vNormal, C->f_fov, C->f_aspect, g_pGameLevel->Environment->Current.Far); 
+}
 
 void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N, float fFOV_Dest, float fASPECT_Dest, float fFAR_Dest)
 {

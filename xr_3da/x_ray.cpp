@@ -6,8 +6,9 @@
 //	AlexMX		- Alexander Maksimchuk
 //-----------------------------------------------------------------------------
 #include "stdafx.h"
+#include "igame_level.h"
+
 #include "xr_input.h"
-#include "xr_creator.h"
 #include "xr_ioconsole.h"
 #include "x_ray.h"
 #include "std_classes.h"
@@ -17,7 +18,6 @@
    
 // global variables
 ENGINE_API	CApplication*	pApp			= NULL;
-ENGINE_API	CCreator*		pCreator		= NULL;
 
 static		HWND			logoWindow		= NULL;
 
@@ -242,9 +242,9 @@ void CApplication::OnEvent(EVENT E, u64 P1, u64 P2)
 		Console.Hide();
 		LPSTR		op_server		= LPSTR	(P1);
 		LPSTR		op_client		= LPSTR	(P2);
-		R_ASSERT	(0==pCreator);
-		pCreator	= (CCreator*)	NEW_INSTANCE(CLSID_LEVEL);
-		R_ASSERT	(pCreator->net_Start(op_server,op_client));
+		R_ASSERT	(0==g_pGameLevel);
+		g_pGameLevel	= (CCreator*)	NEW_INSTANCE(CLSID_LEVEL);
+		R_ASSERT	(g_pGameLevel->net_Start(op_server,op_client));
 		xr_free		(op_server);
 		xr_free		(op_client);
 
@@ -256,10 +256,10 @@ void CApplication::OnEvent(EVENT E, u64 P1, u64 P2)
 			Console.Execute		(buf);
 		}
 	} else if (E==eDisconnect) {
-		if (pCreator) {
+		if (g_pGameLevel) {
 			Console.Hide			();
-			pCreator->net_Stop		();
-			DEL_INSTANCE			(pCreator);
+			g_pGameLevel->net_Stop		();
+			DEL_INSTANCE			(g_pGameLevel);
 			Console.Show			();
 		}
 	}

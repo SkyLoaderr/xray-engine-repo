@@ -6,6 +6,7 @@
 #include "render.h"
 #include "gamefont.h"
 #include "xrLevel.h"
+#include "environment.h"
 
 IGame_Level::IGame_Level	()
 {
@@ -72,7 +73,7 @@ BOOL IGame_Level::Load				(u32 dwNum)
 	IReader *chunk				= 0;
 	u32	count, i;
 
-	Environment.Load			(pLevel, "environment");
+	Environment->Load			(pLevel, "environment");
 
 	// Header
 	hdrLEVEL					H;
@@ -142,7 +143,7 @@ BOOL IGame_Level::Load				(u32 dwNum)
 			Sounds_dwNextTime		= Device.TimerAsync	()	+ 5000;
 		}
 	}
-	Environment.Load_Music		(pLevel);
+	Environment->Load_Music		(pLevel);
 
 	// Done
 	pApp->LoadTitle				("Syncronizing...");
@@ -159,7 +160,7 @@ Shader*		IGame_Level::LL_CreateShader	(int S, int T, int M, int C)
 	return Device.Shader.Create			(getString(S),getString(T),getString(M),getString(C));
 }
 
-LPCSTR		IGame_Level::getString			(int id);	
+LPCSTR		IGame_Level::getString			(int id)	
 {
 	if (id<0)	return 0;
 	R_ASSERT	(id<int(LL_strings.size()));
@@ -185,7 +186,7 @@ void IGame_Level::OnFrame		( )
 	// Update all objects
 	VERIFY						(bReady);
 	Engine.Sheduler.Update		( );
-	Environment.OnFrame			( );
+	Environment->OnFrame		( );
 	Objects.Update				( );
 	pHUD->OnFrame				( );
 

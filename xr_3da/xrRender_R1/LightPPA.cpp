@@ -50,7 +50,7 @@ IC void mk_vertex		(CLightPPA_Vertex& D, Fvector& P, Fvector& N, Fvector& C, flo
 
 void CLightPPA::Render	(SGeometry* hGeom)
 {
-	VERIFY	(pCreator);
+	VERIFY	(g_pGameLevel);
 
 	// Build bbox
 	Fvector size;
@@ -58,10 +58,10 @@ void CLightPPA::Render	(SGeometry* hGeom)
 
 	// Query collision DB (Select polygons)
 	XRC.box_options		(0);
-	XRC.box_query		(pCreator->ObjectSpace.GetStaticModel(),sphere.P,size);
+	XRC.box_query		(g_pGameLevel->ObjectSpace.GetStaticModel(),sphere.P,size);
 	u32	triCount		= XRC.r_count	();
 	if (0==triCount)	return;
-	CDB::TRI* tris		= pCreator->ObjectSpace.GetStaticTris();
+	CDB::TRI* tris		= g_pGameLevel->ObjectSpace.GetStaticTris();
 
 	// Lock
 	RCache.set_Geometry		(hGeom);

@@ -9,15 +9,15 @@
 	#include "ui_main.h"
 #else
 	#include "igame_level.h"
+	#include "Environment.h"
 #endif
 
 
 #ifdef _LEVEL_EDITOR
 	#define FAR_DIST UI.ZFar()
 #else
-	#define FAR_DIST pCreator->Environment.Current.Far
+	#define FAR_DIST g_pGameLevel->Environment->Current.Far
 #endif
-
 
 #define MAX_Flares	12
 //////////////////////////////////////////////////////////////////////////////
@@ -185,7 +185,7 @@ void CLensFlare::OnFrame()
 #ifdef _LEVEL_EDITOR
 	if ( Scene.RayPick(Device.m_Camera.GetPosition(), vSunDir, OBJCLASS_SCENEOBJECT, 0, false, 0))
 #else
-	if ( pCreator->ObjectSpace.RayTest( Device.vCameraPosition, vSunDir) )
+	if ( g_pGameLevel->ObjectSpace.RayTest( Device.vCameraPosition, vSunDir) )
 #endif
 	{
 		fBlend = fBlend - BLEND_DEC_SPEED * Device.fTimeDelta;

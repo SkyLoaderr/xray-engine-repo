@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "igame_level.h"
 #include "igame_objectpool.h"
+#include "xr_object.h"
 
 IGame_ObjectPool::IGame_ObjectPool(void)
 {
@@ -8,11 +9,12 @@ IGame_ObjectPool::IGame_ObjectPool(void)
 
 IGame_ObjectPool::~IGame_ObjectPool(void)
 {
+	R_ASSERT			(map_POOL.empty());
 }
 
-void IGame_ObjectPool::load()
+void IGame_ObjectPool::load	()
 {
-	R_ASSERT			(map_POOL.empty() && map_NETID.empty() && objects.empty() && destroy_queue.empty());
+	R_ASSERT			(map_POOL.empty());
 	if (strstr(Core.Params,"-noprefetch"))	return;
 
 	u32	mem_0			= Memory.mem_usage();

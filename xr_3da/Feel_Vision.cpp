@@ -107,7 +107,7 @@ namespace Feel {
 			if (f>fuzzy_guaranteed) 
 			{
 				D.div		(f);
-				if (pCreator->ObjectSpace.RayTest(P,D,f,false,&I->Cache)) 
+				if (g_pGameLevel->ObjectSpace.RayTest(P,D,f,false,&I->Cache)) 
 				{
 					// INVISIBLE, choose next point
 					I->fuzzy				-=	fuzzy_update_novis*dt;

@@ -245,7 +245,7 @@ void CWeaponProtecta::FireShotmark(const Fvector &vDir, const Fvector &vEnd, Col
 
 	// particles
 	Fvector N,D;
-	RAPID::tri* pTri	= pCreator->ObjectSpace.GetStaticTris()+R.element;
+	RAPID::tri* pTri	= g_pGameLevel->ObjectSpace.GetStaticTris()+R.element;
 	N.mknormal			(pTri->V(0),pTri->V(1),pTri->V(2));
 	D.reflect			(vDir,N);
 

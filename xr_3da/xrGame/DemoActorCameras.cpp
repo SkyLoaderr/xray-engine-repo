@@ -5,5 +5,5 @@
 void CDemoActor::UpdateCamera()
 {
 	camera->Set	(vPosition,mRotate.k,mRotate.j);
-	pCreator->Cameras.Update	(camera);
+	g_pGameLevel->Cameras.Update	(camera);
 }

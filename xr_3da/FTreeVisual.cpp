@@ -102,8 +102,8 @@ struct	FTreeVisual_setup
 		scale					= 1.f/float(FTreeVisual_quant);
 
 		// Fog
-		float	f_near			= pCreator->Environment.c_FogNear;
-		float	f_far			= 1/(pCreator->Environment.c_FogFar - f_near);
+		float	f_near			= g_pGameLevel->Environment.c_FogNear;
+		float	f_far			= 1/(g_pGameLevel->Environment.c_FogFar - f_near);
 		Fvector4 plane;			
 
 		// Near plane for fog
@@ -115,7 +115,7 @@ struct	FTreeVisual_setup
 		float denom				= -1.0f / _sqrt(_sqr(plane.x)+_sqr(plane.y)+_sqr(plane.z));
 
 		// D-Light
-		CSun&	sun				= *(pCreator->Environment.Suns.front());
+		CSun&	sun				= *(g_pGameLevel->Environment.Suns.front());
 
 		// setup constants
 		wave.set				(ps_r__Tree_Wave.x,	ps_r__Tree_Wave.y,	ps_r__Tree_Wave.z,	Device.fTimeGlobal*ps_r__Tree_w_speed);			// wave

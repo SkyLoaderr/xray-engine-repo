@@ -25,15 +25,15 @@ CCFModel::CCFModel( CObject* _owner )
 
 CCFModel::~CCFModel( )
 {
-	R_ASSERT(pCreator);
-	pCreator->ObjectSpace.Object_Unregister(owner);
+	R_ASSERT(g_pGameLevel);
+	g_pGameLevel->ObjectSpace.Object_Unregister(owner);
 }
 
 void CCFModel::OnMove( )
 {
-	VERIFY	( pCreator );
+	VERIFY	( g_pGameLevel );
 	VERIFY	( owner );
-	pCreator->ObjectSpace.Object_Move(owner);
+	g_pGameLevel->ObjectSpace.Object_Move(owner);
 }
 
 //----------------------------------------------------------------------------------
@@ -126,7 +126,7 @@ void CCF_Polygonal::_BoxQuery( const Fbox& B, const Fmatrix& M, u32 flags)
 	if ((flags&clQUERY_TOPLEVEL) || (((flags&clGET_TRIS)==0) && (flags&clGET_BOXES)))
 	{
 		// Return only top level
-		clQueryCollision& Q = pCreator->ObjectSpace.q_result;
+		clQueryCollision& Q = g_pGameLevel->ObjectSpace.q_result;
 		Q.AddBox			(owner->svXFORM(),bv_box);
 	} else {
 		// XForm box
@@ -144,7 +144,7 @@ void CCF_Polygonal::_BoxQuery( const Fbox& B, const Fmatrix& M, u32 flags)
 		XRC.box_query (&model, bc, bd );
 		if (XRC.r_count())
 		{
-			clQueryCollision& Q = pCreator->ObjectSpace.q_result;
+			clQueryCollision& Q = g_pGameLevel->ObjectSpace.q_result;
 			if (flags&clQUERY_ONLYFIRST) 
 			{
 				Q.AddTri(T,&model.get_tris()[XRC.r_begin()->id]);
@@ -267,13 +267,13 @@ void CCF_Skeleton::_BoxQuery( const Fbox& B, const Fmatrix& M, u32 flags)
 	{
 		if (dwFrameTL!=Device.dwFrame) BuildTopLevel();
 		// Return only top level
-		clQueryCollision& Q = pCreator->ObjectSpace.q_result;
+		clQueryCollision& Q = g_pGameLevel->ObjectSpace.q_result;
 		Q.AddBox			(owner->svXFORM(),bv_box);
 	} else { 
 		if (dwFrame!=Device.dwFrame) BuildState();
 
 		// Return actual boxes
-		clQueryCollision& Q = pCreator->ObjectSpace.q_result;
+		clQueryCollision& Q = g_pGameLevel->ObjectSpace.q_result;
 
 #pragma todo("CCF_Skeleton::_BoxQuery - Actual test BOX vs SkeletonNODE")
 		for (xr_vector<CCF_OBB>::iterator I=model.begin(); I!=model.end(); I++) 
@@ -390,13 +390,13 @@ void CCF_Rigid::_BoxQuery( const Fbox& B, const Fmatrix& M, u32 flags)
 	{
 		if (dwFrameTL!=Device.dwFrame) BuildTopLevel();
 		// Return only top level
-		clQueryCollision& Q = pCreator->ObjectSpace.q_result;
+		clQueryCollision& Q = g_pGameLevel->ObjectSpace.q_result;
 		Q.AddBox			(owner->svXFORM(),bv_box);
 	} else { 
 		if (dwFrame!=Device.dwFrame) BuildState();
 
 		// Return actual boxes
-		clQueryCollision& Q = pCreator->ObjectSpace.q_result;
+		clQueryCollision& Q = g_pGameLevel->ObjectSpace.q_result;
 
 #pragma todo("CCF_Rigid::_BoxQuery - Actual test BOX vs SkeletonNODE")
 		for (xr_vector<CCF_OBB>::iterator I=model.begin(); I!=model.end(); I++) 

@@ -16,7 +16,7 @@ class ENGINE_API CDemoRecord :
 {
 private:
 	int			iCount;
-	int			hFile;
+	IWriter*	file;
 	Fvector		m_HPB;
 	Fvector		m_Position;
 	Fmatrix		m_Camera;

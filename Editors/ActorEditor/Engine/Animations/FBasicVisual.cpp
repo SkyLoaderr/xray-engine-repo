@@ -76,7 +76,7 @@ void IVisual::Load		(const char* N, IReader *data, u32 dwFlags)
 		tscreate.Begin	();
 		u32 T = data->r_u32();
 		u32 S = data->r_u32();
-		hShader = pCreator->LL_CreateShader(S,T,-1,-1);
+		hShader = g_pGameLevel->LL_CreateShader(S,T,-1,-1);
 		tscreate.End	();
 #endif
 	} else {

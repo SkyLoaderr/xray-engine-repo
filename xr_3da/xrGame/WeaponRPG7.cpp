@@ -330,7 +330,7 @@ void CWeaponRPG7Grenade::FragWallmark	(const Fvector& vDir, const Fvector &vEnd,
 			hWallmark,
 			vEnd,
 			fWallmarkSize,
-			pCreator->ObjectSpace.GetStaticTris()+R.element/**/);
+			g_pGameLevel->ObjectSpace.GetStaticTris()+R.element/**/);
 	}
 
 	Sound->play_at_pos(sndRicochet[Random.randI(SND_RIC_COUNT)], 0, vEnd,false);
@@ -339,7 +339,7 @@ void CWeaponRPG7Grenade::FragWallmark	(const Fvector& vDir, const Fvector &vEnd,
 	{
 		// particles
 		Fvector N,D;
-		CDB::TRI* pTri		= pCreator->ObjectSpace.GetStaticTris()+R.element;
+		CDB::TRI* pTri		= g_pGameLevel->ObjectSpace.GetStaticTris()+R.element;
 		N.mknormal			(pTri->V(0),pTri->V(1),pTri->V(2));
 		D.reflect			(vDir,N);
 		

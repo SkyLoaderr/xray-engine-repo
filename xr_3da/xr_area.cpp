@@ -20,11 +20,11 @@ void __stdcall _sound_event	(sound* S, float range)
 		VERIFY					(p);
 
 		// Query objects
-		pCreator->ObjectSpace.GetNearest	(p->position,range);
+		g_pGameLevel->ObjectSpace.GetNearest	(p->position,range);
 
 		// Iterate
-		CObjectSpace::NL_IT		it	= pCreator->ObjectSpace.q_nearest.begin	();
-		CObjectSpace::NL_IT		end	= pCreator->ObjectSpace.q_nearest.end	();
+		CObjectSpace::NL_IT		it	= g_pGameLevel->ObjectSpace.q_nearest.begin	();
+		CObjectSpace::NL_IT		end	= g_pGameLevel->ObjectSpace.q_nearest.end	();
 		for (; it!=end; it++)
 		{
 			CObject*	O		= *it;
@@ -203,7 +203,7 @@ void CObjectSpace::Load	()
 	} else {
 		R_ASSERT			(CFORM_CURRENT_VERSION==H.version);
 	}
-	pCreator->Load_GameSpecific_CFORM	( tris, H.facecount );
+	g_pGameLevel->Load_GameSpecific_CFORM	( tris, H.facecount );
 	Static.build						( verts, H.vertcount, tris, H.facecount );
     Msg						("* Level CFORM memory usage: %dK",Static.memory()/1024);
 
@@ -276,5 +276,5 @@ void CObjectSpace::dbgRender()
 			RCache.dbg_DrawAABB(c,cl_2,0,cl_2,B?C2s:C2);
 		}
 	}
-	c.set(pCreator->CurrentEntity()->Position());
+	c.set(g_pGameLevel->CurrentEntity()->Position());
 }

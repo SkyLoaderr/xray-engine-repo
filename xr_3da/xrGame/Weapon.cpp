@@ -682,7 +682,7 @@ void CWeapon::FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collide::r
 			hWallmark,
 			vEnd,
 			fWallmarkSize,
-			pCreator->ObjectSpace.GetStaticTris()+R.element);
+			g_pGameLevel->ObjectSpace.GetStaticTris()+R.element);
 	}
 }
 

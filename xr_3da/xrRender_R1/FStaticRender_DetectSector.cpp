@@ -21,7 +21,7 @@ IRender_Sector* CRender::detectSector(Fvector& P)
 	// Geometry model
 	int		id2		= -1;
 	float	range2	= range1;
-	XRC.ray_query	(pCreator->ObjectSpace.GetStaticModel(),P,dir,range2);
+	XRC.ray_query	(g_pGameLevel->ObjectSpace.GetStaticModel(),P,dir,range2);
 	if (XRC.r_count()) {
 		CDB::RESULT *RP2 = XRC.r_begin();
 		id2 = RP2->id; range2 = RP2->range;
@@ -42,7 +42,7 @@ IRender_Sector* CRender::detectSector(Fvector& P)
 		return pPortal->getSectorFacing(P);
 	} else {
 		// Take triangle at ID and use it's Sector
-		CDB::TRI*	pTri	= pCreator->ObjectSpace.GetStaticTris()+ID;
+		CDB::TRI*	pTri	= g_pGameLevel->ObjectSpace.GetStaticTris()+ID;
 		return getSector(pTri->sector);
 	}
 }

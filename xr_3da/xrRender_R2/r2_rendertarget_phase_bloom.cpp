@@ -66,7 +66,7 @@ void CRenderTarget::phase_bloom	()
 	// Render skybox/skydome into Bloom1
 	RCache.set_Stencil					(FALSE);
 	RImplementation.rmFar				();
-	pCreator->Environment.RenderFirst	();		// sky
+	g_pGameLevel->Environment.RenderFirst	();		// sky
 
 	// Transfer into Bloom1, use black/white mask stored in Bloom2
 	{
@@ -275,7 +275,7 @@ void CRenderTarget::phase_bloom	()
 		// Render skybox/skydome into Bloom2.rgbx
 		u_setrt								(rt_Bloom_2,NULL,NULL,rt_Bloom_ZB);		// No need for ZBuffer at all
 		RImplementation.rmFar				();
-		pCreator->Environment.RenderFirst	();
+		g_pGameLevel->Environment.RenderFirst	();
 	}
 
 	CHK_DX		(HW.pDevice->SetRenderState	( D3DRS_ZENABLE,		TRUE				));

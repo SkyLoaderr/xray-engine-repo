@@ -449,7 +449,7 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element, float i
 	if (g_Alive()<=0) return;
 	Fvector position_in_bone_space;
 	position_in_bone_space.set(0.f,0.f,0.f);
-	if(pCreator->CurrentEntity() == this) {
+	if(g_pGameLevel->CurrentEntity() == this) {
 		Fvector l_d; l_d.set(dir); l_d.normalize();
 		Level().Cameras.AddEffector(xr_new<CEffectorPPHit>(svTransform.i.dotproduct(l_d), svTransform.j.dotproduct(l_d), .5f, .003f*iLost));
 		Level().Cameras.AddEffector(xr_new<CEffectorHit>(svTransform.i.dotproduct(l_d), svTransform.j.dotproduct(l_d), .8f, .003f*iLost));
@@ -490,7 +490,7 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 
 	if (g_Alive()<=0) return;
 
-	if(pCreator->CurrentEntity() == this) {
+	if(g_pGameLevel->CurrentEntity() == this) {
 		Fvector l_d; l_d.set(dir); l_d.normalize();
 		Level().Cameras.AddEffector(xr_new<CEffectorPPHit>(svTransform.i.dotproduct(l_d), svTransform.j.dotproduct(l_d), .5f, .003f*iLost));
 		Level().Cameras.AddEffector(xr_new<CEffectorHit>(svTransform.i.dotproduct(l_d), svTransform.j.dotproduct(l_d), .8f, .003f*iLost));
@@ -658,7 +658,7 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 		ph_Movement.SetVelocity				(correctV);
 
 		if (Local()) {
-			pCreator->Cameras.AddEffector		(xr_new<CEffectorFall> (ph_Movement.gcontact_Power));
+			g_pGameLevel->Cameras.AddEffector		(xr_new<CEffectorFall> (ph_Movement.gcontact_Power));
 			Fvector D; D.set					(0,1,0);
 			if (ph_Movement.gcontact_HealthLost)	Hit	(1.5f * ph_Movement.gcontact_HealthLost,D,this,-1);
 		}
@@ -674,7 +674,7 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 		if (Local()) {
 			
 			if (ph_Movement.gcontact_Was) 
-				pCreator->Cameras.AddEffector		(xr_new<CEffectorFall> (ph_Movement.gcontact_Power));
+				g_pGameLevel->Cameras.AddEffector		(xr_new<CEffectorFall> (ph_Movement.gcontact_Power));
 			Fvector D; D.set					(0,1,0);
 			if (ph_Movement.gcontact_HealthLost)	{
 				Hit	(ph_Movement.gcontact_HealthLost,D,this,s16(6 + 2*::Random.randI(0,2)),0);
@@ -993,7 +993,7 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 			Fvector				start_pos;
 			//bbStandBox.getcenter(start_pos);
 			start_pos.add		(vPosition);
-			//if (!pCreator->ObjectSpace.EllipsoidCollide(cfModel,svTransform,start_pos,bbStandBox))
+			//if (!g_pGameLevel->ObjectSpace.EllipsoidCollide(cfModel,svTransform,start_pos,bbStandBox))
 			Fbox stand_box=ph_Movement.Boxes()[0];
 			stand_box.y1+=ph_Movement.FootExtent().y;
 			ph_Movement.GetPosition(start_pos);
@@ -1002,7 +1002,7 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 						(ph_Movement.Boxes()[0].y2-ph_Movement.Boxes()[0].y1)
 						)/2.f;
 			start_pos.y+=ph_Movement.FootExtent().y/2.f;
-			if (!pCreator->ObjectSpace.EllipsoidCollide(cfModel,svTransform,start_pos,stand_box))
+			if (!g_pGameLevel->ObjectSpace.EllipsoidCollide(cfModel,svTransform,start_pos,stand_box))
 			{
 				mstate_real &= ~mcCrouch;
 				ph_Movement.ActivateBox	(0);

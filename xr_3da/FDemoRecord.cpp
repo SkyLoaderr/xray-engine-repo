@@ -23,11 +23,12 @@ CDemoRecord * xrDemoRecord = 0;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CDemoRecord::CDemoRecord(const char *name,float life_time):CEffector(cefDemo,life_time,FALSE)
+CDemoRecord::CDemoRecord(const char *name,float life_time) : CEffector(cefDemo,life_time,FALSE)
 {
-	_unlink(name);
-	hFile	= _open(name,O_WRONLY|O_CREAT|O_BINARY, S_IREAD|S_IWRITE);
-	if (hFile>0) {
+	_unlink	(name);
+	file	= FS.w_open	(name);
+	if (file) 
+	{
 		iCapture();	// capture input
 		m_Camera.invert(Device.mView);
 
@@ -54,15 +55,14 @@ CDemoRecord::CDemoRecord(const char *name,float life_time):CEffector(cefDemo,lif
 		m_bMakeScreenshot	= FALSE;
 	} else {
 		fLifeTime = -1;
-		//pCreator->Cameras.RemoveEffector(cefDemo);
 	}
 }
 
 CDemoRecord::~CDemoRecord()
 {
-	if (hFile>0) {
-		iRelease();	// release input
-		_close(hFile);
+	if (file) {
+		iRelease	();	// release input
+		FS.w_close	(file);
 	}
 }
 
@@ -121,7 +121,7 @@ void CDemoRecord::MakeCubeMapFace(Fvector &D, Fvector &N)
 
 BOOL CDemoRecord::Process(Fvector &P, Fvector &D, Fvector &N, float& fFov, float& fFar, float& fAspect)
 {
-	if (hFile<=0)	return TRUE;
+	if (0==file)	return TRUE;
 
 	if (m_bMakeScreenshot){
 		MakeScreenshotFace();
@@ -199,11 +199,11 @@ void CDemoRecord::OnKeyboardPress	(int dik)
 	if (dik == DIK_SPACE)	RecordKey();
 	if (dik == DIK_BACK)	MakeCubemap();
 	if (dik == DIK_F12)		MakeScreenshot();
-	if (dik == DIK_ESCAPE)	fLifeTime = -1; //pCreator->Cameras.RemoveEffector(cefDemo);
+	if (dik == DIK_ESCAPE)	fLifeTime = -1; //g_pGameLevel->Cameras.RemoveEffector(cefDemo);
 	if (dik == DIK_RETURN){	
-		if (pCreator->CurrentEntity()){
-			pCreator->CurrentEntity()->ForceTransform(m_Camera);
-			//pCreator->Cameras.RemoveEffector(cefDemo);
+		if (g_pGameLevel->CurrentEntity()){
+			g_pGameLevel->CurrentEntity()->ForceTransform(m_Camera);
+			//g_pGameLevel->Cameras.RemoveEffector(cefDemo);
 			fLifeTime		= -1; 
 		}
 	}
@@ -251,21 +251,17 @@ void CDemoRecord::OnMouseHold		(int btn)
 
 void CDemoRecord::RecordKey			()
 {
-	Fmatrix g_matView;
+	Fmatrix			g_matView;
  
 	g_matView.invert(m_Camera);
-	_write(
-		hFile,
-		&g_matView,
-		sizeof(Fmatrix)
-	);
+	file->w			(&g_matView,sizeof(Fmatrix));
 	iCount++;
 }
 
 void CDemoRecord::MakeCubemap		()
 {
-	m_bMakeCubeMap = TRUE;
-	s_idx = 0;
+	m_bMakeCubeMap	= TRUE;
+	s_idx			= 0;
 }
 
 void CDemoRecord::MakeScreenshot	()

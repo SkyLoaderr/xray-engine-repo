@@ -19,7 +19,7 @@ void CRender::Render	()
 		// Calculate sector(s) and their objects
 		set_Object								(0);
 		if (0!=pLastSector) pLastSector->Render	(ViewBase);
-		pCreator->pHUD->Render_Last				();
+		g_pGameLevel->pHUD->Render_Last				();
 	}
 	Device.Statistic.RenderCALC.End				();
 
@@ -166,6 +166,6 @@ void CRender::Render	()
 	
 	// HUD
 	Device.Statistic.RenderDUMP_HUD.Begin	();
-	pCreator->pHUD->Render_Direct			();
+	g_pGameLevel->pHUD->Render_Direct			();
 	Device.Statistic.RenderDUMP_HUD.End		();
 }

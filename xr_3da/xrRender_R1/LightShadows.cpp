@@ -323,7 +323,7 @@ void CLightShadows::render	()
 {
 	Device.Statistic.RenderDUMP_Srender.Begin	();
 	// Gain access to collision-DB
-	CDB::MODEL*		DB		= pCreator->ObjectSpace.GetStaticModel();
+	CDB::MODEL*		DB		= g_pGameLevel->ObjectSpace.GetStaticModel();
 	CDB::TRI*		TRIS	= DB->get_tris();
 
 	int slot_line	= S_rt_size/S_size;

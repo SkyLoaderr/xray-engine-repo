@@ -66,7 +66,7 @@ CCar* CActor::pick_VehicleObject()
 	setEnabled(false);
 	Collide::ray_query	l_rq;
 	l_rq.O=NULL;
-	pCreator->ObjectSpace.RayPick(Device.vCameraPosition, Device.vCameraDirection, 15.f, l_rq);
+	g_pGameLevel->ObjectSpace.RayPick(Device.vCameraPosition, Device.vCameraDirection, 15.f, l_rq);
 	setEnabled(true);
 	CCar* ret=dynamic_cast<CCar*>(l_rq.O);
 

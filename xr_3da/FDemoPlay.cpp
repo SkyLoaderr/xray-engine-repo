@@ -31,7 +31,7 @@ CDemoPlay::CDemoPlay(const char *name, float ms, BOOL bc, float life_time) : CEf
 		m_MParam.Set			(m_pMotion, true);
 	}else{
 		if (!FS.exist(name)) {
-			pCreator->Cameras.RemoveEffector(cefDemo);
+			g_pGameLevel->Cameras.RemoveEffector(cefDemo);
 			return;
 		}
 		IReader*	fs	= FS.r_open	(name);

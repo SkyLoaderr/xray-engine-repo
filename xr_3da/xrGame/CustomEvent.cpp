@@ -111,7 +111,7 @@ BOOL CCustomEvent::net_Spawn	( LPVOID DC )
 			count--;
 		}
 		shape->ComputeBounds		();
-		pCreator->ObjectSpace.Object_Register		(this);
+		g_pGameLevel->ObjectSpace.Object_Register		(this);
 		cfModel->OnMove				();
 	}
 	

@@ -10,7 +10,7 @@
 #include "..\GameFont.h"
 
 #define FADE_SCALE			1024.f
-#define MAX_GlowsDist1		float(pCreator->Environment.Current.Far)
+#define MAX_GlowsDist1		float(g_pGameLevel->Environment.Current.Far)
 #define MAX_GlowsDist2		float(MAX_GlowsDist1*MAX_GlowsDist1)
 
 //////////////////////////////////////////////////////////////////////
@@ -43,7 +43,7 @@ void CGlowManager::Load		(IReader* fs)
 
 		u32 T		= fs->r_u32();
 		u32 S		= fs->r_u32();
-		G.hShader	= pCreator->LL_CreateShader(S,T,-1,-1);
+		G.hShader	= g_pGameLevel->LL_CreateShader(S,T,-1,-1);
 
 		G.fade		= 255.f;
 		G.dwFrame	= 0x0;
@@ -138,7 +138,7 @@ void CGlowManager::Render()
 			Fvector dir;
 			dir.sub(G.C,start); float range = dir.magnitude();
 			dir.div(range);
-			G.bTestResult = pCreator->ObjectSpace.RayTest(start,dir,range,TRUE,&G.RayCache);
+			G.bTestResult = g_pGameLevel->ObjectSpace.RayTest(start,dir,range,TRUE,&G.RayCache);
 		}
 
 		// 2. Sort by shader

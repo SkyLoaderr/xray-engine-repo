@@ -21,7 +21,7 @@ void CFlyer::UpdateCamera()
 	}
 	CCameraBase* C				= cameras[cam_active];
 	C->Update					(point,dangle);
-	pCreator->Cameras.Update	(C);
+	g_pGameLevel->Cameras.Update	(C);
 }
  
 void CFlyer::ChangeCamStyle	(EFlyerCameras style){

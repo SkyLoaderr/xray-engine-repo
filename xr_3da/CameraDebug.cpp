@@ -119,6 +119,6 @@ void CCameraDebug::OnKeyboardPress(int dik)
 {
 //	switch (dik)
 //	{
-//	case DIK_RETURN: pCreator->Cameras.Activate(savedStyle); break;
+//	case DIK_RETURN: g_pGameLevel->Cameras.Activate(savedStyle); break;
 //	}
 }

@@ -35,7 +35,7 @@ BOOL CCustomDetector::net_Spawn(LPVOID DC) {
 //	shape->add_sphere			(S);
 //	shape->ComputeBounds						();
 //#pragma todo("@@@ WT: Check if detector will work w/o registration.")
-//	pCreator->ObjectSpace.Object_Register		(this);
+//	g_pGameLevel->ObjectSpace.Object_Register		(this);
 //	cfModel->OnMove								();
 
 	setVisible(true);

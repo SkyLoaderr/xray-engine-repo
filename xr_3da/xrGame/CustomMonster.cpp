@@ -504,7 +504,7 @@ void CCustomMonster::Exec_Visibility	( )
 
 	// Camera
 	if (IsMyCamera())						
-		pCreator->Cameras.Update	(eye_matrix.c,eye_matrix.k,eye_matrix.j,eye_fov,1.f,eye_range);
+		g_pGameLevel->Cameras.Update	(eye_matrix.c,eye_matrix.k,eye_matrix.j,eye_fov,1.f,eye_range);
 
 	// Slice
 	Engine.Sheduler.Slice();

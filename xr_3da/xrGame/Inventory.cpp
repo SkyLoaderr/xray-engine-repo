@@ -353,7 +353,7 @@ void CInventory::Update(u32 deltaT) {
 	if(l_pA) {
 		l_pA->setEnabled(false);
 		Collide::ray_query	l_rq;
-		if(pCreator->ObjectSpace.RayPick(Device.vCameraPosition, Device.vCameraDirection, m_takeDist, l_rq)) m_pTarget = dynamic_cast<PIItem>(l_rq.O);
+		if(g_pGameLevel->ObjectSpace.RayPick(Device.vCameraPosition, Device.vCameraDirection, m_takeDist, l_rq)) m_pTarget = dynamic_cast<PIItem>(l_rq.O);
 		else m_pTarget = NULL;
 		l_pA->setEnabled(true);
 	}

@@ -7,11 +7,11 @@
 
 void CRender::level_Load()
 {
-	if (0==pCreator)	return;
+	if (0==g_pGameLevel)	return;
 
 	// Begin
 	pApp->LoadBegin		();
-	IReader*	fs		= pCreator->LL_Stream;
+	IReader*	fs		= g_pGameLevel->LL_Stream;
 	IReader*	chunk;
 
 	// VB
@@ -51,7 +51,7 @@ void CRender::level_Load()
 
 void CRender::level_Unload()
 {
-	if (0==pCreator)		return;
+	if (0==g_pGameLevel)		return;
 
 	u32 I;
 

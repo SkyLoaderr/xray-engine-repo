@@ -1,7 +1,8 @@
 #include "stdafx.h"
+#include "igame_level.h"
+
 #include "x_ray.h"
 #include "xr_ioconsole.h"
-#include "xr_creator.h"
 #include "xr_ioc_cmd.h"
 #include "fbasicvisual.h"
 #include "cameramanager.h"
@@ -156,7 +157,7 @@ class CCC_Start : public CConsoleCommand
 public:
 	CCC_Start(LPCSTR N) : CConsoleCommand(N) {};
 	virtual void Execute(LPCSTR args) {
-		if (pCreator)	{
+		if (g_pGameLevel)	{
 			Log		("! Please disconnect/unload first");
 			return;
 		}
@@ -179,7 +180,7 @@ class CCC_ServerLoad : public CConsoleCommand
 public:
 	CCC_ServerLoad(LPCSTR N) : CConsoleCommand(N) {};
 	virtual void Execute(LPCSTR args) {
-		if (pCreator)	{
+		if (g_pGameLevel)	{
 			Log("! Please disconnect/unload first");
 			return;
 		}

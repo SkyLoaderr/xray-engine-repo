@@ -101,7 +101,7 @@ void	CLightDB_Static::Track	(CObject* O)
 			D.sub			(P,LP);
 			float	f		= D.magnitude();
 			D.div			(f);
-			if (pCreator->ObjectSpace.RayTest(LP,D,f,false,&I->Cache))	amount -=	lt_dec;
+			if (g_pGameLevel->ObjectSpace.RayTest(LP,D,f,false,&I->Cache))	amount -=	lt_dec;
 			else														amount +=	lt_inc;
 		}
 		

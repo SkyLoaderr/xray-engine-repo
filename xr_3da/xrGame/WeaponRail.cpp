@@ -46,7 +46,7 @@ void CWeaponRail::FireEnd()
 		/*
 		VERIFY(pParent);
 		if (pParent->bLocal)
-			pCreator->Cameras.AddEffector(NULL,0);
+			g_pGameLevel->Cameras.AddEffector(NULL,0);
 		*/
 	}
 }
@@ -68,12 +68,12 @@ void CWeaponRail::OnMove()
 //			BOOL bLocal = pParent->SUB_CLS_ID==CLSID_OBJECT_ACTOR;
 
 //			if (bLocal)
-//				pCreator->Cameras.AddEffector(
+//				g_pGameLevel->Cameras.AddEffector(
 //					xr_new<CEffectorRecoil> (.20f),Recoil_TIME);
 
 			Fvector p1,d;
 			m_pParent->g_fireParams(p1,d);
-			float	dist=pCreator->Environment.Current.Far;
+			float	dist=g_pGameLevel->Environment.Current.Far;
 
 		//	sounds
 			Fvector r_pos; r_pos.mad(p1,d,2);
@@ -81,7 +81,7 @@ void CWeaponRail::OnMove()
 
 			m_pParent->bEnabled = false;
 			Collide::ray_query RQ;
-			if (pCreator->ObjectSpace.RayPick( p1, d, dist, RQ )) {
+			if (g_pGameLevel->ObjectSpace.RayPick( p1, d, dist, RQ )) {
 				if ( RQ.range>0.3f) 
 				{
 					SetRail		(p1,d,RQ,TRUE);
@@ -91,7 +91,7 @@ void CWeaponRail::OnMove()
 					}
 				}
 			} else {
-				RQ.range	= pCreator->Environment.Current.Far;
+				RQ.range	= g_pGameLevel->Environment.Current.Far;
 				SetRail		(p1,d,RQ,FALSE);
 			}
 			m_pParent->bEnabled = true;

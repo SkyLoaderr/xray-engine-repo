@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "igame_level.h"
+#include "igame_persistant.h"
 
 #include "xr_object_list.h"
 #include "std_classes.h"
@@ -29,19 +30,18 @@ CObjectList::~CObjectList	( )
 	R_ASSERT(objects.empty()		);
 	R_ASSERT(destroy_queue.empty()	);
 	R_ASSERT(map_NETID.empty()		);
-	R_ASSERT(map_POOL.empty()		);
 }
 
 CObject*	CObjectList::FindObjectByName	( LPCSTR name )
 {
-	OBJ_IT O=std::find_if(objects.begin(),objects.end(),fNameEQ(name));
+	xr_vector<CObject*>::iterator O	= std::find_if	(objects.begin(),objects.end(),fNameEQ(name));
 	if (O!=objects.end())	return *O;
 	else					return NULL;
 }
 
 CObject*	CObjectList::FindObjectByCLS_ID	( CLASS_ID cls )
 {
-	OBJ_IT O=std::find_if(objects.begin(),objects.end(),fClassEQ(cls));
+	xr_vector<CObject*>::iterator O	= std::find_if(objects.begin(),objects.end(),fClassEQ(cls));
 	if (O!=objects.end())	return *O;
 	else					return NULL;
 }
@@ -67,7 +67,7 @@ void CObjectList::Update		()
 {
 	// Clients
 	Device.Statistic.UpdateClient.Begin		();
-	for (OBJ_IT O=objects.begin(); O!=objects.end(); O++) 
+	for (xr_vector<CObject*>::iterator O=objects.begin(); O!=objects.end(); O++) 
 		SingleUpdate(*O);
 	Device.Statistic.UpdateClient.End		();
 
@@ -75,7 +75,7 @@ void CObjectList::Update		()
 	if (!destroy_queue.empty()) 
 	{
 		// Info
-		for (OBJ_IT oit=objects.begin(); oit!=objects.end(); oit++)
+		for (xr_vector<CObject*>::iterator oit=objects.begin(); oit!=objects.end(); oit++)
 		{
 			for (int it = destroy_queue.size()-1; it>=0; it--)
 				(*oit)->net_Relcase	(destroy_queue[it]);
@@ -112,7 +112,7 @@ void CObjectList::net_Export	(NET_Packet* _Packet)
 {
 	NET_Packet& Packet	= *_Packet;
 	u32			position;
-	for (OBJ_IT O=objects.begin(); O!=objects.end(); O++) 
+	for (xr_vector<CObject*>::iterator O=objects.begin(); O!=objects.end(); O++) 
 	{
 		CObject* P = *O;
 		if (P->net_Relevant() && !P->getDestroy())	
@@ -194,9 +194,9 @@ CObject*	CObjectList::Create				( LPCSTR	name	)
 
 void		CObjectList::Destroy			( CObject*	O		)
 {
-	if (0==O)				return;
-	net_Unregister			(O);
-	OBJ_IT it				=	std::find	(objects.begin(),objects.end(),O);
+	if (0==O)								return;
+	net_Unregister							(O);
+	xr_vector<CObject*>::iterator  it		=	std::find	(objects.begin(),objects.end(),O);
 	if (it!=objects.end())	objects.erase	(it);
 	g_pGamePersistent->ObjectPool.destroy	(O);
 }

@@ -35,7 +35,7 @@ CSpectator::~CSpectator()
 void CSpectator::UpdateCL()
 {
 	inherited::UpdateCL();
-	if (pCreator->CurrentViewEntity()==this){
+	if (g_pGameLevel->CurrentViewEntity()==this){
 		if (eacFreeFly!=cam_active){
 			int idx			= 0;
 			game_cl_GameState::Player* P = Game().local_player;
@@ -189,7 +189,7 @@ void CSpectator::cam_Update	(CActor* A)
 			cam->Update				(point,dangle);
 			}break;
 		}
-		pCreator->Cameras.Update(cam);
+		g_pGameLevel->Cameras.Update(cam);
 		// hud output
 		HUD().pFontDI->Out			(0.f,0.9f,"%s(%d%%)",A->cName(),iFloor(A->g_Health()+0.5f));
 	}else{
@@ -201,7 +201,7 @@ void CSpectator::cam_Update	(CActor* A)
 		dangle.set					(0,0,0);
 		CCameraBase* cam			= cameras[eacFreeFly];
 		cam->Update					(point,dangle);
-		pCreator->Cameras.Update	(cam);
+		g_pGameLevel->Cameras.Update	(cam);
 		// hud output
 		HUD().pFontDI->Out			(0.f,0.9f,"Free-fly camera");
 	}

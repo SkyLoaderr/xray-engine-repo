@@ -40,7 +40,7 @@ class CCC_Spawn : public CConsoleCommand
 public:
 	CCC_Spawn(LPCSTR N) : CConsoleCommand(N)  { };
 	virtual void Execute(LPCSTR args) {
-		R_ASSERT(pCreator);
+		R_ASSERT(g_pGameLevel);
 
 		char	Name[128];	Name[0]=0;
 		sscanf	(args,"%s", Name);
@@ -539,7 +539,7 @@ public:
 	virtual void Execute(LPCSTR args) {
 		Console.Hide	();
 		char fn[256]; strconcat(fn,args,".xrdemo");
-		pCreator->Cameras.AddEffector(xr_new<CDemoRecord> (fn));
+		g_pGameLevel->Cameras.AddEffector(xr_new<CDemoRecord> (fn));
 	}
 };
 class CCC_DemoPlay : public CConsoleCommand
@@ -551,7 +551,7 @@ public:
 	  virtual void Execute(LPCSTR args) {
 		  Console.Hide();
 		  char fn[256]; strconcat(fn,args,".xrdemo");
-		  pCreator->Cameras.AddEffector(xr_new<CDemoPlay> (fn,1.3f));
+		  g_pGameLevel->Cameras.AddEffector(xr_new<CDemoPlay> (fn,1.3f));
 	  }
 };
 class CCC_Rain : public CConsoleCommand {

@@ -27,7 +27,7 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 		case epotSkeleton:		cfModel = xr_new<CCF_Skeleton>(this);	break;
 		default: NODEFAULT; 
 	}
-	pCreator->ObjectSpace.Object_Register(this);
+	g_pGameLevel->ObjectSpace.Object_Register(this);
 	cfModel->OnMove();
 
 	switch(m_type) {

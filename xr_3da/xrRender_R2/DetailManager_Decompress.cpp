@@ -56,9 +56,9 @@ void		CDetailManager::cache_Decompress(Slot* S)
 	Scene.BoxPick		(D.vis.box,pinf,GetSnapObjects());
 	u32	triCount		= pinf.size();
 #else
-	XRC.box_query		(pCreator->ObjectSpace.GetStaticModel(),bC,bD);
+	XRC.box_query		(g_pGameLevel->ObjectSpace.GetStaticModel(),bC,bD);
 	u32	triCount		= XRC.r_count	();
-	CDB::TRI* tris		= pCreator->ObjectSpace.GetStaticTris();
+	CDB::TRI* tris		= g_pGameLevel->ObjectSpace.GetStaticTris();
 #endif
 
 	if (0==triCount)	return;

@@ -254,9 +254,9 @@ void CRender::Calculate()
 	calc_DetailTexturing					();
 	set_Object								(0);
 	if (0!=pLastSector)	pLastSector->Render_prepare(ViewBase);
-	pCreator->pHUD->Render_First			();	
+	g_pGameLevel->pHUD->Render_First			();	
 	if (0!=pLastSector) pLastSector->Render	(ViewBase);
-	pCreator->pHUD->Render_Last				();	
+	g_pGameLevel->pHUD->Render_Last				();	
 	L_Shadows.calculate						();
 	L_Projector.calculate					();
 
@@ -536,7 +536,7 @@ void	CRender::Render		()
 		Device.mProject.build_projection(
 			deg2rad(psHUD_FOV*Device.fFOV*Device.fASPECT), 
 			Device.fASPECT, VIEWPORT_NEAR, 
-			pCreator->Environment.Current.Far);
+			g_pGameLevel->Environment.Current.Far);
 		Device.mFullTransform.mul	(Device.mProject, Device.mView);
 		RCache.set_xform_project	(Device.mProject);
 
@@ -639,7 +639,7 @@ void	CRender::Render		()
 			RCache.set_xform_world	(Fidentity);
 			Details.Render			(Device.vCameraPosition);
 
-			pCreator->Environment.RenderFirst	();
+			g_pGameLevel->Environment.RenderFirst	();
 
 			// NORMAL-matrix		*** actors and dyn. objects
 			mapMatrix.traverseANY	(matrix_L1);
@@ -671,7 +671,7 @@ void	CRender::Render		()
 		flush_Patches	();
 	}
 
-	pCreator->Environment.RenderLast		();
+	g_pGameLevel->Environment.RenderLast		();
 	// L_Projector.render					();
 	
 	// Postprocess
@@ -680,7 +680,7 @@ void	CRender::Render		()
 	
 	// HUD
 	Device.Statistic.RenderDUMP_HUD.Begin	();
-	pCreator->pHUD->Render_Direct			();
+	g_pGameLevel->pHUD->Render_Direct			();
 	Device.Statistic.RenderDUMP_HUD.End		();
 
 	Device.Statistic.RenderDUMP.End();

@@ -99,7 +99,7 @@ void CHM_Static::Update	()
 		
 		// Select polygons
 		XRC.BBoxMode		(0); // BBOX_TRITEST
-		XRC.BBoxCollide		(precalc_identity,pCreator->ObjectSpace.GetStaticModel(),precalc_identity,bb);
+		XRC.BBoxCollide		(precalc_identity,g_pGameLevel->ObjectSpace.GetStaticModel(),precalc_identity,bb);
 		u32	triCount	= XRC.GetBBoxContactCount();
 		if (0==triCount)	{
 			S->clear	();
@@ -107,7 +107,7 @@ void CHM_Static::Update	()
 		}
 		
 		// Cull polys
-		RAPID::tri* tris	= pCreator->ObjectSpace.GetStaticTris();
+		RAPID::tri* tris	= g_pGameLevel->ObjectSpace.GetStaticTris();
 		Fvector		vecUP;	vecUP.set(0,1,0);
 		for (u32 tid=0; tid<triCount; tid++)
 		{

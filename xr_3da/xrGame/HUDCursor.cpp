@@ -61,7 +61,7 @@ void CHUDCursor::Render()
 {
 	Fvector		p1,p2,dir;
 
-	CObject*	O = pCreator->CurrentEntity();
+	CObject*	O = g_pGameLevel->CurrentEntity();
 	if (0==O)	return;
 	CEntity*	E = dynamic_cast<CEntity*>(O);
 	if (0==E)	return;
@@ -74,15 +74,15 @@ void CHUDCursor::Render()
 	// Render cursor
 	float		dist=Level().Environment.c_Far*0.99f;
 	
-	pCreator->CurrentEntity()->setEnabled(false);
+	g_pGameLevel->CurrentEntity()->setEnabled(false);
 	u32 C			= C_DEFAULT;
 	Collide::ray_query	RQ;
 
-	if (pCreator->ObjectSpace.RayPick( p1, dir, dist, RQ )){
+	if (g_pGameLevel->ObjectSpace.RayPick( p1, dir, dist, RQ )){
 		// if (RQ.O && (RQ.O->CLS_ID == CLSID_ENTITY) && (((CEntity*)RQ.O)->id_Team!=cur_team)) C = C_ON_ENEMY;
 		dist = RQ.range;
 	}
-	pCreator->CurrentEntity()->setEnabled(true);
+	g_pGameLevel->CurrentEntity()->setEnabled(true);
 	
 	if ( dist<NEAR_LIM) dist=NEAR_LIM;
 	

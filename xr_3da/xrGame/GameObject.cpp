@@ -38,8 +38,8 @@ CGameObject::~CGameObject		()
 void CGameObject::net_Destroy	()
 {
 	setReady									(FALSE);
-	pCreator->Objects.net_Unregister			(this);
-	pCreator->ObjectSpace.Object_Unregister		(this);
+	g_pGameLevel->Objects.net_Unregister			(this);
+	g_pGameLevel->ObjectSpace.Object_Unregister		(this);
 	shedule_Unregister							();
 	Sector_Move									(0);
 }
@@ -96,7 +96,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 	setLocal						(E->s_flags.is(M_SPAWN_OBJECT_LOCAL));
 	setReady						(TRUE);
 	setID							(E->ID);
-	pCreator->Objects.net_Register	(this);
+	g_pGameLevel->Objects.net_Register	(this);
 
 	// AI-DB connectivity
 	CTimer		T; T.Start		();

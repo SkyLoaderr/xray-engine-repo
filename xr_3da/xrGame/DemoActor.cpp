@@ -59,7 +59,7 @@ void CDemoActor::PlayDemo(const char* name)
 	animator->OnMove			();
 	if (music)	music->Play		(false);
 	if (attached){
-		CObject* O		= pCreator->Objects.FindObjectByName(attached);
+		CObject* O		= g_pGameLevel->Objects.FindObjectByName(attached);
 		R_ASSERT		(O);
 		R_ASSERT		(O->SUB_CLS_ID==CLSID_OBJECT_DUMMY);
 		dynamic_cast<CDummyObject*>(O)->PlayDemo(name);

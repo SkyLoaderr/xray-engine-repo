@@ -180,7 +180,7 @@ public:
 	virtual ~CLevel();
 };
 
-IC CLevel&				Level()		{ return *((CLevel*) pCreator);			}
+IC CLevel&				Level()		{ return *((CLevel*) g_pGameLevel);			}
 IC game_cl_GameState&	Game()		{ return Level().game;					}
 IC u32					GameID()	{ return Game().type;					}
 IC CHUDManager&			HUD()		{ return *((CHUDManager*)Level().pHUD);	}

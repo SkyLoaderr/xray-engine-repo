@@ -72,9 +72,9 @@ void CEnvironment::Load(CInifile *pIni, char *section)
 	}
 
 	// environment objects
-	if ((0==pSkydome) && (pCreator->pLevel->line_exist("environment","sky")))
+	if ((0==pSkydome) && (g_pGameLevel->pLevel->line_exist("environment","sky")))
 	{
-		LPCSTR S			= pCreator->pLevel->r_string("environment","sky");
+		LPCSTR S			= g_pGameLevel->pLevel->r_string("environment","sky");
 		pSkydome			= Render->model_Create	(S);
 	} else {
 		pSkydome			= 0;

@@ -230,14 +230,14 @@ void CFlyer::Update(u32 DT)
 	// test nearest object
 //	Fvector C; float R;
 //	Movement.GetBoundingSphere(C,R);
-//	pCreator->ObjectSpace.TestNearestObject(cfModel, C, R);
+//	g_pGameLevel->ObjectSpace.TestNearestObject(cfModel, C, R);
 
 	// check state
 	UpdateState			();
 
 	// Check ground-contact
 	if (Movement.gcontact_Was) {
-//		pCreator->Cameras.AddEffector(
+//		g_pGameLevel->Cameras.AddEffector(
 //			xr_new<CEffectorFall> (Movement.gcontact_AnimAmount));
 //		Fvector D; D.set(0,0,0);
 //		Hit(Movement.gcontact_HealthLost,D);
