@@ -128,7 +128,7 @@ void CLightProjector::calculate	()
 	
 	Device.Statistic.RenderDUMP_Pcalc.Begin	();
 	RCache.set_RT				(RT_temp->pRT);
-	RCache.set_ZB				(HW.pTempZB);
+	RCache.set_ZB				(RImplementation.Target.pTempZB);
 	CHK_DX(HW.pDevice->Clear	(0,0, D3DCLEAR_ZBUFFER | (HW.Caps.bStencil?D3DCLEAR_STENCIL:0), 0,1,0 ));
 	RCache.set_xform_world		(Fidentity);
 

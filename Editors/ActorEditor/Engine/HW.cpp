@@ -54,7 +54,6 @@ D3DFORMAT CHW::selectDepthStencil	(D3DFORMAT fTarget)
 
 void	CHW::DestroyDevice	()
 {
-	_RELEASE				(pTempZB);
 	_RELEASE				(pBaseZB);
 	_RELEASE				(pBaseRT);
 	_RELEASE				(dwDebugSB);
@@ -196,7 +195,6 @@ u32 CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 	}
 
 	// Capture misc data
-#pragma todo("R2 doesn't need pTempZB")
 	R_CHK	(pDevice->CreateStateBlock			(D3DSBT_ALL,&dwDebugSB));
 	R_CHK	(pDevice->GetRenderTarget			(0,&pBaseRT));
 	R_CHK	(pDevice->GetDepthStencilSurface	(&pBaseZB));
