@@ -166,21 +166,21 @@ void CRenderDevice::Create	() {
     }
 
     // Hide the cursor if necessary
-	ShowCursor(FALSE);
+	ShowCursor		(FALSE);
 
 	// after creation
 	bReady			= TRUE;
 
 	// General Render States
-	mView.identity();
-	mProject.identity();
-	mFullTransform.identity();
-	vCameraPosition.set(0,0,0);
-	vCameraDirection.set(0,0,1);
-	vCameraTop.set(0,1,0);
-	vCameraRight.set(1,0,0);
+	mView.identity			();
+	mProject.identity		();
+	mFullTransform.identity	();
+	vCameraPosition.set		(0,0,0);
+	vCameraDirection.set	(0,0,1);
+	vCameraTop.set			(0,1,0);
+	vCameraRight.set		(1,0,0);
 
-	HW.Caps.Update();
+	HW.Caps.Update			();
 	for (DWORD i=0; i<HW.Caps.pixel.dwStages; i++) 
 	{
 		if (psDeviceFlags&rsAnisotropic)	{

@@ -69,22 +69,26 @@ BOOL CRenderTarget::Create	()
 
 void CRenderTarget::OnDeviceCreate	()
 {
+	Log	("void CRenderTarget::OnDeviceCreate	()");
+	
 	bAvailable	= FALSE;
 	bAvailable	= Create	();
 }
 
 void CRenderTarget::OnDeviceDestroy	()
 {
+	Log	("void CRenderTarget::OnDeviceDestroy	()");
+
 	Device.Shader.Delete		(pShaderBlend);
 	Device.Shader.Delete		(pShaderGray);
 	Device.Shader.Delete		(pShaderSet);
 	pTexture->surface_set		(0);
 	Device.Shader._DeleteTexture(pTexture);
 	
-	_RELEASE	(pBaseZB);
-	_RELEASE	(pBaseRT);
-	_RELEASE	(pRT);
-	_RELEASE	(pSurface);
+	_RELEASE	(pBaseZB	);
+	_RELEASE	(pBaseRT	);
+	_RELEASE	(pRT		);
+	_RELEASE	(pSurface	);
 }
 
 void CRenderTarget::Begin	()
