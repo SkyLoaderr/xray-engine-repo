@@ -293,6 +293,7 @@ void CActor::Die	( )
 	ChangeCamStyle(eacFreeLook);
 	g_fireEnd();
 	bAlive	= FALSE;
+	mstate_real &= ~mcAnyMove;
 }
 
 BOOL CActor::TakeItem		( DWORD CID )
@@ -491,8 +492,6 @@ void CActor::g_cl_ValidateMState(DWORD mstate_wf)
 
 void CActor::g_cl_CheckControls(DWORD mstate_wf, Fvector &vControlAccel, float &Jump, float dt)
 {
-	if (!bAlive)	return;
-
 	// ****************************** Check keyboard input and control acceleration
 	vControlAccel.set	(0,0,0);
 	if (Movement.Environment()==CMovementControl::peOnGround)
