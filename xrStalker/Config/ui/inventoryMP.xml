@@ -1,6 +1,11 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <window x="0" y="0" w="640" h="480" r="227" g="121" b="222" texture="1">
 
+    <!-- OUTFIT INFO -->
+    <outfit_info_window x="30" y="310" width="268" height="460">
+		<text font="medium" r="255" g="255" b="255" a="130"></text>
+	</outfit_info_window>
+
 	<!-- BAG WINDOW -->
 	<bag_background_static x="10" y="245" width="350" height="440">
 		<texture>ui\ui_dg_inventory_multiplayer</texture>
@@ -204,4 +209,5 @@
 		<text_h r="255" g="255" b="255"/>
 		<text_t r="255" g="255" b="255"/>
 	</cancel_button>
+	
 </window>
