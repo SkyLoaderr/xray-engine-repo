@@ -184,10 +184,10 @@ void CEntityAlive::shedule_Update(u32 dt)
 	UpdateCondition		();
 	//Обновление партиклов огня
 	UpdateFireParticles	();
-	//обновить раны
-	UpdateWounds		();
 	//капли крови
 	UpdateBloodDrops	();
+	//обновить раны
+	UpdateWounds		();
 
 	//убить сущность
 	if(Local() && !g_Alive() && !AlreadyDie())
