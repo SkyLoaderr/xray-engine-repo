@@ -141,6 +141,8 @@ class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject
 		.def("disable_talk",				&CScriptGameObject::DisableTalk)
 		.def("is_talk_enabled",				&CScriptGameObject::IsTalkEnabled)
 
+		.def("inventory_for_each",			&CScriptGameObject::ForEachInventoryItems)
+		.def("drop_item",					&CScriptGameObject::DropItem)
 		.def("transfer_item",				&CScriptGameObject::TransferItem)
 		.def("transfer_money",				&CScriptGameObject::TransferMoney)
 		.def("money",						&CScriptGameObject::Money)

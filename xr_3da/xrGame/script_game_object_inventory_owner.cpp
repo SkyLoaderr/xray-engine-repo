@@ -28,6 +28,7 @@
 #include "actorcondition.h"
 #include "level_navigation_graph.h"
 #include "ui/UIMainIngameWnd.h"
+#include "inventory.h"
 
 bool CScriptGameObject::GiveInfoPortion(LPCSTR info_id)
 {
@@ -186,6 +187,55 @@ bool CScriptGameObject::IsTalkEnabled()
 	return pInventoryOwner->IsTalkEnabled();
 }
 
+void CScriptGameObject::ForEachInventoryItems(const luabind::functor<void> &functor)
+{
+	CInventoryOwner* owner = smart_cast<CInventoryOwner*>(&object());
+	if(!owner)
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CScriptGameObject::ForEachInventoryItems non-CInventoryOwner object !!!");
+	
+	CInventory* pInv = &owner->inventory();
+	TIItemList item_list;
+	pInv->AddAvailableItems(item_list, true);
+
+	PPIItem it;
+	for(it =  item_list.begin(); item_list.end() != it; ++it) 
+	{
+		CGameObject* inv_go = smart_cast<CGameObject*>(*it);
+		if( inv_go ){
+			functor(inv_go->lua_game_object(),this);
+		}
+	}
+}
+
+
+void CScriptGameObject::DropItem(CScriptGameObject* pItem, Fvector pos)
+{
+	CInventoryOwner* owner = smart_cast<CInventoryOwner*>(&object());
+	CInventoryItem* item = smart_cast<CInventoryItem*>(&pItem->object());
+	if(!owner||!item)
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CScriptGameObject::DropItem non-CInventoryOwner object !!!");
+
+	NET_Packet						P;
+	CGameObject::u_EventGen			(P,GE_OWNERSHIP_REJECT, object().ID());
+	P.w_u16							(pItem->object().ID());
+	CGameObject::u_EventSend		(P);
+
+	NET_Packet						PP;
+	CGameObject::u_EventGen			(PP,GE_CHANGE_POS, pItem->object().ID());
+	PP.w_vec3						(pos);
+	CGameObject::u_EventSend		(PP);
+
+/*	CPHSynchronize* pSyncObj = NULL;
+	pSyncObj = item->object().PHGetSyncItem(0);
+	if (!pSyncObj) return;
+	SPHNetState state;
+	pSyncObj->get_State(state);
+	state.position = pos;
+	state.previous_position = pos;
+	pSyncObj->set_State(state);
+
+*/
+}
 
 //передаче вещи из своего инвентаря в инвентарь партнера
 void CScriptGameObject::TransferItem(CScriptGameObject* pItem, CScriptGameObject* pForWho)

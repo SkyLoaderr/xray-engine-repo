@@ -90,6 +90,7 @@ enum {
 
 	GE_MOVE_ACTOR,				//move actor to desired position instantly
 
+	GE_CHANGE_POS,
 
 	GE_GAME_EVENT,
 /*

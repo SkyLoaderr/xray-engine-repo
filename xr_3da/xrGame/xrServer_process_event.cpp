@@ -302,6 +302,7 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 		}break;
 	case GE_ADDON_ATTACH:
 	case GE_ADDON_DETACH:
+	case GE_CHANGE_POS:
 		{			
 			SendTo(SV_Client->ID, P, net_flags(TRUE, TRUE));
 //			VERIFY					(verify_entities());
