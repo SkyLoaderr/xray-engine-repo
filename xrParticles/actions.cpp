@@ -1037,6 +1037,8 @@ void PAMove::Execute(ParticleEffect *effect)
 		if (m.flags.is(Particle::DYING)) continue;
 		// move
 		m.age	+= dt;
+        m.posB 	= m.pos;
+        m.velB 	= m.vel;
 		m.pos	+= m.vel * dt;
 	}
 }
