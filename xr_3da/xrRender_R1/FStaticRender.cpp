@@ -34,6 +34,12 @@ void					CRender::model_Delete			(IRender_DetailModel* & F)
 		F				= NULL;
 	}
 }
+IVisual*				CRender::model_CreatePS			(LPCSTR name, PS::SEmitter* E)	
+{ 
+	PS::SDef_RT*	source	= PSystems.FindPS	(name);
+	VERIFY					(source);
+	return Models.CreatePS	(source,E);
+}
 
 int						CRender::getVisualsCount		()					{ return Visuals.size();								}
 IRender_Portal*			CRender::getPortal				(int id)			{ VERIFY(id<int(Portals.size()));	return Portals[id];	}
@@ -45,21 +51,23 @@ IDirect3DVertexBuffer9*	CRender::getVB					(int id)			{ VERIFY(id<int(VB.size())
 IDirect3DIndexBuffer9*	CRender::getIB					(int id)			{ VERIFY(id<int(IB.size()));		return IB[id];		}
 IRender_Target*			CRender::getTarget				()					{ return &Target;										}
 
-void		CRender::L_add					(CLightPPA* L)		{ VERIFY(L); L_Dynamic.Add(L);							}
-void		CRender::L_select				(Fvector &pos, float fRadius, vector<xrLIGHT*>& dest)
+
+IRender_Light*			CRender::light_create			()					{ return L_Dynamic.Create();							}
+void					CRender::light_destroy			(IRender_Light* &L)	{ L_Dynamic.Destroy((CLightPPA*)L)};	L=0;			}
+void					CRender::L_select				(Fvector &pos, float fRadius, vector<xrLIGHT*>& dest)
 {	L_DB.Select	(pos,fRadius,dest);		}
 
-void		CRender::flush				()					{ flush_Models();									}
-
-BOOL		CRender::occ_visible		(vis_data& P)		{ return HOM.visible(P);							}
-BOOL		CRender::occ_visible		(sPoly& P)			{ return HOM.visible(P);							}
-BOOL		CRender::occ_visible		(Fbox& P)			{ return HOM.visible(P);							}
-
-void		CRender::add_Visual			(IVisual*		V )	{ add_leafs_Dynamic(V);								}
-void		CRender::add_Geometry		(IVisual*		V )	{ add_Static(V,View->getMask());					}
-void		CRender::add_Lights			(vector<WORD> &	V )	{ L_DB.add_sector_lights(V);						}
-void		CRender::add_Glows			(vector<WORD> &	V )	{ Glows.add(V);										}
-void		CRender::add_Patch			(Shader* S, const Fvector& P1, float s, float a, BOOL bNearer)
+void					CRender::flush					()					{ flush_Models();									}
+			
+BOOL					CRender::occ_visible			(vis_data& P)		{ return HOM.visible(P);							}
+BOOL					CRender::occ_visible			(sPoly& P)			{ return HOM.visible(P);							}
+BOOL					CRender::occ_visible			(Fbox& P)			{ return HOM.visible(P);							}
+			
+void					CRender::add_Visual				(IVisual*		V )	{ add_leafs_Dynamic(V);								}
+void					CRender::add_Geometry			(IVisual*		V )	{ add_Static(V,View->getMask());					}
+void					CRender::add_Lights				(vector<WORD> &	V )	{ L_DB.add_sector_lights(V);						}
+void					CRender::add_Glows				(vector<WORD> &	V )	{ Glows.add(V);										}
+void					CRender::add_Patch				(Shader* S, const Fvector& P1, float s, float a, BOOL bNearer)
 {
 	vecPatches.push_back(SceneGraph::_PatchItem());
 	SceneGraph::_PatchItem& P = vecPatches.back();
@@ -80,13 +88,6 @@ void		CRender::set_Object			(CObject*		O )
 	L_Projector.set_object	(O);
 	L_DB.Track				(O);
 }
-IVisual*	CRender::model_CreatePS		(LPCSTR name, PS::SEmitter* E)	
-{ 
-	PS::SDef_RT*	source	= PSystems.FindPS	(name);
-	VERIFY					(source);
-	return Models.CreatePS	(source,E);
-}
-
 
 // Misc
 Shader*				shDEBUG = 0;

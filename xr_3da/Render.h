@@ -161,7 +161,7 @@ public:
 	virtual void 					model_Delete			(IRender_DetailModel* & F)				= 0;
 
 	virtual IRender_Light*			light_create			()										= 0;
-	virtual void					light_destroy			(IRender_Light*)						= 0;
+	virtual void					light_destroy			(IRender_Light* &)						= 0;
 
 	// Occlusion culling
 	virtual BOOL					occ_visible				(vis_data&	V)							= 0;

@@ -130,7 +130,8 @@ public:
 	virtual void					add_Wallmark			(Shader* S, const Fvector& P, float s, CDB::TRI* T);
 	
 	// Lighting
-	virtual void					L_add					(CLightPPA* L	);
+	virtual IRender_Light*			light_create			();
+	virtual void					light_destroy			(IRender_Light* &);
 	virtual void					L_select				(Fvector &pos, float fRadius, vector<xrLIGHT*>&	dest);
 	
 	// Models

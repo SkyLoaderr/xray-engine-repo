@@ -14,7 +14,7 @@ struct	CLightPPA_Vertex
 	float			u1,v1;
 };
 
-class	CLightPPA  
+class	CLightPPA	:	public IRender_Light
 {
 public:
 	Fsphere			sphere;
@@ -31,7 +31,7 @@ public:
 	void			Render			(SGeometry* hGeom);
 };
 
-class ENGINE_API	CLightPPA_Manager
+class CLightPPA_Manager
 {
 	svector<CLightPPA*,128>			container;
 	
@@ -40,6 +40,9 @@ class ENGINE_API	CLightPPA_Manager
 public:
 	void			Initialize		();
 	void			Destroy			();
+
+	CLightPPA*		Create			();
+	void			Destroy			(CLightPPA*);
 
 	IC void			Add				(CLightPPA* L)	
 	{ 
