@@ -1,38 +1,38 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [wpn_pb]
-GroupControlSection	= spawn_group
-discovery_dependency = 
-$spawn          = "weapons\pb"					; option for Level Editor
-$npc			= on		; option for Level Editor
-$prefetch 		= 8
-scheduled            	= off              ; option for ALife Simulator
-cform                    = skeleton
-class                    = W_PM
-min_radius               = 0
-max_radius               = 30
+GroupControlSection			= spawn_group
+discovery_dependency	 	= 
+$spawn          			= "weapons\pb"					; option for Level Editor
+$npc						= on		; option for Level Editor
+$prefetch 					= 8
+scheduled       	     	= off              ; option for ALife Simulator
+cform           	        = skeleton
+class           	        = W_PM
+min_radius      	        = 0
+max_radius      	        = 30
 
-cost					 = 150	;250
+cost						= 150	;250
 
-ammo_limit		 = 120
-ammo_current		 = 96
-ammo_elapsed		 = 8
+ammo_limit			 		= 120
+ammo_current			 	= 96
+ammo_elapsed			 	= 8
 
-ammo_mag_size		 = 8
-ammo_class		 = ammo_9x18_fmj, ammo_9x18_pbp, ammo_9x18_pmm
+ammo_mag_size			 	= 8
+ammo_class			 		= ammo_9x18_fmj, ammo_9x18_pbp, ammo_9x18_pmm
+	
+resource					= 6000
+	
+hand_dependence			 	= 1
 
-resource		= 6000
-
-hand_dependence		 = 1
-
-slot 			 = 1
-inv_name		= PB
-inv_name_short		= PB
-inv_weight		= .5
-
-inv_grid_width		= 2
-inv_grid_height		= 1
-inv_grid_x			= 15
-inv_grid_y			= 6
+slot 				 		= 1
+inv_name					= PB
+inv_name_short				= PB
+inv_weight					= .5
+	
+inv_grid_width				= 2
+inv_grid_height				= 1
+inv_grid_x					= 15
+inv_grid_y					= 6
 
 ;-----------------------------------------------------------------------------------
 ;базовая дисперсия
@@ -40,9 +40,9 @@ fire_dispersion_base		= 0.17 ;угол (в градусах) базовой дисперсии оружия (оружия
 
 ;отдача
 cam_relax_speed         	= 5.0	;скорость возврата в исходное положение
-cam_dispersion          	= 1.0	;увеличения угла (в градусах) с каждым выстрелом
+cam_dispersion          	= 2.0	;увеличения угла (в градусах) с каждым выстрелом
 cam_max_angle				= 8		;максимальный угол отдачи
-cam_horz_prob				= 0.35	;вероятность отклонения по горизонтали эффектора во время стрельбы (1 - всегда отклоняется)
+cam_horz_prob				= 0.5	;вероятность отклонения по горизонтали эффектора во время стрельбы (1 - всегда отклоняется)
 cam_horz_factor				= 2.5	;импирический коэффициент отклонения по горизонтали (чем больше, тем сильнее разброс)
 
 
@@ -51,47 +51,47 @@ misfire_probability 		= 0.0001	;вероятность осечки при максимальном износе
 condition_shot_dec 			= 0.00003	;увеличение износа при каждом выстреле
 ;-----------------------------------------------------------------------------------
 
-direction                = 0, 0, 1
-fire_point               = 0.0, 0.12, 0.2
+direction           	    = 0, 0, 1
+fire_point          	    = 0.0, 0.12, 0.2
 
-smoke_particles		   = weapons\generic_shoot_00
+smoke_particles				= weapons\generic_shoot_00
 
-shell_point		 = 0.05, 0.12, -0.05
-shell_dir		 = 0.0, 0.0, 0.4
-shell_particles	 = weapons\generic_shells
+shell_point		 			= 0.05, 0.12, -0.05
+shell_dir		 			= 0.0, 0.0, 0.4
+shell_particles	 			= weapons\generic_shells
  
-rpm_empty_click 	 = 200
+rpm_empty_click 			= 200
 
 ; ttc
-hit_power                = 30
-hit_impulse		 = 56; 40
-hit_type 		 = fire_wound
+hit_power        	        = 40
+hit_impulse		 			= 56
+hit_type 		 			= fire_wound
 
-fire_distance            = 200
-bullet_speed			 = 290			;начальная скорость пули
-rpm                      = 300
+fire_distance    	        = 200
+bullet_speed				= 290			;начальная скорость пули
+rpm              	        = 300
 ; end ttc
 
-hud                      = wpn_PB_hud
-normal                   = 0, 1, 0
-position                 = -0.03, -0.02, 0.12
-orientation              = 0, 0, 0
-;startup_ammo             = 90
-visual                   = weapon\pb\wpn_pb.ogf
-wm_name                  = wallmarks\wallmark_default
-wm_size                  = 0.05
-tracer_head_speed	 = 290
-tracer_trail_scale	 = 0.075
-tracer_start_length	 = 1
-tracer_width		 = 0.07
-light_color		 = 0.0,0.0,0.0
-light_range		 = 1.0
-light_var_color		 = 0.05
-light_var_range		 = 0.5
-light_time 		 = 0.0
+hud              	        = wpn_PB_hud
+normal           	        = 0, 1, 0
+position         	        = -0.03, -0.02, 0.12
+orientation      	        = 0, 0, 0
+;startup_ammo    	        = 90
+visual           	        = weapon\pb\wpn_pb.ogf
+wm_name          	        = wallmarks\wallmark_default
+wm_size          	        = 0.05
+tracer_head_speed	 		= 290
+tracer_trail_scale	 		= 0.075
+tracer_start_length	 		= 1
+tracer_width		 		= 0.07
+light_color		 			= 0.0,0.0,0.0
+light_range		 			= 1.0
+light_var_color		 		= 0.05
+light_var_range		 		= 0.5
+light_time 		 			= 0.0
 
-ph_mass			 = 1
-;cost			 = 350
+ph_mass			 			= 1
+;cost			 			= 350
 
 ;addons
 scope_status				= 0
@@ -99,41 +99,38 @@ silencer_status				= 1
 grenade_launcher_status		= 0
 
 zoom_enabled				= true
-scope_zoom_factor	    = 55	;30
+scope_zoom_factor	    	= 55
 
 ;звуки
-snd_draw			= weapons\generic_draw
-snd_holster			= weapons\generic_holster
-snd_shoot			= weapons\pb_shoot
-snd_empty			= weapons\generic_empty
-snd_reload			= weapons\pm_reload, 0.8
-snd_close			= weapons\generic_close
+snd_draw					= weapons\generic_draw
+snd_holster					= weapons\generic_holster
+snd_shoot					= weapons\pb_shoot
+snd_empty					= weapons\generic_empty
+snd_reload					= weapons\pm_reload, 0.8
+snd_close					= weapons\generic_close
 
-
-
- 
 [wpn_pb_hud]
-shell_point		         = -0.35, -0.06, 0.07
-fire_point               = -0.140000,0.010000,0.030000
-fire_bone                = wpn_body
-orientation              = 0,0,0
-position                 = 0,0,0
-visual                   = weapon\pb\wpn_pb_hud.ogf
+shell_point		    	 	= -0.35, -0.06, 0.07
+fire_point               	= -0.140000,0.010000,0.030000
+fire_bone                	= wpn_body
+orientation              	= 0,0,0
+position                 	= 0,0,0
+visual                   	= weapon\pb\wpn_pb_hud.ogf
 
-anim_holster		= holster
-anim_idle			= idle
-anim_empty			= empty
-anim_reload			= reload_full
-anim_reload_empty	= reload
-anim_draw			= draw
-anim_draw_empty		= draw_empty
-anim_shoot			= shoot1
-anim_shot_last		= shoot_last
-anim_close			= empty
-anim_idle_aim			= idle_aim
+anim_holster				= holster
+anim_idle					= idle
+anim_empty					= empty
+anim_reload					= reload_full
+anim_reload_empty			= reload
+anim_draw					= draw
+anim_draw_empty				= draw_empty
+anim_shoot					= shoot1
+anim_shot_last				= shoot_last
+anim_close					= empty
+anim_idle_aim				= idle_aim
 
 ;смещения HUD для режима приближения
-zoom_offset			= -0.191600,0.077900,0.001000
-zoom_rotate_x		= -0.008000
-zoom_rotate_y		= -0.035400
+zoom_offset					= -0.191600,0.077900,0.001000
+zoom_rotate_x				= -0.008000
+zoom_rotate_y				= -0.035400
 
