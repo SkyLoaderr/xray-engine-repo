@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<game_dialogs>
+    <dialog id="val_escort_hello">
+        <phrase_list>
+            <phrase id="211">
+                <text>val_escort_hello_211</text>
+            </phrase>
+            <phrase id="21">
+                <text>val_escort_hello_21</text>
+                <next>211</next>
+            </phrase>
+            <phrase id="0">
+                <text>val_escort_hello_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>val_escort_hello_1</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="11">
+                <text>val_escort_hello_11</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="111">
+                <text>val_escort_hello_111</text>
+                <next>1111</next>
+            </phrase>
+            <phrase id="1111">
+                <text>val_escort_hello_1111</text>
+                <next>11111</next>
+            </phrase>
+            <phrase id="11111">
+                <text>val_escort_hello_11111</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+        </phrase_list>
+    </dialog>
+</game_dialogs>
