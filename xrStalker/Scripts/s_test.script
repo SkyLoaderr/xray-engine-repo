@@ -1,5 +1,11 @@
+function test_print (str)
+	printf ("This is test %d", str)
+end
 
 function main ()
+
+
+	s_test.test_print (566)
 
 	local stalker = get_level_object ("m_stalker_e0000")
 	stalker:script (true, s_test.script_name ())
