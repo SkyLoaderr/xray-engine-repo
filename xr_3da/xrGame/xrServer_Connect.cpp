@@ -49,6 +49,6 @@ BOOL xrServer::Connect(LPCSTR session_name)
 		// Options
 		if (0==game)				return FALSE;
 		game->Create				(options);
-		return	TRUE;
 	}
+	return	bResult;
 }
