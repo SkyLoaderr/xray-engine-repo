@@ -30,6 +30,7 @@ function door_binder:reset_scheme(delta)
 end
 
 function door_binder:deactivate_scheme()
+	printf("deactivate_scheme")
 	self.object:clear_use_callback()
 end
 
@@ -92,6 +93,10 @@ end
 
 function door_binder:door_callback(door, actor)
 	if self.st.locked then
+		return
+	end
+
+	if not self.joint then -- FIXME - DELME после того, как нормально станут убирать коллбеки на переключении схем
 		return
 	end
 
