@@ -210,7 +210,6 @@ void CBuild::Run()
 	Phase			("Building normals...");
 	mem_Compact		();
 	CalcNormals		();
-	IsolateVertices	();
 	
 	FPU::m64r();
 	Phase			("Building collision database...");

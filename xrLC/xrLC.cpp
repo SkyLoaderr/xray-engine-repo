@@ -127,7 +127,6 @@ int APIENTRY WinMain(HINSTANCE hInst,
                      int       nCmdShow)
 {
 	_amblksiz		= 512;
-	MessageBox		(0,"press ok :)","Congratulation!",MB_OK|MB_ICONINFORMATION);
 	
 	// Initialize debugging
 	Debug.Start		();
