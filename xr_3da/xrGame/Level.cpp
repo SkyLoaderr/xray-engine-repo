@@ -236,7 +236,8 @@ void CLevel::OnFrame	()
 			{
 				IClient*	C = Server->client_Get(I);
 				F->OutNext("%10s: P(%d), BPS(%2.1fK), MRR(%2d), MSR(%2d)",
-					C->Name,
+					Server->game->get_option_s(C->Name,"name",C->Name),
+//					C->Name,
 					C->stats.getPing(),
 					float(C->stats.getBPS())/1024,
 					C->stats.getMPS_Receive(),

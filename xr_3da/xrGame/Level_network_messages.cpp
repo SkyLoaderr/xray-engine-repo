@@ -82,7 +82,7 @@ void CLevel::ClientReceive()
 		net_msg_Release();
 	}
 
-	if (!game_spawn_queue.empty())
+	while (!game_spawn_queue.empty())
 	{
 //		u32			m0	= Memory.stat_calls;
 //		CTimer		T;	T.Start		();
