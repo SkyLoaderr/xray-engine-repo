@@ -65,7 +65,7 @@ function main()
 
 	--wait for first frame
 	while device().precache_frame ~= 0 do
-		wait(1000)
+		wait()
 	end
 	
 	level.add_dialog_to_render(dlg)
