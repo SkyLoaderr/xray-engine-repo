@@ -84,6 +84,23 @@ function main()
 
 	wait(1000)			
 
+			stalker1:script	(true,  this.script_name())
+			stalker2:script	(true,  this.script_name())
+
+			action(
+				stalker1,
+			  	move	(move.standing, move.walk,move.line,patrol("way0000")),
+				look	(look.fire_point, stalker2),
+				anim	(anim.danger),
+				cond	(cond.time_end, 150000)
+			)
+			action(
+				stalker2,
+			  	move	(move.standing, move.walk,move.line,patrol("way0000")),
+				anim	(anim.danger),
+				cond	(cond.time_end, 150000)
+			)
+
 	while true do
 		if stalker1:see(actor) == false or stalker2:see(actor) == false then
 			wait(2000)			
