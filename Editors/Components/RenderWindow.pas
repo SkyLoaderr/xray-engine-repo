@@ -61,6 +61,8 @@ published
 	property OnResize;
 	property OnPaint: TNotifyEvent read FOnPaint write FOnPaint;
 end;
+
+
 const
 	RWStyle = [csAcceptsControls, csCaptureMouse, csClickEvents, csOpaque, csReplicatable];
     
