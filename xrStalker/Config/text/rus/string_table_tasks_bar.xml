@@ -95,6 +95,42 @@
 	<string id="bar_bring_pda_lucky">
 		<text>Принести этот ПДА бармену в качестве доказательства</text>
 	</string>
+	
+	<string id="secret_laboratory_documents">
+		<text>Добыть документы из  секретной лаборатории</text>
+	</string>
+	<string id="secret_documents_from_darklab">
+		<text>Найти документы в Темной долине</text>
+	</string>
+	<string id="find_secret_documents">
+		<text>Найти документы в заброшенной лаборатории</text>
+	</string>
+	<string id="bring_secret_documents">
+		<text>Принести их бармену</text>
+	</string>
 
 
+	<string id="decoding_secret_documents">
+		<text>Расшифровать документы из  секретной лаборатории</text>
+	</string>
+	<string id="secret_documents_to_yantar">
+		<text>Найти ученых, которые расшифруют документы</text>
+	</string>
+	<string id="find_researchers">
+		<text>Передать ученым документы для расшифровки</text>
+	</string>
+	<string id="bring_decoding_documents">
+		<text>Принести расшифрованные документы бармену</text>
+	</string>
+	
+	<string id="deactivate_radar">
+		<text>Отключить радар</text>
+	</string>
+	<string id="find_and_deactivate_radar">
+		<text>Найти и отключить радар</text>
+	</string>
+	<string id="deactivate_radar_now">
+		<text>Отключить радар</text>
+	</string>
+	
 </string_table>
