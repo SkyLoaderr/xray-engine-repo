@@ -653,17 +653,19 @@ if(who==this)
 		float curHealth = GetfHealth();
 		curHealth -= P*It->second*10.0f;
 		SetfHealth(curHealth);
-
+#ifdef DEBUG
 		Log("----Helicopter::PilotHit(). health=",curHealth);
-
+#endif
 	}else {
 		float hit_power		= P/100.f;
 		hit_power			*= m_HitTypeK[hit_type];
 
 		SetfHealth(GetfHealth()-hit_power);
+#ifdef DEBUG
 		float h= GetfHealth();
 		Log("----Helicopter::Hit(). health=",h);
 		Log("----------------------------------------");
+#endif
 	};
 	
 	if (who){
