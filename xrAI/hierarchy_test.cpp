@@ -178,6 +178,7 @@ IC	void fill_mark(
 		if (!connect(level_graph,v1,table_i1_j,group_id,1,cross,left))
 			goto enough;
 		
+		
 		j1						= (*i1).begin() + j + 1;
 		j1_1					= j1 - 1;
 		i1_1_j1					= (*i1_1).begin() + j + 1;
@@ -338,6 +339,7 @@ IC	void build_convex_hierarchy(const CLevelGraph &level_graph, CSectorGraph &sec
 			VERIFY						(current_cell);
 			u32							current_mark = current_cell->m_mark - 1;
 			CSectorGraph::CVertex		*sector_vertex = sector_graph.vertex(current_mark);
+#if 0
 			CLevelGraph::const_iterator	I, E;
 			level_graph.begin			(j,I,E);
 			for ( ; I != E; ++I) {
@@ -357,6 +359,38 @@ IC	void build_convex_hierarchy(const CLevelGraph &level_graph, CSectorGraph &sec
 
 				sector_graph.add_edge	(current_mark,mark,1.f);
 			}
+#else
+			for (u32 usage = c.m_use; usage; ) {
+				u32						I = usage;
+				usage					&= usage - 1;
+				I						^= usage;
+#if 0
+				switch (I) {
+					case 1 : I = 0; break;
+					case 2 : I = 1; break;
+					case 4 : I = 2; break;
+					case 8 : I = 3; break;
+					default : NODEFAULT;
+				}
+#else
+				I						= (I >> 1) + 1;
+				I						= (I ^ (I >> 2)) - 1;
+#endif
+
+				u32						vertex_id = (*i).link(I);
+				if (!level_graph.valid_vertex_id(vertex_id))
+					continue;
+
+				CCellVertex				*cell = cross[vertex_id].m_cell; VERIFY(cell);
+				u32						mark = cell->m_mark - 1;
+				VERIFY					(mark != current_mark);
+
+				if (sector_vertex->edge(mark))
+					continue;
+
+				sector_graph.add_edge	(current_mark,mark,1.f);
+			}
+#endif
 		}
 	}
 	f								= CPU::GetCycleCount();
