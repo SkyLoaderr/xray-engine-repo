@@ -142,7 +142,7 @@ CSE_ALifeItemTorch::CSE_ALifeItemTorch		(LPCSTR caSection) : CSE_ALifeItem(caSec
 	spot_cone_angle				= PI_DIV_3;
 	color						= 0xffffffff;
     spot_brightness				= 1.f;
-	set_visual					("lights/lights_torch");
+	set_visual					("lights\\lights_torch");
 }
 
 CSE_ALifeItemTorch::~CSE_ALifeItemTorch		()
@@ -318,13 +318,13 @@ void CSE_ALifeItemWeapon::FillProp			(LPCSTR pref, PropItemVec& items)
 	PHelper.CreateU16			(items,FHelper.PrepareKey(pref,s_name,"Ammo: in magazine"),	&a_elapsed,0,30,1);
 
 	if ((EAddonStatus)pSettings->r_s32(s_name,"scope_status") == eAddondAttachable)
-	       PHelper.CreateFlag8	(items,FHelper.PrepareKey(pref,s_name,"Addons/Scope"), 	&m_addon_flags, eWeaponAddonScope);
+	       PHelper.CreateFlag8	(items,FHelper.PrepareKey(pref,s_name,"Addons\\Scope"), 	&m_addon_flags, eWeaponAddonScope);
 
 	if ((EAddonStatus)pSettings->r_s32(s_name,"silencer_status") == eAddondAttachable)
-        PHelper.CreateFlag8		(items,FHelper.PrepareKey(pref,s_name,"Addons/Silencer"), 	&m_addon_flags, eWeaponAddonSilencer);
+        PHelper.CreateFlag8		(items,FHelper.PrepareKey(pref,s_name,"Addons\\Silencer"), 	&m_addon_flags, eWeaponAddonSilencer);
 
 	if ((EAddonStatus)pSettings->r_s32(s_name,"grenade_launcher_status") == eAddondAttachable)
-        PHelper.CreateFlag8		(items,FHelper.PrepareKey(pref,s_name,"Addons/Podstvolnik"),&m_addon_flags,eWeaponAddonGrenadeLauncher);
+        PHelper.CreateFlag8		(items,FHelper.PrepareKey(pref,s_name,"Addons\\Podstvolnik"),&m_addon_flags,eWeaponAddonGrenadeLauncher);
 }
 #endif
 
