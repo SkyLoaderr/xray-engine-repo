@@ -44,12 +44,22 @@ static CBlender_skybox		b_skybox;
 
 //////////////////////////////////////////////////////////////////////////
 // vertex
+#pragma pack(push,1)
 struct v_skybox				{
 	Fvector4	p;
 	u32			color;
 	Fvector3	uv	[2];
+
+	void		set			(float _x, float _y, float _z, float _w, u32 _c, Fvector3& _tc)
+	{
+		p.set	(_x,_y,_z,_w);
+		color	= _c;
+		uv[0]	= _tc;
+		uv[1]	= _tc;
+	}
 };
 const	u32 v_skybox_fvf	= D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX2 | D3DFVF_TEXCOORDSIZE3(0) | D3DFVF_TEXCOORDSIZE3(1);
+#pragma pack(pop)
 
 //////////////////////////////////////////////////////////////////////////
 // environment
@@ -79,8 +89,9 @@ void CEnvDescriptor::load	(LPCSTR S)
 void CEnvDescriptor::lerp	(CEnvDescriptor& A, CEnvDescriptor& B, float f)
 {
 	float	fi	= 1-f;
-	sky_0					= A.sky_texture;
-	sky_1					= B.sky_texture;
+	sky_r_textures.clear	();
+	sky_r_textures.push_back(A.sky_texture);
+	sky_r_textures.push_back(B.sky_texture);
 	sky_factor				= f;
 	sky_color.lerp			(A.sky_color,B.sky_color,f);
 	far_plane				= fi*A.far_plane + f*B.far_plane;
@@ -151,6 +162,57 @@ void CEnvironment::OnFrame()
 extern float psHUD_FOV;
 void CEnvironment::RenderFirst	()
 {
+	Fvector			P	= Device.vCameraPosition;
+	Fvector			D	= Device.vCameraDirection;
+	Fvector			U	= Device.vCameraTop;
+
+	// Calc vectors
+	float YFov			= deg2rad(Device.fFOV*Device.fASPECT);	float wT=tanf(YFov*0.5f);	float wB=-wT;
+	float XFov			= deg2rad(Device.fFOV);					float wR=tanf(XFov*0.5f);	float wL=-wR;
+
+	// calc x-axis (viewhoriz) and store cop
+	// here we are assuring that vectors are perpendicular & normalized
+	Fvector				R,COP;
+	R.crossproduct		(D,U);
+	R.normalize			();
+	COP.set				(P);
+
+	// calculate the corner vertices of the window
+	Fvector				sPts	[4];  // silhouette points (corners of window)
+	Fvector				dirs	[4];
+	Fvector				Offset,	T;
+	Offset.add			(D,COP);
+
+	// find projector direction vectors (from cop through silhouette pts)
+	T.mad(Offset,U,wT);	sPts[0].mad(T,R,wR); dirs[0].sub(sPts[0],COP).normalize();	// 0=TR
+	T.mad(Offset,U,wT);	sPts[1].mad(T,R,wL); dirs[1].sub(sPts[1],COP).normalize();	// 1=TL
+	T.mad(Offset,U,wB);	sPts[2].mad(T,R,wL); dirs[2].sub(sPts[2],COP).normalize();	// 2=BL
+	T.mad(Offset,U,wB);	sPts[3].mad(T,R,wR); dirs[3].sub(sPts[3],COP).normalize();	// 3=BR
+
+	// Render skybox/plane
+	{
+		u32		Offset;
+		Fcolor	clr					= { Current.sky_color.x, Current.sky_color.y, Current.sky_color.z, Current.sky_factor };
+		u32		C					= clr.get	();
+		float	_w					= float		(::Render->getTarget()->get_width());
+		float	_h					= float		(::Render->getTarget()->get_height());
+
+		// Analyze depth
+		float						d_Z	= EPS_S, d_W = 1.f;
+
+		// Fill vertex buffer
+		v_skybox* pv				= (v_skybox*)	RCache.Vertex.Lock	(4,sh_2geom.stride(),Offset);
+		pv->set						(EPS,			float(_h+EPS),	d_Z,	d_W, C, dirs[2]);	pv++; // BL
+		pv->set						(EPS,			EPS,			d_Z,	d_W, C, dirs[1]);	pv++; // TL
+		pv->set						(float(_w+EPS),	float(_h+EPS),	d_Z,	d_W, C, dirs[3]);	pv++; // BR
+		pv->set						(float(_w+EPS),	EPS,			d_Z,	d_W, C, dirs[0]);	pv++; // TR
+		RCache.Vertex.Unlock		(4,sh_2geom.stride());
+		RCache.set_Geometry			(sh_2geom);
+		RCache.set_Shader			(sh_2sky);
+		RCache.set_Textures			(Current.sky_r_textures);
+		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
+	}
+
 	// Sun sources
 	/* *********************** interfere with R2
 	if (psEnvFlags.test(effSunGlare))
