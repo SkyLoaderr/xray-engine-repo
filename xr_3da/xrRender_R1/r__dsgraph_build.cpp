@@ -212,7 +212,7 @@ void R_dsgraph_structure::r_dsgraph_insert_static	(IRender_Visual *pVisual)
 	counter_S					++;
 	SPass&						pass	= *sh->passes.front	();
 	mapNormal_T&				map		= mapNormal			[sh->flags.iPriority/2];
-#ifdef DEBUG
+#ifdef USE_RESOURCE_DEBUGGER
 	mapNormalVS::TNode*			Nvs		= map.insert		(pass.vs);
 	mapNormalPS::TNode*			Nps		= Nvs->val.insert	(pass.ps);
 #else
