@@ -250,14 +250,14 @@ void CMovementManager::process_game_path()
 			if (!CDetailPathManager::actual())
 				m_path_state	= ePathStateBuildDetailPath;
 			else
-			if (CGamePathManager::completed())
-				m_path_state	= ePathStatePathCompleted;
+			if (CDetailPathManager::completed())
+				m_path_state	= ePathStateContinueLevelPath;
 			else
 			if (CLevelPathManager::completed())
 				m_path_state	= ePathStateContinueGamePath;
 			else
-			if (CDetailPathManager::completed())
-				m_path_state	= ePathStateContinueLevelPath;
+			if (CGamePathManager::completed())
+				m_path_state	= ePathStatePathCompleted;
 			break;
 		}
 		case ePathStatePathCompleted : {
@@ -324,11 +324,11 @@ void CMovementManager::process_level_path()
 			if (!CDetailPathManager::actual())
 				m_path_state	= ePathStateBuildDetailPath;
 			else
-			if (CLevelPathManager::completed())
-				m_path_state	= ePathStatePathCompleted;
-			else
 			if (CDetailPathManager::completed())
 				m_path_state	= ePathStateContinueLevelPath;
+			else
+			if (CLevelPathManager::completed())
+				m_path_state	= ePathStatePathCompleted;
 			break;
 		}
 		case ePathStatePathCompleted : {
@@ -393,11 +393,11 @@ void CMovementManager::process_enemy_search()
 			if (!CDetailPathManager::actual())
 				m_path_state	= ePathStateBuildDetailPath;
 			else
-			if (CLevelPathManager::completed())
-				m_path_state	= ePathStateSelectEnemyVertex;
-			else
 			if (CDetailPathManager::completed())
 				m_path_state	= ePathStateContinueLevelPath;
+			else
+			if (CLevelPathManager::completed())
+				m_path_state	= ePathStateSelectEnemyVertex;
 			break;
 		}
 		case ePathStatePathCompleted : {
