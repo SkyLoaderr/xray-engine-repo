@@ -372,7 +372,7 @@ function set_guard(object, enable, path_main, path_hideout, search_light)
 	        		if char_ini:line_exist("guard", "path_hideout") == true then
 		        	        st.path_hideout = char_ini:r_string("guard", "path_hideout")
 	        		else
-		        	    	st.enabled = false
+		        	    	st.path_hideout = st.path_main
 			        end
 			else
 				st.enabled = false
@@ -387,8 +387,6 @@ function set_guard(object, enable, path_main, path_hideout, search_light)
 		    	if char_ini:section_exist ("guard") == true then
 	        		if char_ini:line_exist("guard", "search_light") == true then
 		        	        st.projector_name = char_ini:r_string("guard", "search_light")
-	        		else
-		        	    	st.enabled = false
 			        end
 			else
 				st.enabled = false
@@ -400,4 +398,3 @@ function set_guard(object, enable, path_main, path_hideout, search_light)
 
 	xr_motivator.checkStorage(object)
 end
-
