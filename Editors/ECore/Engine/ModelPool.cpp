@@ -268,7 +268,6 @@ IRender_Visual* CModelPool::CreateChild(LPCSTR name, IReader* data)
 	if (0!=Model){	
 		// 2. If found - return reference
     	Model 				= Instance_Duplicate(Model);
-        Registry.insert		(mk_pair(Model,xr_strdup(low_name)));
     }else{
         // 3. If not found
         Model 				= Instance_Duplicate(Instance_Load(name,data));
