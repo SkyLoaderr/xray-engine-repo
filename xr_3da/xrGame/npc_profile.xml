@@ -274,8 +274,9 @@
 	<character id="bar_dolg_petrenko">
 		<class>stalker_bar_petrenko</class>
 	</character>
+	<character id="bar_dolg_ivancov">
+		<class>stalker_bar_ivancov</class>
+	</character>
 
 
-	
-	
 </xml>
