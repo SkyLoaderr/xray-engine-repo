@@ -221,23 +221,18 @@ void CRender::LoadSectors(IReader* fs)
 				(CSector*)getSector(P.sector_front),
 				(CSector*)getSector(P.sector_back));
 			for (u32 j=2; j<P.vertices.size(); j++)
-				CL.add_face_packed(
+				CL.add_face_packed_D(
 				P.vertices[0],P.vertices[j-1],P.vertices[j],
-				CDB::edge_open,CDB::edge_open,CDB::edge_open,
-				0,0,u32(Portals[i])
+				u32(Portals[i])
 				);
 		}
 		if (CL.getTS()<2)
 		{
-			Fvector		v1,v2,v3;
-			v1.set		(-20000.f,-20000.f,-20000.f);
-			v2.set		(-20001.f,-20001.f,-20001.f);
-			v3.set		(-20002.f,-20002.f,-20002.f);
-			CL.add_face_packed(
-				v1,v2,v3,
-				CDB::edge_open,CDB::edge_open,CDB::edge_open,
-				0,0,0
-				);
+			Fvector					v1,v2,v3;
+			v1.set					(-20000.f,-20000.f,-20000.f);
+			v2.set					(-20001.f,-20001.f,-20001.f);
+			v3.set					(-20002.f,-20002.f,-20002.f);
+			CL.add_face_packed_D	(v1,v2,v3,0);
 		}
 
 		// build portal model

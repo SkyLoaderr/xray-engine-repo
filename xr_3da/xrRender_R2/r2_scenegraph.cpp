@@ -1,10 +1,10 @@
 #include "stdafx.h"
-#include "..\particlegroup.h"
 #include "..\fhierrarhyvisual.h"
 #include "..\bodyinstance.h"
 #include "..\fmesh.h"
 #include "..\fcached.h"
 #include "..\flod.h"
+#include "particlegroup.h"
 #include "ftreevisual.h"
 
 using namespace SceneGraph;

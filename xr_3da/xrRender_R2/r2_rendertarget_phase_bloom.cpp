@@ -1,4 +1,6 @@
 #include "stdafx.h"
+
+#include "..\igame_persistent.h"
 #include "..\environment.h"
 
 #pragma pack(push,4)
