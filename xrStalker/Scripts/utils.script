@@ -1,0 +1,60 @@
+
+--[[
+
+-- Крешнуть игру (после вывода сообщения об ошибке в лог)
+function abort()
+
+-- Настройка параметров игровых объектов:
+bool param_get_bool(char_ini, section, field, override, object)
+string conf_get_string(char_ini, section, field, override, object)
+
+
+--]]
+
+
+-- Крешнуть игру (после вывода сообщения об ошибке в лог)
+function abort(reason)
+	patrol(".." .. reason .. "..")
+end
+
+-- Настройка параметра типа bool у игрового объекта.
+-- 
+-- char_ini - указатель на customdata (обычно object:spawn_ini())
+-- section - имя секции в customdata
+-- field - имя поля в customdata
+-- override - nil, если переменную нужно прочесть из customdata,
+--            иначе - значение, которое взять вместо того, которое в customdata
+-- object - игровой объект, от которого будет взято имя для сообщения об ошибке
+-- mandatory - поле обязательно должно быть задано
+--
+-- Возвращает true или false
+function conf_get_bool(char_ini, section, field, override, object, mandatory)
+	if override ~= nil then
+		return override ~= nil
+	end
+	if char_ini:section_exist(section) and char_ini:line_exist(section, field) then
+		return char_ini:r_bool(section, field)
+	end
+	if not mandatory then
+		return false
+	end
+	local err = "ERROR: object name '" .. object:name() .. "': attempt to read a non-existant boolean field '" ..
+		field .. "' in section '" .. section .. "'";
+	utils.abort(err)
+end
+
+function conf_get_string(char_ini, section, field, override, object, mandatory)
+	if override ~= nil then
+		return override ~= nil
+	end
+	if char_ini:section_exist(section) and char_ini:line_exist(section, field) then
+		return char_ini:r_string(section, field)
+	end
+	if not mandatory then
+		return nil
+	end
+	local err = "ERROR: object name '" .. object:name() .. "': attempt to read a non-existant boolean field '" ..
+		field .. "' in section '" .. section .. "'";
+	utils.abort(err)
+end
+
