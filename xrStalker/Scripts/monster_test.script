@@ -9,6 +9,7 @@ local	callback_var	= 0
 local	cur_action_id	= 1
 
 function action_one(npc) 
+	//printf("set action1")
 	action	( npc,
 			move	(move.run_fwd, patrol("way", patrol.next, patrol.continue)), 
 			cond	(cond.move_end)
@@ -17,6 +18,7 @@ end
 
 
 function action_two(npc) 
+	//printf("set action1")
 	action	( npc,
 			anim	(anim.stand_idle), cond	(cond.time_end, 2000)
 	)
@@ -49,10 +51,10 @@ function main()
 
 	monster:script			( true, script_name() )
 	
-	action_one				(monster)
-
 	while true do
-
+		
+		action_one			(monster)
+		
 		while monster:action() do 
 			
 			if (callback_var == 1) then
@@ -66,7 +68,7 @@ function main()
 
 			wait() 
 		end
-		
+			
 	end
 
 	monster:script( false, script_name() )
