@@ -112,29 +112,19 @@ void CAI_Biting::vfUpdateParameters()
 	H = true;
 
 	// Fill flags, properties and vars for attack mode
-	flagEnemyDie				= false;
-	flagEnemyLostSight			= false;
-
-	flagEnemyGoCloser			= false;
-	flagEnemyGoFarther			= false;
-	flagEnemyGoCloserFast		= false;
-	flagEnemyGoFartherFast		= false;
-	flagEnemyStanding			= false;
-	flagEnemyDoesntKnowAboutMe	= false;
-	flagEnemyHiding				= false;			// todo
-	flagEnemyRunAway			= false;			// todo
-
-	flagEnemyGoOffline			= false;
+	flagsEnemy	= 0;
+	
+#pragma todo("enemy hiding & enemy runaway flags")
 
 	// Set current enemy
 	m_tEnemy					= ve;
 	
 	if (m_tEnemy.obj && (m_tEnemyPrevFrame.obj == m_tEnemy.obj) && (m_tEnemy.time != m_dwCurrentUpdate)) {
-		flagEnemyLostSight = true;
+		flagsEnemy |= FLAG_ENEMY_LOST_SIGHT;		// враг потерян из вида
 	}
 	
 	if (m_tEnemyPrevFrame.obj && !m_tEnemyPrevFrame.obj->g_Alive()) {
-		flagEnemyDie = true;
+		flagsEnemy |= FLAG_ENEMY_DIE;
 	}
 	
 	float dist_now, dist_prev;
@@ -142,21 +132,21 @@ void CAI_Biting::vfUpdateParameters()
 		dist_now	= m_tEnemy.position.distance_to(Position());
 		dist_prev	= m_tEnemyPrevFrame.position.distance_to(Position());
 		
-		if (_abs(dist_now - dist_prev) < 0.2f) flagEnemyStanding	= true;
+		if (_abs(dist_now - dist_prev) < 0.2f) flagsEnemy |= FLAG_ENEMY_STANDING;
 		else {
-			if (dist_now < dist_prev) flagEnemyGoCloser = true;
-			else flagEnemyGoFarther = true;
+			if (dist_now < dist_prev) flagsEnemy |= FLAG_ENEMY_GO_CLOSER;
+			else flagsEnemy |= FLAG_ENEMY_GO_FARTHER;
 
 			if (_abs(dist_now - dist_prev) < 1.2f) {
-				if (dist_now < dist_prev)  flagEnemyGoCloserFast = true;
-				else flagEnemyGoFartherFast = true;
+				if (dist_now < dist_prev)  flagsEnemy |= FLAG_ENEMY_GO_CLOSER_FAST;
+				else flagsEnemy |= FLAG_ENEMY_GO_FARTHER_FAST;
 			}
 		}
 
-		if (flagEnemyStanding && !I) flagEnemyDoesntKnowAboutMe = true;
+		if (((flagsEnemy & FLAG_ENEMY_STANDING) == FLAG_ENEMY_STANDING)  && !I) flagsEnemy |= FLAG_ENEMY_DOESN_KNOW_ABOUT_ME;
 	}
 	
-	if (!m_tEnemy.obj && m_tEnemyPrevFrame.obj && m_tEnemyPrevFrame.obj->getDestroy()) flagEnemyGoOffline = true;
+	if (!m_tEnemy.obj && m_tEnemyPrevFrame.obj && m_tEnemyPrevFrame.obj->getDestroy()) flagsEnemy |= FLAG_ENEMY_GO_OFFLINE;
 
 	// Save current enemy (only if valid)
 	if (m_tEnemy.obj)

@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "ai_bloodsucker.h"
 
+// temp
+#include "..\\..\\hudmanager.h"
+
 CAI_Bloodsucker::CAI_Bloodsucker()
 {
 	stateRest			= xr_new<CBloodsuckerRest>		(this);
@@ -31,7 +34,7 @@ void CAI_Bloodsucker::Think()
 {
 	inherited::Think();
 	
-	if (flagEnemyGoOffline) {
+	if ((flagsEnemy & FLAG_ENEMY_GO_OFFLINE) == FLAG_ENEMY_GO_OFFLINE) {
 		CurrentState->Reset();
 		SetState(stateRest);
 	}
@@ -43,7 +46,7 @@ void CAI_Bloodsucker::Think()
 	}else {
 		
 		//- FSM 1-level 
-		if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && (GetSatiety() > 0.85f))
+		if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && (GetSatiety() < 0.85f))
 			SetState(stateEat);	
 		else SetState(stateRest);
 		//-
@@ -61,6 +64,10 @@ void CAI_Bloodsucker::Think()
 void CAI_Bloodsucker::UpdateCL()
 {
 	inherited::UpdateCL();
+
+	HUD().pFontSmall->OutSet	(300,400);
+	HUD().pFontSmall->OutNext("Satiety = [%f]",GetSatiety());
+	
 }
 
 
@@ -74,7 +81,7 @@ void CAI_Bloodsucker::MotionToAnim(EMotionAnim motion, int &index1, int &index2,
 		case eMotionLieIdle:		index1 = 1; index2 = 0;	 break;
 		case eMotionStandTurnLeft:	index1 = 0; index2 = 0;	 break;
 		case eMotionWalkFwd:		index1 = 0; index2 = 2;	 break;
-		case eMotionWalkBkwd:		index1 = 0; index2 = 2;  break;
+		case eMotionWalkBkwd:		index1 = 0; index2 = 3;  break;
 		case eMotionWalkTurnLeft:	index1 = 0; index2 = 0;  break;
 		case eMotionWalkTurnRight:	index1 = 0; index2 = 0;  break;
 		case eMotionRun:			index1 = 0; index2 = 6;  break;
@@ -89,7 +96,7 @@ void CAI_Bloodsucker::MotionToAnim(EMotionAnim motion, int &index1, int &index2,
 		case eMotionDie:			index1 = 0; index2 = 0; break;
 		case eMotionLieDown:		index1 = 0; index2 = 16; break;
 		case eMotionStandUp:		index1 = 1; index2 = 17; break;
-		case eMotionCheckCorpse:	index1 = 0; index2 = 3;	 index3 = 0;	break;
+		case eMotionCheckCorpse:	index1 = 0; index2 = 9;	 index3 = 0;	break;
 		case eMotionLieDownEat:		index1 = 0; index2 = 16; break;
 		case eMotionAttackJump:		index1 = 0; index2 = 0;  break;
 			///default:					NODEFAULT;

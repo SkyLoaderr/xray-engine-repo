@@ -36,6 +36,8 @@ public:
 	bool				flagVisibility;					// true - если видим
 	TTime				timeStartVisChanged;			// время начала изменение видимости монстра
 	TTime				timeInvisible;					// время нахождения в состоянии невидимости
+
+	bool				flagEatNow;						// true - сейчас монстр ест
 	
 };
 

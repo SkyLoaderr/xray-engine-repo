@@ -14,6 +14,23 @@
 #include "ai_biting_state.h"
 #include "..\\ai_monster_mem.h"
 
+
+// flags
+#define FLAG_ENEMY_DIE					( 1 << 0 )
+#define FLAG_ENEMY_LOST_SIGHT			( 1 << 1 )
+#define FLAG_ENEMY_GO_CLOSER			( 1 << 2 )
+#define FLAG_ENEMY_GO_FARTHER			( 1 << 3 )
+#define FLAG_ENEMY_GO_CLOSER_FAST		( 1 << 4 )
+#define FLAG_ENEMY_GO_FARTHER_FAST		( 1 << 5 )
+#define FLAG_ENEMY_STANDING				( 1 << 6 )
+#define FLAG_ENEMY_HIDING				( 1 << 7 )
+#define FLAG_ENEMY_RUN_AWAY				( 1 << 8 )
+#define FLAG_ENEMY_DOESN_KNOW_ABOUT_ME	( 1 << 9 )
+#define FLAG_ENEMY_GO_OFFLINE			( 1 << 10 )
+
+
+
+
 // logging
 //#define SILENCE
 
@@ -25,6 +42,8 @@
 	Msg("%s",s);\
 }
 #endif
+
+
 
 class CCharacterPhysicsSupport;
 
@@ -147,20 +166,7 @@ public:
 	bool					A,B,C,D,E,F,G,H,I,J,K,L,M;
 
 	// Combat flags 
-#pragma	todo("Jim to Jim: pack flags")
-
-	bool					flagEnemyDie;
-	bool					flagEnemyLostSight;
-	bool					flagEnemyGoCloser;
-	bool					flagEnemyGoFarther;
-	bool					flagEnemyGoCloserFast;
-	bool					flagEnemyGoFartherFast;
-	bool					flagEnemyStanding;
-	bool					flagEnemyDoesntKnowAboutMe;
-	bool					flagEnemyHiding;
-	bool					flagEnemyRunAway;
-
-	bool					flagEnemyGoOffline;
+	u32						flagsEnemy;
 
 	// Enemy
 	SEnemy					m_tEnemy;				// Current frame enemy 

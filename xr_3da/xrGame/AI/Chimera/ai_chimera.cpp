@@ -51,7 +51,7 @@ void CAI_Chimera::Think()
 {
 	inherited::Think();
 
-	if (flagEnemyGoOffline) {
+	if ((flagsEnemy & FLAG_ENEMY_GO_OFFLINE) == FLAG_ENEMY_GO_OFFLINE) {
 		CurrentState->Reset();
 		SetState(stateRest);
 	}

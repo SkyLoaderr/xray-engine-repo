@@ -203,15 +203,12 @@ void CBloodsuckerEat::Init()
 	CAI_Rat	*tpRat = dynamic_cast<CAI_Rat *>(pCorpse);
 	bTastyCorpse = ((tpRat) ? false : true); 
 
-	m_fDistToCorpse		= 1.5f;
+	m_fDistToCorpse		= 0.8f;
 	m_fWalkDistToCorpse = 5.f;
 
 	// если очень голоден - бежать у трупу
 	if (pMonster->GetSatiety() < 0.5f) m_tAction = ACTION_CORPSE_APPROACH_RUN;
 	else m_tAction = ACTION_CORPSE_APPROACH_WALK;
-
-	pMonster->AI_Path.DestNode = pCorpse->AI_NodeID;
-	pMonster->vfChoosePointAndBuildPath(0,&pCorpse->Position(), true, 0);
 
 	// Test
 	WRITE_TO_LOG("_ Eat Init _");
@@ -219,6 +216,13 @@ void CBloodsuckerEat::Init()
 
 void CBloodsuckerEat::Run()
 {
+	// Если новый труп, снова инициализировать состояние 
+	VisionElem ve;
+	if (!pMonster->GetEnemy(ve)) R_ASSERT(false);
+	if (pCorpse != ve.obj) {
+		Reset();
+		Init();
+	}	
 
 	float dist = pMonster->Position().distance_to(pCorpse->Position());
 	if ((m_tAction != ACTION_EAT)  && (dist < m_fWalkDistToCorpse) && (dist > m_fDistToCorpse)) {
@@ -245,11 +249,16 @@ void CBloodsuckerEat::Run()
 	switch (m_tAction) {
 		case ACTION_CORPSE_APPROACH_RUN:
 
+			pMonster->AI_Path.DestNode = pCorpse->AI_NodeID;
+			pMonster->vfChoosePointAndBuildPath(0,&pCorpse->Position(), true, 0);
+
 			pMonster->Motion.m_tParams.SetParams(eMotionRun,pMonster->m_ftrRunAttackSpeed,pMonster->m_ftrRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 			pMonster->Motion.m_tTurn.Set(eMotionRunTurnLeft,eMotionRunTurnRight, pMonster->m_ftrRunAttackTurnSpeed,pMonster->m_ftrRunAttackTurnRSpeed,pMonster->m_ftrRunAttackMinAngle);
 
 			break;
 		case ACTION_CORPSE_APPROACH_WALK:
+			pMonster->AI_Path.DestNode = pCorpse->AI_NodeID;
+			pMonster->vfChoosePointAndBuildPath(0,&pCorpse->Position(), true, 0);
 
 			pMonster->Motion.m_tParams.SetParams(eMotionWalkFwd,pMonster->m_ftrWalkSpeed,pMonster->m_ftrWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 			pMonster->Motion.m_tTurn.Set(eMotionWalkTurnLeft, eMotionWalkTurnRight,pMonster->m_ftrWalkTurningSpeed,pMonster->m_ftrWalkTurnRSpeed,pMonster->m_ftrWalkMinAngle);
@@ -259,8 +268,11 @@ void CBloodsuckerEat::Run()
 			pMonster->Motion.m_tParams.SetParams(eMotionEat,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 			pMonster->Motion.m_tTurn.Clear();
 
+	//		pMonster
+
 			// съесть часть
 			if (m_dwLastTimeEat + m_dwEatInterval < m_dwCurrentTime) {
+				pMonster->ChangeSatiety(0.05f);
 				pCorpse->m_fFood -= pMonster->m_fHitPower/5.f;
 				m_dwLastTimeEat = m_dwCurrentTime;
 			}
