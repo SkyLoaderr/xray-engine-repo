@@ -364,6 +364,21 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 		inputAtts.push_back(texCoordAtt);
 
 		// Specify the requested output
+		NVMeshMender::VAVector			output;
+		NVMeshMender::VertexAttribute	att;
+		att.Name_ = “position”;
+		output.push_back(att);
+		att.Name_ = “tex0”;
+		output.push_back(att);
+		att.Name_ = “normal”;
+		output.push_back(att);
+		att.Name_ = “tangent”;
+		output.push_back(att);
+		att.Name_ = “binormal”;
+		output.push_back(att);
+
+
+
 		// Tangents
 		NVMeshMender::VertexAttribute tangentAtt;
 		tangentAtt.Name_	= "tangent";
