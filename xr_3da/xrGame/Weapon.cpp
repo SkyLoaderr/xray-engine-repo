@@ -334,24 +334,26 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 	setVisible						(true);
 	setEnabled						(true);
 
-	// Physics (Box)
-	Fobb								obb;
-	Visual()->bv_BBox.get_CD			(obb.m_translate,obb.m_halfsize);
-	obb.m_rotate.identity				();
+	{
+		// Physics (Box)
+		Fobb								obb;
+		Visual()->bv_BBox.get_CD			(obb.m_translate,obb.m_halfsize);
+		obb.m_rotate.identity				();
 
-	// Physics (Elements)
-	CPhysicsElement* E					= P_create_Element	();
-	R_ASSERT							(E);
-	E->add_Box							(obb);
+		// Physics (Elements)
+		CPhysicsElement* E					= P_create_Element	();
+		R_ASSERT							(E);
+		E->add_Box							(obb);
 
-	// Physics (Shell)
-	m_pPhysicsShell						= P_create_Shell	();
-	R_ASSERT							(m_pPhysicsShell);
-	m_pPhysicsShell->add_Element		(E);
-	m_pPhysicsShell->setMass			(10.f);
-	m_pPhysicsShell->Activate			(svXFORM(),0,svXFORM());
-	m_pPhysicsShell->mDesired.identity	();
-	m_pPhysicsShell->fDesiredStrength	= 0.f;
+		// Physics (Shell)
+		m_pPhysicsShell						= P_create_Shell	();
+		R_ASSERT							(m_pPhysicsShell);
+		m_pPhysicsShell->add_Element		(E);
+		m_pPhysicsShell->setMass			(10.f);
+		m_pPhysicsShell->Activate			(svXFORM(),0,svXFORM());
+		m_pPhysicsShell->mDesired.identity	();
+		m_pPhysicsShell->fDesiredStrength	= 0.f;
+	}
 
 	return bResult;
 }
