@@ -12,7 +12,7 @@
     <!-- BAG FRAME WINDOW -->
     <bag_static x="10" y="260" width="350" height="480">
 		<texture>ui\ui_dg_inventory</texture>
-        <text x="30" y="8" font="header" r="255" g="255" b="255" a="128">Bag</text>
+        <text x="30" y="8" font="header" r="255" g="255" b="255" a="128">ui_inv_bag</text>
     </bag_static>
 
     <!-- ARTIFACT MERGER WINDOW -->
@@ -36,20 +36,20 @@
     <!-- DESCRIPTION WINDOW -->
     <descr_static x="370" y="260" width="335" height="455">
         <texture> ui\ui_dg_info</texture>
-        <text x="25" y="6" font="header" r="255" g="255" b="255" a="130">Description</text>
+        <text x="25" y="6" font="header" r="255" g="255" b="255" a="130">ui_inv_description</text>
     </descr_static>
 
     <!-- CHARACTER WINDOW -->
     <frame_window x="730" y="260" width="268" height="490">
         <base_texture>ui\ui_frame</base_texture>
         <left_top_texture x="5" y="10">ui\ui_inv_personal_over_t</left_top_texture>
-        <title x="100" y="0" width="240" height="60"><text font="header" r="255" g="255" b="255" a="130">Personal</text></title>
+        <title x="100" y="0" width="240" height="60"><text font="header" r="255" g="255" b="255" a="130">ui_inv_personal</text></title>
     </frame_window>
 
     <!-- BELT STATIC BACKGROUND -->
     <static x="10" y="140" width="1014" height="128">
         <texture> ui\ui_inv_belt</texture>
-        <text x="25" y="2" font="header" r="255" g="255" b="255" a="130">Belt</text>
+        <text x="25" y="2" font="header" r="255" g="255" b="255" a="130">ui_inv_belt</text>
     </static>
 
     <button x="600" y="715" width="150" height="40">
@@ -141,7 +141,7 @@
 
     <time_static x="15" y="730" width="200" height="30">
         <texture> ui\ui_dg_time</texture>
-        <text x="20" y="8" font="medium" r="240" g="217" b="182" a="255"></text>
+        <text x="20" y="8" font="medium" r="240" g="217" b="182" a="255">ui_inv_time</text>
 	</time_static>
 
 </window>

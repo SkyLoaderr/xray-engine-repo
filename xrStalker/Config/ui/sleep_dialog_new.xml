@@ -18,7 +18,7 @@
 	<!-- REST BTN -->
 	<rest_button x="137" y="10" width="90" height="33" hR="0" hB="0" hG="0" shadow_offset_x="1" shadow_offset_y="1" push_off_x="1" push_off_y="1">
 	<!--	<texture>ui\ui_button_01</texture> -->
-		<text align="c" font="graffiti22" r="238" g="155" b="23">Rest</text>
+		<text align="c" font="graffiti22" r="238" g="155" b="23">ui_inv_rest</text>
 	</rest_button>
 </window>
 

@@ -69,15 +69,15 @@ void CUIOutfitInfo::SetText(const CStringTable& stringTable){
 #endif
 
 	// caption
-	m_staticTitle.SetText(*stringTable("outfit_params"));
+	m_staticTitle.SetText(*stringTable("ui_inv_outfit_params"));
 
 	// details	
-	m_strBurnProtection = *stringTable("outfit_burn_protection");	
-	m_strChemicalBurnProtection = *stringTable("outfit_chemical_burn_protection");
-	m_strExplosionProtection = *stringTable("outfit_explosion_protection");
-	m_strFireWoundProtection = *stringTable("outfit_fire_wound_protection");
-	m_strShockProtection = *stringTable("outfit_shock_protection");
-	m_strStrikeProtection = *stringTable("outfit_strike_protection");
+	m_strBurnProtection = *stringTable("ui_inv_outfit_burn_protection");	
+	m_strChemicalBurnProtection = *stringTable("ui_inv_outfit_chemical_burn_protection");
+	m_strExplosionProtection = *stringTable("ui_inv_outfit_explosion_protection");
+	m_strFireWoundProtection = *stringTable("ui_inv_outfit_fire_wound_protection");
+	m_strShockProtection = *stringTable("ui_inv_outfit_shock_protection");
+	m_strStrikeProtection = *stringTable("ui_inv_outfit_strike_protection");
 }
 
 void CUIOutfitInfo::Update(){

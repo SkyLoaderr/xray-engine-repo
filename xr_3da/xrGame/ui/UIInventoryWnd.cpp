@@ -84,7 +84,6 @@ void CUIInventoryWnd::Init()
 
 	AttachChild(&UIStaticBelt);
 	xml_init.InitStatic(uiXml, "static", 0, &UIStaticBelt);
-	UIStaticBelt.SetText(*string_table("belt"));
 	
 	AttachChild(&UIBagWnd);
 	xml_init.InitStatic(uiXml, "bag_static", 0, &UIBagWnd);
@@ -102,7 +101,6 @@ void CUIInventoryWnd::Init()
 
 	AttachChild(&UIDescrWnd);
 	xml_init.InitStatic(uiXml, "descr_static", 0, &UIDescrWnd);
-	UIDescrWnd.SetText(*string_table("description"));
 
 	//информация о предмете
 	UIDescrWnd.AttachChild(&UIItemInfo);
@@ -111,7 +109,6 @@ void CUIInventoryWnd::Init()
 	// Кнопка Drop
 	UIDescrWnd.AttachChild(&UIDropButton);
 	xml_init.InitButton(uiXml, "drop_button", 0, &UIDropButton);
-	UIDropButton.SetText(*string_table("drop"));
 	UIDropButton.SetMessageTarget(this);
 	UIDropButton.SetTextAlign(CGameFont::alLeft);
 
@@ -119,7 +116,6 @@ void CUIInventoryWnd::Init()
 	//Окно с информации о персонаже
 	AttachChild(&UIPersonalWnd);
 	xml_init.InitFrameWindow(uiXml, "frame_window", 1, &UIPersonalWnd);
-	UIPersonalWnd.UITitleText.SetText(*string_table("personal"));
 
 	//Полосы прогресса
 	UIPersonalWnd.AttachChild(&UIProgressBarHealth);
@@ -153,7 +149,7 @@ void CUIInventoryWnd::Init()
 	AttachChild(&UISleepWnd);
 	xml_init.InitStatic(uiXml, "sleep_window", 0, &UISleepWnd);
 	UISleepWnd.Init();
-	UISleepWnd.SetText(*string_table("rest"));
+//	UISleepWnd.SetText(*string_table("rest"));
 
 	//Списки Drag&Drop
 	AttachChild(&UIBeltList);
@@ -206,12 +202,12 @@ void CUIInventoryWnd::Init()
 	// Time indicator
 	AttachChild(&UITimeWnd);
 	xml_init.InitStatic(uiXml, "time_static", 0, &UITimeWnd);
-	UITimeWnd.SetText(*string_table("time"));
+//	UITimeWnd.SetText(*string_table("time"));
 
 	// Exit button
 	AttachChild(&UIExitButton);
 	xml_init.InitButton(uiXml, "exit_button", 0, &UIExitButton);
-	UIExitButton.SetText(*string_table("exit"));
+//	UIExitButton.SetText(*string_table("exit"));
 }
 
 CUIInventoryWnd::~CUIInventoryWnd()
