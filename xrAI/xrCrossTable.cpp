@@ -132,7 +132,7 @@ void					xrBuildCrossTable(LPCSTR caProjectName)
 	Progress			(1.f);
 	
 	Phase				("Saving cross table");
-	CFS_Memory			tMemoryStream;
+	CMemoryWriter			tMemoryStream;
 	CALifeCrossTable	tCrossTable;
 	
 	tCrossTable.m_tCrossTableHeader.dwVersion = XRAI_CURRENT_VERSION;
@@ -140,7 +140,7 @@ void					xrBuildCrossTable(LPCSTR caProjectName)
 	tCrossTable.m_tCrossTableHeader.dwGraphPointCount = iVertexCount;
 	
 	tMemoryStream.open_chunk(CROSS_TABLE_CHUNK_VERSION);
-	tMemoryStream.write(&tCrossTable.m_tCrossTableHeader,sizeof(tCrossTable.m_tCrossTableHeader));
+	tMemoryStream.w(&tCrossTable.m_tCrossTableHeader,sizeof(tCrossTable.m_tCrossTableHeader));
 	tMemoryStream.close_chunk();
 	
 	tMemoryStream.open_chunk(CROSS_TABLE_CHUNK_DATA);
@@ -156,11 +156,11 @@ void					xrBuildCrossTable(LPCSTR caProjectName)
 					tCrossTableCell.fDistance	= (*I)[i];
 					tCrossTableCell.tGraphIndex = I - B;
 				}
-			tMemoryStream.write(&tCrossTableCell,sizeof(tCrossTableCell));
+			tMemoryStream.w(&tCrossTableCell,sizeof(tCrossTableCell));
 		}
 	}
 	tMemoryStream.close_chunk();
 	
 	strconcat			(caFileName,caProjectName,CROSS_TABLE_NAME_RAW);
-	tMemoryStream.SaveTo(caFileName,0);
+	tMemoryStream.save_to(caFileName,0);
 }

@@ -48,13 +48,13 @@ void vfLoadAIPoints(LPCSTR name)
 {
 	string256								fName;
 	strconcat								(fName,name,"level.spawn");
-	CVirtualFileStream						F(fName);
-	CStream									*O = 0;
-	for (int id=0, i=0; 0!=(O = F.OpenChunk(id)); id++)	{
+	CVirtualFileReader						F(fName);
+	IReader									*O = 0;
+	for (int id=0, i=0; 0!=(O = F.open_chunk(id)); id++)	{
 		NET_Packet							P;
-		P.B.count							= O->Length();
-		O->Read								(P.B.data,P.B.count);
-		O->Close							();
+		P.B.count							= O->length();
+		O->r								(P.B.data,P.B.count);
+		O->close							();
 		u16									ID;
 		P.r_begin							(ID);
 		R_ASSERT							(M_SPAWN==ID);
@@ -79,7 +79,7 @@ void vfLoadAIPoints(LPCSTR name)
 		if (i % 100 == 0)
 			Status							("Vertexes being read : %d",i);
 	}
-	O->Close								();
+	O->close								();
 	xr_delete								(pSettings);
 	Status									("Vertexes being read : %d",i);
 }
@@ -267,7 +267,7 @@ void vfSaveGraph(LPCSTR name, CAI_Map *tpAI_Map)
 	string256					fName;
 	strconcat					(fName,name,"level.graph");
 	
-	CFS_Memory					tGraph;
+	CMemoryWriter					tGraph;
 	tGraphHeader.dwVersion		= XRAI_CURRENT_VERSION;
 	tGraphHeader.dwVertexCount	= tpaGraph.size();
 	tGraphHeader.dwLevelCount	= 1;
@@ -275,14 +275,14 @@ void vfSaveGraph(LPCSTR name, CAI_Map *tpAI_Map)
 	tLevel.tOffset.set			(0,0,0);
 	Memory.mem_copy(tLevel.caLevelName,name,strlen(name) + 1);
 	tGraphHeader.tpLevels.push_back(tLevel);
-	tGraph.Wdword				(tGraphHeader.dwVersion);
-	tGraph.Wdword				(tGraphHeader.dwVertexCount);
-	tGraph.Wdword				(tGraphHeader.dwLevelCount);
+	tGraph.w_u32				(tGraphHeader.dwVersion);
+	tGraph.w_u32				(tGraphHeader.dwVertexCount);
+	tGraph.w_u32				(tGraphHeader.dwLevelCount);
 	vector<CALifeGraph::SLevel>::iterator	I = tGraphHeader.tpLevels.begin();
 	vector<CALifeGraph::SLevel>::iterator	E = tGraphHeader.tpLevels.end();
 	for ( ; I != E; I++) {
-		tGraph.WstringZ((*I).caLevelName);
-		tGraph.Wvector((*I).tOffset);
+		tGraph.w_stringZ((*I).caLevelName);
+		tGraph.w_fvector3((*I).tOffset);
 	}
 
 	u32		dwPosition = tGraph.size();
@@ -291,7 +291,7 @@ void vfSaveGraph(LPCSTR name, CAI_Map *tpAI_Map)
 	CALifeGraph::SGraphVertex tGraphVertex;
 	Memory.mem_fill(&tGraphVertex,0,sizeof(CALifeGraph::SGraphVertex));
 	for (int i=0; i<(int)tpaGraph.size(); Progress(float(++i)/tpaGraph.size()/4))
-		tGraph.write(&tGraphVertex,sizeof(CALifeGraph::SGraphVertex));
+		tGraph.w(&tGraphVertex,sizeof(CALifeGraph::SGraphVertex));
 	
 	Progress(0.25f);
 	for (int i=0; i<(int)tpaGraph.size(); Progress(.25f + float(++i)/tpaGraph.size()/2)) {
@@ -299,8 +299,8 @@ void vfSaveGraph(LPCSTR name, CAI_Map *tpAI_Map)
 		for (int j=0, k=0; j<(int)tDynamicGraphVertex.tNeighbourCount; j++)
 			if (!tpAI_Map->q_mark_bit[tDynamicGraphVertex.tpaEdges + j - tpaEdges]) {
 				k++;
-				tGraph.Wdword(tDynamicGraphVertex.tpaEdges[j].dwVertexNumber);	
-				tGraph.Wfloat(tDynamicGraphVertex.tpaEdges[j].fPathDistance);	
+				tGraph.w_u32(tDynamicGraphVertex.tpaEdges[j].dwVertexNumber);	
+				tGraph.w_float(tDynamicGraphVertex.tpaEdges[j].fPathDistance);	
 			}
 		tDynamicGraphVertex.tNeighbourCount = k;
 	}
@@ -316,9 +316,9 @@ void vfSaveGraph(LPCSTR name, CAI_Map *tpAI_Map)
 		tGraphVertex.tLevelID			= tDynamicGraphVertex.tLevelID;
 		tGraphVertex.tNeighbourCount	= tDynamicGraphVertex.tNeighbourCount;
 		tGraphVertex.dwEdgeOffset		= k + j*sizeof(CALifeGraph::SGraphEdge);
-		tGraph.write					(&tGraphVertex,	sizeof(CALifeGraph::SGraphVertex));
+		tGraph.w						(&tGraphVertex,	sizeof(CALifeGraph::SGraphVertex));
 	}
-	tGraph.SaveTo(fName,0);
+	tGraph.save_to(fName,0);
 	Progress(1.0f);
 	Msg("%d bytes saved",int(tGraph.size()));
 }

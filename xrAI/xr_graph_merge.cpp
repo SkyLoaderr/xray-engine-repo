@@ -60,7 +60,7 @@ public:
 				tCrossTableUpdate[i].tGraphIndex += dwOffset;
 			}
 
-			CFS_Memory			tMemoryStream;
+			CMemoryWriter		tMemoryStream;
 			CALifeCrossTable	tCrossTable;
 			
 			tCrossTable.m_tCrossTableHeader.dwVersion = XRAI_CURRENT_VERSION;
@@ -70,16 +70,16 @@ public:
 			xr_delete			(tpCrossTable);
 			
 			tMemoryStream.open_chunk(CROSS_TABLE_CHUNK_VERSION);
-			tMemoryStream.write(&tCrossTable.m_tCrossTableHeader,sizeof(tCrossTable.m_tCrossTableHeader));
+			tMemoryStream.w(&tCrossTable.m_tCrossTableHeader,sizeof(tCrossTable.m_tCrossTableHeader));
 			tMemoryStream.close_chunk();
 			
 			tMemoryStream.open_chunk(CROSS_TABLE_CHUNK_DATA);
 			for (int i=0; i<(int)tCrossTable.m_tCrossTableHeader.dwNodeCount; i++)
-				tMemoryStream.write(&(tCrossTableUpdate[i]),sizeof(tCrossTableUpdate[i]));
+				tMemoryStream.w(&(tCrossTableUpdate[i]),sizeof(tCrossTableUpdate[i]));
 			tMemoryStream.close_chunk();
 			
 			strconcat			(caFileName,S,CROSS_TABLE_NAME);
-			tMemoryStream.SaveTo(caFileName,0);
+			tMemoryStream.save_to(caFileName,0);
 		}
 
 		// loading graph
@@ -110,13 +110,13 @@ public:
 			string256								fName;
 			strconcat								(fName,"gamedata\\levels\\",tLevel.caLevelName);
 			strconcat								(fName,fName,"\\level.spawn");
-			CVirtualFileStream						F(fName);
-			CStream									*O = 0;
-			for (int id=0, i=0; 0!=(O = F.OpenChunk(id)); id++)	{
+			CVirtualFileReader						F(fName);
+			IReader									*O = 0;
+			for (int id=0, i=0; 0!=(O = F.open_chunk(id)); id++)	{
 				NET_Packet							P;
-				P.B.count							= O->Length();
-				O->Read								(P.B.data,P.B.count);
-				O->Close							();
+				P.B.count							= O->length();
+				O->r								(P.B.data,P.B.count);
+				O->close							();
 				u16									ID;
 				P.r_begin							(ID);
 				R_ASSERT							(M_SPAWN==ID);
@@ -157,7 +157,7 @@ public:
 				}
 				xr_delete							(E);
 			}
-			O->Close								();
+			O->close								();
 			xr_delete								(pSettings);
 		}
 	};
@@ -188,7 +188,7 @@ public:
 		m_tpVertices[dwVertexNumber].tpaEdges[m_tpVertices[dwVertexNumber].tNeighbourCount - 1] = tGraphEdge;
 	}
 
-	void						vfSaveVertices(CFS_Memory &tMemoryStream, u32 &dwOffset)
+	void						vfSaveVertices(CMemoryWriter &tMemoryStream, u32 &dwOffset)
 	{
 		GRAPH_VERTEX_IT			I = m_tpVertices.begin();
 		GRAPH_VERTEX_IT			E = m_tpVertices.end();
@@ -201,17 +201,17 @@ public:
 			tVertex.tLevelID		= (*I).tLevelID;
 			tVertex.dwEdgeOffset	= dwOffset;
 			dwOffset				+= (tVertex.tNeighbourCount = (*I).tNeighbourCount)*sizeof(SGraphEdge);
-			tMemoryStream.write		(&tVertex,sizeof(tVertex));
+			tMemoryStream.w		(&tVertex,sizeof(tVertex));
 		}
 	};
 	
-	void						vfSaveEdges(CFS_Memory &tMemoryStream)
+	void						vfSaveEdges(CMemoryWriter &tMemoryStream)
 	{
 		GRAPH_VERTEX_IT			I = m_tpVertices.begin();
 		GRAPH_VERTEX_IT			E = m_tpVertices.end();
 		for ( ; I != E; I++)
 			for (int i=0; i<(int)(*I).tNeighbourCount; i++)
-				tMemoryStream.write	((*I).tpaEdges + i,sizeof(SGraphEdge));
+				tMemoryStream.w	((*I).tpaEdges + i,sizeof(SGraphEdge));
 	};
 };
 
@@ -271,19 +271,19 @@ void xrMergeGraphs()
 	
 	// save all the graphs
 	Phase("Saving graph being merged");
-	CFS_Memory						F;
+	CMemoryWriter						F;
 	tGraphHeader.dwLevelCount		= tpGraphs.size();
 	tGraphHeader.dwVersion			= XRAI_CURRENT_VERSION;
 	tGraphHeader.dwVertexCount		= dwOffset;
-	F.Wdword						(tGraphHeader.dwVersion);
-	F.Wdword						(tGraphHeader.dwVertexCount);
-	F.Wdword						(tGraphHeader.dwLevelCount);
+	F.w_u32					(tGraphHeader.dwVersion);
+	F.w_u32					(tGraphHeader.dwVertexCount);
+	F.w_u32					(tGraphHeader.dwLevelCount);
 	{
 		vector<CALifeGraph::SLevel>::iterator	I = tGraphHeader.tpLevels.begin();
 		vector<CALifeGraph::SLevel>::iterator	E = tGraphHeader.tpLevels.end();
 		for ( ; I != E; I++) {
-			F.WstringZ((*I).caLevelName);
-			F.Wvector((*I).tOffset);
+			F.w_stringZ((*I).caLevelName);
+			F.w_fvector3((*I).tOffset);
 		}
 	}
 
@@ -300,7 +300,7 @@ void xrMergeGraphs()
 		for ( ; I != E; I++)
 			(*I).second->vfSaveEdges		(F);
 	}
-	F.SaveTo("game.graph",0);
+	F.save_to("game.graph",0);
 	
 	// _free all the graphs
 	Phase("Freeing resources being allocated");

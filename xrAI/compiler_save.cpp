@@ -67,7 +67,7 @@ void xrSaveNodes(LPCSTR N)
 	string256	fName; 
 	strconcat	(fName,N,"level.ai");
 
-	CFS_File	fs(fName);
+	CFileWriter	fs(fName);
 
 	// Header
 	Status("Saving header...");
@@ -76,12 +76,12 @@ void xrSaveNodes(LPCSTR N)
 	H.count		= g_merged.size()+1;
 	H.size		= g_params.fPatchSize;
 	H.size_y	= CalculateHeight(H.aabb);
-	fs.write	(&H,sizeof(H));
+	fs.w		(&H,sizeof(H));
 
 	// Dummy node
 	NodeCompressed	NC;
 	ZeroMemory		(&NC,sizeof(NC));
-	fs.write		(&NC,sizeof(NC));
+	fs.w			(&NC,sizeof(NC));
 
 	// All nodes
 	Status("Saving nodes...");
@@ -96,13 +96,13 @@ void xrSaveNodes(LPCSTR N)
 		// write node itself
 		Compress		(NC,N,H);
 		NC.links		= cnt;
-		fs.write		(&NC,sizeof(NC));
+		fs.w			(&NC,sizeof(NC));
 
 		// write links
 		for (L=0; L<N.neighbours.size(); L++)
 		{
 			DWORD		L_id		= N.neighbours[L];
-			if (L_id)	{ L_id++; fs.write	(&L_id,3); }
+			if (L_id)	{ L_id++; fs.w		(&L_id,3); }
 		}
 		Progress(float(i)/float(g_merged.size()));
 	}

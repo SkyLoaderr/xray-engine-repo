@@ -20,7 +20,7 @@ typedef struct tagSSegment {
 
 class CAI_Map {
 private:
-	CStream*					vfs;			// virtual file
+	CVirtualFileReader*			vfs;			// virtual file
 	BYTE*						m_nodes;		// virtual nodes DATA array
 	NodeCompressed**			m_nodes_ptr;	// pointers to node's data
 public:
@@ -33,12 +33,12 @@ public:
 	{
 		string256	fName;
 		strconcat	(fName,name,"level.ai");
-		vfs			= xr_new<CVirtualFileStream>(fName);
+		vfs			= xr_new<CVirtualFileReader>(fName);
 		
 		// m_header & data
-		vfs->Read	(&m_header,sizeof(m_header));
+		vfs->r		(&m_header,sizeof(m_header));
 		R_ASSERT	(m_header.version == XRAI_CURRENT_VERSION);
-		m_nodes		= (BYTE*) vfs->Pointer();
+		m_nodes		= (BYTE*) vfs->pointer();
 
 		m_fSize2	= _sqr(m_header.size)/4;
 		m_fYSize2	= _sqr((float)(m_header.size_y/32767.0))/4;
@@ -47,13 +47,13 @@ public:
 		
 		for (u32 I=0; I<m_header.count; Progress(float(++I)/m_header.count))
 		{
-			m_nodes_ptr[I]	= (NodeCompressed*)vfs->Pointer();
+			m_nodes_ptr[I]	= (NodeCompressed*)vfs->pointer();
 
 			NodeCompressed	C;
-			vfs->Read		(&C,sizeof(C));
+			vfs->r			(&C,sizeof(C));
 
-			u32			L = C.links;
-			vfs->Advance	(L*sizeof(NodeLink));
+			u32				L = C.links;
+			vfs->advance	(L*sizeof(NodeLink));
 		}
 
 		// special query tables

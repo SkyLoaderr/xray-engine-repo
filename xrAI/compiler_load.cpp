@@ -9,20 +9,20 @@ void xrLoad(LPCSTR name)
 	string256				N;
 	{
 		strconcat			(N,name,"level.");
-		CVirtualFileStream	FS(N);
+		CVirtualFileReader	FS(N);
 		
-		CStream* fs			= FS.OpenChunk(fsL_CFORM);
+		IReader* fs			= FS.open_chunk(fsL_CFORM);
 		R_ASSERT			(fs);
 		
 		hdrCFORM			H;
-		fs->Read			(&H,sizeof(hdrCFORM));
+		fs->r				(&H,sizeof(hdrCFORM));
 		R_ASSERT			(CFORM_CURRENT_VERSION==H.version);
 		
-		Fvector*	verts	= (Fvector*)fs->Pointer();
+		Fvector*	verts	= (Fvector*)fs->pointer();
 		CDB::TRI*	tris	= (CDB::TRI*)(verts+H.vertcount);
 		Level.build			( verts, H.vertcount, tris, H.facecount );
 		Msg("* Level CFORM: %dK",Level.memory()/1024);
-		fs->Close			();
+		fs->close			();
 		
 		LevelBB.set			(H.aabb);
 	}
@@ -30,13 +30,13 @@ void xrLoad(LPCSTR name)
 	// Load CFORM ("lighting")
 	{
 		strconcat			(N,name,"build.cform");
-		CVirtualFileStream	FS(N);
+		CVirtualFileReader	FS(N);
 		
 		hdrCFORM			H;
-		FS.Read				(&H,sizeof(hdrCFORM));
+		FS.r				(&H,sizeof(hdrCFORM));
 		R_ASSERT			(CFORM_CURRENT_VERSION==H.version);
 		
-		Fvector*	verts	= (Fvector*)FS.Pointer();
+		Fvector*	verts	= (Fvector*)FS.pointer();
 		CDB::TRI*	tris	= (CDB::TRI*)(verts+H.vertcount);
 		LevelLight.build	( verts, H.vertcount, tris, H.facecount );
 		Msg("* Level CFORM(L): %dK",LevelLight.memory()/1024);
@@ -45,16 +45,16 @@ void xrLoad(LPCSTR name)
 	// Load emitters
 	{
 		strconcat			(N,name,"level.game");
-		CFileStream			F(N);
-		CStream *O = 0;
-		if (0!=(O = F.OpenChunk	(AIPOINT_CHUNK)))
+		CFileReader			F(N);
+		IReader *O = 0;
+		if (0!=(O = F.open_chunk	(AIPOINT_CHUNK)))
 		{
-			for (int id=0; O->FindChunk(id); id++)
+			for (int id=0; O->find_chunk(id); id++)
 			{
 				Emitters.push_back(Fvector());
-				O->Rvector	(Emitters.back());
+				O->r_fvector3	(Emitters.back());
 			}
-			O->Close();
+			O->close();
 		}
 	}
 
@@ -64,32 +64,32 @@ void xrLoad(LPCSTR name)
 
 		string32	ID			= BUILD_PROJECT_MARK;
 		string32	id;
-		CStream*	F			= xr_new<CFileStream>(N);
-		F->Read		(&id,8);
+		IReader*	F			= xr_new<CFileReader>(N);
+		F->r		(&id,8);
 		if (0==strcmp(id,ID))	{
 			xr_delete		(F);
-			F			= xr_new<CCompressedStream>(N,ID);
+			F			= xr_new<CCompressedReader>(N,ID);
 		}
-		CStream&				FS	= *F;
+		IReader&				FS	= *F;
 
 		// Version
 		DWORD version;
-		FS.ReadChunk			(EB_Version,&version);
+		FS.r_chunk				(EB_Version,&version);
 		R_ASSERT				(XRCL_CURRENT_VERSION==version);
 
 		// Header
 		b_params				Params;
-		FS.ReadChunk			(EB_Parameters,&Params);
+		FS.r_chunk				(EB_Parameters,&Params);
 
 		// Lights (Static)
 		{
-			F = FS.OpenChunk(EB_Light_static);
+			F = FS.open_chunk(EB_Light_static);
 			b_light_static	temp;
-			DWORD cnt		= F->Length()/sizeof(temp);
+			DWORD cnt		= F->length()/sizeof(temp);
 			for				(DWORD i=0; i<cnt; i++)
 			{
 				R_Light		RL;
-				F->Read		(&temp,sizeof(temp));
+				F->r		(&temp,sizeof(temp));
 				Flight&		L = temp.data;
 
 				// type
@@ -112,7 +112,7 @@ void xrLoad(LPCSTR name)
 				// place into layer
 				if (0==temp.controller_ID)	g_lights.push_back		(RL);
 			}
-			F->Close		();
+			F->close		();
 		}
 	}
 

@@ -69,16 +69,16 @@ public:
 		fName[0]				= 0;
 		strconcat				(fName,"gamedata\\levels\\",m_tLevel.caLevelName);
 		strconcat				(fName,fName,"\\level.spawn");
-		CVirtualFileStream		*SP = xr_new<CVirtualFileStream>(fName);
-		CStream					*S = 0;
+		CVirtualFileReader		*SP = xr_new<CVirtualFileReader>(fName);
+		IReader					*S = 0;
 		NET_Packet				P;
 		int						S_id	= 0;
 		map<u32,vector<CALifeObject*> >	tpSGMap;
-		while (0!=(S = SP->OpenChunk(S_id)))
+		while (0!=(S = SP->open_chunk(S_id)))
 		{
-			P.B.count			= S->Length();
-			S->Read				(P.B.data,P.B.count);
-			S->Close			();
+			P.B.count			= S->length();
+			S->r				(P.B.data,P.B.count);
+			S->close			();
 			u16					ID;
 			P.r_begin			(ID);
 			R_ASSERT			(M_SPAWN==ID);
@@ -232,7 +232,7 @@ public:
 		}
 	};
 
-	void						Save(CFS_Memory &FS, u32 &dwID)
+	void						Save(CMemoryWriter &FS, u32 &dwID)
 	{
 		NET_Packet		P;
 		for (u32 i=0 ; i<m_tpSpawnPoints.size(); i++, dwID++) {
@@ -242,14 +242,14 @@ public:
 
 			// Spawn
 			E->Spawn_Write		(P,TRUE);
-			FS.Wword			(u16(P.B.count));
-			FS.write			(P.B.data,P.B.count);
+			FS.w_u16			(u16(P.B.count));
+			FS.w				(P.B.data,P.B.count);
 
 			// Update
 			P.w_begin			(M_UPDATE);
 			E->UPDATE_Write		(P);
-			FS.Wword			(u16(P.B.count));
-			FS.write			(P.B.data,P.B.count);
+			FS.w_u16			(u16(P.B.count));
+			FS.w				(P.B.data,P.B.count);
 
 			FS.close_chunk		();
 		}
@@ -294,13 +294,13 @@ void xrMergeSpawns()
 	for (u32 i=0, N = tpLevels.size(); i<N; i++)
 		tSpawnHeader.dwSpawnCount += tpLevels[i]->m_tpSpawnPoints.size();
 	
-	CFS_Memory					tMemoryStream;
+	CMemoryWriter					tMemoryStream;
 	tMemoryStream.open_chunk	(SPAWN_POINT_CHUNK_VERSION);
-	tMemoryStream.write			(&tSpawnHeader,sizeof(tSpawnHeader));
+	tMemoryStream.w				(&tSpawnHeader,sizeof(tSpawnHeader));
 	tMemoryStream.close_chunk	();
 	for (u32 i=0, dwID = 0, N = tpLevels.size(); i<N; i++)
 		tpLevels[i]->Save		(tMemoryStream,dwID);
-	tMemoryStream.SaveTo		("game.spawn",0);
+	tMemoryStream.save_to		("game.spawn",0);
 
 	Phase						("Freeing resources being allocated");
 	xr_delete					(tpGraph);
