@@ -168,6 +168,7 @@ CEnvironment::CEnvironment	()
 	ed_to_time				= day_tm;
     ed_speed				= 12.f;
 #endif
+	fGameTime				= 0;
 }
 CEnvironment::~CEnvironment	()
 {
@@ -297,9 +298,6 @@ void CEnvironment::SelectEnvs(float gt)
     }
 }
 
-#ifdef _EDITOR
-	float fGameTime				= 0.f;
-#endif
 void CEnvironment::OnFrame()
 {
 #ifdef _EDITOR
@@ -307,8 +305,6 @@ void CEnvironment::OnFrame()
 	fGameTime				+= Device.fTimeDelta*ed_speed;
     if (fGameTime>ed_to_time)	fGameTime=fGameTime-ed_to_time+ed_from_time;
     if (fGameTime<ed_from_time)	fGameTime=ed_from_time;
-#else
-	float fGameTime			= Level().GetGameDayTime_sec();
 #endif
 	SelectEnvs				(fGameTime);
     VERIFY					(CurrentA&&CurrentB);

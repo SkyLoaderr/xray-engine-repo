@@ -75,6 +75,8 @@ public:
 	CLensFlare*				eff_LensFlare;
 	CEffect_Thunderbolt*	eff_Thunderbolt;
 
+	float					fGameTime;
+
     void					SelectEnvs			(float gt);
 #ifdef _EDITOR
 public:
@@ -82,6 +84,8 @@ public:
 	float					ed_to_time;
     float 					ed_speed;
 #endif
+
+
 public:
 							CEnvironment		();
 							~CEnvironment		();
@@ -99,6 +103,7 @@ public:
 
     void					SetWeather			(LPCSTR name);
     LPCSTR					GetWeather			(){return CurrentWeatherName;}
+	void					SetGameTime			(float _t)	{ fGameTime = _t;	}
 
     void					ED_Reload			();
 };
