@@ -9,7 +9,6 @@
 #include "xr_ini.h"
 #include "cderr.h"
 
-CFileSystem FS;
 //----------------------------------------------------
 
 void FSPath::Init( char *_Root, char *_Add, char *_DefExt, char *_FilterString ){
@@ -94,12 +93,11 @@ void CFileSystem::OnCreate(){
 	m_Textures.Init 	(m_Server, 	"textures\\",     		"*.bmp;*.tga",		"Textures (*.bmp;*.tga)" );
 	m_Temp.Init     	(m_Local, 	"temp\\",         		"",     			"" );
 
-    strcpy				(m_LastAccessFN,"access.ini"); 	FS.m_ServerRoot.Update(m_LastAccessFN);
-    string256 fn; strcpy(fn,"access.log"); FS.m_ServerRoot.Update(fn);
+    strcpy				(m_LastAccessFN,"access.ini"); 	m_ServerRoot.Update(m_LastAccessFN);
+    string256 fn; strcpy(fn,"access.log"); m_ServerRoot.Update(fn);
     m_AccessLog			= new CLog();
 	m_AccessLog->Create	(fn,true);
 }
-
 //----------------------------------------------------
 #ifdef _MSC_VER
 #define utimbuf _utimbuf
@@ -497,3 +495,13 @@ LPCSTR CFileSystem::GetLockOwner(FSPath *initial, LPSTR fname)
 	return comp;
 }
 
+CStream* CFileSystem::Open(LPCSTR fn)
+{
+	if (!Exist(fn)) return 0;
+	return new CFileStream(fn);	
+}
+
+void CFileSystem::Close(CStream*& F)
+{
+	_DELETE(F);
+}

@@ -7,9 +7,22 @@
 #include "dxerr8.h"
 #include "ImageManager.h"
 
+#include "FMesh.h"
+#include "FBasicVisual.h"
+#include "FVisual.h"
+#include "FHierrarhyVisual.h"
+#include "FProgressiveFixedVisual.h"
+#include "FProgressive.h"
+#include "BodyInstance.h"
+
 #pragma package(smart_init)
 
-CRenderDevice Device;
+extern void __stdcall xrSkin1W_x86(	vertRender* D, vertBoned1W* S, DWORD vCount, CBoneInstance* Bones);
+extern void __stdcall xrBoneLerp_x86(CKey* D, CKeyQ* K1, CKeyQ* K2, float delta);
+
+
+CRenderDevice 		Device;
+xrDispatchTable		PSGP;
 
 int psTextureLOD	= 0;
 DWORD psDeviceFlags = rsStatistic|rsFilterLinear|rsFog|rsDrawGrid;
@@ -65,6 +78,13 @@ CRenderDevice::CRenderDevice(){
     dwShadeMode		= D3DSHADE_GOURAUD;
 
     m_CurrentShader	= 0;
+
+    // generic
+    PSGP.skin1W		= xrSkin1W_x86;
+    PSGP.skin2W		= NULL;
+    PSGP.blerp		= xrBoneLerp_x86;
+    PSGP.m44_mul	= NULL;//xrM44_Mul_x86;
+    PSGP.transfer 	= NULL;//xrTransfer_x86;
 }
 
 CRenderDevice::~CRenderDevice(){
@@ -79,8 +99,8 @@ void CRenderDevice::Initialize()
 	Surface_Init();
 
 	AnsiString fn = "shaders_xrlc.xr";
-    FS.m_GameRoot.Update(fn);
-    if (FS.Exist(fn.c_str())){
+    Engine.FS.m_GameRoot.Update(fn);
+    if (Engine.FS.Exist(fn.c_str())){
     	ShaderXRLC.Load(fn.c_str());
     }else{
     	ELog.DlgMsg(mtInformation,"Can't find file '%s'",fn.c_str());
@@ -137,7 +157,7 @@ bool CRenderDevice::Create(){
 	dwFrame				= 0;
 
 	AnsiString sh		= "shaders.xr";
-    FS.m_GameRoot.Update(sh);
+    Engine.FS.m_GameRoot.Update(sh);
     _Create				(sh.c_str());
 
 	ELog.Msg			(mtInformation, "D3D: initialized");
@@ -458,5 +478,79 @@ void CRenderDevice::Reset(LPCSTR shName, BOOL bKeepTextures)
 	_Create			(shName);
 	u32 tm_end		= TimerAsync();
 	Msg				("*** RESET [%d ms]",tm_end-tm_start);
+}
+
+FBasicVisual* CRenderDevice::CreateVisual(CStream* data, CInifile* ini)
+{
+	FBasicVisual* 		V=0;
+	ogf_header			H;
+	data->ReadChunkSafe	(OGF_HEADER,&H,sizeof(H));
+//-----
+	// Check types
+	switch (H.type) {
+	case MT_NORMAL:				// our base visual
+		V	= new Fvisual;
+		break;
+	case MT_HIERRARHY:
+		V	= new FHierrarhyVisual;
+		break;
+	case MT_PROGRESSIVE:		// dynamic-resolution visual
+		V	= new FProgressiveFixedVisual;
+		break;
+	case MT_SKELETON:
+		V	= new CKinematics;
+		break;
+	case MT_SKELETON_PART:
+		V	= new CSkeletonX_PM;
+		break;
+	case MT_SKELETON_PART_STRIPPED:
+		V	= new CSkeletonX_ST;
+		break;
+	case MT_PROGRESSIVE_STRIPS:
+		V	= new FProgressive;
+		break;
+	default:
+		R_ASSERT(0=="Unknown visual type");
+		break;
+	}
+	R_ASSERT(V);
+	V->Type = H.type;
+//-----
+	V->Load				(0,data,0);
+    return V;
+}
+
+FBasicVisual* CRenderDevice::CreateVisual(LPCSTR file_name)
+{
+	// 1. Search for already loaded model
+	char N[64]; R_ASSERT(strlen(file_name)<64);
+	strcpy(N,file_name); strlwr(N);
+
+	FILE_NAME		fn;
+	FILE_NAME		name;
+
+	// Add default ext if no ext at all
+	if (0==strext(N))	strconcat	(name,N,".ogf");
+	else				strcpy		(name,N);
+
+	// Load data from MESHES or LEVEL
+	if (!Engine.FS.Exist(N))	{
+		Msg("Can't find model file '%s'.",name);
+		THROW;
+	} else {
+		strcpy			(fn,N);
+	}
+
+	// Actual loading
+	destructor<CStream> data(new CFileStream(fn));
+    return CreateVisual(&data());
+}
+
+void CRenderDevice::DeleteVisual(FBasicVisual*& V)
+{
+	if (V){
+		V->Release();
+		_DELETE(V);
+    }
 }
 

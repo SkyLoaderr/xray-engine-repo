@@ -10,6 +10,7 @@
 #include "bone.h"
 #include "motion.h"
 #include "exportskeleton.h"
+#include "xr_ini.h"
 
 #ifdef _EDITOR
 #include "Shader.h"
@@ -68,7 +69,7 @@ void CEditableObject::SaveObject(const char* fname){
     _splitpath( fname, dir, path, nm, 0 );
 	strconcat(save_nm,dir,path,nm,".object");
 
-    FS.VerifyPath(save_nm);
+    Engine.FS.VerifyPath(save_nm);
 
     F.SaveTo(save_nm,0);
 	m_LoadName = save_nm;
@@ -189,9 +190,7 @@ bool CEditableObject::Load(CStream& F){
 	        for (BPIt bp_it=m_BoneParts.begin(); bp_it!=m_BoneParts.end(); bp_it++){
     	        F.RstringZ	(buf); bp_it->alias=buf;
 	            bp_it->bones.resize(F.Rdword());
-        	    for (AStringIt as_it=bp_it->bones.begin(); as_it!=bp_it->bones.end(); as_it++){
-                 	F.RstringZ(buf); *as_it=buf; 
-                }
+                F.Read(bp_it->bones.begin(),bp_it->bones.size()*sizeof(WORD));
 	        }
     	}
 
@@ -289,10 +288,10 @@ void CEditableObject::Save(CFS_Base& F){
         for (BPIt bp_it=m_BoneParts.begin(); bp_it!=m_BoneParts.end(); bp_it++){
             F.WstringZ	(bp_it->alias.c_str());
             F.Wdword	(bp_it->bones.size());
-            for (AStringIt as_it=bp_it->bones.begin(); as_it!=bp_it->bones.end(); as_it++) F.WstringZ(as_it->c_str());
+            F.write		(bp_it->bones.begin(),bp_it->bones.size()*sizeof(WORD));
         }
         F.close_chunk	();
-    }
+    }                                 
 
 
     if (m_ActiveOMotion){
@@ -317,7 +316,7 @@ void CEditableObject::Save(CFS_Base& F){
 }
 //------------------------------------------------------------------------------
 CSMotion* CEditableObject::LoadSMotion(const char* fname){
-	if (FS.Exist(fname)){
+	if (Engine.FS.Exist(fname)){
     	CSMotion* M = new CSMotion();
         if (!M->LoadMotion(fname)){
         	_DELETE(M);
@@ -328,7 +327,7 @@ CSMotion* CEditableObject::LoadSMotion(const char* fname){
 }
 //------------------------------------------------------------------------------
 COMotion* CEditableObject::LoadOMotion(const char* fname){
-	if (FS.Exist(fname)){
+	if (Engine.FS.Exist(fname)){
     	COMotion* M = new COMotion();
         if (!M->LoadMotion(fname)){
         	_DELETE(M);
@@ -340,8 +339,13 @@ COMotion* CEditableObject::LoadOMotion(const char* fname){
 //------------------------------------------------------------------------------
 
 bool CEditableObject::ExportSkeletonOGF(LPCSTR fn){
+	CFS_Memory F;
     CExportSkeleton E(this);
-    return E.Export(fn);
+    if (E.Export(F)){
+    	F.SaveTo(fn,0);
+        return true;
+    }
+    return false;
 }
 //------------------------------------------------------------------------------
 

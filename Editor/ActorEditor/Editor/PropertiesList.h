@@ -3,127 +3,106 @@
 #ifndef PropertiesListH
 #define PropertiesListH
 //---------------------------------------------------------------------------
-#include <Classes.hpp>
-#include <Controls.hpp>
-#include <StdCtrls.hpp>
-#include <Forms.hpp>
+
 #include "ElTree.hpp"
-#include "ElXPThemedControl.hpp"
 #include "ElTreeStdEditors.hpp"
-#include "ElTreeComboBox.hpp"
-#include "ElTreeDTPickEdit.hpp"
-#include "ElTreeModalEdit.hpp"
-#include "ElTreeAdvEdit.hpp"
-#include "ElTreeBtnEdit.hpp"
-#include "ElTreeCheckBoxEdit.hpp"
-#include "ElTreeCurrEdit.hpp"
-#include "ElTreeMaskEdit.hpp"
-#include "ElTreeMemoEdit.hpp"
-#include "ElTreeSpinEdit.hpp"
-#include "ElEdits.hpp"
-#include "ElSpin.hpp"
-#include "ElBtnEdit.hpp"
-#include "ElACtrls.hpp"
-#include "ElClrCmb.hpp"
-#include "ElTreeTreeComboEdit.hpp"
-#include "ElTreeCombo.hpp"
-#include "ElMenus.hpp"
-#include <Menus.hpp>
-#include "ElCombos.hpp"
+#include "ElXPThemedControl.hpp"
+#include "multi_edit.hpp"
 #include "MxMenus.hpp"
 #include "mxPlacemnt.hpp"
-#include "ElStatBar.hpp"
-#include "ExtBtn.hpp"
-#include <ExtCtrls.hpp>
-#include "multi_edit.hpp"
+#include <Classes.hpp>
+#include <Controls.hpp>
+#include <Menus.hpp>
+#include <StdCtrls.hpp>
 
-#ifdef _LEVEL_EDITOR
- #include "CustomObject.h"
-#endif
+// refs
+struct 	xr_token;
+class PropValue;
 
-// refs   
-struct xr_token;
-struct xr_list;
+typedef void 	__fastcall (__closure *TBeforeEdit)		(PropValue* sender, LPVOID edit_val);
+typedef void 	__fastcall (__closure *TAfterEdit)		(PropValue* sender, LPVOID edit_val);
+typedef void 	__fastcall (__closure *TOnDrawValue)	(PropValue* sender, LPVOID draw_val);
+typedef void 	__fastcall (__closure *TOnModifiedEvent)(void);
 
-typedef void __fastcall (__closure *TBeforeEdit)(LPVOID data);
-typedef void __fastcall (__closure *TAfterEdit)(LPVOID data);
-typedef LPCSTR __fastcall (__closure *TOnDrawValue)(LPVOID data);
-typedef void __fastcall (__closure *TOnModifiedEvent)(void);
-
-static AnsiString static_text;
-
-class PropertiesValue{
+class PropValue{
 public:
-    TAfterEdit		OnAfterEdit;
-    TBeforeEdit		OnBeforeEdit;
-    TOnDrawValue	OnDrawValue;
+    TAfterEdit			OnAfterEdit;
+    TBeforeEdit			OnBeforeEdit;
+    TOnDrawValue		OnDrawValue;
 public:
-	PropertiesValue(TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):OnAfterEdit(after),OnBeforeEdit(before),OnDrawValue(draw){};
-	virtual ~PropertiesValue(){};
-    virtual LPCSTR	get_draw_text()=0;
+						PropValue		(TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):OnAfterEdit(after),OnBeforeEdit(before),OnDrawValue(draw){};
+	virtual 			~PropValue		(){};
+    virtual LPCSTR		GetText			()=0;
 };
 
-class IntValue: public PropertiesValue{
+class IntValue: public PropValue{
 public:
-	int*	val;
-	int		lim_mn;
-    int		lim_mx;
-    int 	inc;
-    IntValue(int* value, int mn, int mx, int increm, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):val(value),lim_mn(mn),lim_mx(mx),inc(increm),PropertiesValue(after,before,draw){};
-    virtual LPCSTR	get_draw_text()
+	int*				val;
+	int					lim_mn;
+    int					lim_mx;
+    int 				inc;
+    					IntValue		(int* value, int mn, int mx, int increm, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):val(value),lim_mn(mn),lim_mx(mx),inc(increm),PropValue(after,before,draw){};
+    virtual LPCSTR		GetText			()
     {
-    	if (OnDrawValue) return OnDrawValue(this);
-        else{
-        	static_text=*val;
-            return static_text.c_str();
-        }
+    	int draw_val 	= *val;
+        if (OnDrawValue)OnDrawValue(this, &draw_val);
+		static AnsiString draw_text	= draw_val;
+        return draw_text.c_str();
     }
 };
-class FloatValue: public PropertiesValue{
+class FloatValue: public PropValue{
 public:
-	float*	val;
-	float	lim_mn;
-    float	lim_mx;
-    float 	inc;
-    int 	dec;
-    FloatValue(float* value, float mn, float mx, float increment, int decimal, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):val(value),lim_mn(mn),lim_mx(mx),inc(increment),dec(decimal),PropertiesValue(after,before,draw){};
-    virtual LPCSTR	get_draw_text()
+	float*				val;
+	float				lim_mn;
+    float				lim_mx;
+    float 				inc;
+    int 				dec;
+    					FloatValue		(float* value, float mn, float mx, float increment, int decimal, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):val(value),lim_mn(mn),lim_mx(mx),inc(increment),dec(decimal),PropValue(after,before,draw){};
+    virtual LPCSTR		GetText			()
     {
-    	if (OnDrawValue) return OnDrawValue(this);
-        else{
-            AnsiString fmt; fmt.sprintf("%%.%df",dec);
-            static_text.sprintf(fmt.c_str(),*val);
-            return static_text.c_str();
-        }
+    	float draw_val 	= *val;
+        if (OnDrawValue)OnDrawValue(this, &draw_val);
+        static AnsiString draw_text;
+		AnsiString fmt; fmt.sprintf("%%.%df",dec);
+        draw_text.sprintf(fmt.c_str(),draw_val);
+		return draw_text.c_str();
     }
 };
-class FlagValue: public PropertiesValue{
+class FlagValue: public PropValue{
 public:
-	DWORD*	val;
-	DWORD	mask;
-	FlagValue(DWORD* value, DWORD _mask, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):val(value),mask(_mask),PropertiesValue(after,before,draw){};
-    virtual LPCSTR	get_draw_text();
+	DWORD*				val;
+	DWORD				mask;
+						FlagValue		(DWORD* value, DWORD _mask, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):val(value),mask(_mask),PropValue(after,before,draw){};
+    virtual LPCSTR		GetText			();
 };
-class TokenValue: public PropertiesValue{
+class TokenValue: public PropValue{
 public:
-	DWORD*	val;
-	xr_token* token;
-	TokenValue(DWORD* value, xr_token* _token, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):val(value),token(_token),PropertiesValue(after,before,draw){};
-	virtual LPCSTR get_draw_text();
+	DWORD*				val;
+	xr_token* 			token;
+						TokenValue		(DWORD* value, xr_token* _token, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):val(value),token(_token),PropValue(after,before,draw){};
+	virtual LPCSTR 		GetText			();
 };
-class ListValue: public PropertiesValue{
+class TokenValue2: public PropValue{
 public:
-	LPSTR	val;
-	AStringVec items;
-	ListValue(LPSTR value, AStringVec* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):val(value),items(*_items),PropertiesValue(after,before,draw){};
-	virtual LPCSTR	get_draw_text()
+	DWORD*				val;
+	AStringVec 			items;
+						TokenValue2		(DWORD* value, AStringVec* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):val(value),items(*_items),PropValue(after,before,draw){};
+	virtual LPCSTR 		GetText			();
+};
+class ListValue: public PropValue{
+public:
+	LPSTR				val;
+	AStringVec 			items;
+						ListValue		(LPSTR value, AStringVec* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):val(value),items(*_items),PropValue(after,before,draw){};
+	virtual LPCSTR		GetText			()
     {
-    	if (OnDrawValue) return OnDrawValue(this);
-        else return val;
+    	static AnsiString draw_text = val;
+        if (OnDrawValue)OnDrawValue(this, &draw_text);
+        return draw_text.c_str();
     }
 };
 //---------------------------------------------------------------------------
-DEFINE_VECTOR(PropertiesValue*,PropValVec,PropValIt)
+DEFINE_VECTOR(PropValue*,PropValVec,PropValIt)
 
 class TfrmProperties : public TForm
 {
@@ -163,6 +142,7 @@ private:	// User declarations
     void PrepareLWNumber(TElTreeItem* node);
     void ShowLWNumber(TRect& R);
     void ApplyLWNumber();
+    void CancelLWNumber();
 
     PropValVec m_Params;
     TOnModifiedEvent OnModifiedEvent;
@@ -217,6 +197,12 @@ public:		// User declarations
         m_Params.push_back(V);
     	return V;
     }
+	TokenValue2* 	MakeTokenValue2			(LPVOID val, AStringVec* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
+    {
+    	TokenValue2* V=new TokenValue2((LPDWORD)val,lst,after,before,draw);
+        m_Params.push_back(V);
+    	return V;
+    }
 	ListValue* 		MakeListValue			(LPVOID val, AStringVec* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
     	ListValue* V=new ListValue((LPSTR)val,lst,after,before,draw);
@@ -243,6 +229,7 @@ enum EProperties{
 	PROP_WAVE,
 	PROP_FLAG,
 	PROP_TOKEN,
+	PROP_TOKEN2,
 	PROP_LIST,
 	PROP_INTEGER,
 	PROP_FLOAT,

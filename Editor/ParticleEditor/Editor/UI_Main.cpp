@@ -69,7 +69,7 @@ bool TUI::OnCreate(){
 	string256 fn;
     strcpy(fn,_EDITOR_FILE_NAME_);
     strcat(fn,".log");
-    FS.m_LocalRoot.Update(fn);
+    Engine.FS.m_LocalRoot.Update(fn);
     ELog.Create(fn);
 
 	Device.InitTimer();

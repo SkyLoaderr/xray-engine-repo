@@ -98,7 +98,7 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
                             }
                             char tex_name[_MAX_FNAME];
                             _splitpath( tname, 0, 0, tex_name, 0 );
-							Osf->SetTexture(FS.UpdateTextureNameWithFolder(tex_name));
+							Osf->SetTexture(Engine.FS.UpdateTextureNameWithFolder(tex_name));
                             // get vmap refs
                             Osf->SetVMap(Itx->param.imap.vmap_name);
                         }

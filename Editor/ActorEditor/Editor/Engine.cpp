@@ -3,10 +3,11 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "Engine.h"
 
-CEngine				Engine;
-xrDispatchTable		PSGP;
+CEngine	Engine;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -25,26 +26,12 @@ CEngine::~CEngine()
 void CEngine::Initialize(void)
 {
 	// Mathematics & PSI detection
-	InitMath							( );
-
-	// Bind PSGP
-	Log("Loading PSGP: xrCPU_Pipe.dll");
-	hPSGP		= LoadLibrary("xrCPU_Pipe.dll");
-	R_ASSERT	(hPSGP);
-
-	xrBinder*	bindCPU	= (xrBinder*)	GetProcAddress(hPSGP,"xrBind_PSGP");	R_ASSERT(bindCPU);
-	bindCPU		(&PSGP);
-
+	InitMath				();
 	// Other stuff
-	Engine.FS.Initialize				( );
-	Engine.Scripts.Initialize			( );
+	FS.OnCreate				();
 }
 
-void CEngine::Destroy	()
-{
-	Engine.External.Destroy				( );
-	Engine.Scripts.Destroy				( );
-	Engine.FS.Destroy					( );
-
-	if (hPSGP)	{ FreeLibrary(hPSGP); hPSGP=0; }
+void CEngine::Destroy()
+{                      
+	Engine.FS.OnDestroy		();
 }

@@ -13,6 +13,8 @@
 //---------------------------------------------------------------------------
 // refs
 class CFontHUD;
+class FBasicVisual;
+class CInifile;
 
 //------------------------------------------------------------------------------
 class ENGINE_API CRenderDevice{
@@ -162,6 +164,10 @@ public:
 public:
 	CShaderManager			Shader;
     Shader_xrLC_LIB			ShaderXRLC;
+
+    FBasicVisual*			CreateVisual	(CStream* data, CInifile* ini=0);
+    FBasicVisual*			CreateVisual	(LPCSTR fn);
+    void					DeleteVisual	(FBasicVisual*& V);
 };
 
 extern ENGINE_API CRenderDevice Device;
@@ -190,5 +196,8 @@ extern int psTextureLOD;
 
 #define		REQ_CREATE()	if (!Device.bReady)	return;
 #define		REQ_DESTROY()	if (Device.bReady)	return;
+
+#include "xrCPU_Pipe.h"
+ENGINE_API extern xrDispatchTable	PSGP;
 
 #endif

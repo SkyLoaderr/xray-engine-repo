@@ -84,10 +84,10 @@ bool EImageThumbnail::Load()
 {
 	AnsiString fn = m_Name;
     switch (m_Type){
-    case EITObject: FS.m_Objects.Update(fn); 	break;
-    case EITTexture:FS.m_Textures.Update(fn); 	break;
+    case EITObject: Engine.FS.m_Objects.Update(fn); 	break;
+    case EITTexture:Engine.FS.m_Textures.Update(fn); 	break;
     }
-    if (!FS.Exist(fn.c_str())) return false;
+    if (!Engine.FS.Exist(fn.c_str())) return false;
     CFileStream FN(fn.c_str());
     char MARK[8]; FN.Read(MARK,8);
     if (strncmp(MARK,THM_SIGN,8)!=0){
@@ -115,7 +115,7 @@ bool EImageThumbnail::Load()
     R_ASSERT(F.FindChunk(THM_CHUNK_TYPE));
     m_Type	= THMType(F.Rdword());
 
-    m_Age = FS.GetFileAge(fn);
+    m_Age = Engine.FS.GetFileAge(fn);
 
     return true;
 }
@@ -142,14 +142,14 @@ void EImageThumbnail::Save(int age){
 
 	AnsiString fn 	= m_Name;
     switch (m_Type){
-    case EITObject: FS.m_Objects.Update(fn); 	break;
-    case EITTexture:FS.m_Textures.Update(fn); 	break;
+    case EITObject: Engine.FS.m_Objects.Update(fn); 	break;
+    case EITTexture:Engine.FS.m_Textures.Update(fn); 	break;
     }
-	FS.VerifyPath	(fn.c_str());
+	Engine.FS.VerifyPath	(fn.c_str());
 
     F.SaveTo		(fn.c_str(),THM_SIGN);
 
-    FS.SetFileAge	(fn,age?age:m_Age);
+    Engine.FS.SetFileAge	(fn,age?age:m_Age);
 }
 
 void EImageThumbnail::DrawNormal( HANDLE handle, RECT *r ){

@@ -64,6 +64,10 @@ public:
 				CFileSystem		();
 	virtual 	~CFileSystem	();
     void 		OnCreate		();
+    void 		OnDestroy		(){;}
+
+    CStream*	Open			(LPCSTR fn);
+	void 		Close			(CStream*& F);
 
 	bool 		GetOpenName		(FSPath& initial, LPSTR buffer, int sz_buf, bool bMulti=false, LPCSTR offset=0 );
 	bool 		GetSaveName		(FSPath& initial, char *buffer, int sz_buf, LPCSTR offset=0 );
@@ -101,6 +105,5 @@ public:
 
     void		GetCompAndUser	(string64& computer, string64& user);
 };
-extern CFileSystem FS;
 #endif /*_INCDEF_FileSystem_H_*/
 

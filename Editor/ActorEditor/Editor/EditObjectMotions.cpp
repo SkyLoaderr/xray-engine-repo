@@ -337,6 +337,22 @@ CBone* CEditableObject::FindBoneByName(const char* name){
     return (parent==m_Bones.end())?0:*parent;
 }
 
+int CEditableObject::BoneIDByName(LPCSTR name){
+	BoneIt bone = std::find_if(m_Bones.begin(),m_Bones.end(),fBoneNameEQ(name));
+    return (bone!=m_Bones.end())?(bone-m_Bones.begin()):-1;
+}
+
+int CEditableObject::PartIDByName(LPCSTR name){
+	for (BPIt it=m_BoneParts.begin(); it!=m_BoneParts.end(); it++)
+    	if (it->alias==name) return it-m_BoneParts.begin();
+    return -1;
+}
+
+LPCSTR CEditableObject::BoneNameByID(int id){
+	VERIFY((id>=0)&&(id<m_Bones.size()));
+    return m_Bones[id]->Name();
+}
+
 int	CEditableObject::GetBoneIndexByWMap(const char* wm_name){
 	BoneIt bone = std::find_if(m_Bones.begin(),m_Bones.end(),fBoneWMNameEQ(wm_name));
     return (bone==m_Bones.end())?-1:bone-m_Bones.begin();
@@ -375,9 +391,9 @@ bool CEditableObject::CheckBoneCompliance(CSMotion* M){
 	VERIFY(M);
     BoneMotionVec& lst = M->BoneMotions();
 	if (m_Bones.size()!=lst.size()) return false;
-    for(BoneMotionIt bm_it=lst.begin(); bm_it!=lst.end(); bm_it++){
-    	if (!FindBoneByName(bm_it->name)) return false;
-    }
+//    for(BoneMotionIt bm_it=lst.begin(); bm_it!=lst.end(); bm_it++){
+//    	if (!FindBoneByName(bm_it->name)) return false;
+//    }
     return true;
 }
 

@@ -49,7 +49,7 @@ LPCSTR __fastcall TfrmChoseItem::SelectEntity(LPCSTR init_name)
 	AnsiString fld;
     CInifile* sys_ini;
     AnsiString fn="system.ltx";
-    FS.m_GameRoot.Update(fn);
+    Engine.FS.m_GameRoot.Update(fn);
     sys_ini = new CInifile(fn.c_str(),true);
     CInifile::Root& data = sys_ini->Sections();
     for (CInifile::RootIt it=data.begin(); it!=data.end(); it++)
@@ -80,7 +80,7 @@ LPCSTR __fastcall TfrmChoseItem::SelectEntityCLSID(LPCSTR init_name)
 	AnsiString fld;
     CInifile* sys_ini;
     AnsiString fn="system.ltx";
-    FS.m_GameRoot.Update(fn);
+    Engine.FS.m_GameRoot.Update(fn);
     sys_ini = new CInifile(fn.c_str(),true);
     CInifile::Root& data = sys_ini->Sections();
 	FOLDER::AppendObject(form->tvItems,"O_ACTOR");
@@ -458,8 +458,8 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
 	        AnsiString nm,fn;
         	FOLDER::MakeName		(Item,0,nm,false);
             fn						= ChangeFileExt(nm,".thm");
-            FS.m_Objects.Update(fn);
-            if (FS.Exist(fn.c_str())){
+            Engine.FS.m_Objects.Update(fn);
+            if (Engine.FS.Exist(fn.c_str())){
 	    	    m_Thm 					= new EImageThumbnail(nm.c_str(),EImageThumbnail::EITObject);
     	        if (!m_Thm->Valid()) 	pbImage->Repaint();
         	    else				 	pbImagePaint(Sender);

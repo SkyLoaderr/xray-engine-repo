@@ -29,6 +29,9 @@ void CStats::Show(CFontBase* font)
 		RenderTOTAL.FrameEnd		();
 		RenderCALC.FrameEnd			();
 
+        RenderDUMP_SKIN.FrameEnd	();
+
+		Animation.FrameEnd			();	
 		Input.FrameEnd				();
 		clRAY.FrameEnd				();
 		clBOX.FrameEnd				();
@@ -60,6 +63,8 @@ void CStats::Show(CFontBase* font)
 		F.OutNext	("DIP/DP:      %d",dwCalls);
 		F.OutNext	("SH/T/M/C:    %d/%d/%d/%d",dwShader_Codes,dwShader_Textures,dwShader_Matrices,dwShader_Constants);
 		F.OutNext	("LIGHT S/T:   %d/%d",dwLightInScene,dwTotalLight);
+		F.OutNext	("Skeletons:   %2.2fms, %d",Animation.result,Animation.count);
+		F.OutNext	("Skinning:    %2.2fms",RenderDUMP_SKIN.result);
 		F.OutSkip	();
 		F.OutNext	("Input:       %2.2fms",Input.result);
 		F.OutNext	("clRAY:       %2.2fms, %d",clRAY.result,clRAY.count);
@@ -68,11 +73,14 @@ void CStats::Show(CFontBase* font)
 	}
 
 	{
+		Animation.FrameStart		();	
 		RenderTOTAL.FrameStart		();
 
 		Input.FrameStart			();
 		clRAY.FrameStart			();
 		clBOX.FrameStart			();
+
+		RenderDUMP_SKIN.FrameStart	();
 	}
 	dwShader_Codes = dwShader_Textures = dwShader_Matrices = dwShader_Constants = 0;
 	dwVert = dwPoly = dwCalls = 0;

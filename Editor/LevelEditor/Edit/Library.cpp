@@ -26,7 +26,7 @@ ELibrary::~ELibrary(){
 
 void ELibrary::OnCreate(){
 	m_Current = "";
-    FS.GetFiles(FS.m_Objects.m_Path,m_Objects,true,true,"*.object");
+    Engine.FS.GetFiles(Engine.FS.m_Objects.m_Path,m_Objects,true,true,"*.object");
 	Device.seqDevCreate.Add	(this,REG_PRIORITY_NORMAL);
 	Device.seqDevDestroy.Add(this,REG_PRIORITY_NORMAL);
     m_bReady = true;
@@ -116,8 +116,8 @@ CEditableObject* ELibrary::LoadEditObject(LPCSTR name, int age){
 	VERIFY(m_bReady);
     CEditableObject* m_EditObject = new CEditableObject(name);
     AnsiString fn=ChangeFileExt(name,".object");
-    FS.m_Objects.Update(fn);
-    if (FS.Exist(fn.c_str(), true))
+    Engine.FS.m_Objects.Update(fn);
+    if (Engine.FS.Exist(fn.c_str(), true))
         if (m_EditObject->Load(fn.c_str())){
             m_EditObject->m_ObjVer.f_age = age;
             return m_EditObject;
@@ -167,11 +167,11 @@ void ELibrary::Save()
     for(; O!=E; O++)
     	if (O->second->IsModified()){
         	AnsiString nm=O->second->GetName();
-            FS.m_Objects.Update(nm);
+            Engine.FS.m_Objects.Update(nm);
         	O->second->SaveObject(nm.c_str());
         }
     m_Objects.clear();
-    FS.GetFiles(FS.m_Objects.m_Path,m_Objects,true,true,"*.object");
+    Engine.FS.GetFiles(Engine.FS.m_Objects.m_Path,m_Objects,true,true,"*.object");
 }
 //---------------------------------------------------------------------------
 

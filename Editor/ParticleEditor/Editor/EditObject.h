@@ -89,7 +89,7 @@ struct st_AnimParam{
 
 struct SBonePart{
 	AnsiString 		alias;
-    AStringVec 		bones;
+    INTVec 			bones;
 };
 DEFINE_VECTOR(SBonePart,BPVec,BPIt);
 
@@ -188,6 +188,9 @@ public:
     IC BoneIt		LastBone				()	{return m_Bones.end();}
 	IC BoneVec&		Bones					()	{return m_Bones;}
     IC int			BoneCount				()	{return m_Bones.size();}
+    LPCSTR			BoneNameByID			(int id);
+    int				BoneIDByName			(LPCSTR name);
+    int				PartIDByName			(LPCSTR name);
     IC CBone*		GetBone					(DWORD idx){VERIFY(idx<m_Bones.size()); return m_Bones[idx];}
     void			GetBoneWorldTransform	(DWORD bone_idx, float t, CSMotion* motion, Fmatrix& matrix);
     IC SMotionIt	FirstSMotion			()	{return m_SMotions.begin();}
@@ -296,6 +299,7 @@ public:
 	void 			OnDeviceDestroy			();
 
 	bool			ExportSkeletonOGF		(LPCSTR fname);
+    bool			PrepareSkeletonVisual	(CFS_Base& F);
 #ifdef _MAX_EXPORT
 	CSurface*		CreateSurface			(Mtl* M, DWORD m_id);
 	LPCSTR			GenerateSurfaceName		(const char* base_name);

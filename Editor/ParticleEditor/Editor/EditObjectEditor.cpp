@@ -7,6 +7,7 @@
 #include "motion.h"
 #include "D3DUtils.h"
 #include "bone.h"
+#include "ExportSkeleton.h"
 
 bool CEditableObject::Reload()
 {
@@ -167,5 +168,11 @@ void CEditableObject::LightenObject(){
     	(*m)->UnloadPNormals();
     }
     ClearRenderBuffers();
+}
+
+bool CEditableObject::PrepareSkeletonVisual(CFS_Base& F)
+{
+    CExportSkeleton E(this);
+    return E.Export(F);
 }
 
