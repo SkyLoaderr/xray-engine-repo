@@ -30,4 +30,28 @@ public:
 	virtual void	reinit				(_object_type *object);
 };
 
+class CPropertyStorage;
+
+template <
+	typename _object_type,
+	template <typename _base_object_type> class ancestor,
+	typename _base_object_type = CLuaGameObject
+>
+class CWrapperAbstract2 : public ancestor<_base_object_type> {
+protected:
+	typedef ancestor<_base_object_type> inherited;
+
+protected:
+	_object_type	*m_object;
+
+public:
+	IC				CWrapperAbstract2	();
+	template <typename T1>
+	IC				CWrapperAbstract2	(T1 t1);
+	template <typename T1, typename T2, typename T3>
+	IC				CWrapperAbstract2	(T1 t1, T2 t2, T3 t3);
+	virtual			~CWrapperAbstract2	();
+	virtual void	reinit				(_object_type *object, CPropertyStorage *storage);
+};
+
 #include "wrapper_abstract_inline.h"

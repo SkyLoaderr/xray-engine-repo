@@ -19,8 +19,8 @@ public:
 
 public:
 	IC							CScriptActionWrapper(const luabind::object &lua_instance, CLuaGameObject *object = 0, LPCSTR action_name = "");
-	virtual void				reinit				(CLuaGameObject *object, bool clear_all);
-	static	void				reinit_static		(CScriptAction *action, CLuaGameObject *object, bool clear_all);
+	virtual void				reinit				(CLuaGameObject *object, CPropertyStorage *storage, bool clear_all);
+	static	void				reinit_static		(CScriptAction *action, CLuaGameObject *object, CPropertyStorage *storage, bool clear_all);
 	virtual void				initialize			();
 	static	void				initialize_static	(CScriptAction *action);
 	virtual void				execute				();

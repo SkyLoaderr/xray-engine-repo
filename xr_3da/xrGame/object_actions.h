@@ -21,16 +21,14 @@ template <typename _item_type>
 class CObjectActionBase : public CActionBase<CAI_Stalker> {
 protected:
 	typedef CActionBase<CAI_Stalker>				inherited;
-	typedef CGraphEngine::CSolverConditionStorage	CConditionStorage;
 	typedef CGraphEngine::_solver_condition_type	_condition_type;
 	typedef CGraphEngine::_solver_value_type		_value_type;
 
 protected:
 	_item_type			*m_item;
-	CConditionStorage	*m_storage;
 
 public:
-	IC					CObjectActionBase	(_item_type *item, CAI_Stalker *owner, CConditionStorage *storage, LPCSTR action_name = "");
+	IC					CObjectActionBase	(_item_type *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name = "");
 	virtual void		initialize			();
 	IC		void		set_property		(_condition_type condition_id, _value_type value);
 };
@@ -51,7 +49,7 @@ protected:
 	_value_type			m_value;
 
 public:
-	IC					CObjectActionMember	(_item_type *item, CAI_Stalker *owner, CConditionStorage *storage, _condition_type condition_id, _value_type value, LPCSTR action_name = "");
+	IC					CObjectActionMember	(_item_type *item, CAI_Stalker *owner, CPropertyStorage *storage, _condition_type condition_id, _value_type value, LPCSTR action_name = "");
 	virtual void		execute				();
 };
 
@@ -67,7 +65,7 @@ protected:
 	u32					m_command;
 
 public:
-						CObjectActionCommand(CInventoryItem *item, CAI_Stalker *owner, CConditionStorage *storage, u32 command, LPCSTR action_name = "");
+						CObjectActionCommand(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, u32 command, LPCSTR action_name = "");
 	virtual void		initialize			();
 };
 
@@ -80,7 +78,7 @@ protected:
 	typedef CObjectActionBase<CInventoryItem> inherited;
 
 public:
-						CObjectActionShow	(CInventoryItem *item, CAI_Stalker *owner, CConditionStorage *storage, LPCSTR action_name = "");
+						CObjectActionShow	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name = "");
 	virtual void		initialize			();
 };
 
@@ -93,7 +91,7 @@ protected:
 	typedef CObjectActionBase<CInventoryItem> inherited;
 
 public:
-						CObjectActionHide	(CInventoryItem *item, CAI_Stalker *owner, CConditionStorage *storage, LPCSTR action_name = "");
+						CObjectActionHide	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name = "");
 	virtual void		initialize			();
 };
 
@@ -109,7 +107,7 @@ protected:
 	u32					m_type;
 
 public:
-						CObjectActionReload	(CInventoryItem *item, CAI_Stalker *owner, CConditionStorage *storage, u32 type, LPCSTR action_name = "");
+						CObjectActionReload	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, u32 type, LPCSTR action_name = "");
 	virtual void		initialize			();
 	virtual void		execute				();
 };
@@ -126,7 +124,7 @@ protected:
 	u32					m_type;
 
 public:
-						CObjectActionFire	(CInventoryItem *item, CAI_Stalker *owner, CConditionStorage *storage, u32 type, LPCSTR action_name = "");
+						CObjectActionFire	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, u32 type, LPCSTR action_name = "");
 	virtual void		initialize			();
 	virtual void		execute				();
 	virtual void		finalize			();
@@ -141,7 +139,7 @@ protected:
 	typedef CObjectActionMember<CInventoryItem> inherited;
 
 public:
-						CObjectActionAim	(CInventoryItem *item, CAI_Stalker *owner, CConditionStorage *storage, _condition_type condition_id, _value_type value, LPCSTR action_name = "");
+						CObjectActionAim	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, _condition_type condition_id, _value_type value, LPCSTR action_name = "");
 	virtual void		initialize			();
 };
 
@@ -154,7 +152,7 @@ protected:
 	typedef CObjectActionBase<CInventoryItem> inherited;
 
 public:
-						CObjectActionStrapping	(CInventoryItem *item, CAI_Stalker *owner, CConditionStorage *storage, LPCSTR action_name = "");
+						CObjectActionStrapping	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name = "");
 	virtual void		initialize				();
 	virtual void		execute					();
 	virtual void		finalize				();
@@ -169,7 +167,7 @@ protected:
 	typedef CObjectActionBase<CInventoryItem> inherited;
 
 public:
-						CObjectActionUnstrapping(CInventoryItem *item, CAI_Stalker *owner, CConditionStorage *storage, LPCSTR action_name = "");
+						CObjectActionUnstrapping(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name = "");
 	virtual void		initialize				();
 	virtual void		execute					();
 	virtual void		finalize				();
@@ -187,7 +185,7 @@ protected:
 	u32					m_type;
 
 public:
-						CObjectActionQueueWait	(CInventoryItem *item, CAI_Stalker *owner, CConditionStorage *storage, u32 type, LPCSTR action_name = "");
+						CObjectActionQueueWait	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, u32 type, LPCSTR action_name = "");
 	virtual void		initialize				();
 	virtual void		execute					();
 	virtual void		finalize				();
@@ -205,7 +203,7 @@ protected:
 	u32					m_type;
 
 public:
-						CObjectActionSwitch	(CInventoryItem *item, CAI_Stalker *owner, CConditionStorage *storage, u32 type, LPCSTR action_name = "");
+						CObjectActionSwitch	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, u32 type, LPCSTR action_name = "");
 	virtual void		initialize			();
 	virtual void		execute				();
 	virtual void		finalize			();
@@ -220,7 +218,7 @@ protected:
 	typedef CObjectActionBase<CInventoryItem> inherited;
 
 public:
-						CObjectActionDrop	(CInventoryItem *item, CAI_Stalker *owner, CConditionStorage *storage, LPCSTR action_name = "");
+						CObjectActionDrop	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name = "");
 	virtual void		initialize			();
 };
 
@@ -233,7 +231,7 @@ protected:
 	typedef CObjectActionBase<CAI_Stalker> inherited;
 
 public:
-						CObjectActionThreaten	(CAI_Stalker *item, CAI_Stalker *owner, CConditionStorage *storage, LPCSTR action_name = "");
+						CObjectActionThreaten	(CAI_Stalker *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name = "");
 	virtual void		execute					();
 };
 

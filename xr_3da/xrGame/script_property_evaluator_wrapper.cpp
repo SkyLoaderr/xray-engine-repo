@@ -9,14 +9,14 @@
 #include "stdafx.h"
 #include "script_property_evaluator_wrapper.h"
 
-void CPropertyEvaluatorWrapper::reinit			(CLuaGameObject *object)
+void CPropertyEvaluatorWrapper::reinit			(CLuaGameObject *object, CPropertyStorage *storage)
 {
-	luabind::call_member<void>(m_lua_instance,"reinit",object);
+	luabind::call_member<void>(m_lua_instance,"reinit",object,storage);
 }
 
-void CPropertyEvaluatorWrapper::reinit_static	(CScriptPropertyEvaluator *evaluator, CLuaGameObject *object)
+void CPropertyEvaluatorWrapper::reinit_static	(CScriptPropertyEvaluator *evaluator, CLuaGameObject *object, CPropertyStorage *storage)
 {
-	evaluator->CScriptPropertyEvaluator::reinit(object);
+	evaluator->CScriptPropertyEvaluator::reinit(object,storage);
 }
 
 bool CPropertyEvaluatorWrapper::evaluate		()

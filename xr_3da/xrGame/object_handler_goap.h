@@ -99,10 +99,6 @@ protected:
 	typedef CActionPlanner<CAI_Stalker>				inherited;
 	typedef CGraphEngine::_solver_value_type		_value_type;
 	typedef CGraphEngine::_solver_condition_type	_condition_type;
-	typedef CGraphEngine::CSolverConditionStorage	CConditionStorage;
-
-private:
-	CConditionStorage			m_storage;
 
 protected:
 	bool						m_bHammerIsClutched;

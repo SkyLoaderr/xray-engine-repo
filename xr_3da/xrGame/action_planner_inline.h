@@ -25,7 +25,19 @@ IC	CPlanner::CActionPlanner			()
 TEMPLATE_SPECIALIZATION
 IC	CPlanner::~CActionPlanner			()
 {
-	m_object				= 0;
+	{
+		OPERATOR_VECTOR::iterator	I = m_operators.begin();
+		OPERATOR_VECTOR::iterator	E = m_operators.end();
+		for ( ; I != E; ++I)
+			xr_delete				((*I).m_operator);
+	}
+	{
+		EVALUATOR_MAP::iterator		I = m_evaluators.begin();
+		EVALUATOR_MAP::iterator		E = m_evaluators.end();
+		for ( ; I != E; ++I)
+			xr_delete				((*I).second);
+	}
+	m_object						= 0;
 }
 
 TEMPLATE_SPECIALIZATION
@@ -57,12 +69,13 @@ void CPlanner::reinit				(_object_type *object, bool clear_all)
 	inherited::reinit		(clear_all);
 	m_object				= object;
 	m_current_action_id		= _action_id_type(-1);
+	m_storage.clear			();
 	{
 		OPERATOR_VECTOR::iterator	I = m_operators.begin();
 		OPERATOR_VECTOR::iterator	E = m_operators.end();
 		for ( ; I != E; ++I)
 			if (!clear_all)
-				(*I).get_operator()->reinit(object,clear_all);
+				(*I).get_operator()->reinit(object,&m_storage,clear_all);
 			else
 				xr_delete	((*I).m_operator);
 		if (clear_all)
@@ -73,7 +86,7 @@ void CPlanner::reinit				(_object_type *object, bool clear_all)
 		EVALUATOR_MAP::iterator		E = m_evaluators.end();
 		for ( ; I != E; ++I)
 			if (!clear_all)
-				(*I).second->reinit	(object);
+				(*I).second->reinit	(object,&m_storage);
 			else
 				xr_delete	((*I).second);
 		if (clear_all)

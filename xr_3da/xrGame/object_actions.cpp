@@ -15,7 +15,7 @@
 // CObjectActionCommand
 //////////////////////////////////////////////////////////////////////////
 
-CObjectActionCommand::CObjectActionCommand(CInventoryItem *item, CAI_Stalker *owner, CConditionStorage *storage, u32 command, LPCSTR action_name) :
+CObjectActionCommand::CObjectActionCommand(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, u32 command, LPCSTR action_name) :
 	inherited			(item,owner,storage,action_name),
 	m_command			(command)
 {
@@ -31,7 +31,7 @@ void CObjectActionCommand::initialize	()
 // CObjectActionShow
 //////////////////////////////////////////////////////////////////////////
 
-CObjectActionShow::CObjectActionShow	(CInventoryItem *item, CAI_Stalker *owner, CConditionStorage *storage, LPCSTR action_name) :
+CObjectActionShow::CObjectActionShow	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name) :
 	inherited		(item,owner,storage,action_name)
 {
 }
@@ -48,7 +48,7 @@ void CObjectActionShow::initialize		()
 // CObjectActionHide
 //////////////////////////////////////////////////////////////////////////
 
-CObjectActionHide::CObjectActionHide	(CInventoryItem *item, CAI_Stalker *owner, CConditionStorage *storage, LPCSTR action_name) :
+CObjectActionHide::CObjectActionHide	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name) :
 	inherited		(item,owner,storage,action_name)
 {
 }
@@ -64,7 +64,7 @@ void CObjectActionHide::initialize		()
 // CObjectActionReload
 //////////////////////////////////////////////////////////////////////////
 
-CObjectActionReload::CObjectActionReload	(CInventoryItem *item, CAI_Stalker *owner, CConditionStorage *storage, u32 type, LPCSTR action_name) :
+CObjectActionReload::CObjectActionReload	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, u32 type, LPCSTR action_name) :
 	inherited		(item,owner,storage,action_name),
 	m_type			(type)
 {
@@ -86,7 +86,7 @@ void CObjectActionReload::execute			()
 // CObjectActionFire
 //////////////////////////////////////////////////////////////////////////
 
-CObjectActionFire::CObjectActionFire	(CInventoryItem *item, CAI_Stalker *owner, CConditionStorage *storage, u32 type, LPCSTR action_name) :
+CObjectActionFire::CObjectActionFire	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, u32 type, LPCSTR action_name) :
 	inherited		(item,owner,storage,action_name),
 	m_type			(type)
 {
@@ -114,7 +114,7 @@ void CObjectActionFire::finalize		()
 // CObjectActionStrapping
 //////////////////////////////////////////////////////////////////////////
 
-CObjectActionStrapping::CObjectActionStrapping	(CInventoryItem *item, CAI_Stalker *owner, CConditionStorage *storage, LPCSTR action_name) :
+CObjectActionStrapping::CObjectActionStrapping	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name) :
 	inherited		(item,owner,storage,action_name)
 {
 }
@@ -138,7 +138,7 @@ void CObjectActionStrapping::finalize		()
 // CObjectActionUnstrapping
 //////////////////////////////////////////////////////////////////////////
 
-CObjectActionUnstrapping::CObjectActionUnstrapping	(CInventoryItem *item, CAI_Stalker *owner, CConditionStorage *storage, LPCSTR action_name) :
+CObjectActionUnstrapping::CObjectActionUnstrapping	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name) :
 	inherited		(item,owner,storage,action_name)
 {
 }
@@ -162,7 +162,7 @@ void CObjectActionUnstrapping::finalize		()
 // CObjectActionQueueWait
 //////////////////////////////////////////////////////////////////////////
 
-CObjectActionQueueWait::CObjectActionQueueWait	(CInventoryItem *item, CAI_Stalker *owner, CConditionStorage *storage, u32 type, LPCSTR action_name) :
+CObjectActionQueueWait::CObjectActionQueueWait	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, u32 type, LPCSTR action_name) :
 	inherited				(item,owner,storage,action_name),
 	m_type					(type)
 {
@@ -188,7 +188,7 @@ void CObjectActionQueueWait::finalize		()
 // CObjectActionSwitch
 //////////////////////////////////////////////////////////////////////////
 
-CObjectActionSwitch::CObjectActionSwitch	(CInventoryItem *item, CAI_Stalker *owner, CConditionStorage *storage, u32 type, LPCSTR action_name) :
+CObjectActionSwitch::CObjectActionSwitch	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, u32 type, LPCSTR action_name) :
 	inherited		(item,owner,storage,action_name),
 	m_type			(type)
 {
@@ -213,7 +213,7 @@ void CObjectActionSwitch::finalize		()
 // CObjectActionDrop
 //////////////////////////////////////////////////////////////////////////
 
-CObjectActionDrop::CObjectActionDrop	(CInventoryItem *item, CAI_Stalker *owner, CConditionStorage *storage, LPCSTR action_name) :
+CObjectActionDrop::CObjectActionDrop	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name) :
 	inherited		(item,owner,storage,action_name)
 {
 }
@@ -234,7 +234,7 @@ void CObjectActionDrop::initialize		()
 // CObjectActionThreaten
 //////////////////////////////////////////////////////////////////////////
 
-CObjectActionThreaten::CObjectActionThreaten	(CAI_Stalker *item, CAI_Stalker *owner, CConditionStorage *storage, LPCSTR action_name) :
+CObjectActionThreaten::CObjectActionThreaten	(CAI_Stalker *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name) :
 	inherited				(item,owner,storage,action_name)
 {
 }

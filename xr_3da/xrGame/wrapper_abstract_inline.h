@@ -15,6 +15,7 @@
 		typename _base_object_type\
 	>
 #define CWrapper CWrapperAbstract<_object_type,ancestor,_base_object_type>
+#define CWrapper2 CWrapperAbstract2<_object_type,ancestor,_base_object_type>
 
 TEMPLATE_SPECIALIZATION
 IC	CWrapper::CWrapperAbstract	()
@@ -48,6 +49,45 @@ void CWrapper::reinit				(_object_type *object)
 {
 	VERIFY					(object);
 	inherited::reinit		(object->lua_game_object());
+	m_object				= object;
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CWrapperAbstract2
+//////////////////////////////////////////////////////////////////////////
+
+TEMPLATE_SPECIALIZATION
+IC	CWrapper2::CWrapperAbstract2	()
+{
+	m_object			= 0;
+}
+
+TEMPLATE_SPECIALIZATION
+template <typename T1>
+IC	CWrapper2::CWrapperAbstract2	(T1 t1) :
+	inherited			(t1)
+{
+	m_object			= 0;
+}
+
+TEMPLATE_SPECIALIZATION
+template <typename T1, typename T2, typename T3>
+IC	CWrapper2::CWrapperAbstract2	(T1 t1, T2 t2, T3 t3) :
+	inherited			(t1,t2,t3)
+{
+	m_object			= 0;
+}
+
+TEMPLATE_SPECIALIZATION
+CWrapper2::~CWrapperAbstract2		()
+{
+}
+
+TEMPLATE_SPECIALIZATION
+void CWrapper2::reinit				(_object_type *object, CPropertyStorage *storage)
+{
+	VERIFY					(object);
+	inherited::reinit		(object->lua_game_object(),storage);
 	m_object				= object;
 }
 

@@ -8,22 +8,27 @@
 
 #pragma once
 
-#include "graph_engine.h"
+#include "property_storage.h"
 
 template <typename _object_type>
 class CPropertyEvaluator {
 protected:
-	_object_type	*m_object;
-	typedef CGraphEngine::_solver_value_type _value_type;
+	typedef CGraphEngine::_solver_condition_type	_condition_type;
+	typedef CGraphEngine::_solver_value_type		_value_type;
+
+protected:
+	_object_type		*m_object;
+	CPropertyStorage	*m_storage;
 
 public:
-						CPropertyEvaluator	(_object_type *object = 0);
-	virtual 			~CPropertyEvaluator	();
-			void		init				(_object_type *object);
-	virtual void		reinit				(_object_type *object);
-	virtual void		Load				(LPCSTR section);
-	virtual void		reload				(LPCSTR section);
-	virtual	_value_type	evaluate			();
+								CPropertyEvaluator	(_object_type *object = 0);
+	virtual 					~CPropertyEvaluator	();
+			void				init				(_object_type *object);
+	virtual void				reinit				(_object_type *object, CPropertyStorage *storage);
+	virtual void				Load				(LPCSTR section);
+	virtual void				reload				(LPCSTR section);
+	virtual	_value_type			evaluate			();
+	IC		const _value_type	&property			(const _condition_type &condition_id) const;
 };
 
 #include "property_evaluator_inline.h"

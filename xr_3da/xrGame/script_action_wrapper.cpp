@@ -9,14 +9,14 @@
 #include "stdafx.h"
 #include "script_action_wrapper.h"
 
-void CScriptActionWrapper::reinit				(CLuaGameObject *object, bool clear_all)
+void CScriptActionWrapper::reinit				(CLuaGameObject *object, CPropertyStorage *storage, bool clear_all)
 {
-	luabind::call_member<void>			(m_lua_instance,"reinit",object,clear_all);
+	luabind::call_member<void>			(m_lua_instance,"reinit",object,storage,clear_all);
 }
 
-void CScriptActionWrapper::reinit_static		(CScriptAction *action, CLuaGameObject *object, bool clear_all)
+void CScriptActionWrapper::reinit_static		(CScriptAction *action, CLuaGameObject *object, CPropertyStorage *storage, bool clear_all)
 {
-	action->CScriptAction::reinit		(object,clear_all);
+	action->CScriptAction::reinit		(object,storage,clear_all);
 }
 
 void CScriptActionWrapper::initialize			()

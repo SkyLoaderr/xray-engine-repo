@@ -31,10 +31,10 @@ CScriptBaseAction::~CActionScriptBase		()
 }
 
 TEMPLATE_SPECIALIZATION
-void CScriptBaseAction::reinit		(_object_type *object, bool clear_all)
+void CScriptBaseAction::reinit		(_object_type *object, CPropertyStorage *storage, bool clear_all)
 {
 	VERIFY				(object);
-	inherited::reinit	(object->lua_game_object(),clear_all);
+	inherited::reinit	(object->lua_game_object(),storage,clear_all);
 	m_object			= object;
 }
 

@@ -23,7 +23,7 @@ public:
 	IC						CActionScriptBase	(const xr_vector<COperatorCondition> &conditions, const xr_vector<COperatorCondition> &effects, _object_type *object = 0, LPCSTR action_name = "");
 	IC						CActionScriptBase	(_object_type *object = 0, LPCSTR action_name = "");
 	virtual					~CActionScriptBase	();
-	virtual	void			reinit				(_object_type *object, bool clear_all);
+	virtual	void			reinit				(_object_type *object, CPropertyStorage *storage, bool clear_all);
 };
 
 #include "action_script_base_inline.h"

@@ -15,20 +15,18 @@
 //////////////////////////////////////////////////////////////////////////
 
 template <typename _item_type>
-IC	CObjectActionBase<_item_type>::CObjectActionBase(_item_type *item, CAI_Stalker *owner, CConditionStorage *storage, LPCSTR action_name) :
-	inherited			(owner,action_name),
-	m_storage			(storage),
-	m_item				(item)
+IC	CObjectActionBase<_item_type>::CObjectActionBase(_item_type *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name) :
+	inherited				(owner,action_name),
+	m_item					(item)
 {
+	m_storage				= storage;
 }
 
 template <typename _item_type>
 IC	void CObjectActionBase<_item_type>::set_property	(_condition_type condition_id, _value_type value)
 {
-	VERIFY						(m_storage);
-	CConditionStorage::iterator	I = m_storage->find(condition_id);
-	VERIFY						(m_storage->end() != I);
-	(*I).second					= value;
+	VERIFY					(m_storage);
+	m_storage->set_property	(condition_id,value);
 }
 
 template <typename _item_type>
@@ -44,10 +42,10 @@ void CObjectActionBase<_item_type>::initialize	()
 //////////////////////////////////////////////////////////////////////////
 
 template <typename _item_type>
-IC	CObjectActionMember<_item_type>::CObjectActionMember	(_item_type *item, CAI_Stalker *owner, CConditionStorage *storage, _condition_type condition_id, _value_type value, LPCSTR action_name) :
-	inherited			(item,owner,storage,action_name),
-	m_condition_id		(condition_id),
-	m_value				(value)
+IC	CObjectActionMember<_item_type>::CObjectActionMember	(_item_type *item, CAI_Stalker *owner, CPropertyStorage *storage, _condition_type condition_id, _value_type value, LPCSTR action_name) :
+	inherited				(item,owner,storage,action_name),
+	m_condition_id			(condition_id),
+	m_value					(value)
 {
 }
 

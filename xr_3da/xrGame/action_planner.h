@@ -11,6 +11,7 @@
 #include "problem_solver.h"
 #include "action_base.h"
 #include "property_evaluator.h"
+#include "property_storage.h"
 
 template <
 	typename _object_type,
@@ -43,6 +44,7 @@ protected:
 	bool					m_initialized;
 	_action_id_type			m_current_action_id;
 	_object_type			*m_object;
+	CPropertyStorage		m_storage;
 
 public:
 							CActionPlanner			();

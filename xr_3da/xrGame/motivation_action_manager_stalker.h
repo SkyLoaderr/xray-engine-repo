@@ -49,12 +49,8 @@ protected:
 	typedef CActionScriptBase<CAI_Stalker>				CAction;
 	typedef CGraphEngine::_solver_value_type			_value_type;
 	typedef CGraphEngine::_solver_condition_type		_condition_type;
-	typedef CGraphEngine::CSolverConditionStorage		CConditionStorage;
 
 	using inherited::add_condition;
-
-private:
-	CConditionStorage		m_storage;
 
 protected:
 	IC		void			add_condition						(CWorldState &goal, _condition_type condition_id, _value_type value);

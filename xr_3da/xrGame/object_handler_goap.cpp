@@ -54,8 +54,8 @@ void CObjectHandlerGOAP::reinit			(CAI_Stalker *object)
 	CInventoryOwner::reinit			();
 	CActionBase<CAI_Stalker>		*action;
 
-	m_storage[eWorldPropertyAimed1]	= false;
-	m_storage[eWorldPropertyAimed2]	= false;
+	m_storage.set_property			(eWorldPropertyAimed1,false);
+	m_storage.set_property			(eWorldPropertyAimed2,false);
 	
 	add_evaluator					(u32(eWorldPropertyNoItems),			xr_new<CObjectPropertyEvaluatorNoItems>(m_object));
 	add_evaluator					(u32(eWorldPropertyNoItemsIdle),		xr_new<CObjectPropertyEvaluatorConst>(false));

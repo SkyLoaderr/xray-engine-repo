@@ -19,16 +19,11 @@ class CAI_Stalker;
 class CStalkerActionBase : public CActionScriptBase<CAI_Stalker> {
 protected:
 	typedef CActionScriptBase<CAI_Stalker>			inherited;
-	typedef CGraphEngine::CSolverConditionStorage	CConditionStorage;
 	typedef CGraphEngine::_solver_condition_type	_condition_type;
 	typedef CGraphEngine::_solver_value_type		_value_type;
 
-protected:
-	CConditionStorage	*m_storage;
-
 public:
-						CStalkerActionBase	(CAI_Stalker *object, CConditionStorage *storage, LPCSTR action_name = "");
-	IC		void		set_property		(_condition_type condition_id, _value_type value);
+						CStalkerActionBase	(CAI_Stalker *object, LPCSTR action_name = "");
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -40,7 +35,7 @@ protected:
 	typedef CStalkerActionBase inherited;
 
 public:
-						CStalkerActionDead	(CAI_Stalker *object, CConditionStorage *storage, LPCSTR action_name = "");
+						CStalkerActionDead	(CAI_Stalker *object, LPCSTR action_name = "");
 	virtual void		execute				();
 };
 
@@ -53,7 +48,7 @@ protected:
 	typedef CStalkerActionBase inherited;
 
 public:
-						CStalkerActionFreeNoALife	(CAI_Stalker *object, CConditionStorage *storage, LPCSTR action_name = "");
+						CStalkerActionFreeNoALife	(CAI_Stalker *object, LPCSTR action_name = "");
 	virtual void		execute						();
 };
 

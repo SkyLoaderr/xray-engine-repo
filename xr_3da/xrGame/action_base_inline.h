@@ -32,6 +32,7 @@ CBaseAction::~CActionBase		()
 TEMPLATE_SPECIALIZATION
 void CBaseAction::init			(_object_type *object, LPCSTR action_name)
 {
+	m_storage			= 0;
 	m_object			= object;
 #ifdef LOG_ACTION
 	m_action_name		= action_name;
@@ -50,10 +51,12 @@ void CBaseAction::Load			(LPCSTR section)
 }
 
 TEMPLATE_SPECIALIZATION
-void CBaseAction::reinit		(_object_type *object, bool clear_all)
+void CBaseAction::reinit		(_object_type *object, CPropertyStorage *storage, bool clear_all)
 {
 	VERIFY				(object);
+	VERIFY				(storage);
 	m_object			= object;
+	m_storage			= storage;
 	m_inertia_time		= 0;
 #ifdef LOG_ACTION
 	if (xr_strlen(m_action_name))
@@ -166,6 +169,20 @@ IC	void CBaseAction::debug_log			(const EActionStates state_state) const
 	}
 }
 #endif
+
+TEMPLATE_SPECIALIZATION
+IC	void CBaseAction::set_property	(const _condition_type &condition_id, const _value_type &value)
+{
+	VERIFY					(m_storage);
+	m_storage->set_property	(condition_id,value);
+}
+
+TEMPLATE_SPECIALIZATION
+IC	const typename CBaseAction::_value_type	&CBaseAction::property	(const _condition_type &condition_id) const
+{
+	VERIFY					(m_storage);
+	return					(m_storage->property(condition_id))
+}
 
 #undef TEMPLATE_SPECIALIZATION
 #undef CBaseAction

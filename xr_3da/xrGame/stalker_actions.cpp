@@ -15,26 +15,17 @@
 // CStalkerActionBase
 //////////////////////////////////////////////////////////////////////////
 
-CStalkerActionBase::CStalkerActionBase		(CAI_Stalker *object, CConditionStorage *storage, LPCSTR action_name) :
-	inherited			(object,action_name),
-	m_storage			(storage)
+CStalkerActionBase::CStalkerActionBase		(CAI_Stalker *object, LPCSTR action_name) :
+	inherited				(object,action_name)
 {
-}
-
-IC	void CStalkerActionBase::set_property	(_condition_type condition_id, _value_type value)
-{
-	VERIFY						(m_storage);
-	CConditionStorage::iterator	I = m_storage->find(condition_id);
-	VERIFY						(m_storage->end() != I);
-	(*I).second					= value;
 }
 
 //////////////////////////////////////////////////////////////////////////
 // CStalkerActionDead
 //////////////////////////////////////////////////////////////////////////
 
-CStalkerActionDead::CStalkerActionDead	(CAI_Stalker *object, CConditionStorage *storage, LPCSTR action_name) :
-	inherited				(object,storage,action_name)
+CStalkerActionDead::CStalkerActionDead	(CAI_Stalker *object, LPCSTR action_name) :
+	inherited				(object,action_name)
 {
 }
 
@@ -49,8 +40,8 @@ void CStalkerActionDead::execute		()
 // CStalkerActionFreeNoALife
 //////////////////////////////////////////////////////////////////////////
 
-CStalkerActionFreeNoALife::CStalkerActionFreeNoALife	(CAI_Stalker *object, CConditionStorage *storage, LPCSTR action_name) :
-	inherited				(object,storage,action_name)
+CStalkerActionFreeNoALife::CStalkerActionFreeNoALife	(CAI_Stalker *object, LPCSTR action_name) :
+	inherited				(object,action_name)
 {
 }
 

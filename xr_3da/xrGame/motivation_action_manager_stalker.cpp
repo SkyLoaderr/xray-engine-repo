@@ -36,8 +36,8 @@ void CMotivationActionManagerStalker::Load				(LPCSTR section)
 
 void CMotivationActionManagerStalker::reinit			(CAI_Stalker *object, bool clear_all)
 {
-	inherited::reinit				(object,clear_all);
-	m_storage[eWorldPropertyDead]	= false;
+	inherited::reinit		(object,clear_all);
+	m_storage.set_property	(eWorldPropertyDead,false);
 }
 
 void CMotivationActionManagerStalker::reload			(LPCSTR section)
@@ -84,7 +84,7 @@ void CMotivationActionManagerStalker::add_actions			()
 {
 	CAction					*action;
 
-	action					= xr_new<CStalkerActionDead>		(m_object,&m_storage,"dead");
+	action					= xr_new<CStalkerActionDead>		(m_object,"dead");
 	add_condition			(action,eWorldPropertyAlive,		false);
 	add_condition			(action,eWorldPropertyDead,			false);
 	add_effect				(action,eWorldPropertyDead,			true);
@@ -95,14 +95,14 @@ void CMotivationActionManagerStalker::add_actions			()
 	add_effect				(action,eWorldPropertyAlreadyDead,	true);
 	add_operator			(eWorldOperatorAlreadyDead,			action);
 
-	action					= xr_new<CStalkerActionFreeNoALife>	(m_object,&m_storage,"free_no_alife");
+	action					= xr_new<CStalkerActionFreeNoALife>	(m_object,"free_no_alife");
 	add_condition			(action,eWorldPropertyAlive,		true);
 	add_condition			(action,eWorldPropertyALife,		false);
 	add_condition			(action,eWorldPropertyPuzzleSolved,	false);
 	add_effect				(action,eWorldPropertyPuzzleSolved,	true);
 	add_operator			(eWorldOperatorFreeNoALife,			action);
 
-	action					= xr_new<CStalkerActionFreeNoALife>	(m_object,&m_storage,"free_alife");
+	action					= xr_new<CStalkerActionFreeNoALife>	(m_object,"free_alife");
 	add_condition			(action,eWorldPropertyAlive,		true);
 	add_condition			(action,eWorldPropertyALife,		true);
 	add_condition			(action,eWorldPropertyPuzzleSolved,	false);

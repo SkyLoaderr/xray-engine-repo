@@ -13,18 +13,15 @@
 template <typename _object_type>
 class CPropertyEvaluatorMember : public CPropertyEvaluator<_object_type> {
 protected:
-	typedef CPropertyEvaluator<_object_type>		inherited;
-	typedef CGraphEngine::_solver_condition_type	_condition_type;
-	typedef CGraphEngine::CSolverConditionStorage	CConditionStorage;
+	typedef CPropertyEvaluator<_object_type>	inherited;
 
 protected:
-	const CConditionStorage		*m_storage;
-	_condition_type				m_condition_id;
-	_value_type					m_value;
-	bool						m_equality;
+	_condition_type		m_condition_id;
+	_value_type			m_value;
+	bool				m_equality;
 
 public:
-						CPropertyEvaluatorMember(const CConditionStorage *storage, _condition_type condition_id, _value_type value, bool equality = true);
+						CPropertyEvaluatorMember(CPropertyStorage *storage, _condition_type condition_id, _value_type value, bool equality = true);
 	virtual _value_type	evaluate				();
 };
 

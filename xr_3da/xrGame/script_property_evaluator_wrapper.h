@@ -18,8 +18,8 @@ public:
 	luabind::object		m_lua_instance;
 
 	IC					CPropertyEvaluatorWrapper	(const luabind::object &lua_instance, CLuaGameObject *object = 0);
-	virtual void		reinit						(CLuaGameObject *object);
-	static	void		reinit_static				(CScriptPropertyEvaluator *evaluator, CLuaGameObject *object);
+	virtual void		reinit						(CLuaGameObject *object, CPropertyStorage *storage);
+	static	void		reinit_static				(CScriptPropertyEvaluator *evaluator, CLuaGameObject *object, CPropertyStorage *storage);
 	virtual bool		evaluate					();
 	static	bool		evaluate_static				(CScriptPropertyEvaluator *evaluator);
 };
