@@ -257,6 +257,12 @@ void vfPrintTable(lua_State *luaVM, LPCSTR S, bool bRecursive = false)
 	}
 }
 
+static void set(lua_State *L, int table_index, const char *key) {
+	lua_pushstring	(L, key);
+	lua_insert		(L, -2);  // swap value and key
+	lua_settable	(L, table_index);
+}
+
 // main
 int __cdecl _tmain(int argc, _TCHAR* argv[])
 {
@@ -273,13 +279,10 @@ int __cdecl _tmain(int argc, _TCHAR* argv[])
 	open			(luaVM);
 	function		(luaVM,"log",(void (*)(LPCSTR))(Log));
 
-	if (luaL_loadfile(luaVM, "x:\\extension.lua"))
-		lua_error	(luaVM);
-
-	lua_newtable	(luaVM);
-	lua_pushstring	(luaVM, "core");
-	lua_pushvalue	(luaVM, -2);
-	lua_settable	(luaVM, LUA_GLOBALSINDEX); /* register it with given name */
+//	lua_newtable	(luaVM);
+//	lua_pushstring	(luaVM, "core");
+//	lua_pushvalue	(luaVM, -2);
+//	lua_settable	(luaVM, LUA_GLOBALSINDEX); /* register it with given name */
 	
 //	luaL_newmetatable(luaVM, "core");
 //	lua_pushliteral	(luaVM, "__index");
@@ -287,9 +290,67 @@ int __cdecl _tmain(int argc, _TCHAR* argv[])
 //	lua_rawset		(luaVM, -3);
 //	lua_pop			(luaVM,1);
 //	lua_setfenv		(luaVM, lua_setmetatable(luaVM,LUA_GLOBALSINDEX));
-	lua_setfenv		(luaVM, -2);
+	
+	
+	
+	
+	
+	if (luaL_loadfile(luaVM, "x:\\extension.lua"))
+		lua_error	(luaVM);
 
+//	if (lua_dofile(luaVM, "x:\\extension.lua"))
+//		lua_error	(luaVM);
+
+//	lua_newtable	(luaVM);
+//	lua_pushstring	(luaVM, "core");
+//	lua_pushvalue	(luaVM, -2);
+//	lua_settable	(luaVM, LUA_GLOBALSINDEX); /* register it with given name */
+
+//	lua_setfenv		(luaVM, -2);
+
+//	lua_call		(luaVM, 0, 0);
+/////////////////////////////////////////////////////////////////
+	lua_newtable	(luaVM);
+	int methods = lua_gettop(luaVM);
+
+	luaL_newmetatable(luaVM, "core");
+	int metatable = lua_gettop(luaVM);
+
+	// store method table in globals so that
+	// scripts can add functions written in Lua.
+	lua_pushvalue	(luaVM, methods);
+	set				(luaVM, LUA_GLOBALSINDEX, "core");
+
+	// hide metatable from Lua getmetatable()
+	lua_pushvalue	(luaVM, methods);
+	set				(luaVM, metatable, "__metatable");
+
+	lua_pushvalue	(luaVM, methods);
+	set				(luaVM, metatable, "__index");
+	
+	lua_pushstring	(luaVM,"_G");
+	lua_gettable	(luaVM,LUA_GLOBALSINDEX);
+//	lua_pushvalue	(luaVM, LUA_GLOBALSINDEX);
+	set				(luaVM, metatable, "__index");
+
+	lua_newtable	(luaVM);                // mt for method table
+	
+	lua_setmetatable(luaVM, methods);
+	
+	lua_pop			(luaVM, 1);  // drop metatable and method table
+
+	lua_setfenv		(luaVM, -2);
+	
 	lua_call		(luaVM, 0, 0);
+
+	lua_setfenv		(luaVM, 0);
+
+//	if (lua_dofile(luaVM, "x:\\extension.lua"))
+//		lua_error	(luaVM);
+
+
+//	lua_setfenv		(luaVM, -2);
+//	lua_call		(luaVM, 0, 0);
 
 //	lua_pushstring	(luaVM, "core");
 //	lua_gettable	(luaVM, LUA_GLOBALSINDEX); /* register it with given name */
