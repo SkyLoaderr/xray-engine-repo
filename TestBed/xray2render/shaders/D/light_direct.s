@@ -50,7 +50,7 @@ p2f 	p_main	( v2p_in IN )
   float3 N	= float3	(_N.x,_N.y,_N.z);
 
   // Vector to the eye:
-  float3 V 	= normalize	(-P);
+  float3 V 	= -normalize(P);
 
   // Vector to the light:
   float3 L 	= -float3	(light_direction.x,light_direction.y,light_direction.z);
