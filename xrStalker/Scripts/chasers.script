@@ -51,10 +51,10 @@ function main ()
              for a = 1, table.getn (monsters), 1 do
                  if monsters[a] ~= nil and monsters[a]:alive () == true then
                     local t = distance_between (actor, monsters[a])
+                    printf ("Distance from attackers %s - %f", monsters[a]:name (), t)
                     if t < distance and monsters[a]:id () ~= old_monster then
                        scr_monster = monsters[a]
                        distance = t
-                       printf ("Distance from attackers %s - %f", scr_monster:name (), t)
                     end   
                  end   
              end
