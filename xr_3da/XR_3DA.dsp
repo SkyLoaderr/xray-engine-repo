@@ -1547,15 +1547,6 @@ SOURCE=.\XR_Animator.h
 # Begin Group "Environment"
 
 # PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\Environment.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Environment.h
-# End Source File
-# End Group
 # Begin Group "Effects"
 
 # PROP Default_Filter ""
@@ -1574,6 +1565,15 @@ SOURCE=.\xr_effsun.cpp
 # Begin Source File
 
 SOURCE=.\xr_effsun.h
+# End Source File
+# End Group
+# Begin Source File
+
+SOURCE=.\Environment.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Environment.h
 # End Source File
 # End Group
 # Begin Group "AI_Space"
@@ -1752,99 +1752,6 @@ SOURCE=.\xr_collide_form.cpp
 SOURCE=.\xr_collide_form.h
 # End Source File
 # End Group
-# Begin Group "AI_Old"
-
-# PROP Default_Filter ""
-# Begin Group "AI_Navigation"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\AI_FileFormat.h
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI_Mover.cpp
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI_Mover.h
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI_Navigation.cpp
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI_Navigation.h
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI_NaviHierrarhy.h
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI_NaviObstacle.h
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI_NaviPlane.cpp
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI_NaviPlane.h
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI_SaveNavigation.cpp
-# PROP Exclude_From_Build 1
-# End Source File
-# End Group
-# Begin Source File
-
-SOURCE=.\AI.cpp
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI.h
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI_Frustum.h
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI_NavigationPoint.h
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI_Network.h
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI_PathQuantizer.cpp
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI_PathQuantizer.h
-# PROP Exclude_From_Build 1
-# End Source File
-# End Group
 # Begin Group "Animator"
 
 # PROP Default_Filter ""
@@ -1876,6 +1783,10 @@ SOURCE=.\ObjectAnimator.cpp
 
 SOURCE=.\ObjectAnimator.h
 # End Source File
+# End Group
+# Begin Group "Weather"
+
+# PROP Default_Filter ""
 # End Group
 # Begin Source File
 

@@ -10,7 +10,7 @@ class ENGINE_API FBasicVisual;
 class ENGINE_API CInifile;
 class ENGINE_API CSoundStream;
 
-struct ENGINE_API SEnvDef 
+struct ENGINE_API	SEnvDef 
 {
 	Fcolor			Sky;
 	Fcolor			Ambient;
@@ -27,31 +27,25 @@ public:
 	int						Music_Active;
 	int						Music_Fade;
 public:
-	BOOL				pm_bug;
-
 	// Total level of lighting on level
-	float				fDayLight;		// 0..1
-
-	float				FOV_Dest;		
-	float				FOV_Current;
-	float				MOUSE_Sens;
+	float					fDayLight;		// 0..1
 
 	// Wind
-	float				fWindDir;		// angle
-	float				fWindStrength;	// m/s
+	float					fWindDir;		// angle
+	float					fWindStrength;	// m/s
 
 	// Environments
-	SEnvDef				Current;
-	int					CurrentID;
-	float				CurrentSpeed;
-	svector<SEnvDef,32>	Palette;
+	SEnvDef					Current;
+	int						CurrentID;
+	float					CurrentSpeed;
+	svector<SEnvDef,32>		Palette;
 
 	// Environment cache
-	DWORD				c_Ambient;	
-	DWORD				c_Fog;		
-	float				c_Fogness;	
-	float				c_Far;
-	IC void				c_Invalidate() {
+	DWORD					c_Ambient;	
+	DWORD					c_Fog;		
+	float					c_Fogness;	
+	float					c_Far;
+	IC void					c_Invalidate() {
 		c_Ambient	= 0xAAAAAAAA;
 		c_Fog		= 0xAAAAAAAA;
 		c_Fogness	= 999;
