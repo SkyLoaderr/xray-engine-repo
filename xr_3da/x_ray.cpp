@@ -16,17 +16,25 @@
 #include "GameFont.h"
 #include "resource.h"
 #include "LightAnimLibrary.h"
-   
+
+//////////////////////////////////////////////////////////////////////////
+struct _SoundProcessor	: public pureFrame
+{
+	virtual void OnFrame	( )
+	{
+		Device.Statistic.Sound.Begin();
+		::Sound->update				(Device.vCameraPosition,Device.vCameraDirection,Device.vCameraTop,Device.fTimeDelta);
+		Device.Statistic.Sound.End	();
+	}
+}	SoundProcessor;
+
+//////////////////////////////////////////////////////////////////////////
 // global variables
 ENGINE_API	CApplication*	pApp			= NULL;
-
 static		HWND			logoWindow		= NULL;
 
-// externs
-extern BOOL					StartGame		(u32 num);
-
 // startup point
-void Startup				()
+void Startup				( )
 {
 	// initialization
 	Engine.Initialize			( );
@@ -218,15 +226,22 @@ CApplication::CApplication()
 
 	// Register us
 	Device.seqFrame.Add			(this, REG_PRIORITY_HIGH+1000);
+	if (psDeviceFlags.test(mtSound))	Device.seqFrameMT.Add		(&SoundProcessor);
+	else								Device.seqFrame.Add			(&SoundProcessor);
 	Console.Show				( );
 }
 
 CApplication::~CApplication()
 {
 	Console.Hide				( );
+
+	Device.seqFrameMT.Remove	(&SoundProcessor);
+	Device.seqFrame.Remove		(&SoundProcessor);
+	Device.seqFrame.Remove		(this);
+
 	// font
 	Device.seqRender.Remove		( pFontSystem		);
-	xr_delete						( pFontSystem		);
+	xr_delete					( pFontSystem		);
 
 	// events
 	Engine.Event.Handler_Detach	(eDisconnect,this);
@@ -330,16 +345,13 @@ void CApplication::LoadSwitch()
 	else							ll_hLogo = ll_hLogo1;
 }
 
-void CApplication::OnFrame( )
+void CApplication::OnFrame	( )
 {
 	/*
 	CTimer	T;
 	T.Start	();
 	while	(T.GetElapsed_ms()<10);
 	*/
-	Device.Statistic.Sound.Begin();
-	::Sound->update		(Device.vCameraPosition,Device.vCameraDirection,Device.vCameraTop,Device.fTimeDelta);
-	Device.Statistic.Sound.End();
 	Engine.Event.OnFrame();
 }
 
