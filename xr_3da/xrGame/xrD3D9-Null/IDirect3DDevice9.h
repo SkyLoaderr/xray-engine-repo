@@ -13,17 +13,11 @@ extern "C" {
 	class xrIDirect3DDevice9: public IDirect3DDevice9
 	{
 	protected:
-		HRESULT		HRESULT_Proc(HRESULT ret);
-		ULONG		ULONG_Proc(ULONG ret);
-		UINT		UINT_Proc(UINT ret);
-		BOOL		BOOL_Proc(BOOL ret);
-		float		FLOAT_Proc(float ret);
-		void		VOID_proc();
 
 		LONG		m_refCount;
-		xrIDirect3D9*	m_pIDirect3D9;
+		IDirect3D9*	m_pIDirect3D9;
 	public:
-		xrIDirect3DDevice9(xrIDirect3D9* pDirect3D9, D3DPRESENT_PARAMETERS* pPresentationParameters);
+		xrIDirect3DDevice9(IDirect3D9* pDirect3D9, D3DPRESENT_PARAMETERS* pPresentationParameters);
 		/*** IUnknown methods ***/
 		HRESULT		__stdcall	QueryInterface( REFIID riid, void** ppvObj);
 		ULONG		__stdcall	AddRef();

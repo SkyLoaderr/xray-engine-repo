@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "IDirect3D9.h"
 #include "IDirect3DDevice9.h"
+#include "xrD3D9-Null_OutProc.h"
 
 #include <stdlib.h>
 #include <objbase.h>
@@ -127,6 +128,7 @@ HRESULT xrIDirect3D9::CreateDevice	(UINT Adapter,D3DDEVTYPE DeviceType,HWND hFoc
 	return HRESULT_Proc(S_OK);
 };
 //-------------------------------------------------------------------
+/*
 HRESULT		xrIDirect3D9::HRESULT_Proc(HRESULT ret)
 {
 	return ret;
@@ -136,5 +138,6 @@ ULONG		xrIDirect3D9::ULONG_Proc(ULONG ret)
 {
 	return ret;
 }
+*/
 
 

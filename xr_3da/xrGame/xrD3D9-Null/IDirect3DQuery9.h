@@ -14,9 +14,6 @@ extern "C" {
 	class xrIDirect3DQuery9: public IDirect3DQuery9
 	{
 	protected:
-		HRESULT		HRESULT_Proc(HRESULT ret);
-		ULONG		ULONG_Proc(ULONG ret);
-		DWORD		DWORD_Proc(DWORD ret);
 
 		LONG		m_refCount;
 		IDirect3DDevice9*	m_pIDirect3DDevice9;

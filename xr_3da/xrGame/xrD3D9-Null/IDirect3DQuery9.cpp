@@ -1,11 +1,7 @@
 #include "stdafx.h"
-#include "IDirect3D9.h"
-#include "IDirect3DDevice9.h"
 #include "IDirect3DQuery9.h"
 
-#include <stdlib.h>
-#include <objbase.h>
-#include <windows.h>
+#include "xrD3D9-Null_OutProc.h"
 
 const GUID DECLSPEC_SELECTANY IID_IDirect3DQuery9;
 
@@ -13,7 +9,7 @@ xrIDirect3DQuery9::xrIDirect3DQuery9(IDirect3DDevice9* pIDirect3DDevice9, D3DQUE
 {
 	APIDEBUG("xrIDirect3DQuery9::xrIDirect3DQuery9");
 
-	DataSize = sizeof(Type);
+	DataSize = 0;
 	memcpy(&Type, &rType, sizeof(rType));
 	CreationCallStack = NULL;
 	m_pIDirect3DDevice9 = pIDirect3DDevice9;
@@ -76,9 +72,11 @@ HRESULT				xrIDirect3DQuery9::Issue		( DWORD dwIssueFlags)
 HRESULT				xrIDirect3DQuery9::GetData		( void* pData,DWORD dwSize,DWORD dwGetDataFlags)	
 {
 	APIDEBUG("xrIDirect3DQuery9::GetData		");
+	dwSize = 0;
 	return HRESULT_Proc(S_OK);
 };
 //-----------------------------------------------------------------------
+/*
 HRESULT		xrIDirect3DQuery9::HRESULT_Proc(HRESULT ret)
 {
 	return ret;
@@ -93,3 +91,4 @@ DWORD		xrIDirect3DQuery9::DWORD_Proc(DWORD ret)
 {
 	return ret;
 }
+*/

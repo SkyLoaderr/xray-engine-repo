@@ -2,7 +2,6 @@
 //
 
 #include "stdafx.h"
-#include "stdio.h"
 #include "xrD3D9-Null.h"
 
 BOOL APIENTRY DllMain( HANDLE hModule, 
@@ -48,16 +47,3 @@ CxrD3D9Null::CxrD3D9Null()
 	return I;
 }
 
-//-----------------------------------------------------------------------
-void LogOut( const char *format, ... ) 
-{
-	va_list argptr;
-	char text[4096];
-		
-	va_start (argptr,format);
-	vsprintf (text, format, argptr);
-	va_end (argptr);
-	
-	//rr  printf(text);
-	OutputDebugString( text );
-}

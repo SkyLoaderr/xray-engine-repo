@@ -1,10 +1,7 @@
 #include "stdafx.h"
-#include "IDirect3D9.h"
 #include "IDirect3DDevice9.h"
 
-#include <stdlib.h>
-#include <objbase.h>
-#include <windows.h>
+#include "xrD3D9-Null_OutProc.h"
 
 HRESULT		xrIDirect3DDevice9::GetDeviceCaps( D3DCAPS9* pCaps)
 { 

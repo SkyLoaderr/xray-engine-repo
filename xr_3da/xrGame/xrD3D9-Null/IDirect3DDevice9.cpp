@@ -1,15 +1,15 @@
 #include "stdafx.h"
-#include "IDirect3D9.h"
+
 #include "IDirect3DDevice9.h"
 #include "IDirect3DQuery9.h"
+#include "IDirect3DSurface9.h"
+#include "IDirect3DIndexBuffer9.h"
 
-#include <stdlib.h>
-#include <objbase.h>
-#include <windows.h>
+#include "xrD3D9-Null_OutProc.h"
 
 const GUID DECLSPEC_SELECTANY IID_IDirect3DDevice9;
 
-xrIDirect3DDevice9::xrIDirect3DDevice9(xrIDirect3D9* pDirect3D9, D3DPRESENT_PARAMETERS* pPresentationParameters) 
+xrIDirect3DDevice9::xrIDirect3DDevice9(IDirect3D9* pDirect3D9, D3DPRESENT_PARAMETERS* pPresentationParameters) 
 	: m_refCount(0)
 {
 	APIDEBUG("xrIDirect3DDevice9::xrIDirect3DDevice9");
@@ -164,7 +164,15 @@ HRESULT		xrIDirect3DDevice9::CreateCubeTexture( UINT EdgeLength,UINT Levels,DWOR
 HRESULT		xrIDirect3DDevice9::CreateVertexBuffer( UINT Length,DWORD Usage,DWORD FVF,D3DPOOL Pool,IDirect3DVertexBuffer9** ppVertexBuffer,HANDLE* pSharedHandle) 
 { APIDEBUG("xrIDirect3DDevice9::CreateVertexBuffer");  return HRESULT_Proc(S_OK); };
 HRESULT		xrIDirect3DDevice9::CreateIndexBuffer( UINT Length,DWORD Usage,D3DFORMAT Format,D3DPOOL Pool,IDirect3DIndexBuffer9** ppIndexBuffer,HANDLE* pSharedHandle) 
-{ APIDEBUG("xrIDirect3DDevice9::CreateIndexBuffer");  return HRESULT_Proc(S_OK); };
+{ 
+	APIDEBUG("xrIDirect3DDevice9::CreateIndexBuffer");  
+	
+	*ppIndexBuffer = NULL;
+	xrIDirect3DIndexBuffer9* I = new xrIDirect3DIndexBuffer9(this, Length, Usage, Format, Pool);
+	*ppIndexBuffer = I;
+
+	return HRESULT_Proc(S_OK);
+};
 HRESULT		xrIDirect3DDevice9::CreateRenderTarget( UINT Width,UINT Height,D3DFORMAT Format,D3DMULTISAMPLE_TYPE MultiSample,DWORD MultisampleQuality,BOOL Lockable,IDirect3DSurface9** ppSurface,HANDLE* pSharedHandle) 
 { APIDEBUG("xrIDirect3DDevice9::CreateRenderTarget");  return HRESULT_Proc(S_OK); };
 HRESULT		xrIDirect3DDevice9::CreateDepthStencilSurface( UINT Width,UINT Height,D3DFORMAT Format,D3DMULTISAMPLE_TYPE MultiSample,DWORD MultisampleQuality,BOOL Discard,IDirect3DSurface9** ppSurface,HANDLE* pSharedHandle) 
@@ -192,6 +200,10 @@ HRESULT		xrIDirect3DDevice9::SetDepthStencilSurface( IDirect3DSurface9* pNewZSte
 HRESULT		xrIDirect3DDevice9::GetDepthStencilSurface( IDirect3DSurface9** ppZStencilSurface) 
 { 
 	APIDEBUG("xrIDirect3DDevice9::GetDepthStencilSurface");  
+	*ppZStencilSurface = NULL;
+	xrIDirect3DSurface9* I = new xrIDirect3DSurface9(this);
+	*ppZStencilSurface = I;
+
 	return HRESULT_Proc(S_OK); 
 };
 HRESULT		xrIDirect3DDevice9::BeginScene() 
@@ -351,6 +363,7 @@ HRESULT		xrIDirect3DDevice9::CreateQuery				( D3DQUERYTYPE Type,IDirect3DQuery9*
 	return HRESULT_Proc(S_OK);
 };
 //---------------------------------------------------------------------------------------------
+/*
 HRESULT		xrIDirect3DDevice9::HRESULT_Proc(HRESULT ret)
 {
 	return ret;
@@ -380,3 +393,4 @@ void		xrIDirect3DDevice9::VOID_proc()
 	int x=0;
 	x=x;
 };
+*/
