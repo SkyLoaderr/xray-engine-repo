@@ -20,8 +20,10 @@ CScriptMonster::CScriptMonster()
 	m_tpActionQueue.clear	();
 	m_caScriptName			= "";
 	m_bScriptControl		= false;
-	for (u32 i=(u32)eActionTypeMovement; i<(u32)eActionTypeCount; ++i)
-		m_tpCallbacks[i]	= 0;
+	for (u32 i=(u32)eActionTypeMovement; i<(u32)eActionTypeCount; ++i) {
+		m_tpCallbacks[i].m_lua_object = 0;
+		m_tpCallbacks[i].m_method_name = "";
+	}
 	InitScript				();
 }
 
@@ -191,30 +193,30 @@ void CScriptMonster::ProcessScripts()
 	
 	l_bCompleted	= l_tpEntityAction->m_tMovementAction.m_bCompleted;
 	bfAssignWatch	(l_tpEntityAction);
-	if (l_tpEntityAction->m_tMovementAction.m_bCompleted && !l_bCompleted && m_tpCallbacks[eActionTypeWatch])
-		(*m_tpCallbacks[eActionTypeWatch])(u32(eActionTypeWatch));
+	if (l_tpEntityAction->m_tMovementAction.m_bCompleted && !l_bCompleted && m_tpCallbacks[eActionTypeWatch].m_lua_object)
+		callback(eActionTypeWatch);
 
 	bfAssignAnimation(l_tpEntityAction);
 
 	l_bCompleted	= l_tpEntityAction->m_tSoundAction.m_bCompleted;
 	bfAssignSound	(l_tpEntityAction);
-	if (l_tpEntityAction->m_tSoundAction.m_bCompleted && !l_bCompleted && m_tpCallbacks[eActionTypeSound])
-		(*m_tpCallbacks[eActionTypeSound])(u32(eActionTypeSound));
+	if (l_tpEntityAction->m_tSoundAction.m_bCompleted && !l_bCompleted && m_tpCallbacks[eActionTypeSound].m_lua_object)
+		callback(eActionTypeSound);
 	
 	l_bCompleted	= l_tpEntityAction->m_tParticleAction.m_bCompleted;
 	bfAssignParticles(l_tpEntityAction);
-	if (l_tpEntityAction->m_tParticleAction.m_bCompleted && !l_bCompleted && m_tpCallbacks[eActionTypeParticle])
-		(*m_tpCallbacks[eActionTypeParticle])(u32(eActionTypeParticle));
+	if (l_tpEntityAction->m_tParticleAction.m_bCompleted && !l_bCompleted && m_tpCallbacks[eActionTypeParticle].m_lua_object)
+		callback(eActionTypeParticle);
 	
 	l_bCompleted	= l_tpEntityAction->m_tObjectAction.m_bCompleted;
 	bfAssignObject	(l_tpEntityAction);
-	if (l_tpEntityAction->m_tObjectAction.m_bCompleted && !l_bCompleted && m_tpCallbacks[eActionTypeObject])
-		(*m_tpCallbacks[eActionTypeObject])(u32(eActionTypeObject));
+	if (l_tpEntityAction->m_tObjectAction.m_bCompleted && !l_bCompleted && m_tpCallbacks[eActionTypeObject].m_lua_object)
+		callback(eActionTypeObject);
 	
 	l_bCompleted	= l_tpEntityAction->m_tMovementAction.m_bCompleted;
 	bfAssignMovement(l_tpEntityAction);
-	if (l_tpEntityAction->m_tMovementAction.m_bCompleted && !l_bCompleted && m_tpCallbacks[eActionTypeMovement])
-		(*m_tpCallbacks[eActionTypeMovement])(u32(eActionTypeMovement),u32(-1));
+	if (l_tpEntityAction->m_tMovementAction.m_bCompleted && !l_bCompleted && m_tpCallbacks[eActionTypeMovement].m_lua_object)
+		luabind::call_member<void>(*(m_tpCallbacks[eActionTypeMovement].m_lua_object),*(m_tpCallbacks[eActionTypeMovement].m_method_name),CLuaGameObject(this),u32(eActionTypeMovement),u32(-1));
 }
 
 bool CScriptMonster::bfAssignWatch(CEntityAction *tpEntityAction)
@@ -377,11 +379,12 @@ void CScriptMonster::net_Destroy()
 	InitScript				();
 }
 
-void CScriptMonster::set_callback	(const luabind::functor<void> &tpActionCallback, const CScriptMonster::EActionType tActionType)
+void CScriptMonster::set_callback	(const luabind::object &lua_object, LPCSTR method, const CScriptMonster::EActionType tActionType)
 {
 	VERIFY					(tActionType < eActionTypeCount);
-	xr_delete				(m_tpCallbacks[tActionType]);
-	m_tpCallbacks[tActionType] = xr_new<luabind::functor<void> >(tpActionCallback);
+	xr_delete				(m_tpCallbacks[tActionType].m_lua_object);
+	m_tpCallbacks[tActionType].m_lua_object = xr_new<luabind::object>(lua_object);
+	m_tpCallbacks[tActionType].m_method_name = method;
 	if (eActionTypeMovement == tActionType) {
 		CPatrolPathManager	*l_tpPatrolPathManager = dynamic_cast<CPatrolPathManager*>(this);
 		if (l_tpPatrolPathManager)
@@ -392,18 +395,19 @@ void CScriptMonster::set_callback	(const luabind::functor<void> &tpActionCallbac
 void CScriptMonster::clear_callback	(const CScriptMonster::EActionType tActionType)
 {
 	VERIFY					(tActionType < eActionTypeCount);
-	xr_delete				(m_tpCallbacks[tActionType]);
+	xr_delete				(m_tpCallbacks[tActionType].m_lua_object);
+	m_tpCallbacks[tActionType].m_method_name = "";
 	if (tActionType) {
 		CPatrolPathManager	*l_tpPatrolPathManager = dynamic_cast<CPatrolPathManager*>(this);
 		if (l_tpPatrolPathManager)
-			l_tpPatrolPathManager->set_callback(0);
+			l_tpPatrolPathManager->set_callback(m_tpCallbacks[tActionType]);
 	}
 }
 
 void CScriptMonster::callback		(const CScriptMonster::EActionType tActionType)
 {
-	if (m_tpCallbacks[tActionType])
-		(*m_tpCallbacks[tActionType])(CLuaGameObject(this),u32(tActionType));
+	if (m_tpCallbacks[tActionType].m_lua_object)
+		luabind::call_member<void>(*(m_tpCallbacks[tActionType].m_lua_object),*(m_tpCallbacks[tActionType].m_method_name),CLuaGameObject(this),u32(tActionType));
 }
 
 LPCSTR CScriptMonster::GetPatrolPathName()

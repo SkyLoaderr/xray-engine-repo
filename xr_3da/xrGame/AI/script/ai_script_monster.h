@@ -30,7 +30,13 @@ protected:
 	bool						m_bScriptControl;
 	ref_str						m_caScriptName;
 	CMotionDef					*m_tpScriptAnimation;
-	luabind::functor<void>		*m_tpCallbacks[eActionTypeCount];
+public:
+	struct SMemberCallback {
+		luabind::object			*m_lua_object;
+		ref_str					m_method_name;
+	};
+protected:
+	SMemberCallback				m_tpCallbacks[eActionTypeCount];
 public:
 								CScriptMonster			();
 	virtual						~CScriptMonster			();
@@ -60,7 +66,7 @@ public:
 	virtual	bool				bfAssignParticles		(CEntityAction		*tpEntityAction);
 	virtual	bool				bfAssignObject			(CEntityAction		*tpEntityAction);
 
-	virtual void				set_callback			(const luabind::functor<void> &tpActionCallback, const CScriptMonster::EActionType tActionType);
+	virtual void				set_callback			(const luabind::object &lua_object, LPCSTR method, const CScriptMonster::EActionType tActionType);
 	virtual void				clear_callback			(const CScriptMonster::EActionType tActionType);
 
 	virtual	void				callback				(const EActionType tActionType);

@@ -611,10 +611,17 @@ IC	bool compute_tangent(
 			if  (fsimilar(start_circle.radius,dest_circle.radius)) {
 				// so, our circles are equal
 				tangents[0]			= tangents[1] = start_circle;
-				adjust_point		(start_circle.center,yaw1 + PI_DIV_2,	start_circle.radius,tangents[0].point);
-//				tangents[0].point	= tangents[1].point = start.point;
-				tangents[0].angle	= 0.f;
-				assign_angle		(tangents[1].angle,start_yaw,dest_yaw,start_cp > 0);
+				if (start_cp > 0.f) {
+					adjust_point	(start_circle.center,yaw1 + PI_DIV_2,	start_circle.radius,tangents[0].point);
+					assign_angle	(tangents[0].angle,start_yaw,angle_normalize(yaw1 + PI_DIV_2),true);
+				}
+				else {
+					adjust_point	(start_circle.center,yaw1 - PI_DIV_2,	start_circle.radius,tangents[0].point);
+					assign_angle	(tangents[0].angle,start_yaw,angle_normalize(yaw1 - PI_DIV_2),false);
+				}
+
+				tangents[1].point	= tangents[0].point;
+				tangents[1].angle	= 0.f;
 				return				(true);
 			}
 			else
@@ -793,7 +800,7 @@ IC	bool compute_trajectory(
 void CLevelGraph::compute_path()
 {
 //	STrajectoryPoint		start, dest;
-
+//
 //	CObject					*obj = Level().Objects.FindObjectByName("m_stalker_e0000");
 //	CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(obj);
 //	obj						= Level().CurrentEntity();
@@ -818,11 +825,11 @@ void CLevelGraph::compute_path()
 //	start.vertex_id			= vertex(start.position);
 //	
 //	dest.angular_velocity	= 1.f;
-//	dest.linear_velocity	= 2.f;
-//	dest.position			= Fvector().set(-54,0,-40);
+//	dest.linear_velocity	= 1.f;
+//	dest.position			= Fvector().set(-50,0,-40);
 //	dest.direction.set		(0,0,-1);
 //	dest.vertex_id			= vertex(dest.position);
-//
+
 //	m_tpTravelLine.clear	();
 //	compute_trajectory		(start,dest,m_tpTravelLine);
 	return;

@@ -82,7 +82,7 @@ IC	void CPatrolPathManager::set_random	(bool random)
 	m_random				= random;
 }
 
-IC	void CPatrolPathManager::set_callback(const luabind::functor<void> *callback)
+IC	void CPatrolPathManager::set_callback(const CScriptMonster::SMemberCallback &callback)
 {
-	m_callback				= callback;
+	m_callback				= &callback;
 }
