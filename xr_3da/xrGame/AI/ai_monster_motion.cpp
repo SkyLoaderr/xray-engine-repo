@@ -590,7 +590,7 @@ void CMotionManager::STEPS_Update(u8 legs_num)
 		if (step_info.activity[i].handled && (step_info.activity[i].cycle == step_info.cur_cycle)) continue;
 		
 		// вычислить смещённое время шага в соответствии с параметрами анимации ходьбы
-		TTime offset_time = pMonster->cur_anim.started + u32(1000 * (cycle_anim_time * step_info.cur_cycle + cycle_anim_time * step.step[i].time));
+		TTime offset_time = pMonster->cur_anim.started + u32(1000 * (cycle_anim_time * (step_info.cur_cycle-1) + cycle_anim_time * step.step[i].time));
 
 		if ((offset_time >= (cur_time - TIME_OFFSET)) && (offset_time <= (cur_time + TIME_OFFSET)) ){
 			
@@ -630,7 +630,7 @@ void CMotionManager::STEPS_Update(u8 legs_num)
 	}
 
 	// определить текущий цикл
-	if (step_info.cur_cycle < step.cycles) step_info.cur_cycle = u8(float(cur_time - pMonster->cur_anim.started) / (1000.f*cycle_anim_time));
+	if (step_info.cur_cycle < step.cycles) step_info.cur_cycle = 1 + u8(float(cur_time - pMonster->cur_anim.started) / (1000.f*cycle_anim_time));
 
 	// позиционировать играемые звуки
 	for (i=0; i<legs_num; i++) {
@@ -650,11 +650,14 @@ void CMotionManager::STEPS_Initialize()
 		return;
 	}
 
-	step_info.disable = false;
-
-	for (u32 i=0; i<4; i++) step_info.activity[i].handled = false;
-
+	step_info.disable	= false;
 	step_info.params	= it->second;
-	step_info.cur_cycle = 0;
+	step_info.cur_cycle = 1;					// all cycles are 1-based
+
+	for (u32 i=0; i<4; i++) {
+		step_info.activity[i].handled	= false;
+		step_info.activity[i].cycle		= step_info.cur_cycle;	
+	}
+
 }
 
