@@ -431,7 +431,7 @@ typedef _quaternion<float>	Fquaternion;
 typedef _quaternion<double>	Dquaternion;
 
 template <class T>
-BOOL	_valid			(const _quaternion<T>& s)	{ return _valid(x) && _valid(y) && _valid(z) && _valid(w);	}
+BOOL	_valid			(const _quaternion<T>& s)	{ return _valid(s.x) && _valid(s.y) && _valid(s.z) && _valid(s.w);	}
 
 #undef UNIT_TOLERANCE
 #undef QZERO_TOLERANCE

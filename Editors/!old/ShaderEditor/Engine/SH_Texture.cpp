@@ -22,7 +22,7 @@ CTexture::CTexture		()
 	flags.bLoaded		= false;
 	flags.bUser			= false;
 	flags.seqCycles		= FALSE;
-	m_material			= 0;
+	m_material			= 0.5f;
 }
 
 CTexture::~CTexture()
