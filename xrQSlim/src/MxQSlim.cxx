@@ -139,9 +139,7 @@ void MxQSlim::constrain_boundaries()
 
 void MxQSlim::constraint_manual(MxVertexID v0, MxVertexID v1, MxFaceID f)
 {
-	MxFaceList faces;
-	faces.add				(f);
-	discontinuity_constraint(v0, v1, faces);
+	discontinuity_constraint(v0, v1, f);
 }
 
 MxEdgeQSlim::MxEdgeQSlim(MxStdModel* _m)
