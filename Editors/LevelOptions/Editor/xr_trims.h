@@ -5,13 +5,13 @@
 struct xr_token;
 
 #ifdef __BORLANDC__
-	AnsiString&				_Trim					( AnsiString& str );
-	LPCSTR					_GetItem				( LPCSTR src, int, AnsiString& p, char separator=',', LPCSTR ="" );
-	LPCSTR					_GetItems 				( LPCSTR src, int idx_start, int idx_end, AnsiString& dst, char separator );
-	LPCSTR					_CopyVal 				( LPCSTR src, AnsiString& dst, char separator=',' );
-	AnsiString&				_ListToSequence			( const AStringVec& lst );
-	AnsiString&				_ListToSequence2		( const AStringVec& lst );
-	void 					_SequenceToList			( AStringVec& lst, LPCSTR in, char separator=',' );
+	XRCORE_API AnsiString&	_Trim					( AnsiString& str );
+	XRCORE_API LPCSTR		_GetItem				( LPCSTR src, int, AnsiString& p, char separator=',', LPCSTR ="" );
+	XRCORE_API LPCSTR		_GetItems 				( LPCSTR src, int idx_start, int idx_end, AnsiString& dst, char separator );
+	XRCORE_API LPCSTR		_CopyVal 				( LPCSTR src, AnsiString& dst, char separator=',' );
+	XRCORE_API AnsiString&	_ListToSequence			( const AStringVec& lst );
+	XRCORE_API AnsiString&	_ListToSequence2		( const AStringVec& lst );
+	XRCORE_API void 		_SequenceToList			( AStringVec& lst, LPCSTR in, char separator=',' );
 #endif
 
 XRCORE_API int				_GetItemCount			( LPCSTR , char separator=',');
