@@ -23,8 +23,7 @@ stohe_bobik_base        = id_start + 1070
 stohe_camper_base       = id_start + 1080
 assistance              = id_start + 1090
 death                   = id_start + 1100
-combat                  = id_start + 1110
-combat_enemy            = id_start + 1111
+script_combat           = id_start + 1110
 
 
 sidor_patrol_base_property          = id_start + 2000

@@ -25,26 +25,26 @@ function evaluator_check_combat:evaluate ()
 
 					local overrides = xr_logic.generic_scheme_overrides( self.object )
 
-					if overrides and overrides.on_combat then
+					if overrides and overrides.combat_type then
 						printf( "5.1" )
 
-						local script_combat_type = xr_logic.pick_section_from_condlist( actor, self.object, overrides.on_combat.condlist )
+						local script_combat_type = xr_logic.pick_section_from_condlist( actor, self.object, overrides.combat_type.condlist )
 						db.storage[self.object:id()].script_combat_type = script_combat_type
 
 						printf( "script_combat_type=%s", script_combat_type or "<<<nil>>>" )
 
-						return script_combat_type == nil
+						return script_combat_type ~= nil
 					else
 --						db.storage[self.object:id()].script_combat_type = nil
 						printf( "5.2" )
-						return true
+						return false
 					end
 				end
 			end
 		end
 	end
 
-	return true
+	return false
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -63,32 +63,24 @@ end
 -- binder
 ----------------------------------------------------------------------------------------------------------------------
 function add_to_binder(npc, ini, scheme, section, storage)
-	local operators    = {}
-	local properties  = {}
-  	
 	local manager = npc:motivation_action_manager()
 
-	properties["combat"] = xr_evaluators_id.combat
-
-	manager:add_evaluator( properties["combat"], this.evaluator_check_combat("combat_check",storage) )
+	manager:add_evaluator( xr_evaluators_id.script_combat, this.evaluator_check_combat("combat_check",storage) )
 
 	local action = manager:action(stalker_ids.action_combat_planner)
-	action:add_precondition(world_property(properties["combat"], true))
+	action:add_precondition(world_property(xr_evaluators_id.script_combat, false))
 
 	----------
 
-	printf( "combat=%d combat_enemy=%d", xr_evaluators_id.combat, xr_evaluators_id.combat_enemy )
-
-	local planner = planner_action()
+	local planner = planner_action( nil, "script_combat_planner" )
 	planner:setup( npc )
 
-	planner:add_evaluator( stalker_ids.property_enemy, evaluator_enemy( "property_enemy2" ) )
-	planner:add_evaluator( xr_evaluators_id.combat_enemy, const_evaluator( "script_combat_enemy_const_true", true ) )
-	planner:add_evaluator( properties["combat"], this.evaluator_check_combat("combat_check",storage) )
+	planner:add_evaluator( stalker_ids.property_enemy,     evaluator_enemy( "is_there_enemy" ) )
+	planner:add_evaluator( xr_evaluators_id.script_combat, evaluator_check_combat("combat_check",storage) )
 
-	planner:add_precondition( world_property( xr_evaluators_id.combat_enemy, false ) )
-	planner:add_precondition( world_property( properties["combat"], false ) )
-	planner:add_effect( world_property( stalker_ids.property_enemy, false ) )
+	planner:add_precondition( world_property( xr_evaluators_id.script_combat, true ) )
+	planner:add_precondition( world_property( stalker_ids.property_enemy,     true ) )
+	planner:add_effect      ( world_property( stalker_ids.property_enemy,     false ) )
 
     manager:add_action( xr_actions_id.script_combat_planner, planner )
 

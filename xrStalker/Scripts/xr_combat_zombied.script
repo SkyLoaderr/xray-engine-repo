@@ -1,6 +1,9 @@
 --[[----------------------------------------------------------------------------------------------------------
 Боевая схема зомбированных сталкеров
 Чугай Саша
+
+Сделать:
+	- звуки
 ------------------------------------------------------------------------------------------------------------]]
 
 class "evaluator_combat_zombied" ( property_evaluator )
@@ -48,23 +51,15 @@ end
 
 function action_zombie_shoot:finalize()
 	action_base.finalize( self )
-
-	state_mgr.set_state( self.object, "idle" )
 end
 
 --------------------------------------------------------------------------------------------------------------
 
 function add_to_binder( npc, ini, st, planner )
-	local prop_enemy          = xr_evaluators_id.combat_enemy
-	local prop_combat_zombied = xr_evaluators_id.combat_zombied_base
-
-	local act_zombie_shoot    = xr_actions_id.combat_zombied_base
-
-	planner:add_evaluator( prop_combat_zombied, evaluator_combat_zombied( "combat_zombied", st ) )
+	planner:add_evaluator( xr_evaluators_id.combat_zombied_base, evaluator_combat_zombied( "combat_zombied", st ) )
 
 	local action = action_zombie_shoot( "action_zombie_shoot", st )
-	action:add_precondition( world_property( prop_combat_zombied, true  ) )
-	action:add_effect( world_property( stalker_ids.property_enemy, false ) )
-	action:add_effect( world_property( prop_enemy, false ) )
-	planner:add_action( act_zombie_shoot, action )
+	action:add_precondition( world_property( xr_evaluators_id.combat_zombied_base, true  ) )
+	action:add_effect      ( world_property( stalker_ids.property_enemy,           false ) )
+	planner:add_action( xr_actions_id.combat_zombied_base, action )
 end
