@@ -61,12 +61,20 @@ void C3DSound::Update()
 BOOL C3DSound::Update_Volume()
 {
 	fRealVolume			= .9f*fRealVolume + .1f*(fVolume*psSoundVEffects*fBaseVolume);
-	float dist			= Device.vCameraPosition.distance_to(ps.vPosition);
-	float att			= ps.flMinDistance/(psSoundRolloff*dist);	clamp(att,0.f,1.f);
-	float volume		= fRealVolume*att;
-	int	hw_volume		= iFloor(float(DSBVOLUME_MIN)*(1-fRealVolume));
-	pBuffer->SetVolume	( hw_volume );
-	return volume > psSoundCull;
+	float	dist		= Device.vCameraPosition.distance_to(ps.vPosition);
+	if (dist>ps.flMaxDistance)	return FALSE;
+	else {
+		// Trace wave
+		float att			= ps.flMinDistance/(psSoundRolloff*dist);	clamp(att,0.f,1.f);
+		float volume		= fRealVolume*att;
+		if (volume>psSoundCull)	{
+			int	hw_volume		= iFloor(float(DSBVOLUME_MIN)*(1-fRealVolume));
+			pBuffer->SetVolume	( hw_volume );
+			return TRUE;
+		} else {
+			return FALSE;
+		}
+	}
 }
 
 void C3DSound::OnMove		()
