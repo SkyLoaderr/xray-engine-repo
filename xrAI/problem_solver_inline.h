@@ -99,7 +99,7 @@ IC	void CProblemSolverAbstract::validate_properties	(const CState &conditions) c
 	xr_vector<COperatorCondition>::const_iterator	E = conditions.conditions().end();
 	for ( ; I != E; ++I) {
 		if (!(evaluators().find((*I).condition()) != evaluators().end())) {
-			Msg		("! cannot find corresponding evaluator to the proprty with id %d",(*I).condition());
+			Msg		("! cannot find corresponding evaluator to the property with id %d",(*I).condition());
 			THROW	(evaluators().find((*I).condition()) != evaluators().end());
 		}
 	}
