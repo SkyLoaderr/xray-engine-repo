@@ -26,7 +26,7 @@ IC float myacos(const float x)
 	return PI_DIV_2 - myasin(x);
 }
 
-IC	void	Qslerp(_quaternion& D, _quaternion &Q0, _quaternion &Q1, float T)
+IC	void	Qslerp(_quaternion<float>& D, _quaternion<float> &Q0, _quaternion<float> &Q1, float T)
 {
 	float Scale0,Scale1,sign;
 	
