@@ -64,6 +64,7 @@ public:
 	const hdrNODES	GetHeader		(){return m_header;};
 	void			q_Range			(DWORD StartNode, const Fvector& Pos,	float Range,	AI::NodeEstimator& Estimator, float &fOldCost);
 	void			q_Range_Bit		(DWORD StartNode, const Fvector& BasePos, float Range, NodePosition* QueryPosition, DWORD &BestNode, float &BestCost);
+	//void			q_Range_Bit		(DWORD StartNode, const Fvector& BasePos, float Range, DWORD &BestNode, float &BestCost);
 	DWORD			q_Node			(DWORD PrevNode,  const Fvector& Pos);
 
 	// yet another A* search
@@ -96,9 +97,15 @@ public:
 	IC	void		PackPosition	(NodePosition& Pdest, const Fvector& Psrc)
 	{
 		float sp = 1/m_header.size;
+		/**
 		int px	= iFloor(Psrc.x*sp+EPS_L);
 		int py	= iFloor(65535.f*(Psrc.y-m_header.aabb.min.y)/(m_header.size_y)+EPS_L);
 		int pz	= iFloor(Psrc.z*sp+EPS_L);
+		/**/
+		int px	= iFloor(Psrc.x*sp+EPS_L + .5f);
+		int py	= iFloor(65535.f*(Psrc.y-m_header.aabb.min.y)/(m_header.size_y)+EPS_L);
+		int pz	= iFloor(Psrc.z*sp+EPS_L + .5f);
+		/**/
 		clamp	(px,-32767,32767);	Pdest.x = s16	(px);
 		clamp	(py,0,     65535);	Pdest.y = u16	(py);
 		clamp	(pz,-32767,32767);	Pdest.z = s16	(pz);
