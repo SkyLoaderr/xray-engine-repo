@@ -175,8 +175,8 @@ void CMonsterMovement::stop_now()
 {
 	enable_movement						(false);
 	disable_path						();
-	m_object->m_velocity_linear.target	= 0.f;
-	m_object->m_velocity_linear.current = 0.f;
+	m_velocity_linear.target			= 0.f;
+	m_velocity_linear.current			= 0.f;
 }
 
 //////////////////////////////////////////////////////////////////////////

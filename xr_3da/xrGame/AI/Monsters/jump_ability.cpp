@@ -62,6 +62,9 @@ void CJumpingAbility::jump(CObject *obj, u32 vel_mask)
 	m_target_object		= obj;
 	m_target_position	= get_target(obj);
 
+	m_object->m_velocity_angular	= 3.f;
+	m_object->DirMan.face_target	(obj);
+	
 	m_active			= true;
 	m_velocity_bounced	= false;
 	m_object_hitted		= false;
@@ -163,7 +166,7 @@ Fvector CJumpingAbility::get_target(CObject *obj)
 	global_transform.set	(obj->XFORM());
 	global_transform.mulB	(bone.mTransform);
 	
-	return global_transform.c;
+	return	(predict_position(obj, global_transform.c));
 }
 
 void CJumpingAbility::on_TA_change(IEventData *p_data)
@@ -251,8 +254,9 @@ bool CJumpingAbility::can_jump(CObject *target)
 	Fvector source_position		= m_object->Position	();
 	Fvector target_position;
 	target->Center				(target_position);
+
 	
-	float dist = source_position.distance_to(target_position);
+	float dist = source_position.distance_to(predict_position(target, target_position));
 	if ((dist < m_min_distance) || (dist > m_max_distance)) return false;
 	
 	// получить вектор направления и его мир угол
@@ -268,4 +272,21 @@ bool CJumpingAbility::can_jump(CObject *target)
 	if (angle_difference(m_object->CMovementManager::m_body.current.yaw, yaw) > m_max_angle) return false;
 
 	return true;
+}
+
+Fvector CJumpingAbility::predict_position(CObject *obj, const Fvector &pos)
+{
+	if (obj->ps_Size() < 2) return pos;
+
+	CObject::SavedPosition	pos0 = obj->ps_Element	(obj->ps_Size() - 2);
+	CObject::SavedPosition	pos1 = obj->ps_Element	(obj->ps_Size() - 1);
+
+	float velocity = pos1.vPosition.distance_to(pos0.vPosition) / (float(pos1.dwTime)/1000.f - float(pos0.dwTime)/1000.f);
+	float jump_time = m_object->m_PhysicMovementControl->JumpMinVelTime(pos);
+	float prediction_dist = jump_time * velocity;
+
+	Fvector prediction_pos;
+	prediction_pos.mad(pos, obj->Direction(), prediction_dist);
+	
+	return prediction_pos;
 }

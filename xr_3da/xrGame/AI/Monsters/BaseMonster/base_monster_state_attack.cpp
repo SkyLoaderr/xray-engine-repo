@@ -168,13 +168,14 @@ void CBaseMonsterAttack::Run()
 			pMonster->MotionMan.accel_activate				(eAT_Aggressive);
 			pMonster->MotionMan.accel_set_braking			(false);
 
-			pMonster->CMonsterMovement::set_target_point	(pMonster->EnemyMan.get_enemy_position(), pMonster->EnemyMan.get_enemy_vertex());
-			pMonster->CMonsterMovement::set_rebuild_time	(100 + u32(50.f * dist));
+			pMonster->CMonsterMovement::set_target_point	(pMonster->EnemyMan.get_enemy()->Position(), pMonster->EnemyMan.get_enemy()->level_vertex_id());
+			pMonster->CMonsterMovement::set_rebuild_time	(pMonster->get_attack_rebuild_time());
 			pMonster->CMonsterMovement::set_distance_to_end	(2.5f);
 			pMonster->CMonsterMovement::set_use_covers		();
 			pMonster->CMonsterMovement::set_cover_params	(5.f, 30.f, 1.f, 30.f);
 			pMonster->CMonsterMovement::set_try_min_time	(false);
-			
+			pMonster->set_state_sound						(MonsterSpace::eMonsterSoundAttack);
+
 			pSquad = monster_squad().get_squad(pMonster);
 			squad_active = pSquad && pSquad->SquadActive();
 			
@@ -189,7 +190,7 @@ void CBaseMonsterAttack::Run()
 				pMonster->set_dest_direction	(command.direction);
 			}
 			
-			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
+			
 			
 			break;
 

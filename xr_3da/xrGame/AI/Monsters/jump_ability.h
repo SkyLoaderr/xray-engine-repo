@@ -80,5 +80,8 @@ private:
 	// check current jump state		
 			bool	is_landing			();	
 			bool	is_on_the_ground	();
+
+
+			Fvector	predict_position	(CObject *obj, const Fvector &pos);
 };
 

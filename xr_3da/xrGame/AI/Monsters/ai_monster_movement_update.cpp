@@ -47,14 +47,13 @@ void CMonsterMovement::Update_Finalize()
 // update path with new scheme method
 void CMonsterMovement::update_target_point() 
 {
-	if (!enabled()) return;
+	if (!enabled() || !b_enable_movement) return;
 	if (path_type() != MovementManager::ePathTypeLevelPath) return;
 	
 	m_path_end	= false;
 	m_failed	= false;
 
 	/// проверить условия, когда путь строить не нужно
-	if (!b_enable_movement)			return;
 	if (!check_build_conditions())	return;
 
 	// получить промежуточные позицию и ноду

@@ -33,7 +33,7 @@ void CStateMonsterAttackRunAbstract::execute()
 	object->MotionMan.accel_activate					(eAT_Aggressive);
 	object->MotionMan.accel_set_braking					(false);
 	object->CMonsterMovement::set_target_point			(object->EnemyMan.get_enemy()->Position(), object->EnemyMan.get_enemy()->level_vertex_id());
-	object->CMonsterMovement::set_rebuild_time			(100 + u32(50.f * dist));
+	object->CMonsterMovement::set_rebuild_time			(object->get_attack_rebuild_time());
 	object->CMonsterMovement::set_distance_to_end		(2.5f);
 	object->CMonsterMovement::set_use_covers			();
 	object->CMonsterMovement::set_cover_params			(5.f, 30.f, 1.f, 30.f);
@@ -53,7 +53,6 @@ bool CStateMonsterAttackRunAbstract::check_completion()
 {
 	float m_fDistMin	= object->MeleeChecker.get_min_distance		();
 	float dist			= object->MeleeChecker.distance_to_enemy	(object->EnemyMan.get_enemy());
-
 
 	if (dist < m_fDistMin)	return true;
 
