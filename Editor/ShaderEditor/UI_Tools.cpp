@@ -92,15 +92,25 @@ void CShaderTools::OnDestroy(){
 }
 
 void CShaderTools::Render(){
-	if (m_EditObject)
-    	m_EditObject->RenderSingle(precalc_identity);
+	switch (ActiveEditor()){
+	case aeEngine:
+    	if (m_EditObject) m_EditObject->RenderSingle(precalc_identity);
+    break;
+	case aeCompiler:
+    break;
+    };
 }
 
 void CShaderTools::Update(){
-	if (m_EditObject)
-    	m_EditObject->RTL_Update(Device.fTimeDelta);
-    SEngine.Update();
-    SCompiler.Update();
+	switch (ActiveEditor()){
+	case aeEngine:
+    	if (m_EditObject) m_EditObject->RTL_Update(Device.fTimeDelta);
+	    SEngine.Update();
+    break;
+	case aeCompiler:
+    	SCompiler.Update();
+    break;
+    };
 }
 
 void CShaderTools::ZoomObject(){

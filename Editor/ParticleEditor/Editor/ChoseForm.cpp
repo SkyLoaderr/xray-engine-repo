@@ -234,8 +234,6 @@ __fastcall TfrmChoseItem::TfrmChoseItem(TComponent* Owner)
     : TForm(Owner)
 {
 	tvItems->MultiSelect = false;
-//S	sel_tex = 0;
-//S    sel_thm = 0;
     bMultiSel = false;
     tvItems->ShowCheckboxes = false;
 	DEFINE_INI(fsStorage);
