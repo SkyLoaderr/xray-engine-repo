@@ -7,17 +7,16 @@
 #pragma once
 
 #include "Blender_Recorder.h"
-#include "Blender_CLSID.h"
 
 #pragma pack(push,4)
 class ENGINE_API	CBlender_DESC
 {
 public:
-	CLASS_ID	CLS;
-	string128	cName;
-	string32	cComputer;
-	u32			cTime;
-	WORD		version;
+	CLASS_ID					CLS;
+	string128					cName;
+	string32					cComputer;
+	u32							cTime;
+	WORD						version;
 	
 	CBlender_DESC()	
 	{
@@ -28,36 +27,36 @@ public:
 		version		= 0;
 	}
 
-	void					Setup	(LPCSTR N);
+	void						Setup	(LPCSTR N);
 };
 
 class ENGINE_API CBlender	: public CPropertyBase
 {
-	friend class	CBlender_Compile;
+	friend class				CBlender_Compile;
 protected:
-	CBlender_DESC	description;
-	xrP_Integer		oPriority;
-	xrP_BOOL		oStrictSorting;
-	string64		oT_Name;
-	string64		oT_xform;
+	CBlender_DESC				description;
+	xrP_Integer					oPriority;
+	xrP_BOOL					oStrictSorting;
+	string64					oT_Name;
+	string64					oT_xform;
 protected:
-	u32			BC			(BOOL v)		{ return v?0xff:0; }
-	BOOL		c_XForm		();
+	u32							BC				(BOOL v)		{ return v?0xff:0; }
+	BOOL						c_XForm			();
 public:
-	static		CBlender*	Create			(CLASS_ID cls);
-	static		void		CreatePalette	(vector<CBlender*> & palette);
+	static			CBlender*	Create			(CLASS_ID cls);
+	static			void		CreatePalette	(vector<CBlender*> & palette);
 	
-	CBlender_DESC&			getDescription	()	{return description;}
-	virtual 	LPCSTR		getName			()	{return description.cName;}
-	virtual		LPCSTR		getComment		()	= 0;
+	CBlender_DESC&				getDescription	()	{return description;}
+	virtual 		LPCSTR		getName			()	{return description.cName;}
+	virtual			LPCSTR		getComment		()	= 0;
 
-	virtual		BOOL		canBeDetailed	()	{ return FALSE; }
-	virtual		BOOL		canBeLMAPped	()	= 0;
+	virtual			BOOL		canBeDetailed	()	{ return FALSE; }
+	virtual			BOOL		canBeLMAPped	()	= 0;
 	
-	virtual		void		Save			(IWriter& FS);
-	virtual		void		Load			(IReader& FS, WORD version);
+	virtual			void		Save			(IWriter& FS);
+	virtual			void		Load			(IReader& FS, WORD version);
 	
-	virtual		void		Compile			(CBlender_Compile& C);
+	virtual			void		Compile			(CBlender_Compile& C);
 
 	CBlender();
 	virtual ~CBlender();
