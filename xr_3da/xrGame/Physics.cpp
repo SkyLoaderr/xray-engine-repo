@@ -651,7 +651,7 @@ void __stdcall ContactShotMark(CDB::TRI* T,dContactGeom* c)
 	{
 		data=dGeomGetUserData(c->g1);
 	}
-	
+	if(!b) return;
 	dVector3 vel;
 	dMass m;
 	dBodyGetMass(b,&m);
