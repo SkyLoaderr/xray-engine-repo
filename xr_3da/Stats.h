@@ -66,9 +66,9 @@ public:
 	CStatTimer	TEST2;				// debug counter
 	CStatTimer	TEST3;				// debug counter
 
-	void		Show			(void);
-	void		OnDeviceCreate	(void);
-	void		OnDeviceDestroy (void);
+	void		Show				(void);
+	void		OnDeviceCreate		(void);
+	void		OnDeviceDestroy		(void);
 
 	CStats	();
 	~CStats	();

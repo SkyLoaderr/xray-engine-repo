@@ -182,6 +182,11 @@ void CStats::Show()
 		F.OutNext	("TEST 3:      %2.2fms, %d",TEST3.result,TEST3.count);
 
 		//////////////////////////////////////////////////////////////////////////
+		// Renderer specific
+		F.OutSet					(600,0);
+		::Render->Statistics		(F);
+
+		//////////////////////////////////////////////////////////////////////////
 		// PERF ALERT
 		F.SetColor	(color_rgba(255,0,0,255));
 		F.OutSet	(300,0);
