@@ -817,6 +817,9 @@
 					<File
 						RelativePath="AI\Biting\ai_biting_path.cpp">
 					</File>
+					<File
+						RelativePath=".\ai\biting\ai_biting_script.cpp">
+					</File>
 					<Filter
 						Name="States"
 						Filter="">

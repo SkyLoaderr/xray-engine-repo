@@ -11,7 +11,6 @@
 #include "../../actor.h"
 #include "../../hudmanager.h"
 
-#include "../../ai_script_actions.h"
 #include "../ai_monster_jump.h"
 
 // A - я слышу опасный звук
@@ -164,85 +163,3 @@ bool CAI_Biting::IsObstacle(TTime time)
 	
 	return (bSpeedDiffer && (time_start_speed_differ + time < m_dwCurrentTime));
 }
-
-////////////////////////////////////////////////////////////////////////////////////////////
-// обработка скриптов
-////////////////////////////////////////////////////////////////////////////////////////////
-
-bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
-{
-	if (!inherited::bfAssignMovement(tpEntityAction))
-		return		(false);
-
-	CMovementAction	&l_tMovementAction	= tpEntityAction->m_tMovementAction;
-	MotionMan.m_tAction = EAction(l_tMovementAction.m_tActState);
-
-	// pre-update path parameters
-	enable_path								();
-	CLevelLocationSelector::set_evaluator	(0);
-	CDetailPathManager::set_path_type		(eDetailPathTypeSmooth);
-	CDetailPathManager::set_try_min_time	(true);	
-
-	SetupVelocityMasks(l_tMovementAction.m_tActTypeEx == eAT_ForceMovementType);
-	
-	update_path();
-	
-	UpdateActionWithPath();
-	MotionMan.ProcessAction();
-
-	//if (IsMovingOnPath()) UpdateVelocities(STravelParams(m_fCurSpeed,m_body.speed));
-
-	UpdateVelocityWithPath();
-
-#pragma todo("Dima to Jim : This method will be automatically removed after 22.12.2003 00:00")
-	set_desirable_speed		(m_fCurSpeed);
-
-	m_body = m_body;
-
-	CDetailPathManager::set_use_dest_orientation(false);
-	// Show patrol path
-	
-//	HDebug->L_Clear();
-//	const CLevel::SPath *m_path = CPatrolPathManager::get_path();
-//	if (m_path) {
-//		for (u32 i=0; i<m_path->tpaWayPoints.size();i++){
-//			Fvector P;
-//			P = m_path->tpaWayPoints[i].tWayPoint;
-//			HDebug->L_AddPoint(P,0.50f,D3DCOLOR_XRGB(0,255,0));
-//			Fvector p2;
-//			p2 = P;
-//			p2.y += 5.f;
-//			HDebug->L_AddLine(P,p2,D3DCOLOR_XRGB(0,255,0));
-//		}
-//	}
-//
-//	HDebug->SetActive(true);
-
-	return			(true);		
-}
-
-bool CAI_Biting::bfAssignObject(CEntityAction *tpEntityAction)
-{
-	if (!inherited::bfAssignObject(tpEntityAction))
-		return	(false);
-
-	CObjectAction	&l_tObjectAction = tpEntityAction->m_tObjectAction;
-	if (!l_tObjectAction.m_tpObject)
-		return	(false == (l_tObjectAction.m_bCompleted = true));
-
-	CEntityAlive	*l_tpEntity		= dynamic_cast<CEntityAlive*>(l_tObjectAction.m_tpObject);
-	if (!l_tpEntity) return	(false == (l_tObjectAction.m_bCompleted = true));
-	
-	switch (l_tObjectAction.m_tGoalType) {
-		case eObjectActionTake: 
-			m_PhysicMovementControl.PHCaptureObject(l_tpEntity);
-			break;
-		case eObjectActionDrop: 
-			m_PhysicMovementControl.PHReleaseObject();
-			break;
-	}
-	l_tObjectAction.m_bCompleted = true;
-	return	(true);
-}
-
-
