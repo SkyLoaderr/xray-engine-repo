@@ -22,7 +22,7 @@ void ActivateXRAY();
 CString g_calltip;
 CString get_local_time()
 {
-	return CTime::GetCurrentTime().Format("%H:%M:%S");
+	return CTime::GetCurrentTime().Format("%H;%M;%S");
 }
 
 IMPLEMENT_DYNAMIC(CMainFrame, CMDIFrameWnd)
