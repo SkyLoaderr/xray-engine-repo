@@ -432,13 +432,19 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bar_arena_fun_3", 
 			idle = 0,
 			prior = 5, state = {1}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
+			predicate = function(obj)
+				         	return obj:character_community() == "dolg"
+			            end
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_arena_fun_4", 
 			idle = 0,
 			prior = 5, state = {1}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
+			predicate = function(obj)
+				         	return obj:character_community() == "dolg"
+			            end
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_arena_fun_5", 
@@ -456,7 +462,10 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bar_arena_fun_7", 
 			idle = 0,
 			prior = 5, state = {1}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
+			predicate = function(obj)
+				         	return obj:character_community() == "dolg"
+			            end
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_arena_fun_8", 
