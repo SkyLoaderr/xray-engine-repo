@@ -1635,9 +1635,9 @@ HRESULT CMyD3DApplication::RenderCombine_Bloom	()
 	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
 
 	// Cleanup
-	m_pd3dDevice->SetRenderState			(D3DRS_ZENABLE,		TRUE);
-	m_pd3dDevice->SetTexture				(0, NULL);
-	m_pd3dDevice->SetTexture				(1, NULL);
+	m_pd3dDevice->SetRenderState			(D3DRS_ZENABLE,	TRUE);
+	m_pd3dDevice->SetTexture				(0, NULL			);
+	m_pd3dDevice->SetTexture				(1, NULL			);
 	m_pd3dDevice->SetRenderTarget			(0, pBaseTarget		);
 	m_pd3dDevice->SetDepthStencilSurface	(pBaseZB			);
 	m_pd3dDevice->SetViewport				(&oldViewport		);

@@ -73,7 +73,7 @@ p2f 	p_main	( v2p_in IN )
 	S			=	half4		(C.w,C.w,C.w,C.w);	// replicated specular
 	
 	// we are interested only in colors > 1
-	OUT.C 		=	saturate	((C+S) - half4(1,1,1,1));
+	OUT.C 		=	saturate	((C+S) /*- half4(1,1,1,1)*/);
 	return OUT;
 }
 
