@@ -7,6 +7,8 @@
 #include "xrThread.h"
 #include "detailformat.h"
 
+
+//-----------------------------------------------------------------
 #define LT_DIRECT		0
 #define LT_POINT		1
 #define LT_SECONDARY	2
@@ -26,14 +28,16 @@ struct R_Light
 	Fvector			tri[3];				// Cached triangle for ray-testing
 };
 
-
 DEF_VECTOR		(Lights,R_Light);
+//-----------------------------------------------------------------
 
-Lights			g_lights;
-RAPID::Model	Level;
-Fbox			LevelBB;
+Lights					g_lights;
+RAPID::Model			Level;
+Fbox					LevelBB;
+CVirtualFileStreamRW*	dtFS=0;
+DetailHeader			dtH;
 
-
+//-----------------------------------------------------------------
 #define HEMI1_LIGHTS	26
 #define HEMI2_LIGHTS	91
 
@@ -89,6 +93,14 @@ void xrLoad(LPCSTR name)
 		fs->Close			();
 		
 		LevelBB.set			(H.aabb);
+	}
+	
+	// Load .details
+	{
+		strconcat			(N,name,"level.details");
+		dtFS				= new CVirtualFileStreamRW(N);
+		dtFS->ReadChunk		(0,&dtH);
+		R_ASSERT			(dtH.version==DETAIL_VERSION);
 	}
 	
 	// Load lights
