@@ -597,7 +597,7 @@ void CParticleEffect::Render(float LOD)
 	if((pe!=NULL)&&(pe->p_count>0)){
 		if (m_Def->m_Flags.is(CPEDef::dfSprite)){
 			FVF::LIT* pv_start	= (FVF::LIT*)RCache.Vertex.Lock(pe->p_count*4*4,hGeom->vb_stride,dwOffset);
-			FVF::LIT* pv		= pv_start;
+			F V F::LIT* pv		= pv_start;
 
 			for(int i = 0; i < pe->p_count; i++){
 				PAPI::Particle &m = pe->particles[i];

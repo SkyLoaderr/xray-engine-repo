@@ -159,26 +159,26 @@ void CEditableObject::RenderSingle(const Fmatrix& parent)
 void CEditableObject::RenderAnimation(const Fmatrix& parent){
 }
 
-void CEditableObject::RenderEdge(const Fmatrix& parent, CEditableMesh* mesh, u32 color)
+void CEditableObject::RenderEdge(const Fmatrix& parent, CEditableMesh* mesh, CSurface* surf, u32 color)
 {
     if (!(m_LoadState.is(LS_RBUFFERS))) DefferedLoadRP();
 
     Device.SetShader(Device.m_WireShader);
-    if(mesh) mesh->RenderEdge(parent, color);
+    if(mesh) mesh->RenderEdge(parent, surf, color);
     else for(EditMeshIt _M = m_Meshes.begin();_M!=m_Meshes.end();_M++)
-            (*_M)->RenderEdge(parent, color);
+            (*_M)->RenderEdge(parent, surf, color);
 }
 
-void CEditableObject::RenderSelection(const Fmatrix& parent, CEditableMesh* mesh, u32 color)
+void CEditableObject::RenderSelection(const Fmatrix& parent, CEditableMesh* mesh, CSurface* surf, u32 color)
 {
     if (!(m_LoadState.is(LS_RBUFFERS))) DefferedLoadRP();
 
     RCache.set_xform_world(parent);
     Device.SetShader(Device.m_SelectionShader);
     Device.RenderNearer(0.0005);
-    if(mesh) mesh->RenderSelection(parent, color);
+    if(mesh) mesh->RenderSelection(parent, surf, color);
     else for(EditMeshIt _M = m_Meshes.begin();_M!=m_Meshes.end();_M++)
-         	(*_M)->RenderSelection(parent, color);
+         	(*_M)->RenderSelection(parent, surf, color);
     Device.ResetNearer();
 }
 

@@ -274,9 +274,9 @@ public:
     // render routine
 	void 			Render					(const Fmatrix& parent, CSurface* S);
 	void 			RenderSkeleton			(const Fmatrix& parent, CSurface* S);
-	void            RenderList				(const Fmatrix& parent, u32 color, bool bEdge, U32Vec& fl);
-	void 			RenderEdge				(const Fmatrix& parent, u32 color);
-	void 			RenderSelection			(const Fmatrix& parent, u32 color);
+	void            RenderList				(const Fmatrix& parent, u32 color, bool bEdge, IntVec& fl);
+	void 			RenderSelection			(const Fmatrix& parent, CSurface* s, u32 color);
+	void 			RenderEdge				(const Fmatrix& parent, CSurface* s, u32 color);
 
     // statistics methods
     int 			GetFaceCount			(bool bMatch2Sided=true);

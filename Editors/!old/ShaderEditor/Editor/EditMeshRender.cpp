@@ -185,10 +185,10 @@ void CEditableMesh::Render(const Fmatrix& parent, CSurface* S)
 static Fvector RB[MAX_VERT_COUNT];
 static RB_cnt=0;
 
-void CEditableMesh::RenderList(const Fmatrix& parent, u32 color, bool bEdge, U32Vec& fl)
+void CEditableMesh::RenderList(const Fmatrix& parent, u32 color, bool bEdge, IntVec& fl)
 {
 //	if (!m_Visible) return;
-    if (!m_LoadState.is(LS_RBUFFERS)) CreateRenderBuffers();
+//	if (!m_LoadState.is(LS_RBUFFERS)) CreateRenderBuffers();
 
 	if (fl.size()==0) return;
 	RCache.set_xform_world(parent);
@@ -199,7 +199,7 @@ void CEditableMesh::RenderList(const Fmatrix& parent, u32 color, bool bEdge, U32
 	    Device.SetRS(D3DRS_FILLMODE,D3DFILL_WIREFRAME);
     }else
     	Device.SetShader(Device.m_SelectionShader);
-    for (U32It dw_it=fl.begin(); dw_it!=fl.end(); dw_it++){
+    for (IntIt dw_it=fl.begin(); dw_it!=fl.end(); dw_it++){
         st_Face& face = m_Faces[*dw_it];
         for (int k=0; k<3; k++)	RB[RB_cnt++].set(m_Points[face.pv[k].pindex]);
 		if (RB_cnt==MAX_VERT_COUNT){
@@ -214,30 +214,7 @@ void CEditableMesh::RenderList(const Fmatrix& parent, u32 color, bool bEdge, U32
 }
 //----------------------------------------------------
 
-void CEditableMesh::RenderEdge(const Fmatrix& parent, u32 color)
-{
-    if (!m_LoadState.is(LS_RBUFFERS)) CreateRenderBuffers();
-//	if (!m_Visible) return;
-	RCache.set_xform_world(parent);
-	Device.SetShader(Device.m_WireShader);
-	Device.RenderNearer(0.001);
-
-    // render
-    Device.SetRS(D3DRS_TEXTUREFACTOR,	color);
-    Device.SetRS(D3DRS_FILLMODE,D3DFILL_WIREFRAME);
-    for (RBMapPairIt p_it=m_RenderBuffers.begin(); p_it!=m_RenderBuffers.end(); p_it++){
-		RBVector& rb_vec = p_it->second;
-	    u32 vBase;
-    	for (RBVecIt rb_it=rb_vec.begin(); rb_it!=rb_vec.end(); rb_it++)
-            Device.DP(D3DPT_TRIANGLELIST,rb_it->pGeom,0,rb_it->dwNumVertex/3);
-    }
-    Device.SetRS(D3DRS_TEXTUREFACTOR,	0xffffffff);
-    Device.SetRS(D3DRS_FILLMODE,Device.dwFillMode);
-    Device.ResetNearer();
-}
-//----------------------------------------------------
-
-void CEditableMesh::RenderSelection(const Fmatrix& parent, u32 color)
+void CEditableMesh::RenderSelection(const Fmatrix& parent, CSurface* s, u32 color)
 {
     if (!m_LoadState.is(LS_RBUFFERS)) CreateRenderBuffers();
 //	if (!m_Visible) return;
@@ -246,16 +223,48 @@ void CEditableMesh::RenderSelection(const Fmatrix& parent, u32 color)
 	if (!::Render->occ_visible(bb)) return;
     // render
 	RCache.set_xform_world(parent);
-    Device.SetRS(D3DRS_TEXTUREFACTOR,	color);
-    for (RBMapPairIt p_it=m_RenderBuffers.begin(); p_it!=m_RenderBuffers.end(); p_it++){
-		RBVector& rb_vec = p_it->second;
-	    u32 vBase;
-    	for (RBVecIt rb_it=rb_vec.begin(); rb_it!=rb_vec.end(); rb_it++)
-            Device.DP(D3DPT_TRIANGLELIST,rb_it->pGeom,0,rb_it->dwNumVertex/3);
+    if (s){
+    	RenderList(parent,color,false,m_SurfFaces[s]);
+    }else{
+	    Device.SetRS(D3DRS_TEXTUREFACTOR,	color);
+        for (RBMapPairIt p_it=m_RenderBuffers.begin(); p_it!=m_RenderBuffers.end(); p_it++){
+            RBVector& rb_vec = p_it->second;
+            u32 vBase;
+            for (RBVecIt rb_it=rb_vec.begin(); rb_it!=rb_vec.end(); rb_it++)
+                Device.DP(D3DPT_TRIANGLELIST,rb_it->pGeom,0,rb_it->dwNumVertex/3);
+        }
+	    Device.SetRS(D3DRS_TEXTUREFACTOR,	0xffffffff);
     }
-    Device.SetRS(D3DRS_TEXTUREFACTOR,	0xffffffff);
 }
 //----------------------------------------------------
+
+void CEditableMesh::RenderEdge(const Fmatrix& parent, CSurface* s, u32 color)
+{
+    if (!m_LoadState.is(LS_RBUFFERS)) CreateRenderBuffers();
+//	if (!m_Visible) return;
+	RCache.set_xform_world(parent);
+	Device.SetShader(Device.m_WireShader);
+	Device.RenderNearer(0.001);
+
+    // render
+    Device.SetRS(D3DRS_FILLMODE,D3DFILL_WIREFRAME);
+    if (s){
+    	RenderList(parent,color,true,m_SurfFaces[s]);
+    }else{
+	    Device.SetRS(D3DRS_TEXTUREFACTOR,	color);
+        for (RBMapPairIt p_it=m_RenderBuffers.begin(); p_it!=m_RenderBuffers.end(); p_it++){
+            RBVector& rb_vec = p_it->second;
+            u32 vBase;
+            for (RBVecIt rb_it=rb_vec.begin(); rb_it!=rb_vec.end(); rb_it++)
+                Device.DP(D3DPT_TRIANGLELIST,rb_it->pGeom,0,rb_it->dwNumVertex/3);
+        }
+	    Device.SetRS(D3DRS_TEXTUREFACTOR,	0xffffffff);
+    }
+    Device.SetRS(D3DRS_FILLMODE,Device.dwFillMode);
+    Device.ResetNearer();
+}
+//----------------------------------------------------
+
 #define SKEL_MAX_FACE_COUNT 10000
 struct svertRender
 {
