@@ -96,7 +96,7 @@ void CLightDB_Static::Load			(IReader *fs)
 
 		F->close		();
 	}
-	Msg	("* Layers/Lights : %d / %d",Layers.size(),Lights.size());
+	//Msg	("* Layers/Lights : %d / %d",Layers.size(),Lights.size());
 }
 
 void CLightDB_Static::Unload		(void)

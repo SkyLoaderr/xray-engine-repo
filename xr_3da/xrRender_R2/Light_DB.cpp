@@ -84,7 +84,7 @@ void CLight_DB::Load			(IReader *fs)
 
 		F->close			();
 	}
-	Msg	("* Layers/Lights : %d / %d",v_static_controls.size(),v_static.size());
+	// Msg	("* Layers/Lights : %d / %d",v_static_controls.size(),v_static.size());
 }
 
 void CLight_DB::Unload		()
