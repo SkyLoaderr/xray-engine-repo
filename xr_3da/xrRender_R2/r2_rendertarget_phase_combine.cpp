@@ -2,6 +2,8 @@
 #include "..\igame_persistent.h"
 #include "..\environment.h"
 
+#define STENCIL_CULL 0
+
 void	CRenderTarget::phase_combine	()
 {
 	u32			Offset					= 0;
@@ -14,20 +16,22 @@ void	CRenderTarget::phase_combine	()
 		t_LUM_dest->surface_set		(rt_LUM_pool[gpu_id*2+1]->pSurface);
 	}
 
-	// low/hi RTs
-	u_setrt				( rt_Generic_0,rt_Generic_1,0,HW.pBaseZB );
-	RCache.set_CullMode	( CULL_NONE );
-	RCache.set_Stencil	( FALSE		);
-
-	// Draw full-screen quad textured with our scene image
-	{
-		//.
+	// 
+	if (STENCIL_CULL)	{
 		RCache.set_Stencil					(TRUE,D3DCMP_LESSEQUAL,0x01,0xff,0x00);	// stencil should be >= 1
 		if (RImplementation.o.nvstencil)	{
 			u_stencil_optimize				(FALSE);
 			RCache.set_ColorWriteEnable		();
 		}
+	}
 
+	// low/hi RTs
+	u_setrt				( rt_Generic_0,rt_Generic_1,0,HW.pBaseZB );
+	RCache.set_CullMode	( CULL_NONE );
+	// RCache.set_Stencil	( FALSE		);
+
+	// Draw full-screen quad textured with our scene image
+	{
 		// Compute params
 		Fmatrix		m_v2w;			m_v2w.invert				(Device.mView		);
 		CEnvDescriptor&		envdesc	= g_pGamePersistent->Environment.CurrentEnv;
@@ -72,16 +76,15 @@ void	CRenderTarget::phase_combine	()
 
 	// Draw skybox
 	{
-		//.
 		RCache.set_Stencil			(TRUE,D3DCMP_EQUAL,0x00,0xff,0x00);
 		if (RImplementation.o.nvstencil)	{
 			u_stencil_optimize				(FALSE);
 			RCache.set_ColorWriteEnable		();
 		}
-		g_pGamePersistent->Environment.RenderFirst	();
 	}
 
 	// Perform blooming filter and distortion if needed
+	RCache.set_Stencil	(FALSE);
 	phase_bloom			( );
 	BOOL	bDistort	= RImplementation.o.distortion;
 	if (0==RImplementation.mapDistort.size())	bDistort	= FALSE;
