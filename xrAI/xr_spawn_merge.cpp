@@ -44,6 +44,7 @@ class CSpawn : public CThread {
 public:
 	CSE_ALifeGraph::SLevel		m_tLevel;
 	ALIFE_OBJECT_P_VECTOR		m_tpSpawnPoints;
+	xr_vector<CSE_LevelPoint*>	m_tpLevelSpawnPoints;
 	u32							m_dwLevelID;
 	CAI_Map						*m_tpAI_Map;
 	CSE_ALifeCrossTable			*m_tpCrossTable;
@@ -72,8 +73,7 @@ public:
 		int						S_id	= 0;
 		xr_map<LPCSTR,xr_vector<CSE_ALifeObject*>*,pred_str>	l_tpSpawnGroupObjectsMap;
 		xr_map<LPCSTR,CSE_SpawnGroup*,pred_str>					l_tpSpawnGroupControlsMap;
-		while (0!=(S = SP->open_chunk(S_id)))
-		{
+		while ( 0 != (S = SP->open_chunk(S_id))) {
 			P.B.count			= S->length();
 			S->r				(P.B.data,P.B.count);
 			S->close			();
@@ -116,8 +116,13 @@ public:
 						l_tpSpawnGroup->m_dwSpawnGroup = *dwGroupOffset++;
 						l_tpSpawnGroupControlsMap.insert(mk_pair(l_tpSpawnGroup->s_name_replace,l_tpSpawnGroup));
 					}
-					else
-						xr_delete(E);
+					else {
+						CSE_LevelPoint *l_tpLevelPoint = dynamic_cast<CSE_LevelPoint*>(E);
+						if (l_tpLevelPoint)
+							m_tpLevelSpawnPoints.push_back(l_tpLevelPoint);
+						else
+							xr_delete(E);
+					}
 				}
 			}
 			else
