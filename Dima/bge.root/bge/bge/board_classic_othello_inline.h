@@ -66,21 +66,26 @@ IC	bool CBoardClassicOthello::passed			() const
 template <CBoardClassicOthello::cell_type opponent_color>
 IC	void CBoardClassicOthello::undo_move		()
 {
-	VERIFY							(m_current_flip > m_flip_stack);
+	VERIFY								(!m_flip_stack.empty());
+
+	CStackCell							&stack_cell = m_flip_stack.top();
+	int									flip_count = (int)stack_cell.m_flip_count;
+	m_passed							= stack_cell.m_passed;
+	m_flip_stack.pop					();
+	m_color_to_move						= opponent_color;
 	
-	--m_current_flip;
-	int								flip_count = (int)reinterpret_cast<size_t>(*m_current_flip);
+	if (flip_count) {
+		VERIFY							(!m_flip_stack.empty());
+		*m_flip_stack.top().m_cell		= EMPTY;
+		m_flip_stack.pop				();
 
-	VERIFY							(m_current_flip > m_flip_stack);
-	**(--m_current_flip)			= EMPTY;
-
-	for ( ; flip_count; ) {
-		--flip_count;
-        **(--m_current_flip)		= opponent_color;
-		VERIFY						(m_current_flip >= m_flip_stack);
-    }
-
-	m_color_to_move					= opponent_color == BLACK ? WHITE : BLACK;
+		for ( ; flip_count; ) {
+			--flip_count;
+			VERIFY						(!m_flip_stack.empty());
+			*m_flip_stack.top().m_cell	= opponent_color;
+			m_flip_stack.pop			();
+		}
+	}
 }
 
 IC	void CBoardClassicOthello::undo_move		()
@@ -99,4 +104,9 @@ IC	bool CBoardClassicOthello::can_move			(const cell_index &index0, const cell_i
 IC	int	 CBoardClassicOthello::compute_difference	(const cell_index &index0, const cell_index &index1) const
 {
 	return							(compute_difference(index(index0,index1)));
+}
+
+IC	void CBoardClassicOthello::change_color		()
+{
+	m_color_to_move					= m_color_to_move == BLACK ? WHITE : BLACK;
 }

@@ -8,7 +8,6 @@
 
 #include "stdafx.h"
 #include "board_classic_othello.h"
-#include "stack_reserve.h"
 
 const u8 CBoardClassicOthello::flipping_directions[BOARD_SIZE] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -25,27 +24,25 @@ const u8 CBoardClassicOthello::flipping_directions[BOARD_SIZE] = {
 
 void CBoardClassicOthello::start_position	()
 {
-	Memory::mem_fill(m_board,DUMMY,sizeof(m_board));
+	Memory::mem_fill		(m_board,DUMMY,sizeof(m_board));
 	
 	for (cell_index i=0; i<8; ++i)
 		for (cell_index j=0; j<8; ++j)
-			cell	(i,j,EMPTY);
+			cell			(i,j,EMPTY);
 	
-	cell			(3,3,WHITE);
-	cell			(3,4,BLACK);
-	cell			(4,3,BLACK);
-	cell			(4,4,WHITE);
+	cell					(3,3,WHITE);
+	cell					(3,4,BLACK);
+	cell					(4,3,BLACK);
+	cell					(4,4,WHITE);
 
-	m_color_to_move	= BLACK;
-	m_empties		= 60;
-	m_difference	= 0;
-	m_passed		= false;
-	m_current_flip	= m_flip_stack;
+	m_color_to_move			= BLACK;
+	m_empties				= 60;
+	m_difference			= 0;
+	m_passed				= false;
 
-	stack_reserve<u32>	s;
-	s.reserve			(4096);
-	s.push				(12);
-	s.push				(6);
+	while (!m_flip_stack.empty())
+		m_flip_stack.pop();
+	m_flip_stack.c.reserve	(4096);
 }
 
 void CBoardClassicOthello::show_cell		(const cell_type &value) const

@@ -31,6 +31,29 @@ public:
 	typedef u8 cell_type;
 	typedef s8 cell_index;
 
+public:
+	union CStackCell {
+		cell_type	*m_cell;
+		struct {
+			u16		m_flip_count;
+			bool	m_passed;
+		};
+
+		IC	CStackCell(cell_type *cell)
+		{
+			m_cell	= cell;
+		}
+
+		IC	CStackCell(u16 flip_count, bool passed)
+		{
+			m_flip_count	= flip_count;
+			m_passed		= passed;
+		}
+	};
+	
+public:
+	typedef std::stack<CStackCell,std::vector<CStackCell> > flip_stack;
+
 private:
 	static const u8 flipping_directions[BOARD_SIZE];
 
@@ -40,11 +63,13 @@ private:
 	u8				m_empties;
 	int				m_difference;
 	bool			m_passed;
-	cell_type		*m_flip_stack[4096];
-	cell_type		**m_current_flip;
+	flip_stack		m_flip_stack;
 
 protected:
 	IC		void			show_cell				(const cell_type &value) const;
+
+protected:
+	IC		void			change_color			();
 
 protected:
 	template <int increment, cell_type _color_to_move, cell_type opponent_color>
