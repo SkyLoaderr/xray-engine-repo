@@ -4,13 +4,10 @@
 
 #include "stdafx.h"
 #include "AI_Space.h"
-#include "fstaticrender.h"
+#include "..\fstaticrender.h"
 
 #include "x_ray.h"
 #include "xr_smallfont.h"
-
-#include "xr_creator.h"
-#include "xr_object.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

@@ -37,6 +37,7 @@ BOOL CGameObject::Spawn	(BOOL bLocal, int server_id, Fvector4& o_pos)
 	AI_NodeID			= DWORD(node);
 	AI_Node				= Level().AI.Node(AI_NodeID);
 	AI_Lighting			= (AI_Node?float(AI_Node->light):255);
+	return	bResult;
 }
 
 void CGameObject::Sector_Detect	()

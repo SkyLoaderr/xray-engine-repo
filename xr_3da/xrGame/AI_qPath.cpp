@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "xr_creator.h"
 #include "ai_space.h"
 #include "ai_astar.h"
 
