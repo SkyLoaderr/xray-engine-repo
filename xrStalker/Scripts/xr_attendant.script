@@ -289,9 +289,9 @@ function set_scheme (npc, ini, scheme, section, gulag_name)
 	st.logic = xr_logic.cfg_get_switch_conditions (ini, section, npc)
 	
 	st.leader = utils.cfg_get_string (ini, section, "leader",  npc, false, "")
-	st.animation_move = utils.cfg_get_string (ini, section, "animation_walk",  npc, false, "walk")
-	st.animation_run = utils.cfg_get_string (ini, section, "animation_run",  npc, false, "run")
-	st.animation_sprint = utils.cfg_get_string (ini, section, "animation_sprint",  npc, false, "sprint")
+	st.animation_move = utils.cfg_get_string (ini, section, "animation_walk",  npc, false, "", "walk")
+	st.animation_run = utils.cfg_get_string (ini, section, "animation_run",  npc, false, "", "run")
+	st.animation_sprint = utils.cfg_get_string (ini, section, "animation_sprint",  npc, false, "", "sprint")
 	st.formation = utils.cfg_get_bool (ini, section, "formation_line", npc, false, false)
 	st.distance = utils.cfg_get_number (ini, section, "distance", npc, false)
 	if st.distance == nil then
