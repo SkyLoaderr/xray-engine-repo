@@ -15,6 +15,8 @@ const	int		S_size		= 64;
 const	int		S_rt_size	= 512;
 const	int		batch_size	= 128;
 const	float	S_tess		= .5f;
+const	int 	S_ambient	= 64;
+const	int 	S_clip		= 256-12;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -121,12 +123,10 @@ IC float PLC_energy	(Fvector& P, Fvector& N, xrLIGHT* L, float E)
 	}
 }
 
-IC DWORD PLC_calc	(Fvector& P, Fvector& N, xrLIGHT* L, float E)
+IC int PLC_calc	(Fvector& P, Fvector& N, xrLIGHT* L, float E)
 {
 	float	A		= 1.f-.5f*PLC_energy(P,N,L,E);
 	int		iA		= iCeil(255.f*A);
-	clamp	(iA,64,255);
-	return	D3DCOLOR_RGBA	(iA,iA,iA,iA);
 }
 
 //
@@ -267,6 +267,7 @@ void CLightShadows::calculate	()
 	Device.set_xform_view		(Device.mView);
 }
 
+#define CLS(a) D3DCOLOR_RGBA(a,a,a,a)
 void CLightShadows::render	()
 {
 	Device.Statistic.RenderDUMP_Srender.Begin	();
@@ -354,9 +355,15 @@ void CLightShadows::render	()
 			tess_tri&	TT		= tess[tid];
 			Fvector* 	v		= TT.v;
 			Fvector		T;
-			S.M.transform(T,v[0]); pv->set(v[0],PLC_calc(v[0],TT.N,S.L,Le),(T.x+1)*t_scale.x+t_offset.x,(1-T.y)*t_scale.y+t_offset.y); pv++;
-			S.M.transform(T,v[1]); pv->set(v[1],PLC_calc(v[1],TT.N,S.L,Le),(T.x+1)*t_scale.x+t_offset.x,(1-T.y)*t_scale.y+t_offset.y); pv++;
-			S.M.transform(T,v[2]); pv->set(v[2],PLC_calc(v[2],TT.N,S.L,Le),(T.x+1)*t_scale.x+t_offset.x,(1-T.y)*t_scale.y+t_offset.y); pv++;
+
+			int	c0				= PLC_calc(v[0],TT.N,S.L,Le);	if (c0<S_ambient) c0=S_ambient; else if (c0>255) c0=255;
+			int	c1				= PLC_calc(v[1],TT.N,S.L,Le);	if (c1<S_ambient) c1=S_ambient; else if (c1>255) c1=255;
+			int	c2				= PLC_calc(v[2],TT.N,S.L,Le);	if (c2<S_ambient) c2=S_ambient; else if (c2>255) c2=255;
+			if ((c0>S_clip) && (c1>S_clip) && (c2>S_clip))		continue;
+
+			S.M.transform(T,v[0]); pv->set(v[0],CLS(c0),(T.x+1)*t_scale.x+t_offset.x,(1-T.y)*t_scale.y+t_offset.y); pv++;
+			S.M.transform(T,v[1]); pv->set(v[1],CLS(c1),(T.x+1)*t_scale.x+t_offset.x,(1-T.y)*t_scale.y+t_offset.y); pv++;
+			S.M.transform(T,v[2]); pv->set(v[2],CLS(c2),(T.x+1)*t_scale.x+t_offset.x,(1-T.y)*t_scale.y+t_offset.y); pv++;
 
 			batch++;
 			if (batch==batch_size)	{
