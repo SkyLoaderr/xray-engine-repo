@@ -27,6 +27,26 @@ IC	bool			CheckSize()
 {
 	return nj<JOINTS_LIMIT && nb<BODIES_LIMIT;
 }
+IC	int				MaxJoints()
+{
+	return JOINTS_LIMIT-nj;
+}
+IC	int				MaxJoints(CPHIsland* island)
+{
+	return MaxJoints()-island->nj;
+}
+
+IC	int				MaxBodies(CPHIsland* island)
+{
+	return BODIES_LIMIT-nb-island->nb;
+}
+
+IC	bool			CanMerge(CPHIsland* island,int& MAX_JOINTS)
+{
+	MAX_JOINTS=MaxJoints();
+	return MAX_JOINTS>0 && ((nb+island->nb)<BODIES_LIMIT);
+}
+
 IC	bool			IsActive()			{return b_active;}
 
 IC	dWorldID		DWorld()

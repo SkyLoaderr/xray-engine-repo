@@ -103,13 +103,13 @@ IC void add_contact_body_effector(dBodyID body,const dContact& c,SGameMtl* mater
 
 
 
-IC static bool CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup,CPHIsland* world)
+IC static int CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup,CPHIsland* world,const int &MAX_CONTACTS)
 {
 	const int RS= 800;
 	const int N = RS;
 	
 	static dContact contacts[RS];
-	bool	collided=false;
+	int	collided_contacts=0;
 	// get the contacts up to a maximum of N contacts
 	int n;
 	
@@ -237,9 +237,9 @@ IC static bool CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup,
 		/////////////////////////////////////////////////////////////////////////////////////////////////
 		if	(pushing_neg)
 			surface.mu=dInfinity;
-		if	(do_collide&&world->CheckSize())
+		if	(do_collide && collided_contacts<MAX_CONTACTS)
 		{
-			collided=true;
+			++collided_contacts;
 			#ifdef DRAW_CONTACTS
 			Contacts.push_back(c);
 			#endif
@@ -248,11 +248,15 @@ IC static bool CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup,
 			dJointAttach			(contact_joint, dGeomGetBody(g1), dGeomGetBody(g2));
 		}
 	}
-	return collided;
+	return collided_contacts;
 }
 void NearCallback(CPHObject* obj1,CPHObject* obj2, dGeomID o1, dGeomID o2)
 {	
-	if(CollideIntoGroup(o1,o2,ContactGroup,obj1->DActiveIsland()))
+	CPHIsland* island1=obj1->DActiveIsland();
+	CPHIsland* island2=obj2->DActiveIsland();
+	int MAX_CONTACTS=-1;
+	if(!island1->CanMerge(island2,MAX_CONTACTS)) return;
+	if(CollideIntoGroup(o1,o2,ContactGroup,island1,MAX_CONTACTS)!=0)
 	{	
 		if(obj2)
 		{
@@ -263,7 +267,8 @@ void NearCallback(CPHObject* obj1,CPHObject* obj2, dGeomID o1, dGeomID o2)
 }
 void CollideStatic(dGeomID o2,CPHObject* obj2)
 {
-	CollideIntoGroup(ph_world->GetMeshGeom(),o2,ContactGroup,obj2->DActiveIsland());
+	CPHIsland* island2=obj2->DActiveIsland();
+	CollideIntoGroup(ph_world->GetMeshGeom(),o2,ContactGroup,island2,island2->MaxJoints());
 }
 
 
