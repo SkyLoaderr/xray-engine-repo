@@ -27,7 +27,7 @@ void CEffectorBobbing::SetState(u32 mstate){
 #define CROUCH_FACTOR	0.75f
 #define SPEED_REMINDER	5.f 
 
-BOOL CEffectorBobbing::Process		(Fvector &p, Fvector &d, Fvector &n)
+BOOL CEffectorBobbing::Process		(Fvector &p, Fvector &d, Fvector &n, float& fFov, float& fFar, float& fAspect)
 {
 	fTime			+= Device.fTimeDelta;
 	if (dwMState&CActor::EMoveCommand::mcAnyMove){

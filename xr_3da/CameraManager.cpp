@@ -89,6 +89,13 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 	unaffected_vNormal.set				(vNormal);
 	unaffected_vRight.crossproduct		(vNormal,vDirection);
 
+	float aspect				= Device.fHeight_2/Device.fWidth_2;
+	float src					= 10*Device.fTimeDelta;	clamp(src,0.f,1.f);
+	float dst					= 1-src;
+	fFov						= fFov*dst		+ fFOV_Dest*src;
+	fFar						= fFar*dst		+ fFAR_Dest*src;
+	fAspect						= fAspect*dst	+ (fASPECT_Dest*aspect)*src;
+
 	// Effector
 	if (m_Effectors.size()){
 		for (int i=m_Effectors.size()-1; i>=0; i--){
@@ -96,7 +103,7 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 			Fvector sp=vPosition;
 			Fvector sd=vDirection;
 			Fvector sn=vNormal;
-			if ((eff->fLifeTime>0)&&eff->Process(vPosition,vDirection,vNormal))
+			if ((eff->fLifeTime>0)&&eff->Process(vPosition,vDirection,vNormal,fFov,fFar,fAspect))
 			{
 				if (eff->Affected()){
 					sp.sub(vPosition,sp);	sd.sub(vDirection,sd);	sn.sub(vNormal,sn);
@@ -130,12 +137,6 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 	Device.vCameraRight.set		( vRight		);
 	
 	// projection
-	float aspect				= Device.fHeight_2/Device.fWidth_2;
-	float src					= 10*Device.fTimeDelta;	clamp(src,0.f,1.f);
-	float dst					= 1-src;
-	fFov						= fFov*dst		+ fFOV_Dest*src;
-	fFar						= fFar*dst		+ fFAR_Dest*src;
-	fAspect						= fAspect*dst	+ (fASPECT_Dest*aspect)*src;
 	Device.fFOV					= fFov;
 	Device.fASPECT				= fAspect;
 	Device.mProject.build_projection(deg2rad(fFov*fAspect), fAspect, VIEWPORT_NEAR, fFar);

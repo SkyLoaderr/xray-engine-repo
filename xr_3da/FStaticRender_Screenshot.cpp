@@ -3,6 +3,7 @@
 #include "fs.h"
 #include "tga.h"
 #include "xr_creator.h"
+#include "xrImage_Resampler.h"
 
 #define RGBA_GETALPHA(rgb)      u32((rgb) >> 24)
 #define RGBA_GETRED(rgb)        u32(((rgb) >> 16) & 0xff)
@@ -35,7 +36,7 @@ IC void MouseRayFromPoint	( Fvector& direction, int x, int y, Fmatrix& m_CamMat 
 	direction.normalize();
 }
 
-void CRender::Screenshot		()
+void CRender::Screenshot		(BOOL bSquare)
 {
 	if (!Device.bReady) return;
 	if ((psDeviceFlags&rsFullscreen) == 0) {
@@ -74,17 +75,30 @@ void CRender::Screenshot		()
 			);
 	}
 
-	// 
-    TGAdesc			p;
-    p.format		= IMG_24B;
-    p.scanlenght	= D.Pitch;
-    p.width			= Device.dwWidth;
-    p.height		= Device.dwHeight;
-    p.data			= D.pBits;
-	
 	string64		buf,buf1;
 	strconcat		(buf,Path.SShot,"ss_",psSystemUserName,"_",itoa(timeGetTime(),buf1,10));
-    p.maketga		(buf);
+
+	TGAdesc			p;
+	p.format		= IMG_24B;
+	if (bSquare){
+		u32* data	= (u32*)xr_malloc(Device.dwHeight*Device.dwHeight*4);
+		imf_Process	(data,Device.dwHeight,Device.dwHeight,(u32*)D.pBits,Device.dwWidth,Device.dwHeight,imf_lanczos3);
+		p.scanlenght= Device.dwHeight*4;
+		p.width		= Device.dwHeight;
+		p.height	= Device.dwHeight;
+		p.data		= data;
+		p.maketga	(buf);
+		_FREE		(data);
+	}else{
+		// 
+		p.scanlenght	= D.Pitch;
+		Log("a",p.scanlenght);
+		Log("b",Device.dwWidth);
+		p.width			= Device.dwWidth;
+		p.height		= Device.dwHeight;
+		p.data			= D.pBits;
+		p.maketga		(buf);
+	}
 	
 	R_CHK(pFB->UnlockRect());
 	pFB->Release	();

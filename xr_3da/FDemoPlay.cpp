@@ -72,7 +72,7 @@ void CDemoPlay::stat_Stop()
 #define FIX(a) while (a>=m_count) a-=m_count
 
 extern void spline1(float,Fvector*,Fvector*);
-BOOL CDemoPlay::Process(Fvector &P, Fvector &D, Fvector &N)
+BOOL CDemoPlay::Process(Fvector &P, Fvector &D, Fvector &N, float& fFov, float& fFar, float& fAspect)
 {
 	if (m_pMotion)
 	{

@@ -31,7 +31,7 @@ class ENGINE_API CDemoPlay :
 	void				stat_Start	();
 	void				stat_Stop	();
 public:
-	virtual	BOOL		Process		(Fvector &p, Fvector &d, Fvector &n);
+	virtual	BOOL		Process		(Fvector &p, Fvector &d, Fvector &n, float& fFov, float& fFar, float& fAspect);
 
 						CDemoPlay	(const char *name, float ms, BOOL cycle=false, float life_time=60*60*1000);
 	virtual				~CDemoPlay	();

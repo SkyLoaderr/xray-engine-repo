@@ -91,10 +91,10 @@ void CDemoRecord::MakeCubeMapFace(Fvector &D, Fvector &N)
 	case 5:
 		N.set		(cmNorm[s_idx]);
 		D.set		(cmDir[s_idx]);
-		Render->Screenshot	();
+		Render->Screenshot	(TRUE);
 	break;
 	case 6:
-		Render->Screenshot	();
+		Render->Screenshot	(TRUE);
 		N.set		(m_Camera.j);
 		D.set		(m_Camera.k);
 		psHUD_Flags	= s_hud_flag;
@@ -104,13 +104,14 @@ void CDemoRecord::MakeCubeMapFace(Fvector &D, Fvector &N)
 	s_idx++;
 }
 
-BOOL CDemoRecord::Process(Fvector &P, Fvector &D, Fvector &N)
+BOOL CDemoRecord::Process(Fvector &P, Fvector &D, Fvector &N, float& fFov, float& fFar, float& fAspect)
 {
 	if (hFile<=0)	return TRUE;
 
 	if (m_bMakeCubeMap){
 		MakeCubeMapFace(D,N);
 		P.set(m_Camera.c);
+		fAspect = 1.f;
 	}else{
 		if ((Device.dwTimeGlobal/500)%2==0) {
 			pApp->pFontSystem->SetSize	(0.02f);

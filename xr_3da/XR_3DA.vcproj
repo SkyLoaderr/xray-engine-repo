@@ -902,6 +902,12 @@
 							RelativePath=".\TextureManager_Runtime.h">
 						</File>
 						<File
+							RelativePath="xrImage_Resampler.cpp">
+						</File>
+						<File
+							RelativePath="xrImage_Resampler.h">
+						</File>
+						<File
 							RelativePath=".\xr_avi.cpp">
 						</File>
 						<File

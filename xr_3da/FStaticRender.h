@@ -147,7 +147,7 @@ public:
 	virtual void					Calculate				();
 	virtual void					Render					();
 	virtual void					RenderBox				(CSector* S, Fbox& BB, int sh);
-	virtual void					Screenshot				();
+	virtual void					Screenshot				(BOOL bSquare=FALSE);
 	
 	// Render mode
 	virtual void					rmNear					();

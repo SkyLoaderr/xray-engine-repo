@@ -14,7 +14,7 @@ class ENGINE_API CEffectorFall : public CEffector
 	float	fPower;
 	float	fPhase;
 public:
-	virtual	BOOL	Process(Fvector &p, Fvector &d, Fvector &n);
+	virtual	BOOL	Process(Fvector &p, Fvector &d, Fvector &n, float& fFov, float& fFar, float& fAspect);
 
 	CEffectorFall(float power, float life_time=1);
 	virtual ~CEffectorFall();

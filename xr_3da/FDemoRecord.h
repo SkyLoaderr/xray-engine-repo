@@ -40,7 +40,7 @@ public:
 	virtual void OnMouseMove			(int dx, int dy);
 	virtual void OnMouseHold			(int btn);
 	
-	virtual	BOOL Process				(Fvector &p, Fvector &d, Fvector &n);
+	virtual	BOOL Process				(Fvector &p, Fvector &d, Fvector &n, float& fFov, float& fFar, float& fAspect);
 };
 
 #endif // !defined(AFX_FDEMORECORD_H__D7638760_FB61_11D3_B4E3_4854E82A090D__INCLUDED_)

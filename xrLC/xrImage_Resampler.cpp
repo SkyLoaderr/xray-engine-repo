@@ -14,9 +14,11 @@
 #define RGBA_GETRED(rgb)        DWORD(((rgb) >> 16) & 0xff)
 #define RGBA_GETGREEN(rgb)      DWORD(((rgb) >> 8) & 0xff)
 #define RGBA_GETBLUE(rgb)       DWORD((rgb) & 0xff)
-#define D3DCOLOR_ARGB(a,r,g,b) \
-    ((DWORD)((((a)&0xff)<<24)|(((r)&0xff)<<16)|(((g)&0xff)<<8)|((b)&0xff)))
 #define RGBA_MAKE(r,g,b,a)		D3DCOLOR_ARGB(a,r,g,b)
+#endif
+#ifndef D3DCOLOR_ARGB
+#define D3DCOLOR_ARGB(a,r,g,b) \
+	((DWORD)((((a)&0xff)<<24)|(((r)&0xff)<<16)|(((g)&0xff)<<8)|((b)&0xff)))
 #endif
 
 
@@ -41,8 +43,9 @@ Image *	new_image(int xsize, int ysize)		/* create a blank image */
 	Image *image;
 
 	if((image = (Image *)xr_malloc(sizeof(Image)))
-	&& (image->data = (Pixel *)calloc(ysize*xsize,sizeof(Pixel)))) 
+	&& (image->data = (Pixel *)xr_malloc(ysize*xsize*sizeof(Pixel)))) 
 	{
+		ZeroMemory(image->data,ysize*xsize*sizeof(Pixel));
 		image->xsize	= xsize;
 		image->ysize	= ysize;
 		image->span		= xsize;
@@ -258,7 +261,8 @@ void	imf_Process	(u32* dstI, u32 dstW, u32 dstH, u32* srcI, u32 srcW, u32 srcH, 
 
 	/* pre-calculate filter contributions for a row */
 	try	{
-		contrib = (CLIST *)	calloc	(dst.xsize, sizeof(CLIST));
+		contrib = (CLIST *)	xr_malloc	(dst.xsize*sizeof(CLIST));
+		ZeroMemory(contrib,dst.xsize*sizeof(CLIST));
 	} catch (...) {
 		Msg		("imf_Process::2");
 	};
@@ -269,7 +273,8 @@ void	imf_Process	(u32* dstI, u32 dstW, u32 dstH, u32* srcI, u32 srcW, u32 srcH, 
 			for(i = 0; i < dst.xsize; ++i) 
 			{
 				contrib[i].n	= 0;
-				contrib[i].p	= (CONTRIB *)calloc((int) (width * 2 + 1),	sizeof(CONTRIB));
+				contrib[i].p	= (CONTRIB *)xr_malloc((int) (width * 2 + 1)*sizeof(CONTRIB));
+				ZeroMemory(contrib[i].p,(int) (width * 2 + 1)*sizeof(CONTRIB));
 				center			= double(i) / xscale;
 				left			= ceil	(center - width);
 				right			= floor	(center + width);
@@ -297,7 +302,8 @@ void	imf_Process	(u32* dstI, u32 dstW, u32 dstH, u32* srcI, u32 srcW, u32 srcH, 
 			for(i = 0; i < dst.xsize; ++i) 
 			{
 				contrib[i].n	= 0;
-				contrib[i].p	= (CONTRIB *)calloc((int) (fwidth * 2 + 1),	sizeof(CONTRIB));
+				contrib[i].p	= (CONTRIB *)xr_malloc((int) (fwidth * 2 + 1)*sizeof(CONTRIB));
+				ZeroMemory(contrib[i].p,(int) (fwidth * 2 + 1)*sizeof(CONTRIB));
 				center			= double(i) / xscale;
 				left			= ceil	(center - fwidth);
 				right			= floor	(center + fwidth);
@@ -324,7 +330,8 @@ void	imf_Process	(u32* dstI, u32 dstW, u32 dstH, u32* srcI, u32 srcW, u32 srcH, 
 
 	/* apply filter to zoom horizontally from src to tmp */
 	try	{
-		raster	= (Pixel *)calloc(src.xsize, sizeof(Pixel));
+		raster	= (Pixel *)xr_malloc(src.xsize*sizeof(Pixel));
+		ZeroMemory(raster,src.xsize*sizeof(Pixel));
 	} catch (...) {	Msg		("imf_Process::4");	};
 	try	{
 		for	(k = 0; k < tmp->ysize; ++k) 
@@ -357,7 +364,8 @@ void	imf_Process	(u32* dstI, u32 dstW, u32 dstH, u32* srcI, u32 srcW, u32 srcH, 
 
 	/* pre-calculate filter contributions for a column */
 	try	{
-		contrib = (CLIST *)calloc(dst.ysize, sizeof(CLIST));
+		contrib = (CLIST *)xr_malloc(dst.ysize*sizeof(CLIST));
+		ZeroMemory(contrib,dst.ysize*sizeof(CLIST));
 	} catch (...) {	Msg		("imf_Process::7");	};
 	if(yscale < 1.0) {
 		try	{
@@ -366,7 +374,8 @@ void	imf_Process	(u32* dstI, u32 dstW, u32 dstH, u32* srcI, u32 srcW, u32 srcH, 
 			for	(i = 0; i < dst.ysize; ++i) 
 			{
 				contrib[i].n	= 0;
-				contrib[i].p	= (CONTRIB *)calloc((int) (width * 2 + 1),sizeof(CONTRIB));
+				contrib[i].p	= (CONTRIB *)xr_malloc((int) (width * 2 + 1)*sizeof(CONTRIB));
+				ZeroMemory(contrib[i].p,(int) (width * 2 + 1)*sizeof(CONTRIB));
 				center			= (double) i / yscale;
 				left			= ceil	(center - width);
 				right			= floor	(center + width);
@@ -392,7 +401,8 @@ void	imf_Process	(u32* dstI, u32 dstW, u32 dstH, u32* srcI, u32 srcW, u32 srcH, 
 			for(i = 0; i < dst.ysize; ++i) 
 			{
 				contrib[i].n	= 0;
-				contrib[i].p	= (CONTRIB *)calloc((int) (fwidth * 2 + 1),sizeof(CONTRIB));
+				contrib[i].p	= (CONTRIB *)xr_malloc((int) (fwidth * 2 + 1)*sizeof(CONTRIB));
+				ZeroMemory(contrib[i].p,(int) (fwidth * 2 + 1)*sizeof(CONTRIB));
 				center			= (double) i / yscale;
 				left			= ceil	(center - fwidth);
 				right			= floor	(center + fwidth);
@@ -416,7 +426,8 @@ void	imf_Process	(u32* dstI, u32 dstW, u32 dstH, u32* srcI, u32 srcW, u32 srcH, 
 
 	/* apply filter to zoom vertically from tmp to dst */
 	try	{
-		raster = (Pixel *)calloc(tmp->ysize, sizeof(Pixel));
+		raster = (Pixel *)xr_malloc(tmp->ysize*sizeof(Pixel));
+		ZeroMemory(raster,tmp->ysize*sizeof(Pixel));
 	} catch (...) {	Msg		("imf_Process::9");	};
 	try	{
 		for(k = 0; k < dst.xsize; ++k) 

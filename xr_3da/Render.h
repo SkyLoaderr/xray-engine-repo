@@ -92,7 +92,7 @@ public:
 	virtual void					Calculate				()								= 0;
 	virtual void					Render					()								= 0;
 	virtual void					RenderBox				(CSector* S, Fbox& BB, int sh)	= 0;
-	virtual void					Screenshot				()								= 0;
+	virtual void					Screenshot				(BOOL bSquare=FALSE)			= 0;
 
 	// Render mode
 	virtual void					rmNear					()								= 0;
