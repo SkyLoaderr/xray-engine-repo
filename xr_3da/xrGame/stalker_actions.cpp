@@ -19,6 +19,8 @@
 #include "missile.h"
 #include "script_game_object.h"
 
+#include "inventory.h"
+
 using namespace StalkerDecisionSpace;
 
 #ifdef _DEBUG
@@ -132,7 +134,7 @@ void CStalkerActionFreeNoALife::execute		()
 	m_object->set_path_evaluator	(0);
 	m_object->set_desired_direction	(0);
 
-	m_object->CObjectHandler::set_goal	(eObjectActionIdle);
+//	m_object->CObjectHandler::set_goal	(eObjectActionIdle);
 
 //	m_object->CSightManager::setup		(CSightAction(SightManager::eSightTypeCover,false,true));
 //	Fvector							direction = Fvector().set(0.f,0.f,1.f);//Fvector().set(::Random.randF(1.f),0.f,::Random.randF(1.f));
@@ -150,10 +152,11 @@ void CStalkerActionFreeNoALife::execute		()
 	look_pos.y						+= .8f;
 	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypePosition,look_pos,true));
 
-	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
+	m_object->set_detail_path_type	(eDetailPathTypeSmooth);
 	m_object->set_body_state		(eBodyStateStand);
-	m_object->set_movement_type		(eMovementTypeWalk);
+	m_object->set_movement_type		(eMovementTypeStand);
 	m_object->set_mental_state		(eMentalStateDanger);
+	m_object->CObjectHandler::set_goal	(eObjectActionUse,m_object->inventory().GetItemFromInventory("vodka"));
 #endif
 }
 
