@@ -99,8 +99,8 @@ void CAI_Stalker::Init()
 
 	m_fTimeToStep					= 0;
 	
-	m_dwMyMaterialID				= GMLib.GetMaterialIdx("creatures\\human");
-	m_dwLastMaterialID				= GMLib.GetMaterialIdx("default");
+	m_wMyMaterialID				= GMLib.GetMaterialIdx("creatures\\human");
+	m_wLastMaterialID				= GMLib.GetMaterialIdx("default");
 
 	m_dwLookChangedTime				= 0;
 
@@ -239,7 +239,7 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	//проспавнить PDA у InventoryOwner
 	if (!CInventoryOwner::net_Spawn(DC)) return FALSE;
 
-	m_PhysicMovementControl.SetPLastMaterial		(&m_dwLastMaterialID);
+	m_PhysicMovementControl.SetPLastMaterial		(&m_wLastMaterialID);
 
 	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeHumanAbstract			*tpHuman = dynamic_cast<CSE_ALifeHumanAbstract*>(e);
@@ -514,9 +514,9 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 	VERIFY				(_valid(Position()));
 
 	if (g_Alive()) {
-		R_ASSERT					(GAMEMTL_NONE != m_dwLastMaterialID);
-		SGameMtlPair				*mtl_pair = GMLib.GetMaterialPair(m_dwMyMaterialID,m_dwLastMaterialID);
-		R_ASSERT3					(mtl_pair,"Undefined material pair: Actor # ", *GMLib.GetMaterial(m_dwLastMaterialID)->m_Name);
+		R_ASSERT					(GAMEMTL_NONE != m_wLastMaterialID);
+		SGameMtlPair				*mtl_pair = GMLib.GetMaterialPair(m_wMyMaterialID,m_wLastMaterialID);
+		R_ASSERT3					(mtl_pair,"Undefined material pair: Actor # ", *GMLib.GetMaterial(m_wLastMaterialID)->m_Name);
 		// ref_sound step
 		if (eMovementTypeStand != m_tMovementType) {
 			if(m_fTimeToStep < 0) {

@@ -127,7 +127,7 @@ public:
 		fWallFriction	= wall;
 		fGroundFriction	= ground;
 	}
-	void SetPLastMaterial(u32* p){m_character->SetPLastMaterial(p);}
+	void SetPLastMaterial(u16* p){m_character->SetPLastMaterial(p);}
 	float				GetCurrentFriction()		{ return fFriction; }
 
 	const Fvector&		GetVelocity		( )			{ return vVelocity;	}

@@ -64,8 +64,8 @@ private:
 	float					m_fTimeToStep;
 	bool					m_bStep;
 	
-	u32						m_dwMyMaterialID;
-	u32						m_dwLastMaterialID;
+	u16						m_wMyMaterialID;
+	u16						m_wLastMaterialID;
 
 	// dynamic objects, sounds, hurts, search positions, etc.
 	svector<SDynamicObject,	MAX_DYNAMIC_OBJECTS>		m_tpaDynamicObjects;

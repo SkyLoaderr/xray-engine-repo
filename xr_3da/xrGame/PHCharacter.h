@@ -45,7 +45,7 @@ float m_update_time;
 /////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////
-u32* p_lastMaterial;
+u16* p_lastMaterial;
 ///////////////////////////////////////////////////////////////////////////
 dVector3 m_safe_velocity;
 dVector3 m_safe_position;
@@ -62,7 +62,7 @@ public:
 
 
 
-void					SetPLastMaterial					(u32* p)													{p_lastMaterial=p;}													
+void					SetPLastMaterial					(u16* p)													{p_lastMaterial=p;}													
 
 virtual void			SetMaximumVelocity					(dReal /**vel/**/)											{}																			//!!
 virtual	void			SetJupmUpVelocity					(dReal /**velocity/**/)										{}																			//!!

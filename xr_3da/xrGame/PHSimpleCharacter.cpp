@@ -11,7 +11,7 @@
 
 const float LOSE_CONTROL_DISTANCE=0.5f; //fly distance to lose control
 const float CLAMB_DISTANCE=0.5f;
-static u32 lastMaterial;
+static u16 lastMaterial;
 float object_demage_factor=4.f;
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////class//CPHSimpleCharacter////////////////////
