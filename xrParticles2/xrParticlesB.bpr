@@ -4,7 +4,11 @@
   <MACROS>
     <VERSION value="BCB.06.00"/>
     <PROJECT value="x:\xrParticlesB.dll"/>
-    <OBJFILES value="Intermediate\stdafx.obj"/>
+    <OBJFILES value="Intermediate\stdafx.obj Intermediate\particle_manager.obj 
+      Intermediate\particle_core.obj Intermediate\particle_actions.obj 
+      Intermediate\particle_effect.obj 
+      Intermediate\particle_actions_collection.obj 
+      Intermediate\particle_actions_collection_io.obj"/>
     <RESFILES value=""/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -21,7 +25,7 @@
     <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
-    <USERDEFINES value="_EDITOR;PARTICLEDLL_EXPORTS;_DEBUG"/>
+    <USERDEFINES value="_EDITOR;XR_PARTICLES_EXPORTS;_DEBUG"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="xrParticlesB.bpf"/>
     <INCLUDEPATH value="C:\Rad\Borland\CBuilder6\Projects;R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore"/>
@@ -34,7 +38,7 @@
       -I$(BCB)\include -I$(BCB)\include\vcl -IP:\MagicFM_Borland\Sdk\Include 
       -IR:\Borland\Components6\AlexMX 
       -IR:\Borland\Components6\ElPack\Code\Source -IP:\xrCore -src_suffix cpp 
-      -D_EDITOR -DPARTICLEDLL_EXPORTS -D_DEBUG -boa"/>
+      -D_EDITOR -DXR_PARTICLES_EXPORTS -D_DEBUG -boa"/>
     <CFLAG1 value="-WD -Od -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -r- -ps 
       -a4 -6 -b- -k -y -v -vi- -tWD -tWM -c"/>
     <PFLAGS value="-N2Intermediate -N0Intermediate -$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
@@ -52,6 +56,13 @@
   <FILELIST>
       <FILE FILENAME="xrParticlesB.bpf" FORMNAME="" UNITNAME="xrParticlesB" CONTAINERID="BPF" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="stdafx.cpp" FORMNAME="" UNITNAME="StdAfx.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="psystem.h" FORMNAME="" UNITNAME="psystem.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="particle_manager.cpp" FORMNAME="" UNITNAME="particle_manager" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="particle_core.cpp" FORMNAME="" UNITNAME="particle_core" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="particle_actions.cpp" FORMNAME="" UNITNAME="particle_actions" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="particle_effect.cpp" FORMNAME="" UNITNAME="particle_effect" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="particle_actions_collection.cpp" FORMNAME="" UNITNAME="particle_actions_collection" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="particle_actions_collection_io.cpp" FORMNAME="" UNITNAME="particle_actions_collection_io" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -130,9 +141,10 @@ Count=1
 Item0=$(BCB)\source\vcl
 
 [HistoryLists\hlConditionals]
-Count=2
-Item0=_EDITOR;PARTICLEDLL_EXPORTS;_DEBUG
-Item1=_EDITOR;_PARTICLEDLLB;PARTICLEDLL_EXPORTS;_DEBUG
+Count=3
+Item0=_EDITOR;XR_PARTICLES_EXPORTS;_DEBUG
+Item1=_EDITOR;PARTICLEDLL_EXPORTS;_DEBUG
+Item2=_EDITOR;_PARTICLEDLLB;PARTICLEDLL_EXPORTS;_DEBUG
 
 [HistoryLists\hlIntOutputDir]
 Count=1

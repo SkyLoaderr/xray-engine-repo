@@ -9,7 +9,7 @@ MAKE = $(ROOT)\bin\make.exe -$(MAKEFLAGS) -f$**
 DCC = $(ROOT)\bin\dcc32.exe $**
 BRCC = $(ROOT)\bin\brcc32.exe $**
 #------------------------------------------------------------------------------
-PROJECTS = xrCoreB.dll xrCDBB.dll ParticleDLLB.dll xrSoundB.dll \
+PROJECTS = xrCoreB.dll xrCDBB.dll xrParticlesB.dll xrSoundB.dll \
   ECoreB_static.lib ActorEditor.exe LevelEditor.exe ParticleEditor.exe \
   ShaderEditor.exe
 #------------------------------------------------------------------------------
@@ -49,7 +49,7 @@ xrSoundB.dll: ..\xrSound\xrSoundB.bpr
   $(ROOT)\bin\bpr2mak $**
   $(ROOT)\bin\make -$(MAKEFLAGS) -f$*.mak
 
-ParticleDLLB.dll: ..\xrParticles\ParticleDLLB.bpr
+xrParticlesB.dll: ..\xrParticles2\xrParticlesB.bpr
   $(ROOT)\bin\bpr2mak $**
   $(ROOT)\bin\make -$(MAKEFLAGS) -f$*.mak
 

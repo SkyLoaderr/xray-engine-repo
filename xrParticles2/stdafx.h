@@ -12,6 +12,7 @@
 #include <xrCore.h>
 
 #include "psystem.h"
+#include "particle_core.h"
 
 #ifdef __BORLANDC__
 #pragma comment( lib, "x:\\xrCoreB.lib"	)
