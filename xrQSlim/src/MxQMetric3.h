@@ -35,9 +35,9 @@ public:
     MxQuadric3(double a, double b, double c, double d, double area=1.0)
 	{ init(a, b, c, d, area); }
     MxQuadric3(const float *n, double d, double area=1.0)
-	{ init(n[X], n[Y], n[Z], d, area); }
+	{ init(n[0], n[1], n[2], d, area); }
     MxQuadric3(const double *n, double d, double area=1.0)
-	{ init(n[X], n[Y], n[Z], d, area); }
+	{ init(n[0], n[1], n[2], d, area); }
     MxQuadric3(const MxQuadric3& Q) { *this = Q; }
 
     Mat3 tensor() const;
@@ -58,13 +58,13 @@ public:
     MxQuadric3& transform(const Mat4& P);
 
     double evaluate(double x, double y, double z) const;
-    double evaluate(const double *v) const {return evaluate(v[X], v[Y], v[Z]);}
-    double evaluate(const float *v) const  {return evaluate(v[X], v[Y], v[Z]);}
+    double evaluate(const double *v) const {return evaluate(v[0], v[1], v[2]);}
+    double evaluate(const float *v) const  {return evaluate(v[0], v[1], v[2]);}
 
     double operator()(double x, double y, double z) const
 	{ return evaluate(x, y, z); }
-    double operator()(const double *v) const {return evaluate(v[X],v[Y],v[Z]);}
-    double operator()(const float *v) const  {return evaluate(v[X],v[Y],v[Z]);}
+    double operator()(const double *v) const {return evaluate(v[0],v[1],v[2]);}
+    double operator()(const float *v) const  {return evaluate(v[0],v[1],v[2]);}
 
     bool optimize(Vec3& v) const;
     bool optimize(float *x, float *y, float *z) const;

@@ -111,8 +111,8 @@ bool internal_jacobi4(double a[4][4], double w[4], double v[4][4])
 
     if ( i >= MAX_ROTATIONS )
     {
-	mxmsg_signal(MXMSG_WARN, "Error computing eigenvalues.", "jacobi");
-	return false;
+		Debug.fatal("Error computing eigenvalues.");
+		return false;
     }
 
     // sort eigenfunctions

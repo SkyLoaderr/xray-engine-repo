@@ -162,9 +162,9 @@ bool MxQuadric3::optimize(float *x, float *y, float *z) const
     bool success = optimize(v);
     if( success )
     {
-	*x = (float)v[X];
-	*y = (float)v[Y];
-	*z = (float)v[Z];
+	*x = (float)v[0];
+	*y = (float)v[1];
+	*z = (float)v[2];
     }
     return success;
 }
