@@ -210,24 +210,6 @@
 					RelativePath=".\Config\gameplay\character_desc_zombied.xml">
 				</File>
 				<File
-					RelativePath=".\Config\gameplay\dialogs.xml">
-				</File>
-				<File
-					RelativePath=".\Config\gameplay\dialogs_agroprom.xml">
-				</File>
-				<File
-					RelativePath=".\Config\gameplay\dialogs_bar.xml">
-				</File>
-				<File
-					RelativePath=".\Config\gameplay\dialogs_escape.xml">
-				</File>
-				<File
-					RelativePath=".\Config\gameplay\dialogs_garbage.xml">
-				</File>
-				<File
-					RelativePath=".\Config\gameplay\dialogs_yantar.xml">
-				</File>
-				<File
 					RelativePath=".\Config\gameplay\encyclopedia_equipment.xml">
 				</File>
 				<File
@@ -308,6 +290,28 @@
 				<File
 					RelativePath=".\Config\gameplay\tasks_escape.xml">
 				</File>
+				<Filter
+					Name="Dialogs"
+					Filter="">
+					<File
+						RelativePath=".\Config\gameplay\dialogs.xml">
+					</File>
+					<File
+						RelativePath=".\Config\gameplay\dialogs_agroprom.xml">
+					</File>
+					<File
+						RelativePath=".\Config\gameplay\dialogs_bar.xml">
+					</File>
+					<File
+						RelativePath=".\Config\gameplay\dialogs_escape.xml">
+					</File>
+					<File
+						RelativePath=".\Config\gameplay\dialogs_garbage.xml">
+					</File>
+					<File
+						RelativePath=".\Config\gameplay\dialogs_yantar.xml">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="misc"
