@@ -36,6 +36,6 @@ void CActor::create_Skeleton(){
 	//disable_pars.rotational.acceleration *=rotational_factor;
 	//disable_pars.rotational.velocity *=rotational_factor;
 	//m_pPhysicsShell->set_DisableParams(disable_pars);
-	m_pPhysicsShell->Activate(false);
+	m_pPhysicsShell->Activate();
 	smart_cast<CKinematics*>(Visual())->CalculateBones();
 }
