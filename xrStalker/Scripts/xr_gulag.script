@@ -58,8 +58,8 @@ function fract:calculate() -- просчет лагеря
 		end	
 		-- обнуление заданий, не подходящих под текущее состояние
 		local avail = false
-		for states in v.state do
-			if states == self.state then
+		for key,stat in v.state do
+			if stat == self.state then
 				avail = true
 			end
 		end
@@ -383,11 +383,10 @@ function fract:setState(id)
 		if v.id == id then	
 			self.stateBegin = device():time_global()	
 			self.state = id
-			self:print()
+			self:calculate()
 			return true
 		end
 	end
-	self:print()
 	return false
 end
 function fract:getState()
