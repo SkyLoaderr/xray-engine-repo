@@ -80,7 +80,8 @@ BOOL CArtifact::net_Spawn(LPVOID DC)
 	/////////////////////////////////////////
 	m_CarringBoneID = u16(-1);
 	/////////////////////////////////////////
-
+	CSkeletonAnimated	*K=PSkeletonAnimated(Visual());
+	if(K)K->PlayCycle("idle");
 	return result;	
 }
 
@@ -172,7 +173,9 @@ void CArtifact::SoundDestroy(ref_sound& dest)
 
 void CArtifact::create_physic_shell	()
 {
-	create_box2sphere_physic_shell	();
+	///create_box2sphere_physic_shell	();
+	m_pPhysicsShell=P_build_Shell(this,false);
+	m_pPhysicsShell->Deactivate();
 }
 
 //////////////////////////////////////////////////////////////////////////
