@@ -97,7 +97,7 @@ Comments:
 #endif
 
 #include "NVMeshMender.h"
-#include <nv_math.h>
+#include "nv_math.h"
 #include <map>
 #include <set>
 #include <assert.h>
