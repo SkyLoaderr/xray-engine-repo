@@ -6,8 +6,8 @@
 
 class CUIHealth
 {
-	int				health;
-	int				armor;
+	float			health;
+	float			armor;
 	CUIStaticItem	back;
 	CUIStaticItem	health_bar;
 	CUIStaticItem	armor_bar;

@@ -142,7 +142,7 @@ void CDetailManager::Unload		()
 	_DELETE			(dtFS);
 }
 
-extern float ssaLIMIT;
+extern float r_ssaDISCARD;
 
 void CDetailManager::Render		(Fvector& vecEYE)
 {
@@ -206,7 +206,7 @@ void CDetailManager::Render		(Fvector& vecEYE)
 								float	scale	= Item.scale*(1-alpha);
 								float	radius	= R*scale;
 								
-								if (radius*radius/dist_sq < ssaLIMIT) continue;
+								if (radius*radius/dist_sq < r_ssaDISCARD) continue;
 
 								Item.scale_calculated = scale; //alpha;
 								vis.push_back	(siIT);
@@ -237,7 +237,7 @@ void CDetailManager::Render		(Fvector& vecEYE)
 							float	scale	= Item.scale*(1-alpha);
 							float	radius	= R*scale;
 
-							if (radius*radius/dist_sq < ssaLIMIT) continue;
+							if (radius*radius/dist_sq < r_ssaDISCARD) continue;
 
 							Item.scale_calculated = scale;	//alpha;
 							vis.push_back	(siIT);

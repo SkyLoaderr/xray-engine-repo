@@ -220,7 +220,7 @@ void CWallmarksEngine::AddWallmark	(CDB::TRI* pTri, const Fvector &contact_point
 	marks.push_back			(W);
 }
 
-extern float ssaLIMIT;
+extern float r_ssaDISCARD;
 void CWallmarksEngine::Render()
 {
 	if (marks.empty())			return;
@@ -238,7 +238,7 @@ void CWallmarksEngine::Render()
 	FVF::LIT*			w_start = w_verts;
 
 	Shader*	w_S			= marks.front()->shader;
-	float	ssaCLIP		= ssaLIMIT/4;
+	float	ssaCLIP		= r_ssaDISCARD/4;
 	for (DWORD i=0; i<marks.size(); i++)
 	{
 		wallmark* W		= marks	[i];

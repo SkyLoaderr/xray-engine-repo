@@ -581,7 +581,7 @@ void CCustomMonster::Death	()
 BOOL CCustomMonster::net_Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
 {
 	if (!inherited::net_Spawn(bLocal,server_id,o_pos,o_angle,P,flags))	return FALSE;
-	fHealth = m_iHealth;
+	fHealth					= float(m_iHealth);
 	AI_Path.DestNode		= AI_NodeID;
 
 	eye_matrix.identity	();

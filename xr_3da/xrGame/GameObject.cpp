@@ -112,12 +112,12 @@ void CGameObject::UpdateCL	()
 	}
 }
 
-void CGameObject::u_EventGen(NET_Packet& P, u16 type, u16 dest)
+void CGameObject::u_EventGen(NET_Packet& P, u32 type, u32 dest)
 {
 	P.w_begin	(M_EVENT);
 	P.w_u32		(Level().timeServer());
-	P.w_u16		(type);
-	P.w_u16		(dest);
+	P.w_u16		(u16(type&0xffff));
+	P.w_u16		(u16(dest&0xffff));
 }
 
 void CGameObject::u_EventSend(NET_Packet& P, BOOL sync)

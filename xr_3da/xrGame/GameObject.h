@@ -18,7 +18,7 @@ public:
 	NET_Queue_Event								net_Events;
 
 	// Utilities
-	void					u_EventGen			(NET_Packet& P, u16 type, u16 dest	);
+	void					u_EventGen			(NET_Packet& P, u32 type, u32 dest	);
 	void					u_EventSend			(NET_Packet& P, BOOL sync=TRUE		);
 	
 	// Methods

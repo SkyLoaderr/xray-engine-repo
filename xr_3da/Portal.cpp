@@ -96,7 +96,7 @@ CSector::~CSector()
 }
 
 //
-extern float ssaLIMIT;
+extern float r_ssaDISCARD;
 
 void CSector::Render(CFrustum &F)
 {
@@ -184,7 +184,7 @@ void CSector::Render(CFrustum &F)
 			float ssa			=	R*R/distSQ;
 			dir2portal.div		(_sqrt(distSQ));
 			ssa					*=	fabsf(PORTAL->P.n.dotproduct(dir2portal));
-			if (ssa<ssaLIMIT)	continue;
+			if (ssa<r_ssaDISCARD)	continue;
 
 			// Clip by frustum
 			vector<Fvector> &	POLY = PORTAL->getPoly();
