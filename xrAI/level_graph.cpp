@@ -60,6 +60,7 @@ CLevelGraph::CLevelGraph					(LPCSTR filename)
 						break;
 					}
 				if (!bOk) {
+					begin		(v,ii,ee);
 					for ( ; ii != ee; ++ii)
 						if (value(v,ii) == i) {
 							bOk = true;
