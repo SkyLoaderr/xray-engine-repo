@@ -429,8 +429,17 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 	s_Light_Direct.compile			(m_pd3dDevice,"shaders\\D\\light_direct.s");
 
 	// Create special textures
-	m_pd3dDevice->CreateTexture		(512,1, 1, 0, D3DFMT_R16F, D3DPOOL_DEFAULT, pT, NULL)
-t_SpecularPower_32				
+	{
+		const DWORD	size				= 512;
+		const float	array[size];
+		for (DWORD it=0; it<size; it++)
+		{
+			float	v = float(it)/float(size);
+		}
+		m_pd3dDevice->CreateTexture		(512,1, 1, 0, D3DFMT_R16F, D3DPOOL_MANAGED, &t_SpecularPower_32, NULL);
+
+	}
+
 
 
 	// Create shadow map texture and retrieve surface
