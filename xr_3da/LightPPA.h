@@ -10,6 +10,8 @@ struct ENGINE_API	PPA_Vertex
 {
 	Fvector			P;
 	Fvector			N;
+	float			u0,v0;
+	float			u1,v1;
 };
 
 class ENGINE_API	CLightPPA  

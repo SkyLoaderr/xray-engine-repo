@@ -36,6 +36,13 @@ void CLightPPA::Render(CList<PPA_Vertex>&	vlist)
 	if (0==triCount)	continue;
 	RAPID::tri* tris	= pCreator->ObjectSpace.GetStaticTris();
 
+	// Calculate XForms
+	Fmatrix	XForm, invXForm;
+	float	R			= sphere.R;
+	XForm.scale			(R,R,R);
+	XForm.translate_over(sphere.P);
+	invXForm.invert		(XForm);
+
 	// Create clipper
 	CFrustum			clipper;
 	Fplane				P;
@@ -89,18 +96,20 @@ void CLightPPA::Render(CList<PPA_Vertex>&	vlist)
 
 		// Triangulation
 		PPA_Vertex		vert1,vert2,vert3;
-		vert1.P.set		((*P)[0]);	vert1.N.set(N);
-		vert2.P.set		((*P)[0]);	vert2.N.set(N);
+		Fvector			uv;
+		vert1.P.set		((*P)[0]);	vert1.N.set(N);	invXForm.transform_tiny(uv,vert1.P); vert1.u0=uv.x; vert1.v0=uv.y; vert1.u1=uv.z; vert1.v1=.5f;
+		vert2.P.set		((*P)[0]);	vert2.N.set(N);	invXForm.transform_tiny(uv,vert2.P); vert2.u0=uv.x; vert2.v0=uv.y; vert2.u1=uv.z; vert2.v1=.5f;
 		vert3.N.set		(N);
 		for (DWORD i=2; i<P->size(); i++)
 		{
-			vert3.P.set	((*P)[i]);
+			vert3.P.set		((*P)[i]);
+			invXForm.transform_tiny(uv,vert1.P); 
+			vert3.u0=uv.x; vert3.v0=uv.y; 
+			vert3.u1=uv.z; vert3.v1=.5f;			
 			vlist.push_back	(vert1);
 			vlist.push_back	(vert2);
 			vlist.push_back	(vert3);
 			vert2.P.set		(vert3.P);
 		}
 	}
-	
-	// Calculate XForms
 }
