@@ -926,10 +926,25 @@ void CUIMainIngameWnd::ReceivePdaMessage(CInventoryOwner* pSender, EPdaMsg msg, 
 
 //////////////////////////////////////////////////////////////////////////
 
-CUIPdaMsgListItem * CUIMainIngameWnd::AddGameMessage(LPCSTR message)
+bool CUIMainIngameWnd::SetDelayForPdaMessage(int iValue, int iDelay){
+	int index = UIPdaMsgListWnd.FindItemWithValue(iValue);
+
+	if (index >= 0)
+	{
+        CUIPdaMsgListItem* item = smart_cast<CUIPdaMsgListItem*>(UIPdaMsgListWnd.GetItem(index));
+        item->SetDelay(iDelay);
+		return true;
+	}
+
+	return false;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+CUIPdaMsgListItem * CUIMainIngameWnd::AddGameMessage(LPCSTR message, int iId, int iDelay)
 {
 	CUIPdaMsgListItem* pItem = NULL;
-	pItem = xr_new<CUIPdaMsgListItem>();
+	pItem = xr_new<CUIPdaMsgListItem>(iDelay);
 	UIPdaMsgListWnd.AddItem<CUIListItem>(pItem, 0); 
 	UIPdaMsgListWnd.ScrollToBegin();
 
@@ -938,8 +953,8 @@ CUIPdaMsgListItem * CUIMainIngameWnd::AddGameMessage(LPCSTR message)
 	p->Cyclic(false);
 //	p->SetColorToModify(&pItem->UIMsgText.GetColorRef());
 	pItem->SetData(p);
+	pItem->SetValue(iId);
 	pItem->UIMsgText.MoveWindow(0, 0);
-
 	pItem->UIMsgText.SetText(message);
 
 	return pItem;
@@ -1142,6 +1157,9 @@ void CUIMainIngameWnd::FadeUpdate(CUIListWnd *pWnd)
 	{
 		CUIListItem			*pItem	= pWnd->GetItem(i);
 		CUIPdaMsgListItem	*pPItem = smart_cast<CUIPdaMsgListItem*>(pItem);
+
+		if (! pPItem->IsTimeToDestroy() )
+			return;
 
 		CUIColorAnimatorWrapper *p = reinterpret_cast<CUIColorAnimatorWrapper*>(pItem->GetData());
 		if (p)

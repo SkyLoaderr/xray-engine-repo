@@ -77,7 +77,8 @@ public:
 	//для отображения сообщения пришедшего по PDA
 	void ReceivePdaMessage(CInventoryOwner* pSender, EPdaMsg msg, INFO_INDEX info_index);
 	
-	CUIPdaMsgListItem * AddGameMessage	(LPCSTR message);
+	bool SetDelayForPdaMessage          (int iValue, int iDelay);
+	CUIPdaMsgListItem * AddGameMessage	(LPCSTR message, int iId = 0, int iDelay = 0);
 	void AddPersonalizedGameMessage		(CInventoryOwner* pSender, LPCSTR TextMessage);
 	void AddIconedGameMessage			(LPCSTR textureName, RECT originalRect, LPCSTR message);
 	void AddStaticItem					(CUIStaticItem* si, int left, int top, int right, int bottom, int priority = 0);

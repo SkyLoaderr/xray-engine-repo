@@ -68,6 +68,7 @@ public:
 	void RemoveAll();
 	//находит первый элемент с заданной pData, иначе -1
 	int FindItem(void* pData);
+	int FindItemWithValue(int iValue);
 	CUIListItem* GetItem(int index);
 	// Получить индекс элемента по адресу. Либо -1 если нет такого
 	int GetItemPos(CUIListItem *pItem);

@@ -451,6 +451,16 @@ int CUIListWnd::FindItem(void* pData)
 	return -1;
 }
 
+int CUIListWnd::FindItemWithValue(int iValue)
+{
+	int i=0;
+	for(LIST_ITEM_LIST_it it=m_ItemList.begin();  m_ItemList.end() != it; ++it,++i)
+	{
+		if((*it)->GetValue()==iValue) return i;
+	}
+	return -1;
+}
+
 //////////////////////////////////////////////////////////////////////////
 
 void CUIListWnd::OnMouse(int x, int y, EUIMessages mouse_action)

@@ -6,9 +6,10 @@
 #include "stdafx.h"
 
 #include "UIPdaMsgListItem.h"
-
 #include "../Entity.h"
 #include "../character_info.h"
+
+
 
 #include "UIInventoryUtilities.h"
 using namespace InventoryUtilities;
@@ -20,6 +21,13 @@ using namespace InventoryUtilities;
 
 CUIPdaMsgListItem::CUIPdaMsgListItem(void)
 {
+	m_iDelay = 0;
+	m_timeBegin = 0;
+}
+
+CUIPdaMsgListItem::CUIPdaMsgListItem(int iDelay){
+	m_iDelay = iDelay;
+	m_timeBegin = 0;
 }
 
 CUIPdaMsgListItem::~CUIPdaMsgListItem(void)
@@ -51,6 +59,11 @@ void CUIPdaMsgListItem::Init(int x, int y, int width, int height)
 	AttachChild(&UIMsgText);
 	xml_init.InitStatic(uiXml, "text_static", 0, &UIMsgText);
 }
+
+void CUIPdaMsgListItem::SetDelay(int iDelay){
+	m_iDelay = iDelay;
+}
+
 void CUIPdaMsgListItem::Update()
 {
 	inherited::Update();
@@ -76,3 +89,41 @@ void CUIPdaMsgListItem::InitCharacter(CInventoryOwner* pInvOwner)
 					pInvOwner->CharacterInfo().TradeIconX()+CHAR_ICON_WIDTH*ICON_GRID_WIDTH,
 					pInvOwner->CharacterInfo().TradeIconY()+CHAR_ICON_HEIGHT*ICON_GRID_HEIGHT);
 }
+
+bool CUIPdaMsgListItem::IsTimeToDestroy(){
+	if (m_iDelay < 0 )  // if delay less than ZERO then we never returns true
+		return false;
+
+	if (0 == m_iDelay)
+		return true;
+
+	if (0 == m_timeBegin)	
+		m_timeBegin = Level().GetGameTime();
+
+	if (m_iDelay*1000 < Level().GetGameTime() - m_timeBegin)
+	{		
+		CUIColorAnimatorWrapper *p = reinterpret_cast<CUIColorAnimatorWrapper*>(GetData());
+		p->Reset();
+		m_iDelay = 0;
+		return true;
+	}
+
+	return false;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
