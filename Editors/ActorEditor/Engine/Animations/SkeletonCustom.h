@@ -54,8 +54,8 @@ public:
 
     Fmatrix				bind_transform;
     SBoneShape			shape;
-    ref_str				game_mtl;
-	u32					game_mtl_id;
+    ref_str				game_mtl_name;
+	u16					game_mtl_idx;
     SJointIKData		IK_data;
     float				mass;
     Fvector				center_of_mass;
