@@ -11,6 +11,7 @@
 #include "level.h"
 #include "../skeletoncustom.h"
 #include "../camerabase.h"
+#include "inventory.h"
 
 
 
@@ -361,4 +362,17 @@ void CTorch::net_Import			(NET_Packet& P)
 {
 	inherited::net_Import		(P);
 	light_render->set_active	(!!P.r_u8());
+}
+
+bool  CTorch::can_be_attached		() const
+{
+	const CActor *pA = smart_cast<const CActor *>(H_Parent());
+	if (pA) 
+	{
+		if(pA->inventory().Get(ID(), false))
+			return true;
+		else
+			return false;
+	}
+	return true;
 }

@@ -70,3 +70,8 @@ void CAttachableItem::enable		(bool value)
 		setVisible			(false);
 	}
 }
+
+bool  CAttachableItem::can_be_attached		() const
+{
+	 return true;
+}

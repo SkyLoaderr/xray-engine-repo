@@ -46,6 +46,8 @@ public:
 			void	Switch				();
 			void	Switch				(bool light_on);
 
+	virtual bool	can_be_attached		() const;
+ 
 //////////////////////////////////////////////////////////////////////////
 //Night vision
 public:

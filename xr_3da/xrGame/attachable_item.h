@@ -34,6 +34,8 @@ public:
 	IC		const Fmatrix	&offset				() const;
 	IC		bool			enabled				() const;
 			void			enable				(bool value);
+
+	virtual bool			can_be_attached		() const;
 };
 
 #include "attachable_item_inline.h"

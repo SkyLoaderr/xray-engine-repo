@@ -92,6 +92,8 @@ void CAttachmentOwner::attach(CInventoryItem *inventory_item)
 			game_object->add_visual_callback(AttachmentCallback);
 		attachable_item->set_bone_id		(smart_cast<CKinematics*>(game_object->Visual())->LL_BoneID(attachable_item->bone_name()));
 		m_attached_objects.push_back		(smart_cast<CAttachableItem*>(inventory_item));
+
+		inventory_item->setVisible	    (true);
 	}
 }
 
@@ -106,6 +108,8 @@ void CAttachmentOwner::detach(CInventoryItem *inventory_item)
 				CGameObject					*game_object = smart_cast<CGameObject*>(this);
 				VERIFY						(game_object && game_object->Visual());
 				game_object->remove_visual_callback(AttachmentCallback);
+				
+				inventory_item->setVisible	    (false);
 			}
 			break;
 		}
@@ -122,13 +126,30 @@ bool CAttachmentOwner::attached				(const CInventoryItem *inventory_item) const
 	return				(false);
 }
 
+bool  CAttachmentOwner::attached			(shared_str sect_name) const
+{
+	xr_vector<CAttachableItem*>::const_iterator	I = m_attached_objects.begin();
+	xr_vector<CAttachableItem*>::const_iterator	E = m_attached_objects.end();
+	for ( ; I != E; ++I)
+		if (!xr_strcmp((*I)->cNameSect(), sect_name) && !(*I)->m_drop)
+			return		(true);
+	return				(false);
+}
+
 bool CAttachmentOwner::can_attach			(const CInventoryItem *inventory_item) const
 {
 	const CAttachableItem	*item = smart_cast<const CAttachableItem*>(inventory_item);
-	if (!item || !item->enabled())
+	if (!item || !item->enabled() || !item->can_be_attached())
 		return			(false);
 
-	return				(std::binary_search(m_attach_item_sections.begin(),m_attach_item_sections.end(),inventory_item->cNameSect(),CStringPredicate()));
+	//можно ли присоединять объекты такого типа
+	if(!(std::binary_search(m_attach_item_sections.begin(),m_attach_item_sections.end(),inventory_item->cNameSect(),CStringPredicate())))
+		return false;
+	//если уже есть присоединненый объет такого типа 
+	if(attached(inventory_item->cNameSect()))
+		return false;
+
+	return true;
 }
 
 void CAttachmentOwner::reattach_items		()

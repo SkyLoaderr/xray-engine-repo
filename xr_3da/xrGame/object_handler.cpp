@@ -185,7 +185,7 @@ bool CObjectHandler::weapon_strapped	(CWeapon *weapon) const
 IC	void CObjectHandler::switch_torch	(CInventoryItem *inventory_item, bool value)
 {
 	CTorch						*torch = smart_cast<CTorch*>(inventory_item);
-	if (torch)
+	if (torch && attached(torch))
 		torch->Switch			(value);
 }
 

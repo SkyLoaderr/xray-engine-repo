@@ -163,7 +163,7 @@ public:
 	virtual void			renderable_Render		();
 	virtual void			OnItemTake				(CInventoryItem *inventory_item);
 	virtual void			OnItemDrop				(CInventoryItem *inventory_item);
-	virtual void			OnItemDropUpdate		() {}
+	virtual void			OnItemDropUpdate		();
 	virtual bool			use_bolts				() const {return(true);}
 	virtual	void			spawn_supplies			();
 

@@ -331,11 +331,6 @@ void CInventoryOwner::OnItemTake			(CInventoryItem *inventory_item)
 	attach		(inventory_item);
 }
 
-void CInventoryOwner::OnItemDrop			(CInventoryItem *inventory_item)
-{
-	detach		(inventory_item);
-}
-
 //возвращает текуший разброс стрельбы с учетом движения (в радианах)
 float CInventoryOwner::GetWeaponAccuracy	() const
 {
@@ -466,4 +461,21 @@ CHARACTER_REPUTATION_VALUE	CInventoryOwner::Reputation	() const
 const CSpecificCharacter&	CInventoryOwner::SpecificCharacter	() const
 {
 	return CharacterInfo().m_SpecificCharacter;
+}
+
+void CInventoryOwner::OnItemDrop			(CInventoryItem *inventory_item)
+{
+	detach		(inventory_item);
+}
+
+void CInventoryOwner::OnItemDropUpdate ()
+{
+
+	//на тот случай если была выкинута присоединяемая вещь (типа фонарика)
+	//а у нас есть еще одна
+	PSPIItem					I = inventory().m_all.begin();
+	PSPIItem					E = inventory().m_all.end();
+	for ( ; I != E; ++I)
+		if(!(*I)->m_drop && !attached(*I))
+		attach(*I);
 }

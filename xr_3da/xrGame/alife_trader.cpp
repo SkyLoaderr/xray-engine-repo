@@ -93,9 +93,33 @@ void CSE_ALifeTraderAbstract::spawn_supplies	()
 
 	if(NO_SPECIFIC_CHARACTER != m_iSpecificCharacter)
 	{
-		CSpecificCharacter selected_char;
-		selected_char.Load(m_iSpecificCharacter);
-		dynamic_object->spawn_supplies(selected_char.SupplySpawn());
+		//если в custom data объекта есть
+		//секция [dont_spawn_character_supplies]
+		//то не вызывать spawn из selected_char.SupplySpawn()
+		bool specific_character_supply = true;	
+
+		if (xr_strlen(dynamic_object->m_ini_string))
+		{
+#pragma warning(push)
+#pragma warning(disable:4238)
+			CInifile					ini(
+				&IReader				(
+				(void*)(*dynamic_object->m_ini_string),
+				xr_strlen(dynamic_object->m_ini_string)
+				)
+				);
+#pragma warning(pop)
+
+			if (ini.section_exist("dont_spawn_character_supplies")) 
+				specific_character_supply = false;
+		}
+
+		if(specific_character_supply)
+		{
+			CSpecificCharacter selected_char;
+			selected_char.Load(m_iSpecificCharacter);
+			dynamic_object->spawn_supplies(selected_char.SupplySpawn());
+		}
 	}
 }
 

@@ -193,6 +193,7 @@ protected:
 	//буфферный список
 	TIItemList			l_subs; 
 	xr_vector<PIItem>	drop_tasks;
+	bool				m_drop_last_frame;
 
 	void		SendActionEvent		(s32 cmd, u32 flags);
 };

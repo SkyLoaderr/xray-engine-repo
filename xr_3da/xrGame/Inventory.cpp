@@ -73,6 +73,8 @@ CInventory::CInventory()
 
 	m_dwModifyFrame = 0;
 	m_iPrevActiveSlot = NO_ACTIVE_SLOT;
+
+	m_drop_last_frame = false;
 }
 
 
@@ -178,6 +180,8 @@ bool CInventory::Drop(CGameObject *pObj, bool call_drop)
 
 			CalcTotalWeight();
 			m_dwModifyFrame = Device.dwFrame;
+
+			m_drop_last_frame = true;
 
 			return true;
 		};
@@ -658,8 +662,11 @@ void CInventory::Update()
 		drop_tasks.pop_back	();
 	}
 
-	if (drop_count)
+	if (m_drop_last_frame)
+	{
+		m_drop_last_frame = false;
 		m_pOwner->OnItemDropUpdate	();
+	}
 }
 //ищем на поясе гранату такоже типа
 PIItem CInventory::Same(const PIItem pIItem, bool bSearchRuck) const
