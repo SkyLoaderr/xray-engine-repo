@@ -637,7 +637,7 @@ function day_time()
 end
 
 --Time in hours
-function local_hour()
+function local_hours()
     return math.floor( math.mod( game.time()/1000, 86400 )/ 3600 )
 end
 
