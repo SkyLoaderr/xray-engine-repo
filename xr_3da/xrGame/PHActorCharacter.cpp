@@ -1,6 +1,13 @@
 #include "stdafx.h"
 #include "phactorcharacter.h"
 #include "Extendedgeom.h"
+
+
+
+//const float JUMP_HIGHT=0.5;
+const float JUMP_UP_VELOCITY=6.0f;//5.6f;
+const float JUMP_INCREASE_VELOCITY_RATE=1.2f;
+
 CPHActorCharacter::CPHActorCharacter(void)
 {
 	m_cap=NULL;
@@ -280,6 +287,23 @@ void CPHActorCharacter::InitContact(dContact* c){
 
 	}
 
+
+}
+
+void CPHActorCharacter::SetAcceleration(Fvector accel)
+{
+
+	inherited::SetAcceleration(accel);
+	if(!b_exist) return;
+
+	if( m_acceleration.y>0.f&&!b_lose_control && (m_ground_contact_normal[1]>0.5f||b_at_wall))
+	{
+		b_jump=true;
+		const dReal* vel=dBodyGetLinearVel(m_body);
+		dReal amag =m_acceleration.magnitude();
+		if(amag<1.f)amag=1.f;
+		m_jump_accel.set(vel[0]*JUMP_INCREASE_VELOCITY_RATE+m_acceleration.x/amag*0.2f,jump_up_velocity,vel[2]*JUMP_INCREASE_VELOCITY_RATE +m_acceleration.z/amag*0.2f);
+	}
 
 }
 

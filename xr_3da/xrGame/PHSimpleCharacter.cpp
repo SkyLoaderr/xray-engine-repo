@@ -10,9 +10,6 @@
 
 const float LOSE_CONTROL_DISTANCE=0.5f; //fly distance to lose control
 const float CLAMB_DISTANCE=0.5f;
-//const float JUMP_HIGHT=0.5;
-const float JUMP_UP_VELOCITY=6.0f;//5.6f;
-const float JUMP_INCREASE_VELOCITY_RATE=1.2f;
 static u32 lastMaterial;
 float object_demage_factor=4.f;
 ////////////////////////////////////////////////////////////////////////////////
@@ -384,8 +381,8 @@ void CPHSimpleCharacter::PhTune(dReal step){
 	b_on_ground=b_valide_ground_contact||(b_meet&&(!b_depart));
 
 
-	if(b_at_wall ) {
-
+	if(b_at_wall ) 
+	{
 		// b_clamb_jump=true;
 		b_side_contact=false;
 		m_friction_factor=1.f;
@@ -462,18 +459,14 @@ void CPHSimpleCharacter::PhTune(dReal step){
 	else b_clamb_jump=ValidateWalkOn();
 
 	//jump	
-	if(b_jump){
+	if(b_jump)
+	{
 		b_lose_control=true;
-		const dReal* vel=dBodyGetLinearVel(m_body);
-		dReal amag =m_acceleration.magnitude();
-		if(amag<1.f)amag=1.f;
-		//dBodySetLinearVel(m_body,vel[0]*JUMP_INCREASE_VELOCITY_RATE+m_acceleration.x/amag*0.2f,vel[1]+JUMP_UP_VELOCITY,vel[2]*JUMP_INCREASE_VELOCITY_RATE +m_acceleration.z/amag*0.2f);
-		dBodySetLinearVel(m_body,vel[0]*JUMP_INCREASE_VELOCITY_RATE+m_acceleration.x/amag*0.2f,jump_up_velocity,vel[2]*JUMP_INCREASE_VELOCITY_RATE +m_acceleration.z/amag*0.2f);//vel[1]+
+		dBodySetLinearVel(m_body,m_jump_accel.x,m_jump_accel.y,m_jump_accel.z);//vel[1]+
 		Memory.mem_copy(m_jump_depart_position,dBodyGetPosition(m_body),sizeof(dVector3));
-		m_jump_accel=m_acceleration;
+		//m_jump_accel=m_acceleration;
 		b_jump=false;
 		b_jumping=true;
-
 	}
 
 
@@ -514,17 +507,17 @@ void CPHSimpleCharacter::PhTune(dReal step){
 	if(b_jumping)
 	{
 
-		dReal proj=m_jump_accel.x*chVel[0]+m_jump_accel.z*chVel[2];
+		dReal proj=m_acceleration.x*chVel[0]+m_acceleration.z*chVel[2];
 
 		const dReal* current_pos=dBodyGetPosition(m_body);
 		dVector3 dif={current_pos[0]-m_jump_depart_position[0],
 			current_pos[1]-m_jump_depart_position[1],
 			current_pos[2]-m_jump_depart_position[2]};
-		dReal amag =_sqrt(m_jump_accel.x*m_jump_accel.x+m_jump_accel.z*m_jump_accel.z);
+		dReal amag =_sqrt(m_acceleration.x*m_acceleration.x+m_acceleration.z*m_acceleration.z);
 		if(amag>0.f)
-			if(dif[0]*m_jump_accel.x/amag+dif[2]*m_jump_accel.z/amag<0.3f)
+			if(dif[0]*m_acceleration.x/amag+dif[2]*m_acceleration.z/amag<0.3f)
 			{
-				dBodyAddForce(m_body,m_jump_accel.x/amag*1000.f,0,m_jump_accel.z/amag*1000.f);
+				dBodyAddForce(m_body,m_acceleration.x/amag*1000.f,0,m_acceleration.z/amag*1000.f);
 			}
 			if(proj<0.f){
 
@@ -640,9 +633,6 @@ void CPHSimpleCharacter::SetAcceleration(Fvector accel){
 		if(accel.magnitude()!=0.f)
 			dBodyEnable(m_body);
 	m_acceleration=accel;
-	if( m_acceleration.y>0.f&&!b_lose_control && (m_ground_contact_normal[1]>0.5f||b_at_wall)) 
-		b_jump=true;
-
 }
 
 void CPHSimpleCharacter::ApplyAcceleration() 

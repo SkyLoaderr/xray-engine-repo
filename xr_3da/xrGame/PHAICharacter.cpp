@@ -286,6 +286,11 @@ void CPHAICharacter::InitContact(dContact* c){
 
 }
 
+void	CPHAICharacter::Jump(const Fvector& jump_velocity)
+{
+	b_jump=true;
+	m_jump_accel.set(jump_velocity);
+}
 
 
 #ifdef DEBUG
