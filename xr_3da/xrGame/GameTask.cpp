@@ -132,6 +132,12 @@ shared_str		CGameTask::ObjectiveDesc	(u32 index)
 {
 	return data()->m_Objectives[index].description;
 }
+
+shared_str		CGameTask::ObjectiveArticle	(u32 index)
+{
+	return data()->m_Objectives[index].article_id;
+}
+
 ETaskState	CGameTask::ObjectiveState  (u32 index)
 {
 	VERIFY(index<m_ObjectiveStates.size());
