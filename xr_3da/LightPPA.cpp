@@ -22,6 +22,9 @@ CLightPPA::~CLightPPA()
 void CLightPPA::Render(CList<PPA_Vertex>&	vlist)
 {
 	VERIFY	(pCreator);
+	vlist.clear();
+
+	// Build bbox
 	Fbox	BB;
 	BB.set	(sphere.P);
 	BB.grow	(sphere.R+EPS_L);
@@ -98,4 +101,6 @@ void CLightPPA::Render(CList<PPA_Vertex>&	vlist)
 			vert2.P.set		(vert3.P);
 		}
 	}
+	
+	// Calculate XForms
 }
