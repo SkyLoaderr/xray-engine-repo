@@ -8,8 +8,6 @@ struct _point {
 	IC void set(_point &P)
 	{	set(P.x,P.y); }
 };
-const int USED_P1	= (1<<0);
-const int USED_P2	= (1<<1);
 struct _rect {
 	_point	a,b;		// min,max
 	int		iArea;
@@ -21,18 +19,11 @@ struct _rect {
 		iArea	= R.iArea;
 	};
 	IC void init(int ax, int ay, int bx, int by)
-	{
-		a.set(ax,ay);
-		b.set(bx,by);
-	}
+	{	a.set(ax,ay); b.set(bx,by); }
 	IC void	calc_area()
-	{
-		iArea = SizeX()*SizeY();
-	};
+	{	iArea = SizeX()*SizeY(); 	};
 	IC bool	PointInside(_point &P)
-	{
-		return (P.x>=a.x && P.x<=b.x && P.y>=a.y && P.y<=b.y);
-	};
+	{	return (P.x>=a.x && P.x<=b.x && P.y>=a.y && P.y<=b.y); 	};
 	IC bool	Intersect(_rect &R)
 	{
 		if (R.b.x < a.x) return false;
