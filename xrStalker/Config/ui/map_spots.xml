@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <map_spots>
 
-<!-------remove this on next update -->
-	<actor_spot hint="actor">
-		<level_map x="0" y="0" width="32" height="32" heading="1">
-			<texture x="0" y="0" width="32" height="32"> ui\ui_map_arrow_02</texture>
-		</level_map>
-		
-		<zone_map x="0" y="0" width="32" height="32" heading="1">
-			<texture x="0" y="0" width="32" height="32"> ui\ui_map_arrow_02</texture>
-		</zone_map>
-	</actor_spot>
-<!-------remove this on next update -->
-
 <!-- location definitions -->
 	<actor_location hint="actor">
 		<level_map spot="actor_level_spot" pointer="actor_pointer"></level_map>
