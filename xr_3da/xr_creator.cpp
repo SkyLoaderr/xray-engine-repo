@@ -15,6 +15,7 @@ CCreator::CCreator( )
 	pLevel						= NULL;
 	bReady						= false;
 	pCurrentEntity				= NULL;
+	pCurrentViewEntity			= NULL;
 	LL_Stream					= NULL;
 	pHUD						= (CCustomHUD*)NEW_INSTANCE(CLSID_HUDMANAGER);
 }

@@ -54,6 +54,7 @@ BOOL CLevel::net_Client		( LPCSTR name_of_server )
 		}
 
 		// Waiting for actor spawn
+		/*
 		while (0==CurrentEntity()) 
 		{
 			for (NET_Packet* P = net_Retreive(); P; P=net_Retreive())
@@ -64,6 +65,7 @@ BOOL CLevel::net_Client		( LPCSTR name_of_server )
 			}
 			Sleep	(1);
 		}
+		*/
 
 		// Textures
 		pApp->LoadTitle						("Loading textures...");
