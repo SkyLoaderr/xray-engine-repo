@@ -53,7 +53,7 @@ public:
 	virtual void		set_noise			(float f)		{ param_noise=f;		}
 	virtual void		set_noise_scale		(float f)		{ param_noise_scale=f;	}
 	virtual void		set_noise_color		(u32 f)			{ param_noise_color=f;	}
-	virtual void		set_noise_fps		(float f)		{ param_noise_fps=f;	}
+	virtual void		set_noise_fps		(float f)		{ param_noise_fps=_abs(f)+EPS_S;	}
 
 	virtual u32			get_width			()				{ return curWidth;	}
 	virtual u32			get_height			()				{ return curHeight;	}

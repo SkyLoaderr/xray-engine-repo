@@ -28,6 +28,7 @@ public:
 	virtual void					set_noise			(float f)	= 0;
 	virtual void					set_noise_scale		(float f)	= 0;
 	virtual void					set_noise_color		(u32 f)		= 0;
+	virtual void					set_noise_fps		(float f)	= 0;
 	virtual u32						get_width			()			= 0;
 	virtual u32						get_height			()			= 0;
 };
