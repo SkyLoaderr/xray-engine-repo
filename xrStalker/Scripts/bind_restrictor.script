@@ -7,15 +7,21 @@ Space restrictor binder
 	- callbacks вызывается только на актёра
 --------------------------------------------------------------------------------------------------]]
 
+module "level_tips"
+module "zone_no_weapon"
+module "zone_idle"
+
 local updatable_binders = {}    -- биндеры, которые требуют обновлений (update)
 
-function update( actor )
+function actor_update()
 	for i, v in updatable_binders do
-		v:update( actor )
+		v:actor_update()
 	end
 end
 
 function bind( obj )
+	db.storage[obj:id()] = { }
+
 	obj:bind_object( restrictor_binder( obj ) )
 end
 
@@ -23,6 +29,22 @@ end
 class "restrictor_binder" ( object_binder )
 
 function restrictor_binder:__init(obj, char_ini) super(obj)
+	self.initialized = false
+	self.loaded = false
+	
+	xr_logic.load_generic_schemes(obj, modules.stype_restrictor)
+end
+
+function restrictor_binder:reload(section)
+	object_binder.reload(self, section)
+end
+
+function restrictor_binder:reinit()
+	object_binder.reinit(self)
+
+	db.storage[self.object:id()] = { }
+
+	self.st = db.storage[self.object:id()]
 end
 
 function restrictor_binder:net_spawn(data)
@@ -32,32 +54,6 @@ function restrictor_binder:net_spawn(data)
 
 	db.add_zone( self.object )
 
-	self.actor_inside = db.actor ~= nil and self.object:inside( db.actor:position() )
-	self.managers     = {}
-
-	local ini = self.object:spawn_ini()
-
-	if not ini then
-		return true
-	end
-
-	local need_update = false
-
-	if ini:section_exist( "tips" ) then
-		self.managers.level_tip = level_tips.level_tip( self.object, self, ini )
-		need_update = true
-	end
-
-	if ini:section_exist("no_weapon") then
-		self.managers.no_weapon = zone_no_weapon.CZoneNoWeapon( self.object, self, ini )
-		need_update = true
-	end
-
-	if ini:section_exist( "sound" ) then
-		self.managers.zone_sound = xr_zones_sound.zone_sound( self.object, self, ini )
-		need_update = true
-	end
-
 	if need_update then
 		updatable_binders[self.object:id()] = self
 	end
@@ -66,8 +62,6 @@ function restrictor_binder:net_spawn(data)
 end
 
 function restrictor_binder:net_destroy()
-	table.foreach( self.managers, function( k, v ) if v.destroy then v:destroy() end end )
-
 	db.del_zone( self.object )
 
 	updatable_binders[self.object:id()] = nil
@@ -76,18 +70,31 @@ function restrictor_binder:net_destroy()
 end
 
 -- вызывается из обновления актёра!
-function restrictor_binder:update( actor )
-	if self.object:inside( actor:position() ) then
-		if not self.actor_inside then
-			self.actor_inside = true
-			table.foreach( self.managers, function( k, v ) if v.on_enter then v:on_enter( actor ) end end )
-		end
-	else
-		if self.actor_inside then
-			self.actor_inside = false
-			table.foreach( self.managers, function( k, v ) if v.on_leave then v:on_leave( actor ) end end )
-		end
+function restrictor_binder:actor_update()
+	if not self.initialized and db.actor then
+		self.initialized = true
+		xr_logic.initialize_obj(self.object, self.st, self.loaded, db.actor, modules.stype_restrictor)
 	end
 
-	table.foreach( self.managers, function( k, v ) if v.update then v:update() end end )
+	if self.st.active_section ~= nil then
+		xr_logic.non_goap_update_actions_event(self.object, self.st[self.st.active_scheme])
+	end
+end
+
+function restrictor_binder:net_save_relevant()
+	return true
+end
+
+function restrictor_binder:save(packet)
+	object_binder.save(self, packet)
+
+	xr_logic.save_obj(self.object, packet)
+end
+
+function restrictor_binder:load(reader)
+	self.loaded = true
+
+	object_binder.load(self, reader)
+
+	xr_logic.load_obj(self.object, reader)
 end

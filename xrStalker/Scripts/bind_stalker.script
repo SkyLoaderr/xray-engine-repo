@@ -51,7 +51,7 @@ if false then
 end
 
 	--' обновление рестрикторов, которые реагируют на актЄра (убирание оружи€, подсказки...)
-	bind_restrictor.update( self.object )
+	bind_restrictor.actor_update()
 
 	--' —южет
 	level_tasks.proceed(self.object)
