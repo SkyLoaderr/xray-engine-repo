@@ -120,11 +120,12 @@ class PropItem
 {
 	friend class		CPropHelper;
     friend class		TProperties;
-    shared_str				key;
+    shared_str			key;
     EPropType			type;
 	void*				item;
 	DEFINE_VECTOR		(PropValue*,PropValueVec,PropValueIt);
     PropValueVec		values;
+    TProperties* 		m_Owner;
 // events
 public:
 	typedef fastdelegate::FastDelegate1<PropItem*> 	TOnPropItemFocused;
@@ -152,6 +153,7 @@ public:
     	for (PropValueIt it=values.begin(); values.end() != it; ++it)
         	xr_delete	(*it);
     };
+    IC TProperties*		Owner			(){return m_Owner;}
     void				SetName			(const shared_str& name)
     {
     	key=name;

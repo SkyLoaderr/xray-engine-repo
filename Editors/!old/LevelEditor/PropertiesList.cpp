@@ -255,6 +255,7 @@ void TProperties::FillElItems(PropItemVec& items, LPCSTR startup_pref)
             }
         }
         m_ViewItems.push_back	(prop);
+        prop->m_Owner 		= this; 
         prop->item			= FHelper.AppendObject(tvProperties,key,false,false); R_ASSERT3(prop->item,"Duplicate properties key found:",key.c_str());
         prop->Item()->Tag 	= (int)prop;
         prop->Item()->UseStyles=true;
