@@ -1,0 +1,37 @@
+﻿<?xml version='1.0' encoding="UTF-8"?>
+<encyclopedia>
+    <!-- LIST OF ENCYCLOPEDIA ENTRIES -->
+    <article id="one" name="AK-74" group="Weapons/Machineguns">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        AK-74 this is main weapon of\npost soviet military troops.\nIt is highly robust 
+        and powerful weapon\nproduced since 1976.\n\nTTX:\nRange - 800M\nMagazine capacity:
+         30 bullets
+    </article>
+    <article id="two" name="Groza" group="Weapons/Machineguns">
+        <texture x="0" y="700" width="200" height="100">ui\ui_icon_equipment</texture>
+        Groza\n\n
+        TTX:\nRange - 600M\nMagazine capacity: 20 bullets
+    </article>
+    <article id="three" name="SVU" group="Weapons/Sniper rifles">
+<!--        <texture x="250" y="300" width="250" height="100">ui\ui_icon_equipment</texture> -->
+        <ltx>wpn_svu</ltx>
+        SVU: Sniper rifle\n\n
+        TTX:\nRange - 2000M\nMagazine capacity: 10 bullets 
+    </article>
+    <article id="four" name="PM" group="Weapons/Pistols">
+        <ltx>wpn_pm</ltx>
+<!--        <texture x="0" y="100" width="250" height="100">ui\ui_icon_equipment</texture> -->
+        PM: Pistolet Makarova\n\n
+        TTX:\nRange - 100M\nMagazine capacity: 7 bullets
+    </article>
+    <article id="five" name="Zombie" group="Creatures">
+        <texture x="0" y="600" width="250" height="100">ui\ui_icon_equipment</texture>
+        Zombies are very angry and hungry\ncreatures. They moving slowly but\n
+        his arms jaws very powerful.
+    </article>
+    <article id="six" name="Pseudo dog" group="Creatures">
+        <texture x="0" y="300" width="250" height="100">ui\ui_icon_equipment</texture>
+        Pseudo dogs it is very evil\nsemidead dogs with huge\nmouth :)
+    </article>
+</encyclopedia>
+
