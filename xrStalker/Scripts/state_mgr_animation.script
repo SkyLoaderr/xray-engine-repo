@@ -584,7 +584,7 @@ function animation:update()
 end
 -- Отыгрыш рандомной анимации
 function animation:play_rnd(state, rnd)
-	printf("try to add rnd animation")
+	--printf("try to add rnd animation")
 	-- нельзя добавлять рандом во время лока схемы.
 	if not (self.mgr.planner:evaluator(self.mgr.properties["animation"]):evaluate() and
 	        self.mgr.planner:evaluator(self.mgr.properties["weapon"]):evaluate())
