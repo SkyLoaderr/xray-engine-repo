@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "igame_level.h"
 #include "resourcemanager.h"
+#include "blenders\blender.h"
 #include "render.h"
 
 #include "Environment.h"
