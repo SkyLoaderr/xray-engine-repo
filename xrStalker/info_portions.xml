@@ -3,6 +3,27 @@
 
 <game_information_portions>
 
+	<info_portion id="escape_novice_need_weapon">
+		<location >
+			<level>0</level>
+			<x>-100</x>
+			<y>-100</y>
+			<icon name="Novice" x="2" y="2" width="1" height="1"></icon>
+			<text>Novice need weapon</text>
+		</location>
+	</info_portion>
+
+	<info_portion id="escape_novice_has_weapon">
+		<disable>"escape_novice_need_weapon"</disable>
+	</info_portion>
+
+	<info_portion id="escape_factory_bandits_dead">
+	</info_portion>
+
+
+
+
+
 	<info_portion id="actor_start">
 		<location >
 			<level>0</level>
