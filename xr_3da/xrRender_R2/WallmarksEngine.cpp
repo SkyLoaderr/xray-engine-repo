@@ -270,13 +270,15 @@ void CWallmarksEngine::AddSkeletonWallmark	(const Fmatrix* xf, CKinematics* obj,
 
 void CWallmarksEngine::AddSkeletonWallmark(CSkeletonWallmark* wm)
 {
-	lock.Enter				();
-	// search if similar wallmark exists
-	wm_slot* slot			= FindSlot	(wm->Shader());
-	if (0==slot) slot		= AppendSlot(wm->Shader());
-	// no similar - register _new_
-	slot->skeleton_items.push_back(wm);
-	lock.Leave				();
+	if (!::RImplementation.val_bHUD){
+		lock.Enter			();
+		// search if similar wallmark exists
+		wm_slot* slot		= FindSlot	(wm->Shader());
+		if (0==slot) slot	= AppendSlot(wm->Shader());
+		// no similar - register _new_
+		slot->skeleton_items.push_back(wm);
+		lock.Leave			();
+	}
 }
 
 extern float r_ssaDISCARD;
