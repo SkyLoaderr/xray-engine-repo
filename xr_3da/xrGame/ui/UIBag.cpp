@@ -184,6 +184,9 @@ void CUIBag::UpdateBuyPossibility(){
 	bool flag;
 
 	// disable items player can't buy
+	if (GROUP_BOXES == GetCurrentGroupIndex())
+		return;
+
 	currentDDList = GetCurrentGroup();
 	if (!currentDDList)
 		return;
@@ -296,37 +299,6 @@ void CUIBag::OnItemClick(CUIDragDropItemMP* pDDItem){
         m_pCurrentDDItem = pDDItem;
 }
 
-CUIDragDropItemMP * CUIBag::IsItemAnAddon(CUIDragDropItemMP *pPossibleAddon, CUIDragDropItemMP::AddonIDs &ID)
-{
-	R_ASSERT(pPossibleAddon);
-
-	for (int i = GROUP_2; i <=GROUP_34; i++)
-	{
-		if (!m_groups[i].GetDragDropItemsList().empty())
-		{
-			CUIDragDropItemMP * pDDItemMP = smart_cast<CUIDragDropItemMP*>(m_groups[i].GetDragDropItemsList().front());
-
-			if (pDDItemMP && pDDItemMP->bAddonsAvailable)
-			{
-				for (u8 j = 0; j < CUIDragDropItemMP::NUM_OF_ADDONS; ++j)
-				{
-					// Если один из типов аддонов
-					if (pPossibleAddon->GetSectionName() == pDDItemMP->m_AddonInfo[j].strAddonName)
-					{
-						ID = static_cast<CUIDragDropItemMP::AddonIDs>(j);
-						return pDDItemMP;
-					}
-				}
-			}
-		}
-
-		if (GROUP_2 == i)
-			i = GROUP_31 - 1;
-	}
-
-	return NULL;
-}
-
 bool CUIBag::IsItemAnAddonSimple(CUIDragDropItemMP *pPossibleAddon) const
 {
 	R_ASSERT(pPossibleAddon);
@@ -390,8 +362,7 @@ void CUIBag::InitBoxes(){
 		pNewDDItem->Rescale(SECTION_ICON_SCALE, SECTION_ICON_SCALE);
 		pNewDDItem->SetStretchTexture(true);
 		pNewDDItem->SetColor(0xffffffff);
-		pNewDDItem->EnableDragDrop(false);
-
+		
 		pNewDDItem->SetSlot(WEAPON_BOXES_SLOT);
 		pNewDDItem->SetSectionGroupID(WEAPON_BOXES_SLOT);
 		pNewDDItem->SetPosInSectionsGroup(i);

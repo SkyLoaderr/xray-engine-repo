@@ -402,8 +402,6 @@ bool CUIBuyWeaponWnd::BeltProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	return true;
 }
 
-//------------------------------------------------
-//как только подняли элемент, сделать его текущим
 void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
 	TABS_VECTOR_it	it;
@@ -541,17 +539,17 @@ void CUIBuyWeaponWnd::SetCurrentDDItem(CUIWindow* pWnd){
 		m_pCurrentDragDropItem->Highlight(false);
 
 	m_pCurrentDragDropItem = smart_cast<CUIDragDropItemMP*>(pWnd);
+
+#ifdef DEBUG
 	R_ASSERT2(m_pCurrentDragDropItem, "CUIBuyWeaponWnd::SetCurrentDDItem - invalid item");
+#endif
 }
 
 void CUIBuyWeaponWnd::OnDDItemDbClick(){
 	if (m_pCurrentDragDropItem->IsDragDropEnabled())
 	{
-
-		// "Поднять" вещь для освобождения занимаемого места
 		SendMessage(m_pCurrentDragDropItem, DRAG_DROP_ITEM_DRAG, NULL);
 
-		//попытаться закинуть элемент в слот, рюкзак или на пояс
 		if(!ToSlot())
 			if(!ToBelt())
 				if(!ToBag())
@@ -1186,7 +1184,28 @@ CUIDragDropItemMP * CUIBuyWeaponWnd::GetAddonByID(CUIDragDropItemMP *pAddonOwner
 
 CUIDragDropItemMP * CUIBuyWeaponWnd::IsItemAnAddon(CUIDragDropItemMP *pPossibleAddon, CUIDragDropItemMP::AddonIDs &ID)
 {
-	return UIBagWnd.IsItemAnAddon(pPossibleAddon, ID);
+	R_ASSERT(pPossibleAddon);
+
+	// проверяем не аддон ли pPossibleAddon вещи в слот(е/ах)
+	if (!UITopList[RIFLE_SLOT].GetDragDropItemsList().empty())
+	{
+		CUIDragDropItemMP * pDDItemMP = smart_cast<CUIDragDropItemMP*>(UITopList[RIFLE_SLOT].GetDragDropItemsList().front());
+
+		if (pDDItemMP && pDDItemMP->bAddonsAvailable)
+		{
+			for (u8 j = 0; j < CUIDragDropItemMP::NUM_OF_ADDONS; ++j)
+			{
+				// Если один из типов аддонов
+				if (pPossibleAddon->GetSectionName() == pDDItemMP->m_AddonInfo[j].strAddonName)
+				{
+					ID = static_cast<CUIDragDropItemMP::AddonIDs>(j);
+					return pDDItemMP;
+				}
+			}
+		}
+	}
+
+	return NULL;
 }
 
 bool CUIBuyWeaponWnd::IsItemAnAddonSimple(CUIDragDropItemMP *pPossibleAddon) const
