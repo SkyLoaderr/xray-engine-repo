@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include "DynamicHeightMap.h"
-#include "..\cl_intersect.h"
+#include "../cl_intersect.h"
 
 const int	tasksPerFrame	= 1;
 const float limit_up		= 100.f;
@@ -18,8 +18,8 @@ CHM_Static::CHM_Static()
 {
 	// Initialize slots
 	Slot*	slt = pool;
-	for (u32 i=0; i<dhm_matrix; i++)
-		for (u32 j=0; j<dhm_matrix; j++, slt++)
+	for (u32 i=0; i<dhm_matrix; ++i)
+		for (u32 j=0; j<dhm_matrix; ++j, ++slt)
 			data	[i][j]	= slt;
 
 	// Center
@@ -37,23 +37,23 @@ void CHM_Static::Update	()
 	if (v_x!=c_x)	{
 		if (v_x>c_x)	{
 			// scroll matrix to left
-			c_x ++;
-			for (int z=0; z<dhm_matrix; z++)
+			++c_x;
+			for (int z=0; z<dhm_matrix; ++z)
 			{
 				Slot*	S	= data[z][0];
 				if (S->bReady)	{	S->bReady = FALSE; task.push_back(S); }
-				for (int x=1; x<dhm_matrix; x++)	data[z][x-1] = data[z][x];
+				for (int x=1; x<dhm_matrix; ++x)	data[z][x-1] = data[z][x];
 				data[z][dhm_matrix-1] = S;
 				S->set	(c_x-dhm_line+dhm_matrix-1, c_z-dhm_line+z);
 			}
 		} else {
 			// scroll matrix to right
-			c_x --;
-			for (int z=0; z<dhm_matrix; z++)
+			--c_x;
+			for (int z=0; z<dhm_matrix; ++z)
 			{
 				Slot*	S	= data[z][dhm_matrix-1];
 				if (S->bReady)	{	S->bReady = FALSE; task.push_back(S); }
-				for (int x=dhm_matrix-1; x>0; x--)	data[z][x] = data[z][x-1]; 
+				for (int x=dhm_matrix-1; x>0; --x)	data[z][x] = data[z][x-1]; 
 				data[z][0]	= S;
 				S->set	(c_x-dhm_line+0,c_z-dhm_line+z);
 			}
@@ -62,23 +62,23 @@ void CHM_Static::Update	()
 	if (v_z!=c_z)	{
 		if (v_z>c_z)	{
 			// scroll matrix down a bit
-			c_z ++;
-			for (int x=0; x<dhm_matrix; x++)
+			++c_z;
+			for (int x=0; x<dhm_matrix; ++x)
 			{
 				Slot*	S	= data[dhm_matrix-1][x];
 				if (S->bReady)	{	S->bReady = FALSE; task.push_back(S); }
-				for (int z=dhm_matrix-1; z>0; z--)	data[z][x] = data[z-1][x];
+				for (int z=dhm_matrix-1; z>0; --z)	data[z][x] = data[z-1][x];
 				data[0][x]	= S;
 				S->set	(c_x-dhm_line+x,c_z-dhm_line+0);
 			}
 		} else {
 			// scroll matrix up
-			c_z --;
-			for (int x=0; x<dhm_matrix; x++)
+			--c_z;
+			for (int x=0; x<dhm_matrix; ++x)
 			{
 				Slot*	S = data[0][x];
 				if (S->bReady)	{	S->bReady = FALSE; task.push_back(S); }
-				for (int z=0; z<dhm_matrix; z++)	data[z-1][x] = data[z][x];
+				for (int z=0; z<dhm_matrix; ++z)	data[z-1][x] = data[z][x];
 				data[dhm_matrix-1][x]	= S;
 				S->set	(c_x-dhm_line+x,c_z-dhm_line+dhm_matrix-1);
 			}
@@ -86,7 +86,7 @@ void CHM_Static::Update	()
 	}
 	
 	// *****	perform TASKs
-	for (int taskid=0; (taskid<tasksPerFrame) && (!task.empty()); taskid++)
+	for (int taskid=0; (taskid<tasksPerFrame) && (!task.empty()); ++taskid)
 	{
 		Slot*	S	= task.back	();	task.pop_back();
 		S->bReady	= TRUE;
@@ -109,7 +109,7 @@ void CHM_Static::Update	()
 		// Cull polys
 		RAPID::tri* tris	= g_pGameLevel->ObjectSpace.GetStaticTris();
 		Fvector		vecUP;	vecUP.set(0,1,0);
-		for (u32 tid=0; tid<triCount; tid++)
+		for (u32 tid=0; tid<triCount; ++tid)
 		{
 			RAPID::tri&	T		= tris[XRC.BBoxContact[tid].id];
 			Poly		P;
@@ -121,9 +121,9 @@ void CHM_Static::Update	()
 		}
 		
 		// Perform testing
-		for (int z=0; z<dhm_precision; z++)
+		for (int z=0; z<dhm_precision; ++z)
 		{
-			for (int x=0; x<dhm_precision; x++)
+			for (int x=0; x<dhm_precision; ++x)
 			{
 				float	rx	= (float(x)/float(dhm_precision))*dhm_size + bb.min.x;
 				float	rz	= (float(z)/float(dhm_precision))*dhm_size + bb.min.z;
@@ -132,7 +132,7 @@ void CHM_Static::Update	()
 				Fvector	dir; dir.set(0,-1,0);
 				
 				float	r_u,r_v,r_range;
-				for (u32 tid=0; tid<polys.size(); tid++)
+				for (u32 tid=0; tid<polys.size(); ++tid)
 				{
 					if (RAPID::TestRayTri(pos,dir,polys[tid].v,r_u,r_v,r_range,TRUE))
 					{

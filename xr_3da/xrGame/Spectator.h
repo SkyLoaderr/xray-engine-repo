@@ -5,7 +5,7 @@
 
 #include "entity.h"
 #include "actor_flags.h"
-#include "..\feel_touch.h"
+#include "../feel_touch.h"
 
 // refs
 class CActor;

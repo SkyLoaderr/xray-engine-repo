@@ -40,7 +40,7 @@ void game_sv_CS::SavePlayerWeapon(u32 it, CMemoryWriter &store) {
 	CSE_ALifeCreatureActor *l_pActor = dynamic_cast<CSE_ALifeCreatureActor*>(l_pServer->ID_to_entity(get_id_2_eid(get_it_2_id(it))));
 	if(!l_pActor) return;
 	xr_vector<u16>* l_pCilds = get_children(get_it_2_id(it));
-	for(u32 cit = 0; cit < l_pCilds->size(); cit++) {
+	for(u32 cit = 0; cit < l_pCilds->size(); ++cit) {
 		CSE_ALifeItemWeapon *l_pWeapon = dynamic_cast<CSE_ALifeItemWeapon*>(l_pServer->ID_to_entity((*l_pCilds)[cit]));
 		if(!l_pWeapon) continue;
 		//l_pWeapon->flags
@@ -116,7 +116,7 @@ void game_sv_CS::SpawnArtifacts() {
 	xr_vector<RPoint>&		rp	= rpoints[2];
 	srand				( (unsigned)time( NULL ) );
 	std::random_shuffle	( rp.begin( ), rp.end( ) );
-	for(s32 i = 0; i < 3; i++) {
+	for(s32 i = 0; i < 3; ++i) {
 		CSE_Abstract*		E	=	spawn_begin	("m_target_cs");								// create SE
 		CSE_Target_CS*	A		=	(CSE_Target_CS*) E;					
 		A->s_flags.set			(M_SPAWN_OBJECT_LOCAL);				// flags
@@ -170,7 +170,7 @@ void game_sv_CS::OnRoundStart() {
 	// Сохраняем оружие для следующего раунда
 	// Для живых - то что у них есть, для мертвых - дефолтное.
 	xr_vector<CMemoryWriter> l_memAr; l_memAr.resize(l_cnt);
-	for(u32 i = 0; i < l_cnt; i++) {
+	for(u32 i = 0; i < l_cnt; ++i) {
 		game_PlayerState *l_pPS = get_it(i);
 		if(l_pPS->flags&GAME_PLAYER_FLAG_CS_SPECTATOR) continue;		// Наблюдателей это не касается
 		if((round==-1)||(l_pPS->flags&GAME_PLAYER_FLAG_VERY_VERY_DEAD)) SaveDefaultWeapon(l_memAr[i]);
@@ -182,7 +182,7 @@ void game_sv_CS::OnRoundStart() {
 	// Обновляем состаяние всех игроков и команд
 	if(round == 0) {
 		teams[0].score = teams[1].score = 0;
-		for(u32 i = 0; i < l_cnt; i++) {
+		for(u32 i = 0; i < l_cnt; ++i) {
 			game_PlayerState *l_pPS = get_it(i);
 			if(l_pPS->flags&GAME_PLAYER_FLAG_CS_SPECTATOR) continue;		// Наблюдателей это не касается
 			l_pPS->money_total = money.startup;
@@ -192,7 +192,7 @@ void game_sv_CS::OnRoundStart() {
 			l_pPS->kills = 0;
 		}
 	} else {
-		for(u32 i = 0; i < l_cnt; i++) {
+		for(u32 i = 0; i < l_cnt; ++i) {
 			game_PlayerState *l_pPS = get_it(i);
 			if(l_pPS->flags&GAME_PLAYER_FLAG_CS_SPECTATOR) continue;		// Наблюдателей это не касается
 			l_pPS->money_total = l_pPS->money_total + l_pPS->money_for_round;
@@ -207,7 +207,7 @@ void game_sv_CS::OnRoundStart() {
 	std::random_shuffle(rp1.begin(), rp1.end());
 	xr_vector<RPoint> &rp2 = rpoints[0];
 	std::random_shuffle(rp2.begin(), rp2.end());
-	for(u32 i = 0; i < l_cnt; i++) SpawnPlayer(i, l_memAr[i]);
+	for(u32 i = 0; i < l_cnt; ++i) SpawnPlayer(i, l_memAr[i]);
 }
 
 
@@ -216,16 +216,16 @@ void game_sv_CS::OnRoundStart() {
 //	m_delayedRoundEnd = false;
 //	NET_Packet l_packet;
 //	xr_vector<CMemoryWriter> l_memAr;
-//	if(round!=-1) {							// Если раунд не первый сохраняем игроков и их оружие
+//	if(-1!=round) {							// Если раунд не первый сохраняем игроков и их оружие
 //		xrServer *l_pServer = Level().Server;
 //		u32 cnt = get_count();
 //		l_memAr.resize(cnt);
-//		for(u32 it = 0; it < cnt; it++) {
+//		for(u32 it = 0; it < cnt; ++it) {
 //			if(get_it(it)->flags&GAME_PLAYER_FLAG_VERY_VERY_DEAD) continue;
 //			u32 l_chunk = 0;
 //			CMemoryWriter &l_mem = l_memAr[it];
 //			xr_vector<u16>* l_pCilds = get_children(get_it_2_id(it));
-//			for(u32 cit = 0; cit < l_pCilds->size(); cit++) {
+//			for(u32 cit = 0; cit < l_pCilds->size(); ++cit) {
 //				CSE_ALifeItemWeapon *l_pWeapon = dynamic_cast<CSE_ALifeItemWeapon*>(l_pServer->ID_to_entity((*l_pCilds)[cit]));
 //				if(!l_pWeapon) continue;
 //				u16 id_save = l_pWeapon->ID;			// save wpn entity ID 
@@ -270,8 +270,8 @@ void game_sv_CS::OnRoundStart() {
 //			CInifile::Destroy	(ini);
 //			u32 cnt = get_count();
 //			l_memAr.resize(cnt);
-//			for(u32 it = 0; it < cnt; it++) {
-//				if(!(get_it(it)->flags&GAME_PLAYER_FLAG_VERY_VERY_DEAD) && (round!=-1)) continue;
+//			for(u32 it = 0; it < cnt; ++it) {
+//				if(!(get_it(it)->flags&GAME_PLAYER_FLAG_VERY_VERY_DEAD) && (-1!=round)) continue;
 //				u32 l_chunk = 0;
 //				CMemoryWriter &l_mem = l_memAr[it];
 //				if(W_prim) {
@@ -294,7 +294,7 @@ void game_sv_CS::OnRoundStart() {
 //	{
 //		// give $1000 to everybody
 //		u32		cnt = get_count();
-//		for		(u32 it=0; it<cnt; it++)	
+//		for		(u32 it=0; it<cnt; ++it)	
 //		{
 //			game_PlayerState*	ps	=	get_it	(it);
 //			ps->money_total			=	1000;
@@ -306,7 +306,7 @@ void game_sv_CS::OnRoundStart() {
 //	} else {
 //		// sum-up money for round with total
 //		u32		cnt = get_count();
-//		for		(u32 it=0; it<cnt; it++)	
+//		for		(u32 it=0; it<cnt; ++it)	
 //		{
 //			game_PlayerState*	ps	=	get_it	(it);
 //			ps->money_total			=	ps->money_total + ps->money_for_round;
@@ -320,7 +320,7 @@ void game_sv_CS::OnRoundStart() {
 //	xr_vector<RPoint>&		rp	= rpoints[2];
 //	srand				( (unsigned)time( NULL ) );
 //	random_shuffle		( rp.begin( ), rp.end( ) );
-//	for(s32 i = 0; i < 3; i++) {
+//	for(s32 i = 0; i < 3; ++i) {
 //		CSE_Abstract*		E	=	spawn_begin	("m_target_cs");									// create SE
 //		CSE_Target_CS*	A		=	(CSE_Target_CS*) E;					
 //		A->s_flags				=	M_SPAWN_OBJECT_LOCAL;				// flags
@@ -332,7 +332,7 @@ void game_sv_CS::OnRoundStart() {
 //
 //	// Respawn all players and some info
 //	u32		cnt = get_count();
-//	for		(u32 it=0; it<cnt; it++)	
+//	for		(u32 it=0; it<cnt; ++it)	
 //	{
 //		// init
 //		game_PlayerState*	ps	=	get_it	(it);
@@ -367,10 +367,10 @@ void game_sv_CS::OnRoundStart() {
 void	game_sv_CS::OnRoundEnd		(LPCSTR reason)
 {
 	__super::OnRoundEnd(reason);
-//	u32 cnt = get_count(); for(u32 it=0; it<cnt; it++) get_it(it)->flags &= (GAME_PLAYER_FLAG_CS_SPECTATOR|GAME_PLAYER_FLAG_VERY_VERY_DEAD);
+//	u32 cnt = get_count(); for(u32 it=0; it<cnt; ++it) get_it(it)->flags &= (GAME_PLAYER_FLAG_CS_SPECTATOR|GAME_PLAYER_FLAG_VERY_VERY_DEAD);
 }
 
-void	game_sv_CS::OnDelayedRoundEnd		(LPCSTR reason)
+void	game_sv_CS::OnDelayedRoundEnd		(LPCSTR /**reason/**/)
 {
 	m_delayedRoundEnd = true;
 	m_roundEndDelay = Device.TimerAsync() + 10000;
@@ -380,10 +380,10 @@ void	game_sv_CS::OnTeamScore		(u32 team)
 {
 	if(GAME_PHASE_INPROGRESS != phase) return;
 
-	teams[team].score++;
+	++(teams[team].score);
 	// Increment/decrement money
 	u32		cnt = get_count();
-	for		(u32 it=0; it<cnt; it++)	
+	for		(u32 it=0; it<cnt; ++it)	
 	{
 		game_PlayerState*	ps	=	get_it	(it);
 		ps->money_for_round = ps->money_for_round + (s32(team)==ps->team)?(s16)money.win:(s16)money.lose;
@@ -397,7 +397,7 @@ void	game_sv_CS::OnTeamsInDraw	()
 
 	// Give $1000 to everybody
 	u32		cnt = get_count();
-	for		(u32 it=0; it<cnt; it++)	
+	for		(u32 it=0; it<cnt; ++it)	
 	{
 		game_PlayerState*	ps	=	get_it	(it);
 		ps->money_for_round = ps->money_for_round + (s16)money.draw;
@@ -504,7 +504,7 @@ BOOL	game_sv_CS::OnTouch			(u16 eid_who, u16 eid_what)
 			// Weapon
 			xr_vector<u16>&	C			=	A->children;
 			//u8 slot						=	W->get_slot	();
-			for (u32 it=0; it<C.size(); it++)
+			for (u32 it=0; it<C.size(); ++it)
 			{
 				CSE_Abstract*		Et	= S->ID_to_entity				(C[it]);
 				if (0==Et)				continue;
@@ -546,18 +546,18 @@ BOOL	game_sv_CS::OnTouch			(u16 eid_who, u16 eid_what)
 			if((ps_who->flags&GAME_PLAYER_FLAG_CS_HAS_ARTEFACT) && (ps_who->flags&GAME_PLAYER_FLAG_CS_ON_BASE))		{
 				l_pMBall = NULL;									// Отбираем у игрока мяч
 				xr_vector<u16>&	C			=	A->children;
-				for (u32 it=0; it<C.size(); it++) {
+				for (u32 it=0; it<C.size(); ++it) {
 					l_pMBall = dynamic_cast<CSE_Target_CS*>(S->ID_to_entity(C[it]));
 					if (l_pMBall) break;
 				}
 				R_ASSERT(l_pMBall);
 				S->Perform_transfer(l_pMBall, A, l_pCSCask);		// Кладем мяч в бочку
 				ps_who->flags &= ~GAME_PLAYER_FLAG_CS_HAS_ARTEFACT;
-				teams[ps_who->team].num_targets++;
+				++(teams[ps_who->team].num_targets);
 				if(teams[ps_who->team].num_targets == 3) {
 					OnTeamScore(ps_who->team);
 					u32	cnt = get_count();						// Доп. бонус за выполнение задания
-					for(u32 it=0; it<cnt; it++)	{
+					for(u32 it=0; it<cnt; ++it)	{
 						game_PlayerState* ps = get_it(it);
 						if(ps->team == ps_who->team) ps->money_for_round = ps->money_for_round + (s16)money.mission;
 					}											//
@@ -570,14 +570,14 @@ BOOL	game_sv_CS::OnTouch			(u16 eid_who, u16 eid_what)
 			if(!(ps_who->flags&GAME_PLAYER_FLAG_CS_HAS_ARTEFACT) && (ps_who->flags&GAME_PLAYER_FLAG_CS_ON_ENEMY_BASE))		{
 				l_pMBall = NULL;									// Достаем мяч из бочки
 				xr_vector<u16>&	C			=	l_pCSCask->children;
-				for (u32 it=0; it<C.size(); it++) {
+				for (u32 it=0; it<C.size(); ++it) {
 					l_pMBall = dynamic_cast<CSE_Target_CS*>(S->ID_to_entity(C[it]));
 					if(l_pMBall) break;
 				}
 				if (l_pMBall){
 					S->Perform_transfer(l_pMBall, l_pCSCask, A);		// Отдаем игроку
 					ps_who->flags |= GAME_PLAYER_FLAG_CS_HAS_ARTEFACT;
-					teams[(ps_who->team+1)%2].num_targets--;
+					--(teams[(ps_who->team+1)%2].num_targets);
 					signal_Syncronize();
 				}
 				return false;
@@ -658,10 +658,10 @@ void	game_sv_CS::OnPlayerReady	(u32 id)
 			// Check if all players ready
 			u32		cnt		= get_count	();
 			u32		ready	= 0;
-			for		(u32 it=0; it<cnt; it++)	
+			for		(u32 it=0; it<cnt; ++it)	
 			{
 				ps		=	get_it	(it);
-				if((ps->flags&GAME_PLAYER_FLAG_READY) || (ps->flags&GAME_PLAYER_FLAG_CS_SPECTATOR))	ready++;
+				if((ps->flags&GAME_PLAYER_FLAG_READY) || (ps->flags&GAME_PLAYER_FLAG_CS_SPECTATOR))	++ready;
 			}
 
 			if (ready == cnt)
@@ -766,7 +766,7 @@ void game_sv_CS::OnPlayerBuy		(u32 id_who, u16 eid_who, LPCSTR what)
 		xrServer*		S		=	Level().Server;
 		xr_vector<u16>*	C		=	get_children(id_who);
 		if (0==C)				return;
-		for (u32 it=0; it<C->size(); it++)
+		for (u32 it=0; it<C->size(); ++it)
 		{
 			CSE_Abstract*		Et	= S->ID_to_entity				((*C)[it]);
 			if (0==Et)				continue;
@@ -781,7 +781,7 @@ void game_sv_CS::OnPlayerBuy		(u32 id_who, u16 eid_who, LPCSTR what)
 				u16		a_limit			= W->get_ammo_limit		();
 				u16		a_total			= W->get_ammo_total		();
 				u16		a_magsize		= W->get_ammo_magsize	();
-				while (iAmmoMagCount && (iAmmoMagCount*a_magsize+a_total)>(a_limit+a_magsize-1))	iAmmoMagCount--;
+				while (iAmmoMagCount && (iAmmoMagCount*a_magsize+a_total)>(a_limit+a_magsize-1))	--iAmmoMagCount;
 				if		(0==iAmmoMagCount)	return;
 				int		a_cost			= iAmmoMagCount*cost;
 
@@ -826,7 +826,7 @@ void game_sv_CS::OnPlayerBuy		(u32 id_who, u16 eid_who, LPCSTR what)
 				return;
 			}
 			//u8 slot					=	W->get_slot	();
-			for (u32 it=0; it<C->size(); it++)
+			for (u32 it=0; it<C->size(); ++it)
 			{
 				CSE_Abstract*		Et	= S->ID_to_entity				((*C)[it]);
 				if (0==Et)				continue;
@@ -859,9 +859,9 @@ void game_sv_CS::OnPlayerBuy		(u32 id_who, u16 eid_who, LPCSTR what)
 u8 game_sv_CS::AutoTeam() 
 {
 	u32	cnt = get_count(), l_teams[2] = {0,0};
-	for(u32 it=0; it<cnt; it++)	{
+	for(u32 it=0; it<cnt; ++it)	{
 		game_PlayerState* ps = get_it(it);
-		if(ps->team>=0) l_teams[ps->team]++;
+		if(ps->team>=0) ++(l_teams[ps->team]);
 	}
 	return (l_teams[0]>l_teams[1])?1:0;
 }

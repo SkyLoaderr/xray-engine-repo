@@ -25,8 +25,8 @@ class CHM_Static
 		IC			void		set		(int _x, int _z)	{ x=_x; z=_z; }
 		IC			void		clear	()
 		{
-			for (u32 i=0; i<dhm_precision; i++)
-				for (u32 j=0; j<dhm_precision; j++)
+			for (u32 i=0; i<dhm_precision; ++i)
+				for (u32 j=0; j<dhm_precision; ++j)
 					data	[i][j]	= flt_min;
 		}
 		Slot()

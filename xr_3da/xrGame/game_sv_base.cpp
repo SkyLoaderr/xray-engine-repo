@@ -70,7 +70,7 @@ u32					game_sv_GameState::get_alive_count			(u32 team)
 {
 	u32		cnt		= get_count	();
 	u32		alive	= 0;
-	for		(u32 it=0; it<cnt; it++)	
+	for		(u32 it=0; it<cnt; ++it)	
 	{
 		game_PlayerState*	ps	=	get_it	(it);
 		if (u32(ps->team) == team)	alive	+=	(ps->flags&GAME_PLAYER_FLAG_VERY_VERY_DEAD)?0:1;
@@ -141,7 +141,7 @@ void game_sv_GameState::net_Export_State						(NET_Packet& P, u32 to)
 
 	// Teams
 	P.w_u16			(u16(teams.size()));
-	for (u32 t_it=0; t_it<teams.size(); t_it++)
+	for (u32 t_it=0; t_it<teams.size(); ++t_it)
 	{
 		P.w				(&teams[t_it],sizeof(game_TeamState));
 	}
@@ -151,7 +151,7 @@ void game_sv_GameState::net_Export_State						(NET_Packet& P, u32 to)
 	u32	p_count			= get_count();
 	P.w_u16				(u16(p_count));
 	game_PlayerState*	Base	= get_id(to);
-	for (u32 p_it=0; p_it<p_count; p_it++)
+	for (u32 p_it=0; p_it<p_count; ++p_it)
 	{
 		string64	p_name;
 		xrClientData*	C		=	(xrClientData*)	S->client_Get	(p_it);
@@ -198,11 +198,11 @@ void game_sv_GameState::net_Export_Update						(NET_Packet& P, u32 id_to, u32 id
 void game_sv_GameState::OnRoundStart			()
 {
 	switch_Phase	(GAME_PHASE_INPROGRESS);
-	round			++;
+	++round;
 
 	// clear "ready" flag
 	u32		cnt		= get_count	();
-	for		(u32 it=0; it<cnt; it++)	
+	for		(u32 it=0; it<cnt; ++it)	
 	{
 		game_PlayerState*	ps	=	get_it	(it);
 		ps->flags				&=	~(GAME_PLAYER_FLAG_READY + GAME_PLAYER_FLAG_VERY_VERY_DEAD);
@@ -215,22 +215,22 @@ void game_sv_GameState::OnRoundStart			()
 	Level().Server->SLS_Default	();
 }
 
-void game_sv_GameState::OnRoundEnd				(LPCSTR reason)
+void game_sv_GameState::OnRoundEnd				(LPCSTR /**reason/**/)
 {
 	switch_Phase		(GAME_PHASE_PENDING);
 }
 
-void game_sv_GameState::OnPlayerConnect			(u32 id_who)
+void game_sv_GameState::OnPlayerConnect			(u32 /**id_who/**/)
 {
 	signal_Syncronize	();
 }
 
-void game_sv_GameState::OnPlayerDisconnect		(u32 id_who)
+void game_sv_GameState::OnPlayerDisconnect		(u32 /**id_who/**/)
 {
 	signal_Syncronize	();
 }
 
-void game_sv_GameState::Create					(LPSTR &options)
+void game_sv_GameState::Create					(LPSTR &/**options/**/)
 {
 	string256	fn_game;
 	if (FS.exist(fn_game, "$level$", "level.game")) 
@@ -241,7 +241,7 @@ void game_sv_GameState::Create					(LPSTR &options)
 		// Load RPoints
 		if (0!=(O = F->open_chunk	(RPOINT_CHUNK)))
 		{ 
-			for (int id=0; O->find_chunk(id); id++)
+			for (int id=0; O->find_chunk(id); ++id)
 			{
 				RPoint					R;
 				int						team;
@@ -354,7 +354,7 @@ void game_sv_GameState::u_EventSend(NET_Packet& P)
 void game_sv_GameState::Update		()
 {
 	xrServer*		S	= Level().Server;
-	for (u32 it=0; it<S->client_Count(); it++)
+	for (u32 it=0; it<S->client_Count(); ++it)
 	{
 		xrClientData*	C		= (xrClientData*)	S->client_Get(it);
 		C->ps.ping				= u16(C->stats.getPing());
