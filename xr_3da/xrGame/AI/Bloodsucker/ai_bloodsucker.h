@@ -3,6 +3,7 @@
 #include "..\\biting\\ai_biting.h"
 #include "ai_bloodsucker_state.h"
 #include "ai_bloodsucker_bones.h"
+#include "ai_bloodsucker_misc.h"
 
 
 class CAI_Bloodsucker : public CAI_Biting {
@@ -17,7 +18,7 @@ public:
 	virtual void	Think					();
 	virtual void	UpdateCL				();
 	virtual BOOL	net_Spawn				(LPVOID DC);
-
+	virtual	void	Load					(LPCSTR section);
 			void	vfAssignBones			();
 
 	static	void __stdcall	BoneCallback(CBoneInstance *B);
@@ -33,9 +34,7 @@ public:
 
 	bonesManipulation	Bones;
 
-	bool				flagVisibility;					// true - если видим
-	TTime				timeStartVisChanged;			// время начала изменение видимости монстра
-	TTime				timeInvisible;					// время нахождения в состоянии невидимости
+	CBloodsuckerVisibility	m_tVisibility;
 
 	bool				flagEatNow;						// true - сейчас монстр ест
 	

@@ -722,6 +722,12 @@
 							RelativePath=".\Ai\Bloodsucker\ai_bloodsucker_bones.h">
 						</File>
 						<File
+							RelativePath=".\Ai\Bloodsucker\ai_bloodsucker_misc.cpp">
+						</File>
+						<File
+							RelativePath=".\Ai\Bloodsucker\ai_bloodsucker_misc.h">
+						</File>
+						<File
 							RelativePath=".\Ai\Bloodsucker\ai_bloodsucker_state.cpp">
 						</File>
 						<File

@@ -57,8 +57,9 @@ public:
 					CBloodsuckerEat	(CAI_Bloodsucker *p);
 	virtual void	Reset			();
 private:
-	virtual	void	Init();
-	virtual	void	Run();
+	virtual	void	Init			();
+	virtual	void	Run				();
+	virtual void	Done			();
 };
 
 

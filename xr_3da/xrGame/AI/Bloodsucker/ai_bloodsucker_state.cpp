@@ -235,15 +235,15 @@ void CBloodsuckerEat::Run()
 			// ...
 			pMonster->Motion.m_tSeq.Add(eMotionWalkBkwd,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);
 			pMonster->Motion.m_tSeq.Switch();
+
+			
 		} else {
 			// играть анимацию сесть
 			pMonster->Motion.m_tSeq.Add(eMotionCheckCorpse,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);
 			pMonster->Motion.m_tSeq.Add(eMotionLieDownEat,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);
 			pMonster->Motion.m_tSeq.Switch();
+			m_tAction = ACTION_EAT;
 		}
-		
-		m_tAction = ACTION_EAT;
-
 	}
 
 	switch (m_tAction) {
@@ -268,8 +268,9 @@ void CBloodsuckerEat::Run()
 			pMonster->Motion.m_tParams.SetParams(eMotionEat,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 			pMonster->Motion.m_tTurn.Clear();
 
-	//		pMonster
-
+			if (pMonster->GetSatiety() >= 1.0f) pMonster->flagEatNow = false;
+			else pMonster->flagEatNow = true;
+		
 			// съесть часть
 			if (m_dwLastTimeEat + m_dwEatInterval < m_dwCurrentTime) {
 				pMonster->ChangeSatiety(0.05f);
@@ -280,3 +281,9 @@ void CBloodsuckerEat::Run()
 	}
 }
 
+void CBloodsuckerEat::Done()
+{
+	inherited::Done();
+
+	pMonster->flagEatNow = false;
+}

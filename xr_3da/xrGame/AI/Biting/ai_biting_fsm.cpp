@@ -39,6 +39,7 @@ void CAI_Biting::SetState(IState *pS, bool bSkipInertiaCheck)
 				if (CurrentState->GetPriority() >= pS->GetPriority()) return;
 			}
 
+			CurrentState->Done();
 			CurrentState->Reset();
 			CurrentState = pS;
 			CurrentState->Activate();
