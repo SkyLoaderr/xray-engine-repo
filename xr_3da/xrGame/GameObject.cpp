@@ -14,7 +14,7 @@
 #include "game_sv_single.h"
 #include "level_graph.h"
 #include "game_level_cross_table.h"
-
+#include "ph_shell_interface.h"
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -106,6 +106,11 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 
 	CSE_Abstract*		E			= (CSE_Abstract*)DC;
 	R_ASSERT						(E);
+	
+	const CSE_Visual				*l_tpVisual = dynamic_cast<const CSE_Visual*>(E);
+	if (l_tpVisual)
+		cNameVisual_set				(l_tpVisual->get_visual());
+
 
 	// Naming
 	cName_set						(E->s_name);
@@ -155,7 +160,8 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 		}
 		inherited::net_Spawn	(DC);
 	}
-
+	IPhysicShellCreator* shell_creator=dynamic_cast<IPhysicShellCreator*>(this);
+	if(shell_creator)shell_creator->CreatePhysicsShell();
 	return						(TRUE);
 }
 

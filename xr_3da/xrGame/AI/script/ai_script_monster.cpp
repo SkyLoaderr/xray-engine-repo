@@ -422,10 +422,7 @@ LPCSTR CScriptMonster::GetPatrolPathName()
 
 BOOL CScriptMonster::net_Spawn		(LPVOID DC)
 {
-	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
-	CSE_ALifeDynamicObjectVisual	*l_tpALifeDynamicObjectVisual = dynamic_cast<CSE_ALifeDynamicObjectVisual*>(e);
-	R_ASSERT						(l_tpALifeDynamicObjectVisual);
-	cNameVisual_set					(l_tpALifeDynamicObjectVisual->get_visual());
+
 
 	if (!inherited::net_Spawn(DC))
 		return						(FALSE);
