@@ -42,7 +42,7 @@ void CTorch::Switch()
 
 	if(*light_trace_bone)
 	{
-		CKinematics* pVisual = PKinematics(Visual()); R_ASSERT(pVisual);
+		CKinematics* pVisual = PKinematics(Visual()); VERIFY(pVisual);
 		pVisual->LL_SetBoneVisible(pVisual->LL_BoneID(light_trace_bone),bActive,TRUE);
 	}
 }
@@ -54,7 +54,7 @@ void CTorch::Switch	(bool light_on)
 
 	if(*light_trace_bone)
 	{
-		CKinematics* pVisual = PKinematics(Visual()); R_ASSERT(pVisual);
+		CKinematics* pVisual = PKinematics(Visual()); VERIFY(pVisual);
 		pVisual->LL_SetBoneVisible(pVisual->LL_BoneID(light_trace_bone),light_on,TRUE);
 	}
 }

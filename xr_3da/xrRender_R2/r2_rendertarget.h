@@ -124,10 +124,8 @@ public:
 	void						phase_accumulator_init	();
 	void						shadow_direct			(u32 dls_phase);
 	void						accum_direct			();
-	void						accum_point_shadow		(light* L);
-	void						accum_point_unshadow	(light* L);
-	void						accum_spot_shadow		(light* L);
-	void						accum_spot_unshadow		(light* L);
+	void						accum_point				(light* L);
+	void						accum_spot				(light* L);
 	void						phase_bloom				();
 	void						phase_combine			();
 

@@ -2,12 +2,12 @@
 
 extern Fvector du_cone_vertices[DU_CONE_NUMVERTEX];
 
-void CRenderTarget::accum_spot_shadow	(light* L)
+void CRenderTarget::accum_spot	(light* L)
 {
 	// *** assume accumulator setted up ***
 	// *****************************	Mask by stencil		*************************************
-	ref_shader		shader		= L->s_spot_s;
-	if (!shader)	shader		= s_accum_spot_s;
+	ref_shader		shader		= L->flags.bShadow ? L->s_spot_s	: L->s_spot_uns;
+	if (!shader)	shader		= L->flags.bShadow ? s_accum_spot_s : s_accum_spot_uns;
 
 	if (1)
 	{
@@ -124,7 +124,7 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 	L_dir.normalize				();
 
 	// Perform "unmasking" where dot(L,N) < 0
-	if (ps_r2_ls_flags.test(R2FLAG_SPOT_UNMASK))
+	if (0 && ps_r2_ls_flags.test(R2FLAG_SPOT_UNMASK))
 	{
 		// General: if stencil>=light_id && alpha<="small_value" => stencil=0x1
 		// Unmasking (note: alpha-func assumed to be "greater" we need "less" here
@@ -170,9 +170,4 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 	}
 
 	dwLightMarkerID					+=	2;	// keep lowest bit always setted up
-}
-
-void CRenderTarget::accum_spot_unshadow	(light* L)
-{
-#pragma todo("Have to implement unshadowed spot-light")
 }

@@ -206,12 +206,12 @@ void CHangingLamp::CreateBody(CSE_ALifeObjectHangingLamp	*lamp)
 
 void CHangingLamp::net_Export(NET_Packet& P)
 {
-	R_ASSERT						(Local());
+	VERIFY					(Local());
 }
 
 void CHangingLamp::net_Import(NET_Packet& P)
 {
-	R_ASSERT						(Remote());
+	VERIFY					(Remote());
 }
 
 BOOL CHangingLamp::UsedAI_Locations()
