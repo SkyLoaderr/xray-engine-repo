@@ -105,7 +105,7 @@ void test					(const _Graph *graph, const xr_vector<SPathParams> &path_params, _
 	
 	start					= CPU::GetCycleCount();
 	
-	xr_vector<SPathParams>::const_iterator	I = path_params.begin() + 53;
+	xr_vector<SPathParams>::const_iterator	I = path_params.begin();
 	xr_vector<SPathParams>::const_iterator	E = path_params.end();
 	for ( ; I != E; ++I) {
 		path_manager->setup		(
@@ -236,14 +236,14 @@ void test_all				(LPCSTR caLevelName, u32 test_count, _dist_type min_value, _dis
 
 	path_params.resize		(_min(path_params.size(),test_count));
 				
-	test<CDataStorageUL				<							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
-	test<CDataStorageDLUL			<							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
-	test<CDataStorageSL				<							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
-	test<CDataStorageDLSL			<							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
-	test<CDataStorageBinaryHeap		<							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
-	test<CDataStorageBinaryHeapList	<4,							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
-	test<CDataStorageMultiBinaryHeap<4,							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
-	test<CDataStorageCheapList		<32,true,true,				_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
+//	test<CDataStorageUL				<							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
+//	test<CDataStorageDLUL			<							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
+//	test<CDataStorageSL				<							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
+//	test<CDataStorageDLSL			<							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
+//	test<CDataStorageBinaryHeap		<							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
+//	test<CDataStorageBinaryHeapList	<4,							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
+//	test<CDataStorageMultiBinaryHeap<4,							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
+//	test<CDataStorageCheapList		<32,true,true,				_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
 	test<CDataStorageBucketList		<8*1024,false,				_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value,max_value);
 	test<CDataStoragePriorityQueue	<boost::fibonacci_heap,		_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
 	test<CDataStoragePriorityQueue	<boost::pairing_heap,		_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
