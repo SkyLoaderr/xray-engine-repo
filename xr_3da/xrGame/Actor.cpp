@@ -611,26 +611,25 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 
 	/////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////
-	/*
-	if (m_PhysicMovementControl->gcontact_Was) 
-	{
-	Fvector correctV					= m_PhysicMovementControl->GetVelocity	();
-	correctV.x							*= 0.1f;
-	correctV.z							*= 0.1f;
-	m_PhysicMovementControl->SetVelocity				(correctV);
+	
+	//if (m_PhysicMovementControl->gcontact_Was) 
+	//{
+	//	Fvector correctV					= m_PhysicMovementControl->GetVelocity	();
+	//	correctV.x							*= 0.1f;
+	//	correctV.z							*= 0.1f;
+	//	m_PhysicMovementControl->SetVelocity				(correctV);
 
-	if (Local()) {
-	g_pGameLevel->Cameras.AddEffector		(xr_new<CEffectorFall> (m_PhysicMovementControl->gcontact_Power));
-	Fvector D; D.set					(0,1,0);
-	if (m_PhysicMovementControl->gcontact_HealthLost)	Hit	(1.5f * m_PhysicMovementControl->gcontact_HealthLost,D,this,-1);
-	}
-	}
-	*/	
+	//	if (Local()) {
+	//	g_pGameLevel->Cameras.AddEffector		(xr_new<CEffectorFall> (m_PhysicMovementControl->gcontact_Power));
+	//	/*SGameMtlPair* pair	= GMLib.GetMaterialPair(0,1); R_ASSERT(pair);
+	//	
+	//	::Sound->play_at_pos						(pair->,this,Position());*/
+	//	}
+	//}
+	
 
 	{
-		//		SGameMtlPair* pair	= GMLib.GetMaterialPair(0,1); R_ASSERT(pair);
-		//		::Sound->play_at_pos	(pair->HitSounds[0],this,Position());
-		//		::Sound->play_at_pos						(sndLanding,this,Position());
+
 
 		if (Local()) {
 			if (m_PhysicMovementControl->gcontact_Was) 
@@ -1350,6 +1349,7 @@ bool CActor:: ActivateBox(DWORD id)
 	else	return false;
 	*/
 	DWORD old_id=m_PhysicMovementControl->BoxID();
+	if(id==old_id)return true;
 	m_PhysicMovementControl->ActivateBox(id);
 	ph_world->Freeze();
 	m_PhysicMovementControl->UnFreeze();
