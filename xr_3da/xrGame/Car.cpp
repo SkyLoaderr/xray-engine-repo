@@ -43,6 +43,7 @@ CCar::CCar(void)
 	///////////////////////////////
 	//////////////////////////////
 	/////////////////////////////
+	Memory.mem_copy(m_exhaust_particles,"vehiclefx\\exhaust_1",sizeof("vehiclefx\\exhaust_1"));
 	m_car_sound=xr_new<SCarSound>(this);
 }
 
@@ -374,6 +375,10 @@ void CCar::ParseDefinitions()
 	m_fuel=m_fuel_tank;
 	m_fuel_consumption=ini->r_float("car_definition","fuel_consumption");
 	m_fuel_consumption/=100000.f;
+	if(ini->line_exist("car_definition","exhaust_particles"))
+	{
+		Memory.mem_copy(m_exhaust_particles,ini->r_string("car_definition","exhaust_particles"),sizeof(string64));
+	}
 }
 
 void CCar::CreateSkeleton()
@@ -1007,7 +1012,7 @@ void CCar::SExhaust::Init()
 	pelement->InterpolateGlobalTransform(&element_transform);
 	element_transform.invert();
 	transform.mulA(element_transform);
-	p_pgobject=xr_new<CParticlesObject>("vehiclefx\\exhaust_1",pcar->Sector(),false);
+	p_pgobject=xr_new<CParticlesObject>(pcar->m_exhaust_particles,pcar->Sector(),false);
 	p_pgobject->SetTransform(pcar->XFORM());
 }
 
