@@ -16,7 +16,7 @@ void	game_sv_CS::OnStartRound	()
 		u32		cnt = get_count();
 		for		(u32 it=0; it<cnt; it++)	
 		{
-			game_PlayerState*	ps	=	get_it	(ps);
+			game_PlayerState*	ps	=	get_it	(it);
 			ps->money_total			=	1000;
 			ps->money_for_round		=	0;
 		}
@@ -27,7 +27,7 @@ void	game_sv_CS::OnStartRound	()
 		u32		cnt = get_count();
 		for		(u32 it=0; it<cnt; it++)	
 		{
-			game_PlayerState*	ps	=	get_it	(ps);
+			game_PlayerState*	ps	=	get_it	(it);
 			ps->money_total			+=	ps->money_for_round;
 			ps->money_for_round		=	0;
 		}
@@ -42,8 +42,8 @@ void	game_sv_CS::OnTeamScore		(u32 team)
 	u32		cnt = get_count();
 	for		(u32 it=0; it<cnt; it++)	
 	{
-		game_PlayerState*	ps	=	get_it	(ps);
-		ps->money_for_round		+=	(team==ps->team)?+1000:+500;
+		game_PlayerState*	ps	=	get_it	(it);
+		ps->money_for_round		+=	(s32(team)==ps->team)?+1000:+500;
 	}
 	Unlock	();
 }
@@ -55,7 +55,7 @@ void	game_sv_CS::OnTeamsInDraw	()
 	u32		cnt = get_count();
 	for		(u32 it=0; it<cnt; it++)	
 	{
-		game_PlayerState*	ps	=	get_it	(ps);
+		game_PlayerState*	ps	=	get_it	(it);
 		ps->money_for_round		+=	+1000;
 	}
 	Unlock	();
@@ -89,6 +89,6 @@ void	game_sv_CS::OnTimeElapsed	()
 	// if ()
 }
 
-void	game_sv_CS::OnTargetTouched	()
+void	game_sv_CS::OnTargetTouched	(u32 id_who, u32 id_target)
 {
 }

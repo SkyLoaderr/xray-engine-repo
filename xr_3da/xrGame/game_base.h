@@ -39,7 +39,7 @@ struct	game_TeamState
 class	game_GameState
 {
 public:
-	u32								round;
+	s32								round;
 	u32								fraglimit;
 	u32								timelimit;
 	vector<game_TeamState>			teams;
