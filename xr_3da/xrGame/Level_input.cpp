@@ -19,11 +19,13 @@ void CLevel::OnKeyboardPress(int key)
 		Render->Screenshot			();
 		return;
 	case DIK_RALT:
-		ShowLM	= TRUE;
+		ShowLM						= TRUE;
 		return;
+#ifdef DEBUG
 	case DIK_BACK:
 		HW.Caps.SceneMode			= (HW.Caps.SceneMode+1)%3;
 		return;
+#endif
 	case DIK_F6:
 		net_Save					("quick.save");
 		return;
@@ -64,7 +66,8 @@ void CLevel::OnKeyboardHold(int key)
 	if (CurrentEntity())	CurrentEntity()->OnKeyboardHold(key_binding[key]);
 }
 
-static int mouse_button_2_key []={MOUSE_1,MOUSE_2,MOUSE_3};
+static int mouse_button_2_key []	=	{MOUSE_1,MOUSE_2,MOUSE_3};
+
 void CLevel::OnMousePress(int btn)
 {	OnKeyboardPress(mouse_button_2_key[btn]);}
 void CLevel::OnMouseRelease(int btn)

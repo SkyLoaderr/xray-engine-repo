@@ -60,7 +60,6 @@ protected:
 	CTargetCS*				m_pArtifact;
 
 	// Death
-	float					die_hide;
 	float					hit_slowmo;
 	float					hit_factor;
 
