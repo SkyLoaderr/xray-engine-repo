@@ -394,7 +394,6 @@ function events:calculate()  -- ѕроизводить перерасчет и обновление раздражителе
 		end
 	end
 
---[[
 	-- определ€ем что нам известно о видимости объекта
 	local vtable = self.npc:not_yet_visible_objects()
 	if vtable == nil then return false end
@@ -487,7 +486,6 @@ function events:calculate()  -- ѕроизводить перерасчет и обновление раздражителе
 			end
 		end
 	end
-]]
 end
 function events:isRuled(obj)
 	if self.npc == nil then return false end
