@@ -419,7 +419,7 @@ void CObjectHandler::update(u32 time_delta)
 	set_current_state	(object_state());
 	inherited::update	(time_delta);
 
-#ifdef DEBUG
+#ifdef _DEBUG
 	if (xr_strcmp("stalker3",m_object->cName()))
 		return;
 	if (!path().empty()) {
