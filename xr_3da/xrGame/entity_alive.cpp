@@ -226,6 +226,8 @@ void CEntityAlive::HitImpulse	(float /**amount/**/, Fvector& /**vWorldDir/**/, F
 
 void CEntityAlive::Hit(float P, Fvector &dir,CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type)
 {
+	HitScale(element, m_fHitBoneScale, m_fWoundBoneScale);
+
 	//изменить состояние, перед тем как родительский класс обработает хит
 	CWound* pWound = ConditionHit(who, P, hit_type, element);
 

@@ -11,6 +11,7 @@
 
 #include "physicsshellholder.h"
 #include "entitycondition.h"
+#include "damage_manager.h"
 
 // refs
 class	ENGINE_API CCameraBase;
@@ -22,7 +23,8 @@ class	CWeaponList;
 class   CPHMovementControl;
 class	CHudItem;
  
-class CEntity : virtual public CPhysicsShellHolder
+class CEntity : virtual public CPhysicsShellHolder,
+						public CDamageManager
 {
 private:
 	typedef	CPhysicsShellHolder	inherited;			
@@ -80,6 +82,7 @@ public:
 	// Core events
 	virtual void			Load				(LPCSTR section);
 	virtual void			reinit				();
+	virtual void			reload				(LPCSTR section);
 	virtual BOOL			net_Spawn			(LPVOID DC);
 	virtual void			net_Destroy			();
 
@@ -112,7 +115,7 @@ public:
 	virtual	void			Hit					(float P, Fvector &dir,			CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound);
 	virtual void			HitSignal			(float P, Fvector &local_dir,	CObject* who, s16 element)		= 0;
 	virtual void			HitImpulse			(float P, Fvector &vWorldDir, 	Fvector& vLocalDir)	= 0;
-	virtual	float			HitScale			(int /**element/**/){return 1.f;}
+	virtual	void			HitScale			(const int bone_num, float hit_scale, float wound_scale);
 	virtual void			Die					();
 	virtual void			KillEntity			(CObject* who);
 		

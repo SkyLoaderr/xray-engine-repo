@@ -80,6 +80,9 @@ CEntityCondition::CEntityCondition(void)
 	m_fK_SleepPower = 1.0f;
 	m_fK_SleepSatiety = 1.0f;	
 	m_fK_SleepRadiation = 1.0f;*/
+
+	m_fHitBoneScale = 1.f;
+	m_fWoundBoneScale = 1.f;
 }
 
 CEntityCondition::~CEntityCondition(void)
@@ -384,6 +387,7 @@ CWound* CEntityCondition::ConditionHit(CObject* who, float hit_power, ALife::EHi
 	hit_power = hit_power/100.f;
 	hit_power = HitOutfitEffect(hit_power, hit_type);
 
+
 	switch(hit_type)
 	{
 	case ALife::eHitTypeTelepatic:
@@ -412,9 +416,13 @@ CWound* CEntityCondition::ConditionHit(CObject* who, float hit_power, ALife::EHi
 		break;
 	}
 
+	//коэффициент косточки
+	m_fDeltaHealth *= m_fHitBoneScale;
+
+
 	//раны добавл€ютс€ только живому
 	if(GetHealth()>0)
-		return AddWound(hit_power, hit_type, element);
+		return AddWound(hit_power*m_fWoundBoneScale, hit_type, element);
 	else
 		return NULL;
 }

@@ -7,6 +7,10 @@
 #include "xrserver_objects_alife_items.h"
 const float TIME_2_HIDE		= 5.f;
 
+#include "level.h"
+#include "../CameraManager.h"
+#include "ai/ai_monster_effector.h"
+
 CTorch::CTorch(void) 
 {
 	m_weight					= .5f;
@@ -18,6 +22,8 @@ CTorch::CTorch(void)
 	lanim						= 0;
 	time2hide					= 0;
 	fBrightness					= 1.f;
+
+	m_pNightVision				= NULL;
 }
 
 CTorch::~CTorch(void) 
@@ -32,6 +38,71 @@ void CTorch::Load(LPCSTR section)
 	inherited::Load			(section);
 	m_pos					= pSettings->r_fvector3(section,"position");
 	light_trace_bone		= pSettings->r_string(section,"light_trace_bone");
+
+
+	m_bNightVisionEnabled = !!pSettings->r_bool(section,"night_vision");
+	if(m_bNightVisionEnabled)
+	{
+		m_sNightVisionTexture = pSettings->r_string(section,"night_vision_texture");
+		
+		// Load attack postprocess --------------------------------------------------------
+		LPCSTR ppi_section = pSettings->r_string(section,"night_vision_effector");
+		m_NightVisionEffector.ppi.duality.h		= pSettings->r_float(ppi_section,"duality_h");
+		m_NightVisionEffector.ppi.duality.v		= pSettings->r_float(ppi_section,"duality_v");
+		m_NightVisionEffector.ppi.gray				= pSettings->r_float(ppi_section,"gray");
+		m_NightVisionEffector.ppi.blur				= pSettings->r_float(ppi_section,"blur");
+		m_NightVisionEffector.ppi.noise.intensity	= pSettings->r_float(ppi_section,"noise_intensity");
+		m_NightVisionEffector.ppi.noise.grain		= pSettings->r_float(ppi_section,"noise_grain");
+		m_NightVisionEffector.ppi.noise.fps		= pSettings->r_float(ppi_section,"noise_fps");
+		VERIFY(!fis_zero(m_NightVisionEffector.ppi.noise.fps));
+
+		sscanf(pSettings->r_string(ppi_section,"color_base"),	"%f,%f,%f", &m_NightVisionEffector.ppi.color_base.r, &m_NightVisionEffector.ppi.color_base.g, &m_NightVisionEffector.ppi.color_base.b);
+		sscanf(pSettings->r_string(ppi_section,"color_gray"),	"%f,%f,%f", &m_NightVisionEffector.ppi.color_gray.r, &m_NightVisionEffector.ppi.color_gray.g, &m_NightVisionEffector.ppi.color_gray.b);
+		sscanf(pSettings->r_string(ppi_section,"color_add"),	"%f,%f,%f", &m_NightVisionEffector.ppi.color_add.r,  &m_NightVisionEffector.ppi.color_add.g,  &m_NightVisionEffector.ppi.color_add.b);
+
+		m_NightVisionEffector.time			= pSettings->r_float(ppi_section,"time");
+		m_NightVisionEffector.time_attack	= pSettings->r_float(ppi_section,"time_attack");
+		m_NightVisionEffector.time_release	= pSettings->r_float(ppi_section,"time_release");
+
+		m_NightVisionEffector.ce_time			= pSettings->r_float(ppi_section,"ce_time");
+		m_NightVisionEffector.ce_amplitude		= pSettings->r_float(ppi_section,"ce_amplitude");
+		m_NightVisionEffector.ce_period_number	= pSettings->r_float(ppi_section,"ce_period_number");
+		m_NightVisionEffector.ce_power			= pSettings->r_float(ppi_section,"ce_power");
+
+		// --------------------------------------------------------------------------------
+	}
+}
+
+void CTorch::SwitchNightVision()
+{
+	SwitchNightVision(!m_bNightVisionOn);
+}
+
+void CTorch::SwitchNightVision(bool vision_on)
+{
+	if(!m_bNightVisionEnabled) return;
+	m_bNightVisionOn = vision_on;
+
+	if(m_bNightVisionOn)
+	{
+		CActor *pA = smart_cast<CActor *>(H_Parent());
+		if (pA) 
+			m_pNightVision = xr_new<CMonsterEffector>(m_NightVisionEffector.ppi, m_NightVisionEffector.time, m_NightVisionEffector.time_attack, m_NightVisionEffector.time_release);
+			Level().Cameras.AddEffector(m_pNightVision);
+	}
+	else
+	{
+		//m_pNightVision->fLifeTime = m_pNightVision->m_total*m_pNightVision->m_release;
+		m_pNightVision = NULL;
+		//Level().Cameras.RemoveEffector(xr_new<CMonsterEffector>(get_sd()->m_attack_effector.ppi, get_sd()->m_attack_effector.time, m_NightVisionEffector.time_attack, m_NightVisionEffector.time_release));
+	}
+}
+
+
+void CTorch::UpdateSwitchNightVision   ()
+{
+//	if(m_pNightVision)
+//		m_pNightVision->fLifeTime = flt_max;
 }
 
 void CTorch::Switch()
@@ -92,6 +163,8 @@ BOOL CTorch::net_Spawn(LPVOID DC)
 	//включить/выключить фонарик
 	Switch					(torch->m_active);
 	VERIFY					(!torch->m_active || (torch->ID_Parent != 0xffff));
+	
+	SwitchNightVision		(false);
 
 	return					(TRUE);
 }
@@ -99,6 +172,8 @@ BOOL CTorch::net_Spawn(LPVOID DC)
 void CTorch::net_Destroy() 
 {
 	Switch					(false);
+	SwitchNightVision		(false);
+
 	inherited::net_Destroy	();
 	xr_delete				(collidable.model);
 }
@@ -118,7 +193,9 @@ void CTorch::OnH_B_Independent()
 {
 	inherited::OnH_B_Independent	();
 	time2hide						= TIME_2_HIDE;
-	Switch							(false);
+
+	Switch					(false);
+	SwitchNightVision		(false);
 }
 
 void CTorch::UpdateCL	() 
@@ -172,6 +249,8 @@ void CTorch::UpdateCL	()
 		light_render->set_color(fclr);
 		glow_render->set_color(fclr);
 	}
+
+	UpdateSwitchNightVision   ();
 }
 
 void CTorch::renderable_Render	() 

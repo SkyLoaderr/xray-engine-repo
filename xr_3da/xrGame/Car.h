@@ -526,4 +526,5 @@ private:
 	CInventory	*inventory;
 	
 	virtual	void reinit		();
+	virtual	void reload		(LPCSTR section);
 };

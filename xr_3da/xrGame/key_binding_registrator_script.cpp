@@ -38,6 +38,7 @@ void key_binding_registrator::script_register(lua_State *L)
 				value("kCAM_ZOOM_OUT",				int(kCAM_ZOOM_OUT)),
 				value("kBINOCULARS",				int(kBINOCULARS)),
 				value("kTORCH",						int(kTORCH)),
+				value("kNIGHT_VISION",				int(kNIGHT_VISION)),
 				value("kWPN_1",						int(kWPN_1)),
 				value("kWPN_2",						int(kWPN_2)),
 				value("kWPN_3",						int(kWPN_3)),

@@ -185,6 +185,10 @@ protected:
 	u64 m_iDeltaTime;
 	bool m_bTimeValid;
 
+	//для передачи параметров из DamageManager
+	float m_fHitBoneScale;
+	float m_fWoundBoneScale;
+
 	virtual void reinit	();
 };
 

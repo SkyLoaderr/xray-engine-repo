@@ -51,7 +51,6 @@ class	CActor:
 	public Feel::Touch,
 	public CInventoryOwner,
 	public CActorCondition,
-	public CDamageManager,
 	public CMaterialManager,
 	public CPhraseDialogManager
 #ifdef DEBUG
@@ -147,7 +146,6 @@ public:
 	virtual void						Die				( );
 	virtual	void						Hit				(float P, Fvector &dir,			CObject* who, s16 element, Fvector position_in_bone_space, float impulse,  ALife::EHitType hit_type = ALife::eHitTypeWound);
 	virtual void						HitSignal		(float P, Fvector &vLocalDir,	CObject* who, s16 element);
-	virtual	float						HitScale		(int element);
 	
 	/////////////////////////////////////////////////////////////////
 	// misc properties
@@ -196,7 +194,6 @@ protected:
 
 	// Death
 	float					hit_slowmo;
-	float					hit_factor;
 	bool					bDeathInit;
 
 	// media

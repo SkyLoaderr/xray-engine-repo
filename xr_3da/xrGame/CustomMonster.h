@@ -31,7 +31,6 @@ class CCustomMonster :
 			public CEntityAlive, 
 			public CScriptMonster,
 			public Feel::Touch,
-			public CDamageManager,
 			public CEventMemoryManager,
 			public CLocationManager,
 			public CMaterialManager,

@@ -127,7 +127,6 @@ public:
 	virtual void				g_WeaponBones					(int &L, int &R1, int &R2);
 	virtual void				g_fireParams					(const CHudItem* pHudItem, Fvector& P, Fvector& D);
 	virtual void				HitSignal						(float P,	Fvector& vLocalDir, CObject* who, s16 element);
-	virtual float				HitScale						(int element);
 	virtual void				Die								();
 
 	virtual void				OnEvent							(NET_Packet& P, u16 type);

@@ -639,8 +639,6 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	Engine.Sheduler.Register	(this,TRUE);
 
 	hit_slowmo				= 0.f;
-	hit_factor				= 1.f;
-
 	m_pArtefact				= 0;
 
 	CSE_ALifeTraderAbstract	 *pTA	= smart_cast<CSE_ALifeTraderAbstract*>(e);
@@ -648,8 +646,6 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	m_tRank					= pTA->m_tRank;
 
 	OnChangeVisual();
-	// load damage params
-	CDamageManager::Load	(*cNameSect());
 	//----------------------------------
 	m_bAllowDeathRemove = false;
 

@@ -33,13 +33,6 @@ float CAI_Stalker::GetWeaponAccuracy	() const
 				return	(base*m_disp_stand_crouch);
 }
 
-float CAI_Stalker::HitScale	(int element)
-{
-	CKinematics* V		= PKinematics(Visual());			VERIFY(V);
-	float scale			= fis_zero(V->LL_GetBoneInstance(u16(element)).get_param(0))?1.f:V->LL_GetBoneInstance(u16(element)).get_param(0);
-	return				(m_default_hit_factor*scale);
-}
-
 void CAI_Stalker::g_fireParams(const CHudItem* pHudItem, Fvector& P, Fvector& D)
 {
 	if (g_Alive()) {

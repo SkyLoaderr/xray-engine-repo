@@ -94,6 +94,24 @@ float CEntity::CalcCondition(float hit)
 	return lost_health;
 }
 
+
+void  CEntity::HitScale			(const int element, float hit_scale, float wound_scale)
+{
+	if(BI_NONE == element)
+	{
+		//считаем что параметры для BI_NONE заданы как 1.f 
+		hit_scale = 1.f * m_default_hit_factor;
+		wound_scale = 1.f * m_default_wound_factor;
+		return;
+	}
+	
+	CKinematics* V		= PKinematics(Visual());			VERIFY(V);
+	float scale			= fis_zero(V->LL_GetBoneInstance(u16(element)).get_param(0))?1.f:V->LL_GetBoneInstance(u16(element)).get_param(0);
+	hit_scale			= m_default_hit_factor*scale;
+	scale				= fis_zero(V->LL_GetBoneInstance(u16(element)).get_param(2))?1.f:V->LL_GetBoneInstance(u16(element)).get_param(2);
+	wound_scale			= m_default_wound_factor*scale;
+}
+
 void CEntity::Hit			(float perc, Fvector &dir, CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type) 
 {
 
@@ -202,6 +220,9 @@ BOOL CEntity::net_Spawn		(LPVOID DC)
 	if (!inherited::net_Spawn(DC))
 		return				(FALSE);
 
+	// load damage params
+	CDamageManager::Load	(*cNameSect());
+
 	CSE_Abstract			*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeCreatureAbstract	*E	= smart_cast<CSE_ALifeCreatureAbstract*>(e);
 	if (!E) {
@@ -265,9 +286,19 @@ void CEntity::reinit			()
 {
 	inherited::reinit			();
 
+	CDamageManager::reinit		();
+
 	m_level_death_time			= 0;
 	m_game_death_time			= 0;
 }
+
+
+void CEntity::reload			(LPCSTR section)
+{
+	inherited::reload			(section);
+	CDamageManager::reload		(section);
+}
+
 
 void CEntity::set_death_time	()
 {

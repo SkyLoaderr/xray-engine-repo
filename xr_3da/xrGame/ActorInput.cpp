@@ -43,14 +43,20 @@ void CActor::IR_OnKeyboardPress(int cmd)
 	case kCAM_2:	cam_Set			(eacLookAt);				break;
 	case kCAM_3:	cam_Set			(eacFreeLook);				break;
 
+	case kNIGHT_VISION: {
+		PIItem I = inventory().Get(CLSID_DEVICE_TORCH, false); 
+		if (I){
+			CTorch* torch = smart_cast<CTorch*>(I);
+			if (torch) torch->SwitchNightVision();
+		}
+		}break;
 	case kTORCH:{ 
-		PIItem I = inventory().Get("device_torch",false); 
+		PIItem I = inventory().Get(CLSID_DEVICE_TORCH, false); 
 		if (I){
 			CTorch* torch = smart_cast<CTorch*>(I);
 			if (torch) torch->Switch();
 		}
 		}break;
-//	case kWPN_ZOOM:	Weapons->Zoom	(TRUE);						break;
 	case kWPN_1:	
 	case kWPN_2:	
 	case kWPN_3:	

@@ -191,7 +191,6 @@ void CActor::reinit	()
 	m_PhysicMovementControl->SetPhysicsRefObject(this);
 	CEntityAlive::reinit	();
 	CInventoryOwner::reinit	();
-	CDamageManager::reinit	();
 	CMaterialManager::reinit();
 //	m_r_hand				= PKinematics(Visual())->LL_BoneID("bip01_r_hand");
 //	m_l_finger1				= PKinematics(Visual())->LL_BoneID("bip01_l_finger1");
@@ -202,7 +201,6 @@ void CActor::reload	(LPCSTR section)
 {
 	CEntityAlive::reload	(section);
 	CInventoryOwner::reload	(section);
-	CDamageManager::reload	(section);
 	CMaterialManager::reload(section);
 }
 
@@ -1034,13 +1032,6 @@ void CActor::OnHUDDraw	(CCustomHUD* /**hud/**/)
 		HUD().pFontSmall->SetSize(Size);
 	};
 #endif
-}
-
-float CActor::HitScale	(int element)
-{
-	CKinematics* V		= PKinematics(Visual());			VERIFY(V);
-	float scale			= fis_zero(V->LL_GetBoneInstance(u16(element)).get_param(0))?1.f:V->LL_GetBoneInstance(u16(element)).get_param(0);
-	return hit_factor*scale;
 }
 
 void CActor::SetPhPosition(const Fmatrix &transform)

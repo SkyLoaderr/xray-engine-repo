@@ -1,7 +1,9 @@
 #pragma once
 #include "attachable_item.h"
+#include "ai/ai_monster_defs.h"
 
 class CLAItem;
+class CMonsterEffector;
 
 class CTorch : public CAttachableItem {
 private:
@@ -18,6 +20,7 @@ protected:
 	IRender_Light*	light_render;
 	IRender_Glow*	glow_render;
 	Fvector			m_focus;
+
 public:
 					CTorch				(void);
 	virtual			~CTorch				(void);
@@ -38,7 +41,21 @@ public:
 
 			void	Switch				();
 			void	Switch				(bool light_on);
-	
+
+//////////////////////////////////////////////////////////////////////////
+//Night vision
+public:
+			void	SwitchNightVision		  ();
+			void	SwitchNightVision		  (bool light_on);
+			void	UpdateSwitchNightVision   ();
+protected:
+	bool				m_bNightVisionEnabled;
+	bool				m_bNightVisionOn;
+	ref_str				m_sNightVisionTexture;
+	SAttackEffector		m_NightVisionEffector;
+	CMonsterEffector*	m_pNightVision;
+public:
+
 	virtual bool			use_parent_ai_locations	() const
 	{
 		return				(!H_Parent());

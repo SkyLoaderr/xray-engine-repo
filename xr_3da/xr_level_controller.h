@@ -24,6 +24,7 @@ enum	EKeyBinding
 
 	kBINOCULARS		,
 	kTORCH			,
+	kNIGHT_VISION	,
 
 	kWPN_1			,
 	kWPN_2			,

@@ -47,7 +47,6 @@ public:
 	virtual CPHMovementControl*	movement_control()	{return m_PhysicMovementControl;}
 	virtual void			HitImpulse				(float amount, Fvector& vWorldDir, Fvector& vLocalDir);
 	virtual	void			Hit						(float P, Fvector &dir,			CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound);
-	
 	virtual void			g_WeaponBones			(int &L, int &R1, int &R2)										= 0;
 	
 	virtual float GetfHealth() const { return m_fHealth*100.f; }
@@ -58,7 +57,6 @@ public:
 	virtual float			g_MaxHealth			()	const { return GetMaxHealth()*100.f; }
 
 	virtual float			CalcCondition		(float hit);
-
 
 	// Visibility related
 	virtual	float			ffGetFov				()	const			= 0;	

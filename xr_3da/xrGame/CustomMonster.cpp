@@ -63,7 +63,6 @@ void CCustomMonster::Load		(LPCSTR section)
 {
 	inherited::Load				(section);
 	CScriptMonster::Load		(section);
-	CDamageManager::Load		(section);
 	CEventMemoryManager::Load	(section);
 	CLocationManager::Load		(section);
 	CMaterialManager::Load		(section);
@@ -146,7 +145,6 @@ void CCustomMonster::reinit()
 {
 	CScriptMonster::reinit		();
 	CEntityAlive::reinit		();
-	CDamageManager::reinit		();
 	CEventMemoryManager::reinit	();
 	CLocationManager::reinit	();
 	CMaterialManager::reinit	();
@@ -167,7 +165,6 @@ void CCustomMonster::reload		(LPCSTR section)
 	CSoundPlayer::reload		(section);
 	CScriptMonster::reload		(section);
 	CEntityAlive::reload		(section);
-	CDamageManager::reload		(section);
 	CEventMemoryManager::reload	(section);
 	CLocationManager::reload	(section);
 	CMaterialManager::reload	(section);
@@ -676,8 +673,6 @@ BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 	if (!inherited::net_Spawn(DC) || !CScriptMonster::net_Spawn(DC) || !CMovementManager::net_Spawn(DC))
 		return					(FALSE);
 	
-	CDamageManager::Load		(*cNameSect());
-
 	CSE_Abstract				*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeMonsterAbstract	*E	= smart_cast<CSE_ALifeMonsterAbstract*>(e);
 

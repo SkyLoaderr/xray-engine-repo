@@ -70,6 +70,13 @@ void CCar::reinit		()
 	CScriptMonster::reinit	();
 }
 
+void CCar::reload		(LPCSTR section)
+{
+	CEntity::reload			(section);
+	CScriptMonster::reload	(section);
+}
+
+
 void __stdcall  CCar::cb_Steer(CBoneInstance* B)
 {
 	CCar*	C			= smart_cast<CCar*>	(static_cast<CObject*>(B->Callback_Param));
