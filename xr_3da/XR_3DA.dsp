@@ -595,32 +595,6 @@ SOURCE=.\Blenders\Blender_Recorder.cpp
 SOURCE=.\Blenders\Blender_Recorder.h
 # End Source File
 # End Group
-# Begin Group "OLD generation"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\XRShader.cpp
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=.\XRShader.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\XRShaderDef.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\xrShaderLib.cpp
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=.\xrShaderLib.h
-# End Source File
-# End Group
 # Begin Source File
 
 SOURCE=.\SH_Constant.cpp
@@ -665,14 +639,6 @@ SOURCE=.\WaveForm.h
 # Begin Group "Textures"
 
 # PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\Image.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Image.h
-# End Source File
 # Begin Source File
 
 SOURCE=.\Texture.cpp
@@ -868,71 +834,58 @@ SOURCE=.\xrSyncronize.h
 # Begin Group "Collision Core"
 
 # PROP Default_Filter ""
-# Begin Group "RAPID"
-
-# PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=.\Collide\cl_bboxcollide.cpp
+SOURCE=.\cl_bboxcollide.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\Collide\cl_build.cpp
+SOURCE=.\cl_build.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\Collide\cl_collector.cpp
+SOURCE=.\cl_collector.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\Collide\cl_collector.h
+SOURCE=.\cl_collector.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\Collide\cl_collide.cpp
+SOURCE=.\cl_collide.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\Collide\cl_defs.h
+SOURCE=.\cl_defs.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\Collide\cl_intersect.cpp
+SOURCE=.\cl_intersect.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\Collide\cl_intersect.h
+SOURCE=.\cl_intersect.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\Collide\cl_moments.h
+SOURCE=.\cl_moments.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\Collide\cl_overlap.cpp
-
-!IF  "$(CFG)" == "XR_3DA - Win32 Release"
-
-# ADD CPP /FAs
-
-!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
-
-!ENDIF 
-
+SOURCE=.\cl_overlap.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\Collide\cl_RAPID.cpp
+SOURCE=.\cl_RAPID.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\Collide\cl_RAPID.h
+SOURCE=.\cl_RAPID.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\Collide\cl_raypick.cpp
+SOURCE=.\cl_raypick.cpp
 # End Source File
-# End Group
 # End Group
 # Begin Group "LTX"
 
@@ -965,18 +918,6 @@ SOURCE=.\xr_trims.h
 # Begin Group "File System"
 
 # PROP Default_Filter ""
-# Begin Group "TGA"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\tga.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\tga.h
-# End Source File
-# End Group
 # Begin Source File
 
 SOURCE=.\FS.cpp
@@ -1501,6 +1442,26 @@ SOURCE=.\NET_Shared.h
 # Begin Source File
 
 SOURCE=.\NET_utils.h
+# End Source File
+# End Group
+# Begin Group "Imaging"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\Image.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Image.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\tga.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\tga.h
 # End Source File
 # End Group
 # Begin Source File
