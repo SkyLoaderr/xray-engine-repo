@@ -6,8 +6,6 @@
 #define AFX_RAIN_H__5284C8A3_153D_4331_83F8_02165A1B8AF4__INCLUDED_
 #pragma once
 
-class ENGINE_API	CPSVisual;
-
 class CEffect_Rain	: public CEventBase, public pureDeviceDestroy, public pureDeviceCreate
 {
 private:
@@ -22,9 +20,8 @@ private:
 	struct	Particle
 	{
 		Particle		*next,*prev;
-		DWORD			dwNextUpdate;
-		CPSVisual*		visual;
-		PS::SEmitter	emitter;
+		Fvector			pos;
+		float			time;
 	};
 	enum	States
 	{
@@ -38,9 +35,13 @@ private:
 	EVENT				control_start;
 	EVENT				control_stop;
 
-	// Visualization
-	Shader*				SH;
-	CVertexStream*		VS;
+	// Visualization	(rain)
+	Shader*				SH_Rain;
+	CVertexStream*		VS_Rain;
+
+	// Visualization	(drops)
+	Shader*				SH_Drops;
+	CVertexStream*		VS_Drops;
 	
 	// Data and logic
 	vector<Item>		items;

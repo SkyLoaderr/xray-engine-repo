@@ -96,6 +96,31 @@ void CDetail::Unload	()
 
 void CDetail::Transfer	(Fmatrix& mXform, fvfVertexOut* vDest, DWORD C, WORD* iDest, DWORD iOffset)
 {
+	// Transfer vertices
+	{
+		CDetail::fvfVertexIn	*srcIt = vertices, *srcEnd = vertices+number_vertices;
+		CDetail::fvfVertexOut	*dstIt = vDest;
+		for	(; srcIt!=srcEnd; srcIt++, dstIt++)
+		{
+			mXform.transform_tiny	(dstIt->P,srcIt->P);
+			dstIt->C	= C;
+			dstIt->u	= srcIt->u;
+			dstIt->v	= srcIt->v;
+		}
+	}
+	
+	// Transfer indices (in 32bit lines)
+	VERIFY	(iOffset<65535);
+	{
+		DWORD	item	= (iOffset<<16) | iOffset;
+		DWORD	count	= number_indices/2;
+		LPDWORD	sit		= LPDWORD(indices);
+		LPDWORD	send	= sit+count;
+		LPDWORD	dit		= LPDWORD(iDest);
+		for		(; sit!=send; dit++,sit++)	*dit=*sit+item;
+		if		(number_indices&1)	
+			iDest[number_indices-1]=indices[number_indices-1]+WORD(iOffset);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////
