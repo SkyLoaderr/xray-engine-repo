@@ -357,7 +357,7 @@ IC float CAI_Rat::ffComputeCost(Fvector tLeaderPosition,SSubNode &tCurrentNeighb
 	tCurrentSubNode.x = (tCurrentNeighbour.tLeftDown.x + tCurrentNeighbour.tRightUp.x)/2.f;
 	//tCurrentSubNode.y = (tCurrentNeighbour.tLeftDown.y + tCurrentNeighbour.tRightUp.y)/2.f;
 	tCurrentSubNode.z = (tCurrentNeighbour.tLeftDown.z + tCurrentNeighbour.tRightUp.z)/2.f;
-	return	(_sqr(sqrt(_sqr(tLeaderPosition.x - tCurrentSubNode.x) + /**0*_sqr(tLeaderPosition.y - tCurrentSubNode.y)/**/ + _sqr(tLeaderPosition.z - tCurrentSubNode.z)) - fMinDistance));
+	return	(_sqr(_sqrt(_sqr(tLeaderPosition.x - tCurrentSubNode.x) + /**0*_sqr(tLeaderPosition.y - tCurrentSubNode.y)/**/ + _sqr(tLeaderPosition.z - tCurrentSubNode.z)) - fMinDistance));
 }
 
 IC float CAI_Rat::ffGetY(NodeCompressed &tNode, float X, float Z)
@@ -696,7 +696,7 @@ void CAI_Rat::FollowLeader(Fvector &tLeaderPosition, const float fMinDistance, c
 		//Fvector tLeaderPosition = Leader->Position();
 		DWORD dwTime = Level().timeServer();
 		int iBestI = -1;
-		float fBestCost = _sqr(sqrt(_sqr(tLeaderPosition.x - tCurrentPosition.x) + 0*_sqr(tLeaderPosition.y - tCurrentPosition.y) + _sqr(tLeaderPosition.z - tCurrentPosition.z)) - fMinDistance);
+		float fBestCost = _sqr(_sqrt(_sqr(tLeaderPosition.x - tCurrentPosition.x) + 0*_sqr(tLeaderPosition.y - tCurrentPosition.y) + _sqr(tLeaderPosition.z - tCurrentPosition.z)) - fMinDistance);
 		bool bMobility = false;
 		for ( i=0; i<tpSubNodes.size(); i++)
 			if ((i != iMySubNode) && (tpSubNodes[i].bEmpty)) {
