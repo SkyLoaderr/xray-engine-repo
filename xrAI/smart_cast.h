@@ -123,17 +123,17 @@
 #		undef cast_type_list
 #		define cast_type_list save_cast_list	(CCustomZone,		CGameObject)
 
-//		DECLARE_SPECIALIZATION	(CWeaponMagazined,	CWeapon,				cast_weapon_magazined);
-//#		undef cast_type_list
-//#		define cast_type_list save_cast_list	(CWeaponMagazined,	CWeapon)
-//
-//		DECLARE_SPECIALIZATION	(CHudItem,			CInventoryItem,			cast_hud_item);
-//#		undef cast_type_list
-//#		define cast_type_list save_cast_list	(CHudItem,			CInventoryItem)
-//
-//		DECLARE_SPECIALIZATION	(CPhysicsShellHolder,CGameObject,			cast_physics_shell_holder);
-//#		undef cast_type_list
-//#		define cast_type_list save_cast_list	(CPhysicsShellHolder,CGameObject)
+		DECLARE_SPECIALIZATION	(CWeaponMagazined,	CWeapon,				cast_weapon_magazined);
+#		undef cast_type_list
+#		define cast_type_list save_cast_list	(CWeaponMagazined,	CWeapon)
+
+		DECLARE_SPECIALIZATION	(CHudItem,			CInventoryItem,			cast_hud_item);
+#		undef cast_type_list
+#		define cast_type_list save_cast_list	(CHudItem,			CInventoryItem)
+
+		DECLARE_SPECIALIZATION	(CPhysicsShellHolder,CGameObject,			cast_physics_shell_holder);
+#		undef cast_type_list
+#		define cast_type_list save_cast_list	(CPhysicsShellHolder,CGameObject)
 
 #	endif
 	
