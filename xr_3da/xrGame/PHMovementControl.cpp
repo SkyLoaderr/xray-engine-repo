@@ -929,6 +929,6 @@ void CPHMovementControl::ActivateBox		(DWORD id, BOOL Check/*false*/)
 
 void CPHMovementControl::ApplyHit(const Fvector& dir,const dReal P,ALife::EHitType hit_type)
 {
-	if(hit_type==ALife::eHitTypeExplosion||ALife::eHitTypeWound)
+	if(hit_type==ALife::eHitTypeExplosion||hit_type==ALife::eHitTypeWound)
 																ApplyImpulse(dir,P);
 }
