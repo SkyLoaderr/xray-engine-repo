@@ -418,7 +418,7 @@ void CAI_Stalker::Think()
 		Death				();
 	}
 	else 
-	if ((m_dwParticularState != -1) && (K)) {
+ 	if ((m_dwParticularState != -1) && (K || (m_dwParticularState == 7))) {
 		switch (m_dwParticularState) {
 			case 0 : {
 				m_dwRandomFactor = 100;
@@ -453,6 +453,12 @@ void CAI_Stalker::Think()
 			case 6 : {
 				m_dwRandomFactor = 50;
 				Detour();
+				break;
+			}
+			case 7 : {
+				m_tBodyState	= eBodyStateStand;
+				m_tMovementType = eMovementTypeStand;
+				m_tStateType	= eStateTypeDanger;
 				break;
 			}
 			default : {

@@ -204,32 +204,47 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 {
 	if (!g_Alive())
 		return;
+	
+	CWeapon *tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
+	u32		dwCurrentAniSlot = 0;
+	if (tpWeapon)
+		switch (tpWeapon->SUB_CLS_ID) {
+			case CLSID_OBJECT_W_M134		:
+			case CLSID_OBJECT_W_FN2000		:
+			case CLSID_OBJECT_W_AK74		:
+			case CLSID_OBJECT_W_LR300		: {
+				dwCurrentAniSlot = 2;
+				break;
+			}
+			case CLSID_OBJECT_W_HPSA		:
+			case CLSID_OBJECT_W_PM			:
+			case CLSID_OBJECT_W_FORT		: {
+				dwCurrentAniSlot = 1;
+				break;
+			}
+			case CLSID_OBJECT_W_BINOCULAR	: {
+				dwCurrentAniSlot = 5;
+				break;
+			}
+			case CLSID_OBJECT_W_SHOTGUN		:
+			case CLSID_OBJECT_W_SVD			:
+			case CLSID_OBJECT_W_SVU			: {7
+				dwCurrentAniSlot = 3;
+				break;
+			}
+			case CLSID_OBJECT_W_RPG7		: {
+				dwCurrentAniSlot = 4;
+				break;
+			}
+		}
 	if (m_tStateType == eStateTypeNormal) {
 		tpTorsoAnimation = 0;
 		VERIFY(m_tBodyState == eBodyStateStand);
 		if (m_tMovementType == eMovementTypeStand)
-			tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[0].A[9].A[0];
-		else {
-			CWeapon *tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
-			if (tpWeapon && (tpWeapon->STATE == CWeapon::eIdle)) {
-				switch (m_inventory.m_activeSlot) {
-					case 0 : {
-						tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[3].A[7 + m_tMovementType].A[m_tStateType];
-						break;
-					}
-					case 1 : {
-						tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[1].A[7 + m_tMovementType].A[m_tStateType];
-						break;
-					}
-					case 2 : {
-						tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[2].A[7 + m_tMovementType].A[m_tStateType];
-						break;
-					}
-				}
-			}
-			else
-				tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[0].A[7 + m_tMovementType].A[0];
-		}
+			//tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[0].A[9].A[0];
+			tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[9].A[0];
+		else
+			tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[7 + m_tMovementType].A[0];
 		return;
 	}
 	if (m_inventory.ActiveItem()) {
@@ -237,109 +252,31 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 		if (tpWeapon) {
 			switch (tpWeapon->STATE) {
 				case CWeapon::eIdle : {
-					switch (m_inventory.m_activeSlot) {
-						case 0 : {
-							tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[3].A[6].A[m_tStateType];
-							break;
-						}
-						case 1 : {
-							tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[1].A[6].A[m_tStateType];
-							break;
-						}
-						case 2 : {
-							tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[2].A[6].A[m_tStateType];
-							break;
-						}
-					}
+					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[6].A[m_tStateType];
 					break;
 				}
 				case CWeapon::eReload : {
-					switch (m_inventory.m_activeSlot) {
-						case 0 : {
-							tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[3].A[4].A[0];
-							break;
-						}
-						case 1 : {
-							tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[1].A[4].A[0];
-							break;
-						}
-						case 2 : {
-							tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[2].A[4].A[0];
-							break;
-						}
-					}
+					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[4].A[0];
 					break;
 				}
 				case CWeapon::eShowing : {
-					switch (m_inventory.m_activeSlot) {
-						case 0 : {
-							tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[3].A[0].A[0];
-							break;
-						}
-						case 1 : {
-							tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[1].A[0].A[0];
-							break;
-						}
-						case 2 : {
-							tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[2].A[0].A[0];
-							break;
-						}
-					}
+					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[0].A[0];
 					break;
 				}
 				case CWeapon::eHiding : {
-					switch (m_inventory.m_activeSlot) {
-						case 0 : {
-							tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[3].A[3].A[0];
-							break;
-						}
-						case 1 : {
-							tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[1].A[3].A[0];
-							break;
-						}
-						case 2 : {
-							tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[2].A[3].A[0];
-							break;
-						}
-					}
+					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[3].A[0];
 					break;
 				}
 				case CWeapon::eFire : {
-					switch (m_inventory.m_activeSlot) {
-						case 0 : {
-							tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[3].A[1].A[0];
-							break;
-						}
-						case 1 : {
-							tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[1].A[1].A[0];
-							break;
-						}
-						case 2 : {
-							tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[2].A[1].A[0];
-							break;
-						}
-					}
+					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[1].A[0];
 					break;
 				}
 				case CWeapon::eFire2 : {
-					switch (m_inventory.m_activeSlot) {
-						case 0 : {
-							tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[3].A[1].A[0];
-							break;
-						}
-						case 1 : {
-							tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[1].A[1].A[0];
-							break;
-						}
-						case 2 : {
-							tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[2].A[1].A[0];
-							break;
-						}
-					}
+					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[1].A[0];
 					break;
 				}
 				default :
-					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[0].A[6].A[0];
+					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[6].A[0];
 			}
 		}
 	}

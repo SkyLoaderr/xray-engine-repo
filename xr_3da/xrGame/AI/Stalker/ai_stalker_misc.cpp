@@ -183,6 +183,9 @@ void CAI_Stalker::vfUpdateSearchPosition()
 	
 	INIT_SQUAD_AND_LEADER;
 	
+	if (m_dwParticularState != u32(-1))
+		return;
+
 	if (this != Leader)	{
 		CAI_Stalker *tpLeader			= dynamic_cast<CAI_Stalker*>(Leader);
 		if (tpLeader) {
@@ -301,7 +304,8 @@ void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E
 	
 	// is there any items to pick up?
 	L = false;
-	vfCheckForItems();
+	if (m_dwParticularState != 7)
+		vfCheckForItems();
 	
 	M = !!m_tpItemToTake;
 }

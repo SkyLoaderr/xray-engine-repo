@@ -228,7 +228,7 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	R_ASSERT						(tpHuman);
 	cNameVisual_set					(tpHuman->caModel);
 	
-	r_torso_current.yaw				= r_torso_target.yaw	= -tpHuman->o_Angle.y;
+	r_current.yaw = r_target.yaw = r_torso_current.yaw = r_torso_target.yaw	= -tpHuman->o_Angle.y;
 	r_torso_current.pitch			= r_torso_target.pitch	= 0;
 
 	fHealth							= tpHuman->fHealth;
@@ -236,7 +236,8 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	m_tNextGP						= tpHuman->m_tNextGraphID;
 	
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	m_tNextGP						= m_tCurGP = getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
+	if (m_dwParticularState == u32(-1))
+		m_tNextGP					= m_tCurGP = getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 //	m_tStateStack.push				(m_eCurrentState = eStalkerStateAccomplishingTask);
