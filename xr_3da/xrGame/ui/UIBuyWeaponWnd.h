@@ -55,6 +55,16 @@ public:
 	virtual void Hide();
 
 protected:
+//	#define NO_ACTIVE_SLOT			0xffffffff
+//	#define KNIFE_SLOT				0
+//	#define PISTOL_SLOT				1
+//	#define RIFLE_SLOT				2
+//	#define GRENADE_SLOT			3
+//	#define APPARATUS_SLOT			4
+	#define BELT_SLOT				5
+//	#define OUTFIT_SLOT				6
+//	#define PDA_SLOT				7 
+	#define MP_SLOTS_NUM			8
 
 	//-----------------------------------------------------------------------------/
 	//  новые данные относящиеся к покупке оружия 
@@ -76,17 +86,6 @@ protected:
 		// Игровая стоимость вещи
 		int				cost;
 	public:
-		//	#define NO_ACTIVE_SLOT		0xffffffff
-		//	#define KNIFE_SLOT			0
-		//	#define PISTOL_SLOT			1
-		//	#define RIFLE_SLOT			2
-		//	#define GRENADE_SLOT		3
-		//	#define APPARATUS_SLOT		4
-		#define BELT_SLOT				5
-		//	#define OUTFIT_SLOT			6
-		//	#define PDA_SLOT			7 
-		#define MP_SLOTS_NUM			8
-
 		CUIDragDropItemMP(): slotNum			(0),
 							 sectionNum			(0),
 							 bAddonsAvailable	(false),
@@ -158,6 +157,10 @@ protected:
 		// Работа с деньгами
 		void				SetCost(const int c)	{ cost = c; }
 		int					GetCost()	const		{ return cost; }
+
+		// Массив дополнительных полей которые могут быть специфичны для определенных типов вещей,
+		// например для арморов храним координаты иконки в общей текстуре его представляющей
+		xr_vector<float>	m_fAdditionalInfo;
 	};
 
 	CUIFrameWindow		UIBagWnd;
@@ -197,7 +200,8 @@ protected:
 	//слоты для оружия
 	CUIDragDropList		UITopList[MP_SLOTS_NUM]; 
 	//отдельный слот для костюмов
-	CUIOutfitSlot		UIOutfitSlot;
+//	CUIOutfitSlot		UIOutfitSlot;
+	CUIStatic			UIOutfitIcon;		
 
 //	CUIDragDropList		UIBagList;
 //	CUIDragDropList		UIBeltList;
@@ -368,15 +372,29 @@ protected:
 	// Запрос количества денег у игрока
 
 	// Работа с деньгами
+
 	// Количество
 	int			m_iMoneyAmount;
 	// Получаем количество денег
 	int			GetMoneyAmount() const			{ return m_iMoneyAmount; }
 	// Устанавливам количество денег
-	void		SetMoneyAmount(int moneyAmount);
+	void		SetMoneyAmount(int moneyAmount)	{ m_iMoneyAmount = moneyAmount; CheckBuyAvailability(); }
 	// Проверка всех вещей на возможность покупки (достаточно ли денег?)
 	// Если вещь невозможно купить, то помечаем ее красным и запрещаем ее перетаскивание
 	void		CheckBuyAvailability();
+
+	// Работа с арморами
+
+	// Вернуть номер текущего армора.
+	// На данный момент: - 1 - нет, 0 - экзоскелет, 1 - научный
+	const u8	GetCurrentSuit();
+	// Восстановить скин стаокера без костюма
+	void		SetDefaultSuit();
+	// Таблица соответсвия имени армора с именами моделей персонажей. Заполняется ручками
+	// Во вложенной паре первое имя для синей комманды, второе для зеленой
+	typedef xr_vector<std::pair<ref_str, std::pair<ref_str, ref_str> > >	CONFORMITY_TABLE;
+	typedef CONFORMITY_TABLE::iterator										CONFORMITY_TABLE_it;
+	CONFORMITY_TABLE		m_ConformityTable;
 
 public:
 	// А не является ли данная вещь чьим-то аддоном?

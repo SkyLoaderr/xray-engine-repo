@@ -13,6 +13,8 @@
 const char * const	SKIN_SELECTOR_XML		= "skin_selector.xml";
 const u32			clActive				= 0xffffffff;
 const u32			clInactive				= 0xaa888888;
+const u16			SKIN_TEX_HEIGHT			= 341;
+const u16			SKIN_TEX_WIDTH			= 128;
 
 //-----------------------------------------------------------------------------/
 // Constructors and Destructor
@@ -237,8 +239,8 @@ void CUISkinSelectorWnd::InitializeSkins()
 		int bkWidth				= r.right	- r.left, 
 			bkHeight			= r.bottom	- r.top,
 			// Координаты текстуры
-			texWidth			= 128,
-			texHeight			= 341;
+			texWidth			= SKIN_TEX_WIDTH,
+			texHeight			= SKIN_TEX_HEIGHT;
 
 		// Коеффициент сжатия
 		float stretchKoeff = 1.0f;

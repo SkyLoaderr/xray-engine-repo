@@ -7,8 +7,8 @@
 
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
+#include "UISkinSelector.h"
 
-//#include "../actor.h"
 #include "../uigamesp.h"
 #include "../hudmanager.h"
 
@@ -17,21 +17,8 @@
 #include "../ArtifactMerger.h"
 #include "../level.h"
 
-//#include "../weapon.h"
-//#include "../silencer.h"
-//#include "../scope.h"
-//#include "../grenadelauncher.h"
-//
-//#include "../weapon.h"
-//#include "../silencer.h"
-//#include "../scope.h"
-//#include "../grenadelauncher.h"
-
 #include "../script_space.h"
 #include "../ai_script_processor.h"
-
-//#include "../eatable_item.h"
-//#include "../inventory.h"
 
 #include "UIInventoryUtilities.h"
 using namespace InventoryUtilities;
@@ -68,8 +55,15 @@ CUIBuyWeaponWnd::CUIBuyWeaponWnd(char *strSectionName)
 	SetFont(HUD().pFontMedium);
 
 	m_mlCurrLevel	= mlRoot;
-	SetMoneyAmount(2000);
+	SetMoneyAmount(50000);
 
+	// Заполняем таблицу соответсвия армора и модели персонажа в этом арморе
+	m_ConformityTable.push_back(std::make_pair("exo_outfit", 
+		std::make_pair("stalker_ki_exoskeleton", "stalker_sv_exoskeleton")));
+	m_ConformityTable.push_back(std::make_pair("scientific_outfit",
+		std::make_pair("stalker_ki_nauchniy", "stalker_sv_nauchniy")));
+
+	// Инициализируем вещи
 	Init(strSectionName);
 
 	Hide();
@@ -103,45 +97,13 @@ void CUIBuyWeaponWnd::Init(char *strSectionName)
 	////////////////////////////////////////
 	//окно с описанием активной вещи
 
-	//для работы с артефактами
-//	AttachChild(&UIArtifactMergerWnd);
-//	xml_init.InitWindow(uiXml, "frame_window", 1, &UIArtifactMergerWnd);
-
 	AttachChild(&UIDescWnd);
 	xml_init.InitStatic(uiXml, "desc_static", 0, &UIDescWnd);
-//	UIDescWnd.AttachChild(&UIStaticDesc);
-//	UIStaticDesc.Init("ui\\ui_inv_info_over_b", 5, UIDescWnd.GetHeight() - 310 ,260,310);
-
-	//информация о предмете
-//	UIStaticDesc.AttachChild(&UIItemInfo);
-//	UIItemInfo.Init(0,0, UIStaticDesc.GetWidth(), UIStaticDesc.GetHeight(), "inventory_item.xml");
 
 	////////////////////////////////////
 	//Окно с информации о персонаже
 	AttachChild(&UIPersonalWnd);
 	xml_init.InitStatic(uiXml, "personal_static", 0, &UIPersonalWnd);
-
-	//Полосы прогресса
-//	UIPersonalWnd.AttachChild(&UIProgressBarHealth);
-//	xml_init.InitProgressBar(uiXml, "progress_bar", 0, &UIProgressBarHealth);
-//
-//	UIPersonalWnd.AttachChild(&UIProgressBarSatiety);
-//	xml_init.InitProgressBar(uiXml, "progress_bar", 1, &UIProgressBarSatiety);
-//
-//	UIPersonalWnd.AttachChild(&UIProgressBarPower);
-//	xml_init.InitProgressBar(uiXml, "progress_bar", 2, &UIProgressBarPower);
-//
-//	UIPersonalWnd.AttachChild(&UIProgressBarRadiation);
-//	xml_init.InitProgressBar(uiXml, "progress_bar", 3, &UIProgressBarRadiation);
-
-
-//	UIPersonalWnd.AttachChild(&UIStaticPersonal);
-//	UIStaticPersonal.Init("ui\\ui_inv_personal_over_b", 
-//		-3,UIPersonalWnd.GetHeight() - 209 ,260,260);
-
-	//информация о персонаже
-//	UIStaticPersonal.AttachChild(&UICharacterInfo);
-//	UICharacterInfo.Init(0,0, UIStaticPersonal.GetWidth(), UIStaticPersonal.GetHeight(), "inventory_character.xml");
 
 	// Статический бекграунд для кнопок табконтрола выбора оружия
 	AttachChild(&UIStaticTabCtrl);
@@ -178,33 +140,6 @@ void CUIBuyWeaponWnd::Init(char *strSectionName)
 
 	// Indicator
 	UIGreenIndicator.Init("ui\\ui_bt_multiplayer_over", 0, 0, uIndicatorWidth, uIndicatorHeight);
-
-//	//Элементы автоматического добавления
-//	xml_init.InitAutoStatic(uiXml, "auto_static", this);
-
-
-	//кнопки внизу
-//	AttachChild(&UISleepButton);
-//	xml_init.InitButton(uiXml, "sleep_button", 0, &UISleepButton);
-
-
-	//окошко для диалога параметров сна
-//	AttachChild(&UISleepWnd);
-//	xml_init.InitWindow(uiXml, "sleep_window", 0, &UISleepWnd);
-//	UISleepWnd.Hide();
-
-	/*	AttachChild(&UIButton1);
-	xml_init.InitButton(uiXml, "button", 0, &UIButton1);
-	AttachChild(&UIButton2);
-	xml_init.InitButton(uiXml, "button", 1, &UIButton2);
-	AttachChild(&UIButton3);
-	xml_init.InitButton(uiXml, "button", 2, &UIButton3);
-	AttachChild(&UIButton4);
-	xml_init.InitButton(uiXml, "button", 3, &UIButton4);
-	AttachChild(&UIButton5);
-	xml_init.InitButton(uiXml, "button", 4, &UIButton5);
-	AttachChild(&UIButton6);
-	xml_init.InitButton(uiXml, "button", 5, &UIButton6);*/
 
 	// Кнопки OK и Cancel для выходи из диалога покупки оружия
 	AttachChild(&UIBtnOK);
@@ -308,6 +243,14 @@ void CUIBuyWeaponWnd::Init(char *strSectionName)
 
 	AttachChild(&UIItemCost);
 	xml_init.InitStatic(uiXml, "item_cost_static", 0, &UIItemCost);
+
+	// Иконка изображения персонажа в костюме
+	AttachChild(&UIOutfitIcon);
+	xml_init.InitStatic(uiXml, "outfit_static", 0, &UIOutfitIcon);
+	UIOutfitIcon.SetShader(GetMPCharIconsShader());
+	UIOutfitIcon.Show(false);
+	UIOutfitIcon.SetTextureScale(0.65f);
+	UIOutfitIcon.ClipperOn();
 }
 
 void CUIBuyWeaponWnd::ReInitItems	(char *strSectionName)
@@ -463,6 +406,22 @@ bool CUIBuyWeaponWnd::OutfitSlotProc(CUIDragDropItem* pItem, CUIDragDropList* pL
 	if (OUTFIT_SLOT == pDDItemMP->GetSlot())
 	{
 		this_inventory->SlotToSection(OUTFIT_SLOT);
+		pDDItemMP->Show(false);
+
+		// Teперь отображаем соответствующую иконку персонажа, в зависимости от цвета команды, 
+		// и купленного костюма
+
+		// Сначала проверим проинициализирован ли правильно костюм
+		if (pDDItemMP->m_fAdditionalInfo.size() < 2)
+			R_ASSERT(!"Unknown suit");
+
+		xr_vector<float>::iterator it = pDDItemMP->m_fAdditionalInfo.begin();
+		this_inventory->UIOutfitIcon.GetUIStaticItem().SetOriginalRect(
+			static_cast<int>(*it), 
+			static_cast<int>(*(it+1)),
+			SKIN_TEX_WIDTH, SKIN_TEX_HEIGHT - 15);
+		this_inventory->UIOutfitIcon.Show(true);
+
 		return true;
 	}
 	
@@ -494,6 +453,12 @@ bool CUIBuyWeaponWnd::BagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	static_cast<CUIDragDropList*>(pDDItemMP->GetParent())->
 		DetachChild(pDDItemMP);
 	pDDItemMP->GetOwner()->AttachChild(pDDItemMP);
+
+	// Если это армор, то убедимся, что он стал видимым
+	if (OUTFIT_SLOT == pDDItemMP->GetSlot())
+	{
+		pDDItemMP->Show(true);
+	}
 
 	return false;
 }
@@ -691,6 +656,22 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	{
 		UIBtnCancel.SetTextColor(0xFFEE9B17);
 	}
+	// Если костюмчик вернулся в слот, то спрятать его
+	else if (CUIOutfitSlot::OUTFIT_RETURNED_BACK == msg && pWnd->GetParent() == &UITopList[OUTFIT_SLOT])
+	{
+		CUIDragDropItemMP *pDDItemMP = dynamic_cast<CUIDragDropItemMP*>(pWnd);
+		if (pDDItemMP && OUTFIT_SLOT == pDDItemMP->GetSlot())
+		{
+			pDDItemMP->Show(false);
+		}
+	}
+//	else if (CUIWindow::LBUTTON_DOWN == msg && &UIOutfitIcon == pWnd)
+//	{
+//		if (!UITopList[OUTFIT_SLOT].GetDragDropItemsList().empty())
+//		{
+//			UITopList[OUTFIT_SLOT].GetDragDropItemsList().front()->Enable(true);
+//		}
+//	}
 
 	CUIWindow::SendMessage(pWnd, msg, pData);
 }
@@ -723,6 +704,44 @@ void CUIBuyWeaponWnd::Update()
 		ClearWpnSubBag(GRENADE_SLOT);
 		FillWpnSubBag(GRENADE_SLOT);
 	}
+
+	// Если активная вещь изменилась, то обновляем информацию о ее стоимости
+	static CUIDragDropItemMP *pOldCurrentDragDropItem = reinterpret_cast<CUIDragDropItemMP*>(1);
+	static string16		str;
+
+	if (pOldCurrentDragDropItem != m_pCurrentDragDropItem)
+	{
+		pOldCurrentDragDropItem	= m_pCurrentDragDropItem;
+		if (m_pCurrentDragDropItem)
+		{
+			sprintf(str, "%i", m_pCurrentDragDropItem->GetCost());
+			UIItemCost.SetText(str);
+		}
+		else
+			UIItemCost.SetText("");
+	}
+
+	// Если деньги иземниличь то обновить и их
+	static int oldMoneyAmount	= 0;
+
+	if (oldMoneyAmount != m_iMoneyAmount)
+	{
+		oldMoneyAmount = m_iMoneyAmount;
+		sprintf(str, "%i", m_iMoneyAmount);
+		UITotalMoney.SetText(str);
+	}
+
+	// Ecли в слоте с костюмом армор показывается, то спрятать его.
+	static flag = true;
+	if (UITopList[OUTFIT_SLOT].GetDragDropItemsList().empty() && flag)
+	{
+		SetDefaultSuit();
+		flag = false;
+	}
+
+	if (!UITopList[OUTFIT_SLOT].GetDragDropItemsList().empty())
+		flag = true;
+
 	DrawBuyButtonCaptions();
 	CUIWindow::Update();
 }
@@ -882,54 +901,6 @@ bool CUIBuyWeaponWnd::ToBelt()
 	return true;
 }
 
-//запуск и остановка меню работы с артефактами
-//void CUIBuyWeaponWnd::StartArtifactMerger()
-//{
-//	UIArtifactMergerWnd.InitArtifactMerger(dynamic_cast<CArtifactMerger*>(m_pCurrentItem));
-//	UIArtifactMergerWnd.Show();
-//}
-//void CUIBuyWeaponWnd::StopArtifactMerger()
-//{
-//	UIArtifactMergerWnd.Hide();
-//
-//	//скинуть все элементы из усторйства артефактов в рюкзак
-//	for(DRAG_DROP_LIST_it it = UIArtifactMergerWnd.UIArtifactList.GetDragDropItemsList().begin(); 
-//		UIArtifactMergerWnd.UIArtifactList.GetDragDropItemsList().end() != it;
-//		++it)
-//	{
-//		CUIDragDropItem* pDragDropItem = *it;
-////		UIBagList.AttachChild(pDragDropItem);
-//		m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex()]->AttachChild(pDragDropItem);
-//	}
-//
-//	//((CUIDragDropList*)pDragDropItem->GetParent())->DetachChild(pDragDropItem);
-//	UIArtifactMergerWnd.UIArtifactList.DropAll();
-//}
-
-//void CUIBuyWeaponWnd::SetCurrentItem(CInventoryItem* pItem)
-//{
-//	m_pCurrentItem = pItem;
-//	UIItemInfo.InitItem(m_pCurrentItem);
-//}
-/////////////////////////////////////////////////
-//запуск и остановка диалога параметров сна
-//void  CUIBuyWeaponWnd::StartSleepWnd()
-//{
-//	UISleepWnd.InitSleepWnd();
-//	UISleepWnd.Show();
-//	UISleepButton.Enable(false);
-//	UISleepButton.Show(false);
-//
-//}
-//void  CUIBuyWeaponWnd::StopSleepWnd()
-//{
-//	UISleepWnd.Hide();
-//
-//	UISleepButton.Reset();
-//	UISleepButton.Enable(true);
-//	UISleepButton.Show(true);
-//}
-
 //-----------------------------------------------------------------------------/
 //  Buy weapon stuff
 //-----------------------------------------------------------------------------/
@@ -1013,6 +984,37 @@ void CUIBuyWeaponWnd::FillWpnSubBag(const u32 slotNum)
 		// Читаем стоимость оружия
 		if(pSettings->line_exist(wpnSectStorage[slotNum][j].c_str(), "cost"))
 			UIDragDropItem.SetCost(pSettings->r_u32(wpnSectStorage[slotNum][j].c_str(), "cost"));
+
+		// Для арморов читаем дополнительно координаты на текстуре с иконками персонажей для арморов
+		if (OUTFIT_SLOT == m_slot)
+		{
+			// Необходимо знать, в какой команде мы находимся
+			bool bBlueTeam = true;//IsBlueTeam();
+
+			// Теперь для каждого армора, который может быть у нас в мультиплеере, читаем инфу
+			// для иконки сталкера в полный рост в этом арморе и с нужным цветом
+			for (CONFORMITY_TABLE_it it = m_ConformityTable.begin(); it != m_ConformityTable.end(); ++it)
+			{
+				// Информация о таком арморе есть
+				if (0 == xr_strcmp(it->first, wpnSectStorage[slotNum][j].c_str()))
+				{
+					ref_str modelName;
+					if (bBlueTeam)
+						modelName = it->second.first;
+					else
+						modelName = it->second.second;
+
+					int m_iSkinX = 0, m_iSkinY = 0;
+					sscanf(pSettings->r_string("multiplayer_skins", *modelName), "%i,%i", &m_iSkinX, &m_iSkinY);
+					UIDragDropItem.m_fAdditionalInfo.push_back(static_cast<float>(m_iSkinX));
+					UIDragDropItem.m_fAdditionalInfo.push_back(static_cast<float>(m_iSkinY));
+				}
+		
+			}
+
+			// Изменяем мессажд таргет для возможности реакции на то, что костюм возвращается в слот
+			UIDragDropItem.SetMessageTarget(this);
+		}
 
 		InitAddonsInfo(UIDragDropItem, wpnSectStorage[slotNum][j]);
 
@@ -1575,6 +1577,19 @@ void CUIBuyWeaponWnd::SwitchIndicator(bool bOn, const int activeTabIndex)
 	}
 }
 
+const u8 CUIBuyWeaponWnd::GetCurrentSuit()
+{
+	if (!UITopList[OUTFIT_SLOT].GetDragDropItemsList().empty())
+	{
+		CUIDragDropItemMP *pDDItemMP = dynamic_cast<CUIDragDropItemMP*>(UITopList[OUTFIT_SLOT].GetDragDropItemsList().front());
+		if (0 == xr_strcmp(pDDItemMP->GetSectionName(), "a"))
+		{
+
+		}
+	}
+	return static_cast<u8>(-1);
+}
+
 //////////////////////////////////////////////////////////////////////////
 
 void CUIBuyWeaponWnd::CheckBuyAvailability()
@@ -1601,15 +1616,14 @@ void CUIBuyWeaponWnd::CheckBuyAvailability()
 	}
 }
 
-void CUIBuyWeaponWnd::SetMoneyAmount(int moneyAmount)
+//////////////////////////////////////////////////////////////////////////
+
+void CUIBuyWeaponWnd::SetDefaultSuit()
 {
-	string16		str;
-	sprintf(str, "%i", m_iMoneyAmount);
-	UITotalMoney.SetText(str);
-	m_iMoneyAmount = moneyAmount;
+	UIOutfitIcon.Show(false);
 }
 
-////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
 
 //-----------------------------------------------------------------------------/
 //  CUIDragDropItemMP class
