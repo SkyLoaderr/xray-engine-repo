@@ -741,6 +741,7 @@ void CActor::OnHUDDraw(CCustomHUD* hud)
 	pUI->OutWeapon	(Weapons->ActiveWeapon());
 	pUI->SetHeading	(-r_torso.yaw);
 
+/*
 	char buf[128];
 	buf[0] = 0;
 	CWeapon* W=Weapons->ActiveWeapon();
@@ -750,7 +751,6 @@ void CActor::OnHUDDraw(CCustomHUD* hud)
 		HUD->pHUDFont->Color(0xffffffff);
 		HUD->pHUDFont->Out	(400,320,buf);
 	}
-/*
 	char buf[128];
 	buf[0] = 0;
 	switch (Movement.Environment())
