@@ -15,13 +15,13 @@ function evaluator_new:__init(name, storage) super()
 end
 function evaluator_new:evaluate()
 	-- если мы щас никого не обрабатываем и есть раздражители - нужно заполнить пробел
-	if self.a.evn:ruleExist("ignore") == true then
-		return false
-	end
 
 	self.a.evn:calculate()
 --	self.a.evn:print()
 
+	if self.a.evn:ruleExist("ignore") == true then
+		return false
+	end
 	return self.a.evn:isEvents()
 end
 
@@ -218,6 +218,7 @@ function action_wait:execute()
 	action_base.execute(self)
 end
 function action_wait:finalize()	
+	self:set_prisluh(false)
 	action_base.finalize (self)
 end
 function action_wait:set_prisluh(prisluh)
@@ -432,6 +433,14 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 					and vo:group() == self.npc:group()))
 		then
 		   	continue = false
+		end
+
+		if continue and self:ruleExist("ignore") and
+			v.value >= self.npc:visibility_threshold()
+		then
+			if type ~= corpse then
+				self:markAsUsed(vo:id())
+			end
 		end
 
 		if continue then
