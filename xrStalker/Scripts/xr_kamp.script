@@ -339,14 +339,10 @@ function action_wait:__init (npc_name,action_name,storage) super (nil,action_nam
 		       maxidle = 20,
 		       sumidle = 10 }
 
---[[	self.sound = {idle = 0,
-		     begin = nil,
-		     maxidle = 10, 
-		     sumidle = 10,
-   		     rnd = 60,
-		     lastsound = nil,	
-		     sounds = nil }]]
-	self.sound = { rnd = 60, themes = { "weather", "state" } }
+	self.sound = { rnd = 60,
+				   maxidle = 10, 
+				   sumidle = 10,
+				   themes = { "weather", "state" } }
 
 	self.anim = {	idle = 0,
 			begin = nil,
@@ -433,8 +429,6 @@ function action_wait:execute()
 				end
 			else
 				-- Саунды
-				--self.sound.sounds = xr_sound.construct_sound(self.object, {"weather","state"})
-				--xr_sound.set_sound(self.object, self.sound, false)
 				xr_sound.sound_update(self.object, self.sound)
 			end
 		else

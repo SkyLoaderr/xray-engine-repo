@@ -167,13 +167,6 @@ function action_wait_for_buyer:initialize()
 		     sumidle = 5,
    		     rnd = 100,
 		     lastanim = nil}
-			                                  
-	self.sound = {idle = 0,
-		     begin = nil,
-		     maxidle = 7, 
-		     sumidle = 5,
-   		     rnd = 100,
-		     lastsound = nil}
 
 	self.anim_s = {idle = 0,
 		     begin = nil,
@@ -182,15 +175,16 @@ function action_wait_for_buyer:initialize()
    		     rnd = 80,
 		     lastanim = nil}
 
-	self.sound_s = {idle = 0,
-		     begin = nil,
-		     maxidle = 5, 
-		     sumidle = 2,
-   		     rnd = 100,
-		     lastsound = nil,
-		 	sounds = {      {pack = sounds["trade"], id = 2},
-					{pack = sounds["trade"], id = 3}, 
-					{pack = sounds["trade"], id = 4} 	}}
+	self.sound_s = { rnd = 100,
+				   maxidle = 5, 
+				   sumidle = 2,
+				   themes = { "weather", "state", "hail" } }
+
+	self.sound_s = { rnd = 100,
+				   maxidle = 7, 
+				   sumidle = 5,
+				   themes = { "weather", "state", "wait" } }
+
 end
 function action_wait_for_buyer:execute ()
 	action_base.execute (self)
@@ -217,7 +211,7 @@ function action_wait_for_buyer:execute ()
 		                            
 		-- секция озвучки
 		if self.object:active_sound_count() == 0 then
-			globals.set_sound(self.object, self.sound_s, false)
+			xr_sound.sound_update(self.object, self.sound_s)		
 		end
 	else
 		-- секция анимации
@@ -239,17 +233,8 @@ function action_wait_for_buyer:execute ()
 		end
 
 		-- секция озвучки
-		if self.sound.begin == nil then
-			self.sound.begin = device():time_global()/1000
-			self.sound.idle = math.random(self.sound.maxidle) + self.sound.sumidle
-		else
-			if (device():time_global()/1000 - self.sound.begin) > self.sound.idle then
-				if math.random(100) < self.sound.rnd then
-					self.object:play_sound (sounds["trade"], 1, 0, 1, 0, 1)
-				end
-				self.sound.begin = device():time_global()/1000
-				self.sound.idle = math.random(self.sound.maxidle) + self.sound.sumidle
-			end
+		if self.object:active_sound_count() == 0 then
+			xr_sound.sound_update(self.object, self.sound_w)		
 		end
 	end
 
@@ -268,15 +253,10 @@ class "action_wait" (action_base)
 function action_wait:__init (npc_name,action_name, storage) super (nil, action_name)
 	self.a = storage
 
-	self.sound_w = {idle = 0,
-		     begin = nil,
-		     maxidle = 3, 
-		     sumidle = 3,
-   		     rnd = 100,
-		     lastsound = nil,
-		 	sounds = {      {pack = sounds["trade"], id = 2},
-					{pack = sounds["trade"], id = 3}, 
-					{pack = sounds["trade"], id = 4} 	}}
+	self.sound_w = { rnd = 80,
+				   maxidle = 5, 
+				   sumidle = 2,
+				   themes = { "weather", "state", "wait" } }
 
 end
 function action_wait:initialize()
@@ -304,7 +284,7 @@ function action_wait:execute ()
 
 	-- Звуки
 	if self.object:active_sound_count() == 0 then
-		globals.set_sound(self.object, self.sound_w, false)
+		xr_sound.sound_update(self.object, self.sound_w)		
 	end
 	action_base.execute (self)
 end
@@ -319,23 +299,15 @@ class "action_talk" (action_base)
 function action_talk:__init (npc_name,action_name, storage) super (nil, action_name)
 	self.a = storage
 
-	self.sound_trend = {idle = 0,
-		     begin = nil,
-		     maxidle = 1, 
-		     sumidle = 0,
-   		     rnd = 100,
-		     lastsound = nil,
-		 	sounds = {      {pack = sounds["trade"], id = 12},
-					{pack = sounds["trade"], id = 13}, 
-					{pack = sounds["trade"], id = 14} 	}}
-	self.sound_trstart = {idle = 0,
-		     begin = nil,
-		     maxidle = 1, 
-		     sumidle = 0,
-   		     rnd = 100,
-		     lastsound = nil,
-		 	sounds = {      {pack = sounds["tradeseller_talk"], id = 7},
-					{pack = sounds["tradeseller_talk"], id = 8} }}
+	self.sound_trstart = { rnd = 100,
+				   maxidle = 1, 
+				   sumidle = 0,
+				   themes = { "trade_yes" } }
+
+	self.sound_trend = { rnd = 100,
+				   maxidle = 1, 
+				   sumidle = 0,
+				   themes = { "talk_bye" } }
 end
 function action_talk:initialize()
 	action_base.initialize(self)
@@ -349,7 +321,7 @@ function action_talk:initialize()
 	self.object:set_mental_state(anim.free)
 
 	if self.object:active_sound_count() == 0 then
-		globals.set_sound(self.object, self.sound_trstart, false)
+		xr_sound.sound_update(self.object, self.sound_trstart)		
 	end
    	self.object:set_item(object.deactivate, self.object:best_weapon())
 end
@@ -365,7 +337,7 @@ function action_talk:execute ()
 end
 function action_talk:finalize ()
 	if self.object:active_sound_count() == 0 then
-		globals.set_sound(self.object, self.sound_trend, false)
+		xr_sound.sound_update(self.object, self.sound_trend)		
 	end
 	xr_state.anim_update(nil, self.object)
 	action_base.finalize (self)
@@ -376,29 +348,15 @@ class "action_weapon" (action_base)
 function action_weapon:__init (npc_name,action_name, storage) super (nil, action_name)
 	self.a = storage
 
-	self.sound_e = {idle = 0,
-		     begin = nil,
-		     maxidle = 5, 
-		     sumidle = 1,
-   		     rnd = 100,
-		     lastsound = nil,
-		 	sounds = {      {pack = sounds["trade"], id = 5},
-					{pack = sounds["trade"], id = 6}, 
-					{pack = sounds["trade"], id = 7}, 
-					{pack = sounds["trade"], id = 8}, 
-					{pack = sounds["trade"], id = 9}, 
-					{pack = sounds["trade"], id = 10} 	}}
-	self.sound_f = {idle = 0,
-		     begin = nil,
-		     maxidle = 5, 
-		     sumidle = 1,
-   		     rnd = 100,
-		     lastsound = nil,
-		 	sounds = {      {pack = sounds["tradeseller_talk"], id = 14},
-					{pack = sounds["tradeseller_talk"], id = 15}, 
-					{pack = sounds["tradeseller_talk"], id = 16}, 
-					{pack = sounds["tradeseller_talk"], id = 17}, 
-					{pack = sounds["tradeseller_talk"], id = 18} 	}}
+	self.sound_e = { rnd = 100,
+				   maxidle = 3, 
+				   sumidle = 2,
+				   themes = { "threat_weap" } }
+
+	self.sound_f = { rnd = 100,
+				   maxidle = 1, 
+				   sumidle = 0,
+				   themes = { "talk_abuse" } }					
 end
 function action_weapon:initialize()
 	action_base.initialize(self)
@@ -426,16 +384,15 @@ function action_weapon:execute ()
 	-- если актер ближе какого-то радиуса - открывать огонь
 	if self.object:position():distance_to(self.a.actor:position()) < self.a.shoot_distance then
 		if self.object:active_sound_count() == 0 then
-			globals.set_sound(self.object, self.sound_f, false)
+			xr_sound.sound_update(self.object, self.sound_f)		
 		end
 		self.object:set_relation(game_object.enemy, self.a.actor)
 	else
 		-- Звуки
 		if self.object:active_sound_count() == 0 then
-			globals.set_sound(self.object, self.sound_e, false)
+			xr_sound.sound_update(self.object, self.sound_e)		
 		end
 	end
-
 	action_base.execute (self)
 end
 function action_weapon:finalize ()
@@ -450,29 +407,15 @@ function action_afraid:__init (npc_name,action_name, storage) super (nil, action
 	self.timer = 10*1000 -- задержка
 	self.begin = nil
 
-	self.sound_e = {idle = 0,
-		     begin = nil,
-		     maxidle = 5, 
-		     sumidle = 1,
-   		     rnd = 100,
-		     lastsound = nil,
-		 	sounds = {      {pack = sounds["trade"], id = 5},
-					{pack = sounds["trade"], id = 6}, 
-					{pack = sounds["trade"], id = 7}, 
-					{pack = sounds["trade"], id = 8}, 
-					{pack = sounds["trade"], id = 9}, 
-					{pack = sounds["trade"], id = 10} 	}}
-	self.sound_f = {idle = 0,
-		     begin = nil,
-		     maxidle = 5, 
-		     sumidle = 1,
-   		     rnd = 100,
-		     lastsound = nil,
-		 	sounds = {      {pack = sounds["tradeseller_talk"], id = 14},
-					{pack = sounds["tradeseller_talk"], id = 15}, 
-					{pack = sounds["tradeseller_talk"], id = 16}, 
-					{pack = sounds["tradeseller_talk"], id = 17}, 
-					{pack = sounds["tradeseller_talk"], id = 18} 	}}
+	self.sound_e = { rnd = 100,
+				   maxidle = 5, 
+				   sumidle = 1,
+				   themes = { "threat_back" } }
+
+	self.sound_f = { rnd = 100,
+				   maxidle = 1, 
+				   sumidle = 0,
+				   themes = { "talk_abuse" } }					
 end
 function action_afraid:initialize()
 	action_base.initialize(self)
@@ -494,7 +437,7 @@ function action_afraid:execute ()
 
 	if device():time_global() - self.begin > self.timer then
 		if self.object:active_sound_count() == 0 then
-			globals.set_sound(self.object, self.sound_f, false)
+			xr_sound.sound_update(self.object, self.sound_f)			
 		end
 		self.object:set_relation(game_object.enemy, self.a.actor)		
 	end
@@ -505,7 +448,7 @@ function action_afraid:execute ()
 
 	-- Звуки
 	if self.object:active_sound_count() == 0 then
-		globals.set_sound(self.object, self.sound_e, false)
+		xr_sound.sound_update(self.object, self.sound_e)
 	end
 
 	action_base.execute (self)
@@ -515,106 +458,22 @@ function action_afraid:finalize ()
 	action_base.finalize (self)
 end
 
--- Типа спрячь пушку, чувак
-class "action_weapon" (action_base)
-function action_weapon:__init (npc_name,action_name, storage) super (nil, action_name)
-	self.a = storage
-
-	self.sound_e = {idle = 0,
-		     begin = nil,
-		     maxidle = 5, 
-		     sumidle = 1,
-   		     rnd = 100,
-		     lastsound = nil,
-		 	sounds = {      {pack = sounds["trade"], id = 5},
-					{pack = sounds["trade"], id = 6}, 
-					{pack = sounds["trade"], id = 7}, 
-					{pack = sounds["trade"], id = 8}, 
-					{pack = sounds["trade"], id = 9}, 
-					{pack = sounds["trade"], id = 10} 	}}
-	self.sound_f = {idle = 0,
-		     begin = nil,
-		     maxidle = 5, 
-		     sumidle = 1,
-   		     rnd = 100,
-		     lastsound = nil,
-		 	sounds = {      {pack = sounds["tradeseller_talk"], id = 14},
-					{pack = sounds["tradeseller_talk"], id = 15}, 
-					{pack = sounds["tradeseller_talk"], id = 16}, 
-					{pack = sounds["tradeseller_talk"], id = 17}, 
-					{pack = sounds["tradeseller_talk"], id = 18} 	}}
-end
-function action_weapon:initialize()
-	action_base.initialize(self)
-	self.object:set_node_evaluator()
-	self.object:set_path_evaluator()
-	self.object:set_desired_position()
-	self.object:set_desired_direction()    
-
-	self.object:set_body_state(move.standing)
-	self.object:set_movement_type(move.stand)
-	self.object:set_mental_state(anim.danger)
-
-	self.object:clear_animations()
-	xr_reactions.add_rule(self.object, "ignore")
-end
-function action_weapon:execute ()
-   	self.object:set_item(object.idle, self.object:best_weapon())
-
-	-- нужно остановиться и посмотреть в сторону актора
-	local dir = self.a.actor:position():sub(self.object:position())
-	self.object:set_sight(look.direction, dir, 0)
-
-	-- если актер ближе какого-то радиуса - открывать огонь
-	if self.object:position():distance_to(self.a.actor:position()) < self.a.shoot_distance then
-		if self.object:active_sound_count() == 0 then
-			globals.set_sound(self.object, self.sound_f, false)
-		end
-		self.object:set_relation(game_object.enemy, self.a.actor)
-	else
-		-- Звуки
-		if self.object:active_sound_count() == 0 then
-			globals.set_sound(self.object, self.sound_e, false)
-		end
-	end
-
-	action_base.execute (self)
-end
-function action_weapon:finalize ()
-	xr_reactions.remove_rule(self.object, "ignore")
-	action_base.finalize (self)
-end
-
 -- Контакт с членом другой группировки за территорией группировки
 class "action_contact_zoneout" (action_base)
 function action_contact_zoneout:__init (npc_name,action_name, storage) super (nil, action_name)
 	self.a = storage
-
 	self.timer = 10*1000 -- задержка
 	self.begin = nil
-	self.sound_e = {idle = 0,
-		     begin = nil,
-		     maxidle = 5, 
-		     sumidle = 1,
-   		     rnd = 100,
-		     lastsound = nil,
-		 	sounds = {      {pack = sounds["trade"], id = 5},
-					{pack = sounds["trade"], id = 6}, 
-					{pack = sounds["trade"], id = 7}, 
-					{pack = sounds["trade"], id = 8}, 
-					{pack = sounds["trade"], id = 9}, 
-					{pack = sounds["trade"], id = 10} 	}}
-	self.sound_f = {idle = 0,
-		     begin = nil,
-		     maxidle = 5, 
-		     sumidle = 1,
-   		     rnd = 100,
-		     lastsound = nil,
-		 	sounds = {      {pack = sounds["tradeseller_talk"], id = 14},
-					{pack = sounds["tradeseller_talk"], id = 15}, 
-					{pack = sounds["tradeseller_talk"], id = 16}, 
-					{pack = sounds["tradeseller_talk"], id = 17}, 
-					{pack = sounds["tradeseller_talk"], id = 18} 	}}
+
+	self.sound_e = { rnd = 100,
+				   maxidle = 5, 
+				   sumidle = 1,
+				   themes = { "threat_back" } }
+
+	self.sound_f = { rnd = 100,
+				   maxidle = 1, 
+				   sumidle = 0,
+				   themes = { "talk_abuse" } }					
 end
 function action_contact_zoneout:initialize()
 	action_base.initialize(self)
@@ -636,7 +495,7 @@ function action_contact_zoneout:execute ()
 
 	if device():time_global() - self.begin > self.timer then
 		if self.object:active_sound_count() == 0 then
-			globals.set_sound(self.object, self.sound_f, false)
+			xr_sound.sound_update(self.object, self.sound_f)
 		end
 		self.object:set_relation(game_object.enemy, self.a.actor)		
 	end
@@ -647,9 +506,8 @@ function action_contact_zoneout:execute ()
 
 	-- Звуки
 	if self.object:active_sound_count() == 0 then
-		globals.set_sound(self.object, self.sound_e, false)
+		xr_sound.sound_update(self.object, self.sound_e)
 	end
-
 	action_base.execute (self)
 end
 function action_contact_zoneout:finalize ()
@@ -664,38 +522,21 @@ function action_contact_zone:__init (npc_name,action_name, storage) super (nil, 
 
 	self.timer = 10*1000 -- задержка
 	self.begin = nil
-	self.sound_e = {idle = 0,
-		     begin = nil,
-		     maxidle = 5, 
-		     sumidle = 1,
-   		     rnd = 100,
-		     lastsound = nil,
-		 	sounds = {      {pack = sounds["trade"], id = 5},
-					{pack = sounds["trade"], id = 6}, 
-					{pack = sounds["trade"], id = 7}, 
-					{pack = sounds["trade"], id = 8}, 
-					{pack = sounds["trade"], id = 9}, 
-					{pack = sounds["trade"], id = 10} 	}}
-	self.sound_f = {idle = 0,
-		     begin = nil,
-		     maxidle = 5, 
-		     sumidle = 1,
-   		     rnd = 100,
-		     lastsound = nil,
-		 	sounds = {      {pack = sounds["tradeseller_talk"], id = 14},
-					{pack = sounds["tradeseller_talk"], id = 15}, 
-					{pack = sounds["tradeseller_talk"], id = 16}, 
-					{pack = sounds["tradeseller_talk"], id = 17}, 
-					{pack = sounds["tradeseller_talk"], id = 18} 	}}
-	self.sound_w = {idle = 0,
-		     begin = nil,
-		     maxidle = 3, 
-		     sumidle = 3,
-   		     rnd = 100,
-		     lastsound = nil,
-		 	sounds = {      {pack = sounds["trade"], id = 2},
-					{pack = sounds["trade"], id = 3}, 
-					{pack = sounds["trade"], id = 4} 	}}
+
+	self.sound_e = { rnd = 100,
+				   maxidle = 5, 
+				   sumidle = 1,
+				   themes = { "threat_back" } }
+
+	self.sound_f = { rnd = 100,
+				   maxidle = 1, 
+				   sumidle = 0,
+				   themes = { "talk_abuse" } }					
+
+	self.sound_w = { rnd = 100,
+				   maxidle = 1, 
+				   sumidle = 0,
+				   themes = { "weather", "state", "threat_stop" } }
 end
 function action_contact_zone:initialize()
 	action_base.initialize(self)
@@ -738,13 +579,13 @@ function action_contact_zone:execute ()
 
 		-- Звуки
 		if self.object:active_sound_count() == 0 then
-			globals.set_sound(self.object, self.sound_w, false)
+			xr_sound.sound_update(self.object, self.sound_w)
 		end
 
 	else
 		if device():time_global() - self.begin > self.timer then
 			if self.object:active_sound_count() == 0 then
-				globals.set_sound(self.object, self.sound_f, false)
+				xr_sound.sound_update(self.object, self.sound_f)
 			end
 			self.object:set_relation(game_object.enemy, self.a.actor)		
 		end     
@@ -753,7 +594,7 @@ function action_contact_zone:execute ()
 		self.object:set_sight(look.direction, dir, 0)
 		-- Звуки
 		if self.object:active_sound_count() == 0 then
-			globals.set_sound(self.object, self.sound_e, false)
+			xr_sound.sound_update(self.object, self.sound_e)
 		end
 	end
 	action_base.execute (self)
@@ -793,12 +634,6 @@ end
 function add_to_binder(object, char_ini)
 	local operators		= {}
 	local properties	= {}
-
-	sounds["trade"] 			= xr_sounds_id.stohe_tradeseller_base + 1
-	sounds["tradeseller_talk"] 		= xr_sounds_id.stohe_tradeseller_base + 2
-
-	object:add_sound("script_replics\\stalker_1\\trade\\stalker_trade_", 30, snd_type.talk, 2, 1, sounds["trade"])
-	object:add_sound("script_replics\\stalker_1\\talk\\stalker_talk_", 30, snd_type.talk, 2, 1, sounds["tradeseller_talk"])
 
 	local manager = object:motivation_action_manager()
 
