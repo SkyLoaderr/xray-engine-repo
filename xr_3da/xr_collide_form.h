@@ -173,7 +173,31 @@ public:
 	virtual BOOL	_svRayTest		( RayQuery& Q);
 	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, DWORD flags);
 
-	BOOL			Contact			( CObject* O);
+	BOOL			Contact			( CObject* O );
+};
+
+class ENGINE_API	CCF_Shape	: public CCFModel
+{
+private:
+	union shape_data
+	{
+		Fsphere		sphere;
+		Fmatrix		box;
+	};
+	union shape_def
+	{
+		int			type;
+		shape_data	data;
+	};
+	vector<shape_def>	shapes;
+public:
+					CCF_Shape		( CObject* _owner );
+
+	virtual BOOL	_clRayTest		( RayQuery& Q);
+	virtual BOOL	_svRayTest		( RayQuery& Q);
+	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, DWORD flags);
+	
+	BOOL			Contact			( CObject* O );
 };
 
 #endif //__XR_COLLIDE_FORM_H__

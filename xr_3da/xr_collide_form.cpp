@@ -272,7 +272,6 @@ CCF_EventBox::CCF_EventBox( CObject* O ) : CCFModel(O)
 		T.transform_tiny(B[i],A[i]);
 	}
 	s_box.set		(-.5f,-.5f,-.5f,+.5f,+.5f,+.5f);
-//	s_box.getsphere	(Sphere.P,Sphere.R); // не правильно!!!! box скейлится
 	Fvector R; R.set(s_box.min);
 	T.transform_dir	(R);
 	Sphere.R		= R.magnitude();
@@ -305,3 +304,6 @@ BOOL CCF_EventBox::_clRayTest(RayQuery& Q)
 {	return FALSE; }
 void CCF_EventBox::_BoxQuery(const Fbox& B, const Fmatrix& M, DWORD flags)
 {   return; }
+//----------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------

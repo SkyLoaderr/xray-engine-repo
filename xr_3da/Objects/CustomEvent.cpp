@@ -123,36 +123,19 @@ void CCustomEvent::Load			(CInifile* ini, const char * section)
 	pVisual						= NULL;
 	rbVisible					= FALSE;
 	
-	// Collision model
-	cfModel						= new CCF_EventBox(this);
-	pCreator->ObjectSpace.Object_Register(this);
-	cfModel->OnMove				();
-	
-	// Events
-	OnEnter.Create				(ini->ReadSTRING(section,"OnEnter"));
-	OnExit.Create				(ini->ReadSTRING(section,"OnExit"));
-	ExecuteOnce					= ini->ReadBOOL(section,"execute_once");
-	bEnabled					= TRUE;
-	
-	// Target
-	clsid_Target				= ini->ReadCLSID(section,"target_class");
-
-	// ********************* Spawn
-	// Net params
-	net_Local					= TRUE;
-	net_ID						= 0xffff;
-	net_Ready					= TRUE;
-	
 	// Sheduler
-	dwMinUpdate	= 300;
-	dwMaxUpdate	= 1000;
+	dwMinUpdate					= 300;
+	dwMaxUpdate					= 1000;
 }
 
 BOOL CCustomEvent::Spawn		( BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags )
 {
 	inherited::Spawn			(bLocal,server_id,o_pos,o_angle,P,flags);
 
-
+	// Read CFORM
+	cfModel						= new CCF_EventBox(this);
+	pCreator->ObjectSpace.Object_Register(this);
+	cfModel->OnMove				();
 }
 
 void CCustomEvent::Update (DWORD dt)
