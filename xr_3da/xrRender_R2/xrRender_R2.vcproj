@@ -172,6 +172,9 @@
 				RelativePath="r2.h">
 			</File>
 			<File
+				RelativePath="r2_blenders.cpp">
+			</File>
+			<File
 				RelativePath="r2_loader.cpp">
 			</File>
 			<File
