@@ -462,85 +462,9 @@ SOURCE=.\xr_effgamma.h
 # Begin Group "Blender"
 
 # PROP Default_Filter ""
-# Begin Group "Blenders"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\Blender_default_aref.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Blender_default_aref.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\Blender_Editor_Selection.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Blender_Editor_Selection.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\Blender_Editor_Wire.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Blender_Editor_Wire.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\Blender_Screen_GRAY.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Blender_Screen_GRAY.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\Blender_Screen_SET.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Blender_Screen_SET.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\Blender_Vertex.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Blender_Vertex.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\Blender_Vertex_aref.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Blender_Vertex_aref.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\BlenderDefault.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\BlenderDefault.h
-# End Source File
-# End Group
 # Begin Group "Compiling"
 
 # PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\Blender_Recorder.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Blender_Recorder.h
-# End Source File
 # Begin Source File
 
 SOURCE=.\tss.h
@@ -554,21 +478,105 @@ SOURCE=.\tss_def.cpp
 SOURCE=.\tss_def.h
 # End Source File
 # End Group
+# Begin Group "Templates"
+
+# PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=.\Blender.cpp
+SOURCE=.\Blenders\Blender_default_aref.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\Blender.h
+SOURCE=.\Blenders\Blender_default_aref.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\Blender_CLSID.h
+SOURCE=.\Blenders\Blender_Editor_Selection.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\Blender_Params.h
+SOURCE=.\Blenders\Blender_Editor_Selection.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Blenders\Blender_Editor_Wire.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Blenders\Blender_Editor_Wire.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Blenders\Blender_Screen_BLEND.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Blenders\Blender_Screen_BLEND.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Blenders\Blender_Screen_GRAY.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Blenders\Blender_Screen_GRAY.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Blenders\Blender_Screen_SET.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Blenders\Blender_Screen_SET.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Blenders\Blender_Vertex.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Blenders\Blender_Vertex.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Blenders\Blender_Vertex_aref.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Blenders\Blender_Vertex_aref.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Blenders\BlenderDefault.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Blenders\BlenderDefault.h
+# End Source File
+# End Group
+# Begin Source File
+
+SOURCE=.\Blenders\Blender.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Blenders\Blender.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Blenders\Blender_CLSID.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Blenders\Blender_Params.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Blenders\Blender_Recorder.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Blenders\Blender_Recorder.h
 # End Source File
 # End Group
 # Begin Group "OLD generation"
