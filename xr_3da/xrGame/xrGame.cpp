@@ -57,6 +57,25 @@ public:
 		strcpy(I,"restart game"); 
 	}
 };
+class CCC_Money : public CConsoleCommand {
+public:
+	CCC_Money(LPCSTR N) : CConsoleCommand(N)  { };
+	virtual void Execute(LPCSTR args) {
+		s32 l_money;
+		if(sscanf(args, "%d", &l_money) == 1) {
+			if(Level().Server) {
+				u32 l_cnt = Level().Server->game->get_count();
+				while(l_cnt--) {
+					game_PlayerState *l_pPs = Level().Server->game->get_it(l_cnt);
+					l_pPs->money_total = s16(l_money);
+				}
+			}
+		}
+	}
+	virtual void Info(TInfo& I) {
+		strcpy(I,"give money"); 
+	}
+};
 class CCC_Path : public CConsoleCommand {
 public:
 	CCC_Path(LPCSTR N) : CConsoleCommand(N)  { };
@@ -116,6 +135,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 		CMD3(CCC_Mask,		"g_god",				&psActorFlags,	AF_GODMODE	);
 		CMD1(CCC_Spawn,		"g_spawn"				);
 		CMD1(CCC_Restart,	"g_restart"				);
+		CMD1(CCC_Money,		"g_money"				);
 		CMD1(CCC_Path,		"path"					);
 
 		// hud

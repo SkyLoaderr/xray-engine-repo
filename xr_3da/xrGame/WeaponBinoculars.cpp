@@ -96,6 +96,7 @@ void CWeaponBinoculars::OnVisible	()
 
 void CWeaponBinoculars::OnStateSwitch	(u32 S)
 {
+	//if(STATE == S) return;
 	switch (S)
 	{
 	case eIdle:
@@ -106,6 +107,9 @@ void CWeaponBinoculars::OnStateSwitch	(u32 S)
 		break;
 	case eHiding:
 		switch2_Hiding	();
+		break;
+	case eHidden:
+		switch2_Hidden	();
 		break;
 	case eZooming:
 		switch2_Zooming	();
@@ -123,6 +127,10 @@ void CWeaponBinoculars::UpdateCL	()
 	// cycle update
 	switch (STATE)
 	{
+	case eShowing:
+	case eHiding:
+	case eReload:
+		PKinematics		(m_pHUD->Visual())->Update();
 	case eZooming:
 		state_Zooming	(dt);
 		break;
@@ -142,15 +150,16 @@ void CWeaponBinoculars::UpdateCL	()
 
 void CWeaponBinoculars::Hide	()
 {
-	FireEnd							();
-	bPending						= TRUE;
+	if (Local())	SwitchState						(eHiding);
+	//FireEnd							();
+	//bPending						= TRUE;
 
-	// add shot effector
-	if (Local())					
-	{
-		Level().Cameras.RemoveEffector	(cefShot);
-		SwitchState						(eHiding);
-	}
+	//// add shot effector
+	//if (Local())					
+	//{
+	//	Level().Cameras.RemoveEffector	(cefShot);
+	//	SwitchState						(eHiding);
+	//}
 }
 
 void CWeaponBinoculars::Show	()
@@ -185,7 +194,7 @@ void CWeaponBinoculars::OnAnimationEnd()
 {
 	switch (STATE)
 	{
-	case eHiding:	signal_HideComplete();	break;	// End of Hide
+	case eHiding:	SwitchState(eHidden);	break;	// End of Hide
 	case eShowing:	SwitchState(eIdle);		break;	// End of Show
 	}
 }
@@ -221,9 +230,19 @@ void CWeaponBinoculars::switch2_Idle	()
 
 void CWeaponBinoculars::switch2_Hiding	()
 {
-	switch2_Idle			();
+	FireEnd					();
+	bPending				= TRUE;
 	Sound->PlayAtPos		(sndHide,H_Root(),vLastFP);
 	m_pHUD->animPlay		(mhud_hide[Random.randI(mhud_hide.size())],TRUE,this);
+	if (Local())			Level().Cameras.RemoveEffector	(cefShot);
+
+	//switch2_Idle			();
+	//Sound->PlayAtPos		(sndHide,H_Root(),vLastFP);
+	//m_pHUD->animPlay		(mhud_hide[Random.randI(mhud_hide.size())],TRUE,this);
+}
+void CWeaponBinoculars::switch2_Hidden()
+{
+	signal_HideComplete		();
 }
 
 void CWeaponBinoculars::switch2_Showing	()
