@@ -25,6 +25,7 @@ protected:
 	{
 		eIdle,
 		eFire,
+		eFrozen,	// for pistols, etc
 		eMagEmpty,
 		eReload,
 		eShowing,
@@ -37,15 +38,15 @@ protected:
 
 	virtual void	MediaLOAD		()				{};
 	virtual void	MediaUNLOAD		()				{};
-	virtual void	switch2_Idle	(BOOL bHUDView)	{};
-	virtual void	switch2_Fire	(BOOL bHUDView)	{};
-	virtual void	switch2_Empty	(BOOL bHUDView)	{};
-	virtual void	switch2_Reload	(BOOL bHUDView)	{};
-	virtual void	switch2_Hiding	(BOOL bHUDView)	{};
-	virtual void	switch2_Showing	(BOOL bHUDView)	{};
-	virtual void	OnShot			(BOOL bHUDView)	{};
-	virtual void	OnEmptyClick	(BOOL bHUDView)	{};
-	virtual void	OnDrawFlame		(BOOL bHUDView)	{};
+	virtual void	switch2_Idle	(BOOL bHUD)	{};
+	virtual void	switch2_Fire	(BOOL bHUD)	{};
+	virtual void	switch2_Empty	(BOOL bHUD)	{};
+	virtual void	switch2_Reload	(BOOL bHUD)	{};
+	virtual void	switch2_Hiding	(BOOL bHUD)	{};
+	virtual void	switch2_Showing	(BOOL bHUD)	{};
+	virtual void	OnShot			(BOOL bHUD)	{};
+	virtual void	OnEmptyClick	(BOOL bHUD)	{};
+	virtual void	OnDrawFlame		(BOOL bHUD)	{};
 	virtual void	OnShotmark		(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R) {};
 	virtual void	OnShow			();
 	virtual void	OnHide			();
@@ -53,6 +54,9 @@ protected:
 	virtual void	UpdateFP		(BOOL bHUD);
 	virtual void	UpdateXForm		(BOOL bHUD);
 	virtual void	ReloadMagazine	();
+
+	virtual void	state_Fire		(BOOL bHUD);
+	virtual void	state_MagEmpty	(BOOL bHUD);
 public:
 					CWeaponMagazined	(LPCSTR name);
 	virtual			~CWeaponMagazined	();

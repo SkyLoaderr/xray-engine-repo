@@ -188,7 +188,7 @@ void CWeaponMagazined::Update			(float dt, BOOL bHUDView)
 	}
 	pApp->pFont->Out(0,0,"state: %s",st_name);
 	// Log("****",st_name);
-
+	
 	// cycle update
 	switch (st_current)
 	{
@@ -196,43 +196,43 @@ void CWeaponMagazined::Update			(float dt, BOOL bHUDView)
 	case eShowing:
 	case eHiding:
 	case eReload:
-		bVisible		= TRUE;
 		fTime			-=	dt;
 		if (fTime<0)	fTime = 0;
 		break;
-	case eFire:
-		bVisible		= TRUE;
-		{
-			UpdateFP				(bHUDView);
-			fTime					-=dt;
-			Fvector					p1, d;
-			m_pParent->g_fireParams	(p1,d);
-			
-			while (fTime<0)
-			{
-				bFlame			=	TRUE;
-				fTime			+=	fTimeToFire;
-
-				OnShot			(bHUDView);
-				FireTrace		(p1,vLastFP,d);
-			}
-		}
-		break;
-	case eMagEmpty:
-		bVisible		= TRUE;
-		{
-			UpdateFP	(bHUDView);
-			fTime		-=dt;
-
-			while		(fTime<0)
-			{
-				fTime			+=  fTimeToEmptyClick;
-				OnEmptyClick	(bHUDView);
-			}
-		}
-		break;
+	case eFire:			state_Fire		(bHUDView);	break;
+	case eMagEmpty:		state_MagEmpty	(bHUDView);	break;
 	}
-	bPending	= FALSE;
+	bVisible		= TRUE;
+	bPending		= FALSE;
+}
+
+void CWeaponMagazined::state_Fire	(BOOL bHUDView)
+{
+	UpdateFP				(bHUDView);
+	fTime					-=dt;
+	Fvector					p1, d;
+	m_pParent->g_fireParams	(p1,d);
+	
+	while (fTime<0)
+	{
+		bFlame			=	TRUE;
+		fTime			+=	fTimeToFire;
+		
+		OnShot			(bHUDView);
+		FireTrace		(p1,vLastFP,d);
+	}
+}
+
+void CWeaponMagazined::state_MagEmpty(BOOL bHUDView)
+{
+	UpdateFP	(bHUDView);
+	fTime		-=dt;
+	
+	while		(fTime<0)
+	{
+		fTime			+=  fTimeToEmptyClick;
+		OnEmptyClick	(bHUDView);
+	}
 }
 
 void CWeaponMagazined::Render(BOOL bHUDView)
