@@ -16,7 +16,7 @@
 			and powerful weapon\nproduced since 1976.\n\nTTX:\nRange - 800M\nMagazine capacity:
 		    30 bullet
 		</text>
-		<text ln="rus">%c255,0,0AK-74 описание на русском</text>
+		<text ln="rus">%credAK-74 %cblueописание на русском</text>
 	</string>
 </string_table>
 
