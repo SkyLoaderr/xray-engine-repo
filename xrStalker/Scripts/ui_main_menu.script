@@ -83,7 +83,7 @@ function main_menu:InitControls()
 	txt_caption:Init(captiontxt_rect.x, captiontxt_rect.y, caption_rect.width, caption_rect.height)
 	main_frame:AttachChild(txt_caption)	
 
---------------------------------------- 
+-------- BUTTONS ------------------------------- 
     local btn   = CUIButton()
 	btn:SetAutoDelete(true)
 	btn:SetWindowName("btn_save")
