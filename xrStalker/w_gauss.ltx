@@ -23,25 +23,21 @@ ammo_class				= ammo_gauss
 
 ;-----------------------------------------------------------------------------------
 ;базовая дисперсия
-fire_dispersion_base		= 0.002 ;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
+fire_dispersion_base			= 0.002 ;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
 
 ;отдача
-cam_relax_speed         	= 4.0	;скорость возврата в исходное положение
-cam_dispersion          	= 3.0	;увеличения угла (в градусах) с каждым выстрелом
-cam_max_angle				= 4		;максимальный угол отдачи
-cam_max_angle_horz	= 5.0	;(degree) maximum shot horizontal degree 
-cam_step_angle_horz	= 0.5	;(degree) size of step camera moved in horizontal position while shooting
-
-;;;destroy it
-cam_horz_prob = 1			;probability of the horizontal deviation of effector while shooting (1 – always deviates)
-cam_horz_factor = 1.5		; empirically determined coefficient  of the horizontal deviation (if raises – dispersal raises) 
+cam_relax_speed         		= 4.0	;скорость возврата в исходное положение
+cam_dispersion          		= 3.0	;увеличения угла (в градусах) с каждым выстрелом
+cam_max_angle					= 4		;максимальный угол отдачи
+cam_max_angle_horz				= 5.0	;(degree) maximum shot horizontal degree 
+cam_step_angle_horz				= 0.5	;(degree) size of step camera moved in horizontal position while shooting
 
 fire_dispersion_condition_factor = 5	;увеличение дисперсии в процентах при максимальном износе 
-misfire_probability 		= 0.0001	;вероятность осечки при максимальном износе 
-condition_shot_dec 			= 0.00003	;увеличение износа при каждом выстреле
+misfire_probability 			= 0.0001	;вероятность осечки при максимальном износе 
+condition_shot_dec 				= 0.00003	;увеличение износа при каждом выстреле
 ;-----------------------------------------------------------------------------------
 
-hand_dependence 		= 2
+hand_dependence 		= 1
 
 slot 					= 2		; // secondary
 animation_slot			= 2		; type of the animation that will be used
@@ -52,24 +48,24 @@ inv_weight				= 5.
 
 inv_grid_width			= 5
 inv_grid_height			= 2
-inv_grid_x			= 10
-inv_grid_y			= 6
+inv_grid_x				= 10
+inv_grid_y				= 6
 
-immunities_sect		= weapon
+immunities_sect			= weapon
 
 
 direction               = 0, 0, 1
 
-fire_point              = 0.0, 0.14, 1.1
+fire_point              = 0.0, 0.122, 0.694
 
-;flame_particles		    = weapons\generic_weapon05
-;smoke_particles		   	= weapons\generic_weapon07
-shot_particles		   		= weapons\generic_weapon07
+;flame_particles		= weapons\generic_weapon05
+;smoke_particles		= weapons\generic_weapon07
+shot_particles		   	= weapons\generic_weapon07
 
 
 rpm_empty_click 		= 120
 ; ttc
-;shell_point		 		= 0.0, 0.15, 0.05
+;shell_point		 		= 0.0, 0.122, 0.120
 ;shell_dir		 		= 0.0, 0.0, 0.4
 ;shell_particles	 		= weapons\generic_shells
 
@@ -83,8 +79,8 @@ rpm                     = 30
 ; end ttc
 hud                     = wpn_gauss_hud
 normal                  = 0, 1, 0
-position                = -0.03, -0.03, 0.1
-orientation             = -0.0, -6, -0.5
+position                = -0.026, -0.070, 0.0
+orientation             = 0, 0, 0
 startup_ammo            = 10
 visual                  = weapons\gauss\wpn_gauss.ogf
 
@@ -102,37 +98,37 @@ ph_mass			 		= 3
 ;cost			 		= 900
 
 ;addons
-scope_status				= 1
-silencer_status				= 0
-grenade_launcher_status		= 0
+scope_status			= 1
+silencer_status			= 0
+grenade_launcher_status	= 0
 
 zoom_enabled			= true
 scope_zoom_factor	    = 15		;ПСО-1 4X
 
-scope_texture		= wpn\wpn_crosshair
+scope_texture			= wpn\wpn_crosshair
 
-scope_name 					= wpn_addon_scope
-scope_x 					= 60
-scope_y 					= -2
+scope_name 				= wpn_addon_scope
+scope_x 				= 60
+scope_y 				= -2
 
 ;звуки
-snd_draw			= weapons\svd_draw
-snd_holster			= weapons\generic_holster
-snd_shoot			= weapons\gauss_shoot
-snd_empty			= weapons\gen_empty, 0.5
-snd_reload			= weapons\svd_reload
+snd_draw				= weapons\svd_draw
+snd_holster				= weapons\generic_holster
+snd_shoot				= weapons\gauss_shoot
+snd_empty				= weapons\gen_empty, 0.5
+snd_reload				= weapons\svd_reload
 
  
 [wpn_gauss_hud]
 
-;shell_point		 = -0.05, -0.03, 0.05 ; 0.15, -0.03, 0.05
-;shell_dir		 = 0.0, 1.0, 0.0
+;shell_point		 	= -0.05, -0.03, 0.05
+;shell_dir		 		= 0.0, 1.0, 0.0
 
-fire_point               = 0.2, 0.03, 0.73; 0.3, -0.07, 0.12; 0.3, -0.07, 0.15
-fire_bone                = wpn_body
-orientation              = 0, 0, 0
-position                 = 0, 0, 0
-visual                   = weapons\gauss\wpn_gauss_hud.ogf
+fire_point              = 0.2, 0.03, 0.73
+fire_bone               = wpn_body
+orientation             = 0, 0, 0
+position                = 0, 0, 0
+visual                  = weapons\gauss\wpn_gauss_hud.ogf
 
 anim_holster	= holster
 anim_idle		= idle
