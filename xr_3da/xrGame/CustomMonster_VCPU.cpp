@@ -123,5 +123,6 @@ void CCustomMonster::Exec_Action	( float dt )
 
 void CCustomMonster::Exec_Movement	( float dt )
 {
-	AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,dt);
+	if (m_fCurSpeed > EPS_L)
+		AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,dt);
 }

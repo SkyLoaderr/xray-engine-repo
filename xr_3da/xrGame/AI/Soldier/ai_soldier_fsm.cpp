@@ -753,7 +753,7 @@ void CAI_Soldier::OnLookingOver()
 		}
 	/**/
 
-	vfSetLookAndFireMovement(false, BODY_STATE_STAND,WALK_NO,1.0f,Group,dwCurTime);
+	vfSetLookAndFireMovement(false, WALK_NO,1.0f,Group,dwCurTime);
 
 	//r_torso_target.yaw = r_torso_target.yaw + PI - PI/180;
 	r_torso_target.pitch = -PI_DIV_4*0;
@@ -866,7 +866,7 @@ void CAI_Soldier::OnPatrolReturn()
 		}
 	}
 
-	vfSetLookAndFireMovement(false, BODY_STATE_STAND,Leader != this ? RUN_FORWARD_1 : WALK_FORWARD_3,1.0f,Group,dwCurTime);
+	vfSetLookAndFireMovement(false, Leader != this ? RUN_FORWARD_1 : WALK_FORWARD_3,1.0f,Group,dwCurTime);
 	
 	SetDirectionLook();
 }
@@ -1038,18 +1038,18 @@ void CAI_Soldier::OnFollowLeaderPatrol()
 	if (acosf(tWatchDirection.dotproduct(tTemp0)) < PI_DIV_2) {
 		float fDistance = Leader->Position().distance_to(Position());
 		if (fDistance >= m_fMaxPatrolDistance) {
-			vfSetLookAndFireMovement(false, BODY_STATE_STAND,WALK_FORWARD_3,1.1f,Group,dwCurTime);
+			vfSetLookAndFireMovement(false, WALK_FORWARD_3,1.1f,Group,dwCurTime);
 		}
 		else
 			if (fDistance <= m_fMinPatrolDistance) {
-				vfSetLookAndFireMovement(false, BODY_STATE_STAND,WALK_FORWARD_3,0.9f,Group,dwCurTime);
+				vfSetLookAndFireMovement(false, WALK_FORWARD_3,0.9f,Group,dwCurTime);
 			}
 			else {
-				vfSetLookAndFireMovement(false, BODY_STATE_STAND,WALK_FORWARD_3,float(((fDistance - (m_fMaxPatrolDistance + m_fMinPatrolDistance)*.5f)/((m_fMaxPatrolDistance - m_fMinPatrolDistance)*.5f)*.1f + m_fMinPatrolDistance)),Group,dwCurTime);
+				vfSetLookAndFireMovement(false, WALK_FORWARD_3,float(((fDistance - (m_fMaxPatrolDistance + m_fMinPatrolDistance)*.5f)/((m_fMaxPatrolDistance - m_fMinPatrolDistance)*.5f)*.1f + m_fMinPatrolDistance)),Group,dwCurTime);
 			}
 	}
 	else {
-		vfSetLookAndFireMovement(false, BODY_STATE_STAND,WALK_FORWARD_3,0.9f,Group,dwCurTime);
+		vfSetLookAndFireMovement(false, WALK_FORWARD_3,0.9f,Group,dwCurTime);
 	}
 
 	SetDirectionLook();
@@ -1148,7 +1148,7 @@ void CAI_Soldier::OnPatrol()
 		}
 	}
 	
-	vfSetLookAndFireMovement(false, BODY_STATE_STAND,WALK_FORWARD_4,1.0f,Group,dwCurTime);
+	vfSetLookAndFireMovement(false, WALK_FORWARD_4,1.0f,Group,dwCurTime);
 
 	SetDirectionLook();
 }
@@ -1438,16 +1438,18 @@ void CAI_Soldier::OnPatrolHurt()
 		
 	r_torso_speed = 1*PI_DIV_2;
 	if (m_cBodyState != BODY_STATE_LIE) {
-		Lie();
 		if (m_cBodyState == BODY_STATE_STAND)
 			m_tpAnimationBeingWaited = tSoldierAnimations.tNormal.tGlobal.tpaLieDown[0];
 		else
 			m_tpAnimationBeingWaited = tSoldierAnimations.tCrouch.tGlobal.tpaLieDown[0];
+		Lie();
 		SWITCH_TO_NEW_STATE(aiSoldierWaitForAnimation);
 	}
 	r_torso_speed = TORSO_START_SPEED;
 	r_torso_target.yaw = r_torso_current.yaw;
 
+	vfSetMovementType(m_cBodyState,WALK_FORWARD_1);
+	
 	SelectEnemy(Enemy);
 
 	if (fabsf(r_torso_target.yaw - r_torso_current.yaw) >= PI/30)
