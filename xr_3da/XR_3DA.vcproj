@@ -2271,6 +2271,9 @@
 			RelativePath=".\features.txt">
 		</File>
 		<File
+			RelativePath="network.txt">
+		</File>
+		<File
 			RelativePath=".\plan_last_month.txt">
 		</File>
 	</Files>
