@@ -107,9 +107,13 @@ void	CHW::DestroyDevice	()
 #ifdef DEBUG
 	_RELEASE				(dwDebugSB);
 #endif
+#ifdef _EDITOR
+	_RELEASE				(HW.pDevice);
+#else
 	_SHOW_REF				("DeviceREF:",HW.pDevice);
 	while (HW.pDevice->Release())	;	//.
 	HW.pDevice				= 0		;
+#endif    
 	DestroyD3D				();
 }
 
