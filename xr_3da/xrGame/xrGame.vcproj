@@ -2317,10 +2317,22 @@
 						<Filter
 							Name="Dangerous Sound"
 							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_hear_danger_sound.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_hear_danger_sound_inline.h">
+							</File>
 						</Filter>
 						<Filter
 							Name="Interesting Sound"
 							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_hear_int_sound.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_hear_int_sound_inline.h">
+							</File>
 						</Filter>
 						<Filter
 							Name="Squad"
@@ -2447,6 +2459,28 @@
 							</File>
 							<File
 								RelativePath=".\ai\Monsters\States\monster_state_attack_run_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="Hitted"
+							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_hitted.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_hitted_hide.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_hitted_hide_inline.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_hitted_inline.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_hitted_moveout.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_hitted_moveout_inline.h">
 							</File>
 						</Filter>
 					</Filter>
@@ -2678,12 +2712,6 @@
 								RelativePath=".\ai\Monsters\Controller\controller_state_attack.h">
 							</File>
 							<File
-								RelativePath=".\ai\Monsters\Controller\controller_state_attack_cover.h">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\Controller\controller_state_attack_cover_inline.h">
-							</File>
-							<File
 								RelativePath=".\ai\Monsters\Controller\controller_state_attack_inline.h">
 							</File>
 							<File
@@ -2692,12 +2720,22 @@
 							<File
 								RelativePath=".\ai\Monsters\Controller\controller_state_control_hit_inline.h">
 							</File>
-							<File
-								RelativePath=".\ai\Monsters\Controller\controller_state_expose.h">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\Controller\controller_state_expose_inline.h">
-							</File>
+							<Filter
+								Name="Cover"
+								Filter="">
+								<File
+									RelativePath=".\ai\Monsters\Controller\controller_state_attack_hide.h">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\Controller\controller_state_attack_hide_inline.h">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\Controller\controller_state_attack_moveout.h">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\Controller\controller_state_attack_moveout_inline.h">
+								</File>
+							</Filter>
 						</Filter>
 						<Filter
 							Name="State Panic"

@@ -19,6 +19,9 @@
 #include "../states/monster_state_eat.h"
 #include "../states/monster_state_eat_eat.h"
 #include "../states/monster_state_panic.h"
+#include "../states/monster_state_hear_int_sound.h"
+#include "../states/monster_state_hear_danger_sound.h"
+#include "../states/monster_state_hitted.h"
 
 //#include "../states/monster_state_find_enemy.h"
 //#include "../states/monster_state_find_enemy_run.h"
@@ -60,6 +63,21 @@ CStateManagerController::CStateManagerController(CController *obj) : inherited(o
 		xr_new<CStateMonsterPanic<CController> >(obj)
 	);
 
+	add_state(
+		eStateHitted,
+		xr_new<CStateMonsterHitted<CController> >(obj)
+	);
+
+	add_state(
+		eStateInterestingSound,
+		xr_new<CStateMonsterHearInterestingSound<CController> >(obj)
+	);
+
+	add_state(
+		eStateDangerousSound,
+		xr_new<CStateMonsterHearDangerousSound<CController> >(obj)
+	);
+
 
 	//add_state(
 	//	eStateFindEnemy, xr_new<CStateMonsterFindEnemy<CChimera> > (obj,
@@ -84,55 +102,46 @@ void CStateManagerController::execute()
 {
 	u32 state_id = u32(-1);
 		
-	const CEntityAlive* enemy = object->EnemyMan.get_enemy();
+	const CEntityAlive* enemy	= object->EnemyMan.get_enemy();
+	const CEntityAlive* corpse	= object->CorpseMan.get_corpse();
 
-	//if (enemy) {
-	//	if (object->is_able_to_control(enemy)) {
-	//		object->take_under_control(enemy);
-	//		state_id = eStateRest;
-	//	} else {
-	//		switch (object->EnemyMan.get_danger_type()) {
-	//			case eVeryStrong:	state_id = eStatePanic; break;
-	//			case eStrong:		
-	//			case eNormal:
-	//			case eWeak:			state_id = eStateAttack; break;
-	//		}
-	//	}
-	//} else if (object->hear_dangerous_sound || object->hear_interesting_sound) {
-	//	if (object->hear_interesting_sound)	state_id = eStateInterestingSound;	
-	//	if (object->hear_dangerous_sound)	state_id = eStateDangerousSound;		
-	//} else if (object->CorpseMan.get_corpse() && ((object->GetSatiety() < object->get_sd()->m_fMinSatiety) || object->flagEatNow))
-	//	state_id = eStateEat;	
-	//else state_id = eStateRest;
+	bool can_eat = false;
+	if ((prev_substate == eStateEat) && (object->GetSatiety() < object->get_sd()->m_fMaxSatiety)) 
+		can_eat = true;		
 
-	//const CEntityAlive* corpse = object->CorpseMan.get_corpse();
-	//bool can_eat = true;
+	if ((prev_substate != eStateEat) && (object->GetSatiety() < object->get_sd()->m_fMinSatiety)) 
+		can_eat = true;		
+	
+	if (enemy) {
+		switch (object->EnemyMan.get_danger_type()) {
+			case eVeryStrong:	state_id = eStatePanic; break;
+			case eStrong:		
+			case eNormal:
+			case eWeak:			state_id = eStateAttack; break;
+		}
+	} else if (object->HitMemory.is_hit()) {
+		state_id = eStateHitted;
+	} else if (object->hear_dangerous_sound) {
+		state_id = eStateDangerousSound;
+	} else if (object->hear_interesting_sound) {
+		state_id = eStateInterestingSound;
+	} else {
+		bool can_eat = false;
+		if (!corpse) can_eat = false;
+		else {
+			if ((prev_substate == eStateEat) && (object->GetSatiety() < object->get_sd()->m_fMaxSatiety)) 
+				can_eat = true;		
 
-	//if ((prev_substate == eStateEat) && (object->GetSatiety() < object->get_sd()->m_fMaxSatiety)) {
-	//	can_eat = true;		
-	//}
-
-	//if ((prev_substate != eStateEat) && (object->GetSatiety() < object->get_sd()->m_fMinSatiety)) {
-	//	can_eat = true;		
-	//}
-
-
-	//if (enemy) {
-	//	state_id = eStateAttack;
-	//	//object->set_controlled_task(eTaskAttack);
-	//} else if (corpse && can_eat){
-	//	state_id = eStateEat;
-
-	//} else {
-	//	state_id = eStateRest;
-
-	//	//object->set_controlled_task(eTaskFollow);
-	//}
-
-	if (enemy)
-		state_id = eStateAttack;
-	else 
-		state_id = eStateRest;
+			if ((prev_substate != eStateEat) && (object->GetSatiety() < object->get_sd()->m_fMinSatiety)) 
+				can_eat = true;		
+		}
+		
+		if (can_eat) state_id = eStateEat;
+		else state_id = eStateRest;
+	}
+	
+	if (enemy) object->set_controlled_task(eTaskAttack);
+	else object->set_controlled_task(eTaskFollow);
 
 	select_state(state_id); 
 

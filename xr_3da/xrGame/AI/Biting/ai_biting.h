@@ -30,6 +30,7 @@ class CCharacterPhysicsSupport;
 class CAnimTriple;
 class CMonsterCorpseCoverEvaluator;
 class CCoverEvaluatorFarFromEnemy;
+class CCoverEvaluatorCloseToEnemy;
 
 class CAI_Biting : public CCustomMonster, 
 				   virtual public CMonsterMovement,
@@ -223,6 +224,7 @@ public:
 			bool			GetCorpseCover					(Fvector &position, u32 &vertex_id);
 			bool			GetCoverFromEnemy				(const Fvector &enemy_pos, Fvector &position, u32 &vertex_id);
 			bool			GetCoverFromPoint				(const Fvector &pos, Fvector &position, u32 &vertex_id, float min_dist, float max_dist, float radius);
+			bool			GetCoverCloseToPoint			(const Fvector &dest_pos, float min_dist, float max_dist, float deviation, float radius ,Fvector &position, u32 &vertex_id);
 
 	// Team	
 			void			ChangeTeam						(int team, int squad, int group);
@@ -250,6 +252,7 @@ public:
 
 	CMonsterCorpseCoverEvaluator	*m_corpse_cover_evaluator;
 	CCoverEvaluatorFarFromEnemy		*m_enemy_cover_evaluator;
+	CCoverEvaluatorCloseToEnemy		*m_cover_evaluator_close_point;
 
 	// -----------------------------------------------------------------------
 	// FSM

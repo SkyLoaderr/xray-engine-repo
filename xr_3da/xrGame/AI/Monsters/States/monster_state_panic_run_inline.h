@@ -66,5 +66,6 @@ bool CStateMonsterPanicRunAbstract::check_completion()
 	return true;
 }
 
+#undef DIST_TO_PATH_END
 #undef TEMPLATE_SPECIALIZATION
 #undef CStateMonsterPanicRunAbstract

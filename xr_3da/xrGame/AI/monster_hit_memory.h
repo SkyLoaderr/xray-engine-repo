@@ -25,6 +25,7 @@ public:
 	Fvector				get_last_hit_dir		();
 	TTime				get_last_hit_time		();
 	CObject				*get_last_hit_object	();
+	Fvector				get_last_hit_position	();
 	
 	void				clear					() {m_hits.clear();}
 

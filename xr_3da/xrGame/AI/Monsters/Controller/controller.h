@@ -1,10 +1,11 @@
 #pragma once
 #include "../../biting/ai_biting.h"
 #include "../../anim_triple.h"
+#include "../../ai_monster_jump.h"
 
 class CStateManagerController;
 
-class CController : public CAI_Biting {
+class CController : public CAI_Biting, public CJumping {
 	typedef		CAI_Biting	inherited;
 
 	CStateManagerController	*StateMan;
@@ -27,10 +28,16 @@ public:
 	virtual void	reload				(LPCSTR section);
 	virtual u8		get_legs_number		() {return BIPEDAL;}
 	
+	virtual void	UpdateCL			();
+
 	virtual	void	CheckSpecParams		(u32 spec_params);
 	virtual bool	UpdateStateManager	();
 
-	virtual void	InitThink				();
+	virtual void	InitThink			();
+
+	virtual bool	ability_can_jump	() {return true;}
+			
+			void	Jump				();
 
 	// Controller ability
 			bool	HasUnderControl		() {return (!m_controlled_objects.empty());}

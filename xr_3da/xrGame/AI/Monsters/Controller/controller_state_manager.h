@@ -15,6 +15,7 @@ class CStateManagerController : public CState<CController> {
 		eStateThreaten,
 		eStateDangerousSound,
 		eStateInterestingSound,
+		eStateHitted,
 		eStateFindEnemy,
 	};
 

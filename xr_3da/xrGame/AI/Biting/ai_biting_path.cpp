@@ -123,4 +123,14 @@ bool CAI_Biting::GetCoverFromPoint(const Fvector &pos, Fvector &position, u32 &v
 	return true;
 }
 
+bool CAI_Biting::GetCoverCloseToPoint(const Fvector &dest_pos, float min_dist, float max_dist, float deviation, float radius ,Fvector &position, u32 &vertex_id) 
+{
+	m_cover_evaluator_close_point->setup(dest_pos,min_dist, max_dist,deviation);
+	CCoverPoint	 *point = ai().cover_manager().best_cover(Position(),radius,*m_cover_evaluator_close_point);
+	if (!point) return false;
+
+	position	= point->m_position;
+	vertex_id	= point->m_level_vertex_id;
+	return true;
+}
 

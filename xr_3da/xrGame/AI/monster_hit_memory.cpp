@@ -35,9 +35,10 @@ bool CMonsterHitMemory::is_hit(CObject *pO)
 void CMonsterHitMemory::add_hit(CObject *who, EHitSide side)
 {
 	SMonsterHit			new_hit_info;
-	new_hit_info.object = who;
-	new_hit_info.time	= Level().timeServer();
-	new_hit_info.side	= side;
+	new_hit_info.object		= who;
+	new_hit_info.time		= Level().timeServer();
+	new_hit_info.side		= side;
+	new_hit_info.position	= monster->Position();
 
 	MONSTER_HIT_VECTOR_IT it = find(m_hits.begin(), m_hits.end(), who);
 
@@ -129,3 +130,17 @@ CObject	*CMonsterHitMemory::get_last_hit_object()
 
 	return last_hit.object;
 }
+
+Fvector CMonsterHitMemory::get_last_hit_position()
+{
+	SMonsterHit		last_hit;
+	last_hit.time	= 0;
+	last_hit.position.set(0.f,0.f,0.f);
+
+	for (u32 i = 0; i < m_hits.size(); i++) {
+		if (m_hits[i].time > last_hit.time)	last_hit = m_hits[i];
+	}
+
+	return last_hit.position;
+}
+

@@ -492,6 +492,7 @@ struct SMonsterHit {
 	CObject		*object;
 	TTime		time;
 	EHitSide	side;
+	Fvector		position;
 
 	bool	operator==(const CObject *obj) {
 		return (object == obj);

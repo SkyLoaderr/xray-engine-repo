@@ -55,6 +55,7 @@ CAI_Biting::CAI_Biting()
 
 	m_corpse_cover_evaluator		= xr_new<CMonsterCorpseCoverEvaluator>();
 	m_enemy_cover_evaluator			= xr_new<CCoverEvaluatorFarFromEnemy>();
+	m_cover_evaluator_close_point	= xr_new<CCoverEvaluatorCloseToEnemy>();
 }
 
 CAI_Biting::~CAI_Biting()
@@ -66,6 +67,7 @@ CAI_Biting::~CAI_Biting()
 
 	xr_delete(m_corpse_cover_evaluator);
 	xr_delete(m_enemy_cover_evaluator);
+	xr_delete(m_cover_evaluator_close_point);
 }
 
 void CAI_Biting::reinit()

@@ -51,7 +51,6 @@ void CStateAbstract::execute()
 		state->finalize();
 		current_substate = u32(-1);
 	} else {
-		
 		// сохранить текущее состояние
 		prev_substate = current_substate;
 	}
@@ -66,6 +65,7 @@ void CStateAbstract::finalize()
 TEMPLATE_SPECIALIZATION
 void CStateAbstract::critical_finalize()
 {
+	if (current_substate != u32(-1)) get_state_current()->critical_finalize();
 	reset();
 }
 

@@ -7,6 +7,7 @@
 #include "level_graph.h"
 
 #include "ai/monsters/poltergeist/poltergeist.h"
+#include "ai/monsters/controller/controller.h"
 
 #include "../fdemorecord.h"
 #include "level.h"
@@ -226,6 +227,15 @@ void CLevel::IR_OnKeyboardPress(int key)
 			break;
 		case DIK_2:
 			monster->Show();
+			break;
+		}
+	}
+
+	CController	*m_controller	= dynamic_cast<CController*>(obj);
+	if (m_controller) {
+		switch (key) {
+		case DIK_1:
+			m_controller->Jump();
 			break;
 		}
 	}

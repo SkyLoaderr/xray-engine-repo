@@ -11,6 +11,8 @@
 CController::CController()
 {
 	StateMan = xr_new<CStateManagerController>(this);
+
+	CJumping::Init(this);
 }
 
 CController::~CController()
@@ -21,6 +23,7 @@ CController::~CController()
 void CController::Load(LPCSTR section)
 {
 	inherited::Load	(section);
+	CJumping::Load	(section);
 
 	m_max_controlled_number			= pSettings->r_u8(section,"Max_Controlled_Count");
 	m_controlled_objects.reserve	(m_max_controlled_number);
@@ -122,7 +125,7 @@ void CController::UpdateControlled()
 	// удалить мертвые объекты	
 	if (!m_controlled_objects.empty()) 
 		for (int i=m_controlled_objects.size()-1; i>=0;i--) {
-			if (!m_controlled_objects[i]->g_Alive()) {
+			if (!m_controlled_objects[i]->g_Alive() || m_controlled_objects[i]->getDestroy()) {
 				m_controlled_objects[i] = m_controlled_objects.back();
 				m_controlled_objects.pop_back();
 			}  
@@ -150,12 +153,6 @@ void CController::UpdateControlled()
 		HDebug->L_AddLine(my_pos,		new_pos, D3DCOLOR_XRGB(0,255,255));
 		HDebug->L_AddLine(enemy_pos,	new_pos, D3DCOLOR_XRGB(0,255,255));
 	}
-
-
-	//if (EnemyMan.get_enemy()) 
-	//	HDebug->M_Add(0, "See Actor", D3DCOLOR_XRGB(255,0,0));
-	//else 
-	//	HDebug->M_Add(0, "Dont see Actor", D3DCOLOR_XRGB(255,0,0));
 
 
 #endif
@@ -237,6 +234,9 @@ void CController::reload(LPCSTR section)
 	VERIFY(def3);
 
 	anim_triple_control.init_external	(def1, def2, def3);
+
+	CJumping::AddState(PSkeletonAnimated(Visual())->ID_Cycle_Safe("jump_glide_0"), JT_GLIDE, false,	0.f, inherited::get_sd()->m_fsVelocityRunFwdNormal.velocity.angular);
+
 }
 
 void CController::control_hit()
@@ -251,5 +251,17 @@ void CController::control_hit()
 	}
 }
 
+void CController::UpdateCL()
+{
+	inherited::UpdateCL();
+	CJumping::Update();
+}
 
+void CController::Jump()
+{
+	if (CJumping::Check(Position(),EnemyMan.get_enemy()->Position(),EnemyMan.get_enemy())){
+		CSoundPlayer::play(MonsterSpace::eMonsterSoundAttackHit);
+		MotionMan.ActivateJump();
+	}
+}
 
