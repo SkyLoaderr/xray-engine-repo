@@ -143,7 +143,7 @@ CLensFlare::~CLensFlare()
 	OnDeviceDestroy				();
 }
 
-void CLensFlare::lerp(int a, int b, float f)
+void CLensFlare::OnFrame(int id)
 {
 	if (dwFrame==Device.dwFrame)return;
 #ifndef _EDITOR
@@ -157,21 +157,21 @@ void CLensFlare::lerp(int a, int b, float f)
     Fvector& c		= g_pGamePersistent->Environment.CurrentEnv.sun_color;
 	LightColor.set	(c.x,c.y,c.z,1.f);
 
-    CLensFlareDescriptor* desc = (f<0.5f)?&m_Palette[a]:&m_Palette[b];
+    CLensFlareDescriptor* desc = (id==-1)?0:&m_Palette[id];
 
     switch(m_State){
-    case lfsNone: m_State=lfsShow; m_Current=&m_Palette[a]; break;
+    case lfsNone: m_State=lfsShow; m_Current=desc; break;
     case lfsIdle: if (desc!=m_Current) m_State=lfsHide; 	break;
     case lfsShow: 
-        m_StateBlend 	= m_StateBlend + m_Current->m_StateBlendSpeed * Device.fTimeDelta;
-        if (m_StateBlend>1.f) m_State=lfsIdle;
+        m_StateBlend 	= m_Current?(m_StateBlend + m_Current->m_StateBlendSpeed * Device.fTimeDelta):1.f+EPS;
+        if (m_StateBlend>=1.f) m_State=lfsIdle;
     break;
     case lfsHide: 
-        m_StateBlend 	= m_StateBlend - m_Current->m_StateBlendSpeed * Device.fTimeDelta;
-        if (m_StateBlend<0.f){ 	
+        m_StateBlend 	= m_Current?(m_StateBlend - m_Current->m_StateBlendSpeed * Device.fTimeDelta):0.f-EPS;
+        if (m_StateBlend<=0.f){ 	
             m_State		= lfsShow;
-            m_Current	= &m_Palette[b];
-	        m_StateBlend= m_Current->m_StateBlendSpeed * Device.fTimeDelta;
+            m_Current	= desc;
+	        m_StateBlend= m_Current?m_Current->m_StateBlendSpeed * Device.fTimeDelta:0;
         }
     break;
     }

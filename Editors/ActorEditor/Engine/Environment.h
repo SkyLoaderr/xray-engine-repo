@@ -43,6 +43,7 @@ public:
 	Fvector3			sun_dir;
 
     int					lens_flare_id;
+    BOOL				thunderbolt;
     
 	void				load		(LPCSTR exec_tm, LPCSTR sect, CEnvironment* parent);
     void				unload		();

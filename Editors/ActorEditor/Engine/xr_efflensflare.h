@@ -82,12 +82,11 @@ protected:
     LFState				m_State;
     float				m_StateBlend;
 public:
-	void				lerp			(int a, int b, float f);
-public:
 						CLensFlare		();
 	virtual				~CLensFlare		();
 
-    void __fastcall		Render			( BOOL bSun, BOOL bFlares, BOOL bGradient );
+	void				OnFrame			(int id);
+    void __fastcall		Render			(BOOL bSun, BOOL bFlares, BOOL bGradient);
 	void 				OnDeviceCreate	();         
 	void 				OnDeviceDestroy	();
 

@@ -106,8 +106,6 @@ void CEnvDescriptor::load	(LPCSTR exec_tm, LPCSTR S, CEnvironment* parent)
 	fog_density				= pSettings->r_float	(S,"fog_density");
 	rain_density			= pSettings->r_float	(S,"rain_density");
 	rain_color				= pSettings->r_fvector3	(S,"rain_color");            
-	bolt_period				= pSettings->r_float	(S,"bolt_period");
-	bolt_duration			= pSettings->r_float	(S,"bolt_duration");
     wind_velocity			= pSettings->r_float	(S,"wind_velocity");
     wind_direction			= deg2rad(pSettings->r_float(S,"wind_direction"));
 	ambient					= pSettings->r_fvector3	(S,"ambient");
@@ -116,6 +114,9 @@ void CEnvDescriptor::load	(LPCSTR exec_tm, LPCSTR S, CEnvironment* parent)
 	sun_color				= pSettings->r_fvector3	(S,"sun_color");
 	Fvector2 sund			= pSettings->r_fvector2	(S,"sun_dir");	sun_dir.setHP	(deg2rad(sund.y),deg2rad(sund.x));
     lens_flare_id			= parent->eff_LensFlare->AppendDef(pSettings,pSettings->r_string(S,"flares"));
+    thunderbolt				= pSettings->r_bool		(S,"thunderbolt");
+	bolt_period				= thunderbolt?pSettings->r_float	(S,"bolt_period"):0.f;
+	bolt_duration			= thunderbolt?pSettings->r_float	(S,"bolt_duration"):0.f;
 }
 void CEnvDescriptor::unload	()
 {
@@ -272,10 +273,12 @@ void CEnvironment::OnFrame()
     if (ABcurrent>ABlength)	SelectEnv();
 
     VERIFY(CurrentA&&CurrentB);
-    float t_fact		= ABcurrent/ABlength; VERIFY(t_fact<1.f);
-	CurrentEnv.lerp		(*CurrentA,*CurrentB,t_fact);
-	eff_LensFlare->lerp	(CurrentA->lens_flare_id,CurrentB->lens_flare_id,t_fact);
-    eff_Thunderbolt->lerp(CurrentEnv.bolt_period,CurrentEnv.bolt_duration);
+    float t_fact			= ABcurrent/ABlength; VERIFY(t_fact<1.f);
+	CurrentEnv.lerp			(*CurrentA,*CurrentB,t_fact);
+    int id					= (t_fact<0.5f)?CurrentA->lens_flare_id:CurrentB->lens_flare_id;
+	eff_LensFlare->OnFrame	(id);
+    BOOL tb_enabled			= (t_fact<0.5f)?CurrentA->thunderbolt:CurrentB->thunderbolt;
+    eff_Thunderbolt->OnFrame(tb_enabled,CurrentEnv.bolt_period,CurrentEnv.bolt_duration);
 
 	// ******************** Environment params (setting)
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGCOLOR,	color_rgba_f(CurrentEnv.fog_color.x,CurrentEnv.fog_color.y,CurrentEnv.fog_color.z,0) )); 
