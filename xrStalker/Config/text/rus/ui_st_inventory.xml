@@ -61,7 +61,7 @@
         <text>Пистолеты</text>
     </string>
     <string id="ui_inv_primary_weapons">
-        <text>Основное Оружие</text>
+        <text>Основное</text>
     </string>
     <string id="ui_inv_granades">
         <text>Гранаты</text>
@@ -70,18 +70,18 @@
         <text>Костюмы</text>
     </string>
     <string id="ui_inv_equipment">
-        <text>Екипировка</text>
+        <text>Оборудование</text>
     </string>
     <string id="ui_inv_shotguns">
-        <text>Винчестеры</text>
+        <text>Ружья</text>
     </string>
     <string id="ui_inv_rifles">
-        <text>Штурмовые винтовки и автоматы</text>
+        <text>Автоматическое</text>
     </string>
     <string id="ui_inv_sniper_rifles">
-        <text>Снайперские винтовки</text>
+        <text>Снайперское</text>
     </string>
     <string id="ui_inv_heavy_weapons">
-        <text>Тяжолое оружие</text>
+        <text>Тяжелое</text>
     </string>
 </string_table>
