@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "level_graph.h"
+#include "profiler.h"
 
 #ifndef AI_COMPILER
 CLevelGraph::CLevelGraph					()
@@ -72,6 +73,7 @@ u32	CLevelGraph::vertex		(const Fvector &position) const
 
 u32 CLevelGraph::vertex		(u32 current_node_id, const Fvector& position) const
 {
+	START_PROFILE("AI/Level Graph/find vertex")
 #ifndef AI_COMPILER
 	Device.Statistic.AI_Node.Begin	();
 #endif
@@ -159,6 +161,8 @@ u32 CLevelGraph::vertex		(u32 current_node_id, const Fvector& position) const
 	Device.Statistic.AI_Node.End();
 #endif
 	return					(best_vertex_id);
+
+	STOP_PROFILE
 }
 
 u32	CLevelGraph::vertex_id				(const Fvector &position) const

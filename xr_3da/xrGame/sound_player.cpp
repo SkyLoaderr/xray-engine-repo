@@ -13,6 +13,7 @@
 #include "ai_space.h"
 #include "../xr_object.h"
 #include "../skeletoncustom.h"
+#include "profiler.h"
 
 CSoundPlayer::CSoundPlayer			(CObject *object)
 {
@@ -115,8 +116,9 @@ bool CSoundPlayer::check_sound_legacy(u32 internal_type) const
 
 void CSoundPlayer::update			(float time_delta)
 {
+	START_PROFILE("AI/Sound Player/update")
 	remove_inappropriate_sounds		(m_sound_mask);
-	update_playing_sounds			();
+	STOP_PROFILE
 }
 
 void CSoundPlayer::remove_inappropriate_sounds(u32 sound_mask)

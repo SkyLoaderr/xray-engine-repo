@@ -15,6 +15,7 @@
 #include "restricted_object.h"
 #include "movement_manager.h"
 #include "ai_space.h"
+#include "profiler.h"
 
 bool CItemManager::is_useful		(const CGameObject *object) const
 {
@@ -57,4 +58,11 @@ float CItemManager::evaluate		(const CGameObject *object) const
 	VERIFY					(inventory_item);
 	VERIFY					(inventory_item->useful_for_NPC());
 	return					(1000000.f - (float)inventory_item->Cost());
+}
+
+void CItemManager::update			()
+{
+	START_PROFILE("AI/Memory Manager/items/update")
+	inherited::update		();
+	STOP_PROFILE
 }

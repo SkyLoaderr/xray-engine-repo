@@ -13,6 +13,9 @@
 #include "detail_path_manager.h"
 #include "ai_object_location.h"
 #include "custommonster.h"
+#include "level_path_builder.h"
+#include "detail_path_builder.h"
+#include "movement_manager_impl.h"
 
 void CMovementManager::process_patrol_path()
 {
@@ -41,7 +44,19 @@ void CMovementManager::process_patrol_path()
 					break;
 			}
 			case ePathStateBuildLevelPath : {
-				level_path().build_path(object().ai_location().level_vertex_id(),level_dest_vertex_id());
+				if (can_use_distributed_compuations(mtLevelPath)) {
+					level_path_builder().setup(
+						object().ai_location().level_vertex_id(),
+						level_dest_vertex_id()
+					);
+
+					break;
+				}
+				
+				level_path().build_path(
+					object().ai_location().level_vertex_id(),
+					level_dest_vertex_id()
+				);
 				
 				if (level_path().failed())
 					break;
@@ -64,6 +79,16 @@ void CMovementManager::process_patrol_path()
 				detail().set_start_position(object().Position());
 				detail().set_start_direction(Fvector().setHP(-m_body.current.yaw,0));
 				detail().set_dest_position(patrol().destination_position());
+				
+				if (can_use_distributed_compuations(mtDetailPath)) {
+					detail_path_builder().setup(
+						level_path().path(),
+						level_path().intermediate_index()
+					);
+
+					break;
+				}
+				
 				detail().build_path(
 					level_path().path(),
 					level_path().intermediate_index()
@@ -107,7 +132,7 @@ void CMovementManager::process_patrol_path()
 			default : NODEFAULT;
 		}
 
-		if (time_over() || (m_path_state == prev_state))
+		if (time_over() || (m_path_state == prev_state) || wait_for_distributed_computation())
 			break;
 
 		prev_state		= m_path_state;

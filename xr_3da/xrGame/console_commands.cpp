@@ -27,6 +27,7 @@
 #include "ai/monsters/BaseMonster/base_monster.h"
 #include "game_sv_deathmatch.h"
 #include "date_time.h"
+#include "mt_config.h"
 
 extern void show_smart_cast_stats		();
 extern void clear_smart_cast_stats		();
@@ -62,6 +63,7 @@ extern	BOOL	g_bAfReturnPlayersToBases;
 		BOOL	g_bCheckTime			= FALSE;
 		int		g_dwEventDelay			= 0	;
 		int		net_cl_inputupdaterate	= 50;
+		Flags32	g_mt_config				= {mtLevelPath | mtDetailPath | mtObjectHandler | mtSightManager};
 #ifdef DEBUG
 		Flags32	dbg_net_Draw_Flags		= {0};
 #endif
@@ -1721,8 +1723,12 @@ void CCC_RegisterCommands()
 	CMD1(CCC_DemoRecord,		"demo_record"			);
 	CMD1(CCC_DemoPlay,			"demo_play"				);
 
-#ifdef DEBUG
 	// ai
+	CMD3(CCC_Mask,				"mt_level_path",		&g_mt_config,	mtLevelPath);
+	CMD3(CCC_Mask,				"mt_detail_path",		&g_mt_config,	mtDetailPath);
+	CMD3(CCC_Mask,				"mt_object_handler",	&g_mt_config,	mtObjectHandler);
+	CMD3(CCC_Mask,				"mt_sight_manager",		&g_mt_config,	mtSightManager);
+#ifdef DEBUG
 	CMD3(CCC_Mask,				"ai_debug",				&psAI_Flags,	aiDebug);
 	CMD3(CCC_Mask,				"ai_dbg_brain",			&psAI_Flags,	aiBrain);
 	CMD3(CCC_Mask,				"ai_dbg_motion",		&psAI_Flags,	aiMotion);

@@ -8,3 +8,9 @@
 
 #pragma once
 
+#include "mt_config.h"
+
+IC	bool CMovementManager::can_use_distributed_compuations	(u32 option) const
+{
+	return	(!m_build_at_once && g_mt_config.test(option));
+}

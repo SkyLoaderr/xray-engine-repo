@@ -20,6 +20,7 @@
 #include "agent_manager.h"
 #include "agent_member_manager.h"
 #include "ai/stalker/ai_stalker.h"
+#include "profiler.h"
 
 #define SILENCE
 //#define SAVE_OWN_SOUNDS
@@ -215,6 +216,8 @@ struct CRemoveOfflinePredicate {
 
 void CSoundMemoryManager::update()
 {
+	START_PROFILE("AI/Memory Manager/sounds/update")
+
 	VERIFY						(m_sounds);
 	{
 		xr_vector<CSoundObject>::iterator	I = remove_if(m_sounds->begin(),m_sounds->end(),CRemoveOfflinePredicate());
@@ -232,6 +235,7 @@ void CSoundMemoryManager::update()
 			priority			= cur_priority;
 		}
 	}
+	STOP_PROFILE
 }
 
 struct CSoundObjectPredicate {

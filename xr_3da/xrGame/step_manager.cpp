@@ -4,6 +4,7 @@
 #include "../skeletonanimated.h"
 #include "level.h"
 #include "material_manager.h"
+#include "profiler.h"
 
 #define TIME_OFFSET 10
 
@@ -89,6 +90,8 @@ void CStepManager::on_animation_start(shared_str anim, CBlend *blend)
 
 void CStepManager::update()
 {
+	START_PROFILE("AI/Step Manager/update")
+
 	if (m_step_info.disable)	return;
 	if (!m_blend)				return;
 
@@ -181,6 +184,7 @@ void CStepManager::update()
 			m_step_info.activity[i].cycle	= m_step_info.cur_cycle;
 		}
 	}
+	STOP_PROFILE
 }
 
 //////////////////////////////////////////////////////////////////////////

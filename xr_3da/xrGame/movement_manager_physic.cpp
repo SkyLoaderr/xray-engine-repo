@@ -13,6 +13,8 @@
 #include "level.h"
 #include "custommonster.h"
 #include "IColisiondamageInfo.h"
+#include "profiler.h"
+
 #define DISTANCE_PHISICS_ENABLE_CHARACTERS 2.f
 
 float CMovementManager::speed			(CPHMovementControl *movement_control) const
@@ -39,6 +41,8 @@ void CMovementManager::apply_collision_hit(CPHMovementControl *movement_control)
 }
 void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fvector &dest_position, float time_delta)
 {
+	START_PROFILE("AI/Build Path/Move Along Path")
+
 	Fvector				motion;
 	dest_position		= object().Position();
 
@@ -184,5 +188,6 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 	
 	Device.Statistic.Physics.End	();
 
+	STOP_PROFILE
 }
 

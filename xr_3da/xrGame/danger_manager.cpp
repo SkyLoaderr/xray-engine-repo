@@ -10,6 +10,7 @@
 #include "danger_manager.h"
 #include "custommonster.h"
 #include "memory_space.h"
+#include "profiler.h"
 
 struct CDangerPredicate {
 	const CObject	*m_object;
@@ -79,6 +80,8 @@ void CDangerManager::reload			(LPCSTR section)
 
 void CDangerManager::update			()
 {
+	START_PROFILE("AI/Memory Manager/dangers/update")
+
 	{
 		OBJECTS::iterator	I = remove_if(m_objects.begin(),m_objects.end(),CRemoveByTimePredicate(time_line()));
 		m_objects.erase		(I,m_objects.end());
@@ -96,6 +99,8 @@ void CDangerManager::update			()
 			m_selected		= &*I;
 		}
 	}
+
+	STOP_PROFILE
 }
 
 void CDangerManager::remove_links	(const CObject *object)

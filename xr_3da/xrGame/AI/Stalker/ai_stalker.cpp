@@ -48,6 +48,7 @@
 #include "../../stalker_sound_data.h"
 #include "../../stalker_sound_data_visitor.h"
 #include "ai_stalker_space.h"
+#include "../../mt_config.h"
 
 using namespace StalkerSpace;
 
@@ -409,46 +410,70 @@ void CAI_Stalker::net_Import		(NET_Packet& P)
 	setEnabled						(TRUE);
 }
 
-void CAI_Stalker::UpdateCL()
+void CAI_Stalker::update_object_handler	()
 {
-	if (g_Alive()) {
+	VERIFY							(g_Alive());
+	
+	try {
 		try {
-			try {
-				CObjectHandler::update	();
-			}
-#ifdef DEBUG
-			catch (luabind::cast_failed &message) {
-				Msg						("! Expression \"%s\" from luabind::object to %s",message.what(),message.info()->name());
-				throw;
-			}
-#endif
-			catch (std::exception &message) {
-				Msg						("! Expression \"%s\"",message.what());
-				throw;
-			}
-			catch(...) {
-				throw;
-			}
-		}
-		catch(...) {
-			CObjectHandler::set_goal(eObjectActionIdle);
 			CObjectHandler::update	();
 		}
+#ifdef DEBUG
+		catch (luabind::cast_failed &message) {
+			Msg						("! Expression \"%s\" from luabind::object to %s",message.what(),message.info()->name());
+			throw;
+		}
+#endif
+		catch (std::exception &message) {
+			Msg						("! Expression \"%s\"",message.what());
+			throw;
+		}
+		catch(...) {
+			throw;
+		}
+	}
+	catch(...) {
+		CObjectHandler::set_goal(eObjectActionIdle);
+		CObjectHandler::update	();
+	}
+}
+
+void CAI_Stalker::update_sight_manager	()
+{
+	VERIFY				(g_Alive());
+
+	try {
+		sight().update	();
+	}
+	catch(...) {
+		sight().setup	(CSightAction(SightManager::eSightTypeCurrentDirection));
+		sight().update	();
+	}
+	
+	Exec_Look			(Device.fTimeDelta);
+}
+
+void CAI_Stalker::UpdateCL()
+{
+	inherited::UpdateCL				();
+	
+	if (g_Alive()) {
+		if (g_mt_config.test(mtObjectHandler))
+			Device.seqParallel.push_back	(fastdelegate::FastDelegate0(this,&CAI_Stalker::update_object_handler));
+		else
+			update_object_handler			();
 	}
 
-	inherited::UpdateCL				();
 	m_pPhysics_support->in_UpdateCL	();
 
 	if (g_Alive()) {
 		VERIFY						(!m_pPhysicsShell);
-		try {
-			sight().update			();
-		}
-		catch(...) {
-			sight().setup			(CSightAction(SightManager::eSightTypeCurrentDirection));
-			sight().update			();
-		}
-		Exec_Look					(Device.fTimeDelta);
+		
+		if (g_mt_config.test(mtSightManager))
+			Device.seqParallel.push_back	(fastdelegate::FastDelegate0(this,&CAI_Stalker::update_sight_manager));
+		else
+			update_sight_manager	();
+
 		CStepManager::update		();
 	}
 

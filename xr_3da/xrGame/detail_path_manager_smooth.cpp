@@ -807,7 +807,6 @@ void CDetailPathManager::build_smooth_path		(
 	u32						intermediate_index
 )
 {
-	Device.Statistic.AI_Range.Begin		();
 	START_PROFILE("AI/Build Path/Detail Path");
 	
 	m_failed							= true;
@@ -816,7 +815,6 @@ void CDetailPathManager::build_smooth_path		(
 	STrajectoryPoint					start,dest;
 
 	if (!init_build(level_path,intermediate_index,start,dest,straight_line_index,straight_line_index_negative)) {
-		Device.Statistic.AI_Range.End	();
 		return;
 	}
 
@@ -832,7 +830,6 @@ void CDetailPathManager::build_smooth_path		(
 	xr_vector<STravelParamsIndex>		&finish_params = m_use_dest_orientation ? m_start_params : m_dest_params;
 
 	if (!fill_key_points(level_path,intermediate_index,start,dest)) {
-		Device.Statistic.AI_Range.End	();
 		if (m_restricted_object)
 			m_restricted_object->remove_border();
 		return;
@@ -846,5 +843,4 @@ void CDetailPathManager::build_smooth_path		(
 		m_restricted_object->remove_border();
 
 	STOP_PROFILE;
-	Device.Statistic.AI_Range.End		();
 }

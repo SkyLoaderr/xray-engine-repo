@@ -15,6 +15,7 @@
 #include "stalker_movement_manager.h"
 #include "ai/stalker/ai_stalker_space.h"
 #include "ai_space.h"
+#include "profiler.h"
 
 using namespace StalkerSpace;
 
@@ -191,6 +192,7 @@ bool CSightManager::need_correction	(float x1, float x2, float x3)
 
 void CSightManager::Exec_Look		(float dt)
 {
+	START_PROFILE("AI/Sight Manager/exec_look")
 	// normalizing torso angles
 	object().movement().m_body.current.yaw		= angle_normalize_signed	(object().movement().m_body.current.yaw);
 	object().movement().m_body.current.pitch	= angle_normalize_signed	(object().movement().m_body.current.pitch);
@@ -239,6 +241,7 @@ void CSightManager::Exec_Look		(float dt)
 	mXFORM.setHPB					(-object().movement().body_orientation().current.yaw,0,0);
 	mXFORM.c.set					(m_object->Position());
 	m_object->XFORM().set			(mXFORM);
+	STOP_PROFILE
 }
 
 void CSightManager::setup			(const CSightAction &sight_action)
@@ -253,6 +256,7 @@ void CSightManager::setup			(const CSightAction &sight_action)
 
 void CSightManager::update			()
 {
+	START_PROFILE("AI/Sight Manager/update")
 	if (enabled()) {
 		if (fis_zero(object().movement().speed())) {
 			if (!m_turning_in_place) {
@@ -281,6 +285,7 @@ void CSightManager::update			()
 
 		inherited::update				();
 	}
+	STOP_PROFILE
 }
 
 void CSightManager::GetDirectionAngles				(float &yaw, float &pitch)

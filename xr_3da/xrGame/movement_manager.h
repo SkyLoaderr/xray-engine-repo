@@ -132,11 +132,9 @@ private:
 
 		ePathStateSelectLevelVertex,
 		ePathStateBuildLevelPath,
-		ePathStateComputeLevelPath,
 		ePathStateContinueLevelPath,
 
 		ePathStateBuildDetailPath,
-		ePathStateComputeDetailPath,
 		
 		ePathStatePathVerification,
 		
@@ -240,6 +238,7 @@ public:
 	IC		bool	extrapolate_path		() const;
 
 	IC		bool	wait_for_distributed_computation			() const;
+	IC		bool	can_use_distributed_compuations				(u32 option) const;
 
 public:
 	IC		CBaseParameters			*base_game_params			() const;

@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "greeting_manager.h"
 #include "ai/stalker/ai_stalker.h"
+#include "profiler.h"
 
 const u32 FORGET_GREETING_TIME = 300000;
 
@@ -71,12 +72,16 @@ IC	const CGreetingManager::COldGreeting *CGreetingManager::old_greeting	(const C
 
 void CGreetingManager::update		()
 {
+	START_PROFILE("AI/Memory Manager/greetings/update")
+
 	if (!m_object)
 		return;
 
 	remove_old_greetings		();
 
 	inherited::update			();
+	
+	STOP_PROFILE
 }
 
 void CGreetingManager::process_greeting	()

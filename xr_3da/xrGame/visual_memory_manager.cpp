@@ -19,6 +19,7 @@
 #include "agent_manager.h"
 #include "agent_member_manager.h"
 #include "ai_space.h"
+#include "profiler.h"
 
 struct SRemoveOfflinePredicate {
 	bool		operator()						(const CVisibleObject &object) const
@@ -317,6 +318,8 @@ void CVisualMemoryManager::add_visible_object	(const CVisibleObject visible_obje
 
 void CVisualMemoryManager::update				(float time_delta)
 {
+	START_PROFILE("AI/Memory Manager/visuals/update")
+
 	if (!enabled())
 		return;
 
@@ -364,6 +367,7 @@ void CVisualMemoryManager::update				(float time_delta)
 		xr_vector<CNotYetVisibleObject>::iterator	J = remove_if(m_not_yet_visible_objects.begin(),m_not_yet_visible_objects.end(),SRemoveOfflinePredicate());
 		m_not_yet_visible_objects.erase				(J,m_not_yet_visible_objects.end());
 	}
+	STOP_PROFILE
 }
 
 bool CVisualMemoryManager::visible(u32 _level_vertex_id, float yaw, float eye_fov) const

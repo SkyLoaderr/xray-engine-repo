@@ -368,6 +368,8 @@ private:
 public:
 	IC		bool						group_behaviour					() const;
 	virtual	void						update_range_fov				(float &new_range, float &new_fov, float start_range, float start_fov);
+			void __stdcall				update_object_handler			();
+			void __stdcall				update_sight_manager			();
 
 public:
 	DECLARE_SCRIPT_REGISTER_FUNCTION

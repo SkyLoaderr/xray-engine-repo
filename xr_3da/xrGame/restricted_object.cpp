@@ -195,12 +195,16 @@ void CRestrictedObject::remove_border		() const
 
 shared_str	CRestrictedObject::in_restrictions	() const
 {
+	START_PROFILE("AI/Restricted Object/in_restrictions")
 	return						(Level().space_restriction_manager().in_restrictions(object().ID()));
+	STOP_PROFILE
 }
 
 shared_str CRestrictedObject::out_restrictions	() const
 {
+	START_PROFILE("AI/Restricted Object/out_restrictions")
 	return						(Level().space_restriction_manager().out_restrictions(object().ID()));
+	STOP_PROFILE
 }
 
 IC	void CRestrictedObject::add_object_restriction(ALife::_OBJECT_ID id, const RestrictionSpace::ERestrictorTypes &restrictor_type)

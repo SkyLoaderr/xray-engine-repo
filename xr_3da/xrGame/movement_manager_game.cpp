@@ -21,6 +21,7 @@
 #include "custommonster.h"
 #include "level_path_builder.h"
 #include "detail_path_builder.h"
+#include "movement_manager_impl.h"
 
 void CMovementManager::process_game_path()
 {
@@ -86,14 +87,12 @@ void CMovementManager::process_game_path()
 					);
 				}
 
-				if (!m_build_at_once) {
+				if (can_use_distributed_compuations(mtLevelPath)) {
 					level_path_builder().setup(
 						object().ai_location().level_vertex_id(),
 						dest_level_vertex_id
 					);
 
-					m_path_state	= ePathStateComputeLevelPath;
-				
 					break;
 				}
 
@@ -109,9 +108,6 @@ void CMovementManager::process_game_path()
 				
 				m_path_state		= ePathStateContinueLevelPath;
 				
-				break;
-			}
-			case ePathStateComputeLevelPath : {
 				break;
 			}
 			case ePathStateContinueLevelPath : {
@@ -134,13 +130,11 @@ void CMovementManager::process_game_path()
 					)
 				);
 
-				if (!m_build_at_once) {
+				if (can_use_distributed_compuations(mtDetailPath)) {
 					detail_path_builder().setup(
 						level_path().path(),
 						level_path().intermediate_index()
 					);
-
-					m_path_state	= ePathStateComputeDetailPath;
 
 					break;
 				}
@@ -157,9 +151,6 @@ void CMovementManager::process_game_path()
 
 				m_path_state		= ePathStatePathVerification;
 				
-				break;
-			}
-			case ePathStateComputeDetailPath : {
 				break;
 			}
 			case ePathStatePathVerification : {

@@ -18,6 +18,7 @@
 #include "agent_member_manager.h"
 #include "ai/stalker/ai_stalker.h"
 #include "game_object_space.h"
+#include "profiler.h"
 
 struct CHitObjectPredicate {
 	const CObject *m_object;
@@ -150,6 +151,8 @@ struct CRemoveOfflinePredicate {
 
 void CHitMemoryManager::update()
 {
+	START_PROFILE("AI/Memory Manager/hits/update")
+
 	VERIFY						(m_hits);
 	{
 		HITS::iterator			I = remove_if(m_hits->begin(),m_hits->end(),CRemoveOfflinePredicate());
@@ -166,6 +169,7 @@ void CHitMemoryManager::update()
 			level_time			= (*I).m_level_time;
 		}
 	}
+	STOP_PROFILE
 }
 
 void CHitMemoryManager::enable			(const CObject *object, bool enable)

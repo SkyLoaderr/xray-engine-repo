@@ -81,17 +81,16 @@ BOOL CALifeUpdateManager::shedule_Ready		()
 
 void CALifeUpdateManager::shedule_Update	(u32 dt)
 {
+	START_PROFILE("AI/ALife/update")
+	
 	ISheduled::shedule_Update		(dt);
 
-	Device.Statistic.TEST3.Begin	();
-	if (!initialized()) {
-		Device.Statistic.TEST3.End	();
+	if (!initialized())
 		return;
-	}
 
 	update							(true);
 
-	Device.Statistic.TEST3.End		();
+	STOP_PROFILE
 }
 
 void CALifeUpdateManager::set_process_time	(int microseconds)

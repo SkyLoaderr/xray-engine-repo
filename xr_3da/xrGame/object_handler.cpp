@@ -22,6 +22,7 @@
 #include "memory_manager.h"
 #include "enemy_manager.h"
 #include "ai_object_location.h"
+#include "profiler.h"
 
 CObjectHandler::CObjectHandler		()
 {
@@ -79,7 +80,7 @@ void CObjectHandler::OnItemTake		(CInventoryItem *inventory_item)
 void CObjectHandler::OnItemDrop		(CInventoryItem *inventory_item)
 {
 	inherited::OnItemDrop	(inventory_item);
-	if (m_infinite_ammo && planner().object().g_Alive() && inventory_item->useful_for_NPC()) {
+	if (m_infinite_ammo && planner().object().g_Alive() && !inventory_item->useful_for_NPC()) {
 		CWeaponAmmo				*weapon_ammo = smart_cast<CWeaponAmmo*>(inventory_item);
 		if (weapon_ammo)
 			Level().spawn_item	(*weapon_ammo->cNameSect(),planner().object().Position(),planner().object().ai_location().level_vertex_id(),planner().object().ID());
@@ -126,7 +127,9 @@ CInventoryItem *CObjectHandler::best_weapon() const
 
 void CObjectHandler::update		()
 {
+	START_PROFILE("AI/Object Handler/update")
 	planner().update		();
+	STOP_PROFILE
 }
 
 void CObjectHandler::set_goal	(MonsterSpace::EObjectAction object_action, CGameObject *game_object, u32 queue_size, u32 queue_interval)

@@ -22,6 +22,7 @@
 #include "memory_space_impl.h"
 #include "ai_object_location.h"
 #include "level_graph.h"
+#include "profiler.h"
 
 CMemoryManager::CMemoryManager		(CCustomMonster *monster, CSoundUserDataVisitor *visitor)
 {
@@ -84,6 +85,8 @@ void CMemoryManager::reload			(LPCSTR section)
 
 void CMemoryManager::update			(float time_delta)
 {
+	START_PROFILE("AI/Memory Manager/update")
+
 	visual().update		(time_delta);
 	sound().update		();
 	hit().update		();
@@ -104,6 +107,8 @@ void CMemoryManager::update			(float time_delta)
 	item().update		();
 	greeting().update	();
 	danger().update		();
+	
+	STOP_PROFILE
 }
 
 void CMemoryManager::enable			(const CObject *object, bool enable)

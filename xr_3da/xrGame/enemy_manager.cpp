@@ -20,6 +20,7 @@
 #include "level.h"
 #include "script_game_object.h"
 #include "ai_space.h"
+#include "profiler.h"
 
 #define USE_EVALUATOR
 
@@ -108,6 +109,8 @@ void CEnemyManager::reload					(LPCSTR section)
 
 void CEnemyManager::update					()
 {
+	START_PROFILE("AI/Memory Manager/enemies/update")
+
 	if (!m_ready_to_save) {
 //		Msg						("%6d %s DEcreased enemy counter for player (%d -> %d)",Device.dwTimeGlobal,*m_object->cName(),Level().autosave_manager().not_ready_count(),Level().autosave_manager().not_ready_count()-1);
 		Level().autosave_manager().dec_not_ready();
@@ -125,6 +128,7 @@ void CEnemyManager::update					()
 //		Msg						("%6d %s INcreased enemy counter for player (%d -> %d)",Device.dwTimeGlobal,*m_object->cName(),Level().autosave_manager().not_ready_count(),Level().autosave_manager().not_ready_count()+1);
 		Level().autosave_manager().inc_not_ready();
 	}
+	STOP_PROFILE
 }
 
 void CEnemyManager::set_ready_to_save		()

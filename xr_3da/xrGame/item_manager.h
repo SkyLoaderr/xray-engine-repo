@@ -27,6 +27,7 @@ public:
 	virtual bool		is_useful		(const CGameObject *object) const;
 	virtual	float		evaluate		(const CGameObject *object) const;
 	virtual	float		do_evaluate		(const CGameObject *object) const;
+	virtual void		update			();
 };
 
 #include "item_manager_inline.h"

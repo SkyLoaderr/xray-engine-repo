@@ -38,16 +38,12 @@ CSQuadTree::~CQuadTree			()
 TEMPLATE_SPECIALIZATION
 IC	void CSQuadTree::clear	()
 {
-#ifndef AI_COMPILER
-	Device.Statistic.AI_Range.Begin();
-#endif
+	START_PROFILE("AI/Covers/clear")
 	m_nodes->clear		();
 	m_list_items->clear	();
 	m_root				= 0;
 	m_leaf_count		= 0;
-#ifndef AI_COMPILER
-	Device.Statistic.AI_Range.End();
-#endif
+	STOP_PROFILE
 }
 
 TEMPLATE_SPECIALIZATION
@@ -86,9 +82,7 @@ IC	u32	CSQuadTree::neighbour_index	(const Fvector &position, Fvector &center, fl
 TEMPLATE_SPECIALIZATION
 IC	void CSQuadTree::insert		(_object_type *object)
 {
-#ifndef AI_COMPILER
-	Device.Statistic.AI_Range.Begin();
-#endif
+	START_PROFILE("AI/Covers/insert")
 	Fvector				center = m_center;
 	float				distance = m_radius;
 	CQuadNode			**node = &m_root;
@@ -99,9 +93,6 @@ IC	void CSQuadTree::insert		(_object_type *object)
 			list_item->m_next	= (CListItem*)((void*)(*node));
 			*node				= (CQuadNode*)((void*)list_item);
 			++m_leaf_count;
-#ifndef AI_COMPILER
-			Device.Statistic.AI_Range.End();
-#endif
 			return;
 		}
 
@@ -114,6 +105,7 @@ IC	void CSQuadTree::insert		(_object_type *object)
 		
 		node			= (*node)->m_neighbours + index;
 	}
+	STOP_PROFILE
 }
 
 TEMPLATE_SPECIALIZATION
@@ -146,15 +138,11 @@ IC	_object_type *CSQuadTree::find	(const Fvector &position)
 TEMPLATE_SPECIALIZATION
 IC	void CSQuadTree::nearest	(const Fvector &position, float radius, xr_vector<_object_type*> &objects, bool clear) const
 {
-#ifndef AI_COMPILER
-	Device.Statistic.AI_Range.Begin();
-#endif
+	START_PROFILE("AI/Covers/nearest")
 	if (clear)
 		objects.clear	();
 	nearest				(position,radius,objects,m_root,m_center,m_radius,0);
-#ifndef AI_COMPILER
-	Device.Statistic.AI_Range.End();
-#endif
+	STOP_PROFILE
 }
 
 TEMPLATE_SPECIALIZATION
@@ -237,14 +225,10 @@ IC	void CSQuadTree::nearest	(const Fvector &position, float radius, xr_vector<_o
 TEMPLATE_SPECIALIZATION
 IC	_object_type *CSQuadTree::remove		(const _object_type *object)
 {
-#ifndef AI_COMPILER
-	Device.Statistic.AI_Range.Begin();
-#endif
+	START_PROFILE("AI/Covers/remove")
 	_object_type	*_object = remove(object,m_root,m_center,m_radius,0);
-#ifndef AI_COMPILER
-	Device.Statistic.AI_Range.End();
-#endif
 	return			(_object);
+	STOP_PROFILE
 }
 
 TEMPLATE_SPECIALIZATION
