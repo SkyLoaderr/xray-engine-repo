@@ -10,9 +10,7 @@
 
 #include "xrServer_Objects_Abstract.h"
 #include "object_interfaces.h"
-#ifdef XRSE_FACTORY_EXPORTS
-#	include "script_value_container.h"
-#endif
+#include "script_value_container.h"
 
 #pragma warning(push)
 #pragma warning(disable:4005)
@@ -29,11 +27,7 @@ add_to_type_list(CPureServerObject)
 
 class xrClientData;
 
-#ifdef XRSE_FACTORY_EXPORTS
 SERVER_ENTITY_DECLARE_BEGIN3(CSE_Abstract,ISE_Abstract,CPureServerObject,CScriptValueContainer)
-#else
-SERVER_ENTITY_DECLARE_BEGIN2(CSE_Abstract,ISE_Abstract,CPureServerObject)
-#endif
 public:
 	BOOL							net_Ready;
 	BOOL							net_Processed;	// Internal flag for connectivity-graph
