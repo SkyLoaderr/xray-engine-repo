@@ -38,6 +38,19 @@ public:
 };
 
 //////////////////////////////////////////////////////////////////////////
+// definition (Dynamic Glow)
+class	ENGINE_API	IRender_Glow		{
+public:
+	virtual void					set_active			(bool)								= 0;
+	virtual bool					get_active			()									= 0;
+	virtual void					set_position		(const Fvector& P)					= 0;
+	virtual void					set_range			(float R)							= 0;
+	virtual void					set_texture			(LPCSTR name)						= 0;
+	virtual void					set_color			(const Fcolor& C)					= 0;
+	virtual void					set_color			(float r, float g, float b)			= 0;
+	virtual ~IRender_Glow()			{};
+};
+//////////////////////////////////////////////////////////////////////////
 // definition (Per-object render-specific data)
 class	ENGINE_API	IRender_ObjectSpecific		{
 public:
@@ -118,9 +131,11 @@ public:
 	virtual IRender_ObjectSpecific*	ros_create				(IRenderable* parent)						= 0;
 	virtual void					ros_destroy				(IRender_ObjectSpecific* &)					= 0;
 
-	// Lighting
+	// Lighting/glowing
 	virtual IRender_Light*			light_create			()											= 0;
 	virtual void					light_destroy			(IRender_Light* &)							= 0;
+	virtual IRender_Glow*			glow_create				()											= 0;
+	virtual void					glow_destroy			(IRender_Glow* &)							= 0;
 
 	// Models
 	virtual IRender_Visual*			model_CreateParticles	(LPCSTR name)								= 0;
