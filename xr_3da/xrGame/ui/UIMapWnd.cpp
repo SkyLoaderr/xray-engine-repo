@@ -271,19 +271,24 @@ void CUIMapWnd::InitMap()
 	Device.vCameraDirection.getHP	(h,p);
 	map_spot->m_fHeading = h;
 	
-	map_spot->SetShader(GetCharIconsShader());
-	map_spot->SetWidth(MAP_ICON_WIDTH);
-	map_spot->SetHeight(MAP_ICON_HEIGHT);
+	//map_spot->SetShader(GetCharIconsShader());
+	map_spot->InitTexture(pSettings->r_string("game_map", "actor_arrow"));
+	//map_spot->SetWidth(MAP_ICON_WIDTH);
+	//map_spot->SetHeight(MAP_ICON_HEIGHT);
+
+	map_spot->SetWidth(32);
+	map_spot->SetHeight(32);
+
 	map_spot->MoveWindow(P.x + left, P.y + top);
 	map_spot->m_bCenter = true;
 	map_spot->m_sDescText.SetText("It's you.");
 	map_spot->m_sNameText.SetText("You");
 
-	map_spot->GetUIStaticItem().SetOriginalRect(
+/*	map_spot->GetUIStaticItem().SetOriginalRect(
 						pActor->GetMapIconX()*ICON_GRID_WIDTH,
 						pActor->GetMapIconY()*ICON_GRID_HEIGHT,
 						(pActor->GetMapIconX()+1)*ICON_GRID_WIDTH,
-						(pActor->GetMapIconY()+1)*ICON_GRID_HEIGHT);
+						(pActor->GetMapIconY()+1)*ICON_GRID_HEIGHT);*/
 
 	UIMapBackground.m_vMapSpots.push_back(map_spot);
 	UIMapBackground.AttachChild(map_spot);
@@ -404,6 +409,10 @@ void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 
 void CUIMapWnd::Update()
 {
+	float h,p;
+	Device.vCameraDirection.getHP	(h,p);
+	m_pActorSpot->m_fHeading = h;
+
 	inherited::Update();
 }
 
