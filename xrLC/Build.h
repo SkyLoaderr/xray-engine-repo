@@ -69,14 +69,14 @@ public:
 public:
 	void	Run();
 
-	void	PreOptimize		();
-	void	CorrectTJunctions();
-	void	CalcNormals		();
-	void	Tesselate		();
+	void	PreOptimize				();
+	void	CorrectTJunctions		();
+	void	CalcNormals				();
+	void	Tesselate				();
 
-	void	BuildCForm		(CFS_Base &fs);
-	void	BuildPortals	(CFS_Base &fs);
-	void	BuildRapid		();
+	void	BuildCForm				(CFS_Base &fs);
+	void	BuildPortals			(CFS_Base &fs);
+	void	BuildRapid				();
 
 	void	xrPhase_ResolveMaterials();
 	void	xrPhase_UVmap			();
@@ -88,10 +88,8 @@ public:
 	void	xrPhase_MergeLM			();
 	void	xrPhase_MergeGeometry	();
 
-	void	Flex2OGF		();
-	void	LightPatches	();
-
-	void	BuildSectors	();
+	void	Flex2OGF				();
+	void	BuildSectors			();
 
 	void	SaveLights		(CFS_Base &fs);
 	void	SaveTREE		(CFS_Base &fs);
