@@ -1570,38 +1570,46 @@
 				RelativePath=".\AI_qRange.cpp">
 			</File>
 			<File
-				RelativePath="a_star.cpp">
-			</File>
-			<File
-				RelativePath="a_star.h">
-			</File>
-			<File
-				RelativePath="a_star_interfaces.cpp">
-			</File>
-			<File
-				RelativePath="a_star_interfaces.h">
-			</File>
-			<File
-				RelativePath="a_star_template.h">
-			</File>
-			<File
-				RelativePath="ai_alife.cpp">
-			</File>
-			<File
-				RelativePath="ai_alife.h">
-			</File>
-			<File
-				RelativePath="ai_alife_objects.h">
-			</File>
-			<File
-				RelativePath="ai_alife_registries.h">
-			</File>
-			<File
-				RelativePath="ai_alife_space.h">
-			</File>
-			<File
 				RelativePath="ai_misc.cpp">
 			</File>
+			<Filter
+				Name="ALife"
+				Filter="">
+				<File
+					RelativePath="ai_alife.cpp">
+				</File>
+				<File
+					RelativePath="ai_alife.h">
+				</File>
+				<File
+					RelativePath="ai_alife_objects.h">
+				</File>
+				<File
+					RelativePath="ai_alife_registries.h">
+				</File>
+				<File
+					RelativePath="ai_alife_space.h">
+				</File>
+			</Filter>
+			<Filter
+				Name="AStar"
+				Filter="">
+				<File
+					RelativePath="a_star.cpp">
+				</File>
+				<File
+					RelativePath="a_star.h">
+				</File>
+				<File
+					RelativePath="a_star_interfaces.cpp">
+				</File>
+				<File
+					RelativePath="a_star_interfaces.h">
+				</File>
+				<File
+					RelativePath="a_star_template.h">
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Physics"
