@@ -25,7 +25,7 @@ end
 function base_dialog:__finalize()
 end
 
-function base_dialog:InitControls(txt_caption)
+function base_dialog:InitControls(caption)
 	-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< INIT DATA 
 	self.indent = 18	
 	self.button_indent = 7	
@@ -91,19 +91,25 @@ function base_dialog:InitControls(txt_caption)
 	self.main_frame = CUIFrameWindow()
 	main_frame:SetAutoDelete(true)
 	main_frame:SetWindowName("main_frame")
-	main_frame:Init("ui\\ui_frame", main_rect.x, main_rect.y, main_rect.width, main_rect.height)
+	main_frame:Init("ui\\ui_frame", self.main_rect.x, 
+									self.main_rect.y, 
+									self.main_rect.width, 
+									self.main_rect.height)
 	main_frame:InitLeftTop("ui\\ui_frame_over_lt", 20, 45)
-	self:AttachChild(main_frame)
+	self:AttachChild(self.main_frame)
 	
 	-- CAPTION --
 	self.txt_caption = CUIStatic()
-	txt_caption:SetAutoDelete(true)
-	txt_caption:SetWindowName("txt_caption")
-	txt_caption:SetFont(self.caption_font)
-	txt_caption:SetTextAlign(CGameFont.alLeft)
-	txt_caption:SetText(txt_caption)
-	txt_caption:Init(caption_text_rect.x, caption_text_rect.y, caption_text_rect.width, caption_text_rect.height)
-	main_frame:AttachChild(txt_caption)		
+	self.txt_caption:SetAutoDelete(true)
+	self.txt_caption:SetWindowName("txt_caption")
+	self.txt_caption:SetFont(self.caption_font)
+	self.txt_caption:SetTextAlign(CGameFont.alLeft)
+	self.txt_caption:SetText(caption)
+	self.txt_caption:Init(self.caption_text_rect.x, 
+						  self.caption_text_rect.y,
+						  self.caption_text_rect.width, 
+						  self.caption_text_rect.height)
+	main_frame:AttachChild(self.txt_caption)		
 	-- CODE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	
 	
 end
