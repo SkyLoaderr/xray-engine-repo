@@ -79,14 +79,17 @@ void CParticlesObject::play_at_pos(const Fvector& pos)
 	V->Play			();
 }
 
-void CParticlesObject::shedule_Update	(u32 dt)
+void CParticlesObject::shedule_Update	(u32 _dt)
 {
-	inherited::shedule_Update	(dt);
+	inherited::shedule_Update	(_dt);
 
 	// visual
-	IParticleCustom* V	= dynamic_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
-	V->OnFrame			(dt);
-	dwLastTime			= Device.dwTimeGlobal;
+	u32 dt							= Device.dwTimeGlobal - dwLastTime;
+	if (dt)							{
+		IParticleCustom* V	= dynamic_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
+		V->OnFrame			(dt);
+		dwLastTime			= Device.dwTimeGlobal;
+	}
 
 	// spatial	(+ workaround occasional bug inside particle-system)
 	if (_valid(renderable.visual->vis.sphere))
