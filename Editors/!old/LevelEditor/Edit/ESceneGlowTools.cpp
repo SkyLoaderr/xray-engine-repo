@@ -3,10 +3,11 @@
 
 #include "ESceneGlowTools.h"
 #include "PropertiesListHelper.h"
+#include "UI_LevelTools.h"
 
 void ESceneGlowTools::CreateControls()
 {
-	inherited::CreateControls();
+	inherited::CreateDefaultControls(estDefault);
     m_Flags.zero	();
 }
 //----------------------------------------------------

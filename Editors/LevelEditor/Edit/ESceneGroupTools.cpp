@@ -9,7 +9,7 @@
 
 void ESceneGroupTools::CreateControls()
 {
-	inherited::CreateControls();
+	inherited::CreateDefaultControls(estDefault);
 	// frame
     pFrame 			= xr_new<TfraGroup>((TComponent*)0,this);
 }

@@ -47,8 +47,8 @@ CLevelMain::~CLevelMain()
 //------------------------------------------------------------------------------
 void CLevelTools::CommandChangeTarget(u32 p1, u32 p2, u32& res)
 {
-    SetTarget((EObjClass)p1);
-    ExecCommand(COMMAND_UPDATE_PROPERTIES);
+    SetTarget	((EObjClass)p1,p2);
+    ExecCommand	(COMMAND_UPDATE_PROPERTIES);
 }
 void CLevelTools::CommandShowObjectList(u32 p1, u32 p2, u32& res)
 {
@@ -204,8 +204,8 @@ void CommandClear(u32 p1, u32 p2, u32& res)
         Tools->m_LastFileName 			= "";
         Scene->UndoClear			();
         ExecCommand(COMMAND_UPDATE_CAPTION);
-        ExecCommand(COMMAND_CHANGE_TARGET,OBJCLASS_SCENEOBJECT,TRUE);
-        ExecCommand(COMMAND_CHANGE_ACTION,etaSelect);
+        ExecCommand(COMMAND_CHANGE_TARGET,OBJCLASS_SCENEOBJECT);
+        ExecCommand(COMMAND_CHANGE_ACTION,etaSelect,estDefault);
         Scene->UndoSave();
     } else {
         ELog.DlgMsg( mtError, "Scene sharing violation" );
@@ -394,16 +394,6 @@ void CommandMakeAIMap(u32 p1, u32 p2, u32& res)
     if( !Scene->locked() ){
         if (mrYes==ELog.DlgMsg(mtConfirmation, TMsgDlgButtons()<<mbYes<<mbNo, "Are you sure to export ai-map?"))
             Builder.MakeAIMap( );
-    }else{
-        ELog.DlgMsg( mtError, "Scene sharing violation" );
-        res = FALSE;
-    }
-}
-void CommandMakeWM(u32 p1, u32 p2, u32& res)
-{
-    if( !Scene->locked() ){
-        if (mrYes==ELog.DlgMsg(mtConfirmation, TMsgDlgButtons()<<mbYes<<mbNo, "Are you sure to export wallmarks?"))
-            Builder.MakeWallmarks( );
     }else{
         ELog.DlgMsg( mtError, "Scene sharing violation" );
         res = FALSE;
@@ -651,66 +641,83 @@ void CLevelMain::RegisterCommands()
 {
 	inherited::RegisterCommands();
     // tools                                                                                            
-	REGISTER_CMD_C	(COMMAND_CHANGE_TARGET,             LTools,CLevelTools::CommandChangeTarget);
-	REGISTER_CMD_C	(COMMAND_SHOW_OBJECTLIST,           LTools,CLevelTools::CommandShowObjectList);
+	REGISTER_SUB_CMD_CE	(COMMAND_CHANGE_TARGET,             "Change Target", 	LTools,CLevelTools::CommandChangeTarget);
+		APPEND_SUB_CMD	("Object", 							OBJCLASS_SCENEOBJECT,	0);
+		APPEND_SUB_CMD	("Light", 							OBJCLASS_LIGHT, 		0);
+		APPEND_SUB_CMD	("Sound Source",					OBJCLASS_SOUND_SRC, 	0);
+		APPEND_SUB_CMD	("Sound Env", 		                OBJCLASS_SOUND_ENV, 	0);
+		APPEND_SUB_CMD	("Glow", 			                OBJCLASS_GLOW, 			0);
+		APPEND_SUB_CMD	("Shape", 			                OBJCLASS_SHAPE, 		0);
+		APPEND_SUB_CMD	("Spawn Point", 	                OBJCLASS_SPAWNPOINT, 	0);
+		APPEND_SUB_CMD	("Way", 			                OBJCLASS_WAY, 			0);
+		APPEND_SUB_CMD	("Way Point", 		                OBJCLASS_WAY, 			1);
+		APPEND_SUB_CMD	("Sector", 			                OBJCLASS_SECTOR, 		0);
+		APPEND_SUB_CMD	("Portal", 			                OBJCLASS_PORTAL, 		0);
+		APPEND_SUB_CMD	("Group", 			                OBJCLASS_GROUP, 		0);
+		APPEND_SUB_CMD	("Particle System",                 OBJCLASS_PS, 			0);
+		APPEND_SUB_CMD	("Detail Objects", 	                OBJCLASS_DO, 			0);
+		APPEND_SUB_CMD	("AI Map", 			                OBJCLASS_AIMAP, 		0);
+		APPEND_SUB_CMD	("Static Wallmark",                 OBJCLASS_WM, 			0);
+    REGISTER_SUB_CMD_END;    
+
+	REGISTER_CMD_C	    (COMMAND_SHOW_OBJECTLIST,           LTools,CLevelTools::CommandShowObjectList);
 	// common
-	REGISTER_CMD_S	(COMMAND_LIBRARY_EDITOR,           	CommandLibraryEditor);
-	REGISTER_CMD_S	(COMMAND_LANIM_EDITOR,            	CommandLAnimEditor);
-	REGISTER_CMD_S	(COMMAND_FILE_MENU,              	CommandFileMenu);
-	REGISTER_CMD_S	(COMMAND_LOAD,              		CommandLoad);
-	REGISTER_CMD_S	(COMMAND_RELOAD,              		CommandReload);
-	REGISTER_CMD_S	(COMMAND_SAVE,              		CommandSave);
-	REGISTER_CMD_S	(COMMAND_SAVE_BACKUP,              	CommandSaveBackup);
-	REGISTER_CMD_S	(COMMAND_SAVEAS,              		CommandSaveAs);
-	REGISTER_CMD_S	(COMMAND_CLEAR,              		CommandClear);
-	REGISTER_CMD_S	(COMMAND_LOAD_FIRSTRECENT,          CommandLoadFirstRecent);
-	REGISTER_CMD_S	(COMMAND_CLEAR_COMPILER_ERROR,      CommandClearCompilerError);
-	REGISTER_CMD_S	(COMMAND_IMPORT_COMPILER_ERROR,     CommandImportCompilerError);
-	REGISTER_CMD_S	(COMMAND_EXPORT_COMPILER_ERROR,     CommandExportCompilerError);
-	REGISTER_CMD_S	(COMMAND_VALIDATE_SCENE,            CommandValidateScene);
-	REGISTER_CMD_S	(COMMAND_REFRESH_LIBRARY,           CommandRefreshLibrary);
-	REGISTER_CMD_S	(COMMAND_RELOAD_OBJECTS,            CommandReloadObject);
-	REGISTER_CMD_S	(COMMAND_CUT,              			CommandCut);
-	REGISTER_CMD_S	(COMMAND_COPY,              		CommandCopy);
-	REGISTER_CMD_S	(COMMAND_PASTE,              		CommandPaste);
-	REGISTER_CMD_S	(COMMAND_LOAD_SELECTION,            CommandLoadSelection);
-	REGISTER_CMD_S	(COMMAND_SAVE_SELECTION,            CommandSaveSelection);
-	REGISTER_CMD_S	(COMMAND_UNDO,              		CommandUndo);
-	REGISTER_CMD_S	(COMMAND_REDO,              		CommandRedo);
-	REGISTER_CMD_S	(COMMAND_SCENE_SUMMARY,             CommandSceneSummary);
-	REGISTER_CMD_S	(COMMAND_OPTIONS,              		CommandOptions);
-	REGISTER_CMD_S	(COMMAND_BUILD,              		CommandBuild);
-	REGISTER_CMD_S	(COMMAND_MAKE_AIMAP,              	CommandMakeAIMap);
-	REGISTER_CMD_S	(COMMAND_MAKE_WM,              		CommandMakeWM);
-	REGISTER_CMD_S	(COMMAND_MAKE_GAME,              	CommandMakeGame);
-	REGISTER_CMD_S	(COMMAND_MAKE_DETAILS,              CommandMakeDetails);
-	REGISTER_CMD_S	(COMMAND_MAKE_HOM,              	CommandMakeHOM);
-	REGISTER_CMD_S	(COMMAND_INVERT_SELECTION_ALL,      CommandInvertSelectionAll);
-	REGISTER_CMD_S	(COMMAND_SELECT_ALL,              	CommandSelectAll);
-	REGISTER_CMD_S	(COMMAND_DESELECT_ALL,              CommandDeselectAll);
-	REGISTER_CMD_S	(COMMAND_DELETE_SELECTION,          CommandDeleteSelection);
-	REGISTER_CMD_S	(COMMAND_HIDE_UNSEL,              	CommandHideUnsel);
-	REGISTER_CMD_S	(COMMAND_HIDE_SEL,              	CommandHideSel);
-	REGISTER_CMD_S	(COMMAND_HIDE_ALL,              	CommandHideAll);
-	REGISTER_CMD_S	(COMMAND_LOCK_ALL,              	CommandLockAll);
-	REGISTER_CMD_S	(COMMAND_LOCK_SEL,             		CommandLockSel);
-	REGISTER_CMD_S	(COMMAND_LOCK_UNSEL,              	CommandLockUnsel);
-	REGISTER_CMD_S	(COMMAND_SET_SNAP_OBJECTS,          CommandSetSnapObjects);
-	REGISTER_CMD_S	(COMMAND_ADD_SEL_SNAP_OBJECTS,      CommandAddSelSnapObjects);
-	REGISTER_CMD_S	(COMMAND_DEL_SEL_SNAP_OBJECTS,      CommandDelSelSnapObjects);
-	REGISTER_CMD_S	(COMMAND_CLEAR_SNAP_OBJECTS,        CommandClearSnapObjects);
-	REGISTER_CMD_S	(COMMAND_SELECT_SNAP_OBJECTS,       CommandSelectSnapObjects);
-	REGISTER_CMD_S	(COMMAND_REFRESH_SNAP_OBJECTS,      CommandRefreshSnapObjects);
-	REGISTER_CMD_S	(COMMAND_REFRESH_SOUND_ENVS,        CommandRefreshSoundEnvs);
-	REGISTER_CMD_S	(COMMAND_REFRESH_SOUND_ENV_GEOMETRY,CommandRefreshSoundEnvGeometry);
-	REGISTER_CMD_S	(COMMAND_MOVE_CAMERA_TO,            CommandMoveCameraTo);
-	REGISTER_CMD_S	(COMMAND_SHOWCONTEXTMENU,           CommandShowContextMenu);
-	REGISTER_CMD_S	(COMMAND_REFRESH_UI_BAR,            CommandRefreshUIBar);
-	REGISTER_CMD_S	(COMMAND_RESTORE_UI_BAR,            CommandRestoreUIBar);
-	REGISTER_CMD_S	(COMMAND_SAVE_UI_BAR,              	CommandSaveUIBar);
-	REGISTER_CMD_S	(COMMAND_UPDATE_TOOLBAR,            CommandUpdateToolBar);
-	REGISTER_CMD_S	(COMMAND_UPDATE_CAPTION,            CommandUpdateCaption);
-	REGISTER_CMD_S	(COMMAND_CREATE_SOUND_LIB,          CommandCreateSoundLib);
+	REGISTER_CMD_S	    (COMMAND_LIBRARY_EDITOR,           	CommandLibraryEditor);
+	REGISTER_CMD_S	    (COMMAND_LANIM_EDITOR,            	CommandLAnimEditor);
+	REGISTER_CMD_S	    (COMMAND_FILE_MENU,              	CommandFileMenu);
+	REGISTER_CMD_S	    (COMMAND_LOAD,              		CommandLoad);
+	REGISTER_CMD_S	    (COMMAND_RELOAD,              		CommandReload);
+	REGISTER_CMD_S	    (COMMAND_SAVE,              		CommandSave);
+	REGISTER_CMD_S	    (COMMAND_SAVE_BACKUP,              	CommandSaveBackup);
+	REGISTER_CMD_S	    (COMMAND_SAVEAS,              		CommandSaveAs);
+	REGISTER_CMD_S	    (COMMAND_CLEAR,              		CommandClear);
+	REGISTER_CMD_S	    (COMMAND_LOAD_FIRSTRECENT,          CommandLoadFirstRecent);
+	REGISTER_CMD_S	    (COMMAND_CLEAR_COMPILER_ERROR,      CommandClearCompilerError);
+	REGISTER_CMD_S	    (COMMAND_IMPORT_COMPILER_ERROR,     CommandImportCompilerError);
+	REGISTER_CMD_S	    (COMMAND_EXPORT_COMPILER_ERROR,     CommandExportCompilerError);
+	REGISTER_CMD_S	    (COMMAND_VALIDATE_SCENE,            CommandValidateScene);
+	REGISTER_CMD_S	    (COMMAND_REFRESH_LIBRARY,           CommandRefreshLibrary);
+	REGISTER_CMD_S	    (COMMAND_RELOAD_OBJECTS,            CommandReloadObject);
+	REGISTER_CMD_S	    (COMMAND_CUT,              			CommandCut);
+	REGISTER_CMD_S	    (COMMAND_COPY,              		CommandCopy);
+	REGISTER_CMD_S	    (COMMAND_PASTE,              		CommandPaste);
+	REGISTER_CMD_S	    (COMMAND_LOAD_SELECTION,            CommandLoadSelection);
+	REGISTER_CMD_S	    (COMMAND_SAVE_SELECTION,            CommandSaveSelection);
+	REGISTER_CMD_S	    (COMMAND_UNDO,              		CommandUndo);
+	REGISTER_CMD_S	    (COMMAND_REDO,              		CommandRedo);
+	REGISTER_CMD_S	    (COMMAND_SCENE_SUMMARY,             CommandSceneSummary);
+	REGISTER_CMD_S	    (COMMAND_OPTIONS,              		CommandOptions);
+	REGISTER_CMD_S	    (COMMAND_BUILD,              		CommandBuild);
+	REGISTER_CMD_S	    (COMMAND_MAKE_AIMAP,              	CommandMakeAIMap);
+	REGISTER_CMD_S	    (COMMAND_MAKE_GAME,              	CommandMakeGame);
+	REGISTER_CMD_S	    (COMMAND_MAKE_DETAILS,              CommandMakeDetails);
+	REGISTER_CMD_S	    (COMMAND_MAKE_HOM,              	CommandMakeHOM);
+	REGISTER_CMD_S	    (COMMAND_INVERT_SELECTION_ALL,      CommandInvertSelectionAll);
+	REGISTER_CMD_S	    (COMMAND_SELECT_ALL,              	CommandSelectAll);
+	REGISTER_CMD_S	    (COMMAND_DESELECT_ALL,              CommandDeselectAll);
+	REGISTER_CMD_S	    (COMMAND_DELETE_SELECTION,          CommandDeleteSelection);
+	REGISTER_CMD_S	    (COMMAND_HIDE_UNSEL,              	CommandHideUnsel);
+	REGISTER_CMD_S	    (COMMAND_HIDE_SEL,              	CommandHideSel);
+	REGISTER_CMD_S	    (COMMAND_HIDE_ALL,              	CommandHideAll);
+	REGISTER_CMD_S	    (COMMAND_LOCK_ALL,              	CommandLockAll);
+	REGISTER_CMD_S	    (COMMAND_LOCK_SEL,             		CommandLockSel);
+	REGISTER_CMD_S	    (COMMAND_LOCK_UNSEL,              	CommandLockUnsel);
+	REGISTER_CMD_S	    (COMMAND_SET_SNAP_OBJECTS,          CommandSetSnapObjects);
+	REGISTER_CMD_S	    (COMMAND_ADD_SEL_SNAP_OBJECTS,      CommandAddSelSnapObjects);
+	REGISTER_CMD_S	    (COMMAND_DEL_SEL_SNAP_OBJECTS,      CommandDelSelSnapObjects);
+	REGISTER_CMD_S	    (COMMAND_CLEAR_SNAP_OBJECTS,        CommandClearSnapObjects);
+	REGISTER_CMD_S	    (COMMAND_SELECT_SNAP_OBJECTS,       CommandSelectSnapObjects);
+	REGISTER_CMD_S	    (COMMAND_REFRESH_SNAP_OBJECTS,      CommandRefreshSnapObjects);
+	REGISTER_CMD_S	    (COMMAND_REFRESH_SOUND_ENVS,        CommandRefreshSoundEnvs);
+	REGISTER_CMD_S	    (COMMAND_REFRESH_SOUND_ENV_GEOMETRY,CommandRefreshSoundEnvGeometry);
+	REGISTER_CMD_S	    (COMMAND_MOVE_CAMERA_TO,            CommandMoveCameraTo);
+	REGISTER_CMD_S	    (COMMAND_SHOWCONTEXTMENU,           CommandShowContextMenu);
+	REGISTER_CMD_S	    (COMMAND_REFRESH_UI_BAR,            CommandRefreshUIBar);
+	REGISTER_CMD_S	    (COMMAND_RESTORE_UI_BAR,            CommandRestoreUIBar);
+	REGISTER_CMD_S	    (COMMAND_SAVE_UI_BAR,              	CommandSaveUIBar);
+	REGISTER_CMD_S	    (COMMAND_UPDATE_TOOLBAR,            CommandUpdateToolBar);
+	REGISTER_CMD_S	    (COMMAND_UPDATE_CAPTION,            CommandUpdateCaption);
+	REGISTER_CMD_S	    (COMMAND_CREATE_SOUND_LIB,          CommandCreateSoundLib);
 }                                                                            
 
 char* CLevelMain::GetCaption()
@@ -733,29 +740,14 @@ bool __fastcall CLevelMain::ApplyShortCut(WORD Key, TShiftState Shift)
             else if (Key=='A')    		COMMAND0(COMMAND_SELECT_ALL)                   
             else if (Key=='T')    		COMMAND0(COMMAND_MOVE_CAMERA_TO)                   
             else if (Key=='I')    		COMMAND0(COMMAND_INVERT_SELECTION_ALL)         
-            else if (Key=='1') 	 		COMMAND1(COMMAND_CHANGE_TARGET, OBJCLASS_GROUP)
-            else if (Key=='2')			COMMAND1(COMMAND_CHANGE_TARGET, OBJCLASS_PS)          
-            else if (Key=='3')  		COMMAND1(COMMAND_CHANGE_TARGET, OBJCLASS_DO)          
-            else if (Key=='4')			COMMAND1(COMMAND_CHANGE_TARGET,	OBJCLASS_AIMAP)		
-            else if (Key=='5')			COMMAND1(COMMAND_CHANGE_TARGET, OBJCLASS_WM)
             else if (Key=='W')			COMMAND0(COMMAND_SHOW_OBJECTLIST)              
         }
     }else{
         if (Shift.Contains(ssAlt)){
         	if (Key=='F')   			COMMAND0(COMMAND_FILE_MENU)                    
         }else{
-            if (Key=='1')     			COMMAND1(COMMAND_CHANGE_TARGET, OBJCLASS_SCENEOBJECT)      
-            else if (Key=='2')  		COMMAND1(COMMAND_CHANGE_TARGET, OBJCLASS_LIGHT)       
-            else if (Key=='3')  		COMMAND1(COMMAND_CHANGE_TARGET, OBJCLASS_SOUND_SRC)    
-            else if (Key=='4')  		COMMAND1(COMMAND_CHANGE_TARGET, OBJCLASS_SOUND_ENV)    
-            else if (Key=='5')  		COMMAND1(COMMAND_CHANGE_TARGET, OBJCLASS_GLOW)        
-            else if (Key=='6')			COMMAND1(COMMAND_CHANGE_TARGET, OBJCLASS_SHAPE)       
-            else if (Key=='7')  		COMMAND1(COMMAND_CHANGE_TARGET, OBJCLASS_SPAWNPOINT)  
-            else if (Key=='8')  		COMMAND1(COMMAND_CHANGE_TARGET, OBJCLASS_WAY)         
-            else if (Key=='9')  		COMMAND1(COMMAND_CHANGE_TARGET, OBJCLASS_SECTOR)      
-            else if (Key=='0')  		COMMAND1(COMMAND_CHANGE_TARGET, OBJCLASS_PORTAL)      
             // simple press
-            else if (Key==VK_DELETE)	COMMAND0(COMMAND_DELETE_SELECTION)             
+            if (Key==VK_DELETE)			COMMAND0(COMMAND_DELETE_SELECTION)             
             else if (Key==VK_RETURN)	COMMAND0(COMMAND_SHOW_PROPERTIES)              
             else if (Key==VK_OEM_MINUS)	COMMAND1(COMMAND_HIDE_SEL, FALSE)              
             else if (Key==VK_OEM_PLUS)	COMMAND1(COMMAND_HIDE_UNSEL, FALSE)            

@@ -2,9 +2,11 @@
 #pragma hdrstop
 
 #include "ui_main.h"
+#include "ui_leveltools.h"
 #include "FrameWayPoint.h"
 #include "Scene.h"
 #include "WayPoint.h"
+#include "ESceneWayControls.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -37,8 +39,11 @@ void __fastcall TfraWayPoint::ebAdd1LinksClick(TObject *Sender)
     bool bRes = false;
 	ObjectList lst;
     Scene->GetQueryObjects(lst, OBJCLASS_WAY, 1, 1, 0);
-    for (ObjectIt it=lst.begin(); it!=lst.end(); it++)
+	// remove links
+    for (ObjectIt it=lst.begin(); it!=lst.end(); it++){
+    	((CWayObject*)(*it))->RemoveLink();
     	bRes|=((CWayObject*)(*it))->Add1Link();
+    }
 	if (bRes) Scene->UndoSave();
 }
 //---------------------------------------------------------------------------
@@ -86,4 +91,9 @@ void __fastcall TfraWayPoint::ebInvertLinkClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraWayPoint::ebModeWayClick(TObject *Sender)
+{
+	LTools->SetTarget		(OBJCLASS_WAY,dynamic_cast<TExtBtn*>(Sender)->Tag);
+}
+//---------------------------------------------------------------------------
 

@@ -13,9 +13,10 @@
 #include "UI_Main.h"
 #include "D3DUtils.h"
 #include "ResourceManager.h"
+#include "UI_LevelTools.h"
 
 // chunks
-#define WM_VERSION  				0x0002
+#define WM_VERSION  				0x0003
 //----------------------------------------------------
 #define WM_CHUNK_VERSION			0x0001       
 #define WM_CHUNK_FLAGS				0x0002
@@ -32,7 +33,7 @@ ESceneWallmarkTools::ESceneWallmarkTools():ESceneCustomMTools(OBJCLASS_WM)
 	m_MarkHeight	= 1.f;
     m_MarkRotate	= 0.f;
     m_Flags.assign	(flDrawWallmark);
-    m_ShName	= "effects\\wallmark";
+    m_ShName		= "effects\\wallmarkset";
     m_TxName		= "";
 }
 
@@ -244,71 +245,48 @@ bool ESceneWallmarkTools::Load(IReader& F)
 
     R_ASSERT(F.r_chunk(WM_CHUNK_VERSION,&version));
 
-    if( (version!=0x0001) && (version!=WM_VERSION) ){
-        ELog.DlgMsg( mtError, "WM: Unsupported version.");
+    if(version!=WM_VERSION){
+        ELog.Msg( mtError, "Static Wallmark: Unsupported version.");
         return false;
     }
 
     R_ASSERT(F.find_chunk(WM_CHUNK_FLAGS));
     F.r				(&m_Flags,sizeof(m_Flags));
 
-    if(version==0x0001){
-        R_ASSERT(F.find_chunk(WM_CHUNK_PARAMS));
-        m_MarkWidth		= F.r_float	();
-        m_MarkHeight	= m_MarkWidth;
-        m_MarkRotate	= F.r_float	();
-        F.r_stringZ		(m_TxName);
-        m_ShName		= "effects\\wallmark";
+    R_ASSERT(F.find_chunk(WM_CHUNK_PARAMS));
+    m_MarkWidth		= F.r_float	();
+    m_MarkHeight	= F.r_float	();
+    m_MarkRotate	= F.r_float	();
+    F.r_stringZ		(m_ShName);
+    F.r_stringZ		(m_TxName);
 
-        R_ASSERT(F.find_chunk(WM_CHUNK_ITEMS));
-        u32 slot_cnt		= F.r_u32();
-        for (u32 slot_idx=0; slot_idx<slot_cnt; slot_idx++){
-            u32 item_count	= F.r_u32();	
-            if (item_count){
-                shared_str		tex_name;
-                F.r_stringZ		(tex_name);
-                wm_slot* slot	= AppendSlot(m_ShName,tex_name);
-                slot->items.resize(item_count);
-                for (WMVecIt w_it=slot->items.begin(); w_it!=slot->items.end(); w_it++){
-                    *w_it		= wm_allocate();
-                    wallmark* W	= *w_it;
-                    F.r		(&W->flags,sizeof(W->flags));
-                    F.r		(&W->bbox,sizeof(W->bbox));
-                    F.r		(&W->bounds,sizeof(W->bounds));
-                    W->verts.resize(F.r_u32());
-                    F.r		(&*W->verts.begin(),sizeof(FVF::LIT)*W->verts.size());
-                }
-            }
-        }
-    }else{
-        R_ASSERT(F.find_chunk(WM_CHUNK_PARAMS));
-        m_MarkWidth		= F.r_float	();
-        m_MarkHeight	= F.r_float	();
-        m_MarkRotate	= F.r_float	();
-        F.r_stringZ		(m_ShName);
-        F.r_stringZ		(m_TxName);
-
-        R_ASSERT(F.find_chunk(WM_CHUNK_ITEMS));
-        u32 slot_cnt		= F.r_u32();
-        for (u32 slot_idx=0; slot_idx<slot_cnt; slot_idx++){
-            u32 item_count	= F.r_u32();	
+    IReader* OBJ 	= F.open_chunk(WM_CHUNK_ITEMS);
+    if (OBJ){
+        IReader* O  = OBJ->open_chunk(0);
+        for (int count=1; O; count++) {
+            u32 item_count	= O->r_u32();	
             if (item_count){
                 shared_str		tex_name,sh_name;
-                F.r_stringZ		(sh_name);
-                F.r_stringZ		(tex_name);
+                O->r_stringZ	(sh_name);
+                O->r_stringZ	(tex_name);
                 wm_slot* slot	= AppendSlot(sh_name,tex_name);
-                slot->items.resize(item_count);
-                for (WMVecIt w_it=slot->items.begin(); w_it!=slot->items.end(); w_it++){
-                    *w_it		= wm_allocate();
-                    wallmark* W	= *w_it;
-                    F.r		(&W->flags,sizeof(W->flags));
-                    F.r		(&W->bbox,sizeof(W->bbox));
-                    F.r		(&W->bounds,sizeof(W->bounds));
-                    W->verts.resize(F.r_u32());
-                    F.r		(&*W->verts.begin(),sizeof(FVF::LIT)*W->verts.size());
+                if (slot){
+                    slot->items.resize(item_count);
+                    for (WMVecIt w_it=slot->items.begin(); w_it!=slot->items.end(); w_it++){
+                        *w_it	= wm_allocate();
+                        wallmark* W	= *w_it;
+                        O->r	(&W->flags,sizeof(W->flags));
+                        O->r	(&W->bbox,sizeof(W->bbox));
+                        O->r	(&W->bounds,sizeof(W->bounds));
+                        W->verts.resize(O->r_u32());
+                        O->r	(&*W->verts.begin(),sizeof(FVF::LIT)*W->verts.size());
+                    }
                 }
             }
+            O->close();
+            O = OBJ->open_chunk(count);
         }
+        OBJ->close();
     }
 
     return true;
@@ -333,8 +311,8 @@ void ESceneWallmarkTools::Save(IWriter& F)
 	F.close_chunk	();
 
 	F.open_chunk	(WM_CHUNK_ITEMS);
-    F.w_u32			(marks.size());
     for (WMSVecIt slot_it=marks.begin(); slot_it!=marks.end(); slot_it++){
+		F.open_chunk(slot_it-marks.begin());
         wm_slot* slot= *slot_it;	
         F.w_u32		(slot->items.size());
         if (slot->items.size()){
@@ -349,6 +327,7 @@ void ESceneWallmarkTools::Save(IWriter& F)
                 F.w		(&*W->verts.begin(),sizeof(FVF::LIT)*W->verts.size());
             }
         }
+		F.close_chunk();
     }
 	F.close_chunk	();
 }
@@ -448,13 +427,15 @@ struct SWMSlotFindPredicate {
 };
 ESceneWallmarkTools::wm_slot* ESceneWallmarkTools::FindSlot	(shared_str sh_name, shared_str tx_name)
 {
-	WMSVecIt it					= std::find_if(marks.begin(),marks.end(),SWMSlotFindPredicate(sh_name,tx_name));
-	return						(it!=marks.end())?*it:0;
+	WMSVecIt it				= std::find_if(marks.begin(),marks.end(),SWMSlotFindPredicate(sh_name,tx_name));
+	return					(it!=marks.end())?*it:0;
 }
 ESceneWallmarkTools::wm_slot* ESceneWallmarkTools::AppendSlot(shared_str sh_name, shared_str tx_name)
 {
-	marks.push_back				(xr_new<wm_slot>(sh_name,tx_name));
-	return marks.back			();
+	wm_slot* slot			= xr_new<wm_slot>(sh_name,tx_name);
+    if (0==slot->shader)	xr_delete(slot);
+    else marks.push_back	(slot);
+    return slot;
 }
 
 void ESceneWallmarkTools::RecurseTri(u32 t, Fmatrix &mView, wallmark &W)
@@ -637,13 +618,13 @@ BOOL ESceneWallmarkTools::AddWallmark	(const Fvector& start, const Fvector& dir)
 	}
 
 	// no similar - register _new_
-	slot->items.push_back(W);
+	if (slot) slot->items.push_back(W);
     return TRUE;
 }
 
 void ESceneWallmarkTools::CreateControls()
 {
-	inherited::CreateControls();
+	inherited::CreateDefaultControls(estDefault);
 	// node tools
     AddControl(xr_new<TUI_ControlWallmarkAdd>		(0,		etaAdd, 	this));
 }

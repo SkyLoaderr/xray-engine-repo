@@ -32,7 +32,7 @@ class CWayPoint{
 public:
                 CWayPoint		(LPCSTR name);
                 ~CWayPoint		();
-    void    	Render      	(bool bParentSelect);
+    void    	Render      	(LPCSTR parent_name, bool bParentSelect);
     bool    	RayPick	    	(float& distance, const Fvector& S, const Fvector& D);
     bool 		FrustumPick		(const CFrustum& frustum);
     bool 		FrustumSelect	(int flag, const CFrustum& frustum);
@@ -94,8 +94,6 @@ public:
   	virtual bool 	Load			(IReader&);
 	virtual void 	Save			(IWriter&);
     virtual bool	ExportGame		(SExportStreams& data);
-
-    static bool		IsPointMode		();
 
 	virtual void	FillProp		(LPCSTR pref, PropItemVec& items);
 

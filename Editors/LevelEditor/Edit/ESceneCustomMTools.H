@@ -24,13 +24,13 @@ protected:
     void            	AddControl				(TUI_CustomControl* c);
     TUI_CustomControl* 	FindControl				(int subtarget, int action);
     void            	UpdateControl			();
-    void				CreateDefaultControls	();
 public:
     void            	SetAction   			(int action);
     void            	SetSubTarget			(int target);
     void            	ResetSubTarget			();
 protected:
-    virtual void		CreateControls			();
+    void				CreateDefaultControls	(u32 sub_target_id);
+    virtual void		CreateControls			()=0;
     virtual void		RemoveControls			();
 public:
     virtual void    	OnActivate  			();

@@ -39,6 +39,7 @@ __published:	// IDE-managed Components
 	void __fastcall ebRemoveLinksClick(TObject *Sender);
 	void __fastcall ebAdd2LinkClick(TObject *Sender);
 	void __fastcall ebInvertLinkClick(TObject *Sender);
+	void __fastcall ebModeWayClick(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
 	__fastcall TfraWayPoint(TComponent* Owner);

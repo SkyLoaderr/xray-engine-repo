@@ -2,10 +2,11 @@
 #pragma hdrstop
 
 #include "ESceneSoundSrcTools.h"
+#include "UI_LevelTools.h"
 
 void ESceneSoundSrcTools::CreateControls()
 {
-	inherited::CreateControls();
+	inherited::CreateDefaultControls(estDefault);
 }
 //----------------------------------------------------
  

@@ -10,12 +10,18 @@
 #include "d3dutils.h"
 #include "ui_main.h"
 #include "render.h"
-#include "PropertiesListHelper.h"
+#include "ESceneWayControls.h"
+//#include "PropertiesListHelper.h"
 
 //----------------------------------------------------
 
 #define WAYPOINT_SIZE 	1.5f
 #define WAYPOINT_RADIUS WAYPOINT_SIZE*.5f
+
+bool IsPointMode()
+{
+	return LTools->GetSubTarget() == estWayModePoint;
+}
 
 //------------------------------------------------------------------------------
 // Way Point
@@ -44,7 +50,7 @@ void CWayPoint::GetBox(Fbox& bb)
     bb.min.x-=WAYPOINT_RADIUS;
     bb.min.z-=WAYPOINT_RADIUS;
 }
-void CWayPoint::Render(bool bParentSelect)
+void CWayPoint::Render(LPCSTR parent_name, bool bParentSelect)
 {
 	Fvector pos;
     pos.set	(m_vPosition.x,m_vPosition.y+WAYPOINT_SIZE*0.85f,m_vPosition.z);
@@ -53,20 +59,30 @@ void CWayPoint::Render(bool bParentSelect)
 	Fvector p1,p2;
     p1.set	(m_vPosition.x,m_vPosition.y+WAYPOINT_SIZE*0.85f,m_vPosition.z);
 
-    u32 c = m_bSelected?0xFFFFFFFF:0xFF000000;
-    u32 s = m_bSelected?0xFF000000:0xFF909090;
-    u32 l = m_bSelected?0xffffff00:0xff909000;
+    u32 c = (bParentSelect&&m_bSelected)?0xFFFFFFFF:0xFF000000;
+    u32 s = (bParentSelect&&m_bSelected)?0xFF909090:0xFF000000;
+    u32 l = (bParentSelect&&m_bSelected)?0xffffff00:0xff909000;
 
-    DU.DrawText(m_vPosition,*m_Name,c,s);
+    AnsiString hint	= AnsiString(" ")+parent_name;
+    if (bParentSelect){
+	    hint		+= " [";
+	    hint		+= *m_Name;
+	    hint		+= "]";
+        for (WPLIt it=m_Links.begin(); it!=m_Links.end(); it++){
+            SWPLink* O = (SWPLink*)(*it);
+            Fvector xx;
+            xx.sub(p2,p1);
+            xx.mul(0.95f);
+            xx.add(p1);
+            DU.DrawText(xx,AnsiString().sprintf("P: %1.2f",O->probability).c_str(),c,s);
+        }
+    }
+    
+    DU.DrawText(m_vPosition,hint.c_str(),c,s);
     for (WPLIt it=m_Links.begin(); it!=m_Links.end(); it++){
     	SWPLink* O = (SWPLink*)(*it);
 	    p2.set	(O->way_point->m_vPosition.x,O->way_point->m_vPosition.y+WAYPOINT_SIZE*0.85f,O->way_point->m_vPosition.z);
     	DU.DrawLink(p1,p2,0.25f,l);
-        Fvector xx;
-        xx.sub(p2,p1);
-        xx.mul(0.95f);
-        xx.add(p1);
-    	DU.DrawText(xx,AnsiString().sprintf("P: %1.2f",O->probability).c_str(),c,s);
     }
 	if (bParentSelect&&m_bSelected){
     	Fbox bb; GetBox(bb);
@@ -130,7 +146,7 @@ void CWayPoint::InvertLink(CWayPoint* P)
 }
 void CWayPoint::CreateLink(CWayPoint* P, float pb)
 {
-    m_Links.push_back(xr_new<SWPLink>(P,pb));
+	if (P!=this) m_Links.push_back(xr_new<SWPLink>(P,pb));
 }
 bool CWayPoint::AppendLink(CWayPoint* P, float pb)
 {
@@ -228,8 +244,9 @@ bool CWayObject::Add1Link()
             CWayPoint* A = (CWayPoint*)(*_A);
             WPIt _B=_A; _B++;
             for (; _B!=_B1; _B++){
-                CWayPoint* B = (CWayPoint*)(*_B);
-                bRes |= A->AddSingleLink(B);
+                CWayPoint* B	= (CWayPoint*)(*_B);
+                bRes 			|= A->AddSingleLink(B);
+                A->InvertLink	(B);
             }
         }
     }
@@ -262,11 +279,11 @@ void CWayObject::RemoveLink()
 	WPVec objects;
     if (GetSelectedPoints(objects)){
         WPIt _A0=objects.begin();
-        WPIt _A1=objects.end(); _A1--;
+        WPIt _A1=objects.end();
         WPIt _B1=objects.end();
-        for (WPIt _A=_A0; _A!=_A1; _A++){
+        for (WPIt _A=_A0; _A!=_A1; _A++){        
             CWayPoint* A = (CWayPoint*)(*_A);
-            WPIt _B=_A; _B++;
+            WPIt _B=_A0;
             for (; _B!=_B1; _B++){
                 CWayPoint* B = (CWayPoint*)(*_B);
                 A->RemoveLink(B);
@@ -399,7 +416,7 @@ void CWayObject::Render(int priority, bool strictB2F)
     if ((1==priority)&&(false==strictB2F)){
         RCache.set_xform_world(Fidentity);
         Device.SetShader		(Device.m_WireShader);
-        for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++) (*it)->Render(Selected());
+        for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++) (*it)->Render(Name,Selected());
         if( Selected() ){
             u32 clr = Locked()?0xFFFF0000:0xFFFFFFFF;
             Fbox bb; GetBox(bb);
@@ -421,14 +438,6 @@ bool CWayObject::FrustumPick(const CFrustum& frustum)
 	for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++)
     	if ((*it)->FrustumPick(frustum)) return true;
     return false;
-}
-
-bool CWayObject::IsPointMode()
-{
-	if (LTools->GetTarget()==OBJCLASS_WAY){
-	    TfraWayPoint* frame=(TfraWayPoint*)LTools->GetFrame(); R_ASSERT(frame);
-    	return frame->ebModePoint->Down;
-    }else return false;
 }
 
 bool CWayObject::Load(IReader& F)

@@ -58,18 +58,6 @@ void __fastcall TfraAIMap::ExtBtn6Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraAIMap::ebChangeCurrentClick(TObject *Sender)
-{
-	LTools->SetSubTarget		(dynamic_cast<TExtBtn*>(Sender)->Tag);
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraAIMap::fsStorageRestorePlacement(TObject *Sender)
-{
-//.	LTools->SetSubTarget				(estAIMapNode);
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfraAIMap::ebDrawSnapObjectsClick(TObject *Sender)
 {
     UI->RedrawScene();

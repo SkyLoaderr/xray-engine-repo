@@ -546,7 +546,7 @@ object fraLeftBar: TfraLeftBar
         CloseButton = False
         GroupIndex = 1
         Down = True
-        Caption = '1. Object'
+        Caption = 'Object'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -608,7 +608,7 @@ object fraLeftBar: TfraLeftBar
         BtnColor = 10528425
         CloseButton = False
         GroupIndex = 1
-        Caption = '2. Light'
+        Caption = 'Light'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -670,7 +670,7 @@ object fraLeftBar: TfraLeftBar
         BtnColor = 10528425
         CloseButton = False
         GroupIndex = 1
-        Caption = '3. Sound Source'
+        Caption = 'Sound Source'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -732,7 +732,7 @@ object fraLeftBar: TfraLeftBar
         BtnColor = 10528425
         CloseButton = False
         GroupIndex = 1
-        Caption = '4. Sound Env'
+        Caption = 'Sound Env'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -794,7 +794,7 @@ object fraLeftBar: TfraLeftBar
         BtnColor = 10528425
         CloseButton = False
         GroupIndex = 1
-        Caption = '5. Glow'
+        Caption = 'Glow'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -856,7 +856,7 @@ object fraLeftBar: TfraLeftBar
         BtnColor = 10528425
         CloseButton = False
         GroupIndex = 1
-        Caption = '7. Spawn Element'
+        Caption = 'Spawn Element'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -918,7 +918,7 @@ object fraLeftBar: TfraLeftBar
         BtnColor = 10528425
         CloseButton = False
         GroupIndex = 1
-        Caption = '8. Way Points'
+        Caption = 'Way Points'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -980,7 +980,7 @@ object fraLeftBar: TfraLeftBar
         BtnColor = 10528425
         CloseButton = False
         GroupIndex = 1
-        Caption = '9. Sector'
+        Caption = 'Sector'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -1042,7 +1042,7 @@ object fraLeftBar: TfraLeftBar
         BtnColor = 10528425
         CloseButton = False
         GroupIndex = 1
-        Caption = '0. Portal'
+        Caption = 'Portal'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -1140,7 +1140,7 @@ object fraLeftBar: TfraLeftBar
         BtnColor = 10528425
         CloseButton = False
         GroupIndex = 1
-        Caption = '^1. Group'
+        Caption = 'Group'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -1202,7 +1202,7 @@ object fraLeftBar: TfraLeftBar
         BtnColor = 10528425
         CloseButton = False
         GroupIndex = 1
-        Caption = '^2. Static Particles'
+        Caption = 'Static Particles'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -1264,7 +1264,7 @@ object fraLeftBar: TfraLeftBar
         BtnColor = 10528425
         CloseButton = False
         GroupIndex = 1
-        Caption = '6. Shape'
+        Caption = 'Shape'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -1326,7 +1326,7 @@ object fraLeftBar: TfraLeftBar
         BtnColor = 10528425
         CloseButton = False
         GroupIndex = 1
-        Caption = '^3. Detail Objects'
+        Caption = 'Detail Objects'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -1388,7 +1388,7 @@ object fraLeftBar: TfraLeftBar
         BtnColor = 10528425
         CloseButton = False
         GroupIndex = 1
-        Caption = '^4. AI Map'
+        Caption = 'AI Map'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -1450,7 +1450,7 @@ object fraLeftBar: TfraLeftBar
         BtnColor = 10528425
         CloseButton = False
         GroupIndex = 1
-        Caption = '^5. Wallmarks'
+        Caption = 'Wallmarks'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -2179,10 +2179,6 @@ object fraLeftBar: TfraLeftBar
     object MenuItem29: TMenuItem
       Caption = 'Make AI-Map'
       OnClick = MakeAIMap1Click
-    end
-    object MakeWallmarks1: TMenuItem
-      Caption = 'Make Wallmarks'
-      OnClick = MakeWallmarks1Click
     end
     object MenuItem32: TMenuItem
       Caption = '-'

@@ -49,7 +49,7 @@ ESceneSpawnTools::~ESceneSpawnTools()
 
 void ESceneSpawnTools::CreateControls()
 {
-	inherited::CreateControls();
+	inherited::CreateDefaultControls(estDefault);
     AddControl		(xr_new<TUI_ControlSpawnAdd>(estDefault,etaAdd,		this));
 	// frame
     pFrame 			= xr_new<TfraSpawn>((TComponent*)0);

@@ -52,8 +52,6 @@ __published:	// IDE-managed Components
     void __fastcall PanelMinClick(TObject *Sender);
     void __fastcall ExpandClick(TObject *Sender);
 	void __fastcall ebGenerateMapClick(TObject *Sender);
-	void __fastcall ebChangeCurrentClick(TObject *Sender);
-	void __fastcall fsStorageRestorePlacement(TObject *Sender);
 	void __fastcall ebDrawSnapObjectsClick(TObject *Sender);
 	void __fastcall ebInvertLinkClick(TObject *Sender);
 	void __fastcall ebSideClick(TObject *Sender);

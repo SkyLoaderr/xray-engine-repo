@@ -24,7 +24,7 @@ ESceneObjectTools::ESceneObjectTools():ESceneCustomOTools(OBJCLASS_SCENEOBJECT)
 
 void ESceneObjectTools::CreateControls()
 {
-	inherited::CreateControls();
+	inherited::CreateDefaultControls(estDefault);
     AddControl		(xr_new<TUI_ControlObjectAdd >(estDefault,etaAdd,		this));
 	// frame
     pFrame 			= xr_new<TfraObject>((TComponent*)0,this);

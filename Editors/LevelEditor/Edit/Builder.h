@@ -139,7 +139,6 @@ public:
     BOOL 	MakeDetails				();
     BOOL 	MakeHOM					();
     BOOL	MakeAIMap				();
-    BOOL	MakeWallmarks			();
 
     void	OnRender				();
 };

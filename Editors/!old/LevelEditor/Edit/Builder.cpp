@@ -141,22 +141,6 @@ BOOL SceneBuilder::MakeAIMap()
 }
 //------------------------------------------------------------------------------
 
-BOOL SceneBuilder::MakeWallmarks()
-{
-	AnsiString error_text;
-    do{
-		VERIFY_COMPILE(PreparePath(),				"Failed to prepare level path.","");
-        VERIFY_COMPILE(GetBounding(),				"Failed to acquire level bounding volume.","");
-		VERIFY_COMPILE(BuildWallmarks(),			"Failed to build Wallmarks.","");
-    }while(0);
-    if (!error_text.IsEmpty()) 	ELog.DlgMsg(mtError,error_text.c_str());
-    else if (UI->NeedAbort())	ELog.DlgMsg(mtInformation,"Building terminated.");
-    else						ELog.DlgMsg(mtInformation,"Wallmarks succesfully exported.");
-
-	return error_text.IsEmpty();
-}
-//------------------------------------------------------------------------------
-
 BOOL SceneBuilder::MakeDetails()
 {
 	AnsiString error_text;

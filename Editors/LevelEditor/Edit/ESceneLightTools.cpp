@@ -272,10 +272,11 @@ bool ESceneLightTools::Validate()
 
 
 #include "frameLight.h"
+#include "UI_LevelTools.h"
 
 void ESceneLightTools::CreateControls()
 {
-	inherited::CreateControls();
+	inherited::CreateDefaultControls(estDefault);
 	// frame
     pFrame 			= xr_new<TfraLight>((TComponent*)0);
 }

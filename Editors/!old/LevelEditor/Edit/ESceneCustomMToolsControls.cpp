@@ -5,9 +5,10 @@
 #include "ESceneControlsCustom.h"
 #include "ui_leveltools.h"
 
-void ESceneCustomMTools::CreateControls()
+void ESceneCustomMTools::CreateDefaultControls(u32 sub_target_id)
 {
-	CreateDefaultControls();
+    for (int a=0; a<etaMaxActions; a++)
+    	AddControl(xr_new<TUI_CustomControl>(sub_target_id,a,this));
 }
 
 void ESceneCustomMTools::RemoveControls()
@@ -17,12 +18,6 @@ void ESceneCustomMTools::RemoveControls()
     	xr_delete	(*it);
     m_Controls.clear();
     xr_delete		(pFrame);
-}
-
-void ESceneCustomMTools::CreateDefaultControls()
-{
-    for (int a=0; a<etaMaxActions; a++)
-    	AddControl(xr_new<TUI_CustomControl>(estDefault,a,this));
 }
 
 void ESceneCustomMTools::AddControl(TUI_CustomControl* c)
@@ -55,7 +50,6 @@ void ESceneCustomMTools::UpdateControl()
 
 void ESceneCustomMTools::OnActivate  ()
 {
-	ResetSubTarget();
     if (pCurControl) 	pCurControl->OnEnter();
 //    if (pFrame)			pFrame->OnActivate();
 }

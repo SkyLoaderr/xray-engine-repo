@@ -3,10 +3,11 @@
 
 #include "ESceneSoundEnvTools.h"
 #include "SoundManager_LE.h"
+#include "UI_LevelTools.h"
 
 void ESceneSoundEnvTools::CreateControls()
 {
-	inherited::CreateControls();
+	inherited::CreateDefaultControls(estDefault);
 }
 //----------------------------------------------------
  

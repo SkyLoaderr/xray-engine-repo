@@ -6,6 +6,10 @@
 // refs
 class CWayPoint;
 
+enum{
+	estWayModeWay,
+	estWayModePoint
+};
 //---------------------------------------------------------------------------
 class TUI_ControlWayPointAdd: public TUI_CustomControl{
 public:

@@ -8,7 +8,7 @@
 
 void EScenePSTools::CreateControls()
 {
-	inherited::CreateControls();
+	inherited::CreateDefaultControls(estDefault);
     AddControl		(xr_new<TUI_ControlPSAdd>(estDefault,etaAdd,		this));
 	// frame
     pFrame 			= xr_new<TfraPS>((TComponent*)0);

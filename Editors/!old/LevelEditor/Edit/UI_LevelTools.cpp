@@ -72,7 +72,7 @@ void CLevelTools::OnDestroy()
 //---------------------------------------------------------------------------
 void CLevelTools::Reset()
 {
-	RealSetTarget(GetTarget(),true);
+	RealSetTarget(GetTarget(),estDefault,true);
 }
 //---------------------------------------------------------------------------
 
@@ -149,19 +149,20 @@ void __fastcall CLevelTools::SetAction(ETAction act)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall CLevelTools::RealSetTarget   (EObjClass tgt,bool bForced)
+void __fastcall CLevelTools::RealSetTarget   (EObjClass tgt,int sub_tgt,bool bForced)
 {
-    if(bForced||(target!=tgt)){
+    if(bForced||(target!=tgt)||(sub_target!=sub_tgt)){
         target 					= tgt;
-        sub_target 				= estDefault;
+        sub_target 				= sub_tgt;
         if (pCurTools){
             DETACH_FRAME(pCurTools->pFrame);
             pCurTools->OnDeactivate();
         }
         pCurTools				= Scene->GetMTools(tgt); VERIFY(pCurTools);
+        pCurTools->SetSubTarget	(sub_target);
+
         pCurTools->OnActivate	();
         
-        pCurTools->SetSubTarget	(sub_target);
         pCurTools->SetAction	(GetAction());
         ATTACH_FRAME(pCurTools->pFrame, paParent);
     }
@@ -178,21 +179,15 @@ void __fastcall CLevelTools::ResetSubTarget()
 	pCurTools->ResetSubTarget();
 }
 //---------------------------------------------------------------------------
-void __fastcall CLevelTools::SetSubTarget(int tgt)
-{
-	VERIFY(pCurTools);
-	sub_target 				= tgt;
-    pCurTools->SetSubTarget	(tgt);
-}
-//---------------------------------------------------------------------------
-void __fastcall CLevelTools::SetTarget(EObjClass tgt)
+void __fastcall CLevelTools::SetTarget(EObjClass tgt, int sub_tgt)
 {
 	// если мышь захвачена - изменим target после того как она освободится
 	if (UI->IsMouseCaptured()||UI->IsMouseInUse()||!false){
 	    m_Flags.set(flChangeTarget,TRUE);
-        iNeedTarget=tgt;
+        iNeedTarget		= tgt;
+        iNeedSubTarget  = sub_tgt;
     }else
-    	RealSetTarget(tgt);
+    	RealSetTarget(tgt,sub_tgt,false);
 }
 //---------------------------------------------------------------------------
 
@@ -335,7 +330,7 @@ void __fastcall CLevelTools::OnFrame()
     if ((est==esEditScene)||(est==esEditLibrary)||(est==esEditLightAnim)){
         if (!UI->IsMouseCaptured()){
             // если нужно изменить target выполняем после того как мышь освободится
-            if(m_Flags.is(flChangeTarget)) 		RealSetTarget(iNeedTarget);
+            if(m_Flags.is(flChangeTarget)) 		RealSetTarget(iNeedTarget,iNeedSubTarget,false);
             // если нужно изменить action выполняем после того как мышь освободится
             if(m_Flags.is(flChangeAction)) 		RealSetAction(iNeedAction);
         }

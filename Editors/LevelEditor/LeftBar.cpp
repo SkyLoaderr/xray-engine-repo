@@ -466,12 +466,6 @@ void __fastcall TfraLeftBar::MakeAIMap1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::MakeWallmarks1Click(TObject *Sender)
-{
-	ExecCommand( COMMAND_MAKE_WM );
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfraLeftBar::ebSceneFileMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
@@ -694,6 +688,7 @@ void TfraLeftBar::RefreshBar()
     miRecentFiles->Enabled = miRecentFiles->Count;
 }
 //---------------------------------------------------------------------------
+
 
 
 

@@ -1,6 +1,6 @@
 object fraAIMap: TfraAIMap
-  Left = 419
-  Top = 356
+  Left = 524
+  Top = 475
   VertScrollBar.Visible = False
   Align = alClient
   BorderStyle = bsNone
@@ -518,7 +518,6 @@ object fraAIMap: TfraAIMap
     IniSection = 'FrameAIMap'
     Options = []
     Version = 13
-    OnRestorePlacement = fsStorageRestorePlacement
     StoredProps.Strings = (
       'paObjectList.Tag'
       'paObjectList.Height'

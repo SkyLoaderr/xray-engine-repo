@@ -2,10 +2,11 @@
 #pragma hdrstop
 
 #include "ESceneDummyTools.h"
+#include "UI_LevelTools.h"
 
 void ESceneDummyTools::CreateControls()
 {
-	inherited::CreateControls();
+	inherited::CreateDefaultControls(estDefault);
 }
 //----------------------------------------------------
  

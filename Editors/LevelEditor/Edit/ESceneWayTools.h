@@ -25,6 +25,8 @@ public:
     virtual void   		Save            		(IWriter&);
     virtual bool		LoadSelection      		(IReader&);
     virtual void		SaveSelection      		(IWriter&);
+
+    virtual void    	OnActivate  			();
 };
 //---------------------------------------------------------------------------
 #endif

@@ -31,6 +31,7 @@ class CLevelTools: public CToolsCustom{
 
     int					iNeedAction;
     EObjClass			iNeedTarget;
+    int					iNeedSubTarget;
 
     ESceneCustomMTools*	pCurTools;
     
@@ -39,7 +40,7 @@ class CLevelTools: public CToolsCustom{
     void __fastcall 	SetTargetAction		();
 
     void __fastcall 	RealSetAction   	(ETAction act);
-    void __fastcall 	RealSetTarget   	(EObjClass tgt,bool bForced=false);
+    void __fastcall 	RealSetTarget   	(EObjClass tgt,int sub_tgt, bool bForced);//=false);
 
     TProperties* 		m_Props;
     void __stdcall  	OnPropsModified		();
@@ -57,7 +58,7 @@ public:
     IC EObjClass		GetTarget   		(){return target;}
     IC int          	GetSubTarget   		(){return sub_target;}
     virtual void		SetAction			(ETAction act);
-    void 			 	SetTarget			(EObjClass tgt);
+    void 			 	SetTarget			(EObjClass tgt, int sub_tgt);
 
     virtual void		SetFog				(u32 fog_color, float fogness){dwFogColor=fog_color;fFogness=fogness;}
     virtual void		GetCurrentFog		(u32& fog_color, float& s_fog, float& e_fog);
@@ -109,7 +110,6 @@ public:
     TForm*				GetFrame			();
 
     void __fastcall 	ResetSubTarget		();
-    void __fastcall 	SetSubTarget		(int tgt);
 
     void __fastcall 	OnObjectsUpdate		();
 

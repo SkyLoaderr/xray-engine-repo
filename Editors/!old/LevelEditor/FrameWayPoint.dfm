@@ -1,6 +1,6 @@
 object fraWayPoint: TfraWayPoint
-  Left = 1293
-  Top = 7
+  Left = 1003
+  Top = 559
   VertScrollBar.Visible = False
   Align = alClient
   BorderStyle = bsNone
@@ -112,8 +112,10 @@ object fraWayPoint: TfraWayPoint
       NumGlyphs = 4
       ParentFont = False
       Spacing = 3
+      OnClick = ebModeWayClick
     end
     object ebModePoint: TExtBtn
+      Tag = 1
       Left = 2
       Top = 33
       Width = 215
@@ -171,6 +173,7 @@ object fraWayPoint: TfraWayPoint
       NumGlyphs = 4
       ParentFont = False
       Spacing = 3
+      OnClick = ebModeWayClick
     end
   end
   object paLink: TPanel
@@ -367,9 +370,7 @@ object fraWayPoint: TfraWayPoint
       'paCommands.Height'
       'paCommands.Tag'
       'paLink.Tag'
-      'paLink.Height'
-      'ebModeWay.Down'
-      'ebModePoint.Down')
+      'paLink.Height')
     StoredValues = <>
     Left = 65528
     Top = 65528
