@@ -748,7 +748,7 @@ function add_novice3(obj)
     properties["attack"]            = xr_evaluators_id.jon_stalker_attack
     properties["contact"]       	= xr_evaluators_id.stohe_meet_base + 1
 
-    properties["event"]             = xr_evaluators_id.stohe_reactions_base + 0
+    properties["event"]             = xr_evaluators_id.reaction
 
     operators [ "stalker_novice" ]  = xr_actions_id.jon_stalker_novice3
     operators [ "stalker_attack" ]  = xr_actions_id.jon_stalker_attack
