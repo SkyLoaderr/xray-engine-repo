@@ -55,18 +55,6 @@ CALifeSimulatorBase::~CALifeSimulatorBase	()
 
 void CALifeSimulatorBase::unload			()
 {
-//	if (initialized()) {
-//		ALife::D_OBJECT_P_MAP::const_iterator	I = objects().objects().begin();
-//		ALife::D_OBJECT_P_MAP::const_iterator	E = objects().objects().end();
-//		for ( ; I != E; ++I)
-//			if ((*I).second->m_bOnline) {
-//				CSE_Abstract			*object = smart_cast<CSE_Abstract*>((*I).second);
-//				VERIFY					(object);
-//				server().entity_Destroy	(object);
-//			}
-//	}
-
-	m_initialized				= false;
 	xr_delete					(m_header);
 	xr_delete					(m_time_manager);
 	xr_delete					(m_spawns);
@@ -81,6 +69,7 @@ void CALifeSimulatorBase::unload			()
 	xr_delete					(m_news);
 	xr_delete					(m_story_objects);
 	xr_delete					(m_registry_container);
+	m_initialized				= false;
 }
 
 void CALifeSimulatorBase::reload			(LPCSTR section)

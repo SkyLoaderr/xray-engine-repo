@@ -8,22 +8,27 @@
 
 #pragma once
 
-IC	u32	CALifeSpawnHeader::version		() const
+IC	u32	CALifeSpawnHeader::version				() const
 {
 	return			(m_version);
 }
 
-IC	const GUID &CALifeSpawnHeader::guid	() const
+IC	const xrGUID &CALifeSpawnHeader::guid		() const
 {
 	return			(m_guid);
 }
 
-IC	u32	CALifeSpawnHeader::count		() const
+IC	const xrGUID &CALifeSpawnHeader::graph_guid	() const
+{
+	return			(m_graph_guid);
+}
+
+IC	u32	CALifeSpawnHeader::count				() const
 {
 	return			(m_count);
 }
 
-IC	u32	CALifeSpawnHeader::level_count	() const
+IC	u32	CALifeSpawnHeader::level_count			() const
 {
 	return			(m_level_count);
 }

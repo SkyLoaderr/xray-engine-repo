@@ -60,6 +60,8 @@ void CAI_Space::load				(LPCSTR level_name)
 
 	m_level_graph			= xr_new<CLevelNavigationGraph>();
 	m_cross_table			= xr_new<CGameLevelCrossTable>();
+	R_ASSERT2				(cross_table().header().level_guid() == level_graph().header().guid(), "cross_table doesn't correspond to the AI-map");
+	R_ASSERT2				(cross_table().header().game_guid() == game_graph().header().guid(), "graph doesn't correspond to the cross table");
 	m_graph_engine			= xr_new<CGraphEngine>(
 		_max(
 			game_graph().header().vertex_count(),
@@ -68,6 +70,7 @@ void CAI_Space::load				(LPCSTR level_name)
 	);
 	
 	const CGameGraph::SLevel &current_level = game_graph().header().level(level_name);
+	R_ASSERT2				(current_level.guid() == level_graph().header().guid(), "graph doesn't correspond to the AI-map");
 	
 #ifdef DEBUG
 	if (!xr_strcmp(current_level.name(),level_name))

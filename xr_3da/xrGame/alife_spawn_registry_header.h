@@ -8,22 +8,24 @@
 
 #pragma once
 
-#include <rpcdce.h>
+#include "../xrLevel.h"
 
 class CALifeSpawnHeader {
 protected:
-	u32					m_version;
-	GUID				m_guid;
-	u32					m_count;
-	u32					m_level_count;
+	u32						m_version;
+	xrGUID					m_guid;
+	u32						m_count;
+	u32						m_level_count;
+	xrGUID					m_graph_guid;
 
 public:
-	virtual				~CALifeSpawnHeader	();
-	virtual void		load				(IReader &file_stream);
-	IC		u32			version				() const;
-	IC		const GUID	&guid				() const;
-	IC		u32			count				() const;
-	IC		u32			level_count			() const;
+	virtual					~CALifeSpawnHeader	();
+	virtual void			load				(IReader &file_stream);
+	IC		u32				version				() const;
+	IC		const xrGUID	&guid				() const;
+	IC		const xrGUID	&graph_guid			() const;
+	IC		u32				count				() const;
+	IC		u32				level_count			() const;
 };
 
 #include "alife_spawn_registry_header_inline.h"

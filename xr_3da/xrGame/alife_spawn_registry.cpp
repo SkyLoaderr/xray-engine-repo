@@ -10,6 +10,8 @@
 #include "alife_spawn_registry.h"
 #include "object_broker.h"
 #include "game_base.h"
+#include "ai_space.h"
+#include "game_graph.h"
 
 CALifeSpawnRegistry::CALifeSpawnRegistry	(LPCSTR section)
 {
@@ -45,7 +47,7 @@ void CALifeSpawnRegistry::load	(IReader &file_stream, LPCSTR game_name)
 	R_ASSERT2					(file_stream.find_chunk(SPAWN_CHUNK_DATA),"Cannot find chunk SPAWN_CHUNK_DATA!");
 	chunk0						= file_stream.open_chunk(SPAWN_CHUNK_DATA);
 	
-	GUID						guid;
+	xrGUID						guid;
 	chunk						= chunk0->open_chunk(0);
 	VERIFY						(chunk);
 	chunk->r_stringZ			(m_spawn_name);
@@ -80,29 +82,21 @@ void CALifeSpawnRegistry::load	(LPCSTR spawn_name)
 {
 	Msg							("* Loading spawn registry...");
 	m_spawn_name				= spawn_name;
-
 	string256					file_name;
-	IReader						*stream;
 	R_ASSERT3					(FS.exist(file_name, "$game_spawn$", *m_spawn_name, ".spawn"),"Can't find spawn file:",*m_spawn_name);
-	int							spawn_age = FS.get_file_age(file_name);
-	
-	string256					graph_file_name;
-	FS.update_path				(graph_file_name,"$game_data$",GRAPH_NAME);
-	int							graph_age = FS.get_file_age(graph_file_name);
-	VERIFY3						(spawn_age >= graph_age,"Rebuild spawn file ",file_name);
-
-	stream						= FS.r_open(file_name);
+	IReader						*stream = FS.r_open(file_name);
 	load						(*stream);
 	FS.r_close					(stream);
 }
 
-void CALifeSpawnRegistry::load	(IReader &file_stream, GUID	*save_guid)
+void CALifeSpawnRegistry::load	(IReader &file_stream, xrGUID *save_guid)
 {
 	IReader						*chunk;
 	chunk						= file_stream.open_chunk(0);
 	m_header.load				(*chunk);
 	chunk->close				();
 	R_ASSERT2					(!save_guid || (*save_guid == header().guid()),"Saved game doesn't correspond to the spawn : DELETE SAVED GAME!");
+	R_ASSERT2					(header().graph_guid() == ai().game_graph().header().guid(),"Spawn doesn't correspond to the graph : REBUILD SPAWN!");
 
 	chunk						= file_stream.open_chunk(1);
 	m_spawns.load				(*chunk);
