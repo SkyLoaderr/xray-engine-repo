@@ -2699,6 +2699,30 @@ $spawn					= "vehicles\helicopter"
 cform                   = skeleton
 class					= C_HLCPTR
 
+
+[hand_radio]
+GroupControlSection		= spawn_group
+discovery_dependency	= 
+$spawn					= "equipment\hand_radio"
+cform                   = skeleton
+class					= II_ATTCH
+visual                  = equipment\fmradio.ogf
+cost					= 100
+inv_name				= "hand_radio"
+inv_name_short			= "hand_radio"
+inv_weight				= .5
+inv_grid_width			= 2
+inv_grid_height			= 1
+inv_grid_x				= 16
+inv_grid_y				= 12
+attach_angle_offset		= 0, 0, 0
+attach_position_offset	= 0.08, 0.04, 0.03
+attach_bone_name		= bip01_r_hand
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Actor Effector Section
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 [monster_attack_effector]
 duality_h		= 0.01
 duality_v		= 0.01
@@ -2748,21 +2772,24 @@ time			= 0.5
 amplitude		= 3.5
 period_number	= 11.0
 
-[hand_radio]
-GroupControlSection		= spawn_group
-discovery_dependency	= 
-$spawn					= "equipment\hand_radio"
-cform                   = skeleton
-class					= II_ATTCH
-visual                  = equipment\fmradio.ogf
-cost					= 100
-inv_name				= "hand_radio"
-inv_name_short			= "hand_radio"
-inv_weight				= .5
-inv_grid_width			= 2
-inv_grid_height			= 1
-inv_grid_x				= 16
-inv_grid_y				= 12
-attach_angle_offset		= 0, 0, 0
-attach_position_offset	= 0.08, 0.04, 0.03
-attach_bone_name		= bip01_r_hand
+[sleep_effector]
+duality_h		= 0.01
+duality_v		= 0.01
+blur			= 0.01
+gray			= 0.5
+noise_intensity = 0.0
+noise_grain		= 1
+noise_fps		= 30
+color_base		= 0.65,0.15,0.1
+color_gray		= 0.333,0.333,0.333
+color_add		= 0,0,0
+time			= 0.15
+time_attack		= 0.05		; fade in
+time_release	= 0.25		; fade out
+
+; camera effects
+ce_time				= 0.3
+ce_amplitude		= 4.0
+ce_period_number	= 2.0
+ce_power			= 0.7
+
