@@ -171,10 +171,6 @@ protected:
 	// ѕросчитать анимационные параметры фейда дл€ айтемов листа
 	void FadeUpdate(CUIListWnd *pWnd, int fadeDuration);
 
-	// ассоциативный массив с типсами. ¬ыбор пал на map, так как заполнение произойдет 1 раз,
-	// а поиск будет производитьс€ часто.
-	std::map<int, ref_str>	m_strTips;
-
 	// дл€ лога сообщений на экране устанавливаем врем€ постепенного исчезновени€ надписи
 	int					m_iPdaMessagesFade_mSec;
 	int					m_iInfoMessagesFade_mSec;

@@ -80,6 +80,10 @@ public:
 	virtual bool IsTalkEnabled	()		{ return m_bAllowTalk;}
 
 	CInventoryOwner* GetTalkPartner()	{return m_pTalkPartner;}
+
+	//игровое имя 
+	virtual LPCSTR	Name        () const;
+
 protected:
 	// торговля
 	CTrade*				m_pTrade;

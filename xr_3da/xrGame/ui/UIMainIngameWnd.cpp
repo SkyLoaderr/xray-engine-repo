@@ -185,21 +185,6 @@ void CUIMainIngameWnd::Init()
 	UIStaticQuickHelp.SetTextColor(0xffffffff);
 	UIStaticQuickHelp.SetTextAlign(CGameFont::alCenter);
 
-	// читаем типсы их xml файла
-	int tabsCount = uiXml.GetNodesNum("quick_info", 0, "tip");
-
-	XML_NODE* tab_node = uiXml.NavigateToNode("quick_info", 0);
-	uiXml.SetLocalRoot(tab_node);
-
-	std::pair<int, ref_str> tmpTip;
-
-	for (int i = 0; i < tabsCount; ++i)
-	{
-		tmpTip.first	= uiXml.ReadAttribInt("tip", i, "id");
-		tmpTip.second	= uiXml.Read("tip", i, NULL);
-		m_strTips.insert(tmpTip);
-	}
-
 	uiXml.SetLocalRoot(uiXml.GetRoot());
 
 	// Загружаем иконки 
@@ -861,18 +846,8 @@ void CUIMainIngameWnd::RenderQuickInfos()
 	LPCSTR actor_action = m_pActor->GetDefaultActionForObject();
 	if (pObject && actor_action)
 	{
-		LPCSTR object_name = *pObject->cName();
-/*		if(eaaTalk == actor_action)
-		{
-			object_name = m_pActor->PersonWeLookingAt()->CharacterInfo().Name();
-		} 
-		else if(eaaPickup == actor_action)
-		{
-			CInventoryItem* item = dynamic_cast<CInventoryItem*>(m_pActor->ObjectWeLookingAt());
-			VERIFY(item);
-			object_name =item->Name();
-		}
-*/
+		LPCSTR object_name = pObject->Name();
+
 		if (fuzzyShowInfo>0.5f)
 		{
 			UIStaticQuickHelp.SetTextColor(subst_alpha(C,u8(iFloor(255.f*(fuzzyShowInfo-0.5f)*2.f))));

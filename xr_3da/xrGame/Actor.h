@@ -106,7 +106,8 @@ public:
 	typedef CALifeRegistryWrapper<CEncyclopediaRegistry> ENCYCLOPEDIA_REGISTRY;
 	ENCYCLOPEDIA_REGISTRY		encyclopedia_registry;
 
-
+	//игровое имя 
+	virtual LPCSTR	Name        () const {return CInventoryOwner::Name();}
 
 public:
 	//PhraseDialogManager

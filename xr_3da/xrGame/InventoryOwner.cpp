@@ -352,3 +352,9 @@ void CInventoryOwner::spawn_supplies		()
 		F_entity_Destroy					(abstract);
 	}
 }
+
+//игровое имя 
+LPCSTR	CInventoryOwner::Name () const
+{
+	return CharacterInfo().Name();
+}

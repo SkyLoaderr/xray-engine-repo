@@ -189,6 +189,10 @@ public:
 		return					(true);
 	}
 
+	//игровое имя 
+	virtual LPCSTR	Name										() const {return CInventoryOwner::Name();}
+
+
 	virtual	Feel::Sound*		dcast_FeelSound			()		{ return this;	}
 			bool				can_kill_member			();
 			bool				can_kill_member			(const Fvector &position, const Fvector &direction) const;

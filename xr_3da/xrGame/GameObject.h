@@ -77,6 +77,10 @@ public:
 												static CPhysicsShell* no_shell=0; 
 												return no_shell;
 												}*/
+	
+	//игровое имя объекта
+	virtual LPCSTR			Name                () const;
+	
 	//для наследования CParticlesPlayer
 	virtual IRender_Sector*	Sector				()		{return inherited::Sector();}
 	

@@ -110,6 +110,9 @@ public:
 			void			OnStartTrade			();
 			void			OnStopTrade				();
 			void			OnTradeAction			(CGameObject *O, bool bSell);
+
+			//игровое имя 
+			virtual LPCSTR	Name					() const {return CInventoryOwner::Name();}
 public:	
 	virtual	bool			can_attach				(const CInventoryItem *inventory_item) const;
 	virtual bool			use_bolts				() const;

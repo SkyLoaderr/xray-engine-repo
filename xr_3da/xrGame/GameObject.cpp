@@ -568,3 +568,9 @@ BOOL CGameObject::net_SaveRelevant	()
 {
 	return						(false);
 }
+
+//игровое имя объекта
+LPCSTR CGameObject::Name () const
+{
+	return *cName();
+}
