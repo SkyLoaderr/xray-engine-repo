@@ -687,9 +687,10 @@ void Script::vfExportEffector(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def(								constructor<>()),
 
 		class_<CLuaEffector, CLuaEffectorWrapper>("pp_effector")
+			.def_readwrite("info",				&CLuaEffector::m_tInfo)
 			.def(								constructor<int,float>())
 			.def("start",						&CLuaEffector::Add)
 			.def("finish",						&CLuaEffector::Remove)
-			.def("process",						&CLuaEffectorWrapper::Process_static,																						out_value(_1))
+			.def("process",						&CLuaEffectorWrapper::Process_static)
 	];
 }

@@ -398,6 +398,7 @@ class CLuaEffector : public CEffectorPP {
 public:
 	typedef CEffectorPP inherited;
 	EEffectorPPType		m_tEffectorType;
+	SPPInfo				m_tInfo;
 
 					CLuaEffector				(int		iType, float time) : CEffectorPP(EEffectorPPType(iType),time)
 	{
@@ -434,12 +435,14 @@ public:
 
 	virtual BOOL	Process						(SPPInfo &pp)
 	{
-		return	(luabind::call_member<bool>(m_tLuaBindObject,"process",pp));
+		BOOL	l_bResult = !!luabind::call_member<bool>(m_tLuaBindObject,"process",pp);
+		pp		= m_tInfo;
+		return	(l_bResult);
 	}
 
-	static	bool	Process_static				(CLuaEffector *tpLuaEffector, SPPInfo &pp)
+	static	bool Process_static			(CLuaEffector *tpLuaEffector, SPPInfo &pp)
 	{
-		return	(!!tpLuaEffector->CLuaEffector::Process(pp));
+		return		(!!tpLuaEffector->CLuaEffector::Process(pp));
 	}
 };
 
