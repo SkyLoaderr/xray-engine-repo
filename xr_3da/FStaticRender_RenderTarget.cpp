@@ -115,10 +115,10 @@ void CRenderTarget::End		(float blur)
 	
 	// Fill vertex buffer
 	FVF::TL* pv = (FVF::TL*) pStream->Lock(4,Offset);
-	pv->set(0,			float(_h),	1, 1, C, p0.x, p1.y);	pv++;
-	pv->set(0,			0,			1, 1, C, p0.x, p0.y);	pv++;
-	pv->set(float(_w),	float(_h),	1, 1, C, p1.x, p1.y);	pv++;
-	pv->set(float(_w),	0,			1, 1, C, p1.x, p0.y);	pv++;
+	pv->set(0,			float(_h),	.0001f,.9999f, C, p0.x, p1.y);	pv++;
+	pv->set(0,			0,			.0001f,.9999f, C, p0.x, p0.y);	pv++;
+	pv->set(float(_w),	float(_h),	.0001f,.9999f, C, p1.x, p1.y);	pv++;
+	pv->set(float(_w),	0,			.0001f,.9999f, C, p1.x, p0.y);	pv++;
 	pStream->Unlock			(4);
 
 	// Actual rendering
