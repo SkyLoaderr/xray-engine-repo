@@ -126,7 +126,7 @@ void CHudItem::renderable_Render()
 	if(hud_mode && !m_pHUD->IsHidden() && !IsHidden())
 	{ 
 		// HUD render
-		UpdateHudPosition			();
+		//UpdateHudPosition			();
 
 		if(m_bRenderHud)
 		{
@@ -236,6 +236,8 @@ void CHudItem::UpdateCL()
 
 	if(m_pHUD) 
 		m_pHUD->UpdateHud();
+
+	UpdateHudPosition	();
 }
 
 void CHudItem::OnH_A_Chield		()
