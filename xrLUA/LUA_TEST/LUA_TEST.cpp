@@ -1840,15 +1840,94 @@ struct test_luabind : public CLuabindClass<0> {
 	}
 };
 
+struct CClass1 {
+	int c1;
+
+		CClass1(LPCSTR section)
+	{
+		c1		= 6;
+		printf	("CClass1::CClass1() called\n");
+	}
+
+	virtual void init	() = 0;
+};
+
+struct CClassWrapper1 : public CClass1, public luabind::wrap_base {
+
+		CClassWrapper1(LPCSTR section) :
+			CClass1(section)
+	{
+		printf	("CClassWrapper1::CClassWrapper1() called\n");
+	}
+
+	virtual void init	()
+	{
+		call_member<void>(this,"init");
+	}
+
+	static void init_static	(CClass1 *self)
+	{
+		NODEFAULT;
+		//self->CClass1::init();
+	}
+};
+
+struct CClass2 {
+	int c2;
+
+		CClass2(LPCSTR section)
+	{
+		c2		= 16;
+		printf	("CClass2::CClass2() called\n");
+	}
+
+	virtual void init	()
+	{
+		printf	("CClass2::init() called\n");
+	}
+
+	void foo	()
+	{
+		printf	("CClass2::foo() called\n");
+	}
+};
+
+struct CClassWrapper2 : public CClass2, public luabind::wrap_base {
+		CClassWrapper2(LPCSTR section) :
+			CClass2(section)
+	{
+		printf	("CClassWrapper2::CClassWrapper2() called\n");
+	}
+
+	virtual void init	()
+	{
+		call_member<void>(this,"init");
+	}
+
+	static void init_static	(CClass2 *self)
+	{
+		//NODEFAULT;
+		self->CClass2::init();
+	}
+};
+
+namespace callback_test {
+	extern void callback_test();
+}
+
+extern void slipch_test();
+
 int __cdecl main(int argc, char* argv[])
 {
 //	test1();
 //	test0();
 //	time_smart_ptr_test();
 //	lesha_test();
-//	bug_test();
+	bug_test();
 //	test_smart_container();
-//	return 0;
+//	callback_test::callback_test();
+//	slipch_test();
+	return 0;
 
 	printf	("xrLuaCompiler v0.1\n");
 //	if (argc < 2) {
@@ -1887,6 +1966,17 @@ int __cdecl main(int argc, char* argv[])
 
 	module(L)
 	[
+		class_<CClass1,CClassWrapper1>("class1")
+			.def_readwrite	("c1",&CClass1::c1)
+			.def			(constructor<LPCSTR>())
+			.def			("init", &CClass1::init, &CClassWrapper1::init_static),
+
+		class_<CClass2,CClassWrapper2>("class2")
+			.def_readwrite	("c2",&CClass2::c2)
+			.def(constructor<LPCSTR>())
+			.def("init", &CClass2::init, &CClassWrapper2::init_static)
+			.def("foo", &CClass2::foo),
+
 //		class_<CCustomClass,CCustomClassWrapper>("CCustomClass")
 //			.def(constructor<>())
 //			.def("foo",&CCustomClass::foo,&CCustomClassWrapper::foo_static),
@@ -1923,7 +2013,7 @@ int __cdecl main(int argc, char* argv[])
 //			]
 	];
 
-	lua_dofile					(L,"x:\\bug7.script");
+	lua_dofile		(L,"x:\\bug9.script");
 
 	if (xr_strlen(g_ca_stdout)) {
 		printf		("\n%s\n",g_ca_stdout);
@@ -2053,11 +2143,29 @@ int __cdecl main(int argc, char* argv[])
 
 //	delete			(g_custom);
 	lua_setgcthreshold	(L,0);
-	lua_close		(L);
+	lua_close			(L);
 
 //	check if we are yielded
 
 //	L->ci->state & CI_YIELD
+}
+
+luabind::functor<int>	*g_callback;
+luabind::object			*g_object;
+
+void set_callback_free	(const luabind::functor<int> &callback)
+{
+	xr_delete			(g_callback);
+	xr_delete			(g_object);
+	g_callback			= xr_new<luabind::functor<int> >(callback);
+}
+
+void set_callback_member(const luabind::functor<int> &callback, const luabind::object &object)
+{
+	xr_delete			(g_callback);
+	xr_delete			(g_object);
+	g_callback			= xr_new<luabind::functor<int> >(callback);
+	g_object			= xr_new<luabind::object>(object);
 }
 
 void bug_test	()
@@ -2077,6 +2185,7 @@ void bug_test	()
 	
 	luabind::open			(L);
 
+#if 0
 	LPCSTR					s = "main()";
 	lua_dofile				(L,"x:\\bug6.script");
 	for (int i=0; i<10; ++i) {
@@ -2093,6 +2202,36 @@ void bug_test	()
 		lua_settop			(L,top);
 		lua_setgcthreshold	(L,0);
 	}
+#else
+	function				(L,"set_callback",&set_callback_free);
+	function				(L,"set_callback",&set_callback_member);
+
+	xr_vector<LPCSTR>		files;
+
+	files.push_back			("x:\\member_test_free.script");
+	files.push_back			("x:\\member_test_free_pseudo.script");
+	files.push_back			("x:\\member_test_member.script");
+
+	u32						result0 = 0, result1 = 0;
+
+	xr_vector<LPCSTR>::const_iterator	I = files.begin();
+	xr_vector<LPCSTR>::const_iterator	E = files.end();
+	for ( ; I != E; ++I) {
+		lua_dofile			(L,*I);
+		if (g_callback) {
+			if (g_object)
+//				result1		= luabind::call_member<int>(*g_object,*g_callback,"member_call");
+				result1		= (*g_callback)(*g_object,"member_call");
+			else
+				result0		= (*g_callback)("free_call");
+		}
+		printf				("%d, %d\n",result0, result1);
+	}
+
+
+	xr_delete				(g_callback);
+	xr_delete				(g_object);
+#endif
 
 	lua_close				(L);
 }

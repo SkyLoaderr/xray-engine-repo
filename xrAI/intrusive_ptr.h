@@ -39,7 +39,10 @@ private:
 	typedef const object_type *(intrusive_ptr::*unspecified_bool_type) () const;
 
 private:
-	enum {result = object_type_traits::is_base_and_derived<base_type,object_type>::value};
+	enum {result = 
+		object_type_traits::is_base_and_derived<base_type,object_type>::value ||
+		object_type_traits::is_same<base_type,object_type>::value
+	};
 
 private:
 	object_type					*m_object;

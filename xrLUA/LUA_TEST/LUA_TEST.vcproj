@@ -27,7 +27,7 @@
 				OptimizeForProcessor="2"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;DEBUG;_WINDOWS;_USRDLL;LUA_TEST;"
 				MinimalRebuild="TRUE"
-				ExceptionHandling="FALSE"
+				ExceptionHandling="TRUE"
 				BasicRuntimeChecks="3"
 				SmallerTypeCheck="TRUE"
 				RuntimeLibrary="1"
@@ -149,6 +149,9 @@
 				RelativePath=".\box_collision.cpp">
 			</File>
 			<File
+				RelativePath=".\callback_test.cpp">
+			</File>
+			<File
 				RelativePath=".\delegate_test.cpp">
 			</File>
 			<File
@@ -156,6 +159,12 @@
 			</File>
 			<File
 				RelativePath=".\FastDelegate.h">
+			</File>
+			<File
+				RelativePath=".\intrusive_ptr.h">
+			</File>
+			<File
+				RelativePath=".\intrusive_ptr_inline.h">
 			</File>
 			<File
 				RelativePath=".\lesha_test.cpp">
@@ -288,6 +297,15 @@
 		<Filter
 			Name="smart_container"
 			Filter="">
+			<File
+				RelativePath=".\slipch_test.cpp">
+			</File>
+			<File
+				RelativePath=".\slipch_test.h">
+			</File>
+			<File
+				RelativePath=".\slipch_use.cpp">
+			</File>
 			<File
 				RelativePath=".\smart_container.cpp">
 			</File>
