@@ -236,6 +236,8 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 
 void CActor::Hit		(float iLost, Fvector &dir, CObject* who)
 {
+	if (g_Alive()<=0) return;
+
 	switch (GAME)
 	{
 	case GAME_SINGLE:		
@@ -323,6 +325,8 @@ void CActor::feel_touch_delete	(CObject* O)
 
 void CActor::g_Physics			(Fvector& accel, float jump, float dt)
 {
+	if (g_Alive()<=0) return;
+
 	if (patch_frame<patch_frames)	return;
 
 	// Calculate physics
@@ -793,6 +797,7 @@ void CActor::OnHUDDraw	(CCustomHUD* hud)
 	HUD->pHUDFont->OutNext("Position:      [%3.2f, %3.2f, %3.2f]",VPUSH(vPosition));
 	HUD->pHUDFont->OutNext("Velocity:      [%3.2f, %3.2f, %3.2f]",VPUSH(Movement.GetVelocity()));
 	HUD->pHUDFont->OutNext("Vel Magnitude: [%3.2f]",Movement.GetVelocityMagnitude());
+	HUD->pHUDFont->OutNext("Vel Actual:    [%3.2f]",Movement.GetVelocityActual());
 
 /**
 	CHUDManager* HUD	= (CHUDManager*)hud;

@@ -997,12 +997,12 @@
 			<File
 				RelativePath=".\HitMarker.cpp">
 			</File>
-			<File
-				RelativePath=".\HitMarker.h">
-			</File>
 			<Filter
 				Name="UI"
 				Filter="">
+				<File
+					RelativePath=".\HitMarker.h">
+				</File>
 				<File
 					RelativePath=".\UI.cpp">
 				</File>
