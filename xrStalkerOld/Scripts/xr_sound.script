@@ -55,6 +55,8 @@ snd_files = {
 	volk_greet2                    = "characters_voice\\human_01\\scenario\\wolf\\wolf_thanks_2",
 	
 	military_radio                 = "characters_voice\\human_01\\scenario\\radio\\radio_voice_",
+	
+	patrol_radio_1                 = "characters_voice\\human_01\\scenario\\radio\\talk_1\\radio_",
 
 	gar_dm_bandit_backoff1         = [[characters_voice\human_01\scenario\dramatic_garbage\dramatic_bandits_back_off_1_]],
 	gar_dm_bandit_backoff2         = [[characters_voice\human_01\scenario\dramatic_garbage\dramatic_bandits_back_off_2_]],
@@ -183,6 +185,9 @@ function load_sound(obj)
 
 	-- radio for military stalkers
 	theme["military_radio"] = load_theme ("military_radio")
+
+    -- радио для командира патруля
+    theme["patrol_radio_1"] = load_theme ("patrol_radio_1", true)
 
 	-- Garbage DramMoment
 	theme["gar_dm_bandit_backoff1"] = { exec = npc_class, types = {}}

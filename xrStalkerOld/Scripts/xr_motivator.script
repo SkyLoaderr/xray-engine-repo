@@ -46,7 +46,6 @@ function motivator_binder:reinit()
     self.object:disable_talk()
 
     --' загрузка озвучки
-    xr_sounds.load_sounds (self.object)
     xr_sound.load_sound(self.object)
 ----------------------------------------------------------------------------------------------------------------------
 -- Общие скрипты

@@ -84,6 +84,16 @@ function action_patrol:initialize ()
        --printf ("DISABLE RADIO 1")
        obj:enable_attachable_item (false)
     end
+    
+     self.sounds =
+                 { 
+                 rnd = 100,
+                 maxidle = 1,
+                 sumidle = 0,
+                 themes = { "patrol_radio_1" },
+                 last_num = 0
+                 }
+    self.sounds["seq_cnt"] = 0
 	
 end
 -------------
@@ -183,21 +193,18 @@ function action_patrol:process_radio ()
     end
 
     if self.sub_stage == 1 then
-       if count == 1 and self.current_phrase < 8 then
+       if count == 1 and self.sounds["seq_cnt"] < 8 then
           self.object:add_animation ("raciya_2", true)
        end
-       if self.object:active_sound_count () == 0 then
-          if self.current_phrase >= 8 then
-             self.sub_stage = 2
-             self.object:clear_animations ()
-             self.object:add_animation ("raciya_3", true)
-             self.object:add_animation ("raciya_4", true)
-          else
-             xr_sounds.play_sound (self.object, 0, "commander_radio", 1, self.current_phrase)
-             self.current_phrase = self.current_phrase + 1
-          end
-       return false
+       if self.sounds["seq_cnt"] >= 7 then
+          self.sub_stage = 2
+          self.object:clear_animations ()
+          self.object:add_animation ("raciya_3", true)
+          self.object:add_animation ("raciya_4", true)
+       else
+          xr_sound.sound_update(self.object, self.sounds)
        end
+       return false
     end
 
     if self.sub_stage == 2 and count == 1 then
