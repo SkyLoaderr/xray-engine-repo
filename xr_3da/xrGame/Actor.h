@@ -52,14 +52,14 @@ protected:
 
 	// media
 	BOOL				bStep;
-	int					sndStep[2];
-	int					sndLanding;
-	int					sndZoneHeart;
-	int					sndZoneDetector;
-	sound3D				sndWeaponChange;
-	sound3D				sndRespawn;
-	sound3D				sndHit[SND_HIT_COUNT];
-	sound3D				sndDie[SND_DIE_COUNT];
+	sound				sndStep[2];
+	sound				sndLanding;
+	sound				sndZoneHeart;
+	sound				sndZoneDetector;
+	sound				sndWeaponChange;
+	sound				sndRespawn;
+	sound				sndHit[SND_HIT_COUNT];
+	sound				sndDie[SND_DIE_COUNT];
 
 	struct				SActorState
 	{

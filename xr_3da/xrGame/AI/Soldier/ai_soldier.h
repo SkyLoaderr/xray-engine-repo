@@ -224,9 +224,9 @@ class CAI_Soldier : public CCustomMonster
 		static void __stdcall HeadSpinCallback(CBoneInstance*);
 		static void __stdcall SpineSpinCallback(CBoneInstance*);
 		
-		// media
-		sound3D			sndHit[SND_HIT_COUNT];
-		sound3D			sndDie[SND_DIE_COUNT];
+		// mea
+		sound			sndHit[SND_HIT_COUNT];
+		sound			sndDie[SND_DIE_COUNT];
 		
 		// events
 		EVENT			m_tpEventSay;

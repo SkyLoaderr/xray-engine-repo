@@ -60,7 +60,6 @@ CSoundManager::CSoundManager(BOOL bCDA )
 CSoundManager::~CSoundManager( )
 {
 	_DELETE			( pMusicStreams	);
-	_DELETE			( p2DSounds		);
 	_DELETE			( pSoundRender	);
 	_DELETE			( pCDA			);
 	

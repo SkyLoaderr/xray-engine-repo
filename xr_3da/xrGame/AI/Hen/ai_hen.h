@@ -42,8 +42,8 @@ class CAI_Hen : public CCustomMonster
 
 	protected:
 		// media
-		sound3D			sndHit[SND_HIT_COUNT];
-		sound3D			sndDie[SND_DIE_COUNT];
+		sound			sndHit[SND_HIT_COUNT];
+		sound			sndDie[SND_DIE_COUNT];
 		// ai
 		EHenStates		eCurrentState;
 		bool			bStopThinking;

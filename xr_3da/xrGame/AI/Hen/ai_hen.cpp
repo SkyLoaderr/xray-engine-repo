@@ -77,7 +77,7 @@ void CAI_Hen::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
 	tHitDir.normalize();
 
 	// Play hit-sound
-	sound3D& S = sndHit[Random.randI(SND_HIT_COUNT)];
+	sound& S				= sndHit[Random.randI(SND_HIT_COUNT)];
 	if (S.feedback)			return;
 	if (Random.randI(2))	return;
 	pSounds->Play3DAtPos	(S,this,vPosition);

@@ -264,7 +264,7 @@ BOOL CActor::Hit(int iLost, Fvector &dir, CEntity* who)
 
 void CActor::HitSignal(int perc, Fvector& vLocalDir, CEntity* who)
 {
-	sound3D& S = sndHit[Random.randI(SND_HIT_COUNT)];
+	sound& S = sndHit[Random.randI(SND_HIT_COUNT)];
 	if (S.feedback) return;
 
 	// Play hit-sound

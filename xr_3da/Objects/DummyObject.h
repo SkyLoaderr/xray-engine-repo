@@ -20,7 +20,7 @@ class CDummyObject : public CObject, public pureRender
 
 	DWORD				style;
 
-	sound3D				sndDummy;
+	sound				sndDummy;
 
 	typedef	CObject		inherited;
 public:

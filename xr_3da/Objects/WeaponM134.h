@@ -34,11 +34,11 @@ private:
 	DWORD			dwServoMaxFreq;
 	DWORD			dwServoMinFreq;
 
-	sound3D			sndFireStart;
-	sound3D			sndFireEnd;
-	sound3D			sndFireLoop;
-	sound3D			sndServo;
-	sound3D			sndRicochet[SND_RIC_COUNT];
+	sound			sndFireStart;
+	sound			sndFireEnd;
+	sound			sndFireLoop;
+	sound			sndServo;
+	sound			sndRicochet[SND_RIC_COUNT];
 
 	vector<Shader*>	hFlames;
 

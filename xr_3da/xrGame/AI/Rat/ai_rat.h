@@ -72,8 +72,8 @@ class CAI_Rat : public CCustomMonster
 		static void __stdcall SpineSpinCallback(CBoneInstance*);
 		
 		// media
-		sound3D			sndHit[SND_HIT_COUNT];
-		sound3D			sndDie[SND_DIE_COUNT];
+		sound			sndHit[SND_HIT_COUNT];
+		sound			sndDie[SND_DIE_COUNT];
 		
 		// events
 		EVENT			m_tpEventSay;

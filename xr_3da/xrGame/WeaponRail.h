@@ -16,7 +16,7 @@ class CWeaponRail : public CWeapon
 	float				fTime;
 	CFastSpriteRail*	pTrail;		
 
-	sound3D				sndFire;
+	sound				sndFire;
 	bool				bCanFire;
 public:
 	CWeaponRail					();
