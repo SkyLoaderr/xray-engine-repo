@@ -320,5 +320,56 @@
 	</specific_character>	
 
 
-</xml>
+<!-- ******************* Helicopter scene ********************** -->
 
+	<specific_character id="bar_ecolog_professor" team_default = "1">
+		<name>профессор Шариков</name>
+		<icon x="10" y="4"></icon>
+		<map_icon x="1" y="6"></map_icon>
+		<bio>Доктор биологических наук. За пределами Зоны увлекался кинологией.
+		Собственно поэтому и попал в Зону - хотел изучить феномен мутировавших собак.
+		Автор многих открытий, которые спасли жизнь не одному сталкеру.</bio>
+
+		<class>bar_ecolog_professor</class>
+		<community>ecolog</community>
+		
+		<rank>70</rank>
+		<reputation>90</reputation>
+
+		<visual>actors\ecolog\stalker_ecolog</visual>
+		<supplies>
+			[spawn] \n
+			wpn_spas12 \n
+			ammo_12x70_buck = 1 \n
+		</supplies>
+				
+		<start_dialog>hello_dialog</start_dialog>
+	</specific_character>
+
+	<specific_character id="bar_svoboda_attack_commander" team_default = "1">
+		<name>Волкодав</name>
+		<icon x="24" y="8"></icon>
+		<map_icon x="5" y="0"></map_icon>
+		<bio>Один из полевых командиров "Свободы". Командир отряда боевиков, которые именуют себя "псами".
+		ненавидит любые законы, кроме законов крови.</bio>
+
+		<class>bar_svoboda_attack_commander</class>
+		<community>freedom</community>
+
+		
+		<rank>90</rank>
+		<reputation>40</reputation>
+
+		<visual>actors\svoboda\stalker_sv_exoskeleton</visual>
+		<supplies>
+			[spawn] \n
+			wpn_desert_eagle \n
+			ammo_11.43x23_hydro = 1 \n
+			wpn_fn2000 \n
+			ammo_5.56x45_ap = 1 \n
+		</supplies>
+			
+		<start_dialog>hello_dialog</start_dialog>
+	</specific_character>
+
+</xml>

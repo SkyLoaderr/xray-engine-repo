@@ -295,6 +295,12 @@
 	<character id="bar_bar_night_sniper">
 		<class>stalker_bar_night_sniper</class>
 	</character>
+	<character id="bar_ecolog_professor">
+		<class>bar_ecolog_professor</class>
+	</character>
+	<character id="bar_svoboda_attack_commander">
+		<class>bar_svoboda_attack_commander</class>
+	</character>
 
 
 </xml>
