@@ -55,7 +55,7 @@ void CUIPdaListItem::Init(int x, int y, int width, int height)
 		UIInfo.UIIcon.SetMask(&UIMask);
 	}
 
-	AttachChild(&UIName);
+	AttachChild(&UIName);UIName.SetAutoDelete(false);
 	if(uiXml.NavigateToNode("static", 0))
 	{
 		xml_init.InitStatic(uiXml, "static", 0, &UIName);

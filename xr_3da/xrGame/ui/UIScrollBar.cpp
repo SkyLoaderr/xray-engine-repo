@@ -55,10 +55,14 @@ void CUIScrollBar::Init(int x, int y, int length, bool bIsHorizontal)
 
 	
 	
+	if(!IsChild(&m_DecButton))
+		AttachChild(&m_DecButton);
 
-	AttachChild(&m_DecButton);
-	AttachChild(&m_IncButton);
-	AttachChild(&m_ScrollBox);
+	if(!IsChild(&m_IncButton))
+		AttachChild(&m_IncButton);
+
+	if(!IsChild(&m_ScrollBox))
+		AttachChild(&m_ScrollBox);
 	
 	UpdateScrollBar();
 }
