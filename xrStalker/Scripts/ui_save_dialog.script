@@ -51,7 +51,7 @@ function save_dialog:InitControls()
 	list_rect.width  = main_rect.width - indent*2
 	list_rect.height = main_rect.height - indent*2 - list_rect.y - btn_ok_rect.height
 	
-	local message_rect   = {x = 0, y = 0, width = 400, height = 200}	
+	local message_rect   = {x = 0, y = 0, width = 400, height = 300}	
 	
 	-- init self position and size
 	self:Init(main_rect.x, main_rect.y, main_rect.width, main_rect.height)
