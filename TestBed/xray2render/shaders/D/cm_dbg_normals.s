@@ -1,18 +1,18 @@
 struct 	a2v
 {
   float4 Position: 	POSITION;	// Object-space position
-  float4 Tex0: 		TEXCOORD0;	// Texture coordinates
+  float4 tc0: 		TEXCOORD0;	// Texture coordinates
 };
 
 struct 	v2p_out
 {
   float4 HPos: 		POSITION;	// Clip-space position 	(for rasterization)
-  float4 Tex0: 		TEXCOORD0;	// Texture coordinates 	(for sampling maps)
+  float4 tc0: 		TEXCOORD0;	// Texture coordinates 	(for sampling maps)
 };
 
 struct 	v2p_in
 {
-  float4 Tex0: 		TEXCOORD0;	// Texture coordinates 	(for sampling maps)
+  float4 tc0: 		TEXCOORD0;	// Texture coordinates 	(for sampling maps)
 };
 
 struct 	p2f
@@ -32,7 +32,7 @@ v2p_out v_main	( a2v  	IN )
 {
   v2p_out 	OUT;
   OUT.HPos 	= IN.Position;				// pass-through
-  OUT.Tex0 	= IN.Tex0;
+  OUT.tc0 	= IN.tc0;
   return	OUT;
 }
 
@@ -42,6 +42,6 @@ p2f 	p_main	( v2p_in IN )
 {
   p2f		OUT;
 
-  OUT.C 	= tex2D		(s_normal, float2(IN.Tex0.x, IN.Tex0.y)); 
+  OUT.C 	= tex2D		(s_normal, float2(IN.tc0.x, IN.tc0.y)); 
   return OUT;
 }
