@@ -47,6 +47,8 @@ public:
 protected:
 	HMODULE m_hScintilla;
 	BOOL fileExist(CString path_name);
+	afx_msg void OnFileNew();
+
 public:
 	CSSConnection	m_ssConnection;
 	CString			m_comparerCmd;

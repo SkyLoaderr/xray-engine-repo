@@ -55,6 +55,7 @@ public:
 	CString							m_ss_working_folder;
 	CProjectFileArray	m_files;
 	void CreateBreakPointList(CString& str);
+	void	NewFile(CString& fn);
 protected:
 	BOOL Load(CArchive& ar);
 

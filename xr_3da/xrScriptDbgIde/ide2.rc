@@ -165,6 +165,7 @@ BEGIN
         MENUITEM "UndoCheckOut",                ID_VSS_UNDOCHECKOUT
         MENUITEM "Difference",                  ID_VSS_DIFFERENCE
         MENUITEM "GetLatestVersion",            ID_VSS_GETLATESTVERSION
+        MENUITEM "AddToSourceControl",          ID_VSS_ADDTOSOURCECONTROL
     END
 END
 

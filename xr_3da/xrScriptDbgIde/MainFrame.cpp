@@ -927,7 +927,7 @@ void CMainFrame::EvalWatch(CString watch, int iItem)
 void CMainFrame::OnToolsOptions()
 {
 	CLuaView* v = GetActiveView();
-	v->Activate();
+//	v->GetProjectFile()->SS_add_to_ss();
 }
 
 BOOL CMainFrame::checkExistingFolder(CString str)
@@ -982,6 +982,11 @@ void CMainFrame::GetCalltip(const char* str)
 		if(GetTickCount()-tk_start>5000)
 			break;
 	}
+}
+
+void CMainFrame::OnNewFile(CString& fn)
+{
+	GetProject()->NewFile(fn);
 }
 
 void ActivateXRAY()

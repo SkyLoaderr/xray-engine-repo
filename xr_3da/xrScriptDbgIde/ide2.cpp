@@ -25,12 +25,20 @@ BEGIN_MESSAGE_MAP(CIdeApp, CWinApp)
 	//{{AFX_MSG_MAP(CIdeApp)
 	//}}AFX_MSG_MAP
 	// Standard file based document commands
-	ON_COMMAND(ID_FILE_NEW, CWinApp::OnFileNew)
+	ON_COMMAND(ID_FILE_NEW, OnFileNew)
 	ON_COMMAND(ID_FILE_OPEN, CWinApp::OnFileOpen)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CIdeApp construction
+
+void CIdeApp::OnFileNew()
+{
+	CString fn;
+	if( DoPromptFileName(fn, ID_FILE_NEW,
+			0, TRUE, m_pLuaTemplate))
+	g_mainFrame->OnNewFile(fn);
+}
 
 CIdeApp::CIdeApp()
 {

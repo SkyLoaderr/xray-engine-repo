@@ -108,6 +108,7 @@
 #define ID_EDIT_BREAKPOINTSLIST         32874
 #define ID_ADD_WATCH                    32880
 #define ID_EDIT_CLEAROUTPUT             32885
+#define ID_VSS_ADDTOSOURCECONTROL       32886
 
 // Next default values for new objects
 // 
@@ -115,7 +116,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        143
-#define _APS_NEXT_COMMAND_VALUE         32886
+#define _APS_NEXT_COMMAND_VALUE         32887
 #define _APS_NEXT_CONTROL_VALUE         1016
 #define _APS_NEXT_SYMED_VALUE           112
 #endif

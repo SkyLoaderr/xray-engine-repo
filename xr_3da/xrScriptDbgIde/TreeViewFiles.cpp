@@ -66,6 +66,7 @@ BEGIN_MESSAGE_MAP(CTreeViewFiles, CTreeView)
 	ON_COMMAND(ID_VSS_DIFFERENCE,		OnVSSDifference)
 	ON_COMMAND(ID_VSS_GETLATESTVERSION,	OnVSSGetLatest)
 
+	ON_COMMAND(ID_VSS_ADDTOSOURCECONTROL,	OnVSSAddFile)
 
 	
 END_MESSAGE_MAP()
@@ -389,9 +390,12 @@ void CTreeViewFiles::OnRclick(NMHDR* pNMHDR, LRESULT* pResult)
 		mnu_itm = mnu.GetMenuItemID(2);
 		mnu.EnableMenuItem(mnu_itm,(stat==vss_checked_out_me)?MF_ENABLED : MF_GRAYED);
 		mnu_itm = mnu.GetMenuItemID(3);
-		mnu.EnableMenuItem(mnu_itm,(stat != -1)?MF_ENABLED : MF_GRAYED);
+		mnu.EnableMenuItem(mnu_itm,((stat != vss_no_ss)&&(stat != vss_unknown))?MF_ENABLED : MF_GRAYED);
 		mnu_itm = mnu.GetMenuItemID(4);
 		mnu.EnableMenuItem(mnu_itm,((stat != vss_no_ss)&&(stat != vss_unknown))?MF_ENABLED : MF_GRAYED);
+
+		mnu_itm = mnu.GetMenuItemID(5);
+		mnu.EnableMenuItem(mnu_itm,((stat == vss_no_ss)||(stat == vss_unknown))?MF_ENABLED : MF_GRAYED);
 
 			POINT mouse;
 			GetCursorPos(&mouse);
@@ -688,6 +692,12 @@ void CTreeViewFiles::OnVSSDifference(){
 */
 }
 
+void CTreeViewFiles::OnVSSAddFile(){
+	HTREEITEM hItem = m_pTree->GetSelectedItem();
+	CProjectFile* pPF = (CProjectFile*)m_pTree->GetItemData(hItem);
+	pPF->SS_add_to_ss();
+
+}
 /*
 void CTreeViewFiles::VSSCheckIn(HTREEITEM itm){
 	if(!theApp.m_ssConnection.b_IsConnected())

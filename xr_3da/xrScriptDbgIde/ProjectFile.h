@@ -53,6 +53,7 @@ public:
 	void			SS_undo_check_out	();
 	void			SS_difference		();
 	void			SS_get_latest		();
+	void			SS_add_to_ss		();
 	void			Check_view			();
 protected:
 	const CString&	getWorkingFolder	();

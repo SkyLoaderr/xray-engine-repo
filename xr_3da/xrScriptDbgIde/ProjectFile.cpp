@@ -442,6 +442,30 @@ void CProjectFile::SS_get_latest ()
 	}
 
 }
+void CProjectFile::SS_add_to_ss ()
+{
+	if(!theApp.m_ssConnection.b_IsConnected())
+		return;
+
+	CString str = GetNameExt();
+
+	IVSSItemPtr vssItem,vssItemNew;
+	CComBSTR parent_name = getWorkingFolder();
+	theApp.m_ssConnection.p_GetSourcesafeDatabase()->get_VSSItem(parent_name, FALSE, &vssItem);
+
+	CComBSTR bstr_localSpec;
+	vssItem->get_LocalSpec(&bstr_localSpec);
+	bstr_localSpec.Append("\\");
+	bstr_localSpec.Append(str);
+	CComBSTR bstr_comment("no comment");
+	vssItem->Add(bstr_localSpec,bstr_comment, 0,&vssItemNew);
+	if (!b_DisplayAnyError())
+	{
+		UpdateSS_status();
+	}
+
+}
+
 const CString&	CProjectFile::getWorkingFolder()
 {
 	return g_mainFrame->GetProject()->m_ss_working_folder;

@@ -425,3 +425,21 @@ void CProject::CreateBreakPointList(CString& str)
 	for ( int i=0; i<nFiles; ++i )
 		m_files[i]->CreateBreakPointList(str);
 }
+
+void CProject::NewFile(CString& fn)
+{
+	CFile fin;
+
+	if( !fin.Open(fn,CFile::modeCreate) ){
+		CString msg;
+		msg.Format("Unable to create new file %s", fn);
+		AfxMessageBox(msg);
+		return;
+	}
+	fin.Close();
+
+	CProjectFile *pPF = new CProjectFile;
+	pPF->SetPathName( fn );
+	AddFile(pPF);
+//	pPF->Load();
+}

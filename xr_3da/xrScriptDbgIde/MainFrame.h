@@ -88,6 +88,7 @@ public:
 	void			SendBreakPoints();
 	void			OpenDefaultProject();
 	void			GetCalltip(const char* str);
+	void			OnNewFile(CString& fn);
 #ifdef _DEBUG
 	virtual void	AssertValid() const;
 	virtual void	Dump(CDumpContext& dc) const;

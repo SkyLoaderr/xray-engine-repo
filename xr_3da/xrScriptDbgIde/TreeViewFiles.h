@@ -91,7 +91,7 @@ protected:
 	afx_msg void OnVSSUndoCheckOut();
 	afx_msg void OnVSSDifference();
 	afx_msg void OnVSSGetLatest();
-
+	afx_msg void OnVSSAddFile();
 //}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 /*	long VSSGetStatus(HTREEITEM);
