@@ -79,6 +79,9 @@ void CCustomRocket::activate_physic_shell	()
 {
 	VERIFY(H_Parent());
 
+	if( m_pPhysicsShell->bActive )
+		return;
+
 	m_pPhysicsShell->Activate(m_LaunchXForm, m_vLaunchVelocity, m_vLaunchAngularVelocity);
 	m_pPhysicsShell->Update	();
 
