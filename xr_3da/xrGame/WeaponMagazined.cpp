@@ -265,7 +265,10 @@ void CWeaponMagazined::ReloadMagazine()
 	//переменная блокирует использование
 	//только разных типов патронов
 	static bool l_lockType = false;
-	if(!l_lockType) m_ammoName = NULL;
+	if (!l_lockType) {
+		m_ammoName	= NULL;
+		m_pAmmo		= NULL;
+	}
 	
 	if(m_pInventory) 
 	{
