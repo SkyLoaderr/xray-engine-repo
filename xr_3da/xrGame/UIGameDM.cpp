@@ -47,7 +47,7 @@ CUIGameDM::CUIGameDM()
 */
 
 	m_time_caption = "timelimit";
-	m_gameCaptions.addCustomMessage(m_time_caption, 0.0f, -0.95f, 0.03f, HUD().pFontDI, TIME_MSG_COLOR, "");
+	m_gameCaptions.addCustomMessage(m_time_caption, 0.0f, -0.95f, 0.03f, HUD().pFontDI, CGameFont::alCenter, TIME_MSG_COLOR, "");
 //	m_gameCaptions.customizeMessage(m_time_caption, CUITextBanner::tbsFlicker)->fPeriod = 0.5f;
 
 	//-----------------------------------------------------------------------
