@@ -283,7 +283,7 @@ bool CGrenade::Action(s32 cmd, u32 flags)
 				{
 					//перебираем все предметы на поясе 
 					//пока не встретим гарнату другого типа
-					PPIItem it = m_pInventory->m_belt.begin();
+					TIItemContainer::iterator it = m_pInventory->m_belt.begin();
 					while(m_pInventory->m_belt.end() != it) 
 					{
 						CGrenade *pGrenade = smart_cast<CGrenade*>(*it);

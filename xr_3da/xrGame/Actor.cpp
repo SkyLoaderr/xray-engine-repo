@@ -556,7 +556,7 @@ void CActor::Die	(CObject* who)
 		bool MedKitDropped = false;
 		//if we are on server and actor has PDA - destroy PDA
 		TIItemContainer &l_rlist = inventory().m_ruck;
-		for(PPIItem l_it = l_rlist.begin(); l_rlist.end() != l_it; ++l_it)
+		for(TIItemContainer::iterator l_it = l_rlist.begin(); l_rlist.end() != l_it; ++l_it)
 		{
 			if (GameID() == GAME_ARTEFACTHUNT)
 			{
@@ -1268,7 +1268,7 @@ void CActor::UpdateArtefactsOnBelt()
 		update_time = 0;
 	}
 
-	for(PPIItem it = inventory().m_belt.begin(); 
+	for(TIItemContainer::iterator it = inventory().m_belt.begin(); 
 		inventory().m_belt.end() != it; ++it) 
 	{
 		CArtefact*	artefact = smart_cast<CArtefact*>(*it);
@@ -1285,7 +1285,7 @@ void CActor::UpdateArtefactsOnBelt()
 
 float	CActor::HitArtefactsOnBelt		(float hit_power, ALife::EHitType hit_type)
 {
-	for(PPIItem it = inventory().m_belt.begin(); 
+	for(TIItemContainer::iterator it = inventory().m_belt.begin(); 
 		inventory().m_belt.end() != it; ++it) 
 	{
 		CArtefact*	artefact = smart_cast<CArtefact*>(*it);

@@ -171,7 +171,7 @@ void CUICarBodyWnd::UpdateLists()
 	ruck_list.sort(GreaterRoomInRuck);
 
 	//Наш рюкзак
-	PPIItem it;
+	TIItemContainer::iterator it;
 	for(it =  ruck_list.begin(); ruck_list.end() != it; ++it) 
 	{
 		if((*it)) 

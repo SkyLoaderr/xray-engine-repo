@@ -197,7 +197,7 @@ void CScriptGameObject::ForEachInventoryItems(const luabind::functor<void> &func
 	TIItemContainer item_list;
 	pInv->AddAvailableItems(item_list, true);
 
-	PPIItem it;
+	TIItemContainer::iterator it;
 	for(it =  item_list.begin(); item_list.end() != it; ++it) 
 	{
 		CGameObject* inv_go = smart_cast<CGameObject*>(*it);

@@ -155,7 +155,7 @@ LPCSTR CInventoryItem::NameComplex()
 	if(l_name) 	m_nameComplex = l_name; 
 	else 		m_nameComplex = 0;
 
-	/*for(PPIItem l_it = m_subs.begin(); m_subs.end() != l_it; ++l_it) 
+	/*for(TIItemContainer::iterator l_it = m_subs.begin(); m_subs.end() != l_it; ++l_it) 
 	{
 		const char *l_subName = (*l_it)->NameShort();
 		if(l_subName)

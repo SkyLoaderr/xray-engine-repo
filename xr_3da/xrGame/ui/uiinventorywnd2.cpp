@@ -478,7 +478,7 @@ void CUIInventoryWnd::InitInventory()
 	}
 
 	//Пояс
-	for(PPIItem it =  pInv->m_belt.begin(); pInv->m_belt.end() != it; ++it) 
+	for(TIItemContainer::iterator it =  pInv->m_belt.begin(); pInv->m_belt.end() != it; ++it) 
 	{
 		if((*it)) 
 		{

@@ -365,7 +365,7 @@ bool CInventory::Slot(PIItem pIItem, bool bNotActivate)
 	m_slots[pIItem->GetSlot()].m_pIItem = pIItem;
 
 	//удалить из рюкзака или пояса
-	PPIItem it = std::find(m_ruck.begin(), m_ruck.end(), pIItem);
+	TIItemContainer::iterator it = std::find(m_ruck.begin(), m_ruck.end(), pIItem);
 	if(m_ruck.end() != it) m_ruck.erase(it);
 	it = std::find(m_belt.begin(), m_belt.end(), pIItem);
 	if(m_belt.end() != it) m_belt.erase(it);
@@ -398,7 +398,7 @@ bool CInventory::Belt(PIItem pIItem)
 
 	if(!in_slot)
 	{
-		PPIItem it = std::find(m_ruck.begin(), m_ruck.end(), pIItem); 
+		TIItemContainer::iterator it = std::find(m_ruck.begin(), m_ruck.end(), pIItem); 
 		if(m_ruck.end() != it) m_ruck.erase(it);
 	}
 
@@ -426,7 +426,7 @@ bool CInventory::Ruck(PIItem pIItem)
 	else
 	{
 		//вещь была на поясе или вообще только поднята с земли
-		PPIItem it = std::find(m_belt.begin(), m_belt.end(), pIItem); 
+		TIItemContainer::iterator it = std::find(m_belt.begin(), m_belt.end(), pIItem); 
 		if(m_belt.end() != it) m_belt.erase(it);
 	}
 	
@@ -652,7 +652,7 @@ void CInventory::Update()
 	u32		drop_count = 0;
 	for		(int i = 0; i < 2; ++i)	{
 		TIItemContainer &list = i?m_ruck:m_belt;
-		PPIItem it = list.begin();
+		TIItemContainer::iterator it = list.begin();
 	
 		while(list.end() != it)
 		{
@@ -815,7 +815,7 @@ u32 CInventory::dwfGetSameItemCount(LPCSTR caSection)
 {
 	u32			l_dwCount = 0;
 	TIItemContainer	&l_list = m_ruck;
-	for(PPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it) 
+	for(TIItemContainer::iterator l_it = l_list.begin(); l_list.end() != l_it; ++l_it) 
 	{
 		PIItem	l_pIItem = *l_it;
 		if (!xr_strcmp(l_pIItem->object().cNameSect(), caSection))
