@@ -1,20 +1,23 @@
 
 local command1 ={
-                { name = "muzhik1", id = -1},
-                { name = "muzhik2", id = -1},
-                { name = "muzhik3", id = -1}
+                { name = "yan_zom_sc_01", id = -1},
+                { name = "yan_zom_sc_02", id = -1},
+                { name = "yan_zom_sc_03", id = -1},
+                { name = "yan_zom_sc_04", id = -1},
+                { name = "yan_zom_sc_05", id = -1}
                 }
 
 local command2 ={
-                { name = "muzhik4", id = -1},
-                { name = "muzhik5", id = -1},
-                { name = "muzhik6", id = -1}
+                { name = "yan_zom_sc_1", id = -1},
+                { name = "yan_zom_sc_2", id = -1},
+                { name = "yan_zom_sc_3", id = -1},
+                { name = "yan_zom_sc_4", id = -1}
                 }
                 
 local command1_moved = false                
 local command2_moved = false
 local last_time = 0
-local zone_name = "attack_zone";
+local zone_name = "camp_attack_zone";
 local timeout = 2 * 60 * 60 * 1000
                 
 function main ()
