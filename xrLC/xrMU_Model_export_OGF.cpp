@@ -55,7 +55,8 @@ void xrMU_Reference::export_ogf()
 			{
 				xform.transform_tiny(D.v[lv].v,F.v[lv]);
 				D.v[lv].t			= F.t[lv];
-				D.v[lv].c			= 0xffffffff;
+				D.v[lv].c_rgb_hemi	= 0xffffffff;
+				D.v[lv].c_sun		= 0xff;
 			}
 		}
 
@@ -76,7 +77,6 @@ void xrMU_Reference::export_ogf()
 			for (int lv=0; lv<4; lv++)
 			{
 				Fvector	ptPos	= F.v[lv].v;
-				u32&	ptColor	= F.v[lv].c;
 
 				base_color		_C;
 				float 			_N	= 0;
@@ -96,9 +96,10 @@ void xrMU_Reference::export_ogf()
 					_N				+= oA;
 				}
 
-				float	s		= 1/(_N+EPS);
-				_C.mul			(s);
-				ptColor			= _C;
+				float	s			= 1/(_N+EPS);
+				_C.mul				(s);
+				F.v[lv].c_rgb_hemi	= color_rgba(u8_clr(_C.rgb.x),u8_clr(_C.rgb.y),u8_clr(_C.rgb.z),u8_clr(_C.hemi));
+				F.v[lv].c_sun		= u8_clr	(_C.sun);
 			}
 		}
 	}

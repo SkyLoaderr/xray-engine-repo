@@ -95,7 +95,7 @@ void xrMU_Model::calc_lighting	(xr_vector<Fcolor>& dest, Fmatrix& xform, CDB::MO
 			Fvector				P,N;
 			N.random_dir		(vN,deg2rad(45.f));
 			P.mad				(vP,N,a);
-			LightPoint			(&DB, MDL, vC, P, N, &*Lights.begin(), &*Lights.end(), 0, TRUE);
+			LightPoint			(&DB, MDL, vC, P, N, lights, flags, 0);
 		}
 		vC.scale				(n_samples);
 		vC._tmp_				= v_trans;
@@ -142,27 +142,20 @@ void xrMU_Model::calc_lighting	(xr_vector<Fcolor>& dest, Fmatrix& xform, CDB::MO
 		VL.erase			(std::unique(VL.begin(),VL.end()),VL.end());
 
 		// Calc summary color
-		Fcolor		C;
-		C.set		(0,0,0,0);
+		base_color	C;
 		for (int v=0; v<int(VL.size()); v++)
-		{
-			C.r = _max	(C.r,VL[v]->C.r);
-			C.g = _max	(C.g,VL[v]->C.g);
-			C.b = _max	(C.b,VL[v]->C.b);
-		}
+			C.max		(VL[v]->C);
 
 		// Calculate final vertex color
 		for (v=0; v<int(VL.size()); v++)
 		{
 			// trans-level
-			float	level		= VL[v]->C.a;
+			float	level		= VL[v]->C._tmp_;
 
 			// 
-			Fcolor				R;
+			base_color			R;
 			R.lerp				(VL[v]->C,C,level);
-			R.r					= _max(R.r,VL[v]->C.r);
-			R.g					= _max(R.g,VL[v]->C.g);
-			R.b					= _max(R.b,VL[v]->C.b);
+			R.max				(VL[v]->C);
 			VL[v]->C.lerp		(R,g_params.m_lm_amb_color,g_params.m_lm_amb_fogness);
 			VL[v]->C.mul_rgb	(.5f);
 			VL[v]->C.a			= 1.f;
