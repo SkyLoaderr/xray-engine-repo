@@ -250,6 +250,7 @@ void	CRenderTarget::OnDeviceDestroy	()
 	// DIRECT
 	Device.Shader.Delete		(s_accum_direct			);
 	Device.Shader.Delete		(s_accum_mask			);
+	Device.Shader._DeleteRT		(rt_smap_d_depth		);
 	Device.Shader._DeleteRT		(rt_smap_d_surf			);
 	_RELEASE					(rt_smap_d_ZB			);
 
