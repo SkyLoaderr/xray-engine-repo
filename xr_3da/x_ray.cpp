@@ -41,13 +41,17 @@ void Startup				()
 	Engine.External.Initialize	( );
 	
 	// Execute script
-	strcpy						(Console.ConfigFile,"user.ltx");
-	if (strstr(Core.Params,"-ltx ")) {
-		string64				c_name;
-		sscanf					(strstr(Core.Params,"-ltx ")+5,"%[^ ] ",c_name);
-		strcpy					(Console.ConfigFile,c_name);
+	{
+		strcpy						(Console.ConfigFile,"user.ltx");
+		if (strstr(Core.Params,"-ltx ")) {
+			string64				c_name;
+			sscanf					(strstr(Core.Params,"-ltx ")+5,"%[^ ] ",c_name);
+			strcpy					(Console.ConfigFile,c_name);
+		}
+		if (!FS.exist(Console.ConfigFile))
+			strcpy					(Console.ConfigFile,"user.ltx");
+		Console.ExecuteScript		(Console.ConfigFile);
 	}
-	Console.ExecuteScript		(Console.ConfigFile);
 
 	BOOL bCaptureInput			= !strstr(Core.Params,"-i");
 
