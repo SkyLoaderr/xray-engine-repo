@@ -62,8 +62,8 @@ public:
 	void	OnDeviceCreate	(void);
 
 	// Creation/Destroying
-	Shader	Create			(LPCSTR sh_name="null", DWORD lights, LPCSTR t_name = "$null");
-	void	Delete			(Shader &S);
+	Shader	Create			(LPCSTR s_shader="null", LPCSTR s_textures = "$null", LPCSTR s_constants = "", LPCSTR s_matrices = "");
+	void	Delete			(Shader	&S);
 	void	DeferredLoad	(BOOL E)	{ bDeferredLoad=E;	}
 
 	void	TexturesLoad	();
@@ -76,10 +76,6 @@ public:
 	void	__fastcall	Set			(Shader& S);
 	void	__fastcall	SetupPass	(DWORD	pass);
 	void				SetNULL		() { Set(sh_list[0]); }
-	void				Invalidate	()	
-	{
-		cache_shader	= 0;
-	}
 };
 
 #endif // !defined(AFX_TEXTUREMANAGER_H__0E25CF4B_FFEC_11D3_B4E3_4854E82A090D__INCLUDED_)
