@@ -5,7 +5,7 @@
 Сделать:
 --------------------------------------------------------------------------------------------------------------------]]
 
-local attack_dist_sqr = 70 * 70 -- квадрат расстояния, на котором вертолёт может быть атакован
+local def_attack_dist = 70 * 70 -- расстояние, на котором вертолёт может быть атакован
 
 ---------------------------------------------------------------------------------------------------------------------
 -- Эвалуатор свойства "можно пострелять по вертолёту"
@@ -22,7 +22,7 @@ function evaluator_shoot:evaluate()
 		return false
 	else
 		return xr_logic.is_active( self.object, self.a ) and
-		       self.a.heli:position():distance_to_sqr( self.object:position() ) <= attack_dist_sqr
+		       self.a.heli:position():distance_to_sqr( self.object:position() ) <= self.a.attack_dist_sqr
 	end
 end
 
@@ -46,7 +46,7 @@ function action_shoot:initialize()
 		self.object:set_item ( object.idle, self.bw )
 	end
 
-	self.aim_end = device():time_global() + 3000
+	self.aim_end = device():time_global() + math.random( 3000, 4000 )
 end
 
 function action_shoot:execute()
@@ -90,6 +90,8 @@ function set_scheme( npc, ini, scheme, section, gulag_name )
 	printf( "DEBUG: set_scheme: scheme='%s', section='%s'", scheme, section )
 	local a = xr_logic.assign_storage_and_bind( npc, ini, scheme, section )
 	printf( "DEBUG: set_scheme: storage assigned" )
+
+	a.attack_dist_sqr = math.pow( utils.cfg_get_number( ini, section, "dist", npc, false, def_attack_dist ), 2 )
 
 	a.logic = xr_logic.cfg_get_switch_conditions( ini, section, npc )
 

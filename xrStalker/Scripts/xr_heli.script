@@ -43,7 +43,7 @@ function HeliManager:HeliOnHit( p )
 	end
 
 	-- количество оставшихся заходов для атаки
-	self.attack_passes = max_attack_passes
+	self.attack_passes = self.attack_passes
 
 	if self.heliObject:GetState() == CHelicopter.eMovingByAttackTraj then
 		return
@@ -54,7 +54,8 @@ function HeliManager:HeliOnHit( p )
 	impulse    = p:r_float()
 	hit_type   = p:r_u32()
 	enemy_name = p:r_stringZ()
-printf( "ENEMY NAME=%s", enemy_name )
+
+	printf( "ENEMY NAME=%s", enemy_name )
 	self:set_enemy( level.object( enemy_name ) )
 end
 
@@ -187,7 +188,7 @@ function HeliManager:update()
 	return true
 end
 
-function HeliManager:set_enemy( enemy )
+function HeliManager:set_enemy( enemy, attack_passes )
 	if enemy then
 		self.enemy = enemy
 
@@ -198,12 +199,14 @@ function HeliManager:set_enemy( enemy )
 		self.heliObject:SetState( CHelicopter.eMovingByAttackTraj )
 
 		self.attack_pass_state = 0
-		self.attack_passes     = max_attack_passes
+		self.attack_passes     = attack_passes or max_attack_passes
 --		self.heliObject.on_point_range_dist = 30
 
 		if self.heli:position():distance_to_sqr( self.enemy:position() ) >= pass_dist then
+			printf( "fly straight" )
 			self.heliObject:SetDestPosition( enemy:position() )
 		else
+			printf( "fly far" )
 			self:HeliOnPoint()
 		end
 	end
