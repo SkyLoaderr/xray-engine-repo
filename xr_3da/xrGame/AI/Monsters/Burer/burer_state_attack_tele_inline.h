@@ -27,8 +27,9 @@ void CStateBurerAttackTeleAbstract::execute()
 {
 //	const CEntityAlive *enemy		= m_object->EnemyMan.get_enemy();
 	m_object->MotionMan.m_tAction	= ACT_STAND_IDLE;
-
-	//if ()
+	
+	m_object->CTelekineticObject tele_object;
+		
 
 }
 

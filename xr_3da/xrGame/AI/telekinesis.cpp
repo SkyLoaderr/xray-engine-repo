@@ -13,95 +13,109 @@ CTelekinesis::~CTelekinesis()
 
 }
 
-
-void CTelekinesis::InitExtern(float s, float h, u32 keep_time)
+void CTelekinesis::activate(CGameObject *obj, float strength, float height, u32 max_time_keep)
 {
-	strength		= s;
-	height			= h;
-	max_time_keep	= keep_time;
-}
-
-void CTelekinesis::Activate(const Fvector &pos)
-{
-	if (active)		return;
-	VERIFY(objects.empty());
-
 	active = true;
 
-	// получить список объектов
-	Level().ObjectSpace.GetNearest		(pos,10.f); 
-	xr_vector<CObject*> &tpNearest		= Level().ObjectSpace.q_nearest; 
-
-	// все объекты внести в список 
-	for (u32 i = 0; i < tpNearest.size(); i++) {
-
-		CGameObject *obj = dynamic_cast<CGameObject *>(tpNearest[i]);
-		CTelekineticObject tele_object;		
-		if (!tele_object.init(obj,height,max_time_keep)) continue;
+	CTelekineticObject tele_object;		
+	if (!tele_object.init(obj,strength, height,max_time_keep)) return;
 		
-		// добавить объект
-		objects.push_back(tele_object);
-	}
+	// добавить объект
+	objects.push_back(tele_object);
 
 	if (!objects.empty()) CPHUpdateObject::Activate();
 }
 
-void CTelekinesis::Deactivate()
+void CTelekinesis::deactivate()
 {
 	active			= false;
 
-	for (u32 i = 0; i < objects.size(); i++) {
-		objects[i].release();
-	}
-
+	// отпустить все объекты
+	for (u32 i = 0; i < objects.size(); i++) objects[i].release();
 	objects.clear	();
 
 	CPHUpdateObject::Deactivate();
 }
 
 
-
-void CTelekinesis::Throw(const Fvector &target)
+void CTelekinesis::deactivate(CGameObject *obj)
 {
-	if (!active) return;
+	// найти объект
+	TELE_OBJECTS_IT it = find(objects.begin(), objects.end(), obj);
+	if (it == objects.end()) return;
 
-	for (u32 i = 0; i < objects.size(); i++) {
-		objects[i].fire(target);
+	// отпустить объект
+	it->release();
+	
+	// удалить
+	objects.erase(it);
+
+	// проверить на полную деактивацию
+	if (objects.empty()) {
+		CPHUpdateObject::Deactivate();
+		active = false;
 	}
-
-	Deactivate();
 }
 
 
-void CTelekinesis::UpdateSched()
+void CTelekinesis::fire(const Fvector &target)
+{
+	if (!active) return;
+
+	for (u32 i = 0; i < objects.size(); i++) objects[i].fire(target);
+
+	deactivate();
+}
+
+void CTelekinesis::fire(CGameObject *obj, const Fvector &target)
+{
+	// найти объект
+	TELE_OBJECTS_IT it = find(objects.begin(), objects.end(), obj);
+	if (it == objects.end()) return;
+
+	// бросить объект
+	it->fire(target);
+
+	// удалить
+	objects.erase(it);
+
+	// проверить на полную деактивацию
+	if (objects.empty()) {
+		CPHUpdateObject::Deactivate();
+		active = false;
+	}
+}
+
+bool CTelekinesis::is_active_object(CGameObject *obj)
+{
+	// найти объект
+	TELE_OBJECTS_IT it = find(objects.begin(), objects.end(), obj);
+	if (it == objects.end()) return false;
+
+	return true;
+}
+
+void CTelekinesis::schedule_update()
 {
 	if (!active) return;
 
 	// обновить состояние объектов
 	for (u32 i = 0; i < objects.size(); i++) {
-		CTelekineticObject *cur_obj = &objects[i]; 
+
+		CTelekineticObject *cur_obj = &objects[i];
+
 		switch (cur_obj->get_state()) {
 		case TS_Raise: 
 			if (cur_obj->check_height()) cur_obj->prepare_keep();// начать удержание предмета
 			break;
 		case TS_Keep:
-			if (cur_obj->time_keep_elapsed()) {
-				cur_obj->release();
-
-				// удалить объект из массива
-				if (objects.size() > 1) {
-					if (i != (objects.size()-1)) objects[i] = objects.back();
-					objects.pop_back();
-				} else {
-					objects.clear();
-					active = false;
-				}
-			}
+			if (cur_obj->time_keep_elapsed()) deactivate(cur_obj->get_object());
 			break;
 		case TS_None: continue; 
 		}
 	}
 }
+
 
 void CTelekinesis::PhDataUpdate(dReal step)
 {
@@ -109,7 +123,7 @@ void CTelekinesis::PhDataUpdate(dReal step)
 
 	for (u32 i = 0; i < objects.size(); i++) {
 		switch (objects[i].get_state()) {
-		case TS_Raise:	objects[i].raise(strength * step); break;
+		case TS_Raise:	objects[i].raise(step); break;
 		case TS_Keep:	objects[i].keep(); break;
 		case TS_None:	break;
 		}
@@ -118,6 +132,8 @@ void CTelekinesis::PhDataUpdate(dReal step)
 
 void  CTelekinesis::PhTune(dReal step)
 {
+	if (!active) return;
+	
 	for (u32 i = 0; i < objects.size(); i++) {
 		switch (objects[i].get_state()) {
 		case TS_Raise:	

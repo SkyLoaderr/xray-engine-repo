@@ -19,7 +19,7 @@ CTelekineticObject::~CTelekineticObject()
 
 
 
-bool CTelekineticObject::init(CGameObject *obj, float h, u32 ttk) 
+bool CTelekineticObject::init(CGameObject *obj, float s, float h, u32 ttk) 
 {
 	if (!obj || !obj->m_pPhysicsShell) return false;
 	
@@ -32,6 +32,8 @@ bool CTelekineticObject::init(CGameObject *obj, float h, u32 ttk)
 	time_keep_updated	= 0;
 	time_to_keep		= ttk;
 
+	strength			= s;
+
 	object->m_pPhysicsShell->set_ApplyByGravity(FALSE);
 
 	return true;
@@ -39,6 +41,8 @@ bool CTelekineticObject::init(CGameObject *obj, float h, u32 ttk)
 
 void CTelekineticObject::raise(float power) 
 {
+	power *= strength;
+	
 	Fvector dir;
 	dir.set(0.f,1.0f,0.f);
 

@@ -56,55 +56,55 @@ void CStateBurerAttackAbstract::initialize()
 TEMPLATE_SPECIALIZATION
 void CStateBurerAttackAbstract::execute()
 {
-//	const CEntityAlive *enemy = m_object->EnemyMan.get_enemy();
-//	float dist = m_object->Position().distance_to(enemy->Position());
-//	Fvector dir;
-//	dir.sub(enemy->Position(), m_object->Position());
-//	dir.normalize();
-//
-//	if (dist > GOOD_DISTANCE) {
-//		if (m_object->CTelekinesis::get_objects_count() < MAX_HANDLED_OBJECTS) {
-//			
-//			// получить список объектов вокруг монстра
-//			Level().ObjectSpace.GetNearest	(m_object->Position(), CHECK_OBJECTS_RADIUS); 
-//			xr_vector<CObject*> &tpNearest	= Level().ObjectSpace.q_nearest; 
-//			bool b_objects_found = true;
-//
-//			if (tpNearest.empty()) {
-//				// получить список объектов на середине пути от монстра до врага
-//				Fvector pos;
-//				pos.mad(m_object->Position(), dir, dist / 2.f);
-//				Level().ObjectSpace.GetNearest(pos, CHECK_OBJECTS_RADIUS); 
-//				tpNearest	= Level().ObjectSpace.q_nearest; 
-//
-//				if (tpNearest.empty()) b_objects_found = false;
-//			} 
-//			
-//			if (b_objects_found) {
-//				// выбрать объект
-//				for (u32 i=0;i<tpNearest.size();i++) {
-//					CGameObject *obj = dynamic_cast<CGameObject *>(tpNearest[i]);
-//					// проверка по объекту и его массе
-//					if (!obj || !obj->m_pPhysicsShell || (obj->m_pPhysicsShell->getMass() < MINIMAL_MASS) || (obj->m_pPhysicsShell->getMass() > MINIMAL_MASS)) continue;
-//
-//					// проверить, активен ли уже объект
-//					(m_object->CTelekinesis::is_active_object(obj)) continue;
-//
-//					// применить телекинез на объект
-//					m_object->CTelekinesis::apply(obj);
-//					break;
-//				}
-//			}
-//		}
-//	}
-//
-//	if (m_object->CTelekinesis::get_objects_count() > 0) {
-//		// обработать объекты
-//		set_dest_state(eStateTelekinetic);
-//	} else {
-//		// бить вплотную
-//		set_dest_state(eStateMelee)
-//	}
+	const CEntityAlive *enemy = m_object->EnemyMan.get_enemy();
+	float dist = m_object->Position().distance_to(enemy->Position());
+	Fvector dir;
+	dir.sub(enemy->Position(), m_object->Position());
+	dir.normalize();
+
+	if (dist > GOOD_DISTANCE) {
+		if (m_object->CTelekinesis::get_objects_count() < MAX_HANDLED_OBJECTS) {
+			
+			// получить список объектов вокруг монстра
+			Level().ObjectSpace.GetNearest	(m_object->Position(), CHECK_OBJECTS_RADIUS); 
+			xr_vector<CObject*> &tpNearest	= Level().ObjectSpace.q_nearest; 
+			bool b_objects_found = true;
+
+			if (tpNearest.empty()) {
+				// получить список объектов на середине пути от монстра до врага
+				Fvector pos;
+				pos.mad(m_object->Position(), dir, dist / 2.f);
+				Level().ObjectSpace.GetNearest(pos, CHECK_OBJECTS_RADIUS); 
+				tpNearest	= Level().ObjectSpace.q_nearest; 
+
+				if (tpNearest.empty()) b_objects_found = false;
+			} 
+			
+			if (b_objects_found) {
+				// выбрать объект
+				for (u32 i=0;i<tpNearest.size();i++) {
+					CGameObject *obj = dynamic_cast<CGameObject *>(tpNearest[i]);
+					// проверка по объекту и его массе
+					if (!obj || !obj->m_pPhysicsShell || (obj->m_pPhysicsShell->getMass() < MINIMAL_MASS) || (obj->m_pPhysicsShell->getMass() > MINIMAL_MASS)) continue;
+
+					// проверить, активен ли уже объект
+					(m_object->CTelekinesis::is_active_object(obj)) continue;
+
+					// применить телекинез на объект
+					m_object->CTelekinesis::activate(obj, 3.f, 3.f, 10000);
+					break;
+				}
+			}
+		}
+	}
+
+	if (m_object->CTelekinesis::get_objects_count() > 0) {
+		// обработать объекты
+		set_dest_state(eStateTelekinetic);
+	} else {
+		// бить вплотную
+		set_dest_state(eStateMelee)
+	}
 	
 	inherited::execute();
 }

@@ -17,13 +17,14 @@ class CTelekineticObject {
 	u32					time_keep_updated;
 
 	u32					time_to_keep;
-
+	
+	float				strength;
 
 public:
 						CTelekineticObject		();
 						~CTelekineticObject		();
 	
-	bool				init					(CGameObject *obj, float h, u32 ttk); 
+	bool				init					(CGameObject *obj, float s, float h, u32 ttk); 
 	
 	void				raise					(float power);
 	
@@ -40,5 +41,9 @@ public:
 	bool				time_keep_elapsed		();
 
 	void				enable					();
+
+	bool				operator==				(const CGameObject *obj) {
+		return (object == obj);
+	}
 	
 };

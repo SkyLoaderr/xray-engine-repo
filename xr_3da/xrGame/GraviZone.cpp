@@ -18,7 +18,6 @@ CGraviZone::~CGraviZone(void)
 
 BOOL CGraviZone::net_Spawn(LPVOID DC)
 {
-	TTelekinesis::InitExtern(3.f, 1.5f, int_max);
 	return inherited::net_Spawn(DC);
 }
 void CGraviZone::net_Destroy()
@@ -37,19 +36,19 @@ void CGraviZone::shedule_Update		(u32 dt)
 {
 	inherited::shedule_Update(dt);
 
-	static int i = 0;
-	i+=dt;
+//	static int i = 0;
+//	i+=dt;
+//
+//	if (i > 10000)
+//	{
+//		if (!TTelekinesis::IsActive())
+//			TTelekinesis::Activate(Position());
+//		else 
+//			TTelekinesis::Deactivate();
+//		
+//		i = 0;
+//
+//	}
 
-	if (i > 10000)
-	{
-		if (!TTelekinesis::IsActive())
-			TTelekinesis::Activate(Position());
-		else 
-			TTelekinesis::Deactivate();
-		
-		i = 0;
-
-	}
-
-	TTelekinesis::UpdateSched();
+	TTelekinesis::schedule_update();
 }
