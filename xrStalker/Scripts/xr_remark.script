@@ -13,7 +13,7 @@ local state_standing = 4
 ---------------------------------------------------------------------------------------------------------------------
 class "evaluator_need_remark" (property_evaluator)
 
-function evaluator_need_remark:__init(storage) super()
+function evaluator_need_remark:__init(storage, name) super(nil, name)
   	self.st = storage
 end
 
@@ -277,7 +277,7 @@ function add_to_binder(npc, ini, scheme, section, storage)
 	 	operators["action_remark"] = xr_actions_id.zmey_remark_base + 1
 
 	   	-- // evaluators
-		manager:add_evaluator(properties["need_remark"], this.evaluator_need_remark(storage))
+		manager:add_evaluator(properties["need_remark"], this.evaluator_need_remark(storage, "remark_need_remark"))
 
 		local new_action = this.action_remark_activity(npc, "action_remark_activity", storage)
 		new_action:add_precondition(world_property(stalker_ids.property_alive, true))
