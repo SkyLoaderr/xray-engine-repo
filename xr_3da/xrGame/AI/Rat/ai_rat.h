@@ -12,6 +12,7 @@
 #include "..\\..\\CustomMonster.h"
 #include "..\\..\\group.h"
 #include "ai_rat_selectors.h"
+#include "..\\..\\..\\bodyinstance.h"
 
 typedef struct tagSSubNode {
 	Fvector tLeftDown;
@@ -66,6 +67,17 @@ class CAI_Rat : public CCustomMonster
 		NodeCompressed* tpSavedEnemyNode;
 		DWORD			dwSavedEnemyNodeID;
 		bool			bBuildPathToLostEnemy;
+		
+		CMotionDef* 	m_tpaAttackAnimations[3];
+
+		bool			m_bAttackStart;
+		CBlend*			m_tpCurrentBlend;
+
+		CEntity*		m_tpEnemyBeingAttacked;
+		float			m_fHitPower;
+		DWORD			m_dwHitInterval;
+		DWORD			m_dwAttackStartTime;
+
 		// finite state machine
 		stack<ERatStates>	tStateStack;
 			void Die();

@@ -22,6 +22,8 @@ CAI_Hen::CAI_Hen()
 	tSenseDir.set(0,0,1);
 	tSavedEnemy = 0;
 	tSavedEnemyPosition.set(0,0,0);
+	tpSavedEnemyNode = 0;
+	dwSavedEnemyNodeID = -1;
 	dwLostEnemyTime = 0;
 	eCurrentState = aiHenFollowMe;
 }
@@ -241,7 +243,7 @@ void CAI_Hen::Attack()
 		// do I see the enemies?
 		if (!(Enemy.Enemy)) {
 			// did we kill the enemy ?
-			if (tSavedEnemy->g_Health() <= 0) {
+			if ((tSavedEnemy) && (tSavedEnemy->g_Health() <= 0)) {
 				eCurrentState = tStateStack.top();
 				tStateStack.pop();
 			}

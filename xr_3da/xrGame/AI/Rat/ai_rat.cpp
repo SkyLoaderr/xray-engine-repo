@@ -11,7 +11,6 @@
 #include "..\\..\\..\\3dsound.h"
 #include "ai_rat.h"
 #include "ai_rat_selectors.h"
-#include "..\\..\\..\\bodyinstance.h"
 
 //#define WRITE_LOG
 
@@ -23,7 +22,11 @@ CAI_Rat::CAI_Rat()
 	tSenseDir.set(0,0,1);
 	tSavedEnemy = 0;
 	tSavedEnemyPosition.set(0,0,0);
+	tpSavedEnemyNode = 0;
+	dwSavedEnemyNodeID = -1;
 	dwLostEnemyTime = 0;
+	m_bAttackStart = false;
+	m_tpCurrentBlend = 0;
 	eCurrentState = aiRatFollowMe;
 	m_bMobility = true;
 }
@@ -64,6 +67,13 @@ void CAI_Rat::Load(CInifile* ini, const char* section)
 	SelectorFreeHunting.Load(ini,section);
 	SelectorPursuit.Load(ini,section);
 	SelectorUnderFire.Load(ini,section);
+	
+	m_fHitPower = ini->ReadFLOAT(section,"hit_power");
+	m_dwHitInterval = ini->ReadINT(section,"hit_interval");
+
+	m_tpaAttackAnimations[0] = PKinematics(pVisual)->ID_Cycle_Safe("attack_1");
+	m_tpaAttackAnimations[1] = PKinematics(pVisual)->ID_Cycle_Safe("attack_2");
+	m_tpaAttackAnimations[2] = PKinematics(pVisual)->ID_Cycle_Safe("attack_3");
 }
 
 // when someone hit rat
@@ -717,10 +727,12 @@ void CAI_Rat::Attack()
 						1000);
 					q_look.o_look_speed=_FB_look_speed;
 					
-					if (ffGetDistance(Position(),Enemy.Enemy->Position()) < S.fOptEnemyDistance) 
-						q_action.setup(AI::AIC_Action::FireBegin);
+					if ((Enemy.Enemy) && (ffGetDistance(Position(),Enemy.Enemy->Position()) < SelectorAttack.fMaxEnemyDistance)) {
+						q_action.setup(AI::AIC_Action::AttackBegin);
+						m_tpEnemyBeingAttacked = Enemy.Enemy;
+					}
 					else
-						q_action.setup(AI::AIC_Action::FireEnd);
+						q_action.setup(AI::AIC_Action::AttackEnd);
 
 					m_fCurSpeed = m_fMaxSpeed;
 					bStopThinking = true;
@@ -802,7 +814,7 @@ void CAI_Rat::Attack()
 						1000);
 					q_look.o_look_speed=_FB_look_speed;
 					
-					q_action.setup(AI::AIC_Action::FireEnd);
+					q_action.setup(AI::AIC_Action::AttackEnd);
 
 					// checking flag to stop processing more states
 					m_fCurSpeed = m_fMaxSpeed;
@@ -824,10 +836,12 @@ void CAI_Rat::Attack()
 				
 				q_action.setup(AI::AIC_Action::FireEnd);
 
-				if (ffGetDistance(Position(),Enemy.Enemy->Position()) < SelectorAttack.fOptEnemyDistance) 
-					q_action.setup(AI::AIC_Action::FireBegin);
+				if ((Enemy.Enemy) && (ffGetDistance(Position(),Enemy.Enemy->Position()) < SelectorAttack.fMaxEnemyDistance)) {
+					q_action.setup(AI::AIC_Action::AttackBegin);
+					m_tpEnemyBeingAttacked = Enemy.Enemy;
+				}
 				else
-					q_action.setup(AI::AIC_Action::FireEnd);
+					q_action.setup(AI::AIC_Action::AttackEnd);
 				// checking flag to stop processing more states
 				m_fCurSpeed = m_fMaxSpeed;
 				bStopThinking = true;
@@ -1499,42 +1513,6 @@ void CAI_Rat::Think()
 	while (!bStopThinking);
 }
 
-void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
-{
-	R_ASSERT(fsimilar(_view.magnitude(),1));
-	R_ASSERT(fsimilar(_move.magnitude(),1));
-
-	CMotionDef*	S=0;
-/**/
-	if (iHealth<=0)
-		S = m_death;
-	else {
-		if (speed<0.2f)
-			S = m_idle;
-		else {
-			Fvector view = _view; 
-			Fvector move = _move; 
-			view.y=0; 
-			move.y=0; 
-			view.normalize_safe();
-			move.normalize_safe();
-			float	dot  = view.dotproduct(move);
-			
-			SAnimState* AState = &m_walk;
-			
-			if (speed>2.f)
-				AState = &m_run;
-			
-			S = AState->fwd;
-		}
-	}
-/**/
-	if (S!=m_current){ 
-		m_current = S;
-		if (S) PKinematics(pVisual)->PlayCycle(S);
-	}
-}
-
 void CAI_Rat::net_Export(NET_Packet* P)					// export to server
 {
 	R_ASSERT				(net_Local);
@@ -1572,21 +1550,99 @@ void CAI_Rat::net_Import(NET_Packet* P)
 	bEnabled				= TRUE;
 }
 
+void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
+{
+	R_ASSERT(fsimilar(_view.magnitude(),1));
+	R_ASSERT(fsimilar(_move.magnitude(),1));
+
+	CMotionDef*	S=0;
+	if (iHealth<=0)
+		S = m_death;
+	else {
+		if (m_bAttackStart) {
+			if (m_tpCurrentBlend) {
+				if ((!(m_tpCurrentBlend->playing)) || (!(m_tpCurrentBlend->noloop))) {
+					m_current = 0;
+					S = m_tpaAttackAnimations[::Random.randI(0,3)];
+				}
+				else
+					S = m_current;
+			}
+			else {
+				m_current = 0;
+				S = m_tpaAttackAnimations[::Random.randI(0,3)];
+			}
+		}
+		else {
+			if (speed<0.2f)
+				S = m_idle;
+			else {
+				Fvector view = _view; 
+				Fvector move = _move; 
+				view.y=0; 
+				move.y=0; 
+				view.normalize_safe();
+				move.normalize_safe();
+				float	dot  = view.dotproduct(move);
+				
+				SAnimState* AState = &m_walk;
+				
+				if (speed > m_fMinSpeed)
+					AState = &m_run;
+				
+				S = AState->fwd;
+			}
+		}
+	}
+	if (S != m_current){ 
+		m_current = S;
+		if (S)
+			m_tpCurrentBlend = PKinematics(pVisual)->PlayCycle(S);
+		else
+			m_tpCurrentBlend = 0;
+	}
+}
+
 void CAI_Rat::Exec_Action	( float dt )
 {
 	//*** process action commands
 	AI::C_Command* C	= &q_action;
 	AI::AIC_Action* L	= (AI::AIC_Action*)C;
 	switch (L->Command) {
-		case AI::AIC_Action::AttackJumpBegin: {
+		case AI::AIC_Action::AttackBegin: {
+			
+			DWORD dwTime = Level().timeServer();
+			
+			if (!m_bAttackStart)
+				m_dwAttackStartTime = dwTime;
+			
+			m_bAttackStart = true;
+			
+			if (dwTime - m_dwAttackStartTime > m_dwHitInterval) {
+				
+				m_dwAttackStartTime = dwTime;
+				
+				Fvector tDirection;
+				tDirection.sub(m_tpEnemyBeingAttacked->Position(),this->Position());
+				tDirection.normalize();
+				
+				if ((this->Local()) && (m_tpEnemyBeingAttacked) && (m_tpEnemyBeingAttacked->CLS_ID == CLSID_ENTITY))
+					if (m_tpEnemyBeingAttacked->g_Health() > 0)
+						m_tpEnemyBeingAttacked->Hit(m_fHitPower,tDirection,this);
+					else
+						m_bAttackStart = false;
+			}
+
 			break;
 		}
-		case AI::AIC_Action::AttackJumpEnd: {
+		case AI::AIC_Action::AttackEnd: {
+			m_bAttackStart = false;
 			break;
 		}
 		default:
 			break;
 	}
-	if (Device.dwTimeGlobal>=L->o_timeout)	L->setTimeout();
+	if (Device.dwTimeGlobal>=L->o_timeout)	
+		L->setTimeout();
 }
 

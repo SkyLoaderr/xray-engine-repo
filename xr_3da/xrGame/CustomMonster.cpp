@@ -114,7 +114,8 @@ void CCustomMonster::Load(CInifile* ini, const char* section)
 	// weapons
 	if (ini->ReadINT(section,"weapon_usage")) {
 		Weapons					= new CWeaponList(this);
-		Weapons->Init			("torso2","head");
+		LPCSTR S1 = ini->ReadSTRING(section,"bone_torso"),S2 = ini->ReadSTRING(section,"bone_head");
+		Weapons->Init			(S1,S2);
 		Weapons->TakeItem		(CLSID_OBJECT_W_M134_en,0);
 	}
 

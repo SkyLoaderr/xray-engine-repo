@@ -11,7 +11,6 @@
 #include "..\\..\\..\\3dsound.h"
 #include "ai_zomby.h"
 #include "ai_zomby_selectors.h"
-#include "..\\..\\..\\_random.h"
 
 //#define WRITE_LOG
 
@@ -23,6 +22,8 @@ CAI_Zomby::CAI_Zomby()
 	tSenseDir.set(0,0,1);
 	tSavedEnemy = 0;
 	tSavedEnemyPosition.set(0,0,0);
+	tpSavedEnemyNode = 0;
+	dwSavedEnemyNodeID = -1;
 	dwLostEnemyTime = 0;
 	m_bAttackStart = false;
 	m_tpCurrentBlend = 0;
@@ -67,7 +68,7 @@ void CAI_Zomby::Load(CInifile* ini, const char* section)
 	SelectorUnderFire.Load(ini,section);
 
 	m_fHitPower = ini->ReadFLOAT(section,"hit_power");
-	m_fHitSpeed = ini->ReadFLOAT(section,"hit_speed");
+	m_dwHitInterval = ini->ReadINT(section,"hit_interval");
 
 	m_tpaDeathAnimations[0] = m_death;
 	m_tpaDeathAnimations[1] = PKinematics(pVisual)->ID_Cycle_Safe("norm_death_1");
@@ -601,7 +602,7 @@ void CAI_Zomby::Attack()
 		// do I see the enemies?
 		if (!(Enemy.Enemy)) {
 			// did we kill the enemy ?
-			if (tSavedEnemy->g_Health() <= 0) {
+			if ((tSavedEnemy) && (tSavedEnemy->g_Health() <= 0)) {
 				eCurrentState = tStateStack.top();
 				tStateStack.pop();
 			}
@@ -700,6 +701,13 @@ void CAI_Zomby::Attack()
 						AI_Path.bNeedRebuild = TRUE;
 				}
 				/**/
+				bBuildPathToLostEnemy = false;
+				// saving an enemy
+				tSavedEnemy = Enemy.Enemy;
+				tSavedEnemyPosition = Enemy.Enemy->Position();
+				tpSavedEnemyNode = Enemy.Enemy->AI_Node;
+				dwSavedEnemyNodeID = Enemy.Enemy->AI_NodeID;
+				
 				FollowLeader(Level().Teams[g_Team()].Squads[g_Squad()],Enemy.Enemy);
 				// setting up a look
 				q_look.setup(
@@ -1473,6 +1481,43 @@ void CAI_Zomby::Think()
 	while (!bStopThinking);
 }
 
+void CAI_Zomby::net_Export(NET_Packet* P)					// export to server
+{
+	R_ASSERT				(net_Local);
+
+	// export last known packet
+	R_ASSERT				(!NET.empty());
+	net_update& N			= NET.back();
+	P->w_u32				(N.dwTimeStamp);
+	P->w_u8					(0);
+	P->w_vec3				(N.p_pos);
+	P->w_angle8				(N.o_model);
+	P->w_angle8				(N.o_torso.yaw);
+	P->w_angle8				(N.o_torso.pitch);
+}
+
+void CAI_Zomby::net_Import(NET_Packet* P)
+{
+	R_ASSERT				(!net_Local);
+	net_update				N;
+
+	u8 flags;
+	P->r_u32				(N.dwTimeStamp);
+	P->r_u8					(flags);
+	P->r_vec3				(N.p_pos);
+	P->r_angle8				(N.o_model);
+	P->r_angle8				(N.o_torso.yaw);
+	P->r_angle8				(N.o_torso.pitch);
+
+	if (NET.empty() || (NET.back().dwTimeStamp<N.dwTimeStamp))	{
+		NET.push_back			(N);
+		NET_WasInterpolating	= TRUE;
+	}
+
+	bVisible				= TRUE;
+	bEnabled				= TRUE;
+}
+
 void CAI_Zomby::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
 {
 	R_ASSERT(fsimilar(_view.magnitude(),1));
@@ -1517,12 +1562,13 @@ void CAI_Zomby::SelectAnimation(const Fvector& _view, const Fvector& _move, floa
 				
 				SAnimState* AState = &m_walk;
 				
-				if (speed>2.f)
+				if (speed > m_fMinSpeed)
 					AState = &m_run;
 				else 
 					if (dot>0.7f)
 						S = AState->fwd;
 					else
+						/**
 						if ((dot<=0.7f)&&(dot>=-0.7f)) {
 							Fvector cross; 
 							cross.crossproduct(view,move);
@@ -1533,6 +1579,7 @@ void CAI_Zomby::SelectAnimation(const Fvector& _view, const Fvector& _move, floa
 						}
 							//if (dot<-0.7f)
 						else 
+						/**/
 							S = AState->back;
 			}
 		}
@@ -1546,43 +1593,6 @@ void CAI_Zomby::SelectAnimation(const Fvector& _view, const Fvector& _move, floa
 	}
 }
 
-void CAI_Zomby::net_Export(NET_Packet* P)					// export to server
-{
-	R_ASSERT				(net_Local);
-
-	// export last known packet
-	R_ASSERT				(!NET.empty());
-	net_update& N			= NET.back();
-	P->w_u32				(N.dwTimeStamp);
-	P->w_u8					(0);
-	P->w_vec3				(N.p_pos);
-	P->w_angle8				(N.o_model);
-	P->w_angle8				(N.o_torso.yaw);
-	P->w_angle8				(N.o_torso.pitch);
-}
-
-void CAI_Zomby::net_Import(NET_Packet* P)
-{
-	R_ASSERT				(!net_Local);
-	net_update				N;
-
-	u8 flags;
-	P->r_u32				(N.dwTimeStamp);
-	P->r_u8					(flags);
-	P->r_vec3				(N.p_pos);
-	P->r_angle8				(N.o_model);
-	P->r_angle8				(N.o_torso.yaw);
-	P->r_angle8				(N.o_torso.pitch);
-
-	if (NET.empty() || (NET.back().dwTimeStamp<N.dwTimeStamp))	{
-		NET.push_back			(N);
-		NET_WasInterpolating	= TRUE;
-	}
-
-	bVisible				= TRUE;
-	bEnabled				= TRUE;
-}
-
 void CAI_Zomby::Exec_Action	( float dt )
 {
 	//*** process action commands
@@ -1590,18 +1600,29 @@ void CAI_Zomby::Exec_Action	( float dt )
 	AI::AIC_Action* L	= (AI::AIC_Action*)C;
 	switch (L->Command) {
 		case AI::AIC_Action::AttackBegin: {
+			
 			DWORD dwTime = Level().timeServer();
+			
 			if (!m_bAttackStart)
 				m_dwAttackStartTime = dwTime;
+			
 			m_bAttackStart = true;
-			if (dwTime - m_dwAttackStartTime> m_fHitSpeed) {
+			
+			if (dwTime - m_dwAttackStartTime > m_dwHitInterval) {
+				
 				m_dwAttackStartTime = dwTime;
+				
 				Fvector tDirection;
 				tDirection.sub(m_tpEnemyBeingAttacked->Position(),this->Position());
 				tDirection.normalize();
-				if ((m_tpEnemyBeingAttacked) && (this->Local()) && (m_tpEnemyBeingAttacked->CLS_ID == CLSID_ENTITY) && (m_tpEnemyBeingAttacked->g_Health() > 0))
-					m_tpEnemyBeingAttacked->Hit(m_fHitPower,tDirection,this);
+				
+				if ((this->Local()) && (m_tpEnemyBeingAttacked) && (m_tpEnemyBeingAttacked->CLS_ID == CLSID_ENTITY))
+					if (m_tpEnemyBeingAttacked->g_Health() > 0)
+						m_tpEnemyBeingAttacked->Hit(m_fHitPower,tDirection,this);
+					else
+						m_bAttackStart = false;
 			}
+
 			break;
 		}
 		case AI::AIC_Action::AttackEnd: {
@@ -1614,4 +1635,3 @@ void CAI_Zomby::Exec_Action	( float dt )
 	if (Device.dwTimeGlobal>=L->o_timeout)	
 		L->setTimeout();
 }
-

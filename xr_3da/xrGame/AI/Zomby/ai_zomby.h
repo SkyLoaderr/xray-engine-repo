@@ -76,7 +76,7 @@ class CAI_Zomby : public CCustomMonster
 
 		CEntity*		m_tpEnemyBeingAttacked;
 		float			m_fHitPower;
-		float			m_fHitSpeed;
+		DWORD			m_dwHitInterval;
 		DWORD			m_dwAttackStartTime;
 
 		// finite state machine
