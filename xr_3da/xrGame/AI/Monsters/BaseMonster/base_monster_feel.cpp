@@ -55,7 +55,7 @@ void CBaseMonster::feel_sound_new(CObject* who, int eType, CSoundUserDataPtr use
 void CBaseMonster::HitEntity(const CEntity *pEntity, float fDamage, float impulse, Fvector &dir)
 {
 	if (!g_Alive()) return;
-	if (!pEntity) return;
+	if (!pEntity || pEntity->getDestroy()) return;
 
 	if (!EnemyMan.get_enemy()) return;
 
