@@ -2598,10 +2598,12 @@
     <dialog id="bar_bar_drunk_dolg_quest_finish">
       <has_info>bar_bar_drunk_dolg_quest_start</has_info>
       <dont_has_info>bar_bar_drunk_dolg_quest_finish</dont_has_info>
+      <precondition>bar_dialogs.have_sniper_pda</precondition>
         <phrase_list>
             <phrase id="0">
                 <text>bar_bar_drunk_dolg_quest_finish_0</text>
                 <give_info>bar_bar_drunk_dolg_quest_finish</give_info>
+                <action>bar_dialogs.give_sniper_pda</action>
                 <next>1</next>
             </phrase>
             <phrase id="1">
