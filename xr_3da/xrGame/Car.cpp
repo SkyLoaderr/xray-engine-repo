@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "car.h"
-#include "..\\camerabase.h"
-#include "..\\bodyinstance.h"
+#include "..\camerabase.h"
+#include "..\bodyinstance.h"
+#include "..\xr_level_controller.h"
 
 CCar::CCar(void)
 {
@@ -88,15 +89,23 @@ void	CCar::OnMouseMove			(int x, int y)
 {
 }
 
-void	CCar::OnKeyboardPress		(int dik)
+void	CCar::OnKeyboardPress		(int cmd)
+{
+	switch (cmd)	
+	{
+	case kACCEL:	break;
+	case kR_STRAFE:	vPosition.x+=1; break;
+	case kL_STRAFE:	vPosition.x-=1; break;
+	case kFWD:		vPosition.z+=1; break;
+	case kBACK:		vPosition.z-=1; break;
+	};
+}
+
+void	CCar::OnKeyboardRelease		(int cmd)
 {
 }
 
-void	CCar::OnKeyboardRelease		(int dik)
-{
-}
-
-void	CCar::OnKeyboardHold		(int dik)
+void	CCar::OnKeyboardHold		(int cmd)
 {
 }
 
