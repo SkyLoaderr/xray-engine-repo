@@ -155,12 +155,20 @@
 			};
 		};
 
-		template <typename T1, template <typename _1> class T2>
-		struct is_derived_from_template1 {
-			template <typename P> static object_type_traits::detail::yes select(T2<P>*);
+		template <template <typename _1> class T1, typename T2>
+		struct is_base_and_derived_or_same_from_template_1 {
+			template <typename P> static object_type_traits::detail::yes select(T1<P>*);
 			static object_type_traits::detail::no select(...);
 
-			enum { value = sizeof(object_type_traits::detail::yes) == sizeof(select((T1*)0))};
+			enum { value = sizeof(object_type_traits::detail::yes) == sizeof(select((T2*)0))};
+		};
+
+		template <template <typename _1> class T1, typename T2, typename T3>
+		struct is_base_and_derived_or_same_for_template_template_1_1 {
+			template <typename P> static object_type_traits::detail::yes select(T1<P>*, P*);
+			static object_type_traits::detail::no select(...);
+
+			enum { value = sizeof(object_type_traits::detail::yes) == sizeof(select((T2*)0,(T3*)0))};
 		};
 
 		declare_has(iterator);
