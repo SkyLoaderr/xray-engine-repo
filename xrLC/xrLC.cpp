@@ -79,7 +79,7 @@ void Startup(LPSTR     lpCmdLine)
 	extern  HWND logWindow;
 	IReader*	F			= FS.r_open(prjName);
 	if (NULL==F){
-		sprintf				("Build failed!\nCan't find level: '%s'",name);
+		sprintf				(inf,"Build failed!\nCan't find level: '%s'",name);
 		clMsg				(inf);
 		MessageBox			(logWindow,inf,"Error!",MB_OK|MB_ICONERROR);
 		return;
