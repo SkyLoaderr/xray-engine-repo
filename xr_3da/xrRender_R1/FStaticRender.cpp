@@ -254,6 +254,8 @@ void CRender::Calculate				()
 			pPortal->bDualRender	= TRUE;
 		}
 	}
+	//
+	L_DB->Update	();
 
 	// Main process
 	marker	++;
