@@ -114,7 +114,7 @@ IC void CBackend::set_Constants			(R_constant_table* C)
 	// process constant-loaders
 	R_constant**	it	= C->table.begin();
 	R_constant**	end	= C->table.end	();
-	for ()
+	for (; it!=end; it++)
 }
 
 IC void CBackend::set_Element			(ShaderElement* S, u32	pass)
