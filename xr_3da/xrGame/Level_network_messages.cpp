@@ -12,13 +12,17 @@ void CLevel::ClientReceive()
 		{
 		case M_SPAWN:
 			{
-				u32			m0	= Memory.stat_calls;
-				CTimer		T;
-				T.Start		();
-				g_sv_Spawn	(P);
-				T.Stop		();
-				u32			m1	= Memory.stat_calls;
-				Msg			("--spawn--: %f ms, %d mo",1000.f*T.Get(),m1-m0);
+				// Begin analysis
+				string64			s_name;
+				P->r_string			(s_name);
+
+				// Create DC (xrSE)
+				xrServerEntity*		E	= F_entity_Create	(s_name);
+				R_ASSERT			(E);
+				E->Spawn_Read		(P);
+				if (E->s_flags.is(M_SPAWN_UPDATE))
+					E->UPDATE_Read	(P);
+				game_spawn_queue.push_back(E);
 			}
 			break;
 		case M_UPDATE:
@@ -58,7 +62,21 @@ void CLevel::ClientReceive()
 			}
 			break;
 		}
-		
+
 		net_msg_Release();
+	}
+
+	if (!game_spawn_queue.empty())
+	{
+		u32			m0	= Memory.stat_calls;
+		CTimer		T;	T.Start		();
+
+		g_sv_Spawn					(game_spawn_queue.front());
+		F_entity_Destroy			(game_spawn_queue.front());
+		game_spawn_queue.pop_front	();
+
+		T.Stop		();
+		u32			m1	= Memory.stat_calls;
+		Msg			("--spawn--: %f ms, %d mo",1000.f*T.Get(),m1-m0);
 	}
 }

@@ -29,7 +29,7 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color, in
 
 	Fvector2 LTp,RBp;
 	Fvector2 LTt,RBt;
-	float sc		= Level().HUD()->GetScale();
+	float sc		= HUD().GetScale();
 	LTp.set			(pos.x+x1*sc,pos.y+y1*sc);
 	RBp.set			(pos.x+x2*sc,pos.y+y2*sc);
 
@@ -67,7 +67,7 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color, fl
 	Fvector2 C;
 	Ivector2 RS;
 	iVisRect.getsize(RS);
-	float sc		= Level().HUD()->GetScale();
+	float sc		= HUD().GetScale();
 	float sz		= sc*((RS.x>RS.y)?RS.x:RS.y)*0.7071f;
 
 	Fvector2 LTt,RBt;

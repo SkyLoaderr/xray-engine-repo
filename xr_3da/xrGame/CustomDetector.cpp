@@ -120,7 +120,7 @@ void CCustomDetector::UpdateCL() {
 	list<CCustomZone*>::iterator l_it;
 	for(l_it = m_zones.begin(); l_it != m_zones.end(); l_it++) l_zonePow = _max(l_zonePow, (*l_it)->Power((*l_it)->Position().distance_to(vPosition)));
 	/*
-	CGameFont* H		= Level().HUD()->pFontMedium;
+	CGameFont* H		= HUD().pFontMedium;
 	H->SetColor			(0xf0ffffff); 
 	H->Out				(550,500,"Anomaly force: %.0f", l_zonePow);
 	*/
@@ -129,7 +129,7 @@ void CCustomDetector::UpdateCL() {
 void CCustomDetector::feel_touch_new(CObject* O) {
 	CCustomZone *l_pZ = dynamic_cast<CCustomZone*>(O);
 	if(l_pZ) {
-		if(bDebug) Level().HUD()->outMessage(0xffffffff,cName(),"started to feel a zone.");
+		if(bDebug) HUD().outMessage(0xffffffff,cName(),"started to feel a zone.");
 		m_zones.push_back(l_pZ);
 		m_times[l_pZ] = 0;
 	}
@@ -138,7 +138,7 @@ void CCustomDetector::feel_touch_new(CObject* O) {
 void CCustomDetector::feel_touch_delete(CObject* O) {
 	CCustomZone *l_pZ = dynamic_cast<CCustomZone*>(O);
 	if(l_pZ) {
-		if(bDebug) Level().HUD()->outMessage(0xffffffff,cName(),"stoped to feel a zone.");
+		if(bDebug) HUD().outMessage(0xffffffff,cName(),"stoped to feel a zone.");
 		m_zones.erase(find(m_zones.begin(), m_zones.end(), l_pZ));
 	}
 }

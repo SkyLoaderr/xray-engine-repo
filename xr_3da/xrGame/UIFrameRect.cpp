@@ -47,7 +47,7 @@ void CUIFrameRect::UpdateSize()
 	int tile_x		= iFloor(float(iSize.x)/ts.x); tile_x-=2; R_ASSERT(tile_x>=0);
 	int tile_y		= iFloor(float(iSize.y)/ts.y); tile_y-=2; R_ASSERT(tile_y>=0);
 
-	float fScale	= Level().HUD()->GetScale();
+	float fScale	= HUD().GetScale();
 	// center align
 	if (GetAlign()&alCenter)
 		iPos.set	(iFloor((Device.dwWidth-fScale*iSize.x)*.5f),iFloor((Device.dwHeight-fScale*iSize.y)*.5f));

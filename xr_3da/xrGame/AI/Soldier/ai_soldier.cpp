@@ -226,7 +226,7 @@ void CAI_Soldier::OnEvent(EVENT E, u32 P1, u32 P2)
 		if (0==P2 || u32(this)==P2) {
 			char* caTextToShow;
 			caTextToShow = (char *)P1;
-			Level().HUD()->outMessage(0xffffffff,cName(),"%s",caTextToShow);
+			HUD().outMessage(0xffffffff,cName(),"%s",caTextToShow);
 		}
 	}
 	else

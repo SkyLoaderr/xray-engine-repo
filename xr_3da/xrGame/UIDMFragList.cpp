@@ -31,7 +31,7 @@ void CUIDMFragList::OnFrame()
 	sort(items.begin(),items.end(),pred_player);
 
 	// out info
-	CGameFont* H		= Level().HUD()->pFontSmall;
+	CGameFont* H		= HUD().pFontSmall;
 	H->OutSet			(float(list_rect.lt.x),float(list_rect.lt.y));
 	// global info
 	if (Game().fraglimit)	H->OutNext	("Frag Limit:  %3d",Game().fraglimit);

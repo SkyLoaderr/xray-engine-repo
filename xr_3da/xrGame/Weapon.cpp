@@ -245,9 +245,9 @@ void CWeapon::UpdateFP		()
 			parent.transform_tiny	(vLastSP,sp);
 			vLastFD.set				(0.f,0.f,1.f);
 			parent.transform_dir	(vLastFD);
-/*			Level().HUD()->pHUDFont->Color	(0xffffffff);
-			Level().HUD()->pHUDFont->OutSet	(400,300);
-			Level().HUD()->pHUDFont->OutNext("%3.2f,  %3.2f,  %3.2f",vLastFD.x,vLastFD.y,vLastFD.z);
+/*			HUD().pHUDFont->Color	(0xffffffff);
+			HUD().pHUDFont->OutSet	(400,300);
+			HUD().pHUDFont->OutNext	("%3.2f,  %3.2f,  %3.2f",vLastFD.x,vLastFD.y,vLastFD.z);
 */		}
 	}
 }

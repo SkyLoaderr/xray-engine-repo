@@ -32,7 +32,7 @@ void CUICSFragList::OnFrame()
 
 	// out info
 	int k=1;
-	CGameFont* H		= Level().HUD()->pFontMedium;
+	CGameFont* H		= HUD().pFontMedium;
 	float h 			= H->CurrentHeight();
 	float y				= float(list_rect.lt.y);
 	float x0			= float(list_rect.lt.x);

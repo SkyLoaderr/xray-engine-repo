@@ -31,11 +31,10 @@ const u32 DET_COLOR[3]={ITEM_COLOR_BAD,ITEM_COLOR_MED,ITEM_COLOR_GOOD};
 void CUIGroup::Render(CGroup& G, int idx, int grp_index, bool bSelected)
 {
 	// convert
-	int offset			= Level().HUD()->ClientToScreenX(UI_BASE_WIDTH-(idx+1)*GROUP_OFFSET, alRight|alTop);
+	int offset			= HUD().ClientToScreenX(UI_BASE_WIDTH-(idx+1)*GROUP_OFFSET, alRight|alTop);
 
 	// out labels
-	CHUDManager* HUD	= Level().HUD();
-	float sc			= HUD->GetScale();
+	float sc			= HUD().GetScale();
 	int sc_offset		= iFloor(offset*sc);
 
 	if (bSelected){
@@ -67,16 +66,16 @@ void CUIGroup::Render(CGroup& G, int idx, int grp_index, bool bSelected)
 			list_item_health.Render		();
 			list_item_ammo.Render		();
 			// out name
-			HUD->pFontSmall->Out		(float(offset+11),Y,"%6.6s",E->cName());
+			HUD().pFontSmall->Out		(float(offset+11),Y,"%6.6s",E->cName());
 			item_cnt++;
 		}
 	}
 	list_bottom.SetPos(iFloor(sc_offset+3*sc),iFloor(Y*sc));
 	list_bottom.Render();
 	// counters
-	HUD->pFontSmall->SetColor	(0xffffffff);
-	HUD->pFontSmall->Out		(float(offset+5),	10,	"#%02d",grp_index+1);
-	HUD->pFontSmall->Out		(float(offset+30),	40,	"%02d",item_cnt);
+	HUD().pFontSmall->SetColor	(0xffffffff);
+	HUD().pFontSmall->Out		(float(offset+5),	10,	"#%02d",grp_index+1);
+	HUD().pFontSmall->Out		(float(offset+30),	40,	"%02d",item_cnt);
 }
 //--------------------------------------------------------------------
 

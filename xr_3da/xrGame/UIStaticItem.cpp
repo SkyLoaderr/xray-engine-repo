@@ -44,7 +44,7 @@ void CUIStaticItem::Render(Shader* sh)
 	RCache.set_Shader		(sh?sh:hShader);
 	// convert&set pos
 	Ivector2		bp;
-	Level().HUD()->ClientToScreenScaled	(bp,iPos.x,iPos.y,uAlign);
+	HUD().ClientToScreenScaled	(bp,iPos.x,iPos.y,uAlign);
 
 	// actual rendering
 	u32				vOffset;
@@ -94,7 +94,7 @@ void CUIStaticItem::Render(float angle, Shader* sh)
 	RCache.set_Shader		(sh?sh:hShader);
 	// convert&set pos
 	Ivector2		bp;
-	Level().HUD()->ClientToScreenScaled	(bp,iPos.x,iPos.y,uAlign);
+	HUD().ClientToScreenScaled	(bp,iPos.x,iPos.y,uAlign);
 
 	// actual rendering
 	u32			vOffset;

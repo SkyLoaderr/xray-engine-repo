@@ -206,9 +206,9 @@ void CWeaponProtecta::Render(BOOL bHUDView)
 
 		// HUD render
 		if (m_pHUD){ 
-			Level().HUD()->RenderModel(m_pHUD->Visual(),m_pHUD->Transform(),iFloor(LL));
+			HUD().RenderModel(m_pHUD->Visual(),m_pHUD->Transform(),iFloor(LL));
 			// Render PS Shoot
-			Level().HUD()->RenderModel(m_pShootPS->Visual(),precalc_identity,255);
+			HUD().RenderModel(m_pShootPS->Visual(),precalc_identity,255);
 		}
 	}
 	else

@@ -15,7 +15,7 @@ CUIWeapon::CUIWeapon()
 
 void CUIWeapon::Init()
 {
-	Level().HUD()->ClientToScreen(position, 694, 525, alRight|alBottom);
+	HUD().ClientToScreen(position, 694, 525, alRight|alBottom);
 	// back frame with tex
 	back.Init		("ui\\hud_weapon_back","font",694,525,alRight|alBottom);
 	back.SetRect	(0,0,90,61);
@@ -41,7 +41,7 @@ void CUIWeapon::Render()
 
 void CUIWeapon::Out(CWeapon* W){
 	if (W){
-		CGameFont* H= Level().HUD()->pFontSmall;
+		CGameFont* H= HUD().pFontSmall;
 		H->SetColor	(0x80ffffff);
 		H->Out		(float(position.x+6),	float(position.y+15),"%s",W->GetName());
 		int	AE		= W->GetAmmoElapsed();

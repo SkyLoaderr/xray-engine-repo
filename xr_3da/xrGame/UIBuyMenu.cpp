@@ -10,17 +10,16 @@
 //--------------------------------------------------------------------
 CUIBuyMenu::CUIBuyMenu	()
 {
-	CHUDManager* HUD	= (CHUDManager*)Level().HUD();
-	menu_offs_row		= (float)HUD->ClientToScreenY(BUY_MENU_OFFS_ROW,alLeft|alTop);
-	menu_offs_col[0]	= (float)HUD->ClientToScreenX(BUY_MENU_OFFS_COL1,alLeft|alTop);
-	menu_offs_col[1]	= (float)HUD->ClientToScreenX(BUY_MENU_OFFS_COL2,alLeft|alTop);
+	menu_offs_row		= (float)HUD().ClientToScreenY(BUY_MENU_OFFS_ROW,alLeft|alTop);
+	menu_offs_col[0]	= (float)HUD().ClientToScreenX(BUY_MENU_OFFS_COL1,alLeft|alTop);
+	menu_offs_col[1]	= (float)HUD().ClientToScreenX(BUY_MENU_OFFS_COL2,alLeft|alTop);
 }
 //--------------------------------------------------------------------
 
 void CUIBuyMenu::OnFrame()
 {
 	if (menu_active){
-		CGameFont* F	= Level().HUD()->pFontMedium;
+		CGameFont* F	= HUD().pFontMedium;
 		F->SetColor		(0xFFFFFFFF);
 		if (menu_active->Parent()){
 			F->OutSet	(menu_offs_col[1],menu_offs_row);

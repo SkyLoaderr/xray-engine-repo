@@ -94,13 +94,13 @@ void CCustomZone::UpdateCL() {
 
 
 void CCustomZone::feel_touch_new(CObject* O) {
-	if(bDebug) Level().HUD()->outMessage(0xffffffff,O->cName(),"entering a zone.");
+	if(bDebug) HUD().outMessage(0xffffffff,O->cName(),"entering a zone.");
 	m_inZone.insert(O);
 	if(dynamic_cast<CActor*>(O) && O == Level().CurrentEntity()) m_pLocalActor = dynamic_cast<CActor*>(O);
 }
 
 void CCustomZone::feel_touch_delete(CObject* O) {
-	if(bDebug) Level().HUD()->outMessage(0xffffffff,O->cName(),"leaving a zone.");
+	if(bDebug) HUD().outMessage(0xffffffff,O->cName(),"leaving a zone.");
 	m_inZone.erase(O);
 	if(dynamic_cast<CActor*>(O)) m_pLocalActor = NULL;
 }

@@ -35,7 +35,7 @@ void CUIDynamicItem::Out(int left, int top, u32 color)
 	}else{
 		D = &data[item_cnt];
 	}
-	Level().HUD()->ClientToScreenScaled(D->pos,left,top,uAlign);
+	HUD().ClientToScreenScaled(D->pos,left,top,uAlign);
 	D->color = color;
 	item_cnt++;
 }

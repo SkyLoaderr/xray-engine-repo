@@ -113,7 +113,7 @@ void CAI_Space::Render()
 	if (bfCheckIfGraphLoaded())
 	{
 		Fvector tCameraPosition = Device.vCameraPosition;
-		CGameFont* F		= ((CHUDManager*)Level().HUD())->pFontDI;
+		CGameFont* F		= HUD().pFontDI;
 		for (int i=0; i<(int)GraphHeader().dwVertexCount; i++) {
 			Fvector t1 = m_tpaGraph[i].tGlobalPoint;
 			t1.y += .6f;
@@ -236,7 +236,7 @@ void CAI_Space::Render()
 
 	u32 ID				= O->AI_NodeID;
 
-	CGameFont* F		= ((CHUDManager*)Level().HUD())->pFontDI;
+	CGameFont* F		= HUD().pFontDI;
 	F->SetSize			(.02f);
 	F->Out				(0.f,0.5f,"%f,%f,%f",VPUSH(P));
 	F->Out				(0.f,0.55f,"%3d,%4d,%3d -> %d",	iFloor(Local.x),iFloor(Local.y),iFloor(Local.z),u32(ID));

@@ -68,6 +68,7 @@ protected:
 	bool					bDeathInit;
 	u32						self_gmtl_id;
 	u32						last_gmtl_id;
+	
 	//Death physics			
 	CPhysicsShell*			m_phSkeleton;
 
@@ -186,9 +187,6 @@ private:
 	float					fPrevCamPos;
 	CEffectorBobbing*		pCamBobbing;
 	
-	// 
-	vector<Fvector4>		zone_areas;
-
 	//------------------------------
 	struct				net_update 		
 	{

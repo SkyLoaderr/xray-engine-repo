@@ -56,12 +56,10 @@ public:
 	game_cl_GameState			game;
 	BOOL						game_configured;
 	NET_Queue_Event				game_events;
+	deque<xrServerEntity*>		game_spawn_queue;
 
 	xrServer*					Server;
 
-//	CAI_DDD*					m_tpAI_DDD;
-
-//	CAI_Space					AI;
 	vector<CTeam>				Teams;
 
 	CTracer						Tracers;
@@ -160,11 +158,9 @@ public:
 	void						ClientReceive			();
 	void						ClientSend				();
 	
-	void						g_cl_Spawn				(LPCSTR name, u8 rp, u16 flags);		// only signal 2 server
-	void						g_sv_Spawn				(NET_Packet* P);						// server reply parsing and spawning
+	void						g_cl_Spawn				(LPCSTR name, u8 rp, u16 flags);		// only ask server
+	void						g_sv_Spawn				(xrServerEntity* E);					// server reply/command spawning
 	
-	CHUDManager*				HUD						()	{ return (CHUDManager*)pHUD; }
-
 	// Save/Load/State
 	void						SLS_Load				(LPCSTR name);		// Game Load
 	void						SLS_Default				();					// Default/Editor Load
@@ -174,9 +170,10 @@ public:
 	virtual ~CLevel();
 };
 
-IC CLevel&				Level()		{ return *((CLevel*) pCreator); }
-IC game_cl_GameState&	Game()		{ return Level().game;			}
-IC u32					GameID()	{ return Game().type;			}
+IC CLevel&				Level()		{ return *((CLevel*) pCreator);			}
+IC game_cl_GameState&	Game()		{ return Level().game;					}
+IC u32					GameID()	{ return Game().type;					}
+IC CHUDManager&			HUD()		{ return *((CHUDManager*)Level().pHUD);	}
 
 class  CPHWorld;
 extern CPHWorld*				ph_world;

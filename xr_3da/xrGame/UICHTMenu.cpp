@@ -9,16 +9,15 @@
 //--------------------------------------------------------------------
 CUIChangeTeamMenu::CUIChangeTeamMenu	()
 {
-	CHUDManager* HUD	= (CHUDManager*)Level().HUD();
-	menu_offs_row		= (float)HUD->ClientToScreenY(BUY_MENU_OFFS_ROW,alLeft|alTop);
-	menu_offs_col		= (float)HUD->ClientToScreenX(BUY_MENU_OFFS_COL,alLeft|alTop);
+	menu_offs_row		= (float)HUD().ClientToScreenY(BUY_MENU_OFFS_ROW,alLeft|alTop);
+	menu_offs_col		= (float)HUD().ClientToScreenX(BUY_MENU_OFFS_COL,alLeft|alTop);
 }
 //--------------------------------------------------------------------
 
 void CUIChangeTeamMenu::OnFrame()
 {
 	if (menu_active){
-		CGameFont* F	= Level().HUD()->pFontMedium;
+		CGameFont* F	= HUD().pFontMedium;
 		F->SetColor		(0xFFFFFFFF);
 		if (menu_active->Parent()){
 			F->OutSet	(menu_offs_col,menu_offs_row);

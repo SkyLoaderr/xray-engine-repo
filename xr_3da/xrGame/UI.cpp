@@ -14,7 +14,7 @@
 //--------------------------------------------------------------------
 CUI::CUI(CHUDManager* p)
 {
-	Level().HUD()->pUI = this;
+	HUD().pUI		= this;
 	UIZoneMap.Init	();
 	UIWeapon.Init	();
 	UIHealth.Init	();

@@ -75,13 +75,13 @@ CActor::CActor() : CEntityAlive()
 	m_fRunFactor			= 2.f;
 	m_fCrouchFactor			= 0.2f;
 
-	m_fFallTime				= s_fFallTime;
-	m_bAnimTorsoPlayed		= false;
+	m_fFallTime				=	s_fFallTime;
+	m_bAnimTorsoPlayed		=	false;
 
-	self_gmtl_id			= GAMEMTL_NONE;
-	last_gmtl_id			= GAMEMTL_NONE;
-	m_phSkeleton			=NULL;
-	bDeathInit				=false;
+	self_gmtl_id			=	GAMEMTL_NONE;
+	last_gmtl_id			=	GAMEMTL_NONE;
+	m_phSkeleton			=	NULL;
+	bDeathInit				=	false;
 	m_saved_dir.set(0,0,0);
 	m_saved_impulse=0.f;
 }
@@ -146,9 +146,9 @@ void CActor::Load		(LPCSTR section )
 	::Sound->Create		(sndDie[2],			TRUE,	strconcat(buf,cName(),"\\die2"),0,SOUND_TYPE_MONSTER_DYING_HUMAN);
 	::Sound->Create		(sndDie[3],			TRUE,	strconcat(buf,cName(),"\\die3"),0,SOUND_TYPE_MONSTER_DYING_HUMAN);
 
-	Movement.ActivateBox(0);
-	ph_Movement.ActivateBox(0);
-	cam_Set				(eacFirstEye);
+	Movement.ActivateBox	(0);
+	ph_Movement.ActivateBox	(0);
+	cam_Set					(eacFirstEye);
 
 	// motions
 	m_current_legs_blend= 0;
@@ -158,19 +158,6 @@ void CActor::Load		(LPCSTR section )
 
 	// sheduler
 	shedule_Min			= shedule_Max = 1;
-
-	// patch : ZoneAreas
-	if (Level().pLevel->SectionExists("zone_areas"))
-	{
-		Log("...Using zones...");
-		CInifile::Sect&		S = Level().pLevel->ReadSection("zone_areas");
-		for (CInifile::SectIt I = S.begin(); I!=S.end(); I++)
-		{
-			Fvector4 a;
-			sscanf				(I->second,"%f,%f,%f,%f",&a.x,&a.y,&a.z,&a.w);
-			zone_areas.push_back(a);
-		}
-	}
 
 	// get self game material id
 	self_gmtl_id		= GMLib.GetMaterialIdx("actor");
@@ -292,7 +279,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 		strcpy				(D->s_name_replace,"");
 		D->s_gameid			=	u8(GameID());
 		D->s_RP				=	0xff;
-		D->ID				=	0xffff;
+		D->ID				=	0xfffd;
 		D->ID_Parent		=	E->ID;
 		D->ID_Phantom		=	0xffff;
 		D->s_flags.set		(M_SPAWN_OBJECT_ACTIVE | M_SPAWN_OBJECT_LOCAL);
@@ -399,7 +386,7 @@ void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who, s16 element
 			float z		= _abs(vLocalDir.z);
 			if (z>x)	id = (vLocalDir.z<0)?2:0;
 			else		id = (vLocalDir.x<0)?3:1;
-			Level().HUD()->Hit(id);
+			HUD().Hit	(id);
 		}
 
 		// stop-motion
@@ -1122,25 +1109,23 @@ void CActor::OnHUDDraw	(CCustomHUD* hud)
 	if (W)				W->OnVisible		();
 
 #ifdef _DEBUG
-	CHUDManager* HUD	= (CHUDManager*)hud;
 	string128 buf;
-	HUD->pFontSmall->SetColor(0xffffffff);
-	HUD->pFontSmall->OutSet	(120,530);
-	HUD->pFontSmall->OutNext("Position:      [%3.2f, %3.2f, %3.2f]",VPUSH(vPosition));
-	HUD->pFontSmall->OutNext("Velocity:      [%3.2f, %3.2f, %3.2f]",VPUSH(Movement.GetVelocity()));
-	HUD->pFontSmall->OutNext("Vel Magnitude: [%3.2f]",Movement.GetVelocityMagnitude());
-	HUD->pFontSmall->OutNext("Vel Actual:    [%3.2f]",Movement.GetVelocityActual());
+	HUD().pFontSmall->SetColor(0xffffffff);
+	HUD().pFontSmall->OutSet	(120,530);
+	HUD().pFontSmall->OutNext("Position:      [%3.2f, %3.2f, %3.2f]",VPUSH(vPosition));
+	HUD().pFontSmall->OutNext("Velocity:      [%3.2f, %3.2f, %3.2f]",VPUSH(Movement.GetVelocity()));
+	HUD().pFontSmall->OutNext("Vel Magnitude: [%3.2f]",Movement.GetVelocityMagnitude());
+	HUD().pFontSmall->OutNext("Vel Actual:    [%3.2f]",Movement.GetVelocityActual());
 	switch (Movement.Environment())
 	{
 	case CMovementControl::peOnGround:	strcpy(buf,"ground");			break;
 	case CMovementControl::peInAir:		strcpy(buf,"air");				break;
 	case CMovementControl::peAtWall:	strcpy(buf,"wall");				break;
 	}
-	HUD->pFontSmall->OutNext	(buf);
+	HUD().pFontSmall->OutNext	(buf);
 #endif
 /**
-	CHUDManager* HUD	= (CHUDManager*)hud;
-	CUI* pUI=HUD->GetUI	();
+	CUI* pUI=HUD().GetUI	();
 	pUI->OutHealth		(iFloor(fHealth),iFloor(fArmor));
 	pUI->OutWeapon		(Weapons->ActiveWeapon());
 	pUI->SetHeading		(-r_torso.yaw);
@@ -1149,8 +1134,8 @@ void CActor::OnHUDDraw	(CCustomHUD* hud)
 	char buf[128];
 	sprintf(buf,"Position : %3.2f,%3.2f,%3.2f",VPUSH(vPosition));
 
-	HUD->pHUDFont->Color(0xffffffff);
-	HUD->pHUDFont->Out	(400,320,buf);
+	HUD().pHUDFont->Color(0xffffffff);
+	HUD().pHUDFont->Out	(400,320,buf);
 /*
 	char buf[128];
 	buf[0] = 0;
@@ -1158,8 +1143,8 @@ void CActor::OnHUDDraw	(CCustomHUD* hud)
 	if (W){
 		float prec = W->GetPrecision();
 		sprintf(buf,"Prec: %3.2f",prec);
-		HUD->pHUDFont->Color(0xffffffff);
-		HUD->pHUDFont->Out	(400,320,buf);
+		HUD().pHUDFont->Color(0xffffffff);
+		HUD().pHUDFont->Out	(400,320,buf);
 	}
 	char buf[128];
 	buf[0] = 0;
@@ -1179,11 +1164,11 @@ void CActor::OnHUDDraw	(CCustomHUD* hud)
 	if (mstate_real&mcJump)		strcat(buf,"Jump ");
 	if (mstate_real&mcTurn)		strcat(buf,"Turn ");
 	if (m_bJumpKeyPressed)		strcat(buf,"+Jumping ");
-	HUD->pHUDFont->Color(0xffffffff);
-	HUD->pHUDFont->Out	(400,320,buf);
-	HUD->pHUDFont->Out	(400,330,"Vel Actual:    %3.2f",Movement.GetVelocityActual());
-	HUD->pHUDFont->Out	(400,340,"Vel:           %3.2f",Movement.GetVelocity());
-	HUD->pHUDFont->Out	(400,350,"Vel Magnitude: %3.2f",Movement.GetVelocityMagnitude());
+	HUD().pHUDFont->Color(0xffffffff);
+	HUD().pHUDFont->Out	(400,320,buf);
+	HUD().pHUDFont->Out	(400,330,"Vel Actual:    %3.2f",Movement.GetVelocityActual());
+	HUD().pHUDFont->Out	(400,340,"Vel:           %3.2f",Movement.GetVelocity());
+	HUD().pHUDFont->Out	(400,350,"Vel Magnitude: %3.2f",Movement.GetVelocityMagnitude());
 */
 }
 
