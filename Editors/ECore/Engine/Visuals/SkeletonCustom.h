@@ -128,6 +128,7 @@ public:
 	typedef xr_map<shared_str,u16,str_pred>		accel_map;
 protected:
 	SkeletonWMVec				wallmarks;
+	u32							wm_frame;
 
 	// Globals
     CInifile*					pUserData;

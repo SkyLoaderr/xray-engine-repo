@@ -302,6 +302,9 @@ void	CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 */
 	// reset update_callback
 	Update_Callback	= NULL;
+
+	// reset update frame
+	wm_frame		= u32(-1);
 }
 
 #define PCOPY(a)	a = pFrom->a
@@ -502,16 +505,17 @@ void CKinematics::AddWallmark(const Fmatrix* parent_xform, const Fvector3& start
 	wallmarks.push_back		(wm);
 }
 
-static const float LIFE_TIME=10.f;
+static const float LIFE_TIME=30.f;
 
 void CKinematics::CalculateWallmarks()
 {
-	if (!wallmarks.empty()){
-		bool need_remove=false; 
+	if (!wallmarks.empty()&&(wm_frame!=Device.dwFrame)){
+		wm_frame			= Device.dwFrame;
+		bool need_remove	= false; 
 		for (SkeletonWMVecIt it=wallmarks.begin(); it!=wallmarks.end(); it++){
 			CSkeletonWallmark*& wm = *it;
 			float w	= (Device.fTimeGlobal-wm->TimeStart())/LIFE_TIME;
-			if (w<=1.f){
+			if (w<1.f){
 				// append wm to WallmarkEngine
 				if (::Render->ViewBase.testSphere_dirty(wm->m_Bounds.P,wm->m_Bounds.R))
 					::Render->add_SkeletonWallmark	(wm);
