@@ -24,9 +24,8 @@ void CAI_Rat::SetDirectionLook()
 			tWatchDirection.normalize();
 			mk_rotation(tWatchDirection,r_torso_target);
 		}
-		else
-			r_torso_target.pitch = 0;
 	}
+	r_torso_target.pitch = 0;
 }
 
 void CAI_Rat::vfAimAtEnemy()
