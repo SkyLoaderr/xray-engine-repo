@@ -128,7 +128,10 @@ IC int	CObjectSpace::GetNearest ( const Fvector &point, float range )
 				if (!t_model->enabled)					continue;
 				if (t_model->dwQueryID!=dwQueryID) {
 					t_model->dwQueryID=dwQueryID;
-					if (Q.intersect(t_model->Sphere)) 
+					Fsphere	mS;
+					t_object->clXFORM().transform_tiny	(mS.P,t_model->getSphere().P);
+					mS.R								= t_model->getRadius();
+					if (Q.intersect(mS)) 
 						q_nearest.push_back(t_object);
 				}
 			}
@@ -137,7 +140,9 @@ IC int	CObjectSpace::GetNearest ( const Fvector &point, float range )
 //----------------------------------------------------------------------
 IC int   CObjectSpace::GetNearest( CCFModel* obj, float range ){
 	obj->Enable 		( false ); // self exclude from test
-	int res				= GetNearest( obj->Sphere.P, range + obj->Sphere.R );
+	Fvector				P;
+	obj->Owner().clXFORM().transform_tiny(P,obj->getSphere().P);
+	int res				= GetNearest( P, range + obj->getRadius() );
 	obj->EnableRollback	( );
 	return				res;
 }
