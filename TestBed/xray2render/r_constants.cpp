@@ -31,7 +31,7 @@ BOOL	R_constant_table::parse	(D3DXSHADER_CONSTANTTABLE* desc, u16 destination)
 {
 	D3DXSHADER_CONSTANTINFO* it		= (D3DXSHADER_CONSTANTINFO*) (LPBYTE(desc)+desc->ConstantInfo);
 	LPBYTE					 ptr	= LPBYTE(desc);
-	for (u32 dwCount = desc->Constants; dwCount; dwCount--)
+	for (u32 dwCount = desc->Constants; dwCount; dwCount--,it++)
 	{
 		// Name
 		LPCSTR	name		=	LPCSTR(ptr+it->Name);
