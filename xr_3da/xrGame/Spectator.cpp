@@ -218,10 +218,12 @@ BOOL			CSpectator::net_Spawn				( LPVOID	DC )
 	CSE_Abstract			*E	= (CSE_Abstract*)(DC);
 	if (!E) return FALSE;
 
-	cam_active				= eacFreeLook;
+	cam_active				= eacFreeFly;
 	look_idx				= 0;
 
 	cameras[cam_active]->Set		(-E->o_Angle.y,-E->o_Angle.x,0);		// set's camera orientation
+//	cameras[cam_active]->Set		(0, E->o_Angle.x,0);		// set's camera orientation
+	cameras[cam_active]->vPosition.set(E->o_Position);
 
 	if (OnServer())
 	{
