@@ -88,10 +88,7 @@ virtual		CPhysicsRefObject* PhysicsRefObject				(){return m_phys_ref_object;}
 //AICharacter
 virtual		void		GetDesiredPosition					(Fvector& /**dpos/**/)	{}
 virtual		void		SetDesiredPosition					(const Fvector& /**pos/**/)	{}
-#pragma warning(push)
-#pragma warning(disable:4100)
 virtual		void		BringToDesired						(float /**time/**/,float /**velocity/**/,float force=1.f){}	;
-#pragma warning(pop)
 virtual		bool		TryPosition							(Fvector /**pos/**/)	{return false;}	
 
 			CPHCharacter									(void)				;
