@@ -14,6 +14,15 @@
 #include "..\\..\\weapon.h"
 #include "..\\..\\ParticlesObject.h"
 
+CScriptMonster::CScriptMonster()
+{
+	m_iCurrentPatrolPoint = m_iPreviousPatrolPoint = -1;
+}
+
+CScriptMonster::~CScriptMonster()
+{
+}
+
 void CScriptMonster::SetScriptControl(const bool bScriptControl, LPCSTR caSciptName)
 {
 	m_bScriptControl	= bScriptControl;
@@ -118,6 +127,10 @@ void __stdcall ParticleCallback(CBoneInstance *tpBoneInstance)
 			CParticlesObject	*l_tpParticlesObject = l_tParticleAction.m_tpParticleSystem;
 			l_tpParticlesObject->UpdateParent(l_tpScriptMonster->GetUpdatedMatrix(l_caBoneName,l_tParticleAction.m_tParticlePosition,l_tParticleAction.m_tParticleAngles),l_tParticleAction.m_tParticleVelocity);
 		}
+		else {
+			CBoneInstance	&l_tBoneInstance = PKinematics(l_tpScriptMonster->Visual())->LL_GetInstance(PKinematics(l_tpScriptMonster->Visual())->LL_BoneID(l_caBoneName));
+			l_tBoneInstance.set_callback(0,0);
+		}
 	}
 }
 
@@ -131,6 +144,10 @@ void __stdcall SoundCallback(CBoneInstance *tpBoneInstance)
 		LPCSTR			l_caBoneName = l_tSoundAction.m_caBoneName;
 		if (l_tpScriptMonster->GetCurrentAction() && strlen(l_caBoneName) && l_tSoundAction.m_tpSound->feedback)
 			l_tSoundAction.m_tpSound->feedback->set_position(l_tpScriptMonster->GetUpdatedMatrix(l_caBoneName,l_tSoundAction.m_tSoundPosition,Fvector().set(0,0,0)).c);
+		else {
+			CBoneInstance	&l_tBoneInstance = PKinematics(l_tpScriptMonster->Visual())->LL_GetInstance(PKinematics(l_tpScriptMonster->Visual())->LL_BoneID(l_caBoneName));
+			l_tBoneInstance.set_callback(0,0);
+		}
 	}
 }
 
@@ -198,6 +215,102 @@ bool CScriptMonster::bfAssignObject(CEntityAction *tpEntityAction)
 	return			(GetCurrentAction() && !GetCurrentAction()->m_tObjectAction.m_bCompleted);
 }
 
+void CScriptMonster::vfChoosePatrolPathPoint(CEntityAction *tpEntityAction)
+{
+	CMovementAction	&l_tMovementAction	= tpEntityAction->m_tMovementAction;
+	if (l_tMovementAction.m_bCompleted)
+		return;
+
+	CLevel::SPathPairIt	I = Level().m_PatrolPaths.find(l_tMovementAction.m_caPatrolPathToGo);
+	if (I == Level().m_PatrolPaths.end()) {
+		Msg			("* [LUA] Patrol path %s not found!",l_tMovementAction.m_caPatrolPathToGo);
+		l_tMovementAction.m_bCompleted = true;
+		return;
+	}
+
+	const CLevel::SPath	&l_tPatrolPath = (*I).second;
+
+	int			l_iFirst = -1;
+	if (m_iPreviousPatrolPoint == -1) {
+		switch (l_tMovementAction.m_tPatrolPathStart) {
+			case CPatrolPathParams::ePatrolPathFirst : {
+				l_iFirst = 0;
+				break;
+			}
+			case CPatrolPathParams::ePatrolPathLast : {
+				l_iFirst = l_tPatrolPath.tpaWayPoints.size() - 1;
+				break;
+			}
+			case CPatrolPathParams::ePatrolPathNearest : {
+				float		l_fMinLength = 10000.f;
+				for (int i=0, n=l_tPatrolPath.tpaWayPoints.size(); i<n; i++) {
+					float	l_fTempDistance = l_tPatrolPath.tpaWayPoints[i].tWayPoint.distance_to(Position());
+					if (l_fTempDistance < l_fMinLength) {
+						l_iFirst		= i;
+						l_fMinLength	= l_fTempDistance;
+					}
+				}
+				break;
+			}
+			default : NODEFAULT;
+		}
+		R_ASSERT	(l_iFirst>=0);
+	}
+	else {
+		if (l_tMovementAction.m_tDestinationPosition.distance_to(Position()) > .1f)
+			return;
+
+		int			l_iCount = 0;
+		for (int i=0, n=(int)l_tPatrolPath.tpaWayLinks.size(); i<n; i++)
+			if ((l_tPatrolPath.tpaWayLinks[i].wFrom == m_iCurrentPatrolPoint) && (l_tPatrolPath.tpaWayLinks[i].wTo != m_iPreviousPatrolPoint)) {
+				if (!l_iCount)
+					l_iFirst = i;
+				l_iCount++;
+			}
+
+		if (!l_iCount) {
+			switch (l_tMovementAction.m_tPatrolPathStop) {
+				case CPatrolPathParams::ePatrolPathStop : {
+					l_tMovementAction.m_bCompleted = true;
+					return;
+				}
+				case CPatrolPathParams::ePatrolPathContinue : {
+					for (int i=0, n=(int)l_tPatrolPath.tpaWayLinks.size(); i<n; i++)
+						if (l_tPatrolPath.tpaWayLinks[i].wFrom == m_iCurrentPatrolPoint) {
+							l_iFirst = i;
+							break;
+						}
+					if (l_iFirst == -1) {
+						l_tMovementAction.m_bCompleted = true;
+						return;
+					}
+					break;
+				}
+				default : NODEFAULT;
+			}
+		}
+		else {
+			if (l_tMovementAction.m_bRandom && (l_iCount > 1)) {
+				int			l_iChoosed = ::Random.randI(l_iCount);
+				l_iCount	= 0;
+				for (int i=0, n=(int)l_tPatrolPath.tpaWayLinks.size(); i<n; i++)
+					if ((l_tPatrolPath.tpaWayLinks[i].wFrom == m_iCurrentPatrolPoint) && (l_tPatrolPath.tpaWayLinks[i].wTo != m_iPreviousPatrolPoint))
+						if (l_iCount == l_iChoosed) {
+							l_iFirst = i;
+							break;
+						}
+						else
+							l_iCount++;
+			}
+		}
+	}
+	
+	m_iPreviousPatrolPoint	= m_iCurrentPatrolPoint;
+	m_iCurrentPatrolPoint	= l_tPatrolPath.tpaWayLinks[l_iFirst].wTo;
+	l_tMovementAction.m_tNodeID = l_tPatrolPath.tpaWayPoints[m_iCurrentPatrolPoint].dwNodeID;
+	l_tMovementAction.m_tDestinationPosition = l_tPatrolPath.tpaWayPoints[m_iCurrentPatrolPoint].tWayPoint;
+}
+
 bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 {
 	CMovementAction	&l_tMovementAction	= tpEntityAction->m_tMovementAction;
@@ -211,7 +324,7 @@ bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 		case CMovementAction::eGoalTypeObject : {
 			CGameObject		*l_tpGameObject = dynamic_cast<CGameObject*>(l_tMovementAction.m_tpObjectToGo);
 			l_tMovementAction.m_tDestinationPosition = l_tMovementAction.m_tpObjectToGo->Position();
-			if (Position().distance_to(l_tMovementAction.m_tDestinationPosition) < EPS_L)
+			if (Position().distance_to(l_tMovementAction.m_tDestinationPosition) < .1f)
 				l_tMovementAction.m_bCompleted = true;
 			else
 				if (!l_tpGameObject)
@@ -227,14 +340,7 @@ bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 			break;
 		}
 		case CMovementAction::eGoalTypePatrolPath : {
-#pragma todo("Dima to Dima : Implement patrol paths")
-//			SPathPairIt		I = Level().m_PatrolPaths.find(l_tMovementAction.m_caPatrolPathToGo);
-//			if (I == Level().m_PatrolPaths.end()) {
-//				m_bCompleted = true;
-//			}
-//			else {
-//				m_tpPatrolPath = &((*I)->second);
-//			}
+			vfChoosePatrolPathPoint(tpEntityAction);
 			break;
 		}
 		case CMovementAction::eGoalTypePathPosition : {
@@ -250,7 +356,7 @@ bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 		case CMovementAction::eGoalTypeNoPathPosition : {
 			l_tMovementAction.m_tNodeID	= 1;
 			if (l_tpCustomMonster) {
-				if (l_tpCustomMonster->AI_Path.TravelPath.empty() || (l_tpCustomMonster->AI_Path.TravelPath[l_tpCustomMonster->AI_Path.TravelPath.size() - 1].P.distance_to(l_tMovementAction.m_tDestinationPosition) > EPS_L)) {
+				if (l_tpCustomMonster->AI_Path.TravelPath.empty() || (l_tpCustomMonster->AI_Path.TravelPath[l_tpCustomMonster->AI_Path.TravelPath.size() - 1].P.distance_to(l_tMovementAction.m_tDestinationPosition) > .1f)) {
 					l_tpCustomMonster->AI_Path.TravelPath.resize(2);
 					l_tpCustomMonster->AI_Path.TravelPath[0].P = Position();
 					l_tpCustomMonster->AI_Path.TravelPath[1].P = l_tMovementAction.m_tDestinationPosition;
@@ -271,4 +377,9 @@ bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 	}
 
 	return		(!l_tMovementAction.m_bCompleted);
+}
+
+void CScriptMonster::ResetScriptData(void *P)
+{
+	m_iCurrentPatrolPoint = m_iPreviousPatrolPoint = -1;
 }

@@ -297,6 +297,25 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 {
 	module(tpLuaVirtualMachine)
 	[
+		class_<CPatrolPathParams>("patrol")
+			.enum_("start")
+			[
+				value("start",					int(CPatrolPathParams::ePatrolPathFirst)),
+				value("stop",					int(CPatrolPathParams::ePatrolPathLast)),
+				value("nearest",				int(CPatrolPathParams::ePatrolPathNearest)),
+				value("dummy",					int(CPatrolPathParams::ePatrolPathDummy))
+			]
+			.enum_("start")
+			[
+				value("stop",					int(CPatrolPathParams::ePatrolPathStop)),
+				value("continue",				int(CPatrolPathParams::ePatrolPathContinue)),
+				value("dummy",					int(CPatrolPathParams::ePatrolPathInvalid))
+			]
+			.def(								constructor<LPCSTR>())
+			.def(								constructor<LPCSTR,const CPatrolPathParams::EPatrolPathStart>())
+			.def(								constructor<LPCSTR,const CPatrolPathParams::EPatrolPathStart,const CPatrolPathParams::EPatrolPathStop>())
+			.def(								constructor<LPCSTR,const CPatrolPathParams::EPatrolPathStart,const CPatrolPathParams::EPatrolPathStop, bool>()),
+
 		class_<CMovementAction>("move")
 			.enum_("body")
 			[
@@ -318,12 +337,12 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 				value("curve_criteria",			int(MonsterSpace::ePathTypeDodgeCriteria))
 			]
 			.def(								constructor<>())
-			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,MonsterSpace::EPathType,CLuaGameObject*,float>())
-			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,MonsterSpace::EPathType,LPCSTR,float>())
-			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,MonsterSpace::EPathType,const Fvector &,float>())
 			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,MonsterSpace::EPathType,CLuaGameObject*>())
-			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,MonsterSpace::EPathType,LPCSTR>())
+			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,MonsterSpace::EPathType,CLuaGameObject*,float>())
+			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,MonsterSpace::EPathType,const CPatrolPathParams &>())
+			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,MonsterSpace::EPathType,const CPatrolPathParams &,float>())
 			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,MonsterSpace::EPathType,const Fvector &>())
+			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,MonsterSpace::EPathType,const Fvector &,float>())
 			.def(								constructor<const Fvector &,float>())
 			.def("body",						&CMovementAction::SetBodyState)
 			.def("move",						&CMovementAction::SetMovementType)
@@ -379,14 +398,19 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("set_position",				&CSoundAction::SetPosition)
 			.def("set_angles",					&CSoundAction::SetAngles),
 
+		class_<CParticleParams>("particle_params")
+			.def(								constructor<>())
+			.def(								constructor<const Fvector &>())
+			.def(								constructor<const Fvector &,const Fvector &>())
+			.def(								constructor<const Fvector &,const Fvector &,const Fvector &>()),
+
 		class_<CParticleAction>("particle")
 			.def(								constructor<>())
 			.def(								constructor<LPCSTR,LPCSTR>())
-			.def(								constructor<LPCSTR,LPCSTR,const Fvector &>())
-			.def(								constructor<LPCSTR,LPCSTR,const Fvector &,const Fvector &>())
-			.def(								constructor<LPCSTR,LPCSTR,const Fvector &,const Fvector &, bool>())
-			.def(								constructor<LPCSTR,const Fvector &>())
-			.def(								constructor<LPCSTR,const Fvector &,const Fvector &, bool>())
+			.def(								constructor<LPCSTR,LPCSTR,const CParticleParams &>())
+			.def(								constructor<LPCSTR,LPCSTR,const CParticleParams &, bool>())
+			.def(								constructor<LPCSTR,const CParticleParams &>())
+			.def(								constructor<LPCSTR,const CParticleParams &, bool>())
 			.def("set",							&CParticleAction::SetParticle)
 			.def("set",							&CParticleAction::SetBone)
 			.def("set_position",				&CParticleAction::SetPosition)

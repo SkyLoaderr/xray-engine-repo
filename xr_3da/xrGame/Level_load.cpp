@@ -197,7 +197,7 @@ BOOL CLevel::Load_GameSpecific_Before()
 
 				SPath tPatrolPath;
 
-				string64 sName;
+				LPSTR sName = (LPSTR)xr_malloc(64*sizeof(char));
 				R_ASSERT(OBJ->find_chunk(WAYOBJECT_CHUNK_NAME));
 				OBJ->r_stringZ(sName);
 
@@ -237,7 +237,7 @@ BOOL CLevel::Load_GameSpecific_Before()
 				}
 				while (!bOk);
 
-				m_PatrolPaths[sName] = tPatrolPath;
+				m_PatrolPaths.insert(std::make_pair(sName,tPatrolPath));
 				
 				vfCreateAllPossiblePaths(sName, m_PatrolPaths[sName]);
 			}

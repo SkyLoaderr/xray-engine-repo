@@ -22,6 +22,39 @@ public:
 	}
 };
 
+class CPatrolPathParams {
+public:
+	enum EPatrolPathStart {
+		ePatrolPathFirst = u32(0),
+		ePatrolPathLast,
+		ePatrolPathNearest,
+		ePatrolPathDummy = u32(-1),
+	};
+	
+	enum EPatrolPathStop {
+		ePatrolPathStop = u32(0),
+		ePatrolPathContinue,
+		ePatrolPathInvalid = u32(-1),
+	};
+
+	string32						m_caPatrolPathToGo;
+	EPatrolPathStart				m_tPatrolPathStart;
+	EPatrolPathStop					m_tPatrolPathStop;
+	bool							m_bRandom;
+
+							CPatrolPathParams	(LPCSTR caPatrolPathToGo, const EPatrolPathStart tPatrolPathStart = ePatrolPathNearest, const EPatrolPathStop tPatrolPathStop = ePatrolPathContinue, bool bRandom = true)
+	{
+		strcpy				(m_caPatrolPathToGo,caPatrolPathToGo);
+		m_tPatrolPathStart	= tPatrolPathStart;
+		m_tPatrolPathStop	= tPatrolPathStop;
+		m_bRandom			= bRandom;
+	}
+
+	virtual					~CPatrolPathParams	()
+	{
+	}
+};
+
 class CLuaGameObject;
 
 class CMovementAction : public CAbstractAction {
@@ -39,10 +72,13 @@ public:
 	MonsterSpace::EPathType			m_tPathType;
 	CObject							*m_tpObjectToGo;
 	string32						m_caPatrolPathToGo;
+	CPatrolPathParams::EPatrolPathStart	m_tPatrolPathStart;
+	CPatrolPathParams::EPatrolPathStop	m_tPatrolPathStop;
 	Fvector							m_tDestinationPosition;
 	u32								m_tNodeID;
 	EGoalType						m_tGoalType;
 	float							m_fSpeed;
+	bool							m_bRandom;
 
 							CMovementAction		()
 	{
@@ -50,6 +86,9 @@ public:
 		SetMovementType		(eMovementTypeStand);
 		SetPathType			(ePathTypeStraight);
 		SetPatrolPath		("");
+		SetPatrolStart		(CPatrolPathParams::ePatrolPathNearest);
+		SetPatrolStop		(CPatrolPathParams::ePatrolPathContinue);
+		SetPatrolRandom		(true);
 		SetPosition			(Fvector().set(0,0,0));
 		SetSpeed			(0);
 		SetObjectToGo		(0);
@@ -64,12 +103,15 @@ public:
 		SetSpeed			(fSpeed);
 	}
 
-							CMovementAction		(MonsterSpace::EBodyState tBodyState, MonsterSpace::EMovementType tMovementType, MonsterSpace::EPathType tPathType, LPCSTR caPatrolPathToGo, float fSpeed = 0.f)
+							CMovementAction		(MonsterSpace::EBodyState tBodyState, MonsterSpace::EMovementType tMovementType, MonsterSpace::EPathType tPathType, const CPatrolPathParams &tPatrolPathParams, float fSpeed = 0.f)
 	{
 		SetBodyState		(tBodyState);
 		SetMovementType		(tMovementType);
 		SetPathType			(tPathType);
-		SetPatrolPath		(caPatrolPathToGo);
+		SetPatrolPath		(tPatrolPathParams.m_caPatrolPathToGo);
+		SetPatrolStart		(tPatrolPathParams.m_tPatrolPathStart);
+		SetPatrolStop		(tPatrolPathParams.m_tPatrolPathStop);
+		SetPatrolRandom		(tPatrolPathParams.m_bRandom);
 		SetSpeed			(fSpeed);
 	}
 
@@ -129,6 +171,21 @@ public:
 			void			SetSpeed			(float fSpeed)
 	{
 		m_fSpeed			= fSpeed;
+	}
+
+			void			SetPatrolStart		(CPatrolPathParams::EPatrolPathStart tPatrolPathStart)
+	{
+		m_tPatrolPathStart	= tPatrolPathStart;
+	}
+
+			void			SetPatrolStop		(CPatrolPathParams::EPatrolPathStop tPatrolPathStop)
+	{
+		m_tPatrolPathStop	= tPatrolPathStop;
+	}
+
+			void			SetPatrolRandom		(bool bRandom)
+	{
+		m_bRandom			= bRandom;
 	}
 };
 
@@ -325,6 +382,24 @@ public:
 	}
 };
 
+class CParticleParams {
+public:
+	Fvector							m_tParticlePosition;
+	Fvector							m_tParticleAngles;
+	Fvector							m_tParticleVelocity;
+
+							CParticleParams(const Fvector &tPositionOffset = Fvector().set(0,0,0), const Fvector &tAnglesOffset = Fvector().set(0,0,0), const Fvector &tVelocity = Fvector().set(0,0,0))
+	{
+		m_tParticlePosition	= tPositionOffset;
+		m_tParticleAngles	= tAnglesOffset;
+		m_tParticleVelocity	= tVelocity;
+	}
+
+	virtual					~CParticleParams()
+	{
+	}
+};
+
 class CParticleAction : public CAbstractAction {
 public:
 	enum EGoalType {
@@ -355,20 +430,21 @@ public:
 	}
 
 #pragma todo("Dima to Dima : Add velocity for particle systems here")
-							CParticleAction		(LPCSTR caPartcileToRun, LPCSTR caBoneName, const Fvector &tPositionOffset = Fvector().set(0,0,0), const Fvector &tAngleOffset = Fvector().set(0,0,0), /**const Fvector &tVelocity = Fvector().set(0,0,0), /**/bool bAutoRemove = false)
+							CParticleAction		(LPCSTR caPartcileToRun, LPCSTR caBoneName, const CParticleParams &tParticleParams = CParticleParams(), bool bAutoRemove = false)
 	{
 		SetBone				(caBoneName);
-		SetPosition			(tPositionOffset);
-		SetAngles			(tAngleOffset);
-//		SetVelocity			(tVelocity);
+		SetPosition			(tParticleParams.m_tParticlePosition);
+		SetAngles			(tParticleParams.m_tParticleAngles);
+		SetVelocity			(tParticleParams.m_tParticleVelocity);
 		SetParticle			(caPartcileToRun,bAutoRemove);
 	}
 
-							CParticleAction		(LPCSTR caPartcileToRun, const Fvector &tPosition, const Fvector &tAngleOffset = Fvector().set(0,0,0), bool bAutoRemove = false)
+							CParticleAction		(LPCSTR caPartcileToRun, const CParticleParams &tParticleParams = CParticleParams(), bool bAutoRemove = false)
 	{
 		SetParticle			(caPartcileToRun,bAutoRemove);
-		SetPosition			(tPosition);
-		SetAngles			(tAngleOffset);
+		SetPosition			(tParticleParams.m_tParticlePosition);
+		SetAngles			(tParticleParams.m_tParticleAngles);
+		SetVelocity			(tParticleParams.m_tParticleVelocity);
 	}
 
 	virtual					~CParticleAction	();
