@@ -64,8 +64,8 @@ void CUIStaticItem::Render		(const ref_shader& sh)
 	FVF::TL*		pv				= (FVF::TL*)RCache.Vertex.Lock	(4*(iTileX+1)*(iTileY+1),hGeom.stride(),vOffset);
 
 	Ivector2		pos;
-	float fw		= iVisRect.width()  * UI()->GetScaleX();
-	float fh		= iVisRect.height() * UI()->GetScaleY();
+	float fw		= iVisRect.x2*UI()->GetScaleX();
+	float fh		= iVisRect.y2*UI()->GetScaleY();
 
 	int tile_x		= (iRemX==0)?iTileX:iTileX+1;
 	int tile_y		= (iRemY==0)?iTileY:iTileY+1;
