@@ -110,7 +110,7 @@ private:
 	R_constant_array		a_pixel;
 	R_constant_array		a_vertex;
 	
-	void					flush_cache	();
+	void					flush_cache	(IDirect3DDevice9* D);
 public:
 	// fp, non-array versions
 	void					set		(R_constant* C, Fmatrix& A)		{
@@ -145,30 +145,6 @@ public:
 	{
 		if (a_pixel.b_dirty || a_vertex.b_dirty)
 		{
-			if (a_pixel.b_dirty)
-			{
-				// fp
-				R_constant_array::t_f&	F	= a_pixel.c_f;
-				{
-					u32		count		= F.r_hi()-F.r_lo();
-					if (count)			{
-						D->SetPixelShaderConstantF	(F.r_lo(), F.access(F.r_lo()),count);
-						F.flush			();
-					}
-				}
-			}
-			if (a_vertex.b_dirty)
-			{
-				// fp
-				R_constant_array::t_f&	F	= a_vertex.c_f;
-				{
-					u32		count		= F.r_hi()-F.r_lo();
-					if (count)			{
-						D->SetVertexShaderConstantF	(F.r_lo(), F.access(F.r_lo()),count);
-						F.flush			();
-					}
-				}
-			}
 		}
 	}
 };
