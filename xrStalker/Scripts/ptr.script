@@ -57,16 +57,16 @@ function main ()
 
     local snds = 
                { 
-               "monsters\Stalker\Humming\em1_humming1",
-               "monsters\Stalker\Humming\em1_humming2",
-               "monsters\Stalker\Humming\em1_humming3",
-               "monsters\Stalker\Humming\em1_humming4",
-               "monsters\Stalker\Humming\em1_humming5",
-               "monsters\Stalker\Humming\em1_whistle1",
-               "monsters\Stalker\Humming\em1_whistle2",
-               "monsters\Stalker\Humming\em1_whistle3",
-               "monsters\Stalker\Humming\em1_whistle4",
-               "monsters\Stalker\Humming\em1_whistle5"
+               "monsters\\Stalker\\Humming\\em1_humming1",
+               "monsters\\Stalker\\Humming\\em1_humming2",
+               "monsters\\Stalker\\Humming\\em1_humming3",
+               "monsters\\Stalker\\Humming\\em1_humming4",
+               "monsters\\Stalker\\Humming\\em1_humming5",
+               "monsters\\Stalker\\Humming\\em1_whistle1",
+               "monsters\\Stalker\\Humming\\em1_whistle2",
+               "monsters\\Stalker\\Humming\\em1_whistle3",
+               "monsters\\Stalker\\Humming\\em1_whistle4",
+               "monsters\\Stalker\\Humming\\em1_whistle5"
                }
     
     local sss = ptr.SPatrol (get_level_object ("s_patrol"), ptr.script_name (), patrol ("patrolway"), snds)
