@@ -61,7 +61,7 @@ function multiplayer_create_dialog:InitControls()
 	self:Register(btn)
 	self.main_frame:AttachChild(btn)	
 	
-	self.map_tab = ui_multiplayer_map_tab.multiplayer_map_tab()
+	self.map_tab = ui_multiplayer_map_tab.map_tab()
 	self.map_tab:InitControls(tab_rect.x, tab_rect.y, tab_rect.width, tab_rect.height)
 	self.main_frame:AttachChild(self.map_tab)
 	self.map_tab:Show(true)
