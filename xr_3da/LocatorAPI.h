@@ -154,8 +154,9 @@ public:
     int  						get_file_age	(LPCSTR nm);
     void 						set_file_age	(LPCSTR nm, int age);
 
-	int							file_list		(LPSTRVec& dest, LPCSTR path, u32 flags=FS_ListFiles);
-                                      
+	vector<char*>*				file_list_open	(LPCSTR path, u32 flags=FS_ListFiles);
+	void						file_list_close	(vector<char*>* &lst);
+
     bool						path_exist		(LPCSTR path);
     FS_Path*					get_path		(LPCSTR path);
     LPCSTR						update_path		(LPSTR dest, LPCSTR initial, LPCSTR src);

@@ -320,7 +320,7 @@ const CLocatorAPI::file* CLocatorAPI::exist			(char* fn, const char* path, const
 	return exist(fn);
 }
 
-int CLocatorAPI::file_list		(vector<char*>& dest, const char* initial, u32 flags)
+vector<char*>* CLocatorAPI::file_list_open			(const char* initial, u32 flags)
 {
 	VERIFY			(flags);
 	
@@ -329,9 +329,11 @@ int CLocatorAPI::file_list		(vector<char*>& dest, const char* initial, u32 flags
 	
 	file			desc;
 	desc.name		= N;                      
-	files_it	I = files.find(desc);
+	files_it	I	= files.find(desc);
 	if (I==files.end())	return 0;
 	
+	vector<char*>	dest	= xr_new<vector<char*> > ();
+
 	size_t base_len	= strlen(N);
 	for (++I; I!=files.end(); I++)
 	{
@@ -344,7 +346,7 @@ int CLocatorAPI::file_list		(vector<char*>& dest, const char* initial, u32 flags
 
 			const char* entry_begin = entry.name+base_len;
 			if ((flags&FS_RootOnly)&&strstr(entry_begin,"\\"))	continue;	// folder in folder
-			dest.push_back			(xr_strdup(entry_begin));
+			dest->push_back			(xr_strdup(entry_begin));
             LPSTR fname 			= dest.back();
             if (flags&FS_ClampExt)	if (0!=strext(fname)) *strext(fname)=0;
 		} else {
@@ -354,10 +356,20 @@ int CLocatorAPI::file_list		(vector<char*>& dest, const char* initial, u32 flags
 			
 			if ((flags&FS_RootOnly)&&(strstr(entry_begin,"\\")!=end_symbol))	continue;	// folder in folder
 			
-			dest.push_back	(xr_strdup(entry_begin));
+			dest->push_back	(xr_strdup(entry_begin));
 		}
 	}
-	return int(dest.size());
+	return dest;
+}
+
+void	CLocatorAPI::file_list_close	(vector<char*>* &lst)
+{
+	if (lst) 
+	{
+		for (vector<char*>::iterator I=lst->begin(); I!=lst->end(); I++)
+			xr_free	(*I);
+		xr_delete	(lst);
+	}
 }
 
 IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
