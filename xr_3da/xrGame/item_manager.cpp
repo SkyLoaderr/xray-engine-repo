@@ -29,7 +29,7 @@ float CItemManager::evaluate		(const CGameObject *object) const
 {
 	const CInventoryItem	*inventory_item = dynamic_cast<const CInventoryItem*>(object);
 	if (!inventory_item)
-		return				(0.f);
-	return					((float)inventory_item->Cost());
+		return				(flt_max);
+	return					(1000000.f - (float)inventory_item->Cost());
 }
 

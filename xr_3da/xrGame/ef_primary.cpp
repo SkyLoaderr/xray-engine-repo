@@ -453,12 +453,12 @@ float CEnemyHealthFunction::ffGetValue()
 float CEnemyCreatureTypeFunction::ffGetValue()
 {
 	if (bfCheckForCachedResult())
-		return							(m_fLastValue);
+		return										(m_fLastValue);
 	if (ai().ef_storage().m_tpCurrentMember) {
-		const CEntityAlive *tpEntity			= ai().ef_storage().m_tpCurrentMember;
-		ai().ef_storage().m_tpCurrentMember		= ai().ef_storage().m_tpCurrentEnemy;
-		m_fLastValue					= ai().ef_storage().m_pfPersonalCreatureType->ffGetValue();
-		ai().ef_storage().m_tpCurrentMember		= tpEntity;
+		const CEntityAlive *tpEntity				= ai().ef_storage().m_tpCurrentMember;
+		ai().ef_storage().m_tpCurrentMember			= ai().ef_storage().m_tpCurrentEnemy;
+		m_fLastValue								= ai().ef_storage().m_pfPersonalCreatureType->ffGetValue();
+		ai().ef_storage().m_tpCurrentMember			= tpEntity;
 	}
 	else {
 		CSE_ALifeSchedulable						*l_tpALifeSchedulable = ai().ef_storage().m_tpCurrentALifeMember;
@@ -466,7 +466,7 @@ float CEnemyCreatureTypeFunction::ffGetValue()
 		m_fLastValue								= ai().ef_storage().m_pfPersonalCreatureType->ffGetValue();
 		ai().ef_storage().m_tpCurrentALifeMember	= l_tpALifeSchedulable;
 	}
-	return								(m_fLastValue);
+	return											(m_fLastValue);
 }
 
 float CEnemyWeaponTypeFunction::ffGetValue()

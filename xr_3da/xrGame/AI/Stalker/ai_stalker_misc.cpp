@@ -40,7 +40,7 @@ float CAI_Stalker::evaluate		(const CGameObject *object) const
 {
 	float				distance = Position().distance_to_sqr(object->Position());
 	distance			= !fis_zero(distance) ? distance : EPS_L;
-	return				(1.f/distance);
+	return				(distance);
 }
 
 bool CAI_Stalker::bfIfHuman(const CEntity *tpEntity)

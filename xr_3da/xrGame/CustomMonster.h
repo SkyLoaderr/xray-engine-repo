@@ -178,6 +178,10 @@ public:
 	};
 	virtual bool				use_model_pitch			() const;
 	virtual float				get_custom_pitch_speed	(float def_speed) {return def_speed;}
+	virtual bool				human_being				() const
+	{
+		return					(false);
+	}
 };
 
 #include "custommonster_inline.h"

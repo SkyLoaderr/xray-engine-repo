@@ -278,7 +278,7 @@ void CSE_ALifeSimulator::vfFurlObjectOffline(CSE_ALifeDynamicObject *I)
 bool CSE_ALifeSimulator::bfValidatePosition(CSE_ALifeDynamicObject *I)
 {
 #ifdef DEBUG
-	VERIFY					(ai().level_graph().level_id() == ai().game_graph().vertex(I->m_tGraphID)->level_id());
+	VERIFY3					(ai().level_graph().level_id() == ai().game_graph().vertex(I->m_tGraphID)->level_id(),I->s_name,I->s_name_replace);
 	xr_vector<u16>			test = I->children;
 	std::sort				(test.begin(),test.end());
 	for (u32 i=1, n=test.size(); i<n; ++i)

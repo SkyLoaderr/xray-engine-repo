@@ -837,7 +837,7 @@ void CStalkerActionAimEnemy::initialize	()
 	inherited::initialize	();
 	m_object->set_sound_mask(u32(eStalkerSoundMaskNoHumming));
 	float					distance = m_object->Position().distance_to(m_object->enemy()->Position());
-	if (m_object->enemy() && !m_storage->property(eWorldPropertyFireEnough)) {
+	if (m_object->enemy() && m_object->enemy()->human_being() && !m_storage->property(eWorldPropertyFireEnough)) {
 		CMemoryInfo			mem_object = m_object->memory(m_object->enemy());
 		if (mem_object.m_object && 
 			m_object->visible(m_object->enemy()) && 
@@ -1406,7 +1406,7 @@ void CStalkerActionGetEnemySeenModerate::finalize	()
 	inherited::finalize		();
 	m_object->set_sound_mask(eStalkerSoundMaskSurrender);
 	m_object->set_sound_mask(0);
-//	if (m_object->enemy()) {
+//	if (m_object->enemy() && m_object->enemy()->human_being()) {
 //		CMemoryInfo			mem_object = m_object->memory(m_object->enemy());
 //		if (mem_object.m_object && 
 //			m_object->visible(m_object->enemy()) && 
@@ -1421,11 +1421,12 @@ void CStalkerActionGetEnemySeenModerate::execute	()
 {
 	inherited::execute			();
 
-	m_object->play				(eStalkerSoundSurrender,20000,10000);
-
 	VERIFY						(m_object->enemy());
 	if (!m_object->enemy())
 		return;
+
+	if (m_object->enemy()->human_being())
+		m_object->play			(eStalkerSoundSurrender,20000,10000);
 
 	CMemoryInfo									mem_object = m_object->memory(m_object->enemy());
 
@@ -1522,7 +1523,7 @@ void CStalkerActionKillEnemyLostModerate::initialize	()
 {
 	inherited::initialize	();
 	m_object->set_sound_mask(u32(eStalkerSoundMaskNoHumming));
-	if (m_object->enemy() && !m_storage->property(eWorldPropertyFireEnough)) {
+	if (m_object->enemy() && m_object->enemy()->human_being() && !m_storage->property(eWorldPropertyFireEnough)) {
 		CMemoryInfo			mem_object = m_object->memory(m_object->enemy());
 		if (mem_object.m_object && 
 			m_object->visible(m_object->enemy()) && 

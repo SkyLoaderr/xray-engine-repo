@@ -462,6 +462,10 @@ public:
 	virtual void			SpawnAmmoForWeapon		(CInventoryItem *pIItem);
 	virtual void			RemoveAmmoForWeapon		(CInventoryItem *pIItem);
 	virtual	void			spawn_supplies			();
+	virtual bool			human_being				() const
+	{
+		return				(true);
+	}
 
 protected:
 	int						skel_ddelay;

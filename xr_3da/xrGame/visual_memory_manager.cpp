@@ -8,6 +8,8 @@
 
 #include "stdafx.h"
 #include "visual_memory_manager.h"
+#include "custommonster.h"
+#include "ai/stalker/ai_stalker.h"
 
 CVisualMemoryManager::CVisualMemoryManager		()
 {
@@ -37,8 +39,17 @@ void CVisualMemoryManager::Load					(LPCSTR section)
 //	m_fLateralMultiplier		= pSettings->r_float(section,"LateralMultiplier");
 //	m_fShadowWeight				= pSettings->r_float(section,"ShadowWeight");
 
+	m_max_object_count			= pSettings->r_s32(section,"DynamicObjectsCount");
+	m_monster					= dynamic_cast<CCustomMonster*>(this);
+	m_stalker					= dynamic_cast<CAI_Stalker*>(this);
+
+	if (!m_stalker)
+		return;
 	
-	m_max_object_count		= pSettings->r_s32(section,"DynamicObjectsCount");
+	m_min_view_distance_danger	= pSettings->r_float(section,"min_view_distance_danger");
+	m_max_view_distance_danger	= pSettings->r_float(section,"max_view_distance_danger");
+	m_min_view_distance_free	= pSettings->r_float(section,"min_view_distance_free");
+	m_max_view_distance_free	= pSettings->r_float(section,"max_view_distance_free");
 }
 
 void CVisualMemoryManager::reinit					()
@@ -59,29 +70,40 @@ bool CVisualMemoryManager::visible(const CGameObject *game_object) const
 	
 	if (game_object->getDestroy())
 		return							(false);
+
+	if (!m_stalker)
+		return							(true);
+
+	Fmatrix								&eye_matrix = PKinematics(m_monster->Visual())->LL_GetTransform(u16(m_stalker->eye_bone));
+	VERIFY								(_valid(eye_matrix));
+	const CAI_Stalker					*stalker = dynamic_cast<const CAI_Stalker*>(this);
+	const MonsterSpace::SBoneRotation	&rotation = stalker ? stalker->head_orientation() : m_stalker->m_body;
+	Fvector								current_direction, object_direction;
+	current_direction.setHP				(-rotation.current.yaw,-rotation.current.pitch);
+	game_object->Center					(object_direction);
+	float								object_distance = object_direction.distance_to(eye_matrix.c);
+	object_direction.sub				(eye_matrix.c);
+	object_direction.normalize_safe		();
+	float								fov = deg2rad(m_stalker->eye_fov)*.5f;
+	float								cos_alpha = current_direction.dotproduct(object_direction);
+	clamp								(cos_alpha,-.99999f,.99999f);
+	float								alpha = acosf(cos_alpha);
+	clamp								(alpha,0.f,fov);
+
+	float								max_view_distance, min_view_distance;
+	if (stalker->mental_state() == eMentalStateDanger) {
+		max_view_distance				= m_max_view_distance_danger;
+		min_view_distance				= m_min_view_distance_danger;
+	}
+	else {
+		max_view_distance				= m_max_view_distance_free;
+		min_view_distance				= m_min_view_distance_free;
+	}
+
+	float								distance = (1.f - (fov - alpha)/fov)*(max_view_distance - min_view_distance) + min_view_distance;
+	if (distance < object_distance)
+		return							(false);
 	
-//	const CCustomMonster				*m_object = dynamic_cast<const CCustomMonster*>(this);
-//	if (!m_object)
-//		return							(true);
-//
-//	Fmatrix								&eye_matrix = PKinematics(m_object->Visual())->LL_GetTransform(u16(m_object->eye_bone));
-//	VERIFY								(_valid(eye_matrix));
-//	const CAI_Stalker					*stalker = dynamic_cast<const CAI_Stalker*>(this);
-//	const MonsterSpace::SBoneRotation	&rotation = stalker ? stalker->head_orientation() : m_body;
-//	Fvector								current_direction, object_direction;
-//	current_direction.setHP				(-rotation.current.yaw,-rotation.current.pitch);
-//	game_object->Center					(object_direction);
-//	float								object_distance = object_direction.distance_to(eye_matrix.c);
-//	object_direction.sub				(eye_matrix.c);
-//	object_direction.normalize_safe		();
-//	float								cos_alpha = current_direction.dot_product(object_direction);
-//	clamp								(cos_alpha,-.99999f,.99999f);
-//	float								alpha = acosf(cos_alpha);
-//	float								fov = deg2rad(m_object->eye_fov)*.5f;
-//	float								distance = (1.f - (fov - alpha)/fov)*(m_max_view_distance - m_min_view_distance) + m_min_view_distance;
-//	if (distance < object_distance)
-//		return							(false);
-//	
 	return								(true);
 ////	if (Level().iGetKeyState(DIK_RCONTROL))
 ////		return(false);

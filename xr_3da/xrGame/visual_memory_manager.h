@@ -17,6 +17,9 @@ protected:
 	friend class CScriptMonster;
 };
 
+class CAI_Stalker;
+class CCustomMonster;
+
 class CVisualMemoryManager : 
 	virtual public CGameObject,
 	virtual public CVisualMemory
@@ -47,6 +50,8 @@ public:
 private:
 	u32								m_max_object_count;
 	xr_vector<CVisibleObject>		*m_objects;
+	CCustomMonster					*m_monster;
+	CAI_Stalker						*m_stalker;
 	// visibility constants
 	u32								m_dwMovementIdleTime;
 	float							m_fMaxInvisibleSpeed;
@@ -57,6 +62,11 @@ private:
 	float							m_fVisibilityThreshold;
 	float							m_fLateralMultiplier;
 	float							m_fShadowWeight;
+	//
+	float							m_min_view_distance_danger;
+	float							m_max_view_distance_danger;
+	float							m_min_view_distance_free;
+	float							m_max_view_distance_free;
 
 protected:
 	IC		void	fill_object						(CVisibleObject &visible_object, const CGameObject *game_object);

@@ -219,6 +219,10 @@ public:
 			void				update_best_item_info			();
 	virtual float				GetWeaponAccuracy				() const;
 	virtual	void				spawn_supplies					();
+	virtual bool				human_being						() const
+	{
+		return					(true);
+	}
 
 public:
 	u32							m_last_best_item_frame;
