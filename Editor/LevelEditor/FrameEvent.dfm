@@ -68,12 +68,10 @@ object fraEvent: TfraEvent
       Width = 120
       Height = 15
       Align = alNone
-      AllowAllUp = True
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
       CloseButton = False
-      GroupIndex = 1
       Caption = 'Append Form'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText

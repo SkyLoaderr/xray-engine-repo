@@ -12,6 +12,7 @@
 #include "cl_intersect.h"
 #include "texture.h"
 #include "D3DUtils.h"
+#include "bottombar.h"
 
 #define EVENT_VERSION		   				0x0011
 //----------------------------------------------------
@@ -35,7 +36,7 @@ void CEvent::SForm::Select( int flag )
 };
 void CEvent::SForm::GetTransform(Fmatrix& M){
     // update transform matrix
-	Fmatrix	mScale,mTranslate,mRotate;
+	Fmatrix			mScale,mTranslate,mRotate;
 	mRotate.setHPB	(vRotate.y, vRotate.x, vRotate.z);
 	mScale.scale	(vSize);
 	mTranslate.translate(vPosition);
@@ -43,9 +44,19 @@ void CEvent::SForm::GetTransform(Fmatrix& M){
 	M.mulB			(mScale);
 }
 
+void CEvent::SForm::GetTransformRP(Fmatrix& M){
+    // update transform matrix
+	Fmatrix			mTranslate,mRotate;
+	mRotate.setHPB	(vRotate.y, vRotate.x, vRotate.z);
+	mTranslate.translate(vPosition);
+	M.mul			(mTranslate,mRotate);
+}
+
 void CEvent::SForm::RenderBox(const Fmatrix& parent, bool bAlpha){
 	Fmatrix T; GetTransform(T);
     T.mulA(parent);
+	Fmatrix Trp; GetTransformRP(Trp);
+    Trp.mulA(parent);
 	// render
 	FVF::L v;
 	FLvertexVec V;
@@ -61,9 +72,13 @@ void CEvent::SForm::RenderBox(const Fmatrix& parent, bool bAlpha){
         C=D3DCOLOR_RGBA( m_Selected?255:32,m_Selected?255:32,m_Selected?255:32, 255 );
         Device.RenderNearer(0.0003);
         Device.SetTransform(D3DTS_WORLD,T);
-	    Device.SetShader(Device.m_SelectionShader);
+	    Device.SetShader(Device.m_WireShader);
         Device.ResetNearer();
         DU::DrawIdentBox(false,true,&C);
+		if (fraBottomBar->miDrawObjectsPivot->Checked&&m_Selected){
+    		Device.SetShader(Device.m_WireShader);
+    		DU::DrawObjectAxis(Trp);
+	    }
     }
 }
 
@@ -76,7 +91,7 @@ void CEvent::SForm::Render(const Fmatrix& parent, bool bAlpha)
 
 void CEvent::SForm::GetBox(Fbox& bb)
 {
-	Fmatrix T; 		GetTransform(T);
+	Fmatrix T;		GetTransform(T);
 	bb.min.set		(-0.5f,-0.5f,-0.5f);
 	bb.max.set		( 0.5f, 0.5f, 0.5f);
     bb.xform		(T);
@@ -126,12 +141,11 @@ bool CEvent::SForm::FrustumPick(const Fmatrix& parent, const CFrustum& frustum)
 
 bool CEvent::SForm::FrustumSelect(const Fmatrix& parent, int flag, const CFrustum& frustum)
 {
-	if (FrustumPick(parent,frustum)) Select(flag);
-}
-
-bool CEvent::SForm::RaySelect(const Fmatrix& parent, int flag, Fvector& start, Fvector& direction)
-{
-	if (RayPick(parent,UI.ZFar(),start,direction)) Select(flag);
+	if (FrustumPick(parent,frustum)){
+    	Select(flag);
+    	return true;
+    }
+	return false;
 }
 
 void CEvent::SForm::Move( Fvector& amount )
@@ -141,7 +155,14 @@ void CEvent::SForm::Move( Fvector& amount )
 
 void CEvent::SForm::RotateLocal( Fvector& axis, float angle )
 {
-    vRotate.mad(vRotate,axis,angle);
+	Fmatrix T; 		GetTransformRP(T);
+
+    Fmatrix 		m;
+    Fvector 		r;
+    m.rotation		(axis,angle);
+    T.mulB			(m);
+    T.getXYZ		(r);
+    vRotate			= r;
 }
 
 void CEvent::SForm::RotateParent( Fvector& axis, float angle )
@@ -245,12 +266,26 @@ bool CEvent::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPi
     return bPick;
 }
 
+void CEvent::Select(int flag)
+{
+	inherited::Select(flag);
+    if (flag==0) for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) it->Select(0);
+}
+
 bool CEvent::RaySelect(int flag, Fvector& start,Fvector& dir, bool bRayTest)
 {
     if (UI.GetShiftState().Contains(ssAlt)){
     	if ((bRayTest&&RayPick(UI.ZFar(),start,dir))||!bRayTest) Select(1);
-		for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) it->RaySelect(FTransform,flag,start,dir);
-    }else 	inherited::RaySelect(flag,start,dir,bRayTest);
+        FormIt nearest=m_Forms.end();
+        float dist = UI.ZFar();
+		for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++)
+			if (it->RayPick(FTransform,dist,start,dir)) nearest=it;
+        if (nearest!=m_Forms.end()){
+        	nearest->Select(flag);
+            return true;
+        }
+    }else 	return inherited::RaySelect(flag,start,dir,bRayTest);
+    return false;
 }
 
 bool CEvent::FrustumSelect(int flag, const CFrustum& frustum)
@@ -258,27 +293,31 @@ bool CEvent::FrustumSelect(int flag, const CFrustum& frustum)
     if (UI.GetShiftState().Contains(ssAlt)){
     	Select(1);
 		for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) it->FrustumSelect(FTransform,flag,frustum);
-    }else 	inherited::FrustumSelect(flag,frustum);
+        return true;
+    }else 	return inherited::FrustumSelect(flag,frustum);
 }
 
 void CEvent::Move(Fvector& amount){
     if (UI.GetShiftState().Contains(ssAlt)){
-		for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) if (it->m_Selected) it->Move(amount);
+		for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++)
+        	if (it->m_Selected) it->Move(amount);
     }else inherited::Move(amount);
 }
 void CEvent::RotateParent(Fvector& axis, float angle){
-    if (UI.GetShiftState().Contains(ssAlt))
+    if (UI.GetShiftState().Contains(ssAlt)){
 		for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) if (it->m_Selected) it->RotateParent(axis,angle);
-    else	inherited::RotateParent(axis,angle);
+    }else	inherited::RotateParent(axis,angle);
 
 }
 void CEvent::RotateLocal(Fvector& axis, float angle){
-    if (UI.GetShiftState().Contains(ssAlt))
-	    for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) /*if (it->m_Selected)*/ it->RotateLocal(axis,angle);
-    else	inherited::RotateLocal(axis,angle);
+    if (UI.GetShiftState().Contains(ssAlt)){
+	    for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) if (it->m_Selected) it->RotateLocal(axis,angle);
+    }else	inherited::RotateLocal(axis,angle);
 }
 void CEvent::Scale(Fvector& amount){
-	inherited::Scale(amount);
+    if (UI.GetShiftState().Contains(ssAlt)){
+	    for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) if (it->m_Selected) it->Scale(amount);
+    }else	inherited::Scale(amount);
 }
 void CEvent::PivotRotateParent(const Fmatrix& prev_inv, const Fmatrix& current, Fvector& axis, float angle ){
 	inherited::PivotRotateParent(prev_inv, current, axis, angle);

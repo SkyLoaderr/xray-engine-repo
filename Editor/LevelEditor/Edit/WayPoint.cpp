@@ -1,5 +1,5 @@
 //----------------------------------------------------
-// file: AITraffic.cpp
+// file: WayPoint.cpp
 //----------------------------------------------------
 #include "stdafx.h"
 #pragma hdrstop
@@ -15,6 +15,7 @@
 #define WAYPOINT_CHUNK_VERSION			0xE501
 #define WAYPOINT_CHUNK_POINT			0xE502
 #define WAYPOINT_CHUNK_LINKS			0xE503
+#define WAYPOINT_CHUNK_PATHNAME			0xE504
 //----------------------------------------------------
 
 #define WAYPOINT_SIZE 	1.5f
@@ -32,7 +33,8 @@ CWayPoint::CWayPoint():CCustomObject(){
 }
 
 void CWayPoint::Construct(){
-	ClassID   	= OBJCLASS_AITPOINT;
+	ClassID   	= OBJCLASS_WAYPOINT;
+    m_PathName	= "";
 }
 
 CWayPoint::~CWayPoint(){
@@ -78,6 +80,7 @@ void CWayPoint::DrawLinks(Fcolor& c){
 //----------------------------------------------------
 
 void CWayPoint::Render(int priority, bool strictB2F){
+	inherited::Render(priority, strictB2F);
     if ((1==priority)&&(false==strictB2F)){
         if (Device.m_Frustum.testSphere(PPosition,WAYPOINT_SIZE)){
             Fcolor c1,c2;
@@ -142,6 +145,10 @@ bool CWayPoint::Load(CStream& F){
 		F.RstringZ	(buf); *s_it = buf;
     }
 
+    if (F.FindChunk(WAYPOINT_CHUNK_PATHNAME)){
+		F.RstringZ	(buf); m_PathName=buf;
+    }
+
     return true;
 }
 //----------------------------------------------------
@@ -158,6 +165,10 @@ void CWayPoint::Save(CFS_Base& F){
     for (ObjectIt o_it=m_Links.begin(); o_it!=m_Links.end(); o_it++)
     	F.WstringZ	((*o_it)->Name);
 	F.close_chunk	();
+
+    F.open_chunk	(WAYPOINT_CHUNK_PATHNAME);
+	F.WstringZ		(m_PathName.c_str());
+	F.close_chunk	();
 }
 //----------------------------------------------------
 
@@ -165,7 +176,7 @@ void CWayPoint::OnSynchronize(){
 	m_Links.resize(m_NameLinks.size());
     ObjectIt o_it = m_Links.begin();
 	for (AStringIt s_it=m_NameLinks.begin(); s_it!=m_NameLinks.end(); s_it++,o_it++){
-    	*o_it = Scene.FindObjectByName(s_it->c_str(),OBJCLASS_AITPOINT);
+    	*o_it = Scene.FindObjectByName(s_it->c_str(),OBJCLASS_WAYPOINT);
         R_ASSERT(*o_it);
     }
     m_NameLinks.clear();

@@ -3,42 +3,42 @@
 
 #include "UI_WayPointTools.h"
 #include "ui_tools.h"
-#include "FrameAITPoint.h"
-#include "AITraffic.h"
+#include "FrameWayPoint.h"
+#include "WayPoint.h"
 #include "ui_main.h"
 #include "scene.h"
 //---------------------------------------------------------------------------
 
-TUI_AITPointTools::TUI_AITPointTools():TUI_CustomTools(OBJCLASS_AITPOINT){
-    AddControlCB(new TUI_ControlAITPointAdd	(estSelf,eaAdd,		this));
+TUI_WayPointTools::TUI_WayPointTools():TUI_CustomTools(OBJCLASS_WAYPOINT){
+    AddControlCB(new TUI_ControlWayPointAdd	(estSelf,eaAdd,		this));
 }
 
-void TUI_AITPointTools::OnActivate(){
-    pFrame = new TfraAITPoint(0);
-    ((TfraAITPoint*)pFrame)->fsStorage->RestoreFormPlacement();
+void TUI_WayPointTools::OnActivate(){
+    pFrame = new TfraWayPoint(0);
+    ((TfraWayPoint*)pFrame)->fsStorage->RestoreFormPlacement();
 	TUI_CustomTools::OnActivate();
 }
-void TUI_AITPointTools::OnDeactivate(){
-    ((TfraAITPoint*)pFrame)->fsStorage->SaveFormPlacement();
+void TUI_WayPointTools::OnDeactivate(){
+    ((TfraWayPoint*)pFrame)->fsStorage->SaveFormPlacement();
 	TUI_CustomTools::OnDeactivate();
     _DELETE(pFrame);
 }
 //--------------------------------------------------------------------------------------------------
-__fastcall TUI_ControlAITPointAdd::TUI_ControlAITPointAdd(int st, int act, TUI_CustomTools* parent):TUI_CustomControl(st,act,parent){
+__fastcall TUI_ControlWayPointAdd::TUI_ControlWayPointAdd(int st, int act, TUI_CustomTools* parent):TUI_CustomControl(st,act,parent){
 	last_obj = 0;
 }
 
-bool __fastcall TUI_ControlAITPointAdd::Start(TShiftState Shift){
-	CAITPoint* obj = (CAITPoint*)DefaultAddObject(Shift);
+bool __fastcall TUI_ControlWayPointAdd::Start(TShiftState Shift){
+	CWayPoint* obj = (CWayPoint*)DefaultAddObject(Shift);
 	if (obj&&Shift.Contains(ssAlt))
-		if (((TfraAITPoint*)parent_tool->pFrame)->ebAutoLink->Down){
+		if (((TfraWayPoint*)parent_tool->pFrame)->ebAutoLink->Down){
         	if (last_obj) obj->AddLink(last_obj);
         	last_obj = obj;
 		}
     return false;
 }
 
-void __fastcall TUI_ControlAITPointAdd::OnEnter(){
+void __fastcall TUI_ControlWayPointAdd::OnEnter(){
 	last_obj = 0;
 }
 

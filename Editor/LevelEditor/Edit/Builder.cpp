@@ -8,7 +8,6 @@
 #include "Builder.h"
 #include "UI_Main.h"
 #include "Scene.h"
-#include "AITraffic.h"
 #include "PortalUtils.h"
 #include "DetailObjects.h"
 //----------------------------------------------------

@@ -38,12 +38,13 @@ __published:	// IDE-managed Components
 	TLabel *Label3;
 	TLabel *Label4;
 	TEdit *edEvent;
-	TBevel *Bevel1;
 	TExtBtn *ebCLSID;
+	TExtBtn *ebExpandText;
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall ebMultiRemoveClick(TObject *Sender);
 	void __fastcall ebCLSIDClick(TObject *Sender);
 	void __fastcall OnModified(TObject *Sender);
+	void __fastcall ebExpandTextClick(TObject *Sender);
 private:	// User declarations
 	TfrmPropertiesEvent* m_Parent;
 public:

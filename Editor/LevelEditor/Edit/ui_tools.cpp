@@ -15,7 +15,7 @@
 #include "UI_SoundTools.h"
 #include "UI_GlowTools.h"
 #include "UI_RPointTools.h"
-#include "UI_AITPointTools.h"
+#include "UI_WayPointTools.h"
 #include "UI_SectorTools.h"
 #include "UI_PortalTools.h"
 #include "UI_EventTools.h"
@@ -67,7 +67,7 @@ void TUI_Tools::OnCreate(){
     AddTool			(etSector, 	new TUI_SectorTools	());
     AddTool			(etPortal, 	new TUI_PortalTools	());
     AddTool			(etEvent, 	new TUI_EventTools	());
-    AddTool			(etAITPoint,new TUI_AITPointTools());
+    AddTool			(etWayPoint,new TUI_WayPointTools());
     AddTool			(etPS, 		new TUI_PSTools		());
     AddTool			(etDO,		new TUI_DOTools		());
 // check tools

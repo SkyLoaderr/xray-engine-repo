@@ -37,6 +37,8 @@ void __fastcall TfraEvent::ebAppendFormClick(TObject *Sender)
     	CEvent* E=(CEvent*)lst.back();
         E->AppendForm(CEvent::efBox);
     }
+    UI.RedrawScene();
 }
 //---------------------------------------------------------------------------
+
 

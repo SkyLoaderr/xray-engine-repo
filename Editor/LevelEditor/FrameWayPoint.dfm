@@ -48,7 +48,7 @@ object fraWayPoint: TfraWayPoint
         000000000000000000000000FFFFFF0000000000000000000000000000000000
         00000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00
         0000}
-      OnClick = PaneMinClick
+      OnClick = PanelMinClick
     end
     object ebAutoLink: TExtBtn
       Left = 2

@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 277
+  Height = 586
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -891,7 +891,7 @@ object fraLeftBar: TfraLeftBar
         Spacing = 3
         OnClick = TargetClick
       end
-      object ebTargetAITraffic: TExtBtn
+      object ebTargetWPoint: TExtBtn
         Left = 2
         Top = 121
         Width = 120
@@ -903,7 +903,7 @@ object fraLeftBar: TfraLeftBar
         BtnColor = 10528425
         CloseButton = False
         GroupIndex = 1
-        Caption = '8. AI Traffic'
+        Caption = '8. Way Point'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11

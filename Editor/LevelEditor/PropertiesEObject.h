@@ -76,6 +76,9 @@ private:	// User declarations
 	void __fastcall OnAfterShaderEdit		(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
 	void __fastcall OnAfterTextureEdit		(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
 	void __fastcall OnAfterTransformation	(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+	void __fastcall RotateOnAfterEdit	 	(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+	void __fastcall RotateOnBeforeEdit		(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+	void __fastcall RotateOnDraw			(PropValue* sender, LPVOID draw_val);
 public:
 public:		// User declarations
     __fastcall 		TfrmPropertiesEObject	(TComponent* Owner);

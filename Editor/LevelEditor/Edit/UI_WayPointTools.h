@@ -5,24 +5,24 @@
 #include "ui_customtools.h"
 
 // refs
-class CAITPoint;
+class CWayPoint;
 
 //---------------------------------------------------------------------------
-class TUI_AITPointTools:public TUI_CustomTools{
+class TUI_WayPointTools:public TUI_CustomTools{
 public:
-                    TUI_AITPointTools();
-    virtual         ~TUI_AITPointTools(){;}
+                    TUI_WayPointTools();
+    virtual         ~TUI_WayPointTools(){;}
 	virtual	void 	OnActivate();
 	virtual	void 	OnDeactivate();
 };
 //---------------------------------------------------------------------------
-class TUI_ControlAITPointAdd: public TUI_CustomControl{
-	CAITPoint* last_obj;
+class TUI_ControlWayPointAdd: public TUI_CustomControl{
+	CWayPoint* last_obj;
 public:
-    TUI_ControlAITPointAdd(int st, int act, TUI_CustomTools* parent);
-    virtual ~TUI_ControlAITPointAdd(){;}
+    TUI_ControlWayPointAdd(int st, int act, TUI_CustomTools* parent);
+    virtual ~TUI_ControlWayPointAdd(){;}
 	virtual bool Start  (TShiftState _Shift);
     virtual void OnEnter();
 };
 
-#endif //UI_AITPointToolsH
+#endif //UI_WayPointToolsH

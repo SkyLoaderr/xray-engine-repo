@@ -188,6 +188,7 @@ bool CImage::LoadTGA(LPCSTR name)
     	Msg("Texture (%s) - invalid pixsize: %d",name,hdr.pixsize);
         return false;
     }
+#ifndef _EDITOR
 	if (!btwIsPow2(hdr.width)){
     	Msg("Texture (%s) - invalid width: %d",name,hdr.width);
         return false;
@@ -196,6 +197,7 @@ bool CImage::LoadTGA(LPCSTR name)
     	Msg("Texture (%s) - invalid height: %d",name,hdr.height);
         return false;
     }
+#endif
 
 	// Skip funky stuff
 	if (hdr.idlen)	TGA().Advance(hdr.idlen);

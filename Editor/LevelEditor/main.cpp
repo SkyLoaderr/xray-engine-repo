@@ -123,6 +123,7 @@ void __fastcall TfrmMain::D3DWindowKeyPress(TObject *Sender, char &Key)
 void __fastcall TfrmMain::FormKeyDown(TObject *Sender, WORD &Key, TShiftState Shift)
 {
     if (!D3DWindow->Focused()) UI.ApplyGlobalShortCut(Key, Shift);
+	if (Key==VK_MENU) Key=0;	
 }
 //---------------------------------------------------------------------------
 

@@ -4,6 +4,7 @@
 #include "EventOneAction.h"
 #include "PropertiesEvent.h"
 #include "ChoseForm.h"
+#include "TextForm.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ElXPThemedControl"
@@ -84,6 +85,15 @@ void __fastcall TfrmOneEventAction::OnModified(TObject *Sender)
 {
 	if (bLoadMode) return;
 	m_Parent->OnModified(Sender);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmOneEventAction::ebExpandTextClick(TObject *Sender)
+{
+	AnsiString txt=edEvent->Text;
+	if (TfrmText::Run(txt, "Event Text")){
+		edEvent->Text = txt;
+    }
 }
 //---------------------------------------------------------------------------
 

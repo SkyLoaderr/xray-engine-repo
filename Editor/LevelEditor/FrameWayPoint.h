@@ -27,7 +27,7 @@ __published:	// IDE-managed Components
 	TBevel *Bevel1;
 	TExtBtn *ebRemoveLinks;
 	TFormStorage *fsStorage;
-    void __fastcall PaneMinClick(TObject *Sender);
+    void __fastcall PanelMinClick(TObject *Sender);
     void __fastcall ExpandClick(TObject *Sender);
 	void __fastcall ebAddLinksClick(TObject *Sender);
 	void __fastcall ebRemoveLinksClick(TObject *Sender);

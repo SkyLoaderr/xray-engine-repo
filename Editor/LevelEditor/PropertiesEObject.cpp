@@ -52,6 +52,31 @@ void TfrmPropertiesEObject::DestroyProperties(TfrmPropertiesEObject*& props)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfrmPropertiesEObject::RotateOnAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+{
+	Fvector* V = (Fvector*)edit_val;
+	V->x = deg2rad(V->x);
+	V->y = deg2rad(V->y);
+	V->z = deg2rad(V->z);
+	UI.RedrawScene();
+}
+
+void __fastcall TfrmPropertiesEObject::RotateOnBeforeEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+{
+	Fvector* V = (Fvector*)edit_val;
+	V->x = rad2deg(V->x);
+	V->y = rad2deg(V->y);
+	V->z = rad2deg(V->z);
+}
+
+void __fastcall TfrmPropertiesEObject::RotateOnDraw(PropValue* sender, LPVOID draw_val)
+{
+	Fvector* V = (Fvector*)draw_val;
+	V->x = rad2deg(V->x);
+	V->y = rad2deg(V->y);
+	V->z = rad2deg(V->z);
+}
+
 void TfrmPropertiesEObject::FillBasicProps()
 {
 	// basic
@@ -64,7 +89,7 @@ void TfrmPropertiesEObject::FillBasicProps()
         TElTreeItem* M;
 		M=m_Basic->AddItem	(0,PROP_MARKER,	"Transformation");
 		m_Basic->AddItem	(M,PROP_VECTOR,	"Position",	m_Basic->MakeVectorValue(&S->FPosition,	-10000,	10000,0.01,2,OnAfterTransformation));
-		m_Basic->AddItem	(M,PROP_VECTOR,	"Rotation",	m_Basic->MakeVectorValue(&S->FRotation,	-10000,	10000,0.1,1,OnAfterTransformation));
+		m_Basic->AddItem	(M,PROP_VECTOR,	"Rotation",	m_Basic->MakeVectorValue(&S->FRotation,	-10000,	10000,0.1,1,RotateOnAfterEdit,RotateOnBeforeEdit,RotateOnDraw));
 		m_Basic->AddItem	(M,PROP_VECTOR,	"Scale",	m_Basic->MakeVectorValue(&S->FScale,	0.01,	10000,0.01,2,OnAfterTransformation));
 		M=m_Basic->AddItem	(0,PROP_MARKER,	"Summary");
         AnsiString t; t.sprintf("V: %d, F: %d",S->GetVertexCount(),S->GetFaceCount());

@@ -181,42 +181,48 @@ void __fastcall TfrmImageLib::tvItemsItemFocused(TObject *Sender)
 		_DELETE(m_Thm);
         // get new texture
         m_Thm = new EImageThumbnail(m_SelectedName.c_str(),EImageThumbnail::EITTexture,true,bCheckMode);
-        if (!m_Thm->Valid())	pbImage->Repaint();
-        else	 				pbImagePaint(Sender);
-        lbFileName->Caption 	= "\""+ChangeFileExt(m_SelectedName,"")+"\"";
-		AnsiString temp; 		temp.sprintf("%d x %d x %s",m_Thm->_Width(),m_Thm->_Height(),m_Thm->_Format().HasAlpha()?"32b":"24b");
-        lbInfo->Caption			= temp;
-        // set UI
-        STextureParams& fmt 	= m_Thm->_Format();
+        if (!m_Thm->Valid()){
+        	pbImage->Repaint();
+            ImageProps->ClearProperties();
+            lbFileName->Caption 	= "/Error/";
+            lbInfo->Caption			= "/Error/";
+        }else{
+        	pbImagePaint(Sender);
+            lbFileName->Caption 	= "\""+ChangeFileExt(m_SelectedName,"")+"\"";
+            AnsiString temp; 		temp.sprintf("%d x %d x %s",m_Thm->_Width(),m_Thm->_Height(),m_Thm->_Format().HasAlpha()?"32b":"24b");
+            lbInfo->Caption			= temp;
+            // set UI
+            STextureParams& fmt 	= m_Thm->_Format();
 
-        char key[255];
-        TElTreeItem* M=0;
+            char key[255];
+            TElTreeItem* M=0;
 
-        ImageProps->BeginFillMode("Image properties");
-        ImageProps->AddItem(0,PROP_TOKEN,"Format",			ImageProps->MakeTokenValue(&fmt.fmt,tfmt_token));
-        M = ImageProps->AddItem(0,PROP_MARKER,"MipMaps");
-        ImageProps->AddItem(M,PROP_FLAG,"Enabled",			ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flGenerateMipMaps));
-        ImageProps->AddItem(M,PROP_TOKEN,"Filter",			ImageProps->MakeTokenValue(&fmt.mip_filter,tparam_token));
-        M = ImageProps->AddItem(0,PROP_MARKER,"Fade");
-        ImageProps->AddItem(M,PROP_FLAG,"Color Enabled",	ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flFadeToColor));
-        ImageProps->AddItem(M,PROP_FLAG,"Alpha Enabled",	ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flFadeToAlpha));
-        ImageProps->AddItem(M,PROP_INTEGER,"Amount",		ImageProps->MakeIntValue(&fmt.fade_amount,0,1000,1));
-        ImageProps->AddItem(M,PROP_COLOR,"Color",			&fmt.fade_color);
-        M = ImageProps->AddItem(0,PROP_MARKER,"Border");
-        ImageProps->AddItem(M,PROP_FLAG,"Color Enabled",	ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flColorBorder));
-        ImageProps->AddItem(M,PROP_FLAG,"Alpha Enabled",	ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flAlphaBorder));
-        ImageProps->AddItem(M,PROP_COLOR,"Color",			&fmt.border_color);
-        M = ImageProps->AddItem(0,PROP_MARKER,"Flags");
-        ImageProps->AddItem(M,PROP_FLAG,"Binary Alpha",		ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flBinaryAlpha));
-        ImageProps->AddItem(M,PROP_FLAG,"Normal Map",		ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flNormalMap));
-        ImageProps->AddItem(M,PROP_FLAG,"Du Dv Map",		ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flDuDvMap));
-        ImageProps->AddItem(M,PROP_FLAG,"Dither",			ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flDitherColor));
-        ImageProps->AddItem(M,PROP_FLAG,"Dither Each MIP",	ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flDitherEachMIPLevel));
-        ImageProps->AddItem(M,PROP_FLAG,"Grayscale",		ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flGreyScale));
-        ImageProps->AddItem(M,PROP_FLAG,"Implicit Lighted",	ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flImplicitLighted));
-        ImageProps->EndFillMode();
+            ImageProps->BeginFillMode("Image properties");
+            ImageProps->AddItem(0,PROP_TOKEN,"Format",			ImageProps->MakeTokenValue(&fmt.fmt,tfmt_token));
+            M = ImageProps->AddItem(0,PROP_MARKER,"MipMaps");
+            ImageProps->AddItem(M,PROP_FLAG,"Enabled",			ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flGenerateMipMaps));
+            ImageProps->AddItem(M,PROP_TOKEN,"Filter",			ImageProps->MakeTokenValue(&fmt.mip_filter,tparam_token));
+            M = ImageProps->AddItem(0,PROP_MARKER,"Fade");
+            ImageProps->AddItem(M,PROP_FLAG,"Color Enabled",	ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flFadeToColor));
+            ImageProps->AddItem(M,PROP_FLAG,"Alpha Enabled",	ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flFadeToAlpha));
+            ImageProps->AddItem(M,PROP_INTEGER,"Amount",		ImageProps->MakeIntValue(&fmt.fade_amount,0,1000,1));
+            ImageProps->AddItem(M,PROP_COLOR,"Color",			&fmt.fade_color);
+            M = ImageProps->AddItem(0,PROP_MARKER,"Border");
+            ImageProps->AddItem(M,PROP_FLAG,"Color Enabled",	ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flColorBorder));
+            ImageProps->AddItem(M,PROP_FLAG,"Alpha Enabled",	ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flAlphaBorder));
+            ImageProps->AddItem(M,PROP_COLOR,"Color",			&fmt.border_color);
+            M = ImageProps->AddItem(0,PROP_MARKER,"Flags");
+            ImageProps->AddItem(M,PROP_FLAG,"Binary Alpha",		ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flBinaryAlpha));
+            ImageProps->AddItem(M,PROP_FLAG,"Normal Map",		ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flNormalMap));
+            ImageProps->AddItem(M,PROP_FLAG,"Du Dv Map",		ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flDuDvMap));
+            ImageProps->AddItem(M,PROP_FLAG,"Dither",			ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flDitherColor));
+            ImageProps->AddItem(M,PROP_FLAG,"Dither Each MIP",	ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flDitherEachMIPLevel));
+            ImageProps->AddItem(M,PROP_FLAG,"Grayscale",		ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flGreyScale));
+            ImageProps->AddItem(M,PROP_FLAG,"Implicit Lighted",	ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flImplicitLighted));
+            ImageProps->EndFillMode();
 
-        m_LastSelection = m_SelectedName;
+            m_LastSelection = m_SelectedName;
+        }
     }else{
 		ImageProps->ClearProperties();
 		_DELETE(m_Thm);

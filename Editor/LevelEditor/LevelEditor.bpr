@@ -41,11 +41,11 @@
       intermediate\FrameEmitter.obj intermediate\xr_trims.obj 
       intermediate\PropertiesRPoint.obj intermediate\FrameRPoint.obj 
       intermediate\interp.obj intermediate\Envelope.obj intermediate\motion.obj 
-      intermediate\bone.obj intermediate\clsid.obj intermediate\AITraffic.obj 
-      intermediate\FrameAITPoint.obj intermediate\DetailObjects.obj 
+      intermediate\bone.obj intermediate\clsid.obj intermediate\WayPoint.obj 
+      intermediate\FrameWayPoint.obj intermediate\DetailObjects.obj 
       intermediate\FrameDetObj.obj intermediate\xr_ini.obj 
       intermediate\ColorPicker.obj intermediate\LzHuf.obj 
-      intermediate\UI_AITPointTools.obj intermediate\UI_Camera.obj 
+      intermediate\UI_WayPointTools.obj intermediate\UI_Camera.obj 
       intermediate\ui_control.obj intermediate\UI_CustomTools.obj 
       intermediate\UI_DOTools.obj intermediate\UI_EventTools.obj 
       intermediate\UI_GlowTools.obj intermediate\UI_LightTools.obj 
@@ -97,7 +97,8 @@
       intermediate\PropertiesEObject.obj intermediate\GroupObject.obj 
       intermediate\UI_GroupTools.obj intermediate\FrameGroup.obj 
       intermediate\Blender_Shadow_Texture.obj intermediate\PropertiesGroup.obj 
-      intermediate\FrameEvent.obj intermediate\Blender_Shadow_World.obj"/>
+      intermediate\FrameEvent.obj intermediate\Blender_Shadow_World.obj 
+      intermediate\TextForm.obj intermediate\PropertiesWayPoint.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -109,11 +110,11 @@
       ObjectList.dfm EditorPref.dfm Splash.dfm main.dfm PropertiesEvent.dfm 
       LogForm.dfm FrameLight.dfm OneEnvironment.dfm PropertiesPS.dfm 
       ChoseForm.dfm ImageEditor.dfm FramePS.dfm previewimage.dfm 
-      FrameEmitter.dfm PropertiesRPoint.dfm FrameRPoint.dfm FrameAITPoint.dfm 
+      FrameEmitter.dfm PropertiesRPoint.dfm FrameRPoint.dfm FrameWayPoint.dfm 
       FrameDetObj.dfm DOShuffle.dfm DOOneColor.dfm PropertiesDetailObject.dfm 
       PropertiesList.dfm PropertiesSceneObject.dfm EventOneAction.dfm 
       EditLightAnim.dfm PropertiesEObject.dfm FrameGroup.dfm PropertiesGroup.dfm 
-      FrameEvent.dfm"/>
+      FrameEvent.dfm TextForm.dfm PropertiesWayPoint.dfm"/>
     <LIBFILES value="lib\LWO.lib lib\cg32.lib lib\xrProgressive.lib lib\MagicFMd.lib 
       lib\DXT.lib lib\gauss.lib lib\DX\d3d8.lib lib\DX\d3dx8d.lib 
       lib\DX\dinput.lib lib\ETools.lib lib\FreeImage.lib lib\xrCDB.lib"/>

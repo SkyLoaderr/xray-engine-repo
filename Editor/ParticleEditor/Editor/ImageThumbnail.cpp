@@ -121,7 +121,7 @@ bool EImageThumbnail::Load()
 }
 
 void EImageThumbnail::Save(int age){
-	R_ASSERT(Valid());
+	if (!Valid()) return;
 
     CFS_Memory F;
 	F.open_chunk	(THM_CHUNK_VERSION);

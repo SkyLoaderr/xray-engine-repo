@@ -14,7 +14,7 @@ enum ETarget{
     etSound,
     etGlow,
     etRPoint,
-    etAITPoint,
+    etWayPoint,
     etSector,
     etPortal,
     etEvent,

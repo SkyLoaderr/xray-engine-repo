@@ -30,7 +30,7 @@ __published:	// IDE-managed Components
 	TFormStorage *fsStorage;
     TExtBtn *ebTargetGlow;
     TExtBtn *ebTargetRPoint;
-	TExtBtn *ebTargetAITraffic;
+	TExtBtn *ebTargetWPoint;
 	TExtBtn *ebTargetSector;
 	TExtBtn *ebTargetPortal;
 	TLabel *APHeadLabel2;

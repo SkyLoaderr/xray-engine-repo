@@ -29,6 +29,8 @@ bool Surface_Load(LPCSTR full_name, DWORDVec& data, int& w, int& h, int& a)
         a					= img.bAlpha;
         data.resize			(w*h);
 		CopyMemory			(data.begin(),img.pData,sizeof(DWORD)*data.size());
+		if (!btwIsPow2(w))	ELog.Msg(mtError,"Texture (%s) - invalid width: %d",full_name,w);
+		if (!btwIsPow2(h))	ELog.Msg(mtError,"Texture (%s) - invalid height: %d",full_name,h);
         return true;
     }else{
         FIBITMAP* bm 		= Surface_Load((LPSTR)full_name);
@@ -40,6 +42,8 @@ bool Surface_Load(LPCSTR full_name, DWORDVec& data, int& w, int& h, int& a)
             for (int y=h-1; y>=0; y--) CopyMemory(data.begin()+(h-y-1)*w,FreeImage_GetScanLine(bm,y),w4);
             a				= FIC_RGBALPHA==FreeImage_GetColorType(bm);
             FreeImage_Free	(bm);
+            if (!btwIsPow2(w))	ELog.Msg(mtError,"Texture (%s) - invalid width: %d",full_name,w);
+            if (!btwIsPow2(h))	ELog.Msg(mtError,"Texture (%s) - invalid height: %d",full_name,h);
             return true;
         }
     }
@@ -111,6 +115,11 @@ void CImageManager::MakeGameTexture(EImageThumbnail* THM, LPCSTR game_name, DWOR
     int w4= w*4;
     // compress
     bool bRes 	= DXTCompress(game_name, (LPBYTE)load_data, w, h, w4, &THM->m_TexParams, 4);
+    if (!bRes){
+    	Engine.FS.DeleteFileByName(game_name);
+    	ELog.DlgMsg(mtError,"Can't make game texture '%s'.\nCheck texture size.",game_name);
+		return;
+    }
     R_ASSERT(bRes&&Engine.FS.FileLength(game_name));
 }
 
@@ -132,8 +141,16 @@ void CImageManager::SynchronizeThumbnail(EImageThumbnail* THM, LPCSTR src_name)
     int w, h, a;
 	AnsiString fn = src_name;
 	Engine.FS.m_Textures.Update(fn);
-	R_ASSERT(Engine.FS.Exist(fn.c_str()));
-	bool bRes = Surface_Load(fn.c_str(),data,w,h,a); R_ASSERT(bRes);
+	if (!Engine.FS.Exist(fn.c_str())){
+    	ELog.DlgMsg(mtError,"Can't load texture '%s'.\nCheck file existance",fn.c_str());
+        return;
+    }
+	bool bRes = Surface_Load(fn.c_str(),data,w,h,a);
+    if (!bRes){
+    	ELog.DlgMsg(mtError,"Can't load texture '%s'.\nCheck file existance or texture size.",fn.c_str(),w,h);
+		return;
+    }
+    R_ASSERT2(bRes,"");
 	MakeThumbnail(THM,data.begin(),w,h,a);
 }
 //------------------------------------------------------------------------------

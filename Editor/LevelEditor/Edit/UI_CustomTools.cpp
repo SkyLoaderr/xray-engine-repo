@@ -18,6 +18,7 @@
 #include "PropertiesEvent.h"
 #include "PropertiesPS.h"
 #include "PropertiesRPoint.h"
+#include "PropertiesWayPoint.h"
 
 #include "PropertiesList.h"
 #include "NumericVector.h"
@@ -99,7 +100,7 @@ void TUI_CustomTools::ShowProperties(){
 	    case OBJCLASS_SECTOR:   	frmPropertiesSectorRun(&objset,bChange); 	break;
 	    case OBJCLASS_EVENT:   		frmPropertiesEventRun(&objset,bChange);		break;
 	    case OBJCLASS_RPOINT:   	TfrmPropertiesRPoint::Run(&objset,bChange); break;
-//	    case OBJCLASS_AITRAFFIC:   	TfrmPropertiesAITraffic::Run(&objset,bChange);break;
+	    case OBJCLASS_WAYPOINT:   	TfrmPropertiesWayPoint::Run(&objset,bChange);break;
         case OBJCLASS_PS:			TfrmPropertiesPS::Run(&objset,bChange);		break;
     	default:{ ELog.Msg(mtInformation, "Can't find properties form.");}
 	    }

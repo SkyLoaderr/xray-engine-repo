@@ -57,29 +57,33 @@ public:
     TBeforeEdit			OnBeforeEdit;
     TOnDrawValue		OnDrawValue;
 public:
-						PropValue		(TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):OnAfterEdit(after),OnBeforeEdit(before),OnDrawValue(draw){};
+						PropValue		(TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):OnAfterEdit(after),OnBeforeEdit(before),OnDrawValue(draw),bChanged(false){};
 	virtual 			~PropValue		(){};
     virtual LPCSTR		GetText			()=0;
+    virtual bool		IsC
 };
 class TextValue: public PropValue{
+	AnsiString			init_val;
 public:
 	LPSTR				val;
-						TextValue		(LPSTR value, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):val(value),PropValue(after,before,draw){};
+						TextValue		(LPSTR value, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):init_val(value),val(value),PropValue(after,before,draw){};
     virtual LPCSTR		GetText			();
 };
 class AnsiTextValue: public PropValue{
+	AnsiString			init_val;
 public:
 	AnsiString*			val;
-						AnsiTextValue	(AnsiString* value, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):val(value),PropValue(after,before,draw){};
+						AnsiTextValue	(AnsiString* value, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):init_val(*value),val(value),PropValue(after,before,draw){};
     virtual LPCSTR		GetText			();
 };
 class IntValue: public PropValue{
+	int					init_val;
 public:
 	int*				val;
 	int					lim_mn;
     int					lim_mx;
     int 				inc;
-    					IntValue		(int* value, int mn, int mx, int increm, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):val(value),lim_mn(mn),lim_mx(mx),inc(increm),PropValue(after,before,draw){};
+    					IntValue		(int* value, int mn, int mx, int increm, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):init_val(*value),val(value),lim_mn(mn),lim_mx(mx),inc(increm),PropValue(after,before,draw){};
     virtual LPCSTR		GetText			()
     {
     	int draw_val 	= *val;
@@ -90,13 +94,14 @@ public:
     }
 };
 class FloatValue: public PropValue{
+	float				init_val;
 public:
 	float*				val;
 	float				lim_mn;
     float				lim_mx;
     float 				inc;
     int 				dec;
-    					FloatValue		(float* value, float mn, float mx, float increment, int decimal, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):val(value),lim_mn(mn),lim_mx(mx),inc(increment),dec(decimal),PropValue(after,before,draw){};
+    					FloatValue		(float* value, float mn, float mx, float increment, int decimal, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):init_val(*value),val(value),lim_mn(mn),lim_mx(mx),inc(increment),dec(decimal),PropValue(after,before,draw){};
     virtual LPCSTR		GetText			()
     {
     	float draw_val 	= *val;
@@ -108,13 +113,14 @@ public:
     }
 };
 class VectorValue: public PropValue{
+	Fvector				init_val;
 public:
 	Fvector*			val;
 	float				lim_mn;
     float				lim_mx;
     float 				inc;
     int 				dec;
-						VectorValue		(Fvector* value, float mn, float mx, float increment, int decimal, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):val(value),lim_mn(mn),lim_mx(mx),inc(increment),dec(decimal),PropValue(after,before,draw){};
+						VectorValue		(Fvector* value, float mn, float mx, float increment, int decimal, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):init_val(*value),val(value),lim_mn(mn),lim_mx(mx),inc(increment),dec(decimal),PropValue(after,before,draw){};
     virtual LPCSTR		GetText			()
     {
 		Fvector draw_val 	= *val;
@@ -126,27 +132,31 @@ public:
     }
 };
 class FlagValue: public PropValue{
+	DWORD				init_val;
 public:
 	DWORD*				val;
 	DWORD				mask;
-						FlagValue		(DWORD* value, DWORD _mask, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):val(value),mask(_mask),PropValue(after,before,draw){};
+						FlagValue		(DWORD* value, DWORD _mask, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):init_val(*value),val(value),mask(_mask),PropValue(after,before,draw){};
     virtual LPCSTR		GetText			(){return 0;}
 };
 class TokenValue: public PropValue{
+	DWORD				init_val;
 public:
 	DWORD*				val;
 	xr_token* 			token;
-						TokenValue		(DWORD* value, xr_token* _token, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):val(value),token(_token),PropValue(after,before,draw){};
+						TokenValue		(DWORD* value, xr_token* _token, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):init_val(*value),val(value),token(_token),PropValue(after,before,draw){};
 	virtual LPCSTR 		GetText			();
 };
 class TokenValue2: public PropValue{
+	DWORD				init_val;
 public:
 	DWORD*				val;
 	AStringVec 			items;
-						TokenValue2		(DWORD* value, AStringVec* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):val(value),items(*_items),PropValue(after,before,draw){};
+						TokenValue2		(DWORD* value, AStringVec* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):init_val(*value),val(value),items(*_items),PropValue(after,before,draw){};
 	virtual LPCSTR 		GetText			();
 };
 class TokenValue3: public PropValue{
+	DWORD				init_val;
 public:
 	struct Item {
 		DWORD		ID;
@@ -155,15 +165,16 @@ public:
 	DWORD*				val;
 	DWORD				cnt;
     const Item*			items;
-						TokenValue3		(DWORD* value, DWORD _cnt, const Item* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):val(value),cnt(_cnt),items(_items),PropValue(after,before,draw){};
+						TokenValue3		(DWORD* value, DWORD _cnt, const Item* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):init_val(*value),val(value),cnt(_cnt),items(_items),PropValue(after,before,draw){};
 	virtual LPCSTR 		GetText			();
 };
 class ListValue: public PropValue{
+	LPSTR				init_val;
 public:
 	LPSTR				val;
 	AStringVec 			items;
-						ListValue		(LPSTR value, AStringVec* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):val(value),items(*_items),PropValue(after,before,draw){};
-						ListValue		(LPSTR value, DWORD cnt, LPCSTR* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):val(value),PropValue(after,before,draw){items.resize(cnt); int i=0; for (AStringIt it=items.begin(); it!=items.end(); it++,i++) *it=_items[i]; };
+						ListValue		(LPSTR value, AStringVec* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):init_val(value),val(value),items(*_items),PropValue(after,before,draw){};
+						ListValue		(LPSTR value, DWORD cnt, LPCSTR* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):init_val(value),val(value),PropValue(after,before,draw){items.resize(cnt); int i=0; for (AStringIt it=items.begin(); it!=items.end(); it++,i++) *it=_items[i]; };
 	virtual LPCSTR		GetText			();
 };
 //---------------------------------------------------------------------------

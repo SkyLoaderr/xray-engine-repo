@@ -65,7 +65,7 @@ void __fastcall TfrmPropertiesEvent::FormKeyDown(TObject *Sender,
       WORD &Key, TShiftState Shift)
 {
     if (Key==VK_ESCAPE) ebCancel->Click();
-    if (Key==VK_RETURN) ebOk->Click();
+    if (Shift.Contains(ssCtrl)&&(Key==VK_RETURN)) ebOk->Click();
 }
 
 //----------------------------------------------------

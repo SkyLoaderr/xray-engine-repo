@@ -89,15 +89,15 @@ USEUNIT("engine\motion.cpp");
 USEUNIT("engine\bone.cpp");
 USELIB("lib\gauss.lib");
 USEUNIT("engine\clsid.cpp");
-USEUNIT("edit\AITraffic.cpp");
-USEFORM("FrameAITPoint.cpp", fraAITPoint); /* TFrame: File Type */
+USEUNIT("edit\WayPoint.cpp");
+USEFORM("FrameWayPoint.cpp", fraWayPoint); /* TFrame: File Type */
 USEUNIT("edit\DetailObjects.cpp");
 USEFORM("FrameDetObj.cpp", fraDetailObject); /* TFrame: File Type */
 USEUNIT("engine\xr_ini.cpp");
 USE("engine\Communicate.h", File);
 USEUNIT("edit\ColorPicker.cpp");
 USEUNIT("engine\LzHuf.cpp");
-USEUNIT("edit\UI_AITPointTools.cpp");
+USEUNIT("edit\UI_WayPointTools.cpp");
 USEUNIT("edit\UI_Camera.cpp");
 USEUNIT("edit\ui_control.cpp");
 USEUNIT("edit\UI_CustomTools.cpp");
@@ -211,6 +211,8 @@ USEUNIT("Engine\Blenders\Blender_Shadow_Texture.cpp");
 USEFORM("PropertiesGroup.cpp", frmPropertiesGroup);
 USEFORM("FrameEvent.cpp", fraEvent); /* TFrame: File Type */
 USEUNIT("Engine\Blenders\Blender_Shadow_World.cpp");
+USEFORM("TextForm.cpp", frmText);
+USEFORM("PropertiesWayPoint.cpp", frmPropertiesWayPoint);
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

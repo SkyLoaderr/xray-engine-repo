@@ -2,8 +2,8 @@
 // file: WayPoint.h
 //----------------------------------------------------
 
-#ifndef _INCDEF_AITraffic_H_
-#define _INCDEF_AITraffic_H_                                
+#ifndef _INCDEF_WayPoint_H_
+#define _INCDEF_WayPoint_H_                                
 
 #include "CustomObject.h"
 
@@ -15,6 +15,7 @@ class CWayPoint: public CCustomObject {
     ObjectList		m_Links;
     // temporary storage (load only)
     AStringVec		m_NameLinks;
+    AnsiString		m_PathName;
 
     void            DrawPoint		(Fcolor& c);
     void			DrawLinks		(Fcolor& c);
@@ -40,6 +41,11 @@ public:
 
     bool			AddLink			(CWayPoint* P);
     bool			RemoveLink		(CWayPoint* P);
+    void			SetPathName     (LPCSTR name){m_PathName="";}
+
+	virtual void 	RotateParent	(Fvector& axis, float angle ){;}
+	virtual void 	RotateLocal		(Fvector& axis, float angle ){;}
+	virtual void 	Scale			(Fvector& amount){;}
 };
 #endif /*_INCDEF_WayPoint_H_*/
 

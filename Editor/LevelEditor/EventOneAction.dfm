@@ -1,11 +1,11 @@
 object frmOneEventAction: TfrmOneEventAction
-  Left = 376
-  Top = 220
+  Left = 555
+  Top = 305
   Align = alTop
   BorderIcons = []
   BorderStyle = bsNone
   ClientHeight = 50
-  ClientWidth = 485
+  ClientWidth = 492
   Color = 10528425
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -22,16 +22,9 @@ object frmOneEventAction: TfrmOneEventAction
   object Bevel2: TBevel
     Left = 0
     Top = 0
-    Width = 485
+    Width = 492
     Height = 50
     Align = alClient
-  end
-  object Bevel1: TBevel
-    Left = 61
-    Top = 4
-    Width = 106
-    Height = 20
-    Style = bsRaised
   end
   object ebMultiRemove: TExtBtn
     Left = 1
@@ -205,7 +198,7 @@ object frmOneEventAction: TfrmOneEventAction
   object ebCLSID: TExtBtn
     Left = 345
     Top = 4
-    Width = 135
+    Width = 144
     Height = 18
     Align = alNone
     BevelShow = False
@@ -217,6 +210,32 @@ object frmOneEventAction: TfrmOneEventAction
     FlatAlwaysEdge = True
     OnClick = ebCLSIDClick
   end
+  object ebExpandText: TExtBtn
+    Left = 62
+    Top = 26
+    Width = 18
+    Height = 19
+    Align = alNone
+    CloseButton = False
+    Glyph.Data = {
+      C2010000424DC20100000000000036000000280000000C0000000B0000000100
+      1800000000008C010000120B0000120B00000000000000000000C8D0D4C8D0D4
+      C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0
+      D4000000000000000000000000C8D0D4C8D0D4000000000000000000000000C8
+      D0D4C8D0D4000000000000000000C8D0D4C8D0D4C8D0D4C8D0D4000000000000
+      000000C8D0D4C8D0D4000000C8D0D4000000000000C8D0D4C8D0D40000000000
+      00C8D0D4000000C8D0D4C8D0D4C8D0D4C8D0D4C8D0D400000000000000000000
+      0000C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4000000
+      000000C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D40000
+      00000000000000000000C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4000000C8D0D400
+      0000000000C8D0D4C8D0D4000000000000C8D0D4000000C8D0D4C8D0D4000000
+      000000000000C8D0D4C8D0D4C8D0D4C8D0D4000000000000000000C8D0D4C8D0
+      D4000000000000000000000000C8D0D4C8D0D4000000000000000000000000C8
+      D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4
+      C8D0D4C8D0D4}
+    Spacing = 0
+    OnClick = ebExpandTextClick
+  end
   object seCount: TMultiObjSpinEdit
     Left = 200
     Top = 2
@@ -226,17 +245,18 @@ object frmOneEventAction: TfrmOneEventAction
     ButtonKind = bkLightWave
     MaxValue = 65535
     MinValue = -1
-    Color = 8422020
+    Color = 10526880
     TabOrder = 0
     OnChange = OnModified
   end
   object edEvent: TEdit
-    Left = 61
+    Left = 80
     Top = 25
-    Width = 420
+    Width = 409
     Height = 21
-    Color = 8422020
+    Color = 10526880
     TabOrder = 1
     OnChange = OnModified
+    OnDblClick = ebExpandTextClick
   end
 end
