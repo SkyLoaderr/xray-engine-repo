@@ -67,7 +67,7 @@ float		ps_r2_sun_depth_far_scale	= 1.00000f;			// 1.00001f
 float		ps_r2_sun_depth_far_bias	= 0.00000f;			// -0.0000f
 float		ps_r2_sun_depth_near_scale	= 1.00000f;			// 1.00001f
 float		ps_r2_sun_depth_near_bias	= -0.0005f;			// -0.0005f
-
+float		ps_r2_sun_lumscale			= 1.0f;				// 1.0f
 float		ps_r2_gmaterial				= 0.f;				// 
 
 #ifndef _EDITOR
@@ -178,6 +178,7 @@ void		xrRender_initconsole	()
 	CMD4(CCC_Float,		"r2_sun_depth_far_bias",&ps_r2_sun_depth_far_bias,	-0.5,	+0.5	);
 	CMD4(CCC_Float,		"r2_sun_depth_near_scale",&ps_r2_sun_depth_near_scale,0.5,	1.5		);
 	CMD4(CCC_Float,		"r2_sun_depth_near_bias",&ps_r2_sun_depth_near_bias,-0.5,	+0.5	);
+	CMD4(CCC_Float,		"r2_sun_lumscale",		&ps_r2_sun_lumscale,		-1.0,	+1.0	);
 
 	CMD3(CCC_Mask,		"r2_aa",				&ps_r2_ls_flags,			R2FLAG_AA);
 	CMD4(CCC_Float,		"r2_aa_kernel",			&ps_r2_aa_kernel,			0.3f,	0.7f	);
