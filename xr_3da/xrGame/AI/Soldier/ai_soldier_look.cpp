@@ -51,8 +51,8 @@ bool CAI_Soldier::bfCheckForVisibility(CEntity* tpEntity)
 		}
 	}
 	
-	// computing lightness weight
-	fResult *= m_fShadowWeight*float(tpEntity->AI_Node->light)/255.f;
+	// computing my ability to view the enemy
+	fResult += m_fCurSpeed < m_fMaxViewableSpeed ? m_fSpeedWeight*(1.f - m_fCurSpeed/m_fMaxViewableSpeed) : m_fSpeedWeight;
 	
 	// computing enemy state
 	switch (m_cBodyState) {
@@ -69,8 +69,12 @@ bool CAI_Soldier::bfCheckForVisibility(CEntity* tpEntity)
 		}
 	}
 	
-	// computing my ability to view the enemy
-	fResult += m_fCurSpeed < m_fMaxViewableSpeed ? m_fSpeedWeight*(1.f - m_fCurSpeed/m_fMaxViewableSpeed) : m_fSpeedWeight;
+	// computing lightness weight
+	float fTemp = float(tpEntity->AI_Node->light)/255.f;
+	if (fTemp < .05f)
+		fResult = 0.f;
+	else
+		fResult += m_fShadowWeight*fTemp;
 	
 	return(fResult >= m_fVisibilityThreshold);
 }
