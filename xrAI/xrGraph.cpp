@@ -231,7 +231,6 @@ void vfNormalizeGraph()
 		} 
 		while(!bOk);
 	}
-
 }
 
 class CGraphSaver {
