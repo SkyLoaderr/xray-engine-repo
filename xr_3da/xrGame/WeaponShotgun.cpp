@@ -113,7 +113,9 @@ void CWeaponShotgun::OnShotBoth()
 	CPGObject* pStaticPG;/* s32 l_c = m_effects.size();*/
 	pStaticPG = xr_new<CPGObject>("weapons\\generic_shoot",Sector());
 	Fmatrix l_pos; l_pos.set(svTransform); l_pos.c.set(vLastFP);
-	pStaticPG->SetTransform(l_pos); pStaticPG->Play();
+	Fvector l_vel; l_vel.sub(vPosition,ps_Element(0).vPosition); l_vel.div((Device.dwTimeGlobal-ps_Element(0).dwTime)/1000.f);
+	pStaticPG->UpdateParent(l_pos, l_vel); pStaticPG->Play();
+	//pStaticPG->SetTransform(l_pos); pStaticPG->Play();
 	//pStaticPG = xr_new<CPGObject>("weapons\\generic_shoot",Sector());
 	//l_pos.set(svTransform); l_pos.c.set(vLastFP); l_pos.c.y += .01;
 	//pStaticPG->UpdateParent(l_pos); pStaticPG->Play();
