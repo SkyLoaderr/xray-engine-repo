@@ -407,7 +407,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	// @@@: WT - !!!ВРЕМЕННО!!! - спавним каждому актеру детектор
 
 	//спавним каждому актеру в инвентарь болты
-	if(Local()) for(u32 i = 0; i < 1; ++i) {
+	if(Local() && GameID() == 1) for(u32 i = 0; i < 1; ++i) {
 		// Create
 		//CSE_Abstract*		D	= F_entity_Create("detector_simple");
 		//CSE_Abstract*		D	= F_entity_Create("grenade_f1");
