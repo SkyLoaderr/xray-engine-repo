@@ -417,10 +417,22 @@
 					>
 				</Filter>
 			</Filter>
+			<Filter
+				Name="patterns"
+				>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="ui"
 			>
+			<File
+				RelativePath=".\ui.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ui.h"
+				>
+			</File>
 			<Filter
 				Name="console"
 				>
@@ -431,6 +443,18 @@
 				<Filter
 					Name="output"
 					>
+				</Filter>
+				<Filter
+					Name="log"
+					>
+					<File
+						RelativePath=".\log.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\log.h"
+						>
+					</File>
 				</Filter>
 			</Filter>
 		</Filter>

@@ -1,15 +1,10 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: bge.cpp
-//	Created 	: 01.10.2004
-//  Modified 	: 01.10.2004
+//	Module 		: ui.cpp
+//	Created 	: 12.11.2004
+//  Modified 	: 12.11.2004
 //	Author		: Dmitriy Iassenev
-//	Description : Board game engine
+//	Description : User interface
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
 #include "ui.h"
-
-void main(char *argc, char *argv[])
-{
-	ui();
-}

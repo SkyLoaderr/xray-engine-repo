@@ -9,12 +9,12 @@
 #pragma once
 
 namespace FPU {
-	u16					_24;
-	u16					_24r;
-	u16					_53;
-	u16					_53r;
-	u16					_64;
-	u16					_64r;
+	extern u16			_24;
+	extern u16			_24r;
+	extern u16			_53;
+	extern u16			_53r;
+	extern u16			_64;
+	extern u16			_64r;
 	
 	IC	void			m24	()
 	{
