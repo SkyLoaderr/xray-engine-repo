@@ -14,7 +14,6 @@ public:
 
 void			Init			(CCar* car);
 void			Clear			();
-void			PlayExplosion   (CCar* car);
 void			Play1			(CCar* car);
 void			Play2			(CCar* car);
 void			PlayWheel1		(CCar*car,u16 bone_id);

@@ -129,12 +129,3 @@ void CCar::SCarSound::TransmissionSwitch()
 	}
 }
 
-void CCar::SCarSound::Explosion()
-{
-	Fvector pos;
-	pcar->XFORM().transform_tiny(pos,relative_pos);
-	if(snd_explosion.handle)
-	{
-		snd_explosion.play_at_pos(pcar,pos);
-	}
-}

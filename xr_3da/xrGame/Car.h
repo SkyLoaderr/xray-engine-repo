@@ -289,7 +289,7 @@ virtual void ApplyDamage(u16 level);
 		void Stall();
 		void Drive();
 		void TransmissionSwitch();
-		void Explosion();
+
 		SCarSound(CCar* car);
 		~SCarSound();
 		u32		time_state_start;
