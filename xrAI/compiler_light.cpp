@@ -9,7 +9,7 @@
 const int	LIGHT_Count			=2;
 const int	LIGHT_Total			=(2*LIGHT_Count+1)*(2*LIGHT_Count+1);
 
-typedef	svector<R_Light*,128>	LSelection;
+typedef	svector<R_Light*,256>	LSelection;
 
 IC bool RayPick(RAPID::XRCollide& DB, Fvector& P, Fvector& D, float r, R_Light& L)
 {
