@@ -228,7 +228,7 @@ public:
 			bool			GetCoverCloseToPoint			(const Fvector &dest_pos, float min_dist, float max_dist, float deviation, float radius ,Fvector &position, u32 &vertex_id);
 
 	// Team	
-			void			ChangeTeam						(int team, int squad, int group);
+	virtual void			ChangeTeam						(int team, int squad, int group);
 
 
 // members

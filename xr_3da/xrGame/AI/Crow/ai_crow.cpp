@@ -332,6 +332,9 @@ void CAI_Crow::net_Export	(NET_Packet& P)					// export to server
 	P.w_angle8			(yaw);
 	P.w_angle8			(yaw);
 	P.w_angle8			(pitch);
+	P.w_u8				(u8(g_Team()));
+	P.w_u8				(u8(g_Squad()));
+	P.w_u8				(u8(g_Group()));
 }
 //---------------------------------------------------------------------
 void CAI_Crow::net_Import	(NET_Packet& P)
@@ -359,7 +362,11 @@ void CAI_Crow::net_Import	(NET_Packet& P)
 	P.r_angle8			(yaw);
 	P.r_angle8			(yaw);
 	P.r_angle8			(pitch);
-	
+
+	id_Team				= P.r_u8();
+	id_Squad			= P.r_u8();
+	id_Group			= P.r_u8();
+
 	XFORM().setHPB		(yaw,pitch,bank);
 }
 //---------------------------------------------------------------------

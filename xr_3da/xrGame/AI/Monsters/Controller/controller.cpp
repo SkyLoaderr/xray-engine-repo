@@ -15,6 +15,9 @@ CController::CController()
 	StateMan = xr_new<CStateManagerController>(this);
 
 	CJumping::Init(this);
+	CPsyAuraController::init_external(this);
+	
+	time_control_hit_started = 0;
 }
 CController::~CController()
 {
@@ -28,6 +31,7 @@ void CController::Load(LPCSTR section)
 
 	// Load Control FX texture
 	m_UIControlFX.Init(pSettings->r_string(section, "control_fx_texture"), "hud\\default",0,0,0);
+	m_UIControlFX2.Init(pSettings->r_string(section, "control_fx_texture2"), "hud\\default",0,0,0);
 
 	m_max_controlled_number			= pSettings->r_u8(section,"Max_Controlled_Count");
 	m_controlled_objects.reserve	(m_max_controlled_number);
@@ -147,7 +151,7 @@ void CController::UpdateControlled()
 //////////////////////////////////////////////////////////////////////////
 	CActor *pA = dynamic_cast<CActor*>(Level().CurrentEntity());
 	if (!pA) return;
-	pA->SetControlled();
+	//pA->SetControlled();
 //////////////////////////////////////////////////////////////////////////
 
 
@@ -238,7 +242,8 @@ void CController::play_control_sound_hit()
 
 void CController::reload(LPCSTR section)
 {
-	inherited::reload(section);
+	inherited::reload			(section);
+	CPsyAuraController::reload	(section);
 
 	// Load triple gravi animations
 	CMotionDef *def1, *def2, *def3;
@@ -254,6 +259,12 @@ void CController::reload(LPCSTR section)
 	anim_triple_control.init_external	(def1, def2, def3);
 
 	CJumping::AddState(PSkeletonAnimated(Visual())->ID_Cycle_Safe("jump_glide_0"), JT_GLIDE, false,	0.f, inherited::get_sd()->m_fsVelocityRunFwdNormal.velocity.angular);
+}
+
+void CController::reinit()
+{
+	inherited::reinit();
+	CPsyAuraController::reinit();
 
 }
 
@@ -268,30 +279,48 @@ void CController::control_hit()
 		Level().Cameras.AddEffector(xr_new<CMonsterEffector>(m_control_effector.ppi, m_control_effector.time, m_control_effector.time_attack, m_control_effector.time_release));
 	}
 
+	active_control_fx			= true;
+	time_control_hit_started	= Level().timeServer();
+
 }
+
+#define TEXTURE_SIZE_PERCENT 2.f
 
 void CController::UpdateCL()
 {
 	inherited::UpdateCL();
 	CJumping::Update();
+	CPsyAuraController::frame_update();
 	
+	if (active_control_fx) {
+		u32 time_to_show	= 50;
+		float percent		= float((Level().timeServer() - time_control_hit_started)) / float(time_to_show);
+		float percent2		= 1 - (percent - TEXTURE_SIZE_PERCENT) / 2 ;
 
-	
-	static u32 time_started = 0;
-	u32 time_to_show = 2000;
 		
-	if (time_started + time_to_show < Level().timeServer()) {
-		time_started = Level().timeServer();
+		if (percent < TEXTURE_SIZE_PERCENT ) {
+			float x1 = Device.dwWidth  / 2 - ((Device.dwWidth	/ 2) * percent);
+			float y1 = Device.dwHeight / 2 - ((Device.dwHeight	/ 2) * percent);
+			float x2 = Device.dwWidth  / 2 + ((Device.dwWidth	/ 2) * percent);
+			float y2 = Device.dwHeight / 2 + ((Device.dwHeight	/ 2) * percent);
+
+			HUD().GetUI()->UIMainIngameWnd.AddStaticItem(&m_UIControlFX2,int(x1),int(y1),int(x2),int(y2));
+		} else if (percent2 > 0){
+			float x1 = Device.dwWidth  / 2 - ((Device.dwWidth	/ 2) * percent2);
+			float y1 = Device.dwHeight / 2 - ((Device.dwHeight	/ 2) * percent2);
+			float x2 = Device.dwWidth  / 2 + ((Device.dwWidth	/ 2) * percent2);
+			float y2 = Device.dwHeight / 2 + ((Device.dwHeight	/ 2) * percent2);
+
+			HUD().GetUI()->UIMainIngameWnd.AddStaticItem(&m_UIControlFX,int(x1),int(y1),int(x2),int(y2));
+
+		} else active_control_fx = false;
 	}
+}
 
-	float percent = float((Level().timeServer() - time_started)) / float(time_to_show);
-
-	float x1 = Device.dwWidth  / 2 - ((Device.dwWidth	/ 2) * (1 - percent));
-	float y1 = Device.dwHeight / 2 - ((Device.dwHeight	/ 2) * (1 - percent));
-	float x2 = Device.dwWidth  / 2 + ((Device.dwWidth	/ 2) * (1 - percent));
-	float y2 = Device.dwHeight / 2 + ((Device.dwHeight	/ 2) * (1 - percent));
-	
-	HUD().GetUI()->UIMainIngameWnd.AddStaticItem(&m_UIControlFX,int(x1),int(y1),int(x2),int(y2));
+void CController::shedule_Update(u32 dt)
+{
+	inherited::shedule_Update(dt);
+	CPsyAuraController::schedule_update();
 }
 
 void CController::Jump()

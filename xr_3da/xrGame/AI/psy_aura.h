@@ -1,51 +1,64 @@
 #pragma once
+#include "../../feel_touch.h"
 
 class CPsyAura : public Feel::Touch {
 
 	// владелец поля
 	CObject		*object;
-	
+
+	// энергия поля
 	struct {
 		float	value;				// текущее значение энергии
 		float	restore_vel;		// скорость восстановления (ltx-param)
-		float	critical_value;		// критическое значение энергии поля, меньше которого поле будет отключено(ltx-param)
+		float	decline_vel;		// скорость уменьшения энергии при активном поле (ltx-param)	
+		float	critical_value;		// критическое значение энергии поля, меньше которого поле будет отключено (ltx-param)
+		float	activate_value;		// значение энергии поля, больше значения которого поле может быть активировано (ltx-param)
+		u32		time_last_update;	// время последнего обновления энергии
 	} m_power;
 	
-	// энергия поля
-	float		m_power;
+	// радиус поля
+	float		m_radius;
 	
 	// активность поля
 	bool		m_active;
 
+	// автоматическое включение / выключение поля
+	bool		m_auto_activate;
+
 public:
-					CPsyAura			();
-	virtual			~CPsyAura			();
+					CPsyAura				();
+	virtual			~CPsyAura				();
 	
-			void	reload				(LPCSTR section);
-			void	init_external		(CObject *obj);
+			void	init_external			(CObject *obj) {object = obj;}
+	virtual	void	reinit					();
+	virtual	void	reload					(LPCSTR section);
+	
+	virtual BOOL	feel_touch_contact		(CObject* O){return FALSE;}
+			
+	virtual	void	frame_update			(){}
+	virtual	void	schedule_update			();
 
-	virtual void	feel_touch_new		(CObject* O){};
-	virtual void	feel_touch_delete	(CObject* O){};
-	virtual BOOL	feel_touch_contact	(CObject* O){return FALSE;}
+	virtual	void	on_activate				() {};
+	virtual	void	on_deactivate			() {};
 
-			void	frame_update		(){}
-			void	schedule_update		(){}
+	virtual void	process_objects_in_aura	() {}
 
-			void	update_power		(){}
+	// активность поля
+			void	activate				();
+			void	deactivate				();
+			bool	is_active				(){return m_active;}
+			bool	can_activate			(){return (m_power.value > m_power.activate_value);}
+			void	set_auto_activate		(bool b_auto = true)  {m_auto_activate = b_auto;}
 
-			void	activate			(){m_active = true;}
-			void	deactivate			(){m_active = false;}
-			bool	is_active			(){return m_active;}
+	// свойства поля
+			void	set_radius				(float R) {m_radius = R;}
+			float	get_radius				(){return m_radius;}
 
-	virtual	void	on_activate			() {};
-	virtual	void	on_deactivate		() {};
+			CObject	*get_object				(){return object;}
+
+private:
+			void	update_power			();
 };
 
 
-
-//// звук, исходящий от владельца при входе в поле
-//ref_sound	m_sound;
-//
-//// эффектор у актера при входе в поле
-//CEffector	m_effector;
 

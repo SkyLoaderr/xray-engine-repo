@@ -3,10 +3,14 @@
 #include "../../anim_triple.h"
 #include "../../ai_monster_jump.h"
 #include "../../../UIStaticItem.h"
+#include "controller_psy_aura.h"
 
 class CStateManagerController;
 
-class CController : public CAI_Biting, public CJumping {
+class CController : public CAI_Biting, 
+					public CJumping,
+					public CPsyAuraController {
+
 	typedef		CAI_Biting	inherited;
 
 	CStateManagerController	*StateMan;
@@ -19,6 +23,10 @@ class CController : public CAI_Biting, public CJumping {
 	SAttackEffector		m_control_effector;
 
 	CUIStaticItem		m_UIControlFX;
+	CUIStaticItem		m_UIControlFX2;
+
+	u32					time_control_hit_started;
+	bool				active_control_fx;
 
 public:
 	xr_vector<CEntity*> m_controlled_objects;
@@ -29,7 +37,9 @@ public:
 
 	virtual void	Load				(LPCSTR section);
 	virtual void	reload				(LPCSTR section);
+	virtual void	reinit				();
 	virtual void	UpdateCL			();
+	virtual void	shedule_Update		(u32 dt);
 
 	virtual	void	CheckSpecParams		(u32 spec_params);
 	virtual bool	UpdateStateManager	();

@@ -282,6 +282,9 @@ void CAI_Biting::net_Export(NET_Packet& P)
 	P.w_angle8				(N.o_model);
 	P.w_angle8				(N.o_torso.yaw);
 	P.w_angle8				(N.o_torso.pitch);
+	P.w_u8					(u8(g_Team()));
+	P.w_u8					(u8(g_Squad()));
+	P.w_u8					(u8(g_Group()));
 
 	ALife::_GRAPH_ID		l_game_vertex_id = game_vertex_id();
 	P.w						(&l_game_vertex_id,			sizeof(l_game_vertex_id));
@@ -319,6 +322,9 @@ void CAI_Biting::net_Import(NET_Packet& P)
 	P.r_angle8				(N.o_model);
 	P.r_angle8				(N.o_torso.yaw);
 	P.r_angle8				(N.o_torso.pitch);
+	id_Team					= P.r_u8();
+	id_Squad				= P.r_u8();
+	id_Group				= P.r_u8();
 
 	ALife::_GRAPH_ID		l_game_vertex_id = game_vertex_id();
 	P.r						(&l_game_vertex_id,			sizeof(l_game_vertex_id));

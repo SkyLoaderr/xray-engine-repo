@@ -1810,12 +1810,6 @@
 							RelativePath=".\ai\ai_monster_defs.h">
 						</File>
 						<File
-							RelativePath=".\ai\ai_monster_effector.cpp">
-						</File>
-						<File
-							RelativePath=".\ai\ai_monster_effector.h">
-						</File>
-						<File
 							RelativePath=".\ai\ai_monster_shared_data.h">
 						</File>
 						<File
@@ -2070,24 +2064,6 @@
 									Filter="">
 									<File
 										RelativePath=".\ai\psy_aura.cpp">
-										<FileConfiguration
-											Name="Debug|Win32"
-											ExcludedFromBuild="TRUE">
-											<Tool
-												Name="VCCLCompilerTool"/>
-										</FileConfiguration>
-										<FileConfiguration
-											Name="Mixed|Win32"
-											ExcludedFromBuild="TRUE">
-											<Tool
-												Name="VCCLCompilerTool"/>
-										</FileConfiguration>
-										<FileConfiguration
-											Name="Release|Win32"
-											ExcludedFromBuild="TRUE">
-											<Tool
-												Name="VCCLCompilerTool"/>
-										</FileConfiguration>
 									</File>
 									<File
 										RelativePath=".\ai\psy_aura.h">
@@ -2692,6 +2668,12 @@
 						</File>
 						<File
 							RelativePath=".\ai\Monsters\Controller\controller.h">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\Controller\controller_psy_aura.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\Controller\controller_psy_aura.h">
 						</File>
 						<File
 							RelativePath=".\ai\Monsters\Controller\controller_state_manager.cpp">
@@ -4887,34 +4869,6 @@
 						<File
 							RelativePath="ActorVehicle.cpp">
 						</File>
-						<Filter
-							Name="Effectors"
-							Filter="">
-							<File
-								RelativePath=".\CameraEffector.cpp">
-							</File>
-							<File
-								RelativePath=".\CameraEffector.h">
-							</File>
-							<File
-								RelativePath=".\EffectorBobbing.cpp">
-							</File>
-							<File
-								RelativePath=".\EffectorBobbing.h">
-							</File>
-							<File
-								RelativePath=".\ShootingHitEffector.cpp">
-							</File>
-							<File
-								RelativePath=".\ShootingHitEffector.h">
-							</File>
-							<File
-								RelativePath=".\SleepEffector.cpp">
-							</File>
-							<File
-								RelativePath=".\SleepEffector.h">
-							</File>
-						</Filter>
 					</Filter>
 					<Filter
 						Name="Basic"
@@ -5279,22 +5233,6 @@
 										RelativePath=".\RocketLauncher.h">
 									</File>
 								</Filter>
-							</Filter>
-							<Filter
-								Name="Effectors"
-								Filter="">
-								<File
-									RelativePath=".\EffectorShot.cpp">
-								</File>
-								<File
-									RelativePath=".\EffectorShot.h">
-								</File>
-								<File
-									RelativePath=".\EffectorZoomInertion.cpp">
-								</File>
-								<File
-									RelativePath=".\EffectorZoomInertion.h">
-								</File>
 							</Filter>
 							<Filter
 								Name="Various weapons"
@@ -5853,12 +5791,6 @@
 							Name="Explosives"
 							Filter="">
 							<File
-								RelativePath=".\explode_effector.cpp">
-							</File>
-							<File
-								RelativePath=".\explode_effector.h">
-							</File>
-							<File
 								RelativePath=".\Explosive.cpp">
 							</File>
 							<File
@@ -6159,16 +6091,6 @@
 							</File>
 						</Filter>
 						<Filter
-							Name="ZoneEffector"
-							Filter="">
-							<File
-								RelativePath=".\zone_effector.cpp">
-							</File>
-							<File
-								RelativePath=".\zone_effector.h">
-							</File>
-						</Filter>
-						<Filter
 							Name="TorridZone"
 							Filter="">
 							<File
@@ -6407,6 +6329,102 @@
 						<File
 							RelativePath=".\DynamicHeightMap.h">
 						</File>
+					</Filter>
+				</Filter>
+				<Filter
+					Name="Effectors"
+					Filter="">
+					<Filter
+						Name="Actor"
+						Filter="">
+						<File
+							RelativePath=".\CameraEffector.cpp">
+						</File>
+						<File
+							RelativePath=".\CameraEffector.h">
+						</File>
+						<File
+							RelativePath=".\EffectorBobbing.cpp">
+						</File>
+						<File
+							RelativePath=".\EffectorBobbing.h">
+						</File>
+						<File
+							RelativePath=".\ShootingHitEffector.cpp">
+						</File>
+						<File
+							RelativePath=".\ShootingHitEffector.h">
+						</File>
+						<File
+							RelativePath=".\SleepEffector.cpp">
+						</File>
+						<File
+							RelativePath=".\SleepEffector.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="Custom"
+						Filter="">
+						<Filter
+							Name="Postprocess"
+							Filter="">
+							<File
+								RelativePath=".\pp_effector_distance.cpp">
+							</File>
+							<File
+								RelativePath=".\pp_effector_distance.h">
+							</File>
+						</Filter>
+					</Filter>
+					<Filter
+						Name="Postprocess"
+						Filter="">
+						<Filter
+							Name="Zones"
+							Filter="">
+							<File
+								RelativePath=".\zone_effector.cpp">
+							</File>
+							<File
+								RelativePath=".\zone_effector.h">
+							</File>
+						</Filter>
+					</Filter>
+					<Filter
+						Name="Monsters"
+						Filter="">
+						<File
+							RelativePath=".\ai\ai_monster_effector.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\ai_monster_effector.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="Weapon"
+						Filter="">
+						<File
+							RelativePath=".\EffectorShot.cpp">
+						</File>
+						<File
+							RelativePath=".\EffectorShot.h">
+						</File>
+						<File
+							RelativePath=".\EffectorZoomInertion.cpp">
+						</File>
+						<File
+							RelativePath=".\EffectorZoomInertion.h">
+						</File>
+						<Filter
+							Name="Explode"
+							Filter="">
+							<File
+								RelativePath=".\explode_effector.cpp">
+							</File>
+							<File
+								RelativePath=".\explode_effector.h">
+							</File>
+						</Filter>
 					</Filter>
 				</Filter>
 			</Filter>
