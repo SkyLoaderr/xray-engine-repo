@@ -66,6 +66,14 @@ function proceed(actor)
 		actor:set_task_state(task.completed, "esc_dinamit_to_volk", 1)
 	end
 
+	--' Выдача сообщения "на ее месте можешь быть ты"
+	if actor:has_info("tutorial_flash_die")
+	then
+		news_manager.send_tip(actor, "tutorial_flash_anomaly_alarm")
+		actor:disable_info_portion("tutorial_flash_die")
+	end
+
+
 	--' GARBAGE
 	if actor:has_info("garbage_meetstalker_start") and
 	   actor:object("garbage_letter") ~= nil
