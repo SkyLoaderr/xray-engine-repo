@@ -95,6 +95,7 @@ public:
 	float	m_breaks_to_back_rate;
 	u32		m_death_time;
 	u32		m_time_to_explode;
+	bool	b_exploded;
 
 	struct SWheel: 
 	public CDamagableHealthItem

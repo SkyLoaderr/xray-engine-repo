@@ -63,6 +63,7 @@ CCar::CCar(void)
 	m_breaks_to_back_rate=1.f;
 	m_death_time=u32(-1);
 	m_time_to_explode=5000;
+	b_exploded=false;
 }
 
 CCar::~CCar(void)
@@ -271,10 +272,14 @@ void CCar::shedule_Update(u32 dt)
 {
 	inherited::shedule_Update(dt);
 	CPHSkeleton::Update(dt);
-	if(fEntityHealth<=0.f && m_death_time!=u32(-1)&& Device.dwTimeGlobal-m_death_time>m_time_to_explode)
+	
+	if(m_death_time!=u32(-1)&&fEntityHealth<=0.f && Device.dwTimeGlobal-m_death_time>m_time_to_explode)
 	{
 		CarExplode();
+		m_death_time=u32(-1);
 	}
+	if(b_exploded&&!m_bExploding&&!getEnabled())
+										setEnabled(TRUE);
 }
 
 void	CCar::UpdateCL				( )
@@ -667,7 +672,7 @@ void CCar::Init()
 	}
 	//ref_wheel.Init();
 	m_ref_radius=ini->r_float("car_definition","reference_radius");//ref_wheel.radius;
-
+	b_exploded=false;
 	b_engine_on=false;
 	b_clutch   =false;
 	b_starting =false;
@@ -1512,7 +1517,7 @@ void CCar::OnBeforeExplosion()
 void CCar::CarExplode()
 {
 
-	m_death_time=u32(-1);
+	b_exploded=true;
 	CExplosive::GenExplodeEvent(Position(),Fvector().set(0.f,1.f,0.f));
 	//m_damage_particles.PlayExplosion(this);
 	//m_car_sound->Explosion();
