@@ -35,6 +35,7 @@ TEMPLATE_SPECIALIZATION
 IC	void CSMotivationManager::init				()
 {
 	m_graph					= xr_new<CSGraphAbstract>();
+	m_edges.reserve			(16);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -205,7 +206,7 @@ TEMPLATE_SPECIALIZATION
 IC	void CSMotivationManager::propagate	(u32 motivation_id, float weight)
 {
 	CSGraphAbstract::CVertex	*vertex	= graph().vertex(motivation_id);
-	xr_vector<CSGraphAbstract::CEdge>::const_iterator	I = vertex->edges().begin();
+	xr_vector<CSGraphAbstract::CEdge>::const_iterator	I = vertex->edges().begin(), B = I;
 	xr_vector<CSGraphAbstract::CEdge>::const_iterator	E = vertex->edges().end();
 
 	if (I == E) {
@@ -218,15 +219,23 @@ IC	void CSMotivationManager::propagate	(u32 motivation_id, float weight)
 	}
 
 	float				total_value	= 0.f;
-	for ( ; I != E; ++I) {
+	m_edges.resize		(vertex->edges().size());
+	xr_vector<float>::iterator	J = m_edges.begin();
+	for ( ; I != E; ++I, ++J) {
 		u32				vertex_id = graph().vertex((*I).vertex_index())->vertex_id();
-		float			value = vertex->data()->evaluate(vertex_id);
-		total_value		+= value;
-		VERIFY			(total_value <= (1.f + EPS_L));
-		value			*= weight;
-		if (!fis_zero(value))
-			propagate	(vertex_id,value);
+		*J				= vertex->data()->evaluate(vertex_id);
+		total_value		+= *J;
 	}
+
+	if (total_value >= 1.f + EPS_L)
+		total_value		= weight/total_value;
+	else
+		total_value		= weight;
+
+	J					= m_edges.begin();
+	for (I = B; I != E; ++I, ++J)
+		if (!fis_zero((*J)*total_value))
+			propagate	(graph().vertex((*I).vertex_index())->vertex_id(),(*J)*total_value);
 }
 
 TEMPLATE_SPECIALIZATION

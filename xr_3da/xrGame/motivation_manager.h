@@ -32,6 +32,7 @@ protected:
 	u32								m_selected_id;
 	bool							m_actuality;
 	xr_set<u32>						m_temp;
+	xr_vector<float>				m_edges;
 
 protected:
 	IC		CSGraphAbstract			&graph				();
