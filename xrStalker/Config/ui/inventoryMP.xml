@@ -2,25 +2,25 @@
 <window x="0" y="0" w="640" h="480" r="227" g="121" b="222" texture="1">
 
 	<!-- BAG WINDOW -->
-	<bag_background_static x="10" y="245" width="350" height="440">
+	<bag_background_static x="10" y="260" width="350" height="440">
 		<texture>ui\ui_dg_inventory_multiplayer</texture>
 		<text x="40" y="7" font="graffiti22" r="255" g="255" b="255" a="130">Items List</text>
 	</bag_background_static>
 
 	<!-- DESCRIPTION WINDOW -->
-	<desc_static x="340" y="245" width="420" height="400">
+	<desc_static x="340" y="260" width="420" height="400">
 		<texture>ui\ui_dg_info_multiplayer</texture>
 		<text x="20" y="195" font="graffiti22" r="255" g="255" b="255" a="130">Description</text>
 	</desc_static>
 
 	<!-- CHARACTER WINDOW -->
-	<personal_static x="790" y="245" width="200" height="400">
+	<personal_static x="790" y="260" width="200" height="400">
 		<texture>ui\ui_dg_personal_multiplayer</texture>
 		<text x="60" y="7" font="graffiti22" r="255" g="255" b="255" a="130">Personal</text>
 	</personal_static>
 
 	<!-- BELT STATIC BACKGROUND-->
-	<static x="15" y="137" width="1024" height="128">
+	<static x="15" y="140" width="1024" height="128">
 		<texture>ui\ui_inv_belt</texture>
 		<text x="25" y="2" font="graffiti22" r="255" g="255" b="255" a="130">Belt</text>
 	</static>
@@ -35,141 +35,92 @@
 	<dragdrop_list x="32" y="174" width="1024" height="60"
 			cell_width = "53" cell_height="50"
 			rows_num="1" cols_num="18"></dragdrop_list>
-	<!-- BAG LIST ---------  DELETE ME-->
+	<!-- BAG LIST -->
 	<dragdrop_list x="30" y="40" width="400" height="350"
 			cell_width = "40" cell_height="40"
 			rows_num="24" cols_num="6" rows_num_view="9"></dragdrop_list>
-	<!-- BAG LIST -->
-	<dragdrop_list_bag x="30" y="40" width="400" height="350"
-			cell_width = "40" cell_height="40"
-			rows_num="24" cols_num="6" rows_num_view="9"/>
 
 	<!-- SLOTS LISTS -->
 	<dragdrop_list x="43" y="14" width="120" height="120"
 			cell_width = "53" cell_height="53"
-			rows_num="2" cols_num="2" show_grid="0" />
+			rows_num="2" cols_num="2"></dragdrop_list>
 
 	<dragdrop_list x="188" y="14" width="120" height="120"
 			cell_width = "53" cell_height="53"
-			rows_num="2" cols_num="2" show_grid="0" />
+			rows_num="2" cols_num="2"></dragdrop_list>
 
 	<dragdrop_list x="333" y="14" width="320" height="120"
 			cell_width = "53" cell_height="53"
-			rows_num="2" cols_num="6" show_grid="0" />
+			rows_num="2" cols_num="6"></dragdrop_list>
 
 	<dragdrop_list x="690" y="14" width="100" height="120"
 			cell_width = "53" cell_height="53"
-			rows_num="2" cols_num="2" show_grid="0" />
+			rows_num="2" cols_num="2"></dragdrop_list>
 
 	<dragdrop_list x="838" y="14" width="150" height="120"
 			cell_width = "53" cell_height="53"
-			rows_num="2" cols_num="3" show_grid="0" />
+			rows_num="2" cols_num="3"></dragdrop_list>
 
 	<!-- OUTFIT SLOT -->
-	<dragdrop_list x="828" y="314" width="150" height="220"
+	<dragdrop_list x="828" y="314" width="86" height="220"
 			cell_width = "53" cell_height="53"
-			rows_num="4" cols_num="4" show_grid="0" />
+			rows_num="4" cols_num="4" show_grid="1"></dragdrop_list>
 
 	<!-- STATIC BCAKGROUND FOR MP TABCONTROL -->
-	<!--static_tab x="0" y="690" width="1024" height="128">
+	<static x="0" y="690" width="1024" height="128">
 		<texture>ui\ui_dg_bottom_multiplayer</texture>
-	</static_tab -->
+	</static>
 
 	<!-- TOTAL MONEY AMOUNT -->
-	<total_money_header_static x="631" y="326" width="200" height="50">
+	<total_money_header_static x="610" y="300" width="200" height="50">
 		<text font="small" r="240" g="217" b="182">You have:</text>
 	</total_money_header_static>
 
-	<total_money_static x="631" y="336" width="200" height="50">
+	<total_money_static x="610" y="310" width="200" height="50">
 		<text font="graffiti50" r="238" g="155" b="23">You have:</text>
 	</total_money_static>
 
 	<!-- ITEM COST -->
-	<item_cost_header_static x="518" y="395" width="200" height="50">
+	<item_cost_header_static x="610" y="370" width="200" height="50">
 		<text font="small" r="240" g="217" b="182">Item Price:</text>
 	</item_cost_header_static>
 
-	<item_cost_static x="518" y="405" width="200" height="50">
-		<text font="graffiti32" r="240" g="217" b="182"></text>
+	<item_cost_static x="610" y="380" width="200" height="50">
+		<text font="graffiti50" r="240" g="217" b="182">Item Price:</text>
 	</item_cost_static>
 
 	<!-- CHARACTER ICON -->
-	<outfit_static x="858" y="314"  width="86" height="220"></outfit_static>
+	<outfit_static x="858" y="314" width="86" height="220"></outfit_static>
 
 	<!-- TAB CONTROL FOR WEAPON TYPE SELECT -->
-	<tab x="0" y="701" width="1014" height="200">
+	<tab x="0" y="690" width="1014" height="78">
 		<!-- BUTTONS -->
-		<button x="18" y="0" width="150" height="52" accel="2">
-			<texture_offset x="-18" y="-62"/>
-			<texture_t>ui\ui_btn_sec_t</texture_t>
-			<texture_e>ui\ui_btn_mp_e</texture_e>
-			<texture_d>ui\ui_btn_mp_d</texture_d>
-			<texture_h>ui\ui_btn_mp_h</texture_h>
-			<text font="normal" r="181" g="170" b="148" align="c">Pistols</text>
-			<text_h r="255" g="187" b="51"/>
-			<text_t r="255" g="187" b="51"/>
+		<button x="15" y="10" width="150" height="65" accel="2">
+			<!--texture>ui\ui_mp_icon_small_weapons</texture-->
 		</button>
-		<button x="202" y="0" width="150" height="52" accel="3">
-			<texture_offset x="-18" y="-62"/>
-			<texture_t>ui\ui_btn_prim_t</texture_t>
-			<texture_e>ui\ui_btn_mp_e</texture_e>
-			<texture_d>ui\ui_btn_mp_d</texture_d>
-			<texture_h>ui\ui_btn_mp_h</texture_h>
-			<text font="normal" r="181" g="170" b="148" align="c">Primary Weapons</text>
-			<text_h r="255" g="187" b="51"/>
-			<text_t r="255" g="187" b="51"/>
+		<button x="183" y="10" width="150" height="65" accel="3">
+			<!--texture>ui\ui_mp_icon_main_guns</texture-->
 		</button>
-		<button x="386" y="0" width="150" height="52" accel="4">
-			<texture_offset x="-18" y="-62"/>
-			<texture_t>ui\ui_btn_gren_t</texture_t>
-			<texture_e>ui\ui_btn_mp_e</texture_e>
-			<texture_d>ui\ui_btn_mp_d</texture_d>
-			<texture_h>ui\ui_btn_mp_h</texture_h>
-			<text font="normal" r="181" g="170" b="148" align="c">Grenades</text>
-			<text_h r="255" g="187" b="51"/>
-			<text_t r="255" g="187" b="51"/>
+		<button x="353" y="10" width="150" height="65" accel="4">
+			<!--texture>ui\ui_mp_icon_grenades</texture-->
 		</button>
-		<button x="570" y="0" width="150" height="52" accel="5">
-			<texture_offset x="-18" y="-62"/>
-			<texture_t>ui\ui_btn_suit_t</texture_t>
-			<texture_e>ui\ui_btn_mp_e</texture_e>
-			<texture_d>ui\ui_btn_mp_d</texture_d>
-			<texture_h>ui\ui_btn_mp_h</texture_h>
-			<text font="normal" r="181" g="170" b="148" align="c">Outfits</text>
-			<text_h r="255" g="187" b="51"/>
-			<text_t r="255" g="187" b="51"/>
+		<button x="522" y="10" width="150" height="65" accel="5">
+			<!--texture>ui\ui_mp_icon_suits</texture-->
 		</button>
-		<button x="753" y="0" width="150" height="52" accel="6">
-			<texture_offset x="-18" y="-62"/>
-			<texture_t>ui\ui_btn_equip_t</texture_t>
-			<texture_e>ui\ui_btn_mp_e</texture_e>
-			<texture_d>ui\ui_btn_mp_d</texture_d>
-			<texture_h>ui\ui_btn_mp_h</texture_h>
-			<text font="normal" r="181" g="170" b="148" align="c">Etc</text>
-			<text_h r="255" g="187" b="51"/>
-			<text_t r="255" g="187" b="51"/>
+		<button x="691" y="10" width="150" height="65" accel="6">
+			<!--texture>ui\ui_mp_icon_equipment</texture-->
 		</button>
 	</tab>
 
 	<!-- OK DIALOG BUTTON -->
-	<ok_button x="931" y="682" width="79" height="30" accel="28">		
-		<texture_offset x="-8" y="-23"/>
-		<texture_e>ui\ui_mp_buy_ok_e</texture_e>
-		<texture_t>ui\ui_mp_buy_ok_h</texture_t>
-		<texture_h>ui\ui_mp_buy_ok_h</texture_h>
-		<text font="normal" r="156" g="122" b="46" align="c">Ok</text>
-		<text_h r="255" g="255" b="255"/>
-		<text_t r="255" g="255" b="255"/>
+	<ok_button x="870" y="700" width="140" height="30" accel="28">
+		<texture></texture>
+		<text font="normal" r="238" g="155" b="23">Accept</text>
 	</ok_button>
 
 	<!-- CANCEL DIALOG BUTTON -->
-	<cancel_button x=931" y="724" width="79" height="30" accel="1">
-		<texture_offset x="-8" y="-23"/>
-		<texture_e>ui\ui_mp_buy_ok_e</texture_e>
-		<texture_t>ui\ui_mp_buy_ok_h</texture_t>
-		<texture_h>ui\ui_mp_buy_ok_h</texture_h>
-		<text font="normal" r="156" g="122" b="46" align="c">Cancel</text>		
-		<text_h r="255" g="255" b="255"/>
-		<text_t r="255" g="255" b="255"/>
+	<cancel_button x="870" y="740" width="140" height="30" accel="1">
+		<texture></texture>
+		<text font="normal" r="238" g="155" b="23">Cancel</text>
 	</cancel_button>
 </window>
