@@ -22,7 +22,9 @@ public:
 
 	virtual void Init(int x, int y, int length, int broad, bool bIsHorizontal);
 
-	void SetProgressTexture(const char* tex_name, int progress_length, bool tile, 
+	void SetProgressTexture(const char* tex_name, int progress_length, bool tile,
+						int x, int y,
+						int width, int height,
 						u32 color = 0xFFFFFFFF);
 	void SetBackgroundTexture(const char* tex_name, int left_offset, int up_offset);
 

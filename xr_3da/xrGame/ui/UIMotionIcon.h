@@ -15,9 +15,11 @@ public:
 private:
 					EState				m_curren_state;
 					CUIStatic			m_states[states_number]							;
+					CUIProgressBar		m_PowerBar[states_number];
 public:
 	virtual			~CUIMotionIcon				()										;
 					CUIMotionIcon				()										;
 			void			Init				(int x, int y, int width, int height)	;
 			void			ShowState			(EState state)							;
+			void			SetProgressPos		(s16 Pos);
 };

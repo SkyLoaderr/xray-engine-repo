@@ -116,15 +116,6 @@ void CUIMainIngameWnd::Init()
 
 	AttachChild(&UIWeaponBack);
 	xml_init.InitStatic(uiXml, "static", 1, &UIWeaponBack);
-	
-	if (GameID() != GAME_SINGLE)
-	{	
-		AttachChild(&UIStaticPower);
-		xml_init.InitStatic(uiXml, "power_bar_static", 0, &UIStaticPower);
-
-		UIStaticPower.AttachChild(&UIPowerBar);
-		xml_init.InitProgressBar(uiXml, "power_bar", 0, &UIPowerBar);
-	};
 
 	UIWeaponBack.AttachChild(&UIWeaponSignAmmo);
 	xml_init.InitStatic(uiXml, "static", 2, &UIWeaponSignAmmo);
@@ -578,7 +569,7 @@ void CUIMainIngameWnd::Update()
 	UIHealthBar.SetProgressPos((s16)m_pActor->g_Health());
 	if (GameID() != GAME_SINGLE)
 	{
-		UIPowerBar.SetProgressPos(s16(m_pActor->conditions().GetPower()*100));
+		UIMotionIcon.SetProgressPos(s16(m_pActor->conditions().GetPower()*100));
 	};
 	
 	EWarningIcons i = ewiWeaponJammed;

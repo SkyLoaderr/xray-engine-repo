@@ -54,13 +54,22 @@ void CUIProgressBar::Init(int x, int y, int length, int broad, bool bIsHorizonta
 }
 
 void CUIProgressBar::SetProgressTexture(const char* tex_name, 
-											int progress_length, bool tile, u32 color)
+											int progress_length, bool tile, 
+											int x, int y,
+											int width, int height,
+											u32 color)
 {
 	m_bProgressTile = tile;
 	m_iProgressLength = progress_length;
 	
-	m_UIStaticItem.Init(tex_name, "hud\\default", 0, 0, alNone);
+	m_UIStaticItem.Init(tex_name, "hud\\default", x, y, alNone);
 	m_UIStaticItem.SetColor(color);
+
+	if (width != 0 && height != 0)
+	{
+		m_UIStaticItem.SetOriginalRect(x, y, width, height);
+//		ClipperOn();
+	}
 }
 void CUIProgressBar::SetBackgroundTexture(const char* tex_name, 
 													int left_offset, int up_offset)

@@ -336,10 +336,14 @@ bool CUIXmlInit::InitProgressBar(CUIXml& xml_doc, LPCSTR path,
 	int r = xml_doc.ReadAttribInt(buf, index, "r");
 	int g = xml_doc.ReadAttribInt(buf, index, "g");
 	int b = xml_doc.ReadAttribInt(buf, index, "b");
+	int tex_x = xml_doc.ReadAttribInt(buf, index, "x");
+	int tex_y = xml_doc.ReadAttribInt(buf, index, "y");
+	int tex_w = xml_doc.ReadAttribInt(buf, index, "width");
+	int tex_h = xml_doc.ReadAttribInt(buf, index, "height");
 
 	u32 color = RGB_ALPHA(0xFF, r,g,b);
 
-	pWnd->SetProgressTexture(texture,progress_length,tile,color);
+	pWnd->SetProgressTexture(texture,progress_length,tile,tex_x, tex_y, tex_w, tex_h, color);
 
 
 	texture = xml_doc.Read(strconcat(buf,path,":background"), index, NULL);
