@@ -44,6 +44,7 @@ public:
 	bool				Done					() const		{ return isDone; }
 	void				SetDone					(bool value)	{ isDone = value; }
 	void				Reverese				(bool value);
+	void				GoToEnd					();
 
 private:
 	// Собственно анимация

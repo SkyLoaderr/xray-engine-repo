@@ -157,3 +157,10 @@ void CUIColorAnimatorWrapper::Reverese(bool value)
 		animationTime = colorAnimation->iFrameCount / colorAnimation->fFPS - animationTime;
 	}
 }
+
+void CUIColorAnimatorWrapper::GoToEnd(){
+	prevGlobalTime	= Device.fTimeGlobal;
+	this->currFrame = colorAnimation->iFrameCount;
+	animationTime = colorAnimation->iFrameCount / colorAnimation->fFPS;
+	this->isDone = false;
+}
