@@ -2779,6 +2779,9 @@
 						<File
 							RelativePath=".\ai\Monsters\Poltergeist\poltergeist.h">
 						</File>
+						<File
+							RelativePath=".\ai\Monsters\Poltergeist\poltergeist_flame_thrower.cpp">
+						</File>
 					</Filter>
 				</Filter>
 				<Filter
