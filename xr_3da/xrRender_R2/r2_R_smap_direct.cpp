@@ -26,8 +26,8 @@ void	CRender::render_smap_sector(Fmatrix& mCombined, Fvector& C)
 	CFrustum	ViewSave			= ViewBase;
 	ViewBase.CreateFromMatrix		(mCombined,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
 	View							= &ViewBase;
-	CSector*	S					= detectSector	(C);
-	R_ASSERT	(S);
+	CSector*	S					= (CSector*)detectSector	(C);
+	R_ASSERT						(S);
 	S->Render_objects_s				(ViewBase,C,mCombined);
 
 	// Restore
