@@ -80,7 +80,7 @@ function bandit:update()
 	end
 
 
-	self:updateJob()
+--	self:updateJob()
 end
 function bandit:print()
 	printf("***** %s -- State: %d -- Time: %d of %d", self.name, self.state, game.time()-self.begin, self.idle)
