@@ -199,6 +199,8 @@ void CSightManager::Exec_Look		(float dt)
 {
 	START_PROFILE("AI/Sight Manager/exec_look")
 	
+	typedef MonsterSpace::SBoneRotation CBoneRotation;
+
 	CBoneRotation		&body = object().movement().m_body;
 	CBoneRotation		&head = object().movement().m_head;
 
