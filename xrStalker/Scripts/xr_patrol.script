@@ -117,6 +117,7 @@ function action_single_patrol:__init (name, storage) super (nil, name)
     self.sub_stage = 0
     self.current_phrase = 0
     self.phrases = {}
+    self.path_type = patrol.start
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_single_patrol:initialize ()
@@ -133,11 +134,9 @@ function action_single_patrol:initialize ()
     self.object:set_body_state            (move.standing)
     self.object:set_movement_type         (move.walk)
     self.object:set_path_type             (game_object.patrol_path)
-    if self.a.first_init == true then
-       self.object:set_patrol_path           (self.a.patrol_path, patrol.start, patrol.continue, true)
-    else   
-       self.object:set_patrol_path           (self.a.patrol_path, patrol.nearest, patrol.continue, true)
-    end   
+    if self.a.first_init == true then self.path_type = patrol.start
+    else  self.path_type = patrol.nearest end 
+    self.object:set_patrol_path           (self.a.patrol_path, self.path_type, patrol.continue, true)
     self.object:set_mental_state          (anim.free)
     self.object:set_sight                 (look.path_dir, nil, 0)
     
@@ -218,7 +217,7 @@ function action_single_patrol:execute ()
         if self.object:animation_count () == 0 then
            self.stage = 0
            self.object:set_movement_type (move.walk)  
-           self.object:set_patrol_path   (self.a.patrol_path, patrol.nearest, patrol.continue, true)
+           --self.object:set_patrol_path   (self.a.patrol_path, self.path_type, patrol.continue, true) --!!!
            self.object:set_previous_point (self.waypoint)
            if patrol (self.object:patrol()):flag (self.waypoint, 0) == true and table.getn (xr_motivator.storage[self.object:id()].followers) ~= 0 then
            	  self:speak (commander_snd, 2, 0)
@@ -228,7 +227,7 @@ function action_single_patrol:execute ()
         if self:process_radio () == true then
            self.stage = 0
            self.object:set_movement_type (move.walk)
-           self.object:set_patrol_path   (self.a.patrol_path, patrol.nearest, patrol.continue, true)
+           --self.object:set_patrol_path   (self.a.patrol_path, self.path_type, patrol.continue, true)    --!!!
            if patrol (self.object:patrol()):flag (self.waypoint, 2) == true and table.getn (xr_motivator.storage[self.object:id()].followers) ~= 0 then
            	  self:speak (commander_snd, 1, 0)
            end   
@@ -245,6 +244,7 @@ function action_single_patrol:finalize ()
     self.object:clear_callback (game_object.movement) 
     self.object:clear_animations ()
     self.a.first_init = false
+    self.path_type = patrol.nearest
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_single_patrol:process_radio ()
@@ -363,10 +363,10 @@ end
 function action_single_patrol:move_callback (obj, action_type, index)
     if index == -1 then return end
 
---    if self.a.first_init == true then   
---       self.object:set_patrol_path  (self.a.patrol_path, patrol.nearest, patrol.continue, true)
---       self.a.first_init = false
---    end   
+    if self.a.first_init == true then   
+       self.path_type = patrol.nearest
+       self.a.first_init = false
+    end    
     
     self.waypoint = index
     local ptr = patrol (self.object:patrol ())
@@ -445,7 +445,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 function action_single_patrol:speak (namespace, index, soldier)
 	if soldier == 0 then
-       self.object:set_sound_mask (2147483647)
+       self.object:set_sound_mask (-1)
        self.object:set_sound_mask (0)
        self.object:play_sound (namespace, 1, 0, 1, 0, index)
        self:set_command (leader_speak)
@@ -754,6 +754,6 @@ function set_patrol (npc, enabled, patrol_path, escape_path, raid_enabled, raid_
     end      
 	xr_motivator.checkStorage (npc)
 	
-	st.first_init = false
+	st.first_init = true
 	
 end
