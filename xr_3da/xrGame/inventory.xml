@@ -79,7 +79,7 @@
     
     <!-- BELT LIST -->
     <dragdrop_list x="22" y="174" width="1024" height="60"
-            cell_width = "53" cell_height="52"
+            cell_width = "51" cell_height="51"
             rows_num="1" cols_num="18"></dragdrop_list>
     <!-- BAG LIST -->
     <dragdrop_list x="30" y="35" width="400" height="350"
@@ -88,30 +88,30 @@
 
     <!-- SLOTS LISTS -->
     <dragdrop_list x="23" y="14" width="120" height="120"
-            cell_width = "53" cell_height="53"
+            cell_width = "51" cell_height="51"
             rows_num="2" cols_num="2"></dragdrop_list>
 
     <dragdrop_list x="168" y="14" width="120" height="120"
-            cell_width = "53" cell_height="53"
+            cell_width = "51" cell_height="51"
             rows_num="2" cols_num="2"></dragdrop_list>
 
     <!-- ACTIVE WEAPON SLOT -->
     <dragdrop_list x="313" y="14" width="320" height="120"
-            cell_width = "53" cell_height="53"
+            cell_width = "51" cell_height="51"
             rows_num="2" cols_num="6"></dragdrop_list>
 
     <dragdrop_list x="670" y="14" width="100" height="120"
-            cell_width = "53" cell_height="53"
+            cell_width = "51" cell_height="51"
             rows_num="2" cols_num="2"></dragdrop_list>
 
     <dragdrop_list x="818" y="14" width="150" height="120"
-            cell_width = "53" cell_height="53"
+            cell_width = "51" cell_height="51"
             rows_num="2" cols_num="3"></dragdrop_list>
 
     <!-- OUTFIT SLOT -->
     <!-- <dragdrop_list x="828" y="314" width="150" height="220" -->
     <dragdrop_list x="858" y="314" width="150" height="220"
-            cell_width = "53" cell_height="53"
+            cell_width = "51" cell_height="51"
             rows_num="4" cols_num="4" show_grid="0"></dragdrop_list>
 
 
