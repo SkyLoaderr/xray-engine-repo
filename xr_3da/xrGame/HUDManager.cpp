@@ -15,6 +15,8 @@
 
 CFontManager::CFontManager()
 {
+	pFontConsole			= xr_new<CGameFont> ("console_font", CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
+	pFontStartup			= xr_new<CGameFont> ("startup_font", CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
 	pFontSmall				= xr_new<CGameFont> ("hud_font_small");
 	pFontMedium				= xr_new<CGameFont> ("hud_font_medium");//,CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
 	pFontDI					= xr_new<CGameFont> ("hud_font_di",CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
@@ -37,6 +39,8 @@ CFontManager::CFontManager()
 
 CFontManager::~CFontManager()
 {
+	xr_delete			(pFontConsole);
+	xr_delete			(pFontStartup);
 	xr_delete			(pFontBigDigit);
 	xr_delete			(pFontSmall);
 	xr_delete			(pFontMedium);
@@ -59,6 +63,8 @@ CFontManager::~CFontManager()
 
 void CFontManager::Render()
 {
+	pFontConsole->OnRender		();
+	pFontStartup->OnRender		();
 	pFontDI->OnRender			();
 	pFontSmall->OnRender		();
 	pFontMedium->OnRender		();

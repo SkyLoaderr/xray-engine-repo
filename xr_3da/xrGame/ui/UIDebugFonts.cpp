@@ -128,8 +128,6 @@ void CUIDebugFonts::FillUpList(){
 	pItem = xr_new<CUIListItem>();
 	pItem->SetFont(UI()->Font()->pFontStat);
 	pItem->SetText("pFontStat 1 2 3 4 5 6 7 8 9 0");
-	m_list.AddItem(pItem);
-
-	
+	m_list.AddItem(pItem);	
 
 }
