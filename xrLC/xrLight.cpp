@@ -75,6 +75,8 @@ CCriticalSection					g_trans_CS;
 
 void	g_trans_register			(Vertex* V)
 {
+	R_ASSERT	(V);
+
 	const float eps		= EPS_L;
 	const float eps2	= 2.f*eps;
 	
@@ -93,7 +95,9 @@ void	g_trans_register			(Vertex* V)
 	for (; it!=it2; it++)
 	{
 		vecVertex&	VL		= it->second;
-		if (VL.front()->P.similar(V->P,eps))
+		Vertex* Front		= VL.front();
+		R_ASSERT			(Front);
+		if (Front->P.similar(V->P,eps))
 		{
 			g_trans_CS.Enter	();
 			VL.push_back		(V);
@@ -133,13 +137,15 @@ public:
 		
 		for (DWORD I = faceStart; I<faceEnd; I++)
 		{
-			Face* F = VL_faces[I];
+			Face* F		= VL_faces[I];
+			R_ASSERT	(F);
 			
 			float v_amb	= F->Shader().vert_ambient;
 			float v_inv = 1.f-v_amb;
 			for (int v=0; v<3; v++)
 			{
 				Vertex* V		= F->v[v];
+				R_ASSERT		(V);
 				if (!fis_zero(V->Color.a))	continue;
 				
 				Fcolor			C;
