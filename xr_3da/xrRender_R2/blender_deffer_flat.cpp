@@ -32,7 +32,8 @@ void	CBlender_deffer_flat::Compile(CBlender_Compile& C)
 				// bump found
 				C.r2_Pass			(r2v("r2_deffer_base_bump"),r2p("r2_deffer_base_bump"));
 				C.r2_Sampler		("s_base",C.L_textures[0]);
-				C.r2_Sampler		("s_bump",fname);
+				if (ps_r2_ls_flags.test(R2FLAG_BUMP_AF))	C.r2_Sampler		("s_bump",fname,D3DTADDRESS_WRAP,D3DTEXF_ANISOTROPIC);
+				else										C.r2_Sampler		("s_bump",fname);
 				C.r2_End			();
 			} else {
 				// flat

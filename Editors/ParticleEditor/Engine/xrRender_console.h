@@ -47,8 +47,9 @@ extern Flags32		ps_r2_ls_flags;				// r2-only
 
 enum
 {
-	R2FLAG_SUN	= (1<<0),
-	R2FLAG_SKY	= (1<<1)
+	R2FLAG_SUN		= (1<<0),
+	R2FLAG_SKY		= (1<<1),
+	R2FLAG_BUMP_AF	= (1<<2)
 };
 
 extern void			xrRender_initconsole	();
