@@ -105,6 +105,7 @@ CScript::CScript(LPCSTR caFileName)
 	Msg				("* Launching script %s",caFileName);
 	m_tpThreads.push_back(lua_newthread(m_tpLuaVirtualMachine));
 	lua_dostring	(m_tpThreads[0],static_cast<LPCSTR>(l_tpFileReader->pointer()));
+	FS.r_close		(l_tpFileReader);
 }
 
 CScript::~CScript()
