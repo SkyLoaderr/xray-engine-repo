@@ -68,7 +68,7 @@ void CSightManager::SetDirectionLook()
 	CMovementManager::SBoneRotation	orientation = stalker->m_head, body_orientation = stalker->body_orientation();
 	GetDirectionAngles				(stalker->m_head.target.yaw,stalker->m_head.target.pitch);
 	stalker->m_head.target.yaw		*= -1;
-	stalker->m_head.target.pitch	= 0;
+	stalker->m_head.target.pitch	*= -1;
 	stalker->m_body.target			= stalker->m_head.target;
 }
 
@@ -227,7 +227,7 @@ void CSightManager::update		(MonsterSpace::ELookType tLookType, const Fvector *t
 		case eLookTypeDirection : {
 			tPointToLook->getHP	(stalker->m_head.target.yaw,stalker->m_head.target.pitch);
 			stalker->m_head.target.yaw		*= -1;
-			stalker->m_head.target.pitch		*= -1;
+			stalker->m_head.target.pitch	*= -1;
 			break;
 		}
 		case eLookTypeSearch : {
@@ -244,7 +244,7 @@ void CSightManager::update		(MonsterSpace::ELookType tLookType, const Fvector *t
 		}
 		case eLookTypeFirePoint : {
 			SetFirePointLookAngles(*tPointToLook,stalker->m_head.target.yaw,stalker->m_head.target.pitch);
-			stalker->m_head.target.pitch = 0;
+//			stalker->m_head.target.pitch = 0;
 			break;
 		}
 		case eLookTypeLookOver : {
