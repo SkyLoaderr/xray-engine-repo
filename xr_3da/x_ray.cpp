@@ -119,6 +119,7 @@ void __cdecl	slowdownthread	( void* )
 		if (0==pSettings)			return;
 		if (0==Console)				return;
 		if (0==pInput)				return;
+		if (0==pApp)				return;
 	}
 }
 
