@@ -130,6 +130,30 @@ function cfg_get_number(char_ini, section, field, object, mandatory)
 	utils.abort("%s", err)
 end
 
+function mob_get_string(char_ini, section, field, object, override, mandatory)
+	if override ~= nil then
+		return override
+	end
+
+	return cfg_get_string(char_ini, section, field, object, mandatory, "")
+end
+
+function mob_get_number(char_ini, section, field, object, override, mandatory)
+	if override ~= nil then
+		return override
+	end
+
+	return cfg_get_number(char_ini, section, field, object, mandatory)
+end
+
+function mob_get_bool(char_ini, section, field, object, override, mandatory)
+	if override ~= nil then
+		return override ~= false
+	end
+
+	return cfg_get_bool(char_ini, section, field, object, mandatory)
+end
+
 -- ѕровер€ет, находитс€ ли stalker р€дом с точкой path_point пути patrol_path
 function stalker_at_waypoint(stalker, patrol_path, path_point)
 	return stalker:level_vertex_id() == patrol_path:level_vertex_id(path_point)
