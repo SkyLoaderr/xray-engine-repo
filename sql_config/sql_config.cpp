@@ -196,8 +196,56 @@ extern "C"{
 
 };
 #include "stdio.h"
+#include <string>
+
+bool getItem(LPCSTR src, char* dst)
+{
+	if( 0==strcmp(src,"left"))
+	{
+		strcat(dst,"LEFT_KEY");
+	}else if( 0==strcmp(src,"right"))
+	{
+		strcat(dst,"RIGHT_KEY");
+	}else{
+		strcat(dst,"not_defined");
+	}
+return true;
+}
+
 int main ()
 {
+
+LPCSTR str = "1 $$action_left$$ 2 $$action_right$$ 3 $$action_left$$ 4";
+	std::string res;
+	int k = 0;
+	const char* b;
+	int LEN = (int)strlen("$$action_");
+	char buff[64];
+	char srcbuff[64];
+	while( b = strstr( str+k,"$$action_") )
+	{
+		buff[0]=0;
+		srcbuff[0]=0;
+		res.append(str+k, b-str-k);
+		const char* e = strstr( b+LEN,"$$" );
+
+		int len = (int)(e-b-LEN);
+
+		strncpy(srcbuff,b+LEN, len);
+		srcbuff[len]=0;
+		getItem(srcbuff,buff);
+		res.append(buff, strlen(buff) );
+		k=(int)(b-str);
+		k+=len;
+		k+=LEN;
+		k+=2;
+	};
+	if(k<(int)strlen(str)){
+		res.append(str+k);
+	}
+
+
+/*
 	initLibrary();
 	int r = testConnection("localhost\\kas_sql_srv", "sa", "KAStorka40");	
 		if (r==0)
@@ -206,4 +254,5 @@ int main ()
 			printf ("Failed");
 
 	deInitLibrary();
+*/
 }
