@@ -23,13 +23,14 @@ public:
 	DEFINE_MAP_PRED(LPSTR,CMatrix*,MatrixMap,MatrixPairIt,str_pred);
 	DEFINE_MAP_PRED(LPSTR,CBlender*,BlenderMap,BlenderPairIt,str_pred);
 	DEFINE_MAP_PRED(LPSTR,CTexture*,TextureMap,TexturePairIt,str_pred);
+	DEFINE_MAP_PRED(LPSTR,CRT*,RTMap,RTPairIt,str_pred);
 private:
-
 	// data
 	BlenderMap						blenders;
 	TextureMap						textures;
 	MatrixMap						matrices;
 	ConstantMap						constants;
+	RTMap							rtargets;
 
 	// shader code array
 	struct sh_Code {
@@ -75,7 +76,8 @@ public:
 	LPCSTR							DBG_GetTextureName	(CTexture*);
 	LPCSTR							DBG_GetMatrixName	(CMatrix*);
 	LPCSTR							DBG_GetConstantName	(CConstant*);
-
+	LPCSTR							DBG_GetRTName		(CRT*);
+	
 	// Editor cooperation
 	void							ED_UpdateBlender	(LPCSTR Name, CBlender*		data);
 	void							ED_UpdateMatrix		(LPCSTR Name, CMatrix*		data);

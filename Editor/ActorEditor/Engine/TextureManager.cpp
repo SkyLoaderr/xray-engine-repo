@@ -47,7 +47,43 @@ void		CShaderManager::_DeleteCode		(DWORD& SB)
 	// Fail
 	Device.Fatal("Failed to find compiled shader or stateblock");
 }
-
+//--------------------------------------------------------------------------------------------------------------
+CRT* CShaderManager::_CreateRT		(LPCSTR Name, DWORD w, DWORD h) 
+{
+	R_ASSERT(Name && Name[0]);
+	R_ASSERT(w && h);
+	
+	// ***** first pass - search already loaded texture
+	LPSTR N = LPSTR(Name);
+	RTMap::iterator I = rtargets.find	(N);
+	if (I!=rtargets.end())	
+	{
+		CRT *RT			=	I->second;
+		RT->dwReference	+=	1;
+		return		RT;
+	}
+	else 
+	{
+		CRT *RT			=	new CRT;
+		RT->dwReference	=	1;
+		rtargets.insert	(make_pair(strdup(Name),RT));
+		if (Device.bReady)	RT->Create	(Name,w,h);
+		return		RT;
+	}
+}
+void	CShaderManager::_DeleteRT	(CRT* &RT)
+{
+	R_ASSERT(RT);
+	RT->dwReference	--;
+	RT=0;
+}
+LPCSTR	CShaderManager::DBG_GetRTName	(CRT* T)
+{
+	R_ASSERT(T);
+	for (RTMap::iterator I=rtargets.begin(); I!=rtargets.end(); I++)
+		if (I->second == T)	return I->first;
+	return 0;
+}
 //--------------------------------------------------------------------------------------------------------------
 CTexture* CShaderManager::_CreateTexture	(LPCSTR Name) 
 {
