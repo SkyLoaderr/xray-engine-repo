@@ -20,7 +20,19 @@
 #ifdef XRGAME_EXPORTS
 #	include "ef_storage.h"
 #	include "character_info.h"
+#	include "specific_character.h"
 #endif
+
+
+//////////////////////////////////////////////////////////////////////////
+
+//возможное отклонение от значения репутации
+//заданого в профиле и для конкретного персонажа
+#define REPUTATION_DELTA	10
+#define RANK_DELTA			10
+
+
+//////////////////////////////////////////////////////////////////////////
 
 using namespace ALife;
 
@@ -83,18 +95,95 @@ void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 
 SPECIFIC_CHARACTER_INDEX CSE_ALifeTraderAbstract::specific_character()
 {
-	return m_iSpecificCharacter;
+	if(NO_SPECIFIC_CHARACTER != m_iSpecificCharacter) 
+		return m_iSpecificCharacter;
+
+	VERIFY(character_profile() != NO_PROFILE);
+	CCharacterInfo char_info;
+	char_info.Load(character_profile());
+
+	//профиль задан индексом
+	if(NO_SPECIFIC_CHARACTER != char_info.m_iSpecificCharacterIndex)
+	{
+		set_specific_character(char_info.m_iSpecificCharacterIndex);
+		return m_iSpecificCharacter;
+	}
+	//профиль задан шаблоном
+	//
+	//проверяем все информации о персонаже, запоминаем подходящие,
+	//а потом делаем случайный выбор
+	else
+	{	
+		m_CheckedCharacters.clear();
+
+		SPECIFIC_CHARACTER_INDEX team_default_index = NO_SPECIFIC_CHARACTER;
+		for(SPECIFIC_CHARACTER_INDEX i=0; i<=CSpecificCharacter::GetMaxIndex(); i++)
+		{
+			CSpecificCharacter spec_char;
+			spec_char.Load(i);
+
+			if(spec_char.data()->m_bNoRandom) continue;
+
+			if(char_info.data()->m_Community == NO_COMMUNITY || !xr_strcmp(spec_char.Community(), char_info.data()->m_Community))
+			{
+				//запомнить первый (если группировка явно не задана) подходящий персонаж с флажком m_bDefaultForCommunity
+				if(team_default_index == NO_SPECIFIC_CHARACTER && spec_char.data()->m_bDefaultForCommunity)
+					team_default_index = i;
+
+				if(char_info.data()->m_Rank == NO_RANK || _abs(spec_char.Rank() - char_info.data()->m_Rank)<RANK_DELTA)
+				{
+					if(char_info.data()->m_Reputation == NO_REPUTATION || _abs(spec_char.Reputation() - char_info.data()->m_Reputation)<REPUTATION_DELTA)
+					{
+						int* count = NULL;
+						if(ai().get_alife())
+							count = ai().alife().registry(specific_characters).object(i, true);
+						//если индекс еще не был использован
+						if(NULL == count)
+							m_CheckedCharacters.push_back(i);
+					}
+				}
+			}
+		}
+		R_ASSERT3(NO_SPECIFIC_CHARACTER != team_default_index, 
+			"no default spec character set for team", *char_info.data()->m_Community);
+
+
+		if(m_CheckedCharacters.empty())
+			char_info.m_iSpecificCharacterIndex = team_default_index;
+		else
+			char_info.m_iSpecificCharacterIndex = m_CheckedCharacters[Random.randI(m_CheckedCharacters.size())];
+
+		set_specific_character(char_info.m_iSpecificCharacterIndex);
+		return m_iSpecificCharacter;
+	}
 }
 
 void CSE_ALifeTraderAbstract::set_specific_character	(SPECIFIC_CHARACTER_INDEX new_spec_char)
 {
+	R_ASSERT(new_spec_char != NO_SPECIFIC_CHARACTER);
+
+	//убрать предыдущий номер из реестра
+	if (NO_SPECIFIC_CHARACTER != m_iSpecificCharacter) 
+	{
+		if(ai().get_alife())
+			ai().alife().registry(specific_characters).remove(m_iSpecificCharacter, true);
+	}
+
 	m_iSpecificCharacter = new_spec_char;
+
+	if(ai().get_alife())
+	{
+		//запомнить, то что мы использовали индекс
+		int a = 1;
+		ai().alife().registry(specific_characters).add(m_iSpecificCharacter, a, true);
+	}
 }
 
 void CSE_ALifeTraderAbstract::set_character_profile(PROFILE_INDEX new_profile)
 {
 	m_iCharacterProfile = new_profile;
 }
+
 PROFILE_INDEX CSE_ALifeTraderAbstract::character_profile()
 {
 	if(m_character_profile_init) return	m_iCharacterProfile;

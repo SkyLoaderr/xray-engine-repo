@@ -37,6 +37,7 @@ struct SCharacterProfile : CSharedResource
 
 
 class CInventoryOwner;
+class CSE_ALifeTraderAbstract;
 
 class CCharacterInfo: public CSharedClass<SCharacterProfile, PROFILE_INDEX>,
 					  public CXML_IdToIndex<PROFILE_ID, PROFILE_INDEX, CCharacterInfo>
@@ -47,6 +48,7 @@ private:
 
 	friend id_to_index;
 	friend CInventoryOwner;
+	friend CSE_ALifeTraderAbstract;
 public:
 	
 	CCharacterInfo();
@@ -61,11 +63,9 @@ public:
 
 	//инициализация профиля подразумевает
 	//загрузку соответствующего CSpecificCharacter, по 
-	//указанному индексу, или если индекс NO_SPECIFIC_CHARACTER,
-	//то случайный подбор по шаблону
-	virtual void InitSpecificCharacter (SPECIFIC_CHARACTER_INDEX new_index);
-protected:
-	virtual void SetSpecificCharacter ();
+	//указанному индексу
+	void InitSpecificCharacter (SPECIFIC_CHARACTER_INDEX new_index);
+
 protected:
 	const SCharacterProfile* data() const	{ VERIFY(inherited_shared::get_sd()); return inherited_shared::get_sd();}
 	SCharacterProfile* data()				{ VERIFY(inherited_shared::get_sd()); return inherited_shared::get_sd();}
@@ -118,7 +118,4 @@ protected:
 	CHARACTER_RANK			m_CurrentRank;
 	CHARACTER_REPUTATION	m_CurrentReputation;
 	CHARACTER_COMMUNITY		m_CurrentCommunity;
-
-	//буферный вектор проверенных персонажей
-	xr_vector<SPECIFIC_CHARACTER_INDEX> m_CheckedCharacters;
 };

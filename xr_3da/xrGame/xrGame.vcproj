@@ -9383,9 +9383,6 @@
 					RelativePath=".\npc_profile.xml">
 				</File>
 				<File
-					RelativePath=".\string_table_enc_mutants.xml">
-				</File>
-				<File
 					RelativePath=".\tasks_escape.xml">
 				</File>
 			</Filter>
@@ -9482,6 +9479,9 @@
 				</File>
 				<File
 					RelativePath=".\string_table_enc_equipment.xml">
+				</File>
+				<File
+					RelativePath=".\string_table_enc_mutants.xml">
 				</File>
 				<File
 					RelativePath=".\string_table_enc_social.xml">

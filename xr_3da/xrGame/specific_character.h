@@ -52,6 +52,7 @@ struct SSpecificCharacterData : CSharedResource
 
 
 class CCharacterInfo;
+class CSE_ALifeTraderAbstract;
 
 
 class CSpecificCharacter: public CSharedClass<SSpecificCharacterData, SPECIFIC_CHARACTER_INDEX>,
@@ -63,6 +64,7 @@ private:
 
 	friend id_to_index;
 	friend CCharacterInfo;
+	friend CSE_ALifeTraderAbstract;
 public:
 
 	CSpecificCharacter();

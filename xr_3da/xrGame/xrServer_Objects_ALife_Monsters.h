@@ -34,6 +34,10 @@ private:
 	bool							m_character_profile_init;
 	PROFILE_INDEX					m_iCharacterProfile;
 	SPECIFIC_CHARACTER_INDEX		m_iSpecificCharacter;
+	//буферный вектор проверенных персонажей
+	xr_vector<SPECIFIC_CHARACTER_INDEX> m_CheckedCharacters;
+
+
 public:	
 									CSE_ALifeTraderAbstract(LPCSTR caSection);
 	virtual							~CSE_ALifeTraderAbstract();

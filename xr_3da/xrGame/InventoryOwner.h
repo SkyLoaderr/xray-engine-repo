@@ -121,8 +121,8 @@ public:
 	//////////////////////////////////////////////////////////////////////////
 	// инвентарь 
 public:
-	const CInventory &inventory() const {return(*m_inventory);}
-	CInventory		 &inventory()		{return(*m_inventory);}
+	const CInventory &inventory() const {VERIFY (m_inventory); return(*m_inventory);}
+	CInventory		 &inventory()		{VERIFY (m_inventory); return(*m_inventory);}
 
 	//возвращает текуший разброс стрельбы (в радианах) с учетом движения
 	virtual float GetWeaponAccuracy			() const;

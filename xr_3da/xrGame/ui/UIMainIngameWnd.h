@@ -20,7 +20,6 @@
 #include "../actor.h"
 #include "../weapon.h"
 #include "../alife_space.h"
-#include "../game_news.h"
 
 #include "xrXMLParser.h"
 
@@ -185,7 +184,7 @@ public:
 	void AnimateContacts();
 
 	// Обработчик события получения новости
-	void OnNewsReceived	(const GAME_NEWS_DATA &news);
+	void OnNewsReceived	(GAME_NEWS_DATA &news);
 	
 protected:
 
@@ -217,30 +216,6 @@ protected:
 	int					m_iPdaMessagesFade_mSec;
 	int					m_iInfoMessagesFade_mSec;
 	int					m_iChatMessagesFade_mSec;
-	//-----------------------------------------------------------------------------/
-	//	News related routines
-	//-----------------------------------------------------------------------------/
-
-	// Читаем заготовки стандартных собщений
-	void				LoadNewsTemplates();
-
-	// Структурка описывающая ньюс
-	typedef struct tagNewsTemplate
-	{
-		ref_str		str;
-		bool		ignore;
-		///////////////////
-		tagNewsTemplate(): ignore(false) {}
-
-	} SNewsTemplate;
-
-	// Array of news templates
-	typedef std::map<u32, SNewsTemplate>	NewsTemplates;
-	NewsTemplates							m_NewsTemplates;
-
-	// Период проверки ньюсов в моллисекундах
-	static const int			NEWS_CHECK_INTERVAL = 1000;
-	ALife::_TIME_ID				m_iPrevTime;
 
 	// Мигалка для контактов
 	CUIColorAnimatorWrapper		UIContactsAnimation;

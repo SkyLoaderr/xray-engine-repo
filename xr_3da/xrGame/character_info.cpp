@@ -12,13 +12,6 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-//возможное отклонение от значения репутации
-//заданого в профиле и для конкретного персонажа
-#define REPUTATION_DELTA	10
-#define RANK_DELTA			10
-
-//////////////////////////////////////////////////////////////////////////
-
 SRelation::SRelation()
 {
 	m_eRelationType = ALife::eRelationTypeDummy;
@@ -97,12 +90,12 @@ void CCharacterInfo::Load(PROFILE_INDEX index)
 {
 	m_iProfileIndex = index;
 	inherited_shared::load_shared(m_iProfileIndex, NULL);
-	InitSpecificCharacter(data()->m_iCharacterIndex);
 }
 
-void CCharacterInfo::SetSpecificCharacter ()
+void CCharacterInfo::InitSpecificCharacter (SPECIFIC_CHARACTER_INDEX new_index)
 {
-	R_ASSERT(m_iSpecificCharacterIndex != NO_SPECIFIC_CHARACTER);
+	R_ASSERT(new_index != NO_SPECIFIC_CHARACTER);
+	m_iSpecificCharacterIndex = new_index;
 
 	m_SpecificCharacter.Load(m_iSpecificCharacterIndex);
 	if(Rank() == NO_RANK)
@@ -111,78 +104,6 @@ void CCharacterInfo::SetSpecificCharacter ()
 		SetReputation(m_SpecificCharacter.Reputation());
 	if(Community() == NO_COMMUNITY)
 		SetCommunity(m_SpecificCharacter.Community());
-
-	if(ai().get_alife())
-	{
-		//запомнить, то что мы использовали индекс
-		int a = 1;
-		ai().alife().registry(specific_characters).add(m_iSpecificCharacterIndex, a, true);
-	}
-}
-
-
-void CCharacterInfo::InitSpecificCharacter (SPECIFIC_CHARACTER_INDEX new_index)
-{
-	//если конкретный профиль уже был задан,
-	//удалить использованный индекс из реестра
-	if (NO_SPECIFIC_CHARACTER != m_iSpecificCharacterIndex) 
-	{
-		if(ai().get_alife())
-			ai().alife().registry(specific_characters).remove(m_iSpecificCharacterIndex, true);
-	}
-
-	m_iSpecificCharacterIndex = new_index;
-
-	//профиль задан индексом
-	if(NO_SPECIFIC_CHARACTER != m_iSpecificCharacterIndex)
-	{
-		SetSpecificCharacter();
-	}
-	//профиль задан шаблоном
-	//
-	//проверяем все информации о персонаже, запоминаем подходящие,
-	//а потом делаем случайный выбор
-	else
-	{
-		SPECIFIC_CHARACTER_INDEX team_default_index = NO_SPECIFIC_CHARACTER;
-		for(SPECIFIC_CHARACTER_INDEX i=0; i<=CSpecificCharacter::GetMaxIndex(); i++)
-		{
-			CSpecificCharacter spec_char;
-			spec_char.Load(i);
-
-			if(spec_char.data()->m_bNoRandom) continue;
-
-			if(data()->m_Community == NO_COMMUNITY || !xr_strcmp(spec_char.Community(), data()->m_Community))
-			{
-				//запомнить первый (если группировка явно не задана) подходящий персонаж с флажком m_bDefaultForCommunity
-				if(team_default_index == NO_SPECIFIC_CHARACTER && spec_char.data()->m_bDefaultForCommunity)
-					team_default_index = i;
-
-				if(data()->m_Rank == NO_RANK || _abs(spec_char.Rank() - data()->m_Rank)<RANK_DELTA)
-				{
-					if(data()->m_Reputation == NO_REPUTATION || _abs(spec_char.Reputation() - data()->m_Reputation)<REPUTATION_DELTA)
-					{
-						int* count = NULL;
-						if(ai().get_alife())
-							count = ai().alife().registry(specific_characters).object(i, true);
-						//если индекс еще не был использован
-						if(NULL == count)
-							m_CheckedCharacters.push_back(i);
-					}
-				}
-			}
-		}
-		R_ASSERT3(NO_SPECIFIC_CHARACTER != team_default_index, 
-			"no default spec character set for team", *data()->m_Community);
-	
-		
-		if(m_CheckedCharacters.empty())
-			m_iSpecificCharacterIndex = team_default_index;
-		else
-			m_iSpecificCharacterIndex = m_CheckedCharacters[Random.randI(m_CheckedCharacters.size())];
-
-		SetSpecificCharacter();
-	}
 }
 
 void CCharacterInfo::load_shared	(LPCSTR)

@@ -444,13 +444,14 @@ float CEntityCondition::BleedingSpeed()
 
 void CEntityCondition::UpdateHealth()
 {
-	m_fDeltaHealth -= BleedingSpeed() * float(m_iDeltaTime)/1000.f;
+	float delta_time = float(m_iDeltaTime)/1000.f;
+	m_fDeltaHealth -= BleedingSpeed() * delta_time;
 	VERIFY(_valid(m_fDeltaHealth));
 
 	//затянуть раны
 	for(WOUND_VECTOR_IT it = m_WoundVector.begin(); m_WoundVector.end() != it; ++it)
 	{
-		(*it)->Incarnation( m_fV_WoundIncarnation * m_iDeltaTime/1000);
+		(*it)->Incarnation( m_fV_WoundIncarnation * delta_time);
 		if(0 == (*it)->TotalSize())
 			(*it)->SetDestroy(true);
 	}
