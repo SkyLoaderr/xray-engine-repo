@@ -67,6 +67,8 @@ CInventory::CInventory()
 
 	//инициализируем невалидный вес инвентаря
 	m_fTotalWeight = -1.f;
+
+	m_dwModifyFrame = 0;
 }
 
 
@@ -78,6 +80,8 @@ CInventory::~CInventory()
 
 void CInventory::Clear()
 {
+	m_dwModifyFrame = Device.dwFrame;
+
 	//for multiplayer modes
 	if (Game().type != GAME_SINGLE) m_iMaxBelt+=2;
 	
@@ -94,6 +98,7 @@ void CInventory::Clear()
 	m_pOwner = NULL;
 
 	CalcTotalWeight();
+	m_dwModifyFrame = Device.dwFrame;
 }
 
 bool CInventory::Take(CGameObject *pObj, bool bNotActivate)
@@ -136,7 +141,9 @@ bool CInventory::Take(CGameObject *pObj, bool bNotActivate)
 	}
 	
 	m_pOwner->OnItemTake		(pIItem);
+
 	CalcTotalWeight();
+	m_dwModifyFrame = Device.dwFrame;
 
 	return true;
 }
@@ -163,6 +170,7 @@ bool CInventory::Drop(CGameObject *pObj, bool call_drop)
 				m_pOwner->OnItemDrop	(dynamic_cast<CInventoryItem*>(pObj));
 
 			CalcTotalWeight();
+			m_dwModifyFrame = Device.dwFrame;
 
 			return true;
 		};
@@ -182,6 +190,7 @@ bool CInventory::DropAll()
 	}
 	
 	CalcTotalWeight();
+	m_dwModifyFrame = Device.dwFrame;
 
 	return true;
 }
@@ -199,6 +208,7 @@ void CInventory::ClearAll()
 	m_all.clear();
 
 	CalcTotalWeight();
+	m_dwModifyFrame = Device.dwFrame;
 }
 
 //положить вещь в слот
@@ -252,6 +262,8 @@ bool CInventory::Belt(PIItem pIItem)
 	}
 
 	CalcTotalWeight();
+	m_dwModifyFrame = Device.dwFrame;
+
 	pIItem->m_eItemPlace = eItemPlaceBelt;
 	pIItem->OnMoveToBelt();
 	return true;
@@ -277,6 +289,8 @@ bool CInventory::Ruck(PIItem pIItem)
 	m_ruck.insert(m_ruck.end(), pIItem); 
 	
 	CalcTotalWeight();
+	m_dwModifyFrame = Device.dwFrame;
+
 	pIItem->m_eItemPlace = eItemPlaceRuck;
 	pIItem->OnMoveToRuck();
 	return true;
