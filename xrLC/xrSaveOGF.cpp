@@ -4,7 +4,7 @@
 
 VBContainer				g_VB;
 IBContainer				g_IB;
-xr_vector<char*>		g_Strings;
+xr_vector<LPCSTR>		g_Strings;
 
 u32						g_batch_count;
 u32						g_batch_verts;
@@ -18,11 +18,12 @@ u32						g_batch_5000;
 
 int		RegisterString		(LPCSTR T) 
 {
-	xr_vector<char*>::iterator W = std::find(g_Strings.begin(), g_Strings.end(), T);
-	if (W!=g_Strings.end()) return W-g_Strings.begin();
-	g_Strings.push_back(T);
+	for (u32 it=0; it<g_Strings.size(); it++)
+		if (0==stricmp(T,g_Strings[it]))	return it;
+	g_Strings.push_back	(T);
 	return g_Strings.size()-1;
 }
+
 void	geom_batch_average	(u32 verts, u32 faces)
 {
 	g_batch_count	++;
@@ -83,8 +84,8 @@ void CBuild::SaveTREE(IWriter &fs)
 	Status				("String table...");
 	fs.open_chunk		(fsL_STRINGS);
 	fs.w_u32			(g_Strings.size());
-	for (xr_vector<std::string>::iterator T=g_Strings.begin(); T!=g_Strings.end(); T++)
-		fs.w(T->c_str(),T->length()+1);
+	for (xr_vector<LPCSTR>::iterator T=g_Strings.begin(); T!=g_Strings.end(); T++)
+		fs.w_stringZ	(*T);
 	fs.close_chunk		();
 	//mem_Compact			();
 }

@@ -84,8 +84,9 @@ void CBuild::BuildRapid()
 
 	// Saving for AI/DO usage
 	Status					("Saving...");
+	string256				fn;
 
-	IWriter*		MFS		= FS.w_open	((pBuild->path+std::string("build.cform")).c_str());
+	IWriter*		MFS		= FS.w_open	(strconcat(fn,pBuild->path,"build.cform"));
 
 	xr_vector<b_rc_face>	rc_faces;
 	rc_faces.resize			(CL.getTS());

@@ -81,14 +81,14 @@ public:
 	xr_vector<xrMU_Reference*>	mu_refs;
 
 	Shader_xrLC_LIB				shaders;
-	std::string					path;
+	string256					path;
 
 	void	mem_Compact				();
 	void	mem_CompactSubdivs		();
 	xr_vector<R_Layer>*				LLayer_by_name	(LPCSTR N);
 public:
 	void	Load					(const b_params& P, const IReader&  fs);
-	void	Run						(std::string& path);
+	void	Run						(LPCSTR path);
 
 	void	xrPhase_R2_Lights		();
 	void	Tesselate				();

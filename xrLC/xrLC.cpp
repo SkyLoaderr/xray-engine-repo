@@ -72,7 +72,8 @@ void Startup(LPSTR     lpCmdLine)
 	name[0]=0;				sscanf(strstr(cmd,"-f")+2,"%s",name);
 	string256				prjName;
 	FS.update_path			(prjName,"$game_levels$",strconcat(prjName,name,"\\build.prj"));
-	Phase					((std::string("Reading project [")+std::string(name)+std::string("]...")).c_str());
+	string256				phaseName;
+	Phase					(strconcat(phaseName,"Reading project [",name,"]..."));
 
 	IReader*	F			= FS.r_open(prjName);
 
@@ -107,7 +108,8 @@ void Startup(LPSTR     lpCmdLine)
 	xr_delete				(F);
 	
 	// Call for builder
-	pBuild->Run				("gamedata\\levels\\"+std::string(name));
+	string256				lfn;
+	pBuild->Run				(strconcat(lfn,"gamedata\\levels\\",name));
 	xr_delete				(pBuild);
 
 	// Show statistic

@@ -53,11 +53,12 @@ public:
 	}
 };
 
-void CBuild::Run	(std::string& P)
+void CBuild::Run	(LPCSTR P)
 {
 	//****************************************** Open Level
-	path						= P+std::string("\\");
-	IWriter* fs					= FS.w_open((path+std::string("level.")).c_str());
+	strconcat					(path,P,"\\");
+	string256					lfn;
+	IWriter* fs					= FS.w_open(strconcat(lfn,path,"level."));
 	fs->open_chunk				(fsL_HEADER);
 	hdrLEVEL H;		ZeroMemory	(&H,sizeof(H));
 	H.XRLC_version				= XRCL_PRODUCTION_VERSION;

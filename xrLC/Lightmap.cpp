@@ -144,8 +144,8 @@ void CLightmap::Save()
 	Status			("Compression...");
 	{
 		char	FN[_MAX_PATH];
-		sprintf	(lm.name,"lmap#%d",lmapNameID					); 
-		sprintf	(FN,"%s%s.dds",	pBuild->path.c_str(),lm.name	);
+		sprintf	(lm.name,"lmap#%d",lmapNameID			); 
+		sprintf	(FN,"%s%s.dds",	pBuild->path,lm.name	);
 		BYTE*	raw_data		= LPBYTE(lm.pSurface);
 		u32	w				= lm.dwWidth;
 		u32	h				= lm.dwHeight;
