@@ -9,7 +9,7 @@ function main()
 	action(                                                                                                       
     	flesh,                                                                                                      
 		anim("stand_eat_0"),
-    	cond(cond.time_end,10000) 
+    	cond(cond.time_end,30000) 
 	)                                                                                                             
 
 	action(
