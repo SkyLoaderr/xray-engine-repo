@@ -10,6 +10,7 @@
 //#include "car.h"
 //#include "spectator.h"
 #include "../igame_level.h"
+#include "clsid_game.h"
 
 //--------------------------------------------------------------------
 CHUDManager::CHUDManager()
