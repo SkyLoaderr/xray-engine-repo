@@ -652,14 +652,15 @@ void CSE_ALifeSimulator::vfUpdateOrganizations()
 						// checking if we are ready to invent it
 						if (l_bGoToResearch) {
 							(*I).second->m_tResearchState = eResearchStateResearch;
-							(*I).second->m_tpOrderedArtefacts.clear();
+							(*I).second->m_tpPurchasedArtefacts.clear();
 						}
 						else {
 							// if not - order artefacts needed for the discovery
 							(*I).second->m_tpOrderedArtefacts = l_tpBestDiscovery->m_tpArtefactNeed;
 						}
 					}
-					(*I).second->m_tpPurchasedArtefacts.clear();
+					else
+						(*I).second->m_tpPurchasedArtefacts.clear();
 				}
 				break;
 			}
@@ -690,7 +691,6 @@ void CSE_ALifeSimulator::vfUpdateOrganizations()
 						// checking if we've destroyed laboratory during investigations
 						if (randF(1) < (*i).second->m_fDestroyProbability) {
 							(*I).second->m_tResearchState = eResearchStateFreeze;
-							(*I).second->m_tpOrderedArtefacts.clear();
 						}
 						else {
 							// otherwise - we finished with investigations without any discovery;
@@ -715,6 +715,7 @@ void CSE_ALifeSimulator::vfUpdateOrganizations()
 
 void CSE_ALifeSimulator::vfSellArtefacts(CSE_ALifeTrader &tTrader)
 {
+
 }
 
 void CSE_ALifeSimulator::vfUpdateArtefactOrders(CSE_ALifeTrader &tTrader)
