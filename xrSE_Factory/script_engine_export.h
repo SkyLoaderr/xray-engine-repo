@@ -74,6 +74,7 @@
 #	include "UI/UIPropertiesBox.h"
 #	include "UI/UITabControl.h"
 #	include "UI/UIListWnd.h"
+#   include "UI/UIListWndEx.h"
 #	include "script_ui_registrator.h"
 #	include "key_binding_registrator.h"
 #	include "fs_registrator.h"
