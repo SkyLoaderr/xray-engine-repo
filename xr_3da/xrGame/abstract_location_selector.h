@@ -18,7 +18,6 @@ private:
 	bool						m_selector_failed;
 	_VertexEvaluator			*m_selector_evaluator;
 	_vertex_id_type				m_selected_vertex_id;
-	_vertex_id_type				m_start_vertex_id;
 	_Graph						*m_graph;
 
 	IC		void				perform_search				(const _vertex_id_type game_vertex_id);

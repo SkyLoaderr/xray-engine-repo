@@ -15,7 +15,8 @@
 #ifdef AI_COMPILER
 #include "test_table.h"
 #else
-#include "path_manager_selector.h"
+#include "path_manager_level_selector.h"
+#include "path_manager_game_selector.h"
 #endif
 
 template <
@@ -814,14 +815,13 @@ public:
 #ifndef AI_COMPILER
 template <
 	typename _DataStorage,
-	u64		 flags,
 	typename _dist_type,
 	typename _index_type,
 	typename _iteration_type
 >	class CPathManager <
 		CLevelGraph,
 		_DataStorage,
-		PathManagers::CNodeEvaluator<flags>,
+		PathManagers::CAbstractVertexEvaluator,
 		_dist_type,
 		_index_type,
 		_iteration_type
@@ -839,7 +839,7 @@ template <
 		>
 {
 	typedef CLevelGraph _Graph;
-	typedef PathManagers::CNodeEvaluator<flags> _Parameters;
+	typedef PathManagers::CAbstractVertexEvaluator _Parameters;
 	typedef typename CPathManager <
 				_Graph,
 				_DataStorage,
@@ -901,6 +901,98 @@ public:
 		_Graph::CVertex			&tNode0 = *graph->vertex(node_index);
 		y1						= (float)(tNode0.position().y);
 
+		return					(false);
+	}
+};
+
+template <
+	typename _DataStorage,
+	typename _dist_type,
+	typename _index_type,
+	typename _iteration_type
+>	class CPathManager <
+		CGameGraph,
+		_DataStorage,
+		PathManagers::SVertexType<
+			_dist_type,
+			_index_type,
+			_iteration_type
+		>,
+		_dist_type,
+		_index_type,
+		_iteration_type
+	> : public CPathManager <
+			CGameGraph,
+			_DataStorage,
+			PathManagers::SBaseParameters<
+				_dist_type,
+				_index_type,
+				_iteration_type
+			>,
+			_dist_type,
+			_index_type,
+			_iteration_type
+		>
+{
+	typedef CGameGraph _Graph;
+	typedef PathManagers::SVertexType<
+		_dist_type,
+		_index_type,
+		_iteration_type
+	> _Parameters;
+	typedef typename CPathManager <
+				_Graph,
+				_DataStorage,
+				PathManagers::SBaseParameters<
+					_dist_type,
+					_index_type,
+					_iteration_type
+				>,
+				_dist_type,
+				_index_type,
+				_iteration_type
+			> inherited;
+protected:
+	_Parameters		*m_evaluator;
+
+public:
+	virtual				~CPathManager	()
+	{
+	}
+
+	IC		void		setup			(
+				const _Graph			*_graph,
+				_DataStorage			*_data_storage,
+				xr_vector<_index_type>	*_path,
+				const _index_type		_start_node_index,
+				const _index_type		_goal_node_index,
+				_Parameters				&parameters
+			)
+	{
+		inherited::setup(
+			_graph,
+			_data_storage,
+			_path,
+			_start_node_index,
+			_goal_node_index,
+			parameters
+		);
+		m_evaluator		= &parameters;
+		m_evaluator->m_vertex_id = _index_type(-1);
+	}
+
+	IC	_dist_type	estimate		(const _index_type node_index) const
+	{
+		return					(_dist_type(0));
+	}
+
+	IC	bool		is_goal_reached	(const _index_type node_index)
+	{
+		VERIFY					(parameters);
+		if (graph->mask(m_evaluator->m_vertex_types,graph->vertex(data_storage.get_best().index()).vertex_types())) {
+			m_evaluator->m_vertex_id	= data_storage.get_best().index();
+			return				(true);
+		}
 		return					(false);
 	}
 };

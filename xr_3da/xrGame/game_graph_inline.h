@@ -78,6 +78,11 @@ IC	bool CGameGraph::accessible	(const u32 vertex_id) const
 	return						(true);
 }
 
+IC	bool CGameGraph::valid_vertex_id(const u32 vertex_id) const
+{
+	return						(vertex_id < header().vertex_count());
+}
+
 IC	void CGameGraph::begin		(const u32 vertex_id, const_iterator &start, const_iterator &end) const
 {
 	end							= (start = (const CEdge *)((BYTE *)m_tpaGraph + vertex(ALife::_GRAPH_ID(vertex_id)).edge_offset())) + vertex(ALife::_GRAPH_ID(vertex_id)).edge_count();

@@ -54,7 +54,7 @@ template <
 IC	void CAbstractLocationSelector<_Graph,_VertexEvaluator,_vertex_id_type>::select_location	(const ALife::_GRAPH_ID vertex_id)
 {
 	if (!m_selector_failed) {
-		perform_search	(m_start_vertex_id = vertex_id);
+		perform_search	(vertex_id);
 		return;
 	}
 }

@@ -13,7 +13,7 @@
 #include "ai_space.h"
 #endif
 
-#pragma todo("Jim to Dima: CAbstractNodeEvaluator uses large amount of memory. Currently 372 bytes!!!")
+#pragma todo("Jim to Dima: CAbstractVertexEvaluator uses large amount of memory. Currently 372 bytes!!!")
 
 float CLevelGraph::distance(const Fvector &position, const CLevelGraph::CVertex *vertex) const
 {
