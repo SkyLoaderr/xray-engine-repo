@@ -100,6 +100,9 @@ u32		CBlender_Compile::r_Sampler		(LPCSTR _name, LPCSTR texture, bool b_ps1x_Pro
 	{
 		i_Texture				(dwStage,texture);
 
+		// force ANISO-TF for "s_base"
+		if ((0==xr_strcmp(_name,"s_base")) && (fmin==D3DTEXF_LINEAR))	fmin = D3DTEXF_ANISOTROPIC;
+
 		// Sampler states
 		i_Address				(dwStage,address);
 		i_Filter				(dwStage,fmin,fmip,fmag);
@@ -123,10 +126,6 @@ void	CBlender_Compile::r_Sampler_clw	(LPCSTR name, LPCSTR texture, bool b_ps1x_P
 }
 void	CBlender_Compile::r_End			()
 {
-	// force ANISO-TF for "s_base"
-	u32		stage			= i_Sampler	("s_base");
-	if (u32(-1)!=stage)		i_Filter_Min(stage,D3DTEXF_ANISOTROPIC);
-
 	dest.constants			= Device.Resources->_CreateConstantTable(ctable);
 	dest.state				= Device.Resources->_CreateState		(RS.GetContainer());
 	dest.T					= Device.Resources->_CreateTextureList	(passTextures);
