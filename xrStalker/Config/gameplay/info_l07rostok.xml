@@ -172,6 +172,8 @@
     </info_portion>
 	<info_portion id="bar_deactivate_radar_done"></info_portion>
 
-     
+		<!-- BLOODSUCKER SPAWNERS -->
+	<info_portion id="spawn_bloodsucker1"></info_portion>
+	<info_portion id="spawn_bloodsucker2"></info_portion>	
     
 </game_information_portions>
