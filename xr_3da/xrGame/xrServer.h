@@ -7,7 +7,7 @@
 #pragma once
 
 #include "xrServer_Entities.h"
-#include "game_base.h"
+#include "game_sv_base.h"
 
 const u32	NET_Latency		= 100;		// time in (ms)
 
@@ -41,6 +41,7 @@ IC bool operator < (const svs_respawn& A, const svs_respawn& B)	{ return A.times
 class xrServer	: public IPureServer  
 {
 private:
+	game_sv_GameState*		game;
 	xrS_entities			entities;
 	deque<u16>				id_free;
 	multiset<svs_respawn>	q_respawn;

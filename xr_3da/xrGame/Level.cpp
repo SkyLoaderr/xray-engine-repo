@@ -27,10 +27,6 @@ CLevel::CLevel()
 	eChangeRP					= Engine.Event.Handler_Attach	("LEVEL:ChangeRP",this);
 	eDemoPlay					= Engine.Event.Handler_Attach	("LEVEL:PlayDEMO",this);
 	eChangeTrack				= Engine.Event.Handler_Attach	("LEVEL:PlayMusic",this);
-	eDoorOpen					= Engine.Event.Handler_Attach	("LEVEL:DoorOpen",this);
-	eDoorClose					= Engine.Event.Handler_Attach	("LEVEL:DoorClose",this);
-	eDA_PlayMotion				= Engine.Event.Handler_Attach	("LEVEL:DA_PlayMotion",this);
-	eDA_StopMotion				= Engine.Event.Handler_Attach	("LEVEL:DA_StopMotion",this);
 	eEnvironment				= Engine.Event.Handler_Attach	("LEVEL:Environment",this);
 
 	eEntitySpawn				= Engine.Event.Handler_Attach	("LEVEL:spawn",this);
