@@ -911,7 +911,7 @@ PARTICLEDLL_API void pCurrentGroup(int p_group_num)
 }
 
 // Change the maximum number of particles in the current group.
-PARTICLEDLL_API int pSetMaxParticlesGroup(int group_num, int max_count)
+PARTICLEDLL_API int pSetMaxParticles(int group_num, int max_count)
 {
 	_ParticleState &_ps = _GetPState();
 
@@ -965,10 +965,10 @@ PARTICLEDLL_API int pSetMaxParticlesGroup(int group_num, int max_count)
 	return max_count;
 }
 
-PARTICLEDLL_API int pSetMaxParticles(int max_count)
+PARTICLEDLL_API int pSetMaxParticlesCG(int max_count)
 {
 	_ParticleState &_ps = _GetPState();
-	return pSetMaxParticlesGroup(_ps.group_id,max_count);
+	return pSetMaxParticles(_ps.group_id,max_count);
 }
 
 // Copy from the specified group to the current group.

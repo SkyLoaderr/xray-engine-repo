@@ -137,9 +137,9 @@ extern "C"{
 		PARTICLEDLL_API int pGetParticles(int index, int count, float *position = NULL, float *color = NULL,
 			float *vel = NULL, float *size = NULL, float *age = NULL);
 
-		PARTICLEDLL_API int pSetMaxParticlesGroup(int group_num, int max_count);
+		PARTICLEDLL_API int pSetMaxParticles(int group_num, int max_count);
 
-		PARTICLEDLL_API int pSetMaxParticles(int max_count);
+		PARTICLEDLL_API int pSetMaxParticlesCG(int max_count);
 
 		// Actions
 		PARTICLEDLL_API void pAvoid(float magnitude, float epsilon, float look_ahead,
