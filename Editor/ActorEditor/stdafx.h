@@ -6,6 +6,9 @@
 
 #pragma once
 
+// disable warn W8059
+#pragma warn -pck
+
 // VCL headers
 #include <vcl.h>
 
@@ -48,8 +51,11 @@
 #include <sys\stat.h>
 #include <process.h>
 #include <utime.h>
+#include <time.h>
 
 // C++ STL headers
+#include <string>
+#include <limits>
 #include <vector>
 #include <list>
 #include <deque>

@@ -461,19 +461,7 @@ void CDetailManager::UpdateSlotBBox(int sx, int sz, DetailSlot& slot){
 }
 
 bool CDetailManager::UpdateSlots(){
-    // get bounding box
-	if (!Scene.GetBox(m_BBox,m_SnapObjects)) return false;
-
-    // fill header
-    int mn_x 			= iFloor(m_BBox.min.x/DETAIL_SLOT_SIZE);
-    int mn_z 			= iFloor(m_BBox.min.z/DETAIL_SLOT_SIZE);
-    int mx_x 			= iFloor(m_BBox.max.x/DETAIL_SLOT_SIZE)+1;
-    int mx_z 			= iFloor(m_BBox.max.z/DETAIL_SLOT_SIZE)+1;
-    m_Header.offs_x 	= -mn_x;
-    m_Header.offs_z 	= -mn_z;
-	m_Header.size_x 	= mx_x-mn_x;
-	m_Header.size_z 	= mx_z-mn_z;
-
+	// clear previous slots
     m_Slots.clear		();
     m_Slots.resize		(m_Header.size_x*m_Header.size_z);
 

@@ -1,8 +1,8 @@
 //----------------------------------------------------
 // file: TextureParam.h
 //----------------------------------------------------
-#ifndef _INCDEF_TextureParam_H_
-#define _INCDEF_TextureParam_H_
+#ifndef _INCDEF_TextureParams_H_
+#define _INCDEF_TextureParams_H_
 
 #pragma pack(push,1)
 struct STextureParams{
@@ -99,5 +99,5 @@ extern xr_token	tfmt_token[];
 #define THUMB_HEIGHT 	128
 #define THUMB_SIZE 		THUMB_HEIGHT*THUMB_WIDTH
 //----------------------------------------------------
-#endif /*_INCDEF_TextureParam_H_*/
+#endif /*_INCDEF_TextureParams_H_*/
 

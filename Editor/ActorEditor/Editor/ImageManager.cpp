@@ -2,7 +2,7 @@
 #pragma hdrstop
 
 #include "ImageManager.h"
-#include "ETextureParams.h"
+#include "ETextureParams.h"          
 #include "ImageThumbnail.h"
 #include "xrImage_Resampler.h"
 #include "freeimage.h"

@@ -57,7 +57,6 @@ CFileSystem::CFileSystem( ){
 	m_Server[0] = 0;
     m_FindItems = 0;
     m_AccessLog = 0;
-	_tzset();
 }
 
 CFileSystem::~CFileSystem(){

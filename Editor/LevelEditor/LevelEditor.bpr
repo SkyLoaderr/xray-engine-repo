@@ -2,7 +2,7 @@
 <!-- C++Builder XML Project -->
 <PROJECT>
   <MACROS>
-    <VERSION value="BCB.05.03"/>
+    <VERSION value="BCB.06.00"/>
     <PROJECT value="x:\LevelEditor.exe"/>
     <OBJFILES value="intermediate\LevelEditor.obj intermediate\Library.obj 
       intermediate\Scene.obj intermediate\SceneUndo.obj 
@@ -90,8 +90,7 @@
       intermediate\FProgressiveFixedVisual.obj intermediate\FVisual.obj 
       intermediate\SkeletonCalculate.obj intermediate\SkeletonX.obj 
       intermediate\BodyInstance.obj intermediate\ExportSkeleton.obj 
-      intermediate\Engine.obj intermediate\ModelPool.obj Intermediate\cpuid.obj 
-      intermediate\SH_RT.obj Intermediate\_math.obj 
+      intermediate\Engine.obj intermediate\ModelPool.obj intermediate\SH_RT.obj 
       intermediate\EditLightAnim.obj intermediate\LightAnimLibrary.obj 
       intermediate\PropertiesEObject.obj intermediate\GroupObject.obj 
       intermediate\UI_GroupTools.obj intermediate\FrameGroup.obj 
@@ -99,7 +98,7 @@
       intermediate\FrameEvent.obj intermediate\Blender_Shadow_World.obj 
       intermediate\TextForm.obj intermediate\PropertiesWayPoint.obj 
       intermediate\CustomObjectLE.obj intermediate\Blender_Blur.obj 
-      intermediate\Blender_Model.obj"/>
+      intermediate\Blender_Model.obj Intermediate\cpuid.obj Intermediate\_math.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -119,47 +118,264 @@
     <LIBFILES value="lib\LWO.lib lib\cg32.lib lib\xrProgressive.lib lib\MagicFMd.lib 
       lib\DXT.lib lib\gauss.lib lib\DX\d3d8.lib lib\DX\d3dx8d.lib 
       lib\DX\dinput.lib lib\ETools.lib lib\FreeImage.lib lib\xrCDB.lib"/>
-    <LIBRARIES value="elpackB5.lib dclusr50.lib VCLX50.lib bcbsmp50.lib Vcl50.lib"/>
-    <SPARELIBS value="Vcl50.lib bcbsmp50.lib VCLX50.lib dclusr50.lib elpackB5.lib"/>
-    <PACKAGES value="Vcl50.bpi Vclx50.bpi bcbsmp50.bpi TeeUI50.bpi Tee50.bpi Vclbde50.bpi 
-      TeeDB50.bpi dclusr50.bpi NMFast50.bpi"/>
-    <PATHCPP value=".;edit;engine;lib\DX;Engine\Blenders;Engine\Animations;Intermediate"/>
+    <LIBRARIES value="elpackB6.lib editor.lib vclx.lib bcbsmp.lib vcl.lib rtl.lib"/>
+    <SPARELIBS value="rtl.lib vcl.lib bcbsmp.lib vclx.lib editor.lib elpackB6.lib"/>
+    <PACKAGES value="rtl.bpi vcl.bpi vclx.bpi DCLUSR.bpi"/>
+    <PATHCPP value=".;edit;edit;edit;edit;edit;edit;edit;EDIT;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;engine;engine;engine;edit;engine;engine;engine;engine;engine;edit;edit;engine;edit;engine;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;engine;edit;edit;edit;engine;engine;engine;engine;edit;engine;engine;engine;engine;lib\DX;engine;edit;edit;edit;engine;Engine;Engine;edit;Engine;Engine;Engine;Engine;Engine;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine;Engine;Engine;edit;edit;Engine;edit;Engine\Blenders;edit;edit;edit;Engine;edit;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine;Engine\Blenders;edit;Engine;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;edit;edit;edit;Engine;edit;edit;edit;Engine\Blenders;Engine\Blenders;edit;Engine\Blenders;Engine\Blenders"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
     <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
-    <LINKER value="tlink32"/>
+    <LINKER value="ilink32"/>
     <USERDEFINES value="_EDITOR;_LEVEL_EDITOR;_DEBUG"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL"/>
     <MAINSOURCE value="LevelEditor.cpp"/>
-    <INCLUDEPATH value="Engine\CPU_Pipe;Engine\Animations;Engine\Blenders;R:\Borland\Components\Eldos\Code\Source\;r:\borland\components\alexmx\;lib\DX;R:\DirectX8.1\include\;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;engine;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;&quot;C:\RAD\borland\Components\ElTree\Code\Source\&quot;"/>
-    <LIBPATH value="Engine\CPU_Pipe;Engine\Animations;Engine\Blenders;R:\Borland\Components\Eldos\Code\Source\;r:\borland\components\alexmx\;engine;lib\DX;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;&quot;C:\RAD\borland\Components\ElTree\Code\Source\&quot;"/>
+    <INCLUDEPATH value="lib\DX;R:\DirectX8.1\include;$(BCB)\include;$(BCB)\include\vcl;edit;engine;Engine\CPU_Pipe;Engine\Animations;Engine\Blenders;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\alexmx;R:\Borland\Components6\ElPack\Code\Source"/>
+    <LIBPATH value="lib\DX;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;edit;engine;Engine\CPU_Pipe;Engine\Animations;Engine\Blenders;R:\Borland\Components6\alexmx"/>
     <WARNINGS value="-w-par -w-8027"/>
+    <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-src_suffix cpp -D_EDITOR -D_LEVEL_EDITOR -D_DEBUG -IEngine\Animations 
-      -IEngine\Blenders -IR:\Borland\Components\Eldos\Code\Source\. 
-      -Ir:\borland\components\alexmx\. -Ilib\DX -IR:\DirectX8.1\include\. 
-      -Ic:\rad\Borland\CBuilder5\Bin\. -Ic:\rad\borland\CBuilder5\Projects\. 
-      -I$(BCB)\include -I$(BCB)\include\vcl -Iengine -Iedit -IImport\LWO 
-      -ICollide -IP:\MagicFM_Borland\Sdk\Include\. 
-      -Ic:\rad\borland\components\extbtn\. -Ic:\rad\borland\components\multi\. 
-      -Ic:\rad\borland\components\renderwindow\. 
-      -IC:\RAD\borland\Components\RX\Units\. 
-      -I&quot;C:\RAD\borland\Components\ElTree\Code\Source\.&quot; -no_tie -boa"/>
-    <CFLAG1 value="-Od -H=$(BCB)\lib\vcl50.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -r- -a4 -6 
-      -b- -d -k -y -v -vi- -He -c -tW -tWM"/>
-    <PFLAGS value="-N2intermediate -N0intermediate -$Y+ -$W -$Q -$O- -$C- -v -JPHNE -M"/>
+    <IDLCFLAGS value="-Ilib\DX -IR:\DirectX8.1\include -I$(BCB)\include -I$(BCB)\include\vcl 
+      -Iedit -Iengine -IEngine\CPU_Pipe -IEngine\Animations -IEngine\Blenders 
+      -IP:\MagicFM_Borland\Sdk\Include -IR:\Borland\Components6\alexmx 
+      -IR:\Borland\Components6\ElPack\Code\Source -src_suffix cpp -D_EDITOR 
+      -D_LEVEL_EDITOR -D_DEBUG -no_tie -boa"/>
+    <CFLAG1 value="-Od -H=c:\rad\borland\CBUILD~2\lib\vcl60.csm -Hc -Q -Vx -Ve -xf -xp -VF 
+      -ff -X- -r- -a4 -6 -b- -d -k -y -v -vi- -He -c -tW -tWM"/>
+    <PFLAGS value="-N2intermediate -N0intermediate -$Y+ -$W -$Q -$O- -$C- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
     <AFLAGS value="/mx /mv32 /m2 /kh32768 /w2 /zi"/>
     <LFLAGS value="-Iintermediate -D&quot;&quot; -aa -Tpe -GD -x -v"/>
+    <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
     <ALLOBJ value="c0w32.obj Memmgr.Lib sysinit.obj $(OBJFILES)"/>
     <ALLRES value="$(RESFILES)"/>
     <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cp32mti.lib"/>
+    <OTHERFILES value=""/>
   </LINKER>
+  <FILELIST>
+      <FILE FILENAME="LevelEditor.cpp" FORMNAME="" UNITNAME="LevelEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="LevelEditor.res" FORMNAME="" UNITNAME="LevelEditor" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="resource.res" FORMNAME="" UNITNAME="resource" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="!.txt" FORMNAME="" UNITNAME="!" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\Library.cpp" FORMNAME="" UNITNAME="Library" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\Scene.cpp" FORMNAME="" UNITNAME="Scene" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\SceneUndo.cpp" FORMNAME="" UNITNAME="SceneUndo" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\FileSystem.cpp" FORMNAME="" UNITNAME="FileSystem" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\SceneUtil.cpp" FORMNAME="" UNITNAME="SceneUtil" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\D3DUtils.cpp" FORMNAME="" UNITNAME="D3DUtils" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\Builder.cpp" FORMNAME="" UNITNAME="Builder" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="EDIT\SceneClassList.cpp" FORMNAME="" UNITNAME="SceneClassList" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\BuilderCore.cpp" FORMNAME="" UNITNAME="BuilderCore" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\BuilderRemote.cpp" FORMNAME="" UNITNAME="BuilderRemote" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\Sound.cpp" FORMNAME="" UNITNAME="Sound" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\BuilderTexFiles.cpp" FORMNAME="" UNITNAME="BuilderTexFiles" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\BuilderLTX.cpp" FORMNAME="" UNITNAME="BuilderLTX" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\Glow.cpp" FORMNAME="" UNITNAME="Glow" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\TLSPRITE.CPP" FORMNAME="" UNITNAME="TLSPRITE" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\RPoint.cpp" FORMNAME="" UNITNAME="RPoint" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\Log.cpp" FORMNAME="" UNITNAME="Log" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\BuilderCF.cpp" FORMNAME="" UNITNAME="BuilderCF" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\BuilderOGF.cpp" FORMNAME="" UNITNAME="BuilderOGF" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\std_classes.h" FORMNAME="" UNITNAME="std_classes" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\frustum.cpp" FORMNAME="" UNITNAME="frustum" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="EditLibrary.cpp" FORMNAME="frmEditLibrary" UNITNAME="EditLibrary" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\sector.cpp" FORMNAME="" UNITNAME="sector" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\portal.cpp" FORMNAME="" UNITNAME="portal" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\portalutils.cpp" FORMNAME="" UNITNAME="portalutils" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="stdafx.cpp" FORMNAME="" UNITNAME="stdafx" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="NumericVector.cpp" FORMNAME="frmNumericVector" UNITNAME="NumericVector" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\LWO.lib" FORMNAME="" UNITNAME="LWO" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\EditMesh.cpp" FORMNAME="" UNITNAME="EditMesh" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ShaderFunction.cpp" FORMNAME="frmShaderFunction" UNITNAME="ShaderFunction" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\EditObjectImport.cpp" FORMNAME="" UNITNAME="EditObjectImport" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\EditMeshIO.cpp" FORMNAME="" UNITNAME="EditMeshIO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\EditMeshPick.cpp" FORMNAME="" UNITNAME="EditMeshPick" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\EditMeshModify.cpp" FORMNAME="" UNITNAME="EditMeshModify" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\Device.cpp" FORMNAME="" UNITNAME="Device" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\SceneIO.cpp" FORMNAME="" UNITNAME="SceneIO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\EditMeshRender.cpp" FORMNAME="" UNITNAME="EditMeshRender" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\Event.cpp" FORMNAME="" UNITNAME="Event" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="TopBar.cpp" FORMNAME="fraTopBar" UNITNAME="TopBar" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="LeftBar.cpp" FORMNAME="fraLeftBar" UNITNAME="LeftBar" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="BottomBar.cpp" FORMNAME="fraBottomBar" UNITNAME="BottomBar" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="FrameObject.cpp" FORMNAME="fraObject" UNITNAME="FrameObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="FrameSector.cpp" FORMNAME="fraSector" UNITNAME="FrameSector" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="FramePortal.cpp" FORMNAME="fraPortal" UNITNAME="FramePortal" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="PropertiesLight.cpp" FORMNAME="frmPropertiesLight" UNITNAME="PropertiesLight" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="PropertiesSound.cpp" FORMNAME="frmPropertiesSound" UNITNAME="PropertiesSound" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="PropertiesGlow.cpp" FORMNAME="frmPropertiesGlow" UNITNAME="PropertiesGlow" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="PropertiesSector.cpp" FORMNAME="frmPropertiesSector" UNITNAME="PropertiesSector" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="PropertiesPortal.cpp" FORMNAME="frmPropertiesPortal" UNITNAME="PropertiesPortal" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="SceneProperties.cpp" FORMNAME="frmSceneProperties" UNITNAME="SceneProperties" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ObjectList.cpp" FORMNAME="frmObjectList" UNITNAME="ObjectList" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="EditorPref.cpp" FORMNAME="frmEditorPreferences" UNITNAME="EditorPref" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Splash.cpp" FORMNAME="frmSplash" UNITNAME="Splash" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="main.cpp" FORMNAME="frmMain" UNITNAME="main" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\cg32.lib" FORMNAME="" UNITNAME="cg32" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="PropertiesEvent.cpp" FORMNAME="frmPropertiesEvent" UNITNAME="PropertiesEvent" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="LogForm.cpp" FORMNAME="frmLog" UNITNAME="LogForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\EditObjectIO.cpp" FORMNAME="" UNITNAME="EditObjectIO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\EditObjectMotions.cpp" FORMNAME="" UNITNAME="EditObjectMotions" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\xrProgressive.lib" FORMNAME="" UNITNAME="xrProgressive" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="FrameLight.cpp" FORMNAME="fraLight" UNITNAME="FrameLight" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
+      <FILE FILENAME="OneEnvironment.cpp" FORMNAME="frmOneEnvironment" UNITNAME="OneEnvironment" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\MagicFMd.lib" FORMNAME="" UNITNAME="MagicFMd" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\PSLibrary.cpp" FORMNAME="" UNITNAME="PSLibrary" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="PropertiesPS.cpp" FORMNAME="frmPropertiesPS" UNITNAME="PropertiesPS" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\PSObject.cpp" FORMNAME="" UNITNAME="PSObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="engine\xrParticlesLib.cpp" FORMNAME="" UNITNAME="xrParticlesLib" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="engine\Particle.h" FORMNAME="" UNITNAME="Particle" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="engine\ParticleSystem.h" FORMNAME="" UNITNAME="ParticleSystem" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ChoseForm.cpp" FORMNAME="frmChoseItem" UNITNAME="ChoseForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="engine\_quaternion.cpp" FORMNAME="" UNITNAME="_quaternion" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="engine\_compressed_normal.cpp" FORMNAME="" UNITNAME="_compressed_normal" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ImageEditor.cpp" FORMNAME="frmTextureLib" UNITNAME="ImageEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="FramePS.cpp" FORMNAME="fraPS" UNITNAME="FramePS" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
+      <FILE FILENAME="previewimage.cpp" FORMNAME="frmPreviewImage" UNITNAME="previewimage" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\DXT.lib" FORMNAME="" UNITNAME="DXT" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="FrameEmitter.cpp" FORMNAME="fraEmitter" UNITNAME="FrameEmitter" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\xr_trims.cpp" FORMNAME="" UNITNAME="xr_trims" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="PropertiesRPoint.cpp" FORMNAME="frmPropertiesRPoint" UNITNAME="PropertiesRPoint" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="FrameRPoint.cpp" FORMNAME="fraRPoint" UNITNAME="FrameRPoint" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
+      <FILE FILENAME="engine\interp.cpp" FORMNAME="" UNITNAME="interp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="engine\Envelope.cpp" FORMNAME="" UNITNAME="Envelope" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="engine\motion.cpp" FORMNAME="" UNITNAME="motion" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="engine\bone.cpp" FORMNAME="" UNITNAME="bone" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\gauss.lib" FORMNAME="" UNITNAME="gauss" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="engine\clsid.cpp" FORMNAME="" UNITNAME="clsid" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\WayPoint.cpp" FORMNAME="" UNITNAME="WayPoint" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="FrameWayPoint.cpp" FORMNAME="fraWayPoint" UNITNAME="FrameWayPoint" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\DetailObjects.cpp" FORMNAME="" UNITNAME="DetailObjects" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="FrameDetObj.cpp" FORMNAME="fraDetailObject" UNITNAME="FrameDetObj" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
+      <FILE FILENAME="engine\xr_ini.cpp" FORMNAME="" UNITNAME="xr_ini" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="engine\Communicate.h" FORMNAME="" UNITNAME="Communicate" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\ColorPicker.cpp" FORMNAME="" UNITNAME="ColorPicker" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="engine\LzHuf.cpp" FORMNAME="" UNITNAME="LzHuf" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\UI_WayPointTools.cpp" FORMNAME="" UNITNAME="UI_WayPointTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\UI_Camera.cpp" FORMNAME="" UNITNAME="UI_Camera" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\ui_control.cpp" FORMNAME="" UNITNAME="ui_control" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\UI_CustomTools.cpp" FORMNAME="" UNITNAME="UI_CustomTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\UI_DOTools.cpp" FORMNAME="" UNITNAME="UI_DOTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\UI_EventTools.cpp" FORMNAME="" UNITNAME="UI_EventTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\UI_GlowTools.cpp" FORMNAME="" UNITNAME="UI_GlowTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\UI_LightTools.cpp" FORMNAME="" UNITNAME="UI_LightTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\UI_Main.cpp" FORMNAME="" UNITNAME="UI_Main" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\UI_MainCommand.cpp" FORMNAME="" UNITNAME="UI_MainCommand" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\UI_ObjectTools.cpp" FORMNAME="" UNITNAME="UI_ObjectTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\UI_PortalTools.cpp" FORMNAME="" UNITNAME="UI_PortalTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\UI_PSTools.cpp" FORMNAME="" UNITNAME="UI_PSTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\UI_RPointTools.cpp" FORMNAME="" UNITNAME="UI_RPointTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\UI_SectorTools.cpp" FORMNAME="" UNITNAME="UI_SectorTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\UI_SoundTools.cpp" FORMNAME="" UNITNAME="UI_SoundTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\ui_tools.cpp" FORMNAME="" UNITNAME="ui_tools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\ELight.cpp" FORMNAME="" UNITNAME="ELight" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="engine\FS.cpp" FORMNAME="" UNITNAME="FS" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="DOShuffle.cpp" FORMNAME="frmDOShuffle" UNITNAME="DOShuffle" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="DOOneColor.cpp" FORMNAME="frmOneColor" UNITNAME="DOOneColor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\DetailObjectsRender.cpp" FORMNAME="" UNITNAME="DetailObjectsRender" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="PropertiesDetailObject.cpp" FORMNAME="frmPropertiesDO" UNITNAME="PropertiesDetailObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\DetailObjectsPick.cpp" FORMNAME="" UNITNAME="DetailObjectsPick" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="!TODO.txt" FORMNAME="" UNITNAME="!TODO" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\HW.cpp" FORMNAME="" UNITNAME="HW" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="engine\HWCaps.cpp" FORMNAME="" UNITNAME="HWCaps" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="engine\PrimitivesR.cpp" FORMNAME="" UNITNAME="PrimitivesR" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="engine\Primitive.cpp" FORMNAME="" UNITNAME="Primitive" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="engine\SharedPrimitive.cpp" FORMNAME="" UNITNAME="SharedPrimitive" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\DX\d3d8.lib" FORMNAME="" UNITNAME="d3d8" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\DX\d3dx8d.lib" FORMNAME="" UNITNAME="d3dx8d" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\EditObject.cpp" FORMNAME="" UNITNAME="EditObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="engine\Xr_input.cpp" FORMNAME="" UNITNAME="Xr_input" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="engine\fcontroller.cpp" FORMNAME="" UNITNAME="fcontroller" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="engine\XR_CustomFont.cpp" FORMNAME="" UNITNAME="XR_CustomFont" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="engine\XR_HUDFont.cpp" FORMNAME="" UNITNAME="XR_HUDFont" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\DX\dinput.lib" FORMNAME="" UNITNAME="dinput" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\DX\c_dinput.cpp" FORMNAME="" UNITNAME="c_dinput" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="engine\pure.cpp" FORMNAME="" UNITNAME="pure" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\CustomObject.cpp" FORMNAME="" UNITNAME="CustomObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\SceneObject.cpp" FORMNAME="" UNITNAME="SceneObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\SceneObjectIO.cpp" FORMNAME="" UNITNAME="SceneObjectIO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="engine\xrImage_Resampler.cpp" FORMNAME="" UNITNAME="xrImage_Resampler" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\TextureManager_Loader.cpp" FORMNAME="" UNITNAME="TextureManager_Loader" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Texture.cpp" FORMNAME="" UNITNAME="Texture" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\Cursor3D.cpp" FORMNAME="" UNITNAME="Cursor3D" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\SH_Matrix.cpp" FORMNAME="" UNITNAME="SH_Matrix" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\SH_Texture.cpp" FORMNAME="" UNITNAME="SH_Texture" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Shader.cpp" FORMNAME="" UNITNAME="Shader" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\SH_Constant.cpp" FORMNAME="" UNITNAME="SH_Constant" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\xr_avi.cpp" FORMNAME="" UNITNAME="xr_avi" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_Recorder.cpp" FORMNAME="" UNITNAME="Blender_Recorder" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender.cpp" FORMNAME="" UNITNAME="Blender" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_Vertex.cpp" FORMNAME="" UNITNAME="Blender_Vertex" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_Editor_Selection.cpp" FORMNAME="" UNITNAME="Blender_Editor_Selection" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_Editor_Wire.cpp" FORMNAME="" UNITNAME="Blender_Editor_Wire" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_Screen_GRAY.cpp" FORMNAME="" UNITNAME="Blender_Screen_GRAY" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_Screen_SET.cpp" FORMNAME="" UNITNAME="Blender_Screen_SET" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_default_aref.cpp" FORMNAME="" UNITNAME="Blender_default_aref" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_Vertex_aref.cpp" FORMNAME="" UNITNAME="Blender_Vertex_aref" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\BlenderDefault.cpp" FORMNAME="" UNITNAME="BlenderDefault" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Image.cpp" FORMNAME="" UNITNAME="Image" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\tss_def.cpp" FORMNAME="" UNITNAME="tss_def" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\xrLoadSurface.cpp" FORMNAME="" UNITNAME="xrLoadSurface" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\ImageManager.cpp" FORMNAME="" UNITNAME="ImageManager" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\ImageThumbnail.cpp" FORMNAME="" UNITNAME="ImageThumbnail" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\TextureManager.cpp" FORMNAME="" UNITNAME="TextureManager" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="PropertiesList.cpp" FORMNAME="frmProperties" UNITNAME="PropertiesList" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\ETextureParams.cpp" FORMNAME="" UNITNAME="ETextureParams" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\blender_light.cpp" FORMNAME="" UNITNAME="blender_light" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\FolderLib.cpp" FORMNAME="" UNITNAME="FolderLib" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\EStats.cpp" FORMNAME="" UNITNAME="EStats" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\UI_MainExtern.cpp" FORMNAME="" UNITNAME="UI_MainExtern" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\xr_efflensflare.cpp" FORMNAME="" UNITNAME="xr_efflensflare" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\ETools.lib" FORMNAME="" UNITNAME="ETools" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="PropertiesSceneObject.cpp" FORMNAME="frmPropertiesSceneObject" UNITNAME="PropertiesSceneObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\EditObjectEditor.cpp" FORMNAME="" UNITNAME="EditObjectEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_LaEmB.cpp" FORMNAME="" UNITNAME="Blender_LaEmB" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_Lm(EbB).cpp" FORMNAME="" UNITNAME="Blender_Lm(EbB)" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_LmBmmD.cpp" FORMNAME="" UNITNAME="Blender_LmBmmD" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\fmesh.cpp" FORMNAME="" UNITNAME="fmesh" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_BmmD.cpp" FORMNAME="" UNITNAME="Blender_BmmD" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\BuilderGame.cpp" FORMNAME="" UNITNAME="BuilderGame" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="EventOneAction.cpp" FORMNAME="frmOneEventAction" UNITNAME="EventOneAction" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\xrXRC.cpp" FORMNAME="" UNITNAME="xrXRC" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Animations\FBasicVisual.cpp" FORMNAME="" UNITNAME="FBasicVisual" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Animations\FHierrarhyVisual.cpp" FORMNAME="" UNITNAME="FHierrarhyVisual" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Animations\FProgressive.cpp" FORMNAME="" UNITNAME="FProgressive" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Animations\FProgressiveFixedVisual.cpp" FORMNAME="" UNITNAME="FProgressiveFixedVisual" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Animations\FVisual.cpp" FORMNAME="" UNITNAME="FVisual" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Animations\SkeletonCalculate.cpp" FORMNAME="" UNITNAME="SkeletonCalculate" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Animations\SkeletonX.cpp" FORMNAME="" UNITNAME="SkeletonX" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Animations\BodyInstance.cpp" FORMNAME="" UNITNAME="BodyInstance" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\ExportSkeleton.cpp" FORMNAME="" UNITNAME="ExportSkeleton" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\Engine.cpp" FORMNAME="" UNITNAME="Engine" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\ModelPool.cpp" FORMNAME="" UNITNAME="ModelPool" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\SH_RT.cpp" FORMNAME="" UNITNAME="SH_RT" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="EditLightAnim.cpp" FORMNAME="frmEditLightAnim" UNITNAME="EditLightAnim" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\LightAnimLibrary.cpp" FORMNAME="" UNITNAME="LightAnimLibrary" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="PropertiesEObject.cpp" FORMNAME="frmPropertiesEObject" UNITNAME="PropertiesEObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\GroupObject.cpp" FORMNAME="" UNITNAME="GroupObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\UI_GroupTools.cpp" FORMNAME="" UNITNAME="UI_GroupTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="FrameGroup.cpp" FORMNAME="fraGroup" UNITNAME="FrameGroup" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_Shadow_Texture.cpp" FORMNAME="" UNITNAME="Blender_Shadow_Texture" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="PropertiesGroup.cpp" FORMNAME="frmPropertiesGroup" UNITNAME="PropertiesGroup" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="FrameEvent.cpp" FORMNAME="fraEvent" UNITNAME="FrameEvent" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_Shadow_World.cpp" FORMNAME="" UNITNAME="Blender_Shadow_World" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="TextForm.cpp" FORMNAME="frmText" UNITNAME="TextForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="PropertiesWayPoint.cpp" FORMNAME="frmPropertiesWayPoint" UNITNAME="PropertiesWayPoint" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\CustomObjectLE.cpp" FORMNAME="" UNITNAME="CustomObjectLE" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_Blur.cpp" FORMNAME="" UNITNAME="Blender_Blur" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_Model.cpp" FORMNAME="" UNITNAME="Blender_Model" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Intermediate\cpuid.obj" FORMNAME="" UNITNAME="cpuid.obj" CONTAINERID="OBJTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Intermediate\_math.obj" FORMNAME="" UNITNAME="_math.obj" CONTAINERID="OBJTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\FreeImage.lib" FORMNAME="" UNITNAME="FreeImage.lib" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\xrCDB.lib" FORMNAME="" UNITNAME="xrCDB.lib" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+  </FILELIST>
+  <BUILDTOOLS>
+  </BUILDTOOLS>
+
   <IDEOPTIONS>
 [Version Info]
 IncludeVerInfo=1
@@ -167,7 +383,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=1
-Build=409
+Build=410
 Debug=1
 PreRelease=0
 Special=0
@@ -179,7 +395,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=
 FileDescription=
-FileVersion=1.0.1.409
+FileVersion=1.0.1.410
 InternalName=
 LegalCopyright=
 LegalTrademarks=
@@ -190,76 +406,77 @@ Comments=
 
 [HistoryLists\hlIncludePath]
 Count=30
-Item0=Engine\Animations;Engine\Blenders;R:\Borland\Components\Eldos\Code\Source\;r:\borland\components\alexmx\;lib\DX;R:\DirectX8.1\include\;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;engine;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item1=Engine\Blenders;R:\Borland\Components\Eldos\Code\Source\;r:\borland\components\alexmx\;lib\DX;R:\DirectX8.1\include\;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;engine;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item2=R:\Borland\Components\Eldos\Code\Source;r:\borland\components\alexmx;lib\DX;R:\DirectX8.1\include\;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;engine;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item3=lib\DX;R:\DirectX8.1\include\;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;engine;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item4=engine;lib\DX;R:\DirectX8.1\include\;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;shared;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item5=R:\DirectX8.1\include\;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;shared;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item6=R:\DirectX8.1\include;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;shared;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item7=c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;shared;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item8=c:\rad\Borland\CBuilder5\Bin;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;shared;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item9=c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;shared;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item10=c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;shared;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\;R:\STLport-4.5\stlport\BC50\;R:\STLport-4.5\stlport\
-Item11=R:\STLport-4.5\stlport\BC50\;R:\STLport-4.5\stlport\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;shared;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item12=R:\STLport-4.5\stlport\BC50\;R:\STLport-4.5\stlport\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;shared;$(BCB)\include\vcl;edit;edit\Shader;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item13=R:\STLport-4.5\stlport\BC50;R:\STLport-4.5\stlport;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;shared;$(BCB)\include\vcl;edit;edit\Shader;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item14=c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;shared;$(BCB)\include\vcl;edit;edit\Shader;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item15=R:\STLport-4.5\stlport\BC50\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;shared;$(BCB)\include\vcl;edit;edit\Shader;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item16=R:\STLport-4.5\stlport\;R:\STLport-4.5\stlport\BC50\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;shared;$(BCB)\include\vcl;edit;edit\Shader;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item17=R:\STLport-4.5\stlport;R:\STLport-4.5\stlport\BC50\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;shared;$(BCB)\include\vcl;edit;edit\Shader;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item18=R:\STLport-4.5\stlport\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;shared;$(BCB)\include\vcl;edit;edit\Shader;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item19=R:\STLport-4.5\stlport;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;shared;$(BCB)\include\vcl;edit;edit\Shader;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item20=R:\STLport-4.5\stlport\BC50;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;shared;$(BCB)\include\vcl;edit;edit\Shader;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item21=c:\rad\borland\CBuilder5\Projects;$(BCB)\include;shared;$(BCB)\include\vcl;edit;edit\Shader;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item22=$(BCB)\include;shared;$(BCB)\include\vcl;edit;edit\Shader;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item23=$(BCB)\include;$(BCB)\include\vcl;shared;edit;edit\Shader;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item24=$(BCB)\include;$(BCB)\include\vcl;engine;edit;edit\Shader;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item25=$(BCB)\include;$(BCB)\include\vcl;edit;edit\Shader;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item26=edit;edit\Shader;Import\LWO;Collide;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item27=edit\Shader;Import\LWO;c:\rad\borland\components\gradient\;c:\rad\borland\components\temp\;c:\rad\borland\CBuilder5\Projects\;c:\rad\borland\components\renderwindow\;edit;Collide;$(BCB)\include;$(BCB)\include\vcl;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\;P:\MagicFM_Borland\Sdk\Include\
-Item28=edit\Shader;Import\LWO;c:\rad\borland\components\gradient\;c:\rad\borland\components\temp\;c:\rad\borland\CBuilder5\Projects\;c:\rad\borland\components\renderwindow\;edit;Collide;$(BCB)\include;$(BCB)\include\vcl;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\;P:\MagicFM_Borland\Sdk\Include
-Item29=edit\Shader;Import\LWO;c:\rad\borland\components\gradient\;c:\rad\borland\components\temp\;c:\rad\borland\CBuilder5\Projects\;c:\rad\borland\components\renderwindow\;edit;Collide;$(BCB)\include;$(BCB)\include\vcl;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\;R:\MagicFM\FreeMagic\Include\
+Item0=lib\DX;R:\DirectX8.1\include;$(BCB)\include;$(BCB)\include\vcl;edit;engine;Engine\CPU_Pipe;Engine\Animations;Engine\Blenders;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\alexmx;R:\Borland\Components6\ElPack\Code\Source
+Item1=lib\DX;R:\DirectX8.1\include;$(BCB)\include;$(BCB)\include\vcl;edit;engine;Engine\CPU_Pipe;Engine\Animations;Engine\Blenders;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\alexmx
+Item2=lib\DX;R:\DirectX8.1\include;$(BCB)\include;$(BCB)\include\vcl;edit;engine;Engine\CPU_Pipe;Engine\Animations;Engine\Blenders;P:\MagicFM_Borland\Sdk\Include
+Item3=edit;engine;Engine\CPU_Pipe;Engine\Animations;Engine\Blenders;lib\DX;R:\DirectX8.1\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include
+Item4=edit;engine;Engine\CPU_Pipe;Engine\Animations;Engine\Blenders;lib\DX;R:\DirectX8.1\include\;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include\
+Item5=Engine\CPU_Pipe;Engine\Animations;Engine\Blenders;R:\Borland\Components\Eldos\Code\Source\;r:\borland\components\alexmx\;lib\DX;R:\DirectX8.1\include\;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;engine;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item6=Engine\Animations;Engine\Blenders;R:\Borland\Components\Eldos\Code\Source\;r:\borland\components\alexmx\;lib\DX;R:\DirectX8.1\include\;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;engine;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item7=Engine\Blenders;R:\Borland\Components\Eldos\Code\Source\;r:\borland\components\alexmx\;lib\DX;R:\DirectX8.1\include\;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;engine;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item8=R:\Borland\Components\Eldos\Code\Source;r:\borland\components\alexmx;lib\DX;R:\DirectX8.1\include\;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;engine;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item9=lib\DX;R:\DirectX8.1\include\;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;engine;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item10=engine;lib\DX;R:\DirectX8.1\include\;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;shared;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item11=R:\DirectX8.1\include\;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;shared;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item12=R:\DirectX8.1\include;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;shared;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item13=c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;shared;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item14=c:\rad\Borland\CBuilder5\Bin;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;shared;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item15=c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;shared;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item16=c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;shared;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\;R:\STLport-4.5\stlport\BC50\;R:\STLport-4.5\stlport\
+Item17=R:\STLport-4.5\stlport\BC50\;R:\STLport-4.5\stlport\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;shared;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item18=R:\STLport-4.5\stlport\BC50\;R:\STLport-4.5\stlport\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;shared;$(BCB)\include\vcl;edit;edit\Shader;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item19=R:\STLport-4.5\stlport\BC50;R:\STLport-4.5\stlport;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;shared;$(BCB)\include\vcl;edit;edit\Shader;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item20=c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;shared;$(BCB)\include\vcl;edit;edit\Shader;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item21=R:\STLport-4.5\stlport\BC50\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;shared;$(BCB)\include\vcl;edit;edit\Shader;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item22=R:\STLport-4.5\stlport\;R:\STLport-4.5\stlport\BC50\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;shared;$(BCB)\include\vcl;edit;edit\Shader;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item23=R:\STLport-4.5\stlport;R:\STLport-4.5\stlport\BC50\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;shared;$(BCB)\include\vcl;edit;edit\Shader;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item24=R:\STLport-4.5\stlport\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;shared;$(BCB)\include\vcl;edit;edit\Shader;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item25=R:\STLport-4.5\stlport;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;shared;$(BCB)\include\vcl;edit;edit\Shader;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item26=R:\STLport-4.5\stlport\BC50;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;shared;$(BCB)\include\vcl;edit;edit\Shader;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item27=c:\rad\borland\CBuilder5\Projects;$(BCB)\include;shared;$(BCB)\include\vcl;edit;edit\Shader;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item28=$(BCB)\include;shared;$(BCB)\include\vcl;edit;edit\Shader;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item29=$(BCB)\include;$(BCB)\include\vcl;shared;edit;edit\Shader;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
 
 [HistoryLists\hlLibraryPath]
 Count=30
-Item0=Engine\Animations;Engine\Blenders;R:\Borland\Components\Eldos\Code\Source\;r:\borland\components\alexmx\;engine;lib\DX;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item1=Engine\Blenders;R:\Borland\Components\Eldos\Code\Source\;r:\borland\components\alexmx\;engine;lib\DX;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item2=R:\Borland\Components\Eldos\Code\Source;r:\borland\components\alexmx;engine;lib\DX;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item3=engine;lib\DX;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item4=c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item5=c:\rad\Borland\CBuilder5\Bin;c:\rad\borland\CBuilder5\Projects\;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item6=c:\rad\borland\CBuilder5\Projects\;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item7=c:\rad\borland\CBuilder5\Projects;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item8=shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item9=edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item10=edit\Shader;Import\LWO;c:\rad\borland\components\gradient\;c:\rad\borland\components\temp\;c:\rad\borland\CBuilder5\Projects\;c:\rad\borland\components\renderwindow\;edit;Collide;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item11=c:\rad\borland\components\gradient\;c:\rad\borland\components\temp\;c:\rad\borland\CBuilder5\Projects\;c:\rad\borland\components\renderwindow\;edit;Collide;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item12=QHull;c:\rad\borland\components\gradient\;c:\rad\borland\components\temp\;c:\rad\borland\CBuilder5\Projects\;c:\rad\borland\components\renderwindow\;edit;Collide;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item13=c:\rad\borland\components\gradient;c:\rad\borland\components\temp;c:\rad\borland\CBuilder5\Projects\;c:\rad\borland\components\renderwindow\;edit;Collide;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item14=c:\rad\borland\CBuilder5\Projects\;c:\rad\borland\components\renderwindow\;edit;Collide;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item15=c:\rad\borland\CBuilder5\Projects;c:\rad\borland\components\renderwindow;edit;Collide;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item16=edit;Collide;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item17=edit;Collide;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\extbtn;c:\rad\borland\components\multi;C:\RAD\borland\Components\RX\Units;C:\RAD\borland\Components\ElTree\Code\Source
-Item18=Collide;c:\rad\borland\components\extbtn\;C:\RAD\bcb5\Components\ElTree\Code\Source\;C:\RAD\bcb5\Components\ElTree\Code\;c:\rad\borland\components\mstree\;c:\rad\borland\components\enhtree\;$(BCB)\Imports;c:\rad\bcb5\CBuilder5\Projects\;$(BCB)\Projects\Lib;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\lib\obj;$(BCB)\lib;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\;C:\RAD\borland\Components\ElTree\Code\Source\;C:\RAD\bcb5\Components\ExtBtn\
-Item19=Collide;Rapid;c:\rad\borland\components\extbtn\;C:\RAD\bcb5\Components\ElTree\Code\Source\;C:\RAD\bcb5\Components\ElTree\Code\;c:\rad\borland\components\mstree\;c:\rad\borland\components\enhtree\;$(BCB)\Imports;c:\rad\bcb5\CBuilder5\Projects\;$(BCB)\Projects\Lib;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\lib\obj;$(BCB)\lib;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\;C:\RAD\borland\Components\ElTree\Code\Source\;C:\RAD\bcb5\Components\ExtBtn\
-Item20=Rapid;c:\rad\borland\components\extbtn\;C:\RAD\bcb5\Components\ElTree\Code\Source\;C:\RAD\bcb5\Components\ElTree\Code\;c:\rad\borland\components\mstree\;c:\rad\borland\components\enhtree\;$(BCB)\Imports;c:\rad\bcb5\CBuilder5\Projects\;$(BCB)\Projects\Lib;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\lib\obj;$(BCB)\lib;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\;C:\RAD\borland\Components\ElTree\Code\Source\;C:\RAD\bcb5\Components\ExtBtn\
-Item21=Rapid;c:\rad\borland\components\extbtn\;C:\RAD\bcb5\Components\ElTree\Code\Source\;C:\RAD\bcb5\Components\ElTree\Code\;c:\rad\borland\components\mstree\;c:\rad\borland\components\enhtree\;$(BCB)\Imports;c:\rad\bcb5\CBuilder5\Projects\;$(BCB)\Projects\Lib;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\lib\obj;$(BCB)\lib;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\;C:\RAD\borland\Components\ElTree\Code\Source\;C:\RAD\bcb5\Components\ExtBtn
-Item22=Rapid;c:\rad\borland\components\extbtn\;C:\RAD\bcb5\Components\ElTree\Code\Source\;C:\RAD\bcb5\Components\ElTree\Code\;c:\rad\borland\components\mstree\;c:\rad\borland\components\enhtree\;$(BCB)\Imports;c:\rad\bcb5\CBuilder5\Projects\;$(BCB)\Projects\Lib;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\lib\obj;$(BCB)\lib;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item23=c:\rad\borland\components\extbtn;C:\RAD\bcb5\Components\ElTree\Code\Source\;C:\RAD\bcb5\Components\ElTree\Code\;c:\rad\borland\components\mstree\;c:\rad\borland\components\enhtree\;$(BCB)\Imports;c:\rad\bcb5\CBuilder5\Projects\;$(BCB)\Projects\Lib;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\lib\obj;$(BCB)\lib;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item24=C:\RAD\bcb5\Components\ElTree\Code\Source\;C:\RAD\bcb5\Components\ElTree\Code\;c:\rad\borland\components\mstree\;c:\rad\borland\components\enhtree\;$(BCB)\Imports;c:\rad\bcb5\CBuilder5\Projects\;$(BCB)\Projects\Lib;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\lib\obj;$(BCB)\lib;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item25=C:\RAD\bcb5\Components\ElTree\Code\Source;C:\RAD\bcb5\Components\ElTree\Code;c:\rad\borland\components\mstree;c:\rad\borland\components\enhtree;$(BCB)\Imports;c:\rad\bcb5\CBuilder5\Projects\;$(BCB)\Projects\Lib;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\lib\obj;$(BCB)\lib;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\;C:\RAD\borland\Components\ElTree\Code\Source
-Item26=C:\RAD\bcb5\Components\ElTree\Code\Source;C:\RAD\bcb5\Components\ElTree\Code;c:\rad\borland\components\mstree;c:\rad\borland\components\enhtree;$(BCB)\Imports;c:\rad\bcb5\CBuilder5\Projects\;$(BCB)\Projects\Lib;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\lib\obj;$(BCB)\lib;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\
-Item27=$(BCB)\Imports;c:\rad\bcb5\CBuilder5\Projects\;$(BCB)\Projects\Lib;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\lib\obj;$(BCB)\lib;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\
-Item28=c:\rad\bcb5\CBuilder5\Projects\;$(BCB)\Projects\Lib;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\lib\obj;$(BCB)\lib;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\
-Item29=c:\rad\bcb5\CBuilder5\Projects;$(BCB)\Projects\Lib;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\lib\obj;$(BCB)\lib;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\
+Item0=lib\DX;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;edit;engine;Engine\CPU_Pipe;Engine\Animations;Engine\Blenders;R:\Borland\Components6\alexmx
+Item1=lib\DX;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;edit;engine;Engine\CPU_Pipe;Engine\Animations;Engine\Blenders
+Item2=lib\DX;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;edit;engine;Engine\CPU_Pipe;Engine\Animations;Engine\Blenders;R:\Borland\Components6\ElPack\Code
+Item3=Engine\CPU_Pipe;Engine\Animations;Engine\Blenders;R:\Borland\Components\Eldos\Code\Source;r:\borland\components\alexmx;engine;lib\DX;c:\rad\Borland\CBuilder5\Bin;c:\rad\borland\CBuilder5\Projects;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow;c:\rad\borland\components\extbtn;c:\rad\borland\components\multi;C:\RAD\borland\Components\RX\Units;C:\RAD\borland\Components\ElTree\Code\Source
+Item4=Engine\CPU_Pipe;Engine\Animations;Engine\Blenders;R:\Borland\Components\Eldos\Code\Source\;r:\borland\components\alexmx\;engine;lib\DX;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item5=Engine\Animations;Engine\Blenders;R:\Borland\Components\Eldos\Code\Source\;r:\borland\components\alexmx\;engine;lib\DX;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item6=Engine\Blenders;R:\Borland\Components\Eldos\Code\Source\;r:\borland\components\alexmx\;engine;lib\DX;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item7=R:\Borland\Components\Eldos\Code\Source;r:\borland\components\alexmx;engine;lib\DX;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item8=engine;lib\DX;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item9=c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item10=c:\rad\Borland\CBuilder5\Bin;c:\rad\borland\CBuilder5\Projects\;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item11=c:\rad\borland\CBuilder5\Projects\;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item12=c:\rad\borland\CBuilder5\Projects;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item13=shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item14=edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item15=edit\Shader;Import\LWO;c:\rad\borland\components\gradient\;c:\rad\borland\components\temp\;c:\rad\borland\CBuilder5\Projects\;c:\rad\borland\components\renderwindow\;edit;Collide;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item16=c:\rad\borland\components\gradient\;c:\rad\borland\components\temp\;c:\rad\borland\CBuilder5\Projects\;c:\rad\borland\components\renderwindow\;edit;Collide;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item17=QHull;c:\rad\borland\components\gradient\;c:\rad\borland\components\temp\;c:\rad\borland\CBuilder5\Projects\;c:\rad\borland\components\renderwindow\;edit;Collide;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item18=c:\rad\borland\components\gradient;c:\rad\borland\components\temp;c:\rad\borland\CBuilder5\Projects\;c:\rad\borland\components\renderwindow\;edit;Collide;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item19=c:\rad\borland\CBuilder5\Projects\;c:\rad\borland\components\renderwindow\;edit;Collide;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item20=c:\rad\borland\CBuilder5\Projects;c:\rad\borland\components\renderwindow;edit;Collide;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item21=edit;Collide;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item22=edit;Collide;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\extbtn;c:\rad\borland\components\multi;C:\RAD\borland\Components\RX\Units;C:\RAD\borland\Components\ElTree\Code\Source
+Item23=Collide;c:\rad\borland\components\extbtn\;C:\RAD\bcb5\Components\ElTree\Code\Source\;C:\RAD\bcb5\Components\ElTree\Code\;c:\rad\borland\components\mstree\;c:\rad\borland\components\enhtree\;$(BCB)\Imports;c:\rad\bcb5\CBuilder5\Projects\;$(BCB)\Projects\Lib;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\lib\obj;$(BCB)\lib;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\;C:\RAD\borland\Components\ElTree\Code\Source\;C:\RAD\bcb5\Components\ExtBtn\
+Item24=Collide;Rapid;c:\rad\borland\components\extbtn\;C:\RAD\bcb5\Components\ElTree\Code\Source\;C:\RAD\bcb5\Components\ElTree\Code\;c:\rad\borland\components\mstree\;c:\rad\borland\components\enhtree\;$(BCB)\Imports;c:\rad\bcb5\CBuilder5\Projects\;$(BCB)\Projects\Lib;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\lib\obj;$(BCB)\lib;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\;C:\RAD\borland\Components\ElTree\Code\Source\;C:\RAD\bcb5\Components\ExtBtn\
+Item25=Rapid;c:\rad\borland\components\extbtn\;C:\RAD\bcb5\Components\ElTree\Code\Source\;C:\RAD\bcb5\Components\ElTree\Code\;c:\rad\borland\components\mstree\;c:\rad\borland\components\enhtree\;$(BCB)\Imports;c:\rad\bcb5\CBuilder5\Projects\;$(BCB)\Projects\Lib;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\lib\obj;$(BCB)\lib;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\;C:\RAD\borland\Components\ElTree\Code\Source\;C:\RAD\bcb5\Components\ExtBtn\
+Item26=Rapid;c:\rad\borland\components\extbtn\;C:\RAD\bcb5\Components\ElTree\Code\Source\;C:\RAD\bcb5\Components\ElTree\Code\;c:\rad\borland\components\mstree\;c:\rad\borland\components\enhtree\;$(BCB)\Imports;c:\rad\bcb5\CBuilder5\Projects\;$(BCB)\Projects\Lib;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\lib\obj;$(BCB)\lib;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\;C:\RAD\borland\Components\ElTree\Code\Source\;C:\RAD\bcb5\Components\ExtBtn
+Item27=Rapid;c:\rad\borland\components\extbtn\;C:\RAD\bcb5\Components\ElTree\Code\Source\;C:\RAD\bcb5\Components\ElTree\Code\;c:\rad\borland\components\mstree\;c:\rad\borland\components\enhtree\;$(BCB)\Imports;c:\rad\bcb5\CBuilder5\Projects\;$(BCB)\Projects\Lib;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\lib\obj;$(BCB)\lib;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item28=c:\rad\borland\components\extbtn;C:\RAD\bcb5\Components\ElTree\Code\Source\;C:\RAD\bcb5\Components\ElTree\Code\;c:\rad\borland\components\mstree\;c:\rad\borland\components\enhtree\;$(BCB)\Imports;c:\rad\bcb5\CBuilder5\Projects\;$(BCB)\Projects\Lib;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\lib\obj;$(BCB)\lib;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item29=C:\RAD\bcb5\Components\ElTree\Code\Source\;C:\RAD\bcb5\Components\ElTree\Code\;c:\rad\borland\components\mstree\;c:\rad\borland\components\enhtree\;$(BCB)\Imports;c:\rad\bcb5\CBuilder5\Projects\;$(BCB)\Projects\Lib;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\lib\obj;$(BCB)\lib;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\;C:\RAD\borland\Components\ElTree\Code\Source\
 
 [HistoryLists\hlDebugSourcePath]
-Count=4
-Item0=c:\rad\borland\cbuilder5\source\vcl;R:\Borland\Components\AlexMX\
-Item1=c:\rad\borland\cbuilder5\source\vcl
-Item2=c:\rad\borland\cbuilder5\source\vcl;P:\Editor\QHull\
-Item3=$(BCB)\source\vcl
+Count=5
+Item0=c:\rad\borland\cbuilder5\source\vcl;R:\Borland\Components6\AlexMX\
+Item1=c:\rad\borland\cbuilder5\source\vcl;R:\Borland\Components\AlexMX\
+Item2=c:\rad\borland\cbuilder5\source\vcl
+Item3=c:\rad\borland\cbuilder5\source\vcl;P:\Editor\QHull\
+Item4=$(BCB)\source\vcl
 
 [HistoryLists\hlConditionals]
 Count=8
@@ -285,17 +502,33 @@ Item2=!run\
 Item3=P:\Editor\!run
 
 [Debugging]
-DebugSourceDirs=c:\rad\borland\cbuilder5\source\vcl;R:\Borland\Components\AlexMX\
+DebugSourceDirs=c:\rad\borland\cbuilder5\source\vcl;R:\Borland\Components6\AlexMX\
 
 [Parameters]
 RunParams=
+Launcher=
+UseLauncher=0
+DebugCWD=
 HostApplication=
 RemoteHost=
 RemotePath=
+RemoteLauncher=
+RemoteCWD=
 RemoteDebug=0
 
 [Compiler]
 ShowInfoMsgs=0
-LinkDebugVcl=0
+LinkDebugVcl=1
+LinkCGLIB=0
+
+[CORBA]
+AddServerUnit=1
+AddClientUnit=1
+PrecompiledHeaders=1
+
+[Language]
+ActiveLang=
+ProjectLang=
+RootDir=
   </IDEOPTIONS>
 </PROJECT>

@@ -2,10 +2,7 @@
 #ifndef EImageManagerH
 #define EImageManagerH
 
-struct STextureParams;
 class EImageThumbnail;
-
-//DEVINE_MAP(LPSTR,EImageThumbnail*,)
 
 class CImageManager{
     void		MakeThumbnail		(EImageThumbnail* THM, DWORD* data, int w, int h, int a);
