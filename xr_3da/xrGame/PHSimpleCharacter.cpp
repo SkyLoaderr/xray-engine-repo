@@ -13,7 +13,7 @@
 #include "PhysicsGamePars.h"
 const float LOSE_CONTROL_DISTANCE=0.5f; //fly distance to lose control
 const float CLAMB_DISTANCE=0.5f;
-const float CLIMB_GETUP_HEIGHT=0.01f;
+const float CLIMB_GETUP_HEIGHT=0.1f;
 static u16 lastMaterial;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -792,26 +792,28 @@ void CPHSimpleCharacter::ApplyAcceleration()
 	//M->m_Flags.is(GameMtl::flClimbable);
 	if(!b_at_wall&&b_climb)
 	{
-		if(!b_climb_getup)
+		if(!b_block_climb_getup)
 		{
-			b_climb_getup=true;
-			m_start_climb_getup_height=dBodyGetPosition(m_body)[1];
-		}
-		else
-		{
-			if(dFabs(dBodyGetPosition(m_body)[1]-m_start_climb_getup_height)<CLIMB_GETUP_HEIGHT)
+			if(!b_climb_getup)
 			{
-				//m_control_force[0]*=4.f;
-				m_control_force[1]+=m.mass*40.f;
-				//m_control_force[2]*=4.f;
+				b_climb_getup=true;
+				m_start_climb_getup_height=dBodyGetPosition(m_body)[1];
 			}
 			else
 			{
-				b_climb_getup=false;
-				b_block_climb_getup=true;
+				if(dFabs(dBodyGetPosition(m_body)[1]-m_start_climb_getup_height)<CLIMB_GETUP_HEIGHT)
+				{
+					//m_control_force[0]*=4.f;
+					m_control_force[1]+=m.mass*40.f;
+					//m_control_force[2]*=4.f;
+				}
+				else
+				{
+					b_climb_getup=false;
+					b_block_climb_getup=true;
+				}
 			}
 		}
-	
 	}
 	else 
 	{
