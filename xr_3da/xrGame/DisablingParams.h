@@ -2,21 +2,24 @@
 #define DISABLING_PARAMS_H
 struct	SOneDDOParams
 {
-	float				velocity				;
-	float				acceleration			;
+	void				Mul					(float v)	;
+	float				velocity						;
+	float				acceleration					;
 };
 
 struct	SAllDDOParams
 {
-	SOneDDOParams		translational			;
-	SOneDDOParams		rotational				;
-	u16					L2frames				;
+	void				Reset						()	;
+	void				Load			(CInifile* ini)	;
+	SOneDDOParams		translational					;
+	SOneDDOParams		rotational						;
+	u16					L2frames						;
 };
 
 struct SAllDDWParams
 {
-	SAllDDOParams		objects_params			;
-	float				reanable_factor			;
+	SAllDDOParams		objects_params					;
+	float				reanable_factor					;
 };
 
 

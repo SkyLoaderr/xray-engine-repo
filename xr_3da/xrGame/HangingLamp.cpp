@@ -43,23 +43,23 @@ BOOL CHangingLamp::net_Spawn(LPVOID DC)
 
 	// set bone id
 	R_ASSERT				(Visual()&&PKinematics(Visual()));
-	light_bone_idx			= lamp->spot_bone[0]?PKinematics(Visual())->LL_BoneID(lamp->spot_bone):-1;
-	R_ASSERT2				(BI_NONE != light_bone_idx, lamp->spot_bone);
+	light_bone_idx			= *lamp->spot_bone?PKinematics(Visual())->LL_BoneID(*lamp->spot_bone):-1;
+	R_ASSERT2				(BI_NONE != light_bone_idx, *lamp->spot_bone);
 	clr.set					(lamp->color);			clr.a = 1.f;
 	clr.mul_rgb				(lamp->spot_brightness);
 	fBrightness				= lamp->spot_brightness;
 	light_render->set_range	(lamp->spot_range);
 	light_render->set_color	(clr);
 	light_render->set_cone	(lamp->spot_cone_angle);
-	light_render->set_texture(lamp->spot_texture[0]?lamp->spot_texture:0);
+	light_render->set_texture(*lamp->spot_texture);
 	light_render->set_active(true);
 
-	glow_render->set_texture(lamp->glow_texture[0]?lamp->glow_texture:0);
+	glow_render->set_texture(*lamp->glow_texture);
 	glow_render->set_color	(clr);
 	glow_render->set_radius	(lamp->glow_radius);
 	glow_render->set_active (true);
 
-	lanim					= LALib.FindItem(lamp->color_animator);
+	lanim					= LALib.FindItem(*lamp->color_animator);
 
 	if (lamp->flags.is(CSE_ALifeObjectHangingLamp::flPhysic))		CreateBody(lamp->mass);
 	if(PSkeletonAnimated(Visual()))	PSkeletonAnimated(Visual())->PlayCycle("idle");
@@ -222,7 +222,9 @@ void CHangingLamp::CreateBody(float/* mass*/)
 
 	m_pPhysicsShell->mXFORM.set(XFORM());
 	m_pPhysicsShell->SetAirResistance(0.001f, 0.02f);
-
+	SAllDDOParams disable_params;
+	disable_params.Load(PKinematics(Visual())->LL_UserData());
+	m_pPhysicsShell->set_DisableParams(disable_params);
 }
 
 void CHangingLamp::net_Export(NET_Packet& P)

@@ -219,12 +219,10 @@ void CCharacterPhysicsSupport::CreateSkeleton(CPhysicsShell* &pShell)
 	pShell->SmoothElementsInertia(0.3f);
 
 	pShell->set_PhysicsRefObject(&m_EntityAlife);
-	//if(m_eType==etStalker)
-	//{
-	//CInifile* ini = PKinematics(m_EntityAlife.Visual())->LL_UserData();
-	//R_ASSERT2(ini,"NO INI FILE IN MODEL");
-	//pShell->set_DisableParams(default_disl*ini->r_float("disable","linear_factor"),default_disw*ini->r_float("disable","angular_factor"));
-	//}
+	SAllDDOParams disable_params;
+	disable_params.Load(PKinematics(m_EntityAlife.Visual())->LL_UserData());
+	pShell->set_DisableParams(disable_params);
+
 	pShell->Build();
 
 }
@@ -251,21 +249,11 @@ Fvector velocity;
 	m_pPhysicsShell->SetAirResistance(0.002f*skel_airr_lin_factor,
 		0.3f*skel_airr_ang_factor);
 	m_pPhysicsShell->SmoothElementsInertia(0.3f);
-
 	m_pPhysicsShell->set_PhysicsRefObject(&m_EntityAlife);
-//	if(m_eType==etStalker)
-//	{
-		//CInifile* ini = PKinematics(m_EntityAlife.Visual())->LL_UserData();
-		//R_ASSERT2(ini,"NO INI FILE IN MODEL");
-		//SAllDDOParams	disable_pars	= worldDisablingParams.objects_params;
-		//float translational_factor=ini->r_float("disable","linear_factor");
-		//float rotational_factor	  =ini->r_float("disable","angular_factor");
-		//disable_pars.rotational.acceleration*=translational_factor;
-		//disable_pars.translational.velocity*=translational_factor;
-		//disable_pars.rotational.acceleration *=rotational_factor;
-		//disable_pars.rotational.velocity *=rotational_factor;
-		//m_pPhysicsShell->set_DisableParams(disable_pars);
-//	}
+	SAllDDOParams disable_params;
+	disable_params.Load(PKinematics(m_EntityAlife.Visual())->LL_UserData());
+	m_pPhysicsShell->set_DisableParams(disable_params);
+
 	m_pPhysicsShell->Activate(true);
 	m_pPhysicsShell->set_LinearVel(velocity);
 	PKinematics(m_EntityAlife.Visual())->Calculate();

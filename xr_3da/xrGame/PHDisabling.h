@@ -8,7 +8,7 @@ struct SDisableVector
 	float						Update						(const Fvector& new_vector)						;
 	void						Reset						()												;
 	float						SumMagnitude				()												;
-	SDisableVector											()																		;
+	SDisableVector											()												;
 };
 struct SDisableUpdateState
 {

@@ -27,7 +27,7 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 
 	m_type = EPOType(po->type);
 	m_mass = po->mass;
-	LPTSTR start_anim=po->startup_animation;
+	LPCSTR start_anim=*po->startup_animation;
 	xr_delete(collidable.model);
 	switch(m_type) {
 		case epotBox:			collidable.model = xr_new<CCF_Rigid>(this);		break;
@@ -141,6 +141,9 @@ void CPhysicObject::CreateBody(CSE_ALifeObjectPhysic* po) {
 	}
 	m_pPhysicsShell->mXFORM.set(XFORM());
 	m_pPhysicsShell->SetAirResistance(0.001f, 0.02f);
+	SAllDDOParams disable_params;
+	disable_params.Load(PKinematics(Visual())->LL_UserData());
+	m_pPhysicsShell->set_DisableParams(disable_params);
 	//m_pPhysicsShell->SetAirResistance(0.002f, 0.3f);
 }
 
@@ -171,9 +174,9 @@ void CPhysicObject::CreateSkeleton(CSE_ALifeObjectPhysic* po)
 	CKinematics* pKinematics=PKinematics(Visual());
 	m_pPhysicsShell		= P_create_Shell();
 	CPhysicsElement* fixed_element=NULL;
-	if(0!=po->fixed_bone[0])
+	if(*po->fixed_bones)
 	{
-		u32 fixed_bone_id=pKinematics->LL_BoneID(po->fixed_bone);
+		u32 fixed_bone_id=pKinematics->LL_BoneID(*po->fixed_bones);
 		R_ASSERT2(BI_NONE!=fixed_bone_id,"wrong fixed bone");
 		bone_map.clear();
 		bone_map.insert(mk_pair(fixed_bone_id,physicsBone()));
