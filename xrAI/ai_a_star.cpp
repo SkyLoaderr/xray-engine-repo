@@ -36,7 +36,7 @@ IC float ffCriteria(NodeCompressed &tNode0, NodeCompressed &tNode1)
 	float y2 = (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
 	float z2 = (float)(tNode1.p1.z) + (float)(tNode1.p0.z);
 
-	return(_sqrt((float)(fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + 0*fYSize2*_sqr(y2 - y1))));
+	return(_sqrt((float)(fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + 1*fYSize2*_sqr(y2 - y1))));
 }
 
 IC void vfUpdateSuccessors(TNode *tpList, float dDifference)
