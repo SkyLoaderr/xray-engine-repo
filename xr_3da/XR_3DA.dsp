@@ -1132,42 +1132,6 @@ SOURCE=.\xr_trims.cpp
 SOURCE=.\xr_trims.h
 # End Source File
 # End Group
-# Begin Group "Font output"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\XR_CustomFont.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\XR_CustomFont.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\XR_GameFont.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\XR_GameFont.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\XR_HUDFont.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\XR_HUDFont.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\XR_SmallFont.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\XR_SmallFont.h
-# End Source File
-# End Group
 # Begin Group "Console"
 
 # PROP Default_Filter ""
@@ -2675,6 +2639,42 @@ SOURCE=.\ModelPool.cpp
 # Begin Source File
 
 SOURCE=.\ModelPool.h
+# End Source File
+# End Group
+# Begin Group "Font output"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\XR_CustomFont.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\XR_CustomFont.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\XR_GameFont.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\XR_GameFont.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\XR_HUDFont.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\XR_HUDFont.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\XR_SmallFont.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\XR_SmallFont.h
 # End Source File
 # End Group
 # Begin Source File
