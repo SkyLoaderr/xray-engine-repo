@@ -1,6 +1,5 @@
 //----------------------------------------------------
 // file: CEditObject.h
-// http://www.pornstarsxtra.com/partners/black-hardcore/
 //----------------------------------------------------
 #ifndef _INCDEF_Object_H_
 #define _INCDEF_Object_H_
