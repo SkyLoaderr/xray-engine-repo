@@ -45,6 +45,9 @@ CInventoryItem::CInventoryItem()
 	m_dwFrameSpawn		= u32(-1);
 	m_dwFrameDestroy	= u32(-1);
 	m_dwFrameClient		= u32(-1);
+
+
+	m_eItemPlace = eItemPlaceUndefined;
 }
 
 CInventoryItem::~CInventoryItem() 
@@ -231,6 +234,7 @@ bool CInventoryItem::Merge(PIItem /**pIItem/**/)
 
 void CInventoryItem::OnH_B_Independent	()
 {
+	m_eItemPlace = eItemPlaceUndefined;
 	inherited::OnH_B_Independent();
 }
 
@@ -348,6 +352,11 @@ void CInventoryItem::net_Destroy		()
 
 void CInventoryItem::net_Import			(NET_Packet& P) 
 {	
+	u8 item_place;
+	P.r_u8					(item_place);
+	m_eItemPlace = (EItemPlace)item_place;
+
+
 	P.r_float				(m_fCondition);
 
 	net_update_IItem			N;
@@ -405,6 +414,7 @@ void CInventoryItem::net_Export			(NET_Packet& P)
 {	
 	
 //	inherited::net_Export(P);
+	P.w_u8				((u8)m_eItemPlace);
 	P.w_float			(m_fCondition);
 	P.w_u32				(Level().timeServer());	
 

@@ -22,3 +22,11 @@ typedef xr_list<PIItem>			TIItemList;
 typedef TIItemSet::iterator		PSPIItem;
 typedef TIItemList::iterator	PPIItem;
 
+
+//положение вещи в инвенторе (используется актером 
+//при переходе в offline и обратно)
+typedef	enum {eItemPlaceUndefined,
+			eItemPlaceSlot,
+			eItemPlaceBelt,
+			eItemPlaceRuck} EItemPlace;
+

@@ -75,6 +75,9 @@ public:
 	LPCSTR			m_nameShort;
 	char			m_nameComplex[255];
 	bool			m_drop;
+	//текущее положение вещи в инвентаре
+	EItemPlace		m_eItemPlace;
+
 
 	virtual int		GetGridWidth		() const {return m_iGridWidth;}
 	virtual int		GetGridHeight		() const {return m_iGridHeight;}
@@ -92,7 +95,7 @@ public:
 			bool	Ruck				() {return m_ruck;}
 			void	Ruck				(bool on_ruck) {m_ruck = on_ruck;}
 protected:
-	// Слот в который можно установить объект (0xffffffff если нельзя)
+	// Слот в который можно установить объект (NO_ACTIVE_SLOT если нельзя)
 	u32				m_slot;
 	// Может ли объект быть на поясе или в рюкзаке
 	bool			m_belt, m_ruck;			

@@ -11,6 +11,7 @@
 
 #include "xrServer_Objects_ALife.h"
 #include "PHSynchronize.h"
+#include "inventory_space.h"
 
 class CSE_ALifeInventoryItem : virtual public CSE_Abstract {
 public:
@@ -32,6 +33,10 @@ public:
 	u64								m_qwGridBitMask;
 	ALife::_OBJECT_ID				m_tPreviousParentID;
 	bool							m_can_switch_offline;
+
+	//положение вещи в инвенторе (используется актером 
+	//при переходе в offline и обратно)
+	EItemPlace						m_eItemPlace;
 
 									CSE_ALifeInventoryItem	(LPCSTR caSection);
 	virtual							~CSE_ALifeInventoryItem	();

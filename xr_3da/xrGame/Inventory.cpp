@@ -110,7 +110,7 @@ bool CInventory::FreeBeltRoom()
 bool CInventory::Take(CGameObject *pObj, bool bNotActivate)
 {
 	CInventoryItem *pIItem = dynamic_cast<CInventoryItem*>(pObj);
-	//Msg("Takin %s", *(pObj->cName()));
+	VERIFY(pIItem);
 	
 	if(m_all.find(pIItem) != m_all.end()) 
 	{
@@ -247,6 +247,9 @@ bool CInventory::Slot(PIItem pIItem, bool bNotActivate)
 		if ((m_iActiveSlot == NO_ACTIVE_SLOT) && (!bNotActivate))
 			Activate(pIItem->GetSlot());
 
+	
+		pIItem->m_eItemPlace = eItemPlaceSlot;
+
 		return true;
 	}
 	else
@@ -293,6 +296,7 @@ bool CInventory::Belt(PIItem pIItem)
 		if(m_ruck.end() != it) m_ruck.erase(it);
 
 		CalcTotalWeight();
+		pIItem->m_eItemPlace = eItemPlaceBelt;
 		return true;
 	}
 }
@@ -319,6 +323,7 @@ bool CInventory::Ruck(PIItem pIItem)
 	
 	m_ruck.insert(m_ruck.end(), pIItem); 
 	CalcTotalWeight();
+	pIItem->m_eItemPlace = eItemPlaceRuck;
 	return true;
 }
 
