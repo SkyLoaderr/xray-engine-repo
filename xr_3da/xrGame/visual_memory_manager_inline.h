@@ -22,3 +22,9 @@ IC	void CVisualMemoryManager::set_squad_objects(xr_vector<CVisibleObject> *squad
 {
 	m_objects						= squad_objects;
 }
+
+IC	bool CVisualMemoryManager::visible_now	(const CGameObject *game_object) const
+{
+	xr_vector<CObject*>::const_iterator	I = std::find_if(m_visible_objects.begin(),m_visible_objects.end(),CVisibleObjectPredicate(game_object->ID()));
+	return							(m_visible_objects.end() != I);
+}

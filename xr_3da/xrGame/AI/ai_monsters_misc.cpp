@@ -13,21 +13,6 @@
 #include "../actor.h"
 #include "../ef_storage.h"
 
-SRotation tfGetOrientation(CEntity *tpEntity)
-{
-	CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster *>(tpEntity);
-	if (tpCustomMonster)
-		return(tpCustomMonster->m_body.current);
-	else {
-		SRotation tTemp;
-		CActor *tpActor = dynamic_cast<CActor *>(tpEntity);
-		if (tpActor)
-			return(tpActor->Orientation());
-		else
-			return(tTemp);
-	}
-}
-
 bool bfGetActionSuccessProbability(EntityVec &Members, const xr_set<const CEntityAlive *> &VisibleEnemies, float fMinProbability, CBaseFunction &fSuccessProbabilityFunction)
 {
 	int i = 0, j = 0, I = (int)Members.size(), J = (int)VisibleEnemies.size();

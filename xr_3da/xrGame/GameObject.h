@@ -89,6 +89,16 @@ public:
 			void			Init				();
 	virtual	void			reinit				();
 	virtual	void			reload				(LPCSTR section);
+
+	virtual const SRotation	Orientation			() const
+	{
+		SRotation			rotation;
+		float				h,p,b;
+		XFORM().getHPB		(h,p,b);
+		rotation.yaw		= h;
+		rotation.pitch		= p;
+		return				(rotation);
+	};
 };
 
 #endif // !defined(AFX_GAMEOBJECT_H__3DA72D03_C759_4688_AEBB_89FA812AA873__INCLUDED_)

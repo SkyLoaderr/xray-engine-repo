@@ -15,9 +15,6 @@
 #include "../../game_level_cross_table.h"
 #include "../../game_graph.h"
 
-// states
-#include "../../state_free_no_alife.h"
-
 CAI_Stalker::CAI_Stalker			()
 {
 	Init							();
@@ -36,9 +33,6 @@ void CAI_Stalker::Init()
 	shedule.t_min					= 200;
 	shedule.t_max					= 1;
 	m_dwParticularState				= u32(-1);
-//	CStalkerStateManager::Init		();
-//	CSStateManager::add				(xr_new<CStateFreeNoAlife>(this),eStateFreeNoAlife,10);
-
 }
 
 void CAI_Stalker::reinit			()
@@ -49,7 +43,7 @@ void CAI_Stalker::reinit			()
 	CSightManager::reinit			();
 	CStalkerAnimations::reinit		();
 	CStalkerMovementManager::reinit	();
-	CSStateManager::reinit			();
+	CStateManagerStalker::reinit	();
 
 	m_pPhysics_support->in_Init		();
 	m_dwRandomFactor				= 100;
@@ -70,7 +64,7 @@ void CAI_Stalker::reload			(LPCSTR section)
 //	CSightManager::reload			(section);
 //	CStalkerAnimations::reload		(section);
 	CStalkerMovementManager::reload	(section);
-	CSStateManager::reload			(section);
+	CStateManagerStalker::reload	(section);
 }
 
 void CAI_Stalker::Die				()
@@ -94,7 +88,7 @@ void CAI_Stalker::Load				(LPCSTR section)
 	CWeaponManager::Load			(section);
 	CSightManager::Load				(section);
 	CStalkerMovementManager::Load	(section);
-	CSStateManager::Load			(section);
+	CStateManagerStalker::Load		(section);
 
 	CSelectorManager::add<
 		PathManagers::CVertexEvaluator<

@@ -28,6 +28,15 @@ class CStateManagerAbstract {
 	u32					m_cur_state;
 	u32					m_dest_state;
 	bool				m_actuality;
+
+protected:
+	virtual	void		add						(T *state, u32 state_id, u32 priority);
+	virtual	void		remove					(u32 state_id);
+	virtual	void		update					(u32 time_delta);
+	IC		u32			current_state			() const;
+	IC		u32			dest_state				() const;
+	IC		void		set_dest_state			(u32 state_id);
+
 public:
 						CStateManagerAbstract	();
 	virtual				~CStateManagerAbstract	();
@@ -35,14 +44,6 @@ public:
 	virtual	void		Load					(LPCSTR section);
 	virtual	void		reinit					();
 	virtual	void		reload					(LPCSTR section);
-
-			void		add						(T *state, u32 state_id, u32 priority);
-			void		remove					(u32 state_id);
-			void		update					(u32 time_delta);
-
-	IC		u32			current_state			() const;
-	IC		u32			dest_state				() const;
-	IC		void		set_dest_state			(u32 state_id);
 };
 
 #include "state_manager_abstract_inline.h"

@@ -15,8 +15,7 @@
 #include "../../inventory.h"
 #include "../../weapon_manager.h"
 #include "../../sight_manager.h"
-#include "../../state_manager_abstract.h"
-#include "../../state_base.h"
+#include "../../state_manager_stalker.h"
 
 using namespace StalkerSpace;
 
@@ -38,11 +37,10 @@ class CAI_Stalker :
 	public CSightManager,
 	public CStalkerAnimations, 
 	public CStalkerMovementManager,
-	public CStateManagerAbstract<CStateBase>
+	public CStateManagerStalker
 {
 private:
 	typedef CCustomMonster inherited;
-	typedef CStateManagerAbstract<CStateBase> CSStateManager;
 	
 	EActionState				m_tActionState;
 	u32							m_dwActionStartTime;
@@ -207,6 +205,10 @@ public:
 			void				vfSetCurrentTask				(_TASK_ID		&tTaskID);
 			bool				bfAssignDestinationNode			();
 			void				vfFinishTask					();
+	virtual const SRotation		Orientation				() const
+	{
+		return					(m_head.current);
+	};
 };
 
 #include "ai_stalker_inline.h"

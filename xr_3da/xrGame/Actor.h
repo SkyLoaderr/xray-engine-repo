@@ -360,8 +360,8 @@ public:
 	virtual void						g_PerformDrop		( );
 	virtual void						g_WeaponBones		(int &L, int &R1, int &R2);
 	
-	const SRotation&					Orientation()		const { return r_torso; };
-	SRotation&							Orientation()		{ return r_torso; };
+	virtual const SRotation				Orientation()		const { return r_torso; };
+	SRotation							&Orientation()		{ return r_torso; };
 
 	virtual void						IR_OnMouseMove		(int x, int y);
 	//virtual void						IR_OnMousePress		(int dik);

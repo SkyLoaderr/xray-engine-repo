@@ -278,7 +278,6 @@ void Script::vfExportDevice(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def_readonly("width",					&CRenderDevice::dwWidth)
 			.def_readonly("height",					&CRenderDevice::dwHeight)
 			.def_readonly("time_delta",				&CRenderDevice::dwTimeDelta)
-			.def_readonly("time_global",			&CRenderDevice::dwTimeGlobal)
 			.def_readonly("cam_pos",				&CRenderDevice::vCameraPosition)
 			.def_readonly("cam_dir",				&CRenderDevice::vCameraDirection)
 			.def_readonly("cam_top",				&CRenderDevice::vCameraTop)
@@ -288,6 +287,7 @@ void Script::vfExportDevice(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def_readonly("full_transform",			&CRenderDevice::mFullTransform)
 			.def_readonly("fov",					&CRenderDevice::fFOV)
 			.def_readonly("aspect_ratio",			&CRenderDevice::fASPECT)
+			.def("time_global",						&CRenderDevice::TimerAsync)
 	];
 }
 

@@ -16,6 +16,22 @@ private:
 	u32							m_max_hit_count;
 	const CHitObject			*m_selected_hit;
 
+	struct CHitObjectPredicate {
+		const CObject *m_object;
+					CHitObjectPredicate			(const CObject *object) :
+						m_object(object)
+		{
+		}
+
+		bool		operator()					(const CHitObject &hit_object) const
+		{
+			if (!m_object)
+				return			(!hit_object.m_object);
+			if (!hit_object.m_object)
+				return			(false);
+			return				(m_object->ID() == hit_object.m_object->ID());
+		}
+	};
 public:
 					CHitMemoryManager			();
 	virtual			~CHitMemoryManager			();
@@ -30,6 +46,7 @@ public:
 	IC		const xr_vector<CHitObject> &hit_objects() const;
 	IC		const CHitObject *hit				() const;
 	IC		void	set_squad_objects			(xr_vector<CHitObject> *squad_objects);
+	IC		bool	hit							(const CEntityAlive *object) const;
 };
 
 #include "hit_memory_manager_inline.h"

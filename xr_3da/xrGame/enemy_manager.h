@@ -17,6 +17,7 @@ public:
 	virtual bool	useful						(const CEntityAlive *object) const;
 	virtual	float	evaluate					(const CEntityAlive *object) const;
 	IC		const xr_set<const CEntityAlive*> &enemies() const;
+			bool	expedient					(const CEntityAlive *object) const;
 };
 
 #include "enemy_manager_inline.h"

@@ -30,6 +30,20 @@ public:
 		}
 	};
 
+	struct CVisibleObjectPredicate {
+		u32			m_id;
+					CVisibleObjectPredicate			(u32 id) : 
+						m_id(id)
+		{
+		}
+
+		bool		operator()						(const CObject *object) const
+		{
+			VERIFY	(object);
+			return	(object->ID() == m_id);
+		}
+	};
+
 private:
 	u32								m_max_object_count;
 	xr_vector<CVisibleObject>		*m_objects;
@@ -59,9 +73,11 @@ public:
 	virtual	void	reload							(LPCSTR section);
 	IC		const xr_vector<CVisibleObject>	&memory_visible_objects() const;
 	IC		const xr_vector<CObject*>		&visible_objects() const;
-			bool	visible							(CGameObject *game_object) const;
+			bool	visible							(const CGameObject *game_object) const;
 			bool	visible							(u32 dwNodeID, float yaw) const;
 	IC		void	set_squad_objects				(xr_vector<CVisibleObject> *squad_objects);
+	IC		bool	visible_now						(const CGameObject *game_object) const;
+			bool	see								(const CEntityAlive *object0, const CEntityAlive *object1) const;
 };
 
 #include "visual_memory_manager_inline.h"

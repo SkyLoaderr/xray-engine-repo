@@ -171,6 +171,10 @@ public:
 	virtual void				Load					(LPCSTR	section);				
 	virtual	void				reinit					();
 	virtual void				reload					(LPCSTR	section);				
+	virtual const SRotation		Orientation				() const
+	{
+		return					(m_body.current);
+	};
 };
 
 #include "custommonster_inline.h"

@@ -1103,20 +1103,60 @@
 							</File>
 						</Filter>
 						<Filter
-							Name="StateManagers"
+							Name="StateInternal"
 							Filter="">
 							<File
-								RelativePath=".\state_manager_abstract.cpp">
+								RelativePath=".\state_internal.cpp">
 							</File>
 							<File
-								RelativePath=".\state_manager_abstract.h">
+								RelativePath=".\state_internal.h">
 							</File>
-							<File
-								RelativePath=".\state_manager_abstract_inline.h">
-							</File>
+						</Filter>
+						<Filter
+							Name="StateManagers"
+							Filter="">
+							<Filter
+								Name="StateManagerAbstract"
+								Filter="">
+								<File
+									RelativePath=".\state_manager_abstract.cpp">
+								</File>
+								<File
+									RelativePath=".\state_manager_abstract.h">
+								</File>
+								<File
+									RelativePath=".\state_manager_abstract_inline.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="StateManagerStalker"
+								Filter="">
+								<File
+									RelativePath=".\state_manager_stalker.cpp">
+								</File>
+								<File
+									RelativePath=".\state_manager_stalker.h">
+								</File>
+								<File
+									RelativePath=".\state_manager_stalker_inline.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="StateManagerDeath"
+								Filter="">
+							</Filter>
 							<Filter
 								Name="StateManagerNoALife"
 								Filter="">
+								<File
+									RelativePath=".\state_manager_no_alife.cpp">
+								</File>
+								<File
+									RelativePath=".\state_manager_no_alife.h">
+								</File>
+								<File
+									RelativePath=".\state_manager_no_alife_inline.h">
+								</File>
 								<Filter
 									Name="StateFreeNoALife"
 									Filter="">
@@ -1137,10 +1177,6 @@
 							</Filter>
 							<Filter
 								Name="StateManagerCombat"
-								Filter="">
-							</Filter>
-							<Filter
-								Name="StateManagerDeath"
 								Filter="">
 							</Filter>
 						</Filter>

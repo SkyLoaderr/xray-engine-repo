@@ -41,6 +41,7 @@ void CHitMemoryManager::reload				(LPCSTR section)
 
 void CHitMemoryManager::add_hit_object		(float amount, const Fvector &vLocalDir, CObject *who, s16 element)
 {
+	VERIFY						(m_hits);
 	CEntityAlive				*self = dynamic_cast<CEntityAlive*>(this);
 	if (self && !self->g_Alive()) {
 		m_hits->clear			();
@@ -75,6 +76,7 @@ void CHitMemoryManager::add_hit_object		(float amount, const Fvector &vLocalDir,
 
 void CHitMemoryManager::add_hit_object(const CHitObject &hit_object)
 {
+	VERIFY						(m_hits);
 	CEntityAlive				*self = dynamic_cast<CEntityAlive*>(this);
 	if (self && !self->g_Alive()) {
 		m_hits->clear			();
@@ -98,6 +100,7 @@ void CHitMemoryManager::add_hit_object(const CHitObject &hit_object)
 
 void CHitMemoryManager::update()
 {
+	VERIFY						(m_hits);
 	m_selected_hit				= 0;
 	u32							level_time = 0;
 	xr_vector<CHitObject>::const_iterator	I = m_hits->begin();

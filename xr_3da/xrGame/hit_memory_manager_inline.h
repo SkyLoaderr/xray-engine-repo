@@ -10,6 +10,7 @@
 
 IC	const xr_vector<CHitObject> &CHitMemoryManager::hit_objects() const
 {
+	VERIFY				(m_hits);
 	return				(*m_hits);
 }
 
@@ -26,4 +27,11 @@ IC	const CHitObject *CHitMemoryManager::hit() const
 IC	void CHitMemoryManager::set_squad_objects	(xr_vector<CHitObject> *squad_objects)
 {
 	m_hits				= squad_objects;
+}
+
+IC	bool CHitMemoryManager::hit	(const CEntityAlive *object) const
+{
+	VERIFY				(m_hits);
+	xr_vector<CHitObject>::const_iterator	I = std::find_if(m_hits->begin(),m_hits->end(),CHitObjectPredicate(object));
+	return				(m_hits->end() != I);
 }
