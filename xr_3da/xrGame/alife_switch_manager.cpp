@@ -117,11 +117,36 @@ void CALifeSwitchManager::add_online(CSE_ALifeDynamicObject *object, bool update
 	}
 }
 
+struct remove_non_savable_predicate {
+	xrServer			*m_server;
+
+	IC		 remove_non_savable_predicate(xrServer *server)
+	{
+		VERIFY			(server);
+		m_server		= server;
+	}
+
+	IC	bool operator()	(const ALife::_OBJECT_ID &id) const
+	{
+		CSE_Abstract	*object = m_server->game->get_entity_from_eid(id);
+		VERIFY			(object);
+		CSE_ALifeObject	*alife_object = smart_cast<CSE_ALifeObject*>(object);
+		VERIFY			(alife_object);
+		return			(!alife_object->can_save());
+	}
+};
+
 void CALifeSwitchManager::remove_online(CSE_ALifeDynamicObject *object, bool update_registries)
 {
 	object->m_bOnline			= false;
 	
 	m_saved_chidren				= object->children;
+	CSE_ALifeTraderAbstract		*inventory_owner = smart_cast<CSE_ALifeTraderAbstract*>(object);
+	if (inventory_owner) {
+		OBJECT_VECTOR::iterator	I = remove_if(m_saved_chidren.begin(),m_saved_chidren.end(),remove_non_savable_predicate(&server()));
+		m_saved_chidren.erase	(I,m_saved_chidren.end());
+	}
+
 	server().Perform_destroy	(object,net_flags(TRUE,TRUE));
 	VERIFY						(object->children.empty());
 
@@ -134,12 +159,9 @@ void CALifeSwitchManager::remove_online(CSE_ALifeDynamicObject *object, bool upd
 	}
 #endif
 
-	CSE_ALifeTraderAbstract			*inventory_owner = smart_cast<CSE_ALifeTraderAbstract*>(object);
 	if (inventory_owner) {
 		for (u32 i=0, n=m_saved_chidren.size(); i<n; ++i) {
 			CSE_ALifeDynamicObject	*child = smart_cast<CSE_ALifeDynamicObject*>(objects().object(m_saved_chidren[i],true));
-			if (!child)
-				continue;
 			R_ASSERT				(child);
 			child->m_bOnline		= false;
 
