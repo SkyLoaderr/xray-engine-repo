@@ -55,8 +55,9 @@ int __fastcall TfrmChoseItem::SelectItem(ESelectMode mode, LPCSTR& dest, int sel
 
     // fill
     switch (form->Mode){
-    case smCustom: 		form->FillCustom(items);break;
-    case smSound: 		form->FillSound();		break;
+    case smCustom: 	  	form->FillCustom(items);break;
+    case smSoundSource:	form->FillSoundSource();break;
+    case smSoundEnv:	form->FillSoundEnv();	break;
     case smObject: 		form->FillObject();		break;
     case smShader: 		form->FillShader();		break;
     case smShaderXRLC: 	form->FillShaderXRLC();	break;
@@ -127,14 +128,25 @@ void __fastcall TfrmChoseItem::FillEntity()
     }
 }
 //---------------------------------------------------------------------------
-void __fastcall TfrmChoseItem::FillSound()
+void __fastcall TfrmChoseItem::FillSoundSource()
 {
-    form->Caption					= "Select Sound";
+    form->Caption					= "Select Sound Source";
     FS_QueryMap lst;
     if (SndLib.GetSounds(lst)){
 	    FS_QueryPairIt  it			= lst.begin();
     	FS_QueryPairIt	_E			= lst.end();
 	    for (; it!=_E; it++)		AppendItem(it->first.c_str());
+    }
+}
+//---------------------------------------------------------------------------
+void __fastcall TfrmChoseItem::FillSoundEnv()
+{
+    form->Caption					= "Select Sound Environment";
+    AStringVec lst;
+    if (SndLib.GetSoundEnvs(lst)){
+	    AStringIt  it				= lst.begin();
+    	AStringIt	_E				= lst.end();
+	    for (; it!=_E; it++)		AppendItem(it->c_str());
     }
 }
 //---------------------------------------------------------------------------
@@ -482,14 +494,15 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
 			lbFileName->Caption		= "\""+Item->Text+".object\"";
             lbInfo->Caption			= "-";
         }break;
-        case smSound:{
+        case smSoundSource:{
 	        AnsiString fn;
         	FHelper.MakeName		(Item,0,fn,false);
             fn						= ChangeFileExt(fn,".wav");
             const CLocatorAPI::file* file	= FS.exist(_game_sounds_,fn.c_str());
             if (file){
-            	m_Snd.create		(0,fn.c_str());
+            	m_Snd.create		(TRUE,fn.c_str());
                 m_Snd.play			(0,FALSE);
+                m_Snd.set_position	(Device.m_Camera.GetPosition());
                 AnsiString temp; 		
                 CSoundRender_Source* src= (CSoundRender_Source*)m_Snd.handle;
                 if (src) temp.sprintf	("Size: %.2f Kb\nTime: %.2f sec",float(file->size)/1024.f,float(src->dwTimeTotal)/1000.f);

@@ -19,7 +19,6 @@
 #include "xr_input.h"
 #include "ui_main.h"
 #include "d3dutils.h"
-#include "frustum.h"
 #include "EditLightAnim.h"
 #include "folderLib.h"
 #include "sceneproperties.h"

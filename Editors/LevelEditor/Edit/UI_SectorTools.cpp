@@ -10,7 +10,6 @@
 #include "frameSector.h"
 #include "topbar.h"
 #include "ui_tools.h"
-#include "frustum.h"
 #include "ui_main.h"
 
 //---------------------------------------------------------------------------

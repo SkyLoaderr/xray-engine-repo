@@ -86,7 +86,8 @@ private:	// User declarations
     bool 	bIgnoreExt;
 // fill routines
     void __fastcall FillCustom		(AStringVec* items);
-    void __fastcall FillSound		();
+    void __fastcall FillSoundSource	();
+    void __fastcall FillSoundEnv	();
     void __fastcall FillObject		();
     void __fastcall FillLAnim		();
     void __fastcall FillShader		();
@@ -102,7 +103,8 @@ private:	// User declarations
 public:		// User declarations
     enum ESelectMode{
     	smCustom = 0,
-    	smSound,
+    	smSoundSource,
+    	smSoundEnv,
         smObject,
     	smShader,
         smShaderXRLC,

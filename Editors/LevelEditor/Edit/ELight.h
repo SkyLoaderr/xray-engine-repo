@@ -51,14 +51,7 @@ public:
     virtual void	OnUpdateTransform();
     void __fastcall	OnTypeChange	(PropValue* value);
 
-    static PropItem* piA0;
-    static PropItem* piA1;
-    static PropItem* piA2;
-    static PropItem* piBrightness;
-    static PropItem* piRange;
-
-    void __fastcall	OnAutoA1Click	(PropItem* value);
-    void __fastcall	OnAutoA2Click	(PropItem* value);
+    void __fastcall	OnAutoClick		(PropValue* value);
     void __fastcall	OnNeedUpdate	(PropValue* value);
 protected:
     virtual Fvector& GetPosition	()						{ return m_D3D.position; 	}

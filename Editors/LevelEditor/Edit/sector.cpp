@@ -6,7 +6,6 @@
 
 #include "Log.h"
 #include "Sector.h"
-#include "Frustum.h"
 #include "EditMesh.h"
 #include "SceneObject.h"
 #include "Scene.h"

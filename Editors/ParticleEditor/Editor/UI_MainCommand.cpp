@@ -115,6 +115,9 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	case COMMAND_UPDATE_PROPERTIES:
         Tools.UpdateProperties();
         break;
+	case COMMAND_REFRESH_PROPERTIES:
+        Tools.RefreshProperties();
+        break;
 	case COMMAND_SHOWCONTEXTMENU:
     	ShowContextMenu(EObjClass(p1));
         break;

@@ -9,7 +9,6 @@
 #include "Scene.h"
 #include "Texture.h"
 #include "ui_tools.h"
-#include "Frustum.h"
 #include "SceneObject.h"
 #include "DetailObjects.h"
 #include "Sector.h"
@@ -494,7 +493,7 @@ void EScene::Render( const Fmatrix& camera )
 // priority #1
 	// draw lights, sounds, respawn points, pclipper, sector, event
     RENDER_CLASS_NORMAL		(1,OBJCLASS_LIGHT);
-    RENDER_CLASS_NORMAL		(1,OBJCLASS_SOUND);
+    RENDER_CLASS			(1,OBJCLASS_SOUND,		false);
     RENDER_CLASS_NORMAL		(1,OBJCLASS_SPAWNPOINT);
     RENDER_CLASS_NORMAL		(1,OBJCLASS_WAY);
     RENDER_CLASS_NORMAL		(1,OBJCLASS_EVENT);
@@ -508,6 +507,7 @@ void EScene::Render( const Fmatrix& camera )
     m_DetailObjects->Render	(1,false);
     m_DetailObjects->Render	(1,true);
 	// draw clip planes, glows, event, sectors, portals
+    RENDER_CLASS			(1,OBJCLASS_SOUND,		true);
 	RENDER_CLASS_ALPHA		(1,OBJCLASS_GLOW);
 	RENDER_CLASS_ALPHA		(1,OBJCLASS_EVENT);
     RENDER_CLASS			(1,OBJCLASS_SHAPE,		true);

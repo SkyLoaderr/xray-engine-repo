@@ -14,7 +14,10 @@ private:
 	void			ComputeBounds	( );
 
 //    void			ScaleShapes		(const Fvector& val);
+	u32				m_DrawTranspColor;
+	u32				m_DrawEdgeColor;
 public:
+	void			SetDrawColor	(u32 transp, u32 edge){m_DrawTranspColor=transp;m_DrawEdgeColor=edge;}
 	void			ApplyScale		();
 	void			add_sphere		(const Fsphere& S);
 	void			add_box			(const Fmatrix& B);

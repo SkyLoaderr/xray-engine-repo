@@ -212,3 +212,11 @@ void CCustomObject::FillProp(LPCSTR pref, PropItemVec& items)
 }
 //----------------------------------------------------
 
+void CCustomObject::OnShowHint(AStringVec& dest)
+{
+    dest.push_back(AnsiString("Class: ")+AnsiString(GetNameByClassID(ClassID)));
+    dest.push_back(AnsiString("Name:  ")+AnsiString(Name));
+    dest.push_back(AnsiString("-------"));
+}
+//----------------------------------------------------
+

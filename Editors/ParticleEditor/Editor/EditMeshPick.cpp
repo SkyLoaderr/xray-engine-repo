@@ -7,7 +7,6 @@
 
 #include "EditMesh.h"
 #include "EditObject.h"
-#include "frustum.h"
 #include "EditorPref.h"
 #include "bottombar.h"
 #include "cl_collector.h"

@@ -8,8 +8,7 @@
 #include "du_box.h"
 #include "Scene.h"
 
-#define SHAPE_COLOR_TRANSP_NORM	0x1800FF00
-#define SHAPE_COLOR_TRANSP_SEL	0x3600FF00
+#define SHAPE_COLOR_TRANSP		0x1800FF00
 #define SHAPE_COLOR_EDGE		0xFF202020
 //---------------------------------------------------------------------------
 
@@ -31,6 +30,8 @@ CEditShape::~CEditShape()
 void CEditShape::Construct(LPVOID data)
 {
 	ClassID		= OBJCLASS_SHAPE;
+    m_DrawTranspColor	= SHAPE_COLOR_TRANSP;
+    m_DrawEdgeColor		= SHAPE_COLOR_EDGE;
 	m_Box.invalidate();
 }
 
@@ -265,7 +266,7 @@ bool CEditShape::FrustumPick(const CFrustum& frustum)
 bool CEditShape::GetBox(Fbox& box)
 {
 	if (m_Box.is_valid()){
-    	box.xform(m_Box,FTransformRP);
+    	box.xform(m_Box,FTransform);
     	return true;
     }
 	return false;
@@ -316,24 +317,25 @@ void CEditShape::Render(int priority, bool strictB2F)
 		if (::Render->occ_visible(bb)){
             if (strictB2F){
 				Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
+                u32 clr = Selected()?subst_alpha(m_DrawTranspColor, color_get_A(m_DrawTranspColor)*2):m_DrawTranspColor;
                 for (ShapeIt it=shapes.begin(); it!=shapes.end(); it++){
 					switch(it->type){
                     case cfSphere:{
 		                RCache.set_xform_world(_Transform());
                     	Fsphere& S			= it->data.sphere;
 		                Device.SetShader	(Device.m_WireShader);
-                        DU::DrawLineSphere	(S.P,S.R,SHAPE_COLOR_EDGE,true);
+                        DU::DrawLineSphere	(S.P,S.R,m_DrawEdgeColor,true);
 		                Device.SetShader	(Device.m_SelectionShader);
-                        DU::DrawSphere		(S.P,S.R,Selected()?SHAPE_COLOR_TRANSP_SEL:SHAPE_COLOR_TRANSP_NORM);
+                        DU::DrawSphere		(S.P,S.R,clr);
                     }break;
                     case cfBox:
                     	Fmatrix B			= it->data.box;
                         B.mulA				(_Transform());
 		                RCache.set_xform_world(B);
 		                Device.SetShader	(Device.m_SelectionShader);
-				        DU::DrawIdentBox	(true,false,Selected()?SHAPE_COLOR_TRANSP_SEL:SHAPE_COLOR_TRANSP_NORM);
+				        DU::DrawIdentBox	(true,false,clr);
 		                Device.SetShader	(Device.m_WireShader);
-				        DU::DrawIdentBox	(false,true,SHAPE_COLOR_EDGE);
+				        DU::DrawIdentBox	(false,true,m_DrawEdgeColor);
                     break;
 				    }
                 }

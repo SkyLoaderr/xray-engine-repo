@@ -19,7 +19,6 @@
 #include "Library.h"
 #include "DetailFormat.h"
 #include "Texture.h"
-#include "frustum.h"
 #include "bottombar.h"
 #include "ImageManager.h"
 

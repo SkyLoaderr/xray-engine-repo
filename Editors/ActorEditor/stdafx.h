@@ -122,6 +122,7 @@ struct astr_pred : public binary_function<AnsiString&, AnsiString&, bool>
 #ifdef _EDITOR
 	#include "device.h"
 	#include "properties.h"
+	#include "render.h"
 	DEFINE_VECTOR(FVF::L,FLvertexVec,FLvertexIt);
 	DEFINE_VECTOR(FVF::TL,FTLvertexVec,FTLvertexIt);
 	DEFINE_VECTOR(FVF::LIT,FLITvertexVec,FLITvertexIt);

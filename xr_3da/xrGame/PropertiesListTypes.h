@@ -38,8 +38,10 @@ enum EPropType{
     PROP_LIGHTANIM,
     PROP_LIBOBJECT,
     PROP_A_LIBOBJECT,
-    PROP_LIBSOUND,
-    PROP_A_LIBSOUND,
+    PROP_SOUNDSRC,
+    PROP_A_SOUNDSRC,
+    PROP_SOUNDENV,
+    PROP_A_SOUNDENV,
     PROP_LIBPS,
     PROP_A_LIBPS,
     PROP_GAMEOBJECT,
@@ -176,7 +178,23 @@ public:
     {
     	for (PropValueIt it=values.begin(); it!=values.end(); it++)
         	(*it)->ResetValue();
-        if (!m_Flags.is(flMixed)&&(values.size()>1)){
+        CheckMixed		();
+    }
+    IC void				AppendValue		(PropValue* value)
+    {
+    	if (!values.empty()&&!value->Equal(values.front()))
+        	m_Flags.set	(flMixed,TRUE);
+    	values.push_back(value);
+    }
+    IC LPCSTR			GetText			()
+    {
+    	VERIFY(!values.empty()); 
+        return m_Flags.is(flMixed)?"(mixed)":values.front()->GetText(OnDrawTextEvent);
+    }
+	IC void				CheckMixed		()
+    {
+		m_Flags.set		(flMixed,FALSE);
+        if (values.size()>1){
             PropValueIt F	= values.begin();
         	PropValueIt it	= F; it++;
 	    	for (; it!=values.end(); it++){
@@ -187,16 +205,7 @@ public:
             }
         }
     }
-    IC void				AppendValue		(PropValue* value)
-    {
-    	if (!values.empty()&&!value->Equal(values.front()))
-        	m_Flags.set	(flMixed,TRUE);
-    	values.push_back(value);
-    }
-    IC LPCSTR			GetText			(){
-    	VERIFY(!values.empty()); 
-        return m_Flags.is(flMixed)?"(mixed)":values.front()->GetText(OnDrawTextEvent);
-    }
+
     IC bool 			ApplyValue		(LPVOID val)
     {
     	bool bChanged	= false;
@@ -257,11 +266,13 @@ public:
 class ButtonValue: public PropValue{
 public:
 	AStringVec			value;
-    s8					btn_num;
+    int					btn_num;
     TRect				draw_rect;
+    TOnClick			OnBtnClickEvent;
 public:
 						ButtonValue		(AnsiString val)
 	{
+    	OnBtnClickEvent	= 0;
     	btn_num			= -1;
     	AnsiString 		v;
         int cnt=_GetItemCount(val.c_str()); 
@@ -272,6 +283,7 @@ public:
     virtual	void		ResetValue		(){;}
     virtual	bool		Equal			(PropValue* val){return true;}
     virtual	bool		ApplyValue		(LPVOID val){return false;}
+    bool				OnBtnClick		(int btn){btn_num=btn; if(OnBtnClickEvent){ OnBtnClickEvent(this); return true;}else return false;}
 };
 
 class TextValue: public PropValue{

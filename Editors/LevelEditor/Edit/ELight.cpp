@@ -6,7 +6,6 @@
 
 #include "Log.h"
 #include "ELight.h"
-#include "Frustum.h"
 #include "BottomBar.h"
 #include "ui_main.h"
 #include "d3dutils.h"
@@ -300,8 +299,7 @@ void CLight::FillProp(LPCSTR pref, PropItemVec& items)
     V->SetEvents			(0,0,OnTypeChange);
     V=PHelper.CreateFColor	(items,	PHelper.PrepareKey(pref,"Color"),			&m_D3D.diffuse);
 	V->SetEvents			(0,0,OnNeedUpdate);
-    V=PHelper.CreateFloat	(items,	PHelper.PrepareKey(pref,"Brightness"),		&m_Brightness,-3.f,3.f,0.1f,2);
-    piBrightness			= V->Owner();
+    PHelper.CreateFloat		(items,	PHelper.PrepareKey(pref,"Brightness"),		&m_Brightness,-3.f,3.f,0.1f,2);
     PHelper.CreateBOOL		(items,	PHelper.PrepareKey(pref,"Use In D3D"),		&m_UseInD3D);
     PHelper.CreateFlag32	(items,	PHelper.PrepareKey(pref,"Usage\\LightMap"),	&m_Flags,	CLight::flAffectStatic);
     PHelper.CreateFlag32	(items,	PHelper.PrepareKey(pref,"Usage\\Dynamic"),	&m_Flags,	CLight::flAffectDynamic);
@@ -349,51 +347,33 @@ void CLight::FillSunProp(LPCSTR pref, PropItemVec& items)
 }
 //----------------------------------------------------
 
-PropItem* CLight::piA0			= 0;
-PropItem* CLight::piA1			= 0;
-PropItem* CLight::piA2			= 0;
-PropItem* CLight::piBrightness	= 0;
-PropItem* CLight::piRange		= 0;
-
-void __fastcall	CLight::OnAutoA1Click(PropItem* value)
+void __fastcall	CLight::OnAutoClick(PropValue* value)
 {
-    float P = 0.1f;
-    float b = dynamic_cast<FloatValue*>(piBrightness->GetFrontValue())->GetValue();
-    float r = dynamic_cast<FloatValue*>(piRange->GetFrontValue())->GetValue();
-	float a0= 1.f;
-    float a2= dynamic_cast<FloatValue*>(piA2->GetFrontValue())->GetValue();
-    float a1= (b-P-P*r*r*a2)/(P*r);
-    piA0->ApplyValue(&a0);
-    piA1->ApplyValue(&a1);
-	UI.Command		(COMMAND_UPDATE_PROPERTIES);
-}
-void __fastcall	CLight::OnAutoA2Click(PropItem* value)
-{
-    float P = 0.1f;
-    float b = dynamic_cast<FloatValue*>(piBrightness->GetFrontValue())->GetValue();
-    float r = dynamic_cast<FloatValue*>(piRange->GetFrontValue())->GetValue();
-	float a0= 1.f;
-    float a1= dynamic_cast<FloatValue*>(piA1->GetFrontValue())->GetValue();
-    float a2= (b-P-P*r*a1)/(P*r*r);
-    piA0->ApplyValue(&a0);
-    piA2->ApplyValue(&a2);
-	UI.Command		(COMMAND_UPDATE_PROPERTIES);
+	ButtonValue* B = dynamic_cast<ButtonValue*>(value); R_ASSERT(B);
+	switch(B->btn_num){
+    case 0:{
+        float P = 0.1f;
+		m_D3D.attenuation0 = 1.f;
+        m_D3D.attenuation1 = (m_Brightness-P-P*m_D3D.range*m_D3D.range*m_D3D.attenuation2)/(P*m_D3D.range);
+        clamp(m_D3D.attenuation1,0.f,1.f);
+    }break;
+	case 1:{
+        float P = 0.1f;
+        m_D3D.attenuation0 = 1.f;
+        m_D3D.attenuation2 = (m_Brightness-P-P*m_D3D.range*m_D3D.attenuation1)/(P*m_D3D.range*m_D3D.range);
+        clamp(m_D3D.attenuation2,0.f,1.f);
+    }
+    }
 }
 void CLight::FillPointProp(LPCSTR pref, PropItemVec& items)
 {
-	PropValue* V=0;
-    V=PHelper.CreateFloat	(items,	PHelper.PrepareKey(pref, "Point", "Range"),					&m_D3D.range,		0.1f,1000.f);
-    piRange					= V->Owner();
-    V=PHelper.CreateFloat	(items,	PHelper.PrepareKey(pref, "Point", "Attenuation\\Constant"),	&m_D3D.attenuation0,0.f,1.f,0.0001f,6);
-    piA0 					= V->Owner();
-    V=PHelper.CreateFloat	(items,	PHelper.PrepareKey(pref, "Point", "Attenuation\\Linear"),	&m_D3D.attenuation1,0.f,1.f,0.0001f,6);
-    piA1 					= V->Owner();
-    piA1->m_Flags.set		(PropItem::flShowExtBtn,TRUE);
-    piA1->SetEvents			(0,OnAutoA1Click);
-    V=PHelper.CreateFloat	(items,	PHelper.PrepareKey(pref, "Point", "Attenuation\\Quadratic"),&m_D3D.attenuation2,0.f,1.f,0.0001f,6);
-    piA2 					= V->Owner();
-    piA2->m_Flags.set		(PropItem::flShowExtBtn,TRUE);
-    piA1->SetEvents			(0,OnAutoA2Click);
+    PHelper.CreateFloat		(items,	PHelper.PrepareKey(pref, "Point", "Range"),					&m_D3D.range,		0.1f,1000.f);
+    PHelper.CreateFloat		(items,	PHelper.PrepareKey(pref, "Point", "Attenuation\\Constant"),	&m_D3D.attenuation0,0.f,1.f,0.0001f,6);
+    PHelper.CreateFloat		(items,	PHelper.PrepareKey(pref, "Point", "Attenuation\\Linear"),	&m_D3D.attenuation1,0.f,1.f,0.0001f,6);
+    PHelper.CreateFloat		(items,	PHelper.PrepareKey(pref, "Point", "Attenuation\\Quadratic"),&m_D3D.attenuation2,0.f,1.f,0.0001f,6);
+	ButtonValue* V=0;
+    V=PHelper.CreateButton	(items,	PHelper.PrepareKey(pref, "Point", "Attenuation\\Auto"),"Linear,Quadratic");
+    V->OnBtnClickEvent		= OnAutoClick;
 }
 //----------------------------------------------------
 

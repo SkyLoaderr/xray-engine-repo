@@ -372,6 +372,8 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             Surface->Font->Color 	= clSilver;
             Surface->Font->Style 	= TFontStyles()<< fsBold;
         }
+        // check mixed
+        prop->CheckMixed();
 		// out caption mixed 
         if (prop->m_Flags.is(PropItem::flMixed)){
             TColor C 		= Surface->Brush->Color;
@@ -455,7 +457,8 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             break;
             case PROP_WAVE:
             case PROP_LIBPS:
-            case PROP_LIBSOUND:
+            case PROP_SOUNDSRC:
+            case PROP_SOUNDENV:
             case PROP_LIGHTANIM:
             case PROP_LIBOBJECT:
             case PROP_GAMEOBJECT:
@@ -464,7 +467,8 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             case PROP_A_LIBOBJECT:
             case PROP_A_GAMEMTL:
             case PROP_A_LIBPS:
-            case PROP_A_LIBSOUND:
+            case PROP_A_SOUNDSRC:
+            case PROP_A_SOUNDENV:
             case PROP_A_ESHADER:
             case PROP_A_CSHADER:
             case PROP_ESHADER:
@@ -539,8 +543,15 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
             pmEnum->Tag = (int)item;
             switch(prop->type){
             case PROP_BUTTON:{
-                ButtonValue* V				= dynamic_cast<ButtonValue*>(prop->GetFrontValue()); R_ASSERT(V);
-                V->btn_num					= iFloor((X-V->draw_rect.left)*(float(V->value.size())/float(V->draw_rect.Width())));
+                ButtonValue* FV				= dynamic_cast<ButtonValue*>(prop->GetFrontValue()); R_ASSERT(FV);
+                int btn_num					= iFloor((X-FV->draw_rect.left)*(float(FV->value.size())/float(FV->draw_rect.Width())));
+                for (PropItem::PropValueIt it=prop->values.begin(); it!=prop->values.end(); it++){
+                	ButtonValue* V			= dynamic_cast<ButtonValue*>(*it); R_ASSERT(V);
+                    if (V->OnBtnClick(btn_num)){
+						Modified			();
+	                    RefreshForm			();
+                    }
+                }
                 item->RedrawItem			(true);
             }break;
             case PROP_FLAG8:{
@@ -658,7 +669,8 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
             case PROP_COLOR: 			ColorClick(item); 			break;
             case PROP_GAMEMTL:
             case PROP_LIBPS:
-            case PROP_LIBSOUND:
+            case PROP_SOUNDSRC:
+            case PROP_SOUNDENV:
             case PROP_LIGHTANIM:
             case PROP_LIBOBJECT:
             case PROP_GAMEOBJECT:
@@ -669,7 +681,8 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
             case PROP_A_LIBOBJECT:
             case PROP_A_GAMEMTL:
             case PROP_A_LIBPS:
-            case PROP_A_LIBSOUND:
+            case PROP_A_SOUNDSRC:
+            case PROP_A_SOUNDENV:
             case PROP_A_TEXTURE:
             case PROP_A_ESHADER:
             case PROP_A_CSHADER:	CustomAnsiTextClick(item);	break;
@@ -906,7 +919,8 @@ void __fastcall TProperties::CustomTextClick(TElTreeItem* item)
     case PROP_LIBOBJECT:	mode = TfrmChoseItem::smObject;		                    break;
     case PROP_GAMEOBJECT:	mode = TfrmChoseItem::smGameObject;	                    break;
     case PROP_ENTITY:		mode = TfrmChoseItem::smEntity;		                    break;
-    case PROP_LIBSOUND:		mode = TfrmChoseItem::smSound;		bIgnoreExt = true; 	break;
+    case PROP_SOUNDSRC:		mode = TfrmChoseItem::smSoundSource;bIgnoreExt = true; 	break;
+    case PROP_SOUNDENV:		mode = TfrmChoseItem::smSoundEnv;						break;
     case PROP_LIBPS:		mode = TfrmChoseItem::smPS;			                    break;
     case PROP_GAMEMTL:		mode = TfrmChoseItem::smGameMaterial; 					break;
     default: THROW2("Unknown prop");
@@ -936,7 +950,8 @@ void __fastcall TProperties::CustomAnsiTextClick(TElTreeItem* item)
 	case PROP_A_CSHADER:   	mode = TfrmChoseItem::smShaderXRLC;	                    break;
     case PROP_A_TEXTURE:   	mode = TfrmChoseItem::smTexture;	bIgnoreExt = true;  break;
     case PROP_A_LIBOBJECT:	mode = TfrmChoseItem::smObject;		                    break;
-    case PROP_A_LIBSOUND:  	mode = TfrmChoseItem::smSound;		bIgnoreExt = true;  break;
+    case PROP_A_SOUNDSRC:  	mode = TfrmChoseItem::smSoundSource;bIgnoreExt = true;  break;
+    case PROP_A_SOUNDENV:	mode = TfrmChoseItem::smSoundEnv;						break;
     case PROP_A_LIBPS:		mode = TfrmChoseItem::smPS;			                    break;
     case PROP_A_GAMEMTL:	mode = TfrmChoseItem::smGameMaterial; 					break;
     default: THROW2("Unknown prop");

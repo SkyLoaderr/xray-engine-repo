@@ -5,8 +5,8 @@
 #include "ui_tools.h"
 #include "FrameShape.h"
 #include "EShape.h"
-#include "ui_main.h"
 #include "scene.h"
+#include "ui_main.h"
 //---------------------------------------------------------------------------
 
 TUI_ShapeTools::TUI_ShapeTools():TUI_CustomTools(OBJCLASS_SHAPE)

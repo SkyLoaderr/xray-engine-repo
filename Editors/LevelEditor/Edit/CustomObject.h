@@ -27,6 +27,8 @@ struct SExportStreams{
 	SExportStreamItem	patrolpath;
 	SExportStreamItem	rpoint;
 	SExportStreamItem	aipoint;
+	SExportStreamItem	sound_static;
+	SExportStreamItem	sound_env_geom;
 };
 
 class CCustomObject {
@@ -34,6 +36,7 @@ class CCustomObject {
 
     BOOL			m_bUpdateTransform;
 
+public:
 	BOOL 			m_bSelected;
 	BOOL 			m_bVisible;
     BOOL 			m_bLocked;

@@ -133,6 +133,7 @@ public:
     void			ShowProperties	();
     void			HideProperties	();
     void			UpdateProperties(){m_Flags.set(flUpdateProperties|flUpdateObjectList,TRUE);}
+    void			RefreshProperties();
 };
 extern TUI_Tools Tools;
 extern void ResetActionToSelect();

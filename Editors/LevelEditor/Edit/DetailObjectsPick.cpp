@@ -9,7 +9,6 @@
 #include "cl_intersect.h"
 #include "bottombar.h"
 #include "ui_main.h"
-#include "frustum.h"
 
 int EDetailManager::RaySelect(bool flag, float& distance, const Fvector& start, const Fvector& direction)
 {

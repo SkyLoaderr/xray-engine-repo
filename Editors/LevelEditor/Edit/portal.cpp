@@ -6,7 +6,6 @@
 
 #include "Log.h"
 #include "Portal.h"
-#include "Frustum.h"
 #include "Scene.h"
 #include "cl_intersect.h"
 #include "sector.h"

@@ -155,6 +155,7 @@ enum {
     rsRenderRealTime	= (1ul<<25ul),
     rsDrawGrid			= (1ul<<26ul),
     rsDrawSafeRect		= (1ul<<27ul),
+    rsMuteSounds		= (1ul<<28ul),
 };
 
 #define DEFAULT_CLEARCOLOR 0x00555555

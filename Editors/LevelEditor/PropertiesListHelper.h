@@ -237,13 +237,21 @@ public:
     {
     	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_GAMEOBJECT);
     }
-    IC TextValue*		CreateLibSound	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
+    IC TextValue*		CreateSoundSrc	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
     {
-    	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_LIBSOUND);
+    	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_SOUNDSRC);
     }
-    IC ATextValue*	  	CreateALibSound	(PropItemVec& items, LPCSTR key, AnsiString* val)
+    IC ATextValue*	  	CreateASoundSrc	(PropItemVec& items, LPCSTR key, AnsiString* val)
     {
-    	return			(ATextValue*)	AppendValue		(items,key,xr_new<ATextValue>(val),PROP_A_LIBSOUND);
+    	return			(ATextValue*)	AppendValue		(items,key,xr_new<ATextValue>(val),PROP_A_SOUNDSRC);
+    }
+    IC TextValue*		CreateSoundEnv	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
+    {
+    	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_SOUNDENV);
+    }
+    IC ATextValue*	  	CreateASoundEnv	(PropItemVec& items, LPCSTR key, AnsiString* val)
+    {
+    	return			(ATextValue*)	AppendValue		(items,key,xr_new<ATextValue>(val),PROP_A_SOUNDENV);
     }
     IC TextValue*	 	CreateLibPS		(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
     {

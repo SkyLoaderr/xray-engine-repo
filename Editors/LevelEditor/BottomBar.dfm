@@ -1,27 +1,30 @@
 object fraBottomBar: TfraBottomBar
   Left = 0
   Top = 0
-  Width = 443
+  Width = 782
   Height = 277
   VertScrollBar.Visible = False
   Align = alClient
+  Color = 10528425
+  ParentColor = False
   TabOrder = 0
   object paBottomBar: TPanel
     Left = 0
     Top = 0
-    Width = 443
+    Width = 782
     Height = 17
     Align = alTop
     BevelOuter = bvLowered
-    Color = 10526880
+    ParentColor = True
     TabOrder = 0
     object paInfo: TPanel
-      Left = 119
+      Left = 458
       Top = 1
       Width = 323
       Height = 15
       Align = alRight
       BevelOuter = bvNone
+      ParentColor = True
       TabOrder = 0
       object paSel: TPanel
         Left = 0
@@ -32,12 +35,12 @@ object fraBottomBar: TfraBottomBar
         Alignment = taLeftJustify
         BevelInner = bvLowered
         Caption = 'Sel: 1024'
-        Color = clSilver
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clMaroon
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
+        ParentColor = True
         ParentFont = False
         TabOrder = 0
       end
@@ -50,12 +53,12 @@ object fraBottomBar: TfraBottomBar
         Alignment = taLeftJustify
         BevelInner = bvLowered
         Caption = 'Grid: 0.1 m'
-        Color = clSilver
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clMaroon
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
+        ParentColor = True
         ParentFont = False
         TabOrder = 1
       end
@@ -68,12 +71,12 @@ object fraBottomBar: TfraBottomBar
         Alignment = taLeftJustify
         BevelInner = bvLowered
         Caption = 'Cur: 2048, 2048'
-        Color = clSilver
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clMaroon
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
+        ParentColor = True
         ParentFont = False
         TabOrder = 2
       end
@@ -86,12 +89,12 @@ object fraBottomBar: TfraBottomBar
         Alignment = taLeftJustify
         BevelInner = bvLowered
         Caption = 'Cam: '
-        Color = clSilver
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clMaroon
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
+        ParentColor = True
         ParentFont = False
         TabOrder = 3
       end
@@ -99,10 +102,11 @@ object fraBottomBar: TfraBottomBar
     object paStatusBar: TPanel
       Left = 176
       Top = 1
-      Width = 196
+      Width = 282
       Height = 15
       Align = alClient
       BevelOuter = bvNone
+      ParentColor = True
       TabOrder = 1
       object paStatusLabel: TPanel
         Left = 0
@@ -113,12 +117,13 @@ object fraBottomBar: TfraBottomBar
         BevelInner = bvRaised
         BevelOuter = bvNone
         Caption = 'Status:'
+        ParentColor = True
         TabOrder = 0
       end
       object paStatus: TPanel
         Left = 48
         Top = 0
-        Width = 148
+        Width = 234
         Height = 15
         Align = alClient
         Alignment = taLeftJustify
@@ -128,10 +133,11 @@ object fraBottomBar: TfraBottomBar
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
+        ParentColor = True
         ParentFont = False
         TabOrder = 1
         object cgProgress: TCGauge
-          Left = 19
+          Left = 105
           Top = 2
           Width = 127
           Height = 11
@@ -155,6 +161,7 @@ object fraBottomBar: TfraBottomBar
       Height = 15
       Align = alLeft
       BevelOuter = bvNone
+      ParentColor = True
       TabOrder = 2
       object ebOptions: TExtBtn
         Left = 0
@@ -163,6 +170,7 @@ object fraBottomBar: TfraBottomBar
         Height = 15
         Align = alNone
         BevelShow = False
+        CloseTransparent = True
         Caption = 'Options'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -171,7 +179,6 @@ object fraBottomBar: TfraBottomBar
         Font.Style = []
         Kind = knMinimize
         ParentFont = False
-        Transparent = False
         FlatAlwaysEdge = True
         OnMouseDown = ebOptionsMouseDown
       end
@@ -192,7 +199,6 @@ object fraBottomBar: TfraBottomBar
         Kind = knMinimize
         ParentFont = False
         Spacing = 0
-        Transparent = False
         FlatAlwaysEdge = True
         OnClick = ebLogClick
       end
@@ -213,7 +219,6 @@ object fraBottomBar: TfraBottomBar
         Kind = knMinimize
         ParentFont = False
         Spacing = 0
-        Transparent = False
         FlatAlwaysEdge = True
         OnClick = ebStatClick
       end
@@ -233,7 +238,6 @@ object fraBottomBar: TfraBottomBar
         Font.Style = []
         Kind = knMinimize
         ParentFont = False
-        Transparent = False
         FlatAlwaysEdge = True
         OnClick = ebStopClick
       end
@@ -542,6 +546,11 @@ object fraBottomBar: TfraBottomBar
     object N1: TMenuItem
       Caption = '-'
       GroupIndex = 4
+    end
+    object miMuteSounds: TMenuItem
+      Caption = 'Mute Sounds'
+      GroupIndex = 4
+      OnClick = ClickOptionsMenuItem
     end
     object miLightScene: TMenuItem
       Caption = 'Light Scene'

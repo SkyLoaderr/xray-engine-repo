@@ -13,7 +13,6 @@
 #include "sector.h"
 #include "groupobject.h"
 #include "portal.h"
-#include "frustum.h"
 #include "xrLevel.h"
 #include "ui_main.h"
 #include "xrHemisphere.h"

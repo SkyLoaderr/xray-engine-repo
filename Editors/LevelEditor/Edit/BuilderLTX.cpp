@@ -26,16 +26,6 @@ BOOL SceneBuilder::ParseLTX(CInifile* pIni, ObjectList& lst, LPCSTR prefix)
 	AnsiString suns;
 	for (ObjectIt it=lst.begin(); it!=lst.end(); it++){
 		switch ((*it)->ClassID){
-        case OBJCLASS_SOUND:{
-            ESound *s = (ESound *)(*it);
-            if (s->m_WAVName.IsEmpty()){
-            	ELog.DlgMsg(mtError,"*ERROR: Sound '%s'. Not assigned wave file!", s->Name);
-                bResult=FALSE;
-                break;
-            }
-            AnsiString ln; ln.sprintf("%s,%f,%f,%f",s->m_WAVName.c_str(),s->PPosition.x,s->PPosition.y,s->PPosition.z);
-            pIni->w_string("static_sounds",s->Name,ln.c_str());
-        }break;
         case OBJCLASS_LIGHT:{
             CLight *l = (CLight *)(*it);
             if (l->m_D3D.type==D3DLIGHT_DIRECTIONAL){

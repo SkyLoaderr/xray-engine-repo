@@ -7,7 +7,6 @@
 #include "framePortal.h"
 #include "topbar.h"
 #include "ui_tools.h"
-#include "frustum.h"
 #include "ui_main.h"
 //---------------------------------------------------------------------------
 TUI_PortalTools::TUI_PortalTools():TUI_CustomTools(OBJCLASS_PORTAL){

@@ -168,8 +168,7 @@ bool CSceneObject::ExportGame(SExportStreams& F)
     if (IsDynamic()&&m_Flags.is(flDummy)){
     	R_ASSERT(m_pReference);
     	// export spawn packet
-        xrSE_Dummy			dummy;
-        strcpy(dummy.s_name, "m_dummy");
+        xrSE_Dummy			dummy("m_dummy");
         strcpy(dummy.s_name_replace,Name);
         dummy.o_Position.set(PPosition);
         dummy.o_Angle.set	(PRotation);

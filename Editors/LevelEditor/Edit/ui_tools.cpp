@@ -249,6 +249,11 @@ bool TUI_Tools::Pick()
 #include "PropertiesPS.h"
 #include "PropertiesWayPoint.h"
 
+void TUI_Tools::RefreshProperties()
+{
+	m_Props->RefreshForm();
+}
+
 void TUI_Tools::ShowProperties()
 {
     ObjectList lst;

@@ -6,7 +6,6 @@
 #pragma hdrstop
 
 #include "Event.h"
-#include "frustum.h"
 #include "cl_intersect.h"
 #include "texture.h"
 #include "bottombar.h"

@@ -106,7 +106,10 @@
       intermediate\r_constants.obj intermediate\r_constants_cache.obj 
       intermediate\R_DStreams.obj intermediate\R_Backend.obj 
       intermediate\Blender_detail_still.obj intermediate\Blender_tree.obj 
-      intermediate\ELog.obj intermediate\FS2.obj intermediate\ESound.obj"/>
+      intermediate\ELog.obj intermediate\FS2.obj intermediate\ESound.obj 
+      intermediate\FrameSound.obj intermediate\ESound_Static.obj 
+      intermediate\ESound_Environment.obj intermediate\ESound_Custom.obj 
+      intermediate\SoundManager_LE.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -120,7 +123,7 @@
       FrameWayPoint.dfm FrameDetObj.dfm DOShuffle.dfm DOOneColor.dfm 
       PropertiesDetailObject.dfm PropertiesList.dfm EventOneAction.dfm 
       EditLightAnim.dfm PropertiesEObject.dfm FrameGroup.dfm FrameEvent.dfm 
-      TextForm.dfm PropertiesWayPoint.dfm FrameShape.dfm"/>
+      TextForm.dfm PropertiesWayPoint.dfm FrameShape.dfm FrameSound.dfm"/>
     <LIBFILES value=""/>
     <LIBRARIES value="elpackB6.lib editor.lib bcbsmp.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib bcbsmp.lib vclx.lib editor.lib elpackB6.lib"/>
@@ -153,7 +156,7 @@
     <PFLAGS value="-N2intermediate -N0intermediate -$Y+ -$W -$R -$Q -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
     <AFLAGS value="/mx /w2 /zi"/>
-    <LFLAGS value="-Iintermediate -D&quot;&quot; -aa -Tpe -GD -x -v"/>
+    <LFLAGS value="-Iintermediate -D&quot;&quot; -aa -Tpe -GD -x -Gn -v"/>
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
@@ -384,6 +387,11 @@
       <FILE FILENAME="edit\ELog.cpp" FORMNAME="" UNITNAME="ELog" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\FS2.CPP" FORMNAME="" UNITNAME="FS2" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\ESound.cpp" FORMNAME="" UNITNAME="ESound" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="FrameSound.cpp" FORMNAME="fraSound" UNITNAME="FrameSound" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\ESound_Static.cpp" FORMNAME="" UNITNAME="ESound_Static" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\ESound_Environment.cpp" FORMNAME="" UNITNAME="ESound_Environment" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\ESound_Custom.cpp" FORMNAME="" UNITNAME="ESound_Custom" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\SoundManager_LE.cpp" FORMNAME="" UNITNAME="SoundManager_LE" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
