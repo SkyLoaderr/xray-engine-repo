@@ -9,6 +9,7 @@
 #include "Library.h"
 #include "EditObject.h"
 #include "SceneClassList.h"
+#include "UI_Main.h"
 
 //----------------------------------------------------
 ELibrary Lib;
@@ -134,12 +135,15 @@ CEditableObject* ELibrary::CreateEditObject(LPCSTR nm,int* age)
     CEditableObject* m_EditObject = 0;
     FilePairIt p_it = m_Objects.find(name);
     if (p_it==m_Objects.end()) return 0;
+    UI.ProgressStart(2,"Object loading...");
+    UI.ProgressInc();
     if (age) *age = p_it->second;
 	EditObjPairIt it = m_EditObjects.find(name);
     if (it!=m_EditObjects.end())	m_EditObject = it->second;
     else if (m_EditObject=LoadEditObject(name,p_it->second))
 		m_EditObjects[name] = m_EditObject;
 	m_EditObject->m_RefCount++;
+    UI.ProgressEnd();
 	return m_EditObject;
 }
 //---------------------------------------------------------------------------
