@@ -26,7 +26,7 @@ IC		void		gm_SetLevel		(int iLevel)
 {
 	if (_abs(gm_Level-s32(iLevel))>2) {
 		gm_Level	= iLevel;
-		float c		= float(gm_Level)/255.f;
+		float c		= 0.1f+float(gm_Level)/255.f;
 		gm_Data.diffuse.set				(c,c,c,c);
 		CHK_DX(HW.pDevice->SetMaterial	(gm_Data.d3d()));
 	}
