@@ -2,11 +2,11 @@
 
 <xml>
 <!---------------------------STALKER NOVICE----------------------->
-	<specific_character id="stalker_novice_default" team_default = "1">
+	<specific_character id="stalker_novice_default1" team_default = "1">
 		<name>Неизвестный новичок</name>
 		<icon x="20" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Ничем себя проявить еще не успел.</bio>
+		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
 
 		<team>Stalker_novice</team>
 		
@@ -17,6 +17,125 @@
 		<reputation>50</reputation>
 
 		<visual>actors\novice\green_stalker_1</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pm \n
+			ammo_9x18_fmj = 1 \n
+			wpn_toz34 \n
+			ammo_12x70_buck = 1 \n
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
+	</specific_character>
+
+	<specific_character id="stalker_novice_default2" team_default = "1">
+		<name>Неизвестный новичок</name>
+		<icon x="20" y="2"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
+
+		<team>Stalker_novice</team>
+		
+		<class>Stalker_novice</class>
+		<community>stalker</community>
+		
+		<rank>30</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\novice\green_stalker_2</visual>
+		<supplies>
+			[spawn] \n
+			wpn_fort \n
+			ammo_9x18_fmj = 1 \n
+			wpn_bm16 \n
+			ammo_12x70_buck = 1 \n
+		</supplies>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
+	</specific_character>
+
+	<specific_character id="stalker_novice_default3" team_default = "1">
+		<name>Неизвестный новичок</name>
+		<icon x="20" y="2"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
+
+		<team>Stalker_novice</team>
+		
+		<class>Stalker_novice</class>
+		<community>stalker</community>
+		
+		<rank>30</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\novice\green_stalker_3</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pm \n
+			ammo_9x18_fmj = 1 \n
+			wpn_bm16 \n
+			ammo_12x70_buck = 1 \n
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
+	</specific_character>
+
+	<specific_character id="stalker_novice_default4" team_default = "1">
+		<name>Неизвестный новичок</name>
+		<icon x="20" y="2"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
+
+		<team>Stalker_novice</team>
+		
+		<class>Stalker_novice</class>
+		<community>stalker</community>
+		
+		<rank>30</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\novice\green_stalker_4</visual>
+		<supplies>
+			[spawn] \n
+			wpn_fort \n
+			ammo_9x18_fmj = 1 \n
+			wpn_toz34 \n
+			ammo_12x70_buck = 1 \n			
+		</supplies>
+
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
+	</specific_character>
+
+	<specific_character id="stalker_novice_default5" team_default = "1">
+		<name>Неизвестный новичок</name>
+		<icon x="20" y="2"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
+
+		<team>Stalker_novice</team>
+		
+		<class>Stalker_novice</class>
+		<community>stalker</community>
+		
+		<rank>30</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\novice\green_stalker_5</visual>
+		<supplies>
+			[spawn] \n
+			wpn_fort \n
+			ammo_9x18_fmj = 1 \n
+			wpn_ak74u \n
+			ammo_5.45x39_fmj = 1 \n
+		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
@@ -24,11 +143,11 @@
 	</specific_character>
 
 <!---------------------------STALKER GENERAL---------------------->
-	<specific_character id="stalker_general_default" team_default = "1">
+	<specific_character id="stalker_general_default1" team_default = "1">
 		<name>Неизвестный сталкер</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Об этом сталкере ничего не известно.</bio>
+		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
 
 		<team>Stalker_general</team>
 		
@@ -39,29 +158,266 @@
 		<reputation>50</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_9</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pm \n
+			ammo_9x18_pmm = 1 \n
+			wpn_bm16 \n
+			ammo_12x76_zhekan = 1 \n
+		</supplies>
+				
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
+	</specific_character>
+
+<specific_character id="stalker_general_default2" team_default = "1">
+		<name>Неизвестный сталкер</name>
+		<icon x="2" y="2"></icon>
+		<map_icon x="1" y="0"></map_icon>
+		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
+
+		<team>Stalker_general</team>
+		
+		<class>Stalker_general</class>
+		<community>stalker</community>
+		
+		<rank>50</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\neytral\stalker_neytral_balon_8</visual>
+		<supplies>
+			[spawn] \n
+			wpn_fort \n
+			ammo_9x18_pmm = 1 \n
+			wpn_mp5 \n
+			ammo_9x19_fmj = 1 \n
+		</supplies>
+				
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
+</specific_character>
+
+<specific_character id="stalker_general_default3" team_default = "1">
+		<name>Неизвестный сталкер</name>
+		<icon x="2" y="2"></icon>
+		<map_icon x="1" y="0"></map_icon>
+		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
+
+		<team>Stalker_general</team>
+		
+		<class>Stalker_general</class>
+		<community>stalker</community>
+		
+		<rank>50</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\neytral\stalker_neytral_rukzak_2</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pb \n
+			ammo_9x18_fmj = 1 \n
+			wpn_mp5 \n
+			ammo_9x19_fmj = 1 \n
+		</supplies>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
+</specific_character>
+
+	<specific_character id="stalker_general_default4" team_default = "1">
+		<name>Неизвестный сталкер</name>
+		<icon x="2" y="2"></icon>
+		<map_icon x="1" y="0"></map_icon>
+		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
+
+		<team>Stalker_general</team>
+		
+		<class>Stalker_general</class>
+		<community>stalker</community>
+		
+		<rank>50</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\neytral\stalker_neytral_hood_2</visual>
+		<supplies>
+			[spawn] \n
+			wpn_hpsa \n
+			ammo_9x19_fmj = 1 \n
+			wpn_ak74u \n
+			ammo_5.45x39_ap = 1 \n
+		</supplies>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
+	</specific_character>
+	
+	<specific_character id="stalker_general_default5" team_default = "1">
+		<name>Неизвестный сталкер</name>
+		<icon x="2" y="2"></icon>
+		<map_icon x="1" y="0"></map_icon>
+		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
+
+		<team>Stalker_general</team>
+		
+		<class>Stalker_general</class>
+		<community>stalker</community>
+		
+		<rank>50</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\neytral\stalker_neytral_hood_8</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pb \n
+			ammo_9x18_pbp \n
+			wpn_ak74 \n
+			ammo_5.45x39_fmj \n
+		</supplies>
+				
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
+	</specific_character>
+	
+<!---------------------------STALKER VETERAN---------------------->
+	<specific_character id="stalker_veteran_default1" team_default = "1">
+		<name>Неизвестный ветеран</name>
+		<icon x="2" y="2"></icon>
+		<map_icon x="1" y="0"></map_icon>
+		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
+
+		<team>Stalker_veteran</team>
+		
+		<class>Stalker_veteran</class>
+		<community>stalker</community>
+			
+		<rank>70</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\neytral\stalker_neytral_hood_9</visual>
+		<supplies>
+			[spawn] \n
+			wpn_hpsa \n
+			ammo_9x19_pbp = 1 \n
+			wpn_spas12 \n
+			ammo_12x70_buck = 1 \n
+		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
-<!---------------------------STALKER VETERAN---------------------->
-	<specific_character id="stalker_veteran_default" team_default = "1">
+	<specific_character id="stalker_veteran_default2" team_default = "1">
+		<name>Неизвестный ветеран</name>
+		<icon x="2" y="2"></icon>
+		<map_icon x="1" y="0"></map_icon>
+		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
+
+		<team>Stalker_veteran</team>
+		
+		<class>Stalker_veteran</class>
+		<community>stalker</community>
+			
+		<rank>70</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\neytral\stalker_neytral_hood_8</visual>
+		<supplies>
+			[spawn] \n
+			wpn_walther \n
+			ammo_9x19_fmj = 1 \n
+			wpn_ak74 \n
+			ammo_5.45x39_ap = 1 \n
+		</supplies>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
+	</specific_character>
+
+	<specific_character id="stalker_veteran_default3" team_default = "1">
 		<name>Неизвестный ветеран</name>
 		<icon x="20" y="8"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Этот сталкер явно не первый день в Зоне.</bio>
+		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
+
+		<team>Stalker_veteran</team>
+		
+		<class>Stalker_veteran</class>
+		<community>stalker</community>
+		
+		<rank>70</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pb \n
+			ammo_9x18_pbp = 1 \n
+			wpn_l85 \n
+			ammo_5.56x45_ss190 = 1 \n
+		</supplies>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
+	</specific_character>
+
+	<specific_character id="stalker_veteran_default4" team_default = "1">
+		<name>Неизвестный ветеран</name>
+		<icon x="20" y="8"></icon>
+		<map_icon x="1" y="0"></map_icon>
+		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
 
 		<team>Stalker_veteran</team>
 		
 		<class>Stalker_veteran</class>
 		<community>stalker</community>
 	
-		
 		<rank>70</rank>
 		<reputation>50</reputation>
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
+		<supplies>
+			[spawn] \n
+			wpn_walther \n
+			ammo_9x19_fmj = 1 \n
+			wpn_lr300 \n
+			ammo_5.56x45_ss190 = 1 \n
+		</supplies>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
+	</specific_character>
+
+	<specific_character id="stalker_veteran_default5" team_default = "1">
+		<name>Неизвестный ветеран</name>
+		<icon x="20" y="8"></icon>
+		<map_icon x="1" y="0"></map_icon>
+		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
+
+		<team>Stalker_veteran</team>
+		
+		<class>Stalker_veteran</class>
+		<community>stalker</community>
+			
+		<rank>70</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
+		<supplies>
+			[spawn] \n
+			wpn_walther \n
+			ammo_9x19_fmj = 1 \n
+			wpn_l85 \n
+			ammo_5.56x45_ss190 = 1 \n
+		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
@@ -69,11 +425,128 @@
 	</specific_character>
 
 <!---------------------------STALKER MASTER----------------------->
-	<specific_character id="stalker_master_default" team_default = "1">
+	<specific_character id="stalker_master_default1" team_default = "1">
 		<name>Неизвестный мастер</name>
 		<icon x="10" y="0"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Этот сталкер знает Зону как своих пять пальцев.</bio>
+		<bio>Один из ветеранов Зоны. Этот сталкер знает Зону как своих пять пальцев.
+		Обычно хорошо экипирован и очень опасен. Детальная информация отсутствует.</bio>
+
+		<team>Stalker_master</team>
+
+		<class>Stalker_master</class>
+		<community>stalker</community>
+		
+		<rank>90</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\neytral\stalker_neytral_nauchniy</visual>
+		<supplies>
+			[spawn] \n
+			wpn_walther \n
+			ammo_9x19_pbp = 1 \n
+			wpn_ak74 = 1, 1, 0, 0 \n
+			ammo_5.45x39_ap = 1 \n
+		</supplies>
+						
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
+	</specific_character>
+
+	<specific_character id="stalker_master_default2" team_default = "1">
+		<name>Неизвестный мастер</name>
+		<icon x="10" y="0"></icon>
+		<map_icon x="1" y="0"></map_icon>
+		<bio>Один из ветеранов Зоны. Этот сталкер знает Зону как своих пять пальцев.
+		Обычно хорошо экипирован и очень опасен. Детальная информация отсутствует.</bio>
+
+		<team>Stalker_master</team>
+
+		<class>Stalker_master</class>
+		<community>stalker</community>
+		
+		<rank>90</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\neytral\stalker_neytral_nauchniy</visual>
+		<supplies>
+			[spawn] \n
+			wpn_beretta \n
+			ammo_9x19_fmj = 1 \n
+			wpn_lr300 = 1, 1, 0, 0 \n
+			ammo_5.56x45_ap \n
+		</supplies>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
+	</specific_character>
+
+	<specific_character id="stalker_master_default3" team_default = "1">
+		<name>Неизвестный мастер</name>
+		<icon x="10" y="0"></icon>
+		<map_icon x="1" y="0"></map_icon>
+		<bio>Один из ветеранов Зоны. Этот сталкер знает Зону как своих пять пальцев.
+		Обычно хорошо экипирован и очень опасен. Детальная информация отсутствует.</bio>
+
+		<team>Stalker_master</team>
+
+		<class>Stalker_master</class>
+		<community>stalker</community>
+		
+		<rank>90</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\neytral\stalker_neytral_nauchniy</visual>
+		<supplies>
+			[spawn] \n
+			wpn_beretta \n
+			ammo_9x19_pbp = 1 \n
+			wpn_l85 \n
+			ammo_5.56x45_ap \n			
+		</supplies>
+
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
+	</specific_character>
+
+	<specific_character id="stalker_master_default4" team_default = "1">
+		<name>Неизвестный мастер</name>
+		<icon x="20" y="8"></icon>
+		<map_icon x="1" y="0"></map_icon>
+		<bio>Один из ветеранов Зоны. Этот сталкер знает Зону как своих пять пальцев.
+		Обычно хорошо экипирован и очень опасен. Детальная информация отсутствует.</bio>
+
+		<team>Stalker_master</team>
+
+		<class>Stalker_master</class>
+		<community>stalker</community>
+				
+		<rank>90</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
+		<supplies>
+			[spawn] \n
+			wpn_desert_eagle \n
+			ammo_11.43x23_fmj = 1 \n
+			wpn_svd \n
+			ammo_7.62x54_7h1 = 1 \n
+		</supplies>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
+	</specific_character>	
+
+	<specific_character id="stalker_master_default5" team_default = "1">
+		<name>Неизвестный мастер</name>
+		<icon x="20" y="8"></icon>
+		<map_icon x="1" y="0"></map_icon>
+		<bio>Один из ветеранов Зоны. Этот сталкер знает Зону как своих пять пальцев.
+		Обычно хорошо экипирован и очень опасен. Детальная информация отсутствует.</bio>
 
 		<team>Stalker_master</team>
 
@@ -84,14 +557,21 @@
 		<rank>90</rank>
 		<reputation>50</reputation>
 
-		<visual>actors\neytral\stalker_neytral_nauchniy</visual>
+		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
+		<supplies>
+			[spawn] \n
+			wpn_desert_eagle \n
+			ammo_11.43x23_hydro = 1 \n
+			wpn_ak74 = 1, 0, 0, 1 \n
+			ammo_5.45x39_ap = 1 \n
+			ammo_vog-25 = 1 \n
+		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>escape_talk_about_escape</actor_dialog>
-	</specific_character>
+	</specific_character>	
 
-	
 <!--	
 	<specific_character id="stalker_demon">
 		<name>Олег "Демон" Гусаров</name>

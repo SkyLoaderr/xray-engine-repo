@@ -37,6 +37,7 @@
         <phrase_list>
             <phrase id="0">
                 <text>Да...</text>
+                <give_info>rostok_heli_start</give_info>
                 <next>1</next>
             </phrase>
             <phrase id="1">
@@ -63,20 +64,29 @@
             <phrase id="0">
                 <text>Ну, чего тебе?</text>
                 <next>1</next>
-            </phrase>
-            <phrase id="1">
-                <text>Я насчёт Бобика...</text>
                 <next>2</next>
             </phrase>
+            <phrase id="1">
+            	<text>Мне ничего не нужно</text>
+            	<next>6</next>
+            </phrase>
             <phrase id="2">
-                <text>Славный пёс.</text>
+                <text>Я насчёт Бобика...</text>
                 <next>3</next>
             </phrase>
             <phrase id="3">
-                <text>Был...</text>
+                <text>Эх... Бобик... Моя первая любовь...</text>
                 <next>4</next>
             </phrase>
             <phrase id="4">
+                <text>Расскажи подробнее</text>
+                <next>5</next>
+            </phrase>
+            <phrase id="5">
+                <action>barman.about_bobik</action>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="6">
                 <action>barman.from_small_room</action>
                 <action>dialogs.break_dialog</action>
             </phrase>
