@@ -129,7 +129,7 @@ int __cdecl main	(int argc, char* argv[])
 		{
 			for (int x=0; x<occ_dim0; x++)
 			{
-				float	A	= *(occ.get_depth() + y*occ_dim0 + x);
+				float	A	= *(occ.get_depth() + y*occ_dim0 + x);	if (A<0) A=0; else if (A>1) A=1;
 				DWORD  gray	= int(A*255.f);
 				DWORD  mask	= (*(occ.get_frame() + y*occ_dim0 + x)) ? 255 : 0;
 				DWORD  C	= (mask << 24) | (gray << 16) | (gray << 8) | (gray << 0);

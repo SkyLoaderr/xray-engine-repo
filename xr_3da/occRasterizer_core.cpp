@@ -69,6 +69,7 @@ BOOL shared(occTri* T1, occTri* T2)
 /* Rasterize a scan line between given X point values, corresponding Z values
 and current color
 */
+
 void i_scan	(occRasterizer* OCC, occTri* T, int curY, float startT, float endT, float startX, float endX, float startR, float endR, float startZ, float endZ)
 {
 //	if (13==curY)	__asm int 3;
@@ -100,9 +101,8 @@ void i_scan	(occRasterizer* OCC, occTri* T, int curY, float startT, float endT, 
 	// left connector
 	for (; X<limLeft; X++, i++, Z+=dZ)
 	{
-		if (shared(T,pFrame[i-1]))
-		{
-			float ZR = (Z+pDepth[i-1])/2; if (ZR<0)	ZR=0; else if (ZR>1) ZR = 1;
+		if (shared(T,pFrame[i-1])) {
+			float ZR = (Z+pDepth[i-1])/2;
 			if (ZR<pDepth[i])	{ pFrame[i]	= T; pDepth[i]	= ZR; }
 		}
 	}
@@ -111,14 +111,12 @@ void i_scan	(occRasterizer* OCC, occTri* T, int curY, float startT, float endT, 
 	for (; X<maxX; X++, i++, Z+=dZ) 
 	{
 		if (Z < pDepth[i])	{ pFrame[i]	= T; pDepth[i] = Z; }
-		if (shared(T,pFrame[i-occ_dim0*2]))
-		{
-			float ZR = (Z+pDepth[i-occ_dim0*2])/2; if (ZR<0)	ZR=0; else if (ZR>1) ZR = 1;
+		if (shared(T,pFrame[i-occ_dim0*2]))	{
+			float ZR = (Z+pDepth[i-occ_dim0*2])/2;
 			if (ZR<pDepth[i-occ_dim0])	{ pFrame[i-occ_dim0] = T; pDepth[i-occ_dim0] = ZR; }
 		}
-		if (shared(T,pFrame[i+occ_dim0*2]))
-		{
-			float ZR = (Z+pDepth[i+occ_dim0*2])/2; if (ZR<0)	ZR=0; else if (ZR>1) ZR = 1;
+		if (shared(T,pFrame[i+occ_dim0*2]))	{
+			float ZR = (Z+pDepth[i+occ_dim0*2])/2;
 			if (ZR<pDepth[i+occ_dim0])	{ pFrame[i+occ_dim0] = T; pDepth[i+occ_dim0] = ZR; }
 		}
 	}
@@ -127,7 +125,7 @@ void i_scan	(occRasterizer* OCC, occTri* T, int curY, float startT, float endT, 
 	for (X=maxT-1, Z=Zend-dZ, i=curY*occ_dim0+X; X>=limRight; X--, i--, Z-=dZ)
 	{
 		if (shared(T,pFrame[i+1])) {
-			float ZR = (Z+pDepth[i+1])/2; if (ZR<0)	ZR=0; else if (ZR>1) ZR = 1;
+			float ZR = (Z+pDepth[i+1])/2;
 			if (ZR<pDepth[i])	{ pFrame[i]	= T; pDepth[i]	= ZR; }
 		}
 	}
