@@ -38,6 +38,30 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 -- Evaluator
 ---------------------------------------------------------------------------------------------------------------------
+class "artifact_evaluator" (property_evaluator)
+--Пока self.a.enabled и артефакт а аномалии возвращает
+function artifact_evaluator:__init (name, storage) super ()
+    self.a = storage
+end
+
+function artifact_evaluator:evaluate()
+    if(self.a.enabled == false) then  return false  end
+
+	--Если нет сейкци про артефакти и аномалию то возвращаем false
+    if(self.a.artifact == nil or self.a.zone == nil) then  return false  end
+
+    if(level.object(self.a.artifact) and distance_between(level.object(self.a.artifact), level.object(self.a.zone)) < self.a.radius) then
+		--Если артефакт есть и он в центре зоны, то работаем
+    	return true
+    end
+
+	self.a.enabled = false
+
+    return  self.a.enabled
+end
+---------------------------------------------------------------------------------------------------------------------
+-- Evaluator
+---------------------------------------------------------------------------------------------------------------------
 class "can_attack_enemy_evaluator" (property_evaluator)
 --Евалуатор используется для того, когда у нас в customDate задан враг и сообщаем можем ли мы атаковать врага
 function can_attack_enemy_evaluator:__init (name, storage, obj) super ()
@@ -405,26 +429,26 @@ function stalker_novice2_action:action( param )
   if( param ) then
       self.a.curState    = 2
     self.a.time     = device():time_global() + 3000
-        self.object:set_sight           ( look.point, patrol( self.a.path ):point( 0 ), 0 )
+        self.object:set_sight           ( look.point, level.object(self.a.artifact):position(), 0 )
         self.object:set_movement_type   ( move.stand )
     end
 
     if( self.a.curState == 2 and                                     --Повернули ли мы
-       yaw( self.object:direction(), patrol( self.a.path ):point( 0 ) : sub( self.object:position() ) ) < 0.3 ) then
+       yaw( self.object:direction(), level.object(self.a.artifact):position() : sub( self.object:position() ) ) < 0.3 ) then
 
         if( math.random() < 0.5 ) then
-      xr_sounds.play_sound_rnd    (self.object, 2000, 5000, "trivial", 3,1)
-          self.object:add_animation   ( "prisluh_2_idle_0", true )
+			xr_sounds.play_sound_rnd    (self.object, 2000, 5000, "trivial", 3,1)
+          	self.object:add_animation   ( "prisluh_2_idle_0", true )
             self.object:add_animation   ( "prisluh_2_idle_3", true )
             self.object:add_animation   ( "prisluh_2_idle_6", true )
-          self.object:add_animation   ( "prisluh_2_idle_1", true )
-          self.time   = device():time_global() + 8000--+ math.random(6000, 10000)
+          	self.object:add_animation   ( "prisluh_2_idle_1", true )
+          	self.time   = device():time_global() + 8000--+ math.random(6000, 10000)
             self.state  = 8
         else
             xr_sounds.play_sound_rnd    (self.object, 2000, 3000, "trivial", 3,1)
             self.object:add_animation   ( "prisluh_9_0", true )
-          self.object:add_animation   ( "prisluh_9_2", true )
-          self.time   = device():time_global() + 5000--+ math.random(6000, 10000)
+          	self.object:add_animation   ( "prisluh_9_2", true )
+          	self.time   = device():time_global() + 5000--+ math.random(6000, 10000)
             self.state  = 9
         end
 
@@ -481,7 +505,7 @@ function add_novice2(obj)
 
 
     local manager  = obj:motivation_action_manager ()
-    manager:add_evaluator ( properties[ "novice2_alife" ], this.enabled_evaluator("enabled evaluator", xr_motivator.storage[obj:id()].novice2 )  )
+    manager:add_evaluator ( properties[ "novice2_alife" ], this.artifact_evaluator("artifact_evaluator", xr_motivator.storage[obj:id()].novice2 )  )
 
     local action = this.stalker_novice2_action ( "stalker_novice2_action", xr_motivator.storage[obj:id()].novice2 )
 

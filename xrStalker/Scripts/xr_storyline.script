@@ -85,7 +85,9 @@ xr_motivator.storage[object:id()].novice2 = {
             xr_motivator.storage[object:id()].novice2.zone     = char_ini:r_string("novice2", "zone")
         end
         if( char_ini:line_exist("novice2", "radius") == true ) then
-            xr_motivator.storage[object:id()].novice2.radius   = char_ini:r_float("novice2", "radius")
+            --Радиус задается путем
+            local way = patrol(char_ini:r_string("novice2", "radius") )
+            xr_motivator.storage[object:id()].novice2.radius   = way:point(0):distance_to(way:point(1))
         end
     end
 --Настройка схемы реакции новичка3 - новичок которого ограбили
