@@ -61,9 +61,9 @@ class CUI{
 	UIMsgSVec			messages;
 
 	// 
-	bool				bShift;
-	bool				bShowFragList;
-	bool				bShowBuyMenu;
+	BOOL				bShift;
+	BOOL				bShowFragList;
+	BOOL				bShowBuyMenu;
 public:
 						CUI					(CHUDManager* p);
 	virtual				~CUI				();

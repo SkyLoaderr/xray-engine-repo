@@ -21,7 +21,7 @@ CUI::CUI(CHUDManager* p)
 	UIFragList.Init	();
 
 	m_Parent		= p;
-	bShift			= false;
+	bShift			= FALSE;
 	bShowFragList	= FALSE;
 	bShowBuyMenu	= FALSE;
 
