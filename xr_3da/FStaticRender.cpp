@@ -492,17 +492,20 @@ void	CRender::Render		()
 // Device events
 void CRender::OnDeviceCreate()
 {
-	REQ_CREATE				();
-	Target.OnDeviceCreate	();
-	level_Load				();
-	gm_Nearer				= FALSE;
-	rmNormal				();
-	L_Dynamic.Initialize	();
+	REQ_CREATE					();
+	Target.OnDeviceCreate		();
+	level_Load					();
+	gm_Nearer					= FALSE;
+	rmNormal					();
+	L_Dynamic.Initialize		();
+	L_Shadows.OnDeviceCreate	();
 }
+
 void CRender::OnDeviceDestroy()
 {
 //	REQ_DESTROY				();
-	level_Unload			();
-	Target.OnDeviceDestroy	();
-	L_Dynamic.Destroy		();
+	level_Unload				();
+	Target.OnDeviceDestroy		();
+	L_Dynamic.Destroy			();
+	L_Shadows.OnDeviceDestroy	();
 }
