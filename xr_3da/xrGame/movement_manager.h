@@ -68,6 +68,7 @@ public:
 		ePathTypeLevelPath,
 		ePathTypeEnemySearch,
 		ePathTypePatrolPath,
+		ePathTypeNoPath,
 		ePathTypeDummy = u32(-1),
 	};
 

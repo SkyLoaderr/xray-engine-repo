@@ -26,9 +26,10 @@ void CMovementManager::Init			()
 {
 	m_time_work						= 1300*CPU::cycles_per_microsec;
 	m_speed							= 0.f;
-	m_path_type						= ePathTypeDummy;
+	m_path_type						= ePathTypeNoPath;
 	m_path_state					= ePathStateDummy;
-	
+	m_path_actuality				= true;
+
 	enable_movement					(true);
 	CGameLocationSelector::Init		(&ai().game_graph());
 	CGamePathManager::Init			(&ai().game_graph());
@@ -68,7 +69,10 @@ void CMovementManager::build_path()
 				m_path_state	= ePathStateSelectPatrolPoint;
 				break;
 			}
-			
+			case ePathTypeNoPath : {
+				m_path_state	= ePathStateDummy;
+				break;
+			}
 			default :			NODEFAULT;
 		}
 		m_path_actuality	= true;
@@ -89,6 +93,9 @@ void CMovementManager::build_path()
 									}
 		case ePathTypePatrolPath : {
 			process_patrol_path();
+			break;
+		}
+		case ePathTypeNoPath : {
 			break;
 		}
 		default :				NODEFAULT;

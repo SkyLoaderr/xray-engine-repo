@@ -7,83 +7,83 @@
 
 void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 {
-	xr_vector<BYTE>			tpaFrom;
-	xr_vector<BYTE>			tpaTo;
+//	xr_vector<BYTE>			tpaFrom;
+//	xr_vector<BYTE>			tpaTo;
 	xr_vector<Fvector>		tpaPoints;
 	xr_vector<Fvector>		tpaDeviations;
 	xr_vector<u32>			tpaNodes;
 
 	int i;
-	int iStartPoint = -1, iFinishPoint = -1, iCurPoint = 0, iPrevPoint = -1;
-	u32 N = (u32)tpPatrolPath.tpaWayPoints.size(), dwOneZero = 0, dwZeroOne = 0, dwOneCount = 0, dwTwoCount = 0;
+	int /**iStartPoint = -1, iFinishPoint = -1, /**/iCurPoint = 0, iPrevPoint = -1;
+	u32 N = (u32)tpPatrolPath.tpaWayPoints.size();//, dwOneZero = 0, dwZeroOne = 0, dwOneCount = 0, dwTwoCount = 0;
 
-	tpaFrom.resize		(N);
-	tpaTo.resize		(N);
+//	tpaFrom.resize		(N);
+//	tpaTo.resize		(N);
 	
-	tpPatrolPath.dwType = PATH_LOOPED | PATH_BIDIRECTIONAL;
-	
-	// computing from-to arrays
-	for ( i=0; i<(int)N; ++i)
-		tpaTo[i] = tpaFrom[i] = 0;
-	
-	for ( i=0; i<(int)tpPatrolPath.tpaWayLinks.size(); ++i) {
-		++(tpaTo[tpPatrolPath.tpaWayLinks[i].wTo]);
-		++(tpaFrom[tpPatrolPath.tpaWayLinks[i].wFrom]);
-	}
-	
-	// counting types of points
-	for ( i=0; i<(int)N; ++i) {
-		if (tpaTo[i] > 2)
-			Debug.fatal("Patrol path %s : invalid count of incoming links (%d) for point %d [%.2f,%.2f,%.2f]",sName,tpaTo[i],i,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
-		if (tpaFrom[i] > 2)
-			Debug.fatal("Patrol path %s : invalid count of outcoming links (%d) for point %d [%.2f,%.2f,%.2f]",sName,tpaFrom[i],i,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
-		if ((tpaTo[i] == 1) && (tpaFrom[i] == 0)) {
-			if (dwOneZero)
-				Debug.fatal("Patrol path %s : invalid count of start points [%.2f,%.2f,%.2f]",sName,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
-			++dwOneZero;
-			iFinishPoint = i;
-		}
-		
-		if ((tpaTo[i] == 0) && (tpaFrom[i] == 1)) {
-			if (dwZeroOne)
-				Debug.fatal("Patrol path %s : invalid count of finish points [%.2f,%.2f,%.2f]",sName,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
-			++dwZeroOne;
-			iStartPoint = i;
-		}
-		
-		if ((tpaTo[i] == 1) && (tpaFrom[i] == 1)) {
-			if ((!dwOneCount) && (!dwZeroOne) && (!dwOneZero))
-				iStartPoint = i;
-			else
-				if ((dwOneCount == 1) && (!dwZeroOne) && (!dwOneZero))
-					iFinishPoint = i;
-			++dwOneCount;
-		}
-		
-		if ((tpaTo[i] == 2) && (tpaFrom[i] == 2))
-			++dwTwoCount;
-	}
-	
-	// checking for supported path types
-	if (!(dwOneZero + dwZeroOne)) {
-		if ((dwOneCount == 2) && (dwTwoCount == N - 2)) {
-			iCurPoint = iStartPoint;
-			tpPatrolPath.dwType ^= PATH_LOOPED;
-		}
-		else
-			if (dwOneCount == N)
-				tpPatrolPath.dwType ^= PATH_BIDIRECTIONAL;
-			else
-				if (dwTwoCount != N)
-					Debug.fatal("Patrol path %s : invalid count of outcoming links (%d) for point %d [%.2f,%.2f,%.2f]",sName,tpaFrom[i],i,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
-	}
-	else
-		if ((N - 2 != dwOneCount) || (1 != dwOneZero) || (1 != dwZeroOne))
-			Debug.fatal("Patrol path %s : invalid count of outcoming links (%d) for point %d [%.2f,%.2f,%.2f] in non-looped one-directional path",sName,tpaFrom[i],i,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
-		else {
-			iCurPoint = iStartPoint;
-			tpPatrolPath.dwType ^= PATH_LOOPED ^ PATH_BIDIRECTIONAL;
-		}
+//	tpPatrolPath.dwType = PATH_LOOPED | PATH_BIDIRECTIONAL;
+//	
+//	// computing from-to arrays
+//	for ( i=0; i<(int)N; ++i)
+//		tpaTo[i] = tpaFrom[i] = 0;
+//	
+//	for ( i=0; i<(int)tpPatrolPath.tpaWayLinks.size(); ++i) {
+//		++(tpaTo[tpPatrolPath.tpaWayLinks[i].wTo]);
+//		++(tpaFrom[tpPatrolPath.tpaWayLinks[i].wFrom]);
+//	}
+//	
+//	// counting types of points
+//	for ( i=0; i<(int)N; ++i) {
+//		if (tpaTo[i] > 2)
+//			Debug.fatal("Patrol path %s : invalid count of incoming links (%d) for point %d [%.2f,%.2f,%.2f]",sName,tpaTo[i],i,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
+//		if (tpaFrom[i] > 2)
+//			Debug.fatal("Patrol path %s : invalid count of outcoming links (%d) for point %d [%.2f,%.2f,%.2f]",sName,tpaFrom[i],i,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
+//		if ((tpaTo[i] == 1) && (tpaFrom[i] == 0)) {
+//			if (dwOneZero)
+//				Debug.fatal("Patrol path %s : invalid count of start points [%.2f,%.2f,%.2f]",sName,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
+//			++dwOneZero;
+//			iFinishPoint = i;
+//		}
+//		
+//		if ((tpaTo[i] == 0) && (tpaFrom[i] == 1)) {
+//			if (dwZeroOne)
+//				Debug.fatal("Patrol path %s : invalid count of finish points [%.2f,%.2f,%.2f]",sName,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
+//			++dwZeroOne;
+//			iStartPoint = i;
+//		}
+//		
+//		if ((tpaTo[i] == 1) && (tpaFrom[i] == 1)) {
+//			if ((!dwOneCount) && (!dwZeroOne) && (!dwOneZero))
+//				iStartPoint = i;
+//			else
+//				if ((dwOneCount == 1) && (!dwZeroOne) && (!dwOneZero))
+//					iFinishPoint = i;
+//			++dwOneCount;
+//		}
+//		
+//		if ((tpaTo[i] == 2) && (tpaFrom[i] == 2))
+//			++dwTwoCount;
+//	}
+//	
+//	// checking for supported path types
+//	if (!(dwOneZero + dwZeroOne)) {
+//		if ((dwOneCount == 2) && (dwTwoCount == N - 2)) {
+//			iCurPoint = iStartPoint;
+//			tpPatrolPath.dwType ^= PATH_LOOPED;
+//		}
+//		else
+//			if (dwOneCount == N)
+//				tpPatrolPath.dwType ^= PATH_BIDIRECTIONAL;
+//			else
+//				if (dwTwoCount != N)
+//					Debug.fatal("Patrol path %s : invalid count of outcoming links (%d) for point %d [%.2f,%.2f,%.2f]",sName,tpaFrom[i],i,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
+//	}
+//	else
+//		if ((N - 2 != dwOneCount) || (1 != dwOneZero) || (1 != dwZeroOne))
+//			Debug.fatal("Patrol path %s : invalid count of outcoming links (%d) for point %d [%.2f,%.2f,%.2f] in non-looped one-directional path",sName,tpaFrom[i],i,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
+//		else {
+//			iCurPoint = iStartPoint;
+//			tpPatrolPath.dwType ^= PATH_LOOPED ^ PATH_BIDIRECTIONAL;
+//		}
 
 	// building point sequencies and path
 	tpPatrolPath.tpaWayPointIndexes.resize(N);

@@ -924,15 +924,14 @@ void CAI_Stalker::Think()
 //	set_path_type		(ePathTypeGamePath);
 //	CMovementManager::CGameLocationSelector::set_selection_type	(eSelectionTypeRandomBranching);
 //	build_path			();
-//	m_tMovementType		= eMovementTypeWalk;
-//	m_tMentalState		= eMentalStateDanger;
-//	set_path_type		(ePathTypePatrolPath);
+	m_tMovementType		= eMovementTypeWalk;
+	m_tMentalState		= eMentalStateDanger;
 //	CPatrolPathManager::set_path		("way0000");
 //	CPatrolPathManager::set_start_type	(ePatrolStartTypeNearest);
 //	CPatrolPathManager::set_route_type	(ePatrolRouteTypeContinue);
 //	CPatrolPathManager::set_random		(true);
-//	build_path			();
-//	return;
+	build_path			();
+	return;
 //	if (!m_dwLastUpdate) {
 //		Level().ObjectSpace.GetNearest(Position(),3.f);
 //		if (Level().ObjectSpace.q_nearest.size()) {
