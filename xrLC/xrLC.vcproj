@@ -690,21 +690,6 @@
 			</File>
 			<File
 				RelativePath=".\xrOptimizeCFORM.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Mixed|Win32">
-					<Tool
-						Name="VCCLCompilerTool"/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\xrPhase_AdaptiveHT.cpp">
@@ -1561,6 +1546,97 @@
 				</File>
 				<File
 					RelativePath=".\OpenMesh\Core\Math\VectorT_inc.hh">
+				</File>
+			</Filter>
+			<Filter
+				Name="Tools"
+				Filter="">
+				<File
+					RelativePath=".\OpenMesh\Tools\Decimater\CollapseInfoT.hh">
+				</File>
+				<File
+					RelativePath=".\OpenMesh\Tools\Utils\Config.hh">
+				</File>
+				<File
+					RelativePath=".\OpenMesh\Tools\Geometry\Config.hh">
+				</File>
+				<File
+					RelativePath=".\OpenMesh\Tools\Utils\conio.cc">
+				</File>
+				<File
+					RelativePath=".\OpenMesh\Tools\Utils\conio.hh">
+				</File>
+				<File
+					RelativePath=".\OpenMesh\Tools\Decimater\DecimaterT.cc">
+				</File>
+				<File
+					RelativePath=".\OpenMesh\Tools\Decimater\DecimaterT.hh">
+				</File>
+				<File
+					RelativePath=".\OpenMesh\Tools\Utils\getopt.c">
+				</File>
+				<File
+					RelativePath=".\OpenMesh\Tools\Utils\getopt.h">
+				</File>
+				<File
+					RelativePath=".\OpenMesh\Tools\Utils\GLConstAsString.hh">
+				</File>
+				<File
+					RelativePath=".\OpenMesh\Tools\Utils\Gnuplot.cc">
+				</File>
+				<File
+					RelativePath=".\OpenMesh\Tools\Utils\Gnuplot.hh">
+				</File>
+				<File
+					RelativePath=".\OpenMesh\Tools\Utils\HeapT.hh">
+				</File>
+				<File
+					RelativePath=".\OpenMesh\Tools\Utils\MeshCheckerT.cc">
+				</File>
+				<File
+					RelativePath=".\OpenMesh\Tools\Utils\MeshCheckerT.hh">
+				</File>
+				<File
+					RelativePath=".\OpenMesh\Tools\Decimater\ModBaseT.hh">
+				</File>
+				<File
+					RelativePath=".\OpenMesh\Tools\Decimater\ModIndependentSetsT.hh">
+				</File>
+				<File
+					RelativePath=".\OpenMesh\Tools\Decimater\ModNormalFlippingT.hh">
+				</File>
+				<File
+					RelativePath=".\OpenMesh\Tools\Decimater\ModProgMeshT.cc">
+				</File>
+				<File
+					RelativePath=".\OpenMesh\Tools\Decimater\ModProgMeshT.hh">
+				</File>
+				<File
+					RelativePath=".\OpenMesh\Tools\Decimater\ModQuadricT.cc">
+				</File>
+				<File
+					RelativePath=".\OpenMesh\Tools\Decimater\ModQuadricT.hh">
+				</File>
+				<File
+					RelativePath=".\OpenMesh\Tools\Decimater\ModRoundnessT.hh">
+				</File>
+				<File
+					RelativePath=".\OpenMesh\Tools\Geometry\QuadricT.hh">
+				</File>
+				<File
+					RelativePath=".\OpenMesh\Tools\Utils\StripifierT.cc">
+				</File>
+				<File
+					RelativePath=".\OpenMesh\Tools\Utils\StripifierT.hh">
+				</File>
+				<File
+					RelativePath=".\OpenMesh\Tools\Utils\TestingFramework.hh">
+				</File>
+				<File
+					RelativePath=".\OpenMesh\Tools\Utils\Timer.cc">
+				</File>
+				<File
+					RelativePath=".\OpenMesh\Tools\Utils\Timer.hh">
 				</File>
 			</Filter>
 		</Filter>
