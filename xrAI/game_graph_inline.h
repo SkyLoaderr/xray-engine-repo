@@ -36,8 +36,8 @@ IC CGameGraph::CGameGraph		(LPCSTR file_name)
 #ifndef DEBUG
 	m_nodes						= (CVertex*)m_reader->pointer();
 #else
-	m_nodes						= (CVertex*)xr_malloc(m_reader->elpased()*sizeof(char));
-	Memory.mem_copy				(m_nodes,m_reader->pointer(),m_reader->elpased()*sizeof(char));
+	m_nodes						= (CVertex*)xr_malloc(m_reader->elapsed()*sizeof(char));
+	Memory.mem_copy				(m_nodes,m_reader->pointer(),m_reader->elapsed()*sizeof(char));
 	xr_delete					(m_reader);
 #endif
 }
