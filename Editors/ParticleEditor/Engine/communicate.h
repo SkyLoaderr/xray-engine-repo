@@ -3,7 +3,6 @@
 
 #pragma pack(push,4)
 
-const u32 XR_MAX_TEXTURES		= 32;
 const u32 XR_MAX_PORTAL_VERTS	= 6;
 
 #define HEMILIGHTS_CONTROL_NAME "$hemi"
