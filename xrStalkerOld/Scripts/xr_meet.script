@@ -449,7 +449,7 @@ function add_to_binder(object, char_ini)
 	action:add_precondition		(world_property(properties["contact"],		false))
 	action:add_precondition		(world_property(properties["wait_buyer"], 	false))
 
-    if char_ini:section_exist("meet") == true then
+    if char_ini ~= nil and char_ini:section_exist("meet") == true then
         if char_ini:line_exist("meet", "enabled") == true then
                 xr_motivator.storage[object:id()].meet.enabled = char_ini:r_bool("meet", "enabled")
         end
