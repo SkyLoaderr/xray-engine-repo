@@ -48,7 +48,7 @@ void CCustomObject::AnimationUpdate(float t)
     UpdateTransform			(true);
     m_CO_Flags.set			(flAutoKey,bAK);
     if (m_CO_Flags.is(flCameraView))
-    	Device.m_Camera.Set	(-r.x,-r.y,-r.z,P.x,P.y,P.z);
+    	Device.m_Camera.Set	(-r.y,-r.x,-r.z,P.x,P.y,P.z);
 }
 
 void CCustomObject::AnimationOnFrame()
