@@ -67,7 +67,7 @@ void CHUDCursor::Render()
 	Collide::ray_query	RQ;
 
 	if (pCreator->ObjectSpace.RayPick( p1, dir, dist, RQ )){
-		if (RQ.O && (RQ.O->CLS_ID == CLSID_ENTITY) && (((CEntity*)RQ.O)->id_Team!=cur_team)) C = C_ON_ENEMY;
+		// if (RQ.O && (RQ.O->CLS_ID == CLSID_ENTITY) && (((CEntity*)RQ.O)->id_Team!=cur_team)) C = C_ON_ENEMY;
 		dist = RQ.range;
 	}
 	pCreator->CurrentEntity()->setEnabled(true);
