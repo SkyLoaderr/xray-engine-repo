@@ -53,14 +53,14 @@ void CLightShadows::OnDeviceCreate	()
 	RT_temp		= Device.Shader._CreateRT	(RTtemp,S_rt_size,S_rt_size);
 	sh_Texture	= Device.Shader.Create		("effects\\shadow_texture");
 	sh_World	= Device.Shader.Create		("effects\\shadow_world",	RTname);
-	vs_World	= Device.Streams.Create		(FVF::F_LIT);
+	vs_World	= Device.Shader._CreateVS	(FVF::F_LIT);
 	sh_BlurTR	= Device.Shader.Create		("effects\\blur",			RTtemp2);
 	sh_BlurRT	= Device.Shader.Create		("effects\\blur",			RTname2);
-	vs_Blur		= Device.Streams.Create		(FVF::F_TL2uv);
+	vs_Blur		= Device.Shader._CreateVS	(FVF::F_TL2uv);
 
 	// Debug
 	sh_Screen	= Device.Shader.Create		("effects\\screen_set",RTname);
-	vs_Screen	= Device.Streams.Create		(FVF::F_TL);
+	vs_Screen	= Device.Shader._CreateVS	(FVF::F_TL);
 }
 
 void CLightShadows::OnDeviceDestroy	()
@@ -259,43 +259,52 @@ void CLightShadows::calculate	()
 	// Blur
 	if (bRTS)
 	{
-		float						dim				= S_rt_size;
-		Fvector2					shift,p0,p1,a0,a1,b0,b1,c0,c1,d0,d1;
-		p0.set						(.5f/dim, .5f/dim);
-		p1.set						((dim+.5f)/dim, (dim+.5f)/dim);
+		float							dim				= S_rt_size;
+		Fvector2						shift,p0,p1,a0,a1,b0,b1,c0,c1,d0,d1;
+		p0.set							(.5f/dim, .5f/dim);
+		p1.set							((dim+.5f)/dim, (dim+.5f)/dim);
 		shift.set(.5f/dim, .5f/dim); a0.add(p0,shift); a1.add(p1,shift); b0.sub(p0,shift); b1.sub(p1,shift);
 		shift.set(.5f/dim,-.5f/dim); c0.add(p0,shift); c1.add(p1,shift); d0.sub(p0,shift); d1.sub(p1,shift);
 		
 		// Fill VB
-		DWORD C						=	0xffffffff, Offset;
-		FVF::TL2uv* pv				=	(FVF::TL2uv*) vs_Blur->Lock(8,Offset);
-		pv->set						(0.f,	dim,	C, a0.x, a1.y, b0.x, b1.y);	pv++;
-		pv->set						(0.f,	0.f,	C, a0.x, a0.y, b0.x, b0.y);	pv++;
-		pv->set						(dim,	dim,	C, a1.x, a1.y, b1.x, b1.y);	pv++;
-		pv->set						(dim,	0.f,	C, a1.x, a0.y, b1.x, b0.y);	pv++;
+		DWORD C							=	0xffffffff, Offset;
+		FVF::TL2uv* pv					=	(FVF::TL2uv*) Device.Streams.Vertex.Lock(8,vs_Blur->dwStride,Offset);
+		pv->set							(0.f,	dim,	C, a0.x, a1.y, b0.x, b1.y);	pv++;
+		pv->set							(0.f,	0.f,	C, a0.x, a0.y, b0.x, b0.y);	pv++;
+		pv->set							(dim,	dim,	C, a1.x, a1.y, b1.x, b1.y);	pv++;
+		pv->set							(dim,	0.f,	C, a1.x, a0.y, b1.x, b0.y);	pv++;
 		
-		pv->set						(0.f,	dim,	C, c0.x, c1.y, d0.x, d1.y);	pv++;
-		pv->set						(0.f,	0.f,	C, c0.x, c0.y, d0.x, d0.y);	pv++;
-		pv->set						(dim,	dim,	C, c1.x, c1.y, d1.x, d1.y);	pv++;
-		pv->set						(dim,	0.f,	C, c1.x, c0.y, d1.x, d0.y);	pv++;
-		vs_Blur->Unlock				(8);
+		pv->set							(0.f,	dim,	C, c0.x, c1.y, d0.x, d1.y);	pv++;
+		pv->set							(0.f,	0.f,	C, c0.x, c0.y, d0.x, d0.y);	pv++;
+		pv->set							(dim,	dim,	C, c1.x, c1.y, d1.x, d1.y);	pv++;
+		pv->set							(dim,	0.f,	C, c1.x, c0.y, d1.x, d0.y);	pv++;
+		Device.Streams.Vertex.Unlock	(8,vs_Blur->dwStride);
 		
 		// Actual rendering (pass0, temp2real)
-		Device.Shader.set_RT		(RT->pRT,	0);
-		Device.Shader.set_Shader	(sh_BlurTR	);
-		Device.Primitive.Draw		(vs_Blur,	4, 2, Offset,	Device.Streams_QuadIB);
+		Device.Shader.set_RT			(RT->pRT,HW.pTempZB);
+		Device.Shader.set_Shader		(sh_BlurTR	);
+		Device.Primitive.setVertices	(vs_Blur->dwHandle,vs_Blur->dwStride,Device.Streams.Vertex.getBuffer());
+		Device.Primitive.setIndices		(Offset,Device.Streams_QuadIB);
+		Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
+		UPDATEC							(4,2,1);
 		
 		for (int it=0; it<psSH_Blur; it++)	
 		{
 			// Actual rendering (pass1, real2temp)
-			Device.Shader.set_RT		(RT_temp->pRT,	0);
-			Device.Shader.set_Shader	(sh_BlurRT	);
-			Device.Primitive.Draw		(vs_Blur,	4, 2, Offset+4,	Device.Streams_QuadIB);
+			Device.Shader.set_RT			(RT_temp->pRT,HW.pTempZB);
+			Device.Shader.set_Shader		(sh_BlurRT	);
+			Device.Primitive.setVertices	(vs_Blur->dwHandle,vs_Blur->dwStride,Device.Streams.Vertex.getBuffer());
+			Device.Primitive.setIndices		(Offset+4,Device.Streams_QuadIB);
+			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
+			UPDATEC							(4,2,1);
 			
 			// Actual rendering (pass2, temp2real)
-			Device.Shader.set_RT		(RT->pRT,	0);
-			Device.Shader.set_Shader	(sh_BlurTR	);
-			Device.Primitive.Draw		(vs_Blur,	4, 2, Offset,	Device.Streams_QuadIB);
+			Device.Shader.set_RT			(RT->pRT,HW.pTempZB);
+			Device.Shader.set_Shader		(sh_BlurTR	);
+			Device.Primitive.setVertices	(vs_Blur->dwHandle,vs_Blur->dwStride,Device.Streams.Vertex.getBuffer());
+			Device.Primitive.setIndices		(Offset,Device.Streams_QuadIB);
+			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
+			UPDATEC							(4,2,1);
 		}
 	}
 	
@@ -328,7 +337,7 @@ void CLightShadows::render	()
 	Device.Shader.set_Shader	(sh_World);
 	int batch					= 0;
 	DWORD Offset				= 0;
-	FVF::LIT* pv				= (FVF::LIT*) vs_World->Lock(batch_size*3,Offset);
+	FVF::LIT* pv				= (FVF::LIT*) Device.Streams.Vertex.Lock(batch_size*3,vs_World->dwStride,Offset);
 	for (u32 s_it=0; s_it<shadows.size(); s_it++)
 	{
 		shadow&		S			=	shadows[s_it];
@@ -406,17 +415,28 @@ void CLightShadows::render	()
 			batch++;
 			if (batch==batch_size)	{
 				// Flush
-				vs_World->Unlock		(batch*3);
-				Device.Primitive.Draw	(vs_World,batch,Offset);
-				pv						= (FVF::LIT*) vs_World->Lock(batch_size*3,Offset);
-				batch					= 0;
+				Device.Streams.Vertex.Unlock	(batch*3,vs_World->dwStride);
+
+				Device.Primitive.setVertices	(vs_World->dwHandle,vs_World->dwStride,Device.Streams.Vertex.getBuffer());
+				Device.Primitive.setIndices		(0,0);
+				Device.Primitive.Render			(D3DPT_TRIANGLELIST,Offset,batch);
+				UPDATEC							(batch*3,batch,1);
+
+				pv								= (FVF::LIT*) Device.Streams.Vertex.Lock(batch_size*3,vs_World->dwStride,Offset);
+				batch							= 0;
 			}
 		}
 	}
 
 	// Flush if nessesary
-	vs_World->Unlock		(batch*3);
-	if (batch)				Device.Primitive.Draw	(vs_World,batch,Offset);
+	Device.Streams.Vertex.Unlock	(batch*3,vs_World->dwStride);
+	if (batch)				
+	{
+		Device.Primitive.setVertices	(vs_World->dwHandle,vs_World->dwStride,Device.Streams.Vertex.getBuffer());
+		Device.Primitive.setIndices		(0,0);
+		Device.Primitive.Render			(D3DPT_TRIANGLELIST,Offset,batch);
+		UPDATEC							(batch*3,batch,1);
+	}
 	
 	// Clear all shadows
 	shadows.clear			();
