@@ -57,7 +57,10 @@ struct Triangle {
 
 	}
 };
-static dVector3 last_pos={dInfinity,0.f,0.f,0.f};
+static	dVector3 last_pos={dInfinity,0.f,0.f,0.f};
+static 	vector<Triangle> pos_tries;
+static 	vector<Triangle> neg_tries;
+
 extern "C" int dSortTriCollide (
 								const dxGeom *o1, const dxGeom *o2,
 								int flags, dContactGeom *contact, int skip,
@@ -68,8 +71,8 @@ extern "C" int dSortTriCollide (
 {
 	int ret=0;
 	Triangle tri,neg_tri,b_neg_tri;
-	vector<Triangle> pos_tries;
-	vector<Triangle> neg_tries;
+	pos_tries.clear	();
+	neg_tries.clear	();
 	dReal pos_dist=dInfinity,neg_depth=dInfinity,b_neg_depth=dInfinity;
 	dReal max_proj=-dInfinity,proj;
 	const dReal* p=o1->pos;
