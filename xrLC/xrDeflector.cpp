@@ -156,17 +156,17 @@ void CDeflector::RemapUV(DWORD base_u, DWORD base_v, DWORD size_u, DWORD size_v,
 	d_size.sub	(d_max,d_min);
 	
 	// Remapping
-	UVtri	R;
+	UVpoint		tc;
 	if (bRotate)	{
 		for (UVIt it = tris.begin(); it!=tris.end(); it++)
 		{
 			UVtri&	T  = *it;
 			for (int i=0; i<3; i++) 
 			{
-				R.uv[i].u = ((T.uv[i].v-a_min.v)/a_size.v)*d_size.u + d_min.u;
-				R.uv[i].v = ((T.uv[i].u-a_min.u)/a_size.u)*d_size.v + d_min.v;
+				tc.u = ((T.uv[i].v-a_min.v)/a_size.v)*d_size.u + d_min.u;
+				tc.v = ((T.uv[i].u-a_min.u)/a_size.u)*d_size.v + d_min.v;
+				T.uv[i].set(tc);
 			}
-			T = R;
 		}
 	} else {
 		for (UVIt it = tris.begin(); it!=tris.end(); it++)
@@ -174,10 +174,10 @@ void CDeflector::RemapUV(DWORD base_u, DWORD base_v, DWORD size_u, DWORD size_v,
 			UVtri&	T  = *it;
 			for (int i=0; i<3; i++) 
 			{
-				R.uv[i].u = ((T.uv[i].u-a_min.u)/a_size.u)*d_size.u + d_min.u;
-				R.uv[i].v = ((T.uv[i].v-a_min.v)/a_size.v)*d_size.v + d_min.v;
+				tc.u = ((T.uv[i].u-a_min.u)/a_size.u)*d_size.u + d_min.u;
+				tc.v = ((T.uv[i].v-a_min.v)/a_size.v)*d_size.v + d_min.v;
+				T.uv[i].set(tc);
 			}
-			T = R;
 		}
 	}
 }
