@@ -2,17 +2,25 @@
 
 void	CRenderTarget::phase_combine	()
 {
-	// 
-	dwWidth						= Device.dwWidth;
-	dwHeight					= Device.dwHeight;
-	RCache.set_RT				(HW.pBaseRT,			0);
-	RCache.set_RT				(NULL,					1);
-	RCache.set_RT				(NULL,					2);
-	RCache.set_ZB				(HW.pBaseZB);
-	RImplementation.rmNormal	();
+	// Targets
+	dwWidth								= Device.dwWidth;
+	dwHeight							= Device.dwHeight;
+	RCache.set_RT						(HW.pBaseRT,			0);
+	RCache.set_RT						(NULL,					1);
+	RCache.set_RT						(NULL,					2);
+	RCache.set_ZB						(HW.pBaseZB);
+	RImplementation.rmNormal			();
+
+	// Clear	- don't clear - it's stupid here :)
+
+	// Stencil	- disable
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILENABLE,		FALSE				));
+
+	// Misc		- draw everything (no culling)
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_NONE		)); 	
 
 	// Draw full-screen quad textured with our scene image
-	u32	Offset;
+	u32		Offset;
 	u32		C					= D3DCOLOR_RGBA	(255,255,255,255);
 	float	_w					= float(Device.dwWidth);
 	float	_h					= float(Device.dwHeight);
