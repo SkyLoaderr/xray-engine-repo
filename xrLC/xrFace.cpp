@@ -18,9 +18,9 @@ void	base_lighting::select	(xr_vector<R_Light>& dest, xr_vector<R_Light>& src, F
 }
 void	base_lighting::select	(base_lighting& from, Fvector& P, float R)
 {
-	select(rgb,from.rgb);
-	select(hemi,from.hemi);
-	select(sun,from.sun);
+	select(rgb,from.rgb,P,R);
+	select(hemi,from.hemi,P,R);
+	select(sun,from.sun,P,R);
 }
 
 base_Vertex::~base_Vertex() {};

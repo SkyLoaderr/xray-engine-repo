@@ -6,34 +6,32 @@
 
 #include "hash2D.h"
 
-struct UVtri : public _TCF 
-{
-	Face*	owner;
-};
-
+struct UVtri : public _TCF		{ Face*	owner; };
 typedef hash2D<UVtri*,128,128>	HASH;
+
+struct lm_layer
+{
+	u32						width;
+	u32						height;
+	xr_vector<base_color>	surface;
+	xr_vector<u8>			marker;
+
+	u32						Area ()	{ return (width+2*BORDER)*(height+2*BORDER); }
+
+	lm_layer()				{ width=height=0; }
+};
 
 class CDeflector
 {
 public:
-	xr_vector<UVtri>	UVpolys;
-	Fvector				N;
-	struct Layer
-	{
-		int				base_id;
-		b_texture		lm;
-		
-		u32				Area ()	{ return (lm.dwWidth+2*BORDER)*(lm.dwHeight+2*BORDER); }
-		
-		Layer()			{ ZeroMemory(this,sizeof(*this)); }
-	};
-	xr_vector<Layer>		layers;
+	xr_vector<UVtri>			UVpolys;
+	Fvector						N;
+	lm_layer					layer;
+	Fsphere						Sphere;
 	
-	Fsphere				Sphere;
-	
-	u32				dwWidth;
-	u32				dwHeight;
-	BOOL				bMerged;
+	u32							dwWidth;
+	u32							dwHeight;
+	BOOL						bMerged;
 public:
 	CDeflector					();
 	~CDeflector					();
@@ -44,7 +42,6 @@ public:
 	void	OA_Export			();
 		
 	void	GetRect				(Fvector2 &min, Fvector2 &max);
-	Layer*	GetLayer			(int base_id);
 	u32		GetFaceCount()		{ return (u32)UVpolys.size();	};
 		
 	VOID	Light				(CDB::COLLIDER* DB, base_lighting* LightsSelected, HASH& H	);

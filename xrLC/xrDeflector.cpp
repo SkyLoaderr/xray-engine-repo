@@ -52,13 +52,10 @@ CDeflector::CDeflector()
 	dwHeight		= 0;
 	bMerged			= FALSE;
 	UVpolys.reserve	(32);
-	layers.reserve	(2);
 }
 CDeflector::~CDeflector()
 {
-	for (u32 I=0; I<layers.size(); I++)
-		xr_free	(layers[I].lm.pSurface);
-	layers.clear();
+	xr_free			(layer.lm.pSurface);
 }
 
 VOID CDeflector::OA_Export()
@@ -217,11 +214,4 @@ void CDeflector::RemapUV(u32 base_u, u32 base_v, u32 size_u, u32 size_v, u32 lm_
 	xr_vector<UVtri>	tris_new;
 	RemapUV			(tris_new,base_u,base_v,size_u,size_v,lm_u,lm_v,bRotate);
 	UVpolys			= tris_new;
-}
-
-CDeflector::Layer* CDeflector::GetLayer(int base)
-{
-	for (u32 I=0; I<layers.size(); I++)
-		if (layers[I].base_id == base)	return &layers[I];
-	return 0;
 }

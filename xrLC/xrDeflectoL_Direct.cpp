@@ -10,14 +10,14 @@ void CDeflector::L_Direct_Edge (CDB::COLLIDER* DB, base_lighting* LightsSelected
 	Fvector		vdir;
 	vdir.sub	(v2,v1);
 	
-	b_texture&	lm = layers.back().lm;
+	b_texture&	lm	= layer.lm;
 	
-	Fvector2		size; 
-	size.x		= p2.x-p1.x;
-	size.y		= p2.y-p1.y;
-	int	du		= iCeil(_abs(size.x)/texel_size);
-	int	dv		= iCeil(_abs(size.y)/texel_size);
-	int steps	= _max(du,dv);
+	Fvector2	size; 
+	size.x			= p2.x-p1.x;
+	size.y			= p2.y-p1.y;
+	int	du			= iCeil(_abs(size.x)/texel_size);
+	int	dv			= iCeil(_abs(size.y)/texel_size);
+	int steps		= _max(du,dv);
 	if (steps<=0)	return;
 	
 	for (int I=0; I<=steps; I++)
@@ -36,14 +36,11 @@ void CDeflector::L_Direct_Edge (CDB::COLLIDER* DB, base_lighting* LightsSelected
 		if (color_get_A(Lumel))			continue;
 		
 		// ok - perform lighting
-		Fcolor	C; C.set(0,0,0,0);
-		Fvector	P; P.mad(v1,vdir,time);
-		LightPoint	(DB, RCAST_Model, C, P, N, &*LightsSelected->begin(), &*LightsSelected->end(),skip);
+		base_color	C;
+		Fvector		P;	P.mad(v1,vdir,time);
+		LightPoint	(DB, RCAST_Model, C, P, N, *LightsSelected, LP_dont_hemi, skip);
 		
-		Fcolor		R;
-		R.lerp		(C,g_params.m_lm_amb_color,g_params.m_lm_amb_fogness);
-		R.mul_rgb	(.5f);
-		R.a			= 1.f;
+		C.mul		(.5f);
 		Lumel		= R.get() | color_rgba(0,0,0,255);
 	}
 }

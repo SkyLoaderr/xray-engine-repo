@@ -24,79 +24,78 @@ void Jitter_Select(Fvector2* &Jitter, u32& Jcount)
 
 	switch (g_params.m_lm_jitter_samples)
 	{
-		case 1:
-			Jcount	= 1;
-			Jitter	= Jitter1;
-			break;
-		case 9:
-			Jcount	= 9;
-			Jitter	= Jitter9;
-			break;
-		case 4:
-		default:
-			Jcount	= 4;
-			Jitter	= Jitter4;
-			break;
+	case 1:
+		Jcount	= 1;
+		Jitter	= Jitter1;
+		break;
+	case 9:
+		Jcount	= 9;
+		Jitter	= Jitter9;
+		break;
+	case 4:
+	default:
+		Jcount	= 4;
+		Jitter	= Jitter4;
+		break;
 	}
 }
 
 IC void GET(
-			b_texture &lm, 
+			lm_layer &lm, 
 			int x, int y, u32 ref, u32 &count, 
-			u32 &r, u32 &g, u32 &b)
+			base_color& dst)
 {
 	// wrap pixels
 	if (x<0) return;
-	else if (x>=(int)lm.dwWidth)	return;
+	else if (x>=(int)lm.width)	return;
 	if (y<0) return;
-	else if (y>=(int)lm.dwHeight)	return;
-	
+	else if (y>=(int)lm.height)	return;
+
 	// summarize
-	u32 pixel = lm.pSurface[y*lm.dwWidth + x];
-	if (color_get_A(pixel)<=ref) return;
-	
-	r	+=	color_get_R	(pixel);
-	g	+=	color_get_G	(pixel);
-	b	+=	color_get_B	(pixel);
-	count++;
+	u32		id	= y*lm.width + x;
+	if (lm.marker[id]<=ref)		return;
+
+	dst.add	(lm.surface[id]);
+	count	++;
 }
 
-BOOL ApplyBorders(b_texture &lm, u32 ref) 
+BOOL ApplyBorders	(lm_layer &lm, u32 ref) 
 {
-	BOOL	bNeedContinue = FALSE;
-	
+	BOOL			bNeedContinue = FALSE;
+
 	try {
-		u32	result[lmap_size*lmap_size];
-		
-		R_ASSERT(lm.dwHeight<=lmap_size	);
-		R_ASSERT(lm.dwWidth<=lmap_size	);
-		
-		CopyMemory(result,lm.pSurface,lm.dwHeight*lm.dwWidth*4);
-		for (int y=0; y<(int)lm.dwHeight; y++) {
-			for (int x=0; x<(int)lm.dwWidth; x++)
+		lm_layer	result	= lm;
+		R_ASSERT	(lm.height<=lmap_size	);
+		R_ASSERT	(lm.width<=lmap_size	);
+
+		for (int y=0; y<(int)lm.height; y++) {
+			for (int x=0; x<(int)lm.width; x++)
 			{
-				if (color_get_A(lm.pSurface[y*lm.dwWidth+x])==0) {
-					
-					u32 C=0,r=0,g=0,b=0;
-					GET(lm,x-1,y-1,ref,C,r,g,b);
-					GET(lm,x  ,y-1,ref,C,r,g,b);
-					GET(lm,x+1,y-1,ref,C,r,g,b);
-					
-					GET(lm,x-1,y  ,ref,C,r,g,b);
-					GET(lm,x+1,y  ,ref,C,r,g,b);
-					
-					GET(lm,x-1,y+1,ref,C,r,g,b);
-					GET(lm,x  ,y+1,ref,C,r,g,b);
-					GET(lm,x+1,y+1,ref,C,r,g,b);
-					
+				if (lm.marker[y*lm.width+x]==0) 
+				{
+					base_color	clr;
+					u32			C	=0;
+					GET(lm,x-1,y-1,ref,C,clr);
+					GET(lm,x  ,y-1,ref,C,clr);
+					GET(lm,x+1,y-1,ref,C,clr);
+
+					GET(lm,x-1,y  ,ref,C,clr);
+					GET(lm,x+1,y  ,ref,C,clr);
+
+					GET(lm,x-1,y+1,ref,C,clr);
+					GET(lm,x  ,y+1,ref,C,clr);
+					GET(lm,x+1,y+1,ref,C,clr);
+
 					if (C) {
-						result[y*lm.dwWidth+x]=color_rgba(r/C,g/C,b/C,ref);
-						bNeedContinue = TRUE;
+						clr.scale			(C);
+						result.surface		[y*lm.width+x]=clr;
+						result.marker		[y*lm.width+x]=u8(ref);
+						bNeedContinue		= TRUE;
 					}
 				}
 			}
 		}
-		CopyMemory(lm.pSurface,result,lm.dwHeight*lm.dwWidth*4);
+		lm	= result;
 	} catch (...)
 	{
 		clMsg("* ERROR: ApplyBorders");
@@ -115,17 +114,17 @@ float getLastRP_Scale(CDB::COLLIDER* DB, CDB::MODEL* MDL, R_Light& L, Face* skip
 		for (u32 I=0; I<tris_count; I++)
 		{
 			CDB::RESULT& rpinf = DB->r_begin()[I];
-			
+
 			// Access to texture
 			CDB::TRI& clT									= MDL->get_tris()[rpinf.id];
 			base_Face* F									= (base_Face*) clT.dummy;
 			if (0==F)										continue;
 			if (skip==F)									continue;
 			if (bUseFaceDisable && F->bDisableShadowCast)	continue;
-			
+
 			Shader_xrLC&	SH								= F->Shader();
 			if (!SH.flags.bLIGHT_CastShadow)				continue;
-			
+
 			if (F->bOpaque){
 				// Opaque poly - cache it
 				L.tri[0].set	(*clT.verts[0]);
@@ -133,25 +132,25 @@ float getLastRP_Scale(CDB::COLLIDER* DB, CDB::MODEL* MDL, R_Light& L, Face* skip
 				L.tri[2].set	(*clT.verts[2]);
 				return 0;
 			}
-			
+
 			b_material& M	= pBuild->materials			[F->dwMaterial];
 			b_texture&	T	= pBuild->textures			[M.surfidx];
-			
+
 			// barycentric coords
 			// note: W,U,V order
 			B.set	(1.0f - rpinf.u - rpinf.v,rpinf.u,rpinf.v);
-			
+
 			// calc UV
 			Fvector2*	cuv = F->getTC0					();
 			Fvector2	uv;
 			uv.x = cuv[0].x*B.x + cuv[1].x*B.y + cuv[2].x*B.z;
 			uv.y = cuv[0].y*B.x + cuv[1].y*B.y + cuv[2].y*B.z;
-			
+
 			int U = iFloor(uv.x*float(T.dwWidth) + .5f);
 			int V = iFloor(uv.y*float(T.dwHeight)+ .5f);
 			U %= T.dwWidth;		if (U<0) U+=T.dwWidth;
 			V %= T.dwHeight;	if (V<0) V+=T.dwHeight;
-			
+
 			u32 pixel		= T.pSurface[V*T.dwWidth+U];
 			u32 pixel_a		= color_get_A(pixel);
 			float opac		= 1.f - float(pixel_a)/255.f;
@@ -162,24 +161,24 @@ float getLastRP_Scale(CDB::COLLIDER* DB, CDB::MODEL* MDL, R_Light& L, Face* skip
 	{
 		clMsg("* ERROR: getLastRP_Scale");
 	}
-	
+
 	return scale;
 }
 
 float rayTrace	(CDB::COLLIDER* DB, CDB::MODEL* MDL, R_Light& L, Fvector& P, Fvector& D, float R, Face* skip, BOOL bUseFaceDisable)
 {
 	R_ASSERT	(DB);
-	
+
 	// 1. Check cached polygon
 	float _u,_v,range;
 	bool res = CDB::TestRayTri(P,D,L.tri,_u,_v,range,false);
 	if (res) {
 		if (range>0 && range<R) return 0;
 	}
-	
+
 	// 2. Polygon doesn't pick - real database query
 	DB->ray_query	(MDL,P,D,R);
-	
+
 	// 3. Analyze polygons and cache nearest if possible
 	if (0==DB->r_count()) {
 		return 1;
@@ -315,10 +314,10 @@ BOOL	__stdcall rms_test	(b_texture& lm, u32 w, u32 h, u32 rms)
 
 	// scale down(lanczos3) and up (bilinear, as video board)
 	u32*	pScaled		= (u32*)(xr_malloc(w*h*4));
-	u32*	pRestored	= (u32*)(xr_malloc(lm.dwWidth*lm.dwHeight*4));
+	u32*	pRestored	= (u32*)(xr_malloc(lm.width*lm.height*4));
 	try {
-		imf_Process	(pScaled,	w,h,(u32*)lm.pSurface,lm.dwWidth,lm.dwHeight,imf_lanczos3	);
-		imf_Process	(pRestored,	lm.dwWidth,lm.dwHeight,pScaled,w,h,imf_filter				);
+		imf_Process	(pScaled,	w,h,(u32*)lm.pSurface,lm.width,lm.height,imf_lanczos3	);
+		imf_Process	(pRestored,	lm.width,lm.height,pScaled,w,h,imf_filter				);
 	} catch (...)
 	{
 		clMsg	("* ERROR: imf_Process");
@@ -330,11 +329,11 @@ BOOL	__stdcall rms_test	(b_texture& lm, u32 w, u32 h, u32 rms)
 
 	// compare them
 	const u32 limit = 254-BORDER;
-	for (u32 y=0; y<lm.dwHeight; y++)
+	for (u32 y=0; y<lm.height; y++)
 	{
-		u32*	scan_lmap	= lm.pSurface+y*lm.dwWidth;
-		u32*	scan_rest	= (u32*)(pRestored)+y*lm.dwWidth;
-		for (u32 x=0; x<lm.dwWidth; x++)
+		u32*	scan_lmap	= lm.pSurface+y*lm.width;
+		u32*	scan_rest	= (u32*)(pRestored)+y*lm.width;
+		for (u32 x=0; x<lm.width; x++)
 		{
 			u32 pixel	= scan_lmap[x];
 			if (color_get_A(pixel)>=limit)	
@@ -357,11 +356,11 @@ fail:
 BOOL	__stdcall rms_test	(b_texture&	lm, u32 _r, u32 _g, u32 _b, u32 rms)
 {
 	u32 x,y;
-	for (y=0; y<lm.dwHeight; y++)
+	for (y=0; y<lm.height; y++)
 	{
-		for (x=0; x<lm.dwWidth; x++)
+		for (x=0; x<lm.width; x++)
 		{
-			u32 pixel	= lm.pSurface	[y*lm.dwWidth+x];
+			u32 pixel	= lm.pSurface	[y*lm.width+x];
 			if (color_get_A(pixel)>=254)	{
 				if (rms_diff(_r, color_get_R(pixel))>rms)	return FALSE;
 				if (rms_diff(_g, color_get_G(pixel))>rms)	return FALSE;
@@ -376,12 +375,12 @@ u32	__stdcall rms_average	(b_texture& lm, u32& _r, u32& _g, u32& _b)
 {
 	u32 x,y,_count;
 	_r=0, _g=0, _b=0, _count=0;
-	
-	for (y=0; y<lm.dwHeight; y++)
+
+	for (y=0; y<lm.height; y++)
 	{
-		for (x=0; x<lm.dwWidth; x++)
+		for (x=0; x<lm.width; x++)
 		{
-			u32 pixel	= lm.pSurface[y*lm.dwWidth+x];
+			u32 pixel	= lm.pSurface[y*lm.width+x];
 			if ((color_get_A(pixel))>=254)	
 			{
 				_r		+= color_get_R	(pixel);
@@ -397,17 +396,17 @@ u32	__stdcall rms_average	(b_texture& lm, u32& _r, u32& _g, u32& _b)
 BOOL	compress_Zero			(b_texture& lm, u32 rms)
 {
 	u32 _r, _g, _b, _count;
-	
+
 	// Average color
 	_count	= rms_average(lm,_r,_g,_b);
-	
+
 	if (0==_count)	{
 		clMsg("* ERROR: Lightmap not calculated (T:%d)");
 		return FALSE;
 	} else {
 		_r	/= _count;	_g	/= _count;	_b	/= _count;
 	}
-	
+
 	// Compress if needed
 	if (rms_test(lm,_r,_g,_b,rms))
 	{
@@ -418,10 +417,10 @@ BOOL	compress_Zero			(b_texture& lm, u32 rms)
 		u32*	compressed	= (u32*)(xr_malloc(c_size*4));
 		u32	c_fill			= color_rgba	(_r,_g,_b,255);
 		for (u32 p=0; p<c_size; p++)	compressed[p]=c_fill;
-		
+
 		lm.pSurface			= compressed;
-		lm.dwHeight			= 0;
-		lm.dwWidth			= 0;
+		lm.height			= 0;
+		lm.width			= 0;
 		return TRUE;
 	}
 	return FALSE;
@@ -430,34 +429,34 @@ BOOL	compress_RMS			(b_texture& lm, u32 rms, u32& w, u32& h)
 {
 	// *** Try to bilinearly filter lightmap down and up
 	w=0, h=0;
-	if (lm.dwWidth>=2)	{
-		w = lm.dwWidth/2;
-		if (!rms_test(lm,w,lm.dwHeight,rms))	{
+	if (lm.width>=2)	{
+		w = lm.width/2;
+		if (!rms_test(lm,w,lm.height,rms))	{
 			// 3/4
-			w = (lm.dwWidth*3)/4;
-			if (!rms_test(lm,w,lm.dwHeight,rms))	w = 0;
+			w = (lm.width*3)/4;
+			if (!rms_test(lm,w,lm.height,rms))	w = 0;
 		} else {
 			// 1/4
-			u32 nw = (lm.dwWidth*1)/4;
-			if (rms_test(lm,nw,lm.dwHeight,rms))	w = nw;
+			u32 nw = (lm.width*1)/4;
+			if (rms_test(lm,nw,lm.height,rms))	w = nw;
 		}
 	}
-	if (lm.dwHeight>=2)	{
-		h = lm.dwHeight/2;
-		if (!rms_test(lm,lm.dwWidth,h,rms))		{
+	if (lm.height>=2)	{
+		h = lm.height/2;
+		if (!rms_test(lm,lm.width,h,rms))		{
 			// 3/4
-			h = (lm.dwHeight*3)/4;
-			if (!rms_test(lm,lm.dwWidth,h,rms))		h = 0;
+			h = (lm.height*3)/4;
+			if (!rms_test(lm,lm.width,h,rms))		h = 0;
 		} else {
 			// 1/4
-			u32 nh = (lm.dwHeight*1)/4;
-			if (rms_test(lm,lm.dwWidth,nh,rms))		h = nh;
+			u32 nh = (lm.height*1)/4;
+			if (rms_test(lm,lm.width,nh,rms))		h = nh;
 		}
 	}
 	if (w || h)	{
-		if (0==w)	w = lm.dwWidth;
-		if (0==h)	h = lm.dwHeight;
-//		clMsg	("* RMS: [%d,%d] => [%d,%d]",lm.dwWidth,lm.dwHeight,w,h);
+		if (0==w)	w = lm.width;
+		if (0==h)	h = lm.height;
+		//		clMsg	("* RMS: [%d,%d] => [%d,%d]",lm.width,lm.height,w,h);
 		return TRUE;
 	}
 	return FALSE;
@@ -466,10 +465,10 @@ BOOL	compress_RMS			(b_texture& lm, u32 rms, u32& w, u32& h)
 VOID CDeflector::L_Calculate(CDB::COLLIDER* DB, base_lighting* LightsSelected, HASH& H)
 {
 	try {
-		b_texture&		lm = layers.back().lm;
-		
+		lm_layer&		lm	= layer;
+
 		// UV & HASH
-		RemapUV			(0,0,lm.dwWidth,lm.dwHeight,lm.dwWidth,lm.dwHeight,FALSE);
+		RemapUV			(0,0,lm.width,lm.height,lm.width,lm.height,FALSE);
 		Fbox2			bounds;
 		Bounds_Summary	(bounds);
 		H.initialize	(bounds,(u32)UVpolys.size());
@@ -479,14 +478,14 @@ VOID CDeflector::L_Calculate(CDB::COLLIDER* DB, base_lighting* LightsSelected, H
 			Bounds		(fid,bounds);
 			H.add		(bounds,T);
 		}
-		
+
 		// Calculate
 		{
-			R_ASSERT	(lm.dwWidth<=(lmap_size-2*BORDER));
-			R_ASSERT	(lm.dwHeight<=(lmap_size-2*BORDER));
-			u32 size = lm.dwWidth*lm.dwHeight*4;
-			lm.pSurface = (u32 *)xr_malloc(size);
-			ZeroMemory	(lm.pSurface,size);
+			R_ASSERT			(lm.width		<=(lmap_size-2*BORDER));
+			R_ASSERT			(lm.height	<=(lmap_size-2*BORDER));
+			u32 size			= lm.width*lm.height;
+			lm.surface.resize	(size);
+			lm.marker.resize	(size);
 		}
 		L_Direct		(DB,LightsSelected,H);
 	} catch (...)
@@ -511,148 +510,109 @@ VOID CDeflector::Light(CDB::COLLIDER* DB, base_lighting* LightsSelected, HASH& H
 		clMsg("* ERROR: CDeflector::Light - sphere calc");
 	}
 
-	// Iterate on layers
-	for (R_Layer* layer=&*pBuild->L_layers.begin(); layer!=&*pBuild->L_layers.end(); layer++)
+	// Convert lights to local form
+	LightsSelected->select(pBuild->L_static,Sphere.P,Sphere.R);
+
+	// Register _new layer
+	Layer& lm			= layer;
+	lm.width			= width;
+	lm.height			= height;
+
+	// Calculate and fill borders
+	L_Calculate			(DB,LightsSelected,H);
+	for (u32 ref=254; ref>0; ref--) if (!ApplyBorders(lm,ref)) break;
+
+	// Compression
+	try {
+		u32	w,h;
+		if (compress_Zero(lm,rms_zero))	return;		// already with borders
+		else if (compress_RMS(lm,rms_shrink,w,h))	
+		{
+			// Reacalculate lightmap at lower resolution
+			lm.width	= w;
+			lm.height	= h;
+			xr_free		(lm.pSurface);
+			L_Calculate	(DB,LightsSelected,H);
+		}
+	} catch (...)
 	{
-		// Convert lights to local form
-		try {
-			LightsSelected->clear	();
-			R_Light*	L			= &*layer->lights.begin();
-			for (; L!=&*layer->lights.end(); L++)
-			{
-				if (L->type==LT_POINT) {
-					float dist						= Sphere.P.distance_to(L->position);
-					if (dist>(Sphere.R+L->range))	continue;
-				}
-				LightsSelected->push_back(*L);
-			}
-			if ((layer!=&*pBuild->L_layers.begin()) && LightsSelected->empty())	continue;	// empty, non-base layer
-		} catch (...)
+		clMsg("* ERROR: CDeflector::Light - Compression");
+	}
+
+	// Expand with borders
+	try {
+		if (lm.width==1)	
 		{
-			clMsg("* ERROR: CDeflector::Light - LocalSelect (L:%d)",layer-&*pBuild->L_layers.begin());
-		}
+			// Horizontal ZERO - vertical line
+			b_texture		T;
+			T.width		= 2*BORDER;
+			T.height		= lm.height+2*BORDER;
+			u32 size		= T.width*T.height*4;
+			T.pSurface		= (u32*)(xr_malloc(size));
+			ZeroMemory		(T.pSurface,size);
 
-		// Register _new layer
-		layers.push_back	(Layer());
-		Layer&	layer_data	= layers.back();
-		layer_data.base_id	= (u32)(layer - &*pBuild->L_layers.begin());
-		b_texture& lm		= layer_data.lm;
-		lm.dwWidth			= dwWidth;
-		lm.dwHeight			= dwHeight;
-
-		// Calculate and fill borders
-		L_Calculate			(DB,LightsSelected,H);
-		for (u32 ref=254; ref>0; ref--) if (!ApplyBorders(lm,ref)) break;
-
-		// Compression
-		try {
-			u32	w,h;
-			if (compress_Zero(lm,rms_zero))	return;		// already with borders
-			else if (compress_RMS(lm,rms_shrink,w,h))	
+			// Transfer
+			for (u32 y=0; y<T.height; y++)
 			{
-				// Reacalculate lightmap at lower resolution
-				lm.dwWidth	= w;
-				lm.dwHeight	= h;
-				xr_free		(lm.pSurface);
-				L_Calculate	(DB,LightsSelected,H);
+				int		py			= int(y)-BORDER;
+				clamp	(py,0,int(lm.height-1));
+				u32	C			= lm.pSurface[py];
+				T.pSurface[y*2+0]	= C; 
+				T.pSurface[y*2+1]	= C;
 			}
-		} catch (...)
-		{
-			clMsg("* ERROR: CDeflector::Light - Compression (L:%d)", layer-&*pBuild->L_layers.begin());
-		}
 
-		// Expand with borders
-		try {
-			if (lm.dwWidth==1)	
+			// Exchange
+			xr_free			(lm.pSurface);
+			T.width		= 0;
+			T.height		= lm.height;
+			lm				= T;
+		} else if (lm.height==1) 
+		{
+			// Vertical ZERO - horizontal line
+			b_texture		T;
+			T.width		= lm.width+2*BORDER;
+			T.height		= 2*BORDER;
+			u32 size		= T.width*T.height*4;
+			T.pSurface		= (u32*)(xr_malloc(size));
+			ZeroMemory		(T.pSurface,size);
+
+			// Transfer
+			for (u32 x=0; x<T.width; x++)
 			{
-				// Horizontal ZERO - vertical line
-				b_texture		T;
-				T.dwWidth		= 2*BORDER;
-				T.dwHeight		= lm.dwHeight+2*BORDER;
-				u32 size		= T.dwWidth*T.dwHeight*4;
-				T.pSurface		= (u32*)(xr_malloc(size));
-				ZeroMemory		(T.pSurface,size);
-
-				// Transfer
-				for (u32 y=0; y<T.dwHeight; y++)
-				{
-					int		py			= int(y)-BORDER;
-					clamp	(py,0,int(lm.dwHeight-1));
-					u32	C			= lm.pSurface[py];
-					T.pSurface[y*2+0]	= C; 
-					T.pSurface[y*2+1]	= C;
-				}
-
-				// Exchange
-				xr_free			(lm.pSurface);
-				T.dwWidth		= 0;
-				T.dwHeight		= lm.dwHeight;
-				lm				= T;
-			} else if (lm.dwHeight==1) 
-			{
-				// Vertical ZERO - horizontal line
-				b_texture		T;
-				T.dwWidth		= lm.dwWidth+2*BORDER;
-				T.dwHeight		= 2*BORDER;
-				u32 size		= T.dwWidth*T.dwHeight*4;
-				T.pSurface		= (u32*)(xr_malloc(size));
-				ZeroMemory		(T.pSurface,size);
-
-				// Transfer
-				for (u32 x=0; x<T.dwWidth; x++)
-				{
-					int		px			= int(x)-BORDER;
-					clamp	(px,0,int(lm.dwWidth-1));
-					u32	C			= lm.pSurface[px];
-					T.pSurface[0*T.dwWidth+x]	= C;
-					T.pSurface[1*T.dwWidth+x]	= C;
-				}
-
-				// Exchange
-				xr_free			(lm.pSurface);
-				T.dwWidth		= lm.dwWidth;
-				T.dwHeight		= 0;
-				lm				= T;
-			} else {
-				// Generic blit
-				b_texture		lm_old	= lm;
-				b_texture		lm_new;
-				lm_new.dwWidth	= (lm_old.dwWidth+2*BORDER);
-				lm_new.dwHeight	= (lm_old.dwHeight+2*BORDER);
-				u32 size		= lm_new.dwWidth*lm_new.dwHeight*4;
-				lm_new.pSurface	= (u32*)(xr_malloc(size));
-				ZeroMemory		(lm_new.pSurface,size);
-				blit			(lm_new.pSurface,lm_new.dwWidth,lm_new.dwHeight,lm_old.pSurface,lm_old.dwWidth,lm_old.dwHeight,BORDER,BORDER,255-BORDER);
-				xr_free			(lm_old.pSurface);
-				lm				= lm_new;
-				ApplyBorders	(lm,254);
-				ApplyBorders	(lm,253);
-				ApplyBorders	(lm,252);
-				ApplyBorders	(lm,251);
-				for	(ref=250; ref>0; ref--) if (!ApplyBorders(lm,ref)) break;
-				lm.dwWidth		= lm_old.dwWidth;
-				lm.dwHeight		= lm_old.dwHeight;
+				int		px			= int(x)-BORDER;
+				clamp	(px,0,int(lm.width-1));
+				u32	C			= lm.pSurface[px];
+				T.pSurface[0*T.width+x]	= C;
+				T.pSurface[1*T.width+x]	= C;
 			}
-		} catch (...)
-		{
-			clMsg("* ERROR: CDeflector::Light - BorderExpansion (L:%d)", layer-&*pBuild->L_layers.begin());
+
+			// Exchange
+			xr_free			(lm.pSurface);
+			T.width		= lm.width;
+			T.height		= 0;
+			lm				= T;
+		} else {
+			// Generic blit
+			b_texture		lm_old	= lm;
+			b_texture		lm_new;
+			lm_new.width	= (lm_old.width+2*BORDER);
+			lm_new.height	= (lm_old.height+2*BORDER);
+			u32 size		= lm_new.width*lm_new.height*4;
+			lm_new.pSurface	= (u32*)(xr_malloc(size));
+			ZeroMemory		(lm_new.pSurface,size);
+			blit			(lm_new.pSurface,lm_new.width,lm_new.height,lm_old.pSurface,lm_old.width,lm_old.height,BORDER,BORDER,255-BORDER);
+			xr_free			(lm_old.pSurface);
+			lm				= lm_new;
+			ApplyBorders	(lm,254);
+			ApplyBorders	(lm,253);
+			ApplyBorders	(lm,252);
+			ApplyBorders	(lm,251);
+			for	(ref=250; ref>0; ref--) if (!ApplyBorders(lm,ref)) break;
+			lm.width		= lm_old.width;
+			lm.height		= lm_old.height;
 		}
-
-		// Test if layer really needed 
-		{
-			if (layer==&*pBuild->L_layers.begin())			continue;	// base, ambient layer - always present
-			BOOL			bSkip	= TRUE;
-			u32			size	= (lm.dwWidth+2*BORDER)*(lm.dwHeight+2*BORDER);
-			for (u32 pix=0; pix<size; pix++)	{
-				u32 pixel	= lm.pSurface	[pix];
-				if (color_get_R(pixel)>rms_discard)			{ bSkip=FALSE; break; }
-				if (color_get_G(pixel)>rms_discard)		{ bSkip=FALSE; break; }
-				if (color_get_B(pixel)>rms_discard)		{ bSkip=FALSE; break; }
-			}
-			if (bSkip)		{
-				xr_free			(lm.pSurface);
-				layers.pop_back	();
-			}
-		}
+	} catch (...)
+	{
+		clMsg("* ERROR: CDeflector::Light - BorderExpansion");
 	}
 }
