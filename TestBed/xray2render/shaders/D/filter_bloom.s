@@ -72,7 +72,10 @@ p2f 	p_main	( v2p_in IN )
 		samples[8]	*weight[1].z + 
 		samples[9]	*weight[1].y + 
 		samples[10]	*weight[1].x + 
-		samples[11]	*weight[1].x + 
+		samples[11]	*weight[0].w + 
+		samples[12]	*weight[0].z + 
+		samples[13]	*weight[0].y + 
+		samples[14]	*weight[0].x + 
 
 	return OUT;
 }
