@@ -182,7 +182,7 @@ struct b_params
 		fuzzy_enable			= FALSE;
 
         // Progressive
-        m_bConvertProgressive   = TRUE;
+        m_bConvertProgressive   = FALSE;
         m_pm_uv                 = 0.5f;
         m_pm_pos			    = 1.f;
         m_pm_curv			    = 1.f;
