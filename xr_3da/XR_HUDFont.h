@@ -16,6 +16,7 @@ protected:
 public:
 					CFontHUD	();
 	void			SetScale	(float sc){scale=sc;}
+	float			GetScale	(){return scale;}
 };
 
 #endif // _XR_HUDFONT_H_
