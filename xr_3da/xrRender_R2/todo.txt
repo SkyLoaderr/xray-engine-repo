@@ -1,0 +1,9 @@
+* shadowed		point lights
+* unshadowed	point lights
+* bloom
+* nv30
+* xrLC format
+* bump shaders
+* ability to specify texture + transform on P-lights
+* ability to project texture on directional lights
+* skybox/fog
