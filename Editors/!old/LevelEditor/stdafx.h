@@ -70,6 +70,7 @@ __inline float expf	(float val)                           	{ return ::exp(val);}
 #define PropertyGP(a,b)	__declspec( property( get=a, put=b ) )
 #define THROW			Debug.fatal("THROW");
 #define THROW2(a)		Debug.fatal(a);
+#define NO_XRC_STATS
 
 #define clMsg 			Msg
 
