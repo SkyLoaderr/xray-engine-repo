@@ -79,8 +79,9 @@ static  dColliderFn * dRayMotionsColliderFn (int num)
 
 static  void dRayMotionsAABB (dxGeom *geom, dReal aabb[6])
 {
-	dxRayMotions	*c = (dxRayMotions*) dGeomGetClassData(geom);
-	dGeomGetAABB(c->ray,aabb);
+	//dxRayMotions	*c = (dxRayMotions*) dGeomGetClassData(geom);
+	///dGeomGetAABB(c->ray,aabb);
+	dInfiniteAABB(geom,aabb);
 }
 void dGeomRayMotionDestroy (dGeomID ray)
 {

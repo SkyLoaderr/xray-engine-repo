@@ -10,7 +10,7 @@
 #include "level.h"
 #include "game_cl_base.h"
 #include "xr_level_controller.h"
-
+#include "UsableScriptObject.h"
 void CActor::IR_OnKeyboardPress(int cmd)
 {
 	if (Remote())		return;
@@ -226,6 +226,8 @@ void CActor::ActorUse()
 		element = (u16)RQ.element;
 
 	if (object){
+		CUsableScriptObject* so=dynamic_cast<CUsableScriptObject*>(object);
+		so->use();
 		switch (object->SUB_CLS_ID){
 		case CLSID_CAR:					if(use_Vehicle(object))			return;	break;
 		case CLSID_OBJECT_W_MOUNTED:	if(use_MountedWeapon(object))	return;	break;
