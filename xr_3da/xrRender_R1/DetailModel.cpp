@@ -42,9 +42,6 @@ void CDetail::transfer	(Fmatrix& mXform, fvfVertexOut* vDest, u32 C, WORD* iDest
 	}
 }
 
-#ifndef _EDITOR
-#include "xrstripify.h"
-
 void CDetail::Load		(IReader* S)
 {
 	// Shader
@@ -81,8 +78,13 @@ void CDetail::Load		(IReader* S)
 		bv_bb.modify	(vertices[i].P);
 	bv_bb.getsphere		(bv_sphere.P,bv_sphere.R);
 
+#ifndef _EDITOR
 	Optimize	();
+#endif
 }
+
+#ifndef _EDITOR
+#include "xrstripify.h"
 
 void CDetail::Optimize	()
 {

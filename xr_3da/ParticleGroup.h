@@ -2,7 +2,6 @@
 #ifndef ParticleGroupH
 #define ParticleGroupH
 
-#include "..\FHierrarhyVisual.h"
 #include "..\ParticleCustom.h"
 
 namespace PS
