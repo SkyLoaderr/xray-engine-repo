@@ -146,7 +146,7 @@ end
 
 -- callback на вход в зону
 function zone_binder:on_enter( zone, obj )
-	printf( "[zone %s] on_enter obj=%s", zone:name(), obj:name() )
+	printf( "[zone %s] on_enter obj=%s, clsid=%s", zone:name(), obj:name(), obj:clsid() )
 
 	-- вызвать callback-и всех подключённых классов управления
 	table.foreach( self.managers, function( k, v ) if v.on_enter then v:on_enter( obj ) end end )
