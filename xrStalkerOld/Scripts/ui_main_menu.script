@@ -132,7 +132,7 @@ function main_menu:InitControls()
 	btn:SetTextAlign(CGameFont.alLeft)
 	btn:SetText("Player Name")
 	btn:Init(btn_prof_rect.x, btn_prof_rect.y, btn_prof_rect.width, btn_prof_rect.height)
-	self.main_frame:AttachChild(self.txt_caption)
+	self.main_frame:AttachChild(btn)
 
 	-- TEST ---
 	
