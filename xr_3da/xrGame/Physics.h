@@ -254,6 +254,7 @@ public:
 	Fvector			get_mc_data();
 	Fvector			get_mc_geoms();
 	void			Start();
+	void			RunSimulation();
 	dBodyID			get_body(){return m_body;};
 	float			get_volume(){get_mc_data();return m_volume;};
 	void			SetTransform(const Fmatrix& m0);
@@ -281,30 +282,85 @@ public:
 		dis_count_f1=0;
 		m_parent_element=NULL;
 		m_shell=NULL;
+		m_group=NULL;
 	};
 		//CPHElement(){ m_space=ph_world->GetSpace();};
 		virtual ~CPHElement	();
 };
+//////////////////////////////////////////////////////////////////////
+class CPHJoint: public CPhysicsJoint{
+vector<Fvector> axes;
+Fvector anchor;
+dJointID m_joint;
+
+
+void CreateBall();
+void CreateHinge();
+void CreateHinge2();
+void CreateShoulder1();
+void CreateShoulder2();
+void CreateCarWeel();
+void CreateUniversalHinge();
+
+	virtual void SetAnchor					(const Fvector& position){SetAnchor(position.x,position.y,position.z);}	
+	virtual void SetAnchorVsFirstElement	(const Fvector& position){SetAnchorVsFirstElement(position.x,position.y,position.z);}
+	virtual void SetAnchorVsSecondElement	(const Fvector& position){SetAnchorVsSecondElement(position.x,position.y,position.z);}
+
+	virtual void SetAxis					(const Fvector& orientation,const int axis_num){SetAxis(orientation.x,orientation.y,orientation.z,axis_num);}	
+	virtual void SetAxisVsFirstElement		(const Fvector& orientation,const int axis_num){SetAxisVsFirstElement(orientation.x,orientation.y,orientation.z,axis_num);}
+	virtual void SetAxisVsSecondElement		(const Fvector& orientation,const int axis_num){SetAxisVsSecondElement(orientation.x,orientation.y,orientation.z,axis_num);}
+
+	virtual void SetLimits					(const float low,const float high,const int axis_num)	;
+	virtual void SetLimitsVsFirstElement	(const float low,const float high,const int axis_num)	;
+	virtual void SetLimitsVsSecondElement	(const float low,const float high,const int axis_num)	;
+
+	virtual void SetAnchor					(const float x,const float y,const float z)	;
+	virtual void SetAnchorVsFirstElement	(const float x,const float y,const float z)	;
+	virtual void SetAnchorVsSecondElement	(const float x,const float y,const float z)	;
+
+	virtual void SetAxis					(const float x,const float y,const float z,const int axis_num);
+	virtual void SetAxisVsFirstElement		(const float x,const float y,const float z,const int axis_num);
+	virtual void SetAxisVsSecondElement		(const float x,const float y,const float z,const int axis_num);
+public:
+	CPHJoint(CPhysicsJoint::enumType type ,CPhysicsElement* first,CPhysicsElement* second);
+	virtual ~CPHJoint(){axes.clear();};
+	void Activate();
+	void Deactivate();
+};
+
+
+
 
 ///////////////////////////////////////////////////////////////////////
 class CPHShell: public CPhysicsShell,public CPHObject {
 	vector<CPHElement*> elements;
+	vector<CPHJoint*>	joints;
+	dSpaceID			m_space;
 	Fmatrix m_m2;
 	Fmatrix m_m0;
+	bool bActivating;
 
 list<CPHObject*>::iterator m_ident;
 				
 public:
 
 	CPHShell				()							{bActive=false;
+														 bActivating=false;
+														 m_space=NULL;
 
 											
 																		};
 	~CPHShell				()							{if(bActive) Deactivate();
+
 															vector<CPHElement*>::iterator i;
 														for(i=elements.begin();i!=elements.end();i++)
 																							xr_delete(*i);
 														elements.clear();
+
+														vector<CPHJoint*>::iterator j;
+														for(j=joints.begin();j!=joints.end();j++)
+																							xr_delete(*j);
+														joints.clear();
 														}
 
 	static void __stdcall	BonesCallback				(CBoneInstance* B);
@@ -316,7 +372,9 @@ public:
 
 	};
 
-	virtual	void			add_Joint				(CPhysicsJoint* E, int E1, int E2)					{};
+	virtual	void			add_Joint				(CPhysicsJoint* J)					{
+																						joints.push_back((CPHJoint*)J);
+																						};
 	virtual void			applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val)	;
 
 	virtual void			Update					()	;											
@@ -337,6 +395,15 @@ public:
 	virtual	void PhTune(dReal step);
 	virtual void InitContact(dContact* c){};
 	virtual void StepFrameUpdate(dReal step){};
+
+	dSpaceID GetSpace()
+	{
+		return m_space;
+	}
+	void CreateSpace()
+	{
+		if(!m_space) m_space=dSimpleSpaceCreate(ph_world->GetSpace());
+	}
 private:
 	
 

@@ -1,12 +1,7 @@
 #pragma once
 
 typedef void __stdcall BoneCallbackFun(CBoneInstance* B);
-// ABSTRACT:
-class	CPhysicsJoint
-{
-public:
-	virtual ~CPhysicsJoint	()																	= 0;
-};
+
 
 // ABSTRACT:
 class	CPhysicsBase
@@ -40,6 +35,55 @@ public:
 	virtual ~CPhysicsElement	()																	{};
 };
 
+//ABSTRACT:
+// Joint between two elements 
+class CPhysicsJoint	
+{
+
+public:
+enum enumType{
+	ball,
+	hinge,
+	hinge2,
+	universal_hinge,
+	shoulder1,
+	shoulder2,
+	car_wheel
+};
+protected:
+
+CPhysicsElement* pFirst_element;
+CPhysicsElement* pSecond_element;
+enumType eType;
+
+bool bActive;
+public:
+//	CPhysicsJoint(CPhysicsElement* first,CPhysicsElement* second,enumType type){pFirst_element=first; pSecond_element=second; eType=type;bActive=false;}
+	virtual ~CPhysicsJoint	()																{};
+
+	virtual void SetAnchor					(const Fvector& position)						=0;
+	virtual void SetAnchorVsFirstElement	(const Fvector& position)						=0;
+	virtual void SetAnchorVsSecondElement	(const Fvector& position)						=0;
+
+	virtual void SetAxis					(const Fvector& orientation,const int axis_num)	=0;
+	virtual void SetAxisVsFirstElement		(const Fvector& orientation,const int axis_num)	=0;
+	virtual void SetAxisVsSecondElement		(const Fvector& orientation,const int axis_num)	=0;
+
+	virtual void SetAnchor					(const float x,const float y,const float z)						=0;
+	virtual void SetAnchorVsFirstElement	(const float x,const float y,const float z)						=0;
+	virtual void SetAnchorVsSecondElement	(const float x,const float y,const float z)						=0;
+
+	virtual void SetAxis					(const float x,const float y,const float z,const int axis_num)	=0;
+	virtual void SetAxisVsFirstElement		(const float x,const float y,const float z,const int axis_num)	=0;
+	virtual void SetAxisVsSecondElement		(const float x,const float y,const float z,const int axis_num)	=0;
+
+
+	virtual void SetLimits					(const float low,const float high,const int axis_num)=0;
+	virtual void SetLimitsVsFirstElement	(const float low,const float high,const int axis_num)=0;
+	virtual void SetLimitsVsSecondElement	(const float low,const float high,const int axis_num)=0;
+
+};
+
 // ABSTRACT: 
 class CPhysicsShell			: public CPhysicsBase
 {
@@ -47,13 +91,14 @@ public:
 	BOOL					bActive;
 public:
 	virtual	void			add_Element				(CPhysicsElement* E)								= 0;
-	virtual	void			add_Joint				(CPhysicsJoint* E, int E1, int E2)					= 0;
+	virtual	void			add_Joint				(CPhysicsJoint* E)									= 0;
 	virtual void			applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val)	= 0;
 	virtual BoneCallbackFun* GetBonesCallback		()													= 0;
 	virtual void			Update					()													= 0;
 	};
 
+
 // Implementation creator
-CPhysicsJoint*				P_create_Joint			(int type);
+CPhysicsJoint*				P_create_Joint			(CPhysicsJoint::enumType type ,CPhysicsElement* first,CPhysicsElement* second);
 CPhysicsElement*			P_create_Element		();
 CPhysicsShell*				P_create_Shell			();

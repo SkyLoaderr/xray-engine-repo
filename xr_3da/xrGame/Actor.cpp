@@ -1116,30 +1116,57 @@ float CActor::HitScale	(int element)
 }
 
 void CActor::create_Skeleton(){
+	//create shell
 	CKinematics* M		= PKinematics(pVisual);			VERIFY(M);
 	m_phSkeleton		= P_create_Shell();
-	//M->LL_GetData(M->LL_BoneID("pelvis"));
+	CPhysicsJoint*		joint;
+	//get bone instance
 	int id=M->LL_BoneID("bip01_pelvis");//bip01_spine1
 	CBoneInstance& instance=M->LL_GetInstance				(id);
 
-	CPhysicsElement* pelvis=P_create_Element				();
-	instance.set_callback(m_phSkeleton->GetBonesCallback(),pelvis);
-	//pelvis->add_Box(M->LL_GetBox(id));
-	Fsphere sphere;
-	sphere.P.set(0,0,0);
-	sphere.R=0.3f;
-	pelvis->add_Sphere(sphere);
-	pelvis->setMass(80.f);
-	m_phSkeleton->add_Element(pelvis);
+	//create root element
+	CPhysicsElement* element=P_create_Element				();
+	instance.set_callback(m_phSkeleton->GetBonesCallback(),element);
+	element->add_Box(M->LL_GetBox(id));
+	//Fsphere sphere;
+	//sphere.P.set(0,0,0);
+	//sphere.R=0.3f;
+	//pelvis->add_Sphere(sphere);
+	element->setMass(80.f);
+	m_phSkeleton->add_Element(element);
+
+	CPhysicsElement* parent=element;
+
+	//spine
+	id=M->LL_BoneID("bip01_spine");//bip01_spine1
+	element=P_create_Element				();
+	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
+	element->add_Box(M->LL_GetBox(id));
+	element->setMass(80.f);
+	element->set_ParentElement(parent);
+	m_phSkeleton->add_Element(element);
+	joint=P_create_Joint(CPhysicsJoint::ball,parent,element);
+	joint->SetAnchorVsFirstElement(0,0,0);
+	m_phSkeleton->add_Joint(joint);
+
+	parent=element;
+	id=M->LL_BoneID("bip01_spine1");//bip01_spine1
+	element=P_create_Element				();
+	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
+	element->add_Box(M->LL_GetBox(id));
+	element->setMass(80.f);
+	element->set_ParentElement(parent);
+	m_phSkeleton->add_Element(element);
+	joint=P_create_Joint(CPhysicsJoint::ball,parent,element);
+	m_phSkeleton->add_Joint(joint);
+	//set shell start position
 	Fmatrix m;
 	m.identity();
 	ph_Movement.GetDeathPosition(m.c);
 	m_phSkeleton->mXFORM.set(m);
-	//m_phSkeleton->Activate();
-//	instance.set_callback	(cb_WheelFL,this);
-	//M->LL_GetInstance				(M->LL_BoneID("phy_wheel_frontr")).set_callback	(cb_WheelFR,this);
-	//M->LL_GetInstance				(M->LL_BoneID("phy_wheel_rearl")).set_callback	(cb_WheelBL,this);
-	//M->LL_GetInstance				(M->LL_BoneID("phy_wheel_rearr")).set_callback	(cb_WheelBR,this);
+
+	
+
 }
 
 

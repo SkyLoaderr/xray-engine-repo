@@ -875,7 +875,7 @@ void CPHElement::			create_Box		(Fobb&		V){
 														//dGeomGetUserData(trans)->friction=friction_table[1];
 															}
 														else{
-													  geom=dCreateBox(ph_world->GetSpace(),
+													  geom=dCreateBox(0,
 																		V.m_halfsize.x*2.f,
 																		V.m_halfsize.y*2.f,
 																		V.m_halfsize.z*2.f);
@@ -908,34 +908,50 @@ void CPHElement::			create_Sphere	(Fsphere&	V){
 															V.P.x-m_mass_center.x,
 															V.P.y-m_mass_center.y,
 															V.P.z-m_mass_center.z};
+														if(dDOT(local_position,local_position)>0.0001||
+															m_spheras_data.size()+m_boxes_data.size()>1
+															)
+														{
 														geom=dCreateSphere(0,V.R);
 														m_geoms.push_back(geom);
 														dGeomSetPosition(geom,local_position[0],local_position[1],local_position[2]);
-														if(m_spheras_data.size()+m_boxes_data.size()>1)
-															trans=dCreateGeomTransform(0);
-														else
-															trans=dCreateGeomTransform(ph_world->GetSpace());
+														trans=dCreateGeomTransform(0);
 														dGeomTransformSetGeom(trans,geom);
 														dGeomSetBody(trans,m_body);
 														m_trans.push_back(trans);
-														if(m_spheras_data.size()+m_boxes_data.size()>1)
-																	dGeomGroupAdd(m_group,trans);
+														dGeomGroupAdd(m_group,trans);
 														dGeomTransformSetInfo(trans,1);		
 														dGeomCreateUserData(geom);
 														//dGeomGetUserData(geom)->material=GMLib.GetMaterialIdx("box_default");
 														dGeomGetUserData(geom)->material=0;
+														}
+														else
+														{
+														geom=dCreateSphere(0,V.R);
+														m_geoms.push_back(geom);
+														dGeomSetPosition(geom,
+															m_mass_center.x,
+															m_mass_center.y,
+															m_mass_center.z);
+														dGeomSetBody(geom,m_body);
+														dGeomCreateUserData(geom);
+														//dGeomGetUserData(geom)->material=GMLib.GetMaterialIdx("box_default");
+														dGeomGetUserData(geom)->material=0;
+														}
 														};
 void CPHElement::			build	(dSpaceID space){
 
 m_body=dBodyCreate(phWorld);
 
+dBodyDisable(m_body);
 //dBodySetFiniteRotationMode(m_body,1);
 //dBodySetFiniteRotationAxis(m_body,0,0,0);
 
 dBodySetMass(m_body,&m_mass);
 
 if(m_spheras_data.size()+m_boxes_data.size()>1)
-m_group=dCreateGeomGroup(space);
+//m_group=dCreateGeomGroup(space);
+m_group=dCreateGeomGroup(0);
 
 Fvector mc=get_mc_data();
 //m_start=mc;
@@ -952,6 +968,18 @@ vector<Fobb>::iterator i_box;
 	for(i_sphere=m_spheras_data.begin();i_sphere!=m_spheras_data.end();i_sphere++){
 		create_Sphere(*i_sphere);
 		}
+//////////////////////////////////////
+
+}
+
+void CPHElement::RunSimulation()
+{
+if(m_group)
+dSpaceAdd(m_shell->GetSpace(),m_group);
+else
+dSpaceAdd(m_shell->GetSpace(),*m_geoms.begin());
+
+dBodyEnable(m_body);
 }
 
 void CPHElement::			destroy	(){
@@ -1088,6 +1116,7 @@ calculate_it_data_use_density(get_mc_data(),M);
 void		CPHElement::Start(){
 	//mXFORM.set(m0);
 	build(m_space);
+	RunSimulation();
 	//dBodySetPosition(m_body,m_m0.c.x,m_m0.c.y,m_m0.c.z);
 	//Fmatrix33 m33;
 	//m33.set(m_m0);
@@ -1139,6 +1168,7 @@ void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disa
 		vector<CPHElement*>::iterator i;
 		
 		mXFORM.set(m0);
+		m_space=dSimpleSpaceCreate(ph_world->GetSpace());
 		for(i=elements.begin();i!=elements.end();i++){
 														//(*i)->Start();
 														//(*i)->SetTransform(m0);
@@ -1197,6 +1227,11 @@ if(!bActive)
 	vector<CPHElement*>::iterator i;
 	for(i=elements.begin();i!=elements.end();i++)
 	(*i)->Deactivate();
+
+	vector<CPHJoint*>::iterator j;
+	for(j=joints.begin();j!=joints.end();j++)
+	(*j)->Deactivate();
+
 ph_world->RemoveObject(m_ident);
 bActive=false;
 }
@@ -1464,17 +1499,22 @@ void CPHElement::CallBack(CBoneInstance* B){
 		bActivating=true;
 		bActive=true;
 		m_start_time=Device.fTimeGlobal;
+		if(!m_parent_element){
+		
+		m_shell->CreateSpace();
+		}
+		build(m_space);
 		return;
 	}
 
 	if(bActivating){
 
-	Start();
+	RunSimulation();
 	Fmatrix global_transform;
 	global_transform.set(m_shell->mXFORM);
 
 	if(m_parent_element){
-		global_transform.mulB(m_parent_element->mXFORM);
+	//	global_transform.mulB(m_parent_element->mXFORM);
 	}
 	else
 		m_shell->Activate();
@@ -1524,8 +1564,10 @@ void CPHElement::CallBack(CBoneInstance* B){
 	Fmatrix parent;
 	
 	if(m_parent_element){
+	//if(m_parent_element->bActivating || !m_parent_element->bActive) return;
 	InterpolateGlobalTransform(&B->mTransform);
-	m_parent_element->InterpolateGlobalTransform(&parent);
+	parent.set(m_shell->mXFORM);
+	//m_parent_element->InterpolateGlobalTransform(&parent);
 	parent.invert();
 	B->mTransform.mulA(parent);
 	}
@@ -1563,7 +1605,14 @@ void CPHShell::Activate(){
 														//(*i)->SetTransform(m0);
 											//			(*i)->Activate();
 			//}
+		vector<CPHJoint*>::iterator i;
+
+		for(i=joints.begin();i!=joints.end();i++){
+														(*i)->Activate();
+										
+			}
 	bActive=true;
+	bActivating=true;
 }
 void CPHElement::Activate(){
 	//mXFORM.set(m0);
@@ -1602,4 +1651,118 @@ void CPHElement::Activate(){
 //	if(disable) dBodyDisable(m_body);
 
 
+}
+
+void CPHJoint::CreateBall()
+{
+
+m_joint=dJointCreateBall(phWorld,0);
+Fvector pos;
+Fmatrix location;
+CPHElement* first=dynamic_cast<CPHElement*>(pFirst_element);
+CPHElement* second=dynamic_cast<CPHElement*>(pSecond_element);
+first->InterpolateGlobalTransform(&location);
+
+location.transform_tiny(pos,anchor);
+dJointSetBallAnchor(m_joint,pos.x,pos.y,pos.z);
+dJointAttach(m_joint,first->get_body(),second->get_body());
+
+}
+
+void CPHJoint::CreateCarWeel()
+{
+}
+
+void CPHJoint::CreateHinge()
+{
+
+}
+
+
+void CPHJoint::CreateHinge2()
+{
+}
+
+void CPHJoint::CreateShoulder1()
+{
+}
+
+void CPHJoint::CreateShoulder2()
+{
+}
+
+void CPHJoint::CreateUniversalHinge()
+{
+}
+
+void CPHJoint::SetAnchor(const float x,const float y,const float z)
+{
+}
+
+void CPHJoint::SetAnchorVsFirstElement(const float x,const float y,const float z)
+{
+	anchor.set(x,y,z);
+}
+
+void CPHJoint::SetAnchorVsSecondElement(const float x,const float y,const float z)
+{
+	
+}
+
+void CPHJoint::SetAxis(const float x,const float y,const float z,const int axis_num)
+{
+}
+
+void CPHJoint::SetAxisVsFirstElement(const float x,const float y,const float z,const int axis_num)
+{
+
+}
+
+void CPHJoint::SetAxisVsSecondElement(const float x,const float y,const float z,const int axis_num)
+{
+}
+
+void CPHJoint::SetLimits(const float low, const float high, const int axis_num)
+{
+}
+
+
+CPHJoint::CPHJoint(CPhysicsJoint::enumType type ,CPhysicsElement* first,CPhysicsElement* second)
+{
+
+pFirst_element=first;
+pSecond_element=second; 
+eType=type;
+bActive=false;
+
+
+}
+
+void CPHJoint::SetLimitsVsFirstElement(const float low, const float high,const  int axis_num)
+{
+}
+
+void CPHJoint::SetLimitsVsSecondElement(const float low, const float high,const  int axis_num)
+{
+}
+
+void CPHJoint::Activate()
+{
+if(bActive) return;
+	switch(eType){
+	case ball:					CreateBall();			break;
+	case hinge:					CreateHinge();			break;
+	case hinge2:				CreateHinge2();			break;
+	case universal_hinge:		CreateUniversalHinge(); break;
+	case shoulder1:				CreateShoulder1();		break;
+	case shoulder2:				CreateShoulder2();		break;
+	case car_wheel:				CreateCarWeel();		break;
+	}
+	bActive=true;
+}
+
+void CPHJoint::Deactivate()
+{
+if(!bActive) return;
+dJointDestroy(m_joint);
 }
