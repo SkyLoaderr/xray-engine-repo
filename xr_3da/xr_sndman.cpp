@@ -272,37 +272,9 @@ void CSoundManager::SetModel()
 	pSoundRender->Reload	();
 }
 
-float CSoundManager::GetVMaster( )
-{
-	if ( !bPresent ) return 0;
-	DWORD			vol = 0;
-	/*
-	if (bVolume)
-		if (MMSYSERR_NOERROR==mixerGetControlDetails((HMIXEROBJ)hMixer, &master_detail, MIXER_GETCONTROLDETAILSF_VALUE))
-			return	float(LOWORD( master_volume.dwValue ))/0xFFFF;
-	*/
-	return			0;
-}
-
-void CSoundManager::SetVMaster( )
-{
-	if (!bPresent)	return;
-
-	/*
-	if (bVolume){
-		clamp			( psSoundVMaster, 0.0f, 1.0f );
-		master_volume.dwValue = (int)(psSoundVMaster*0xFFFF);
-		mixerSetControlDetails((HMIXEROBJ)hMixer, &master_detail, MIXER_SETCONTROLDETAILSF_VALUE);
-	}
-	*/
-
-	fMasterVolume	= psSoundVMaster;
-}
-
 void CSoundManager::SetVMusic( )
 {
 	if (!bPresent)	return;
-//	if (pCDA)		pCDA->SetVolume( psSoundVMusic );
 	pMusicStreams->Update();
 }
 
@@ -315,9 +287,8 @@ void CSoundManager::OnFrame( )
 
 	Device.Statistic.Sound.Begin();
 	if (Device.bActive) {
-		if (dwFreq  != psSoundFreq)				SetFreq		();
-		if (dwModel != psSoundModel)			SetModel	();
-		if (fMasterVolume	!= psSoundVMaster)	SetVMaster	();
+		if (dwFreq			!= psSoundFreq)		SetFreq		();
+		if (dwModel			!= psSoundModel)	SetModel	();
 		if (fMusicVolume	!= psSoundVMusic)	SetVMusic	();
 
 		pMusicStreams->OnMove	();

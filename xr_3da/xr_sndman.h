@@ -35,8 +35,6 @@ private:
 	BOOL					CreatePrimaryBuffer		( );
 	void					Initialize				( );
 	
-	float					GetVMaster				( );
-	void					SetVMaster				( );
 	void					SetVMusic				( );
 	void					SetFreq					( );
 	void					SetModel				( );
