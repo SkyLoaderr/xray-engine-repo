@@ -251,6 +251,7 @@ void CRenderDevice::Create	()
 	fWidth_2	= float(dwWidth/2);
 	fHeight_2	= float(dwHeight/2);
 	fFOV		= 90.f;
+	fASPECT		= 1.f;
     {
         // When moving from fullscreen to windowed mode, it is important to
         // adjust the window size after recreating the device rather than
