@@ -36,6 +36,7 @@ void console_registrator::script_register(lua_State *L)
 {
 	module(L)
 	[
+		.def("get_console",					&console),
 		class_<CConsole>("CConsole")
 		.def("execute",						&CConsole::Execute)
 		.def("execute_script",				&CConsole::ExecuteScript)
