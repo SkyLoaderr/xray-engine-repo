@@ -196,7 +196,7 @@ void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount)
 			Render->shader_option_skinning	(0);
 		} else if (sw_bones<=hw_bones) {
 			RenderMode						= RM_SKINNING_1B;
-			RMS_bonecount					= sw_bones;
+			RMS_bonecount					= sw_bones+1;
 			Render->shader_option_skinning	(1);
 		}
 		break;
@@ -210,7 +210,7 @@ void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount)
 		}
 		if (sw_bones<=hw_bones) {
 			RenderMode						= RM_SKINNING_2B;
-			RMS_bonecount					= sw_bones;
+			RMS_bonecount					= sw_bones+1;
 			Render->shader_option_skinning	(2);
 		}
 		break;
