@@ -28,7 +28,7 @@ typedef struct tagSIndexNode {
 } SIndexNode;
 #pragma pack(pop)
 
-template<class CTemplateNode> class CAStarSearch {
+template<class CTemplateNode, class SData> class CAStarSearch {
 
 private:
 
@@ -79,13 +79,14 @@ public:
 	}
 	
 	void vfFindOptimalPath(
-			SNode	*tpHeap,
+			SNode		*tpHeap,
 			SIndexNode	*tpIndexes,
-			u32 &dwAStarStaticCounter,
-			u32 dwStartNode, 
-			u32 dwGoalNode, 
-			float fMaxValue, 
-			float &fValue, 
+			u32			&dwAStarStaticCounter,
+			SData		&tData,
+			u32			dwStartNode, 
+			u32			dwGoalNode, 
+			float		fMaxValue, 
+			float		&fValue, 
 			vector<u32> &tpaNodes)
 	{
 		Device.Statistic.AI_Path.Begin();
@@ -94,7 +95,7 @@ public:
 		dwAStarStaticCounter++;
 
 		u32					dwHeap = 0;
-		CTemplateNode		tTemplateNode;
+		CTemplateNode		tTemplateNode(tData);
 
 		SNode  *tpOpenedList = tpHeap + dwHeap++,
 			*tpTemp       = tpIndexes[dwStartNode].tpNode = tpHeap + dwHeap++,

@@ -59,14 +59,17 @@ namespace AI {
 	};
 };
 
-class CAIMapShortestPathNode {//: public CAIMapTemplateNode {
-private:
-	float	m_fSize2;
-	float	m_fYSize2;
+class CAI_Space;
+
+typedef struct tagSAIMapData {
+	CAI_Space	*tpAI_Space;
+	u32			dwFinishNode;
+} SAIMapData;
+
+class CAIMapTemplateNode {
 public:
-	typedef NodeLink* iterator;
-	IC float	ffEvaluate			(u32 dwStartNode, u32 dwFinishNode);
-	IC float	ffAnticipate		(u32 dwStartNode, u32 dwFinishNode) {return(ffEvaluate(dwStartNode,dwFinishNode));};
+	SAIMapData	tData;
+	typedef		NodeLink* iterator;
 	IC void		begin				(u32 dwNode, iterator &tStart, iterator &tEnd);
 	IC u32		get_value			(iterator &tIterator);
 	IC bool		bfCheckIfAccessible	(u32 dwNode)
@@ -75,64 +78,10 @@ public:
 	}
 };
 
-class CAIMapLCDPathNode {//: public CAIMapTemplateNode {
-private:
-	float	
-		m_fCriteriaLightWeight,
-		m_fCriteriaCoverWeight,
-		m_fCriteriaDistanceWeight;
-
+class CAIGraphTemplateNode {
 public:
-	CAIMapLCDPathNode()
-	{
-		m_fCriteriaLightWeight = 5.f;
-		m_fCriteriaCoverWeight = 10.f;
-		m_fCriteriaDistanceWeight = 40.f;
-	}
-	typedef NodeLink* iterator;
-	IC float	ffEvaluate			(u32 dwStartNode, u32 dwFinishNode);
-	IC float	ffAnticipate		(u32 dwStartNode, u32 dwFinishNode) {return(ffEvaluate(dwStartNode,dwFinishNode));};
-	IC void		begin				(u32 dwNode, iterator &tStart, iterator &tEnd);
-	IC u32		get_value			(iterator &tIterator);
-	IC bool		bfCheckIfAccessible	(u32 dwNode)
-	{
-		return(true);
-	}
-};
-
-class CAIMapEnemyPathNode {//: public CAIMapTemplateNode {
-private:
-	float	
-		m_fCriteriaEnemyViewWeight,
-		m_fCriteriaLightWeight,
-		m_fCriteriaCoverWeight,
-		m_fCriteriaDistanceWeight,
-		m_fOptimalEnemyDistance;
-public:
-	CAIMapEnemyPathNode()
-	{
-		m_fCriteriaLightWeight = 5.f;
-		m_fCriteriaCoverWeight = 10.f;
-		m_fCriteriaDistanceWeight = 40.f;
-		m_fCriteriaEnemyViewWeight = 100.f;
-		m_fOptimalEnemyDistance = 40.f;
-	}
-	typedef NodeLink* iterator;
-	IC float	ffEvaluate			(u32 dwStartNode, u32 dwFinishNode);
-	IC float	ffAnticipate		(u32 dwStartNode, u32 dwFinishNode) {return(ffEvaluate(dwStartNode,dwFinishNode));};
-	IC void		begin				(u32 dwNode, iterator &tStart, iterator &tEnd);
-	IC u32		get_value			(iterator &tIterator);
-	IC bool bfCheckIfAccessible(u32 dwNode)
-	{
-		return(true);
-	}
-};
-
-class CAIGraphShortestPathNode {//: public CAIGraphTemplateNode {
-public:
-	typedef AI::SGraphEdge* iterator;
-	IC float	ffEvaluate			(u32 dwStartNode, u32 dwFinishNode);
-	IC float	ffAnticipate		(u32 dwStartNode, u32 dwFinishNode);
+	SAIMapData	tData;
+	typedef		AI::SGraphEdge* iterator;
 	IC void		begin				(u32 dwNode, iterator &tStart, iterator &tEnd);
 	IC u32		get_value			(iterator &tIterator)
 	{
@@ -142,6 +91,67 @@ public:
 	{
 		return(true);
 	}
+};
+
+class CAIMapShortestPathNode : public CAIMapTemplateNode {
+public:
+	CAIMapShortestPathNode(SAIMapData &tAIMapData)
+	{
+		tData = tAIMapData;
+	}
+	IC float	ffEvaluate			(u32 dwStartNode, u32 dwFinishNode);
+	IC float	ffAnticipate		(u32 dwStartNode, u32 dwFinishNode) {return(ffEvaluate(dwStartNode,dwFinishNode));};
+};
+
+class CAIMapLCDPathNode : public CAIMapTemplateNode {
+private:
+	float	
+		m_fCriteriaLightWeight,
+		m_fCriteriaCoverWeight,
+		m_fCriteriaDistanceWeight;
+
+public:
+	CAIMapLCDPathNode(SAIMapData &tAIMapData)
+	{
+		tData = tAIMapData;
+		m_fCriteriaLightWeight = 5.f;
+		m_fCriteriaCoverWeight = 10.f;
+		m_fCriteriaDistanceWeight = 40.f;
+	}
+	IC float	ffEvaluate			(u32 dwStartNode, u32 dwFinishNode);
+	IC float	ffAnticipate		(u32 dwStartNode, u32 dwFinishNode) {return(ffEvaluate(dwStartNode,dwFinishNode));};
+};
+
+class CAIMapEnemyPathNode : public CAIMapTemplateNode {
+private:
+	float	
+		m_fCriteriaEnemyViewWeight,
+		m_fCriteriaLightWeight,
+		m_fCriteriaCoverWeight,
+		m_fCriteriaDistanceWeight,
+		m_fOptimalEnemyDistance;
+public:
+	CAIMapEnemyPathNode(SAIMapData &tAIMapData)
+	{
+		tData = tAIMapData;
+		m_fCriteriaLightWeight = 5.f;
+		m_fCriteriaCoverWeight = 10.f;
+		m_fCriteriaDistanceWeight = 40.f;
+		m_fCriteriaEnemyViewWeight = 100.f;
+		m_fOptimalEnemyDistance = 40.f;
+	}
+	IC float	ffEvaluate			(u32 dwStartNode, u32 dwFinishNode);
+	IC float	ffAnticipate		(u32 dwStartNode, u32 dwFinishNode) {return(ffEvaluate(dwStartNode,dwFinishNode));};
+};
+
+class CAIGraphShortestPathNode : public CAIGraphTemplateNode {
+public:
+	CAIGraphShortestPathNode(SAIMapData &tAIMapData)
+	{
+		tData = tAIMapData;
+	}
+	IC float	ffEvaluate			(u32 dwStartNode, u32 dwFinishNode);
+	IC float	ffAnticipate		(u32 dwStartNode, u32 dwFinishNode);
 };
 
 class CAI_Space	: public pureDeviceCreate, pureDeviceDestroy
@@ -184,10 +194,10 @@ public:
 	SIndexNode								*m_tpIndexes;
 	u32										m_dwAStarStaticCounter;
 	float									m_fSize,m_fYSize,m_fSize2,m_fYSize2;
-	CAStarSearch<CAIMapShortestPathNode>	m_tpMapPath;
-	CAStarSearch<CAIMapLCDPathNode>			m_tpLCDPath;
-	CAStarSearch<CAIMapEnemyPathNode>		m_tpEnemyPath;
-	CAStarSearch<CAIGraphShortestPathNode>	m_tpGraphPath;
+	CAStarSearch<CAIMapShortestPathNode,SAIMapData>		m_tpMapPath;
+	CAStarSearch<CAIMapLCDPathNode,SAIMapData>			m_tpLCDPath;
+	CAStarSearch<CAIMapEnemyPathNode,SAIMapData>		m_tpEnemyPath;
+	CAStarSearch<CAIGraphShortestPathNode,SAIMapData>	m_tpGraphPath;
 //	// yet another A* search
 	#define DEFAULT_LIGHT_WEIGHT		  5.f 
 	#define DEFAULT_COVER_WEIGHT		 10.f 
