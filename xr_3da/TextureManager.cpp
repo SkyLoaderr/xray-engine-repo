@@ -15,9 +15,7 @@ CShader* CShaderManager::_CreateShader(const char *Name)
 	VERIFY(Name[0]);
 
 	for (DWORD i=0; i<shaders.size(); i++) {
-		// shader present - check name matching
-		if (strcmp(shaders[i]->cName,Name)==0) 
-			return shaders[i];
+		if (strcmp(shaders[i]->Name,Name)==0) return shaders[i];
 	}
 	Device.Fatal("! Shader \"%s\" not found",Name);
 	return NULL;

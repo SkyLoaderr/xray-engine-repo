@@ -12,8 +12,8 @@ class ENGINE_API CShaderManager
 {
 private:
 	// data
-	vector<CTexture *>				textures;
 	vector<CShader*>				shaders;
+	vector<CTexture *>				textures;
 	vector<CConstant*>				constants;
 	vector<CMatrix*>				matrices;
 
@@ -68,9 +68,6 @@ public:
 
 	void	TexturesLoad	();
 	void	TexturesUnload	();
-
-	// Info
-	int		GetShaderCount	(void)	{ return sh_list.size(); }
 
 	// API
 	void	__fastcall	Set			(Shader& S);

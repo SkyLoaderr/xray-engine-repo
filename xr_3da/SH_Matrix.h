@@ -22,6 +22,9 @@ public:
 	WaveForm		rotate;
 	WaveForm		scrollU,scrollV;
 
+	
+
+
 	IC void			tc_trans	(Fmatrix& T, float u, float v)
 	{
 		T.identity	();

@@ -5,7 +5,7 @@ class ENGINE_API CAviPlayerCustom;
 class ENGINE_API CTexture
 {
 public:
-	sh_name						cName;
+	LPCSTR						Name;
 	DWORD						dwRefCount;
 	BOOL						bMipmaps;
 	IDirect3DTexture8*			pSurface;
