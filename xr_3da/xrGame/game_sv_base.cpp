@@ -167,7 +167,7 @@ void game_sv_GameState::OnRoundStart			()
 
 void game_sv_GameState::OnRoundEnd				(LPCSTR reason)
 {
-	phase		= GAME_PHASE_PENDING;
+	phase				= GAME_PHASE_PENDING;
 
 	signal_Syncronize	();
 }
@@ -178,6 +178,10 @@ void game_sv_GameState::OnPlayerConnect			(u32 id_who)
 }
 
 void game_sv_GameState::OnPlayerDisconnect		(u32 id_who)
+{
+	signal_Syncronize	();
+}
+void game_sv_GameState::OnPlayerChangedInfo		(u32 id_who)
 {
 	signal_Syncronize	();
 }
