@@ -281,7 +281,7 @@ void CAI_Zombie::Think()
 				Die();
 				break;
 			}
-			case aiZombieJumping : {
+			case aiZombieJumping :  {
 				Jumping();
 				break;
 			}
