@@ -302,6 +302,7 @@ void CCC_Register()
 	CMD1(CCC_Disconnect,"disconnect"			);
 	CMD1(CCC_SaveCFG,	"cfg_save"				);
 	CMD1(CCC_LoadCFG,	"cfg_load"				);
+	CMD1(CCC_MemStat,	"stat_mem"				);
 
 	CMD3(CCC_Mask,		"mt_sound",				&psDeviceFlags,	mtSound);
 	CMD3(CCC_Mask,		"mt_input",				&psDeviceFlags,	mtInput);
