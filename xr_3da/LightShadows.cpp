@@ -353,8 +353,9 @@ void CLightShadows::render	()
 			Fvector* 	v		= TT.v;
 			Fvector		T;
 			S.M.transform(T,v[0]); pv->set(v[0],PLC_calc(v[0],TT.N,S.L,Le),(T.x+1)*t_scale.x+t_offset.x,(1-T.y)*t_scale.y+t_offset.y); pv++;
-			S.M.transform(T,v[1]); pv->set(v[1],S.C,(T.x+1)*t_scale.x+t_offset.x,(1-T.y)*t_scale.y+t_offset.y); pv++;
-			S.M.transform(T,v[2]); pv->set(v[2],S.C,(T.x+1)*t_scale.x+t_offset.x,(1-T.y)*t_scale.y+t_offset.y); pv++;
+			S.M.transform(T,v[1]); pv->set(v[1],PLC_calc(v[1],TT.N,S.L,Le),(T.x+1)*t_scale.x+t_offset.x,(1-T.y)*t_scale.y+t_offset.y); pv++;
+			S.M.transform(T,v[2]); pv->set(v[2],PLC_calc(v[2],TT.N,S.L,Le),(T.x+1)*t_scale.x+t_offset.x,(1-T.y)*t_scale.y+t_offset.y); pv++;
+
 			batch++;
 			if (batch==batch_size)	{
 				// Flush
