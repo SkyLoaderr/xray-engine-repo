@@ -77,11 +77,6 @@ function can_attack_enemy_evaluator:evaluate()
 
     return false
 
---    if(isWeapon(wpn) == false) then
---        return false
---    end
-
---    return true
 end
 ---------------------------------------------------------------------------------------------------------------------
 -- Actions
@@ -878,7 +873,7 @@ function action_security_stand:on_position()
 	--Если точно не поворачиваемя, то: если актер далеко проигруем анимации, если рядом и угол между направлением
     --наблюдения и актером меньше величины, то смотрим на актера, в противном случае - в наблюдаемую точку
     if(device():time_global() > self.time) then
-		if(level.actor() and distance_between(level.actor(), self.object) > 8) then
+		if(level.actor() and distance_between(level.actor(), self.object) > 5) then
 			self.animations:update("idle")
 			self.object:set_sight               (look.point, self.a.path:point(1), 0)
         else
@@ -889,7 +884,6 @@ function action_security_stand:on_position()
             	return
             end
 
---            printf("%f", yaw(level.actor():position():sub(self.object:position()), self.a.path:point(1):sub(self.object:position()) ) )
             --Проверяем угол
             if(level.actor() and yaw(level.actor():position():sub(self.object:position()), self.a.path:point(1):sub(self.object:position()) ) < 1.5)then
             	--Угол не большой, смотрим на актера
@@ -910,7 +904,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 function action_security_stand:finalize ()
     action_base.finalize 		(self)
-	self.animations				= nil
+	self.animations			= nil
 	self.object:disable_talk	()
     self.object:clear_animations()
 end
@@ -923,7 +917,6 @@ function add_security(obj)
     local properties    = {}
 
     properties["enabled"]            = xr_evaluators_id.jon_security
---    properties["position"]           = xr_evaluators_id.position
 
     operators["security"]            = xr_actions_id.jon_security
 
@@ -934,9 +927,9 @@ function add_security(obj)
 
     action:add_precondition         (world_property (stalker_ids.property_alive,  true))
     action:add_precondition         (world_property (stalker_ids.property_enemy,  false))
---    action:add_precondition         (world_property (properties["position"],      true))
     action:add_precondition         (world_property (properties["enabled"],       true))
     action:add_effect               (world_property (properties["enabled"],       false))
+
     manager:add_action              (operators["security"], action)
 
     action = manager:action         (stalker_ids.action_puzzle_solver)
