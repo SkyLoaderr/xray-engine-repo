@@ -6,6 +6,15 @@ void	game_sv_Single::Create			(LPCSTR options)
 	m_bALife			= !!strstr(options,"/alife");
 	switch_Phase		(GAME_PHASE_PENDING);
 }
+xrServerEntity*		game_sv_Single::get_entity_from_eid		(u16 id)
+{
+	VERIFY(m_tpALife);
+	OBJECT_PAIR_IT	I = m_tpALife->m_tObjectRegistry.find(id);
+	if (I != m_tpALife->m_tObjectRegistry.end())
+		return((*I).second);
+	else
+		return(inherited::get_entity_from_eid(id));
+}
 
 BOOL	game_sv_Single::OnTouch			(u16 eid_who, u16 eid_what)
 {

@@ -57,6 +57,11 @@ u16					game_sv_GameState::get_id_2_eid				(u32 id)
 	if (0==E)			return 0xffff;
 	return E->ID;
 }
+xrServerEntity*		game_sv_GameState::get_entity_from_eid		(u16 id)
+{
+	xrServer*		S	= Level().Server;
+	return				S->ID_to_entity(id);
+}
 
 // Utilities
 u32					game_sv_GameState::get_alive_count			(u32 team)

@@ -23,6 +23,7 @@ public:
 	};
 
 	virtual		void				Create					(LPCSTR options);
+	virtual		xrServerEntity*		get_entity_from_eid		(u16 id);
 
 	// Events
 	virtual		void				OnRoundStart			();										// старт раунда

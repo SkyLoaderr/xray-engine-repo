@@ -28,6 +28,7 @@ public:
 	virtual		u16					get_id_2_eid			(u32 id);
 	virtual		u32					get_it_2_id				(u32 it);
 	virtual		u32					get_count				();
+	virtual		xrServerEntity*		get_entity_from_eid		(u16 id);
 	
 	// Signals
 	virtual		void				switch_Phase			(u32 new_phase);

@@ -127,11 +127,12 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			P.r_u16				(id_src);
 			xrServerEntity*		e_dest		= ID_to_entity	(id_dest);	// кто умер
 			xrServerEntity*		e_src		= ID_to_entity	(id_src	);	// кто убил
+			R_ASSERT2			(e_dest && e_src, "Killer or/and being killed are offline or not exist at all :(");
 
 			xrClientData*		c_dest		= e_dest->owner;			// клиент, чей юнит умер
 			xrClientData*		c_src		= e_src->owner;				// клиент, чей юнит убил
 			xrClientData*		c_from		= ID_to_client	(sender);	// клиент, откуда пришла мессага
-			R_ASSERT			(c_dest == c_from);						// assure client ownership of event
+			R_ASSERT2			(c_dest == c_from, "Security error (SSU :)");// assure client ownership of event
 
 			//
 			
