@@ -200,7 +200,7 @@ end
 
 -- We need to customize behavior of ListBox
 
-class "CUISatanListBox" (CUIListBox)
+class "CUISatanListBox" (CUIScriptWnd)
 
 function CUISatanListBox:__init() super()
 	self:SetFont(GetFontLetterica25())
