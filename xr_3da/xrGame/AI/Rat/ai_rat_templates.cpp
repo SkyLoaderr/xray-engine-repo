@@ -132,7 +132,7 @@ void CAI_Rat::vfComputeNextDirectionPosition()
 	// Tweak orientation based on last position and goal
 	Fvector tOffset;
 	tOffset.sub(m_tGoalDir,vPosition);
-	float fDistance = tOffset.magnitude();
+	//float fDistance = tOffset.magnitude();
 	
 	// First, tweak the pitch
 	if (tOffset.y > 1.0) {			// We're too low
