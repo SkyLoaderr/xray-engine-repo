@@ -17,6 +17,7 @@ public:
 	float			area;
 	u32				flags;
 	u32				skip;
+	Fvector			center;
 };
 
 const float			occQ_s32	= float(0x40000000);	// [-2..2]

@@ -97,6 +97,7 @@ void CHOM::Load			()
 		}
 		rT.plane.build	(v0,v1,v2);
 		rT.skip			= 0;
+		rT.center.add(v0,v1).add(v2).div(3.f);
 	}
 
 	// Create AABB-tree
@@ -112,6 +113,19 @@ void CHOM::Unload		()
 	bEnabled			= FALSE;
 }
 
+class	pred_fb	{
+public:
+	occTri*		m_pTris	;
+	Fvector		camera	;
+public:
+	pred_fb		(occTri* _t, Fvector& _c) : m_pTris(_t), camera(_c)	{}
+	bool		operator()		(CDB::RESULT* _1, CDB::RESULT* _2)	{
+		occTri&	t0	= m_pTris	[_1->id];
+		occTri&	t1	= m_pTris	[_2->id];
+		return	camera.distance_to_sqr(t0) < camera.distance_to_sqr(t1);
+	}
+};
+
 void CHOM::Render_DB			(CFrustum& base)
 {
 	// Query DB
@@ -122,7 +136,10 @@ void CHOM::Render_DB			(CFrustum& base)
 	// Prepare
 	CDB::RESULT*	it			= xrc.r_begin	();
 	CDB::RESULT*	end			= xrc.r_end		();
+	
 	Fvector			COP			= Device.vCameraPosition;
+	std::sort		(it,end,pred_fb(m_pTris,COP));
+
 	float			view_dim	= occ_dim_0;
 	Fmatrix			m_viewport		= {
 		view_dim/2.f,			0.0f,					0.0f,		0.0f,
@@ -143,14 +160,15 @@ void CHOM::Render_DB			(CFrustum& base)
 	CFrustum					clip;
 	clip.CreateFromMatrix		(Device.mFullTransform,FRUSTUM_P_NEAR);
 	sPoly						src,dst;
+	u32							_frame	= Device.dwFrame;
 
 	// Perfrom selection, sorting, culling
 	for (; it!=end; it++)
 	{
 		// Control skipping
-		occTri& T		= m_pTris	[it->id];
-		if (T.skip)		{ T.skip--; continue; }
-		u32	next		= ::Random.randI(3,10);
+		occTri& T			= m_pTris	[it->id];
+		if (T.skip<_frame)	continue;
+		u32	next			= _frame + ::Random.randI(3,10);
 
 		// Test for good occluder - should be improved :)
 		if (!(T.flags || (T.plane.classify(COP)>0)))	
@@ -175,8 +193,7 @@ void CHOM::Render_DB			(CFrustum& base)
 			m_xform.transform(T.raster[2],(*P)[v+1]);
 			pixels	+=		Raster.rasterize(&T);
 		}
-		if (0==pixels)
-		{ T.skip=next; continue; }
+		if (0==pixels)	{ T.skip=next; continue; }
 	}
 }
 
