@@ -82,7 +82,7 @@ void CAI_ALife::vfListObjects()
 //	for (int i=0; I != E; I++, i++) {
 //		Memory.mem_copy(tString,&((*I).second->m_tClassID),sizeof((*I).second->m_tClassID));
 //		tString[sizeof((*I).second->m_tClassID)] = 0;
-//		Msg("* %4d : %8s[ID=%4d][MDL=%10s][CNT=%3d][GID=%4d][UPD=%d]",i,tString,(*I).first,m_tpSpawnPoints[(*I).second->m_tSpawnID]->m_caModel,(*I).second->m_wCount,(*I).second->m_tGraphID,(*I).second->m_tTimeID);
+//		Msg("* %4d : %8s[m_tObjectID=%4d][MDL=%10s][CNT=%3d][GID=%4d][UPD=%d]",i,tString,(*I).first,m_tpSpawnPoints[(*I).second->m_tSpawnID]->m_caModel,(*I).second->m_wCount,(*I).second->m_tGraphID,(*I).second->m_tTimeID);
 //	}
 //	Msg("Total %d objects",i);
 }
@@ -93,7 +93,7 @@ void CAI_ALife::vfListEvents()
 	EVENT_PAIR_IT	E = m_tEventRegistry.end();
 	Msg("%s->Listing events :",cName());
 	for (int i=0; I != E; I++, i++)
-		Msg("* %4d : [ID=%4d][BR=%1d][GID=%4d][TIME=%d]",i,(*I).first,(*I).second->m_tBattleResult,(*I).second->m_tGraphID,(*I).second->m_tTimeID);
+		Msg("* %4d : [m_tObjectID=%4d][BR=%1d][GID=%4d][TIME=%d]",i,(*I).first,(*I).second->m_tBattleResult,(*I).second->m_tGraphID,(*I).second->m_tTimeID);
 	Msg("Total %d events",i);
 }
 
@@ -103,7 +103,7 @@ void CAI_ALife::vfListTasks()
 	TASK_PAIR_IT	E = m_tTaskRegistry.end();
 	Msg("%s->Listing tasks :",cName());
 	for (int i=0; I != E; I++, i++)
-		Msg("* %4d : [ID=%4d][CID=%1d][TT=][GID=%4d][UPD=%d]",i,(*I).first,(*I).second->m_tCustomerID,(*I).second->m_tTaskType,(*I).second->m_tGraphID,(*I).second->m_tTimeID);
+		Msg("* %4d : [m_tObjectID=%4d][CID=%1d][TT=][GID=%4d][UPD=%d]",i,(*I).first,(*I).second->m_tCustomerID,(*I).second->m_tTaskType,(*I).second->m_tGraphID,(*I).second->m_tTimeID);
 	Msg("Total %d tasks",i);
 }
 
@@ -125,7 +125,7 @@ void CAI_ALife::vfListTerrain()
 		}
 
 		if (j)
-			vfPrintLargeString("Terrain location ID",S,i,j,105);
+			vfPrintLargeString("Terrain location m_tObjectID",S,i,j,105);
 	}
 	xr_free(S);
 	Msg("Total %d terrain locations",i);
@@ -153,7 +153,7 @@ void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 	OBJECT_PAIR_IT	I = m_tObjectRegistry.find(tObjectID);
 	Msg("%s->Object information :",cName());
 	if (I == m_tObjectRegistry.end()) {
-		Msg("Object not found! (ID = %d)",tObjectID);
+		Msg("Object not found! (m_tObjectID = %d)",tObjectID);
 		return;
 	}
 	
@@ -161,10 +161,10 @@ void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 	string64		tString;
 	Memory.mem_copy	(tString,&(tpALifeDynamicObject->m_tClassID),sizeof(tpALifeDynamicObject->m_tClassID));
 	tString[sizeof(tpALifeDynamicObject->m_tClassID)] = 0;
-	Msg("* Class ID      : %s[%I64u]",tString,tpALifeDynamicObject->m_tClassID);
+	Msg("* Class m_tObjectID      : %s[%I64u]",tString,tpALifeDynamicObject->m_tClassID);
 	Msg("* ObjectID      : %d",tpALifeDynamicObject->m_tObjectID);
-	Msg("* Spawn ID      : %d",tpALifeDynamicObject->m_tSpawnID);
-	Msg("* Graph ID      : %d",tpALifeDynamicObject->m_tGraphID);
+//	Msg("* Spawn m_tObjectID      : %d",tpALifeDynamicObject->m_tSpawnID);
+	Msg("* Graph m_tObjectID      : %d",tpALifeDynamicObject->m_tGraphID);
 	Msg("* Count         : %d",tpALifeDynamicObject->m_wCount);
 	vfPrintTime("* Update        :",tpALifeDynamicObject->m_tTimeID);
 	//Msg("* Update        : %d",tpALifeDynamicObject->m_tTimeID);
@@ -178,8 +178,8 @@ void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 	
 	CALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CALifeMonsterAbstract *>(tpALifeDynamicObject);
 	if (tpALifeMonsterAbstract) {
-		Msg("* Graph ID next : %d",tpALifeMonsterAbstract->m_tNextGraphID);
-		Msg("* Graph ID prev : %d",tpALifeMonsterAbstract->m_tPrevGraphID);
+		Msg("* Graph m_tObjectID next : %d",tpALifeMonsterAbstract->m_tNextGraphID);
+		Msg("* Graph m_tObjectID prev : %d",tpALifeMonsterAbstract->m_tPrevGraphID);
 		Msg("* Current speed : %7.2f",tpALifeMonsterAbstract->m_fCurSpeed);
 		Msg("* Going speed   : %7.2f",tpALifeMonsterAbstract->m_fGoingSpeed);
 		Msg("* Distance from : %7.2f",tpALifeMonsterAbstract->m_fDistanceFromPoint);
@@ -196,7 +196,7 @@ void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 		MONSTER_PARAMS_P_IT		I = tpALifeMonsterGroup->m_tpMembers.begin();
 		MONSTER_PARAMS_P_IT		E = tpALifeMonsterGroup->m_tpMembers.end();
 		for (int i=0; I != E; I++, i++)
-			Msg("* Member ID [%d]: %d",i,(*I)->m_iHealth);
+			Msg("* Member m_tObjectID [%d]: %d",i,(*I)->m_iHealth);
 		return;
 	}
 	
@@ -256,38 +256,38 @@ void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 		Msg("* Current task  :");
 		if (tpALifeHumanAbstract->m_tpTaskIDs.size()) {
 			CALifePersonalTask	&tTask = *(tpALifeHumanAbstract->m_tpTasks[tpALifeHumanAbstract->m_dwCurTask]);
-			Msg("* Task  ID    : %d",tTask.m_tTaskID);
-			vfPrintTime("* Time  ID  :",tTask.m_tTimeID);
-			Msg("* Customer ID : %d",tTask.m_tCustomerID);
+			Msg("* Task  m_tObjectID    : %d",tTask.m_tTaskID);
+			vfPrintTime("* Time  m_tObjectID  :",tTask.m_tTimeID);
+			Msg("* Customer m_tObjectID : %d",tTask.m_tCustomerID);
 			Msg("* Task type   : %d",tTask.m_tTaskType);
 			if (tTask.m_tTaskType == eTaskTypeSearchForItemOG) {
-				Msg("* Graph ID    : %d",tTask.m_tGraphID);
-				Msg("* Object ID   : %d",tTask.m_tObjectID);
+				Msg("* Graph m_tObjectID    : %d",tTask.m_tGraphID);
+				Msg("* Object m_tObjectID   : %d",tTask.m_tObjectID);
 			}
 			else if (tTask.m_tTaskType == eTaskTypeSearchForItemOL) {
-				Msg("* Location ID : %d",tTask.m_tLocationID);
-				Msg("* Object ID   : %d",tTask.m_tObjectID);
+				Msg("* Location m_tObjectID : %d",tTask.m_tLocationID);
+				Msg("* Object m_tObjectID   : %d",tTask.m_tObjectID);
 			}
 			else if (tTask.m_tTaskType == eTaskTypeSearchForItemCG) {
 				string64 tString;
 				Memory.mem_copy(tString,&(tTask.m_tClassID),sizeof(tTask.m_tClassID));
 				tString[sizeof(tTask.m_tClassID)] = 0;
-				Msg("* Graph ID    : %d",tTask.m_tGraphID);
-				Msg("* Class ID    : %d (%s)",tTask.m_tClassID,tString);
+				Msg("* Graph m_tObjectID    : %d",tTask.m_tGraphID);
+				Msg("* Class m_tObjectID    : %d (%s)",tTask.m_tClassID,tString);
 			}
 			else if (tTask.m_tTaskType == eTaskTypeSearchForItemCL) {
 				string64 tString;
 				Memory.mem_copy(tString,&(tTask.m_tClassID),sizeof(tTask.m_tClassID));
 				tString[sizeof(tTask.m_tClassID)] = 0;
-				Msg("* Location ID : %d",tTask.m_tLocationID);
-				Msg("* Class ID    : %d (%s)",tTask.m_tClassID,tString);
+				Msg("* Location m_tObjectID : %d",tTask.m_tLocationID);
+				Msg("* Class m_tObjectID    : %d (%s)",tTask.m_tClassID,tString);
 			}
 		}
 		{
 			PERSONAL_TASK_P_IT	I = tpALifeHumanAbstract->m_tpTasks.begin();
 			PERSONAL_TASK_P_IT	E = tpALifeHumanAbstract->m_tpTasks.end();
 			for (int j=0; I != E; I++, j++) {
-				Msg("* Task  ID    : %d",(*I)->m_tTaskID);
+				Msg("* Task  m_tObjectID    : %d",(*I)->m_tTaskID);
 				vfPrintTime(S,(*I)->m_tTimeID);
 				Msg("* Cost hope   : %7.2f",(*I)->m_fCost);
 				Msg("* Try count   : %d",(*I)->m_dwTryCount);
@@ -318,7 +318,7 @@ void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 			HUMAN_PARAMS_P_IT		I = tpALifeHumanGroup->m_tpMembers.begin();
 			HUMAN_PARAMS_P_IT		E = tpALifeHumanGroup->m_tpMembers.begin();
 			for (int i=0; I != E; I++, i++) {
-				Msg("* Member ID [%d]: %d",i,*I);
+				Msg("* Member m_tObjectID [%d]: %d",i,*I);
 				Msg("* Health        : %d",(*I)->m_iHealth);
 				Msg("* Money         : %d",(*I)->m_dwMoney);
 				Msg("* Item mass     : %7.2f",(*I)->m_fCumulativeItemMass);
@@ -342,27 +342,27 @@ void CAI_ALife::vfEventInfo(_EVENT_ID &tEventID)
 {
 	EVENT_PAIR_IT I = m_tEventRegistry.find(tEventID);
 	if (I == m_tEventRegistry.end()) {
-		Msg("* Invalid event ID! (%d)",tEventID);
+		Msg("* Invalid event m_tObjectID! (%d)",tEventID);
 		return;
 	}
 	CALifeEvent &tEvent = *((*I).second);
 	Msg("* Event information");
-	Msg("* Event ID  : %d",tEvent.m_tEventID);
-	Msg("* Graph ID  : %d",tEvent.m_tGraphID);
-	vfPrintTime("* Time  ID  :",tEvent.m_tTimeID);
+	Msg("* Event m_tObjectID  : %d",tEvent.m_tEventID);
+	Msg("* Graph m_tObjectID  : %d",tEvent.m_tGraphID);
+	vfPrintTime("* Time  m_tObjectID  :",tEvent.m_tTimeID);
 	Msg("* Battle    : %d",tEvent.m_tBattleResult);
 	Msg("* Monster 1 :");
 	CALifeEventGroup *tpMG = tEvent.m_tpMonsterGroup1;
-	Msg("*     Class  ID    : %d",tpMG->m_tClassID);
-	Msg("*     Object ID    : %d",tpMG->m_tObjectID);
-	Msg("*     Spawn  ID    : %d",tpMG->m_tSpawnID);
+	Msg("*     Class  m_tObjectID    : %d",tpMG->m_tClassID);
+	Msg("*     Object m_tObjectID    : %d",tpMG->m_tObjectID);
+//	Msg("*     Spawn  m_tObjectID    : %d",tpMG->m_tSpawnID);
 	Msg("*     Count before : %d",tpMG->m_wCount);
 	Msg("*     Count after  : %d",tpMG->m_wCountAfter);
 	Msg("* Monster 2 :");
 	tpMG = tEvent.m_tpMonsterGroup2;
-	Msg("*     Class  ID    : %d",tpMG->m_tClassID);
-	Msg("*     Object ID    : %d",tpMG->m_tObjectID);
-	Msg("*     Spawn  ID    : %d",tpMG->m_tSpawnID);
+	Msg("*     Class  m_tObjectID    : %d",tpMG->m_tClassID);
+	Msg("*     Object m_tObjectID    : %d",tpMG->m_tObjectID);
+//	Msg("*     Spawn  m_tObjectID    : %d",tpMG->m_tSpawnID);
 	Msg("*     Count before : %d",tpMG->m_wCount);
 	Msg("*     Count after  : %d",tpMG->m_wCountAfter);
 	{
@@ -393,37 +393,37 @@ void CAI_ALife::vfTaskInfo(_TASK_ID &tTaskID)
 {
 	TASK_PAIR_IT I = m_tTaskRegistry.find(tTaskID);
 	if (I == m_tTaskRegistry.end()) {
-		Msg("* Invalid task ID! (%d)",tTaskID);
+		Msg("* Invalid task m_tObjectID! (%d)",tTaskID);
 		return;
 	}
 	CALifeTask &tTask = *((*I).second);
 	Msg("* Task information");
-	Msg("* Task  ID    : %d",tTask.m_tTaskID);
-	vfPrintTime("* Time  ID  :",tTask.m_tTimeID);
-//	Msg("* Time  ID    : %d",tTask.m_tTimeID);
-	Msg("* Customer ID : %d",tTask.m_tCustomerID);
+	Msg("* Task  m_tObjectID    : %d",tTask.m_tTaskID);
+	vfPrintTime("* Time  m_tObjectID  :",tTask.m_tTimeID);
+//	Msg("* Time  m_tObjectID    : %d",tTask.m_tTimeID);
+	Msg("* Customer m_tObjectID : %d",tTask.m_tCustomerID);
 	Msg("* Task type   : %d",tTask.m_tTaskType);
 	if (tTask.m_tTaskType == eTaskTypeSearchForItemOG) {
-		Msg("* Graph ID    : %d",tTask.m_tGraphID);
-		Msg("* Object ID   : %d",tTask.m_tObjectID);
+		Msg("* Graph m_tObjectID    : %d",tTask.m_tGraphID);
+		Msg("* Object m_tObjectID   : %d",tTask.m_tObjectID);
 	}
 	else if (tTask.m_tTaskType == eTaskTypeSearchForItemOL) {
-		Msg("* Location ID : %d",tTask.m_tLocationID);
-		Msg("* Object ID   : %d",tTask.m_tObjectID);
+		Msg("* Location m_tObjectID : %d",tTask.m_tLocationID);
+		Msg("* Object m_tObjectID   : %d",tTask.m_tObjectID);
 	}
 	else if (tTask.m_tTaskType == eTaskTypeSearchForItemCG) {
 		string64 tString;
 		Memory.mem_copy(tString,&(tTask.m_tClassID),sizeof(tTask.m_tClassID));
 		tString[sizeof(tTask.m_tClassID)] = 0;
-		Msg("* Graph ID    : %d",tTask.m_tGraphID);
-		Msg("* Class ID    : %d (%s)",tTask.m_tClassID,tString);
+		Msg("* Graph m_tObjectID    : %d",tTask.m_tGraphID);
+		Msg("* Class m_tObjectID    : %d (%s)",tTask.m_tClassID,tString);
 	}
 	else if (tTask.m_tTaskType == eTaskTypeSearchForItemCL) {
 		string64 tString;
 		Memory.mem_copy(tString,&(tTask.m_tClassID),sizeof(tTask.m_tClassID));
 		tString[sizeof(tTask.m_tClassID)] = 0;
-		Msg("* Location ID : %d",tTask.m_tLocationID);
-		Msg("* Class ID    : %d (%s)",tTask.m_tClassID,tString);
+		Msg("* Location m_tObjectID : %d",tTask.m_tLocationID);
+		Msg("* Class m_tObjectID    : %d (%s)",tTask.m_tClassID,tString);
 	}
 	string4096	S;
 	string16	S1;
@@ -466,7 +466,7 @@ void CAI_ALife::vfSpawnPointInfo(_SPAWN_ID &tSpawnID)
 //		Msg("* Team                    : %d",tpCreatureSpawnPoint->m_ucTeam);
 //		Msg("* Squad                   : %d",tpCreatureSpawnPoint->m_ucSquad);
 //		Msg("* Group                   : %d",tpCreatureSpawnPoint->m_ucGroup);
-//		Msg("* Group ID	               : %d",tpCreatureSpawnPoint->m_wGroupID);
+//		Msg("* Group m_tObjectID	               : %d",tpCreatureSpawnPoint->m_wGroupID);
 //		Msg("* Count	               : %d",tpCreatureSpawnPoint->m_wCount);
 //		Msg("* BirthRadius	           : %6.2f",tpCreatureSpawnPoint->m_fBirthRadius);
 //		Msg("* BirthProbability	       : %6.2f",tpCreatureSpawnPoint->m_fBirthProbability);
@@ -491,7 +491,7 @@ void CAI_ALife::vfGraphVertexInfo(_GRAPH_ID &tGraphID)
 	SGraphVertex &tGraphVertex = Level().AI.m_tpaGraph[tGraphID];
 	Msg("%s->Graph vertex information :",cName());
 	Msg("* Level point                : [%7.2f][%7.2f][%7.2f]",tGraphVertex.tGlobalPoint.x,tGraphVertex.tGlobalPoint.y,tGraphVertex.tGlobalPoint.z);
-	Msg("* Location ID                : %d",tGraphVertex.tVertexType);
+	Msg("* Location m_tObjectID                : %d",tGraphVertex.tVertexType);
 	Msg("* Neighbours                 :");
 	SGraphEdge	*tpaEdges = (SGraphEdge *)((BYTE *)Level().AI.m_tpaGraph + tGraphVertex.dwEdgeOffset);
 	for (int i=0; i<(int)tGraphVertex.tNeighbourCount; i++)

@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "ai_alife_space.h"
+//#include "ai_alife_space.h"
 #include "ai_alife_objects.h"
 #include "ai_alife_registries.h"
 
@@ -39,7 +39,7 @@ private:
 															//	местности получить список точек 
 															//  графа
 	ALIFE_ENTITY_P_VECTOR			m_tpObjects;
-	xrALifeEntity					*m_tpActor;
+	CALifeObject					*m_tpActor;
 	float							m_fOnlineDistance;
 	// comnmon
 	void							vfUpdateDynamicData		(CALifeDynamicObject *tpALifeDynamicObject);
@@ -82,16 +82,18 @@ public:
 	virtual float					shedule_Scale			()					{return .5f;};
 	virtual BOOL					Ready					()					{return TRUE;};
 	virtual LPCSTR					cName					()					{return "ALife Simulator";}; 
-	virtual void					Load					();
 	virtual void					Update					(u32 dt);	
+	virtual void					Load					();
 			void					Save					();
 			void					Generate				();
-			void					vfCreateObject			(xrALifeEntity *tpALifeEntity);
-			void					vfSwitchObjectOnline	(xrALifeEntity *tpALifeEntity);
-			void					vfSwitchObjectOffline	(xrALifeEntity *tpALifeEntity);
-			void					vfUpdateOfflineObject	(xrALifeEntity *tpALifeEntity);
-			void					vfUpdateOnlineObject	(xrALifeEntity *tpALifeEntity);
+			void					vfCreateObject			(CALifeObject *tpALifeObject);
+			void					vfSwitchObjectOnline	(CALifeObject *tpALifeObject);
+			void					vfSwitchObjectOffline	(CALifeObject *tpALifeObject);
+			void					vfUpdateOfflineObject	(CALifeObject *tpALifeObject);
+			void					vfUpdateOnlineObject	(CALifeObject *tpALifeObject);
 			void					ProcessOnlineOfflineSwitches(CObject *tpObject, ALIFE_ENTITY_P_IT &I);
+			void					vfReleaseObject			(CALifeObject *tpALifeObject);
+			void					vfNewGame				();
 #ifdef ALIFE_SUPPORT_CONSOLE_COMMANDS
 			void					vfListObjects			();
 			void					vfListEvents			();

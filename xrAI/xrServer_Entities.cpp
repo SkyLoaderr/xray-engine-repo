@@ -1136,17 +1136,6 @@ void xrGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
 }
 #endif
 
-void xrALifeEntity::UPDATE_Read(NET_Packet &P)
-{
-	P.r			(&m_tGraphID,sizeof(m_tGraphID));
-	P.r_float	(m_fDistance);
-}
-
-void xrALifeEntity::UPDATE_Write(NET_Packet &P)
-{
-	P.w			(&m_tGraphID,sizeof(m_tGraphID));
-	P.w_float	(m_fDistance);
-}
 //--------------------------------------------------------------------
 xrServerEntity*	F_entity_Create		(LPCSTR name)
 {

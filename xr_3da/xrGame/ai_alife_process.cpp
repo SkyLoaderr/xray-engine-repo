@@ -52,28 +52,9 @@ void CAI_ALife::Update(u32 dt)
 //		default : NODEFAULT;
 //	}
 	
-//	vfUpdateOfflineObject			(m_tpActor);
-//	ALIFE_ENTITY_P_IT				I = m_tpObjects.begin();
-//	ALIFE_ENTITY_P_IT				E = m_tpObjects.end();
-//	for ( ;I != E; I++) {
-//		float						fDistance;
-//		if ((*I)->m_bOnline) {
-//			vfUpdateOfflineObject	(*I);
-//			fDistance				= m_tpActor->o_Position.distance_to((*I)->o_Position);
-//			if (fDistance > m_fOnlineDistance)
-//				vfSwitchObjectOffline(*I);
-//		}
-//		else {
-//			vfUpdateOnlineObject	(*I);
-//			fDistance				= m_tpActor->o_Position.distance_to((*I)->o_Position);
-//			if (fDistance <= m_fOnlineDistance)
-//				vfSwitchObjectOnline(*I);
-//		}
-//	}
-
 	ALIFE_ENTITY_P_IT				I = m_tpObjects.begin();
 	ALIFE_ENTITY_P_IT				E = m_tpObjects.end();
-	CObject							*tpObject = Level().Objects.FindObjectByName(m_tpActor->s_name_replace);
+	CObject							*tpObject = Level().Objects.net_Find(m_tpActor->ID);
 	if (!tpObject)
 		return;
 	for ( ;I != E; I++)

@@ -9,18 +9,17 @@
 #pragma once
 
 #include "ai_alife_spawn.h"
+#include "ai_alife_server_objects.h"
 #include "ai_alife_predicates.h"
 
 using namespace ALife;
 
 class CALifeObjectRegistry : public IPureALifeLSObject {
 public:
-	_OBJECT_ID						m_tObjectID;			// идентификатор карты событий
 	OBJECT_MAP						m_tObjectRegistry;		// список событий игры
 
 	CALifeObjectRegistry()
 	{
-		m_tObjectID					= 0;
 		m_tObjectRegistry.clear		();
 	};
 
@@ -32,50 +31,12 @@ public:
 	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
 		tMemoryStream.open_chunk	(OBJECT_CHUNK_DATA);
-		tMemoryStream.write			(&m_tObjectID,sizeof(m_tObjectID));
+//		tMemoryStream.write			(&m_tObjectID,sizeof(m_tObjectID));
 		tMemoryStream.Wdword		(m_tObjectRegistry.size());
-		OBJECT_PAIR_IT it			= m_tObjectRegistry.begin();
+		OBJECT_PAIR_IT I			= m_tObjectRegistry.begin();
 		OBJECT_PAIR_IT E			= m_tObjectRegistry.end();
-		for ( ; it != E; it++) {
-			CALifeTrader *tpALifeTrader = dynamic_cast<CALifeTrader *>((*it).second);
-			if (tpALifeTrader)
-				tMemoryStream.Wbyte(ALIFE_TRADER_ID);
-			else {
-				CALifeHuman	*tpALifeHuman = dynamic_cast<CALifeHuman *>((*it).second);
-				if (tpALifeHuman)
-					tMemoryStream.Wbyte(ALIFE_HUMAN_ID);
-				else {
-					CALifeHumanGroup	*tpALifeHumanGroup = dynamic_cast<CALifeHumanGroup *>((*it).second);
-					if (tpALifeHumanGroup)
-						tMemoryStream.Wbyte(ALIFE_HUMAN_GROUP_ID);
-					else {
-						CALifeMonster	*tpALifeMonster = dynamic_cast<CALifeMonster *>((*it).second);
-						if (tpALifeMonster)
-							tMemoryStream.Wbyte(ALIFE_MONSTER_ID);
-						else {
-							CALifeMonsterGroup	*tpALifeHumanGroup = dynamic_cast<CALifeMonsterGroup *>((*it).second);
-							if (tpALifeHumanGroup)
-								tMemoryStream.Wbyte(ALIFE_MONSTER_GROUP_ID);
-							else {
-								CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>((*it).second);
-								if (tpALifeItem)
-									tMemoryStream.Wbyte(ALIFE_ITEM_ID);
-								else {
-									CALifeAnomalousZone *tpALifeAnomalousZone = dynamic_cast<CALifeAnomalousZone *>((*it).second);
-									if (tpALifeAnomalousZone)
-										tMemoryStream.Wbyte(ALIFE_ANOMALOUS_ZONE_ID);
-									else {
-										Msg("!Unsupported ALife monster type!");
-										R_ASSERT(false);
-									}
-								}
-							}
-
-						}
-					}
-				}
-			}
-			(*it).second->Save(tMemoryStream);
+		for ( ; I != E; I++) {
+//			(*I).second->
 		}
 		tMemoryStream.close_chunk	();
 	};
@@ -83,7 +44,7 @@ public:
 	void CALifeObjectRegistry::Load(CStream	&tFileStream)
 	{
 		R_ASSERT(tFileStream.FindChunk(OBJECT_CHUNK_DATA));
-		tFileStream.Read(&m_tObjectID,sizeof(m_tObjectID));
+//		tFileStream.Read(&m_tObjectID,sizeof(m_tObjectID));
 		m_tObjectRegistry.clear();
 		u32 dwCount = tFileStream.Rdword();
 		for (u32 i=0; i<dwCount; i++) {
@@ -119,14 +80,14 @@ public:
 				}
 				default : NODEFAULT;
 			};
-			tpALifeDynamicObject->Load	(tFileStream);
+//			tpALifeDynamicObject->Load	(tFileStream);
 			m_tObjectRegistry.insert	(make_pair(tpALifeDynamicObject->m_tObjectID,tpALifeDynamicObject));
 		}
 	};
 
 	virtual	void					Add	(CALifeDynamicObject *tpALifeDynamicObject)
 	{
-		m_tObjectRegistry.insert				(make_pair(tpALifeDynamicObject->m_tObjectID = m_tObjectID++,tpALifeDynamicObject));
+//		m_tObjectRegistry.insert				(make_pair(tpALifeDynamicObject->m_tObjectID = m_tObjectID++,tpALifeDynamicObject));
 	};
 
 	IC bool bfCheckIfTaskCompleted(CALifeHumanParams &tHumanParams, CALifeHumanAbstract *tpALifeHumanAbstract, OBJECT_IT &I)
@@ -187,7 +148,7 @@ public:
 	{
 		tMemoryStream.open_chunk	(EVENT_CHUNK_DATA);
 		tMemoryStream.write			(&m_tEventID,sizeof(m_tEventID));
-		save_map					(m_tEventRegistry,tMemoryStream);
+		//save_map					(m_tEventRegistry,tMemoryStream);
 		tMemoryStream.close_chunk	();
 	};
 
@@ -195,7 +156,7 @@ public:
 	{
 		R_ASSERT(tFileStream.FindChunk(EVENT_CHUNK_DATA));
 		tFileStream.Read(&m_tEventID,sizeof(m_tEventID));
-		load_map					(m_tEventRegistry,tFileStream,tfChooseEventKeyPredicate);
+		//load_map					(m_tEventRegistry,tFileStream,tfChooseEventKeyPredicate);
 	};
 	
 	virtual	void					Add	(CALifeEvent	*tpEvent)
@@ -224,7 +185,7 @@ public:
 	{
 		tMemoryStream.open_chunk	(TASK_CHUNK_DATA);
 		tMemoryStream.write			(&m_tTaskID,sizeof(m_tTaskID));
-		save_map					(m_tTaskRegistry,tMemoryStream);
+		//save_map					(m_tTaskRegistry,tMemoryStream);
 		tMemoryStream.close_chunk	();
 	};
 	
@@ -232,7 +193,7 @@ public:
 	{
 		R_ASSERT(tFileStream.FindChunk(TASK_CHUNK_DATA));
 		tFileStream.Read			(&m_tTaskID,sizeof(m_tTaskID));
-		load_map					(m_tTaskRegistry,tFileStream,tfChooseTaskKeyPredicate);
+//		load_map					(m_tTaskRegistry,tFileStream,tfChooseTaskKeyPredicate);
 	};
 	
 	virtual	void					Add	(CALifeTask	*tpTask)
@@ -434,8 +395,10 @@ public:
 			R_ASSERT				(M_UPDATE == ID);
 			E->UPDATE_Read			(P);
 			
+			E->Init					(E->s_name);
+
 			R_ASSERT				(E->s_gameid == GAME_SINGLE);
-			R_ASSERT				((*I = dynamic_cast<xrALifeEntity*>(E)) != 0);
+			R_ASSERT				((*I = dynamic_cast<CALifeObject*>(E)) != 0);
 		}
 		m_tLevelEntities.clear		();
 		I							= m_tpALifeEntitites.begin();

@@ -165,6 +165,7 @@ void			xrServer::entity_Destroy	(xrServerEntity* P)
 {
 	R_ASSERT			(P);
 	id_free.push_back	(P->ID);
-	F_entity_Destroy	(P);
+	if (!P->m_bALifeControl)
+		F_entity_Destroy	(P);
 }
 

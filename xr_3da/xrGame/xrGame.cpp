@@ -287,9 +287,9 @@ public:
 			if (tpGame && tpGame->m_tALife.m_bLoaded) {
 				ALife::_OBJECT_ID id1 = ALife::_OBJECT_ID(-1);
 				sscanf(args ,"%d",&id1);
-				if (id1 >= tpGame->m_tALife.m_tObjectID)
-					Msg("Invalid object ID! (%d)",id1);
-				else
+//				if (id1 >= tpGame->m_tALife.m_tObjectID)
+//					Msg("Invalid object ID! (%d)",id1);
+//				else
 					tpGame->m_tALife.vfObjectInfo(id1);
 			}
 			else

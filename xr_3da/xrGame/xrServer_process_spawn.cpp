@@ -19,7 +19,10 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender, BOOL bSpawnWithClients
 			F_entity_Destroy(E);
 			return;
 		}
+		E->m_bALifeControl = false;
 	}
+	else
+		E->m_bALifeControl = true;
 
 	// check if we can assign entity to some client
 	if (0==CL && !net_Players.empty())
