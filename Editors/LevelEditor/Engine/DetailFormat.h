@@ -105,13 +105,16 @@ public:
 	static void		verify		()						{	VERIFY(16==sizeof(DetailSlot));	}
     void			color_editor(){c_dir=w_qclr(0.5f,15);c_hemi=w_qclr(0.5f,15);c_r=w_qclr(0.f,15);c_g=w_qclr(0.f,15);c_b=w_qclr(0.f,15);}
     u8				r_id		(u32 idx) {	
-        switch(idx){
+        switch(idx)	{
         case 0: return id0;
         case 1: return id1;
         case 2: return id2;
         case 3: return id3;
         default: NODEFAULT;	
         }
+#ifdef DEBUG
+		return 0;
+#endif
     }
     void			w_id		(u32 idx, u8 val) {	
         switch(idx){

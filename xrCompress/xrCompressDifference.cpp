@@ -30,7 +30,7 @@ struct file_comparer{
 
 	bool operator ()(char* o){
 		//compare file names
-		int eq = strcmp(m_full_name,o);
+		int eq = xr_strcmp(m_full_name,o);
 		if(0!=eq)
 			return false;
 		

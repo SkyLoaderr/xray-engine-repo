@@ -241,7 +241,7 @@ void CGlowManager::render_hw		()
 	SelectedToTest_0.clear_not_free	();
 
 	// 1. Sort into two parts - 1(selected-to-test)[to-test], 2(selected)[just-draw]
-	Fvector &start	= Device.vCameraPosition;
+	// Fvector &start	= Device.vCameraPosition;
 	for (int i=0; (i<ps_r1_GlowsPerFrame) && Selected.size(); i++,dwTestID++)
 	{
 		u32	ID		= dwTestID%Selected.size();

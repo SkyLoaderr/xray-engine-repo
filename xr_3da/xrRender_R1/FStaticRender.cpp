@@ -24,6 +24,9 @@ ShaderElement*			CRender::rimp_select_sh_dynamic	(IRender_Visual	*pVisual, float
 	case PHASE_SPOT:	return pVisual->shader->E[SE_R1_LSPOT]._get();
 	default:			NODEFAULT;
 	}
+#ifdef DEBUG
+	return	0;
+#endif
 }
 //////////////////////////////////////////////////////////////////////////
 ShaderElement*			CRender::rimp_select_sh_static	(IRender_Visual	*pVisual, float cdist_sq)
@@ -34,6 +37,9 @@ ShaderElement*			CRender::rimp_select_sh_static	(IRender_Visual	*pVisual, float 
 	case PHASE_SPOT:	return pVisual->shader->E[SE_R1_LSPOT]._get();
 	default:			NODEFAULT;
 	}
+#ifdef DEBUG
+	return	0;
+#endif
 }
 
 //////////////////////////////////////////////////////////////////////////
