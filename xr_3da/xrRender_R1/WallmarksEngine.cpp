@@ -179,7 +179,7 @@ void CWallmarksEngine::AddWallmark_internal	(CDB::TRI* pTri, const Fvector* pVer
 		if (0==triCount)	return;
 		CDB::TRI* tris		= g_pGameLevel->ObjectSpace.GetStaticTris();
 		sml_collector.clear	();
-		sml_collector.add_face_packed_D	(pVerts[pTri->verts[0]],pVerts[pTri->verts[1]],pVerts[pTri->verts[2]],0);
+		// sml_collector.add_face_packed_D	(pVerts[pTri->verts[0]],pVerts[pTri->verts[1]],pVerts[pTri->verts[2]],0);
 		for (u32 t=0; t<triCount; t++)	{
 			CDB::TRI*	T	= tris+xrc.r_begin()[t].id;
 			sml_collector.add_face_packed_D		(pVerts[T->verts[0]],pVerts[T->verts[1]],pVerts[T->verts[2]],0);
@@ -238,7 +238,7 @@ void CWallmarksEngine::AddWallmark	(CDB::TRI* pTri, const Fvector* pVerts, const
 {
 	// Physics may add wallmarks in parallel with rendering
 	lock.Enter				();
-	AddWallmark_internal	(pTri,contact_point,hShader,sz);
+	AddWallmark_internal	(pTri,pVerts,contact_point,hShader,sz);
 	lock.Leave				();
 }
 
