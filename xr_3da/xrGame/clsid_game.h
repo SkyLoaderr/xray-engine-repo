@@ -92,6 +92,7 @@
 
 // Standart level object
 #define CLSID_OBJECT_ITEM_STD		MK_CLSID('O','_','I','T','E','M',' ',' ')
+#define CLSID_OBJECT_PHYSIC			MK_CLSID('O','_','P','H','Y','S','I','C')
 
 // Zones
 #define CLSID_ZONE					MK_CLSID('Z','_','Z','O','N','E',' ',' ')

@@ -90,6 +90,17 @@ xrSE_DECLARE_BEGIN2(xrSE_HangingLamp,xrServerEntity,xrSE_Visualed)
     virtual							~xrSE_HangingLamp	();
 xrSE_DECLARE_END
 
+// Physyc Object ////////////////////////////////////////////////////
+enum EPOType {
+	epotBox
+};
+xrSE_DECLARE_BEGIN2(xrSE_PhysicObject,xrServerEntity,xrSE_Visualed)
+	u32								type;
+									xrSE_PhysicObject	(LPCSTR caSection);
+    virtual							~xrSE_PhysicObject	();
+xrSE_DECLARE_END
+/////////////////////////////////////////////////////////////////////
+
 //***** Weapon
 xrSE_DECLARE_BEGIN(xrSE_Weapon,CALifeDynamicObject)
 	u32								timestamp;

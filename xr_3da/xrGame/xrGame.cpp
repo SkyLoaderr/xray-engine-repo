@@ -667,6 +667,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 #include "mincer.h"
 
 #include "simpledetector.h"
+#include "physicobject.h"
 
 extern "C" {
 	DLL_API DLL_Pure*	__cdecl xrFactory_Create		(CLASS_ID cls)
@@ -739,6 +740,7 @@ extern "C" {
 
 		// entity
 		case CLSID_OBJECT_HLAMP:		P = xr_new<CHangingLamp>();			break;
+		case CLSID_OBJECT_PHYSIC:		P = xr_new<CPhysicObject>();			break;
 		}
 		R_ASSERT		(P);
 		P->SUB_CLS_ID	= cls;

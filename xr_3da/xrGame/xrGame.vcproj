@@ -686,6 +686,12 @@
 					<File
 						RelativePath=".\MovementControl.h">
 					</File>
+					<File
+						RelativePath="PhysicObject.cpp">
+					</File>
+					<File
+						RelativePath="PhysicObject.h">
+					</File>
 				</Filter>
 				<Filter
 					Name="_door"
