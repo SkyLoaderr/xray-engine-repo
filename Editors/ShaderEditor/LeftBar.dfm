@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 544
+  Height = 649
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 260
-    Height = 544
+    Height = 649
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -32,7 +32,7 @@ object fraLeftBar: TfraLeftBar
     TabOrder = 0
     object Splitter1: TSplitter
       Left = 1
-      Top = 305
+      Top = 410
       Width = 258
       Height = 2
       Cursor = crVSplit
@@ -184,7 +184,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 154
       Width = 258
-      Height = 151
+      Height = 256
       Align = alClient
       Color = 10528425
       ParentShowHint = False
@@ -206,7 +206,7 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 14
         Width = 256
-        Height = 136
+        Height = 241
         ActiveTabColor = 10528425
         BorderWidth = 0
         Color = 10528425
@@ -356,7 +356,7 @@ object fraLeftBar: TfraLeftBar
             Left = 0
             Top = 52
             Width = 252
-            Height = 59
+            Height = 164
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -571,7 +571,7 @@ object fraLeftBar: TfraLeftBar
             Left = 0
             Top = 52
             Width = 252
-            Height = 59
+            Height = 164
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -786,7 +786,7 @@ object fraLeftBar: TfraLeftBar
             Left = 0
             Top = 52
             Width = 252
-            Height = 59
+            Height = 164
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -894,7 +894,7 @@ object fraLeftBar: TfraLeftBar
             Left = 0
             Top = 52
             Width = 252
-            Height = 59
+            Height = 164
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -1215,7 +1215,7 @@ object fraLeftBar: TfraLeftBar
             Left = 0
             Top = 52
             Width = 252
-            Height = 59
+            Height = 164
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -1310,7 +1310,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paShaderProperties: TPanel
       Left = 1
-      Top = 307
+      Top = 412
       Width = 258
       Height = 236
       Align = alBottom
@@ -1588,10 +1588,6 @@ object fraLeftBar: TfraLeftBar
     object MenuItem7: TMenuItem
       Caption = 'Synchronize Sounds'
       OnClick = MenuItem7Click
-    end
-    object MenuItem8: TMenuItem
-      Caption = 'Check New Sounds'
-      OnClick = MenuItem8Click
     end
   end
 end

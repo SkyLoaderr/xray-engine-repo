@@ -66,8 +66,8 @@
       Intermediate\TopBar.obj Intermediate\UI_Camera.obj 
       Intermediate\UI_Main.obj Intermediate\UI_MainCommand.obj 
       Intermediate\UI_Tools.obj Intermediate\BottomBar.obj 
-      Intermediate\EditorPref.obj Intermediate\GameMtlLib_Editor.obj 
-      Intermediate\LeftBar.obj Intermediate\LogForm.obj Intermediate\main.obj 
+      Intermediate\GameMtlLib_Editor.obj Intermediate\LeftBar.obj 
+      Intermediate\LogForm.obj Intermediate\main.obj 
       Intermediate\SHCompilerTools.obj 
       Intermediate\SHCompilerToolsProperties.obj Intermediate\SHEngineTools.obj 
       Intermediate\SHEngineToolsProperties.obj 
@@ -85,7 +85,7 @@
       Intermediate\SkeletonAnimated.obj Intermediate\SkeletonCustom.obj 
       Intermediate\SoundEditor.obj Intermediate\EThumbnailTexture.obj 
       Intermediate\EThumbnail.obj Intermediate\EThumbnailObject.obj 
-      Intermediate\EThumbnailSound.obj"/>
+      Intermediate\EThumbnailSound.obj Intermediate\EditorPreferences.obj"/>
     <RESFILES value="ShaderEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -93,7 +93,7 @@
     <RESDEPEN value="$(RESFILES) Editor\ChoseForm.dfm Editor\ImageEditor.dfm 
       Editor\ItemList.dfm Editor\NumericVector.dfm Editor\PropertiesList.dfm 
       Editor\ShaderFunction.dfm Editor\TextForm.dfm Editor\TopBar.dfm 
-      BottomBar.dfm EditorPref.dfm LeftBar.dfm LogForm.dfm main.dfm Splash.dfm 
+      BottomBar.dfm LeftBar.dfm LogForm.dfm main.dfm Splash.dfm 
       Editor\SoundEditor.dfm"/>
     <LIBFILES value=""/>
     <LIBRARIES value="elpackB6.lib editor.lib vclx.lib bcbsmp.lib"/>
@@ -264,7 +264,6 @@
       <FILE FILENAME="Editor\UI_MainCommand.cpp" FORMNAME="" UNITNAME="UI_MainCommand.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="UI_Tools.cpp" FORMNAME="" UNITNAME="UI_Tools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="BottomBar.cpp" FORMNAME="fraBottomBar" UNITNAME="BottomBar" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
-      <FILE FILENAME="EditorPref.cpp" FORMNAME="frmEditPrefs" UNITNAME="EditorPref" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="GameMtlLib_Editor.cpp" FORMNAME="" UNITNAME="GameMtlLib_Editor.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="LeftBar.cpp" FORMNAME="fraLeftBar" UNITNAME="LeftBar" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="LogForm.cpp" FORMNAME="frmLog" UNITNAME="LogForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -303,6 +302,7 @@
       <FILE FILENAME="Editor\EThumbnail.cpp" FORMNAME="" UNITNAME="EThumbnail.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\EThumbnailObject.cpp" FORMNAME="" UNITNAME="EThumbnailObject.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\EThumbnailSound.cpp" FORMNAME="" UNITNAME="EThumbnailSound.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\EditorPreferences.cpp" FORMNAME="" UNITNAME="EditorPreferences" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

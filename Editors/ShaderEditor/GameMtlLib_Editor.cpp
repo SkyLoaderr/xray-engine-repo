@@ -168,7 +168,7 @@ void __fastcall SGameMtlPair::OnParentClick(PropValue* sender, bool& bModif)
         }
 	    SGameMtlPair* P	= m_Owner->GetMaterialPair(ID_parent);
         AnsiString nm	= P?m_Owner->MtlPairToName(P->GetMtl0(),P->GetMtl1()):NONE_CAPTION;
-        if (TfrmChoseItem::SelectItem(TfrmChoseItem::smCustom,MP,1,nm.c_str(),false,&items)){
+        if (TfrmChoseItem::SelectItem(TfrmChoseItem::smCustom,MP,1,(nm==NONE_CAPTION)?0:nm.c_str(),false,&items)){
         	if (MP){
                 int m0, m1;
                 m_Owner->NameToMtlPair	(MP,m0,m1);

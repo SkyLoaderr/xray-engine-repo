@@ -14,7 +14,6 @@ USEFORM("Editor\ShaderFunction.cpp", frmShaderFunction);
 USEFORM("Editor\TextForm.cpp", frmText);
 USEFORM("Editor\TopBar.cpp", fraTopBar); /* TFrame: File Type */
 USEFORM("BottomBar.cpp", fraBottomBar); /* TFrame: File Type */
-USEFORM("EditorPref.cpp", frmEditPrefs);
 USEFORM("LeftBar.cpp", fraLeftBar); /* TFrame: File Type */
 USEFORM("LogForm.cpp", frmLog);
 USEFORM("main.cpp", frmMain);
