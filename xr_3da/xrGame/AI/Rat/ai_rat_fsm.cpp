@@ -309,10 +309,10 @@ void CAI_Rat::UnderFire()
 	else 
 		m_fSafeSpeed = m_fSpeed = m_fAttackSpeed;
 
-	if (m_fSpeed > EPS_L)
+	//if (m_fSpeed > EPS_L)
 		vfComputeNewPosition();
-	else
-		UpdateTransform();
+	//else
+	//	UpdateTransform();
 
 	SetDirectionLook();
 }
@@ -335,10 +335,10 @@ void CAI_Rat::AttackFire()
 	if (!(m_Enemy.Enemy) && m_tSavedEnemy && (Level().timeServer() - m_dwLostEnemyTime < LOST_MEMORY_TIME))
 		m_Enemy.Enemy = m_tSavedEnemy;
 
-	CHECK_IF_GO_TO_NEW_STATE((m_Enemy.Enemy->Position().distance_to(vPosition) > ATTACK_DISTANCE),aiRatAttackRun)
-
 	CHECK_IF_GO_TO_PREV_STATE(!(m_Enemy.Enemy));// || !m_Enemy.Enemy->g_Alive())
 		
+	CHECK_IF_GO_TO_NEW_STATE((m_Enemy.Enemy->Position().distance_to(vPosition) > ATTACK_DISTANCE),aiRatAttackRun)
+
 	Fvector tTemp;
 	tTemp.sub(m_Enemy.Enemy->Position(),vPosition);
 	vfNormalizeSafe(tTemp);
