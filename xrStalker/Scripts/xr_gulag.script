@@ -118,7 +118,7 @@ function fract:calculate()
 end
 function fract:changeState(state)
 	if self.music ~= nil then
-		self.music:update(state)
+		self.music:event(state)
 	end
 	self.state = state
 end
