@@ -145,8 +145,10 @@ void xrMergeGraphs()
 	F.SaveTo("game.graph",0);
 	
 	// free all the graphs
-	GRAPH_P_IT					I = tpGraphs.begin();
-	GRAPH_P_IT					E = tpGraphs.end();
-	for ( ; I != E; I++)
-		xr_free(*I);
+	{
+		GRAPH_P_IT					I = tpGraphs.begin();
+		GRAPH_P_IT					E = tpGraphs.end();
+		for ( ; I != E; I++)
+			xr_free(*I);
+	}
 }
