@@ -403,13 +403,15 @@ void CUIGlobalMap::Draw					()
 //////////////////////////////////////////////////////////////////////////
 
 CUILevelMap::CUILevelMap()
-:m_globalMapSpot(this)
 {
-	Show(false);
+	m_globalMapSpot		= xr_new<CUIGlobalMapSpot>(this);
+	Show				(false);
 }
 
 CUILevelMap::~CUILevelMap()
-{}
+{
+	xr_delete			(m_globalMapSpot);
+}
 
 void CUILevelMap::Init	(shared_str name, CInifile& gameLtx)
 {
@@ -418,7 +420,7 @@ void CUILevelMap::Init	(shared_str name, CInifile& gameLtx)
 	Fvector4 tmp = gameLtx.r_fvector4(MapName(),"global_rect");
 	m_GlobalRect.set(tmp.x, tmp.w, tmp.z, tmp.y);
 
-	m_globalMapSpot.Init(inactiveLocalMapColor);
+	m_globalMapSpot->Init(inactiveLocalMapColor);
 }
 
 

@@ -23,7 +23,8 @@
 class CUIMapWnd;
 class CUIGlobalMapSpot;
 
-class CUICustomMap : public CUIStatic, public CUIWndCallback{
+class CUICustomMap : public CUIStatic, public CUIWndCallback
+{
 	
 	shared_str		m_name;
 	Frect			m_BoundRect;// real map size (meters)
@@ -125,13 +126,18 @@ class CUILevelMap: public CUICustomMap{
 	typedef  CUICustomMap inherited;
 
 	Frect						m_GlobalRect;			// virtual map size (meters)
-	CUIGlobalMapSpot			m_globalMapSpot;		//rect on the global map
+	CUIGlobalMapSpot			*m_globalMapSpot;		//rect on the global map
+
+private:
+								CUILevelMap			(const CUILevelMap &obj) {}
+			CUILevelMap			&operator=			(const CUILevelMap &obj) {}
+
 public:
 								CUILevelMap			();
 	virtual						~CUILevelMap		();
 	virtual void				Init				(shared_str name, CInifile& gameLtx);
 	const Frect&				GlobalRect			() const								{return m_GlobalRect;}
-	virtual CUIGlobalMapSpot*	GlobalMapSpot		()										{return &m_globalMapSpot;}
+	virtual CUIGlobalMapSpot*	GlobalMapSpot		()										{return m_globalMapSpot;}
 protected:
 	virtual void				UpdateSpots			();
 
