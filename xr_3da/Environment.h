@@ -11,7 +11,8 @@ class ENGINE_API CInifile;
 class ENGINE_API CSoundStream;
 
 enum {
-	effSunGlare		= (1ul<<0ul)
+	effSunGlare		= (1ul<<0ul),
+	effGlows		= (1ul<<1ul)
 };
 
 struct ENGINE_API	SEnvDef 
@@ -77,7 +78,7 @@ public:
 	virtual void	OnDeviceDestroy		();
 };
 
-ENGINE_API extern DWORD		psENVState;
+ENGINE_API extern DWORD		psEnvFlags;
 ENGINE_API extern float		psGravity;
 
 #endif // !defined(AFX_ENVIRONMENT_H__155A6D9E_2ECC_4DCC_80B2_27CD3F070B41__INCLUDED_)

@@ -98,6 +98,8 @@ IC bool glow_compare(CGlow* g1, CGlow *g2)
 
 void CGlowManager::add(vector<WORD> &V)
 {
+	if (! (psEnvFlags & effGlows))		return;
+
 	Device.Statistic.RenderDUMP_Glows.Begin();
 
 	Fvector &start	= Device.vCameraPosition;

@@ -410,5 +410,5 @@ void CCC_Register()
 	CMD4(CCC_Float,		"ph_gravity",			&psGravity,					1,	100);
 
 	CMD3(CCC_Mask,		"eff_sun_glare",		&psEnvFlags,	effSunGlare);
+	CMD3(CCC_Mask,		"eff_glow",				&psEnvFlags,	effGlows);
 };
-
