@@ -21,6 +21,21 @@
 	obj_count-1
 2 - slots
 */
+/*
+// detail object
+	char*			shader;
+	char*			texture;
+
+	DWORD			flag;
+	float			min_scale;
+	float	 		max_scale;
+
+	DWORD			vert_count;
+	DWORD			index_count;
+
+	fvfVertexIn*	vertices;
+	WORD*			indices;
+*/
 
 struct ENGINE_API DetailHeader
 {
