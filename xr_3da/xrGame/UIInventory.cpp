@@ -15,7 +15,7 @@
 static
 u32 DILetters[] = { DIK_A, DIK_B, DIK_C, DIK_D, DIK_E, DIK_F, DIK_G, DIK_H, DIK_I, DIK_J, DIK_K, DIK_L, DIK_M, DIK_N, DIK_O, DIK_P, DIK_Q, DIK_R, DIK_S, DIK_T, DIK_U, DIK_V, DIK_W, DIK_X, DIK_Y, DIK_Z };
 static
-map<u32, char> gs_DIK2CHR;
+xr_map<u32, char> gs_DIK2CHR;
 
 CUIInventory::CUIInventory(void) {
 	m_active = m_shift = m_deleteNext = false;

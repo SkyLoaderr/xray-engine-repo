@@ -28,7 +28,7 @@ private:
 
 	typedef multimap<LPCSTR,IVisual*,str_pred>		POOL;
 	typedef POOL::iterator							POOL_IT;
-	typedef map<IVisual*,LPCSTR>					REGISTRY;
+	typedef xr_map<IVisual*,LPCSTR>					REGISTRY;
 	typedef REGISTRY::iterator						REGISTRY_IT;
 private:
 	xr_vector<ModelDef>	Models;				// Reference / Base

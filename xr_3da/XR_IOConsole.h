@@ -24,7 +24,7 @@ public:
 		IC bool operator()(const char* x, const char* y) const
 		{	return strcmp(x,y)<0;	}
 	};
-	typedef map<LPSTR,CConsoleCommand*,str_pred>	vecCMD;
+	typedef xr_map<LPSTR,CConsoleCommand*,str_pred>	vecCMD;
 	typedef vecCMD::iterator						vecCMD_IT;
 	enum			{ MAX_LEN = 512 };
 private:

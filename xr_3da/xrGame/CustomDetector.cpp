@@ -81,7 +81,7 @@ void CCustomDetector::net_Destroy() {
 	xr_delete(m_pPhysicsShell);
 	inherited::net_Destroy();
 	SoundDestroy(m_noise);
-	map<CLASS_ID, sound*>::iterator l_it;
+	xr_map<CLASS_ID, sound*>::iterator l_it;
 	for(l_it = m_sounds.begin(); l_it != m_sounds.end(); l_it++) SoundDestroy(*l_it->second);
 }
 

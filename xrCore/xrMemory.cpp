@@ -94,7 +94,7 @@ void	xrMemory::mem_statistic	()
 {
 	mem_compact				();
 	LPCSTR					fn	= "$memstat$.tmp";
-	map<u32,u32>			stats;
+	xr_map<u32,u32>			stats;
 
 	// Dump memory stats into file to avoid reallocation while traversing
 	cs.Enter				();
@@ -117,7 +117,7 @@ void	xrMemory::mem_statistic	()
 		while (!F->eof())
 		{
 			size						= F->r_u32	();
-			map<u32,u32>::iterator I	= stats.find(size);
+			xr_map<u32,u32>::iterator I	= stats.find(size);
 			if (I!=stats.end())			I->second += 1;
 			else						stats.insert(make_pair(size,1));
 		}
@@ -127,8 +127,8 @@ void	xrMemory::mem_statistic	()
 
 	// Output to log
 	{
-		map<u32,u32>::iterator I		= stats.begin();
-		map<u32,u32>::iterator E		= stats.end();
+		xr_map<u32,u32>::iterator I		= stats.begin();
+		xr_map<u32,u32>::iterator E		= stats.end();
 		for (; I!=E; I++)	Msg			("%8d : %-4d [%d]",I->first,I->second,I->first*I->second);
 	}
 }

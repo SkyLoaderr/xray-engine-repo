@@ -35,7 +35,7 @@ void	game_cl_GameState::net_import_state	(NET_Packet& P)
 	u16	p_count;
 	P.r_u16			(p_count);
 	players.clear	();
-	pair <map<u32,Player>::iterator, bool> I;
+	pair <xr_map<u32,Player>::iterator, bool> I;
 	for (u16 p_it=0; p_it<p_count; p_it++)
 	{
 		u32				ID;
@@ -58,7 +58,7 @@ void	game_cl_GameState::net_import_update(NET_Packet& P)
 	P.r					(&PS,sizeof(game_PlayerState));
 
 	// Update
-	map<u32,Player>::iterator I	= players.find(ID);
+	xr_map<u32,Player>::iterator I	= players.find(ID);
 	if (I!=players.end())
 	{
 		Player& IP		= I->second;

@@ -22,8 +22,8 @@ IC bool	pred_player		(LPVOID v1, LPVOID v2)
 void CUICSFragList::OnFrame()
 {
 	inherited::OnFrame();
-	map<u32,game_cl_GameState::Player>::iterator I=Game().players.begin();
-	map<u32,game_cl_GameState::Player>::iterator E=Game().players.end();
+	xr_map<u32,game_cl_GameState::Player>::iterator I=Game().players.begin();
+	xr_map<u32,game_cl_GameState::Player>::iterator E=Game().players.end();
 
 	// create temporary (sort by kills)
 	items.clear			();

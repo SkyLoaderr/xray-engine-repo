@@ -124,7 +124,7 @@ void CPlayers::remove(NET_Packet& P)
 
 CPlayers::Item* CPlayers::access(u32 ID)
 {
-	map<u32,Item>::iterator	it = items.find	(ID);
+	xr_map<u32,Item>::iterator	it = items.find	(ID);
 	if (it!=items.end())		return &it->second;
 	else						return 0;
 }

@@ -12,7 +12,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 
 	//************************************************************************************
 	// RTargets
-	for (map<LPSTR,CRT*,str_pred>::iterator r=m_rtargets.begin(); r!=m_rtargets.end(); r++)
+	for (xr_map<LPSTR,CRT*,str_pred>::iterator r=m_rtargets.begin(); r!=m_rtargets.end(); r++)
 	{
 		R_ASSERT	(0==r->second->dwReference);
 		xr_free		((char*)r->first);
@@ -90,7 +90,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 	//************************************************************************************
 	// Textures
 	if (!bKeepTextures)	{
-		for (map<LPSTR,CTexture*,str_pred>::iterator t=m_textures.begin(); t!=m_textures.end(); t++)
+		for (xr_map<LPSTR,CTexture*,str_pred>::iterator t=m_textures.begin(); t!=m_textures.end(); t++)
 		{
 //			R_ASSERT	(0==t->second->dwReference);
 			xr_free		((char*)t->first);
@@ -100,7 +100,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 	}
 
 	// Matrices
-	for (map<LPSTR,CMatrix*,str_pred>::iterator m=m_matrices.begin(); m!=m_matrices.end(); m++)
+	for (xr_map<LPSTR,CMatrix*,str_pred>::iterator m=m_matrices.begin(); m!=m_matrices.end(); m++)
 	{
 //		if (m->second->dwMode!=CMatrix::modeDetail)	R_ASSERT(0==m->second->dwReference);
 		xr_free		((char*)m->first);
@@ -109,7 +109,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 	m_matrices.clear	();
 
 	// Constants
-	for (map<LPSTR,CConstant*,str_pred>::iterator c=m_constants.begin(); c!=m_constants.end(); c++)
+	for (xr_map<LPSTR,CConstant*,str_pred>::iterator c=m_constants.begin(); c!=m_constants.end(); c++)
 	{
 //		R_ASSERT	(0==c->second->dwReference);
 		xr_free		((char*)c->first);

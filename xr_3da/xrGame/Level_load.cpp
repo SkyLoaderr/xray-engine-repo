@@ -309,7 +309,7 @@ void CLevel::Load_GameSpecific_CFORM	( CDB::TRI* tris, u32 count )
 	u16		default_id	= (u16)GMLib.GetMaterialIdx("default");
 
 	// 2. Build mapping
-	map<u32,u16>		translator;
+	xr_map<u32,u16>		translator;
 	translator.insert	(make_pair(u32(-1),default_id));
 	u16 idx				= 0;
 	for (GameMtlIt I=GMLib.FirstMaterial(); I!=GMLib.LastMaterial(); I++)
@@ -321,7 +321,7 @@ void CLevel::Load_GameSpecific_CFORM	( CDB::TRI* tris, u32 count )
 	for (u32 it=0; it<count; it++)
 	{
 		CDB::TRI* T						= tris + it;
-		map<u32,u16>::iterator index	= translator.find(T->dummy);
+		xr_map<u32,u16>::iterator index	= translator.find(T->dummy);
 		if (index==translator.end())	Debug.fatal	("Game material '%d' not found",T->dummy);
 		T->material						= index->second;
 	}

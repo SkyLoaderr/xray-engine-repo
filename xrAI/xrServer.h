@@ -12,7 +12,7 @@
 const u32	NET_Latency		= 50;		// time in (ms)
 
 // t-defs
-typedef std::map<u16,xrServerEntity*>	xrS_entities;
+typedef xr_map<u16,xrServerEntity*>	xrS_entities;
 
 class xrClientData	: public IClient
 {

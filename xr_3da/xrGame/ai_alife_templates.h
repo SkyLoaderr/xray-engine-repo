@@ -22,10 +22,10 @@ void free_vector(xr_vector<T *> &tpVector)
 };
 
 template <class T1, class T2>
-void free_map(map<T1,T2 *> &tpMap)
+void free_map(xr_map<T1,T2 *> &tpMap)
 {
-	map<T1,T2 *>::iterator		I = tpMap.begin();
-	map<T1,T2 *>::iterator		E = tpMap.end();
+	xr_map<T1,T2 *>::iterator		I = tpMap.begin();
+	xr_map<T1,T2 *>::iterator		E = tpMap.end();
 	for ( ; I != E; I++)
 		xr_delete					((*I).second);
 };
@@ -126,17 +126,17 @@ void load_vector(xr_vector<T *> &tpVector, NET_Packet &tNetPacket)
 };
 
 template <class T1, class T2>
-void save_map(map<T1,T2 *> &tpMap, NET_Packet &tNetPacket)
+void save_map(xr_map<T1,T2 *> &tpMap, NET_Packet &tNetPacket)
 {
 	tNetPacket.w_u32		(tpMap.size());
-	map<T1,T2 *>::iterator		I = tpMap.begin();
-	map<T1,T2 *>::iterator		E = tpMap.end();
+	xr_map<T1,T2 *>::iterator		I = tpMap.begin();
+	xr_map<T1,T2 *>::iterator		E = tpMap.end();
 	for ( ; I != E; I++)
 		(*I).second->Save		(tMemoryStream);
 };
 
 template <class T1, class T2>
-void load_map(map<T1,T2 *> &tpMap, NET_Packet &tNetPacket, T1 tfGetKey(const T2 *))
+void load_map(xr_map<T1,T2 *> &tpMap, NET_Packet &tNetPacket, T1 tfGetKey(const T2 *))
 {
 	tpMap.clear					();
 	u32							dwCount	= tFileStream.Rdword();
