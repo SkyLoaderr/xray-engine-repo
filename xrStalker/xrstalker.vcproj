@@ -1554,6 +1554,9 @@
 							RelativePath=".\scripts\xr_sos.script">
 						</File>
 						<File
+							RelativePath=".\scripts\xr_use.script">
+						</File>
+						<File
 							RelativePath=".\scripts\xr_wounded.script">
 						</File>
 					</Filter>

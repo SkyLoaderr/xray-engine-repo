@@ -200,6 +200,7 @@ function disable_generic_schemes(npc, stype)
 	if stype == modules.stype_stalker then
 		xr_combat.disable_scheme(npc, "combat")
 		xr_death.disable_scheme(npc, "death")
+		xr_use.disable_scheme(npc, "use")
 		xr_hit.disable_scheme(npc, "hit")
 		xr_meet.disable_scheme(npc, "actor_dialogs")
 		xr_wounded.disable_scheme(npc, "wounded")
@@ -227,6 +228,11 @@ function enable_generic_schemes(ini, npc, stype, section)
 		local death_section = utils.cfg_get_string(ini, section, "on_death", npc, false, "")
 		if death_section then
 			xr_death.set_death_checker(npc, ini, "death", death_section)
+		end
+
+		local use_section = utils.cfg_get_string(ini, section, "on_use", npc, false, "")
+		if use_section then
+			xr_use.set_use_checker(npc, ini, "use", use_section)
 		end
 
 		local hit_section = utils.cfg_get_string(ini, section, "on_hit", npc, false, "")

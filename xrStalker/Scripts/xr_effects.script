@@ -291,3 +291,14 @@ function search_gulag_job(actor, npc)
 		xr_gulag.resetJob (st, npc)
 	end
 end
+
+function notify_back_off(actor, npc)
+	sound_e = { rnd = 100,
+				   maxidle = 1, 
+				   sumidle = 0,
+				   themes = { "threat_back" } }
+	
+	if npc:active_sound_count() == 0 then
+		xr_sound.sound_update(npc, sound_e)		
+	end	
+end
