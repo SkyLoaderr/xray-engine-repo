@@ -345,7 +345,7 @@ void xrSE_Spectator::FillProp		(LPCSTR pref, PropItemVec& items)
 xrSE_Actor::xrSE_Actor			()
 {
 	caModel[0]						= 0;
-	strcat(caModel,"actors\\Different_stalkers\\stalker_no_hood_multiplayer.ogf");
+	strcat(caModel,"actors\\Different_stalkers\\stalker_hood_multiplayer.ogf");
 }
 
 void xrSE_Actor::STATE_Read			(NET_Packet& P, u16 size)
