@@ -11,12 +11,6 @@ function load_scheme(filename, scheme, stype)
 	module(filename)
 end
 
-// this function can be used instead of obsolete function "module"
-// this function forces to load module directly in-place
-function prefetch(filename)
-	return _G[filename] 
-end
-
 ----------------------------------------------------------------------
 -- Загрузка модулей:
 ----------------------------------------------------------------------
