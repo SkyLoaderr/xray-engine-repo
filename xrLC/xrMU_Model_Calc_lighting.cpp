@@ -76,7 +76,6 @@ void xrMU_Model::calc_lighting	(vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL
 	}
 
 	// Process all groups
-	Status					("Transluenting...");
 	for (mapVertIt it=g_trans.begin(); it!=g_trans.end(); it++)
 	{
 		// Unique
