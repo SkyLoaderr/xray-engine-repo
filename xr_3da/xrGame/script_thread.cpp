@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "script_space.h"
 #include "lua.h"
+#include "lstate.h"
 #include "script_engine.h"
 #include "script_thread.h"
 #include "ai_space.h"
@@ -40,16 +41,9 @@ CScriptThread::CScriptThread(LPCSTR caNamespaceName)
 		lua_sethook		(lua(), CDbgLuaHelper::hookLua,			LUA_MASKLINE|LUA_MASKCALL|LUA_MASKRET, 0);
 #endif
 
-//	sprintf				(S,"function start_thread()\n%s.main()\nend\n",caNamespaceName);
 	sprintf				(S,"%s.main()",caNamespaceName);
 	if (!ai().script_engine().load_buffer(lua(),S,xr_strlen(S),"@_thread_main"))
 		return;
-
-//	lua_call			(lua(),0,0);
-
-//	ai().script_engine().set_current_thread	(m_script_name);
-//	luabind::resume_function<void>(lua(),"start_thread");
-//	ai().script_engine().set_current_thread	("");
 
 	m_bActive			= true;
 }
@@ -68,18 +62,18 @@ bool CScriptThread::Update()
 	ai().script_engine().set_current_thread	(this);
 	
 	int					l_iErrorCode = lua_resume(lua(),0);
-//	luabind::resume<void>(lua());
+	
 	if (l_iErrorCode) {
 		if (!ai().script_engine().print_output(lua(),m_script_name,l_iErrorCode))
 			ai().script_engine().print_error(lua(),l_iErrorCode);
 		m_bActive		= false;
 	}
 	else
-//		if (!(lua()->ci->state & CI_YIELD)) {
-//			m_bActive	= false;
-//			ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeInfo,"Script %s is finished!",m_script_name);
-//		}
-//		else {
+		if (!(lua()->ci->state & CI_YIELD)) {
+			m_bActive	= false;
+			ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeInfo,"Script %s is finished!",m_script_name);
+		}
+		else {
 #ifdef USE_DEBUGGER
 			if( !CScriptDebugger::GetDebugger()->Active() ) 
 #endif
@@ -88,7 +82,7 @@ bool CScriptThread::Update()
 				--m_current_stack_level;
 			}
 			VERIFY2		(!lua_gettop(lua()),"Do not pass any value to coroutine.yield()!");
-//		}
+		}
 	
 	ai().script_engine().set_current_thread	(0);
 	
