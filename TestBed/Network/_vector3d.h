@@ -278,16 +278,34 @@ public:
 		mknormal_non_normalized(p0,p1,p2);
     	normalize_safe();
     };
-	IC	void direct(float heading, float pitch){
-		float h=-heading;
-		float p=-pitch;
-		float _sh,_ch;		_sincos(h,_sh,_ch);
-		float _sp,_cp;		_sincos(p,_sp,_cp);
-		
-		x = _cp*_sh;
-		y = -_sp;
-		z = _cp*_ch;
+	IC	void direct(T h, T p)
+	{
+        T ch, cp, sh, sp;
+        _sincos(h,sh,ch);
+        _sincos(p,sp,cp);
+
+        x = -cp*sh;
+        y = sp;
+        z = cp*ch;
     }
+    IC void getHP(T& h, T& p)
+    {
+        float hyp;
+
+        if (fis_zero(x)&& fis_zero(z)){
+            h = 0.0f;
+            if (!fis_zero(y))	p = (y>0.0f)?PI_DIV_2:-PI_DIV_2;
+            else            	p = 0.0f;
+        }else{
+            if (fis_zero(z))	h = (x>0.0f)?-PI_DIV_2:PI_DIV_2;
+            else if (z<0.0f)	h = -(atan(x/z)-PI);
+            else            	h = -atan(x/z);
+            hyp = _sqrt(x*x+z*z);
+            if (fis_zero(hyp))	p = (y>0.0f)?PI_DIV_2:-PI_DIV_2;
+            else				p = atan(y/hyp);
+        }
+    }
+
 	IC	void reflect(const Self& dir, const Self& norm){
 		direct(dir,norm,-2*dir.dotproduct(norm));
 	}

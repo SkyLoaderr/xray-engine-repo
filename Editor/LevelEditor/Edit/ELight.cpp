@@ -223,17 +223,10 @@ bool CLight::Load(CStream& F){
 	    	if (D3DLIGHT_DIRECTIONAL==m_D3D.type){
 		    	// generate from direction
         	    Fvector& dir= m_D3D.direction;
-	            // parse heading
-    	        Fvector DYaw; DYaw.set(dir.x,0.f,dir.z); DYaw.normalize_safe();
-        	    if (DYaw.x<0)	FRotate.x = acosf(DYaw.z);
-	            else			FRotate.x = 2*PI-acosf(DYaw.z);
-    	        // parse pitch
-        	    dir.normalize_safe	();
-            	FRotate.y		= asinf(dir.y);
-                FRotate.z		= 0;
+                dir.getHP(FRotate.y,FRotate.x);
             }else{
 	        	FRotate.set(0,0,0);
-            }           
+            }
         }
     }
 

@@ -143,12 +143,9 @@ void CCustomObject::Move(Fvector& amount){
 					vD.crossproduct	(vR,vN);
                     vD.normalize();
 
-			   	   	r.x = asinf( vD.y );
-                    if (vD.x<0)	r.y = acosf(vD.z);
-                    else	 	r.y = 2*PI-acosf(vD.z);
-//					r.z = asinf(vR.x);
-                    if (vR.y<0)	r.z = -acosf( vN.y / cos( r.x ));
-                    else		r.z = acosf( vN.y / cos( r.x ));
+                    Fmatrix M;
+                    M.set(vR,vN,vD,vR);
+                    M.getXYZ(r);
 
                     PRotate = r;
 				}
@@ -195,7 +192,7 @@ void CCustomObject::LocalRotate(Fvector& axis, float angle){
     m.rotation(axis,angle);
     FTransform.mulB(m);
     FTransform.getXYZ(r);
-    FRotate		= r;
+    PRotate		= r;
 }
 
 void CCustomObject::Scale( Fvector& center, Fvector& amount ){
