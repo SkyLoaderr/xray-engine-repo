@@ -33,7 +33,7 @@ public:
 					~CStatGraph	();
     virtual void 	OnRender	();
     virtual void 	OnDeviceCreate	();
-    virtual void 	OnDeviceDestroy	();
+    virtual void 	OnDeviceDestroy	();	
     IC 	void		SetStyle	(EStyle s)
     {
     	style		= s;
