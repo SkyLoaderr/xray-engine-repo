@@ -389,6 +389,12 @@ void __fastcall TfraLeftBar::MakeHOM1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::miMakeSkyDomeClick(TObject *Sender)
+{
+	UI.Command( COMMAND_MAKE_SKYDOME );
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfraLeftBar::ebSceneFileMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
@@ -592,6 +598,7 @@ void __fastcall TfraLeftBar::miClearErrorListClick(TObject *Sender)
 	UI.Command(COMMAND_CLEAR_COMPILER_ERROR);
 }
 //---------------------------------------------------------------------------
+
 
 
 

@@ -662,23 +662,24 @@ void EScene::Unload(){
 }
 
 
-bool EScene::Validate(bool bNeedOkMsg, bool bTestPortal){
+bool EScene::Validate(bool bNeedOkMsg, bool bTestPortal, bool bTestHOM, bool bTestGlow){
 	if (bTestPortal){
 		if (!PortalUtils.Validate(false)){
 			ELog.DlgMsg(mtError,"*ERROR: Scene has non associated face!");
 	    	return false;
     	}
     }
-    bool bHasHOM=false;
-    ObjectList& lst = ListObj(OBJCLASS_SCENEOBJECT);
-    for(ObjectIt it=lst.begin();it!=lst.end();it++){
-    	CEditableObject* O = ((CSceneObject*)(*it))->GetReference(); R_ASSERT(O);
-        if (O->m_Flags.is(CEditableObject::eoHOM)){ bHasHOM = true; break; }
-    }                            
-    if (!bHasHOM)
-    	if (mrNo==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Level doesn't contain HOM.\nContinue anyway?"))
-        	return false;
-
+    if (bTestHOM){
+        bool bHasHOM=false;
+        ObjectList& lst = ListObj(OBJCLASS_SCENEOBJECT);
+        for(ObjectIt it=lst.begin();it!=lst.end();it++){
+            CEditableObject* O = ((CSceneObject*)(*it))->GetReference(); R_ASSERT(O);
+            if (O->m_Flags.is(CEditableObject::eoHOM)){ bHasHOM = true; break; }
+        }                            
+        if (!bHasHOM)
+            if (mrNo==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Level doesn't contain HOM.\nContinue anyway?"))
+                return false;
+    }
     if (ObjCount(OBJCLASS_SPAWNPOINT)==0){
     	ELog.DlgMsg(mtError,"*ERROR: Can't find 'Spawn Point'.\nPlease add at least one.");
         return false;
@@ -687,15 +688,12 @@ bool EScene::Validate(bool bNeedOkMsg, bool bTestPortal){
     	ELog.DlgMsg(mtError,"*ERROR: Can't find 'Light'.\nPlease add at least one.");
         return false;
     }
-
-//	if(!Scene.FindObjectByName(DEFAULT_SECTOR_NAME,OBJCLASS_SECTOR)){
-//    	ELog.DlgMsg(mtError,"*ERROR: Compute portals before compiling.");
-//        return false;
-//	}
-	if (ObjCount(OBJCLASS_GLOW)==0){
-    	ELog.DlgMsg(mtError,"*ERROR: Can't found 'Glow'.\nPlease add at least one.");
-		return false;
-	}
+    if (bTestGlow){
+        if (ObjCount(OBJCLASS_GLOW)==0){
+            ELog.DlgMsg(mtError,"*ERROR: Can't found 'Glow'.\nPlease add at least one.");
+            return false;
+        }
+    }
     if (FindDuplicateName()){
     	ELog.DlgMsg(mtError,"*ERROR: Found duplicate object name.\nResolve this problem and try again.");
         return false;

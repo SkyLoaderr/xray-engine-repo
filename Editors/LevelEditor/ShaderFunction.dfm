@@ -1,8 +1,8 @@
 object frmShaderFunction: TfrmShaderFunction
-  Left = 539
-  Top = 203
+  Left = -939
+  Top = 398
   BorderStyle = bsDialog
-  Caption = 'Shader Function'
+  Caption = 'Wave Form'
   ClientHeight = 157
   ClientWidth = 415
   Color = clBtnFace

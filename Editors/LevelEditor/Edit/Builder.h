@@ -127,6 +127,7 @@ public:
 	BOOL 	MakeGame				();
     BOOL 	MakeDetails				();
     BOOL 	MakeHOM					();
+    BOOL 	MakeSkydome				();
 };
 
 extern SceneBuilder Builder;

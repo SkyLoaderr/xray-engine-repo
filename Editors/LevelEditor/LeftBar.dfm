@@ -1619,6 +1619,10 @@ object fraLeftBar: TfraLeftBar
         Caption = 'Make HOM'
         OnClick = MakeHOM1Click
       end
+      object miMakeSkyDome: TMenuItem
+        Caption = 'Make Skydome'
+        OnClick = miMakeSkyDomeClick
+      end
     end
     object N9: TMenuItem
       Caption = '-'

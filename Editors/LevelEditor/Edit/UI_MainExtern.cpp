@@ -292,10 +292,18 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 			bRes = false;
         }
 		break;
-
+    case COMMAND_MAKE_SKYDOME:
+		if( !Scene.locked() ){
+			if (mrYes==ELog.DlgMsg(mtConfirmation, TMsgDlgButtons()<<mbYes<<mbNo, "Are you sure to make skydome?"))
+                Builder.MakeSkydome( );
+        }else{
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
+			bRes = false;
+        }
+		break;
 	case COMMAND_MAKE_GAME:
 		if( !Scene.locked() ){
-            if (frmScenePropertiesRun(&Scene.m_LevelOp.m_BuildParams,true)==mrOk)
+			if (mrYes==ELog.DlgMsg(mtConfirmation, TMsgDlgButtons()<<mbYes<<mbNo, "Are you sure to make game?"))
                 Builder.MakeGame( );
         }else{
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
@@ -471,40 +479,44 @@ bool __fastcall TUI::ApplyShortCutExt(WORD Key, TShiftState Shift)
 {
 	bool bExec = false;
     if (Shift.Contains(ssCtrl)){
-        if (Key==VK_F5)    				{Command(COMMAND_BUILD);                		bExec=true;}
-        else if (Key==VK_F7)    		{Command(COMMAND_OPTIONS);                      bExec=true;}
-        else if (Key=='A')    			{Command(COMMAND_SELECT_ALL);                   bExec=true;}
-        else if (Key=='I')    			{Command(COMMAND_INVERT_SELECTION_ALL);         bExec=true;}
-       	else if (Key=='1') 	 			{Command(COMMAND_CHANGE_TARGET, etGroup);       bExec=true;}
-		else if (Key=='2')				{Command(COMMAND_CHANGE_TARGET, etPS);          bExec=true;}
-        else if (Key=='3')				{Command(COMMAND_CHANGE_TARGET, etShape);       bExec=true;}
+        if (Shift.Contains(ssShift)){                                                     
+            if (Key==VK_F5)    		{Command(COMMAND_MAKE_GAME);                    bExec=true;}
+        }else{
+            if (Key==VK_F5)    				{Command(COMMAND_BUILD);                		bExec=true;}
+            else if (Key==VK_F7)    		{Command(COMMAND_OPTIONS);                      bExec=true;}
+            else if (Key=='A')    			{Command(COMMAND_SELECT_ALL);                   bExec=true;}
+            else if (Key=='I')    			{Command(COMMAND_INVERT_SELECTION_ALL);         bExec=true;}
+            else if (Key=='1') 	 			{Command(COMMAND_CHANGE_TARGET, etGroup);       bExec=true;}
+            else if (Key=='2')				{Command(COMMAND_CHANGE_TARGET, etPS);          bExec=true;}
+            else if (Key=='3')				{Command(COMMAND_CHANGE_TARGET, etShape);       bExec=true;}
+        }
     }else{                                                                              
         if (Shift.Contains(ssAlt)){                                                     
         	if (Key=='F')   			{Command(COMMAND_FILE_MENU);                    bExec=true;}
         }else{                                                                          
             if (Key=='1')     			{Command(COMMAND_CHANGE_TARGET, etObject);      bExec=true;}
-        	else if (Key=='2')  		{Command(COMMAND_CHANGE_TARGET, etLight);       bExec=true;}
-        	else if (Key=='3')  		{Command(COMMAND_CHANGE_TARGET, etSound);       bExec=true;}
-        	else if (Key=='4')  		{Command(COMMAND_CHANGE_TARGET, etEvent);       bExec=true;}
-        	else if (Key=='5')  		{Command(COMMAND_CHANGE_TARGET, etGlow);        bExec=true;}
-        	else if (Key=='6')  		{Command(COMMAND_CHANGE_TARGET, etDO);          bExec=true;}
-        	else if (Key=='7')  		{Command(COMMAND_CHANGE_TARGET, etSpawnPoint);  bExec=true;}
-        	else if (Key=='8')  		{Command(COMMAND_CHANGE_TARGET, etWay);         bExec=true;}
-        	else if (Key=='9')  		{Command(COMMAND_CHANGE_TARGET, etSector);      bExec=true;}
-        	else if (Key=='0')  		{Command(COMMAND_CHANGE_TARGET, etPortal);      bExec=true;}
+            else if (Key=='2')  		{Command(COMMAND_CHANGE_TARGET, etLight);       bExec=true;}
+            else if (Key=='3')  		{Command(COMMAND_CHANGE_TARGET, etSound);       bExec=true;}
+            else if (Key=='4')  		{Command(COMMAND_CHANGE_TARGET, etEvent);       bExec=true;}
+            else if (Key=='5')  		{Command(COMMAND_CHANGE_TARGET, etGlow);        bExec=true;}
+            else if (Key=='6')  		{Command(COMMAND_CHANGE_TARGET, etDO);          bExec=true;}
+            else if (Key=='7')  		{Command(COMMAND_CHANGE_TARGET, etSpawnPoint);  bExec=true;}
+            else if (Key=='8')  		{Command(COMMAND_CHANGE_TARGET, etWay);         bExec=true;}
+            else if (Key=='9')  		{Command(COMMAND_CHANGE_TARGET, etSector);      bExec=true;}
+            else if (Key=='0')  		{Command(COMMAND_CHANGE_TARGET, etPortal);      bExec=true;}
             // simple press             
-        	else if (Key=='W')			{Command(COMMAND_SHOW_OBJECTLIST);              bExec=true;}
-        	else if (Key==VK_DELETE)	{Command(COMMAND_DELETE_SELECTION);             bExec=true;}
-        	else if (Key==VK_RETURN)	{Command(COMMAND_SHOW_PROPERTIES);              bExec=true;}
+            else if (Key=='W')			{Command(COMMAND_SHOW_OBJECTLIST);              bExec=true;}
+            else if (Key==VK_DELETE)	{Command(COMMAND_DELETE_SELECTION);             bExec=true;}
+            else if (Key==VK_RETURN)	{Command(COMMAND_SHOW_PROPERTIES);              bExec=true;}
             else if (Key==VK_OEM_MINUS)	{Command(COMMAND_HIDE_SEL, FALSE);              bExec=true;}
             else if (Key==VK_OEM_PLUS)	{Command(COMMAND_HIDE_UNSEL, FALSE);            bExec=true;}
             else if (Key==VK_OEM_5)		{Command(COMMAND_HIDE_ALL, TRUE);               bExec=true;}
-        	else if (Key=='N'){
-            	switch (Tools.GetAction()){
-            	case eaMove: 			{Command(COMMAND_SET_NUMERIC_POSITION); bExec=true;} 	break;
-			    case eaRotate: 			{Command(COMMAND_SET_NUMERIC_ROTATION); bExec=true;} 	break;
-            	case eaScale: 			{Command(COMMAND_SET_NUMERIC_SCALE);    bExec=true;}	break;
-            	}
+            else if (Key=='N'){
+                switch (Tools.GetAction()){
+                case eaMove: 			{Command(COMMAND_SET_NUMERIC_POSITION); bExec=true;} 	break;
+                case eaRotate: 			{Command(COMMAND_SET_NUMERIC_ROTATION); bExec=true;} 	break;
+                case eaScale: 			{Command(COMMAND_SET_NUMERIC_SCALE);    bExec=true;}	break;
+                }
             }
         }
     }

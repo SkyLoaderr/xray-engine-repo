@@ -295,7 +295,7 @@ public:
     int 			GetUndoCount	(){return m_UndoStack.size();}
     int 			GetRedoCount	(){return m_RedoStack.size();}
 
-    bool 			Validate		(bool bNeedOkMsg=false, bool bTestPortal=true);
+    bool 			Validate		(bool bNeedOkMsg=false, bool bTestPortal=true, bool bTestHOM=true, bool bTestGlow=true);
     void 			OnObjectsUpdate	();
 
 					EScene			();

@@ -21,9 +21,9 @@ bool SceneBuilder::BuildSkyModel(){
         ogf_name.sprintf("%s.ogf",Scene.m_SkyDome->Name);
         m_LevelPath.Update(ogf_name);
         CEditableObject* O = Scene.m_SkyDome->GetReference(); R_ASSERT(O);
-        O->ExportObjectOGF(ogf_name.c_str());
+        return O->ExportObjectOGF(ogf_name.c_str());
     }
-	return true;
+	return false;
 }
 
 // some types

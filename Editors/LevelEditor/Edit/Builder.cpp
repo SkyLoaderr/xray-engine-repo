@@ -56,7 +56,7 @@ BOOL SceneBuilder::Compile()
             VERIFY_COMPILE(CompileStatic(),				"Failed static remote build.");
             VERIFY_COMPILE(BuildLTX(),					"Failed to build level description.");
             VERIFY_COMPILE(BuildGame(),					"Failed to build game.");
-            VERIFY_COMPILE(BuildSkyModel(),				"Failed to build OGF model.");
+            VERIFY_COMPILE(BuildSkyModel(),				"Failed to build sky model.");
             VERIFY_COMPILE(WriteTextures(),				"Failed to write textures."); 				// only implicit lighted
             BuildHOMModel();
         } while(0);
@@ -84,15 +84,13 @@ BOOL SceneBuilder::MakeGame( )
     UI.BeginEState(esBuildLevel);
     try{
         do{
-            UI.Command( COMMAND_RESET_ANIMATION );
 	        // validate scene
-    	    VERIFY_COMPILE(Scene.Validate(false,false),	"Validation failed. Invalid scene.");
+    	    VERIFY_COMPILE(Scene.Validate(false,false,false,false),	"Validation failed. Invalid scene.");
         	// build
             VERIFY_COMPILE(PreparePath(),				"Failed to prepare level path.");
             VERIFY_COMPILE(GetBounding(),				"Failed to acquire level bounding volume.");
             VERIFY_COMPILE(BuildLTX(),					"Failed to build level description.");
             VERIFY_COMPILE(BuildGame(),					"Failed to build game.");
-            VERIFY_COMPILE(BuildSkyModel(),				"Failed to build OGF model.");
         } while(0);
 
         if (!error_text.IsEmpty()) 	ELog.DlgMsg(mtError,error_text.c_str());
@@ -103,6 +101,21 @@ BOOL SceneBuilder::MakeGame( )
         abort();
     }
     UI.EndEState();
+
+	return error_text.IsEmpty();
+}
+//------------------------------------------------------------------------------
+
+BOOL SceneBuilder::MakeSkydome()
+{
+	AnsiString error_text;
+    do{
+		VERIFY_COMPILE(PreparePath(),				"Failed to prepare level path.");
+		VERIFY_COMPILE(BuildSkyModel(),				"Failed to build sky model.");
+    }while(0);
+    if (!error_text.IsEmpty()) 	ELog.DlgMsg(mtError,error_text.c_str());
+    else if (UI.NeedAbort())	ELog.DlgMsg(mtInformation,"Building terminated.");
+    else						ELog.DlgMsg(mtInformation,"Details succesfully exported.");
 
 	return error_text.IsEmpty();
 }
