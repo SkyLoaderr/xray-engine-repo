@@ -1,5 +1,6 @@
 is_creature_entered = false
 is_actor_entered = false
+stalker_already_saw_actor = false
 
 -- функция вызывается из игры после того как объект object вошел в зону zone
 function on_enter(zone,object)
