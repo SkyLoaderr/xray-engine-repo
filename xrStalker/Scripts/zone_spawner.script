@@ -45,7 +45,7 @@ function activate_by_infoportion (info)
         if table.getn (zones[a].infoportions) ~= 0 then
            for b = 1, table.getn (zones[a].infoportions), 1 do
                if info == zones[a].infoportions[b] then
-                  zones[a]:on_enter (level.actor ())  
+                  zones[a]:on_infoportion (info)  
                 end
            end     
         end
@@ -123,7 +123,30 @@ function zone_spawner:add_member (obj)
     table.insert (self.members, t)
 end
 -----------------------
-
+function zone_spawner:on_infoportion (info)
+    local founded = false
+    local size = table.getn (self.infoportions)
+    if size ~= 0 then
+       for a = 1, size, 1 do
+          if info == self.infoportions[a] then
+             --printf ("Actor have a infoportion %s", self.infoportions[a]) 
+             founded = true
+          --else
+             --printf ("Actor don't have a infoportion %s", self.infoportions[a])    
+          end
+       end
+    else 
+       founded = true         
+    end    
+    
+    if founded == false then return end
+    
+    if table.getn (self.members) == 0 then return end
+    for a = 1, table.getn (self.members), 1 do
+        this.switch_online (self.members[a].id)
+    end
+    self.activated = true
+end
 
 
 -------------------------------------------------------------------------------------------
