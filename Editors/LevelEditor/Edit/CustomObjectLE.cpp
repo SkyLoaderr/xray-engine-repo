@@ -208,8 +208,8 @@ void __fastcall CCustomObject::OnObjectNameAfterEdit(PropItem* sender, LPVOID ed
 
 void __fastcall	CCustomObject::OnNumChangeTransform(PropValue* sender)
 {
+	NumSetRotation	(FRotation);	// не менять строки (важно)
 	NumSetPosition	(FPosition);
-	NumSetRotation	(FRotation);
 	NumSetScale		(FScale);
 }
 
@@ -219,11 +219,11 @@ void CCustomObject::FillProp(LPCSTR pref, PropItemVec& items)
     V->Owner()->OnAfterEditEvent = OnObjectNameAfterEdit;
     if (V->Owner()->m_Flags.is(PropItem::flMixed)) V->Owner()->m_Flags.set(PropItem::flDisabled,TRUE);
     V = PHelper.CreateVector	(items, FHelper.PrepareKey(pref,"Transform\\Position"),	&PPosition,	-10000,	10000,0.01,2);
-    V->OnChangeEvent 			= OnNumChangeTransform;
+    V->OnChangeEvent	= OnNumChangeTransform;
     V = PHelper.CreateAngle3	(items, FHelper.PrepareKey(pref,"Transform\\Rotation"),	&PRotation,	-10000,	10000,0.1,1);
-    V->OnChangeEvent 			= OnNumChangeTransform;
+    V->OnChangeEvent	= OnNumChangeTransform;
     V = PHelper.CreateVector	(items, FHelper.PrepareKey(pref,"Transform\\Scale"),	&PScale, 	0.01,	10000,0.01,2);
-    V->OnChangeEvent 			= OnNumChangeTransform;
+    V->OnChangeEvent	= OnNumChangeTransform;
 }
 //----------------------------------------------------
 

@@ -102,7 +102,9 @@ protected:
 	virtual void 	SetRotation		(const Fvector& rot)	{ FRotation.set(rot);	UpdateTransform();}
     virtual void 	SetScale		(const Fvector& scale)	{ FScale.set(scale);	UpdateTransform();}
 
-    void __fastcall	OnAfterNumTransform(PropItem* sender, LPVOID edit_val);
+    void __fastcall	OnNumChangePosition	(PropValue* sender);
+    void __fastcall	OnNumChangeRotation	(PropValue* sender);
+    void __fastcall	OnNumChangeScale	(PropValue* sender);
 public:
 					CCustomObject	(LPVOID data, LPCSTR name);
 					CCustomObject	(CCustomObject* source);

@@ -170,7 +170,8 @@ void CGroupObject::NumSetPosition(const Fvector& pos)
 }
 void CGroupObject::NumSetRotation(const Fvector& rot)
 {
-	Fvector old_r=FRotation;
+	Fvector old_r;
+    FTransformR.getXYZ(old_r);
 	inherited::NumSetRotation(rot);
     Fmatrix prev; prev.invert(FTransform);
     UpdateTransform(true);
