@@ -39,6 +39,7 @@ CSE_ALifeTraderAbstract::CSE_ALifeTraderAbstract(LPCSTR caSection)
 	m_tpEvents.clear			();
 
 	m_iCharacterProfile			= NO_PROFILE;
+	m_iSpecificCharacter		= NO_SPECIFIC_CHARACTER;	
 }
 
 CSE_Abstract *CSE_ALifeTraderAbstract::init	()
@@ -58,6 +59,7 @@ void CSE_ALifeTraderAbstract::STATE_Write	(NET_Packet &tNetPacket)
 {
 	save_data					(m_tpEvents,tNetPacket);
 	tNetPacket.w_u32			(m_dwMoney);
+	tNetPacket.w_s32			(m_iSpecificCharacter);
 }
 
 void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
@@ -70,6 +72,8 @@ void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 			load_data			(l_tpTaskIDs,tNetPacket);
 		if (m_wVersion > 62)
 			tNetPacket.r_u32	(m_dwMoney);
+		if (m_wVersion > 75)
+			tNetPacket.r_s32	(m_iSpecificCharacter);
 	}
 
 	//запоминаем index profile

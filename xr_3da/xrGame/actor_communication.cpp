@@ -17,6 +17,8 @@
 #include "alife_registry_container.h"
 #include "script_game_object.h"
 
+#include "game_cl_base.h"
+
 
 
 void CActor::AddMapLocationsFromInfo(const CInfoPortion* info_portion)
@@ -207,13 +209,23 @@ void CActor::TryToTalk()
 
 	if(!IsTalking())
 	{
-		//предложить поговорить с нами
-		if(m_pPersonWeLookingAt->OfferTalk(this))
-		{	
-			StartTalk(m_pPersonWeLookingAt);
-			//только если находимся в режиме single
-			CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-			if(pGameSP)pGameSP->StartTalk();
+		RunTalkDialog(m_pPersonWeLookingAt);
+	}
+}
+
+void CActor::RunTalkDialog(CInventoryOwner* talk_partner)
+{
+	//предложить поговорить с нами
+	if(talk_partner->OfferTalk(this))
+	{	
+		StartTalk(talk_partner);
+		//только если находимся в режиме single
+		CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+		if(pGameSP)
+		{
+			if(pGameSP->MainInputReceiver())
+				Game().StartStopMenu(pGameSP->MainInputReceiver());
+			pGameSP->StartTalk();
 		}
 	}
 }

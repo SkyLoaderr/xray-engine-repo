@@ -194,7 +194,15 @@ public:
 			void				SetGoodwill			(int goodwill, CScriptGameObject* pWhoToSet);
 			int					GetGoodwill			(CScriptGameObject* pToWho);
 			void				SetRelation			(ALife::ERelationType relation, CScriptGameObject* pWhoToSet);
+			
 			void				SetStartDialog		(LPCSTR dialog_id);
+			void				GetStartDialog		();
+			void				RestoreDefaultStartDialog();
+
+			void				SwitchToTrade		();
+			void				SwitchToTalk		();	
+			void				RunTalkDialog		(CScriptGameObject* pToWho);
+			void				ActorSleep			(int hours, int minutes);
 
 			bool				NeedToAnswerPda		();
 			void				AnswerPda			();

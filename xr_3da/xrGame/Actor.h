@@ -99,6 +99,7 @@ protected:
 public:
 	virtual void StartTalk			(CInventoryOwner* talk_partner);
 	virtual	void UpdateContact		(u16 contact_id);
+	virtual	void RunTalkDialog		(CInventoryOwner* talk_partner);
 	//реестр контактов общения с другими персонажами
 	typedef CALifeRegistryWrapper<CKnownContactsRegistry> KNOWN_CONTACTS_REGISTRY;
 	KNOWN_CONTACTS_REGISTRY		contacts_registry;
@@ -154,7 +155,7 @@ public:
 	virtual void	UpdateCondition();
 
 	//сон
-	virtual EActorSleep	GoSleep(u32	sleep_time);
+	virtual EActorSleep	GoSleep(ALife::_TIME_ID	sleep_time, bool without_check = false);
 	virtual EActorSleep	CanSleepHere();
 	virtual void		Awoke();
 			void		UpdateSleep();

@@ -26,6 +26,7 @@ SERVER_ENTITY_DECLARE_BEGIN0(CSE_ALifeTraderAbstract)
 
 	//character profile info
 	PROFILE_INDEX					m_iCharacterProfile;
+	SPECIFIC_CHARACTER_INDEX		m_iSpecificCharacter;
 public:	
 									CSE_ALifeTraderAbstract(LPCSTR caSection);
 	virtual							~CSE_ALifeTraderAbstract();

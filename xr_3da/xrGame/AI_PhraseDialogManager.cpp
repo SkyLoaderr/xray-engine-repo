@@ -14,6 +14,7 @@
 
 CAI_PhraseDialogManager::CAI_PhraseDialogManager	(void)
 {
+	m_sStartDialog = m_sDefaultStartDialog = NULL;
 }
 
 CAI_PhraseDialogManager::~CAI_PhraseDialogManager	(void)
@@ -81,9 +82,15 @@ void CAI_PhraseDialogManager::SetStartDialog(PHRASE_DIALOG_ID phrase_dialog)
 {
 	m_sStartDialog = phrase_dialog;
 }
-void CAI_PhraseDialogManager::ResetStartDialog()
+
+void CAI_PhraseDialogManager::SetDefaultStartDialog(PHRASE_DIALOG_ID phrase_dialog)
 {
-	m_sStartDialog = NULL;
+	m_sDefaultStartDialog = phrase_dialog;
+}
+
+void CAI_PhraseDialogManager::RestoreDefaultStartDialog()
+{
+	m_sStartDialog = m_sDefaultStartDialog;
 }
 
 

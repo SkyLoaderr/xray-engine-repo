@@ -25,12 +25,15 @@ public:
 	virtual bool NeedAnswerOnPDA		();
 	virtual void AnswerOnPDA			();
 
-	virtual void SetStartDialog			(PHRASE_DIALOG_ID phrase_dialog);
-	virtual void ResetStartDialog		();
+	virtual void				SetStartDialog				(PHRASE_DIALOG_ID phrase_dialog);
+	virtual void				SetDefaultStartDialog		(PHRASE_DIALOG_ID phrase_dialog);
+	virtual PHRASE_DIALOG_ID	GetStartDialog				() {return m_sStartDialog;}
+	virtual void				RestoreDefaultStartDialog	();
 protected:
 	//диалог, если не NULL, то его персонаж запустит
 	//при встрече с актером
 	PHRASE_DIALOG_ID m_sStartDialog;
+	PHRASE_DIALOG_ID m_sDefaultStartDialog;
 
 	DEFINE_VECTOR(DIALOG_SHARED_PTR, DIALOG_SHARED_VECTOR, DIALOG_SHARED_IT);
 	//список диалогов, на которые нужно ответить

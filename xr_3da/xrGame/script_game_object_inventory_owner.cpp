@@ -15,6 +15,11 @@
 #include "actor.h"
 #include "level.h"
 
+#include "date_time.h"
+
+#include "uigamesp.h"
+#include "hudmanager.h"
+
 bool CScriptGameObject::GiveInfoPortion(LPCSTR info_id)
 {
 	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
@@ -184,13 +189,6 @@ void CScriptGameObject::SetRelation(ALife::ERelationType relation, CScriptGameOb
 	VERIFY(pInventoryOwner);
 	pInventoryOwner->CharacterInfo().SetRelationType(pWhoToSet->m_tpGameObject->ID(), relation);
 }
-void CScriptGameObject::SetStartDialog(LPCSTR dialog_id)
-{
-	CAI_PhraseDialogManager* pDialogManager = dynamic_cast<CAI_PhraseDialogManager*>(m_tpGameObject);
-	if(!pDialogManager) return;
-	pDialogManager->SetStartDialog(dialog_id);
-}
-
 bool CScriptGameObject::NeedToAnswerPda		()
 {
 	CAI_PhraseDialogManager* pDialogManager = dynamic_cast<CAI_PhraseDialogManager*>(m_tpGameObject);
@@ -309,4 +307,67 @@ void CScriptGameObject::SetGameTaskState	(ETaskState state, LPCSTR task_id, int 
 	{
 		(*it).finish_time = Level().GetGameTime();
 	}
+}
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+
+void CScriptGameObject::SetStartDialog(LPCSTR dialog_id)
+{
+	CAI_PhraseDialogManager* pDialogManager = dynamic_cast<CAI_PhraseDialogManager*>(m_tpGameObject);
+	if(!pDialogManager) return;
+	pDialogManager->SetStartDialog(dialog_id);
+}
+
+void CScriptGameObject::GetStartDialog		()
+{
+	CAI_PhraseDialogManager* pDialogManager = dynamic_cast<CAI_PhraseDialogManager*>(m_tpGameObject);
+	if(!pDialogManager) return;
+	pDialogManager->GetStartDialog();
+}
+void CScriptGameObject::RestoreDefaultStartDialog()
+{
+	CAI_PhraseDialogManager* pDialogManager = dynamic_cast<CAI_PhraseDialogManager*>(m_tpGameObject);
+	if(!pDialogManager) return;
+	pDialogManager->RestoreDefaultStartDialog();
+}
+
+void  CScriptGameObject::SwitchToTrade		()
+{
+	CActor* pActor = dynamic_cast<CActor*>(m_tpGameObject);	if(pActor) return;
+
+	//только если находимся в режиме single
+	CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+	if(!pGameSP) return;
+
+	if(pGameSP->TalkMenu.IsShown())
+	{
+		pGameSP->TalkMenu.SwitchToTrade();
+	}
+}
+void  CScriptGameObject::SwitchToTalk		()
+{
+	CActor* pActor = dynamic_cast<CActor*>(m_tpGameObject);	if(pActor) return;
+
+	//только если находимся в режиме single
+	CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+	if(!pGameSP) return;
+
+	if(pGameSP->TradeMenu.IsShown())
+	{
+		pGameSP->TradeMenu.SwitchToTalk();
+	}
+}
+
+void  CScriptGameObject::RunTalkDialog			(CScriptGameObject* pToWho)
+{
+	CActor* pActor = dynamic_cast<CActor*>(m_tpGameObject);	
+	R_ASSERT2(pActor, "RunTalkDialog applicable only for actor");
+	CInventoryOwner* pPartner = dynamic_cast<CInventoryOwner*>(pToWho->m_tpGameObject);	VERIFY(pPartner);
+	pActor->RunTalkDialog(pPartner);
+}
+
+void  CScriptGameObject::ActorSleep			(int hours, int minutes)
+{
+	CActor* pActor = dynamic_cast<CActor*>(m_tpGameObject);	if(pActor) return;
+	pActor->GoSleep(generate_time(0,0,0,hours, minutes, 0, 0), true);
 }

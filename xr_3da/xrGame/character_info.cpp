@@ -124,20 +124,23 @@ void CCharacterInfo::SetSpecificCharacter ()
 
 void CCharacterInfo::InitSpecificCharacter (SPECIFIC_CHARACTER_INDEX new_index)
 {
+	//если конкретный профиль уже был задан,
+	//удалить использованный индекс из реестра
 	if (NO_SPECIFIC_CHARACTER != m_iSpecificCharacterIndex) 
 	{
-		//удалить использованный индекс из реестра
 		if(ai().get_alife())
 			ai().alife().registry(specific_characters).remove(m_iSpecificCharacterIndex, true);
 	}
 
 	m_iSpecificCharacterIndex = new_index;
 
-
+	//профиль задан индексом
 	if(NO_SPECIFIC_CHARACTER != m_iSpecificCharacterIndex)
 	{
 		SetSpecificCharacter();
 	}
+	//профиль задан шаблоном
+	//
 	//проверяем все информации о персонаже, запоминаем подходящие,
 	//а потом делаем случайный выбор
 	else

@@ -289,14 +289,23 @@ void CScriptGameObject::script_register(lua_State *L)
 			.def("transfer_item",				&CScriptGameObject::TransferItem)
 			.def("transfer_money",				&CScriptGameObject::TransferMoney)
 			.def("money",						&CScriptGameObject::Money)
+			
+			.def("switch_to_trade",				&CScriptGameObject::SwitchToTrade)
+			.def("switch_to_talk",				&CScriptGameObject::SwitchToTalk)
+			.def("run_talk_dialog",				&CScriptGameObject::RunTalkDialog)
+			.def("actor_sleep",					&CScriptGameObject::ActorSleep)
+
+			.def("set_start_dialog",			&CScriptGameObject::SetStartDialog)
+			.def("get_start_dialog",			&CScriptGameObject::GetStartDialog)
+			.def("restore_default_start_dialog",&CScriptGameObject::RestoreDefaultStartDialog)
+
 			.def("set_goodwill",				&CScriptGameObject::SetGoodwill)
 			.def("goodwill",					&CScriptGameObject::GetGoodwill)
 			.def("set_relation",				&CScriptGameObject::SetRelation)
-			.def("set_start_dialog",			&CScriptGameObject::SetStartDialog)
+			
 			.def("need_to_answer_pda",			&CScriptGameObject::NeedToAnswerPda)
 			.def("answer_pda",					&CScriptGameObject::AnswerPda)
 			
-
 			.def("character_name",				&CScriptGameObject::CharacterName)
 			.def("character_rank",				&CScriptGameObject::CharacterRank)
 			.def("set_character_rank",			&CScriptGameObject::SetCharacterRank)
