@@ -27,13 +27,7 @@ const DWORD	NET_Latency	= 100;
 #include "ActorAnimation.h"
 #include "xr_weapon_list.h"
 
-#define MIN_CRASH_SPEED	16.0f
-#define MAX_CRASH_SPEED	30.0f
-
-#define X_SIZE_2 0.35f
-#define Y_SIZE_2 0.8f
-#define Z_SIZE_2 0.35f
-#define Y_SIZE_4 Y_SIZE_2*.5f
+#define SND_STEP_TIME	1.f
 
 static Fbox		bbStandBox;
 static Fbox		bbCrouchBox;
@@ -144,6 +138,12 @@ CActor::CActor() : CEntity()
 	r_model_yaw				= 0;
 	r_model_yaw_delta		= 0;
 	r_model_yaw_dest		= 0;
+	
+	m_fTimeToStep			= 0;
+	bStep					= FALSE;
+
+	m_fRunFactor			= 2.f;
+	m_fCrouchFactor			= 0.2f;
 //	Device.seqRender.Add(this,REG_PRIORITY_LOW-1111);
 }
 
@@ -156,7 +156,8 @@ CActor::~CActor()
 	// sounds
 	for (i=0; i<SND_HIT_COUNT; i++) pSounds->Delete3D(sndHit[i]);
 	for (i=0; i<SND_DIE_COUNT; i++) pSounds->Delete3D(sndDie[i]);
-	pSounds->Delete3D(sndStep);
+	pSounds->Delete2D(sndStep[0]);
+	pSounds->Delete2D(sndStep[1]);
 	pSounds->Delete3D(sndRespawn);
 	pSounds->Delete3D(sndWeaponChange);
 }
@@ -169,7 +170,8 @@ void CActor::Load(CInifile* ini, const char* section )
 
 	m_fWalkAccel		= ini->ReadFLOAT(section,"walk_accel");	
 	m_fJumpSpeed		= ini->ReadFLOAT(section,"jump_speed");
-	m_fRunCoef			= ini->ReadFLOAT(section,"run_coef");
+	m_fRunFactor		= ini->ReadFLOAT(section,"run_coef");
+	m_fCrouchFactor		= ini->ReadFLOAT(section,"crouch_coef");
 
 	R_ASSERT			(pVisual->Type==MT_SKELETON);
 
@@ -181,7 +183,9 @@ void CActor::Load(CInifile* ini, const char* section )
 
 	// sounds
 	char buf[256];
-	pSounds->Create3D	(sndStep,			strconcat(buf,cName(),"\\step"));
+	sndStep[0]			= pSounds->Create2D	(strconcat(buf,cName(),"\\stepL"));
+	sndStep[1]			= pSounds->Create2D	(strconcat(buf,cName(),"\\stepR"));
+	sndLanding			= pSounds->Create2D	(strconcat(buf,cName(),"\\landing"));
 	pSounds->Create3D	(sndWeaponChange,	strconcat(buf,cName(),"\\weaponchange"));
 	pSounds->Create3D	(sndRespawn,		strconcat(buf,cName(),"\\respawn"));
 	pSounds->Create3D	(sndHit[0],			strconcat(buf,cName(),"\\bhit_flesh-1"));
@@ -328,6 +332,7 @@ void CActor::g_Physics(Fvector& accel, float jump, float dt)
 	// Check ground-contact
 	if (net_Local && Movement.gcontact_Was) 
 	{
+		pSounds->Play2D(sndLanding);
 		pCreator->Cameras.AddEffector		(new CEffectorFall(Movement.gcontact_Power));
 		Fvector D; D.set	(0,1,0);
 		if (Movement.gcontact_HealthLost)	Hit(int(Movement.gcontact_HealthLost),D,this);
@@ -450,6 +455,18 @@ void CActor::Update	(DWORD DT)
 	bVisible				= !HUDview	();
 
 	Weapons->Update			(dt,HUDview());
+
+	// sound step
+	if (mstate_real&mcAnyMove){
+		if(m_fTimeToStep<0){
+			pSounds->Play2D(sndStep[bStep]);
+			bStep = !bStep;
+			float k = (mstate_real&mcCrouch)?0.75f:1.f;
+			float tm = isAccelerated(mstate_real)?(PI/(k*10.f)):(PI/(k*7.f));
+			m_fTimeToStep	= tm;
+		}
+		m_fTimeToStep -= dt;
+	}
 }
 
 void CActor::OnMoveVisible()
@@ -545,8 +562,8 @@ void CActor::g_cl_CheckControls(DWORD mstate_wf, Fvector &vControlAccel, float &
 			float	scale				= vControlAccel.magnitude();
 			if (scale>EPS)	{
 				scale	=	m_fWalkAccel/scale;
-				if (bAccelerated)			scale *= m_fRunCoef;
-				if (mstate_real&mcCrouch)	scale *= 0.2f;
+				if (bAccelerated)			scale *= m_fRunFactor;
+				if (mstate_real&mcCrouch)	scale *= m_fCrouchFactor;
 				vControlAccel.mul			(scale);
 			} else {
 				mstate_real	&= ~mcAnyMove;

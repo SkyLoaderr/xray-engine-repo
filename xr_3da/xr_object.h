@@ -75,6 +75,7 @@ public:
 
 	virtual BOOL						Ready			()					{ return net_Ready; }		
 
+	IC CSector*							Sector			()					{ return pSector; }
 	IC void								svCenter		(Fvector& C) const	{ VERIFY(pVisual); svTransform.transform_tiny(C,pVisual->bv_Position);	}
 	IC void								clCenter		(Fvector& C) const	{ VERIFY(pVisual); clTransform.transform_tiny(C,pVisual->bv_Position);	}
 

@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "..\bodyinstance.h"
 #include "..\fstaticrender.h"
+#include "..\PSObject.h"
 #include "Weapon.h"
 #include "WeaponHUD.h"
 
@@ -131,13 +132,31 @@ void CWeapon::UpdatePosition(const Fmatrix& trans){
 void CWeapon::FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collide::ray_query& R) 
 {
 	if (0==hWallmark)	return;
-	if (R.O)			return;
-	::Render.Wallmarks.AddWallmark(
-		pCreator->ObjectSpace.GetStaticTris()+R.element,
-		vEnd,
-		hWallmark,
-		fWallmarkSize
-	);
+	if (R.O && (R.O->CLS_ID==CLSID_ENTITY)){
+		// particles
+		Fvector D;
+		D.invert(vDir);
+
+		CSector* S			= R.O->Sector();
+
+		// stones or sparks
+		LPCSTR ps_gibs		= "sparks_1";//(Random.randI(5)==0)?"sparks_1":"stones";
+		CPSObject* PS		= new CPSObject(ps_gibs,S,true);
+		PS->m_Emitter.m_ConeDirection.set(D);
+		PS->PlayAtPos		(vEnd);
+
+		// smoke
+		PS					= new CPSObject("smokepuffs_1",S,true);
+		PS->m_Emitter.m_ConeDirection.set(D);
+		PS->PlayAtPos		(vEnd);
+	}else{
+		::Render.Wallmarks.AddWallmark(
+			pCreator->ObjectSpace.GetStaticTris()+R.element,
+			vEnd,
+			hWallmark,
+			fWallmarkSize
+		);
+	}
 }
 
 BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
@@ -165,9 +184,8 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 				CEntity* E =	(CEntity*)RQ.O;
 				E->Hit			(iHitPower,D,m_pParent);
 			}
-		} else {
-			FireShotmark		(D,end_point,RQ);
 		}
+		FireShotmark		(D,end_point,RQ);
 	}
 
 	// tracer

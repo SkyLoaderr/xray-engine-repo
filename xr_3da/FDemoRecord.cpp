@@ -64,6 +64,7 @@ void CDemoRecord::Process(Fvector &P, Fvector &D, Fvector &N)
 	if (hFile<=0)	return;
 
 	if ((timeGetTime()/500)%2==0) {
+		pApp->pFont->Size(0.02f);
 		pApp->pFont->Color(D3DCOLOR_RGBA(255,0,0,255));
 		pApp->pFont->Out(0,-.05f,"~%s","RECORDING");
 		pApp->pFont->Out(0,+.05f,"~Key frames count: %d",iCount);
@@ -75,7 +76,7 @@ void CDemoRecord::Process(Fvector &P, Fvector &D, Fvector &N)
 
 	float acc;
 	if (Console.iGetKeyState(DIK_LSHIFT)) acc=.025f;
-	else if (Console.iGetKeyState(DIK_LCONTROL)) acc=4.0; else acc=1.f;
+	else if (Console.iGetKeyState(DIK_LALT)) acc=4.0; else acc=1.f;
     m_vT.mul				(m_vVelocity, Device.fTimeDelta * g_fSpeed * acc);
     m_vR.mul				(m_vAngularVelocity, Device.fTimeDelta * g_fAngularSpeed * acc);
 
@@ -133,10 +134,10 @@ void CDemoRecord::OnKeyboardHold	(int dik)
 	case DIK_D:
 	case DIK_NUMPAD3:
 	case DIK_RIGHT:		m_vT.x += 1.0f; break; // Slide Right
-	case DIK_DOWN:		m_vT.y -= 1.0f; break; // Slide Down
-	case DIK_UP:		m_vT.y += 1.0f; break; // Slide Up
-	case DIK_S:			m_vT.z -= 1.0f; break; // Move Forward
-	case DIK_W:			m_vT.z += 1.0f; break; // Move Backward
+	case DIK_S:			m_vT.y -= 1.0f; break; // Slide Down
+	case DIK_W:			m_vT.y += 1.0f; break; // Slide Up
+//	case DIK_S:			m_vT.z -= 1.0f; break; // Move Forward
+//	case DIK_W:			m_vT.z += 1.0f; break; // Move Backward
 	// rotate	
 	case DIK_NUMPAD2:	m_vR.x -= 1.0f; break; // Pitch Down
 	case DIK_NUMPAD8:	m_vR.x += 1.0f; break; // Pitch Up
@@ -151,10 +152,18 @@ void CDemoRecord::OnKeyboardHold	(int dik)
 
 void CDemoRecord::OnMouseMove		(int dx, int dy)
 {
-	float scale			= psMouseSens;
+	float scale			= .75f;//psMouseSens;
 	if (dx||dy){
 		m_vR.y			+= float(dx)*scale;
 		m_vR.x			+= ((psMouseInvert)?-1:1)*float(dy)*scale*MouseHWScale;
+	}
+}
+
+void CDemoRecord::OnMouseHold		(int btn)
+{
+	switch (btn){
+	case 0:			m_vT.z += 1.0f; break; // Move Backward
+	case 1:			m_vT.z -= 1.0f; break; // Move Forward
 	}
 }
 

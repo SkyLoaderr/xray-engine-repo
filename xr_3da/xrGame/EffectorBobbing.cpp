@@ -42,10 +42,13 @@ void CEffectorBobbing::Process		(Fvector &p, Fvector &d, Fvector &n)
 		float A = (CActor::isAccelerated(dwMState)?AMPLITUDE_RUN:AMPLITUDE_WALK)*k;
 		float ST= ((CActor::isAccelerated(dwMState)?SPEED_RUN:SPEED_WALK)*fTime)*k;
 	
-		p.y			+=	A*fabsf(sinf(ST)); 
-		dangle.x	=	A*cosf(ST);
-		dangle.z	=	A*cosf(ST);
-		dangle.y	=	A*fabsf(sinf(ST));
+		float _sin	= fabsf(sinf(ST)*A);
+		float _cos	= cosf(ST)*A;
+
+		p.y			+=	_sin; 
+		dangle.x	=	_cos;
+		dangle.z	=	_cos;
+		dangle.y	=	_sin;
 
 		Fmatrix		R;
 		R.setHPB	(dangle.x,dangle.y,dangle.z);
@@ -55,7 +58,8 @@ void CEffectorBobbing::Process		(Fvector &p, Fvector &d, Fvector &n)
 		
 		d.set		(mR.k);
 		n.set		(mR.j);
-	}else{
-		fTime = 0;
 	}
+//	else{
+//		fTime		= 0;
+//	}
 }

@@ -49,7 +49,9 @@ protected:
 	CWeaponList*		Weapons;
 
 	// media
-	sound3D				sndStep;
+	int					sndStep[2];
+	BOOL				bStep;
+	int					sndLanding;
 	sound3D				sndWeaponChange;
 	sound3D				sndRespawn;
 	sound3D				sndHit[SND_HIT_COUNT];
@@ -105,7 +107,10 @@ private:
 
 	float				m_fWalkAccel;
 	float				m_fJumpSpeed;
-	float				m_fRunCoef;
+	float				m_fRunFactor;
+	float				m_fCrouchFactor;
+	
+	float				m_fTimeToStep;
 
 	// Cameras
 	CCameraBase*		cameras[eacMaxCam];

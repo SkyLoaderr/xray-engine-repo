@@ -37,6 +37,7 @@ public:
 	virtual void OnKeyboardPress		(int dik);
 	virtual void OnKeyboardHold			(int dik);
 	virtual void OnMouseMove			(int dx, int dy);
+	virtual void OnMouseHold			(int btn);
 	
 	virtual	void Process				(Fvector &p, Fvector &d, Fvector &n);
 };
