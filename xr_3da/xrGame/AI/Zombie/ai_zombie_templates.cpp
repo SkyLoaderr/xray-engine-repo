@@ -472,6 +472,7 @@ int CAI_Zombie::ifDivideNearestNode(NodeCompressed *tpStartNode, Fvector tCurren
 
 void CAI_Zombie::GoToPointViaSubnodes(Fvector &tLeaderPosition) 
 {
+	Device.Statistic.AI_Path.Begin();
 	Fvector tCurrentPosition = Position();
 	NodeCompressed* tpCurrentNode = AI_Node;
 	bool bInsideNode = false;
@@ -657,4 +658,5 @@ void CAI_Zombie::GoToPointViaSubnodes(Fvector &tLeaderPosition)
 		else
 			m_bMobility = false;
 	}
+	Device.Statistic.AI_Path.End();
 }
