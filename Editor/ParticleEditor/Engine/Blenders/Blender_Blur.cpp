@@ -47,8 +47,8 @@ void CBlender_Blur::Compile	(CBlender_Compile& C)
 
 		// Stage1 - B1*F + current
 		C.StageBegin		();
-		C.StageSET_Color3	(D3DTA_CURRENT,	  D3DTOP_MULTIPLYADD,	D3DTA_TEXTURE, D3DTA_TFACTOR);
-		C.StageSET_Alpha	(D3DTA_CURRENT,	  D3DTOP_SELECTARG1,	D3DTA_CURRENT);
+		C.StageSET_Color3	(D3DTA_TEXTURE,	  D3DTOP_MULTIPLYADD,	D3DTA_TFACTOR, D3DTA_CURRENT);
+		C.StageSET_Alpha	(D3DTA_CURRENT,	  D3DTOP_SELECTARG1,	D3DTA_TFACTOR);
 		C.Stage_Texture		("$base1");
 		C.Stage_Matrix		("$null",0);
 		C.Stage_Constant	("$null");
