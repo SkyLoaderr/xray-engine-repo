@@ -434,6 +434,7 @@ struct _ParticleState
 	static int group_count;
 	static int alist_count;
 	
+	// state part
 	pDomain Size;
 	pDomain Vel;
 	pDomain VertexB;
@@ -444,7 +445,8 @@ struct _ParticleState
 	float AgeSigma;
 	
 	_ParticleState();
-	
+
+	void ResetState();
 	// Return an index into the list of particle groups where
 	// p_group_count groups can be added.
 	int GenerateGroups(int p_group_count);

@@ -184,7 +184,12 @@ _ParticleState::_ParticleState()
 	pgrp		= NULL;
 	pact		= NULL;
 	tid			= 0; // This will be filled in above if we're MP.
-	
+
+	ResetState	();
+}
+
+void _ParticleState::ResetState()
+{
 	Size		= pDomain(PDPoint, 1.0f, 1.0f, 1.0f);
 	Vel			= pDomain(PDPoint, 0.0f, 0.0f, 0.0f);
 	VertexB		= pDomain(PDPoint, 0.0f, 0.0f, 0.0f);
@@ -437,6 +442,11 @@ void _pAddActionToList(ParticleAction *S, int size)
 
 ////////////////////////////////////////////////////////
 // State setting calls
+PARTICLEDLL_API void __stdcall pResetState()
+{
+	_ParticleState &_ps = _GetPState();
+	_ps.ResetState	();
+}
 
 PARTICLEDLL_API void __stdcall pColor(float red, float green, float blue, float alpha)
 {

@@ -57,6 +57,8 @@ extern "C"{
 	};
 
 	// State setting calls
+	PARTICLEDLL_API void __stdcall pResetState();
+
 	PARTICLEDLL_API void __stdcall pColor(float red, float green, float blue, float alpha = 1.0f);
 
 	PARTICLEDLL_API void __stdcall pColorD(float alpha, PDomainEnum dtype,
@@ -100,7 +102,6 @@ extern "C"{
 
 
 	// Action List Calls
-
 	PARTICLEDLL_API void __stdcall pCallActionList(int action_list_num);
 
 	PARTICLEDLL_API void __stdcall pDeleteActionLists(int action_list_num, int action_list_count = 1);
