@@ -108,6 +108,8 @@ void CDetailManager::VS_Unload()
 
 void CDetailManager::VS_Render()
 {
+	return;
+
 	// Phase
 	float	fPhaseRange	= PI/16;
 	float	fPhaseX		= sinf(Device.fTimeGlobal*0.1f)	*fPhaseRange;
