@@ -80,7 +80,7 @@ end
 // Кабаны не escape. Буцают труп, при подходе игрока бегут в аномалию
 // Часть скрипта скопирована из футбола. Так что немного тут есть лишнего
 
-local boar_distance         = 40      // Расстояние, ближе которого кабаны бегут в аномалию
+local boar_distance         = 45      // Расстояние, ближе которого кабаны бегут в аномалию
 local max_distance       	= 10      // На каком расстояние от точки обитания, буду буцать трупп
 
 class "CBoarPlayWithCorpse" (object_binder)
@@ -116,17 +116,19 @@ function CBoarPlayWithCorpse:update(delta)
 		self.object:script(true, script_name())
 	end
 
-	if(self.actor_near == false) then 
-		self.hear_sound	= self.object:get_sound_info()
-		if( (self.object:get_monster_hit_info().time ~= 0 and self.object:get_monster_hit_info().who:id() == get_actor_id())
-			//or (level.actor() and self.object:see(level.actor()))			
-		) then
-			reset_action(self.object, script_name())
-			self.actor_near	= true
-		end
+	if(self.actor_near == false and 
+		self.object:get_monster_hit_info().time ~= 0 and self.object:get_monster_hit_info().who:id() == get_actor_id()
+	) then
+		reset_action(self.object, script_name())
+		self.actor_near	= true
 	end
 
 	if(self.actor_near == false and distance_between_safe(self.object, level.actor()) < boar_distance) then
+		reset_action(self.object, script_name())
+		self.actor_near	= true
+	end
+
+	if(self.actor_near == false) then
 		self:set_action()
 	else
 		// Актер рядом, бежит в аномалию
@@ -135,30 +137,14 @@ function CBoarPlayWithCorpse:update(delta)
 			self.actor_near	= true
 		end
 		
-		// Выбираем, в какую точку побежим
-		if(self.point == nil) then
-			self:select_run_point()
+		if(self.object:get_enemy() and self.object:get_enemy():id() == get_actor_id()) then
+			// Если появился враг и он актер, то отпускаем из под скрипта
+			if(self.object:get_script()) then self.object:script(false, script_name()) end
+			self.end_work	= true		// Больше скрипт не работает
+			return
 		end
-
-		if(self.object:action() == nil) then
-			action(self.object, move(move.run_fwd, self.point), sound(sound.panic), cond(cond.move_end))
-		end
-	end
-end
-
-function CBoarPlayWithCorpse:select_run_point()
-	self.point	= self.path:point(1)
-	
-	// Если актера нет, то бежим в первую точку
-	if(level.actor() == nil) then return end
-	
-	self.actor_position	= level.actor():position()
-	
-	for i = 2, self.path:count() - 1 do
-		// если расстояние от запомненной точки до актера, больше, чем от следующей точки пути, то запоминаем ее
-		if(self.point:distance_to(self.actor_position) > self.path:point(i):distance_to(self.actor_position)) then
-			self.point	= self.path:point(i)
-		end
+		
+		action(self.object, act(act.attack, level.actor()), cond(cond.time_end, 10000))
 	end
 end
 
