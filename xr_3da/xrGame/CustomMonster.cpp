@@ -402,8 +402,8 @@ void CCustomMonster::Exec_Visibility	( float dt )
 	Fmatrix&	mEye	= V->LL_GetTransform(eye_bone);
 	Fmatrix		X;		X.mul_43(svTransform,mEye);
 
-	eye_matrix.setHPB	(-r_current.yaw,r_current.pitch,0);
-	eye_matrix.c.set	(X.c);
+	eye_matrix.setHPB			(-r_current.yaw,r_current.pitch,0);
+	eye_matrix.c.set			(X.c);
 	
 	Device.Statistic.AI_Vis.Begin();		//--------------
 
