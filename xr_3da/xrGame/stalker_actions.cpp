@@ -1779,7 +1779,10 @@ void CStalkerActionTakeCover::execute	()
 	else
 		m_object->set_movement_type	(eMovementTypeWalk);
 
-	m_object->CObjectHandler::set_goal	(eObjectActionAimReady1,m_object->best_weapon());
+	if (!m_object->ready_to_kill())
+		m_object->CObjectHandler::set_goal	(eObjectActionAimReady1,m_object->best_weapon());
+	else
+		m_object->CObjectHandler::set_goal	(eObjectActionFire1,m_object->best_weapon());
 }
 
 _edge_value_type CStalkerActionTakeCover::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
