@@ -65,8 +65,8 @@ void CScriptMonster::FreeAll()
 
 void CScriptMonster::reinit()
 {
-	inherited::reinit					();
 	FreeAll								();
+	inherited::reinit					();
 }
 
 void CScriptMonster::SetScriptControl(const bool bScriptControl, ref_str caSciptName)
