@@ -153,6 +153,10 @@ void vfFindTheShortestPath(TNode *taHeap, TIndexNode *tpaIndexes, u32 &dwAStarSt
 					}
 					else 
 						fLastDirectDistance = fDirectDistance;
+					if (fCumulativeDistance + fLastDirectDistance >= fMaxDistance) {
+						fDistance = MAX_VALUE;
+						return;
+					}
 				}
 				fDirectDistance = ffCheckPositionInDirection(dwNode,tPosition,tFinishPosition,fMaxDistance);
 				if (fDirectDistance == MAX_VALUE)
