@@ -69,7 +69,9 @@ CInifile::CInifile( LPCSTR szFileName, BOOL ReadOnly, BOOL bLoad, BOOL SaveAtEnd
     	}
 		destructor<CStream>	file(Engine.FS.Open(szFileName));
 #else
+#ifdef _EDITOR
 	    if (!bReadOnly&&!Engine.FS.Exist(szFileName)) Engine.FS.CreateNullFile(szFileName);
+#endif
 		destructor<CStream>	file(new CFileStream(szFileName));
 #endif
 
