@@ -19,8 +19,8 @@ class	Shader;
 class	Mtl;
 class	CExporter;
 class	CMayaTranslator;
-struct	FSChunkDef;
 struct	st_ObjectDB;
+struct	SXRShaderData;
 
 #ifndef _EDITOR
 	class PropValue;
@@ -338,7 +338,7 @@ public:
     bool			SaveSMotions			(LPCSTR fname);
 
     // load/save methods
-	void 			LoadMeshDef				(FSChunkDef *chunk);
+	//void 			LoadMeshDef				(FSChunkDef *chunk);
 	bool 			Reload					();
 	bool 			Load					(LPCSTR fname);
 	bool 			LoadObject				(LPCSTR fname);
@@ -400,8 +400,8 @@ public:
 	bool			Export_LW				(LWObjectImport *local);
 #endif
 #ifdef _MAYA_EXPORT
-	BOOL			ParseMAMaterial			(CSurface* dest, LPCSTR m_name, LPCSTR tex_name);
-	CSurface*		CreateSurface			(LPCSTR m_name, LPCSTR tex_name);
+	BOOL			ParseMAMaterial			(CSurface* dest, SXRShaderData& d);
+	CSurface*		CreateSurface			(LPCSTR m_name, SXRShaderData& d);
 #endif
 	bool			ExportLWO				(LPCSTR fname);
 };
