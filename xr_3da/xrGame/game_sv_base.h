@@ -24,7 +24,7 @@ public:
 	virtual		game_PlayerState*	get_id					(u32 id);								// DPNID
 	virtual		LPCSTR				get_name_it				(u32 it);
 	virtual		LPCSTR				get_name_id				(u32 id);								// DPNID
-	virtual		u32					get_id_2_eid			(u32 id)	 { return 0xffff; }; 
+	virtual		u16					get_id_2_eid			(u32 id);
 	virtual		u32					get_it_2_id				(u32 it);
 	virtual		u32					get_count				();
 	
@@ -45,10 +45,10 @@ public:
 	virtual		void				OnPlayerConnect			(u32 id_who);
 	virtual		void				OnPlayerDisconnect		(u32 id_who);
 	virtual		void				OnPlayerReady			(u32 id_who)							{};
-	virtual		void				OnPlayerBuy				(u32 id_who, u32 eid_who, LPCSTR what)	{};
+	virtual		void				OnPlayerBuy				(u32 id_who, u16 eid_who, LPCSTR what)	{};
 	virtual		void				OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)	= 0;
-	virtual		BOOL				OnTargetTouched			(u32 id_who, u32 eid_who, u32 eid_target)	= 0;			// TRUE=allow ownership, FALSE=denied
-	virtual		BOOL				OnTargetDetouched		(u32 id_who, u32 eid_who, u32 eid_target)	{return TRUE;};	// TRUE=allow ownership, FALSE=denied
+	virtual		BOOL				OnTouch					(u16 eid_who, u16 eid_target)	= 0;			// TRUE=allow ownership, FALSE=denied
+	virtual		BOOL				OnDetouch				(u16 eid_who, u16 eid_target)	= 0;			// TRUE=allow ownership, FALSE=denied
 
 	virtual		void				OnRoundStart			();												// старт раунда
 	virtual		void				OnRoundEnd				(LPCSTR reason);								// конец раунда

@@ -79,10 +79,17 @@ void	game_sv_Deathmatch::Update					()
 		break;
 	}
 }
-BOOL	game_sv_Deathmatch::OnTargetTouched			(u32 id_who, u32 eid_target)
+
+BOOL	game_sv_Single::OnTouch			(u16 eid_who, u16 eid_what)
 {
 	return TRUE;
 }
+
+BOOL	game_sv_Single::OnDetouch		(u16 eid_who, u16 eid_what)
+{
+	return TRUE;
+}
+
 void	game_sv_Deathmatch::OnPlayerReady			(u32 id)
 {
 	if	(GAME_PHASE_INPROGRESS == phase) return;

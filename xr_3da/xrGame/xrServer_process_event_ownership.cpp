@@ -5,7 +5,7 @@ void xrServer::Process_event_ownership(NET_Packet& P, DPNID sender, u32 time, u1
 	u32				MODE		= net_flags		(TRUE,TRUE);
 
 	// Parse message
-	u16					=ID,id_entity;
+	u16					id_parent=ID,id_entity;
 	P.r_u16				(id_entity);
 	xrServerEntity*		e_parent	= ID_to_entity	(id_parent);
 	xrServerEntity*		e_entity	= ID_to_entity	(id_entity);
@@ -18,7 +18,7 @@ void xrServer::Process_event_ownership(NET_Packet& P, DPNID sender, u32 time, u1
 	R_ASSERT			(c_parent == c_from);		// assure client only send request for local units
 
 
-	if (game->OnTargetTouched(sender,id_parent,id_entity))
+	if (game->OnTouch	(id_parent,id_entity))
 	{
 		// Game allows ownership of entity
 

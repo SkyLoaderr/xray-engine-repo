@@ -13,8 +13,10 @@ public:
 	virtual		void				OnRoundEnd				()								{};		// старт раунда
 	virtual		void				OnTeamScore				(u32 team)						{};		// команда выиграла
 	virtual		void				OnTeamsInDraw			()								{};		// ничья
-	virtual		BOOL				OnTargetTouched			(u32 id_who, u32 eid_target);
 	virtual		void				OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)	{};
+
+	virtual		BOOL				OnTouch					(u16 eid_who, u16 eid_what);
+	virtual		BOOL				OnDetouch				(u16 eid_who, u16 eid_what);
 
 	virtual		void				OnFraglimitExceed		()								{};
 	virtual		void				OnTimelimitExceed		()								{};

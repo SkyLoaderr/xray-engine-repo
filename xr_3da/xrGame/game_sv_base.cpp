@@ -47,6 +47,16 @@ u32					game_sv_GameState::get_count				()
 	return				S->client_Count();
 }
 
+u16					game_sv_GameState::get_id_2_eid				(u32 id)
+{
+	xrServer*		S	= Level().Server;
+	xrClientData*	C	= (xrClientData*)S->ID_to_client	(id);
+	if (0==C)			return 0xffff;
+	xrServerEntity*	E	= C->owner;
+	if (0==E)			return 0xffff;
+	return E->ID;
+}
+
 // Utilities
 u32					game_sv_GameState::get_alive_count			(u32 team)
 {
