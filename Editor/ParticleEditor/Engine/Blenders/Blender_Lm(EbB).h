@@ -16,6 +16,7 @@ public:
 	
 	void		compile_2	(CBlender_Compile& C);
 	void		compile_3	(CBlender_Compile& C);
+	void		compile_L	(CBlender_Compile& C);
 public:
 	virtual		LPCSTR		getComment()	{ return "LEVEL: lmap*(env^base)";	}
 

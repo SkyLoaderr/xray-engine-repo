@@ -30,7 +30,6 @@ public:
 
 	void					Setup	(LPCSTR N);
 };
-#pragma pack(push,4)
 
 class ENGINE_API CBlender	: public CPropertyBase
 {
@@ -59,5 +58,6 @@ public:
 	CBlender();
 	virtual ~CBlender();
 };
+#pragma pack(push,4)
 
 #endif // !defined(AFX_BLENDER_H__A023332E_C09B_4D93_AA53_57C052CCC075__INCLUDED_)

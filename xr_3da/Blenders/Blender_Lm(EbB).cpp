@@ -43,61 +43,50 @@ void	CBlender_LmEbB::Compile(CBlender_Compile& C)
 {
 	CBlender::Compile		(C);
 	if (C.bEditor)	{
-		// NO CONSTANT
-		
 		C.PassBegin		();
 		{
 			C.PassSET_ZB		(TRUE,TRUE);
-			C.PassSET_Blend_SET();
+			C.PassSET_Blend_SET	();
 			C.PassSET_LightFog	(TRUE,TRUE);
 			
 			// Stage1 - Env texture
 			C.StageBegin		();
-			{
-				C.StageSET_Address	(D3DTADDRESS_WRAP);
-				C.StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,		D3DTA_DIFFUSE);
-				C.StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,		D3DTA_DIFFUSE);
-				C.Stage_Texture		(oT2_Name,		C.L_textures		);
-				C.Stage_Matrix		(oT2_xform,		C.L_matrices,		0);
-				C.Stage_Constant		("$null",		C.L_constants		);
-			}
+			C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,		D3DTA_DIFFUSE);
+			C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,		D3DTA_DIFFUSE);
+			C.StageSET_TMC		(oT2_Name, oT2_xform, "$null", 0);
 			C.StageEnd			();
 			
 			// Stage2 - Base texture
 			C.StageBegin		();
-			{
-				C.StageSET_Address	(D3DTADDRESS_WRAP);
-				C.StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_BLENDTEXTUREALPHA,	D3DTA_CURRENT);
-				C.StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,		D3DTA_CURRENT);
-				C.Stage_Texture		(oT_Name,		C.L_textures		);
-				C.Stage_Matrix		(oT_xform,		C.L_matrices,		0);
-				C.Stage_Constant		("$null",		C.L_constants		);
-			}
+			C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_BLENDTEXTUREALPHA,	D3DTA_CURRENT);
+			C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,		D3DTA_CURRENT);
+			C.StageSET_TMC		(oT_Name, oT_xform, "$null", 0);
 			C.StageEnd			();
 
 			// Stage3 - Lighting - should work on all 2tex hardware
 			C.StageBegin		();
-			{
-				C.StageSET_Address	(D3DTADDRESS_WRAP);
-				C.StageSET_Color		(D3DTA_DIFFUSE,	  D3DTOP_MODULATE,			D3DTA_CURRENT);
-				C.StageSET_Alpha		(D3DTA_DIFFUSE,	  D3DTOP_SELECTARG2,		D3DTA_CURRENT);
-				C.Stage_Texture		("$null",		C.L_textures		);
-				C.Stage_Matrix		("$null",		C.L_matrices,		0);
-				C.Stage_Constant		("$null",		C.L_constants		);
-			}
+			C.StageSET_Color	(D3DTA_DIFFUSE,	  D3DTOP_MODULATE,			D3DTA_CURRENT);
+			C.StageSET_Alpha	(D3DTA_DIFFUSE,	  D3DTOP_SELECTARG2,		D3DTA_CURRENT);
+			C.Stage_Texture		("$null"	);
+			C.Stage_Matrix		("$null",	0);
+			C.Stage_Constant	("$null"	);
 			C.StageEnd			();
 		}
 		C.PassEnd			();
 	} else {
-		switch (HW.Caps.pixel.dwStages)
+		if (C.bLighting)	
 		{
-		case 2:		// Geforce1/2/MX
-			compile_2	(C);
-			break;
-		case 3:		// Kyro, Radeon, Radeon2, Geforce3/4
-		default:
-			compile_3	(C);
-			break;
+		} else {
+			switch (HW.Caps.pixel.dwStages)
+			{
+			case 2:		// Geforce1/2/MX
+				compile_2	(C);
+				break;
+			case 3:		// Kyro, Radeon, Radeon2, Geforce3/4
+			default:
+				compile_3	(C);
+				break;
+			}
 		}
 	}
 }

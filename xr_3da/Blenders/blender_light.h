@@ -11,7 +11,7 @@
 class ENGINE_API CBlender_LIGHT : public CBlender  
 {
 public:
-	virtual		LPCSTR		getComment()	{ return "lighting effect";	}
+	virtual		LPCSTR		getComment()	{ return "INTERNAL: lighting effect";	}
 
 	virtual		void		Save			(CFS_Base&  FS);
 	virtual		void		Load			(CStream&	FS, WORD version);
