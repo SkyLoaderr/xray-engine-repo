@@ -623,17 +623,22 @@ bool CPHSimpleCharacter::ValidateWalkOnMesh()
 	m_bcenter_forbid.set(center_forbid);
 	m_AABB.set(AABB);
 	m_AABB_forbid.set(AABB_forbid);
-
 #endif
-	CDB::RESULT*    R_begin;
-	CDB::RESULT*    R_end  ;
-	CDB::TRI*       T_array ;
-	XRC.box_options                (0);
-	XRC.box_query                  (Level().ObjectSpace.GetStaticModel(),center_forbid,AABB_forbid);
-	R_begin                         = XRC.r_begin();
-	R_end                           = XRC.r_end();
-	T_array                         = Level().ObjectSpace.GetStaticTris();
+	// perform single query / two usages
+	Fbox			query,tmp		;
+	Fvector			q_c, q_d		;
+	query.set		(center_forbid,center_forbid);
+	query.grow		(AABB_forbid				);
+	tmp.set			(center,center				);
+	tmp.grow		(AABB						);
+	query.merge		(tmp);
+	query.get_CD	(q_c,q_d);
 
+	XRC.box_options                (0);
+	XRC.box_query                  (Level().ObjectSpace.GetStaticModel(),q_c,q_d);
+	CDB::RESULT*    R_begin        = XRC.r_begin();
+	CDB::RESULT*    R_end          = XRC.r_end();
+	CDB::TRI*       T_array        = Level().ObjectSpace.GetStaticTris();
 	for (CDB::RESULT* Res=R_begin; Res!=R_end; ++Res)
 	{
 		//CDB::TRI* T = T_array + Res->id;
@@ -650,12 +655,6 @@ bool CPHSimpleCharacter::ValidateWalkOnMesh()
 		}
 	}
 
-
-	XRC.box_options                (0);
-	XRC.box_query                  (Level().ObjectSpace.GetStaticModel(),center,AABB);
-	R_begin                         = XRC.r_begin();
-	R_end                           = XRC.r_end();
-	T_array                         = Level().ObjectSpace.GetStaticTris();
 	for (CDB::RESULT* Res=R_begin; Res!=R_end; ++Res)
 	{
 		//CDB::TRI* T = T_array + Res->id;
