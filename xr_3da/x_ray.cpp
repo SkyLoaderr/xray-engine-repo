@@ -366,7 +366,7 @@ void CApplication::Level_Scan()
 		strconcat	(N1,(*folder)[i],"level");
 		strconcat	(N2,(*folder)[i],"level.ltx");
 		strconcat	(N3,(*folder)[i],"level.game");
-		strconcat	(N4,(*folder)[i],"level.spawn");
+		strconcat	(N4,(*folder)[i],"level.cform");
 		if	(
 			FS.exist("$game_levels$",N1)		&&
 			FS.exist("$game_levels$",N2)		&&
