@@ -260,7 +260,7 @@ void test_goap	()
 	{
 		CSProblemSolver						problem_solver;
 		CSProblemSolver::CState				start_condition;
-		FILE								*f = fopen("x:\\dump.txt","rt");
+		FILE								*f = fopen("x:\\goap.dat","rt");
 		{
 			u32								count;
 			fscanf							(f,"%d",&count);
