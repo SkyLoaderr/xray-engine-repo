@@ -70,6 +70,9 @@ public:
 	CRenderTarget												Target;			// Render-target
 	CLight_DB													Lights;
 	CLight_Render_Direct										LR;
+
+	ref_str														c_sbase;
+	ref_str														c_lmaterial;
 private:
 	// Loading / Unloading
 	void							LoadBuffers					(IReader	*fs);
@@ -100,6 +103,17 @@ public:
 	IC u32							occq_begin					(u32&	ID		)	{ return HWOCC.occq_begin	(ID);	}
 	IC void							occq_end					(u32&	ID		)	{ HWOCC.occq_end	(ID);			}
 	IC u32							occq_get					(u32&	ID		)	{ return HWOCC.occq_get		(ID);	}
+
+	IC void							apply_lmaterial				()
+	{
+		R_constant*		C	= RCache.get_c(c_sbase);			// get sampler
+		if (0==C)			return;
+		VERIFY				(RC_dest_sampler	== C->destination);
+		VERIFY				(RC_sampler			== C->type);
+		CTexture*		T	= RCache.get_ActiveTexture	(u32(C->samp.index));
+		VERIFY				(T);
+		RCache.set_c		(c_lmaterial,0,0,0,T->m_material/3.f);
+	}
 
 public:
 	// Loading / Unloading

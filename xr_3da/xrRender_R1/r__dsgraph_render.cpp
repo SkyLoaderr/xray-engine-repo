@@ -61,13 +61,15 @@ void __fastcall mapMatrix_Render	(mapMatrixItems& N)
 // ALPHA
 void __fastcall sorted_L1		(mapSorted_Node *N)
 {
-	IRender_Visual *V			= N->val.pVisual;
-	RCache.set_Element			(N->val.se);
-	RCache.set_xform_world		(N->val.Matrix);
+	IRender_Visual *V				= N->val.pVisual;
+	RCache.set_Element				(N->val.se);
+	RCache.set_xform_world			(N->val.Matrix);
 #if RENDER==R_R1
-	RImplementation.ApplyObject	(N->val.pObject);
+	RImplementation.ApplyObject		(N->val.pObject);
+#else
+	RImplementation.apply_lmaterial	();
 #endif
-	V->Render					(calcLOD(N->key,V->vis.sphere.R));
+	V->Render						(calcLOD(N->key,V->vis.sphere.R));
 }
 
 IC	bool	cmp_vs_nrm			(mapNormalVS::TNode* N1, mapNormalVS::TNode* N2)			{	return (N1->val.ssa > N2->val.ssa);		}
@@ -277,6 +279,7 @@ void R_dsgraph_structure::r_dsgraph_render_graph	(u32	_priority)
 						{
 							mapNormalTextures::TNode*	Ntex		= nrmTextures[tex_id];
 							RCache.set_Textures						(Ntex->key);
+							RImplementation.apply_lmaterial			();
 
 							mapNormalVB&				vb			= Ntex->val;	vb.ssa	=	0;
 							vb.getANY_P								(nrmVB);
@@ -350,6 +353,7 @@ void R_dsgraph_structure::r_dsgraph_render_graph	(u32	_priority)
 						{
 							mapMatrixTextures::TNode*	Ntex		= matTextures[tex_id];
 							RCache.set_Textures						(Ntex->key);
+							RImplementation.apply_lmaterial			();
 
 							mapMatrixVB&				vb			= Ntex->val;	vb.ssa	=	0;
 							vb.getANY_P								(matVB);

@@ -138,7 +138,8 @@ public:
 	void							set_ClipPlanes		(u32 _enable, Fmatrix*	_xform =NULL, u32 fmask=0xff);
 
 	// constants
-	IC	R_constant*					get_c				(LPCSTR n)															{ if (ctable)	return ctable->get(n);else return 0;}
+	IC	R_constant*					get_c				(LPCSTR		n)														{ if (ctable)	return ctable->get(n);else return 0;}
+	IC	R_constant*					get_c				(ref_str&	n)														{ if (ctable)	return ctable->get(n);else return 0;}
 
 	// constants - direct (fast)
 	IC	void						set_c				(R_constant* C, const Fmatrix& A)									{ if (C)		constants.set(C,A);					}

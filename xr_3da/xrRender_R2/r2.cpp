@@ -61,6 +61,9 @@ void					CRender::create					()
 	::Device.Resources->RegisterConstantSetup	("v_decodeZ01",	&binder_decodeZ01);
 	::Device.Resources->RegisterConstantSetup	("parallax",	&binder_parallax);
 
+	c_lmaterial					= "L_material";
+	c_sbase						= "s_base";
+
 	Target.OnDeviceCreate		();
 	LR.Create					();
 
