@@ -29,6 +29,16 @@ void CAI_Rat::Die()
 
 	//bActive = false;
 	bEnabled = false;
+	
+	if (m_bFiring) {
+		AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,.1f);
+		Fvector tAcceleration;
+		tAcceleration.set(0,m_fJumpSpeed,0);
+		Movement.SetPosition(vPosition);
+		Movement.Calculate	(tAcceleration,0,0,.1f,false);
+		Movement.GetPosition(vPosition);
+		UpdateTransform();
+	}
 }
 
 void CAI_Rat::Jumping()
