@@ -75,11 +75,12 @@ public:
 	virtual void			set_DynamicScales		(float l_scale=default_l_scale,float w_scale=default_w_scale)= 0;
 	virtual void			set_ContactCallback		(ContactCallbackFun* callback)							= 0;
 	virtual void			set_ObjectContactCallback(ObjectContactCallbackFun* callback)					= 0;
-	virtual void			set_PhysicsRefObject	(CPhysicsShellHolder* ref_object)							= 0;
+	virtual void			set_PhysicsRefObject	(CPhysicsShellHolder* ref_object)						= 0;
 	virtual void			get_LinearVel			(Fvector& velocity)										= 0;
 	virtual void			get_AngularVel			(Fvector& velocity)										= 0;
 	virtual void			set_LinearVel			(const Fvector& velocity)								= 0;
 	virtual void			set_AngularVel			(const Fvector& velocity)								= 0;
+	virtual void			TransformPosition		(const Fmatrix &form)									= 0;
 	virtual void			set_ApplyByGravity		(bool flag)												= 0;
 	virtual void			set_PushOut				(u32 time,ObjectContactCallbackFun* push_out=PushOutCallback)	= 0;
 	virtual void			SetMaterial				(u16 m)													= 0;

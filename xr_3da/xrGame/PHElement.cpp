@@ -251,6 +251,31 @@ void CPHElement::SetGlobalPositionDynamic(const Fvector& position)
 	if(!bActive) return;
 	dBodySetPosition(m_body,position.x,position.y,position.z);
 }
+
+void CPHElement::TransformPosition(const Fmatrix &form)
+{
+	if(!bActive)return;
+	R_ASSERT2(m_body,"body is not created");
+	//dMatrix3 dMT,dMN;
+	//PHDynamicData::FMXtoDMX(form,dMT);
+
+	//const dReal* dMB=dBodyGetRotation(m_body);
+	//dVector3 dVT,dVN,dVB;
+	//dVectorSet(dVB,(const dReal*)&form.c);
+	//dMULTIPLY0_331(dVT,dMB,dVB);
+	//dMULTIPLY0_333(dMN,dMB,dMT);
+	//dVectorAdd(dVN,dBodyGetPosition(m_body),dVT);
+	//dBodySetPosition(m_body,dVN[0],dVN[1],dVN[2]);
+	//dBodySetRotation(m_body,dMN);
+	Fmatrix bm;
+	PHDynamicData::DMXPStoFMX(dBodyGetRotation(m_body),dBodyGetPosition(m_body),bm);
+	Fmatrix new_bm;
+	new_bm.mul(form,bm);
+	dMatrix3 dBM;
+	PHDynamicData::FMXtoDMX(new_bm,dBM);
+	dBodySetRotation(m_body,dBM);
+	dBodySetPosition(m_body,new_bm.c.x,new_bm.c.y,new_bm.c.z);
+}
 CPHElement::~CPHElement	()
 {
 	Deactivate();
@@ -583,7 +608,7 @@ void CPHElement::InterpolateGlobalTransform(Fmatrix* m){
 void CPHElement::GetGlobalTransformDynamic(Fmatrix* m)
 {
 	PHDynamicData::DMXPStoFMX(dBodyGetRotation(m_body),dBodyGetPosition(m_body),*m);
-	m->mulB(m_inverse_local_transform);
+	m->mulB_43(m_inverse_local_transform);
 	//bUpdate=false;
 	m_flags.set(flUpdate,FALSE);
 }

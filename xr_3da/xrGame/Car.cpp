@@ -190,6 +190,10 @@ void CCar::SaveNetState(NET_Packet& P)
 	CPHSkeleton::SaveNetState	   (P);
 	P.w_float(fEntityHealth);
 
+	P.w_vec3(Position());
+	Fvector Angle;
+	XFORM().getHPB(Angle);
+	P.w_vec3(Angle);
 	{
 		xr_map<u16,SDoor>::iterator i,e;
 		i=m_doors.begin();
@@ -237,11 +241,16 @@ void CCar::RestoreNetState(CSE_PHSkeleton* po)
 			i->second.RestoreNetState(*ii);
 		}
 	}
-
-	PKinematics(Visual())->CalculateBones_Invalidate();//this need to call callbacks
-	PKinematics(Visual())->CalculateBones	();
-	VisualUpdate();
-
+/////////////////////////////////////////////////////////////////////////
+	Fmatrix restored_form;
+	PPhysicsShell()->GetGlobalTransformDynamic(&restored_form);
+	Fmatrix inv ,replace,sof;
+	sof.setHPB(co->o_Angle.x,co->o_Angle.y,co->o_Angle.z);
+	sof.c.set(co->o_Position);
+	inv.set(restored_form);
+	inv.invert();
+	replace.mul(sof,inv);
+	PPhysicsShell()->TransformPosition(replace);
 }
 void CCar::SetDefaultNetState(CSE_PHSkeleton* po)
 {

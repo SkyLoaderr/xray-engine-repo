@@ -58,7 +58,7 @@ shell_root CPHShellSplitterHolder::SplitJoint(u16 aspl)
 	new_shell_desc->PureActivate();
 	//new_shell_desc->ObjectInRoot().identity();
 	m_pShell->DeleteJoint(start_joint);
-	
+	new_shell->set_ObjectContactCallback(NULL);
 	return ret;
 }
 
@@ -346,6 +346,7 @@ shell_root CPHShellSplitterHolder::ElementSingleSplit(const element_fracture &sp
 	VERIFY(_valid(new_shell_last->mXFORM));
 	VERIFY(dBodyStateValide(source_element->get_bodyConst()));
 	VERIFY(dBodyStateValide(split_elem.first->get_body()));
+	new_shell_last->set_ObjectContactCallback(NULL);
 	return mk_pair(new_shell_last,split_elem.second.m_bone_id);
 
 }

@@ -431,6 +431,11 @@ void CPHShell::set_PushOut(u32 time,ObjectContactCallbackFun* push_out)
 	}
 }
 
+void CPHShell::TransformPosition(const Fmatrix &form)
+{
+	ELEMENT_I i=elements.begin(),e=elements.end();
+	for(;i!=e;i++) (*i)->TransformPosition(form);
+}
 
 void CPHShell::SmoothElementsInertia(float k)
 {

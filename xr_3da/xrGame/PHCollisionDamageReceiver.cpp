@@ -105,5 +105,12 @@ void CPHCollisionDamageReceiver::Hit(u16 source_id,u16 bone_id,float power,const
 
 void CPHCollisionDamageReceiver::Clear()
 {
-	m_controled_bones.clear();
+	//CPhysicsShellHolder *sh	=PPhysicsShellHolder	();
+	//xr_map<u16,float>::iterator i=m_controled_bones.begin(),e=m_controled_bones.end();
+	//for(;e!=i;++i)
+	//{
+	//	CODEGeom* og= sh->PPhysicsShell()->get_GeomByID(i->first);
+	//	if(og)og->set_obj_contact_cb(NULL);
+	//}
+		m_controled_bones.clear();
 }

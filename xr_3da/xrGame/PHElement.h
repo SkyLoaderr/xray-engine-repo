@@ -179,6 +179,7 @@ public:																																				//
 ///////////////////////////////////////////////////Position///////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	virtual void			SetTransform					(const Fmatrix& m0);															//
+	virtual void			TransformPosition				(const Fmatrix &form);
 	virtual void			getQuaternion					(Fquaternion& quaternion);														//
 	virtual void			setQuaternion					(const Fquaternion& quaternion);												//
 	virtual void			SetGlobalPositionDynamic		(const Fvector& position);														//

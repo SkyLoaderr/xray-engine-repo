@@ -117,6 +117,7 @@ public:
 	virtual void				get_AngularVel			  (Fvector& velocity);
 	virtual void				set_LinearVel			  (const Fvector& velocity);
 	virtual void				set_AngularVel			  (const Fvector& velocity);
+	virtual void				TransformPosition		  (const Fmatrix &form);
 	virtual void				set_ApplyByGravity		  (bool flag);
 	virtual void				SetMaterial				  (u16 m);
 	virtual void				SetMaterial				  (LPCSTR m);
@@ -199,6 +200,7 @@ private:
 	void setEndElementSplitter	  			()																				;
 	void setElementSplitter		  			(u16 element_number,u16 splitter_position)										;
 	void setEndJointSplitter	  			()																				;
+
 	void AddSplitter			  			(CPHShellSplitter::EType type,u16 element,u16 joint)							;
 	void AddSplitter			  			(CPHShellSplitter::EType type,u16 element,u16 joint,u16 position)				;
 	/////////////////////////////////////////
