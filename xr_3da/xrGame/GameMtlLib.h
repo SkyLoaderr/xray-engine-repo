@@ -165,6 +165,9 @@ public:
 #endif
 };
 
+#define SELECT_RANDOM_SAFE(a_vector)	((a_vector.empty()) ? 0 : (a_vector[Random.randI(a_vector.size())]))
+#define SELECT_RANDOM(a_vector)			(a_vector[Random.randI(a_vector.size())])
+
 DEFINE_VECTOR(SGameMtlPair*,GameMtlPairVec,GameMtlPairIt);
 
 class CGameMtlLibrary{

@@ -607,14 +607,16 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 	}
 */	
 
-	if (ph_Movement.gcontact_Was) 
+
 	{
 //		SGameMtlPair* pair	= GMLib.GetMaterialPair(0,1); R_ASSERT(pair);
 //		::Sound->play_at_pos	(pair->HitSounds[0],this,Position());
 //		::Sound->play_at_pos						(sndLanding,this,Position());
 
 		if (Local()) {
-			pCreator->Cameras.AddEffector		(xr_new<CEffectorFall> (ph_Movement.gcontact_Power));
+			
+			if (ph_Movement.gcontact_Was) 
+				pCreator->Cameras.AddEffector		(xr_new<CEffectorFall> (ph_Movement.gcontact_Power));
 			Fvector D; D.set					(0,1,0);
 			if (ph_Movement.gcontact_HealthLost)	{
 				Hit	(ph_Movement.gcontact_HealthLost,D,this,-1,0);

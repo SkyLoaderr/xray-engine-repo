@@ -540,7 +540,7 @@ void CPHSimpleCharacter::InitContact(dContact* c){
 			dBodyGetMass(b,&m);
 			const dReal* obj_vel=dBodyGetLinearVel(b);
 		//	dVector3 rel_vel={obj_vel[0]-vel[0],obj_vel[1]-vel[1],obj_vel[2]-vel[2]};
-			c_vel=dFabs(dDOT(obj_vel,c->geom.normal)*dSqrt(m.mass/m_mass));
+			c_vel=dFabs(dDOT(obj_vel,c->geom.normal)*_sqrt(m.mass/m_mass));
 		}
 	//	else
 	//	{

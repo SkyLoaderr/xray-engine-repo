@@ -2703,16 +2703,52 @@ void CPHShell::set_ContactCallback(ContactCallbackFun* callback)
 void __stdcall ContactShotMark(CDB::TRI* T,dContactGeom* c)
 {
 dBodyID b=dGeomGetBody(c->g1);
-if(!b) b=dGeomGetBody(c->g2);
+dxGeomUserData* data;
+if(!b) 
+{
+	b=dGeomGetBody(c->g2);
+	data=dGeomGetUserData(c->g2);
+}
+else
+{
+	data=dGeomGetUserData(c->g1);
+}
+
 dVector3 vel;
 dMass m;
 dBodyGetMass(b,&m);
 
  dBodyGetPointVel(b,c->pos[0],c->pos[1],c->pos[2],vel);
- if(dFabs(dDOT(vel,c->normal))* _sqrt(m.mass)>10.f)
+ dReal vel_cret=dFabs(dDOT(vel,c->normal))* _sqrt(m.mass);
+{
+	 if(data)
+	 {
+	 	SGameMtlPair* mtl_pair		= GMLib.GetMaterialPair(T->material,data->material);
+	//	char buf[40];
+	//	R_ASSERT3(mtl_pair,strconcat(buf,"Undefined material pair:  # ", GMLib.GetMaterial(T->material)->name),GMLib.GetMaterial(data->material)->name);
+		if(mtl_pair)
+		{
+		 if(vel_cret>20.f && !mtl_pair->HitMarks.empty())
 			::Render->add_Wallmark	(
-				CPHElement::hWallmark,
-				*((Fvector*)c->pos),
-				0.09f,
-				T);
+			 SELECT_RANDOM(mtl_pair->HitMarks),
+			 *((Fvector*)c->pos),
+			 0.09f,
+			 T);
+		 if(vel_cret>5.f && !mtl_pair->HitSounds.empty())
+		 {
+			  ::Sound->play_at_pos(
+			  SELECT_RANDOM(mtl_pair->HitSounds) ,0,*((Fvector*)c->pos)
+			  );
+		 }
+		}
+	
+	 }
+
+//			::Render->add_Wallmark	(
+//				CPHElement::hWallmark,
+//				*((Fvector*)c->pos),
+//				0.09f,
+//				T);
+	 
+ } 
 }
