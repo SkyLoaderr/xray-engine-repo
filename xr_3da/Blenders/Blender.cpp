@@ -128,6 +128,11 @@ CBlender*	CBlender::Create	(CLASS_ID cls)
 	}
 }
 
+IC bool		p_sort			(CBlender* A, CBlender* B)
+{
+	return stricmp(A->getComment(),B->getComment())<0;
+}
+
 void		CBlender::CreatePalette(vector<CBlender*> &palette)
 {
 	R_ASSERT(palette.empty());
@@ -150,4 +155,6 @@ void		CBlender::CreatePalette(vector<CBlender*> &palette)
 	palette.push_back(Create(B_BLUR));
 	palette.push_back(Create(B_MODEL));
 	palette.push_back(Create(B_MODEL_EbB));
+
+	std::sort		(palette.begin(),palette.end(),p_sort);
 }

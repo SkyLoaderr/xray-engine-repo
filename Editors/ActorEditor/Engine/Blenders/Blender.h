@@ -16,7 +16,7 @@ public:
 	CLASS_ID	CLS;
 	string128	cName;
 	string32	cComputer;
-	u32		cTime;
+	u32			cTime;
 	WORD		version;
 	
 	CBlender_DESC()	
@@ -41,7 +41,7 @@ protected:
 	string64		oT_Name;
 	string64		oT_xform;
 protected:
-	u32		BC			(BOOL v)		{ return v?0xff:0; }
+	u32			BC			(BOOL v)		{ return v?0xff:0; }
 	BOOL		c_XForm		();
 public:
 	static		CBlender*	Create			(CLASS_ID cls);
