@@ -1,7 +1,0 @@
-function main ()
-
-    local gr = get_level_object ("grenade")
-    wait (5000)
-    gr:explode (1)
-
-end
