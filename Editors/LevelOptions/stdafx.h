@@ -160,28 +160,35 @@ struct st_Version{
 };
 
 #ifdef _LEVEL_EDITOR
-	#define _EDITOR_FILE_NAME_ "level"
+	#define _EDITOR_FILE_NAME_ 	"level"
+	#define _EDITOR_NAME_ 		"Level Editor"
 #else
 	#ifdef _SHADER_EDITOR
-		#define _EDITOR_FILE_NAME_ "shader"
+		#define _EDITOR_FILE_NAME_ 	"shader"
+		#define _EDITOR_NAME_ 		"Shader Editor"
     #else
 		#ifdef _PARTICLE_EDITOR
-			#define _EDITOR_FILE_NAME_ "particle"
+			#define _EDITOR_FILE_NAME_ 	"particle"
+			#define _EDITOR_NAME_ 		"Particle Editor"
         #else
 			#ifdef _ACTOR_EDITOR
-				#define _EDITOR_FILE_NAME_ "actor"
+				#define _EDITOR_FILE_NAME_ 	"actor"
+				#define _EDITOR_NAME_ 		"Actor Editor"
             #else
             	#ifdef _LEVEL_OPTIONS
-					#define _EDITOR_FILE_NAME_ "actor"
+					#define _EDITOR_FILE_NAME_ 	"options"
+					#define _EDITOR_NAME_ 		"Level Options"
                 #endif
     		#endif
 		#endif
     #endif
 #endif
+
 #define DEFINE_INI(fs) char buf[255];	strcpy(buf,_EDITOR_FILE_NAME_); strcat(buf,".ini"); Engine.FS.m_LocalRoot.Update(buf); fs->IniFileName = buf;
 #define NONE_CAPTION "<none>" 
 #define MULTIPLESEL_CAPTION "<multiple selection>" 
 
+// external dependencies
 #pragma comment(lib,"xrCoreB.lib")
 #pragma comment(lib,"dinput.lib")
 #pragma comment(lib,"d3dx8d.lib")

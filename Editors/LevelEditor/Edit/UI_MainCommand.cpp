@@ -42,18 +42,16 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 		//----------------
         if (UI.OnCreate()){
             Tools.OnCreate	();
-			Scene.OnCreate	();
+            Scene.OnCreate	();
             PSLib.OnCreate	();
             Lib.OnCreate	();
             LALib.OnCreate	();
-
 		    BeginEState		(esEditScene);
 
 		    Command			(COMMAND_CLEAR);
 			Command			(COMMAND_RENDER_FOCUS);
 			Command			(COMMAND_CHANGE_TARGET, etObject);
 			Command			(COMMAND_CHANGE_ACTION, eaSelect);
-//			Command			(COMMAND_CHECK_TEXTURES);
         }else{
         	bRes = false;
         }
@@ -610,109 +608,63 @@ bool TUI::Command( int _Command, int p1, int p2 ){
         Command(COMMAND_UPDATE_GRID);
     	}break;
  	default:
-		ELog.DlgMsg( mtError, "Warning: Undefined command: %04d", _Command );
-        bRes = false;
-		}
+    	bRes = CommandExt(_Command,p1,p2);
+	}
 
     RedrawScene();
     return bRes;
 }
-
-void TUI::ApplyShortCut(WORD Key, TShiftState Shift)
-{
-	VERIFY(m_bReady);
-    if (Key==VK_ESCAPE)   		Command(COMMAND_CHANGE_ACTION, eaSelect);
-    if (Shift.Contains(ssCtrl)){
-        if (Key=='V')    		Command(COMMAND_PASTE);
-        else if (Key=='C')    	Command(COMMAND_COPY);
-        else if (Key=='X')    	Command(COMMAND_CUT);
-        else if (Key=='Z')    	Command(COMMAND_UNDO);
-        else if (Key=='Y')    	Command(COMMAND_REDO);
-        else if (Key==VK_F5)    Command(COMMAND_BUILD);
-        else if (Key==VK_F7)    Command(COMMAND_OPTIONS);
-        else if (Key=='A')    	Command(COMMAND_SELECT_ALL);
-        else if (Key=='I')    	Command(COMMAND_INVERT_SELECTION_ALL);
-        else if (Key=='O')   	Command(COMMAND_LOAD);
-        else if (Key=='N')   	Command(COMMAND_CLEAR);
-        else if (Key=='S'){ 	if (Shift.Contains(ssAlt))  Command(COMMAND_SAVEAS);
-					            else                        Command(COMMAND_SAVE);}
-       	else if (Key=='1') 	 	Command(COMMAND_CHANGE_TARGET, etGroup);
-		else if (Key=='2')		Command(COMMAND_CHANGE_TARGET, etPS);
-        else if (Key=='3')		Command(COMMAND_CHANGE_TARGET, etShape);
-		else if (Key=='R')		Command(COMMAND_LOAD_FIRSTRECENT);
-        else if (Key=='G')   	Command(COMMAND_TOGGLE_GRID);
-        else if (Key=='F')		Command(COMMAND_TOGGLE_SAFE_RECT);
-    }else{
-        if (Shift.Contains(ssAlt)){
-        	if (Key=='F')   	Command(COMMAND_FILE_MENU);
-        }else{
-            if (Key=='1')     	Command(COMMAND_CHANGE_TARGET, etObject);
-        	else if (Key=='2')  Command(COMMAND_CHANGE_TARGET, etLight);
-        	else if (Key=='3')  Command(COMMAND_CHANGE_TARGET, etSound);
-        	else if (Key=='4')  Command(COMMAND_CHANGE_TARGET, etEvent);
-        	else if (Key=='5')  Command(COMMAND_CHANGE_TARGET, etGlow);
-        	else if (Key=='6')  Command(COMMAND_CHANGE_TARGET, etDO);
-        	else if (Key=='7')  Command(COMMAND_CHANGE_TARGET, etSpawnPoint);
-        	else if (Key=='8')  Command(COMMAND_CHANGE_TARGET, etWay);
-        	else if (Key=='9')  Command(COMMAND_CHANGE_TARGET, etSector);
-        	else if (Key=='0')  Command(COMMAND_CHANGE_TARGET, etPortal);
-            // simple press
-        	else if (Key=='S')	Command(COMMAND_CHANGE_ACTION, eaSelect);
-        	else if (Key=='A')	Command(COMMAND_CHANGE_ACTION, eaAdd);
-        	else if (Key=='T')	Command(COMMAND_CHANGE_ACTION, eaMove);
-        	else if (Key=='Y')	Command(COMMAND_CHANGE_ACTION, eaRotate);
-        	else if (Key=='H')	Command(COMMAND_CHANGE_ACTION, eaScale);
-        	else if (Key=='Z')	Command(COMMAND_CHANGE_AXIS,   eAxisX);
-        	else if (Key=='X')	Command(COMMAND_CHANGE_AXIS,   eAxisY);
-        	else if (Key=='C')	Command(COMMAND_CHANGE_AXIS,   eAxisZ);
-        	else if (Key=='V')	Command(COMMAND_CHANGE_AXIS,   eAxisZX);
-        	else if (Key=='O')	Command(COMMAND_CHANGE_SNAP,   (int)fraTopBar->ebOSnap);
-        	else if (Key=='G')	Command(COMMAND_CHANGE_SNAP,   (int)fraTopBar->ebGSnap);
-        	else if (Key=='P')	Command(COMMAND_EDITOR_PREF);
-        	else if (Key=='W')	Command(COMMAND_OBJECT_LIST);
-        	else if (Key==VK_DELETE)Command(COMMAND_DELETE_SELECTION);
-        	else if (Key==VK_RETURN)Command(COMMAND_SHOW_PROPERTIES);
-            else if (Key==VK_OEM_4)	Command(COMMAND_GRID_SLOT_SIZE,false);
-            else if (Key==VK_OEM_6)	Command(COMMAND_GRID_SLOT_SIZE,true);
-            else if (Key==VK_OEM_MINUS)	Command(COMMAND_HIDE_SEL, FALSE);
-            else if (Key==VK_OEM_PLUS)	Command(COMMAND_HIDE_UNSEL, FALSE);
-            else if (Key==VK_OEM_5)		Command(COMMAND_HIDE_ALL, TRUE);
-        	else if (Key=='N'){
-            	switch (Tools.GetAction()){
-            	case eaMove: 	UI.Command(COMMAND_SET_NUMERIC_POSITION); 	break;
-			    case eaRotate: 	UI.Command(COMMAND_SET_NUMERIC_ROTATION); 	break;
-			    case eaScale: 	UI.Command(COMMAND_SET_NUMERIC_SCALE); 		break;
-            	}
-            }
-        }
-    }
-}
 //---------------------------------------------------------------------------
-
-void TUI::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
-{
-	VERIFY(m_bReady);
-    if (Shift.Contains(ssCtrl)){
-        if (Key=='S'){
-            if (Shift.Contains(ssAlt))  Command(COMMAND_SAVEAS);
-            else                        Command(COMMAND_SAVE);
-        }
-        else if (Key=='O')   			Command(COMMAND_LOAD);
-        else if (Key=='N')   			Command(COMMAND_CLEAR);
-        else if (Key=='G')   			Command(COMMAND_TOGGLE_GRID);
-        else if (Key=='F')				Command(COMMAND_TOGGLE_SAFE_RECT);
-    }
-    if ((Key==VK_OEM_3)||(Key==VK_SHIFT))Command(COMMAND_RENDER_FOCUS);
-}
-//---------------------------------------------------------------------------
-
-char* TUI::GetCaption()
-{
-	return GetEditFileName()[0]?GetEditFileName():"noname";
-}
 char* TUI::GetTitle()
 {
-	return "Level Editor";
+	return _EDITOR_NAME_;
 }
 
+//---------------------------------------------------------------------------
+bool TUI::ApplyShortCut(WORD Key, TShiftState Shift)
+{
+	VERIFY(m_bReady);
+    
+    if (ApplyGlobalShortCut(Key,Shift))	return true;
+	if (ApplyShortCutExt(Key,Shift)) 	return true;
+
+	bool bExec = false;
+    
+    if (Key==VK_ESCAPE)   		{Command(COMMAND_CHANGE_ACTION, eaSelect);					bExec=true;}
+    if (Shift.Contains(ssCtrl)){
+    }else{
+        if (Shift.Contains(ssAlt)){
+        }else{
+            // simple press
+        	if (Key=='S')		{Command(COMMAND_CHANGE_ACTION, eaSelect);					bExec=true;}
+        	else if (Key=='A')	{Command(COMMAND_CHANGE_ACTION, eaAdd);                     bExec=true;}
+        	else if (Key=='T')	{Command(COMMAND_CHANGE_ACTION, eaMove);					bExec=true;}
+        	else if (Key=='Y')	{Command(COMMAND_CHANGE_ACTION, eaRotate);                  bExec=true;}
+        	else if (Key=='H')	{Command(COMMAND_CHANGE_ACTION, eaScale);                   bExec=true;}
+        	else if (Key=='Z')	{Command(COMMAND_CHANGE_AXIS,   eAxisX);                    bExec=true;}
+        	else if (Key=='X')	{Command(COMMAND_CHANGE_AXIS,   eAxisY);                    bExec=true;}
+        	else if (Key=='C')	{Command(COMMAND_CHANGE_AXIS,   eAxisZ);                    bExec=true;}
+        	else if (Key=='V')	{Command(COMMAND_CHANGE_AXIS,   eAxisZX);                   bExec=true;}
+        	else if (Key=='O')	{Command(COMMAND_CHANGE_SNAP,   (int)fraTopBar->ebOSnap);   bExec=true;}
+        	else if (Key=='G')	{Command(COMMAND_CHANGE_SNAP,   (int)fraTopBar->ebGSnap);   bExec=true;}
+        	else if (Key=='P')	{Command(COMMAND_EDITOR_PREF);                              bExec=true;}
+        }
+    }
+    return bExec;
+}
+//---------------------------------------------------------------------------
+
+bool TUI::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
+{
+	VERIFY(m_bReady);
+	if (ApplyGlobalShortCutExt(Key,Shift)) return true;
+	bool bExec = false;
+    if (Shift.Contains(ssCtrl)){
+        if (Key=='G')   		{Command(COMMAND_TOGGLE_GRID);                      		bExec=true;}
+        else if (Key=='F')		{Command(COMMAND_TOGGLE_SAFE_RECT);                 		bExec=true;}
+    }
+    if ((Key==VK_OEM_3)||(Key==VK_SHIFT)){Command(COMMAND_RENDER_FOCUS);            		bExec=true;}
+    return bExec;
+}
+//---------------------------------------------------------------------------
 

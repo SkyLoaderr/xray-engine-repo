@@ -48,30 +48,30 @@ USEFORM("FrameShape.cpp", fraShape); /* TFrame: File Type */
 WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 {
 //    try{
-    	Core._initialize	("LevelEditor");
-        TfrmLog::CreateLog	();
+    	Core._initialize			(_EDITOR_FILE_NAME_);
+        TfrmLog::CreateLog			();
 
-        frmSplash = xr_new<TfrmSplash>((TComponent*)0);
-        frmSplash->Show();
-        frmSplash->Repaint();
+        frmSplash 					= xr_new<TfrmSplash>((TComponent*)0);
+        frmSplash->Show				();
+        frmSplash->Repaint			();
 
-        frmSplash->SetStatus("Initializing");
+        frmSplash->SetStatus		("Initializing");
 
-        Application->Initialize();
+        Application->Initialize		();
 
-        frmSplash->SetStatus("Loading...");
+        frmSplash->SetStatus		("Loading...");
 
 // startup create
-		Application->Title = "Level Editor";
-		Application->CreateForm(__classid(TfrmMain), &frmMain);
-		Application->CreateForm(__classid(TfrmEditorPreferences), &frmEditorPreferences);
-		frmMain->SetHInst(hInst);
+		Application->Title 			= _EDITOR_NAME_;
+		Application->CreateForm		(__classid(TfrmMain), &frmMain);
+		Application->CreateForm		(__classid(TfrmEditorPreferences), &frmEditorPreferences);
+		frmMain->SetHInst			(hInst);
 
-        xr_delete(frmSplash);
+        xr_delete					(frmSplash);
 
-        Application->Run();
+        Application->Run			();
 
-        TfrmLog::DestroyLog();
+        TfrmLog::DestroyLog			();
 //    }catch (Exception &exception){
 //           Application->ShowException(&exception);
 //    }

@@ -414,6 +414,7 @@ void TUI::CheckWindowPos(TForm* form)
 	if (form->Top<0) 							form->Top 	= 0;
 }
 //---------------------------------------------------------------------------
+
 /*
 void TUI::OnMousePress(int btn){
 	if (!m_bReady) return;

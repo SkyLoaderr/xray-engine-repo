@@ -104,6 +104,10 @@ public:
 public:
     // mouse sensetive
     float m_MouseSM, m_MouseSS, m_MouseSR;
+protected:
+    bool 			CommandExt				(int _Command, int p = 0, int p2 = 0);
+    bool 			ApplyShortCutExt		(WORD Key, TShiftState Shift);
+    bool 			ApplyGlobalShortCutExt	(WORD Key, TShiftState Shift);
 public:
     				TUI				();
     virtual 		~TUI			();
@@ -190,8 +194,8 @@ public:
     void 			NeedBreak			(){bNeedAbort = true;}
     void 			ResetBreak			(){bNeedAbort = false;}
 
-    void 			ApplyShortCut		(WORD Key, TShiftState Shift);
-    void 			ApplyGlobalShortCut	(WORD Key, TShiftState Shift);
+    bool 			ApplyShortCut		(WORD Key, TShiftState Shift);
+    bool 			ApplyGlobalShortCut	(WORD Key, TShiftState Shift);
 
 	void 			ShowContextMenu		(int cls);
 

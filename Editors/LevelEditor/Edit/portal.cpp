@@ -293,7 +293,6 @@ void SimplifyVertices(Fvector2Vec& vertices)
 
 void CPortal::Simplify()
 {
-/*
 	Fvector rkOffset;
     Fvector rkNormal;
     // compute plane
@@ -320,11 +319,20 @@ void CPortal::Simplify()
     }
     // compute 2D Convex Hull
     Mgc::ConvexHull2D Hull(points.size(),(const Mgc::Vector2*)points.begin());
-	int Count   = Hull.GetQuantity();
-	if (Count==0) return;
-    int CurVert = Hull.GetEdge(0).m_aiVertex[0];
+    Hull.ByIncremental();
+    Hull.RemoveCollinear();
+	int Count   	= Hull.GetQuantity();
+	if (Count<=0) return;
+    const int* indices 	= Hull.GetIndices();
+    for (int ind_i=0; ind_i<Count; ind_i++){
+    	vertices.push_back(points[indices[ind_i]]);
+    }
+//    R_ASSERT2(0,"Go to ALEXMX and say: ''Test portal simplifier. Please!''");
+/*    
+    int* indices 	= Hull.GetIndices();
+    int CurVert 	= indices[0];
 	vertices.push_back(points[CurVert]);
-    CurVert = Hull.GetEdge(0).m_aiVertex[1];
+    CurVert 		= indices[1];
     vertices.push_back(points[CurVert]);
 
     vector<bool>    marks(Count,false);
@@ -359,7 +367,7 @@ void CPortal::Simplify()
         e2.sub(vertices[k2],vertices[k]); e2.norm();
         if ((1-fabsf(e1.dot(e2)))<=EPS){ vertices.erase(vertices.begin()+k); k--; continue; }
     }
-
+*/
     // simplify
     while(vertices.size()>XR_MAX_PORTAL_VERTS){
     	int f_cnt=vertices.size();
@@ -396,7 +404,6 @@ void CPortal::Simplify()
     }else{
 	    m_Normal.set(norm);
     }
-*/
 }
 //------------------------------------------------------------------------------
 

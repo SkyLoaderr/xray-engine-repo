@@ -1,7 +1,7 @@
 #ifndef UI_MainCommandH
 #define UI_MainCommandH
 
-enum ECommands{
+enum{
 	COMMAND_INITIALIZE,
 	COMMAND_DESTROY,
 	COMMAND_QUIT,
@@ -80,7 +80,9 @@ enum ECommands{
 
 	COMMAND_LOCK_ALL,
 	COMMAND_LOCK_SEL,
-	COMMAND_LOCK_UNSEL
+	COMMAND_LOCK_UNSEL,
+
+    COMMAND_MAIN_LAST
 };
 //------------------------------------------------------------------------------
 
