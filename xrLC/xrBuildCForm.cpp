@@ -143,7 +143,7 @@ void CBuild::BuildCForm	()
 	SimplifyCFORM	(CL);
 
 	// bb?
-	Fbox BB; BB.invalidate();
+	BB.invalidate	();
 	for (int it = 0; it<CL.getVS(); it++)
 		BB.modify( CL.getV()[it] );
 
