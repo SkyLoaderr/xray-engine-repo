@@ -291,11 +291,13 @@ function Monster:process ()
 	--если монстр еще двигается по пути, то выйдем
 	if self.moving == true then return end
 
-	self.npc:script (false, self.script)
-	self.freemove = true
-	return
+	if true then
+   	   self.npc:script (false, self.script)
+	   self.freemove = true
+  	   return
+	end	
 
-	--если больше нет целей, то отпускаем зверя и флаг ему в руки :)
+	--если больше нет целей, то отпускаем зверя и флаг ему в руки 
 	if table.getn (self.targets) == 0 then 
 	   self.npc:script (false, self.script)
 	   self.freemove = true
