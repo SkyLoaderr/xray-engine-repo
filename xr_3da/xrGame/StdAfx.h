@@ -5,7 +5,6 @@
 #pragma warning(default:4995)
 #pragma warning( 4 : 4018 )
 #pragma warning( 4 : 4244 )
-
 #pragma warning(disable:4505)
 
 // this include MUST be here, since smart_cast is used >1800 times in the project
@@ -26,3 +25,7 @@ IC	void		throw_and_log(const xr_string &s) {Msg("! %s",s.c_str()); throw s;}
 #	define	THROW2					VERIFY2
 #	define	THROW3					VERIFY3
 #endif
+
+#include "../gamefont.h"
+#include "../xr_object.h"
+#include "../igame_level.h"

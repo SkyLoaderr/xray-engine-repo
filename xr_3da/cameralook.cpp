@@ -1,11 +1,8 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "../GameFont.h"
 #include "CameraLook.h"
 #include "xr_level_controller.h"
-#include "../xr_object.h"
-#include "../igame_level.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
