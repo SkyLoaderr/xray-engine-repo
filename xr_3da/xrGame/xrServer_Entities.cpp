@@ -59,7 +59,7 @@ xr_token game_types[]
 	{ "Any game",	GAME_ANY		},
 	{ "Single",		GAME_SINGLE		},
 	{ "Deathmatch", GAME_DEATHMATCH },
-	{ "CT",			GAME_CTF		},
+	{ "CTF",		GAME_CTF		},
 	{ "Assault",	GAME_ASSAULT	},
 	{ 0,			0				}
 };
