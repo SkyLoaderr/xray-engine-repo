@@ -81,11 +81,6 @@ namespace Game {
 //
 //};
 //
-int ifSuspendThread(lua_State *tpLuaVirtualMachine)
-{
-	return lua_yield(tpLuaVirtualMachine, lua_gettop(tpLuaVirtualMachine));
-}
-
 void export2lua		(lua_State *tpLuaVirtualMachine)
 {
 	open			(tpLuaVirtualMachine);
@@ -187,7 +182,6 @@ void export2lua		(lua_State *tpLuaVirtualMachine)
 			.def("generate_orthonormal_basis",	&Fvector::generate_orthonormal_basis)
 	];
 
-	lua_register	(tpLuaVirtualMachine,	"wait",				ifSuspendThread);
 	function		(tpLuaVirtualMachine,"log",(void (*)(LPCSTR))(Log));
 }
 
