@@ -112,7 +112,7 @@ void CAI_Crow::Load( LPCSTR section )
 	fMinHeight					= pSettings->ReadFLOAT	(section,"min_height");
 	vVarGoal					= pSettings->ReadVECTOR	(section,"goal_variability");
 	fIdleSoundDelta				= pSettings->ReadFLOAT	(section,"idle_sound_delta");
-	fIdleSoundTime				= fIdleSoundDelta+10.f*fIdleSoundDelta*Random.randF();
+	fIdleSoundTime				= fIdleSoundDelta+fIdleSoundDelta*Random.randF(-.5f,.5f);
 
 	Movement.SetParent			(this);
 }
