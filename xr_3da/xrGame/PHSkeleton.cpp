@@ -179,6 +179,7 @@ void CPHSkeleton::ClearUnsplited()
 		i->first->Deactivate();
 		xr_delete(i->first);
 	}
+	m_unsplited_shels.clear();
 }
 
 void CPHSkeleton::SpawnCopy()
