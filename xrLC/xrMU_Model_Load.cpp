@@ -47,5 +47,14 @@ xrMU_Model::_face* xrMU_Model::load_create_face(Fvector& P1, Fvector& P2, Fvecto
 
 xrMU_Model::_vertex* xrMU_Model::load_create_vertex(Fvector& P)
 {
-	
+	// find similar
+	for (u32 it=0; it<m_vertices.size(); it++)
+	{
+		if (m_vertices[it]->P.similar(P,0.001))	return m_vertices[it];
+	}
+
+	// create new
+	_vertex*	_V		= mu_vertices.create();
+	_V->P				= P;
+	_V->N.set			(0,0,0);
 }
