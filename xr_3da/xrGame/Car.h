@@ -77,7 +77,7 @@ struct SWheelSteer
 	bool  limited;			//zero limited for idle steering drive
 	float GetSteerAngle()
 	{
-		return dJointGetHinge2Angle1 (pwheel->joint);
+		return -pos_right*dJointGetHinge2Angle1 (pwheel->joint);
 	}
 	void Init();
 	void SteerRight();

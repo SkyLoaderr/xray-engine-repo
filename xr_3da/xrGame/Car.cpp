@@ -367,11 +367,15 @@ void CCar::ParseDefinitions()
 	CKinematics* pKinematics=PKinematics(Visual());
 	CInifile* ini = pKinematics->LL_UserData();
 	if(! ini) return;
+
+///////////////////////////car definition///////////////////////////////////////////////////
 	fill_wheel_vector			(ini->r_string	("car_definition","driving_wheels"),m_driving_wheels);
 	fill_wheel_vector			(ini->r_string	("car_definition","steering_wheels"),m_steering_wheels);
 	fill_wheel_vector			(ini->r_string	("car_definition","breaking_wheels"),m_breaking_wheels);
 	//fill_exhaust_vector			(ini->r_string	("car_definition","exhausts"),m_exhausts);
 	fill_doors_map				(ini->r_string	("car_definition","doors"),m_doors);
+
+///////////////////////////car properties///////////////////////////////
 	m_power				=		ini->r_float("car_definition","engine_power");
 	m_power				*=		(0.8f*1000.f);
 	m_max_rpm			=		ini->r_float("car_definition","max_engine_rpm");
@@ -381,6 +385,8 @@ void CCar::ParseDefinitions()
 	m_axle_friction		=		ini->r_float("car_definition","axle_friction");
 	m_steering_speed	=		ini->r_float("car_definition","steering_speed");
 	m_break_torque		=		ini->r_float("car_definition","break_torque");
+
+/////////////////////////transmission////////////////////////////////////////////////////////////////////////
 	R_ASSERT2(ini->section_exist("transmission_gear_ratio"),"no section transmission_gear_ratio");
 	m_gear_ratious.push_back(-ini->r_float("transmission_gear_ratio","R"));
 	string32 rat_num;
@@ -390,7 +396,8 @@ void CCar::ParseDefinitions()
 	if(!ini->line_exist("transmission_gear_ratio",rat_num)) break;
 	m_gear_ratious.push_back(ini->r_float("transmission_gear_ratio",rat_num));
 	}
-	
+///////////////////////////////steer/////////////////////////////////////////////////////////////////
+
 
 
 }
@@ -404,13 +411,7 @@ void CCar::CreateSkeleton()
 	K->Calculate();
 
 	CInifile* ini=K->LL_UserData();
-	K->LL_GetInstance				(K->LL_BoneID(ini->r_string("car_definition","steering_wheel"))).set_callback			(cb_Steer,this);
-	//m_doors_ids[1]					=K->LL_BoneID("phy_door_left");
-	//m_doors_ids[0]					=K->LL_BoneID("phy_door_right");
-	//m_exhaust_ids[0]				=K->LL_BoneID("pos_exhaust_1");
-	//m_exhaust_ids[1]				=K->LL_BoneID("pos_exhaust_2");
-
-
+	K->LL_GetInstance				(K->LL_BoneID(ini->r_string("car_definition","steer"))).set_callback			(cb_Steer,this);
 	m_pPhysicsShell		= P_create_Shell();
 	m_pPhysicsShell->build_FromKinematics(K,&bone_map);
 	m_pPhysicsShell->set_PhysicsRefObject(this);
@@ -425,6 +426,7 @@ void CCar::InitWheels()
 CKinematics* pKinematics=PKinematics(Visual());
 CInifile* ini = pKinematics->LL_UserData();
 SWheel& ref_wheel=m_wheels_map.find(pKinematics->LL_BoneID(ini->r_string("car_definition","reference_wheel")))->second;
+pKinematics->LL_GetInstance(pKinematics->LL_BoneID(ini->r_string("car_definition","steer"))).set_callback(cb_Steer,this);
 ref_wheel.Init();
 m_ref_radius=ref_wheel.radius;
 m_power/=m_driving_wheels.size();
