@@ -50,7 +50,7 @@ function options_profiles_tab:InitControls(x_pos, y_pos)
 	caption:SetText("Current Profile: xxx")
 	self.main_frame:AttachChild(caption)
 	
-	local lst_frame = CUIStatic()
+	local lst_frame = CUIFrameWindow()
 	lst_frame:SetAutoDelete(true)
 	lst_frame:SetWindowName("list_frame")
 	lst_frame:Init("ui\\ui_frame_very_small", lst_rect.x, lst_rect.y, lst_rect.width, lst_rect.height)
