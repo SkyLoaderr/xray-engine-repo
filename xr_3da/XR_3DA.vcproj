@@ -190,7 +190,7 @@
 				BrowseInformation="0"
 				WarningLevel="4"
 				SuppressStartupBanner="TRUE"
-				DebugInformationFormat="0"
+				DebugInformationFormat="3"
 				CallingConvention="2"
 				CompileAs="0"/>
 			<Tool
