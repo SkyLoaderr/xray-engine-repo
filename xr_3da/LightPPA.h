@@ -8,15 +8,13 @@
 
 #include "xr_list.h"
 
-struct ENGINE_API	PPA_Vertex
+struct ENGINE_API	CLightPPA_Vertex
 {
 	Fvector			P;
 	Fvector			N;
 	float			u0,v0;
 	float			u1,v1;
 };
-typedef CList<PPA_Vertex>	PPA_VB;
-
 
 class ENGINE_API	CLightPPA  
 {
@@ -32,13 +30,12 @@ public:
 	IC void			SetColor		(Fcolor& C)		{ color.set(C);		}
 	IC void			SetColor		(float r, float g, float b)		{ color.set(r,g,b,1); }
 
-	void			Render			(PPA_VB& vlist);
+	void			Render			(CVertexStream* VS);
 };
 
 class ENGINE_API	CLightPPA_Manager
 {
 	svector<CLightPPA*,128>			container;
-	PPA_VB							storage;
 	
 	Shader*							SH;
 	CVertexStream*					VS;
