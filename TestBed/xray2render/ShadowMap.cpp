@@ -884,7 +884,7 @@ HRESULT CMyD3DApplication::RenderLight_Direct_smap	()
 	cc.set									(s_Light_Direct_smap.constants.get("light_xform"),		*(Fmatrix*)&dm_model2world2view2projection_light	);
 
 	R_constant*	C							= s_Light_Direct_smap.constants.get("jitter");
-	Fvector J; float scale					= 1.f / SHADOW_MAP_SIZE;
+	Fvector J; float scale					= .5f / SHADOW_MAP_SIZE;
 	J.set(11,0,0);	J.sub(11); J.div(22); J.mul(scale);	cc.seta	(C,0,J.x,J.y,0,0);
 	J.set(19,3,0);	J.sub(11); J.div(22); J.mul(scale);	cc.seta	(C,1,J.x,J.y,0,0);
 	J.set(22,11,0); J.sub(11); J.div(22); J.mul(scale);	cc.seta	(C,2,J.x,J.y,0,0);
