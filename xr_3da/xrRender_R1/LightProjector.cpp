@@ -225,13 +225,13 @@ void CLightProjector::calculate	()
 		//CHK_DX				(HW.pDevice->Clear(0,0, D3DCLEAR_TARGET, color_rgba(c_i,c_i,c_i,c_i), 1, 0 ));
 		
 		// Build bbox and render
-		Fvector	min,max;
-		Fbox	BB;
+		Fvector				min,max;
+		Fbox				BB;
 		min.set				(C.C.x-p_R,	C.C.y-(p_R+P_cam_range),	C.C.z-p_R);
 		max.set				(C.C.x+p_R,	C.C.y+0,					C.C.z+p_R);
 		BB.set				(min,max);
 		ISpatial*	spatial	= dynamic_cast<ISpatial*>	(C.O);
-		if (spatial)		RImplementation.RenderBox	(spatial->spatial.sector,BB,2);
+		if (spatial)		RImplementation.r_dsgraph_render_subspace(spatial->spatial.sector,mCombine,v_C,FALSE);
 	}
 
 	// Blur
