@@ -107,44 +107,10 @@ BOOL IGame_Level::Load				(u32 dwNum)
 	Msg							("* S-CREATE: %f ms, %d times",tscreate.result,tscreate.count);
 
 	// Objects
-	pApp->LoadTitle				("Loading entities...");
+	pApp->LoadTitle				("Loading game...");
 	R_ASSERT					(Load_GameSpecific_Before());
 	Objects.Load				();
 	R_ASSERT					(Load_GameSpecific_After ());
-
-	// Load Sounds
-	pApp->LoadTitle				("Loading sound and music...");
-	{
-		CInifile::Sect& S = pLevel->r_section		("static_sounds");
-		Sounds.reserve			(S.size());
-		for (CInifile::SectIt I=S.begin(); I!=S.end(); I++) {
-			Fvector				pos;
-			string128			fname;
-			sscanf				( I->second,"%[^,],%f,%f,%f",fname,&pos.x,&pos.y,&pos.z);
-			if (0==stricmp(fname,"ambient"))	continue;
-			Sounds.push_back	(ref_sound());
-			Sound->create		(Sounds.back(),TRUE,fname);
-			Sound->play_at_pos	(Sounds.back(),0,pos,true);
-		}
-		if (pLevel->line_exist("static_sounds","ambient"))
-		{
-			LPCSTR fname		= pLevel->r_string("static_sounds","ambient");
-			Sound->create		(Sounds_Ambience,FALSE,fname);
-			Sound->play			(Sounds_Ambience,0,true);
-		}
-	}
-	{
-		if (pLevel->section_exist("random_sounds"))	
-		{
-			CInifile::Sect& S		= pLevel->r_section("random_sounds");
-			Sounds_Random.reserve	(S.size());
-			for (CInifile::SectIt I=S.begin(); I!=S.end(); I++) {
-				Sounds_Random.push_back	(ref_sound());
-				Sound->create			(Sounds_Random.back(),TRUE,I->second);
-			}
-			Sounds_dwNextTime		= Device.TimerAsync	()	+ 5000;
-		}
-	}
 
 	// Done
 	pApp->LoadTitle				("Syncronizing...");

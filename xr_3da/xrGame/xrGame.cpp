@@ -540,21 +540,6 @@ public:
 		  }
 	  }
 };
-class CCC_Rain : public CConsoleCommand {
-public:
-	CCC_Rain(LPCSTR N) : CConsoleCommand(N)  { };
-	virtual void Execute(LPCSTR args) {
-		int id1 = 0;
-		sscanf(args ,"%d",&id1);
-		if (id1 == 1) {
-			Engine.Event.Signal	("level.weather.rain.start");
-		}
-		else
-			if (id1 == 0) {
-				Engine.Event.Signal	("level.weather.rain.stop");
-			}
-	}
-};
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Trader
@@ -751,8 +736,6 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 		CMD1(CCC_ALifeScheduleMin,	"al_schedule_min"		);		// set min schedule
 		CMD1(CCC_ALifeScheduleMax,	"al_schedule_max"		);		// set max schedule
 #endif
-		// temp
-		CMD1(CCC_Rain,				"rain"					);		// start rain
 
 		// hud
 		CMD3(CCC_Mask,				"hud_crosshair",		&psHUD_Flags,	HUD_CROSSHAIR);

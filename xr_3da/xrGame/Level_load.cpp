@@ -300,6 +300,18 @@ BOOL CLevel::Load_GameSpecific_After()
 		::Sound->set_geometry_env(F);
 		FS.r_close				(F);
 	}
+
+	// loading random (around player) sounds
+	if (pLevel->section_exist("random_sounds"))	
+	{
+		CInifile::Sect& S		= pLevel->r_section("random_sounds");
+		Sounds_Random.reserve	(S.size());
+		for (CInifile::SectIt I=S.begin(); I!=S.end(); I++) {
+			Sounds_Random.push_back	(ref_sound());
+			Sound->create			(Sounds_Random.back(),TRUE,I->second);
+		}
+		Sounds_dwNextTime		= Device.TimerAsync	()	+ 5000;
+	}
 	return TRUE;
 }
 
