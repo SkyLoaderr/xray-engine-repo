@@ -58,6 +58,9 @@ void CLight_DB::Load			(IReader *fs)
 				sun_dir.y			+= -1.f;
 				sun_dir.normalize	();
 				sun_color.set		(Ldata.diffuse.r,Ldata.diffuse.g,Ldata.diffuse.b,1.f);
+
+				sun_tm_next			=	0;
+				sun_dir_base		=	sun_dir;
 			}
 			else
 			{
@@ -150,4 +153,23 @@ void			CLight_DB::add_sector_lights(vector<WORD> &L)
 			else					v_selected_unshadowed.push_back	(T);
 		}
 	}
+}
+
+void			CLight_DB::Update()
+{
+	// Light direction
+	u32 t					= Device.TimerAsync();
+	if (t>sun_tm_next) 
+	{
+		sun_tm_base				= t;
+		sun_tm_next				= t+5000;
+
+		sun_dir_0.set			(sun_dir_1);
+		sun_dir_1.random_dir	();
+	}
+	
+	sun_dir.lerp			(sun_dir_0,sun_dir_1,float(t-sun_tm_base)/float(sun_tm_next-sun_tm_base));
+	sun_dir.normalize		();
+	sun_dir.lerp			(sun_dir,sun_dir_base,.5f);
+	sun_dir.normalize		();
 }

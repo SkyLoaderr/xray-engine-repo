@@ -46,4 +46,7 @@ void CRender::Calculate		()
 			pPortal->bDualRender = TRUE;
 		}
 	}
+
+	//
+	Lights.Update();
 }

@@ -9,6 +9,12 @@ public:
 	Fvector3				sun_dir;
 	Fvector4				sun_color;
 
+	Fvector3				sun_dir_base;
+	Fvector3				sun_dir_0;
+	Fvector3				sun_dir_1;
+	u32						sun_tm_base;
+	u32						sun_tm_next;
+
 private:
 	vector<xrLIGHT_control>	v_static_controls;
 	vector<light*>			v_static;
@@ -28,6 +34,7 @@ public:
 
 	light*					Create				();
 	void					Destroy				(light*);
+	void					Update				();
 
 	CLight_DB				();
 	~CLight_DB				();
