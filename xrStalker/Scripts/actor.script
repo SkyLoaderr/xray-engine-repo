@@ -1,7 +1,7 @@
 function main()
 	printf	("%s",actor.script_name())
 	local 	actor = get_level_object("localhost/dima")
-xczxcvcvxzvxvc
+
 	while true do
 		h				= hit()
 		h.power			= 10
