@@ -60,8 +60,9 @@ public:
     	flBreakable	= 1<<0,
         flShootable = 1<<1,
         flBounceable= 1<<2,
-        flWheeltrace= 1<<3,
-        flBloodmark	= 1<<4
+        flSkidmark	= 1<<3,
+        flBloodmark	= 1<<4,
+        flClimbable	= 1<<5
     };
 public:
 	string64			name;
