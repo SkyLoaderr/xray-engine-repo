@@ -940,7 +940,7 @@ void CD3DApplication::BuildPresentParamsFromSettings()
         m_d3dpp.BackBufferHeight = m_d3dSettings.DisplayMode().Height;
         m_d3dpp.BackBufferFormat = m_d3dSettings.PDeviceCombo()->BackBufferFormat;
         m_d3dpp.FullScreen_RefreshRateInHz = m_d3dSettings.Fullscreen_DisplayMode.RefreshRate;
-        m_d3dpp.PresentationInterval = m_d3dSettings.PresentInterval();
+        m_d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE; //m_d3dSettings.PresentInterval();
     }
 }
 
