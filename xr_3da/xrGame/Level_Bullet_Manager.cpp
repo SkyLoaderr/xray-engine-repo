@@ -145,7 +145,6 @@ void CBulletManager::Update()
 			if(!CalcBullet(&bullet, m_dwStepTime)){
 				m_Bullets[k] = m_Bullets.back();
 				m_Bullets.pop_back();
-				k--;
 				break;
 			}
 		}
