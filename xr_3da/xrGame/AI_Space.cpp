@@ -440,5 +440,6 @@ int	CAI_Space::q_LoadSearch(const Fvector& pos)
 			}
 		}
 	}
+	R_ASSERT2		(selected != u32(-1),"Can't find an appropriate node for the specified position!");
 	return selected;
 }
