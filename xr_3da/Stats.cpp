@@ -118,8 +118,8 @@ void CStats::Show()
 		F.OutNext	("  Lights:    %2.2fms, %d",RenderDUMP_Lights.result,RenderDUMP_Lights.count);
 		F.OutNext	("  RT:        %2.2fms, %d",RenderDUMP_RT.result,RenderDUMP_RT.count);
 		F.OutNext	("  HUD:       %2.2fms",RenderDUMP_HUD.result);	
-		F.OutNext	("  S_calc:    %2.2fms",RenderDUMP_Shads.result);
-		F.OutNext	("  S_render:  %2.2fms",RenderDUMP_Shads.result);
+		F.OutNext	("  S_calc:    %2.2fms",RenderDUMP_Scalc.result);
+		F.OutNext	("  S_render:  %2.2fms",RenderDUMP_Srender.result);
 		F.OutSkip	();
 		F.OutNext	("*** SOUND:   %2.2fms",Sound.result);
 		F.OutNext	("  SP/SA:     %d/%d",  dwSND_Played,dwSND_Allocated);
