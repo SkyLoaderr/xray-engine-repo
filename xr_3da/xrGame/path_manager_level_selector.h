@@ -325,8 +325,7 @@ namespace PathManagers {
 
 		IC		void vfAddTotalCoverCost					()
 		{
-			u8	*my_cover	= ai().level_graph().cover(m_tpCurrentNode);
-			m_fResult += m_fTotalCover*(float(my_cover[0])/255.f + float(my_cover[1])/255.f + float(my_cover[2])/255.f + float(my_cover[3])/255.f);
+			m_fResult += m_fTotalCover*(float(m_tpCurrentNode->cover(0))/255.f + float(m_tpCurrentNode->cover(1))/255.f + float(m_tpCurrentNode->cover(2))/255.f + float(m_tpCurrentNode->cover(3))/255.f);
 		}
 
 		IC		void vfAddEnemyLookCost						()

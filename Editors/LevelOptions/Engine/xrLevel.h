@@ -167,6 +167,9 @@ public:
 			case 3 : return(cover3);
 			default : NODEFAULT;
 		}
+#ifdef DEBUG
+		return				(u8(-1));
+#endif
 	}
 
 	friend class CLevelGraph;
