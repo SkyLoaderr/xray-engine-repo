@@ -6,6 +6,7 @@
 
 // refs
 class ENGINE_API	CVisual;
+class ENGINE_API	CTempObject;
 class ENGINE_API	CObject;
 class ENGINE_API	xrLIGHT;
 class ENGINE_API	CLightPPA;
@@ -14,17 +15,25 @@ namespace PS	{
 	struct ENGINE_API SEmitter; 
 };
 
-const float							fLightSmoothFactor = 4.f;
+const	float						fLightSmoothFactor = 4.f;
+typedef svector<CObject*,256>		objSET;
+typedef BOOL	__fastcall			objQualifier(CObject* O, void* P);
 
 // definition (Portal)
 class	ENGINE_API	IRender_Portal
 {
+public:
 	virtual ~IRender_Portal()		{};
 };
 
 // definition (Sector)
 class	ENGINE_API	IRender_Sector
 {
+public:
+	virtual void					tempAdd				(CTempObject*)	= 0;
+	virtual void					tempRemove			(CTempObject*)	= 0;
+	virtual void					objectAdd			(CObject*)		= 0;
+	virtual void					objectRemove		(CObject*)		= 0;
 	virtual ~IRender_Sector()		{};
 };
 
@@ -32,17 +41,17 @@ class	ENGINE_API	IRender_Sector
 class	ENGINE_API	IRender_target
 {
 public:
-	virtual void					eff_load			(LPCSTR n)	= 0;
-	virtual	void					set_blur			(float f)	= 0;
-	virtual	void					set_gray			(float f)	= 0;
-	virtual void					set_duality_h		(float f)	= 0;
-	virtual void					set_duality_v		(float f)	= 0;
-	virtual void					set_noise			(float f)	= 0;
-	virtual void					set_noise_scale		(float f)	= 0;
-	virtual void					set_noise_color		(u32 f)		= 0;
-	virtual void					set_noise_fps		(float f)	= 0;
-	virtual u32						get_width			()			= 0;
-	virtual u32						get_height			()			= 0;
+	virtual void					eff_load			(LPCSTR n)		= 0;
+	virtual	void					set_blur			(float f)		= 0;
+	virtual	void					set_gray			(float f)		= 0;
+	virtual void					set_duality_h		(float f)		= 0;
+	virtual void					set_duality_v		(float f)		= 0;
+	virtual void					set_noise			(float f)		= 0;
+	virtual void					set_noise_scale		(float f)		= 0;
+	virtual void					set_noise_color		(u32 f)			= 0;
+	virtual void					set_noise_fps		(float f)		= 0;
+	virtual u32						get_width			()				= 0;
+	virtual u32						get_height			()				= 0;
 };
 
 // definition (Renderer)

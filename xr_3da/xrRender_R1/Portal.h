@@ -46,8 +46,6 @@ public:
 };
 
 // Main 'Sector' class
-typedef svector<CObject*,256>	objSET;
-typedef BOOL	__fastcall		objQualifier(CObject* O, void* P);
 class CSector				: public IRender_Sector
 {
 public:

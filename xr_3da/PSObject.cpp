@@ -18,7 +18,7 @@ CPSObject::CPSObject(LPCSTR ps_name, IRender_Sector* S, BOOL bAutoRemove)
 
 	// registry
 	m_pCurSector	= S;
-	if (S) m_pCurSector->tempobjAdd(this);
+	if (S) m_pCurSector->tempAdd(this);
 }
 
 //----------------------------------------------------
@@ -30,9 +30,9 @@ CPSObject::~CPSObject()
 void CPSObject::UpdateSector(IRender_Sector* sect)
 {
 	if (sect == m_pCurSector)	return;
-	if (m_pCurSector) m_pCurSector->tempobjRemove(this);
+	if (m_pCurSector) m_pCurSector->tempRemove	(this);
 	m_pCurSector	= sect;
-	if (m_pCurSector) m_pCurSector->tempobjAdd(this);
+	if (m_pCurSector) m_pCurSector->tempAdd		(this);
 }
 
 void CPSObject::Update(u32 dt)

@@ -1,7 +1,7 @@
 #pragma once
 
 
-class CRenderTarget		: public CRender_target
+class CRenderTarget		: public IRender_target
 {
 private:
 	BOOL				bAvailable;

@@ -51,10 +51,10 @@ public:
 	SGeometry*												hGeomPatches;
 
 	// Sector detection and visibility
-	CSector*												pLastSector;
+	IRender_Sector*											pLastSector;
 	Fvector													vLastCameraPos;
-	vector<CPortal>											Portals;
-	vector<CSector*>										Sectors;
+	vector<IRender_Portal>									Portals;
+	vector<IRender_Sector*>									Sectors;
 	CDB::MODEL*												rmPortals;
 	CHOM													HOM;
 	

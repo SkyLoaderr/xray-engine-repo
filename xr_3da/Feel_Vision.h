@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xr_collide_defs.h"
+#include "render.h"
 
 class ENGINE_API IRender_Sector;
 class ENGINE_API CObject;

@@ -218,7 +218,7 @@ void CObject::Sector_Detect	()
 		Pos.add		(vPosition);
 		Pos.y		=	_max(Pos.y,vPosition.y);
 		Pos.y		+=	EPS_L;
-		P			=	Render->detectSector(Pos);
+		P			=	::Render->detectSector(Pos);
 		if (P)		Sector_Move	(P);
 	}
 }
