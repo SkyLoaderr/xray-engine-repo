@@ -12,7 +12,7 @@ enum Material
 	mesh_default,
 	car_cabin,
 	weapon_default,
-	matrerial_default
+	matrerial_default 
 };
 
 struct Triangle 
