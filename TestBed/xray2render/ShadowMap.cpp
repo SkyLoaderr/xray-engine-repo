@@ -670,7 +670,7 @@ HRESULT CreatePower(IDirect3DDevice9* D, DWORD size, float P, LPDIRECT3DTEXTURE9
 
 // Gauss filtering coeffs
 void	CalcGauss	(
-					 vector<float>&			w,	// weight
+					 vector<D3DXVECTOR4>&	w,	// weight
 					 vector<D3DXVECTOR4>&	H,	// horizontal offsets
 					 vector<D3DXVECTOR4>&	V,	// vertical offsets
 					 int	n=7,				// kernel size
