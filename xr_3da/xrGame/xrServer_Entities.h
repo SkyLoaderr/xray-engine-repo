@@ -325,6 +325,18 @@ xrSE_DECLARE_BEGIN(xrSE_Dog,xrSE_Enemy)
 							xrSE_Dog();				// constructor for variable initialization
 xrSE_DECLARE_END
 
+xrSE_DECLARE_BEGIN(xrSE_NPC, xrSE_Teamed)
+	string64				caModel;
+	u16						wGroupID;
+	u16						wCount;
+	float					fBirthRadius;
+	float					fBirthProbability;
+	float					fIncreaseCoefficient;
+	float					fAnomalyDeathProbability;
+	string512				caRouteGraphPoints;
+							xrSE_NPC();				// constructor for variable initialization
+xrSE_DECLARE_END
+
 // 
 #undef xrSE_EDITOR_METHODS
 #undef xrSE_DECLARE_BEGIN

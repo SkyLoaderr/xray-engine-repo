@@ -966,6 +966,77 @@ void xrSE_Dog::FillProp(LPCSTR pref, PropValueVec& values)
 }
 #endif
 
+//////////////////////////////////////////////////////////////////////////
+// Offline NPC
+//////////////////////////////////////////////////////////////////////////
+
+xrSE_NPC::xrSE_NPC()
+{
+	caModel[0]					= 0;
+	wGroupID					= u32(-1);
+	wCount						= 1;
+	fBirthRadius				= 10.f;
+	fBirthProbability			= 1.f;
+	fIncreaseCoefficient		= 0.0;
+	fAnomalyDeathProbability	= 0.0;
+	caRouteGraphPoints[0]		= 0;
+}
+
+void xrSE_NPC::STATE_Read(NET_Packet& P, u16 size)
+{
+	// inherited properties
+	inherited::STATE_Read(P,size);
+	P.r_string(caModel);
+	P.r_u16(wGroupID);
+	P.r_u16(wCount);
+	P.r_float(fBirthRadius);
+	P.r_float(fBirthProbability);
+	P.r_float(fIncreaseCoefficient);
+	P.r_float(fAnomalyDeathProbability);
+	P.r_string(caRouteGraphPoints);
+}
+
+void xrSE_NPC::STATE_Write(NET_Packet& P)
+{
+	// inherited properties
+	inherited::STATE_Write(P);
+	// model
+	P.w_string(caModel);
+	P.w_u16(wGroupID);
+	P.w_u16(wCount);
+	P.w_float(fBirthRadius);
+	P.w_float(fBirthProbability);
+	P.w_float(fIncreaseCoefficient);
+	P.w_float(fAnomalyDeathProbability);
+	P.w_string(caRouteGraphPoints);
+}
+
+void xrSE_NPC::UPDATE_Read(NET_Packet& P)
+{
+	inherited::UPDATE_Read(P);
+}
+
+void xrSE_NPC::UPDATE_Write(NET_Packet& P)
+{
+	inherited::UPDATE_Write(P);
+}
+
+#ifdef _EDITOR
+void xrSE_NPC::FillProp(LPCSTR pref, PropValueVec& values)
+{
+   	inherited::FillProp(pref, values);
+	// model
+   	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),"NPC namne",					&caModel,					PHelper.CreateGameObject(sizeof(caModel)));
+   	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),"Group ID",					&wGroupID,					PHelper.CreateU16	(0,65535,1));
+   	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),"Count",						&wCount,					PHelper.CreateU16	(0,65535,1));
+   	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),"Birth radius",				&fBirthRadius,				PHelper.CreateFloat	(0,1000.f,1.f));
+   	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),"Birth probability",			&fBirthProbability,			PHelper.CreateFloat	(0,1.f,.1f));
+   	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),"Increase Coefficient",		&fIncreaseCoefficient,		PHelper.CreateFloat	(0,1.f,.05f));
+   	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),"Anomaly death probability",	&fAnomalyDeathProbability,	PHelper.CreateFloat	(0,1.f,.1f));
+	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),"Route points",				&caRouteGraphPoints,		PHelper.CreateGameObject(sizeof(caRouteGraphPoints)));
+}
+#endif
+
 //--------------------------------------------------------------------
 xrServerEntity*	F_entity_Create		(LPCSTR name)
 {
