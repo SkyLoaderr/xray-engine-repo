@@ -1,7 +1,7 @@
 // ModelPool.cpp: implementation of the CModelPool class.
 //
 //////////////////////////////////////////////////////////////////////
-  
+
 #include "stdafx.h"
 #pragma hdrstop
 
@@ -73,11 +73,11 @@ CVisual*	CModelPool::Instance_Load		(const char* N)
 	} else {
 		strcpy			(fn,N);
 	}
-	
+
 	// Actual loading
-	CStream*			data	= Engine.FS.Open(fn);
+	IReader*			data	= Engine.FS.Open(fn);
 	ogf_header			H;
-	data->ReadChunkSafe	(OGF_HEADER,&H,sizeof(H));
+	data->r_chunk_safe	(OGF_HEADER,&H,sizeof(H));
 	V = Instance_Create (H.type);
 	V->Load				(fn,data,0);
 	Engine.FS.Close		(data);
@@ -91,13 +91,13 @@ CVisual*	CModelPool::Instance_Load		(const char* N)
 	return V;
 }
 
-CVisual*	CModelPool::Instance_Load(CStream* data)
+CVisual*	CModelPool::Instance_Load(IReader* data)
 {
 	CVisual	*V;
-	
+
 	// Actual loading
 	ogf_header			H;
-	data->ReadChunkSafe	(OGF_HEADER,&H,sizeof(H));
+	data->r_chunk_safe	(OGF_HEADER,&H,sizeof(H));
 	V = Instance_Create (H.type);
 	V->Load				(0,data,0);
 
@@ -116,7 +116,7 @@ CVisual*	CModelPool::Instance_Load(CStream* data)
 void CModelPool::OnDestroy()
 {
 	vector<ModelDef>::iterator	I;
-	for (I=Models.begin(); I!=Models.end(); I++) 
+	for (I=Models.begin(); I!=Models.end(); I++)
 	{
 		I->model->Release();
 		xr_delete(I->model);
@@ -157,7 +157,7 @@ CVisual* CModelPool::Create(const char* name)
 	return Instance_Duplicate(Instance_Load(low_name));
 }
 
-CVisual* CModelPool::Create(CStream* data)
+CVisual* CModelPool::Create(IReader* data)
 {
 	return Instance_Duplicate(Instance_Load(data));
 }

@@ -26,9 +26,9 @@ void CHW::DestroyD3D()
 D3DFORMAT CHW::selectDepthStencil	(D3DFORMAT fTarget)
 {
 
-	static	D3DFORMAT	fDS_Try1[6] = 
+	static	D3DFORMAT	fDS_Try1[6] =
 	{D3DFMT_D24S8,D3DFMT_D24X4S4,D3DFMT_D32,D3DFMT_D24X8,D3DFMT_D16,D3DFMT_D15S1};
-	
+
 	D3DFORMAT*	fDS_Try			= fDS_Try1;
 	int			fDS_Cnt			= 6;
 
@@ -37,7 +37,7 @@ D3DFORMAT CHW::selectDepthStencil	(D3DFORMAT fTarget)
 			D3DADAPTER_DEFAULT,D3DDEVTYPE_HAL,fTarget,
 			D3DUSAGE_DEPTHSTENCIL,D3DRTYPE_SURFACE,fDS_Try[it])))
 		{
-            if( SUCCEEDED( pD3D->CheckDepthStencilMatch( 
+            if( SUCCEEDED( pD3D->CheckDepthStencilMatch(
 				D3DADAPTER_DEFAULT,D3DDEVTYPE_HAL,
                 fTarget, fTarget, fDS_Try[it]) ) )
             {
@@ -63,7 +63,7 @@ u32 CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 {
 	CreateD3D				();
 
-	// General 
+	// General
 	BOOL  bWindowed			= !psDeviceFlags.is(rsFullscreen);
 
 	u32 dwWindowStyle=0;
@@ -71,7 +71,7 @@ u32 CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 	// Set window properties depending on what mode were in.
 	if (bWindowed)	SetWindowLong( m_hWnd, GWL_STYLE, dwWindowStyle=(WS_BORDER|WS_DLGFRAME|WS_VISIBLE) );
 	else			SetWindowLong( m_hWnd, GWL_STYLE, dwWindowStyle=(WS_POPUP|WS_VISIBLE) );
-    
+
 	// Select width/height
 	dwWidth	= psCurrentMode;
 	switch (dwWidth) {
@@ -150,12 +150,12 @@ u32 CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 	    P.MultiSampleType	= D3DMULTISAMPLE_NONE;
 	}
 	P.MultiSampleQuality	= 0;
-    
+
 	// Windoze
     P.SwapEffect			= D3DSWAPEFFECT_DISCARD;
 	P.hDeviceWindow			= m_hWnd;
     P.Windowed				= bWindowed;
-	
+
 	// Depth/stencil
 	P.EnableAutoDepthStencil= TRUE;
     P.AutoDepthStencilFormat= fDepth;
@@ -168,9 +168,9 @@ u32 CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 
     // Create the device
 	u32 GPU = selectGPU();
-    R_CHK(HW.pD3D->CreateDevice(D3DADAPTER_DEFAULT, 
+    R_CHK(HW.pD3D->CreateDevice(D3DADAPTER_DEFAULT,
 								D3DDEVTYPE_HAL,
-                                m_hWnd, 
+                                m_hWnd,
 								GPU,
 								&P,
                                 &pDevice ));
@@ -208,9 +208,9 @@ u32	CHW::selectPresentInterval	()
 	pD3D->GetDeviceCaps(D3DADAPTER_DEFAULT,D3DDEVTYPE_HAL,&caps);
 
 	if (psDeviceFlags.is(rsNoVSync)) {
-		if (caps.PresentationIntervals & D3DPRESENT_INTERVAL_IMMEDIATE) 
+		if (caps.PresentationIntervals & D3DPRESENT_INTERVAL_IMMEDIATE)
 			return D3DPRESENT_INTERVAL_IMMEDIATE;
-		if (caps.PresentationIntervals & D3DPRESENT_INTERVAL_ONE) 
+		if (caps.PresentationIntervals & D3DPRESENT_INTERVAL_ONE)
 			return D3DPRESENT_INTERVAL_ONE;
 	}
 	return D3DPRESENT_INTERVAL_DEFAULT;
@@ -223,7 +223,7 @@ u32 CHW::selectGPU ()
 	D3DCAPS9	caps;
 	pD3D->GetDeviceCaps(D3DADAPTER_DEFAULT,D3DDEVTYPE_HAL,&caps);
 
-    if(caps.DevCaps&D3DDEVCAPS_HWTRANSFORMANDLIGHT) 
+    if(caps.DevCaps&D3DDEVCAPS_HWTRANSFORMANDLIGHT)
 	{
 		if (Caps.bForceGPU_NonPure)	return D3DCREATE_HARDWARE_VERTEXPROCESSING;
 		else {
@@ -237,7 +237,7 @@ u32 CHW::selectGPU ()
 u32 CHW::selectRefresh(u32 dwWidth, u32 dwHeight, D3DFORMAT fmt)
 {
 	if (psDeviceFlags.is(rsRefresh60hz))	return D3DPRESENT_RATE_DEFAULT;
-	else 
+	else
 	{
 		u32 selected	= D3DPRESENT_RATE_DEFAULT;
 		u32 count		= pD3D->GetAdapterModeCount(D3DADAPTER_DEFAULT,fmt);

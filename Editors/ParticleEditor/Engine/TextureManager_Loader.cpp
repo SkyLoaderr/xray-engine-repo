@@ -1,12 +1,11 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "fs.h"
 #include "blenders\blender.h"
 #include "xr_ini.h"
 
 
-void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures) 
+void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 {
 	u32 it;
 
@@ -22,10 +21,10 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 		xr_delete   (r->second);
 	}
 	m_rtargets.clear	();
-	
+
 	//************************************************************************************
 	// Shaders
-	for (it=0; it!=v_shaders.size(); it++)	
+	for (it=0; it!=v_shaders.size(); it++)
 	{
 		Shader& S = *(v_shaders[it]);
 		if (0!=S.dwReference)	{
@@ -47,7 +46,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 		xr_delete(v_elements[it]);
 	}
 	v_elements.clear();
-	
+
 	//************************************************************************************
 	// Texture List
 	for (it=0; it<lst_textures.size(); it++)	{
@@ -56,7 +55,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 		xr_delete (lst_textures[it]);
 	}
 	lst_textures.clear	();
-	
+
 	// Matrix List
 	for (it=0; it<lst_matrices.size(); it++)	{
 //		if (0!=lst_matrices[it]->dwReference)
@@ -64,7 +63,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 		xr_delete (lst_matrices[it]);
 	}
 	lst_matrices.clear	();
-	
+
 	// Constant List
 	for (it=0; it<lst_constants.size(); it++)	{
 //		if (0!=lst_constants[it]->dwReference)
@@ -72,7 +71,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 		xr_delete (lst_constants[it]);
 	}
 	lst_constants.clear	();
-	
+
 	// Codes
 	for (it=0; it<v_states.size(); it++)			{
 //		R_ASSERT	(0==v_states[it]->dwReference);
@@ -100,7 +99,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 		}
 		m_textures.clear	();
 	}
-	
+
 	// Matrices
 	for (map<LPSTR,CMatrix*,str_pred>::iterator m=m_matrices.begin(); m!=m_matrices.end(); m++)
 	{
@@ -109,7 +108,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 		xr_delete	(m->second);
 	}
 	m_matrices.clear	();
-	
+
 	// Constants
 	for (map<LPSTR,CConstant*,str_pred>::iterator c=m_constants.begin(); c!=m_constants.end(); c++)
 	{
@@ -130,7 +129,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
         }
         m_vs.clear	();
     }
-	
+
 	// PS
     {
         for (map_PSIt v=m_ps.begin(); v!=m_ps.end(); v++)
@@ -168,7 +167,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
     v_geoms.clear();
 }
 
-void	CShaderManager::OnDeviceCreate	(CStream* FS)
+void	CShaderManager::OnDeviceCreate	(IReader* FS)
 {
 	if (!Device.bReady) return;
 
@@ -176,54 +175,54 @@ void	CShaderManager::OnDeviceCreate	(CStream* FS)
 
 	// Load constants
 	{
-		CStream*	fs		= FS->OpenChunk	(0);
-		while (fs && !fs->Eof())	{
-			fs->RstringZ	(name);
+		IReader*	fs		= FS->open_chunk	(0);
+		while (fs && !fs->eof())	{
+			fs->r_stringZ	(name);
 			CConstant*		C = xr_new<CConstant>();
 			C->Load			(fs);
 			m_constants.insert(make_pair(xr_strdup(name),C));
 		}
-		fs->Close();
+		fs->close();
 	}
 
 	// Load matrices
 	{
-		CStream*	fs		= FS->OpenChunk(1);
-		while (fs&&!fs->Eof())	{
-			fs->RstringZ	(name);
+		IReader*	fs		= FS->open_chunk(1);
+		while (fs&&!fs->eof())	{
+			fs->r_stringZ	(name);
 			CMatrix*		M	= xr_new<CMatrix>();
 			M->Load				(fs);
 			m_matrices.insert	(make_pair(xr_strdup(name),M));
 		}
-		fs->Close();
+		fs->close();
 	}
 
 	// Load blenders
 	{
-		CStream*	fs		= FS->OpenChunk	(2);
-		CStream*	chunk	= NULL;
+		IReader*	fs		= FS->open_chunk	(2);
+		IReader*	chunk	= NULL;
 		int			chunk_id= 0;
 
-		while ((chunk=fs->OpenChunk(chunk_id))!=NULL)
+		while ((chunk=fs->open_chunk(chunk_id))!=NULL)
 		{
 			CBlender_DESC	desc;
-			chunk->Read		(&desc,sizeof(desc));
+			chunk->r		(&desc,sizeof(desc));
 			CBlender*		B = CBlender::Create(desc.CLS);
 			if	(B->getDescription().version != desc.version)
 			{
 				Msg			("! Version conflict in shader '%s'",desc.cName);
 			}
 
-            chunk->Seek		(0);
+            chunk->seek		(0);
             B->Load			(*chunk,desc.version);
 
 			pair<map_BlenderIt, bool> I =  m_blenders.insert	(make_pair(xr_strdup(desc.cName),B));
             R_ASSERT2		(I.second,"shader.xr - found duplicate name!!!");
 
-			chunk->Close	();
+			chunk->close	();
 			chunk_id		+= 1;
 		}
-		fs->Close();
+		fs->close();
 	}
 
 	// Load detail textures association
@@ -233,7 +232,7 @@ void	CShaderManager::OnDeviceCreate	(CStream* FS)
 	string256 fname; strconcat	(fname,Path.Textures,"textures.ltx");
 #endif
 	LPCSTR		Iname		= fname;
-	if (Engine.FS.Exist(Iname))	
+	if (Engine.FS.Exist(Iname))
 	{
 		CInifile	ini		(Iname);
         if (ini.SectionExists("association")){
@@ -267,7 +266,7 @@ void	CShaderManager::OnDeviceCreate	(CStream* FS)
                     _M->xform.scale	(s,s,s);
                 }
 
-                // 
+                //
                 D.T				= xr_strdup	(T);
                 D.M				= xr_strdup	(M);
                 LPSTR N			= xr_strdup	(item.first);
@@ -286,14 +285,14 @@ void	CShaderManager::OnDeviceCreate	(LPCSTR shName)
 	// Check if file is compressed already
 	string32	ID			= "shENGINE";
 	string32	id;
-	CStream*	F			= Engine.FS.Open(shName);
-	F->Read		(&id,8);
-	if (0==strncmp(id,ID,8))	
+	IReader*	F			= Engine.FS.Open(shName);
+	F->r		(&id,8);
+	if (0==strncmp(id,ID,8))
 	{
 		Engine.FS.Close			(F);
-		F						= xr_new<CCompressedStream>(shName,ID);
+		F						= xr_new<CCompressedReader>(shName,ID);
 	}
-	CStream&				FS	= *F;
+	IReader&				FS	= *F;
 
 	OnDeviceCreate			(&FS);
 }

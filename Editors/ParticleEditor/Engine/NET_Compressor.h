@@ -12,8 +12,8 @@ struct	NET_Compressor_FREQ
 {
 	u32	table	[257];
 
-	NET_Compressor_FREQ		()	
-	{	
+	NET_Compressor_FREQ		()
+	{
 		setZero				();
 	}
 	void	setIdentity		()
@@ -44,11 +44,11 @@ struct	NET_Compressor_FREQ
 };
 
 // typedefs
-class	NET_Compressor  
+class	NET_Compressor
 {
 public:
 	typedef u32			code_value;		/* Type of an rangecode value			*/
-	typedef u32			freq;			
+	typedef u32			freq;
 private:
 	xrCriticalSection		CS;
 
@@ -83,7 +83,7 @@ private:
 	/* b,s is the data to be encoded                             */
 	void				encode_byte			(freq b)			{ encode_shift( freq(1), freq(b), freq(8) );	}
 	void				encode_short		(freq s)			{ encode_shift( freq(1), freq(s), freq(16) );	}
-	
+
 	/* Finish encoding                                           */
 	/* returns number of bytes written                           */
 	u32				done_encoding		( );
@@ -91,7 +91,7 @@ private:
 	/* Start the decoder                                         */
 	/* returns the char from start_encoding or EOF               */
 	int					start_decoding		( BYTE* src, u32 header_size );
-	
+
 	/* Calculate culmulative frequency for next symbol. Does NO update!*/
 	/* tot_f is the total frequency                              */
 	/* or: totf is 1<<shift                                      */
@@ -99,21 +99,21 @@ private:
 	freq				decode_culfreq		( freq tot_f );
 	freq				decode_culshift		( freq shift );
 	void				decode_normalize	( );
-	
+
 	/* Update decoding state                                     */
 	/* sy_f is the interval length (frequency of the symbol)     */
 	/* lt_f is the lower end (frequency sum of < symbols)        */
 	/* tot_f is the total interval length (total frequency sum)  */
 	void				decode_update		( freq sy_f, freq lt_f, freq tot_f);
 	void				decode_update_shift	( freq f1, freq f2, freq f3)	{ decode_update(f1,f2,freq(1)<<f3); }
-	
+
 	/* Decode a byte/short without modelling                     */
 	BYTE				decode_byte			( );
 	WORD				decode_short		( );
-	
+
 	/* Finish decoding                                           */
 	void				done_decoding		( );
-	
+
 public:
 	NET_Compressor			();
 	~NET_Compressor			();

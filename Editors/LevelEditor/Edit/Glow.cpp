@@ -126,11 +126,11 @@ bool CGlow::RayPick(float& distance, const Fvector& start, const Fvector& direct
 	return false;
 }
 
-bool CGlow::Load(CStream& F){
+bool CGlow::Load(IReader& F){
 	DWORD version = 0;
     string256 buf;
 
-    R_ASSERT(F.ReadChunk(GLOW_CHUNK_VERSION,&version));
+    R_ASSERT(F.r_chunk(GLOW_CHUNK_VERSION,&version));
     if((version!=0x0011)&&(version!=GLOW_VERSION)){
         ELog.DlgMsg( mtError, "CGlow: Unsupported version.");
         return false;
@@ -138,49 +138,49 @@ bool CGlow::Load(CStream& F){
 
 	CCustomObject::Load(F);
 
-    if (F.FindChunk(GLOW_CHUNK_SHADER)){ 
-    	F.RstringZ (buf); m_ShaderName = buf;
+    if (F.find_chunk(GLOW_CHUNK_SHADER)){
+    	F.r_stringZ (buf); m_ShaderName = buf;
     }
 
-    R_ASSERT(F.FindChunk(GLOW_CHUNK_TEXTURE));
-	F.RstringZ	(buf); m_TexName = buf;
+    R_ASSERT(F.find_chunk(GLOW_CHUNK_TEXTURE));
+	F.r_stringZ	(buf); m_TexName = buf;
 
-    R_ASSERT(F.FindChunk(GLOW_CHUNK_PARAMS));
-	m_fRadius  		= F.Rfloat();
+    R_ASSERT(F.find_chunk(GLOW_CHUNK_PARAMS));
+	m_fRadius  		= F.r_float();
 	if (version==0x0011){
-		F.Rvector	(FPosition);
+		F.r_fvector3	(FPosition);
         UpdateTransform();
     }
 
-    if (F.FindChunk(GLOW_CHUNK_FLAGS))
-    	m_Flags.set	(F.Rword());
+    if (F.find_chunk(GLOW_CHUNK_FLAGS))
+    	m_Flags.set	(F.r_u16());
 
     return true;
 }
 
-void CGlow::Save(CFS_Base& F){
+void CGlow::Save(IWriter& F){
 	CCustomObject::Save(F);
 
 	F.open_chunk	(GLOW_CHUNK_VERSION);
-	F.Wword			(GLOW_VERSION);
+	F.w_u16			(GLOW_VERSION);
 	F.close_chunk	();
 
 	F.open_chunk	(GLOW_CHUNK_PARAMS);
-	F.Wfloat   		(m_fRadius);
+	F.w_float   		(m_fRadius);
 	F.close_chunk	();
 
     if (!m_ShaderName.IsEmpty()){
 		F.open_chunk(GLOW_CHUNK_SHADER);
-	    F.WstringZ 	(m_ShaderName.c_str());
+	    F.w_stringZ 	(m_ShaderName.c_str());
 		F.close_chunk();
     }
 
 	F.open_chunk	(GLOW_CHUNK_TEXTURE);
-	F.WstringZ		(m_TexName.c_str());
+	F.w_stringZ		(m_TexName.c_str());
 	F.close_chunk	();
 
 	F.open_chunk	(GLOW_CHUNK_FLAGS);
-	F.Wword			(m_Flags.get());
+	F.w_u16			(m_Flags.get());
 	F.close_chunk	();
 }
 //----------------------------------------------------

@@ -18,7 +18,7 @@ public:
 	void			ApplyScale		();
 	void			add_sphere		(const Fsphere& S);
 	void			add_box			(const Fmatrix& B);
-protected:                 
+protected:
 	virtual void 	SetScale		(const Fvector& val);
     virtual void	OnUpdateTransform();
 public:
@@ -37,8 +37,8 @@ public:
 //	virtual void 	Scale		(Fvector& amount){;}
 
     // file system function
-  	virtual bool 	Load		(CStream&);
-	virtual void 	Save		(CFS_Base&);
+  	virtual bool 	Load		(IReader&);
+	virtual void 	Save		(IWriter&);
 	virtual void	FillProp	(LPCSTR pref, PropItemVec& values);
 
     // render utility function
@@ -48,9 +48,9 @@ public:
     // tools
     void			Attach		(CEditShape* from);
     void			Detach		();
-    
+
     ShapeVec&		GetShapes	(){return shapes;}
-    
+
     // events
     virtual void    OnShowHint  (AStringVec& dest);
 };

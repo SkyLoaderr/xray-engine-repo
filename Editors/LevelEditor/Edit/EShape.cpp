@@ -54,11 +54,11 @@ void CEditShape::ComputeBounds()
 		case cfBox:{
             Fvector		P;
             Fmatrix&	T		= it->data.box;
-				
+
             // Build points
             Fvector p;
             for (int i=0; i<DU_BOX_NUMVERTEX; i++){
-                T.transform_tiny	(P,du_box_vertices[i]); 
+                T.transform_tiny	(P,du_box_vertices[i]);
                 m_Box.modify		(P);
             }
 		}break;
@@ -67,8 +67,8 @@ void CEditShape::ComputeBounds()
 	m_Box.getsphere(m_Sphere.P,m_Sphere.R);
 }
 
-void CEditShape::SetScale(const Fvector& val)	
-{ 
+void CEditShape::SetScale(const Fvector& val)
+{
 	if (shapes.size()==1){
 		switch (shapes[0].type){
 		case cfSphere:{
@@ -76,7 +76,7 @@ void CEditShape::SetScale(const Fvector& val)
             float v;
         	if (_abs(a.x)>_abs(a.y)){ 	if (_abs(a.x)>_abs(a.z)) v = a.x; else v = a.z;
             }else{		            	if (_abs(a.y)>_abs(a.z)) v = a.y; else v = a.z;}
-        	FScale.add(v);	
+        	FScale.add(v);
         }break;
 		case cfBox:		FScale.set(val.x,val.y,val.z);	break;
         default: THROW;
@@ -105,7 +105,7 @@ void CEditShape::ApplyScale()
     }
     FScale.set		(1.f,1.f,1.f);
     UpdateTransform	(true);
-    
+
     ComputeBounds	();
 }
 
@@ -114,7 +114,7 @@ void CEditShape::add_sphere(const Fsphere& S)
 	shapes.push_back(shape_def());
 	shapes.back().type	= cfSphere;
 	shapes.back().data.sphere.set(S);
-    
+
 	ComputeBounds();
 }
 
@@ -123,7 +123,7 @@ void CEditShape::add_box(const Fmatrix& B)
 	shapes.push_back(shape_def());
 	shapes.back().type	= cfBox;
 	shapes.back().data.box.set(B);
-    
+
 	ComputeBounds();
 }
 
@@ -149,10 +149,10 @@ void CEditShape::Attach(CEditShape* from)
         default: THROW;
 		}
     }
-    // common 
+    // common
     Scene.RemoveObject		(from,true);
     xr_delete					(from);
-    
+
 	ComputeBounds			();
 }
 
@@ -188,10 +188,10 @@ void CEditShape::Detach()
             Scene.AddObject		(shape,false);
 	    	shape->Select		(true);
         }
-        // erase shapes in base object 
+        // erase shapes in base object
         it=shapes.begin(); it++;
         shapes.erase(it,shapes.end());
-    
+
         ComputeBounds();
 
         Scene.UndoSave();
@@ -201,7 +201,7 @@ void CEditShape::Detach()
 bool CEditShape::RayPick(float& distance, const Fvector& start, const Fvector& direction, SRayPickInfo* pinf)
 {
     bool bPick			= FALSE;
-	
+
 	for (ShapeIt it=shapes.begin(); it!=shapes.end(); it++){
 		switch (it->type){
 		case cfSphere:{
@@ -271,35 +271,35 @@ bool CEditShape::GetBox(Fbox& box)
 	return false;
 }
 
-bool CEditShape::Load(CStream& F)
+bool CEditShape::Load(IReader& F)
 {
-	R_ASSERT(F.FindChunk(SHAPE_CHUNK_VERSION));
-    u16 vers		= F.Rword();
+	R_ASSERT(F.find_chunk(SHAPE_CHUNK_VERSION));
+    u16 vers		= F.r_u16();
 	if (SHAPE_CURRENT_VERSION!=vers){
 		ELog.DlgMsg( mtError, "CEditShape: unsupported version. Object can't load.");
     	return false;
     }
 	inherited::Load	(F);
 
-	R_ASSERT(F.FindChunk(SHAPE_CHUNK_SHAPES));
-    shapes.resize	(F.Rdword());
-    F.Read			(shapes.begin(),shapes.size()*sizeof(shape_def));
+	R_ASSERT(F.find_chunk(SHAPE_CHUNK_SHAPES));
+    shapes.resize	(F.r_u32());
+    F.r				(shapes.begin(),shapes.size()*sizeof(shape_def));
 
 	ComputeBounds();
 	return true;
 }
 
-void CEditShape::Save(CFS_Base& F)
+void CEditShape::Save(IWriter& F)
 {
 	inherited::Save	(F);
-    
+
 	F.open_chunk	(SHAPE_CHUNK_VERSION);
-	F.Wword			(SHAPE_CURRENT_VERSION);
+	F.w_u16			(SHAPE_CURRENT_VERSION);
 	F.close_chunk	();
 
 	F.open_chunk	(SHAPE_CHUNK_SHAPES);
-    F.Wdword		(shapes.size());
-    F.write			(shapes.begin(),shapes.size()*sizeof(shape_def));
+    F.w_u32			(shapes.size());
+    F.w				(shapes.begin(),shapes.size()*sizeof(shape_def));
 	F.close_chunk	();
 }
 
@@ -326,7 +326,7 @@ void CEditShape::Render(int priority, bool strictB2F)
 		                Device.SetShader	(Device.m_SelectionShader);
                         DU::DrawSphere		(S.P,S.R,Selected()?SHAPE_COLOR_TRANSP_SEL:SHAPE_COLOR_TRANSP_NORM);
                     }break;
-                    case cfBox:		
+                    case cfBox:
                     	Fmatrix B			= it->data.box;
                         B.mulA				(_Transform());
 		                RCache.set_xform_world(B);
@@ -338,7 +338,7 @@ void CEditShape::Render(int priority, bool strictB2F)
 				    }
                 }
 				Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
-            }else{   
+            }else{
                 if( Selected()&&m_Box.is_valid() ){
                     DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
 	                RCache.set_xform_world(_Transform());

@@ -21,7 +21,7 @@ bool DrawThumbnail(HDC hdc, U32Vec& data, int offs_x, int offs_y, int dest_w, in
 
     SetStretchBltMode			(hdc, STRETCH_HALFTONE);
     int ln = StretchDIBits		(hdc, offs_x,offs_y, dest_w,dest_h, 0,0, src_w,src_h, (BYTE*)data.begin(), &bi, DIB_RGB_COLORS, SRCCOPY);
-	if (ln==GDI_ERROR){ 
+	if (ln==GDI_ERROR){
     	ELog.Msg(mtError,"%s",Engine.LastWindowsError());
     	return false;
     }
@@ -33,10 +33,10 @@ LPCSTR EImageThumbnail::FormatString()
 {
 	LPCSTR c_fmt = 0;
     switch (m_Type){
-    case EITObject: 
+    case EITObject:
     break;
     case EITTexture:
-		for(int i=0; tfmt_token[i].name; i++) 
+		for(int i=0; tfmt_token[i].name; i++)
         	if (tfmt_token[i].id==m_TexParams.fmt){
             	c_fmt=tfmt_token[i].name;
                 break;
@@ -51,17 +51,17 @@ int EImageThumbnail::MemoryUsage()
 {
 	int mem_usage = 0;
     switch (m_Type){
-    case EITObject: 
+    case EITObject:
     break;
     case EITTexture:{
     	mem_usage = _Width()*_Height()*4;
         switch (m_TexParams.fmt){
-        case STextureParams::tfDXT1:	
+        case STextureParams::tfDXT1:
         case STextureParams::tfADXT1: 	mem_usage/=6; break;
-        case STextureParams::tfDXT3: 	
+        case STextureParams::tfDXT3:
         case STextureParams::tfDXT5: 	mem_usage/=4; break;
-        case STextureParams::tf4444: 	
-        case STextureParams::tf1555: 	
+        case STextureParams::tf4444:
+        case STextureParams::tf1555:
         case STextureParams::tf565: 	mem_usage/=2; break;
         case STextureParams::tfRGBA:	break;
         }
@@ -69,11 +69,11 @@ int EImageThumbnail::MemoryUsage()
         Engine.FS.m_GameTextures.Update(fn);
         if (Engine.FS.Exist(fn.c_str())){
         	string128		buffer;
-			destructor<CStream>	fs(Engine.FS.Open(fn.c_str()));
-            fs().Rstring	(buffer);
+			destructor<IReader>	fs(Engine.FS.Open(fn.c_str()));
+            fs().r_string	(buffer);
 			int cnt = 0;
-            while (!fs().Eof()){
-                fs().Rstring(buffer);
+            while (!fs().eof()){
+                fs().r_string(buffer);
                 cnt++;
             }
 	        mem_usage *= cnt?cnt:1;
@@ -115,7 +115,7 @@ EImageThumbnail::~EImageThumbnail()
 
 void EImageThumbnail::CreateFromData(u32* p, u32 w, u32 h)
 {
-	R_ASSERT(IsTexture()); 
+	R_ASSERT(IsTexture());
 	R_ASSERT(p&&(w>0)&&(h>0));
 //	imf_filter	imf_box  imf_triangle  imf_bell  imf_b_spline  imf_lanczos3  imf_mitchell
 	m_Pixels.resize(THUMB_SIZE);
@@ -145,53 +145,53 @@ bool EImageThumbnail::Load(LPCSTR src_name, FSPath* path)
     	}
     }
     if (!Engine.FS.Exist(fn.c_str())) return false;
-    CFileStream FN(fn.c_str());
-    char MARK[8]; FN.Read(MARK,8);
+    CFileReader FN(fn.c_str());
+    char MARK[8]; FN.r(MARK,8);
     if (strncmp(MARK,THM_SIGN,8)!=0){
         ELog.Msg( mtError, "Thumbnail: Unsupported version.");
         return false;
     }
 
-    CCompressedStream F(fn.c_str(),THM_SIGN);
+    CCompressedReader F(fn.c_str(),THM_SIGN);
 
     u32 version = 0;
 
-    R_ASSERT(F.ReadChunk(THM_CHUNK_VERSION,&version));
+    R_ASSERT(F.r_chunk(THM_CHUNK_VERSION,&version));
     if( version!=THM_CURRENT_VERSION ){
         ELog.Msg( mtError, "Thumbnail: Unsupported version.");
         return false;
     }
 
-    R_ASSERT(F.FindChunk(THM_CHUNK_DATA));
+    R_ASSERT(F.find_chunk(THM_CHUNK_DATA));
     m_Pixels.resize(THUMB_SIZE);
-    F.Read(m_Pixels.begin(),THUMB_SIZE*sizeof(u32));
+    F.r(m_Pixels.begin(),THUMB_SIZE*sizeof(u32));
 
-    R_ASSERT(F.FindChunk(THM_CHUNK_TYPE));
-    m_Type	= THMType(F.Rdword());
+    R_ASSERT(F.find_chunk(THM_CHUNK_TYPE));
+    m_Type	= THMType(F.r_u32());
 
     if (IsTexture()){
-        R_ASSERT(F.FindChunk(THM_CHUNK_TEXTUREPARAM));
-        F.Read			(&m_TexParams.fmt,sizeof(STextureParams::ETFormat));
-        m_TexParams.flags.set	(F.Rdword());
-        m_TexParams.border_color= F.Rdword();
-        m_TexParams.fade_color	= F.Rdword();
-        m_TexParams.fade_amount	= F.Rdword();
-        m_TexParams.mip_filter	= F.Rdword();
-        m_TexParams.width		= F.Rdword();
-        m_TexParams.height		= F.Rdword();
+        R_ASSERT(F.find_chunk(THM_CHUNK_TEXTUREPARAM));
+        F.r						(&m_TexParams.fmt,sizeof(STextureParams::ETFormat));
+        m_TexParams.flags.set	(F.r_u32());
+        m_TexParams.border_color= F.r_u32();
+        m_TexParams.fade_color	= F.r_u32();
+        m_TexParams.fade_amount	= F.r_u32();
+        m_TexParams.mip_filter	= F.r_u32();
+        m_TexParams.width		= F.r_u32();
+        m_TexParams.height		= F.r_u32();
 
-        if (F.FindChunk(THM_CHUNK_TEXTURE_TYPE)){
-            m_TexParams.type	= (STextureParams::ETType)F.Rdword();
+        if (F.find_chunk(THM_CHUNK_TEXTURE_TYPE)){
+            m_TexParams.type	= (STextureParams::ETType)F.r_u32();
         }
-    
-        if (F.FindChunk(THM_CHUNK_DETAIL_EXT)){
-            F.RstringZ			(m_TexParams.detail_name);
-            m_TexParams.detail_scale = F.Rfloat();
+
+        if (F.find_chunk(THM_CHUNK_DETAIL_EXT)){
+            F.r_stringZ			(m_TexParams.detail_name);
+            m_TexParams.detail_scale = F.r_float();
         }
     }else{
-        if (F.FindChunk(THM_CHUNK_OBJECTPARAM)){
-            m_TexParams.face_count 		= F.Rdword();
-            m_TexParams.vertex_count 	= F.Rdword();
+        if (F.find_chunk(THM_CHUNK_OBJECTPARAM)){
+            m_TexParams.face_count 		= F.r_u32();
+            m_TexParams.vertex_count 	= F.r_u32();
         }
     }
 
@@ -203,44 +203,44 @@ bool EImageThumbnail::Load(LPCSTR src_name, FSPath* path)
 void EImageThumbnail::Save(int age, FSPath* path){
 	if (!Valid()) return;
 
-    CFS_Memory F;
+    CMemoryWriter F;
 	F.open_chunk	(THM_CHUNK_VERSION);
-	F.Wword			(THM_CURRENT_VERSION);
+	F.w_u16			(THM_CURRENT_VERSION);
 	F.close_chunk	();
 
 	F.open_chunk	(THM_CHUNK_DATA);
-    F.write			(m_Pixels.begin(),m_Pixels.size()*sizeof(u32));
+    F.w				(m_Pixels.begin(),m_Pixels.size()*sizeof(u32));
 	F.close_chunk	();
 
     F.open_chunk	(THM_CHUNK_TYPE);
-    F.Wdword		(m_Type);
+    F.w_u32			(m_Type);
 	F.close_chunk	();
-    
+
 	if (IsTexture()){
-        F.open_chunk	(THM_CHUNK_TEXTUREPARAM);
-        F.write			(&m_TexParams.fmt,sizeof(STextureParams::ETFormat));
-        F.Wdword		(m_TexParams.flags.get());
-        F.Wdword		(m_TexParams.border_color);
-        F.Wdword		(m_TexParams.fade_color);
-        F.Wdword		(m_TexParams.fade_amount);
-        F.Wdword		(m_TexParams.mip_filter);
-        F.Wdword		(m_TexParams.width);
-        F.Wdword		(m_TexParams.height);
+        F.open_chunk(THM_CHUNK_TEXTUREPARAM);
+        F.w			(&m_TexParams.fmt,sizeof(STextureParams::ETFormat));
+        F.w_u32		(m_TexParams.flags.get());
+        F.w_u32		(m_TexParams.border_color);
+        F.w_u32		(m_TexParams.fade_color);
+        F.w_u32		(m_TexParams.fade_amount);
+        F.w_u32		(m_TexParams.mip_filter);
+        F.w_u32		(m_TexParams.width);
+        F.w_u32		(m_TexParams.height);
         F.close_chunk	();
 
         F.open_chunk	(THM_CHUNK_TEXTURE_TYPE);
-        F.Wdword		(m_TexParams.type);
+        F.w_u32		(m_TexParams.type);
         F.close_chunk	();
 
-    
+
         F.open_chunk	(THM_CHUNK_DETAIL_EXT);
-        F.WstringZ		(m_TexParams.detail_name);
-        F.Wfloat		(m_TexParams.detail_scale);
+        F.w_stringZ		(m_TexParams.detail_name);
+        F.w_float		(m_TexParams.detail_scale);
         F.close_chunk	();
     }else{
         F.open_chunk	(THM_CHUNK_OBJECTPARAM);
-        F.Wdword		(m_TexParams.face_count);
-        F.Wdword		(m_TexParams.vertex_count);
+        F.w_u32		(m_TexParams.face_count);
+        F.w_u32		(m_TexParams.vertex_count);
         F.close_chunk	();
     }
 
@@ -254,7 +254,7 @@ void EImageThumbnail::Save(int age, FSPath* path){
     }
 	Engine.FS.VerifyPath(fn.c_str());
 
-    F.SaveTo		(fn.c_str(),THM_SIGN);
+    F.save_to		(fn.c_str(),THM_SIGN);
 
     Engine.FS.SetFileAge	(fn,age?age:m_Age);
 }
@@ -270,7 +270,7 @@ void EImageThumbnail::FillProp(PropItemVec& items)
         PHelper.CreateToken		(items, "MipMaps\\Filter",			&F.mip_filter,			tparam_token,4);
 
         PHelper.CreateFlag32	(items, "Details\\Enabled",			&F.flags,				STextureParams::flHasDetailTexture);
-        PHelper.CreateTexture	(items, "Details\\Texture",			F.detail_name,			sizeof(F.detail_name));    
+        PHelper.CreateTexture	(items, "Details\\Texture",			F.detail_name,			sizeof(F.detail_name));
         PHelper.CreateFloat		(items, "Details\\Scale",			&F.detail_scale,		0.1f,10000.f,0.1f,2);
 
         PHelper.CreateFlag32	(items, "Flags\\Grayscale",			&F.flags,				STextureParams::flGreyScale);

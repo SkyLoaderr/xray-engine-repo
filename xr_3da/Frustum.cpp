@@ -105,7 +105,7 @@ void CFrustum::SimplifyPoly_AABB(sPoly* poly, Fplane& plane)
 	p2.set		(max.x,min.y);
 	mInv.invert	(mView);
 	poly->clear	();
-	
+
 	mInv.transform_tiny23(poly->last(),min);	poly->inc();
 	mInv.transform_tiny23(poly->last(),p1);		poly->inc();
 	mInv.transform_tiny23(poly->last(),max);	poly->inc();
@@ -177,7 +177,7 @@ sPoly*	CFrustum::ClipPoly(sPoly& S, sPoly& D) const
 			if (negative(cls[j]))
 			{
 				dest->push_back((*src)[j]);
-				if (positive(cls[j+1])) 
+				if (positive(cls[j+1]))
 				{
 					// segment intersects plane
 					D.sub((*src)[j+1],(*src)[j]);
@@ -232,7 +232,7 @@ void CFrustum::CreateFromMatrix(Fmatrix &M, u32 mask)
 	p_count			= 0;
 
 	// Left clipping plane
-	if (mask&FRUSTUM_P_LEFT) 
+	if (mask&FRUSTUM_P_LEFT)
 	{
 		planes[p_count].n.x	= -(M._14 + M._11);
 		planes[p_count].n.y	= -(M._24 + M._21);
@@ -240,9 +240,9 @@ void CFrustum::CreateFromMatrix(Fmatrix &M, u32 mask)
 		planes[p_count].d	= -(M._44 + M._41);
 		p_count++;
 	}
-	
+
 	// Right clipping plane
-	if (mask&FRUSTUM_P_RIGHT) 
+	if (mask&FRUSTUM_P_RIGHT)
 	{
 		planes[p_count].n.x	= -(M._14 - M._11);
 		planes[p_count].n.y	= -(M._24 - M._21);
@@ -250,9 +250,9 @@ void CFrustum::CreateFromMatrix(Fmatrix &M, u32 mask)
 		planes[p_count].d		= -(M._44 - M._41);
 		p_count++;
 	}
-	
+
 	// Top clipping plane
-	if (mask&FRUSTUM_P_TOP) 
+	if (mask&FRUSTUM_P_TOP)
 	{
 		planes[p_count].n.x	= -(M._14 - M._12);
 		planes[p_count].n.y	= -(M._24 - M._22);
@@ -260,9 +260,9 @@ void CFrustum::CreateFromMatrix(Fmatrix &M, u32 mask)
 		planes[p_count].d		= -(M._44 - M._42);
 		p_count++;
 	}
-	
+
 	// Bottom clipping plane
-	if (mask&FRUSTUM_P_BOTTOM) 
+	if (mask&FRUSTUM_P_BOTTOM)
 	{
 		planes[p_count].n.x	= -(M._14 + M._12);
 		planes[p_count].n.y	= -(M._24 + M._22);
@@ -270,9 +270,9 @@ void CFrustum::CreateFromMatrix(Fmatrix &M, u32 mask)
 		planes[p_count].d		= -(M._44 + M._42);
 		p_count++;
 	}
-	
+
 	// Far clipping plane
-	if (mask&FRUSTUM_P_FAR) 
+	if (mask&FRUSTUM_P_FAR)
 	{
 		planes[p_count].n.x	= -(M._14 - M._13);
 		planes[p_count].n.y	= -(M._24 - M._23);
@@ -280,9 +280,9 @@ void CFrustum::CreateFromMatrix(Fmatrix &M, u32 mask)
 		planes[p_count].d		= -(M._44 - M._43);
 		p_count++;
 	}
-	
+
 	// Near clipping plane
-	if (mask&FRUSTUM_P_NEAR) 
+	if (mask&FRUSTUM_P_NEAR)
 	{
 		planes[p_count].n.x		= -(M._14 + M._13);
 		planes[p_count].n.y		= -(M._24 + M._23);
@@ -290,7 +290,7 @@ void CFrustum::CreateFromMatrix(Fmatrix &M, u32 mask)
 		planes[p_count].d		= -(M._44 + M._43);
 		p_count++;
 	}
-	
+
 	for (int i=0;i<p_count;i++)
 	{
 		float denom = 1.0f / planes[i].n.magnitude();// Get magnitude of Vector

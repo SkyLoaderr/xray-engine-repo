@@ -11,9 +11,9 @@
 CGameFont::CGameFont(LPCSTR section, u32 flags)
 {
 	Initialize	(pSettings->ReadSTRING(section,"shader"),pSettings->ReadSTRING(section,"texture"),flags);
-	if (pSettings->LineExists(section,"size"))		
+	if (pSettings->LineExists(section,"size"))
 		SetSize(pSettings->ReadFLOAT(section,"size"));
-	if (pSettings->LineExists(section,"interval"))	
+	if (pSettings->LineExists(section,"interval"))
 		SetInterval(pSettings->ReadVECTOR2(section,"interval"));
 }
 CGameFont::CGameFont(LPCSTR shader, LPCSTR texture, u32 flags)
@@ -65,7 +65,7 @@ void CGameFont::Initialize		(LPCSTR cShader, LPCSTR cTexture, u32 flags)
 				TCMap[i].set			((i%cpl)*width,(i/cpl)*fHeight,width);
 		}
 	}
-	if (!(uFlags&fsDeviceIndependent)) 
+	if (!(uFlags&fsDeviceIndependent))
 		SetSize					(fHeight);
 	CInifile::Destroy			(ini);
 
@@ -90,7 +90,7 @@ void CGameFont::OnRender()
 		CTexture* T		= RCache.get_ActiveTexture(0);
 		vTS.set			((int)T->get_Width(),(int)T->get_Height());
 		vHalfPixel.set	(0.5f/float(vTS.x),0.5f/float(vTS.y));
-		for (int i=0; i<256; i++){ 
+		for (int i=0; i<256; i++){
 			TCMap[i].x	/= float(vTS.x);
 			TCMap[i].y	/= float(vTS.y);
 			TCMap[i].z	/= float(vTS.x);
@@ -102,14 +102,14 @@ void CGameFont::OnRender()
 	float				w_2		= float	(Device.dwWidth)	/ 2;
 	float				h_2		= float	(Device.dwHeight)	/ 2;
 
-	for (u32 i=0; i<strings.size(); ) 
+	for (u32 i=0; i<strings.size(); )
 	{
 		// calculate first-fit
 		int		count	=	1;
 		int		length	=	strlen(strings[i].string);
 		while	((i+count)<strings.size()) {
 			int	L	=	strlen(strings[i+count].string);
-			if ((L+length)<MAX_CHARS)	
+			if ((L+length)<MAX_CHARS)
 			{
 				count	++;
 				length	+=	L;
@@ -121,7 +121,7 @@ void CGameFont::OnRender()
 		u32	vOffset;
 		FVF::TL* v		= (FVF::TL*)RCache.Vertex.Lock	(length*4,pGeom->vb_stride,vOffset);
 		FVF::TL* start	= v;
-		
+
 		// fill vertices
 		u32 last=i+count;
 		for (; i<last; i++) {
@@ -140,8 +140,8 @@ void CGameFont::OnRender()
 				case alRight:	X-=SizeOf(PS.string,PS.size);		break;
 				}
 
-				u32	clr,clr2; 
-				clr2 = clr	= PS.c; 
+				u32	clr,clr2;
+				clr2 = clr	= PS.c;
 				if (uFlags&fsGradient){
 					u32	_R	= color_get_R	(clr)/2;
 					u32	_G	= color_get_G	(clr)/2;
@@ -151,7 +151,7 @@ void CGameFont::OnRender()
 				}
 
 				float	tu,tv;
-				for (int j=0; j<len; j++) 
+				for (int j=0; j<len; j++)
 				{
 					int c		= CharMap	[(u8)PS.string[j]];
 					Fvector& l	= TCMap		[(u8)PS.string[j]];
@@ -173,7 +173,7 @@ void CGameFont::OnRender()
 		// Unlock and draw
 		u32 vCount = v-start;
 		RCache.Vertex.Unlock		(vCount,pGeom->vb_stride);
-		if (vCount) 
+		if (vCount)
 		{
 			RCache.set_Geometry		(pGeom);
 			RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,vCount,0,vCount/2);
@@ -250,13 +250,13 @@ void __cdecl CGameFont::OutPrev(char *fmt,...)
 	OutSkip(-1);
 }
 
-void CGameFont::OutSkip(float val)		
+void CGameFont::OutSkip(float val)
 {
 	fCurrentY += val*CurrentHeight();
 }
 
-float CGameFont::SizeOf(char *s,float size)	
-{ 
+float CGameFont::SizeOf(char *s,float size)
+{
 	int		len			= strlen(s);
 	float	X			= 0;
 	if (len) for (int j=0; j<len; j++) X+=TCMap[s[j]].z;

@@ -23,7 +23,7 @@ CBlender_Model_EbB::~CBlender_Model_EbB	()
 	
 }
 
-void	CBlender_Model_EbB::Save(	CFS_Base& FS )
+void	CBlender_Model_EbB::Save(	IWriter& FS )
 {
 	CBlender::Save	(FS);
 	xrPWRITE_MARKER	(FS,"Environment map");
@@ -31,7 +31,7 @@ void	CBlender_Model_EbB::Save(	CFS_Base& FS )
 	xrPWRITE_PROP	(FS,"Transform",		xrPID_MATRIX,	oT2_xform);
 }
 
-void	CBlender_Model_EbB::Load(	CStream& FS, WORD version )
+void	CBlender_Model_EbB::Load(	IReader& FS, WORD version )
 {
 	CBlender::Load	(FS,version);
 	xrPREAD_MARKER	(FS);

@@ -115,14 +115,14 @@ void CSkeletonX_ST::Release()
 	_Release	();
 }
 //////////////////////////////////////////////////////////////////////
-void CSkeletonX::_Load(const char* N, CStream *data, u32& dwVertCount) 
+void CSkeletonX::_Load(const char* N, IReader *data, u32& dwVertCount) 
 {
 	// Load vertices
-	R_ASSERT(data->FindChunk(OGF_VERTICES));
+	R_ASSERT(data->find_chunk(OGF_VERTICES));
 			
 	u32 dwVertType,size;
-	dwVertType	= data->Rdword(); 
-	dwVertCount	= data->Rdword();
+	dwVertType	= data->r_u32(); 
+	dwVertCount	= data->r_u32();
 
 	switch		(dwVertType)
 	{
@@ -130,13 +130,13 @@ void CSkeletonX::_Load(const char* N, CStream *data, u32& dwVertCount)
 		size		= dwVertCount*sizeof(vertBoned1W);
 		Vertices1W	= (vertBoned1W*) xr_malloc(size);
 		Vertices2W	= NULL;
-		data->Read	(Vertices1W,size);
+		data->r		(Vertices1W,size);
 		break;
 	case 2*0x12071980:
 		size		= dwVertCount*sizeof(vertBoned2W);
 		Vertices1W	= NULL;
 		Vertices2W	= (vertBoned2W*) xr_malloc(size);
-		data->Read	(Vertices2W,size);
+		data->r		(Vertices2W,size);
 		break;
 	default:
 		Debug.fatal	("Invalid vertex type in skinned model '%s'",N);
@@ -144,17 +144,17 @@ void CSkeletonX::_Load(const char* N, CStream *data, u32& dwVertCount)
 	}
 }
 
-void CSkeletonX_PM::Load(const char* N, CStream *data, u32 dwFlags) 
+void CSkeletonX_PM::Load(const char* N, IReader *data, u32 dwFlags) 
 {
 	_Load				(N,data,vCount);
 	inherited::Load		(N, data, dwFlags|VLOAD_NOVERTICES|VLOAD_NOINDICES);
 
 	// Load indices with replication in mind
-	R_ASSERT			(data->FindChunk(OGF_INDICES));
-	u32					dwCount = data->Rdword();
+	R_ASSERT			(data->find_chunk(OGF_INDICES));
+	u32					dwCount = data->r_u32();
 	R_ASSERT			(dwCount%3 == 0);
 	indices				= LPWORD(xr_malloc(dwCount*2));
-	Memory.mem_copy		(indices,data->Pointer(),dwCount*2);
+	Memory.mem_copy		(indices,data->pointer(),dwCount*2);
 	dwPrimitives		= dwCount/3;
 
 	BOOL	bSoft		= HW.Caps.vertex.bSoftware || (dwFlags&VLOAD_FORCESOFTWARE);
@@ -170,7 +170,7 @@ void CSkeletonX_PM::Load(const char* N, CStream *data, u32 dwFlags)
 	hGeom				= Device.Shader.CreateGeom	(vertRenderFVF, RCache.Vertex.Buffer(), pIndices);
 }
 
-void CSkeletonX_ST::Load(const char* N, CStream *data, u32 dwFlags) 
+void CSkeletonX_ST::Load(const char* N, IReader *data, u32 dwFlags) 
 {
 	_Load				(N,data,vCount);
 	inherited::Load		(N, data, dwFlags|VLOAD_NOVERTICES);

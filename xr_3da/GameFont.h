@@ -14,7 +14,7 @@ public:
 		alCenter
 	};
 private:
-	struct String 
+	struct String
 	{
 		string256	string;
 		float		x,y;
@@ -72,7 +72,7 @@ public:
 	void __cdecl            OutPrev			(char *fmt, ...);
 	void __cdecl 			Out				(float _x, float _y, char *fmt, ...);
 	void					OutSkip			(float val=1.f);
-	
+
 	virtual void			OnRender		();
 
 	IC	void				Clear			()  { strings.clear(); }

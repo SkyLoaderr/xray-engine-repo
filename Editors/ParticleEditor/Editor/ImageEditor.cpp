@@ -222,10 +222,10 @@ void __fastcall TfrmImageLib::tvItemsItemFocused(TObject *Sender)
     	FHelper.MakeName(Item,0,m_SelectedName,false);
 		xr_delete(m_Thm);
         // get new texture
-        if (bImportMode){ 
+        if (bImportMode){
         	m_Thm = xr_new<EImageThumbnail>(m_SelectedName.c_str(),EImageThumbnail::EITTexture,false);
             AnsiString fn = m_SelectedName;
-            Engine.FS.UpdateTextureNameWithFolder(fn);         
+            Engine.FS.UpdateTextureNameWithFolder(fn);
 //            if (!(m_Thm->Load(m_SelectedName.c_str(),&Engine.FS.m_Import)||m_Thm->Load(fn.c_str(),&Engine.FS.m_Textures)))
             if (!m_Thm->Load(m_SelectedName.c_str(),&Engine.FS.m_Import)){
             	bool bLoad = m_Thm->Load(fn.c_str(),&Engine.FS.m_Textures);
@@ -344,13 +344,13 @@ void __fastcall TfrmImageLib::ebExportAssociationClick(TObject *Sender)
 	if (ELog.DlgMsg(mtConfirmation,TMsgDlgButtons()<<mbYes<<mbNo,"Export assosiation?")==mrNo) return;
     // save previous data
     SaveTextureParams();
-    
+
 	AnsiString nm = "textures.ltx";
     Engine.FS.m_GameTextures.Update(nm);
 	CInifile* ini = xr_new<CInifile>(nm.c_str(), FALSE, FALSE, TRUE);
 
 	LockForm();
-    
+
     string256 fn;
     FilePairIt it=texture_map.begin();
     FilePairIt _E=texture_map.end();
@@ -375,7 +375,7 @@ void __fastcall TfrmImageLib::ebExportAssociationClick(TObject *Sender)
 	UnlockForm();
 
     if (!bRes) ini->bSaveAtEnd = false;
-	xr_delete(ini);    
+	xr_delete(ini);
 }
 //---------------------------------------------------------------------------
 

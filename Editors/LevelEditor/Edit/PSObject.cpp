@@ -6,7 +6,7 @@
 
 #include "Log.h"
 #include "PSObject.h"
-#include "ParticleSystem.h"                 
+#include "ParticleSystem.h"
 #include "PSLibrary.h"
 #include "tlsprite.h"
 #include "d3dutils.h"
@@ -307,10 +307,10 @@ void CPSObject::Stop(){
 }
 //----------------------------------------------------
 
-bool CPSObject::Load(CStream& F){
+bool CPSObject::Load(IReader& F){
 	DWORD version = 0;
 
-    R_ASSERT(F.ReadChunk(CPSOBJECT_CHUNK_VERSION,&version));
+    R_ASSERT(F.r_chunk(CPSOBJECT_CHUNK_VERSION,&version));
     if( version!=CPSOBJECT_VERSION ){
         ELog.DlgMsg( mtError, "PSObject: Unsupported version.");
         return false;
@@ -319,8 +319,8 @@ bool CPSObject::Load(CStream& F){
 	CCustomObject::Load(F);
 
 	char buf[1024];
-    R_ASSERT(F.FindChunk(CPSOBJECT_CHUNK_REFERENCE));
-    F.RstringZ(buf);
+    R_ASSERT(F.find_chunk(CPSOBJECT_CHUNK_REFERENCE));
+    F.r_stringZ(buf);
 	Compile(buf);
     if (!m_Definition){
         ELog.DlgMsg( mtError, "CPSObject: '%s' not found in library", buf );
@@ -328,25 +328,25 @@ bool CPSObject::Load(CStream& F){
     }
 
     // читать об€зательно после компил€ции
-    R_ASSERT(F.ReadChunk(CPSOBJECT_CHUNK_EMITTER,&m_Emitter));
+    R_ASSERT(F.r_chunk(CPSOBJECT_CHUNK_EMITTER,&m_Emitter));
 
     return true;
 }
 //----------------------------------------------------
 
-void CPSObject::Save(CFS_Base& F){
+void CPSObject::Save(IWriter& F){
 	CCustomObject::Save(F);
 
 	F.open_chunk	(CPSOBJECT_CHUNK_VERSION);
-	F.Wword			(CPSOBJECT_VERSION);
+	F.w_u16			(CPSOBJECT_VERSION);
 	F.close_chunk	();
 
     VERIFY(m_Definition);
 	F.open_chunk	(CPSOBJECT_CHUNK_REFERENCE);
-    F.WstringZ		(m_Definition->m_Name);
+    F.w_stringZ		(m_Definition->m_Name);
 	F.close_chunk	();
 
-    F.write_chunk	(CPSOBJECT_CHUNK_EMITTER,&m_Emitter,sizeof(m_Emitter));
+    F.w_chunk		(CPSOBJECT_CHUNK_EMITTER,&m_Emitter,sizeof(m_Emitter));
 }
 //----------------------------------------------------
 
@@ -388,7 +388,7 @@ bool CPSObject::ExportGame(SExportStreams& F)
     Packet.w_seek		(position,&size,sizeof(u16));
 
     F.spawn.stream.open_chunk	(F.spawn.chunk++);
-    F.spawn.stream.write		(Packet.B.data,Packet.B.count);
+    F.spawn.stream.w			(Packet.B.data,Packet.B.count);
     F.spawn.stream.close_chunk	();
     return true;
 }

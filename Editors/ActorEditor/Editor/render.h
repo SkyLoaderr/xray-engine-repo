@@ -13,14 +13,14 @@ public:
 	// Occlusion culling
 	virtual BOOL		occ_visible		(Fbox&	B);
 	virtual BOOL		occ_visible		(sPoly& P);
-	
+
 	// Constructor/destructor
 						CRender			();
 	virtual 			~CRender		();
 
     void				Calculate		();
     void				Render			();
-};                                                    
+};
 
 IC  float   CalcSSA(Fvector& C, float R)
 {
@@ -28,5 +28,5 @@ IC  float   CalcSSA(Fvector& C, float R)
     return  R*R/distSQ;
 }
 extern CRender*	Render;
-	
+
 #endif

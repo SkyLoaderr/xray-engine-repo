@@ -11,19 +11,19 @@ public:
 	IDirect3DBaseTexture9*			pSurface;
 	CAviPlayerCustom*				pAVI;
 	u32								dwMemoryUsage;
-	
+
 	// Sequence data
 	u32								seqMSPF;	// milliseconds per frame
 	vector<IDirect3DBaseTexture9*>	seqDATA;
 	BOOL							seqCycles;
-	
+
 	// User-data
 	BOOL							bUser;
 
 	// Description
 	IDirect3DBaseTexture9*			desc_cache;
 	D3DSURFACE_DESC					desc;
-	IC BOOL							desc_valid	()	{ return pSurface==desc_cache; } 
+	IC BOOL							desc_valid	()	{ return pSurface==desc_cache; }
 	IC void							desc_enshure()	{ if (!desc_valid()) desc_update(); }
 	void							desc_update	();
 
@@ -31,7 +31,7 @@ public:
 	void							Load		(LPCSTR Name);
 	void							Unload		(void);
 	void							Apply		(u32 dwStage);
-	
+
 	void							surface_set	(IDirect3DBaseTexture9* surf);
 	IDirect3DBaseTexture9*			surface_get ();
 

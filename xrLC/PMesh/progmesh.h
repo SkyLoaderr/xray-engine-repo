@@ -60,9 +60,9 @@ extern "C" {
 //			...then create all of your vertices preserving their order
 PM_API void	__cdecl PM_Init	(
 	DWORD	dwRelevantUV, DWORD dwRelevantUVMASK,
-	DWORD	dwMinVertCount, 
-	float	w_UV=0.5f, 
-	float	w_Pos=1.f, 
+	DWORD	dwMinVertCount,
+	float	w_UV=0.5f,
+	float	w_Pos=1.f,
 	float	w_Norm=1.f,
 	float	p_BorderHeuristic=150.f,
 	float	p_BorderHeuristicD=0.07f,
@@ -75,7 +75,7 @@ PM_API void __cdecl PM_CreateVertex(float x, float y, float z,int _id, P_UV *uv)
 //			You need to call this function passing indices (which will be reordered)
 //			...and collaped, so initial model state has minimal number of vertices
 PM_API int __cdecl PM_Convert(
-	WORD*			pIndices,	
+	WORD*			pIndices,
 	DWORD			idxCount,
 	PM_Result*		RESULT
 	);

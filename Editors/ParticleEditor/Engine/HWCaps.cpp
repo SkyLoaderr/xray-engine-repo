@@ -3,7 +3,7 @@
 
 #include "hwcaps.h"
 #include "hw.h"
- 
+
 void CHWCaps::Update()
 {
 	D3DCAPS9 caps;
@@ -19,7 +19,7 @@ void CHWCaps::Update()
 	IDirect3DQuery9*	q_vc;
 	D3DDEVINFO_VCACHE	vc;
 	HRESULT _hr			= HW.pDevice->CreateQuery(D3DQUERYTYPE_VCACHE,&q_vc);
-	if (FAILED(_hr)) 
+	if (FAILED(_hr))
 	{
 		vc.OptMethod			= 0;
 		vc.CacheSize			= 16;
@@ -32,7 +32,7 @@ void CHWCaps::Update()
 		else					vertex.dwVertexCache	= 16;
 	}
 	Msg					("* GPU vertex cache: %s, %d",(1==vc.OptMethod)?"recognized":"unrecognized",u32(vertex.dwVertexCache));
-	
+
 	// ***************** PIXEL processing
 	pixel.dwVersion		= (caps.PixelShaderVersion&(0xf << 8ul))>>4 | (caps.PixelShaderVersion&0xf);
 	pixel.dwStages		= caps.MaxSimultaneousTextures;
@@ -88,6 +88,6 @@ void CHWCaps::Update()
 
 	// FORCE (overwrite) flags
 	if (bForceVertexFog)		bTableFog			=	false;
-	
+
 	// DEV INFO
 }

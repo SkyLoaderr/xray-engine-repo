@@ -4,8 +4,8 @@
 
 #include "WaveForm.h"
 
-class	ENGINE_API	CStream;
-class	ENGINE_API	CFS_Base;
+class	ENGINE_API	IReader;
+class	ENGINE_API	IWriter;
 
 class	ENGINE_API	CConstant
 {
@@ -24,7 +24,7 @@ public:
 	WaveForm		_A;
 
 	CConstant		()
-	{	
+	{
 		Memory.mem_fill	(this,0,sizeof(CConstant));
 	}
 	IC void			set_float	(float r, float g, float b, float a)
@@ -60,7 +60,7 @@ public:
 		if (!_A.Similar(C._A))	return FALSE;
 		return TRUE;
 	}
-	void			Load		(CStream* fs);
-	void			Save		(CFS_Base* fs);
+	void			Load		(IReader* fs);
+	void			Save		(IWriter* fs);
 };
 #endif

@@ -11,13 +11,13 @@
 struct SRayPickInfo;
 struct FSChunkDef;
 class CFrustum;
-class CStream;
-class CFS_Base;
+class IReader;
+class IWriter;
 struct SSceneSummary;
 
 struct SExportStreamItem{
 	int					chunk;
-	CFS_Memory			stream;
+	CMemoryWriter		stream;
     SExportStreamItem	():chunk(0){;}
 };
 
@@ -79,7 +79,7 @@ public:
 	virtual void 	Show			(BOOL flag);
 	virtual void 	Lock			(BOOL flag);
     void			SetValid		(BOOL flag){m_bValid=flag;}
-                                                                              
+
 	virtual bool 	IsRender		(){return true;}
 	virtual void 	Render			(int priority, bool strictB2F);
 	virtual void 	OnFrame			();
@@ -121,9 +121,9 @@ public:
 	virtual void 	PivotRotateLocal(const Fmatrix& parent, Fvector& pivot, Fvector& axis, float angle );
 	virtual void 	PivotScale		(const Fmatrix& prev_inv, const Fmatrix& current, Fvector& amount );
 
-	virtual bool 	Load			(CStream&);
-	virtual void 	Save			(CFS_Base&);
-    virtual bool	ExportGame		(SExportStreams& data){return false;}             
+	virtual bool 	Load			(IReader&);
+	virtual void 	Save			(IWriter&);
+    virtual bool	ExportGame		(SExportStreams& data){return false;}
 
 	virtual bool 	GetBox			(Fbox& box){return false;}
 	virtual bool 	GetUTBox		(Fbox& box){return false;}

@@ -20,7 +20,7 @@
 /* one could do without c, but then you have an additional if  */
 /* per outputbyte.                                             */
 void NET_Compressor::start_encoding		( BYTE* dest, u32 header_size )
-{  
+{
 	dest			+=	header_size-1;
 	RNGC.low		=	0;				/* Full code range */
     RNGC.range		=	Top_value;
@@ -33,17 +33,17 @@ void NET_Compressor::start_encoding		( BYTE* dest, u32 header_size )
 /* I do the normalization before I need a defined state instead of */
 /* after messing it up. This simplifies starting and ending.       */
 void NET_Compressor::encode_normalize	( )
-{   
+{
 	while(RNGC.range <= Bottom_value)     /* do we need renormalisation?  */
-    {   
+    {
 		if (RNGC.low < code_value(0xff) << SHIFT_BITS)  /* no carry possible --> output */
         {
 			RNGC.byte_out	(RNGC.buffer);
             for(; RNGC.help; RNGC.help--)	RNGC.byte_out(0xff);
             RNGC.buffer		= (BYTE)(RNGC.low >> SHIFT_BITS);
-        } 
+        }
 		else if (RNGC.low & Top_value) /* carry now, no future carry */
-        {   
+        {
 			RNGC.byte_out	(RNGC.buffer+1);
             for(; RNGC.help; RNGC.help--)	RNGC.byte_out(0);
             RNGC.buffer		= (BYTE)(RNGC.low >> SHIFT_BITS);
@@ -61,7 +61,7 @@ void NET_Compressor::encode_normalize	( )
 /* tot_f is the total interval length (total frequency sum)  */
 /* or (faster): tot_f = (code_value)1<<shift                             */
 void NET_Compressor::encode_freq(freq sy_f, freq lt_f, freq tot_f )
-{	
+{
 	code_value	r, tmp;
 
 	encode_normalize();
@@ -73,7 +73,7 @@ void NET_Compressor::encode_freq(freq sy_f, freq lt_f, freq tot_f )
 }
 
 void NET_Compressor::encode_shift	( freq sy_f, freq lt_f, freq shift )
-{	
+{
 	code_value r, tmp;
 
 	encode_normalize();
@@ -89,7 +89,7 @@ void NET_Compressor::encode_shift	( freq sy_f, freq lt_f, freq shift )
 /* cares. I output them because decode will read them :)     */
 /* the return value is the number of bytes written           */
 u32 NET_Compressor::done_encoding	( )
-{   
+{
 	u32 tmp;
 
     encode_normalize	();     /* now we have a normalized state */
@@ -98,7 +98,7 @@ u32 NET_Compressor::done_encoding	( )
     else																	tmp = (RNGC.low >> SHIFT_BITS) + 1;
 
     if (tmp > 0xff) /* we have a carry */
-    {   
+    {
 		RNGC.byte_out	(RNGC.buffer+1);
         for(; RNGC.help; RNGC.help--)	RNGC.byte_out(0);
     } else  /* no carry */
@@ -123,9 +123,9 @@ int NET_Compressor::start_decoding	( BYTE* src, u32 header_size )
 }
 
 void NET_Compressor::decode_normalize	( )
-{   
+{
 	while (RNGC.range <= Bottom_value)
-    {   
+    {
 		RNGC.low	=	(RNGC.low<<8) | ((RNGC.buffer<<EXTRA_BITS)&0xff);
         RNGC.buffer =	RNGC.byte_in();
         RNGC.low	|=	RNGC.buffer >> (8-EXTRA_BITS);
@@ -139,7 +139,7 @@ void NET_Compressor::decode_normalize	( )
 /* or: totf is (code_value)1<<shift                                 */
 /* returns the culmulative frequency								*/
 NET_Compressor::freq NET_Compressor::decode_culfreq		( freq tot_f )
-{   
+{
 	freq tmp;
 
     decode_normalize	();
@@ -183,7 +183,7 @@ BYTE NET_Compressor::decode_byte		( )
 }
 
 WORD NET_Compressor::decode_short		( )
-{   
+{
 	u32 tmp	=	decode_culshift(16);
     decode_update	( 1,tmp,(freq)1<<16);
     return WORD(tmp);
@@ -232,11 +232,11 @@ WORD NET_Compressor::Compress	(BYTE* dest, BYTE* src, u32 count)
 	/*
 	CS.Enter		();
     start_encoding	(dest, 2);
-	
+
 	// output the encoded symbols
 	u32	cum	= freqCompress[256];
 	BYTE*	end	= src+count;
-	for(; src!=end; ) 
+	for(; src!=end; )
 	{
 		int ch				=	*src++;
 		u32 freq			=	freqCompress[ch];
@@ -254,7 +254,7 @@ WORD NET_Compressor::Compress	(BYTE* dest, BYTE* src, u32 count)
 
 
 WORD NET_Compressor::Decompress	(BYTE* dest, BYTE* src, u32 count)
-{  
+{
 	R_ASSERT(dest && src && count);
 
 	Memory.mem_copy	(dest,src,count);
@@ -265,7 +265,7 @@ WORD NET_Compressor::Decompress	(BYTE* dest, BYTE* src, u32 count)
 	u32			size	= u32(*LPWORD(src));
 
 	start_decoding	(src, 2);
-	
+
 	u32			cum = freqDecompress[256];
 	for (u32 i=0; i<size; i++)
 	{
@@ -286,7 +286,7 @@ WORD NET_Compressor::Decompress	(BYTE* dest, BYTE* src, u32 count)
 		decode_update	(Fnext-Fcur,Fcur,cum);
 		*dest ++		= BYTE(symbol);
 	}
-	
+
     done_decoding	();
 	CS.Leave		();
 	return WORD		(size);
@@ -298,7 +298,7 @@ void NET_Compressor_FREQ::Normalize()
 	// summarize counters
 	u32 I, total	= 0;
 	for (I=0; I<256; I++)	total += table[I];
-	
+
 	if (total>60000)	{
 		// rescale counters so in summary they gives us less than 60 000 freq
 		float fScale	= float(60000)/float(total);

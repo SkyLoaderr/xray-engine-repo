@@ -7,7 +7,7 @@
 #include "Library.h"
 #include "library.h"
 #include "ui_tools.h"
-#include "EditObject.h"                 
+#include "EditObject.h"
 #include "EditObject.h"
 #include "Main.h"
 #include "Scene.h"
@@ -45,7 +45,7 @@ __fastcall TfrmEditLibrary::TfrmEditLibrary(TComponent* Owner)
     : TForm(Owner)
 {
     DEFINE_INI(fsStorage);
-	m_pEditObject = xr_new<CSceneObject>((LPVOID)0,(LPSTR)0);     
+	m_pEditObject = xr_new<CSceneObject>((LPVOID)0,(LPSTR)0);
     m_Props = TfrmPropertiesEObject::CreateProperties(0,alNone,OnModified);
 }
 //---------------------------------------------------------------------------
@@ -76,7 +76,7 @@ void __fastcall TfrmEditLibrary::OnRender(){
 	if (!form) return;
 	if (form->cbPreview->Checked){
     	CSceneObject*		S = form->m_pEditObject;
-    	CEditableObject* 	O = form->m_pEditObject->GetReference(); 
+    	CEditableObject* 	O = form->m_pEditObject->GetReference();
         if (O){
 	        if (!S->PPosition.similar(O->t_vPosition)) 	S->PPosition 	= O->t_vPosition;
     	    if (!S->PRotation.similar(O->t_vRotate))	S->PRotation 	= O->t_vRotate;
@@ -100,7 +100,7 @@ void __fastcall TfrmEditLibrary::ZoomObject(){
 void __fastcall TfrmEditLibrary::FormShow(TObject *Sender)
 {
 	modif_map.clear();
-    
+
     InitObjects();
     ebSave->Enabled = false;
     UI.BeginEState(esEditLibrary);
@@ -257,7 +257,7 @@ void TfrmEditLibrary::InitObjects()
     tvObjects->Items->Clear();
     FileMap& lst = Lib.Objects();
     FilePairIt it=lst.begin();
-    FilePairIt _E=lst.end();   
+    FilePairIt _E=lst.end();
     for(; it!=_E; it++)
         FHelper.AppendObject(tvObjects,it->first.c_str());
 	tvObjects->IsUpdating		= false;
@@ -345,7 +345,7 @@ void __fastcall TfrmEditLibrary::ebMakeLODClick(TObject *Sender)
             m_pEditObject->GetReference()->OnDeviceDestroy();
         	tvObjectsItemFocused(Sender);
         	O->m_Flags.set(CEditableObject::eoUsingLOD,bLod);
-		    ELog.DlgMsg(mtInformation,"LOD successfully created."); 
+		    ELog.DlgMsg(mtInformation,"LOD successfully created.");
 	    }else{
             ELog.DlgMsg(mtError,"Can't create LOD texture. Set preview mode.");
         }
@@ -421,9 +421,9 @@ void __fastcall TfrmEditLibrary::ebExportDOClick(TObject *Sender)
 			// make detail
     	    CDetail DO;
         	if (DO.Update(name.c_str())){
-		        CFS_Memory F;
+		        CMemoryWriter F;
     		    DO.Export(F);
-        		F.SaveTo(fn.c_str(),0);
+        		F.save_to(fn.c_str(),0);
             }
         }
     }else{
@@ -544,7 +544,7 @@ void __fastcall TfrmEditLibrary::ExtBtn1Click(TObject *Sender)
     	if (obj){
 		    AnsiString save_nm="c:\\test.txt";
 //------------------------------------------------------------------------------
-            CFS_Memory FS;
+            CMemoryWriter FS;
             EditMeshVec& m_lst=obj->Meshes();
             R_ASSERT(m_lst.size()==1);
             AnsiString t;
@@ -553,24 +553,24 @@ void __fastcall TfrmEditLibrary::ExtBtn1Click(TObject *Sender)
                 FaceVec& f_lst 		= (*m_it)->GetFaces();
                 (*m_it)->GenerateFNormals();
                 FvectorVec& n_lst 		= (*m_it)->GetFNormals();
-                t.sprintf("#define POINT_COUNT (%d)",p_lst.size());	FS.Wstring(t.c_str());
-                t.sprintf("#define FACE_COUNT (%d)",f_lst.size());	FS.Wstring(t.c_str());
+                t.sprintf("#define POINT_COUNT (%d)",p_lst.size());	FS.w_string(t.c_str());
+                t.sprintf("#define FACE_COUNT (%d)",f_lst.size());	FS.w_string(t.c_str());
                 FvectorVec n_vec;
                 Fvector2Vec uv_vec;
                 n_vec.resize(p_lst.size());
                 uv_vec.resize(p_lst.size());
                 // points
-                t.sprintf("float GroundVertices[POINT_COUNT][3]={");	FS.Wstring(t.c_str());
+                t.sprintf("float GroundVertices[POINT_COUNT][3]={");	FS.w_string(t.c_str());
 				FvectorIt itE=p_lst.end(); itE--;
                 for (FvectorIt it=p_lst.begin(); it!=itE; it++){
-                    t.sprintf("{%3.3f,%3.3f,%3.3f},",it->x,it->y,it->z);	FS.Wstring(t.c_str());
+                    t.sprintf("{%3.3f,%3.3f,%3.3f},",it->x,it->y,it->z);	FS.w_string(t.c_str());
                 }
-                t.sprintf("{%3.3f,%3.3f,%3.3f}};",it->x,it->y,it->z);		FS.Wstring(t.c_str());
+                t.sprintf("{%3.3f,%3.3f,%3.3f}};",it->x,it->y,it->z);		FS.w_string(t.c_str());
                 // faces
-                t.sprintf("WORD GroundFaces[FACE_COUNT][3]={");	FS.Wstring(t.c_str());
+                t.sprintf("WORD GroundFaces[FACE_COUNT][3]={");	FS.w_string(t.c_str());
                 FaceIt fitE = f_lst.end(); fitE--;
                 for (FaceIt fit=f_lst.begin(); fit!=fitE; fit++){
-                    t.sprintf("{%d,%d,%d},",fit->pv[0].pindex,fit->pv[1].pindex,fit->pv[2].pindex);	FS.Wstring(t.c_str());
+                    t.sprintf("{%d,%d,%d},",fit->pv[0].pindex,fit->pv[1].pindex,fit->pv[2].pindex);	FS.w_string(t.c_str());
                     n_vec[fit->pv[0].pindex].set(n_lst[fit-f_lst.begin()]);
                     n_vec[fit->pv[1].pindex].set(n_lst[fit-f_lst.begin()]);
                     n_vec[fit->pv[2].pindex].set(n_lst[fit-f_lst.begin()]);
@@ -580,26 +580,26 @@ void __fastcall TfrmEditLibrary::ExtBtn1Click(TObject *Sender)
                     uv_vec[fit->pv[1].pindex].set(*uv[1]);
                     uv_vec[fit->pv[2].pindex].set(*uv[2]);
                 }
-                t.sprintf("{%d,%d,%d}};",fit->pv[0].pindex,fit->pv[1].pindex,fit->pv[2].pindex);	FS.Wstring(t.c_str());
+                t.sprintf("{%d,%d,%d}};",fit->pv[0].pindex,fit->pv[1].pindex,fit->pv[2].pindex);	FS.w_string(t.c_str());
                 n_vec[fit->pv[0].pindex].set(n_lst[fit-f_lst.begin()]);
                 n_vec[fit->pv[1].pindex].set(n_lst[fit-f_lst.begin()]);
                 n_vec[fit->pv[2].pindex].set(n_lst[fit-f_lst.begin()]);
                 // normals
-                t.sprintf("float GroundNormals[POINT_COUNT][3]={");	FS.Wstring(t.c_str());
+                t.sprintf("float GroundNormals[POINT_COUNT][3]={");	FS.w_string(t.c_str());
 				itE=n_vec.end(); itE--;
                 for (it=n_vec.begin(); it!=itE; it++){
-                    t.sprintf("{%3.3f,%3.3f,%3.3f},",it->x,it->y,it->z);	FS.Wstring(t.c_str());
+                    t.sprintf("{%3.3f,%3.3f,%3.3f},",it->x,it->y,it->z);	FS.w_string(t.c_str());
                 }
-                t.sprintf("{%3.3f,%3.3f,%3.3f}};",it->x,it->y,it->z);		FS.Wstring(t.c_str());
+                t.sprintf("{%3.3f,%3.3f,%3.3f}};",it->x,it->y,it->z);		FS.w_string(t.c_str());
                 // TX_UV
-                t.sprintf("float GroundUV[POINT_COUNT][2]={");	FS.Wstring(t.c_str());
+                t.sprintf("float GroundUV[POINT_COUNT][2]={");	FS.w_string(t.c_str());
 				Fvector2It itE2=uv_vec.end(); itE2--;
                 for (Fvector2It uvit=uv_vec.begin(); uvit!=itE2; uvit++){
-                    t.sprintf("{%3.3f,%3.3f},",uvit->x,uvit->y);	FS.Wstring(t.c_str());
+                    t.sprintf("{%3.3f,%3.3f},",uvit->x,uvit->y);	FS.w_string(t.c_str());
                 }
-                t.sprintf("{%3.3f,%3.3f}};",uvit->x,uvit->y);		FS.Wstring(t.c_str());
+                t.sprintf("{%3.3f,%3.3f}};",uvit->x,uvit->y);		FS.w_string(t.c_str());
             }
-            FS.SaveTo(save_nm.c_str(),0);
+            FS.save_to(save_nm.c_str(),0);
             ELog.DlgMsg(mtInformation, "Export complete.");
 	    }else{
             ELog.DlgMsg(mtError,"Can't load object.");

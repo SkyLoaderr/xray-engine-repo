@@ -3,7 +3,7 @@
 //----------------------------------------------------
 
 #ifndef WayPointH
-#define WayPointH                                
+#define WayPointH
 
 #include "LevelGameDef.h"
 
@@ -76,8 +76,8 @@ public:
 	virtual void    Render      	(int priority, bool strictB2F);
 	virtual bool    RayPick	    	(float& distance, const Fvector& S, const Fvector& D, SRayPickInfo* pinf = NULL);
     virtual bool 	FrustumPick		(const CFrustum& frustum);
-  	virtual bool 	Load			(CStream&);
-	virtual void 	Save			(CFS_Base&);
+  	virtual bool 	Load			(IReader&);
+	virtual void 	Save			(IWriter&);
     virtual bool	ExportGame		(SExportStreams& data);
 
     static bool		IsPointMode		();

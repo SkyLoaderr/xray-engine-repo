@@ -23,7 +23,7 @@ CBlender_LmEbB::~CBlender_LmEbB	()
 	
 }
 
-void	CBlender_LmEbB::Save(	CFS_Base& FS )
+void	CBlender_LmEbB::Save(	IWriter& FS )
 {
 	CBlender::Save	(FS);
 	xrPWRITE_MARKER	(FS,"Environment map");
@@ -31,7 +31,7 @@ void	CBlender_LmEbB::Save(	CFS_Base& FS )
 	xrPWRITE_PROP	(FS,"Transform",		xrPID_MATRIX,	oT2_xform);
 }
 
-void	CBlender_LmEbB::Load(	CStream& FS, WORD version )
+void	CBlender_LmEbB::Load(	IReader& FS, WORD version )
 {
 	CBlender::Load	(FS,version);
 	xrPREAD_MARKER	(FS);

@@ -2,7 +2,7 @@
 #pragma hdrstop
 
 #include "ImageManager.h"
-#include "ETextureParams.h"          
+#include "ETextureParams.h"
 #include "ImageThumbnail.h"
 #include "xrImage_Resampler.h"
 #include "freeimage.h"
@@ -24,12 +24,12 @@ bool IsValidSize(u32 w, u32 h){
 	if (!btwIsPow2(w)) return false;
     return true;
 }
-                 
+
 bool Surface_Load(LPCSTR full_name, U32Vec& data, u32& w, u32& h, u32& a)
 {
     if (!Engine.FS.Exist(full_name,true)) return false;
 	AnsiString ext = ExtractFileExt(full_name).LowerCase();
-	if (ext==".tga"){                     
+	if (ext==".tga"){
     	CImage img;
         if (!img.LoadTGA	(full_name)) return false;
 		w 					= img.dwWidth;
@@ -100,7 +100,7 @@ void CImageManager::CreateTextureThumbnail(EImageThumbnail* THM, const AnsiStrin
 void CImageManager::CreateGameTexture(const AnsiString& src_name, EImageThumbnail* thumb){
 	R_ASSERT(src_name.Length());
     EImageThumbnail* THM 	= thumb?thumb:xr_new<EImageThumbnail>(src_name.c_str(),EImageThumbnail::EITTexture);
-	AnsiString base_name 	= src_name;       
+	AnsiString base_name 	= src_name;
 	AnsiString game_name 	= ChangeFileExt(src_name,".dds");
 	Engine.FS.m_Textures.Update(base_name);
 	Engine.FS.m_GameTextures.Update(game_name);
@@ -157,7 +157,7 @@ void CImageManager::SafeCopyLocalToServer(FileMap& files)
     AnsiString p_textures;
     AnsiString src_name,dest_name;
     Engine.FS.m_Import.Update(p_import);
-    Engine.FS.m_Textures.Update(p_textures);       
+    Engine.FS.m_Textures.Update(p_textures);
 
     FilePairIt it	= files.begin();
 	FilePairIt _E 	= files.end();
@@ -172,7 +172,7 @@ void CImageManager::SafeCopyLocalToServer(FileMap& files)
 		fn 			= it->first;
 		src_name 	= p_import	+ AnsiString(fn);
 		Engine.FS.UpdateTextureNameWithFolder(fn);
-		dest_name 	= p_textures+ AnsiString(fn);                      
+		dest_name 	= p_textures+ AnsiString(fn);
         Engine.FS.BackupFile	(&Engine.FS.m_Textures,AnsiString(fn));
 		Engine.FS.CopyFileTo	(src_name.c_str(),dest_name.c_str(),true);
         Engine.FS.WriteAccessLog(dest_name.c_str(),"Replace");
@@ -525,7 +525,7 @@ void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR tex_name, u32 tgt_w, u32 
     AnsiString out_name=tex_name;
     Engine.FS.m_Textures.Update(out_name);
     Engine.FS.VerifyPath(out_name.c_str());
-    
+
     CImage* I = xr_new<CImage>();
     I->Create	(tgt_w*samples,tgt_h,new_pixels.begin());
     I->Vflip	();
@@ -564,7 +564,7 @@ BOOL CImageManager::CreateOBJThumbnail(LPCSTR tex_name, CEditableObject* obj, in
     	bResult = FALSE;
         ELog.DlgMsg(mtError,"Can't make screenshot.");
     }
-    
+
     // restore render params
     psDeviceFlags 	= old_flag;
     return bResult;

@@ -95,14 +95,14 @@ void	CDetailManager::cache_Update	(int v_x, int v_z, Fvector& view, int limit)
 			for (int z=0; z<dm_cache_line; z++)
 			{
 				Slot*	S	= cache[z][dm_cache_line-1];
-				for			(int x=dm_cache_line-1; x>0; x--)	cache[z][x] = cache[z][x-1]; 
+				for			(int x=dm_cache_line-1; x>0; x--)	cache[z][x] = cache[z][x-1];
 				cache		[z][0]	= S;
 				cache_Task	(0,z,S);
 			}
 			// R_ASSERT	(cache_Validate());
 		}
 	}
-	while (cache_cz!=v_z)	
+	while (cache_cz!=v_z)
 	{
 		if (v_z>cache_cz)	{
 			// shift matrix down a bit
@@ -153,7 +153,7 @@ void	CDetailManager::cache_Update	(int v_x, int v_z, Fvector& view, int limit)
 				S->BB.getcenter	(C);
 				float		D	= view.distance_to_sqr	(C);
 
-				// Select 
+				// Select
 				if (D<best_dist)
 				{
 					best_dist	= D;

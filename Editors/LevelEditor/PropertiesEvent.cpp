@@ -29,7 +29,7 @@ __fastcall TfrmPropertiesEvent::TfrmPropertiesEvent(TComponent* Owner)
 {
 }
 //---------------------------------------------------------------------------
-      
+
 void TfrmPropertiesEvent::GetObjectsInfo(){
 	VERIFY(!m_Objects->empty());
 

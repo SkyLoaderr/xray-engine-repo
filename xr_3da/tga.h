@@ -3,8 +3,6 @@
 #ifndef _INCDEF_TARGASAVER_H_
 #define _INCDEF_TARGASAVER_H_
 
-#include "fs.h"
-
 #pragma pack(push,1)
 struct tgaImgSpecHeader{
 	WORD tgaXOrigin;
@@ -38,7 +36,7 @@ public:
 	~TGAdesc()	{};
 
 	VOID maketga( char *fname );
-	VOID maketga( CFS_Base &fs );
+	VOID maketga( IWriter &fs );
 };
 
 #endif /*_INCDEF_TARGASAVER_H_*/

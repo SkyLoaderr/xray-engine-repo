@@ -21,12 +21,12 @@ CBlender_LIGHT::~CBlender_LIGHT()
 
 }
 
-void	CBlender_LIGHT::Save	( CFS_Base& FS	)
+void	CBlender_LIGHT::Save	( IWriter& FS	)
 {
 	CBlender::Save	(FS);
 }
 
-void	CBlender_LIGHT::Load	( CStream& FS, WORD version	)
+void	CBlender_LIGHT::Load	( IReader& FS, WORD version	)
 {
 	CBlender::Load	(FS,version);
 }

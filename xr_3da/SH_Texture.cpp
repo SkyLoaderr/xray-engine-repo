@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #pragma hdrstop
-           
+
 #include "sh_texture.h"
 #include "texture.h"
 #include "xr_avi.h"
@@ -23,7 +23,7 @@ CTexture::CTexture		()
 	desc_cache			= 0;
 }
 
-CTexture::~CTexture() 
+CTexture::~CTexture()
 {
 //	R_ASSERT(dwReference==0);
 	Unload	();
@@ -108,7 +108,7 @@ void CTexture::Load(LPCSTR cName)
 				&pTexture,NULL
 				);
 			pSurface	= pTexture;
-			if (FAILED(hrr)) 
+			if (FAILED(hrr))
 			{
 				Debug.fatal	("Invalid video stream");
 				R_CHK		(hrr);
@@ -126,23 +126,23 @@ void CTexture::Load(LPCSTR cName)
 	{
 		// Sequence
 		char buffer[256];
-		destructor<CStream>	fs(Engine.FS.Open(fn));
+		destructor<IReader>	fs(Engine.FS.Open(fn));
 
 		seqCycles	= FALSE;
-		fs().Rstring	(buffer);
+		fs().r_string	(buffer);
 		if (0==stricmp	(buffer,"cycled"))
 		{
-			seqCycles		= TRUE;                    
-			fs().Rstring	(buffer);
+			seqCycles		= TRUE;
+			fs().r_string	(buffer);
 		}
 		u32 fps	= atoi(buffer);
 		seqMSPF		= 1000/fps;
 
-		while (!fs().Eof())
+		while (!fs().eof())
 		{
-			fs().Rstring(buffer);
+			fs().r_string(buffer);
 			_Trim		(buffer);
-			if (buffer[0])	
+			if (buffer[0])
 			{
 				// Load another texture
 				D3DFORMAT f; u32 W,H,M;
@@ -156,7 +156,7 @@ void CTexture::Load(LPCSTR cName)
 					0.5f,
 					false,
 					false,
-					
+
 					// return values
 					f,W,H
 					);
@@ -168,7 +168,7 @@ void CTexture::Load(LPCSTR cName)
 			}
 		}
 		pSurface	= 0;
-	} else 
+	} else
 	{
 		// Normal texture
 		D3DFORMAT f; u32 W,H,M;
@@ -182,7 +182,7 @@ void CTexture::Load(LPCSTR cName)
 			0.5f,
 			false,
 			false,
-			
+
 			// return values
 			f,W,H
 			);

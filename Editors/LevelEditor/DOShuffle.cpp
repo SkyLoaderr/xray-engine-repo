@@ -180,7 +180,7 @@ void __fastcall TfrmDOShuffle::FormClose(TObject *Sender, TCloseAction &Action)
 
     if (ModalResult==mrOk)
 		Scene.m_DetailObjects->InvalidateCache();
- 
+
 	Action = caFree;
     form = 0;
 }

@@ -80,7 +80,7 @@ CCustomObject* __fastcall TUI_CustomControl::DefaultAddObject(TShiftState Shift,
     	if (after&&!after(Shift, obj)){
         	xr_delete(obj);
             return 0;
-        } 
+        }
 		obj->MoveTo(p,n);
         Scene.SelectObjects(false,parent_tool->objclass);
 		Scene.AddObject(obj);

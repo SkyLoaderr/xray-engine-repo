@@ -31,7 +31,7 @@ static const T_IDX idx[12]={{0,4,3},{4,7,3},{7,6,2},{7,2,3},{4,5,6},{6,7,4},
 							{6,5,1},{6,1,2},{5,4,0},{5,0,1},{0,3,2},{0,2,1}};
 
 Fbox box_identity={{-0.5f,-0.5f,-0.5f},{0.5f,0.5f,0.5f}};
-                            
+
 void GetBoxTri(int index, Fvector* v){
 	box_identity.getpoint(idx[index][0],v[0]);
 	box_identity.getpoint(idx[index][1],v[1]);
@@ -374,11 +374,11 @@ bool CEvent::IsFormMode(){
 }
 //----------------------------------------------------
 
-bool CEvent::Load(CStream& F){
+bool CEvent::Load(IReader& F){
 	DWORD version = 0;
     string4096 buf;
 
-    R_ASSERT(F.ReadChunk(EVENT_CHUNK_VERSION,&version));
+    R_ASSERT(F.r_chunk(EVENT_CHUNK_VERSION,&version));
     if( version!=EVENT_VERSION ){
         ELog.DlgMsg( mtError, "Event: Unsupported version.");
         return false;
@@ -386,41 +386,41 @@ bool CEvent::Load(CStream& F){
 
 	CCustomObject::Load(F);
 
-	R_ASSERT(F.FindChunk(EVENT_CHUNK_FORMS));
-	m_Forms.resize	(F.Rdword());
-    F.Read			(m_Forms.begin(),sizeof(SForm)*m_Forms.size());
+	R_ASSERT(F.find_chunk(EVENT_CHUNK_FORMS));
+	m_Forms.resize	(F.r_u32());
+    F.r				(m_Forms.begin(),sizeof(SForm)*m_Forms.size());
 
-	R_ASSERT(F.FindChunk(EVENT_CHUNK_ACTIONS));
-	m_Actions.resize(F.Rdword());
+	R_ASSERT(F.find_chunk(EVENT_CHUNK_ACTIONS));
+	m_Actions.resize(F.r_u32());
 	for (ActionIt it=m_Actions.begin(); it!=m_Actions.end(); it++){
-    	it->type	= (EEventType)F.Rdword();
-    	it->count	= F.Rword();
-    	F.Read		(&it->clsid,sizeof(it->clsid));
-    	F.RstringZ	(buf); it->event=buf;
+    	it->type	= (EEventType)F.r_u32();
+    	it->count	= F.r_u16();
+    	F.r			(&it->clsid,sizeof(it->clsid));
+    	F.r_stringZ	(buf); it->event=buf;
     }
 
     return true;
 }
 
-void CEvent::Save(CFS_Base& F){
+void CEvent::Save(IWriter& F){
 	CCustomObject::Save(F);
 
 	F.open_chunk	(EVENT_CHUNK_VERSION);
-	F.Wword			(EVENT_VERSION);
+	F.w_u16			(EVENT_VERSION);
 	F.close_chunk	();
 
 	F.open_chunk	(EVENT_CHUNK_FORMS);
-	F.Wdword		(m_Forms.size());
-    F.write			(m_Forms.begin(),sizeof(SForm)*m_Forms.size());
+	F.w_u32			(m_Forms.size());
+    F.w				(m_Forms.begin(),sizeof(SForm)*m_Forms.size());
 	F.close_chunk	();
 
 	F.open_chunk	(EVENT_CHUNK_ACTIONS);
-	F.Wdword		(m_Actions.size());
+	F.w_u32			(m_Actions.size());
 	for (ActionIt it=m_Actions.begin(); it!=m_Actions.end(); it++){
-    	F.Wdword	(it->type);
-    	F.Wword		(it->count);
-    	F.write		(&it->clsid,sizeof(it->clsid));
-    	F.WstringZ	(it->event.c_str());
+    	F.w_u32		(it->type);
+    	F.w_u16		(it->count);
+    	F.w			(&it->clsid,sizeof(it->clsid));
+    	F.w_stringZ	(it->event.c_str());
     }
 	F.close_chunk	();
 }
@@ -470,7 +470,7 @@ bool CEvent::ExportGame(SExportStreams& F)
     Packet.w_seek		(position,&size,sizeof(u16));
 
     F.spawn.stream.open_chunk	(F.spawn.chunk++);
-    F.spawn.stream.write		(Packet.B.data,Packet.B.count);
+    F.spawn.stream.w			(Packet.B.data,Packet.B.count);
     F.spawn.stream.close_chunk	();
 
     return true;

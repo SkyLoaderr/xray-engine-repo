@@ -103,7 +103,7 @@ class CExportObjectOGF{
         std::vector<Vsplit>	pmap_vsplit;
         std::vector<WORD>	pmap_faces;
 
-        void 			Save	(CFS_Base& F);
+        void 			Save	(IWriter& F);
 
 		void 			MakeProgressive();
         SSplit			(CSurface* surf, const Fbox& bb);
@@ -116,7 +116,7 @@ class CExportObjectOGF{
     int     FindSplit			(LPCSTR shader, LPCSTR texture);
 public:
 			CExportObjectOGF	(CEditableObject* object);
-    bool    ExportGeometry		(CFS_Base& F);
+    bool    ExportGeometry		(IWriter& F);
 };
 
 #endif

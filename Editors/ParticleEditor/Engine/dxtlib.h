@@ -35,14 +35,14 @@ typedef HRESULT (__cdecl *MIPcallback)(void * data, int miplevel, DWORD size);
 // mip level
 // size of chunk
 
-     
+
 
 
 
 
 #ifndef TRGBA
 #define TRGBA
-typedef	struct	
+typedef	struct
 {
 	BYTE	rgba[4];
 } rgba_t;
@@ -59,14 +59,14 @@ union tPixel
 
 #ifndef ISPOWER2
 inline bool IsPower2(unsigned int x)
-{              
+{
     if ( x < 1 )
         return false;
 
     if (x == 1)
         return true;
 
-    if ( x & (x-1) )        
+    if ( x & (x-1) )
         return false;
 
     return true;
@@ -91,7 +91,7 @@ HRESULT __cdecl nvDXTcompress(unsigned char * raw_data, // pointer to data (24 o
 // You must write the routines (or provide stubs)
 // void WriteDTXnFile(count, buffer);
 // void ReadDTXnFile(count, buffer);
-// 
+//
 //
 void __cdecl WriteDTXnFile(DWORD count, void * buffer);
 void __cdecl ReadDTXnFile(DWORD count, void * buffer);
@@ -107,7 +107,7 @@ void __cdecl ReadDTXnFile(DWORD count, void * buffer);
 
 /* example
 
-LPDIRECT3DTEXTURE8 pCurrentTexture = 0; 
+LPDIRECT3DTEXTURE8 pCurrentTexture = 0;
 
 HRESULT LoadAllMipSurfaces(void * data, int iLevel)
 {
@@ -115,27 +115,27 @@ HRESULT LoadAllMipSurfaces(void * data, int iLevel)
     LPDIRECT3DSURFACE8 psurf;
     D3DSURFACE_DESC sd;
     D3DLOCKED_RECT lr;
-       
+
     hr = pCurrentTexture->GetSurfaceLevel(iLevel, &psurf);
-    
+
     if (FAILED(hr))
         return hr;
     psurf->GetDesc(&sd);
-    
-    
+
+
     hr = pCurrentTexture->LockRect(iLevel, &lr, NULL, 0);
     if (FAILED(hr))
         return hr;
-    
+
     memcpy(lr.pBits, data, sd.Size);
-    
+
     hr = pCurrentTexture->UnlockRect(iLevel);
-    
+
     ReleasePpo(&psurf);
-    
+
     return 0;
 }
-       
+
 
     hr = D3DXCreateTexture(m_pd3dDevice, Width, Height, nMips,  0,   D3DFMT_DXT3,  D3DPOOL_MANAGED, &pCurrentTexture);
     nvDXTcompress(raw_data, Width, Height, DXT3, true, 4, LoadAllMipSurfaces);
@@ -145,7 +145,7 @@ HRESULT LoadAllMipSurfaces(void * data, int iLevel)
 
 	/*
     src_format
-    dDXT1 
+    dDXT1
 	dDXT1a  // DXT1 with one bit alpha
 	dDXT3    // explicit alpha
 	dDXT5    // interpolated alpha

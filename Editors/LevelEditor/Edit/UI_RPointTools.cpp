@@ -46,7 +46,7 @@ bool __fastcall TUI_ControlSpawnPointAdd::Start(TShiftState Shift)
             else{
                 CSpawnPoint* base = dynamic_cast<CSpawnPoint*>(lst.back()); R_ASSERT(base);
                 if (base->AttachObject(from)){
-                    if (!Shift.Contains(ssAlt)){ 
+                    if (!Shift.Contains(ssAlt)){
                         F->ebAttachObject->Down	= false;
                         ResetActionToSelect		();
                     }

@@ -150,7 +150,7 @@ bool EDetailManager::Reinitialize(){
     if (!UpdateHeader())            return false;
     if (!UpdateBaseTexture(0))		return false;
     if (!UpdateSlots()) 			return false;
-    if (!UpdateObjects(false,false))return false;							
+    if (!UpdateObjects(false,false))return false;
 
 	return true;
 }

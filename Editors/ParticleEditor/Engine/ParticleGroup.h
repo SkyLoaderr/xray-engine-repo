@@ -49,14 +49,14 @@ public:
     enum{
     	flSprite		= (1<<0),
     	flModel			= (1<<1),
-        
+
     	flFramed		= (1<<10),
     	flAnimated		= (1<<11),
         flRandomFrame   = (1<<12),
         flRandomPlayback= (1<<13),
     };
-    
-    string64			m_Name;                   
+
+    string64			m_Name;
     Flags32				m_Flags;
 
     LPSTR				m_ShaderName;
@@ -79,20 +79,20 @@ public:
     void				pFrame				(BOOL random_frame=TRUE, u32 frame_count=16, u32 texture_width=128, u32 texture_height=128, u32 frame_width=32, u32 frame_height=32);
     // action api
 	void 				pAnimate			(float speed=24.f, BOOL random_playback=FALSE);
-    // action 
+    // action
     void				pFrameInitExecute	(PAPI::ParticleGroup *group);
     void				pAnimateExecute		(PAPI::ParticleGroup *group);
-protected:    
-	BOOL 				SaveActionList		(CFS_Base& F);
-	BOOL 				LoadActionList		(CStream& F);
+protected:
+	BOOL 				SaveActionList		(IWriter& F);
+	BOOL 				LoadActionList		(IReader& F);
 public:
 						CPGDef				();
                         ~CPGDef				();
     void				SetName				(LPCSTR name);
 
-   	void 				Save				(CFS_Base& F); 
-   	BOOL 				Load				(CStream& F); 
-    
+   	void 				Save				(IWriter& F);
+   	BOOL 				Load				(IReader& F);
+
 #ifdef _PARTICLE_EDITOR
 	void 				Compile				();
 	static PFunction*	FindCommandPrototype(LPCSTR src, LPCSTR& dest);
@@ -103,36 +103,36 @@ class CParticleGroup
 {
 	friend class PFunction;
 	CPGDef*				m_Def;
-    
+
     BOOL				m_bPlaying;
-    
+
 	int					m_HandleGroup;
 	int					m_HandleActionList;
 
     Shader*				m_Shader;
-protected:    
-	BOOL 				SaveActionList		(CFS_Base& F);
-	BOOL 				LoadActionList		(CStream& F);
+protected:
+	BOOL 				SaveActionList		(IWriter& F);
+	BOOL 				LoadActionList		(IReader& F);
 
     void				RefreshShader		();
-public: 
+public:
 						CParticleGroup		();
 	virtual 			~CParticleGroup		();
 	void	 			OnFrame				();
 
 	void	 			Render				();
 	void 				RenderEditor		();
-    
+
     void 				OnDeviceCreate		();
     void 				OnDeviceDestroy		();
 
     void				UpdateParent		(const Fmatrix& m, const Fvector& velocity);
 
-//   	void 				Save				(CFS_Base& F); 
-//   	BOOL 				Load				(CStream& F); 
+//   	void 				Save				(IWriter& F);
+//   	BOOL 				Load				(IReader& F);
 
     BOOL				Compile				(CPGDef* def);
-    
+
     void				Play				(){m_bPlaying=TRUE;}
     void				Pause				(){m_bPlaying=!m_bPlaying;}
     void				Stop				(){m_bPlaying=FALSE;}

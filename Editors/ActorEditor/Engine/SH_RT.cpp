@@ -5,11 +5,11 @@ void CRT::Create	(LPCSTR Name, u32 w, u32 h)
 {
 	R_ASSERT	(HW.pDevice && Name && Name[0] && w && h);
 	HRESULT		_hr;
-	
+
 	// Get caps
 	D3DCAPS9	caps;
 	R_CHK		(HW.pDevice->GetDeviceCaps(&caps));
-	
+
 	// Pow2
 	if (!btwIsPow2(w) || !btwIsPow2(h))
 	{
@@ -35,7 +35,7 @@ void CRT::Create	(LPCSTR Name, u32 w, u32 h)
 	Device.Shader.Evict				();
 	_hr = HW.pDevice->CreateTexture	(w, h, 1, D3DUSAGE_RENDERTARGET, HW.Caps.fTarget, D3DPOOL_DEFAULT, &pSurface,NULL);
 	if (FAILED(_hr) || (0==pSurface))	return;
-	
+
 	// OK
 	R_CHK		(pSurface->GetSurfaceLevel	(0,&pRT));
 	pTexture	= Device.Shader._CreateTexture	(Name);

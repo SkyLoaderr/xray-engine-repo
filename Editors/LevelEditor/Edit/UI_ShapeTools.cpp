@@ -35,7 +35,7 @@ bool __fastcall TUI_ControlShapeAdd::AfterAppendCallback(TShiftState Shift, CCus
 {
 	CEditShape* shape 	= dynamic_cast<CEditShape*>(obj); R_ASSERT(shape);
 	TfraShape* F 		= (TfraShape*)parent_tool->pFrame;
-	if (F->ebTypeSphere->Down){		
+	if (F->ebTypeSphere->Down){
     	Fsphere S;	S.identity();
     	shape->add_sphere(S);
         if (!Shift.Contains(ssAlt)) F->ebTypeSphere->Down = false;
@@ -64,7 +64,7 @@ bool __fastcall TUI_ControlShapeAdd::Start(TShiftState Shift)
                 CEditShape* base = dynamic_cast<CEditShape*>(lst.back()); R_ASSERT(base);
                 if (base!=from){
 	                base->Attach(from);
-    	            if (!Shift.Contains(ssAlt)){ 
+    	            if (!Shift.Contains(ssAlt)){
         	            F->ebAttachShape->Down 	= false;
             	        ResetActionToSelect		();
                 	}

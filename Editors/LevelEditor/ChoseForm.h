@@ -81,7 +81,7 @@ private:	// User declarations
     bool 	bMultiSel;
     int 	iMultiSelLimit;
     bool 	bIgnoreExt;
-// fill routines    
+// fill routines
     void __fastcall FillSound		();
     void __fastcall FillObject		();
     void __fastcall FillLAnim		();

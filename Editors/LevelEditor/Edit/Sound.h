@@ -27,8 +27,8 @@ public:
 
     virtual bool 	FrustumPick	(const CFrustum& frustum);
 
-  	virtual bool 	Load		(CStream&);
-	virtual void 	Save		(CFS_Base&);
+  	virtual bool 	Load		(IReader&);
+	virtual void 	Save		(IWriter&);
 
 	virtual bool 	GetBox		(Fbox& box);
 

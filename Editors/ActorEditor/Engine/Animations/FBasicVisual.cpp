@@ -34,12 +34,12 @@ void CVisual::Release	()
 	Device.Shader.DeleteGeom	(hGeom	);
 }
 
-void CVisual::Load		(const char* N, CStream *data, u32 dwFlags)
+void CVisual::Load		(const char* N, IReader *data, u32 dwFlags)
 {
 	// header
 	VERIFY(data);
 	ogf_header hdr;
-	if (data->ReadChunkSafe(OGF_HEADER,&hdr,sizeof(hdr)))
+	if (data->r_chunk_safe(OGF_HEADER,&hdr,sizeof(hdr)))
 	{
 		VERIFY	(hdr.format_version==xrOGF_FormatVersion);
 		Type	= hdr.type;
@@ -49,7 +49,7 @@ void CVisual::Load		(const char* N, CStream *data, u32 dwFlags)
 
 	// BBox
 	ogf_bbox bbox;
-	if (data->ReadChunkSafe(OGF_BBOX,&bbox,sizeof(bbox)))
+	if (data->r_chunk_safe(OGF_BBOX,&bbox,sizeof(bbox)))
 	{
 		vis.box.set		(bbox.min,bbox.max);
 		vis.sphere.P.sub(bbox.max,bbox.min);
@@ -62,24 +62,24 @@ void CVisual::Load		(const char* N, CStream *data, u32 dwFlags)
 	}
 
 	// Sphere (if exists)
-	if (data->FindChunk(OGF_BSPHERE))
+	if (data->find_chunk(OGF_BSPHERE))
 	{
-		data->Read(&vis.sphere.P,3*sizeof(float));
-		data->Read(&vis.sphere.R,sizeof(float));
+		data->r(&bv_Position,3*sizeof(float));
+		data->r(&bv_Radius,sizeof(float));
 	}
 
 	// textures
-	if (data->FindChunk(OGF_TEXTURE_L)) {
+	if (data->find_chunk(OGF_TEXTURE_L)) {
 #ifndef _EDITOR
-		u32 T = data->Rdword();
-		u32 S = data->Rdword();
+		u32 T = data->r_u32();
+		u32 S = data->r_u32();
 		hShader = pCreator->LL_CreateShader(S,T,-1,-1);
 #endif
 	} else {
-		if (data->FindChunk(OGF_TEXTURE)) {
+		if (data->find_chunk(OGF_TEXTURE)) {
 			string256 fnT,fnS;
-			data->RstringZ(fnT);
-			data->RstringZ(fnS);
+			data->r_stringZ(fnT);
+			data->r_stringZ(fnS);
 			hShader = Device.Shader.Create(fnS,fnT);
 		} else {
 			hShader = 0; // Device.Shader.Create("null","$null");

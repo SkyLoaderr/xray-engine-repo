@@ -38,7 +38,7 @@ BOOL SceneBuilder::Compile()
 	UI.ResetBreak();
 	if(UI.ContainEState(esBuildLevel)) return false;
 	ELog.Msg( mtInformation, "Building started..." );
-    
+
     UI.BeginEState(esBuildLevel);
     try{
         do{
@@ -80,7 +80,7 @@ BOOL SceneBuilder::MakeGame( )
 	UI.ResetBreak();
 	if(UI.ContainEState(esBuildLevel)) return false;
 	ELog.Msg( mtInformation, "Making started..." );
-    
+
     UI.BeginEState(esBuildLevel);
     try{
         do{
@@ -145,7 +145,7 @@ BOOL SceneBuilder::MakeHOM( )
 	UI.ResetBreak();
 	if(UI.ContainEState(esBuildLevel)) return false;
 	ELog.Msg( mtInformation, "Making started..." );
-    
+
     UI.BeginEState(esBuildLevel);
     try{
         do{

@@ -20,7 +20,7 @@ char* CPSLibrary::GenerateName(LPSTR buffer, LPCSTR folder, LPCSTR pref )
 {
     int cnt = 0;
     string128 prefix; prefix[0]=0;
-    if (pref&&pref[0]){                
+    if (pref&&pref[0]){
     	strcpy( prefix, pref );
         for (int i=strlen(prefix)-1; i>=0; i--) if (isdigit(prefix[i])) prefix[i]=0; else break;
 		sprintf( buffer, "%s%s%04d", folder?folder:"", prefix, cnt++);
@@ -62,15 +62,15 @@ void CPSLibrary::Save()
 
 void CPSLibrary::Save(const char* nm)
 {
-	CFS_Memory F;
+	CMemoryWriter F;
 
 	F.open_chunk	(PS_CHUNK_VERSION);
-    F.Wword			(PS_VERSION);
+    F.w_u16			(PS_VERSION);
 	F.close_chunk	();
-    
+
 	F.open_chunk	(PS_CHUNK_FIRSTGEN);
-    F.Wdword		(m_PSs.size());
-	F.write			(m_PSs.begin(), m_PSs.size()*sizeof(PS::SDef));
+    F.w_u32			(m_PSs.size());
+	F.w				(m_PSs.begin(), m_PSs.size()*sizeof(PS::SDef));
 	F.close_chunk	();
 
 	F.open_chunk	(PS_CHUNK_SECONDGEN);
@@ -81,7 +81,7 @@ void CPSLibrary::Save(const char* nm)
     }
 	F.close_chunk	();
 
-    F.SaveTo		(nm,0);
+    F.save_to		(nm,0);
 }
 //------------------------------------------------------------------------------
- 
+

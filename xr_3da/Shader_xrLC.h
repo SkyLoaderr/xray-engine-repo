@@ -5,7 +5,7 @@
 struct Shader_xrLC
 {
 public:
-	enum { 
+	enum {
 		flCollision			= 1<<0,
 		flRendering			= 1<<1,
 		flOptimizeUV		= 1<<2,
@@ -56,17 +56,17 @@ class Shader_xrLC_LIB
 public:
 	void					Load	(LPCSTR name)
 	{
-		CFileStream			fs(name);
-		int count			= fs.Length()/sizeof(Shader_xrLC);
-		R_ASSERT			(int(fs.Length()) == int(count*sizeof(Shader_xrLC)));
+		CFileReader			fs(name);
+		int count			= fs.length()/sizeof(Shader_xrLC);
+		R_ASSERT			(int(fs.length()) == int(count*sizeof(Shader_xrLC)));
 		library.resize		(count);
-		fs.Read				(library.begin(),fs.Length());
+		fs.r				(library.begin(),fs.length());
 	}
 	void					Save	(LPCSTR name)
 	{
-		CFS_Memory			fs;
-		fs.write			(library.begin(),library.size()*sizeof(Shader_xrLC));
-		fs.SaveTo			(name,0);
+		CMemoryWriter		fs;
+		fs.w				(library.begin(),library.size()*sizeof(Shader_xrLC));
+		fs.save_to			(name,0);
 	}
 	void					Unload	()
 	{

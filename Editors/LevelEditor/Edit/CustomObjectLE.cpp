@@ -187,11 +187,11 @@ void CCustomObject::PivotScale( const Fmatrix& prev_inv, const Fmatrix& current,
 void CCustomObject::Scale( Fvector& amount )
 {
 	R_ASSERT(!Locked());
-    UI.UpdateScene();                                                       
+    UI.UpdateScene();
     Fvector s	= PScale;
 	s.add(amount);
     if (s.x<EPS) s.x=EPS;
-    if (s.y<EPS) s.y=EPS;                                 
+    if (s.y<EPS) s.y=EPS;
     if (s.z<EPS) s.z=EPS;
     PScale		= s;
 }

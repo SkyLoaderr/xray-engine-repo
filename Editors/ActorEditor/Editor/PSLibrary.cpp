@@ -60,7 +60,7 @@ void CPSLibrary::RenamePG(PS::CPGDef* src, LPCSTR new_name)
 
 void CPSLibrary::Remove(const char* nm)
 {
-    PS::SDef* sh = FindPS(nm); 
+    PS::SDef* sh = FindPS(nm);
     if (sh) m_PSs.erase(sh);
     else{
     	PS::PGIt it = FindPGIt(nm);
@@ -77,43 +77,43 @@ bool CPSLibrary::Load(const char* nm)
 	// Check if file is compressed already
 	string32	ID			= PS_LIB_SIGN;
 	string32	id;
-	CStream*	F			= Engine.FS.Open(nm);
-	F->Read		(&id,8);
+	IReader*	F			= Engine.FS.Open(nm);
+	F->r		(&id,8);
 	if (0==strncmp(id,ID,8)){
 		Engine.FS.Close		(F);
-		F					= xr_new<CCompressedStream> (nm,ID);
+		F					= xr_new<CCompressedReader> (nm,ID);
 	}else{
-    	F->Seek	(0);
+    	F->seek	(0);
     }
-	CStream&				FS	= *F;
-    
+	IReader&				FS	= *F;
+
 	m_PSs.clear				();
 
 	bool bRes 				= true;
-    R_ASSERT(FS.FindChunk(PS_CHUNK_VERSION));
-    u16 ver				= FS.Rword();
+    R_ASSERT(FS.find_chunk(PS_CHUNK_VERSION));
+    u16 ver				= FS.r_u16();
     if (ver!=PS_VERSION) return false;
     // two version
     // first generation
-    R_ASSERT(FS.FindChunk(PS_CHUNK_FIRSTGEN));
-    u32 count 			= FS.Rdword();
+    R_ASSERT(FS.find_chunk(PS_CHUNK_FIRSTGEN));
+    u32 count 			= FS.r_u32();
     if (count){
         m_PSs.resize	(count);
-        FS.Read			(m_PSs.begin(), count*sizeof(PS::SDef));
+        FS.r			(m_PSs.begin(), count*sizeof(PS::SDef));
     }
     // second generation
-    CStream* OBJ 		= FS.OpenChunk(PS_CHUNK_SECONDGEN);
+    IReader* OBJ 		= FS.open_chunk(PS_CHUNK_SECONDGEN);
     if (OBJ){
-        CStream* O   	= OBJ->OpenChunk(0);
+        IReader* O   	= OBJ->open_chunk(0);
         for (int count=1; O; count++) {
             PS::CPGDef*	def	= xr_new<PS::CPGDef>();
             if (def->Load(*O)) m_PGs.push_back(def);
             else{ bRes = false; xr_delete(def); }
-            O->Close();
+            O->close();
             if (!bRes)	break;
-            O 			= OBJ->OpenChunk(count);
+            O 			= OBJ->open_chunk(count);
         }
-        OBJ->Close();
+        OBJ->close();
     }
 
     // final

@@ -35,7 +35,7 @@ struct b_material
 	u16					shader;				// index of shader that combine them
 	u16					shader_xrlc;		// compiler options
 	u16					sector;				// ***
-	u16					reserved;			// 
+	u16					reserved;			//
 };
 
 struct b_shader
@@ -94,7 +94,7 @@ struct b_lod_face
 	Fvector				v		[4];
 	Fvector2			t		[4];
 };
- 
+
 struct b_lod
 {
 	b_lod_face			faces	[8];
@@ -161,15 +161,15 @@ struct b_params
 	float		m_lm_amb_fogness;	// in percents
 	u32			m_lm_rms_zero;		// RMS - after what the lightmap will be shrinked to ZERO pixels
 	u32			m_lm_rms;			// RMS - shrink and recalc
-	
+
 	// Area(hemi-sphere) lighting
 	Fcolor		area_color;			//
 	float		area_dispersion;	// Angle of 'sun' - our sun has around 5 degrees, recomended around 7.5 degrees
 	float		area_energy_summary;// Amount of energy distributed across hemisphere
 	int			area_quality;		//
-	
+
 	// Light smoothing
-	float		fuzzy_min;			// in meters - min dist 
+	float		fuzzy_min;			// in meters - min dist
 	float		fuzzy_max;			// in meters - max dist
 	int			fuzzy_samples;		// number of samples = 16;
 	BOOL		fuzzy_enable;		// TRUE/FALSE - 'cause of slowness - FALSE is better :)

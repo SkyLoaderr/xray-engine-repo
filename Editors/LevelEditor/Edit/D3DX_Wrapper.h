@@ -3,20 +3,20 @@
 #pragma once
 
 #ifdef CREATEDX_EXPORTS
-#define ETOOLS_API __declspec( dllexport ) 
+#define ETOOLS_API __declspec( dllexport )
 #else
-#define ETOOLS_API __declspec( dllimport ) 
+#define ETOOLS_API __declspec( dllimport )
 #endif
 
 extern "C" {
-	ETOOLS_API UINT WINAPI		
+	ETOOLS_API UINT WINAPI
 		D3DX_GetDriverLevel(
 		LPDIRECT3DDEVICE9		pDevice);
 
-	ETOOLS_API HRESULT WINAPI	
+	ETOOLS_API HRESULT WINAPI
 		D3DX_GetImageInfoFromFileInMemory(
-		LPCVOID					pSrcData, 
-		UINT					SrcDataSize, 
+		LPCVOID					pSrcData,
+		UINT					SrcDataSize,
 		D3DXIMAGE_INFO*			pSrcInfo);
 
 	ETOOLS_API HRESULT WINAPI
@@ -100,12 +100,12 @@ extern "C" {
 		DWORD FVF,
 		D3DVERTEXELEMENT9 pDeclarator[MAX_FVF_DECL_SIZE]);
 
-	ETOOLS_API UINT WINAPI 
+	ETOOLS_API UINT WINAPI
 		D3DX_GetDeclVertexSize(
 		CONST D3DVERTEXELEMENT9*pDecl,
 		DWORD					Stream);
 
-	ETOOLS_API UINT WINAPI 
+	ETOOLS_API UINT WINAPI
 		D3DX_GetDeclLength(
 		CONST D3DVERTEXELEMENT9*pDecl);
 
@@ -113,7 +113,7 @@ extern "C" {
 		D3DX_GetFVFVertexSize(
 		DWORD					FVF);
 
-	ETOOLS_API const char*  WINAPI 
+	ETOOLS_API const char*  WINAPI
 		DX_GetErrorDescription9(
 		HRESULT					hr);
 }

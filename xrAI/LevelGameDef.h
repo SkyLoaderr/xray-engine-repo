@@ -53,7 +53,7 @@ enum EWayType{
         dword	(m_dwTeamId);
     ...
     - chunk #n
-    	
+
 - chunk AIPOINT_CHUNK
 	- chunk #0
         vector	(PPosition);
@@ -91,8 +91,8 @@ enum EWayType{
 */
 class CCustomGamePoint {
 public:
-	virtual void Save		(CStream&)							= 0;
-	virtual void Load		(CFS_Base&)							= 0;
+	virtual void Save		(IReader&)							= 0;
+	virtual void Load		(IWriter&)							= 0;
 #ifdef _EDITOR
 	virtual void FillProp	(LPCSTR pref, PropItemVec& values)	= 0;
 #endif
@@ -112,48 +112,48 @@ private:
 	float					fAnomalyDeathProbability;
 	string512				caRouteGraphPoints;
 public:
-	virtual void Save		(CFS_Base &fs)
+	virtual void Save		(IWriter &fs)
 	{
 		// version chunk
 		fs.open_chunk		(NPC_POINT_CHUNK_VERSION);
-		fs.Wdword			(NPC_POINT_VERSION);
+		fs.w_u32			(NPC_POINT_VERSION);
 		fs.close_chunk		();
-		
+
 		// data chunk
 		fs.open_chunk		(NPC_POINT_CHUNK_DATA);
-		fs.Wstring			(caModel);
-		fs.Wbyte			(ucTeam);
-		fs.Wbyte			(ucSquad);
-		fs.Wbyte			(ucGroup);
-		fs.Wword			(wGroupID);
-		fs.Wword			(wCount);
-		fs.Wfloat			(fBirthRadius);
-		fs.Wfloat			(fBirthProbability);
-		fs.Wfloat			(fIncreaseCoefficient);
-		fs.Wfloat			(fAnomalyDeathProbability);
-		fs.Wstring			(caRouteGraphPoints);
+		fs.w_string			(caModel);
+		fs.w_u8				(ucTeam);
+		fs.w_u8				(ucSquad);
+		fs.w_u8				(ucGroup);
+		fs.w_u16			(wGroupID);
+		fs.w_u16			(wCount);
+		fs.w_float			(fBirthRadius);
+		fs.w_float			(fBirthProbability);
+		fs.w_float			(fIncreaseCoefficient);
+		fs.w_float			(fAnomalyDeathProbability);
+		fs.w_string			(caRouteGraphPoints);
 		fs.close_chunk		();
 	}
-	
-	virtual void Load		(CStream &fs)
+
+	virtual void Load		(IReader &fs)
 	{
-		R_ASSERT(fs.FindChunk(NPC_POINT_CHUNK_VERSION));
-		u32 dwVersion = fs.Rdword();
+		R_ASSERT(fs.find_chunk(NPC_POINT_CHUNK_VERSION));
+		u32 dwVersion = fs.r_u32();
 		if (dwVersion != NPC_POINT_VERSION)
 			THROW;
-		
-		R_ASSERT(fs.FindChunk(NPC_POINT_CHUNK_DATA));
-		fs.Rstring					(caModel);
-		ucTeam						= fs.Rbyte();
-		ucSquad						= fs.Rbyte();
-		ucGroup						= fs.Rbyte();
-		wGroupID					= fs.Rword();
-		wCount						= fs.Rword();
-		fBirthRadius				= fs.Rfloat();
-		fBirthProbability			= fs.Rfloat();
-		fIncreaseCoefficient		= fs.Rfloat();
-		fAnomalyDeathProbability	= fs.Rfloat();
-		fs.Rstring					(caRouteGraphPoints);
+
+		R_ASSERT(fs.find_chunk(NPC_POINT_CHUNK_DATA));
+		fs.r_string					(caModel);
+		ucTeam						= fs.r_u8();
+		ucSquad						= fs.r_u8();
+		ucGroup						= fs.r_u8();
+		wGroupID					= fs.r_u16();
+		wCount						= fs.r_u16();
+		fBirthRadius				= fs.r_float();
+		fBirthProbability			= fs.r_float();
+		fIncreaseCoefficient		= fs.r_float();
+		fAnomalyDeathProbability	= fs.r_float();
+		fs.r_string					(caRouteGraphPoints);
 	}
 #ifdef _EDITOR
 	virtual void FillProp	(LPCSTR pref, PropItemVec& values);
@@ -162,4 +162,4 @@ public:
 
 //---------------------------------------------------------------------------
 #endif //LevelGameDefH
- 
+

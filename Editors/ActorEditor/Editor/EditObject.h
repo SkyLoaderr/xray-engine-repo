@@ -1,7 +1,7 @@
 #ifndef EditObjectH
 #define EditObjectH
-                                      
-#include "Bone.h"                     
+
+#include "Bone.h"
 #include "SceneClassList.h"
 #ifdef _EDITOR
 //	#include "PropertiesListHelper.h"
@@ -63,7 +63,7 @@ public:
 #endif
 #ifdef _LW_IMPORT
 	LWSurfaceID		surf_id;
-#endif 
+#endif
 	DWORD			tag;
 public:
 	CSurface		()
@@ -79,7 +79,7 @@ public:
 #endif
 #ifdef _LW_IMPORT
 		surf_id		= 0;
-#endif 
+#endif
 		tag			= 0;
 	}
 #ifdef _EDITOR
@@ -108,9 +108,9 @@ public:
     {
 	    m_Flags.set(sfValidGameMtlID,FALSE);
     }
-    IC u32			_GameMtl		() 
+    IC u32			_GameMtl		()
     {
-    	if (!m_Flags.is(sfValidGameMtlID)){ 
+    	if (!m_Flags.is(sfValidGameMtlID)){
         	m_GameMtlID = GMLib.GetMaterialID(m_GameMtlName.c_str()); R_ASSERT(m_GameMtlID!=GAMEMTL_NONE);
         	m_Flags.set(sfValidGameMtlID,TRUE);
         }
@@ -180,7 +180,7 @@ public:
 	enum{
 		eoDynamic 	 	= (1<<0),
 		eoProgressive 	= (1<<1),
-        eoUsingLOD		= (1<<2),	
+        eoUsingLOD		= (1<<2),
         eoHOM			= (1<<3),
         eoMultipleUsage	= (1<<4),
 		eoFORCE32		= DWORD(-1)
@@ -200,7 +200,7 @@ public:
 	Fvector 		t_vPosition;
     Fvector			t_vScale;
     Fvector			t_vRotate;
- 
+
     bool			bOnModified;
     IC bool			IsModified				(){return bOnModified;}
     IC void 		Modified				(){bOnModified=true;}
@@ -329,10 +329,10 @@ public:
 	bool 			Reload					();
 	bool 			Load					(LPCSTR fname);
 	bool 			LoadObject				(LPCSTR fname);
-	void 			SaveObject				(LPCSTR fname);         
+	void 			SaveObject				(LPCSTR fname);
     CSMotion*		LoadSMotion				(LPCSTR fname);
-  	bool 			Load					(CStream&);
-	void 			Save					(CFS_Base&);
+  	bool 			Load					(IReader&);
+	void 			Save					(IWriter&);
 #ifdef _EDITOR
     void			FillPropSurf			(LPCSTR pref, PropItemVec& items);
 	void 			FillBasicProps			(LPCSTR pref, PropItemVec& items);
@@ -358,14 +358,14 @@ public:
     // export routine
     // skeleton
 	bool			ExportSkeletonOGF		(LPCSTR fname);
-    bool			PrepareSVGeometry		(CFS_Base& F);
-    bool			PrepareSVMotions		(CFS_Base& F);
-    bool			PrepareSV				(CFS_Base& F);
+    bool			PrepareSVGeometry		(IWriter& F);
+    bool			PrepareSVMotions		(IWriter& F);
+    bool			PrepareSV				(IWriter& F);
     // ogf
     bool			ExportObjectOGF			(LPCSTR fname);
-    bool			PrepareOGF				(CFS_Base& F);
+    bool			PrepareOGF				(IWriter& F);
     // HOM
-    bool			ExportHOMPart			(const Fmatrix& parent, CFS_Base& F);
+    bool			ExportHOMPart			(const Fmatrix& parent, IWriter& F);
     bool			ExportHOM				(LPCSTR fname);
 #ifdef _MAX_EXPORT
 	BOOL			ExtractTexName			(Texmap *src, LPSTR dest);
@@ -373,7 +373,7 @@ public:
 	BOOL			ParseMultiMaterial		(MultiMtl* src, DWORD mid, CSurface* dest);
 	BOOL			ParseXRayMaterial		(XRayMtl* src, DWORD mid, CSurface* dest);
 	CSurface*		CreateSurface			(Mtl* M, DWORD mat_id);
-	LPCSTR			GenerateSurfaceName		(LPCSTR base_name); 
+	LPCSTR			GenerateSurfaceName		(LPCSTR base_name);
 	bool			ImportMAXSkeleton		(CExporter* exporter);
 #endif
 #ifdef _LW_EXPORT

@@ -124,7 +124,7 @@ void __fastcall TfrmMain::D3DWindowKeyPress(TObject *Sender, char &Key)
 void __fastcall TfrmMain::FormKeyDown(TObject *Sender, WORD &Key, TShiftState Shift)
 {
     if (!D3DWindow->Focused()) UI.ApplyGlobalShortCut(Key, Shift);
-	if (Key==VK_MENU) Key=0;	
+	if (Key==VK_MENU) Key=0;
 }
 //---------------------------------------------------------------------------
 
@@ -175,7 +175,7 @@ void __fastcall TfrmMain::paWindowResize(TObject *Sender)
 	if (psDeviceFlags.is(rsDrawSafeRect)){
     	int w=paWindow->Width,h=paWindow->Height,w_2=w/2,h_2=h/2;
         Irect rect;
-        if ((0.75f*float(w))>float(h)) 	rect.set(w_2-1.33f*float(h_2),0,1.33f*h,h); 
+        if ((0.75f*float(w))>float(h)) 	rect.set(w_2-1.33f*float(h_2),0,1.33f*h,h);
         else                   			rect.set(0,h_2-0.75f*float(w_2),w,0.75f*w);
         D3DWindow->Left  	= rect.x1;
         D3DWindow->Top  	= rect.y1;

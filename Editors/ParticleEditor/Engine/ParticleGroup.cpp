@@ -57,7 +57,7 @@ void CPGDef::pFrameInitExecute(ParticleGroup *group)
         if (m_Flags.is(Particle::BIRTH)){
             if (m_Flags.is(flRandomFrame))
                 m.frame	= Random.randI(m_Frame.m_iFrameCount);
-            if (m_Flags.is(flAnimated)&&m_Flags.is(flRandomPlayback)&&Random.randI(2))	
+            if (m_Flags.is(flAnimated)&&m_Flags.is(flRandomPlayback)&&Random.randI(2))
                 m.flags.set(Particle::ANIMATE_CCW,TRUE);
         }
     }
@@ -76,84 +76,84 @@ void CPGDef::pAnimateExecute(ParticleGroup *group)
 //------------------------------------------------------------------------------
 // I/O part
 //------------------------------------------------------------------------------
-BOOL CPGDef::Load(CStream& F)
+BOOL CPGDef::Load(IReader& F)
 {
-	R_ASSERT		(F.FindChunk(PGD_CHUNK_VERSION));
-	u16 version		= F.Rword();
+	R_ASSERT		(F.find_chunk(PGD_CHUNK_VERSION));
+	u16 version		= F.r_u16();
 
     if (version!=PGD_VERSION)
     	return FALSE;
 
-	R_ASSERT		(F.FindChunk(PGD_CHUNK_NAME));
-	F.RstringZ		(m_Name);
+	R_ASSERT		(F.find_chunk(PGD_CHUNK_NAME));
+	F.r_stringZ		(m_Name);
 
-	R_ASSERT		(F.FindChunk(PGD_CHUNK_GROUPDATA));
-    m_MaxParticles	= F.Rdword();
-    
-    R_ASSERT		(F.FindChunk(PGD_CHUNK_ACTIONLIST));
-    m_ActionCount	= F.Rdword();
+	R_ASSERT		(F.find_chunk(PGD_CHUNK_GROUPDATA));
+    m_MaxParticles	= F.r_u32();
+
+    R_ASSERT		(F.find_chunk(PGD_CHUNK_ACTIONLIST));
+    m_ActionCount	= F.r_u32();
     m_ActionList	= xr_alloc<PAPI::PAHeader>(m_ActionCount);
-    F.Read			(m_ActionList,m_ActionCount*sizeof(PAPI::PAHeader));
+    F.r				(m_ActionList,m_ActionCount*sizeof(PAPI::PAHeader));
 
-	F.ReadChunk		(PGD_CHUNK_FLAGS,&m_Flags);
+	F.r_chunk		(PGD_CHUNK_FLAGS,&m_Flags);
 
     string256		buf;
     if (m_Flags.is(flSprite)){
-        R_ASSERT	(F.FindChunk(PGD_CHUNK_SPRITE));
-        F.RstringZ	(buf); m_ShaderName = xr_strdup(buf);
-        F.RstringZ	(buf); m_TextureName= xr_strdup(buf);
+        R_ASSERT	(F.find_chunk(PGD_CHUNK_SPRITE));
+        F.r_stringZ	(buf); m_ShaderName = xr_strdup(buf);
+        F.r_stringZ	(buf); m_TextureName= xr_strdup(buf);
     }
 
     if (m_Flags.is(flFramed)){
-        R_ASSERT	(F.FindChunk(PGD_CHUNK_FRAME));
-        F.Read		(&m_Frame,sizeof(SFrame));
+        R_ASSERT	(F.find_chunk(PGD_CHUNK_FRAME));
+        F.r			(&m_Frame,sizeof(SFrame));
     }
 
-#ifdef _PARTICLE_EDITOR    
-	F.FindChunk		(PGD_CHUNK_SOURCETEXT);
-    F.RstringZ		(m_SourceText);
+#ifdef _PARTICLE_EDITOR
+	F.find_chunk		(PGD_CHUNK_SOURCETEXT);
+    F.r_stringZ		(m_SourceText);
 #endif
 
     return TRUE;
 }
 
-void CPGDef::Save(CFS_Base& F)
+void CPGDef::Save(IWriter& F)
 {
 	F.open_chunk	(PGD_CHUNK_VERSION);
-	F.Wword			(PGD_VERSION);
+	F.w_u16			(PGD_VERSION);
     F.close_chunk	();
 
 	F.open_chunk	(PGD_CHUNK_NAME);
-    F.WstringZ		(m_Name);
+    F.w_stringZ		(m_Name);
     F.close_chunk	();
 
 	F.open_chunk	(PGD_CHUNK_GROUPDATA);
-    F.Wdword		(m_MaxParticles);
-    F.close_chunk	();
-    
-	F.open_chunk	(PGD_CHUNK_ACTIONLIST);
-    F.Wdword		(m_ActionCount);
-    F.write			(m_ActionList,m_ActionCount*sizeof(PAPI::PAHeader));
+    F.w_u32			(m_MaxParticles);
     F.close_chunk	();
 
-	F.write_chunk	(PGD_CHUNK_FLAGS,&m_Flags,sizeof(m_Flags));
+	F.open_chunk	(PGD_CHUNK_ACTIONLIST);
+    F.w_u32			(m_ActionCount);
+    F.w				(m_ActionList,m_ActionCount*sizeof(PAPI::PAHeader));
+    F.close_chunk	();
+
+	F.w_chunk		(PGD_CHUNK_FLAGS,&m_Flags,sizeof(m_Flags));
 
     if (m_Flags.is(flSprite)){
         F.open_chunk	(PGD_CHUNK_SPRITE);
-        F.WstringZ		(m_ShaderName);
-        F.WstringZ		(m_TextureName);
+        F.w_stringZ		(m_ShaderName);
+        F.w_stringZ		(m_TextureName);
         F.close_chunk	();
     }
 
     if (m_Flags.is(flFramed)){
         F.open_chunk	(PGD_CHUNK_FRAME);
-        F.write			(&m_Frame,sizeof(SFrame));
+        F.w				(&m_Frame,sizeof(SFrame));
         F.close_chunk	();
     }
 
-#ifdef _PARTICLE_EDITOR    
+#ifdef _PARTICLE_EDITOR
 	F.open_chunk	(PGD_CHUNK_SOURCETEXT);
-    F.WstringZ		(m_SourceText.c_str());
+    F.w_stringZ		(m_SourceText.c_str());
 	F.close_chunk	();
 #endif
 }
@@ -184,7 +184,7 @@ void CParticleGroup::OnDeviceCreate()
 void CParticleGroup::OnDeviceDestroy()
 {
 	Device.Shader.Delete(m_Shader);
-}   
+}
 
 void CParticleGroup::RefreshShader()
 {
@@ -202,7 +202,7 @@ void CParticleGroup::OnFrame()
 	if (m_Def&&m_bPlaying){
         pTimeStep			(Device.fTimeDelta);
         pCurrentGroup		(m_HandleGroup);
-    
+
         // execute action list
         pCallActionList		(m_HandleActionList);
         ParticleGroup *pg 	= _GetGroupPtr(m_HandleGroup);
@@ -217,7 +217,7 @@ void CParticleGroup::OnFrame()
         }
     }
 }
-          
+
 void CParticleGroup::Render()
 {
 /*	// Get a pointer to the particles in gp memory

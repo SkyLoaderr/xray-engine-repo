@@ -18,12 +18,12 @@ CBlender_Model::~CBlender_Model()
 	
 }
 
-void	CBlender_Model::Save	( CFS_Base& FS	)
+void	CBlender_Model::Save	( IWriter& FS	)
 {
 	CBlender::Save	(FS);
 }
 
-void	CBlender_Model::Load	( CStream& FS, WORD version)
+void	CBlender_Model::Load	( IReader& FS, WORD version)
 {
 	CBlender::Load		(FS,version);
 }

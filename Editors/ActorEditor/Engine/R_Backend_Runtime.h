@@ -21,7 +21,7 @@ IC void CBackend::set_RT				(IDirect3DSurface9* RT, IDirect3DSurface9* ZB)
 		pRT				= RT;
 		CHK_DX			(HW.pDevice->SetRenderTarget(0,RT));
 	}
-	if (ZB!=pZB)	
+	if (ZB!=pZB)
 	{
 		stat.target_zb	++;
 		pZB				= ZB;
@@ -70,7 +70,7 @@ IC void CBackend::set_Matrices			(SMatrixList*	_M)
 			for (u32 it=0; it<M->size(); it++)
 			{
 				CMatrix*	mat = (*M)[it];
-				if (mat && matrices[it]!=mat)	
+				if (mat && matrices[it]!=mat)
 				{
 					matrices	[it]	= mat;
 					mat->Calculate		();
@@ -132,7 +132,7 @@ IC void CBackend::set_Format			(IDirect3DVertexDeclaration9* _decl)
 
 IC void CBackend::set_PS				(IDirect3DPixelShader9* _ps)
 {
-	if (ps!=_ps)	
+	if (ps!=_ps)
 	{
 		stat.ps			++;
 		ps				= _ps;
@@ -142,7 +142,7 @@ IC void CBackend::set_PS				(IDirect3DPixelShader9* _ps)
 
 IC void CBackend::set_VS				(IDirect3DVertexShader9* _vs)
 {
-	if (vs!=_vs)	
+	if (vs!=_vs)
 	{
 		stat.vs			++;
 		vs				= _vs;
@@ -172,21 +172,21 @@ IC void CBackend::set_Indices			(IDirect3DIndexBuffer9* _ib)
 }
 
 IC void CBackend::Render				(D3DPRIMITIVETYPE T, u32 baseV, u32 startV, u32 countV, u32 startI, u32 PC)
-{	
+{
 	stat.calls			++;
 	stat.verts			+= countV;
-	stat.polys			+= PC;		
+	stat.polys			+= PC;
 	constants.flush		();
-	CHK_DX				(HW.pDevice->DrawIndexedPrimitive(T,baseV, startV, countV,startI,PC));	
+	CHK_DX				(HW.pDevice->DrawIndexedPrimitive(T,baseV, startV, countV,startI,PC));
 }
 
 IC void CBackend::Render				(D3DPRIMITIVETYPE T, u32 startV, u32 PC)
-{	
+{
 	stat.calls			++;
 	stat.verts			+= 3*PC;
 	stat.polys			+= PC;
 	constants.flush		();
-	CHK_DX				(HW.pDevice->DrawPrimitive(T, startV, PC));			
+	CHK_DX				(HW.pDevice->DrawPrimitive(T, startV, PC));
 }
 
 IC void CBackend::set_Shader			(Shader* S, u32 pass)

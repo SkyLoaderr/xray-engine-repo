@@ -102,7 +102,7 @@ void CWayPoint::InvertLink(CWayPoint* P)
 	if (b) P->m_Links.erase(B);
     if (a) P->AppendLink(this);
 	if (b) AppendLink(P);
-} 
+}
 void CWayPoint::AppendLink(CWayPoint* P)
 {
 	m_Links.push_back(P);
@@ -236,7 +236,7 @@ void CWayObject::RemoveLink()
         for (WPIt _A=_A0; _A!=_A1; _A++){
             CWayPoint* A = (CWayPoint*)(*_A);
             WPIt _B=_A; _B++;
-            for (; _B!=_B1; _B++){ 
+            for (; _B!=_B1; _B++){
                 CWayPoint* B = (CWayPoint*)(*_B);
                 A->RemoveLink(B);
             }
@@ -399,15 +399,15 @@ bool CWayObject::IsPointMode(){
     return false;
 }
 
-bool CWayObject::Load(CStream& F)
+bool CWayObject::Load(IReader& F)
 {
 	Clear();
-    
+
 	DWORD version = 0;
 	char buf[1024];
 
-    if (!F.FindChunk(WAYOBJECT_CHUNK_VERSION)) return false;
-    R_ASSERT(F.ReadChunk(WAYOBJECT_CHUNK_VERSION,&version));
+    if (!F.find_chunk(WAYOBJECT_CHUNK_VERSION)) return false;
+    R_ASSERT(F.r_chunk(WAYOBJECT_CHUNK_VERSION,&version));
     if(version!=WAYOBJECT_VERSION){
         ELog.DlgMsg( mtError, "CWayPoint: Unsupported version.");
         return false;
@@ -415,65 +415,65 @@ bool CWayObject::Load(CStream& F)
 
 	CCustomObject::Load(F);
 
-	R_ASSERT(F.FindChunk(WAYOBJECT_CHUNK_POINTS));
-    m_WayPoints.resize(F.Rword());
+	R_ASSERT(F.find_chunk(WAYOBJECT_CHUNK_POINTS));
+    m_WayPoints.resize(F.r_u16());
 	for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++){
     	CWayPoint* W 	= xr_new<CWayPoint>(); *it = W;
-    	F.Rvector		(W->m_vPosition);
-    	W->m_dwFlags 	= F.Rdword();
-        W->m_bSelected	= F.Rword();
+    	F.r_fvector3		(W->m_vPosition);
+    	W->m_dwFlags 	= F.r_u32();
+        W->m_bSelected	= F.r_u16();
     }
 
-	R_ASSERT(F.FindChunk(WAYOBJECT_CHUNK_LINKS));
-    int l_cnt = F.Rword();
+	R_ASSERT(F.find_chunk(WAYOBJECT_CHUNK_LINKS));
+    int l_cnt = F.r_u16();
     for (int k=0; k<l_cnt; k++){
-    	int idx0 = F.Rword();
-    	int idx1 = F.Rword();
+    	int idx0 = F.r_u16();
+    	int idx1 = F.r_u16();
         m_WayPoints[idx0]->AppendLink(m_WayPoints[idx1]);
     }
 
-	R_ASSERT(F.FindChunk(WAYOBJECT_CHUNK_TYPE));
-    m_Type			= EWayType(F.Rdword());
+	R_ASSERT(F.find_chunk(WAYOBJECT_CHUNK_TYPE));
+    m_Type			= EWayType(F.r_u32());
 
     return true;
 }
 //----------------------------------------------------
 
-void CWayObject::Save(CFS_Base& F)
+void CWayObject::Save(IWriter& F)
 {
 	CCustomObject::Save(F);
 
 	F.open_chunk	(WAYOBJECT_CHUNK_VERSION);
-	F.Wword			(WAYOBJECT_VERSION);
+	F.w_u16			(WAYOBJECT_VERSION);
 	F.close_chunk	();
 
     int l_cnt		= 0;
 	F.open_chunk	(WAYOBJECT_CHUNK_POINTS);
-    F.Wword			(m_WayPoints.size());
+    F.w_u16			(m_WayPoints.size());
 	for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++){
     	CWayPoint* W = *it;
-		F.Wvector	(W->m_vPosition);
-        F.Wdword	(W->m_dwFlags);
-        F.Wword		(W->m_bSelected);
+		F.w_fvector3	(W->m_vPosition);
+        F.w_u32	(W->m_dwFlags);
+        F.w_u16		(W->m_bSelected);
         l_cnt		+= W->m_Links.size();
     }
 	F.close_chunk	();
 
 	F.open_chunk	(WAYOBJECT_CHUNK_LINKS);
-    F.Wword			(l_cnt);
+    F.w_u16			(l_cnt);
 	for (it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++){
     	CWayPoint* W= *it;
     	int from	= it-m_WayPoints.begin();
         for (WPIt l_it=W->m_Links.begin(); l_it!=W->m_Links.end(); l_it++){
         	WPIt to	= find(m_WayPoints.begin(),m_WayPoints.end(),*l_it); R_ASSERT(to!=W->m_Links.end());
-	    	F.Wword	(from);
-	    	F.Wword	(to-m_WayPoints.begin());
+	    	F.w_u16	(from);
+	    	F.w_u16	(to-m_WayPoints.begin());
         }
     }
 	F.close_chunk	();
 
     F.open_chunk	(WAYOBJECT_CHUNK_TYPE);
-    F.Wdword		(m_Type);
+    F.w_u32		(m_Type);
     F.close_chunk	();
 }
 
@@ -481,33 +481,33 @@ bool CWayObject::ExportGame(SExportStreams& F){
 	F.patrolpath.stream.open_chunk		(F.patrolpath.chunk++);
 	{
         F.patrolpath.stream.open_chunk	(WAYOBJECT_CHUNK_VERSION);
-        F.patrolpath.stream.Wword		(WAYOBJECT_VERSION);
+        F.patrolpath.stream.w_u16		(WAYOBJECT_VERSION);
         F.patrolpath.stream.close_chunk	();
 
         F.patrolpath.stream.open_chunk	(WAYOBJECT_CHUNK_NAME);
-        F.patrolpath.stream.WstringZ	(Name);
+        F.patrolpath.stream.w_stringZ	(Name);
         F.patrolpath.stream.close_chunk	();
 
         int l_cnt		= 0;
         F.patrolpath.stream.open_chunk	(WAYOBJECT_CHUNK_POINTS);
-        F.patrolpath.stream.Wword		(m_WayPoints.size());
+        F.patrolpath.stream.w_u16		(m_WayPoints.size());
         for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++){
             CWayPoint* W = *it;
-            F.patrolpath.stream.Wvector	(W->m_vPosition);
-            F.patrolpath.stream.Wdword	(W->m_dwFlags);
+            F.patrolpath.stream.w_fvector3	(W->m_vPosition);
+            F.patrolpath.stream.w_u32	(W->m_dwFlags);
             l_cnt		+= W->m_Links.size();
         }
         F.patrolpath.stream.close_chunk	();
 
         F.patrolpath.stream.open_chunk	(WAYOBJECT_CHUNK_LINKS);
-        F.patrolpath.stream.Wword		(l_cnt);
+        F.patrolpath.stream.w_u16		(l_cnt);
         for (it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++){
             CWayPoint* W= *it;
             int from	= it-m_WayPoints.begin();
             for (WPIt l_it=W->m_Links.begin(); l_it!=W->m_Links.end(); l_it++){
                 WPIt to	= find(m_WayPoints.begin(),m_WayPoints.end(),*l_it); R_ASSERT(to!=W->m_Links.end());
-                F.patrolpath.stream.Wword	(from);
-                F.patrolpath.stream.Wword	(to-m_WayPoints.begin());
+                F.patrolpath.stream.w_u16	(from);
+                F.patrolpath.stream.w_u16	(to-m_WayPoints.begin());
             }
         }
         F.patrolpath.stream.close_chunk	();

@@ -69,7 +69,7 @@ public:		// User declarations
     	flReadOnly 	= (1<<0),
     	flOurPPMenu	= (1<<1),
     };
-public:    
+public:
     __fastcall TfrmText(TComponent* Owner);
     static TfrmText* 	__fastcall ShowEditor		(AnsiString& text, LPCSTR caption="Text", u32 flags=0, int lim=0, TOnApplyClick on_apply=0, TOnCloseClick on_close=0, TOnCodeIndight on_insight=0);
     static bool		 	__fastcall ShowModalEditor	(AnsiString& text, LPCSTR caption="Text", u32 flags=0, int lim=0, TOnApplyClick on_apply=0, TOnCloseClick on_close=0, TOnCodeIndight on_insight=0);

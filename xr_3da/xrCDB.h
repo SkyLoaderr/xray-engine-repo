@@ -2,10 +2,10 @@
 #define XRCDB_H
 
 #pragma once
-// The following ifdef block is the standard way of creating macros which make exporting 
+// The following ifdef block is the standard way of creating macros which make exporting
 // from a DLL simpler. All files within this DLL are compiled with the XRCDB_EXPORTS
 // symbol defined on the command line. this symbol should not be defined on any project
-// that uses this DLL. This way any other project whose source files include this file see 
+// that uses this DLL. This way any other project whose source files include this file see
 // XRCDB_API functions as being imported from a DLL, wheras this DLL sees symbols
 // defined with this macro as being exported.
 #ifdef XRCDB_EXPORTS
@@ -34,9 +34,9 @@ namespace CDB
 		WORD			sector;			// 2b			(28b)
 		u32			dummy;			// 4b			(32b)
 
-	public:		
+	public:
 		IC Fvector&		V(int id)	{ return *(verts[id]); }
-		
+
 		IC u32*		IDverts()	{ return (u32*)	verts;	}
 		IC u32*		IDadj()		{ return (u32*)	adj;	}
 		void			convert_I2P	(Fvector* pBaseV, TRI* pBaseTri);
@@ -46,7 +46,7 @@ namespace CDB
 	// Model definition
 	class XRCDB_API MODEL
 	{
-		friend class COLLIDER;	
+		friend class COLLIDER;
 	private:
 		HANDLE					heapHandle;
 		BOOL					heapPrivate;
@@ -86,7 +86,7 @@ namespace CDB
 	};
 
 	// Collider itself
-	class XRCDB_API COLLIDER 
+	class XRCDB_API COLLIDER
 	{
 		// Ray data and methods
 		u32			ray_mode;
@@ -100,16 +100,16 @@ namespace CDB
 	public:
 		COLLIDER		();
 		~COLLIDER		();
-		
+
 		IC void			ray_options		(u32 f)	{	ray_mode = f;		}
 		void			ray_query		(const MODEL *m_def, const Fvector& r_start,  const Fvector& r_dir, float r_range = 10000.f);
-		
+
 		IC void			box_options		(u32 f)	{	box_mode = f;		}
 		void			box_query		(const MODEL *m_def, const Fvector& b_center, const Fvector& b_dim);
-		
+
 		IC void			frustum_options	(u32 f)	{	frustum_mode = f;	}
 		void			frustum_query	(const MODEL *m_def, const CFrustum& F);
-		
+
 		IC RESULT*		r_begin			()	{	return rd_ptr;				};
 		IC RESULT*		r_end			()	{	return rd_ptr + rd_count;	};
 		RESULT&			r_add			();
@@ -126,7 +126,7 @@ namespace CDB
 	const u32			err_build		= 4;
 };
 
-extern "C" 
+extern "C"
 {
 	XRCDB_API	void*	__cdecl		cdb_model_create	();
 	XRCDB_API	void	__cdecl		cdb_model_destroy	(void*);
@@ -138,5 +138,5 @@ extern "C"
 	XRCDB_API	void	__cdecl		cdb_query_frustum	(const CDB::COLLIDER* C, const CDB::MODEL *m_def, const CFrustum& F);
 };
 
-#pragma pack(pop)	
+#pragma pack(pop)
 #endif

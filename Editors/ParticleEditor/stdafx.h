@@ -188,8 +188,8 @@ struct st_Version{
 #endif
 
 #define DEFINE_INI(fs) char buf[255];	strcpy(buf,_EDITOR_FILE_NAME_); strcat(buf,".ini"); Engine.FS.m_LocalRoot.Update(buf); fs->IniFileName = buf;
-#define NONE_CAPTION "<none>" 
-#define MULTIPLESEL_CAPTION "<multiple selection>" 
+#define NONE_CAPTION "<none>"
+#define MULTIPLESEL_CAPTION "<multiple selection>"
 
 // external dependencies
 #pragma comment(lib,"xrCoreB.lib")

@@ -28,9 +28,9 @@ private:
 	R_constants						constants;
 
 	// Shaders/State
-	IDirect3DStateBlock9*			state;		
-	IDirect3DPixelShader9*			ps;			
-	IDirect3DVertexShader9*			vs;			
+	IDirect3DStateBlock9*			state;
+	IDirect3DPixelShader9*			ps;
+	IDirect3DVertexShader9*			vs;
 
 	// Lists
 	STextureList*					T;
@@ -42,7 +42,7 @@ private:
 	CMatrix*						matrices	[8];
 
 	void							Invalidate	()
-	{	
+	{
 		pRT							= NULL;
 		pZB							= NULL;
 
@@ -83,7 +83,7 @@ public:
 		u32								target_zb;
 	}									stat;
 public:
-	IC	CTexture*					get_ActiveTexture	(u32 stage)	
+	IC	CTexture*					get_ActiveTexture	(u32 stage)
 	{
 		return textures	[stage];
 	}

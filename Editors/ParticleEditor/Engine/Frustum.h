@@ -30,7 +30,7 @@ enum EFC_Visible {
 #define FRUSTUM_SAFE	(FRUSTUM_MAXPLANES*4)
 typedef svector<Fvector,FRUSTUM_SAFE>	sPoly;
 
-class ENGINE_API CFrustum  
+class ENGINE_API CFrustum
 {
 public:
 	Fplane			planes	[FRUSTUM_MAXPLANES];
@@ -42,20 +42,20 @@ public:
 		const Fvector &N	= P.n;
 		Fvector Neg, Pos;
 		if(positive(N.x)) {
-			if(positive(N.y)) { 
+			if(positive(N.y)) {
 				if(positive(N.z))	{ Pos.set(M.x,M.y,M.z); Neg.set(m.x,m.y,m.z); }
-				else				{ Pos.set(M.x,M.y,m.z); Neg.set(m.x,m.y,M.z); } 
-			} else { 
+				else				{ Pos.set(M.x,M.y,m.z); Neg.set(m.x,m.y,M.z); }
+			} else {
 				if(positive(N.z))	{ Pos.set(M.x,m.y,M.z); Neg.set(m.x,M.y,m.z); }
-				else				{ Pos.set(M.x,m.y,m.z); Neg.set(m.x,M.y,M.z); } 
+				else				{ Pos.set(M.x,m.y,m.z); Neg.set(m.x,M.y,M.z); }
 			}
 		} else {
-			if(positive(N.y)) { 
+			if(positive(N.y)) {
 				if(positive(N.z))	{ Pos.set(m.x,M.y,M.z); Neg.set(M.x,m.y,m.z); }
-				else				{ Pos.set(m.x,M.y,m.z); Neg.set(M.x,m.y,M.z); } 
-			} else { 
+				else				{ Pos.set(m.x,M.y,m.z); Neg.set(M.x,m.y,M.z); }
+			} else {
 				if(positive(N.z))	{ Pos.set(m.x,m.y,M.z); Neg.set(M.x,M.y,m.z); }
-				else				{ Pos.set(m.x,m.y,m.z); Neg.set(M.x,M.y,M.z); } 
+				else				{ Pos.set(m.x,m.y,m.z); Neg.set(M.x,M.y,M.z); }
 			}
 		}
 
@@ -68,10 +68,10 @@ public:
 public:
 	IC void			_clear	()			{ p_count=0; }
 	IC void			_add	(Fplane &P) { VERIFY(p_count<FRUSTUM_MAXPLANES); planes[p_count++].set(P);	}
-	IC void			_add	(Fvector& P1, Fvector& P2, Fvector&P3) 
-	{ 
-		VERIFY(p_count<FRUSTUM_MAXPLANES); 
-		planes[p_count++].build(P1,P2,P3);	
+	IC void			_add	(Fvector& P1, Fvector& P2, Fvector&P3)
+	{
+		VERIFY(p_count<FRUSTUM_MAXPLANES);
+		planes[p_count++].build(P1,P2,P3);
 	}
 
 	void			SimplifyPoly_AABB	(sPoly* P, Fplane& plane);

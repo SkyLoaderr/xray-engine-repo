@@ -76,7 +76,7 @@ void CEngine::Initialize(void)
 }
 
 void CEngine::Destroy()
-{                      
+{
     xr_delete				(pSettings);
 	Engine.FS.OnDestroy		();
 	if (hPSGP)	{ FreeLibrary(hPSGP); hPSGP=0; }

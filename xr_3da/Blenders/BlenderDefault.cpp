@@ -20,11 +20,11 @@ CBlender_default::~CBlender_default	()
 {
 
 }
-void	CBlender_default::Save(	CFS_Base& FS )
+void	CBlender_default::Save(	IWriter& FS )
 {
 	CBlender::Save	(FS);
 }
-void	CBlender_default::Load(	CStream& FS, WORD version )
+void	CBlender_default::Load(	IReader& FS, WORD version )
 {
 	CBlender::Load	(FS,version);
 }

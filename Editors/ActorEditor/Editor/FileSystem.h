@@ -75,8 +75,8 @@ public:
     void 		OnCreate		();
     void 		OnDestroy		(){;}
 
-    CStream*	Open			(LPCSTR fn);
-	void 		Close			(CStream*& F);
+    IReader*	Open			(LPCSTR fn);
+	void 		Close			(IReader*& F);
 
 	bool 		GetOpenName		(FSPath& initial, LPSTR buffer, int sz_buf, bool bMulti=false, LPCSTR offset=0, int start_flt_ext=1 );
 	bool 		GetSaveName		(FSPath& initial, char *buffer, int sz_buf, LPCSTR offset=0, int start_flt_ext=1 );

@@ -13,7 +13,7 @@ namespace FVF {
 		IC void		set(const Fvector& _p, u32 C) { p.set(_p); color=C; }
 	};
 	const u32 F_L		= D3DFVF_XYZ | D3DFVF_DIFFUSE;
-	
+
 	struct V {
 		Fvector		p;
 		Fvector2	t;
@@ -32,7 +32,7 @@ namespace FVF {
 		IC void		set(const Fvector& _p, u32 C, float u, float v) { p.set(_p); color=C; t.set(u,v);}
 	};
 	const u32 F_LIT	= D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1;
-	
+
 	struct TL {
 		Fvector4	p;
 		u32		color;

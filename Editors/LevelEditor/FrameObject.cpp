@@ -65,16 +65,16 @@ void __fastcall TfraObject::MultiSelByRefObject ( bool clear_prev )
             for(;_F!=_E;_F++){
 	            CSceneObject *_O = (CSceneObject *)(*_F);
                 if((*_F)->Visible()&&_O->RefCompare(N)){
-                	if (clear_prev){ 
+                	if (clear_prev){
                     	_O->Select( false );
 	                    sellist.push_back((LPDWORD)_O);
-                    }else{ 
-                    	if (!_O->Selected()) 
+                    }else{
+                    	if (!_O->Selected())
                         	sellist.push_back((LPDWORD)_O);
                     }
                 }
             }
-        }           
+        }
         sort			(sellist.begin(),sellist.end());
         sellist.erase	(unique(sellist.begin(),sellist.end()),sellist.end());
         random_shuffle	(sellist.begin(),sellist.end());
@@ -147,7 +147,7 @@ void __fastcall TfraObject::ebMultiAppendClick(TObject *Sender)
                 xr_delete(obj);
                 return;
             }
-            
+
             obj->MoveTo(pos,up);
             Scene.AddObject( obj );
         }

@@ -91,7 +91,7 @@ bool TUI::OnCreate(){
     m_bReady		= true;
 
     Engine.FS.WriteAccessLog(_EDITOR_FILE_NAME_,"Started");
-    
+
     CreateMailslot	();
 
 	BeginEState		(esEditScene);
@@ -336,7 +336,7 @@ void TUI::ProgressInfo(LPCSTR text)
 		fraBottomBar->paStatus->Caption=fraBottomBar->sProgressTitle+" ("+text+")";
     	fraBottomBar->paStatus->Repaint();
     }
-}                                                           
+}
 void TUI::ProgressStart(float max_val, const char* text)
 {
 	VERIFY(m_bReady);
@@ -411,7 +411,7 @@ void TUI::OutGridSize()
 }
 //---------------------------------------------------------------------------
 void TUI::CheckWindowPos(TForm* form)
-{   
+{
 	if (form->Left+form->Width>Screen->Width) 	form->Left	= Screen->Width-form->Width;
 	if (form->Top+form->Height>Screen->Height)	form->Top 	= Screen->Height-form->Height;
 	if (form->Left<0) 							form->Left	= 0;
@@ -421,7 +421,7 @@ void TUI::CheckWindowPos(TForm* form)
 
 void TUI::Redraw(){
 	VERIFY(m_bReady);
-    if (!psDeviceFlags.is(rsRenderRealTime)) m_Flags.set(flRedraw,FALSE);                                                                      
+    if (!psDeviceFlags.is(rsRenderRealTime)) m_Flags.set(flRedraw,FALSE);
 	if (m_Flags.is(flResize)) Device.Resize(m_D3DWindow->Width,m_D3DWindow->Height); m_Flags.set(flResize,FALSE);
 // set render state
     Device.SetRS(D3DRS_TEXTUREFACTOR,	0xffffffff);
@@ -461,7 +461,7 @@ void TUI::Redraw(){
     	Device.Statistic.RenderDUMP_RT.Begin();
         Device.Begin			();
         Device.UpdateView		();
-		Device.ResetMaterial	();              
+		Device.ResetMaterial	();
 
         Device.SetRS			(D3DRS_FILLMODE, Device.dwFillMode);
 		Device.SetRS			(D3DRS_SHADEMODE,Device.dwShadeMode);
@@ -506,7 +506,7 @@ void TUI::Idle()
     Sleep(1);
 	Device.UpdateTimer	();
     // tools on frame
-    if (m_Flags.is(flUpdateScene)){ 
+    if (m_Flags.is(flUpdateScene)){
         Tools.UpdateProperties	();
         RealUpdateScene	();
     }
@@ -517,7 +517,7 @@ void TUI::Idle()
 	// show hint
     ShowObjectHint	();
 	ResetBreak		();
-	// check mail    
+	// check mail
     CheckMailslot	();
     // test quit
     if (m_Flags.is(flNeedQuit))			frmMain->Close();

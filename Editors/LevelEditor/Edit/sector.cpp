@@ -2,7 +2,7 @@
 // file: Sector.cpp
 //----------------------------------------------------
 #include "stdafx.h"
-#pragma hdrstop                                      
+#pragma hdrstop
 
 #include "Log.h"
 #include "Sector.h"
@@ -68,7 +68,7 @@ CSector::~CSector()
 void CSector::OnFrame()
 {
 	inherited::OnFrame();
-    if (m_Flags.is(flNeedUpdateVolume)) 
+    if (m_Flags.is(flNeedUpdateVolume))
     	UpdateVolume();
 }
 
@@ -193,7 +193,7 @@ void CSector::UpdateVolume()
     m_Box.getsphere(m_SectorCenter,m_SectorRadius);
 
     UI.RedrawScene();
-    
+
     m_Flags.set(flNeedUpdateVolume,FALSE);
 }
 //----------------------------------------------------
@@ -339,15 +339,15 @@ void CSector::GetCounts(int* objects, int* meshes, int* faces)
 }
 //----------------------------------------------------
 
-void CSector::LoadSectorDef( CStream* F ){
+void CSector::LoadSectorDef( IReader* F ){
 	string256 o_name="";
 	string256 m_name="";
 
     CSectorItem sitem;
 
 	// sector item
-    R_ASSERT(F->FindChunk(SECTOR_CHUNK_ONE_ITEM));
-	F->RstringZ(o_name);
+    R_ASSERT(F->find_chunk(SECTOR_CHUNK_ONE_ITEM));
+	F->r_stringZ(o_name);
 	sitem.object=(CSceneObject*)Scene.FindObjectByName(o_name,OBJCLASS_SCENEOBJECT);
     if (sitem.object==0){
     	ELog.Msg(mtError,"Sector Item contains object '%s' - can't load.\nObject not found.",o_name);
@@ -364,7 +364,7 @@ void CSector::LoadSectorDef( CStream* F ){
 //        m_bHasLoadError = true;
 //     	return;
 //    }
-	F->RstringZ(m_name);
+	F->r_stringZ(m_name);
 	sitem.mesh=sitem.object->GetReference()->FindMeshByName(m_name);
     if (sitem.mesh==0){
     	ELog.Msg(mtError,"Sector Item contains object '%s' mesh '%s' - can't load.\nMesh not found.",o_name,m_name);
@@ -375,11 +375,11 @@ void CSector::LoadSectorDef( CStream* F ){
     sector_items.push_back(sitem);
 }
 
-bool CSector::Load(CStream& F){
+bool CSector::Load(IReader& F){
 	DWORD version = 0;
 
     char buf[1024];
-    R_ASSERT(F.ReadChunk(SECTOR_CHUNK_VERSION,&version));
+    R_ASSERT(F.r_chunk(SECTOR_CHUNK_VERSION,&version));
     if( version!=SECTOR_VERSION ){
         ELog.Msg( mtError, "CSector: Unsupported version.");
         return false;
@@ -387,21 +387,21 @@ bool CSector::Load(CStream& F){
 
 	CCustomObject::Load(F);
 
-    R_ASSERT(F.ReadChunk(SECTOR_CHUNK_COLOR,&sector_color));
+    R_ASSERT(F.r_chunk(SECTOR_CHUNK_COLOR,&sector_color));
 
-	R_ASSERT(F.FindChunk(SECTOR_CHUNK_PRIVATE));
-    m_bDefault 		= F.Rbyte();
+	R_ASSERT(F.find_chunk(SECTOR_CHUNK_PRIVATE));
+    m_bDefault 		= F.r_u8();
 
     // Objects
-    CStream* OBJ 	= F.OpenChunk(SECTOR_CHUNK_ITEMS);
+    IReader* OBJ 	= F.open_chunk(SECTOR_CHUNK_ITEMS);
     if(OBJ){
-        CStream* O   	= OBJ->OpenChunk(0);
+        IReader* O   	= OBJ->open_chunk(0);
         for (int count=1; O; count++) {
             LoadSectorDef(O);
-            O->Close	();
-            O 			= OBJ->OpenChunk(count);
+            O->close	();
+            O 			= OBJ->open_chunk(count);
         }
-        OBJ->Close();
+        OBJ->close();
     }
 
     if (sector_items.empty()) return false;
@@ -410,17 +410,17 @@ bool CSector::Load(CStream& F){
     return true;
 }
 
-void CSector::Save(CFS_Base& F){
+void CSector::Save(IWriter& F){
 	CCustomObject::Save(F);
 
 	F.open_chunk	(SECTOR_CHUNK_VERSION);
-	F.Wword			(SECTOR_VERSION);
+	F.w_u16			(SECTOR_VERSION);
 	F.close_chunk	();
 
-    F.write_chunk	(SECTOR_CHUNK_COLOR,&sector_color,sizeof(Fcolor));
+    F.w_chunk		(SECTOR_CHUNK_COLOR,&sector_color,sizeof(Fcolor));
 
 	F.open_chunk	(SECTOR_CHUNK_PRIVATE);
-	F.Wbyte			(m_bDefault);
+	F.w_u8			(m_bDefault);
 	F.close_chunk	();
 
 	F.open_chunk	(SECTOR_CHUNK_ITEMS);
@@ -428,8 +428,8 @@ void CSector::Save(CFS_Base& F){
     for(SItemIt it=sector_items.begin(); it!=sector_items.end(); it++){
         F.open_chunk(count); count++;
             F.open_chunk(SECTOR_CHUNK_ONE_ITEM);
-            F.WstringZ	(it->object->Name);
-            F.WstringZ	(it->mesh->GetName());
+            F.w_stringZ	(it->object->Name);
+            F.w_stringZ	(it->mesh->GetName());
 	        F.close_chunk();
         F.close_chunk();
     }

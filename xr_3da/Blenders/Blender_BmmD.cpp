@@ -23,7 +23,7 @@ CBlender_BmmD::~CBlender_BmmD	()
 	
 }
 
-void	CBlender_BmmD::Save		(CFS_Base& FS )
+void	CBlender_BmmD::Save		(IWriter& FS )
 {
 	CBlender::Save	(FS);
 	xrPWRITE_MARKER	(FS,"Detail map");
@@ -31,7 +31,7 @@ void	CBlender_BmmD::Save		(CFS_Base& FS )
 	xrPWRITE_PROP	(FS,"Transform",		xrPID_MATRIX,	oT2_xform);
 }
 
-void	CBlender_BmmD::Load		(CStream& FS, WORD version )
+void	CBlender_BmmD::Load		(IReader& FS, WORD version )
 {
 	CBlender::Load	(FS,version);
 	xrPREAD_MARKER	(FS);

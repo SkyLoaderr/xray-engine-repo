@@ -10,7 +10,7 @@
 #define EOBJ_SMOTION_VERSION   	0x0005
 
 #ifdef _LW_EXPORT
-	extern char* ReplaceSpace(char* s);               
+	extern char* ReplaceSpace(char* s);
 #endif
 //------------------------------------------------------------------------------------------
 // CCustomMotion
@@ -29,21 +29,21 @@ CCustomMotion::CCustomMotion(CCustomMotion* source){
 CCustomMotion::~CCustomMotion(){
 }
 
-void CCustomMotion::Save(CFS_Base& F){
+void CCustomMotion::Save(IWriter& F){
 #ifdef _LW_EXPORT
 	ReplaceSpace(name);			strlwr(name);
 #endif
-	F.WstringZ	(name);
-	F.Wdword	(iFrameStart);	
-	F.Wdword	(iFrameEnd);
-	F.Wfloat	(fFPS);
+	F.w_stringZ	(name);
+	F.w_u32	(iFrameStart);
+	F.w_u32	(iFrameEnd);
+	F.w_float	(fFPS);
 }
 
-bool CCustomMotion::Load(CStream& F){
-	F.RstringZ	(name);
-	iFrameStart	= F.Rdword();	
-	iFrameEnd	= F.Rdword();
-	fFPS		= F.Rfloat();
+bool CCustomMotion::Load(IReader& F){
+	F.r_stringZ	(name);
+	iFrameStart	= F.r_u32();
+	iFrameEnd	= F.r_u32();
+	fFPS		= F.r_float();
 	return true;
 }
 
@@ -76,30 +76,30 @@ void COMotion::Evaluate(float t, Fvector& T, Fvector& R){
 }
 
 void COMotion::SaveMotion(const char* buf){
-	CFS_Memory		F;
+	CMemoryWriter	F;
 	F.open_chunk	(EOBJ_OMOTION);
 	Save			(F);
 	F.close_chunk	();
-	F.SaveTo		(buf,0);
+	F.save_to		(buf,0);
 }
 
 bool COMotion::LoadMotion(const char* buf)
 {
-	destructor<CStream>	F(Engine.FS.Open(buf));
-	R_ASSERT(F().FindChunk(EOBJ_OMOTION));
+	destructor<IReader>	F(Engine.FS.Open(buf));
+	R_ASSERT(F().find_chunk(EOBJ_OMOTION));
 	return Load		(F());
 }
 
-void COMotion::Save(CFS_Base& F){
+void COMotion::Save(IWriter& F){
 	CCustomMotion::Save(F);
-	F.Wword		(EOBJ_OMOTION_VERSION);
+	F.w_u16		(EOBJ_OMOTION_VERSION);
 	for (int ch=0; ch<ctMaxChannel; ch++)
 		envs[ch]->Save(F);
 }
 
-bool COMotion::Load(CStream& F){
+bool COMotion::Load(IReader& F){
 	CCustomMotion::Load(F);
-	WORD vers	= F.Rword();
+	WORD vers	= F.r_u16();
 	if (vers!=EOBJ_OMOTION_VERSION) return false;
 	for (int ch=0; ch<ctMaxChannel; ch++){
 		envs[ch] = xr_new<CEnvelope> ();
@@ -195,53 +195,53 @@ void CSMotion::WorldRotate(int boneId, float h, float p, float b)
 }
 
 void CSMotion::SaveMotion(const char* buf){
-	CFS_Memory		F;
+	CMemoryWriter	F;
 	F.open_chunk	(EOBJ_SMOTION);
 	Save			(F);
 	F.close_chunk	();
-	F.SaveTo		(buf,0);
+	F.save_to		(buf,0);
 }
 
 bool CSMotion::LoadMotion(const char* buf){
-	destructor<CStream>	F(Engine.FS.Open(buf));
-	R_ASSERT		(F().FindChunk(EOBJ_SMOTION));
+	destructor<IReader>	F(Engine.FS.Open(buf));
+	R_ASSERT		(F().find_chunk(EOBJ_SMOTION));
 	return Load		(F());
 }
 
-void CSMotion::Save(CFS_Base& F){ 
+void CSMotion::Save(IWriter& F){
 	CCustomMotion::Save(F);
-	F.Wword		(EOBJ_SMOTION_VERSION);
-	F.Wdword	(m_Flags.get());
-    F.Wdword	(iBoneOrPart);
-    F.Wfloat	(fSpeed);
-    F.Wfloat	(fAccrue);
-    F.Wfloat	(fFalloff);
-    F.Wfloat	(fPower);
-	F.Wdword	(bone_mots.size()); 
+	F.w_u16		(EOBJ_SMOTION_VERSION);
+	F.w_u32		(m_Flags.get());
+    F.w_u32		(iBoneOrPart);
+    F.w_float	(fSpeed);
+    F.w_float	(fAccrue);
+    F.w_float	(fFalloff);
+    F.w_float	(fPower);
+	F.w_u32		(bone_mots.size());
 	for(BoneMotionIt bm_it=bone_mots.begin(); bm_it!=bone_mots.end(); bm_it++){
-    	F.WstringZ	(bm_it->name);
-		F.Wdword	(bm_it->flag);
+    	F.w_stringZ	(bm_it->name);
+		F.w_u32	(bm_it->flag);
 		for (int ch=0; ch<ctMaxChannel; ch++)
 			bm_it->envs[ch]->Save(F);
 	}
 }
 
-bool CSMotion::Load(CStream& F){
+bool CSMotion::Load(IReader& F){
 	CCustomMotion::Load(F);
-	WORD vers	= F.Rword();
+	WORD vers	= F.r_u16();
 	if (vers==0x0004){
-	    iBoneOrPart	= F.Rdword();
-		m_Flags.set	(esmFX,F.Rbyte());
-		m_Flags.set	(esmStopAtEnd,F.Rbyte());
-		fSpeed		= F.Rfloat();
-	    fAccrue		= F.Rfloat();
-		fFalloff	= F.Rfloat();
-	    fPower		= F.Rfloat();
-		bone_mots.resize(F.Rdword());
+	    iBoneOrPart	= F.r_u32();
+		m_Flags.set	(esmFX,F.r_u8());
+		m_Flags.set	(esmStopAtEnd,F.r_u8());
+		fSpeed		= F.r_float();
+	    fAccrue		= F.r_float();
+		fFalloff	= F.r_float();
+	    fPower		= F.r_float();
+		bone_mots.resize(F.r_u32());
         string64	temp_buf;
 		for(BoneMotionIt bm_it=bone_mots.begin(); bm_it!=bone_mots.end(); bm_it++){
         	bm_it->SetName	(itoa(bm_it-bone_mots.begin(),temp_buf,10));
-			bm_it->flag 	= F.Rdword();
+			bm_it->flag 	= F.r_u32();
 			for (int ch=0; ch<ctMaxChannel; ch++){
 				bm_it->envs[ch] = xr_new<CEnvelope> ();
 				bm_it->envs[ch]->Load(F);
@@ -249,18 +249,18 @@ bool CSMotion::Load(CStream& F){
 		}
 	}else{
 		if (vers!=EOBJ_SMOTION_VERSION) return false;
-		m_Flags.set	(F.Rdword());
-		iBoneOrPart	= F.Rdword();
-		fSpeed		= F.Rfloat();
-		fAccrue		= F.Rfloat();
-		fFalloff	= F.Rfloat();
-		fPower		= F.Rfloat();
-		bone_mots.resize(F.Rdword());
+		m_Flags.set	(F.r_u32());
+		iBoneOrPart	= F.r_u32();
+		fSpeed		= F.r_float();
+		fAccrue		= F.r_float();
+		fFalloff	= F.r_float();
+		fPower		= F.r_float();
+		bone_mots.resize(F.r_u32());
        	string64 	buf;
 		for(BoneMotionIt bm_it=bone_mots.begin(); bm_it!=bone_mots.end(); bm_it++){
-        	F.RstringZ		(buf);
+        	F.r_stringZ		(buf);
         	bm_it->SetName	(buf);
-			bm_it->flag 	= F.Rdword();
+			bm_it->flag 	= F.r_u32();
 			for (int ch=0; ch<ctMaxChannel; ch++){
 				bm_it->envs[ch] = xr_new<CEnvelope> ();
 				bm_it->envs[ch]->Load(F);

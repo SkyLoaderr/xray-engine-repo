@@ -114,18 +114,18 @@ LPSTR GetClassNameByClassID(EObjClass cls_id)
 
 EObjClass GetClassIDByClassName	(LPCSTR name)
 {
-	if (0==strcmp(name,"Group")) 				return OBJCLASS_GROUP;	
+	if (0==strcmp(name,"Group")) 				return OBJCLASS_GROUP;
 	else if (0==strcmp(name,"Object")) 			return OBJCLASS_SCENEOBJECT;
 	else if (0==strcmp(name,"Light")) 			return OBJCLASS_LIGHT;
-	else if (0==strcmp(name,"Shape")) 			return OBJCLASS_SHAPE;	
-	else if (0==strcmp(name,"Glow")) 			return OBJCLASS_SOUND;    
-	else if (0==strcmp(name,"Spawn Point")) 	return OBJCLASS_GLOW;     
+	else if (0==strcmp(name,"Shape")) 			return OBJCLASS_SHAPE;
+	else if (0==strcmp(name,"Glow")) 			return OBJCLASS_SOUND;
+	else if (0==strcmp(name,"Spawn Point")) 	return OBJCLASS_GLOW;
 	else if (0==strcmp(name,"Way")) 			return OBJCLASS_SPAWNPOINT;
-	else if (0==strcmp(name,"Sector")) 			return OBJCLASS_WAY;		
-	else if (0==strcmp(name,"Portal")) 			return OBJCLASS_SECTOR; 	
-	else if (0==strcmp(name,"Event")) 			return OBJCLASS_PORTAL; 	
-	else if (0==strcmp(name,"Particle System")) return OBJCLASS_EVENT; 	
-	else if (0==strcmp(name,"Group")) 			return OBJCLASS_PS;		
+	else if (0==strcmp(name,"Sector")) 			return OBJCLASS_WAY;
+	else if (0==strcmp(name,"Portal")) 			return OBJCLASS_SECTOR;
+	else if (0==strcmp(name,"Event")) 			return OBJCLASS_PORTAL;
+	else if (0==strcmp(name,"Particle System")) return OBJCLASS_EVENT;
+	else if (0==strcmp(name,"Group")) 			return OBJCLASS_PS;
     else THROW2("Unknown class name"); return OBJCLASS_DUMMY;
 }
 

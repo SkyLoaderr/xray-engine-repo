@@ -30,7 +30,7 @@ BOOL CRender::occ_visible(Fbox&	B)
 BOOL CRender::occ_visible(sPoly& P)
 {
 	return ViewBase.testPolyInside(P);
-}	
+}
 
 void CRender::Calculate()
 {
@@ -41,7 +41,7 @@ void CRender::Calculate()
 //	r_ssaLOD_B						=	(ssaLOD_B*ssaLOD_B)/g_fSCREEN;
 
 	ViewBase.CreateFromMatrix		(Device.mFullTransform,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
-} 
+}
 
 void CRender::Render()
 {

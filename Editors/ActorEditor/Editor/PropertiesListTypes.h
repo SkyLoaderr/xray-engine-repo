@@ -101,7 +101,7 @@ public:
 public:
 	TYPE				init_value;
 	TYPE*				value;
-public:    
+public:
 						CustomValue		(T* val)
 	{
     	set_value		(value,val);
@@ -109,9 +109,9 @@ public:
     };
     virtual LPCSTR		GetText			(TOnDrawEvent OnDraw){return 0;}
     virtual bool		Equal			(PropValue* _prop)
-    { 
-    	CustomValue<T>* prop = (CustomValue<T>*)_prop; 
-        return (*value==*prop->value); 
+    {
+    	CustomValue<T>* prop = (CustomValue<T>*)_prop;
+        return (*value==*prop->value);
     }
     virtual const T&	GetValue		(){return *value; }
     virtual void		ResetValue		(){set_value(*value,init_value);}
@@ -131,7 +131,7 @@ class PropItem{
     friend class		TProperties;
     LPSTR				key;
     EPropType			type;
-	TElTreeItem*		item; 
+	TElTreeItem*		item;
 	DEFINE_VECTOR		(PropValue*,PropValueVec,PropValueIt);
     PropValueVec		values;
 public:
@@ -154,7 +154,7 @@ public:
 						PropItem		(EPropType _type):type(_type),item(0),key(0),tag(0),subitem(1),OnDrawEvent(0),OnClickEvent(0),OnExtBtnClick(0){m_Flags.zero();}
 	virtual 			~PropItem		()
     {
-    	for (PropValueIt it=values.begin(); it!=values.end(); it++) 
+    	for (PropValueIt it=values.begin(); it!=values.end(); it++)
         	xr_delete		(*it);
     	xr_free			(key);
     };
@@ -166,8 +166,8 @@ public:
     }
     void				SetName			(LPCSTR name){key=xr_strdup(name);}
     IC void				ResetValues		()
-    { 
-    	for (PropValueIt it=values.begin(); it!=values.end(); it++) 
+    {
+    	for (PropValueIt it=values.begin(); it!=values.end(); it++)
         	(*it)->ResetValue();
         if (!m_Flags.is(flMixed)&&(values.size()>1)){
             PropValueIt F	= values.begin();
@@ -191,7 +191,7 @@ public:
     {
     	bool bChanged	= false;
     	for (PropValueIt it=values.begin(); it!=values.end(); it++)
-        	if ((*it)->ApplyValue(val)){ 
+        	if ((*it)->ApplyValue(val)){
             	bChanged = true;
                 if ((*it)->OnChangeEvent) (*it)->OnChangeEvent(*it);
         	}
@@ -293,7 +293,7 @@ public:
     T					lim_mx;
     T					inc;
     int 				dec;
-public:    
+public:
 						NumericValue	(T* val):CustomValue<T>(val)
 	{
         value			= val;
@@ -302,14 +302,14 @@ public:
     };
 						NumericValue	(T* val, T mn, T mx, T increm, int decim):CustomValue<T>(val),lim_mn(mn),lim_mx(mx),inc(increm),dec(decim)
 	{
-    	clamp			(*val,lim_mn,lim_mx); 
+    	clamp			(*val,lim_mn,lim_mx);
         value			= val;
         init_value		= *value;
     };
     virtual bool		ApplyValue		(LPVOID _val)
     {
-    	T* val			= (T*)_val;	
-    	clamp			(*val,lim_mn,lim_mx); 
+    	T* val			= (T*)_val;
+    	clamp			(*val,lim_mn,lim_mx);
         return CustomValue<T>::ApplyValue(val);
     }
 	virtual LPCSTR 		GetText			(TOnDrawEvent OnDraw)
@@ -343,16 +343,16 @@ IC bool operator == (const Fvector& A, const Fvector& B)
 {	return A.similar(B); }
 IC void clamp(Fvector& V, Fvector& mn, const Fvector& mx)
 {
-    clamp(V.x,mn.x,mx.x); 
-    clamp(V.y,mn.y,mx.y); 
-    clamp(V.z,mn.z,mx.z); 
+    clamp(V.x,mn.x,mx.x);
+    clamp(V.y,mn.y,mx.y);
+    clamp(V.z,mn.z,mx.z);
 }
 IC AnsiString& astring_sprintf(AnsiString& s, const Fvector& V, int dec)
 {
 	AnsiString fmt; fmt.sprintf("{%%.%df, %%.%df, %%.%df}",dec,dec,dec);
 	s.sprintf(fmt.c_str(),V.x,V.y,V.z);
     return s;
-}        
+}
 class VectorValue: public NumericValue<Fvector>{
 public:
 						VectorValue		(Fvector* val, float mn, float mx, float increment, int decimal):NumericValue<Fvector>(val)
@@ -374,7 +374,7 @@ public:
 	TYPE				init_value;
 	TYPE*				value;
     T::TYPE				mask;
-public:    
+public:
 						FlagValue		(T* val, T::TYPE _mask):PropValue(),mask(_mask)
 	{
     	value			= val;

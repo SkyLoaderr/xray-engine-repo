@@ -32,7 +32,7 @@ void CImage::SaveTGA(LPCSTR name, BOOL b24)
 	tga.width	= dwWidth;
 	tga.scanlenght=dwWidth*4;
 
-	CFS_File	fs	(name);
+	CFileWriter	fs	(name);
 	tga.maketga	(fs);
 }
 
@@ -63,7 +63,7 @@ void CImage::Hflip()
 	}
 }
 
-IC BYTE ClampColor(float a) 
+IC BYTE ClampColor(float a)
 {
 	int c = iFloor(a);
 	if (c<0) c=0; else if (c>255) c=255;
@@ -179,12 +179,12 @@ struct TGAHeader
 
 bool CImage::LoadTGA(LPCSTR name)
 {
-	destructor<CStream>	TGA(Engine.FS.Open(name));
+	destructor<IReader>	TGA(Engine.FS.Open(name));
 
 	TGAHeader	hdr;
 	BOOL		hflip, vflip;
 
-	TGA().Read(&hdr,sizeof(TGAHeader));
+	TGA().r(&hdr,sizeof(TGAHeader));
 
 	if (!((hdr.imgtype==2)||(hdr.imgtype==10))){
     	Msg("Unsupported texture format (%s)",name);
@@ -206,8 +206,8 @@ bool CImage::LoadTGA(LPCSTR name)
 #endif
 
 	// Skip funky stuff
-	if (hdr.idlen)	TGA().Advance(hdr.idlen);
-	if (hdr.cmlen)	TGA().Advance(hdr.cmlen*((hdr.cmes+7)/8));
+	if (hdr.idlen)	TGA().advance(hdr.idlen);
+	if (hdr.cmlen)	TGA().advance(hdr.cmlen*((hdr.cmes+7)/8));
 
 	hflip		= (hdr.desc & 0x10) ? TRUE : FALSE;		// Need hflip
 	vflip		= (hdr.desc & 0x20) ? TRUE : FALSE;		// Need vflip
@@ -227,13 +227,13 @@ bool CImage::LoadTGA(LPCSTR name)
         if( 0 == ( hdr.desc & 0x0010 ) ) dwOffset = (hdr.height-y-1)*hdr.width;
         for( int x=0; x<hdr.width; ){
             if( hdr.imgtype == 10 ){
-                BYTE PacketInfo; TGA().Read(&PacketInfo,1);
+                BYTE PacketInfo; TGA().r(&PacketInfo,1);
                 WORD PacketType = 0x80 & PacketInfo;
                 WORD PixelCount = ( 0x007f & PacketInfo ) + 1;
                 if( PacketType ){
                     pixel = 0xffffffff;
-                    if(hdr.pixsize==32) TGA().Read(&pixel,4);
-                    else                TGA().Read(&pixel,3);
+                    if(hdr.pixsize==32) TGA().r(&pixel,4);
+                    else                TGA().r(&pixel,3);
                     while( PixelCount-- ){
                     	*(ptr+dwOffset+x)=pixel;
                         x++;
@@ -241,16 +241,16 @@ bool CImage::LoadTGA(LPCSTR name)
                 }else{
                     while( PixelCount-- ){
                         pixel = 0xffffffff;
-                        if(hdr.pixsize==32) TGA().Read(&pixel,4);
-                        else                TGA().Read(&pixel,3);
+                        if(hdr.pixsize==32) TGA().r(&pixel,4);
+                        else                TGA().r(&pixel,3);
                     	*(ptr+dwOffset+x)=pixel;
                         x++;
                     }
                 }
             }else{
                 pixel = 0xffffffff;
-                if(hdr.pixsize==32) TGA().Read(&pixel,4);
-                else                TGA().Read(&pixel,3);
+                if(hdr.pixsize==32) TGA().r(&pixel,4);
+                else                TGA().r(&pixel,3);
 				*(ptr+dwOffset+x)	=pixel;
                 x++;
             }

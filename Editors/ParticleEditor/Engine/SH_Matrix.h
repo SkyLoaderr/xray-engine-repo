@@ -4,14 +4,14 @@
 
 #include "WaveForm.h"
 
-class	ENGINE_API	CStream;
-class	ENGINE_API	CFS_Base;
+class	ENGINE_API	IReader;
+class	ENGINE_API	IWriter;
 
 class	ENGINE_API	CMatrix
 {
 public:
 	enum { modeProgrammable=0, modeTCM, modeS_refl, modeC_refl, modeDetail	};
-	enum 
+	enum
 	{
 		tcmScale		= (1<<0),
 		tcmRotate		= (1<<1),
@@ -33,7 +33,7 @@ public:
 	WaveForm		scrollU,scrollV;
 
 	CMatrix			()
-	{	
+	{
 		Memory.mem_fill	(this,0,sizeof(CMatrix));
 	}
 
@@ -50,10 +50,10 @@ public:
 
 		// Switch on mode
 		switch (dwMode) {
-		case modeProgrammable:			
+		case modeProgrammable:
 		case modeDetail:
 			return;
-		case modeTCM: 
+		case modeTCM:
 			{
 				Fmatrix		T;
 				float		sU=1,sV=1,t=Device.fTimeGlobal;
@@ -69,7 +69,7 @@ public:
 					xform.mulA_43	(T);
 				}
 				if (tcm&tcmScroll) {
-					float u = scrollU.Calculate(t)*t; 
+					float u = scrollU.Calculate(t)*t;
 					float v = scrollV.Calculate(t)*t;
                     u*=sU;
                     v*=sV;
@@ -84,7 +84,7 @@ public:
 			{
 				float Ux= .5f*Device.mView._11, Uy= .5f*Device.mView._21, Uz= .5f*Device.mView._31, Uw = .5f;
 				float Vx=-.5f*Device.mView._12, Vy=-.5f*Device.mView._22, Vz=-.5f*Device.mView._32, Vw = .5f;
-				
+
 				xform._11=Ux; xform._12=Vx; xform._13=0; xform._14=0;
 				xform._21=Uy; xform._22=Vy; xform._23=0; xform._24=0;
 				xform._31=Uz; xform._32=Vz; xform._33=0; xform._34=0;
@@ -97,7 +97,7 @@ public:
 				M._41		= 0.f;
 				M._42		= 0.f;
 				M._43		= 0.f;
-				xform.invert(M);	
+				xform.invert(M);
 			}
 			return;
 		default:
@@ -117,7 +117,7 @@ public:
 		return TRUE;
 	}
 
-	void			Load		(CStream* fs);
-	void			Save		(CFS_Base* fs);
+	void			Load		(IReader* fs);
+	void			Save		(IWriter* fs);
 };
 #endif

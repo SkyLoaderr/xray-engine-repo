@@ -8,7 +8,6 @@
 #include "Log.h"
 #include "Scene.h"
 #include "Texture.h"
-#include "FS.h"
 #include "ui_tools.h"
 #include "Frustum.h"
 #include "SceneObject.h"
@@ -17,7 +16,7 @@
 #include "Library.h"
 #include "xr_ini.h"
 #include "bottombar.h"
-#include "leftbar.h"    
+#include "leftbar.h"
 #include "ui_main.h"
 #include "d3dutils.h"
 #include "PropertiesList.h"
@@ -548,7 +547,7 @@ void EScene::Render( const Fmatrix& camera )
         	(*_F)->Render(1,false);
 			(*_F)->Render(1,true);
         }
-        
+
     // draw compiler errors
 	if (1){
 	 	Device.SetShader		(Device.m_SelectionShader);
@@ -570,7 +569,7 @@ void EScene::Render( const Fmatrix& camera )
         }
 	    Device.SetRS			(D3DRS_CULLMODE,D3DCULL_CCW);
 	}
-    
+
     mapRenderObjects.clear			();
 
 	ClearLights();
@@ -675,7 +674,7 @@ bool EScene::Validate(bool bNeedOkMsg, bool bTestPortal, bool bTestHOM, bool bTe
         for(ObjectIt it=lst.begin();it!=lst.end();it++){
             CEditableObject* O = ((CSceneObject*)(*it))->GetReference(); R_ASSERT(O);
             if (O->m_Flags.is(CEditableObject::eoHOM)){ bHasHOM = true; break; }
-        }                            
+        }
         if (!bHasHOM)
             if (mrNo==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Level doesn't contain HOM.\nContinue anyway?"))
                 return false;
@@ -863,7 +862,7 @@ void SSceneSummary::FillProp(PropItemVec& items)
     sort				(waves.begin(),waves.end());
 	new_end	= unique	(waves.begin(),waves.end());
     waves.erase			(new_end,waves.end());
-    
+
     int mem_usage		= 0;
     // fill items
     PHelper.CreateCaption(items,"Level Name",					Scene.m_LevelOp.m_FNLevelPath);
@@ -943,11 +942,11 @@ void EScene::ShowSummaryInfo()
                 sscanf			(item.second,"%[^,]",T);
             	summary.textures.push_back(T);
 			}
-        }    
+        }
         xr_delete(ini);
     }
 
-    
+
 	PropItemVec items;
 	if (bRes){
         // fill items

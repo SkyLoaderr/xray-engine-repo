@@ -87,6 +87,6 @@ bool CEditableObject::ExportLWO(LPCSTR fname)
 	F->end_save(fname);
 
 	xr_delete(F);
-	
+
 	return true;
 }

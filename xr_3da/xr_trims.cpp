@@ -245,7 +245,7 @@ void _SequenceToList(AStringVec& lst, LPCSTR in, char separator)
 		_GetItem(in,i,T,separator,0);
         _Trim(T);
         if (!T.IsEmpty()) lst.push_back(T);
-	}                  
+	}
 }
 #endif
 
@@ -257,6 +257,6 @@ void _SequenceToList(LPSTRVec& lst, LPCSTR in, char separator)
 		_GetItem(in,i,T,separator,0);
         _Trim(T);
         if (strlen(T)) lst.push_back(xr_strdup(T));
-	}                  
+	}
 }
 

@@ -44,7 +44,7 @@ class CDetail{
 	DWORD				flags;
 	Fsphere				bv_sphere;
 	Fbox				bv_bb;
-    
+
     // references
     AnsiString			m_sRefs;
 	CEditableObject*	m_pRefs;
@@ -56,9 +56,9 @@ public:
 						CDetail			();
 	virtual             ~CDetail		();
 
-	bool				Load            (CStream&);
-	void				Save            (CFS_Base&);
-    void				Export			(CFS_Base&);
+	bool				Load            (IReader&);
+	void				Save            (IWriter&);
+    void				Export			(IWriter&);
 
 	bool				Update			(LPCSTR name);
 	void				Unload			();

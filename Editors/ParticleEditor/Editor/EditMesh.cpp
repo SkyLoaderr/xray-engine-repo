@@ -3,7 +3,7 @@
 //----------------------------------------------------
 
 #include "stdafx.h"
-#pragma hdrstop                              
+#pragma hdrstop
 
 #include "EditMesh.h"
 #include "EditObject.h"
@@ -181,10 +181,10 @@ void CEditableMesh::GenerateSVertices()
                     int cnt = wb.size();
 					CBone* B=0;
                     switch (cnt){
-                    	case 0: 
-                        	bRes = false; 
+                    	case 0:
+                        	bRes = false;
                         break;
-                        case 1:{ 
+                        case 1:{
 		                    bRes 		= true;
                             SV.bone0 	= wb[0].bone;
                             SV.bone1 	= -1;
@@ -270,7 +270,7 @@ void CEditableMesh::DumpAdjacency(){
 /*    for (DWORD i=0; i<m_Adjs.size(); i++){
         IntVec& a_lst	= m_Adjs[i];
         AnsiString s; s = "Point "; s+=AnsiString(i); s+=":";
-        AnsiString s1; 
+        AnsiString s1;
         for (DWORD j=0; j<a_lst.size(); j++){ s1=a_lst[j]; s+=" "+s1; }
 		ELog.Msg(mtInformation,s.c_str());
     }

@@ -67,7 +67,7 @@ BOOL SceneBuilder::ParseLTX(CInifile* pIni, ObjectList& lst, LPCSTR prefix)
                	pIni->WriteString	(l->Name, "flare_position",	FP.c_str());
             }
         }break;
-        case OBJCLASS_GROUP:{ 
+        case OBJCLASS_GROUP:{
             CGroupObject* group = (CGroupObject*)(*it);
             bResult = ParseLTX(pIni,group->GetObjects(),group->Name);
         }break;
@@ -92,10 +92,10 @@ BOOL SceneBuilder::BuildLTX(){
     	Engine.FS.MarkFile(ltx_filename,true);
 
 	// -- defaults --
-    CFS_Memory F;
+    CMemoryWriter F;
 	if( !Scene.m_LevelOp.m_BOPText.IsEmpty() )
-		F.WstringZ( Scene.m_LevelOp.m_BOPText.c_str() );
-	F.SaveTo(ltx_filename,0);
+		F.w_stringZ( Scene.m_LevelOp.m_BOPText.c_str() );
+	F.save_to(ltx_filename,0);
 
     CInifile* pIni = xr_new<CInifile>(ltx_filename,false);
 
@@ -107,7 +107,7 @@ BOOL SceneBuilder::BuildLTX(){
 
     for(ObjectPairIt it=Scene.FirstClass(); it!=Scene.LastClass(); it++)
         if (!ParseLTX(pIni,(*it).second)){bResult = FALSE; break;}
-    
+
     delete pIni;
 
 	return bResult;

@@ -107,7 +107,7 @@ bool __fastcall TfrmNumericVector::Run(const char* title, Fvector* data, int dec
         int h=GetSystemMetrics(SM_CYSCREEN);
 	    Left = pt.x-(Width*0.5f);
     	Top = pt.y;
-        if (((Left+Width*0.5f)>w)||((Top+Height)>h)){ Left=w*0.5f-Width*0.5f; Top=h*0.5f; } 
+        if (((Left+Width*0.5f)>w)||((Top+Height)>h)){ Left=w*0.5f-Width*0.5f; Top=h*0.5f; }
     }else{
 	    Left = *X-(Width*0.5f);
     	Top = *Y;

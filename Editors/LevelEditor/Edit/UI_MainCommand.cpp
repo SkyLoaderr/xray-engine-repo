@@ -185,12 +185,12 @@ char* TUI::GetTitle()
 bool TUI::ApplyShortCut(WORD Key, TShiftState Shift)
 {
 	VERIFY(m_bReady);
-    
+
     if (ApplyGlobalShortCut(Key,Shift))	return true;
 	if (ApplyShortCutExt(Key,Shift)) 	return true;
 
 	bool bExec = false;
-    
+
     if (Key==VK_ESCAPE)   		{Command(COMMAND_CHANGE_ACTION, eaSelect);					bExec=true;}
     if (Shift.Contains(ssCtrl)){
     }else{

@@ -7,8 +7,8 @@
 #include <lwhost.h>
 #endif
 // refs
-class CFS_Base;
-class CStream;
+class IWriter;
+class IReader;
 
 class CBone{
 	string64		name;
@@ -21,7 +21,7 @@ class CBone{
 	Fvector			mot_offset;
 	Fvector			mot_rotate;
 	float			mot_length;
-    
+
     Fmatrix			last_transform;
     Fmatrix			last_i_transform;
 	int				parent_idx;
@@ -47,9 +47,9 @@ public:
 
 	void			Update			(const Fvector& T, const Fvector& R){mot_offset.set(T); mot_rotate.set(R); mot_length=rest_length;}
     void			Reset			(){mot_offset.set(rest_offset); mot_rotate.set(rest_rotate); mot_length=rest_length;}
-    
-	void			Save			(CFS_Base& F);
-	void			Load			(CStream& F);
+
+	void			Save			(IWriter& F);
+	void			Load			(IReader& F);
 
 #ifdef _LW_EXPORT
 	void			ParseBone		(LWItemID bone);

@@ -389,8 +389,8 @@ void CFileSystem::BackupFile(FSPath *initial, const AnsiString& fname)
 #endif
 
 bool CFileSystem::CreateNullFile(const char* fn){
-    CFS_Memory F;
-	F.SaveTo(fn,0);
+    CMemoryWriter F;
+	F.save_to(fn,0);
     return true;
 }
 #endif
@@ -583,13 +583,13 @@ LPCSTR CFileSystem::GetLockOwner(FSPath *initial, LPSTR fname)
 	return comp;
 }
 
-CStream* CFileSystem::Open(LPCSTR fn)
+IReader* CFileSystem::Open(LPCSTR fn)
 {
 	if (!Exist(fn)) return 0;
-	return xr_new<CFileStream>(fn);
+	return xr_new<CFileReader>(fn);
 }
 
-void CFileSystem::Close(CStream*& F)
+void CFileSystem::Close(IReader*& F)
 {
 	xr_delete(F);
 }

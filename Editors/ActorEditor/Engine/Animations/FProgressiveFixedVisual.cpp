@@ -22,31 +22,31 @@ FProgressiveFixedVisual::~FProgressiveFixedVisual()
 	_RELEASE	(pIndices);
 }
 
-void FProgressiveFixedVisual::Load(const char* N, CStream *data, u32 dwFlags)
+void FProgressiveFixedVisual::Load(const char* N, IReader *data, u32 dwFlags)
 {
 	// load base visual data
 	Fvisual::Load(N,data,dwFlags);
 
-	CStream* fs = data->OpenChunk(OGF_P_MAP);
+	IReader* fs = data->open_chunk(OGF_P_MAP);
 
 	// PMAP_HEADER
-	R_ASSERT(fs->FindChunk(0x1));
-	V_Current	= V_Minimal = fs->Rdword();
-	I_Current	= fs->Rdword();
+	R_ASSERT(fs->find_chunk(0x1));
+	V_Current	= V_Minimal = fs->r_u32();
+	I_Current	= fs->r_u32();
 	FIX_Current	= 0;
 
 	// PMAP_VSPLIT
 	R_ASSERT(vCount>V_Minimal);
 	vsplit = xr_alloc<Vsplit>(vCount-V_Minimal);
-	R_ASSERT(fs->ReadChunkSafe(0x2,vsplit,(vCount-V_Minimal)*sizeof(Vsplit)));
+	R_ASSERT(fs->r_chunk_safe(0x2,vsplit,(vCount-V_Minimal)*sizeof(Vsplit)));
 
 	// PMAP_FACES
-	R_ASSERT(fs->FindChunk(0x3));
-	u32 fCount = fs->Rdword();
+	R_ASSERT(fs->find_chunk(0x3));
+	u32 fCount = fs->r_u32();
 	faces_affected = xr_alloc<WORD>(fCount);
-	fs->Read(faces_affected,fCount*sizeof(WORD));
+	fs->r(faces_affected,fCount*sizeof(WORD));
 
-	fs->Close();
+	fs->close();
 }
 
 void FProgressiveFixedVisual::Release()

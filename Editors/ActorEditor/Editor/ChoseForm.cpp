@@ -67,7 +67,7 @@ int __fastcall TfrmChoseItem::SelectItem(ESelectMode mode, LPCSTR& dest, int sel
     case smGameObject: 	form->FillGameObject();	break;
     case smGameMaterial:form->FillGameMaterial();break;
     case smSceneObject:	form->FillSceneObject();break;
-    default: 
+    default:
     	THROW2("ChooseForm: Unknown Item Type");
     }
     // redraw
@@ -196,7 +196,7 @@ void __fastcall TfrmChoseItem::FillGameMaterial()
     form->Caption					= "Select Game Material";
 	GameMtlIt _F 					= GMLib.FirstMaterial();
 	GameMtlIt _E 					= GMLib.LastMaterial();
-	for ( ;_F!=_E;_F++)				AppendItem((*_F)->name); 
+	for ( ;_F!=_E;_F++)				AppendItem((*_F)->name);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmChoseItem::FillSceneObject()

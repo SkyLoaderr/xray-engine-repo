@@ -8,7 +8,7 @@ const int			c_hdr	= 12;
 const int			c_base	= c_hdr;
 const int			c_size	= 4;
 
-static D3DVERTEXELEMENT9 dwDecl[] = 
+static D3DVERTEXELEMENT9 dwDecl[] =
 {
 	{ 0, 0,  D3DDECLTYPE_FLOAT3,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_POSITION,	0 },	// pos
 	{ 0, 12, D3DDECLTYPE_SHORT4,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,	0 },	// uv
@@ -30,7 +30,7 @@ short QC (float v)
 }
 
 void CDetailManager::hw_Load	()
-{	
+{
 	// Analyze batch-size
 	hw_BatchSize	= (u32(HW.Caps.vertex.dwRegisters)-c_hdr)/c_size;
 	clamp			(hw_BatchSize,(u32)0,(u32)50);
@@ -204,7 +204,7 @@ void	CDetailManager::hw_Render_dump	(R_constant* x_array, u32 var_id, u32 lod_id
 				RCache.set_ca			(x_array,		base+3,		C,				C,				C,				1.f		);
 
 				dwBatch	++;
-				if (dwBatch == hw_BatchSize)	
+				if (dwBatch == hw_BatchSize)
 				{
 					// flush
 					u32 dwCNT_verts			= dwBatch * Object.number_vertices;

@@ -51,7 +51,7 @@ CInput::CInput						( BOOL bExclusive, int deviceForInit)
 		((bExclusive)?DISCL_EXCLUSIVE:DISCL_NONEXCLUSIVE) | DISCL_FOREGROUND | DISCL_NOWINKEY,
 		MOUSEBUFFERSIZE ));
 
-#ifdef ENGINE_BUILD 
+#ifdef ENGINE_BUILD
 	Device.seqAppActivate.Add		(this);
 	Device.seqAppDeactivate.Add		(this);
 	if (psDeviceFlags.is(mtInput))	Device.seqFrameMT.Add	(this, REG_PRIORITY_LOW);
@@ -61,7 +61,7 @@ CInput::CInput						( BOOL bExclusive, int deviceForInit)
 
 CInput::~CInput(void)
 {
-#ifdef ENGINE_BUILD 
+#ifdef ENGINE_BUILD
 	Device.seqFrameMT.Remove		(this);
 	Device.seqFrame.Remove			(this);
 	Device.seqAppDeactivate.Remove	(this);

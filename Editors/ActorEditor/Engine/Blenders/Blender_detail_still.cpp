@@ -22,13 +22,13 @@ CBlender_Detail_Still::~CBlender_Detail_Still()
 
 }
 
-void	CBlender_Detail_Still::Save		(CFS_Base& FS )
+void	CBlender_Detail_Still::Save		(IWriter& FS )
 {
 	CBlender::Save		(FS);
 	xrPWRITE_PROP		(FS,"Alpha-blend",	xrPID_BOOL,		oBlend);
 }
 
-void	CBlender_Detail_Still::Load		(CStream& FS, WORD version )
+void	CBlender_Detail_Still::Load		(IReader& FS, WORD version )
 {
 	CBlender::Load		(FS,version);
 	xrPREAD_PROP		(FS,xrPID_BOOL,		oBlend);

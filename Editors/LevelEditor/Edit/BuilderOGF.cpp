@@ -30,10 +30,10 @@ bool SceneBuilder::BuildSkyModel(){
 bool SceneBuilder::BuildHOMModel()
 {
 	// build HOM model
-	CFS_Memory F;
+	CMemoryWriter F;
 
     F.open_chunk(0);
-    F.Wdword(0);
+    F.w_u32(0);
     F.close_chunk();
 
     F.open_chunk(1);
@@ -48,7 +48,7 @@ bool SceneBuilder::BuildHOMModel()
     if (bValid){
 	    AnsiString hom_name = "level.hom";
 		m_LevelPath.Update(hom_name);
-	    F.SaveTo(hom_name.c_str(),0);
+	    F.save_to(hom_name.c_str(),0);
     }
 	return bValid;
 }

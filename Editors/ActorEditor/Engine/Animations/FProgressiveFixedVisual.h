@@ -36,7 +36,7 @@ protected:
 	void			pm_copy			(CVisual *pFrom);
 public:
 	virtual void Render		(float LOD);	// LOD - Level Of Detail  [0.0f - min, 1.0f - max], Used
-	virtual void Load		(const char* N, CStream *data,u32 dwFlags);
+	virtual void Load		(const char* N, IReader *data,u32 dwFlags);
 	virtual void Copy		(CVisual *pFrom);
 	virtual void Release	();
 

@@ -29,13 +29,13 @@ class ENGINE_API CRenderDevice{
 
     Shader*					m_CurrentShader;
 
-	void					_Create		(CStream* F);
+	void					_Create		(IReader* F);
 	void					_Destroy	(BOOL	bKeepTextures);
 public:
     Shader*					m_WireShader;
     Shader*					m_SelectionShader;
 
-    Fmaterial				m_DefaultMat;           
+    Fmaterial				m_DefaultMat;
 
     CModelPool				Models;
 public:
@@ -97,13 +97,13 @@ public:
 
 	void 					Initialize		(void);
 	void 					ShutDown		(void);
-	void 					Reset			(CStream* F, BOOL bKeepTextures);
+	void 					Reset			(IReader* F, BOOL bKeepTextures);
 
     IC float				GetRenderArea	(){return m_RenderArea;}
 	// Sprite rendering
-	IC float 				_x2real			(float x)	
+	IC float 				_x2real			(float x)
     { return (x+1)*m_RenderWidth_2;	}
-	IC float 				_y2real			(float y)	
+	IC float 				_y2real			(float y)
     { return (y+1)*m_RenderHeight_2;}
 
 	// draw

@@ -8,10 +8,10 @@ enum fsL_Chunks {
 	fsL_CFORM,			//*
 	fsL_PORTALS,		//*		- Portal polygons
 	fsL_LIGHT_CONTROL,	//*
-	fsL_LIGHT_DYNAMIC,	//*		
+	fsL_LIGHT_DYNAMIC,	//*
 	fsL_GLOWS,			//*		- All glows inside level
 	fsL_SECTORS,		//*		- All sectors on level
-	fsL_IBUFFERS,		//*		
+	fsL_IBUFFERS,		//*
 	fsL_VBUFFERS_DX9,	//*
     fsL_forcedword	= 0xFFFFFFFF
 };
@@ -36,7 +36,7 @@ struct hdrLEVEL
 	u32		XRLC_version;
 	char	name[124];
 };
-struct hdrCFORM 
+struct hdrCFORM
 {
 	u32		version;
 	u32		vertcount;
@@ -61,7 +61,7 @@ struct NodePosition
 	u16				y;
 	s16				z;
 };
-struct NodeCompressed		
+struct NodeCompressed
 {
 	WORD			plane;			// 2
 	NodePosition	p0;				// 2+2+2 = 6
@@ -69,7 +69,7 @@ struct NodeCompressed
 	BYTE			light;			// 1
 
 	u8				cover	[4];	// 4
-	u8				links	: 6;	// 1		
+	u8				links	: 6;	// 1
 	u8				flag0	: 1;	// .
 	u8				flag1	: 1;	// .
 };									// 2+6+6+1+4+1 = 20b + links

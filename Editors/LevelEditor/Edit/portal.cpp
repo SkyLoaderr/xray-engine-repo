@@ -98,7 +98,7 @@ void CPortal::Render(int priority, bool strictB2F){
         	Fvector dir;
             dir.random_dir(m_Normal,deg2rad(45.f));
 	        DU::DrawFaceNormal	(m_Center,dir,1,0x00FF0000);
-    	}    
+    	}
 */
    	}
 }
@@ -166,7 +166,7 @@ bool CPortal::Update(bool bLoadMode){
 		return false;
     }
     m_Normal.div(m);
-    
+
     // simplify portal
 	Simplify();
 
@@ -196,10 +196,10 @@ bool CPortal::Update(bool bLoadMode){
 */
         int a = A[m_SectorFront]+A[m_SectorBack];
         int b = B[m_SectorFront]+B[m_SectorBack];
-        if (a>b); 
+        if (a>b);
         else if (a<b) InvertOrientation();
         else ELog.Msg(mtError, "Check portal orientation: '%s'",Name);
-/*    
+/*
         map<CSector*,int> counters;
         for (DWORD i=0; i<m_Vertices.size()-1; i++){
             Fbox bb; bb.set(m_Vertices[i],m_Vertices[i]); bb.grow(0.01f);
@@ -228,7 +228,7 @@ bool CPortal::Update(bool bLoadMode){
         	InvertOrientation();
 //    	m_Normal
 //    	m_Center
-/*    
+/*
         float step=0.05f;
         float delta_step=0.05f;
 
@@ -263,7 +263,7 @@ bool CPortal::Update(bool bLoadMode){
         }else{
             if (SF!=m_SectorFront) InvertOrientation();
         }
-*/        
+*/
     }
 
     return true;
@@ -398,7 +398,7 @@ void CPortal::Simplify()
     	vertices.push_back(points[indices[ind_i]]);
     }
 //    R_ASSERT2(0,"Go to ALEXMX and say: ''Test portal simplifier. Please!''");
-/*    
+/*
     int* indices 	= Hull.GetIndices();
     int CurVert 	= indices[0];
 	vertices.push_back(points[CurVert]);
@@ -477,11 +477,11 @@ void CPortal::Simplify()
 }
 //------------------------------------------------------------------------------
 
-bool CPortal::Load(CStream& F){
+bool CPortal::Load(IReader& F){
 	DWORD version = 0;
 
     char buf[64];
-    R_ASSERT(F.ReadChunk(PORTAL_CHUNK_VERSION,&version));
+    R_ASSERT(F.r_chunk(PORTAL_CHUNK_VERSION,&version));
     if( version!=PORTAL_VERSION ){
         ELog.Msg( mtError, "CPortal: Unsupported version.");
         return false;
@@ -489,12 +489,12 @@ bool CPortal::Load(CStream& F){
 
 	CCustomObject::Load(F);
 
-	if (F.FindChunk	(PORTAL_CHUNK_SECTOR_FRONT)){
-        F.RstringZ	(buf);
+	if (F.find_chunk	(PORTAL_CHUNK_SECTOR_FRONT)){
+        F.r_stringZ	(buf);
         m_SectorFront=(CSector*)Scene.FindObjectByName(buf,OBJCLASS_SECTOR);
     }
-	if (F.FindChunk	(PORTAL_CHUNK_SECTOR_BACK)){
-        F.RstringZ	(buf);
+	if (F.find_chunk	(PORTAL_CHUNK_SECTOR_BACK)){
+        F.r_stringZ	(buf);
 		m_SectorBack=(CSector*)Scene.FindObjectByName(buf,OBJCLASS_SECTOR);
     }
 
@@ -503,9 +503,9 @@ bool CPortal::Load(CStream& F){
     	return false;
     }
 
-    R_ASSERT(F.FindChunk(PORTAL_CHUNK_VERTICES));
-	m_Vertices.resize(F.Rword());
-	F.Read			(m_Vertices.begin(), m_Vertices.size()*sizeof(Fvector));
+    R_ASSERT(F.find_chunk(PORTAL_CHUNK_VERTICES));
+	m_Vertices.resize(F.r_u16());
+	F.r				(m_Vertices.begin(), m_Vertices.size()*sizeof(Fvector));
 
     if (m_Vertices.size()<3){
         ELog.Msg( mtError, "Portal: '%s' can't create.\nInvalid portal. (m_Vertices.size()<3)", Name);
@@ -517,28 +517,28 @@ bool CPortal::Load(CStream& F){
 }
 //------------------------------------------------------------------------------
 
-void CPortal::Save(CFS_Base& F){
+void CPortal::Save(IWriter& F){
 	CCustomObject::Save(F);
 
 	F.open_chunk	(PORTAL_CHUNK_VERSION);
-	F.Wword			(PORTAL_VERSION);
+	F.w_u16			(PORTAL_VERSION);
 	F.close_chunk	();
 
     if (m_SectorFront){
 		F.open_chunk	(PORTAL_CHUNK_SECTOR_FRONT);
-        F.WstringZ		(m_SectorFront->Name);
+        F.w_stringZ		(m_SectorFront->Name);
 		F.close_chunk	();
     }
 
 	if (m_SectorBack){
 		F.open_chunk	(PORTAL_CHUNK_SECTOR_BACK);
-        F.WstringZ		(m_SectorBack->Name);
+        F.w_stringZ		(m_SectorBack->Name);
 		F.close_chunk	();
     }
 
 	F.open_chunk	(PORTAL_CHUNK_VERTICES);
-    F.Wword			(m_Vertices.size());
-    F.write			(m_Vertices.begin(),m_Vertices.size()*sizeof(Fvector));
+    F.w_u16			(m_Vertices.size());
+    F.w				(m_Vertices.begin(),m_Vertices.size()*sizeof(Fvector));
 	F.close_chunk	();
 }
 //------------------------------------------------------------------------------

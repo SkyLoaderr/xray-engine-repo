@@ -53,8 +53,8 @@ class SceneBuilder{
 
     void    BuildGlow       (CGlow* e);
     void    BuildPortal   	(b_portal* b, CPortal* e);
-    BOOL    BuildMesh       (const Fmatrix& parent, CEditableObject* object, CEditableMesh* mesh, int sector_num, 
-    						b_vertex* verts, int& vert_cnt, int& vert_it, 
+    BOOL    BuildMesh       (const Fmatrix& parent, CEditableObject* object, CEditableMesh* mesh, int sector_num,
+    						b_vertex* verts, int& vert_cnt, int& vert_it,
                             b_face* faces, int& face_cnt, int& face_it);
     BOOL    BuildObject     (CSceneObject* obj);
     BOOL    BuildMUObject   (CSceneObject* obj);
@@ -63,7 +63,7 @@ class SceneBuilder{
 
     int		BuildLightControl(LPCSTR name);
     void 	BuildHemiLights	();
-	void	AppendLight		();    
+	void	AppendLight		();
     BOOL 	BuildSun		(b_light* b, const Flags32& usage, svector<WORD,16>* sectors);
     BOOL 	BuildPointLight	(b_light* b, const Flags32& usage, svector<WORD,16>* sectors, FvectorVec* soft_points);
     BOOL    BuildLight		(CLight* e);
@@ -105,7 +105,7 @@ protected:
 
     BOOL	ParseLTX				(CInifile* pIni, ObjectList& lst, LPCSTR prefix=0);
 	BOOL 	BuildLTX                ();
-    BOOL	ParseGAME				(CFS_Base& game, CFS_Base& spawn, ObjectList& lst, LPCSTR prefix=0);
+    BOOL	ParseGAME				(IWriter& game, IWriter& spawn, ObjectList& lst, LPCSTR prefix=0);
     BOOL 	BuildGame				();
 
 	bool 	WriteTextures           ();

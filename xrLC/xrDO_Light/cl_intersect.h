@@ -2,29 +2,29 @@
 #ifndef intersectH
 #define intersectH
 
-namespace CDB 
+namespace CDB
 {
 	//----------------------------------------------------------------------
 	// Name  : intersectRaySphere()
 	// Input : rO - origin of ray in world space
 	//         rV - vector describing direction of ray in world space
-	//         sO - Origin of sphere 
+	//         sO - Origin of sphere
 	//         sR - radius of sphere
 	// Notes : Normalized directional vectors expected
-	// -----------------------------------------------------------------------  
-	IC bool IntersectRaySphere(const Fvector& rO, const Fvector& rV, const Fvector& sO, float sR) 
+	// -----------------------------------------------------------------------
+	IC bool IntersectRaySphere(const Fvector& rO, const Fvector& rV, const Fvector& sO, float sR)
 	{
 		Fvector Q;
 		Q.sub(sO,rO);
-		
+
 		float c = Q.magnitude();
 		float v = Q.dotproduct(rV);
 		float d = sR*sR - (c*c - v*v);
-		
+
 		// If there was no intersection, return -1
 		return (d > 0.0);
 	}
-	
+
 	//-- Ray-Triangle : 2nd level of indirection --------------------------------
 	IC bool TestRayTri(const Fvector& C, const Fvector& D, Fvector** p, float& u, float& v, float& range, bool bCull)
 	{
@@ -101,13 +101,13 @@ namespace CDB
 		}
 		return true;
 	}
-	
+
 	//-- Ray-Triangle(always return range) : 1st level of indirection --------------------------------
 	IC bool TestRayTri2(const Fvector& C, const Fvector& D, Fvector* p, float& range)
 	{
 		Fvector edge1, edge2, tvec, pvec, qvec;
 		float det,inv_det,u,v;
-		
+
 		// find vectors for two edges sharing vert0
 		edge1.sub(p[1], p[0]);
 		edge2.sub(p[2], p[0]);
@@ -115,7 +115,7 @@ namespace CDB
 		pvec.crossproduct(D, edge2);
 		// if determinant is near zero, ray lies in plane of triangle
 		det = edge1.dotproduct(pvec);
-		
+
 		if (_abs(det) < EPS_S)		{ range=-1; return false; }
 		inv_det = 1.0f / det;
 		tvec.sub(C, p[0]);					// calculate distance from vert0 to ray origin
@@ -127,7 +127,7 @@ namespace CDB
 		if (v < 0.0f || u + v > 1.0f) return false;
 		return true;
 	}
-	
+
 	//---------------------------------------------------------------------------
 	// macros for fast arithmetic
 	//---------------------------------------------------------------------------
@@ -183,18 +183,18 @@ namespace CDB
     } \
 	}
 	//---------------------------------------------------------------------------
-	
+
 	IC bool TestBBoxTri(const Fmatrix33& A, const Fvector& T, const Fvector& extA, Fvector** p, BOOL bCulling){
 		// construct triangle normal, difference of center and vertex (18 ops)
 		Fvector D, E[2], N;
 		E[0].sub(*p[1],*p[0]);
 		E[1].sub(*p[2],*p[0]);
 		N.crossproduct(E[0],E[1]);
-		
+
 		if (bCulling&&(A.k.dotproduct(N)>=0)) return false;
-		
+
 		D.sub(*p[0],T);
-		
+
 		// axis C+t*N
 		float A0dN = A.i.dotproduct(N);
 		float A1dN = A.j.dotproduct(N);
@@ -202,85 +202,85 @@ namespace CDB
 		float R = _abs(extA.x*A0dN)+_abs(extA.y*A1dN)+_abs(extA.z*A2dN);
 		float NdD = N.dotproduct(D);
 		TESTV0(NdD,R); //AXIS_N
-		
+
 		// axis C+t*A0
 		float A0dD = A.i.dotproduct(D);
 		float A0dE0 = A.i.dotproduct(E[0]);
 		float A0dE1 = A.i.dotproduct(E[1]);
 		TESTV1(A0dD,A0dE0,A0dE1,extA.x); //AXIS_A0
-		
+
 		// axis C+t*A1
 		float A1dD	= A.j.dotproduct(D);
 		float A1dE0 = A.j.dotproduct(E[0]);
 		float A1dE1 = A.j.dotproduct(E[1]);
 		TESTV1(A1dD,A1dE0,A1dE1,extA.y); //AXIS_A1
-		
+
 		// axis C+t*A2
 		float A2dD	= A.k.dotproduct(D);
 		float A2dE0 = A.k.dotproduct(E[0]);
 		float A2dE1 = A.k.dotproduct(E[1]);
 		TESTV1(A2dD,A2dE0,A2dE1,extA.z); //AXIS_A2
-		
+
 		// axis C+t*A0xE0
 		Fvector A0xE0;
 		A0xE0.crossproduct(A.i,E[0]);
 		float A0xE0dD = A0xE0.dotproduct(D);
 		R = _abs(extA.y*A2dE0)+_abs(extA.z*A1dE0);
 		TESTV2(A0xE0dD,A0dN,R); //AXIS_A0xE0
-		
+
 		// axis C+t*A0xE1
 		Fvector A0xE1;
 		A0xE1.crossproduct(A.i,E[1]);
 		float A0xE1dD = A0xE1.dotproduct(D);
 		R = _abs(extA.y*A2dE1)+_abs(extA.z*A1dE1);
 		TESTV2(A0xE1dD,-A0dN,R); //AXIS_A0xE1
-		
+
 		// axis C+t*A0xE2
 		float A1dE2 = A1dE1-A1dE0;
 		float A2dE2 = A2dE1-A2dE0;
 		float A0xE2dD = A0xE1dD-A0xE0dD;
 		R = _abs(extA.y*A2dE2)+_abs(extA.z*A1dE2);
 		TESTV2(A0xE2dD,-A0dN,R); //AXIS_A0xE2
-		
+
 		// axis C+t*A1xE0
 		Fvector A1xE0;
 		A1xE0.crossproduct(A.j,E[0]);
 		float A1xE0dD = A1xE0.dotproduct(D);
 		R = _abs(extA.x*A2dE0)+_abs(extA.z*A0dE0);
 		TESTV2(A1xE0dD,A1dN,R); //AXIS_A1xE0
-		
+
 		// axis C+t*A1xE1
 		Fvector A1xE1;
 		A1xE1.crossproduct(A.j,E[1]);
 		float A1xE1dD = A1xE1.dotproduct(D);
 		R = _abs(extA.x*A2dE1)+_abs(extA.z*A0dE1);
 		TESTV2(A1xE1dD,-A1dN,R); //AXIS_A1xE1
-		
+
 		// axis C+t*A1xE2
 		float A0dE2 = A0dE1-A0dE0;
 		float A1xE2dD = A1xE1dD-A1xE0dD;
 		R = _abs(extA.x*A2dE2)+_abs(extA.z*A0dE2);
 		TESTV2(A1xE2dD,-A1dN,R); //AXIS_A1xE2
-		
+
 		// axis C+t*A2xE0
 		Fvector A2xE0;
 		A2xE0.crossproduct(A.k,E[0]);
 		float A2xE0dD = A2xE0.dotproduct(D);
 		R = _abs(extA.x*A1dE0)+_abs(extA.y*A0dE0);
 		TESTV2(A2xE0dD,A2dN,R); //AXIS_A2xE0
-		
+
 		// axis C+t*A2xE1
 		Fvector A2xE1;
 		A2xE1.crossproduct(A.k,E[1]);
 		float A2xE1dD = A2xE1.dotproduct(D);
 		R = _abs(extA.x*A1dE1)+_abs(extA.y*A0dE1);
 		TESTV2(A2xE1dD,-A2dN,R); //AXIS_A2xE1
-		
+
 		// axis C+t*A2xE2
 		float A2xE2dD = A2xE1dD-A2xE0dD;
 		R = _abs(extA.x*A1dE2)+_abs(extA.y*A0dE2);
 		TESTV2(A2xE2dD,-A2dN,R); //AXIS_A2xE2
-		
+
 		// intersection occurs
 		return true;
 	}
@@ -290,11 +290,11 @@ namespace CDB
 		E[0].sub(p[1],p[0]);
 		E[1].sub(p[2],p[0]);
 		N.crossproduct(E[0],E[1]);
-		
+
 		if (bCulling&&(A.k.dotproduct(N)>=0)) return false;
-		
+
 		D.sub(p[0],T);
-		
+
 		// axis C+t*N
 		float A0dN = A.i.dotproduct(N);
 		float A1dN = A.j.dotproduct(N);
@@ -302,96 +302,96 @@ namespace CDB
 		float R = _abs(extA.x*A0dN)+_abs(extA.y*A1dN)+_abs(extA.z*A2dN);
 		float NdD = N.dotproduct(D);
 		TESTV0(NdD,R); //AXIS_N
-		
+
 		// axis C+t*A0
 		float A0dD = A.i.dotproduct(D);
 		float A0dE0 = A.i.dotproduct(E[0]);
 		float A0dE1 = A.i.dotproduct(E[1]);
 		TESTV1(A0dD,A0dE0,A0dE1,extA.x); //AXIS_A0
-		
+
 		// axis C+t*A1
 		float A1dD	= A.j.dotproduct(D);
 		float A1dE0 = A.j.dotproduct(E[0]);
 		float A1dE1 = A.j.dotproduct(E[1]);
 		TESTV1(A1dD,A1dE0,A1dE1,extA.y); //AXIS_A1
-		
+
 		// axis C+t*A2
 		float A2dD	= A.k.dotproduct(D);
 		float A2dE0 = A.k.dotproduct(E[0]);
 		float A2dE1 = A.k.dotproduct(E[1]);
 		TESTV1(A2dD,A2dE0,A2dE1,extA.z); //AXIS_A2
-		
+
 		// axis C+t*A0xE0
 		Fvector A0xE0;
 		A0xE0.crossproduct(A.i,E[0]);
 		float A0xE0dD = A0xE0.dotproduct(D);
 		R = _abs(extA.y*A2dE0)+_abs(extA.z*A1dE0);
 		TESTV2(A0xE0dD,A0dN,R); //AXIS_A0xE0
-		
+
 		// axis C+t*A0xE1
 		Fvector A0xE1;
 		A0xE1.crossproduct(A.i,E[1]);
 		float A0xE1dD = A0xE1.dotproduct(D);
 		R = _abs(extA.y*A2dE1)+_abs(extA.z*A1dE1);
 		TESTV2(A0xE1dD,-A0dN,R); //AXIS_A0xE1
-		
+
 		// axis C+t*A0xE2
 		float A1dE2 = A1dE1-A1dE0;
 		float A2dE2 = A2dE1-A2dE0;
 		float A0xE2dD = A0xE1dD-A0xE0dD;
 		R = _abs(extA.y*A2dE2)+_abs(extA.z*A1dE2);
 		TESTV2(A0xE2dD,-A0dN,R); //AXIS_A0xE2
-		
+
 		// axis C+t*A1xE0
 		Fvector A1xE0;
 		A1xE0.crossproduct(A.j,E[0]);
 		float A1xE0dD = A1xE0.dotproduct(D);
 		R = _abs(extA.x*A2dE0)+_abs(extA.z*A0dE0);
 		TESTV2(A1xE0dD,A1dN,R); //AXIS_A1xE0
-		
+
 		// axis C+t*A1xE1
 		Fvector A1xE1;
 		A1xE1.crossproduct(A.j,E[1]);
 		float A1xE1dD = A1xE1.dotproduct(D);
 		R = _abs(extA.x*A2dE1)+_abs(extA.z*A0dE1);
 		TESTV2(A1xE1dD,-A1dN,R); //AXIS_A1xE1
-		
+
 		// axis C+t*A1xE2
 		float A0dE2 = A0dE1-A0dE0;
 		float A1xE2dD = A1xE1dD-A1xE0dD;
 		R = _abs(extA.x*A2dE2)+_abs(extA.z*A0dE2);
 		TESTV2(A1xE2dD,-A1dN,R); //AXIS_A1xE2
-		
+
 		// axis C+t*A2xE0
 		Fvector A2xE0;
 		A2xE0.crossproduct(A.k,E[0]);
 		float A2xE0dD = A2xE0.dotproduct(D);
 		R = _abs(extA.x*A1dE0)+_abs(extA.y*A0dE0);
 		TESTV2(A2xE0dD,A2dN,R); //AXIS_A2xE0
-		
+
 		// axis C+t*A2xE1
 		Fvector A2xE1;
 		A2xE1.crossproduct(A.k,E[1]);
 		float A2xE1dD = A2xE1.dotproduct(D);
 		R = _abs(extA.x*A1dE1)+_abs(extA.y*A0dE1);
 		TESTV2(A2xE1dD,-A2dN,R); //AXIS_A2xE1
-		
+
 		// axis C+t*A2xE2
 		float A2xE2dD = A2xE1dD-A2xE0dD;
 		R = _abs(extA.x*A1dE2)+_abs(extA.y*A0dE2);
 		TESTV2(A2xE2dD,-A2dN,R); //AXIS_A2xE2
-		
+
 		// intersection occurs
 		return true;
 	}
 	//---------------------------------------------------------------------------}
-	
+
 	//----------------------------------------------------------------------------
 	IC float MgcSqrDistance (const Fvector& rkPoint, const Fvector& orig, const Fvector& e0,const Fvector& e1){
-		
+
 		Fvector kDiff;
 		kDiff.sub(orig,rkPoint);
-		
+
 		float fA00 = e0.square_magnitude();
 		float fA01 = e0.dotproduct(e1);
 		float fA11 = e1.square_magnitude();
@@ -402,7 +402,7 @@ namespace CDB
 		float fS = fA01*fB1-fA11*fB0;
 		float fT = fA01*fB0-fA00*fB1;
 		float fSqrDist;
-		
+
 		if ( fS + fT <= fDet ){
 			if ( fS < 0.0f ){
 				if ( fT < 0.0f ){  // region 4
@@ -463,7 +463,7 @@ namespace CDB
 			}
 		}else{
 			float fTmp0, fTmp1, fNumer, fDenom;
-			
+
 			if ( fS < 0.0f ){  // region 2
 				fTmp0 = fA01 + fB0;
 				fTmp1 = fA11 + fB1;
@@ -543,42 +543,42 @@ namespace CDB
 				}
 			}
 		}
-		
+
 		return _abs(fSqrDist);
 }
 
-IC bool TestSphereTri(const Fvector& sphereOrigin, float sphereRadius, 
+IC bool TestSphereTri(const Fvector& sphereOrigin, float sphereRadius,
 					  const Fvector& orig, const Fvector& e0,const Fvector& e1)
 {
-	
+
     float fRSqr = sphereRadius*sphereRadius;
     Fvector kV0mC;
 	kV0mC.sub(orig, sphereOrigin);
-	
+
     // count the number of triangle vertices inside the sphere
     int iInside = 0;
-	
+
     // test if v0 is inside the sphere
     if ( kV0mC.square_magnitude() <= fRSqr )
         iInside++;
-	
+
     // test if v1 is inside the sphere
     Fvector kDiff;
 	kDiff.add(kV0mC, e0);
     if ( kDiff.square_magnitude() <= fRSqr )
         iInside++;
-	
+
     // test if v2 is inside the sphere
     kDiff.add(kV0mC, e1);
     if ( kDiff.square_magnitude() <= fRSqr )
         iInside++;
-	
+
     // triangle does not traversely intersect sphere
 	if ( iInside == 3 ) return false;
-	
+
 	// triangle transversely intersects sphere
     if ( iInside > 0 ) return true;
-	
+
     // All vertices are outside the sphere, but the triangle might still
     // intersect the sphere.  This is the case when the distance from the
     // sphere center to the triangle is smaller than the radius.

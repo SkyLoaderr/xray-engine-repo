@@ -45,7 +45,7 @@ enum{
 
 	COMMAND_UNDO,
 	COMMAND_REDO,
-    
+
     COMMAND_MAIN_LAST
 };
 

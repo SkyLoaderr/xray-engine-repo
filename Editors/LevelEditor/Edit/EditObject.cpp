@@ -2,7 +2,7 @@
 // file: EditObject.cpp
 //----------------------------------------------------
 
-#include "stdafx.h"       
+#include "stdafx.h"
 #pragma hdrstop
 
 #include "EditObject.h"
@@ -144,7 +144,7 @@ void CEditableObject::RemoveMesh(CEditableMesh* mesh){
     xr_delete(mesh);
 }
 
-void CEditableObject::TranslateToWorld(const Fmatrix& parent) 
+void CEditableObject::TranslateToWorld(const Fmatrix& parent)
 {
 	EditMeshIt m = m_Meshes.begin();
 	for(;m!=m_Meshes.end();m++) (*m)->Transform( parent );

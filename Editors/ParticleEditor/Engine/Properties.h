@@ -61,7 +61,7 @@ struct	xrP_TOKEN
 
 	u32				IDselected;
 	u32				Count;
-	
+
 	//--- elements:		(ID,string64)
 
 	xrP_TOKEN()	: IDselected(0), Count(0)		{}
@@ -86,23 +86,23 @@ struct	xrP_Template
 class ENGINE_API	CPropertyBase
 {
 protected:
-	
+
 public:
 	virtual 	LPCSTR		getName			()								= 0;
 	virtual		LPCSTR		getComment		()								= 0;
-	
-	virtual		void		Save			(CFS_Base&  FS)					= 0;
-	virtual		void		Load			(CStream&	FS, WORD version)	= 0;
+
+	virtual		void		Save			(IWriter&  FS)					= 0;
+	virtual		void		Load			(IReader&	FS, WORD version)	= 0;
 };
 
 // Writers
-IC void		xrPWRITE		(CFS_Base& FS, u32 ID, LPCSTR name, LPCVOID data, u32 size )
+IC void		xrPWRITE		(IWriter& FS, u32 ID, LPCSTR name, LPCVOID data, u32 size )
 {
-	FS.Wdword	(ID);
-	FS.WstringZ	(name);
-	if (data && size)	FS.write	(data,size);
+	FS.w_u32			(ID);
+	FS.w_stringZ		(name);
+	if (data && size)	FS.w(data,size);
 }
-IC void		xrPWRITE_MARKER	(CFS_Base& FS, LPCSTR name)
+IC void		xrPWRITE_MARKER	(IWriter& FS, LPCSTR name)
 {
 	xrPWRITE	(FS,xrPID_MARKER,name,0,0);
 }
@@ -113,35 +113,35 @@ IC void		xrPWRITE_MARKER	(CFS_Base& FS, LPCSTR name)
 }
 
 // Readers
-IC u32	xrPREAD			(CStream& FS)
+IC u32	xrPREAD			(IReader& FS)
 {
-	u32 T		= FS.Rdword();
-	FS.SkipStringZ	();
+	u32 T		= FS.r_u32();
+	FS.skip_stringZ	();
 	return		T;
 }
-IC void		xrPREAD_MARKER	(CStream& FS)
+IC void		xrPREAD_MARKER	(IReader& FS)
 {
 	R_ASSERT(xrPID_MARKER==xrPREAD(FS));
 }
 
 #define xrPREAD_PROP(FS,ID,data) \
 { \
-	R_ASSERT(ID==xrPREAD(FS)); FS.Read(&data,sizeof(data)); \
+	R_ASSERT(ID==xrPREAD(FS)); FS.r(&data,sizeof(data)); \
 	switch (ID) \
 	{ \
-	case xrPID_TOKEN:	FS.Advance(((xrP_TOKEN*)&data)->Count * sizeof(xrP_TOKEN::Item));	break; \
-	case xrPID_CLSID:	FS.Advance(((xrP_CLSID*)&data)->Count * sizeof(CLASS_ID));			break; \
+	case xrPID_TOKEN:	FS.advance(((xrP_TOKEN*)&data)->Count * sizeof(xrP_TOKEN::Item));	break; \
+	case xrPID_CLSID:	FS.advance(((xrP_CLSID*)&data)->Count * sizeof(CLASS_ID));			break; \
 	}; \
 }
 
 //template <class T>
-//IC void		xrPWRITE_PROP	(CFS_Base& FS, LPCSTR name, u32 ID, T& data)
+//IC void		xrPWRITE_PROP	(IWriter& FS, LPCSTR name, u32 ID, T& data)
 //{
 //	xrPWRITE	(FS,ID,name,&data,sizeof(data));
 //}
 
 //template <class T>
-//IC void		xrPREAD_PROP	(CStream& FS, u32 ID, T& data)
+//IC void		xrPREAD_PROP	(IReader& FS, u32 ID, T& data)
 //{
 //	R_ASSERT(ID==xrPREAD(FS)); FS.Read(&data,sizeof(data));
 //	switch (ID)

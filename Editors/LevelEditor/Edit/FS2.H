@@ -3,16 +3,16 @@
 
 #pragma once
 
-class ENGINE_API CCustomStream {
+class ENGINE_API IBasicStream {
 private:
 	std::stack<u32>	chunk_pos;
 	std::stack<u16>	subchunk_pos;
 	void		revbytes		( void *bp, int elsize, int elcount )
 	{
 		register unsigned char *p, *q;
-		
+
 		p = ( unsigned char * ) bp;
-		
+
 		if ( elsize == 2 ) {
 			q = p + 1;
 			while ( elcount-- ) {
@@ -24,7 +24,7 @@ private:
 			}
 			return;
 		}
-		
+
 		while ( elcount-- ) {
 			q = p + elsize - 1;
 			while ( p < q ) {
@@ -38,7 +38,7 @@ private:
 		}
 	}
 public:
-	virtual ~CCustomStream	()
+	virtual ~IBasicStream	()
 	{
 		R_ASSERT(subchunk_pos.empty());
 		while (!chunk_pos.empty())
@@ -107,7 +107,7 @@ public:
 	}
 };
 
-class ENGINE_API CMemoryStream : public CCustomStream
+class ENGINE_API CMemoryStream : public IBasicStream
 {
 	u8*		data;
 	u32		position;
@@ -125,9 +125,9 @@ public:
 	// kernel
 	virtual void	write	(const void* ptr, u32 count);
 
-	virtual void	seek	(u32 pos)	
+	virtual void	seek	(u32 pos)
 	{	position = pos;		}
-	virtual u32	tell	() 
+	virtual u32	tell	()
 	{	return position;	}
 
 	// specific
@@ -156,7 +156,7 @@ class ENGINE_API CLWMemoryStream: public CMemoryStream{
 	IC void make_ord( int nbloks, int index, unsigned char *ord )
 	{
 		int i, d;
-		
+
 		for ( i = 8, d = 16; i < 128; i *= 2 ){
 			if ( i >= nbloks ) break;
 			d /= 2;
@@ -164,7 +164,7 @@ class ENGINE_API CLWMemoryStream: public CMemoryStream{
 		ord[ 0 ] = 128 + index * d;
 		ord[ 1 ] = 0;
 	}
-	
+
 public:
 	IC void		begin_save		()				{ open_chunk(ID_FORM); w_u32(ID_LWO2);}
 	IC void		end_save		(LPCSTR name)	{ close_chunk(); SaveTo(name,0);}
@@ -179,18 +179,18 @@ public:
 		close_chunk();
 	}
 	IC void		w_vx   			(int idx)
-	{	
-    	if (idx>=0xFF00){ 
-        	idx|=0xff000000; 
+	{
+    	if (idx>=0xFF00){
+        	idx|=0xff000000;
             w_u32(idx);
-        }else 
+        }else
         	w_u16(idx);
     }
 
 	IC void		w_face3			(int i0, int i1, int i2)
 	{	w_u16(3); w_vx(i0); w_vx(i1); w_vx(i2); }
 
-	IC void		begin_vmap		(BOOL polymap, u32 type, int dim, LPCSTR name){	
+	IC void		begin_vmap		(BOOL polymap, u32 type, int dim, LPCSTR name){
 		open_chunk(polymap?ID_VMAD:ID_VMAP);
 		w_u32	(type);
 		w_u16	(dim);
@@ -207,7 +207,7 @@ public:
 	{	w_vx(v_index); w_vx(f_index); w_float(uv[0]); if (dim==2) w_float(1.f-uv[1]); }
 
 	IC void Wsurface(LPCSTR name, BOOL b2Sided, u16 image, LPCSTR vmap, LPCSTR sh_eng, LPCSTR sh_comp){
-		// surf screen 
+		// surf screen
 		char ord[2];
 		open_chunk(ID_SURF);
 			w_stringZ(name);
@@ -215,8 +215,8 @@ public:
 			open_subchunk(ID_COLR);
  				w_float(1.f);w_float(1.f);w_float(1.f); w_u16(0);
 			close_subchunk();
-			open_subchunk(ID_SIDE); 
-				w_u16(b2Sided?3:1); 
+			open_subchunk(ID_SIDE);
+				w_u16(b2Sided?3:1);
 			close_subchunk();
 			open_subchunk(ID_BLOK);
 				open_subchunk(ID_IMAP);

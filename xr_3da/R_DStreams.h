@@ -8,7 +8,7 @@ enum
 	LOCKFLAGS_APPEND	= D3DLOCK_NOOVERWRITE
 };
 
-class ENGINE_API _VertexStream  
+class ENGINE_API _VertexStream
 {
 private :
 	IDirect3DVertexBuffer9*		pVB;
@@ -17,7 +17,7 @@ private :
 	u32							mDiscardID;		// ID of discard - usually for caching
 private:
 	void						_clear			()
-	{ 
+	{
 		pVB			= NULL;
 		mSize		= 0;
 		mPosition	= 0;
@@ -75,7 +75,7 @@ public:
 	~_VertexStream()		{ Destroy();			};
 };
 
-class ENGINE_API _IndexStream  
+class ENGINE_API _IndexStream
 {
 private :
 	IDirect3DIndexBuffer9*		pIB;
@@ -84,7 +84,7 @@ private :
 	u32							mDiscardID;
 private:
 	void						_clear	()
-	{ 
+	{
 		pIB			= NULL;
 		mSize		= 0;
 		mPosition	= 0;

@@ -26,20 +26,20 @@ bool CEditableObject::Load(const char* fname){
 #endif
 
 bool CEditableObject::LoadObject(const char* fname){
-    CStream* F;
-    F = xr_new<CFileStream>(fname);
+    IReader* F;
+    F = xr_new<CFileReader>(fname);
     char MARK[8];
-    F->Read(MARK,8);
+    F->r(MARK,8);
     if (strcmp(MARK,"OBJECT")==0){
         xr_delete(F);
-        F = xr_new<CCompressedStream>(fname,"OBJECT");
+        F = xr_new<CCompressedReader>(fname,"OBJECT");
     }else{
-    	F->Seek(0);
+    	F->seek(0);
     }
-    CStream* OBJ = F->OpenChunk(EOBJ_CHUNK_OBJECT_BODY);
+    IReader* OBJ = F->open_chunk(EOBJ_CHUNK_OBJECT_BODY);
     R_ASSERT(OBJ);
     bool bRes = Load(*OBJ);
-    OBJ->Close();
+    OBJ->close();
 	xr_delete(F);
     if (bRes) m_LoadName = fname;
     return bRes;
@@ -63,7 +63,7 @@ void CEditableObject::SaveObject(const char* fname)
         }
     }
 
-    CFS_Memory F;
+    CMemoryWriter F;
     F.open_chunk(EOBJ_CHUNK_OBJECT_BODY);
     Save(F);
     F.close_chunk();
@@ -74,97 +74,97 @@ void CEditableObject::SaveObject(const char* fname)
 
     Engine.FS.VerifyPath(save_nm);
 
-    F.SaveTo(save_nm,0);
+    F.save_to(save_nm,0);
 	m_LoadName = save_nm;
 }
 
 
-bool CEditableObject::Load(CStream& F){
+bool CEditableObject::Load(IReader& F){
     bool bRes = true;
 	do{
         DWORD version = 0;
         char buf[255];
         char sh_name[255];
-        R_ASSERT(F.ReadChunk(EOBJ_CHUNK_VERSION,&version));
+        R_ASSERT(F.r_chunk(EOBJ_CHUNK_VERSION,&version));
         if (version!=EOBJ_CURRENT_VERSION){
             ELog.DlgMsg( mtError, "CEditableObject: unsupported file version. Object can't load.");
             bRes = false;
             break;
         }
 
-        R_ASSERT(F.ReadChunk(EOBJ_CHUNK_FLAGS, &m_Flags.flags));
+        R_ASSERT(F.r_chunk(EOBJ_CHUNK_FLAGS, &m_Flags.flags));
 
-        if (F.FindChunk	(EOBJ_CHUNK_CLASSSCRIPT)){
-            F.RstringZ	(buf); m_ClassScript=buf;
+        if (F.find_chunk	(EOBJ_CHUNK_CLASSSCRIPT)){
+            F.r_stringZ	(buf); m_ClassScript=buf;
         }
 
         // file version
-        R_ASSERT(F.ReadChunk(EOBJ_CHUNK_LIB_VERSION, &m_ObjVer));
+        R_ASSERT(F.r_chunk(EOBJ_CHUNK_LIB_VERSION, &m_ObjVer));
         // surfaces
-        if (F.FindChunk(EOBJ_CHUNK_SURFACES3)){
-            DWORD cnt = F.Rdword();
+        if (F.find_chunk(EOBJ_CHUNK_SURFACES3)){
+            DWORD cnt = F.r_u32();
             m_Surfaces.resize(cnt);
             for (SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
                 *s_it 		= xr_new<CSurface>();
-                F.RstringZ	(buf);	(*s_it)->SetName		(buf);
-                F.RstringZ	(buf);	(*s_it)->SetShader		(buf);
-                F.RstringZ	(buf);	(*s_it)->SetShaderXRLC	(buf);
-                F.RstringZ	(buf);	(*s_it)->SetGameMtl		(buf);
-                F.RstringZ	(buf); 	(*s_it)->SetTexture		(buf);
-                F.RstringZ	(buf); 	(*s_it)->SetVMap		(buf);
-                (*s_it)->m_Flags.set(F.Rdword());
-                (*s_it)->SetFVF		(F.Rdword());
-                cnt 				= F.Rdword();
+                F.r_stringZ	(buf);	(*s_it)->SetName		(buf);
+                F.r_stringZ	(buf);	(*s_it)->SetShader		(buf);
+                F.r_stringZ	(buf);	(*s_it)->SetShaderXRLC	(buf);
+                F.r_stringZ	(buf);	(*s_it)->SetGameMtl		(buf);
+                F.r_stringZ	(buf); 	(*s_it)->SetTexture		(buf);
+                F.r_stringZ	(buf); 	(*s_it)->SetVMap		(buf);
+                (*s_it)->m_Flags.set(F.r_u32());
+                (*s_it)->SetFVF		(F.r_u32());
+                cnt 				= F.r_u32();
                 if (cnt>1) ELog.DlgMsg(mtError,"Object surface '%s' has more than one TC's.",buf);
                 R_ASSERT(1<=cnt);
             }
-        }else if (F.FindChunk(EOBJ_CHUNK_SURFACES2)){
-            DWORD cnt = F.Rdword();
+        }else if (F.find_chunk(EOBJ_CHUNK_SURFACES2)){
+            DWORD cnt = F.r_u32();
             m_Surfaces.resize(cnt);
             for (SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
                 *s_it 		= xr_new<CSurface>();
-                F.RstringZ	(buf);	(*s_it)->SetName		(buf);
-                F.RstringZ	(buf);	(*s_it)->SetShader		(buf);
-                F.RstringZ	(buf);	(*s_it)->SetShaderXRLC	(buf);
-                F.RstringZ	(buf); 	(*s_it)->SetTexture		(buf);
-                F.RstringZ	(buf); 	(*s_it)->SetVMap		(buf);
-                (*s_it)->m_Flags.set(F.Rdword());
-                (*s_it)->SetFVF		(F.Rdword());
-                cnt 				= F.Rdword();
+                F.r_stringZ	(buf);	(*s_it)->SetName		(buf);
+                F.r_stringZ	(buf);	(*s_it)->SetShader		(buf);
+                F.r_stringZ	(buf);	(*s_it)->SetShaderXRLC	(buf);
+                F.r_stringZ	(buf); 	(*s_it)->SetTexture		(buf);
+                F.r_stringZ	(buf); 	(*s_it)->SetVMap		(buf);
+                (*s_it)->m_Flags.set(F.r_u32());
+                (*s_it)->SetFVF		(F.r_u32());
+                cnt 				= F.r_u32();
                 if (cnt>1) ELog.DlgMsg(mtError,"Object surface '%s' has more than one TC's.",buf);
                 R_ASSERT(1<=cnt);
             }
         }else{
-            R_ASSERT(F.FindChunk(EOBJ_CHUNK_SURFACES));
-            DWORD cnt = F.Rdword();
+            R_ASSERT(F.find_chunk(EOBJ_CHUNK_SURFACES));
+            DWORD cnt = F.r_u32();
             m_Surfaces.resize(cnt);
             for (SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
                 *s_it = xr_new<CSurface>();
-                F.RstringZ(buf);
+                F.r_stringZ(buf);
                 (*s_it)->SetName(buf);
-                F.RstringZ(sh_name);
-                (*s_it)->m_Flags.set(CSurface::sf2Sided,!!F.Rbyte());
-                (*s_it)->SetFVF		(F.Rdword());
-                cnt 				= F.Rdword();
+                F.r_stringZ(sh_name);
+                (*s_it)->m_Flags.set(CSurface::sf2Sided,!!F.r_u8());
+                (*s_it)->SetFVF		(F.r_u32());
+                cnt 				= F.r_u32();
                 if (cnt>1) ELog.DlgMsg(mtError,"Object surface '%s' has more than one TC's.",buf);
                 R_ASSERT(1<=cnt);
-                F.RstringZ			(buf); (*s_it)->SetTexture(buf);
-                F.RstringZ			(buf); (*s_it)->SetVMap(buf);
+                F.r_stringZ			(buf); (*s_it)->SetTexture(buf);
+                F.r_stringZ			(buf); (*s_it)->SetVMap(buf);
                 (*s_it)->SetShader		(sh_name);
                 (*s_it)->SetShaderXRLC	("default");
             }
 
             // surfaces xrlc part
-            if(F.FindChunk(EOBJ_CHUNK_SURFACES_XRLC))
+            if(F.find_chunk(EOBJ_CHUNK_SURFACES_XRLC))
                 for (s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
-                    F.RstringZ(buf); (*s_it)->SetShaderXRLC(buf);
+                    F.r_stringZ(buf); (*s_it)->SetShaderXRLC(buf);
                 }
         }
 
         // Load meshes
-        CStream* OBJ = F.OpenChunk(EOBJ_CHUNK_EDITMESHES);
+        IReader* OBJ = F.open_chunk(EOBJ_CHUNK_EDITMESHES);
         if(OBJ){
-            CStream* M   = OBJ->OpenChunk(0);
+            IReader* M   = OBJ->open_chunk(0);
             for (int count=1; M; count++) {
                 CEditableMesh* mesh=xr_new<CEditableMesh>(this);
                 if (mesh->LoadMesh(*M))
@@ -174,16 +174,16 @@ bool CEditableObject::Load(CStream& F){
                     ELog.DlgMsg( mtError, "CEditableObject: Can't load mesh!", buf );
                     bRes = false;
                 }
-                M->Close();
+                M->close();
                 if (!bRes)	break;
-                M = OBJ->OpenChunk(count);
+                M = OBJ->open_chunk(count);
             }
-            OBJ->Close();
+            OBJ->close();
         }
 
         // bones
-        if (F.FindChunk(EOBJ_CHUNK_BONES)){
-            m_Bones.resize(F.Rdword());
+        if (F.find_chunk(EOBJ_CHUNK_BONES)){
+            m_Bones.resize(F.r_u32());
             for (BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){
                 *b_it = xr_new<CBone>();
                 (*b_it)->Load(F);
@@ -192,8 +192,8 @@ bool CEditableObject::Load(CStream& F){
         }
 
         // skeleton motions
-        if (F.FindChunk(EOBJ_CHUNK_SMOTIONS)){
-            m_SMotions.resize(F.Rdword());
+        if (F.find_chunk(EOBJ_CHUNK_SMOTIONS)){
+            m_SMotions.resize(F.r_u32());
             for (SMotionIt s_it=m_SMotions.begin(); s_it!=m_SMotions.end(); s_it++){
                 *s_it = xr_new<CSMotion>();
                 if (!(*s_it)->Load(F)){
@@ -206,18 +206,18 @@ bool CEditableObject::Load(CStream& F){
         }
 
         // bone parts
-        if (F.FindChunk(EOBJ_CHUNK_BONEPARTS)){
-            m_BoneParts.resize(F.Rdword());
+        if (F.find_chunk(EOBJ_CHUNK_BONEPARTS)){
+            m_BoneParts.resize(F.r_u32());
 	        for (BPIt bp_it=m_BoneParts.begin(); bp_it!=m_BoneParts.end(); bp_it++){
-    	        F.RstringZ	(buf); bp_it->alias=buf;
-	            bp_it->bones.resize(F.Rdword());
-                F.Read(bp_it->bones.begin(),bp_it->bones.size()*sizeof(int));
+    	        F.r_stringZ	(buf); bp_it->alias=buf;
+	            bp_it->bones.resize(F.r_u32());
+                F.r(bp_it->bones.begin(),bp_it->bones.size()*sizeof(int));
 	        }
     	}
 
-		if (F.FindChunk	(EOBJ_CHUNK_ACTORTRANSFORM)){
-	        F.Rvector	(a_vPosition);
-    	    F.Rvector	(a_vRotate);
+		if (F.find_chunk	(EOBJ_CHUNK_ACTORTRANSFORM)){
+	        F.r_fvector3	(a_vPosition);
+    	    F.r_fvector3	(a_vRotate);
 		}
 
         ResetAnimation();
@@ -229,19 +229,19 @@ bool CEditableObject::Load(CStream& F){
     return bRes;
 }
 
-void CEditableObject::Save(CFS_Base& F){
+void CEditableObject::Save(IWriter& F){
 	F.open_chunk	(EOBJ_CHUNK_VERSION);
-	F.Wword			(EOBJ_CURRENT_VERSION);
+	F.w_u16			(EOBJ_CURRENT_VERSION);
 	F.close_chunk	();
 
 	F.open_chunk	(EOBJ_CHUNK_CLASSSCRIPT);
-	F.WstringZ		(m_ClassScript.c_str());
+	F.w_stringZ		(m_ClassScript.c_str());
 	F.close_chunk	();
 
-    F.write_chunk	(EOBJ_CHUNK_FLAGS,&m_Flags.flags,sizeof(m_Flags.flags));
+    F.w_chunk		(EOBJ_CHUNK_FLAGS,&m_Flags.flags,sizeof(m_Flags.flags));
 
     // object version
-    F.write_chunk	(EOBJ_CHUNK_LIB_VERSION,&m_ObjVer,m_ObjVer.size());
+    F.w_chunk		(EOBJ_CHUNK_LIB_VERSION,&m_ObjVer,m_ObjVer.size());
     // meshes
     F.open_chunk	(EOBJ_CHUNK_EDITMESHES);
     int count = 0;
@@ -253,24 +253,24 @@ void CEditableObject::Save(CFS_Base& F){
     F.close_chunk	();
     // surfaces
     F.open_chunk	(EOBJ_CHUNK_SURFACES3);
-    F.Wdword		(m_Surfaces.size());
+    F.w_u32		(m_Surfaces.size());
     for (SurfaceIt sf_it=m_Surfaces.begin(); sf_it!=m_Surfaces.end(); sf_it++){
-        F.WstringZ	((*sf_it)->_Name			());
-        F.WstringZ	((*sf_it)->_ShaderName		());
-        F.WstringZ	((*sf_it)->_ShaderXRLCName	());
-        F.WstringZ	((*sf_it)->_GameMtlName		());
-		F.WstringZ	((*sf_it)->_Texture			());
-		F.WstringZ	((*sf_it)->_VMap			());
-        F.Wdword	((*sf_it)->m_Flags.get		());
-        F.Wdword	((*sf_it)->_FVF				());
-        F.Wdword	(1);
+        F.w_stringZ	((*sf_it)->_Name			());
+        F.w_stringZ	((*sf_it)->_ShaderName		());
+        F.w_stringZ	((*sf_it)->_ShaderXRLCName	());
+        F.w_stringZ	((*sf_it)->_GameMtlName		());
+		F.w_stringZ	((*sf_it)->_Texture			());
+		F.w_stringZ	((*sf_it)->_VMap			());
+        F.w_u32	((*sf_it)->m_Flags.get		());
+        F.w_u32	((*sf_it)->_FVF				());
+        F.w_u32	(1);
     }
     F.close_chunk	();
 
     // bones
     if (!m_Bones.empty()){
 	    F.open_chunk	(EOBJ_CHUNK_BONES);
-    	F.Wdword		(m_Bones.size());
+    	F.w_u32		(m_Bones.size());
 	    for (BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++) (*b_it)->Save(F);
     	F.close_chunk	();
     }
@@ -278,7 +278,7 @@ void CEditableObject::Save(CFS_Base& F){
     // skeleton motions
     if (!m_SMotions.empty()){
         F.open_chunk	(EOBJ_CHUNK_SMOTIONS);
-        F.Wdword		(m_SMotions.size());
+        F.w_u32		(m_SMotions.size());
         for (SMotionIt s_it=m_SMotions.begin(); s_it!=m_SMotions.end(); s_it++) (*s_it)->Save(F);
         F.close_chunk	();
     }
@@ -286,19 +286,19 @@ void CEditableObject::Save(CFS_Base& F){
     // bone parts
     if (!m_BoneParts.empty()){
         F.open_chunk	(EOBJ_CHUNK_BONEPARTS);
-        F.Wdword		(m_BoneParts.size());
+        F.w_u32			(m_BoneParts.size());
         for (BPIt bp_it=m_BoneParts.begin(); bp_it!=m_BoneParts.end(); bp_it++){
-            F.WstringZ	(bp_it->alias.c_str());
-            F.Wdword	(bp_it->bones.size());
-            F.write		(bp_it->bones.begin(),bp_it->bones.size()*sizeof(int));
+            F.w_stringZ	(bp_it->alias.c_str());
+            F.w_u32		(bp_it->bones.size());
+            F.w			(bp_it->bones.begin(),bp_it->bones.size()*sizeof(int));
         }
         F.close_chunk	();
-    }                                 
+    }
 
     if (IsDynamic()){
 		F.open_chunk	(EOBJ_CHUNK_ACTORTRANSFORM);
-        F.Wvector		(a_vPosition);
-        F.Wvector		(a_vRotate);
+        F.w_fvector3		(a_vPosition);
+        F.w_fvector3		(a_vRotate);
 		F.close_chunk	();
     }
 
@@ -318,9 +318,9 @@ CSMotion* CEditableObject::LoadSMotion(const char* fname){
 //------------------------------------------------------------------------------
 #ifdef _EDITOR
 bool CEditableObject::ExportSkeletonOGF(LPCSTR fn){
-	CFS_Memory F;
+	CMemoryWriter F;
     if (PrepareSV(F)){
-    	F.SaveTo(fn,0);
+    	F.save_to(fn,0);
         return true;
     }
     return false;
@@ -328,15 +328,15 @@ bool CEditableObject::ExportSkeletonOGF(LPCSTR fn){
 //------------------------------------------------------------------------------
 bool CEditableObject::ExportObjectOGF(LPCSTR fname)
 {
-	CFS_Memory F;
+	CMemoryWriter F;
     if (PrepareOGF(F)){
-    	F.SaveTo(fname,0);
+    	F.save_to(fname,0);
         return true;
     }
     return false;
 }
 //------------------------------------------------------------------------------
-bool CEditableObject::ExportHOMPart(const Fmatrix& parent, CFS_Base& F)
+bool CEditableObject::ExportHOMPart(const Fmatrix& parent, IWriter& F)
 {
 	Fvector v;
     for (EditMeshIt m_it=m_Meshes.begin(); m_it!=m_Meshes.end(); m_it++){
@@ -347,9 +347,9 @@ bool CEditableObject::ExportHOMPart(const Fmatrix& parent, CFS_Base& F)
                 st_Face& face = (*m_it)->m_Faces[*i_it];
                 for (int k=0; k<3; k++){
                     parent.transform_tiny(v,(*m_it)->m_Points[face.pv[k].pindex]);
-                    F.Wvector	(v);
+                    F.w_fvector3	(v);
                 }
-                F.Wdword(b2Sided);
+                F.w_u32(b2Sided);
             }
         }
     }
@@ -358,14 +358,14 @@ bool CEditableObject::ExportHOMPart(const Fmatrix& parent, CFS_Base& F)
 //------------------------------------------------------------------------------
 bool CEditableObject::ExportHOM(LPCSTR fname)
 {
-    CFS_Memory F;
+    CMemoryWriter F;
     F.open_chunk(0);
-    F.Wdword(0);
+    F.w_u32(0);
     F.close_chunk();
     F.open_chunk(1);
     ExportHOMPart(Fidentity,F);
     F.close_chunk();
-    F.SaveTo(fname,0);
+    F.save_to(fname,0);
 	return true;
 }
 //------------------------------------------------------------------------------

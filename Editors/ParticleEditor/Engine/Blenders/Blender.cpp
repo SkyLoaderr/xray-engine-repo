@@ -46,9 +46,9 @@ CBlender::~CBlender()
 
 }
 
-void	CBlender::Save(	CFS_Base& FS )
+void	CBlender::Save(IWriter& FS )
 {
-	FS.write		(&description,sizeof(description));
+	FS.w			(&description,sizeof(description));
 	xrPWRITE_MARKER (FS,"General");
 	xrPWRITE_PROP	(FS,"Priority",			xrPID_INTEGER,	oPriority);
 	xrPWRITE_PROP	(FS,"Strict sorting",	xrPID_BOOL,		oStrictSorting);
@@ -57,11 +57,11 @@ void	CBlender::Save(	CFS_Base& FS )
 	xrPWRITE_PROP	(FS,"Transform",		xrPID_MATRIX,	oT_xform);
 }
 
-void	CBlender::Load(	CStream& FS, WORD version )
+void	CBlender::Load(	IReader& FS, WORD version )
 {
 	// Read desc and doesn't change version
 	WORD	V		= description.version;
-	FS.Read			(&description,sizeof(description));
+	FS.r			(&description,sizeof(description));
 	description.version	= V;
 
 	// Properties

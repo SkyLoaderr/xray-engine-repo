@@ -38,9 +38,9 @@ public:
 	IntVec			pindices;
 public:
 	st_VMap			(LPCSTR nm=0, EVMType t=vmtUV, BOOL pm=false){
-		type=t; 
-		polymap=pm; 
-		if(nm) strcpy(name,nm); else name[0]=0; 
+		type=t;
+		polymap=pm;
+		if(nm) strcpy(name,nm); else name[0]=0;
 		if (t==vmtUV) dim=2; else dim=1;
 	}
     IC Fvector2&	getUV		(int idx)				{VERIFY(type==vmtUV);		return (Fvector2&)vm[idx*dim];}
@@ -228,8 +228,8 @@ public:
     int 			GetSurfFaceCount		(CSurface* surf, bool bMatch2Sided=true);
 
     // IO - routine
-    void			SaveMesh				(CFS_Base&);
-	bool 			LoadMesh				(CStream&);
+    void			SaveMesh				(IWriter&);
+	bool 			LoadMesh				(IReader&);
 
     // debug
     void			DumpAdjacency			();

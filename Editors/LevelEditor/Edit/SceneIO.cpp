@@ -39,98 +39,98 @@
 //------------------------------------------------------------------------------------------------
 // Environment
 //------------------------------------------------------------------------------------------------
-void st_Environment::Save( CFS_Base& F ){
-    F.Wfloat	( m_ViewDist );
-    F.Wfloat	( m_Fogness );
-    F.Wcolor	( m_FogColor );
-    F.Wcolor	( m_AmbColor );
-    F.Wcolor	( m_SkyColor );
+void st_Environment::Save( IWriter& F ){
+    F.w_float	( m_ViewDist );
+    F.w_float	( m_Fogness );
+    F.w_fcolor	( m_FogColor );
+    F.w_fcolor	( m_AmbColor );
+    F.w_fcolor	( m_SkyColor );
 }
 
-void st_Environment::Read(CStream& F){
-    m_ViewDist 	= F.Rfloat();
-    m_Fogness  	= F.Rfloat();
-    F.Rcolor   	( m_FogColor );
-    F.Rcolor   	( m_AmbColor );
-    F.Rcolor	( m_SkyColor );
+void st_Environment::Read(IReader& F){
+    m_ViewDist 	= F.r_float();
+    m_Fogness  	= F.r_float();
+    F.r_fcolor 	( m_FogColor );
+    F.r_fcolor 	( m_AmbColor );
+    F.r_fcolor 	( m_SkyColor );
 }
 //------------------------------------------------------------------------------------------------
 // Level Options
 //------------------------------------------------------------------------------------------------
-void st_LevelOptions::Save( CFS_Base& F ){
+void st_LevelOptions::Save( IWriter& F ){
     F.open_chunk( CHUNK_LO_VERSION );
-	F.Wdword	( CURRENT_LEVELOP_VERSION );
+	F.w_u32		( CURRENT_LEVELOP_VERSION );
     F.close_chunk();
 
     F.open_chunk( CHUNK_LO_NAMES );
-	F.WstringZ	( m_FNLevelPath.c_str() );
-	F.WstringZ	( m_LevelName.c_str() );
+	F.w_stringZ	( m_FNLevelPath.c_str() );
+	F.w_stringZ	( m_LevelName.c_str() );
     F.close_chunk();
 
     F.open_chunk( CHUNK_LO_BOP );
-	F.WstringZ	( m_BOPText.c_str() );
+	F.w_stringZ	( m_BOPText.c_str() );
     F.close_chunk();
 
     F.open_chunk( CHUNK_LO_SKYDOME );
-    F.WstringZ	( m_SkydomeObjName.c_str() );
+    F.w_stringZ	( m_SkydomeObjName.c_str() );
     F.close_chunk();
 
     F.open_chunk( CHUNK_LO_ENVS );
-	F.Wdword	( m_CurEnv );
-	F.Wdword	( m_Envs.size() );
+	F.w_u32		( m_CurEnv );
+	F.w_u32		( m_Envs.size() );
 	for (EnvIt e_it=m_Envs.begin(); e_it!=m_Envs.end(); e_it++)
     	e_it->Save(F);
     F.close_chunk();
 
     F.open_chunk( CHUNK_LO_DOCLUSTERSIZE );
-	F.Wfloat	( m_DOClusterSize );
+	F.w_float	( m_DOClusterSize );
     F.close_chunk();
 
     F.open_chunk( CHUNK_LO_BP_VERSION );
-	F.Wdword	( CURRENT_LEVELOP_BP_VERSION );
+	F.w_u32		( CURRENT_LEVELOP_BP_VERSION );
     F.close_chunk();
 
     F.open_chunk( CHUNK_BUILD_PARAMS );
-	F.write		( &m_BuildParams, sizeof(m_BuildParams) );
+	F.w			( &m_BuildParams, sizeof(m_BuildParams) );
     F.close_chunk();
 }
 
-void st_LevelOptions::Read(CStream& F)
+void st_LevelOptions::Read(IReader& F)
 {
-	R_ASSERT(F.FindChunk(CHUNK_LO_VERSION));
-    DWORD vers = F.Rdword( );
+	R_ASSERT(F.find_chunk(CHUNK_LO_VERSION));
+    DWORD vers = F.r_u32( );
     if( vers != CURRENT_LEVELOP_VERSION ){
         ELog.DlgMsg( mtError, "Skipping bad version of level options." );
         return;
     }
 
     char buf[4096];
-    R_ASSERT(F.FindChunk(CHUNK_LO_NAMES));
-    F.RstringZ 	(buf); m_FNLevelPath=buf;
-    F.RstringZ 	(buf); m_LevelName=buf;
+    R_ASSERT(F.find_chunk(CHUNK_LO_NAMES));
+    F.r_stringZ 	(buf); m_FNLevelPath=buf;
+    F.r_stringZ 	(buf); m_LevelName=buf;
 
-    R_ASSERT(F.FindChunk(CHUNK_LO_BOP));
-    F.RstringZ 	(buf); m_BOPText=buf;
+    R_ASSERT(F.find_chunk(CHUNK_LO_BOP));
+    F.r_stringZ 	(buf); m_BOPText=buf;
 
-    R_ASSERT(F.FindChunk(CHUNK_LO_SKYDOME));
-	F.RstringZ	(buf); m_SkydomeObjName=buf;
+    R_ASSERT(F.find_chunk(CHUNK_LO_SKYDOME));
+	F.r_stringZ	(buf); m_SkydomeObjName=buf;
 
-    R_ASSERT(F.FindChunk(CHUNK_LO_ENVS));
-	m_CurEnv	= F.Rdword( );
-    m_Envs.resize(F.Rdword( ));
+    R_ASSERT(F.find_chunk(CHUNK_LO_ENVS));
+	m_CurEnv	= F.r_u32( );
+    m_Envs.resize(F.r_u32( ));
 	for (EnvIt e_it=m_Envs.begin(); e_it!=m_Envs.end(); e_it++)
     	e_it->Read(F);
 
-    R_ASSERT(F.FindChunk(CHUNK_LO_DOCLUSTERSIZE));
-    m_DOClusterSize = F.Rfloat();
+    R_ASSERT(F.find_chunk(CHUNK_LO_DOCLUSTERSIZE));
+    m_DOClusterSize = F.r_float();
 
     vers = 0;
-    if (F.FindChunk(CHUNK_LO_BP_VERSION))
-	    vers = F.Rdword( );
+    if (F.find_chunk(CHUNK_LO_BP_VERSION))
+	    vers = F.r_u32( );
 
     if (CURRENT_LEVELOP_BP_VERSION==vers){
-	    if (F.FindChunk(CHUNK_BUILD_PARAMS)){
-			F.Read	( &m_BuildParams, sizeof(m_BuildParams) );
+	    if (F.find_chunk(CHUNK_BUILD_PARAMS)){
+			F.r		( &m_BuildParams, sizeof(m_BuildParams) );
         }
     }else{
         ELog.DlgMsg( mtError, "Skipping bad version of build params." );
@@ -141,11 +141,11 @@ void st_LevelOptions::Read(CStream& F)
 //------------------------------------------------------------------------------------------------
 void EScene::Save(char *_FileName, bool bUndo){
 	VERIFY( _FileName );
-    CFS_Memory F;
+    CMemoryWriter F;
 
 //	Msg("0: %d",F.tell());
     F.open_chunk	(CHUNK_VERSION);
-    F.Wdword		(CURRENT_FILE_VERSION);
+    F.w_u32		(CURRENT_FILE_VERSION);
     F.close_chunk	();
 
 //	Msg("1: %d",F.tell());
@@ -155,7 +155,7 @@ void EScene::Save(char *_FileName, bool bUndo){
 
 //	Msg("2: %d",F.tell());
     F.open_chunk	(CHUNK_OBJECT_COUNT);
-    F.Wdword		(ObjCount());
+    F.w_u32		(ObjCount());
 	F.close_chunk	();
 
 //	Msg("3: %d",F.tell());
@@ -168,17 +168,17 @@ void EScene::Save(char *_FileName, bool bUndo){
 //	Msg("4: %d",F.tell());
     if (!bUndo){
 		F.open_chunk	(CHUNK_CAMERA);
-        F.Wvector		(Device.m_Camera.GetHPB());
-        F.Wvector		(Device.m_Camera.GetPosition());
+        F.w_fvector3		(Device.m_Camera.GetHPB());
+        F.w_fvector3		(Device.m_Camera.GetPosition());
         F.close_chunk	();
     }
 
 //	Msg("5: %d",F.tell());
 	// snap list
     F.open_chunk	(CHUNK_SNAPOBJECTS);
-    F.Wdword		(m_SnapObjects.size());
+    F.w_u32		(m_SnapObjects.size());
     for(ObjectIt _F=m_SnapObjects.begin();_F!=m_SnapObjects.end();_F++)
-        F.WstringZ	((*_F)->Name);
+        F.w_stringZ	((*_F)->Name);
     F.close_chunk	();
 
 //	Msg("6: %d",F.tell());
@@ -203,15 +203,15 @@ void EScene::Save(char *_FileName, bool bUndo){
 
     // save data
 	if (!bUndo) Engine.FS.UnlockFile	(0,_FileName,false);
-    F.SaveTo							(_FileName,0);
+    F.save_to							(_FileName,0);
 	if (!bUndo) Engine.FS.LockFile		(0,_FileName,false);
 }
 //--------------------------------------------------------------------------------------------------
 
-void EScene::SaveObject( CCustomObject* O, CFS_Base& F )
+void EScene::SaveObject( CCustomObject* O, IWriter& F )
 {
     F.open_chunk	(CHUNK_OBJECT_CLASS);
-    F.Wdword		(O->ClassID);
+    F.w_u32		(O->ClassID);
     F.close_chunk	();
     F.open_chunk	(CHUNK_OBJECT_BODY);
     O->Save			(F);
@@ -219,7 +219,7 @@ void EScene::SaveObject( CCustomObject* O, CFS_Base& F )
 }
 //--------------------------------------------------------------------------------------------------
 
-void EScene::SaveObjects( ObjectList& lst, u32 chunk_id, CFS_Base& F )
+void EScene::SaveObjects( ObjectList& lst, u32 chunk_id, IWriter& F )
 {
     F.open_chunk	(chunk_id);
     int count 		= 0;
@@ -232,37 +232,37 @@ void EScene::SaveObjects( ObjectList& lst, u32 chunk_id, CFS_Base& F )
 }
 //--------------------------------------------------------------------------------------------------
 
-bool EScene::ReadObject(CStream& F, CCustomObject*& O){
+bool EScene::ReadObject(IReader& F, CCustomObject*& O){
     DWORD clsid=0;
-    R_ASSERT(F.FindChunk(CHUNK_OBJECT_CLASS));
-    clsid = F.Rdword();
+    R_ASSERT(F.find_chunk(CHUNK_OBJECT_CLASS));
+    clsid = F.r_u32();
 	O = NewObjectFromClassID(clsid,0,0);
 
-    CStream* S = F.OpenChunk(CHUNK_OBJECT_BODY);
+    IReader* S = F.open_chunk(CHUNK_OBJECT_BODY);
     R_ASSERT(S);
     bool bRes = O->Load(*S);
-    S->Close();
+    S->close();
 
 	if (!bRes) xr_delete(O);
 	return bRes;
 }
 //----------------------------------------------------
 
-bool EScene::ReadObjects(CStream& F, u32 chunk_id, TAppendObject on_append)
+bool EScene::ReadObjects(IReader& F, u32 chunk_id, TAppendObject on_append)
 {
 	R_ASSERT(on_append);
 	bool bRes = true;
-    CStream* OBJ 	= F.OpenChunk(chunk_id);
+    IReader* OBJ 	= F.open_chunk(chunk_id);
     if (OBJ){
-        CStream* O   = OBJ->OpenChunk(0);
+        IReader* O   = OBJ->open_chunk(0);
         for (int count=1; O; count++) {
             CCustomObject* obj=0;
             if (ReadObject(*O, obj)) 	on_append(obj);
             else						bRes = false;
-            O->Close();
-            O = OBJ->OpenChunk(count);
+            O->close();
+            O = OBJ->open_chunk(count);
         }
-        OBJ->Close();
+        OBJ->close();
     }
     return bRes;
 }
@@ -282,17 +282,17 @@ bool EScene::Load(char *_FileName){
 	ELog.Msg( mtInformation, "EScene: loading %s...", _FileName );
 
     if (Engine.FS.Exist(_FileName,true)){
-        CStream* F;
-        F = xr_new<CFileStream>(_FileName);
+        IReader* F;
+        F = xr_new<CFileReader>(_FileName);
 		char MARK[8];
-        F->Read(MARK,8);
+        F->r(MARK,8);
         if (strcmp(MARK,"LEVEL")==0){
         	xr_delete(F);
-            F = xr_new<CCompressedStream>(_FileName,"LEVEL");
+            F = xr_new<CCompressedReader>(_FileName,"LEVEL");
         }
 
         // Version
-        R_ASSERT(F->ReadChunk(CHUNK_VERSION, &version));
+        R_ASSERT(F->r_chunk(CHUNK_VERSION, &version));
         if (version!=CURRENT_FILE_VERSION){
             ELog.DlgMsg( mtError, "EScene: unsupported file version. Can't load Level.");
             UI.UpdateScene();
@@ -301,38 +301,38 @@ bool EScene::Load(char *_FileName){
         }
 
         // Lev. ops.
-        CStream* LOP = F->OpenChunk(CHUNK_LEVELOP);
+        IReader* LOP = F->open_chunk(CHUNK_LEVELOP);
         if (LOP){
 	        m_LevelOp.Read	(*LOP);
     	    UpdateSkydome	();
-        	LOP->Close		();
+        	LOP->close		();
         }else{
 			ELog.DlgMsg( mtError, "Skipping old version of level options.\nCheck level options after loading." );
 	    }
 
         //
-        if (F->FindChunk(CHUNK_CAMERA)){
+        if (F->find_chunk(CHUNK_CAMERA)){
         	Fvector hpb, pos;
-	        F->Rvector	(hpb);
-    	    F->Rvector	(pos);
+	        F->r_fvector3	(hpb);
+    	    F->r_fvector3	(pos);
             Device.m_Camera.Set(hpb,pos);
 			Device.m_Camera.SetStyle(Device.m_Camera.GetStyle());
         }
 
         DWORD obj_cnt 	= 0;
-        if (F->FindChunk(CHUNK_OBJECT_COUNT)) 
-        	obj_cnt = F->Rdword();
+        if (F->find_chunk(CHUNK_OBJECT_COUNT))
+        	obj_cnt = F->r_u32();
 
         UI.ProgressStart(obj_cnt,"Loading scene...");
         ReadObjects		(*F,CHUNK_OBJECT_LIST,OnLoadAppendObject);
         UI.ProgressEnd	();
 
         // snap list
-        if (F->FindChunk(CHUNK_SNAPOBJECTS)){
-        	m_SnapObjects.resize(F->Rdword());
+        if (F->find_chunk(CHUNK_SNAPOBJECTS)){
+        	m_SnapObjects.resize(F->r_u32());
 		    char buf[4096];
 		   	for(ObjectIt _F=m_SnapObjects.begin();_F!=m_SnapObjects.end();_F++){
-    	    	F->RstringZ(buf);
+    	    	F->r_stringZ(buf);
                 *_F 	= FindObjectByName(buf,OBJCLASS_SCENEOBJECT);
                 VERIFY	(*_F);
             }
@@ -341,10 +341,10 @@ bool EScene::Load(char *_FileName){
 
         // detail objects
         // объ€зательно после загрузки snap листа
-	    CStream* DO = F->OpenChunk(CHUNK_DETAILOBJECTS);
+	    IReader* DO = F->open_chunk(CHUNK_DETAILOBJECTS);
 		if (DO){
 	    	m_DetailObjects->Load(*DO);
-            DO->Close();
+            DO->close();
         }
 
         ELog.Msg( mtInformation, "EScene: %d objects loaded", ObjCount() );
@@ -365,10 +365,10 @@ bool EScene::Load(char *_FileName){
 //---------------------------------------------------------------------------------------
 void EScene::SaveSelection( int classfilter, char *filename ){
 	VERIFY( filename );
-    CFS_Memory F;
+    CMemoryWriter F;
 
     F.open_chunk	(CHUNK_VERSION);
-    F.Wdword		(CURRENT_FILE_VERSION);
+    F.w_u32		(CURRENT_FILE_VERSION);
     F.close_chunk	();
 
     F.open_chunk	(CHUNK_OBJECT_LIST);
@@ -380,7 +380,7 @@ void EScene::SaveSelection( int classfilter, char *filename ){
                 if( (*_F)->Selected() ){
                     F.open_chunk(count); count++;
                         F.open_chunk	(CHUNK_OBJECT_CLASS);
-                        F.Wdword		((*_F)->ClassID);
+                        F.w_u32		((*_F)->ClassID);
                         F.close_chunk	();
                         F.open_chunk	(CHUNK_OBJECT_BODY);
                         (*_F)->Save		(F);
@@ -390,7 +390,7 @@ void EScene::SaveSelection( int classfilter, char *filename ){
             }
     }
 	F.close_chunk	();
-    F.SaveTo		(filename,0);//"LEVEL");
+    F.save_to		(filename,0);//"LEVEL");
 }
 
 //----------------------------------------------------
@@ -416,10 +416,10 @@ bool EScene::LoadSelection( const char *_FileName )
     if (Engine.FS.Exist(_FileName)){
 		SelectObjects( false );
 
-        CFileStream F(_FileName);
+        CFileReader F(_FileName);
 
         // Version
-        R_ASSERT(F.ReadChunk(CHUNK_VERSION, &version));
+        R_ASSERT(F.r_chunk(CHUNK_VERSION, &version));
         if (version!=CURRENT_FILE_VERSION){
             ELog.DlgMsg( mtError, "EScene: unsupported file version. Can't load Level.");
             UI.UpdateScene();
@@ -431,7 +431,7 @@ bool EScene::LoadSelection( const char *_FileName )
             ELog.DlgMsg(mtError,"EScene. Failed to load selection.");
             res = false;
         }
-        
+
         // Synchronize
 		SynchronizeObjects();
     }
@@ -500,20 +500,20 @@ int EScene::CutSelection( EObjClass classfilter )
 
 void EScene::LoadCompilerError(LPCSTR fn)
 {
-	CFileStream F(fn);
-    
+	CFileReader F(fn);
+
     m_CompilerErrors.Clear();
-    if (F.FindChunk(0)){ // lc error (TJ)
-        m_CompilerErrors.m_TJVerts.resize(F.Rdword());
-        F.Read(m_CompilerErrors.m_TJVerts.begin(),sizeof(ERR::Vert)*m_CompilerErrors.m_TJVerts.size());
+    if (F.find_chunk(0)){ // lc error (TJ)
+        m_CompilerErrors.m_TJVerts.resize(F.r_u32());
+        F.r(m_CompilerErrors.m_TJVerts.begin(),sizeof(ERR::Vert)*m_CompilerErrors.m_TJVerts.size());
     }
-    if (F.FindChunk(1)){ // lc error (multiple edges)
-        m_CompilerErrors.m_MultiEdges.resize(F.Rdword());
-        F.Read(m_CompilerErrors.m_MultiEdges.begin(),sizeof(ERR::Edge)*m_CompilerErrors.m_MultiEdges.size());
+    if (F.find_chunk(1)){ // lc error (multiple edges)
+        m_CompilerErrors.m_MultiEdges.resize(F.r_u32());
+        F.r(m_CompilerErrors.m_MultiEdges.begin(),sizeof(ERR::Edge)*m_CompilerErrors.m_MultiEdges.size());
     }
-    if (F.FindChunk(2)){ // lc error (invalid faces)
-        m_CompilerErrors.m_InvalidFaces.resize(F.Rdword());
-        F.Read(m_CompilerErrors.m_InvalidFaces.begin(),sizeof(ERR::Face)*m_CompilerErrors.m_InvalidFaces.size());
+    if (F.find_chunk(2)){ // lc error (invalid faces)
+        m_CompilerErrors.m_InvalidFaces.resize(F.r_u32());
+        F.r(m_CompilerErrors.m_InvalidFaces.begin(),sizeof(ERR::Face)*m_CompilerErrors.m_InvalidFaces.size());
     }
 }
 

@@ -25,7 +25,7 @@ const float		dm_fade				= float(2*dm_size)-.5f;
 const float		dm_slot_size		= DETAIL_SLOT_SIZE;
 const float		dm_slot_radius		= DETAIL_SLOT_SIZE*0.70710678118654752440084436210485f; // (slot_size/2)*sqrtf(2)
 
-class ENGINE_API CDetailManager  
+class ENGINE_API CDetailManager
 {
 public:
 	struct	SlotItem
@@ -34,13 +34,13 @@ public:
 		float				scale;
 		float				C;
 		u32					C_dw;
-		float				scale_calculated;           
+		float				scale_calculated;
 		Fmatrix				mRotY;
 		u32					vis_ID;
 	};
 	struct	SlotPart
 	{
-		u32					id;	
+		u32					id;
 		vector<SlotItem*>	items;
 	};
 	enum	SlotType
@@ -50,7 +50,7 @@ public:
 
 		stFORCEDWORD = 0xffffffff
 	};
-	struct Slot 
+	struct Slot
 	{
 		u32					type;
 		int					sx,sz;
@@ -64,10 +64,10 @@ public:
 	typedef		svector<CDetail*,dm_max_objects>	DetailVec;
 	typedef		DetailVec::iterator					DetailIt;
 	typedef		poolSS<SlotItem,4096>				PSS;
-public:	
+public:
 	int								dither			[16][16];
 public:
-	CStream*						dtFS;
+	IReader*						dtFS;
 	DetailHeader					dtH;
 	DetailSlot*						dtSlots;		// note: pointer into VFS
 	DetailSlot						DS_empty;
@@ -127,13 +127,13 @@ public:
 	int								cg2w_Z			(int z)			{ return cache_cz-dm_size+(dm_cache_line-1-z);	}
 	int								w2cg_X			(int x)			{ return x-cache_cx+dm_size;					}
 	int								w2cg_Z			(int z)			{ return cache_cz-dm_size+(dm_cache_line-1-z);	}
-	
+
 	void							Load			();
 	void							Unload			();
 	void							Render			(Fvector& EYE);
-									
+
 	CDetailManager					();
 	virtual ~CDetailManager			();
-};									
-									
+};
+
 #endif // !defined(AFX_DETAILMANAGER_H__2C7B9CBD_4751_4D3E_8020_4792B800E4E2__INCLUDED_)

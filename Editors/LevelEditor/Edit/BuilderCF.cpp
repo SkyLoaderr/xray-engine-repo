@@ -14,9 +14,9 @@
 #include "cl_collector.h"
 /*
 bool SceneBuilder::SaveObjectVCF(LPCSTR name, CEditableObject* obj){
-	CFS_Memory F;
+	CMemoryWriter F;
     bool bRes = BuildObjectVCF(F, obj);
-    if (bRes) F.SaveTo(name,0);
+    if (bRes) F.save_to(name,0);
     return bRes;
 }
 
@@ -26,7 +26,7 @@ struct st_VCFFace{
 };
 DEFINE_VECTOR(st_VCFFace,VCFFaceVec,VCFFaceIt);
 
-bool SceneBuilder::BuildObjectVCF(CFS_Base& FM, CEditableObject* obj){
+bool SceneBuilder::BuildObjectVCF(IWriter& FM, CEditableObject* obj){
 	ELog.DlgMsg(mtError,"Error BuildObjectVCF");
     FvectorVec		V;
     VCFFaceVec		F;

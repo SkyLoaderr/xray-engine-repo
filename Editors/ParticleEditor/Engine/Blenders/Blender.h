@@ -52,8 +52,8 @@ public:
 	virtual		LPCSTR		getComment		()	= 0;
 	virtual		BOOL		canBeDetailed()	{ return FALSE; }
 	
-	virtual		void		Save			(CFS_Base&  FS);
-	virtual		void		Load			(CStream&	FS, WORD version);
+	virtual		void		Save			(IWriter& FS);
+	virtual		void		Load			(IReader& FS, WORD version);
 	
 	virtual		void		Compile			(CBlender_Compile& C);
 

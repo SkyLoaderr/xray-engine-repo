@@ -7,7 +7,7 @@
 class ENGINE_API CSimulatorTSS
 {
 public:
-	IC void Set			(SimulatorStates& container, u32 S, u32 N, u32 V) 
+	IC void Set			(SimulatorStates& container, u32 S, u32 N, u32 V)
 	{
 		container.set_TSS(S,N,V);
 	}
@@ -64,7 +64,7 @@ public:
 class ENGINE_API CSimulatorRS
 {
 public:
-	IC void Set			(SimulatorStates& container, u32 N, u32 V)	
+	IC void Set			(SimulatorStates& container, u32 N, u32 V)
 	{
 		R_ASSERT(N<256);
 		container.set_RS(N,V);

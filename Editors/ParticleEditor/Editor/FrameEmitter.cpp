@@ -3,7 +3,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "FrameEmitter.h"                                                                                
+#include "FrameEmitter.h"
 #include "ShaderFunction.h"
 #include "ParticleSystem.h"
 //---------------------------------------------------------------------------

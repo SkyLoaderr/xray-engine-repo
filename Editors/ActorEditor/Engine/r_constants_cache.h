@@ -13,7 +13,7 @@ private:
 public:
 	R_constant_cache()
 	{
-		array.resize(limit); 
+		array.resize(limit);
 		flush		();
 	}
 	IC T*					access	(u32 id)				{ return &array[id];						}
@@ -108,12 +108,12 @@ public:
 	}
 };
 
-class	ENGINE_API R_constants 
+class	ENGINE_API R_constants
 {
 private:
 	R_constant_array		a_pixel;
 	R_constant_array		a_vertex;
-	
+
 	void					flush_cache	();
 public:
 	// fp, non-array versions
@@ -144,7 +144,7 @@ public:
 		seta				(C,e,data);
 	}
 
-	// 
+	//
 	void					flush	()
 	{
 		if (a_pixel.b_dirty || a_vertex.b_dirty)	flush_cache();

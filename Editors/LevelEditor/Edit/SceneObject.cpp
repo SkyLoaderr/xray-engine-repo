@@ -85,7 +85,7 @@ int CSceneObject::GetVertexCount(){
 void CSceneObject::OnUpdateTransform(){
 	inherited::OnUpdateTransform();
     // update bounding volume
-    if (m_pReference){ 
+    if (m_pReference){
     	m_TBBox.set		(m_pReference->GetBox());
     	m_TBBox.xform	(_Transform());
     }
@@ -237,7 +237,7 @@ void CSceneObject::OnFrame()
 	inherited::OnFrame();
 	if (!m_pReference) return;
 	if (m_pReference) m_pReference->OnFrame();
-                         
+
     if (IsDynamic()&&IsOMotionActive()){
         Fvector R,P,r;
 		m_ActiveOMotion->Evaluate(m_OMParam.Frame(),P,r);
@@ -368,10 +368,10 @@ void CSceneObject::ClearOMotions()
 
 void CSceneObject::LoadOMotions(const char* fname)
 {
-	CFileStream F(fname);
+	CFileReader F(fname);
     ClearOMotions();
     // object motions
-    m_OMotions.resize(F.Rdword());
+    m_OMotions.resize(F.r_u32());
 	SetActiveOMotion(0);
     for (OMotionIt m_it=m_OMotions.begin(); m_it!=m_OMotions.end(); m_it++){
         *m_it = xr_new<COMotion>();
@@ -381,10 +381,10 @@ void CSceneObject::LoadOMotions(const char* fname)
 
 void CSceneObject::SaveOMotions(const char* fname)
 {
-	CFS_Memory F;
-    F.Wdword		(m_OMotions.size());
+	CMemoryWriter F;
+    F.w_u32		(m_OMotions.size());
     for (OMotionIt m_it=m_OMotions.begin(); m_it!=m_OMotions.end(); m_it++) (*m_it)->Save(F);
-    F.SaveTo		(fname,0);
+    F.save_to		(fname,0);
 }
 
 void __fastcall CSceneObject::ReferenceChange(PropValue* sender)

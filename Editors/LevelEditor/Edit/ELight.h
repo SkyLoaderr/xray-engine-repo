@@ -3,7 +3,7 @@
 //----------------------------------------------------
 
 #ifndef ELightH
-#define ELightH                                                      
+#define ELightH
 
 #include "xr_efflensflare.h"
 
@@ -13,8 +13,8 @@ class CLAItem;
 class CEditFlare: public CLensFlare{
 public:
 					CEditFlare();
-  	void 			Load(CStream& F);
-	void 			Save(CFS_Base& F);
+  	void 			Load(IReader& F);
+	void 			Save(IWriter& F);
     void			Render();
     void			DeleteShaders();
     void			CreateShaders();
@@ -56,11 +56,11 @@ public:
     static PropItem* piA2;
     static PropItem* piBrightness;
     static PropItem* piRange;
-    
+
     void __fastcall	OnAutoA1Click	(PropItem* value);
     void __fastcall	OnAutoA2Click	(PropItem* value);
     void __fastcall	OnNeedUpdate	(PropValue* value);
-protected:                 
+protected:
     virtual Fvector& GetPosition	()						{ return m_D3D.position; 	}
     virtual void 	SetPosition		(const Fvector& pos)	{ m_D3D.position.set(pos);	UpdateTransform();}
 public:
@@ -81,8 +81,8 @@ public:
 	virtual bool 	GetBox		(Fbox& box);
 
     // file system function
-  	virtual bool 	Load		(CStream&);
-	virtual void 	Save		(CFS_Base&);
+  	virtual bool 	Load		(IReader&);
+	virtual void 	Save		(IWriter&);
 	virtual void	FillProp	(LPCSTR pref, PropItemVec& items);
 	void			FillSunProp	(LPCSTR pref, PropItemVec& items);
 	void			FillPointProp(LPCSTR pref, PropItemVec& items);

@@ -13,9 +13,9 @@
 #include <Controls.hpp>
 #include <Menus.hpp>
 #include <StdCtrls.hpp>
-#include <ExtCtrls.hpp>               
+#include <ExtCtrls.hpp>
 #include "ElTreeAdvEdit.hpp"
-#include <Mask.hpp>                    
+#include <Mask.hpp>
 
 #include "PropertiesListHelper.h"
 #include "ElBtnCtl.hpp"
@@ -71,7 +71,7 @@ private:	// User declarations
 	void __fastcall CustomAnsiTextClick(TElTreeItem* item);
 
 	TElTreeItem* m_FirstClickItem;
-    
+
 	Graphics::TBitmap* m_BMCheck;
 	Graphics::TBitmap* m_BMDot;
 	Graphics::TBitmap* m_BMEllipsis;
@@ -109,18 +109,18 @@ public:		// User declarations
 	static void 	DestroyForm				(TProperties*& props);
     void __fastcall ShowPropertiesModal		();
     void __fastcall ShowProperties			();
-    void __fastcall HideProperties			();                                   
+    void __fastcall HideProperties			();
     void __fastcall ClearProperties			();
     bool __fastcall IsModified				(){return bModified;}
     void __fastcall ResetModified			(){bModified = false;}
     void __fastcall RefreshForm				(){tvProperties->Repaint();}
 
-    void __fastcall AssignItems				(PropItemVec& values, bool full_expand, const AnsiString& title="Properties"); 
+    void __fastcall AssignItems				(PropItemVec& values, bool full_expand, const AnsiString& title="Properties");
     void __fastcall ResetItems				();
     bool __fastcall IsFocused				(){return tvProperties->Focused()||seNumber->Focused()||edText->Focused();}
     void __fastcall SetModifiedEvent		(TOnModifiedEvent modif=0){OnModifiedEvent=modif;}
     void __fastcall BeginFillMode			(const AnsiString& title="Properties", LPCSTR section=0);
-    TElTreeItem* __fastcall AddItem			(TElTreeItem* parent, LPCSTR key, LPVOID value, PropValue* prop); 
+    TElTreeItem* __fastcall AddItem			(TElTreeItem* parent, LPCSTR key, LPVOID value, PropValue* prop);
     void __fastcall EndFillMode				(bool bFullExpand=true);
     TElTreeItem* __fastcall BeginEditMode	(LPCSTR section=0);
     void __fastcall EndEditMode				(TElTreeItem* expand_node=0);

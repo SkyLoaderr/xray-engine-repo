@@ -7,7 +7,7 @@
 
 #pragma once
 
-class ENGINE_API CHW 
+class ENGINE_API CHW
 {
 public:
 	IDirect3D9* 			pD3D;		// D3D
@@ -16,11 +16,11 @@ public:
 	IDirect3DSurface9*		pBaseRT;
 	IDirect3DSurface9*		pBaseZB;
 	IDirect3DSurface9*		pTempZB;
-	
+
 	CHWCaps					Caps;
 
 	CHW()
-	{ 
+	{
 		pD3D		= NULL;
 		pDevice		= NULL;
 		pBaseRT		= NULL;

@@ -23,11 +23,11 @@ void CEditableMesh::CreateRenderBuffers()
     R_ASSERT2(m_RenderBuffers.empty(),"Render buffer already exist.");
 
     UI.ProgressStart((float)m_SurfFaces.size(),"Loading RB...");
-    
+
     VERIFY(m_PNormals.size());
 
 	UI.Command(COMMAND_EVICT_TEXTURES);
-    
+
     for (SurfFacesPairIt sp_it=m_SurfFaces.begin(); sp_it!=m_SurfFaces.end(); sp_it++){
 		IntVec& face_lst = sp_it->second;
         CSurface* _S = sp_it->first;
@@ -89,7 +89,7 @@ void CEditableMesh::FillRenderBuffer(IntVec& face_lst, int start_face, int num_f
             DWORD norm_id = f_index*3+k;
 	        VERIFY2(norm_id<m_PNormals.size(),"Normal index out of range.");
             VERIFY2(fv.pindex<m_Points.size(),"Point index out of range.");
-            Fvector& PN = m_PNormals[norm_id]; 
+            Fvector& PN = m_PNormals[norm_id];
 			Fvector& V 	= m_Points[fv.pindex];
             int sz;
             if (dwFVF&D3DFVF_XYZ){

@@ -196,7 +196,7 @@ public:
 	{	int		t = iFloor(V*655.35f); clamp(t,0,65535); return WORD(t); }
 
 	void		Load		(CKinematics* P, CInifile* INI, LPCSTR section, BOOL bCycle);
-	void		Load		(CKinematics* P, CStream* MP, u32 fl);
+	void		Load		(CKinematics* P, IReader* MP, u32 fl);
 	CBlend*		PlayCycle	(CKinematics* P, BOOL bMixIn, PlayCallback Callback, LPVOID Callback_Param);
 	CBlend*		PlayFX		(CKinematics* P);
 };
@@ -338,7 +338,7 @@ public:
 
 	// General "Visual" stuff
 	virtual void				Copy			(CVisual *pFrom);
-	virtual void				Load			(const char* N, CStream *data, u32 dwFlags);
+	virtual void				Load			(const char* N, IReader *data, u32 dwFlags);
 	virtual void				Release			();
 	virtual						~CKinematics	();
 };

@@ -41,12 +41,12 @@ COMotion* CSceneObject::LoadOMotion(const char* fname){
 }
 //------------------------------------------------------------------------------
 
-bool CSceneObject::Load(CStream& F){
+bool CSceneObject::Load(IReader& F){
     bool bRes = true;
 	do{
         DWORD version = 0;
         char buf[1024];
-        R_ASSERT(F.ReadChunk(SCENEOBJ_CHUNK_VERSION,&version));
+        R_ASSERT(F.r_chunk(SCENEOBJ_CHUNK_VERSION,&version));
         if ((version!=0x0010)&&(version!=SCENEOBJ_CURRENT_VERSION)){
             ELog.DlgMsg( mtError, "CSceneObject: unsupported file version. Object can't load.");
             bRes = false;
@@ -54,17 +54,17 @@ bool CSceneObject::Load(CStream& F){
         }
 
         if (version==0x0010){
-	        R_ASSERT(F.FindChunk(SCENEOBJ_CHUNK_PLACEMENT));
-    	    F.Rvector(FPosition);
-	        F.Rvector(FRotation);
-    	    F.Rvector(FScale);
+	        R_ASSERT(F.find_chunk(SCENEOBJ_CHUNK_PLACEMENT));
+    	    F.r_fvector3(FPosition);
+	        F.r_fvector3(FRotation);
+    	    F.r_fvector3(FScale);
         }
 
 		CCustomObject::Load(F);
 
-        R_ASSERT(F.FindChunk(SCENEOBJ_CHUNK_REFERENCE));
-        F.Read(&m_ObjVer, sizeof(m_ObjVer));
-        F.RstringZ(buf);
+        R_ASSERT(F.find_chunk(SCENEOBJ_CHUNK_REFERENCE));
+        F.r(&m_ObjVer, sizeof(m_ObjVer));
+        F.r_stringZ(buf);
         if (!SetReference(buf)){
             ELog.Msg( mtError, "CSceneObject: '%s' not found in library", buf );
             bRes = false;
@@ -74,13 +74,13 @@ bool CSceneObject::Load(CStream& F){
             ELog.Msg( mtError, "CSceneObject: '%s' different file version! Some objects will work incorrectly.", buf );
 
         // flags
-        if (F.FindChunk(SCENEOBJ_CHUNK_FLAGS)){
-        	m_Flags.set(F.Rdword());
+        if (F.find_chunk(SCENEOBJ_CHUNK_FLAGS)){
+        	m_Flags.set(F.r_u32());
         }
 
         // object motions
-        if (F.FindChunk(SCENEOBJ_CHUNK_OMOTIONS)){
-            m_OMotions.resize(F.Rdword());
+        if (F.find_chunk(SCENEOBJ_CHUNK_OMOTIONS)){
+            m_OMotions.resize(F.r_u32());
             for (OMotionIt o_it=m_OMotions.begin(); o_it!=m_OMotions.end(); o_it++){
                 *o_it = xr_new<COMotion>();
                 if (!(*o_it)->Load(F)){
@@ -90,20 +90,20 @@ bool CSceneObject::Load(CStream& F){
                     break;
                 }
             }
-            if (F.FindChunk(SCENEOBJ_CHUNK_ACTIVE_OMOTION)){
-            	string256 buf; F.RstringZ(buf);
+            if (F.find_chunk(SCENEOBJ_CHUNK_ACTIVE_OMOTION)){
+            	string256 buf; F.r_stringZ(buf);
                 SetActiveOMotion(FindOMotionByName(buf));
             }
         }
 
         // object sounds
-        if (F.FindChunk(SCENEOBJ_CHUNK_SOUNDS)){
-            m_Sounds.resize(F.Rdword());
+        if (F.find_chunk(SCENEOBJ_CHUNK_SOUNDS)){
+            m_Sounds.resize(F.r_u32());
             for (AStringIt s_it=m_Sounds.begin(); s_it!=m_Sounds.end(); s_it++){
-            	string256 buf; F.RstringZ(buf); *s_it = buf;
+            	string256 buf; F.r_stringZ(buf); *s_it = buf;
             }
-            if (F.FindChunk(SCENEOBJ_CHUNK_ACTIVE_SOUND)){
-            	string256 buf; F.RstringZ(buf);
+            if (F.find_chunk(SCENEOBJ_CHUNK_ACTIVE_SOUND)){
+            	string256 buf; F.r_stringZ(buf);
                 SetActiveSound(buf);
             }
         }
@@ -113,47 +113,47 @@ bool CSceneObject::Load(CStream& F){
     return bRes;
 }
 
-void CSceneObject::Save(CFS_Base& F){
+void CSceneObject::Save(IWriter& F){
 	CCustomObject::Save(F);
 
 	F.open_chunk	(SCENEOBJ_CHUNK_VERSION);
-	F.Wword			(SCENEOBJ_CURRENT_VERSION);
+	F.w_u16			(SCENEOBJ_CURRENT_VERSION);
 	F.close_chunk	();
 
     // reference object version
     F.open_chunk	(SCENEOBJ_CHUNK_REFERENCE); R_ASSERT2(m_pReference,"Empty SceneObject REFS");
-    F.write			(&m_pReference->m_ObjVer,sizeof(m_pReference->m_ObjVer));
-    F.WstringZ		(m_ReferenceName.c_str());
+    F.w				(&m_pReference->m_ObjVer,sizeof(m_pReference->m_ObjVer));
+    F.w_stringZ		(m_ReferenceName.c_str());
     F.close_chunk	();
 
     F.open_chunk	(SCENEOBJ_CHUNK_FLAGS);
-	F.Wdword		(m_Flags.flags);
+	F.w_u32			(m_Flags.flags);
     F.close_chunk	();
 
     // object motions
     if (IsOMotionable()){
 	    F.open_chunk	(SCENEOBJ_CHUNK_OMOTIONS);
-    	F.Wdword		(m_OMotions.size());
+    	F.w_u32		(m_OMotions.size());
 	    for (OMotionIt o_it=m_OMotions.begin(); o_it!=m_OMotions.end(); o_it++) (*o_it)->Save(F);
     	F.close_chunk	();
 
         if (IsOMotionActive()){
 	        F.open_chunk	(SCENEOBJ_CHUNK_ACTIVE_OMOTION);
-    	    F.WstringZ		(m_ActiveOMotion->Name());
+    	    F.w_stringZ		(m_ActiveOMotion->Name());
     		F.close_chunk	();
         }
     }
 
     if (IsSoundable()){
 	    F.open_chunk	(SCENEOBJ_CHUNK_SOUNDS);
-    	F.Wdword		(m_Sounds.size());
+    	F.w_u32		(m_Sounds.size());
 	    for (AStringIt s_it=m_Sounds.begin(); s_it!=m_Sounds.end(); s_it++)
-			F.WstringZ	(s_it->c_str());
+			F.w_stringZ	(s_it->c_str());
     	F.close_chunk	();
 
         if (IsOMotionActive()){
 	        F.open_chunk	(SCENEOBJ_CHUNK_ACTIVE_SOUND);
-    	    F.WstringZ		(m_ActiveSound.c_str());
+    	    F.w_stringZ		(m_ActiveSound.c_str());
     		F.close_chunk	();
         }
     }
@@ -165,7 +165,7 @@ bool CSceneObject::ExportGame(SExportStreams& F)
     if (IsDynamic()&&m_Flags.is(flDummy)){
     	R_ASSERT(m_pReference);
     	// export spawn packet
-        xrSE_Dummy			dummy; 
+        xrSE_Dummy			dummy;
         strcpy(dummy.s_name, "m_dummy");
         strcpy(dummy.s_name_replace,Name);
         dummy.o_Position.set(PPosition);
@@ -174,7 +174,7 @@ bool CSceneObject::ExportGame(SExportStreams& F)
         // esAnimated=1<<0,	esModel=1<<1, esParticles=1<<2, esSound=1<<3, esRelativePosition=1<<4
         dummy.s_style		= (IsOMotionable()?(1<<0):0)|
         					 (1<<1)|
-                             (IsSoundable()?(1<<3):0); 
+                             (IsSoundable()?(1<<3):0);
 		// verify path
 		// esAnimated
         if (IsOMotionable()){
@@ -198,9 +198,9 @@ bool CSceneObject::ExportGame(SExportStreams& F)
 
         NET_Packet Packet;
         dummy.Spawn_Write	(Packet,TRUE);
-        
+
 	    F.spawn.stream.open_chunk	(F.spawn.chunk++);
-        F.spawn.stream.write		(Packet.B.data,Packet.B.count);
+        F.spawn.stream.w			(Packet.B.data,Packet.B.count);
         F.spawn.stream.close_chunk	();
     	return true;
     }

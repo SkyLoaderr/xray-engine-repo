@@ -30,14 +30,14 @@
 #define GAMEMTL_NONE		u32(-1)
 #define GAMEMTL_FILENAME	"gamemtl.xr"
 
-#ifdef _EDITOR		
-#define GM_NON_GAME	
+#ifdef _EDITOR
+#define GM_NON_GAME
 #endif
-#ifdef _MAX_PLUGIN	
-#define GM_NON_GAME 
+#ifdef _MAX_PLUGIN
+#define GM_NON_GAME
 #endif
 #ifdef _LW_SHADER
-#define GM_NON_GAME 
+#define GM_NON_GAME
 #endif
 
 #ifdef GM_NON_GAME
@@ -67,7 +67,7 @@ public:
     };
 public:
 	string64			name;
-    
+
     Flags32				Flags;
     // physics part
     float				fPHFriction;            // ?
@@ -81,20 +81,20 @@ public:
     float				fVisTransparencyFactor;	// 0.f - 1.f
     float				fSndOcclusionFactor;	// 0.f - 1.f
 public:
-	SGameMtl			()	
+	SGameMtl			()
     {
 		ZeroMemory		(this,sizeof(*this));
 		strcpy			(name,"unknown");
         ID				= -1;
         // physics
-        fPHFriction				= 1.f;          
-        fPHDamping				= 1.f;           
-        fPHSpring				= 1.f;            
-        fPHBounceStartVelocity  = 0.f; 
-        fPHBouncing				= 0.1f;          
-	}               	
-    void 				Load			(CStream& fs);
-    void 				Save			(CFS_Base& fs);
+        fPHFriction				= 1.f;
+        fPHDamping				= 1.f;
+        fPHSpring				= 1.f;
+        fPHBounceStartVelocity  = 0.f;
+        fPHBouncing				= 0.1f;
+	}
+    void 				Load			(IReader& fs);
+    void 				Save			(IWriter& fs);
     IC int				GetID			(){return ID;}
 #ifdef _EDITOR
     void 				FillProp		(PropItemVec& values);
@@ -157,8 +157,8 @@ public:
     IC int				GetID			(){return ID;}
     IC void				SetPair			(int m0, int m1){mtl0=m0; mtl1=m1;}
 	IC bool				IsPair			(int m0, int m1){return !!(((mtl0==m0)&&(mtl1==m1))||((mtl0==m1)&&(mtl1==m0)));}
-    void				Save			(CFS_Base& fs);
-    void				Load			(CStream& fs);
+    void				Save			(IWriter& fs);
+    void				Load			(IReader& fs);
 #ifdef _EDITOR
 	void 				FillProp		(PropItemVec& values);
     void				TransferFromParent(SGameMtlPair* parent);
@@ -259,7 +259,7 @@ public:
 	SGameMtlPair*		GetMaterialPair		(LPCSTR name);
     int					GetParents			(SGameMtlPair* obj, GameMtlPairVec& lst);
 #endif
-                                                              
+
 	// game
 	IC SGameMtlPair*	GetMaterialPair		(u32 idx0, u32 idx1){R_ASSERT((idx0<material_count)&&(idx1<material_count)); return material_pairs_rt[idx1*material_count+idx0];}
 

@@ -17,7 +17,7 @@ DECLARE_MESSAGE(DeviceDestroy);
 DECLARE_MESSAGE(DeviceCreate);
 DECLARE_MESSAGE(AppActivate);
 DECLARE_MESSAGE(AppDeactivate);
-DECLARE_MESSAGE(AppCycleStart);	
+DECLARE_MESSAGE(AppCycleStart);
 DECLARE_MESSAGE(AppCycleEnd);
 
 //-----------------------------------------------------------------------------

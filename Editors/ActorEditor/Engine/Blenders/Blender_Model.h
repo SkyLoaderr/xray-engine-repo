@@ -13,8 +13,8 @@ class ENGINE_API CBlender_Model : public CBlender
 public:
 	virtual		LPCSTR		getComment()	{ return "MODEL: Default"; }
 	
-	virtual		void		Save			(CFS_Base&  FS);
-	virtual		void		Load			(CStream&	FS, WORD version);
+	virtual		void		Save			(IWriter&  FS);
+	virtual		void		Load			(IReader&	FS, WORD version);
 	
 	virtual		void		Compile			(CBlender_Compile& C);
 	

@@ -130,7 +130,7 @@ bool CRenderDevice::Create(){
 	AnsiString sh		= "shaders.xr";
     Engine.FS.m_GameRoot.Update(sh);
 
-    CStream* FS			= 0;
+    IReader* FS			= 0;
 	if (Engine.FS.Exist(sh.c_str()))
 		FS				= Engine.FS.Open(sh.c_str());
     _Create				(FS);
@@ -158,7 +158,7 @@ void CRenderDevice::Destroy(){
 	ELog.Msg( mtInformation, "D3D: device cleared" );
 }
 //---------------------------------------------------------------------------
-void CRenderDevice::_Create(CStream* F)
+void CRenderDevice::_Create(IReader* F)
 {
 	bReady				= TRUE;
 
@@ -360,7 +360,7 @@ bool CRenderDevice::MakeScreenshot(U32Vec& pixels, u32& width, u32& height)
 
     // free managed resource
     Shader.Evict();
-    
+
     IDirect3DSurface9* 	poldZB=0;
     IDirect3DSurface9* 	pZB=0;
     IDirect3DSurface9* 	pRT=0;
@@ -370,7 +370,7 @@ bool CRenderDevice::MakeScreenshot(U32Vec& pixels, u32& width, u32& height)
     CHK_DX(HW.pDevice->GetRenderTarget(0,&poldRT));
     CHK_DX(HW.pDevice->GetDepthStencilSurface(&poldZB));
     CHK_DX(HW.pDevice->GetViewport(&oldViewport));
-    
+
 	CHK_DX(HW.pDevice->CreateRenderTarget(width,height,D3DFMT_A8R8G8B8,D3DMULTISAMPLE_NONE,0,FALSE,&pRT,0));
 	CHK_DX(HW.pDevice->CreateDepthStencilSurface(width,height,HW.Caps.bStencil?D3DFMT_D24S8:D3DFMT_D24X8,D3DMULTISAMPLE_NONE,0,FALSE,&pZB,0));
 	CHK_DX(HW.pDevice->SetRenderTarget(0,pRT));
@@ -383,7 +383,7 @@ bool CRenderDevice::MakeScreenshot(U32Vec& pixels, u32& width, u32& height)
 	R_CHK(HW.pDevice->CreateOffscreenPlainSurface(
 		width,height,D3DFMT_A8R8G8B8,D3DPOOL_SYSTEMMEM,&pFB,NULL));
 	R_CHK(HW.pDevice->GetRenderTargetData(pRT, pFB));
-	
+
 	D3DLOCKED_RECT	D;
 	R_CHK(pFB->LockRect(&D,0,D3DLOCK_NOSYSLOCK));
 	pixels.resize(width*height);
@@ -400,11 +400,11 @@ bool CRenderDevice::MakeScreenshot(U32Vec& pixels, u32& width, u32& height)
     UI.ProgressEnd();
 
     R_CHK(pFB->UnlockRect());
-    
+
 	CHK_DX(HW.pDevice->SetDepthStencilSurface(poldZB));
     CHK_DX(HW.pDevice->SetRenderTarget(0,poldRT));
     CHK_DX(HW.pDevice->SetViewport(&oldViewport));
-    
+
     _RELEASE(pZB);
     _RELEASE(poldZB);
     _RELEASE(pFB);
@@ -414,7 +414,7 @@ bool CRenderDevice::MakeScreenshot(U32Vec& pixels, u32& width, u32& height)
     return true;
 }
 
-void CRenderDevice::Reset(CStream* F, BOOL bKeepTextures)
+void CRenderDevice::Reset(IReader* F, BOOL bKeepTextures)
 {
 	u32 tm_start	= TimerAsync();
 	_Destroy		(bKeepTextures);

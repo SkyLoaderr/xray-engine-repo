@@ -80,9 +80,9 @@ struct STextureParams{
 		mip_filter		= dMIPFilterBox;
         width			= 0;
         height			= 0;
-        detail_scale	= 1;             
+        detail_scale	= 1;
         face_count		= 0;
-        vertex_count	= 0;                       
+        vertex_count	= 0;
 	}
     IC BOOL HasAlpha(){ // исходная текстура содержит альфа канал
     	return flags.is(flHasAlpha);

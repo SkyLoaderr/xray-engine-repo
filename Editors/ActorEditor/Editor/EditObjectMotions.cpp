@@ -37,12 +37,12 @@ void st_AnimParam::Set(CCustomMotion* M, bool loop){
 void st_AnimParam::Update(float dt){
 	if (!bPlay) return;
 	t+=dt;
-    if (t>max_t){ 
+    if (t>max_t){
 #ifdef _EDITOR
 		if (bLooped) t=min_t;
-		else 
+		else
 #endif
-			t=max_t; 
+			t=max_t;
 	}
 }
 
@@ -187,10 +187,10 @@ void CEditableObject::ClearSMotions(){
 }
 
 bool CEditableObject::LoadSMotions(const char* fname){
-	CFileStream F(fname);
+	CFileReader F(fname);
     ClearSMotions();
     // object motions
-    m_SMotions.resize(F.Rdword());
+    m_SMotions.resize(F.r_u32());
 	SetActiveSMotion(0);
     for (SMotionIt m_it=m_SMotions.begin(); m_it!=m_SMotions.end(); m_it++){
         *m_it = xr_new<CSMotion>();
@@ -211,10 +211,10 @@ bool CEditableObject::LoadSMotions(const char* fname){
 }
 
 bool CEditableObject::SaveSMotions(const char* fname){
-	CFS_Memory F;
-    F.Wdword		(m_SMotions.size());
+	CMemoryWriter F;
+    F.w_u32		(m_SMotions.size());
     for (SMotionIt m_it=m_SMotions.begin(); m_it!=m_SMotions.end(); m_it++) (*m_it)->Save(F);
-    F.SaveTo		(fname,0);
+    F.save_to		(fname,0);
     return true;
 }
 

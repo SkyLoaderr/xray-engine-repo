@@ -110,19 +110,19 @@ public:
     };
 
     ColorIndexMap		m_ColorIndices;
-	BYTEVec				m_Selected; 
+	BYTEVec				m_Selected;
     SBase				m_Base;
 
     float				m_fDensity;
 
-    void				SaveColorIndices		(CFS_Base&);
-    bool				LoadColorIndices		(CStream&);
+    void				SaveColorIndices		(IWriter&);
+    bool				LoadColorIndices		(IReader&);
 public:
 						EDetailManager			();
     virtual 			~EDetailManager			();
 
-    bool				Load            		(CStream&);
-    void				Save            		(CFS_Base&);
+    bool				Load            		(IReader&);
+    void				Save            		(IWriter&);
     bool				Export          		(LPCSTR fn);
 
     bool				UpdateHeader			();

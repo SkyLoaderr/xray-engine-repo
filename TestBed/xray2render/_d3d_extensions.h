@@ -17,8 +17,8 @@ public:
     float	        attenuation2;     /* Quadratic attenuation */
     float	        theta;            /* Inner angle of spotlight cone */
     float	        phi;              /* Outer angle of spotlight cone */
-	
-	IC	void		set	(u32 ltType, float x, float y, float z) 
+
+	IC	void		set	(u32 ltType, float x, float y, float z)
 	{
 		VERIFY(sizeof(Flight)==sizeof(D3DLIGHT9));
 		ZeroMemory( this, sizeof(Flight) );
@@ -39,7 +39,7 @@ public:
 #endif
 
 #ifndef NO_XR_MATERIAL
-struct Fmaterial 
+struct Fmaterial
 {
 public:
     Fcolor			diffuse;        /* Diffuse color RGBA */
@@ -47,7 +47,7 @@ public:
     Fcolor		    specular;       /* Specular 'shininess' */
     Fcolor			emissive;       /* Emissive color RGB */
     float			power;          /* Sharpness if specular highlight */
-	
+
 	IC	void		set	(float r, float g, float b)
 	{
 		VERIFY		(sizeof(Fmaterial)==sizeof(D3DMATERIAL9));
@@ -99,8 +99,8 @@ struct	VDeclarator	: public svector<D3DVERTEXELEMENT9, MAXD3DDECLLENGTH+1>
 		*this		= d;
 	}
 	u32		vertex	()				{ return D3DXGetDeclVertexSize(begin(),0);	}
-	BOOL	equal	(VDeclarator& d)	
-	{ 
+	BOOL	equal	(VDeclarator& d)
+	{
 		if (size()!=d.size())	return false;
 		else					return 0==memcmp(begin(),d.begin(),size()*sizeof(D3DVERTEXELEMENT9));
 	}

@@ -40,13 +40,13 @@ public:
 	D3DFORMAT		fTarget;
 	D3DFORMAT		fDepth;
 	u32				dwRefreshRate;
-	
+
 	// caps itself
 	caps_Geometry	vertex;
 	caps_Texturing	pixel;
-	
+
 	BOOL			bStencil;			// stencil buffer present
-	BOOL			bTableFog;			// 
+	BOOL			bTableFog;			//
 
 	// some precalculated values
 	D3DSTENCILOP	soDec, soInc;		// best stencil OPs for shadows

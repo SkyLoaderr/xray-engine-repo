@@ -32,7 +32,7 @@ struct	R_constant_load
 	}
 };
 
-struct	R_constant 
+struct	R_constant
 {
 	string64				name;		// HLSL-name
 	u16						type;		// float=0/integer=1/boolean=2

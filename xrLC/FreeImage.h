@@ -97,28 +97,28 @@ typedef long LONG;
 #endif
 
 typedef struct tagRGBQUAD {
-  BYTE rgbBlue; 
-  BYTE rgbGreen; 
-  BYTE rgbRed; 
-  BYTE rgbReserved; 
-} RGBQUAD; 
+  BYTE rgbBlue;
+  BYTE rgbGreen;
+  BYTE rgbRed;
+  BYTE rgbReserved;
+} RGBQUAD;
 
 typedef struct tagBITMAPINFOHEADER{
   DWORD biSize;
-  LONG  biWidth; 
-  LONG  biHeight; 
-  WORD  biPlanes; 
+  LONG  biWidth;
+  LONG  biHeight;
+  WORD  biPlanes;
   WORD  biBitCount;
-  DWORD biCompression; 
-  DWORD biSizeImage; 
-  LONG  biXPelsPerMeter; 
-  LONG  biYPelsPerMeter; 
-  DWORD biClrUsed; 
+  DWORD biCompression;
+  DWORD biSizeImage;
+  LONG  biXPelsPerMeter;
+  LONG  biYPelsPerMeter;
+  DWORD biClrUsed;
   DWORD biClrImportant;
-} BITMAPINFOHEADER, *PBITMAPINFOHEADER; 
+} BITMAPINFOHEADER, *PBITMAPINFOHEADER;
 
-typedef struct tagBITMAPINFO { 
-  BITMAPINFOHEADER bmiHeader; 
+typedef struct tagBITMAPINFO {
+  BITMAPINFOHEADER bmiHeader;
   RGBQUAD          bmiColors[1];
 } BITMAPINFO, *PBITMAPINFO;
 
@@ -341,7 +341,7 @@ FI_STRUCT(FreeImage) {
 	FI_ConvertLine8To32Proc convert_line_8to32_proc;
 	FI_ConvertLine16To32_555Proc convert_line_16to32_555_proc;
 	FI_ConvertLine16To32_565Proc convert_line_16to32_565_proc;
-	FI_ConvertLine24To32Proc convert_line_24to32_proc;	
+	FI_ConvertLine24To32Proc convert_line_24to32_proc;
 };
 
 FI_STRUCT (Plugin) {

@@ -21,7 +21,7 @@ protected:
 	u32							dwPrimitives;
 public:
 	virtual void Render			(float LOD		);									// LOD - Level Of Detail  [0.0f - min, 1.0f - max], Ignored
-	virtual void Load			(LPCSTR N, CStream *data, u32 dwFlags);
+	virtual void Load			(LPCSTR N, IReader *data, u32 dwFlags);
 	virtual void Copy			(CVisual *pFrom	);
 	virtual void Release		();
 

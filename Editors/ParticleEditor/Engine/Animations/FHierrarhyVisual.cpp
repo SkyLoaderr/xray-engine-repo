@@ -33,19 +33,19 @@ FHierrarhyVisual::~FHierrarhyVisual()
 	children.clear();
 }
 
-void FHierrarhyVisual::Load(const char* N, CStream *data, u32 dwFlags)
+void FHierrarhyVisual::Load(const char* N, IReader *data, u32 dwFlags)
 {
 	CVisual::Load(N,data,dwFlags);
-	if (data->FindChunk(OGF_CHIELDS_L)) 
+	if (data->find_chunk(OGF_CHIELDS_L)) 
 	{
 		// From Link
-		u32 cnt = data->Rdword();
+		u32 cnt = data->r_u32();
 		children.resize(cnt);
 		for (u32 i=0; i<cnt; i++) {
 #ifdef _EDITOR
 			THROW;
 #else
-			u32 ID	= data->Rdword();
+			u32 ID	= data->r_u32();
 			children[i]	= ::Render->getVisual(ID);
 #endif
 		}
@@ -53,12 +53,12 @@ void FHierrarhyVisual::Load(const char* N, CStream *data, u32 dwFlags)
 	}
 	else
 	{	
-    	if (data->FindChunk(OGF_CHILDREN))
+    	if (data->find_chunk(OGF_CHILDREN))
 		{
 			// From stream
-            CStream* OBJ = data->OpenChunk(OGF_CHILDREN);
+            IReader* OBJ = data->open_chunk(OGF_CHILDREN);
             if (OBJ){
-                CStream* O = OBJ->OpenChunk(0);
+                IReader* O = OBJ->open_chunk(0);
                 for (int count=1; O; count++) {
 #ifdef _EDITOR
                     children.push_back	(::Device.Models.Create(O));
@@ -67,26 +67,26 @@ void FHierrarhyVisual::Load(const char* N, CStream *data, u32 dwFlags)
 					sprintf				(name_load,"%s_%d",N,count);
 					children.push_back	(::Render->model_Create(name_load,O));
 #endif
-                    O->Close();
-                    O = OBJ->OpenChunk(count);
+                    O->close();
+                    O = OBJ->open_chunk(count);
                 }
-                OBJ->Close();
+                OBJ->close();
             }
 			bDontDelete = FALSE;
         }
 		else
 		{
 			// From FILE
-			if (data->FindChunk(OGF_CHIELDS)) {
+			if (data->find_chunk(OGF_CHIELDS)) {
                 string32	c_drv;
                 string256	c_dir;
                 string256	fn,fn_full;
                 _splitpath	(N,c_drv,c_dir,0,0);
-                int			cnt = data->Rdword();
+                int			cnt = data->r_u32();
                 children.reserve(cnt);
                 for (int i=0; i<cnt; i++) 
 				{
-                    data->RstringZ		(fn);
+                    data->r_stringZ		(fn);
                     strconcat			(fn_full,c_drv,c_dir,fn);
 #ifdef _EDITOR
                     children.push_back	(::Device.Models.Create(fn_full));

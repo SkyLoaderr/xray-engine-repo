@@ -23,8 +23,6 @@ class CLight;
 class CSceneObject;
 class EDetailManager;
 class CInifile;
-class CStream;
-class CFS_Base;
 class TProperties;
 /*
 int __cdecl _CompareByDist( const void *a, const void *b)
@@ -55,7 +53,7 @@ struct SSceneSummary{
     int			sector_cnt;
     int			portal_cnt;
     int 		sound_source_cnt;
-    
+
     			SSceneSummary(){ZeroMemory(this,sizeof(SSceneSummary));}
     void		FillProp	(PropItemVec& items);
 };
@@ -69,8 +67,8 @@ struct st_Environment{
 
     st_Environment();
     void		Reset();
-	void 		Save			(CFS_Base&);
-	void 		Read			(CStream&);
+	void 		Save			(IWriter&);
+	void 		Read			(IReader&);
 };
 
 DEFINE_VECTOR(st_Environment,EnvList,EnvIt);
@@ -88,8 +86,8 @@ struct st_LevelOptions{
 
     st_LevelOptions();
     // routine
-	void 		Save			(CFS_Base&);
-	void 		Read			(CStream&);
+	void 		Save			(IWriter&);
+	void 		Read			(IReader&);
     void		Reset			();
 	void 		InitDefaultText	();
     void		WriteToLTX		(CInifile* pIni);
@@ -186,10 +184,10 @@ public:
 
 	typedef void (__closure *TAppendObject)(CCustomObject* object);
 
-	bool ReadObject					(CStream& F, CCustomObject*& O);
-	bool ReadObjects				(CStream& F, u32 chunk_id, TAppendObject on_append);
-	void SaveObject					(CCustomObject* O,CFS_Base& F);
-	void SaveObjects				(ObjectList& lst, u32 chunk_id, CFS_Base& F);
+	bool ReadObject					(IReader& F, CCustomObject*& O);
+	bool ReadObjects				(IReader& F, u32 chunk_id, TAppendObject on_append);
+	void SaveObject					(CCustomObject* O,IWriter& F);
+	void SaveObjects				(ObjectList& lst, u32 chunk_id, IWriter& F);
 public:
 	bool Load						(char *_FileName);
 	void Save						(char *_FileName, bool bUndo);

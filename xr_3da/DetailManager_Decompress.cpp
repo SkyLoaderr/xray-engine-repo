@@ -87,7 +87,7 @@ void		CDetailManager::cache_Decompress(Slot* S)
 	CRandom				r_scale		(0x12071980^::Random.randI(32760));
 
 	// Prepare to actual-bounds-calculations
-	Fbox				Bounds;	
+	Fbox				Bounds;
 	Bounds.invalidate	();
 
 	// Decompressing itself
@@ -106,11 +106,11 @@ void		CDetailManager::cache_Decompress(Slot* S)
 			if ((DS.items[2].id!=0xff)&& InterpolateAndDither(alpha255[2],x,z,shift_x,shift_z,d_size,dither))	selected.push_back(2);
 			if ((DS.items[3].id!=0xff)&& InterpolateAndDither(alpha255[3],x,z,shift_x,shift_z,d_size,dither))	selected.push_back(3);
 
-			// Select 
+			// Select
 			if (selected.empty())	continue;
 			u32 index;
 			if (selected.size()==1)	index = selected[0];
-			else					index = selected[r_selection.randI(selected.size())]; 
+			else					index = selected[r_selection.randI(selected.size())];
 
 			CDetail*	Dobj	= objects[DS.items[index].id];
 			SlotItem*	ItemP	= poolSI.create();
@@ -128,7 +128,7 @@ void		CDetailManager::cache_Decompress(Slot* S)
 			float		r_u,r_v,r_range;
 			for (u32 tid=0; tid<triCount; tid++)
 			{
-#ifdef _EDITOR                
+#ifdef _EDITOR
 				Fvector verts[3];
 				SBoxPickInfo& I=pinf[tid];
 				for (int k=0; k<(int)I.inf.size(); k++){
@@ -185,13 +185,13 @@ Device.Statistic.TEST0.End		();
 			Item.C			=	c_f/255.f;
 
 			// Vis-sorting
-			if (!UseVS())	
+			if (!UseVS())
 			{
 				// Always still on CPU pipe
 				Item.vis_ID	= 0;
 			} else {
 				if (Dobj->flags&DO_NO_WAVING)	Item.vis_ID	= 0;
-				else 
+				else
 				{
 					if (::Random.randI(0,3)==0)	Item.vis_ID	= 2;	// Second wave
 					else						Item.vis_ID = 1;	// First wave

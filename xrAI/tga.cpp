@@ -4,7 +4,7 @@
 
 #include "tga.h"
 
-VOID TGAdesc::maketga( CFS_Base& fs ){
+VOID TGAdesc::maketga( IWriter& fs ){
 	R_ASSERT(data);
 	R_ASSERT(width);
 	R_ASSERT(height);
@@ -24,7 +24,7 @@ VOID TGAdesc::maketga( CFS_Base& fs ){
 		hdr.tgaImgSpec.tgaImgDesc = 0x0f | 32;	// flip
 	}
 
-	fs.write(&hdr, sizeof(hdr) );
+	fs.w(&hdr, sizeof(hdr) );
 
 	if( format==IMG_24B ){
 		BYTE ab_buffer[4]={0,0,0,0};
@@ -34,11 +34,11 @@ VOID TGAdesc::maketga( CFS_Base& fs ){
 			BYTE *p = (LPBYTE)data + scanlenght*j;
 			for( int i=0; i<width; i++){
 				BYTE buffer[3] = {p[0],p[1],p[2]};
-				fs.write(buffer, 3 );
+				fs.w(buffer, 3 );
 				p+=4;
 			}
 			if(ab_size)
-				fs.write(ab_buffer, ab_size );
+				fs.w(ab_buffer, ab_size );
 		}
 	}
 	else{
@@ -46,7 +46,7 @@ VOID TGAdesc::maketga( CFS_Base& fs ){
 			BYTE *p = (LPBYTE)data + scanlenght*j;
 			for( int i=0; i<width; i++){
 				BYTE buffer[4] = {p[0],p[1],p[2],p[3]};
-				fs.write(buffer, 4 );
+				fs.w(buffer, 4 );
 				p+=4;
 			}
 		}

@@ -24,90 +24,90 @@
 
 void SceneBuilder::SaveBuild()
 {
-	CFS_Memory F;
+	CMemoryWriter F;
     F.open_chunk	(EB_Version);
-    F.Wdword		(XRCL_CURRENT_VERSION);
+    F.w_u32		(XRCL_CURRENT_VERSION);
     F.close_chunk	();
 
     F.open_chunk	(EB_Parameters);
-    F.write			(&Scene.m_LevelOp.m_BuildParams,sizeof(b_params));
+    F.w				(&Scene.m_LevelOp.m_BuildParams,sizeof(b_params));
     F.close_chunk	();
 
-    F.open_chunk	(EB_Vertices);    
-    F.write			(l_verts,sizeof(b_vertex)*l_vert_cnt);
+    F.open_chunk	(EB_Vertices);
+    F.w				(l_verts,sizeof(b_vertex)*l_vert_cnt);
     F.close_chunk	();
-    
+
     F.open_chunk	(EB_Faces);
-    F.write			(l_faces,sizeof(b_face)*l_face_cnt);
+    F.w				(l_faces,sizeof(b_face)*l_face_cnt);
     F.close_chunk	();
 
     F.open_chunk	(EB_Materials);
-    F.write			(l_materials.begin(),sizeof(b_material)*l_materials.size());
+    F.w				(l_materials.begin(),sizeof(b_material)*l_materials.size());
     F.close_chunk	();
 
     F.open_chunk	(EB_Shaders_Render);
-    F.write			(l_shaders.begin(),sizeof(b_shader)*l_shaders.size());
+    F.w				(l_shaders.begin(),sizeof(b_shader)*l_shaders.size());
     F.close_chunk	();
 
     F.open_chunk	(EB_Shaders_Compile);
-    F.write			(l_shaders_xrlc.begin(),sizeof(b_shader)*l_shaders_xrlc.size());
+    F.w				(l_shaders_xrlc.begin(),sizeof(b_shader)*l_shaders_xrlc.size());
     F.close_chunk	();
 
     F.open_chunk	(EB_Textures);
-    F.write			(l_textures.begin(),sizeof(b_texture)*l_textures.size());
+    F.w				(l_textures.begin(),sizeof(b_texture)*l_textures.size());
     F.close_chunk	();
 
     F.open_chunk	(EB_Glows);
-    F.write			(l_glows.begin(),sizeof(b_glow)*l_glows.size());
+    F.w				(l_glows.begin(),sizeof(b_glow)*l_glows.size());
     F.close_chunk	();
 
     F.open_chunk	(EB_Portals);
-    F.write			(l_portals.begin(),sizeof(b_portal)*l_portals.size());
+    F.w				(l_portals.begin(),sizeof(b_portal)*l_portals.size());
     F.close_chunk	();
 
     F.open_chunk	(EB_Light_control);
     for (vector<sb_light_control>::iterator lc_it=l_light_control.begin(); lc_it!=l_light_control.end(); lc_it++){
-    	F.write		(lc_it->name,sizeof(lc_it->name));
-    	F.Wdword	(lc_it->data.size());
-    	F.write		(lc_it->data.begin(),sizeof(DWORD)*lc_it->data.size());
+    	F.w			(lc_it->name,sizeof(lc_it->name));
+    	F.w_u32		(lc_it->data.size());
+    	F.w			(lc_it->data.begin(),sizeof(DWORD)*lc_it->data.size());
     }
     F.close_chunk	();
 
     F.open_chunk	(EB_Light_static);
-    F.write			(l_light_static.begin(),sizeof(b_light_static)*l_light_static.size());
+    F.w				(l_light_static.begin(),sizeof(b_light_static)*l_light_static.size());
     F.close_chunk	();
 
     F.open_chunk	(EB_Light_dynamic);
-    F.write			(l_light_dynamic.begin(),sizeof(b_light_dynamic)*l_light_dynamic.size());
+    F.w				(l_light_dynamic.begin(),sizeof(b_light_dynamic)*l_light_dynamic.size());
     F.close_chunk	();
 
     F.open_chunk	(EB_LOD_models);
-    F.write			(l_lods.begin(),sizeof(b_lod)*l_lods.size());
+    F.w				(l_lods.begin(),sizeof(b_lod)*l_lods.size());
     F.close_chunk	();
 
     F.open_chunk	(EB_MU_models);
     for (int k=0; k<(int)l_mu_models.size(); k++){
     	b_mu_model&	m= l_mu_models[k];
         // name
-        F.WstringZ	(m.name);
+        F.w_stringZ	(m.name);
         // vertices
-        F.Wdword	(m.vert_cnt);
-	    F.write		(m.verts,sizeof(b_vertex)*m.vert_cnt);
+        F.w_u32		(m.vert_cnt);
+	    F.w			(m.verts,sizeof(b_vertex)*m.vert_cnt);
         // faces
-        F.Wdword	(m.face_cnt);
-	    F.write		(m.faces,sizeof(b_face)*m.face_cnt);
+        F.w_u32		(m.face_cnt);
+	    F.w			(m.faces,sizeof(b_face)*m.face_cnt);
         // lod_id
-        F.Wword		(m.lod_id);
+        F.w_u16		(m.lod_id);
     }
     F.close_chunk	();
-    
+
     F.open_chunk	(EB_MU_refs);
-	F.write			(l_mu_refs.begin(),sizeof(b_mu_reference)*l_mu_refs.size());
+	F.w				(l_mu_refs.begin(),sizeof(b_mu_reference)*l_mu_refs.size());
     F.close_chunk	();
 
     AnsiString fn	= "build.prj";
 	m_LevelPath.Update(fn);
-    F.SaveTo		(fn.c_str(),BUILD_PROJECT_MARK);
+    F.save_to		(fn.c_str(),BUILD_PROJECT_MARK);
 }
 
 int SceneBuilder::CalculateSector(const Fvector& P, float R){
@@ -153,7 +153,7 @@ void SceneBuilder::ResetStructures (){
 //------------------------------------------------------------------------------
 // CEditObject build functions
 //------------------------------------------------------------------------------
-BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEditableMesh* mesh, int sect_num, 
+BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEditableMesh* mesh, int sect_num,
 							b_vertex* verts, int& vert_cnt, int& vert_it, b_face* faces, int& face_cnt, int& face_it)
 {
 	BOOL bResult = TRUE;
@@ -273,7 +273,7 @@ BOOL SceneBuilder::BuildMUObject(CSceneObject* obj)
     UI.SetStatus(temp.c_str());
 
     int model_idx		= -1;
-    
+
     for (int k=0; k<(int)l_mu_models.size(); k++){
     	b_mu_model&	m 	= l_mu_models[k];
     	if (0==strcmp(m.name,O->GetName())){
@@ -288,7 +288,7 @@ BOOL SceneBuilder::BuildMUObject(CSceneObject* obj)
 
     // build model
     if (-1==model_idx){
-	    // build LOD           
+	    // build LOD
         int	lod_id 		= BuildObjectLOD(Fidentity,O,sect_num);
         if (lod_id==-2) return FALSE;
         // build model
@@ -306,7 +306,7 @@ BOOL SceneBuilder::BuildMUObject(CSceneObject* obj)
 	    for(EditMeshIt MESH=O->FirstMesh();MESH!=O->LastMesh();MESH++)
 	    	if (!BuildMesh(Fidentity,O,*MESH,sect_num,M.verts,M.vert_cnt,vert_it,M.faces,M.face_cnt,face_it)) return FALSE;
     }
-    
+
     l_mu_refs.push_back	(b_mu_reference());
 	b_mu_reference&	R	= l_mu_refs.back();
     R.model_index		= model_idx;
@@ -378,7 +378,7 @@ BOOL SceneBuilder::BuildSun(b_light* b, const Flags32& usage, svector<WORD,16>* 
     if (usage.is(CLight::flAffectStatic)){
 	    b_params& P			= Scene.m_LevelOp.m_BuildParams;
     	if (!P.area_quality){
-        	// single light	        
+        	// single light
             l_light_static.push_back(b_light_static());
     	    b_light_static& sl	= l_light_static.back();
 	        sl.controller_ID 	= b->controller_ID;
@@ -427,7 +427,7 @@ BOOL SceneBuilder::BuildSun(b_light* b, const Flags32& usage, svector<WORD,16>* 
         dl.data			    = b->data;
         dl.sectors			= *sectors;
     }
-	
+
 	return TRUE;
 }
 
@@ -465,7 +465,7 @@ BOOL SceneBuilder::BuildPointLight(b_light* b, const Flags32& usage, svector<WOR
         dl.data			    = b->data;
         dl.sectors			= *sectors;
     }
-	
+
 	return TRUE;
 }
 
@@ -475,10 +475,10 @@ BOOL SceneBuilder::BuildLight(CLight* e)
     	return FALSE;
 
     b_light	L;
-    L.data			= e->m_D3D; 
+    L.data			= e->m_D3D;
     L.data.mul		(e->m_Brightness);
     L.controller_ID	= BuildLightControl("all"); // e->controller_name?e->controller_name:"all"
-    
+
 	svector<WORD,16>* lpSectors;
     if (e->m_Flags.is(CLight::flAffectDynamic)){
 		svector<WORD,16> sectors;
@@ -505,13 +505,13 @@ BOOL SceneBuilder::BuildLight(CLight* e)
                 if (vis==fvPartialOutside)
                     sectors.push_back(_S->sector_num);
             }
-            if (sectors.empty()) return FALSE; 
+            if (sectors.empty()) return FALSE;
         }else{
             sectors.push_back(m_iDefaultSectorNum);
         }
     }
 
-    
+
     switch (e->m_D3D.type){
     case D3DLIGHT_DIRECTIONAL: 	return BuildSun			(&L,e->m_Flags,lpSectors);
     case D3DLIGHT_POINT:		return BuildPointLight	(&L,e->m_Flags,lpSectors,0);
@@ -577,7 +577,7 @@ int SceneBuilder::BuildShader(const char * s){
     strcpy(sh.name,s);
     int sh_id = FindInShaders(&sh);
     if (sh_id<0){
-        if (!Device.Shader._FindBlender(sh.name)){ 
+        if (!Device.Shader._FindBlender(sh.name)){
         	ELog.DlgMsg(mtError,"Can't find engine shader: %s",sh.name);
             return -1;
         }
@@ -604,7 +604,7 @@ int SceneBuilder::BuildShaderXRLC(const char * s){
     int sh_id = FindInShadersXRLC(&sh);
     if (sh_id<0){
         l_shaders_xrlc.push_back(sh);
-        if (!Device.ShaderXRLC.Get(sh.name)){ 
+        if (!Device.ShaderXRLC.Get(sh.name)){
         	ELog.DlgMsg(mtError,"Can't find compiler shader: %s",sh.name);
             return -1;
         }
@@ -650,7 +650,7 @@ int	SceneBuilder::BuildObjectLOD(const Fmatrix& parent, CEditableObject* e, int 
     if (!Engine.FS.Exist(&Engine.FS.m_Textures,fname.c_str())){
 		ELog.DlgMsg(mtError,"Can't find object LOD texture: %s",fname.c_str());
     	return -2;
-    }    
+    }
 
     b_material 		mtl;
     mtl.surfidx		= BuildTexture		(lod_name.c_str());
@@ -670,9 +670,9 @@ int	SceneBuilder::BuildObjectLOD(const Fmatrix& parent, CEditableObject* e, int 
     Fvector2 		t[4];
     for (int frame=0; frame<LOD_SAMPLE_COUNT; frame++){
         e->GetLODFrame(frame,p,t,&parent);
-        for (int k=0; k<4; k++){ 
-            b.faces[frame].v[k].set(p[k]); 
-            b.faces[frame].t[k].set(t[k]); 
+        for (int k=0; k<4; k++){
+            b.faces[frame].v[k].set(p[k]);
+            b.faces[frame].t[k].set(t[k]);
         }
     }
     b.dwMaterial	= mtl_idx;
@@ -738,12 +738,12 @@ BOOL SceneBuilder::ParseStaticObjects(ObjectList& lst, LPCSTR prefix)
             if (obj->IsStatic()) 		bResult = BuildObject(obj);
             else if (obj->IsMUStatic()) bResult = BuildMUObject(obj);
         }break;
-        case OBJCLASS_GROUP:{ 
+        case OBJCLASS_GROUP:{
             CGroupObject* group = (CGroupObject*)(*_F);
             bResult = ParseStaticObjects(group->GetObjects(),group->Name);
         }break;
         }// end switch
-        if (!bResult){ 
+        if (!bResult){
             ELog.DlgMsg(mtError,"Failed to build object: '%s'",(*_F)->Name);
         	break;
         }

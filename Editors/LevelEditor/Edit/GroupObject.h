@@ -10,12 +10,12 @@ class CGroupObject: public CCustomObject{
     typedef CCustomObject inherited;
     void			AppendObject	(CCustomObject* object);
     void			RemoveObject	(CCustomObject* object);
-    Fbox			m_BBox; 
+    Fbox			m_BBox;
 
     enum{
     	flInitFromFirstObject
     };
-    Flags32			m_Flags;                                   
+    Flags32			m_Flags;
 	void 			OnDestroy		();
 public:
 					CGroupObject	(LPVOID data, LPCSTR name);
@@ -46,8 +46,8 @@ public:
     virtual void 	OnUpdateTransform();
 	virtual void 	OnFrame			();
 
-	virtual bool 	Load			(CStream& F);
-	virtual void 	Save			(CFS_Base& F);
+	virtual bool 	Load			(IReader& F);
+	virtual void 	Save			(IWriter& F);
     virtual bool	ExportGame		(SExportStreams& data);
 
     // device dependent routine

@@ -9,7 +9,7 @@
 namespace CDB {
 	const u32 edge_open = 0xffffffff;
 
-	class ENGINE_API Collector  
+	class ENGINE_API Collector
 	{
 		vector<Fvector>	verts;
 		vector<TRI>		faces;
@@ -65,7 +65,7 @@ namespace CDB {
 			faces.push_back(T);
 		}
 		void			calc_adjacency	();
-		
+
 		Fvector*		getV()	{ return &*verts.begin();	}
 		u32				getVS()	{ return verts.size();	}
 		TRI*			getT()	{ return &*faces.begin();	}
@@ -89,7 +89,7 @@ namespace CDB {
 		u32			VPack(Fvector& V);
 	public:
 		CollectorPacked	(const Fbox &bb, int apx_vertices=5000, int apx_faces=5000);
-		
+
 		void			add_face(
 			Fvector& v0, Fvector& v1, Fvector& v2,	// vertices
 			u32 e01, u32 e12, u32 e20,		// edges

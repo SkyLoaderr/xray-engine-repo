@@ -79,7 +79,7 @@ TfrmText* __fastcall TfrmText::ShowEditor(AnsiString& txt, LPCSTR caption, u32 f
     form->OnApplyClick 		= on_apply;
     form->OnCloseClick		= on_close;
     form->OnCodeInsight		= on_insight;
-    
+
     form->Show();
     return form;
 }
@@ -98,7 +98,7 @@ bool __fastcall TfrmText::ShowModalEditor(AnsiString& txt, LPCSTR caption, u32 f
     form->OnApplyClick 		= on_apply;
     form->OnCloseClick		= on_close;
     form->OnCodeInsight		= on_insight;
-    
+
 	return (form->ShowModal()==mrOk);
 }
 //---------------------------------------------------------------------------
@@ -119,7 +119,7 @@ void __fastcall TfrmText::mmTextChange(TObject *Sender)
 void __fastcall TfrmText::FormClose(TObject *Sender, TCloseAction &Action)
 {
 	Action = caFree;
-    form = 0;	
+    form = 0;
 }
 //---------------------------------------------------------------------------
 
@@ -128,8 +128,8 @@ void __fastcall TfrmText::ebLoadClick(TObject *Sender)
 	AnsiString fn;
 	if (Engine.FS.GetOpenName(Engine.FS.m_Import,fn,false,NULL,4)){
     	string4096 buf;
-    	CStream* F = Engine.FS.Open(fn.c_str());
-        F->RstringZ	(buf);
+    	IReader* F = Engine.FS.Open(fn.c_str());
+        F->r_stringZ	(buf);
         mmText->Text= buf;
         Engine.FS.Close(F);
     }
@@ -140,9 +140,9 @@ void __fastcall TfrmText::ebSaveClick(TObject *Sender)
 {
 	AnsiString fn;
 	if (Engine.FS.GetSaveName(Engine.FS.m_Import,fn,NULL,4)){
-    	CFS_Memory F;
-        F.WstringZ	(mmText->Text.c_str());
-        F.SaveTo	(fn.c_str(),0);
+    	CMemoryWriter F;
+        F.w_stringZ	(mmText->Text.c_str());
+        F.save_to	(fn.c_str(),0);
     }
 }
 //---------------------------------------------------------------------------
@@ -180,7 +180,7 @@ void __fastcall TfrmText::mmTextKeyUp(TObject *Sender, WORD &Key,
 
 void __fastcall TfrmText::ebClearClick(TObject *Sender)
 {
-	mmText->Clear();	
+	mmText->Clear();
 }
 //---------------------------------------------------------------------------
 

@@ -14,8 +14,8 @@ public:
 public:
                 CLAItem				();
 	void		InitDefault			();
-    void		Load				(CStream& F);
-    void		Save				(CFS_Base& F);
+    void		Load				(IReader& F);
+    void		Save				(IWriter& F);
     DWORD		Interpolate			(int frame);
     DWORD		Calculate			(float T, int& frame);
     void		Resize				(int new_len);

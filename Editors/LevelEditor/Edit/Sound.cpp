@@ -79,10 +79,10 @@ bool CSound::RayPick(float& distance, const Fvector& start, const Fvector& direc
 }
 //----------------------------------------------------
 
-bool CSound::Load(CStream& F){
+bool CSound::Load(IReader& F){
 	DWORD version = 0;
 
-    R_ASSERT(F.ReadChunk(SOUND_CHUNK_VERSION,&version));
+    R_ASSERT(F.r_chunk(SOUND_CHUNK_VERSION,&version));
     if(version!=SOUND_VERSION){
         ELog.DlgMsg( mtError, "CSound: Unsupported version.");
         return false;
@@ -91,25 +91,25 @@ bool CSound::Load(CStream& F){
 	inherited::Load(F);
 
     string1024		buf;
-    R_ASSERT(F.FindChunk(SOUND_CHUNK_PARAMS2));
-    F.RstringZ		(buf); m_WAVName=buf;
-    m_Range 		= F.Rfloat();
+    R_ASSERT(F.find_chunk(SOUND_CHUNK_PARAMS2));
+    F.r_stringZ		(buf); m_WAVName=buf;
+    m_Range 		= F.r_float();
 
     UpdateTransform	();
 
     return true;
 }
 
-void CSound::Save(CFS_Base& F){
+void CSound::Save(IWriter& F){
 	inherited::Save(F);
 
 	F.open_chunk	(SOUND_CHUNK_VERSION);
-	F.Wword			(SOUND_VERSION);
+	F.w_u16			(SOUND_VERSION);
 	F.close_chunk	();
 
 	F.open_chunk	(SOUND_CHUNK_PARAMS2);
-	F.WstringZ		(m_WAVName.c_str());
-	F.Wfloat		(m_Range);
+	F.w_stringZ		(m_WAVName.c_str());
+	F.w_float		(m_Range);
 	F.close_chunk	();
 }
 
@@ -126,7 +126,7 @@ void CSound::FillProp(LPCSTR pref, PropItemVec& values)
 #include "scene.h"
 bool CSound::GetSummaryInfo(SSceneSummary* inf)
 {
-	if (!m_WAVName.IsEmpty()) inf->waves.push_back(m_WAVName); 
+	if (!m_WAVName.IsEmpty()) inf->waves.push_back(m_WAVName);
     inf->sound_source_cnt++;
 	return true;
 }

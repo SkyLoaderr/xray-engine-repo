@@ -11,8 +11,8 @@
 
 // refs
 class CEnvelope;
-class CFS_Base;
-class CStream;
+class IWriter;
+class IReader;
 
 enum EChannelType{
 	ctUnsupported = -1,
@@ -66,8 +66,8 @@ public:
 
 	void			SetParam		(int s, int e, float fps){iFrameStart=s; iFrameEnd=e; fFPS=fps;}
 
-	virtual void	Save			(CFS_Base& F);
-	virtual bool	Load			(CStream& F);
+	virtual void	Save			(IWriter& F);
+	virtual bool	Load			(IReader& F);
 
 	virtual void	SaveMotion		(const char* buf)=0;
 	virtual bool	LoadMotion		(const char* buf)=0;
@@ -87,8 +87,8 @@ public:
 	virtual			~COMotion		();
 
 	void			Evaluate		(float t, Fvector& T, Fvector& R);
-	virtual void	Save			(CFS_Base& F);
-	virtual bool	Load			(CStream& F);
+	virtual void	Save			(IWriter& F);
+	virtual bool	Load			(IReader& F);
 
 	virtual void	SaveMotion		(const char* buf);
 	virtual bool	LoadMotion		(const char* buf);
@@ -109,7 +109,7 @@ class ENGINE_API CSMotion: public CCustomMotion{
 	BoneMotionVec	bone_mots;
 public:
     int				iBoneOrPart;
-    float			fSpeed;                      
+    float			fSpeed;
     float			fAccrue;
     float			fFalloff;
     float			fPower;
@@ -130,8 +130,8 @@ public:
 	void			SetBoneOrPart	(int idx)		{iBoneOrPart=idx;}
 	u32			GetMotionFlag	(int bone_idx)	{return bone_mots[bone_idx].flag;}
 
-	virtual void	Save			(CFS_Base& F);
-	virtual bool	Load			(CStream& F);
+	virtual void	Save			(IWriter& F);
+	virtual bool	Load			(IReader& F);
 
 	virtual void	SaveMotion		(const char* buf);
 	virtual bool	LoadMotion		(const char* buf);

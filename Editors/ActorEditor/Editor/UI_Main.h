@@ -53,7 +53,7 @@ protected:
         flUpdateScene	= (1<<1),
         flResize		= (1<<2),
         flNeedQuit		= (1<<3),
-    };	
+    };
 	Flags32 m_Flags;
 protected:
 	long m_StartTime;
@@ -112,7 +112,7 @@ public:
     virtual 		~TUI			();
 
     void			Quit			()	{	m_Flags.set(flNeedQuit,TRUE); }
-    
+
     IC HANDLE 		GetHWND			()	{   return m_D3DWindow->Handle; }
     int 			GetRenderWidth	()	{   return Device.dwWidth; }
     int 			GetRenderHeight	()	{   return Device.dwHeight; }

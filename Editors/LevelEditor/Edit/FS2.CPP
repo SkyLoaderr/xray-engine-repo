@@ -4,9 +4,9 @@
 #include "FS2.h"
 
 // memory
-CMemoryStream::~CMemoryStream() 
-{	
-	xr_free(data);	
+CMemoryStream::~CMemoryStream()
+{
+	xr_free(data);
 }
 
 void CMemoryStream::write(const void* ptr, u32 count)

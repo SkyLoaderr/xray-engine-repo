@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "image.h"      
+#include "image.h"
 #include "texture.h"
 #include "std_classes.h"
 #include "xr_avi.h"
@@ -456,10 +456,10 @@ _DDS:
 	{
 		// Load and get header
 		D3DXIMAGE_INFO			IMG;
-		CStream* S				= Engine.FS.Open	(fn);
-		mem						= S->Length			();
+		IReader* S				= Engine.FS.Open	(fn);
+		mem						= S->length			();
 		R_ASSERT				(S);
-		R_CHK					(D3DXGetImageInfoFromFileInMemory	(S->Pointer(),S->Length(),&IMG));
+		R_CHK					(D3DXGetImageInfoFromFileInMemory	(S->pointer(),S->length(),&IMG));
 		if (IMG.ResourceType	== D3DRTYPE_CUBETEXTURE)			goto _DDS_CUBE;
 		else														goto _DDS_2D;
 
@@ -467,7 +467,7 @@ _DDS_CUBE:
 		{
 			R_CHK(D3DXCreateCubeTextureFromFileInMemoryEx(
 				HW.pDevice,
-				S->Pointer(),S->Length(),
+				S->pointer(),S->length(),
 				D3DX_DEFAULT,
 				IMG.MipLevels,0,
 				IMG.Format,
@@ -493,16 +493,16 @@ _DDS_2D:
 		{
 			// Check for LMAP and compress if needed
 			strlwr					(fn);
-			if (psDeviceFlags.is(rsCompressLMAPs)	&& strstr(fn,"lmap#"))	
+			if (psDeviceFlags.is(rsCompressLMAPs)	&& strstr(fn,"lmap#"))
 			{
 				IMG.Format			= D3DFMT_DXT1;
 			}
 
 			// Load   SYS-MEM-surface, bound to device restrictions
 			IDirect3DTexture9*		T_sysmem;
-			R_CHK(D3DXCreateTextureFromFileInMemoryEx( 
+			R_CHK(D3DXCreateTextureFromFileInMemoryEx(
 				HW.pDevice,
-				S->Pointer(),S->Length(),
+				S->pointer(),S->length(),
 				D3DX_DEFAULT,D3DX_DEFAULT,
 				IMG.MipLevels,0,
 				IMG.Format,

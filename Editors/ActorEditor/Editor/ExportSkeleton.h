@@ -136,7 +136,7 @@ class CExportSkeleton{
         std::vector<Vsplit>	pmap_vsplit;
         std::vector<WORD>	pmap_faces;
 
-        void 			Save	(CFS_Base& F, BOOL b2Link);
+        void 			Save	(IWriter& F, BOOL b2Link);
 
 		void 			MakeProgressive();
         SSplit			(CSurface* surf, const Fbox& bb);
@@ -149,9 +149,9 @@ class CExportSkeleton{
     int     FindSplit			(LPCSTR shader, LPCSTR texture);
 public:
 			CExportSkeleton		(CEditableObject* object);
-    bool    Export				(CFS_Base& F);
-    bool    ExportGeometry		(CFS_Base& F);
-    bool    ExportMotions		(CFS_Base& F);
+    bool    Export				(IWriter& F);
+    bool    ExportGeometry		(IWriter& F);
+    bool    ExportMotions		(IWriter& F);
 };
 
 #endif

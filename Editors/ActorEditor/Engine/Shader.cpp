@@ -12,7 +12,7 @@
 //////////////////////////////////////////////////////////////////////
 
 
-BOOL	SPass::equal	(SPass& P)	
+BOOL	SPass::equal	(SPass& P)
 {
 	if (state		!= P.state)				return FALSE;
 	if (ps			!= P.ps)				return FALSE;
@@ -50,9 +50,9 @@ BOOL ShaderElement::equal	(ShaderElement* S)
 //
 BOOL Shader::equal	(Shader& S)
 {
-	return 
-		lod0->equal(S.lod0) && 
-		lod1->equal(S.lod1) && 
+	return
+		lod0->equal(S.lod0) &&
+		lod1->equal(S.lod1) &&
 		lighting->equal(S.lighting);
 }
 BOOL Shader::equal	(Shader* S)

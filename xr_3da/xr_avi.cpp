@@ -56,7 +56,7 @@ BOOL CAviPlayerCustom::Load (char* fn)
 	if( aviIC == 0 )	return FALSE;
 
 	if( ICERR_OK != ICDecompressBegin(aviIC, &aviInFormat, &aviOutFormat) ) return FALSE;
-	
+
 	return TRUE;
 }
 

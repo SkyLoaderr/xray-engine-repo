@@ -23,35 +23,35 @@ void CLAItem::InitDefault(){
 	Keys[0]		= 0x00000000;
 }
 
-void CLAItem::Load(CStream& F)
+void CLAItem::Load(IReader& F)
 {
-	R_ASSERT(F.FindChunk(CHUNK_ITEM_COMMON));
-    F.RstringZ		(cName);
-    fFPS			= F.Rfloat();
-    iFrameCount		= F.Rdword();
+	R_ASSERT(F.find_chunk(CHUNK_ITEM_COMMON));
+    F.r_stringZ		(cName);
+    fFPS			= F.r_float();
+    iFrameCount		= F.r_u32();
 
     int key_cnt,key;
-	R_ASSERT(F.FindChunk(CHUNK_ITEM_KEYS));
-	key_cnt			= F.Rdword();
+	R_ASSERT(F.find_chunk(CHUNK_ITEM_KEYS));
+	key_cnt			= F.r_u32();
     for (int i=0; i<key_cnt; i++){
-    	key			= F.Rdword	();
-        Keys[key]	= F.Rdword();
+    	key			= F.r_u32	();
+        Keys[key]	= F.r_u32();
     }
 }
 
-void CLAItem::Save(CFS_Base& F)
+void CLAItem::Save(IWriter& F)
 {
     F.open_chunk	(CHUNK_ITEM_COMMON);
-    F.WstringZ		(cName);
-    F.Wfloat		(fFPS);
-    F.Wdword		(iFrameCount);
+    F.w_stringZ		(cName);
+    F.w_float		(fFPS);
+    F.w_u32		(iFrameCount);
 	F.close_chunk	();
 
     F.open_chunk	(CHUNK_ITEM_KEYS);
-    F.Wdword		(Keys.size());
+    F.w_u32		(Keys.size());
     for (KeyPairIt it=Keys.begin(); it!=Keys.end(); it++){
-		F.Wdword	(it->first);
-		F.Wdword	(it->second);
+		F.w_u32	(it->first);
+		F.w_u32	(it->second);
     }
 	F.close_chunk	();
 }
@@ -187,19 +187,19 @@ void ELightAnimLibrary::Load()
 {
 	AnsiString fn="lanims.xr";
     Engine.FS.m_ServerRoot.Update(fn);
-	CStream* fs=Engine.FS.Open(fn.c_str());
+	IReader* fs=Engine.FS.Open(fn.c_str());
     if (fs){
-        CStream* OBJ = fs->OpenChunk(CHUNK_ITEM_LIST);
+        IReader* OBJ = fs->open_chunk(CHUNK_ITEM_LIST);
         if (OBJ){
-	        CStream* O   = OBJ->OpenChunk(0);
+	        IReader* O   = OBJ->open_chunk(0);
     	    for (int count=1; O; count++) {
         	    CLAItem* I = xr_new<CLAItem>();
                 I->Load(*O);
                 Items.push_back(I);
-            	O->Close();
-	            O = OBJ->OpenChunk(count);
+            	O->close();
+	            O = OBJ->open_chunk(count);
     	    }
-	        OBJ->Close();
+	        OBJ->close();
         }
 
 		Engine.FS.Close(fs);
@@ -208,7 +208,7 @@ void ELightAnimLibrary::Load()
 
 void ELightAnimLibrary::Save()
 {
-	CFS_Memory F;
+	CMemoryWriter F;
     F.open_chunk	(CHUNK_ITEM_LIST);
     int count = 0;
 	for (LAItemIt it=Items.begin(); it!=Items.end(); it++){
@@ -220,7 +220,7 @@ void ELightAnimLibrary::Save()
 
 	AnsiString fn="lanims.xr";
     Engine.FS.m_ServerRoot.Update(fn);
-    F.SaveTo(fn.c_str(),0);
+    F.save_to(fn.c_str(),0);
 }
 
 void ELightAnimLibrary::Reload()

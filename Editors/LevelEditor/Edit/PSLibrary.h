@@ -41,7 +41,7 @@ public:
 
 	PS::SDef*			GetCurrentPS	(){return m_CurrentPS.IsEmpty()?0:FindPS(m_CurrentPS.c_str());}
     PS::SDef*			ChoosePS		(bool bSetCurrent=true);
-    
+
     void				Reload			();
     void				Save			();
 };

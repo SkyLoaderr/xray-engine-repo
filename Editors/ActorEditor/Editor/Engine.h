@@ -6,10 +6,10 @@
 #define AFX_ENGINE_H__22802DD7_D7EB_4234_9781_E237657471AC__INCLUDED_
 #pragma once
 
-#include "FS.h"
+#include "ELog.h"
 #include "FileSystem.h"
 #include "xrCPU_Pipe.h"
-                      
+
 class ENGINE_API CEngine
 {
 	HMODULE				hPSGP;

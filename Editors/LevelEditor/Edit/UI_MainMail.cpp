@@ -21,7 +21,7 @@ void TUI::CheckMailslot()
 {
     DWORD cbMessage, cMessage, cbRead;
 	BOOL fResult;
-	LPSTR lpszBuffer; 
+	LPSTR lpszBuffer;
 
     cbMessage = cMessage = cbRead = 0;
     fResult = GetMailslotInfo(hMailSlot,	// mailslot handle
@@ -31,23 +31,23 @@ void TUI::CheckMailslot()
         (LPDWORD) NULL);					// no read time-out
 	R_ASSERT2(fResult,"Can't get mailslot info");
 	if (cbMessage == MAILSLOT_NO_MESSAGE) return;
-    while (cMessage != 0)  // retrieve all messages    
-	{ 
-		// Allocate memory for the message.  
-		lpszBuffer = (LPSTR) GlobalAlloc(GPTR, cbMessage);          
-		lpszBuffer[0] = '\0'; 
-		fResult = ReadFile(hMailSlot, lpszBuffer, cbMessage, &cbRead, (LPOVERLAPPED) NULL);  
+    while (cMessage != 0)  // retrieve all messages
+	{
+		// Allocate memory for the message.
+		lpszBuffer = (LPSTR) GlobalAlloc(GPTR, cbMessage);
+		lpszBuffer[0] = '\0';
+		fResult = ReadFile(hMailSlot, lpszBuffer, cbMessage, &cbRead, (LPOVERLAPPED) NULL);
 		if (!fResult) {
 			GlobalFree((HGLOBAL) lpszBuffer);
 			throw Exception("Can't ReadFile");
 		}
 		OnReceiveMail(lpszBuffer);
 		GlobalFree((HGLOBAL) lpszBuffer);
-		fResult = GetMailslotInfo(hMailSlot,	// mailslot handle 
-			(LPDWORD) NULL,							// no maximum message size 
-			&cbMessage,								// size of next message 
-			&cMessage,								// number of messages 
-			(LPDWORD) NULL);						// no read time-out  
+		fResult = GetMailslotInfo(hMailSlot,	// mailslot handle
+			(LPDWORD) NULL,							// no maximum message size
+			&cbMessage,								// size of next message
+			&cMessage,								// number of messages
+			(LPDWORD) NULL);						// no read time-out
 		R_ASSERT2(fResult,"Can't get mailslot info");
     }
 }
@@ -69,7 +69,7 @@ void TUI::OnReceiveMail(LPCSTR msg)
                     break;
                 }
             }
-        }else if (p[0]=="quit"){ 
+        }else if (p[0]=="quit"){
         	ELog.Msg(mtInformation,"'%s EDITOR': Super critical update!",AnsiString(_EDITOR_FILE_NAME_).UpperCase());
         	Command(COMMAND_SAVE_BACKUP);
         	Command(COMMAND_QUIT);
@@ -81,4 +81,4 @@ void TUI::OnReceiveMail(LPCSTR msg)
     }
 }
 //---------------------------------------------------------------------------
- 
+

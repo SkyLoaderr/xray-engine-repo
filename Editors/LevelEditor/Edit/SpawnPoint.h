@@ -33,16 +33,16 @@ public:
         void		Destroy	();
         bool		Valid	(){return m_Data;}
 
-        void		Save	(CFS_Base&);
-        bool		Load	(CStream&);
+        void		Save	(IWriter&);
+        bool		Load	(IReader&);
 		bool 		ExportGame(SExportStreams& F, CSpawnPoint* owner);
-        
+
 		void		FillProp(LPCSTR pref, PropItemVec& values);
 	};
 
 	SSpawnData    	m_SpawnData;
 	CCustomObject*	m_AttachedObject;
-    
+
     EPointType		m_Type;
     DWORD			m_dwTeamID;
 
@@ -68,8 +68,8 @@ public:
 
 	virtual void 	OnFrame			();
 
-  	virtual bool 	Load			(CStream&);
-	virtual void 	Save			(CFS_Base&);
+  	virtual bool 	Load			(IReader&);
+	virtual void 	Save			(IWriter&);
     virtual bool	ExportGame		(SExportStreams& data);
 
 	virtual void	FillProp		(LPCSTR pref, PropItemVec& values);

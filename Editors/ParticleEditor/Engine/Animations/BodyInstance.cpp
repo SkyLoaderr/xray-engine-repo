@@ -14,15 +14,15 @@ int			psSkeletonUpdate	= 32;
 const float	fAA					= 1.5f;	// anim-change acceleration
 
 // High level control
-void CMotionDef::Load(CKinematics* P, CStream* MP, u32 fl)
+void CMotionDef::Load(CKinematics* P, IReader* MP, u32 fl)
 {
 	// params
-	bone_or_part= MP->Rword(); // bCycle?part_id:bone_id;
-	motion		= MP->Rword(); // motion_id
-	speed		= Quantize(MP->Rfloat());
-	power		= Quantize(MP->Rfloat());
-	accrue		= Quantize(MP->Rfloat());
-	falloff		= Quantize(MP->Rfloat());
+	bone_or_part= MP->r_u16(); // bCycle?part_id:bone_id;
+	motion		= MP->r_u16(); // motion_id
+	speed		= Quantize(MP->r_float());
+	power		= Quantize(MP->r_float());
+	accrue		= Quantize(MP->r_float());
+	falloff		= Quantize(MP->r_float());
 	flags		= fl;
 	if (!(flags&esmFX) && (falloff>=accrue)) falloff = accrue-1;
 }
@@ -531,7 +531,7 @@ void CKinematics::Copy(CVisual *P)
 	Update_ID		= ::Random.randI(psSkeletonUpdate);
 }
 
-void CKinematics::Load(const char* N, CStream *data, u32 dwFlags)
+void CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 {
 	inherited::Load(N,data, dwFlags);
 
@@ -545,8 +545,8 @@ void CKinematics::Load(const char* N, CStream *data, u32 dwFlags)
 	// Load bones
 	vector<LPSTR>	L_parents;
 
-	R_ASSERT(data->FindChunk(OGF_BONE_NAMES));
-	u32 dwCount = data->Rdword();
+	R_ASSERT(data->find_chunk(OGF_BONE_NAMES));
+	u32 dwCount = data->r_u32();
 
 	for (; dwCount; dwCount--)
 	{
@@ -554,16 +554,16 @@ void CKinematics::Load(const char* N, CStream *data, u32 dwFlags)
 
 		// Bone
 		int		ID = bones->size();
-		data->RstringZ(buf);	strlwr(buf);
+		data->r_stringZ(buf);	strlwr(buf);
 		CBoneData*	pBone = xr_new<CBoneData> (ID);
 		bones->push_back(pBone);
 		bone_map->insert(make_pair(xr_strdup(buf),ID));
 
 		// It's parent
-		data->RstringZ(buf);	strlwr(buf);
+		data->r_stringZ(buf);	strlwr(buf);
 		L_parents.push_back(xr_strdup(buf));
 
-		data->Read(&pBone->obb,sizeof(Fobb));
+		data->r(&pBone->obb,sizeof(Fobb));
 	}
 
 	// Attach bones to their parents
@@ -589,17 +589,17 @@ void CKinematics::Load(const char* N, CStream *data, u32 dwFlags)
 		xr_free(L_parents[aaa]);
 
 	// Load animation
-	CStream* MS = data->OpenChunk(OGF_MOTIONS);
+	IReader* MS = data->open_chunk(OGF_MOTIONS);
 	u32 dwCNT = 0;
-	MS->ReadChunkSafe	(0,&dwCNT,sizeof(dwCNT));
+	MS->r_chunk_safe	(0,&dwCNT,sizeof(dwCNT));
 	for (u32 M=0; M<dwCNT; M++)
 	{
-		R_ASSERT(MS->FindChunk(M+1));
+		R_ASSERT(MS->find_chunk(M+1));
         char mname[128];
-		MS->RstringZ(mname);
+		MS->r_stringZ(mname);
 		motion_map->insert(make_pair(xr_strdup(strlwr(mname)),M));
 
-		u32 dwLen = MS->Rdword();
+		u32 dwLen = MS->r_u32();
 		for (i=0; i<bones->size(); i++)
 		{
 			CMotion TMP;
@@ -607,74 +607,74 @@ void CKinematics::Load(const char* N, CStream *data, u32 dwFlags)
 			for (u32 k=0; k<dwLen; k++)
 			{
 				CKeyQ K;
-				MS->Read(&K,sizeof(K));
+				MS->r(&K,sizeof(K));
 				TMP.Keys.push_back(K);
 			}
 			(*bones)[i]->Motions.push_back(TMP);
 		}
 	}
-	MS->Close();
+	MS->close();
 
 	// Load definitions
-	CStream* MP = data->OpenChunk(OGF_SMPARAMS2);
+	IReader* MP = data->open_chunk(OGF_SMPARAMS2);
     if (MP){
-	    WORD vers = MP->Rword();
+	    WORD vers = MP->r_u16();
         R_ASSERT(vers==xrOGF_SMParamsVersion);
         // partitions
         WORD part_count;
-        part_count = MP->Rword();
+        part_count = MP->r_u16();
         string128 buf;
         for (WORD part_i=0; part_i<part_count; part_i++){
             CPartDef&	PART	= (*partition)[part_i];
-            MP->RstringZ(buf);
+            MP->r_stringZ(buf);
             PART.Name			= _strlwr(xr_strdup(buf));
-            PART.bones.resize	(MP->Rword());
-            MP->Read			(&*PART.bones.begin(),PART.bones.size()*sizeof(int));
+            PART.bones.resize	(MP->r_u16());
+            MP->r				(&*PART.bones.begin(),PART.bones.size()*sizeof(int));
         }
 
         m_cycle = xr_new<mdef> ();
         m_fx	= xr_new<mdef> ();
 
         // motion defs (cycle&fx)
-        WORD mot_count			= MP->Rword();
+        WORD mot_count			= MP->r_u16();
         for (WORD mot_i=0; mot_i<mot_count; mot_i++){
-            MP->RstringZ(buf);
-	        u32 dwFlags		= MP->Rdword();
+            MP->r_stringZ(buf);
+	        u32 dwFlags		= MP->r_u32();
             CMotionDef	D;		D.Load(this,MP,dwFlags);
             if (dwFlags&esmFX)	m_fx->insert(make_pair(_strlwr(xr_strdup(buf)),D));
             else				m_cycle->insert(make_pair(_strlwr(xr_strdup(buf)),D));
         }
-        MP->Close();
+        MP->close();
     }else{
-		CStream* MP = data->OpenChunk(OGF_SMPARAMS);
+		IReader* MP = data->open_chunk(OGF_SMPARAMS);
         if (MP){
             // partitions
             WORD part_count;
-            part_count = MP->Rword();
+            part_count = MP->r_u16();
             string128 buf;
             for (WORD part_i=0; part_i<part_count; part_i++){
                 CPartDef&	PART	= (*partition)[part_i];
-                MP->RstringZ(buf);
+                MP->r_stringZ(buf);
                 PART.Name			= _strlwr(xr_strdup(buf));
-                PART.bones.resize	(MP->Rword());
-                MP->Read			(&*PART.bones.begin(),PART.bones.size()*sizeof(int));
+                PART.bones.resize	(MP->r_u16());
+                MP->r				(&*PART.bones.begin(),PART.bones.size()*sizeof(int));
             }
 
             m_cycle = xr_new<mdef> ();
             m_fx	= xr_new<mdef> ();
 
             // motion defs (cycle&fx)
-            WORD mot_count			= MP->Rword();
+            WORD mot_count			= MP->r_u16();
             for (WORD mot_i=0; mot_i<mot_count; mot_i++){
-                MP->RstringZ(buf);
-                BYTE bCycle			=	MP->Rbyte();
+                MP->r_stringZ(buf);
+                BYTE bCycle			=	MP->r_u8();
 				CMotionDef	D;		D.Load(this,MP,bCycle?0:esmFX);
-				BYTE bNoLoop		=	MP->Rbyte();
+				BYTE bNoLoop		=	MP->r_u8();
 				D.flags				|=	(bNoLoop?esmStopAtEnd:0);
                 if (bCycle)			m_cycle->insert(make_pair(_strlwr(xr_strdup(buf)),D));
                 else				m_fx->insert(make_pair(_strlwr(xr_strdup(buf)),D));
             }
-            MP->Close();
+            MP->close();
         }else{
             // old variant (read params from ltx)
             R_ASSERT(N && N[0]);

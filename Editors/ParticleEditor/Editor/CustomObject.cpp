@@ -64,20 +64,20 @@ void CCustomObject::OnShowHint(AStringVec& dest)
     dest.push_back(AnsiString("-------"));
 }
 
-bool CCustomObject::Load(CStream& F)
+bool CCustomObject::Load(IReader& F)
 {
-    R_ASSERT(F.FindChunk(CUSTOMOBJECT_CHUNK_PARAMS));
-	m_bSelected 	= F.Rword();
-	m_bVisible   	= F.Rword();
-	F.RstringZ		(FName);
+    R_ASSERT(F.find_chunk(CUSTOMOBJECT_CHUNK_PARAMS));
+	m_bSelected 	= F.r_u16();
+	m_bVisible   	= F.r_u16();
+	F.r_stringZ		(FName);
 
-	if(F.FindChunk(CUSTOMOBJECT_CHUNK_LOCK))
-		m_bLocked	= F.Rword();
+	if(F.find_chunk(CUSTOMOBJECT_CHUNK_LOCK))
+		m_bLocked	= F.r_u16();
 
-	if(F.FindChunk(CUSTOMOBJECT_CHUNK_TRANSFORM)){
-        F.Rvector	(FPosition);
-        F.Rvector	(FRotation);
-        F.Rvector	(FScale);
+	if(F.find_chunk(CUSTOMOBJECT_CHUNK_TRANSFORM)){
+        F.r_fvector3(FPosition);
+        F.r_fvector3(FRotation);
+        F.r_fvector3(FScale);
     }
 
 //	UpdateTransform	(true); // нужно для секторов, иначе неправильный бокс
@@ -87,22 +87,22 @@ bool CCustomObject::Load(CStream& F)
 	return true;
 }
 
-void CCustomObject::Save(CFS_Base& F)
+void CCustomObject::Save(IWriter& F)
 {
 	F.open_chunk	(CUSTOMOBJECT_CHUNK_PARAMS);
-	F.Wword			(m_bSelected);
-	F.Wword			(m_bVisible);
-	F.WstringZ		(FName);
+	F.w_u16			(m_bSelected);
+	F.w_u16			(m_bVisible);
+	F.w_stringZ		(FName);
 	F.close_chunk	();
 
 	F.open_chunk	(CUSTOMOBJECT_CHUNK_LOCK);
-	F.Wword			(m_bLocked);
+	F.w_u16			(m_bLocked);
 	F.close_chunk	();
 
 	F.open_chunk	(CUSTOMOBJECT_CHUNK_TRANSFORM);
-    F.Wvector		(FPosition);
-    F.Wvector		(FRotation);
-    F.Wvector		(FScale);
+    F.w_fvector3 	(FPosition);
+    F.w_fvector3 	(FRotation);
+    F.w_fvector3 	(FScale);
 	F.close_chunk	();
 }
 //----------------------------------------------------

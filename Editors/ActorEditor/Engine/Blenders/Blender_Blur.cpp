@@ -17,12 +17,12 @@ CBlender_Blur::~CBlender_Blur()
 
 }
 
-void	CBlender_Blur::Save	( CFS_Base& FS	)
+void	CBlender_Blur::Save	( IWriter& FS	)
 {
 	CBlender::Save	(FS);
 }
 
-void	CBlender_Blur::Load	( CStream& FS, WORD version	)
+void	CBlender_Blur::Load	( IReader& FS, WORD version	)
 {
 	CBlender::Load	(FS,version);
 }

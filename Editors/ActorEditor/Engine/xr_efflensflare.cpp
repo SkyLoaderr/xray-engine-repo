@@ -138,9 +138,9 @@ void CLensFlare::OnFrame()
 	// Compute center and axis of flares
 	//
 	float fDot;
-	
+
 	Fvector vecPos;
-	
+
 	Fmatrix	matEffCamPos;
 	matEffCamPos.identity();
 	// Calculate our position and direction
@@ -159,15 +159,15 @@ void CLensFlare::OnFrame()
 	vecDir.set(0.0f, 0.0f, 1.0f);
 	matEffCamPos.transform_dir(vecDir);
 	vecDir.normalize();
-	
+
 	// Figure out of light (or flare) might be visible
-	vecLight.set(vSunDir); 
+	vecLight.set(vSunDir);
 	vecLight.normalize();
-	
+
 	fDot = vecLight.dotproduct(vecDir);
-	
+
 	if(fDot <= 0.01f){	bRender = false; return;} else bRender = true;
-	
+
 	// Calculate the point directly in front of us, on the far clip plane
 	float 	fDistance	= FAR_DIST*0.75f;
 	vecCenter.mul(vecDir, fDistance);
@@ -177,7 +177,7 @@ void CLensFlare::OnFrame()
 	vecLight.add(vecPos);
 	// Compute axis which goes from light through the center of the screen
 	vecAxis.sub(vecLight, vecCenter);
-	
+
 	//
 	// Figure out if light is behind something else
 	vecX.set(1.0f, 0.0f, 0.0f);
@@ -196,7 +196,7 @@ void CLensFlare::OnFrame()
 		fBlend = fBlend + BLEND_INC_SPEED * Device.fTimeDelta;
 	}
 	clamp( fBlend, 0.0f, 1.0f );
-	
+
 	// gradient
 	if (m_Flags.is(flGradient)){
 		Fvector				scr_pos;
@@ -205,10 +205,10 @@ void CLensFlare::OnFrame()
 		float sun_blend		= 0.5f;
 		float sun_max		= 2.5f;
 		scr_pos.y			*= -1;
-		
+
 		if (_abs(scr_pos.x) > sun_blend)	kx = ((sun_max - (float)_abs(scr_pos.x))) / (sun_max - sun_blend);
 		if (_abs(scr_pos.y) > sun_blend)	ky = ((sun_max - (float)_abs(scr_pos.y))) / (sun_max - sun_blend);
-		
+
 		if (!((_abs(scr_pos.x) > sun_max) || (_abs(scr_pos.y) > sun_max)))
 			fGradientValue	= kx * ky * m_Gradient.fOpacity * fBlend;
 		else
@@ -221,20 +221,20 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
 	VERIFY				(bInit);
 	OnFrame				();
 	if (!bRender)		return;
-	
+
 	Fcolor				dwLight;
 	Fcolor				color;
 	Fvector				vec, vecSx, vecSy;
 	Fvector				vecDx, vecDy;
-	
+
 	dwLight.set							( LightColor );
 	svector<Shader*,MAX_Flares>			_2render;
-	
+
 	u32									VS_Offset;
 	FVF::LIT *pv						= (FVF::LIT*) RCache.Vertex.Lock(2*MAX_Flares*4,hGeom->vb_stride,VS_Offset);
-	
+
 	float 	fDistance					= FAR_DIST*0.75f;
-	
+
 	if (m_Flags.is(flSource)&&bSun)
 	{
 		vecSx.mul			(vecX, m_Source.fRadius*fDistance);
@@ -248,7 +248,7 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
 		pv->set				(vecLight.x-vecSx.x+vecSy.x, vecLight.y-vecSx.y+vecSy.y, vecLight.z-vecSx.z+vecSy.z, c, 1, 1); pv++;
 		_2render.push_back	(m_Source.hShader);
 	}
-	
+
 	if (fBlend>=EPS_L)
 	{
 		if(bFlares&&(m_Flags.is(flFlare)))
@@ -291,7 +291,7 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
 			_2render.push_back		(m_Gradient.hShader);
 		}
 	}
-	
+
 	RCache.Vertex.Unlock	(_2render.size()*4,hGeom->vb_stride);
 
 	RCache.set_xform_world	(Fidentity);
@@ -310,11 +310,11 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
 void CLensFlare::Update( Fvector& sun_dir, Fcolor& color )
 {
 	vSunDir.mul		(sun_dir,-1);
-	
+
 	// color
 	LightColor.set	(color);
 	LightColor.a	= 1;
-	
+
 	bInit			= true;
 }
 

@@ -50,7 +50,7 @@ struct ENGINE_API SEmitterDef
 
 	Flags32			m_Flags;
     void			Reset()			{ ZeroMemory(this, sizeof(SEmitterDef));}
-    void			InitDefault()	
+    void			InitDefault()
 	{
     	Reset		();
         m_fBirthRate 	= 100;
@@ -212,7 +212,7 @@ struct ENGINE_API SDef: public SParams
 			buf[sz] = 0;
 			strcpy(m_Computer,buf);
 			strlwr(m_Computer);
-	
+
 			// Time
 			_tzset(); time( (long*)&m_dwCreationTime );
 			return true;
@@ -303,9 +303,9 @@ public:
         float start_velocity = m_Definition->m_Speed.start + Random.randF(-0.5f,0.5f)*m_Definition->m_fSpeedVar*m_Definition->m_Speed.start;
         P.m_Velocity.start.mul(start_velocity);
 		P.m_Velocity.end.mul(P.m_Velocity.start,rel);
-                                                                
+
 		int sign[2]		= {-1,1};
-        // Angular                            
+        // Angular
 		if (m_Definition->m_Flags.is(PS_ALIGNTOPATH)){
 	        P.m_fAngle 		= 0;
     	    P.m_ASpeed.start= 0;

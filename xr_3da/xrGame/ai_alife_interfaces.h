@@ -15,12 +15,12 @@ using namespace ALife;
 
 interface IPureALifeLObject {
 public:
-	virtual void					Load(CStream	&tFileStream)	= 0;
+	virtual void					Load(IReader	&tFileStream)	= 0;
 };
 
 interface IPureALifeSObject {
 public:
-	virtual void					Save(CFS_Memory	&tMemoryStream) = 0;
+	virtual void					Save(IWriter	&tMemoryStream) = 0;
 };
 
 interface IPureALifeLSObject : public IPureALifeLObject, public IPureALifeSObject {

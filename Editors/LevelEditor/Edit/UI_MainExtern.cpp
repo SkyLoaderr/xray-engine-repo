@@ -175,14 +175,14 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 	case COMMAND_CLEAR_COMPILER_ERROR:
     	Scene.ClearCompilerErrors();
         break;
-        
+
     case COMMAND_IMPORT_COMPILER_ERROR:{
     	AnsiString fn;
     	if(Engine.FS.GetOpenName(Engine.FS.m_ServerRoot, fn)){
         	Scene.LoadCompilerError(fn.c_str());
         }
     	}break;
-    
+
 	case COMMAND_VALIDATE_SCENE:
 		if( !Scene.locked() ){
             Scene.Validate(true,false);
@@ -272,7 +272,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 			bRes = false;
         }
     	break;
-        
+
 	case COMMAND_OPTIONS:
 		if( !Scene.locked() ){
             if (mrOk==frmScenePropertiesRun(&Scene.m_LevelOp.m_BuildParams,false))
@@ -327,7 +327,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
-    	break;        
+    	break;
 	case COMMAND_INVERT_SELECTION_ALL:
 		if( !Scene.locked() ){
 			Scene.InvertSelection(Tools.CurrentClassID());
@@ -479,7 +479,7 @@ bool __fastcall TUI::ApplyShortCutExt(WORD Key, TShiftState Shift)
 {
 	bool bExec = false;
     if (Shift.Contains(ssCtrl)){
-        if (Shift.Contains(ssShift)){                                                     
+        if (Shift.Contains(ssShift)){
             if (Key==VK_F5)    		{Command(COMMAND_MAKE_GAME);                    bExec=true;}
         }else{
             if (Key==VK_F5)    				{Command(COMMAND_BUILD);                		bExec=true;}
@@ -490,10 +490,10 @@ bool __fastcall TUI::ApplyShortCutExt(WORD Key, TShiftState Shift)
             else if (Key=='2')				{Command(COMMAND_CHANGE_TARGET, etPS);          bExec=true;}
             else if (Key=='3')				{Command(COMMAND_CHANGE_TARGET, etShape);       bExec=true;}
         }
-    }else{                                                                              
-        if (Shift.Contains(ssAlt)){                                                     
+    }else{
+        if (Shift.Contains(ssAlt)){
         	if (Key=='F')   			{Command(COMMAND_FILE_MENU);                    bExec=true;}
-        }else{                                                                          
+        }else{
             if (Key=='1')     			{Command(COMMAND_CHANGE_TARGET, etObject);      bExec=true;}
             else if (Key=='2')  		{Command(COMMAND_CHANGE_TARGET, etLight);       bExec=true;}
             else if (Key=='3')  		{Command(COMMAND_CHANGE_TARGET, etSound);       bExec=true;}
@@ -504,7 +504,7 @@ bool __fastcall TUI::ApplyShortCutExt(WORD Key, TShiftState Shift)
             else if (Key=='8')  		{Command(COMMAND_CHANGE_TARGET, etWay);         bExec=true;}
             else if (Key=='9')  		{Command(COMMAND_CHANGE_TARGET, etSector);      bExec=true;}
             else if (Key=='0')  		{Command(COMMAND_CHANGE_TARGET, etPortal);      bExec=true;}
-            // simple press             
+            // simple press
             else if (Key=='W')			{Command(COMMAND_SHOW_OBJECTLIST);              bExec=true;}
             else if (Key==VK_DELETE)	{Command(COMMAND_DELETE_SELECTION);             bExec=true;}
             else if (Key==VK_RETURN)	{Command(COMMAND_SHOW_PROPERTIES);              bExec=true;}

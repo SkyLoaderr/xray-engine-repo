@@ -22,12 +22,12 @@ CBlender_B::~CBlender_B	()
 	
 }
 
-void	CBlender_B::Save		(CFS_Base& FS )
+void	CBlender_B::Save		(IWriter& FS )
 {
 	CBlender::Save	(FS);
 }
 
-void	CBlender_B::Load		(CStream& FS, WORD version )
+void	CBlender_B::Load		(IReader& FS, WORD version )
 {
 	CBlender::Load	(FS,version);
 

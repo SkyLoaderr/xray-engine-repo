@@ -14,8 +14,8 @@ public:
 	virtual		LPCSTR		getComment()	{ return "LEVEL: Implicit";	}
 	virtual		BOOL		canBeDetailed()	{ return TRUE; }
 
-	virtual		void		Save			(CFS_Base&  FS);
-	virtual		void		Load			(CStream&	FS, WORD version);
+	virtual		void		Save			(IWriter&  FS);
+	virtual		void		Load			(IReader&	FS, WORD version);
 
 	virtual		void		Compile			(CBlender_Compile& C);
 

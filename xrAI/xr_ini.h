@@ -36,13 +36,13 @@ public:
 	typedef	std::vector<Sect>	Root;
 	typedef Root::iterator		RootIt;
 
-	struct sect_pred : public std::binary_function<Sect&, Sect&, bool> 
-	{	
+	struct sect_pred : public std::binary_function<Sect&, Sect&, bool>
+	{
 		IC bool operator() (const Sect& x, const Sect& y) const
 		{	return strcmp(x.Name,y.Name)<0;	}
 	};
-	struct item_pred : public std::binary_function<Item&, Item&, bool> 
-	{	
+	struct item_pred : public std::binary_function<Item&, Item&, bool>
+	{
 		IC bool operator() (const Item& x, const Item& y) const
 		{
 			if ((0==x.first) || (0==y.first))	return x.first<y.first;

@@ -33,7 +33,7 @@ CGroupObject::~CGroupObject	()
 void CGroupObject::OnDestroy()
 {
 	for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
-    	(*it)->m_pOwnerObject=0;	// 
+    	(*it)->m_pOwnerObject=0;	//
     	xr_delete(*it);
     }
     m_Objects.clear();
@@ -95,7 +95,7 @@ void CGroupObject::UpdateBBoxAndPivot(bool bInitFromFirstObject)
         ObjectIt it=m_Objects.begin();
         Fvector C; C.set((*it)->PPosition); it++;
         for (; it!=m_Objects.end(); it++)
-        	C.add((*it)->PPosition);    
+        	C.add((*it)->PPosition);
         FPosition.div(C,m_Objects.size());
         FRotation.set(0,0,0);
         FScale.set(1.f,1.f,1.f);
@@ -291,11 +291,11 @@ void CGroupObject::OnDeviceDestroy(){
 #define GROUPOBJ_CHUNK_FLAGS	     	0x0003
 //----------------------------------------------------
 
-bool CGroupObject::Load(CStream& F)
+bool CGroupObject::Load(IReader& F)
 {
     DWORD version = 0;
     char buf[1024];
-    R_ASSERT(F.ReadChunk(GROUPOBJ_CHUNK_VERSION,&version));
+    R_ASSERT(F.r_chunk(GROUPOBJ_CHUNK_VERSION,&version));
     if (version!=GROUPOBJ_CURRENT_VERSION){
         ELog.DlgMsg( mtError, "CGroupObject: unsupported file version. Object can't load.");
         return false;
@@ -305,26 +305,26 @@ bool CGroupObject::Load(CStream& F)
 	// objects
     Scene.ReadObjects(F,GROUPOBJ_CHUNK_OBJECT_LIST,AppendObject);
 
-    F.ReadChunk(GROUPOBJ_CHUNK_FLAGS,&m_Flags);
+    F.r_chunk(GROUPOBJ_CHUNK_FLAGS,&m_Flags);
 
-	// update bounding volume    
+	// update bounding volume
 	UpdateBBoxAndPivot(m_Flags.is(flInitFromFirstObject));
 
     return true;
 }
 
-void CGroupObject::Save(CFS_Base& F)
+void CGroupObject::Save(IWriter& F)
 {
 	CCustomObject::Save(F);
 
 	F.open_chunk	(GROUPOBJ_CHUNK_VERSION);
-	F.Wword			(GROUPOBJ_CURRENT_VERSION);
+	F.w_u16			(GROUPOBJ_CURRENT_VERSION);
 	F.close_chunk	();
 
     // objects
     Scene.SaveObjects(m_Objects,GROUPOBJ_CHUNK_OBJECT_LIST,F);
 
-    F.write_chunk	(GROUPOBJ_CHUNK_FLAGS,&m_Flags,sizeof(m_Flags));
+    F.w_chunk		(GROUPOBJ_CHUNK_FLAGS,&m_Flags,sizeof(m_Flags));
 }
 //----------------------------------------------------
 

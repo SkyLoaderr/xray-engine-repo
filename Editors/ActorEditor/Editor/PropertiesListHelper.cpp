@@ -5,6 +5,6 @@
 //---------------------------------------------------------------------------
 
 CPropHelper PHelper;
-AnsiString CPropHelper::XKey; 
+AnsiString CPropHelper::XKey;
 
 

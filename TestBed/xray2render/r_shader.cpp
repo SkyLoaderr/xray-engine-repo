@@ -13,13 +13,13 @@ BOOL	R_shader::compile		(LPDIRECT3DDEVICE9 pDevice, LPCSTR name)
 	hr = D3DXCompileShaderFromFile	(name, NULL, NULL, "p_main", "ps_2_0", D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR, &pShaderBuf, &pErrorBuf, NULL);
 	if (SUCCEEDED(hr))
 	{
-		if (pShaderBuf) 
+		if (pShaderBuf)
 		{
 			hr = pDevice->CreatePixelShader	((DWORD*)pShaderBuf->GetBufferPointer(), &ps);
 			if (SUCCEEDED(hr))	{
 				LPCVOID			data		= NULL;
 				hr	= D3DXFindShaderComment	((DWORD*)pShaderBuf->GetBufferPointer(),MAKEFOURCC('C','T','A','B'),&data,NULL);
-				if (SUCCEEDED(hr) && data) 
+				if (SUCCEEDED(hr) && data)
 				{
 					pConstants		= LPD3DXSHADER_CONSTANTTABLE(data);
 					constants.parse	(pConstants,0x1);
@@ -37,13 +37,13 @@ BOOL	R_shader::compile		(LPDIRECT3DDEVICE9 pDevice, LPCSTR name)
 	hr = D3DXCompileShaderFromFile	(name, NULL, NULL, "v_main", "vs_2_0", D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR, &pShaderBuf, &pErrorBuf, NULL);
 	if (SUCCEEDED(hr))
 	{
-		if (pShaderBuf) 
+		if (pShaderBuf)
 		{
 			hr = pDevice->CreateVertexShader	((DWORD*)pShaderBuf->GetBufferPointer(), &vs);
 			if (SUCCEEDED(hr))	{
 				LPCVOID			data		= NULL;
 				hr	= D3DXFindShaderComment	((DWORD*)pShaderBuf->GetBufferPointer(),MAKEFOURCC('C','T','A','B'),&data,NULL);
-				if (SUCCEEDED(hr) && data) 
+				if (SUCCEEDED(hr) && data)
 				{
 					pConstants		= LPD3DXSHADER_CONSTANTTABLE(data);
 					constants.parse	(pConstants,0x2);

@@ -2,17 +2,17 @@
 #define _ENVELOPE_H_
 
 // refs
-class CFS_Base;
-class CStream;
+class IWriter;
+class IReader;
 
 /*
 ======================================================================
 envelope.h
 
   Definitions for local copies of LightWave envelopes.
-  
+
 	Ernie Wright  31 Aug 00
-	
+
 	  The LightWave plug-in SDK provides its own representation of LightWave
 	  envelopes that plug-ins can use.  These definitions are for standalone
 	  programs that, for example, read scene or object files and must store
@@ -68,10 +68,10 @@ public:
 
 	float		Evaluate	(float t);
 
-	void		Save		(CFS_Base& F);
-	void		Load		(CStream& F);
-	void		SaveA		(CFS_Base& F);
-	void		LoadA		(CStream& F);
+	void		Save		(IWriter& F);
+	void		Load		(IReader& F);
+	void		SaveA		(IWriter& F);
+	void		LoadA		(IReader& F);
 
     void		RotateKeys	(float angle);
 };

@@ -7,7 +7,7 @@ class CSector;
 class CPortal: public CCustomObject {
 	friend class TfrmPropertiesPortal;
     friend class CSector;
-    friend class TfraPortal;                                 
+    friend class TfraPortal;
     friend class SceneBuilder;
     friend class CPortalUtils;
 
@@ -28,8 +28,8 @@ public:
 								SRayPickInfo* pinf = NULL);
     virtual bool 	FrustumPick	(const CFrustum& frustum);
 	virtual void 	Move		( Fvector& amount ); // need for Shift Level
-  	virtual bool 	Load		(CStream&);
-	virtual void 	Save		(CFS_Base&);
+  	virtual bool 	Load		(IReader&);
+	virtual void 	Save		(IWriter&);
 	virtual bool 	GetBox		(Fbox& box);
     void			Simplify	();
     bool			Update		(bool bLoadMode=false);

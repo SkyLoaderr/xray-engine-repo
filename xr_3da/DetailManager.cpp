@@ -19,7 +19,7 @@ const float dbgOffset			= 0.f;
 const int	dbgItems			= 128;
 
 //--------------------------------------------------- Decompression
-static int magic4x4[4][4] =  
+static int magic4x4[4][4] =
 {
  	 0, 14,  3, 13,
 	11,  5,  8,  6,
@@ -30,18 +30,18 @@ static int magic4x4[4][4] =
 void bwdithermap	(int levels, int magic[16][16] )
 {
 	/* Get size of each step */
-    float N = 255.0f / (levels - 1);    
-	
+    float N = 255.0f / (levels - 1);
+
 	/*
 	* Expand 4x4 dither pattern to 16x16.  4x4 leaves obvious patterning,
 	* and doesn't give us full intensity range (only 17 sublevels).
-	* 
+	*
 	* magicfact is (N - 1)/16 so that we get numbers in the matrix from 0 to
 	* N - 1: mod N gives numbers in 0 to N - 1, don't ever want all
 	* pixels incremented to the next level (this is reserved for the
 	* pixel value with mod N == 0 at the next level).
 	*/
-	
+
     float	magicfact = (N - 1) / 16;
     for ( int i = 0; i < 4; i++ )
 		for ( int j = 0; j < 4; j++ )
@@ -69,7 +69,7 @@ CDetailManager::CDetailManager	()
 
 CDetailManager::~CDetailManager	()
 {
-	
+
 }
 /*
 */
@@ -94,29 +94,29 @@ void CDetailManager::Load		()
 		return;
 	}
 	dtFS		= Engine.FS.Open(fn);
-	
+
 	// Header
-	dtFS->ReadChunkSafe	(0,&dtH,sizeof(dtH));
+	dtFS->r_chunk_safe	(0,&dtH,sizeof(dtH));
 	R_ASSERT			(dtH.version == DETAIL_VERSION);
-	u32 m_count		= dtH.object_count;
-	
+	u32 m_count			= dtH.object_count;
+
 	// Models
-	CStream* m_fs	= dtFS->OpenChunk(1);
+	IReader* m_fs		= dtFS->open_chunk(1);
 	for (u32 m_id = 0; m_id < m_count; m_id++)
 	{
 		CDetail*		dt	= xr_new<CDetail> ();
-		CStream* S			= m_fs->OpenChunk(m_id);
+		IReader* S			= m_fs->open_chunk(m_id);
 		dt->Load			(S);
 		objects.push_back	(dt);
 		S->Close			();
 	}
 	m_fs->Close		();
-	
+
 	// Get pointer to database (slots)
-	CStream* m_slots	= dtFS->OpenChunk(2);
+	IReader* m_slots	= dtFS->open_chunk(2);
 	dtSlots				= (DetailSlot*)m_slots->Pointer();
 	m_slots->Close		();
-	
+
 	// Initialize 'vis' and 'cache'
 	visible[0].resize	(objects.size());	// dump(visible[0]);
 	visible[1].resize	(objects.size());	// dump(visible[1]);
@@ -135,7 +135,7 @@ void CDetailManager::Unload		()
 {
 	if (UseVS())	hw_Unload	();
 	else			soft_Unload	();
-	
+
 	for (DetailIt it=objects.begin(); it!=objects.end(); it++){
 		(*it)->Unload();
 		xr_delete		(*it);
@@ -161,7 +161,7 @@ void CDetailManager::Render		(Fvector& vecEYE)
 
 	Fvector		EYE				= vecEYE;
 	CFrustum	View			= ::Render->ViewBase;
-    
+
 	int s_x	= iFloor			(EYE.x/dm_slot_size+.5f);
 	int s_z	= iFloor			(EYE.z/dm_slot_size+.5f);
 
@@ -199,26 +199,26 @@ void CDetailManager::Render		(Fvector& vecEYE)
 						SlotPart&			sp	= S.G		[sp_id];
 						if (sp.id==0xff)	continue;
 						float				R   = objects	[sp.id]->bv_sphere.R;
-						
+
 						SlotItem			**siIT=sp.items.begin(), **siEND=sp.items.end();
-						for (; siIT!=siEND; siIT++) 
+						for (; siIT!=siEND; siIT++)
 						{
 							SlotItem& Item	= *(*siIT);
 
 							float	dist_sq = EYE.distance_to_sqr(Item.P);
 							if (dist_sq>fade_limit)	continue;
-							
-							if (::Render->ViewBase.testSphere_dirty(Item.P,R*Item.scale))	
+
+							if (::Render->ViewBase.testSphere_dirty(Item.P,R*Item.scale))
 							{
 								float	alpha	= (dist_sq<fade_start)?0.f:(dist_sq-fade_start)/fade_range;
 								float	scale	= Item.scale*(1-alpha);
 								float	radius	= R*scale;
-								
+
 								float	ssa		= radius*radius/dist_sq;
 								if (ssa < r_ssaDISCARD) continue;
 								u32	vis_id	= Item.vis_ID;
 								if (ssa < r_ssaCHEAP)	vis_id=0;
-								
+
 								Item.scale_calculated = scale;			//alpha;
 								visible[vis_id][sp.id].push_back	(*siIT);
 							}
@@ -234,15 +234,15 @@ void CDetailManager::Render		(Fvector& vecEYE)
 						SlotPart&			sp	= S.G		[sp_id];
 						if (sp.id==0xff)	continue;
 						float				R   = objects	[sp.id]->bv_sphere.R;
-						
+
 						SlotItem			**siIT=sp.items.begin(), **siEND=sp.items.end();
-						for (; siIT!=siEND; siIT++) 
+						for (; siIT!=siEND; siIT++)
 						{
 							SlotItem& Item	= *(*siIT);
 
 							float	dist_sq = EYE.distance_to_sqr(Item.P);
 							if (dist_sq>fade_limit)	continue;
-							
+
 							float	alpha	= (dist_sq<fade_start)?0.f:(dist_sq-fade_start)/fade_range;
 							float	scale	= Item.scale*(1-alpha);
 							float	radius	= R*scale;

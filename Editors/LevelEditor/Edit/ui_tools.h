@@ -52,14 +52,14 @@ class TUI_Tools{
     int             action;
 
     Flags32			m_Flags;
-    
+
     enum{
     	flChangeAction		= (1<<0),
         flChangeTarget		= (1<<1),
         flUpdateProperties	= (1<<2),
         flUpdateObjectList	= (1<<3)
     };
-    
+
     int				iNeedAction;
     int				iNeedTarget;
 
@@ -129,7 +129,7 @@ public:
     bool			Pick			();
 
     void			ShowObjectList	();
-    
+
     void			ShowProperties	();
     void			HideProperties	();
     void			UpdateProperties(){m_Flags.set(flUpdateProperties|flUpdateObjectList,TRUE);}

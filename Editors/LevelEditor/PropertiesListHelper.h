@@ -9,7 +9,7 @@ class CPropHelper{
 	IC PropItem*		CreateItem		(PropItemVec& items, LPCSTR key, EPropType type)
     {
     	PropItem* item	= FindItem(items,key,type);
-        if (!item){ 
+        if (!item){
         	item		= xr_new<PropItem>	(type);
             item->SetName(key);
             items.push_back(item);
@@ -24,7 +24,7 @@ class CPropHelper{
         return val;
     }
 //------------------------------------------------------------------------------
-	static AnsiString XKey; 
+	static AnsiString XKey;
     IC AnsiString		FolderAppend	(LPCSTR val)
     {
     	if (val&&val[0]) return AnsiString(val)+"\\";
@@ -34,19 +34,19 @@ public:
     IC LPCSTR			PrepareKey		(LPCSTR pref, LPCSTR key)
     {
         R_ASSERT(key);
-    	XKey			= FolderAppend(pref)+AnsiString(key); 
+    	XKey			= FolderAppend(pref)+AnsiString(key);
         return XKey.c_str();
     }
     IC LPCSTR			PrepareKey		(LPCSTR pref0, LPCSTR pref1, LPCSTR key)
     {
         R_ASSERT(key);
-    	XKey			= FolderAppend(pref0)+FolderAppend(pref1)+AnsiString(key); 
+    	XKey			= FolderAppend(pref0)+FolderAppend(pref1)+AnsiString(key);
         return XKey.c_str();
     }
     IC LPCSTR			PrepareKey		(LPCSTR pref0, LPCSTR pref1, LPCSTR pref2, LPCSTR key)
     {
         R_ASSERT(key);
-    	XKey			= FolderAppend(pref0)+FolderAppend(pref1)+FolderAppend(pref2)+AnsiString(key); 
+    	XKey			= FolderAppend(pref0)+FolderAppend(pref1)+FolderAppend(pref2)+AnsiString(key);
         return XKey.c_str();
     }
     IC PropItem* 		FindItem		(PropItemVec& items,	LPCSTR key, EPropType type)
@@ -57,7 +57,7 @@ public:
     }
 
 //------------------------------------------------------------------------------
-// predefind event routines    
+// predefind event routines
     IC void __fastcall 	FvectorRDOnAfterEdit(PropValue* sender, LPVOID edit_val)
     {
         Fvector* V = (Fvector*)edit_val;
@@ -127,7 +127,7 @@ public:
     IC FloatValue* 		CreateFloat		(PropItemVec& items, LPCSTR key, float* val, float mn=0.f, float mx=1.f, float inc=0.01f, int decim=2)
     {
     	return			(FloatValue*)	AppendValue		(items,key,xr_new<FloatValue>(val,mn,mx,inc,decim),PROP_FLOAT);
-    }           	
+    }
     IC BOOLValue* 	  	CreateBOOL		(PropItemVec& items, LPCSTR key, BOOL* val)
     {
     	return			(BOOLValue*)	AppendValue		(items,key,xr_new<BOOLValue>(val),PROP_BOOLEAN);
@@ -259,7 +259,7 @@ public:
 	IC WaveValue* 		CreateWave		(PropItemVec& items, LPCSTR key, WaveForm* val)
     {
     	return			(WaveValue*)	AppendValue		(items,key,xr_new<WaveValue>(val),PROP_WAVE);
-    }     
+    }
     IC TextValue* 		CreateGameMtl	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
     {
     	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_GAMEMTL);

@@ -22,13 +22,13 @@ CBlender_Tree::~CBlender_Tree()
 
 }
 
-void	CBlender_Tree::Save		(CFS_Base& FS )
+void	CBlender_Tree::Save		(IWriter& FS )
 {
 	CBlender::Save		(FS);
 	xrPWRITE_PROP		(FS,"Alpha-blend",	xrPID_BOOL,		oBlend);
 }
 
-void	CBlender_Tree::Load		(CStream& FS, WORD version )
+void	CBlender_Tree::Load		(IReader& FS, WORD version )
 {
 	CBlender::Load		(FS,version);
 	xrPREAD_PROP		(FS,xrPID_BOOL,		oBlend);

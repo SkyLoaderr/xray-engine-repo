@@ -21,7 +21,7 @@ struct WaveForm
 		switch (F)
 		{
 			case fCONSTANT:		return 0;
-			case fSIN:			return sinf(t*PI_MUL_2); 
+			case fSIN:			return sinf(t*PI_MUL_2);
 			case fTRIANGLE:		return asinf(sinf((t-0.25f)*PI_MUL_2))/PI_DIV_2;
 			case fSQUARE:		return signf(cosf(t*PI));
 			case fSAWTOOTH:		return atanf(tanf((t+0.5f)*PI))/PI_DIV_2;
@@ -47,7 +47,7 @@ public:
 		arg[2]	= 0;
 		arg[3]	= 1;
 	}
-	
+
 	IC	BOOL	Similar	(const WaveForm& W) const
 	{
 		if (!fsimilar(arg[0],W.arg[0],EPS_L))	return FALSE;

@@ -47,8 +47,8 @@ public:
 	virtual void 		ParentRotate(Fvector& axis, float angle);
 	virtual void 		Scale		(Fvector& amount);
 
-  	virtual bool 		Load		(CStream&);
-	virtual void 		Save		(CFS_Base&);
+  	virtual bool 		Load		(IReader&);
+	virtual void 		Save		(IWriter&);
     virtual bool		ExportGame	(SExportStreams& data);
 	virtual bool    	GetBox      (Fbox& box);
 	virtual void 		OnFrame		();

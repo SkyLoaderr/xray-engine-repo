@@ -32,7 +32,7 @@ void	Surface_FormatExt(FREE_IMAGE_FORMAT f)
         LPSTR ext = base;
         LPSTR cur = ext;
         for	(; ext[0]; ext++){
-        if (ext[0]==','){ 
+        if (ext[0]==','){
                 ext[0] = 0;
                 formats.format_register(cur);
                 cur = ++ext;
@@ -47,7 +47,7 @@ void	Surface_Init()
 	Msg("* ImageLibrary version: %s",FreeImage_GetVersion());
 
     formats.format_register("tga");
-	Surface_FormatExt(FIF_BMP);      
+	Surface_FormatExt(FIF_BMP);
 	Surface_FormatExt(FIF_ICO);
 	Surface_FormatExt(FIF_JPEG);
 	Surface_FormatExt(FIF_JNG);

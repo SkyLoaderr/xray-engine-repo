@@ -7,7 +7,7 @@
 
 #include "tlsprite.h"
 #include "customobject.h"
-class CFrustum;                                 
+class CFrustum;
 
 class CGlow : public CCustomObject {
 	typedef CCustomObject inherited ;
@@ -39,8 +39,8 @@ public:
 	virtual bool    RayPick     ( float& distance,	const Fvector& start,	const Fvector& direction,
 		                          SRayPickInfo* pinf = NULL );
     virtual bool 	FrustumPick	( const CFrustum& frustum );
-  	virtual bool 	Load		(CStream&);
-	virtual void 	Save		(CFS_Base&);
+  	virtual bool 	Load		(IReader&);
+	virtual void 	Save		(IWriter&);
 	virtual bool    GetBox      ( Fbox& box );
     virtual void	FillProp	( LPCSTR pref, PropItemVec& values );
 

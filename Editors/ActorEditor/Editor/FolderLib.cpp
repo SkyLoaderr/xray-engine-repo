@@ -246,7 +246,7 @@ TElTreeItem* CFolderHelper::AppendObject(TElTree* tv, LPCSTR full_name)
 {
     int idx=0;
 	TElTreeItem* last_node=0;
-	char fld[128];                                                                     
+	char fld[128];
 	int fld_cnt = _GetItemCount(full_name,'\\')-1;
     _GetItems(full_name,0,fld_cnt,fld,'\\');
     TElTreeItem* fld_node = fld[0]?FindFolder(tv,fld,&last_node,&idx):0;
@@ -493,7 +493,7 @@ BOOL CFolderHelper::RemoveItem(TElTree* tv, TElTreeItem* pNode, TOnRemoveItem On
                 bRes = TRUE;
 		        for (TElTreeItem* item=pNode->GetFirstChild(); item&&(item->Level>pNode->Level); item=item->GetNext()){
                     MakeName(item,0,full_name,false);
-                	if (IsObject(item)) 
+                	if (IsObject(item))
                     	if (!OnRemoveItem(full_name.c_str())) bRes=FALSE;
                 }
                 if (bRes){
@@ -506,7 +506,7 @@ BOOL CFolderHelper::RemoveItem(TElTree* tv, TElTreeItem* pNode, TOnRemoveItem On
 	        if (ELog.DlgMsg(mtConfirmation, TMsgDlgButtons() << mbYes << mbNo,"Delete selected item?") == mrYes){
 				MakeName(pNode,0,full_name,false);
                 bRes = OnRemoveItem(full_name.c_str());
-	            if (bRes){ 
+	            if (bRes){
                 	pNode->Delete();
                     if (OnAfterRemoveItem) OnAfterRemoveItem();
                 }
@@ -527,7 +527,7 @@ TElTreeItem* CFolderHelper::ExpandItem(TElTree* tv, TElTreeItem* node)
         TElTreeItem* folder	= node->Parent;
         while(folder){
 			if (folder) folder->Expand(false);
-        	if (folder->Parent){ 
+        	if (folder->Parent){
             	folder = folder->Parent;
             }else				break;
         }

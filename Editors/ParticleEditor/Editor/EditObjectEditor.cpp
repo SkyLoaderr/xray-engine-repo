@@ -18,7 +18,7 @@ const float tex_w	= LOD_SAMPLE_COUNT*LOD_IMAGE_SIZE;
 const float tex_h	= 1*LOD_IMAGE_SIZE;
 const float half_p_x= 0.5f*(1.f/tex_w);
 const float half_p_y= 0.5f*(1.f/tex_h);
-const float offs_x 	= 1.f/tex_w; 
+const float offs_x 	= 1.f/tex_w;
 const float offs_y 	= 1.f/tex_h;
 
 static Fvector LOD_pos[4]={
@@ -72,14 +72,14 @@ static const float ssaLim = 64.f*64.f/(640*480);
 void CEditableObject::Render(const Fmatrix& parent, int priority, bool strictB2F){
     if (!(m_LoadState&EOBJECT_LS_DEFFEREDRP)) DefferedLoadRP();
 
-	Fvector v; float r; 
+	Fvector v; float r;
     Fbox bb; bb.xform(m_Box,parent); bb.getsphere(v,r);
-    
+
     if (m_Flags.is(eoUsingLOD)&&(CalcSSA(v,r)<ssaLim)){
 		if ((1==priority)&&(true==strictB2F)) RenderLOD(parent);
     }else{
 		RCache.set_xform_world(parent);
-        
+
 	    if (m_Flags.is(eoHOM)){
         	if ((1==priority)&&(false==strictB2F)){
 	            RenderEdge(parent,0,0x00000000);
@@ -127,7 +127,7 @@ void CEditableObject::RenderBones(const Fmatrix& parent){
 	if (IsSkeleton()){
         // render
         RCache.set_xform_world(parent);
-        Device.SetShader(Device.m_WireShader);      
+        Device.SetShader(Device.m_WireShader);
 		BoneVec& lst = m_Bones;
         for(BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++){
             Fmatrix& M = (*b_it)->LTransform();
@@ -213,7 +213,7 @@ void CEditableObject::RenderLOD(const Fmatrix& parent)
     float max_dot	= 0;
     Fvector HPB;
     parent.getHPB	(HPB);
-    
+
     for (int frame=0; frame<LOD_SAMPLE_COUNT; frame++){
     	float angle = angle_normalize(frame*(PI_MUL_2/LOD_SAMPLE_COUNT)+HPB.x);
 
@@ -259,7 +259,7 @@ void CEditableObject::OnDeviceDestroy()
 void CEditableObject::DefferedLoadRP()
 {
 	if (m_LoadState&EOBJECT_LS_DEFFEREDRP) return;
-/*    
+/*
     EditMeshIt _M=m_Meshes.begin();
     EditMeshIt _E=m_Meshes.end();
     AnsiString tmp;
@@ -302,25 +302,25 @@ void CEditableObject::EvictObject(){
     DefferedUnloadRP	();
 }
 
-bool CEditableObject::PrepareOGF(CFS_Base& F)
+bool CEditableObject::PrepareOGF(IWriter& F)
 {
     CExportObjectOGF E(this);
     return E.ExportGeometry(F);
 }
 
-bool CEditableObject::PrepareSVGeometry(CFS_Base& F)
+bool CEditableObject::PrepareSVGeometry(IWriter& F)
 {
     CExportSkeleton E(this);
     return E.ExportGeometry(F);
 }
 
-bool CEditableObject::PrepareSVMotions(CFS_Base& F)
+bool CEditableObject::PrepareSVMotions(IWriter& F)
 {
     CExportSkeleton E(this);
     return E.ExportMotions(F);
 }
 
-bool CEditableObject::PrepareSV(CFS_Base& F)
+bool CEditableObject::PrepareSV(IWriter& F)
 {
     CExportSkeleton E(this);
     return E.Export(F);
@@ -366,7 +366,7 @@ void CEditableObject::FillBasicProps(LPCSTR pref, PropItemVec& items)
     PHelper.CreateFlag32	(items,	PHelper.PrepareKey(pref,"Flags\\Use LOD"),		&m_Flags,		CEditableObject::eoUsingLOD);
     PHelper.CreateFlag32	(items,	PHelper.PrepareKey(pref,"Flags\\Multiple Usage"),&m_Flags,		CEditableObject::eoMultipleUsage);
     V=PHelper.CreateVector	(items, PHelper.PrepareKey(pref,"Transform\\Position"),	&t_vPosition,	-10000,	10000,0.01,2); 	V->OnChangeEvent = OnChangeTransform;
-    V=PHelper.CreateVector	(items, PHelper.PrepareKey(pref,"Transform\\Rotation"),	&t_vRotate, 	-10000,	10000,0.1,1);	
+    V=PHelper.CreateVector	(items, PHelper.PrepareKey(pref,"Transform\\Rotation"),	&t_vRotate, 	-10000,	10000,0.1,1);
     V->OnAfterEditEvent		= PHelper.FvectorRDOnAfterEdit;
     V->OnBeforeEditEvent	= PHelper.FvectorRDOnBeforeEdit;
     V->Owner()->OnDrawEvent	= PHelper.FvectorRDOnDraw;
@@ -397,7 +397,7 @@ bool CEditableObject::GetSummaryInfo(SSceneSummary* inf)
 	if (IsStatic()||IsMUStatic()){
         for(SurfaceIt 	s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
             inf->textures.push_back(ChangeFileExt((*s_it)->m_Texture,"").LowerCase());
-        if (m_Flags.is(eoUsingLOD)){ 
+        if (m_Flags.is(eoUsingLOD)){
             inf->textures.push_back(GetLODTextureName());
             inf->lod_objects.push_back(m_LibName);
             inf->object_lod_ref_cnt++;
@@ -414,7 +414,7 @@ bool CEditableObject::GetSummaryInfo(SSceneSummary* inf)
     	inf->hom_face_cnt	+= GetFaceCount	();
     	inf->hom_vert_cnt	+= GetVertexCount();
     }
-        
+
 	return true;
 }
 #endif

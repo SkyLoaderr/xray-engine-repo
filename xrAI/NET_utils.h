@@ -8,7 +8,7 @@
 
 const	u32		NET_PacketSizeLimit	= 8192;
 
-struct	NET_Buffer	
+struct	NET_Buffer
 {
 	BYTE	data	[NET_PacketSizeLimit];
 	u32		count;
@@ -23,9 +23,9 @@ public:
 public:
 	// writing - main
 	IC void	w_begin	( u16 type		)				// begin of packet 'type'
-	{ 
-		B.count=0; 
-		w_u16(type);	
+	{
+		B.count=0;
+		w_u16(type);
 	}
 	IC void	w		( const void* p, u32 count )
 	{
@@ -111,7 +111,7 @@ public:
 		R_ASSERT			(size<256	);
 		w_seek				(position,&size,sizeof(u8));
 	}
-	
+
 	// reading
 	IC u32		r_begin			( u16& type	)	// returns time of receiving
 	{
@@ -139,7 +139,7 @@ public:
 		r_pos		+= size;
 		VERIFY		(r_pos<=B.count);
 	}
-	
+
 	// reading - utilities
 	IC void		r_vec3			(Fvector& A)	{ r(&A,3*sizeof(float));		} // vec3
 	IC void		r_vec4			(Fvector4& A)	{ r(&A,4*sizeof(float));		} // vec4
@@ -153,7 +153,7 @@ public:
 	IC void		r_s16			(s16& A)		{ r(&A,2);						} // word (2b)
 	IC void		r_u8			(u8&  A)		{ r(&A,1);						} // byte (1b)
 	IC void		r_s8			(s8&  A)		{ r(&A,1);						} // byte (1b)
-	
+
 	IC void		r_float_q16		(float& A, float min, float max, BOOL h_error=FALSE)
 	{
 		u16				val;

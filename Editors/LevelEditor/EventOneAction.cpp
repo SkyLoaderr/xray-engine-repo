@@ -42,7 +42,7 @@ void __fastcall TfrmOneEventAction::ShowIndex(TfrmPropertiesEvent* parent,CEvent
         }
         string16 buf; CLSID2TEXT(action->clsid,buf);
         ebCLSID->Caption= buf;
-        seCount->Value 	= (signed short)action->count;  
+        seCount->Value 	= (signed short)action->count;
         edEvent->Text 	= action->event;
 	    bLoadMode = false;
     }
@@ -80,7 +80,7 @@ void __fastcall TfrmOneEventAction::ebCLSIDClick(TObject *Sender)
         m_Parent->OnModified(Sender);
     }
     */
-}          
+}
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmOneEventAction::OnModified(TObject *Sender)

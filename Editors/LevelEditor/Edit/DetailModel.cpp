@@ -122,14 +122,14 @@ bool CDetail::Update	(LPCSTR name){
 	bv_bb.getsphere		(bv_sphere.P,bv_sphere.R);
 
     OnDeviceCreate		();
-    
+
     return true;
 }
 
-bool CDetail::Load(CStream& F){
+bool CDetail::Load(IReader& F){
 	// check version
-    R_ASSERT			(F.FindChunk(DETOBJ_CHUNK_VERSION));
-    DWORD version		= F.Rdword();
+    R_ASSERT			(F.find_chunk(DETOBJ_CHUNK_VERSION));
+    DWORD version		= F.r_u32();
     if (version!=DETOBJ_VERSION){
     	ELog.Msg(mtError,"CDetail: unsupported version.");
         return false;
@@ -137,69 +137,69 @@ bool CDetail::Load(CStream& F){
 
 	// references
 	char buf[255];
-    R_ASSERT			(F.FindChunk(DETOBJ_CHUNK_REFERENCE));
-    F.RstringZ			(buf);
+    R_ASSERT			(F.find_chunk(DETOBJ_CHUNK_REFERENCE));
+    F.r_stringZ			(buf);
 
     // scale
-    R_ASSERT			(F.FindChunk(DETOBJ_CHUNK_SCALE_LIMITS));
-    s_min				= F.Rfloat(); if (fis_zero(s_min)) 	s_min = 0.1f;
-	s_max		        = F.Rfloat(); if (s_max<s_min)		s_max = s_min;
+    R_ASSERT			(F.find_chunk(DETOBJ_CHUNK_SCALE_LIMITS));
+    s_min				= F.r_float(); if (fis_zero(s_min)) 	s_min = 0.1f;
+	s_max		        = F.r_float(); if (s_max<s_min)		s_max = s_min;
 
 	// density factor
-    if (F.FindChunk(DETOBJ_CHUNK_DENSITY_FACTOR))
-	    m_fDensityFactor= F.Rfloat();
+    if (F.find_chunk(DETOBJ_CHUNK_DENSITY_FACTOR))
+	    m_fDensityFactor= F.r_float();
 
-    if (F.FindChunk(DETOBJ_CHUNK_FLAGS))
-    	flags			= F.Rdword();
+    if (F.find_chunk(DETOBJ_CHUNK_FLAGS))
+    	flags			= F.r_u32();
 
     // update object
     return 				Update(buf);
 }
 
-void CDetail::Save(CFS_Base& F){
+void CDetail::Save(IWriter& F){
 	// version
 	F.open_chunk		(DETOBJ_CHUNK_VERSION);
-    F.Wdword			(DETOBJ_VERSION);
+    F.w_u32				(DETOBJ_VERSION);
     F.close_chunk		();
 
     // reference
 	F.open_chunk		(DETOBJ_CHUNK_REFERENCE);
-    F.WstringZ			(m_sRefs.c_str());
+    F.w_stringZ			(m_sRefs.c_str());
     F.close_chunk		();
 
 	// scale
 	F.open_chunk		(DETOBJ_CHUNK_SCALE_LIMITS);
-    F.Wfloat			(s_min);
-    F.Wfloat			(s_max);
+    F.w_float			(s_min);
+    F.w_float			(s_max);
     F.close_chunk		();
 
 	// density factor
 	F.open_chunk		(DETOBJ_CHUNK_DENSITY_FACTOR);
-    F.Wfloat			(m_fDensityFactor);
+    F.w_float			(m_fDensityFactor);
     F.close_chunk		();
 
     // flags
 	F.open_chunk		(DETOBJ_CHUNK_FLAGS);
-    F.Wdword			(flags);
+    F.w_u32				(flags);
     F.close_chunk		();
 }
 
-void CDetail::Export(CFS_Base& F){
+void CDetail::Export(IWriter& F){
 	R_ASSERT			(m_pRefs);
     CSurface* surf		= *m_pRefs->FirstSurface();
 	R_ASSERT			(surf);
     // write data
-	F.WstringZ			(surf->_ShaderName());
-	F.WstringZ			(surf->_Texture());
+	F.w_stringZ			(surf->_ShaderName());
+	F.w_stringZ			(surf->_Texture());
 
-    F.Wdword			(flags);
-    F.Wfloat			(s_min);
-    F.Wfloat			(s_max);
+    F.w_u32				(flags);
+    F.w_float			(s_min);
+    F.w_float			(s_max);
 
-    F.Wdword			(number_vertices);
-    F.Wdword			(number_indices);
+    F.w_u32				(number_vertices);
+    F.w_u32				(number_indices);
 
-    F.write				(vertices, 	number_vertices*sizeof(fvfVertexIn));
-    F.write				(indices, 	number_indices*sizeof(WORD));
+    F.w					(vertices, 	number_vertices*sizeof(fvfVertexIn));
+    F.w					(indices, 	number_indices*sizeof(WORD));
 }
 

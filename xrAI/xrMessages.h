@@ -27,8 +27,8 @@ enum {
 	GE_OWNERSHIP_TAKE,			// DUAL: Client request for ownership of an item
 	GE_OWNERSHIP_REJECT,		// DUAL: Client request ownership rejection
 	GE_TRANSFER_AMMO,			// DUAL: Take ammo out of weapon for our weapon
-	GE_HIT,						// 
-	GE_DIE,						// 
+	GE_HIT,						//
+	GE_DIE,						//
 	GE_DESTROY,					// authorative client request for entity-destroy
 
 	GE_BUY,
@@ -78,12 +78,12 @@ M_EVENT
 }
 
 M_SPAWN
-{	
+{
 	stringZ		Name_section;		// section in SYSTEM.LTX
 	stringZ		Name_replace;		// Name of EDITOR's object, user can change this
 
 	u8			gameid;
-	u8			o_Point;			// [0..0xFC] = NumberOfRespawnPoint, or following... 
+	u8			o_Point;			// [0..0xFC] = NumberOfRespawnPoint, or following...
 	vec3		o_Position;			// ... 0xFF = AutoSelectAny, 0xFD = AutoSelectTeamed, 0xFE = UseSuppliedCoords
 	vec3		o_Angle;
 	u16			RespawnTime;		// time in sec, when respawn must be performed, 0=no respawn
@@ -92,13 +92,13 @@ M_SPAWN
 	u16			server_id_parent;	// 0xffff = Unknown/None/Invalid
 	u16			server_id_phantom;	// for respawn, for example :)
 	u16			flags;
-	
+
 	u16			data_size;
 	...
 
 	event
 	{
-		cform 
+		cform
 		{
 			u8				count;
 
@@ -113,7 +113,7 @@ M_SPAWN
 				}
 			}
 		}
-		actions 
+		actions
 		{
 			u8				count;
 
@@ -162,10 +162,10 @@ M_SPAWN
 	{
 		cform {
 			u8				count;
-		
+
 			element {
 				u8			type;	// 0=Sphere, 1=Box
-		  
+
 				sphere {
 					Fsphere		def;
 				}
@@ -186,7 +186,7 @@ M_UPDATE
 		u16		id;
 		u8		size
 	}
-	actor 
+	actor
 	{
 		u32		timestamp;
 		u8			flags;
@@ -207,7 +207,7 @@ M_UPDATE
 		u8			flags;
 		vec3		pos;
 		u8			state_data_size;
-		
+
 		?...?		state_data
 
 	}
@@ -215,15 +215,15 @@ M_UPDATE
 	weapon
 	{
 		u32			timestamp;
-		u8			flags;				// wf_working, wf_visible=selected or independent,  
+		u8			flags;				// wf_working, wf_visible=selected or independent,
 
 		u16			a_current;
 		u16			a_elapsed;
 
 		vec3		pos;				// position
 		angle8		aX;					// X: orientation
-		angle8		aY;					// Y: 
-		angle8		aZ;					// Z: 
+		angle8		aY;					// Y:
+		angle8		aZ;					// Z:
 
 		vec3		f_pos;
 		direction	f_dir;
@@ -236,7 +236,7 @@ GE_RESPAWN
 
 GE_OWNERSHIP_TAKE
 {
-	u16			id_entity;			
+	u16			id_entity;
 }
 
 GE_OWNERSHIP_REJECT

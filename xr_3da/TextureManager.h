@@ -41,7 +41,7 @@ private:
 	map_VS							m_vs;
 	map_PS							m_ps;
 	map_TD							m_td;
-	
+
 	vector<SState*>					v_states;
 	vector<SDeclaration*>			v_declarations;
 	vector<SGeometry*>				v_geoms;
@@ -51,7 +51,7 @@ private:
 	vector<STextureList*>			lst_textures;
 	vector<SMatrixList*>			lst_matrices;
 	vector<SConstantList*>			lst_constants;
-	
+
 	// main shader-array
 	vector<SPass*>					v_passes;
 	vector<ShaderElement*>			v_elements;
@@ -68,7 +68,7 @@ public:
 	BOOL							_GetDetailTexture	(LPCSTR Name, LPCSTR& T, LPCSTR& M);
 
     map_Blender&					_GetBlenders		()		{	return m_blenders;	}
-	
+
 	// Debug
 	LPCSTR							DBG_GetTextureName	(CTexture*);
 	LPCSTR							DBG_GetMatrixName	(CMatrix*);
@@ -76,13 +76,13 @@ public:
 	LPCSTR							DBG_GetRTName		(CRT*);
 	LPCSTR							DBG_GetVSName		(SGeometry*);
 	void							DBG_VerifyGeoms		();
-	
+
 	// Editor cooperation
 	void							ED_UpdateBlender	(LPCSTR Name, CBlender*		data);
 	void							ED_UpdateMatrix		(LPCSTR Name, CMatrix*		data);
 	void							ED_UpdateConstant	(LPCSTR Name, CConstant*	data);
 	void							ED_UpdateTextures	(vector<LPSTR>* names);
-	
+
 	// Low level resource creation
 	CTexture*						_CreateTexture		(LPCSTR Name);
 	void							_DeleteTexture		(CTexture* &T);
@@ -113,31 +113,31 @@ public:
 
 	IDirect3DVertexDeclaration9*	_CreateDecl			(D3DVERTEXELEMENT9* dcl);
 	void							_DeleteDecl			(IDirect3DVertexDeclaration9*& dcl);
-	
+
 	STextureList*					_CreateTextureList	(STextureList& L);
 	void							_DeleteTextureList	(STextureList* &L);
-	
+
 	SMatrixList*					_CreateMatrixList	(SMatrixList& L);
 	void							_DeleteMatrixList	(SMatrixList* &L);
-	
+
 	SConstantList*					_CreateConstantList	(SConstantList& L);
 	void							_DeleteConstantList	(SConstantList* &L);
-	
+
 	ShaderElement*					_CreateElement		(CBlender_Compile& C);
 	void							_DeleteElement		(ShaderElement* &L);
-	
+
 	CShaderManager			()
 	{
 		bDeferredLoad		= FALSE;
 	}
-	
+
 	void			xrStartUp			();
 	void			xrShutDown			();
-	
-	void			OnDeviceCreate		(CStream* F);
+
+	void			OnDeviceCreate		(IReader* F);
 	void			OnDeviceCreate		(LPCSTR name);
 	void			OnDeviceDestroy		(BOOL   bKeepTextures);
-	
+
 	// Creation/Destroying
 	Shader*			Create				(LPCSTR s_shader=0, LPCSTR s_textures=0, LPCSTR s_constants=0, LPCSTR s_matrices=0);
 	void			Delete				(Shader*	&S);

@@ -32,7 +32,7 @@ void Fvisual::Release	()
 	_RELEASE			(pIndices);
 }
 
-void Fvisual::Load		(const char* N, CStream *data, u32 dwFlags)
+void Fvisual::Load		(const char* N, IReader *data, u32 dwFlags)
 {
 	CVisual::Load		(N,data,dwFlags);
 
@@ -41,22 +41,22 @@ void Fvisual::Load		(const char* N, CStream *data, u32 dwFlags)
 
 	// read vertices
 	if ((dwFlags&VLOAD_NOVERTICES)==0) {
-		if (data->FindChunk(OGF_VCONTAINER)) {
+		if (data->find_chunk(OGF_VCONTAINER)) {
 #ifndef _EDITOR
-			u32 ID				= data->Rdword				();
-			vBase				= data->Rdword				();
-			vCount				= data->Rdword				();
+			u32 ID				= data->r_u32				();
+			vBase				= data->r_u32				();
+			vCount				= data->r_u32				();
 			pVertices			= ::Render->getVB			(ID);
 			pVertices->AddRef	();
 			vFormat				= ::Render->getVB_Format	(ID);
 #endif
 		} else {
-			R_ASSERT			(data->FindChunk(OGF_VERTICES));
+			R_ASSERT			(data->find_chunk(OGF_VERTICES));
 			vBase				= 0;
-			u32 fvf				= data->Rdword				();
+			u32 fvf				= data->r_u32				();
 			CHK_DX				(D3DXDeclaratorFromFVF(fvf,dcl));
 			vFormat				= dcl;
-			vCount				= data->Rdword				();
+			vCount				= data->r_u32				();
 			u32 vStride			= D3DXGetFVFVertexSize		(fvf);
 
 			BOOL	bSoft		= HW.Caps.vertex.bSoftware || (dwFlags&VLOAD_FORCESOFTWARE);
@@ -64,7 +64,7 @@ void Fvisual::Load		(const char* N, CStream *data, u32 dwFlags)
 			BYTE*	bytes		= 0;
 			R_CHK				(HW.pDevice->CreateVertexBuffer(vCount*vStride,dwUsage,0,D3DPOOL_MANAGED,&pVertices,0));
 			R_CHK				(pVertices->Lock(0,0,(void**)&bytes,0));
-			Memory.mem_copy		(bytes, data->Pointer(), vCount*vStride);
+			Memory.mem_copy		(bytes, data->pointer(), vCount*vStride);
 			pVertices->Unlock	();
 		}
 	}
@@ -72,19 +72,19 @@ void Fvisual::Load		(const char* N, CStream *data, u32 dwFlags)
 	// indices
 	dwPrimitives = 0;
 	if ((dwFlags&VLOAD_NOINDICES)==0) {
-		if (data->FindChunk(OGF_ICONTAINER)) {
+		if (data->find_chunk(OGF_ICONTAINER)) {
 #ifndef _EDITOR
-			u32 ID			= data->Rdword			();
-			iBase				= data->Rdword			();
-			iCount				= data->Rdword			();
+			u32 ID			= data->r_u32			();
+			iBase				= data->r_u32			();
+			iCount				= data->r_u32			();
 			dwPrimitives		= iCount/3;
 			pIndices			= ::Render->getIB		(ID);
 			pIndices->AddRef	();
 #endif
 		} else {
-			R_ASSERT			(data->FindChunk(OGF_INDICES));
+			R_ASSERT			(data->find_chunk(OGF_INDICES));
 			iBase				= 0;
-			iCount				= data->Rdword();
+			iCount				= data->r_u32();
 			dwPrimitives		= iCount/3;
 
 			BOOL	bSoft		= HW.Caps.vertex.bSoftware || (dwFlags&VLOAD_FORCESOFTWARE);
@@ -93,7 +93,7 @@ void Fvisual::Load		(const char* N, CStream *data, u32 dwFlags)
 
 			R_CHK				(HW.pDevice->CreateIndexBuffer(iCount*2,dwUsage,D3DFMT_INDEX16,D3DPOOL_MANAGED,&pIndices,0));
 			R_CHK				(pIndices->Lock(0,0,(void**)&bytes,0));
-			Memory.mem_copy		(bytes, data->Pointer(), iCount*2);
+			Memory.mem_copy		(bytes, data->pointer(), iCount*2);
 			pIndices->Unlock	();
 		}
 	}

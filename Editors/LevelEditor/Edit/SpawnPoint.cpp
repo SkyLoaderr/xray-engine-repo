@@ -51,7 +51,7 @@ void CSpawnPoint::SSpawnData::Create(LPCSTR entity_ref)
 //	   	cform->shapes.push_back		(xrSE_CFormed::shape_def());
     }
 
-    if (m_Data){ 
+    if (m_Data){
         if (pSettings->LineExists(entity_ref,"$player")){
             if (pSettings->ReadBOOL(entity_ref,"$player"))
                 m_Data->s_flags.set(M_SPAWN_OBJECT_ASPLAYER,TRUE);
@@ -64,30 +64,30 @@ void CSpawnPoint::SSpawnData::Destroy()
 {
     F_entity_Destroy(m_Data);
 }
-void CSpawnPoint::SSpawnData::Save(CFS_Base& F)
+void CSpawnPoint::SSpawnData::Save(IWriter& F)
 {
     F.open_chunk		(SPAWNPOINT_CHUNK_ENTITYREF);
-    F.WstringZ			(m_Data->s_name);
+    F.w_stringZ			(m_Data->s_name);
     F.close_chunk		();
-    
+
     F.open_chunk		(SPAWNPOINT_CHUNK_SPAWNDATA);
     NET_Packet 			Packet;
     m_Data->Spawn_Write	(Packet,TRUE);
-    F.Wdword			(Packet.B.count);
-    F.write				(Packet.B.data,Packet.B.count);
+    F.w_u32				(Packet.B.count);
+    F.w					(Packet.B.data,Packet.B.count);
     F.close_chunk		();
 }
-bool CSpawnPoint::SSpawnData::Load(CStream& F)
+bool CSpawnPoint::SSpawnData::Load(IReader& F)
 {
     string64 			temp;
-    F.RstringZ			(temp);
+    F.r_stringZ			(temp);
 
     NET_Packet 			Packet;
-    R_ASSERT(F.FindChunk(SPAWNPOINT_CHUNK_SPAWNDATA));
-    Packet.B.count 		= F.Rdword();
-    F.Read				(Packet.B.data,Packet.B.count);
+    R_ASSERT(F.find_chunk(SPAWNPOINT_CHUNK_SPAWNDATA));
+    Packet.B.count 		= F.r_u32();
+    F.r					(Packet.B.data,Packet.B.count);
     Create				(temp);
-    if (Valid())		
+    if (Valid())
     	if (!m_Data->Spawn_Read(Packet))
         	Destroy		();
 
@@ -103,7 +103,7 @@ bool CSpawnPoint::SSpawnData::ExportGame(SExportStreams& F, CSpawnPoint* owner)
     // export cform (if needed)
     xrSE_CFormed* cform 		= dynamic_cast<xrSE_CFormed*>(m_Data);
 //   	if (cform) cform->shapes.push_back		(xrSE_CFormed::shape_def());
-    
+
     if (cform&&!(owner->m_AttachedObject&&(owner->m_AttachedObject->ClassID==OBJCLASS_SHAPE))){
 		ELog.DlgMsg				(mtError,"Spawn Point: '%s' must contain attached shape.",owner->Name);
     	return false;
@@ -114,17 +114,17 @@ bool CSpawnPoint::SSpawnData::ExportGame(SExportStreams& F, CSpawnPoint* owner)
     	cform->shapes 			= shape->GetShapes();
     }
     // end
-    
+
     NET_Packet					Packet;
     m_Data->Spawn_Write			(Packet,TRUE);
-        
+
     F.spawn.stream.open_chunk	(F.spawn.chunk++);
-    F.spawn.stream.write		(Packet.B.data,Packet.B.count);
+    F.spawn.stream.w			(Packet.B.data,Packet.B.count);
     F.spawn.stream.close_chunk	();
 
 //    if (cform){
 //    	cform->shapes 			= shape->GetShapes();
-//	}    
+//	}
     return true;
 }
 void CSpawnPoint::SSpawnData::FillProp(LPCSTR pref, PropItemVec& items)
@@ -165,17 +165,17 @@ CSpawnPoint::~CSpawnPoint()
 }
 
 void CSpawnPoint::SetPosition(const Fvector& pos)
-{ 
+{
 	inherited::SetPosition	(pos);
     if (m_AttachedObject) m_AttachedObject->PPosition = pos;
 }
-void CSpawnPoint::SetRotation(const Fvector& rot)	
-{ 
+void CSpawnPoint::SetRotation(const Fvector& rot)
+{
 	inherited::SetRotation	(rot);
     if (m_AttachedObject) m_AttachedObject->PRotation = rot;
 }
 void CSpawnPoint::SetScale(const Fvector& scale)
-{ 
+{
 	inherited::SetScale		(scale);
     if (m_AttachedObject) m_AttachedObject->PScale = scale;
 }
@@ -186,7 +186,7 @@ bool CSpawnPoint::AttachObject(CCustomObject* obj)
     // большая проверялка
     if (m_SpawnData.Valid()){
     	switch(obj->ClassID){
-        case OBJCLASS_SHAPE: 
+        case OBJCLASS_SHAPE:
 	    	bAllowed = !!dynamic_cast<xrSE_CFormed*>(m_SpawnData.m_Data);
         break;
         }
@@ -267,7 +267,7 @@ void CSpawnPoint::Render( int priority, bool strictB2F )
                 if (fraBottomBar->miSpawnPointDrawText->Checked)
                 {
                     AnsiString s_name;
-					if (m_SpawnData.Valid()){ 
+					if (m_SpawnData.Valid()){
                     	s_name	= m_SpawnData.m_Data->s_name;
                     }else{
                         switch (m_Type){
@@ -307,7 +307,7 @@ bool CSpawnPoint::RayPick(float& distance, const Fvector& start, const Fvector& 
 {
 	bool bPick = false;
     if (m_AttachedObject) bPick = m_AttachedObject->RayPick(distance, start, direction, pinf);
-    
+
 	Fvector pos,ray2;
     pos.set(PPosition.x,PPosition.y+RPOINT_SIZE,PPosition.z);
 	ray2.sub( pos, start );
@@ -332,10 +332,10 @@ void CSpawnPoint::OnAppendObject(CCustomObject* object)
     m_AttachedObject = object;
 }
 
-bool CSpawnPoint::Load(CStream& F){
+bool CSpawnPoint::Load(IReader& F){
 	DWORD version = 0;
 
-    R_ASSERT(F.ReadChunk(SPAWNPOINT_CHUNK_VERSION,&version));
+    R_ASSERT(F.r_chunk(SPAWNPOINT_CHUNK_VERSION,&version));
     if(version!=SPAWNPOINT_VERSION){
         ELog.Msg( mtError, "SPAWNPOINT: Unsupported version.");
         return false;
@@ -344,21 +344,21 @@ bool CSpawnPoint::Load(CStream& F){
 	CCustomObject::Load(F);
 
     // new generation
-    if (F.FindChunk(SPAWNPOINT_CHUNK_ENTITYREF)){
+    if (F.find_chunk(SPAWNPOINT_CHUNK_ENTITYREF)){
         if (!m_SpawnData.Load(F)){
             ELog.Msg( mtError, "SPAWNPOINT: Can't load Spawn Data.");
             return false;
         }
         SetValid	(true);
     }else{
-	    if (F.FindChunk(SPAWNPOINT_CHUNK_TYPE))     m_Type 		= (EPointType)F.Rdword();
+	    if (F.find_chunk(SPAWNPOINT_CHUNK_TYPE))     m_Type 		= (EPointType)F.r_u32();
         if (m_Type>=ptMaxType){
             ELog.Msg( mtError, "SPAWNPOINT: Unsupported spawn version.");
             return false;
         }
     	switch (m_Type){
-        case ptRPoint: 
-		    if (F.FindChunk(SPAWNPOINT_CHUNK_TEAMID)) 	m_dwTeamID	= F.Rdword();
+        case ptRPoint:
+		    if (F.find_chunk(SPAWNPOINT_CHUNK_TEAMID)) 	m_dwTeamID	= F.r_u32();
         break;
         case ptAIPoint:
         break;
@@ -374,11 +374,11 @@ bool CSpawnPoint::Load(CStream& F){
     return true;
 }
 
-void CSpawnPoint::Save(CFS_Base& F){
+void CSpawnPoint::Save(IWriter& F){
 	CCustomObject::Save(F);
 
 	F.open_chunk		(SPAWNPOINT_CHUNK_VERSION);
-	F.Wword				(SPAWNPOINT_VERSION);
+	F.w_u16				(SPAWNPOINT_VERSION);
 	F.close_chunk		();
 
     // save attachment
@@ -390,10 +390,10 @@ void CSpawnPoint::Save(CFS_Base& F){
 	if (m_SpawnData.Valid()){
     	m_SpawnData.Save(F);
     }else{
-		F.write_chunk	(SPAWNPOINT_CHUNK_TYPE,		&m_Type,	sizeof(DWORD));
+		F.w_chunk	(SPAWNPOINT_CHUNK_TYPE,		&m_Type,	sizeof(DWORD));
     	switch (m_Type){
-        case ptRPoint: 
-	        F.write_chunk	(SPAWNPOINT_CHUNK_TEAMID,	&m_dwTeamID,sizeof(DWORD));
+        case ptRPoint:
+	        F.w_chunk	(SPAWNPOINT_CHUNK_TEAMID,	&m_dwTeamID,sizeof(DWORD));
         break;
         case ptAIPoint:
         break;
@@ -411,11 +411,11 @@ bool CSpawnPoint::ExportGame(SExportStreams& F)
     }else{
         // game
         switch (m_Type){
-        case ptRPoint: 
+        case ptRPoint:
 	        F.rpoint.stream.open_chunk	(F.rpoint.chunk++);
-            F.rpoint.stream.Wvector		(PPosition);
-            F.rpoint.stream.Wvector		(PRotation);
-            F.rpoint.stream.Wdword		(m_dwTeamID);
+            F.rpoint.stream.w_fvector3		(PPosition);
+            F.rpoint.stream.w_fvector3		(PRotation);
+            F.rpoint.stream.w_u32		(m_dwTeamID);
 			F.rpoint.stream.close_chunk	();
         case ptAIPoint:
         break;
@@ -423,7 +423,7 @@ bool CSpawnPoint::ExportGame(SExportStreams& F)
         }
     }
     F.aipoint.stream.open_chunk		(F.aipoint.chunk++);
-    F.aipoint.stream.Wvector		(PPosition);
+    F.aipoint.stream.w_fvector3		(PPosition);
     F.aipoint.stream.close_chunk	();
     return true;
 }
@@ -432,7 +432,7 @@ bool CSpawnPoint::ExportGame(SExportStreams& F)
 void CSpawnPoint::FillProp(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp(pref,items);
-    
+
     if (m_SpawnData.Valid()){
     	m_SpawnData.FillProp(pref,items);
     }else{
@@ -440,7 +440,7 @@ void CSpawnPoint::FillProp(LPCSTR pref, PropItemVec& items)
         case ptRPoint:{
 			PHelper.CreateU32(items, PHelper.PrepareKey(pref,"Respawn Point","Team"), &m_dwTeamID, 0,64,1);
         }break;
-        case ptAIPoint: 
+        case ptAIPoint:
         	PHelper.CreateCaption(items,PHelper.PrepareKey(pref,"AI Point","Reserved"),"-");
         break;
         default: THROW;

@@ -32,7 +32,7 @@ void CStats::Show(CGameFont* font)
 
         RenderDUMP_SKIN.FrameEnd	();
 
-		Animation.FrameEnd			();	
+		Animation.FrameEnd			();
 		Input.FrameEnd				();
 		clRAY.FrameEnd				();
 		clBOX.FrameEnd				();
@@ -40,8 +40,8 @@ void CStats::Show(CGameFont* font)
 
         RenderDUMP_RT.FrameEnd		();
 
-		RenderDUMP_DT_VIS.FrameEnd	();	
-		RenderDUMP_DT_Render.FrameEnd();	
+		RenderDUMP_DT_VIS.FrameEnd	();
+		RenderDUMP_DT_Render.FrameEnd();
 		RenderDUMP_DT_Cache.FrameEnd();
         TEST0.FrameEnd				();
         TEST1.FrameEnd				();
@@ -86,9 +86,9 @@ void CStats::Show(CGameFont* font)
 		F.OutSkip	();
 //        F.OutNext	("Render:       %2.2fms",		RenderDUMP.result);
 		F.OutNext	(" RT:          %2.2fms, %d",	RenderDUMP_RT.result,RenderDUMP_RT.count);
-		F.OutNext	(" DT_Vis:      %2.2fms",		RenderDUMP_DT_VIS.result);	
-		F.OutNext	(" DT_Render:   %2.2fms",		RenderDUMP_DT_Render.result);	
-		F.OutNext	(" DT_Cache:    %2.2fms",		RenderDUMP_DT_Cache.result);	
+		F.OutNext	(" DT_Vis:      %2.2fms",		RenderDUMP_DT_VIS.result);
+		F.OutNext	(" DT_Render:   %2.2fms",		RenderDUMP_DT_Render.result);
+		F.OutNext	(" DT_Cache:    %2.2fms",		RenderDUMP_DT_Cache.result);
 		F.OutSkip	();
 		F.OutNext	("TEST 0:       %2.2fms, %d",TEST0.result,TEST0.count);
 		F.OutNext	("TEST 1:       %2.2fms, %d",TEST1.result,TEST1.count);
@@ -101,7 +101,7 @@ void CStats::Show(CGameFont* font)
 	}
 
 	{
-		Animation.FrameStart		();	
+		Animation.FrameStart		();
 		RenderTOTAL.FrameStart		();
 
 		Input.FrameStart			();
@@ -112,9 +112,9 @@ void CStats::Show(CGameFont* font)
 		RenderDUMP_SKIN.FrameStart	();
 		RenderDUMP_RT.FrameStart	();
 
-		RenderDUMP_DT_VIS.FrameStart();	
-		RenderDUMP_DT_Render.FrameStart();	
-		RenderDUMP_DT_Cache.FrameStart();	
+		RenderDUMP_DT_VIS.FrameStart();
+		RenderDUMP_DT_Render.FrameStart();
+		RenderDUMP_DT_Cache.FrameStart();
 
 		TEST0.FrameStart			();
 		TEST1.FrameStart			();

@@ -110,7 +110,7 @@ bool TfrmEditLightAnim::FinalClose(){
 void __fastcall TfrmEditLightAnim::tvItemsItemFocused(TObject *Sender)
 {
 //	if (bFreezeUpdate) return;
-    
+
     TElTreeItem* node = tvItems->Selected;
 
     if (node&&FHelper.IsObject(node)){

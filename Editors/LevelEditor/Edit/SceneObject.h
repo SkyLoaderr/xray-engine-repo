@@ -65,17 +65,17 @@ public:
     virtual void 	SetPosition				(const Fvector& pos)	{ if (m_ActiveOMotion) m_vMotionPosition.set(pos); else FPosition.set(pos);	UpdateTransform();}
 	virtual void 	SetRotation				(const Fvector& rot)	{ if (m_ActiveOMotion) m_vMotionRotation.set(rot); else FRotation.set(rot);	UpdateTransform();}
     virtual void 	SetScale				(const Fvector& scale)
-    { 
+    {
     	if (m_pReference&&m_pReference->IsDynamic()){
         	ELog.Msg(mtError,"Dynamic object %s - can't scale.", Name);
         }else{
-			FScale.set(scale); 
+			FScale.set(scale);
             UpdateTransform();
         }
     }
 protected:
 	typedef CCustomObject inherited;
-    int				m_iBlinkTime;           
+    int				m_iBlinkTime;
 public:
     // constructor/destructor methods
 					CSceneObject			(LPVOID data, LPCSTR name);
@@ -112,7 +112,7 @@ public:
 	void 			RenderAnimation			();
 	void 			RenderSingle			();
 
-    // update methods           
+    // update methods
 	virtual void 	OnFrame					();
     virtual void	OnUpdateTransform		();
 
@@ -137,8 +137,8 @@ public:
 	virtual bool 	GetSummaryInfo			(SSceneSummary* inf);
 
     // load/save methods
-  	virtual bool 	Load					(CStream&);
-	virtual void 	Save					(CFS_Base&);
+  	virtual bool 	Load					(IReader&);
+	virtual void 	Save					(IWriter&);
     virtual bool	ExportGame				(SExportStreams& data);
 };
 //----------------------------------------------------

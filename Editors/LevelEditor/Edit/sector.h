@@ -1,7 +1,7 @@
 #ifndef SectorH
 #define SectorH
 
-#include "portalutils.h"                                 
+#include "portalutils.h"
 enum EVisible{
 	fvNone,
     fvPartialInside,
@@ -48,14 +48,14 @@ class CSector : public CCustomObject {
 	SItemVec 		sector_items;
 	bool 			FindSectorItem(CSceneObject* o, CEditableMesh* m, SItemIt& it);
 	bool 			FindSectorItem(const char* O, const char* M, SItemIt& it);
-	void 			LoadSectorDef( CStream* F );
+	void 			LoadSectorDef( IReader* F );
 
     enum{
     	flNeedUpdateVolume = (1<<0)
     };
-    
+
     Flags32			m_Flags;
-    
+
     // only for build
     int				sector_num;
 	void 			OnDestroy	();
@@ -75,8 +75,8 @@ public:
 	virtual void 	OnSceneUpdate();
 
     // file system function
-  	virtual bool 	Load		(CStream&);
-	virtual void 	Save		(CFS_Base&);
+  	virtual bool 	Load		(IReader&);
+	virtual void 	Save		(IWriter&);
 	virtual void	FillProp	(LPCSTR pref, PropItemVec& values);
 	virtual bool 	GetSummaryInfo(SSceneSummary* inf);
 
@@ -92,7 +92,7 @@ public:
     bool			IsEmpty		();
 
 	virtual void 	OnFrame		();
-    
+
     EVisible		Intersect	(const Fvector& center, float radius);
 	EVisible 		Intersect	(const Fbox& box);
 };

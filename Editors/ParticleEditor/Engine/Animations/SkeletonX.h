@@ -54,7 +54,7 @@ protected:
 	void					_Copy			(CSkeletonX *V);
 	void					_Render			(SGeometry* hGeom, u32 vCount, u32 pCount);
 	void					_Release		();
-	void					_Load			(const char* N, CStream *data, u32& dwVertCount);
+	void					_Load			(const char* N, IReader *data, u32& dwVertCount);
 public:
 	virtual void			SetParent		(CKinematics* K) { Parent = K; }
 
@@ -72,7 +72,7 @@ private:
 	typedef Fvisual	inherited;
 public:
 	virtual void			Render			(float LOD);
-	virtual void			Load			(const char* N, CStream *data, u32 dwFlags);
+	virtual void			Load			(const char* N, IReader *data, u32 dwFlags);
 	virtual void			Copy			(CVisual *pFrom);
 	virtual void			Release			();
 };
@@ -86,7 +86,7 @@ public:
 	CSkeletonX_PM()	: indices(0) {};
 	
 	virtual void			Render			(float LOD);
-	virtual void			Load			(const char* N, CStream *data, u32 dwFlags);
+	virtual void			Load			(const char* N, IReader *data, u32 dwFlags);
 	virtual void			Copy			(CVisual *pFrom);
 	virtual void			Release			();
 };

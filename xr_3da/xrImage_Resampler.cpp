@@ -23,7 +23,7 @@
 
 
 typedef	u32	Pixel;
-struct Image 
+struct Image
 {
 	int		xsize;		/* horizontal size of the image in Pixels */
 	int		ysize;		/* vertical size of the image in Pixels */
@@ -42,7 +42,7 @@ Image *	new_image(int xsize, int ysize)		/* create a blank image */
 {
 	Image *image;
 
-	if((image = (Image *)xr_malloc(sizeof(Image))) && (image->data = (Pixel *)xr_malloc(ysize*xsize*sizeof(Pixel)))) 
+	if((image = (Image *)xr_malloc(sizeof(Image))) && (image->data = (Pixel *)xr_malloc(ysize*xsize*sizeof(Pixel))))
 	{
 		ZeroMemory(image->data,ysize*xsize*sizeof(Pixel));
 		image->xsize	= xsize;
@@ -121,7 +121,7 @@ double	triangle_filter		(double t)
 	return(0.0);
 }
 
-// 
+//
 #define	bell_support		(1.5)
 double	bell_filter			(double t)		/* box (*) box (*) box */
 {
@@ -134,7 +134,7 @@ double	bell_filter			(double t)		/* box (*) box (*) box */
 	return(0.0);
 }
 
-// 
+//
 #define	B_spline_support	(2.0)
 double	B_spline_filter		(double t)	/* box (*) box (*) box (*) box */
 {
@@ -151,7 +151,7 @@ double	B_spline_filter		(double t)	/* box (*) box (*) box (*) box */
 	return(0.0);
 }
 
-// 
+//
 #define	Lanczos3_support	(3.0)
 double	sinc				(double x)
 {
@@ -166,7 +166,7 @@ double	Lanczos3_filter		(double t)
 	return(0.0);
 }
 
-// 
+//
 #define	Mitchell_support	(2.0)
 #define	B	(1.0 / 3.0)
 #define	C	(1.0 / 3.0)
@@ -196,13 +196,13 @@ double	Mitchell_filter		(double t)
  *	image rescaling routine
  */
 
-struct CONTRIB	
+struct CONTRIB
 {
 	int		pixel;
 	double	weight;
 };
 
-struct CLIST 
+struct CLIST
 {
 	int		n;					/* number of contributors */
 	CONTRIB	*p;					/* pointer to list of contributions */
@@ -269,7 +269,7 @@ void	imf_Process	(u32* dstI, u32 dstW, u32 dstH, u32* srcI, u32 srcW, u32 srcH, 
 		try	{
 			width	= fwidth / xscale;
 			fscale	= 1.0 / xscale;
-			for(i = 0; i < dst.xsize; ++i) 
+			for(i = 0; i < dst.xsize; ++i)
 			{
 				contrib[i].n	= 0;
 				contrib[i].p	= (CONTRIB *)xr_malloc((int) (width * 2 + 1)*sizeof(CONTRIB));
@@ -277,7 +277,7 @@ void	imf_Process	(u32* dstI, u32 dstW, u32 dstH, u32* srcI, u32 srcW, u32 srcH, 
 				center			= double(i) / xscale;
 				left			= ceil	(center - width);
 				right			= floor	(center + width);
-				for(j = int(left); j <= int(right); ++j) 
+				for(j = int(left); j <= int(right); ++j)
 				{
 					weight	= center - double(j);
 					weight	= filterf(weight / fscale) / fscale;
@@ -298,7 +298,7 @@ void	imf_Process	(u32* dstI, u32 dstW, u32 dstH, u32* srcI, u32 srcW, u32 srcH, 
 		};
 	} else {
 		try	{
-			for(i = 0; i < dst.xsize; ++i) 
+			for(i = 0; i < dst.xsize; ++i)
 			{
 				contrib[i].n	= 0;
 				contrib[i].p	= (CONTRIB *)xr_malloc((int) (fwidth * 2 + 1)*sizeof(CONTRIB));
@@ -306,7 +306,7 @@ void	imf_Process	(u32* dstI, u32 dstW, u32 dstH, u32* srcI, u32 srcW, u32 srcH, 
 				center			= double(i) / xscale;
 				left			= ceil	(center - fwidth);
 				right			= floor	(center + fwidth);
-				for(j = int(left); j <= int(right); ++j) 
+				for(j = int(left); j <= int(right); ++j)
 				{
 					weight	= center - (double) j;
 					weight	= (*filterf)(weight);
@@ -333,14 +333,14 @@ void	imf_Process	(u32* dstI, u32 dstW, u32 dstH, u32* srcI, u32 srcW, u32 srcH, 
 		ZeroMemory(raster,src.xsize*sizeof(Pixel));
 	} catch (...) {	Msg		("imf_Process::4");	};
 	try	{
-		for	(k = 0; k < tmp->ysize; ++k) 
+		for	(k = 0; k < tmp->ysize; ++k)
 		{
 			get_row	(raster, &src, k);
-			for(i = 0; i < tmp->xsize; ++i) 
+			for(i = 0; i < tmp->xsize; ++i)
 			{
 				double	w_r	= 0., w_g = 0., w_b	= 0., w_a = 0.;
 
-				for	(j = 0; j < contrib[i].n; ++j) 
+				for	(j = 0; j < contrib[i].n; ++j)
 				{
 					double	W	=	contrib[i].p[j].weight;
 					Pixel	P	=	raster[contrib[i].p[j].pixel];
@@ -370,7 +370,7 @@ void	imf_Process	(u32* dstI, u32 dstW, u32 dstH, u32* srcI, u32 srcW, u32 srcH, 
 		try	{
 			width	= fwidth / yscale;
 			fscale	= 1.0 / yscale;
-			for	(i = 0; i < dst.ysize; ++i) 
+			for	(i = 0; i < dst.ysize; ++i)
 			{
 				contrib[i].n	= 0;
 				contrib[i].p	= (CONTRIB *)xr_malloc((int) (width * 2 + 1)*sizeof(CONTRIB));
@@ -378,7 +378,7 @@ void	imf_Process	(u32* dstI, u32 dstW, u32 dstH, u32* srcI, u32 srcW, u32 srcH, 
 				center			= (double) i / yscale;
 				left			= ceil	(center - width);
 				right			= floor	(center + width);
-				for(j = int(left); j <= int(right); ++j) 
+				for(j = int(left); j <= int(right); ++j)
 				{
 					weight	= center - (double) j;
 					weight	= filterf(weight / fscale) / fscale;
@@ -397,7 +397,7 @@ void	imf_Process	(u32* dstI, u32 dstW, u32 dstH, u32* srcI, u32 srcW, u32 srcH, 
 		} catch (...) {	Msg		("imf_Process::8 (yscale<1.0)");	};
 	} else {
 		try	{
-			for(i = 0; i < dst.ysize; ++i) 
+			for(i = 0; i < dst.ysize; ++i)
 			{
 				contrib[i].n	= 0;
 				contrib[i].p	= (CONTRIB *)xr_malloc((int) (fwidth * 2 + 1)*sizeof(CONTRIB));
@@ -429,14 +429,14 @@ void	imf_Process	(u32* dstI, u32 dstW, u32 dstH, u32* srcI, u32 srcW, u32 srcH, 
 		ZeroMemory(raster,tmp->ysize*sizeof(Pixel));
 	} catch (...) {	Msg		("imf_Process::9");	};
 	try	{
-		for(k = 0; k < dst.xsize; ++k) 
+		for(k = 0; k < dst.xsize; ++k)
 		{
 			get_column	(raster, tmp, k);
-			for(i = 0; i < dst.ysize; ++i) 
+			for(i = 0; i < dst.ysize; ++i)
 			{
 				double	w_r	= 0., w_g = 0., w_b	= 0., w_a = 0.;
 
-				for	(j = 0; j < contrib[i].n; ++j) 
+				for	(j = 0; j < contrib[i].n; ++j)
 				{
 					double	W	=	contrib[i].p[j].weight;
 					Pixel	P	=	raster[contrib[i].p[j].pixel];

@@ -182,20 +182,20 @@ void EDetailManager::RemoveFromSnapList(CCustomObject* O)
 
 void EDetailManager::ExportColorIndices(LPCSTR fname)
 {
-	CFS_Memory F;
+	CMemoryWriter F;
     SaveColorIndices(F);
-    F.SaveTo(fname,0);
+    F.save_to(fname,0);
 }
 
 void EDetailManager::ImportColorIndices(LPCSTR fname)
 {
 	ClearColorIndices	();
-	CStream* F=Engine.FS.Open(fname); R_ASSERT(F);
+	IReader* F=Engine.FS.Open(fname); R_ASSERT(F);
 	LoadColorIndices	(*F);
 	Engine.FS.Close		(F);
 }
 
-void EDetailManager::SaveColorIndices(CFS_Base& F)
+void EDetailManager::SaveColorIndices(IWriter& F)
 {
 	// objects
 	F.open_chunk		(DETMGR_CHUNK_OBJECTS);
@@ -207,45 +207,45 @@ void EDetailManager::SaveColorIndices(CFS_Base& F)
     F.close_chunk		();
     // color index map
 	F.open_chunk		(DETMGR_CHUNK_COLOR_INDEX);
-    F.Wbyte				(m_ColorIndices.size());
+    F.w_u8				(m_ColorIndices.size());
     ColorIndexPairIt S 	= m_ColorIndices.begin();
     ColorIndexPairIt E 	= m_ColorIndices.end();
     ColorIndexPairIt i_it= S;
 	for(; i_it!=E; i_it++){
-		F.Wdword		(i_it->first);
-        F.Wbyte			(i_it->second.size());
+		F.w_u32		(i_it->first);
+        F.w_u8			(i_it->second.size());
 	    for (DetailIt d_it=i_it->second.begin(); d_it!=i_it->second.end(); d_it++)
-        	F.WstringZ	((*d_it)->GetName());
+        	F.w_stringZ	((*d_it)->GetName());
     }
     F.close_chunk		();
 }
 
-bool EDetailManager::LoadColorIndices(CStream& F)
+bool EDetailManager::LoadColorIndices(IReader& F)
 {
     // objects
-    CStream* OBJ 		= F.OpenChunk(DETMGR_CHUNK_OBJECTS);
+    IReader* OBJ 		= F.open_chunk(DETMGR_CHUNK_OBJECTS);
     if (OBJ){
-        CStream* O   	= OBJ->OpenChunk(0);
+        IReader* O   	= OBJ->open_chunk(0);
         for (int count=1; O; count++) {
             CDetail* DO	= xr_new<CDetail>();
             if (!DO->Load(*O)) ELog.Msg(mtError,"Can't load detail object.");
 			objects.push_back(DO);
-            O->Close();
-            O = OBJ->OpenChunk(count);
+            O->close();
+            O = OBJ->open_chunk(count);
         }
-        OBJ->Close();
+        OBJ->close();
     }
     // color index map
-    R_ASSERT			(F.FindChunk(DETMGR_CHUNK_COLOR_INDEX));
-    int cnt				= F.Rbyte();
+    R_ASSERT			(F.find_chunk(DETMGR_CHUNK_COLOR_INDEX));
+    int cnt				= F.r_u8();
     string256			buf;
     DWORD index;
     int ref_cnt;
     for (int k=0; k<cnt; k++){
-		index			= F.Rdword();
-        ref_cnt			= F.Rbyte();
+		index			= F.r_u32();
+        ref_cnt			= F.r_u8();
 		for (int j=0; j<ref_cnt; j++){
-        	F.RstringZ	(buf);
+        	F.r_stringZ	(buf);
             CDetail* DO	= FindObjectByName(buf);
             if (DO) 	m_ColorIndices[index].push_back(DO);
         }
@@ -254,10 +254,10 @@ bool EDetailManager::LoadColorIndices(CStream& F)
     return true;
 }
 
-bool EDetailManager::Load(CStream& F){
+bool EDetailManager::Load(IReader& F){
     string256 buf;
-    R_ASSERT			(F.FindChunk(DETMGR_CHUNK_VERSION));
-	DWORD version		= F.Rdword();
+    R_ASSERT			(F.find_chunk(DETMGR_CHUNK_VERSION));
+	DWORD version		= F.r_u32();
 
     if (version!=DETMGR_VERSION){
     	ELog.Msg(mtError,"EDetailManager: unsupported version.");
@@ -265,28 +265,28 @@ bool EDetailManager::Load(CStream& F){
     }
 
 	// header
-    R_ASSERT			(F.ReadChunk(DETMGR_CHUNK_HEADER,&dtH));
+    R_ASSERT			(F.r_chunk(DETMGR_CHUNK_HEADER,&dtH));
 
     // objects
     LoadColorIndices	(F);
 
     // slots
-    R_ASSERT			(F.FindChunk(DETMGR_CHUNK_SLOTS));
-    int cnt 			= F.Rdword();
+    R_ASSERT			(F.find_chunk(DETMGR_CHUNK_SLOTS));
+    int cnt 			= F.r_u32();
     dtSlots				= xr_alloc<DetailSlot>(cnt);
     m_Selected.resize	(cnt);
-	F.Read				(dtSlots,cnt*sizeof(DetailSlot));
+	F.r					(dtSlots,cnt*sizeof(DetailSlot));
 
     // internal
     // bbox
-    R_ASSERT			(F.ReadChunk(DETMGR_CHUNK_BBOX,&m_BBox));
+    R_ASSERT			(F.r_chunk(DETMGR_CHUNK_BBOX,&m_BBox));
 
 	// snap objects
-    if (F.FindChunk(DETMGR_CHUNK_SNAP_OBJECTS)){
-		cnt 			= F.Rdword();
+    if (F.find_chunk(DETMGR_CHUNK_SNAP_OBJECTS)){
+		cnt 			= F.r_u32();
         if (cnt){
 	        for (int i=0; i<cnt; i++){
-    	    	F.RstringZ	(buf);
+    	    	F.r_stringZ	(buf);
         	    CCustomObject* O = Scene.FindObjectByName(buf,OBJCLASS_SCENEOBJECT);
             	if (!O)		ELog.Msg(mtError,"DetailManager: Can't find object '%s' in scene.",buf);
 	            else		m_SnapObjects.push_back(O);
@@ -298,12 +298,12 @@ bool EDetailManager::Load(CStream& F){
     	m_SnapObjects	= Scene.m_SnapObjects;
     }
 
-    if (F.FindChunk(DETMGR_CHUNK_DENSITY))
-		m_fDensity 			= F.Rfloat();
+    if (F.find_chunk(DETMGR_CHUNK_DENSITY))
+		m_fDensity 			= F.r_float();
 
 	// base texture
-	if(F.FindChunk(DETMGR_CHUNK_BASE_TEXTURE)){
-	    F.RstringZ		(buf);
+	if(F.find_chunk(DETMGR_CHUNK_BASE_TEXTURE)){
+	    F.r_stringZ		(buf);
     	if (m_Base.LoadImage(buf)){
 		    m_Base.CreateShader();
 		    m_Base.CreateRMFromObjects(m_BBox,m_SnapObjects);
@@ -319,40 +319,40 @@ bool EDetailManager::Load(CStream& F){
     return true;
 }
 
-void EDetailManager::Save(CFS_Base& F){
+void EDetailManager::Save(IWriter& F){
 	// version
 	F.open_chunk		(DETMGR_CHUNK_VERSION);
-    F.Wdword			(DETMGR_VERSION);
+    F.w_u32				(DETMGR_VERSION);
     F.close_chunk		();
 
 	// header
-	F.write_chunk		(DETMGR_CHUNK_HEADER,&dtH,sizeof(DetailHeader));
+	F.w_chunk			(DETMGR_CHUNK_HEADER,&dtH,sizeof(DetailHeader));
 
     // objects
     SaveColorIndices	(F);
 
     // slots
 	F.open_chunk		(DETMGR_CHUNK_SLOTS);
-    F.Wdword			(dtH.size_x*dtH.size_z);
-	F.write				(dtSlots,dtH.size_x*dtH.size_z*sizeof(DetailSlot));
+    F.w_u32				(dtH.size_x*dtH.size_z);
+	F.w					(dtSlots,dtH.size_x*dtH.size_z*sizeof(DetailSlot));
     F.close_chunk		();
     // internal
     // bbox
-	F.write_chunk		(DETMGR_CHUNK_BBOX,&m_BBox,sizeof(Fbox));
+	F.w_chunk			(DETMGR_CHUNK_BBOX,&m_BBox,sizeof(Fbox));
 	// base texture
     if (m_Base.Valid()){
 		F.open_chunk	(DETMGR_CHUNK_BASE_TEXTURE);
-    	F.WstringZ		(m_Base.GetName());
+    	F.w_stringZ		(m_Base.GetName());
 	    F.close_chunk	();
     }
     F.open_chunk		(DETMGR_CHUNK_DENSITY);
-    F.Wfloat			(m_fDensity);
+    F.w_float			(m_fDensity);
     F.close_chunk		();
 	// snap objects
 	F.open_chunk		(DETMGR_CHUNK_SNAP_OBJECTS);
-    F.Wdword			(m_SnapObjects.size());
+    F.w_u32			(m_SnapObjects.size());
     for (ObjectIt o_it=m_SnapObjects.begin(); o_it!=m_SnapObjects.end(); o_it++)
-    	F.WstringZ		((*o_it)->Name);
+    	F.w_stringZ		((*o_it)->Name);
     F.close_chunk		();
 }
 
@@ -361,12 +361,12 @@ bool EDetailManager::Export(LPCSTR fn)
     bool bRes=true;
 
     UI.ProgressStart	(4,"Making details...");
-    dtH.version	= DETAIL_VERSION;
-	CFS_Memory F;
+    dtH.version			= DETAIL_VERSION;
+	CMemoryWriter F;
     dtH.object_count	= objects.size();
 	// header
-	F.write_chunk		(DETMGR_CHUNK_HEADER,&dtH,sizeof(DetailHeader));
-	UI.ProgressInc();
+	F.w_chunk			(DETMGR_CHUNK_HEADER,&dtH,sizeof(DetailHeader));
+	UI.ProgressInc		();
 
     // objects
 	F.open_chunk		(DETMGR_CHUNK_OBJECTS);
@@ -387,12 +387,12 @@ bool EDetailManager::Export(LPCSTR fn)
     // slots
     if (bRes){
 		F.open_chunk	(DETMGR_CHUNK_SLOTS);
-		F.write			(dtSlots,dtH.size_x*dtH.size_z*sizeof(DetailSlot));
+		F.w				(dtSlots,dtH.size_x*dtH.size_z*sizeof(DetailSlot));
 	    F.close_chunk	();
 		UI.ProgressInc	();
     }
 
-    if (bRes)			F.SaveTo(fn,0);
+    if (bRes)			F.save_to(fn,0);
 
 	UI.ProgressInc();
     UI.ProgressEnd		();

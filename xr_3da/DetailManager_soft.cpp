@@ -52,7 +52,7 @@ void CDetailManager::soft_Render	()
 		Fmatrix		mXform;
 		for (u32 L_ID=0; L_ID<lock_count; L_ID++)
 		{
-			// Calculate params 
+			// Calculate params
 			u32	item_start	= L_ID*o_per_lock;
 			u32	item_end	= item_start+o_per_lock;
 			if (item_end>o_total)	item_end = o_total;
@@ -105,7 +105,7 @@ void CDetailManager::soft_Render	()
 					LPDWORD	send	= sit+count;
 					LPDWORD	dit		= LPDWORD(iDest);
 					for		(; sit!=send; dit++,sit++)	*dit=*sit+item;
-					if		(Object.number_indices&1)	
+					if		(Object.number_indices&1)
 						iDest[Object.number_indices-1]=Object.indices[Object.number_indices-1]+WORD(iOffset);
 				}
 

@@ -81,12 +81,12 @@ CInifile::CInifile( LPCSTR szFileName, BOOL ReadOnly, BOOL bLoad, BOOL SaveAtEnd
         	R_ASSERT(!ReadOnly);
 	        return;
     	}
-		destructor<CStream>	file(Engine.FS.Open(szFileName));
+		destructor<IReader>	file(Engine.FS.Open(szFileName));
 #else
 #ifdef _EDITOR
 	    if (!bReadOnly&&!Engine.FS.Exist(szFileName)) Engine.FS.CreateNullFile(szFileName);
 #endif
-		destructor<CStream>	file(xr_new<CFileStream>(szFileName));
+		destructor<IReader>	file(xr_new<CFileReader>(szFileName));
 #endif
 
 
@@ -94,9 +94,9 @@ CInifile::CInifile( LPCSTR szFileName, BOOL ReadOnly, BOOL bLoad, BOOL SaveAtEnd
         char	str			[1024];
         char	str2		[1024];
 
-        while (!file().Eof())
+        while (!file().eof())
         {
-            file().Rstring	(str);
+            file().r_string	(str);
             _Trim			(str);
             LPSTR semi		= strchr(str,';');
             LPSTR comment	= 0;
@@ -188,12 +188,12 @@ void	CInifile::SaveAs( LPCSTR new_fname )
         fName		= xr_strdup(new_fname);
     }
     R_ASSERT(fName&&fName[0]);
-    CFS_Memory	F;
+    CMemoryWriter	F;
     char		temp[512],val[512];
     for (RootIt r_it=DATA.begin(); r_it!=DATA.end(); r_it++)
     {
         sprintf		(temp,"[%s]",r_it->Name);
-        F.Wstring	(temp);
+        F.w_string	(temp);
         for (SectIt s_it=r_it->begin(); s_it!=r_it->end(); s_it++)
         {
             Item&	I = *s_it;
@@ -222,11 +222,11 @@ void	CInifile::SaveAs( LPCSTR new_fname )
                 else			temp[0] = 0;
             }
             _TrimRight			(temp);
-            if (temp[0])		F.Wstring	(temp);
+            if (temp[0])		F.w_string	(temp);
         }
-        F.Wstring		(" ");
+        F.w_string		(" ");
     }
-    F.SaveTo			(fName,0);
+    F.save_to			(fName,0);
 }
 
 BOOL	CInifile::SectionExists( LPCSTR S )
@@ -242,7 +242,7 @@ BOOL	CInifile::LineExists( LPCSTR S, LPCSTR L )
 	Item Test; Test.first=(char*)L; SectIt A = std::lower_bound(I.begin(),I.end(),Test,item_pred());
 	return (A!=I.end() && strcmp(A->first,L)==0);
 }
- 
+
 u32	CInifile::LineCount	(LPCSTR Sname)
 {
 	Sect&	S = ReadSection(Sname);
@@ -250,7 +250,7 @@ u32	CInifile::LineCount	(LPCSTR Sname)
 	u32	C = 0;
 	for (; I!=S.end(); I++)	if (I->first) C++;
 	return  C;
-}                 
+}
 
 CInifile::Sect& CInifile::ReadSection( LPCSTR S )
 {

@@ -67,7 +67,7 @@ struct	ENGINE_API	SGeometry
 	IDirect3DIndexBuffer9*			ib;
 	u32								vb_stride;
 };
-struct	ENGINE_API		SPass 
+struct	ENGINE_API		SPass
 {
 	IDirect3DStateBlock9*			state;		// Generic state, like Z-Buffering, samplers, etc
 	IDirect3DPixelShader9*			ps;			// may be NULL = FFP, in that case "state" must contain TSS setup
@@ -96,11 +96,11 @@ public:
 	u32						dwReference;
 	SFlags					Flags;
 	svector<SPass*,8>		Passes;
-	
+
 	BOOL					equal	(ShaderElement& S);
 	BOOL					equal	(ShaderElement* S);
 };
-struct ENGINE_API		Shader 
+struct ENGINE_API		Shader
 {
 public:
 	u32					dwReference;
@@ -112,7 +112,7 @@ public:
 		};
 		ShaderElement*		E	[3];
 	};
-	
+
 	BOOL					equal	(Shader& S);
 	BOOL					equal	(Shader* S);
 };
