@@ -413,7 +413,7 @@ function process_map_spot(info_id)
 	
 	-- bar_rostok
 	if info_id = "bar_bar_hunter_quest_start" then
-		add_location(002, bar_hunter_toz_location)
+		add_location(502, bar_hunter_toz_location)
 
 
 
