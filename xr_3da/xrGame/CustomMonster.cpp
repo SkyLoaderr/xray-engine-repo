@@ -430,7 +430,7 @@ void CCustomMonster::GetVisible			(objVisible& R)
 	xr_vector<feel_visible_Item>::iterator I=feel_visible.begin(),E=feel_visible.end();
 	for (; I!=E; I++)	if (positive(I->fuzzy)) {
 		CEntityAlive *tpEntityAlive = dynamic_cast<CEntityAlive *>(I->O);
-		//CActor		 *tpActor = dynamic_cast<CActor *>(I->O);
+		CActor		 *tpActor = dynamic_cast<CActor *>(I->O);
 #ifdef IGNORE_ACTOR
 		if (tpEntityAlive && (tfGetRelationType(tpEntityAlive) != eRelationTypeFriend) && !tpActor)
 #else
