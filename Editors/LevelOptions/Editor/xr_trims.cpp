@@ -163,6 +163,46 @@ LPSTR _ChangeSymbol ( LPSTR name, char src, char dest )
 }
 
 #ifdef M_BORLAND
+AnsiString& _ReplaceItem 	( LPCSTR src, int index, LPCSTR new_item, AnsiString& dst, char separator )
+{
+	dst = "";
+    int level = 0;
+    bool bCopy = true;
+	for (LPCSTR p=src; *p!=0; p++){
+    	if (level==index){
+        	if (bCopy){
+            	for (LPCSTR itm = new_item; *itm!=0;) dst += *itm++;
+                bCopy=false;
+            }
+	    	if (*p==separator) dst += separator;
+        }else{
+			dst += *p;
+        }
+    	if (*p==separator) level++;
+    }
+	return dst;
+}
+
+AnsiString& _ReplaceItems ( LPCSTR src, int idx_start, int idx_end, LPCSTR new_items, AnsiString& dst, char separator )
+{
+	dst = "";
+    int level = 0;
+    bool bCopy = true;
+	for (LPCSTR p=src; *p!=0; p++){
+    	if ((level>=idx_start)&&(level<idx_end)){
+        	if (bCopy){
+            	for (LPCSTR itm = new_items; *itm!=0;) dst += *itm++;
+                bCopy=false;
+            }
+	    	if (*p==separator) dst += separator;
+        }else{
+			dst += *p;
+        }
+    	if (*p==separator) level++;
+    }
+	return dst;
+}
+
 AnsiString& _Trim( AnsiString& str )
 {
 	return str=str.Trim();

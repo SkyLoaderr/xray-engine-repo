@@ -12,6 +12,8 @@ struct xr_token;
 	XRCORE_API AnsiString&	_ListToSequence			( const AStringVec& lst );
 	XRCORE_API AnsiString&	_ListToSequence2		( const AStringVec& lst );
 	XRCORE_API void 		_SequenceToList			( AStringVec& lst, LPCSTR in, char separator=',' );
+	XRCORE_API AnsiString&	_ReplaceItem 			( LPCSTR src, int index, LPCSTR new_item, AnsiString& dst, char separator );
+	XRCORE_API AnsiString&	_ReplaceItems 			( LPCSTR src, int idx_start, int idx_end, LPCSTR new_items, AnsiString& dst, char separator );
 #endif
 
 XRCORE_API int		__stdcall	_GetItemCount			( LPCSTR , char separator=',');
