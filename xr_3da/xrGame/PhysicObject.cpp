@@ -415,7 +415,9 @@ void CPhysicObject::UnsplitSingle(CGameObject* O)
 	u_EventSend				(P);
 
 
-	//static_cast<CPhysicObject*>(O)->CopySpawnInit();
+	CopySpawnInit			();
+
+	
 }
 
 BOOL CPhysicObject::UsedAI_Locations()
