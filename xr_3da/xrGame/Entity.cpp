@@ -34,7 +34,7 @@ void CEntity::OnEvent	(EVENT E, DWORD P1, DWORD P2)
 {
 	if (E==eHealthLost_Begin)	
 	{
-		if (0==P2 || this==P2)	
+		if (0==P2 || DWORD(this)==P2)	
 		{
 			eHealthLost_Enabled		= TRUE;
 			LPCSTR	param			= LPCSTR(P1);
@@ -44,7 +44,7 @@ void CEntity::OnEvent	(EVENT E, DWORD P1, DWORD P2)
 	} else
 	if (E==eHealthLost_End)
 	{
-		if (0==P2 || this==P2)	
+		if (0==P2 || DWORD(this)==P2)	
 		{
 			eHealthLost_Enabled		= FALSE;
 		}

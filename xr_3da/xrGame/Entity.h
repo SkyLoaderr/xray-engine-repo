@@ -30,8 +30,8 @@ protected:
 	int					iArmor,		iMAX_Armor;
 protected:	
 	// EVENT: health lost 
-	EVENT*				eHealthLost_Begin;
-	EVENT*				eHealthLost_End;
+	EVENT				eHealthLost_Begin;
+	EVENT				eHealthLost_End;
 	
 	BOOL				eHealthLost_Enabled;
 	float				eHealthLost_speed;
