@@ -86,12 +86,12 @@ ENGINE_API DWORD* Build32MipLevel(DWORD &_w, DWORD &_h, DWORD &_p, DWORD *pdwPix
 			float	c_b	= float(DWORD(p1[2])+DWORD(p2[2])+DWORD(p3[2])+DWORD(p4[2])) / 4.f;
 			float	c_a	= float(DWORD(p1[3])+DWORD(p2[3])+DWORD(p3[3])+DWORD(p4[3])) / 4.f;
 			
-			if (fmt->flag.bFadeToColor){
+			if (fmt->flag&STextureParams::flFadeToColor){
 				c_r		= c_r*inv_blend + mixed_r*blend;
 				c_g		= c_g*inv_blend + mixed_g*blend;
 				c_b		= c_b*inv_blend + mixed_b*blend;
 			}
-			if (fmt->flag.bFadeToAlpha){
+			if (fmt->flag&STextureParams::flFadeToAlpha){
 				c_a		= c_a*inv_blend + mixed_a*blend;
 			}
 
@@ -140,23 +140,23 @@ bool DXTCompress(LPCSTR out_name, BYTE* raw_data, DWORD w, DWORD h, DWORD pitch,
 	ZeroMemory(&nvOpt,sizeof(nvOpt));
     nvOpt.bMipMapsInImage	= false;
 
-	bool a = fmt->flag.bGenerateMipMaps;
+	bool a = fmt->flag&STextureParams::flGenerateMipMaps;
 
-    if (fmt->flag.bGenerateMipMaps)	nvOpt.MipMapType=dGenerateMipMaps;
-    else							nvOpt.MipMapType=dNoMipMaps;
-    nvOpt.bBinaryAlpha	    = fmt->flag.bBinaryAlpha;
-    nvOpt.bNormalMap		= fmt->flag.bNormalMap;
-	nvOpt.bDuDvMap			= fmt->flag.bDuDvMap;
-    nvOpt.bAlphaBorder		= fmt->flag.bAlphaBorder;
-    nvOpt.bBorder			= fmt->flag.bColorBorder;
+    if (fmt->flag&STextureParams::flGenerateMipMaps)	nvOpt.MipMapType=dGenerateMipMaps;
+    else												nvOpt.MipMapType=dNoMipMaps;
+    nvOpt.bBinaryAlpha	    = !!(fmt->flag&STextureParams::flBinaryAlpha);
+    nvOpt.bNormalMap		= !!(fmt->flag&STextureParams::flNormalMap);
+	nvOpt.bDuDvMap			= !!(fmt->flag&STextureParams::flDuDvMap);
+    nvOpt.bAlphaBorder		= !!(fmt->flag&STextureParams::flAlphaBorder);
+    nvOpt.bBorder			= !!(fmt->flag&STextureParams::flColorBorder);
     nvOpt.BorderColor.u		= fmt->border_color;
-    nvOpt.bFade				= fmt->flag.bFadeToColor;
+    nvOpt.bFade				= !!(fmt->flag&STextureParams::flFadeToColor);
     nvOpt.bFadeAlpha		= FALSE;//fmt->flag.bFadeToAlpha;
     nvOpt.FadeToColor.u		= 0;//fmt->fade_color;
     nvOpt.FadeAmount		= 0;//fmt->fade_amount;
-    nvOpt.bDitherColor		= fmt->flag.bDitherColor;
-    nvOpt.bDitherEachMIPLevel=fmt->flag.bDitherEachMIPLevel;
-    nvOpt.bGreyScale		= fmt->flag.bGreyScale;
+    nvOpt.bDitherColor		= !!(fmt->flag&STextureParams::flDitherColor);
+    nvOpt.bDitherEachMIPLevel=!!(fmt->flag&STextureParams::flDitherEachMIPLevel);
+    nvOpt.bGreyScale		= !!(fmt->flag&STextureParams::flGreyScale);
     nvOpt.TextureType		= dTextureType2D;
     switch(fmt->fmt){
     case STextureParams::tfDXT1: 	nvOpt.TextureFormat = dDXT1; 	break;
@@ -179,7 +179,7 @@ bool DXTCompress(LPCSTR out_name, BYTE* raw_data, DWORD w, DWORD h, DWORD pitch,
 	}
 //-------------------
 
-	if (fmt->flag.bGenerateMipMaps&&((STextureParams::dMIPFilterAdvanced==fmt->mip_filter)||fmt->flag.bFadeToColor||fmt->flag.bFadeToAlpha)){
+	if ((fmt->flag&STextureParams::flGenerateMipMaps)&&((STextureParams::dMIPFilterAdvanced==fmt->mip_filter)||(fmt->flag&STextureParams::flFadeToColor)||(fmt->flag&STextureParams::flFadeToAlpha))){
 		nvOpt.MipMapType=dUseExistingMipMaps;
 
 		LPBYTE pImagePixels=0;
@@ -199,7 +199,7 @@ bool DXTCompress(LPCSTR out_name, BYTE* raw_data, DWORD w, DWORD h, DWORD pitch,
 		float	d = (float(fmt->fade_amount)/100.f)*numMipmaps-1;
 		if (d<1.f) d=1.f;
 		for (int i=1; i<numMipmaps; i++){
-			if (fmt->flag.bFadeToColor||fmt->flag.bFadeToAlpha){
+			if ((fmt->flag&STextureParams::flFadeToColor)||(fmt->flag&STextureParams::flFadeToAlpha)){
 				blend = i/d;
 				if (blend>1.f) blend=1.f;
 			}
