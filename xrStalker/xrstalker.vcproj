@@ -1551,9 +1551,6 @@
 						Name="Physics"
 						Filter="">
 						<File
-							RelativePath=".\scripts\fx_sound.script">
-						</File>
-						<File
 							RelativePath=".\Scripts\ph_button.script">
 						</File>
 						<File
@@ -1592,6 +1589,13 @@
 						</File>
 						<File
 							RelativePath=".\Scripts\sr_tip.script">
+						</File>
+					</Filter>
+					<Filter
+						Name="Misc"
+						Filter="">
+						<File
+							RelativePath=".\scripts\fx_sound.script">
 						</File>
 					</Filter>
 				</Filter>
