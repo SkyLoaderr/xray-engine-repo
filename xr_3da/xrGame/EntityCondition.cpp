@@ -446,36 +446,29 @@ void CEntityCondition::UpdatePower()
 void CEntityCondition::UpdateSatiety()
 {
 	if (GameID() != GAME_SINGLE) return;
+
+	float sleep_k = 1.f;
 	if(m_fSatiety>0)
 	{
 		m_fDeltaSatiety -= m_fV_Satiety*
 					  m_fCurrentSleepSatiety*
 					  m_iDeltaTime/1000;
+		sleep_k = m_fCurrentSleepHealth;
+	}
 		
-		m_fDeltaHealth += m_fV_SatietyHealth*
-			         ((m_fSatiety - m_fSatietyCritical*m_fSatietyMax)/m_fSatietyMax)*
-					 m_fCurrentSleepHealth*
-			         m_iDeltaTime/1000;
-		
+	m_fDeltaHealth += m_fV_SatietyHealth*
+					(m_fSatiety>m_fSatietyCritical?1.f:-1.f)*
+					sleep_k*m_iDeltaTime/1000;
 
-		//коэффициенты уменьшения восстановления силы от сытоти и радиации
-		float radiation_power_k = _abs(m_fRadiationMax - m_fRadiation)/m_fRadiationMax;
-		float satiety_power_k = _abs(m_fSatiety/m_fSatietyMax);
+	//коэффициенты уменьшения восстановления силы от сытоти и радиации
+	float radiation_power_k = 1.f;/*_abs(m_fRadiationMax - m_fRadiation)/m_fRadiationMax*/
+	float satiety_power_k = 1.f;/*_abs(m_fSatiety/m_fSatietyMax)*/
 			
-		m_fDeltaPower += m_fV_SatietyPower*
-					radiation_power_k*
-					satiety_power_k*
-					m_fCurrentSleepPower*
-					m_iDeltaTime/1000;
-
-	}
-	else
-	{
-//		m_fHealth -= m_fV_Satiety*m_iDeltaTime/1000;
-		m_fDeltaHealth += m_fV_SatietyHealth*
-					     (m_fSatiety - m_fSatietyCritical*m_fSatietyMax)*
-						 m_iDeltaTime/1000;
-	}
+	m_fDeltaPower += m_fV_SatietyPower*
+				radiation_power_k*
+				satiety_power_k*
+				m_fCurrentSleepPower*
+				m_iDeltaTime/1000;
 }
 void CEntityCondition::UpdateRadiation()
 {

@@ -79,12 +79,12 @@ LPCSTR GAME_NEWS_DATA::FullText()
 		const CGameGraph::CVertex	*game_vertex = ai().game_graph().vertex(newsItem.m_game_vertex_id);
 		if (ai().game_graph().header().levels().find(game_vertex->level_id()) != ai().game_graph().header().levels().end())
 		{
-			sprintf(locationName, "%s ", CStringTable()(ai().game_graph().header().levels().find(game_vertex->level_id())->second.name()));
+			sprintf(locationName, "%s ", *CStringTable()(ai().game_graph().header().levels().find(game_vertex->level_id())->second.name()));
 		}
 
 		// Substitute placeholders with real names
-		shared_str name1 = "";
-		shared_str name2 = "";
+		LPCSTR name1 = "";
+		LPCSTR name2 = "";
 
 		CSE_ALifeDynamicObject	*newsActorOne = ai().alife().objects().object(newsItem.m_object_id[0]); VERIFY(newsActorOne);
 		name1 = newsActorOne->s_name_replace;
@@ -114,7 +114,7 @@ LPCSTR GAME_NEWS_DATA::FullText()
 				}
 			}
 		}
-		sprintf(newsPhrase, *m_NewsTemplates[static_cast<u32>(newsItem.m_news_type)].str, *name1, *name2);
+		sprintf(newsPhrase, *m_NewsTemplates[static_cast<u32>(newsItem.m_news_type)].str, name1, name2);
 	}
 
 	// Calc current time
