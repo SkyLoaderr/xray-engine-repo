@@ -184,6 +184,7 @@ function Monster:process ()
 	   self.first_start = false	
 	   reset_action (self.npc, self.script)
 	   action (self.npc, move (move.act_run, move.force_type, self.way), cond (cond.move_end))
+	   return	
 	end
 
 	if moving == true then 
@@ -273,6 +274,7 @@ function main ()
 		         stalkers[a]:process ()
   		      end
 		  end	
+		  wait ()
 	end
 
 
