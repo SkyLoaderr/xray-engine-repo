@@ -12,6 +12,7 @@
 #include "ai_space.h"
 #include "game_graph.h"
 #include "PHCollideValidator.h"
+#include "PHShell.h"
 CPHDestroyable::CPHDestroyable()
 {
 	m_flags.flags=0;
@@ -214,7 +215,7 @@ void CPHDestroyable::NotificateDestroy(CPHDestroyableNotificate *dn)
 		e->set_LinearVel(*(Fvector*)&res_vell);
 	}
 	new_shell->Enable();
-	if(own_shell->CollideClassBits().is(CPHCollideValidator::cbNCGroupObject))
+	if(own_shell->IsGroupObject())
 							new_shell->RegisterToCLGroup(own_shell->CollideBits());
 			
 }

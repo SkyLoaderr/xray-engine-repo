@@ -15,8 +15,8 @@ const float EffectPars::vel_cret_wallmark=30.f;
 
 
 const float CharacterEffectPars::vel_cret_sound=20.f;
-const float CharacterEffectPars::vel_cret_particles=30.f;
-const float CharacterEffectPars::vel_cret_wallmark=30.f;
+const float CharacterEffectPars::vel_cret_particles=60.f;
+const float CharacterEffectPars::vel_cret_wallmark=100.f;
 
 void LoadPhysicsGameParams()
 {

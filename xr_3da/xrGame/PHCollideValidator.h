@@ -7,19 +7,25 @@ typedef u32 CLBits;
 class CPHObject;
 class CPHCollideValidator
 {
-public:
+
 	enum ETypeFlags 
 	{
 		cbNCGroupObject	=	1<<0,
-		cbNone			=	1<<1
+		cbNCStatic		=	1<<1,
+		cbNone			=	1<<2
 	};
+public:
 static		CGID			RegisterGroup				()														;
 static		CGID			LastGroupRegistred			()														;
+////////////////////////////////////////////////////////////////////////////////
+static		void			InitObject					(CPHObject& obj)										;
 static		void			RegisterObjToGroup			(CGID group,CPHObject& obj)								;
 static		void			RegisterObjToLastGroup		(CPHObject& obj)										;
 static		void			RestoreGroupObject			(const CPHObject& obj)									;
+static		bool			IsGroupObject				(const CPHObject& obj)									;
+static		void			SetStaticNotCollide			(CPHObject& obj)										;
 static		void			Init						()														;
-static		void			InitObject					(CPHObject& obj)										;
+
 static	IC	bool			DoCollide					(const CPHObject& obj1,const CPHObject& obj2)
 {
 	switch(CollideType(obj1.collide_class_bits().flags,obj2.collide_class_bits().flags)) {
@@ -30,6 +36,11 @@ static	IC	bool			DoCollide					(const CPHObject& obj1,const CPHObject& obj2)
 	}
 	return DoCollideNone(obj1,obj2) || DoCollideGroup(obj1,obj2);
 			
+}
+
+static	IC bool				DoCollideStatic				(const CPHObject& obj)
+{
+	return !obj.collide_class_bits().test(cbNCStatic);
 }
 
 protected:
@@ -54,8 +65,7 @@ private:
 
 	static IC	CLClassBits	CollideType(CLClassBits cb1,CLClassBits cb2)
 	{
-	//cb1~=typeFlags;cb2~=typeFlags;
-	return (cb1&cb2);//|((cb1|cb2)&onceFlags.flags);
+		return ((cb1&cb2)&~typeFlags.flags);//|((cb1|cb2)&onceFlags.flags);
 	}
 
 static		CGID					freeGroupID																			;

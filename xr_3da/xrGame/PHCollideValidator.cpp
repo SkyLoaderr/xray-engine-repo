@@ -4,10 +4,11 @@
 
 CGID CPHCollideValidator::freeGroupID=0;
 _flags<CLClassBits> CPHCollideValidator::onceFlags={CLClassBits(0)};	
-_flags<CLClassBits> CPHCollideValidator::typeFlags={CLClassBits(-1)};	
+_flags<CLClassBits> CPHCollideValidator::typeFlags={CLClassBits(0)};	
 void CPHCollideValidator::Init()
 {
 	freeGroupID=0;
+	typeFlags.set(cbNCStatic,TRUE);
 }
 CGID CPHCollideValidator::RegisterGroup()
 {
@@ -28,7 +29,10 @@ void CPHCollideValidator::RegisterObjToGroup(CGID group,CPHObject& obj)
 	obj.collide_class_bits().set(cbNCGroupObject,TRUE);
 	obj.collide_class_bits().set(cbNone,FALSE);
 }
-
+bool CPHCollideValidator::IsGroupObject(const CPHObject& obj)
+{
+	return obj.collide_class_bits().test(cbNCGroupObject);
+}
 void CPHCollideValidator::RegisterObjToLastGroup(CPHObject& obj)
 {
 	RegisterObjToGroup(LastGroupRegistred(),obj);
@@ -43,3 +47,8 @@ void CPHCollideValidator::RestoreGroupObject(const CPHObject& obj)
 {
 }
 
+void CPHCollideValidator::SetStaticNotCollide(CPHObject& obj)
+{
+	obj.collide_class_bits().set(cbNone,FALSE);
+	obj.collide_class_bits().set(cbNCStatic,TRUE);
+}

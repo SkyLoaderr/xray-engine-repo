@@ -421,7 +421,7 @@ void CPHShellSplitterHolder::SplitProcess(PHSHELL_PAIR_VECTOR &out_shels)
 void CPHShellSplitterHolder::InitNewShell(CPHShell* shell)
 {
 	shell->PresetActive();
-	if(m_pShell->collide_class_bits().is(CPHCollideValidator::cbNCGroupObject))
+	if(m_pShell->IsGroupObject())
 		CPHCollideValidator::RegisterObjToGroup(m_pShell->collide_bits(),*static_cast<CPHObject*>(shell));
 }
 

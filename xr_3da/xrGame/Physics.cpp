@@ -268,6 +268,7 @@ void NearCallback(CPHObject* obj1,CPHObject* obj2, dGeomID o1, dGeomID o2)
 }
 void CollideStatic(dGeomID o2,CPHObject* obj2)
 {
+	if(!CPHCollideValidator::DoCollideStatic(*obj2)) return;
 	CPHIsland* island2=obj2->DActiveIsland();
 	CollideIntoGroup(ph_world->GetMeshGeom(),o2,ContactGroup,island2,island2->MaxJoints());
 }

@@ -29,7 +29,7 @@
 #include "ExtendedGeom.h"
 #include "PHElement.h"
 #include "PHShell.h"
-
+#include "PHCollideValidator.h"
 CPHShell::~CPHShell				()							
 {
 	if(bActive) Deactivate();
@@ -1338,4 +1338,14 @@ void	CPHShell::StaticCollideStep(float step)
 void	CPHShell::RegisterToCLGroup	(CGID g)	
 {
 	CPHCollideValidator::RegisterObjToGroup(g,*static_cast<CPHObject*>(this));
+}
+
+bool CPHShell::IsGroupObject()
+{
+	return CPHCollideValidator::IsGroupObject(*this);
+};
+
+void CPHShell::SetIgnoreStatic()
+{
+	CPHCollideValidator::SetStaticNotCollide(*this);
 }

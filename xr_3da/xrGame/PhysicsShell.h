@@ -256,7 +256,8 @@ IC	CKinematics*				PKinematics				()					{return m_pKinematics;};
 	virtual const	_flags<CLClassBits>&CollideClassBits()const												= 0;
 	virtual const	CLBits&				CollideBits		()const												= 0;
 	virtual			void				RegisterToCLGroup(CGID g)											= 0;
-
+	virtual			bool				IsGroupObject	()													= 0;
+	virtual			void				SetIgnoreStatic	()													= 0;
 	virtual bool				isFractured				()													= 0;
 	virtual CPHShellSplitterHolder*	SplitterHolder		()													= 0;
 	virtual void				SplitProcess			(PHSHELL_PAIR_VECTOR &out_shels)					= 0;
@@ -320,13 +321,14 @@ add_to_type_list(CPhysicsShell)
 a._12 * ( a._21 * a._33 - a._23 * a._31 ) +\
 a._13 * ( a._21 * a._32 - a._22 * a._31 ) ))
 // Implementation creator
-CPhysicsJoint*				P_create_Joint			(CPhysicsJoint::enumType type ,CPhysicsElement* first,CPhysicsElement* second);
-CPhysicsElement*			P_create_Element		();
-CPhysicsShell*				P_create_Shell			();
-CPhysicsShell*				P_create_splited_Shell	();
-CPhysicsShell*				P_build_Shell			(CGameObject* obj,bool not_active_state,LPCSTR	fixed_bones);
-CPhysicsShell*				P_build_Shell			(CGameObject* obj,bool not_active_state,U16Vec& fixed_bones);
-CPhysicsShell*				P_build_Shell			(CGameObject* obj,bool not_active_state,BONE_P_MAP* bone_map,LPCSTR	fixed_bones);
-CPhysicsShell*				P_build_Shell			(CGameObject* obj,bool not_active_state,BONE_P_MAP* bone_map=NULL);
-CPhysicsShell*				P_build_SimpleShell		(CGameObject* obj,float mass,bool not_active_state);
+CPhysicsJoint*				P_create_Joint				(CPhysicsJoint::enumType type ,CPhysicsElement* first,CPhysicsElement* second)		;
+CPhysicsElement*			P_create_Element			()																					;
+CPhysicsShell*				P_create_Shell				()																					;
+CPhysicsShell*				P_create_splited_Shell		()																					;
+CPhysicsShell*				P_build_Shell				(CGameObject* obj,bool not_active_state,LPCSTR	fixed_bones)						;
+CPhysicsShell*				P_build_Shell				(CGameObject* obj,bool not_active_state,U16Vec& fixed_bones)						;
+CPhysicsShell*				P_build_Shell				(CGameObject* obj,bool not_active_state,BONE_P_MAP* bone_map,LPCSTR	fixed_bones)	;
+CPhysicsShell*				P_build_Shell				(CGameObject* obj,bool not_active_state,BONE_P_MAP* bone_map=NULL)					;
+CPhysicsShell*				P_build_SimpleShell			(CGameObject* obj,float mass,bool not_active_state)									;
+			void			ApplySpawnIniToPhysicShell	(CInifile* ini,CPhysicsShell* physics_shell)										;
 #endif // PhysicsShellH

@@ -150,3 +150,18 @@ CPhysicsShell*	P_build_SimpleShell(CGameObject* obj,float mass,bool not_active_s
 	pPhysicsShell->fDesiredStrength = 0.f;
 	return pPhysicsShell;
 }
+
+void ApplySpawnIniToPhysicShell(CInifile* ini,CPhysicsShell* physics_shell)
+{
+
+	{
+
+		if(ini&&ini->section_exist("collide"))
+		{
+			if(ini->line_exist("collide","ignore_static"))
+			{
+				physics_shell->SetIgnoreStatic();
+			}
+		}
+	}
+}

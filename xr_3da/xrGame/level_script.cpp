@@ -255,7 +255,7 @@ void add_call(const luabind::object &lua_object, LPCSTR condition,LPCSTR action)
 		luabind::functor<void>		_action = object_cast<luabind::functor<void> >(lua_object[action]);
 		CPHScriptObjectConditionN	*c=xr_new<CPHScriptObjectConditionN>(lua_object,_condition);
 		CPHScriptObjectActionN		*a=xr_new<CPHScriptObjectActionN>(lua_object,_action);
-		Level().ph_commander_scripts().add_call(c,a);
+		Level().ph_commander_scripts().add_call_unique(c,c,a,a);
 //	}
 //	catch(...)
 //	{

@@ -69,7 +69,9 @@ public:
 	virtual			CLBits&					CollideBits			()			{return CPHObject::collide_bits();}
 	virtual const	_flags<CLClassBits>&	CollideClassBits	()const		{return CPHObject::collide_class_bits();}
 	virtual const	CLBits&					CollideBits			()const		{return CPHObject::collide_bits();}
-	virtual			void					RegisterToCLGroup	(CGID g)	;
+	virtual			void					RegisterToCLGroup	(CGID g)						;
+	virtual			bool					IsGroupObject		()								;
+	virtual			void					SetIgnoreStatic		()								;
 	virtual void			setMass					(float M)									;
 
 	virtual void			setMass1				(float M)									;
