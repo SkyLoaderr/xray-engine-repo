@@ -206,42 +206,44 @@ void	CShaderManager::OnDeviceCreate	(CStream* FS)
 	if (Engine.FS.Exist(Iname))	
 	{
 		CInifile	ini		(Iname);
-		CInifile::Sect& 	data = ini.ReadSection("association");
-		for (CInifile::SectIt I=data.begin(); I!=data.end(); I++)
-		{
-			texture_detail	D;
-			string256		T,M;
-			float			s;
+        if (ini.SectionExists("association")){
+            CInifile::Sect& 	data = ini.ReadSection("association");
+            for (CInifile::SectIt I=data.begin(); I!=data.end(); I++)
+            {
+                texture_detail	D;
+                string256		T,M;
+                float			s;
 
-			CInifile::Item& item		= *I;
-			sscanf			(item.second,"%[^,],%f",T,&s);
+                CInifile::Item& item		= *I;
+                sscanf			(item.second,"%[^,],%f",T,&s);
 
-			// Search or create matrix
-			M[0]			= 0;
-			for (MatrixPairIt m=matrices.begin(); m!=matrices.end(); m++)
-			{
-				if (CMatrix::modeDetail == m->second->dwMode)
-				{
-					if (fsimilar(m->second->xform._11,s)) {
-						// ok
-						strcpy(M,m->first);
-						break;
-					}
-				}
-			}
-			if (0==M[0])	{
-				strconcat		(M,"$user$td$",T);
-				CMatrix* _M		= _CreateMatrix	(M);
-				_M->dwMode		= CMatrix::modeDetail;
-				_M->xform.scale	(s,s,s);
-			}
+                // Search or create matrix
+                M[0]			= 0;
+                for (MatrixPairIt m=matrices.begin(); m!=matrices.end(); m++)
+                {
+                    if (CMatrix::modeDetail == m->second->dwMode)
+                    {
+                        if (fsimilar(m->second->xform._11,s)) {
+                            // ok
+                            strcpy(M,m->first);
+                            break;
+                        }
+                    }
+                }
+                if (0==M[0])	{
+                    strconcat		(M,"$user$td$",T);
+                    CMatrix* _M		= _CreateMatrix	(M);
+                    _M->dwMode		= CMatrix::modeDetail;
+                    _M->xform.scale	(s,s,s);
+                }
 
-			// 
-			D.T				= xr_strdup	(T);
-			D.M				= xr_strdup	(M);
-			LPSTR N			= xr_strdup	(item.first);
-			td.insert		(make_pair(N,D));
-		}
+                // 
+                D.T				= xr_strdup	(T);
+                D.M				= xr_strdup	(M);
+                LPSTR N			= xr_strdup	(item.first);
+                td.insert		(make_pair(N,D));
+            }
+        }
 	}
 }
 

@@ -16,5 +16,5 @@ enum	EIMF_Type
 	imf_FORCEDWORD=0xffffffff
 };
 
-ENGINE_API	extern	void imf_Process(LPDWORD dst, DWORD dstW, DWORD dstH, LPDWORD src, DWORD srcW, DWORD srcH, EIMF_Type FILTER);
+ENGINE_API	extern	void imf_Process(u32* dst, u32 dstW, u32 dstH, u32* src, u32 srcW, u32 srcH, EIMF_Type FILTER);
 #endif

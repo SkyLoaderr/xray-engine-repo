@@ -20,7 +20,7 @@
 #endif
 
 
-typedef	DWORD	Pixel;
+typedef	u32	Pixel;
 struct Image 
 {
 	int		xsize;		/* horizontal size of the image in Pixels */
@@ -206,14 +206,14 @@ struct CLIST
 	CONTRIB	*p;					/* pointer to list of contributions */
 };
 
-DWORD	CC	(double a)
+u32	CC	(double a)
 {
 	int	p		= iFloor(float(a)+.5f);
 	if	(p<0)	return 0; else if (p>255) return 255;
 	return p;
 }
 
-void	imf_Process	(LPDWORD dstI, DWORD dstW, DWORD dstH, LPDWORD srcI, DWORD srcW, DWORD srcH, EIMF_Type FILTER)
+void	imf_Process	(u32* dstI, u32 dstW, u32 dstH, u32* srcI, u32 srcW, u32 srcH, EIMF_Type FILTER)
 {
 	R_ASSERT		(dstI);	R_ASSERT	(dstW>1);	R_ASSERT	(dstH>1);
 	R_ASSERT		(srcI);	R_ASSERT	(srcW>1);	R_ASSERT	(srcH>1);
