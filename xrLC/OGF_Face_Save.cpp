@@ -277,7 +277,7 @@ void	OGF::PreSave			()
 		for (itXV V=x_vertices.begin(); V!=x_vertices.end(); V++)
 		{
 			x_vert		v	(V->P,V->UV);
-			g_VB.Add		(&v,sizeof(v));
+			x_VB.Add		(&v,sizeof(v));
 		}
 		x_VB.End		(&xvb_id,&xvb_start);
 		x_IB.Register	(LPWORD(&*x_faces.begin()),LPWORD(&*x_faces.end()),&xib_id,&xib_start);
