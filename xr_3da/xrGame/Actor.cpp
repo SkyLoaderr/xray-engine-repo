@@ -417,7 +417,7 @@ void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who, s16 element
 			{
 //				b.set(who->Position().x - Position().x, 0,who->Position().z - Position().z);
 				Fmatrix m_inv;
-				Fvector tmp_v, tmp_d = {who->Position().x, 0,who->Position().z};
+				Fvector tmp_d = {who->Position().x, 0,who->Position().z};
 				m_inv.invert(XFORM());
 				m_inv.transform_tiny(b, tmp_d);
 			}

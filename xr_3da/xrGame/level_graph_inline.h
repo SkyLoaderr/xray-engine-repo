@@ -419,7 +419,7 @@ IC	bool	CLevelGraph::create_straight_path	(u32 start_vertex_id, const Fvector2 &
 		bool				found = false;
 		for ( ; I != E; ++I) {
 			u32				next_vertex_id = value(cur_vertex_id,I);
-			if ((next_vertex_id == prev_vertex_id) || !valid_vertex_id(next_vertex_id))
+			if ((next_vertex_id == prev_vertex_id) || !valid_vertex_id(next_vertex_id) || !is_accessible(next_vertex_id))
 				continue;
 			unpack_xz		(vertex(next_vertex_id),temp.x,temp.y);
 			box.min			= box.max = temp;

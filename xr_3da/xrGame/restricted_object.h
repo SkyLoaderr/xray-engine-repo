@@ -25,8 +25,8 @@ public:
 	virtual				~CRestrictedObject		();
 	virtual BOOL		net_Spawn				(LPVOID data);
 	virtual void		net_Destroy				();
-			void		add_border				() const;
-			void		remove_border			() const;
+	virtual	void		add_border				() const;
+	virtual	void		remove_border			() const;
 			bool		accessible				(const Fvector &position) const;
 			bool		accessible				(u32 vertex_id) const;
 			u32			accessible_nearest		(const Fvector &position, Fvector &result) const;

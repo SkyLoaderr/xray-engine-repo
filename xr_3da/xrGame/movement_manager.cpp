@@ -104,7 +104,7 @@ void CMovementManager::Hit			(float P, Fvector &dir,	CObject* who, s16 element,F
 	CPhysicsShellHolder::Hit		(P,dir,who,element,p_in_object_space,impulse,hit_type);
 }
 
-void CMovementManager::update_path()
+void CMovementManager::update_path	()
 {
 	if (!enabled() || ((/**actual_all() || /**/(m_last_update > Level().timeServer())) && !path_completed()))
 		return;
@@ -172,4 +172,14 @@ void CMovementManager::update_path()
 		}
 		default :				NODEFAULT;
 	}
+}
+
+void CMovementManager::add_border	() const
+{
+	CRestrictedObject::add_border	();
+}
+
+void CMovementManager::remove_border() const
+{
+	CRestrictedObject::remove_border();
 }
