@@ -416,6 +416,7 @@ void Script::vfExportObject(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("set_object",					&CLuaGameObject::set_object)
 			.def("motivation_action_manager",	&CLuaGameObject::motivation_action_manager)
 			
+			// movement manager
 			.def("set_desired_position",		&CLuaGameObject::set_desired_position	)
 			.def("set_desired_direction",		&CLuaGameObject::set_desired_direction	)
 			.def("set_body_state",				&CLuaGameObject::set_body_state			)
@@ -426,5 +427,21 @@ void Script::vfExportObject(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("set_node_evaluator",			&CLuaGameObject::set_node_evaluator		)
 			.def("set_path_evaluator",			&CLuaGameObject::set_path_evaluator		)
 			
+			// sound_player
+//			.def("add_sound",					&CLuaGameObject::add_sound)
+			.def("remove_sound",				&CLuaGameObject::remove_sound)
+			.def("set_sound_mask",				&CLuaGameObject::set_sound_mask)
+			.def("play_sound",					(void (CLuaGameObject::*)(u32))(CLuaGameObject::play_sound))
+			.def("play_sound",					(void (CLuaGameObject::*)(u32,u32))(CLuaGameObject::play_sound))
+			.def("play_sound",					(void (CLuaGameObject::*)(u32,u32,u32))(CLuaGameObject::play_sound))
+			.def("play_sound",					(void (CLuaGameObject::*)(u32,u32,u32,u32))(CLuaGameObject::play_sound))
+			.def("play_sound",					(void (CLuaGameObject::*)(u32,u32,u32,u32,u32))(CLuaGameObject::play_sound))
+//			.def("play_sound",					(void (CLuaGameObject::*)(u32,u32,u32,u32,u32,u32))(CLuaGameObject::play_sound))
+
+			// sight manager
+			.def("set_sight",					&CLuaGameObject::set_sight)
+
+			// object handler
+			.def("set_item",					&CLuaGameObject::set_item)
 	];
 }

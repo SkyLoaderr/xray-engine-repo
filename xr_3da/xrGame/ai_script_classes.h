@@ -601,4 +601,58 @@ public:
 		else
 			stalker->set_path_evaluator	(path_evaluator);
 	}
+
+	IC		void	add_sound		(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 priority, u32 mask, u32 internal_type, LPCSTR bone_name)
+	{
+		CSoundPlayer				*sound_player = dynamic_cast<CSoundPlayer*>(m_tpGameObject);
+		if (!sound_player)
+			LuaOut					(Lua::eLuaMessageTypeError,"CSoundPlayer : cannot access class member add!");
+		else
+			sound_player->add		(prefix,max_count,type,priority,mask,internal_type,bone_name);
+	}
+
+	IC		void	remove_sound	(u32 internal_type)
+	{
+		CSoundPlayer				*sound_player = dynamic_cast<CSoundPlayer*>(m_tpGameObject);
+		if (!sound_player)
+			LuaOut					(Lua::eLuaMessageTypeError,"CSoundPlayer : cannot access class member add!");
+		else
+			sound_player->remove	(internal_type);
+	}
+
+	IC		void	play_sound		(u32 internal_type, u32 max_start_time = 0, u32 min_start_time = 0, u32 max_stop_time = 0, u32 min_stop_time = 0, u32 id = u32(-1))
+	{
+		CSoundPlayer				*sound_player = dynamic_cast<CSoundPlayer*>(m_tpGameObject);
+		if (!sound_player)
+			LuaOut					(Lua::eLuaMessageTypeError,"CSoundPlayer : cannot access class member play!");
+		else
+			sound_player->play		(internal_type,max_start_time,min_start_time,max_stop_time,min_stop_time,id);
+	}
+
+	IC		void	set_sound_mask	(u32 sound_mask)
+	{
+		CSoundPlayer				*sound_player = dynamic_cast<CSoundPlayer*>(m_tpGameObject);
+		if (!sound_player)
+			LuaOut					(Lua::eLuaMessageTypeError,"CSoundPlayer : cannot access class member set_sound_mask!");
+		else
+			sound_player->set_sound_mask(sound_mask);
+	}
+
+	IC		void	set_sight		(ELookType tLookType, const Fvector	*tPointToLook = 0, u32 dwLookOverDelay = u32(-1))
+	{
+		CSightManager				*sight_manager = dynamic_cast<CSightManager*>(m_tpGameObject);
+		if (!sight_manager)
+			LuaOut					(Lua::eLuaMessageTypeError,"CSightManager : cannot access class member set_sight!");
+		else
+			sight_manager->update	(tLookType,tPointToLook,dwLookOverDelay);
+	}
+
+	IC		void	set_item		(MonsterSpace::EObjectAction object_action, CGameObject *game_object = 0)
+	{
+		CObjectHandlerGOAP			*object_handler = dynamic_cast<CObjectHandlerGOAP*>(m_tpGameObject);
+		if (!object_handler)
+			LuaOut					(Lua::eLuaMessageTypeError,"CObjectHandler : cannot access class member set_item!");
+		else
+			object_handler->set_goal(object_action,game_object);
+	}
 };
