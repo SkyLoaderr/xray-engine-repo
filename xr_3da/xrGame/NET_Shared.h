@@ -48,6 +48,7 @@ public:
 	IC u32	getPing				()	{ return ci_last.dwRoundTripLatencyMS;	}
 	IC u32	getBPS				()	{ return ci_last.dwThroughputBPS;		}
 	IC u32	getDroppedCount		()	{ return ci_last.dwPacketsDropped;		}
+	IC u32	getRetriedCount		()	{ return ci_last.dwPacketsRetried;		}
 	IC u32	getMPS_Receive		()  { return mps_recive;	}
 	IC u32	getMPS_Send			()	{ return mps_send;		}
 
