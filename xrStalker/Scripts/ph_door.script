@@ -87,10 +87,7 @@ function action_door:update(delta)
 		end
 	end
 
-	local actor = level.actor()
-	if not actor then
-		return
-	end
+	local actor = db.actor
 
 	if xr_logic.try_switch_to_another_section(self.object, self.st, actor) then
 		return

@@ -8,27 +8,35 @@
 ----------------------------------------------------------------------------------------------------------------------
 --' Условие завершения скрипта
 class "evaluator_end" (property_evaluator)
+
 function evaluator_end:__init(name, storage) super (nil, name)
 	self.a = storage
 end
+
 function evaluator_end:evaluate()
 	return not xr_logic.is_active(self.object, self.a)
 end
+
 --' Обычный комбат или кемперский
 class "evaluator_close_combat" (property_evaluator)
+
 function evaluator_close_combat:__init(name, storage) super (nil, name)
 	self.a = storage
 end
-function evaluator_close_combat:evaluate()
-	if not xr_logic.is_active(self.object, self.a) then return true end
-	return (self.object:best_enemy() ~= nil and distance_between(self.object, self.object:best_enemy()) < self.a.radius )
-end
 
+function evaluator_close_combat:evaluate()
+	if not xr_logic.is_active(self.object, self.a) then
+		return true
+	end
+	local best_enemy = self.object:best_enemy()
+	return best_enemy ~= nil and distance_between(self.object, self.object:best_enemy()) < self.a.radius
+end
 
 ----------------------------------------------------------------------------------------------------------------------
 -- ACTIONS
 ----------------------------------------------------------------------------------------------------------------------
 --' Патрулировать территорию по патрульному пути
+
 class "action_patrol" (action_base)
 function action_patrol:__init (npc_name,action_name,storage) super (nil,action_name)
 	self.a = storage
@@ -51,23 +59,20 @@ end
 function action_patrol:reset_scheme()
 	self.move_mgr:initialize()
 	self.move_mgr:reset(self.a.path_walk, 
-					utils.path_parse_waypoints(self.a.path_walk),
-					self.a.path_look,
-					utils.path_parse_waypoints(self.a.path_look),
-					nil,nil,{obj=self,func=self.process_point})
+		utils.path_parse_waypoints(self.a.path_walk),
+		self.a.path_look,
+		utils.path_parse_waypoints(self.a.path_look),
+		nil,nil,{obj=self,func=self.process_point})
 end
 function action_patrol:execute()
 	action_base.execute (self)
 	if xr_state.finish_state(self.object) == true then
 		self.move_mgr:update()
-  	    if self.move_mgr:arrived_to_first_waypoint() then
-                   local actor = level.actor()
-                   if actor then
-		         if xr_logic.try_switch_to_another_section (self.object, self.a, actor) then
-                                    return
-                         end
-                   end
-	    end
+		if self.move_mgr:arrived_to_first_waypoint() then
+			if xr_logic.try_switch_to_another_section (self.object, self.a, db.actor) then
+				return
+			end
+		end
 	end
 end
 function action_patrol:process_point(mode, number)
@@ -118,10 +123,13 @@ function action_kill:execute ()
 
 	if self.enemy ~= nil then 
 		self.object:set_sight(look.direction, self.enemy:position():sub(self.object:position()), 0)	
+		printf("_bp: %d: see_enemy?", device():time_global())
 		if self.object:see(self.enemy) == true then
+			printf("_bp: YES")
 			xr_state.anim_update(nil, self.object)
 			self.object:set_item(object.fire1, self.object:best_weapon())
 		else
+			printf("_bp: NO")
 			xr_state.anim_update("hide", self.object)
 			self.object:set_item(object.idle, self.object:best_weapon())
 		end
@@ -145,36 +153,39 @@ function add_to_binder(object, ini, scheme, section, storage)
 		properties["end"]			= xr_evaluators_id.stohe_camper_base + 1
 		properties["close_combat"]	= xr_evaluators_id.stohe_camper_base + 2
 		
-		manager:add_evaluator (properties["end"],			this.evaluator_end("camper_end", db.storage[object:id()].camper))
-		manager:add_evaluator (properties["close_combat"], 	this.evaluator_close_combat("camper_close_combat", db.storage[object:id()].camper))
+		manager:add_evaluator (properties["end"], this.evaluator_end("camper_end", db.storage[object:id()].camper))
+		manager:add_evaluator (properties["close_combat"], this.evaluator_close_combat("camper_close_combat", db.storage[object:id()].camper))
 
 		local action = this.action_patrol (object:name(),"action_patrol", db.storage[object:id()].camper)
-		action:add_precondition		(world_property(stalker_ids.property_alive, true))
-		action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
+		action:add_precondition	(world_property(stalker_ids.property_alive, true))
+		action:add_precondition	(world_property(stalker_ids.property_enemy,	false))
 		xr_motivator.addCommonPrecondition(action)
-		action:add_effect 			(world_property(properties["end"],			true))
-		manager:add_action			(operators["patrol"], action)
+		action:add_effect (world_property(properties["end"],			true))
+		manager:add_action (operators["patrol"], action)
 
 		action = this.action_kill (object:name(),"action_kill", db.storage[object:id()].camper)
-		action:add_precondition		(world_property(stalker_ids.property_alive, true))
-		action:add_precondition     (world_property(properties["close_combat"],	false))
+		action:add_precondition	(world_property(stalker_ids.property_alive, true))
+		action:add_precondition (world_property(properties["close_combat"],	false))
 		xr_motivator.addCommonPrecondition(action)
-		action:add_effect 			(world_property(stalker_ids.property_enemy,	false))		
-		manager:add_action			(operators["kill"], action)
+		action:add_effect (world_property(stalker_ids.property_enemy,	false))		
+		manager:add_action (operators["kill"], action)
 
-		action = manager:action		(xr_actions_id.alife)	
-		action:add_precondition		(world_property(properties["end"],			true))
+		action = manager:action (xr_actions_id.alife)	
+		action:add_precondition	(world_property(properties["end"],			true))
 
-		action = manager:action     (stalker_ids.action_combat_planner)
-		action:add_precondition     (world_property(properties["close_combat"],	true))   		
+		action = manager:action (stalker_ids.action_combat_planner)
+		action:add_precondition (world_property(properties["close_combat"],	true))   		
 end
 
 function set_scheme(npc, ini, scheme, section, gulag_name)
 	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
-	st.logic     = xr_logic.cfg_get_switch_conditions(ini, section, npc)		
+	st.logic = xr_logic.cfg_get_switch_conditions(ini, section, npc)		
 
-	st.path_walk = utils.cfg_get_string(ini, section, "path_walk", npc, true,  gulag_name)
-	st.path_look = utils.cfg_get_string(ini, section, "path_look", npc, true,  gulag_name)
-	st.radius	 = utils.cfg_get_number(ini, section, "radius", npc, false)
-	if st.radius == nil then st.radius = 20 end
+	st.path_walk = utils.cfg_get_string(ini, section, "path_walk", npc, true, gulag_name)
+	st.path_look = utils.cfg_get_string(ini, section, "path_look", npc, true, gulag_name)
+	st.radius = utils.cfg_get_number(ini, section, "radius", npc, false)
+	if st.radius == nil then
+		st.radius = 20
+	end
 end
+

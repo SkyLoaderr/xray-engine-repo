@@ -579,7 +579,6 @@ function try_switch_to_another_section(npc, st, actor)
 				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
 			end
 		elseif c.name == "on_actor_inside" then
-			printf("_bp: on_actor_inside")
 			if npc_in_zone(actor, npc) then
 				printf("_bp: TRUE")
 				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
