@@ -115,8 +115,9 @@
 // 96 - CSE_ALifeTraderAbstract			changed m_iCharacterProfile(int) to m_sCharacterProfile(shared_str)
 // 97 - CSE_ALifeItemPDA				changed m_info_portion(int) to m_info_portion(shared_str) +m_specific_character +CSE_ALifeItemDocument m_wDoc (int-> shared_str)
 // 98 - CSE_ALifeItemPDA				changed m_info_portion(int) to m_info_portion(shared_str) +m_specific_character +CSE_ALifeItemDocument m_wDoc (int-> shared_str)
+// 99 - CSE_ALifeObjectClimable			inheritance changed CSE_Abstruct -> CSE_AlifeObject
 //------------------------------------------------------------------------------
-#define SPAWN_VERSION	u16(98)
+#define SPAWN_VERSION	u16(99)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Shape,ISE_Shape,CShapeData)
 public:
