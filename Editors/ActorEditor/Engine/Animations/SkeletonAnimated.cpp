@@ -99,6 +99,25 @@ void	CBoneDataAnimated::Motion_Stop_IM	(CSkeletonAnimated* K, CBlend* handle)
 	K->LL_GetBlendInstance(SelfID).blend_remove	(handle);
 }
 
+LPCSTR CSkeletonAnimated::LL_MotionDefName_dbg	(u16	ID)
+{
+	CKinematics::accel::iterator _I, _E=motion_map->end();
+	for (_I	= bone_map->begin(); _I!=_E; ++_I)	if (_I->second==ID) return *_I->first;
+	return 0;
+}
+LPCSTR CSkeletonAnimated::LL_MotionDefName_dbg	(LPVOID ptr)
+{
+	// cycles
+	mdef::const_iterator I,E;
+	I = m_cycle->begin(); 
+	E = m_cycle->end(); 
+	for ( ; I != E; ++I) if (&(*I).second == ptr) return *(*I).first;
+	// fxs
+	I = m_fx->begin(); 
+	E = m_fx->end(); 
+	for ( ; I != E; ++I) if (&(*I).second == ptr) return *(*I).first;
+	return 0;
+}
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////

@@ -52,7 +52,7 @@ u16	CKinematics::LL_BoneID		(LPCSTR B)
 	else						return I->second;
 }
 
-LPCSTR CKinematics::LL_BoneName	(u16 ID)
+LPCSTR CKinematics::LL_BoneName_dbg	(u16 ID)
 {
 	CKinematics::accel::iterator _I, _E=bone_map->end();
 	for (_I	= bone_map->begin(); _I!=_E; ++_I)	if (_I->second==ID) return *_I->first;

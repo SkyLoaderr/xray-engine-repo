@@ -189,8 +189,8 @@ protected:
 	CBlend*						IBlend_Create			();
 
 public:
-	IC const mdef* 				cycles 			() const {return m_cycle;}
-    
+	LPCSTR						LL_MotionDefName_dbg	(u16	ID);
+	LPCSTR						LL_MotionDefName_dbg	(LPVOID ptr);
 	// Low level interface
 	u16							LL_MotionID		(LPCSTR B);
 	u16							LL_PartID		(LPCSTR B);
