@@ -79,9 +79,9 @@ namespace PAPI
 		pVector	rot;	// 12   60
 		u32		color;	// 4
 		float	age;	// 4
-		u8		frame;	// 1
-		Flags8	flags;	// 1
-	};                  // 		70
+		u16		frame;	// 2
+		Flags16	flags;	// 2
+	};                  // 		72
 	#pragma pack (pop)
     
 
