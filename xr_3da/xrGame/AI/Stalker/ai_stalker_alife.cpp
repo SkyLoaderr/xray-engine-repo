@@ -67,8 +67,6 @@ void CAI_Stalker::vfAccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 	vfUpdateSearchPosition	();
 
 	if (m_bStateChanged || AI_Path.Nodes.empty() || (AI_Path.Nodes[AI_Path.Nodes.size() - 1] != AI_Path.DestNode)) {
-		//AI_Path.Nodes.clear();
-		//AI_Path.TravelPath.clear();
 		m_tActionState = !::Random.randI(1) ? eActionStateWatch : eActionStateDontWatch;
 		m_dwActionStartTime = Level().timeServer() + ::Random.randI(30000,50000);
 	}
@@ -87,11 +85,8 @@ void CAI_Stalker::vfAccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 	float					yaw,pitch;
 	GetDirectionAngles		(yaw,pitch);
 	yaw						= angle_normalize_signed(-yaw);
-	if (!getAI().bfTooSmallAngle(r_torso_current.yaw,yaw,PI_DIV_6)) {
-		// Msg("! Turning to path direction [%f][%f][%f][%f]",r_torso_target.yaw,r_target.yaw,r_torso_current.yaw,r_current.yaw);
+	if (!getAI().bfTooSmallAngle(r_torso_current.yaw,yaw,PI_DIV_6))
 		vfSetParameters(tpNodeEvaluator,0,false,eWeaponStateIdle,!tpNodeEvaluator ? ePathTypeStraight : ePathTypeCriteria,eBodyStateStand,eMovementTypeWalk,eStateTypeNormal,eLookTypeDirection);
-		//r_target.yaw = r_torso_target.yaw;
-	}
 	else
 		vfSetParameters(tpNodeEvaluator,0,false,eWeaponStateIdle,!tpNodeEvaluator ? ePathTypeStraight : ePathTypeCriteria,eBodyStateStand,eMovementTypeWalk,eStateTypeNormal,eLookTypeSearch);
 
