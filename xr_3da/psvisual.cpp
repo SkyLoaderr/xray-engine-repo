@@ -77,7 +77,7 @@ void CPSVisual::Update(DWORD dt)
 }
 
 //----------------------------------------------------
-IC void FillSprite(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fvector2& lt, const Fvector2& rb, float radius, DWORD clr, float angle)
+IC void FillSprite(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fvector2& lt, const Fvector2& rb, float radius, DWORD clr, float angle, float scale)
 {
 	FVF::TL			PT;
 
@@ -107,7 +107,7 @@ IC void FillSprite(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fve
 	pv->set	(c.x-sz*_sin1,	c.y-sz*_cos1,	PT.p.z, PT.p.w, clr, rb.x,lt.y);	pv++;
 }
 
-IC void FillSprite(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fvector2& lt, const Fvector2& rb, float radius, DWORD clr, const Fvector& D)
+IC void FillSprite(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fvector2& lt, const Fvector2& rb, float radius, DWORD clr, const Fvector& D, float scale)
 {
 	Fvector			P1,P2;
     P1.direct		(pos,D,-radius);
@@ -138,7 +138,8 @@ void CPSVisual::Render(float LOD)
 	float fTime			= Device.fTimeGlobal;
 	
 	// build transform matrix
-	Fmatrix mSpriteTransform = Device.mFullTransform;
+	Fmatrix mSpriteTransform	= Device.mFullTransform;
+	float	fov_scale			= 1/(Device.fFOV/90.f);
 	
     int 	mb_samples 	= 1;
     float 	mb_step 	= 0;
@@ -201,8 +202,8 @@ void CPSVisual::Render(float LOD)
 				else										frame = P->m_iAnimStartFrame;
                 m_Definition->m_Animation.CalculateTC(frame,lt,rb);
             }
-			if (m_Definition->m_dwFlag&PS_ALIGNTOPATH) 	FillSprite(pv,mSpriteTransform,Pos,lt,rb,sz*.5f,C,D);
-			else                                     	FillSprite(pv,mSpriteTransform,Pos,lt,rb,sz*.5f,C,angle);
+			if (m_Definition->m_dwFlag&PS_ALIGNTOPATH) 	FillSprite(pv,mSpriteTransform,Pos,lt,rb,sz*.5f,C,D,fov_scale);
+			else                                     	FillSprite(pv,mSpriteTransform,Pos,lt,rb,sz*.5f,C,angle,fov_scale);
 			
 			// modify visual bbox
 			bv_BBox.modify(Pos);
