@@ -191,14 +191,14 @@ Shader*	CResourceManager::_lua_Create		(LPCSTR s_shader, LPCSTR s_textures)
 
 	// Prepare
 	_ParseList			(C.L_textures,	s_textures	);
+	C.detail_texture	= NULL;
+	C.detail_scaler		= NULL;
 
 	// Compile element	(LOD0 - HQ)
 	if (Script::bfIsObjectPresent(LSVM,s_shader,"normal_hq",LUA_TFUNCTION))
 	{
 		// Analyze possibility to detail this shader
 		C.iElement			= 0;
-		C.detail_texture	= NULL;
-		C.detail_scaler		= NULL;
 		C.bDetail			= Device.Resources->_GetDetailTexture(C.L_textures[0],C.detail_texture,C.detail_scaler);
 		if (C.bDetail)		S.E[0]	= C._lua_Compile(s_shader,"normal_hq");
 		else				S.E[0]	= C._lua_Compile(s_shader,"normal");
