@@ -43,11 +43,16 @@ snd_files = {
 ------------------ сюжетные --------------------
 ------ ESCAPE --------
 	-- бандиты на заводе
-	esc_f_band_novice              = "l_escape\\factory_bandits\\bandit_about_novice_",
+--[[	esc_f_band_novice              = "l_escape\\factory_bandits\\bandit_about_novice_",
 	esc_f_band_zone                = "l_escape\\factory_bandits\\bandit_about_zone_",
 	esc_f_band_place               = "l_escape\\factory_bandits\\bandit_hiding_place_",
 	esc_f_band_novice_again        = "l_escape\\factory_bandits\\bandit_novice_again_",
-	esc_f_band_on_actor            = "l_escape\\factory_bandits\\bandit_on_actor_",
+	esc_f_band_on_actor            = "l_escape\\factory_bandits\\bandit_on_actor_", ]]
+	esc_f_band_novice              = "script_replics\\bandit_1\\replics\\bandit_about_novice_",
+	esc_f_band_zone                = "script_replics\\bandit_1\\replics\\bandit_about_zone_",
+	esc_f_band_place               = "script_replics\\bandit_1\\replics\\bandit_hiding_place_",
+	esc_f_band_novice_again        = "script_replics\\bandit_1\\replics\\bandit_novice_again_",
+	esc_f_band_on_actor            = "script_replics\\bandit_1\\replics\\bandit_on_actor_",
 ------ GARBAGE  -------
 
 ------ AGROPROM -------
