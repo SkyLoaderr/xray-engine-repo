@@ -49,7 +49,7 @@ public:
 	//(вызов скриптованной процедуры)
 	bool PerformMerge();
 
-	static void SetArtifactMergeFunctor(const luabind::functor<void> &artifactMergeFunctor);
+	void SetArtifactMergeFunctor(const luabind::functor<void> &artifactMergeFunctor);
 
 	//количество различных артефактов в списке
 	template<typename A> int GetArtifactNum()

@@ -17,7 +17,7 @@
 //глобальный указатель на функтор, который
 //запускает функцию сочетания артефактов из 
 //скиптов
-static luabind::functor<void> g_ArtifactMergeFunctor;
+luabind::functor<void> g_ArtifactMergeFunctor;
 
 
 
