@@ -6,7 +6,8 @@
 #include "cameralook.h"
 #include "camerafirsteye.h"
 #include "Actor.h"
-//#include "math.h"
+#define   _USE_MATH_DEFINES
+#include "math.h"
 
 static float car_snd_volume=1.f;
 
@@ -786,12 +787,9 @@ void CCar::InitParabola()
 
 
 
-	m_a=(m_max_power*(-4*powf(m_power_rpm,2) + 6*powf(m_torque_rpm,2)))/
-		(3.f*powf(m_power_rpm,4)*(powf(m_power_rpm,5) - 5*powf(m_power_rpm,3)*powf(m_torque_rpm,2) + 4*powf(m_torque_rpm,5)));
-	m_b=(m_max_power*(7*powf(m_power_rpm,5) - 12*powf(m_torque_rpm,5)))/
-		(3.f*powf(m_power_rpm,4)*(powf(m_power_rpm,5) - 5*powf(m_power_rpm,3)*powf(m_torque_rpm,2) + 4*powf(m_torque_rpm,5)));
-	m_c=(m_max_power*(-7*powf(m_power_rpm,3)*powf(m_torque_rpm,2) + 8*powf(m_torque_rpm,5)))/
-		(powf(m_power_rpm,7) - 5*powf(m_power_rpm,5)*powf(m_torque_rpm,2) + 4*powf(m_power_rpm,2)*powf(m_torque_rpm,5));
+	m_a=expf((m_power_rpm - m_torque_rpm)/(2.f*m_power_rpm))*m_max_power/m_power_rpm;
+	m_b=m_torque_rpm;
+	m_c=-(1.41421356237309504880f*_sqrt(m_power_rpm*(m_power_rpm - m_torque_rpm)));
 
 
 }
@@ -894,8 +892,10 @@ return false;
 
 float CCar::Parabola(float rpm)
 {
-	float rpm_2=rpm*rpm;
-	float value=(m_a*rpm_2*rpm_2*rpm+m_b*rpm_2+m_c)*rpm_2;
+	//float rpm_2=rpm*rpm;
+	//float value=(m_a*rpm_2*rpm_2*rpm_2+m_b*rpm_2+m_c)*rpm_2;
+	float ex=(rpm-m_b)/m_c;
+	float value=m_a*expf(-ex*ex)*rpm;
 	if(value<0.f) return 0.f;
 	return value;
 }
@@ -982,3 +982,4 @@ void CCar::SExhaust::Stop()
 	p_pgobject->Stop();
 }
 
+#undef   _USE_MATH_DEFINES
