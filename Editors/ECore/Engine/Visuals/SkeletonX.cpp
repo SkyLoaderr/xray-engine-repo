@@ -28,6 +28,8 @@ void CSkeletonX::_Copy		(CSkeletonX *B)
 	Parent					= NULL;
 	Vertices1W				= B->Vertices1W;
 	Vertices2W				= B->Vertices2W;
+
+	// caution - overlapped (union)
 	cache_DiscardID			= B->cache_DiscardID;
 	cache_vCount			= B->cache_vCount;
 	cache_vOffset			= B->cache_vOffset;
