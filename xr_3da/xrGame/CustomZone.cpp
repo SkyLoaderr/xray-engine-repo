@@ -29,30 +29,34 @@ BOOL CCustomZone::net_Spawn(LPVOID DC)
 		}
 	}
 
-	l_pShape->ComputeBounds		();
-	m_maxPower					= Z->m_maxPower;
-	m_attn						= Z->m_attn;
-	m_period					= Z->m_period;
+	BOOL							bOk = inherited::net_Spawn(DC);
+	if (bOk) {
 
-	Fvector						P;
-	XFORM().transform_tiny		(P,CFORM()->getSphere().P);
-	Sound->play_at_pos			(m_ambient,this, Position(), true);
+		l_pShape->ComputeBounds		();
+		m_maxPower					= Z->m_maxPower;
+		m_attn						= Z->m_attn;
+		m_period					= Z->m_period;
 
-//	setVisible(true);
-	setEnabled(true);
+		Fvector						P;
+		XFORM().transform_tiny		(P,CFORM()->getSphere().P);
+		Sound->play_at_pos			(m_ambient,this, Position(), true);
 
-	CPGObject* pStaticPG; s32 l_c = (int)m_effects.size();
-	Fmatrix l_m; l_m.set(renderable.xform);
-	for(s32 i = 0; i < l_c; i++) {
-		Fvector c; c.set(l_m.c.x,l_m.c.y+EPS,l_m.c.z);
-		IRender_Sector *l_pRS = ::Render->detectSector(c);
-		pStaticPG = xr_new<CPGObject>(m_effects[i],l_pRS,false);
-		pStaticPG->SetTransform(l_m);
-		pStaticPG->Play();
-		m_effectsPSs.push_back(pStaticPG);
+		//	setVisible(true);
+		setEnabled(true);
+
+		CPGObject* pStaticPG; s32 l_c = (int)m_effects.size();
+		Fmatrix l_m; l_m.set(renderable.xform);
+		for(s32 i = 0; i < l_c; i++) {
+			Fvector c; c.set(l_m.c.x,l_m.c.y+EPS,l_m.c.z);
+			IRender_Sector *l_pRS = ::Render->detectSector(c);
+			pStaticPG = xr_new<CPGObject>(m_effects[i],l_pRS,false);
+			pStaticPG->SetTransform(l_m);
+			pStaticPG->Play();
+			m_effectsPSs.push_back(pStaticPG);
+		}
 	}
 
-	return						inherited::net_Spawn(DC);
+	return bOk;
 }
 
 void CCustomZone::Load(LPCSTR section) {
@@ -160,6 +164,11 @@ void CCustomZone::spatial_register()
 	spatial.center.set	(CFORM()->getSphere().P);
 	spatial.radius		= CFORM()->getRadius();
 	ISpatial::spatial_register();
+}
+
+void CCustomZone::spatial_unregister()
+{
+	ISpatial::spatial_unregister();
 }
 
 void CCustomZone::spatial_move()

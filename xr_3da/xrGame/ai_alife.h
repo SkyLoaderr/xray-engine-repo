@@ -47,6 +47,7 @@ private:
 			void					vfCreateNewTask				(CSE_ALifeTrader			*tpTrader);
 			void					vfAssignGraphPosition		(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract);
 			void					vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject		*&tpALifDynamicObject, CSE_ALifeDynamicObject *j, _SPAWN_ID tSpawnID);
+			void					vfSetupScheduledObjects		();
 	// surge
 			void					vfPerformSurge				();
 			void					vfGenerateAnomalousZones	();

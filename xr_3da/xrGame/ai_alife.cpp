@@ -79,10 +79,15 @@ void CSE_ALifeSimulator::vfUpdateDynamicData()
 			vfAddEventToGraphPoint((*I).second,(*I).second->m_tGraphID);
 	}
 
+	vfSetupScheduledObjects();
+}
+
+void CSE_ALifeSimulator::vfSetupScheduledObjects()
+{
 	// setting up the first switched object
 	R_ASSERT2					(m_tpCurrentLevel->begin() != m_tpCurrentLevel->end(),"It is impossible, because at least actor must be in the switch objects map");
 	m_tNextFirstSwitchObjectID	= (*(m_tpCurrentLevel->begin())).second->ID;
-	
+
 	// setting up the first scheduled object
 	if (m_tpScheduledObjects.size())
 		m_tNextFirstProcessObjectID = (*m_tpScheduledObjects.begin()).second->ID;

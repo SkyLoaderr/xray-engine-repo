@@ -34,7 +34,7 @@ public:
 	void SoundDestroy(ref_sound& dest);
 
 	virtual void spatial_register();
-	//virtual void spatial_unregister();
+	virtual void spatial_unregister();
 	virtual void spatial_move();
 
 	// debug

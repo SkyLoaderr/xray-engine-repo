@@ -28,9 +28,9 @@ void CSE_ALifeSimulator::vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject *&i
 	i->m_tSpawnID				= tSpawnID;
 	i->ID						= m_tpServer->PerformIDgen(0xffff);
 	m_tObjectRegistry.insert	(std::make_pair(i->ID,i));
-	//vfUpdateDynamicData			(i);
+	vfUpdateDynamicData			(i);
 	i->m_bALifeControl			= true;
-	m_tpServer->entity_Destroy	(tpSE_Abstract);
+	//m_tpServer->entity_Destroy	(tpSE_Abstract);
 
 	CSE_ALifeMonsterAbstract	*l_tpALifeMonsterAbstract	= dynamic_cast<CSE_ALifeMonsterAbstract*>(i);
 	if (l_tpALifeMonsterAbstract)
@@ -62,8 +62,8 @@ void CSE_ALifeSimulator::vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject *&i
 			k->m_bDirectControl			= false;
 			k->m_bALifeControl			= true;
 			m_tObjectRegistry.insert	(std::make_pair(k->ID,k));
-			//vfUpdateDynamicData			(k);
-			m_tpServer->entity_Destroy	(l_tpAbstract);
+			vfUpdateDynamicData			(k);
+			//m_tpServer->entity_Destroy	(l_tpAbstract);
 		}
 	}
 }
@@ -133,7 +133,7 @@ void CSE_ALifeSimulator::vfGenerateAnomalousZones()
 		// proceed random artefacts generation for the active zone
 		fProbability			= randF(1.f);
 		fSum					= 0;
-		for (u32 ii=0, jj=iFloor(l_tpALifeAnomalousZone->m_maxPower*10/3); ii<jj; ii++) {
+		for (u32 ii=0, jj=iFloor(l_tpALifeAnomalousZone->m_maxPower/10); ii<jj; ii++) {
 			for (u16 p=0; p<l_tpSpawnAnomalousZone->m_wItemCount; p++) {
 				fSum			+= l_tpSpawnAnomalousZone->m_faWeights[p];
 				if (fSum > fProbability)
@@ -153,7 +153,6 @@ void CSE_ALifeSimulator::vfGenerateAnomalousZones()
 				i->m_tNodeID	= m_tpArtefactSpawnPositions[l_dwIndex].tNodeID;
 				i->m_fDistance	= m_tpArtefactSpawnPositions[l_dwIndex].fDistance;
 				i->m_bALifeControl = true;
-				m_tpServer->entity_Destroy	(l_tpSE_Abstract);
 
 				CSE_ALifeItemArtefact *l_tpALifeItemArtefact = dynamic_cast<CSE_ALifeItemArtefact*>(i);
 				R_ASSERT2		(l_tpALifeItemArtefact,"Anomalous zone can't generate non-artefact objects since they don't have an 'anomaly property'!");
@@ -161,9 +160,11 @@ void CSE_ALifeSimulator::vfGenerateAnomalousZones()
 				l_tpALifeItemArtefact->m_fAnomalyValue = l_tpALifeAnomalousZone->m_maxPower*(1.f - i->o_Position.distance_to(l_tpSpawnAnomalousZone->o_Position)/l_tpSpawnAnomalousZone->m_fRadius);
 
 				m_tObjectRegistry.insert(std::make_pair(i->ID,i));
-				//vfUpdateDynamicData(i);
+				vfUpdateDynamicData(i);
+				//m_tpServer->entity_Destroy	(l_tpSE_Abstract);
 			}
 		}
+		I++;
 	}
 }
 
@@ -284,7 +285,7 @@ void CSE_ALifeSimulator::vfKillCreatures()
 						l_tpALifeCreatureAbstract->m_tNodeID		= l_tpaLevelPoints[l_dwDeathpointIndex].tNodeID;
 						l_tpALifeCreatureAbstract->m_fDistance		= l_tpaLevelPoints[l_dwDeathpointIndex].fDistance;
 
-						//vfUpdateDynamicData							(l_tpALifeCreatureAbstract);
+						vfUpdateDynamicData							(l_tpALifeCreatureAbstract);
 						i--;
 						N--;
 					}
@@ -704,9 +705,9 @@ void CSE_ALifeSimulator::vfUpdateTasks()
 				CSE_ALifeTask				*l_tpALifeTask = xr_new<CSE_ALifeTask>();
 				l_tpALifeTask->m_tTaskType	= eTaskTypeSearchForItemCG;
 				l_tpALifeTask->m_tClassID	= l_tClassID;
-				l_tpALifeTask->m_tGraphID	= (*ii)->m_tGraphID;
+				l_tpALifeTask->m_tGraphID	= (*jj)->m_tGraphID;
 				l_tpALifeTask->m_tTimeID	= tfGetGameTime();
-				l_tpALifeTask->m_tCustomerID= (*ii)->ID;
+				l_tpALifeTask->m_tCustomerID= (*jj)->ID;
 #pragma todo("Correct task price")
 				l_tpALifeTask->m_fCost		= 100.f;
 				l_tpALifeTask->m_tTaskID	= m_tTaskID++;
@@ -741,5 +742,6 @@ void CSE_ALifeSimulator::vfPerformSurge()
 	vfUpdateTasks					();
 	
 	// updating dynamic data
-	vfUpdateDynamicData				();
+	vfSetupScheduledObjects			();
+	//vfUpdateDynamicData			();
 }
