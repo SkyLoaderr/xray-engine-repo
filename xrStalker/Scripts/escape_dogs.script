@@ -1,7 +1,8 @@
 module("m_monster_ai")
+
 function main()
-	local dog1 = m_monster_ai.m_MonsterArtful("m_dog1", this.script_name(), "way1", vector():set(0,0,0), 10)
-    local dog2 = m_monster_ai.m_MonsterArtful("m_dog2", this.script_name(), "way2",vector():set(0,0,0), 10)
+	local dog1 = m_monster_ai.m_MonsterArtful("btr_dog_1", this.script_name(), "way_btr_dog_1", vector():set(-9.42, -9.6, -76.93), 10)
+    local dog2 = m_monster_ai.m_MonsterArtful("btr_dog_2", this.script_name(), "way_btr_dog_2", vector():set(-11.45, -9.8, -75.15), 10)
 
 	local work = true
 
