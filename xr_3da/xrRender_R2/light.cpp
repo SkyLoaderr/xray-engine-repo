@@ -108,13 +108,11 @@ void	light::spatial_move			()
 	switch(flags.type)	{
 	case IRender_Light::REFLECTED	:	
 	case IRender_Light::POINT		:	
-	case IRender_Light::SPOT		:	
 		{
 			spatial.center				= position;
 			spatial.radius				= range;
 		} 
 		break;
-		/*
 	case IRender_Light::SPOT		:	
 		{
 			// minimal enclosing sphere around cone
@@ -129,7 +127,6 @@ void	light::spatial_move			()
 			}
 		}
 		break;
-		*/
 	}
 	ISpatial::spatial_move			();
 
