@@ -1,7 +1,7 @@
 #include "xrCore.h"
 
-#include "../../QSCore/src/MxStdModel.h"
-#include "../../QSCore/src/MxQSlim.h"
+#include "../src/MxStdModel.h"
+#include "../src/MxQSlim.h"
 
 #pragma comment(lib,"x:/xrCore.lib")
 
@@ -15,14 +15,14 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 
 	MxStdModel* m	= xr_new<MxStdModel>(100,100);
 
-	m->add_vertex	(0,0,0);
-	m->add_vertex	(1,0,0);
-	m->add_vertex	(0,1,0);
-	m->add_vertex	(1,1,0);
-	m->add_vertex	(0,0,1);
-	m->add_vertex	(1,0,1);
-	m->add_vertex	(0,1,1);
-	m->add_vertex	(1,1,1);
+	m->add_vertex	(0,0,0);	// 0
+	m->add_vertex	(1,0,0);	// 1
+	m->add_vertex	(0,1,0);	// 2	
+	m->add_vertex	(1,1,0);	// 3
+	m->add_vertex	(0,0,1);	// 4
+	m->add_vertex	(1,0,1);	// 5
+	m->add_vertex	(0,1,1);	// 6
+	m->add_vertex	(1,1,1);	// 7
 	m->add_face		(0,3,1);
 	m->add_face		(0,2,3);
 	m->add_face		(4,5,7);
@@ -35,10 +35,21 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	m->add_face		(3,6,7);
 	m->add_face		(2,0,4);
 	m->add_face		(2,4,6);
+	m->color_binding('v');
+	m->add_color	(0,0,0);
+	m->add_color	(1,0,0);
+	m->add_color	(0,1,0);
+	m->add_color	(1,1,0);
+	m->add_color	(0,0,1);
+	m->add_color	(1,0,1);
+	m->add_color	(0,1,1);
+	m->add_color	(1,1,1);
 
 	MxQSlim* slim	= xr_new<MxEdgeQSlim>(m);
 	slim->meshing_penalty = 10000.f;
 	slim->initialize();
+	slim->constraint_manual(0,3, 0);
+	slim->constraint_manual(0,5,5);
 
 	slim->decimate			(8);
 	m->compact_vertices		();
@@ -56,6 +67,12 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 			sprintf		(tmp,"f %d %d %d",m->face(f)[0]+1,m->face(f)[1]+1,m->face(f)[2]+1);
 			W->w_string	(tmp);
 		}
+	}
+	W->w_string		("bind c vertex");
+	for (u32 v=0; v<m->vert_count(); v++){
+		string256	tmp;
+		sprintf		(tmp,"c %f %f %f",m->color(v).R(),m->color(v).G(),m->color(v).B());
+		W->w_string	(tmp);
 	}
 	FS.w_close		(W);
 
