@@ -10,7 +10,7 @@
 #include "fvisual.h"
 #include "fprogressivefixedvisual.h"
 #include "ParticleGroup.h"
-//#include "fprogressive.h"
+#include "skeletonX.h"
 #include "fhierrarhyvisual.h"
 #include "bodyinstance.h"
 
@@ -32,10 +32,10 @@ IRender_Visual*	CModelPool::Instance_Create(u32 type)
 	case MT_SKELETON:
 		V	= xr_new<CKinematics>();
 		break;
-	case MT_SKELETON_PART:
+	case MT_SKELETON_GEOMDEF_PM:
 		V	= xr_new<CSkeletonX_PM>();
 		break;
-	case MT_SKELETON_PART_STRIPPED:
+	case MT_SKELETON_GEOMDEF_ST:
 		V	= xr_new<CSkeletonX_ST>();
 		break;
 	case MT_PARTICLE_EFFECT:
