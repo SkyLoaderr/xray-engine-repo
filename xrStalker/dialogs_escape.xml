@@ -84,6 +84,13 @@
 	</phrase_list>
     </dialog>
 
+    <dialog id="escape_trader_talk_about">
+	<phrase_list>
+	    	<phrase id="0">
+			<text>Привет! Как здоровье? Надеюсь не прихворал.\n У меня для тебя есть работка на выходных.</text>
+	    	</phrase>                                                                                               
+	</phrase_list>
+    </dialog>
 
     <dialog id="loser_hello_dialog">
         <phrase_list>
