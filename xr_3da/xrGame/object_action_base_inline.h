@@ -21,6 +21,8 @@ template <typename _item_type>
 void CObjectActionBase<_item_type>::initialize	()
 {
 	inherited::initialize	();
+#ifndef OLD_OBJECT_HANDLER
 	m_object->set_aimed		(0,false);
 	m_object->set_aimed		(1,false);
+#endif
 }

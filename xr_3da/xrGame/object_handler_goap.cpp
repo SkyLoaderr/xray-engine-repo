@@ -72,7 +72,7 @@ void CObjectHandlerGOAP::reinit			(CAI_Stalker *object)
 	m_aimed2					= false;
 	add_evaluator				(eWorldPropertyNoItems,		xr_new<CObjectPropertyEvaluatorNoItems>(m_object));
 	add_evaluator				(eWorldPropertyNoItemsIdle,	xr_new<CObjectPropertyEvaluatorConst>(m_object,m_object,false));
-	CSObjectActionBase			*action = xr_new<CSObjectActionBase>(m_object,m_object);
+	CSObjectActionBase			*action = xr_new<CSObjectActionBase>(m_object,m_object,"no items idle");
 	action->add_condition		(CWorldProperty(eWorldPropertyNoItems,		true));
 	action->add_effect			(CWorldProperty(eWorldPropertyNoItemsIdle,	true));
 	add_operator				(eWorldOperatorNoItemsIdle,action);

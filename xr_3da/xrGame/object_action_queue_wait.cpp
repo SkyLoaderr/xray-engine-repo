@@ -18,7 +18,9 @@ CObjectActionQueueWait::CObjectActionQueueWait	(CInventoryItem *item, CAI_Stalke
 void CObjectActionQueueWait::initialize		()
 {
 	inherited::inherited::initialize	();
+#ifndef OLD_OBJECT_HANDLER
 	m_object->set_aimed		(m_type ? 0 : 1,false);
+#endif
 }
 
 void CObjectActionQueueWait::execute			()
