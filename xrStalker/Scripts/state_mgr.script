@@ -43,10 +43,10 @@ function eva_state_mgr_locked:__init(name, st) super (nil, name)
 	self.st = st
 end
 function eva_state_mgr_locked:evaluate()
---	printf("weapon locked: %s", utils.to_str(self.st.planner:evaluator(self.st.properties["weapon_locked"]):evaluate()))
---	printf("direction locked: %s", utils.to_str(self.st.planner:evaluator(self.st.properties["direction_turning"]):evaluate()))
---	printf("animstate locked: %s", utils.to_str(self.st.planner:evaluator(self.st.properties["animstate_locked"]):evaluate()))
---	printf("animation locked: %s", utils.to_str(self.st.planner:evaluator(self.st.properties["animation_locked"]):evaluate()))
+	--printf("weapon locked: %s", utils.to_str(self.st.planner:evaluator(self.st.properties["weapon_locked"]):evaluate()))
+	--printf("direction locked: %s", utils.to_str(self.st.planner:evaluator(self.st.properties["direction_turning"]):evaluate()))
+	--printf("animstate locked: %s", utils.to_str(self.st.planner:evaluator(self.st.properties["animstate_locked"]):evaluate()))
+	--printf("animation locked: %s", utils.to_str(self.st.planner:evaluator(self.st.properties["animation_locked"]):evaluate()))
 	
 	return self.st.planner:evaluator(self.st.properties["weapon_locked"]):evaluate() or
 		   self.st.planner:evaluator(self.st.properties["animstate_locked"]):evaluate() or
@@ -464,23 +464,25 @@ function state_manager:set_state(state_name, callback, timeout, target)
 	if state_lib.states[state_name] == nil then
 		printf("ERROR: ILLEGAL SET STATE CALLED!!!")
 	end
-	
---	if target then
---		if target.look_position then
---			printf("look position: %s %s %s", target.look_position.x,
---												target.look_position.y,
---												target.look_position.z)
---		else
---			printf("look position: NIL")
---		end
---		if target.look_object then
---			printf("look object: %s", target.look_object:name())
---		else
---			printf("look object: NIL")
---		end
---	else
---		printf("look target NIL")
---	end
+--[[
+	if target then
+		if target.look_position then
+			printf("look position: %s %s %s", target.look_position.x,
+												target.look_position.y,
+												target.look_position.z)
+		else
+			printf("look position: NIL")
+		end
+		if target.look_object then
+			printf("look object: %s", target.look_object:name())
+		else
+			printf("look object: NIL")
+		end
+	else
+		printf("look target NIL")
+	end
+	]]
+--	printf(nil)
 --	printf("Timeout %s", utils.to_str(timeout))
 	
 	self.target_state = state_name

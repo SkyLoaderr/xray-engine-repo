@@ -31,12 +31,14 @@ function eva_state_mgr_direction:evaluate()
 	
 	if self.target_position ~= nil then
 		local dir = utils.vector_copy_by_val(self.target_position):sub(self.object:position())
---		printf("head: %s", yaw_degree(dir, self.object:head_orientation()))
---		printf("body: %s", yaw_degree(dir, self.object:direction()))
+		--printf("head: %s", utils.to_str(yaw_degree(dir, self.object:head_orientation())))
+		--printf("body: %s", utils.to_str(yaw_degree(dir, self.object:direction())))
 
 		if yaw_degree(dir, self.object:head_orientation()) > 5 then
+			--printf("false")
 			return false
 		else
+			--printf("true")
 			return true
 		end
 	end
