@@ -88,22 +88,24 @@ void CDetailManager::soft_Render	()
 					CDetail::fvfVertexOut	*dstIt = vDest;
 					for	(; srcIt!=srcEnd; srcIt++, dstIt++)
 					{
-						float tm			= Device.fTimeGlobal*0.1f; 
+						float	tm			= Device.fTimeGlobal*0.1f; 
+						float	height		= Object.bv_bb.max.y-Object.bv_bb.min.y;
 						Fvector origin;		origin.set				(20,0,20);
+						Fvector& src		= srcIt->P;
 
 						//
-						Fvector pos;		mXform.transform_tiny	(pos,srcIt->P);
-						Fvector pos2D;		pos2D.set				(pos.x,0,pos.y);
-						Fvector dir;		dir.sub					(pos2D,origin);
-						float	H			= pos.y-mXform.c.y;
-						float	frac		= srcIt->P.y/(Object.bv_bb.max.y-Object.bv_bb.min.y);
-						float inten			= sinf					(tm+.1f*dir.magnitude())*H;
-						dir.normalize		();
+						Fvector pos;		mXform.transform_tiny	(pos,src);			// normal coords
+						Fvector pos2D;		pos2D.set				(pos.x,0,pos.z);	// 2D pos
+						Fvector dir2D;		dir2D.sub				(pos2D, origin);	// 2D dir (non normalized)
+						float	H			= pos.y - mXform.c.y;						// height of vertex (scaled)
+						float	frac		= src.y/height;								// fraction of model height
+						float	inten		= sinf					(tm+.1f*dir2D.magnitude())*H;
+						dir2D.normalize		();
 
 						//
-						Fvector ctrl1;		ctrl1.set	(0,				0,		0			);
-						Fvector ctrl2;		ctrl2.set	(0,				H/2,	0			);
-						Fvector ctrl3;		ctrl3.set	(dir.x*inten,	H,		dir.z*inten	);
+						Fvector ctrl1;		ctrl1.set	(0,				0,		0				);
+						Fvector ctrl2;		ctrl2.set	(0,				H/2,	0				);
+						Fvector ctrl3;		ctrl3.set	(dir2D.x*inten,	H,		dir2D.z*inten	);
 
 						//
 						Fvector temp;		temp.lerp	(ctrl1, ctrl2, frac);
