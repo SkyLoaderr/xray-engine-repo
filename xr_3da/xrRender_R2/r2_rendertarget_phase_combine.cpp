@@ -53,6 +53,7 @@ void	CRenderTarget::phase_combine	()
 		float	_h					= float(Device.dwHeight)/4;
 
 		// Draw quater-screen quad textured with our direct-shadow-map-image
+		/*
 		{
 			u32							IX=0,IY=0;
 			Fvector2					p0,p1;
@@ -72,6 +73,7 @@ void	CRenderTarget::phase_combine	()
 			RCache.set_Geometry			(g_combine);
 			RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 		}
+		*/
 		// Draw quater-screen quad textured with our accumulator
 		{
 			u32							IX=1,IY=0;

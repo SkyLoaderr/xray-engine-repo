@@ -31,10 +31,8 @@ void	CRenderTarget::OnDeviceCreate	()
 
 		R_CHK						(HW.pDevice->CreateDepthStencilSurface	(w,h,HW.Caps.fDepth,D3DMULTISAMPLE_NONE,0,TRUE,&rt_smap_d_ZB,NULL));
 		rt_smap_d					= Device.Shader._CreateRT	(r2_RT_smap_d,				w,h,D3DFMT_R32F);
-		s_smap_d_debug				= Device.Shader.Create		("effects\\screen_set",		r2_RT_smap_d);
 		s_accum_direct_mask			= Device.Shader.Create_B	(b_accum_direct_mask,		"r2\\accum_direct_mask");
 		s_accum_direct				= Device.Shader.Create_B	(b_accum_direct,			"r2\\accum_direct");
-		g_smap_d_debug				= Device.Shader.CreateGeom	(FVF::F_TL,					RCache.Vertex.Buffer(), RCache.QuadIB);
 	}
 
 	// POINT
@@ -81,10 +79,8 @@ void	CRenderTarget::OnDeviceDestroy	()
 	_RELEASE					(rt_smap_p_ZB			);
 
 	// DIRECT
-	Device.Shader.DeleteGeom	(g_smap_d_debug			);
 	Device.Shader.Delete		(s_accum_direct			);
 	Device.Shader.Delete		(s_accum_direct_mask	);
-	Device.Shader.Delete		(s_smap_d_debug			);
 	Device.Shader._DeleteRT		(rt_smap_d				);
 	_RELEASE					(rt_smap_d_ZB			);
 
