@@ -292,7 +292,7 @@ void	CRender::Statistics	(CGameFont* _F)
 
 /////////
 #pragma comment(lib,"d3dx9.lib")
-
+/*
 extern "C"
 {
 	LPCSTR WINAPI	D3DXGetPixelShaderProfile	(LPDIRECT3DDEVICE9  pDevice);
