@@ -85,6 +85,10 @@ BOOL CxrUpdateApp::InitInstance()
 	HANDLE h_in  =GetStdHandle(STD_INPUT_HANDLE);
 	HANDLE h_out =GetStdHandle(STD_OUTPUT_HANDLE);
 	HANDLE h_err =GetStdHandle(STD_ERROR_HANDLE);
+
+	_VerifyPath("x:\\upd_scripts\\");
+	SetCurrentDirectoryA("x:\\upd_scripts");
+
 	CreateShellRedirect();
 	Core._initialize("xrUpdate",log_cb_fn,FALSE);
 	FS._initialize(CLocatorAPI::flTargetFolderOnly,"x:\\upd_scripts");

@@ -12,7 +12,7 @@ BOOL file_exist(LPCSTR src);
 BOOL mk_bk_rename(LPCSTR src, int start_from=0);
 void copy_folder(LPCSTR src, LPCSTR dst);
 void checkRightFolderName(LPSTR fn);
-void _VerifyPath(LPCSTR path);
+
 CFileOperation fo;      // create object
 
 

@@ -152,3 +152,4 @@ public:
 };
 
 extern void updateTreeItemName(HTREEITEM itm, CTask* t);
+void _VerifyPath(LPCSTR path);

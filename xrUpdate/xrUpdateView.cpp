@@ -7,7 +7,6 @@
 #include "xrUpdateDoc.h"
 #include "xrUpdateView.h"
 #include "upd_task.h"
-#include ".\xrupdateview.h"
 #include "CopyTaskPropDlg.h"
 #include "CopyFolderDlgProp.h"
 #include "SectionQueryDlg.h"
@@ -247,7 +246,7 @@ BOOL CxrUpdateView::ShowPropDlg(CTask* t)
 {
 	m_task_name_edt.EnableWindow(TRUE);
 	m_task_name=t->name();
-	m_task_type_static = *typeToStr(t->type());
+	m_task_type_static.Format("Task type = %s", *typeToStr(t->type()) );
 	m_task_proirity.Format("Task proirity: %d",t->m_priority);
 	UpdateData(FALSE);
 
