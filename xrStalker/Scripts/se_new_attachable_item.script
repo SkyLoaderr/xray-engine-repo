@@ -1,14 +1,14 @@
-class "CSE_NewAttachableItem" (cse_alife_item)
+class "CSE_NewAttachableItem"				(cse_alife_item)
 
-function CSE_NewAttachableItem:__init(section) super(section)
+function CSE_NewAttachableItem:__init		(section) super(section)
 	log		("CSE_NewAttachableItem::CSE_NewAttachableItem called!")
 end
 
-function CSE_NewAttachableItem:__finalize()
+function CSE_NewAttachableItem:__finalize	()
 	log		("CSE_NewAttachableItem::~CSE_NewAttachableItem called!")
 end
 
-function CSE_NewAttachableItem:init()
+function CSE_NewAttachableItem:init			()
 	return	(self)
 end
 
