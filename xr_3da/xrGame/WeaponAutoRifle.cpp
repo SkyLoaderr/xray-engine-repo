@@ -117,7 +117,7 @@ void CWeaponAutoRifle::switch2_Hiding(BOOL bHUDView)
 }
 void CWeaponAutoRifle::switch2_Showing(BOOL bHUDView)
 {
-	m_pHUD->animPlay			(mhud_show);
+	m_pHUD->animPlay			(mhud_show,TRUE,this);
 }
 void CWeaponAutoRifle::OnShot		(BOOL bHUDView)
 {
@@ -147,14 +147,17 @@ void CWeaponAutoRifle::OnDrawFlame	(BOOL bHUDView)
 		P.add(D);
 	}
 }
+
 void CWeaponAutoRifle::OnAnimationEnd()
 {
 	switch (st_current)
 	{
 	case eReload:	ReloadMagazine();		break;	// End of reload animation
 	case eHiding:	signal_HideComplete();	break;
+	case eShowing:	st_target = eIdle;		break;
 	}
 }
+
 void CWeaponAutoRifle::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R)
 {
 	pSounds->Play3DAtPos	(sndRicochet[Random.randI(SND_RIC_COUNT)], vEnd,false);
