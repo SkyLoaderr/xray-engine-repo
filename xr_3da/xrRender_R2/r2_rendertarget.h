@@ -2,6 +2,9 @@
 
 class light;
 
+#define DU_SPHERE_NUMVERTEX 92
+#define DU_SPHERE_NUMFACES	180
+
 class CRenderTarget		: public IRender_Target
 {
 private:

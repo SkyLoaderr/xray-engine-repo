@@ -10,38 +10,32 @@ void CRenderTarget::accum_point_shadow	(light* L)
 	p0.set						(.5f/_w, .5f/_h);
 	p1.set						((_w+.5f)/_w, (_h+.5f)/_h );
 
-	// Calc near plane of light
-	float	d_Z	= EPS_S, d_W = 1.f;
-
-	// Fill vertex buffer
-	FVF::TL* pv					= (FVF::TL*) RCache.Vertex.Lock	(4,g_combine->vb_stride,Offset);
-	pv->set						(EPS,			float(_h+EPS),	d_Z,	d_W, C, p0.x, p1.y);	pv++;
-	pv->set						(EPS,			EPS,			d_Z,	d_W, C, p0.x, p0.y);	pv++;
-	pv->set						(float(_w+EPS),	float(_h+EPS),	d_Z,	d_W, C, p1.x, p1.y);	pv++;
-	pv->set						(float(_w+EPS),	EPS,			d_Z,	d_W, C, p1.x, p0.y);	pv++;
-	RCache.Vertex.Unlock		(4,g_combine->vb_stride);
-	RCache.set_Geometry			(g_combine);
-	RCache.set_Shader			(s_accum_point);
-
 	// Constants
 	Fvector4	J;
 	Fvector		L_pos;
+	float		L_R				= 10; //1/L->sphere.R;
 	Fcolor		L_clr			= L->color;
+	float		near			= .2f;
 	float		scale			= 1.f/50.f;
 	Device.mView.transform_tiny	(L_pos,L->sphere.P);
-	RCache.set_c				("light_position",	L_pos.x,L_pos.y,L_pos.z,1/L->sphere.R);
+	RCache.set_c				("light_position",	L_pos.x,L_pos.y,L_pos.z,L_R);
 	RCache.set_c				("light_color",		L_clr.r,L_clr.g,L_clr.b,.15f*L_clr.magnitude_rgb());
+	RCache.set_c				("near",			near,near,near,near);
 	R_constant* _C				= RCache.get_c		("jitter");
-	J.set(-1,-1,-1); J.mul(scale); RCache.set_ca	(_C,0,J);
-	J.set(+1,-1,-1); J.mul(scale); RCache.set_ca	(_C,1,J);
-	J.set(-1,-1,+1); J.mul(scale); RCache.set_ca	(_C,2,J);
-	J.set(+1,-1,+1); J.mul(scale); RCache.set_ca	(_C,3,J);
-	J.set(-1,+1,-1); J.mul(scale); RCache.set_ca	(_C,4,J);
-	J.set(+1,+1,-1); J.mul(scale); RCache.set_ca	(_C,5,J);
-	J.set(-1,+1,+1); J.mul(scale); RCache.set_ca	(_C,6,J);
-	J.set(+1,+1,+1); J.mul(scale); RCache.set_ca	(_C,7,J);
+	if (_C)
+	{
+		J.set(-1,-1,-1); J.mul(scale); RCache.set_ca	(_C,0,J);
+		J.set(+1,-1,-1); J.mul(scale); RCache.set_ca	(_C,1,J);
+		J.set(-1,-1,+1); J.mul(scale); RCache.set_ca	(_C,2,J);
+		J.set(+1,-1,+1); J.mul(scale); RCache.set_ca	(_C,3,J);
+		J.set(-1,+1,-1); J.mul(scale); RCache.set_ca	(_C,4,J);
+		J.set(+1,+1,-1); J.mul(scale); RCache.set_ca	(_C,5,J);
+		J.set(-1,+1,+1); J.mul(scale); RCache.set_ca	(_C,6,J);
+		J.set(+1,+1,+1); J.mul(scale); RCache.set_ca	(_C,7,J);
+	}
 
 	// Render if stencil >= 0x2
-	RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
+	RCache.set_Geometry			(g_accum_point);
+	RCache.set_Shader			(s_accum_point);
+	RCache.Render				(D3DPT_TRIANGLELIST,0,0,DU_SPHERE_NUMVERTEX,0,DU_SPHERE_NUMFACES);
 }
-
