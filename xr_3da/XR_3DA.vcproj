@@ -1084,21 +1084,6 @@
 						Name="Textures"
 						Filter="">
 						<File
-							RelativePath=".\Texture.cpp">
-							<FileConfiguration
-								Name="Mixed|Win32">
-								<Tool
-									Name="VCCLCompilerTool"
-									AssemblerOutput="4"/>
-							</FileConfiguration>
-							<FileConfiguration
-								Name="Release|Win32">
-								<Tool
-									Name="VCCLCompilerTool"
-									AssemblerOutput="4"/>
-							</FileConfiguration>
-						</File>
-						<File
 							RelativePath=".\xr_avi.cpp">
 						</File>
 						<File
