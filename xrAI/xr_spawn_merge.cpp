@@ -265,7 +265,7 @@ public:
 
 		for (int i=0; i<(int)m_tpSpawnPoints.size(); i++, thProgress = .5f*(fRelation + float(i)/float(m_tpSpawnPoints.size())*(1.f - fRelation))) {
 			if (!m_tpSpawnPoints[i]->used_ai_locations()) {
-				m_tpSpawnPoints[i]->m_tGraphID = (ALife::_GRAPH_ID)m_level_graph_vertex_id;
+				m_tpSpawnPoints[i]->m_tGraphID = (GameGraph::_GRAPH_ID)m_level_graph_vertex_id;
 				m_tpSpawnPoints[i]->m_fDistance = 0.f;
 				m_tpSpawnPoints[i]->m_tNodeID = tpGraph->vertex(m_level_graph_vertex_id)->level_vertex_id();
 				continue;
@@ -290,7 +290,7 @@ public:
 				S += sprintf(S,"Spawn point : [%7.2f][%7.2f][%7.2f]\n",m_tpSpawnPoints[i]->o_Position.x,m_tpSpawnPoints[i]->o_Position.y,m_tpSpawnPoints[i]->o_Position.z);
 				R_ASSERT2(dwBest != -1,S1);
 			}
-			m_tpSpawnPoints[i]->m_tGraphID	= (ALife::_GRAPH_ID)dwBest;
+			m_tpSpawnPoints[i]->m_tGraphID	= (GameGraph::_GRAPH_ID)dwBest;
 			m_tpSpawnPoints[i]->m_fDistance	= fCurrentBestDistance;
 		}
 		thProgress				= .75f;
@@ -316,7 +316,7 @@ public:
 					for (u32 ii=0, nn = tpGraph->header().vertex_count(); ii<nn; ++ii) {
 						if ((tpGraph->vertex(ii)->level_id() != m_dwLevelID) || !tpGraph->vertex(ii)->level_point().similar((*I)->o_Position,.001f))
 							continue;
-						(*m_level_changers)[i]->m_tNextGraphID	= (ALife::_GRAPH_ID)ii;
+						(*m_level_changers)[i]->m_tNextGraphID	= (GameGraph::_GRAPH_ID)ii;
 						(*m_level_changers)[i]->m_tNextPosition	= (*I)->o_Position;
 						(*m_level_changers)[i]->m_tAngles		= (*I)->o_Angle;
 						(*m_level_changers)[i]->m_dwNextNodeID	= tpGraph->vertex(ii)->level_vertex_id();

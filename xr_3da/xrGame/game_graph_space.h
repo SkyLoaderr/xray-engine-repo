@@ -24,7 +24,12 @@ namespace GameGraph {
 		LOCATION_COUNT		= (u32(1) << (8*sizeof(_LOCATION_ID))),
 	};
 
-	class SLevel {
+#ifdef AI_COMPILER
+	struct
+#else
+	class
+#endif
+		SLevel {
 		shared_str				caLevelName;
 		Fvector					tOffset;
 		_LEVEL_ID				tLevelID;
@@ -50,35 +55,30 @@ namespace GameGraph {
 		IC void load(IReader *reader);
 
 		friend class CGameGraph;
-#ifdef AI_COMPILER
-		friend class CGraphSaver;
-		friend class CGraphMerger;
-		friend class CSpawn;
-		friend class CSpawnMerger;
-		friend class CRenumbererConverter;
-		friend class CLevelSpawnConstructor;
-		friend class CGameSpawnConstructor;
-#endif
 	};
 
 	typedef xr_map<_LEVEL_ID,SLevel>LEVEL_MAP;
 
 #pragma pack(push,4)
-	class CEdge {
+#ifdef AI_COMPILER
+	struct
+#else
+	class
+#endif
+		CEdge {
 		u32							dwVertexNumber;
 		float						fPathDistance;
 	public:
 		IC	_GRAPH_ID				vertex_id			() const;
 		IC	float					distance			() const;
-#ifdef AI_COMPILER
-		friend class CLevelGameGraph;
-		friend class CGraphThread;
-		friend class CGraphMerger;
-		friend class CRenumbererConverter;
-#endif
 	};
 
-	class CVertex {
+#ifdef AI_COMPILER
+	struct
+#else
+	class
+#endif
+		CVertex {
 		Fvector						tLocalPoint;
 		Fvector						tGlobalPoint;
 		u32							tLevelID:8;
@@ -99,14 +99,14 @@ namespace GameGraph {
 		IC	u32						death_point_count	() const;
 		IC	u32						death_point_offset	() const;
 		friend class CGameGraph;
-#ifdef AI_COMPILER
-		friend class CLevelGameGraph;
-		friend class CGraphSaver;
-		friend class CRenumbererConverter;
-#endif
 	};
 
-	class CHeader {
+#ifdef AI_COMPILER
+	struct
+#else
+	class
+#endif
+		CHeader {
 		u32							dwVersion;
 		u32							dwLevelCount;
 		u32							dwVertexCount;
@@ -125,15 +125,15 @@ namespace GameGraph {
 		IC	const SLevel			&level				(LPCSTR level_name) const;
 		IC	void					load				(IReader *reader);
 		friend class CGameGraph;
-#ifdef AI_COMPILER
-		friend class CGraphSaver;
-		friend class CGraphMerger;
-		friend class CRenumbererConverter;
-#endif
 	};
 #pragma pack(pop)
 
-	class CLevelPoint  {
+#ifdef AI_COMPILER
+	struct
+#else
+	class
+#endif
+		CLevelPoint  {
 		Fvector		tPoint;
 		u32			tNodeID;
 		float		fDistance;	
@@ -152,13 +152,6 @@ namespace GameGraph {
 		{
 			return				(fDistance);
 		}
-
-#ifdef AI_COMPILER
-		friend class CLevelGameGraph;
-		friend class CSpawn;
-		friend class CLevelSpawnConstructor;
-		friend class CRenumbererConverter;
-#endif
 	};
 
 	struct STerrainPlace{

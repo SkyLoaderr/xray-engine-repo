@@ -162,7 +162,7 @@ CCrossTableBuilder::CCrossTableBuilder(LPCSTR caProjectName)
 			for ( ; I != E; I++)
 				if (float((*I)[i])*tMap.header().cell_size() < tCrossTableCell.fDistance) {
 					tCrossTableCell.fDistance	= float((*I)[i])*tMap.header().cell_size();
-					tCrossTableCell.tGraphIndex = ALife::_GRAPH_ID(I - B);
+					tCrossTableCell.tGraphIndex = GameGraph::_GRAPH_ID(I - B);
 				}
 			
 			for (int j=0; j<iVertexCount; j++)
@@ -170,7 +170,7 @@ CCrossTableBuilder::CCrossTableBuilder(LPCSTR caProjectName)
 					Msg("! Warning : graph points are too close, therefore cross table is automatically validated");
 					Msg("%d : [%f][%f][%f] %d[%f] -> %d[%f]",i,VPUSH(tGraph.vertex(j)->level_point()),tCrossTableCell.tGraphIndex,tCrossTableCell.fDistance,j,tDistances[j][i]);
 					tCrossTableCell.fDistance	= float(tDistances[j][i])*tMap.header().cell_size();
-					tCrossTableCell.tGraphIndex = (ALife::_GRAPH_ID)j;
+					tCrossTableCell.tGraphIndex = (GameGraph::_GRAPH_ID)j;
 				}
 			tMemoryStream.w(&tCrossTableCell,sizeof(tCrossTableCell));
 		}

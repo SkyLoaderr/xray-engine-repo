@@ -24,8 +24,8 @@ class CLevelGameGraph;
 
 typedef struct tagSConnectionVertex {
 	LPSTR		caConnectName;
-	_GRAPH_ID	tGraphID;
-	_GRAPH_ID	tOldGraphID;
+	GameGraph::_GRAPH_ID	tGraphID;
+	GameGraph::_GRAPH_ID	tOldGraphID;
 	u32			dwLevelID;
 } SConnectionVertex;
 
@@ -85,7 +85,7 @@ public:
 		VERIFY					(m_tpGraph->header().vertex_count() == l_tpCrossTable->header().game_vertex_count());
 
 		{
-			for (_GRAPH_ID i=0, n = m_tpGraph->header().vertex_count(); i<n; ++i)
+			for (GameGraph::_GRAPH_ID i=0, n = m_tpGraph->header().vertex_count(); i<n; ++i)
 				if ((!l_tpAI_Map->valid_vertex_id(m_tpGraph->vertex(i)->level_vertex_id()) ||
 					(l_tpCrossTable->vertex(m_tpGraph->vertex(i)->level_vertex_id()).game_vertex_id() != i) ||
 					!l_tpAI_Map->inside(m_tpGraph->vertex(i)->level_vertex_id(),m_tpGraph->vertex(i)->level_point()))) {
@@ -103,7 +103,7 @@ public:
 			(*I).tGlobalPoint.add	(m_tpGraph->vertex(int(I - B))->game_point(),m_tLevel.offset());
 			(*I).tLevelID			= dwLevelID;
 			(*I).tNodeID			= m_tpGraph->vertex(int(I - B))->level_vertex_id();
-			Memory.mem_copy			((*I).tVertexTypes,m_tpGraph->vertex(int(I - B))->vertex_type(),LOCATION_TYPE_COUNT*sizeof(_LOCATION_ID));
+			Memory.mem_copy			((*I).tVertexTypes,m_tpGraph->vertex(int(I - B))->vertex_type(),GameGraph::LOCATION_TYPE_COUNT*sizeof(GameGraph::_LOCATION_ID));
 			(*I).tNeighbourCount	= m_tpGraph->vertex(int(I - B))->edge_count();
 			CGameGraph::const_iterator	b,i,e;
 			m_tpGraph->begin		(int(I - B),i,e);
@@ -129,7 +129,7 @@ public:
 			for (int i=0; i<(int)tpCrossTable->header().level_vertex_count(); i++) {
 				tCrossTableUpdate[i] = tpCrossTable->vertex(i);
 				VERIFY				(u32(tCrossTableUpdate[i].tGraphIndex) < tpCrossTable->header().game_vertex_count());
-				tCrossTableUpdate[i].tGraphIndex = tCrossTableUpdate[i].tGraphIndex + (ALife::_GRAPH_ID)dwOffset;
+				tCrossTableUpdate[i].tGraphIndex = tCrossTableUpdate[i].tGraphIndex + (GameGraph::_GRAPH_ID)dwOffset;
 			}
 
 			CMemoryWriter					tMemoryStream;
@@ -176,7 +176,7 @@ public:
 				if (tpGraphPoint) {
 					Fvector							tVector;
 					tVector							= tpGraphPoint->o_Position;
-					_GRAPH_ID						tGraphID = _GRAPH_ID(-1);
+					GameGraph::_GRAPH_ID			tGraphID = GameGraph::_GRAPH_ID(-1);
 					float							fMinDistance = 1000000.f;
 					{
 						GRAPH_VERTEX_IT					B = m_tpVertices.begin();
@@ -186,7 +186,7 @@ public:
 							float fDistance = (*I).tLocalPoint.distance_to(tVector);
 							if (fDistance < fMinDistance) {
 								fMinDistance	= fDistance;
-								tGraphID		= _GRAPH_ID(I - B);
+								tGraphID		= GameGraph::_GRAPH_ID(I - B);
 								if (fMinDistance < EPS_L)
 									break;
 							}
@@ -198,7 +198,7 @@ public:
 						S								= xr_strdup(tpGraphPoint->name_replace());
 						T.caConnectName					= xr_strdup(*tpGraphPoint->m_caConnectionPointName);
 						T.dwLevelID						= dwfGetIDByLevelName(Ini,*tpGraphPoint->m_caConnectionLevelName);
-						T.tGraphID						= (ALife::_GRAPH_ID)i;
+						T.tGraphID						= (GameGraph::_GRAPH_ID)i;
 						T.tOldGraphID					= tGraphID;
 
 						bool							ok = true;
@@ -256,12 +256,12 @@ public:
 	{
 		GRAPH_VERTEX_IT			I = m_tpVertices.begin();
 		GRAPH_VERTEX_IT			E = m_tpVertices.end();
-		CGameGraph::CVertex		tVertex;
+		GameGraph::CVertex		tVertex;
 		for ( ; I != E; I++) {
 			tVertex.tLocalPoint		= (*I).tLocalPoint;
 			tVertex.tGlobalPoint	= (*I).tGlobalPoint;
 			tVertex.tNodeID			= (*I).tNodeID;
-			Memory.mem_copy			(tVertex.tVertexTypes,(*I).tVertexTypes,LOCATION_TYPE_COUNT*sizeof(_LOCATION_ID));
+			Memory.mem_copy			(tVertex.tVertexTypes,(*I).tVertexTypes,GameGraph::LOCATION_TYPE_COUNT*sizeof(GameGraph::_LOCATION_ID));
 			tVertex.tLevelID		= (*I).tLevelID;
 			tVertex.dwEdgeOffset	= dwOffset;
 			tVertex.dwPointOffset	= dwPointOffset;
@@ -526,8 +526,8 @@ CGraphMerger::CGraphMerger(LPCSTR name)
 	F.w_u32						(tGraphHeader.dwEdgeCount);
 	F.w_u32						(tGraphHeader.dwDeathPointCount);
 	{
-		CGameGraph::LEVEL_PAIR_IT	I = tGraphHeader.tpLevels.begin();
-		CGameGraph::LEVEL_PAIR_IT	E = tGraphHeader.tpLevels.end();
+		GameGraph::LEVEL_MAP::iterator	I = tGraphHeader.tpLevels.begin();
+		GameGraph::LEVEL_MAP::iterator	E = tGraphHeader.tpLevels.end();
 		for ( ; I != E; I++) {
 			F.w_stringZ	(*(*I).second.name());
 			F.w_fvector3((*I).second.offset());

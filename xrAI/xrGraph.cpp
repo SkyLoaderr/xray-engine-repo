@@ -72,7 +72,7 @@ void vfLoadGraphPoints(LPCSTR name)
 			tDynamicGraphVertex.tGlobalPoint	= tDynamicGraphVertex.tLocalPoint;
 			tDynamicGraphVertex.tNodeID			= 0;
 			tDynamicGraphVertex.tNeighbourCount	= 0;
-			Memory.mem_copy						(tDynamicGraphVertex.tVertexTypes,tpGraphPoint->m_tLocations,LOCATION_TYPE_COUNT*sizeof(_LOCATION_ID));
+			Memory.mem_copy						(tDynamicGraphVertex.tVertexTypes,tpGraphPoint->m_tLocations,GameGraph::LOCATION_TYPE_COUNT*sizeof(GameGraph::_LOCATION_ID));
 			tDynamicGraphVertex.tLevelID		= 0;
 			tDynamicGraphVertex.tpaEdges		= 0;
 			tDynamicGraphVertex.tDeathPointCount = 0;
@@ -265,8 +265,8 @@ public:
 		tGraph.w_u32				(tGraphHeader.dwVertexCount);
 		tGraph.w_u32				(tGraphHeader.dwEdgeCount);
 		tGraph.w_u32				(tGraphHeader.dwDeathPointCount);
-		CGameGraph::LEVEL_PAIR_IT	I = tGraphHeader.tpLevels.begin();
-		CGameGraph::LEVEL_PAIR_IT	E = tGraphHeader.tpLevels.end();
+		GameGraph::LEVEL_MAP::iterator	I = tGraphHeader.tpLevels.begin();
+		GameGraph::LEVEL_MAP::iterator	E = tGraphHeader.tpLevels.end();
 		for ( ; I != E; I++) {
 			tGraph.w_stringZ		((*I).second.caLevelName);
 			tGraph.w_fvector3		((*I).second.tOffset);
@@ -301,7 +301,7 @@ public:
 			tGraphVertex.tLocalPoint		= tDynamicGraphVertex.tLocalPoint;
 			tGraphVertex.tGlobalPoint		= tDynamicGraphVertex.tGlobalPoint;
 			tGraphVertex.tNodeID			= tDynamicGraphVertex.tNodeID;
-			Memory.mem_copy					(tGraphVertex.tVertexTypes,tDynamicGraphVertex.tVertexTypes,LOCATION_TYPE_COUNT*sizeof(_LOCATION_ID));
+			Memory.mem_copy					(tGraphVertex.tVertexTypes,tDynamicGraphVertex.tVertexTypes,GameGraph::LOCATION_TYPE_COUNT*sizeof(GameGraph::_LOCATION_ID));
 			tGraphVertex.tLevelID			= tDynamicGraphVertex.tLevelID;
 			tGraphVertex.tNeighbourCount	= tDynamicGraphVertex.tNeighbourCount;
 			tGraphVertex.dwEdgeOffset		= k + j*(u32)sizeof(CGameGraph::CEdge);
@@ -375,8 +375,8 @@ void vfRemoveIncoherentGraphPoints(CLevelGraph *tpAI_Map, u32 &dwVertexCount)
 //	tGraph.w_u32				(tGraphHeader.dwVertexCount);
 //	tGraph.w_u32				(tGraphHeader.dwEdgeCount);
 //	tGraph.w_u32				(tGraphHeader.dwDeathPointCount);
-//	CGameGraph::LEVEL_PAIR_IT	I = tGraphHeader.tpLevels.begin();
-//	CGameGraph::LEVEL_PAIR_IT	E = tGraphHeader.tpLevels.end();
+//	GameGraph::LEVEL_MAP::iterator	I = tGraphHeader.tpLevels.begin();
+//	GameGraph::LEVEL_MAP::iterator	E = tGraphHeader.tpLevels.end();
 //	for ( ; I != E; I++) {
 //		tGraph.w_stringZ		((*I).second.caLevelName);
 //		tGraph.w_fvector3		((*I).second.tOffset);

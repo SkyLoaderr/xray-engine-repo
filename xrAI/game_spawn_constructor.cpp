@@ -70,7 +70,7 @@ void CGameSpawnConstructor::load_spawns	(LPCSTR name)
 	read_levels							(&game_info(),m_levels);
 
 	// load levels
-	CGameGraph::SLevel					level;
+	GameGraph::SLevel					level;
 	string256							J;
 	LEVEL_INFO_STORAGE::const_iterator	I = m_levels.begin();
 	LEVEL_INFO_STORAGE::const_iterator	E = m_levels.end();
@@ -275,17 +275,17 @@ void CGameSpawnConstructor::process_actor			(LPCSTR start_level_name)
 		return;
 
 	const CGameGraph::SLevel		&level = game_graph().header().level(start_level_name);
-	ALife::_GRAPH_ID				dest = ALife::_GRAPH_ID(-1);
+	GameGraph::_GRAPH_ID				dest = GameGraph::_GRAPH_ID(-1);
 	GraphEngineSpace::CGameLevelParams	evaluator(level.id());
 	CGraphEngine					*graph_engine = xr_new<CGraphEngine>(game_graph().header().vertex_count());
 
-	bool							failed = !graph_engine->search(game_graph(),m_actor->m_tGraphID,ALife::_GRAPH_ID(-1),0,evaluator);
+	bool							failed = !graph_engine->search(game_graph(),m_actor->m_tGraphID,GameGraph::_GRAPH_ID(-1),0,evaluator);
 	if (failed) {
 		Msg							("! Cannot build path via game graph from the current level to the level %s!",start_level_name);
 		float						min_dist = flt_max;
 		Fvector						current = game_graph().vertex(m_actor->m_tGraphID)->game_point();
-		ALife::_GRAPH_ID			n = game_graph().header().vertex_count();
-		for (ALife::_GRAPH_ID i=0; i<n; ++i)
+		GameGraph::_GRAPH_ID			n = game_graph().header().vertex_count();
+		for (GameGraph::_GRAPH_ID i=0; i<n; ++i)
 			if (game_graph().vertex(i)->level_id() == level.id()) {
 				float				distance = game_graph().vertex(i)->game_point().distance_to_sqr(current);
 				if (distance < min_dist) {
@@ -299,7 +299,7 @@ void CGameSpawnConstructor::process_actor			(LPCSTR start_level_name)
 			}
 	}
 	else
-		dest						= (ALife::_GRAPH_ID)evaluator.selected_vertex_id();
+		dest						= (GameGraph::_GRAPH_ID)evaluator.selected_vertex_id();
 
 	m_actor->m_tGraphID				= dest;
 	m_actor->m_tNodeID				= game_graph().vertex(dest)->level_vertex_id();

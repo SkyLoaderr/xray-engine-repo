@@ -15,7 +15,7 @@ typedef struct tagSDynamicGraphVertex {
 	Fvector						tLocalPoint;
 	Fvector						tGlobalPoint;
 	u32							tNodeID;
-	u8							tVertexTypes[LOCATION_TYPE_COUNT];
+	u8							tVertexTypes[GameGraph::LOCATION_TYPE_COUNT];
 	u32							tLevelID;
 	u32							tNeighbourCount;
 	u32							tDeathPointCount;

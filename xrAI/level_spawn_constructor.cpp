@@ -281,7 +281,7 @@ void CLevelSpawnConstructor::correct_objects					()
 
 	for (int i=0; i<(int)m_spawns.size(); i++) {
 		if (!m_spawns[i]->used_ai_locations()) {
-			m_spawns[i]->m_tGraphID = (ALife::_GRAPH_ID)m_level_graph_vertex_id;
+			m_spawns[i]->m_tGraphID = (GameGraph::_GRAPH_ID)m_level_graph_vertex_id;
 			m_spawns[i]->m_fDistance = 0.f;
 			m_spawns[i]->m_tNodeID = game_graph().vertex(m_level_graph_vertex_id)->level_vertex_id();
 			continue;
@@ -306,7 +306,7 @@ void CLevelSpawnConstructor::correct_objects					()
 			S += sprintf(S,"Spawn point : [%7.2f][%7.2f][%7.2f]\n",m_spawns[i]->o_Position.x,m_spawns[i]->o_Position.y,m_spawns[i]->o_Position.z);
 			R_ASSERT2(dwBest != -1,S1);
 		}
-		m_spawns[i]->m_tGraphID		= (ALife::_GRAPH_ID)dwBest;
+		m_spawns[i]->m_tGraphID		= (GameGraph::_GRAPH_ID)dwBest;
 		m_spawns[i]->m_fDistance	= fCurrentBestDistance;
 	}
 }
@@ -372,7 +372,7 @@ void CLevelSpawnConstructor::fill_level_changers				()
 				for (u32 ii=0, nn = game_graph().header().vertex_count(); ii<nn; ++ii) {
 					if ((game_graph().vertex(ii)->level_id() != m_level.id()) || !game_graph().vertex(ii)->level_point().similar((*I)->o_Position,.001f))
 						continue;
-					level_changers()[i]->m_tNextGraphID		= (ALife::_GRAPH_ID)ii;
+					level_changers()[i]->m_tNextGraphID		= (GameGraph::_GRAPH_ID)ii;
 					level_changers()[i]->m_tNextPosition	= (*I)->o_Position;
 					level_changers()[i]->m_tAngles			= (*I)->o_Angle;
 					level_changers()[i]->m_dwNextNodeID		= game_graph().vertex(ii)->level_vertex_id();
