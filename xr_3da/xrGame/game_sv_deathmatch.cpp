@@ -26,6 +26,7 @@ void	game_sv_Deathmatch::Create					(shared_str& options)
 		m_bAnomaliesEnabled	= true;
 	else 
 		m_bAnomaliesEnabled	= false;
+	m_dwAnomalySetLengthTime = get_option_i(*options, "anslen", 60)*60000; //in (ms)
 	//-----------------------------------------------------------------------
 	int		SpectatorMode = -1;
 	m_dwSM_CurViewEntity = 0;
@@ -57,14 +58,17 @@ void	game_sv_Deathmatch::Create					(shared_str& options)
 	m_AnomalySetsList.clear();
 	m_AnomalySetID.clear();
 	m_dwLastAnomalySetID	= 1001;
+	m_dwLastAnomalyStartTime = 0;
 
 	m_delayedRoundEnd = false;
+	m_dwLastAnomalyStartTime = 0;
 }
 
 void	game_sv_Deathmatch::OnRoundStart			()
 {
 	m_delayedRoundEnd = false;
 	pWinnigPlayerName = "";
+	m_dwLastAnomalySetID	= 1001;
 	/////////////////////////////////////////////////////////////////////////
 	for (u32 i=0; i<teams.size(); ++i)
 	{
@@ -214,6 +218,8 @@ void	game_sv_Deathmatch::Update					()
 			check_InvinciblePlayers();
 
 			check_ForceRespawn();
+
+			check_for_Anomalies();
 
 			if (m_bSpectatorMode)
 			{
@@ -1103,6 +1109,21 @@ void game_sv_Deathmatch::OnDestroyObject			(u16 eid_who)
 		}
 		else i++;
 	};
+
+	CSE_Abstract* entity = get_entity_from_eid(eid_who);
+	if (entity && entity->owner->ps->GameID == eid_who)
+	{
+		xrClientData* xrCData = entity->owner;
+//		game_PlayerState* ps = entity->owner->ps;
+		if (Phase() == GAME_PHASE_INPROGRESS)
+		{		
+			CSE_ALifeCreatureActor*			A		= smart_cast<CSE_ALifeCreatureActor*> (entity);
+			if (A)
+			{
+				SpawnPlayer(xrCData->ID, "spectator");
+			}
+		};
+	}
 };
 
 
@@ -1325,6 +1346,7 @@ void	game_sv_Deathmatch::StartAnomalies			()
 //		if (!pZone->IsEnabled())
 			pZone->ZoneEnable();
 	};
+	m_dwLastAnomalyStartTime = Level().timeServer();
 };
 
 BOOL	game_sv_Deathmatch::OnTouch			(u16 eid_who, u16 eid_what)
@@ -1547,3 +1569,14 @@ bool	game_sv_Deathmatch::HasChampion()
 
 	return (MaxFrags>0);
 };
+
+bool	game_sv_Deathmatch::check_for_Anomalies()
+{
+	if (!m_bAnomaliesEnabled) return false;
+	if (m_dwLastAnomalySetID != 1001)
+	{
+		if (m_dwLastAnomalyStartTime + m_dwAnomalySetLengthTime > Level().timeServer()) return false;
+	};
+	StartAnomalies(); 
+	return true;
+}

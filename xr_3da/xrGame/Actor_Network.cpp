@@ -373,8 +373,11 @@ void		CActor::net_Import_Base				( NET_Packet& P)
 
 void	CActor::net_Import_Base_proceed		( )
 {
-	setVisible					(TRUE);
-	setEnabled					(TRUE);
+	if (g_Alive())
+	{
+		setVisible					(TRUE);
+		setEnabled					(TRUE);
+	};
 	//---------------------------------------------
 		
 	if (Remote()) return;

@@ -37,7 +37,9 @@ protected:
 
 	ANOMALY_SETS					m_AnomalySetsList;
 	xr_vector<u8>					m_AnomalySetID;
+	u32								m_dwAnomalySetLengthTime;
 	u32								m_dwLastAnomalySetID;
+	u32								m_dwLastAnomalyStartTime;	
 	bool							m_bAnomaliesEnabled;
 	//--------------------------------------------------
 	bool							m_bSpectatorMode;
@@ -55,6 +57,7 @@ protected:
 	virtual		bool				checkForFragLimit		();
 	virtual		bool				checkForRoundStart		();
 	virtual		bool				checkForRoundEnd		();
+	virtual		bool				check_for_Anomalies		();
 
 //	virtual		void				OnPlayerChangeSkin		(ClientID id_who, u8 skin);
 //	virtual		void				OnPlayerWantsDie		(ClientID id_who);

@@ -328,6 +328,10 @@ BOOL CCustomZone::net_Spawn(CSE_Abstract* DC)
 	m_fAttenuation				= Z->m_attn;
 	m_dwPeriod					= Z->m_period;
 
+	if (GameID() != GAME_SINGLE)
+		m_bSpawnBlowoutArtefacts = false;
+
+
 	//добавить источники света
 	if (m_bIdleLight) {
 		m_pIdleLight = ::Render->light_create();
@@ -365,6 +369,7 @@ BOOL CCustomZone::net_Spawn(CSE_Abstract* DC)
 	m_fRealWindPower = g_pGamePersistent->Environment.wind_strength;
 	m_fDistanceToCurEntity = flt_max;
 	m_bBlowoutWindActive = false;
+
 
 	return						(TRUE);
 }

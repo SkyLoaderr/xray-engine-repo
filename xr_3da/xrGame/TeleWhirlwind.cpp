@@ -161,6 +161,7 @@ bool	CTeleWhirlwindObject::destroy_object		(const Fvector dir,float val)
 	if(D)
 	{
 		D->Destroy(m_telekinesis->OwnerObject()->ID());
+		
 		m_telekinesis->add_impact(dir,val*10.f);
 
 		CParticlesPlayer* PP = smart_cast<CParticlesPlayer*>(object);

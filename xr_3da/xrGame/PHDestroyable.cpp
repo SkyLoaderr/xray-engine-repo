@@ -34,13 +34,16 @@ void CPHDestroyable::GenSpawnReplace(u16 ref_id,LPCSTR section,shared_str visual
 	// Send
 	D->s_name			= section;//*cNameSect()
 	D->ID_Parent		= u16(-1);
-	NET_Packet			P;
-	D->Spawn_Write		(P,TRUE);
-	Level().Send		(P,net_flags(TRUE));
-	// Destroy
-	F_entity_Destroy	(D);
-	m_depended_objects++;
-}
+	if (OnServer())
+	{
+		NET_Packet			P;
+		D->Spawn_Write		(P,TRUE);
+		Level().Send		(P,net_flags(TRUE));
+		// Destroy
+		F_entity_Destroy	(D);
+		m_depended_objects++;
+	};
+};
 
 void CPHDestroyable::InitServerObject(CSE_Abstract* D)
 {
@@ -99,12 +102,12 @@ void CPHDestroyable::Destroy(u16 source_id/*=u16(-1)*/,LPCSTR section/*="ph_skel
 		m_flags.set(fl_released,FALSE);
 	}
 	xr_vector<shared_str>::iterator i=m_destroyed_obj_visual_names.begin(),e=m_destroyed_obj_visual_names.end();
-	for(;e!=i;i++)
-		GenSpawnReplace(source_id,section,*i);
 
-
-
-	
+	if (GameID() == GAME_SINGLE)
+	{
+		for(;e!=i;i++)
+			GenSpawnReplace(source_id,section,*i);
+	};	
 ///////////////////////////////////////////////////////////////////////////
 	m_flags.set(fl_destroyed,TRUE);
 	return;
@@ -112,6 +115,8 @@ void CPHDestroyable::Destroy(u16 source_id/*=u16(-1)*/,LPCSTR section/*="ph_skel
 
 void CPHDestroyable::Load(CInifile* ini,LPCSTR section)
 {
+	m_flags.set(fl_destroyable,FALSE);
+
 		CPhysicsShellHolder *shell_holder=PPhysicsShellHolder();
 		shared_str visual_name;
 		visual_name=shell_holder->cNameVisual();
@@ -139,6 +144,8 @@ void CPHDestroyable::Load(CInifile* ini,LPCSTR section)
 }
 void CPHDestroyable::Load(LPCSTR section)
 {
+	m_flags.set(fl_destroyable,FALSE);
+
 	CPhysicsShellHolder *shell_holder=PPhysicsShellHolder();
 	shared_str visual_name;
 	visual_name=shell_holder->cNameVisual();
@@ -161,7 +168,6 @@ void CPHDestroyable::RespawnInit()
 {
 	m_flags.set(fl_destroyed,FALSE);
 	m_flags.set(fl_released,TRUE);
-	m_flags.set(fl_destroyable,FALSE);
 	m_destroyed_obj_visual_names.clear();
 	m_depended_objects=0;
 }
@@ -208,7 +214,6 @@ void CPHDestroyable::NotificateDestroy(CPHDestroyableNotificate *dn)
 		e->set_LinearVel(*(Fvector*)&res_vell);
 	}
 	new_shell->Enable();
-
 	if(own_shell->CollideClassBits().is(CPHCollideValidator::cbNCGroupObject))
 							new_shell->RegisterToCLGroup(own_shell->CollideBits());
 			
