@@ -50,7 +50,7 @@ public:
 	virtual		void				OnPlayerBuy				(u32 id_who, u16 eid_who, LPCSTR what)	{};
 	virtual		void				OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)	= 0;
 	virtual		BOOL				OnTouch					(u16 eid_who, u16 eid_target)	= 0;			// TRUE=allow ownership, FALSE=denied
-	virtual		BOOL				OnDetouch				(u16 eid_who, u16 eid_target)	= 0;			// TRUE=allow ownership, FALSE=denied
+	virtual		BOOL				OnDetach				(u16 eid_who, u16 eid_target)	= 0;			// TRUE=allow ownership, FALSE=denied
 
 	virtual		void				OnRoundStart			();												// старт раунда
 	virtual		void				OnRoundEnd				(LPCSTR reason);								// конец раунда

@@ -355,7 +355,7 @@ BOOL	game_sv_CS::OnTouch			(u16 eid_who, u16 eid_what)
 	return FALSE;
 }
 
-BOOL	game_sv_CS::OnDetouch		(u16 eid_who, u16 eid_what)
+BOOL	game_sv_CS::OnDetach		(u16 eid_who, u16 eid_what)
 {
 	xrServer*			S		= Level().Server;
 	xrServerEntity*		e_who	= S->ID_to_entity(eid_who);		VERIFY(e_who	);
