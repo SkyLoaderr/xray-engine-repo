@@ -45,7 +45,7 @@ void IRender_Visual::Load		(const char* N, IReader *data, u32 dwFlags)
 		Type				= hdr.type;
 		if (hdr.shader_id)	hShader	= ::Render->getShader(hdr.shader_id);
 	} else {
-		Debug.fatal	("Invalid visual");
+		Debug.fatal			("Invalid visual");
 	}
 
 	// BBox
