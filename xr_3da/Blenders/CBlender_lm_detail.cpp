@@ -13,7 +13,7 @@
 
 CBlender_lm_detail::CBlender_lm_detail	()
 {
-	description.CLS		= B_COMPLEX2;
+	description.CLS		= B_LM_DETAIL;
 }
 
 CBlender_lm_detail::~CBlender_lm_detail	()
@@ -175,8 +175,6 @@ void	CBlender_lm_detail::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_
 				RS.StageEnd			();
 			}
 			RS.PassEnd			();
-			break;
-			}
 			break;
 		}
 	}
