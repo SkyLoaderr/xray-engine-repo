@@ -4,15 +4,16 @@
 #include "blenders\Blender_Recorder.h"
 #include "blenders\Blender.h"
 
-class	cl_xform_w			: public R_constant_setup		{
-	virtual void			setup	(R_constant* C)			{	RCache.xforms.set_c_w		(C);	}
-};
-class	cl_xform_v			: public R_constant_setup		{	
-	virtual void			setup	(R_constant* C)			{	RCache.xforms.set_c_v		(C);	}
-};
-class	cl_xform_p			: public R_constant_setup		{	
-	virtual void			setup	(R_constant* C)			{	RCache.xforms.set_c_p		(C);	}
-};
+#define	BIND_DECLARE(xf)	\
+	class cl_xform_##xf	: public R_constant_setup {	virtual void setup (R_constant* C) { RCache.xforms.set_c_##xf (C); } }; \
+	static cl_xform_##xf	binder_##xf
+
+BIND_DECLARE(w);
+BIND_DECLARE(v);
+BIND_DECLARE(p);
+BIND_DECLARE(wv);
+BIND_DECLARE(vp);
+BIND_DECLARE(wvp);
 
 void	CBlender_Compile::r2_Pass		(LPCSTR _vs, LPCSTR _ps, BOOL bZtest, BOOL bZwrite,	BOOL bABlend, u32 abSRC, u32 abDST, BOOL aTest, u32 aRef)
 {
@@ -33,6 +34,12 @@ void	CBlender_Compile::r2_Pass		(LPCSTR _vs, LPCSTR _ps, BOOL bZtest, BOOL bZwri
 	ctable.merge			(vs->constants);
 
 	// Standart constant-binding
+	r2_Constant				("m_W",		binder_w);
+	r2_Constant				("m_V",		binder_v);
+	r2_Constant				("m_P",		binder_p);
+	r2_Constant				("m_WV",	binder_wv);
+	r2_Constant				("m_VP",	binder_vp);
+	r2_Constant				("m_WVP",	binder_wvp);
 }
 
 void	CBlender_Compile::r2_Constant	(LPCSTR name, R_constant_setup* s)

@@ -178,12 +178,4 @@ void R_constant_table::merge(R_constant_table* T)
 
 	// Sort
 	std::sort		(table.begin(),table.end(),p_sort);
-
-	// Analyze mapping
-	mapping.c_w		= get("m_w");	if (mapping.c_w		)	mapping.empty=FALSE;
-	mapping.c_v		= get("m_v");	if (mapping.c_v		)	mapping.empty=FALSE;
-	mapping.c_p		= get("m_p");	if (mapping.c_p		)	mapping.empty=FALSE;
-	mapping.c_wv	= get("m_wv");	if (mapping.c_wv	)	mapping.empty=FALSE;
-	mapping.c_vp	= get("m_vp");	if (mapping.c_vp	)	mapping.empty=FALSE;
-	mapping.c_wvp	= get("m_wvp");	if (mapping.c_wvp	)	mapping.empty=FALSE;
 }
