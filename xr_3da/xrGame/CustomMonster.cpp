@@ -624,17 +624,36 @@ void CCustomMonster::OnRender()
 	}
 //	if (bDebug) PKinematics(Visual())->DebugRender(XFORM());
 
-	// TEMP
+	// JIM TEMP
 	CAI_Biting *pM = dynamic_cast<CAI_Biting *>(this);
 	if (!pM) return;
 
-	if (!pM->dbg_info.active) return;
-	RCache.dbg_DrawAABB(pM->dbg_info.pos,0.15f,0.15f,0.15f,D3DCOLOR_XRGB(255,0,128));
+//	if (!pM->dbg_info.active) return;
+//	RCache.dbg_DrawAABB(pM->dbg_info.pos,0.15f,0.15f,0.15f,D3DCOLOR_XRGB(255,0,128));
+//
+//	Fvector up_vect;
+//	up_vect = pM->dbg_info.pos;
+//	up_vect.y += 1.5f;
+//	RCache.dbg_DrawLINE(Fidentity,pM->dbg_info.pos,up_vect,D3DCOLOR_XRGB(255,0,128));
 
-	Fvector up_vect;
-	up_vect = pM->dbg_info.pos;
-	up_vect.y += 1.5f;
-	RCache.dbg_DrawLINE(Fidentity,pM->dbg_info.pos,up_vect,D3DCOLOR_XRGB(255,0,128));
+	CAI_Biting::s_dbg::TNODES_MAP_IT I, B = pM->dbg_info.nodes.begin();
+	CAI_Biting::s_dbg::TNODES_MAP_IT E = pM->dbg_info.nodes.end();
+	
+	for (I = B; I!=E; I++) {
+		u32		node_id = I->first;
+		TTime	d_time	= TTime((Level().timeServer() - I->second) / 500);
+		u8 col;
+
+		Fvector pos = ai().level_graph().vertex_position(node_id);
+		
+		if (d_time > 0xff) col = 0xff;
+		else col = 0xff - u8(d_time);
+
+		RCache.dbg_DrawAABB(pos,0.25f,0.25f,0.25f,D3DCOLOR_XRGB(128,col,128));
+	}
+
+	// JIM TEMP END
+
 }
 #endif
 
