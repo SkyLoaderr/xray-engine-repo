@@ -145,7 +145,7 @@ void TfrmPropertiesLight::GetObjectsInfo(){
     flPointA1						= (FloatValue*)PROP::FindProp(point_values,pref,"Attenuation\\Linear"); 	 R_ASSERT(flPointA1);
     flPointA2						= (FloatValue*)PROP::FindProp(point_values,pref,"Attenuation\\Quadratic"); 	R_ASSERT(flPointA2);
     m_Props->AssignValues			(values,true);
-    m_SunProps->AssignValues		(sun_values,false);
+    m_SunProps->AssignValues		(sun_values,true);
     m_PointProps->AssignValues		(point_values,true);
 }
 
@@ -203,6 +203,7 @@ void __fastcall TfrmPropertiesLight::FormPaint(TObject *Sender)
 void __fastcall TfrmPropertiesLight::OnModified()
 {
     DrawGraph();
+    UI.RedrawScene();
 }
 //---------------------------------------------------------------------------
 
