@@ -768,6 +768,12 @@
 					RelativePath="ISpatial.h">
 				</File>
 				<File
+					RelativePath="ISpatial_q_box.cpp">
+				</File>
+				<File
+					RelativePath="ISpatial_q_frustum.cpp">
+				</File>
+				<File
 					RelativePath="ISpatial_q_ray.cpp">
 					<FileConfiguration
 						Name="Mixed|Win32">

@@ -4,7 +4,7 @@
 extern Fvector	c_spatial_offset[8];
 
 template <bool b_first, bool b_nearest>
-class	walker_ray
+class	walker
 {
 public:
 	u32			mask;
@@ -13,7 +13,7 @@ public:
 	float		range;
 	float		range2;
 public:
-	walker_ray				(u32 _mask, const Fvector& _start, const Fvector&	_dir, float _range)
+	walker					(u32 _mask, const Fvector& _start, const Fvector&	_dir, float _range)
 	{
 		mask	= _mask;
 		start	= _start;
@@ -70,10 +70,10 @@ void	ISpatial_DB::q_ray	(u32 _o, u32 _mask, const Fvector&	_start,  const Fvecto
 	q_result.clear	();
 	if (_o & O_ONLYFIRST)
 	{
-		if (_o & O_ONLYNEAREST)		{ walker_ray<true,true>		W(_mask,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
-		else						{ walker_ray<true,false>	W(_mask,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
+		if (_o & O_ONLYNEAREST)		{ walker<true,true>		W(_mask,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
+		else						{ walker<true,false>	W(_mask,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
 	} else {
-		if (_o & O_ONLYNEAREST)		{ walker_ray<false,true>	W(_mask,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
-		else						{ walker_ray<false,false>	W(_mask,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
+		if (_o & O_ONLYNEAREST)		{ walker<false,true>	W(_mask,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
+		else						{ walker<false,false>	W(_mask,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
 	}
 }

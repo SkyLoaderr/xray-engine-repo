@@ -117,7 +117,7 @@ public:
 	// query
 	void							q_ray			(u32 _o, u32 _mask, const Fvector&	_start,  const Fvector&	_dir, float _range);
 	void							q_box			(u32 _o, u32 _mask, const Fvector&	_center, const Fvector& _size);
-	void							q_sphere		(u32 _o, u32 _mask, const Fvector&	_center, const Fvector& _radius);
+	void							q_sphere		(u32 _o, u32 _mask, const Fvector&	_center, const float _radius);
 	void							q_frustum		(u32 _o, u32 _mask, const CFrustum&	_frustum);
 };
 
