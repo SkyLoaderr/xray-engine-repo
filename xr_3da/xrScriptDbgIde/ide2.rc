@@ -416,6 +416,10 @@ BEGIN
         MENUITEM "&Tile",                       ID_WINDOW_TILE_HORZ
         MENUITEM "&Arrange Icons",              ID_WINDOW_ARRANGE
     END
+    POPUP "Tools"
+    BEGIN
+        MENUITEM "Options",                     32824
+    END
 END
 
 
