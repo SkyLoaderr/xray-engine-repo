@@ -200,7 +200,7 @@ bool EParticlesObject::ExportGame(SExportStreams& F)
 
 bool EParticlesObject::Compile(LPCSTR ref_name)
 {
-    PS::CPEDef* def 		= ::Render->PSystems.FindPED(ref_name);
+    PS::CPEDef* def 		= ::Render->PSLibrary.FindPED(ref_name);
     if (m_PE.Compile(def)){
 		m_RefName			= ref_name;
 		UpdateTransform		();

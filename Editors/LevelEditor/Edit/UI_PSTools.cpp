@@ -33,7 +33,7 @@ __fastcall TUI_ControlPSAdd::TUI_ControlPSAdd(int st, int act, TUI_CustomTools* 
 bool __fastcall TUI_ControlPSAdd::AfterAppendCallback(TShiftState Shift, CCustomObject* obj)
 {
 	EParticlesObject* pg= dynamic_cast<EParticlesObject*>(obj); R_ASSERT(pg);
-    LPCSTR ref_name		= ::Render->PSystems.GetCurrentPED();
+    LPCSTR ref_name		= ::Render->PSLibrary.GetCurrentPED();
     if (!ref_name)		return false;
 	if (!pg->Compile(ref_name)){
     	ELog.DlgMsg(mtInformation,"Can't compile particle system '%s'.",ref_name);

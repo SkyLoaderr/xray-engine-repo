@@ -1,7 +1,7 @@
 object fraBottomBar: TfraBottomBar
   Left = 0
   Top = 0
-  Width = 846
+  Width = 443
   Height = 277
   VertScrollBar.Visible = False
   Align = alClient
@@ -11,14 +11,14 @@ object fraBottomBar: TfraBottomBar
   object paBottomBar: TPanel
     Left = 0
     Top = 0
-    Width = 846
+    Width = 443
     Height = 17
     Align = alTop
     BevelOuter = bvLowered
     ParentColor = True
     TabOrder = 0
     object paInfo: TPanel
-      Left = 498
+      Left = 95
       Top = 1
       Width = 347
       Height = 15
@@ -279,7 +279,8 @@ object fraBottomBar: TfraBottomBar
       'miDrawDOBaseTexture.Checked'
       'miDrawDOBlended.Checked'
       'miDrawHOM.Checked'
-      'miSpawnPointDrawText.Checked')
+      'miSpawnPointDrawText.Checked'
+      'miDrawObjectLOD.Checked')
     StoredValues = <>
     Left = 185
     Top = 33
@@ -430,6 +431,11 @@ object fraBottomBar: TfraBottomBar
       end
       object miDrawObjectAnimPath: TMenuItem
         Caption = 'Draw Animation Path'
+        Checked = True
+        OnClick = ClickOptionsMenuItem
+      end
+      object miDrawObjectLOD: TMenuItem
+        Caption = 'Draw Object LOD'
         Checked = True
         OnClick = ClickOptionsMenuItem
       end

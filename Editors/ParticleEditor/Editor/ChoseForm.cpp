@@ -203,13 +203,13 @@ void __fastcall TfrmChoseItem::FillShaderXRLC()
 void __fastcall TfrmChoseItem::FillPS()
 {
     form->Caption					= "Select Particle System";
-    for (PS::PSIt S=::Render->PSystems.FirstPS(); S!=::Render->PSystems.LastPS(); S++)AppendItem(S->m_Name);
+    for (PS::PSIt S=::Render->PSLibrary.FirstPS(); S!=::Render->PSLibrary.LastPS(); S++)AppendItem(S->m_Name);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmChoseItem::FillPE()
 {
     form->Caption					= "Select Particle System";
-    for (PS::PEDIt S=::Render->PSystems.FirstPED(); S!=::Render->PSystems.LastPED(); S++)AppendItem((*S)->m_Name);
+    for (PS::PEDIt S=::Render->PSLibrary.FirstPED(); S!=::Render->PSLibrary.LastPED(); S++)AppendItem((*S)->m_Name);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmChoseItem::FillTexture()

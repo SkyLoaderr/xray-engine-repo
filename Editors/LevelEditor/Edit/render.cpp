@@ -51,3 +51,11 @@ void CRender::Calculate()
 void CRender::Render()
 {
 }
+
+IRender_Visual*	CRender::model_CreatePE			(LPCSTR name)	
+{ 
+	PS::CPEDef*	source		= PSLibrary.FindPED	(name);
+	VERIFY					(source);
+	return Device.Models.CreatePE	(source);
+}
+

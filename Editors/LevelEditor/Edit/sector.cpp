@@ -280,8 +280,9 @@ void CSector::CaptureInsideVolume(){
 					AddMesh(obj,*m_def);
             }
         }
-		m_Flags.set(flNeedUpdateVolume,TRUE);
-		UI.RedrawScene();
+		m_Flags.set		(flNeedUpdateVolume,TRUE);
+		UI.RedrawScene	();
+        UI.Command		(COMMAND_UPDATE_PROPERTIES);
     }
 }
 //----------------------------------------------------

@@ -456,7 +456,7 @@ void CLight::FillPointProp(LPCSTR pref, PropItemVec& items)
 	    B=PHelper.CreateButton	(items,	FHelper.PrepareKey(pref, "Point\\Fuzzy\\Generate"),"Random");
     	B->OnBtnClickEvent		= OnFuzzyGenerateClick;
         P=PHelper.CreateToken	(items,	FHelper.PrepareKey(pref, "Point\\Fuzzy\\Shape"),				&m_FuzzyData.m_ShapeType,	fuzzy_shape_types, 1);
-        P->OnChangeEvent		= OnFuzzyDataChange;
+        P->OnChangeEvent		= OnFuzzyTypeChange;
         switch (m_FuzzyData.m_ShapeType){
         case CLight::SFuzzyData::fstSphere: 
             P=PHelper.CreateFloat(items,	FHelper.PrepareKey(pref, "Point\\Fuzzy\\Radius"),		&m_FuzzyData.m_SphereRadius,0.01f,100.f,0.01f,2);

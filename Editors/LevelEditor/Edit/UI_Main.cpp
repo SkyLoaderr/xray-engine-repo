@@ -68,13 +68,13 @@ TUI::~TUI()
 void TUI::OnDeviceCreate()
 {
 	DU.OnDeviceCreate();
-    ::Render->PSystems.OnDeviceCreate();
+    ::Render->PSLibrary.OnDeviceCreate();
 }
 
 void TUI::OnDeviceDestroy()
 {
 	DU.OnDeviceDestroy();
-    ::Render->PSystems.OnDeviceDestroy();
+    ::Render->PSLibrary.OnDeviceDestroy();
 }
 
 bool TUI::OnCreate()

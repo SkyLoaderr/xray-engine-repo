@@ -590,6 +590,7 @@ void EScene::Render( const Fmatrix& camera )
 	if (1){
 	 	Device.SetShader		(Device.m_SelectionShader);
  		RCache.set_xform_world	(Fidentity);
+        Device.RenderNearer		(0.0003f);
 		Device.SetRS			(D3DRS_CULLMODE,D3DCULL_NONE);
         AnsiString temp;
         int cnt=0;
@@ -597,15 +598,18 @@ void EScene::Render( const Fmatrix& camera )
         	temp.sprintf		("TJ: %d",cnt++);
         	DU.dbgDrawVert(vit->p[0],						0xff0000ff,	temp.c_str());
         }
+        cnt=0;
         for (ERR::EdgeIt eit=m_CompilerErrors.m_MultiEdges.begin(); eit!=m_CompilerErrors.m_MultiEdges.end(); eit++){
         	temp.sprintf		("ME: %d",cnt++);
         	DU.dbgDrawEdge(eit->p[0],eit->p[1],			0xff00ff00,	temp.c_str());
         }
+        cnt=0;
         for (ERR::FaceIt fit=m_CompilerErrors.m_InvalidFaces.begin(); fit!=m_CompilerErrors.m_InvalidFaces.end(); fit++){
         	temp.sprintf		("IF: %d",cnt++);
         	DU.dbgDrawFace(fit->p[0],fit->p[1],fit->p[2],	0xffff0000,	temp.c_str());
         }
 	    Device.SetRS			(D3DRS_CULLMODE,D3DCULL_CCW);
+        Device.ResetNearer		();
 	}
 
     mapRenderObjects.clear			();
@@ -711,10 +715,11 @@ void EScene::Unload()
 
 bool EScene::Validate(bool bNeedOkMsg, bool bTestPortal, bool bTestHOM, bool bTestGlow, bool bTestShaderCompatible)
 {
+	bool bRes = true;
 	if (bTestPortal){
 		if (!PortalUtils.Validate(false)){
-			ELog.DlgMsg(mtError,"*ERROR: Scene has non associated face!");
-	    	return false;
+			ELog.Msg(mtError,"*ERROR: Scene has non associated face!");
+            bRes = false;
     	}
     }
     if (bTestHOM){
@@ -729,61 +734,75 @@ bool EScene::Validate(bool bNeedOkMsg, bool bTestPortal, bool bTestHOM, bool bTe
                 return false;
     }
     if (ObjCount(OBJCLASS_SPAWNPOINT)==0){
-    	ELog.DlgMsg(mtError,"*ERROR: Can't find 'Spawn Point'.\nPlease add at least one.");
-        return false;
+    	ELog.Msg(mtError,"*ERROR: Can't find any Spawn Object.");
+        bRes = false;
     }
     if (ObjCount(OBJCLASS_LIGHT)==0){
-    	ELog.DlgMsg(mtError,"*ERROR: Can't find 'Light'.\nPlease add at least one.");
-        return false;
+    	ELog.Msg(mtError,"*ERROR: Can't find any Light Object.");
+        bRes = false;
+    }
+    if (ObjCount(OBJCLASS_SCENEOBJECT)==0){
+    	ELog.Msg(mtError,"*ERROR: Can't find any Scene Object.");
+        bRes = false;
     }
     if (bTestGlow){
         if (ObjCount(OBJCLASS_GLOW)==0){
-            ELog.DlgMsg(mtError,"*ERROR: Can't found 'Glow'.\nPlease add at least one.");
-            return false;
+            ELog.Msg(mtError,"*ERROR: Can't find any Glow Object.");
+            bRes = false;
         }
     }
     if (FindDuplicateName()){
-    	ELog.DlgMsg(mtError,"*ERROR: Found duplicate object name.\nResolve this problem and try again.");
-        return false;
+    	ELog.Msg(mtError,"*ERROR: Found duplicate object name.");
+        bRes = false;
     }
+    
     if (bTestShaderCompatible){
-    	bool bRes = true;
+    	bool res = true;
         ObjectList& lst = ListObj(OBJCLASS_SCENEOBJECT);
 		DEFINE_SET(CEditableObject*,EOSet,EOSetIt);
         EOSet objects;
+        int static_obj = 0; 
         for(ObjectIt it=lst.begin();it!=lst.end();it++){
         	CSceneObject* S = (CSceneObject*)(*it);
         	if (S->IsStatic()||S->IsMUStatic()){
+            	static_obj++;
 	            CEditableObject* O = ((CSceneObject*)(*it))->GetReference(); R_ASSERT(O);
                 if (objects.find(O)==objects.end()){
-	    	        if (!O->CheckShaderCompatible()) bRes = false;
+	    	        if (!O->CheckShaderCompatible()) res = false;
                     objects.insert(O);
                 }
             }
         }
-		if (!bRes){ 
-        	ELog.DlgMsg	(mtError,"ERROR: Scene has non compatible shaders. See log.");
-        	return false;
+		if (!res){ 
+        	ELog.Msg	(mtError,"*ERROR: Scene has non compatible shaders. See log.");
+            bRes = false;
+        }
+		if (0==static_obj){ 
+        	ELog.Msg	(mtError,"*ERROR: Can't find static geometry.");
+            bRes = false;
         }
     }
     
     if (!SndLib.Validate()) 
-    	return false;
+        bRes = false;
 
     {
         ObjectList& lst = ListObj(OBJCLASS_PS);
         for(ObjectIt it=lst.begin();it!=lst.end();it++){
         	EParticlesObject* S = (EParticlesObject*)(*it);
             if (!S->GetReference()){
-		    	ELog.DlgMsg(mtError,"*ERROR: Particle System hasn't reference.");
-                return false;
+		    	ELog.Msg(mtError,"*ERROR: Particle System hasn't reference.");
+                bRes = false;
             }
         }
     }
     
-    if (bNeedOkMsg)
-    	ELog.DlgMsg(mtInformation,"Validation OK!");
-    return true;
+    if (bRes){
+    	if (bNeedOkMsg) ELog.DlgMsg(mtInformation,"Validation OK!");
+    }else{
+    	ELog.DlgMsg(mtInformation,"Validation FAILED!");
+    }
+    return bRes;
 }
 
 void EScene::OnObjectsUpdate(){

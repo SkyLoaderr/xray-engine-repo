@@ -720,8 +720,8 @@ Plugs:
 LE:
 - LOD выключить
 - сделать в натуре график
-- При Sector::CaptureVolume UpdateProperties
-- Отрисовывать компиляц ошибки виднее
+- освещение геометрии вернуть
+- отрисовывать компиляц ошибки виднее
 - навести порядок в DU
 - Icon Rotate Local/Parent
 - (ObjectList,ChoseForm)->ItemsList
@@ -730,9 +730,10 @@ LE:
 - когда подсвечивается объект около места имя писать
 - рисовать все через OGF (освещение OGF)
 - подправить export skeleton (см. OGF)
-- Fuzzy для поинт лайтов
 - брать имена для ServerEnt из секции
 - Light рисовать график
++ Fuzzy для поинт лайтов
++ При Sector::CaptureVolume UpdateProperties
 + добавить смус группы
 + SEVisualed через ogf - добавить у всех + анимация
 + убрать Dummy objects

@@ -33,7 +33,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
         // make interface
 		//----------------
         if (UI.OnCreate()){
-            ::Render->PSystems.OnCreate	();
+            ::Render->PSLibrary.OnCreate	();
             Lib.OnCreate	();
             LALib.OnCreate	();
             SndLib.OnCreate	();
@@ -52,7 +52,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	case COMMAND_DESTROY:
 		Command				(COMMAND_CLEAR);
         LALib.OnDestroy		();
-    	::Render->PSystems.OnDestroy();
+    	::Render->PSLibrary.OnDestroy();
 		Tools.OnDestroy		();
 		SndLib.OnDestroy	();
 		Lib.OnDestroy		();

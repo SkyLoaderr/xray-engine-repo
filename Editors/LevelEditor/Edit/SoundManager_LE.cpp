@@ -56,11 +56,10 @@ bool CSoundManager::MakeEnvGeometry(CMemoryWriter& F, bool bErrMsg)
         Fbox bb;
         R_ASSERT	(E->GetBox(bb));
         aabb.merge	(bb);
+
         // get env name indices
-        if (E->m_EnvInner==E->m_EnvOuter){ 
-        	if (bErrMsg) ELog.Msg(mtError,"SoundEnvironment: '%s' inner and outer environment must be different.",E->Name);
-        	return false;
-        }
+        if (E->m_EnvInner==E->m_EnvOuter) continue;
+
         int inner = -1;
         int outer = -1;
         for (AStringIt e_it=env_names.begin(); e_it!=env_names.end(); e_it++){
@@ -68,6 +67,7 @@ bool CSoundManager::MakeEnvGeometry(CMemoryWriter& F, bool bErrMsg)
         	if ((-1==outer)&&(E->m_EnvOuter==*e_it)) outer = e_it-env_names.begin();
             if ((inner>-1)&&(outer>-1)) break;
         }
+        if ((-1==inner)||(-1==outer)) continue;
         if (-1==inner){ inner=env_names.size(); env_names.push_back(E->m_EnvInner);}
         if (-1==outer){ outer=env_names.size(); env_names.push_back(E->m_EnvOuter);}
         u32 idx = (inner<<16)|(outer);
@@ -81,6 +81,8 @@ bool CSoundManager::MakeEnvGeometry(CMemoryWriter& F, bool bErrMsg)
         	CP.add_face_packed(bv[du_box_faces[k*3+0]],bv[du_box_faces[k*3+1]],bv[du_box_faces[k*3+2]],0,0,0,0,0,idx);
     }
 
+    if (env_names.empty()) return false;
+    
     // write names
     F.open_chunk	(0);
 	for (AStringIt e_it=env_names.begin(); e_it!=env_names.end(); e_it++)

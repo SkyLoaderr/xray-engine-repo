@@ -11,6 +11,7 @@
 #include "ui_main.h"
 #include "render.h"
 #include "PropertiesListHelper.h"
+#include "bottombar.h"
 
 const float tex_w	= LOD_SAMPLE_COUNT*LOD_IMAGE_SIZE;
 const float tex_h	= 1*LOD_IMAGE_SIZE;
@@ -86,7 +87,7 @@ void CEditableObject::Render(const Fmatrix& parent, int priority, bool strictB2F
 	Fvector v; float r;
     Fbox bb; bb.xform(m_Box,parent); bb.getsphere(v,r);
 
-    if (m_Flags.is(eoUsingLOD)&&(CalcSSA(v,r)<ssaLim)){
+    if ((fraBottomBar->miDrawObjectLOD->Checked)&&(m_Flags.is(eoUsingLOD)&&(CalcSSA(v,r)<ssaLim))){
 		if ((1==priority)&&(true==strictB2F)) RenderLOD(parent);
     }else{
 /*		//.

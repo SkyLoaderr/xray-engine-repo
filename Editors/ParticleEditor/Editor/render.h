@@ -18,25 +18,27 @@ public:
 
 
 class	CRender{
-    IRender_Target		Target;
+    IRender_Target			Target;
 public:
 	// Data
-	CFrustum			ViewBase;
-	CPSLibrary			PSystems;
+	CFrustum				ViewBase;
+	CPSLibrary				PSLibrary;
 public:
 	// Occlusion culling
-	virtual BOOL		occ_visible		(Fbox&	B);
-	virtual BOOL		occ_visible		(sPoly& P);
-	virtual BOOL		occ_visible		(vis_data& P);
+	virtual BOOL			occ_visible		(Fbox&	B);
+	virtual BOOL			occ_visible		(sPoly& P);
+	virtual BOOL			occ_visible		(vis_data& P);
 
 	// Constructor/destructor
-						CRender			();
-	virtual 			~CRender		();
+							CRender			();
+	virtual 				~CRender		();
 
-    void				Calculate		();
-    void				Render			();
+    void					Calculate		();
+    void					Render			();
 
-	IRender_Target*		getTarget		(){return &Target;}
+	IRender_Target*			getTarget		(){return &Target;}
+
+	virtual IRender_Visual*	model_CreatePE	(LPCSTR name);
 };
 
 IC  float   CalcSSA(Fvector& C, float R)

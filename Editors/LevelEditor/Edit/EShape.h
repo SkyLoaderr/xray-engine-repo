@@ -21,7 +21,7 @@ public:
 	void			ApplyScale		();
 	void			add_sphere		(const Fsphere& S);
 	void			add_box			(const Fmatrix& B);
-    const shape_def&get_shape		(int idx){R_ASSERT(idx<shapes.size());return shapes[idx];}
+    const shape_def&get_shape		(int idx){R_ASSERT(idx<(int)shapes.size());return shapes[idx];}
 protected:
 	virtual void 	SetScale		(const Fvector& val);
     virtual void	OnUpdateTransform();
