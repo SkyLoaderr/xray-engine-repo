@@ -74,7 +74,7 @@ void  CUIStatic::Draw()
 
 	if(m_bStretchTexture)
 		//растягиваем текстуру, Clipper в таком случае игнорируется (пока)
-		m_UIStaticItem.Render(rect.left, rect.top, rect.right, rect.bottom);
+		m_UIStaticItem.Render(0, 0, rect.right-rect.left, rect.bottom-rect.top);
 	else
 		m_UIStaticItem.Render();
 
