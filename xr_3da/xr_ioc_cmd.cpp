@@ -121,6 +121,14 @@ public:
 		g_pMotionsContainer->dump();
 	}
 };
+class CCC_TexturesStat : public IConsole_Command
+{
+public:
+	CCC_TexturesStat(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = TRUE; };
+	virtual void Execute(LPCSTR args) {
+		Device.Resources->_DumpMemoryUsage();
+	}
+};
 //-----------------------------------------------------------------------
 class CCC_E_Dump : public IConsole_Command
 {
@@ -355,7 +363,8 @@ void CCC_Register()
 	CMD1(CCC_MotionsStat,	"stat_motions"		);
 	CMD1(CCC_MemStats,		"stat_memory"		);
 	CMD1(CCC_MemStat,		"stat_mem_dump"		);
-
+	CMD1(CCC_TexturesStat,	"stat_textures"		);
+	
 	CMD3(CCC_Mask,		"mt_particles",			&psDeviceFlags,			mtParticles);
 #ifdef DEBUG
 
