@@ -164,8 +164,8 @@ void CMissile::UpdateCL() {
 			if(m_force > m_maxForce) m_force = m_maxForce;
 		}
 	}
-	if(getVisible() && /*m_destroyTime < 0xffffffff &&*/ m_pPhysicsShell) {
-		if(m_destroyTime < Device.dwTimeDelta) {
+	if(getVisible() && m_pPhysicsShell) {
+		if(m_destroyTime <= Device.dwTimeDelta) {
 			m_destroyTime = 0xffffffff;
 			R_ASSERT(!m_pInventory);
 			Destroy();

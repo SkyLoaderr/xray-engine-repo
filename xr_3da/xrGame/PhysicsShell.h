@@ -6,6 +6,8 @@ typedef	 void __stdcall ObjectContactCallbackFun(bool& do_colide,dContact& c);
 struct Fcylinder;
 class CPhysicsRefObject
 {
+public:
+	virtual ~CPhysicsRefObject() {}
 };
 // ABSTRACT:
 class	CPhysicsBase

@@ -45,8 +45,8 @@ void CUIWeapon::Out(CWeapon* W){
 		H->SetColor	(0x80ffffff);
 		H->Out		(float(position.x+6),	float(position.y+15),"%s",W->GetName());
 		int	AE		= W->GetAmmoElapsed();
-		//int	AC		= W->GetAmmoCurrent();
-		int	AC		= W->GetAmmoMagSize();
+		int	AC		= W->GetAmmoCurrent();
+		//int	AC		= W->GetAmmoMagSize();
 		if((AE>=0)&&(AC>0))
 			H->Out	(float(position.x+3),	float(position.y+2),"%d/%d %s",AE,AC, W->m_ammoName?W->m_ammoName:"");
 		cur_shader	= W->GetUIIcon();
