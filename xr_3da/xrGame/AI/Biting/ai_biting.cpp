@@ -22,6 +22,8 @@ CAI_Biting::CAI_Biting()
 CAI_Biting::~CAI_Biting()
 {
 	xr_delete(m_pPhysics_support);
+
+	xr_delete(m_tSelectorApproach);
 }
 
 void CAI_Biting::Init()
@@ -99,13 +101,7 @@ void CAI_Biting::Load(LPCSTR section)
 	
 	LoadSounds						(section);
 
-//	m_tSelectorFreeHunting.Load		(section,"selector_free_hunting");
-//	m_tSelectorCover.Load			(section,"selector_cover");
-
-//	m_tSelectorGetAway.Load			(section,"selector_getaway");
-//	m_tSelectorApproach.Load		(section,"selector_approach");
-
-//	m_tSelectorHearSnd.Load			(section,"selector_hear_sound");	 // like _free hunting
+	m_tSelectorApproach				= xr_new<PathManagers::CVertexEvaluator<aiSearchRange | aiEnemyDistance>  >(section,"selector_approach");
 	
 	eye_fov							= pSettings->r_float(section,"EyeFov");
 	eye_range						= pSettings->r_float(section,"eye_range");

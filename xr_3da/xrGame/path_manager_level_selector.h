@@ -174,7 +174,7 @@ namespace PathManagers {
 
 						CVertexEvaluator			(LPCSTR section, LPCSTR Name)
 		{
-			Load			(section, name);
+			Load			(section, Name);
 		}
 
 		virtual void	Load						(LPCSTR section, LPCSTR Name)

@@ -91,7 +91,7 @@ void CBitingEat::Run()
 	switch (m_tAction) {
 	case ACTION_CORPSE_APPROACH_RUN:	// бежать к трупу
 		pMonster->set_level_dest_vertex (pCorpse->level_vertex_id());
-		pMonster->vfChoosePointAndBuildPath(0,&nearest_bone_pos, true, 0);
+		//pMonster->vfChoosePointAndBuildPath(0,&nearest_bone_pos, true, 0);
 
 		pMonster->MotionMan.m_tAction = ACT_RUN;
 
@@ -100,7 +100,7 @@ void CBitingEat::Run()
 	case ACTION_CORPSE_APPROACH_WALK:
 
 		pMonster->set_level_dest_vertex	(pCorpse->level_vertex_id());
-		pMonster->vfChoosePointAndBuildPath(0,&nearest_bone_pos, true, 0);
+		//pMonster->vfChoosePointAndBuildPath(0,&nearest_bone_pos, true, 0);
 
 		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 		
@@ -165,7 +165,7 @@ void CBitingEat::Run()
 	case ACTION_WALK:
 
 		pMonster->set_level_dest_vertex	(pCorpse->level_vertex_id());
-		pMonster->vfChoosePointAndBuildPath(0,&nearest_bone_pos, true, 0,500);
+//		pMonster->vfChoosePointAndBuildPath(0,&nearest_bone_pos, true, 0,500);
 
 		pMonster->MotionMan.m_tAction = ACT_WALK_FWD; 
 

@@ -67,7 +67,7 @@ void CBitingExploreDE::Run()
 		pMonster->m_tSelectorCover->m_fOptEnemyDistance = pMonster->m_tSelectorCover->m_fMaxEnemyDistance;
 		pMonster->m_tSelectorCover->m_fMinEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + 3.f;
 
-		pMonster->vfChoosePointAndBuildPath(pMonster->m_tSelectorCover, 0, true, 0,2000);
+	//	pMonster->vfChoosePointAndBuildPath(pMonster->m_tSelectorCover, 0, true, 0,2000);
 
 		// Установить параметры движения
 		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;

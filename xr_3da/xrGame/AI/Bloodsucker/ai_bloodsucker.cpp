@@ -164,41 +164,50 @@ void CAI_Bloodsucker::StateSelector()
 		SetState(stateEat);	
 	else						SetState(stateRest);
 
-//	ProcessSquadGI();
+	ProcessSquadGI();
+
+	
 }
 
-//bool i_can_start_squad_job()
-//{
-//	// если приоритет запроса больше приоритета текущего состояния
-//	GetMyCurrentStatePriority();
-//	// или наступило время возможного следующего задания
-//}
-//
-//bool i_can_continue_squad_job() 
-//{
-//	// если сейчас выполняется squad job
-//	// если приоритет локального состояния меньше приоритета squad job
-//}
+u8 CAI_Bloodsucker::TransformPriority(ESquadCommand com)
+{	
+	u8 ret_val = 0;
+	
+	switch (com) {
+	case SC_EXPLORE:		ret_val = 5;		break;
+	case SC_ATTACK:			ret_val = 15;		break;
+	case SC_THREATEN:		ret_val = 15;		break;
+	case SC_COVER:			ret_val = 10;		break;
+	case SC_FOLLOW:			ret_val = 5;		break;
+	case SC_FEEL_DANGER:	ret_val = 10;		break;
+	}
 
-//void CAI_Bloodsucker::ProcessSquadGI() 
-//{
-//	CMonsterSquad	*pSquad = Level().SquadMan.GetSquad((u8)g_Squad());
-//	if (pSquad->GetLeader() == this) pSquad->ProcessGroupIntel();
-//	GTask &pTask = pSquad->GetTask(this);
-//
-//	bool gi_master_priority = (TRANSFORM_PRIORITY(pTask.state.command) >= CurrentState->GetPriority());
-//
-//	if ((pTask.state.type == TS_REQUEST) && (pTask.state.ttl > m_dwCurrentTime)) {
-//		pTask.state.type	= TS_PROGRESS;
-//		pTask.state.ttl		= m_dwCurrentTime + 3000;
-//		if (i_can_start_squad_job()) Start_Doing_Squad_Job();
-//	} else {
-//		if ((pTask.state.type == TS_PROGRESS) && (pTask.state.ttl > m_dwCurrentTime)) {
-//			if (i_can_continue_squad_job()) Continue_Doing_Squad_Job();
-//		} 
-//		Do_My_Own_Local_Job();
-//	}
-//}
+	return ret_val;
+}
+
+void CAI_Bloodsucker::ProcessSquadGI() 
+{
+	CMonsterSquad	*pSquad = Level().SquadMan.GetSquad((u8)g_Squad());
+	if (pSquad->GetLeader() == this) pSquad->ProcessGroupIntel();
+	GTask &pTask = pSquad->GetTask(this);
+
+	LOG_EX2("SQUAD:: ---- PROCESS SI : Monster name = [%s] Time = [%u]----- ", *"*/ cName(), m_dwCurrentTime /*"*);
+	bool gi_master_priority = (TransformPriority(pTask.state.command) >= CurrentState->GetPriority());
+
+	LOG_EX2("SQUAD:: 1. Request prior = [%u] 2. State prior = [%u]", *"*/ TransformPriority(pTask.state.command), CurrentState->GetPriority() /*"*);
+
+	if ((pTask.state.type == TS_REQUEST) && (pTask.state.ttl > m_dwCurrentTime)) {
+		if (gi_master_priority) {
+			SetState(stateSquadTask);
+			pTask.state.type	= TS_PROGRESS;
+			pTask.state.ttl		= m_dwCurrentTime + 3000;
+		}
+	} else {
+		if ((pTask.state.type == TS_PROGRESS) && (pTask.state.ttl > m_dwCurrentTime)) {
+			if (gi_master_priority) SetState(stateSquadTask);
+		} 
+	}
+}
 
 
 void __stdcall CAI_Bloodsucker::BoneCallback(CBoneInstance *B)

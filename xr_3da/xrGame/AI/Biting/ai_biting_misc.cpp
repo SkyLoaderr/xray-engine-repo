@@ -205,7 +205,7 @@ bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
 		MotionMan.SetSpecParams(ASP_DRAG_CORPSE | ASP_MOVE_BKWD);
 	}
 	
-	vfChoosePointAndBuildPath(0,&l_tMovementAction.m_tDestinationPosition, false, 0);
+//	vfChoosePointAndBuildPath(0,&l_tMovementAction.m_tDestinationPosition, false, 0);
 	MotionMan.ProcessAction();
 	return			(true);		
 }

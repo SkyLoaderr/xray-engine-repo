@@ -39,4 +39,8 @@ public:
 	float					m_ftrPowerDown;					// коэффициент, на который падает сила монстра при активации невидимости 
 	float					m_fPowerThreshold;				// порог силы, после которого нельзя стать невидимым
 	float					m_fEffectDist;
+
+
+			void			ProcessSquadGI			();
+			u8				TransformPriority		(ESquadCommand com);
 };

@@ -168,12 +168,6 @@ public:
 
 	// path routines
 			void			vfInitSelector					(PathManagers::CAbstractVertexEvaluator &S, bool hear_sound = false);
-			void			vfSearchForBetterPosition		(PathManagers::CAbstractVertexEvaluator &tNodeEvaluator, CSquad &Squad, CEntity* &Leader);
-			void			vfBuildPathToDestinationPoint	(PathManagers::CAbstractVertexEvaluator *tpNodeEvaluator);
-			void			vfBuildTravelLine				(Fvector *tpDestinationPosition);
-			void			vfChoosePointAndBuildPath		(PathManagers::CAbstractVertexEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition, bool bSearchForNode, bool bSelectorPath = false, u32 TimeToRebuild = 0);
-			void			vfChooseNextGraphPoint			();
-			void			vfUpdateDetourPoint				();
 			void			Path_GetAwayFromPoint			(CEntity *pE, Fvector position, float dist, TTime rebuild_time);
 			void			Path_CoverFromPoint				(CEntity *pE, Fvector position, TTime rebuild_time);
 			void			Path_ApproachPoint				(CEntity *pE, Fvector position, TTime rebuild_time);
