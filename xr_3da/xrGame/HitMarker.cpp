@@ -22,9 +22,15 @@ CHitMarker::CHitMarker(){
 	hShader			= 0;
 	VS				= 0;
 	OnDeviceCreate	();
+
+	Device.seqDevCreate.Add		(this);
+	Device.seqDevDestroy.Add	(this);
 } 
 //--------------------------------------------------------------------
 CHitMarker::~CHitMarker(){
+	Device.seqDevCreate.Remove	(this);
+	Device.seqDevDestroy.Remove	(this);
+
 	VS				= 0;
 	OnDeviceDestroy	();
 } 
