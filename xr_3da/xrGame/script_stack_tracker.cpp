@@ -10,11 +10,8 @@
 #include "script_stack_tracker.h"
 #include "script_storage_space.h"
 #include "script_space.h"
-
-#ifdef XRGAME_EXPORTS
-#	include "script_engine.h"
-#	include "ai_space.h"
-#endif
+#include "ai_space.h"
+#include "script_engine.h"
 
 CScriptStackTracker::CScriptStackTracker	()
 {
