@@ -103,6 +103,7 @@ void CEnemyManager::reload					(LPCSTR section)
 	m_max_ignore_distance		= READ_IF_EXISTS(pSettings,r_float,section,"max_ignore_distance",0.f);
 	m_visible_now				= false;
 	m_last_enemy_time			= 0;
+	m_last_enemy				= 0;
 	m_useful_callback.clear		();
 	VERIFY						(m_ready_to_save);
 }
