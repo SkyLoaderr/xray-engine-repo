@@ -210,7 +210,7 @@ void CRenderTarget::End		()
 		Device.Primitive.Draw				(pStream,4,2,Offset+4,Device.Streams_QuadIB);
 		*/
 	} else {
-		if ((psDeviceFlags&rsPostprocess) && (param_gray>0.001f)) 
+		if (psDeviceFlags.test(rsPostprocess) && (param_gray>0.001f)) 
 		{
 			// Draw GRAY
 			Device.Shader.set_Shader		(pShaderGray);
