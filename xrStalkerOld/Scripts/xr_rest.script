@@ -1,77 +1,133 @@
-local operators		= {}
-local properties	= {}
-	
-properties["rest"]             = xr_evaluators_id.sidor_rest      + 0
-properties["food"]             = xr_evaluators_id.sidor_rest      + 1
-properties["state"]            = xr_evaluators_id.state_change 
-operators["action_rest"]       = xr_actions_id.sidor_act_rest     + 0
 
-
-----------------------------------------------------------------------------------------------------------------------
-class "evaluator_satiety" (property_evaluator)
-----------------------
-function evaluator_satiety:__init (treshold, name) super (nil, name)
-    self.treshold = treshold
-    self.value = false
-end
-----------------------
-function evaluator_satiety:evaluate ()
-    if self.object.satiety < self.treshold then
-       self.value = true
+function is_food_present (npc)
+    if npc:object ("bread") ~= nil or npc:object ("kolbasa") ~= nil or  
+       npc:object ("conserva") ~= nil or npc:object ("vodka") ~= nil then
+       return true
     end    
-    return self.value
+    return false
+end
+
+
+----------------------------------------------------------------------------------------------------------------------
+class "evaluator_rest" (property_evaluator)
+----------------------
+function evaluator_rest:__init (name, storage) super (nil, name)
+    self.st = storage
+end
+----------------------
+function evaluator_rest:evaluate ()
+  	return xr_logic.is_active (self.object, self.st)
 end
 ----------------------------------------------------------------------------------------------------------------------
+
 
 ----------------------------------------------------------------------------------------------------------------------
 class "evaluator_food" (property_evaluator)
 ----------------------
-function evaluator_food:__init (name) super (nil, name)
+function evaluator_food:__init (name, storage) super (nil, name)
+    self.st = storage
 end
 ----------------------
 function evaluator_food:evaluate ()
-    if self.object:object ("bread") ~= nil or 
-       self.object:object ("kolbasa") ~= nil or 
-       self.object:object ("conserva") ~= nil or
-       self.object:object ("vodka") ~= nil then
-       --printf ("FOOD PRESENT")
-       return true
-    end    
-    --printf ("NO FOOD")
-    return false
+    return this.is_food_present (self.object)
 end
 ----------------------------------------------------------------------------------------------------------------------
 
 
 ----------------------------------------------------------------------------------------------------------------------
-class "action_sit_down" (action_base)
+class "evaluator_pos" (property_evaluator)
 ----------------------
-function action_sit_down:__init (name) super (nil, name)
+function evaluator_pos:__init (name, storage) super (nil, name)
+    self.st = storage
 end
 ----------------------
-function action_sit_down:initialize ()
+function evaluator_pos:evaluate ()
+    return self.st.on_position
+end
+----------------------------------------------------------------------------------------------------------------------
+
+
+
+----------------------------------------------------------------------------------------------------------------------
+class "action_position" (action_base)
+----------------------
+function action_position:__init (name, storage) super (nil, name)
+    self.st = storage
+	self.move_mgr = move_mgr.move_mgr (self.st.npc)
+	self.on_position = false
+	self.set = false
+end    
+----------------------
+function action_position:initialize ()
     action_base.initialize (self)
-    xr_state.change_state (self.object, 3)
-end    
-----------------------
-function action_sit_down:execute ()
-    action_base.execute (self)
-    if xr_state.finish_state (self.object) == false then return end
     
-end    
+	self.object:set_node_evaluator ()
+	self.object:set_path_evaluator ()
+	self.object:set_desired_position ()
+	self.object:set_desired_direction ()
+	self.move_mgr:initialize ()
+	self:reset_scheme ()
+	self.set = false
+end
 ----------------------
-function action_sit_down:finalize ()
+function action_position:execute ()
+    action_base.execute (self)
+	self.move_mgr:update ()
+	
+	if self.on_position == false then return end
+	
+	if self.object:active_item () ~= nil then
+       self.object:set_item (object.deactivate, self.object:active_item ())
+       return
+    else 
+       if self.set == false then 
+          xr_state.change_state (self.object, 3)
+          printf ("Change state at %d", device ():time_global ())
+          self.set = true
+          return
+       end   
+    end   
+	
+	if xr_state.finish_state (self.object) ~= true then 
+	   return 
+	end
+	printf ("End of change state at %d", device ():time_global ())
+	self.st.on_position = true    
+	
+end
+----------------------
+function action_position:finalize ()
+	self.move_mgr:finalize ()
+	--self.object:clear_animations ()
     action_base.finalize (self)
-end    
+end            
+----------------------
+function action_position:reset_scheme ()
+	self.object:clear_animations()
+	if self.st.path_walk_info == nil then
+		self.st.path_walk_info = utils.path_parse_waypoints(self.st.path_rest)
+	end
+	if self.st.path_look_info == nil then
+		self.st.path_look_info = utils.path_parse_waypoints(self.st.path_rest)
+	end
+	self.move_mgr:reset(self.st.path_rest, self.st.path_walk_info, self.st.path_rest, self.st.path_look_info, nil, nil, {obj = self, func = self.callback})
+end	
 
 ----------------------------------------------------------------------------------------------------------------------
+function action_position:callback (mode, number)
+    if self.on_position == true then return end
+    if number == 1 then 
+       self.on_position = true
+       self.object:set_item (object.deactivate, self.object:active_item ())
+    end    
+end
 
 
 
 ----------------------------------------------------------------------------------------------------------------------
 class "action_rest" (action_base) 
 ----------------------
-function action_rest:__init (name) super (nil, name)
+function action_rest:__init (name, storage) super (nil, name)
     self.eat_enable = false
     self.drink_enable = false
     self.eat_object = nil
@@ -79,22 +135,13 @@ function action_rest:__init (name) super (nil, name)
     self.state = 0
     self.time_to_eat = 0
     self.stage = 0
+    self.st = storage
 end
 ----------------------
 function action_rest:initialize ()
     action_base.initialize (self)
     
     if self.state == 2 then return end
-    
-    self.object:set_movement_type (move.stand)
-    if self.state == 0 then
-       if xr_state.change_state (self.object, xr_state.sit_wait) == true then
-          if self.object:active_item () ~= nil then
-             self.object:set_item (object.deactivate, self.object:active_item ())
-          end   
-          return
-       end   
-    end   
     
     self.eat_object = self.object:object ("bread")
     if self.eat_object == nil then
@@ -107,13 +154,12 @@ function action_rest:initialize ()
     self.eat_enable = self.eat_object ~= nil
     self.drink_object = self.object:object ("vodka")
     self.drink_enable = self.drink_object ~= nil
-    
+   
     if self.state == 0 then
        self.state = 1  
        return 
     end
     
-    self.time_to_eat = device ():time_global () + 30000
     self.stage = 0
     
 end
@@ -125,12 +171,13 @@ function action_rest:execute ()
     
     if self.eat_enable == true then
        if self.stage == 0 then  
-         if hand_object ~= nil and hand_object:name () == self.eat_object:name () then
-             self.object:clear_animations () 
-             self.stage = 1
-             self.object:set_callback (self, "anim_callback", game_object.animation)
+         if hand_object ~= nil and hand_object:id () == self.eat_object:id () then
+            self.time_to_eat = device ():time_global () + 30000
+            self.object:clear_animations () 
+            self.stage = 1
           end   
           self.object:set_item (object.use, self.eat_object)
+          self.time_to_eat = device ():time_global () + 30000
        end   
        if device ():time_global () - self.time_to_eat > 0 then
           self.eat_enable = false
@@ -141,68 +188,86 @@ function action_rest:execute ()
     end   
     
     if self.drink_enable == true then
+       printf ("ENABLE VODKA") 
        if self.stage == 0 then  
-         if hand_object ~= nil and hand_object:name () == self.drink_object:name () then
+         if hand_object ~= nil and hand_object:id () == self.drink_object:id () then
             self.object:clear_animations () 
             self.stage = 1
           end   
           self.object:set_item (object.use, self.drink_object)
+          self.time_to_eat = device ():time_global () + 20000
        end   
        if device ():time_global () - self.time_to_eat > 0 then
           self.object:set_item (object.deactivate, self.drink_object)
           self.drink_enable = false
           self.state = 2
           xr_state.change_state (self.object, 0)
-          self.object:clear_callback (game_object.animation)
        end
        return
     end   
     
-    self.object:motivation_action_manager ():evaluator (properties["rest"]).value = false
+    if xr_state.finish_state (self.object) ~= true then return end
+        
+    xr_logic.try_switch_to_another_section (self.object, self.st)
     self.object:set_item (object.activate, self.object:best_weapon ())
 end
 ----------------------
 function  action_rest:finalize ()
     action_base.finalize (self)
-    if self.state == 0 then 
-       self.state = 1 
-       return
-    end
-    self.object:clear_callback (game_object.animation)
 end    
 ----------------------
-function action_rest:anim_callback (obj, action_type, index)
-    --if action_type ~= game_object.animation then return end
-    printf ("ANIMATION CALLBACK 1")
-    if self.object:active_item () == nil then
-       printf ("ANIMATION CALLBACK 2") 
-       self.object:add_animation ("item_1_draw_0", true)
-    end        
-end
 
 
 ----------------------------------------------------------------------------------------------------------------------
-function add_to_binder (obj, property_id)
+function add_to_binder (npc, ini, scheme, section, st)
 
-	local manager  = obj:motivation_action_manager ()
+    local operators		= {}
+    local properties	= {}
+	
+    properties["food"]              = xr_evaluators_id.sidor_rest      + 0
+    properties["on_position"]       = xr_evaluators_id.sidor_rest      + 1
+    properties["rest"]              = xr_evaluators_id.sidor_rest      + 2
+    properties["state"]             = xr_evaluators_id.state_change 
+    
+    operators["action_position"]    = xr_actions_id.sidor_act_rest     + 0
+    operators["action_rest"]        = xr_actions_id.sidor_act_rest     + 1
 
-   	local ini = obj:spawn_ini ()
-   	if ini == nil or ini:section_exist ("rest") == false or ini:line_exist ("rest", "satiety_threshold") == false then return end
-    local satiety = ini:r_u32 ("rest", "satiety_threshold") / 100.0
+	local manager  = npc:motivation_action_manager ()
    	
-    manager:add_evaluator (properties["rest"], this.evaluator_satiety (satiety, "evaluator_satiety"))
-    manager:add_evaluator (properties["food"], this.evaluator_food ("evaluator_food"))
+    manager:add_evaluator (properties["food"], this.evaluator_food ("evaluator_food", st))
+    manager:add_evaluator (properties["on_position"], this.evaluator_pos ("evaluator_position", st))
+    manager:add_evaluator (properties["rest"], this.evaluator_rest ("evaluator_rest", st))
     
-    local action = this.action_rest ("action_rest")
-    action:add_precondition     	(world_property (stalker_ids.property_alive,    true))
-   	action:add_precondition     	(world_property (stalker_ids.property_enemy,    false))
-   	action:add_precondition         (world_property (properties["food"],            true))
-   	action:add_precondition         (world_property (properties["rest"],            true))
-   	action:add_precondition         (world_property (properties["state"],           true))
-   	action:add_effect               (world_property (properties["rest"],            false))
-   	manager:add_action              (operators["action_rest"], action)
+    local action = this.action_position ("action_position", st)
+    action:add_precondition     (world_property (stalker_ids.property_alive,    true))
+   	action:add_precondition     (world_property (stalker_ids.property_enemy,    false))
+   	action:add_precondition     (world_property (properties["food"],            true))
+   	action:add_precondition     (world_property (properties["rest"],            true))
+   	action:add_precondition     (world_property (properties["on_position"],     false))
+   	action:add_effect           (world_property (properties["on_position"],     true))
+   	manager:add_action          (operators["action_position"], action)
+   	
+	xr_logic.subscribe_action_for_events (npc, storage, action)
+    
+    action = this.action_rest ("action_rest", st)
+    action:add_precondition     (world_property (stalker_ids.property_alive,    true))
+   	action:add_precondition     (world_property (stalker_ids.property_enemy,    false))
+   	action:add_precondition     (world_property (properties["food"],            true))
+   	action:add_precondition     (world_property (properties["rest"],            true))
+   	action:add_precondition     (world_property (properties["on_position"],     true))
+   	action:add_effect           (world_property (properties["rest"],            false))
+   	manager:add_action          (operators["action_rest"], action)
    	     	   
-    manager:action (property_id):add_precondition (world_property (properties["rest"],  false))
+    manager:action (xr_actions_id.alife):add_precondition (world_property (properties["rest"],  false))
     
 end
 ----------------------------------------------------------------------------------------------------------------------
+function set_scheme (npc, ini, scheme, section, gulag_name)
+
+	local st = xr_logic.assign_storage_and_bind (npc, ini, scheme, section)
+	st.path_rest = utils.cfg_get_string(ini, section, "path_rest", npc, true,  gulag_name)
+    st.on_position = false	
+	st.path_walk_info = nil
+	st.path_look_info = nil 
+end
+

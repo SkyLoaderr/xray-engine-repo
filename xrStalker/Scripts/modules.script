@@ -55,7 +55,7 @@ module ("xr_commander")
 --module ("xr_wounded")
 module ("xr_trivial")
 module ("xr_report")
-module ("xr_rest")
+--module ("xr_rest")
 module ("xr_formation")
 module ("xr_sos")
 module ("xr_assistance")
@@ -101,6 +101,7 @@ load_scheme("xr_commander",   "commander",   stype_stalker)
 load_scheme("xr_combat",      "combat",      stype_stalker)
 load_scheme("xr_death",	      "death",       stype_stalker)
 load_scheme("xr_wounded",     "wounded",     stype_stalker)
+load_scheme("xr_rest",        "rest",        stype_stalker)
 
 ----------------------------------------------------------------------
 -- Загрузка модулей монстров:
