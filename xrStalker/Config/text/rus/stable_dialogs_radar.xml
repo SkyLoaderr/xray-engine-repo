@@ -97,7 +97,7 @@
         <text>ƒоговорились!</text>
     </string>
     <string id="rad_find_stalkers_dialog_120">
-        <text> ак хочешь, придетс€ все делать самому, можешь валить куда хочешь! </text>
+        <text> ак хочешь, придетс€ все делать самому, можешь валить куда хочешь!</text>
     </string>
     <string id="rad_find_stalkers_dialog_1200">
         <text>ћожет подкинешь немного больше денжат? ƒва косар€?\n</text>
@@ -133,13 +133,16 @@
         <text>Ќет, у мен€ мало времени, есть ли другой вариант?</text>
     </string>
     <string id="rad_find_stalkers_dialog_35">
-        <text>Ќет, € не буду бегать как твой ручной пес за потер€нными сучками, ищи их сам, у мен€ есть дела по важнее. </text>
+        <text>Ќет, € не буду бегать как твой ручной пес за потер€нными сучками, ищи их сам, у мен€ есть дела по важнее.</text>
     </string>
     <string id="rad_found_stalkers_dialog_0">
-        <text>«даров! Ќу как ты нашел парней?</text>
+        <text>я нашЄл твоих реб€т</text>
+    </string>
+    <string id="rad_found_stalkers_dialog_1">
+        <text>Ќу, расказывай</text>
     </string>
     <string id="rad_found_stalkers_dialog_100">
-        <text>ƒа € нашел их, от них мало что осталось, вот принес тебе оружие как доказательство.</text>
+        <text>ќт них мало что осталось, вот принес тебе оружие как доказательство.</text>
     </string>
     <string id="rad_found_stalkers_dialog_1000">
         <text>—пасибо, получаетс€ моих парней прикончили, надеюсь они перед смертью кучу народа завалили!!!\n“ы доказал, мне что достоин вступлени€ в банду. ≈динственное у мен€ есть задание дл€ теб€, мне надо чтоб ты нашел моего заместител€, он забрал мои вещи и сбежал, как возьмешьс€ за это дело?\n\n</text>
@@ -151,7 +154,7 @@
         <text>Ќашел, покажи мне сначала деньги!!!</text>
     </string>
     <string id="rad_found_stalkers_dialog_1100">
-        <text>ќтлично, € догадываюсь куда он мог пойти не бумаю что он далеко смог уйти, € отмечу тебе примерно где он может быть. </text>
+        <text>ќтлично, € догадываюсь куда он мог пойти не бумаю что он далеко смог уйти, € отмечу тебе примерно где он может быть.</text>
     </string>
     <string id="rad_found_stalkers_dialog_1150">
         <text>ѕонимаю, тогда € не могу теб€ прин€ть в банду! \n\n\n</text>
@@ -163,9 +166,33 @@
         <text>Ќет, у мен€ нет времени ищи свою "подругу" сам!</text>
     </string>
     <string id="rad_found_stalkers_dialog_210">
-        <text>¬се € пошел в путь </text>
+        <text>¬се € пошел в путь</text>
     </string>
     <string id="rad_found_stalkers_dialog_215">
+        <text>text in default</text>
+    </string>
+    <string id="rad_test_0">
+        <text>default text</text>
+    </string>
+    <string id="rad_test_1">
+        <text>text in default</text>
+    </string>
+    <string id="rad_test_10">
+        <text>text in default</text>
+    </string>
+    <string id="rad_test_100">
+        <text>text in default</text>
+    </string>
+    <string id="rad_test_20">
+        <text>text in default</text>
+    </string>
+    <string id="rad_test_200">
+        <text>text in default</text>
+    </string>
+    <string id="rad_test_30">
+        <text>text in default</text>
+    </string>
+    <string id="rad_test_300">
         <text>text in default</text>
     </string>
 </string_table>

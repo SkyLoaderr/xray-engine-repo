@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <game_dialogs>
+    <dialog id="rad_chief_start_dialog">
+        <phrase_list>
+            <phrase id="0">
+                <text>rad_chief_start_dialog_0</text>
+                <next>100</next>
+            </phrase>
+            <phrase id="100">
+                <text>rad_chief_start_dialog_100</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
     <dialog id="rad_found_stalkers_dialog">
         <phrase_list>
-            <phrase id="1000">
-                <text>rad_found_stalkers_dialog_1000</text>
-                <next>200</next>
-                <next>205</next>
-            </phrase>
             <phrase id="200">
                 <text>rad_found_stalkers_dialog_200</text>
                 <next>1100</next>
@@ -29,31 +35,129 @@
             <phrase id="210">
                 <text>rad_found_stalkers_dialog_210</text>
             </phrase>
-            <phrase id="100">
-                <text>rad_found_stalkers_dialog_100</text>
-                <next>1000</next>
-            </phrase>
-            <phrase id="105">
-                <text>rad_found_stalkers_dialog_105</text>
+            <phrase id="1000">
+                <text>rad_found_stalkers_dialog_1000</text>
+                <next>200</next>
+                <next>205</next>
             </phrase>
             <phrase id="110">
                 <text>rad_found_stalkers_dialog_110</text>
             </phrase>
+            <phrase id="105">
+                <text>rad_found_stalkers_dialog_105</text>
+            </phrase>
+            <phrase id="100">
+                <text>rad_found_stalkers_dialog_100</text>
+                <next>1000</next>
+            </phrase>
             <phrase id="0">
                 <text>rad_found_stalkers_dialog_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>rad_found_stalkers_dialog_1</text>
                 <next>100</next>
                 <next>105</next>
                 <next>110</next>
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="rad_chief_start_dialog">
+    <dialog id="rad_find_stalkers_dialog">
         <phrase_list>
+            <phrase id="1150">
+                <text>rad_find_stalkers_dialog_1150</text>
+                <action>dialogs.break_dialog</action>
+                <give_info>rad_find_stalkers_reward_start</give_info>
+            </phrase>
+            <phrase id="2100">
+                <text>rad_find_stalkers_dialog_2100</text>
+                <next>1150</next>
+            </phrase>
+            <phrase id="1100">
+                <text>rad_find_stalkers_dialog_1100</text>
+                <next>2100</next>
+            </phrase>
+            <phrase id="115">
+                <text>rad_find_stalkers_dialog_115</text>
+                <next>20</next>
+            </phrase>
+            <phrase id="15">
+                <text>rad_find_stalkers_dialog_15</text>
+                <next>115</next>
+            </phrase>
+            <phrase id="110">
+                <text>rad_find_stalkers_dialog_110</text>
+                <next>15</next>
+                <next>30</next>
+                <next>35</next>
+            </phrase>
+            <phrase id="30">
+                <text>rad_find_stalkers_dialog_30</text>
+                <next>125</next>
+            </phrase>
+            <phrase id="125">
+                <text>rad_find_stalkers_dialog_125</text>
+            </phrase>
+            <phrase id="35">
+                <text>rad_find_stalkers_dialog_35</text>
+                <next>120</next>
+            </phrase>
+            <phrase id="120">
+                <text>rad_find_stalkers_dialog_120</text>
+            </phrase>
+            <phrase id="2075">
+                <text>rad_find_stalkers_dialog_2075</text>
+            </phrase>
+            <phrase id="1075">
+                <text>rad_find_stalkers_dialog_1075</text>
+                <next>2075</next>
+            </phrase>
+            <phrase id="2050">
+                <text>rad_find_stalkers_dialog_2050</text>
+                <next>1100</next>
+                <next>1075</next>
+                <next>1200</next>
+            </phrase>
+            <phrase id="1200">
+                <text>rad_find_stalkers_dialog_1200</text>
+                <next>2150</next>
+            </phrase>
+            <phrase id="2150">
+                <text>rad_find_stalkers_dialog_2150</text>
+                <next>1250</next>
+            </phrase>
+            <phrase id="20">
+                <text>rad_find_stalkers_dialog_20</text>
+                <action>dialogs.break_dialog</action>
+                <give_info>rad_find_stalkers_free_start</give_info>
+            </phrase>
+            <phrase id="1250">
+                <text>rad_find_stalkers_dialog_1250</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="2000">
+                <text>rad_find_stalkers_dialog_2000</text>
+                <next>1050</next>
+            </phrase>
+            <phrase id="1050">
+                <text>rad_find_stalkers_dialog_1050</text>
+                <next>2050</next>
+            </phrase>
+            <phrase id="10">
+                <text>rad_find_stalkers_dialog_10</text>
+                <next>110</next>
+            </phrase>
+            <phrase id="1000">
+                <text>rad_find_stalkers_dialog_1000</text>
+                <next>2000</next>
+            </phrase>
             <phrase id="100">
-                <text>rad_chief_start_dialog_100</text>
+                <text>rad_find_stalkers_dialog_100</text>
+                <next>10</next>
+                <next>1000</next>
             </phrase>
             <phrase id="0">
-                <text>rad_chief_start_dialog_0</text>
+                <text>rad_find_stalkers_dialog_0</text>
                 <next>100</next>
             </phrase>
         </phrase_list>
@@ -66,10 +170,6 @@
             </phrase>
             <phrase id="1101">
                 <text>rad_find_stalkers_dialog111_1101</text>
-            </phrase>
-            <phrase id="1">
-                <text></text>
-                <next>20</next>
             </phrase>
             <phrase id="3">
                 <text></text>
@@ -177,115 +277,54 @@
                 <text></text>
                 <next>50</next>
             </phrase>
+            <phrase id="100">
+                <text>rad_find_stalkers_dialog111_100</text>
+                <next>120</next>
+            </phrase>
+            <phrase id="1">
+                <text></text>
+                <next>20</next>
+            </phrase>
             <phrase id="0">
                 <text>rad_find_stalkers_dialog111_0</text>
                 <next>1</next>
                 <next>100</next>
                 <next>1000</next>
             </phrase>
-            <phrase id="100">
-                <text>rad_find_stalkers_dialog111_100</text>
-                <next>120</next>
-            </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="rad_find_stalkers_dialog">
+    <dialog id="rad_test">
         <phrase_list>
-            <phrase id="1150">
-                <text>rad_find_stalkers_dialog_1150</text>
-                <action>dialogs.break_dialog</action>
-                <give_info>rad_find_stalkers_reward_start</give_info>
-            </phrase>
-            <phrase id="2100">
-                <text>rad_find_stalkers_dialog_2100</text>
-                <next>1150</next>
-            </phrase>
-            <phrase id="1100">
-                <text>rad_find_stalkers_dialog_1100</text>
-                <next>2100</next>
-            </phrase>
-            <phrase id="115">
-                <text>rad_find_stalkers_dialog_115</text>
-                <next>20</next>
-            </phrase>
-            <phrase id="15">
-                <text>rad_find_stalkers_dialog_15</text>
-                <next>115</next>
-            </phrase>
-            <phrase id="110">
-                <text>rad_find_stalkers_dialog_110</text>
-                <next>15</next>
-                <next>30</next>
-                <next>35</next>
-            </phrase>
-            <phrase id="30">
-                <text>rad_find_stalkers_dialog_30</text>
-                <next>125</next>
-            </phrase>
-            <phrase id="125">
-                <text>rad_find_stalkers_dialog_125</text>
-            </phrase>
-            <phrase id="35">
-                <text>rad_find_stalkers_dialog_35</text>
-                <next>120</next>
-            </phrase>
-            <phrase id="120">
-                <text>rad_find_stalkers_dialog_120</text>
-            </phrase>
-            <phrase id="2075">
-                <text>rad_find_stalkers_dialog_2075</text>
-            </phrase>
-            <phrase id="1075">
-                <text>rad_find_stalkers_dialog_1075</text>
-                <next>2075</next>
-            </phrase>
-            <phrase id="2050">
-                <text>rad_find_stalkers_dialog_2050</text>
-                <next>1100</next>
-                <next>1075</next>
-                <next>1200</next>
-            </phrase>
-            <phrase id="1200">
-                <text>rad_find_stalkers_dialog_1200</text>
-                <next>2150</next>
-            </phrase>
-            <phrase id="2150">
-                <text>rad_find_stalkers_dialog_2150</text>
-                <next>1250</next>
-            </phrase>
-            <phrase id="20">
-                <text>rad_find_stalkers_dialog_20</text>
-                <action>dialogs.break_dialog</action>
-                <give_info>rad_find_stalkers_free_start</give_info>
-            </phrase>
-            <phrase id="1250">
-                <text>rad_find_stalkers_dialog_1250</text>
-                <action>dialogs.break_dialog</action>
-            </phrase>
-            <phrase id="2000">
-                <text>rad_find_stalkers_dialog_2000</text>
-                <next>1050</next>
-            </phrase>
-            <phrase id="1050">
-                <text>rad_find_stalkers_dialog_1050</text>
-                <next>2050</next>
+            <phrase id="1">
+                <text>rad_test_1</text>
+                <next>100</next>
+                <next>200</next>
+                <next>300</next>
             </phrase>
             <phrase id="10">
-                <text>rad_find_stalkers_dialog_10</text>
-                <next>110</next>
-            </phrase>
-            <phrase id="1000">
-                <text>rad_find_stalkers_dialog_1000</text>
-                <next>2000</next>
-            </phrase>
-            <phrase id="0">
-                <text>rad_find_stalkers_dialog_0</text>
-                <next>100</next>
+                <text>rad_test_10</text>
             </phrase>
             <phrase id="100">
-                <text>rad_find_stalkers_dialog_100</text>
+                <text>rad_test_100</text>
                 <next>10</next>
-                <next>1000</next>
+            </phrase>
+            <phrase id="20">
+                <text>rad_test_20</text>
+            </phrase>
+            <phrase id="200">
+                <text>rad_test_200</text>
+                <next>20</next>
+            </phrase>
+            <phrase id="30">
+                <text>rad_test_30</text>
+            </phrase>
+            <phrase id="0">
+                <text>rad_test_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="300">
+                <text>rad_test_300</text>
+                <next>30</next>
             </phrase>
         </phrase_list>
     </dialog>
