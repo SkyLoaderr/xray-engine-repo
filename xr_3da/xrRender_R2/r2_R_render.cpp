@@ -104,8 +104,6 @@ void CRender::Render	()
 				RCache.set_xform_world					(Fidentity);			// ???
 				RCache.set_xform_view					(LR_Direct.L_view);
 				RCache.set_xform_project				(LR_Direct.L_project);
-				Fvector p; RCache.xforms.m_wv.transform_tiny(p, L->sphere.P);
-				Binders.l_position.P.set				(p.x,p.y,p.z,0);
 				render_scenegraph						();
 			}
 
