@@ -96,10 +96,10 @@ void CPhysicItem::net_Destroy		()
 
 void CPhysicItem::UpdateCL()
 {
-	inherited::UpdateCL();
-
 	if (!H_Parent() && m_pPhysicsShell)
 		m_pPhysicsShell->InterpolateGlobalTransform(&XFORM());
+
+	inherited::UpdateCL();
 }
 
 void CPhysicItem::activate_physic_shell()
