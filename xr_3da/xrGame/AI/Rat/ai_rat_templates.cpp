@@ -47,29 +47,31 @@ void CAI_Rat::vfAdjustSpeed()
 	clamp(fAngle,0.f,.99999f);
 	fAngle = acosf(fAngle);
 	
+	float fMinASpeed = PI_MUL_2, fNullASpeed = PI_MUL_2;
+	
 	if (fabsf(m_fSpeed - m_fMinSpeed) <= EPS_L)	{
 		if (fAngle >= 3*PI_DIV_2) {
 			m_fSpeed = 0;
-			m_fASpeed = PI;
+			m_fASpeed = fNullASpeed;
 			r_torso_target.yaw = fAngle;
 		}
 		else 
 		{
 			m_fSpeed = m_fMinSpeed;
-			m_fASpeed = .4f;
+			m_fASpeed = fMinASpeed;
 		}
 	}
 	else
 		if (fabsf(m_fSpeed - m_fMaxSpeed) <= EPS_L)	{
 			if (fAngle >= 3*PI_DIV_2) {
 				m_fSpeed = 0;
-				m_fASpeed = PI;
+				m_fASpeed = fNullASpeed;
 				r_torso_target.yaw = fAngle;
 			}
 			else
 				if (fAngle >= PI_DIV_2) {
 					m_fSpeed = m_fMinSpeed;
-					m_fASpeed = .4f;
+					m_fASpeed = fMinASpeed;
 				}
 				else {
 					m_fSpeed = m_fMaxSpeed;
@@ -80,13 +82,13 @@ void CAI_Rat::vfAdjustSpeed()
 			if (fabsf(m_fSpeed - m_fAttackSpeed) <= EPS_L)	{
 				if (fAngle >= 3*PI_DIV_2) {
 					m_fSpeed = 0;
-					m_fASpeed = PI;
+					m_fASpeed = fNullASpeed;
 					r_torso_target.yaw = fAngle;
 				}
 				else
 					if (fAngle >= PI_DIV_2) {
 						m_fSpeed = m_fMinSpeed;
-						m_fASpeed = .4f;
+						m_fASpeed = fMinASpeed;
 					}
 					else
 						if (fAngle >= PI_DIV_4) {
@@ -101,7 +103,7 @@ void CAI_Rat::vfAdjustSpeed()
 			else {
 				r_torso_target.yaw = fAngle;
 				m_fSpeed = 0;
-				m_fASpeed = PI;
+				m_fASpeed = fNullASpeed;
 			}
 }
 

@@ -11,8 +11,8 @@
 #include "..\\ai_monsters_misc.h"
 
 #undef	WRITE_TO_LOG
-#define WRITE_TO_LOG(s) bStopThinking = true;
-/**
+//#define WRITE_TO_LOG(s) bStopThinking = true;
+/**/
 #define WRITE_TO_LOG(s) {\
 	Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
 	if (!feel_visible.size())\
@@ -167,7 +167,7 @@ void CAI_Rat::Turn()
 	vfSetFire(false,Group);
 
 	float fTurnAngle = _min(_abs(r_torso_target.yaw - r_torso_current.yaw), PI_MUL_2 - _abs(r_torso_target.yaw - r_torso_current.yaw));
-	r_torso_speed = 3*fTurnAngle;
+	r_torso_speed = PI_MUL_2;
 
 	vfSetMovementType(BODY_STATE_STAND,0);
 }
@@ -431,6 +431,7 @@ void CAI_Rat::AttackRun()
 
 	vfUpdateTime(m_fTimeUpdateDelta);
 
+	m_fSpeed = m_fAttackSpeed;
 	if (bfComputeNextDirectionPosition())
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
 }
@@ -472,6 +473,8 @@ void CAI_Rat::Retreat()
 	
 	vfUpdateTime(m_fTimeUpdateDelta);
 	
+	m_fSpeed = m_fAttackSpeed;
+
 	if (bfComputeNextDirectionPosition())
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
 }
@@ -509,6 +512,8 @@ void CAI_Rat::Pursuit()
 	m_tGoalDir.set(m_tSavedEnemyPosition);
 	
 	vfUpdateTime(m_fTimeUpdateDelta);
+
+	m_fSpeed = m_fAttackSpeed;
 
 	if (bfComputeNextDirectionPosition())
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
@@ -586,6 +591,8 @@ void CAI_Rat::ReturnHome()
 
 	vfUpdateTime(m_fTimeUpdateDelta);
 
+	m_fSpeed = m_fAttackSpeed;
+
 	if (bfComputeNextDirectionPosition())
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
 }
@@ -626,6 +633,8 @@ void CAI_Rat::EatCorpse()
 	m_tGoalDir.set			(m_Enemy.Enemy->Position());
 	
 	vfUpdateTime(m_fTimeUpdateDelta);
+
+	m_fSpeed = m_fMaxSpeed;
 
 	if (bfComputeNextDirectionPosition())
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
