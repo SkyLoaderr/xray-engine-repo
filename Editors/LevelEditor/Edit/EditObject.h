@@ -90,9 +90,9 @@ public:
     IC void			SetName			(LPCSTR name){m_Name=name;}
     IC void			SetShader		(LPCSTR name){R_ASSERT(name&&name[0]); m_ShaderName=name;}
     IC void 		SetShaderXRLC	(LPCSTR name){m_ShaderXRLCName=name;}
-    IC bool			GetFlag			(EFlags flag)const {return !!(m_dwFlags&flag);}
+	IC void			SetFlag			(EFlags flag, bool val){if (val) m_dwFlags|=flag; else m_dwFlags&=~flag;}
+    IC bool			IsFlag			(EFlags flag)const {return !!(m_dwFlags&flag);}
     IC DWORD		GetFlags		()const {return m_dwFlags;}
-    IC void			SetFlag			(EFlags flag, bool val){if (val) m_dwFlags|=val; else m_dwFlags&=~flag;}
     IC void			SetFlags		(DWORD flags){m_dwFlags=flags;}
     IC void			SetFVF			(DWORD fvf){m_dwFVF=fvf;}
     IC void			SetTexture		(LPCSTR name){m_Texture=name;}

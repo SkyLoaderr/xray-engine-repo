@@ -123,7 +123,7 @@ bool CEditableObject::Load(CStream& F){
                 F.RstringZ(buf);
                 (*s_it)->SetName(buf);
                 F.RstringZ(sh_name);
-                (*s_it)->SetFlag	(CSurface::sf2Sided,F.Rbyte());
+                (*s_it)->SetFlag	(CSurface::sf2Sided,!!F.Rbyte());
                 (*s_it)->SetFVF		(F.Rdword());
                 cnt 				= F.Rdword();
                 if (cnt>1) ELog.DlgMsg(mtError,"Object surface '%s' has more than one TC's.",buf);
