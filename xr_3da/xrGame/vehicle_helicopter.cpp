@@ -96,7 +96,9 @@ void CVehicleHelicopter::UpdateCL			()
 	m_animator->OnFrame	();
 	m_engine_sound.set_position(XFORM().c);
 
+#ifndef _DEBUG
 	if (m_animator->IsPlaying())
+#endif
 		XFORM().set	(m_animator->XFORM());
 }
 
