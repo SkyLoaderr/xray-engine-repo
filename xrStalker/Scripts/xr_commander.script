@@ -116,7 +116,7 @@ function action_commander:finalize()
     self.object:clear_callback( game_object.movement )
 
     local enemy = self.object:best_enemy()
-    if enemy then
+    if enemy and is_object_online( enemy:id() ) then
         if enemy:clsid() == clsid.stalker or enemy:clsid() == clsid.actor then
             self.object:play_sound( snd_enemy_stalker, 1, 0 )
         else
