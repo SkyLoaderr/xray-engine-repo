@@ -556,7 +556,51 @@ u32 CObjectHandler::object_state() const
 
 	CMissile		*missile = dynamic_cast<CMissile*>(inventory().ActiveItem());
 	if (missile) {
-		return		(current_state_id());
+//		if (missile->ID() != current_object_state_id()) {
+			switch (missile->State()) {
+				case MS_HIDDEN	 : return(eObjectActionNoItems);
+				case MS_SHOWING	 : return(uid(eObjectActionShow,missile->ID()));
+				case MS_HIDING	 : return(uid(eObjectActionHide,missile->ID()));
+//				case MS_HIDING	 : return(uid(eObjectActionIdle,missile->ID()));
+				case MS_IDLE	 : return(uid(eObjectActionIdle,missile->ID()));
+				case MS_EMPTY	 : return(uid(eObjectActionEmpty1,missile->ID()));
+//				case MS_EMPTY	 : return(uid(eObjectActionIdle,missile->ID()));
+				case MS_THREATEN : return(uid(eObjectActionFire2,missile->ID()));
+				case MS_READY	 : return(uid(eObjectActionSwitch1,missile->ID()));
+				case MS_THROW	 : return(uid(eObjectActionFire1,missile->ID()));
+				case MS_END		 : return(uid(eObjectActionFire1,missile->ID()));
+				case MS_PLAYING	 : return(uid(eObjectActionIdle,missile->ID()));
+				default			 : NODEFAULT;
+			}
+//		}
+//		switch (missile->State()) {
+//			case MS_HIDDEN	 : {
+//				switch (current_state_state_id()) {
+//					case eObjectActionIdle :
+//					case eObjectActionAim1 :
+//					case eObjectActionAim2 :
+//					case eObjectActionSwitch1 :
+//					case eObjectActionSwitch2 : 
+//						return	(current_state_id());
+//					default :
+//						if (!weapon->IsWorking())
+//							return	(uid(eObjectActionIdle,weapon->ID()));
+//						else
+//							return	(current_state_id());
+//				}
+//				break;
+//			}
+//			case MS_SHOWING	 : return(uid(eObjectActionShow,missile->ID()));
+//			case MS_HIDING	 : return(uid(eObjectActionHide,missile->ID()));
+//			case MS_IDLE	 : return(uid(eObjectActionIdle,missile->ID()));
+//			case MS_EMPTY	 : return(uid(eObjectActionEmpty1,missile->ID()));
+//			case MS_THREATEN : return(uid(eObjectActionFire2,missile->ID()));
+//			case MS_READY	 : return(uid(eObjectActionSwitch1,missile->ID()));
+//			case MS_THROW	 : return(uid(eObjectActionFire1,missile->ID()));
+//			case MS_END		 : return(uid(eObjectActionFire1,missile->ID()));
+//			case MS_PLAYING	 : return(uid(eObjectActionIdle,missile->ID()));
+//			default			 : NODEFAULT;
+//		}
 	}
 
 #ifdef DEBUG
@@ -623,12 +667,12 @@ void CObjectHandler::add_item			(CInventoryItem *inventory_item)
 		state(uid(eObjectActionAim2,id)).set_inertia_time(1000);
 	}
 	else if (missile) {
-		add_state		(xr_new<CObjectStateBase>(inventory_item,CWeapon::eIdle,true),	uid(eObjectActionIdle,id),		0);
-		add_state		(xr_new<CObjectStateShow>(inventory_item,CWeapon::eShowing),	uid(eObjectActionShow,id),		0);
-		add_state		(xr_new<CObjectStateHide>(inventory_item,CWeapon::eHiding),		uid(eObjectActionHide,id),		0);
-		add_state		(xr_new<CObjectStateBase>(inventory_item,CWeapon::eFire),		uid(eObjectActionFire1,id),		0);
-		add_state		(xr_new<CObjectStateBase>(inventory_item,CWeapon::eIdle),		uid(eObjectActionSwitch1,id),	0);
-		add_state		(xr_new<CObjectStateFirePrimary>(inventory_item,CWeapon::eFire),uid(eObjectActionFire2,id),		0);
+		add_state		(xr_new<CObjectStateBase>(inventory_item,MS_IDLE,true),		uid(eObjectActionIdle,id),		0);
+		add_state		(xr_new<CObjectStateShow>(inventory_item,MS_SHOWING),		uid(eObjectActionShow,id),		0);
+		add_state		(xr_new<CObjectStateHide>(inventory_item,MS_HIDING),		uid(eObjectActionHide,id),		0);
+		add_state		(xr_new<CObjectStateBase>(inventory_item,MS_THREATEN),		uid(eObjectActionFire1,id),		0);
+		add_state		(xr_new<CObjectStateBase>(inventory_item,MS_READY,true),	uid(eObjectActionSwitch1,id),	0);
+		add_state		(xr_new<CObjectStateFirePrimary>(inventory_item,MS_END),	uid(eObjectActionFire2,id),		0);
 
 		add_transition	(uid(eObjectActionShow,id),			uid(eObjectActionIdle,id),		1);
 		add_transition	(uid(eObjectActionIdle,id),			uid(eObjectActionHide,id),		1);
@@ -637,6 +681,9 @@ void CObjectHandler::add_item			(CInventoryItem *inventory_item)
 		add_transition	(uid(eObjectActionFire2,id),		uid(eObjectActionSwitch1,id),	1);
 		add_transition	(uid(eObjectActionSwitch1,id),		uid(eObjectActionFire1,id),		1);
 		add_transition	(uid(eObjectActionFire1,id),		u32(eObjectActionNoItems),		1);
+
+		state(uid(eObjectActionSwitch1,id)).set_inertia_time(1000);
+		state(uid(eObjectActionFire1,id)).set_inertia_time(700);
 	}
 
 	// нож, (еда, питьё), приборы
@@ -747,7 +794,7 @@ void CObjectHandler::OnItemDropUpdate	()
 {
 }
 
-CInventoryItem *CObjectHandler::get_best_weapon() const
+CInventoryItem *CObjectHandler::best_weapon() const
 {
 	CInventoryItem	*best_weapon = 0;
 	u32				best_weapon_type = 0;
