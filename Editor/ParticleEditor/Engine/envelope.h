@@ -33,16 +33,19 @@ envelope.h
 #define BEH_OFFSET     4
 #define BEH_LINEAR     5
 
+
+#pragma pack( push,1 )
 struct st_Key{
-	float	value;
-	float	time;
-	int		shape;
-	float	tension;
-	float	continuity;
-	float	bias;
-	float	param[ 4 ];
+	float		value;
+	float		time;
+	int			shape;
+	float		tension;
+	float		continuity;
+	float		bias;
+	float		param[ 4 ];
 	st_Key		(){ZeroMemory(this,sizeof(st_Key));}
 };
+#pragma pack( pop )
 
 DEFINE_VECTOR(st_Key*,KeyVec,KeyIt);
 

@@ -27,10 +27,10 @@ enum EChannelType{
 #define WORLD_ORIENTATION (1<<0)
 
 struct st_BoneMotion{
-	char		name[MAX_OBJ_NAME];
+//	char		name[MAX_OBJ_NAME];
 	CEnvelope*	envs[ctMaxChannel];
 	DWORD		flag;
-    st_BoneMotion()	{name[0]=0; flag=0; ZeroMemory(envs,sizeof(CEnvelope*)*ctMaxChannel);}
+    st_BoneMotion()	{flag=0; ZeroMemory(envs,sizeof(CEnvelope*)*ctMaxChannel);}
 };
 // list по костям
 DEFINE_VECTOR(st_BoneMotion,BoneMotionVec,BoneMotionIt);
@@ -96,8 +96,7 @@ public:
 class ENGINE_API CSMotion: public CCustomMotion{
 	BoneMotionVec	bone_mots;
 public:
-	char			cStartBone[MAX_OBJ_NAME];
-	char			cBonePart[MAX_OBJ_NAME];
+    int				iBoneOrPart;
     BOOL			bFX;
 	BOOL			bStopAtEnd;
     float			fSpeed;
@@ -116,9 +115,7 @@ public:
     void			CopyMotion		(CSMotion* src);
 
     BoneMotionVec&	BoneMotions		()				{return bone_mots;}
-	void			SetStartBone	(const char* n)	{if(n) strcpy(cStartBone,n);strlwr(cStartBone);}
-	void			SetBonePart		(const char* n)	{if(n) strcpy(cBonePart,n);strlwr(cBonePart);}
-	const char*		GetRootBone		()				{return bone_mots.empty()?0:bone_mots[0].name;}
+	void			SetBoneOrPart	(int idx)		{iBoneOrPart=idx;}
 	DWORD			GetMotionFlag	(int bone_idx)	{return bone_mots[bone_idx].flag;}
 
 	virtual void	Save			(CFS_Base& F);
@@ -130,5 +127,4 @@ public:
 	void			ParseBoneMotion	(LWItemID bone);
 #endif
 };
-
 #endif

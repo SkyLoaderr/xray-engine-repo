@@ -20,7 +20,7 @@ float CEnvelope::Evaluate(float time){
 
 void CEnvelope::Save(CFS_Base& F){
 	F.write		(behavior,sizeof(int)*2);
-	F.Wdword	(keys.size());
+	F.Wdword	(keys.size());           
 	for (KeyIt k_it=keys.begin(); k_it!=keys.end(); k_it++)
 		F.write	(*k_it,sizeof(st_Key));
 }
