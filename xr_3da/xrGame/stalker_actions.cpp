@@ -1356,7 +1356,6 @@ void CStalkerActionGetEnemySeenModerate::finalize	()
 		m_storage->set_property		(eWorldPropertyEnemyAimed,true);
 	m_object->set_sound_mask(0);
 	m_start_standing_time	= m_start_level_time;
-	m_storage->set_property	(eWorldPropertyEnemyLost,false);
 }
 
 void CStalkerActionGetEnemySeenModerate::execute	()
@@ -1514,4 +1513,3 @@ _edge_value_type CStalkerActionKillEnemyLostModerate::weight	(const CSConditionS
 	else
 		return				(_edge_value_type(100));
 }
-
