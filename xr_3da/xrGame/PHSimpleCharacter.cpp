@@ -1040,11 +1040,11 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide){
 	if((c->geom.g1==m_cap_transform||c->geom.g2==m_cap_transform||c->geom.g1==m_shell_transform||c->geom.g2==m_shell_transform))
 	{
 		
-		Fvector2 f={m_control_force[0],m_control_force[2]},cn={c->geom.normal[0],c->geom.normal[2]};
-		f.normalize(),cn.normalize();
-		float product=f.x*cn.x+f.y*cn.y;
-		if(is_control&& (bo1	?	product<-M_SQRT1_2	:	product>M_SQRT1_2))
-			b_side_contact=true;
+		//Fvector2 f={m_control_force[0],m_control_force[2]},cn={c->geom.normal[0],c->geom.normal[2]};
+		//f.normalize(),cn.normalize();
+		//float product=f.x*cn.x+f.y*cn.y;
+		//if(is_control&& (bo1	?	product<-M_SQRT1_2	:	product>M_SQRT1_2))
+		b_side_contact=true;
 
 		//c->surface.soft_cfm*=spring_rate;//0.01f;
 		//c->surface.soft_erp*=dumping_rate;//10.f;
@@ -1209,7 +1209,15 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide){
 
 	}
 	else{
+		if(c->geom.g2==m_wheel){
+			Memory.mem_copy(m_death_position,dGeomGetPosition(c->geom.g2),sizeof(dVector3));
+			m_death_position[1]+=c->geom.depth;
+			if(dGeomGetUserData(c->geom.g2)->pushing_neg)
+				m_death_position[1]=dGeomGetUserData(c->geom.g2)->neg_tri.pos;
 
+			if(dGeomGetUserData(c->geom.g2)->pushing_b_neg)
+				m_death_position[1]=dGeomGetUserData(c->geom.g2)->b_neg_tri.pos;
+		}
 		if(c->geom.normal[1]<-m_ground_contact_normal[1]||!b_valide_ground_contact)//
 		{
 			m_ground_contact_normal[0]=-c->geom.normal[0];
