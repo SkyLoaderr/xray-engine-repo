@@ -74,12 +74,16 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrLUA", "..\xrLUA\xrLUA.vcp
 		{A0F7D1FB-59A7-4717-A7E4-96F37E91998E} = {A0F7D1FB-59A7-4717-A7E4-96F37E91998E}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ode", "P:\xrODE\contrib\msvc7\ode_default\default.vcproj", "{1BF75FEB-87DD-486C-880B-227987D191C2}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(DPCodeReviewSolutionGUID) = preSolution
 		DPCodeReviewSolutionGUID = {00000000-0000-0000-0000-000000000000}
 	EndGlobalSection
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 12
+		SccNumberOfProjects = 13
 		SccLocalPath0 = .
 		CanCheckoutShared = true
 		SolutionUniqueID = {6F8E4AE3-CB8E-4760-8086-796FE333A467}
@@ -127,6 +131,11 @@ Global
 		SccProjectName11 = \u0022$/xrLUA\u0022,\u0020LCMAAAAA
 		SccLocalPath11 = ..\\xrLUA
 		CanCheckoutShared = true
+		SccProjectUniqueName12 = P:\\xrODE\\contrib\\msvc7\\ode_default\\default.vcproj
+		SccProjectName12 = \u0022$/xrODE\u0022,\u0020AJPAAAAA
+		SccLocalPath12 = P:\\xrODE
+		CanCheckoutShared = true
+		SccProjectFilePathRelativizedFromConnection12 = contrib\\msvc7\\ode_default\\
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -200,6 +209,12 @@ Global
 		{F496E4E3-22D5-4294-A0FB-A1EFDA7E2450}.Mixed.Build.0 = Mixed|Win32
 		{F496E4E3-22D5-4294-A0FB-A1EFDA7E2450}.Release.ActiveCfg = Release|Win32
 		{F496E4E3-22D5-4294-A0FB-A1EFDA7E2450}.Release.Build.0 = Release|Win32
+		{1BF75FEB-87DD-486C-880B-227987D191C2}.Debug.ActiveCfg = Debug|Win32
+		{1BF75FEB-87DD-486C-880B-227987D191C2}.Debug.Build.0 = Debug|Win32
+		{1BF75FEB-87DD-486C-880B-227987D191C2}.Mixed.ActiveCfg = Mixed|Win32
+		{1BF75FEB-87DD-486C-880B-227987D191C2}.Mixed.Build.0 = Mixed|Win32
+		{1BF75FEB-87DD-486C-880B-227987D191C2}.Release.ActiveCfg = Release|Win32
+		{1BF75FEB-87DD-486C-880B-227987D191C2}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
 	EndGlobalSection
