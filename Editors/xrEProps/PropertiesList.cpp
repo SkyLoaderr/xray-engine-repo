@@ -62,7 +62,8 @@ void TProperties::ClearParams(TElTreeItem* node)
         // clear
 	    for (PropItemIt it=m_Items.begin(); it!=m_Items.end(); it++)
     		xr_delete	(*it);
-		m_Items.clear();
+		m_Items.clear				();
+        m_ViewItems.clear			();
 		LockUpdating				();
 	    tvProperties->Items->Clear	();
 		UnlockUpdating				();
@@ -229,9 +230,9 @@ void __fastcall TProperties::FormDestroy(TObject *Sender)
 
 void TProperties::FillElItems(PropItemVec& items, LPCSTR startup_pref)
 {
-	m_ViewItems		= items;
+	m_ViewItems.clear();
     tvProperties->Items->Clear();
-	for (PropItemIt it=m_ViewItems.begin(); it!=m_ViewItems.end(); it++){
+	for (PropItemIt it=items.begin(); it!=items.end(); it++){
     	PropItem* prop		= *it;
         AnsiString 	key 	= *prop->key;
 	    if (m_Flags.is(plItemFolders)){
@@ -245,8 +246,9 @@ void TProperties::FillElItems(PropItemVec& items, LPCSTR startup_pref)
             	if (1!=_GetItemCount(key.c_str(),'\\')) continue;
             }
         }
+        m_ViewItems.push_back	(prop);
         prop->item			= FHelper.AppendObject(tvProperties,key,false,false); R_ASSERT3(prop->item,"Duplicate properties key found:",key.c_str());
-        prop->Item()->Tag	    = (int)prop;
+        prop->Item()->Tag 	= (int)prop;
         prop->Item()->UseStyles=true;
         prop->Item()->CheckBoxEnabled = prop->m_Flags.is(PropItem::flShowCB);
         prop->Item()->ShowCheckBox 	= prop->m_Flags.is(PropItem::flShowCB);
@@ -271,7 +273,7 @@ void TProperties::FillElItems(PropItemVec& items, LPCSTR startup_pref)
         CS->Style 			= ElhsOwnerDraw;
         prop->Item()->ColumnText->Add(prop->GetText().c_str());
     }
-    if (m_Flags.is(plFullExpand)) tvProperties->FullExpand();
+    if (m_Flags.is(plFullExpand)||miAutoExpand->Checked) tvProperties->FullExpand();
     if (m_Flags.is(plFullSort)){
         tvProperties->ShowColumns	= false;
     	tvProperties->Sort			(true);
@@ -1094,18 +1096,18 @@ void __fastcall TProperties::ChooseClick(TElTreeItem* item)
 	PropItem* prop			= (PropItem*)item->Tag;
 
     ChooseValue* V			= dynamic_cast<ChooseValue*>(prop->GetFrontValue()); VERIFY(V);
-    shared_str	edit_val		= V->GetValue();
+    shared_str	edit_val  	= V->GetValue();
 	if (!edit_val.size()) 	edit_val = V->m_StartPath;
     prop->BeforeEdit<ChooseValue,shared_str>(edit_val);
 	//
-    ChooseItemVec			m_Items;
+    ChooseItemVec			items;
     if (!V->OnChooseFillEvent.empty()){
-        V->m_Items			= &m_Items;
+        V->m_Items			= &items;
         V->OnChooseFillEvent(V);
     }    
     //
     LPCSTR new_val			= 0;
-    if (TfrmChoseItem::SelectItem(V->m_ChooseID,new_val,V->subitem,edit_val.c_str(),0,V->m_FillParam,0,m_Items.size()?&m_Items:0)){
+    if (TfrmChoseItem::SelectItem(V->m_ChooseID,new_val,V->subitem,edit_val.c_str(),0,V->m_FillParam,0,items.size()?&items:0)){
         edit_val			= new_val;
         if (prop->AfterEdit<ChooseValue,shared_str>(edit_val))
             if (prop->ApplyValue<ChooseValue,shared_str>(edit_val)){
@@ -1507,14 +1509,21 @@ void __fastcall TProperties::miDrawThumbnailsClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TProperties::miAutoExpandClick(TObject *Sender)
+{
+	RefreshForm();
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TProperties::RefreshForm()
 {
 	LockUpdating		();
-    for (PropItemIt it=m_Items.begin(); it!=m_Items.end(); it++){
+    for (PropItemIt it=m_ViewItems.begin(); it!=m_ViewItems.end(); it++){
     	PropItem* prop = *it;
     	if (prop&&prop->item&&prop->m_Flags.is(PropItem::flDrawThumbnail)) 
         	prop->Item()->OwnerHeight = !miDrawThumbnails->Checked;
     }
+    if (miAutoExpand->Checked) tvProperties->FullExpand();
 	UnlockUpdating		();
 	tvProperties->Repaint();
 }
@@ -1557,6 +1566,7 @@ void __fastcall TProperties::tvPropertiesCompareItems(TObject *Sender,
     else if (type2==TYPE_FOLDER)	    	res =  1;
 }
 //---------------------------------------------------------------------------
+
 
 
 

@@ -53,6 +53,7 @@ __published:	// IDE-managed Components
 	TPanel *paFolders;
 	TSplitter *spFolders;
 	TElTreeInplaceEdit *ElTreeInplaceEdit1;
+	TMenuItem *miAutoExpand;
 	void __fastcall 	FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall 	tvPropertiesClick(TObject *Sender);
 	void __fastcall 	tvPropertiesItemDraw(TObject *Sender, TElTreeItem *Item, TCanvas *Surface, TRect &R, int SectionIndex);
@@ -84,6 +85,7 @@ __published:	// IDE-managed Components
           THintWindow *HintWindow, TPoint &MousePos, bool &DoShowHint);
 	void __fastcall tvPropertiesCompareItems(TObject *Sender,
           TElTreeItem *Item1, TElTreeItem *Item2, int &res);
+	void __fastcall miAutoExpandClick(TObject *Sender);
 private:	// User declarations
     void __fastcall 	PMItemClick		(TObject *Sender);
 	void __fastcall 	WaveFormClick	(TElTreeItem* item);
@@ -183,6 +185,7 @@ public:		// User declarations
 		fs->WriteInteger(AnsiString().sprintf("%s_column0_width",Caption.c_str()),tvProperties->HeaderSections->Item[0]->Width);
 		fs->WriteInteger(AnsiString().sprintf("%s_column1_width",Caption.c_str()),tvProperties->HeaderSections->Item[1]->Width);
 		fs->WriteInteger(AnsiString().sprintf("%s_draw_thm",Caption.c_str()),miDrawThumbnails->Checked);
+		fs->WriteInteger(AnsiString().sprintf("%s_auto_expand",Caption.c_str()),miAutoExpand->Checked);
 		fs->WriteInteger(AnsiString().sprintf("%s_fp_width",Caption.c_str()),paFolders->Width);
 		fs->WriteInteger(AnsiString().sprintf("%s_fp_height",Caption.c_str()),paFolders->Height);
     }
@@ -191,6 +194,7 @@ public:		// User declarations
 		tvProperties->HeaderSections->Item[0]->Width 	= fs->ReadInteger(AnsiString().sprintf("%s_column0_width",Caption.c_str()),tvProperties->HeaderSections->Item[0]->Width);
 		tvProperties->HeaderSections->Item[1]->Width 	= fs->ReadInteger(AnsiString().sprintf("%s_column1_width",Caption.c_str()),tvProperties->HeaderSections->Item[1]->Width);
         miDrawThumbnails->Checked						= fs->ReadInteger(AnsiString().sprintf("%s_draw_thm",Caption.c_str()),false);
+        miAutoExpand->Checked							= fs->ReadInteger(AnsiString().sprintf("%s_auto_expand",Caption.c_str()),false);
 		paFolders->Width								= fs->ReadInteger(AnsiString().sprintf("%s_fp_width",Caption.c_str()),paFolders->Width);
 		paFolders->Height								= fs->ReadInteger(AnsiString().sprintf("%s_fp_height",Caption.c_str()),paFolders->Height);
         RefreshForm			();
