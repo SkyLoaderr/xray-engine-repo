@@ -179,7 +179,7 @@ default:		axis.set(axes[0].direction);
 	dJointSetHingeParam(m_joint,dParamStopERP ,axes[0].erp);
 	dJointSetHingeParam(m_joint,dParamStopCFM ,axes[0].cfm);
 
-	dJointSetHingeParam(m_joint,dParamCFM ,cfm);
+	dJointSetHingeParam(m_joint,dParamCFM ,m_cfm);
 }
 
 
@@ -624,9 +624,9 @@ default:		axis.set(axes[2].direction);
 	dJointSetAMotorParam(m_joint1,dParamStopERP3 ,axes[2].erp);
 	dJointSetAMotorParam(m_joint1,dParamStopCFM3 ,axes[2].cfm);
 
-	dJointSetAMotorParam(m_joint1,dParamCFM ,cfm);
-	dJointSetAMotorParam(m_joint1,dParamCFM2 ,cfm);
-	dJointSetAMotorParam(m_joint1,dParamCFM3 ,cfm);
+	dJointSetAMotorParam(m_joint1,dParamCFM ,m_cfm);
+	dJointSetAMotorParam(m_joint1,dParamCFM2 ,m_cfm);
+	dJointSetAMotorParam(m_joint1,dParamCFM3 ,m_cfm);
 }
 
 
@@ -805,11 +805,11 @@ CPHJoint::CPHJoint(CPhysicsJoint::enumType type ,CPhysicsElement* first,CPhysics
 	bActive=false;
 
 #ifndef ODE_SLOW_SOLVER
-	erp=world_erp;
-	cfm=world_cfm;
+	m_erp=world_erp;
+	m_cfm=world_cfm;
 #else
-	erp=world_erp;
-	cfm=world_cfm;
+	m_erp=world_erp;
+	m_cfm=world_cfm;
 #endif
 
 	SPHAxis axis,axis2,axis3;
@@ -1108,4 +1108,51 @@ if(ax==-1)
 	}
 else
 	axes[axis_num]=axis;
+}
+
+void CPHJoint::SetAxisSDfactors(float spring_factor,float damping_factor,int axis_num)
+{
+	int ax=axis_num;
+	LimitAxisNum(ax);
+	float erp=ERP(world_spring*spring_factor,world_damping*damping_factor);
+	float cfm=CFM(world_spring*spring_factor,world_damping*damping_factor);
+	if(ax==-1) 
+		switch(eType){
+		case welding:				; 
+		case ball:					return;
+		case hinge:					
+			axes[0].erp=erp;
+			axes[0].cfm=cfm;
+			break;
+		case hinge2:				;
+		case universal_hinge:		;
+		case shoulder1:				;
+		case shoulder2:				;
+		case car_wheel:	
+			axes[0].erp=erp;
+			axes[0].cfm=cfm;
+			axes[1].erp=erp;
+			axes[1].cfm=cfm;
+			break;
+
+		case full_control:			
+			axes[0].erp=erp;
+			axes[0].cfm=cfm;
+			axes[1].erp=erp;
+			axes[1].cfm=cfm;
+			axes[2].erp=erp;
+			axes[2].cfm=cfm;
+			break;
+		}
+	else
+	{
+		axes[axis_num].erp=erp;
+		axes[axis_num].cfm=cfm;
+	}
+}
+
+void CPHJoint::SetJointSDfactors(float spring_factor,float damping_factor)
+{
+	m_erp=ERP(world_spring*spring_factor,world_damping*damping_factor);
+	m_cfm=CFM(world_spring*spring_factor,world_damping*damping_factor);
 }

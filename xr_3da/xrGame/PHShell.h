@@ -15,6 +15,7 @@ class CPHShell: public CPhysicsShell,public CPHObject {
 	bool bActivating;
 	xr_list<CPHObject*>::iterator m_ident;
 
+
 public:
 
 	CPHShell				()							
@@ -22,7 +23,7 @@ public:
 													bActive=false;
 													bActivating=false;
 													m_space=NULL;
-													p_kinematics=NULL;
+													m_pKinematics=NULL;
 			};
 
 	~CPHShell				()							
@@ -59,6 +60,7 @@ public:
 	}
 
 	virtual	void			add_Joint				(CPhysicsJoint* J)					{
+		if(!J)return;
 		joints.push_back((CPHJoint*)J);
 		dynamic_cast<CPHJoint*>(J)->SetShell(this);
 	};
@@ -110,6 +112,7 @@ public:
 	virtual	void				PhTune						(dReal step);
 	virtual void				InitContact					(dContact* c){};
 	virtual void				StepFrameUpdate				(dReal step){};
+	virtual void				build_FromKinematics		(CKinematics* K);
 
 
 	virtual void			SmoothElementsInertia(float k);
@@ -126,7 +129,7 @@ public:
 
 	void SetTransform(Fmatrix m);
 private:
-
+	void AddElementRecursive(CPhysicsElement* root_e, int id);
 
 };
 #endif

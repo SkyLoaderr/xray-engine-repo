@@ -1124,7 +1124,8 @@ void CPHElement::CallBack(CBoneInstance* B){
 		bActive=true;
 		m_start_time=Device.fTimeGlobal;
 
-		if(!m_parent_element) m_shell->CreateSpace();
+		if(!m_parent_element) 
+			m_shell->CreateSpace();
 		build(m_space);
 
 	
@@ -1306,4 +1307,58 @@ void CPHElement::unset_Pushout()
 	temp_for_push_out=NULL;
 	set_ObjectContactCallback(object_contact_callback);
 	push_untill=0;
+}
+
+void CPHElement::add_Shape(const SBoneShape& shape,const Fmatrix& offset)
+{
+switch(shape.type) {
+	case SBoneShape::stBox	:
+		{
+	Fobb box=shape.box;
+	Fmatrix m;
+	m.set(offset);
+	//Fmatrix position;
+	//position.set(box.m_rotate);
+	//position.c.set(box.m_translate);
+	//position.mulA(offset);
+	//box.m_rotate.set(position);
+	//box.m_translate.set(position.c);
+	box.transform(box,m);
+	add_Box(box);
+	break;
+		}
+	case SBoneShape::stSphere	:
+		{
+	Fsphere sphere=shape.sphere;
+	offset.transform_tiny(sphere.P);
+	add_Sphere(sphere);
+	break;
+		}
+
+	
+	case SBoneShape::stCylinder :
+	break;
+default: NODEFAULT;
+}
+}
+
+void CPHElement::add_Shape(const SBoneShape& shape)
+{
+	switch(shape.type) {
+	case SBoneShape::stBox	:
+		{
+			add_Box(shape.box);
+			break;
+		}
+	case SBoneShape::stSphere	:
+		{
+			add_Sphere(shape.sphere);
+			break;
+		}
+
+
+	case SBoneShape::stCylinder :
+		break;
+	default: NODEFAULT;
+	}
 }

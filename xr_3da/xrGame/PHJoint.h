@@ -27,7 +27,9 @@ class CPHJoint: public CPhysicsJoint{
 	void LimitAxisNum						(int &axis_num);
 	void SetForceActive						(const int axis_num);
 	void SetVelocityActive					(const int axis_num);
-	
+
+	virtual void SetAxisSDfactors			(float spring_factor,float damping_factor,int axis_num);
+	virtual void SetJointSDfactors			(float spring_factor,float damping_factor);
 	virtual void SetAxis					(const SPHAxis& axis,const int axis_num);
 	virtual void SetAnchor					(const Fvector& position){SetAnchor(position.x,position.y,position.z);}	
 	virtual void SetAnchorVsFirstElement	(const Fvector& position){SetAnchorVsFirstElement(position.x,position.y,position.z);}

@@ -95,6 +95,8 @@ public:
 	virtual	void			add_Sphere						(const Fsphere&		V);
 	virtual	void			add_Box							(const Fobb&		V);
 	virtual	void			add_Cylinder					(const Pcylinder&	V);
+	virtual void			add_Shape						(const SBoneShape& shape);
+	virtual void			add_Shape						(const SBoneShape& shape,const Fmatrix& offset);
 
 	virtual void			set_ContactCallback				(ContactCallbackFun* callback);
 

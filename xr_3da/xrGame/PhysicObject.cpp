@@ -39,7 +39,7 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 			break;
 		case epotSkeleton:
 			R_ASSERT				(pVisual&&PKinematics(pVisual));
-			PKinematics(pVisual)->PlayCycle("death_init");
+			PKinematics(pVisual)->PlayCycle("idle");
 			PKinematics(pVisual)->Calculate();
 			break;
 		default: NODEFAULT; 
@@ -105,6 +105,7 @@ void CPhysicObject::AddElement(CPhysicsElement* root_e, int id)
 	}
 }
 
+
 void CPhysicObject::CreateBody(LPCSTR fixed_bone) {
 	m_pPhysicsShell		= P_create_Shell();
 	switch(m_type) {
@@ -157,7 +158,9 @@ void CPhysicObject::Hit(float P, Fvector &dir,	CObject* who, s16 element,Fvector
 void CPhysicObject::CreateSkeleton(LPCSTR fixed_bone)
 {
 	if (!pVisual) return;
-
+	m_pPhysicsShell		= P_create_Shell();
+	m_pPhysicsShell->build_FromKinematics(PKinematics(pVisual));
+/*
 	int iFBone = PKinematics(pVisual)->LL_BoneID(fixed_bone);
 
 	Fmatrix ident;
@@ -302,12 +305,12 @@ void CPhysicObject::CreateSkeleton(LPCSTR fixed_bone)
 	element->setDensity(density);
 	element->set_ParentElement(parent);
 	m_pPhysicsShell->add_Element(element);
-	/*
-	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
-	joint->SetAnchorVsSecondElement(0,0,0);
-	joint->SetAxisDirVsSecondElement(0,1,0,0);
-	joint->SetLimits(-M_PI/4.f,M_PI/3.f,0);
-	*/
+	
+	//joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
+	//joint->SetAnchorVsSecondElement(0,0,0);
+	//joint->SetAxisDirVsSecondElement(0,1,0,0);
+	//joint->SetLimits(-M_PI/4.f,M_PI/3.f,0);
+	
 
 	joint=P_create_Joint(CPhysicsJoint::full_control,parent,element);
 	joint->SetAnchorVsSecondElement(0,0,0);
@@ -692,7 +695,7 @@ void CPhysicObject::CreateSkeleton(LPCSTR fixed_bone)
 		joint->SetAnchorVsSecondElement(0,0,0);
 		m_pPhysicsShell->add_Joint(joint);
 	}
-
+*/
 	//set shell start position
 	Fmatrix m;
 	m.set(mRotate);

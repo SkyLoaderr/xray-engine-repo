@@ -69,9 +69,10 @@ public:
 	virtual	void			add_Sphere				(const Fsphere&		V)							= 0;
 	virtual	void			add_Box					(const Fobb&		V)							= 0;
 	virtual	void			add_Cylinder			(const Pcylinder&	V)							= 0;
+	virtual void			add_Shape				(const SBoneShape& shape)						= 0;
+	virtual void			add_Shape				(const SBoneShape& shape,const Fmatrix& offset)	= 0;
 	virtual	void			set_ParentElement		(CPhysicsElement* p)							= 0;
-	virtual	void			set_BoxMass				(const Fobb& box, float mass)					= 0;
-
+	virtual	void			set_BoxMass				(const Fobb& box, float mass)					= 0;	
 	virtual void			setInertia				(const Fmatrix& M)								= 0;
 	virtual	dBodyID			get_body				()												= 0;
 
@@ -102,8 +103,8 @@ enum enumType{				//joint type
 
 	enumType eType;          //type of the joint
 
-	float erp;				 //joint erp
-	float cfm;				 //joint cfm
+	float m_erp;				 //joint erp
+	float m_cfm;				 //joint cfm
 
 	enum eVs {				//coordinate system 
 		vs_first,			//in first local
@@ -139,12 +140,14 @@ public:
 	
 	virtual void SetAxis					(const SPHAxis& axis,const int axis_num)		=0;
 	virtual void SetAnchor					(const Fvector& position)						=0;
+	virtual void SetAxisSDfactors			(float spring_factor,float damping_factor,int axis_num)=0;
+	virtual void SetJointSDfactors			(float spring_factor,float damping_factor)		=0;
 	virtual void SetAnchorVsFirstElement	(const Fvector& position)						=0;
 	virtual void SetAnchorVsSecondElement	(const Fvector& position)						=0;
 
 	virtual void SetAxisDir					(const Fvector& orientation,const int axis_num)	=0;
-	virtual void SetAxisDirVsFirstElement		(const Fvector& orientation,const int axis_num)	=0;
-	virtual void SetAxisDirVsSecondElement		(const Fvector& orientation,const int axis_num)	=0;
+	virtual void SetAxisDirVsFirstElement	(const Fvector& orientation,const int axis_num)	=0;
+	virtual void SetAxisDirVsSecondElement	(const Fvector& orientation,const int axis_num)	=0;
 
 	virtual void SetAnchor					(const float x,const float y,const float z)						=0;
 	virtual void SetAnchorVsFirstElement	(const float x,const float y,const float z)						=0;
@@ -167,11 +170,11 @@ public:
 class CPhysicsShell			: public CPhysicsBase
 {
 protected:
-CKinematics* p_kinematics;
+CKinematics* m_pKinematics;
 public:
 	BOOL					bActive;
 public:
-	void						set_Kinematics			(CKinematics* p)	{p_kinematics=p;}
+	void						set_Kinematics			(CKinematics* p)	{m_pKinematics=p;}
 	virtual void				set_JointResistance		(float force)										= 0;
 	virtual	void				add_Element				(CPhysicsElement* E)								= 0;
 	virtual	void				add_Joint				(CPhysicsJoint* E)									= 0;
@@ -183,6 +186,7 @@ public:
 	virtual void				SmoothElementsInertia	(float k)											= 0;
 	virtual CPhysicsElement*	get_Element				(s16 bone_id)										= 0;
 	virtual CPhysicsElement*	get_Element				(LPCSTR bone_name)									= 0;
+	virtual void				build_FromKinematics	(CKinematics* K)									= 0;
 	};
 
 
