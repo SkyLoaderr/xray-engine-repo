@@ -706,13 +706,11 @@ void CActor::shedule_Update	(u32 DT)
 {
 	setSVU(OnServer());
 
-	if(m_holder)
+	if(m_holder || !getEnabled() || !Ready())
 	{
 		inherited::shedule_Update		(DT);
 		return;
 	}
-	if (!getEnabled())	return;
-	if (!Ready())		return;
 
 	cam_shift				= 0.f;
 	cam_gray				= 0.f;
