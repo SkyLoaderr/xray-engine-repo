@@ -152,7 +152,7 @@ void CSkeletonX_ST::Release()
 	inherited::Release();
 }
 //////////////////////////////////////////////////////////////////////
-void CSkeletonX::_Load(const char* N, IReader *data, u32& dwVertCount) 
+void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount) 
 {	
 	sbones_array	= "sbones_array";
 
@@ -162,11 +162,12 @@ void CSkeletonX::_Load(const char* N, IReader *data, u32& dwVertCount)
 	// Load vertices
 	R_ASSERT	(data->find_chunk(OGF_VERTICES));
 			
+	u32			hw_bones	= (HW.Caps.geometry.dwRegisters-22)/3;
+	u32			sw_bones	= Parent->LL_BoneCount();
 #ifdef _EDITOR
 	u32			hw_bones	= 0;
-#else
-	u32			hw_bones	= (HW.Caps.geometry.dwRegisters-22)/3;
 #endif
+
 	u32			dwVertType,size,it,bpv=0,crc;
 	dwVertType	= data->r_u32(); 
 	dwVertCount	= data->r_u32();
@@ -179,14 +180,13 @@ void CSkeletonX::_Load(const char* N, IReader *data, u32& dwVertCount)
 		bpv			= 1;
 		size		= dwVertCount*sizeof(vertBoned1W);
 		crc			= crc32	(data->pointer(),size);
-		Vertices1W.create(crc,dwVertCount,(vertBoned1W*)data->pointer());
+		Vertices1W.create	(crc,dwVertCount,(vertBoned1W*)data->pointer());
 		for (it=0; it<dwVertCount; it++)
 			bids.insert	(Vertices1W[it].matrix);
-		//Msg	("         BPV: %d, %d verts, %d bone-influences",bpv,dwVertCount,bids.size());
 		if	(1==bids.size())	{
 			RenderMode						= RM_SINGLE;
 			RMS_boneid						= *bids.begin();
-		} else if (bids.size()<hw_bones) {
+		} else if (sw_bones<=hw_bones) {
 			RenderMode						= RM_SKINNING_1B;
 			Render->shader_option_skinning	(1);
 		}
@@ -195,13 +195,8 @@ void CSkeletonX::_Load(const char* N, IReader *data, u32& dwVertCount)
 		bpv			= 2;
 		size		= dwVertCount*sizeof(vertBoned2W);
 		crc			= crc32	(data->pointer(),size);
-		Vertices2W.create(crc,dwVertCount,(vertBoned2W*)data->pointer());
-		for (it=0; it<dwVertCount; it++)	{
-			bids.insert	(Vertices2W[it].matrix0);
-			bids.insert	(Vertices2W[it].matrix1);
-		}
-		//Msg	("         BPV: %d, %d verts, %d/%d bone-influences",bpv,dwVertCount,bids.size(),bids2.size());
-		if (bids.size()<hw_bones) {
+		Vertices2W.create	(crc,dwVertCount,(vertBoned2W*)data->pointer());
+		if (sw_bones<=hw_bones) {
 			RenderMode						= RM_SKINNING_2B;
 			Render->shader_option_skinning	(2);
 		}
