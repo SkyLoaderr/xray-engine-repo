@@ -747,7 +747,10 @@ void CAI_Soldier::OnLookingOver()
 	
 //	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime),aiSoldierPatrolUnderFire)
 	
-	CHECK_IF_SWITCH_TO_NEW_STATE(m_tpaPatrolPoints.size() > 1,aiSoldierPatrolRoute)
+	if (m_tpaPatrolPoints.size() > 1)
+		CHECK_IF_SWITCH_TO_NEW_STATE(this == Leader,aiSoldierPatrolRoute)
+	else
+		SWITCH_TO_NEW_STATE(aiSoldierFollowLeaderPatrol);
 	/**
 	for (int i=0; i<tpaDynamicSounds.size(); i++)
 		if (tpaDynamicSounds[i].dwTime > m_dwLastUpdate) {
