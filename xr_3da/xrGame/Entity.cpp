@@ -325,7 +325,8 @@ void CEntity::KillEntity(CObject* who)
 	u_EventGen		(P,GE_DIE,ID());
 	P.w_u16			(u16(who->ID()));
 	P.w_u32			(0);
-	u_EventSend		(P);
+	if (OnServer())
+		u_EventSend		(P);
 
 	m_dwDeathTime = Level().GetGameTime();
 }
