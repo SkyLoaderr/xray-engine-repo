@@ -2432,6 +2432,12 @@
 								RelativePath=".\CarInput.cpp">
 							</File>
 							<File
+								RelativePath=".\CarLights.cpp">
+							</File>
+							<File
+								RelativePath=".\CarLights.h">
+							</File>
+							<File
 								RelativePath=".\CarSound.cpp">
 							</File>
 							<File
@@ -3010,6 +3016,9 @@
 					Name="Objects"
 					Filter="">
 					<File
+						RelativePath=".\ph_shell_interface.h">
+					</File>
+					<File
 						RelativePath=".\PHDefs.h">
 					</File>
 					<File
@@ -3017,6 +3026,12 @@
 					</File>
 					<File
 						RelativePath="PHObject.h">
+					</File>
+					<File
+						RelativePath=".\PHShellCreator.cpp">
+					</File>
+					<File
+						RelativePath=".\PHShellCreator.h">
 					</File>
 					<File
 						RelativePath=".\PhysicsRefObject.h">

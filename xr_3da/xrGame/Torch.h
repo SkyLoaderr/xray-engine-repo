@@ -1,10 +1,12 @@
 #pragma once
 #include "inventory.h"
+#include "PHShellCreator.h"
 
 class CLAItem;
 
 class CTorch :
-	public CInventoryItem
+	public CInventoryItem,
+	public CPHShellSimpleCreator
 {
 typedef	CInventoryItem	inherited;
 	float			fBrightness;

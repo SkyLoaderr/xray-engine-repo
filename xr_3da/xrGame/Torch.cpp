@@ -58,16 +58,19 @@ BOOL CTorch::net_Spawn(LPVOID DC)
 	light_render->set_cone	(torch->spot_cone_angle);
 	light_render->set_texture(torch->spot_texture[0]?torch->spot_texture:0);
 
-	if (glow_render)		{
-		glow_render->set_texture(torch->glow_texture[0]?torch->glow_texture:0);
-		glow_render->set_color	(clr);
-		//glow_render->set_radius	(torch->glow_radius);
-	}
+	glow_render->set_texture(torch->glow_texture[0]?torch->glow_texture:0);
+	glow_render->set_color	(clr);
+	glow_render->set_radius	(torch->glow_radius);
 
 	R_ASSERT				(Visual());
 	lanim					= LALib.FindItem(torch->animator);
 
+	VERIFY						(m_pPhysicsShell);
+	CSE_Abstract *l_pE = (CSE_Abstract*)DC;
+	if(l_pE->ID_Parent==0xffff) m_pPhysicsShell->Activate(XFORM(),0,XFORM());
+	/*
 	if (0==m_pPhysicsShell) {
+		
 		// Physics (Box)
 		Fobb obb; Visual()->vis.box.get_CD(obb.m_translate,obb.m_halfsize); obb.m_rotate.identity();
 		// Physics (Elements)
@@ -80,8 +83,9 @@ BOOL CTorch::net_Spawn(LPVOID DC)
 		if(l_pE->ID_Parent==0xffff) m_pPhysicsShell->Activate(XFORM(),0,XFORM());
 		m_pPhysicsShell->mDesired.identity();
 		m_pPhysicsShell->fDesiredStrength = 0.f;
-	}
 
+	}
+	*/
 	setVisible(true);
 	setEnabled(true);
 
