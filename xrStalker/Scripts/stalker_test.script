@@ -1,3 +1,7 @@
+function animation_callback(action_type)
+	printf		("Animation is finished!")
+end
+
 function main ()
     stalker			= get_level_object ("m_stalker_e0000")
     stalker:script	(true,stalker_test:script_name());
@@ -33,7 +37,9 @@ function main ()
 --		cond		(cond.move_end)
 --	)
 
-	action1 (
+	stalker:set_callback(animation_callback,game_object.animation)
+	
+	action (
 		stalker, 
 		move		(move.standing, move.walk, move.line, patrol ("way0000")),
 		look		(look.path_dir),
@@ -47,7 +53,7 @@ function main ()
 		stalker, 
 		move		(move.standing, move.stand, move.line, patrol ("way0000")),
 		anim		("stoya_ruje_ 0"),
-		cond		(cond.time_end, 10000)
+		cond		(cond.anim_end)
 	)
 	
 	while stalker:action() do
