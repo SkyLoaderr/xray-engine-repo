@@ -17,7 +17,7 @@ class ENGINE_API CApplication	:
 	};
 	
 private:
-	Shader					ll_hLogo;
+	Shader*					ll_hLogo;
 	CVertexStream*			ll_pStream;
 	DWORD					ll_dwReference;
 private:

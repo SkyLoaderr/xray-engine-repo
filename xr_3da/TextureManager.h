@@ -101,13 +101,13 @@ public:
 	IC void set_Textures	(STextureList* T);
 	IC void set_Matrices	(SMatrixList* M);
 	IC void set_Constants	(SConstantList* C, BOOL bPS);
-	IC void set_Shader		(Shader& S, DWORD pass=0)
+	IC void set_Shader		(Shader* S, DWORD pass=0)
 	{
-		CPass&	P		= S.Passes[pass];
+		CPass&	P		= S->Passes[pass];
 		set_Code		(P.dwStateBlock);
 		set_Textures	(P.T);
 		set_Matrices	(P.M);
-		set_Constants	(P.C,S.Flags.bPixelShader);
+		set_Constants	(P.C,S->Flags.bPixelShader);
 	}
 };
 
