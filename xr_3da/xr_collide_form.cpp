@@ -169,7 +169,7 @@ CCF_Skeleton::CCF_Skeleton(CObject* O) : CCFModel(O)
 void CCF_Skeleton::BuildState()
 {
 	dwFrame			= Device.dwFrame;
-	PKinematics	K	= PKinematics(owner->Visual());
+	CKinematics* K	= PKinematics(owner->Visual());
 	K->Calculate	();
 	
 	Fmatrix &L2W	= owner->svTransform;
