@@ -81,7 +81,7 @@ void Compress			(LPCSTR path)
 	printf				("\n%-80s   ",path);
 	if (testSKIP(path))	{
 		filesSKIP	++;
-		printf(" -A SKIP");
+		printf(" - a SKIP");
 		return;
 	}
 
@@ -92,7 +92,7 @@ void Compress			(LPCSTR path)
 	u32			a_tests		= 0;
 
 	ALIAS*		A			= testALIAS(src,a_tests);
-	printf				("%2dA ",a_tests);
+	printf				("%3da ",a_tests);
 	if (A) 
 	{
 		filesALIAS			++;
