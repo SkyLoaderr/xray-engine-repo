@@ -119,7 +119,7 @@ public:
 
 	MESHEDGE_APP_DEFINED		// App-defined data.
 
-	BINARY_HEAP_VARS();			// Helper stuff.
+//	BINARY_HEAP_VARS();			// Helper stuff.
 
 	MeshEdge ( void );
 	MeshEdge ( MeshPt *pNewPt1, MeshPt *pNewPt2, MeshEdge *pListRoot = NULL );
@@ -1069,9 +1069,9 @@ inline MeshEdge *MeshEdge::DoProxMatch ( void )
 	// Loop through all the prox pts to pPt1
 	//		Loop through all their edges.
 	//			If the other pt is prox to pPt2, then we found a prox edge.
-	int i;
-	MeshPt **ppPt = pPt1->ProxPtList.Ptr();
-	for ( i = 0; i < pPt1->ProxPtList.Size(); i++ )
+	u32 i;
+	MeshPt **ppPt = pPt1->ProxPtList.ptr();
+	for ( i = 0; i < pPt1->ProxPtList.size(); i++ )
 	{
 		MeshPt *pPtProx = ppPt[i];
 		VERIFY ( pPtProx != NULL );
@@ -1272,17 +1272,17 @@ inline MeshPt::MeshPt ( MeshPt *pListRoot )
 inline MeshPt::~MeshPt ( void )
 {
 	// Can't just do a simple loop - RemoveProx modifies the list.
-	while ( ProxPtList.Size() > 0 )
+	while ( ProxPtList.size() > 0 )
 	{
-		bool bRes = RemoveProx ( ProxPtList.Ptr()[0] );
+		bool bRes = RemoveProx ( ProxPtList.ptr()[0] );
 		VERIFY ( bRes );
 	}
  
 	// Should not be any tris.
-	VERIFY ( TriList.Size() == 0 );
+	VERIFY ( TriList.size() == 0 );
 
 	// Should not be any edges.
-	VERIFY ( EdgeList.Size() == 0 );
+	VERIFY ( EdgeList.size() == 0 );
 
 	ListDel();
 }
@@ -1290,35 +1290,35 @@ inline MeshPt::~MeshPt ( void )
 inline void MeshPt::RemoveEdge ( MeshEdge *pEdge )
 {
 	VERIFY ( pEdge != NULL );
-	MeshEdge **ppEdgeList = EdgeList.Ptr();
-	int i;
-	for ( i = 0; i < EdgeList.Size(); i++ )
+	MeshEdge **ppEdgeList = EdgeList.ptr();
+	u32 i;
+	for ( i = 0; i < EdgeList.size(); i++ )
 	{
 		if ( ppEdgeList[i] == pEdge )
 		{
 			break;
 		}
 	}
-	VERIFY ( i < EdgeList.Size() );
+	VERIFY ( i < EdgeList.size() );
 	// Bin this entry.
-	EdgeList.RemoveItem ( i );
+	EdgeList.erase_fast ( i );
 }
 
 inline void MeshPt::RemoveTri ( MeshTri *pTri )
 {
 	VERIFY ( pTri != NULL );
-	MeshTri **ppTriList = TriList.Ptr();
-	int i;
-	for ( i = 0; i < TriList.Size(); i++ )
+	MeshTri **ppTriList = TriList.ptr();
+	u32 i;
+	for ( i = 0; i < TriList.size(); i++ )
 	{
 		if ( ppTriList[i] == pTri )
 		{
-			break;
+			break; 
 		}
 	}
-	VERIFY ( i < TriList.Size() );
+	VERIFY ( i < TriList.size() );
 	// Bin this entry with the last entry.
-	TriList.RemoveItem ( i );
+	TriList.erase_fast ( i );
 }
 
 inline void MeshPt::AddTri ( MeshTri *pTri )
@@ -1326,15 +1326,15 @@ inline void MeshPt::AddTri ( MeshTri *pTri )
 	VERIFY ( pTri != NULL );
 #ifdef DEBUG
 	// Make sure this hasn't been added already.
-	MeshTri **ppTriList = TriList.Ptr();
-	int i;
-	for ( i = 0; i < TriList.Size(); i++ )
+	MeshTri **ppTriList = TriList.ptr();
+	u32 i;
+	for ( i = 0; i < TriList.size(); i++ )
 	{
 		VERIFY ( ppTriList[i] != NULL );
 		VERIFY ( ppTriList[i] != pTri );
 	}
 #endif
-	*(TriList.AddItem()) = pTri;
+	*(TriList.append()) = pTri;
 }
 
 inline void MeshPt::AddEdge ( MeshEdge *pEdge )
@@ -1342,15 +1342,15 @@ inline void MeshPt::AddEdge ( MeshEdge *pEdge )
 	VERIFY ( pEdge != NULL );
 #ifdef DEBUG
 	// Make sure this hasn't been added already.
-	int i;
-	MeshEdge **ppEdgeList = EdgeList.Ptr();
-	for ( i = 0; i < EdgeList.Size(); i++ )
+	u32 i;
+	MeshEdge **ppEdgeList = EdgeList.ptr();
+	for ( i = 0; i < EdgeList.size(); i++ )
 	{
 		VERIFY ( ppEdgeList[i] != NULL );
 		VERIFY ( ppEdgeList[i] != pEdge );
 	}
 #endif
-	*(EdgeList.AddItem()) = pEdge;
+	*(EdgeList.append()) = pEdge;
 }
 
 
@@ -1358,9 +1358,9 @@ inline MeshEdge *MeshPt::FindEdge ( MeshPt *pPt )
 {
 	VERIFY ( pPt != NULL );
 	VERIFY ( pPt != this );
-	MeshEdge **ppEdgeList = EdgeList.Ptr();
-	int i;
-	for ( i = 0; i < EdgeList.Size(); i++ )
+	MeshEdge **ppEdgeList = EdgeList.ptr();
+	u32 i;
+	for ( i = 0; i < EdgeList.size(); i++ )
 	{
 		MeshEdge *pEdge = ppEdgeList[i];
 		VERIFY ( pEdge != NULL );
@@ -1390,9 +1390,9 @@ inline MeshEdge *MeshPt::FindTriEdge ( MeshPt *pPt )
 {
 	VERIFY ( pPt != NULL );
 	VERIFY ( pPt != this );
-	MeshEdge **ppEdgeList = EdgeList.Ptr();
-	int i;
-	for ( i = 0; i < EdgeList.Size(); i++ )
+	MeshEdge **ppEdgeList = EdgeList.ptr();
+	u32 i;
+	for ( i = 0; i < EdgeList.size(); i++ )
 	{
 		MeshEdge *pEdge = ppEdgeList[i];
 		VERIFY ( pEdge != NULL );
@@ -1407,10 +1407,10 @@ inline MeshEdge *MeshPt::FindTriEdge ( MeshPt *pPt )
 			{
 				return ( pEdge );
 			}
-			else
-			{
-				int bogus = 0;
-			}
+//			else
+//			{
+//				int bogus = 0;
+//			}
 		}
 		if ( pEdge->pPt1 == pPt )
 		{
@@ -1422,10 +1422,10 @@ inline MeshEdge *MeshPt::FindTriEdge ( MeshPt *pPt )
 			{
 				return ( pEdge );
 			}
-			else
-			{
-				int bogus = 0;
-			}
+//			else
+//			{
+//				int bogus = 0;
+//			}
 		}
 	}
 	return ( NULL );
@@ -1436,9 +1436,9 @@ inline MeshTri *MeshPt::FindTri ( MeshPt *pPt1, MeshPt *pPt2 )
 {
 	VERIFY ( pPt1 != NULL );
 	VERIFY ( pPt2 != NULL );
-	MeshTri **ppTriList = TriList.Ptr();
-	int i;
-	for ( i = 0; i < TriList.Size(); i++ )
+	MeshTri **ppTriList = TriList.ptr();
+	u32 i;
+	for ( i = 0; i < TriList.size(); i++ )
 	{
 		MeshTri *pTri = ppTriList[i];
 		VERIFY ( pTri != NULL );
@@ -1468,9 +1468,9 @@ inline MeshTri *MeshPt::NextTri ( MeshPt *pPt )
 	VERIFY ( iCurTriNum >= 0 );
 	while ( TRUE )
 	{
-		if ( iCurTriNum < TriList.Size() )
+		if ( iCurTriNum < (int)TriList.size() )
 		{
-			MeshTri *pTri = (TriList.Ptr())[iCurTriNum++];
+			MeshTri *pTri = (TriList.ptr())[iCurTriNum++];
 			VERIFY ( pTri != NULL );
 			if ( pPt == NULL )
 			{
@@ -1520,9 +1520,9 @@ inline MeshEdge *MeshPt::NextEdge ( MeshPt *pPt )
 	VERIFY ( iCurEdgeNum >= 0 );
 	while ( TRUE )
 	{
-		if ( iCurEdgeNum < EdgeList.Size() )
+		if ( iCurEdgeNum < (int)EdgeList.size() )
 		{
-			MeshEdge *pEdge = (EdgeList.Ptr())[iCurEdgeNum++];
+			MeshEdge *pEdge = (EdgeList.ptr())[iCurEdgeNum++];
 			VERIFY ( pEdge != NULL );
 			if ( pPt == NULL )
 			{
@@ -1566,8 +1566,8 @@ inline void MeshPt::EndEdge ( void )
 inline bool MeshPt::CheckProx ( MeshPt *pPt )
 {
 	VERIFY ( pPt != NULL );
-	MeshPt **ppPt = ProxPtList.Ptr();
-	for ( int i = 0; i < ProxPtList.Size(); i++ )
+	MeshPt **ppPt = ProxPtList.ptr();
+	for ( u32 i = 0; i < ProxPtList.size(); i++ )
 	{
 		VERIFY ( ppPt[i] != NULL );
 		if ( ppPt[i] == pPt )
@@ -1599,10 +1599,10 @@ inline bool MeshPt::AddProx ( MeshPt *pPt, bool bProxEdges )
 		VERIFY ( !pPt->CheckProx ( this ) );
 
 		// Add to this pt.
-		*(ProxPtList.AddItem()) = pPt;
+		*(ProxPtList.append()) = pPt;
 
 		// Add to the other pt.
-		*(pPt->ProxPtList.AddItem()) = this;
+		*(pPt->ProxPtList.append()) = this;
 
 		bRes = TRUE;
 	}
@@ -1615,8 +1615,8 @@ inline bool MeshPt::AddProx ( MeshPt *pPt, bool bProxEdges )
 	while ( pedge != NULL )
 	{
 		MeshPt *pptOther = pedge->OtherPt ( this );
-		MeshPt **ppPt = pptOther->ProxPtList.Ptr();
-		for ( int i = 0; i < pptOther->ProxPtList.Size(); i++ )
+		MeshPt **ppPt = pptOther->ProxPtList.ptr();
+		for ( u32 i = 0; i < pptOther->ProxPtList.size(); i++ )
 		{
 			VERIFY ( ppPt[i] != NULL );
 			MeshEdge *pedgeProx = pPt->FindEdge ( ppPt[i] );
@@ -1645,33 +1645,33 @@ inline bool MeshPt::RemoveProx ( MeshPt *pPt )
 		VERIFY ( pPt->CheckProx ( this ) );
 
 		MeshPt **ppPtList;
-		int i;
+		u32 i;
 
 		// Remove pPt from this.
-		ppPtList = ProxPtList.Ptr();
-		for ( i = 0; i < ProxPtList.Size(); i++ )
+		ppPtList = ProxPtList.ptr();
+		for ( i = 0; i < ProxPtList.size(); i++ )
 		{
 			if ( ppPtList[i] == pPt )
 			{
 				break;
 			}
 		}
-		VERIFY ( i < ProxPtList.Size() );
+		VERIFY ( i < ProxPtList.size() );
 		// Replace this entry with the last entry.
-		ProxPtList.RemoveItem(i);
+		ProxPtList.erase_fast(i);
 
 		// Remove this from pPt.
-		ppPtList = pPt->ProxPtList.Ptr();
-		for ( i = 0; i < pPt->ProxPtList.Size(); i++ )
+		ppPtList = pPt->ProxPtList.ptr();
+		for ( i = 0; i < pPt->ProxPtList.size(); i++ )
 		{
 			if ( ppPtList[i] == this )
 			{
 				break;
 			}
 		}
-		VERIFY ( i < pPt->ProxPtList.Size() );
+		VERIFY ( i < pPt->ProxPtList.size() );
 		// Replace this entry with the last entry.
-		ProxPtList.RemoveItem(i);
+		ProxPtList.erase_fast(i);
 
 		return ( TRUE );
 	}
@@ -1698,9 +1698,9 @@ inline MeshPt *MeshPt::NextProx ( void )
 	VERIFY ( iCurProxNum >= 0 );
 	while ( TRUE )
 	{
-		if ( iCurProxNum < ProxPtList.Size() )
+		if ( iCurProxNum < (int)ProxPtList.size() )
 		{
-			MeshPt *pptProx = (ProxPtList.Ptr())[iCurProxNum++];
+			MeshPt *pptProx = (ProxPtList.ptr())[iCurProxNum++];
 			VERIFY ( pptProx != NULL );
 			return ( pptProx );
 		}
@@ -1748,8 +1748,8 @@ inline bool MeshPt::ConsistencyCheck ( MeshPt *pPtRoot, MeshEdge *pEdgeRoot, Mes
 	}
 
 	// Check prox.
-	MeshPt **ppPt = ProxPtList.Ptr();
-	for ( int i = 0; i < ProxPtList.Size(); i++ )
+	MeshPt **ppPt = ProxPtList.ptr();
+	for ( u32 i = 0; i < ProxPtList.size(); i++ )
 	{
 		VERIFY ( ppPt[i] != NULL );
 		if ( !ppPt[i]->CheckProx ( this ) )

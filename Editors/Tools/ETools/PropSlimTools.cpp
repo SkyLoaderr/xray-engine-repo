@@ -3,14 +3,40 @@
 #include "object.h"
 #include "object_sliding.h"
 
-namespace ETOOLS{
-ETOOLS_API void ContractionClear		(QSContraction*& dst_conx)
+static Object*					g_pObject						= 0;
+static ArbitraryList<MeshPt*>	g_ppTempPts						= 0;
+static float					g_fSlidingWindowErrorTolerance	= 0.1f;
+static BOOL						g_bOptimiseVertexOrder			= FALSE;
+static u32						g_bMaxSlidingWindow				= u32(-1);
+static VIPM_Result*				g_pResult						= 0;
+
+ETOOLS_API void			VIPM_Init			()
 {
-	xr_delete				(dst_conx);
+	R_ASSERT2	(0==g_pObject,"VIPM already in use!");
+	g_pObject							= xr_new<Object>();
+	g_pResult							= xr_new<VIPM_Result>();
+	g_pObject->iNumCollapses			= 0;
+	g_pObject->iCurSlidingWindowLevel	= 0;
+}
+
+ETOOLS_API void			VIPM_AppendVertex	(const Fvector3& p, const Fvector2& uv)
+{
+	MeshPt* pt			= xr_new<MeshPt>	(&g_pObject->CurPtRoot);
+	g_ppTempPts.push_back(pt);
+	pt->mypt.vPos 		= p;
+	pt->mypt.fU			= uv.x;
+	pt->mypt.fV			= uv.y;
+	pt->mypt.dwIndex	= g_ppTempPts.size()-1;
+}
+
+ETOOLS_API void			VIPM_AppendFace		(u16 v0, u16 v1, u16 v2)
+{
+	xr_new<MeshTri>(g_ppTempPts[v0],g_ppTempPts[v1],g_ppTempPts[v2], &g_pObject->CurTriRoot, &g_pObject->CurEdgeRoot );
 }
 
 void CalculateAllCollapses(Object* m_pObject, float m_fSlidingWindowErrorTolerance=1.f)
 {
+	m_pObject->BinEdgeCollapse();
 	while (true){
 		// Find the best collapse you can.
 		// (how expensive is this? Ohhhh yes).
@@ -93,58 +119,23 @@ void CalculateAllCollapses(Object* m_pObject, float m_fSlidingWindowErrorToleran
 	}
 }
 
+ETOOLS_API VIPM_Result*	VIPM_Convert		(u32 max_sliding_window, float error_tolerance, BOOL optimize_vertex_order)
+{
+	g_pObject->SetNewLevel	(0);
+	CalculateAllCollapses	(g_pObject,error_tolerance);
+	CalculateSW				(g_pObject,g_pResult);
+	return g_pResult;
+}
+
+ETOOLS_API void			VIPM_Destroy		()
+{
+	xr_delete			(g_pResult);
+	xr_delete			(g_pObject);
+	g_ppTempPts.resize	(0);
+}
+/*
 ETOOLS_API BOOL ContractionGenerate		(QSMesh* src_mesh, QSContraction*& dst_conx, u32 min_faces, float max_error)
 {
-	VERIFY					(src_mesh);
-	VERIFY					(src_mesh->verts.size());
-	VERIFY					(src_mesh->faces.size());
-
-	Object*	m_pObject		= xr_new<Object>();
-	// prepare model
-	// The de-index list.
-	MeshPt **ppPts			= xr_alloc<MeshPt*>(src_mesh->verts.size());
-	for (u32 v_idx=0; v_idx<src_mesh->verts.size(); v_idx++){
-		QSVert& v			= src_mesh->verts[v_idx];
-		MeshPt * pt			= xr_new<MeshPt>( &m_pObject->CurPtRoot );
-		ppPts[v_idx]		= pt;
-		pt->mypt.vPos 		= v.pt;
-		pt->mypt.fU			= v.uv.x;
-		pt->mypt.fV			= v.uv.y;
-		pt->mypt.dwIndex	= v_idx;
-	}
-	for (u32 f_idx=0; f_idx<src_mesh->faces.size(); f_idx++){
-		QSFace& f			= src_mesh->faces[f_idx];
-		MeshTri *ptri		= xr_new<MeshTri>(ppPts[f.v[0]],ppPts[f.v[1]],ppPts[f.v[2]], &m_pObject->CurTriRoot, &m_pObject->CurEdgeRoot );
-		ptri->mytri.dwIndex	= f_idx;
-	}
-	xr_free(ppPts);
-
-	m_pObject->iFullNumTris = 0;
-	m_pObject->iFullNumPts	= 0;
-	MeshPt *pt = m_pObject->CurPtRoot.ListNext();
-	while ( pt != NULL )
-	{
-		// All the pts had better be the same material.
-		pt = pt->ListNext();
-		m_pObject->iFullNumPts++;
-	}
-	MeshTri *tri = m_pObject->CurTriRoot.ListNext();
-	while ( tri != NULL )
-	{
-		// All the pts had better be the same material.
-		tri = tri->ListNext();
-		m_pObject->iFullNumTris++;
-	}
-
-	MeshEdge *edge = m_pObject->CurEdgeRoot.ListNext();
-	while ( edge != NULL )
-	{
-		edge = edge->ListNext();
-	}
-
-	m_pObject->iNumCollapses = 0;
-	m_pObject->iCurSlidingWindowLevel = 0;
-	m_pObject->SetNewLevel ( m_pObject->iCurSlidingWindowLevel );
 
 	dst_conx				= xr_new<QSContraction>(src_mesh->verts.size());
 
@@ -157,7 +148,7 @@ ETOOLS_API BOOL ContractionGenerate		(QSMesh* src_mesh, QSContraction*& dst_conx
 	int iLoD = 700;
 	if ( iLoD < 0 )						iLoD = 0;
 	else if ( iLoD > SM->iNumCollapses )iLoD = SM->iNumCollapses;
-	SlidingWindowRecord *pswr = SM->swrRecords.Item ( iLoD );
+	SlidingWindowRecord *pswr = SM->swrRecords.item ( iLoD );
 
 	// write SMF
 	IWriter* W			= FS.w_open("x:\\import\\original.smf");
@@ -182,4 +173,4 @@ ETOOLS_API BOOL ContractionGenerate		(QSMesh* src_mesh, QSContraction*& dst_conx
 
 	return TRUE;
 }
-}
+*/

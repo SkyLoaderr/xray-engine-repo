@@ -16,6 +16,8 @@
 extern int g_iMaxNumTrisDrawn;
 
 
+#define INVALID_INDEX u32(-1)
+
 // The data that gets stored inside mesh.h's tris, pts and edges.
 class MeshPt;
 class MeshEdge;
@@ -46,7 +48,6 @@ struct MyTri
 	// Temporary data.
 	int			iSlidingWindowLevel;// Which sliding window level this tri belongs to.
 
-	DWORD		dwIndex;
 	DWORD		dwNewIndex;
 	MeshTri*	pOriginalTri;
 };
