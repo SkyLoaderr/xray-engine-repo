@@ -1301,16 +1301,22 @@ void xrSE_Human::FillProp(LPCSTR pref, PropItemVec& items)
 
 xrSE_Idol::xrSE_Idol(LPCSTR caSection) : xrSE_Human(caSection)
 {
+	m_dwAniPlayType		= 0;
+	m_caAnimations[0]	= 0;
 }
 
 void xrSE_Idol::STATE_Read(NET_Packet& P, u16 size)
 {
 	inherited::STATE_Read(P,size);
+	P.r_string			(m_caAnimations);
+	P.r_u32				(m_dwAniPlayType);
 }
 
 void xrSE_Idol::STATE_Write(NET_Packet& P)
 {
 	inherited::STATE_Write(P);
+	P.w_string	(m_caAnimations);
+	P.w_u32		(m_dwAniPlayType);
 }
 
 void xrSE_Idol::UPDATE_Read(NET_Packet& P)
@@ -1324,7 +1330,9 @@ void xrSE_Idol::UPDATE_Write(NET_Packet& P)
 #ifdef _EDITOR
 void xrSE_Idol::FillProp(LPCSTR pref, PropItemVec& items)
 {
-   	inherited::FillProp(pref, items);
+   	inherited::FillProp		(pref, items);
+    PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,s_name,"Idol", "Animations"),m_caAnimations,sizeof(m_caAnimations));
+   	PHelper.CreateU32		(items, PHelper.PrepareKey(pref,s_name,"Idol", "Health"),&m_iAniPlayType,0,2,1);
 }	
 #endif
 

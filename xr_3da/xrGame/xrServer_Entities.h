@@ -432,6 +432,8 @@ xrSE_DECLARE_BEGIN(xrSE_Human,CALifeMonsterAbstract)
 xrSE_DECLARE_END
 
 xrSE_DECLARE_BEGIN(xrSE_Idol,xrSE_Human)
+	string256						m_caAnimations;
+	u32								m_dwAniPlayType;
 									xrSE_Idol	(LPCSTR caSection);
 xrSE_DECLARE_END
 

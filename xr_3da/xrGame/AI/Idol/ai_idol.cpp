@@ -33,12 +33,12 @@ BOOL CAI_Idol::net_Spawn			(LPVOID DC)
 	
 	if (!inherited::net_Spawn(DC))	return FALSE;
 	
+	m_iAnyPlayType					= tpIdol->m_dwAniPlayType;
 	m_tpaAnims.clear				();
-	LPCSTR							S = pSettings->r_string(cNameSect(),"animations");
-	u32								N = _GetItemCount(S);
+	u32								N = _GetItemCount(tpIdol->m_caAnimations);
 	string16						I;
 	for (u32 i=0; i<N; i++)
-		m_tpaAnims.push_back		(PKinematics(pVisual)->ID_Cycle(_GetItem(S,i,I)));
+		m_tpaAnims.push_back		(PKinematics(pVisual)->ID_Cycle(_GetItem(tpIdol->m_caAnimations,i,I)));
 
 	return							TRUE;
 }
@@ -47,9 +47,29 @@ void CAI_Idol::SelectAnimation		(const Fvector& _view, const Fvector& _move, flo
 {
 	R_ASSERT						(!m_tpaAnims.empty());
 	if (g_Alive()) {
-		if (!m_bPlaying) {// || (!m_tpCurrentBlend->noloop && !m_tpCurrentBlend->playing))
-			m_tpCurrentBlend		= PKinematics(pVisual)->PlayCycle	(m_tpaAnims[::Random.randI(0,m_tpaAnims.size())],TRUE,AnimCallback,this);
-			m_bPlaying				= true;
+		switch (m_iAnyPlayType) {
+			case 0 : {
+				if (!m_bPlaying) {// || (!m_tpCurrentBlend->noloop && !m_tpCurrentBlend->playing))
+					m_tpCurrentBlend		= PKinematics(pVisual)->PlayCycle	(m_tpaAnims[::Random.randI(0,m_tpaAnims.size())],TRUE,AnimCallback,this);
+					m_bPlaying				= true;
+				}
+				break;
+			}
+			case 1 : {
+				if (!m_bPlaying) {// || (!m_tpCurrentBlend->noloop && !m_tpCurrentBlend->playing))
+					m_tpCurrentBlend		= PKinematics(pVisual)->PlayCycle	(m_tpaAnims[::Random.randI(0,m_tpaAnims.size())],TRUE,AnimCallback,this);
+					m_bPlaying				= true;
+				}
+				break;
+			}
+			case 2 : {
+				if (!m_bPlaying) {// || (!m_tpCurrentBlend->noloop && !m_tpCurrentBlend->playing))
+					m_tpCurrentBlend		= PKinematics(pVisual)->PlayCycle	(m_tpaAnims[::Random.randI(0,m_tpaAnims.size())],TRUE,AnimCallback,this);
+					m_bPlaying				= true;
+				}
+				break;
+			}
+			default : NODEFAULT;
 		}
 	}
 }

@@ -40,7 +40,7 @@ void CAI_Stalker::OnVisible	()
 
 bool CAI_Stalker::bfCheckForVisibility(CEntity* tpEntity)
 {
-//	return(true);
+	return(true);
 //	if (Level().iGetKeyState(DIK_RCONTROL))
 //		return(false);
 #ifdef LOG_PARAMETERS

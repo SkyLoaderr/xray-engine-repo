@@ -13,7 +13,7 @@
 #include "ai_stalker_animations.h"
 #include "ai_stalker_space.h"
 
-#define LOG_PARAMETERS
+//#define LOG_PARAMETERS
 
 #ifdef LOG_PARAMETERS
 extern FILE	*ST_VF;
