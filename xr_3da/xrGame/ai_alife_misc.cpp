@@ -11,22 +11,33 @@
 
 void CAI_ALife::vfAssignGraphPosition(CALifeMonsterAbstract	*tpALifeMonsterAbstract)
 {
-	tpALifeMonsterAbstract->m_tNextGraphID			= tpALifeMonsterAbstract->m_tPrevGraphID = tpALifeMonsterAbstract->m_tGraphID;
-	tpALifeMonsterAbstract->m_fDistanceFromPoint	= 0;
+	tpALifeMonsterAbstract->m_tNextGraphID		= tpALifeMonsterAbstract->m_tPrevGraphID = tpALifeMonsterAbstract->m_tGraphID;
+	tpALifeMonsterAbstract->m_fDistanceToPoint	= tpALifeMonsterAbstract->m_fDistance;
+	_GRAPH_ID									tGraphID		= tpALifeMonsterAbstract->m_tNextGraphID;
+	u16											wNeighbourCount = (u16)getAI().m_tpaGraph[tGraphID].tNeighbourCount;
+	CALifeGraph::SGraphEdge						*tpaEdges		= (CALifeGraph::SGraphEdge *)((BYTE *)getAI().m_tpaGraph + getAI().m_tpaGraph[tGraphID].dwEdgeOffset);
+	for (int i=0; i<wNeighbourCount; i++)
+		if (tpaEdges[i].fPathDistance > tpALifeMonsterAbstract->m_fDistance) {
+			tpALifeMonsterAbstract->m_fDistanceFromPoint	= tpaEdges[i].fPathDistance - tpALifeMonsterAbstract->m_fDistance;
+			break;
+		}
 }
-
 
 void CAI_ALife::vfChooseNextRoutePoint(CALifeMonsterAbstract	*tpALifeMonsterAbstract)
 {
 	if (tpALifeMonsterAbstract->m_tNextGraphID != tpALifeMonsterAbstract->m_tGraphID) {
 		_TIME_ID tCurTime = tfGetGameTime();
-		Msg("%d ->(%f) %d",tpALifeMonsterAbstract->m_tGraphID,tpALifeMonsterAbstract->m_fDistanceToPoint - tpALifeMonsterAbstract->m_fDistanceFromPoint,tpALifeMonsterAbstract->m_tNextGraphID);
 		tpALifeMonsterAbstract->m_fDistanceFromPoint += float(tCurTime - tpALifeMonsterAbstract->m_tTimeID)/1000.f * tpALifeMonsterAbstract->m_fCurSpeed;
+		Msg("[%f][%f][%f]",VPUSH(tpALifeMonsterAbstract->o_Position));
 		if (tpALifeMonsterAbstract->m_fDistanceToPoint - tpALifeMonsterAbstract->m_fDistanceFromPoint < EPS_L) {
 			vfChangeObjectGraphPoint(tpALifeMonsterAbstract,tpALifeMonsterAbstract->m_tGraphID,tpALifeMonsterAbstract->m_tNextGraphID);
 			tpALifeMonsterAbstract->m_fDistanceToPoint	= tpALifeMonsterAbstract->m_fDistanceFromPoint	= 0.0f;
 			tpALifeMonsterAbstract->m_tPrevGraphID		= tpALifeMonsterAbstract->m_tGraphID;
 			tpALifeMonsterAbstract->m_tGraphID			= tpALifeMonsterAbstract->m_tNextGraphID;
+			tpALifeMonsterAbstract->o_Position			= getAI().m_tpaGraph[tpALifeMonsterAbstract->m_tGraphID].tLocalPoint;
+			CALifeAbstractGroup							*tpALifeAbstractGroup = dynamic_cast<CALifeAbstractGroup*>(tpALifeMonsterAbstract);
+			if (tpALifeAbstractGroup)
+				tpALifeAbstractGroup->m_bCreateSpawnPositions = true;
 		}
 	}
 	if (tpALifeMonsterAbstract->m_tNextGraphID == tpALifeMonsterAbstract->m_tGraphID) {
@@ -39,15 +50,15 @@ void CAI_ALife::vfChooseNextRoutePoint(CALifeMonsterAbstract	*tpALifeMonsterAbst
 		int					iBranches		= 0;
 		for (int i=0; i<wNeighbourCount; i++)
 			for (int j=0; j<iPointCount; j++)
-				if (getAI().bfCheckMask(tpaTerrain[j].tMask,getAI().m_tpaGraph[tpaEdges[i].dwVertexNumber].tVertexTypes) && (tpaEdges[i].dwVertexNumber != tpALifeMonsterAbstract->m_tGraphID))
+				if (getAI().bfCheckMask(tpaTerrain[j].tMask,getAI().m_tpaGraph[tpaEdges[i].dwVertexNumber].tVertexTypes) && (tpaEdges[i].dwVertexNumber != tpALifeMonsterAbstract->m_tPrevGraphID))
 					iBranches++;
 		bool				bOk = false;
 		if (!iBranches) {
 			for (int i=0; i<wNeighbourCount; i++) {
 				for (int j=0; j<iPointCount; j++)
 					if (getAI().bfCheckMask(tpaTerrain[j].tMask,getAI().m_tpaGraph[tpaEdges[i].dwVertexNumber].tVertexTypes)) {
-						tpALifeMonsterAbstract->m_tGraphID	= tpALifeMonsterAbstract->m_tNextGraphID;
 						tpALifeMonsterAbstract->m_tNextGraphID	= (_GRAPH_ID)tpaEdges[i].dwVertexNumber;
+						tpALifeMonsterAbstract->m_fDistanceToPoint = tpaEdges[i].fPathDistance;
 						//m_dwTimeToChange	= Level().timeServer() + ::Random.randI(tpaTerrain[j].dwMinTime,tpaTerrain[j].dwMaxTime);
 						bOk = true;
 						break;
@@ -61,10 +72,10 @@ void CAI_ALife::vfChooseNextRoutePoint(CALifeMonsterAbstract	*tpALifeMonsterAbst
 			iBranches = 0;
 			for (int i=0; i<wNeighbourCount; i++) {
 				for (int j=0; j<iPointCount; j++)
-					if (getAI().bfCheckMask(tpaTerrain[j].tMask,getAI().m_tpaGraph[tpaEdges[i].dwVertexNumber].tVertexTypes) && (tpaEdges[i].dwVertexNumber != tpALifeMonsterAbstract->m_tGraphID)) {
+					if (getAI().bfCheckMask(tpaTerrain[j].tMask,getAI().m_tpaGraph[tpaEdges[i].dwVertexNumber].tVertexTypes) && (tpaEdges[i].dwVertexNumber != tpALifeMonsterAbstract->m_tPrevGraphID)) {
 						if (iBranches == iChosenBranch) {
-							tpALifeMonsterAbstract->m_tGraphID	= tpALifeMonsterAbstract->m_tNextGraphID;
 							tpALifeMonsterAbstract->m_tNextGraphID	= (_GRAPH_ID)tpaEdges[i].dwVertexNumber;
+							tpALifeMonsterAbstract->m_fDistanceToPoint = tpaEdges[i].fPathDistance;
 							//m_dwTimeToChange	= Level().timeServer() + ::Random.randI(tpaTerrain[j].dwMinTime,tpaTerrain[j].dwMaxTime);
 							bOk = true;
 							break;

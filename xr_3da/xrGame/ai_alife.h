@@ -39,6 +39,7 @@ private:
 	void							vfUpdateDynamicData			(CALifeDynamicObject *tpALifeDynamicObject);
 	void							vfUpdateDynamicData			();
 	void							vfCreateNewTask				(CALifeTrader *tpTrader);
+	void							vfAssignGraphPosition		(CALifeMonsterAbstract *tpALifeMonsterAbstract);
 	// surge
 	void							vfGenerateAnomalousZones	();
 	void							vfGenerateArtefacts			();
