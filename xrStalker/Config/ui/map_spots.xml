@@ -95,7 +95,6 @@
 <!-- location definitions -->
 	<actor_location hint="actor">
 		<level_map spot="actor_level_spot" pointer="actor_pointer"></level_map>
-		<mini_map  spot="actor_level_spot"  pointer="actor_pointer"></mini_map> 
 	</actor_location>
 
 	<enemy_location hint="enemy">
