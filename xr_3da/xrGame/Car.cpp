@@ -114,11 +114,14 @@ BOOL	CCar::net_Spawn				(CSE_Abstract* DC)
 	Log("car spawn");
 #endif
 	CSE_Abstract					*e = (CSE_Abstract*)(DC);
+	CSE_ALifeCar					*co=smart_cast<CSE_ALifeCar*>(e);
 	BOOL							R = inherited::net_Spawn(DC);
 	CPHSkeleton::Spawn(e);
 	setEnabled						(TRUE);
 	setVisible						(TRUE);
 	m_fSaveMaxRPM					= m_max_rpm;
+	fEntityHealth					=co->health;
+	CDamagableItem::RestoreEffect();
 	return							(CScriptEntity::net_Spawn(DC) && R);
 }
 
@@ -221,8 +224,7 @@ void CCar::RestoreNetState(CSE_PHSkeleton* po)
 	CPHSkeleton::RestoreNetState(po);
 	
 	CSE_ALifeCar* co=smart_cast<CSE_ALifeCar*>(po);
-	fEntityHealth=co->health;
-	CDamagableItem::RestoreEffect();
+
 	{
 		xr_map<u16,SDoor>::iterator i,e;
 		xr_vector<CSE_ALifeCar::SDoorState>::iterator		ii=co->door_states.begin();

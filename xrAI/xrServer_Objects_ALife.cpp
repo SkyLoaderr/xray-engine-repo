@@ -1230,6 +1230,7 @@ void CSE_ALifeCar::load(NET_Packet &tNetPacket)
 {
 	inherited1::load(tNetPacket);
 	inherited2::load(tNetPacket);
+
 }
 
 void CSE_ALifeCar::data_load(NET_Packet	&tNetPacket)
@@ -1255,6 +1256,7 @@ void CSE_ALifeCar::data_load(NET_Packet	&tNetPacket)
 		SWheelState ws;ws.read(tNetPacket);
 		wheel_states.push_back(ws);
 	}
+	health=tNetPacket.r_float();
 }
 void CSE_ALifeCar::data_save(NET_Packet &tNetPacket)
 {
@@ -1279,7 +1281,8 @@ void CSE_ALifeCar::data_save(NET_Packet &tNetPacket)
 			i->write(tNetPacket);
 		}
 		wheel_states.clear();
-	}	
+	}
+	tNetPacket.w_float(health);
 }
 void CSE_ALifeCar::SDoorState::read(NET_Packet& P)
 {
