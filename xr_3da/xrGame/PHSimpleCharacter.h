@@ -1,18 +1,19 @@
 #pragma once
 #include "PHCharacter.h"
+extern float object_demage_factor;
 
 class CPHSimpleCharacter : public CPHCharacter {
 protected:
 	////////////////////////// geometry
 	dGeomID m_geom_shell;
 	dGeomID m_wheel;
-	dGeomID	m_cap;
+
 	dGeomID m_hat;
 	dGeomID m_hat_transform;
 	dGeomID m_geom_group;
 	dGeomID m_wheel_transform;
 	dGeomID m_shell_transform;
-	dGeomID m_cap_transform;
+
 	dReal m_radius;
 	dReal m_cyl_hight;
 	////////////////////////// movement
@@ -70,7 +71,7 @@ public:
 	/////////////////CPHObject//////////////////////////////////////////////
 	virtual		void		PhDataUpdate						(dReal step)		;
 	virtual		void		PhTune								(dReal step)		;
-	virtual		void		InitContact							(dContact* c)		;
+	//virtual		void		InitContact							(dContact* c)		;
 	virtual		void		StepFrameUpdate						(dReal step)		{};
 	/////////////////CPHCharacter////////////////////////////////////////////
 public:

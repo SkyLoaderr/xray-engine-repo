@@ -6,6 +6,7 @@ class CPHAICharacter : public CPHSimpleCharacter
 
 	Fvector m_vDesiredPosition;
 public:
+	virtual		void		InitContact							(dContact* c)		;
 	virtual		void		SetPosition							(Fvector pos);
 	virtual		void		SetDesiredPosition					(const Fvector& pos)									{m_vDesiredPosition.set(pos);}
 	virtual		void		GetDesiredPosition					(Fvector& dpos)											{dpos.set(m_vDesiredPosition);}
