@@ -260,9 +260,14 @@ public:
 	virtual						~CAI_Rat				();
 
 public:
-	virtual CInventoryItem*		cast_inventory_item		()						{return this;}
-	virtual CEntityAlive*		cast_entity_alive		()						{return this;}
-	virtual CEntity*			cast_entity				()						{return this;}
+	virtual CInventoryItem*		cast_inventory_item			()	{return this;}
+	virtual CEntityAlive*		cast_entity_alive			()	{return this;}
+	virtual CEntity*			cast_entity					()	{return this;}
+	virtual CPhysicsShellHolder*cast_physics_shell_holder	()	{return this;}
+	virtual CParticlesPlayer*	cast_particles_player		()	{return this;}
+	virtual CCustomMonster*		cast_custom_monster			()	{return this;}
+	virtual CScriptMonster*		cast_script_monster			()	{return this;}
+	virtual CAI_Rat				*dcast_Rat					()	{return this;};
 
 public:
 
@@ -330,15 +335,12 @@ public:
 	virtual	Feel::Sound*		dcast_FeelSound			()			{ return this;	}
 	virtual bool				use_model_pitch			() const;
 	virtual float				get_custom_pitch_speed	(float def_speed);
-	virtual CAI_Rat				*dcast_Rat				() {return this;};
 
 	//serialization
 	virtual void				save					(NET_Packet &output_packet) {inherited::save(output_packet);}
 	virtual void				load					(IReader &input_packet)		{inherited::load(input_packet);}
 	virtual BOOL				net_SaveRelevant		()							{return inherited::net_SaveRelevant();}
 			bool				can_stand_here			();
-	virtual CPhysicsShellHolder*cast_physics_shell_holder	()	{return this;}
-	virtual CParticlesPlayer*	cast_particles_player		()	{return this;}
 };
 
 #include "ai_rat_inline.h"

@@ -30,7 +30,7 @@ void CStateMonsterAttackRunAbstract::execute()
 	object->set_action									(ACT_RUN);
 	object->MotionMan.accel_activate					(eAT_Aggressive);
 	object->MotionMan.accel_set_braking					(false);
-	object->CMonsterMovement::set_target_point			(object->EnemyMan.get_enemy()->Position(), object->EnemyMan.get_enemy()->level_vertex_id());
+	object->CMonsterMovement::set_target_point			(object->EnemyMan.get_enemy()->Position(), object->EnemyMan.get_enemy()->ai_location().level_vertex_id());
 	object->CMonsterMovement::set_rebuild_time			(object->get_attack_rebuild_time());
 	object->CMonsterMovement::set_distance_to_end		(2.5f);
 	object->CMonsterMovement::set_use_covers			();

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "base_monster.h"
 #include "../../../CharacterPhysicsSupport.h"
-
+#include "../../../ai_object_location.h"
 
 void CBaseMonster::net_Save			(NET_Packet& P)
 {
@@ -31,7 +31,7 @@ void CBaseMonster::net_Export(NET_Packet& P)
 	P.w_u8					(u8(g_Squad()));
 	P.w_u8					(u8(g_Group()));
 
-	ALife::_GRAPH_ID		l_game_vertex_id = game_vertex_id();
+	ALife::_GRAPH_ID		l_game_vertex_id = ai_location().game_vertex_id();
 	P.w						(&l_game_vertex_id,			sizeof(l_game_vertex_id));
 	P.w						(&l_game_vertex_id,			sizeof(l_game_vertex_id));
 //	P.w						(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
@@ -72,7 +72,7 @@ void CBaseMonster::net_Import(NET_Packet& P)
 	id_Squad				= P.r_u8();
 	id_Group				= P.r_u8();
 
-	ALife::_GRAPH_ID		l_game_vertex_id = game_vertex_id();
+	ALife::_GRAPH_ID		l_game_vertex_id = ai_location().game_vertex_id();
 	P.r						(&l_game_vertex_id,			sizeof(l_game_vertex_id));
 	P.r						(&l_game_vertex_id,			sizeof(l_game_vertex_id));
 

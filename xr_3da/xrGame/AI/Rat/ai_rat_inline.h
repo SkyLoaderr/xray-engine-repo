@@ -101,21 +101,6 @@ IC bool CAI_Rat::bfCheckIfSoundFrightful()
 	return(((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_BULLET_HIT) == SOUND_TYPE_WEAPON_BULLET_HIT) || ((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING));
 };
 
-IC bool CAI_Rat::bfCheckIfOutsideAIMap(Fvector &tTemp1)
-{
-	u32 dwNewNode = level_vertex_id();
-	const CLevelGraph::CVertex *tpNewNode = level_vertex();
-	CLevelGraph::CPosition	QueryPos;
-	if (!ai().level_graph().valid_vertex_position(tTemp1))
-		return	(false);
-	ai().level_graph().vertex_position(QueryPos,tTemp1);
-	if (!ai().level_graph().valid_vertex_id(dwNewNode) || !ai().level_graph().inside(*level_vertex(),QueryPos)) {
-		dwNewNode = ai().level_graph().vertex(level_vertex_id(),tTemp1);
-		tpNewNode = ai().level_graph().vertex(dwNewNode);
-	}
-	return(!ai().level_graph().valid_vertex_id(dwNewNode) || !ai().level_graph().inside(*tpNewNode,QueryPos));
-};
-
 IC	bool CAI_Rat::use_model_pitch	() const
 {
 	return			(!!g_Alive());

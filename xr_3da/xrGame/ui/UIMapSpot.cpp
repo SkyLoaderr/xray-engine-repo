@@ -10,6 +10,7 @@
 #include "../level.h"
 #include "../xrserver.h"
 #include "../xrServer_Objects_ALife.h"
+#include "../ai_object_location.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -170,7 +171,7 @@ Fvector CUIMapSpot::MapPos()
 void CUIMapSpot::SetObjectID(u16 id)
 {
 	m_object_id = id;
-	m_our_level_id = ai().game_graph().vertex(smart_cast<CGameObject*>(Level().CurrentEntity())->game_vertex_id())->level_id();
+	m_our_level_id = ai().game_graph().vertex(smart_cast<CGameObject*>(Level().CurrentEntity())->ai_location().game_vertex_id())->level_id();
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -5,7 +5,7 @@
 #include "../../../PhysicsShellHolder.h"
 #include "../ai_monster_debug.h"
 #include "../ai_monster_utils.h"
-
+#include "../../../ai_debug.h"
 
 #define HEIGHT_CHANGE_VELOCITY	0.5f
 #define HEIGHT_CHANGE_MIN_TIME	3000

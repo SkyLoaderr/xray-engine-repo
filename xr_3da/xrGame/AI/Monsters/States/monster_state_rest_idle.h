@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../state.h"
+#include "../../../ai_debug.h"
 
 template<typename _Object>
 class CStateMonsterRestIdle : public CState<_Object> {

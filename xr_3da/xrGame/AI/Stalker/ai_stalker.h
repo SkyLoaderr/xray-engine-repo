@@ -10,9 +10,6 @@
 
 #include "../../CustomMonster.h"
 #include "../../stalker_movement_manager.h"
-#include "../../sight_manager.h"
-#include "../../setup_manager.h"
-#include "../../setup_action.h"
 #include "../../object_handler.h"
 #include "ai_stalker_space.h"
 #include "../../AI_PhraseDialogManager.h"
@@ -40,13 +37,22 @@ class CALifeTask;
 class CMotionDef;
 class CStalkerAnimationManager;
 class CMotivationActionManagerStalker;
+class CSightManager;
+
+template <
+	typename _action_type,
+	typename _object_type,
+	typename _action_id_type
+>
+class CSetupManager;
+
+class CSetupAction;
+class CAI_Stalker;
 
 class CAI_Stalker : 
 	public CCustomMonster, 
 	public CObjectHandler,
-	public CSightManager,
 	public CStalkerMovementManager,
-	public CSetupManager<CSetupAction,CAI_Stalker,u32>,
 	public CAI_PhraseDialogManager,
 	public CStepManager
 {
@@ -59,6 +65,8 @@ public:
 private:
 	CStalkerAnimationManager		*m_animation_manager;
 	CMotivationActionManagerStalker	*m_brain;
+	CSightManager					*m_sight_manager;
+	CSSetupManager					*m_setup_manager;
 
 private:
 	EBodyAction						m_body_action;
@@ -125,6 +133,9 @@ public:
 	virtual CPhysicsShellHolder*		cast_physics_shell_holder	()						{return this;}
 	virtual CParticlesPlayer*			cast_particles_player		()						{return this;}
 	virtual	Feel::Sound*				dcast_FeelSound				()						{return this;}
+	virtual CAI_Stalker*				cast_stalker				()						{return this;}
+	virtual CCustomMonster*				cast_custom_monster			()						{return this;}
+	virtual CScriptMonster*				cast_script_monster			()						{return this;}
 
 public:
 			void						init								();
@@ -326,6 +337,8 @@ public:
 			void						communicate						(CInventoryOwner *trader);
 	IC	CStalkerAnimationManager		&animation						() const;
 	IC	CMotivationActionManagerStalker &brain							() const;
+	IC	CSightManager					&sight							() const;
+	IC	CSSetupManager					&setup							() const;
 	IC		float						panic_threshold					() const;
 	IC		void						body_action						(const EBodyAction &body_action);
 	IC		const EBodyAction			&body_action					() const;

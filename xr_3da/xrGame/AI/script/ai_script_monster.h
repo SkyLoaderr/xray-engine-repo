@@ -76,7 +76,7 @@ public:
 	virtual bool				CheckTypeVisibility		(const char* section_name);
 
 	virtual bool				CheckIfCompleted		() const										{return false;};
-	virtual	CScriptEntityAction		*GetCurrentAction		();
+	virtual	CScriptEntityAction	*GetCurrentAction		();
 	virtual	void				AddAction				(const CScriptEntityAction*tpEntityAction, bool bHighPriority = false);
 	virtual void				UseObject				(const CObject		*tpObject);
 	virtual void				ProcessScripts			();
@@ -111,13 +111,14 @@ public:
 	virtual void				UpdateCL				();
 			bool				bfScriptAnimation		();
 			u32					GetActionCount			() const;
-	const CScriptEntityAction			*GetActionByIndex		(u32 action_index) const;
+	const CScriptEntityAction	*GetActionByIndex		(u32 action_index) const;
 
 	virtual CEntity				*GetCurrentEnemy		();
 	virtual CEntity				*GetCurrentCorpse		();
 	virtual int					get_enemy_strength		();
 
 			void				process_sound_callbacks	();
+	virtual CScriptMonster*		cast_script_monster		()	{return this;}
 private:
 			void				FreeAll					();
 };

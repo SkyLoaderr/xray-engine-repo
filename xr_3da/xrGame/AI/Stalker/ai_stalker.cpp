@@ -35,6 +35,8 @@
 #include "../../object_handler_planner.h"
 #include "../../object_handler_space.h"
 #include "../../memory_manager.h"
+#include "../../sight_manager.h"
+#include "../../ai_object_location.h"
 
 extern int g_AI_inactive_time;
 
@@ -48,8 +50,11 @@ CAI_Stalker::CAI_Stalker			()
 	m_actor_relation_flags.zero		();
 
 	m_animation_manager				= xr_new<CStalkerAnimationManager>();
-	CStepManager::init_external		(this);
 	m_brain							= xr_new<CMotivationActionManagerStalker>();
+	m_sight_manager					= xr_new<CSightManager>(this);
+	m_setup_manager					= xr_new<CSSetupManager>(this);
+
+	CStepManager::init_external		(this);
 }
 
 CAI_Stalker::~CAI_Stalker			()
@@ -57,6 +62,8 @@ CAI_Stalker::~CAI_Stalker			()
 	xr_delete						(m_pPhysics_support);
 	xr_delete						(m_animation_manager);
 	xr_delete						(m_brain);
+	xr_delete						(m_sight_manager);
+	xr_delete						(m_setup_manager);
 }
 
 void CAI_Stalker::init()
@@ -68,9 +75,9 @@ void CAI_Stalker::init()
 
 void CAI_Stalker::reinit			()
 {
-	CSSetupManager::reinit			(this);
+	setup().reinit					();
 	CObjectHandler::reinit			(this);
-	CSightManager::reinit			(this);
+	sight().reinit					();
 	CCustomMonster::reinit			();
 	animation().reinit		();
 	CStalkerMovementManager::reinit	();
@@ -138,7 +145,7 @@ void CAI_Stalker::reload			(LPCSTR section)
 	CObjectHandler::reload			(section);
 	inventory().m_slots[OUTFIT_SLOT].m_bUsable = false;
 
-//	CSightManager::reload			(section);
+//	sight().reload					(section);
 	CStalkerMovementManager::reload	(section);
 
 	m_disp_walk_stand				= pSettings->r_float(section,"disp_walk_stand");
@@ -177,7 +184,7 @@ void CAI_Stalker::Load				(LPCSTR section)
 	
 	CCustomMonster::Load			(section);
 	CObjectHandler::Load			(section);
-	CSightManager::Load				(section);
+	sight().Load					(section);
 	CStalkerMovementManager::Load	(section);
 	CStepManager::load				(section);
 	
@@ -209,7 +216,7 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	m_body.current.pitch			= m_body.target.pitch	= 0;
 
 	if (ai().game_graph().valid_vertex_id(tpHuman->m_tGraphID))
-		set_game_vertex				(tpHuman->m_tGraphID);
+		ai_location().game_vertex	(tpHuman->m_tGraphID);
 	if (ai().game_graph().valid_vertex_id(tpHuman->m_tNextGraphID) && accessible(ai().game_graph().vertex(tpHuman->m_tNextGraphID)->level_point()))
 		set_game_dest_vertex		(tpHuman->m_tNextGraphID);
 
@@ -331,7 +338,7 @@ void CAI_Stalker::net_Export		(NET_Packet& P)
 	
 
 	float					f1 = 0;
-	ALife::_GRAPH_ID		l_game_vertex_id = game_vertex_id();
+	ALife::_GRAPH_ID		l_game_vertex_id = ai_location().game_vertex_id();
 	P.w						(&l_game_vertex_id,			sizeof(l_game_vertex_id));
 	P.w						(&l_game_vertex_id,			sizeof(l_game_vertex_id));
 //	P.w						(&f1,						sizeof(f1));
@@ -381,7 +388,7 @@ void CAI_Stalker::net_Import		(NET_Packet& P)
 
 	ALife::_GRAPH_ID				graph_vertex_id = game_dest_vertex_id();
 	P.r								(&graph_vertex_id,		sizeof(ALife::_GRAPH_ID));
-	graph_vertex_id					= game_vertex_id();
+	graph_vertex_id					= ai_location().game_vertex_id();
 	P.r								(&graph_vertex_id,		sizeof(ALife::_GRAPH_ID));
 
 	if (NET.empty() || (NET.back().dwTimeStamp<N.dwTimeStamp))	{
@@ -415,7 +422,7 @@ void CAI_Stalker::UpdateCL()
 //		float						s_vol	= s_k*((eMovementTypeRun == movement_type()) ? 1.f : ACCELERATED_SOUND_FACTOR);
 //		float						step_time = !fis_zero(CMovementManager::speed()) ? .725f/CMovementManager::speed() : 1.f;
 //		CMaterialManager::update	(Device.fTimeDelta,1.f+0*s_vol,step_time,!!fis_zero(speed()));
-		CSightManager::update		();
+		sight().update				();
 		Exec_Look					(Device.fTimeDelta);
 		CStepManager::update		();
 	}
@@ -644,7 +651,7 @@ void CAI_Stalker::Think			()
 {
 	brain().update					(Level().timeServer() - m_dwLastUpdateTime);
 	CStalkerMovementManager::update	(Level().timeServer() - m_dwLastUpdateTime);
-	CSSetupManager::update			();
+	setup().update					();
 }
 
 void CAI_Stalker::save (NET_Packet &output_packet)

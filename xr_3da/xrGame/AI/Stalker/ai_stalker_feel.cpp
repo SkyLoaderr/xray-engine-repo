@@ -11,6 +11,7 @@
 #include "../../inventory_item.h"
 #include "../../memory_manager.h"
 #include "../../visual_memory_manager.h"
+#include "../../sight_manager.h"
 
 BOOL CAI_Stalker::feel_vision_isRelevant(CObject* O)
 {
@@ -31,7 +32,7 @@ void CAI_Stalker::renderable_Render	()
 
 void CAI_Stalker::Exec_Look			(float dt)
 {
-	CSightManager::Exec_Look		(dt);
+	sight().Exec_Look				(dt);
 }
 
 bool CAI_Stalker::bfCheckForNodeVisibility(u32 dwNodeID, bool bIfRayPick)

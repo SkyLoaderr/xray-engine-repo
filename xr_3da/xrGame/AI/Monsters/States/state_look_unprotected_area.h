@@ -1,6 +1,7 @@
 #pragma once
 #include "../state.h"
 #include "state_data.h"
+#include "../ai_object_location.h"
 
 template<typename _Object>
 class CStateMonsterLookToUnprotectedArea : public CState<_Object> {

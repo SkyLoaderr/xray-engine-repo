@@ -16,6 +16,7 @@
 #include "ai_rat_space.h"
 #include "../../../skeletoncustom.h"
 #include "../../detail_path_manager.h"
+#include "../../ai_object_location.h"
 
 using namespace RatSpace;
 
@@ -193,33 +194,33 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 	m_fAttackAngle					= tpSE_Rat->fAttackAngle/180.f*PI;
 	m_fAttackSuccessProbability		= tpSE_Rat->fAttackSuccessProbability;
 
-//	m_tCurGP						= tpSE_Rat->m_tGraphID;
-//	m_tNextGP						= tpSE_Rat->m_tNextGraphID;
-	m_tCurGP						= m_tNextGP = game_vertex_id();
+	//	m_tCurGP						= tpSE_Rat->m_tGraphID;
+	//	m_tNextGP						= tpSE_Rat->m_tNextGraphID;
+	m_tCurGP						= m_tNextGP = ai_location().game_vertex_id();
 
 	int								iPointCount	= (int)vertex_types().size();
 	for (int j=0; j<iPointCount; ++j)
-		if (ai().game_graph().mask(vertex_types()[j].tMask,ai().game_graph().vertex(game_vertex_id())->vertex_type())) {
+		if (ai().game_graph().mask(vertex_types()[j].tMask,ai().game_graph().vertex(ai_location().game_vertex_id())->vertex_type())) {
 			m_dwTimeToChange	= Level().timeServer() + ::Random.randI(vertex_types()[j].dwMinTime,vertex_types()[j].dwMaxTime);
 			break;
 		}
 
-	//////////////////////////////////////////////////////////////////////////
+		//////////////////////////////////////////////////////////////////////////
 
-	m_fSpeed						= m_fCurSpeed = m_fMaxSpeed;
+		m_fSpeed						= m_fCurSpeed = m_fMaxSpeed;
 
-	m_tOldPosition.set				(Position());
-	if (g_Alive())
-		m_tSpawnPosition.set		(Level().seniority_holder().team(g_Team()).squad(g_Squad()).leader()->Position());
-	else
-		m_tSpawnPosition.set		(Position());
-	m_tSafeSpawnPosition.set		(m_tSpawnPosition);
-	m_tStateStack.push				(m_eCurrentState = aiRatFreeHuntingActive);
-	if (g_Alive())
-		vfAddActiveMember			(true);
+		m_tOldPosition.set				(Position());
+		if (g_Alive())
+			m_tSpawnPosition.set		(Level().seniority_holder().team(g_Team()).squad(g_Squad()).leader()->Position());
+		else
+			m_tSpawnPosition.set		(Position());
+		m_tSafeSpawnPosition.set		(m_tSpawnPosition);
+		m_tStateStack.push				(m_eCurrentState = aiRatFreeHuntingActive);
+		if (g_Alive())
+			vfAddActiveMember			(true);
 
-	m_bStateChanged					= true;
-	set_game_vertex					(ai().cross_table().vertex(level_vertex_id()).game_vertex_id());
+		m_bStateChanged					= true;
+		ai_location().game_vertex		(ai().cross_table().vertex(ai_location().level_vertex_id()).game_vertex_id());
 
 	m_tHPB.x						= -m_body.current.yaw;
 	m_tHPB.y						= -m_body.current.pitch;
@@ -260,7 +261,7 @@ void CAI_Rat::net_Export(NET_Packet& P)
 	P.w_u8					(u8(g_Squad()));
 	P.w_u8					(u8(g_Group()));
 
-	ALife::_GRAPH_ID		l_game_vertex_id = game_vertex_id();
+	ALife::_GRAPH_ID		l_game_vertex_id = ai_location().game_vertex_id();
 	P.w						(&l_game_vertex_id,			sizeof(l_game_vertex_id));
 	P.w						(&l_game_vertex_id,			sizeof(l_game_vertex_id));
 //	P.w						(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
@@ -305,7 +306,7 @@ void CAI_Rat::net_Import(NET_Packet& P)
 	ALife::_GRAPH_ID		t;
 	P.r						(&t,				sizeof(t));
 	P.r						(&t,				sizeof(t));
-	set_game_vertex			(t);
+	ai_location().game_vertex	(t);
 
 	if (NET.empty() || (NET.back().dwTimeStamp<N.dwTimeStamp))	{
 		NET.push_back			(N);

@@ -78,7 +78,7 @@ void CStateMonsterEatingAbstract::execute()
 	} else {
 		object->set_action									(ACT_WALK_FWD);
 		object->set_state_sound								(MonsterSpace::eMonsterSoundIdle);
-		object->CMonsterMovement::set_target_point			(nearest_bone_pos, corpse->level_vertex_id());
+		object->CMonsterMovement::set_target_point			(nearest_bone_pos, corpse->ai_location().level_vertex_id());
 		object->CMonsterMovement::set_generic_parameters	();
 
 #ifdef DEBUG

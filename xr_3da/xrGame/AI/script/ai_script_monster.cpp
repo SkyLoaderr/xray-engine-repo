@@ -25,6 +25,7 @@
 #include "../../level_location_selector.h"
 #include "../../memory_manager.h"
 #include "../../visual_memory_manager.h"
+#include "../../ai_object_location.h"
 
 void __stdcall ActionCallback(CKinematics *tpKinematics);
 
@@ -198,7 +199,7 @@ CScriptEntityAction *CScriptMonster::GetCurrentAction()
 void __stdcall ActionCallback(CKinematics *tpKinematics)
 {
 	// sounds
-	CScriptMonster	*l_tpScriptMonster = smart_cast<CScriptMonster*>(static_cast<CObject*>(tpKinematics->Update_Callback_Param));
+	CScriptMonster	*l_tpScriptMonster = smart_cast<CScriptMonster*>((CGameObject*)(tpKinematics->Update_Callback_Param));
 	VERIFY			(l_tpScriptMonster);
 	if (!l_tpScriptMonster->GetCurrentAction())
 		return;
@@ -438,7 +439,7 @@ bool CScriptMonster::bfAssignMovement(CScriptEntityAction *tpEntityAction)
 			l_tpMovementManager->set_path_type(MovementManager::ePathTypeLevelPath);
 //			Msg			("%6d Object %s, position [%f][%f][%f]",Level().timeServer(),*l_tpGameObject->cName(),VPUSH(l_tpGameObject->Position()));
 			l_tpMovementManager->detail_path_manager().set_dest_position(l_tpGameObject->Position());
-			l_tpMovementManager->set_level_dest_vertex(l_tpGameObject->level_vertex_id());
+			l_tpMovementManager->set_level_dest_vertex(l_tpGameObject->ai_location().level_vertex_id());
 			break;
 		}
 		case CScriptMovementAction::eGoalTypePatrolPath : {
@@ -458,9 +459,9 @@ bool CScriptMonster::bfAssignMovement(CScriptEntityAction *tpEntityAction)
 			
 //			u64					start = CPU::GetCycleCount();
 			u32					vertex_id;
-			vertex_id			= ai().level_graph().vertex(level_vertex_id(),l_tMovementAction.m_tDestinationPosition);
+			vertex_id			= ai().level_graph().vertex(ai_location().level_vertex_id(),l_tMovementAction.m_tDestinationPosition);
 			if (!ai().level_graph().valid_vertex_id(vertex_id)) {
-				vertex_id		= ai().level_graph().check_position_in_direction(level_vertex_id(),Position(),l_tMovementAction.m_tDestinationPosition);
+				vertex_id		= ai().level_graph().check_position_in_direction(ai_location().level_vertex_id(),Position(),l_tMovementAction.m_tDestinationPosition);
 			}
 //			u64					stop = CPU::GetCycleCount();
 #ifdef _DEBUG
@@ -613,7 +614,7 @@ void CScriptMonster::shedule_Update	(u32 DT)
 
 void ScriptCallBack(CBlend* B)
 {
-	CScriptMonster	*l_tpScriptMonster = smart_cast<CScriptMonster*> (static_cast<CObject*>(B->CallbackParam));
+	CScriptMonster	*l_tpScriptMonster = static_cast<CScriptMonster*>(B->CallbackParam);
 	R_ASSERT		(l_tpScriptMonster);
 	if (l_tpScriptMonster->GetCurrentAction() && !B->bone_or_part) {
 		if (!l_tpScriptMonster->GetCurrentAction()->m_tAnimationAction.m_bCompleted)

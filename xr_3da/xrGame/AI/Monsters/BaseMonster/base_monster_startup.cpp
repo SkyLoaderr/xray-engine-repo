@@ -7,7 +7,7 @@
 #include "../critical_action_info.h"
 #include "../ai_monster_jump.h"
 #include "../../../detail_path_manager.h"
-
+#include "../../../level_graph.h"
 
 void CBaseMonster::reload	(LPCSTR section)
 {

@@ -7,6 +7,7 @@
 #include "../../../phmovementcontrol.h"
 #include "../../../PhysicsShell.h"
 #include "../../../phcapture.h"
+#include "../../../ai_object_location.h"
 
 #define		REST_AFTER_LUNCH_TIME			5000
 #define		DIST_SLOW_APPROACH_TO_CORPSE	5.0f
@@ -107,9 +108,9 @@ void CBaseMonsterEat::Run()
 		pMonster->MotionMan.m_tAction = ACT_RUN;
 		pMonster->MotionMan.accel_activate		(eAT_Calm);
 
-		approach_vertex_id = ai().level_graph().check_position_in_direction(pCorpse->level_vertex_id(), pCorpse->Position(), nearest_bone_pos);
+		approach_vertex_id = ai().level_graph().check_position_in_direction(pCorpse->ai_location().level_vertex_id(), pCorpse->Position(), nearest_bone_pos);
 		if (approach_vertex_id == -1) {
-			approach_vertex_id	= pCorpse->level_vertex_id();
+			approach_vertex_id	= pCorpse->ai_location().level_vertex_id();
 			approach_pos		= ai().level_graph().vertex_position(approach_vertex_id);
 		} else {
 			approach_pos = nearest_bone_pos;
@@ -129,7 +130,7 @@ void CBaseMonsterEat::Run()
 
 		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 		
-		pMonster->CMonsterMovement::set_target_point		(nearest_bone_pos,pCorpse->level_vertex_id());
+		pMonster->CMonsterMovement::set_target_point		(nearest_bone_pos,pCorpse->ai_location().level_vertex_id());
 		pMonster->CMonsterMovement::set_generic_parameters	();
 		
 		if (cur_dist < m_fDistToCorpse) {
@@ -201,7 +202,7 @@ void CBaseMonsterEat::Run()
 
 		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 		
-		pMonster->CMonsterMovement::set_target_point		(nearest_bone_pos,pCorpse->level_vertex_id());
+		pMonster->CMonsterMovement::set_target_point		(nearest_bone_pos,pCorpse->ai_location().level_vertex_id());
 		pMonster->CMonsterMovement::set_generic_parameters	();
 
 		if (cur_dist < m_fDistToCorpse) {

@@ -15,6 +15,7 @@
 #include "UIXmlInit.h"
 #include "UIMapWnd.h"
 #include "../alife_registry_wrappers.h"
+#include "../game_graph.h"
 
 //////////////////////////////////////////////////////////////////////////
 

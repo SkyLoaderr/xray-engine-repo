@@ -5,6 +5,7 @@
 #include "state_custom_action.h"
 #include "state_look_unprotected_area.h"
 #include "monster_state_panic_run.h"
+#include "../../../ai_debug.h"
 
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Object\

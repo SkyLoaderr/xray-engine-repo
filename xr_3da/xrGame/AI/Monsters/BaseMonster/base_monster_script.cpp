@@ -5,6 +5,7 @@
 #include "../../../sight_manager.h"
 #include "../ai_monster_debug.h"
 #include "../../../detail_path_manager.h"
+#include "../../../ai_object_location.h"
 
 //////////////////////////////////////////////////////////////////////////
 bool CBaseMonster::bfAssignMovement (CScriptEntityAction *tpEntityAction)
@@ -41,7 +42,7 @@ bool CBaseMonster::bfAssignMovement (CScriptEntityAction *tpEntityAction)
 		
 		case CScriptMovementAction::eGoalTypeObject : {
 			CGameObject		*l_tpGameObject = smart_cast<CGameObject*>(l_tMovementAction.m_tpObjectToGo);
-			CMonsterMovement::set_target_point	(l_tpGameObject->Position(), l_tpGameObject->level_vertex_id());
+			CMonsterMovement::set_target_point	(l_tpGameObject->Position(), l_tpGameObject->ai_location().level_vertex_id());
 			break;
 													  }
 		case CScriptMovementAction::eGoalTypePathPosition :

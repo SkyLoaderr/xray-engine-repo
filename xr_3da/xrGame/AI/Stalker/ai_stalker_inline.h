@@ -30,6 +30,18 @@ IC	CMotivationActionManagerStalker &CAI_Stalker::brain() const
 	return	(*m_brain);
 }
 
+IC	CSightManager &CAI_Stalker::sight				() const
+{
+	VERIFY	(m_sight_manager);
+	return	(*m_sight_manager);
+}
+
+IC	CAI_Stalker::CSSetupManager &CAI_Stalker::setup	() const
+{
+	VERIFY	(m_setup_manager);
+	return	(*m_setup_manager);
+}
+
 IC	LPCSTR CAI_Stalker::Name						() const
 {
 	return	(CInventoryOwner::Name());

@@ -13,6 +13,22 @@
 #include "../../magic_box3.h"
 #include "../../clsid_game.h"
 #include "../../../fbasicvisual.h"
+#include "../../ai_object_location.h"
+
+IC bool CAI_Rat::bfCheckIfOutsideAIMap(Fvector &tTemp1)
+{
+	u32 dwNewNode = ai_location().level_vertex_id();
+	const CLevelGraph::CVertex *tpNewNode = ai_location().level_vertex();
+	CLevelGraph::CPosition	QueryPos;
+	if (!ai().level_graph().valid_vertex_position(tTemp1))
+		return	(false);
+	ai().level_graph().vertex_position(QueryPos,tTemp1);
+	if (!ai().level_graph().valid_vertex_id(dwNewNode) || !ai().level_graph().inside(*ai_location().level_vertex(),QueryPos)) {
+		dwNewNode = ai().level_graph().vertex(ai_location().level_vertex_id(),tTemp1);
+		tpNewNode = ai().level_graph().vertex(dwNewNode);
+	}
+	return(!ai().level_graph().valid_vertex_id(dwNewNode) || !ai().level_graph().inside(*tpNewNode,QueryPos));
+};
 
 void CAI_Rat::vfSetFire(bool bFire)
 {
@@ -265,16 +281,16 @@ void CAI_Rat::vfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForward)
 //	m_PhysicMovementControl->Calculate	(tAcceleration,0,0,m_fTimeUpdateDelta,false);
 //	m_PhysicMovementControl->GetPosition(Position());
 
-	u32 dwNewNode = level_vertex_id();
-	const CLevelGraph::CVertex *tpNewNode = level_vertex();
+	u32 dwNewNode = ai_location().level_vertex_id();
+	const CLevelGraph::CVertex *tpNewNode = ai_location().level_vertex();
 	CLevelGraph::CPosition	QueryPos;
 	bool					a = !ai().level_graph().valid_vertex_id(dwNewNode) || !ai().level_graph().valid_vertex_position(Position());
 	if (!a) {
 		ai().level_graph().vertex_position	(QueryPos,Position());
-		a					= !ai().level_graph().inside(*level_vertex(),QueryPos);
+		a					= !ai().level_graph().inside(*ai_location().level_vertex(),QueryPos);
 	}
 	if (a) {
-		dwNewNode = ai().level_graph().vertex(level_vertex_id(),Position());
+		dwNewNode = ai().level_graph().vertex(ai_location().level_vertex_id(),Position());
 		tpNewNode = ai().level_graph().vertex(dwNewNode);
 	}
 	if (ai().level_graph().valid_vertex_id(dwNewNode) && ai().level_graph().inside(*tpNewNode,QueryPos)) {

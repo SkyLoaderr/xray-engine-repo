@@ -16,6 +16,7 @@
 #include "../../weaponmagazined.h"
 #include "../../../skeletoncustom.h"
 #include "../../script_engine.h"
+#include "../../sight_manager.h"
 
 void CAI_Stalker::UseObject(const CObject *tpObject)
 {
@@ -67,16 +68,16 @@ bool CAI_Stalker::bfAssignMovement(CScriptEntityAction *tpEntityAction)
 	CScriptAnimationAction			&l_tAnimationAction	= tpEntityAction->m_tAnimationAction;
 	CScriptObjectAction				&l_tObjectAction	= tpEntityAction->m_tObjectAction;
 
-	CObjectHandler::set_goal	(l_tObjectAction.m_tGoalType);
+	CObjectHandler::set_goal		(l_tObjectAction.m_tGoalType);
 	
 	set_path_type					(CMovementManager::path_type());
 	set_detail_path_type			(l_tMovementAction.m_tPathType);
 	set_body_state					(l_tMovementAction.m_tBodyState);
 	set_movement_type				(l_tMovementAction.m_tMovementType);
 	set_mental_state				(l_tAnimationAction.m_tMentalState);
-	CSightManager::setup			(l_tWatchAction.m_tWatchType,&l_tWatchAction.m_tWatchVector);
+	sight().setup					(l_tWatchAction.m_tWatchType,&l_tWatchAction.m_tWatchVector);
 	CStalkerMovementManager::update	(Device.dwTimeDelta);
-	CSightManager::update			();
+	sight().update			();
 
 	return							(true);
 }
@@ -103,11 +104,11 @@ bool CAI_Stalker::bfAssignWatch(CScriptEntityAction *tpEntityAction)
 
 				l_tWatchAction.m_tWatchVector	= l_tMatrix.c;
 			}
-			CSightManager::setup(l_tWatchAction.m_tWatchType,&l_tWatchAction.m_tWatchVector);
+			sight().setup(l_tWatchAction.m_tWatchType,&l_tWatchAction.m_tWatchVector);
 			break;
 		}
 		case CScriptWatchAction::eGoalTypeDirection : {
-			CSightManager::setup(l_tWatchAction.m_tWatchType,&l_tWatchAction.m_tWatchVector);
+			sight().setup(l_tWatchAction.m_tWatchType,&l_tWatchAction.m_tWatchVector);
 			break;
 		}
 		case CScriptWatchAction::eGoalTypeWatchType : {

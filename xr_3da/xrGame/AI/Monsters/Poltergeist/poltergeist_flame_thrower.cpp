@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "poltergeist.h"
 #include "../../../xrmessages.h"
+#include "../../../ai_object_location.h"
 
 #define FIND_POINT_ATTEMPT_COUNT	5
 #define MIN_FLAME_DIST				2.f
@@ -129,10 +130,10 @@ bool CPoltergeist::GetValidFlamePosition(const CObject *target_object, Fvector &
 		dir.setHP(h,p);
 		dir.normalize();
 
-		vertex_position = ai().level_graph().vertex_position(Obj->level_vertex_id());
+		vertex_position = ai().level_graph().vertex_position(Obj->ai_location().level_vertex_id());
 		new_pos.mad(vertex_position, dir, Random.randF(MIN_FLAME_DIST, MAX_FLAME_DIST));
 
-		u32 node = ai().level_graph().check_position_in_direction(Obj->level_vertex_id(), vertex_position, new_pos);
+		u32 node = ai().level_graph().check_position_in_direction(Obj->ai_location().level_vertex_id(), vertex_position, new_pos);
 		if (node != u32(-1)) {
 			res_pos = ai().level_graph().vertex_position(node);
 			res_pos.y += Random.randF(MIN_FLAME_HEIGHT, MAX_FLAME_HEIGHT);
@@ -141,16 +142,16 @@ bool CPoltergeist::GetValidFlamePosition(const CObject *target_object, Fvector &
 	}
 
 
-	float angle = ai().level_graph().vertex_less_cover(Obj->level_vertex_id(),PI_DIV_6);
+	float angle = ai().level_graph().vertex_less_cover(Obj->ai_location().level_vertex_id(),PI_DIV_6);
 
 	dir.set(1.f,0.f,0.f);
 	dir.setHP(angle_normalize(angle+PI), 0.f);
 	dir.normalize();
 
-	vertex_position = ai().level_graph().vertex_position(Obj->level_vertex_id());
+	vertex_position = ai().level_graph().vertex_position(Obj->ai_location().level_vertex_id());
 	new_pos.mad(vertex_position, dir, Random.randF(MIN_FLAME_DIST, MAX_FLAME_DIST));
 
-	u32 node = ai().level_graph().check_position_in_direction(Obj->level_vertex_id(), vertex_position, new_pos);
+	u32 node = ai().level_graph().check_position_in_direction(Obj->ai_location().level_vertex_id(), vertex_position, new_pos);
 	if (node != u32(-1)) {
 		res_pos = ai().level_graph().vertex_position(node);
 		res_pos.y += Random.randF(MIN_FLAME_HEIGHT, MAX_FLAME_HEIGHT);

@@ -169,7 +169,7 @@ void CBaseMonsterAttack::Run()
 			pMonster->MotionMan.accel_activate				(eAT_Aggressive);
 			pMonster->MotionMan.accel_set_braking			(false);
 
-			pMonster->CMonsterMovement::set_target_point	(pMonster->EnemyMan.get_enemy()->Position(), pMonster->EnemyMan.get_enemy()->level_vertex_id());
+			pMonster->CMonsterMovement::set_target_point	(pMonster->EnemyMan.get_enemy()->Position(), pMonster->EnemyMan.get_enemy()->ai_location().level_vertex_id());
 			pMonster->CMonsterMovement::set_rebuild_time	(pMonster->get_attack_rebuild_time());
 			pMonster->CMonsterMovement::set_distance_to_end	(2.5f);
 			pMonster->CMonsterMovement::set_use_covers		();
