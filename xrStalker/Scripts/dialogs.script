@@ -7,15 +7,48 @@ function kickass(first_speaker, second_speaker)
 	xr_punch.punch[first_speaker:id()] = second_speaker
 end
 
+function get_money_then_leave(first_speaker, second_speaker)
+	xr_motivator.storage[first_speaker:id()].meet.enabled = false
+	xr_motivator.storage[first_speaker:id()].robber.enabled = true
+end
+
+
+-----------------------------------------------------------------------------------
+-- helper
+-----------------------------------------------------------------------------------
 function helper_init(first_speaker, second_speaker)
 	if xr_motivator.storage[first_speaker:id()].sos.npc == nil and 
 	   first_speaker:relation (second_speaker) ~= game_object.enemy then
 	   xr_motivator.storage[first_speaker:id()].sos.npc = second_speaker
 	end
 end
-
-function get_money_then_leave(first_speaker, second_speaker)
-	xr_motivator.storage[first_speaker:id()].meet.enabled = false
-	xr_motivator.storage[first_speaker:id()].robber.enabled = true
+-------------------
+function is_medikit_present (helper, player)
+    return helper:object ("medikit") ~= nil
 end
-
+-------------------
+function drop_medikit (helper, player)
+    helper:transfer_item (helper:object ("medikit"), player)
+end
+-------------------
+function sell_medikit (helper, player)
+    helper:transfer_item (helper:object ("medikit"), player)
+end
+-------------------
+function have_extra_weapon (helper, player)
+    local count = helper:object_count () 
+    if count == 0 then return false end
+    local wpn = 0
+    for a = 1, count, 1 do
+        local obj = helper:object (a)
+        if isWeapon (obj) == true then wpn = wpn + 1 end
+    end
+    if wpn > 1 then return true end
+    return false    
+end
+-------------------
+function is_health_good (helper, player)
+    return player.health >= 0.9 
+end    
+end
+-----------------------------------------------------------------------------------
