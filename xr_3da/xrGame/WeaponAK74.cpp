@@ -128,7 +128,7 @@ void CWeaponAK74::OnAnimationEnd()
 {
 	switch (st_current)
 	{
-	case eReload:	st_target = eIdle;	break;	// End of reload animation
+	case eReload:	ReloadMagazine();	break;	// End of reload animation
 	}
 }
 void CWeaponAK74::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R)

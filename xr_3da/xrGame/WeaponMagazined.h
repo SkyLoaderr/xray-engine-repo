@@ -46,8 +46,7 @@ protected:
 protected:
 	virtual void	UpdateFP		(BOOL bHUD);
 	virtual void	UpdateXForm		(BOOL bHUD);
-
-
+	virtual void	ReloadMagazine	();
 public:
 					CWeaponMagazined	(LPCSTR name);
 	virtual			~CWeaponMagazined	();
