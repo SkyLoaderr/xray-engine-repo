@@ -7,8 +7,7 @@
 void	xrServerEntity::Spawn_Write		(NET_Packet& P, BOOL bLocal)
 {
 	// generic
-	P.w_u8				(M_SPAWN);
-	P.w_u8				(SPAWN_VERSION);
+	P.w_begin			(M_SPAWN);
 	P.w_string			(s_name			);
 	P.w_string			(s_name_replace	);
 	P.w_u8				(s_gameid		);
