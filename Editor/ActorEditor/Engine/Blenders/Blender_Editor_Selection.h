@@ -8,7 +8,7 @@ class ENGINE_API CBlender_Editor_Selection : public CBlender
 {
 	string64	oT_Factor;
 public:
-	virtual		LPCSTR		getComment()	{ return "editor selection"; }
+	virtual		LPCSTR		getComment()	{ return "EDITOR: selection"; }
 	
 	virtual		void		Save			(CFS_Base&  FS);
 	virtual		void		Load			(CStream&	FS, WORD version);

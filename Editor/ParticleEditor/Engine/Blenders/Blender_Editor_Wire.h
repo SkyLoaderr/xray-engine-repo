@@ -8,7 +8,7 @@ class ENGINE_API CBlender_Editor_Wire : public CBlender
 {
 	string64	oT_Factor;
 public:
-	virtual		LPCSTR		getComment()	{ return "editor wire";	}
+	virtual		LPCSTR		getComment()	{ return "EDITOR: wire";	}
 
 	virtual		void		Save			(CFS_Base&  FS);
 	virtual		void		Load			(CStream&	FS, WORD version);
