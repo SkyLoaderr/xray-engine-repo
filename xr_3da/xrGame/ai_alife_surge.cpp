@@ -162,7 +162,6 @@ void CSE_ALifeSimulator::vfGenerateAnomalousZones()
 
 				CSE_ALifeObjectRegistry::Add(i);
 				vfUpdateDynamicData		(i);
-				//m_tpServer->entity_Destroy	(l_tpSE_Abstract);
 			}
 		}
 		I++;

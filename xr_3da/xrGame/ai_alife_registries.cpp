@@ -364,8 +364,7 @@ void CSE_ALifeGraphRegistry::vfAttachItem(CSE_Abstract &tAbstract, CSE_ALifeItem
 	if (bALifeRequest)
 		vfRemoveObjectFromGraphPoint	(tpALifeItem,tGraphID);
 	else
-		if (m_tpGraphObjects[tGraphID].tpObjects.find(tpALifeItem->ID) != m_tpGraphObjects[tGraphID].tpObjects.end())
-			vfRemoveObjectFromCurrentLevel(tpALifeItem);
+		vfRemoveObjectFromCurrentLevel(tpALifeItem);
 
 	CSE_ALifeTraderAbstract		*l_tpALifeTraderAbstract = dynamic_cast<CSE_ALifeTraderAbstract*>(&tAbstract);
 	R_ASSERT2					(!bALifeRequest || l_tpALifeTraderAbstract,"Cannot attach an item to a non-trader object");
@@ -388,8 +387,7 @@ void CSE_ALifeGraphRegistry::vfDetachItem(CSE_Abstract &tAbstract, CSE_ALifeItem
 	if (bALifeRequest)
 		vfAddObjectToGraphPoint	(tpALifeItem,tGraphID);
 	else
-		if (m_tpGraphObjects[tGraphID].tpObjects.find(tpALifeItem->ID) == m_tpGraphObjects[tGraphID].tpObjects.end())
-			vfAddObjectToCurrentLevel(tpALifeItem);
+		vfAddObjectToCurrentLevel(tpALifeItem);
 
 	CSE_ALifeTraderAbstract		*l_tpALifeTraderAbstract = dynamic_cast<CSE_ALifeTraderAbstract*>(&tAbstract);
 	R_ASSERT2					(!bALifeRequest || l_tpALifeTraderAbstract,"Cannot detach an item from non-trader object");

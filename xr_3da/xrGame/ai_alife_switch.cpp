@@ -215,7 +215,7 @@ void CSE_ALifeSimulator::vfFurlObjectOffline(CSE_ALifeDynamicObject *I)
 					CSE_ALifeMonsterAbstract	*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(tpfGetObjectByID(tpALifeAbstractGroup->m_tpMembers[i]));
 					if (l_tpALifeMonsterAbstract && l_tpALifeMonsterAbstract->fHealth <= 0) {
 						l_tpALifeMonsterAbstract->m_bDirectControl	= true;
-						l_tpALifeMonsterAbstract->m_bOnline			= true;
+						l_tpALifeMonsterAbstract->m_bOnline			= false;
 						tpALifeAbstractGroup->m_tpMembers.erase(tpALifeAbstractGroup->m_tpMembers.begin() + i);
 						vfUpdateDynamicData(l_tpALifeMonsterAbstract);
 						i--;
@@ -314,11 +314,14 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 						// check if monster is not dead
 						if (tpGroupMember->fHealth <= 0) {
 							// detach object from the group
+							tpGroupMember->fHealth			= 0.f;
 							tpGroupMember->m_bDirectControl	= true;
-							tpGroupMember->m_bOnline		= false;
 							tpALifeAbstractGroup->m_tpMembers.erase(tpALifeAbstractGroup->m_tpMembers.begin() + i);
+							tpGroupMember->m_bOnline		= false;
 							// store the new separate object into the registries
-							vfUpdateDynamicData(tpGroupMember);
+							vfUpdateDynamicData				(tpGroupMember);
+							// and remove it from the graph point but do not remove it from the current level map
+							vfRemoveObjectFromGraphPoint	(tpGroupMember,tpGroupMember->m_tGraphID,false);
 							tpGroupMember->m_bOnline		= true;
 							i--;
 							N--;
