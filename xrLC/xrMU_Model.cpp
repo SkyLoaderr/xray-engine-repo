@@ -90,7 +90,7 @@ BOOL			xrMU_Model::_face::isDegenerated()
 	return (v[0]==v[1] || v[0]==v[2] || v[1]==v[2]);
 };
 
-BOOL			xrMU_Model::_face::isEqual		(_face& F)
+BOOL			xrMU_Model::_face::isEqual		(xrMU_Model::_face& F)
 {
 	// Test for 6 variations
 	if ((v[0]==F.v[0]) && (v[1]==F.v[1]) && (v[2]==F.v[2])) return true;

@@ -74,6 +74,7 @@ void __cdecl Status	(const char *format, ...)
 	va_start( mark, format );
 	vsprintf( status, format, mark );
 	bStatusChange = TRUE;
+	Msg					("-status-: %s",status);
 	csLog.Leave			();
 }
 

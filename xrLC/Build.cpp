@@ -126,7 +126,6 @@ CBuild::CBuild	(const b_params& Params, const CStream& _in_FS)
 		{
 			mu_models.push_back				(xr_new<xrMU_Model>());
 			mu_models.back()->Load			(*F);
-			mu_models.back()->calc_normals	();
 			count--;
 		}
 

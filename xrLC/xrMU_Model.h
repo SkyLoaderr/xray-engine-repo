@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xrPool.h"
+#include "cl_collector.h"
 
 class xrMU_Model
 {
@@ -43,7 +44,7 @@ public:
 		void			VSet				( int idx, _vertex* V);
 		void			VSet				( _vertex *V1, _vertex *V2, _vertex *V3);
 		BOOL			isDegenerated		( );
-		BOOL			isEqual				( _face* F );
+		BOOL			isEqual				( _face& F );
 		float			EdgeLen				( int edge);
 		void			EdgeVerts			( int e, _vertex** A, _vertex** B);
 		void			CalcNormal			( );

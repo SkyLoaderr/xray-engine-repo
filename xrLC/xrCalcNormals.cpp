@@ -72,5 +72,7 @@ void CBuild::CalcNormals()
 	for (it = g_faces.begin(); it!=g_faces.end(); it++)
 		(*it)->bSplitted = FALSE;
 
+	// Models
+
 	Msg("%d vertices was duplicated 'cause of SM groups",g_vertices.size()-Vcount);
 }
