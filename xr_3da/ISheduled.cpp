@@ -22,13 +22,13 @@ void	ISheduled::shedule_unregister		()
 void	ISheduled::shedule_Update			(u32 dt)
 {
 #ifdef DEBUG
-	if (Device.dwFrame==dbg_update_shedule)	
+	if (dbg_startframe==dbg_update_shedule)	
 	{
 		LPCSTR		name	= "unknown";
 		CObject*	O		= dynamic_cast<CObject*>	(this);
 		if			(O)		name	= *O->cName();
 		Debug.fatal	("'shedule_Update' called twice per frame for %s",name);
 	}
-	dbg_update_shedule	= Device.dwFrame;
+	dbg_update_shedule	= dbg_startframe;
 #endif
 }
