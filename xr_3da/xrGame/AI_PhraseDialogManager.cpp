@@ -96,6 +96,11 @@ void CAI_PhraseDialogManager::AnswerOnPending			()
 void CAI_PhraseDialogManager::SetStartDialog(PHRASE_DIALOG_ID phrase_dialog)
 {
 	m_sStartDialog = phrase_dialog;
+
+#ifdef _DEBUG
+	CInventoryOwner* pOwner = smart_cast<CInventoryOwner*>(this);
+	Msg("[PhraseDialogManager] %s set start dialog %s",pOwner->Name(), *m_sStartDialog);
+#endif
 }
 
 void CAI_PhraseDialogManager::SetDefaultStartDialog(PHRASE_DIALOG_ID phrase_dialog)
@@ -106,6 +111,12 @@ void CAI_PhraseDialogManager::SetDefaultStartDialog(PHRASE_DIALOG_ID phrase_dial
 void CAI_PhraseDialogManager::RestoreDefaultStartDialog()
 {
 	m_sStartDialog = m_sDefaultStartDialog;
+
+#ifdef _DEBUG
+	CInventoryOwner* pOwner = smart_cast<CInventoryOwner*>(this);
+	Msg("[PhraseDialogManager] %s restore default start dialog %s",pOwner->Name(), *m_sStartDialog);
+#endif
+
 }
 
 
