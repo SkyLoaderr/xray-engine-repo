@@ -3,7 +3,7 @@
 //	Created 	: 07.12.2004
 //  Modified 	: 07.12.2004
 //	Author		: Dmitriy Iassenev
-//	Description : Classic othello board implementation
+//	Description : Othello classic board implementation
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"

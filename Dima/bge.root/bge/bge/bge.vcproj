@@ -1665,7 +1665,23 @@
 							>
 						</File>
 						<File
+							RelativePath=".\othello_bit_board_can_move.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\othello_bit_board_compute_difference.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\othello_bit_board_do_move.cpp"
+							>
+						</File>
+						<File
 							RelativePath=".\othello_bit_board_inline.h"
+							>
+						</File>
+						<File
+							RelativePath=".\othello_bit_board_script.cpp"
 							>
 						</File>
 					</Filter>

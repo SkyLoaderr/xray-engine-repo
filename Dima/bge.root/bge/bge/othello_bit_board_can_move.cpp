@@ -1,20 +1,20 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: othello_classic_board_can_move.cpp
-//	Created 	: 08.12.2004
-//  Modified 	: 08.12.2004
+//	Module 		: othello_bit_board_can_move.cpp
+//	Created 	: 24.12.2004
+//  Modified 	: 24.12.2004
 //	Author		: Dmitriy Iassenev
-//	Description : Othello classic board can move implementation
+//	Description : Othello bit board can move implementation
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "othello_classic_board.h"
+#include "othello_bit_board.h"
 
 template <
 	int increment, 
-	COthelloClassicBoard::cell_type _color_to_move, 
-	COthelloClassicBoard::cell_type opponent_color
+	COthelloBitBoard::cell_type _color_to_move, 
+	COthelloBitBoard::cell_type opponent_color
 >
-IC	bool COthelloClassicBoard::can_move_in_direction(cell_type const *start_cell) const
+IC	bool COthelloBitBoard::can_move_in_direction(cell_type const *start_cell) const
 {
 	if (start_cell[1*increment] != opponent_color)
 		return			(false);
@@ -37,8 +37,8 @@ IC	bool COthelloClassicBoard::can_move_in_direction(cell_type const *start_cell)
 	return				(start_cell[7*increment] == _color_to_move);
 }
 	
-template <COthelloClassicBoard::cell_type _color_to_move>
-IC	bool COthelloClassicBoard::can_move		(const cell_index &index) const
+template <COthelloBitBoard::cell_type _color_to_move>
+IC	bool COthelloBitBoard::can_move		(const cell_index &index) const
 {
 	const cell_type color_to_move	= _color_to_move;
 	const cell_type	opponent_color	= (color_to_move == BLACK ? WHITE : BLACK);
@@ -119,7 +119,7 @@ IC	bool COthelloClassicBoard::can_move		(const cell_index &index) const
 #endif
 }
 
-bool COthelloClassicBoard::can_move			(const cell_index &index) const
+bool COthelloBitBoard::can_move			(const cell_index &index) const
 {
 	if (index) {
 		VERIFY		(cell(index) == EMPTY);
@@ -135,8 +135,8 @@ bool COthelloClassicBoard::can_move			(const cell_index &index) const
 	return			(false);
 }
 
-template <COthelloClassicBoard::cell_type _color_to_move>
-bool COthelloClassicBoard::can_move			() const
+template <COthelloBitBoard::cell_type _color_to_move>
+bool COthelloBitBoard::can_move			() const
 {
 	for (cell_index i=0; i<8; ++i)
 		for (cell_index j=0; j<8; ++j) {
@@ -149,7 +149,7 @@ bool COthelloClassicBoard::can_move			() const
 	return				(false);
 }
 
-bool COthelloClassicBoard::can_move			() const
+bool COthelloBitBoard::can_move			() const
 {
 	if (color_to_move() == BLACK)
 		return	(can_move<BLACK>());

@@ -1,20 +1,20 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: othello_classic_board_compute_result.cpp
-//	Created 	: 08.12.2004
-//  Modified 	: 08.12.2004
+//	Module 		: othello_bit_board.cpp
+//	Created 	: 24.12.2004
+//  Modified 	: 24.12.2004
 //	Author		: Dmitriy Iassenev
-//	Description : Othello classic board compute result implementation
+//	Description : Othello bit board compute difference implementation
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "othello_classic_board.h"
+#include "othello_bit_board.h"
 
 template <
 	int increment, 
-	COthelloClassicBoard::cell_type _color_to_move, 
-	COthelloClassicBoard::cell_type opponent_color
+	COthelloBitBoard::cell_type _color_to_move, 
+	COthelloBitBoard::cell_type opponent_color
 >
-IC	void COthelloClassicBoard::compute_direction(cell_type const *start_cell, int &result) const
+IC	void COthelloBitBoard::compute_direction(cell_type const *start_cell, int &result) const
 {
 	if (start_cell[1*increment] != opponent_color)
 		return;
@@ -53,8 +53,8 @@ IC	void COthelloClassicBoard::compute_direction(cell_type const *start_cell, int
 		result		+= _color_to_move == BLACK ? 12 : -12;
 }
 	
-template <COthelloClassicBoard::cell_type _color_to_move>
-IC	int COthelloClassicBoard::compute_difference	(const cell_index &index) const
+template <COthelloBitBoard::cell_type _color_to_move>
+IC	int COthelloBitBoard::compute_difference	(const cell_index &index) const
 {
 	const cell_type color_to_move	= _color_to_move;
 	const cell_type	opponent_color	= (color_to_move == BLACK ? WHITE : BLACK);
@@ -135,8 +135,8 @@ IC	int COthelloClassicBoard::compute_difference	(const cell_index &index) const
 	return	(result + (_color_to_move == BLACK ? 1 : -1));
 }
 
-template <COthelloClassicBoard::cell_type _color_to_move>
-IC	int	 COthelloClassicBoard::compute_difference	(const cell_index &index, bool) const
+template <COthelloBitBoard::cell_type _color_to_move>
+IC	int	 COthelloBitBoard::compute_difference	(const cell_index &index, bool) const
 {
 	VERIFY			(can_move(index));
 	if (index) {
@@ -155,7 +155,7 @@ IC	int	 COthelloClassicBoard::compute_difference	(const cell_index &index, bool)
 		return		(-difference());
 }
 
-int	 COthelloClassicBoard::compute_difference	(const cell_index &index) const
+int	 COthelloBitBoard::compute_difference	(const cell_index &index) const
 {
 	if (color_to_move() == BLACK)
 		return		(compute_difference<BLACK>(index,true));

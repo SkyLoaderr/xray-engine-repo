@@ -3,7 +3,7 @@
 //	Created 	: 07.12.2004
 //  Modified 	: 07.12.2004
 //	Author		: Dmitriy Iassenev
-//	Description : Classic othello board script export
+//	Description : Othello classic board script export
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
@@ -16,7 +16,7 @@ void COthelloClassicBoard::script_register(lua_State *L)
 {
 	module(L)
 	[
-		class_<COthelloClassicBoard>("bco")//("othello_classic_board")
+		class_<COthelloClassicBoard>("othello_classic_board")
 			.def(constructor<>())
 			.def("start_position",		&COthelloClassicBoard::start_position)
 			.def("show",				&COthelloClassicBoard::show)

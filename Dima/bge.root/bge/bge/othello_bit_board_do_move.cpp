@@ -1,18 +1,18 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: othello_classic_board_do_move.cpp
-//	Created 	: 08.12.2004
-//  Modified 	: 08.12.2004
+//	Module 		: othello_bit_board.cpp
+//	Created 	: 24.12.2004
+//  Modified 	: 24.12.2004
 //	Author		: Dmitriy Iassenev
-//	Description : Othello classic board do move implementation
+//	Description : Othello bit board script export
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "othello_classic_board.h"
+#include "othello_bit_board.h"
 
-template <int increment, COthelloClassicBoard::cell_type _color_to_move, COthelloClassicBoard::cell_type opponent_color>
-IC	void COthelloClassicBoard::try_flip_direction(cell_type *start_cell, int &difference)
+template <int increment, COthelloBitBoard::cell_type _color_to_move, COthelloBitBoard::cell_type opponent_color>
+IC	void COthelloBitBoard::try_flip_direction(cell_type *start_cell, int &difference)
 {
-    COthelloClassicBoard::cell_type *current_cell = start_cell + increment;
+    COthelloBitBoard::cell_type *current_cell = start_cell + increment;
 
 	if (*current_cell != opponent_color)
 		return;
@@ -53,8 +53,8 @@ check:
 	while (current_cell != start_cell);
 }
 
-template <COthelloClassicBoard::cell_type _color_to_move>
-IC	void COthelloClassicBoard::do_move		(const cell_index &index)
+template <COthelloBitBoard::cell_type _color_to_move>
+IC	void COthelloBitBoard::do_move		(const cell_index &index)
 {
 	const cell_type color_to_move	= _color_to_move;
 	const cell_type	opponent_color	= (color_to_move == BLACK ? WHITE : BLACK);
@@ -142,7 +142,7 @@ IC	void COthelloClassicBoard::do_move		(const cell_index &index)
 	--m_empties;
 }
 
-void COthelloClassicBoard::do_move			(const cell_index &index)
+void COthelloBitBoard::do_move			(const cell_index &index)
 {
 	if (index) {
 		if (color_to_move() == BLACK)
