@@ -1,7 +1,8 @@
 -- Movement manager
 -- Created by: Andrey Fidrya (Zmey), af@svitonline.com
 
-local default_animation_play_time = 5000
+local default_wait_time = 5000
+local default_anim = "idle"
 
 local state_none = 0
 local state_moving = 1
@@ -19,22 +20,7 @@ function move_mgr:initialize(npc)
 	self.object:set_callback(self, "waypoint_callback", game_object.movement)
 end
 
-function move_mgr:read_patrol_info()
-	local result = {}
-	for look_idx = 0, self.patrol_look:count() - 1 do
-		local pt_info = result[look_idx]
-		pt_info["retval"] = nil
-		pt_info["anim_set"] = "idle"
-		pt_info["anim_prob"] = 100
-		pt_info["anim_time_min"] = 5000
-		pt_info["anim_time_max"] = 5000
-		pt_info["run"] = false
-		pt_info["state"] = anim.danger
-		pt_info["sync_id"] = nil
-	end
-end
-
-function move_mgr:reset(path_walk, path_look, path_look_info, team)
+function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, team)
 	xr_reactions.add_rule(self.object, "ignore") -- DELME
 
 	printf("move_mgr:reset(path_walk=%s, path_look=%s, team=%s)",
@@ -42,9 +28,14 @@ function move_mgr:reset(path_walk, path_look, path_look_info, team)
 
 	self.patrol_walk = patrol(path_walk)
 	if not self.patrol_walk then
-		utils.abort("object '%s': unable to find customdata's path_walk '%s' on the map",
+		utils.abort("object '%s': unable to find path_walk '%s' on the map",
 			self.object:name(), path_walk)
 	end
+	if not path_walk_info then
+		utils.abort("object '%s': path_walk ('%s') field was supplied, but path_walk_info field is nil",
+			self.object:name(), path_walk)
+	end
+	self.path_walk_info = path_walk_info
 
 	if path_look then
 		if not path_look_info then
@@ -53,7 +44,7 @@ function move_mgr:reset(path_walk, path_look, path_look_info, team)
 		end
 		self.patrol_look = patrol(path_look)
 		if not self.patrol_look then
-			utils.abort("object '%s': unable to find customdata's path_look '%s' on the map",
+			utils.abort("object '%s': unable to find path_look '%s' on the map",
 				self.object:name(), path_look)
 		end
 	else
@@ -62,14 +53,17 @@ function move_mgr:reset(path_walk, path_look, path_look_info, team)
 
 	self.path_walk = path_walk
 	self.path_look = path_look
-	self.patrol_look_info = path_look_info
+	self.path_look_info = path_look_info
 	self.team = team
 
-	self.cur_anim_set = "idle"
+	self.cur_anim_set = default_anim
+	self.pt_wait_time = default_wait_time -- сколько ждать в точке, где играем анимацию 
+
 	self.shall_shoot = nil
 	self.is_shooting = false
 
-	self.pt_wait_time = 0 -- сколько ждать в точке, где играем анимацию (инициализируется реальным числом по прибытию)
+	self.running = false
+	self.danger = false
 
 	-- Точка, в которую смотрели в прошлый раз. Ее запоминаем для того, чтобы не делать паузу между анимациями,
 	-- если собираемся смотреть в ту же самую точку, не поворачиваясь никуда...
@@ -79,8 +73,9 @@ function move_mgr:reset(path_walk, path_look, path_look_info, team)
 
 	self.object:set_detail_path_type(move.line)
 	self.object:set_body_state(move.standing)
-	self.object:set_mental_state(anim.danger)
-	self.object:set_movement_type(move.run)
+	--self.object:set_mental_state(anim.danger)
+	self.object:set_mental_state(anim.free)
+	self.object:set_movement_type(move.run) -- на стартовую точку идти бегом
 	self.object:set_path_type(game_object.patrol_path)
 	self.object:set_patrol_path(self.path_walk, patrol.start, patrol.continue, true)
 	self.object:set_sight(look.danger, nil, 0)
@@ -176,12 +171,7 @@ function move_mgr:update()
 			self:waypoint_callback(self.object, nil, 0)
 		else
 			self.last_look_index = nil
-			-- FIXME
-			--self.object:set_mental_state(if_then_else(self.st.running, anim.danger, anim.free))
-			--self.object:set_movement_type(if_then_else(self.st.running, move.run, move.walk))
-			self.object:set_mental_state(if_then_else(true, anim.danger, anim.free))
-			self.object:set_movement_type(if_then_else(true, move.run, move.walk))
-			--
+			self:update_movement_state() -- идти дальше
 			--self.object:set_sight(look.search, nil, 0)
 			self.object:set_sight(look.danger, nil, 0)
 		end
@@ -198,6 +188,11 @@ end
 -- IMPLEMENTATION
 -------------------------------------------------------------------------------
 
+function move_mgr:update_movement_state()
+	self.object:set_mental_state(if_then_else(self.danger, anim.danger, anim.free))
+	self.object:set_movement_type(if_then_else(self.running, move.run, move.walk))
+end
+
 function move_mgr:waypoint_callback(obj, action_type, index)
 	printf("move_mgr:waypoint_callback()")
 	if index == -1 then
@@ -205,10 +200,36 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 		return
 	end
 
-	-- FIXME: читать из кастомдаты
-	self.pt_wait_time = default_animation_play_time
+	local suggested_running = self.path_walk_info[index]["run"]
+	if suggested_running == "true" then
+		self.running = true
+	else
+		self.running = false
+	end
+
+	local suggested_danger = self.path_walk_info[index]["danger"]
+	if suggested_danger == "true" then
+		self.danger = true
+	else
+		self.danger = false
+	end
+
+	local suggested_wait_time = self.path_look_info[index]["time"]
+	if suggested_wait_time then
+		self.pt_wait_time = tonumber(suggested_wait_time)
+	else
+		self.pt_wait_time = default_wait_time
+	end
+
+	local suggested_anim_set = self.path_look_info[index]["anim"]
+	if suggested_anim_set then
+		self.cur_anim_set = suggested_anim_set
+	else
+		self.cur_anim_set = default_anim
+	end
 
 	if not self.patrol_look then
+		self:update_movement_state() -- идти дальше
 		return
 	end
 
@@ -220,11 +241,12 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 	end
 
 	if search_for == 0 then
+		self:update_movement_state() -- идти дальше
 		return
 	end
 
 	local this_val -- значение флагов текущей точки
-	local num_pts_found = 0 -- количество найденных точек (с нужными флагами)
+	local pts_found_total_weight = 0 -- количество найденных точек (с нужными флагами)
 	local pt_chosen_idx = nil -- индекс выбранной точки
 	local r
 	for look_idx = 0, self.patrol_look:count() - 1 do
@@ -237,9 +259,16 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 		if this_val == search_for then
 			-- Нашли точку с нужными флагами, но поскольку в пути могут быть еще такие-же
 			-- точки, возьмем текущую только с некоторой вероятностью:
-			num_pts_found = num_pts_found + 1
-			r = math.random(1, num_pts_found)
-			if r == 1 then
+			-- Шанс, с которым на точку посмотрит персонаж:
+			local point_look_weight = self.path_look_info[index]["prob"]
+			if point_look_weight then
+				point_look_weight = tonumber(point_look_weight)
+			else
+				point_look_weight = 100 -- по умолчанию у всех точек вес = 100
+			end
+			pts_found_total_weight = pts_found_total_weight + point_look_weight
+			r = math.random(1, pts_found_total_weight)
+			if r <= point_look_weight then
 				pt_chosen_idx = look_idx
 			end
 		end
@@ -247,7 +276,7 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 	if pt_chosen_idx then
 		if pt_chosen_idx ~= self.last_look_index then
 			xr_state.anim_update(nil, self.object) -- не играть анимацию во время поворота!
-			self.expiration_time = device():time_global() + 1500;--700; -- дать 700 мс на начало поворота
+			self.expiration_time = device():time_global() + 700 -- дать 700 мс на начало поворота
 			printf("move_mgr:waypoint_callback(): look_at_waypoint")
 			self:look_at_waypoint(pt_chosen_idx) -- поворачиваемся
 		else
@@ -255,5 +284,8 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 		end
 		self.state = state_standing_before_anim
 		self.object:set_movement_type(move.stand)
+	else
+		utils.abort("object '%s': path_walk '%s', index %d: cannot find corresponding point(s) on path_look '%s'",
+			self.object:name(), self.path_walk, index, self.path_look)
 	end
 end

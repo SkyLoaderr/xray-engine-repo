@@ -44,13 +44,14 @@ function action_walker_activity:initialize()
 
 	self.move_mgr:initialize(self.object)
 
+	self.path_walk_info = utils.path_parse_waypoints(self.st.path_walk)
 	self.path_look_info = utils.path_parse_waypoints(self.st.path_look)
 	self:reset_scheme()
 end
 
 
 function action_walker_activity:reset_scheme()
-	self.move_mgr:reset(self.st.path_walk, self.st.path_look, self.path_look_info, self.st.team)
+	self.move_mgr:reset(self.st.path_walk, self.path_walk_info, self.st.path_look, self.path_look_info, self.st.team)
 end	
 
 function action_walker_activity:execute()
