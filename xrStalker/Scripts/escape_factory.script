@@ -9,8 +9,7 @@ function add_member (obj)
        return 
     end
     printf ("Object %s is added to zone", obj:name ())
-    local id = obj:id ()
-    table.insert (members, id)
+    table.insert (members, obj.id)
     switch_offline (obj)
     return        
 end
