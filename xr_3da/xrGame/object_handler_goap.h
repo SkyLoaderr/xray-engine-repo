@@ -104,6 +104,12 @@ protected:
 			void			add_operators			(CMissile		*missile);
 			void			add_evaluators			(CEatableItem	*eatable_item);
 			void			add_operators			(CEatableItem	*eatable_item);
+			void			remove_evaluators		(CWeapon		*weapon);
+			void			remove_operators		(CWeapon		*weapon);
+			void			remove_evaluators		(CMissile		*missile);
+			void			remove_operators		(CMissile		*missile);
+			void			remove_evaluators		(CEatableItem	*eatable_item);
+			void			remove_operators		(CEatableItem	*eatable_item);
 
 public:
 							CObjectHandlerGOAP		();
@@ -124,7 +130,6 @@ public:
 	IC		bool			goal_reached			() const;
 			CInventoryItem	*best_weapon			() const;
 			u32				weapon_state			(const CWeapon *weapon) const;
-			u32				object_action			() const;
 			void			add_item				(CInventoryItem *inventory_item);
 			void			remove_item				(CInventoryItem *inventory_item);
 			void			set_goal				(const MonsterSpace::EObjectAction object_action, CGameObject *game_object = 0);
