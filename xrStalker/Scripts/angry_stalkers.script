@@ -51,9 +51,9 @@ function main()
 			prof_ne_ojidal_tebya_vstretit:play_at_pos		(chert,chert:position(),0);
 			wait(2000)			
 			i_see_chert = 1
+		break
 		end
 	    wait	()
-		break
 	end
 
 	while siviy:action() and chert:action() do
@@ -64,9 +64,9 @@ function main()
 			prof_otvali:play_at_pos		(chert,chert:position(),0);
 			wait(2000)			
 			i_see_chert = 2
+		break
 		end
 	    wait	()
-		break
 	end
 
 	while siviy:action() and chert:action() do
