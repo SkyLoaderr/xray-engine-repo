@@ -139,6 +139,9 @@ public:
 	virtual void				Disable					  ();
 	virtual bool				isEnabled				  (){return CPHObject::is_active();}
 
+//CPHObject 
+	virtual		void			vis_update_activate()		;
+	virtual		void			vis_update_deactivate()		;
 
 	virtual	void				PhDataUpdate				(dReal step);
 	virtual	void				PhTune						(dReal step);
@@ -148,6 +151,7 @@ public:
 	virtual void				UnFreezeContent				();
 	virtual void				Freeze						();
 	virtual void				UnFreeze					();
+
 	virtual void				StepFrameUpdate				(dReal step){};
 	virtual void				build_FromKinematics		(CKinematics* K,BONE_P_MAP* p_geting_map=NULL);
 	virtual void				preBuild_FromKinematics		(CKinematics* K,BONE_P_MAP* p_geting_map);

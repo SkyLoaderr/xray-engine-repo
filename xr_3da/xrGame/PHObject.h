@@ -58,7 +58,8 @@ virtual		void		activate		()										;
 			void		deactivate		()										;
 virtual		void		Collide			()										;
 
-
+virtual		void		vis_update_activate(){}
+virtual		void		vis_update_deactivate(){}
 };
 
 

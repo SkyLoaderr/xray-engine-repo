@@ -108,7 +108,7 @@ BOOL	CCar::net_Spawn				(LPVOID DC)
 	Init							();//inits m_driving_wheels,m_steering_wheels,m_breaking_wheels values using recieved in ParceDefinitions & from bone_map
 	CPHUpdateObject::Activate             ();
 
-	m_pPhysicsShell->set_PhysicsRefObject(this);
+	
 
 	m_fSaveMaxRPM					= m_max_rpm;
 

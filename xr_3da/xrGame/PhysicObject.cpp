@@ -458,7 +458,7 @@ void __stdcall PushOutCallback2(bool& do_colide,dContact& c);
 void CPhysicObject::UnsplitSingle(CPhysicObject* O)
 {
 	//Msg("%o,received has %d,",this,m_unsplited_shels.size());
-	if (0==m_unsplited_shels.size())	return;	//. hack
+	//if (0==m_unsplited_shels.size())	return;	//. hack
 	VERIFY2(m_unsplited_shels.size(),"NO_SHELLS !!");
 	VERIFY2(!O->m_pPhysicsShell,"this has shell already!!!");
 	CPhysicsShell* newPhysicsShell=m_unsplited_shels.front().first;
@@ -485,7 +485,7 @@ void CPhysicObject::UnsplitSingle(CPhysicObject* O)
 	newKinematics->LL_SetBoneRoot		(split_bone);
 	VERIFY2(mask1.flags,"mask1 -Zero");
 	newKinematics->LL_SetBonesVisible	(mask1.flags);
-
+	
 	newPhysicsShell->set_PhysicsRefObject(O);
 	//newPhysicsShell->set_PushOut(5000,PushOutCallback2);
 	m_unsplited_shels.erase(m_unsplited_shels.begin());

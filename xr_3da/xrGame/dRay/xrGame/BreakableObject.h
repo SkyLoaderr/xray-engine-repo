@@ -9,8 +9,8 @@
 #include "physicsshellholder.h"
 class CPHStaticGeomShell;
 
-class CBreakableObject: public CPhysicsShellHolder {//need m_pPhysicShell
-	typedef	CGameObject		inherited;
+class CBreakableObject: public CPhysicsShellHolder {
+	typedef	CPhysicsShellHolder		inherited;
 private:
 		bool				b_resived_damage;
 		float				m_max_frame_damage;

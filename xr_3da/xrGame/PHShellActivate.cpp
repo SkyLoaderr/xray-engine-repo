@@ -22,8 +22,10 @@
 void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disable){
 	if(bActive)
 		return;
-	if(!disable)EnableObject();
 
+	if(!CPHObject::is_active()) vis_update_deactivate();
+	if(!disable)EnableObject();
+	
 	ELEMENT_I i;
 
 	mXFORM.set(m0);
@@ -46,6 +48,7 @@ void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disa
 void CPHShell::Activate(const Fmatrix &transform,const Fvector& lin_vel,const Fvector& ang_vel,bool disable){
 	if(bActive)
 		return;
+	if(!CPHObject::is_active()) vis_update_deactivate();
 	if(!disable)EnableObject();
 
 	ELEMENT_I i;
@@ -74,6 +77,7 @@ void CPHShell::Activate(bool place_current_forms,bool disable)
 { 
 	if(bActive)
 		return;
+	if(!CPHObject::is_active()) vis_update_deactivate();
 	if(!disable)EnableObject();
 	if(!m_space)
 	{
@@ -130,7 +134,7 @@ void CPHShell::Build(bool place_current_forms/*true*/,bool disable/*false*/)
 
 void CPHShell::RunSimulation(bool place_current_forms/*true*/)
 {
-
+	if(!CPHObject::is_active()) vis_update_deactivate();
 	EnableObject();
 	//dSpaceAdd(ph_world->GetSpace(),(dGeomID)m_space);
 	dSpaceSetCleanup(m_space,0);
@@ -163,6 +167,7 @@ void CPHShell::PureActivate()
 	if(bActive)	return;
 	bActive=true;
 	//dSpaceAdd(ph_world->GetSpace(),(dGeomID)m_space);
+	if(!CPHObject::is_active()) vis_update_deactivate();
 	EnableObject();
 	spatial_register();
 	//m_saved_contacts=dJointGroupCreate (0);

@@ -19,8 +19,9 @@ void CPHObject::activate()
 	if(b_activated)return;
 	if(b_freezed)	{UnFreeze();return;}
 	ph_world->AddObject(this);
+	vis_update_activate();
 	b_activated=true;
-
+	
 }
 
 void CPHObject::EnableObject()
@@ -33,6 +34,7 @@ void CPHObject::deactivate()
 	if(!b_activated)return;
 	VERIFY2(m_island.IsActive(),"can not do it during processing");
 	ph_world->RemoveObject(PH_OBJECT_I(this));
+	vis_update_deactivate();
 	b_activated=false;
 }
 
@@ -90,6 +92,7 @@ void CPHObject::Freeze()
 	ph_world->RemoveObject(this);
 	ph_world->AddFreezedObject(this);
 	FreezeContent();
+	vis_update_deactivate();
 }
 
 void CPHObject::UnFreeze()
@@ -98,6 +101,7 @@ void CPHObject::UnFreeze()
 	UnFreezeContent();
 	ph_world->RemoveFreezedObject(this);
 	ph_world->AddObject(this);
+	vis_update_activate();
 }
 
 CPHUpdateObject::CPHUpdateObject()
@@ -111,6 +115,7 @@ void CPHUpdateObject::Activate()
 
 	ph_world->AddUpdateObject(this);
 	b_activated=true;
+
 }
 
 void CPHUpdateObject::Deactivate()
@@ -118,5 +123,6 @@ void CPHUpdateObject::Deactivate()
 	if(!b_activated)return;
 	ph_world->RemoveUpdateObject(this);
 	b_activated=false;
+
 }
 

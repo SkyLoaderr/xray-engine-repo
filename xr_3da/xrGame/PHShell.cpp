@@ -9,6 +9,7 @@
 #include "PHJointDestroyInfo.h"
 #include "SpaceUtils.h"
 #include "MathUtils.h"
+#include "PhysicsShellHolder.h"
 //#pragma warning(disable:4995)
 //#pragma warning(disable:4267)
 //#include "../ode/src/collision_kernel.h"
@@ -62,7 +63,6 @@ void CPHShell::DisableObject()
 	InterpolateGlobalTransform(&mXFORM);
 	CPHObject::deactivate();
 	if(m_spliter_holder)m_spliter_holder->Deactivate();
-	
 }
 void CPHShell::Disable()
 {
@@ -78,8 +78,20 @@ void CPHShell::ReanableObject()
 {
 	//if(b_contacts_saved) dJointGroupEmpty(m_saved_contacts);
 	//b_contacts_saved=false;
+
 }
 
+void CPHShell::vis_update_activate()
+{
+	CPhysicsShellHolder* ref_object=(*elements.begin())->PhysicsRefObject();
+	if(ref_object)ref_object->processing_activate();
+}
+
+void CPHShell::vis_update_deactivate()
+{
+		CPhysicsShellHolder* ref_object=(*elements.begin())->PhysicsRefObject();
+		if(ref_object)ref_object->processing_deactivate();
+}
 void CPHShell::setDensity(float M)
 {
 	ELEMENT_I i;
@@ -142,7 +154,6 @@ float	CPHShell::getDensity()
 {
 	return getMass()/getVolume();
 }
-
 
 
 
@@ -289,15 +300,15 @@ void CPHShell::Enable()
 
 void CPHShell::set_PhysicsRefObject	 (CPhysicsShellHolder* ref_object)
 {
+	
+
+ 	if(elements.empty()) return;
+	if((*elements.begin())->PhysicsRefObject()==ref_object) return;
 	ELEMENT_I i;
 	for(i=elements.begin();elements.end() != i;++i)
 	{
 		(*i)->set_PhysicsRefObject(ref_object);
 	}
-	//if(dynamic_cast<CCar*>(ref_object))
-	//{
-	//ref_object=ref_object;
-	//}
 
 
 
