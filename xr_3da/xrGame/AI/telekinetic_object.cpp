@@ -44,6 +44,8 @@ bool CTelekineticObject::init(CGameObject *obj, float s, float h, u32 ttk)
 
 void CTelekineticObject::raise(float power) 
 {
+	if (!object || !object->m_pPhysicsShell || !object->m_pPhysicsShell->bActive) return;	
+	
 	power *= strength;
 	
 	Fvector dir;
@@ -80,6 +82,8 @@ void CTelekineticObject::keep()
 {
 	// проверить время последнего обновления
 	//if (time_keep_updated + KEEP_IMPULSE_UPDATE > Level().timeServer()) return;
+	
+	if (!object || !object->m_pPhysicsShell || !object->m_pPhysicsShell->bActive) return;
 
 	// проверить высоту
 	float cur_h		= object->Position().y;
@@ -96,9 +100,6 @@ void CTelekineticObject::keep()
 	//float elem_size = float(object->m_pPhysicsShell->Elements().size());
 	dir.mul(5.0f);
 
-	VERIFY(object);
-	VERIFY(object->m_pPhysicsShell);
-	VERIFY(object->m_pPhysicsShell->bActive);
 	(object->m_pPhysicsShell->Elements()[0])->applyGravityAccel(dir);
 
 	// установить время последнего обновления
@@ -107,13 +108,11 @@ void CTelekineticObject::keep()
 
 void CTelekineticObject::release() 
 {
+	if (!object || !object->m_pPhysicsShell || !object->m_pPhysicsShell->bActive) return;
+	
+	
 	Fvector dir_inv;
 	dir_inv.set(0.f,-1.0f,0.f);
-
-	VERIFY(object);
-	VERIFY(object->m_pPhysicsShell);
-	VERIFY(object->m_pPhysicsShell->bActive);
-
 
 	// включить гравитацию
 	object->m_pPhysicsShell->set_ApplyByGravity(TRUE);
@@ -124,6 +123,11 @@ void CTelekineticObject::release()
 
 void CTelekineticObject::fire(const Fvector &target)
 {
+	state				= TS_Fire;
+	time_fire_started	= Level().timeServer();
+
+	if (!object || !object->m_pPhysicsShell || !object->m_pPhysicsShell->bActive) return;
+
 	// вычислить направление
 	Fvector dir;
 	dir.sub(target,object->Position());
@@ -137,12 +141,15 @@ void CTelekineticObject::fire(const Fvector &target)
 		object->m_pPhysicsShell->Elements()[i]->applyImpulse(dir, 20.f * object->m_pPhysicsShell->getMass() / object->m_pPhysicsShell->Elements().size());
 	}
 	
-	state				= TS_Fire;
-	time_fire_started	= Level().timeServer();
 }
 
 void CTelekineticObject::fire(const Fvector &target, float power)
 {
+	state				= TS_Fire;
+	time_fire_started	= Level().timeServer();
+
+	if (!object || !object->m_pPhysicsShell || !object->m_pPhysicsShell->bActive) return;
+
 	// вычислить направление
 	Fvector dir;
 	dir.sub(target,object->Position());
@@ -155,13 +162,12 @@ void CTelekineticObject::fire(const Fvector &target, float power)
 	for (u32 i=0;i<object->m_pPhysicsShell->Elements().size();i++) {
 		object->m_pPhysicsShell->Elements()[i]->applyImpulse(dir, power * 20.f * object->m_pPhysicsShell->getMass() / object->m_pPhysicsShell->Elements().size());
 	}
-
-	state				= TS_Fire;
-	time_fire_started	= Level().timeServer();
 }
 
 bool CTelekineticObject::check_height()
 {
+	if (!object) return true;	
+	
 	return (object->Position().y > target_height);
 }
 
