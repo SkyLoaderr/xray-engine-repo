@@ -29,22 +29,22 @@ void CHUDCrosshair::Load		()
 {
 	//все размеры в процентах от длины экрана
 	//длина крестика 
-	float cross_length_perc = pSettings->r_float (HUD_CURSOR_SECTION, "cross_length");
-	cross_length = iFloor(0.5f + cross_length_perc*float(Device.dwWidth));
+	cross_length_perc = pSettings->r_float (HUD_CURSOR_SECTION, "cross_length");
+//	cross_length = iFloor(0.5f + cross_length_perc*float(Device.dwWidth));
 
-	float min_radius_perc = pSettings->r_float (HUD_CURSOR_SECTION, "min_radius");
-	min_radius = iFloor(0.5f + min_radius_perc*float(Device.dwWidth));
+	min_radius_perc = pSettings->r_float (HUD_CURSOR_SECTION, "min_radius");
+	//min_radius = iFloor(0.5f + min_radius_perc*float(Device.dwWidth));
 
-	float max_radius_perc = pSettings->r_float (HUD_CURSOR_SECTION, "max_radius");
-	max_radius = iFloor(0.5f + max_radius_perc*float(Device.dwWidth));
+	max_radius_perc = pSettings->r_float (HUD_CURSOR_SECTION, "max_radius");
+	//max_radius = iFloor(0.5f + max_radius_perc*float(Device.dwWidth));
 
 	cross_color = pSettings->r_fcolor (HUD_CURSOR_SECTION, "cross_color");
 
 
-	float radius_speed_perc = pSettings->r_float (HUD_CURSOR_SECTION, "radius_lerp_speed");
-	radius_speed = iFloor(0.5f + radius_speed_perc*float(Device.dwWidth));
-	if(radius_speed<=0)
-		radius_speed = 1;
+	radius_speed_perc = pSettings->r_float (HUD_CURSOR_SECTION, "radius_lerp_speed");
+//	radius_speed = iFloor(0.5f + radius_speed_perc*float(Device.dwWidth));
+//	if(radius_speed<=0)
+//		radius_speed = 1;
 }
 
 //выставляет radius от min_radius до max_radius
@@ -57,7 +57,7 @@ void CHUDCrosshair::SetDispersion	(float disp)
 	Device.mProject.transform_tiny(E);
 
     int radius_pixels = iFloor(0.5f + _abs(E.x)*Device.fWidth_2);
-	clamp(radius_pixels, min_radius, max_radius);
+//	clamp(radius_pixels, min_radius, max_radius);
 
 	target_radius = radius_pixels; 
 }
@@ -75,18 +75,18 @@ void CHUDCrosshair::OnRender ()
 	
 	u32 color = cross_color.get			();
 
-	int x_min = min_radius + radius		; x_min *= UI()->GetScaleX();
-	int x_max = x_min + cross_length	; x_max *= UI()->GetScaleX();
+	int cross_length = iFloor(0.5f + cross_length_perc*Device.dwWidth);
+	int min_radius = iFloor(0.5f + min_radius_perc*Device.dwWidth);
+	int max_radius = iFloor(0.5f + max_radius_perc*Device.dwWidth);
 
-//	int y_min = x_min;
-//	int y_max = x_max;
+	clamp(target_radius , min_radius, max_radius);
 
-	int y_min = min_radius + radius		; y_min *= UI()->GetScaleY();
-	int y_max = y_min + cross_length	; y_max *= UI()->GetScaleX();
+	int x_min = min_radius + radius;
+	int x_max = x_min + cross_length;
 
+	int y_min = x_min;
+	int y_max = x_max;
 
-	//int y_min = iFloor(0.5f + float(x_min)*Device.fASPECT);
-	//int y_max = iFloor(0.5f + float(x_max)*Device.fASPECT);
 
 	// 0
 	pv->set					(center.x,center.y + y_min, color); pv++;
@@ -115,4 +115,5 @@ void CHUDCrosshair::OnRender ()
 		radius -= radius_speed;
 	else 
 		radius = target_radius;
+
 }
