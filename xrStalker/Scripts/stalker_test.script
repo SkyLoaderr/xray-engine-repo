@@ -6,6 +6,9 @@ function callback_exit(zone,object)
 	printf			("[%6d] Object %s exited zone %s",device():time_global(),object:name(),zone:name())
 end
 
+function callback_static(object,action,index)
+	printf			("[%6d] Object %s reached waypoint %d",device():time_global(),object:name(),index)
+end
 
 function main ()
     stalker				= get_level_object ("m_stalker_e0000")
@@ -13,10 +16,21 @@ function main ()
 
     stalker:script		(true,stalker_test:script_name());
     
-	stalker:sdfsadfsda	()
+    action				(
+		stalker,
+		move(move.standing,move.walk,move.line,patrol("way0000")),
+		cond(cond.move_end)
+	)
+    
+    stalker:set_callback(stalker_test.callback_static,game_object.movement)
 	
+	while stalker:action() do
+		wait			()
+	end
 	
-	
+    stalker:script		(false,stalker_test:script_name());
+    
+    
 --[	zone0				= get_level_object ("script_zone0000")
 	zone1				= get_level_object ("script_zone0001")
 	
