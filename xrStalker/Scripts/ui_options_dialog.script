@@ -39,23 +39,23 @@ function options_dialog:InitControls()
 		----- BUTTONS --->>>
 	local btn_video_rect  = {x = self.left_aling_x,
 							 y = self.top_align_y,
-							 width = btn_rect.width,
-							 height = btn_rect.height}
+							 width = self.btn_rect.width,
+							 height = self.btn_rect.height}
 							 
 	local btn_sound_rect  = {x = self.left_aling_x,
 							 y = btn_video_rect.y + btn_video_rect.height + indent,
-							 width = btn_rect.width,
-							 height = btn_rect.height}
+							 width = self.btn_rect.width,
+							 height = self.btn_rect.height}
 							 
 	local btn_game_rect   = {x = self.left_aling_x,
 							 y = btn_sound_rect.y + btn_sound_rect.height + indent,
-							 width = btn_rect.width,
-							 height = btn_rect.height}
+							 width = self.btn_rect.width,
+							 height = self.btn_rect.height}
 	
 	local btn_control_rect= {x = self.left_aling_x,
 							 y = btn_game_rect.y + btn_game_rect.height + indent,
-							 width = btn_rect.width,
-							 height = btn_rect.height}
+							 width = self.btn_rect.width,
+							 height = self.btn_rect.height}
 		----- Bottom right align --->>>
 	local btn_cancel_rect = {x = self.btn_special_rect.x,
 							 y = self.btn_special_rect.y,
