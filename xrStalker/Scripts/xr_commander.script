@@ -687,7 +687,7 @@ function add_to_binder( npc )
         action:add_effect( world_property( prop_commander, true ) )
         manager:add_action( act_commander, action )
 
-        action = manager:action( stalker_ids.action_free_no_alife )
+        action = manager:action( stalker_ids.action_puzzle_solver)
         action:add_precondition( world_property( prop_commander, true ) )
     end
 end
