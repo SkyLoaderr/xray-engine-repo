@@ -84,7 +84,9 @@ class CMyD3DApplication : public CD3DApplication
 
 	// Shaders
 	LPDIRECT3DVERTEXSHADER9			dvs_Scene2fat;
+	LPD3DXCONSTANTTABLE				dvs_Scene2fat_C;
 	LPDIRECT3DPIXELSHADER9			dps_Scene2fat;
+	LPD3DXCONSTANTTABLE				dps_Scene2fat_C;
 
 	//  ************************
 	//	**** Shadow mapping ****
