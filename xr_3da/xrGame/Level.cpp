@@ -76,6 +76,7 @@ CLevel::CLevel():IPureClient(Device.GetTimerGlobal())
 
 //----------------------------------------------------
 	m_bNeed_CrPr					= false;
+	m_bIn_CrPr						= false;
 	m_dwNumSteps				= 0;
 	m_dwDeltaUpdate				= u32(fixed_step*1000);
 	m_dwLastNetUpdateTime		= 0;
@@ -353,7 +354,8 @@ u32	lvInterpSteps = 0;
 
 void CLevel::make_NetCorrectionPrediction	()
 {
-	m_bNeed_CrPr = false;
+	m_bNeed_CrPr	= false;
+	m_bIn_CrPr		= true;
 	u64 NumPhSteps = ph_world->m_steps_num;
 	ph_world->m_steps_num -= m_dwNumSteps;
 	
@@ -402,6 +404,7 @@ void CLevel::make_NetCorrectionPrediction	()
 
 	ph_world->m_steps_num = NumPhSteps;
 	m_dwNumSteps = 0;
+	m_bIn_CrPr = false;
 };
 
 u32			CLevel::GetInterpolationSteps	()

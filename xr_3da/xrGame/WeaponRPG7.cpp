@@ -80,7 +80,19 @@ void CWeaponRPG7::ReloadMagazine()
 void CWeaponRPG7::SwitchState(u32 S) 
 {
 	inherited::SwitchState(S);
-	if(STATE == eIdle && S==eFire && getRocketCount()/*m_pRocket*/) 
+}
+
+void CWeaponRPG7::FireStart()
+{
+	inherited::FireStart();
+}
+
+void CWeaponRPG7::switch2_Fire	()
+{
+	m_bFireSingleShot = true;
+	bWorking = false;
+
+	if(STATE == eIdle	&& getRocketCount()/*m_pRocket*/) 
 	{
 		Fvector p1, d; 
 		p1.set(vLastFP); 
@@ -88,20 +100,20 @@ void CWeaponRPG7::SwitchState(u32 S)
 
 		CEntity* E = dynamic_cast<CEntity*>(H_Parent());
 		if (E) E->g_fireParams (this, p1,d);
-		
+
 		Fmatrix launch_matrix;
 		launch_matrix.identity();
 		launch_matrix.k.set(d);
 		Fvector::generate_orthonormal_basis(launch_matrix.k,
-											launch_matrix.i, launch_matrix.j);
+			launch_matrix.i, launch_matrix.j);
 		launch_matrix.c.set(p1);
 
 		d.normalize();
 		d.mul(m_fLaunchSpeed);
-		
-//		Fvector angular_vel;
-//		angular_vel.set(d);
-//		angular_vel.mul(1400.f);
+
+		//		Fvector angular_vel;
+		//		angular_vel.set(d);
+		//		angular_vel.mul(1400.f);
 		CRocketLauncher::LaunchRocket(launch_matrix, d, zero_vel);
 
 		CExplosiveRocket* pGrenade = dynamic_cast<CExplosiveRocket*>(getCurrentRocket());
@@ -118,17 +130,6 @@ void CWeaponRPG7::SwitchState(u32 S)
 	}
 }
 
-void CWeaponRPG7::FireStart()
-{
-	inherited::FireStart();
-}
-
-void CWeaponRPG7::switch2_Fire	()
-{
-	m_bFireSingleShot = true;
-	bWorking = false;
-}
-
 void CWeaponRPG7::OnEvent(NET_Packet& P, u16 type) 
 {
 	inherited::OnEvent(P,type);
@@ -143,4 +144,10 @@ void CWeaponRPG7::OnEvent(NET_Packet& P, u16 type)
 			CRocketLauncher::DetachRocket(id);
 		} break;
 	}
+}
+
+void CWeaponRPG7::net_Import			( NET_Packet& P)
+{
+	inherited::net_Import(P);
+	UpdateGrenadeVisibility(!!iAmmoElapsed || STATE == eReload);
 }

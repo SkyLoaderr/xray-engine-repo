@@ -352,20 +352,19 @@ void CExplosive::ExplodeParams(const Fvector& pos,
 	m_vExplodeDir = dir;
 }
 
-
 void CExplosive::GenExplodeEvent (const Fvector& pos, const Fvector& normal)
 {
+	if (OnClient() || Remote()) return;
+
 	VERIFY(0xffff != m_iCurrentParentID);
 
-	if (Local()) 
-	{
-		NET_Packet		P;
-		u_EventGen		(P,GE_GRENADE_EXPLODE,ID());	
-		P.w_u16			(m_iCurrentParentID);
-		P.w_vec3		(const_cast<Fvector&>(pos));
-		P.w_vec3		(const_cast<Fvector&>(normal));
-		u_EventSend		(P);
-	}
+	NET_Packet		P;
+	u_EventGen		(P,GE_GRENADE_EXPLODE,ID());	
+	P.w_u16			(m_iCurrentParentID);
+	P.w_vec3		(const_cast<Fvector&>(pos));
+	P.w_vec3		(const_cast<Fvector&>(normal));
+	u_EventSend		(P);
+
 }
 
 void CExplosive::renderable_Render		()

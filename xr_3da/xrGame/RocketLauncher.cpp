@@ -112,7 +112,7 @@ void CRocketLauncher::LaunchRocket(const Fmatrix& xform,
 	m_pRocket->H_SetParent(NULL);
 */
 	getCurrentRocket()->SetLaunchParams(xform, vel, angular_vel);
-	getCurrentRocket()->H_SetParent(NULL);
+//	getCurrentRocket()->H_SetParent(NULL);
 	m_launched_rockets.push_back( getCurrentRocket() );
 	//m_rockets.pop_back();
 }

@@ -9,6 +9,8 @@
 #include "PhysicsShell.h"
 #include "extendedgeom.h"
 #include "level.h"
+#include "xrMessages.h"
+
 
 CCustomRocket::CCustomRocket() 
 {
@@ -19,11 +21,13 @@ CCustomRocket::CCustomRocket()
 
 
 	m_vPrevVel.set(0,0,0);
+
+	m_pTrailLight = NULL;
 }
 
 CCustomRocket::~CCustomRocket	()
 {
-	::Render->light_destroy(m_pTrailLight);
+	if (m_pTrailLight) ::Render->light_destroy(m_pTrailLight);
 }
 
 
@@ -31,6 +35,7 @@ void CCustomRocket::reinit		()
 {
 	inherited::reinit();
 
+	if (m_pTrailLight) ::Render->light_destroy(m_pTrailLight);
 	m_pTrailLight = ::Render->light_create();
 	m_pTrailLight->set_shadow(true);
 
@@ -53,6 +58,9 @@ void CCustomRocket::net_Destroy()
 {
 	inherited::net_Destroy();
 	CPHUpdateObject::Deactivate();
+
+	StopEngine();
+	StopFlying();
 }
 
 
@@ -92,8 +100,6 @@ void CCustomRocket::create_physic_shell	()
 
 void __stdcall CCustomRocket::ObjectContactCallback(bool& do_colide,dContact& c) 
 {
-	if (OnClient()) return;
-
 	do_colide = false;
 
 
@@ -191,6 +197,8 @@ void CCustomRocket::Contact(const Fvector &pos, const Fvector &normal)
 		m_pPhysicsShell->set_AngularVel(zero_vel);
 		m_pPhysicsShell->set_ObjectContactCallback(NULL);
 	}
+//	if (OnClient()) return;
+
 	Position().set(pos);
 }
 
@@ -266,16 +274,17 @@ void CCustomRocket::StopEngine				()
 
 void CCustomRocket::UpdateEnginePh			()
 {
-	float force = m_fEngineImpulse * Device.fTimeDelta;
+	if (Level().In_NetCorrectionPrediction()) return;
+	float force = m_fEngineImpulse*fixed_step;// * Device.fTimeDelta;
 
-	Fvector l_pos, l_dir;; 
+	Fvector l_pos, l_dir; 
 	l_pos.set(0, 0, 5.f);
 	l_dir.set(XFORM().k);
 	l_dir.normalize();
 
 	m_pPhysicsShell->applyImpulseTrace(l_pos, l_dir, force);
 	l_dir.set(0, 1.f, 0);
-	force = m_fEngineImpulseUp * Device.fTimeDelta;
+	force = m_fEngineImpulseUp*fixed_step;// * Device.fTimeDelta;
 	m_pPhysicsShell->applyImpulse(l_dir, force);
 
 	//m_pPhysicsShell->set_AngularVel()
@@ -419,3 +428,18 @@ void CCustomRocket::StopFlying				()
 {
 	StopFlyParticles();
 }
+
+void	CCustomRocket::OnEvent(NET_Packet& P, u16 type)
+{
+	switch (type)
+	{
+	case GE_GRENADE_EXPLODE:
+		{
+			if (m_eState != eCollide && OnClient())
+			{
+				CCustomRocket::Contact(Position(), Direction());
+			};
+		}break;
+	}
+	inherited::OnEvent(P,type);
+};

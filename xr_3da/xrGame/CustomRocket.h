@@ -63,6 +63,8 @@ public:
 	virtual	void			SetLaunchParams			(const Fmatrix& xform, 
 													 const Fvector& vel,
 													 const Fvector& angular_vel);
+
+	virtual void			OnEvent					(NET_Packet& P, u16 type);
 protected:
 	//указатель на владельца RocketLauncher - который стреляет ракету
 	CGameObject*			m_pOwner;

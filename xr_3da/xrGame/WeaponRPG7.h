@@ -23,6 +23,8 @@ public:
 	virtual void SwitchState	(u32 S);
 
 	virtual void UpdateGrenadeVisibility(bool visibility);
+
+	virtual void net_Import			( NET_Packet& P);				// import from server
 protected:
 	Fvector *m_pGrenadePoint;
 

@@ -50,9 +50,12 @@ public:
 	void						ReculcInterpolationSteps();
 	void						SetNumCrSteps			( u32 NumSteps );
 	static void __stdcall		PhisStepsCallback		( u32 Time0, u32 Time1 );
+	bool						In_NetCorrectionPrediction	() {return m_bIn_CrPr;};
 private:
 	BOOL						m_bNeed_CrPr;
 	u32							m_dwNumSteps;
+	bool						m_bIn_CrPr;
+	
 	void						make_NetCorrectionPrediction	();
 
 	u32							m_dwDeltaUpdate ;
