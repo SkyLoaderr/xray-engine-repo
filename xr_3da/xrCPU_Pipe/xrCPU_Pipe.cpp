@@ -49,7 +49,7 @@ extern "C" {
 		if (dwFeatures & _CPU_FEATURE_SSE) {
 			T->memCopy	= xrMemCopy_MMXSSE3DNow;
 		}
-
+ 
 		// 3dnow!
 		if (dwFeatures & _CPU_FEATURE_3DNOW) {
  			T->skin1W	= xrSkin1W_3DNow;
