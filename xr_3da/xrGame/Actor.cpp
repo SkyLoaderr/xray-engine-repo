@@ -868,6 +868,9 @@ void CActor::UpdateCL()
 void CActor::shedule_Update	(u32 DT)
 {
 //	Msg			("Actor position : [%f][%f][%f]",VPUSH(Position()));
+
+	setSVU(Level().Server->client_Count() != 0);
+
 	if(m_vehicle)
 	{
 		inherited::shedule_Update		(DT);

@@ -38,4 +38,6 @@ void xrServer::OnCL_Disconnected	(IClient* CL)
 		entities.clear();
 	}
 	csPlayers.Leave			();
+
+	Find_Server_Client();
 }

@@ -47,6 +47,11 @@ private:
 	xr_multiset<svs_respawn>	q_respawn;
 
 	CID_Generator<u32,u8,u16,u8,u16,0,u16(-2),256,u16(-1)> m_tID_Generator;
+
+	xrClientData*				SV_Client;
+	xr_deque<NET_Packet	>		NET_SV_Client_Stream;
+
+	void						Find_Server_Client ();
 public:
 	game_sv_GameState*			game;
 

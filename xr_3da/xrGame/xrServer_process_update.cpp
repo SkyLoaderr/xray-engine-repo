@@ -6,6 +6,12 @@ void xrServer::Process_update(NET_Packet& P, DPNID sender)
 	xrClientData* CL		= ID_to_client(sender);
 	if (CL)	CL->net_Ready	= TRUE;
 
+	if (!CL->flags.bLocal)
+	{
+		NET_SV_Client_Stream.push_back(P);
+		return;
+	};
+
 	// while has information
 	while (!P.r_eof())
 	{
