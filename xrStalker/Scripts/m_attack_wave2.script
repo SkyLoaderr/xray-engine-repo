@@ -180,9 +180,9 @@ function Defender:process ()
 	   action (self.npc, move (self.stand, move.stand, move.line, vector ():set (0, 0, 0)), 
 			   look (look.fire_point, enemy.npc), cond (cond.time_end, time_infinite))
 	   self.enemy = enemy
-	else
-  	   reset_action (self.npc, self.script_name)
-	   action (self.npc, move (self.stand, move.stand, move.line, vector():set (0, 0, 0)), look (look.fire_point, enemy.npc), cond (cond.time_end, time_infinite))	
+--	else
+--  	   reset_action (self.npc, self.script_name)
+--	   action (self.npc, move (self.stand, move.stand, move.line, vector():set (0, 0, 0)), look (look.fire_point, enemy.npc), cond (cond.time_end, time_infinite))	
 	end
  
 	if self.waiting > 0 then
