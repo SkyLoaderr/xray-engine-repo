@@ -24,6 +24,8 @@ public:
 	CPHShell								();							
 	virtual ~CPHShell						();
 	virtual void	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const u16 id);
+	virtual void	applyHit				(const Fvector& pos, const Fvector& dir, float val,const u16 id,ALife::EHitType hit_type);
+
 	static void __stdcall	BonesCallback				(CBoneInstance* B);
 	static void __stdcall	StataticRootBonesCallBack	(CBoneInstance* B);
 	virtual	BoneCallbackFun* GetBonesCallback		()	{return BonesCallback ;}
@@ -200,5 +202,6 @@ private:
 
 	void DisableObject						()																				;
 	void ReanableObject						()																				;
+	void ExplosionHit						(const Fvector& pos, const Fvector& dir, float val,const u16 id)				;
 };
 #endif

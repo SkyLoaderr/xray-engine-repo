@@ -43,6 +43,7 @@ float					m_saved_impulse;
 Fvector					m_saved_hit_position;
 Fvector					m_saved_hit_dir;
 s16						m_saved_element;
+ALife::EHitType			m_saved_hit_type;
 /////////////////////////////////////////////////////////
 float					m_shot_up_factor;
 float					m_after_death_velocity_factor;
@@ -79,7 +80,7 @@ void in_NetSpawn();
 void in_NetDestroy();
 void in_Init();
 void in_Load(LPCSTR section);
-void in_Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse,bool is_killing=false);
+void in_Hit(Fvector &dir, s16 element,Fvector p_in_object_space, float impulse,ALife::EHitType hit_type ,bool is_killing=false);
 CCharacterPhysicsSupport(EType atype,CEntityAlive* aentity);
 ~CCharacterPhysicsSupport();
 private:

@@ -5762,6 +5762,9 @@
 						<File
 							RelativePath=".\PHSplitedShell.h">
 						</File>
+						<File
+							RelativePath=".\ShellHit.cpp">
+						</File>
 					</Filter>
 					<Filter
 						Name="BaseShell"

@@ -328,9 +328,10 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 		m_saved_position.set(position_in_bone_space);
 		m_saved_impulse=impulse*skel_fatal_impulse_factor;
 		m_saved_element=element;
+		m_saved_hit_type=hit_type;
 	}
 	else if(m_pPhysicsShell) 
-		m_pPhysicsShell->applyImpulseTrace(position_in_bone_space,dir,impulse,element);
+		m_pPhysicsShell->applyHit(position_in_bone_space,dir,impulse,element,hit_type);
 	//m_phSkeleton->applyImpulseTrace(position_in_bone_space,dir,impulse);
 	else
 	{
@@ -499,7 +500,7 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 		if(m_pPhysicsShell)
 			if(m_pPhysicsShell->bActive && !fsimilar(0.f,m_saved_impulse))
 			{
-				m_pPhysicsShell->applyImpulseTrace(m_saved_position,m_saved_dir,m_saved_impulse*1.5f,m_saved_element);
+				m_pPhysicsShell->applyHit(m_saved_position,m_saved_dir,m_saved_impulse*1.5f,m_saved_element,m_saved_hit_type);
 				m_saved_impulse=0.f;
 			}
 

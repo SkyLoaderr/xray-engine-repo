@@ -344,13 +344,16 @@ void CGameObject::u_EventSend(NET_Packet& P, BOOL /**sync/**/)
 	Level().Send(P,net_flags(TRUE,TRUE));
 }
 
-void CGameObject::Hit(float /**P/**/, Fvector &dir, CObject* /**who/**/, s16 /**element/**/,
-					  Fvector p_in_object_space, float impulse, ALife::EHitType /**hit_type/**/)
+void	CGameObject::Hit(float /**P/**/, Fvector &dir, CObject* /**who/**/, s16 element,
+					  Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
+{
+	PHHit(dir,element,p_in_object_space,impulse,hit_type);
+}
+void	CGameObject::PHHit(Fvector &dir,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type /* ALife::eHitTypeWound*/)
 {
 	if(impulse>0)
-		if(m_pPhysicsShell) m_pPhysicsShell->applyImpulseTrace(p_in_object_space,dir,impulse);
+		if(m_pPhysicsShell) m_pPhysicsShell->applyHit(p_in_object_space,dir,impulse,element,hit_type);
 }
-
 //проверка на попадание "осколком" по объекту
 f32 CGameObject::ExplosionEffect(const Fvector &expl_centre, const f32 expl_radius, xr_list<s16> &elements, xr_list<Fvector> &bs_positions) 
 {

@@ -195,10 +195,10 @@ void CHangingLamp::TurnOff()
 }
 
 void CHangingLamp::Hit(float P,Fvector &dir, CObject* who,s16 element,
-					   Fvector p_in_object_space, float impulse, ALife::EHitType /**hit_type/**/)
+					   Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
 {
 	//inherited::Hit(P,dir,who,element,p_in_object_space,impulse);
-	if(m_pPhysicsShell) m_pPhysicsShell->applyImpulseTrace(p_in_object_space,dir,impulse,element);
+	if(m_pPhysicsShell) m_pPhysicsShell->applyHit(p_in_object_space,dir,impulse,element,hit_type);
 
 	if (element==guid_bone)	fHealth =	0.f;
 	else					fHealth -=	P*0.1f;

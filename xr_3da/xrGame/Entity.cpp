@@ -90,7 +90,7 @@ float CEntity::CalcCondition(float hit)
 
 void CEntity::Hit			(float perc, Fvector &dir, CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type) 
 {
-	inherited::Hit(perc,dir,who,element,position_in_object_space,impulse, hit_type);
+
 	if (bDebug)				Log("Process HIT: ", *cName());
 
 	// *** process hit calculations
@@ -117,6 +117,8 @@ void CEntity::Hit			(float perc, Fvector &dir, CObject* who, s16 element,Fvector
 	// If Local() - perform some logic
 	if (Local() && !g_Alive() && !AlreadyDie())
 		KillEntity	(who);
+	//must be last!!! @slipch
+	inherited::Hit(perc,dir,who,element,position_in_object_space,impulse, hit_type);
 }
 
 void CEntity::Load		(LPCSTR section)

@@ -318,12 +318,12 @@ void CAI_Rat::CreateSkeleton(){
 	m_pPhysicsShell->Activate(XFORM(),0,XFORM());
 	if(!fsimilar(0.f,m_saved_impulse)){
 
-		m_pPhysicsShell->applyImpulseTrace(m_saved_hit_position,m_saved_hit_dir,m_saved_impulse);
+		m_pPhysicsShell->applyHit(m_saved_hit_position,m_saved_hit_dir,m_saved_impulse,0,m_saved_hit_type);
 	}
 	/*
 	CKinematics* M		= PKinematics(Visual());			VERIFY(M);
 	m_pPhysicsShell		= P_create_Shell();
-	m_pPhysicsShell->set_Kinematics(M);
+
 	//get bone instance
 	int id=M->LL_BoneID("bip01_pelvis");
 	CBoneInstance& instance=M->LL_GetBoneInstance				(id);
@@ -363,11 +363,12 @@ void CAI_Rat::UpdateCL(){
 		CreateSkeleton	();
 }
 
-void CAI_Rat::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type){
+void CAI_Rat::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type /*= ALife::eHitTypeWound*/){
 	inherited::Hit(P,dir,who,element,p_in_object_space,impulse, hit_type);
 	if(!m_pPhysicsShell){
 		m_saved_impulse=impulse;
 		m_saved_hit_dir.set(dir);
+		m_saved_hit_type=hit_type;
 		m_saved_hit_position.set(p_in_object_space);
 	}
 }

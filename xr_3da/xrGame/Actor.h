@@ -465,6 +465,7 @@ protected:
 	Fvector					m_saved_dir;
 	Fvector					m_saved_position;
 	float					m_saved_impulse;
+	ALife::EHitType			m_saved_hit_type;
 	s16						m_saved_element;
 
 

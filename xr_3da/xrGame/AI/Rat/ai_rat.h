@@ -124,6 +124,7 @@ class CAI_Rat : public CCustomMonster, public CEatableItem
 		float				m_saved_impulse;
 		Fvector				m_saved_hit_position;
 		Fvector				m_saved_hit_dir;
+		ALife::EHitType		m_saved_hit_type;
 		//PHYS
 		float				m_phMass;
 

@@ -208,7 +208,7 @@ void CPhysicObject::CreateBody(CSE_ALifeObjectPhysic* po) {
 
 
 void CPhysicObject::Hit(float P,Fvector &dir, CObject* who,s16 element,
-										Fvector p_in_object_space, float impulse, ALife::EHitType /**hit_type/**/)
+										Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
 {
 	if(m_pPhysicsShell){
 		switch(m_type) {
@@ -218,7 +218,7 @@ void CPhysicObject::Hit(float P,Fvector &dir, CObject* who,s16 element,
 		case epotFixedChain :
 		case epotFreeChain  :
 		case epotSkeleton   :
-			m_pPhysicsShell->applyImpulseTrace(p_in_object_space,dir,impulse,element);
+			m_pPhysicsShell->applyHit(p_in_object_space,dir,impulse,element,hit_type);
 		break;
 		default : NODEFAULT;
 		}

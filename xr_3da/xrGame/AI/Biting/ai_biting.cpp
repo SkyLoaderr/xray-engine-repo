@@ -384,11 +384,13 @@ void CAI_Biting::shedule_Update(u32 dt)
 
 void CAI_Biting::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type)
 {
-	if(m_pPhysics_support->isAlive())inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
-	m_pPhysics_support->in_Hit(P,dir,who,element,p_in_object_space,impulse);
-
+	inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
 }
 
+void CAI_Biting::PHHit(Fvector &dir,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type /*=ALife::eHitTypeWound*/)
+{
+	m_pPhysics_support->in_Hit(dir,element,p_in_object_space,impulse,hit_type);
+}
 CBoneInstance *CAI_Biting::GetBoneInstance(LPCTSTR bone_name)
 {
 	int bone = PKinematics(Visual())->LL_BoneID(bone_name);

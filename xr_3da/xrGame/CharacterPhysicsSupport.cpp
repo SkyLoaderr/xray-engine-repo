@@ -108,9 +108,9 @@ void CCharacterPhysicsSupport::in_shedule_Update(u32 /**DT/**/)
 
 }
 
-void CCharacterPhysicsSupport::in_Hit(float /**P/**/, Fvector &dir, CObject * /**who/**/,s16 element,Fvector p_in_object_space, float impulse,bool is_killing)
+void CCharacterPhysicsSupport::in_Hit(Fvector &dir,s16 element,Fvector p_in_object_space, float impulse,ALife::EHitType hit_type ,bool is_killing)
 {
-	if((!m_EntityAlife.g_Alive()||is_killing)&&!fis_zero(m_shot_up_factor))
+	if((!m_EntityAlife.g_Alive()||is_killing)&&!fis_zero(m_shot_up_factor)&&hit_type!=ALife::eHitTypeExplosion)
 	{
 		dir.y+=m_shot_up_factor;
 		dir.normalize();
@@ -118,12 +118,13 @@ void CCharacterPhysicsSupport::in_Hit(float /**P/**/, Fvector &dir, CObject * /*
 	if(!m_pPhysicsShell&&is_killing)
 	{
 		ActivateShell();
-		impulse*=skel_fatal_impulse_factor;
+		impulse*=(hit_type==ALife::eHitTypeExplosion ? 1.f : skel_fatal_impulse_factor);
 	}
 	if(!(m_pPhysicsShell&&m_pPhysicsShell->bActive))
 	{
-		m_saved_impulse=impulse*skel_fatal_impulse_factor;
+		m_saved_impulse=impulse* (hit_type==ALife::eHitTypeExplosion ? 1.f : skel_fatal_impulse_factor);
 		m_saved_element=element;
+		m_saved_hit_type=hit_type;
 		m_saved_hit_dir.set(dir);
 		m_saved_hit_position.set(p_in_object_space);
 
@@ -134,11 +135,11 @@ void CCharacterPhysicsSupport::in_Hit(float /**P/**/, Fvector &dir, CObject * /*
 	else {
 		{//if (!m_EntityAlife.g_Alive()) 
 			if(m_pPhysicsShell&&m_pPhysicsShell->bActive) 
-				m_pPhysicsShell->applyImpulseTrace(p_in_object_space,dir,impulse,element);
+				m_pPhysicsShell->applyHit(p_in_object_space,dir,impulse,element,hit_type);
 			//m_pPhysicsShell->applyImpulseTrace(position_in_bone_space,dir,impulse);
 			else{
 				m_saved_hit_dir.set(dir);
-				m_saved_impulse=impulse*skel_fatal_impulse_factor;
+				m_saved_impulse=impulse*(hit_type==ALife::eHitTypeExplosion ? 1.f : skel_fatal_impulse_factor);
 				m_saved_element=element;
 				m_saved_hit_position.set(p_in_object_space);
 			}
@@ -170,7 +171,7 @@ void CCharacterPhysicsSupport::in_UpdateCL()
 
 			if(!fsimilar(0.f,m_saved_impulse) && !m_pPhysicsShell->bActivating)
 			{
-				m_pPhysicsShell->applyImpulseTrace(m_saved_hit_position,m_saved_hit_dir,m_saved_impulse*1.f,m_saved_element);
+				m_pPhysicsShell->applyHit(m_saved_hit_position,m_saved_hit_dir,m_saved_impulse*1.f,m_saved_element,m_saved_hit_type);
 				m_saved_impulse=0.f;
 			}
 

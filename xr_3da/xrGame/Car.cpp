@@ -231,10 +231,10 @@ void	CCar::OnHUDDraw				(CCustomHUD* /**hud/**/)
 #endif
 }
 
-void CCar::Hit(float /**P/**/,Fvector &dir,CObject * /**who/**/,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType /**hit_type/**/)
+void CCar::Hit(float /**P/**/,Fvector &dir,CObject * /**who/**/,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
 {
 	if(m_bone_steer==element) return;
-	if(m_pPhysicsShell)		m_pPhysicsShell->applyImpulseTrace(p_in_object_space,dir,impulse,element);
+	if(m_pPhysicsShell)		m_pPhysicsShell->applyHit(p_in_object_space,dir,impulse,element,hit_type);
 }
 
 void CCar::detach_Actor()
