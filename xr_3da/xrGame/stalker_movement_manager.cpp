@@ -336,7 +336,7 @@ void CStalkerMovementManager::parse_velocity_mask	()
 
 	object().sight().enable		(true);
 
-	if ((movement_type() == eMovementTypeStand) || path().empty() || (path().size() <= detail().curr_travel_point_index())) {
+	if ((movement_type() == eMovementTypeStand) || path().empty() || (path().size() <= detail().curr_travel_point_index()) || path_completed()) {
 		object().m_fCurSpeed	= 0;
 		if (mental_state() != eMentalStateDanger)
 			m_body.speed		= 1*PI_DIV_2;
