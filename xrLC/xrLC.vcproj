@@ -934,7 +934,7 @@
 			</Filter>
 		</Filter>
 		<Filter
-			Name="Simplify"
+			Name="Mesh Processing"
 			Filter="">
 		</Filter>
 		<File
