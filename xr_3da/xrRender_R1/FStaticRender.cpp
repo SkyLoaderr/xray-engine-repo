@@ -119,6 +119,9 @@ IRender_Target*			CRender::getTarget				()					{ return Target;										}
 IRender_Light*			CRender::light_create			()					{ return L_DB->Create();								}
 void					CRender::light_destroy			(IRender_Light* &L)	{ if (L) { L_DB->Destroy((light*)L); L=0; }				}
 
+IRender_Glow*			CRender::glow_create			()					{ return xr_new<CGlow>();								}
+void					CRender::glow_destroy			(IRender_Glow* &L)	{ xr_delete(L);											}		
+
 void					CRender::flush					()					{ r_dsgraph_render_graph	(0);						}
 
 BOOL					CRender::occ_visible			(vis_data& P)		{ return HOM.visible(P);								}
