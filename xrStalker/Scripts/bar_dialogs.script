@@ -1,16 +1,7 @@
-
-
-function transfer_seriy_flash(npc, actor)
-	local item = npc:object("garbage_seriy_flash")
-	if item then
-		npc:transfer_item(item, actor)
-	end
+function has_dolg_deposite(actor, npc)
+	return actor:money() >= 1000
 end
 
-function has_dolg_bribe(actor, npc)
-	return actor:money() >= 500
-end
-
-function give_dolg_bribe(actor, npc)	
-	actor:transfer_money(500, npc)
+function give_dolg_deposite(actor, npc)	
+	actor:transfer_money(1000, npc)
 end
