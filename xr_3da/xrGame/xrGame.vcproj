@@ -1634,7 +1634,7 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="ScriptExport"
+						Name="ScriptClasses"
 						Filter="">
 						<File
 							RelativePath=".\ai_script_actions.h">
@@ -1655,16 +1655,20 @@
 							RelativePath=".\ai_script_hit.h">
 						</File>
 						<File
-							RelativePath=".\ai_script_lua_export.cpp">
-						</File>
-						<File
-							RelativePath=".\ai_script_lua_export_extension.cpp">
-						</File>
-						<File
 							RelativePath=".\ai_script_sound.cpp">
 						</File>
 						<File
 							RelativePath=".\ai_script_sound.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="ScriptExport"
+						Filter="">
+						<File
+							RelativePath=".\ai_script_lua_export.cpp">
+						</File>
+						<File
+							RelativePath=".\ai_script_lua_export_extension.cpp">
 						</File>
 					</Filter>
 					<Filter

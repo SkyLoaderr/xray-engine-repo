@@ -81,7 +81,7 @@ void Script::LuaHookCall(CLuaVirtualMachine *tpLuaVirtualMachine, lua_Debug *tpL
 }
 
 #ifndef DEBUG
-void FlushLogFake(LPCSTR S)
+void FlushLogFake()
 {
 }
 #endif

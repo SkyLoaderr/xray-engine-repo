@@ -169,9 +169,9 @@ void CScriptMonster::UseObject(const CObject * /**tpObject/**/)
 void CScriptMonster::AddAction(const CEntityAction *tpEntityAction, bool bHighPriority)
 {
 #ifdef _DEBUG
-	if (!xr_strcmp("m_stalker_wounded",cName())) {
-		Msg				("%6d Adding action : %s",Level().timeServer(),*tpEntityAction->m_tAnimationAction.m_caAnimationToPlay);
-	}
+//	if (!xr_strcmp("m_stalker_wounded",cName())) {
+//		Msg				("%6d Adding action : %s",Level().timeServer(),*tpEntityAction->m_tAnimationAction.m_caAnimationToPlay);
+//	}
 #endif
 	if (!bHighPriority || m_tpActionQueue.empty())
 		m_tpActionQueue.push_back(xr_new<CEntityAction>(*tpEntityAction));
@@ -185,13 +185,13 @@ void CScriptMonster::AddAction(const CEntityAction *tpEntityAction, bool bHighPr
 	}
 
 #ifdef _DEBUG
-	if (!xr_strcmp("m_stalker_wounded",cName()))
-		Msg					("%6d Action queue",Level().timeServer());
-	xr_deque<CEntityAction*>::const_iterator	I = m_tpActionQueue.begin();
-	xr_deque<CEntityAction*>::const_iterator	E = m_tpActionQueue.end();
-	for ( ; I != E; ++I)
-		if (!xr_strcmp("m_stalker_wounded",cName()))
-			Msg				("%6d Action : %s",Level().timeServer(),*(*I)->m_tAnimationAction.m_caAnimationToPlay);
+//	if (!xr_strcmp("m_stalker_wounded",cName()))
+//		Msg					("%6d Action queue",Level().timeServer());
+//	xr_deque<CEntityAction*>::const_iterator	I = m_tpActionQueue.begin();
+//	xr_deque<CEntityAction*>::const_iterator	E = m_tpActionQueue.end();
+//	for ( ; I != E; ++I)
+//		if (!xr_strcmp("m_stalker_wounded",cName()))
+//			Msg				("%6d Action : %s",Level().timeServer(),*(*I)->m_tAnimationAction.m_caAnimationToPlay);
 #endif
 }
 
@@ -246,8 +246,8 @@ void CScriptMonster::ProcessScripts()
 		l_tpEntityAction= m_tpActionQueue.front();
 		R_ASSERT	(l_tpEntityAction);
 #ifdef _DEBUG
-		if (!xr_strcmp("m_stalker_wounded",cName()))
-			Msg			("%6d Processing action : %s",Level().timeServer(),*l_tpEntityAction->m_tAnimationAction.m_caAnimationToPlay);
+//		if (!xr_strcmp("m_stalker_wounded",cName()))
+//			Msg			("%6d Processing action : %s",Level().timeServer(),*l_tpEntityAction->m_tAnimationAction.m_caAnimationToPlay);
 #endif
 		
 		if (m_tpCurrentEntityAction != l_tpEntityAction)
@@ -259,8 +259,8 @@ void CScriptMonster::ProcessScripts()
 			break;
 
 #ifdef _DEBUG
-		if (!xr_strcmp("m_stalker_wounded",cName()))
-			Msg			("%6d Action completed : %s",Level().timeServer(),*l_tpEntityAction->m_tAnimationAction.m_caAnimationToPlay);
+//		if (!xr_strcmp("m_stalker_wounded",cName()))
+//			Msg			("%6d Action completed : %s",Level().timeServer(),*l_tpEntityAction->m_tAnimationAction.m_caAnimationToPlay);
 #endif
 
 		vfFinishAction(l_tpEntityAction);
@@ -600,8 +600,8 @@ void ScriptCallBack(CBlend* B)
 		if (!l_tpScriptMonster->GetCurrentAction()->m_tAnimationAction.m_bCompleted)
 			l_tpScriptMonster->callback(CScriptMonster::eActionTypeAnimation);
 #ifdef _DEBUG
-		if (!xr_strcmp("m_stalker_wounded",l_tpScriptMonster->cName()))
-			Msg			("Completed %s",*l_tpScriptMonster->GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay);
+//		if (!xr_strcmp("m_stalker_wounded",l_tpScriptMonster->cName()))
+//			Msg			("Completed %s",*l_tpScriptMonster->GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay);
 #endif
 		l_tpScriptMonster->GetCurrentAction()->m_tAnimationAction.m_bCompleted = true;
 		l_tpScriptMonster->ProcessScripts();
@@ -620,8 +620,8 @@ bool CScriptMonster::bfScriptAnimation()
 		xr_strlen(GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay)) {
 
 #ifdef _DEBUG
-			if (!xr_strcmp("m_stalker_wounded",cName()))
-				Msg				("%6d Playing animation : %s",Level().timeServer(),*GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay);
+//			if (!xr_strcmp("m_stalker_wounded",cName()))
+//				Msg				("%6d Playing animation : %s",Level().timeServer(),*GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay);
 #endif
 			if (m_tpScriptAnimation != m_tpNextAnimation)
 				PSkeletonAnimated(Visual())->PlayCycle(m_tpScriptAnimation = m_tpNextAnimation,TRUE,ScriptCallBack,this);
