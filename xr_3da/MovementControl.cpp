@@ -226,11 +226,14 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 	vLastMotion.set	(motion);
 	float s_res		= motion.magnitude();	// length of motion - dS - resulting
 
+/*
 	float src		= 20*dt;	clamp(src,0.f,1.f);
 	float dst		= 1-src;
 	fLastMotionMag			= dst*fLastMotionMag + src*s_res;
 	float	fAvgVelocity	= fLastMotionMag/dt;
 	fActualVelocity			= dst*fActualVelocity+ src*fAvgVelocity;
+*/
+	fActualVelocity			= vVelocity.magnitude();
 
 	//	Don't allow new velocity to go against original velocity unless told otherwise
 	Fvector vel_dir;
@@ -261,7 +264,7 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 		default: NODEFAULT;
 	}
 
-	// если определили приземление или резко уиеньшилась скорость (порядок fMinCrashSpeed)
+	// если определили приземление или резко уменьшилась скорость (порядок fMinCrashSpeed)
 	// определим возможное повреждение
 	gcontact_Was		= FALSE;
 	if (

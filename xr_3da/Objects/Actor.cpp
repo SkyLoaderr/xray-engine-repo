@@ -13,7 +13,7 @@
 #include "Actor_Flags.h"
 #include "UI.h"
 
-const DWORD    patch_frames = 50;
+//const DWORD    patch_frames = 50;
 
 // breakpoints
 #include "..\xr_input.h"
@@ -233,8 +233,8 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	setEnabled				(E->s_flags&M_SPAWN_OBJECT_LOCAL);
 	setActive				(TRUE);
 
-	patch_frame				= 0;
-	patch_position.set		(vPosition);
+//	patch_frame			= 0;
+//	patch_position.set	(vPosition);
 
 	Engine.Sheduler.Unregister	(this);
 	Engine.Sheduler.Register	(this,TRUE);
@@ -317,26 +317,26 @@ void CActor::feel_touch_new				(CObject* O)
 	// 
 }
 
-void CActor::feel_touch_delete		(CObject* O)
+void CActor::feel_touch_delete	(CObject* O)
 {
 }
 
-void CActor::g_Physics				(Fvector& accel, float jump, float dt)
+void CActor::g_Physics			(Fvector& accel, float jump, float dt)
 {
-	if (patch_frame<patch_frames)	return;
+//	if (patch_frame<patch_frames)	return;
 
 	// Calculate physics
-	Movement.SetPosition	(vPosition);
+	Movement.SetPosition		(vPosition);
 	float step = 0.1f;
-	while (dt>step)			{
+	while (dt>step){
 		Movement.Calculate		(accel,0,jump,step,false);
 		dt -= step;
 	}
-	if (dt>0)	{
+	if (dt>0){
 		Movement.Calculate		(accel,0,jump,dt,false);
 	}
-	Movement.GetPosition	(vPosition);
-	
+	Movement.GetPosition		(vPosition);
+
 	// Check ground-contact
 	if (net_Local && Movement.gcontact_Was) 
 	{
@@ -403,10 +403,10 @@ void CActor::Update	(DWORD DT)
 	// Log("~~~~~~~~~~~~~~~~~~~~~ UPDATE");
 
 	// patch
-	if (patch_frame<patch_frames)	{
-		vPosition.set		(patch_position);
-		patch_frame			+= 1;
-	}
+//	if (patch_frame<patch_frames)	{
+//		vPosition.set		(patch_position);
+//		patch_frame			+= 1;
+//	}
 
 	// zone test
 	float z_amount		= 0;
@@ -789,6 +789,15 @@ void CActor::OnHUDDraw	(CCustomHUD* hud)
 {
 	CWeapon* W			= Weapons->ActiveWeapon();
 	if (W)				W->OnVisible		();
+
+	CHUDManager* HUD	= (CHUDManager*)hud;
+	string128 buf;
+	HUD->pHUDFont->Color(0xffffffff);
+	HUD->pHUDFont->OutSet(120,530);
+	HUD->pHUDFont->OutNext("Position:      [%3.2f, %3.2f, %3.2f]",VPUSH(vPosition));
+	HUD->pHUDFont->OutNext("Velocity:      [%3.2f, %3.2f, %3.2f]",VPUSH(Movement.GetVelocity()));
+	HUD->pHUDFont->OutNext("Vel Magnitude: [%3.2f]",Movement.GetVelocityMagnitude());
+
 /**
 	CHUDManager* HUD	= (CHUDManager*)hud;
 	CUI* pUI=HUD->GetUI	();
