@@ -39,6 +39,6 @@ typedef	char	string4096	[4096];
 
 #define xr_vector	std::vector
 #define xr_set		std::set
-#define xr_map		xr_map
+#define xr_map		std::map
 #define xr_list		std::list
 #define xr_stack	std::stack
