@@ -797,6 +797,9 @@
 					RelativePath=".\scripts\ui_main_menu.script">
 				</File>
 				<File
+					RelativePath=".\Scripts\ui_main_new_tab.script">
+				</File>
+				<File
 					RelativePath=".\Scripts\ui_multiplayer_base_tab.script">
 				</File>
 				<File

@@ -1,0 +1,20 @@
+-- File:        UI_MAIN_NEW_TAB.SCRIPT
+-- Description: New Game Tab for Main Menu
+-- Created:     20.12.2004
+-- Author:      Serhiy 0. Vynnychenko
+-- Mail:        narrator@gsc-game.kiev.ua
+--
+-- Copyright 2004 GSC Game World
+--
+
+class "ui_main_new_tab" (ui_main_base_tab.main_base_tab)
+
+function ui_main_new_tab:__init() super()
+end
+
+function ui_main_new_tab:__finalize()
+end
+
+function UI_main_new_tab:InitControls()
+end
+
