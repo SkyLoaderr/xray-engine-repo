@@ -251,6 +251,7 @@ void CCar::RestoreNetState(CSE_PHSkeleton* po)
 	inv.invert();
 	replace.mul(sof,inv);
 	PPhysicsShell()->TransformPosition(replace);
+	PPhysicsShell()->GetGlobalTransformDynamic(&XFORM());
 }
 void CCar::SetDefaultNetState(CSE_PHSkeleton* po)
 {

@@ -275,6 +275,8 @@ void CPHElement::TransformPosition(const Fmatrix &form)
 	PHDynamicData::FMXtoDMX(new_bm,dBM);
 	dBodySetRotation(m_body,dBM);
 	dBodySetPosition(m_body,new_bm.c.x,new_bm.c.y,new_bm.c.z);
+	m_body_interpolation.ResetPositions();
+	m_body_interpolation.ResetRotations();
 }
 CPHElement::~CPHElement	()
 {
