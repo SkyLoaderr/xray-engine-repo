@@ -374,6 +374,11 @@ void CCustomMonster::UpdateCL	()
 				}
 			}
 			else {
+				if (!bfScriptAnimation()) {
+					Fvector				dir;
+					AI_Path.Direction	(dir);
+					SelectAnimation		(XFORM().k,dir,AI_Path.fSpeed);
+				}
 			}
 			
 			// Signal, that last time we used interpolation
