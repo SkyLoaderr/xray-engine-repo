@@ -44,3 +44,12 @@ void CTargetCSBase::feel_touch_new			(CObject* O) {
 
 void CTargetCSBase::feel_touch_delete		(CObject* O) {
 }
+
+void CTargetCSBase::Update(u32 dt)
+{
+	inherited::Update	(dt);
+
+	Fvector C;
+	clCenter			(C);
+	feel_touch_update	(C,radius);
+}
