@@ -37,5 +37,5 @@ public:
 	virtual void		load						(IReader *input_packet);
 	static	void		load_static					(CScriptBinderObject *script_binder_object, IReader *input_packet);
 	virtual bool		net_SaveRelevant			();
-	static  bool		net_SaveRelevant			(CScriptBinderObject *script_binder_object);
+	static  bool		net_SaveRelevant_static		(CScriptBinderObject *script_binder_object);
 };

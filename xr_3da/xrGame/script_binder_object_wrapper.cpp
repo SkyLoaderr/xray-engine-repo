@@ -116,7 +116,7 @@ bool CScriptBinderObjectWrapper::net_SaveRelevant		()
 	return							(luabind::call_member<bool>(this,"net_save_relevant"));
 }
 
-bool CScriptBinderObjectWrapper::net_SaveRelevant		(CScriptBinderObject *script_binder_object)
+bool CScriptBinderObjectWrapper::net_SaveRelevant_static(CScriptBinderObject *script_binder_object)
 {
 	return							(script_binder_object->CScriptBinderObject::net_SaveRelevant());
 }
