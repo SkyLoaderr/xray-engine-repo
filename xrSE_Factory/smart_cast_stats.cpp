@@ -53,7 +53,7 @@ public:
 	IC	static	void				_release	();
 
 public:
-	IC			void				add			(shared_str from, shared_str to);
+	IC			void				add			(LPCSTR from, LPCSTR to);
 	IC			void				clear		();
 	IC			void				show		();
 };
