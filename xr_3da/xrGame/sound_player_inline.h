@@ -28,13 +28,20 @@ IC	const xr_vector<CSoundPlayer::CSoundSingle> &CSoundPlayer::playing_sounds() c
 	return								(m_playing_sounds);
 }
 
-IC	u32	CSoundPlayer::active_sound_count() const
+IC	u32	CSoundPlayer::active_sound_count(bool only_playing) const
 {
 	u32									count = 0;
 	xr_vector<CSoundSingle>::const_iterator	I = m_playing_sounds.begin();
 	xr_vector<CSoundSingle>::const_iterator	E = m_playing_sounds.end();
-	for ( ; I != E; ++I)
-		if ((*I).m_sound->feedback || ((*I).m_start_time <= Level().timeServer()))
-			++count;
+	if (!only_playing) {
+		for ( ; I != E; ++I)
+			if ((*I).m_sound->feedback || ((*I).m_start_time <= Level().timeServer()))
+				++count;
+	}
+	else {
+		for ( ; I != E; ++I)
+			if ((*I).m_sound->feedback)
+				++count;
+	}
 	return								(count);
 }

@@ -104,7 +104,7 @@ public:
 			void	update					(float time_delta);
 	IC		void	set_sound_mask			(u32 sound_mask);
 	IC		const xr_vector<CSoundSingle>	&playing_sounds() const;
-	IC		u32		active_sound_count		() const;
+	IC		u32		active_sound_count		(bool only_playing = false) const;
 };
 
 #include "sound_player_inline.h"

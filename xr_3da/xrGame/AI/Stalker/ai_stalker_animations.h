@@ -17,8 +17,10 @@ extern LPCSTR caMovementNames		[];
 extern LPCSTR caMovementActionNames	[];
 extern LPCSTR caInPlaceNames		[];
 extern LPCSTR caGlobalNames			[];
+extern LPCSTR caHeadNames			[];
 extern float  faTurnAngles			[];
 
+class CAI_Stalker;
 
 class CStateAnimations {
 public:
@@ -61,11 +63,15 @@ public:
 	};
 
 	CAniCollection<CStateAnimations,caStateNames>	m_tAnims;
+	// head
+	CAniFVector<caHeadNames>							m_tHead;
 	CMotionDef					*m_tpCurrentGlobalAnimation;
+	CMotionDef					*m_tpCurrentHeadAnimation;
 	CMotionDef					*m_tpCurrentTorsoAnimation;
 	CMotionDef					*m_tpCurrentLegsAnimation;
 	CMotionDef					*m_current_script_animation;
 	CBlend						*m_tpCurrentGlobalBlend;
+	CBlend						*m_tpCurrentHeadBlend;
 	CBlend						*m_tpCurrentTorsoBlend;
 	CBlend						*m_tpCurrentLegsBlend;
 	u8							m_bAnimationIndex;
@@ -75,43 +81,17 @@ public:
 	EMovementDirection			m_tDesirableDirection;
 	xr_deque<CScriptAnimation>	m_script_animations;
 	IRender_Visual				*m_visual;
+	CAI_Stalker					*m_object;
 	
-							CStalkerAnimations				()
-	{
-	};
-
-	virtual	void			reinit							()
-	{
-		m_tpCurrentGlobalAnimation		= 
-		m_tpCurrentTorsoAnimation		= 
-		m_tpCurrentLegsAnimation		= 0;
-		m_dwAnimationSwitchInterval		= 500;
-		m_dwDirectionStartTime			= 0;
-		m_tMovementDirection			= eMovementDirectionForward;
-		m_tDesirableDirection			= eMovementDirectionForward;
-		m_script_animations.clear		();
-	}
-	
-	virtual	void			reload							(IRender_Visual *Visual, CInifile *ini, LPCSTR section)
-	{
-		m_visual								= Visual;
-		m_tAnims.Load							(PSkeletonAnimated(Visual),"");
-		int										head_bone = PKinematics(Visual)->LL_BoneID(ini->r_string(section,"bone_head"));
-		PKinematics(Visual)->LL_GetBoneInstance	(u16(head_bone)).set_callback(HeadCallback,this);
-
-		int										shoulder_bone = PKinematics(Visual)->LL_BoneID(ini->r_string(section,"bone_shoulder"));
-		PKinematics(Visual)->LL_GetBoneInstance	(u16(shoulder_bone)).set_callback(ShoulderCallback,this);
-
-		int										spin_bone = PKinematics(Visual)->LL_BoneID(ini->r_string(section,"bone_spin"));
-		PKinematics(Visual)->LL_GetBoneInstance	(u16(spin_bone)).set_callback(SpinCallback,this);
-	};
-	
-	static	void __stdcall	HeadCallback					(CBoneInstance *B);
-	static	void __stdcall	ShoulderCallback				(CBoneInstance *B);
-	static	void __stdcall	SpinCallback					(CBoneInstance *B);
-			void			vfAssignGlobalAnimation			(CMotionDef *&tpGlobalAnimation);
-			void			vfAssignTorsoAnimation			(CMotionDef *&tpGlobalAnimation);
-			void			vfAssignLegsAnimation			(CMotionDef *&tpLegsAnimation);
-			void			add_animation					(LPCSTR animation, bool hand_usage = false);
-			void			clear_animations				();
+	virtual	void				reinit							();
+	virtual	void				reload							(IRender_Visual *Visual, CInifile *ini, LPCSTR section);
+	static	void __stdcall		HeadCallback					(CBoneInstance *B);
+	static	void __stdcall		ShoulderCallback				(CBoneInstance *B);
+	static	void __stdcall		SpinCallback					(CBoneInstance *B);
+			void				vfAssignGlobalAnimation			(CMotionDef *&tpGlobalAnimation);
+			void				vfAssignHeadAnimation			(CMotionDef *&tpGlobalAnimation);
+			void				vfAssignTorsoAnimation			(CMotionDef *&tpGlobalAnimation);
+			void				vfAssignLegsAnimation			(CMotionDef *&tpLegsAnimation);
+			void				add_animation					(LPCSTR animation, bool hand_usage = false);
+			void				clear_animations				();
 };
