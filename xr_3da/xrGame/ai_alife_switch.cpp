@@ -315,7 +315,7 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 #ifndef USE_SWITCH_OPTION
 				if (m_tpActor->o_Position.distance_to(I->o_Position) > m_fOfflineDistance)
 #else
-				if (!I->can_switch_online() || (m_tpActor->o_Position.distance_to(I->o_Position) > m_fOfflineDistance))
+				if (I->can_switch_offline() && (!I->can_switch_online() || (m_tpActor->o_Position.distance_to(I->o_Position) > m_fOfflineDistance)))
 #endif
 					vfSwitchObjectOffline(I);
 			}
@@ -350,7 +350,7 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 						else
 							// so, monster is not dead
 							// checking if the object is _not_ ready to switch offline
-							if (!tpGroupMember->can_switch_online() || (m_tpActor->o_Position.distance_to(tpGroupMember->o_Position) <= m_fOfflineDistance))
+							if (tpGroupMember->can_switch_offline() && (!tpGroupMember->can_switch_online() || (m_tpActor->o_Position.distance_to(tpGroupMember->o_Position) <= m_fOfflineDistance)))
 								// so, it is not ready, breaking a cycle, because we can't 
 								// switch group offline since not all the group members are ready
 								// to switch offline
@@ -361,7 +361,7 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 #ifndef USE_SWITCH_OPTION
 					if (i == N)
 #else
-					if (!I->can_switch_online() || (i == N))
+					if (I->can_switch_offline() && (!I->can_switch_online() || (i == N)))
 #endif
 						vfSwitchObjectOffline(I);
 				}
@@ -406,7 +406,7 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 #ifndef USE_SWITCH_OPTION
 			if (m_tpActor->o_Position.distance_to(I->o_Position) <= m_fOnlineDistance)
 #else
-			if (!I->can_switch_offline() || (m_tpActor->o_Position.distance_to(I->o_Position) <= m_fOnlineDistance))
+			if (I->can_switch_online() && (!I->can_switch_offline() || (m_tpActor->o_Position.distance_to(I->o_Position) <= m_fOnlineDistance)))
 #endif
 				vfSwitchObjectOnline(I);
 		}
