@@ -112,7 +112,7 @@ end
 function action_follow:initialize ()
     action_base.initialize (self)
     self.st.signals = {}
-    self.st.signals["leader_change_scheme"] = false
+    self.st.signals["leader_section_changed"] = false
     self.st.signals["leader_dead"] = false
 end
 --------
@@ -139,7 +139,7 @@ function action_follow:execute ()
     end
        
     if db.storage[self.st.leader_id].active_section ~= self.st.leader_section then
-       self.st.signals["leader_change_scheme"] = true 
+       self.st.signals["leader_section_changed"] = true 
     end    
     
     if xr_logic.try_switch_to_another_section (self.object, self.st, db.actor) then
@@ -259,7 +259,7 @@ function action_follow:free ()
     else
        xr_logic.try_switch_to_another_section (self.object, self.st, db.actor)
     end
-    st.leader_scheme = nil
+    st.leader_section = nil
 end
 -----------------------------------------------------------------------------------
 
