@@ -5,11 +5,11 @@
 class CInventory;
 class CActor;
 
-class CVehicleCustom
+class CHolderCustom
 {
 public:
-							CVehicleCustom		(){;}
-	virtual					~CVehicleCustom		(){;}
+							CHolderCustom		(){;}
+	virtual					~CHolderCustom		(){;}
 
 	virtual void			OnMouseMove			(int x, int y)	= 0;
 	virtual void			OnKeyboardPress		(int dik)		= 0;
