@@ -53,6 +53,7 @@ void CEditableObject::SaveObject(const char* fname)
         }
     }
 
+    // save object
     CMemoryWriter 	F;
     F.open_chunk	(EOBJ_CHUNK_OBJECT_BODY);
     Save			(F);
@@ -156,6 +157,9 @@ void CEditableObject::Save(IWriter& F)
     F.w_stringZ			(m_ModifName.c_str());
     F.w					(&m_ModifTime,sizeof(m_ModifTime));
     F.close_chunk		();
+
+    // set modif desc
+	SetVersionToCurrent	(FALSE, TRUE);
 
 	bOnModified		= false;
 }
