@@ -12,7 +12,7 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 	if (1)
 	{
 		// scale to account range and angle
-		float		s			= 2.f*L->range*_tan(L->cone/2.f);	
+		float		s			= 2.f*L->range*tanf(L->cone/2.f);	
 		Fmatrix		mScale;		mScale.scale(s,s,L->range);		// make range and radius
 		
 		// build final rotation / translation
