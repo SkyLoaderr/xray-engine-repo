@@ -241,15 +241,12 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeAnomalousZone,CSE_ALifeDynamicObject,CSE_S
 	float							m_fRadius;
 	string512						m_caParameters;
 	float							m_fGlobalProbability;
-	
-	u32								m_dwItemCount;
+	u16								m_wItemCount;
 	u32								*m_dwaWeights;
 	string64						*m_cppArtefactSections;
 
 									CSE_ALifeAnomalousZone	(LPCSTR caSection);
 	virtual							~CSE_ALifeAnomalousZone	();
-	void							vfParseParams			();
-	void							vfMergeParams			();
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectPhysic,CSE_ALifeDynamicObjectVisual)
