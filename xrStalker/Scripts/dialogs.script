@@ -25,25 +25,36 @@ end
 -------------------
 --' Прекондишн на медикит
 function is_medikit_present (helper, player) 
-    return helper:object ("medikit") ~= nil
+    printf ("is_medikit_present")
+    return helper:object ("medkit") ~= nil
+end
+-------------------
+--' Прекондишн на медикит
+function is_medikit_no_present (helper, player) 
+    printf ("is_medikit_no_present")
+    return helper:object ("medkit") == nil
 end
 -------------------
 --' Передача медикита халявная
 function drop_medikit (helper, player)
+    printf ("drop_medikit")
     helper:transfer_item (helper:object ("medikit"), player)
 end
 -------------------
 --' Продажа медикита
 function sell_medikit (helper, player)
+    printf ("sell_medikit")
     helper:transfer_item (helper:object ("medikit"), player)
+    player:transfer_money (300, helper)
 end
 -------------------
 --' Имеется ли лишнее оружие
 function have_extra_weapon (helper, player)
+    printf ("have_extra_weapon")
     local count = helper:object_count () 
     if count == 0 then return false end
     local wpn = 0
-    for a = 1, count, 1 do
+    for a = 0, count - 1, 1 do
         local obj = helper:object (a)
         if isWeapon (obj) == true then wpn = wpn + 1 end
     end
@@ -51,8 +62,36 @@ function have_extra_weapon (helper, player)
     return false    
 end
 -------------------
+function no_have_extra_weapon (helper, player)
+    printf ("no_have_extra_weapon")
+    return not this.have_extra_weapon (helper, player)
+end    
+-------------------
 --' Хорошо ли персонаж себя чувствует
 function is_health_good (helper, player)
+    printf ("is_health_good")
     return player.health >= 0.9 
 end    
------------------------------------------------------------------------------------
+-------------------
+function is_good_relation (helper, player)
+    printf ("is_good_relation")
+    return true
+end
+-------------------
+function is_bad_relation (helper, player)
+    printf ("is_bad_relation")
+    return false
+end
+-------------------
+function activate_helper_follow (helper, player)
+    printf ("activate_helper_follow")
+    xr_motivator.storage[helper:id ()].sos.need_follow = true
+    xr_meet.override_meet (helper, true)
+end
+-------------------
+function disable_helper (helper, player)
+    printf ("disable_helper")
+    xr_motivator.storage[helper:id ()].sos.npc = nil
+    xr_meet.override_meet (helper, false)
+end
+------------------------------------------------------------------------------------

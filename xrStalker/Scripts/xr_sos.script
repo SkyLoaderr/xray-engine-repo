@@ -1,5 +1,14 @@
--- Помощник, мать его... 
--- Создано Сидоровичем at 25.08.2004
+---------------------------------------------------------------------
+--	created:	2004/08/31
+--	created:	25:08:2004   16:52
+--	filename: 	d:\selo\gamedata\scripts\xr_sos.script
+--	file path:	d:\selo\gamedata\scripts
+--	file base:	xr_sos
+--	file ext:	script
+--	author:		Sidorovich
+--	
+--	purpose:	Помощник, мать его... 
+----------------------------------------------------------------------
 
 local   sos_ignore      =   0
 local   sos_help        =   1
@@ -15,9 +24,10 @@ local   scream_zone     =   20
 local   attempts        =   2
 local   timeout         =   20000
 
-local   throwing_probability =   10
+local   throwing_probability =   1
 
 local   follow_distance =   2
+local   follow_time     =   600000
 
 
 
@@ -98,6 +108,7 @@ end
 function evaluator_pda:evaluate ()
     if self.a.npc == nil or self.a.npc:alive () == false then
        self.a.npc = nil 
+       self.object:set_start_dialog ("hello_dialog")
        self.a.initialized = false
        return false 
     end   
@@ -126,7 +137,7 @@ class "evaluator_action" (property_evaluator)
 -----------------------
 function evaluator_action:__init (name, storage) super ()
     self.a = storage
-end
+end 
 -----------------------
 function evaluator_action:evaluate ()
     if self.a.code == sos_help or self.a.code == sos_mercant then return false end
@@ -163,9 +174,11 @@ function action_initialize:initialize ()
     if self.a.code == sos_ignore then
        self.object:send_pda_message(4, self.a.npc)
        self.a.npc = nil
+       self.object:set_start_dialog ("hello_dialog")
     else
        self.a.initialized = true
        self.a.need_follow = false
+       self.object:set_start_dialog ("stalker_helper")
     end        
 end    
 -----------------------
@@ -180,7 +193,6 @@ end
 
 
 
-
 -----------------------------------------------------------------------
 -- Идем помогать
 class "action_help" (action_base)
@@ -191,6 +203,8 @@ function action_help:__init (name, storage) super (nil, name)
     self.scream = false
     self.current_attempt = 0
     self.see_time = 0
+    self.dialog_first = false
+    self.dialog_out = false
 end
 -----------------------
 function action_help:initialize ()
@@ -220,15 +234,29 @@ function action_help:initialize ()
 		       begin = nil,
 		       time = 6
 		       }
-
+    self.dialog_first = false
+    self.dialog_out = false
 end    
 -----------------------
 function action_help:execute ()
     action_base.execute (self)
+    
+    --если мы в процессе болтовни, то ничего не делаем
+    if self.object:is_talking () == true then
+       self.object:set_movement_type (move.stand)
+       self.dialog_out = true
+       return 
+    end    
+    
+    if self.dialog_out == true then
+       self.object:set_start_dialog ("hello_dialog")
+       return
+    end    
+    
     local v = level.vertex_position (self.vertex_id)
     if v:distance_to (self.object:position ()) < scream_zone and self.scream == false then
        self.scream = true
-       printf ("SCREAM !!!")
+       xr_sounds.play_sound (self.object, 0, "sos", 1)
        return
     end
     
@@ -236,8 +264,25 @@ function action_help:execute ()
     
     local dist = distance_between (self.object, self.a.npc)
 
+    
+    --обрабатываем ожидание диалога
+    if distance_between (self.object, self.a.npc) < 2 then
+       if self.dialog_first == false then
+          self.dialog_first = true
+          self.see_time = device ():time_global ()
+          printf ("WAIT FOR DIALOG !!!")
+       end
+       self.object:set_movement_type (move.stand)
+       self:wait_for_player2 ()
+       if device ():time_global () - self.see_time > 10000 then
+          self.a.npc = nil
+          self.object:set_start_dialog ("hello_dialog")
+          printf ("FUCK YOU 2 !!!")
+       end   
+       return 
+    end     
+
     if self.object:see (self.a.npc) == true then
-              
        self.object:clear_animations () 
        self.vertex_id = self.a.npc:level_vertex_id ()
        self.object:set_dest_level_vertex_id  (self.vertex_id)
@@ -253,23 +298,17 @@ function action_help:execute ()
           self.object:set_movement_type (move.stand)
           self:wait_for_player ()
           if self.see_time == 0 then 
-             printf ("PRISHEL !!!")
+             xr_sounds.play_sound (self.object, 0, "sos", 2)
              self.see_time = device ():time_global ()
           end   
        end
     end        
     
-    if distance_between (self.object, self.a.npc) < 2 then
-       printf ("DIALOG !!!")
-       self.object:set_movement_type (move.stand)
-       self.a.npc = nil
-       return 
-    end     
-    
     if self.see_time ~= 0 then
        if device ():time_global () - self.see_time > timeout then
           printf ("FUCK YOU !!!")
           self.a.npc = nil
+          self.object:set_start_dialog ("hello_dialog")
        end
        return
     end
@@ -290,6 +329,7 @@ function action_help:work_with_kill ()
        if distance_between (self.object, self.a.npc) < 10 then
           self.object:set_relation (game_object.enemy, self.a.npc)
           self.a.npc = nil
+          self.object:set_start_dialog ("hello_dialog")
        end    
     else 
        if self.vertex_id == self.object:level_vertex_id () then
@@ -315,7 +355,26 @@ function action_help:wait_for_player ()
     end
     
 end
+-----------------------
+function action_help:wait_for_player2 ()
+
+    if self.act.type == 1 then
+       self.act.begin = device():time_global () / 1000
+       self.act.type = 2
+       local dir = self.a.npc:position ():sub (self.object:position ())
+       dir:normalize ()
+       self.object:set_sight (look.direction, dir, 0)
+       self.object:set_body_state (move.standing)
+    else
+       xr_state.anim_update ("idle", self.object)
+       if (device():time_global () / 1000 - self.act.begin) > self.act.time then
+          self.act.type = 1
+       end
+    end
+    
+end
 -----------------------------------------------------------------------
+
 
 
 -----------------------------------------------------------------------
@@ -370,20 +429,25 @@ function action_follow_npc:execute ()
        self.object:set_movement_type         (move.stand)
     end   
        
-    if device ():time_global () - self.move_time > 600000 then
+    if device ():time_global () - self.move_time > follow_time then 
        printf ("FINITA LA COMEDIA !")
        self.a.npc = nil
+       self.object:set_start_dialog ("hello_dialog")
     end    
         
 end
 -----------------------
 function action_follow_npc:finalize ()
     action_base.finalize (self)
+    self.object:set_start_dialog ("hello_dialog")
 end
 -----------------------
 function action_follow_npc:calc_pos ()
-    self.vertex = level.vertex_in_direction (self.a.npc:level_vertex_id (), self.a.dir, follow_distance)
+    self.vertex = level.vertex_in_direction (self.a.npc:level_vertex_id (), self.dir, follow_distance)
 end
+-----------------------------------------------------------------------
+
+
 
 
 
@@ -391,6 +455,7 @@ end
 function add_to_binder (obj, char_ini)
 
     if char_ini == nil or char_ini:section_exist ("sos") == false then return end
+    
     this.set_sos (obj)
     
 	local operators		= {}
@@ -401,6 +466,7 @@ function add_to_binder (obj, char_ini)
 	properties["init"]              = xr_evaluators_id.sidor_sos + 2
 	properties["action"]            = xr_evaluators_id.sidor_sos + 3
 	properties["follow"]            = xr_evaluators_id.sidor_sos + 4
+	properties["contact"]		    = xr_evaluators_id.stohe_meet_base + 1         
 
  	operators["init"]               = xr_actions_id.sidor_act_sos + 0
 	operators["kill"]               = xr_actions_id.sidor_act_sos + 1
@@ -430,7 +496,8 @@ function add_to_binder (obj, char_ini)
     action:add_precondition         (world_property (properties["pda"],             true))
 	action:add_precondition		    (world_property (properties["init"], 	        true))
 	action:add_precondition		    (world_property (properties["follow"], 	        false))
-   	action:add_effect           	(world_property (properties["pda"],             false))
+	action:add_precondition         (world_property(properties["contact"],	        false))
+	action:add_effect           	(world_property (properties["pda"],             false))
    	manager:add_action              (operators["help"], action)
 
   	action = this.action_follow_npc ("action_follow", xr_motivator.storage[obj:id()].sos)
