@@ -476,7 +476,7 @@ void CLevelGraph::compute_travel_line(xr_vector<u32> &/**vertex_path/**/, u32 /*
 //							m_tpTravelLine.push_back(*tpDestinationPosition);
 }
 
-#include "graph_search_engine.h"
+#include "graph_engine.h"
 
 void CLevelGraph::compute_path() const
 {
@@ -486,7 +486,7 @@ void CLevelGraph::compute_path() const
 //	u32						l_dwFinishNodeID	= vertex(m_finish_point);
 //	VERIFY					(inside(vertex(l_dwFinishNodeID),m_finish_point));
 //	xr_vector<u32>			l_tpNodePath;
-//	ai().graph_search_engine().build_path(ai().level_graph(),l_dwStartNodeID,l_dwFinishNodeID,&l_tpNodePath,CGraphSearchEngine::CObstacleParams());
+//	ai().graph_engine().search(ai().level_graph(),l_dwStartNodeID,l_dwFinishNodeID,&l_tpNodePath,CGraphEngine::CObstacleParams());
 //	compute_travel_line		(l_tpNodePath,l_dwStartNodeID,l_dwFinishNodeID);
 }
 

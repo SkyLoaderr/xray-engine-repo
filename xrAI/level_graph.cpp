@@ -12,7 +12,7 @@
 	#include "ai_space.h"
 #endif
 
-#include "graph_search_engine.h"
+#include "graph_engine.h"
 
 #ifndef AI_COMPILER
 CLevelGraph::CLevelGraph					()
@@ -79,9 +79,9 @@ u32 CLevelGraph::vertex		(u32 current_node_id, const Fvector& position, bool ful
 	}
 
 	u32						id, id_prev = valid_vertex_id(current_node_id) ? current_node_id : 0;
-	CGraphSearchEngine::CPositionParameters	position_params(position,1.f,30.f);
+	CGraphEngine::CPositionParameters	position_params(position,1.f,30.f);
 
-	if (ai().graph_search_engine().build_path(*this,id_prev,id_prev,0,position_params)) {
+	if (ai().graph_engine().search(*this,id_prev,id_prev,0,position_params)) {
 		VERIFY				(valid_vertex_id(position_params.m_vertex_id));
 		return				(position_params.m_vertex_id);
 	}
