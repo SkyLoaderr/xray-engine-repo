@@ -121,18 +121,13 @@ void CAI_Boar::StateSelector()
 	else if (D && H && I)		state = stateAttack;
 	else if (D && H && !I)		state = stateAttack;  //тихо подобраться и начать аттаку
 	else if (D && !H && I)		state = stateAttack;
-	//else if (D && !H && !I) 	SetState(stateHide);	// отход перебежками через укрытия
 	else if (D && !H && !I)		state = statePanic;
 	else if (E && H && I)		state = stateAttack; 
 	else if (E && H && !I)  	state = stateAttack;  //тихо подобраться и начать аттаку
-	//else if (E && !H && I) 		SetState(stateDetour); 
-	//else if (E && !H && !I)		SetState(stateDetour); 
 	else if (E && !H && I) 		state = stateAttack;
 	else if (E && !H && !I)		state = stateAttack;
 	else if (F && H && I) 		state = stateAttack; 		
 	else if (F && H && !I)  	state = stateAttack; 
-	//else if (F && !H && I)  	SetState(stateDetour); 
-	//else if (F && !H && !I) 	SetState(stateHide);
 	else if (A && !K && !H)		state = stateExploreNDE;  //SetState(stateExploreDNE);  // слышу опасный звук, но не вижу, враг не выгодный		(ExploreDNE)
 	else if (A && !K && H)		state = stateExploreNDE;  //SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
 	else if (B && !K && !H)		state = stateExploreNDE;	// слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)
@@ -141,8 +136,50 @@ void CAI_Boar::StateSelector()
 								state = stateEat;
 	else						state = stateRest; 
 
+	
+	if (state == stateAttack) {
+		look_at_enemy = true;
+		// calc new target delta
+		float yaw, pitch;
+		Fvector().sub(m_tEnemy.obj->Position(), Position()).getHP(yaw,pitch);
+		yaw *= -1;
+		yaw = angle_normalize(yaw);
+
+		if (from_right(yaw,m_body.current.yaw)) {
+			_target_delta = angle_difference(yaw,m_body.current.yaw);
+		} else _target_delta = -angle_difference(yaw,m_body.current.yaw);
+
+		clamp(_target_delta, -PI_DIV_4, PI_DIV_4);
+	}
+	
 	SetState(state);
 }
+
+void __stdcall CAI_Boar::BoneCallback(CBoneInstance *B)
+{
+	CAI_Boar	*P = dynamic_cast<CAI_Boar*> (static_cast<CObject*>(B->Callback_Param));
+
+	if (!P->look_at_enemy) return;
+	
+	Fmatrix M;
+	M.setXYZi (P->_cur_delta,0.0f, 0.0f);
+	B->mTransform.mulB(M);
+}
+
+BOOL CAI_Boar::net_Spawn (LPVOID DC) 
+{
+	if (!inherited::net_Spawn(DC))
+		return(FALSE);
+
+	CBoneInstance& BI = PKinematics(Visual())->LL_GetBoneInstance(PKinematics(Visual())->LL_BoneID("bip01_head"));
+	BI.set_callback(BoneCallback,this);
+	
+	_cur_delta		= _target_delta = 0.f;
+	_velocity		= PI;
+	look_at_enemy	= false;
+	return TRUE;
+}
+
 
 void CAI_Boar::LookPosition(Fvector to_point, float angular_speed)
 {
@@ -175,12 +212,18 @@ void CAI_Boar::CheckSpecParams(u32 spec_params)
 		CMovementManager::m_body.target.yaw = yaw;
 
 		// calculate angular speed
-		float new_angular_velocity;  //= 4.0f;
+		float new_angular_velocity; 
 		float delta_yaw = angle_difference(yaw,m_body.current.yaw);
 		float time = MotionMan.GetAnimTime(anim, 0);
 		new_angular_velocity = 2.5f * delta_yaw / time; 
 
 		MotionMan.ForceAngularSpeed(new_angular_velocity);
 	}
+}
+
+void CAI_Boar::UpdateCL()
+{
+	inherited::UpdateCL();
+	angle_lerp(_cur_delta, _target_delta, _velocity, Device.fTimeDelta);
 }
 

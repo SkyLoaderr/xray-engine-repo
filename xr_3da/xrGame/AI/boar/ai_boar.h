@@ -10,6 +10,8 @@ public:
 	virtual			~CAI_Boar			();	
 
 	virtual void	Load				(LPCSTR section);
+	virtual BOOL	net_Spawn			(LPVOID DC);
+	virtual void	UpdateCL			();
 
 			void	Init				();
 	virtual void	StateSelector		();
@@ -18,4 +20,12 @@ public:
 
 	virtual bool	CanExecRotationJump	() {return true;}
 	virtual void	CheckSpecParams		(u32 spec_params);
+
+	// look at enemy
+	static void __stdcall BoneCallback	(CBoneInstance *B);
+	
+			float	_velocity;
+			float	_cur_delta, _target_delta;
+			bool	look_at_enemy;
+	
 };
