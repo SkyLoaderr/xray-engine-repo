@@ -31,7 +31,7 @@ animation_slot		 		= 1		; type of the animation that will be used
 
 inv_name					= COLT1911
 inv_name_short				= COLT1911
-inv_weight					= 1.0
+inv_weight					= 0.9
 
 inv_grid_width				= 2
 inv_grid_height				= 1
@@ -45,14 +45,14 @@ immunities_sect				= weapon
 fire_dispersion_base		= 0.3 ;0.15  ;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
 
 ;отдача
-cam_relax_speed         	= 9.0	;скорость возврата в исходное положение
-cam_dispersion          	= 1.2	;увеличения угла (в градусах) с каждым выстрелом
+cam_relax_speed         	= 5.0	;скорость возврата в исходное положение
+cam_dispersion          	= 1.8	;увеличения угла (в градусах) с каждым выстрелом
 cam_max_angle				= 7		;максимальный угол отдачи
 cam_max_angle_horz			= 10.0	;(degree) maximum shot horizontal degree 
 cam_step_angle_horz			= 1.5	;(degree) size of step camera moved in horizontal position while shooting
 
 fire_dispersion_condition_factor = 5	;увеличение дисперсии в процентах при максимальном износе 
-misfire_probability 		= 0.0001	;вероятность осечки при максимальном износе 
+misfire_probability 		= 0.01	;вероятность осечки при максимальном износе 
 condition_shot_dec 			= 0.00003	;увеличение износа при каждом выстреле
 ;-----------------------------------------------------------------------------------
 
@@ -71,7 +71,7 @@ hit_power                	= 55
 hit_impulse		 		 	= 105
 hit_type 					= fire_wound
 
-fire_distance            	= 100
+fire_distance            	= 150
 bullet_speed			 	= 320			;начальная скорость пули
 rpm                      	= 300
 ; end ttc
