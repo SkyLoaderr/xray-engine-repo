@@ -142,6 +142,7 @@ VOID CDeflector::GetRect(UVpoint &min, UVpoint &max)
 
 void CDeflector::RemapUV(DWORD base_u, DWORD base_v, DWORD size_u, DWORD size_v, DWORD lm_u, DWORD lm_v, BOOL bRotate)
 {
+	FPU::m64r	();
 	// UV rect (actual)
 	UVpoint		a_min,a_max,a_size;
 	GetRect		(a_min,a_max);
@@ -180,6 +181,7 @@ void CDeflector::RemapUV(DWORD base_u, DWORD base_v, DWORD size_u, DWORD size_v,
 			}
 		}
 	}
+	FPU::m24r	();
 }
 
 VOID CDeflector::Capture		(CDeflector *D, int b_u, int b_v, int s_u, int s_v, BOOL bRotated)

@@ -49,6 +49,7 @@ void CDeflector::L_Direct	(HASH& H)
 					// World space
 					Fvector wP,wN,B;
 					C[J].set(0,0,0,0);
+					FPU::m64r	();
 					for (UVtri** it=space.begin(); it!=space.end(); it++)
 					{
 						if ((*it)->isInside(P,B)) {

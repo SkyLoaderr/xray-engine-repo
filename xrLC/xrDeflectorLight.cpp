@@ -532,18 +532,18 @@ void CDeflector::Save()
 	{
 		// 3x expand
 		b_texture		temp;
-		temp.dwHeight	= lm.dwHeight*3;
-		temp.dwWidth	= lm.dwWidth *3;
+		temp.dwHeight	= lm.dwHeight*5;
+		temp.dwWidth	= lm.dwWidth *5;
 		temp.pSurface	= LPDWORD(malloc(temp.dwHeight*temp.dwWidth*4));
 		for (DWORD y=0; y<lm.dwHeight; y++)
 		{
 			for (DWORD x=0; x<lm.dwWidth; x++)
 			{
 				DWORD C = lm.pSurface[y*lm.dwWidth+x];
-//				if (RGBA_GETALPHA(C)!=255)	C=0;
-				pixel(x*3+0,y*3+0,&temp,C); pixel(x*3+1,y*3+0,&temp,C); pixel(x*3+2,y*3+0,&temp,C);
-				pixel(x*3+0,y*3+1,&temp,C); pixel(x*3+1,y*3+1,&temp,C); pixel(x*3+2,y*3+1,&temp,C);
-				pixel(x*3+0,y*3+2,&temp,C); pixel(x*3+1,y*3+2,&temp,C); pixel(x*3+2,y*3+2,&temp,C);
+				if (RGBA_GETALPHA(C)!=255)	C=0;
+				for (DWORD p_y=0; p_y<5; p_y++)
+					for (DWORD p_x=0; p_x<5; p_x++)
+						pixel(x*5+p_x,y*5+p_y,&temp,C);
 			}
 		}
 
