@@ -486,22 +486,22 @@ void CLevelGraph::draw_dynamic_obstacles() const
 
 void CLevelGraph::set_start_point	()
 {
-//	CObject					*obj = Level().Objects.FindObjectByName("m_stalker_e0000");
-//	CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(obj);
-//	obj						= Level().Objects.FindObjectByName("localhost/dima");
-//	CActor					*actor = dynamic_cast<CActor*>(obj);
-//	if (!stalker || !actor)
-//		return;
-//
-//	start.position			= v2d(stalker->Position());
-//	start.direction.x		= -_sin(-stalker->m_body.current.yaw);
-//	start.direction.y		= _cos(-stalker->m_body.current.yaw);
-//	start.vertex_id			= vertex(v3d(start.position));
-//
-//	dest.position			= v2d(actor->Position());
-//	dest.direction.x		= -_sin(actor->r_model_yaw);
-//	dest.direction.y		= _cos(actor->r_model_yaw);
-//	dest.vertex_id			= vertex(v3d(dest.position));
+	CObject					*obj = Level().Objects.FindObjectByName("m_stalker_e0000");
+	CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(obj);
+	obj						= Level().Objects.FindObjectByName("localhost/dima");
+	CActor					*actor = dynamic_cast<CActor*>(obj);
+	if (!stalker || !actor)
+		return;
+
+	start.position			= v2d(stalker->Position());
+	start.direction.x		= -_sin(-stalker->m_body.current.yaw);
+	start.direction.y		= _cos(-stalker->m_body.current.yaw);
+	start.vertex_id			= vertex(v3d(start.position));
+
+	dest.position			= v2d(actor->Position());
+	dest.direction.x		= -_sin(actor->r_model_yaw);
+	dest.direction.y		= _cos(actor->r_model_yaw);
+	dest.vertex_id			= vertex(v3d(dest.position));
 	
 //	start.angular_velocity	= 1.f;
 //	start.linear_velocity	= 2.f;
@@ -515,13 +515,13 @@ void CLevelGraph::set_start_point	()
 //	dest.direction.set		(-1.f,1.f);
 //	dest.vertex_id			= vertex(v3d(dest.position));
 
-	start.position.set		(-41.801155f,-29.429924f);
-	start.direction.set		(4.4425301e-006f,1.000000f);
-	start.vertex_id			= 9055;
+//	start.position.set		(-41.801155f,-29.429924f);
+//	start.direction.set		(4.4425301e-006f,1.000000f);
+//	start.vertex_id			= 9055;
 
-	dest.position.set		(-52.441914f,-19.850077f);
-	dest.direction.set		(-10.500000f,-9.8000031f);
-	dest.vertex_id			= 9296;
+//	dest.position.set		(-52.441914f,-19.850077f);
+//	dest.direction.set		(-10.500000f,-9.8000031f);
+//	dest.vertex_id			= 9296;
 
 //	write_trajectory_point	(start,"start");
 //	write_trajectory_point	(dest,"dest");
@@ -1017,8 +1017,8 @@ void fill_params(
 	xr_vector<CLevelGraph::STravelParams>	&dest_set
 )
 {
-	start.angular_velocity	= PI_DIV_4;
-	start.linear_velocity	= 1.45f;//0.01f;//0.0001f;
+	start.angular_velocity	= PI_MUL_2;
+	start.linear_velocity	= 0.f;
 	start_set.push_back		(start);
 
 //	start.angular_velocity	= PI;
@@ -1033,8 +1033,8 @@ void fill_params(
 //	start.linear_velocity	= 6.f;
 //	start_set.push_back		(start);
 
-	dest.angular_velocity	= PI_DIV_4;
-	dest.linear_velocity	= 1.45f;
+	dest.angular_velocity	= PI_MUL_2;
+	dest.linear_velocity	= 0.f;
 	dest_set.push_back		(dest);
 
 //	dest.angular_velocity	= PI;
