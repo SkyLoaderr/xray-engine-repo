@@ -54,7 +54,9 @@ void CGameObject::Sector_Detect	()
 		CAI_Space&	AI = Level().AI;
 
 		AI.ref_dec  (AI_NodeID);
+		Log("started");
 		AI_NodeID	= AI.q_Node	(AI_NodeID,vPosition);
+		Log("finished");
 		AI.ref_add  (AI_NodeID);
 		AI_Node		= AI.Node	(AI_NodeID);
 	}

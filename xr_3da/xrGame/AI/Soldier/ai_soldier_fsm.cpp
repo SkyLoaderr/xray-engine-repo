@@ -155,7 +155,7 @@ void CAI_Soldier::OnHurtAlone()
 		
 	r_torso_speed = 1*PI_DIV_2;
 	
-	if ((tStateList.size() > 1) && (tStateList[tStateList.size() - 2].eState != aiSoldierRetreatAloneFire)) {
+	if ((tStateList.size() > 1) && (tStateList[tStateList.size() - 2].eState != aiSoldierRetreatAloneFire) && (AI_Path.fSpeed > EPS_L)) {
 		if (m_cBodyState != BODY_STATE_LIE) {
 			if (m_cBodyState == BODY_STATE_STAND)
 				m_tpAnimationBeingWaited = tSoldierAnimations.tNormal.tGlobal.tpaLieDown[1];
@@ -197,9 +197,9 @@ void CAI_Soldier::OnAttackAloneFire()
 	
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfActionOrFightTypeChanged());
 
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(!bfCheckForEntityVisibility(Enemy.Enemy) && !bfTooFarToEnemy(Enemy.Enemy,5.f),aiSoldierAttackAloneFireSteal)
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(!bfCheckForEntityVisibility(Enemy.Enemy) && bfTooFarToEnemy(Enemy.Enemy,ATTACK_FIRE_FIRE_DISTANCE) && !bfNeedRecharge() && !bfNoAmmo(),aiSoldierAttackAloneFireSteal)
 
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(!bfTooFarToEnemy(Enemy.Enemy,ATTACK_FIRE_FIRE_DISTANCE) && !bfNeedRecharge(),aiSoldierAttackAloneFireFire)
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(!bfTooFarToEnemy(Enemy.Enemy,ATTACK_FIRE_FIRE_DISTANCE) && (!bfNeedRecharge()),aiSoldierAttackAloneFireFire)
 
 	SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierAttackAloneFireRun)
 }
@@ -286,7 +286,7 @@ void CAI_Soldier::OnRetreatAloneFire()
 		//if (AI_Path.TravelPath.empty() || (AI_Path.TravelPath.size()/2 < AI_Path.TravelStart))
 			vfSearchForBetterPosition(SelectorRetreat,Squad,Leader);
 
-	if (bfTooBigDistance(tSavedEnemyPosition,15.f) || !Enemy.Enemy || ((Enemy.Enemy) && !Enemy.bVisible) || bfCheckHistoryForState(aiSoldierHurtAlone,10000) || bfCheckHistoryForState(aiSoldierAttackAlone,10000))
+	if (bfTooBigDistance(tSavedEnemyPosition,ATTACK_FIRE_FIRE_DISTANCE) || !Enemy.Enemy || ((Enemy.Enemy) && !Enemy.bVisible) || bfCheckHistoryForState(aiSoldierHurtAlone,10000) || bfCheckHistoryForState(aiSoldierAttackAlone,10000))
 		if (AI_Path.fSpeed < EPS_L)
 			SetLessCoverLook(AI_Node);
 		else
@@ -428,12 +428,9 @@ void CAI_Soldier::OnAttackAloneFireSteal()
 	if (m_bStateChanged)
 		m_dwLastRangeSearch = 0;
 
-	Fvector tDistance;
-	tDistance.sub(Position(),Enemy.Enemy->Position());
-
 	CHECK_IF_SWITCH_TO_NEW_STATE((Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() == 0),aiSoldierRecharge)
 
-	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckForEntityVisibility(Enemy.Enemy) || (!bfTooFarToEnemy(Enemy.Enemy,5.f)))
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckForEntityVisibility(Enemy.Enemy) || (!bfTooFarToEnemy(Enemy.Enemy,ATTACK_FIRE_FIRE_DISTANCE)))
 
 	INIT_SQUAD_AND_LEADER;
 	
@@ -450,7 +447,7 @@ void CAI_Soldier::OnAttackAloneFireSteal()
 	
 	vfStopFire();
 	
-	if (vPosition.distance_to(Enemy.Enemy->Position()) > 25.f) {
+	if (bfTooFarToEnemy(Enemy.Enemy,25.f)) {
 		StandUp();
 		vfSetMovementType(RUN_FORWARD_3);
 	}
@@ -762,7 +759,7 @@ void CAI_Soldier::Die()
 		m_tpSoundBeingPlayed->feedback->Stop();
 
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-	vfSetFire(false,Group);
+	vfStopFire();
 	AI_Path.TravelPath.clear();
 	
 	Fvector	dir;

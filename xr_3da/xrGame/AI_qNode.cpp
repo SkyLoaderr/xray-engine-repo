@@ -261,7 +261,7 @@ DWORD CAI_Space::q_Node(DWORD PrevNode, const Fvector& BasePos)
 	float BestCost;
 	q_Range_Bit(PrevNode,BasePos,m_header.size*3,&QueryPos,BestNode,BestCost);
 	//q_Range_Bit(PrevNode,BasePos,m_header.size*3,BestNode,BestCost);
-	if (BestCost < m_header.size)	{
+	if (BestCost < 3*m_header.size)	{
 		// small distance from node
 		Device.Statistic.AI_Node.End();
 		return BestNode;

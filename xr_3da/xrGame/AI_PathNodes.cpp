@@ -396,6 +396,8 @@ void CPathNodes::BuildTravelLine(const Fvector& current_pos)
 
 void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, float speed, float dt)
 {
+	if (Level().iGetKeyState(DIK_RSHIFT))
+		__asm int 3;
 	if ((TravelPath.empty()) || (TravelPath.size() - 1 <= TravelStart))	{
 		fSpeed = 0;
 		return;

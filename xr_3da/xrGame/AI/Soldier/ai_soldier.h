@@ -659,7 +659,7 @@ class CAI_Soldier : public CCustomMonster
 		}
 	IC	bool bfCheckHistoryForState(ESoldierStates eState, DWORD dwTimeInterval)
 		{
-			for (int i=tStateList.size() - 1; i>=0; i--)
+			for (int i=tStateList.size() - 2; i>=0; i--)
 				if (tStateList[i].eState == eState)
 					return(true);
 				else

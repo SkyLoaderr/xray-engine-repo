@@ -302,8 +302,9 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 //				}
 //				break;
 //			}
-/**
-			case aiSoldierAttackFireAlone : {
+/**/
+			case aiSoldierAttackAloneFireFire : 
+			case aiSoldierAttackGroupFireFire : {
 				if (m_bFiring)
 					switch (m_cBodyState) {
 						case BODY_STATE_STAND : {
@@ -357,6 +358,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 				}
 				break;
 			}
+/**
 			case aiSoldierAttackAim : {
 				switch (m_cBodyState) {
 					case BODY_STATE_STAND : {

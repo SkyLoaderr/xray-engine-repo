@@ -123,6 +123,10 @@ void CAI_Soldier::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
 	Group.m_dwLastHitTime = dwHitTime;
 	Group.m_tLastHitDirection = tHitDir;
 	Group.m_tHitPosition = tHitPosition;
+	if (!Enemy.Enemy) {
+		Enemy.Enemy = who;
+		vfSaveEnemy();
+	}
 	
 	if (iHealth > 0) {
 		vfAddHurtToList(who);
@@ -340,7 +344,7 @@ DWORD CAI_Soldier::tfGetAloneFightType()
 
 	if (KnownEnemies.size() == 1) {
 		CEntity *tpEntity = dynamic_cast<CEntity *>(KnownEnemies[0].key);
-		if ((tpEntity) && (!bfCheckForEntityVisibility(tpEntity)) && !bfNeedRecharge())
+		if ((tpEntity) && (!bfCheckForEntityVisibility(tpEntity)) && !bfNeedRecharge() && !bfCheckHistoryForState(aiSoldierAttackAloneFireFire,100000))
 			return(FIGHT_TYPE_ATTACK);
 	}
 
@@ -598,13 +602,14 @@ DWORD CAI_Soldier::tfGetAloneFightType()
 		}
 	}
 
-	if (fFightCoefficient > 400)
-		return(FIGHT_TYPE_RETREAT);
-	else
-		if (fFightCoefficient > 100)
-			return(FIGHT_TYPE_DEFEND);
-		else
-			return(FIGHT_TYPE_ATTACK);
+	return(FIGHT_TYPE_RETREAT);
+//	if (fFightCoefficient > 400)
+//		return(FIGHT_TYPE_RETREAT);
+//	else
+//		if (fFightCoefficient > 100)
+//			return(FIGHT_TYPE_DEFEND);
+//		else
+//			return(FIGHT_TYPE_ATTACK);
 }
 
 DWORD CAI_Soldier::tfGetGroupFightType()

@@ -34,7 +34,7 @@ void CAI_Soldier::vfBuildPathToDestinationPoint(CSoldierSelectorAttack *S)
 	else
 		Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
 	
-	if (AI_Path.Nodes.size() > 2) {
+	if (AI_Path.Nodes.size() > 1) {
 		// if path is long enough then build travel line
 		AI_Path.BuildTravelLine(Position());
 		AI_Path.TravelStart = 0;
