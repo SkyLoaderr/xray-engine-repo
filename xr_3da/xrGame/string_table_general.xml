@@ -1,5 +1,5 @@
-<?xml version='1.0' encoding="UTF-8"?>
-<!-- С‚Р°Р±Р»РёС†Р° СЃС‚СЂРѕРє РѕР±С‰РµРіРѕ РЅР°Р·РЅР°С‡РµРЅРёСЏ -->
+<?xml version='1.0' encoding="windows-1251"?>
+<!-- таблица строк общего назначения -->
 <string_table>
 	<string id="test1">
 		<text>This is a GENERAL test string</text>
@@ -9,7 +9,7 @@
 	</string>
 	<string id="Weapon">
 		<text>Weapon</text>
-		<text ln="rus">РћСЂСѓР¶РёРµ</text>
+		<text ln="rus">Оружие</text>
 	</string>
 
 </string_table>
