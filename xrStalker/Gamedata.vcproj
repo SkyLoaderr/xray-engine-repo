@@ -461,6 +461,9 @@
 			RelativePath=".\devices.ltx">
 		</File>
 		<File
+			RelativePath=".\game.ltx">
+		</File>
+		<File
 			RelativePath=".\npc_profile.xml">
 		</File>
 		<File

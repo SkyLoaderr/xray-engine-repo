@@ -20,7 +20,7 @@
     <info_portion id="escape_need_blockpost_case">
         <location>
             <level></level>
-            <object>blockpost_case</object>
+            <object>000</object>
 			<icon name="Case" x="2" y="8" width="1" height="1"></icon>
             <text>”красть €щик с блокпоста</text>
         </location>
