@@ -44,7 +44,7 @@ const		u32					BLOOM_size_X		= 256	;
 const		u32					BLOOM_size_Y		= 256	;
 const		u32					LUMINANCE_size		= 16	;
 
-const		u32					occq_size			= 128	;	// queue for occlusion queries
+const		u32					occq_size			= 256	;	// queue for occlusion queries
 
 // spot
 #define		SE_L_FILL			0
