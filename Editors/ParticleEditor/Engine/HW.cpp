@@ -64,7 +64,6 @@ void	CHW::DestroyDevice	()
 	_RELEASE				(pBaseRT);
 	_RELEASE				(dwDebugSB);
 	_SHOW_REF				("DeviceREF:",HW.pDevice);
-	while					(1!=HW.pDevice->Release());
 	_RELEASE				(HW.pDevice);
 	DestroyD3D				();
 }
