@@ -22,7 +22,7 @@ enum ECameraStyle       {
 	cs_forcedword = DWORD(-1)
 };
 
-enum ENGINE_API EEffectorType{
+enum EEffectorType		{
 	cefDemo,
 	cefFall,
 	cefNoise,
