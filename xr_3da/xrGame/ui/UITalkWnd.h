@@ -46,7 +46,7 @@ public:
 	void NeedUpdateQuestions();
 	//инициализации начального диалога собеседника
 	void InitOthersStartDialog();
-
+	virtual bool IR_OnKeyboardPress(int dik);
 	void SwitchToTrade();
 protected:
 

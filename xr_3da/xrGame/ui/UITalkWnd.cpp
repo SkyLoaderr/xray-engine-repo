@@ -18,6 +18,7 @@
 
 #include "../game_cl_base.h"
 #include "../string_table.h"
+#include "../xr_level_controller.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -368,4 +369,15 @@ void CUITalkWnd::SwitchToTrade()
 	UITradeWnd.InitTrade(m_pOurInvOwner, m_pOthersInvOwner);
 	UITradeWnd.Show();
 	UITradeWnd.BringAllToTop();
+}
+
+bool CUITalkWnd::IR_OnKeyboardPress(int dik)
+{
+	int cmd = key_binding[dik];
+	if(cmd==kUSE)
+	{
+		GetHolder()->StartStopMenu(this, true);
+		return true;
+	}
+	return false;
 }
