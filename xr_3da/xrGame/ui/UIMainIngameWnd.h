@@ -13,8 +13,7 @@
 #include "UIWpnDragDropItem.h"
 #include "UIListWnd.h"
 #include "UIMultiTextStatic.h"
-#include "UIAnimationFlicker.h"
-#include "UIAnimationFade.h"
+#include "UIColorAnimatorWrapper.h"
 
 #include "../UIZoneMap.h"
 
@@ -194,9 +193,8 @@ protected:
 	void				DestroyFlashingIcons();
 	void				UpdateFlashingIcons();
 
-	// first - иконка, second - время прошедшее с начала периода мигания иконки.
-	// Если -1, то иконка выключена (не мигает)
-	typedef				std::pair<CUIStatic*, CUIAnimationFade> IconInfo;
+	// first - иконка, second - анимация
+	typedef				std::pair<CUIStatic*, CUIColorAnimatorWrapper> IconInfo;
 	DEF_MAP				(FlashingIcons, EFlashingIcons, IconInfo);
 	FlashingIcons		m_FlashingIcons;
 
@@ -241,12 +239,11 @@ protected:
 	NewsTemplates							m_NewsTemplates;
 
 	// Период проверки ньюсов в моллисекундах
-	static const int	NEWS_CHECK_INTERVAL = 1000;
-	ALife::_TIME_ID		m_iPrevTime;
+	static const int			NEWS_CHECK_INTERVAL = 1000;
+	ALife::_TIME_ID				m_iPrevTime;
 
 	// Мигалка для контактов
-	CUIAnimationFlicker	UIContactsFlicker;
-	void				UpdateContactsAnimation();
+	CUIColorAnimatorWrapper		UIContactsAnimation;
 
 private:
 	// Блок операций работы с текстурами-эффектами ударов когтей на экране(как в Doom 3)
@@ -256,11 +253,11 @@ private:
 	MonsterClawsTextures		m_ClawsTextures;
 
 	// Static item for display claws texture
-	CUIStaticItem		m_ClawsTexture;
+	CUIStaticItem				m_ClawsTexture;
 	// Animation engine for claws
-	CUIAnimationFade	m_ClawsAnimation;
+	CUIColorAnimatorWrapper		m_ClawsAnimation;
 	// Update claws animation
-	void				UpdateClawsAnimation();
+	void						UpdateClawsAnimation();
 
 public:
 	// Инициализировать текстуры когтей для монстров

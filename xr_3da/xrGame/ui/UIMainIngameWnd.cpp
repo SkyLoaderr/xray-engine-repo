@@ -30,8 +30,6 @@
 #include "UIXmlInit.h"
 #include "UIPdaMsgListItem.h"
 
-
-
 //////////////////////////////////////////////////////////////////////////
 
 using namespace InventoryUtilities;
@@ -259,13 +257,16 @@ void CUIMainIngameWnd::Init()
 	uiXml.SetLocalRoot(uiXml.NavigateToNode("flashing_icons"));
 	InitFlashingIcons(uiXml);
 
-	UIContactsFlicker.SetAnimationPeriod(1000);
-	UIContactsFlicker.SetPlayDuration(4000);
+	ref_str contactsAnimationName			= "ui_pda_contacts";
+	UIContactsAnimation.SetColorAnimation	(contactsAnimationName);
+	UIContactsAnimation.SetColorToModify	(&UIPdaOnline.GetColorRef());
+	UIContactsAnimation.Cyclic				(false);
+	UIContactsAnimation.Reset				();
 
 	// Claws animation
 	uiXml.SetLocalRoot(uiXml.GetRoot());
-	m_ClawsAnimation.SetAnimationPeriod(uiXml.ReadAttribInt("claws_animation", 0, "period", 1000));
-	m_ClawsAnimation.SetPlayDuration(uiXml.ReadAttribInt("claws_animation", 0, "duration", 2000));
+//	m_ClawsAnimation.SetAnimationPeriod(uiXml.ReadAttribInt("claws_animation", 0, "period", 1000));
+//	m_ClawsAnimation.SetPlayDuration(uiXml.ReadAttribInt("claws_animation", 0, "duration", 2000));
 	m_ClawsTexture.SetRect(0, 0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
 
 	AttachChild(&UIStaticBattery);
@@ -338,12 +339,12 @@ void CUIMainIngameWnd::Draw()
 	}
 
 	// Render claws
-	if (CUIAnimationBase::easPlayed == m_ClawsAnimation.GetState() && m_ClawsTexture.GetShader())
-	{
-		m_ClawsTexture.SetPos(0, 0);
-		m_ClawsTexture.Render(0, 0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
-		Msg("%i", color_get_A(m_ClawsTexture.GetColor()));
-	}
+//	if (CUIAnimationBase::easPlayed == m_ClawsAnimation.GetState() && m_ClawsTexture.GetShader())
+//	{
+//		m_ClawsTexture.SetPos(0, 0);
+//		m_ClawsTexture.Render(0, 0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
+//		Msg("%i", color_get_A(m_ClawsTexture.GetColor()));
+//	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -558,8 +559,8 @@ void CUIMainIngameWnd::Update()
 	//CheckForNewNews();
 
 	UpdateFlashingIcons();
-	UpdateContactsAnimation();
-	UpdateClawsAnimation();
+	UIContactsAnimation.Update();
+	m_ClawsAnimation.Update();
 
 	CUIWindow::Update();
 }
@@ -1227,7 +1228,6 @@ void CUIMainIngameWnd::SetFlashIconState(EFlashingIcons type, bool enable)
 	FlashingIcons_it icon = m_FlashingIcons.find(type);
 	R_ASSERT2(icon != m_FlashingIcons.end(), "Flashing icon with this type not existed");
 
-	enable ? icon->second.second.Play() : icon->second.second.Stop();
 	if(!enable)
 	{
 		icon->second.first->TextureOff();
@@ -1268,7 +1268,9 @@ void CUIMainIngameWnd::InitFlashingIcons(CUIXml &node)
 		IconInfo &val	= m_FlashingIcons[type];
 		val.first		= pIcon;
 
-		val.second.SetAnimationPeriod(node.ReadAttribInt(flashingIconNodeName, i, "period", 1000));
+		const ref_str colorAnimationName	= "ui_new_jobs";
+		val.second.SetColorAnimation(colorAnimationName);
+		val.second.SetColorToModify(&pIcon->GetColorRef());
 		AttachChild(pIcon);
 		pIcon->Show(false);
 
@@ -1303,11 +1305,7 @@ void CUIMainIngameWnd::UpdateFlashingIcons()
 {
 	for (FlashingIcons_it it = m_FlashingIcons.begin(); it != m_FlashingIcons.end(); ++it)
 	{
-		CUIAnimationFade &f = it->second.second;
-		f.Update();
-		//		if (1 == f.GetCurrentPhase()) it->second.first->Show(true);
-		//		else it->second.first->Show(false);
-		it->second.first->SetColor(subst_alpha(it->second.first->GetColor(), f.GetCurrentPhase()));
+		it->second.second.Update();
 	}
 }
 
@@ -1315,32 +1313,20 @@ void CUIMainIngameWnd::UpdateFlashingIcons()
 
 void CUIMainIngameWnd::AnimateContacts()
 {
-	UIContactsFlicker.Play();
+	UIContactsAnimation.Reset();
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIMainIngameWnd::UpdateContactsAnimation()
-{
-	UIContactsFlicker.Update();
-	if (UIContactsFlicker.GetState() == CUIAnimationBase::easPlayed)
-	{
-		UIPdaOnline.Show(!!UIContactsFlicker.GetCurrentPhase());
-	}
-	else
-		UIPdaOnline.Show(true);
-}
-
-//////////////////////////////////////////////////////////////////////////
-
-void CUIMainIngameWnd::UpdateClawsAnimation()
-{
-	m_ClawsAnimation.Update();
-	if (m_ClawsAnimation.GetState() == CUIAnimationBase::easPlayed)
-	{
-		m_ClawsTexture.SetColor(subst_alpha(m_ClawsTexture.GetColor(), m_ClawsAnimation.GetCurrentPhase()));
-	}
-}
+//void CUIMainIngameWnd::UpdateContactsAnimation()
+//{
+//	if (UIContactsFlicker.GetState() == CUIAnimationBase::easPlayed)
+//	{
+//		UIPdaOnline.Show(!!UIContactsFlicker.GetCurrentPhase());
+//	}
+//	else
+//		UIPdaOnline.Show(true);
+//}
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -1367,8 +1353,8 @@ void CUIMainIngameWnd::PlayClawsAnimation(const ref_str &monsterName)
 	R_ASSERT2(it != m_ClawsTextures.end(), "Monster claws texture for this monster doesn't exist");
 	m_ClawsTexture.SetShader(*it->second);
 	m_ClawsAnimation.Reset();
-	m_ClawsAnimation.SetAnimationDirection(CUIAnimationFade::efdFadeOut);
-	m_ClawsAnimation.Play();
+//	m_ClawsAnimation.SetAnimationDirection(CUIAnimationFade::efdFadeOut);
+//	m_ClawsAnimation.Play();
 }
 
 //////////////////////////////////////////////////////////////////////////

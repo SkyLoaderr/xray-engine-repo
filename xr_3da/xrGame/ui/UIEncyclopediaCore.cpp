@@ -12,6 +12,8 @@
 #include "../UI.h"
 #include "../encyclopedia_article.h"
 #include "../string_table.h"
+#include "../level.h"
+#include "../HUDManager.h"
 //#include "UIXmlInit.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -42,6 +44,7 @@ void CUIEncyclopediaCore::Init(CUIListWnd *infoList, CUIListWnd *idxList)
 
 	pIdxList	= idxList;
 	pInfoList	= infoList;
+	pInfoList->SetRightIndention(static_cast<int>(10 * HUD().GetScale()));
 
 	CUIXml		uiXml;
 	bool xml_result = uiXml.Init("$game_data$", ENCYCLOPEDIA_CORE_XML);
@@ -89,9 +92,9 @@ ref_str CUIEncyclopediaCore::SetCurrentArtice(CUITreeViewItem *pTVItem)
 		// Добавляем текст
 		CUIString str;
 		str.SetText(*CStringTable()(*m_ArticlesDB[pTVItem->GetValue()]->data()->text));
-		CUIStatic::PreprocessText(str.m_str, pInfoList->GetItemWidth() - 5, pInfoList->GetFont());
+//		CUIStatic::PreprocessText(str.m_str, pInfoList->GetItemWidth() - 5, pInfoList->GetFont());
 		pInfoList->AddParsedItem<CUIListItem>(str, 0, 0xffffffff);
-		
+
 //		m_ArticlesDB[pTVItem->GetValue()]->data()->image.SetMask(&UIImgMask);
 //
 //		if(!m_ArticlesDB[pTVItem->GetValue()]->data()->image.GetStaticItem()->GetShader())
@@ -181,12 +184,16 @@ void CUIEncyclopediaCore::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 
 void CUIEncyclopediaCore::Show(bool status)
 {
-	if (!status && m_pCurrArticle)
+	if (!status)
 	{
-		pInfoList->DetachChild(&m_pCurrArticle->data()->image);
-		m_pCurrArticle->data()->image.MoveWindow(0, 0);
+		if (m_pCurrArticle)
+		{
+			pInfoList->DetachChild(&m_pCurrArticle->data()->image);
+			m_pCurrArticle->data()->image.MoveWindow(0, 0);
 
-		m_pCurrArticle = NULL;
+			m_pCurrArticle = NULL;
+		}
+		pInfoList->RemoveAll();
 	}
 
 	m_iCurrentInfoListPos = 0;

@@ -5,7 +5,8 @@
 #include "stdafx.h"
 #include "uiiteminfo.h"
 #include "../string_table.h"
-
+#include "../level.h"
+#include "../HUDManager.h"
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
 
@@ -56,6 +57,7 @@ void CUIItemInfo::Init(int x, int y, int width, int height, const char* xml_name
 	xml_init.InitListWnd(uiXml, "descr_list", 0, &UIDesc);
 	UIDesc.EnableScrollBar(true);
 	UIDesc.ActivateList(false);
+	UIDesc.SetRightIndention(static_cast<int>(5 * HUD().GetScale()));
 
 	if (uiXml.NavigateToNode("image_static", 0))
 	{
@@ -92,7 +94,7 @@ void CUIItemInfo::InitItem(CInventoryItem* pInvItem)
 		// Добавляем текст
 		CUIString str2;
 		str2.SetText(*pInvItem->ItemDescription());
-		CUIStatic::PreprocessText(str2.m_str, UIDesc.GetItemWidth() - 5, UIDesc.GetFont());
+//		CUIStatic::PreprocessText(str2.m_str, UIDesc.GetItemWidth() - 5, UIDesc.GetFont());
 		UIDesc.AddParsedItem<CUIListItem>(str2, 0, UIDesc.GetTextColor());
 
 		// Загружаем картинку

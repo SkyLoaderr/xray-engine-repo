@@ -38,8 +38,8 @@ public:
 
 //	virtual void Draw();
 	virtual void Update();
-		
 	virtual void Show();
+	virtual void Hide();
 	
 	// Специфичные для родительского окна PDA сообщения:
 	// Смена точки центрирования карты

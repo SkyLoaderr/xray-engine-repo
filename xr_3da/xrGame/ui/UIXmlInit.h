@@ -9,20 +9,24 @@
 
 #include "xrXMLParser.h"
 
-
 #define RGB_ALPHA(a, r, g ,b)  ((u32) (((u8) (b) | ((u16) (g) << 8)) | (((u32) (u8) (r)) << 16)) | (((u32) (u8) (a)) << 24)) 
 
-#include "UIFrameWindow.h"
-#include "UIStatic.h"
-#include "UIButton.h"
-#include "UIDragDropList.h"
-#include "UIProgressBar.h"
-#include "UIListWnd.h"
-#include "UITabControl.h"
-#include "UIFrameLineWnd.h"
-#include "UITextBanner.h"
-#include "UIMultiTextStatic.h"
-#include "UIAnimatedStatic.h"
+//////////////////////////////////////////////////////////////////////////
+
+class CUIWindow;
+class CUIFrameWindow;
+class CUIStatic;
+class CUIButton;
+class CUIDragDropList;
+class CUIProgressBar;
+class CUIListWnd;
+class CUITabControl;
+class CUIFrameLineWnd;
+class CUITextBanner;
+class CUIMultiTextStatic;
+class CUIAnimatedStatic;
+
+//////////////////////////////////////////////////////////////////////////
 
 class CUIXmlInit
 {

@@ -10,6 +10,7 @@
 #include "uiwindow.h"
 #include "uilistitem.h"
 #include "uiscrollbar.h"
+#include "UIXmlInit.h"
 
 #include "../script_export_space.h"
 
@@ -24,8 +25,8 @@ class CUIListWnd :public CUIWindow
 private:
 	typedef CUIWindow inherited;
 public:
-	CUIListWnd(void);
-	virtual ~CUIListWnd(void);
+	CUIListWnd();
+	virtual ~CUIListWnd();
 
 	virtual void Init(int x, int y, int width, int height);
 	virtual void Init(int x, int y, int width, int height, int item_height);
@@ -38,80 +39,18 @@ public:
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void* pData);
 	virtual void Draw();
 	virtual void Update();
-	
-	//////////////////////////////////////////////////////////////////////////
-	
-	
+
+	// ƒобавление элементов в листбокс
 	template <class Element>
-	bool AddItem(const char*  str, const int shift = 0, void* pData = NULL,
+	bool AddItem			(const char*  str, const int shift = 0, void* pData = NULL,
+							 int value = 0, int insertBeforeIdx = -1);
 
-				 int value = 0, int insertBeforeIdx = -1)
-	{
-		//создать новый элемент и добавить его в список
-		Element* pItem = NULL;
-		pItem = xr_new<Element>();
+	bool AddText_script		(LPCSTR str, int shift, u32 color, CGameFont* pFont, bool doPreProcess);
 
-		if(!pItem) return false;
-
-
-		pItem->Init(str, shift, m_bVertFlip?GetHeight()-GetSize()* m_iItemHeight-m_iItemHeight:GetSize()* m_iItemHeight, 
-			m_iItemWidth, m_iItemHeight);
-
-		pItem->SetData(pData);
-		pItem->SetValue(value);
-		pItem->SetTextColor(m_dwFontColor);
-
-		return AddItem<Element>(pItem, insertBeforeIdx);
-	}
-
-	//////////////////////////////////////////////////////////////////////////
-	bool AddText_script(LPCSTR str, int shift, u32 color, CGameFont* pFont,bool doPreProcess);
 	template <class Element>
-	bool AddParsedItem(const CUIString &str, const int shift,
-					   const u32 &MsgColor, CGameFont* pFont = NULL,
-					   void* pData = NULL, int value = 0, int insertBeforeIdx = -1)
-	{
-		bool ReturnStatus = true;
-		const STRING& text = str.m_str;
-		STRING buf;
-
-		u32 last_pos = 0;
-
-		int GroupID = GetSize();
-
-		for(int i = 0; i < static_cast<int>(text.size()) - 2; ++i)
-		{
-			// '\n' - переход на новую строку
-			if((text[i] == '\\' && text[i+1]== 'n') || (10 == text[i] && 13 == text[i + 1]))
-			{	
-				buf.clear();
-				buf.insert(buf.begin(), text.begin()+last_pos, text.begin()+i);
-				buf.push_back(0);
-				ReturnStatus &= AddItem<Element>(&buf.front(), shift, pData, value, insertBeforeIdx);
-				Element *pLocalItem = smart_cast<Element*>(GetItem(GetSize() - 1));
-				pLocalItem->SetGroupID(GroupID);
-				pLocalItem->SetTextColor(MsgColor);
-				pLocalItem->SetFont(pFont);
-				++i;
-				last_pos = i+1;
-			}	
-		}
-
-		if(last_pos<text.size())
-		{
-			buf.clear();
-			buf.insert(buf.begin(), text.begin()+last_pos, text.end());
-			buf.push_back(0);
-			AddItem<Element>(&buf.front(), shift, pData, value, insertBeforeIdx);
-			GetItem(GetSize() - 1)->SetGroupID(GroupID);
-			Element *pLocalItem = smart_cast<Element*>(GetItem(GetSize() - 1));
-			pLocalItem->SetGroupID(GroupID);
-			pLocalItem->SetTextColor(MsgColor);
-			pLocalItem->SetFont(pFont);
-		}
-
-		return ReturnStatus;
-	}
+	bool AddParsedItem		(const CUIString &str, const int shift,
+							 const u32 &MsgColor, CGameFont* pFont = NULL,
+							 void* pData = NULL, int value = 0, int insertBeforeIdx = -1);
 
 	//////////////////////////////////////////////////////////////////////////
 	// ƒобавить элемент в лист
@@ -122,49 +61,7 @@ public:
 	//////////////////////////////////////////////////////////////////////////
 	
 	template <class Element>
-	bool AddItem(Element* pItem, int insertBeforeIdx = -1)
-	{	
-		AttachChild(pItem);
-
-		pItem->Init(pItem->GetWndRect().left, m_bVertFlip?GetHeight()-GetSize()* m_iItemHeight-m_iItemHeight:GetSize()* m_iItemHeight, 
-			m_iItemWidth, m_iItemHeight);
-
-		pItem->SetNewRenderMethod(m_bNewRenderMethod);
-
-		//добавление в конец или начало списка
-		if(-1 == insertBeforeIdx)
-		{
-			m_ItemList.push_back(pItem);
-			pItem->SetIndex(m_ItemList.size()-1);
-		}
-		else
-		{
-			//изменить значени€ индексов уже добавленых элементов
-			if (!m_ItemList.empty())
-				R_ASSERT(static_cast<u32>(insertBeforeIdx) <= m_ItemList.size());
-
-			LIST_ITEM_LIST_it it2 = m_ItemList.begin();
-			std::advance(it2, insertBeforeIdx);
-			for(LIST_ITEM_LIST_it it = it2; m_ItemList.end() != it; ++it)
-			{
-				(*it)->SetIndex((*it)->GetIndex()+1);
-			}
-			m_ItemList.insert(it2, pItem);
-			pItem->SetIndex(insertBeforeIdx);
-		}
-
-		UpdateList();
-
-		//обновить полосу прокрутки
-		m_ScrollBar.SetRange(0,s16(m_ItemList.size()-1));
-		m_ScrollBar.SetPageSize(s16(
-			(u32)m_iRowNum<m_ItemList.size()?m_iRowNum:m_ItemList.size()));
-		m_ScrollBar.SetScrollPos(s16(m_iFirstShownIndex));
-
-		UpdateScrollBar();
-
-		return true;
-	}
+	bool AddItem			(Element* pItem, int insertBeforeIdx = -1);
 	
 	void RemoveItem(int index);
 	void RemoveAll();
@@ -230,58 +127,73 @@ public:
 	xr_vector<int> AddInteractiveItem(const char *str2, const int shift = 0,
 		const u32 &MsgColor = 0xffffffff, CGameFont* pFont = 0, int pushAfter = -1);
 
-	void	SetNewRenderMethod(bool value) { m_bNewRenderMethod = value; }
-	int		GetListPosition() const { return m_iFirstShownIndex; }
+	void	SetNewRenderMethod	(bool value)	{ m_bNewRenderMethod = value; }
+	int		GetListPosition		() const		{ return m_iFirstShownIndex; }
+
+	// ќтступ справа от кра€ листа до текста
+	void	SetRightIndention	(int value)		{ m_iRightIndention = value; }
+	int		GetRightIndention	() const		{ return m_iRightIndention; }
 
 protected:
 
 	//полоса прокрутки
-	CUIScrollBar m_ScrollBar;
-	bool m_bScrollBarEnabled;
+	CUIScrollBar	m_ScrollBar;
+	bool	m_bScrollBarEnabled;
 
 	//обновлени€ елементов списка, вызваетс€
 	//если произошли изменени€
-	void UpdateList();
+	void	UpdateList();
 
 	//список элементов листа
-	LIST_ITEM_LIST m_ItemList; 
+	LIST_ITEM_LIST	m_ItemList; 
 
 	//размеры элемента списка
-	int m_iItemHeight;
-	int m_iItemWidth;
+	int		m_iItemHeight;
+	int		m_iItemWidth;
 
 	//количество р€дов дл€ элементов
-	int m_iRowNum;
+	int		m_iRowNum;
 	
 	//индекс первого показанного элемента
-	int m_iFirstShownIndex;
+	int		m_iFirstShownIndex;
 
 	//элемент над которым курсор в данный момент или -1, если такого нет
-	int m_iFocusedItem;
-	int m_iFocusedItemGroupID;
+	int		m_iFocusedItem;
+	int		m_iFocusedItemGroupID;
 	// ≈сли хотим принудительно выставл€ть фокус, то подн€ть этот флаг
-	bool m_bForceFocusedItem;
+	bool	m_bForceFocusedItem;
 
 	//подсветка активного элемента
-	CUIStaticItem m_StaticActiveBackground;
-	bool m_bActiveBackgroundEnable;
+	CUIStaticItem	m_StaticActiveBackground;
+	bool	m_bActiveBackgroundEnable;
 
 	//текущий цвет текста
-	u32 m_dwFontColor;
-
-	bool m_bListActivity;
+	u32		m_dwFontColor;
+	bool	m_bListActivity;
 
 	//переворот списка по вертикали
-	bool m_bVertFlip;
+	bool	m_bVertFlip;
 	
 	// ѕризнак того, что мышь подвинули
-	bool m_bUpdateMouseMove;
+	bool	m_bUpdateMouseMove;
 
 	// “екущий уникальный идентификатор
-	int m_iLastUniqueID;
-	bool m_bNewRenderMethod;
+	int		m_iLastUniqueID;
+	bool	m_bNewRenderMethod;
+
+	// ќтступ справа от кра€ листа до текста
+	int		m_iRightIndention;
+
 	DECLARE_SCRIPT_REGISTER_FUNCTION
+
+	// ¬спомогательна€ функци нахождени€ начала следующего слова начина€ с текущей позиции
+	LPCSTR	FindNextWord(LPCSTR currPos) const;
+	// ¬спомогательна€ функци определени€ длинны строки до конца слова начина€ с текущей позиции
+	int		WordTailSize(LPCSTR currPos, CGameFont *font, int &charsCount) const;
+	bool	IsEmptyDelimiter(const char c) const;
 };
+
+#include "UIListWnd_inline.h"
 
 add_to_type_list(CUIListWnd)
 #undef script_type_list

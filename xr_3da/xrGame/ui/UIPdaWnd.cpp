@@ -163,6 +163,14 @@ void CUIPdaWnd::Show()
 
 //////////////////////////////////////////////////////////////////////////
 
+void CUIPdaWnd::Hide()
+{
+	inherited::Hide();
+	m_pActiveDialog->Show(false);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
 void CUIPdaWnd::FocusOnMap(const int x, const int y, const int z)
 {
 	Fvector a;

@@ -174,6 +174,7 @@ void CUIEncyclopediaWnd::Show(bool status)
 		}
 	}
 
+	UIInfo.Show(status);
 	inherited::Show(status);
 }
 

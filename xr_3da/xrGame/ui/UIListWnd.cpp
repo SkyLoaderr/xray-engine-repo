@@ -2,45 +2,39 @@
 // UIListWnd.cpp: окно со списком
 //////////////////////////////////////////////////////////////////////
 
-
 #include"stdafx.h"
-
 #include ".\uilistwnd.h"
 #include "UIInteractiveListItem.h"
 
-#define ACTIVE_BACKGROUND "ui\\ui_pop_up_active_back"
-#define ACTIVE_BACKGROUND_WIDTH 16
-#define ACTIVE_BACKGROUND_HEIGHT 16
+//////////////////////////////////////////////////////////////////////////
+
+#define				ACTIVE_BACKGROUND			"ui\\ui_pop_up_active_back"
+#define				ACTIVE_BACKGROUND_WIDTH		16
+#define				ACTIVE_BACKGROUND_HEIGHT	16
 
 // разделитель для интерактивных строк в листе
-static const char cSeparatorChar = '%';
+static const char	cSeparatorChar				= '%';
 
+//////////////////////////////////////////////////////////////////////////
 
-CUIListWnd::CUIListWnd(void)
+CUIListWnd::CUIListWnd()
 {
-	m_bScrollBarEnabled = false;
-	m_bActiveBackgroundEnable = false;
-	m_bListActivity = true;
-
-	m_iFocusedItem = -1;
-	m_iFocusedItemGroupID = -1;
-
-	m_dwFontColor = 0xFFFFFFFF;
-
-	SetItemHeight(DEFAULT_ITEM_HEIGHT);
-
-	m_bVertFlip = false;
-
-	m_bUpdateMouseMove = false;
-
-	m_bForceFocusedItem = false;
-
-	m_iLastUniqueID = 0;
-
-	m_bNewRenderMethod = false;
+	m_bScrollBarEnabled			= false;
+	m_bActiveBackgroundEnable	= false;
+	m_bListActivity				= true;
+	m_iFocusedItem				= -1;
+	m_iFocusedItemGroupID		= -1;
+	m_dwFontColor				= 0xFFFFFFFF;
+	SetItemHeight				(DEFAULT_ITEM_HEIGHT);
+	m_bVertFlip					= false;
+	m_bUpdateMouseMove			= false;
+	m_bForceFocusedItem			= false;
+	m_iLastUniqueID				= 0;
+	m_bNewRenderMethod			= false;
+	m_iRightIndention			= 0;
 }
 
-CUIListWnd::~CUIListWnd(void)
+CUIListWnd::~CUIListWnd()
 {
 	//очистить список и удалить все элементы
 	for(LIST_ITEM_LIST_it it=m_ItemList.begin(); m_ItemList.end() != it; ++it)
@@ -553,4 +547,48 @@ int CUIListWnd::GetItemPos(CUIListItem *pItem)
 	}
 
 	return -1;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+LPCSTR CUIListWnd::FindNextWord(LPCSTR currPos) const
+{
+	VERIFY(currPos);
+	bool delimPass	= false;
+	while (0 != *currPos && (!delimPass || IsEmptyDelimiter(*currPos)))
+	{
+		if (IsEmptyDelimiter(*currPos))
+		{
+			delimPass = true;
+		}
+		currPos++;
+	}
+
+	return 0 == *currPos ? NULL : currPos;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+int CUIListWnd::WordTailSize(LPCSTR currPos, CGameFont *font, int &charsCount) const
+{
+	VERIFY(font);
+	static string256 str;
+	ZeroMemory(str, 256);
+	charsCount = 0;
+	LPCSTR memorizedPos = currPos;
+	while (currPos && 0 != *currPos && 0 == IsEmptyDelimiter(*currPos))
+	{
+		charsCount++;
+		currPos++;
+	}
+	clamp(charsCount, 0, 256);
+	strncpy(str, memorizedPos, charsCount);
+	return static_cast<int>(font->SizeOf(str));
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+bool CUIListWnd::IsEmptyDelimiter(const char c) const
+{
+	return ' ' == c;
 }

@@ -38,18 +38,18 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 		return true;
 		break;
 	case kACTIVE_JOBS:
-		m_game->StartStopMenu(&PdaMenu,true);
 		PdaMenu.SetActiveSubdialog(epsActiveJobs);
+		m_game->StartStopMenu(&PdaMenu,true);
 		return true;
 		break;
 	case kMAP:
-		m_game->StartStopMenu(&PdaMenu,true);
 		PdaMenu.SetActiveSubdialog(epsMap);
+		m_game->StartStopMenu(&PdaMenu,true);
 		return true;
 		break;
 	case kCONTACTS:
-		m_game->StartStopMenu(&PdaMenu,true);
 		PdaMenu.SetActiveSubdialog(epsContacts);
+		m_game->StartStopMenu(&PdaMenu,true);
 		return true;
 		break;
 /*

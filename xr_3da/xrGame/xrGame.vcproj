@@ -8658,22 +8658,10 @@
 					Name="Animations"
 					Filter="">
 					<File
-						RelativePath=".\ui\UIAnimationBase.cpp">
+						RelativePath=".\ui\UIColorAnimatorWrapper.cpp">
 					</File>
 					<File
-						RelativePath=".\ui\UIAnimationBase.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIAnimationFade.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIAnimationFade.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIAnimationFlicker.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIAnimationFlicker.h">
+						RelativePath=".\ui\UIColorAnimatorWrapper.h">
 					</File>
 				</Filter>
 			</Filter>
@@ -8750,6 +8738,9 @@
 						RelativePath=".\ui\UIListWnd.h">
 					</File>
 					<File
+						RelativePath=".\ui\UIListWnd_inline.h">
+					</File>
+					<File
 						RelativePath=".\ui\UIListWnd_script.cpp">
 					</File>
 				</Filter>
@@ -8783,37 +8774,6 @@
 					</File>
 					<File
 						RelativePath=".\ui\UIDragDropList.h">
-					</File>
-				</Filter>
-				<Filter
-					Name="Buttons"
-					Filter="">
-					<File
-						RelativePath=".\ui\UIButton.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIButton.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIButton_script.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UICheckButton.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UICheckButton.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIRadioButton.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIRadioButton.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIRadioGroup.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIRadioGroup.h">
 					</File>
 				</Filter>
 				<Filter
@@ -8852,6 +8812,37 @@
 					<File
 						RelativePath=".\ui\UITextBanner.h">
 					</File>
+					<Filter
+						Name="Buttons"
+						Filter="">
+						<File
+							RelativePath=".\ui\UIButton.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIButton.h">
+						</File>
+						<File
+							RelativePath=".\ui\UIButton_script.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UICheckButton.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UICheckButton.h">
+						</File>
+						<File
+							RelativePath=".\ui\UIRadioButton.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIRadioButton.h">
+						</File>
+						<File
+							RelativePath=".\ui\UIRadioGroup.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIRadioGroup.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="EditBox"

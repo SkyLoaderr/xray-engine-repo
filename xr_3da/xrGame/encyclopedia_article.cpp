@@ -7,6 +7,9 @@
 #include "encyclopedia_article.h"
 #include "ui/xrXMLParser.h"
 #include "ui/UIXmlInit.h"
+#include "ui/UIInventoryUtilities.h"
+
+using namespace InventoryUtilities;
 
 CEncyclopediaArticle::CEncyclopediaArticle()
 {
