@@ -108,8 +108,8 @@ void	CBlender_Screen_SET::Compile	(CBlender_Recorder& RS, sh_list& L_textures, s
 			RS.PassSET_Blend	(TRUE,	D3DBLEND_DESTCOLOR,D3DBLEND_SRCCOLOR,	TRUE,oAREF.value);
 			break;
 		}
-		RS.R().SetRS		(D3DRS_LIGHTING,					BC(oLighting.value));
-		RS.R().SetRS		(D3DRS_FOGENABLE,					BC(oFog.value));
+		RS.PassSET_LightFog	(oLighting.value,oFog.value);
+
 		if (oBlend.IDselected==6)	
 		{
 			// Usually for wallmarks

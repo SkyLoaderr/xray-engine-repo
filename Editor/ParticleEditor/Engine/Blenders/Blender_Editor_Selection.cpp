@@ -37,8 +37,7 @@ void	CBlender_Editor_Selection::Compile	(CBlender_Recorder& RS, sh_list& L_textu
 	{
 		RS.PassSET_ZB		(TRUE,FALSE);
 		RS.PassSET_Blend	(TRUE,D3DBLEND_SRCALPHA,D3DBLEND_INVSRCALPHA,	FALSE,0);
-		RS.R().SetRS		(D3DRS_LIGHTING,					BC(FALSE));
-		RS.R().SetRS		(D3DRS_FOGENABLE,					BC(FALSE));
+		RS.PassSET_LightFog	(FALSE,FALSE);
 		
 		// Stage0 - Base texture
 		RS.StageBegin		();

@@ -37,8 +37,7 @@ void	CBlender_Screen_GRAY::Compile	(CBlender_Recorder& RS, sh_list& L_textures, 
 	{
 		RS.PassSET_ZB		(FALSE,FALSE);
 		RS.PassSET_Blend	(FALSE,D3DBLEND_ONE,D3DBLEND_ZERO,	FALSE,0);
-		RS.R().SetRS		(D3DRS_LIGHTING,					BC(FALSE));
-		RS.R().SetRS		(D3DRS_FOGENABLE,					BC(FALSE));
+		RS.PassSET_LightFog	(FALSE,FALSE);
 		
 		if (HW.Caps.pixel.op_DP3)	{
 			RS.R().SetRS		(D3DRS_TEXTUREFACTOR,D3DCOLOR_RGBA(76+105,150+105,29+105,0));

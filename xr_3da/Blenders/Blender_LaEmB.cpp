@@ -54,8 +54,7 @@ void	CBlender_LaEmB::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_list
 			{
 				RS.PassSET_ZB		(TRUE,TRUE);
 				RS.PassSET_Blend_SET();
-				RS.R().SetRS		(D3DRS_LIGHTING,					BC(TRUE));
-				RS.R().SetRS		(D3DRS_FOGENABLE,					BC(TRUE));
+				RS.PassSET_LightFog	(TRUE,TRUE);
 				
 				// Stage1 - Env texture
 				RS.StageBegin		();
@@ -90,8 +89,7 @@ void	CBlender_LaEmB::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_list
 			{
 				RS.PassSET_ZB		(TRUE,TRUE);
 				RS.PassSET_Blend_SET();
-				RS.R().SetRS		(D3DRS_LIGHTING,					BC(TRUE));
-				RS.R().SetRS		(D3DRS_FOGENABLE,					BC(TRUE));
+				RS.PassSET_LightFog	(TRUE,TRUE);
 				
 				// Stage1 - Env texture * constant
 				RS.StageBegin		();
@@ -124,8 +122,7 @@ void	CBlender_LaEmB::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_list
 			{
 				RS.PassSET_ZB		(TRUE,FALSE);
 				RS.PassSET_Blend_MUL();
-				RS.R().SetRS		(D3DRS_LIGHTING,					BC(FALSE));
-				RS.R().SetRS		(D3DRS_FOGENABLE,					BC(TRUE));
+				RS.PassSET_LightFog	(FALSE,TRUE);
 				
 				// Stage2 - Diffuse color
 				RS.StageBegin		();
@@ -164,8 +161,7 @@ void CBlender_LaEmB::compile_2	(CBlender_Recorder& RS, sh_list& L_textures, sh_l
 	{
 		RS.PassSET_ZB		(TRUE,TRUE);
 		RS.PassSET_Blend_SET();
-		RS.R().SetRS		(D3DRS_LIGHTING,					BC(FALSE));
-		RS.R().SetRS		(D3DRS_FOGENABLE,					BC(TRUE));
+		RS.PassSET_LightFog	(FALSE,TRUE);
 		
 		// Stage0 - Lightmap
 		RS.StageBegin		();
@@ -198,8 +194,7 @@ void CBlender_LaEmB::compile_2	(CBlender_Recorder& RS, sh_list& L_textures, sh_l
 	{
 		RS.PassSET_ZB		(TRUE,FALSE);
 		RS.PassSET_Blend_MUL();
-		RS.R().SetRS		(D3DRS_LIGHTING,					BC(FALSE));
-		RS.R().SetRS		(D3DRS_FOGENABLE,					BC(TRUE));
+		RS.PassSET_LightFog	(FALSE,TRUE);
 		
 		// Stage0 - Detail
 		RS.StageBegin		();
@@ -222,8 +217,7 @@ void CBlender_LaEmB::compile_2c	(CBlender_Recorder& RS, sh_list& L_textures, sh_
 	{
 		RS.PassSET_ZB		(TRUE,TRUE);
 		RS.PassSET_Blend_SET();
-		RS.R().SetRS		(D3DRS_LIGHTING,					BC(FALSE));
-		RS.R().SetRS		(D3DRS_FOGENABLE,					BC(TRUE));
+		RS.PassSET_LightFog	(FALSE,TRUE);
 		
 		// Stage0 - Environment map [*] const
 		RS.StageBegin		();
@@ -256,8 +250,7 @@ void CBlender_LaEmB::compile_2c	(CBlender_Recorder& RS, sh_list& L_textures, sh_
 	{
 		RS.PassSET_ZB		(TRUE,FALSE);
 		RS.PassSET_Blend_MUL();
-		RS.R().SetRS		(D3DRS_LIGHTING,					BC(FALSE)	);
-		RS.R().SetRS		(D3DRS_FOGENABLE,					BC(TRUE)	);
+		RS.PassSET_LightFog	(FALSE,TRUE);
 		
 		// Stage0 - Detail
 		RS.StageBegin		();
@@ -280,8 +273,7 @@ void CBlender_LaEmB::compile_3	(CBlender_Recorder& RS, sh_list& L_textures, sh_l
 	{
 		RS.PassSET_ZB		(TRUE,TRUE);
 		RS.PassSET_Blend_SET();
-		RS.R().SetRS		(D3DRS_LIGHTING,					BC(FALSE));
-		RS.R().SetRS		(D3DRS_FOGENABLE,					BC(TRUE));
+		RS.PassSET_LightFog	(FALSE,TRUE);
 		
 		// Stage0 - [=] Lightmap
 		RS.StageBegin		();
@@ -328,8 +320,7 @@ void CBlender_LaEmB::compile_3c	(CBlender_Recorder& RS, sh_list& L_textures, sh_
 	{
 		RS.PassSET_ZB		(TRUE,TRUE);
 		RS.PassSET_Blend_SET();
-		RS.R().SetRS		(D3DRS_LIGHTING,					BC(FALSE));
-		RS.R().SetRS		(D3DRS_FOGENABLE,					BC(TRUE));
+		RS.PassSET_LightFog	(FALSE,TRUE);
 		
 		// Stage1 - [=] Env-map [*] const
 		RS.StageBegin		();

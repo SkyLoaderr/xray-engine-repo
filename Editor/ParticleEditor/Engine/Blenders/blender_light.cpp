@@ -38,9 +38,8 @@ void CBlender_LIGHT::Compile	(CBlender_Recorder& RS, sh_list& L_textures, sh_lis
 	{
 		RS.PassSET_ZB		(TRUE,TRUE);
 		RS.PassSET_Blend	(TRUE,D3DBLEND_ONE,D3DBLEND_ONE,	TRUE,0);
-		RS.R().SetRS		(D3DRS_LIGHTING,					BC(FALSE));
-		RS.R().SetRS		(D3DRS_FOGENABLE,					BC(TRUE));
-
+		RS.PassSET_LightFog	(FALSE,TRUE);
+		
 		// Stage0 - 2D map
 		RS.StageBegin		();
 		{

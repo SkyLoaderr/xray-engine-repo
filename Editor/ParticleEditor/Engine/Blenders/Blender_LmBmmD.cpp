@@ -46,8 +46,7 @@ void	CBlender_LmBmmD::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_lis
 		{
 			RS.PassSET_ZB		(TRUE,TRUE);
 			RS.PassSET_Blend	(FALSE,D3DBLEND_ONE,D3DBLEND_ZERO,	FALSE,0);
-			RS.R().SetRS		(D3DRS_LIGHTING,					BC(TRUE));
-			RS.R().SetRS		(D3DRS_FOGENABLE,					BC(TRUE));
+			RS.PassSET_LightFog	(TRUE,TRUE);
 			
 			// Stage1 - Base texture
 			RS.StageBegin		();
@@ -82,8 +81,7 @@ void	CBlender_LmBmmD::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_lis
 			{
 				RS.PassSET_ZB		(TRUE,TRUE);
 				RS.PassSET_Blend	(FALSE,D3DBLEND_ONE,D3DBLEND_ZERO,	FALSE,0);
-				RS.R().SetRS		(D3DRS_LIGHTING,					BC(FALSE));
-				RS.R().SetRS		(D3DRS_FOGENABLE,					BC(TRUE));
+				RS.PassSET_LightFog	(FALSE,TRUE);
 				
 				// Stage0 - Lightmap
 				RS.StageBegin		();
@@ -116,8 +114,7 @@ void	CBlender_LmBmmD::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_lis
 			{
 				RS.PassSET_ZB		(TRUE,FALSE);
 				RS.PassSET_Blend	(TRUE,D3DBLEND_DESTCOLOR,D3DBLEND_SRCCOLOR,	FALSE,0);
-				RS.R().SetRS		(D3DRS_LIGHTING,					BC(FALSE));
-				RS.R().SetRS		(D3DRS_FOGENABLE,					BC(FALSE));
+				RS.PassSET_LightFog	(FALSE,TRUE);
 				
 				// Stage0 - Detail
 				RS.StageBegin		();
@@ -139,8 +136,7 @@ void	CBlender_LmBmmD::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_lis
 			{
 				RS.PassSET_ZB		(TRUE,TRUE);
 				RS.PassSET_Blend	(FALSE,D3DBLEND_ONE,D3DBLEND_ZERO,FALSE,0);
-				RS.R().SetRS		(D3DRS_LIGHTING,					BC(FALSE));
-				RS.R().SetRS		(D3DRS_FOGENABLE,					BC(TRUE));
+				RS.PassSET_LightFog	(FALSE,TRUE);
 				
 				// Stage0 - Lightmap
 				RS.StageBegin		();

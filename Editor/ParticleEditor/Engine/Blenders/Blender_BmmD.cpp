@@ -47,8 +47,7 @@ void	CBlender_BmmD::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_list&
 		{
 			RS.PassSET_ZB		(TRUE,TRUE);
 			RS.PassSET_Blend	(FALSE,D3DBLEND_ONE,D3DBLEND_ZERO,	FALSE,0);
-			RS.R().SetRS		(D3DRS_LIGHTING,					BC(TRUE));
-			RS.R().SetRS		(D3DRS_FOGENABLE,					BC(TRUE));
+			RS.PassSET_LightFog	(TRUE,TRUE);
 			
 			// Stage1 - Base texture
 			RS.StageBegin		();
@@ -80,8 +79,7 @@ void	CBlender_BmmD::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_list&
 		{
 			RS.PassSET_ZB		(TRUE,TRUE);
 			RS.PassSET_Blend	(FALSE,D3DBLEND_ONE,D3DBLEND_ZERO,	FALSE,0);
-			RS.R().SetRS		(D3DRS_LIGHTING,					BC(FALSE));
-			RS.R().SetRS		(D3DRS_FOGENABLE,					BC(TRUE));
+			RS.PassSET_LightFog	(FALSE,TRUE);
 			
 			// Stage1 - Base texture
 			RS.StageBegin		();

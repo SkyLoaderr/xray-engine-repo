@@ -44,8 +44,7 @@ void CBlender_default_aref::Compile(CBlender_Recorder& RS, sh_list& L_textures, 
 		{
 			RS.PassSET_ZB		(TRUE,TRUE);
 			RS.PassSET_Blend	(TRUE, D3DBLEND_SRCALPHA,D3DBLEND_INVSRCALPHA,TRUE,oAREF.value);
-			RS.R().SetRS		(D3DRS_LIGHTING,					BC(TRUE));
-			RS.R().SetRS		(D3DRS_FOGENABLE,					BC(TRUE));
+			RS.PassSET_LightFog	(TRUE,TRUE);
 			
 			// Stage0 - Base texture
 			RS.StageBegin		();
@@ -65,8 +64,7 @@ void CBlender_default_aref::Compile(CBlender_Recorder& RS, sh_list& L_textures, 
 		{
 			RS.PassSET_ZB		(TRUE,TRUE);
 			RS.PassSET_Blend	(TRUE, D3DBLEND_SRCALPHA,D3DBLEND_INVSRCALPHA,TRUE,oAREF.value);
-			RS.R().SetRS		(D3DRS_LIGHTING,					BC(FALSE));
-			RS.R().SetRS		(D3DRS_FOGENABLE,					BC(TRUE));
+			RS.PassSET_LightFog	(FALSE,TRUE);
 			
 			// Stage0 - Lightmap
 			RS.StageBegin		();
