@@ -62,25 +62,25 @@ void CRestrictedObject::remove_restrictions	(ref_str out_restrictions, ref_str i
 
 void CRestrictedObject::add_border			(u32 start_vertex_id, float radius) const
 {
-	if (accessible(Position()))
+	if (accessible(start_vertex_id))
 		Level().space_restriction_manager().add_border(ID(),start_vertex_id,radius);
 }
 
 void CRestrictedObject::add_border			(const Fvector &start_position, const Fvector &dest_position) const
 {
-	if (accessible(Position()))
+	if (accessible(start_position))
 		Level().space_restriction_manager().add_border(ID(),start_position,dest_position);
 }
 
 void CRestrictedObject::add_border			(u32 start_vertex_id, u32 dest_vertex_id) const
 {
-	if (accessible(Position()))
+	if (accessible(start_vertex_id))
 		Level().space_restriction_manager().add_border(ID(),start_vertex_id,dest_vertex_id);
 }
 
 void CRestrictedObject::remove_border		() const
 {
-	if (accessible(Position()))
+	if (applied())
 		Level().space_restriction_manager().remove_border(ID());
 }
 
