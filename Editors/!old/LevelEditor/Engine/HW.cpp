@@ -54,7 +54,8 @@ void CHW::Reset		(HWND hwnd)
 
 void CHW::CreateD3D	()
 {
-	hD3D9            			= LoadLibrary("d3d9.dll");
+	LPCSTR		_name			= strstr(Core.Params,"-dedicated")?"d3d9-null.dll":"d3d9.dll";
+	hD3D9            			= LoadLibrary(_name);
 	R_ASSERT2	           	 	(hD3D9,"Can't find 'd3d9.dll'\nPlease install latest version of DirectX before running this program");
     typedef IDirect3D9 * WINAPI _Direct3DCreate9(UINT SDKVersion);
     _Direct3DCreate9* createD3D	= (_Direct3DCreate9*)GetProcAddress(hD3D9,"Direct3DCreate9");	R_ASSERT(createD3D);

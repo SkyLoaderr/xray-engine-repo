@@ -21,8 +21,6 @@
 
 Fvisual::Fvisual()  : IRender_Visual()
 {
-	pVertices			= 0;
-	pIndices			= 0;
 }
 
 Fvisual::~Fvisual()
@@ -32,8 +30,6 @@ Fvisual::~Fvisual()
 void Fvisual::Release	()
 {
 	IRender_Visual::Release	();
-	_RELEASE			(pVertices);
-	_RELEASE			(pIndices);
 }
 
 void Fvisual::Load		(const char* N, IReader *data, u32 dwFlags)
