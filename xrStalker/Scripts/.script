@@ -1,6 +1,7 @@
 module ("stalker")
 module ("xr_patrol")
 module ("globals")
+module ("monsters")
 
 function printf(fmt,...)
 	log(string.format(fmt,unpack(arg)))
