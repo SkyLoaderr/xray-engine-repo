@@ -519,12 +519,8 @@ function pick_section_from_condlist(actor, npc, condlist)
 	return nil
 end
 
-function npc_in_zone(npc, zone_id)
-	-- FIXME
---    function inside(const vector&, number) const;
---    function inside(const vector&) const;
-
-	return false
+function npc_in_zone(npc, zone)
+	return npc ~= nil and zone ~= nil and zone:inside(npc:position())
 end
 
 -- Выполняет переключение на указанную секцию, если задана.
@@ -593,11 +589,19 @@ function try_switch_to_another_section(npc, st, actor)
 				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
 			end
 		elseif c.name == "on_actor_in_zone" then
-			if npc_in_zone(actor, c.v1) then
+			if npc_in_zone(actor, db.zone_by_name[c.v1]) then
 				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
 			end
 		elseif c.name == "on_actor_not_in_zone" then
-			if not npc_in_zone(actor, c.v1) then
+			if not npc_in_zone(actor, db.zone_by_name[c.v1]) then
+				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
+			end
+		elseif c.name == "on_npc_in_zone" then
+			if npc_in_zone(db.obj_by_id[c.npc_id], db.zone_by_name[c.v2]) then
+				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
+			end
+		elseif c.name == "on_npc_not_in_zone" then
+			if not npc_in_zone(db.obj_by_id[c.npc_id], db.zone_by_name[c.v2]) then
 				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
 			end
 		else
@@ -768,6 +772,27 @@ function cfg_get_string_and_condlist(ini, section, field, npc)
 	return t
 end
 
+function cfg_get_two_strings_and_condlist(ini, section, field, npc)
+	local str = utils.cfg_get_string(ini, section, field, npc, false, "")
+	if not str then
+		return nil
+	end
+
+	local par = utils.parse_params(str)
+	if not par[1] or not par[2] or not par[3] then
+		abort_syntax_error_in_cond(npc, section, field)
+	end
+
+	local t = {}
+
+	t.name = field
+	t.v1 = par[1]
+	t.v2 = par[2]
+	t.condlist = parse_condlist(npc, section, field, par[3])
+
+	return t
+end
+
 function cfg_get_condlist(ini, section, field, npc)
 	local str = utils.cfg_get_string(ini, section, field, npc, false, "")
 	if not str then
@@ -813,6 +838,8 @@ function cfg_get_switch_conditions(ini, section, npc)
 	n = add_condition(l, n, cfg_get_number_and_condlist(ini, section, "on_timer2",              npc))
 	n = add_condition(l, n, cfg_get_string_and_condlist(ini, section, "on_actor_in_zone",       npc))
 	n = add_condition(l, n, cfg_get_string_and_condlist(ini, section, "on_actor_not_in_zone",   npc))
+	n = add_condition(l, n, cfg_get_npc_and_zone       (ini, section, "on_npc_in_zone",         npc))
+	n = add_condition(l, n, cfg_get_npc_and_zone       (ini, section, "on_npc_not_in_zone",     npc))
 
 	return l
 end
@@ -827,6 +854,30 @@ function cfg_get_overrides(ini, section, npc)
 	l.heli_hunter  = utils.cfg_get_bool(ini, section, "heli_hunter", npc, false)
 
 	return l
+end
+
+function cfg_get_npc_and_zone(ini, section, field, npc)
+	local t = cfg_get_two_strings_and_condlist(ini, section, field, npc)
+
+	if t then
+		local sim = alife()
+		if sim then
+			local se_obj = sim:story_object(tonumber(t.v1))
+			if se_obj then
+				t.npc_id = se_obj.id
+			else
+				t.npc_id = -1
+				utils.abort("object '%s': section '%s': field '%s': there is no object with story_id '%s'",
+				            npc:name(), section, field, t.v1)
+			end
+		else
+			t.npc_id = -1
+			printf("WARNING: object '%s': section '%s': field '%s': can't use story_id without simulation!",
+			        npc:name(), section, field)
+		end
+	end
+
+	return t
 end
 
 -- Возвращает ссылку на оверрайды, зарегистрированные в активной на данный момент секции,
