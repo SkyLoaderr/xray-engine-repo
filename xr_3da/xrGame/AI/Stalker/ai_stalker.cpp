@@ -73,6 +73,7 @@ void CAI_Stalker::reinit			()
 	m_ce_best						= xr_new<CCoverEvaluatorBest>(this);
 	m_ce_angle						= xr_new<CCoverEvaluatorAngle>(this);
 	m_ce_safe						= xr_new<CCoverEvaluatorSafe>(this);
+	m_ce_random_game				= xr_new<CCoverEvaluatorRandomGame>(this);
 	m_ce_close->set_inertia			(3000);
 	m_ce_far->set_inertia			(3000);
 	m_ce_best->set_inertia			(1000);
@@ -81,10 +82,10 @@ void CAI_Stalker::reinit			()
 	m_ce_random_game->set_inertia	(3000);
 
 	m_not_enough_food				= false;
-	m_can_buy_food					= false;?
+	m_can_buy_food					= false;
 	m_not_enough_medikits			= false;
 	m_can_buy_medikits				= false;
-	m_no_or_bad_weapon				= false;?
+	m_no_or_bad_weapon				= false;
 	m_can_buy_weapon				= false;
 	m_not_enough_ammo				= false;
 	m_can_buy_ammo					= false;
