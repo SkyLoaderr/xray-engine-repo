@@ -118,5 +118,5 @@ using namespace MemorySpace;
 template <typename T>
 IC	u16 object_id(const T *object)
 {
-	return			(object ? object->ID() : 0xffff);
+	return			(object ? object->ID() : u16(0xffff));
 }

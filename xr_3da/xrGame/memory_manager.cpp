@@ -20,11 +20,6 @@ CMemoryManager::~CMemoryManager		()
 
 void CMemoryManager::Init			()
 {
-	CVisualMemoryManager::Init		();
-	CSoundMemoryManager::Init		();
-	CHitMemoryManager::Init			();
-	CEnemyManager::Init				();
-	CItemManager::Init				();
 }
 
 void CMemoryManager::Load			(LPCSTR section)
