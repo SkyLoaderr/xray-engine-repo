@@ -98,7 +98,7 @@ void CLightmap::Save()
 	// Saving			(16b.dds)
 	{
 		char	FN[_MAX_PATH];
-		sprintf	(lm.name,"L#%d",deflNameID				);
+		sprintf	(lm.name,"L#%d",lmapNameID				);
 		sprintf	(FN,"%s%s.dds",g_params.L_path,lm.name	);
 		BYTE*	raw_data		= LPBYTE(lm.pSurface);
 		DWORD	w				= lm.dwWidth;

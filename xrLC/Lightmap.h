@@ -14,6 +14,7 @@ struct b_light;
 class CLightmap  
 {
 public:
+	b_texture	lm;
 public:
 	CLightmap					();
 	~CLightmap					();
