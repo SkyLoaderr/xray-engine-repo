@@ -50,6 +50,7 @@ protected:
 	virtual void	OnShotmark		(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R) {};
 	virtual void	OnShow			();
 	virtual void	OnHide			();
+	void			TryReload		();
 protected:
 	virtual void	UpdateFP		(BOOL bHUD);
 	virtual void	UpdateXForm		(BOOL bHUD);

@@ -137,14 +137,19 @@ void CWeaponMagazined::FireEnd			()
 	if (IsWorking())
 	{
 		CWeapon::FireEnd	();
-		if (eMagEmpty == st_current)	st_target = eReload;
-		else							st_target = eIdle;
+		if (eMagEmpty == st_current)	TryReload	();
+		else							st_target	= eIdle;
 	}
 }
 
 void CWeaponMagazined::Reload			()
 {
-	st_target	= eReload;
+	TryReload			();
+}
+
+void CWeaponMagazined::TryReload		()
+{
+	if (iAmmoCurrent)	st_target = eReload;
 }
 
 void CWeaponMagazined::OnMagazineEmpty	()
@@ -192,6 +197,7 @@ void CWeaponMagazined::Update			(float dt, BOOL bHUDView)
 		st_current = st_target;
 	}
 
+	/*
 	LPCSTR st_name = 0;
 	switch(st_current)
 	{
@@ -204,6 +210,7 @@ void CWeaponMagazined::Update			(float dt, BOOL bHUDView)
 	}
 	pApp->pFont->Out(0,0,"state: %s",st_name);
 	// Log("****",st_name);
+	*/
 	
 	// cycle update
 	switch (st_current)
