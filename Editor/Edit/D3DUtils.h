@@ -12,9 +12,6 @@ namespace DU{
 
 	void UpdateGrid(float size, float step, int subdiv);
 
-    DWORD subst_a(DWORD val, BYTE a);
-    DWORD bgr2rgb(DWORD val);
-    DWORD rgb2bgr(DWORD val);
     //----------------------------------------------------
     void DrawCross(const Fvector& p, float szx1, float szy1, float szz1, float szx2, float szy2, float szz2, DWORD clr, bool bRot45=false);
     void DrawFlag(const Fvector& p, float heading, float height, float sz, float sz_fl, DWORD clr);

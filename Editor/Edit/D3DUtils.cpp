@@ -400,27 +400,6 @@ void DrawBox(const Fvector& offs, const Fvector& Size, bool bWire, DWORD c){
     }
 }
 //----------------------------------------------------
-DWORD subst_a(DWORD val, BYTE a){
-    BYTE r, g, b;
-    b = (BYTE) (val >>  0);
-    g = (BYTE) (val >>  8);
-    r = (BYTE) (val >> 16);
-    return ((DWORD)(a<<24) | (r<<16) | (g<<8) | (b));
-}
-DWORD bgr2rgb(DWORD val){
-    BYTE r, g, b;
-    r = (BYTE) (val >>  0);
-    g = (BYTE) (val >>  8);
-    b = (BYTE) (val >> 16);
-    return ((DWORD)(r<<16) | (g<<8) | (b));
-}
-DWORD rgb2bgr(DWORD val){
-    BYTE r, g, b;
-    r = (BYTE) (val >> 16);
-    g = (BYTE) (val >>  8);
-    b = (BYTE) (val >> 0);
-    return ((DWORD)(b<<16) | (g<<8) | (r));
-}
 
 void DrawPlane  (const Fvector& center, const Fvector2& scale, const Fvector& rotate, DWORD c, bool bCull, bool bBorder, DWORD cb){
     Fmatrix M;
