@@ -2462,7 +2462,7 @@
     </dialog>
     <dialog id="bar_dolg_ivancov_test_finish">
         <precondition>bar_dialogs.have_dolg_arhive_document</precondition>
-        <has_info>bar_dolg_community_start</has_info>
+        <has_info>bar_dolg_veteran_start</has_info>
         <dont_has_info>bar_dolg_community_leader</dont_has_info>
         <phrase_list>
             <phrase id="1">
