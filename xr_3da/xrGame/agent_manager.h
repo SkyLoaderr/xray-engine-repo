@@ -91,6 +91,9 @@ protected:
 	template <typename T>
 	IC		void							setup_mask			(xr_vector<T> &objects, CEnemy &enemy);
 	IC		void							setup_mask			(CEnemy &enemy);
+	template <typename T>
+	IC		void							reset_memory_masks	(xr_vector<T> &objects);
+	IC		void							reset_memory_masks	();
 			void							fill_enemies		();
 			void							compute_enemy_danger();
 			void							assign_enemies		();
@@ -116,6 +119,7 @@ public:
 	IC		void							set_squad_objects	(xr_vector<CVisibleObject> *objects);
 	IC		void							set_squad_objects	(xr_vector<CSoundObject> *objects);
 	IC		void							set_squad_objects	(xr_vector<CHitObject> *objects);
+			bool							suitable_location	(CAI_Stalker *object, CCoverPoint *location) const;
 };
 
 #include "agent_manager_inline.h"

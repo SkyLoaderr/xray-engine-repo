@@ -10,6 +10,7 @@
 #include "agent_manager.h"
 #include "ai/stalker/ai_stalker.h"
 #include "ef_storage.h"
+#include "cover_point.h"
 
 struct CEnemyFiller {
 	xr_vector<CAgentManager::CEnemy>	*m_enemies;
@@ -40,6 +41,7 @@ void CAgentManager::fill_enemies		()
 		(*I).probability			(1.f);
 		(*I).object()->fill_enemies	(CEnemyFiller(&m_enemies,mask((*I).object())));
 	}
+	VERIFY							(!m_enemies.empty());
 }
 
 void CAgentManager::compute_enemy_danger()
@@ -124,4 +126,26 @@ void CAgentManager::distribute_enemies	()
 	compute_enemy_danger			();
 	assign_enemies					();
 	assign_enemy_masks				();
+}
+
+bool CAgentManager::suitable_location	(CAI_Stalker *object, CCoverPoint *location) const
+{
+	const_iterator					I = members().begin();
+	const_iterator					E = members().end();
+	for ( ; I != E; ++I) {
+		if ((*I).object()->ID() == object->ID())
+			continue;
+		if ((*I).object()->dest_position().distance_to(location->position()) <= 2.f)
+			if ((*I).object()->Position().distance_to(location->position()) <= object->Position().distance_to(location->position()))
+				return				(false);
+	}
+	return							(true);
+}
+
+void CAgentManager::distribute_locations()
+{
+}
+
+void CAgentManager::setup_actions		()
+{
 }

@@ -97,3 +97,19 @@ IC	void CAgentManager::setup_mask						(CEnemy &enemy)
 	setup_mask						(*m_sound_objects,enemy);
 	setup_mask						(*m_hit_objects,enemy);
 }
+
+template <typename T>
+IC	void CAgentManager::reset_memory_masks				(xr_vector<T> &objects)
+{
+	xr_vector<CVisibleObject>::iterator	I = m_visible_objects->begin();
+	xr_vector<CVisibleObject>::iterator	E = m_visible_objects->end();
+	for ( ; I != E; ++I)
+		(*I).m_squad_mask.one		();
+}
+
+IC	void CAgentManager::reset_memory_masks				()
+{
+	reset_memory_masks				(*m_visible_objects);
+	reset_memory_masks				(*m_sound_objects);
+	reset_memory_masks				(*m_hit_objects);
+}

@@ -63,8 +63,8 @@ IC	CCoverManager::CPointQuadTree *CCoverManager::get_covers	()
 	return					(m_covers);
 }
 
-template <typename _evaluator_type>
-CCoverPoint *CCoverManager::best_cover(const Fvector &position, float radius, _evaluator_type &evaluator) const
+template <typename _evaluator_type, typename _restrictor_type>
+IC	CCoverPoint *CCoverManager::best_cover(const Fvector &position, float radius, _evaluator_type &evaluator, const _restrictor_type &restrictor) const
 {
 	if (evaluator.inertia())
 		return				(evaluator.selected());
@@ -76,9 +76,21 @@ CCoverPoint *CCoverManager::best_cover(const Fvector &position, float radius, _e
 	xr_vector<CCoverPoint*>::const_iterator	I = m_nearest.begin();
 	xr_vector<CCoverPoint*>::const_iterator	E = m_nearest.end();
 	for ( ; I != E; ++I)
-		evaluator.evaluate	(*I);
+		if (restrictor(*I))
+			evaluator.evaluate	(*I);
 
 	evaluator.finalize		();
 
 	return					(evaluator.selected());
+}
+
+template <typename _evaluator_type>
+IC	CCoverPoint	*CCoverManager::best_cover	(const Fvector &position, float radius, _evaluator_type &evaluator) const
+{
+	return					(best_cover<_evaluator_type,CCoverManager>(position,radius,evaluator,*this));
+}
+
+IC	bool CCoverManager::operator()			(const CCoverPoint *) const
+{
+	return					(true);
 }

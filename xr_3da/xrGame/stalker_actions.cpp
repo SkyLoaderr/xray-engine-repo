@@ -23,6 +23,22 @@ EStalkerBehaviour	g_stalker_behaviour = eStalkerBehaviourModerate;//eStalkerBeha
 
 typedef CStalkerActionBase::_edge_value_type _edge_value_type;
 
+struct CMovementRestrictor {
+	CAI_Stalker			*m_object;
+	const CAgentManager	*m_agent_manager;
+
+	IC					CMovementRestrictor	(CAI_Stalker *object)
+	{
+		m_object		= object;
+		m_agent_manager	= &object->agent_manager();
+	}
+
+	IC		bool		operator()			(CCoverPoint *cover) const
+	{
+		return			(m_agent_manager->suitable_location(m_object,cover));
+	}
+};
+
 //////////////////////////////////////////////////////////////////////////
 // CStalkerActionBase
 //////////////////////////////////////////////////////////////////////////
@@ -658,7 +674,7 @@ void CStalkerActionGetReadyToKillAggressive::execute	()
 	if (m_object->enemy() && (m_object->visible_now(mem_object.m_object) || !completed())) {
 		Fvector						position = mem_object.m_object_params.m_position;
 		m_object->m_ce_close->setup	(position,10.f,170.f,10.f);
-		CCoverPoint					*point = ai().cover_manager().best_cover(m_object->Position(),10.f,*m_object->m_ce_close);
+		CCoverPoint					*point = ai().cover_manager().best_cover(m_object->Position(),10.f,*m_object->m_ce_close,CMovementRestrictor(m_object));
 		if (point) {
 			m_object->set_level_dest_vertex	(point->level_vertex_id());
 			m_object->set_desired_position	(&point->position());
@@ -905,7 +921,7 @@ void CStalkerActionGetReadyToKillAvoid::execute	()
 		CMemoryInfo					mem_object = m_object->memory(m_object->enemy());
 		Fvector						position = mem_object.m_object_params.m_position;
 		m_object->m_ce_far->setup	(position,10.f,170.f);
-		CCoverPoint					*point = ai().cover_manager().best_cover(m_object->Position(),30.f,*m_object->m_ce_far);
+		CCoverPoint					*point = ai().cover_manager().best_cover(m_object->Position(),30.f,*m_object->m_ce_far,CMovementRestrictor(m_object));
 		if (point) {
 			m_object->set_level_dest_vertex	(point->level_vertex_id());
 			m_object->set_desired_position	(&point->position());
@@ -1120,7 +1136,7 @@ void CStalkerActionCamp::execute	()
 
 //	Fvector							position = mem_object.m_object_params.m_position;
 	m_object->m_ce_best->setup	(mem_object.m_self_params.m_position,0.f,30.f);
-	CCoverPoint					*point = ai().cover_manager().best_cover(mem_object.m_self_params.m_position,10.f,*m_object->m_ce_best);
+	CCoverPoint					*point = ai().cover_manager().best_cover(mem_object.m_self_params.m_position,10.f,*m_object->m_ce_best,CMovementRestrictor(m_object));
 	if (point) {
 		m_object->set_level_dest_vertex	(point->level_vertex_id());
 		m_object->set_desired_position	(&point->position());
@@ -1186,7 +1202,7 @@ void CStalkerActionGetReadyToKillModerate::execute	()
 		CMemoryInfo					mem_object = m_object->memory(m_object->enemy());
 		Fvector						position = mem_object.m_object_params.m_position;
 		m_object->m_ce_best->setup	(position,10.f,170.f,10.f);
-		CCoverPoint					*point = ai().cover_manager().best_cover(m_object->Position(),10.f,*m_object->m_ce_best);
+		CCoverPoint					*point = ai().cover_manager().best_cover(m_object->Position(),10.f,*m_object->m_ce_best,CMovementRestrictor(m_object));
 		if (point) {
 			m_object->set_level_dest_vertex	(point->level_vertex_id());
 			m_object->set_desired_position	(&point->position());
@@ -1386,7 +1402,7 @@ void CStalkerActionGetEnemySeenModerate::execute	()
 		else {
 			Fvector						position = mem_object.m_object_params.m_position;
 			m_object->m_ce_angle->setup	(position,10.f,170.f,mem_object.m_object_params.m_level_vertex_id);
-			CCoverPoint					*point = ai().cover_manager().best_cover(m_object->Position(),30.f,*m_object->m_ce_angle);
+			CCoverPoint					*point = ai().cover_manager().best_cover(m_object->Position(),30.f,*m_object->m_ce_angle,CMovementRestrictor(m_object));
 			if (point) {
 				m_object->set_level_dest_vertex	(point->level_vertex_id());
 				m_object->set_desired_position	(&point->position());
@@ -1494,7 +1510,7 @@ void CStalkerActionKillEnemyLostModerate::execute		()
 
 	position						= mem_object.m_object_params.m_position;
 	m_object->m_ce_best->setup		(position,10.f,170.f,10.f);
-	CCoverPoint						*point = ai().cover_manager().best_cover(m_object->Position(),10.f,*m_object->m_ce_best);
+	CCoverPoint						*point = ai().cover_manager().best_cover(m_object->Position(),10.f,*m_object->m_ce_best,CMovementRestrictor(m_object));
 	if (point) {
 		m_object->set_level_dest_vertex	(point->level_vertex_id());
 		m_object->set_desired_position	(&point->position());
@@ -1566,7 +1582,7 @@ void CStalkerActionTakeCover::execute	()
 
 	position						= mem_object.m_object_params.m_position;
 	m_object->m_ce_best->setup		(position,10.f,170.f,10.f);
-	CCoverPoint						*point = ai().cover_manager().best_cover(m_object->Position(),10.f,*m_object->m_ce_best);
+	CCoverPoint						*point = ai().cover_manager().best_cover(m_object->Position(),10.f,*m_object->m_ce_best,CMovementRestrictor(m_object));
 	if (point) {
 		m_object->set_level_dest_vertex	(point->level_vertex_id());
 		m_object->set_desired_position	(&point->position());

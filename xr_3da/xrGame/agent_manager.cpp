@@ -48,6 +48,8 @@ void CAgentManager::shedule_Update	(u32 time_delta)
 	xr_vector<CMemberOrder>::iterator	I = remove_if(m_members.begin(),m_members.end(),CDeadMemberPredicate());
 	m_members.erase						(I,m_members.end());
 
+	reset_memory_masks					();
+
 	inherited::update					(time_delta);
 }
 
@@ -135,12 +137,4 @@ void CAgentManager::add_actions		()
 	add_condition			(action,ePropertyEnemy,				true);
 	add_effect				(action,ePropertyEnemy,				false);
 	add_operator			(eOperatorKillEnemy,				action);
-}
-
-void CAgentManager::distribute_locations	()
-{
-}
-
-void CAgentManager::setup_actions		()
-{
 }
