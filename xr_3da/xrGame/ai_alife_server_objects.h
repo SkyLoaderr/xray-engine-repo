@@ -21,6 +21,7 @@ public:
 	float							m_fDistance;
 	u16								m_wCount;
 	bool							m_bOnline;
+	u8								m_ucProbability;
 
 									CALifeObject()
 	{
@@ -30,12 +31,16 @@ public:
 		m_tClassID					= _CLASS_ID(-1);
 		m_tObjectID					= _OBJECT_ID(-1);
 		m_tGraphID					= _GRAPH_ID(-1);
+		m_ucProbability				= 1;
 	};
 
-	virtual void					STATE_Write(NET_Packet &tNetPacket);
-	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
+	virtual void					STATE_Write	(NET_Packet &tNetPacket);
+	virtual void					STATE_Read	(NET_Packet &tNetPacket, u16 size);
 	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
-	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
+	virtual void					UPDATE_Read	(NET_Packet &tNetPacket);
+#ifdef _EDITOR
+    virtual void					FillProp	(LPCSTR pref, PropItemVec &items);
+#endif
 };
 
 class CALifeMonsterParams : public IPureServerInitObject {

@@ -15,10 +15,12 @@
 // CALifeObject
 void CALifeObject::STATE_Write(NET_Packet &tNetPacket)
 {
+	tNetPacket.w_u8				(m_ucProbability);
 }
 
 void CALifeObject::STATE_Read(NET_Packet &tNetPacket, u16 size)
 {
+	tNetPacket.r_u8				(m_ucProbability);
 }
 
 void CALifeObject::UPDATE_Write(NET_Packet &tNetPacket)
@@ -33,6 +35,13 @@ void CALifeObject::UPDATE_Read(NET_Packet &tNetPacket)
 	tNetPacket.r_float			(m_fDistance);
 };
 
+#ifdef _EDITOR
+void CALifeObject::FillProp	(LPCSTR pref, PropItemVec& items)
+{
+	inherited::FillProp			(pref, items);
+	PHelper.CreateU8			(items,	PHelper.PrepareKey(pref, "Probability"),	&m_ucProbability,	0,100);
+}
+#endif
 // CALifeMonsterParams
 void CALifeMonsterParams::STATE_Write(NET_Packet &tNetPacket)
 {
