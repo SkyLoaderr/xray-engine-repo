@@ -121,7 +121,7 @@ void CVisualMemoryManager::add_visible_object	(CObject *object)
 	if (!game_object || !visible(game_object))
 		return;
 
-	xr_vector<CVisibleObject>::iterator	J = std::find(m_objects->begin(),m_objects->end(),game_object->ID());
+	xr_vector<CVisibleObject>::iterator	J = std::find(m_objects->begin(),m_objects->end(),object_id(game_object));
 	if (m_objects->end() == J) {
 		CVisibleObject			visible_object;
 
@@ -141,7 +141,7 @@ void CVisualMemoryManager::add_visible_object	(CObject *object)
 
 void CVisualMemoryManager::add_visible_object	(const CVisibleObject visible_object)
 {
-	xr_vector<CVisibleObject>::iterator			J = std::find(m_objects->begin(),m_objects->end(),visible_object.m_object->ID());
+	xr_vector<CVisibleObject>::iterator			J = std::find(m_objects->begin(),m_objects->end(),object_id(visible_object.m_object));
 	if (m_objects->end() != J)
 		*J				= visible_object;
 	else

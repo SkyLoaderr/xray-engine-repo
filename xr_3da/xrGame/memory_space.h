@@ -54,7 +54,7 @@ namespace MemorySpace {
 		IC	bool	operator==						(u32 id) const
 		{
 			VERIFY					(m_object);
-			return					(m_object->ID() == id);
+			return					(object_id(m_object) == id);
 		}
 
 		IC	void	fill							(T *game_object, T *self)
@@ -114,3 +114,9 @@ namespace MemorySpace {
 };
 
 using namespace MemorySpace;
+
+template <typename T>
+IC	u16 object_id(const T *object)
+{
+	return			(object ? object->ID() : 0xffff);
+}

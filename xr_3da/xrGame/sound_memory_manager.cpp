@@ -115,7 +115,7 @@ void CSoundMemoryManager::add_sound_object(CObject *object, int sound_type, cons
 	// we do not save sounds from the objects we see (?!)
 	CVisualMemoryManager	*visual_memory_manager = dynamic_cast<CVisualMemoryManager*>(this);
 	if (visual_memory_manager) {
-		xr_vector<CVisibleObject>::const_iterator I = std::find(visual_memory_manager->memory_visible_objects().begin(),visual_memory_manager->memory_visible_objects().end(),object->ID());
+		xr_vector<CVisibleObject>::const_iterator I = std::find(visual_memory_manager->memory_visible_objects().begin(),visual_memory_manager->memory_visible_objects().end(),object_id(object));
 		if ((visual_memory_manager->memory_visible_objects().end() != I) && ((*I).m_level_time > m_last_sound_time))
 			return;
 	}
@@ -129,7 +129,7 @@ void CSoundMemoryManager::add_sound_object(CObject *object, int sound_type, cons
 	Msg							("* %s - ref_sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",self->cName(),sound_type,object ? object->cName() : "world",Level().timeServer(),position.x,position.y,position.z,sound_power);
 #endif
 
-	xr_vector<CSoundObject>::iterator	J = std::find(m_sounds->begin(),m_sounds->end(),object->ID());
+	xr_vector<CSoundObject>::iterator	J = std::find(m_sounds->begin(),m_sounds->end(),object_id(object));
 	if (m_sounds->end() == J) {
 		CSoundObject			sound_object;
 

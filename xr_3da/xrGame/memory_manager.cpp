@@ -89,7 +89,7 @@ const CMemoryObject<const CGameObject>	CMemoryManager::memory(const CObject *obj
 	CMemoryObject<const CGameObject>	result;
 
 	{
-		xr_vector<CVisibleObject>::const_iterator	I = std::find(memory_visible_objects().begin(),memory_visible_objects().end(),object->ID());
+		xr_vector<CVisibleObject>::const_iterator	I = std::find(memory_visible_objects().begin(),memory_visible_objects().end(),object_id(object));
 		if (memory_visible_objects().end() != I) {
 			(SMemoryObject&)result					= (SMemoryObject&)(*I);
 			(SObjectParams&)result.m_object_params	= (SObjectParams&)((*I).m_object_params);
@@ -101,7 +101,7 @@ const CMemoryObject<const CGameObject>	CMemoryManager::memory(const CObject *obj
 	}
 
 	{
-		xr_vector<CSoundObject>::const_iterator	I = std::find(sound_objects().begin(),sound_objects().end(),object->ID());
+		xr_vector<CSoundObject>::const_iterator	I = std::find(sound_objects().begin(),sound_objects().end(),object_id(object));
 		if (sound_objects().end() != I) {
 			(SMemoryObject&)result					= (SMemoryObject&)(*I);
 			(SObjectParams&)result.m_object_params	= (SObjectParams&)((*I).m_object_params);
@@ -113,7 +113,7 @@ const CMemoryObject<const CGameObject>	CMemoryManager::memory(const CObject *obj
 	}
 	
 	{
-		xr_vector<CHitObject>::const_iterator	I = std::find(hit_objects().begin(),hit_objects().end(),object->ID());
+		xr_vector<CHitObject>::const_iterator	I = std::find(hit_objects().begin(),hit_objects().end(),object_id(object));
 		if (hit_objects().end() != I) {
 			(SMemoryObject&)result					= (SMemoryObject&)(*I);
 			(SObjectParams&)result.m_object_params	= (SObjectParams&)((*I).m_object_params);

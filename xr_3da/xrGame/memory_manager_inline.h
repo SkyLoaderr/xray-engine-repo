@@ -20,7 +20,7 @@ IC	ERelationType	CMemoryManager::get_relation(CEntityAlive *tpEntityAlive)
 
 IC	bool CMemoryManager::visible	(const CObject *object) const
 {
-	xr_vector<CVisibleObject>::const_iterator	I = std::find(memory_visible_objects().begin(),memory_visible_objects().end(),object->ID());
+	xr_vector<CVisibleObject>::const_iterator	I = std::find(memory_visible_objects().begin(),memory_visible_objects().end(),object_id(object));
 	if (memory_visible_objects().end() == I)
 		return				(false);
 
