@@ -224,6 +224,7 @@ void CObjectFactory::register_classes	()
 	ADD(CWeaponAmmo			,CSE_ALifeItemAmmo				,CLSID_OBJECT_A_PM			,"wpn_ammo");
 	ADD(CWeaponAmmo			,CSE_ALifeItemAmmo				,CLSID_OBJECT_A_VOG25		,"wpn_ammo_vog25");
 	ADD(CWeaponAmmo			,CSE_ALifeItemAmmo				,CLSID_OBJECT_A_OG7B		,"wpn_ammo_og7b");
+	ADD(CWeaponAmmo			,CSE_ALifeItemAmmo				,CLSID_OBJECT_A_M209		,"wpn_ammo_m209");
 	//-----------------------------------------------------------------------------------------------------
 
 	//Weapons Add-on

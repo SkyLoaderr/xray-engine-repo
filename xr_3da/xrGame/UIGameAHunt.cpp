@@ -203,6 +203,15 @@ void			CUIGameAHunt::OnFrame()
 	};
 };
 //--------------------------------------------------------------------
+static	u8 SlotsToCheck [] = {
+KNIFE_SLOT		,
+PISTOL_SLOT		,
+RIFLE_SLOT		,
+GRENADE_SLOT	,
+APPARATUS_SLOT	,
+OUTFIT_SLOT		,
+};
+
 void CUIGameAHunt::OnBuyMenu_Ok	()
 {
 	if (!m_bBuyEnabled) return;
@@ -215,14 +224,15 @@ void CUIGameAHunt::OnBuyMenu_Ok	()
 	l_pPlayer->u_EventGen		(P,GEG_PLAYER_BUY_FINISHED,l_pPlayer->ID()	);
 //-------------------------------------------------------------------------------
 	u8 NumItems = pCurBuyMenu->GetBeltSize();
-	for (u8 Slot=KNIFE_SLOT; Slot<PDA_SLOT; Slot++)
+	for (u8 s =0; s<sizeof(SlotsToCheck); s++)
 	{
-		if (pCurBuyMenu->GetWeaponIndex(Slot) != 0xff) NumItems++;
+		if (pCurBuyMenu->GetWeaponIndex(SlotsToCheck[s]) != 0xff) NumItems++;
 	}
 
 	//-------------------------------------------------------------------------------
 	P.w_u8		(NumItems);
 	//-------------------------------------------------------------------------------
+	/*
 	for (Slot=KNIFE_SLOT; Slot<PDA_SLOT; Slot++)
 	{
 		u8 ItemID = pCurBuyMenu->GetWeaponIndex(Slot);
@@ -230,6 +240,15 @@ void CUIGameAHunt::OnBuyMenu_Ok	()
 		P.w_u8	(Slot);
 		P.w_u8	(ItemID);
 	};
+	*/
+	for (s =0; s<sizeof(SlotsToCheck); s++)
+	{
+		u8 ItemID = pCurBuyMenu->GetWeaponIndex(SlotsToCheck[s]);
+		if (ItemID == 0xff) continue;
+		P.w_u8	(SlotsToCheck[s]);
+		P.w_u8	(ItemID);
+	}
+
 	for (u8 i=0; i<pCurBuyMenu->GetBeltSize(); i++)
 	{
 		u8 SectID, ItemID;

@@ -103,6 +103,7 @@
 //-----------------------------------------------------------------------------
 #define CLSID_OBJECT_A_VOG25		MK_CLSID('A','_','V','O','G','2','5',' ')
 #define CLSID_OBJECT_A_OG7B			MK_CLSID('A','_','O','G','7','B',' ',' ')
+#define CLSID_OBJECT_A_M209			MK_CLSID('A','_','M','2','0','9',' ',' ')
 //-----------------------------------------------------------------------------
 // Weapons Add-ons
 #define CLSID_OBJECT_W_SCOPE		MK_CLSID('W','_','S','C','O','P','E',' ')

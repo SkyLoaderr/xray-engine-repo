@@ -902,6 +902,12 @@ void	game_sv_Deathmatch::SendPlayerKilledMessage	(u32 id_killer, u32 id_killed)
 	};
 
 	u_EventSend(P);
+
+	//---------------------------------------------------------
+	ps_killed->m_lasthitter			= 0;
+	ps_killed->m_lasthitweapon		= 0;
+	ClearPlayerItems		(ps_killed);
+	//---------------------------------------------------------
 };
 
 void	game_sv_Deathmatch::LoadTeams			()
