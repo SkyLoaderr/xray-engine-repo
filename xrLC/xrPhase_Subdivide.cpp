@@ -38,10 +38,10 @@ void CBuild::xrPhase_Subdivide()
 		if  	(size.x>g_params.m_SS_maxsize)					bSplit	= TRUE;
 		if		(size.z>g_params.m_SS_maxsize)					bSplit	= TRUE;
 		if		(int(g_XSplit[X].size()) > g_params.m_SS_High)	bSplit	= TRUE;
-		if		(!bSplit && g_XSplit[X].front().pDeflector)	{
-			CDeflector*	defl		=	g_XSplit[X].front().pDeflector;
-			if (defl->dwWidth>=	(512-2*BORDER))		bSplit	= TRUE;
-			if (defl->dwHeight>=(512-2*BORDER))		bSplit	= TRUE;
+		CDeflector*	defl_base	=	g_XSplit[X].front().pDeflector;
+		if		(!bSplit && defl_base)	{
+			if (defl_base->dwWidth>=	(512-2*BORDER))		bSplit	= TRUE;
+			if (defl_base->dwHeight>=(512-2*BORDER))		bSplit	= TRUE;
 		}
 
 		// perform subdivide if needed
@@ -76,9 +76,24 @@ void CBuild::xrPhase_Subdivide()
 		{
 			// splitting failed
 		} else {
-			// Split deflector into TWO
+			// split deflector into TWO
+			if (defl_base)	{
+				// delete old deflector
+				for (DWORD it=0; it<g_deflectors.size(); it++)
+				{
+					if (g_deflectors[it]==defl_base)	{
+						g_deflectors.erase	(g_deflectors.begin()+it);
+						_DELETE			(defl_base);
+						break;
+					}
+				}
+				
+				// Create new deflectors
+				CDeflector*		D1	= new CDeflector; D1->OA_Place(s1); D1->OA_Export(); g_deflectors.push_back(D1);
+				CDeflector*		D2	= new CDeflector; D2->OA_Place(s2); D2->OA_Export(); g_deflectors.push_back(D2);
+			}
 
-			// Delete old and push two new
+			// Delete old SPLIT and push two new
 			g_XSplit[X].clear	();
 			g_XSplit.erase		(g_XSplit.begin()+X); X--;
 			g_XSplit.push_back	(s1);
