@@ -119,13 +119,13 @@ inline Vec3 operator*(const Mat3& m, const Vec3& v)
 	{ return Vec3(m[0]*v, m[1]*v, m[2]*v); }
 
 extern Mat3 operator*(const Mat3& n, const Mat3& m);
-
+/*
 inline std::ostream &operator<<(std::ostream &out, const Mat3& M)
 	{ return out << M[0] << std::endl << M[1] << std::endl << M[2]; }
 
 inline std::istream &operator>>(std::istream &in, Mat3& M)
 	{ return in >> M[0] >> M[1] >> M[2]; }
-
+*/
 ////////////////////////////////////////////////////////////////////////
 //
 // Misc. function definitions

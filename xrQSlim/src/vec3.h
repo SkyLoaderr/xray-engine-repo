@@ -134,7 +134,7 @@ template<class T>
 inline TVec3<T> operator^(const TVec3<T>& u, const TVec3<T>& v)
 	{ return cross(u, v); }
 
-
+/*
 template<class T>
 inline std::ostream &operator<<(std::ostream &out, const TVec3<T>& v)
 	{ return out << v[0] << " " << v[1] << " " << v[2]; }
@@ -142,7 +142,7 @@ inline std::ostream &operator<<(std::ostream &out, const TVec3<T>& v)
 template<class T>
 inline std::istream &operator>>(std::istream &in, TVec3<T>& v)
 	{ return in >> v[0] >> v[1] >> v[2]; }
-
+*/
 ////////////////////////////////////////////////////////////////////////
 //
 // Misc. function definitions

@@ -116,7 +116,7 @@ template<class T> inline TVec4<T> operator-(const TVec4<T> &u)
 
 template<class T> inline T operator*(const TVec4<T> &u, const TVec4<T> &v)
 	{ return u[0]*v[0] + u[1]*v[1] + u[2]*v[2] + u[3]*v[3]; }
-
+/*
 template<class T>
 inline std::ostream &operator<<(std::ostream &out, const TVec4<T>& v)
 	{ return out <<v[0] <<" " <<v[1] <<" " <<v[2] <<" " <<v[3]; }
@@ -124,7 +124,7 @@ inline std::ostream &operator<<(std::ostream &out, const TVec4<T>& v)
 template<class T>
 inline std::istream &operator>>(std::istream &in, TVec4<T>& v)
 	{ return in >> v[0] >> v[1] >> v[2] >> v[3]; }
-
+*/
 ////////////////////////////////////////////////////////////////////////
 //
 // Misc. function definitions

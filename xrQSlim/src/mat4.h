@@ -139,13 +139,13 @@ inline Vec3 operator*(const Mat4& m, const Vec3& v)
     if(w==0.0)  return Vec3(m[0]*u, m[1]*u, m[2]*u);
     else        return Vec3(m[0]*u/w, m[1]*u/w, m[2]*u/w);
 }
-
+/*
 inline std::ostream &operator<<(std::ostream &out, const Mat4& M)
        { return out<<M[0]<<std::endl<<M[1]<<std::endl<<M[2]<<std::endl<<M[3]; }
 
 inline std::istream &operator>>(std::istream &in, Mat4& M)
        { return in >> M[0] >> M[1] >> M[2] >> M[3]; }
-
+*/
 ////////////////////////////////////////////////////////////////////////
 //
 // Transformations

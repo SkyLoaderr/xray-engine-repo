@@ -116,7 +116,7 @@ template<class T> inline T operator*(const TVec2<T> &u, const TVec2<T>& v)
 
 template<class T> inline TVec2<T> perp(const TVec2<T> &v)
 	{ return TVec2<T>(v[1], -v[0]); }
-
+/*
 template<class T>
 inline std::ostream &operator<<(std::ostream &out, const TVec2<T> &v)
 	{ return out << v[0] << " " << v[1]; }
@@ -124,7 +124,7 @@ inline std::ostream &operator<<(std::ostream &out, const TVec2<T> &v)
 template<class T>
 inline std::istream &operator>>(std::istream &in, TVec2<T>& v)
 	{ return in >> v[0] >> v[1]; }
-
+*/
 
 ////////////////////////////////////////////////////////////////////////
 //
