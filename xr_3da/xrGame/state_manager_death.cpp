@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "state_manager_death.h"
+#include "ai/stalker/ai_stalker.h"
 #include "state_death_recently_dead.h"
 #include "state_death_already_dead.h"
 
@@ -48,6 +49,7 @@ void CStateManagerDeath::reload			(LPCSTR section)
 void CStateManagerDeath::initialize		()
 {
 	inherited::initialize	();
+	m_object->set_sound_mask(u32(eStalkerSoundMaskAnySound));
 }
 
 void CStateManagerDeath::execute		()

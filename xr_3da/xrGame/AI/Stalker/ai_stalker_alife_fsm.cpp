@@ -13,7 +13,7 @@
 
 void CAI_Stalker::vfContinueWithALifeGoals(PathManagers::CAbstractVertexEvaluator *tpNodeEvaluator)
 {
-	set_sound_mask		(0);
+	set_sound_mask		(u32(eStalkerSoundMaskAnySound));
 
 	// going via graph nodes
 	//WRITE_TO_LOG			("Accomplishing task");

@@ -45,7 +45,7 @@ void CStateGatherItems::reload			(LPCSTR section)
 void CStateGatherItems::initialize		()
 {
 	inherited::initialize			();
-	m_object->set_selection_type	(CMovementManager::eSelectionTypeRandomBranching);
+	m_object->set_sound_mask		(u32(eStalkerSoundMaskHumming));
 }
 
 void CStateGatherItems::execute			()

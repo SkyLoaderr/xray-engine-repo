@@ -48,7 +48,7 @@ void CStateFreeNoAlife::initialize		()
 {
 	inherited::initialize			();
 	set_inertia_time				(::Random.randI(60000,120000));
-	m_object->CSoundPlayer::set_sound_mask(0);
+	m_object->set_sound_mask		(eStalkerSoundMaskAnySound);
 	m_object->set_selection_type	(CMovementManager::eSelectionTypeRandomBranching);
 }
 

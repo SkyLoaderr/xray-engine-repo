@@ -46,7 +46,7 @@ void CStateManagerCombat::reload		(LPCSTR section)
 void CStateManagerCombat::initialize	()
 {
 	inherited::initialize	();
-	m_object->CSoundPlayer::set_sound_mask(eStalkerSoundHumming);
+	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
 }
 
 void CStateManagerCombat::execute		()

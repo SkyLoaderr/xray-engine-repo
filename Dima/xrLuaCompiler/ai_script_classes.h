@@ -455,4 +455,17 @@ public:
 		else
 			return			(xr_new<MemorySpace::CMemoryInfo>(memory_manager->memory(lua_game_object.m_tpGameObject)));
 	}
+
+	CLuaGameObject *best_weapon()
+	{
+		CObjectHandler	*object_handler = dynamic_cast<CObjectHandler*>(m_tpGameObject);
+		if (!object_handler) {
+			LuaOut			(Lua::eLuaMessageTypeError,"CScriptMonster : cannot access class member best_weapon!");
+			return			(0);
+		}
+		else {
+			CGameObject		*game_object = object_handler->best_weapon();
+			return			(game_object ? xr_new<CLuaGameObject>(game_object) : 0);
+		}
+	}
 };

@@ -118,11 +118,11 @@ void CAI_Stalker::Load				(LPCSTR section)
 	>								(section,"selector_cover");
 
 	LPCSTR							head_bone_name = pSettings->r_string(section,"bone_head");
-	CSoundPlayer::add				(pSettings->r_string(section,"sound_death"),	100, SOUND_TYPE_MONSTER_DYING,		0, u32(-1),				eStalkerSoundDie,		head_bone_name);
-	CSoundPlayer::add				(pSettings->r_string(section,"sound_hit"),		100, SOUND_TYPE_MONSTER_INJURING,	1, u32(-1),				eStalkerSoundInjuring,	head_bone_name);
-	CSoundPlayer::add				(pSettings->r_string(section,"sound_humming"),	100, SOUND_TYPE_MONSTER_TALKING,	4, u32(1 << 31) | 0,	eStalkerSoundHumming,	head_bone_name);
-	CSoundPlayer::add				(pSettings->r_string(section,"sound_alarm"),	100, SOUND_TYPE_MONSTER_TALKING,	2, u32(1 << 31) | 1,	eStalkerSoundAlarm,		head_bone_name);
-	CSoundPlayer::add				(pSettings->r_string(section,"sound_surrender"),100, SOUND_TYPE_MONSTER_TALKING,	3, u32(1 << 31) | 2,	eStalkerSoundSurrender,	head_bone_name);
+	CSoundPlayer::add				(pSettings->r_string(section,"sound_death"),	100, SOUND_TYPE_MONSTER_DYING,		0, u32(eStalkerSoundMaskDie),		eStalkerSoundDie,		head_bone_name);
+	CSoundPlayer::add				(pSettings->r_string(section,"sound_hit"),		100, SOUND_TYPE_MONSTER_INJURING,	1, u32(eStalkerSoundMaskInjuring),	eStalkerSoundInjuring,	head_bone_name);
+	CSoundPlayer::add				(pSettings->r_string(section,"sound_humming"),	100, SOUND_TYPE_MONSTER_TALKING,	4, u32(eStalkerSoundMaskHumming),	eStalkerSoundHumming,	head_bone_name);
+	CSoundPlayer::add				(pSettings->r_string(section,"sound_alarm"),	100, SOUND_TYPE_MONSTER_TALKING,	2, u32(eStalkerSoundMaskAlarm),		eStalkerSoundAlarm,		head_bone_name);
+	CSoundPlayer::add				(pSettings->r_string(section,"sound_surrender"),100, SOUND_TYPE_MONSTER_TALKING,	3, u32(eStalkerSoundMaskSurrender),	eStalkerSoundSurrender,	head_bone_name);
 
 	// skeleton physics
 	m_pPhysics_support->in_Load		(section);

@@ -697,7 +697,6 @@ void Script::vfExportObject(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("set_callback",				(void (CLuaGameObject::*)(const luabind::functor<void> &, const CScriptMonster::EActionType))(CLuaGameObject::SetCallback))
 			.def("clear_callback",				(void (CLuaGameObject::*)(bool))(CLuaGameObject::ClearCallback))
 			.def("clear_callback",				(void (CLuaGameObject::*)(const CScriptMonster::EActionType))(CLuaGameObject::ClearCallback))
-			
 			.def("give_info_portion",			&CLuaGameObject::GiveInfoPortion)
 			.def("give_info_portion_via_pda",	&CLuaGameObject::GiveInfoPortionViaPda)
 			.def("patrol",						&CLuaGameObject::GetPatrolPathName)
@@ -719,7 +718,7 @@ void Script::vfExportObject(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("set_hear_callback",			(void (CLuaGameObject::*)(const luabind::functor<void> &))(CLuaGameObject::SetSoundCallback))
 			.def("clear_hear_callback",			&CLuaGameObject::ClearSoundCallback)
 			.def("memory",						&CLuaGameObject::memory, adopt(return_value))
-
+			.def("best_weapon",					&CLuaGameObject::best_weapon, adopt(return_value))
 	];
 }
 

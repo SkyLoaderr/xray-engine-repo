@@ -46,6 +46,7 @@ void CStateAnomalyCheck::reload			(LPCSTR section)
 void CStateAnomalyCheck::initialize		()
 {
 	inherited::initialize			();
+	m_object->set_sound_mask		(u32(eStalkerSoundMaskHumming));
 	set_inertia_time				(::Random.randI(5000,10000));
 }
 

@@ -1285,6 +1285,15 @@
 					<Filter
 						Name="StateManagers"
 						Filter="">
+						<File
+							RelativePath=".\state_manager_stalker.cpp">
+						</File>
+						<File
+							RelativePath=".\state_manager_stalker.h">
+						</File>
+						<File
+							RelativePath=".\state_manager_stalker_inline.h">
+						</File>
 						<Filter
 							Name="StateManagerALife"
 							Filter="">
@@ -1463,19 +1472,6 @@
 									RelativePath=".\state_watch_over_inline.h">
 								</File>
 							</Filter>
-						</Filter>
-						<Filter
-							Name="StateManagerStalker"
-							Filter="">
-							<File
-								RelativePath=".\state_manager_stalker.cpp">
-							</File>
-							<File
-								RelativePath=".\state_manager_stalker.h">
-							</File>
-							<File
-								RelativePath=".\state_manager_stalker_inline.h">
-							</File>
 						</Filter>
 					</Filter>
 				</Filter>
