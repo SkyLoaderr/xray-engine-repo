@@ -772,11 +772,12 @@ void __stdcall PushOutCallback1(bool& do_colide,dContact& c)
 		usr_data_2 = dGeomGetUserData(c.geom.g2);
 
 
-
 	CGameObject* obj1=dynamic_cast<CGameObject*>(usr_data_1->ph_ref_object);
 	CGameObject* obj2=dynamic_cast<CGameObject*>(usr_data_2->ph_ref_object);
-	if(obj1&&obj2)
+
+	if(obj1 && obj2 && obj1->m_pPhysicsShell && obj2->m_pPhysicsShell )
 	{	
+		
 		do_colide=false;
 		Fvector push_line,force;
 		push_line.sub(obj1->Position(),obj2->Position());

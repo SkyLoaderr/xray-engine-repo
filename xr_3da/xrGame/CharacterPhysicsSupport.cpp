@@ -116,7 +116,7 @@ void CCharacterPhysicsSupport::in_shedule_Update(u32 DT )
 #ifndef NO_PHYSICS_IN_AI_MOVE
 
 		Movement.DestroyCharacter();
-		m_EntityAlife.PHSetPushOut();
+		m_EntityAlife.PHSetPushOut(2000);
 #endif
 	}
 }

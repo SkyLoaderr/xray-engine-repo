@@ -375,10 +375,10 @@ void CGameObject::OnH_B_Independent()
 	getAI().ref_add			(AI_NodeID);
 }
 
-void CGameObject::PHSetPushOut()
+void CGameObject::PHSetPushOut(u32 time /* = 5000 */)
 {
 	if(m_pPhysicsShell)
-		m_pPhysicsShell->set_PushOut(5000,PushOutCallback1);
+		m_pPhysicsShell->set_PushOut(time,PushOutCallback1);
 }
 
 f32 CGameObject::GetMass() { return m_pPhysicsShell?m_pPhysicsShell->getMass():0; }
