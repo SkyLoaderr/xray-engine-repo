@@ -11,6 +11,10 @@
 
 #include <xrCore.h>
 
+// Include DX
+#ifdef DEBUG
+	#define D3D_DEBUG_INFO
+#endif
 #pragma warning(disable:4995)
 #include <d3d9.h>
 #include <dplay8.h>
