@@ -1,9 +1,11 @@
 [weathers]
 ;sarkofag        = sect_sarkofag
 ;vibros          =sect_vibros
-all_no_vert      =sect_all_no_vert
+;all_no_vert      =sect_all_no_vert
 mp_weather		= sect_mp_weather
 ;aaa = sect_aaa
+tuman = sect_tuman
+
 
 [flares_default10]
 flare_opacity            = 0.240, 0.160, 0.400, 0.320, 0.160, 0.160
@@ -132,7 +134,51 @@ blend_rise_time				= 300 ;(сек)
 blend_down_time				= 300 ;(сек)
 
 
+[sect_tuman]
+00:00:00		=	tt01
+12:00:00		=	tt02
 
+[tt01]
+flares			=	
+sky_texture		=	sky\sky_23_cube
+sky_rotation	=	0
+sky_color		=	1,    1,  	1
+far_plane		=	250
+fog_color		=	0.201, 0.211, 0.224
+fog_density		=	2
+rain_density	=	0.0
+rain_color		=	1.0,	1.0,	1.0
+thunderbolt		= 	off
+bolt_period		=	3.f
+bolt_duration	=	0.25f
+wind_velocity	=	0.0 
+wind_direction	=	0.0
+ambient			=	0.065,   0.065,  	0.07
+lmap_color		=	1.0,	1.0,	1.0
+hemi_color		=	0.4,    0.4,  	0.4,	1.0
+sun_color		=	0.5,    0.3,  	0.4
+sun_dir			=	-6.0, 293
+
+[tt02]
+flares			=	
+sky_texture		=	sky\sky_23_cube
+sky_rotation	=	0
+sky_color		=	1,    1,  	1
+far_plane		=	50
+fog_color		=	0.201, 0.211, 0.224
+fog_density		=	5
+rain_density	=	0.0
+rain_color		=	1.0,	1.0,	1.0
+thunderbolt		= 	off
+bolt_period		=	3.f
+bolt_duration	=	0.25f
+wind_velocity	=	0.0 
+wind_direction	=	0.0
+ambient			=	0.065,   0.065,  	0.07
+lmap_color		=	1.0,	1.0,	1.0
+hemi_color		=	0.4,    0.4,  	0.4,	1.0
+sun_color		=	0.5,    0.3,  	0.4
+sun_dir			=	-6.0, 293
 
 
 [sect_sarkofag]
