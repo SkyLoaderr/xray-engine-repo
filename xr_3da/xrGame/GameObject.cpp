@@ -27,6 +27,9 @@
 CGameObject::CGameObject		()
 {
 	Init						();
+	//-----------------------------------------
+	m_bCrPr_Activated			= false;
+	m_dwCrPr_ActivationStep		= 0;
 }
 
 CGameObject::~CGameObject		()
@@ -99,7 +102,10 @@ void CGameObject::net_Destroy	()
 	g_pGameLevel->Objects.net_Unregister		(this);
 	
 	if (this == Level().CurrentEntity())
+	{
 		Level().SetEntity						(0);
+		Level().SetControlEntity				(0);
+	}
 
 	if (UsedAI_Locations() && !H_Parent() && ai().get_level_graph() && ai().level_graph().valid_vertex_id(level_vertex_id()))
 		ai().level_graph().ref_dec				(level_vertex_id());

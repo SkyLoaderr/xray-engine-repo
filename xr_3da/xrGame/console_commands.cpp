@@ -25,7 +25,7 @@
 ENGINE_API
 extern	float	psHUD_FOV;
 extern	float	psSqueezeVelocity;
-extern	int		lvInterp;
+extern	float	g_cl_lvInterp;
 extern	float	g_fMaxDesyncLen;
 extern	float	g_fMinReconDist;
 extern	float	g_fMaxReconDist;
@@ -647,22 +647,6 @@ public:
 	}
 };
 
-class CCC_Net_CL_Interpolation : public CCC_Integer {
-protected:
-	int		*value_blin;
-public:
-	CCC_Net_CL_Interpolation(LPCSTR N, int* V, int _min=0, int _max=999) :
-	  CCC_Integer(N,V,_min,_max),
-		  value_blin(V)
-	  {};
-
-	  virtual void	Execute	(LPCSTR args)
-	  {
-		  CCC_Integer::Execute(args);
-		  if ((*value_blin > 0) && g_pGameLevel)
-			  Level().SetInterpolationSteps(*value_blin);
-	  }
-};
 class CCC_FloatBlock : public CCC_Float {
 public:
 	CCC_FloatBlock(LPCSTR N, float* V, float _min=0, float _max=1) :
@@ -920,7 +904,7 @@ void CCC_RegisterCommands()
 	CMD4( CCC_FloatBlock,		"ph_rigid_break_weapon_factor",	&phRigidBreakWeaponFactor,	0.f,1000000000.f);
 	// Mad Max
 	// Net Interpolation
-	CMD4(CCC_Net_CL_Interpolation,	"net_cl_interpolation",		&lvInterp,				-1,100);
+	CMD4(CCC_Float,					"net_cl_interpolation",		&g_cl_lvInterp,				-1,1);
 	CMD4(CCC_Float,					"net_cl_maxdesync",			&g_fMaxDesyncLen,		0, 10);
 	CMD1(CCC_Net_CL_Resync,			"net_cl_resync" );
 	CMD1(CCC_Net_CL_ClearStats,		"net_cl_clearstats" );

@@ -61,6 +61,7 @@ void CLevel::g_sv_Spawn		(CSE_Abstract* E)
 		//Msg			("--spawn--SPAWN: %f ms",1000.f*T.GetAsync());
 		if ((E->s_flags.is(M_SPAWN_OBJECT_LOCAL)) && (E->s_flags.is(M_SPAWN_OBJECT_ASPLAYER)))	{
 			SetEntity		(	O	);
+			SetControlEntity(	O	);
 			if (net_Syncronised)	net_Syncronize	();	// start sync-thread again
 		}
 

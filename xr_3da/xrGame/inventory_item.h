@@ -140,6 +140,9 @@ public:
 	virtual void	make_Interpolation	();
 	virtual void	PH_B_CrPr			(); // actions & operations before physic correction-prediction steps
 	virtual void	PH_I_CrPr			(); // actions & operations after correction before prediction steps
+#ifdef DEBUG
+	virtual void	PH_Ch_CrPr			(); // 
+#endif
 	virtual void	PH_A_CrPr			(); // actions & operations after phisic correction-prediction steps
 
 	virtual void	net_Import			(NET_Packet& P);					// import from server
@@ -157,15 +160,29 @@ protected:
 
 	xr_deque<net_update_IItem>	NET_IItem;
 	/////////////////////////////////////////////
-	bool			m_bHasUpdate;
+	/// spline coeff /////////////////////
+	float			SCoeff[3][4];
+
+#ifdef DEBUG
+	DEF_VECTOR		(VIS_POSITION, Fvector);
+	VIS_POSITION	LastVisPos;
+#endif
 
 	Fvector			IStartPos;
 	Fquaternion		IStartRot;
 
-	Fvector			IEndPos;
-	Fquaternion		IEndRot;
+	Fvector			IRecPos;
+	Fquaternion		IRecRot;
 
+	Fvector			IEndPos;
+	Fquaternion		IEndRot;	
+
+	SPHNetState		LastState;
 	SPHNetState		RecalculatedState;
+
+#ifdef DEBUG
+	SPHNetState		CheckState;
+#endif
 	SPHNetState		PredictedState;
 
 	bool			m_bInInterpolation		;
@@ -173,6 +190,8 @@ protected:
 	u32				m_dwIStartTime			;
 	u32				m_dwIEndTime			;
 	u32				m_dwILastUpdateTime		;
+
+	void			CalculateInterpolationParams();
 
 private:
 	u64				m_inventory_mask;
@@ -203,6 +222,10 @@ public:
 	virtual CInventoryItem *can_make_killing(const CInventory *inventory) const;
 	virtual bool	ready_to_kill			() const;
 	IC		bool	useful_for_NPC			() const;
+#ifdef DEBUG
+	virtual void			OnRender			();
+#endif
 };
+
 
 #include "inventory_item_inline.h"

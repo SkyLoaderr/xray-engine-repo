@@ -38,6 +38,8 @@
 #include "date_time.h"
 
 CPHWorld*	ph_world = 0;
+float		g_cl_lvInterp = 0;
+u32			lvInterpSteps = 0;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -89,6 +91,11 @@ CLevel::CLevel():IPureClient(Device.GetTimerGlobal())
 #ifdef DEBUG
 	m_bSynchronization			= false;
 #endif	
+	//---------------------------------------------------------
+	pStatGraph = NULL;
+	//---------------------------------------------------------
+	pObjects4CrPr.clear();
+	pActors4CrPr.clear();
 }
 
 CLevel::~CLevel()
@@ -136,6 +143,11 @@ CLevel::~CLevel()
 	xr_delete			(m_pFogOfWar);
 	//destroy bullet manager
 	xr_delete					(m_pBulletManager);
+	//-----------------------------------------------------------
+	xr_delete	(pStatGraph);
+	//-----------------------------------------------------------
+	pObjects4CrPr.clear();
+	pActors4CrPr.clear();
 }
 
 // Game interface ////////////////////////////////////////////////////
@@ -331,6 +343,16 @@ void CLevel::OnRender()
 			if (team_base_zone)
 				team_base_zone->OnRender();
 		}
+		if (Game().type != GAME_SINGLE)
+		{
+			xr_vector<CObject*>::iterator	I = Level().Objects.objects.begin();
+			xr_vector<CObject*>::iterator	E = Level().Objects.objects.end();
+			for ( ; I != E; ++I) {
+
+				CInventoryItem* pIItem = dynamic_cast<CInventoryItem*>(*I);
+				if (pIItem) pIItem->OnRender();
+			}
+		};
 
 		ObjectSpace.dbgRender	();
 
@@ -369,9 +391,25 @@ void CLevel::OnEvent(EVENT E, u64 P1, u64 /**P2/**/)
 	} else return;
 }
 
+void	CLevel::AddObject_To_Objects4CrPr	(CGameObject* pObj)
+{
+	if (!pObj) return;
+	for	(OBJECTS_LIST_it OIt = pObjects4CrPr.begin(); OIt != pObjects4CrPr.end(); OIt++)
+	{
+		if (*OIt == pObj) return;
+	}
+	pObjects4CrPr.push_back(pObj);
 
-int	lvInterp = 0;
-u32	lvInterpSteps = 0;
+}
+void	CLevel::AddActor_To_Actors4CrPr		(CGameObject* pActor)
+{
+	if (!pActor) return;
+	for	(OBJECTS_LIST_it AIt = pActors4CrPr.begin(); AIt != pActors4CrPr.end(); AIt++)
+	{
+		if (*AIt == pActor) return;
+	}
+	pActors4CrPr.push_back(pActor);
+}
 
 void CLevel::make_NetCorrectionPrediction	()
 {
@@ -384,48 +422,67 @@ void CLevel::make_NetCorrectionPrediction	()
 	ph_world->Freeze();
 
 	//setting UpdateData and determining number of PH steps from last received update
-	for (xr_vector<CObject*>::iterator O=Objects.objects.begin(); O!=Objects.objects.end(); O++) 
+	for	(OBJECTS_LIST_it OIt = pObjects4CrPr.begin(); OIt != pObjects4CrPr.end(); OIt++)
 	{
-		CGameObject* P = dynamic_cast<CGameObject*>(*O);
-		if (!P) continue;
-		P->PH_B_CrPr();
+		CGameObject* pObj = *OIt;
+		if (!pObj) continue;
+		pObj->PH_B_CrPr();
 	};
 //////////////////////////////////////////////////////////////////////////////////
 	//first prediction from "delivered" to "real current" position
-	//making enought PH steps to calculate current objects position based on their updated state
+	//making enought PH steps to calculate current objects position based on their updated state	
+	
 	for (u32 i =0; i<m_dwNumSteps; i++)	
 	{
 		ph_world->Step();
-		
-		CActor* pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
-		if (!pActor) continue;
-		pActor->PH_I_CrPr();
+
+		for	(OBJECTS_LIST_it AIt = pActors4CrPr.begin(); AIt != pActors4CrPr.end(); AIt++)
+		{
+			CGameObject* pActor = *AIt;
+			if (!pActor || pActor->CrPr_IsActivated()) continue;
+			pActor->PH_B_CrPr();
+		};
 	};
 //////////////////////////////////////////////////////////////////////////////////
-	for (xr_vector<CObject*>::iterator O=Objects.objects.begin(); O!=Objects.objects.end(); O++) 
+	for	(OBJECTS_LIST_it OIt = pObjects4CrPr.begin(); OIt != pObjects4CrPr.end(); OIt++)
 	{
-		CGameObject* P = dynamic_cast<CGameObject*>(*O);
-		if (!P) continue;
-		P->PH_I_CrPr();
-	}
+		CGameObject* pObj = *OIt;
+		if (!pObj) continue;
+		pObj->PH_I_CrPr();
+	};
 //////////////////////////////////////////////////////////////////////////////////
 	if (!InterpolationDisabled())
 	{
 		for (u32 i =0; i<lvInterpSteps; i++)	//second prediction "real current" to "future" position
-			ph_world->Step();
-		//////////////////////////////////////////////////////////////////////////////////
-		for (xr_vector<CObject*>::iterator O=Objects.objects.begin(); O!=Objects.objects.end(); O++) 
 		{
-			CGameObject* P = dynamic_cast<CGameObject*>(*O);
-			if (!P) continue;
-			P->PH_A_CrPr();
+			ph_world->Step();
+#ifdef DEBUG
+/*
+			for	(OBJECTS_LIST_it OIt = pObjects4CrPr.begin(); OIt != pObjects4CrPr.end(); OIt++)
+			{
+				CGameObject* pObj = *OIt;
+				if (!pObj) continue;
+				pObj->PH_Ch_CrPr();
+			};
+*/
+#endif
 		}
+		//////////////////////////////////////////////////////////////////////////////////
+		for	(OBJECTS_LIST_it OIt = pObjects4CrPr.begin(); OIt != pObjects4CrPr.end(); OIt++)
+		{
+			CGameObject* pObj = *OIt;
+			if (!pObj) continue;
+			pObj->PH_A_CrPr();
+		};
 	};
 	ph_world->UnFreeze();
 
 	ph_world->m_steps_num = NumPhSteps;
 	m_dwNumSteps = 0;
 	m_bIn_CrPr = false;
+
+	pObjects4CrPr.clear();
+	pActors4CrPr.clear();
 };
 
 u32			CLevel::GetInterpolationSteps	()
@@ -433,30 +490,33 @@ u32			CLevel::GetInterpolationSteps	()
 	return lvInterpSteps;
 };
 
-void		CLevel::SetInterpolationSteps	(u32 InterpSteps)
-{
-	lvInterpSteps = InterpSteps;
-};
-
 void		CLevel::UpdateDeltaUpd	( u32 LastTime )
 {
-	u32 CurrentDelta = iFloor(float(m_dwDeltaUpdate * 10 + (LastTime - m_dwLastNetUpdateTime)) / 11);
+	u32 CurrentDelta = LastTime - m_dwLastNetUpdateTime;
+	if (CurrentDelta < m_dwDeltaUpdate) 
+		CurrentDelta = iFloor(float(m_dwDeltaUpdate * 10 + CurrentDelta) / 11);
+
 	m_dwLastNetUpdateTime = LastTime;
 	m_dwDeltaUpdate = CurrentDelta;
 
-	if (0 == lvInterp) ReculcInterpolationSteps();
+	if (0 == g_cl_lvInterp) ReculcInterpolationSteps();
+	else 
+		if (g_cl_lvInterp>0)
+		{
+			lvInterpSteps = iCeil(g_cl_lvInterp / fixed_step);
+		}
 };
 
 void		CLevel::ReculcInterpolationSteps ()
 {
 	lvInterpSteps			= iFloor(float(m_dwDeltaUpdate) / (fixed_step*1000));
-	if (lvInterpSteps > 50) lvInterpSteps = 50;
+	if (lvInterpSteps > 60) lvInterpSteps = 60;
 	if (lvInterpSteps < 3)	lvInterpSteps = 3;
 };
 
 bool				CLevel::InterpolationDisabled	()
 {
-	return lvInterp < 0; 
+	return g_cl_lvInterp < 0; 
 };
 
 void __stdcall		CLevel::PhisStepsCallback	( u32 Time0, u32 Time1 )
@@ -481,7 +541,6 @@ void __stdcall		CLevel::PhisStepsCallback	( u32 Time0, u32 Time1 )
 void				CLevel::SetNumCrSteps		( u32 NumSteps )
 {
 	m_bNeed_CrPr = true;
-	R_ASSERT2(NumSteps != 0xffffffff, "Invalid Steps Num");
 	if (m_dwNumSteps > NumSteps) return;
 	m_dwNumSteps = NumSteps;
 };

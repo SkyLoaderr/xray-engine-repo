@@ -456,16 +456,13 @@ protected:
 	///////////////////////////////////////////////////////
 	// апдайт с данными физики
 	xr_deque<net_update_A>	NET_A;
-
-	void					Set_Level_CrPr			( long dTime );
+	
 	//---------------------------------------------
-	bool					m_bHasUpdate;	
+//	bool					m_bHasUpdate;	
 	
 	SPHNetState				RecalculatedState;
 	SPHNetState				PredictedState;
 
-//	Fvector					IStartPos;
-//	Fvector					IEndPos;
 	InterpData				IStart;
 	InterpData				IEnd;
 	

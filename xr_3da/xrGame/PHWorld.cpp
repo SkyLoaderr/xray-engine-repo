@@ -223,7 +223,10 @@ void CPHWorld::Step()
 
 u32 CPHWorld::CalcNumSteps (u32 dTime)
 {
-	u32 res = iFloor((float(dTime) / 1000 / fixed_step)+0.5f);
+	if (dTime < m_frame_time*1000) return 0;
+	u32 res = iCeil((float(dTime) - m_frame_time*1000) / (fixed_step*1000));
+//	if (dTime < fixed_step*1000) return 0;
+//	u32 res = iFloor((float(dTime) / 1000 / fixed_step)+0.5f);
 	return res;
 };
 

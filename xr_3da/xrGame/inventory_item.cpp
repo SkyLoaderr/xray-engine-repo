@@ -49,13 +49,17 @@ CInventoryItem::CInventoryItem()
 	m_dwFrameSpawn		= u32(-1);
 	m_dwFrameDestroy	= u32(-1);
 	m_dwFrameClient		= u32(-1);
-
-
+#ifdef DEBUG
+	LastVisPos.clear();
+#endif
 	m_eItemPlace = eItemPlaceUndefined;
 }
 
 CInventoryItem::~CInventoryItem() 
 {
+#ifdef DEBUG
+	LastVisPos.clear();
+#endif
 }
 
 void CInventoryItem::Load(LPCSTR section) 
@@ -345,7 +349,6 @@ BOOL CInventoryItem::net_Spawn			(LPVOID DC)
 
 	BOOL res = inherited::net_Spawn(DC);
 
-	m_bHasUpdate = false;
 	m_bInInterpolation = false;
 	m_bInterpolate	= false;
 
@@ -361,6 +364,10 @@ BOOL CInventoryItem::net_Spawn			(LPVOID DC)
 
 	
 	m_fCondition = pSE_InventoryItem->m_fCondition;
+	if (Game().type != GAME_SINGLE)
+	{
+		processing_activate();
+	}
 
 	return		res;
 }
@@ -419,15 +426,9 @@ void CInventoryItem::net_Import			(NET_Packet& P)
 
 	if (!NET_IItem.empty()) m_bInterpolate = true;
 
-	long dTime = Level().timeServer() - N.dwTimeStamp;
-	u32 NumSteps = 0;
-	if (dTime < (fixed_step*500))
-		NumSteps = 0;
-	else
-		NumSteps = ph_world->CalcNumSteps(dTime);
-
-	m_bHasUpdate = true;
-	Level().SetNumCrSteps(NumSteps);
+	Level().AddObject_To_Objects4CrPr(this);
+	CrPr_SetActivated(false);
+	CrPr_SetActivationStep(0);
 
 	NET_IItem.push_back			(N);
 	while (NET_IItem.size() > 2)
@@ -484,31 +485,25 @@ void CInventoryItem::net_Export			(NET_Packet& P)
 void CInventoryItem::PH_B_CrPr		()
 {
 	//just set last update data for now
-	if (!m_bHasUpdate) return;	
+	if (CrPr_IsActivated()) return;
+	if (CrPr_GetActivationStep() > ph_world->m_steps_num) return;
+	CrPr_SetActivated(true);
+
 	///////////////////////////////////////////////
 	CPHSynchronize* pSyncObj = NULL;
 	pSyncObj = PHGetSyncItem(0);
 	if (!pSyncObj) return;
 	///////////////////////////////////////////////
-	IStartPos.set(Position());
-	IStartRot.set(XFORM());
-
-	m_bInInterpolation = false;
+	pSyncObj->get_State(LastState);
+	///////////////////////////////////////////////
 	net_update_IItem N_I = NET_IItem.back();
-	if (!N_I.State.enabled) 
-	{
-		pSyncObj->set_State(N_I.State);//, N_A.State.enabled);
-	}
-	else
-	{
-		PHUnFreeze();
 
-		pSyncObj->set_State(N_I.State);//, N_A.State.enabled);
-	};
+	pSyncObj->set_State(N_I.State);
+
+	PHUnFreeze();
 	///////////////////////////////////////////////
 	if (Level().InterpolationDisabled())
 	{
-		m_bHasUpdate = false;
 		m_bInInterpolation = false;
 	};
 	///////////////////////////////////////////////
@@ -517,7 +512,7 @@ void CInventoryItem::PH_B_CrPr		()
 void CInventoryItem::PH_I_CrPr		()		// actions & operations between two phisic prediction steps
 {
 	//store recalculated data, then we able to restore it after small future prediction
-	if (!m_bHasUpdate) return;
+	if (!CrPr_IsActivated()) return;
 	////////////////////////////////////
 	CPHSynchronize* pSyncObj = NULL;
 	pSyncObj = PHGetSyncItem(0);
@@ -525,13 +520,51 @@ void CInventoryItem::PH_I_CrPr		()		// actions & operations between two phisic p
 	////////////////////////////////////
 	pSyncObj->get_State(RecalculatedState);
 	///////////////////////////////////////////////
+	Fmatrix xformX;
+	pSyncObj->cv2obj_Xfrom(RecalculatedState.quaternion, RecalculatedState.position, xformX);
+
+	VERIFY2								(_valid(xformX),*cName());
+	pSyncObj->cv2obj_Xfrom(RecalculatedState.quaternion, RecalculatedState.position, xformX);
+
+	IRecRot.set(xformX);
+	IRecPos.set(xformX.c);
+	VERIFY2								(_valid(IEndPos),*cName());
 }; 
+
+#ifdef DEBUG
+void CInventoryItem::PH_Ch_CrPr			()
+{
+	//restore recalculated data and get data for interpolation	
+	if (!CrPr_IsActivated()) return;
+	////////////////////////////////////
+	CPHSynchronize* pSyncObj = NULL;
+	pSyncObj = PHGetSyncItem(0);
+	if (!pSyncObj) return;
+	////////////////////////////////////
+	pSyncObj->get_State(CheckState);
+	if (!H_Parent() && getVisible())
+	{
+		if (CheckState.enabled == false && RecalculatedState.enabled == true)
+		{
+			///////////////////////////////////////////////////////////////////
+			pSyncObj->set_State(LastState);
+			pSyncObj->set_State(RecalculatedState);//, N_A.State.enabled);
+
+			PHUnFreeze();
+			///////////////////////////////////////////////////////////////////
+			ph_world->Step();
+			///////////////////////////////////////////////////////////////////
+			PH_Ch_CrPr();
+			////////////////////////////////////
+		};
+	};	
+};
+#endif
 
 void CInventoryItem::PH_A_CrPr		()
 {
 	//restore recalculated data and get data for interpolation	
-	if (!m_bHasUpdate) return;
-	m_bHasUpdate = false;
+	if (!CrPr_IsActivated()) return;
 	////////////////////////////////////
 	CPHSynchronize* pSyncObj = NULL;
 	pSyncObj = PHGetSyncItem(0);
@@ -543,44 +576,165 @@ void CInventoryItem::PH_A_CrPr		()
 	////////////////////////////////////
 
 	if (!m_bInterpolate) return;
-
+	////////////////////////////////////
 	Fmatrix xformX;
-	pSyncObj->cv2obj_Xfrom(PredictedState.previous_quaternion, PredictedState.previous_position, xformX);
+	pSyncObj->cv2obj_Xfrom(PredictedState.quaternion, PredictedState.position, xformX);
 
 	VERIFY2								(_valid(xformX),*cName());
-	pSyncObj->cv2obj_Xfrom(PredictedState.previous_quaternion, PredictedState.previous_position, xformX);
+	pSyncObj->cv2obj_Xfrom(PredictedState.quaternion, PredictedState.position, xformX);
 	
 	IEndRot.set(xformX);
 	IEndPos.set(xformX.c);
 	VERIFY2								(_valid(IEndPos),*cName());
-	
+	/////////////////////////////////////////////////////////////////////////
+	CalculateInterpolationParams();
+	///////////////////////////////////////////////////
+};
 
-	m_bInInterpolation = true;
+extern	float		g_cl_lvInterp;
+
+void CInventoryItem::CalculateInterpolationParams()
+{
+	IStartPos.set(Position());
+	IStartRot.set(XFORM());
+
+	Fvector P0, P1, P2, P3;
+
+	CPHSynchronize* pSyncObj = NULL;
+	pSyncObj = PHGetSyncItem(0);
+	
+	Fmatrix xformX0, xformX1;	
+
+	if (m_bInInterpolation)
+	{
+		u32 CurTime = Level().timeServer();
+		float factor	= float(CurTime - m_dwIStartTime)/(m_dwIEndTime - m_dwIStartTime);
+		if (factor > 1.0f) factor = 1.0f;
+
+		float c = factor;
+		for (u32 k=0; k<3; k++)
+		{
+			P0[k] = c*(c*(c*SCoeff[k][0]+SCoeff[k][1])+SCoeff[k][2])+SCoeff[k][3];
+			P1[k] = (c*c*SCoeff[k][0]*3+c*SCoeff[k][1]*2+SCoeff[k][2])/3; // сокрость из формулы в 3 раза превышает скорость при расчете коэффициентов !!!!
+		};
+		P0.set(IStartPos);
+		P1.add(IStartPos);
+	}	
+	else
+	{
+		P0 = IStartPos;
+
+		if (LastState.linear_vel.x == 0 && LastState.linear_vel.y == 0 && LastState.linear_vel.z == 0)
+		{
+			pSyncObj->cv2obj_Xfrom(RecalculatedState.previous_quaternion, RecalculatedState.previous_position, xformX0);
+			pSyncObj->cv2obj_Xfrom(RecalculatedState.quaternion, RecalculatedState.position, xformX1);
+		}
+		else
+		{
+			pSyncObj->cv2obj_Xfrom(LastState.previous_quaternion, LastState.previous_position, xformX0);
+			pSyncObj->cv2obj_Xfrom(LastState.quaternion, LastState.position, xformX1);
+		};
+
+		P1.sub(xformX1.c, xformX0.c);
+		P1.add(IStartPos);
+	}
+
+	P2.sub(PredictedState.position, PredictedState.linear_vel);
+	pSyncObj->cv2obj_Xfrom(PredictedState.quaternion, P2, xformX0);
+	P2.set(xformX0.c);
+
+	pSyncObj->cv2obj_Xfrom(PredictedState.quaternion, PredictedState.position, xformX1);
+	P3.set(xformX1.c);
+	/////////////////////////////////////////////////////////////////////////////
+	Fvector TotalPath;
+	TotalPath.sub(P3, P0);
+	float TotalLen = TotalPath.magnitude();
+	
+	SPHNetState	State0 = (NET_IItem.back()).State;
+	SPHNetState	State1 = PredictedState;
+
+	float lV0 = State0.linear_vel.magnitude();
+	float lV1 = State1.linear_vel.magnitude();
+
+	u32		ConstTime = u32((fixed_step - ph_world->m_frame_time)*1000)+ Level().GetInterpolationSteps()*u32(fixed_step*1000);
+	
 	m_dwIStartTime = m_dwILastUpdateTime;
-	m_dwIEndTime = Level().timeServer() + u32((fixed_step - ph_world->m_frame_time)*1000)+ Level().GetInterpolationSteps()*u32(fixed_step*1000);
+
+	if (( lV0 + lV1) > 0.000001 && g_cl_lvInterp == 0)
+	{
+		u32		CulcTime = iCeil(TotalLen*2000/( lV0 + lV1));
+		m_dwIEndTime = m_dwIStartTime + min(CulcTime, ConstTime);
+	}
+	else
+		m_dwIEndTime = m_dwIStartTime + ConstTime;
+	/////////////////////////////////////////////////////////////////////////////
+	Fvector V0, V1;
+	V0.sub(P1, P0);
+	V1.sub(P3, P2);
+	lV0 = V0.magnitude();
+	lV1 = V1.magnitude();
+
+	if (TotalLen != 0)
+	{
+		if (V0.x != 0 || V0.y != 0 || V0.z != 0)
+		{
+			if (lV0 > TotalLen/3)
+			{
+				V0.normalize();
+				V0.mul(TotalLen/3);
+				P1.add(V0, P0);
+			}
+		}
+		
+		if (V1.x != 0 || V1.y != 0 || V1.z != 0)
+		{
+			if (lV1 > TotalLen/3)
+			{
+				V1.normalize();
+				V1.mul(TotalLen/3);
+				P2.sub(P3, V1);
+			};
+		}
+	};
+	/////////////////////////////////////////////////////////////////////////////
+	for( u32 i =0; i<3; i++)
+	{
+		SCoeff[i][0] = P3[i]	- 3*P2[i] + 3*P1[i] - P0[i];
+		SCoeff[i][1] = 3*P2[i]	- 6*P1[i] + 3*P0[i];
+		SCoeff[i][2] = 3*P1[i]	- 3*P0[i];
+		SCoeff[i][3] = P0[i];
+	};
+	/////////////////////////////////////////////////////////////////////////////
+	m_bInInterpolation = true;
+
+	if (m_pPhysicsShell) m_pPhysicsShell->NetInterpolationModeON();
+
 };
 
 void CInventoryItem::make_Interpolation	()
 {
 	m_dwILastUpdateTime = Level().timeServer();
-	if (!m_bInInterpolation) return;
 	
-	if(!H_Parent() && getVisible() && m_pPhysicsShell) {
+	if(!H_Parent() && getVisible() && m_pPhysicsShell && m_bInInterpolation) 
+	{
 		u32 CurTime = Level().timeServer();
-		if (CurTime >= m_dwIEndTime) {
+		if (CurTime >= m_dwIEndTime) 
+		{
 			m_bInInterpolation = false;
+
+			m_pPhysicsShell->NetInterpolationModeOFF();
 
 			CPHSynchronize* pSyncObj = NULL;
 			pSyncObj = PHGetSyncItem(0);
-			pSyncObj->set_State(PredictedState);//, PredictedState.enabled);
-//			Position().set(PredictedState.position);
+			pSyncObj->set_State(PredictedState);
 			Fmatrix xformI;
 			pSyncObj->cv2obj_Xfrom(PredictedState.quaternion, PredictedState.position, xformI);
 			VERIFY2								(_valid(renderable.xform),*cName());
 			XFORM().set(xformI);
 			VERIFY2								(_valid(renderable.xform),*cName());
 		}
-		else {
+		else 
+		{
 			VERIFY			(CurTime <= m_dwIEndTime);
 			float factor	= float(CurTime - m_dwIStartTime)/(m_dwIEndTime - m_dwIStartTime);
 			if (factor > 1) factor = 1.0f;
@@ -588,65 +742,35 @@ void CInventoryItem::make_Interpolation	()
 
 			Fvector IPos;
 			Fquaternion IRot;
-			IPos.lerp(IStartPos, IEndPos, factor);
+
+			float c = factor;
+			for (u32 k=0; k<3; k++)
+			{
+				IPos[k] = c*(c*(c*SCoeff[k][0]+SCoeff[k][1])+SCoeff[k][2])+SCoeff[k][3];
+			};
+
 			VERIFY2								(_valid(IPos),*cName());
 			IRot.slerp(IStartRot, IEndRot, factor);
-
-			VERIFY2								(_valid(renderable.xform),*cName());
+			VERIFY2								(_valid(IRot),*cName());
 			XFORM().rotation(IRot);
 			VERIFY2								(_valid(renderable.xform),*cName());
 			Position().set(IPos);
 			VERIFY2								(_valid(renderable.xform),*cName());
-			
 		};
-		/*
-		if (ph_world->m_steps_num > m_u64IEndStep)
-		{
-			m_bInInterpolation = false;
-		}
-		else
-		{
-			Fvector IPos;
-			Fquaternion IRot;
-
-			if (ph_world->m_steps_num < m_u64IEndStep)
-			{
-				float f = float(CurrentTime - m_dwIStartTime)/(m_dwIEndTime - m_dwIStartTime);
-				if (f < 0 || f > 1)
-				{
-					if (f < 0) f = 0.0f;
-					else f = 1.0f;
-				}
-
-				IPos.lerp(IStartPos, IEndPos, f);
-				IRot.slerp(IStartRot, IEndRot, f);
-			}
-			else
-			{
-				CPHSynchronize* pSyncObj = NULL;
-				pSyncObj = PHGetSyncItem(0);
-				if (!pSyncObj) return;
-				SPHNetState	State;
-				pSyncObj->get_State(State);
-
-				Fmatrix xformI;
-				pSyncObj->cv2obj_Xfrom(State.quaternion, State.position, xformI);
-
-				Fvector tmpP;
-				Fquaternion tmpR;
-
-				tmpR.set(xformI);
-				tmpP.set(xformI.c);
-
-				IPos.lerp(IEndPos, tmpP, ph_world->m_frame_time/fixed_step);
-				IRot.slerp(IEndRot, tmpR, ph_world->m_frame_time/fixed_step);
-			}
-
-			XFORM().rotation(IRot);
-			Position().set(IPos);
-		}
-		*/
 	}
+	else
+	{
+		m_bInInterpolation = false;
+	};
+
+#ifdef DEBUG
+	Fvector iPos = Position();
+
+	if (!H_Parent() && getVisible()) 
+	{
+		LastVisPos.push_back(iPos);
+	};
+#endif
 }
 
 void CInventoryItem::BuildInventoryMask	(const CInventory	*inventory)
@@ -765,3 +889,81 @@ void CInventoryItem::UpdateXForm	()
 	//	UpdatePosition	(mRes);
 	Position().set(mRes.c);
 }
+
+#ifdef DEBUG
+void CInventoryItem::OnRender()
+{
+	if (bDebug && Visual())
+	{
+		Fvector bc,bd; 
+		Visual()->vis.box.get_CD	(bc,bd);
+		Fmatrix	M = XFORM();
+		M.c.add (bc);
+		RCache.dbg_DrawOBB			(M,bd,color_rgba(0,0,255,255));
+/*
+		u32 Color;
+		if (processing_enabled())
+		{
+			if (m_bInInterpolation)
+				Color = color_rgba(0,255,255, 255);
+			else
+				Color = color_rgba(0,255,0, 255);
+		}
+		else
+		{
+			if (m_bInInterpolation)
+				Color = color_rgba(255,0,255, 255);
+			else
+				Color = color_rgba(255, 0, 0, 255);
+		};
+
+//		RCache.dbg_DrawOBB			(M,bd,Color);
+		float size = 0.01f;
+		if (!H_Parent())
+		{
+			RCache.dbg_DrawAABB			(Position(), size, size, size, color_rgba(0, 255, 0, 255));
+
+			Fvector Pos1, Pos2;
+			VIS_POSITION_it It = LastVisPos.begin();
+			Pos1 = *It;
+			for (; It != LastVisPos.end(); It++)
+			{
+				Pos2 = *It;
+				RCache.dbg_DrawLINE(Fidentity, Pos1, Pos2, color_rgba(255, 255, 0, 255));
+				Pos1 = Pos2;
+			};
+
+		}
+		//---------------------------------------------------------
+		if (OnClient() && !H_Parent() && m_bInInterpolation)
+		{
+
+			Fmatrix xformI;
+
+			xformI.rotation(IRecRot);
+			xformI.c.set(IRecPos);
+			RCache.dbg_DrawAABB			(IRecPos, size, size, size, color_rgba(255, 0, 255, 255));
+
+			xformI.rotation(IEndRot);
+			xformI.c.set(IEndPos);
+			RCache.dbg_DrawOBB			(xformI,bd,color_rgba(0, 255, 0, 255));
+
+			///////////////////////////////////////////////////////////////////////////
+			Fvector point0 = IStartPos, point1;			
+			
+			float c = 0;
+			for (float i=0.1f; i<1.1f; i+= 0.1f)
+			{
+				c = i;// * 0.1f;
+				for (u32 k=0; k<3; k++)
+				{
+					point1[k] = c*(c*(c*SCoeff[k][0]+SCoeff[k][1])+SCoeff[k][2])+SCoeff[k][3];
+				};
+				RCache.dbg_DrawLINE(Fidentity, point0, point1, color_rgba(0, 0, 255, 255));
+				point0.set(point1);
+			};
+		};
+		*/
+	};
+}
+#endif

@@ -71,6 +71,23 @@ BOOL CLevel::net_Start_client	( LPCSTR options )
 
 		// if (strstr(Path.Current,"escape"))	Engine.Event.Signal	("level.weather.rain.start");
 
+		//-----------------------------------------------------------------------
+		if (!pStatGraph && OnServer())
+		{
+			/*
+			pStatGraph = xr_new<CStatGraph>();
+			pStatGraph->SetRect(0, 0, 1024, 100, 0xff000000, 0xff000000);
+
+			pStatGraph->SetMinMax(-0.0f, 100.0f, 300);
+			pStatGraph->SetGrid(0, 0.0f, 10, 10.0f, 0xff808080, 0xffffffff);
+
+			pStatGraph->SetStyle(CStatGraph::stBar);
+			pStatGraph->AppendSubGraph(CStatGraph::stBar);
+			pStatGraph->AppendSubGraph(CStatGraph::stBar);
+			*/
+		};
+		//-----------------------------------------------------------------------
+
 		// signal OK
 		pApp->LoadEnd	();
 		return TRUE;

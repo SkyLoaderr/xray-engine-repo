@@ -5,6 +5,7 @@
 #include "xrmessages.h"
 #include "game_cl_base.h"
 #include "net_queue.h"
+#include "Physics.h"
 
 void CLevel::ClientReceive()
 {
@@ -38,11 +39,46 @@ void CLevel::ClientReceive()
 			}
 			break;
 		case M_UPDATE:
-			game->net_import_update	(*P);
-			Objects.net_Import		(P);
-			
-			UpdateDeltaUpd(timeServer());
-			break;
+			{
+				game->net_import_update	(*P);
+				Objects.net_Import		(P);
+
+				if (OnClient()) UpdateDeltaUpd(timeServer());
+				//-------------------------------------------
+				if (OnServer()) break;
+				//-------------------------------------------
+				IClientStatistic pStat = Level().GetStatistic();
+				u32 dTime = Level().timeServer() - P->timeReceive + pStat.getPing();
+				u32 NumSteps = ph_world->CalcNumSteps(dTime);
+				SetNumCrSteps(NumSteps);
+			}break;
+		//----------- for E3 -----------------------------
+		case M_CL_UPDATE:
+			{
+				P->r_u16		(ID);
+				u32 Ping = P->r_u32();
+//				P->r_advance(1);
+				CGameObject*	O	= dynamic_cast<CGameObject*>(Objects.net_Find		(ID));
+				if (0 == O)		break;
+				O->net_Import(*P);
+		//---------------------------------------------------
+				UpdateDeltaUpd(timeServer());
+
+				u32 dTime = Level().timeServer() - P->timeReceive + Ping;
+				u32 NumSteps = ph_world->CalcNumSteps(dTime);
+				SetNumCrSteps(NumSteps);
+
+				O->CrPr_SetActivationStep(u32(ph_world->m_steps_num) - NumSteps);
+				AddActor_To_Actors4CrPr(O);
+
+				if (pStatGraph)
+				{
+					pStatGraph->AppendItem(float(Ping), 0xff00ff00, 2);
+					pStatGraph->AppendItem(float(dTime), 0xffffff00, 1);
+					pStatGraph->AppendItem(float(NumSteps*20), 0xffff00ff, 0);
+				}
+			}break;
+		//------------------------------------------------
 		case 	M_SV_CONFIG_NEW_CLIENT:
 			InitializeClientGame(*P);
 			break;
@@ -97,16 +133,6 @@ void CLevel::ClientReceive()
 				if (0 == O)		break;
 				O->net_ImportInput(*P);
 			}break;
-		//----------- for E3 -----------------------------
-		case M_CL_UPDATE:
-			{
-				P->r_u16		(ID);
-				u8  size;	P->r_u8	(size);
-				CObject*	O	= Objects.net_Find		(ID);
-				if (0 == O)		break;
-				O->net_Import(*P);
-			}break;
-		//------------------------------------------------
 		case M_GAMEMESSAGE:
 			{
 				Game().OnGameMessage(*P);

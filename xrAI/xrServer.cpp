@@ -199,6 +199,10 @@ u32 xrServer::OnMessage(NET_Packet& P, DPNID sender)			// Non-Zero means broadca
 		{
 			xrClientData* CL		= ID_to_client	(sender);
 			if (CL)	CL->net_Ready	= TRUE;
+			//-------------------------------------------------------------------
+			u32 ClientPing = CL->stats.getPing();
+			P.w_seek(P.r_tell()+2, &ClientPing, 4);
+			//-------------------------------------------------------------------
 			if (SV_Client) SendTo	(SV_Client->ID, P, net_flags(TRUE, TRUE));
 			VERIFY					(verify_entities());
 		}break;

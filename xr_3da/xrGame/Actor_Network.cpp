@@ -7,6 +7,7 @@
 #include "Actor_Flags.h"
 #include "inventory.h"
 #include "xrserver_objects_alife_monsters.h"
+#include "xrServer.h"
 
 #include "CameraLook.h"
 #include "CameraFirstEye.h"
@@ -46,7 +47,8 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 	P.w_u32				(0);
 	P.w_u32				(0);
 
-	P.w_u16				(u16(mstate_real));
+	u16 ms	= (u16)(mstate_real & 0x0000ffff);
+	P.w_u16				(u16(ms));
 	P.w_sdir			(NET_SavedAccel);
 	Fvector				v = m_PhysicMovementControl->GetVelocity();
 	P.w_sdir			(v);//m_PhysicMovementControl.GetVelocity());
@@ -56,7 +58,7 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 
 	/////////////////////////////////////////////////
 	u16 NumItems		= PHGetSyncItemsNumber();
-	if (H_Parent() || GameID() == 1) NumItems = 0;
+	if (H_Parent() || GameID() == 1 || !g_Alive()) NumItems = 0;
 
 	P.w_u16				(NumItems);
 	if (!NumItems)		return;
@@ -117,6 +119,48 @@ void		CActor::net_Import_Base				( NET_Packet& P)
 	u32					dwDummy;
 
 	P.r_u32				(N.dwTimeStamp	);
+	
+	//---------------------------------------------
+	if (pStatGraph) 
+	{
+		pStatGraph->SetMinMax(-0.0f, 100.0f, 300);
+		pStatGraph->SetGrid(0, 0.0f, 10, 10.0f, 0xff808080, 0xffffffff);
+		pStatGraph->SetStyle(CStatGraph::stBar);
+		pStatGraph->SetStyle(CStatGraph::stBar, 1);
+		pStatGraph->SetStyle(CStatGraph::stBar, 2);
+
+		float dTime = 0;
+		if (Level().timeServer() < N.dwTimeStamp)
+			dTime =  -float(N.dwTimeStamp - Level().timeServer());
+		else
+			dTime = float(Level().timeServer() - N.dwTimeStamp);
+
+		if (OnServer())
+		{
+			
+			for (u32 I=0; I<Level().Server->client_Count(); ++I)	
+			{
+				game_PlayerState*	ps = Level().Server->game->get_it(I);
+				if (!ps || ps->GameID != ID()) continue;
+				IClient*	C = Level().Server->client_Get(I);
+				if (!C) continue;
+				pStatGraph->AppendItem(float(C->stats.getPing()), 0xff00ff00, 2);
+				pStatGraph->AppendItem(float(Level().timeServer() - P.timeReceive + C->stats.getPing()), 0xffffff00, 0);
+			};
+		}
+		else
+		{
+			pStatGraph->SetStyle(CStatGraph::stBar);
+			pStatGraph->SetStyle(CStatGraph::stBar, 1);
+			pStatGraph->SetStyle(CStatGraph::stBar, 2);
+
+			IClientStatistic pStat = Level().GetStatistic();
+			pStatGraph->AppendItem(float(pStat.getPing()), 0xff00ff00, 2);
+			pStatGraph->AppendItem(float(Level().timeServer() - P.timeReceive + pStat.getPing()), 0xffffff00, 0);
+		};
+	};
+	//---------------------------------------------
+
 	P.r_u8				(flags			);
 	P.r_vec3			(N.p_pos		);
 	P.r_angle8			(N.o_model		);
@@ -157,6 +201,7 @@ void		CActor::net_Import_Base				( NET_Packet& P)
 				inventory().Activate(u32(ActiveSlot));
 		};
 	}
+
 	//----------- for E3 -----------------------------
 	if (Local() && OnClient()) return;
 	//-------------------------------------------------
@@ -181,26 +226,11 @@ void	CActor::net_Import_Base_proceed		( )
 	setVisible					(TRUE);
 	setEnabled					(TRUE);
 	//---------------------------------------------
+		
 	if (Remote()) return;
 
 	net_update N		= NET.back();
 
-	if (pStatGraph) 
-	{
-		pStatGraph->SetMinMax(0, 100.0f, 300);
-		pStatGraph->SetGrid(0, 0.0f, 10, 20.0f, 0xff808080, 0xffffffff);
-		pStatGraph->SetStyle(CStatGraph::stBar);
-		pStatGraph->SetStyle(CStatGraph::stCurve, 1);
-		pStatGraph->SetStyle(CStatGraph::stCurve, 2);
-
-		u32 dTime = 0;
-		if (Level().timeServer() < N.dwTimeStamp) dTime = 0;
-		else
-			dTime = Level().timeServer() - N.dwTimeStamp;
-
-		pStatGraph->AppendItem(float(dTime)/*g_fMaxDesyncLen*/, 0xffff00ff, 0);
-	};
-	//---------------------------------------------
 	SMemoryPos* pMemPos = FindMemoryPos(N.dwTimeStamp);
 	if (pMemPos)
 	{
@@ -289,13 +319,14 @@ void	CActor::net_Import_Physic_proceed	( )
 	net_update N		= NET.back();
 	net_update_A N_A	= NET_A.back();
 
+	Level().AddObject_To_Objects4CrPr(this);
+	CrPr_SetActivated(false);
+	CrPr_SetActivationStep(0);
 	//----------- for E3 -----------------------------
 	if (Remote() || OnServer())
 	//------------------------------------------------
 	{
-		m_bHasUpdate = true;
-
-		Set_Level_CrPr(long(Level().timeServer()) - (NET.back().dwTimeStamp));
+//		m_bHasUpdate = true;		
 	}
 	else
 	{
@@ -320,14 +351,11 @@ void	CActor::net_Import_Physic_proceed	( )
 
 		if (NumRemained)
 		{
-			m_bHasUpdate = true;
-
-			Set_Level_CrPr(long(Level().timeServer()) - long(N.dwTimeStamp));
+//			m_bHasUpdate = true;			
 
 			NetInput_Save();
 		};
 	};
-
 };
 
 void CActor::net_Import		(NET_Packet& P)					// import from server
@@ -358,20 +386,6 @@ void CActor::net_Import		(NET_Packet& P)					// import from server
 	net_Import_Physic(P);
 	//-----------------------------------------------
 }
-
-void CActor::Set_Level_CrPr (long dTime)
-{
-	if (!m_bHasUpdate) return;
-
-	if (dTime < 0) dTime = 0;
-	u32 NumSteps = 0;
-	if (dTime < (fixed_step*500))
-		NumSteps = 0;
-	else
-		NumSteps = ph_world->CalcNumSteps(dTime);
-
-	Level().SetNumCrSteps ( NumSteps );
-};
 
 void CActor::NetInput_Save()
 {
@@ -538,24 +552,29 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	//----------------------------------
 	m_bAllowDeathRemove = false;
 
-	m_bHasUpdate = false;
+//	m_bHasUpdate = false;
 	m_bInInterpolation = false;
 	m_bInterpolate = false;
-
+//*
+	
+//	if (OnServer())// && E->s_flags.is(M_SPAWN_OBJECT_LOCAL))
 	/*
-	if (OnClient() && E->s_flags.is(M_SPAWN_OBJECT_LOCAL))
+	if (OnClient())
 	{
-	if (!pStatGraph)
-	{
-	pStatGraph = xr_new<CStatGraph>();
-	pStatGraph->SetRect(0, 650, 1024, 100, 0xff000000, 0xff000000);
-	pStatGraph->SetGrid(0, 0.0f, 10, 1.0f, 0xff808080, 0xffffffff);
-	pStatGraph->SetMinMax(-PI, PI, 300);
+		if (!pStatGraph)
+		{
+			static g_Y = 100;
+			pStatGraph = xr_new<CStatGraph>();
+			pStatGraph->SetRect(0, g_Y, 1024, 100, 0xff000000, 0xff000000);
+			g_Y += 110;
+			if (g_Y > 700) g_Y = 100;
+			pStatGraph->SetGrid(0, 0.0f, 10, 1.0f, 0xff808080, 0xffffffff);
+			pStatGraph->SetMinMax(-PI, PI, 300);
 
-	pStatGraph->SetStyle(CStatGraph::stBar);
-	pStatGraph->AppendSubGraph(CStatGraph::stCurve);
-	pStatGraph->AppendSubGraph(CStatGraph::stCurve);
-	};
+			pStatGraph->SetStyle(CStatGraph::stBar);
+			pStatGraph->AppendSubGraph(CStatGraph::stCurve);
+			pStatGraph->AppendSubGraph(CStatGraph::stCurve);
+		};
 	};
 	//*/
 	//----------------------------------
@@ -669,9 +688,12 @@ void CActor::NetInput_Update	(u32 Time)
 void CActor::PH_B_CrPr		()	// actions & operations before physic correction-prediction steps
 {
 	//just set last update data for now
-	if (!m_bHasUpdate) return;
+//	if (!m_bHasUpdate) return;
+	if (CrPr_IsActivated()) return;
+	if (CrPr_GetActivationStep() > ph_world->m_steps_num) return;
+	CrPr_SetActivated(true);
+
 	///////////////////////////////////////////////
-//	IStartPos = Position();
 	IStart.Pos				= Position();
 	IStart.o_model			= r_model_yaw;
 	IStart.o_torso.yaw		= unaffected_r_torso_yaw;
@@ -715,7 +737,7 @@ void CActor::PH_B_CrPr		()	// actions & operations before physic correction-pred
 		///////////////////////////////////////////////
 		if (Level().InterpolationDisabled())
 		{
-			m_bHasUpdate = false;
+//			m_bHasUpdate = false;
 		};
 		///////////////////////////////////////////////
 	};
@@ -726,7 +748,8 @@ void CActor::PH_B_CrPr		()	// actions & operations before physic correction-pred
 void CActor::PH_I_CrPr		()		// actions & operations between two phisic prediction steps
 {
 	//store recalculated data, then we able to restore it after small future prediction
-	if (!m_bHasUpdate) return;
+//	if (!m_bHasUpdate) return;
+	if (!CrPr_IsActivated()) return;
 	////////////////////////////////////
 	CPHSynchronize* pSyncObj = NULL;
 	pSyncObj = PHGetSyncItem(0);
@@ -745,8 +768,9 @@ void CActor::PH_I_CrPr		()		// actions & operations between two phisic predictio
 void CActor::PH_A_CrPr		()
 {
 	//restore recalculated data and get data for interpolation	
-	if (!m_bHasUpdate) return;
-	m_bHasUpdate = false;
+//	if (!m_bHasUpdate) return;
+//	m_bHasUpdate = false;
+	if (!CrPr_IsActivated()) return;
 	////////////////////////////////////
 	CPHSynchronize* pSyncObj = NULL;
 	pSyncObj = PHGetSyncItem(0);
@@ -818,7 +842,9 @@ void CActor::make_Interpolation	()
 				if (OnClient())
 					cam_Active()->Set		(-unaffected_r_torso_yaw,unaffected_r_torso_pitch,0);		// set's camera orientation
 			};
-		};
+		}
+		else
+			m_bInInterpolation = false;
 	};
 };
 

@@ -23,7 +23,11 @@ void CLevel::net_Stop		()
 
 void CLevel::ClientSend	()
 {
-	if (!net_HasBandwidth()) return;
+	if (Game().type == GAME_SINGLE || OnClient())
+	{
+		if (!net_HasBandwidth()) return;
+	};
+
 	NET_Packet				P;
 	u32						start	= 0;
 	//----------- for E3 -----------------------------
@@ -34,14 +38,13 @@ void CLevel::ClientSend	()
 		if (pObj->getDestroy()) return;
 
 		P.w_begin		(M_CL_UPDATE);
-
-		u32			position;
-		P.w_u16			(u16(pObj->ID())	);
-		P.w_chunk_open8	(position);
-		pObj->net_Export			(P);
-		P.w_chunk_close8	(position);
 		
-		if (P.B.count>5)				Send	(P, net_flags(FALSE));
+		P.w_u16			(u16(pObj->ID())	);
+		P.w_u32			(0);	//reserved place for client's ping
+
+		pObj->net_Export			(P);
+		
+		if (P.B.count>9)				Send	(P, net_flags(FALSE));
 		return;
 	};
 	//-------------------------------------------------

@@ -767,8 +767,8 @@ void CActor::shedule_Update	(u32 DT)
 	// Check controls, create accel, prelimitary setup "mstate_real"
 	float	Jump	= 0;
 	//----------- for E3 -----------------------------
-	if (Local() && (OnClient() || Level().CurrentEntity()==this))
-//	if (Level().CurrentControlEntity() == this)
+//	if (Local() && (OnClient() || Level().CurrentEntity()==this))
+	if (Level().CurrentControlEntity() == this)
 	//------------------------------------------------
 	{
 		//-----------------------------------

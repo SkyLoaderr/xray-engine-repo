@@ -9,6 +9,7 @@
 #include "team.h"
 #include "infoportiondefs.h"
 #include "script_export_space.h"
+#include "StatGraph.h"
 
 class	CHUDManager;
 class	CParticlesObject;
@@ -46,12 +47,15 @@ protected:
 	EVENT						eChangeTrack;
 	EVENT						eEnvironment;
 	EVENT						eEntitySpawn;
+
+	CStatGraph					*pStatGraph;
 public:
 	////////////// network ////////////////////////
 	u32							GetInterpolationSteps	();
 	void						SetInterpolationSteps	(u32 InterpSteps);
 	bool						InterpolationDisabled	();
 	void						ReculcInterpolationSteps();
+	u32							GetNumCrSteps			() const	{return m_dwNumSteps; };
 	void						SetNumCrSteps			( u32 NumSteps );
 	static void __stdcall		PhisStepsCallback		( u32 Time0, u32 Time1 );
 	bool						In_NetCorrectionPrediction	() {return m_bIn_CrPr;};
@@ -59,6 +63,20 @@ private:
 	BOOL						m_bNeed_CrPr;
 	u32							m_dwNumSteps;
 	bool						m_bIn_CrPr;
+
+	DEF_VECTOR					(OBJECTS_LIST, CGameObject*);
+
+	OBJECTS_LIST				pObjects4CrPr;
+	OBJECTS_LIST				pActors4CrPr;
+
+	CObject*					pCurrentControlEntity;
+public:
+	void						AddObject_To_Objects4CrPr	(CGameObject* pObj);
+	void						AddActor_To_Actors4CrPr		(CGameObject* pActor);
+
+	CObject*					CurrentControlEntity	( void ) const		{ return pCurrentControlEntity; }
+	void						SetControlEntity		( CObject* O  )		{ pCurrentControlEntity=O; }
+private:
 	
 	void						make_NetCorrectionPrediction	();
 
