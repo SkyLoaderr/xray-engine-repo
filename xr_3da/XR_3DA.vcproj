@@ -767,6 +767,9 @@
 				<File
 					RelativePath="ISpatial.h">
 				</File>
+				<File
+					RelativePath="ISpatial_q_ray.cpp">
+				</File>
 			</Filter>
 		</Filter>
 		<Filter

@@ -34,6 +34,7 @@ class ENGINE_API ISpatial_DB;
 class ENGINE_API ISpatial
 {
 public:
+	u32							spatial_type;			
 	Fvector						spatial_center;			// OWN:
 	float						spatial_radius;			// OWN:
 	Fvector						spatial_node_center;	// Cached node center for TBV optimization
@@ -84,6 +85,7 @@ private:
 
 public:
 	ISpatial_NODE*					m_root;
+	vector<ISpatial*>				q_result;
 	u32								stat_nodes;
 	CStatTimer						stat_insert;
 	CStatTimer						stat_remove;
@@ -96,10 +98,27 @@ private:
 	void							_insert			(ISpatial_NODE* N, Fvector& n_center, float n_radius);
 	void							_remove			(ISpatial_NODE* N, ISpatial_NODE* N_sub);
 public:
+	// managing
 	void							initialize		(Fbox& BB);
+	void							destroy			();
 	void							insert			(ISpatial* S);
 	void							remove			(ISpatial* S);
 	void							update			(u32 nodes=8);
+
+public:
+	enum
+	{
+		OPT_ONLYFIRST	= (1<<1),
+		OPT_ONLYNEAREST	= (1<<2),
+		OPT_ORDERED		= (1<<3),
+		OPT_force_u32	= u32(-1)
+	};
+
+	// query
+	void							q_ray			(u32 _o, u32 _mask, const Fvector&	_start,  const Fvector&	_dir, float _range);
+	void							q_box			(u32 _o, u32 _mask, const Fvector&	_center, const Fvector& _size);
+	void							q_sphere		(u32 _o, u32 _mask, const Fvector&	_center, const Fvector& _radius);
+	void							q_frustum		(u32 _o, u32 _mask, const CFrustum&	_frustum);
 };
 
 extern ISpatial_DB*					SpatialSpace;
