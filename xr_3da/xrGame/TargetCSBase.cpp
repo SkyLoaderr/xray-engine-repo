@@ -24,6 +24,10 @@ void CTargetCSBase::OnDeviceCreate()
 {
 	CCF_Shape*	shape			= new CCF_Shape	(this);
 	cfModel						= shape;
-	Fsphere S;	S.set			(Position(),radius);
+	Fsphere S;	S.P.set			(0,0,0); S.R = radius;
 	shape->add_sphere			(S);
+
+	shape->ComputeBounds						();
+	pCreator->ObjectSpace.Object_Register		(this);
+	cfModel->OnMove								();
 }
