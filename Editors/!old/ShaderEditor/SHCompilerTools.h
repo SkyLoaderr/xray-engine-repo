@@ -10,15 +10,15 @@ class PropValue;
 
 class CSHCompilerTools: public ISHTools
 {
-	bool __fastcall			ItemExist			(LPCSTR name){return !!FindItem(name);}
+	void __stdcall 			ItemExist			(LPCSTR name, bool& res){res = !!FindItem(name);}
 	Shader_xrLC*			FindItem			(LPCSTR name);
     Shader_xrLC_LIB			m_Library;
 
     ListItem*				m_Selected;
 public:
     Shader_xrLC*			m_Shader;
-    virtual BOOL __fastcall OnRemoveItem		(LPCSTR name, EItemType type); 
-	virtual void __fastcall OnRenameItem		(LPCSTR old_full_name, LPCSTR new_full_name, EItemType type);
+    virtual void __stdcall  OnRemoveItem		(LPCSTR name, EItemType type, bool& res); 
+	virtual void __stdcall  OnRenameItem		(LPCSTR old_full_name, LPCSTR new_full_name, EItemType type);
     virtual LPCSTR			AppendItem			(LPCSTR folder, LPCSTR parent=0);
 	virtual void			FillItemList		();
 public:

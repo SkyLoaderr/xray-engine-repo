@@ -63,9 +63,23 @@ CSHEngineTools::CSHEngineTools(ISHInit& init):ISHTools(init)
     m_BlenderStream.clear();
     m_bNeedResetShaders	= TRUE;
     m_RemoteRenBlender	= FALSE;
+
+    MCString.push_back	("Custom...");
+    MCString.push_back	("-");
+    MCString.push_back	("$null");
+    MCString.push_back	("$base0");
+    MCString.push_back	("$base1");
+    MCString.push_back	("$base2");
+    MCString.push_back	("$base3");
+    MCString.push_back	("$base4");
+    MCString.push_back	("$base5");
+    MCString.push_back	("$base6");
+    MCString.push_back	("$base7");
 }
 
-CSHEngineTools::~CSHEngineTools(){
+CSHEngineTools::~CSHEngineTools()
+{
+	MCString.clear		();
 }
 //---------------------------------------------------------------------------
 
@@ -73,13 +87,12 @@ bool CSHEngineTools::OnCreate()
 {
 	IBlender::CreatePalette(m_TemplatePalette);
     Load();
-	m_PreviewObject = xr_new<CSceneObject>((LPVOID)NULL, "Test");
     return true;
 }
 
 void CSHEngineTools::OnDestroy()
 {
-	xr_delete(m_PreviewObject);
+    Lib.RemoveEditObject(m_PreviewObject);
 	// free palette
 	for (TemplateIt it=m_TemplatePalette.begin(); it!=m_TemplatePalette.end(); it++)
     	xr_delete(*it);
@@ -102,9 +115,8 @@ xr_token preview_obj_token[]={
 	{ 0,				0			}
 };
 
-void CSHEngineTools::OnPreviewObjectRefChange(PropItem* sender, LPVOID edit_val)
+void CSHEngineTools::OnPreviewObjectRefChange(PropValue* sender, u32& new_val, bool& res)
 {                                                                              
-	EPreviewObj new_val = EPreviewObj(*(u32*)edit_val);
     LPCSTR fn=0;
     m_bCustomEditObject = false; 
 	switch (new_val){
@@ -112,11 +124,11 @@ void CSHEngineTools::OnPreviewObjectRefChange(PropItem* sender, LPVOID edit_val)
     case pvoBox: 	fn	= "editor\\ShaderTest_Box"; 	break;
     case pvoSphere:	fn	= "editor\\ShaderTest_Sphere";	break;
     case pvoTeapot:	fn	= "editor\\ShaderTest_Teapot";	break;
-    case pvoCustom:	fn	= m_PreviewObject->GetRefName(); if (!TfrmChoseItem::SelectItem(smObject,fn)) return; m_bCustomEditObject = true; break;
+    case pvoCustom:	fn	= m_PreviewObject?m_PreviewObject->GetName():""; if (!TfrmChoseItem::SelectItem(smObject,fn)) return; m_bCustomEditObject = true; break;
     }
-    if (AnsiString(fn).LowerCase()!=AnsiString(m_PreviewObject->GetRefName()).LowerCase()){
-	    m_PreviewObject->SetReference(fn);
-        m_PreviewObject->UpdateTransform(true);
+    if (AnsiString(fn).LowerCase()!=AnsiString(m_PreviewObject?m_PreviewObject->GetName():"").LowerCase()){
+        Lib.RemoveEditObject(m_PreviewObject);
+        m_PreviewObject		= (fn&&fn[0])?Lib.CreateEditObject(fn):0;
         ZoomObject			(false);
         UpdateObjectShader	();
         UI->RedrawScene		();
@@ -126,16 +138,15 @@ void CSHEngineTools::OnPreviewObjectRefChange(PropItem* sender, LPVOID edit_val)
 void CSHEngineTools::OnActivate()
 {
 	PropItemVec items;
-//    m_PreviewObject->FillProp			("Object",items);
-    PropValue* V						= PHelper.CreateToken<u32>	(items,FHelper.PrepareKey("Object","Reference"), &m_PreviewObjectType, preview_obj_token); 
-    V->Owner()->OnAfterEditEvent 		= OnPreviewObjectRefChange;
+    TokenValue<u32>* V					= PHelper().CreateToken32	(items,PrepareKey("Object","Reference"), &m_PreviewObjectType, preview_obj_token); 
+    V->OnAfterEditEvent.bind			(this,&CSHEngineTools::OnPreviewObjectRefChange);
     Ext.m_PreviewProps->AssignItems		(items);
     Ext.m_PreviewProps->ShowProperties	();
     // fill items
     FillItemList						();
-    Ext.m_Items->OnModifiedEvent		= Modified;
-    Ext.m_Items->OnItemRename			= OnRenameItem;
-    Ext.m_Items->OnItemRemove			= OnRemoveItem;
+    Ext.m_Items->SetOnModifiedEvent		(TOnModifiedEvent().bind(this,&CSHEngineTools::Modified));
+    Ext.m_Items->SetOnItemRenameEvent	(TOnItemRename().bind(this,&CSHEngineTools::OnRenameItem));
+    Ext.m_Items->SetOnItemRemoveEvent	(TOnItemRemove().bind(this,&CSHEngineTools::OnRemoveItem));
     inherited::OnActivate				();
 }
 //---------------------------------------------------------------------------
@@ -185,14 +196,13 @@ void CSHEngineTools::OnFrame()
 
 void CSHEngineTools::OnRender()
 {
-	m_PreviewObject->RenderSingle();
+	if (m_PreviewObject) m_PreviewObject->RenderSingle(Fidentity);
 }
 
 void CSHEngineTools::ZoomObject(bool bOnlySel)
 {
-	if (m_PreviewObject->GetReference()){
-    	Fbox bb;
-        m_PreviewObject->GetBox(bb);
+	if (m_PreviewObject){
+    	Fbox bb = m_PreviewObject->GetBox();
         Device.m_Camera.ZoomExtents(bb);
     }else{
     	ISHTools::ZoomObject(bOnlySel);
@@ -224,15 +234,15 @@ void CSHEngineTools::RealResetShaders()
 void CSHEngineTools::FillItemList()
 {
 	// store folders
-	AStringVec folders;
+	RStrVec folders;
 	Ext.m_Items->GetFolders(folders);
     // fill items
 	ListItemsVec items;
 	for (BlenderPairIt b=m_Blenders.begin(); b!=m_Blenders.end(); b++)
-    	LHelper.CreateItem(items,b->first,0);
+    	LHelper().CreateItem(items,b->first,0);
     // fill folders
-    for (AStringIt s_it=folders.begin(); s_it!=folders.end(); s_it++)
-        LHelper.CreateItem(items,s_it->c_str(),0);
+    for (RStringVecIt s_it=folders.begin(); s_it!=folders.end(); s_it++)
+        LHelper().CreateItem(items,**s_it,0);
     // assign items
 	Ext.m_Items->AssignItems(items,false,true);
 }
@@ -257,7 +267,7 @@ void CSHEngineTools::Reload()
 
 void CSHEngineTools::Load()
 {
-	AnsiString fn;
+	std::string fn;
     FS.update_path				(fn,_game_data_,"shaders.xr");
 
     m_bFreezeUpdate				= TRUE;
@@ -375,11 +385,11 @@ void CSHEngineTools::Save(CMemoryWriter& F)
 void CSHEngineTools::Save()
 {
     // set name
-	AnsiString fn;
+	std::string fn;
     FS.update_path				(fn,_game_data_,"shaders.xr");
 
     // backup file
-    EFS.BackupFile				(_game_data_,fn);
+    EFS.BackupFile				(_game_data_,fn.c_str());
 
     // collapse reference
 	CollapseReferences();
@@ -416,50 +426,59 @@ IBlender* CSHEngineTools::FindItem(LPCSTR name){
     }else return 0;
 }
 
-CMatrix* CSHEngineTools::FindMatrix(LPSTR name, bool bDuplicate)
+CMatrix* CSHEngineTools::FindMatrix(LPCSTR name)
 {
 	R_ASSERT(name && name[0]);
-	LPSTR N = LPSTR(name);
-	MatrixPairIt I = m_Matrices.find	(N);
-    CMatrix* M = 0;
-	if (I==m_Matrices.end())return M;
-	else					M=I->second;
-    if (bDuplicate&&M->dwReference>1){
+	MatrixPairIt I = m_Matrices.find	((LPSTR)name);
+	if (I==m_Matrices.end())	return 0;
+	else						return I->second;
+}
+
+CMatrix* CSHEngineTools::AppendMatrix(LPSTR name)
+{
+	CMatrix* M 	= FindMatrix(name); VERIFY(M);
+    if (M->dwReference>1){
 		M->dwReference--;
         strcpy(name,AppendMatrix(M,&M));
     }
     return M;
 }
 
-CConstant* CSHEngineTools::FindConstant(LPSTR name, bool bDuplicate){
+CConstant* CSHEngineTools::FindConstant(LPCSTR name)
+{
 	R_ASSERT(name && name[0]);
-	LPSTR N = LPSTR(name);
-	ConstantPairIt I = m_Constants.find	(N);
-    CConstant* C = 0;
-	if (I==m_Constants.end())return C;
-	else					C=I->second;
-    if (bDuplicate&&C->dwReference>1){
+	ConstantPairIt I = m_Constants.find	((LPSTR)name);
+	if (I==m_Constants.end())	return 0;
+	else						return I->second;
+}
+
+CConstant* CSHEngineTools::AppendConstant(LPSTR name)
+{
+	CConstant* C = FindConstant(name);
+    if (C->dwReference>1){
 		C->dwReference--;
         strcpy(name,AppendConstant(C,&C));
     }
     return C;
 }
 
-LPCSTR CSHEngineTools::GenerateMatrixName(LPSTR name){
+LPCSTR CSHEngineTools::GenerateMatrixName(LPSTR name)
+{
     int cnt = 0;
     do sprintf(name,"%04x",cnt++);
-    while(FindMatrix(name,false));
+    while(FindMatrix(name));
     return name;
 }
 
-LPCSTR CSHEngineTools::GenerateConstantName(LPSTR name){
+LPCSTR CSHEngineTools::GenerateConstantName(LPSTR name)
+{
     int cnt = 0;
     do sprintf(name,"%04x",cnt++);
-    while(FindConstant(name,false));
+    while(FindConstant(name));
     return name;
 }
 
-void __fastcall CSHEngineTools::FillChooseTemplate(ChooseItemVec& items)
+void CSHEngineTools::FillChooseTemplate(ChooseItemVec& items, void* param)
 {
     for (TemplateIt it=m_TemplatePalette.begin(); it!=m_TemplatePalette.end(); it++) 
         items.push_back(SChooseItem((*it)->getComment(),""));
@@ -471,7 +490,7 @@ LPCSTR CSHEngineTools::AppendItem(LPCSTR folder_name, LPCSTR parent_name)
 	CLASS_ID cls_id;
     if (!parent){
         LPCSTR M=0;
-        if (!TfrmChoseItem::SelectItem(smCustom,M,1,0,FillChooseTemplate)||!M) return 0;
+        if (!TfrmChoseItem::SelectItem(smCustom,M,1,0,TOnChooseFillItems().bind(this,&CSHEngineTools::FillChooseTemplate))||!M) return 0;
         for (TemplateIt it=m_TemplatePalette.begin(); it!=m_TemplatePalette.end(); it++) 
         	if (0==strcmp((*it)->getComment(),M)){ 
             	cls_id = (*it)->getDescription().CLS;
@@ -525,13 +544,13 @@ LPCSTR CSHEngineTools::AppendItem(LPCSTR folder_name, LPCSTR parent_name)
     B->Load(data,B->getDescription().version);
 	// set name
     AnsiString pref			= parent_name?AnsiString(parent_name):AnsiString(folder_name)+"shader";
-    m_LastSelection			= FHelper.GenerateName(pref.c_str(),2,ItemExist,false);
+    m_LastSelection			= FHelper.GenerateName(pref.c_str(),2,TFindObjectByName().bind(this,&CSHEngineTools::ItemExist),false);
     B->getDescription().Setup(m_LastSelection.c_str());
     // insert blender
 	std::pair<BlenderPairIt, bool> I = m_Blenders.insert(mk_pair(xr_strdup(m_LastSelection.c_str()),B));
 	R_ASSERT2 		(I.second,"shader.xr - found duplicate name!!!");
     // insert to TreeView
-	UI->Command				(COMMAND_UPDATE_PROPERTIES);
+    ExecCommand				(COMMAND_UPDATE_PROPERTIES);
 
 	ResetShaders	(true);
     Modified		();
@@ -564,13 +583,13 @@ void CSHEngineTools::RealRenameItem(LPCSTR old_full_name, LPCSTR new_full_name)
 
 void CSHEngineTools::AddMatrixRef(LPSTR name)
 {
-	CMatrix* M = FindMatrix(name,false); R_ASSERT(M);
+	CMatrix* M = FindMatrix(name); R_ASSERT(M);
     M->dwReference++;
 }
 
 void CSHEngineTools::AddConstantRef(LPSTR name)
 {
-	CConstant* C = FindConstant(name,false); R_ASSERT(C);
+	CConstant* C = FindConstant(name); R_ASSERT(C);
     C->dwReference++;
 }
 
@@ -604,7 +623,7 @@ void CSHEngineTools::OnRenameItem(LPCSTR old_full_name, LPCSTR new_full_name, EI
 		RemoteRenameBlender	(old_full_name, new_full_name);
 }
 
-BOOL CSHEngineTools::OnRemoveItem(LPCSTR name, EItemType type)
+void CSHEngineTools::OnRemoveItem(LPCSTR name, EItemType type, bool& res)
 {
 	if (type==TYPE_OBJECT){
         R_ASSERT(name && name[0]);
@@ -621,13 +640,14 @@ BOOL CSHEngineTools::OnRemoveItem(LPCSTR name, EItemType type)
         ApplyChanges	();
         ResetShaders	();
     }
-    return TRUE;
+    res = true;
 }
 
-void CSHEngineTools::RemoveMatrix(LPSTR name){
+void CSHEngineTools::RemoveMatrix(LPCSTR name)
+{
 	if (*name=='$') return;
 	R_ASSERT(name && name[0]);
-	CMatrix* M = FindMatrix(name,false); VERIFY(M);
+	CMatrix* M = FindMatrix(name); VERIFY(M);
     M->dwReference--;
     if (M->dwReference==0){
 		LPSTR N = LPSTR(name);
@@ -638,10 +658,11 @@ void CSHEngineTools::RemoveMatrix(LPSTR name){
     }
 }
 
-void CSHEngineTools::RemoveConstant(LPSTR name){
+void CSHEngineTools::RemoveConstant(LPCSTR name)
+{
 	if (*name=='$') return;
 	R_ASSERT(name && name[0]);
-	CConstant* C = FindConstant(name,false); VERIFY(C);
+	CConstant* C = FindConstant(name); VERIFY(C);
     C->dwReference--;
     if (C->dwReference==0){
 		LPSTR N = LPSTR(name);
@@ -657,7 +678,7 @@ void CSHEngineTools::UpdateStreamFromObject()
     m_BlenderStream.clear();
     if (m_CurrentBlender) m_CurrentBlender->Save(m_BlenderStream);
 	// init properties
-    UI->Command(COMMAND_UPDATE_PROPERTIES);
+    ExecCommand(COMMAND_UPDATE_PROPERTIES);
 }
 
 void CSHEngineTools::UpdateObjectFromStream()
@@ -692,7 +713,7 @@ void CSHEngineTools::CollapseMatrix(LPSTR name)
 {
 	if (*name=='$') return;
 	R_ASSERT(name&&name[0]);
-    CMatrix* M = FindMatrix(name,false); VERIFY(M);
+    CMatrix* M = FindMatrix(name); VERIFY(M);
 	M->dwReference--;
     for (MatrixPairIt m=m_OptMatrices.begin(); m!=m_OptMatrices.end(); m++){
         if (m->second->Similar(*M)){
@@ -707,10 +728,11 @@ void CSHEngineTools::CollapseMatrix(LPSTR name)
 	m_OptMatrices.insert(mk_pair(xr_strdup(name),N));
 }
 
-void CSHEngineTools::CollapseConstant(LPSTR name){
+void CSHEngineTools::CollapseConstant(LPSTR name)
+{
 	if (*name=='$') return;
 	R_ASSERT(name&&name[0]);
-    CConstant* C = FindConstant(name,false); VERIFY(C);
+    CConstant* C = FindConstant(name); VERIFY(C);
 	C->dwReference--;
     for (ConstantPairIt c=m_OptConstants.begin(); c!=m_OptConstants.end(); c++){
         if (c->second->Similar(*C)){
@@ -725,17 +747,19 @@ void CSHEngineTools::CollapseConstant(LPSTR name){
 	m_OptConstants.insert(mk_pair(xr_strdup(name),N));
 }
 
-void CSHEngineTools::UpdateMatrixRefs(LPSTR name){
+void CSHEngineTools::UpdateMatrixRefs(LPSTR name)
+{
 	if (*name=='$') return;
 	R_ASSERT(name&&name[0]);
-	CMatrix* M = FindMatrix(name,false); R_ASSERT(M);
+	CMatrix* M = FindMatrix(name); R_ASSERT(M);
 	M->dwReference++;
 }
 
-void CSHEngineTools::UpdateConstantRefs(LPSTR name){
+void CSHEngineTools::UpdateConstantRefs(LPSTR name)
+{
 	if (*name=='$') return;
 	R_ASSERT(name&&name[0]);
-	CConstant* C = FindConstant(name,false); R_ASSERT(C);
+	CConstant* C = FindConstant(name); R_ASSERT(C);
 	C->dwReference++;
 }
 
@@ -808,11 +832,22 @@ void CSHEngineTools::OnDeviceCreate()
 void CSHEngineTools::UpdateObjectShader()
 {
     // apply this shader to non custom object
-    CEditableObject* E = m_PreviewObject->GetReference();
+    CEditableObject* E = m_PreviewObject;
 	if (E&&!m_bCustomEditObject){
     	CSurface* surf = *E->FirstSurface(); R_ASSERT(surf);
-//        string512 tex; strcpy(tex,surf->_Texture());
-//        for (int i=0; i<7; i++){ strcat(tex,","); strcat(tex,surf->_Texture());}
+
+		u32 cnt = _GetItemCount(surf->_Texture());
+        string512 	tex; 
+        string128 	elem;
+        if (0==cnt){
+        	strcpy	(elem,"$shadertest");
+        }else{
+            _GetItem(surf->_Texture(),0,elem);
+        }
+        strcpy		(tex,surf->_Texture());
+        for (int i=cnt; i<8; i++){ strcat(tex,","); strcat(tex,elem);}
+        surf->SetTexture(tex);
+
         if (m_CurrentBlender)	surf->SetShader(m_CurrentBlender->getName());
         else					surf->SetShader("editor\\wire");
         UI->RedrawScene();
@@ -822,11 +857,11 @@ void CSHEngineTools::UpdateObjectShader()
 
 void CSHEngineTools::OnShowHint(AStringVec& ss)
 {
-	if (m_PreviewObject->GetReference()){
+	if (m_PreviewObject){
 	    Fvector p;
         float dist=UI->ZFar();
         SRayPickInfo pinf;
-    	if (m_PreviewObject->GetReference()->RayPick(dist,UI->m_CurrentRStart,UI->m_CurrentRNorm,Fidentity,&pinf)){
+    	if (m_PreviewObject->RayPick(dist,UI->m_CurrentRStart,UI->m_CurrentRNorm,Fidentity,&pinf)){
         	R_ASSERT(pinf.e_mesh);
             CSurface* surf=pinf.e_mesh->GetSurfaceByFaceID(pinf.inf.id);
             ss.push_back(AnsiString("Surface: ")+AnsiString(surf->_Name()));

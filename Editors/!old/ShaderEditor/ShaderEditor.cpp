@@ -44,6 +44,8 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 // startup create
         Tools					= xr_new<CShaderTools>();
         UI						= xr_new<CShaderMain>();
+        UI->RegisterCommands	();
+
 		Application->Title 		= UI->EditorDesc();
         TfrmLog::CreateLog		();
 
@@ -54,9 +56,9 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 
 		Application->Run		();
 
-
         TfrmLog::DestroyLog		();
 
+		UI->ClearCommands		();
         xr_delete				(Tools);
         xr_delete				(UI);
 

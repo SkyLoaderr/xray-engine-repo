@@ -7,10 +7,10 @@
 #include "ChoseForm.h"
 #include "ui_main.h"
 #include "leftbar.h"
-#include "ItemList.h"
 #include "PropertiesList.h"
 #include "Blender.h"
 #include "GameMtlLib.h"
+#include "ItemList.h"
 
 //------------------------------------------------------------------------------
 CShaderTools*&	STools=(CShaderTools*)Tools;
@@ -38,8 +38,8 @@ void CShaderTools::OnChangeEditor(ISHTools* tools)
 	if (m_Current) m_Current->OnDeactivate();
 	m_Current = tools; R_ASSERT(m_Current);
 	m_Current->OnActivate();
-    UI->Command(COMMAND_UPDATE_PROPERTIES);
-	UI->Command(COMMAND_UPDATE_CAPTION);
+    ExecCommand(COMMAND_UPDATE_PROPERTIES);
+	ExecCommand(COMMAND_UPDATE_CAPTION);
 }
 //---------------------------------------------------------------------------
 
@@ -67,20 +67,20 @@ bool CShaderTools::OnCreate()
 {
     // create props
     m_Items			= TItemList::CreateForm		("Items",				fraLeftBar->paItemList,		alClient,TItemList::ilEditMenu|TItemList::ilDragAllowed|TItemList::ilFolderStore);
-	m_Items->OnItemsFocused	= OnItemFocused;
+	m_Items->SetOnItemsFocusedEvent(TOnILItemsFocused().bind(this,&CShaderTools::OnItemFocused));
     m_ItemProps 	= TProperties::CreateForm	("Item Properties",		fraLeftBar->paShaderProps,	alClient);
     m_PreviewProps  = TProperties::CreateForm	("Preview Properties",	fraLeftBar->paPreviewProps,	alClient);
 
 	// shader test locking
-	AnsiString sh_fn;
+	std::string 		sh_fn;
     FS.update_path		(sh_fn,_game_data_,"shaders.xr");
 	if (EFS.CheckLocking(0,sh_fn.c_str(),false,true)) return false;
 	// shader test locking
-	AnsiString lc_fn;
+	std::string 		lc_fn;
     FS.update_path		(lc_fn,_game_data_,"shaders_xrlc.xr");
 	if (EFS.CheckLocking(0,lc_fn.c_str(),false,true)) return false;
 	// material test locking
-	AnsiString gm_fn;
+	std::string 		gm_fn;
     FS.update_path		(gm_fn,_game_data_,GAMEMTL_FILENAME);
 	if (EFS.CheckLocking(0,gm_fn.c_str(),false,true)) return false;
 

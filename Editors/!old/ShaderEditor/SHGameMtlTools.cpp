@@ -28,9 +28,9 @@ void CSHGameMtlTools::OnActivate()
 {
     // fill items
     FillItemList		();
-    Ext.m_Items->OnModifiedEvent= Modified;
-    Ext.m_Items->OnItemRename	= OnRenameItem;
-    Ext.m_Items->OnItemRemove	= OnRemoveItem;
+    Ext.m_Items->SetOnModifiedEvent		(TOnModifiedEvent().bind(this,&CSHGameMtlTools::Modified));
+    Ext.m_Items->SetOnItemRenameEvent	(TOnItemRename().bind(this,&CSHGameMtlTools::OnRenameItem));
+    Ext.m_Items->SetOnItemRemoveEvent	(TOnItemRemove().bind(this,&CSHGameMtlTools::OnRemoveItem));
     inherited::OnActivate		();
 }
 
@@ -71,15 +71,15 @@ void CSHGameMtlTools::Reload()
 void CSHGameMtlTools::FillItemList()
 {
 	// store folders
-	AStringVec folders;
+	RStrVec folders;
 	Ext.m_Items->GetFolders(folders);
     // fill items
 	ListItemsVec items;
     for (GameMtlIt m_it=GMLib.FirstMaterial(); m_it!=GMLib.LastMaterial(); m_it++)
-        LHelper.CreateItem(items,*(*m_it)->m_Name,0);
+        LHelper().CreateItem(items,*(*m_it)->m_Name,0);
     // fill folders
-    for (AStringIt s_it=folders.begin(); s_it!=folders.end(); s_it++)
-        LHelper.CreateItem(items,s_it->c_str(),0);
+    for (RStringVecIt s_it=folders.begin(); s_it!=folders.end(); s_it++)
+        LHelper().CreateItem(items,**s_it,0);
     // assign items
 	Ext.m_Items->AssignItems(items,false,true);
 }
@@ -118,7 +118,7 @@ SGameMtl* CSHGameMtlTools::FindItem(LPCSTR name)
     }else return 0;
 }
 
-void __fastcall CSHGameMtlTools::FillChooseMtlType(ChooseItemVec& items)
+void CSHGameMtlTools::FillChooseMtlType(ChooseItemVec& items, void* param)
 {
     items.push_back(SChooseItem("Dynamic",	"Dynamic material"));
     items.push_back(SChooseItem("Static",	"Static material"));
@@ -127,14 +127,14 @@ void __fastcall CSHGameMtlTools::FillChooseMtlType(ChooseItemVec& items)
 LPCSTR CSHGameMtlTools::AppendItem(LPCSTR folder_name, LPCSTR parent_name)
 {
     LPCSTR M=0;
-    if (!TfrmChoseItem::SelectItem(smCustom,M,1,0,FillChooseMtlType)||!M) return 0;
+    if (!TfrmChoseItem::SelectItem(smCustom,M,1,0,TOnChooseFillItems().bind(this,&CSHGameMtlTools::FillChooseMtlType))||!M) return 0;
 	SGameMtl* parent 	= FindItem(parent_name);
     AnsiString pref		= parent_name?AnsiString(parent_name):AnsiString(folder_name)+M;
-    m_LastSelection		= FHelper.GenerateName(pref.c_str(),2,ItemExist,false);
+    m_LastSelection		= FHelper.GenerateName(pref.c_str(),2,TFindObjectByName().bind(this,&CSHGameMtlTools::ItemExist),false);
     SGameMtl* S 		= GMLib.AppendMaterial(parent);
     S->m_Name			= m_LastSelection.c_str();
     S->Flags.set		(SGameMtl::flDynamic,0==strcmp(M,"Dynamic material"));
-    UI->Command			(COMMAND_UPDATE_PROPERTIES);
+    ExecCommand			(COMMAND_UPDATE_PROPERTIES);
 	Modified			();
     return *S->m_Name;
 }
@@ -145,17 +145,17 @@ void CSHGameMtlTools::OnRenameItem(LPCSTR old_full_name, LPCSTR new_full_name, E
         SGameMtl* S = FindItem(old_full_name); R_ASSERT(S);
         S->m_Name		= new_full_name;
         if (S==m_Mtl)
-            UI->Command(COMMAND_UPDATE_PROPERTIES);
+            ExecCommand(COMMAND_UPDATE_PROPERTIES);
     }
 }
 
-BOOL CSHGameMtlTools::OnRemoveItem(LPCSTR name, EItemType type)
+void CSHGameMtlTools::OnRemoveItem(LPCSTR name, EItemType type, bool& res)
 {
 	if (type==TYPE_OBJECT){
         R_ASSERT(name && name[0]);
         GMLib.RemoveMaterial(name);
     }
-    return true;
+    res = true;
 }
 
 void CSHGameMtlTools::SetCurrentItem(LPCSTR name, bool bView)
@@ -166,7 +166,7 @@ void CSHGameMtlTools::SetCurrentItem(LPCSTR name, bool bView)
     // load material
 	if (m_Mtl!=S){
         m_Mtl = S;
-	    UI->Command(COMMAND_UPDATE_PROPERTIES);
+	    ExecCommand(COMMAND_UPDATE_PROPERTIES);
 	 	if (bView) ViewSetCurrentItem(name);
    	}
 }
@@ -184,7 +184,7 @@ void CSHGameMtlTools::RealUpdateProperties()
     if (m_Mtl)
     	m_Mtl->FillProp	(items,m_CurrentItem);
     Ext.m_ItemProps->AssignItems		(items);
-    Ext.m_ItemProps->SetModifiedEvent	(Modified);
+    Ext.m_ItemProps->SetModifiedEvent	(TOnModifiedEvent().bind(this,&CSHGameMtlTools::Modified));
 }
 //---------------------------------------------------------------------------
 

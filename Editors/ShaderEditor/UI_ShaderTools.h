@@ -31,7 +31,7 @@ public:
     ISHTools*			m_Current;
     ISHTools*			Current				(){return m_Current;}
 
-    void __fastcall 	OnItemFocused		(ListItemsVec& items);
+    void __stdcall	 	OnItemFocused		(ListItemsVec& items);
 public:
 						CShaderTools		();
     virtual 			~CShaderTools		();
@@ -81,6 +81,12 @@ public:
 
     ISHTools*			FindTools			(EToolsID id);
     ISHTools*			FindTools			(TElTabSheet* sheet);
+
+    // commands
+    void 				CommandSave			(u32 p1, u32 p2, u32& res);
+    void 				CommandSaveBackup	(u32 p1, u32 p2, u32& res);
+    void 				CommandReload		(u32 p1, u32 p2, u32& res);
+    void 				CommandClear		(u32 p1, u32 p2, u32& res);
 };
 extern CShaderTools*&	STools;
 //---------------------------------------------------------------------------

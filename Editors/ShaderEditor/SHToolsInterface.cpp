@@ -5,7 +5,7 @@
 #include "SHToolsInterface.h"
 #include "FolderLib.h"
 #include "ui_main.h"
-#include "ItemList.h"
+#include "itemlist.h"
 
 ISHTools::ISHTools(ISHInit& init)
 {
@@ -28,7 +28,7 @@ void ISHTools::ViewSetCurrentItem(LPCSTR full_name)
 void ISHTools::Modified()
 {
 	m_bModified=TRUE;
-	UI->Command(COMMAND_UPDATE_CAPTION);
+    ExecCommand(COMMAND_UPDATE_CAPTION);
     ApplyChanges();
 }
 //---------------------------------------------------------------------------

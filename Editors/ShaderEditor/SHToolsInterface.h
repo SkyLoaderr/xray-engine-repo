@@ -75,7 +75,7 @@ public:
 
     bool					IsModified			(){return m_bModified;}
     virtual bool			IfModified			();
-    virtual void __fastcall	Modified			();
+    virtual void __stdcall	Modified			();
 
     virtual bool			OnCreate			()=0;
     virtual void			OnDestroy			()=0;

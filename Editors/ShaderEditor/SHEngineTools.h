@@ -30,8 +30,10 @@ enum EPreviewObj{
 
 class CSHEngineTools: public ISHTools
 {
+	RStringVec				MCString;
+
 	u32						m_PreviewObjectType;
-	CSceneObject*			m_PreviewObject;
+	CEditableObject*		m_PreviewObject;
     bool					m_bCustomEditObject;
 
 	BOOL					m_bFreezeUpdate;
@@ -48,20 +50,22 @@ class CSHEngineTools: public ISHTools
 	MatrixMap				m_Matrices;
 	BlenderMap				m_Blenders;
 
-	bool __fastcall			ItemExist			(LPCSTR name){return !!FindItem(name);}
+	void __stdcall 			ItemExist			(LPCSTR name, bool& res){res = !!FindItem(name);}
 	IBlender*				FindItem			(LPCSTR name);
 
 	void 					AddMatrixRef		(LPSTR name);
-	CMatrix*				FindMatrix			(LPSTR name, bool bDuplicate);
+	CMatrix*				FindMatrix			(LPCSTR name);
+	CMatrix*				AppendMatrix		(LPSTR name);
     LPCSTR					GenerateMatrixName	(LPSTR name);
     LPCSTR					AppendMatrix		(CMatrix* src=0, CMatrix** dest=0);
-    void					RemoveMatrix		(LPSTR name);   
+    void					RemoveMatrix		(LPCSTR name);   
 
 	void 					AddConstantRef		(LPSTR name);
-	CConstant*				FindConstant		(LPSTR name, bool bDuplicate);
+	CConstant*				FindConstant		(LPCSTR name);
+	CConstant*				AppendConstant		(LPSTR name);
     LPCSTR					GenerateConstantName(LPSTR name);
     LPCSTR					AppendConstant		(CConstant* src=0, CConstant** dest=0);
-    void					RemoveConstant		(LPSTR name);
+    void					RemoveConstant		(LPCSTR name);
 
 friend class CCollapseBlender;
 friend class CRefsBlender;
@@ -84,27 +88,27 @@ friend class TfrmShaderProperties;
     void 					PrepareRender		();
 
     // template
-	void __fastcall 		FillChooseTemplate	(ChooseItemVec& items);
-    // matrix props
-	void __fastcall 		MatrixOnAfterEdit	(PropItem* sender, LPVOID edit_val);
-	void __fastcall 		FillMatrixProps		(PropItemVec& items, LPCSTR pref, LPSTR name);
-	void __fastcall 		MCOnDraw			(PropValue* sender, LPVOID draw_val);
+	void __stdcall  		FillChooseTemplate	(ChooseItemVec& items, void* param);
+    // matrix props                                                
+	void __stdcall  		MatrixOnAfterEdit	(PropValue* sender, ref_str& edit_val, bool& res);
+	void __stdcall  		FillMatrixProps		(PropItemVec& items, LPCSTR pref, LPSTR name);
+	void __stdcall  		MCOnDraw			(PropValue* sender, ref_str& draw_val);
     // constant props
-	void __fastcall 		ConstOnAfterEdit	(PropItem* sender, LPVOID edit_val);
-	void __fastcall 		FillConstProps		(PropItemVec& items, LPCSTR pref, LPSTR name);
+	void __stdcall  		ConstOnAfterEdit	(PropValue* sender, ref_str& edit_val, bool& res);
+	void __stdcall  		FillConstProps		(PropItemVec& items, LPCSTR pref, LPSTR name);
     // name                                 
-	void __fastcall 		NameOnAfterEdit		(PropItem* sender, LPVOID edit_val);
+	void __stdcall  		NameOnAfterEdit		(PropValue* sender, ref_str& edit_val, bool& res);
 
     void					RealResetShaders	();
 
-	void __fastcall 		FillMatrix			(PropItemVec& values, LPCSTR pref, CMatrix* m);
-	void __fastcall 		FillConst			(PropItemVec& values, LPCSTR pref, CConstant* c);
-    void __fastcall			RefreshProperties	();
+	void __stdcall  		FillMatrix			(PropItemVec& values, LPCSTR pref, CMatrix* m);
+	void __stdcall  		FillConst			(PropItemVec& values, LPCSTR pref, CConstant* c);
+    void __stdcall 			RefreshProperties	();
 
     void					ResetShaders		(bool bForced=false){m_bNeedResetShaders=true; if (bForced) RealResetShaders(); }
     void					UpdateObjectShader	();
 
-    void __fastcall			OnPreviewObjectRefChange(PropItem* sender, LPVOID edit_val); 
+    void __stdcall 			OnPreviewObjectRefChange(PropValue* sender, u32& edit_val, bool& res); 
 public:
 	CMemoryWriter			m_RenderShaders;
 
@@ -114,8 +118,8 @@ public:
     Shader_xrLC*			m_Shader;
     virtual LPCSTR			AppendItem			(LPCSTR folder_name, LPCSTR parent=0);        
 	virtual void			RealRenameItem		(LPCSTR old_full_name, LPCSTR new_full_name);
-    virtual BOOL __fastcall OnRemoveItem		(LPCSTR name, EItemType type); 
-	virtual void __fastcall OnRenameItem		(LPCSTR old_full_name, LPCSTR new_full_name, EItemType type);
+    virtual void __stdcall  OnRemoveItem		(LPCSTR name, EItemType type, bool& res); 
+	virtual void __stdcall  OnRenameItem		(LPCSTR old_full_name, LPCSTR new_full_name, EItemType type);
 	virtual void			FillItemList		();
 
     void					UpdateStreamFromObject();

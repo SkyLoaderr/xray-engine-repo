@@ -6,8 +6,6 @@
 
 enum {
 	COMMAND_EXTFIRST_EXT = COMMAND_MAIN_LAST-1,
-
-	COMMAND_RESET_ANIMATION,
 };
 //------------------------------------------------------------------------------
 class CShaderMain: public TUI{
@@ -36,9 +34,11 @@ public:
     virtual LPCSTR	EditorName				(){return "shader";}
     virtual LPCSTR	EditorDesc				(){return "Shader Editor";}
 
-    virtual bool	Command					(int _Command, int p = 0, int p2 = 0);
     virtual bool 	ApplyShortCut			(WORD Key, TShiftState Shift);
     virtual bool 	ApplyGlobalShortCut		(WORD Key, TShiftState Shift);
+
+    // commands
+	virtual	void		RegisterCommands	(); 
 };    
 extern CShaderMain*&	PUI;
 

@@ -65,7 +65,7 @@ void CSHGameMtlPairTools::FillItemList()
             SGameMtl* M1 	= *m1_it;
             GameMtlPairIt p_it = GMLib.GetMaterialPairIt(M0->GetID(),M1->GetID());
             if (p_it!=GMLib.LastMaterialPair())
-                LHelper.CreateItem(items,GMLib.MtlPairToName(M0->GetID(),M1->GetID()),0);
+                LHelper().CreateItem(items,GMLib.MtlPairToName(M0->GetID(),M1->GetID()),0);
         }
     }
 	Ext.m_Items->AssignItems(items,false,true);
@@ -106,7 +106,7 @@ void CSHGameMtlPairTools::RealUpdateProperties()
 	PropItemVec items;
     if (m_MtlPair)	m_MtlPair->FillProp(items);
     Ext.m_ItemProps->AssignItems		(items);
-    Ext.m_ItemProps->SetModifiedEvent	(Modified);
+    Ext.m_ItemProps->SetModifiedEvent	(TOnModifiedEvent().bind(this,&CSHGameMtlPairTools::Modified));
 }
 //---------------------------------------------------------------------------
 
@@ -118,17 +118,17 @@ void CSHGameMtlPairTools::ApplyChanges(bool bForced)
 void CSHGameMtlPairTools::OnActivate()
 {
     FillItemList();
-    Ext.m_Items->OnModifiedEvent= Modified;
+    Ext.m_Items->SetOnModifiedEvent(TOnModifiedEvent().bind(this,&CSHGameMtlPairTools::Modified));
     inherited::OnActivate		();
-    m_StoreFlags				= Ext.m_Items->m_Flags.flags;
-    Ext.m_Items->m_Flags.assign	(TItemList::ilFolderStore);
+    m_StoreFlags				= Ext.m_Items->GetFlags();
+    Ext.m_Items->SetFlags		(TItemList::ilFolderStore);
 }
 //---------------------------------------------------------------------------
 
 void CSHGameMtlPairTools::OnDeactivate()
 {
     inherited::OnDeactivate		();
-    Ext.m_Items->m_Flags.assign	(m_StoreFlags);
+    Ext.m_Items->SetFlags		(m_StoreFlags);
 }
 
 void CSHGameMtlPairTools::SetCurrentItem(LPCSTR name, bool bView)
@@ -138,7 +138,7 @@ void CSHGameMtlPairTools::SetCurrentItem(LPCSTR name, bool bView)
     // set material
 	if (m_MtlPair!=S){
         m_MtlPair = S;
-	    UI->Command(COMMAND_UPDATE_PROPERTIES);
+	    ExecCommand(COMMAND_UPDATE_PROPERTIES);
 	 	if (bView) ViewSetCurrentItem(name);
    }
 }

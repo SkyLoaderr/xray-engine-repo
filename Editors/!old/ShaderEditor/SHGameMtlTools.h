@@ -11,14 +11,14 @@ class PropValue;
 class CSHGameMtlTools: public ISHTools
 {
 	ISHTools*				m_GameMtlPairTools;
-	bool __fastcall			ItemExist			(LPCSTR name){return !!FindItem(name);}
+	void __stdcall 			ItemExist			(LPCSTR name, bool& res){res = !!FindItem(name);}
 	SGameMtl*				FindItem			(LPCSTR name);
 public:
     SGameMtl*				m_Mtl;
     virtual LPCSTR			AppendItem			(LPCSTR folder_name, LPCSTR parent_name=0);  
-    virtual BOOL __fastcall OnRemoveItem		(LPCSTR name, EItemType type); 
-	virtual void __fastcall OnRenameItem		(LPCSTR old_full_name, LPCSTR new_full_name, EItemType type);
-	void __fastcall 		FillChooseMtlType	(ChooseItemVec& items);
+    virtual void __stdcall  OnRemoveItem		(LPCSTR name, EItemType type, bool& res); 
+	virtual void __stdcall  OnRenameItem		(LPCSTR old_full_name, LPCSTR new_full_name, EItemType type);
+	void __stdcall  		FillChooseMtlType	(ChooseItemVec& items, void* param);
 
     virtual void			FillItemList		();
 public:

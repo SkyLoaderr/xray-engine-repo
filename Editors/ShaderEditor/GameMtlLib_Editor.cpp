@@ -17,29 +17,29 @@
 void SGameMtl::FillProp		(PropItemVec& items, ListItem* owner)
 {
 	PropValue* V=0;
-    PHelper.CreateRName				(items,	"Name",						&m_Name, owner);
-    PHelper.CreateRText				(items,	"Desc",						&m_Desc);
+    PHelper().CreateName			(items,	"Name",						&m_Name, owner);
+    PHelper().CreateRText			(items,	"Desc",						&m_Desc);
 	// flags                                                      	
-	V=PHelper.CreateFlag<Flags32>	(items,	"Flags\\Dynamic",			&Flags,	flDynamic);	V->Owner()->Enable(FALSE);
-	PHelper.CreateFlag<Flags32>		(items,	"Flags\\Passable",			&Flags,	flPassable);
+	V=PHelper().CreateFlag32		(items,	"Flags\\Dynamic",			&Flags,	flDynamic);	V->Owner()->Enable(FALSE);
+	PHelper().CreateFlag32			(items,	"Flags\\Passable",			&Flags,	flPassable);
     if (Flags.is(flDynamic))
-	    PHelper.CreateFlag<Flags32>	(items,	"Flags\\Breakable",			&Flags,	flBreakable);
-    PHelper.CreateFlag<Flags32>		(items,	"Flags\\Bounceable",		&Flags,	flBounceable);
-    PHelper.CreateFlag<Flags32>		(items,	"Flags\\Skidmark",			&Flags,	flSkidmark);
-    PHelper.CreateFlag<Flags32>		(items,	"Flags\\Bloodmark",			&Flags,	flBloodmark);
-    PHelper.CreateFlag<Flags32>		(items,	"Flags\\Climbable",			&Flags,	flClimbable);
+	    PHelper().CreateFlag32		(items,	"Flags\\Breakable",			&Flags,	flBreakable);
+    PHelper().CreateFlag32			(items,	"Flags\\Bounceable",		&Flags,	flBounceable);
+    PHelper().CreateFlag32			(items,	"Flags\\Skidmark",			&Flags,	flSkidmark);
+    PHelper().CreateFlag32			(items,	"Flags\\Bloodmark",			&Flags,	flBloodmark);
+    PHelper().CreateFlag32			(items,	"Flags\\Climbable",			&Flags,	flClimbable);
     // physics part
-    PHelper.CreateFloat				(items,	"Physics\\Friction",		&fPHFriction,			0.f, 	100.f, 	0.001f, 3); 
-    PHelper.CreateFloat				(items,	"Physics\\Damping",			&fPHDamping,			0.001f,	100.f, 	0.001f, 3); 
-    PHelper.CreateFloat				(items,	"Physics\\Spring",			&fPHSpring,				0.001f,	100.f, 	0.001f, 3); 
-    PHelper.CreateFloat				(items,	"Physics\\Bounce start vel",&fPHBounceStartVelocity,0.f,	100.f, 	0.01f, 	2); 
-    PHelper.CreateFloat				(items,	"Physics\\Bouncing",		&fPHBouncing,			0.f,	1.f, 	0.001f, 3); 
+    PHelper().CreateFloat			(items,	"Physics\\Friction",		&fPHFriction,			0.f, 	100.f, 	0.001f, 3); 
+    PHelper().CreateFloat			(items,	"Physics\\Damping",			&fPHDamping,			0.001f,	100.f, 	0.001f, 3); 
+    PHelper().CreateFloat			(items,	"Physics\\Spring",			&fPHSpring,				0.001f,	100.f, 	0.001f, 3); 
+    PHelper().CreateFloat			(items,	"Physics\\Bounce start vel",&fPHBounceStartVelocity,0.f,	100.f, 	0.01f, 	2); 
+    PHelper().CreateFloat			(items,	"Physics\\Bouncing",		&fPHBouncing,			0.f,	1.f, 	0.001f, 3); 
     // factors
-    PHelper.CreateFloat				(items,	"Factors\\Shoot",			&fShootFactor);
-    PHelper.CreateFloat				(items,	"Factors\\Damage",			&fBounceDamageFactor,   0.f,100.f,0.1f,1);
-    PHelper.CreateFloat				(items,	"Factors\\Transparency",	&fVisTransparencyFactor);
-    PHelper.CreateFloat				(items,	"Factors\\Sound occlusion",	&fSndOcclusionFactor);
-    PHelper.CreateFloat				(items,	"Factors\\Flotation",		&fFlotationFactor);
+    PHelper().CreateFloat			(items,	"Factors\\Shoot",			&fShootFactor);
+    PHelper().CreateFloat			(items,	"Factors\\Damage",			&fBounceDamageFactor,   0.f,100.f,0.1f,1);
+    PHelper().CreateFloat			(items,	"Factors\\Transparency",	&fVisTransparencyFactor);
+    PHelper().CreateFloat			(items,	"Factors\\Sound occlusion",	&fSndOcclusionFactor);
+    PHelper().CreateFloat			(items,	"Factors\\Flotation",		&fFlotationFactor);
 }
 
 BOOL CGameMtlLibrary::UpdateMtlPairs(SGameMtl* src)
@@ -109,7 +109,7 @@ void __fastcall SGameMtlPair::OnFlagChange(PropValue* sender)
     OwnProps.set				(mask,bChecked);
     sender->Owner()->m_Flags.set(PropItem::flDisabled,!bChecked);
 
-    UI->Command					(COMMAND_UPDATE_PROPERTIES);
+    ExecCommand					(COMMAND_UPDATE_PROPERTIES);
 }
 
 IC u32 SetMask(u32 mask, Flags32 flags, u32 flag )
@@ -144,15 +144,15 @@ BOOL SGameMtlPair::SetParent(int parent)
     }
     // all right
     OwnProps.zero();
-	OwnProps.set(flBreakingSounds,	!BreakingSounds.IsEmpty());
-	OwnProps.set(flStepSounds,		!StepSounds.IsEmpty());
-	OwnProps.set(flCollideSounds,	!CollideSounds.IsEmpty());
-	OwnProps.set(flCollideParticles,!CollideParticles.IsEmpty());
-	OwnProps.set(flCollideMarks,	!CollideMarks.IsEmpty());
+	OwnProps.set(flBreakingSounds,	BreakingSounds.size());
+	OwnProps.set(flStepSounds,		StepSounds.size());
+	OwnProps.set(flCollideSounds,	CollideSounds.size());
+	OwnProps.set(flCollideParticles,CollideParticles.size());
+	OwnProps.set(flCollideMarks,	CollideMarks.size());
     return TRUE;
 }
 
-void __fastcall SGameMtlPair::FillChooseMtl(ChooseItemVec& items)
+void __fastcall SGameMtlPair::FillChooseMtl(ChooseItemVec& items, void* param)
 {
     for (GameMtlIt m0_it=m_Owner->FirstMaterial(); m0_it!=m_Owner->LastMaterial(); m0_it++){
         SGameMtl* M0 		= *m0_it;
@@ -174,7 +174,8 @@ void __fastcall SGameMtlPair::OnParentClick(PropValue* sender, bool& bModif, boo
         LPCSTR MP=0;
 	    SGameMtlPair* P	= m_Owner->GetMaterialPair(ID_parent);
         AnsiString nm	= P?m_Owner->MtlPairToName(P->GetMtl0(),P->GetMtl1()):NONE_CAPTION;
-        if (TfrmChoseItem::SelectItem(smCustom,MP,1,(nm==NONE_CAPTION)?0:nm.c_str(),FillChooseMtl)){
+
+        if (TfrmChoseItem::SelectItem(smCustom,MP,1,(nm==NONE_CAPTION)?0:nm.c_str(),TOnChooseFillItems().bind(this,&SGameMtlPair::FillChooseMtl))){
         	if (MP){
                 int m0, m1;
                 m_Owner->NameToMtlPair	(MP,m0,m1);
@@ -183,12 +184,12 @@ void __fastcall SGameMtlPair::OnParentClick(PropValue* sender, bool& bModif, boo
                 	ELog.DlgMsg(mtError,"Pair can't inherit from self.");
                 }else{
 			    	bModif 		= true;
-	                UI->Command	(COMMAND_UPDATE_PROPERTIES);
+	                ExecCommand	(COMMAND_UPDATE_PROPERTIES);
                 }
             }else{
             	SetParent		(GAMEMTL_NONE_ID);
 			    bModif 			= true;
-                UI->Command		(COMMAND_UPDATE_PROPERTIES);
+                ExecCommand		(COMMAND_UPDATE_PROPERTIES);
             }
         }
     }break;
@@ -204,7 +205,7 @@ void __fastcall SGameMtlPair::OnCommandClick(PropValue* sender, bool& bModif, bo
         LPCSTR MP=0;
 	    SGameMtlPair* P	= m_Owner->GetMaterialPair(ID_parent);
         AnsiString nm	= P?m_Owner->MtlPairToName(P->GetMtl0(),P->GetMtl1()):NONE_CAPTION;
-        if (TfrmChoseItem::SelectItem(smCustom,MP,128,0,FillChooseMtl)){
+        if (TfrmChoseItem::SelectItem(smCustom,MP,128,0,TOnChooseFillItems().bind(this,&SGameMtlPair::FillChooseMtl))){
         	if (MP){
                 AStringVec lst;
                 _SequenceToList(lst,MP);
@@ -218,7 +219,7 @@ void __fastcall SGameMtlPair::OnCommandClick(PropValue* sender, bool& bModif, bo
                         bModif 		= true;
                     }
                 }
-                if (bModif)		UI->Command(COMMAND_UPDATE_PROPERTIES);
+                if (bModif)		ExecCommand(COMMAND_UPDATE_PROPERTIES);
             }
         }
     }break;
@@ -227,25 +228,25 @@ void __fastcall SGameMtlPair::OnCommandClick(PropValue* sender, bool& bModif, bo
 
 void SGameMtlPair::FillProp(PropItemVec& items)
 {
-	TOnChange OnChange	= 0;
+	PropValue::TOnChange OnChange	= 0;
     u32 show_CB			= 0;
     SGameMtlPair* P		= 0;
     if (ID_parent!=GAMEMTL_NONE_ID){ 
-       	OnChange 		= OnFlagChange;
+       	OnChange.bind	(this,&SGameMtlPair::OnFlagChange);
         show_CB		    = PropItem::flShowCB;
 	    P				= m_Owner->GetMaterialPair(ID_parent);
     }
     ButtonValue* B;
-    B					= PHelper.CreateButton(items,		"Command",			"Set As Parent To...",0);
-    B->OnBtnClickEvent	= OnCommandClick;
-    B					= PHelper.CreateButton(items,		"Parent", 			P?m_Owner->MtlPairToName(P->GetMtl0(),P->GetMtl1()):NONE_CAPTION,0);
-    B->OnBtnClickEvent	= OnParentClick;
+    B					= PHelper().CreateButton(items,		"Command",			"Set As Parent To...",0);
+    B->OnBtnClickEvent.bind(this,&SGameMtlPair::OnCommandClick);
+    B					= PHelper().CreateButton(items,		"Parent", 			P?m_Owner->MtlPairToName(P->GetMtl0(),P->GetMtl1()):NONE_CAPTION,0);
+    B->OnBtnClickEvent.bind(this,&SGameMtlPair::OnParentClick);
     
-    propBreakingSounds	= PHelper.CreateChoose	(items,	"Breaking Sounds",	&BreakingSounds, 	smSoundSource);
-    propStepSounds		= PHelper.CreateChoose	(items,	"Step Sounds",		&StepSounds, 		smSoundSource);
-    propCollideSounds	= PHelper.CreateChoose	(items,	"Collide Sounds",	&CollideSounds, 	smSoundSource);
-    propCollideParticles= PHelper.CreateChoose	(items,	"Collide Particles",&CollideParticles, 	smParticles);
-    propCollideMarks	= PHelper.CreateChoose	(items,	"Collide Marks",	&CollideMarks,		smTexture);
+    propBreakingSounds	= PHelper().CreateChoose	(items,	"Breaking Sounds",	&BreakingSounds, 	smSoundSource);
+    propStepSounds		= PHelper().CreateChoose	(items,	"Step Sounds",		&StepSounds, 		smSoundSource);
+    propCollideSounds	= PHelper().CreateChoose	(items,	"Collide Sounds",	&CollideSounds, 	smSoundSource);
+    propCollideParticles= PHelper().CreateChoose	(items,	"Collide Particles",&CollideParticles, 	smParticles);
+    propCollideMarks	= PHelper().CreateChoose	(items,	"Collide Marks",	&CollideMarks,		smTexture);
 
     propBreakingSounds->Owner()->m_Flags.assign	(SetMask(show_CB,OwnProps,flBreakingSounds));
     propStepSounds->Owner()->m_Flags.assign		(SetMask(show_CB,OwnProps,flStepSounds));
@@ -560,7 +561,7 @@ void CGameMtlLibrary::Save()
     }
 	fs.close_chunk		();
 
-	AnsiString fn;
+	std::string fn;
     FS.update_path		(fn,_game_data_,GAMEMTL_FILENAME);
     fs.save_to			(fn.c_str());
 }

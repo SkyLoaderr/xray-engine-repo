@@ -83,19 +83,19 @@ void TfraLeftBar::MaximizeAllFrames()
 
 void __fastcall TfraLeftBar::ebSaveClick(TObject *Sender)
 {
-	UI->Command( COMMAND_SAVE );
+	ExecCommand( COMMAND_SAVE );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebReloadClick(TObject *Sender)
 {
-	UI->Command( COMMAND_RELOAD );
+	ExecCommand( COMMAND_RELOAD );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebRefreshTexturesClick(TObject *Sender)
 {
-	UI->Command( COMMAND_REFRESH_TEXTURES );
+	ExecCommand( COMMAND_REFRESH_TEXTURES );
 }
 //---------------------------------------------------------------------------
 
@@ -115,13 +115,7 @@ void __fastcall TfraLeftBar::PanelMaximizeClick(TObject *Sender)
 
 void __fastcall TfraLeftBar::ebEditorPreferencesClick(TObject *Sender)
 {
-	UI->Command(COMMAND_EDITOR_PREF);
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraLeftBar::ebResetAnimationClick(TObject *Sender)
-{
-	UI->Command( COMMAND_RESET_ANIMATION );
+	ExecCommand(COMMAND_EDITOR_PREF);
 }
 //---------------------------------------------------------------------------
 
@@ -185,19 +179,19 @@ void __fastcall TfraLeftBar::fsStorageSavePlacement(TObject *Sender)
 
 void __fastcall TfraLeftBar::ImageEditor1Click(TObject *Sender)
 {
-	UI->Command( COMMAND_IMAGE_EDITOR );
+	ExecCommand( COMMAND_IMAGE_EDITOR );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::Refresh1Click(TObject *Sender)
 {
-	UI->Command( COMMAND_REFRESH_TEXTURES );
+	ExecCommand( COMMAND_REFRESH_TEXTURES );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::Checknewtextures1Click(TObject *Sender)
 {
-	UI->Command( COMMAND_CHECK_TEXTURES );
+	ExecCommand( COMMAND_CHECK_TEXTURES );
 }
 //---------------------------------------------------------------------------
 
@@ -210,13 +204,13 @@ void __fastcall TfraLeftBar::ExtBtn10MouseDown(TObject *Sender,
 
 void __fastcall TfraLeftBar::MenuItem5Click(TObject *Sender)
 {
-	UI->Command( COMMAND_SOUND_EDITOR );
+	ExecCommand( COMMAND_SOUND_EDITOR );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::MenuItem7Click(TObject *Sender)
 {
-	UI->Command( COMMAND_SYNC_SOUNDS );
+	ExecCommand( COMMAND_SYNC_SOUNDS );
 }
 //---------------------------------------------------------------------------
 

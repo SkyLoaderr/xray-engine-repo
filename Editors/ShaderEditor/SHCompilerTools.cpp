@@ -24,9 +24,9 @@ void CSHCompilerTools::OnActivate()
 {
     // fill items
     FillItemList   				();
-    Ext.m_Items->OnModifiedEvent= Modified;
-    Ext.m_Items->OnItemRename	= OnRenameItem;
-    Ext.m_Items->OnItemRemove	= OnRemoveItem;
+    Ext.m_Items->SetOnModifiedEvent		(TOnModifiedEvent().bind(this,&CSHCompilerTools::Modified));
+    Ext.m_Items->SetOnItemRenameEvent	(TOnItemRename().bind(this,&CSHCompilerTools::OnRenameItem));
+    Ext.m_Items->SetOnItemRemoveEvent	(TOnItemRemove().bind(this,&CSHCompilerTools::OnRemoveItem));
 
     inherited::OnActivate		();
 }
@@ -65,7 +65,7 @@ void CSHCompilerTools::Reload()
 
 void CSHCompilerTools::Load()
 {
-	AnsiString fn;
+	std::string fn;
     FS.update_path(fn,_game_data_,"shaders_xrlc.xr");
 
     if (FS.exist(fn.c_str())){
@@ -80,7 +80,7 @@ void CSHCompilerTools::Save()
     ApplyChanges			();
 
     // save
-	AnsiString fn;
+	std::string fn;
     FS.update_path			(fn,_game_data_,"shaders_xrlc.xr");
 
     EFS.UnlockFile			(0,fn.c_str(),false);
@@ -102,10 +102,10 @@ LPCSTR CSHCompilerTools::AppendItem(LPCSTR folder_name, LPCSTR parent_name)
 {
 	Shader_xrLC* parent 	= FindItem(parent_name);
     AnsiString pref			= parent_name?AnsiString(parent_name):AnsiString(folder_name)+"shader";
-    m_LastSelection			= FHelper.GenerateName(pref.c_str(),2,ItemExist,false);
+    m_LastSelection			= FHelper.GenerateName(pref.c_str(),2,TFindObjectByName().bind(this,&CSHCompilerTools::ItemExist),false);
     Shader_xrLC* S 			= m_Library.Append(parent);
     strcpy					(S->Name,m_LastSelection.c_str());
-    UI->Command				(COMMAND_UPDATE_PROPERTIES);
+    ExecCommand				(COMMAND_UPDATE_PROPERTIES);
 	Modified				();
     return S->Name;
 }
@@ -117,17 +117,17 @@ void CSHCompilerTools::OnRenameItem(LPCSTR old_full_name, LPCSTR new_full_name, 
         Shader_xrLC* S = FindItem(old_full_name); R_ASSERT(S);
         strcpy(S->Name,new_full_name);
         if (S==m_Shader)
-            UI->Command(COMMAND_UPDATE_PROPERTIES);
+            ExecCommand(COMMAND_UPDATE_PROPERTIES);
     }
 }
 
-BOOL CSHCompilerTools::OnRemoveItem(LPCSTR name, EItemType type)
+void CSHCompilerTools::OnRemoveItem(LPCSTR name, EItemType type, bool& res)
 {
 	if (type==TYPE_OBJECT){
         R_ASSERT(name && name[0]);
         m_Library.Remove(name);
     }
-    return TRUE;
+    res = TRUE;
 }
 
 void CSHCompilerTools::SetCurrentItem(LPCSTR name, bool bView)
@@ -138,7 +138,7 @@ void CSHCompilerTools::SetCurrentItem(LPCSTR name, bool bView)
     // load shader
 	if (m_Shader!=S){
         m_Shader = S;
-	    UI->Command(COMMAND_UPDATE_PROPERTIES);
+	    ExecCommand(COMMAND_UPDATE_PROPERTIES);
 	    if (bView)	ViewSetCurrentItem(name);
     }
 }

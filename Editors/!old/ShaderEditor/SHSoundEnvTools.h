@@ -11,22 +11,22 @@ class PropValue;
 
 class CSHSoundEnvTools: public ISHTools
 {
-	bool __fastcall				ItemExist			(LPCSTR name){return !!FindItem(name);}
+	void __stdcall 				ItemExist			(LPCSTR name, bool& res){res = !!FindItem(name);}
 	CSoundRender_Environment*	FindItem			(LPCSTR name);
     void						SetCurrentEnv		(CSoundRender_Environment* B);
 
     SoundEnvironment_LIB		m_Library;
 
     ESoundSource*				m_PreviewSnd;
-    void __fastcall 			OnRevResetClick		(PropValue* sender, bool& bModif, bool& bSafe);
-	void __fastcall 			OnEnvSizeChange		(PropValue* sender);
-	void __fastcall 			OnEnvChange			(PropValue* sender);
+    void __stdcall  			OnRevResetClick		(PropValue* sender, bool& bModif, bool& bSafe);
+	void __stdcall  			OnEnvSizeChange		(PropValue* sender);
+	void __stdcall  			OnEnvChange			(PropValue* sender);
 public:
     CSoundRender_Environment 	m_EnvSrc;
     CSoundRender_Environment* 	m_Env;
     virtual LPCSTR				AppendItem			(LPCSTR folder_name, LPCSTR parent=0);            
-    virtual BOOL __fastcall 	OnRemoveItem		(LPCSTR name, EItemType type); 
-	virtual void __fastcall 	OnRenameItem		(LPCSTR old_full_name, LPCSTR new_full_name, EItemType type);
+    virtual void __stdcall  	OnRemoveItem		(LPCSTR name, EItemType type, bool& res); 
+	virtual void __stdcall  	OnRenameItem		(LPCSTR old_full_name, LPCSTR new_full_name, EItemType type);
 	virtual void 				FillItemList		();
 
     void						UseEnvironment		(){Sound->set_user_env(m_Env);}

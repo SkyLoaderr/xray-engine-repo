@@ -26,55 +26,65 @@ CShaderMain::~CShaderMain()
 }
 //---------------------------------------------------------------------------
 
-bool CShaderMain::Command(int _Command, int p1, int p2)
+void CShaderTools::CommandSave(u32 p1, u32 p2, u32& res)
 {
-	bool bRes = true;
-	string256 filebuffer;
-	switch (_Command){
-	case COMMAND_SAVE:
-    	STools->Save	(0,0);
-		Command		(COMMAND_UPDATE_CAPTION);
-    	break;
-    case COMMAND_SAVE_BACKUP:
-		Command		(COMMAND_SAVE);
-    	break;
-    case COMMAND_RELOAD:
-    	STools->Reload();
-		Command		(COMMAND_UPDATE_CAPTION);
-    	break;
-	case COMMAND_CLEAR:
-        Device.m_Camera.Reset();
-        Command		(COMMAND_UPDATE_CAPTION);
-		break;
-	case COMMAND_RESET_ANIMATION:
-   		break;
-//------        
-    case COMMAND_REFRESH_UI_BAR:
-        fraTopBar->RefreshBar	();
-        fraLeftBar->RefreshBar	();
-        fraBottomBar->RefreshBar();
-        break;
-    case COMMAND_RESTORE_UI_BAR:
-        fraTopBar->fsStorage->RestoreFormPlacement();
-        fraLeftBar->fsStorage->RestoreFormPlacement();
-        fraBottomBar->fsStorage->RestoreFormPlacement();
-        break;
-    case COMMAND_SAVE_UI_BAR:
-        fraTopBar->fsStorage->SaveFormPlacement();
-        fraLeftBar->fsStorage->SaveFormPlacement();
-        fraBottomBar->fsStorage->SaveFormPlacement();
-        break;
-	case COMMAND_UPDATE_TOOLBAR:
-    	fraLeftBar->UpdateBar();
-    	break;
-    case COMMAND_UPDATE_CAPTION:
-    	frmMain->UpdateCaption();
-    	break;
-//------
-    default:
-    	return inherited::Command(_Command,p1,p2);
-    }
-    return 	bRes;
+    Save			(0,0);
+    ExecCommand		(COMMAND_UPDATE_CAPTION);
+}
+void CShaderTools::CommandSaveBackup(u32 p1, u32 p2, u32& res)
+{
+    ExecCommand		(COMMAND_SAVE);
+}
+void CShaderTools::CommandReload(u32 p1, u32 p2, u32& res)
+{
+    Reload			();
+    ExecCommand		(COMMAND_UPDATE_CAPTION);
+}
+void CShaderTools::CommandClear(u32 p1, u32 p2, u32& res)
+{
+    Device.m_Camera.Reset();
+    ExecCommand		(COMMAND_UPDATE_CAPTION);
+}
+void CommandRefreshUIBar(u32 p1, u32 p2, u32& res)
+{
+    fraTopBar->RefreshBar	();
+    fraLeftBar->RefreshBar	();
+    fraBottomBar->RefreshBar();
+}
+void CommandRestoreUIBar(u32 p1, u32 p2, u32& res)
+{
+    fraTopBar->fsStorage->RestoreFormPlacement();
+    fraLeftBar->fsStorage->RestoreFormPlacement();
+    fraBottomBar->fsStorage->RestoreFormPlacement();
+}
+void CommandSaveUIBar(u32 p1, u32 p2, u32& res)
+{
+    fraTopBar->fsStorage->SaveFormPlacement();
+    fraLeftBar->fsStorage->SaveFormPlacement();
+    fraBottomBar->fsStorage->SaveFormPlacement();
+}
+void CommandUpdateToolBar(u32 p1, u32 p2, u32& res)
+{
+    fraLeftBar->UpdateBar();
+}
+void CommandUpdateCaption(u32 p1, u32 p2, u32& res)
+{
+    frmMain->UpdateCaption();
+}
+
+void CShaderMain::RegisterCommands()
+{
+	inherited::RegisterCommands();
+    // tools
+	RegisterCommand(COMMAND_SAVE,              	SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(STools,CShaderTools::CommandSave)));
+	RegisterCommand(COMMAND_SAVE_BACKUP,		SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(STools,CShaderTools::CommandSaveBackup)));
+	RegisterCommand(COMMAND_RELOAD,				SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(STools,CShaderTools::CommandReload)));
+	RegisterCommand(COMMAND_CLEAR,				SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(STools,CShaderTools::CommandClear)));
+    RegisterCommand(COMMAND_REFRESH_UI_BAR,		SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandRefreshUIBar)));
+    RegisterCommand(COMMAND_RESTORE_UI_BAR,     SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandRestoreUIBar)));
+    RegisterCommand(COMMAND_SAVE_UI_BAR,        SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandSaveUIBar)));
+	RegisterCommand(COMMAND_UPDATE_TOOLBAR,     SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandUpdateToolBar)));
+    RegisterCommand(COMMAND_UPDATE_CAPTION,     SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandUpdateCaption)));
 }
 
 char* CShaderMain::GetCaption()
@@ -188,7 +198,7 @@ void CShaderMain::OutCameraPos()
 //---------------------------------------------------------------------------
 void CShaderMain::OutUICursorPos()
 {
-	VERIFY(m_bReady);
+	VERIFY(fraBottomBar);
     AnsiString s; POINT pt;
     GetCursorPos(&pt);
     s.sprintf("Cur: %d, %d",pt.x,pt.y);
@@ -197,7 +207,7 @@ void CShaderMain::OutUICursorPos()
 //---------------------------------------------------------------------------
 void CShaderMain::OutGridSize()
 {
-	VERIFY(m_bReady);
+	VERIFY(fraBottomBar);
     AnsiString s;
     s.sprintf("Grid: %1.1f",EPrefs.grid_cell_size);
     fraBottomBar->paGridSquareSize->Caption=s; fraBottomBar->paGridSquareSize->Repaint();
