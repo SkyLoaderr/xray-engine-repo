@@ -38,7 +38,6 @@ public:
 	virtual CVisual*				getVisual				(int id)	= 0;
 	virtual DWORD					getFVF					(int id)	= 0;
 	virtual IDirect3DVertexBuffer8*	getVB					(int id)	= 0;
-	virtual void					getLights				(Fvector &pos, float fRadius, vector<xrLIGHT*>	dest)	= 0;
 	virtual CSector*				detectSector			(Fvector& P)	= 0;
 	
 	// Main 
@@ -46,6 +45,7 @@ public:
 	IC		void					set_Transform			(Fmatrix*	M	)			{ VERIFY(M);	val_pTransform = M;	}
 	IC		void					set_LightLevel			(int		L	)			{ val_iLightLevel	= L;			}
 	IC		void					set_Nearer				(BOOL 		V	)			{ val_bNearer		= V;			}
+	virtual void					flush					()					= 0;	
 	virtual void					set_Object				(CObject*	O	)	= 0;
 	virtual void					add_Visual				(CVisual*	V	)	= 0;	// add visual leaf	(no culling performed at all)
 	virtual void					add_Geometry			(CVisual*	V	)	= 0;	// add visual(s)	(all culling performed)
@@ -53,6 +53,10 @@ public:
 	virtual void					add_Glows				(vector<WORD> &V)	= 0;
 	virtual void					add_Patch				(Shader* S, Fvector& P1, float s, float a, BOOL bNearer)	= 0;
 
+	// Lighting
+	virtual void					L_add					(CLightPPA* L	)	= 0;
+	virtual void					L_select				(Fvector &pos, float fRadius, vector<xrLIGHT*>	dest)	= 0;
+	
 	// Models
 	virtual CVisual*				model_CreatePS			(LPCSTR name, PS::SEmitter* E)	= 0;
 	virtual CVisual*				model_Create			(LPCSTR name)					= 0;
