@@ -18,7 +18,8 @@ void CLight_DB::Load			(IReader *fs)
 	IReader* F	= 0;
 
 	// Lights itself
-	sun			= NULL;
+	sun_original		= NULL;
+	sun_adapted			= NULL;
 	{
 		F				= fs->open_chunk		(fsL_LIGHT_DYNAMIC);
 
@@ -46,14 +47,14 @@ void CLight_DB::Load			(IReader *fs)
 				Fvector tmp_R;		tmp_R.set(1,0,0);
 
 				// directional (base)
-				sun_base			= L;
+				sun_original		= L;
 				L->set_type			(IRender_Light::DIRECT);
 				L->set_shadow		(true);
 				L->set_rotation		(Ldata.direction,tmp_R);
 				
 				// copy to env-sun
-				sun		=	L		= Create();
-				L->flags.bStatic	= true;
+				sun_adapted			=	L		= Create();
+				L->flags.bStatic	=	true;
 				L->set_type			(IRender_Light::DIRECT);
 				L->set_shadow		(true);
 				L->set_rotation		(Ldata.direction,tmp_R);

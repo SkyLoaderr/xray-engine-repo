@@ -5,7 +5,7 @@ void CRenderTarget::accum_direct		()
 	RImplementation.stats.l_visible		++;
 
 	// *** assume accumulator setted up ***
-	light*			fuckingsun			= RImplementation.Lights.sun	;
+	light*			fuckingsun			= RImplementation.Lights.sun_adapted	;
 
 	// texture adjustment matrix
 	float			fTexelOffs			= (.5f / float(RImplementation.o.smapsize));

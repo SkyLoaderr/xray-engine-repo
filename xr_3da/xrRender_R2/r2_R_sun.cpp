@@ -123,7 +123,7 @@ public:
 
 void CRender::render_sun				()
 {
-	light*	fuckingsun					= Lights.sun;
+	light*	fuckingsun					= Lights.sun_adapted	;
 
 	// 
 	Fmatrix		fullxform_inv			;
