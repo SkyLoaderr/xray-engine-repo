@@ -4,13 +4,14 @@
 #include "blenders\Blender_Recorder.h"
 #include "blenders\Blender.h"
 
-class	cl_xform_w			: public R_constant_setup
-{
-	virtual void			setup	(R_constant* C)
-	{
-		RCache.set_c		(C,RCache.xforms.m_w);
-		RCache.xforms.s
-	}
+class	cl_xform_w			: public R_constant_setup		{
+	virtual void			setup	(R_constant* C)			{	RCache.xforms.set_c_w		(C);	}
+};
+class	cl_xform_v			: public R_constant_setup		{	
+	virtual void			setup	(R_constant* C)			{	RCache.xforms.set_c_v		(C);	}
+};
+class	cl_xform_p			: public R_constant_setup		{	
+	virtual void			setup	(R_constant* C)			{	RCache.xforms.set_c_p		(C);	}
 };
 
 void	CBlender_Compile::r2_Pass		(LPCSTR _vs, LPCSTR _ps, BOOL bZtest, BOOL bZwrite,	BOOL bABlend, u32 abSRC, u32 abDST, BOOL aTest, u32 aRef)
