@@ -21,6 +21,7 @@ private:
 	};
 public:
 	typedef	std::pair<ref_sound*,float>	event;
+	xr_vector<event>					s_events;
 public:
 	BOOL								bPresent;
 	BOOL								bUserEnvironment;
@@ -48,7 +49,6 @@ private:
 	u32									s_targets_pu;			// parameters update
 	SoundEnvironment_LIB*				s_environment;
 	CSoundRender_Environment			s_user_environment;
-	xr_vector<event>					s_events;
 public:
 	CSoundRender_Core					();
 	~CSoundRender_Core					();
