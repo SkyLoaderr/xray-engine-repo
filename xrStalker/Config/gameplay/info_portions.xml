@@ -16,8 +16,12 @@
   <!-- special info portion that sends to actor when it
     use in-game UI (PDA, Inventory, etc)-->
     
-    <info_portion id="ui_pda"></info_portion>
-    <info_portion id="ui_pda_hide"></info_portion>
+    <info_portion id="ui_pda">
+		<disable>ui_pda_hide</disable>
+    </info_portion>
+    <info_portion id="ui_pda_hide">
+		<disable>ui_pda</disable>
+    </info_portion>
           
    <info_portion id="ui_pda_contacts"></info_portion>
    <info_portion id="ui_pda_contacts_hide"></info_portion>
