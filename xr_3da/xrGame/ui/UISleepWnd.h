@@ -5,7 +5,9 @@
 
 #include "uiframewindow.h"
 #include "uibutton.h"
-
+#include "UIStatic.h"
+#include "xrXMLParser.h"
+#include "UIXmlInit.h"
 
 class CUISleepWnd: public CUIFrameWindow
 {
@@ -17,6 +19,7 @@ public:
 
 
 	virtual void Init(int x, int y, int width, int height);
+	virtual void Init();
 
 	typedef enum{CLOSE_BUTTON_CLICKED,
 				 PERFORM_BUTTON_CLICKED} E_MESSAGE;
@@ -29,7 +32,22 @@ public:
 
 	virtual void Update();
 
+	// Изменяем текущее установленное время отдыха на дельта-значения
+	void ModifyRestTime(s8 dHours, s8 dMinutes);
+	// Сбрасываем время в 0
+	void ResetTime() { SetRestTime(0, 0); }
 protected:
-	CUIButton UIPerformButton;
-	CUIButton UICloseButton;
+	// Устанавливаем на отображение время для сна
+	void SetRestTime(u8 hours, u8 minutes);
+	// Апдейтим текущее время
+	void UpdateCurrentTime();
+	// Текущее запоменное время отдыха
+	s8 m_Hours, m_Minutes;
+
+	// Контролы
+	CUIStatic UIStaticCurrTime;
+	CUIStatic UIStaticRestAmount;
+	CUIButton UIPlusBtn, UIMinusBtn;
+	CUIButton UIIncRestTime1Btn, UIIncRestTime2Btn, UIIncRestTime3Btn;
+	CUIButton UIRestBtn, UICloseBtn;
 };
