@@ -5,8 +5,6 @@
 #include "motion.h"
 
 // refs
-class ENGINE_API CInifile;
-
 class ENGINE_API CObjectAnimator
 {
 private:
