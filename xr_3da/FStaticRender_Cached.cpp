@@ -28,7 +28,7 @@ void __fastcall render_Cached(CList<FCached*>& cache)
 		vs				=	cache[Start]->VS;
 
 		// Transfer geometry
-		DWORD	vBase,iBase;
+		DWORD	vBase,	iBase;
 		DWORD	Stride	= vs->Stride();
 		BYTE*	verts	= LPBYTE(vs->Lock(v_count,vBase));
 		WORD*	indices	= LPWORD(is->Lock(i_count,iBase));
