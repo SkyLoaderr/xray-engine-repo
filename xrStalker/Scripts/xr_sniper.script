@@ -209,7 +209,7 @@ function action_sniper_idle:initialize ()
     	self:init_state_walk()
     end
 
-   self.object:set_callback (self, "move_callback", game_object.movement)
+--   self.object:set_callback (self, "move_callback", game_object.movement)
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_sniper_idle:init_state_sit_down	()
