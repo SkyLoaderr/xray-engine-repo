@@ -135,5 +135,5 @@ void CGamePersistent::Statistics	(CGameFont* F)
 
 float CGamePersistent::MtlTransparent(u32 mtl_idx)
 {
-	return GMLib.GetMaterialByIdx(mtl_idx)->fVisTransparencyFactor;
+	return GMLib.GetMaterialByIdx((u16)mtl_idx)->fVisTransparencyFactor;
 }
