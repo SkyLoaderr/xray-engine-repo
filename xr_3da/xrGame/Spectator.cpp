@@ -83,7 +83,8 @@ void CSpectator::shedule_Update		(u32 DT)
 	if (!Ready())		return;
 }
 
-static float Accel_mul = 2.0f;
+#define START_ACCEL		16.0f
+static float Accel_mul = START_ACCEL;
 
 void CSpectator::IR_OnKeyboardPress(int cmd)
 {
@@ -111,7 +112,7 @@ void CSpectator::IR_OnKeyboardPress(int cmd)
 	{
 	case kACCEL:
 		{
-			Accel_mul = 8.0f;
+			Accel_mul = START_ACCEL*2;
 		}break;
 	case kCAM_1:	cam_Set			(eacFirstEye);				break;
 	case kCAM_2:	cam_Set			(eacLookAt);				break;
@@ -127,7 +128,7 @@ void CSpectator::IR_OnKeyboardRelease(int cmd)
 	{
 	case kACCEL:
 		{
-			Accel_mul = 2.0f;
+			Accel_mul = START_ACCEL;
 		}break;
 	}
 }
@@ -150,20 +151,20 @@ void CSpectator::IR_OnKeyboardHold(int cmd)
 		case kRIGHT:
 			if (eacFreeLook!=cam_active) cameras[cam_active]->Move(cmd); break;
 		case kFWD:			
-			vmove.mad( C->vDirection, 4.f*Device.fTimeDelta*Accel_mul );
+			vmove.mad( C->vDirection, Device.fTimeDelta*Accel_mul );
 			break;
 		case kBACK:
-			vmove.mad( C->vDirection, -4.f*Device.fTimeDelta*Accel_mul );
+			vmove.mad( C->vDirection, -Device.fTimeDelta*Accel_mul );
 			break;
 		case kR_STRAFE:{
 			Fvector right;
 			right.crossproduct(C->vNormal,C->vDirection);
-			vmove.mad( right, 4.f*Device.fTimeDelta*Accel_mul );
+			vmove.mad( right, Device.fTimeDelta*Accel_mul );
 			}break;
 		case kL_STRAFE:{
 			Fvector right;
 			right.crossproduct(C->vNormal,C->vDirection);
-			vmove.mad( right, -4.f*Device.fTimeDelta*Accel_mul );
+			vmove.mad( right, -Device.fTimeDelta*Accel_mul );
 			}break;
 		}
 		XFORM().c.add( vmove );
