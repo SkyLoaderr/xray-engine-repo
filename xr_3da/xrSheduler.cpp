@@ -154,8 +154,8 @@ void CSheduler::ProcessStep			()
 		if (execTime>3)
 		{
 			CObject*	O				= dynamic_cast<CObject*> (T.Object);
-			if (O)						Msg	("! xrSheduler: object exceed timelimit (%s / %dms)",O->cName(),execTime);
-			else						Msg	("! xrSheduler: object exceed timelimit (%x / %dms)",T.Object,execTime);
+			if (O)						Msg	("! xrSheduler: object exceed [3ms] timelimit (%s / %dms)",O->cName(),execTime);
+			else						Msg	("! xrSheduler: object exceed [3ms] timelimit (%x / %dms)",T.Object,execTime);
 		}	
 
 		Slice						();
