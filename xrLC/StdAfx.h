@@ -108,9 +108,9 @@ using namespace boost;
 #define NO_XR_VERTEX
 #define ENGINE_API
 
-#define xr_malloc malloc
-#define xr_free free
-#define xr_realloc realloc
+#define xr_malloc(a) HeapAlloc(GetProcessHeap(),0,a)
+#define xr_free(a) HeapFree(GetProcessHeap(),0,a)
+#define xr_realloc(a,b) HeapReAlloc(GetProcessHeap(),0,a,b)
 #define xr_strdup strdup
 
 #ifndef	NDEBUG
