@@ -17,7 +17,7 @@ light::light(void)
 #if RENDER==R_R2
 	s_spot			= NULL;
 	s_point			= NULL;
-	vis.frame2test	= 0xffffffff;
+	vis.frame2test	= 0;	// xffffffff;
 	vis.query_id	= 0;
 	vis.query_order	= 0;
 	vis.visible		= true;
