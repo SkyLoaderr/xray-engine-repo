@@ -729,7 +729,7 @@ IWriter* CLocatorAPI::w_open	(LPCSTR path, LPCSTR _fname)
 
 void	CLocatorAPI::w_close(IWriter* &S)
 {
-	R_ASSERT	(S->fName&&S->fName[0]);
+	R_ASSERT	(!S->fName.empty());
 	string_path	fname;
 	strcpy		(fname,S->fName);
 	xr_delete	(S);
