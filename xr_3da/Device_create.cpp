@@ -79,6 +79,7 @@ void CRenderDevice::_Create	(LPCSTR shName)
 	RCache.OnDeviceCreate		();
 	Gamma.Update				();
 	Resources->OnDeviceCreate	(shName);
+	::Render->create			();
 	seqDevCreate.Process		(rp_DeviceCreate);
 	Statistic.OnDeviceCreate	();
 	dwFrame						= 0;
@@ -123,8 +124,6 @@ void CRenderDevice::Create	()
 
 	//////////////////////////////////////////////////////////////////////////
 	Resources		= xr_new<CResourceManager>	();
-	::Render->create();
-
 	_Create			(fname);
 
 	PreCache		(0);
