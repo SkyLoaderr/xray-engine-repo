@@ -3,6 +3,8 @@
 Чугай Саша
 
 Сделать:
+	- когда враг - монстр
+	- под новую систему озвучки
 	- переделать капитально, чтоб мочили нейтралов
 	- СИТУАЦИЯ КОГДА ОДИН БАНДИТ ВИДИТ ДРУГОГО, А ТОТ НЕ ВИДИТ ИГРОКА
 	- оптимизировать action_sit:execute()
@@ -56,15 +58,25 @@ function evaluator_attack:evaluate()
 		return true
 	end
 -----------
-	local h = self.a.squad_hash
+	local h  = self.a.squad_hash
+	local be = self.object:best_enemy()
 
-	if ambushes[h] then
-		if self.object:best_enemy() then -- если у отряда нету врага
+	if be then
+		-- если враг - монстр, то атаковать сходу
+		if ambushes[h] or object_type( self.object ) == "monstr" then
 			return true
-		else
-			ambushes[h] = false
 		end
+	else
+		ambushes[h] = false
 	end
+
+--	if ambushes[h] then
+--		if be then -- если у отряда есть враг
+--			return true
+--		else
+--			ambushes[h] = false
+--		end
+--	end
 
 	local obj_nearest
 	local min_dist = 1000000
@@ -79,6 +91,7 @@ function evaluator_attack:evaluate()
 		-- выбираем только чётко видимые объекты (нейтралы или враги)
 		if vis_obj.value >= thr and
 		   dist_sqr < min_dist and
+		   object_type( obj ) == "stalker" and
 		   ( rel == game_object.neutral or rel == game_object.enemy )
 		then
 			min_dist	= dist
@@ -108,7 +121,6 @@ function evaluator_attack:evaluate()
 
 	printf( "---" )
 
-	local be = self.object:best_enemy()
 	if be then
 		printf( "best enemy = %s", be:name() )
 	else
@@ -178,7 +190,7 @@ function action_sit:execute()
 		self.object:set_sight( look.direction, vector():set( self.a.victim:position() ):sub( self.object:position() ), 0 )
 	else
 		if self.point_time_end < game.time() then
-			local p = 2 --math.random( 1, self.a.path:count() - 1 )
+			local p = math.random( 1, self.a.path:count() - 1 )
 			self.object:set_sight( look.direction, self.a.path:point( p ):sub( self.object:position() ), 0 )
 
 			self.point_time_end = game.time() + math.random( 30000, 40000 )
@@ -194,38 +206,6 @@ function action_sit:finalize()
 	action_base.finalize( self )
 end
 
--------------------------------------------------------------------------------------------------------------------
--- Действие "поджидать замеченного врага"
--------------------------------------------------------------------------------------------------------------------
---[[class "action_await" ( action_base )
-
-function action_await:__init( name, a ) super( nil, name )
-    self.a = a
-end
-
-function action_await:initialize()
-	action_base.initialize( self )
-
-	self.object:set_item            ( object.idle, self.object:best_weapon() )
-	self.object:set_movement_type   ( move.stand )
-	self.object:set_body_state      ( move.crouch )
-	self.object:set_mental_state    ( anim.danger )
-
-	self.object:set_hit_callback( self.object:motivation_action_manager():evaluator( prop_attack ), "hit_callback" )
-
-	printf( "поджидаю %s", self.a.victim:name() )
-end
-
-function action_await:execute()
-    action_base.execute( self )
-
-    self.object:set_sight( look.direction, vector():set( self.a.victim:position() ):sub( self.object:position() ), 0 )
-end
-
-function action_await:finalize()
-    action_base.finalize( self )
-end
-]]
 -------------------------------------------------------------------------------------------------------------------
 
 function add_to_binder( npc, char_ini )
