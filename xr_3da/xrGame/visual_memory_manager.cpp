@@ -11,6 +11,12 @@
 #include "custommonster.h"
 #include "ai/stalker/ai_stalker.h"
 
+//#define VISIBILITY_TEST
+
+#ifdef VISIBILITY_TEST
+#	include "actor.h"
+#endif
+
 CVisualMemoryManager::CVisualMemoryManager		()
 {
 	Init				();
@@ -104,65 +110,19 @@ bool CVisualMemoryManager::visible				(const CGameObject *game_object) const
 
 	float								distance = (1.f - alpha/fov)*(max_view_distance - min_view_distance) + min_view_distance;
 	if (distance < object_distance) {
-//		if (dynamic_cast<const CActor*>(game_object))
-//			Msg							("Object %s IS NOT visible",*game_object->cName());
+#ifdef VISIBILITY_TEST
+		if (dynamic_cast<const CActor*>(game_object))
+			Msg							("Object %s IS NOT visible",*game_object->cName());
+#endif
 		return							(false);
 	}
 	
-//	if (dynamic_cast<const CActor*>(game_object))
-//		Msg								("Object %s IS visible",*game_object->cName());
+#ifdef VISIBILITY_TEST
+	if (dynamic_cast<const CActor*>(game_object))
+		Msg								("Object %s IS visible",*game_object->cName());
+#endif
+
 	return								(true);
-////	if (Level().iGetKeyState(DIK_RCONTROL))
-////		return(false);
-//#ifdef LOG_PARAMETERS
-////	bool		bMessage = g_Alive() && !!dynamic_cast<CActor*>(tpEntity);//!!Levsssssssssssssssssssssel().iGetKeyState(DIK_LALT);
-//	int			iLogParameters = (g_Alive() && !!dynamic_cast<CActor*>(tpEntity)) ? (Level().iGetKeyState(DIK_1) ? 2 : Level().iGetKeyState(DIK_0) ? 1 : 0) : 0;
-//	string4096	S = "";
-//#endif
-//	float fResult = 0.f;
-//	
-//	// computing maximum viewable distance in the specified direction
-//	float fDistance = Position().distance_to(tpEntity->Position()), yaw, pitch;
-//	Fvector tDirection;
-//	tDirection.sub(tpEntity->Position(),Position());
-//	tDirection.getHP(yaw,pitch);
-//
-//	float fEyeFov = eye_fov*PI/180.f, fAlpha = _abs(_min(angle_normalize_signed(yaw - m_head.current.yaw),angle_normalize_signed(pitch - m_head.current.pitch)));
-//	float fMaxViewableDistanceInDirection = eye_range*(1 - fAlpha/(fEyeFov/m_fLateralMultiplier));
-//	
-//	// computing distance weight
-//	fResult += fDistance >= fMaxViewableDistanceInDirection ? 0.f : m_fDistanceWeight*(1.f - fDistance/fMaxViewableDistanceInDirection);
-//	
-//	// computing movement speed weight
-//	float fSpeed = 0;
-//	if (tpEntity->ps_Size() > 1) {
-//		u32 dwTime = tpEntity->ps_Element(tpEntity->ps_Size() - 1).dwTime;
-//		if (dwTime < m_dwMovementIdleTime) {
-//			fSpeed = tpEntity->ps_Element(tpEntity->ps_Size() - 2).Position().distance_to(tpEntity->ps_Element(tpEntity->ps_Size() - 1).Position())/dwTime;
-//			fResult += fSpeed < m_fMaxInvisibleSpeed ? m_fMovementSpeedWeight*fSpeed/m_fMaxInvisibleSpeed : m_fMovementSpeedWeight;
-//		}
-//	}
-//	
-//	// computing my ability to view the enemy
-//	fResult += m_fCurSpeed < m_fMaxViewableSpeed ? m_fSpeedWeight*(1.f - m_fCurSpeed/m_fMaxViewableSpeed) : m_fSpeedWeight;
-//	
-//	// computing lightness weight
-//	fResult += (1 - float(tpEntity->level_vertex()->light)/255.f)*m_fShadowWeight;
-//	
-//#ifdef LOG_PARAMETERS
-//	if ((g_Alive() && !!dynamic_cast<CActor*>(tpEntity)) && (fResult >= m_fVisibilityThreshold))
-//		HUD().outMessage(0xffffffff,cName(),"%s : %d",fResult >= m_fVisibilityThreshold ? "I see actor" : "I don't see actor",Level().timeServer());
-//	Msg("**********");
-//	Msg("Distance : %f [%f]",fDistance, fDistance >= fMaxViewableDistanceInDirection ? 0.f : m_fDistanceWeight*(1.f - fDistance/fMaxViewableDistanceInDirection));
-//	Msg("MySpeed  : %f [%f]",m_fCurSpeed, m_fCurSpeed < m_fMaxViewableSpeed ? m_fSpeedWeight*(1.f - m_fCurSpeed/m_fMaxViewableSpeed) : m_fSpeedWeight);
-//	Msg("Speed    : %f [%f]",fSpeed, fSpeed < m_fMaxInvisibleSpeed ? m_fMovementSpeedWeight*fSpeed/m_fMaxInvisibleSpeed : m_fMovementSpeedWeight);
-//	Msg("Shadow   : %f [%f]",float(tpEntity->level_vertex()->light)/255.f,(1 - float(tpEntity->level_vertex()->light)/255.f)*m_fShadowWeight);
-//	Msg("Result   : %f [%f]",fResult,m_fVisibilityThreshold);
-////	if (iLogParameters) {
-////		fprintf(ST_VF,"%6.2f %6.2f %6.2f %6.2f %6.2f %6.2f %6.2f %6.2f\n",fDistance,fAlpha,fSpeed,speed(),float(tpEntity->level_vertex()->light)/255.f,float(level_vertex()->light)/255.f,tpEntity->Radius(),float(iLogParameters - 1));
-////	}
-//#endif
-//	return(fResult >= m_fVisibilityThreshold);
 }
 
 void CVisualMemoryManager::add_visible_object	(const CObject *object)
