@@ -348,8 +348,8 @@ void CRender::add_leafs_Static(IRender_Visual *pVisual)
 			if (ssa<r_ssaLOD_A)
 			{
 				mapLOD_Node*	N	= mapLOD.insertInAnyWay(D);
-				N->val.ssa						= ssa;
-				N->val.pVisual					= pVisual;
+				N->val.ssa			= ssa;
+				N->val.pVisual		= pVisual;
 			}
 			if (ssa>r_ssaLOD_B)
 			{
@@ -520,8 +520,8 @@ void CRender::add_Static(IRender_Visual *pVisual, u32 planes)
 			if (ssa<r_ssaLOD_A)	
 			{
 				mapLOD_Node*	N	= mapLOD.insertInAnyWay(D);
-				N->val.ssa						= ssa;
-				N->val.pVisual					= pVisual;
+				N->val.ssa			= ssa;
+				N->val.pVisual		= pVisual;
 			}
 			if (ssa>r_ssaLOD_B)
 			{
