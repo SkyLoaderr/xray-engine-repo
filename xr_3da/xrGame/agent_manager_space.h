@@ -11,21 +11,26 @@
 namespace AgentManager {
 	enum EMotivations {
 		eMotivationGlobal		= u32(0),
-		eMotivationIdle,
+		eMotivationNoOrders,
+		eMotivationOrders,
 
 		eMotivationScript,
 		eMotivationDummy		= u32(-1)
 	};
 
 	enum EProperties {
-		ePropertyIdle			= u32(0),
+		ePropertyOrders			= u32(0),
+		ePropertyItem,
+		ePropertyEnemy,
 
 		ePropertyScript,
 		ePropertyDummy			= u32(-1),
 	};
 
 	enum EOperators {
-		eOperatorIdle			= u32(0),
+		eOperatorNoOrders		= u32(0),
+		eOperatorGatherItem,
+		eOperatorKillEnemy,
 
 		eOperatorScript,
 		eOperatorDummy			= u32(-1),

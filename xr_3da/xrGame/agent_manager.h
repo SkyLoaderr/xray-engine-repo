@@ -36,11 +36,13 @@ public:
 		}
 	};
 
-protected:
-	typedef CMotivationActionManager<CAgentManager>	inherited;
+public:
 	typedef xr_vector<CMemberOrder>					MEMBER_STORAGE;
 	typedef MEMBER_STORAGE::iterator				iterator;
 	typedef MEMBER_STORAGE::const_iterator			const_iterator;
+
+protected:
+	typedef CMotivationActionManager<CAgentManager>	inherited;
 	
 	using inherited::add_condition;
 
@@ -64,6 +66,7 @@ public:
 	IC		const CSetupAction		&action			(CAI_Stalker *object) const;
 	IC		const CMemberOrder		&member			(CAI_Stalker *object) const;
 	IC		const MEMBER_STORAGE	&members		() const;
+	IC		MEMBER_STORAGE			&members		();
 };
 
 #include "agent_manager_inline.h"

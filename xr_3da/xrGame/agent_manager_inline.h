@@ -13,6 +13,11 @@ IC	const CAgentManager::MEMBER_STORAGE	&CAgentManager::members	() const
 	return			(m_members);
 }
 
+IC	CAgentManager::MEMBER_STORAGE	&CAgentManager::members	()
+{
+	return			(m_members);
+}
+
 IC	const CSetupAction &CAgentManager::action	(CAI_Stalker *object) const
 {
 	return			(member(object).action());

@@ -15,7 +15,16 @@
 // CAgentManagerPropertyEvaluatorGlobal
 //////////////////////////////////////////////////////////////////////////
 
-CAgentManagerPropertyEvaluatorGlobal::_value_type CAgentManagerPropertyEvaluatorGlobal::evaluate	()
+CAgentManagerPropertyEvaluatorItem::_value_type CAgentManagerPropertyEvaluatorItem::evaluate	()
+{
+	return			(false);
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CAgentManagerPropertyEvaluatorEnemy
+//////////////////////////////////////////////////////////////////////////
+
+CAgentManagerPropertyEvaluatorEnemy::_value_type CAgentManagerPropertyEvaluatorEnemy::evaluate	()
 {
 	return			(false);
 }

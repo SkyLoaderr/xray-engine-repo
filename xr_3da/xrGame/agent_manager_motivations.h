@@ -17,13 +17,4 @@ class CAgentManager;
 typedef CMotivation<CAgentManager>			CAgentManagerMotivation;
 typedef CMotivationAction<CAgentManager>	CAgentManagerMotivationAction;
 
-//////////////////////////////////////////////////////////////////////////
-// CAgentManagerMotivationGlobal
-//////////////////////////////////////////////////////////////////////////
-
-class CAgentManagerMotivationGlobal : public CAgentManagerMotivation {
-public:
-	virtual float	evaluate		(u32 sub_motivation_id);
-};
-
 #include "agent_manager_motivations_inline.h"

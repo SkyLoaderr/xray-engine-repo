@@ -18,10 +18,22 @@ typedef CPropertyEvaluatorConst<CAgentManager>	CAgentManagerPropertyEvaluatorCon
 typedef CPropertyEvaluatorMember<CAgentManager>	CAgentManagerPropertyEvaluatorMember;
 
 //////////////////////////////////////////////////////////////////////////
-// CAgentManagerPropertyEvaluatorGlobal
+// CAgentManagerPropertyEvaluatorItem
 //////////////////////////////////////////////////////////////////////////
 
-class CAgentManagerPropertyEvaluatorGlobal : public CAgentManagerPropertyEvaluator {
+class CAgentManagerPropertyEvaluatorItem : public CAgentManagerPropertyEvaluator {
+protected:
+	typedef CAgentManagerPropertyEvaluator inherited;
+
+public:
+	virtual _value_type	evaluate						();
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CAgentManagerPropertyEvaluatorEnemy
+//////////////////////////////////////////////////////////////////////////
+
+class CAgentManagerPropertyEvaluatorEnemy : public CAgentManagerPropertyEvaluator {
 protected:
 	typedef CAgentManagerPropertyEvaluator inherited;
 

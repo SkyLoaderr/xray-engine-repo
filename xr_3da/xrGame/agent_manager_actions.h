@@ -30,15 +30,45 @@ public:
 };
 
 //////////////////////////////////////////////////////////////////////////
-// CAgentManagerActionIdle
+// CAgentManagerActionNoOrders
 //////////////////////////////////////////////////////////////////////////
 
-class CAgentManagerActionIdle : public CAgentManagerActionBase {
+class CAgentManagerActionNoOrders : public CAgentManagerActionBase {
 protected:
 	typedef CAgentManagerActionBase inherited;
 
 public:
-						CAgentManagerActionIdle		(CAgentManager *object, LPCSTR action_name = "");
+						CAgentManagerActionNoOrders	(CAgentManager *object, LPCSTR action_name = "");
+	virtual void		initialize					();
+	virtual void		finalize					();
+	virtual void		execute						();
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CAgentManagerActionGatherItems
+//////////////////////////////////////////////////////////////////////////
+
+class CAgentManagerActionGatherItems : public CAgentManagerActionBase {
+protected:
+	typedef CAgentManagerActionBase inherited;
+
+public:
+						CAgentManagerActionGatherItems	(CAgentManager *object, LPCSTR action_name = "");
+	virtual void		initialize						();
+	virtual void		finalize						();
+	virtual void		execute							();
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CAgentManagerActionKillEnemy
+//////////////////////////////////////////////////////////////////////////
+
+class CAgentManagerActionKillEnemy : public CAgentManagerActionBase {
+protected:
+	typedef CAgentManagerActionBase inherited;
+
+public:
+						CAgentManagerActionKillEnemy(CAgentManager *object, LPCSTR action_name = "");
 	virtual void		initialize					();
 	virtual void		finalize					();
 	virtual void		execute						();

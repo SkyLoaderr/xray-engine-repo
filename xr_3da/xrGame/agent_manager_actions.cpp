@@ -32,22 +32,76 @@ void CAgentManagerActionBase::execute				()
 }
 
 //////////////////////////////////////////////////////////////////////////
-// CAgentManagerActionIdle
+// CAgentManagerActionNoOrders
 //////////////////////////////////////////////////////////////////////////
 
-CAgentManagerActionIdle::CAgentManagerActionIdle	(CAgentManager *object, LPCSTR action_name) :
+CAgentManagerActionNoOrders::CAgentManagerActionNoOrders	(CAgentManager *object, LPCSTR action_name) :
 	inherited		(object,action_name)
 {
 }
 
-void CAgentManagerActionIdle::initialize			()
+void CAgentManagerActionNoOrders::initialize		()
 {
 }
 
-void CAgentManagerActionIdle::finalize				()
+void CAgentManagerActionNoOrders::finalize			()
 {
 }
 
-void CAgentManagerActionIdle::execute				()
+void CAgentManagerActionNoOrders::execute			()
 {
+	CAgentManager::iterator		I = m_object->members().begin();
+	CAgentManager::iterator		E = m_object->members().end();
+	for ( ; I != E; ++I)
+		(*I).order_type			(AgentManager::eOrderTypeNoOrder);
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CAgentManagerActionGatherItems
+//////////////////////////////////////////////////////////////////////////
+
+CAgentManagerActionGatherItems::CAgentManagerActionGatherItems	(CAgentManager *object, LPCSTR action_name) :
+	inherited		(object,action_name)
+{
+}
+
+void CAgentManagerActionGatherItems::initialize		()
+{
+}
+
+void CAgentManagerActionGatherItems::finalize			()
+{
+}
+
+void CAgentManagerActionGatherItems::execute			()
+{
+	CAgentManager::iterator		I = m_object->members().begin();
+	CAgentManager::iterator		E = m_object->members().end();
+	for ( ; I != E; ++I)
+		(*I).order_type			(AgentManager::eOrderTypeNoOrder);
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CAgentManagerActionKillEnemy
+//////////////////////////////////////////////////////////////////////////
+
+CAgentManagerActionKillEnemy::CAgentManagerActionKillEnemy	(CAgentManager *object, LPCSTR action_name) :
+	inherited		(object,action_name)
+{
+}
+
+void CAgentManagerActionKillEnemy::initialize		()
+{
+}
+
+void CAgentManagerActionKillEnemy::finalize			()
+{
+}
+
+void CAgentManagerActionKillEnemy::execute			()
+{
+	CAgentManager::iterator		I = m_object->members().begin();
+	CAgentManager::iterator		E = m_object->members().end();
+	for ( ; I != E; ++I)
+		(*I).order_type			(AgentManager::eOrderTypeNoOrder);
 }
