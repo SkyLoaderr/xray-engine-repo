@@ -101,7 +101,11 @@ void CMissile::OnH_B_Independent() {
 		l_p2.set(svTransform); l_p2.c.add(l_up); l_fw.mul(m_force); l_p2.c.add(l_fw);
 		//Log("aaa",l_p1.c);
 		//Log("bbb",l_p2.c);
-		m_pPhysicsShell->Activate(l_p1, 0, l_p2);
+		//m_pPhysicsShell->Activate(l_p1, 0, l_p2);
+		Fvector l_vel,a_vel;
+		l_vel.add(l_up,l_fw);
+		a_vel.set(::Random.randF(2.f*M_PI,3.f*M_PI),::Random.randF(2.f*M_PI,3.f*M_PI),::Random.randF(2.f*M_PI,3.f*M_PI));
+		m_pPhysicsShell->Activate(l_p1, l_vel, a_vel);
 		svTransform.set(l_p1);
 		vPosition.set(svTransform.c);
 	}
