@@ -447,7 +447,9 @@ void CScriptEngine::export_object()
 			.def("level_vertex_id",				&CLuaGameObject::level_vertex_id)
 			
 			// sound_player
-			.def("add_sound",					&CLuaGameObject::add_sound)
+			
+			.def("add_sound",					(void (CLuaGameObject::*)(LPCSTR,u32,ESoundTypes,u32,u32,u32))(CLuaGameObject::add_sound))
+			.def("add_sound",					(void (CLuaGameObject::*)(LPCSTR,u32,ESoundTypes,u32,u32,u32,LPCSTR))(CLuaGameObject::add_sound))
 			.def("remove_sound",				&CLuaGameObject::remove_sound)
 			.def("set_sound_mask",				&CLuaGameObject::set_sound_mask)
 			.def("play_sound",					(void (CLuaGameObject::*)(u32))(CLuaGameObject::play_sound))
@@ -455,7 +457,7 @@ void CScriptEngine::export_object()
 			.def("play_sound",					(void (CLuaGameObject::*)(u32,u32,u32))(CLuaGameObject::play_sound))
 			.def("play_sound",					(void (CLuaGameObject::*)(u32,u32,u32,u32))(CLuaGameObject::play_sound))
 			.def("play_sound",					(void (CLuaGameObject::*)(u32,u32,u32,u32,u32))(CLuaGameObject::play_sound))
-//			.def("play_sound",					(void (CLuaGameObject::*)(u32,u32,u32,u32,u32,u32))(CLuaGameObject::play_sound))
+			.def("play_sound",					(void (CLuaGameObject::*)(u32,u32,u32,u32,u32,u32))(CLuaGameObject::play_sound))
 
 			// sight manager
 			.def("set_sight",					&CLuaGameObject::set_sight)
