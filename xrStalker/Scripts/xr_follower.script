@@ -637,7 +637,7 @@ function set_follower (npc, enabled, leader_name, escape_path, raid_enabled, rai
 	local st = xr_motivator.storage[npc:id()].follower
 	
 	if enabled == nil then
-       if char_ini:line_exist("follower", "enabled") == true then
+       if char_ini:section_exist ("follower") == true and char_ini:line_exist("follower", "enabled") == true then
           st.enabled = char_ini:r_bool("follower", "enabled")
        else
           st.enabled = false     
@@ -647,7 +647,7 @@ function set_follower (npc, enabled, leader_name, escape_path, raid_enabled, rai
     end
     
     if leader_name == nil then 
-       if char_ini:line_exist("follower", "leader_name") == true then
+       if char_ini:section_exist ("follower") == true and char_ini:line_exist("follower", "leader_name") == true then
           st.leader_name = char_ini:r_string("follower", "leader_name")
        else
           st.leader_name = nil
@@ -657,7 +657,7 @@ function set_follower (npc, enabled, leader_name, escape_path, raid_enabled, rai
     end          
 
     if escape_path == nil then
-       if char_ini:line_exist("follower", "escape_path") == true then
+       if char_ini:section_exist ("follower") == true and char_ini:line_exist("follower", "escape_path") == true then
           st.escape_path = char_ini:r_string("follower", "escape_path")
        else
           st.escape_path = st.patrol_path
@@ -667,7 +667,7 @@ function set_follower (npc, enabled, leader_name, escape_path, raid_enabled, rai
     end       
     
     if raid_enabled == nil then
-       if char_ini:line_exist ("follower", "raid_enabled") == true then
+       if char_ini:section_exist ("follower") == true and char_ini:line_exist ("follower", "raid_enabled") == true then
           st.raid_enabled = char_ini:r_bool ("follower", "raid_enabled")
        else
           st.raid_enabled = false
@@ -677,7 +677,7 @@ function set_follower (npc, enabled, leader_name, escape_path, raid_enabled, rai
     end   
     
     if raid_path == nil then
-      if char_ini:line_exist ("follower", "raid_path") == true then
+      if char_ini:section_exist ("follower") == true and char_ini:line_exist ("follower", "raid_path") == true then
           st.raid_path = char_ini:r_string ("follower", "raid_path")
       else
           st.raid_path = st.patrol_path
