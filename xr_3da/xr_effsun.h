@@ -3,7 +3,6 @@
 
 #include "xr_efflensflare.h"
 
-class							CTexture;
 class							CEffectLensFlare;
 //-----------------------------------------------------------------------------------------------------------
 //Sun Effect

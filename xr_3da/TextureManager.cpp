@@ -235,7 +235,7 @@ void	CShaderManager::DeferredUpload	()
 {
 	if (!Device.bReady)				return;
 	for (map_TextureIt t=m_textures.begin(); t!=m_textures.end(); t++)
-		t->second->Load(t->first);
+		t->second->Load();
 }
 
 void	CShaderManager::DeferredUnload	()

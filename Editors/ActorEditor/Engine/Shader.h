@@ -18,11 +18,6 @@ typedef svector<string64,4>	sh_list;
 
 class	ENGINE_API			CBlender_Compile;
 class	ENGINE_API			IBlender;
-class	ENGINE_API			CTexture;
-class	ENGINE_API			CMatrix;
-class	ENGINE_API			CConstant;
-class	ENGINE_API			CRT;
-class	ENGINE_API			CRTC;
 
 #pragma pack(push,4)
 
