@@ -31,10 +31,11 @@ BOOL CDestroyablePhysicsObject::net_Spawn(LPVOID DC)
 {
 	BOOL res=inherited::net_Spawn(DC);
 	CInifile* ini=smart_cast<CKinematics*>(Visual())->LL_UserData();
-	R_ASSERT2(ini->section_exist("destroyed"),"destroyable_object must have -destroyed- section in model user data");
-	CPHDestroyable::Load(ini,"destroyed");
+	//R_ASSERT2(ini->section_exist("destroyed"),"destroyable_object must have -destroyed- section in model user data");
+	if(ini&&ini->section_exist("destroyed"))
+		CPHDestroyable::Load(ini,"destroyed");
 	CPHDestroyable::Init();
-	CPHCollisionDamageReceiver::Init();
+	if(ini)CPHCollisionDamageReceiver::Init();
 	return res;
 }
 
@@ -42,6 +43,6 @@ void CDestroyablePhysicsObject::Hit							(float P,Fvector &dir,CObject *who,s16
 {
 	inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
 	m_fHealth-=P;
-	if(m_fHealth<=0.f) Destroy();
+	if(m_fHealth<=0.f) Destroy(u16(-1),"physic_destroyable_object");
 		
 }

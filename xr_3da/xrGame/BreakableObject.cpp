@@ -281,12 +281,16 @@ void CBreakableObject::ProcessDamage()
 }
 void CBreakableObject::CheckHitBreak(float power,ALife::EHitType hit_type)
 {
-	if(ALife::eHitTypeStrike)
-		{
-			Break();return;
-		}
+	if( hit_type!=ALife::eHitTypeStrike)
+	{
+		fHealth-=power/10.f;
+	}
+	if(fHealth<=0.f)	
+	{
+		Break();return;
+	}
 
-	if(power>m_health_threshhold) Break();
+	if(hit_type==ALife::eHitTypeStrike)if(power>m_health_threshhold) Break();
 }
 
 void CBreakableObject::ApplyExplosion(const Fvector &dir,float impulse)

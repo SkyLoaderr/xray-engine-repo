@@ -16,8 +16,47 @@ CPHDestroyable::CPHDestroyable()
 {
 	m_flags.flags=0;
 }
+/////////spawn object representing destroyed item//////////////////////////////////////////////////////////////////////////////////
+void CPHDestroyable::GenSpawnReplace(u16 source_id,LPCSTR section)
+{
+	CPhysicsShellHolder	*obj	=PPhysicsShellHolder()		;
+	CSE_Abstract*				D	= F_entity_Create(section);//*cNameSect()
+	VERIFY						(D);
 
-void CPHDestroyable::Destroy(u16 source_id/*=u16(-1)*/)
+	CSE_ALifeDynamicObjectVisual	*l_tpALifeDynamicObject = smart_cast<CSE_ALifeDynamicObjectVisual*>(D);
+	VERIFY							(l_tpALifeDynamicObject);
+	CSE_PHSkeleton					*l_tpPHSkeleton = smart_cast<CSE_PHSkeleton*>(D);
+	VERIFY							(l_tpPHSkeleton);
+
+	l_tpALifeDynamicObject->m_tGraphID	=obj->ai_location().game_vertex_id();
+	l_tpALifeDynamicObject->m_tNodeID	= obj->ai_location().level_vertex_id();
+	l_tpALifeDynamicObject->set_visual	(*m_destroyed_obj_visual_name);
+
+	l_tpPHSkeleton->source_id	= u16(-1);
+	//	l_tpALifePhysicObject->startup_animation=m_startup_anim;
+	D->s_name			= section;//*cNameSect()
+	D->set_name_replace	("");
+	D->s_gameid			=	u8(GameID());
+	D->s_RP				=	0xff;
+	D->ID				=	0xffff;
+	D->ID_Parent		=	source_id;
+	D->ID_Phantom		=	0xffff;
+	D->o_Position		=	obj->Position();
+	if (ai().get_alife())
+		l_tpALifeDynamicObject->m_tGraphID = ai().game_graph().current_level_vertex();
+	else
+		l_tpALifeDynamicObject->m_tGraphID = 0xffff;
+	obj->XFORM().getHPB	(D->o_Angle);
+	D->s_flags.assign	(M_SPAWN_OBJECT_LOCAL);
+	D->RespawnTime		=	0;
+	// Send
+	NET_Packet			P;
+	D->Spawn_Write		(P,TRUE);
+	Level().Send		(P,net_flags(TRUE));
+	// Destroy
+	F_entity_Destroy	(D);
+}
+void CPHDestroyable::Destroy(u16 source_id/*=u16(-1)*/,LPCSTR section/*="ph_skeleton_object"*/)
 {
 	
 	if(!CanDestroy())return ;
@@ -37,44 +76,7 @@ void CPHDestroyable::Destroy(u16 source_id/*=u16(-1)*/)
 		//	Msg					("ge_destroy: [%d] - %s",ID(),*cName());
 		if (obj->Local()) obj->u_EventSend			(P);
 	}
-/////////spawn object representing destroyed item//////////////////////////////////////////////////////////////////////////////////
-	{
-		CSE_Abstract*				D	= F_entity_Create("ph_skeleton_object");//*cNameSect()
-		VERIFY						(D);
-
-		CSE_ALifeDynamicObject		*l_tpALifeDynamicObject = smart_cast<CSE_ALifeDynamicObject*>(D);
-		VERIFY						(l_tpALifeDynamicObject);
-		CSE_ALifePHSkeletonObject	*l_tpALifePhysicObject = smart_cast<CSE_ALifePHSkeletonObject*>(D);
-		VERIFY						(l_tpALifePhysicObject);
-
-		l_tpALifePhysicObject->m_tGraphID	=obj->ai_location().game_vertex_id();
-		l_tpALifeDynamicObject->m_tNodeID	= obj->ai_location().level_vertex_id();
-		l_tpALifePhysicObject->set_visual	(*m_destroyed_obj_visual_name);
-
-		l_tpALifePhysicObject->source_id	= u16(-1);
-	//	l_tpALifePhysicObject->startup_animation=m_startup_anim;
-		D->s_name			= "ph_skeleton_object";//*cNameSect()
-		D->set_name_replace	("");
-		D->s_gameid			=	u8(GameID());
-		D->s_RP				=	0xff;
-		D->ID				=	0xffff;
-		D->ID_Parent		=	source_id;
-		D->ID_Phantom		=	0xffff;
-		D->o_Position		=	obj->Position();
-		if (ai().get_alife())
-			l_tpALifeDynamicObject->m_tGraphID = ai().game_graph().current_level_vertex();
-		else
-			l_tpALifeDynamicObject->m_tGraphID = 0xffff;
-		obj->XFORM().getHPB	(D->o_Angle);
-		D->s_flags.assign	(M_SPAWN_OBJECT_LOCAL);
-		D->RespawnTime		=	0;
-		// Send
-		NET_Packet			P;
-		D->Spawn_Write		(P,TRUE);
-		Level().Send		(P,net_flags(TRUE));
-		// Destroy
-		F_entity_Destroy	(D);
-	}
+	GenSpawnReplace(source_id,section);
 ///////////////////////////////////////////////////////////////////////////
 	m_flags.set(fl_destroyed,TRUE);
 	return;
