@@ -550,6 +550,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 #include "weaponFORT.h"
 #include "weaponBINOCULARS.h"
 #include "weaponShotgun.h"
+#include "weaponsvd.h"
 #include "Spectator.h"
 
 extern "C" {
@@ -589,6 +590,7 @@ extern "C" {
 		case CLSID_OBJECT_W_FORT:		P = new CWeaponFORT	();			break;
 		case CLSID_OBJECT_W_BINOCULAR:	P = new CWeaponBinoculars();	break;
 		case CLSID_OBJECT_W_SHOTGUN:	P = new CWeaponShotgun();		break;
+		case CLSID_OBJECT_W_SVD:		P = new CWeaponSVD();			break;
 		}
 		R_ASSERT		(P);
 		P->SUB_CLS_ID	= cls;

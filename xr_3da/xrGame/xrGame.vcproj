@@ -1164,6 +1164,16 @@
 								RelativePath="WeaponShotgun.h">
 							</File>
 						</Filter>
+						<Filter
+							Name="SVD"
+							Filter="">
+							<File
+								RelativePath="WeaponSVD.cpp">
+							</File>
+							<File
+								RelativePath="WeaponSVD.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="Target"
