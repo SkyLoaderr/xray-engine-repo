@@ -698,7 +698,7 @@ function Projector:process ()
 	end
 
 	printf ("Set projector target  x:%f, y:%f, z:%f", point.x, point.y, point.z)
-	action (self.projector, look (point, self.speedh, self.speedv))
+	action (self.projector, look (point, self.speedh, self.speedv), cond (cond.look_end))
 
 	self.time = game.time () + 5000
 	
