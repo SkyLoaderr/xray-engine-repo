@@ -198,10 +198,10 @@ void CConsoleUI::execute	(char argc, char *argv[])
 	string256				s;
 	xr_strcpy				(s,"");
 	for (char i=1; i<argc; ++i) {
-		strcat(s,argv[i]);
-		strcat(s," ");
+		sprintf				(s,"dofile(\"%s\")\n",argv[i]);
+		ui().log			(s);
+		script().run_string	(s);
 	}
-	script().run_string		(s);
 
 	for (;;) {
 		log					("bge>");
