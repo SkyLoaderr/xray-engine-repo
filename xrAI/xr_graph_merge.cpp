@@ -33,7 +33,7 @@ class CCompareVertexPredicate {
 public:
 	IC bool operator()(LPCSTR S1, LPCSTR S2) const
 	{
-		return(strcmp(S1,S2) < 0);
+		return(xr_strcmp(S1,S2) < 0);
 	}
 };
 
@@ -41,7 +41,7 @@ u32 dwfGetIDByLevelName(CInifile *Ini, LPCSTR caLevelName)
 {
 	LPCSTR				N,V;
 	for (u32 k = 0; Ini->r_line("levels",k,&N,&V); k++)
-		if (!strcmp(Ini->r_string(N,"caption"),caLevelName))
+		if (!xr_strcmp(Ini->r_string(N,"caption"),caLevelName))
 			return(Ini->r_u32(N,"id"));
 	return(-1);
 }

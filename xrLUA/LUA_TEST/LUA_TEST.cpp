@@ -838,7 +838,7 @@ bool is_object_presented(lua_State *L, LPCSTR identifier, int type)
 {
 	lua_pushnil		(L);
 	while (lua_next(L, -2) != 0) {
-		if ((lua_type(L, -1) == type) && !strcmp(identifier,lua_tostring(L, -2))) {
+		if ((lua_type(L, -1) == type) && !xr_strcmp(identifier,lua_tostring(L, -2))) {
 			lua_pop	(L, 3);
 			return(true);
 		}
