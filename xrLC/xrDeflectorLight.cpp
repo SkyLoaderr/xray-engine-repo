@@ -348,7 +348,7 @@ VOID CDeflector::Light()
 	LightsSelected.clear	();
 
 	// Expand LMap with borders
-	for (DWORD ref=254; ref>0; ref--) if (!ApplyBorders(lm,ref))		break;	// old
+	for (DWORD ref=254; ref>0; ref--) if (!ApplyBorders(lm,ref)) break;
 
 	// Try to shrink lightmap in U & V direction to Zero-pixel LM (only border)
 	{
