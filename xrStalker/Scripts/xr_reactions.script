@@ -774,7 +774,6 @@ function events:type(obj)
 		otype == clsid.burer or
 		otype == clsid.chimera or
 		otype == clsid.boar or
-		otype == clsid.idol or
 		otype == clsid.flesh_group or
 		otype == clsid.dog_red or
 		otype == clsid.dog_black or
@@ -862,7 +861,6 @@ function events:corpseType(obj)
 		otype == clsid.burer or
 		otype == clsid.chimera or
 		otype == clsid.boar or
-		otype == clsid.idol or
 		otype == clsid.flesh_group or
 		otype == clsid.dog_red or
 		otype == clsid.dog_black or
@@ -884,7 +882,6 @@ function events:monstr_power(obj)
 		otype == clsid.burer or
 		otype == clsid.chimera or
 		otype == clsid.boar or
-		otype == clsid.idol or
 		otype == clsid.flesh_group or
 		otype == clsid.dog_red or
 		otype == clsid.dog_black or
