@@ -46,8 +46,8 @@ void CBuild::BuildCForm(CFS_Base &fs)
 {
 	// Collecting data
 	Phase	("CFORM: creating...");
-	vecFace		cfFaces;
-	vecVertex	cfVertices;
+	vecFace*	cfFaces		= new vecFace();
+	vecVertex*	cfVertices	= new vecVertex();
 	{
 		vector<bool>	cfVertexMarks(g_vertices.size(),false);
 
@@ -55,13 +55,13 @@ void CBuild::BuildCForm(CFS_Base &fs)
 		std::sort(g_vertices.begin(),g_vertices.end());
 
 		Status("Collecting faces...");
-		cfFaces.reserve	(g_faces.size());
+		cfFaces->reserve	(g_faces.size());
 		for (vecFaceIt I=g_faces.begin(); I!=g_faces.end(); I++)
 		{
 			Face* F = *I;
 			if (F->Shader().flags.bCollision) 
 			{
-				cfFaces.push_back(F);
+				cfFaces->push_back(F);
 				cfVertexMarks[GetVertexIndex(F->v[0])] = true;
 				cfVertexMarks[GetVertexIndex(F->v[1])] = true;
 				cfVertexMarks[GetVertexIndex(F->v[2])] = true;
@@ -69,41 +69,43 @@ void CBuild::BuildCForm(CFS_Base &fs)
 		}
 
 		Status("Collecting vertices...");
-		cfVertices.reserve	(g_vertices.size());
-		std::sort(cfFaces.begin(),cfFaces.end());
+		cfVertices->reserve	(g_vertices.size());
+		std::sort(cfFaces->begin(),cfFaces->end());
 		for (DWORD V=0; V<g_vertices.size(); V++)
-			if (cfVertexMarks[V]) cfVertices.push_back(g_vertices[V]);
+			if (cfVertexMarks[V]) cfVertices->push_back(g_vertices[V]);
 	}
 
 	float	p_total = 0;
-	float	p_cost  = 1.f/(cfVertices.size());
+	float	p_cost  = 1.f/(cfVertices->size());
 	
 	Fbox BB; BB.invalidate();
-	for (vecVertexIt it = cfVertices.begin(); it!=cfVertices.end(); it++)
+	for (vecVertexIt it = cfVertices->begin(); it!=cfVertices->end(); it++)
 		BB.modify((*it)->P );
 
 	// CForm
 	Phase	("CFORM: collision model...");
-	Status	("Items to process: %d", cfFaces.size());
+	Status	("Items to process: %d", cfFaces->size());
 	p_total = 0;
-	p_cost  = 1.f/(cfFaces.size());
+	p_cost  = 1.f/(cfFaces->size());
 
 	// Collect faces
-	CDB::CollectorPacked CL	(BB,cfVertices.size(),cfFaces.size());
-	for (vecFaceIt F = cfFaces.begin(); F!=cfFaces.end(); F++)
+	CDB::CollectorPacked CL	(BB,cfVertices->size(),cfFaces->size());
+	for (vecFaceIt F = cfFaces->begin(); F!=cfFaces->end(); F++)
 	{
 		Face*	T = *F;
 		CL.add_face(
 			T->v[0]->P, T->v[1]->P, T->v[2]->P,
-			getTriByEdge(T->v[0],T->v[1],T,cfFaces),
-			getTriByEdge(T->v[1],T->v[2],T,cfFaces),
-			getTriByEdge(T->v[2],T->v[0],T,cfFaces),
+			getTriByEdge(T->v[0],T->v[1],T,*cfFaces),
+			getTriByEdge(T->v[1],T->v[2],T,*cfFaces),
+			getTriByEdge(T->v[2],T->v[0],T,*cfFaces),
 			0,materials[T->dwMaterial].sector,0
 			);
 		Progress(p_total+=p_cost);		// progress
 	}
 	if (bCriticalErrCnt)
 		Msg("MultipleEdges: %d faces",bCriticalErrCnt);
+	_DELETE			(cfFaces);
+	_DELETE			(cfVertices);
 
 	// Saving
 	CFS_Memory		MFS;
@@ -123,9 +125,6 @@ void CBuild::BuildCForm(CFS_Base &fs)
 
 	// Compress chunk
 	fs.write_chunk	(fsL_CFORM|CFS_CompressMark,MFS.pointer(),MFS.size());
-
-	cfFaces.clear	();
-	cfVertices.clear();
 }
 
 void CBuild::BuildPortals(CFS_Base& fs)
