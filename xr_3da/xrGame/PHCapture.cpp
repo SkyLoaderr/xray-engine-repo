@@ -288,117 +288,132 @@ void CPHCapture::PhTune(dReal step)
 
 void CPHCapture::PullingUpdate()
 {
-if(!m_taget_element->bActive||Device.dwTimeGlobal-m_time_start>m_capture_time)
-{
-	Release();
-	return;
-}
-
-Fvector dir;
-Fvector capture_bone_position;
-CObject* object=dynamic_cast<CObject*>(m_character->PhysicsRefObject());
-capture_bone_position.set(m_capture_bone->mTransform.c);
-object->XFORM().transform_tiny(capture_bone_position);
-m_taget_element->GetGlobalPositionDynamic(&dir);
-dir.sub(capture_bone_position,dir);
-float dist=dir.magnitude();
-if(dist>m_pull_distance)
-{
-	Release();
-	return;
-}
-dir.mul(1.f/dist);
-if(dist<m_capture_distance)
-{
-m_joint=dJointCreateBall(phWorld,0);
-
-m_ajoint=dJointCreateAMotor(phWorld,0);
-dJointSetAMotorMode (m_ajoint, dAMotorEuler);
-dJointSetAMotorNumAxes (m_ajoint, 3);
-
-
-
-//dJointSetAMotorParam(m_ajoint,dParamFMax ,m_capture_force*0.2f);
-//dJointSetAMotorParam(m_ajoint,dParamVel  ,0.f);
-
-dJointSetAMotorParam(m_ajoint,dParamFMax2 ,m_capture_force*0.2f);
-dJointSetAMotorParam(m_ajoint,dParamVel2  ,0.f);
-
-dJointSetAMotorParam(m_ajoint,dParamFMax3 ,m_capture_force*0.2f);
-dJointSetAMotorParam(m_ajoint,dParamVel3  ,0.f);
-
-
-
-
-
-CreateBody();
-dBodySetPosition(m_body,capture_bone_position.x,capture_bone_position.y,capture_bone_position.z);
-dJointAttach(m_joint,m_body,m_taget_element->get_body());
-dJointAttach(m_ajoint,m_body,m_taget_element->get_body());
-dJointSetFeedback (m_joint, &m_joint_feedback);
-dJointSetBallAnchor(m_joint,capture_bone_position.x,capture_bone_position.y,capture_bone_position.z);
-
-
-dJointSetAMotorAxis (m_ajoint, 0, 1, dir.x, dir.y, dir.z);
-
-if(dir.x>EPS)
-{
-if(dir.y>EPS)
+	if(!m_taget_element->bActive||Device.dwTimeGlobal-m_time_start>m_capture_time)
 	{
-	float mag=dir.x*dir.x+dir.y*dir.y;
-	dJointSetAMotorAxis (m_ajoint, 2, 2, -dir.y/mag, dir.x/mag, 0.f);
+		Release();
+		return;
 	}
-else if(dir.z>EPS)
-	{
-	float mag=dir.x*dir.x+dir.z*dir.z;
-	dJointSetAMotorAxis (m_ajoint, 2, 2, -dir.z/mag,0.f,dir.x/mag);
-	}
-else
-	{
-	dJointSetAMotorAxis (m_ajoint, 2, 2, 1.f,0.f,0.f);
-	}
-}
-else
-{
-	if(dir.y>EPS)
-	{
 
-		if(dir.z>EPS)
+	Fvector dir;
+	Fvector capture_bone_position;
+	CObject* object=dynamic_cast<CObject*>(m_character->PhysicsRefObject());
+	capture_bone_position.set(m_capture_bone->mTransform.c);
+	object->XFORM().transform_tiny(capture_bone_position);
+	m_taget_element->GetGlobalPositionDynamic(&dir);
+	dir.sub(capture_bone_position,dir);
+	float dist=dir.magnitude();
+	if(dist>m_pull_distance)
+	{
+		Release();
+		return;
+	}
+	dir.mul(1.f/dist);
+	if(dist<m_capture_distance)
+	{
+		m_back_force=0.f;
+
+		m_joint=dJointCreateBall(phWorld,0);
+
+		m_ajoint=dJointCreateAMotor(phWorld,0);
+		dJointSetAMotorMode (m_ajoint, dAMotorEuler);
+		dJointSetAMotorNumAxes (m_ajoint, 3);
+
+
+
+		//dJointSetAMotorParam(m_ajoint,dParamFMax ,m_capture_force*0.2f);
+		//dJointSetAMotorParam(m_ajoint,dParamVel  ,0.f);
+
+		dJointSetAMotorParam(m_ajoint,dParamFMax2 ,m_capture_force*0.2f);
+		dJointSetAMotorParam(m_ajoint,dParamVel2  ,0.f);
+
+		dJointSetAMotorParam(m_ajoint,dParamFMax3 ,m_capture_force*0.2f);
+		dJointSetAMotorParam(m_ajoint,dParamVel3  ,0.f);
+
+
+
+
+
+		CreateBody();
+		dBodySetPosition(m_body,capture_bone_position.x,capture_bone_position.y,capture_bone_position.z);
+		dJointAttach(m_joint,m_body,m_taget_element->get_body());
+		dJointAttach(m_ajoint,m_body,m_taget_element->get_body());
+		dJointSetFeedback (m_joint, &m_joint_feedback);
+		dJointSetBallAnchor(m_joint,capture_bone_position.x,capture_bone_position.y,capture_bone_position.z);
+
+
+		dJointSetAMotorAxis (m_ajoint, 0, 1, dir.x, dir.y, dir.z);
+
+		if(dir.x>EPS)
 		{
-			float mag=dir.y*dir.y+dir.z*dir.z;
-			dJointSetAMotorAxis (m_ajoint, 2, 2,0.f,-dir.z/mag,dir.y/mag);
+			if(dir.y>EPS)
+			{
+				float mag=dir.x*dir.x+dir.y*dir.y;
+				dJointSetAMotorAxis (m_ajoint, 2, 2, -dir.y/mag, dir.x/mag, 0.f);
+			}
+			else if(dir.z>EPS)
+			{
+				float mag=dir.x*dir.x+dir.z*dir.z;
+				dJointSetAMotorAxis (m_ajoint, 2, 2, -dir.z/mag,0.f,dir.x/mag);
+			}
+			else
+			{
+				dJointSetAMotorAxis (m_ajoint, 2, 2, 1.f,0.f,0.f);
+			}
 		}
 		else
 		{
-			dJointSetAMotorAxis (m_ajoint, 2, 2, 0.f,1.f,0.f);
+			if(dir.y>EPS)
+			{
+
+				if(dir.z>EPS)
+				{
+					float mag=dir.y*dir.y+dir.z*dir.z;
+					dJointSetAMotorAxis (m_ajoint, 2, 2,0.f,-dir.z/mag,dir.y/mag);
+				}
+				else
+				{
+					dJointSetAMotorAxis (m_ajoint, 2, 2, 0.f,1.f,0.f);
+				}
+			}
+			else 
+			{
+				dJointSetAMotorAxis (m_ajoint, 2, 2, 0.f,0.f,1.f);
+			}
 		}
+
+
+		//dJointSetAMotorParam(m_ajoint,dParamLoStop ,0.f);
+		//dJointSetAMotorParam(m_ajoint,dParamHiStop ,0.f);	
+
+		m_taget_element->set_DynamicLimits();
+		e_state=cstCaptured;
+		return;
 	}
-	else 
-	{
-			dJointSetAMotorAxis (m_ajoint, 2, 2, 0.f,0.f,1.f);
-	}
-}
 
+	m_taget_element->applyForce(dir,m_pull_force);
 
-//dJointSetAMotorParam(m_ajoint,dParamLoStop ,0.f);
-//dJointSetAMotorParam(m_ajoint,dParamHiStop ,0.f);	
-
-m_taget_element->set_DynamicLimits();
-e_state=cstCaptured;
-return;
-}
-
-m_taget_element->applyForce(dir,m_pull_force);
+	m_character->ApplyForce(dir,-m_pull_force/2.f);
 
 }
 
 void CPHCapture::CapturedUpdate()
 {
 
+
 	if(!m_taget_element->bActive||dDOT(m_joint_feedback.f2,m_joint_feedback.f2)>m_capture_force*m_capture_force) 
 	{
 		Release();
 		return;
+	}
+	
+	float mag=dSqrt(dDOT(m_joint_feedback.f1,m_joint_feedback.f1));
+
+	//m_back_force=m_back_force*0.999f+ ((mag<m_capture_force/5.f) ? mag : (m_capture_force/5.f))*0.001f;
+	//
+	if(mag>m_capture_force/2.2f)
+	{
+		float f=mag/(m_capture_force/15.f);
+		m_character->ApplyForce(m_joint_feedback.f1[0]/f,m_joint_feedback.f1[1]/f,m_joint_feedback.f1[2]/f);
 	}
 
 	Fvector capture_bone_position;

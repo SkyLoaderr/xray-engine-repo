@@ -273,12 +273,30 @@ void CPHSimpleCharacter::Destroy(){
 
 }
 
-void		CPHSimpleCharacter::ApplyImpulse(const Fvector& dir,const dReal P){
+void		CPHSimpleCharacter::ApplyImpulse(const Fvector& dir,const dReal P)
+{
 	if(!b_exist) return;
 	if(!dBodyIsEnabled(m_body)) dBodyEnable(m_body);
 	b_lose_control=true;
 	b_external_impulse=true;
 	dBodyAddForce(m_body,dir.x*P/fixed_step,dir.y*P/fixed_step,dir.z*P/fixed_step);
+}
+
+void		CPHSimpleCharacter::ApplyForce(const Fvector& force)
+{
+	ApplyForce(force.x,force.y,force.z);
+}
+
+void		CPHSimpleCharacter::ApplyForce(float x, float y, float z)
+{
+	if(!b_exist) return;
+	if(!dBodyIsEnabled(m_body)) dBodyEnable(m_body);
+	dBodyAddForce(m_body,x,y,z);
+}
+
+void		CPHSimpleCharacter::ApplyForce(const Fvector& dir,float force)
+{
+	ApplyForce(dir.x*force,dir.y*force,dir.z*force);
 }
 
 void CPHSimpleCharacter::PhDataUpdate(dReal step){

@@ -104,6 +104,9 @@ public:
 	virtual		void		IPosition							(Fvector& pos)		;
 
 	virtual		void		ApplyImpulse						(const Fvector& dir,const dReal P);
+	virtual		void		ApplyForce							(const Fvector& force);
+	virtual		void		ApplyForce							(const Fvector& dir,float force);
+	virtual		void		ApplyForce							(float x,float y, float z);
 	virtual		void		SetMaximumVelocity					(dReal vel)			{m_max_velocity=vel; }
 	virtual		void		SetJupmUpVelocity					(dReal velocity)	{jump_up_velocity=velocity;}
 	virtual		float		ContactVelocity						()					{ dReal ret= m_contact_velocity; m_contact_velocity=0; return ret;}
