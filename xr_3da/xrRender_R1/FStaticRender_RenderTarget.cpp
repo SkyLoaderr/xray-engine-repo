@@ -221,7 +221,7 @@ void CRenderTarget::End		()
 void	CRenderTarget::phase_distortion	()
 {
 	RCache.set_RT								(RT_distort->pRT);
-	RCache.set_ZB								(HW.pBaseZB);
+	RCache.set_ZB								(ZB);
 	RCache.set_CullMode							(CULL_CCW);
 	RCache.set_ColorWriteEnable					( );
 	CHK_DX(HW.pDevice->Clear					( 0L, NULL, D3DCLEAR_TARGET, color_rgba(127,127,127,127), 1.0f, 0L));
