@@ -149,12 +149,12 @@ void CRender::Calculate()
 	Device.Statistic.RenderCALC.Begin();
 	diff=Device.Statistic.fFPS-QualityControl.fMinFPS;
 
-	QualityControl.fScaleGLOD     += diff*Device.fTimeDelta*0.1f; //*0.0001f
+	QualityControl.fScaleGLOD		+= diff*Device.fTimeDelta*0.1f; //*0.0001f
 	if (QualityControl.fScaleGLOD<0.001f) QualityControl.fScaleGLOD=0.001f;
 	if (QualityControl.fScaleGLOD>1.2f) QualityControl.fScaleGLOD=1.2f;
 
 	// ******************** Geometry detail
-	ViewBase.CreateFromMatrix(Device.mFullTransform,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
+	ViewBase.CreateFromMatrix		(Device.mFullTransform,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
 	View			= 0;
 
 	// Transfer to global space to avoid deep pointer access
