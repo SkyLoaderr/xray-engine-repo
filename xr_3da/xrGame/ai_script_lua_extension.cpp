@@ -174,6 +174,7 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 		R_ASSERT	(F);
 		strconcat	(S1,"@",S);		
 		int			l_iErrorCode = lua_dobuffer(tpLuaVirtualMachine,static_cast<LPCSTR>(F->pointer()),F->length(),S);
+		Msg			("* [LUA] Loading common script %s",S);
 		vfPrintOutput(tpLuaVirtualMachine,S);
 		if (l_iErrorCode)
 			vfPrintError(tpLuaVirtualMachine,l_iErrorCode);
