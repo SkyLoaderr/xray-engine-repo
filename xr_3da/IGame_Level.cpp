@@ -40,9 +40,7 @@ IGame_Level::~IGame_Level	()
 	Sound->destroy				(Sounds_Ambience);
 
 	// Render-level unload
-	Render->OnDeviceDestroy		( );
-	Device.seqDevDestroy.Remove	(Render);
-	Device.seqDevCreate.Remove	(Render);
+	Render->level_Unload		();
 
 	// Unload sounds
 	for (u32 i=0; i<Sounds.size(); i++)
@@ -113,9 +111,7 @@ BOOL IGame_Level::Load				(u32 dwNum)
 	pApp->LoadSwitch			();
 
 	// Render-level Load
-	Device.seqDevDestroy.Add	(Render);
-	Device.seqDevCreate.Add		(Render);
-	Render->OnDeviceCreate		();
+	Render->level_Load			();
 	tscreate.FrameEnd			();
 	Msg							("* S-CREATE: %f ms, %d times",tscreate.result,tscreate.count);
 
