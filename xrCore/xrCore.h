@@ -130,16 +130,14 @@
 #endif
 
 // stl-config
+#define _STLP_NO_EXCEPTIONS			
 #ifdef __BORLANDC__
-	#define _STLP_NO_EXCEPTIONS			
 #else
 	#ifdef XRCORE_EXPORTS				// no exceptions, export allocator and common stuff
-		#define _STLP_NO_EXCEPTIONS		
 		#define _STLP_DESIGNATED_DLL 
 		#define _STLP_USE_DECLSPEC 
 	#else
-		#define _STLP_NO_EXCEPTIONS		// no exceptions, import allocator and common stuff
-		#define _STLP_USE_DECLSPEC 
+		#define _STLP_USE_DECLSPEC		// no exceptions, import allocator and common stuff
 	#endif
 #endif
 
