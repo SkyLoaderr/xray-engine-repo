@@ -61,9 +61,6 @@ namespace PAPI
 		IC pVector operator^(const pVector& b) const	{	return pVector(y*b.z-z*b.y,z*b.x-x*b.z,x*b.y-y*b.x);		}
 	};
 
-	// refs
-	struct PAHeader;
-
 	#pragma pack (push,1)
 	// A single particle
 	struct Particle
@@ -526,7 +523,6 @@ namespace PAPI
 		int list_id;
 		ParticleEffect *peff;
 		PAHeader *pact;
-		int tid; // Only used in the MP case, but always define it.
 
 		// These are static because all threads access the same effects.
 		// All accesses to these should be locked.

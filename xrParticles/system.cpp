@@ -78,7 +78,6 @@ _ParticleState::_ParticleState()
 	list_id			= -1;
 	peff			= NULL;
 	pact			= NULL;
-	tid				= 0; // This will be filled in above if we're MP.
 
 	ResetState		();
 }
