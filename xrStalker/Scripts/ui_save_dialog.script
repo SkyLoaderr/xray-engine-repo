@@ -152,17 +152,25 @@ function save_dialog:InitControls()
 end
 
 function save_dialog:InitCallBacks()
-	self:AddCallback("button_ok",     ui_events.BUTTON_CLICKED,          self,"OnButton_ok_clicked")
-	self:AddCallback("button_cancel", ui_events.BUTTON_CLICKED,          self,"OnButton_cancel_clicked")
-	self:AddCallback("message_box",   ui_events.MESSAGE_BOX_OK_CLICKED,  self,"OnMsgOk")
-	self:AddCallback("message_box",   ui_events.MESSAGE_BOX_YES_CLICKED, self,"OnMsgYes")
-	self:AddCallback("message_box",   ui_events.MESSAGE_BOX_NO_CLICKED,  self,"OnMsgNo")
+	self:AddCallback("button_ok",     ui_events.BUTTON_CLICKED,             self,"OnButton_ok_clicked")
+	self:AddCallback("button_cancel", ui_events.BUTTON_CLICKED,             self,"OnButton_cancel_clicked")
+	self:AddCallback("message_box",   ui_events.MESSAGE_BOX_OK_CLICKED,     self,"OnMsgOk")
+	self:AddCallback("message_box",   ui_events.MESSAGE_BOX_CANCEL_CLICKED, self,"OnMsgCancel")
+	self:AddCallback("message_box",   ui_events.MESSAGE_BOX_YES_CLICKED,    self,"OnMsgYes")
+	self:AddCallback("message_box",   ui_events.MESSAGE_BOX_NO_CLICKED,     self,"OnMsgNo")
 end
 
 function save_dialog:OnMsgOk()
+	local msg_box = self:GetMessageBox("message_box")
+	msg_box:Hide()
+end
+
+function save_dialog:OnMsgCancel()
 end
 
 function save_dialog:OnMsgYes()
+	local msg_box = self:GetMessageBox("message_box")
+	msg_box:Hide()
 end
 
 function save_dialog:OnMsgNo()
