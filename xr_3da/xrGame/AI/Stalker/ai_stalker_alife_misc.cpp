@@ -34,7 +34,7 @@ bool CAI_Stalker::bfCanTreat				()
 //	xr_vector<u16>::iterator	I = children.begin();
 //	xr_vector<u16>::iterator	E = children.end();
 //	for ( ; I != E; ++I) {
-//		CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(m_tpALife->tpfGetObjectByID(*I));
+//		CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(m_tpALife->object(*I));
 //		R_ASSERT2				(l_tpALifeInventoryItem,"Non inventory item ihas a parent?!");
 //		if (bfItemCanTreat(l_tpALifeInventoryItem))
 //			vfUseItem			(l_tpALifeInventoryItem);
@@ -72,7 +72,7 @@ bool CAI_Stalker::bfCheckIfTaskCompleted()
 	if (int(m_tTaskID) < 0)
 		return		(false);
 
-	CSE_ALifeTask	&tTask = *m_tpALife->tpfGetTaskByID(m_tTaskID);
+	CSE_ALifeTask	&tTask = *m_tpALife->task(m_tTaskID);
 	switch (tTask.m_tTaskType) {
 		case ALife::eTaskTypeSearchForItemCL :
 		case ALife::eTaskTypeSearchForItemCG : {
@@ -103,7 +103,7 @@ void CAI_Stalker::vfChooseHumanTask()
 		ALife::TASK_SET_IT		i = (*J).second.begin();
 		ALife::TASK_SET_IT		e = (*J).second.end();
 		for ( ; i != e; ++i) {
-			CSE_ALifeTask		*l_tpTask = m_tpALife->tpfGetTaskByID(*i);
+			CSE_ALifeTask		*l_tpTask = m_tpALife->task(*i);
 			if (!l_tpTask->m_dwTryCount) {
 				l_tBestTaskID = l_tpTask->m_tTaskID;
 				break;
@@ -124,7 +124,7 @@ void CAI_Stalker::vfChooseHumanTask()
 
 void CAI_Stalker::vfSetCurrentTask(ALife::_TASK_ID &tTaskID)
 {
-	m_tTaskID				= m_tpALife->tpfGetTaskByID(tTaskID)->m_tTaskID;
+	m_tTaskID				= m_tpALife->task(tTaskID)->m_tTaskID;
 }
 
 bool CAI_Stalker::bfAssignDestinationNode()

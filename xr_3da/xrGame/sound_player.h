@@ -18,6 +18,7 @@ public:
 
 	struct CSoundCollection : public CSoundParams {
 		xr_vector<ref_sound*>					m_sounds;
+		ref_str									m_sound_prefix;
 
 						~CSoundCollection		()
 		{

@@ -136,7 +136,7 @@ public:
 
 	IC bool							operator()							(const ALife::_OBJECT_ID tObjectID)
 	{
-		return						(0xffff == m_tpALifeObjectRegistry->tpfGetObjectByID(tObjectID)->ID_Parent);
+		return						(0xffff == m_tpALifeObjectRegistry->object(tObjectID)->ID_Parent);
 	};
 };
 

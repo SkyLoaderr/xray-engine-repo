@@ -53,7 +53,7 @@ void	game_sv_Single::OnCreate		(u16 id_who)
 		return;
 
 	if (alife_object->ID_Parent != 0xffff) {
-		CSE_ALifeDynamicObject			*parent = m_tpALife->tpfGetObjectByID(alife_object->ID_Parent,true);
+		CSE_ALifeDynamicObject			*parent = m_tpALife->object(alife_object->ID_Parent,true);
 		if (parent) {
 			CSE_ALifeTraderAbstract		*trader = dynamic_cast<CSE_ALifeTraderAbstract*>(parent);
 			if (trader)

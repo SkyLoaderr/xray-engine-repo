@@ -25,17 +25,17 @@ void CSE_ALifeSimulator::vfReleaseObject(CSE_Abstract *tpSE_Abstract, bool bALif
 		Msg							("[LSS] Releasing object [%s][%s][%d]",tpSE_Abstract->s_name_replace,tpSE_Abstract->s_name,tpSE_Abstract->ID);
 	}
 #endif
-	CSE_ALifeDynamicObject			*tpALifeDynamicObject = tpfGetObjectByID(tpSE_Abstract->ID);
+	CSE_ALifeDynamicObject			*tpALifeDynamicObject = object(tpSE_Abstract->ID);
 	VERIFY							(tpALifeDynamicObject);
 	CSE_ALifeInventoryItem			*l_tpInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(tpALifeDynamicObject);
 	if (l_tpInventoryItem && l_tpInventoryItem->bfAttached())
-		vfDetachItem				(*tpfGetObjectByID(l_tpInventoryItem->ID_Parent),l_tpInventoryItem,tpfGetObjectByID(l_tpInventoryItem->ID_Parent)->m_tGraphID,bALifeRequest);
+		vfDetachItem				(*object(l_tpInventoryItem->ID_Parent),l_tpInventoryItem,object(l_tpInventoryItem->ID_Parent)->m_tGraphID,bALifeRequest);
 
 	m_tObjectRegistry.erase			(tpSE_Abstract->ID);
 	
 	if (!tpALifeDynamicObject->m_bOnline) {
 		vfRemoveObjectFromGraphPoint(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID);
-		vfRemoveObjectFromScheduled	(tpALifeDynamicObject);
+		CSE_ALifeScheduleRegistry::remove(tpALifeDynamicObject);
 	}
 	else
 		vfRemoveObjectFromCurrentLevel(tpALifeDynamicObject);
@@ -71,7 +71,7 @@ void CSE_ALifeSimulator::vfCreateOnlineObject(CSE_ALifeDynamicObject *tpALifeDyn
 		OBJECT_IT					I = tpALifeDynamicObject->children.begin();
 		OBJECT_IT					E = tpALifeDynamicObject->children.end();
 		for ( ; I != E; ++I) {
-			CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = tpfGetObjectByID(*I);
+			CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = object(*I);
 			CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(l_tpALifeDynamicObject);
 			R_ASSERT2				(l_tpALifeInventoryItem,"Non inventory item object has parent?!");
 			l_tpALifeInventoryItem->s_flags.or(M_SPAWN_UPDATE);
@@ -94,7 +94,7 @@ void CSE_ALifeSimulator::vfCreateOnlineObject(CSE_ALifeDynamicObject *tpALifeDyn
 	}
 	
 	if (bRemoveFromRegistries) {
-		vfRemoveObjectFromScheduled	(tpALifeDynamicObject);
+		CSE_ALifeScheduleRegistry::remove(tpALifeDynamicObject);
 		vfRemoveObjectFromGraphPoint(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID,false);
 	}
 }
@@ -119,7 +119,7 @@ void CSE_ALifeSimulator::vfRemoveOnlineObject(CSE_ALifeDynamicObject *tpALifeDyn
 //		OBJECT_IT					I = tpALifeDynamicObject->children.begin();
 //		OBJECT_IT					E = tpALifeDynamicObject->children.end();
 //		for ( ; I != E; ++I) {
-//			CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = tpfGetObjectByID(*I);
+//			CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = object(*I);
 //			CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(l_tpALifeDynamicObject);
 //			R_ASSERT2				(l_tpALifeInventoryItem,"Non inventory item object has parent?!");
 //#ifdef DEBUG
@@ -136,7 +136,7 @@ void CSE_ALifeSimulator::vfRemoveOnlineObject(CSE_ALifeDynamicObject *tpALifeDyn
 //	}
 	if (tpTraderParams) {
 		for (int i=0, n=(int)tpALifeDynamicObject->children.size(); i<n; ++i) {
-			CSE_ALifeDynamicObject	*dynamic_object = dynamic_cast<CSE_ALifeDynamicObject*>(tpfGetObjectByID(tpALifeDynamicObject->children[i]));
+			CSE_ALifeDynamicObject	*dynamic_object = dynamic_cast<CSE_ALifeDynamicObject*>(object(tpALifeDynamicObject->children[i]));
 			VERIFY					(dynamic_object);
 			CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(dynamic_object);
 			VERIFY2					(l_tpALifeInventoryItem,"Non inventory item object has parent?!");
@@ -160,7 +160,7 @@ void CSE_ALifeSimulator::vfRemoveOnlineObject(CSE_ALifeDynamicObject *tpALifeDyn
 	}
 	
 	if (bAddToRegistries) {
-		vfAddObjectToScheduled		(tpALifeDynamicObject);
+		CSE_ALifeScheduleRegistry::add(tpALifeDynamicObject);
 		vfAddObjectToGraphPoint		(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID,false);
 	}
 }
@@ -187,7 +187,7 @@ void CSE_ALifeSimulator::vfSwitchObjectOnline(CSE_ALifeDynamicObject *tpALifeDyn
 		OBJECT_IT					E = tpALifeGroupAbstract->m_tpMembers.end();
 		u32							N = (u32)(E - I);
 		for ( ; I != E; ++I) {
-			CSE_ALifeDynamicObject	*J = tpfGetObjectByID(*I);
+			CSE_ALifeDynamicObject	*J = object(*I);
 			if (tpALifeGroupAbstract->m_bCreateSpawnPositions) {
 				J->o_Position		= tpALifeDynamicObject->o_Position;
 				J->m_tNodeID		= tpALifeDynamicObject->m_tNodeID;
@@ -198,7 +198,7 @@ void CSE_ALifeSimulator::vfSwitchObjectOnline(CSE_ALifeDynamicObject *tpALifeDyn
 			vfCreateOnlineObject	(J, false);
 		}
 		tpALifeGroupAbstract->m_bCreateSpawnPositions = false;
-		vfRemoveObjectFromScheduled	(tpALifeDynamicObject);
+		CSE_ALifeScheduleRegistry::remove(tpALifeDynamicObject);
 		vfRemoveObjectFromGraphPoint(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID,false);
 	}
 	else
@@ -224,7 +224,7 @@ void CSE_ALifeSimulator::vfSwitchObjectOffline(CSE_ALifeDynamicObject *tpALifeDy
 		OBJECT_IT					I = tpALifeGroupAbstract->m_tpMembers.begin();
 		OBJECT_IT					E = tpALifeGroupAbstract->m_tpMembers.end();
 		if (I != E) {
-			CSE_ALifeMonsterAbstract	*tpGroupMember	= dynamic_cast<CSE_ALifeMonsterAbstract*>(tpfGetObjectByID(*I));
+			CSE_ALifeMonsterAbstract	*tpGroupMember	= dynamic_cast<CSE_ALifeMonsterAbstract*>(object(*I));
 			CSE_ALifeMonsterAbstract	*tpGroup		= dynamic_cast<CSE_ALifeMonsterAbstract*>(tpALifeGroupAbstract);
 			if (tpGroupMember && tpGroup) {
 				tpGroup->m_fCurSpeed	= tpGroup->m_fGoingSpeed;
@@ -242,8 +242,8 @@ void CSE_ALifeSimulator::vfSwitchObjectOffline(CSE_ALifeDynamicObject *tpALifeDy
 			++I;
 		}
 		for ( ; I != E; ++I)
-			vfRemoveOnlineObject	(tpfGetObjectByID(*I),false);
-		vfAddObjectToScheduled		(tpALifeDynamicObject);
+			vfRemoveOnlineObject	(object(*I),false);
+		CSE_ALifeScheduleRegistry::add(tpALifeDynamicObject);
 		vfAddObjectToGraphPoint		(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID,false);
 	}
 	else
@@ -258,7 +258,7 @@ void CSE_ALifeSimulator::vfFurlObjectOffline(CSE_ALifeDynamicObject *I)
 			CSE_ALifeGroupAbstract *tpALifeGroupAbstract = dynamic_cast<CSE_ALifeGroupAbstract*>(I);
 			if (tpALifeGroupAbstract)
 				for (u32 i=0, N = (u32)tpALifeGroupAbstract->m_tpMembers.size(); i<N; ++i) {
-					CSE_ALifeMonsterAbstract	*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(tpfGetObjectByID(tpALifeGroupAbstract->m_tpMembers[i]));
+					CSE_ALifeMonsterAbstract	*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(object(tpALifeGroupAbstract->m_tpMembers[i]));
 					if (l_tpALifeMonsterAbstract && l_tpALifeMonsterAbstract->fHealth <= 0) {
 						l_tpALifeMonsterAbstract->m_bDirectControl	= true;
 						l_tpALifeMonsterAbstract->m_bOnline			= false;
@@ -272,7 +272,7 @@ void CSE_ALifeSimulator::vfFurlObjectOffline(CSE_ALifeDynamicObject *I)
 				vfSwitchObjectOffline(I);
 		}
 		else
-			R_ASSERT2	(tpfGetObjectByID(I->ID_Parent)->m_bOnline,"Object online - parent offline...");
+			R_ASSERT2	(object(I->ID_Parent)->m_bOnline,"Object online - parent offline...");
 }
 
 bool CSE_ALifeSimulator::bfValidatePosition(CSE_ALifeDynamicObject *I)
@@ -309,7 +309,7 @@ bool CSE_ALifeSimulator::bfValidatePosition(CSE_ALifeDynamicObject *I)
 		}
 		else {
 			// assign group position to the member position
-			I->o_Position			= tpfGetObjectByID(tpALifeGroupAbstract->m_tpMembers[0])->o_Position;
+			I->o_Position			= object(tpALifeGroupAbstract->m_tpMembers[0])->o_Position;
 			if (ai().level_graph().valid_vertex_position(I->o_Position) && !ai().level_graph().inside(ai().level_graph().vertex(I->m_tNodeID),I->o_Position)) {
 				// checking if position is inside the current vertex
 				I->m_tNodeID		= ai().level_graph().vertex(I->m_tNodeID,I->o_Position);
@@ -375,7 +375,7 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 				// iterating on group members
 				for (u32 i=0, N = (u32)tpALifeGroupAbstract->m_tpMembers.size(); i<N; ++i) {
 					// casting group member to the abstract monster to get access to the Health property
-					CSE_ALifeMonsterAbstract	*tpGroupMember = dynamic_cast<CSE_ALifeMonsterAbstract*>(tpfGetObjectByID(tpALifeGroupAbstract->m_tpMembers[i]));
+					CSE_ALifeMonsterAbstract	*tpGroupMember = dynamic_cast<CSE_ALifeMonsterAbstract*>(object(tpALifeGroupAbstract->m_tpMembers[i]));
 					if (tpGroupMember)
 						// check if monster is not dead
 						if (tpGroupMember->fHealth <= 0) {
@@ -422,15 +422,15 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 #ifdef DEBUG
 			if (psAI_Flags.test(aiALife)) {
 				// checking if parent is online too
-				CSE_ALifeCreatureAbstract	*l_tpALifeCreatureAbstract = dynamic_cast<CSE_ALifeCreatureAbstract*>(tpfGetObjectByID(I->ID_Parent));
+				CSE_ALifeCreatureAbstract	*l_tpALifeCreatureAbstract = dynamic_cast<CSE_ALifeCreatureAbstract*>(object(I->ID_Parent));
 				if (l_tpALifeCreatureAbstract && (l_tpALifeCreatureAbstract->fHealth < EPS_L))
 					Msg				("! uncontrolled situation [%d][%d][%s][%f]",I->ID,I->ID_Parent,l_tpALifeCreatureAbstract->s_name_replace,l_tpALifeCreatureAbstract->fHealth);
-				R_ASSERT2			(!dynamic_cast<CSE_ALifeCreatureAbstract*>(tpfGetObjectByID(I->ID_Parent)) || (dynamic_cast<CSE_ALifeCreatureAbstract*>(tpfGetObjectByID(I->ID_Parent))->fHealth >= EPS_L),"Parent offline, item online...");
-				if (!tpfGetObjectByID(I->ID_Parent)->m_bOnline)
+				R_ASSERT2			(!dynamic_cast<CSE_ALifeCreatureAbstract*>(object(I->ID_Parent)) || (dynamic_cast<CSE_ALifeCreatureAbstract*>(object(I->ID_Parent))->fHealth >= EPS_L),"Parent offline, item online...");
+				if (!object(I->ID_Parent)->m_bOnline)
 					Msg				("! uncontrolled situation [%d][%d][%s][%f]",I->ID,I->ID_Parent,l_tpALifeCreatureAbstract->s_name_replace,l_tpALifeCreatureAbstract->fHealth);
 			}
 #endif
-			R_ASSERT2			(tpfGetObjectByID(I->ID_Parent)->m_bOnline,"Parent offline, item online...");
+			R_ASSERT2			(object(I->ID_Parent)->m_bOnline,"Parent offline, item online...");
 		}
 	}
 	else {
@@ -448,7 +448,7 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 				CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(I);
 				// checking if the abstract monster has just died
 				if (tpALifeMonsterAbstract && (tpALifeMonsterAbstract->fHealth <= 0) && !tpALifeMonsterAbstract->m_bOnline && (m_tpScheduledObjects.find(tpALifeMonsterAbstract->ID) != m_tpScheduledObjects.end()))
-					vfRemoveObjectFromScheduled(tpALifeMonsterAbstract);
+					CSE_ALifeScheduleRegistry::remove(tpALifeMonsterAbstract);
 			}
 			
 			// checking if the object is ready to switch online
@@ -464,15 +464,15 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 			// checking if parent is offline too
 #ifdef DEBUG
 			if (psAI_Flags.test(aiALife)) {
-				CSE_ALifeCreatureAbstract	*l_tpALifeCreatureAbstract = dynamic_cast<CSE_ALifeCreatureAbstract*>(tpfGetObjectByID(I->ID_Parent));
+				CSE_ALifeCreatureAbstract	*l_tpALifeCreatureAbstract = dynamic_cast<CSE_ALifeCreatureAbstract*>(object(I->ID_Parent));
 				if (l_tpALifeCreatureAbstract && (l_tpALifeCreatureAbstract->fHealth < EPS_L))
 					Msg				("! uncontrolled situation [%d][%d][%s][%f]",I->ID,I->ID_Parent,l_tpALifeCreatureAbstract->s_name_replace,l_tpALifeCreatureAbstract->fHealth);
 				R_ASSERT2			(!l_tpALifeCreatureAbstract || (l_tpALifeCreatureAbstract->fHealth >= EPS_L),"Parent online, item offline...");
-				if (tpfGetObjectByID(I->ID_Parent)->m_bOnline)
+				if (object(I->ID_Parent)->m_bOnline)
 					Msg				("! uncontrolled situation [%d][%d][%s][%f]",I->ID,I->ID_Parent,l_tpALifeCreatureAbstract->s_name_replace,l_tpALifeCreatureAbstract->fHealth);
 			}
 #endif
-			R_ASSERT2				(!tpfGetObjectByID(I->ID_Parent)->m_bOnline,"Parent online, item offline...");
+			R_ASSERT2				(!object(I->ID_Parent)->m_bOnline,"Parent online, item offline...");
 		}
 	}
 }

@@ -164,7 +164,7 @@ void CSE_ALifeSimulator::vfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSche
 						}
 						default			: NODEFAULT;
 					}
-					add					(news);
+					CSE_ALifeNewsRegistry::add	(news);
 				}
 				vfFinishCombat			(l_tCombatResult);
 				break;

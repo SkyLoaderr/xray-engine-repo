@@ -82,7 +82,7 @@ void CSE_ALifeSimulator::vfUpdateDynamicData(CSE_ALifeDynamicObject *tpALifeDyna
 	
 	CSE_ALifeInventoryItem				*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(tpALifeDynamicObject);
 	if (l_tpALifeInventoryItem && l_tpALifeInventoryItem->bfAttached()) {
-		CSE_ALifeDynamicObject			*II = tpfGetObjectByID(l_tpALifeInventoryItem->ID_Parent);
+		CSE_ALifeDynamicObject			*II = object(l_tpALifeInventoryItem->ID_Parent);
 		if (std::find(II->children.begin(),II->children.end(),l_tpALifeInventoryItem->ID) != II->children.end()) {
 #ifdef DEBUG
 			if (psAI_Flags.test(aiALife)) {
@@ -266,7 +266,7 @@ void CSE_ALifeSimulator::vfNewGame(LPCSTR caSaveName)
 	news.m_class_id					= CLSID_OBJECT_ACTOR;
 	news.m_object_id				[0] = 0;
 	news.m_object_id				[1] = 0xffff;
-	add								(news);
+	CSE_ALifeNewsRegistry::add		(news);
 	// end of the test
 
 	m_tpServer->PerformIDgen	(0x0000);
@@ -348,8 +348,8 @@ bool CSE_ALifeSimulator::change_level	(NET_Packet &net_packet)
 
 	m_changing_level			= true;
 	for (u32 i=0, n = m_tpActor->children.size(); i<n; ++i)
-		if (tpfGetObjectByID(m_tpActor->children[i],true))
-			Msg					("%2d[%5d] : Item %s",i,m_tpActor->children[i],tpfGetObjectByID(m_tpActor->children[i])->s_name_replace);
+		if (object(m_tpActor->children[i],true))
+			Msg					("%2d[%5d] : Item %s",i,m_tpActor->children[i],object(m_tpActor->children[i])->s_name_replace);
 
 	ALife::_GRAPH_ID			safe_graph_vertex_id	= m_tpActor->m_tGraphID;
 	u32							safe_level_vertex_id	= m_tpActor->m_tNodeID;
@@ -379,7 +379,7 @@ void CSE_ALifeSimulator::vfCreateItem	(CSE_ALifeObject *object)
 	
 	if (0xffff != dynamic_object->ID_Parent) {
 		u16							id = dynamic_object->ID_Parent;
-		CSE_ALifeDynamicObject		*parent = tpfGetObjectByID(id);
+		CSE_ALifeDynamicObject		*parent = this->object(id);
 		VERIFY						(parent);
 		dynamic_object->m_tGraphID	= parent->m_tGraphID;
 		dynamic_object->o_Position	= parent->o_Position;

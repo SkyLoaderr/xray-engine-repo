@@ -45,7 +45,7 @@ void CSE_ALifeSimulator::vfPrintItems(CSE_ALifeHumanAbstract *tpALifeHumanAbstra
 	OBJECT_IT			I = tpALifeHumanAbstract->children.begin();
 	OBJECT_IT			E = tpALifeHumanAbstract->children.end();
 	for ( ; I != E; ++I)
-		Msg				(" %s",tpfGetObjectByID(*I)->s_name_replace);
+		Msg				(" %s",object(*I)->s_name_replace);
 }
 #endif
 
@@ -104,7 +104,7 @@ void CSE_ALifeSimulator::vfAssignItemParents(CSE_ALifeHumanAbstract *tpALifeHuma
 	OBJECT_IT			I = tpALifeHumanAbstract->children.end() - iItemCount;
 	OBJECT_IT			E = tpALifeHumanAbstract->children.end();
 	for ( ; I != E; ++I) {
-		CSE_ALifeInventoryItem *l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(tpfGetObjectByID(*I));
+		CSE_ALifeInventoryItem *l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(object(*I));
 		tpALifeHumanAbstract->vfAttachItem(l_tpALifeInventoryItem,true,false);
 		R_ASSERT		(tpALifeHumanAbstract->m_dwTotalMoney >= l_tpALifeInventoryItem->m_dwCost);
 		tpALifeHumanAbstract->m_dwTotalMoney			-= l_tpALifeInventoryItem->m_dwCost;
@@ -170,11 +170,11 @@ void CSE_ALifeSimulator::vfAttachGatheredItems(CSE_ALifeTraderAbstract *tpALifeT
 	OBJECT_IT			E = tpObjectVector.end();
 	for ( ; I != E; ++I) {
 #ifndef FAST_OWNERSHIP
-		CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = tpfGetObjectByID(*I);
+		CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = object(*I);
 		l_tpALifeDynamicObject->ID_Parent = 0xffff;
 		vfAttachItem	(*tpALifeTraderAbstract1,dynamic_cast<CSE_ALifeInventoryItem*>(l_tpALifeDynamicObject),l_tpALifeDynamicObject->m_tGraphID);
 #else
-		CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(tpfGetObjectByID(*I));
+		CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(object(*I));
 		if (l_tpALifeInventoryItem->m_tPreviousParentID != tpALifeTraderAbstract1->ID) {
 			R_ASSERT									(l_tpALifeInventoryItem->m_tPreviousParentID == tpALifeTraderAbstract2->ID);
 			tpALifeTraderAbstract2->vfDetachItem		(l_tpALifeInventoryItem,0,false);
@@ -190,7 +190,7 @@ void CSE_ALifeSimulator::vfFillTraderVector(CSE_ALifeHumanAbstract *tpALifeHuman
 	OBJECT_IT			I = tpALifeHumanAbstract->children.end() - iItemCount;
 	OBJECT_IT			E = tpALifeHumanAbstract->children.end();
 	for ( ; I != E; ++I)
-		tpItemVector.push_back(dynamic_cast<CSE_ALifeInventoryItem*>(tpfGetObjectByID(*I)));
+		tpItemVector.push_back(dynamic_cast<CSE_ALifeInventoryItem*>(object(*I)));
 }
 
 void CSE_ALifeSimulator::vfGenerateSums	(ITEM_P_VECTOR &tpTrader, INT_VECTOR &tpSums)
@@ -630,10 +630,10 @@ void CSE_ALifeSimulator::vfPerformTrading(CSE_ALifeHumanAbstract *tpALifeHumanAb
 			for ( ; I != E; ++I) {
 				J				= std::find(tpALifeHumanAbstract2->children.end() - l_iItemCount2,tpALifeHumanAbstract2->children.end(),*I);
 				if (tpALifeHumanAbstract2->children.end() != J) {
-					if (std::binary_search(m_tpItems1.begin(),m_tpItems1.end(),dynamic_cast<CSE_ALifeInventoryItem*>(tpfGetObjectByID(*I))))
+					if (std::binary_search(m_tpItems1.begin(),m_tpItems1.end(),dynamic_cast<CSE_ALifeInventoryItem*>(object(*I))))
 						m_tpBlockedItems2.push_back(*I);
 					else {
-						R_ASSERT2(std::binary_search(m_tpItems2.begin(),m_tpItems2.end(),dynamic_cast<CSE_ALifeInventoryItem*>(tpfGetObjectByID(*I))),"Unknown item parent");
+						R_ASSERT2(std::binary_search(m_tpItems2.begin(),m_tpItems2.end(),dynamic_cast<CSE_ALifeInventoryItem*>(object(*I))),"Unknown item parent");
 						m_tpBlockedItems1.push_back(*I);
 					}
 				}
@@ -733,7 +733,7 @@ void CSE_ALifeSimulator::vfCommunicateWithCustomer(CSE_ALifeHumanAbstract *tpALi
 		OBJECT_IT							I = l_tpALifeAbstractGroup->m_tpMembers.begin();
 		OBJECT_IT							E = l_tpALifeAbstractGroup->m_tpMembers.end();
 		for ( ; I != E; ++I)
-			vfCommunicateWithCustomer		(dynamic_cast<CSE_ALifeHumanAbstract*>(tpfGetObjectByID(*I)),tpALifeTrader);
+			vfCommunicateWithCustomer		(dynamic_cast<CSE_ALifeHumanAbstract*>(object(*I)),tpALifeTrader);
 		return;
 	}
 	
@@ -748,7 +748,7 @@ void CSE_ALifeSimulator::vfCommunicateWithCustomer(CSE_ALifeHumanAbstract *tpALi
 		OBJECT_IT							I = tpALifeHumanAbstract->children.begin();
 		OBJECT_IT							E = tpALifeHumanAbstract->children.end();
 		for ( ; I != E; ++I) {
-			CSE_ALifeInventoryItem			*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(tpfGetObjectByID(*I));
+			CSE_ALifeInventoryItem			*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(object(*I));
 			tpALifeHumanAbstract->vfDetachItem(l_tpALifeInventoryItem,0,true,false);
 			tpALifeTrader->vfAttachItem		(l_tpALifeInventoryItem,true);
 			u32								l_dwItemCost = tpALifeTrader->dwfGetItemCost(l_tpALifeInventoryItem,this);

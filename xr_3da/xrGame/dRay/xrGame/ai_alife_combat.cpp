@@ -26,7 +26,7 @@ void CSE_ALifeSimulator::vfFillCombatGroup(CSE_ALifeSchedulable *tpALifeSchedula
 		OBJECT_IT			I = l_tpALifeGroupAbstract->m_tpMembers.begin();
 		OBJECT_IT			E = l_tpALifeGroupAbstract->m_tpMembers.end();
 		for ( ; I != E; ++I) {
-			CSE_ALifeSchedulable	*l_tpALifeSchedulable = dynamic_cast<CSE_ALifeSchedulable*>(tpfGetObjectByID(*I));
+			CSE_ALifeSchedulable	*l_tpALifeSchedulable = dynamic_cast<CSE_ALifeSchedulable*>(object(*I));
 			R_ASSERT2				(l_tpALifeSchedulable,"Invalid combat object");
 			tpGroupVector.push_back(l_tpALifeSchedulable);
 			l_tpALifeSchedulable->tpfGetBestWeapon(l_tHitType,l_fHitPower);
@@ -344,7 +344,7 @@ void CSE_ALifeSimulator::vfAppendItemVector(OBJECT_VECTOR &tObjectVector, ITEM_P
 	OBJECT_IT	I = tObjectVector.begin();
 	OBJECT_IT	E = tObjectVector.end();
 	for ( ; I != E; ++I) {
-		CSE_ALifeInventoryItem *l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(tpfGetObjectByID(*I));
+		CSE_ALifeInventoryItem *l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(object(*I));
 		if (l_tpALifeInventoryItem)
 			tItemList.push_back				(l_tpALifeInventoryItem);
 	}
@@ -361,7 +361,7 @@ void CSE_ALifeSimulator::vfFinishCombat(ECombatResult tCombatResult)
 		CSE_ALifeGroupAbstract	*l_tpALifeGroupAbstract = dynamic_cast<CSE_ALifeGroupAbstract*>(m_tpaCombatObjects[i]);
 		if (l_tpALifeGroupAbstract) {
 			for (int I=0, N=l_tpALifeGroupAbstract->m_tpMembers.size() ; I<N; ++I) {
-				CSE_ALifeMonsterAbstract	*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(tpfGetObjectByID(l_tpALifeGroupAbstract->m_tpMembers[I]));
+				CSE_ALifeMonsterAbstract	*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(object(l_tpALifeGroupAbstract->m_tpMembers[I]));
 				R_ASSERT2					(l_tpALifeMonsterAbstract,"Invalid group member!");
 				l_tpALifeMonsterAbstract->vfUpdateWeaponAmmo	();
 				if (l_tpALifeMonsterAbstract->fHealth <= EPS_L) {
@@ -392,7 +392,7 @@ void CSE_ALifeSimulator::vfFinishCombat(ECombatResult tCombatResult)
 				vfAssignDeathPosition							(l_tpALifeMonsterAbstract, l_tGraphID, m_tpaCombatObjects[i ^ 1]);
 				l_tpALifeMonsterAbstract->vfDetachAll			();
 				R_ASSERT										(l_tpALifeMonsterAbstract->children.empty());
-				vfRemoveObjectFromScheduled						(l_tpALifeMonsterAbstract);
+				CSE_ALifeScheduleRegistry::remove				(l_tpALifeMonsterAbstract);
 				if (l_tpALifeMonsterAbstract->m_tGraphID != l_tGraphID1) {
 					vfRemoveObjectFromGraphPoint				(l_tpALifeMonsterAbstract,l_tGraphID1);
 					vfAddObjectToGraphPoint						(l_tpALifeMonsterAbstract,l_tpALifeMonsterAbstract->m_tGraphID);

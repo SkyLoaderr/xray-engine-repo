@@ -779,10 +779,10 @@ void CUIMainIngameWnd::OnNewsReceived(const ALife::SGameNews &newsItem)
 	}
 
 	// Substitute placeholders with real names
-	CSE_ALifeDynamicObject	*newsActorOne = ai().alife().tpfGetObjectByID(newsItem.m_object_id[0]);
+	CSE_ALifeDynamicObject	*newsActorOne = ai().alife().object(newsItem.m_object_id[0]);
 	if (newsItem.m_object_id[1] != static_cast<u16>(-1))
 	{
-		CSE_ALifeDynamicObject	*newsActorTwo = ai().alife().tpfGetObjectByID(newsItem.m_object_id[1]);
+		CSE_ALifeDynamicObject	*newsActorTwo = ai().alife().object(newsItem.m_object_id[1]);
 		sprintf(newsPhrase, *m_NewsTemplates[static_cast<u32>(newsItem.m_news_type)], newsActorTwo->s_name_replace, newsActorOne->s_name_replace);
 	}
 	else

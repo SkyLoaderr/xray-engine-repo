@@ -207,7 +207,7 @@ void CSE_ALifeTaskRegistry::Add	(CSE_ALifeTask	*tpTask)
 
 void CSE_ALifeTaskRegistry::Update(CSE_ALifeTask	*tpTask)
 {
-	R_ASSERT2					(tpfGetTaskByID(tpTask->m_tTaskID) == tpTask,"Cannot find a specified task in the Task registry!");
+	R_ASSERT2					(task(tpTask->m_tTaskID) == tpTask,"Cannot find a specified task in the Task registry!");
 	OBJECT_TASK_PAIR_IT			J = m_tTaskCrossMap.find(tpTask->m_tCustomerID);
 	if (m_tTaskCrossMap.end() == J) {
 		m_tTaskCrossMap.insert	(mk_pair(tpTask->m_tCustomerID,TASK_SET()));
@@ -473,7 +473,7 @@ void CSE_ALifeTraderRegistry::Update(CSE_ALifeDynamicObject *tpALifeDynamicObjec
 	}
 }
 
-CSE_ALifeTrader *CSE_ALifeTraderRegistry::tpfGetNearestSuitableTrader(CSE_ALifeHumanAbstract *tpALifeHumanAbstract)
+CSE_ALifeTrader *CSE_ALifeTraderRegistry::trader_nearest(CSE_ALifeHumanAbstract *tpALifeHumanAbstract)
 {
 	float			fBestDistance = dInfinity;
 	CSE_ALifeTrader *tpBestTrader = 0;
@@ -506,10 +506,10 @@ void CSE_ALifeScheduleRegistry::Update(CSE_ALifeDynamicObject *tpALifeDynamicObj
 {
 	if (!tpALifeDynamicObject->m_bDirectControl)
 		return;
-	vfAddObjectToScheduled		(tpALifeDynamicObject);
+	add							(tpALifeDynamicObject);
 }
 
-void CSE_ALifeScheduleRegistry::vfAddObjectToScheduled(CSE_ALifeDynamicObject *tpALifeDynamicObject, bool bUpdateSchedulableObjects)
+void CSE_ALifeScheduleRegistry::add(CSE_ALifeDynamicObject *tpALifeDynamicObject, bool bUpdateSchedulableObjects)
 {
 	R_ASSERT2					(!tpALifeDynamicObject->m_bOnline,"Can't add to scheduled objects online object!");
 	
@@ -538,7 +538,7 @@ void CSE_ALifeScheduleRegistry::vfAddObjectToScheduled(CSE_ALifeDynamicObject *t
 		m_tNextFirstProcessObjectID = l_tpALifeSchedulable->ID;
 }
 
-void CSE_ALifeScheduleRegistry::vfRemoveObjectFromScheduled(CSE_ALifeDynamicObject *tpALifeDynamicObject, bool bUpdateSchedulableObjects)
+void CSE_ALifeScheduleRegistry::remove			(CSE_ALifeDynamicObject *tpALifeDynamicObject, bool bUpdateSchedulableObjects)
 {
 //	R_ASSERT2					(tpALifeDynamicObject->m_bOnline || (dynamic_cast<CSE_ALifeMonsterAbstract*>(tpALifeDynamicObject) && (dynamic_cast<CSE_ALifeMonsterAbstract*>(tpALifeDynamicObject)->fHealth <= 0)	|| (dynamic_cast<CSE_ALifeGroupAbstract*>(tpALifeDynamicObject) && dynamic_cast<CSE_ALifeGroupAbstract*>(tpALifeDynamicObject)->m_tpMembers.empty())),"Can't remove from scheduled objects offline object!");
 	

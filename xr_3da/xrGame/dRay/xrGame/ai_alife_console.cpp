@@ -242,7 +242,7 @@ void CSE_ALifeSimulator::vfObjectInfo(_OBJECT_ID	tObjectID)
 		Msg("* Current point : %7.2f",tpALifeHumanAbstract->m_dwCurTaskLocation);
 		Msg("* Current task  :");
 		if (int(tpALifeHumanAbstract->m_dwCurTaskID) >= 0) {
-			CSE_ALifeTask			&tTask = *tpfGetTaskByID(tpALifeHumanAbstract->m_dwCurTaskID);
+			CSE_ALifeTask			&tTask = *task(tpALifeHumanAbstract->m_dwCurTaskID);
 			Msg("* Task  ID    : %d",tTask.m_tTaskID);
 			vfPrintTime("* Time  ID  :",tTask.m_tTimeID);
 			Msg("* Customer ID : %d",tTask.m_tCustomerID);

@@ -128,7 +128,7 @@ CSE_ALifeDynamicObject *CSE_ALifeMonsterAbstract::tpfGetBestDetector()
 		if (!l_tpALifeGroupAbstract->m_wCount)
 			return				(0);
 		else
-			return				(m_tpALife->tpfGetObjectByID(l_tpALifeGroupAbstract->m_tpMembers[0]));
+			return				(m_tpALife->object(l_tpALifeGroupAbstract->m_tpMembers[0]));
 	}
 }
 

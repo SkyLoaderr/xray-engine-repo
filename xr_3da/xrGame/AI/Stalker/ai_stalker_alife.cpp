@@ -44,7 +44,7 @@ void CAI_Stalker::vfChooseTask()
 		else {
 			m_tDestGraphPointIndex	= ALife::_GRAPH_ID(-1);
 			vfChooseHumanTask		();
-			CSE_ALifeTask			*l_tpTask = m_tpALife->tpfGetTaskByID(m_tTaskID);
+			CSE_ALifeTask			*l_tpTask = m_tpALife->task(m_tTaskID);
 			switch (l_tpTask->m_tTaskType) {
 				case ALife::eTaskTypeSearchForItemCG :
 				case ALife::eTaskTypeSearchForItemOG : {
@@ -69,7 +69,7 @@ void CAI_Stalker::vfChooseTask()
 void CAI_Stalker::vfGoToCustomer()
 {
 //	if (m_tpGraphPath.empty()) {
-//		ai().m_tpAStar->ffFindMinimalPath(m_tGraphID,m_tpALife->tpfGetObjectByID(m_tpALife->tpfGetTaskByID(m_tTaskID)->m_tCustomerID)->m_tGraphID,m_tpGraphPath);
+//		ai().m_tpAStar->ffFindMinimalPath(m_tGraphID,m_tpALife->object(m_tpALife->task(m_tTaskID)->m_tCustomerID)->m_tGraphID,m_tpGraphPath);
 //		m_dwCurGraphPathNode					= 0;
 //		m_tNextGraphID				= m_tGraphID;
 //	}
@@ -77,8 +77,8 @@ void CAI_Stalker::vfGoToCustomer()
 //		m_tpGraphPath.clear();
 //		m_dwCurGraphPathNode = 0;
 //		if (int(m_tTaskID) > 0) {
-////			CSE_ALifeTask			*l_tpTask = m_tpALife->tpfGetTaskByID(m_tTaskID);
-////			CSE_ALifeTrader			*l_tpTrader = dynamic_cast<CSE_ALifeTrader*>(m_tpALife->tpfGetObjectByID(l_tpTask->m_tCustomerID));
+////			CSE_ALifeTask			*l_tpTask = m_tpALife->task(m_tTaskID);
+////			CSE_ALifeTrader			*l_tpTrader = dynamic_cast<CSE_ALifeTrader*>(m_tpALife->object(l_tpTask->m_tCustomerID));
 ////			if (l_tpTrader)
 ////				m_tpALife->vfCommunicateWithCustomer(this,l_tpTrader);
 //		}
@@ -95,7 +95,7 @@ void CAI_Stalker::vfAccomplishTask()
 //		m_tNextGraphID			= m_tGraphID;
 //	}
 //
-//	if (m_tNextGraphID == m_tpALife->tpfGetTaskByID(m_tTaskID)->m_tGraphID)
+//	if (m_tNextGraphID == m_tpALife->task(m_tTaskID)->m_tGraphID)
 //		m_tTaskState	= eTaskStateSearchItem;
 //	else
 //		m_tTaskState	= eTaskStateGoingToSearchItem;
@@ -106,7 +106,7 @@ void CAI_Stalker::vfFinishTask()
 	if (bfCheckIfTaskCompleted())
 		m_tTaskState		= ALife::eTaskStateGoToCustomer;
 	else {
-		CSE_ALifeTask		*l_tpALifeTask = m_tpALife->tpfGetTaskByID(m_tTaskID);
+		CSE_ALifeTask		*l_tpALifeTask = m_tpALife->task(m_tTaskID);
 		switch (l_tpALifeTask->m_tTaskType) {
 			case ALife::eTaskTypeSearchForItemCG :
 			case ALife::eTaskTypeSearchForItemOG : {
@@ -118,7 +118,7 @@ void CAI_Stalker::vfFinishTask()
 			}
 			case ALife::eTaskTypeSearchForItemCL :
 			case ALife::eTaskTypeSearchForItemOL : {
-//					++(tpALife->tpfGetTaskByID(m_tTaskID)->m_dwTryCount);
+//					++(tpALife->task(m_tTaskID)->m_dwTryCount);
 //					m_tTaskState		= eTaskStateChooseTask;
 //					for (++m_dwCurTaskLocation; (m_dwCurTaskLocation < tpAlife->m_tpTerrain[m_tpTasks[m_dwCurTask]->m_tLocationID].size()) && (m_baVisitedVertices[m_dwCurTaskLocation]); ++m_dwCurTaskLocation);
 //					if (m_dwCurTaskLocation < tpAlife->m_tpTerrain[m_tpTasks[m_dwCurTask]->m_tLocationID].size()) {

@@ -40,6 +40,7 @@ void CSoundPlayer::add				(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 p
 	sound_collection.m_priority		= priority;
 	sound_collection.m_synchro_mask	= mask;
 	sound_collection.m_bone_name	= bone_name;
+	sound_collection.m_sound_prefix	= prefix;
 	m_sounds.insert					(std::make_pair(internal_type,sound_collection));
 	
 	I								= m_sounds.find(internal_type);
@@ -73,6 +74,9 @@ void CSoundPlayer::load				(xr_vector<ref_sound*> &sounds, LPCSTR prefix, u32 ma
 				::Sound->create	(*sounds.back(),TRUE,name,type);
 			}
 		}
+	}
+	if (sounds.empty()) {
+		Msg						("! There are no sounds with prefix %s",prefix);
 	}
 }
 
@@ -138,7 +142,7 @@ void CSoundPlayer::play				(u32 internal_type, u32 max_start_time, u32 min_start
 	VERIFY						(m_sounds.end() != I);
 	const CSoundCollection		&sound = (*I).second;
 	if (sound.m_sounds.empty()) {
-		Msg						("There are no sounds in sound collection with internal type %d (sound_script = %d)",internal_type,StalkerSpace::eStalkerSoundScript);
+		Msg						("! There are no sounds in sound collection \"%s\" with internal type %d (sound_script = %d)",*sound.m_sound_prefix,internal_type,StalkerSpace::eStalkerSoundScript);
 		return;
 	}
 

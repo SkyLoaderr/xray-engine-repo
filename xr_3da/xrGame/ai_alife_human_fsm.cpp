@@ -96,7 +96,7 @@ void CSE_ALifeHumanAbstract::vfChooseTask()
 		else {
 			m_tDestGraphPointIndex	= _GRAPH_ID(-1);
 			vfChooseHumanTask		();
-			CSE_ALifeTask			*l_tpTask = m_tpALife->tpfGetTaskByID(m_dwCurTaskID);
+			CSE_ALifeTask			*l_tpTask = m_tpALife->task(m_dwCurTaskID);
 			switch (l_tpTask->m_tTaskType) {
 				case eTaskTypeSearchForItemCG :
 				case eTaskTypeSearchForItemOG : {
@@ -138,7 +138,7 @@ void CSE_ALifeHumanAbstract::vfGoToCustomer()
 {
 	// go to customer to get something to accomplish task
 	if (m_tpPath.empty()) {
-		ai().graph_engine().search(ai().game_graph(),m_tGraphID,m_tpALife->tpfGetObjectByID(m_tpALife->tpfGetTaskByID(m_dwCurTaskID)->m_tCustomerID)->m_tGraphID,&m_tpPath,CGraphEngine::CBaseParameters());
+		ai().graph_engine().search(ai().game_graph(),m_tGraphID,m_tpALife->object(m_tpALife->task(m_dwCurTaskID)->m_tCustomerID)->m_tGraphID,&m_tpPath,CGraphEngine::CBaseParameters());
 		m_dwCurNode					= 0;
 		m_tNextGraphID				= m_tGraphID;
 		m_fCurSpeed					= m_fGoingSpeed;
@@ -147,8 +147,8 @@ void CSE_ALifeHumanAbstract::vfGoToCustomer()
 		m_tpPath.clear();
 		m_dwCurNode = 0;
 		if (int(m_dwCurTaskID) > 0) {
-			CSE_ALifeTask			*l_tpTask = m_tpALife->tpfGetTaskByID(m_dwCurTaskID);
-			CSE_ALifeTrader			*l_tpTrader = dynamic_cast<CSE_ALifeTrader*>(m_tpALife->tpfGetObjectByID(l_tpTask->m_tCustomerID));
+			CSE_ALifeTask			*l_tpTask = m_tpALife->task(m_dwCurTaskID);
+			CSE_ALifeTrader			*l_tpTrader = dynamic_cast<CSE_ALifeTrader*>(m_tpALife->object(l_tpTask->m_tCustomerID));
 			if (l_tpTrader)
 				m_tpALife->vfCommunicateWithCustomer(this,l_tpTrader);
 		}
@@ -183,7 +183,7 @@ void CSE_ALifeHumanAbstract::vfAccomplishTask()
 			m_tTaskState		= eTaskStateGoToCustomer;
 		}
 		else {
-			CSE_ALifeTask		*l_tpALifeTask = m_tpALife->tpfGetTaskByID(m_dwCurTaskID);
+			CSE_ALifeTask		*l_tpALifeTask = m_tpALife->task(m_dwCurTaskID);
 			switch (l_tpALifeTask->m_tTaskType) {
 				case eTaskTypeSearchForItemCG :
 				case eTaskTypeSearchForItemOG : {
@@ -195,7 +195,7 @@ void CSE_ALifeHumanAbstract::vfAccomplishTask()
 				}
 				case eTaskTypeSearchForItemCL :
 				case eTaskTypeSearchForItemOL : {
-//					++(tpALife->tpfGetTaskByID(m_dwCurTaskID)->m_dwTryCount);
+//					++(tpALife->task(m_dwCurTaskID)->m_dwTryCount);
 //					m_tTaskState		= eTaskStateChooseTask;
 //					for (++m_dwCurTaskLocation; (m_dwCurTaskLocation < tpAlife->m_tpTerrain[m_tpTasks[m_dwCurTask]->m_tLocationID].size()) && (m_baVisitedVertices[m_dwCurTaskLocation]); ++m_dwCurTaskLocation);
 //					if (m_dwCurTaskLocation < tpAlife->m_tpTerrain[m_tpTasks[m_dwCurTask]->m_tLocationID].size()) {
@@ -212,7 +212,7 @@ void CSE_ALifeHumanAbstract::vfAccomplishTask()
 		}
 	}
 	else
-		if (m_tNextGraphID == m_tpALife->tpfGetTaskByID(m_dwCurTaskID)->m_tGraphID)
+		if (m_tNextGraphID == m_tpALife->task(m_dwCurTaskID)->m_tGraphID)
 			m_tTaskState	= eTaskStateSearchItem;
 }
 
@@ -220,11 +220,11 @@ void CSE_ALifeHumanAbstract::vfSearchObject()
 {
 	m_fCurSpeed		= m_fSearchSpeed;
 	m_fProbability	= m_fSearchSuccessProbability; 
-	CSE_ALifeTask	*l_tpALifeTask = m_tpALife->tpfGetTaskByID(m_dwCurTaskID);
+	CSE_ALifeTask	*l_tpALifeTask = m_tpALife->task(m_dwCurTaskID);
 	switch (l_tpALifeTask->m_tTaskType) {
 		case eTaskTypeSearchForItemCG :
 		case eTaskTypeSearchForItemOG : {
-			if ((m_tNextGraphID != l_tpALifeTask->m_tGraphID) || (m_tGraphID == m_tpALife->tpfGetTaskByID(m_dwCurTaskID)->m_tGraphID))
+			if ((m_tNextGraphID != l_tpALifeTask->m_tGraphID) || (m_tGraphID == m_tpALife->task(m_dwCurTaskID)->m_tGraphID))
 				m_tTaskState	= eTaskStateAccomplishTask;
 			break;
 		}

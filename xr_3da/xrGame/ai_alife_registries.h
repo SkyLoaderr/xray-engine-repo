@@ -24,7 +24,7 @@ public:
 	virtual void					Load						(IReader &tFileStream);
 			void					Add							(CSE_ALifeDynamicObject *tpALifeDynamicObject);
 
-	IC		CSE_ALifeDynamicObject	*tpfGetObjectByID			(ALife::_OBJECT_ID tObjectID, bool bNoAssert = false)
+	IC		CSE_ALifeDynamicObject	*object			(ALife::_OBJECT_ID tObjectID, bool bNoAssert = false)
 	{
 		ALife::D_OBJECT_PAIR_IT		I = m_tObjectRegistry.find(tObjectID);
 		
@@ -50,7 +50,7 @@ public:
 	virtual	void					Load						(IReader &tFileStream);
 	virtual	void					Add							(CSE_ALifeEvent	*tpEvent);
 	
-	IC		CSE_ALifeEvent			*tpfGetEventByID			(ALife::_EVENT_ID tEventID, bool bNoAssert = false)
+	IC		CSE_ALifeEvent			*event			(ALife::_EVENT_ID tEventID, bool bNoAssert = false)
 	{
 		ALife::EVENT_PAIR_IT		I = m_tEventRegistry.find(tEventID);
 
@@ -77,7 +77,7 @@ public:
 	virtual	void					Add							(CSE_ALifeTask *tpTask);
 	virtual	void					Update						(CSE_ALifeTask *tpTask);
 
-	IC		CSE_ALifeTask			*tpfGetTaskByID				(ALife::_TASK_ID tTaskID, bool bNoAssert = false)
+	IC		CSE_ALifeTask			*task						(ALife::_TASK_ID tTaskID, bool bNoAssert = false)
 	{
 		ALife::TASK_PAIR_IT			I = m_tTaskRegistry.find(tTaskID);
 
@@ -131,7 +131,7 @@ public:
 	virtual							~CSE_ALifeTraderRegistry	(){}
 			void					Init						();
 			void					Update						(CSE_ALifeDynamicObject *tpALifeDynamicObject);
-			CSE_ALifeTrader			*tpfGetNearestSuitableTrader(CSE_ALifeHumanAbstract *tpALifeHumanAbstract);
+			CSE_ALifeTrader			*trader_nearest(CSE_ALifeHumanAbstract *tpALifeHumanAbstract);
 };
 
 class CSE_ALifeScheduleRegistry {
@@ -143,8 +143,8 @@ public:
 	virtual							~CSE_ALifeScheduleRegistry	(){}
 			void					Init						();
 			void					Update						(CSE_ALifeDynamicObject *tpALifeDynamicObject);
-			void					vfAddObjectToScheduled		(CSE_ALifeDynamicObject *tpALifeDynamicObject, bool bUpdateSchedulableObjects = true);
-			void					vfRemoveObjectFromScheduled	(CSE_ALifeDynamicObject *tpALifeDynamicObject, bool bUpdateSchedulableObjects = true);
+			void					add							(CSE_ALifeDynamicObject *tpALifeDynamicObject, bool bUpdateSchedulableObjects = true);
+			void					remove						(CSE_ALifeDynamicObject *tpALifeDynamicObject, bool bUpdateSchedulableObjects = true);
 };
 
 class CSE_ALifeSpawnRegistry : public CSE_ALifeSpawnHeader {

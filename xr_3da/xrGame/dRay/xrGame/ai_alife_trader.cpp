@@ -147,7 +147,7 @@ u32	CSE_ALifeTrader::dwfGetItemCost(CSE_ALifeInventoryItem *tpALifeInventoryItem
 		OBJECT_IT		i = children.begin();
 		OBJECT_IT		e = children.end();
 		for ( ; i != e; ++i)
-			if (!xr_strcmp(tpALifeObjectRegistry->tpfGetObjectByID(*i)->s_name,l_tpALifeItemArtefact->s_name))
+			if (!xr_strcmp(tpALifeObjectRegistry->object(*i)->s_name,l_tpALifeItemArtefact->s_name))
 				++l_dwPurchasedCount;
 	}
 
