@@ -24,7 +24,7 @@ public:
 	};
 	struct Light
 	{
-		Flight				L;
+		light*				source;
 		float				energy;
 	};
 	xr_vector<Item>			track;
@@ -35,9 +35,9 @@ public:
 	u32						Shadowed_dwFrame;
 	int						Shadowed_Slot;
 
-	void					add				(R1_light*		L);
-	void					remove			(R1_light*		id);
-	void					track			(IRenderable*	O);
+	void					add				(light*			L);
+	void					remove			(light*			L);
+	void					ltrack			(IRenderable*	O);
 
 	CLightTrack				();
 	virtual ~CLightTrack	()	{};

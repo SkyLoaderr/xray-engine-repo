@@ -52,7 +52,7 @@ IC bool	pred_energy		(const CLightTrack::Light& L1, const CLightTrack::Light& L2
 	return L1.energy>L2.energy;
 }
 
-void	CLightTrack::Track	(IRenderable* O)
+void	CLightTrack::ltrack	(IRenderable* O)
 {
 	Fvector					pos; 
 	float					fRadius;
@@ -64,8 +64,8 @@ void	CLightTrack::Track	(IRenderable* O)
 	CLightTrack* pROS		= dynamic_cast<CLightTrack*>	(O->renderable.ROS);
 	R_ASSERT				(pROS);
 	CLightTrack& dest		= *pROS;
-	if						(dest.dwFrame==Device.dwFrame)	return;
-	dest.dwFrame			= Device.dwFrame;
+	if						(dwFrame==Device.dwFrame)	return;
+	dwFrame					= Device.dwFrame;
 	O->renderable.xform.transform_tiny	(pos,O->renderable.visual->vis.sphere.P);
 	fRadius					= O->renderable.visual->vis.sphere.R;
 	
@@ -73,8 +73,8 @@ void	CLightTrack::Track	(IRenderable* O)
 	float	dt				= Device.fTimeDelta;
 	float	l_f				= dt*lt_smooth;
 	float	l_i				= 1.f-l_f;
-	dest.ambient			= l_i*dest.ambient + l_f*O->renderable_Ambient();
-	clamp					(dest.ambient,0.f,255.f);
+	ambient			= l_i*ambient + l_f*O->renderable_Ambient();
+	clamp					(ambient,0.f,255.f);
 	
 	// Select nearest lights
 	Fvector					bb_size	=	{fRadius,fRadius,fRadius};
@@ -88,17 +88,17 @@ void	CLightTrack::Track	(IRenderable* O)
 		R1_light*	source		= dynamic_cast<R1_light*>(spatial);
 		if (0==source)			continue;
 		Flight &L				= source->data;
-		if (L.type == D3DLIGHT_DIRECTIONAL)				dest.add	(source);
+		if (L.type == D3DLIGHT_DIRECTIONAL)				add	(source);
 		else {
 			float	R	= fRadius+L.range;
-			if (pos.distance_to_sqr(L.position) < R*R)	dest.add	(source);
-			else										dest.remove	(source);
+			if (pos.distance_to_sqr(L.position) < R*R)	add	(source);
+			else										remove	(source);
 		}
 	}
 	
 	// Trace visibility
-	dest.lights.clear	();
-	xr_vector<CLightTrack::Item>& track			= dest.track;
+	lights.clear	();
+	xr_vector<CLightTrack::Item>& track			= track;
 	xr_vector<CLightTrack::Item>::iterator I	= track.begin(), E=track.end();
 	float R										= fRadius*.5f;
 	for (; I!=E; I++)
@@ -131,8 +131,8 @@ void	CLightTrack::Track	(IRenderable* O)
 		if (E > EPS)	
 		{
 			// Select light
-			dest.lights.push_back	(CLightTrack::Light());
-			CLightTrack::Light&	L	= dest.lights.back();
+			lights.push_back	(CLightTrack::Light());
+			CLightTrack::Light&	L	= lights.back();
 			L.L						= xrL;
 			L.L.diffuse.mul_rgb		(I->energy/2);
 			L.energy				= E;
@@ -140,5 +140,5 @@ void	CLightTrack::Track	(IRenderable* O)
 	}
 	
 	// Sort lights by importance
-	std::sort(dest.lights.begin(),dest.lights.end(), pred_energy);
+	std::sort(lights.begin(),lights.end(), pred_energy);
 }
