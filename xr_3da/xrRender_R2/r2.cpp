@@ -55,15 +55,29 @@ void					CRender::model_Delete			(IRender_DetailModel* & F)
 }
 IRender_Visual*			CRender::model_CreatePS			(LPCSTR name, PS::SEmitter* E)	
 { 
-	PS::SDef*	source		= PSystems.FindPS	(name);
+	PS::SDef*	source		= PSLibrary.FindPS	(name);
 	VERIFY					(source);
 	return Models.CreatePS	(source,E);
 }
 IRender_Visual*			CRender::model_CreatePE			(LPCSTR name)	
 { 
-	PS::CPEDef*	source		= PSystems.FindPED	(name);
-	VERIFY					(source);
-	return Models.CreatePE	(source);
+	PS::CPEDef*	SE			= PSLibrary.FindPED	(name);		VERIFY(SE);
+	return					Models.CreatePE	(SE);
+}
+IRender_Visual*			CRender::model_CreatePG			(LPCSTR name)	
+{ 
+	PS::CPGDef*	SG			= PSLibrary.FindPGD	(name);		VERIFY(SG);
+	return					Models.CreatePG	(SG);
+}
+
+IRender_Visual*			CRender::model_CreateParticles	(LPCSTR name)	
+{ 
+	PS::CPEDef*	SE			= PSLibrary.FindPED	(name);
+	if (SE) return			Models.CreatePE	(SE);
+	else{
+		PS::CPGDef*	SG		= PSLibrary.FindPGD	(name);		R_ASSERT(SG);
+		return				Models.CreatePG	(SG);
+	}
 }
 int						CRender::getVisualsCount		()					{ return Visuals.size();								}
 IRender_Portal*			CRender::getPortal				(int id)			{ VERIFY(id<int(Portals.size()));	return Portals[id];	}
@@ -145,8 +159,8 @@ void CRender::OnDeviceCreate	()
 	Target.OnDeviceCreate		();
 	LR.Create					();
 
-	PSystems.OnCreate			();
-	PSystems.OnDeviceCreate		();
+	PSLibrary.OnCreate			();
+	PSLibrary.OnDeviceCreate	();
 	level_Load					();
 
 	rmNormal					();
@@ -156,8 +170,8 @@ void CRender::OnDeviceCreate	()
 void CRender::OnDeviceDestroy	()
 {
 	level_Unload				();
-	PSystems.OnDeviceDestroy	();
-	PSystems.OnDestroy			();
+	PSLibrary.OnDeviceDestroy	();
+	PSLibrary.OnDestroy			();
 
 	LR.Destroy					();
 	Target.OnDeviceDestroy		();
