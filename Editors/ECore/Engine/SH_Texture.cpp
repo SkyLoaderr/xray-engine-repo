@@ -141,12 +141,11 @@ void CTexture::Load()
 			_Trim		(buffer);
 			if (buffer[0])	{
 				// Load another texture
-				D3DFORMAT f; u32 W,H,M;
-				pSurface = TWLoader2D		(M,buffer,f,W,H);
+				pSurface = ::Render->texture_load	(buffer);
 				if (pSurface)	{
 					pSurface->SetPriority	(PRIORITY_LOW);
 					seqDATA.push_back		(pSurface);
-					flags.MemoryUsage			+= M;
+					flags.MemoryUsage		+= 0;
 				}
 			}
 		}
@@ -154,13 +153,12 @@ void CTexture::Load()
 	} else
 	{
 		// Normal texture
-		D3DFORMAT f; u32 W,H,M;
-		pSurface = TWLoader2D		(M,*cName,f,W,H);
+		pSurface = ::Render->texture_load	(*cName);
 
 		// Calc memory usage and preload into vid-mem
 		if (pSurface) {
 			pSurface->SetPriority	(PRIORITY_NORMAL);
-			flags.MemoryUsage			=	M;
+			flags.MemoryUsage		=	0;
 		}
 	}
 }
