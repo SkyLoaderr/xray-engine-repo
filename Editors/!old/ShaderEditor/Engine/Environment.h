@@ -40,9 +40,10 @@ public:
 	STextureList		sky_r_textures_env;	// C
 	float				sky_factor;			// C
 
-	ref_texture			sky_texture;
-	ref_texture			sky_texture_env;
-	Fvector3			sky_color;
+	ref_texture			sky_texture		;
+	ref_texture			sky_texture_env	;
+	Fvector3			sky_color		;
+	float				sky_rotation	;
 
 	float				far_plane;
 

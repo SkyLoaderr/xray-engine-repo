@@ -122,6 +122,8 @@ void CEnvDescriptor::load	(LPCSTR exec_tm, LPCSTR S, CEnvironment* parent)
 	sky_texture.create		(st);
 	sky_texture_env.create	(st_env);
 	sky_color				= pSettings->r_fvector3	(S,"sky_color");		sky_color.mul(.5f);
+	if (pSettings->line_exist(S,"sky_rotation"))	sky_rotation	= deg2rad(pSettings->r_float(S,"sky_rotation"));
+	else											sky_rotation	= 0;
 	far_plane				= pSettings->r_float	(S,"far_plane");
 	fog_color				= pSettings->r_fvector3	(S,"fog_color");
 	fog_density				= pSettings->r_float	(S,"fog_density");
@@ -174,6 +176,7 @@ void CEnvDescriptor::lerp	(CEnvironment* parent, CEnvDescriptor& A, CEnvDescript
 
 	sky_factor				= f;
 	sky_color.lerp			(A.sky_color,B.sky_color,f);
+	sky_rotation			= (fi*A.sky_rotation + f*B.sky_rotation);
 	far_plane				= (fi*A.far_plane + f*B.far_plane + M.far_plane)*psVisDistance*_power;
 	fog_color.lerp			(A.fog_color,B.fog_color,f).add(M.fog_color).mul(_power);
 	fog_density				= (fi*A.fog_density + f*B.fog_density + M.fog_density)*_power;
@@ -508,7 +511,8 @@ void CEnvironment::RenderFirst	()
 	{
 		::Render->rmFar				();
 		Fmatrix						mSky;
-		mSky.translate				(Device.vCameraPosition);
+		mSky.rotateY				(CurrentEnv.sky_rotation);
+		mSky.translate_over			(Device.vCameraPosition);
 		RCache.set_xform_world		(mSky);
 
 		u32		i_offset,v_offset;
@@ -522,8 +526,7 @@ void CEnvironment::RenderFirst	()
 
 		// Fill vertex buffer
 		v_skybox* pv				= (v_skybox*)	RCache.Vertex.Lock	(12,sh_2geom.stride(),v_offset);
-		for (u32 v=0; v<12; v++)
-			pv[v].set				(hbox_verts[v*2],C,hbox_verts[v*2+1]);
+		for (u32 v=0; v<12; v++)	pv[v].set		(hbox_verts[v*2],C,hbox_verts[v*2+1]);
 		RCache.Vertex.Unlock		(12,sh_2geom.stride());
 
 		// Render
