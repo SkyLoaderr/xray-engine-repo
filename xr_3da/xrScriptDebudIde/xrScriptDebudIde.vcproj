@@ -4,10 +4,10 @@
 	Version="7.10"
 	Name="scriptDbgIde"
 	ProjectGUID="{2024BB4B-9C57-4EA7-B355-1FFF6FD5CE12}"
-	SccProjectName=""
-	SccAuxPath=""
-	SccLocalPath=""
-	SccProvider=""
+	SccProjectName="SAK"
+	SccAuxPath="SAK"
+	SccLocalPath="SAK"
+	SccProvider="SAK"
 	Keyword="MFCProj">
 	<Platforms>
 		<Platform
