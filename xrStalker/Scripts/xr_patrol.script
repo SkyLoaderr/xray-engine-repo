@@ -508,7 +508,7 @@ class "action_raid" (action_base)
 function action_raid:__init (name, storage) super (nil, name)
 	self.a = storage
     self.current_animation = 0
-    self.move_type = move.walk
+    self.move_type = move.run
     self.body_state = move.standing
     self.mental_state = anim.free
     self.stage = 0 
