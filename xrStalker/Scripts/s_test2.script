@@ -90,10 +90,12 @@ function Defender:initialize ()
     if self.way == nil then
 	   action (self.npc, move (move.crouch, move.stand, move.line, self.npc:position ()), anim (anim.danger), 
 	   		   cond (cond.time_end, time_infinite))	
+	   printf ("State = ON_READY")
 	   self.state = on_ready		   
 	else
 	   action (self.npc, move (move.standing, move.run, move.line, self.way), anim (anim.danger), cond (cond.move_end))
 	   action (self.npc, move (move.crouch, move.stand, move.line, self.way), anim (anim.danger), cond (cond.time_end, time_infinite))	
+	   printf ("State = ON_MOVE")
 	   self.state = on_move		   		   
 	end	   		   
 	
@@ -103,7 +105,6 @@ end
 function Defender:process ()
 	if self.npc == nil or self.npc:alive () == false or self.freed == true then return end
 	
-	printf ("Defender in process")
 	--если еще идем, то вперед
 	if self.state == on_move then
 	   if self.npc:action () then 
