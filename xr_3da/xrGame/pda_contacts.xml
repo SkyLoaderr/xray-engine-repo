@@ -14,16 +14,16 @@
 	</cntd_frame_line>
 
 	<!-- CONTACT LIST -->
-	<list x="13" y="70" width="425" height="380" item_height = "74"></list>
+	<list x="13" y="74" width="425" height="375" item_height = "74"></list>
 	
 	<!-- AUTOSTATICS -->
 	
 	<!-- LEFT LADDER -->
-	<auto_static x="7" y="40" width="4" height="430">
+	<auto_static x="6" y="38" width="4" height="430" stretch="1">
 		<texture>ui\ui_pda_vertical_line_r_l</texture>
 	</auto_static>
 	<!-- RIGHT LADDER -->
-	<auto_static x="410" y="77" width="4" height="430">
+	<auto_static x="413" y="77" width="4" height="388" stretch="1">
 		<texture>ui\ui_pda_vertical_line_l_r</texture>
 	</auto_static>
 	<!-- UPPER HORIZONTAL LINE -->
