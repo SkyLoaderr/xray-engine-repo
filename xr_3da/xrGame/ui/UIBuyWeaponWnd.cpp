@@ -112,6 +112,11 @@ void CUIBuyWeaponWnd::Init(char *strSectionName)
 	AttachChild(&UIWeaponsTabControl);
 	xml_init.InitTabControl(uiXml, "tab", 0, &UIWeaponsTabControl);
 
+	// Инициализируем статики с названиями амуниции
+	InitBackgroundStatics();
+
+	BringToTop(&UIWeaponsTabControl);
+
 	TABS_VECTOR *pTabV = UIWeaponsTabControl.GetButtonsVector();
 	for (u8 i = 0; i != pTabV->size(); ++i)
 	{
@@ -142,29 +147,14 @@ void CUIBuyWeaponWnd::Init(char *strSectionName)
 
 	// Кнопки OK и Cancel для выходи из диалога покупки оружия
 	AttachChild(&UIBtnOK);
-//	xml_init.InitButton(uiXml, "ok_button", 0, &UIBtnOK);
-	int x, y, w, h;
-	x = uiXml.ReadAttribInt("ok_button", 0, "x");
-	y = uiXml.ReadAttribInt("ok_button", 0, "y");
-	w = uiXml.ReadAttribInt("ok_button", 0, "width");
-	h = uiXml.ReadAttribInt("ok_button", 0, "height");
+	xml_init.InitButton(uiXml, "ok_button", 0, &UIBtnOK);
+	UIBtnOK.SetTextAlign(CGameFont::alCenter);
 	g_iOkAccelerator = uiXml.ReadAttribInt("ok_button", 0, "accel");
 
-	UIBtnOK.Init("Accept", x, y, w, h);
-	UIBtnOK.SetTextAlign(CGameFont::alCenter);
-	UIBtnOK.SetTextColor(0xFFEE9B17);
-
 	AttachChild(&UIBtnCancel);
-//	xml_init.InitButton(uiXml, "cancel_button", 0, &UIBtnCancel);
-	x = uiXml.ReadAttribInt("cancel_button", 0, "x");
-	y = uiXml.ReadAttribInt("cancel_button", 0, "y");
-	w = uiXml.ReadAttribInt("cancel_button", 0, "width");
-	h = uiXml.ReadAttribInt("cancel_button", 0, "height");
-	g_iCancelAccelerator = uiXml.ReadAttribInt("cancel_button", 0, "accel");
-
-	UIBtnCancel.Init("Cancel", x, y, w, h);
+	xml_init.InitButton(uiXml, "cancel_button", 0, &UIBtnCancel);
 	UIBtnCancel.SetTextAlign(CGameFont::alCenter);
-	UIBtnCancel.SetTextColor(0xFFEE9B17);
+	g_iCancelAccelerator = uiXml.ReadAttribInt("cancel_button", 0, "accel");
 
 	for (int i = 0; i < 20; ++i)
 	{
@@ -250,6 +240,54 @@ void CUIBuyWeaponWnd::Init(char *strSectionName)
 	UIOutfitIcon.SetTextureScale(0.65f);
 	UIOutfitIcon.ClipperOn();
 }
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIBuyWeaponWnd::InitBackgroundStatics()
+{
+	static const ref_str	captionsArr[]	= { "small weapons", "main weapons", "grenades", "suits", "equipment" };
+	CGameFont				*pNumberF		= HUD().pFontBigDigit, 
+							*pCaptionF		= HUD().pFontSmall;
+	const float				numberShiftX	= 30.f;
+	const float				numberShiftY	= 10.f;
+	const float				captionShiftX	= 60.f;
+	const float				captionShiftY	= 10.f;
+	const u32				numberC			= 0xfff0d9b6;
+	const u32				captionC		= 0xfff0d9b6;
+
+	TABS_VECTOR *pTabV = UIWeaponsTabControl.GetButtonsVector();
+	int i = 1;
+
+	RECT r;
+	CUIMultiTextStatic::SinglePhrase * pSP;
+
+	r = UIStaticTabCtrl.GetAbsoluteRect();
+	UIMTStatic.Init(r.left, r.top, r.right - r.left, r.right - r.left);
+	AttachChild(&UIMTStatic);
+
+	for (TABS_VECTOR_it it = pTabV->begin(); it != pTabV->end(); ++it)
+	{
+		r = (*it)->GetAbsoluteRect();
+
+		pSP = UIMTStatic.AddPhrase();
+		pSP->outX = r.left + numberShiftX;
+		pSP->outY = r.top + numberShiftY;
+		pSP->effect.SetFont(pNumberF);
+		pSP->effect.SetTextColor(numberC);
+		pSP->SetText("%i.", i);
+
+		pSP = UIMTStatic.AddPhrase();
+		pSP->outX = r.left + captionShiftX;
+		pSP->outY = r.top + captionShiftY;
+		pSP->effect.SetFont(pCaptionF);
+		pSP->effect.SetTextColor(captionC);
+		pSP->str = captionsArr[i - 1];
+
+		++i;
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUIBuyWeaponWnd::ReInitItems	(char *strSectionName)
 {
@@ -748,6 +786,7 @@ void CUIBuyWeaponWnd::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 
 void CUIBuyWeaponWnd::Draw()
 {
+	DrawBuyButtonCaptions();
 	inherited::Draw();
 }
 
@@ -797,7 +836,6 @@ void CUIBuyWeaponWnd::Update()
 	if (!UITopList[OUTFIT_SLOT].GetDragDropItemsList().empty())
 		flag = true;
 
-	DrawBuyButtonCaptions();
 	CUIWindow::Update();
 }
 
@@ -1518,7 +1556,7 @@ bool CUIBuyWeaponWnd::OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action)
 			CUIDragDropItemMP::AddonIDs ID;
 			CUIDragDropItemMP *pDDItemMP = IsItemAnAddon(static_cast<CUIDragDropItemMP*>(*it), ID);
 
-			R_ASSERT(pDDItemMP);
+//			R_ASSERT(pDDItemMP);
 			if (!pDDItemMP) return false;
 
 			pDDItemMP->AttachDetachAddon(ID, 0 == pDDItemMP->m_AddonInfo[ID].iAttachStatus);
@@ -1564,11 +1602,23 @@ void WpnDrawIndex(CUIDragDropItem *pDDItem)
 	R_ASSERT(pDDItemMP);
 	if (!pDDItemMP) return;
 
-	RECT rect = pDDItemMP->GetAbsoluteRect();
+//	RECT rect = pDDItemMP->GetAbsoluteRect();
+	int left	= pDDItemMP->GetUIStaticItem().GetPosX();
+	int bottom	= pDDItemMP->GetUIStaticItem().GetPosY() + pDDItemMP->GetUIStaticItem().GetRect().height();
 
-	pDDItem->GetFont()->Out(float(rect.left), 
-		float(rect.bottom - pDDItemMP->GetFont()->CurrentHeight()- 2),
+//	HUD().OutText(static_cast<const void*>(pDDItem), pDDItem->GetFont(), float(rect.left), 
+//		float(rect.bottom - pDDItemMP->GetFont()->CurrentHeight()- 2),
+//		"%d", pDDItemMP->GetPosInSectionsGroup() + 1);
+
+	HUD().OutText(pDDItem->GetFont(), pDDItemMP->GetClipRect(), float(left), 
+		float(bottom - pDDItemMP->GetFont()->CurrentHeight()),
 		"%d", pDDItemMP->GetPosInSectionsGroup() + 1);
+
+//	HUD().OutText(pDDItem->GetFont(), pDDItemMP->GetClipRect(), float(rect.left), 
+//		float(rect.bottom - pDDItemMP->GetFont()->CurrentHeight()- 2),
+//		"%d", pDDItemMP->GetPosInSectionsGroup() + 1);
+
+	pDDItemMP->GetFont()->OnRender();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1610,22 +1660,6 @@ void CUIBuyWeaponWnd::MoveWeapon(const char *sectionName)
 void CUIBuyWeaponWnd::DrawBuyButtonCaptions()
 {
 	// Надписи
-	static const ref_str	captionsArr[]	= { "small weapons", "main weapons", "grenades", "suits", "equipment" };
-	TABS_VECTOR				*pTabsVector	= UIWeaponsTabControl.GetButtonsVector();
-	RECT					r;
-	CGameFont				*pNumberF		= HUD().pFontBigDigit, 
-							*pCaptionF		= HUD().pFontSmall;
-
-	pNumberF->SetColor(0xfff0d9b6);
-	pCaptionF->SetColor(0xfff0d9b6);
-
-	for (u8 i = 0; i < pTabsVector->size(); ++i)
-	{
-		r	= (*pTabsVector)[i]->GetAbsoluteRect();
-
-		pNumberF->Out(static_cast<float>(r.left + 30), static_cast<float>(r.top + 5), "%i.", i + 1);
-		pCaptionF->Out(static_cast<float>(r.left + 50), static_cast<float>(r.top + 10), "%s", *captionsArr[i]);
-	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////

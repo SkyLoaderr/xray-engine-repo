@@ -5,6 +5,8 @@
 
 #include "stdafx.h"
 #include ".\uiradiobutton.h"
+#include "../Level.h"
+#include "../HUDManager.h"
 
 CUIRadioButton::CUIRadioButton(void)
 {
@@ -33,19 +35,21 @@ void CUIRadioButton::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 void CUIRadioButton::Draw()
 {
 	CUIButton::Draw();
-}
 
-
-void CUIRadioButton::Update()
-{
 	RECT rect = GetAbsoluteRect();
 
 	//нарисовать галочку
 	if(m_bIsChecked)
 	{
 		GetFont()->SetColor(0xFF00FF00);
-		GetFont()->Out((float)rect.left, (float)rect.top+30,	"O");
+		HUD().OutText(GetFont(), GetClipRect(), (float)rect.left, (float)rect.top+30,	"O");
 	}
 
+	GetFont()->OnRender();
+}
+
+
+void CUIRadioButton::Update()
+{
 	CUIButton::Update();
 }

@@ -41,6 +41,7 @@ public:
 	virtual ~CUIInteractiveListItem() {}
 	virtual void OnMouse(int x, int y, E_MOUSEACTION mouse_action);
 	virtual void Update();
+	virtual void Draw();
 
 	// Инициализируем поля из входного вектора данных. Каждая подстрока в векторе
 	// заключенная в знаки-разделители является интерактивной. При нажатии на

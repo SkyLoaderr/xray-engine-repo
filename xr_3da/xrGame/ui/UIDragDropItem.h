@@ -19,6 +19,7 @@ typedef void (*CUSTOM_DRAW_PROC)(CUIDragDropItem* pItem);
 
 class CUIDragDropItem : public CUIButton
 {
+	typedef CUIButton inherited;
 public:
 	CUIDragDropItem();
 	virtual ~ CUIDragDropItem();

@@ -6,6 +6,8 @@
 
 #include "StdAfx.h"
 #include "UIInteractiveListItem.h"
+#include "../Level.h"
+#include "../HUDManager.h"
 
 //=============================================================================
 //  CUIInteractiveListItem class
@@ -113,42 +115,6 @@ RECT CUIInteractiveListItem::GetAbsoluteSubRect()
 void CUIInteractiveListItem::Update()
 {
 	m_bHighlightText = false;
-	RECT rect = GetAbsoluteSubRect();
-
-	// Подсвечиваем интерактивный элемент
-	if (itCurrIItem != vPositions.end() && m_bCursorOverButton && m_bInteractiveBahaviour)
-	{
-		UpdateTextAlign();
-		GetFont()->SetAligment(GetTextAlign());
-
-		GetFont()->SetColor(m_HighlightColor);
-		GetFont()->Out((float)rect.left + 1 +m_iTextOffsetX, 
-			(float)rect.top + 1 +m_iTextOffsetY,
-			(*itCurrIItem).subStr.c_str());
-		GetFont()->Out((float)rect.left + 1 +m_iTextOffsetX, 
-			(float)rect.top - 1 +m_iTextOffsetY,
-			(*itCurrIItem).subStr.c_str());
-		GetFont()->Out((float)rect.left + 1 +m_iTextOffsetX, 
-			(float)rect.top + 1 +m_iTextOffsetY,
-			(*itCurrIItem).subStr.c_str());
-		GetFont()->Out((float)rect.left + 1 +m_iTextOffsetX, 
-			(float)rect.top - 1 +m_iTextOffsetY,
-			(*itCurrIItem).subStr.c_str());
-		GetFont()->Out((float)rect.left + 1 +m_iTextOffsetX, 
-			(float)rect.top + 0 +m_iTextOffsetY,
-			(*itCurrIItem).subStr.c_str());
-		GetFont()->Out((float)rect.left + 1 +m_iTextOffsetX, 
-			(float)rect.top - 0 +m_iTextOffsetY,
-			(*itCurrIItem).subStr.c_str());
-		GetFont()->Out((float)rect.left + 0 +m_iTextOffsetX, 
-			(float)rect.top + 1 +m_iTextOffsetY,
-			(*itCurrIItem).subStr.c_str());
-		GetFont()->Out((float)rect.left + 0 +m_iTextOffsetX,  
-			(float)rect.top - 1 +m_iTextOffsetY,
-			(*itCurrIItem).subStr.c_str());
-
-	}
-	// вывод всей строки
 	inherited::Update();
 }
 
@@ -161,4 +127,58 @@ void CUIInteractiveListItem::SetIItemID(const u32 uIndex, const int ID)
 u32 CUIInteractiveListItem::GetIFieldsCount()
 {
 	return vPositions.size();
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIInteractiveListItem::Draw()
+{
+	inherited::Draw();
+
+	RECT rect = GetAbsoluteSubRect();
+
+	// Подсвечиваем интерактивный элемент
+	if (itCurrIItem != vPositions.end() && m_bCursorOverButton && m_bInteractiveBahaviour)
+	{
+		UpdateTextAlign();
+		GetFont()->SetAligment(GetTextAlign());
+
+		GetFont()->SetColor(m_HighlightColor);
+		HUD().OutText(GetFont(), GetClipRect(),
+			(float)rect.left + 1 +m_iTextOffsetX, 
+			(float)rect.top + 1 +m_iTextOffsetY,
+			(*itCurrIItem).subStr.c_str());
+		HUD().OutText(GetFont(), GetClipRect(),
+			(float)rect.left + 1 +m_iTextOffsetX, 
+			(float)rect.top - 1 +m_iTextOffsetY,
+			(*itCurrIItem).subStr.c_str());
+		HUD().OutText(GetFont(), GetClipRect(),
+			(float)rect.left + 1 +m_iTextOffsetX, 
+			(float)rect.top + 1 +m_iTextOffsetY,
+			(*itCurrIItem).subStr.c_str());
+		HUD().OutText(GetFont(), GetClipRect(),
+			(float)rect.left + 1 +m_iTextOffsetX, 
+			(float)rect.top - 1 +m_iTextOffsetY,
+			(*itCurrIItem).subStr.c_str());
+		HUD().OutText(GetFont(), GetClipRect(),
+			(float)rect.left + 1 +m_iTextOffsetX, 
+			(float)rect.top + 0 +m_iTextOffsetY,
+			(*itCurrIItem).subStr.c_str());
+		HUD().OutText(GetFont(), GetClipRect(),
+			(float)rect.left + 1 +m_iTextOffsetX, 
+			(float)rect.top - 0 +m_iTextOffsetY,
+			(*itCurrIItem).subStr.c_str());
+		HUD().OutText(GetFont(), GetClipRect(),
+			(float)rect.left + 0 +m_iTextOffsetX, 
+			(float)rect.top + 1 +m_iTextOffsetY,
+			(*itCurrIItem).subStr.c_str());
+		HUD().OutText(GetFont(), GetClipRect(),
+			(float)rect.left + 0 +m_iTextOffsetX,  
+			(float)rect.top - 1 +m_iTextOffsetY,
+			(*itCurrIItem).subStr.c_str());
+
+	}
+	// вывод всей строки
+
+	GetFont()->OnRender();
 }

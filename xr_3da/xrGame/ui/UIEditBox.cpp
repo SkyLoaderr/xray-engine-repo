@@ -4,7 +4,8 @@
 
 #include "stdafx.h"
 #include "uieditbox.h"
-
+#include "../Level.h"
+#include "../HUDManager.h"
 
 static u32 DILetters[] = { DIK_A, DIK_B, DIK_C, DIK_D, DIK_E, 
 						   DIK_F, DIK_G, DIK_H, DIK_I, DIK_J, 
@@ -264,7 +265,7 @@ void CUIEditBox::Update()
 		outY = 0;
 
 		GetFont()->SetColor(0xAAFFFF00);
-	    GetFont()->Out((float)rect.left+outX, 
+		HUD().OutText(GetFont(), GetClipRect(), (float)rect.left+outX, 
 					   (float)rect.top+outY,  "|");
 
 	}

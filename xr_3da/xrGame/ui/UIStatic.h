@@ -80,6 +80,8 @@ public:
 	void SetStretchTexture(bool stretch_texture) {m_bStretchTexture = stretch_texture;}
 	bool GetStretchTexture() {return m_bStretchTexture;}
 
+	Irect GetClipRect();
+
 protected:
 	bool m_bClipper;
 	//растягивание текстуры в видимую область

@@ -23,6 +23,7 @@
 #include "UIItemInfo.h"
 #include "UITabControl.h"
 #include "UIListItem.h"
+#include "UIMultiTextStatic.h"
 
 class CArtifact;
 
@@ -170,18 +171,13 @@ protected:
 	CUIStatic			UIDescWnd;
 	CUIStatic			UIPersonalWnd;
 
-	//конпка активации окошка сна
-//	CUIButton			UISleepButton;
-
 	// Набор закладок для экранов с оружием
 	CUITabControl		UIWeaponsTabControl;
+	// Статик для  вывода надписей на кнопках
+	CUIMultiTextStatic	UIMTStatic;
 
-//	CUIButton			UIButton1;
-//	CUIButton			UIButton2;
-//	CUIButton			UIButton3;
-//	CUIButton			UIButton4;
-//	CUIButton			UIButton5;
-//	CUIButton			UIButton6;
+	// и процедура для их инициализации
+	void InitBackgroundStatics();
 
 	CUIStatic			UIStaticTop;
 	CUIStatic			UIStaticBelt;
@@ -206,36 +202,16 @@ protected:
 //	CUIOutfitSlot		UIOutfitSlot;
 	CUIStatic			UIOutfitIcon;		
 
-//	CUIDragDropList		UIBagList;
-//	CUIDragDropList		UIBeltList;
-
-//	CUIProgressBar		UIProgressBarHealth;
-//	CUIProgressBar		UIProgressBarSatiety;
-//	CUIProgressBar		UIProgressBarPower;
-//	CUIProgressBar		UIProgressBarRadiation;
-
 	//pop-up меню вызываемое по нажатию правой кнопки
 	CUIPropertiesBox	UIPropertiesBox;
-	//менюшка для работы с устройством производства артефактов
-//	CUIArtifactMerger	UIArtifactMergerWnd;
-	//окошко для параметров сна
-//	CUISleepWnd			UISleepWnd;
 
 	// разбивка всего оружия на отдельные DragDrop листы по категориям: пистолеты, автоматы, etc.
 	DEF_VECTOR (WEAPON_TYPES, CUIDragDropList*)
 	WEAPON_TYPES		m_WeaponSubBags;
 
-	//информация о персонаже
-//	CUICharacterInfo UICharacterInfo;
-	//информация о предмете
-//	CUIItemInfo UIItemInfo;
-
 	static const int MAX_ITEMS = 70;
 	CUIDragDropItemMP m_vDragDropItems[MAX_ITEMS];
 	int m_iUsedItems;
-
-	//указатель на инвентарь, передается перед запуском меню
-//	CInventory* m_pInv;
 
 	//элемент с которым работают в текущий момент
 	PIItem m_pCurrentItem;
@@ -397,7 +373,7 @@ protected:
 	// информации из ltx файла соответствующего типу сетевой игры
 	typedef xr_vector<std::pair<ref_str, ref_str> >	CONFORMITY_TABLE;
 	typedef CONFORMITY_TABLE::iterator				CONFORMITY_TABLE_it;
-	CONFORMITY_TABLE		m_ConformityTable;
+	CONFORMITY_TABLE								m_ConformityTable;
 	
 	// Координаты дефолтного скина на текстуре с иконками сталкеров.
 	int			m_iIconTextureX, m_iIconTextureY;

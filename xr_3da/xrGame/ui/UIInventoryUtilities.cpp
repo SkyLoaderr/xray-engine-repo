@@ -11,6 +11,8 @@
 #include "UIDragDropItem.h"
 #include "UIStatic.h"
 #include "../eatable_item.h"
+#include "../Level.h"
+#include "../HUDManager.h"
 
 //буферный список для сортировки
 static TIItemList ruck_list;
@@ -27,9 +29,10 @@ void InventoryUtilities::AmmoUpdateProc(CUIDragDropItem* pItem)
 	CWeaponAmmo* pAmmoItem = (CWeaponAmmo*)(pItem->GetData());
 	RECT rect = pItem->GetAbsoluteRect();
 	
-	pItem->GetFont()->Out(float(rect.left), 
+	HUD().OutText(pItem->GetFont(), pItem->GetClipRect(), float(rect.left), 
 						float(rect.bottom - pItem->GetFont()->CurrentHeight()- 2),
 						"%d",	pAmmoItem->m_boxCurr);
+	pItem->GetFont()->OnRender();
 }
 
 //для надписей на иконках с едой
@@ -39,9 +42,10 @@ void InventoryUtilities::FoodUpdateProc(CUIDragDropItem* pItem)
 	RECT rect = pItem->GetAbsoluteRect();
 	
 	if(pEatableItem->m_iPortionsNum>0)
-		pItem->GetFont()->Out(float(rect.left), 
+		HUD().OutText(pItem->GetFont(), pItem->GetClipRect(), float(rect.left), 
 							float(rect.bottom - pItem->GetFont()->CurrentHeight()- 2),
 							"%d",	pEatableItem->m_iPortionsNum);
+	pItem->GetFont()->OnRender();
 }
 
 

@@ -4,6 +4,8 @@
 
 #include "stdafx.h"
 #include "UIDragDropItem.h"
+#include "../Level.h"
+#include "../HUDManager.h"
 
 
 //////////////////////////////////////////////////////////////////////
@@ -208,22 +210,23 @@ void CUIDragDropItem::Draw()
 
 	m_UIStaticItem.Render();
 
+	//вызвать дополнительную функцию обновления
+	if(m_pCustomUpdateProc) (*m_pCustomUpdateProc)(this);
 
 	//вызвать дополнительную функцию рисования
-	if(m_pCustomDrawProc) (*m_pCustomDrawProc)(this);
+//	if(m_pCustomDrawProc) (*m_pCustomDrawProc)(this);
+
+//	GetFont()->SetColor(0xFFEEEEEE);
+//	GetFont()->SetAligment(CGameFont::alLeft);
+//
+//	if(m_str && xr_strlen(m_str)>0)
+//		GetFont()->Out((float)rect.left,(float)rect.top, m_str);
+
+//	GetFont()->OnRender(GetClipRect());
+//	GetFont()->OnRender();
 }
 
 void CUIDragDropItem::Update()
 {
-	RECT rect = GetAbsoluteRect();
-
-	GetFont()->SetColor(0xFFEEEEEE);
-	GetFont()->SetAligment(CGameFont::alLeft);
-	
-	if(m_str && xr_strlen(m_str)>0)
-		GetFont()->Out((float)rect.left,(float)rect.top, m_str);
-
-	//вызвать дополнительную функцию обновления
-	if(m_pCustomUpdateProc) (*m_pCustomUpdateProc)(this);
-
+	inherited::Update();
 }

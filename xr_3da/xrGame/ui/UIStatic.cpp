@@ -81,20 +81,15 @@ void  CUIStatic::Draw()
 		m_UIStaticItem.Render();
 
 	inherited::Draw();
-}
 
-
-void CUIStatic::Update()
-{
-	inherited::Update();
+	// Вывод текста
 
 	if(m_str == NULL) return;
-	
+
 	if(!GetFont() || GetFont()->SizeOf((char*)m_str) == 0) return;	
-	
+
 	GetFont()->SetAligment(GetTextAlign());
 	GetFont()->SetColor(m_dwFontColor);
-
 
 	/////////////////////////////////////
 	//форматированный вывод текста
@@ -109,9 +104,8 @@ void CUIStatic::Update()
 
 	new_word = false;
 	word_length = 0;
-	
+
 	space_width = (int)GetFont()->SizeOf(" ");
-	
 
 	for(u32 i = 0; i<str_len+1; ++i)
 	{
@@ -122,13 +116,13 @@ void CUIStatic::Update()
 		else
 			//завершить весь вывод пробелом
 			cur_char = ' ';
-					
+
 
 		switch(cur_char)
 		{
 		case ' ':
 			WordOut();
-			
+
 			//"нарисовать" пробел
 			if(curretX+space_width>=GetWidth())
 			{
@@ -143,13 +137,13 @@ void CUIStatic::Update()
 		case '\\':
 			if(i+1<str_len)
 			{
-                //переход на новую строку
+				//переход на новую строку
 				if(m_str[i+1]== 'n')
 				{
 					WordOut();
-					
+
 					//перевести курсор на новую строку
-   					curretY += (int)GetFont()->CurrentHeight();
+					curretY += (int)GetFont()->CurrentHeight();
 					curretX = 0;
 				}
 				//вывести символ '\'
@@ -167,11 +161,11 @@ void CUIStatic::Update()
 				{
 					int r,g,b;
 					u32 offset = ReadColor(i+2, r,g,b);
-					
+
 					//++i;
 					i+= offset;
-					
-					
+
+
 					u32 color = RGB_ALPHA(0xFF,r,g,b);
 					GetFont()->SetColor(color);
 				}
@@ -187,6 +181,13 @@ void CUIStatic::Update()
 			AddLetter(m_str[i]);
 		}
 	}
+	GetFont()->OnRender();
+}
+
+
+void CUIStatic::Update()
+{
+	inherited::Update();
 }
 
 void CUIStatic::WordOut()
@@ -215,9 +216,8 @@ void CUIStatic::WordOut()
 			outY = curretY;
 		}
 		
-		GetFont()->Out(static_cast<float>(HUD().GetScale() * (rect.left+outX + m_iTextOffsetX)), 
+		HUD().OutText(GetFont(), GetClipRect(),static_cast<float>(HUD().GetScale() * (rect.left+outX + m_iTextOffsetX)), 
 						 static_cast<float>(HUD().GetScale() * (rect.top+outY + m_iTextOffsetY)),  &buf_str.front());
-
 		word_length = 0;
 		new_word = false;
 	}
@@ -496,4 +496,20 @@ void CUIStatic::SetText(LPCSTR str)
 	str_len = m_sEdit.size();
 	buf_str.resize(str_len+1);
 	
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+Irect CUIStatic::GetClipRect()
+{
+	Irect	r;
+	if (m_bClipper)
+	{
+		r.set(GetUIStaticItem().GetRect());
+		r.add(GetUIStaticItem().GetPosX(), GetUIStaticItem().GetPosY());
+	}
+	else
+		r.set(0, 0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
+
+	return r;
 }

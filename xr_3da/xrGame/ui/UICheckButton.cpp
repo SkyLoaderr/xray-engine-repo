@@ -4,6 +4,8 @@
 
 #include "stdafx.h"
 #include ".\uicheckbutton.h"
+#include "../Level.h"
+#include "../HUDManager.h"
 
 CUICheckButton::CUICheckButton(void)
 {
@@ -36,19 +38,21 @@ void CUICheckButton::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 void CUICheckButton::Draw()
 {
 	inherited::Draw();
-}
 
-
-void CUICheckButton::Update()
-{
 	RECT rect = GetAbsoluteRect();
 
 	//нарисовать галочку
 	if(m_bIsChecked)
 	{
 		GetFont()->SetColor(0xFF00FF00);
-		GetFont()->Out((float)rect.left, (float)rect.top+30,	"X");
+		HUD().OutText(GetFont(), GetClipRect(), (float)rect.left, (float)rect.top+30,	"X");
 	}
 
+	GetFont()->OnRender();
+}
+
+
+void CUICheckButton::Update()
+{
 	inherited::Update();
 }

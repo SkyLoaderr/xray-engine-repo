@@ -134,6 +134,8 @@ void CUISkinSelectorWnd::Init(const char *strSectionName)
 	rect	= UICancelBtn.GetWndRect();
 	UICancelBtn.MoveWindow(Device.dwWidth / 2 + static_cast<int>((rect.right - rect.left) * 0.5),
 		r.bottom + r.top / 2 - UICancelBtn.GetHeight());
+
+	SetFont(HUD().pFontHeaderRussian);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -323,9 +325,14 @@ void CUISkinSelectorWnd::DrawKBAccelerators()
 	{
 		RECT rect = m_vSkinWindows[i].UIBackground.GetAbsoluteRect();
 
-		HUD().pFontHeaderRussian->Out((rect.right - rect.left) / 2.0f + rect.left, 
+		Irect r;
+		r.set(0, 0, Device.dwWidth, Device.dwHeight);
+
+		HUD().OutText(GetFont(), r,
+			(rect.right - rect.left) / 2.0f + rect.left, 
 			float(rect.bottom - HUD().pFontHeaderRussian->CurrentHeight()- 40),
 			"%d", i + 1);
+		GetFont()->OnRender();
 	}
 }
 

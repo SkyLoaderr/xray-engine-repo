@@ -193,7 +193,6 @@ void  CHUDManager::RenderUI()
 		pFontLetterica16Russian->OnRender();
 		pFontLetterica18Russian->OnRender();
 
-
 		//render UI cursor
 		if(pUI && pUI->GetCursor() && pUI->GetCursor()->IsVisible())
 			pUI->GetCursor()->Render();
@@ -255,4 +254,24 @@ void CHUDManager::SetCrosshairDisp	(float disp)
 void  CHUDManager::ShowCrosshair	(bool show)
 {
 	m_pHUDCursor->m_bShowCrosshair = show;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CHUDManager::OutText(CGameFont *pFont, Irect r, float x, float y, LPCSTR fmt, ...)
+{
+	if (r.in(static_cast<int>(x), static_cast<int>(y)))
+	{
+		R_ASSERT(pFont);
+		va_list	lst;
+		string256 buf;
+		std::string str;
+
+		va_start(lst, fmt);
+			vsprintf(buf, fmt, lst);
+			str += buf;
+		va_end(lst);
+
+		pFont->Out(x, y, str.c_str());
+	}
 }

@@ -4,6 +4,8 @@
 
 #include "stdafx.h"
 #include "UIButton.h"
+#include "../Level.h"
+#include "../HUDManager.h"
 
 #define PUSH_OFFSET_RIGHT 2
 #define PUSH_OFFSET_DOWN  3
@@ -237,6 +239,75 @@ void  CUIButton::Draw()
 	m_UIStaticItem.Render();
 
 	CUIWindow::Draw();
+
+	int right_offset;
+	int down_offset;
+
+	if(m_eButtonState == BUTTON_UP || m_eButtonState == BUTTON_NORMAL
+		|| !m_bAvailableTexture)
+	{
+		right_offset = 0;
+		down_offset = 0;
+	}
+	else
+	{
+		right_offset = m_iPushOffsetX;
+		down_offset = m_iPushOffsetY;
+	}
+
+	UpdateTextAlign();
+	GetFont()->SetAligment(GetTextAlign());
+
+	if(IsHighlightText() && m_str && xr_strlen(m_str)>0)
+	{
+		GetFont()->SetColor(m_HighlightColor);
+		HUD().OutText(GetFont(), GetClipRect(), 
+			(float)rect.left + right_offset + 1 +m_iTextOffsetX, 
+			(float)rect.top + down_offset + 1  +m_iTextOffsetY,
+			m_str);
+		HUD().OutText(GetFont(), GetClipRect(), 
+			(float)rect.left + right_offset - 1 +m_iTextOffsetX, 
+			(float)rect.top + down_offset - 1 +m_iTextOffsetY,
+			m_str);
+		HUD().OutText(GetFont(), GetClipRect(),
+			(float)rect.left + right_offset - 1 +m_iTextOffsetX, 
+			(float)rect.top + down_offset + 1 +m_iTextOffsetY,
+			m_str);
+		HUD().OutText(GetFont(), GetClipRect(), 
+			(float)rect.left + right_offset + 1 +m_iTextOffsetX, 
+			(float)rect.top + down_offset - 1 +m_iTextOffsetY,
+			m_str);
+		HUD().OutText(GetFont(), GetClipRect(),
+			(float)rect.left + right_offset + 1 +m_iTextOffsetX, 
+			(float)rect.top + down_offset + 0 +m_iTextOffsetY,
+			m_str);
+		HUD().OutText(GetFont(), GetClipRect(),
+			(float)rect.left + right_offset - 1 +m_iTextOffsetX, 
+			(float)rect.top + down_offset - 0 +m_iTextOffsetY,
+			m_str);
+		HUD().OutText(GetFont(), GetClipRect(),
+			(float)rect.left + right_offset - 0 +m_iTextOffsetX, 
+			(float)rect.top + down_offset + 1 +m_iTextOffsetY,
+			m_str);
+		HUD().OutText(GetFont(), GetClipRect(),
+			(float)rect.left + right_offset + 0 +m_iTextOffsetX,  
+			(float)rect.top + down_offset - 1 +m_iTextOffsetY,
+			m_str);
+	}
+
+	//	inherited::Update();
+	//	return;
+
+
+	GetFont()->SetColor(m_dwFontColor);
+
+	if(m_str && xr_strlen(m_str)>0)
+		HUD().OutText(GetFont(), GetClipRect(), 
+		(float)rect.left + right_offset  +  m_iTextOffsetX, 
+		(float)rect.top + down_offset  + m_iTextOffsetY,
+		m_str);
+
+	GetFont()->OnRender();
 }
 
 
@@ -247,69 +318,6 @@ bool CUIButton::IsHighlightText()
 
 void  CUIButton::Update()
 {
-	RECT rect = GetAbsoluteRect();
-
-	int right_offset;
-	int down_offset;
-
-	if(m_eButtonState == BUTTON_UP || m_eButtonState == BUTTON_NORMAL
-		|| !m_bAvailableTexture)
-	{
-			right_offset = 0;
-			down_offset = 0;
-	}
-	else
-	{
-			right_offset = m_iPushOffsetX;
-			down_offset = m_iPushOffsetY;
-	}
-
-	UpdateTextAlign();
-	GetFont()->SetAligment(GetTextAlign());
-
-	if(IsHighlightText() && m_str && xr_strlen(m_str)>0)
-	{
-			GetFont()->SetColor(m_HighlightColor);
-			GetFont()->Out((float)rect.left + right_offset + 1 +m_iTextOffsetX, 
-					   (float)rect.top + down_offset + 1  +m_iTextOffsetY,
-					    m_str);
-			GetFont()->Out((float)rect.left + right_offset - 1 +m_iTextOffsetX, 
-					   (float)rect.top + down_offset - 1 +m_iTextOffsetY,
-					    m_str);
-			GetFont()->Out((float)rect.left + right_offset - 1 +m_iTextOffsetX, 
-					   (float)rect.top + down_offset + 1 +m_iTextOffsetY,
-					    m_str);
-			GetFont()->Out((float)rect.left + right_offset + 1 +m_iTextOffsetX, 
-					   (float)rect.top + down_offset - 1 +m_iTextOffsetY,
-					    m_str);
-			GetFont()->Out((float)rect.left + right_offset + 1 +m_iTextOffsetX, 
-					   (float)rect.top + down_offset + 0 +m_iTextOffsetY,
-					    m_str);
-			GetFont()->Out((float)rect.left + right_offset - 1 +m_iTextOffsetX, 
-					   (float)rect.top + down_offset - 0 +m_iTextOffsetY,
-					    m_str);
-			GetFont()->Out((float)rect.left + right_offset - 0 +m_iTextOffsetX, 
-					   (float)rect.top + down_offset + 1 +m_iTextOffsetY,
-					    m_str);
-			GetFont()->Out((float)rect.left + right_offset + 0 +m_iTextOffsetX,  
-					   (float)rect.top + down_offset - 1 +m_iTextOffsetY,
-					    m_str);
-	}
-
-//	inherited::Update();
-//	return;
-
-
-	GetFont()->SetColor(m_dwFontColor);
-
-	
-	if(m_str && xr_strlen(m_str)>0)
-		GetFont()->Out((float)rect.left + right_offset  +  m_iTextOffsetX, 
-					   (float)rect.top + down_offset  + m_iTextOffsetY,
-					    m_str);
-
-
-	
 	CUIWindow::Update();
 }
 

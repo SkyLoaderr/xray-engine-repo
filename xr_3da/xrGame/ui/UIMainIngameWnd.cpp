@@ -107,13 +107,13 @@ void CUIMainIngameWnd::Init()
 	AttachChild(&UIStaticArmor);
 	xml_init.InitStatic(uiXml, "static", 13, &UIStaticArmor);
 
-	// Надпись "health"
-	UIStaticHealth.AttachChild(&UIHealthString);
-	xml_init.InitStatic(uiXml, "static", 11, &UIHealthString);
-	
-	// Надпись "armor"
-	UIStaticArmor.AttachChild(&UIArmorString);
-	xml_init.InitStatic(uiXml, "static", 12, &UIArmorString);
+//	// Надпись "health"
+//	UIStaticHealth.AttachChild(&UIHealthString);
+//	xml_init.InitStatic(uiXml, "static", 11, &UIHealthString);
+//	
+//	// Надпись "armor"
+//	UIStaticArmor.AttachChild(&UIArmorString);
+//	xml_init.InitStatic(uiXml, "static", 12, &UIArmorString);
 /*	AttachChild(&UIStaticMapBack);
 	xml_init.InitStatic(uiXml, "static", 1, &UIStaticMapBack);*/
 
@@ -357,14 +357,14 @@ void CUIMainIngameWnd::Update()
 	if (pItem)
 	{
 		UIArmorBar.Show(true);
-		UIArmorString.Show(true);
+//		UIArmorString.Show(true);
 		UIStaticArmor.Show(true);
 		UIArmorBar.SetProgressPos(static_cast<s16>(pItem->GetCondition() * 100));
 	}
 	else
 	{
 		UIArmorBar.Show(false);
-		UIArmorString.Show(false);
+//		UIArmorString.Show(false);
 		UIStaticArmor.Show(false);
 	}
 
@@ -564,6 +564,8 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 			pWpnHud = m_pWeapon->GetHUD();
 			if (!pWpnHud) return false;
 		}
+		else
+			return false;
 
 		Fvector tmpV;
 		bool flag = false;

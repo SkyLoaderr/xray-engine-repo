@@ -24,6 +24,15 @@ private:
 	CHUDCursor*				m_pHUDCursor;
 
 	float					fScale;
+
+	// Cтруктурка буфера для надписей выводимых шрифтами
+	struct					FontBuffer
+	{
+		ref_str				buf;
+		float				outX, outY;
+		FontBuffer():		buf(NULL), outX(0), outY(0) {}
+	};
+
 public:
 	// hud font
 	CGameFont*				pFontSmall;
@@ -42,6 +51,8 @@ public:
 	CGameFont*				pFontLetterica18Russian;
 	CGameFont*				pFontGraffiti32Russian;
 	CGameFont*				pFontGraffiti50Russian;
+
+	void					OutText(CGameFont *pFont, Irect r, float x, float y, LPCSTR fmt, ...);
 
 public:
 							CHUDManager			();

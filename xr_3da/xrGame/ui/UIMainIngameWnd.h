@@ -82,8 +82,8 @@ protected:
 	CUIStatic			UIWeaponIcon;
 
 	// Надписи armor & health
-	CUIStatic			UIHealthString;
-	CUIStatic			UIArmorString;
+//	CUIStatic			UIHealthString;
+//	CUIStatic			UIArmorString;
 	//CUIDragDropItem	UIWeaponIcon;
 
 	// 5 статиков для отображения иконок:
