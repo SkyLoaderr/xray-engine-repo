@@ -1,0 +1,334 @@
+local animations = {
+                   {anim = "stoya_ruje_ 0",       flag = true},
+                   {anim = "vishka_3",            flag = false},
+                   {anim = "norm_torso_2_idle_1", flag = false},
+                   {anim = "norm_torso_2_idle_2", flag = true},
+                   {anim = "norm_torso_2_idle_3", flag = false},
+                   {anim = "norm_torso_2_idle_4", flag = true},
+                   {anim = "norm_torso_2_idle_5", flag = false},
+                   {anim = "norm_torso_2_idle_6", flag = false}
+                   }
+
+
+local anim_pris = {
+                  {anim = "prisluh_0", flag = false},
+                  {anim = "prisluh_1", flag = false},
+                  {anim = "prisluh_2", flag = false}
+                  }
+
+---------------------------------------------------------------------------------------------------------------------
+-- Sounds id's
+---------------------------------------------------------------------------------------------------------------------
+local commander_snd                     = xr_sounds_id.sound_patrol_base
+local soldiers_idle_snd                 = commander_snd + 1
+local soldiers_hear_snd                 = commander_snd + 2
+local soldiers_idle2_snd                = commander_snd + 3
+local soldiers_replics_snd              = commander_snd + 4
+
+local leader_no_command					= 0
+local leader_move                       = 1
+local leader_stop                       = 2
+local leader_speak						= 3
+local leader_speak_enable				= 4
+local leader_return                     = 5  
+---------------------------------------------------------------------------------------------------------------------
+-- Some functions
+---------------------------------------------------------------------------------------------------------------------
+-- rotation vector around Y axis
+function vector_rotate_y (v, angle)
+    angle = angle * 0.017453292519943295769236907684886
+    local c = math.cos (angle)
+    local s = math.sin (angle)
+    return vector ():set (v.x * c - v.z * s, v.y, v.x * s + v.z * c)
+end
+
+---------------------------------------------------------------------------------------------------------------------
+-- Constants
+---------------------------------------------------------------------------------------------------------------------
+local num_hear_phrases      =   9
+local num_phrases_idle2     =   2
+
+local max_dist              =   5  
+
+
+---------------------------------------------------------------------------------------------------------------------
+-- Evaluators
+---------------------------------------------------------------------------------------------------------------------
+-- ó¸ûþòøÿ ÷ðòõ¨øõýøÿ
+class "evaluator_complete" (property_evaluator)
+function evaluator_complete:__init (name, storage) super ()
+    self.a = storage
+end
+function evaluator_complete:evaluate ()
+	return not (self.a.enabled == true)
+end
+
+---------------------------------------------------------------------------------------------------------------------
+-- Actions
+---------------------------------------------------------------------------------------------------------------------
+-- 1úøý ÿðò¨óûÿ
+class "action_single_patrol" (action_base)
+function action_single_patrol:__init (name, storage) super (nil, name)
+	self.a = storage
+    self.waypoint = -1
+    self.stage = 0
+    self.current_animation = 0
+    self.speak_time = 0
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_single_patrol:initialize ()
+    action_base.initialize (self)
+      
+    self.object:set_callback (self, "move_callback", game_object.movement)
+    
+    self.object:set_node_evaluator        ()
+    self.object:set_path_evaluator        ()
+    self.object:set_desired_position      ()
+    self.object:set_item                  (object.idle, self.object:best_weapon ())
+    self.object:set_detail_path_type      (move.line)
+    self.object:set_body_state            (move.standing)
+    self.object:set_movement_type         (move.walk)
+    self.object:set_path_type             (game_object.patrol_path)
+    self.object:set_patrol_path           (self.a.patrol_path, patrol.nearest, patrol.continue, true)
+    self.object:set_mental_state          (anim.free)
+    self.object:set_sight                 (look.path_dir, nil, 0)
+    
+    if self.stage ~= 3 then self.stage = 0 end
+    self.current_animation = 0
+    
+    if self.a.raid_enabled == false then self:set_soldier_positions ()
+    else self:set_soldier_positions_raid ()
+    end
+    
+    self.speak_time = device ():time_global () + math.random (20000, 40000)
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_single_patrol:set_soldier_positions ()
+    local size = table.getn (xr_motivator.storage[self.object:id()].followers)
+    if size == 0 then return end
+    local dir = self.object:direction ()
+    dir.y = 0.0
+    dir:normalize ()
+    local step = 180.0 / size
+    local angle = 90.0
+    for a = 1, size, 1 do
+        if a == 1 then angle = angle + step * 0.5
+        else angle = angle + step end
+        local vec = this.vector_rotate_y (dir, angle)
+        xr_motivator.storage[self.object:id()].followers[a].direction = vec
+        xr_motivator.storage[self.object:id()].followers[a].distance = 3.0
+    end
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_single_patrol:set_soldier_positions_raid ()
+    local size = table.getn (xr_motivator.storage[self.object:id()].followers)
+    if size == 0 then return end
+    local dir = self.object:direction ()
+    dir.y = 0.0
+    dir:normalize ()
+    local dist = 5.0
+    local side = false
+    local v = vector ():set (0, 0, 0)
+    for count = 1, size, 1 do
+        if side == false then 
+           v = this.vector_rotate_y (dir, -90.0)
+           side = true
+        else 
+           v = this.vector_rotate_y (dir, 90.0)
+           side = false
+        end   
+        xr_motivator.storage[self.object:id()].followers[count].direction = v
+        xr_motivator.storage[self.object:id()].followers[count].distance = dist
+        if count == 2 or count == 4 or count == 6 then
+           dist = dist + dist
+        end    
+    end    
+           
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_single_patrol:execute ()
+    action_base.execute (self)
+    self.object:set_item                  (object.idle, self.object:best_weapon ())
+    
+    if self:check_return () == true then return end
+    
+    if self.stage == 0 then
+       if self.a.raid_enabled == false then self:set_soldier_positions ()
+       else self:set_soldier_positions_raid ()
+       end
+       self:set_command (leader_move)
+       if (self.speak_time - device ():time_global ()) <= 0 and table.getn (xr_motivator.storage[self.object:id()].followers) ~= 0 then
+          self:speak (commander_snd, 0, math.random (1, table.getn (xr_motivator.storage[self.object:id()].followers)))
+       end
+    elseif self.stage == 1 then
+        if self.object:animation_count () == 0 then
+           self.stage = 0
+           self.object:set_movement_type (move.walk) 
+           self.object:set_patrol_path   (self.a.patrol_path, patrol.nearest, patrol.continue, true)
+           if patrol (self.object:patrol()):flag (self.waypoint, 0) == true and table.getn (xr_motivator.storage[self.object:id()].followers) ~= 0 then
+           	  self:speak (commander_snd, 2, 0)
+           end   
+        end   
+    elseif self.stage == 2 then
+        if self.object:animation_count () == 0 then
+           self.stage = 0
+           self.object:set_movement_type (move.walk) 
+           self.object:set_patrol_path   (self.a.patrol_path, patrol.nearest, patrol.continue, true)
+           if patrol (self.object:patrol()):flag (self.waypoint, 2) == true and table.getn (xr_motivator.storage[self.object:id()].followers) ~= 0 then
+           	  self:speak (commander_snd, 1, 0)
+           end   
+        end   
+    elseif self.stage == 3 then    
+           self:set_command (leader_return)
+    end    
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_single_patrol:finalize ()
+    action_base.finalize (self)
+    self.object:clear_callback (game_object.movement)
+    self.object:clear_animations ()
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_single_patrol:check_return ()
+    local size = table.getn (xr_motivator.storage[self.object:id()].followers)
+    if size == 0 then return false end
+    for count = 1, size, 1 do
+        if xr_motivator.storage[self.object:id()].followers[count].npc:alive () == false then
+           if self.a.escape_path == nil then 
+              self.a.enabled = false
+              return true
+           end         
+           self.object:set_patrol_path (self.a.escape_path, patrol.nearest, patrol.stop, false) 
+           self.object:set_mental_state (anim.danger)
+           self.object:set_movement_type (move.run)
+           self:set_command (leader_return)
+           self.stage = 3 
+           return true
+        end
+    end        
+    return false
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_single_patrol:set_command (command)
+    local size = table.getn (xr_motivator.storage[self.object:id()].followers)
+    if size == 0 then return end
+    for a = 1, size, 1 do
+        xr_motivator.storage[self.object:id()].followers[a].leader_command = command
+    end
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_single_patrol:move_callback (obj, action_type, index)
+    if index == -1 then return end
+    self.waypoint = index
+    local ptr = patrol (self.object:patrol ())
+    
+    if self.stage == 3 then
+       if ptr:flag (index, 6) == true then
+          self.a.enabled = false
+          self.stage = 0
+       end           
+       return
+    end    
+    
+    if ptr:flag (index, 0) == true then
+       self.object:set_movement_type (move.stand)
+       self:set_animation ()
+       self:set_look_dir ()
+       self:set_command (leader_stop)
+       self.stage = 1
+       return
+    end    
+   
+    if ptr:flag (index, 1) then
+       self.object:set_movement_type (move.stand)
+       self:set_animation ()
+       self:set_look_dir ()
+       self:set_command (leader_stop)
+       self.stage = 2
+       return 
+    end   
+    
+    if ptr:flag (index, 4) and self.a.raid_enabled == true then
+       local size = table.getn (xr_motivator.storage[self.object:id()].followers)
+       if size == 0 then return end
+       for a = 1, size, 1 do
+           xr_motivator.storage[self.object:id()].followers[a].raid_enabled = true
+       end
+    end   
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_single_patrol:set_look_dir ()
+    local size = table.getn (xr_motivator.storage[self.object:id()].followers)
+    if size == 0 then return end
+    
+    local side = false
+    
+    for a = 1, size, 1 do
+        if side == true then 
+           xr_motivator.storage[self.object:id()].followers[a].look_dir = this.vector_rotate_y (self.object:direction (), 45.0)
+           side = false
+        else
+           xr_motivator.storage[self.object:id()].followers[a].look_dir = this.vector_rotate_y (self.object:direction (), -45.0)
+           side = false
+        end   
+    end
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_single_patrol:set_animation ()
+
+    self.current_animation = self.current_animation + 1
+    if self.current_animation > table.getn (animations) then
+       self.current_animation = 1
+    end
+
+    self.object:add_animation (animations[self.current_animation].anim, animations[self.current_animation].flag)
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_single_patrol:speak (namespace, index, soldier)
+	if soldier == 0 then
+       self.object:set_sound_mask (2147483647)
+       self.object:set_sound_mask (0)
+       self.object:play_sound (namespace, 1, 0, 1, 0, index)
+       self:set_command (leader_speak)
+    else   
+       if table.getn (xr_motivator.storage[self.object:id()].followers) == 0 then return end   
+	   xr_motivator.storage[self.object:id()].followers[soldier].leader_command = leader_speak_enable
+	end
+	self.speak_time = device ():time_global () + math.random (20000, 40000)   
+end
+---------------------------------------------------------------------------------------------------------------------
+
+
+----------------------------------------------------------------------------------------------------------------------
+--patrol binder
+----------------------------------------------------------------------------------------------------------------------
+function add_to_binder(obj)
+
+	local operators		= {}
+	local properties	= {}
+
+
+    obj:add_sound ("Scripts\\Patrol\\Commander1_", 20, snd_type.talk, 2, 1, commander_snd)
+    obj:add_sound ("Scripts\\Patrol\\soldier_idle_", 20, snd_type.talk, 2, 1, soldiers_idle_snd)
+    obj:add_sound ("script_replics\\soldier_1\\idle\\soldier_idle_", 20, snd_type.talk, 2, 1, soldiers_idle2_snd)
+    obj:add_sound ("script_replics\\soldier_1\\replics\\soldier_replic_", 20, snd_type.talk, 2, 1, soldiers_replics_snd)
+    obj:add_sound ("script_replics\\soldier_1\\hear_something\\soldier_hear_", 20, snd_type.talk, 2, 1, soldiers_hear_snd)
+    
+	properties["complete"]           = xr_evaluators_id.sidor_patrol_base_property + 0
+
+ 	operators["single_patrol"]       = xr_actions_id.sidor_act_patrol + 0
+
+  
+	local manager  = obj:motivation_action_manager ()
+  	manager:add_evaluator (properties["complete"], this.evaluator_complete ("property_complete", xr_motivator.storage[obj:id()].patrol))
+    
+  	local action = this.action_single_patrol ("action_single_patrol", xr_motivator.storage[obj:id()].patrol)
+   	action:add_precondition     	(world_property (stalker_ids.property_alive,    true))
+   	action:add_precondition     	(world_property (stalker_ids.property_enemy,    false))
+   	action:add_precondition     	(world_property (properties["complete"],        false))
+   	action:add_effect           	(world_property (properties["complete"],        true))
+   	manager:add_action              (operators["single_patrol"], action)
+
+   	action = manager:action (stalker_ids.action_free_no_alife)
+   	action:add_precondition     	(world_property (properties["complete"],  true))
+end
