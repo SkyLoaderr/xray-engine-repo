@@ -133,7 +133,8 @@ void CDetailManager::Render		(Fvector& vecEYE)
 {
 	if (0==dtFS)	return;
 
-	Fvector  EYE				= vecEYE;
+	Fvector		EYE				= vecEYE;
+	CFrustum	View			= ::Render->ViewBase;
 	int s_x	= iFloor			(EYE.x/slot_size+.5f);
 	int s_z	= iFloor			(EYE.z/slot_size+.5f);
 
@@ -157,11 +158,12 @@ void CDetailManager::Render		(Fvector& vecEYE)
 
 			// Transfer visibile and partially visible slot contents
 			DWORD mask		= 0xff;
-			switch (::Render->ViewBase.testAABB(S.BB.min,S.BB.max,mask))
+			DWORD res		= View.testAABB(S.BB.min,S.BB.max,mask);
+			if ((fcvPartial==res)&&UseVS())	res = fcvFully;
+			switch (res)
 			{
 			case fcvNone:		// nothing to do
 				break;
-/*
 			case fcvPartial:	// addition with TEST
 				{
 					if (!::Render->occ_visible(S.BB))		continue;
@@ -195,8 +197,6 @@ void CDetailManager::Render		(Fvector& vecEYE)
 					}
 				}
 				break;
-				*/
-			case fcvPartial:	// addition with TEST
 			case fcvFully:		// addition
 				{
 					if (!::Render->occ_visible(S.BB))		continue;
