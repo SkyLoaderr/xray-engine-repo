@@ -70,6 +70,9 @@ public:
 		if (dwFrameSmooth!=Device.dwFrame)		update_smooth();
 		return									sun_smooth;
 	}
+	ICF Fvector3&			get_approximate		()	{
+		return									approximate;
+	}
 
 	CROS_impl				();
 	virtual ~CROS_impl	()	{};
