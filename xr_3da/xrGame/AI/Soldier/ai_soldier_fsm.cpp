@@ -354,7 +354,7 @@ void CAI_Soldier::OnFindAloneFire()
 			else {
 				for (int i=0, iCount = 0; i<Group.m_tpaSuspiciousNodes.size(); i++)
 					if (Group.m_tpaSuspiciousNodes[i].dwSearched != 2) {
-						if (bfCheckForNodeVisibility(Group.m_tpaSuspiciousNodes[i].dwNodeID))
+						if (bfCheckForNodeVisibility(Group.m_tpaSuspiciousNodes[i].dwNodeID, i == m_iCurrentSuspiciousNodeIndex))
 							Group.m_tpaSuspiciousNodes[i].dwSearched = 2;
 						iCount++;
 					}

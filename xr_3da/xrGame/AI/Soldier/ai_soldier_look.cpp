@@ -627,48 +627,54 @@ bool CAI_Soldier::bfCheckForVisibility(int iTestNode, SRotation tMyRotation, boo
 	}
 }
 
-bool CAI_Soldier::bfCheckForNodeVisibility(DWORD dwNodeID)
+bool CAI_Soldier::bfCheckForNodeVisibility(DWORD dwNodeID, bool bIfRyPick)
 {
 	SRotation tRotation;
 	float fResult0 = 1.f, fResult1 = 1.f, fEyeFov = ffGetFov()*PI/180.f;
 	Fvector tPosition = Level().AI.tfGetNodeCenter(dwNodeID), tDirection;
 	
-	tDirection.sub(vPosition,tPosition);
-	if ((tDirection.magnitude() >= 5.f) || (fabsf(tDirection.y) > 1.5f))
-		return(false);
-
-	tDirection.normalize_safe();
-	mk_rotation(tDirection,tRotation);
-	
-	if (r_current.yaw >= tRotation.yaw) {
-		while (r_current.yaw - tRotation.yaw > PI)
-			tRotation.yaw += PI_MUL_2;
+	if (bIfRayPick) {
+		tPosition.normalize_safe();
+		return(Level().ObjectSpace.RayTest(eye_matrix.c,tPosition,eye_matrix.c.distance_to(tPosition),FALSE));
 	}
-	else
-		if (tRotation.yaw >= r_current.yaw) {
-			while (tRotation.yaw - r_current.yaw > PI)
-				r_current.yaw += PI_MUL_2;
-		}
-	
-	if ((tRotation.yaw >= r_current.yaw - fEyeFov) && (tRotation.yaw <= r_current.yaw - fEyeFov))
-		fResult0 = ffGetCoverInDirection(tRotation.yaw,Level().AI.Node(dwNodeID));
-	
-	tDirection.sub(tPosition,vPosition);
-	tDirection.normalize_safe();
-	mk_rotation(tDirection,tRotation);
-	
-	if (r_current.yaw >= tRotation.yaw) {
-		while (r_current.yaw - tRotation.yaw > PI)
-			tRotation.yaw += PI_MUL_2;
-	}
-	else
-		if (tRotation.yaw >= r_current.yaw) {
-			while (tRotation.yaw - r_current.yaw > PI)
-				r_current.yaw += PI_MUL_2;
-		}
-	
-	if ((tRotation.yaw >= r_current.yaw - fEyeFov) && (tRotation.yaw <= r_current.yaw - fEyeFov))
-		float fResult1 = ffGetCoverInDirection(tRotation.yaw,AI_NodeID);
+	else {
+		tDirection.sub(vPosition,tPosition);
+		if ((tDirection.magnitude() >= 5.f) || (fabsf(tDirection.y) > 1.5f))
+			return(false);
 
-	return(min(fResult0,fResult1) > .6f);
+		tDirection.normalize_safe();
+		mk_rotation(tDirection,tRotation);
+		
+		if (r_current.yaw >= tRotation.yaw) {
+			while (r_current.yaw - tRotation.yaw > PI)
+				tRotation.yaw += PI_MUL_2;
+		}
+		else
+			if (tRotation.yaw >= r_current.yaw) {
+				while (tRotation.yaw - r_current.yaw > PI)
+					r_current.yaw += PI_MUL_2;
+			}
+		
+		if ((tRotation.yaw >= r_current.yaw - fEyeFov) && (tRotation.yaw <= r_current.yaw - fEyeFov))
+			fResult0 = ffGetCoverInDirection(tRotation.yaw,Level().AI.Node(dwNodeID));
+		
+		tDirection.sub(tPosition,vPosition);
+		tDirection.normalize_safe();
+		mk_rotation(tDirection,tRotation);
+		
+		if (r_current.yaw >= tRotation.yaw) {
+			while (r_current.yaw - tRotation.yaw > PI)
+				tRotation.yaw += PI_MUL_2;
+		}
+		else
+			if (tRotation.yaw >= r_current.yaw) {
+				while (tRotation.yaw - r_current.yaw > PI)
+					r_current.yaw += PI_MUL_2;
+			}
+		
+		if ((tRotation.yaw >= r_current.yaw - fEyeFov) && (tRotation.yaw <= r_current.yaw - fEyeFov))
+			float fResult1 = ffGetCoverInDirection(tRotation.yaw,AI_NodeID);
+
+		return(min(fResult0,fResult1) > .6f);
+	}
 }
