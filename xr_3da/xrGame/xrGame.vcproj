@@ -1388,6 +1388,12 @@
 					<File
 						RelativePath="UIBuyMenu.h">
 					</File>
+					<File
+						RelativePath="UICHTMenu.cpp">
+					</File>
+					<File
+						RelativePath="UICHTMenu.h">
+					</File>
 				</Filter>
 			</Filter>
 		</Filter>

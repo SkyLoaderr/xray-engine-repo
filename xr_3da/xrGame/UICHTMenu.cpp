@@ -1,55 +1,49 @@
 #include "stdafx.h"
-#include "UIBuyMenu.h"
+#include "UICHTMenu.h"
 #include "HUDManager.h"
 #include "UICustomMenu.h"
 #include "..\\xr_trims.h"
 
 #define BUY_MENU_OFFS_ROW	200
-#define BUY_MENU_OFFS_COL1	0
-#define BUY_MENU_OFFS_COL2	200
+#define BUY_MENU_OFFS_COL	0
 //--------------------------------------------------------------------
-CUIBuyMenu::CUIBuyMenu	()
+CUIChangeTeamMenu::CUIChangeTeamMenu	()
 {
 	CHUDManager* HUD	= (CHUDManager*)Level().HUD();
 	menu_offs_row		= (float)HUD->ClientToScreenY(BUY_MENU_OFFS_ROW,alLeft|alTop);
-	menu_offs_col[0]	= (float)HUD->ClientToScreenX(BUY_MENU_OFFS_COL1,alLeft|alTop);
-	menu_offs_col[1]	= (float)HUD->ClientToScreenX(BUY_MENU_OFFS_COL2,alLeft|alTop);
+	menu_offs_col		= (float)HUD->ClientToScreenX(BUY_MENU_OFFS_COL,alLeft|alTop);
 }
 //--------------------------------------------------------------------
 
-void CUIBuyMenu::OnFrame()
+void CUIChangeTeamMenu::OnFrame()
 {
 	if (menu_active){
 		CGameFont* F	= Level().HUD()->pFontMedium;
 		F->SetColor		(0xFFFFFFFF);
 		if (menu_active->Parent()){
-			F->OutSet	(menu_offs_col[1],menu_offs_row);
+			F->OutSet	(menu_offs_col,menu_offs_row);
 			F->OutNext	("$ Cost");
 		}
 		if (menu_active->title){
-			F->OutSet	(menu_offs_col[0],menu_offs_row);
+			F->OutSet	(menu_offs_col,menu_offs_row);
 			F->OutNext	(menu_active->title);
 		}
-		for (int col=0; col<2; col++){
-			F->OutSet	(menu_offs_col[col],menu_offs_row);
-			F->OutSkip	(1.5f);
-			int k=1;
-			for (MIIt it=menu_active->FirstItem(); it!=menu_active->LastItem(); it++,k++)
-				(*it)->DrawItem(F,k,col);
-			if (0==col){
-				F->OutSkip(0.5f);
-				F->OutNext("%-2d %-20s",0,"Exit");
-			}
-		}
+		F->OutSet	(menu_offs_col,menu_offs_row);
+		F->OutSkip	(1.5f);
+		int k=1;
+		for (MIIt it=menu_active->FirstItem(); it!=menu_active->LastItem(); it++,k++)
+			(*it)->DrawItem(F,k,0);
+		F->OutSkip(0.5f);
+		F->OutNext("%-2d %-20s",0,"Exit");
 	}
 }
 //--------------------------------------------------------------------
 
-void CUIBuyMenu::Render	()
+void CUIChangeTeamMenu::Render	()
 {
 }
 //--------------------------------------------------------------------
-bool CUIBuyMenu::OnKeyboardPress(int dik)
+bool CUIChangeTeamMenu::OnKeyboardPress(int dik)
 {
 	int id = -1;
 	switch (dik){

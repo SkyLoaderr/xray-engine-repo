@@ -13,7 +13,8 @@ static const int time_y_offs = 550;
 //--------------------------------------------------------------------
 CUIGameCS::CUIGameCS(CUI* parent):CUIGameCustom(parent)
 {
-	BuyMenu.Load			("game_cs.ltx",this,BuyItem);
+	BuyMenu.Load			("game_cs.ltx","cs_buy_menu",this,CUIGameCS::BuyItem);
+	CTMenu.Load				("game_cs.ltx","cs_change_team",this);
 	FragList.Init			();
 	PlayerList.Init			();
 	OwnBase.Init			("ui\\ui_cs_base",		"font",	5,175,	alLeft|alTop); OwnBase.SetColor		(0x8000FF00);
@@ -37,12 +38,12 @@ BOOL CUIGameCS::CanBuy()
 }
 //--------------------------------------------------------------------
 
-void CUIGameCS::BuyItem(CCustomMenuItem* sender)
+void CUIGameCS::BuyItem(CUICustomMenuItem* sender)
 {
-	CUIGameCS* G	= (CUIGameCS*)sender->tag; R_ASSERT(G);
-	if (G)			G->SetFlag(CUIGameCustom::flShowBuyMenu,FALSE);
-
-	if (G->CanBuy()&&sender->value1){
+	CUICustomMenu* M= (CUICustomMenu*)sender->Owner();
+	M->Hide			();
+	CUIGameCS* G	= (CUIGameCS*)M->m_Owner; R_ASSERT(G);
+	if (G&&G->CanBuy()&&sender->value1){
 		string64 buf;
 		sprintf(buf,"%s/cost=%s",sender->value1,sender->value0);
 		// buy item
@@ -67,9 +68,10 @@ void CUIGameCS::OnFrame()
 		PlayerList.OnFrame();
 	break;
 	case GAME_PHASE_INPROGRESS:
-		if(!CanBuy()) SetFlag(flShowBuyMenu,FALSE);
-		if (uFlags&flShowBuyMenu)		BuyMenu.OnFrame		();
-		else if (uFlags&flShowFragList) FragList.OnFrame	();
+		if(!CanBuy()) BuyMenu.Hide	();
+		if (BuyMenu.Visible())		BuyMenu.OnFrame	();
+		if (CTMenu.Visible())		CTMenu.OnFrame	();
+		if (uFlags&flShowFragList) FragList.OnFrame	();
 		string16 buf;
 		game_cl_GameState::Player* P = Game().local_player;
 		CEntity* m_Actor = dynamic_cast<CEntity*>(Level().CurrentEntity());
@@ -109,16 +111,13 @@ void CUIGameCS::Render()
 bool CUIGameCS::OnKeyboardPress(int dik)
 {
 	if (Game().phase==GAME_PHASE_INPROGRESS){
-		if (uFlags&flShowBuyMenu)
-			if (BuyMenu.OnKeyboardPress(dik))				return true;
+		if (BuyMenu.Visible()&&BuyMenu.OnKeyboardPress(dik))	return true;
+		if (CTMenu.Visible()&&CTMenu.OnKeyboardPress(dik))		return true;
 		// switch pressed keys
 		switch (dik){
-		case DIK_B:		
-			InvertFlag				(flShowBuyMenu);
-			if (uFlags&flShowBuyMenu)BuyMenu.OnActivate		();
-			else					BuyMenu.OnDeactivate	();
-			return true;
-		case DIK_TAB:	SetFlag		(flShowFragList,TRUE);	return true;
+		case DIK_M:		CTMenu.Show();	return true;
+		case DIK_B:		BuyMenu.Show();	return true;
+		case DIK_TAB:	SetFlag(flShowFragList,TRUE);	return true;
 		}
 	}
 	return false;
@@ -128,8 +127,8 @@ bool CUIGameCS::OnKeyboardPress(int dik)
 bool CUIGameCS::OnKeyboardRelease(int dik)
 {
 	if (Game().phase==GAME_PHASE_INPROGRESS){
-		if (uFlags&flShowBuyMenu)
-			if (BuyMenu.OnKeyboardRelease(dik))				return true;
+		if (BuyMenu.Visible()&&BuyMenu.OnKeyboardRelease(dik))	return true;
+		if (CTMenu.Visible()&&CTMenu.OnKeyboardRelease(dik))	return true;
 		// switch pressed keys
 		switch (dik){
 		case DIK_TAB:	SetFlag		(flShowFragList,FALSE);	return true;

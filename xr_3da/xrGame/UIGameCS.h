@@ -4,15 +4,17 @@
 
 #include "UIGameCustom.h"
 #include "UIBuyMenu.h"
+#include "UICHTMenu.h"
 #include "UICSFragList.h"
 #include "UICSPlayerList.h"
 #include "UIIcon.h"
 
 // refs
-class CCustomMenuItem;
+class CUICustomMenuItem;
 
 class CUIGameCS: public CUIGameCustom{
 	CUIBuyMenu			BuyMenu;
+	CUIChangeTeamMenu	CTMenu;
 	CUICSFragList		FragList;
 	CUICSPlayerList		PlayerList;
 	CUIIcon				BuyZone;
@@ -22,7 +24,7 @@ class CUIGameCS: public CUIGameCustom{
 	Ivector2			vMoneyPlace;
 	Ivector2			vTimePlace;
 	BOOL				CanBuy				();
-	static void 		BuyItem				(CCustomMenuItem* sender);
+	static void 		BuyItem				(CUICustomMenuItem* sender);
 public:
 						CUIGameCS			(CUI* parent);
 	virtual 			~CUIGameCS			();

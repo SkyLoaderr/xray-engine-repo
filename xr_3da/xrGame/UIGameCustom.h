@@ -11,7 +11,6 @@ protected:
 	CUI*				m_Parent;
 public:
 	enum{
-		flShowBuyMenu	= (1<<0),
 		flShowFragList	= (1<<1),
 
 		fl_force_dword	= u32(-1)

@@ -1,16 +1,16 @@
-#ifndef __XR_UIBUYMENU_H__
-#define __XR_UIBUYMENU_H__
+#ifndef __XR_UICHTMENU_H__
+#define __XR_UICHTMENU_H__
 #pragma once
 
 #include "UICustomMenu.h"
 // refs
 class CUIGameCustom;
 
-class CUIBuyMenu: public CUICustomMenu{
+class CUIChangeTeamMenu: public CUICustomMenu{
 	float				menu_offs_row;
-	float				menu_offs_col[2];
+	float				menu_offs_col;
 public:
-						CUIBuyMenu			();
+						CUIChangeTeamMenu	();
 
 	virtual void		Render				();
 	virtual void		OnFrame				();
