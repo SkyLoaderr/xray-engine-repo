@@ -29,7 +29,7 @@ void CDetailManager::VS_Load()
 	_RELEASE		(errors);
 
 	// Analyze batch-size
-	VS_BatchSize	= 19; //(DWORD(HW.Caps.vertex.dwRegisters)-1)/5;
+	VS_BatchSize	= (DWORD(HW.Caps.vertex.dwRegisters)-5)/4;
 
 	// Pre-process objects
 	DWORD			dwVerts		= 0;
@@ -66,7 +66,7 @@ void CDetailManager::VS_Load()
 			CDetail& D		=	objects[o];
 			for (u32 batch=0; batch<VS_BatchSize; batch++)
 			{
-				DWORD mid	=	batch*5+1;
+				DWORD mid	=	batch*4+5;
 				DWORD M		=	D3DCOLOR_RGBA	(mid,mid,mid,mid);
 				for (u32 v=0; v<D.number_vertices; v++)
 				{
@@ -117,11 +117,11 @@ void CDetailManager::VS_Render()
 	// Render-prepare
 	CVS_Constants& VSC	=	Device.Shader.VSC;
 	VSC.set					(0,255.01f,255.01f,255.01f,255.01f);
-	VSC.flush				(0,1);
+	VSC.set					(1,Device.mFullTransform);
+	VSC.flush				(0,5);
 	
 	// Matrices and offsets
 	Fmatrix		mXform,	mTemp;
-	Fmatrix		mScreen	=	Device.mFullTransform;
 	DWORD		vOffset	=	0;
 	DWORD		iOffset	=	0;
 	
@@ -142,7 +142,7 @@ void CDetailManager::VS_Render()
 			{
 				SlotItem&	Instance	= *(vis[item]);
 				float	scale			= Instance.scale_calculated;
-				DWORD	cBase			= dwBatch*5+1;
+				DWORD	cBase			= dwBatch*4+5;
 				
 				// Build matrix
 				if (scale>0.7f)	
@@ -161,15 +161,14 @@ void CDetailManager::VS_Render()
 					mXform._31=M._31;		mXform._32=M._32;		mXform._33=M._33*scale;	mXform._34=M._34;
 					mXform._41=P.x;			mXform._42=P.y;			mXform._43=P.z;			mXform._44=1;
 				}
-				mTemp.mul				(mScreen,	mXform);
-				VSC.set					(cBase,		mTemp);
+				VSC.set					(cBase,		mXform);
 				VSC.set					(cBase+4,	Instance.C);
 				
 				dwBatch	++;
 				if (dwBatch == VS_BatchSize)	
 				{
 					// flush
-					VSC.flush						(1,dwBatch*5);
+					VSC.flush						(5,dwBatch*4);
 					DWORD dwCNT_verts				= dwBatch * Object.number_vertices;
 					DWORD dwCNT_prims				= (dwBatch * Object.number_indices)/3;
 					Device.Primitive.setIndicesUC	(vOffset, VS_IB);
@@ -184,7 +183,7 @@ void CDetailManager::VS_Render()
 			// flush if nessecary
 			if (dwBatch)
 			{
-				VSC.flush						(1,dwBatch*5);
+				VSC.flush						(5,dwBatch*4);
 				DWORD dwCNT_verts				= dwBatch * Object.number_vertices;
 				DWORD dwCNT_prims				= (dwBatch * Object.number_indices)/3;
 				Device.Primitive.setIndicesUC	(vOffset, VS_IB);
