@@ -76,7 +76,7 @@ CLevel::~CLevel()
 	xr_delete			(tpAI_Space);
 	xr_free				(m_caServerOptions);
 	xr_free				(m_caClientOptions);
- }
+}
 
 // Game interface ////////////////////////////////////////////////////
 int	CLevel::get_RPID(LPCSTR name)

@@ -87,7 +87,7 @@ void CSE_ALifeMonsterAbstract::Update		(CSE_ALifeSimulator *tpALife)
 			else
 				m_fCurSpeed			= m_fGoingSpeed;
 		}
-		tpALife->vfCheckForTheInteraction(this);
+		tpALife->vfCheckForInteraction(this);
 	}
 	while (bContinue && (tpALife->m_tpActor->o_Position.distance_to(o_Position) > tpALife->m_fOnlineDistance));
 	m_tTimeID					= tpALife->tfGetGameTime();
@@ -98,4 +98,9 @@ CSE_ALifeItemWeapon	*CSE_ALifeMonsterAbstract::tpfGetBestWeapon(EHitType &tHitTy
 	fHitPower					= m_fHitPower;
 	tHitType					= m_tHitType;
 	return						(0);
+}
+
+EMeetActionType	CSE_ALifeMonsterAbstract::tfGetActionType(CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract, int iGroupIndex)
+{
+	return						(g_team() == tpALifeMonsterAbstract->g_team() ? eMeetActionTypeIgnore : (m_tpALife->tfChooseCombatAction(iGroupIndex)==eCombatActionAttack ? eMeetActionTypeAttack : eMeetActionTypeIgnore));
 }

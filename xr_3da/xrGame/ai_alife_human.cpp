@@ -232,7 +232,8 @@ void CSE_ALifeHumanAbstract::vfUpdateWeaponAmmo()
 						continue;
 					}
 					if (m_tpCurrentBestWeapon->m_dwAmmoAvailable) {
-						l_tpALifeItemAmmo->a_elapsed = u16(l_tpALifeItemAmmo->a_elapsed - u16(m_tpCurrentBestWeapon->m_dwAmmoAvailable));
+						l_tpALifeItemAmmo->a_elapsed = (u16)m_tpCurrentBestWeapon->m_dwAmmoAvailable;
+						m_tpCurrentBestWeapon->m_dwAmmoAvailable = 0;
 						continue;
 					}
 					m_tpALife->vfDetachItem(*this,l_tpALifeItemAmmo,m_tGraphID);
@@ -244,36 +245,51 @@ void CSE_ALifeHumanAbstract::vfUpdateWeaponAmmo()
 			break;
 		}
 	}
+
 	for (int i=0, n=children.size() ; i<n; i++) {
+		if (m_tpALife->m_baMarks[i])
+			continue;
+		m_tpALife->m_baMarks[i]	= true;
 		CSE_ALifeItemAmmo		*l_tpALifeItemAmmo = dynamic_cast<CSE_ALifeItemAmmo*>(m_tpALife->tpfGetObjectByID(children[i]));
-		
 		if (!l_tpALifeItemAmmo)
 			continue;
 
-		if (!l_tpALifeItemAmmo->a_elapsed) {
-			m_tpALife->vfDetachItem(*this,l_tpALifeItemAmmo,m_tGraphID);
-			m_tpALife->vfReleaseObject(l_tpALifeItemAmmo,true);
-			i--;
-			n--;
-			continue;
-		}
-
-		for (int j=0; j<i; j++) {
-			CSE_ALifeItemAmmo		*l_tpALifeItemAmmo1 = dynamic_cast<CSE_ALifeItemAmmo*>(m_tpALife->tpfGetObjectByID(children[i]));
-			if (!l_tpALifeItemAmmo1 || strcmp(l_tpALifeItemAmmo->s_name,l_tpALifeItemAmmo1->s_name) || (l_tpALifeItemAmmo1->a_elapsed == l_tpALifeItemAmmo1->m_boxSize))
+		for (int j=i+1; j<n; j++) {
+			if (m_tpALife->m_baMarks[j])
 				continue;
-			u16						l_wDiff = l_tpALifeItemAmmo1->m_boxSize - l_tpALifeItemAmmo1->a_elapsed;
-			if (l_wDiff >= l_tpALifeItemAmmo->a_elapsed) {
-				l_tpALifeItemAmmo1->a_elapsed	= l_tpALifeItemAmmo1->a_elapsed + l_tpALifeItemAmmo->a_elapsed;
-				l_tpALifeItemAmmo->a_elapsed	= 0;
-				i--;
-				break;
+			
+			CSE_ALifeItemAmmo	*l_tpALifeItemAmmo1 = dynamic_cast<CSE_ALifeItemAmmo*>(m_tpALife->tpfGetObjectByID(children[j]));
+			if (!l_tpALifeItemAmmo1) {
+				m_tpALife->m_baMarks[j]	= true;
+				continue;
+			}
+
+			if (!strstr(l_tpALifeItemAmmo->s_name,l_tpALifeItemAmmo1->s_name))
+				continue;
+
+			m_tpALife->m_baMarks[j]	= true;
+
+			if (l_tpALifeItemAmmo->a_elapsed + l_tpALifeItemAmmo1->a_elapsed > l_tpALifeItemAmmo->m_boxSize) {
+				l_tpALifeItemAmmo1->a_elapsed	= l_tpALifeItemAmmo->a_elapsed + l_tpALifeItemAmmo1->a_elapsed - l_tpALifeItemAmmo->m_boxSize;
+				l_tpALifeItemAmmo->a_elapsed	= l_tpALifeItemAmmo->m_boxSize;
+				l_tpALifeItemAmmo				= l_tpALifeItemAmmo1;
 			}
 			else {
-				l_tpALifeItemAmmo1->a_elapsed	= l_tpALifeItemAmmo1->m_boxSize;
-				l_tpALifeItemAmmo->a_elapsed	= l_tpALifeItemAmmo->a_elapsed - l_wDiff;
+				l_tpALifeItemAmmo->a_elapsed	= l_tpALifeItemAmmo->a_elapsed + l_tpALifeItemAmmo1->a_elapsed;
+				l_tpALifeItemAmmo1->a_elapsed	= 0;
 			}
 		}
+	}
+
+	for (int i=0, j=0; i<n; i++,j++) {
+		m_tpALife->m_baMarks[j] = false;
+		CSE_ALifeItemAmmo		*l_tpALifeItemAmmo = dynamic_cast<CSE_ALifeItemAmmo*>(m_tpALife->tpfGetObjectByID(children[i]));
+		if (!l_tpALifeItemAmmo || l_tpALifeItemAmmo->a_elapsed)
+			continue;
+		m_tpALife->vfDetachItem	(*this,l_tpALifeItemAmmo,m_tGraphID);
+		m_tpALife->vfReleaseObject(l_tpALifeItemAmmo,true);
+		i--;
+		n--;
 	}
 }
 
@@ -292,13 +308,13 @@ u16	CSE_ALifeHumanAbstract::get_available_ammo_count(CSE_ALifeItemWeapon *tpALif
 	return						(u16(l_dwResult));
 }
 
-u16	CSE_ALifeHumanAbstract::get_available_ammo_count(CSE_ALifeItemWeapon *tpALifeItemWeapon, ITEM_P_LIST &tpItemVector)
+u16	CSE_ALifeHumanAbstract::get_available_ammo_count(CSE_ALifeItemWeapon *tpALifeItemWeapon, ITEM_P_VECTOR &tpItemVector)
 {
 	if (!tpALifeItemWeapon->m_caAmmoSections)
 		return(u16(-1));
 	u32							l_dwResult = 0;
-	ITEM_P_LIST_IT					I = tpItemVector.begin();
-	ITEM_P_LIST_IT					E = tpItemVector.end();
+	ITEM_P_IT					I = tpItemVector.begin();
+	ITEM_P_IT					E = tpItemVector.end();
 	for ( ; I != E; I++) {
 		CSE_ALifeItemAmmo		*l_tpALifeItemAmmo = dynamic_cast<CSE_ALifeItemAmmo*>(*I);
 		if (l_tpALifeItemAmmo && strstr(tpALifeItemWeapon->m_caAmmoSections,l_tpALifeItemAmmo->s_name))
@@ -307,13 +323,13 @@ u16	CSE_ALifeHumanAbstract::get_available_ammo_count(CSE_ALifeItemWeapon *tpALif
 	return						(u16(l_dwResult));
 }
 
-void CSE_ALifeHumanAbstract::attach_available_ammo(CSE_ALifeItemWeapon *tpALifeItemWeapon, ITEM_P_LIST &tpItemVector)
+void CSE_ALifeHumanAbstract::attach_available_ammo(CSE_ALifeItemWeapon *tpALifeItemWeapon, ITEM_P_VECTOR &tpItemVector)
 {
 	if (!tpALifeItemWeapon->m_caAmmoSections)
 		return;
 	u32							l_dwCount = 0;
-	ITEM_P_LIST_IT					I = tpItemVector.begin();
-	ITEM_P_LIST_IT					E = tpItemVector.end();
+	ITEM_P_IT					I = tpItemVector.begin();
+	ITEM_P_IT					E = tpItemVector.end();
 	for ( ; I != E; I++) {
 		CSE_ALifeItemAmmo		*l_tpALifeItemAmmo = dynamic_cast<CSE_ALifeItemAmmo*>(*I);
 		if (l_tpALifeItemAmmo && strstr(tpALifeItemWeapon->m_caAmmoSections,l_tpALifeItemAmmo->s_name) && bfCanGetItem(l_tpALifeItemAmmo)) {
@@ -327,13 +343,13 @@ void CSE_ALifeHumanAbstract::attach_available_ammo(CSE_ALifeItemWeapon *tpALifeI
 
 void CSE_ALifeHumanAbstract::vfProcessItems()
 {
-	m_tpALife->m_tpItemList.clear();
+	m_tpALife->m_tpItemVector.clear();
 	for (int I=0; I<(int)m_tpALife->m_tpGraphObjects[m_tGraphID].tpObjects.size(); I++) {
 		CSE_ALifeItem			*tpALifeItem = dynamic_cast<CSE_ALifeItem *>(m_tpALife->m_tpGraphObjects[m_tGraphID].tpObjects[I]);
 		if (tpALifeItem && !tpALifeItem->m_bOnline && (m_tpALife->randF(1.0f) < m_fProbability))
-			m_tpALife->m_tpItemList.push_back(tpALifeItem);
+			m_tpALife->m_tpItemVector.push_back(tpALifeItem);
 	}
-	if (!m_tpALife->m_tpItemList.empty())
+	if (!m_tpALife->m_tpItemVector.empty())
 		vfAttachItems();
 }
 
@@ -363,7 +379,7 @@ void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
 	}
 	
 	if (tTakeType == eTakeTypeAll) {
-		m_tpALife->vfAppendItemList		(children,m_tpALife->m_tpItemList);
+		m_tpALife->vfAppendItemList		(children,m_tpALife->m_tpItemVector);
 		for (int i=0, n=children.size(); i<n; n--) {
 			CSE_ALifeItem			*l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>(m_tpALife->tpfGetObjectByID(children[i]));
 			R_ASSERT2				(l_tpALifeItem,"Invalid inventory object");
@@ -383,8 +399,8 @@ void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
 		l_tpALifeItemBest				= 0;
 		l_fItemBestValue				= -1.f;
 		{
-			ITEM_P_LIST_IT				I = m_tpALife->m_tpItemList.begin(), X;
-			ITEM_P_LIST_IT				E = m_tpALife->m_tpItemList.end();
+			ITEM_P_IT				I = m_tpALife->m_tpItemVector.begin(), X;
+			ITEM_P_IT				E = m_tpALife->m_tpItemVector.end();
 			for ( ; I != E; I++) {
 				// checking if it is an item
 				CSE_ALifeItem			*l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>(*I);
@@ -406,7 +422,7 @@ void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
 			}
 			if (l_tpALifeItemBest) {
 				m_tpALife->vfAttachItem	(*this,l_tpALifeItemBest,m_tGraphID);
-				m_tpALife->m_tpItemList.erase(X);
+				m_tpALife->m_tpItemVector.erase(X);
 			}
 		}
 		
@@ -415,8 +431,8 @@ void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
 			l_tpALifeItemBest				= 0;
 			l_fItemBestValue				= -1.f;
 			{
-				ITEM_P_LIST_IT				I = m_tpALife->m_tpItemList.begin();
-				ITEM_P_LIST_IT				E = m_tpALife->m_tpItemList.end();
+				ITEM_P_IT				I = m_tpALife->m_tpItemVector.begin();
+				ITEM_P_IT				E = m_tpALife->m_tpItemVector.end();
 				for ( ; I != E; I++) {
 					// checking if it is an item
 					CSE_ALifeItem			*l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>(*I);
@@ -460,21 +476,21 @@ void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
 				}
 				if (l_tpALifeItemBest) {
 					m_tpALife->vfAttachItem	(*this,l_tpALifeItemBest,m_tGraphID);
-					attach_available_ammo	(dynamic_cast<CSE_ALifeItemWeapon*>(l_tpALifeItemBest),m_tpALife->m_tpItemList);
-					ITEM_P_LIST_IT			I = remove_if(m_tpALife->m_tpItemList.begin(),m_tpALife->m_tpItemList.end(),CRemoveAttachedItemsPredicate());
-					m_tpALife->m_tpItemList.erase(I,m_tpALife->m_tpItemList.end());
+					attach_available_ammo	(dynamic_cast<CSE_ALifeItemWeapon*>(l_tpALifeItemBest),m_tpALife->m_tpItemVector);
+					ITEM_P_IT			I = remove_if(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
+					m_tpALife->m_tpItemVector.erase(I,m_tpALife->m_tpItemVector.end());
 				}
 			}
 		}
 		
-#pragma todo("Add food and medikit items support")
-		m_tpALife->m_tpItemList.sort	(CSortItemPredicate());
+		sort(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CSortItemPredicate());
 		
+#pragma todo("Add food and medikit items need count computations")
 		// choosing food
 		{
 			u32							l_dwCount = 0;
-			ITEM_P_LIST_IT				I = m_tpALife->m_tpItemList.begin();
-			ITEM_P_LIST_IT				E = m_tpALife->m_tpItemList.end();
+			ITEM_P_IT				I = m_tpALife->m_tpItemVector.begin();
+			ITEM_P_IT				E = m_tpALife->m_tpItemVector.end();
 			for ( ; I != E; I++) {
 				CSE_ALifeItem			*l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>(*I);
 				if (!l_tpALifeItem || (l_tpALifeItem->m_iFoodValue <= 0))
@@ -487,16 +503,16 @@ void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
 				}
 			}
 			if (l_dwCount) {
-				ITEM_P_LIST_IT			I = remove_if(m_tpALife->m_tpItemList.begin(),m_tpALife->m_tpItemList.end(),CRemoveAttachedItemsPredicate());
-				m_tpALife->m_tpItemList.erase(I,m_tpALife->m_tpItemList.end());
+				ITEM_P_IT			I = remove_if(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
+				m_tpALife->m_tpItemVector.erase(I,m_tpALife->m_tpItemVector.end());
 			}
 		}
 		
 		// choosing medikits
 		{
 			u32							l_dwCount = 0;
-			ITEM_P_LIST_IT				I = m_tpALife->m_tpItemList.begin();
-			ITEM_P_LIST_IT				E = m_tpALife->m_tpItemList.end();
+			ITEM_P_IT				I = m_tpALife->m_tpItemVector.begin();
+			ITEM_P_IT				E = m_tpALife->m_tpItemVector.end();
 			for ( ; I != E; I++) {
 				CSE_ALifeItem			*l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>(*I);
 				if (!l_tpALifeItem || (l_tpALifeItem->m_iHealthValue <= 0))
@@ -509,16 +525,16 @@ void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
 				}
 			}
 			if (l_dwCount) {
-				ITEM_P_LIST_IT			I = remove_if(m_tpALife->m_tpItemList.begin(),m_tpALife->m_tpItemList.end(),CRemoveAttachedItemsPredicate());
-				m_tpALife->m_tpItemList.erase(I,m_tpALife->m_tpItemList.end());
+				ITEM_P_IT			I = remove_if(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
+				m_tpALife->m_tpItemVector.erase(I,m_tpALife->m_tpItemVector.end());
 			}
 		}
 		// choosing detector
 		l_tpALifeItemBest				= 0;
 		l_fItemBestValue				= -1.f;
 		{
-			ITEM_P_LIST_IT				I = m_tpALife->m_tpItemList.begin(), X;
-			ITEM_P_LIST_IT				E = m_tpALife->m_tpItemList.end();
+			ITEM_P_IT				I = m_tpALife->m_tpItemVector.begin(), X;
+			ITEM_P_IT				E = m_tpALife->m_tpItemVector.end();
 			for ( ; I != E; I++) {
 				// checking if it is an item
 				CSE_ALifeItemDetector	*l_tpALifeItem = dynamic_cast<CSE_ALifeItemDetector*>(*I);
@@ -536,7 +552,7 @@ void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
 			}
 			if (l_tpALifeItemBest) {
 				m_tpALife->vfAttachItem	(*this,l_tpALifeItemBest,m_tGraphID);
-				m_tpALife->m_tpItemList.erase(X);
+				m_tpALife->m_tpItemVector.erase(X);
 			}
 		}
 	}
@@ -544,9 +560,9 @@ void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
 	if ((tTakeType == eTakeTypeAll) || (tTakeType == eTakeTypeRest)) {
 		// choosing the rest objects
 		if (tTakeType == eTakeTypeRest)
-			m_tpALife->m_tpItemList.sort(CSortItemPredicate());
-		ITEM_P_LIST_IT				I = m_tpALife->m_tpItemList.begin();
-		ITEM_P_LIST_IT				E = m_tpALife->m_tpItemList.end();
+			sort(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CSortItemPredicate());
+		ITEM_P_IT				I = m_tpALife->m_tpItemVector.begin();
+		ITEM_P_IT				E = m_tpALife->m_tpItemVector.end();
 		for ( ; I != E; I++) {
 			CSE_ALifeItem			*l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>(*I);
 			if (!l_tpALifeItem)
@@ -554,8 +570,8 @@ void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
 			if (bfCanGetItem(l_tpALifeItem))
 				m_tpALife->vfAttachItem	(*this,l_tpALifeItem,m_tGraphID);
 		}
-		I							= remove_if(m_tpALife->m_tpItemList.begin(),m_tpALife->m_tpItemList.end(),CRemoveAttachedItemsPredicate());
-		m_tpALife->m_tpItemList.erase(I,m_tpALife->m_tpItemList.end());
+		I							= remove_if(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
+		m_tpALife->m_tpItemVector.erase(I,m_tpALife->m_tpItemVector.end());
 	}
 }
 
@@ -592,7 +608,8 @@ bool CSE_ALifeHumanAbstract::bfCanGetItem(CSE_ALifeItem *tpALifeItem)
 
 	sort			(m_tpTempItemBuffer.begin(),m_tpTempItemBuffer.end(),CSortItemVolumePredicate());
 
-#pragma todo("Dima to Dima : Instead of greeding algorithm implement faster algorithm which _always_ computes _correct_ result")
+#pragma todo("Dima to Dima,Oles,AlexMX,Yura,Jim,Kostia : Instead of greeding algorithm implement faster algorithm which _always_ computes _correct_ result (though this problem seems to be NP)")
+
 	u64				l_qwInventoryBitMask = 0;
 	ITEM_P_IT		I = m_tpTempItemBuffer.begin();
 	ITEM_P_IT		E = m_tpTempItemBuffer.end();
@@ -610,4 +627,9 @@ bool CSE_ALifeHumanAbstract::bfCanGetItem(CSE_ALifeItem *tpALifeItem)
 			return	(false);
 	}
 	return			(true);
+}
+
+EMeetActionType	CSE_ALifeHumanAbstract::tfGetActionType(CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract, int iGroupIndex)
+{
+	return						(g_team() == tpALifeMonsterAbstract->g_team() ? eMeetActionTypeInteract : (m_tpALife->tfChooseCombatAction(iGroupIndex)==eCombatActionAttack ? eMeetActionTypeAttack : eMeetActionTypeIgnore));
 }

@@ -58,84 +58,84 @@ float CPersonalCreatureTypeFunction::ffGetValue()
 		case CLSID_AI_RAT				: {
 			m_fLastValue =  1;
 			break;
-											}
+		}
 		case CLSID_AI_RAT_WOLF			: {
 			m_fLastValue =  2;
 			break;
-											}
+		}
 		case CLSID_AI_ZOMBIE			: {
 			m_fLastValue =  3;
 			break;
-											}
+		}
 		case CLSID_AI_ZOMBIE_HUMAN		: {
 			m_fLastValue =  4;
 			break;
-											}
+		}
 		case CLSID_AI_POLTERGEIST		: {
 			m_fLastValue =  5;
 			break;
-											}
+		}
 		case CLSID_AI_DOG				: {
 			m_fLastValue =  6;
 			break;
-											}
+		}
 		case CLSID_AI_FLESH				: {
 			m_fLastValue =  7;
 			break;
-											}
+		}
 		case CLSID_AI_DWARF				: {
 			m_fLastValue =  8;
 			break;
-											}
+		}
 		case CLSID_AI_SCIENTIST			: {
 			m_fLastValue =  9;
 			break;
-											}
+		}
 		case CLSID_AI_PHANTOM			: {
 			m_fLastValue = 10;
 			break;
-											}
+		}
 		case CLSID_AI_SPONGER			: {
 			m_fLastValue = 11;
 			break;
-											}
+		}
 		case CLSID_AI_CONTROLLER		: {
 			m_fLastValue = 12;
 			break;
-											}
+		}
 		case CLSID_AI_BLOODSUCKER		: {
 			m_fLastValue = 13;
 			break;
-											}
+		}
 		case CLSID_AI_SOLDIER			: {
 			m_fLastValue = 14;
 			break;
-											}
+		}
 		case CLSID_AI_STALKER_DARK		: {
 			m_fLastValue = 15;
 			break;
-											}
+		}
 		case CLSID_AI_STALKER_MILITARY	: {
 			m_fLastValue = 16;
 			break;
-											}
+		}
 		case CLSID_OBJECT_ACTOR			: 
 		case CLSID_AI_STALKER			: {
 			m_fLastValue = 17;
 			break;
-											}
+		}
 		case CLSID_AI_BURER				: {
 			m_fLastValue = 18;
 			break;
-											}
+		}
 		case CLSID_AI_GIANT				: {
 			m_fLastValue = 19;
 			break;
-											}
+		}
 		case CLSID_AI_CHIMERA	: {
 			m_fLastValue = 20;
 			break;
-									}
+		}
 		case CLSID_AI_FRACTURE	:
 		case CLSID_AI_DOG_RED	:
 		case CLSID_AI_DOG_BLACK	: {
@@ -151,6 +151,7 @@ float CPersonalCreatureTypeFunction::ffGetValue()
 
 u32 CPersonalWeaponTypeFunction::dwfGetWeaponType()
 {
+	R_ASSERT2	(getAI().m_tpGameObject || getAI().m_tpCurrentALifeObject,"No weapon passed to the PersonalWeaponType evaluation function");
 	CLASS_ID	l_tClassID = getAI().m_tpGameObject ? getAI().m_tpGameObject->SUB_CLS_ID : getAI().m_tpCurrentALifeObject->m_tClassID;
 	switch (l_tClassID) {
 		case CLSID_OBJECT_W_RPG7:
@@ -201,6 +202,8 @@ float CPersonalWeaponTypeFunction::ffGetTheBestWeapon()
 		}	
 	}
 	else {
+		if (!getAI().m_tpCurrentALifeMember->m_tpCurrentBestWeapon)
+			return(0);
 		getAI().m_tpCurrentALifeObject	= getAI().m_tpCurrentALifeMember->m_tpCurrentBestWeapon;
 		dwBestWeapon			= dwfGetWeaponType();
 	}
@@ -217,95 +220,95 @@ float CPersonalWeaponTypeFunction::ffGetValue()
 		case CLSID_AI_RAT				: {
 			m_fLastValue =  1;
 			break;
-										}
+		}
 		case CLSID_AI_RAT_WOLF			: {
 			m_fLastValue =  2;
 			break;
-										}
+		}
 		case CLSID_AI_ZOMBIE			: {
 			m_fLastValue =  1;
 			break;
-										}
+		}
 		case CLSID_AI_ZOMBIE_HUMAN		: {
 			m_fLastValue =  1;
 			break;
-										}
+		}
 		case CLSID_AI_POLTERGEIST		: {
 			// 1 or 12
 			m_fLastValue =  12;
 			break;
-										}
+		}
 		case CLSID_AI_DOG				: {
 			m_fLastValue =  2;
 			break;
-										}
+		}
 		case CLSID_AI_FLESH				: {
 			m_fLastValue =  2;
 			break;
-										}
+		}
 		case CLSID_AI_DWARF				: {
 			m_fLastValue =  1;
 			break;
-										}
+		}
 		case CLSID_AI_SCIENTIST			: {
 			m_fLastValue =  ffGetTheBestWeapon();
 			break;
-										}
+		}
 		case CLSID_AI_PHANTOM			: {
 			m_fLastValue =  3;
 			break;
-										}
+		}
 		case CLSID_AI_SPONGER			: {
 			m_fLastValue =  2;
 			break;
-										}
+		}
 		case CLSID_AI_CONTROLLER		: {
 			//2 or 11
 			m_fLastValue =  11;
 			break;
-										}
+		}
 		case CLSID_AI_BLOODSUCKER		: {
 			m_fLastValue =  3;
 			break;
-										}
+		}
 		case CLSID_AI_SOLDIER			: {
 			m_fLastValue =  ffGetTheBestWeapon();
 			break;
-										}
+		}
 		case CLSID_AI_STALKER_DARK		: {
 			m_fLastValue =  ffGetTheBestWeapon();
 			break;
-										}
+		}
 		case CLSID_AI_STALKER_MILITARY	: {
 			m_fLastValue =  ffGetTheBestWeapon();
 			break;
-										}
+		}
 		case CLSID_OBJECT_ACTOR			: 
 		case CLSID_AI_STALKER			: {
 			m_fLastValue =  ffGetTheBestWeapon();
 			break;
-										}
+		}
 		case CLSID_AI_BURER				: {
 			m_fLastValue =  3;
 			break;
-										}
+		}
 		case CLSID_AI_GIANT				: {
 			m_fLastValue =  3;
 			break;
-										}
+		}
 		case CLSID_AI_CHIMERA	: {
 			m_fLastValue =  3;
 			break;
-								}
+		}
 		case CLSID_AI_FRACTURE	: {
 			m_fLastValue =  4;
 			break;
-								}
+		}
 		case CLSID_AI_DOG_RED	:
-		case CLSID_AI_DOG_BLACK	: 
+		case CLSID_AI_DOG_BLACK	: {
 			m_fLastValue =  4;
 			break;
-
+		}
 		case CLSID_AI_TRADER: 
 			break;
 		default : NODEFAULT;
@@ -382,16 +385,16 @@ float CEnemyCreatureTypeFunction::ffGetValue()
 	if (bfCheckForCachedResult())
 		return(m_fLastValue);
 	if (getAI().m_tpCurrentMember) {
-		CEntityAlive *tpEntity = getAI().m_tpCurrentMember;
-		getAI().m_tpCurrentMember = getAI().m_tpCurrentEnemy;
-		m_fLastValue = getAI().m_pfPersonalCreatureType->ffGetValue();
-		getAI().m_tpCurrentMember = tpEntity;
+		CEntityAlive *tpEntity			= getAI().m_tpCurrentMember;
+		getAI().m_tpCurrentMember		= getAI().m_tpCurrentEnemy;
+		m_fLastValue					= getAI().m_pfPersonalCreatureType->ffGetValue();
+		getAI().m_tpCurrentMember		= tpEntity;
 	}
 	else {
-		CSE_ALifeMonsterAbstract *l_tpALifeMonsterAbstract = getAI().m_tpCurrentALifeMember;
-		getAI().m_tpCurrentALifeMember = getAI().m_tpCurrentALifeEnemy;
-		m_fLastValue = getAI().m_pfPersonalCreatureType->ffGetValue();
-		getAI().m_tpCurrentALifeMember = l_tpALifeMonsterAbstract;
+		CSE_ALifeMonsterAbstract		*l_tpALifeMonsterAbstract = getAI().m_tpCurrentALifeMember;
+		getAI().m_tpCurrentALifeMember	= getAI().m_tpCurrentALifeEnemy;
+		m_fLastValue					= getAI().m_pfPersonalCreatureType->ffGetValue();
+		getAI().m_tpCurrentALifeMember	= l_tpALifeMonsterAbstract;
 	}
 	return(m_fLastValue);
 }
@@ -401,16 +404,21 @@ float CEnemyWeaponTypeFunction::ffGetValue()
 	if (bfCheckForCachedResult())
 		return(m_fLastValue);
 	if (getAI().m_tpCurrentMember) {
-		CEntityAlive *tpEntity = getAI().m_tpCurrentMember;
-		getAI().m_tpCurrentMember = getAI().m_tpCurrentEnemy;
-		m_fLastValue = getAI().m_pfPersonalWeaponType->ffGetValue();
-		getAI().m_tpCurrentMember = tpEntity;
+		CEntityAlive					*tpEntity = getAI().m_tpCurrentMember;
+		CGameObject						*l_tpGameObject = getAI().m_tpGameObject;
+		getAI().m_tpCurrentMember		= getAI().m_tpCurrentEnemy;
+		m_fLastValue					= getAI().m_pfPersonalWeaponType->ffGetValue();
+		getAI().m_tpCurrentMember		= tpEntity;
+		getAI().m_tpGameObject			= l_tpGameObject;
 	}
 	else {
-		CSE_ALifeMonsterAbstract *l_tpALifeMonsterAbstract = getAI().m_tpCurrentALifeMember;
-		getAI().m_tpCurrentALifeMember = getAI().m_tpCurrentALifeEnemy;
-		m_fLastValue = getAI().m_pfPersonalWeaponType->ffGetValue();
-		getAI().m_tpCurrentALifeMember = l_tpALifeMonsterAbstract;
+		CSE_ALifeMonsterAbstract		*l_tpALifeMonsterAbstract = getAI().m_tpCurrentALifeMember;
+		CSE_ALifeObject					*l_tpALifeObject = getAI().m_tpCurrentALifeObject;
+		getAI().m_tpCurrentALifeObject	= getAI().m_tpCurrentALifeEnemy->m_tpCurrentBestWeapon;
+		getAI().m_tpCurrentALifeMember	= getAI().m_tpCurrentALifeEnemy;
+		m_fLastValue					= getAI().m_pfPersonalWeaponType->ffGetValue();
+		getAI().m_tpCurrentALifeMember	= l_tpALifeMonsterAbstract;
+		getAI().m_tpCurrentALifeObject	= l_tpALifeObject;
 	}
 	return(m_fLastValue);
 }
@@ -695,6 +703,6 @@ float CWeaponAmmoCount::ffGetValue()
 	else {
 		CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>(getAI().m_tpCurrentALifeMember);
 		R_ASSERT2				(l_tpALifeHumanAbstract,"Non-human object in WeaponAmmoCount evaluation function");
-		return					(m_fLastValue = l_tpALifeHumanAbstract->get_available_ammo_count(dynamic_cast<CSE_ALifeItemWeapon*>(getAI().m_tpCurrentALifeObject),getAI().m_tpALife->m_tpItemList));
+		return					(m_fLastValue = l_tpALifeHumanAbstract->get_available_ammo_count(dynamic_cast<CSE_ALifeItemWeapon*>(getAI().m_tpCurrentALifeObject),getAI().m_tpALife->m_tpItemVector));
 	}
 }

@@ -25,6 +25,7 @@ CSE_ALifeSimulator::CSE_ALifeSimulator(xrServer *tpServer)
 	getAI().m_tpALife	= this;
 	m_dwInventorySlotCount	= pSettings->r_u32("inventory","slots");
 	m_tpWeaponVector.resize(m_dwInventorySlotCount);
+	m_baMarks.assign	(u16(-1),false);
 }
 
 CSE_ALifeSimulator::~CSE_ALifeSimulator()
@@ -69,9 +70,9 @@ void CSE_ALifeSimulator::vfUpdateDynamicData(CSE_ALifeDynamicObject *tpALifeDyna
 		II->children.push_back(l_tpALifeItem->ID);
 	}
 	
-	CSE_ALifeHumanAbstract		*l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>(tpALifeDynamicObject);
-	if (l_tpALifeHumanAbstract)
-		l_tpALifeHumanAbstract->m_tpALife = this;
+	CSE_ALifeMonsterAbstract			*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(tpALifeDynamicObject);
+	if (l_tpALifeMonsterAbstract)
+		l_tpALifeMonsterAbstract->m_tpALife = this;
 }
 
 void CSE_ALifeSimulator::vfUpdateDynamicData(bool bReserveID)
@@ -306,5 +307,4 @@ void CSE_ALifeSimulator::vfInitAI_ALifeMembers()
 	getAI().m_tpCurrentMember	= 0;
 	getAI().m_tpCurrentEnemy	= 0;
 	getAI().m_tpGameObject		= 0;
-	getAI().m_tpALife			= this;
 }

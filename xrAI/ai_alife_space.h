@@ -9,6 +9,8 @@
 #ifndef XRAY_AI_ALIFE_SPACE
 #define XRAY_AI_ALIFE_SPACE
 
+#define OFFLINE_LOG
+
 // spawn points
 #define SPAWN_POINT_VERSION			0x0001
 #define SPAWN_POINT_CHUNK_VERSION	0xffff
@@ -204,6 +206,13 @@ namespace ALife {
 		eCombatActionDummy = u32(-1),
 	};
 
+	enum EMeetActionType {
+		eMeetActionTypeAttack = u32(0),
+		eMeetActionTypeInteract,
+		eMeetActionTypeIgnore,
+		eMeetActionTypeDummy = u32(-1),
+	};
+
 	enum ERelationType {
 		eRelationTypeFriend = 0,
 		eRelationTypeNeutral,
@@ -283,11 +292,6 @@ namespace ALife {
 		ARTEFACT_ORDER_VECTOR	m_tpOrders;
 	};
 
-	DEFINE_LIST		(CSE_ALifeItem*,			ITEM_P_LIST,					ITEM_P_LIST_IT);
-
-	DEFINE_VECTOR	(float,						FLOAT_VECTOR,					FLOAT_IT);
-	DEFINE_VECTOR	(LPSTR,						LPSTR_VECTOR,					LPSTR_IT);
-	DEFINE_VECTOR	(Fvector,					FVECTOR_VECTOR,					FVECTOR_IT);
 	DEFINE_VECTOR	(_OBJECT_ID,				OBJECT_VECTOR,					OBJECT_IT);
 	DEFINE_VECTOR	(_OBJECT_ID,				OBJECT_VECTOR,					OBJECT_IT);
 	DEFINE_VECTOR	(_EVENT_ID,					EVENT_VECTOR,					EVENT_IT);

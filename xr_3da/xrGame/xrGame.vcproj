@@ -566,16 +566,6 @@
 						<File
 							RelativePath="AI\Rat\ai_rat_templates.cpp">
 						</File>
-						<Filter
-							Name="ai_idol"
-							Filter="">
-							<File
-								RelativePath="AI\Idol\ai_idol.cpp">
-							</File>
-							<File
-								RelativePath="AI\Idol\ai_idol.h">
-							</File>
-						</Filter>
 					</Filter>
 					<Filter
 						Name="ai_soldier"
@@ -734,6 +724,16 @@
 						</File>
 						<File
 							RelativePath=".\Ai\Bloodsucker\ai_bloodsucker.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="ai_idol"
+						Filter="">
+						<File
+							RelativePath="AI\Idol\ai_idol.cpp">
+						</File>
+						<File
+							RelativePath="AI\Idol\ai_idol.h">
 						</File>
 						<File
 							RelativePath=".\Ai\Bloodsucker\ai_bloodsucker_state.cpp">

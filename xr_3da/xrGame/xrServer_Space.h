@@ -41,8 +41,11 @@ enum EPOType {
     epotSkeleton
 };
 
-DEFINE_VECTOR	(u32,						DWORD_VECTOR,			DWORD_IT);
-DEFINE_VECTOR	(bool,						BOOL_VECTOR,			BOOL_IT);
+DEFINE_VECTOR	(u32,						DWORD_VECTOR,					DWORD_IT);
+DEFINE_VECTOR	(bool,						BOOL_VECTOR,					BOOL_IT);
+DEFINE_VECTOR	(float,						FLOAT_VECTOR,					FLOAT_IT);
+DEFINE_VECTOR	(LPSTR,						LPSTR_VECTOR,					LPSTR_IT);
+DEFINE_VECTOR	(Fvector,					FVECTOR_VECTOR,					FVECTOR_IT);
 
 template <class T> void	F_entity_Destroy	(T *&P)
 {

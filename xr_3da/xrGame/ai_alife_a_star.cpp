@@ -47,7 +47,7 @@ float CSE_ALifeAStar::ffFindMinimalPath	(u32 dwStartNode, u32 dwGoalNode)
 	return								(ffFindMinimalPath(dwStartNode, dwGoalNode, m_tpaNodes));
 }
 
-float CSE_ALifeAStar::ffFindMinimalPath(u32 dwStartNode, u32 dwGoalNode, AI::DWORD_VECTOR &tpaNodes)
+float CSE_ALifeAStar::ffFindMinimalPath(u32 dwStartNode, u32 dwGoalNode, DWORD_VECTOR &tpaNodes)
 {
 	float								fDistance;
 	m_tpAIGraphData->dwFinishNode		= dwGoalNode;

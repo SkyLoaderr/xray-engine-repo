@@ -7,16 +7,11 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "ai_alife_objects.h"
-
-#ifdef ALIFE_SUPPORT_CONSOLE_COMMANDS
 #include "ai_alife.h"
-#include "ai_space.h"
-using namespace AI;
 
 #define NORMALIZE_VARIABLE(a,b,c,d) a = u32(b % c) + d, b /= c;
 
-IC void vfPrintTime(char *S, _TIME_ID tTimeID)
+void CSE_ALifeSimulator::vfPrintTime(LPCSTR S, _TIME_ID tTimeID)
 {
 	u32 Milliseconds,Seconds,Minutes,Hours,Days,Week,Months,Years;
 	NORMALIZE_VARIABLE(Milliseconds,tTimeID,1000,0);
@@ -29,6 +24,11 @@ IC void vfPrintTime(char *S, _TIME_ID tTimeID)
 	Years = u32(tTimeID) + 1;
 	Msg("%s year %d month %d week %d day %d time %d:%d:%d.%d",S,Years,Months,Week,Days,Hours,Minutes,Seconds,Milliseconds);
 }
+
+#ifdef ALIFE_SUPPORT_CONSOLE_COMMANDS
+#include "ai_alife.h"
+#include "ai_space.h"
+using namespace AI;
 
 void vfPrintLargeString(const char *S1, const char *S, const int i, const int j, const u32 u)
 {

@@ -14,10 +14,6 @@
 #include "ai\ai_selector_template.h"
 
 namespace AI {
-	DEFINE_VECTOR	(u32,						DWORD_VECTOR,			DWORD_IT);
-	DEFINE_VECTOR	(float,						FLOAT_VECTOR,			FLOAT_IT);
-	DEFINE_VECTOR	(bool,						BOOL_VECTOR,			BOOL_IT);
-
 	class	NodePath
 	{
 	public:

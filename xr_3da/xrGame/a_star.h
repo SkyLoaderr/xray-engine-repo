@@ -28,7 +28,7 @@ public:
 	SNode													*m_tpHeap;
 	SIndexNode												*m_tpIndexes;
 	u32														m_dwAStarStaticCounter;
-	AI::DWORD_VECTOR										m_tpaNodes;
+	DWORD_VECTOR											m_tpaNodes;
 
 	CAStarSearch<CAIMapShortestPathNode,SAIMapData>			*m_tpMapPath;
 	CAStarSearch<CAIMapLCDPathNode,SAIMapDataL>				*m_tpLCDPath;
@@ -38,9 +38,9 @@ public:
 					CAStar(u32 dwMaxNodes);
 	virtual			~CAStar();
 			float	ffFindMinimalPath(u32 dwStartNode, u32 dwGoalNode);
-			float	ffFindMinimalPath(u32 dwStartNode, u32 dwGoalNode, AI::DWORD_VECTOR &tpaNodes);
-			float	ffFindMinimalPath(u32 dwStartNode, u32 dwGoalNode, AI::NodePath& Result, bool bUseMarks = false);
-			float	ffFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::NodePath& Result, float fLightWeight = 0*DEFAULT_LIGHT_WEIGHT, float fCoverWeight = 0*DEFAULT_COVER_WEIGHT, float fDistanceWeight = DEFAULT_DISTANCE_WEIGHT, bool bUseMarks = false);
-			float	ffFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::NodePath& Result, u32 dwEnemyNode, float fOptimalEnemyDistance, float fLightWeight = DEFAULT_LIGHT_WEIGHT, float fCoverWeight = DEFAULT_COVER_WEIGHT, float fDistanceWeight = DEFAULT_DISTANCE_WEIGHT, float fEnemyViewWeight = DEFAULT_ENEMY_VIEW_WEIGHT, bool bUseMarks = false);
-			float	ffFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::NodePath& Result, Fvector tEnemyPosition, float fOptimalEnemyDistance, float fLightWeight = DEFAULT_LIGHT_WEIGHT, float fCoverWeight = DEFAULT_COVER_WEIGHT, float fDistanceWeight = DEFAULT_DISTANCE_WEIGHT, float fEnemyViewWeight = DEFAULT_ENEMY_VIEW_WEIGHT, bool bUseMarks = false);
+			float	ffFindMinimalPath(u32 dwStartNode, u32 dwGoalNode, DWORD_VECTOR	&tpaNodes);
+			float	ffFindMinimalPath(u32 dwStartNode, u32 dwGoalNode, AI::NodePath &Result, bool bUseMarks = false);
+			float	ffFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::NodePath &Result, float fLightWeight = 0*DEFAULT_LIGHT_WEIGHT, float fCoverWeight = 0*DEFAULT_COVER_WEIGHT, float fDistanceWeight = DEFAULT_DISTANCE_WEIGHT, bool bUseMarks = false);
+			float	ffFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::NodePath &Result, u32 dwEnemyNode, float fOptimalEnemyDistance, float fLightWeight = DEFAULT_LIGHT_WEIGHT, float fCoverWeight = DEFAULT_COVER_WEIGHT, float fDistanceWeight = DEFAULT_DISTANCE_WEIGHT, float fEnemyViewWeight = DEFAULT_ENEMY_VIEW_WEIGHT, bool bUseMarks = false);
+			float	ffFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::NodePath &Result, Fvector tEnemyPosition, float fOptimalEnemyDistance, float fLightWeight = DEFAULT_LIGHT_WEIGHT, float fCoverWeight = DEFAULT_COVER_WEIGHT, float fDistanceWeight = DEFAULT_DISTANCE_WEIGHT, float fEnemyViewWeight = DEFAULT_ENEMY_VIEW_WEIGHT, bool bUseMarks = false);
 };

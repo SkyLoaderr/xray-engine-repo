@@ -94,6 +94,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,
 	EHitType						m_tHitType;
 	svector<float,eHitTypeMax>		m_fpImmunityFactors;
 	CSE_ALifeItemWeapon				*m_tpCurrentBestWeapon;
+	CSE_ALifeSimulator				*m_tpALife;
 	
 									CSE_ALifeMonsterAbstract(LPCSTR					caSection);
 	IC		float					g_MaxHealth				()											{ return m_fMaxHealthValue;	}
@@ -109,6 +110,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,
 	virtual	void					vfUpdateWeaponAmmo		()											{};
 	virtual	void					vfProcessItems			()											{};
 	virtual	void					vfAttachItems			(ETakeType tTakeType = eTakeTypeAll)		{};
+	virtual	EMeetActionType			tfGetActionType			(CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract, int iGroupIndex);
 #endif
 #endif
 SERVER_ENTITY_DECLARE_END
@@ -193,11 +195,9 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 	float							m_fSearchSpeed;
 	string128						m_caKnownCustomers;
 	OBJECT_VECTOR					m_tpKnownCustomers;
-	CSE_ALifeSimulator				*m_tpALife;
 	svector<char,5>					m_cpEquipmentPreferences;
 	svector<char,4>					m_cpMainWeaponPreferences;
 	ITEM_P_VECTOR					m_tpTempItemBuffer;
-	svector<svector<bool,RUCK_WIDTH>,RUCK_HEIGHT>	m_bppInventoryGrid;
 
 
 									CSE_ALifeHumanAbstract	(LPCSTR					caSection);
@@ -233,14 +233,15 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 			bool					bfChooseNextRoutePoint	();
 			void					vfSetCurrentTask		(_TASK_ID				&tTaskID);
 			u16						get_available_ammo_count(CSE_ALifeItemWeapon	*tpALifeItemWeapon, OBJECT_VECTOR &tpObjectVector);
-			u16						get_available_ammo_count(CSE_ALifeItemWeapon	*tpALifeItemWeapon,	ITEM_P_LIST &tpItemVector);
-			void					attach_available_ammo	(CSE_ALifeItemWeapon	*tpALifeItemWeapon, ITEM_P_LIST &tpItemVector);
+			u16						get_available_ammo_count(CSE_ALifeItemWeapon	*tpALifeItemWeapon,	ITEM_P_VECTOR &tpItemVector);
+			void					attach_available_ammo	(CSE_ALifeItemWeapon	*tpALifeItemWeapon, ITEM_P_VECTOR &tpItemVector);
 	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(EHitType				&tHitType,			float &fHitPower);
 	virtual bool					bfPerformAttack			();
 	virtual	void					vfUpdateWeaponAmmo		();
 	virtual	void					vfProcessItems			();
 	virtual	void					vfAttachItems			(ETakeType tTakeType = eTakeTypeAll);
 			bool					bfCanGetItem			(CSE_ALifeItem *tpALifeItem);
+	virtual	EMeetActionType			tfGetActionType			(CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract, int iGroupIndex);
 #endif
 #endif
 SERVER_ENTITY_DECLARE_END
