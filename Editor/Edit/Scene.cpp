@@ -377,8 +377,8 @@ SceneObject *EScene::RayPick(const Fvector& start, const Fvector& direction, EOb
 	return nearest_object;
 }
 
-int EScene::BoxPick(const Fbox& box, SBoxPickInfoVec& pinf, bool bUseSnapList){
-	ObjectList& lst=(bUseSnapList&&fraLeftBar->ebEnableSnapList->Down&&!m_SnapObjects.empty())?m_SnapObjects:ListObj(OBJCLASS_EDITOBJECT);
+int EScene::BoxPick(const Fbox& box, SBoxPickInfoVec& pinf, ObjectList* snap_list){
+	ObjectList& lst = (snap_list)?*snap_list:ListObj(OBJCLASS_EDITOBJECT);
 	for(ObjectIt _F=lst.begin();_F!=lst.end();_F++)
         ((CEditObject*)*_F)->BoxPick(box,precalc_identity,pinf);
     return pinf.size();

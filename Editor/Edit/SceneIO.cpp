@@ -238,20 +238,6 @@ bool EScene::Load(char *_FileName){
 			Log->DlgMsg( mtError, "Skipping old version of level options.\nCheck level options after loading." );
 	    }
 
-
-        // detail patches
-	    CStream* DP = F->OpenChunk(CHUNK_DETAILPATCHES);
-		if (DP){
-	    	m_DetailPatches->Load(*DP);
-            DP->Close();
-        }
-
-        // detail objects
-	    CStream* DO = F->OpenChunk(CHUNK_DETAILOBJECTS);
-		if (DO){
-	    	m_DetailObjects->Load(*DO);
-            DO->Close();
-        }
         //
         if (F->FindChunk(CHUNK_CAMERA)){
         	Fvector hpb, pos;
@@ -290,6 +276,21 @@ bool EScene::Load(char *_FileName){
                 VERIFY	(*_F);
             }
             UpdateSnapList();
+        }
+
+        // detail patches
+	    CStream* DP = F->OpenChunk(CHUNK_DETAILPATCHES);
+		if (DP){
+	    	m_DetailPatches->Load(*DP);
+            DP->Close();
+        }
+
+        // detail objects
+        // объ€зательно после загрузки snap листа 
+	    CStream* DO = F->OpenChunk(CHUNK_DETAILOBJECTS);
+		if (DO){
+	    	m_DetailObjects->Load(*DO);
+            DO->Close();
         }
 
 	    UI->ProgressEnd();

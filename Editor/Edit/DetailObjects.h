@@ -80,6 +80,8 @@ class CDetailManager{
     DSVec		 		m_Slots;
 	DOVec				m_Objects;
 
+    ObjectList			m_SnapObjects;
+
     Fbox				m_BBox;
 
 	IC DWORD			toSlotX			(float x)	{return (x/DETAIL_SLOT_SIZE+0.5f)+m_Header.offs_x;}

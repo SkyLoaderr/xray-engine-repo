@@ -385,6 +385,12 @@ void __fastcall TfraLeftBar::ebMakeLTXClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::MakeDetailsClick(TObject *Sender)
+{
+	UI->Command( COMMAND_MAKE_DETAILS );
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfraLeftBar::ShowPPMenu(TRxPopupMenu* M, TObject* B){
     POINT pt;
     GetCursorPos(&pt);
@@ -498,13 +504,10 @@ void __fastcall TfraLeftBar::ExtBtn1MouseDown(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
-
-
-
-
 void __fastcall TfraLeftBar::ebEnableSnapListClick(TObject *Sender)
 {
-	UI->RedrawScene();	
+	UI->RedrawScene();
 }
 //---------------------------------------------------------------------------
+
 

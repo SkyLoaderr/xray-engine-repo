@@ -10,7 +10,7 @@ object fraDetailObject: TfraDetailObject
   TabOrder = 0
   object paSelect: TPanel
     Left = 0
-    Top = 94
+    Top = 79
     Width = 123
     Height = 64
     Align = alTop
@@ -116,7 +116,7 @@ object fraDetailObject: TfraDetailObject
     Left = 0
     Top = 0
     Width = 123
-    Height = 94
+    Height = 79
     Align = alTop
     Constraints.MaxWidth = 123
     Constraints.MinWidth = 123
@@ -225,7 +225,7 @@ object fraDetailObject: TfraDetailObject
       BevelShow = False
       HotTrack = True
       CloseButton = False
-      Caption = 'Reinitilaize Objects'
+      Caption = 'Reinitialize Objects'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -235,27 +235,6 @@ object fraDetailObject: TfraDetailObject
       ParentFont = False
       Transparent = False
       OnClick = ebUpdateObjectsClick
-    end
-    object ebExportDetails: TExtBtn
-      Left = 2
-      Top = 77
-      Width = 119
-      Height = 15
-      Align = alNone
-      AllowAllUp = True
-      BevelShow = False
-      HotTrack = True
-      CloseButton = False
-      Caption = 'Export Details'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      Margin = 13
-      ParentFont = False
-      Transparent = False
-      OnClick = ebExportDetailsClick
     end
   end
   object fsStorage: TFormStorage

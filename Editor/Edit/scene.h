@@ -153,7 +153,7 @@ public:
     bool ContainsObject             (SceneObject* object, EObjClass classfilter);
 
 	SceneObject *RayPick           	(const Fvector& start, const Fvector& dir, EObjClass classfilter, SRayPickInfo* pinf, bool bDynamicTest, bool bUseSnapList);
-	int BoxPick						(const Fbox& box, SBoxPickInfoVec& pinf, bool bUseSnapList);
+	int BoxPick						(const Fbox& box, SBoxPickInfoVec& pinf, ObjectList* snap_list=0);
 
 	int FrustumSelect               (bool flag, EObjClass classfilter=OBJCLASS_DUMMY);
 	int SelectObjects               (bool flag, EObjClass classfilter=OBJCLASS_DUMMY);

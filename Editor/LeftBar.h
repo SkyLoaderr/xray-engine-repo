@@ -117,6 +117,7 @@ __published:	// IDE-managed Components
 	TExtBtn *ebTargetDO;
 	TMenuItem *Checknewtextures1;
 	TMenuItem *RefreshObjects1;
+	TMenuItem *MakeDetails;
     void __fastcall ebClearClick(TObject *Sender);
     void __fastcall ebLoadClick(TObject *Sender);
     void __fastcall ebSaveClick(TObject *Sender);
@@ -186,6 +187,7 @@ __published:	// IDE-managed Components
 	void __fastcall ebEnableSnapListClick(TObject *Sender);
 	void __fastcall RefreshObjects1Click(TObject *Sender);
 	void __fastcall Checknewtextures1Click(TObject *Sender);
+	void __fastcall MakeDetailsClick(TObject *Sender);
 private:	// User declarations
 	void __fastcall ShowPPMenu(TRxPopupMenu* M, TObject* btn);
 public:		// User declarations

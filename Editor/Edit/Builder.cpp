@@ -10,6 +10,7 @@
 #include "Scene.h"
 #include "AITraffic.h"
 #include "PortalUtils.h"
+#include "DetailObjects.h"
 //----------------------------------------------------
 
 SceneBuilder* Builder;
@@ -92,6 +93,25 @@ bool SceneBuilder::MakeLTX( ){
 	UI->ProgressUpdate(1);
 	UI->Command(COMMAND_RELOAD);
 	UI->ProgressEnd();
+
+	return true;
+}
+
+bool SceneBuilder::MakeDetails(){
+	bool error_flag = false;
+	AnsiString error_text;
+    do{
+	    if( !PreparePath() ){
+    	    error_text="*ERROR: Failed to prepare level path....";
+        	error_flag = true;
+	        break;
+    	}
+        AnsiString fn="level.details";
+        m_LevelPath.Update(fn);
+        // save details
+		Scene->m_DetailObjects->Export(fn.c_str());
+    }while(0);
+	if( error_flag )  Log->DlgMsg(mtError,error_text.c_str());
 
 	return true;
 }

@@ -34,7 +34,6 @@ __published:	// IDE-managed Components
 	TExtBtn *ExtBtn4;
 	TExtBtn *ExtBtn5;
 	TExtBtn *ebUpdateObjects;
-	TExtBtn *ebExportDetails;
 	TExtBtn *ebReinitializeSlotObjects;
     void __fastcall PaneMinClick(TObject *Sender);
     void __fastcall ExpandClick(TObject *Sender);

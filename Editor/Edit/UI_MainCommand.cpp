@@ -310,7 +310,15 @@ bool TUI::Command( int _Command, int p1 ){
 			bRes = false;
         }
 		break;
-
+    case COMMAND_MAKE_DETAILS:
+		if( !Scene->locked() ){
+            if( !Builder->InProgress() )
+				Builder->MakeDetails( );
+        }else{
+			Log->DlgMsg( mtError, "Scene sharing violation" );
+			bRes = false;
+        }
+    	break;
 	case COMMAND_INVERT_SELECTION_ALL:
 		if( !Scene->locked() ){
 			Scene->InvertSelection(CurrentClassID());

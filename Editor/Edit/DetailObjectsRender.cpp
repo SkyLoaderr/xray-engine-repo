@@ -347,7 +347,7 @@ void CDetailManager::UpdateCache	(int limit)
 		// Select polygons
 		XRC.BBoxMode		(BBOX_TRITEST); // обязательно иначе точки установлены неверно
 		SBoxPickInfoVec		pinf;
-		Scene->BoxPick		(D.BB,pinf,true);
+		Scene->BoxPick		(D.BB,pinf,&m_SnapObjects);
 		DWORD	triCount	= pinf.size();
 		if (0==triCount)	continue;
 

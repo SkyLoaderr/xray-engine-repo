@@ -46,6 +46,7 @@ static CRandom DetailRandom(0x26111975);
 #define DETMGR_CHUNK_BBOX			0x1001
 #define DETMGR_CHUNK_BASE_TEXTURE	0x1002
 #define DETMGR_CHUNK_COLOR_INDEX 	0x1003
+#define DETMGR_CHUNK_SNAP_OBJECTS 	0x1004
 
 #define DETMGR_VERSION 				0x0001
 //------------------------------------------------------------------------------
@@ -145,8 +146,8 @@ bool CDetail::Load(CStream& F){
 
     // scale
     R_ASSERT			(F.FindChunk(DETOBJ_CHUNK_SCALE_LIMITS));
-    m_fMinScale			= F.Rfloat();
-	m_fMaxScale         = F.Rfloat();
+    m_fMinScale			= F.Rfloat(); if (fis_zero(m_fMinScale)) 	m_fMinScale = 0.1f;
+	m_fMaxScale         = F.Rfloat(); if (m_fMaxScale<m_fMinScale) 	m_fMaxScale = m_fMinScale;
 
     // update object
     return 				Update(buf);
@@ -301,6 +302,9 @@ bool CDetailManager::GenerateSlots(LPCSTR tex_name){
     	return false;
     }
 
+    m_SnapObjects.clear();
+    m_SnapObjects = Scene->m_SnapObjects;
+
     // create base texture
 	if (!UpdateBaseTexture(tex_name))	return false;
     if (!UpdateBBox()) 					return false;
@@ -332,7 +336,7 @@ void CDetailManager::UpdateSlotBBox(int sx, int sz, DetailSlot& slot){
     bbox.max.set		(rect.x2, slot.y_max, rect.y2);
 
     SBoxPickInfoVec pinf;
-    if (Scene->BoxPick(bbox,pinf,true)){
+    if (Scene->BoxPick(bbox,pinf,&m_SnapObjects)){
 		bbox.grow		(EPS_L);
     	Fplane			frustum_planes[4];
 		frustum_planes[0].build(bbox.min,left_vec);
@@ -369,8 +373,7 @@ void CDetailManager::UpdateSlotBBox(int sx, int sz, DetailSlot& slot){
 
 bool CDetailManager::UpdateBBox(){
     // get bounding box
-	ObjectList& lst=Scene->m_SnapObjects;
-	if (!Scene->GetBox(m_BBox,lst)) return false;
+	if (!Scene->GetBox(m_BBox,m_SnapObjects)) return false;
 
     // fill header
     int mn_x 			= iFloor(m_BBox.min.x/DETAIL_SLOT_SIZE+0.5f);
@@ -542,6 +545,7 @@ bool CDetailManager::UpdateSlotObjects(int x, int z){
     // определим ID незаполненных слотов как пустышки
     for(k=best.size(); k<4; k++)
         slot->items[k].id = 0xff;
+    return true;
 }
 
 bool CDetailManager::UpdateObjects(bool bUpdateTex, bool bUpdateSelectedOnly){
@@ -603,6 +607,7 @@ void CDetailManager::Clear(){
     if (m_pBaseShader){ UI->Device.Shader.Delete(m_pBaseShader); m_pBaseShader = 0;}
     _DELETE				(m_pBaseTexture);
 	m_Selected.clear	();
+    m_SnapObjects.clear	();
     InvalidateCache		();
 }
 
@@ -645,7 +650,7 @@ void CDetailManager::InvalidateSlots(){
 void CDetailManager::RemoveObjects(bool bOnlyMarked){
 	if (bOnlyMarked){
     	int cnt=0;
-		for (int i=0; i<m_Objects.size(); i++){  // не менять int i; на DWORD
+		for (DWORD i=0; i<m_Objects.size(); i++){  // не менять int i; на DWORD
     		if (m_Objects[i]->m_bMarkDel){
             	_DELETE(m_Objects[i]);
 	            m_Objects.erase(m_Objects.begin()+i);
@@ -751,6 +756,19 @@ bool CDetailManager::Load(CStream& F){
         }
     }
 
+	// snap objects
+    if (F.FindChunk(DETMGR_CHUNK_SNAP_OBJECTS)){
+		cnt 			= F.Rdword(); VERIFY(cnt);
+        for (int i=0; i<cnt; i++){
+        	F.RstringZ	(buf);
+            CEditObject* O = (CEditObject*)Scene->FindObjectByName(buf,OBJCLASS_EDITOBJECT);
+            if (!O)		Log->Msg(mtError,"DetailManager: Can't find object '%s' in scene.",buf);
+            else		m_SnapObjects.push_back(O);
+        }
+    }else{
+    	m_SnapObjects	= Scene->m_SnapObjects;
+    }
+
     InvalidateCache		();
 
     return true;
@@ -799,6 +817,12 @@ void CDetailManager::Save(CFS_Base& F){
 	    for (DOIt do_it=i_it->second.begin(); do_it!=i_it->second.end(); do_it++)
         	F.WstringZ	((*do_it)->GetName());
     }
+    F.close_chunk		();
+	// snap objects
+	F.open_chunk		(DETMGR_CHUNK_SNAP_OBJECTS);
+    F.Wdword			(m_SnapObjects.size());
+    for (ObjectIt o_it=m_SnapObjects.begin(); o_it!=m_SnapObjects.end(); o_it++)
+    	F.WstringZ		((*o_it)->GetName());
     F.close_chunk		();
 }
 

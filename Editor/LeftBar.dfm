@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 558
+  Height = 277
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -1567,6 +1567,10 @@ object fraLeftBar: TfraLeftBar
     object MakeLTX1: TMenuItem
       Caption = 'Make LTX'
       OnClick = ebMakeLTXClick
+    end
+    object MakeDetails: TMenuItem
+      Caption = 'Make Details'
+      OnClick = MakeDetailsClick
     end
     object Validate1: TMenuItem
       Caption = 'Validate'
