@@ -20,6 +20,62 @@ struct v_filter {
 	Fvector4	uv7;
 };
 
+// Gauss filtering coeffs
+// Samples:			0-central, -1, -2,..., -7, 1, 2,... 7
+//		half2 tc0: 	TEXCOORD0;	// Central
+//		half4 tc1: 	TEXCOORD1;	// -1,+1
+//		half4 tc2: 	TEXCOORD2;	// -2,+2
+//		half4 tc3: 	TEXCOORD3;	// -3,+3
+//		half4 tc4: 	TEXCOORD4;	// -4,+4
+//		half4 tc5: 	TEXCOORD5;	// -5,+5
+//		half4 tc6: 	TEXCOORD6;	// -6,+6
+//		half4 tc7: 	TEXCOORD7;	// -7,+7
+
+void	CalcGauss	(
+					 svector<float,32>&		W,	// weight
+					 svector<float,32>&		H,	// horizontal offsets
+					 svector<float,32>&		V,	// vertical offsets
+					 int	n		=7,			// kernel size
+					 float	r		=3.3f,		// gaussian radius
+					 float	s_out	=1.f,		// resulting magnitude
+					 float	tw		=320.f,		// grid/texture width
+					 float	th		=240.f		// grid/texture height
+					 )
+{
+	// calculate
+	for (int i=-n; i<=0; i++)
+	{
+		float weight	=	expf	(-float(i*i)/(2*r*r));
+		W.push_back		(weight);	// weight
+
+		float offset	=	float	(-i); 
+		H.push_back		(D3DXVECTOR4(offset/tw,0,0,0));
+		V.push_back		(D3DXVECTOR4(0,offset/th,0,0));
+	}
+
+	// scale weights
+	float mag				= 0;
+	for (i=0; i<s32(w.size()); i++)	mag		+= w[i];
+	for (i=0; i<s32(w.size()); i++)	w[i]	= s_out*w[i]/mag;
+
+	// exploit symmetry and pack weights
+	D3DXVECTOR4	buf;
+	int			buf_p	= 0;
+	for (i=0; i<s32(w.size()); i++)
+	{
+		buf[buf_p++]	= w[i];
+		if (4==buf_p)	{ 
+			W.push_back	(buf); 
+			buf_p		=0; 
+		}
+	}
+	if (buf_p)
+	{
+		while (4!=buf_p)	buf[buf_p++]=0.f;
+		W.push_back			(buf);
+	}
+}
+
 void CRenderTarget::phase_bloom	()
 {
 	u32		Offset;
