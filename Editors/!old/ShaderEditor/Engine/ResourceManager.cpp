@@ -78,25 +78,25 @@ void	CResourceManager::_ParseList(sh_list& dest, LPCSTR names)
 	{
 		if (*P == ',') {
 			// flush
-			N.push_back(0);
-			strcpy(dest.last(),N.begin());
-			strlwr(dest.last());
-			if (strext(dest.last())) *strext(dest.last())=0;
-			dest.inc();
-			N.clear();
+			N.push_back	(0);
+			strlwr		(N.begin());
+			if (strext(N.begin())) *strext(N.begin())=0;
+			dest.last	()	= N.begin();
+			dest.inc	();
+			N.clear		();
 		} else {
-			N.push_back(*P);
+			N.push_back	(*P);
 		}
 		P++;
 	}
 	if (N.size())
 	{
 		// flush
-		N.push_back(0);
-		strcpy(dest.last(),N.begin());
-		strlwr(dest.last());
-		if (strext(dest.last())) *strext(dest.last())=0;
-		dest.inc();
+		N.push_back	(0);
+		strlwr		(N.begin());
+		if (strext(N.begin())) *strext(N.begin())=0;
+		dest.last	()	= N.begin();
+		dest.inc	();
 	}
 }
 

@@ -50,7 +50,7 @@ void	CBlender_Compile::_cpp_Compile	(ShaderElement* _SH)
 		base		=	BT->oT_Name;
 		if (id>=0)	{
 			if (id>=int(lst.size()))	Debug.fatal("Not enought textures for shader. Base texture: '%s'.",lst[0]);
-			base	=	lst [id];
+			base	=	*lst [id];
 		}
 		if (!Device.Resources->_GetDetailTexture(base,detail_texture,detail_scaler))	bDetail	= FALSE;
 	} else {
@@ -213,7 +213,7 @@ void	CBlender_Compile::Stage_Texture	(LPCSTR name, u32 address,	u32	 fmin, u32 f
 	LPCSTR N	=	name;
 	if (id>=0)	{
 		if (id>=int(lst.size()))	Debug.fatal("Not enought textures for shader. Base texture: '%s'.",lst[0]);
-		N = lst [id];
+		N = *lst [id];
 	}
 	passTextures.push_back	(Device.Resources->_CreateTexture(N));
 //	i_Address				(Stage(),address);
@@ -224,7 +224,7 @@ void	CBlender_Compile::Stage_Matrix		(LPCSTR name, int iChannel)
 {
 	sh_list& lst	= L_matrices; 
 	int id			= ParseName(name);
-	CMatrix*	M	= Device.Resources->_CreateMatrix	((id>=0)?lst[id]:name);
+	CMatrix*	M	= Device.Resources->_CreateMatrix	((id>=0)?*lst[id]:name);
 	passMatrices.push_back(M);
 
 	// Setup transform pipeline
@@ -247,5 +247,5 @@ void	CBlender_Compile::Stage_Constant	(LPCSTR name)
 {
 	sh_list& lst= L_constants;
 	int id		= ParseName(name);
-	passConstants.push_back	(Device.Resources->_CreateConstant((id>=0)?lst[id]:name));
+	passConstants.push_back	(Device.Resources->_CreateConstant((id>=0)?*lst[id]:name));
 }

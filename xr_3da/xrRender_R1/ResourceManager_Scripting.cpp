@@ -219,7 +219,7 @@ Shader*	CResourceManager::_lua_Create		(LPCSTR d_shader, LPCSTR s_textures)
 	{
 		// Analyze possibility to detail this shader
 		C.iElement			= 0;
-		C.bDetail			= Device.Resources->_GetDetailTexture(C.L_textures[0],C.detail_texture,C.detail_scaler);
+		C.bDetail			= Device.Resources->_GetDetailTexture(*C.L_textures[0],C.detail_texture,C.detail_scaler);
 		if (C.bDetail)		S.E[0]	= C._lua_Compile(s_shader,"normal_hq");
 		else				S.E[0]	= C._lua_Compile(s_shader,"normal");
 	} else {
@@ -281,9 +281,9 @@ ShaderElement*		CBlender_Compile::_lua_Compile	(LPCSTR namesp, LPCSTR name)
 	RS.Invalidate		();
 
 	// Compile
-	LPCSTR				t_0		= L_textures[0]				? L_textures[0] : "null";
-	LPCSTR				t_1		= (L_textures.size() > 1)	? L_textures[1] : "null";
-	LPCSTR				t_d		= detail_texture			? detail_texture: "null" ;
+	LPCSTR				t_0		= *L_textures[0]			? *L_textures[0] : "null";
+	LPCSTR				t_1		= (L_textures.size() > 1)	? *L_textures[1] : "null";
+	LPCSTR				t_d		= detail_texture			? detail_texture : "null" ;
 	lua_State*			LSVM	= Device.Resources->LSVM;
 	object				shader	= get_globals(LSVM)[namesp];
 	functor<void>		element	= object_cast<functor<void> >(shader[name]);
