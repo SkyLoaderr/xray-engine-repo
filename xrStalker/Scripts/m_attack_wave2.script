@@ -8,18 +8,19 @@ function boar_callback (obj, action_type, index)
 
 	if index < 0 then return end
 
---	if ptr:flag (index, 1) then
---	   action_first (obj, anim ("stand_attack_2"), cond (cond.anim_end))
---  	   local h = hit()
---       h.power = 10
---       h.direction:set  (-1, 0, 0)
---       h.bone = "bip01_head"
---       h.draftsman = obj
---       h.impulse = 10
---       h.type  = hit.strike
---       chief:hit (h)
---       obj:clear_callback (game_object.movement)
---	   end	
+	if ptr:flag (index, 1) then
+	   action_first (obj, anim ("stand_attack_2"), cond (cond.anim_end))
+  	   local h = hit()
+       h.power = 1
+       h.direction:set (-1, 0, 0)
+       h:bone ("bip01_head")
+       h.draftsman = obj
+       h.impulse = 1000
+       h.type  = hit.strike
+       chief:hit (h)
+	   printf ("Chief hit !!!")	
+       obj:clear_callback (game_object.movement)
+	   end	
 		
 end
 
@@ -79,18 +80,29 @@ function main ()
 
     wait (20000)
 
-    for a = 1, table.getn (t), 1 do
-        reset_action (t[a], m_attack_wave2.script_name ())
-        action (t[a], move (move.act_walk_fwd, tways[a]), cond (cond.time_end, 1000))
-        end
 
 	t[1]:set_callback (m_attack_wave2.boar_callback, game_object.movement)
 
-	wait (1000)
-
     for a = 1, table.getn (t), 1 do
         reset_action (t[a], m_attack_wave2.script_name ())
-        action (t[a], move (move.act_run, tways[a]), cond (cond.move_end))
+        action (t[a], move (move.act_run, tways[a]:point (0)), cond (cond.move_end))
+        action (t[a], move (move.act_run, tways[a]:point (1)), cond (cond.move_end))
+        action (t[a], move (move.act_run, tways[a]:point (2)), cond (cond.move_end))
+        action (t[a], move (move.act_run, tways[a]:point (3)), cond (cond.move_end))
+        action (t[a], move (move.act_run, tways[a]:point (4)), cond (cond.move_end))
+        action (t[a], move (move.act_run, tways[a]:point (5)), cond (cond.move_end))
+        action (t[a], move (move.act_run, tways[a]:point (6)), cond (cond.move_end))
+        action (t[a], move (move.act_run, tways[a]:point (7)), cond (cond.move_end))
+        action (t[a], move (move.act_run, tways[a]:point (8)), cond (cond.move_end))
+        action (t[a], move (move.act_run, tways[a]:point (9)), cond (cond.move_end))
+        action (t[a], move (move.act_run, tways[a]:point (10)), cond (cond.move_end))
+        action (t[a], move (move.act_run, tways[a]:point (11)), cond (cond.move_end))
+        action (t[a], move (move.act_run, tways[a]:point (12)), cond (cond.move_end))
+        action (t[a], move (move.act_run, tways[a]:point (13)), cond (cond.move_end))
+        action (t[a], move (move.act_run, tways[a]:point (14)), cond (cond.move_end))
+        action (t[a], move (move.act_run, tways[a]:point (15)), cond (cond.move_end))
+        action (t[a], move (move.act_run, tways[a]:point (16)), cond (cond.move_end))
+        action (t[a], move (move.act_run, tways[a]:point (17)), cond (cond.move_end))
         end
 
     wait (120000)

@@ -2,11 +2,10 @@ function main ()
 
     local flesh = get_level_object ("flesh")
     local actor = get_actor ()
-	local dummy = get_level_object ("dummy")
 
     flesh:script (true, military1_1.script_name())
 
-    action (flesh, move (move.act_eat, dummy), cond (cond.time_end, 10000000))
+    action (flesh, move (move.act_eat, actor), cond (cond.time_end, 10000000))
 
     while flesh:see (actor) == false do wait () end
 
@@ -23,7 +22,7 @@ function main ()
 
     reset_action (flesh, military1_1.script_name ())
 
-    action (flesh, move (move.act_eat, dummy), cond (cond.time_end, 10000000))
+    action (flesh, move (move.act_eat, actor), cond (cond.time_end, 10000000))
     while flesh:action () do wait () end
 
     flesh:script (false, military1_1.script_name())
