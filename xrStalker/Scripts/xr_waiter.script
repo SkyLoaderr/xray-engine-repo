@@ -13,8 +13,9 @@ local the_actor
 ----------------------------------------------------------------------------------------------------------------------
 class "evaluator_wait" ( property_evaluator )
 
-function evaluator_wait:__init( npc ) super()
-    self.npc = npc
+function evaluator_wait:__init( npc, dist ) super()
+    self.npc      = npc
+    self.dist_sqr = dist * dist
 end
 
 function evaluator_wait:evaluate()
@@ -25,11 +26,11 @@ function evaluator_wait:evaluate()
         end
     end
 
-    if self.npc and self.npc:position():distance_to_sqr( the_actor:position() ) <= 75*75 then
+    if self.npc and self.npc:position():distance_to_sqr( the_actor:position() ) <= self.dist_sqr then
         --printf( "OPAAAAAA!!!!!! Actor is close!!!!!!!!!!!!" )
         this.UnbindObject( self.npc )
 
-        -- это нужно для того, чтобы второй раз не начать отбайндивать. Такое бывает, если актёр изначально ближе 75м
+        -- это нужно для того, чтобы второй раз не начать отбайндивать. Такое бывает, если актёр изначально ближе N метров
         self.npc = nil
         
         return false
@@ -81,9 +82,19 @@ end
 function waiter_binder:reload( section )
     object_binder.reload( self, section )
 
+    local dist = 75
+
+    local char_ini = self.object:spawn_ini()
+
+    if char_ini:section_exist( "waiter" ) then
+        if char_ini:line_exist( "waiter", "distance" ) then  
+            dist = char_ini:r_float( "waiter", "distance" )
+        end
+    end
+
     local manager = self.object:motivation_action_manager()
 
-    manager:add_evaluator( id_property_wait, this.evaluator_wait( self.object ) )
+    manager:add_evaluator( id_property_wait, this.evaluator_wait( self.object, dist ) )
     
     local action = this.action_wait( "action_wait" )
     action:add_effect( world_property( id_property_wait, false ) )
