@@ -69,9 +69,9 @@ public:
 
 	IC	void		UnpackPosition	(Fvector& Pdest, const NodePosition& Psrc)
 	{
-		Pdest.x = float(Psrc[0])*m_header.size;
-		Pdest.y = (float(Psrc[1])/65535)*m_header.size_y + m_header.aabb.min.y;
-		Pdest.z = float(Psrc[2])*m_header.size;
+		Pdest.x = float(Psrc.x)*m_header.size;
+		Pdest.y = (float(Psrc.y)/65535)*m_header.size_y + m_header.aabb.min.y;
+		Pdest.z = float(Psrc.z)*m_header.size;
 	}
 	IC	DWORD		UnpackLink		(NodeLink& L)
 	{	return (*LPDWORD(&L))&0x00ffffff;	}
@@ -91,8 +91,8 @@ public:
 	float			u_SqrDistance2Node	(const Fvector& P, const NodeCompressed* Node);
 	IC BOOL			u_InsideNode		(const NodeCompressed& N, const NodePosition& P)
 	{
-		return 	((P[0]>=N.p0[0])&&(P[0]<=N.p1[0]))&&	// X inside
-				((P[2]>=N.p0[2])&&(P[2]<=N.p1[2]));		// Z inside
+		return 	((P.x>=N.p0.x)&&(P.x<=N.p1.x))&&	// X inside
+				((P.z>=N.p0.z)&&(P.z<=N.p1.z));		// Z inside
 	}
 
 	// Device dependance
