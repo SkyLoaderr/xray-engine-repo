@@ -15,7 +15,7 @@ function main ()
 	n				= a:count();
 	i				= 0;
 	while i<n do
-		c			= a:point1(i);
+		c			= a:point(i);
 		printf		("[%f][%f][%f]",c.x,c.y,c.z)
 		i			= i + 1
 	end
