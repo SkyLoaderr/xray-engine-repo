@@ -56,7 +56,7 @@ void DBG_DrawContact(dContact& c)
 }
 void DBG_DrawFrameStart()
 {
-
+#ifdef DRAW_CONTACTS
 	if(draw_frame)
 	{
 		Contacts0.clear();
@@ -67,6 +67,7 @@ void DBG_DrawFrameStart()
 		Contacts1.clear();
 		dbg_draw_objects1.clear();
 	}
+#endif
 }
 
 void PH_DBG_Render()
