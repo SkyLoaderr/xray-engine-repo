@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <!-- Стартует машина около бензоколонки -->
-<info_portion id="val_truck_start">
-</info_portion>
+<info_portion id="val_truck_start"></info_portion>
+<info_portion id="val_truck_arrived"></info_portion>
 
