@@ -619,7 +619,9 @@ void CHelicopter::Hit(	float P,
 						float impulse,  
 						ALife::EHitType hit_type/* = ALife::eHitTypeWound*/)
 {
-	inherited::Hit(P,dir,who,element,position_in_bone_space,impulse,hit_type);
+/*
+
+inherited::Hit(P,dir,who,element,position_in_bone_space,impulse,hit_type);
 if(state() == CHelicopter::eDead ) return;
 
 if(who==this)
@@ -642,18 +644,10 @@ if(who==this)
 		Log("----Helicopter::Hit(). health=",h);
 		Log("----------------------------------------");
 	};
-	
-/*	if ( GetfHealth() <= 0.0f ) {
-		Die();
-		return;
-	}
-*/
+*/	
 	if (who){
 		switch (who->SUB_CLS_ID){
 			case CLSID_OBJECT_ACTOR: {
-//				doHunt(who);
-//				doHunt2(who, 5, 5);
-//				goPatrolByPatrolPath("heli_way_1");
 
 			NET_Packet P_;
 			P_.write_start();
@@ -901,7 +895,7 @@ void CHelicopter::UpdateHeliParticles	()
 		if (m_lanim)
 		{
 			int frame;
-			u32 clr					= m_lanim->CalculateBGR(Device.fTimeGlobal,frame); // возвращает в формате BGR
+			u32 clr					= m_lanim->CalculateBGR(Device.fTimeGlobal,frame); // тючтЁр•рхЄ т ЇюЁьрЄх BGR
 			Fcolor					fclr;
 			fclr.set				((float)color_get_B(clr),(float)color_get_G(clr),(float)color_get_R(clr),1.f);
 			fclr.mul_rgb			(m_light_brightness/255.f);
