@@ -30,8 +30,8 @@ CDemoRecord::CDemoRecord(const char *name,float life_time):CEffector(cefDemo,lif
 		// parse yaw
 		Fvector& dir	= m_Camera.k;
 		Fvector DYaw;	DYaw.set(dir.x,0.f,dir.z); DYaw.normalize_safe();
-		if (DYaw.x>=0)	m_HPB.x = -acosf(DYaw.z);
-		else			m_HPB.x = -(2*PI-acosf(DYaw.z));
+		if (DYaw.x<0)	m_HPB.x = acosf(DYaw.z);
+		else			m_HPB.x = 2*PI-acosf(DYaw.z);
 
 		// parse pitch
 		dir.normalize_safe	();
