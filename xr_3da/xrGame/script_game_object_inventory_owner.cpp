@@ -74,7 +74,7 @@ bool  CScriptGameObject::GiveGameNews		(LPCSTR news, LPCSTR texture_name, int x1
 		news_data.texture_name = NULL;
 	}
 
-	if (news_data.news_text != NO_STRING) {
+	if (news_data.news_text == NO_STRING) {
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"no entrance found for news in string table", news);
 		return								false;
 	}
@@ -577,7 +577,7 @@ ETaskState CScriptGameObject::GetGameTaskState	(LPCSTR task_id, int objective_nu
 		return eTaskStateDummy;
 
 //	R_ASSERT3((std::size_t)objective_num < (*it).states.size(), "wrong objective num", task_id);
-	if ((std::size_t)objective_num > (*it).states.size()) {
+	if ((std::size_t)objective_num >= (*it).states.size()) {
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"wrong objective num", task_id);
 		return eTaskStateDummy;
 	}
@@ -610,7 +610,7 @@ void CScriptGameObject::SetGameTaskState	(ETaskState state, LPCSTR task_id, int 
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"actor does not has task", task_id);
 		return;
 	}
-	if ((std::size_t)objective_num > (*it).states.size()) {
+	if ((std::size_t)objective_num >= (*it).states.size()) {
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"wrong objective num", task_id);
 		return;
 	}
