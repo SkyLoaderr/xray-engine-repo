@@ -132,7 +132,25 @@ void fill_mark(
 	sector_graph.add_vertex		(sector,group_id - 1);
 
 	global_count				+= (i1 - i)*(j2 - j);
-	Msg							("%4d : [%3d][%3d] -> [%3d][%3d] = %d (%6d : %6d)",group_id,i,j,i1,j2, (i1 - i)*(j2 - j),global_count,level_graph.header().vertex_count());
+//	Msg							("%5d : [%5d][%5d] -> [%5d][%5d] = %5d (%7d : %7d)",group_id,i,j,i1,j2, (i1 - i)*(j2 - j),global_count,level_graph.header().vertex_count());
+}
+
+CCellVertex *cell_vertex	(xr_vector<CCellVertex>	***table, const CLevelGraph &level_graph, u32 vertex_id)
+{
+	const CLevelGraph::CVertex			*vertex = level_graph.vertex(vertex_id);
+	u32									x = vertex->position().x(level_graph.row_length());
+	u32									z = vertex->position().z(level_graph.row_length());
+	xr_vector<CCellVertex>::iterator	I = table[z][x]->begin();
+	xr_vector<CCellVertex>::iterator	E = table[z][x]->end();
+	for ( ; I != E; ++I)
+		if ((*I).m_vertex_id == vertex_id)
+			return						(&*I);
+	return								(0);
+}
+
+CCellVertex *cell_vertex	(xr_vector<CCellVertex>	***table, const CLevelGraph &level_graph, const CLevelGraph::CVertex *vertex)
+{
+	return	(cell_vertex(table,level_graph,level_graph.vertex_id(vertex)));
 }
 
 void build_convex_hierarchy(const CLevelGraph &level_graph, CSectorGraph &sector_graph)
@@ -145,6 +163,9 @@ void build_convex_hierarchy(const CLevelGraph &level_graph, CSectorGraph &sector
 	u32							min_x = u32(-1);
 	u32							n = level_graph.header().vertex_count();
 	u32							r = level_graph.row_length();
+
+	u64							s,f;
+	s							= CPU::GetCycleCount();
 	for (u32 i = 0; i<n; ++i) {
 		if (level_graph.vertex(i)->position().z(r) > max_z)
 			max_z				= level_graph.vertex(i)->position().z(r);
@@ -155,6 +176,8 @@ void build_convex_hierarchy(const CLevelGraph &level_graph, CSectorGraph &sector
 		if (level_graph.vertex(i)->position().x(r) < min_x)
 			min_x				= level_graph.vertex(i)->position().x(r);
 	}
+	f							= CPU::GetCycleCount();
+	Msg							("MinMax time %f",CPU::cycles2seconds*float(f - s));
 
 	// allocating memory
 	xr_vector<CCellVertex>		***table = (xr_vector<CCellVertex>***)xr_malloc((max_z - min_z + 1)*sizeof(xr_vector<CCellVertex>**));
@@ -163,67 +186,93 @@ void build_convex_hierarchy(const CLevelGraph &level_graph, CSectorGraph &sector
 		for (u32 j=min_x; j<=max_x; ++j)
 			table[i][j]			= xr_new<xr_vector<CCellVertex> >();
 	}
+	f							= CPU::GetCycleCount();
+	Msg							("Allocate time %f",CPU::cycles2seconds*float(f - s));
 
 	for (u32 i = 0; i<n; ++i)
 		table[level_graph.vertex(i)->position().z(r)][level_graph.vertex(i)->position().x(r)]->push_back(CCellVertex(i,0));
+	f							= CPU::GetCycleCount();
+	Msg							("Fill time %f",CPU::cycles2seconds*float(f - s));
 
 	u32							group_id = 0;
-	for (u32 i=min_z; i<=max_z; ++i)
-		for (u32 j=min_x; j<=max_x; ++j)
+	for (u32 i=min_z; i<=max_z; ++i) {
+		for (u32 j=min_x; j<=max_x; ++j) {
 			if (!table[i][j]->empty()) {
 				xr_vector<CCellVertex>::iterator	I = table[i][j]->begin();
 				xr_vector<CCellVertex>::iterator	E = table[i][j]->end();
 				for ( ; I != E; ++I) {
 					if ((*I).m_mark)
 						continue;
-					fill_mark	(level_graph,sector_graph,table,i,j,*I,group_id,min_z,max_z,min_x,max_x);
+					fill_mark		(level_graph,sector_graph,table,i,j,*I,group_id,min_z,max_z,min_x,max_x);
 				}
 			}
+		}
+	}
+	f							= CPU::GetCycleCount();
+	Msg							("Recursive fill time %f",CPU::cycles2seconds*float(f - s));
 
-	for (u32 i=min_z; i<=max_z; ++i)
-		for (u32 j=min_x; j<=max_x; ++j)
+#ifdef DEBUG
+	for (u32 i=min_z; i<=max_z; ++i) {
+		for (u32 j=min_x; j<=max_x; ++j) {
 			if (!table[i][j]->empty()) {
 				xr_vector<CCellVertex>::iterator	I = table[i][j]->begin();
 				xr_vector<CCellVertex>::iterator	E = table[i][j]->end();
 				for ( ; I != E; ++I)
-					VERIFY	((*I).m_mark);
+					VERIFY			((*I).m_mark);
 			}
+		}
+	}
+#endif
+	f								= CPU::GetCycleCount();
+	Msg								("Check marks time %f",CPU::cycles2seconds*float(f - s));
 
-//	// adding neighbours
-//	vector<bool> marks;
-//	for ( i=0; i<group_id; i++) {
-//		marks.assign(group_id,false);
-//		marks[i]				= true;
-//		CSectorGraph::CVertex	*vertex = sector_graph.vertex(i);
-//		u32						k, j;
-////		u32						x1, x2, y1, y2;
-////		level_graph.vertex(vertex->m_vertex_id)->position().x(r)
-//		k						= tGraphVertex.x1 - 1;
-//		for ( j=tGraphVertex.y1; j<=tGraphVertex.y2; j++)
-//			if (!ucaCellularNetwork[k*(M + 1) + j] && !marks[dwaMask[k*M + j]])
-//				vfAddNeighbour(tGraphVertex,k*M + j,tpaGraph,dwaMask,marks);
-//		k = tGraphVertex.x2 + 1;
-//		for ( j=tGraphVertex.y1; j<=tGraphVertex.y2; j++)
-//			if (!ucaCellularNetwork[k*(M + 1) + j] && !marks[dwaMask[k*M + j]])
-//				vfAddNeighbour(tGraphVertex,k*M + j,tpaGraph,dwaMask,marks);
-//		k = tGraphVertex.y1 - 1;
-//		for ( j=tGraphVertex.x1; j<=tGraphVertex.x2; j++)
-//			if (!ucaCellularNetwork[j*(M + 1) + k] && !marks[dwaMask[j*M + k]])
-//				vfAddNeighbour(tGraphVertex,j*M + k,tpaGraph,dwaMask,marks);
-//		k = tGraphVertex.y2 + 1;
-//		for ( j=tGraphVertex.x1; j<=tGraphVertex.x2; j++)
-//			if (!ucaCellularNetwork[j*(M + 1) + k] && !marks[dwaMask[j*M + k]])
-//				vfAddNeighbour(tGraphVertex,j*M + k,tpaGraph,dwaMask,marks);
-//	}
+	Msg								("Group ID : %d (%d vertices)",group_id,sector_graph.vertex_count());
 
-	Msg							("Group ID : %d (%d vertices)",group_id,sector_graph.vertex_count());
+	for (u32 i=0; i<n; ++i) {
+		CCellVertex					*current_cell = cell_vertex(table,level_graph,i);
+		CSectorGraph::CVertex		*sector_vertex = sector_graph.vertex(current_cell->m_mark-1);
+		CLevelGraph::const_iterator	I, E;
+		level_graph.begin			(i,I,E);
+		for ( ; I != E; ++I) {
+			u32						vertex_id = level_graph.value(i,I);
+			if (!level_graph.valid_vertex_id(vertex_id))
+				continue;
+
+			CCellVertex				*cell = cell_vertex(table,level_graph,vertex_id);
+			if (cell->m_mark == current_cell->m_mark)
+				continue;
+
+			if (sector_vertex->edge(cell->m_mark-1))
+				continue;
+
+			sector_graph.add_edge	(current_cell->m_mark-1,cell->m_mark-1,1.f);
+
+//			Msg						("Adding edge %5d -> %5d",current_cell->m_mark,cell->m_mark);
+		}
+	}
+	f								= CPU::GetCycleCount();
+	Msg								("Fill edges time %f",CPU::cycles2seconds*float(f - s));
+
+#ifdef DEBUG
+	CSectorGraph::const_vertex_iterator	I = sector_graph.vertices().begin();
+	CSectorGraph::const_vertex_iterator	E = sector_graph.vertices().end();
+	for ( ; I != E; ++I) {
+		VERIFY						(!(*I)->edges().empty());
+	}
+#endif
+	f								= CPU::GetCycleCount();
+	Msg								("Check edges time %f",CPU::cycles2seconds*float(f - s));
+
 	// freeing memory
 	for (u32 i=min_z; i<=max_z; ++i) {
 		for (u32 j=min_x; j<=max_x; ++j)
-			xr_delete			(table[i][j]);
-		xr_delete				(table[i]);
+			xr_delete				(table[i][j]);
+		xr_delete					(table[i]);
 	}
-	xr_delete					(table);
+	xr_delete						(table);
+	
+	f								= CPU::GetCycleCount();
+	Msg								("Destroy time %f",CPU::cycles2seconds*float(f - s));
 }
 
 #define TEST_COUNT 1
@@ -233,8 +282,10 @@ void test_hierarchy		(LPCSTR name)
 	CLevelGraph					*level_graph = xr_new<CLevelGraph>(name);
 	CSectorGraph				*sector_graph = xr_new<CSectorGraph>();
 	u64							s,f;
-//	SetPriorityClass			(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
-//	SetThreadPriority			(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
+#ifndef _DEBUG
+	SetPriorityClass			(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
+	SetThreadPriority			(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
+#endif
 	Sleep						(1);
 	
 	s							= CPU::GetCycleCount();
