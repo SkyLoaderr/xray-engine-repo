@@ -100,6 +100,15 @@ void CMonsterSquad::UpdateSquadCommands()
 		it->second.type = SC_NONE;
 	}
 
+	// Удалить все цели, объекты которых невалидны или ушли в оффлайн
+	for (MEMBER_GOAL_MAP_IT it_goal = m_goals.begin(); it_goal != m_goals.end(); ++it_goal) {
+		SMemberGoal goal = it_goal->second;
+		if (!goal.entity || goal.entity->getDestroy()) {
+			it->second.type = MG_None;
+		}
+	}
+
+
 	ProcessAttack	();
 	ProcessIdle		();
 }
