@@ -758,8 +758,5 @@ void Script::vfExportArtifactMerger(CLuaVirtualMachine *tpLuaVirtualMachine)
 		.def("spawn_gravi",			&CArtifactMerger::SpawnGraviArtifact)
 		.def("spawn_black_drops",	&CArtifactMerger::SpawnBlackDrops)
 		.def("spawn_needles",		&CArtifactMerger::SpawnNeedles)
-
 	];
-
-
 }
