@@ -32,5 +32,16 @@ void xrMU_Model::calc_materials	()
 		}
 	}
 	m_subdivs.push_back	(current);
+
+	// remove non-visible materials
+	for (s32 it=0; it<s32(m_subdivs.size()); it++)
+	{
+		_face*		first	= m_faces[m_subdivs[it].start];
+		if (first->Shader().flags.bRendering)	continue;
+
+		m_subdivs.erase	(m_subdivs.begin()+it);
+		it--;
+	}
+
 	clMsg	("model '%s' - %d subdivisions",m_name,m_subdivs.size());
 }
