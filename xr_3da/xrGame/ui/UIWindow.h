@@ -108,6 +108,8 @@ public:
 	//положение и размеры окна
 
 	//относительные координаты
+	Ivector2				GetWndPos			() const							(return Ivector2().set(m_WndRect.x1,m_WndRect.y1);)
+
 	Irect					GetWndRect			()									{return m_WndRect;}
 	void					SetWndRect			(int x, int y, int width, int height) 		
 																					{m_WndRect.set(x,y,x+width,y+height); }
@@ -125,6 +127,8 @@ public:
 
 
 	//абсолютные координаты
+	Ivector2				GetAbsolutePos		() const							{Irect abs = GetAbsoluteRect(); 
+																					return Ivector2().set(abs.x1,abs.y1);)
 	Irect					GetAbsoluteRect		();
 
 	virtual void			SetWidth			(int width)			{m_WndRect.right = m_WndRect.left+width;}
