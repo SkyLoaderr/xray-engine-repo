@@ -37,6 +37,10 @@ private:
 	vector<int>				id;
 	vector<xrLIGHT*>		lights;
 	CRT*					RT;
+	Shader*					sh_Texture;
+	Shader*					sh_World;
+	Shader*					sh_Screen;
+	CVertexStream*			pStream;
 private:
 public:
 	void					set_object		(CObject*	O);

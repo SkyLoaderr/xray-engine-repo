@@ -29,12 +29,27 @@ CLightShadows::~CLightShadows()
 
 void CLightShadows::OnDeviceCreate	()
 {
-	RT	= Device.Shader._CreateRT	("$user$shadow",S_rt_size,S_rt_size);
+	LPCSTR	RTname	= "$user$shadow";
+	
+	// 
+	RT			= Device.Shader._CreateRT	(RTname,S_rt_size,S_rt_size);
+	sh_Texture	= Device.Shader.Create		("effects\\shadow_texture");
+	sh_World	= Device.Shader.Create		("effects\\shadow_world",RTname);
+
+	// Debug
+	pStream		= Device.Streams.Create		(FVF::F_TL,4);
+	sh_Screen	= Device.Shader.Create		("effects\\screen_set",RTname);
 }
 
 void CLightShadows::OnDeviceDestroy	()
 {
-	Device.Shader._DeleteRT			(RT);
+	// Debug
+	Device.Shader.Delete					(sh_Screen	);
+	
+	// 
+	Device.Shader.Delete					(sh_World	);
+	Device.Shader.Delete					(sh_Texture	);
+	Device.Shader._DeleteRT					(RT			);
 }
 
 void CLightShadows::set_object	(CObject* O)
@@ -80,7 +95,11 @@ void CLightShadows::calculate	()
 	if (id.empty())	return;
 
 	Device.Shader.set_RT		(RT->pRT,0);
+	Device.Statistic.TEST.Begin	();
 	
+	// set shader
+	Device.Shader.set_Shader	(sh_Texture);
+
 	// sort by distance
 	std::sort	(id.begin(),id.end(),pred_casters(this));
 	
@@ -129,13 +148,13 @@ void CLightShadows::calculate	()
 			// combine and build frustum
 			Fmatrix		mCombine;
 			mCombine.mul			(mProject,mView);
-
+			
 			// Select slot and set viewport
 			int		s_x			=	slot_id%slot_line;
 			int		s_y			=	slot_id/slot_line;
 			D3DVIEWPORT8 VP		=	{s_x*S_size,s_y*S_size,S_size,S_size,0,1 };
 			CHK_DX					(HW.pDevice->SetViewport(&VP));
-
+			
 			// Render object-parts
 			for (int n_it=0; n_it<C.nodes.size(); n_it++)
 			{
@@ -144,7 +163,7 @@ void CLightShadows::calculate	()
 				Device.set_xform_world	(N.val.Matrix);
 				V->Render				(.7f);
 			}
-
+			
 			// register shadow and increment slot
 			shadows.push_back	(shadow());
 			shadows.back().slot	=	slot_id;
@@ -154,6 +173,9 @@ void CLightShadows::calculate	()
 		}
 	}
 	casters.clear	();
+	id.clear		();
+	
+	Device.Statistic.TEST.End	();
 }
 
 void CLightShadows::render	()
@@ -163,4 +185,23 @@ void CLightShadows::render	()
 	F.CreateFromMatrix		(mCombine,FRUSTUM_P_ALL);
 	*/
 	shadows.clear	();
+	
+	// UV
+	Fvector2		p0,p1;
+	p0.set			(.5f/S_rt_size, .5f/S_rt_size);
+	p1.set			((S_rt_size+.5f)/S_rt_size, (S_rt_size+.5f)/S_rt_size);
+	
+	// Fill vertex buffer
+	DWORD Offset, C=0xffffffff;
+	DWORD _w = S_rt_size, _h = S_rt_size;
+	FVF::TL* pv = (FVF::TL*) pStream->Lock(4,Offset);
+	pv->set(0,			float(_h),	.0001f,.9999f, C, p0.x, p1.y);	pv++;
+	pv->set(0,			0,			.0001f,.9999f, C, p0.x, p0.y);	pv++;
+	pv->set(float(_w),	float(_h),	.0001f,.9999f, C, p1.x, p1.y);	pv++;
+	pv->set(float(_w),	0,			.0001f,.9999f, C, p1.x, p0.y);	pv++;
+	pStream->Unlock			(4);
+	
+	// Actual rendering
+	Device.Shader.set_Shader(sh_Screen);
+	Device.Primitive.Draw	(pStream,4,2,Offset,Device.Streams_QuadIB);
 }

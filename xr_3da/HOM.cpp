@@ -259,9 +259,7 @@ IC	BOOL	_visible	(Fbox& B)
 BOOL CHOM::visible		(Fbox& B)
 {
 	if (0==m_pModel)	return TRUE;
-	Device.Statistic.TEST.Begin	();
 	BOOL bResult		= _visible(B);
-	Device.Statistic.TEST.End	();
 	return bResult;
 }
 
