@@ -86,7 +86,7 @@ void COMotion::ParseObjectMotion(LWItemID object){
 //Use the Animation Envelopes global to get the keys of an LWEnvelope
 //and create our own version.
 //======================================================================
-CEnvelope* CCustomMotion::CreateEnvelope(LWChannelID chan){
+CEnvelope* CCustomMotion::CreateEnvelope(LWChannelID chan, float parent_val){
 	LWChanGroupID group;
 	LWEnvelopeID lwenv;
 	LWEnvKeyframeID lwkey;
@@ -109,7 +109,7 @@ CEnvelope* CCustomMotion::CreateEnvelope(LWChannelID chan){
 		env->keys.push_back(key);
 		
 		g_envf->keyGet( lwenv, lwkey, LWKEY_SHAPE, &key->shape );
-		g_envf->keyGet( lwenv, lwkey, LWKEY_VALUE, &val );		key->value		= ( float ) val;
+		g_envf->keyGet( lwenv, lwkey, LWKEY_VALUE, &val );		key->value		= ( float ) val + parent_val;
 		g_envf->keyGet( lwenv, lwkey, LWKEY_TIME, &val );		key->time		= ( float ) val;
 		g_envf->keyGet( lwenv, lwkey, LWKEY_TENSION, &val );	key->tension	= ( float ) val;
 		g_envf->keyGet( lwenv, lwkey, LWKEY_CONTINUITY, &val );	key->continuity = ( float ) val;

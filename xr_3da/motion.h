@@ -68,7 +68,7 @@ public:
 	virtual bool	LoadMotion		(const char* buf)=0;
 
 #ifdef LWO_EXPORTS
-	CEnvelope*		CreateEnvelope	(LWChannelID chan);
+	CEnvelope*		CreateEnvelope	(LWChannelID chan, float parent_val=0);
 #endif
 };
 
