@@ -73,6 +73,7 @@ end
 
 ------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------
+// Монстр, который буцает трупп, либо какой-то физический объект
 
 class "CNecrophil" (object_binder)
 function CNecrophil:__init(obj) super(obj)
@@ -227,4 +228,3 @@ function CNecrophil:set_script_control(value)
 		self.enemy		= nil
 	end	
 end
-// is_object_online(id)
