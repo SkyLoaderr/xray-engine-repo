@@ -111,6 +111,9 @@ void CStats::Show()
 		pFont->OnRender	();
 	}
 
+	CGameFont&	F			= *((CGameFont*)pFont);
+	float		f_base_size	= F.GetSize();
+
 	if( Device.Pause() && !g_pGamePersistent->m_pMainUI->IsActive() ){
 		float sz		= pFont->GetSize();
 		pFont->SetSize	(32);
@@ -132,9 +135,6 @@ void CStats::Show()
 		CSound_stats				snd;
 		::Sound->statistic			(snd);
 		
-		CGameFont&	F = *((CGameFont*)pFont);
-		float			f_base_size	= F.GetSize();
-
 		F.SetColor	(0xFFFFFFFF	);
 		F.OutSet	(0,0);
 		F.OutNext	("FPS/RFPS:    %3.1f/%3.1f",fFPS,fRFPS);
@@ -210,25 +210,27 @@ void CStats::Show()
 #ifdef	DEBUG
 		F.OutSkip	();
 		F.OutNext	("str: cmp[%d], dock[%d]",Memory.stat_strcmp,Memory.stat_strdock);	
-		Memory.stat_strcmp	=	0	;
-		Memory.stat_strdock	=	0	;
+		Memory.stat_strcmp	=	0		;
+		Memory.stat_strdock	=	0		;
 #endif
 
 		//////////////////////////////////////////////////////////////////////////
 		// Renderer specific
+		F.SetSize						(f_base_size);
 		F.OutSet						(200,0);
 		Render->Statistics				(&F);
 
 		//////////////////////////////////////////////////////////////////////////
 		// Game specific
+		F.SetSize						(f_base_size);
 		F.OutSet						(400,0);
 		g_pGamePersistent->Statistics	(&F);
 
 		//////////////////////////////////////////////////////////////////////////
 		// process PURE STATS
-		F.SetSize			(f_base_size);
-		seqStats.Process	(rp_Stats);
-		pFont->OnRender		();
+		F.SetSize						(f_base_size);
+		seqStats.Process				(rp_Stats);
+		pFont->OnRender					();
 	}
 
 	//////////////////////////////////////////////////////////////////////////
@@ -261,6 +263,7 @@ void CStats::Show()
 		CGameFont&	F = *((CGameFont*)pFont);
 		F.SetColor	(color_rgba(255,16,16,191));
 		F.OutSet	(200,0);
+		F.SetSize	(f_base_size);
 		for (u32 it=0; it<errors.size(); it++)
 			F.OutNext("%s",errors[it].c_str());
 		F.OnRender	();
