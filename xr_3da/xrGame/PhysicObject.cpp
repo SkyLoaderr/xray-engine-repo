@@ -19,6 +19,14 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 	m_type = EPOType(po->type);
 	m_mass = po->mass;
 
+	R_ASSERT(!cfModel);
+	switch(m_type) {
+		case epotBox : cfModel = xr_new<CCF_Rigid>(this); break;
+		default : cfModel = xr_new<CCF_Skeleton>(this);
+	}
+	pCreator->ObjectSpace.Object_Register(this);
+	cfModel->OnMove();
+
 	R_ASSERT				(pVisual&&PKinematics(pVisual));
 	PKinematics(pVisual)->PlayCycle("idle");
 	PKinematics(pVisual)->Calculate();
