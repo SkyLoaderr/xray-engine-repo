@@ -6,6 +6,7 @@
 #include "phdestroyable.h"
 #include "xrmessages.h"
 #include "Level.h"
+#include "../SkeletonCustom.h"
 CTeleWhirlwind ::CTeleWhirlwind () 
 {
 	m_owner_object=NULL;
@@ -102,12 +103,7 @@ void		CTeleWhirlwindObject::		release					()
 /////////////////////////////////////////////////
 	if(magnitude<2.f*object->Radius())
 	{
-		CPHDestroyable* D=object->ph_destroyable();
-		if(D)
-		{
-			D->Destroy(m_telekinesis->OwnerObject()->ID());
-			m_telekinesis->add_impact(dir_inv,impulse);
-		}
+		destroy_object(dir_inv,impulse);
 	}
 
 
@@ -115,6 +111,24 @@ void		CTeleWhirlwindObject::		release					()
 	object->m_pPhysicsShell->applyImpulse(dir_inv,impulse);
 	switch_state(TS_None);
 }
+
+void	CTeleWhirlwindObject::destroy_object		(const Fvector dir,float val) 
+{
+	CPHDestroyable* D=object->ph_destroyable();
+	if(D)
+	{
+		D->Destroy(m_telekinesis->OwnerObject()->ID());
+		m_telekinesis->add_impact(dir,val);
+
+		CParticlesPlayer* PP = smart_cast<CParticlesPlayer*>(object);
+		if(PP)
+		{
+			u16 root=(smart_cast<CKinematics*>(object->Visual()))->LL_GetBoneRoot();
+			PP->StartParticles(m_telekinesis->destroing_particles(),root, Fvector().set(0,1,0),m_telekinesis->OwnerObject()->ID());
+		}
+	}
+}
+
 void		CTeleWhirlwindObject::		raise					(float step)
 {
 
@@ -126,7 +140,7 @@ void		CTeleWhirlwindObject::		raise					(float step)
 		{
 			float k=strength;//600.f;
 			float predict_v_eps=0.1f;
-			float mag_eps	   =2.0f;
+			float mag_eps	   =.1f;
 
 			CPhysicsElement* E=	p->get_ElementByStoreOrder(element);
 			if (!E->bActive) continue;

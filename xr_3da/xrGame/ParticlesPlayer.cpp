@@ -41,6 +41,8 @@ CParticlesPlayer::CParticlesPlayer ()
 	
 	m_bActiveBones = false;
 
+	m_Bones.push_back	(SBoneInfo(0,Fvector().set(0,0,0)));
+
 	SetParentVel(zero_vel);
 }
 
@@ -52,6 +54,7 @@ void CParticlesPlayer::LoadParticles(CKinematics* K)
 {
 	VERIFY				(K);
 
+	m_Bones.clear();
 	m_Bones.push_back	(SBoneInfo(K->LL_GetBoneRoot(),Fvector().set(0,0,0)));
 
 	//считать список косточек и соответствующих

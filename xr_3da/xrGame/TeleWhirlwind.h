@@ -24,6 +24,7 @@ public:
 	virtual		void				fire					(const Fvector &target);
 	virtual		void				fire					(const Fvector &target, float power);
 	virtual		void				switch_state			(ETelekineticState new_state);
+	virtual		void				destroy_object			(const Fvector dir,float val);
 
 };
 
@@ -33,17 +34,20 @@ typedef	CTelekinesis inherited;
 		Fvector				m_center;
 		CGameObject*		m_owner_object;
 		PH_IMPACT_STORAGE	m_saved_impacts;
+		shared_str			m_destroying_particles;
 public: 
-						CTeleWhirlwind		();
-		CGameObject*    OwnerObject			()const							{return m_owner_object;}
-  const	Fvector&		Center				()const							{return m_center;}
-		void			SetCenter			(const Fvector center)			{m_center.set(center);}
-		void			SetOwnerObject		(CGameObject* owner_object)		{m_owner_object=owner_object;}
-		void			add_impact			(const Fvector& dir,float val)	;
-		void			draw_out_impact		(Fvector& dir,float& val)		;
-				void	clear_impacts		()								;
-		virtual void	clear				()								;
-		virtual CTelekineticObject*	alloc_tele_object()	{return static_cast<CTelekineticObject*>(xr_new<CTeleWhirlwindObject>());}
+								CTeleWhirlwind			();
+		CGameObject*    		OwnerObject				()const									{return m_owner_object;}
+  const	Fvector&				Center					()const									{return m_center;}
+		void					SetCenter				(const Fvector center)					{m_center.set(center);}
+		void					SetOwnerObject			(CGameObject* owner_object)				{m_owner_object=owner_object;}
+		void					add_impact				(const Fvector& dir,float val)			;
+		void					draw_out_impact			(Fvector& dir,float& val)				;
+		void					clear_impacts			()										;
+		void					set_destroing_particles (const shared_str& destroying_particles){m_destroying_particles=destroying_particles;}
+		const shared_str&		destroing_particles		()										{return m_destroying_particles;}
+virtual void					clear					()										;
+virtual CTelekineticObject*		alloc_tele_object		()										{return static_cast<CTelekineticObject*>(xr_new<CTeleWhirlwindObject>());}
 };
 
 

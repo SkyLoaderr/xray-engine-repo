@@ -15,6 +15,7 @@ class CMincer :	public CBaseGraviZone
 private:
 	typedef CBaseGraviZone inherited;
 	CTeleWhirlwind m_telekinetics;
+	shared_str	   m_torn_particles;
 public:
 	CMincer(void);
 	virtual ~CMincer(void);
@@ -27,6 +28,7 @@ public:
 	virtual void Load						(LPCSTR section);
 	virtual bool BlowoutState				();
 	virtual void AffectPullDead				(CPhysicsShellHolder* GO,const Fvector& throw_in_dir,float dist){}
+	virtual void AffectPullAlife			(CEntityAlive* EA,const Fvector& throw_in_dir,float dist);
 	virtual void AffectThrow				(CPhysicsShellHolder* GO,const Fvector& throw_in_dir,float dist);
 	virtual void ThrowInCenter				(Fvector& C);
 	virtual BOOL net_Spawn					(LPVOID DC);

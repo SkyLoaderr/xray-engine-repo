@@ -36,6 +36,9 @@ void CMincer::SwitchZoneState(EZoneState new_state)
 void CMincer::Load (LPCSTR section)
 {
 	inherited::Load(section);
+	
+	m_telekinetics.set_destroing_particles(shared_str(pSettings->r_string(section,"tearing_particles")));
+	m_torn_particles=pSettings->r_string(section,"torn_particles");
 	//pSettings->r_fvector3(section,whirlwind_center);
 }
 
@@ -76,6 +79,17 @@ void CMincer:: AffectThrow	(CPhysicsShellHolder* GO,const Fvector& throw_in_dir,
 bool CMincer::BlowoutState	()
 {
 	bool ret=inherited::BlowoutState	();
+
+	xr_set<CObject*>::iterator it=m_inZone.begin(),e=m_inZone.end();
+	for(;e!=it;++it)
+	{
+		CEntityAlive * EA = smart_cast<CEntityAlive *>(*it);
+		if(!EA)continue;
+		CPhysicsShellHolder * GO = smart_cast<CPhysicsShellHolder *>(*it);
+		Telekinesis().activate(GO,m_fThrowInImpulse, m_fTeleHeight, 100000);
+
+	}
+
 	if(m_dwBlowoutExplosionTime<(u32)m_iPreviousStateTime ||
 		m_dwBlowoutExplosionTime>=(u32)m_iStateTime) return ret;
 	Telekinesis().deactivate();
@@ -84,6 +98,7 @@ bool CMincer::BlowoutState	()
 void CMincer ::ThrowInCenter(Fvector& C)
 {
 	C.set(m_telekinetics.Center());
+	C.y=0.f;
 }
 
 
@@ -96,11 +111,18 @@ void CMincer ::Center	(Fvector& C) const
 void CMincer::OnOwnershipTake(u16 id)
 {
 		Fvector dir;float impulse;
-		if(!m_telekinetics.has_impacts()) return;
+		//if(!m_telekinetics.has_impacts()) return;
 		m_telekinetics.draw_out_impact(dir,impulse);
 
 		CObject* obj=Level().Objects.net_Find(id);
 		if(obj->SUB_CLS_ID ==CLSID_ARTEFACT) return;
+
+		CParticlesPlayer* PP = smart_cast<CParticlesPlayer*>(obj);
+		if(PP)
+		{
+			PP->StartParticles(m_torn_particles,Fvector().set(0,1,0),ID());
+		}
+
 		if (OnServer())
 		{
 			NET_Packet	l_P;
@@ -119,6 +141,28 @@ void CMincer::OnOwnershipTake(u16 id)
 			obj->H_SetParent(NULL);
 			return;
 		};
+	}
+	
+
+void CMincer::AffectPullAlife(CEntityAlive* EA,const Fvector& throw_in_dir,float dist)
+{
+	float power=Power(dist);
+	if (OnServer())
+	{
+		NET_Packet	l_P;
+		u_EventGen	(l_P,GE_HIT, EA->ID());
+		l_P.w_u16	(u16(EA->ID()));
+		l_P.w_u16	(ID());
+		l_P.w_dir	(throw_in_dir);
+		l_P.w_float	(power);
+		l_P.w_s16	(0/*(s16)BI_NONE*/);
+		l_P.w_vec3	(Fvector().set(0,0,0));
+		l_P.w_float	(0);
+		l_P.w_u16	((u16)m_eHitTypeBlowout);
+		u_EventSend	(l_P);
+	};
+	inherited::AffectPullAlife(EA,throw_in_dir,dist);
+
 }
 #ifdef DEBUG
 void CMincer::OnRender()
