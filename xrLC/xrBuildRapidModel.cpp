@@ -25,11 +25,13 @@ void CBuild::BuildRapid()
 
 	Status				("Building OBB tree..");
 	RCAST_Model			= new CDB::MODEL;
-	Msg					("aaa");
 	switch				(RCAST_Model->build	(CL.getV(),CL.getVS(),CL.getT(),CL.getTS()))
 	{
-	case 0:				break;
-	case CDB::err_memory_0:
+	case 0:						break;
+	case CDB::err_memory_0:		Msg		("ERR: mem_0");	break;
+	case CDB::err_memory_1:		Msg		("ERR: mem_1");	break;
+	case CDB::err_memory_2:		Msg		("ERR: mem_2");	break;
+	case CDB::err_build:		Msg		("ERR: build");	break;
 	}
 	Msg					("%d K memory usage",RCAST_Model->memory()/1024);
 	

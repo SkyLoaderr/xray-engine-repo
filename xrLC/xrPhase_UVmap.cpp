@@ -145,8 +145,13 @@ void CBuild::mem_Compact()
 	HeapCompact			(GetProcessHeap(),0);
 	DWORD				bytes,blocks_used,blocks_free;
 	bytes				= mem_Usage(&blocks_used,&blocks_free);
-	Msg					("***MEMORY*** %d MB, %d Bused, %d Bfree", bytes/(1024*1024),blocks_used,blocks_free);
+	LPCSTR h_status		= 0;
+	if (HeapValidate	(GetProcessHeap(),0,0))	h_status = "OK";
+	else										h_status = "DAMAGED";
+	Msg					("***MEMORY(%s)*** %d MB, %d Bused, %d Bfree",
+		h_status,bytes/(1024*1024),blocks_used,blocks_free);
 }
+
 DWORD CBuild::mem_Usage	(LPDWORD pBlocksUsed, LPDWORD pBlocksFree)
 {
 	_HEAPINFO			hinfo;
