@@ -321,7 +321,7 @@ void CStalkerMovementManager::parse_velocity_mask	()
 			m_stalker->CSightManager::enable(true);
 			if (curr_travel_point_index() + 1 < path().size()) {
 				point				= path()[curr_travel_point_index() + 1];
-				velocity			(point.velocity);
+				current_velocity	= velocity(point.velocity);
 			}
 		}
 	}
