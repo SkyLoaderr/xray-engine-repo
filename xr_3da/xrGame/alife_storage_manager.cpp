@@ -111,7 +111,7 @@ bool CALifeStorageManager::load	(LPCSTR save_name)
 
 	{
 		string512				temp;
-		pApp->LoadTitle			(strconcat(temp,"Loading saved game \"",save_name,".",SAVE_EXTENSION,"\"..."));
+		pApp->LoadTitle			(strconcat(temp,"Loading saved game \"",save_name,SAVE_EXTENSION,"\"..."));
 	}
 
 	unload						();
