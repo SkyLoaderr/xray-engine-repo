@@ -297,11 +297,19 @@ void CAI_Stalker::vfUpdateDynamicObjects()
 			}
 		}
 	}
+	
+	// verifying if object is online
+	for (int i=0, n=m_tpaDynamicObjects.size(); i<n; i++)
+		if (m_tpaDynamicObjects[i].tpEntity && m_tpaDynamicObjects[i].tpEntity->getDestroy()) {
+			m_tpaDynamicObjects.erase(m_tpaDynamicObjects.begin() + i);
+			i--;
+			n--;
+		}
 }
 
 int	 CAI_Stalker::ifFindDynamicObject(CEntity *tpEntity)
 {
-	for (int i=0; i<(int)m_tpaDynamicObjects.size(); i++)
+	for (int i=0, n=m_tpaDynamicObjects.size(); i<n; i++)
 		if (m_tpaDynamicObjects[i].tpEntity == tpEntity)
 			return(i);
 	return(-1);
@@ -330,70 +338,6 @@ void CAI_Stalker::vfUpdateHurt(const SHurt &tHurt)
 	else
 		vfAddHurt(tHurt);
 }
-
-bool CAI_Stalker::bfAddEnemyToDynamicObjects(CAI_Stalker *tpStalker)
-{
-	for (int i=0; i<(int)tpStalker->m_tpaDynamicObjects.size(); i++) {
-		if (tpStalker->m_tpaDynamicObjects[i].tpEntity == m_tSavedEnemy) {
-			u32 dwTime = m_dwCurrentUpdate;
-			CEntity *tpEntity = m_tSavedEnemy;
-			if (tpEntity && !tpEntity->AI_NodeID) {
-				Msg("! Invalid object node ID %s",tpEntity->cName());
-				return(false);
-			}
-			for (int j=0; j<(int)m_tpaDynamicObjects.size(); j++)
-				if (m_tSavedEnemy == m_tpaDynamicObjects[j].tpEntity) {
-					m_tpaDynamicObjects[j].dwTime = tpStalker->m_tpaDynamicObjects[i].dwTime;
-					m_tpaDynamicObjects[j].dwUpdateCount++;
-					m_tpaDynamicObjects[j].dwNodeID = tpStalker->m_tpaDynamicObjects[i].dwNodeID;
-					m_tpaDynamicObjects[j].tSavedPosition = tpStalker->m_tpaDynamicObjects[i].tSavedPosition;
-					m_tpaDynamicObjects[j].tOrientation = tpStalker->m_tpaDynamicObjects[i].tOrientation;
-					m_tpaDynamicObjects[j].dwMyNodeID = tpStalker->m_tpaDynamicObjects[i].dwMyNodeID;
-					m_tpaDynamicObjects[j].tMySavedPosition = tpStalker->m_tpaDynamicObjects[i].tMySavedPosition;
-					m_tpaDynamicObjects[j].tMyOrientation = tpStalker->m_tpaDynamicObjects[i].tMyOrientation;
-					m_tpaDynamicObjects[j].tpEntity = tpEntity;
-					return(true);
-				}
-			
-			if (m_tpaDynamicObjects.size() >= m_dwMaxDynamicObjectsCount)	{
-				u32 dwBest = dwTime + 1, dwIndex = u32(-1);
-				for (int j=0; j<(int)m_tpaDynamicObjects.size(); j++)
-					if (m_tpaDynamicObjects[j].dwTime < dwBest) {
-						dwIndex = i;
-						dwBest = m_tpaDynamicObjects[j].dwTime;
-					}
-				if (dwIndex < m_tpaDynamicObjects.size()) {
-					m_tpaDynamicObjects[dwIndex].dwTime = dwTime;
-					m_tpaDynamicObjects[dwIndex].dwUpdateCount = 1;
-					m_tpaDynamicObjects[dwIndex].dwNodeID = tpStalker->m_tpaDynamicObjects[i].dwNodeID;
-					m_tpaDynamicObjects[dwIndex].tSavedPosition = tpStalker->m_tpaDynamicObjects[i].tSavedPosition;
-					m_tpaDynamicObjects[dwIndex].tOrientation = tpStalker->m_tpaDynamicObjects[i].tOrientation;
-					m_tpaDynamicObjects[dwIndex].dwMyNodeID = tpStalker->m_tpaDynamicObjects[i].dwMyNodeID;
-					m_tpaDynamicObjects[dwIndex].tMySavedPosition = tpStalker->m_tpaDynamicObjects[i].tMySavedPosition;
-					m_tpaDynamicObjects[dwIndex].tMyOrientation = tpStalker->m_tpaDynamicObjects[i].tMyOrientation;
-					m_tpaDynamicObjects[dwIndex].tpEntity = tpEntity;
-					return(true);
-				}
-			}
-			else {
-				SDynamicObject tDynamicObject;
-				tDynamicObject.dwTime = dwTime;
-				tDynamicObject.dwUpdateCount = 1;
-				tDynamicObject.dwNodeID = tpStalker->m_tpaDynamicObjects[i].dwNodeID;
-				tDynamicObject.tSavedPosition = tpStalker->m_tpaDynamicObjects[i].tSavedPosition;
-				tDynamicObject.tOrientation = tpStalker->m_tpaDynamicObjects[i].tOrientation;
-				tDynamicObject.dwMyNodeID = tpStalker->m_tpaDynamicObjects[i].dwMyNodeID;
-				tDynamicObject.tMySavedPosition = tpStalker->m_tpaDynamicObjects[i].tMySavedPosition;
-				tDynamicObject.tMyOrientation = tpStalker->m_tpaDynamicObjects[i].tMyOrientation;
-				tDynamicObject.tpEntity = tpEntity;
-				m_tpaDynamicObjects.push_back(tDynamicObject);
-				return(true);
-			}
-		}
-	}
-	return(false);
-}
-
 
 bool CAI_Stalker::bfCheckIfSound()
 {
@@ -446,7 +390,7 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 		// if enemy made a shot to us, add a fictitious hurt
 		CEntity *tpEntity = dynamic_cast<CEntity *>(who);
 		if (tpEntity) {
-			if (!tpEntity->AI_NodeID)
+			if (tpEntity->getDestroy() || (int(tpEntity->AI_NodeID) <= 0))
 				return;
 			bool bFound = false;
 			objVisible	&VisibleEnemies = Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
