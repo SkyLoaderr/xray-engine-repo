@@ -7,17 +7,16 @@
 #include "alife_simulator.h"
 #include "alife_simulator_header.h"
 #include "level_graph.h"
-
 #include "../fdemorecord.h"
 #include "level.h"
 #include "xr_level_controller.h"
 #include "game_cl_base.h"
 #include "stalker_movement_manager.h"
-
 #include "ai/monsters/chimera/chimera.h"
 #include "Inventory.h"
 #include "WeaponHUD.h"
 #include "xrServer.h"
+#include "autosave_manager.h"
 
 // Обработка нажатия клавиш
 void CLevel::IR_OnKeyboardPress(int key)
@@ -42,6 +41,10 @@ void CLevel::IR_OnKeyboardPress(int key)
 		return;
 	case DIK_F6: {
 		if (GameID() != GAME_SINGLE) return;
+		if (!autosave_manager().ready_for_autosave()) {
+			Msg("! Cannot save the game right now!");
+			return;
+		}
 		NET_Packet					net_packet;
 		net_packet.w_begin			(M_SAVE_GAME);
 		net_packet.w_stringZ		("quick_save");
