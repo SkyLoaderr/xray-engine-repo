@@ -186,6 +186,9 @@ xrSE_DECLARE_END
 
 //***** Target CS Base
 xrSE_DECLARE_BEGIN(xrSE_Target_CSBase,xrSE_Target)
+	float					radius;
+	u8						s_team;
+	xrSE_Target_CSBase		();
 xrSE_DECLARE_END
 
 //***** Actor

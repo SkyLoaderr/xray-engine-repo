@@ -289,14 +289,22 @@ void xrSE_Target_Assault::FillProp			(LPCSTR pref, PropValueVec& values)
 #endif
 
 //***** Target CS Base
-void xrSE_Target_CSBase::STATE_Read			(NET_Packet& P, u16 size)	{};
-void xrSE_Target_CSBase::STATE_Write		(NET_Packet& P)				{};
+xrSE_Target_CSBase::xrSE_Target_CSBase()
+{
+	s_team									= 0;
+	radius									= 10.f;
+    s_gameid								= GAME_CS;    
+};
+void xrSE_Target_CSBase::STATE_Read			(NET_Packet& P, u16 size)	{P.r_float(radius);};
+void xrSE_Target_CSBase::STATE_Write		(NET_Packet& P)				{P.w_float(radius);};
 void xrSE_Target_CSBase::UPDATE_Read		(NET_Packet& P)				{};
 void xrSE_Target_CSBase::UPDATE_Write		(NET_Packet& P)				{};
 #ifdef _EDITOR
 void xrSE_Target_CSBase::FillProp			(LPCSTR pref, PropValueVec& values)
 {
 	inherited::FillProp(pref,values);
+	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name), "Radius",		&radius, 	 PHelper.CreateFloat(1.f,100.f));
+	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name), "Team",		&s_team, 	 PHelper.CreateU8(0,1));
 }
 #endif
 
