@@ -53,6 +53,7 @@ private:
 			CBaseRestrictionPtr		merge						(CBaseRestrictionPtr bridge, const RESTRICTIONS &temp_restrictions) const;
 			void					merge_in_out_restrictions	();
 			void					merge_free_in_retrictions	();
+			u32						accessible_nearest			(CBaseRestrictionPtr restriction, const Fvector &position);
 
 protected:
 	IC		bool					initialized					() const;

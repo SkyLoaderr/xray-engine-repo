@@ -189,9 +189,56 @@ void CSpaceRestriction::remove_border			()
 		}
 }
 
+u32 CSpaceRestriction::accessible_nearest		(CBaseRestrictionPtr restriction, const Fvector &position)
+{
+	u32								result = u32(-1);
+	float							min_dist_sqr = flt_max;
+	xr_vector<u32>::const_iterator	I = restriction->border().begin();
+	xr_vector<u32>::const_iterator	E = restriction->border().end();
+	for ( ; I != E; ++I) {
+		float						cur_dist_sqr = ai().level_graph().vertex_position(*I).distance_to_sqr(position);
+		if (cur_dist_sqr < min_dist_sqr) {
+			bool					found = false;
+			CLevelGraph::const_iterator	i,e;
+			ai().level_graph().begin(*I,i,e);
+			for ( ; i != e; ++i) {
+				u32					level_vertex_id = ai().level_graph().value(*I,i);
+				if (ai().level_graph().valid_vertex_id(level_vertex_id),accessible(level_vertex_id)) {
+					found			= true;
+					result			= level_vertex_id;
+					break;
+				}
+			}
+			if (!found)
+				continue;
+			min_dist_sqr			= cur_dist_sqr;
+		}
+	}
+	VERIFY							(ai().level_graph().valid_vertex_id(result));
+	return							(result);
+}
+
 u32	CSpaceRestriction::accessible_nearest		(const Fvector &position, Fvector &result)
 {
-	return							(m_out_space_restriction->accessible_nearest(position,result));
+	if (m_out_space_restriction)
+		return						(m_out_space_restriction->accessible_nearest(position,result));
+
+	u32								vertex_result = u32(-1);
+	if (m_in_space_restriction && m_in_space_restriction->inside(position))
+		vertex_result				= accessible_nearest(m_in_space_restriction,position);
+	else {
+		FREE_IN_RESTRICTIONS::const_iterator	I = m_free_in_restrictions.begin();
+		FREE_IN_RESTRICTIONS::const_iterator	E = m_free_in_restrictions.end();
+		for ( ; I != E; ++I)
+			if ((*I).m_restriction->inside(position)) {
+				vertex_result		= accessible_nearest((*I).m_restriction,position);
+				break;
+			}
+	}
+
+	VERIFY							(ai().level_graph().valid_vertex_id(vertex_result));
+	result							= ai().level_graph().vertex_position(vertex_result);
+	return							(vertex_result);
 }
 
 bool CSpaceRestriction::affect					(SpaceRestrictionHolder::CBaseRestrictionPtr bridge, const Fvector &start_position, float radius) const
