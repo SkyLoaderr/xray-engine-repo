@@ -19,12 +19,16 @@ protected:
 
 //	virtual			void				OnObjectEnterTeamBase	(u16 player_id, u8 zone_team_id);
 //	virtual			void				OnObjectLeaveTeamBase	(u16 player_id, u8 zone_team_id);
+	virtual			void				UpdateMapLocations		();
 
 public:
 	u8									artefactsNum;//ah
 	u16									artefactBearerID;//ah,ZoneMap
+	u16									old_artefactBearerID;
 	u8									teamInPossession;//ah,ZoneMap
+	u8									old_teamInPossession;
 	u16									artefactID;
+	u16									old_artefactID;
 	s32									dReinforcementTime;
 
 public :

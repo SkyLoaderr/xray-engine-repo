@@ -52,6 +52,8 @@ protected:
 
 	virtual		void				OnRender				();
 	virtual		bool				IsEnemy					(game_PlayerState* ps);
+
+	virtual void			UpdateMapLocations		();
 };
 
 IC bool	TDM_Compare_Players		(LPVOID v1, LPVOID v2)

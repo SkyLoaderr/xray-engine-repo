@@ -15,6 +15,8 @@
 #include "xrserver.h"
 #include "game_cl_base.h"
 #include "clsid_game.h"
+#include "map_manager.h"
+
 
 CTeamBaseZone::CTeamBaseZone		()
 {
@@ -74,8 +76,21 @@ BOOL CTeamBaseZone::net_Spawn	(CSE_Abstract* DC)
 		setEnabled				(true);
 	}
 
+	if (GameID() != GAME_SINGLE)
+	{
+		char BaseMapLocation[1024];
+		sprintf (BaseMapLocation, "mp_team_base_%d_location", m_Team);
+		Level().MapManager().AddMapLocation(BaseMapLocation,ID());
+	};
+
 	return						(bOk);
 }
+
+void CTeamBaseZone::net_Destroy			()
+{
+	Level().MapManager().RemoveMapLocationByObjectID(ID());
+	inherited::net_Destroy();
+};
 
 void CTeamBaseZone::shedule_Update(u32 dt)
 {

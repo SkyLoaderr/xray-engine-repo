@@ -5,6 +5,7 @@
 #include "level.h"
 #include "UIGameAHunt.h"
 #include "clsid_game.h"
+#include "map_manager.h"
 
 #define TEAM0_MENU		"artefacthunt_team0"
 #define	TEAM1_MENU		"artefacthunt_team1"
@@ -34,6 +35,10 @@ void game_cl_ArtefactHunt::Init ()
 //	LoadTeamData(TEAM0_MENU);
 	LoadTeamData(TEAM1_MENU);
 	LoadTeamData(TEAM2_MENU);
+
+	old_artefactBearerID = 0;
+	old_artefactID = 0;
+	old_teamInPossession = 0;
 };
 game_cl_ArtefactHunt::~game_cl_ArtefactHunt()
 {
@@ -491,4 +496,46 @@ bool	game_cl_ArtefactHunt::PlayerCanSprint			(CActor* pActor)
 	if (artefactBearerID == 0) return true;
 	if (bBearerCantSprint && pActor->ID() == artefactBearerID) return false;
 	return true;
+};
+
+#define ARTEFACT_NEUTRAL "mp_af_neutral_location"
+#define ARTEFACT_FRIEND "mp_af_friend_location"
+#define ARTEFACT_ENEMY "mp_af_enemy_location"
+
+void	game_cl_ArtefactHunt::UpdateMapLocations		()
+{
+	inherited::UpdateMapLocations();
+
+	if (local_player)
+	{
+		if (!artefactID && old_artefactID)
+		{
+			Level().MapManager().RemoveMapLocationByObjectID(old_artefactID);
+			if (artefactID)
+				Level().MapManager().AddMapLocation(ARTEFACT_NEUTRAL, artefactID);
+
+			old_artefactID = artefactID;
+		}
+		else
+		{
+			if (old_artefactBearerID != artefactBearerID || old_teamInPossession != teamInPossession)
+			{
+				Level().MapManager().RemoveMapLocationByObjectID(old_artefactID);
+				if (!artefactBearerID)
+				{
+					Level().MapManager().AddMapLocation(ARTEFACT_NEUTRAL, artefactID);
+				}
+				else
+				{
+					if (teamInPossession == local_player->team)
+						Level().MapManager().AddMapLocation(ARTEFACT_FRIEND, artefactID);
+					else
+						Level().MapManager().AddMapLocation(ARTEFACT_ENEMY, artefactID);
+				};
+			};
+		};
+		old_artefactBearerID = artefactBearerID;
+		old_artefactID = artefactID;
+		old_teamInPossession = teamInPossession;
+	};
 };

@@ -761,7 +761,8 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 	//-------------------------------------------------------------
 
 
-	Level().MapManager().AddMapLocation("actor_location",ID());
+	if (GameID() == GAME_SINGLE)
+		Level().MapManager().AddMapLocation("actor_location",ID());
 
 	return					TRUE;
 }

@@ -316,7 +316,9 @@ void game_cl_mp::shedule_Update(u32 dt)
 			HUD().GetUI()->UIGame()->AddDialogToRender(pGameLog);
 			offFlag = true;
 		}
-	}
+	};
+	//-----------------------------------------
+	UpdateMapLocations();
 }
 
 void game_cl_mp::SendStartVoteMessage	(LPCSTR args)

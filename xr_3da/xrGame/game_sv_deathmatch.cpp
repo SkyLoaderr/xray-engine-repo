@@ -445,8 +445,18 @@ void	game_sv_Deathmatch::OnPlayerReady			(ClientID id)
 				return;
 			}
 			//------------------------------------------------------------
-			RespawnPlayer(id, false);
 			CSE_Abstract* pOwner = xrCData->owner;
+			CSE_Spectator	*pS	=	smart_cast<CSE_Spectator*>(pOwner);
+			if (pS)
+			{
+				if (xrSCData->ps->DeathTime + 1000 > Device.dwTimeGlobal)
+				{
+					return;
+				}
+			}
+			//------------------------------------------------------------
+			RespawnPlayer(id, false);
+			pOwner = xrCData->owner;
 			CSE_ALifeCreatureActor	*pA	=	smart_cast<CSE_ALifeCreatureActor*>(pOwner);
 			if(pA)
 			{

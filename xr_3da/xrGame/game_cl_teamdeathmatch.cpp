@@ -6,6 +6,7 @@
 #include "UIGameTDM.h"
 #include "xr_level_controller.h"
 #include "clsid_game.h"
+#include "map_manager.h"
 
 #define	TEAM0_MENU		"teamdeathmatch_team0"
 #define	TEAM1_MENU		"teamdeathmatch_team1"
@@ -349,4 +350,37 @@ BOOL game_cl_TeamDeathmatch::CanCallTeamSelectMenu			()
 	};
 
 	return TRUE;	
+};
+
+#define FRIEND_LOCATION	"mp_friend_location"
+
+void game_cl_TeamDeathmatch::UpdateMapLocations		()
+{
+	inherited::UpdateMapLocations();
+	if (local_player)
+	{
+		PLAYERS_MAP_IT it = players.begin();
+		for(;it!=players.end();++it)
+		{
+			game_PlayerState* ps = it->second;
+			if (ps == local_player) continue;
+			u16 id = ps->GameID;
+			if (ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)) 
+			{
+				Level().MapManager().RemoveMapLocationByObjectID(id);
+				continue;
+			};
+			CObject* pObject = Level().Objects.net_Find(id);
+			if (!pObject || pObject->CLS_ID != CLSID_OBJECT_ACTOR) continue;
+			if (IsEnemy(ps))
+			{
+				Level().MapManager().RemoveMapLocationByObjectID(id);
+				continue;
+			};
+			if (!Level().MapManager().HasMapLocation(FRIEND_LOCATION, id))
+			{
+				Level().MapManager().AddMapLocation(FRIEND_LOCATION, id);
+			}
+		}
+	};
 };

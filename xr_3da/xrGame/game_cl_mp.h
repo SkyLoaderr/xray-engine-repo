@@ -39,6 +39,8 @@ protected:
 
 	bool								m_bVotingActive;
 
+	virtual void			UpdateMapLocations		() {};
+
 public:
 public :
 									game_cl_mp();
