@@ -18,7 +18,7 @@
 #include "xr_streamsnd.h"
 #include "scripting\script.h"
 #include "std_classes.h"
-
+ 
 // global variables
 ENGINE_API	CApplication*	pApp			= NULL;
 ENGINE_API	CCreator*		pCreator		= NULL;
