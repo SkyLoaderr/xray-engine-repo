@@ -171,7 +171,7 @@ void CAI_Zombie::FreeHuntingActive()
 	
 	if (m_Enemy.Enemy) {
 		m_tpSoundBeingPlayed = &(m_tpaSoundNotice[::Random.randI(SND_NOTICE_COUNT)]);
-		pSounds->PlayAtPos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
+		Sound->PlayAtPos		(*m_tpSoundBeingPlayed,this,eye_matrix.c);
 		m_fGoalChangeTime = 0;
 		if ((m_Enemy.Enemy->Position().distance_to(m_tSafeSpawnPosition) < m_fMaxPursuitRadius) || (vPosition.distance_to(m_tSafeSpawnPosition) > m_fMaxHomeRadius))
 			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieAttackRun)
@@ -248,7 +248,7 @@ void CAI_Zombie::FreeHuntingActive()
 			m_tpSoundBeingPlayed = &(m_tpaSoundIdle[Random.randI(SND_IDLE_COUNT)]);
 			
 			if (!m_tpSoundBeingPlayed->feedback)
-				pSounds->PlayAtPos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
+				Sound->PlayAtPos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
 			else
 				m_tpSoundBeingPlayed->feedback->SetPosition(eye_matrix.c);
 		}
@@ -439,7 +439,7 @@ void CAI_Zombie::AttackRun()
 			m_tpSoundBeingPlayed = &(m_tpaSoundPursuit[Random.randI(SND_PURSUIT_COUNT)]);
 			
 			if (!m_tpSoundBeingPlayed->feedback)
-				pSounds->PlayAtPos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
+				Sound->PlayAtPos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
 			else
 				m_tpSoundBeingPlayed->feedback->SetPosition(eye_matrix.c);
 		}
@@ -583,7 +583,7 @@ void CAI_Zombie::Resurrect()
 		m_tpSoundBeingPlayed = &(m_tpaSoundResurrect[Random.randI(SND_RESURRECT_COUNT)]);
 
 		if (!m_tpSoundBeingPlayed->feedback)
-			pSounds->PlayAtPos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
+			Sound->PlayAtPos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
 		else
 			m_tpSoundBeingPlayed->feedback->SetPosition(eye_matrix.c);
 	}

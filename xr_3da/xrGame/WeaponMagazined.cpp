@@ -327,7 +327,7 @@ void CWeaponMagazined::OnShellDrop	()
 void CWeaponMagazined::OnShot		()
 {
 	// Sound
-	pSounds->PlayAtPos			(sndShot,H_Root(),vLastFP);
+	Sound->PlayAtPos			(sndShot,H_Root(),vLastFP);
 
 	// Camera
 	if (hud_mode)	
@@ -350,7 +350,7 @@ void CWeaponMagazined::OnShot		()
 
 void CWeaponMagazined::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R)
 {
-	pSounds->PlayAtPos	(sndRicochet[Random.randI(SND_RIC_COUNT)], 0, vEnd,false);
+	Sound->PlayAtPos		(sndRicochet[Random.randI(SND_RIC_COUNT)], 0, vEnd,false);
 	
 	if (!R.O) 
 	{
@@ -377,7 +377,7 @@ void CWeaponMagazined::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Col
 
 void CWeaponMagazined::OnEmptyClick	()
 {
-	pSounds->PlayAtPos	(sndEmptyClick,H_Root(),vLastFP);
+	Sound->PlayAtPos	(sndEmptyClick,H_Root(),vLastFP);
 }
 void CWeaponMagazined::OnAnimationEnd()
 {
@@ -400,14 +400,14 @@ void CWeaponMagazined::switch2_Empty()
 }
 void CWeaponMagazined::switch2_Reload()
 {
-	pSounds->PlayAtPos		(sndReload,H_Root(),vLastFP);
+	Sound->PlayAtPos		(sndReload,H_Root(),vLastFP);
 	m_pHUD->animPlay		(mhud_reload[Random.randI(mhud_reload.size())],TRUE,this);
 }
 void CWeaponMagazined::switch2_Hiding()
 {
 	FireEnd					();
 	bPending				= TRUE;
-	pSounds->PlayAtPos		(sndHide,H_Root(),vLastFP);
+	Sound->PlayAtPos		(sndHide,H_Root(),vLastFP);
 	m_pHUD->animPlay		(mhud_hide[Random.randI(mhud_hide.size())],TRUE,this);
 	if (Local())			Level().Cameras.RemoveEffector	(cefShot);
 }
@@ -418,6 +418,6 @@ void CWeaponMagazined::switch2_Hidden()
 void CWeaponMagazined::switch2_Showing()
 {
 	setVisible				(TRUE);
-	pSounds->PlayAtPos		(sndShow,H_Root(),vLastFP);
+	Sound->PlayAtPos		(sndShow,H_Root(),vLastFP);
 	m_pHUD->animPlay		(mhud_show[Random.randI(mhud_show.size())],FALSE,this);
 }

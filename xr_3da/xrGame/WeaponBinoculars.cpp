@@ -203,8 +203,8 @@ void CWeaponBinoculars::state_Zooming	(float dt)
 
 void CWeaponBinoculars::switch2_Zooming	()
 {
-	pSounds->PlayAtPos			(sndZoomIn,H_Root(),vLastFP);
-	pSounds->PlayAtPos			(sndGyro,H_Root(),vLastFP,true);
+	Sound->PlayAtPos			(sndZoomIn,H_Root(),vLastFP);
+	Sound->PlayAtPos			(sndGyro,H_Root(),vLastFP,true);
 }
 
 void CWeaponBinoculars::switch2_Idle	()
@@ -212,7 +212,7 @@ void CWeaponBinoculars::switch2_Idle	()
 	switch (STATE)
 	{
 	case eZooming: 
-		pSounds->PlayAtPos			(sndZoomOut,H_Root(),vLastFP);
+		Sound->PlayAtPos			(sndZoomOut,H_Root(),vLastFP);
 		if (sndGyro.feedback)		sndGyro.feedback->Stop();
 		break;
 	}
@@ -222,14 +222,14 @@ void CWeaponBinoculars::switch2_Idle	()
 void CWeaponBinoculars::switch2_Hiding	()
 {
 	switch2_Idle			();
-	pSounds->PlayAtPos		(sndHide,H_Root(),vLastFP);
+	Sound->PlayAtPos		(sndHide,H_Root(),vLastFP);
 	m_pHUD->animPlay		(mhud_hide[Random.randI(mhud_hide.size())],TRUE,this);
 }
 
 void CWeaponBinoculars::switch2_Showing	()
 {
 	setVisible				(TRUE);
-	pSounds->PlayAtPos		(sndShow,H_Root(),vLastFP);
+	Sound->PlayAtPos		(sndShow,H_Root(),vLastFP);
 	m_pHUD->animPlay		(mhud_show[Random.randI(mhud_show.size())],FALSE,this);
 }
 

@@ -23,7 +23,7 @@
 
 #include "..\xr_object.h"
 #include "..\xr_creator.h"
-#include "..\xr_sndman.h"
+#include "..\sound.h"
 #include "..\xr_ini.h"
 #include "..\xr_input.h"
 #include "..\x_ray.h"

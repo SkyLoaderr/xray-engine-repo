@@ -34,7 +34,7 @@ CCar::~CCar(void)
 	_DELETE				(camera[0]);
 	_DELETE				(camera[1]);
 	_DELETE				(camera[2]);
-	pSounds->Delete		(snd_engine);
+	Sound->Delete		(snd_engine);
 	m_jeep.Destroy();
 
 }
@@ -135,7 +135,7 @@ void	CCar::Load					( LPCSTR section )
 {
 	inherited::Load					(section);
 
-	pSounds->Create					(snd_engine,TRUE,"car\\car1",TRUE);
+	Sound->Create					(snd_engine,TRUE,"car\\car1",TRUE);
 }
 
 BOOL	CCar::net_Spawn				(LPVOID DC)
@@ -153,7 +153,7 @@ BOOL	CCar::net_Spawn				(LPVOID DC)
 	
 	PHDynamicData::FMX33toDMX(m33,Rot);
 	m_jeep.SetRotation(Rot);
-	pSounds->PlayAtPos				(snd_engine,this,vPosition,true);
+	Sound->PlayAtPos				(snd_engine,this,vPosition,true);
 	return R;
 }
 

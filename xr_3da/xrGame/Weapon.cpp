@@ -90,13 +90,13 @@ void CWeapon::SoundCreate(sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq)
 	strconcat	(name,"weapons\\",GetName(),"_",s_name);
 	if (Engine.FS.Exist(temp,Path.Sounds,name,".wav"))	
 	{
-		pSounds->Create(dest,TRUE,name,bCtrlFreq,iType);
+		Sound->Create(dest,TRUE,name,bCtrlFreq,iType);
 		return;
 	}
 	strconcat	(name,"weapons\\","generic_",s_name);
 	if (Engine.FS.Exist(temp,Path.Sounds,name,".wav"))	
 	{
-		pSounds->Create(dest,TRUE,name,bCtrlFreq,iType);
+		Sound->Create(dest,TRUE,name,bCtrlFreq,iType);
 		return;
 	}
 	Device.Fatal("Can't find sound '%s' for weapon '%s'",name,GetName());
@@ -104,7 +104,7 @@ void CWeapon::SoundCreate(sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq)
 
 void CWeapon::SoundDestroy	(	sound& dest)
 {
-	pSounds->Delete			(dest);
+	Sound->Delete			(dest);
 }
 
 void CWeapon::ShaderCreate	(Shader* &dest, LPCSTR S, LPCSTR T)

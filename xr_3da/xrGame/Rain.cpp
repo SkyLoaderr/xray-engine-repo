@@ -27,7 +27,7 @@ CEffect_Rain::CEffect_Rain()
 	control_start		= Engine.Event.Handler_Attach	("level.weather.rain.start",this);
 	control_stop		= Engine.Event.Handler_Attach	("level.weather.rain.stop",this);
 	
-	pSounds->Create		(snd_Ambient,FALSE,"amb_rain");
+	Sound->Create		(snd_Ambient,FALSE,"amb_rain");
 	snd_Ambient_volume	= 0;
 
 	Device.seqDevCreate.Add	(this);
@@ -41,7 +41,7 @@ CEffect_Rain::~CEffect_Rain()
 	Engine.Event.Handler_Detach		(control_stop,this);
 	Engine.Event.Handler_Detach		(control_start,this);
 
-	pSounds->Delete					(snd_Ambient);
+	Sound->Delete					(snd_Ambient);
 
 	Device.seqDevCreate.Remove	(this);
 	Device.seqDevDestroy.Remove	(this);
@@ -83,12 +83,10 @@ void	CEffect_Rain::OnEvent	(EVENT E, u32 P1, u32 P2)
 {
 	if ((E==control_start) && (state!=stWorking))	{
 		state				= stStarting;
-		pSounds->Play		(snd_Ambient,0,TRUE);
+		Sound->Play			(snd_Ambient,0,TRUE);
 		snd_Ambient.feedback->SetVolume	(snd_Ambient_volume);
-		Log	("start");
 	} else if ((E==control_stop) && (state!=stIdle))	{
 		state				= stStopping;
-		Log	("stop");
 	}
 }
 
