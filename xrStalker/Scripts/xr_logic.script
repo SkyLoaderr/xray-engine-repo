@@ -342,7 +342,7 @@ function activate_by_section(npc, ini, section, loading)
 			db.storage[npc_id].pstor = nil
 		end
 
-		if db.storage[npc:id()].stype == stype_stalker then
+		if db.storage[npc_id].stype == modules.stype_stalker then
 			issue_event(npc, db.storage[npc_id][scheme], "activate_scheme", loading)
 		else
 			issue_event(npc, db.storage[npc_id][scheme], "reset_scheme", loading)
