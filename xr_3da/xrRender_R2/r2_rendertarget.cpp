@@ -175,7 +175,7 @@ void	CRenderTarget::OnDeviceCreate	()
 		g_combine					= Device.Shader.CreateGeom	(FVF::F_TL,		RCache.Vertex.Buffer(), RCache.QuadIB);
 
 		u32 fvf_aa_blur				= D3DFVF_XYZRHW|D3DFVF_TEX4|D3DFVF_TEXCOORDSIZE2(0)|D3DFVF_TEXCOORDSIZE2(1)|D3DFVF_TEXCOORDSIZE2(2)|D3DFVF_TEXCOORDSIZE2(3);
-		g_aa_AA						= Device.Shader.CreateGeom	(fvf_aa_blur,	RCache.Vertex.Buffer(), RCache.QuadIB);
+		g_aa_blur					= Device.Shader.CreateGeom	(fvf_aa_blur,	RCache.Vertex.Buffer(), RCache.QuadIB);
 
 		u32 fvf_aa_AA				= D3DFVF_XYZRHW|D3DFVF_TEX7|D3DFVF_TEXCOORDSIZE2(0)|D3DFVF_TEXCOORDSIZE2(1)|D3DFVF_TEXCOORDSIZE2(2)|D3DFVF_TEXCOORDSIZE2(3)|D3DFVF_TEXCOORDSIZE2(4)|D3DFVF_TEXCOORDSIZE4(5)|D3DFVF_TEXCOORDSIZE4(6);
 		g_aa_AA						= Device.Shader.CreateGeom	(fvf_aa_AA,		RCache.Vertex.Buffer(), RCache.QuadIB);

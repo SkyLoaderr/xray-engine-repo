@@ -73,8 +73,8 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 				break;
 			}
 		}
-		if (bIntersect)	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,	D3DCULL_CW	)); 	// back
-		else			CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,	D3DCULL_CCW	)); 	// front
+		if (bIntersect)	{CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,	D3DCULL_CW	));} 	// back
+		else			{CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,	D3DCULL_CCW	));} 	// front
 	}
 
 	// 2D texgen (texture adjustment matrix)
