@@ -15,7 +15,6 @@
 #include "UI_SoundTools.h"
 #include "UI_OccluderTools.h"
 #include "UI_GlowTools.h"
-#include "UI_DPatchTools.h"
 #include "UI_RPointTools.h"
 #include "UI_AITPointTools.h"
 #include "UI_SectorTools.h"
@@ -46,7 +45,6 @@ TUI_Tools::TUI_Tools(TPanel* p)
     AddTool			(etSound, 	new TUI_SoundTools	());
     AddTool			(etOccluder,new TUI_OccluderTools());
     AddTool			(etGlow,   	new TUI_GlowTools	());
-	AddTool			(etDPatch, 	new TUI_DPatchTools	());
     AddTool			(etRPoint, 	new TUI_RPointTools	());
     AddTool			(etSector, 	new TUI_SectorTools	());
     AddTool			(etPortal, 	new TUI_PortalTools	());

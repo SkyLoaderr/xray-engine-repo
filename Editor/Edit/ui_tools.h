@@ -13,7 +13,6 @@ enum ETarget{
     etSound,
     etOccluder,
     etGlow,
-    etDPatch,
     etRPoint,
     etAITPoint,
     etSector,
