@@ -9,6 +9,11 @@
 		<bio>Об этом сталкере не известно ничего, кроме того что он принадлежит группировке "Долг".</bio>
 
 		<team>Dolg_novice</team>
+		
+		<class>Dolg_novice</class>
+		<community>dolg</community>
+
+		
 		<rank>30</rank>
 		<reputation>50</reputation>
 
@@ -27,6 +32,11 @@
 		<bio>Об этом сталкере не известно ничего, кроме того что он принадлежит группировке "Долг".</bio>
 
 		<team>Dolg_general</team>
+
+		<class>Dolg_general</class>
+		<community>dolg</community>
+
+		
 		<rank>50</rank>
 		<reputation>50</reputation>
 
@@ -45,6 +55,10 @@
 		<bio>Об этом сталкере не известно ничего, кроме того что он принадлежит группировке "Долг".</bio>
 
 		<team>Dolg_veteran</team>
+
+		<class>Dolg_veteran</class>
+		<community>dolg</community>
+
 		<rank>70</rank>
 		<reputation>50</reputation>
 
@@ -63,6 +77,10 @@
 		<bio>Об этом сталкере не известно ничего, кроме того что он принадлежит группировке "Долг".</bio>
 
 		<team>Dolg_master</team>
+		
+		<class>Dolg_master</class>
+		<community>dolg</community>
+		
 		<rank>90</rank>
 		<reputation>50</reputation>
 
