@@ -119,6 +119,7 @@ public:
 	virtual IDirect3DBaseTexture9*	texture_load			(LPCSTR	fname)								= 0;
 			void					shader_option_skinning	(s32 mode)									{ m_skinning=mode;	}
 	virtual HRESULT					shader_compile			(
+		LPCSTR							name,
 		LPCSTR                          pSrcData,
 		UINT                            SrcDataLen,
 		void*							pDefines,
