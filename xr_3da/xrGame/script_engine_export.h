@@ -13,7 +13,7 @@
 #include "script_engine.h"
 #include "script_token_list.h"
 #include "script_ini_file.h"
-//#include "object_factory.h"
+#include "object_factory.h"
 #include "script_sound_type.h"
 #include "script_net_packet.h"
 #include "xrServer_Objects_ALife_All.h"
