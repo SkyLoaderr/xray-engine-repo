@@ -2,7 +2,6 @@
 
 #include "WeaponBinoculars.h"
 #include "WeaponHUD.h"
-#include "xr_weapon_list.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

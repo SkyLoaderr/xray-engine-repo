@@ -1,14 +1,13 @@
 #include "stdafx.h"
 #include "effectorshot.h"
-#include "..\xr_tokens.h"
-#include "..\PSObject.h"
-#include "..\xr_trims.h"
+#include "../xr_tokens.h"
+#include "../PSObject.h"
+#include "../xr_trims.h"
 #include "hudmanager.h"
 
 #include "WeaponHUD.h"
 #include "WeaponM134.h"
 #include "entity.h"
-#include "xr_weapon_list.h"
 
 void __stdcall CWeaponM134::RotateCallback_norm(CBoneInstance* B)
 {
@@ -86,7 +85,7 @@ CWeaponM134::~CWeaponM134()
 	pSounds->Delete(sndFireLoop);
 	pSounds->Delete(sndFireEnd);
 	pSounds->Delete(sndServo);
-	for (int i=0; i<SND_RIC_COUNT; i++) pSounds->Delete(sndRicochet[i]);
+	for (int i=0; i<SND_RIC_COUNT; ++i) pSounds->Delete(sndRicochet[i]);
 }
 
 void CWeaponM134::Load	(LPCSTR section)
@@ -134,7 +133,7 @@ void CWeaponM134::FlameLOAD()
 	u32 scnt		= _GetItemCount(S);
 	char name		[255];
 	ref_shader		tmp;
-	for (u32 i=0; i<scnt; i++)
+	for (u32 i=0; i<scnt; ++i)
 	{
 		tmp.create			("effects\\flame",_GetItem(S,i,name));
 		hFlames.push_back	(tmp);
@@ -142,7 +141,7 @@ void CWeaponM134::FlameLOAD()
 }
 void CWeaponM134::FlameUNLOAD()
 {
-	for (u32 i=0; i<hFlames.size(); i++)
+	for (u32 i=0; i<hFlames.size(); ++i)
 		hFlames[i].destroy();
 	hFlames.clear();
 }
@@ -233,7 +232,7 @@ void CWeaponM134::Update	(u32 T)
 	// on state change
 	if (st_target!=st_current)
 	{
-		if (st_target != eM134Idle) UpdateFP();
+		if (eM134Idle != st_target) UpdateFP();
 
 		switch(st_target){
 		case eM134Spinup:
@@ -271,7 +270,7 @@ void CWeaponM134::Update	(u32 T)
 	}
 
 	// cycle update
-	if (st_current != eM134Idle) UpdateFP();
+	if (eM134Idle != st_current) UpdateFP();
 	switch (st_current)
 	{
 	case eM134Idle:

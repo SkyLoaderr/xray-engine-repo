@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "weaponshotgun.h"
 #include "WeaponHUD.h"
-#include "xr_weapon_list.h"
 #include "entity.h"
 #include "effectorshot.h"
 #include "ParticlesObject.h"
@@ -154,7 +153,7 @@ void CWeaponShotgun::switch2_Fire2	()
 		if (E) E->g_fireParams		(p1,d);
 		bFlame						=	TRUE;
 		OnShotBoth						();
-		//iAmmoElapsed	--;
+		//--iAmmoElapsed;
 		FireTrace					(p1,vLastFP,d);
 		FireTrace					(p1,vLastFP,d);
 		fTime						+= fTimeToFire*2.f;
@@ -168,7 +167,7 @@ void CWeaponShotgun::switch2_Fire2	()
 #define FLAME_TIME 0.05f
 void CWeaponShotgun::OnDrawFlame	()
 {
-	if(STATE != eFire2) inherited::OnDrawFlame();
+	if(eFire2 != STATE) inherited::OnDrawFlame();
 	else if (fFlameTime>0)	
 	{
 		// fire flash
@@ -178,7 +177,7 @@ void CWeaponShotgun::OnDrawFlame	()
 		float k=fFlameTime/FLAME_TIME;
 		Fvector D; D.mul(vLastFD,::Random.randF(fFlameLength*k)/float(iFlameDiv));
 		float f = fFlameSize;
-		for (int i=0; i<iFlameDiv; i++)
+		for (int i=0; i<iFlameDiv; ++i)
 		{
 			f		*= 0.9f;
 			float	S = f+f*::Random.randF	();
@@ -199,7 +198,7 @@ void CWeaponShotgun::OnDrawFlame	()
 		k=fFlameTime/FLAME_TIME;
 		D; D.mul(vLastFD,::Random.randF(fFlameLength*k)/float(iFlameDiv));
 		f = fFlameSize;
-		for (int i=0; i<iFlameDiv; i++)
+		for (int i=0; i<iFlameDiv; ++i)
 		{
 			f		*= 0.9f;
 			float	S = f+f*::Random.randF	();
@@ -220,7 +219,7 @@ void CWeaponShotgun::renderable_Render	()
 }
 
 
-BOOL CWeaponShotgun::FireTrace2		(const Fvector& P, const Fvector& Peff, Fvector& D)
+BOOL CWeaponShotgun::FireTrace2		(const Fvector& P, const Fvector& /**Peff/**/, Fvector& D)
 {
 	BOOL bResult = 0;
 	int grape_shot = 5;
@@ -300,7 +299,7 @@ BOOL CWeaponShotgun::FireTrace2		(const Fvector& P, const Fvector& Peff, Fvector
 	//// Ammo
 	//if (Local()) 
 	//{
-	//	////iAmmoElapsed	--;
+	//	////--iAmmoElapsed;
 	//	if (/*iAmmoElapsed==*/0) 
 	//	{
 	//		OnMagazineEmpty	();

@@ -7,7 +7,6 @@
 #include "WeaponMagazined.h"
 #include "entity.h"
 #include "actor.h"
-#include "xr_weapon_list.h"
 #include "actor.h"
 #include "ParticlesObject.h"
 
@@ -109,7 +108,7 @@ void CWeaponMagazined::FireStart		()
 	} 
 	else 
 	{
-		if(STATE!=eReload && STATE!=eMisfire) OnMagazineEmpty();
+		if(eReload!=STATE && eMisfire!=STATE) OnMagazineEmpty();
 		//if (1/*!iAmmoElapsed && !iAmmoCurrent*/)	
 		//	
 	}
@@ -156,7 +155,7 @@ void CWeaponMagazined::TryReload()
 			SwitchState(eReload); 
 			return;
 		} 
-		else for(u32 i = 0; i < m_ammoTypes.size(); i++) 
+		else for(u32 i = 0; i < m_ammoTypes.size(); ++i) 
 		{
 			m_pAmmo = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(*m_ammoTypes[i],
 																   !dynamic_cast<CActor*>(H_Parent())));
@@ -171,8 +170,8 @@ void CWeaponMagazined::TryReload()
 	}
 	SwitchState(eIdle);
 
-	////if(m_pInventory) for(PPIItem l_ppIItem = m_pInventory->m_belt.begin(); l_ppIItem != m_pInventory->m_belt.end(); l_ppIItem++) {
-	////	//for(u32 i = 0; i < m_ammoTypes.size(); i++) if(!strcmp((*l_ppIItem)->cName(), m_ammoTypes[i])) {
+	////if(m_pInventory) for(PPIItem l_ppIItem = m_pInventory->m_belt.begin(); m_pInventory->m_belt.end() != l_ppIItem; ++l_ppIItem) {
+	////	//for(u32 i = 0; i < m_ammoTypes.size(); ++i) if(!strcmp((*l_ppIItem)->cName(), m_ammoTypes[i])) {
 	////	if(!strcmp((*l_ppIItem)->cName(), m_ammoTypes[m_ammoType])) {
 	////		SwitchState(eReload);
 	////		return;
@@ -188,7 +187,7 @@ bool CWeaponMagazined::IsAmmoAvailable()
 	if (dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(*m_ammoTypes[m_ammoType],!dynamic_cast<CActor*>(H_Parent()))))
 		return	(true);
 	else
-		for(u32 i = 0; i < m_ammoTypes.size(); i++)
+		for(u32 i = 0; i < m_ammoTypes.size(); ++i)
 			if (dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(*m_ammoTypes[i],!dynamic_cast<CActor*>(H_Parent()))))
 				return	(true);
 	return		(false);
@@ -208,22 +207,22 @@ void CWeaponMagazined::UnloadMagazine()
 	{
 		CCartridge &l_cartridge = m_magazine.top();
 		xr_map<LPCSTR, u16>::iterator l_it;
-		for(l_it = l_ammo.begin(); l_it != l_ammo.end(); l_it++) 
+		for(l_it = l_ammo.begin(); l_ammo.end() != l_it; ++l_it) 
 		{
             if(!strcmp(*l_cartridge.m_ammoSect, l_it->first)) 
             { 
-				 l_it->second++; 
+				 ++(l_it->second); 
 				 break; 
 			}
 		}
 
 		if(l_it == l_ammo.end()) l_ammo[*l_cartridge.m_ammoSect] = 1;
 		m_magazine.pop(); 
-		iAmmoElapsed--;
+		--iAmmoElapsed;
 	}
 	
 	xr_map<LPCSTR, u16>::iterator l_it;
-	for(l_it = l_ammo.begin(); l_it != l_ammo.end(); l_it++) 
+	for(l_it = l_ammo.begin(); l_ammo.end() != l_it; ++l_it) 
 	{
 		CWeaponAmmo *l_pA = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(l_it->first,
 														!dynamic_cast<CActor*>(H_Parent())));
@@ -257,7 +256,7 @@ void CWeaponMagazined::ReloadMagazine()
 		
 		if(!m_pAmmo && !l_lockType) 
 		{
-			for(u32 i = 0; i < m_ammoTypes.size(); i++) 
+			for(u32 i = 0; i < m_ammoTypes.size(); ++i) 
 			{
 				//проверить патроны всех подходящих типов
 				m_pAmmo = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(*m_ammoTypes[i],
@@ -283,7 +282,7 @@ void CWeaponMagazined::ReloadMagazine()
 	CCartridge l_cartridge;
 	while(iAmmoElapsed < iMagazineSize && m_pAmmo->Get(l_cartridge)) 
 	{
-		iAmmoElapsed++;
+		++iAmmoElapsed;
 		m_magazine.push(l_cartridge);
 	}
 	m_ammoName = m_pAmmo->m_nameShort;
@@ -394,7 +393,7 @@ void CWeaponMagazined::state_Fire	(float dt)
 		bFlame			=	TRUE;
 		fTime			+=	fTimeToFire;
 
-		m_shotNum++;
+		++m_shotNum;
 		OnShot			();
 		FireTrace		(p1,vLastFP,d);
 	}
@@ -404,7 +403,7 @@ void CWeaponMagazined::state_Fire	(float dt)
 	if(m_shotNum == m_queueSize) FireEnd();
 }
 
-void CWeaponMagazined::state_Misfire	(float dt)
+void CWeaponMagazined::state_Misfire	(float /**dt/**/)
 {
 	UpdateFP				();
 	OnEmptyClick			();
@@ -415,7 +414,7 @@ void CWeaponMagazined::state_Misfire	(float dt)
 	UpdateSounds			();
 }
 
-void CWeaponMagazined::state_MagEmpty	(float dt)
+void CWeaponMagazined::state_MagEmpty	(float /**dt/**/)
 {
 	UpdateFP				();
 	OnEmptyClick			();
@@ -483,7 +482,7 @@ void CWeaponMagazined::MediaLOAD		()
 	LPCSTR S		= pSettings->r_string	(cNameSect(),"flame");
 	u32 scnt		= _GetItemCount(S);
 	string256		name;
-	for (u32 i=0; i<scnt; i++)
+	for (u32 i=0; i<scnt; ++i)
 	{
 		hFlames.push_back	(ref_shader());
 		ShaderCreate		(hFlames.back(),"effects\\flame",_GetItem(S,i,name));
@@ -492,7 +491,7 @@ void CWeaponMagazined::MediaLOAD		()
 
 void CWeaponMagazined::MediaUNLOAD	()
 {
-	for (u32 i=0; i<hFlames.size(); i++)
+	for (u32 i=0; i<hFlames.size(); ++i)
 		ShaderDestroy(hFlames[i]);
 	hFlames.clear();
 }
@@ -701,11 +700,11 @@ bool CWeaponMagazined::CanAttach(PIItem pIItem)
 bool CWeaponMagazined::CanDetach(const char* item_section_name)
 {
 	if( m_eScopeStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
-	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonScope) != 0 &&
+	   0 != (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonScope) &&
 	   strcmp(*m_sScopeName, item_section_name))
        return true;
 	else if(m_eSilencerStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
-	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonSilencer) != 0 &&
+	   0 != (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonSilencer) &&
 	   strcmp(*m_sSilencerName, item_section_name))
        return true;
 	else
@@ -757,7 +756,7 @@ bool CWeaponMagazined::Attach(PIItem pIItem)
 bool CWeaponMagazined::Detach(const char* item_section_name)
 {
 	if(m_eScopeStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
-	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonScope) != 0 &&
+	   0 != (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonScope) &&
 	   !strcmp(*m_sScopeName, item_section_name))
 	{
 		m_flagsAddOnState &= ~CSE_ALifeItemWeapon::eWeaponAddonScope;
@@ -766,7 +765,7 @@ bool CWeaponMagazined::Detach(const char* item_section_name)
 		return CInventoryItem::Detach(item_section_name);
 	}
 	else if(m_eSilencerStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
-	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonSilencer) != 0 &&
+	   0 != (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonSilencer) &&
 	   !strcmp(*m_sSilencerName, item_section_name))
 	{
 		m_flagsAddOnState &= ~CSE_ALifeItemWeapon::eWeaponAddonSilencer;
