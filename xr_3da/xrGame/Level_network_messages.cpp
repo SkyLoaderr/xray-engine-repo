@@ -69,5 +69,7 @@ void CLevel::ClientReceive()
 			}
 			break;
 		}
+		
+		net_r
 	}
 }
