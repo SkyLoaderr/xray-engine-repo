@@ -121,7 +121,7 @@ void FTreeVisual::Render	(float LOD)
 	RCache.set_c			(c_c_sun,	c_scale.sun,c_bias.sun,0,0);								// sun
 
 	// render
-	RCache.set_xform_world	(xform);
+	// RCache.set_xform_world (xform);
 	RCache.set_Geometry		(hGeom);
 	RCache.Render			(D3DPT_TRIANGLELIST,vBase,0,vCount,iBase,dwPrimitives);
 }

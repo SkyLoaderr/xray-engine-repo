@@ -333,7 +333,15 @@ void CRender::add_leafs_Static(IRender_Visual *pVisual)
 				for (; I!=E; I++)	add_leafs_Static (*I);
 			}
 		}
-		break;
+		return;
+	case MT_TREE:
+		{
+			// Insert (as dynamic)
+			FTreeVisual*	pV			= (FTreeVisual*)pVisual;
+			set_Transform				(&pV->xform);
+			r_dsgraph_insert_dynamic	(pVisual,pV->vis.sphere.P);
+		}
+		return;
 	default:
 		{
 			// General type of visual
@@ -495,10 +503,18 @@ void CRender::add_Static(IRender_Visual *pVisual, u32 planes)
 			}
 		}
 		break;
+	case MT_TREE:
+		{
+			// Insert (as dynamic)
+			FTreeVisual*	pV			= (FTreeVisual*)pVisual;
+			set_Transform				(&pV->xform);
+			r_dsgraph_insert_dynamic	(pVisual,pV->vis.sphere.P);
+		}
+		return;
 	default:
 		{
 			// General type of visual
-			r_dsgraph_insert_static(pVisual);
+			r_dsgraph_insert_static		(pVisual);
 		}
 		break;
 	}
