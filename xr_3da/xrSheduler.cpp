@@ -243,5 +243,6 @@ void CSheduler::Update				()
 	ProcessStep						();
 	clamp							(psShedulerTarget,3.f,66.f);
 	psShedulerCurrent				= 0.9f*psShedulerCurrent + 0.1f*psShedulerTarget;
+	Device.Statistic.fShedulerLoad	= psShedulerCurrent;
 	Device.Statistic.Sheduler.End	();
 }
