@@ -143,12 +143,12 @@ void CAI_Soldier::g_fireParams(Fvector &fire_pos, Fvector &fire_dir)
 	}
 }
 
-float CAI_Soldier::OnVisible()
+void CAI_Soldier::OnVisible()
 {
 	inherited::OnVisible();
 
 	Weapons->OnRender(FALSE);
-	return(0);
+	//return(0);
 }
 
 // when someone hit soldier
