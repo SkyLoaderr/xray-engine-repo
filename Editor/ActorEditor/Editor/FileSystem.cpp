@@ -121,7 +121,7 @@ bool CFileSystem::GetOpenName( FSPath& initial, char *buffer, int sz_buf, bool b
 	OPENFILENAME ofn;
 	memset( &ofn, 0, sizeof(ofn) );
     ofn.lStructSize		= sizeof(OPENFILENAME);
-	ofn.hwndOwner 		= GetTopWindow(0);
+	ofn.hwndOwner 		= GetForegroundWindow();
 	ofn.lpstrDefExt 	= initial.m_DefExt;
 	ofn.lpstrFile 		= buffer;
 	ofn.nMaxFile 		= sz_buf;
@@ -175,7 +175,7 @@ bool CFileSystem::GetSaveName( FSPath& initial, char *buffer, int sz_buf, LPCSTR
 
 	OPENFILENAME ofn;
 	memset( &ofn, 0, sizeof(ofn) );
-	ofn.hwndOwner 		= GetTopWindow(0);
+	ofn.hwndOwner 		= GetForegroundWindow();
 	ofn.lpstrDefExt 	= initial.m_DefExt;
 	ofn.lpstrFile 		= buffer;
 	ofn.lpstrFilter 	= flt;
