@@ -172,7 +172,7 @@ IC void own_axis_angle(const Fmatrix& m,Fvector& axis,float& angle){
 IC void axis_angleB(const Fmatrix& m, const Fvector& axis,float& angle){
 
 	Fvector ort1,ort2;
-	if(!(axis.z==0.f&&axis.y==0.f)){
+	if(!(fis_zero(axis.z)&&fis_zero(axis.y))){
 		ort1.set(0.f,-axis.z,axis.y);
 		ort2.crossproduct(axis,ort1);
 	}
@@ -206,7 +206,7 @@ IC void axis_angleA(const Fmatrix& m, const Fvector& axis,float& angle){
 
 	Fvector ort1,ort2,axis_t;
 	m.transform_dir(axis_t,axis);
-	if(!(axis_t.z==0.f&&axis_t.y==0.f)){
+	if(!(fis_zero(axis_t.z)&&fis_zero(axis_t.y))){
 		ort1.set(0.f,-axis_t.z,axis_t.y);
 		ort2.crossproduct(axis_t,ort1);
 	}
