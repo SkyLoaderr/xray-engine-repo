@@ -1346,9 +1346,13 @@ void CAI_Soldier::OnPatrolRoute()
 			if (m_tpSoundBeingPlayed->feedback)			
 				return;
 
-			pSounds->PlayAtPos(*m_tpSoundBeingPlayed,this,vPosition);
+			pSounds->PlayAtPos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
 		}
 	}
+	else
+		if (m_tpSoundBeingPlayed && m_tpSoundBeingPlayed->feedback)
+			m_tpSoundBeingPlayed->feedback->SetPosition(eye_matrix.c);
+
 	
 	if (m_cBodyState != BODY_STATE_LIE)
 		StandUp();
