@@ -146,6 +146,7 @@ public:
 	
 	// temporary buffers for combats
 	ITEM_P_VECTOR					m_tpItemVector;
+	ITEM_P_VECTOR					m_tpTempItemBuffer;
 	// constructors/destructors
 									CSE_ALifeSimulator			(xrServer					*tpServer);
 	virtual							~CSE_ALifeSimulator			();

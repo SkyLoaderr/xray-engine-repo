@@ -28,12 +28,18 @@ CSE_Abstract *CSE_ALifeSimulator::tpfCreateGroupMember(CSE_ALifeGroupAbstract *t
 	tNetPacket.r_begin			(id);
 	k->UPDATE_Read				(tNetPacket);
 	strcpy						(k->s_name,S);
-	strcpy						(k->s_name_replace,S);
 	k->m_tSpawnID				= j->m_tSpawnID;
 	k->ID						= m_tpServer->PerformIDgen(0xffff);
 	k->m_bDirectControl			= false;
 	k->m_bALifeControl			= true;
 	CSE_ALifeObjectRegistry::Add(k);
+	strcpy						(k->s_name_replace,k->s_name);
+	if (k->ID < 1000)
+			strcat				(k->s_name_replace,"0");
+	if (k->ID < 100)
+		strcat					(k->s_name_replace,"0");
+	if (k->ID < 10)
+		strcat					(k->s_name_replace,"0");
 	string16					S1;
 	strcat						(k->s_name_replace,itoa(k->ID,S1,10));
 	vfUpdateDynamicData			(k);
@@ -171,8 +177,13 @@ void CSE_ALifeSimulator::vfGenerateAnomalousZones()
 				l_tpALifeItemArtefact->m_fAnomalyValue = l_tpALifeAnomalousZone->m_maxPower*(1.f - i->o_Position.distance_to(l_tpSpawnAnomalousZone->o_Position)/l_tpSpawnAnomalousZone->m_fRadius);
 
 				CSE_ALifeObjectRegistry::Add(i);
-				strcpy					(l_tpALifeItemArtefact->s_name,l_tpSpawnAnomalousZone->m_cppArtefactSections[p]);
-				strcpy					(l_tpALifeItemArtefact->s_name_replace,l_tpSpawnAnomalousZone->m_cppArtefactSections[p]);
+				strcpy					(l_tpALifeItemArtefact->s_name_replace,l_tpALifeItemArtefact->s_name);
+				if (l_tpALifeItemArtefact->ID < 1000)
+					strcat				(l_tpALifeItemArtefact->s_name_replace,"0");
+				if (l_tpALifeItemArtefact->ID < 100)
+					strcat				(l_tpALifeItemArtefact->s_name_replace,"0");
+				if (l_tpALifeItemArtefact->ID < 10)
+					strcat				(l_tpALifeItemArtefact->s_name_replace,"0");
 				string16				S1;
 				strcat					(l_tpALifeItemArtefact->s_name_replace,itoa(l_tpALifeItemArtefact->ID,S1,10));
 				vfUpdateDynamicData		(i);

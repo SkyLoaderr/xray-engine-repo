@@ -455,12 +455,12 @@ bool CSE_ALifeHumanAbstract::bfCanGetItem(CSE_ALifeInventoryItem *tpALifeInvento
 		return		(false);
 	
 	if (tpALifeInventoryItem)
-		m_tpTempItemBuffer.resize(children.size() + 1);
+		m_tpALife->m_tpTempItemBuffer.resize(children.size() + 1);
 	
 	{
 		OBJECT_IT	i = children.begin();
 		OBJECT_IT	e = children.end();
-		ITEM_P_IT	I = m_tpTempItemBuffer.begin();
+		ITEM_P_IT	I = m_tpALife->m_tpTempItemBuffer.begin();
 		for ( ; i != e; i++, I++)
 			*I		= dynamic_cast<CSE_ALifeInventoryItem*>(m_tpALife->tpfGetObjectByID(*i));
 		if (tpALifeInventoryItem)
@@ -469,8 +469,8 @@ bool CSE_ALifeHumanAbstract::bfCanGetItem(CSE_ALifeInventoryItem *tpALifeInvento
 
 	m_tpALife->m_tpWeaponVector.assign(m_tpALife->m_tpWeaponVector.size(),0);
 	{
-		ITEM_P_IT		I = m_tpTempItemBuffer.begin();
-		ITEM_P_IT		E = m_tpTempItemBuffer.end();
+		ITEM_P_IT		I = m_tpALife->m_tpTempItemBuffer.begin();
+		ITEM_P_IT		E = m_tpALife->m_tpTempItemBuffer.end();
 		for ( ; I != E; I++) {
 			CSE_ALifeItemWeapon	*l_tpALifeItemWeapon = dynamic_cast<CSE_ALifeItemWeapon*>(*I);
 			if (l_tpALifeItemWeapon && (!m_tpALife->m_tpWeaponVector[l_tpALifeItemWeapon->m_dwSlot] || (m_tpALife->m_tpWeaponVector[l_tpALifeItemWeapon->m_dwSlot]->m_iVolume < l_tpALifeItemWeapon->m_iVolume)))
@@ -478,17 +478,17 @@ bool CSE_ALifeHumanAbstract::bfCanGetItem(CSE_ALifeInventoryItem *tpALifeInvento
 		}
 	}
 	{
-		ITEM_P_IT		I = remove_if(m_tpTempItemBuffer.begin(),m_tpTempItemBuffer.end(),CRemoveSlotAndCellItemsPredicate(&m_tpALife->m_tpWeaponVector,6));
-		m_tpTempItemBuffer.erase(I,m_tpTempItemBuffer.end());
+		ITEM_P_IT		I = remove_if(m_tpALife->m_tpTempItemBuffer.begin(),m_tpALife->m_tpTempItemBuffer.end(),CRemoveSlotAndCellItemsPredicate(&m_tpALife->m_tpWeaponVector,6));
+		m_tpALife->m_tpTempItemBuffer.erase(I,m_tpALife->m_tpTempItemBuffer.end());
 	}
 
-	sort			(m_tpTempItemBuffer.begin(),m_tpTempItemBuffer.end(),CSortItemVolumePredicate());
+	sort			(m_tpALife->m_tpTempItemBuffer.begin(),m_tpALife->m_tpTempItemBuffer.end(),CSortItemVolumePredicate());
 
 #pragma todo("Dima to Dima,Oles,AlexMX,Yura,Jim,Kostia : Instead of greeding algorithm implement faster algorithm which _always_ computes _correct_ result (though this problem seems to be NP)")
 
 	u64				l_qwInventoryBitMask = 0;
-	ITEM_P_IT		I = m_tpTempItemBuffer.begin();
-	ITEM_P_IT		E = m_tpTempItemBuffer.end();
+	ITEM_P_IT		I = m_tpALife->m_tpTempItemBuffer.begin();
+	ITEM_P_IT		E = m_tpALife->m_tpTempItemBuffer.end();
 	for ( ; I != E; I++) {
 		bool		l_bOk = true;
 		u64			l_qwItemBitMask = (*I)->m_qwGridBitMask;
