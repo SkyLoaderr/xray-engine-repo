@@ -53,7 +53,7 @@ void		CDetailManager::cache_Decompress(Slot* S)
 #ifdef _EDITOR
 	// Select polygons
 	SBoxPickInfoVec		pinf;
-	Scene.BoxPick		(D.vis.box,pinf,GetSnapObjects());
+	Scene.BoxPick		(D.vis.box,pinf,&GetSnapList());
 	u32	triCount		= pinf.size();
 #else
 	XRC.box_query		(g_pGameLevel->ObjectSpace.GetStaticModel(),bC,bD);
@@ -79,10 +79,11 @@ void		CDetailManager::cache_Decompress(Slot* S)
 	u32			d_size		= iCeil	(dm_slot_size/density);
 	svector<int,dm_obj_in_slot>		selected;
 
-	CRandom				r_selection	(0x12071980^::Random.randI(32760));
-	CRandom				r_jitter	(0x12071980^::Random.randI(32760));
-	CRandom				r_yaw		(0x12071980^::Random.randI(32760));
-	CRandom				r_scale		(0x12071980^::Random.randI(32760));
+    u32 p_rnd	= D.sx*D.sz; // нужно для того чтобы убрать полосы(ряды)
+	CRandom				r_selection	(0x12071980^p_rnd);
+	CRandom				r_jitter	(0x12071980^p_rnd);
+	CRandom				r_yaw		(0x12071980^p_rnd);
+	CRandom				r_scale		(0x12071980^p_rnd);
 
 	// Prepare to actual-bounds-calculations
 	Fbox				Bounds;
