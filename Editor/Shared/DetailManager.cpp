@@ -8,7 +8,7 @@
 #include "xr_creator.h"
 #include "collide\cl_intersect.h"
 
-const DWORD	vs_size				= 3000;
+const DWORD	vs_size				= 3000*2;
 const float slot_size			= 4.f;
 const float slot_radius			= 2.83f;
 
