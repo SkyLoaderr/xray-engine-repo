@@ -28,7 +28,9 @@ void CSkeletonX::_Copy		(CSkeletonX *B)
 	Parent					= NULL;
 	Vertices1W				= B->Vertices1W;
 	Vertices2W				= B->Vertices2W;
-	cache_DiscardID			= 0xffffffff;
+	cache_DiscardID			= B->cache_DiscardID;
+	cache_vCount			= B->cache_vCount;
+	cache_vOffset			= B->cache_vOffset;
 	RenderMode				= B->RenderMode;
 	RMS_boneid				= B->RMS_boneid;
 }
