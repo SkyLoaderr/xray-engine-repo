@@ -27,7 +27,7 @@ ListItem* CListHelper::CreateItem	(ListItemsVec& items, LPCSTR key, int type, u3
     return			item;
 }
 
-bool CListHelper::NameAfterEdit(ListItem* sender, ref_str value, ref_str& N)
+bool CListHelper::NameAfterEdit(ListItem* sender, LPCSTR value, ref_str& N)
 {
 	N	= AnsiString(N.c_str()).LowerCase().c_str();
     if (!N.size())	{ N=value; return false; }
@@ -49,7 +49,7 @@ bool CListHelper::NameAfterEdit(ListItem* sender, ref_str value, ref_str& N)
     AnsiString tmp;
 	_ReplaceItem(*sender->key,	_GetItemCount(*sender->key,'\\')-1,	N.c_str(),tmp,'\\'); sender->key=tmp.c_str();
     // Имя объекта может быть составным из a\\b\\name
-	_ReplaceItem(value.c_str(),			_GetItemCount(value.c_str(),'\\')-1,		N.c_str(),tmp,'\\');	N=tmp.c_str();
+	_ReplaceItem(value,			_GetItemCount(value,'\\')-1,		N.c_str(),tmp,'\\');	N=tmp.c_str();
     
     return true;
 }

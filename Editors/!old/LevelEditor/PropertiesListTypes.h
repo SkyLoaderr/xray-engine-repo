@@ -19,16 +19,19 @@ enum EPropType{
     PROP_VECTOR, 
 	PROP_TOKEN,
 	PROP_RTOKEN,
-    PROP_SH_TOKEN,
-	PROP_LIST,
+	PROP_RLIST,
 	PROP_COLOR,
 	PROP_FCOLOR,
 	PROP_VCOLOR,
 	PROP_RTEXT,
-	PROP_TEXTURE2,
 	PROP_WAVE,
     PROP_CANVAS,
     PROP_TIME,
+
+	PROP_CTEXT,
+	PROP_CLIST,
+    PROP_SH_TOKEN,
+	PROP_TEXTURE2,
 };
 // refs
 struct 	xr_token;        
@@ -316,6 +319,46 @@ public:
     }
 };
 
+class CTextValue: public PropValue{
+	ref_str				init_value;
+public:
+	LPSTR				value;
+public:
+	typedef fastdelegate::FastDelegate2<PropValue*, ref_str&> 			TOnBeforeEditEvent;
+	typedef fastdelegate::FastDelegate3<PropValue*, ref_str&, bool&> 	TOnAfterEditEvent;
+    TOnBeforeEditEvent	OnBeforeEditEvent;
+    TOnAfterEditEvent	OnAfterEditEvent;
+public:
+	int					lim;
+public:
+						CTextValue		(LPSTR val, int _lim):value(val),init_value(val),lim(_lim)
+    {
+    	OnBeforeEditEvent 	= 0;
+        OnAfterEditEvent	= 0;
+    };
+    virtual ref_str		GetText			(TOnDrawTextEvent OnDrawText)
+    {
+        ref_str txt		= GetValue();
+        if (!OnDrawText.empty())OnDrawText(this, txt);
+        return txt.c_str();
+    }
+    virtual bool		Equal			(PropValue* val)
+    {
+        return (0==xr_strcmp(value,((CTextValue*)val)->value));
+    }
+    bool				ApplyValue		(LPCSTR val)
+    {
+        if (0!=xr_strcmp(value,val)){
+            strcpy		(value,val);
+            return		true;
+        }
+        return 			false;
+    }
+    LPSTR				GetValue		(){return value;}
+    virtual void		ResetValue		(){strcpy(value,init_value.c_str());}
+};
+//------------------------------------------------------------------------------
+
 class ChooseValue: public RTextValue{
 public:
 	u32					m_ChooseID;
@@ -555,19 +598,34 @@ public:
 };
 //------------------------------------------------------------------------------
 
-class ListValue: public RTextValue{
+class RListValue: public RTextValue{
 public:                                   
 	ref_str*			items;
     u32					item_count;
 public:                                   
-						ListValue		(ref_str* val, ref_str* _items, u32 cnt):RTextValue(val),items(_items),item_count(cnt){};
+						RListValue		(ref_str* val, ref_str* _items, u32 cnt):RTextValue(val),items(_items),item_count(cnt){};
 	virtual bool		Equal			(PropValue* val)
     {
-        if (items!=((ListValue*)val)->items){
+        if (items!=((RListValue*)val)->items){
         	m_Owner->m_Flags.set(PropItem::flDisabled,TRUE); 
         	return false;
         }
         return RTextValue::Equal(val);
+    }
+};
+class CListValue: public CTextValue{
+public:                                   
+	ref_str*			items;
+    u32					item_count;
+public:                                   
+						CListValue		(LPSTR val, u32 sz, ref_str* _items, u32 cnt):CTextValue(val,sz),items(_items),item_count(cnt){};
+	virtual bool		Equal			(PropValue* val)
+    {
+        if (items!=((CListValue*)val)->items){
+        	m_Owner->m_Flags.set(PropItem::flDisabled,TRUE); 
+        	return false;
+        }
+        return CTextValue::Equal(val);
     }
 };
 //------------------------------------------------------------------------------

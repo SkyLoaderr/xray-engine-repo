@@ -20,10 +20,13 @@ public:
     virtual void 				__stdcall 	floatRDOnAfterEdit	(PropValue* sender,  float& edit_val, bool& accepted);
     virtual void 				__stdcall 	floatRDOnBeforeEdit	(PropValue* sender,  float& edit_val);
     virtual void 				__stdcall 	floatRDOnDraw		(PropValue* sender,  ref_str& draw_val);
-// name edit
-    virtual void 				__stdcall  	NameAfterEdit		(PropValue* sender, ref_str& edit_val, bool& accepted);
+// R-name edit
     virtual void				__stdcall  	NameBeforeEdit		(PropValue* sender, ref_str& edit_val);
+    virtual void 				__stdcall  	NameAfterEdit		(PropValue* sender, ref_str& edit_val, bool& accepted);
     virtual void 				__stdcall  	NameDraw			(PropValue* sender, ref_str& draw_val);
+// C-name edit
+    virtual void 				__stdcall  	CNameAfterEdit		(PropValue* sender, ref_str& edit_val, bool& accepted);
+    virtual void 				__stdcall  	CNameDraw			(PropValue* sender, ref_str& draw_val);
 public:
     virtual CaptionValue*  		__stdcall	CreateCaption	    (PropItemVec& items, ref_str key, ref_str val);
     virtual CanvasValue*		__stdcall	CreateCanvas	    (PropItemVec& items, ref_str key, ref_str val, int height);
@@ -47,8 +50,7 @@ public:
 	virtual RToken8Value* 		__stdcall	CreateRToken8	    (PropItemVec& items, ref_str key, u8* val,  xr_rtoken* token, u32 t_cnt);
 	virtual RToken16Value* 		__stdcall	CreateRToken16	    (PropItemVec& items, ref_str key, u16* val, xr_rtoken* token, u32 t_cnt);
 	virtual RToken32Value* 		__stdcall	CreateRToken32	    (PropItemVec& items, ref_str key, u32* val, xr_rtoken* token, u32 t_cnt);
-	virtual TokenValueSH*   	__stdcall	CreateTokenSH	    (PropItemVec& items, ref_str key, u32* val, const TokenValueSH::Item* lst, u32 cnt);
-	virtual ListValue* 	 		__stdcall	CreateList		    (PropItemVec& items, ref_str key, ref_str* val, ref_str* lst, u32 cnt);
+	virtual RListValue* 	 	__stdcall	CreateRList		    (PropItemVec& items, ref_str key, ref_str* val, ref_str* lst, u32 cnt);
     virtual U32Value*  			__stdcall	CreateColor		    (PropItemVec& items, ref_str key, u32* val);
     virtual ColorValue*			__stdcall	CreateFColor	    (PropItemVec& items, ref_str key, Fcolor* val);
     virtual VectorValue*		__stdcall	CreateVColor	    (PropItemVec& items, ref_str key, Fvector* val);
@@ -60,6 +62,13 @@ public:
     virtual VectorValue* 		__stdcall	CreateAngle3	    (PropItemVec& items, ref_str key, Fvector* val, float mn=0.f, float mx=PI_MUL_2, float inc=0.01f, int decim=2);
     virtual RTextValue* 		__stdcall	CreateName		    (PropItemVec& items, ref_str key, ref_str* val, ListItem* owner);
 	virtual RTextValue* 		__stdcall	CreateNameCB		(PropItemVec& items, ref_str key, ref_str* val, TOnDrawTextEvent=0, RTextValue::TOnBeforeEditEvent=0, RTextValue::TOnAfterEditEvent=0);
+
+	// obsolette    
+    virtual CTextValue* 		__stdcall	CreateCText			(PropItemVec& items, ref_str key, LPSTR val, u32 sz);
+	virtual CListValue* 	 	__stdcall	CreateCList		    (PropItemVec& items, ref_str key, LPSTR val, u32 sz, ref_str* lst, u32 cnt);
+    virtual CTextValue* 		__stdcall	CreateCName		    (PropItemVec& items, ref_str key, LPSTR val, u32 sz, ListItem* owner);
+	virtual TokenValueSH*   	__stdcall	CreateTokenSH	    (PropItemVec& items, ref_str key, u32* val, const TokenValueSH::Item* lst, u32 cnt);
+    virtual CTextValue* 		__stdcall	CreateTexture		(PropItemVec& items, ref_str key, LPSTR val, u32 sz);
 };
 //---------------------------------------------------------------------------
 #endif

@@ -88,8 +88,8 @@ RToken32Value* 	CPropHelper::CreateRToken32	(PropItemVec& items, ref_str key, u3
 {   return		(RToken32Value*)AppendValue	(items,key,xr_new<RToken32Value>(val,token,t_cnt),PROP_RTOKEN);		}
 TokenValueSH*   CPropHelper::CreateTokenSH	(PropItemVec& items, ref_str key, u32* val, const TokenValueSH::Item* lst, u32 cnt)
 {   return		(TokenValueSH*)	AppendValue	(items,key,xr_new<TokenValueSH>(val,lst,cnt),PROP_SH_TOKEN);		}
-ListValue* 	 	CPropHelper::CreateList		(PropItemVec& items, ref_str key, ref_str* val, ref_str* lst, u32 cnt)
-{   return		(ListValue*)	AppendValue	(items,key,xr_new<ListValue>(val,lst,cnt),PROP_LIST);       			}
+RListValue* 	 CPropHelper::CreateRList	(PropItemVec& items, ref_str key, ref_str* val, ref_str* lst, u32 cnt)
+{   return		(RListValue*)	AppendValue	(items,key,xr_new<RListValue>(val,lst,cnt),PROP_RLIST);       		}
 U32Value*  		CPropHelper::CreateColor   	(PropItemVec& items, ref_str key, u32* val)
 {   return		(U32Value*)		AppendValue	(items,key,xr_new<U32Value>(val,0x00000000,0xffffffff,1,0),PROP_COLOR);}
 ColorValue*		CPropHelper::CreateFColor	(PropItemVec& items, ref_str key, Fcolor* val)
@@ -102,6 +102,24 @@ WaveValue* 		CPropHelper::CreateWave		(PropItemVec& items, ref_str key, WaveForm
 {	return		(WaveValue*)	AppendValue	(items,key,xr_new<WaveValue>(val),PROP_WAVE);           			}
 FloatValue* 	CPropHelper::CreateTime		(PropItemVec& items, ref_str key, float* val, float mn, float mx)
 {	return		(FloatValue*)	AppendValue	(items,key,xr_new<FloatValue>(val,mn,mx,0,0),PROP_TIME);    		}
+//---------------------------------------------------------------------------
+// obsolette
+//---------------------------------------------------------------------------
+CTextValue* 	CPropHelper::CreateCText	(PropItemVec& items, ref_str key, LPSTR val, u32 sz)
+{   return		(CTextValue*)	AppendValue	(items,key,xr_new<CTextValue>(val,sz),PROP_CTEXT);        				}
+CTextValue* 	CPropHelper::CreateTexture	(PropItemVec& items, ref_str key, LPSTR val, u32 sz)
+{   return		(CTextValue*)	AppendValue	(items,key,xr_new<CTextValue>(val,sz),PROP_TEXTURE2);        				}
+CListValue* 	CPropHelper::CreateCList	(PropItemVec& items, ref_str key, LPSTR val, u32 sz, ref_str* lst, u32 cnt)
+{   return		(CListValue*)	AppendValue	(items,key,xr_new<CListValue>(val,sz,lst,cnt),PROP_CLIST);       			}
+CTextValue* 	CPropHelper::CreateCName	(PropItemVec& items, ref_str key, LPSTR val, u32 sz, ListItem* owner)
+{   CTextValue* V					= (CTextValue*) CreateCText	(items,key,val,sz);
+    V->OnAfterEditEvent.bind		(this,&CPropHelper::NameAfterEdit);
+    V->OnBeforeEditEvent.bind		(this,&CPropHelper::NameBeforeEdit);
+    V->Owner()->OnDrawTextEvent.bind(this,&CPropHelper::NameDraw);
+    V->tag							= (u32)owner; VERIFY(owner);
+    if (V->Owner()->m_Flags.is(PropItem::flMixed)) V->Owner()->m_Flags.set(PropItem::flDisabled,TRUE);
+    return V;					
+}
 //---------------------------------------------------------------------------
     
 FloatValue* 	CPropHelper::CreateAngle 	(PropItemVec& items, ref_str key, float* val, float mn, float mx, float inc, int decim)
@@ -193,6 +211,18 @@ void CPropHelper::NameDraw(PropValue* sender, ref_str& draw_val)
 void CPropHelper::NameAfterEdit(PropValue* sender, ref_str& edit_val, bool& accepted)
 {
 	RTextValue* V	= dynamic_cast<RTextValue*>(sender); VERIFY(V);
+    ListItem* L		= (ListItem*)sender->tag;
+	accepted		= LHelper().NameAfterEdit(L,V->GetValue().c_str(),edit_val);
+}
+void CPropHelper::CNameDraw(PropValue* sender, ref_str& draw_val)
+{
+	CTextValue* V	= dynamic_cast<CTextValue*>(sender); VERIFY(V);
+	int cnt			=_GetItemCount(V->value,'\\');
+	draw_val 		= _SetPos(V->value,cnt-1,'\\');
+}
+void CPropHelper::CNameAfterEdit(PropValue* sender, ref_str& edit_val, bool& accepted)
+{
+	CTextValue* V	= dynamic_cast<CTextValue*>(sender); VERIFY(V);
     ListItem* L		= (ListItem*)sender->tag;
 	accepted		= LHelper().NameAfterEdit(L,V->GetValue(),edit_val);
 }
