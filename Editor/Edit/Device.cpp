@@ -148,7 +148,11 @@ void CRenderDevice::OnDeviceCreate(){
 	Primitive.OnDeviceCreate	();
 //    Scene->OnDeviceCreate		();
 
-///    UpdateFog();
+#ifdef _EDITOR
+    UpdateFog();
+#else
+    UpdateFog(0xffffffff,1.f,100);
+#endif
 
 	// Create TL-primitive
 	{
@@ -202,13 +206,13 @@ void CRenderDevice::OnDeviceDestroy(){
 #include "scene.h"
 void CRenderDevice::UpdateFog(){
 	st_Environment& E	= Scene->m_LevelOp.m_Envs[Scene->m_LevelOp.m_CurEnv];
-    UpdateFog (E.m_FogColor,(psDeviceFlags&rsFog)?E.m_Fogness:0,(psDeviceFlags&rsFog)?E.m_ViewDist:UI->ZFar());
+    UpdateFog (E.m_FogColor.get(),(psDeviceFlags&rsFog)?E.m_Fogness:0,(psDeviceFlags&rsFog)?E.m_ViewDist:UI->ZFar());
 }
 #endif
 
-void CRenderDevice::UpdateFog(const Fcolor& color, float fogness, float view_dist){
+void CRenderDevice::UpdateFog(DWORD color, float fogness, float view_dist){
 	//Fog parameters
-	SetRS( D3DRS_FOGCOLOR,	color.get());
+	SetRS( D3DRS_FOGCOLOR,	color);
 	float start	= (1.0f - fogness)* 0.85f * view_dist;
 	float end	= 0.91f * view_dist;
 	if (HW.Caps.bTableFog)	{

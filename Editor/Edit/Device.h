@@ -133,7 +133,7 @@ public:
     void					Validate		();
     void					UpdateView		();
 	void					UpdateTimer		();
-    void					UpdateFog		(const Fcolor& color, float fogness, float view_dist);
+    void					UpdateFog		(DWORD color, float fogness, float view_dist);
 #ifdef _EDITOR
 	void 					UpdateFog		();
 #endif
