@@ -4,6 +4,8 @@ BOOL CLevel::net_Start	( LPCSTR name, BOOL server )
 {
 	BOOL bResult				= FALSE;
 
+	pApp->LoadBegin				();
+
 	// Force server creation for single-player
 	switch (GAME)
 	{
@@ -65,5 +67,8 @@ BOOL CLevel::net_Start	( LPCSTR name, BOOL server )
 		}
 		break;
 	}
+
+	pApp->LoadEnd					();
+
 	return bResult;
 }
