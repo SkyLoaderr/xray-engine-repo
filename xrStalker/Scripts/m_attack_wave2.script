@@ -47,12 +47,16 @@ function Defender:__init (npc, patrol_way, script_name, monsters, available)
 	self.waiting = 1
 	self.available = available
 	self.attacker = nil					-- монстр, который атакует сталкера. Если не nil, то сталкер свободен :)
-	self.weapon = self.npc:active_item ()
+	self.weapon = nil
 end
 
 function Defender:initialize ()
 	self.npc:script (true, self.script_name)
 	action (self.npc, anim (anim.free), cond (cond.time_end, time_infinite))	
+	self.weapon = self.npc:active_item ()
+	if self.weapon ~= nil then
+	   printf ("Object %s has weapon %s", self.npc:name (), self.weapon:name ())	
+	end
 end
 
 function Defender:find_enemy ()
