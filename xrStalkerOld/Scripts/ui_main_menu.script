@@ -140,7 +140,7 @@ function main_menu:InitControls()
 
 
 	-- PROFILE --
-	local btn = CUI3tButton()
+	local btn = CUIButton()
 	btn:SetAutoDelete(true)
 	btn:SetWindowName("btn_profile")
 	btn:SetFont(self.caption_font)
