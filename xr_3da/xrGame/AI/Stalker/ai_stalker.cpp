@@ -301,7 +301,7 @@ void CAI_Stalker::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_
 {
 	if (m_pPhysics_support->isAlive())
 		inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
-	m_pPhysics_support->in_Hit(P,dir,who,element,p_in_object_space,impulse,g_Alive());
+	m_pPhysics_support->in_Hit(P,dir,who,element,p_in_object_space,impulse,!!g_Alive());
 }
 
 void CAI_Stalker::shedule_Update		( u32 DT )
