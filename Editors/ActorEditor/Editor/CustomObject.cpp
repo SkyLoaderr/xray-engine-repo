@@ -7,7 +7,6 @@
 
 #include "bottombar.h"
 #include "topbar.h"
-#include "editorpref.h"
 #include "customobject.h"
 #include "ui_main.h"
 #include "d3dutils.h"

@@ -10,7 +10,7 @@
 #include "leftbar.h"
 #include "bottombar.h"
 
-#include "EditorPref.h"
+#include "EditorPreferences.h"
 #include "main.h"
 #include "ImageEditor.h"
 #include "SoundEditor.h"
@@ -24,6 +24,7 @@
 #include "SoundManager.h"
 #include "ResourceManager.h"
 #include "igame_persistent.h"
+#include "EditorPreferences.h"
 
 bool TUI::Command( int _Command, int p1, int p2 ){
 	if ((_Command!=COMMAND_INITIALIZE)&&!m_bReady) return false;
@@ -36,6 +37,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 		Engine.Initialize	();
         // make interface
 		//----------------
+        EPrefs.OnCreate		();
         if (UI.OnCreate()){
 			g_pGamePersistent= xr_new<IGame_Persistent>();
             Lib.OnCreate	();
@@ -55,6 +57,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
         }
     	}break;
 	case COMMAND_DESTROY:
+        EPrefs.OnDestroy	();
 		Command				(COMMAND_CLEAR);
 		Device.seqAppCycleEnd.Process(rp_AppCycleEnd);
         xr_delete			(g_pGamePersistent);
@@ -70,7 +73,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     	Quit();
     	break;
 	case COMMAND_EDITOR_PREF:
-	    frmEditPrefs->Run();
+    	EPrefs.Edit			();
         break;
 	case COMMAND_CHANGE_ACTION:
 		Tools.ChangeAction((EAction)p1);
@@ -161,23 +164,23 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     	psDeviceFlags.set(rsDrawGrid,!psDeviceFlags.is(rsDrawGrid));
     	break;
 	case COMMAND_UPDATE_GRID:
-    	DU.UpdateGrid(frmEditPrefs->seGridNumberOfCells->Value,frmEditPrefs->seGridSquareSize->Value);
+    	DU.UpdateGrid(EPrefs.grid_cell_count,EPrefs.grid_cell_size);
 	    OutGridSize();
     	break;
     case COMMAND_GRID_NUMBER_OF_SLOTS:
-    	if (p1)	frmEditPrefs->seGridNumberOfCells->Value += frmEditPrefs->seGridNumberOfCells->Increment;
-        else	frmEditPrefs->seGridNumberOfCells->Value -= frmEditPrefs->seGridNumberOfCells->Increment;
+    	if (p1)	EPrefs.grid_cell_count += 2;
+        else	EPrefs.grid_cell_count -= 2;
         Command(COMMAND_UPDATE_GRID);
     	break;
     case COMMAND_GRID_SLOT_SIZE:{
-    	float step = frmEditPrefs->seGridSquareSize->Increment;
-        float val = frmEditPrefs->seGridSquareSize->Value;
+    	float step = 1.f;
+        float val = EPrefs.grid_cell_size;
     	if (p1){
 	    	if (val<1) step/=10.f;
-        	frmEditPrefs->seGridSquareSize->Value += step;
+        	EPrefs.grid_cell_size += step;
         }else{
 	    	if (fsimilar(val,1.f)||(val<1)) step/=10.f;
-        	frmEditPrefs->seGridSquareSize->Value -= step;
+        	EPrefs.grid_cell_size -= step;
         }
         Command(COMMAND_UPDATE_GRID);
     	}break;

@@ -20,7 +20,7 @@
 #include "topbar.h"
 #include "leftbar.h"
 #include "bottombar.h"
-#include "editorpref.h"
+#include "EditorPreferences.h"
 
 #include "itemlist.h"
 
@@ -91,7 +91,6 @@ bool TUI::OnCreate()
 #ifdef _LEVEL_EDITOR
     m_Cursor        = xr_new<C3DCursor>();
 #endif
-	frmEditPrefs	= xr_new<TfrmEditPrefs>((TComponent*)0);
 	// Creation
 	XRC.ray_options	(CDB::OPT_ONLYNEAREST | CDB::OPT_CULL);
 
@@ -130,7 +129,6 @@ void TUI::OnDestroy()
     Device.ShutDown	();
     
     //----------------
-    xr_delete(frmEditPrefs);
     xr_delete(fraLeftBar);
     xr_delete(fraTopBar);
     xr_delete(fraBottomBar);
@@ -375,12 +373,12 @@ void TUI::SetStatus(LPSTR s, bool bOutLog)
     	if (bOutLog&&s&&s[0]) ELog.Msg(mtInformation,s);
     }
 }
-void TUI::ProgressInfo(LPCSTR text)
+void TUI::ProgressInfo(LPCSTR text, bool bWarn)
 {
 	if (text){
 		fraBottomBar->paStatus->Caption=fraBottomBar->sProgressTitle+" ("+text+")";
     	fraBottomBar->paStatus->Repaint();
-	    ELog.Msg(mtInformation,fraBottomBar->paStatus->Caption.c_str());
+	    ELog.Msg(bWarn?mtError:mtInformation,fraBottomBar->paStatus->Caption.c_str());
     }
 }
 void TUI::ProgressStart(float max_val, const char* text)
@@ -415,10 +413,10 @@ void TUI::ProgressUpdate(float val)
         }
     }
 }
-void TUI::ProgressInc(const char* info)
+void TUI::ProgressInc(const char* info, bool bWarn)
 {
 	VERIFY(m_bReady);
-    ProgressInfo(info);
+    ProgressInfo(info,bWarn);
 	fraBottomBar->fStatusProgress++;
     if (fraBottomBar->fMaxVal>=0){
     	int val = (int)((fraBottomBar->fStatusProgress/fraBottomBar->fMaxVal)*100);
@@ -453,7 +451,7 @@ void TUI::OutGridSize()
 {
 	VERIFY(m_bReady);
     AnsiString s;
-    s.sprintf("Grid: %1.1f",float(frmEditPrefs->seGridSquareSize->Value));
+    s.sprintf("Grid: %1.1f",EPrefs.grid_cell_size);
     fraBottomBar->paGridSquareSize->Caption=s; fraBottomBar->paGridSquareSize->Repaint();
 }
 //---------------------------------------------------------------------------
@@ -608,7 +606,7 @@ void __fastcall TUI::miRecentFilesClick(TObject *Sender)
 void TUI::AppendRecentFile(LPCSTR name)
 {
 #ifdef _HAVE_RECENT_FILES
-	R_ASSERT(fraLeftBar->miRecentFiles->Count<=frmEditPrefs->seRecentFilesCount->Value);
+	R_ASSERT(fraLeftBar->miRecentFiles->Count<=EPrefs.scene_recent_count);
 
 	for (int i = 0; i < fraLeftBar->miRecentFiles->Count; i++)
     	if (fraLeftBar->miRecentFiles->Items[i]->Caption==name){
@@ -616,8 +614,8 @@ void TUI::AppendRecentFile(LPCSTR name)
             return;
 		}
 
-	if (fraLeftBar->miRecentFiles->Count==frmEditPrefs->seRecentFilesCount->Value) 
-    	fraLeftBar->miRecentFiles->Remove(fraLeftBar->miRecentFiles->Items[frmEditPrefs->seRecentFilesCount->Value-1]);
+	if (fraLeftBar->miRecentFiles->Count==EPrefs.scene_recent_count) 
+    	fraLeftBar->miRecentFiles->Remove(fraLeftBar->miRecentFiles->Items[EPrefs.scene_recent_count-1]);
 
     TMenuItem *MI 	= xr_new<TMenuItem>((TComponent*)0);
     MI->Caption 	= name;

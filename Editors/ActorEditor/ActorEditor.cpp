@@ -7,7 +7,6 @@
 //---------------------------------------------------------------------------
 USEFORM("BonePart.cpp", frmBonePart);
 USEFORM("BottomBar.cpp", fraBottomBar); /* TFrame: File Type */
-USEFORM("EditorPref.cpp", frmEditPrefs);
 USEFORM("KeyBar.cpp", frmKeyBar);
 USEFORM("LeftBar.cpp", fraLeftBar); /* TFrame: File Type */
 USEFORM("LogForm.cpp", frmLog);

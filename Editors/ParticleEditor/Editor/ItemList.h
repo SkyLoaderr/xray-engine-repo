@@ -131,7 +131,7 @@ public:		// User declarations
 
     int __fastcall		GetSelected				(ElItemsVec& items);
     int __fastcall		GetSelected				(LPCSTR pref, ListItemsVec& items, bool bOnlyObject);
-    TElTreeItem*		GetSelected				(){return (tvItems->MultiSelect)?0:tvItems->Selected;}
+    TElTreeItem*		GetSelected				(){R_ASSERT(!tvItems->MultiSelect); return (tvItems->MultiSelect)?0:tvItems->Selected;}
     ListItem*			FindItem				(LPCSTR full_name);
 
     void 				LockUpdating			(){ tvItems->IsUpdating = true; iLocked++; }

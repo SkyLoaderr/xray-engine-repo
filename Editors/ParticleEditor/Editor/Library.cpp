@@ -9,7 +9,7 @@
 #include "Library.h"
 #include "EditObject.h"
 #include "ui_main.h"
-#include "EditorPref.h"
+#include "EditorPreferences.h"
 
 //----------------------------------------------------
 ELibrary Lib;
@@ -152,7 +152,7 @@ void ELibrary::RemoveEditObject(CEditableObject*& object)
 	if (object){
 	    object->m_RefCount--;
     	R_ASSERT(object->m_RefCount>=0);
-		if ((object->m_RefCount==0)&&!frmEditPrefs->cbLeaveEmptyRef->Checked)
+		if ((object->m_RefCount==0)&&!EPrefs.scene_leave_eo_copy)
 			if (!object->IsModified()) UnloadEditObject(object->GetName());
         object=0;
 	}

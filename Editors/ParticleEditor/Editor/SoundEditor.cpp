@@ -31,7 +31,7 @@ __fastcall TfrmSoundLib::TfrmSoundLib(TComponent* Owner)
 
 void __fastcall TfrmSoundLib::FormCreate(TObject *Sender)
 {
-	m_ItemProps = TProperties::CreateForm("",paProperties,alClient);
+	m_ItemProps = TProperties::CreateForm("SoundED",paProperties,alClient);
     m_ItemList	= TItemList::CreateForm("Items",paItems,alClient,TItemList::ilEditMenu|TItemList::ilMultiSelect);
     m_ItemList->OnItemRemove	= RemoveSound;
     m_ItemList->OnItemRename	= RenameSound;
@@ -236,7 +236,14 @@ void __fastcall TfrmSoundLib::ebImportSoundClick(TObject *Sender)
 		bool bNeedUpdate=false;
         // folder name
         AnsiString folder;
-        TElTreeItem* item = m_ItemList->GetSelected(); 
+
+        TItemList::ElItemsVec sel_items;
+        if (m_ItemList->GetSelected(sel_items)>1){
+            ELog.DlgMsg(mtInformation,"Select only one item and retry again.");
+        	return;
+        }
+        
+        TElTreeItem* item = sel_items.empty()?0:sel_items.back(); 
         if (item) FHelper.MakeName(item,0,folder,true);
         //
 //		AnsiString path; // нужен при multi-open для сохранения последнего пути
@@ -254,7 +261,7 @@ void __fastcall TfrmSoundLib::ebImportSoundClick(TObject *Sender)
             FS_QueryMap 		QM; 
             FS.file_list		(QM,_sounds_,FS_ListFiles|FS_ClampExt,dest_name.c_str());
             SndLib.SynchronizeSounds(true, true, true, &QM, 0);
-//.            EFS.MarkFile		(*it,true);
+            EFS.MarkFile		(*it,true);
             EFS.BackupFile		(_sounds_,dest_name);
             EFS.WriteAccessLog	(dest_full_name.c_str(),"Import");
             bNeedUpdate			= true;

@@ -89,7 +89,7 @@ void __fastcall TfrmImageLib::UpdateImageLib()
         FS_QueryPairIt it=files.begin();
         FS_QueryPairIt _E=files.end();
         for (;it!=_E; it++){
-        	fn = ChangeFileExt(it->first,".tga");
+        	fn = ChangeFileExt(it->first,"");
         	ImageLib.UpdateFileName(fn);
             texture_map.insert(mk_pair(fn,FS_QueryItem(it->second.size,it->second.modif,it->second.flags.get())));
         }

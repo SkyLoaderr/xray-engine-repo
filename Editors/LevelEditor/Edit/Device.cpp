@@ -8,12 +8,11 @@
 #include "render.h"
 #include "GameMtlLib.h"
 #include "ResourceManager.h"
+#include "EditorPreferences.h"
 
 #pragma package(smart_init)
 
 CRenderDevice 		Device;
-
-u32 dwClearColor	= DEFAULT_CLEARCOLOR;
 
 extern int	rsDVB_Size;
 extern int	rsDIB_Size;
@@ -265,7 +264,7 @@ void CRenderDevice::Begin()
 	CHK_DX(HW.pDevice->Clear(0,0,
 		D3DCLEAR_ZBUFFER|D3DCLEAR_TARGET|
 		(HW.Caps.bStencil?D3DCLEAR_STENCIL:0),
-		dwClearColor,1,0
+		EPrefs.scene_clear_color,1,0
 		));
 	RCache.OnFrameBegin();
 }

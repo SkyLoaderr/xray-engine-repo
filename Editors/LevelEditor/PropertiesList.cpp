@@ -214,7 +214,7 @@ void __fastcall TProperties::FormClose(TObject *Sender,
 {
 	HideExtBtn			();
 	ApplyEditControl	();
-    if (OnCloseEvent) 	OnCloseEvent();
+    if (Visible&&OnCloseEvent) 	OnCloseEvent();
 	ClearParams			();
 }
 //---------------------------------------------------------------------------

@@ -169,7 +169,6 @@ enum {
 };
 
 #define DEFAULT_CLEARCOLOR 0x00555555
-extern u32 dwClearColor;
 
 #define		REQ_CREATE()	if (!Device.bReady)	return;
 #define		REQ_DESTROY()	if (Device.bReady)	return;

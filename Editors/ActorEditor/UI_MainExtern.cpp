@@ -6,7 +6,6 @@
 #include "UI_Tools.h"
 #include "topbar.h"
 #include "leftbar.h"
-#include "EditorPref.h"
 #include "D3DUtils.h"
 #include "bottombar.h"
 #include "main.h"

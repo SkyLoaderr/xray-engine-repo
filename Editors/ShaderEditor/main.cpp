@@ -5,7 +5,7 @@
 
 #include "main.h"
 #include "ui_main.h"
-#include "editorpref.h"
+#include "EditorPreferences.h"
 TfrmMain *frmMain;
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -166,7 +166,7 @@ void __fastcall TfrmMain::fsStorageRestorePlacement(TObject *Sender)
     fraBottomBar->fsStorage->RestoreFormPlacement();
     fraTopBar->fsStorage->RestoreFormPlacement();
 	// read recent list    
-    for (int i=frmEditPrefs->seRecentFilesCount->Value; i>=0; i--){
+    for (int i=EPrefs.scene_recent_count; i>=0; i--){
 		AnsiString recent_fn= frmMain->fsStorage->ReadString	(AnsiString("RecentFiles")+AnsiString(i),"");
         if (!recent_fn.IsEmpty()) UI.AppendRecentFile(recent_fn.c_str());
     }

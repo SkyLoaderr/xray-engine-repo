@@ -159,7 +159,8 @@ struct astr_pred : public std::binary_function<const AnsiString&, const AnsiStri
     #endif
 #endif
 
-#define DEFINE_INI(storage){string256 buf;	strconcat(buf,_EDITOR_FILE_NAME_,".ini"); FS.update_path(buf,"$local_root$",buf); storage->IniFileName=buf;}
+#define INI_NAME(buf) 		{buf=AnsiString(_EDITOR_FILE_NAME_)+".ini"; FS.update_path(buf,"$local_root$",buf.c_str());}
+#define DEFINE_INI(storage)	{AnsiString buf;	INI_NAME(buf); storage->IniFileName=buf;}
 #define NONE_CAPTION "<none>"
 #define MULTIPLESEL_CAPTION "<multiple selection>"
 

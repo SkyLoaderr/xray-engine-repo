@@ -8,6 +8,7 @@
 #include "ui_main.h"
 #include "EditObject.h"
 #include "ResourceManager.h"
+#include "EditorPreferences.h"
 CImageManager ImageLib;
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -239,7 +240,7 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
     FS_QueryMap M_GAME;
 
     if (source_list) M_BASE = *source_list;
-    else FS.file_list(M_BASE,_textures_,FS_ListFiles,".tga,.bmp");
+    else FS.file_list(M_BASE,_textures_,FS_ListFiles|FS_ClampExt,".tga");
     if (M_BASE.empty()) return;
     if (sync_thm) 	FS.file_list(M_THUM,_textures_,FS_ListFiles|FS_ClampExt,".thm");
     if (sync_game) 	FS.file_list(M_GAME,_game_textures_,FS_ListFiles|FS_ClampExt,".dds");
@@ -261,12 +262,10 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
 	    U32Vec data;
     	u32 w, h, a;
 
-        AnsiString base_name	=it->first.LowerCase();
-        if (bProgress) 			UI.ProgressInc(base_name.c_str());
+        AnsiString base_name	=ChangeFileExt(it->first.LowerCase(),"");
         AnsiString fn;
-        FS.update_path			(fn,_textures_,base_name.c_str());
+        FS.update_path			(fn,_textures_,ChangeFileExt(base_name,".tga").c_str());
     	if (!FS.exist(fn.c_str())) continue;
-        base_name				= ChangeFileExt(base_name,"");
 
 		FS_QueryPairIt th 	= M_THUM.find(base_name);
     	bool bThm = ((th==M_THUM.end()) || ((th!=M_THUM.end())&&(th->second.modif!=it->second.modif)));
@@ -275,12 +274,14 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
 
 		ETextureThumbnail* THM=0;
 
+        BOOL bUpdated = FALSE;
     	// check thumbnail
     	if (sync_thm&&bThm){
         	THM = xr_new<ETextureThumbnail>(it->first.c_str());
 		    bool bRes = Surface_Load(fn.c_str(),data,w,h,a); R_ASSERT(bRes);
             MakeThumbnailImage(THM,data.begin(),w,h,a);
             THM->Save	(it->second.modif);
+            bUpdated = TRUE;
         }
         // check game textures
     	if (bForceGame||(sync_game&&bGame)){
@@ -291,6 +292,7 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
                 AnsiString game_name=AnsiString(base_name)+".dds";
                 FS.update_path			(_game_textures_,game_name);
                 MakeGameTexture(THM,game_name.c_str(),data.begin());
+                u32 ddd = FS.get_file_age(game_name.c_str());
                 FS.set_file_age(game_name.c_str(), it->second.modif);
                 if (sync_list) sync_list->push_back(base_name);
                 if (modif_map) modif_map->insert(*it);
@@ -303,12 +305,14 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
                 }else{
                     ltx_ini->remove_line("association", base_name.c_str());
                 }
+	            bUpdated = TRUE;
             }else{
-		    	ELog.DlgMsg(mtError,"Can't make game texture '%s'.\nInvalid size (%dx%d).",fn.c_str(),w,h);
+		    	ELog.DlgMsg(mtError,"Can't make game texture '%s'.\nInvalid size (%dx%d).",base_name.c_str(),w,h);
             }
 		}
 		if (THM) xr_delete(THM);
 		if (UI.NeedAbort()) break;
+        if (bProgress) UI.ProgressInc(bUpdated?AnsiString(base_name+" - UPDATED.").c_str():base_name.c_str(),bUpdated);
     }
 
     xr_delete(ltx_ini);
@@ -368,7 +372,7 @@ int	CImageManager::GetServerModifiedTextures(FS_QueryMap& files)
 //------------------------------------------------------------------------------
 int CImageManager::GetTextures(FS_QueryMap& files, BOOL bFolders)
 {                	
-    return FS.file_list(files,_textures_,(bFolders?FS_ListFolders:0)|FS_ListFiles,".tga,.bmp"); 
+    return FS.file_list(files,_textures_,(bFolders?FS_ListFolders:0)|FS_ListFiles|FS_ClampExt,".tga"); 
 }
 //------------------------------------------------------------------------------
 // возвращает список текстур, которые нужно обновить
@@ -564,7 +568,8 @@ void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR tex_name, u32 tgt_w, u32 
     Flags32 old_flag= 	psDeviceFlags;
     // set render params
 
-    dwClearColor 	= 	0x0000000;
+    u32 cc						= 	EPrefs.scene_clear_color;
+    EPrefs.scene_clear_color 	= 	0x0000000;
 	psDeviceFlags.set(rsStatistic|rsDrawGrid|rsLighting|rsFog,FALSE);
 	psDeviceFlags.set(rsFilterLinear,TRUE);
     
@@ -599,8 +604,8 @@ void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR tex_name, u32 tgt_w, u32 
     SynchronizeTexture(tex_name,age);
 
     // restore render params
-    psDeviceFlags 	= old_flag;
-    dwClearColor	= DEFAULT_CLEARCOLOR;
+    psDeviceFlags 				= old_flag;
+    EPrefs.scene_clear_color 	= cc;
 
 	Device.m_Camera.SetStyle(save_style);
     RCache.set_xform_project(save_projection);
@@ -616,7 +621,8 @@ BOOL CImageManager::CreateOBJThumbnail(LPCSTR tex_name, CEditableObject* obj, in
     Flags32 old_flag= 	psDeviceFlags;
     // set render params
     psDeviceFlags.set(rsStatistic|rsDrawGrid,FALSE);
-    dwClearColor 	= 	0x00333333;
+    u32 cc						= 	EPrefs.scene_clear_color;
+    EPrefs.scene_clear_color 	= 	0x00333333;
 
 	U32Vec pixels;
     u32 w=256,h=256;
@@ -630,8 +636,8 @@ BOOL CImageManager::CreateOBJThumbnail(LPCSTR tex_name, CEditableObject* obj, in
     }
 
     // restore render params
-    psDeviceFlags 	= old_flag;
-    dwClearColor	= DEFAULT_CLEARCOLOR;
+    psDeviceFlags 				= old_flag;
+    EPrefs.scene_clear_color 	= cc;
     return bResult;
 }
 

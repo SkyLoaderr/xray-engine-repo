@@ -218,18 +218,21 @@ void CSoundManager::SynchronizeSounds(bool sync_thm, bool sync_game, bool bForce
     if (sync_thm) 	FS.file_list(M_THUM,_sounds_,FS_ListFiles|FS_ClampExt,".thm");
     if (sync_game) 	FS.file_list(M_GAME,_game_sounds_,FS_ListFiles|FS_ClampExt,".ogg");
 
+    bool bProgress = M_BASE.size()>1;
+
     // lock rescanning
     FS.lock_rescan	();
     
-    UI.ProgressStart(M_BASE.size(),"Synchronize sounds...");
+    BOOL bUpdated = FALSE;
+    
+    if (bProgress) UI.ProgressStart(M_BASE.size(),"Synchronize sounds...");
     FS_QueryPairIt it=M_BASE.begin();
 	FS_QueryPairIt _E = M_BASE.end();
 	for (; it!=_E; it++){
         AnsiString base_name	= ChangeFileExt(it->first.LowerCase(),"");
-        UI.ProgressInc			(base_name.c_str());
         AnsiString fn;
-        FS.update_path			(fn,_sounds_,base_name.c_str());
-    	if (!FS.exist(AnsiString(fn+".wav").c_str())) continue;
+        FS.update_path			(fn,_sounds_,ChangeFileExt(base_name,".wav").c_str());
+    	if (!FS.exist(fn.c_str())) continue;
 
 		FS_QueryPairIt th 		= M_THUM.find(base_name);
     	bool bThm = ((th==M_THUM.end()) || ((th!=M_THUM.end())&&(th->second.modif!=it->second.modif)));
@@ -242,6 +245,7 @@ void CSoundManager::SynchronizeSounds(bool sync_thm, bool sync_game, bool bForce
     	if (sync_thm&&bThm){
         	THM = xr_new<ESoundThumbnail>(it->first.c_str());
             THM->Save	(it->second.modif);
+            bUpdated = TRUE;
         }
         // check game sounds
     	if (bForceGame||(sync_game&&bGame)){
@@ -255,12 +259,14 @@ void CSoundManager::SynchronizeSounds(bool sync_thm, bool sync_game, bool bForce
             FS.set_file_age	(game_name.c_str(), it->second.modif);
             if (sync_list) 	sync_list->push_back(base_name);
             if (modif_map) 	modif_map->insert(*it);
+            bUpdated = TRUE;
 		}
 		if (THM) xr_delete(THM);
 		if (UI.NeedAbort()) break;
+        if (bProgress) UI.ProgressInc(bUpdated?AnsiString(base_name+" - UPDATED.").c_str():base_name.c_str(),bUpdated);
     }
 
-    UI.ProgressEnd();
+    if (bProgress) UI.ProgressEnd();
     // lock rescanning
     FS.unlock_rescan	();
 }

@@ -39,9 +39,9 @@
       Intermediate\Blender_Shadow_World.obj Intermediate\Blender_tree.obj 
       Intermediate\Blender_Vertex.obj Intermediate\Blender_Vertex_aref.obj 
       Intermediate\UI_ToolsUndo.obj Intermediate\BonePart.obj 
-      Intermediate\BottomBar.obj Intermediate\EditorPref.obj 
-      Intermediate\KeyBar.obj Intermediate\LeftBar.obj Intermediate\LogForm.obj 
-      Intermediate\main.obj Intermediate\Splash.obj Intermediate\stdafx.obj 
+      Intermediate\BottomBar.obj Intermediate\KeyBar.obj 
+      Intermediate\LeftBar.obj Intermediate\LogForm.obj Intermediate\main.obj 
+      Intermediate\Splash.obj Intermediate\stdafx.obj 
       Intermediate\UI_MainExtern.obj Intermediate\UI_Tools.obj 
       Intermediate\UI_ToolsMotions.obj Intermediate\UI_ToolsProps.obj 
       Intermediate\BoneEditor.obj Intermediate\c_dinput.obj 
@@ -81,16 +81,16 @@
       Intermediate\SkeletonCustom.obj Intermediate\crc32.obj 
       Intermediate\ClipEditor.obj Intermediate\EThumbnailTexture.obj 
       Intermediate\EThumbnailObject.obj Intermediate\EThumbnailSound.obj 
-      Intermediate\SoundEditor.obj"/>
+      Intermediate\SoundEditor.obj Intermediate\EditorPreferences.obj"/>
     <RESFILES value="resource.res ActorEditor.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
-    <RESDEPEN value="$(RESFILES) BonePart.dfm BottomBar.dfm EditorPref.dfm KeyBar.dfm 
-      LeftBar.dfm LogForm.dfm main.dfm Splash.dfm Editor\ChoseForm.dfm 
-      Editor\ImageEditor.dfm Editor\ItemList.dfm Editor\NumericVector.dfm 
-      Editor\PropertiesList.dfm Editor\ShaderFunction.dfm Editor\TextForm.dfm 
-      Editor\TopBar.dfm ClipEditor.dfm Editor\SoundEditor.dfm"/>
+    <RESDEPEN value="$(RESFILES) BonePart.dfm BottomBar.dfm KeyBar.dfm LeftBar.dfm LogForm.dfm 
+      main.dfm Splash.dfm Editor\ChoseForm.dfm Editor\ImageEditor.dfm 
+      Editor\ItemList.dfm Editor\NumericVector.dfm Editor\PropertiesList.dfm 
+      Editor\ShaderFunction.dfm Editor\TextForm.dfm Editor\TopBar.dfm 
+      ClipEditor.dfm Editor\SoundEditor.dfm"/>
     <LIBFILES value=""/>
     <LIBRARIES value="editor.lib elpackB6.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib bcbsmp.lib vclx.lib elpackB6.lib editor.lib"/>
@@ -111,12 +111,13 @@
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-IC:\Rad\Borland\CBuilder6\Projects -IEngine\Animations -IEngine\BLENDERS 
+    <IDLCFLAGS value="-src_suffix cpp -D_EDITOR -D_ACTOR_EDITOR -D_DEBUG 
+      -IC:\Rad\Borland\CBuilder6\Projects -IEngine\Animations -IEngine\BLENDERS 
       -Ir:\borland\components6\alexmx -Ieditor -IR:\SDK\DirectX9.0\include 
       -I$(BCB)\include -I$(BCB)\include\vcl -Iengine 
       -IP:\MagicFM_Borland\Sdk\Include -IR:\Borland\Components6\ElPack\Code 
       -IR:\Borland\Components6\ElPack\Code\Source -IP:\xrCore -IP:\xrCDB 
-      -IP:\xrSound -src_suffix cpp -D_EDITOR -D_ACTOR_EDITOR -D_DEBUG -boa"/>
+      -IP:\xrSound -boa"/>
     <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -r- -ps -a4 
       -6 -b- -k -y -v -vi- -He -c -tW -tWM"/>
     <PFLAGS value="-N2Intermediate -N0Intermediate -$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
@@ -207,7 +208,6 @@
       <FILE FILENAME="UI_ToolsUndo.cpp" FORMNAME="" UNITNAME="UI_ToolsUndo.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="BonePart.cpp" FORMNAME="frmBonePart" UNITNAME="BonePart" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="BottomBar.cpp" FORMNAME="fraBottomBar" UNITNAME="BottomBar" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
-      <FILE FILENAME="EditorPref.cpp" FORMNAME="frmEditPrefs" UNITNAME="EditorPref" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="KeyBar.cpp" FORMNAME="frmKeyBar" UNITNAME="KeyBar" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="LeftBar.cpp" FORMNAME="fraLeftBar" UNITNAME="LeftBar" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="LogForm.cpp" FORMNAME="frmLog" UNITNAME="LogForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -296,6 +296,7 @@
       <FILE FILENAME="Editor\EThumbnailSound.cpp" FORMNAME="" UNITNAME="EThumbnailSound.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\SoundEditor.cpp" FORMNAME="frmSoundLib" UNITNAME="SoundEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\ai_sounds.h" FORMNAME="" UNITNAME="ai_sounds.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\EditorPreferences.cpp" FORMNAME="" UNITNAME="EditorPreferences" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -427,7 +428,7 @@ Item1=!run\
 Item2=P:\Editor\!run
 
 [Debugging]
-DebugSourceDirs=c:\rad\borland\cbuilder5\source\vcl
+DebugSourceDirs=c:\rad\borland\cbuilder5\source\vcl;R:\Borland\Components6\AlexMX\
 
 [Parameters]
 RunParams=-nolog

@@ -6,7 +6,6 @@
 #include "UI_main.h"
 #include "leftbar.h"
 #include "LogForm.h"
-#include "editorpref.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)

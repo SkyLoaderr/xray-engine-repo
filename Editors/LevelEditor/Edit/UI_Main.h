@@ -25,7 +25,7 @@ typedef xr_vector<EEditorState> EStateList;
 typedef EStateList::iterator EStateIt;
 
 class TUI: public IInputReceiver{
-    friend class TfrmEditPrefs;
+    friend class CEditorPreferences;
     friend class CRenderDevice;
 	AnsiString 	m_LastFileName;
     TD3DWindow* m_D3DWindow;
@@ -172,11 +172,11 @@ public:
     EEditorState 	GetEState			(){ return m_EditorState.back(); }
     bool 			ContainEState		(EEditorState st){ return std::find(m_EditorState.begin(),m_EditorState.end(),st)!=m_EditorState.end(); }
 
-	void 			ProgressInfo		(const char* text);
+	void 			ProgressInfo		(const char* text, bool bWarn=false);
 	void 			ProgressStart		(float max_val, const char* text);
 	void 			ProgressEnd			();
 	void 			ProgressUpdate		(float val);
-    void 			ProgressInc			(const char* info=0);
+    void 			ProgressInc			(const char* info=0, bool bWarn=false);
 
     void 			OutCameraPos		();
     void 			SetStatus			(LPSTR s, bool bOutLog=true);
