@@ -18,7 +18,8 @@ enum FS_List
 	FS_forcedword	=u32(-1)
 };
 
-class XRCORE_API FS_Path{
+class XRCORE_API FS_Path
+{
 public:
 	enum{
     	flRecurse	= (1<<0),
@@ -39,29 +40,9 @@ public:
 #endif
 public:
 	FS_Path		(LPCSTR _Root, LPCSTR _Add, LPCSTR _DefExt=0, LPCSTR _FilterString=0, u32 flags=0);
-	~FS_Path	()
-	{
-		xr_free	(m_Root);
-		xr_free	(m_Path);
-		xr_free	(m_Add);
-		xr_free	(m_DefExt);
-		xr_free	(m_FilterCaption);
-	}
+	~FS_Path	();
 	LPCSTR		_update		(LPSTR dest, LPCSTR src) const;
-	void		_set		(LPSTR add)
-	{
-		// m_Add
-		R_ASSERT		(add);
-		xr_free			(m_Add);
-		m_Add			= strlwr(xr_strdup(add));
-
-		// m_Path
-		string256		temp;
-		strconcat		(temp,m_Root,m_Add);
-		if (temp[strlen(temp)-1]!='\\') strcat(temp,"\\");
-		xr_free			(m_Path);
-		m_Path			= strlwr(xr_strdup(temp));
-	}
+	void		_set		(LPSTR add);
 };
 
 #ifdef __BORLANDC__
@@ -93,9 +74,9 @@ public:
 		LPCSTR	name;			// low-case name
 		u32		vfs;			// 0xffffffff - standart file
 		u32		ptr;			// pointer inside vfs
-		u32		size;			// for REAL file - its file size, for COMPRESSED inside VFS - compressed size, for PLAIN inside VFS - file size
+		u32		size_real;		// 
+		u32		size_compressed;// if (size_real==size_compressed) - uncompressed
         u32		modif;			// for editor
-		BOOL	bCompressed;
 	};
 	struct	file_pred		: public std::binary_function<file&, file&, bool> 
 	{	
@@ -128,7 +109,7 @@ private:
     archives_vec				archives;
 	BOOL						bNoRecurse;
 
-	void						Register		(LPCSTR name, u32 vfs, u32 ptr, u32 size, BOOL bCompressed, u32 modif);
+	void						Register		(LPCSTR name, u32 vfs, u32 ptr, u32 size_real, u32 size_compressed, u32 modif);
 	void						ProcessArchive	(LPCSTR path);
 	void						ProcessOne		(LPCSTR path, LPVOID F);
 	bool						Recurse			(LPCSTR path);

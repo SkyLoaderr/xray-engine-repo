@@ -38,6 +38,31 @@ FS_Path::FS_Path	(LPCSTR _Root, LPCSTR _Add, LPCSTR _DefExt, LPCSTR _FilterCapti
 #endif
 }
 
+FS_Path::~FS_Path	()
+{
+	xr_free	(m_Root);
+	xr_free	(m_Path);
+	xr_free	(m_Add);
+	xr_free	(m_DefExt);
+	xr_free	(m_FilterCaption);
+}
+
+void	FS_Path::_set	(LPSTR add)
+{
+	// m_Add
+	R_ASSERT		(add);
+	xr_free			(m_Add);
+	m_Add			= strlwr(xr_strdup(add));
+
+	// m_Path
+	string256		temp;
+	strconcat		(temp,m_Root,m_Add);
+	if (temp[strlen(temp)-1]!='\\') strcat(temp,"\\");
+	xr_free			(m_Path);
+	m_Path			= strlwr(xr_strdup(temp));
+}
+
+
 LPCSTR FS_Path::_update(LPSTR dest, LPCSTR src)const
 {
 	R_ASSERT(dest);
@@ -77,16 +102,16 @@ CLocatorAPI::~CLocatorAPI()
 {
 }
 
-void CLocatorAPI::Register		(LPCSTR name, u32 vfs, u32 ptr, u32 size, BOOL bCompressed, u32 modif)
+void CLocatorAPI::Register		(LPCSTR name, u32 vfs, u32 ptr, u32 size_real, u32 size_compressed, u32 modif)
 {
 	// Register file
 	file				desc;
 	desc.name			= strlwr(xr_strdup(name));
 	desc.vfs			= vfs;
 	desc.ptr			= ptr;
-	desc.size			= size;
+	desc.size_real		= size_real;
+	desc.size_compressed= size_compressed;
     desc.modif			= modif;
-	desc.bCompressed	= bCompressed;
 
 	// if file already exist - update info
 	files_it	I		= files.find(desc);
@@ -114,8 +139,8 @@ void CLocatorAPI::Register		(LPCSTR name, u32 vfs, u32 ptr, u32 size, BOOL bComp
 			desc.name			= xr_strdup(path);
 			desc.vfs			= 0xffffffff;
 			desc.ptr			= 0;
-			desc.size			= 0;
-			desc.bCompressed	= FALSE;
+			desc.size_real		= 0;
+			desc.size_compressed= 0;
             desc.modif			= u32(-1);
 			files.insert		(desc); 
 		}
@@ -146,10 +171,10 @@ void CLocatorAPI::ProcessArchive(const char* path)
 		strconcat		(full,base,name);
 
 		size_t vfs		= archives.size()-1;
-		BOOL  bPacked	= (hdr->r_u32())?FALSE:TRUE;
 		u32 ptr			= hdr->r_u32();
-		u32 size		= hdr->r_u32();
-		Register		(full,(u32)vfs,ptr,size,bPacked,0);
+		u32 size_real	= hdr->r_u32();
+		u32 size_compr	= hdr->r_u32();
+		Register		(full,(u32)vfs,ptr,size_real,size_compr,0);
 	}
 	hdr->close			();
 
@@ -173,11 +198,11 @@ void CLocatorAPI::ProcessOne	(const char* path, LPVOID _F)
 		if (0==strcmp(F.name,"."))	return;
 		if (0==strcmp(F.name,"..")) return;
 		strcat		(N,"\\");
-		Register	(N,0xffffffff,0,F.size,0,(u32)F.time_write);
+		Register	(N,0xffffffff,0,F.size,F.size,(u32)F.time_write);
 		Recurse		(N);
 	} else {
 		if (strext(N) && 0==strncmp(strext(N),".xp",3))					ProcessArchive	(N);
-		else															Register		(N,0xffffffff,0,F.size,0,(u32)F.time_write);
+		else															Register		(N,0xffffffff,0,F.size,F.size,(u32)F.time_write);
 	}
 }
 
@@ -421,32 +446,34 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 	if (0xffffffff == desc.vfs)
 	{
 		// Normal file
-		if (desc.size<256*1024)	R = xr_new<CFileReader>			(fname);
-		else					R = xr_new<CVirtualFileReader>	(fname);
+		if (desc.size_real<256*1024)	R = xr_new<CFileReader>			(fname);
+		else							R = xr_new<CVirtualFileReader>	(fname);
 	} else {
 		// Archived one
 		LPVOID	ptr	= LPVOID(LPBYTE(archives[desc.vfs].vfs->pointer()) + desc.ptr);
-		if (desc.bCompressed)	
+		if (desc.size_real != desc.size_compressed)	
 		{
 			// Compressed
-			BYTE*		dest;
-			unsigned	size;
-
-			_decompressLZ	(&dest,&size,ptr,desc.size);
-			R = xr_new<CTempReader>	(dest,size);
+			u8*			dest		= xr_alloc<u8>(desc.size_real);
+			rtc_decompress			(dest,desc.size_real,ptr,desc.size_compressed);
+			R = xr_new<CTempReader>	(dest,desc.size_real);
 		} else {
 			// Plain (VFS)
-			R = xr_new<IReader>		(ptr,desc.size);
+			R = xr_new<IReader>		(ptr,desc.size_real);
 		}
 	}
-	if (R&&m_Flags.is(flBuildCopy|flReady)){
-		string512 cpy_name;
-		FS_Path* P = get_path("$server_root$"); R_ASSERT(P);
-		if (fname==strstr(fname,P->m_Path)){
-			update_path(cpy_name,"$build_copy$",fname+strlen(P->m_Path));
-			IWriter* W = w_open(cpy_name);
-			W->w(R->pointer(),R->length());
-			w_close(W);
+
+	if ( R && m_Flags.is(flBuildCopy|flReady) )
+	{
+		string512	cpy_name;
+		FS_Path* P	= get_path("$server_root$"); 
+		R_ASSERT	(P);
+		if (fname==strstr(fname,P->m_Path))
+		{
+			update_path			(cpy_name,"$build_copy$",fname+strlen(P->m_Path));
+			IWriter* W = w_open	(cpy_name);
+			W->w				(R->pointer(),R->length());
+			w_close				(W);
 		}
 	}
 	return R;
@@ -468,39 +495,14 @@ IWriter* CLocatorAPI::w_open	(LPCSTR path, LPCSTR _fname)
 void	CLocatorAPI::w_close(IWriter* &S)
 {
 	R_ASSERT	(S->fName&&S->fName[0]);
-/*
-	string256	temp_name,new_name;
-	strcpy		(new_name,fs->fName);
-	strcpy		(temp_name,fs->fName);
-	new_name[strlen(new_name)-2]=0;
-	if (bDiscard){
-		xr_delete	(fs);
-		unlink		(temp_name);
-	}else{
-		xr_delete	(fs);
-		unlink		(new_name);
-		rename		(temp_name,new_name);
-        struct _stat st;
-        _stat		(new_name,&st);
-		Register	(new_name,0xffffffff,0,0,0,(u32)st.st_mtime);
-	}
-*/
 	string256	fname;
 	strcpy		(fname,S->fName);
 	xr_delete	(S);
     struct _stat st;
     _stat		(fname,&st);
-    Register	(fname,0xffffffff,0,0,0,(u32)st.st_mtime);
+    Register	(fname,0xffffffff,0,st.st_size,st.st_size,(u32)st.st_mtime);
 }
-/*
-void	CLocatorAPI::w_close1(IWriter* &S)
-{
-	R_ASSERT	(S->fName&&S->fName[0]);
-    struct _stat st;
-    _stat		(S->fName,&st);
-    Register	(S->fName,0xffffffff,0,0,0,(u32)st.st_mtime);
-}
-*/
+
 CLocatorAPI::files_it CLocatorAPI::file_find(LPCSTR fname)
 {
 	// проверить нужно ли пересканировать пути
@@ -607,7 +609,7 @@ void CLocatorAPI::file_rename(LPCSTR src, LPCSTR dest, bool bOwerwrite)
 int	CLocatorAPI::file_length(LPCSTR src)
 {
 	files_it	I		= file_find(src);
-	return (I!=files.end())?I->size:-1;
+	return (I!=files.end())?I->size_real:-1;
 }
 
 bool CLocatorAPI::path_exist(LPCSTR path)
