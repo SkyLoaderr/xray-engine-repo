@@ -20,7 +20,7 @@ function main()
 				break
 			end
 			if not flesh:get_script() then
-				flesh:script(true, this.script_name())
+				flesh:script(true, "xr_scared_agro_flesh")
 			end
 			if xr_scared.scared_stalker then
 				if not flesh:action() and not xr_scared.scared_stalker:alive() then
@@ -30,7 +30,7 @@ function main()
 				if flesh:position():distance_to(xr_scared.scared_stalker:position()) < 1.5 and
 				   (last_action ~= act_look or not flesh:action()) then
 					printf("___bp_look")
-					reset_action(flesh, this.script_name())
+					reset_action(flesh, "xr_scared_agro_flesh")
 					if xr_scared.finish_me_off then
 						action(flesh, anim(anim.turn, 0), look(look.point,
 							xr_scared.scared_stalker:position()), cond(cond.look_end))
@@ -60,7 +60,7 @@ function main()
 					h.type = hit.wound
 					xr_scared.scared_stalker:hit(h)
 				
-					reset_action(flesh, this.script_name())
+					reset_action(flesh, "xr_scared_agro_flesh")
 					action(flesh, anim(anim.attack, 0), sound(sound.attack),
 						cond(cond.time_end, 3000))
 
@@ -78,7 +78,7 @@ function main()
 
 	if flesh ~= nil then
 		if flesh:get_script() then
-			flesh:script(false, this.script_name())
+			flesh:script(false, "xr_scared_agro_flesh")
 		end
 
 		if not flesh:alive() then
