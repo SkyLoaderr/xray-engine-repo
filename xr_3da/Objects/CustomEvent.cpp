@@ -124,7 +124,6 @@ void CCustomEvent::Load(CInifile* ini, const char * section)
 	net_Local					= TRUE;
 	net_ID						= 0xffff;
 	net_Ready					= FALSE;
-	DetectSector				();
 }
 
 void CCustomEvent::Update (DWORD dt)

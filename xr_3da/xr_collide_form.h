@@ -100,7 +100,7 @@ protected:
 public:
 
 					CCFModel		( CObject* _owner );
-					~CCFModel		( );
+	virtual			~CCFModel		( );
 
 	virtual BOOL	_clRayTest		( RayQuery& Q) = 0;
 	virtual BOOL	_svRayTest		( RayQuery& Q) = 0;
