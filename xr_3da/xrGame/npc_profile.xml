@@ -75,6 +75,18 @@
 		<team>Lonewolf</team>
 		<start_dialog>stalker_talk_about</start_dialog>
 	</character>
+	<character name_id="Wounded">
+		<name>Wounded stalker</name>
+		<icon x="8" y="9"></icon>
+		<map_icon x="0" y="4"></map_icon>
+		<visual>string_name2</visual>
+		<rank>veteran</rank>
+		<team>Lonewolf</team>
+		<start_dialog>stalker_talk_about</start_dialog>
+		<start_dialog>job_medkit</start_dialog>
+	</character>
+
+
 
 
 </xml>
