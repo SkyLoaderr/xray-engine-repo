@@ -107,3 +107,13 @@ IC	bool CAbstractPathManager<_Graph,_VertexEvaluator,_vertex_id_type>::path_comp
 {
 	return				(true);
 }
+
+template <
+	typename _Graph,
+	typename _VertexEvaluator,
+	typename _vertex_id_type
+>
+IC	bool CAbstractPathManager<_Graph,_VertexEvaluator,_vertex_id_type>::path_failed() const
+{
+	return				(false);
+}
