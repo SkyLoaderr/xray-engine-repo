@@ -13,9 +13,9 @@
 
 using namespace luabind;
 
-double get_time()
+u32 get_time()
 {
-	return((double)Level().GetGameTime());
+	return(Level().GetGameTime() & u32(-1));
 }
 
 void game_sv_GameState::script_register(lua_State *L)
