@@ -144,16 +144,22 @@ void CLocatorAPI::Register		(LPCSTR name, u32 vfs, u32 ptr, u32 size_real, u32 s
 	}
 }
 
-void CLocatorAPI::ProcessArchive(const char* path)
+void CLocatorAPI::ProcessArchive(const char* _path)
 {
-	// Open archive
-	archive				A;
-	A.vfs				= xr_new<CVirtualFileReader> (path);
-	archives.push_back	(A);
+	// find existing archive
+	ref_str path		= _path;
+	for (archives_it it=archives.begin(); it!=archives.end(); ++it)
+		if (it->path==path)	return;
+
+	// open archive
+	archives.push_back	(archive());
+	archive& A		= archives.back();
+	A.path			= path;
+	A.vfs			= xr_new<CVirtualFileReader> (*path);
 
 	// Create base path
 	string_path			base;
-	strcpy				(base,path);
+	strcpy				(base,*path);
 	if (strext(base))	*strext(base)	= 0;
 	strcat				(base,"\\");
 
@@ -174,7 +180,7 @@ void CLocatorAPI::ProcessArchive(const char* path)
 	hdr->close			();
 
 	// Seek to zero for safety
-	A.vfs->seek			(0);
+	A.vfs->seek		(0);
 }
 
 void CLocatorAPI::ProcessOne	(const char* path, void* _F)
@@ -249,7 +255,7 @@ void CLocatorAPI::_initialize	(u32 flags, LPCSTR target_folder)
 
 	m_Flags.set		(flags,TRUE);
 
-	// append appliction path
+	// append application path
     {
         string_path		app_root,fn,dr,di;
         GetModuleFileName(GetModuleHandle(MODULE_NAME),fn,sizeof(fn));

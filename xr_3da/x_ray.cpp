@@ -377,8 +377,8 @@ void CApplication::OnFrame	( )
 
 void CApplication::Level_Scan()
 {
-	xr_vector<char*>*	folder	= FS.file_list_open	("$game_levels$","",FS_ListFolders|FS_RootOnly);
-	R_ASSERT			(!folder->empty());
+	xr_vector<char*>*	folder	= FS.file_list_open	("$game_levels$",FS_ListFolders|FS_RootOnly);
+	R_ASSERT			(folder&&folder->size());
 	for (u32 i=0; i<folder->size(); i++)
 	{
 		string256	N1,N2,N3,N4;
