@@ -21,6 +21,7 @@ class CSoundRender_CoreD: public CSoundRender_Core
 		float			fRolloffFactor;
 		float			fDopplerFactor;
 	};
+	BOOL 				QuerySupport				(ULONG ulQuery);
 public:
 	// DSound interface
 	IDirectSound8*				pDevice;		// The device itself
@@ -30,7 +31,7 @@ public:
 	DSCAPS						dsCaps;
 	SListener					Listener;
 private:
-	virtual void			update_listener			( const Fvector& P, const Fvector& D, const Fvector& N, float dt );
+	virtual void			update_listener			(const Fvector& P, const Fvector& D, const Fvector& N, float dt);
 	virtual void			i_eax_set				(const GUID* guid, u32 prop, void* val, u32 sz);
 	virtual void			i_eax_get				(const GUID* guid, u32 prop, void* val, u32 sz);
 public:
