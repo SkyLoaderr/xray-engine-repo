@@ -187,19 +187,19 @@ void CActor::Load(CInifile* ini, const char* section )
 	
 	// sounds
 	char buf[256];
-	pSounds->Create		(sndStep[0],		FALSE, strconcat(buf,cName(),"\\stepL"));
-	pSounds->Create		(sndStep[1],		FALSE, strconcat(buf,cName(),"\\stepR"));
-	pSounds->Create		(sndLanding,		FALSE, strconcat(buf,cName(),"\\landing"));
-	pSounds->Create		(sndZoneHeart,		FALSE, strconcat(buf,cName(),"\\heart\\1"));
-	pSounds->Create		(sndZoneDetector,	FALSE, strconcat(buf,cName(),"\\detectors\\geiger"));
-	pSounds->Create		(sndHit[0],			strconcat(buf,cName(),"\\hurt1"));
-	pSounds->Create		(sndHit[1],			strconcat(buf,cName(),"\\hurt2"));
-	pSounds->Create		(sndHit[2],			strconcat(buf,cName(),"\\hurt3"));
-	pSounds->Create		(sndHit[3],			strconcat(buf,cName(),"\\hurt4"));
-	pSounds->Create		(sndDie[0],			strconcat(buf,cName(),"\\die0"));
-	pSounds->Create		(sndDie[1],			strconcat(buf,cName(),"\\die1"));
-	pSounds->Create		(sndDie[2],			strconcat(buf,cName(),"\\die2"));
-	pSounds->Create		(sndDie[3],			strconcat(buf,cName(),"\\die3"));
+	pSounds->Create		(sndStep[0],		FALSE,	strconcat(buf,cName(),"\\stepL"));
+	pSounds->Create		(sndStep[1],		FALSE,	strconcat(buf,cName(),"\\stepR"));
+	pSounds->Create		(sndLanding,		FALSE,	strconcat(buf,cName(),"\\landing"));
+	pSounds->Create		(sndZoneHeart,		FALSE,	strconcat(buf,cName(),"\\heart\\1"));
+	pSounds->Create		(sndZoneDetector,	FALSE,	strconcat(buf,cName(),"\\detectors\\geiger"));
+	pSounds->Create		(sndHit[0],			TRUE,	strconcat(buf,cName(),"\\hurt1"));
+	pSounds->Create		(sndHit[1],			TRUE,	strconcat(buf,cName(),"\\hurt2"));
+	pSounds->Create		(sndHit[2],			TRUE,	strconcat(buf,cName(),"\\hurt3"));
+	pSounds->Create		(sndHit[3],			TRUE,	strconcat(buf,cName(),"\\hurt4"));
+	pSounds->Create		(sndDie[0],			TRUE,	strconcat(buf,cName(),"\\die0"));
+	pSounds->Create		(sndDie[1],			TRUE,	strconcat(buf,cName(),"\\die1"));
+	pSounds->Create		(sndDie[2],			TRUE,	strconcat(buf,cName(),"\\die2"));
+	pSounds->Create		(sndDie[3],			TRUE,	strconcat(buf,cName(),"\\die3"));
 
 	// take index spine bone
 	int spine_bone		= PKinematics(pVisual)->LL_BoneID("bip01_spine2");
@@ -507,11 +507,11 @@ void CActor::Update	(DWORD DT)
 	// sound step
 	if (mstate_real&mcAnyMove){
 		if(m_fTimeToStep<0){
-			pSounds->Play	(sndStep[bStep],this,Position());
+			pSounds->PlayAtPos	(sndStep[bStep],this,Position());
 			bStep = !bStep;
-			float k			= (mstate_real&mcCrouch)?0.75f:1.f;
-			float tm		= isAccelerated(mstate_real)?(PI/(k*10.f)):(PI/(k*7.f));
-			m_fTimeToStep	= tm;
+			float k				= (mstate_real&mcCrouch)?0.75f:1.f;
+			float tm			= isAccelerated(mstate_real)?(PI/(k*10.f)):(PI/(k*7.f));
+			m_fTimeToStep		= tm;
 		}
 		m_fTimeToStep -= dt;
 	}

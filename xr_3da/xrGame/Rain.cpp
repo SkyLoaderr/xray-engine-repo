@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include "Rain.h"
-#include "..\2dsound.h"
+#include "..\3dsound.h"
 #include "..\render.h"
 #include "..\psvisual.h"
 
@@ -85,7 +85,7 @@ void	CEffect_Rain::OnEvent	(EVENT E, DWORD P1, DWORD P2)
 	if ((E==control_start) && (state!=stWorking))	{
 		state				= stStarting;
 		pSounds->Play		(snd_Ambient,0,TRUE);
-		snd_Ambient->feedback->SetVolume	(snd_Ambient_volume);
+		snd_Ambient.feedback->SetVolume	(snd_Ambient_volume);
 		Log	("start");
 	} else if ((E==control_stop) && (state!=stIdle))	{
 		state				= stStopping;
@@ -229,7 +229,7 @@ void	CEffect_Rain::Render	()
 	case stIdle:		return;
 	case stStarting:	
 		snd_Ambient_volume	+= snd_fade*Device.fTimeDelta;
-		snd_Ambient_control->SetVolume	(snd_Ambient_volume);
+		snd_Ambient.feedback->SetVolume	(snd_Ambient_volume);
 		if (snd_Ambient_volume > 1)	state=stWorking;
 		bBornNewItems	= TRUE;
 		break;
@@ -238,9 +238,9 @@ void	CEffect_Rain::Render	()
 		break;
 	case stStopping:
 		snd_Ambient_volume	-= snd_fade*Device.fTimeDelta;
-		snd_Ambient_control->SetVolume	(snd_Ambient_volume);
+		snd_Ambient.feedback->SetVolume	(snd_Ambient_volume);
 		if (snd_Ambient_volume < 0)	{
-			snd_Ambient_control->Stop	();
+			snd_Ambient.feedback->Stop	();
 			state=stIdle;
 		}
 		bBornNewItems	= FALSE;
