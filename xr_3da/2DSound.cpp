@@ -203,7 +203,6 @@ void C2DSound::OnMove()
 void C2DSound::Play(BOOL bLoop, int iLoopCount)
 {
 	VERIFY((dwStatus & DSBSTATUS_PLAYING) == 0);
-//	VERIFY((bLoop==false && iLoopCount>0)||(bLoop==true && iLoopCount==0));
 	bMustPlay = true;
 	bMustLoop = bLoop;
 	if (bLoop && iLoopCount) {
