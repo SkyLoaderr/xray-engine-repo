@@ -1790,10 +1790,6 @@ SOURCE=.\xrLevel.h
 # PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=.\communicate.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\FLightsController.cpp
 
 !IF  "$(CFG)" == "XR_3DA - Win32 Release"
@@ -1808,10 +1804,6 @@ SOURCE=.\FLightsController.cpp
 # Begin Source File
 
 SOURCE=.\FLightsController.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\light.h
 # End Source File
 # Begin Source File
 
