@@ -343,6 +343,15 @@ void CActor::net_ImportInput	(NET_Packet &P)
 
 	P.r_u32				(xTimeStamp);
 	P.r_u32				(mstate_wishful);
+
+	u8	CamMode;
+	P.r_u8				(CamMode);
+	cam_Set	(EActorCameras(CamMode));
+
+	P.r_angle8		(cam_Active()->yaw);
+	P.r_angle8		(cam_Active()->pitch);
+
+
 };
 
 BOOL CActor::net_Spawn		(LPVOID DC)
@@ -909,11 +918,12 @@ void CActor::shedule_Update	(u32 DT)
 	// Check controls, create accel, prelimitary setup "mstate_real"
 	float	Jump	= 0;
 	if (Local())	{
-		g_cl_CheckControls		(mstate_wishful,NET_SavedAccel,Jump,dt);
-		g_cl_Orientate			(mstate_real,dt);
-		g_Orientate				(mstate_real,dt);
 
 		NetInput_Save			( );
+
+		g_cl_CheckControls		(mstate_wishful,NET_SavedAccel,Jump,dt);
+		g_cl_Orientate			(mstate_real,dt);
+		g_Orientate				(mstate_real,dt);		
 
 		g_Physics				(NET_SavedAccel,Jump,dt);
 		g_cl_ValidateMState		(dt,mstate_wishful);
@@ -1562,6 +1572,10 @@ void CActor::NetInput_Save()
 	NP.w_u16		(u16(ID()));
 	NP.w_u32		(NI.m_dwTimeStamp);
 	NP.w_u32		(NI.mstate_wishful);
+
+	NP.w_u8			(u8(cam_active));
+	NP.w_angle8		(cam_Active()->yaw);
+	NP.w_angle8		(cam_Active()->pitch);
 
 	if (Level().net_HasBandwidth()) u_EventSend(NP);
 };
