@@ -399,14 +399,6 @@
         <text>enc_weapons1_grenade-rgd5</text>
     </article>
 
-    <!-------------------------------- mounted-weapon ----------------------------->
-
-    <article id="weapons1_mounted-weapon" name="mounted-weapon" group="Weapons1">
-        <ltx>mounted_weapon</ltx>
-        <text>enc_weapons1_mounted-weapon</text>
-    </article>
-
-
 
 
 
