@@ -295,6 +295,12 @@
 		<Filter
 			Name="Shading templates"
 			Filter="">
+			<File
+				RelativePath="blender_fat_flat.cpp">
+			</File>
+			<File
+				RelativePath="blender_fat_flat.h">
+			</File>
 		</Filter>
 		<Filter
 			Name="HOM Occlusion"
