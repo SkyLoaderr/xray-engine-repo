@@ -1,8 +1,174 @@
+---=== Dialog class ====---
+class "Dialog"
+
+function Dialog:__init ()
+	self.queue = {}
+	self.current = 0
+	self.speech = false
+	self.speech_id = id
+end
+
+function Dialog:add_queue (id_name, sound_name, _delay)
+	local t = {id = id_name, sound = "sound_name", delay = _delay}
+	table.insert (self.queue, t)
+end
+
+function Dialog:is_speech ()
+	return self.speech
+end
+
+function Dialog:stop_speech ()
+	if self.speech = false then return end
+	self.current = self.current + 1
+	self.speech_id = 0
+end
+
+function Dialog:is_end ()
+	local size = table.getn (self.queue)
+	if size == 0 or self.current > size then return true end
+	return false
+end
+
+function Dialog:set_next ()
+	if self:is_end () == true then return end
+	self.current = self.current + 1
+end
+
+function Dialog:get_next_id ()
+	if self:is_end () == true then return 0 end
+	return self.queue[self.current].id
+end
+
+function Dialog:get_sound ()
+    if self:is_end () == true then return nil end
+    return self.queue[self.current].sound, self.queue[self.current].delay
+end
+
+function Dialog:speech ()
+	self.speech = true
+	self.speech_id = self.queue[self.current].id
+end
+
+function Dialog:speech_id ()
+	return self.speech_id
+end	
+
+
+---=== health evaluator ===----
+class "health_evaluator" (property_evaluator)
+
+function health_evaluator:__init (obj) super ()
+	self.npc = obj
+	self.health = obj.health
+end
+
+function health_evaluator:evaluate ()
+    if self.npc.health < self.health then return true end
+    self.health = self.npc.health
+    return false
+end
+
+---=== speech evaluator ===---
+class "speech_evaluator" (property_evaluator)
+
+function speech_evaluator:__init (obj, dlg) super ()
+	self.dialog = dlg
+	self.npc = obj
+end
+
+function speech_evaluator:evaluate ()
+	if self.dialog:speech_id () == self.npc:id () return true end
+	return false
+end
+
+---=== see evaluator ===---
+class "see_evaluator" (property_evaluator)
+
+function see_evaluator:__init (obj) super ()
+    self.npc = obj
+end
+
+function see_evaluator:evaluate ()
+    local actor = get_actor ()
+    if self.npc:see (actor) and distance_between (self.npc, actor) < 10 then return true end
+    return false 
+end
+
+
+---=== custom planner ===---
+class "custom_planner" (action_planner)
+
+function custom_planner:__init	() super()
+end
+
+function custom_planner:reinit	(obj, clear_all)
+	action_planner.reinit	(self, obj, clear_all)
+end
+
+---=== action wait ===---
+class "action_wait" (action_base)
+
+function action_wait:__init (obj)
+    self.npc = obj
+end    
+
+function action_wait:initialize ()
+	action_base.initialize	(self)
+	self.npc:script	(true, freedom_test.script_name())
+	action (self.npc, anim	("stoya_ruje_ 0"),	cond (cond.anim_end))
+end
+
+function action_wait:finalize ()
+	action_base.finalize (self)
+	self.npc:script (false, freedom_test.script_name ())
+end
+
+function action_wait:execute ()
+	action_base.execute	(self)
+	if self.npc:action () == nil then
+	   reset_action (self.npc, freedom_test.script_name ())
+	   action (self.npc, anim ("vishka_3"), cond (cond.anim_end))
+	end    
+end
+
+---=== action speech ===---
+class "action_speech" (action_base)
+
+---=== main ===---
+local dialog = freedom_test.Dialog ()
 
 function main()
 
-		
+	local defender1 = get_level_object ("defender1")
+	local defender2 = get_level_object ("defender2")
+	dialog.add_queue (defender1:id (), "scripts\\stalker_prof\\prof_eto_territoriya_svobodi")
+	dialog.add_queue (defender2:id (), "scripts\\stalker_rainbow\\rainbow_ti_chto_gluhoy")
+	dialog.add_queue (defender1:id (), "scripts\\stalker_prof\\prof_sam_naprosilsya")
+	dialog.add_queue (defender1:id (), "scripts\\stalker_prof\\prof_hrom_pust_trup_uberet")
+	
+	local property_defender1_view = 257
+	local property_defender1_end = 258
+	local property_defender1_sound_end = 259
+	local property_defender2_sound_end = 260
+	local property_defender1_attacked = 261
+	local property_defender2_attacked = 262
+	
+    local planner1 = freedom_test.custom_planner ()
+    planner1:reinit	(defender1, false)
+    
+    local planner2 = freedom_test.custom_planner ()
+    planner2:reinit	(defender2, false)
 
+    local end_evaluator = custom_evaluator (false)
+    local speech1_evaluator = freedom_test.speech_evaluator (defender1, dialog)
+    local speech2_evaluator = freedom_test.speech_evaluator (defender2, dialog)
+    local health1_evaluator = freedom_test.health_evaluator (defender1)
+    local health2_evaluator = freedom_test.health_evaluator (defender2)
+    local see1_evaluator = freedom_test.see_evaluator (defender1)
+    local see2_evaluator = freedom_test.see_evaluator (defender2)
+
+        
+	
 end
 
 
