@@ -179,6 +179,8 @@ void CRender::add_leafs_Dynamic(FBasicVisual *pVisual)
 
 void CRender::add_leafs_Static(FBasicVisual *pVisual)
 {
+	if (!HOM.Visible(pVisual->bv_BBox))	return;
+
 	// Visual is 100% visible - simply add it
 	vector<FBasicVisual*>::iterator I,E;	// it may be usefull for 'hierrarhy' visuals
 
