@@ -22,7 +22,7 @@ enum EJointType
     jtForceU32 = u32(-1)
 };
 
-struct SJointLimit
+struct ECORE_API SJointLimit
 {
 	Fvector2		limit;
     float 			spring_factor;
@@ -36,7 +36,7 @@ struct SJointLimit
     }
 };
 
-struct SBoneShape
+struct ECORE_API SBoneShape
 {
     enum EShapeType
 	{
@@ -69,7 +69,7 @@ struct SBoneShape
     }
 };
 
-struct SJointIKData
+struct ECORE_API SJointIKData
 {
     // IK
     EJointType		type;
@@ -100,7 +100,7 @@ struct SJointIKData
 };
 #pragma pack( pop )
 
-class CBone
+class ECORE_API CBone
 {
 	string64			name;
 	string64			parent_name;
