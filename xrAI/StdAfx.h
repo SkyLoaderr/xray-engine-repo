@@ -35,6 +35,8 @@
 #endif
 // TODO: reference additional headers your program requires here
 
+#undef		THROW
+
 #if XRAY_EXCEPTIONS
 #	define	THROW(xpr)				if (!(xpr)) {throw __FILE__LINE__"\""#xpr"\"";}
 #	define	THROW2(xpr,msg0)		if (!(xpr)) {throw *shared_str().sprintf("%s \"%s\" : %s",__FILE__LINE__,#xpr,msg0 ? msg0 : "");}
