@@ -172,40 +172,46 @@ public:
 		
 		// Select respawn point
 		DWORD	selected	= 0;
-		float	best		= -1;
-		for (DWORD id=0; id<RP.size(); id++)
+		if (rp==0xff) 
 		{
-			Fvector4&	P = RP[id]; 
-			Fvector		POS;
-			POS.set		(P.x,P.y,P.z);
-			float		cost=0;
-			DWORD		count=0;
-			
-			for (DWORD o=0; o<ent.size(); o++) 
+			float	best		= -1;
+			for (DWORD id=0; id<RP.size(); id++)
 			{
-				// Get entity & it's position
-				xrServerEntity*	E	= ent[o];
-				Fvector4	e_ori;	E->GetPlacement(e_ori);
-				Fvector		e_pos;	e_pos.set(e_ori.x,e_ori.y,e_ori.z);
-
-				float	dist		= POS.distance_to(e_pos);
-				float	e_cost		= 0;
-
-				if (s_team == E->s_team)	{
-					// same teams, try to spawn near them, but not so near
-					if (dist<5)		e_cost += 3*(5-dist);
-				} else {
-					// different teams, try to avoid them
-					if (dist<30)	e_cost += 3*(30-dist);
+				Fvector4&	P = RP[id]; 
+				Fvector		POS;
+				POS.set		(P.x,P.y,P.z);
+				float		cost=0;
+				DWORD		count=0;
+				
+				for (DWORD o=0; o<ent.size(); o++) 
+				{
+					// Get entity & it's position
+					xrServerEntity*	E	= ent[o];
+					Fvector4	e_ori;	E->GetPlacement(e_ori);
+					Fvector		e_pos;	e_pos.set(e_ori.x,e_ori.y,e_ori.z);
+					
+					float	dist		= POS.distance_to(e_pos);
+					float	e_cost		= 0;
+					
+					if (s_team == E->s_team)	{
+						// same teams, try to spawn near them, but not so near
+						if (dist<5)		e_cost += 3*(5-dist);
+					} else {
+						// different teams, try to avoid them
+						if (dist<30)	e_cost += 3*(30-dist);
+					}
+					
+					cost	+= dist;
+					count	+= 1;
 				}
-
-				cost	+= dist;
-				count	+= 1;
+				
+				if (0==count)	{ selected = id; break; }
+				cost /= float(count);
+				if (cost>best)	{ selected = id; best = cost; }
 			}
-			
-			if (0==count)	{ selected = id; break; }
-			cost /= float(count);
-			if (cost>best)	{ selected = id; best = cost; }
+		} else {
+			if (rp>=RP.size())	Msg("! ERROR: Can't spawn entity at RespawnPoint #%d.",DWORD(rp));
+			selected = DWORD(rp);
 		}
 		
 		// Perform spawn
