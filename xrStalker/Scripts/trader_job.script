@@ -5,10 +5,8 @@ function main()
 	wait(1000)
 	local 	actor = get_actor()
 	local 	trader = get_level_object("m_trader")
-	local 	loser = get_level_object("trivial_novice3_0_1")
 	GiveInfoViaPda(actor, actor, "actor_start")
 	trader:set_start_dialog("trader_hello_dialog")
-	loser:set_start_dialog("loser_hello_dialog")
 
 	wait(15000)
 	GiveInfoViaPda(actor, actor, "actor_start01")
@@ -43,15 +41,6 @@ end
 function is_wounded (first_speaker, second_speaker)
 
 	if (second_speaker:name() == "wounded_stalker_0_1") then
-		return true
-	end
-
-	return false
-end
-
-function is_loser (first_speaker, second_speaker)
-
-	if (second_speaker:name() == "trivial_novice3_0_1") then
 		return true
 	end
 
@@ -96,18 +85,6 @@ function is_medkit_present(first_speaker, second_speaker)
 
 end
 
-function is_weapon_present(first_speaker, second_speaker)
-
-	printf("whether we have box: first %s, second %s", first_speaker:name(), second_speaker:name())
-	if( first_speaker:object("wpn_ak74") or first_speaker:object("wpn_toz34") )  then
-		return true
-	end
-	return false
-
-end
-
-
-
 function give_box_to_trader(first_speaker, second_speaker)
 	local box01 = second_speaker:object("quest_case_01")
 	second_speaker:transfer_item (box01, first_speaker)
@@ -123,17 +100,6 @@ function give_medkit_to_wounded(first_speaker, second_speaker)
 -- передать деньги актеру
 	first_speaker:transfer_money (1500, second_speaker)
 end
-
-function give_weapon_to_loser(first_speaker, second_speaker)
-	local wpn = nil
-	if(second_speaker:object("wpn_ak74")) then
-		wpn = second_speaker:object("wpn_ak74")
-	else
-		wpn = second_speaker:object("wpn_toz34")
-	end
-	second_speaker:transfer_item (wpn, first_speaker)
-end
-
 
 function give_box02_to_trader(first_speaker, second_speaker)
 	local box02 = second_speaker:object("quest_case_02")

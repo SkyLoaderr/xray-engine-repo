@@ -1,6 +1,36 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <game_dialogs>
+	<dialog id="loser_hello_dialog">
+		<phrase_list>
+			<phrase id="0">
+				<text>Урки ограбили!!! Принеси мне какое-нибудь серьезное оружие...\nПринеси! Я этого не забуду...</text>
+			</phrase>
+		</phrase_list>
+	</dialog>
+	<dialog id="looser_weapon">
+		<phrase_list>
+			<phrase id="0">
+				<dont_has_info>escape_novice_need_weapon</dont_has_info>
+				<text>Возьми эту пушку, может тебе она подойдет...</text>
+				<action>escape.give_weapon_to_loser</action>
+				<give_info>escape_novice_need_weapon</give_info>
+				<next>1</next>
+			</phrase>
+			<phrase id="1">
+				<text>Спасибо, брат... Я не забуду твою помощь. Теперь урки поплатятся.\n          [отношение изменены до "Друга"]</text>
+			</phrase>
+		</phrase_list>
+	</dialog>
+
+
+
+
+
+
+
+
+
 	<dialog id="test_dialog">
 		<!-- название диалога, если оно не задано, то в качестве названия будет 
 		  использоваться текст первой фразы. -->	
@@ -235,16 +265,6 @@
 		</phrase_list>
 	</dialog>
 
-	<dialog id="loser_hello_dialog">
-		<phrase_list>
-			<phrase id="0">
-				<text>Урки ограбили!!! Принеси мне какое-нибудь серьезное оружие...\nПринеси! Я этого не забуду...</text>
-			</phrase>
-		</phrase_list>
-	</dialog>
-
-
-
 	<dialog id="stalker_talk_about">
 	<precondition>trader_job.if_not_a_trader</precondition>
 	    <has_info>actor_start</has_info>
@@ -362,23 +382,6 @@
 		</phrase_list>
 	</dialog>
 
-
-	<dialog id="job_weapon">
-	        <precondition>trader_job.is_weapon_present</precondition>
-	        <precondition>trader_job.is_loser</precondition>
-		<phrase_list>
-			<phrase id="0">
-				<dont_has_info>job_weapon_finished</dont_has_info>
-				<text>Возьми эту пушку, может тебе она подойтет...</text>
-				<next>1</next>
-				<give_info>job_weapon_finished</give_info>
-			</phrase>
-			<phrase id="1">
-				<text>Спасибо, брат... Я не забуду твою помощь. Теперь урки поплатятся.\n          [отношение изменены до "Друга"]</text>
-				<action>trader_job.give_weapon_to_loser</action>
-			</phrase>
-		</phrase_list>
-	</dialog>
 
 
 
