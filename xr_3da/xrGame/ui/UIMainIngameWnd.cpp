@@ -24,26 +24,28 @@ using namespace InventoryUtilities;
 
 
 //hud adjust mode
-int				g_bHudAdjustMode			= 0;
-float			g_fHudAdjustValue			= 0.0f;
+int			g_bHudAdjustMode			= 0;
+float		g_fHudAdjustValue			= 0.0f;
+const u32	g_clWhite					= 0xffffffff;
 
-#define RADIATION_ABSENT 0.25f
-#define RADIATION_SMALL 0.5f
-#define RADIATION_MEDIUM 0.75f
-#define RADIATION_HIGH 1.0f
+#define		RADIATION_ABSENT			0.25f
+#define		RADIATION_SMALL				0.5f
+#define		RADIATION_MEDIUM			0.75f
+#define		RADIATION_HIGH				1.0f
 
-#define DEFAULT_MAP_SCALE 1.f
+#define		DEFAULT_MAP_SCALE			1.f
 
 //-----------------------------------------------------------------------------/
 //  Fade and color parameters
 //-----------------------------------------------------------------------------/
-#define C_SIZE		0.025f
-#define NEAR_LIM	0.5f
+#define		C_SIZE						0.025f
+#define		NEAR_LIM					0.5f
 
-#define SHOW_INFO_SPEED	0.5f
-#define HIDE_INFO_SPEED	10.f
-#define C_ON_ENEMY	D3DCOLOR_XRGB(0xff,0,0)
-#define C_DEFAULT	D3DCOLOR_XRGB(0xff,0xff,0xff)
+#define		SHOW_INFO_SPEED				0.5f
+#define		HIDE_INFO_SPEED				10.f
+#define		C_ON_ENEMY					D3DCOLOR_XRGB(0xff,0,0)
+#define		C_DEFAULT					D3DCOLOR_XRGB(0xff,0xff,0xff)
+
 
 //-----------------------------------------------------------------------------/
 //  Textual constants
@@ -67,6 +69,7 @@ CUIMainIngameWnd::CUIMainIngameWnd()
 	m_bShowHudCrosshair = false;
 	// Quick infos
 	fuzzyShowInfo		= 0.f;
+	m_iFade_mSec		= 0;
 }
 
 CUIMainIngameWnd::~CUIMainIngameWnd()
@@ -130,15 +133,12 @@ void CUIMainIngameWnd::Init()
 	// У нас отдельные конфигурации листа для SP, и MP modes
 	CUIXml uiXml2;
 	if (Game().type != GAME_SINGLE)
-	{
 		uiXml2.Init("$game_data$", PDA_INGAME_MULTIPLAYER_CFG);
-		xml_init.InitListWnd(uiXml2, "list", 0, &UIPdaMsgListWnd);
-	}
 	else
-	{
 		uiXml2.Init("$game_data$", PDA_INGAME_SINGLEPLAYER_CFG);
-		xml_init.InitListWnd(uiXml2, "list", 0, &UIPdaMsgListWnd);
-	}
+
+	xml_init.InitListWnd(uiXml2, "list", 0, &UIPdaMsgListWnd);
+	m_iFade_mSec = uiXml2.ReadAttribInt("list", 0, "fade", 0);
 
 	UIPdaMsgListWnd.SetVertFlip(true);
 		
@@ -389,6 +389,11 @@ void CUIMainIngameWnd::Update()
 		
 		if(*pShowTime>0)
 		{
+			// Плавное исчезновение надписи
+			float fAlphaFactor = static_cast<float>(m_iFade_mSec - *pShowTime) / m_iFade_mSec;
+			if (fAlphaFactor < 0) fAlphaFactor = 0;
+			pItem->UIMsgText.SetTextColor(subst_alpha(pItem->UIMsgText.GetTextColor(), u8(iFloor(255.f * (1 - fAlphaFactor)))));
+
 			*pShowTime -= Device.dwTimeDelta;
 		}
 		else

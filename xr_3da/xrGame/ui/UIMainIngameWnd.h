@@ -82,15 +82,15 @@ protected:
 	
 
 	//для текущего активного актера и оружия
-	CActor*		m_pActor;	
-	CWeapon*	m_pWeapon;
-	int			m_iWeaponIconX;
-	int			m_iWeaponIconY;
-	int			m_iWeaponIconWidth;
-	int			m_iWeaponIconHeight;
+	CActor*				m_pActor;	
+	CWeapon*			m_pWeapon;
+	int					m_iWeaponIconX;
+	int					m_iWeaponIconY;
+	int					m_iWeaponIconWidth;
+	int					m_iWeaponIconHeight;
 
 	// Добавлено для поддержки fadein/fadeout реалтаймовых подсказок
-	float					fuzzyShowInfo;
+	float				fuzzyShowInfo;
 	// Отображение подсказок при наведении прицела на объект
 	// Эта процедура почти полная копия куска процедуры CHUDCursor::Render().
 	// Возможно, необходимо сделать таки 1 процедуру отрисовки.
@@ -99,4 +99,7 @@ protected:
 	// ассоциативный массив с типсами. Выбор пал на map, так как заполнение произойдет 1 раз,
 	// а поиск будет производиться часто.
 	std::map<int, ref_str>	m_strTips;
+
+	// для лога сообщений на экране устанавливаем время постепенного исчезновения надписи
+	int					m_iFade_mSec;
 };
