@@ -6,12 +6,14 @@
 #pragma once
 
 #include "ui/uistring.h"
+#include "infoportiondefs.h"
+
 
 struct SMapLocation
 {
 	SMapLocation() 
 	{
-		info_portion_index = -1;
+		info_portion_id = NO_INFO_INDEX;
 		level_num = 0;
 		x = y = 0;
 		name.SetText("");
@@ -36,7 +38,7 @@ struct SMapLocation
 	//id объекта на уровне
 	u16 object_id;
 	//индекс части информации
-	int	info_portion_index;
+	INFO_ID info_portion_id;
 
 	//размеры и положение иконки
 	int icon_x, icon_y, icon_width, icon_height;

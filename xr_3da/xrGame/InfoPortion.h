@@ -6,76 +6,72 @@
 
 #pragma once
 
-
-#include "ui/uistring.h"
 #include "ui/xrXMLParser.h"
 #include "map_location.h"
 
-
-#define NO_INFO_INDEX (-1)
-
+#include "shared_data.h"
 
 
-
-DEF_LIST (INFO_INDEX_LIST, int);
-
-//вопрос 
-typedef struct tagSInfoQuestion
+//////////////////////////////////////////////////////////////////////////
+// SInfoPortionData: данные для InfoProtion
+//////////////////////////////////////////////////////////////////////////
+struct SInfoPortionData : CSharedResource
 {
-	//порядковый номер вопроса в информации
-	int num_in_info;
-	//индекс информации которая содержит этот вопрос
-	int info_portion_index;
+	SInfoPortionData ();
+	virtual ~SInfoPortionData ();
 
-	//список индексов кусков информации
-	//которые мы можем получить в ответ на этот вопрос
-	INFO_INDEX_LIST IndexList;
+	//уникальный индекс порции информации
+	INFO_ID		m_InfoId;
 
-	//текстовое представление вопроса
-	CUIString text;
-	//заготовка на негативный ответ
-	CUIString negative_answer_text;
-		
-} SInfoQuestion;
-
-
-DEF_LIST (INFO_QUESTIONS_LIST, SInfoQuestion);
-
-//квант  - порция информации
-class CInfoPortion 
-{
-public:
-	CInfoPortion(void);
-	virtual ~CInfoPortion(void);
-
-	int				GetIndex()			{return m_iIndex;}
-	int				GetLocationsNum()	  {return m_MapLocationVector.size();}
-	SMapLocation&	GetLocation(int index) {return	m_MapLocationVector[index];}
-	LPCSTR			GetText()		{return m_text.GetBuf();}
-
-	//загрузка структуры информацией из файла
-	void			Load(int index);
-	void			GetQuestion(SInfoQuestion& question, int question_num);
-	//функция загрузки из XML
-	void			LoadInfoPortionFromXml(CUIXml& uiXml, int num_in_file);
-
-	//список вопросов, которые игрок может задавать после получения 
-	//информации
-	INFO_QUESTIONS_LIST m_QuestionsList;
-
-
-	DEFINE_VECTOR(ref_str, DIALOG_NAME_VECTOR, DIALOG_NAME_VECTOR_IT);
 	//массив с именами диалогов, которые могут быть инициированы
 	//из этого InfoPortion
+	DEFINE_VECTOR(ref_str, DIALOG_NAME_VECTOR, DIALOG_NAME_VECTOR_IT);
 	DIALOG_NAME_VECTOR m_DialogNames;
 
-protected:
-	bool m_bLoaded;
-
-	//уникальный индекс в списке всех возможных квантов информации
-	int	m_iIndex;
 	//список локаций на карте
-	LOCATIONS_VECTOR	m_MapLocationVector;
+	LOCATIONS_VECTOR	m_MapLocations;
+
+	//скриптовые действия, которые активируется после того как 
+	//информацию получает персонаж
+	DEFINE_VECTOR(ref_str, ACTION_NAME_VECTOR, ACTION_NAME_VECTOR_IT);
+	ACTION_NAME_VECTOR	m_ScriptActions;
+
+	//массив с индексами тех порций информации, которые
+	//исчезнут, после получения этой info_portion
+	DEFINE_VECTOR(int, INFO_INDEX_VECTOR, INFO_INDEX_VECTOR_IT);
+	INFO_INDEX_VECTOR m_DisableInfo;
+
+	//текстовое представление информации	
+	ref_str		m_text;
+};
+
+
+
+
+//квант  - порция информации
+class CInfoPortion : public CSharedClass<SInfoPortionData, INFO_ID>
+{
+private:
+	typedef CSharedClass<SInfoPortionData, INFO_ID> inherited_shared;
+public:
+				CInfoPortion(void);
+	virtual		~CInfoPortion(void);
+
+	//инициализация info данными
+	//если info с таким id раньше не использовался
+	//он будет загружен из файла
+	virtual void Load	(INFO_ID info_id);
+
+	const LOCATIONS_VECTOR&							MapLocations()	{return info_data()->m_MapLocations;}
+	const SInfoPortionData::DIALOG_NAME_VECTOR&		DialogNames()	{return info_data()->m_DialogNames;}
+	const SInfoPortionData::INFO_INDEX_VECTOR&		DisableInfos()	{return info_data()->m_DisableInfo;}
+	const SInfoPortionData::ACTION_NAME_VECTOR&		ScriptActions()	{return	info_data()->m_ScriptActions;}
+
 	//текстовое представление информации
-	CUIString m_text;
+	virtual LPCSTR GetText ();
+protected:
+    INFO_ID	m_InfoId;
+
+	void load_shared	(LPCSTR xml_file);
+	SInfoPortionData* info_data() { VERIFY(inherited_shared::get_sd()); return inherited_shared::get_sd();}
 };

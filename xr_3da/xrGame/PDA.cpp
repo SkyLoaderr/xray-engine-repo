@@ -245,7 +245,7 @@ CObject* CPda::GetOwnerObject()
 
 //отправка сообщения другому владельцу PDA 
 //pda_num - номер PDA в нашем списке
-void CPda::SendMessage(u32 pda_num, EPdaMsg msg, int info_index)
+void CPda::SendMessage(u32 pda_num, EPdaMsg msg, INFO_ID info_index)
 {
 	//найти PDA с нужным номером в списке
 	u32 i=0;
@@ -264,7 +264,7 @@ void CPda::SendMessage(u32 pda_num, EPdaMsg msg, int info_index)
 
 //отправление сообщению PDA с определенным ID
 //если такое есть в списке контактов
-void CPda::SendMessageID(u32 pda_ID, EPdaMsg msg, int info_index)
+void CPda::SendMessageID(u32 pda_ID, EPdaMsg msg, INFO_ID info_index)
 {
 	CObject* pObject =  Level().Objects.net_Find(pda_ID);
 	CPda* pPda = dynamic_cast<CPda*>(pObject);
@@ -281,7 +281,7 @@ void CPda::SendMessageID(u32 pda_ID, EPdaMsg msg, int info_index)
 	PdaEventSend(pda_ID, msg, info_index);
 }
 
-void CPda::PdaEventSend(u32 pda_ID, EPdaMsg msg, int info_index)
+void CPda::PdaEventSend(u32 pda_ID, EPdaMsg msg, INFO_ID info_index)
 {
 	AddMessageToLog(pda_ID, msg, info_index, false);
 
@@ -295,7 +295,7 @@ void CPda::PdaEventSend(u32 pda_ID, EPdaMsg msg, int info_index)
 }
 
 //добавляет сообщение в список
-void CPda::AddMessageToLog(u32 pda_ID, EPdaMsg msg, int info_index, bool receive)
+void CPda::AddMessageToLog(u32 pda_ID, EPdaMsg msg, INFO_ID info_index, bool receive)
 {
 	m_bNewMessage = true;
 
@@ -357,8 +357,8 @@ void CPda::OnEvent(NET_Packet& P, u16 type)
 			if(IsActive())
 			{
 				GetOriginalOwner()->ReceivePdaMessage(id, (EPdaMsg)msg, 
-														  info_index);
-				AddMessageToLog(id, (EPdaMsg)msg, info_index, true);
+														 (INFO_ID)info_index);
+				AddMessageToLog(id, (EPdaMsg)msg, (INFO_ID)info_index, true);
 			}
 		}
 		break;
@@ -370,7 +370,7 @@ void CPda::OnEvent(NET_Packet& P, u16 type)
 			P.r_u16			(id);				//отправитель
 			P.r_s32			(info_index);		//номер полученной информации
 
-			OnReceiveInfo(info_index);
+			OnReceiveInfo	((INFO_ID)info_index);
 		}
 		break;
 	}
@@ -411,18 +411,16 @@ bool CPda::WaitForReply(u32 pda_ID)
 // помощи PDA
 
 //знаем ли о инф-ции с заданным номером
-bool CPda::IsKnowAbout(int info_index)
+bool CPda::IsKnowAbout(INFO_ID info_index)
 {
-	KNOWN_INFO_PAIR_IT it = m_mapKnownInfo.find(info_index);
-
+	KNOWN_INFO_VECTOR_IT it = std::find(m_KnownInfo.begin(), m_KnownInfo.end(), info_index);
 	//нам уже известна эта информация
-	if(m_mapKnownInfo.end() != it) return true;
-
+	if(m_KnownInfo.end() != it) return true;
 	return false;
 }
 
 //передача информации другому PDA
-bool CPda::TransferInfoToID(u32 pda_ID, int info_index)
+bool CPda::TransferInfoToID(u32 pda_ID, INFO_ID info_index)
 {
 	//if(!IsKnowAbout(info_index)) return false;
 
@@ -437,53 +435,22 @@ bool CPda::TransferInfoToID(u32 pda_ID, int info_index)
 }
 
 //получение новой порции информации
-void CPda::OnReceiveInfo(int info_index)
+void CPda::OnReceiveInfo(INFO_ID info_index)
 {
-	KNOWN_INFO_PAIR_IT it = m_mapKnownInfo.find(info_index);
+	KNOWN_INFO_VECTOR_IT it = std::find(m_KnownInfo.begin(), m_KnownInfo.end(),  info_index);
 
 	//нам уже известна эта информация
-	if(m_mapKnownInfo.end() != it) return;
+	if(m_KnownInfo.end() != it) return;
 
-	//что означает FALSE пока не известно....
-	//главное что элемент есть и мы об этом знаем
-	m_mapKnownInfo[info_index] = FALSE;
+	m_KnownInfo.push_back(info_index);
 
 	//оповестить владельца PDA
 	GetOriginalOwner()->OnReceiveInfo(info_index);
 }
 
-//создать список всех возможных вопросов
-void CPda::UpdateQuestions()
+void  CPda::RemoveInfo(INFO_ID info_index)
 {
-	m_ActiveQuestionsList.clear();
-
-
-	for(KNOWN_INFO_PAIR_IT it = m_mapKnownInfo.begin();
-		m_mapKnownInfo.end() != it; ++it)
-	{
-		//подгрузить кусочек информации с которым мы работаем
-		CInfoPortion info_portion;
-		info_portion.Load((*it).first);
-		
-		for(INFO_QUESTIONS_LIST_it it1 = info_portion.m_QuestionsList.begin();
-								   info_portion.m_QuestionsList.end() != it1;
-								   ++it1)
-		{
-			//проверить осталась ли еще неизвестная нам информация
-			//которую мы можем получить в ответ на вопрос
-			SInfoQuestion question = *it1;
-
-			INFO_INDEX_LIST_it it2;
-			for(it2 = question.IndexList.begin();
-				question.IndexList.end() != it2;
-				++it2)
-			{
-				if(!IsKnowAbout(*it2))
-				{
-					m_ActiveQuestionsList.push_back(question);
-					break;
-				}
-			}
-		}
-	}
+	KNOWN_INFO_VECTOR_IT it = std::find(m_KnownInfo.begin(), m_KnownInfo.end(),  info_index);
+	if(m_KnownInfo.end() != it) return;
+	m_KnownInfo.erase(it);
 }

@@ -11,6 +11,25 @@
 
 class CInventoryOwner;
 
+//структура, описывающая отношение одного персонажа к другому
+struct SRelation
+{
+	SRelation();
+	~SRelation();
+
+	ALife::ERelationType	RelationType	() const;
+	void					SetRelationType	(ALife::ERelationType relation);
+
+	int						Goodwill		() const;
+	void					SetGoodwill		(int new_goodwill);
+private:
+	//отношения (враг, нейтрал, друг)
+	ALife::ERelationType m_eRelationType;
+	//благосклонность
+	int m_iGoodwill;
+};
+
+
 class CCharacterInfo
 {
 private:
@@ -34,8 +53,10 @@ public:
 	bool Load(LPCSTR name_id, LPCSTR xml_file = DEFAULT_CHARACTER_FILE);
 
 
-	ALife::ERelationType GetRelation	(u16 person_id) const ;
-	void				 SetRelation	(u16 person_id, ALife::ERelationType new_relation);
+	int					 GetGoodwill			(u16 person_id) const ;
+	void				 SetGoodwill			(u16 person_id, int goodwill);
+	ALife::ERelationType GetRelationType		(u16 person_id) const ;
+	void				 SetRelationType		(u16 person_id, ALife::ERelationType new_relation);
 	void				 ClearRelations	();
 
 protected:
@@ -51,7 +72,7 @@ protected:
 
 
 	//отношения которые мы имеем о других персонажей
-	DEFINE_MAP(u16, ALife::ERelationType, RELATION_MAP, RELATION_MAP_IT);
+	DEFINE_MAP(u16, SRelation, RELATION_MAP, RELATION_MAP_IT);
 	RELATION_MAP m_RelationMap;
 
 	//////////////////////////////////////////////////////////////////////////

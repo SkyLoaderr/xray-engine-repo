@@ -242,6 +242,8 @@ BOOL CHelicopter::net_Spawn(LPVOID	DC)
 	m_engineSound.create(TRUE,*heli->engine_sound);
 	m_engineSound.play_at_pos(0,XFORM().c,sm_Looped);
 
+	CShootingObject::Light_Create();
+
 
 	setVisible			(true);
 	setEnabled			(true);
@@ -259,6 +261,7 @@ BOOL CHelicopter::net_Spawn(LPVOID	DC)
 void CHelicopter::net_Destroy()
 {
 	inherited::net_Destroy();
+	CShootingObject::Light_Destroy();
 }
 
 void CHelicopter::net_Export(NET_Packet &P)

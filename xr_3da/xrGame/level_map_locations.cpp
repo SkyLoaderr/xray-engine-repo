@@ -50,22 +50,22 @@ bool CLevel::RemoveMapLocationByID(u16 object_id)
 class RemoveLocationByInfoPred
 {
 public:
-	RemoveLocationByInfoPred(int index){info_portion_index = index;}
+	RemoveLocationByInfoPred(INFO_ID id){info_portion_id = id;}
 	bool operator() (SMapLocation* map_location)
 	{
-		if(map_location->info_portion_index == info_portion_index)
+		if(map_location->info_portion_id == info_portion_id)
 			return true;
 		else
 			return false;
 	}
 private:
-	int info_portion_index;
+	INFO_ID info_portion_id;
 };
 
 
-bool CLevel::RemoveMapLocationByInfo(int info_portion_index)
+bool CLevel::RemoveMapLocationByInfo(INFO_ID info_portion_id)
 {
-	RemoveLocationByInfoPred pred(info_portion_index);
+	RemoveLocationByInfoPred pred(info_portion_id);
 	LOCATIONS_PTR_VECTOR_IT last_it =  std::remove_if(m_MapLocationVector.begin(), m_MapLocationVector.end(), pred);
 
 	if(m_MapLocationVector.end()!=last_it)

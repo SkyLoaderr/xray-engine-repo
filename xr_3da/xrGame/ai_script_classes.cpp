@@ -42,7 +42,7 @@ void CLuaGameObject::Hit(CLuaHit &tLuaHit)
 	m_tpGameObject->u_EventSend(P);
 }
 
-bool CLuaGameObject::GiveInfoPortion(int info_index)
+bool CLuaGameObject::GiveInfoPortion(INFO_ID info_index)
 {
 	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
 	if(!pInventoryOwner) return false;
@@ -58,7 +58,7 @@ bool CLuaGameObject::GiveInfoPortion(int info_index)
 	return			true;
 }
 
-bool CLuaGameObject::GiveInfoPortionViaPda(int info_index, CLuaGameObject* pFromWho)
+bool CLuaGameObject::GiveInfoPortionViaPda(INFO_ID info_index, CLuaGameObject* pFromWho)
 {
 	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
 	if(!pInventoryOwner) return false;

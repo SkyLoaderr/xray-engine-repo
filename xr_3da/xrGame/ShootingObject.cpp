@@ -35,11 +35,6 @@ CShootingObject::CShootingObject(void)
 	m_eCurrentHitType = ALife::eHitTypeFireWound;
 
 
-	//lights
-	light_render				= ::Render->light_create();
-	light_render->set_shadow	(true);
-	m_bShotLight = true;
-
 	//particles
 	m_sFlameParticlesCurrent = m_sFlameParticles = NULL;
 	m_sSmokeParticlesCurrent = m_sSmokeParticles = NULL;
@@ -52,8 +47,6 @@ CShootingObject::CShootingObject(void)
 }
 CShootingObject::~CShootingObject(void)
 {
-	//lights
-	::Render->light_destroy	(light_render);
 }
 
 void CShootingObject::reinit()
@@ -84,6 +77,20 @@ void CShootingObject::Load	(LPCSTR section)
 	LoadShellParticles	(section, "");
 	LoadFlameParticles	(section, "");
 }
+
+void CShootingObject::Light_Create		()
+{
+	//lights
+	light_render				= ::Render->light_create();
+	light_render->set_shadow	(true);
+	m_bShotLight = true;
+}
+void CShootingObject::Light_Destroy		()
+{
+	//lights
+	::Render->light_destroy	(light_render);
+}
+
 
 void CShootingObject::LoadFireParams(LPCSTR section, LPCSTR prefix)
 {

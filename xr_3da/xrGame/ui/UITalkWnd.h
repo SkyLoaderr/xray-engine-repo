@@ -43,11 +43,15 @@ public:
 	virtual void Hide();
 
 	void UpdateQuestions();
+	//инициализации начального диалога собеседника
+	void InitOthersStartDialog();
 protected:
 
 	//диалог
 	void InitTalkDialog();
 	void AskQuestion();
+
+	void SayPhrase(PHRASE_ID phrase_id);
 
 	// Функции добавления строк в листы вопросов и ответов
 	void AddQuestion(const CUIString &str, void* pData, int value = 0);

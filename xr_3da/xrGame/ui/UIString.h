@@ -17,8 +17,8 @@ public:
 	void SetText(LPCSTR str);
 	void AppendText(LPCSTR str);
 	
-	LPCSTR GetBuf();
-	operator LPCSTR ();
+	LPCSTR GetBuf() const;
+	operator LPCSTR () const;
 
 	STRING m_str;
 };

@@ -19,11 +19,9 @@
 class CInventoryOwner;
 class CPda;
 
-
-
-
 DEF_LIST (PDA_LIST, CPda*);
-DEFINE_MAP (int, BOOL, KNOWN_INFO_MAP, KNOWN_INFO_PAIR_IT);
+DEFINE_VECTOR(INFO_ID, KNOWN_INFO_VECTOR, KNOWN_INFO_VECTOR_IT);
+
 
 class CPda :
 	public CInventoryItem,
@@ -65,8 +63,8 @@ public:
 	virtual bool IsOn() {return !m_bTurnedOff;}
 	virtual bool IsOff() {return m_bTurnedOff;}
 
-	virtual void SendMessage(u32 pda_num, EPdaMsg msg, int info_index);
-	virtual void SendMessageID(u32 pda_ID, EPdaMsg msg, int info_index);
+	virtual void SendMessage(u32 pda_num, EPdaMsg msg, INFO_ID info_index);
+	virtual void SendMessageID(u32 pda_ID, EPdaMsg msg, INFO_ID info_index);
 
 	virtual bool IsNewMessage(){return m_bNewMessage;}
 	virtual void NoNewMessage(){m_bNewMessage = false;}
@@ -95,26 +93,26 @@ public:
 	// помощи PDA
 
 	//знаем ли о инф-ции с заданным номером
-	bool IsKnowAbout(int info_index);
+	bool IsKnowAbout(INFO_ID info_index);
 	//передача информации другому PDA
-	bool TransferInfoToID(u32 pda_ID, int info_index);
+	bool TransferInfoToID(u32 pda_ID, INFO_ID info_index);
 	//событие получения новой порции информации
-	void OnReceiveInfo(int info_index);
+	void OnReceiveInfo(INFO_ID info_index);
 	//получить последнее сообщение из лога  (false - если лог пуст)
 	bool GetLastMessageFromLog(u32 pda_ID,  SPdaMessage& pda_message);
 
-	//свединия об известной информации
-	KNOWN_INFO_MAP m_mapKnownInfo;
+	//свединия об известной информации (info_portions)
+	const KNOWN_INFO_VECTOR& KnownInfo() {return m_KnownInfo;}
+	void					 RemoveInfo(INFO_ID info_index);
 
-	//все вопросы доступные в этот момент
-	INFO_QUESTIONS_LIST m_ActiveQuestionsList;
-	void UpdateQuestions();
 protected:
+	KNOWN_INFO_VECTOR m_KnownInfo;
+
 	//поступление нового сообщения на PDA
 	bool m_bNewMessage;
 
-	void PdaEventSend(u32 pda_ID, EPdaMsg msg, int info_index);
-	void AddMessageToLog(u32 pda_ID, EPdaMsg msg, int info_index, bool receive);
+	void PdaEventSend(u32 pda_ID, EPdaMsg msg, INFO_ID info_index);
+	void AddMessageToLog(u32 pda_ID, EPdaMsg msg, INFO_ID info_index, bool receive);
 
 
 	//радиус обнаружения других PDA

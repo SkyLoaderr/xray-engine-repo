@@ -25,8 +25,15 @@ struct SPhraseDialogData : CSharedResource
 	//описывает все возможные варианты развития диалога
 	CPhraseGraph m_PhraseGraph;
 
-	//уникальная строка, идентифицирующая диалог в m_PhraseDialogMap
+	//уникальная строка, идентифицирующая диалог
 	ref_str		m_sDialogID;
+	//заголовок диалога, если NULL, то принимается за стартовую фразу
+	ref_str		m_sCaption;
+
+	//список скриптовых предикатов, выполнение, которых необходимо
+	//для начала диалога
+	DEFINE_VECTOR(ref_str, PRECONDITION_VECTOR, PRECONDITION_VECTOR_IT);
+	PRECONDITION_VECTOR m_Preconditions;
 };
 
 DEFINE_VECTOR(CPhrase*, PHRASE_VECTOR, PHRASE_VECTOR_IT);
@@ -62,6 +69,9 @@ public:
 	//реинициализация диалога
 	virtual void Reset  ();
 
+	//список предикатов начала диалога
+	virtual const SPhraseDialogData::PRECONDITION_VECTOR& Preconditions() {return dialog_data()->m_Preconditions;}
+
 	//список доступных в данный момент фраз
 	virtual const PHRASE_VECTOR& PhraseList() const			{return m_PhraseVector;}
 	
@@ -89,7 +99,8 @@ public:
 
 	IC bool				IsWeSpeaking	(CPhraseDialogManager* dialog_manager) const  {return (FirstSpeaker()==dialog_manager && FirstIsSpeaking()) ||
 																							(SecondSpeaker()==dialog_manager && SecondIsSpeaking());}
-	
+	CPhraseDialogManager* OurPartner	(CPhraseDialogManager* dialog_manager) const;
+		
 	EDialogType			GetDialogType	()	const {return m_eDialogType;}
 	void				SetDialogType	(EDialogType type)	{m_eDialogType = type;}
 

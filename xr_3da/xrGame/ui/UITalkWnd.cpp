@@ -84,13 +84,33 @@ void CUITalkWnd::InitTalkDialog()
 	CEntityAlive* ContactEA = dynamic_cast<CEntityAlive*>(m_pOthersInvOwner);
 	UITalkDialogWnd.UICharacterInfoRight.SetRelation(ContactEA->tfGetRelationType(m_pActor));
 
-	UpdateQuestions();
-
 	//очистить лог сообщений
 	UITalkDialogWnd.UIAnswersList.RemoveAll();
 
+	InitOthersStartDialog();
+	UpdateQuestions();
+
 	UITalkDialogWnd.Show();
 	UITradeWnd.Hide();
+}
+
+void CUITalkWnd::InitOthersStartDialog()
+{
+	m_pOthersDialogManager->UpdateAvailableDialogs(m_pOurDialogManager);
+	if(!m_pOthersDialogManager->AvailableDialogs().empty())
+	{
+		m_pCurrentDialog = m_pOthersDialogManager->AvailableDialogs().front();
+		m_pOthersDialogManager->InitDialog(m_pOurDialogManager, m_pCurrentDialog);
+		
+		//сказать фразу
+		CUIString speaker_name;
+		speaker_name.SetText(m_pOthersInvOwner->CharacterInfo().Name());
+		AddAnswer(m_pCurrentDialog->GetPhraseText(START_PHRASE), speaker_name);
+		m_pOthersDialogManager->SayPhrase(m_pCurrentDialog, START_PHRASE);
+
+		//если диалог завершился, перейти в режим выбора темы
+		if(m_pCurrentDialog->IsFinished()) ToTopicMode();
+	}
 }
 
 void CUITalkWnd::UpdateQuestions()
@@ -102,7 +122,7 @@ void CUITalkWnd::UpdateQuestions()
 	//режима выбора темы
 	if(!m_pCurrentDialog)
 	{
-		m_pOurDialogManager->UpdateAvailableDialogs();
+		m_pOurDialogManager->UpdateAvailableDialogs(m_pOthersDialogManager);
 		for(u32 i=0; i< m_pOurDialogManager->AvailableDialogs().size(); i++)
 		{
 			const DIALOG_SHARED_PTR& phrase_dialog = m_pOurDialogManager->AvailableDialogs()[i];
@@ -113,6 +133,14 @@ void CUITalkWnd::UpdateQuestions()
 	{
 		if(m_pCurrentDialog->IsWeSpeaking(m_pOurDialogManager))
 		{
+			//если в списке допустимых фраз только одна фраза пустышка, то просто
+			//сказать (игрок сам не производит никаких действий)
+			if(m_pCurrentDialog->PhraseList().size() == 1)
+			{
+				CPhrase* phrase = m_pCurrentDialog->PhraseList().front();
+				if(xr_strlen(phrase->GetText()) == 0) SayPhrase(phrase->GetIndex());
+			}
+
 			//выбор доступных фраз из активного диалога
 			for(PHRASE_VECTOR::const_iterator   it = m_pCurrentDialog->PhraseList().begin();
 				it != m_pCurrentDialog->PhraseList().end();
@@ -177,6 +205,9 @@ void CUITalkWnd::Hide()
 	inherited::Hide();
 
 	if(!m_pActor) return;
+	
+	ToTopicMode();
+
 	if (m_pActor->IsTalking()) m_pActor->StopTalk();
 	m_pActor = NULL;
 }
@@ -194,11 +225,9 @@ void  CUITalkWnd::ToTopicMode		()
 
 void CUITalkWnd::AskQuestion()
 {
-	CUIString str, speaker_name;
+
 	//очистить лог сообщений
 	//UITalkDialogWnd.UIAnswersList.RemoveAll();
-	speaker_name.SetText(m_pOurInvOwner->CharacterInfo().Name());
-
 	PHRASE_ID phrase_id;
 
 	//игрок выбрал тему разговора
@@ -214,10 +243,20 @@ void CUITalkWnd::AskQuestion()
 		phrase_id = (PHRASE_ID)UITalkDialogWnd.m_iClickedQuestion;
 	}
 
+	SayPhrase(phrase_id);
+	UpdateQuestions();
+}
+
+
+void CUITalkWnd::SayPhrase(PHRASE_ID phrase_id)
+{
 	//сказать фразу
+	CUIString speaker_name;
+	speaker_name.SetText(m_pOurInvOwner->CharacterInfo().Name());
+
 	AddAnswer(m_pCurrentDialog->GetPhraseText(phrase_id), speaker_name);
 	m_pOurDialogManager->SayPhrase(m_pCurrentDialog, phrase_id);
-	
+
 	//добавить ответ собеседника в список, если он что-то сказал
 	if(m_pCurrentDialog->GetLastPhraseID() !=  phrase_id)
 	{
@@ -227,9 +266,8 @@ void CUITalkWnd::AskQuestion()
 
 	//если диалог завершился, перейти в режим выбора темы
 	if(m_pCurrentDialog->IsFinished()) ToTopicMode();
-
-	UpdateQuestions();
 }
+
 
 void CUITalkWnd::AddQuestion(const CUIString &str, void* pData , int value)
 {
@@ -239,6 +277,9 @@ void CUITalkWnd::AddQuestion(const CUIString &str, void* pData , int value)
 
 void CUITalkWnd::AddAnswer(const CUIString &str, const CUIString &SpeakerName)
 {
+	//для пустой фразы вообще ничего не выводим
+	if(xr_strlen((LPCSTR)str) == 0) return;
+
 	UITalkDialogWnd.UIAnswersList.AddParsedItem(SpeakerName, 0, UITalkDialogWnd.GetHeaderColor(), UITalkDialogWnd.GetHeaderFont());
 	UITalkDialogWnd.UIAnswersList.AddParsedItem(str, MessageShift, UITalkDialogWnd.UIAnswersList.GetTextColor());
 

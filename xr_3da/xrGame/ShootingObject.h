@@ -107,6 +107,9 @@ protected:
 	//включение подсветки во время выстрела
 	bool					m_bShotLight;
 protected:
+	void					Light_Create		();
+	void					Light_Destroy		();
+
 	void					Light_Start			();
 	void					Light_Render		(const Fvector& P);
 

@@ -8,47 +8,20 @@
 #include "level.h"
 #include "gameobject.h"
 
-///////////////////////////////////////////////////
-//  глобальное хранилище для всех порций информации
-//
+
+#define  INFO_PORTION_XML			"info_portions.xml"
 
 
-static bool g_bInfoPortionsInit = false;
-//массив со всеми информационными сообщениями
-DEFINE_MAP(int, CInfoPortion, INFO_PORTION_MAP, INFO_PORTION_PAIR_IT);
-INFO_PORTION_MAP g_InfoPortionMap;
+//////////////////////////////////////////////////////////////////////////
+// SInfoPortionData: данные для InfoProtion
 
-
-
-
-
-static void LoadAllToMemory()
+SInfoPortionData::SInfoPortionData ()
 {
-	g_InfoPortionMap.clear();
-
-	CUIXml uiXml;
-	bool xml_result = uiXml.Init("$game_data$","info_portions.xml");
-	R_ASSERT2(xml_result, "xml file not found");
-
-
-	//загрузить все части информации
-	int info_num = uiXml.GetNodesNum(uiXml.GetRoot(), "info_portion");
-
-	CInfoPortion info_portion;
-	g_InfoPortionMap;
-
-
-	//загрузка кусочка информации
-	for(int i=0; i<info_num; ++i)
-	{
-		info_portion.LoadInfoPortionFromXml(uiXml, i);
-
-		//добавить информацию в карту
-		g_InfoPortionMap[info_portion.GetIndex()] = info_portion;
-	}
+	m_InfoId = NO_INFO_INDEX;
 }
-
-
+SInfoPortionData::~SInfoPortionData ()
+{
+}
 
 
 /////////////////////////////////////////
@@ -57,9 +30,6 @@ static void LoadAllToMemory()
 
 CInfoPortion::CInfoPortion()
 {
-	m_bLoaded = false;
-
-	m_QuestionsList.clear();
 }
 
 CInfoPortion::~CInfoPortion ()
@@ -67,66 +37,50 @@ CInfoPortion::~CInfoPortion ()
 }
 
 
-void CInfoPortion::LoadInfoPortionFromXml(CUIXml& uiXml, int num_in_file)
+
+void CInfoPortion::Load	(INFO_ID info_id)
 {
-	XML_NODE* pNode = uiXml.NavigateToNode(uiXml.GetRoot(),
-											"info_portion",
-											   num_in_file);
+	m_InfoId = info_id;
+	inherited_shared::load_shared(m_InfoId, INFO_PORTION_XML);
+}
 
-	R_ASSERT2(pNode, "Info Portion with index does not exists");
+void CInfoPortion::load_shared	(LPCSTR xml_file)
+{
+	CUIXml uiXml;
+	bool xml_result = uiXml.Init("$game_data$", xml_file);
+	R_ASSERT2(xml_result, "xml file not found");
 
-	m_iIndex = uiXml.ReadAttribInt(pNode, "index", -1);
-	
-	R_ASSERT2(-1 != m_iIndex, "Wrong index");
-										
+	//loading from XML
+	string128 buf_str;
+	sprintf(buf_str, "%d", m_InfoId);
+	XML_NODE* pNode = uiXml.NavigateToNodeWithAttribute("info_portion", "index", buf_str);
+	R_ASSERT3(pNode, "info_portion index=", buf_str);
+
 	//текст
-	m_text.SetText(uiXml.Read(pNode, "text", 0));
+	info_data()->m_text = uiXml.Read(pNode, "text", 0);
 
-
-	//вопросы
-	int i,j;
-	int questions_num = uiXml.GetNodesNum(pNode, "question");
-	SInfoQuestion question;
-
-	m_QuestionsList.clear();
-	
-	for(i=0; i<questions_num; ++i)
-	{
-		XML_NODE* pQuestionNode = uiXml.NavigateToNode(pNode,"question",i);
-		
-		question.num_in_info = i;
-		question.info_portion_index = m_iIndex;
-
-		question.text.SetText(uiXml.Read(pQuestionNode, "text", 0));
-		question.negative_answer_text.SetText(uiXml.Read(pQuestionNode,
-													"negative_answer", 0));
-	
-		int info_num = uiXml.GetNodesNum(pQuestionNode, "to_info");
-		question.IndexList.clear();
-
-		for(j=0; j<info_num; ++j)
-		{
-			int val = uiXml.ReadInt(pQuestionNode,"to_info",j);
-			question.IndexList.push_back(val);
-		}
-	
-		m_QuestionsList.push_back(question);
-	}
-
-	
 	//список названий диалогов
 	int dialogs_num = uiXml.GetNodesNum(pNode, "dialog");
-	m_DialogNames.clear();
-	for(i=0; i<dialogs_num; ++i)
+	info_data()->m_DialogNames.clear();
+	for(int i=0; i<dialogs_num; ++i)
 	{
 		ref_str dialog_name = uiXml.Read(pNode, "dialog", i);
-		m_DialogNames.push_back(dialog_name);
+		info_data()->m_DialogNames.push_back(dialog_name);
+	}
+
+	//имена скриптовых функций
+	int script_actions_num = uiXml.GetNodesNum(pNode, "action");
+	info_data()->m_ScriptActions.clear();
+	for(int i=0; i<script_actions_num; i++)
+	{
+		ref_str action_name = uiXml.Read(pNode, "action", i, NULL);
+		info_data()->m_ScriptActions.push_back(action_name);
 	}
 
 
 	//загрузить позиции на карте
 	SMapLocation map_location;
-	m_MapLocationVector.clear();
+	info_data()->m_MapLocations.clear();
 	int location_num = uiXml.GetNodesNum(pNode, "location");
 
 	for(i=0; i<location_num; ++i)
@@ -135,7 +89,7 @@ void CInfoPortion::LoadInfoPortionFromXml(CUIXml& uiXml, int num_in_file)
 
 		if(pMapNode)
 		{
-			map_location.info_portion_index = m_iIndex;
+			map_location.info_portion_id = m_InfoId;
 
 			map_location.level_num = uiXml.ReadInt(pMapNode,"level",0);
 			map_location.x = (float)atof(uiXml.Read(pMapNode,"x",0));
@@ -168,92 +122,12 @@ void CInfoPortion::LoadInfoPortionFromXml(CUIXml& uiXml, int num_in_file)
 					map_location.object_id = 0xffff;
 				}
 			}
-
-			m_MapLocationVector.push_back(map_location);
+			info_data()->m_MapLocations.push_back(map_location);
 		}
 	}
 }
 
-
-//загрузка структуры информацией из памяти
-void CInfoPortion::Load(int index)
+LPCSTR  CInfoPortion::GetText ()
 {
-	//загрузить всю информацию в память
-	if(!g_bInfoPortionsInit) 
-	{
-		LoadAllToMemory();
-		g_bInfoPortionsInit = true;
-	}
-	
-	*this = g_InfoPortionMap[index];
-
-	m_bLoaded = true;
-}
-/*
-void CInfoPortion::Load(int index)
-{
-	m_iIndex = index;
-
-
-	if(!g_bInfoPortionsInit)
-	{
-		g_InfoPortionsXml.Init("$game_data$","info_portions.xml");
-		g_bInfoPortionsInit = true;
-	}
-
-	CUIXml& uiXml = g_InfoPortionsXml;
-//	uiXml.Init("$game_data$","info_portions.xml");
-
-	char index_str[255];
-	sprintf(index_str, "%d", index);
-	XML_NODE* pNode = uiXml.SearchForAttribute(uiXml.GetRoot(),
-											   "info_portion",
-											   "index",index_str);
-
-	R_ASSERT2(pNode, "Info Portion with index does not exists");
-										
-	//текст
-	m_text.SetText(uiXml.Read(pNode, "text", 0));
-
-	//локация на карте
-
-
-
-	//вопросы
-	int i,j;
-	int questions_num = uiXml.GetNodesNum(pNode, "question");
-	SInfoQuestion question;
-	
-	for(i=0; i<questions_num; ++i)
-	{
-		XML_NODE* pQuestionNode = uiXml.NavigateToNode(pNode,"question",i);
-		
-		question.num_in_info = i;
-		question.info_portion_index = m_iIndex;
-
-		question.text.SetText(uiXml.Read(pQuestionNode, "text", 0));
-		question.negative_answer_text.SetText(uiXml.Read(pQuestionNode, 
-													"negative_answer", 0));
-	
-		int info_num = uiXml.GetNodesNum(pQuestionNode, "to_info");
-	
-		for(j=0; j<info_num; ++j)
-		{
-			int val = uiXml.ReadInt(pQuestionNode,"to_info",j);
-			question.IndexList.push_back(val);
-		}
-	
-		m_QuestionsList.push_back(question);
-	}
-
-	m_bLoaded = true;
-}*/
-
-
-void  CInfoPortion::GetQuestion(SInfoQuestion& question, int question_num)
-{
-	R_ASSERT(m_bLoaded);
-
-//	question = m_QuestionsList[question_num];
-
+	return *info_data()->m_text;
 }

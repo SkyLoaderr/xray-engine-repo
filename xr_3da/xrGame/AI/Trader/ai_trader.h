@@ -15,14 +15,14 @@
 #include "../ai_monster_bones.h"
 #include "../../ai_script_callback.h"
 #include "../../sound_player.h"
-#include "../../PhraseDialogManager.h"
+#include "../../AI_PhraseDialogManager.h"
 
 class CInventoryItem;
 
 class CAI_Trader : public CEntityAlive, 
 				   public CInventoryOwner, 
 				   public CScriptMonster,
-				   public CPhraseDialogManager,
+				   public CAI_PhraseDialogManager,
 				   public CSoundPlayer
 {
 private:
@@ -115,9 +115,6 @@ public:
 	virtual	bool			can_attach				(const CInventoryItem *inventory_item) const;
 	virtual bool			use_bolts				() const;
 	virtual	void			spawn_supplies			();
-
-	//PhraseDialogManager
-	virtual void				ReceivePhrase		(DIALOG_SHARED_PTR& phrase_dialog);
 private:
 			// Animation management
 

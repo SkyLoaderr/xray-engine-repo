@@ -15,6 +15,9 @@
 #include "character_info.h"
 #include "ai_script_classes.h"
 
+#include "ai_space.h"
+#include "script_engine.h"
+
 //////////////////////////////////////////////////////////////////////////
 // CInventoryOwner class 
 //////////////////////////////////////////////////////////////////////////
@@ -163,7 +166,7 @@ bool CInventoryOwner::IsActivePDA()
 
 //виртуальная функция обработки сообщений
 //who - id PDA от которого пришло сообщение
-void CInventoryOwner::ReceivePdaMessage(u16 who, EPdaMsg msg, int info_index)
+void CInventoryOwner::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_ID info_index)
 {
 	if(msg == ePdaMsgInfo)
 	{
@@ -195,18 +198,40 @@ void CInventoryOwner::ReceivePdaMessage(u16 who, EPdaMsg msg, int info_index)
 }
 
 
-void CInventoryOwner::OnReceiveInfo(int info_index)
+void CInventoryOwner::OnReceiveInfo(INFO_ID info_index)
 {
 	//Запустить скриптовый callback
 	CGameObject* pThisGameObject = dynamic_cast<CGameObject*>(this);
 	VERIFY(pThisGameObject);
 
 	SCRIPT_CALLBACK_EXECUTE_2(m_pInfoCallback, pThisGameObject->lua_game_object(), info_index);
+
+	CInfoPortion info_portion;
+	info_portion.Load(info_index);
+
+	
+	//запустить скриптовые функции
+	for(u32 i = 0; i<info_portion.ScriptActions().size(); i++)
+	{
+		luabind::functor<void>	lua_function;
+		bool functor_exists = ai().script_engine().functor(*info_portion.ScriptActions()[i] ,lua_function);
+		R_ASSERT3(functor_exists, "Cannot find info portion script function", *info_portion.ScriptActions()[i]);
+		lua_function (pThisGameObject->lua_game_object());
+	}
+
+
+	//выкинуть те info portions которые стали неактуальными
+	for(i=0; i<info_portion.DisableInfos().size(); i++)
+		DisableInfo(i);
 }
 
+void CInventoryOwner::DisableInfo(INFO_ID info_index)
+{
+	GetPDA()->RemoveInfo(info_index);
+}
 
 //who - id PDA которому отправляем сообщение
-void CInventoryOwner::SendPdaMessage(u16 who, EPdaMsg msg, int info_index)
+void CInventoryOwner::SendPdaMessage(u16 who, EPdaMsg msg, INFO_ID info_index)
 {
 	if(!GetPDA() || !GetPDA()->IsActive()) return;
 
@@ -272,35 +297,6 @@ void CInventoryOwner::StopTalk()
 bool CInventoryOwner::IsTalking()
 {
 	return m_bTalking;
-}
-
-bool CInventoryOwner::AskQuestion(SInfoQuestion& question, INFO_INDEX_LIST& index_list)
-{
-	R_ASSERT2(GetPDA(), "PDA for character does not init yet");
-
-	bool result_answer = false;
-
-	index_list.clear();
-
-	INFO_INDEX_LIST_it it;
-	for(it = question.IndexList.begin();
-		question.IndexList.end() != it;
-		++it)
-	{
-		int info_index = *it;
-		if(GetPDA()->IsKnowAbout(info_index))
-		{
-			//переслать информацию PDA 
-			u32 partner_pda_id = m_pTalkPartner->GetPDA()->ID();
-			GetPDA()->TransferInfoToID(partner_pda_id, info_index);
-
-			index_list.push_back(info_index);
-
-			result_answer = true;
-		}
-	}
-
-	return result_answer;
 }
 
 void CInventoryOwner::renderable_Render		()

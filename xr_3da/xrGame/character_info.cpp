@@ -7,6 +7,37 @@
 #include "character_info.h"
 #include "ui/xrXMLParser.h"
 
+
+SRelation::SRelation()
+{
+	m_eRelationType = ALife::eRelationTypeDummy;
+}
+SRelation::~SRelation()
+{
+}
+
+ALife::ERelationType SRelation::RelationType() const 
+{
+	return m_eRelationType;
+}
+void SRelation::SetRelationType(ALife::ERelationType relation) 
+{
+	m_eRelationType = relation;
+}
+
+int SRelation::Goodwill() const
+{
+	return m_iGoodwill;
+}
+void SRelation::SetGoodwill(int new_goodwill)
+{
+	m_iGoodwill = new_goodwill;
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+
 CCharacterInfo::CCharacterInfo()
 {
 	m_sGameName		= "noname";
@@ -14,13 +45,11 @@ CCharacterInfo::CCharacterInfo()
 	m_sRank			= "novice";
 }
 
-//////////////////////////////////////////////////////////////////////////
 
 CCharacterInfo::~CCharacterInfo()
 {
 }
 
-//////////////////////////////////////////////////////////////////////////
 
 bool CCharacterInfo::Load(LPCSTR name_id, LPCSTR xml_file)
 {
@@ -67,18 +96,39 @@ LPCSTR CCharacterInfo::Community() const
 	return	*m_sTeamName;
 }
 
-ALife::ERelationType  CCharacterInfo::GetRelation	(u16 person_id) const 
+ALife::ERelationType  CCharacterInfo::GetRelationType	(u16 person_id) const 
 {
 	RELATION_MAP::const_iterator it = m_RelationMap.find(person_id);
 	if(m_RelationMap.end() != it)
-		return (*it).second;
+	{
+		const SRelation& relation = (*it).second;
+		return relation.RelationType();
+	}
 	else
 		return ALife::eRelationTypeDummy;
 }
-void CCharacterInfo::SetRelation	(u16 person_id, ALife::ERelationType new_relation)
+void CCharacterInfo::SetRelationType	(u16 person_id, ALife::ERelationType new_relation)
 {
-	m_RelationMap[person_id] = new_relation;
+	m_RelationMap[person_id].SetRelationType(new_relation);
 }
+
+
+int  CCharacterInfo::GetGoodwill (u16 person_id) const 
+{
+	RELATION_MAP::const_iterator it = m_RelationMap.find(person_id);
+	if(m_RelationMap.end() != it)
+	{
+		const SRelation& relation = (*it).second;
+		return relation.Goodwill();
+	}
+	else
+		return -1;
+}
+void CCharacterInfo::SetGoodwill	(u16 person_id, int goodwill)
+{
+	m_RelationMap[person_id].SetGoodwill(goodwill);
+}
+
 
 void CCharacterInfo::ClearRelations	()
 {

@@ -42,9 +42,9 @@ public:
 	//функци€ через которую
 	//другие персонажи отправл€ют объекту PDA сообщение.
 	//должна быть переопределена в порожеденных классах
-	virtual void ReceivePdaMessage(u16 who, EPdaMsg msg, int info_index);
+	virtual void ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_ID info_index);
 	//отправка сообщени€ другому владельцу PDA
-	virtual void SendPdaMessage(u16 who, EPdaMsg msg, int info_index);
+	virtual void SendPdaMessage(u16 who, EPdaMsg msg, INFO_ID info_index);
 
 
 	CInventory	*m_inventory;									// инвентарь
@@ -69,13 +69,10 @@ public:
 	bool IsTalkEnabled()	{ return m_bAllowTalk;}
 
 	CInventoryOwner* GetTalkPartner() {return m_pTalkPartner;}
-	//партнер задает вопрос, если персонаж захочет отвечать,
-	//то он вернет всю информацию, что у него есть по этой теме
-	//false - если отказываемс€ говорить или информации нет
-	//список индексов выданной информации в index_list
-	virtual bool AskQuestion(SInfoQuestion& question, INFO_INDEX_LIST& index_list);
 	//персонаж получил новую порцию информации
-	virtual void OnReceiveInfo(int info_index);
+	virtual void OnReceiveInfo(INFO_ID info_index);
+	//убрать информацию
+	virtual void DisableInfo(INFO_ID info_index);
 
 	
 	const CInventory &inventory() const {return(*m_inventory);}

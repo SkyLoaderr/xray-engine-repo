@@ -11,8 +11,9 @@
 #include "level.h"
 #include "PhraseDialog.h"
 
+
 //information receive
-void CActor::OnReceiveInfo(int info_index)
+void CActor::OnReceiveInfo(INFO_ID info_index)
 {
 	//только если находимс€ в режиме single
 	CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
@@ -22,8 +23,8 @@ void CActor::OnReceiveInfo(int info_index)
 	info_portion.Load(info_index);
 
 	//добавить отметки на карте
-	for(int i=0; i<info_portion.GetLocationsNum(); i++)
-		Level().AddMapLocation(info_portion.GetLocation(i));
+	for(u32 i=0; i<info_portion.MapLocations().size(); i++)
+		Level().AddMapLocation(info_portion.MapLocations()[i]);
 
 
 	if(pGameSP->TalkMenu.IsShown())
@@ -41,7 +42,16 @@ void CActor::OnReceiveInfo(int info_index)
 	CInventoryOwner::OnReceiveInfo(info_index);
 }
 
-void CActor::ReceivePdaMessage(u16 who, EPdaMsg msg, int info_index)
+
+void CActor::DisableInfo(INFO_ID info_index)
+{
+	Level().RemoveMapLocationByInfo(info_index);
+	CInventoryOwner::DisableInfo(info_index);
+}
+
+
+
+void CActor::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_ID info_index)
 {
 	//только если находимс€ в режиме single
 	CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
@@ -77,25 +87,21 @@ void  CActor::ReceivePhrase		(DIALOG_SHARED_PTR& phrase_dialog)
 	CPhraseDialogManager::ReceivePhrase(phrase_dialog);
 }
 
-void   CActor::UpdateAvailableDialogs	()
+void   CActor::UpdateAvailableDialogs	(CPhraseDialogManager* partner)
 {
 	m_AvailableDialogs.clear();
 
-	for(KNOWN_INFO_PAIR_IT it = GetPDA()->m_mapKnownInfo.begin();
-								GetPDA()->m_mapKnownInfo.end() != it; ++it)
+	for(KNOWN_INFO_VECTOR::const_iterator it = GetPDA()->KnownInfo().begin();
+							   GetPDA()->KnownInfo().end() != it; ++it)
 	{
 		//подгрузить кусочек информации с которым мы работаем
 		CInfoPortion info_portion;
-		info_portion.Load((*it).first);
+		info_portion.Load(*it);
 	
-		for(u32 i = 0; i<info_portion.m_DialogNames.size(); i++)
-		{
-			DIALOG_SHARED_PTR phrase_dialog(xr_new<CPhraseDialog>());
-			phrase_dialog->Load(info_portion.m_DialogNames[i]);
-			m_AvailableDialogs.push_back(phrase_dialog);
-		}
+		for(u32 i = 0; i<info_portion.DialogNames().size(); i++)
+			AddAvailableDialog(*info_portion.DialogNames()[i], partner);
 	}
-	CPhraseDialogManager::UpdateAvailableDialogs();
+	CPhraseDialogManager::UpdateAvailableDialogs(partner);
 }
 
 void CActor::TryToTalk()

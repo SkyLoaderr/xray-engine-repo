@@ -817,7 +817,7 @@ void CUIMainIngameWnd::ShowAll()
 }
 
 
-void CUIMainIngameWnd::ReceivePdaMessage(CInventoryOwner* pSender, EPdaMsg msg, int info_index)
+void CUIMainIngameWnd::ReceivePdaMessage(CInventoryOwner* pSender, EPdaMsg msg, INFO_ID info_index)
 {
 	R_ASSERT(pSender);
 

@@ -96,14 +96,21 @@ BOOL	CWeaponMounted::net_Spawn(LPVOID DC)
 	fixed_bones.push_back	(K->LL_GetBoneRoot());
 	m_pPhysicsShell			= P_build_Shell(this,false,fixed_bones);
 
+
+	CShootingObject::Light_Create();
+
 	setVisible	(true);
 	setEnabled	(true);
+
+
 
 	return TRUE;
 }
 
 void	CWeaponMounted::net_Destroy()
 {
+	CShootingObject::Light_Destroy();
+
 	inherited::net_Destroy();
 	xr_delete(m_pPhysicsShell);
 }

@@ -281,8 +281,8 @@ public:
 	// CInventoryOwner
 	
 	//передача порции информации InventoryOwner
-	bool GiveInfoPortion(int info_index);
-	bool GiveInfoPortionViaPda(int info_index, CLuaGameObject* pFromWho);
+	bool GiveInfoPortion(INFO_ID info_index);
+	bool GiveInfoPortionViaPda(INFO_ID info_index, CLuaGameObject* pFromWho);
 	bool SendPdaMessage(EPdaMsg pda_msg, CLuaGameObject* pForWho);
 	
 	bool IsTalking();

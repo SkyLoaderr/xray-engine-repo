@@ -7,6 +7,7 @@
 #pragma once
 
 #include "team.h"
+#include "infoportiondefs.h"
 
 class	CHUDManager;
 class	CParticlesObject;
@@ -231,7 +232,7 @@ public:
 	void					AddObjectMapLocation		(const CGameObject* object);
 	void					AddMapLocation				(const SMapLocation& map_location);
 	bool					RemoveMapLocationByID		(u16 object_id);
-	bool					RemoveMapLocationByInfo		(int info_portion_index);
+	bool					RemoveMapLocationByInfo		(INFO_ID info_portion_id);
 
 	//работа с пулями
 protected:	

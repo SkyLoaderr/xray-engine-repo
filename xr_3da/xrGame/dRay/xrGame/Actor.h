@@ -83,11 +83,12 @@ public:
 	// Inventory Owner 
 
 	//information receive & dialogs
-	virtual void OnReceiveInfo		(int info_index);
-	virtual void ReceivePdaMessage	(u16 who, EPdaMsg msg, int info_index);
+	virtual void OnReceiveInfo		(INFO_ID info_index);
+	virtual void DisableInfo		(INFO_ID info_index);
+	virtual void ReceivePdaMessage	(u16 who, EPdaMsg msg, INFO_ID info_index);
 	//PhraseDialogManager
 	virtual void ReceivePhrase			(DIALOG_SHARED_PTR& phrase_dialog);
-	virtual void UpdateAvailableDialogs	();
+	virtual void UpdateAvailableDialogs	(CPhraseDialogManager* partner);
 	virtual void TryToTalk				();
 
 	virtual void reinit			();

@@ -51,6 +51,10 @@
 #include "phrasedialog.h"
 #include "phrasedialogmanager.h"
 
+#include "script_engine.h"
+#include "ai_space.h"
+#include "gameobject.h"
+
 //////////////////////////////////////////////////////////////////////////
 
 SPhraseDialogData::SPhraseDialogData ()
@@ -82,7 +86,6 @@ CPhraseDialog::CPhraseDialog(void)
 
 CPhraseDialog::~CPhraseDialog(void)
 {
-	Msg("CPhraseDialog destructor called");
 }
 
 
@@ -121,6 +124,20 @@ void CPhraseDialog::Reset ()
 {
 }
 
+CPhraseDialogManager* CPhraseDialog::OurPartner	(CPhraseDialogManager* dialog_manager) const
+{
+	if(FirstSpeaker() == dialog_manager)
+		return SecondSpeaker();
+	else
+		return FirstSpeaker();
+}
+
+//предикат для сортировки вектора фраз
+static bool PhraseGoodwillPred(const CPhrase* phrase1, const CPhrase* phrase2)
+{
+	return phrase1->GoodwillLevel()>phrase2->GoodwillLevel();
+}
+
 bool CPhraseDialog::SayPhrase (DIALOG_SHARED_PTR& phrase_dialog, PHRASE_ID phrase_id)
 {
 	VERIFY(phrase_dialog->IsInit());
@@ -129,6 +146,8 @@ bool CPhraseDialog::SayPhrase (DIALOG_SHARED_PTR& phrase_dialog, PHRASE_ID phras
 	
 	CPhraseGraph::CVertex* phrase_vertex = phrase_dialog->dialog_data()->m_PhraseGraph.vertex(phrase_dialog->m_iSaidPhraseID);
 	VERIFY(phrase_vertex);
+
+	CPhrase* last_phrase = phrase_vertex->data();
 
 	//больше нет фраз, чтоб говорить
 	phrase_dialog->m_PhraseVector.clear();
@@ -148,11 +167,31 @@ bool CPhraseDialog::SayPhrase (DIALOG_SHARED_PTR& phrase_dialog, PHRASE_ID phras
 			VERIFY(next_phrase_vertex);
 			phrase_dialog->m_PhraseVector.push_back(next_phrase_vertex->data());
 		}
+		//упорядочить списко по убыванию благосклонности
+		std::sort(phrase_dialog->m_PhraseVector.begin(),
+				 phrase_dialog->m_PhraseVector.end(), PhraseGoodwillPred);
 	}
-
 
 	bool first_is_speaking = phrase_dialog->FirstIsSpeaking();
 	phrase_dialog->m_bFirstIsSpeaking = !phrase_dialog->m_bFirstIsSpeaking;
+
+	//вызвать скриптовую присоединенную функцию 
+	//активируется после сказанной фразы
+	//первый параметр - тот кто говорит фразу, второй - тот кто слушает
+	for(u32 i = 0; i<last_phrase->ScriptActions().size(); i++)
+	{
+		luabind::functor<void>	lua_function;
+		bool functor_exists = ai().script_engine().functor(*last_phrase->ScriptActions()[i] ,lua_function);
+		R_ASSERT3(functor_exists, "Cannot find phrase dialog script function", *last_phrase->ScriptActions()[i]);
+		const CGameObject*	pSpeakerGO1 = dynamic_cast<const CGameObject*>(phrase_dialog->FirstSpeaker());	VERIFY(pSpeakerGO1);
+		const CGameObject*	pSpeakerGO2 = dynamic_cast<const CGameObject*>(phrase_dialog->SecondSpeaker());	VERIFY(pSpeakerGO2);
+		
+		if(first_is_speaking)
+			lua_function		(pSpeakerGO1->lua_game_object(), pSpeakerGO2->lua_game_object());
+		else
+			lua_function		(pSpeakerGO2->lua_game_object(), pSpeakerGO1->lua_game_object());
+	}
+
 
 	//сообщить CDialogManager, что сказана фраза
 	//и ожидается ответ
@@ -175,7 +214,7 @@ LPCSTR CPhraseDialog::GetPhraseText	(PHRASE_ID phrase_id)
 
 LPCSTR CPhraseDialog::DialogCaption()
 {
-	return GetPhraseText(START_PHRASE);
+	return *dialog_data()->m_sCaption?*dialog_data()->m_sCaption:GetPhraseText(START_PHRASE);
 }
 
 void CPhraseDialog::load_shared	(LPCSTR xml_file)
@@ -188,6 +227,19 @@ void CPhraseDialog::load_shared	(LPCSTR xml_file)
 	XML_NODE* dialog_node = uiXml.NavigateToNodeWithAttribute("dialog", "id", *m_sDialogID);
 	R_ASSERT3(dialog_node, "dialog id=", *m_sDialogID);
 	uiXml.SetLocalRoot(dialog_node);
+
+	//заголовок 
+	dialog_data()->m_sCaption = uiXml.Read(dialog_node, "caption", 0, NULL);
+
+	//предикаты начала диалога
+	dialog_data()->m_Preconditions.clear();
+	int precondition_num = uiXml.GetNodesNum(dialog_node, "precondition");
+	for(int i=0; i<precondition_num; i++)
+	{
+		ref_str precondition_name = uiXml.Read(dialog_node, "precondition", i, NULL);
+		dialog_data()->m_Preconditions.push_back(precondition_name);
+	}
+
 
 	//заполнить граф диалога фразами
 	dialog_data()->m_PhraseGraph.clear();
@@ -212,13 +264,25 @@ void CPhraseDialog::AddPhrase	(XML_NODE* phrase_node, PHRASE_ID phrase_id)
 
 	CPhrase* phrase = xr_new<CPhrase>(); VERIFY(phrase);
 	phrase->SetIndex(phrase_id);
+	
 	//текстовое представление фразы
 	phrase->SetText(uiXml.Read(phrase_node, "text", 0, ""));
+	//уровень благосклонности
+	phrase->m_iGoodwillLevel = uiXml.ReadInt(phrase_node, "goodwill", 0, 0);
+		
+	int script_actions_num = uiXml.GetNodesNum(phrase_node, "action");
+	for(int i=0; i<script_actions_num; i++)
+	{
+		ref_str action_name = uiXml.Read(phrase_node, "action", i, NULL);
+		phrase->m_ScriptActions.push_back(action_name);
+	}
+
+	
 	dialog_data()->m_PhraseGraph.add_vertex(phrase, phrase_id);
 
 	//фразы которые собеседник может говорить после этой
 	int next_num = uiXml.GetNodesNum(phrase_node, "next");
-	for(int i=0; i<next_num; i++)
+	for(i=0; i<next_num; i++)
 	{
 		LPCSTR next_phrase_id_str = uiXml.Read(phrase_node, "next", i, "");
 		XML_NODE* next_phrase_node = uiXml.NavigateToNodeWithAttribute("phrase", "id", next_phrase_id_str);

@@ -387,8 +387,7 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 			m_magazine.push(l_cartridge);
 	}
 	
-	//if(Local()) OnStateSwitch					(E->state);
-	//STATE = NEXT_STATE = E->state;
+	Light_Create		();
 
 	UpdateAddonsVisibility();
 	InitAddons();
@@ -409,6 +408,7 @@ void CWeapon::net_Destroy	()
 	StopFlameParticles	();
 	StopFlameParticles2	();
 	StopLight			();
+	Light_Destroy		();
 
 	while (m_magazine.size()) m_magazine.pop();
 }

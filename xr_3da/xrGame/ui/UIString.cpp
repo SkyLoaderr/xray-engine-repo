@@ -50,12 +50,12 @@ void CUIString::AppendText(LPCSTR str)
 	m_str.push_back(0);
 }
 
-LPCSTR CUIString::GetBuf()
+LPCSTR CUIString::GetBuf() const
 {
 	return &m_str.front();
 }
 
-CUIString::operator LPCSTR ()
+CUIString::operator LPCSTR () const
 {
 	return (LPCSTR)GetBuf();
 }
