@@ -169,6 +169,7 @@ void CStalkerActionFreeNoALife::execute		()
 	Fvector							look_pos = actor->Position();
 	look_pos.y						+= .8f;
 	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypePosition,look_pos,true));
+	m_object->play					(eStalkerSoundAttack,10000);
 #endif
 }
 
