@@ -20,8 +20,8 @@ C3DSoundRender::C3DSoundRender()
 
     // Get listener interface.
 	R_ASSERT		(pSounds);
-	R_ASSERT		(pSounds->pPrimaryBuf);
-    pSounds->pPrimaryBuf->QueryInterface( IID_IDirectSound3DListener, (VOID**)&pListener );
+	R_ASSERT		(pSounds->pBuffer);
+    pSounds->pBuffer->QueryInterface( IID_IDirectSound3DListener, (VOID**)&pListener );
 
 	// Initialize listener data
 	Listener.dwSize				= sizeof(DS3DLISTENER);

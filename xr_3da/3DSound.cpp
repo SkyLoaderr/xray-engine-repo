@@ -162,7 +162,7 @@ LPDIRECTSOUNDBUFFER C3DSound::LoadWaveAs3D(const char *pName, BOOL bCtrlFreq)
 	WAVEFORMATEX			wfxdest;
 	void*					converted;
 
-	pSounds->lpPrimaryBuf->GetFormat(&wfxdest,sizeof(wfxdest),0);
+	pSounds->pBuffer->GetFormat(&wfxdest,sizeof(wfxdest),0);
 	if ((pFormat->wFormatTag!=1)&&(pFormat->nSamplesPerSec!=wfxdest.nSamplesPerSec)) {
 		// Firstly convert to PCM with SRC freq and Channels; BPS = as Dest
 		wfxdest.nChannels		= pFormat->nChannels;
@@ -174,7 +174,7 @@ LPDIRECTSOUNDBUFFER C3DSound::LoadWaveAs3D(const char *pName, BOOL bCtrlFreq)
 
 		// Secondly convert to best format for 3D
 		CopyMemory				(pFormat,&wfxdest,sizeof(wfxdest));
-		pSounds->lpPrimaryBuf->GetFormat(&wfxdest,sizeof(wfxdest),0);
+		pSounds->pBuffer->GetFormat(&wfxdest,sizeof(wfxdest),0);
 		wfxdest.nChannels		= 1;
 		wfxdest.wBitsPerSample	= pFormat->wBitsPerSample;
 		wfxdest.nBlockAlign		= wfxdest.nChannels * wfxdest.wBitsPerSample / 8;
@@ -198,7 +198,7 @@ LPDIRECTSOUNDBUFFER C3DSound::LoadWaveAs3D(const char *pName, BOOL bCtrlFreq)
 	dwFreq				= wfxdest.nSamplesPerSec;
 
 	// Creating buffer and fill it with data
-    if (SUCCEEDED(pSounds->lpDirectSound->CreateSoundBuffer(&dsBD, &pBuf, NULL))){
+    if (SUCCEEDED(pSounds->pDevice->CreateSoundBuffer(&dsBD, &pBuf, NULL))){
         LPVOID	pMem1, pMem2;
         DWORD	dwSize1, dwSize2;
 
@@ -272,7 +272,7 @@ void C3DSound::Load		(const C3DSound *pOriginal)
 	fVolume				= 1.0f;
 	fRealVolume			= 1.0f;
 	dwStatus			= 0;
-	pSounds->lpDirectSound->DuplicateSoundBuffer(pOriginal->pBuffer,&pBuffer);
+	pSounds->pDevice->DuplicateSoundBuffer(pOriginal->pBuffer,&pBuffer);
 	VERIFY				(pBuffer);
 	pBuffer->QueryInterface(IID_IDirectSound3DBuffer,(void **)(&pBuffer3D));
 	ps.set				(pOriginal->ps);

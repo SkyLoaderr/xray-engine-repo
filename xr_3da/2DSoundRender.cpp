@@ -159,7 +159,7 @@ void C2DSoundRender::Reload()
 			for (DWORD j=1; j<sounds[i].size(); j++) {
 				sounds[i][j]->Stop();
 				_RELEASE(sounds[i][j]->pBuffer);
-				pSounds->lpDirectSound->DuplicateSoundBuffer(sounds[i][0]->pBuffer,&sounds[i][j]->pBuffer);
+				pSounds->pDevice->DuplicateSoundBuffer(sounds[i][0]->pBuffer,&sounds[i][j]->pBuffer);
 				VERIFY	(sounds[i][j]->pBuffer);
 				sounds[i][j]->bNeedUpdate = true;
 				if (sounds[i][j]->isPlaying()) {
