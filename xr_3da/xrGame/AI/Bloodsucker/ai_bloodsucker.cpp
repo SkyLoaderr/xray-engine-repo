@@ -152,7 +152,7 @@ void CAI_Bloodsucker::StateSelector()
 	else if (F && H && !I)  	SetState(stateAttack); 
 	else if (F && !H && I)  	SetState(stateAttack); 
 	else if (F && !H && !I) 	SetState(stateAttack);		
-	else if (A && !K)			SetState(stateExploreDNE); 
+	else if (A && !K)			SetState(stateExploreNDE); 
 	else if (B && !K)			SetState(stateExploreNDE); 
 	else if ((GetCorpse(ve) && (ve.obj->m_fFood > 1)) && ((GetSatiety() < 0.85f) || flagEatNow))
 		SetState(stateEat);	
