@@ -122,7 +122,7 @@ void CBurer::StateSelector()
 	else						state = stateRest; 
 
 	//SetState(state);
-	SetState(stateRest);
+	SetState(stateNull); 
 }
 
 void CBurer::ProcessTurn()
