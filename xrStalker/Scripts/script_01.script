@@ -25,6 +25,8 @@ function main()
 	local stalker1	= get_level_object("m_stalker_e0000")
 	local stalker2	= get_level_object("m_stalker_e0001")
 
+	local trader	= get_level_object("m_trader0000")
+
 	local actor   	= get_actor()
 --  создаем глоб. переменную содержащую id актера который доступен по переменной actor 
 	actor_id = actor:id()

@@ -13,6 +13,7 @@ end
 
 function on_exit(zone,object)
 	is_creature_entered = false
+	is_actor_entered = false
 	printf("Object %s exited zone %s",object:name(),zone:name())
 end
 
@@ -38,22 +39,6 @@ function main()
 	local sound_baran = sound_object("scripts\\idle\\say_baran")
 	local sound_wind = sound_object("scripts\\idle\\ew_gusty_over1")
 
-	sound_wind:play_at_pos		(event,event:position(),1);
-
-	wait		(1000)
-	stalker1:script	(true,script_01.script_name())
-	stalker2:script	(true,script_01.script_name())
-
-			action(                                                                                                       
-			    stalker1,
-			  	move	(move.standing, move.walk,move.line,patrol("way0002")),
-				cond	(cond.time_end, 2000)
-			)
-			action(                                                                                                       
-			    stalker2,
-			  	move	(move.standing, move.walk,move.line,patrol("way0001")),
-				cond	(cond.time_end, 2000)
-			)
 
 	event:clear_callback(true)
 	event:clear_callback(false)
@@ -61,197 +46,48 @@ function main()
 	event:set_callback(script_01.on_enter,true)
 	event:set_callback(script_01.on_exit,false)
 
-			wait(2000)
-			action(                                                                                                       
-			    stalker1,
-			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
-				sound	("scripts\\idle\\cough1","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
-				cond	(cond.time_end, 20000)
-			)
-			wait(5000)
-			action(                                                                                                       
-			    stalker2,
-			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
-				sound	("scripts\\idle\\say_holodno","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
-				cond	(cond.time_end, 20000)
-			)
-			wait(3000)
-			action(                                                                                                       
-			    stalker1,
-				sound	("scripts\\idle\\say_chto_s_toboy","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
-				cond	(cond.time_end, 20000)
-			)
-			wait(3000)
-			action(                                                                                                       
-			    stalker2,
-				sound	("scripts\\idle\\say_dai_vipit","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
-				cond	(cond.time_end, 20000)
-			)
-			wait(2000)
-			action(                                                                                                       
-			    stalker1,
-				sound	("scripts\\idle\\say_ti_pyuaniy","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
-				cond	(cond.time_end, 20000)
-			)
-			wait(2000)
-			action(                                                                                                       
-			    stalker2,
-				sound	("scripts\\idle\\say_skuchno","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
-				cond	(cond.time_end, 20000)
-			)
-			wait(2000)
-			action(                                                                                                       
-			    stalker1,
-			  	move	(move.standing, move.walk,move.line,patrol("way0002")),
-				cond	(cond.time_end, 100000)
-			)
-			action(                                                                                                       
-			    stalker2,
-			  	move	(move.standing, move.walk,move.line,patrol("way0001")),
-				cond	(cond.time_end, 100000)
-			)
-
-	while stalker1:action() and stalker2:action() do
-		if is_actor_entered and stalker1:see(actor) == false and stalker2:see(actor) == false then 
-			printf("alarm!")
+	while true do
+		if is_actor_entered and actor.health > 0 then 
+			printf("entered")
 			flush()
-			stalker1:script	(false, script_01.script_name())
-			stalker1:script	(true,  script_01.script_name())
-			stalker2:script	(false, script_01.script_name())
-			stalker2:script	(true,  script_01.script_name())
-			sound_01:play_at_pos		(actor,actor:position(),0);
-		wait(2000)
-			action(
-				stalker1,
-			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
-				sound	("scripts\\alarm\\say_chto_eto1","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
-				look	(look.fire_point, stalker2),
-				anim	(anim.danger),
-				cond	(cond.sound_end, 10000)
-				)
-		wait(2000)
-			action(
-				stalker2,
-			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
-				sound	("scripts\\alarm\\say_ti_slishal","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
-				look	(look.fire_point, stalker1),
-				anim	(anim.danger),
-				cond	(cond.sound_end, 12000)
-				)
-		wait(2000)
-			action(
-				stalker1,
-			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
-				sound	("scripts\\alarm\\kto-to_idet","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
-				anim	(anim.danger),
-				cond	(cond.sound_end, 10000)
-				)
-		wait(2000)
-
-			printf("a!")
-			flush()
-
-			action(
-				stalker1,
-			  	move	(move.standing, move.stand,move.line,patrol("way0001")),
-				sound	("scripts\\alarm\\prover","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
-				anim	(anim.danger),
-				cond	(cond.sound_end, 10000)
-				)
-		wait(2000)
-
-			printf("b!")
-			flush()
-
-			action(
-				stalker2,
-			  	move	(move.standing, move.walk,move.line,patrol("way0000")),
-				sound	("scripts\\idle\\movie_footsteps","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),true),
-				anim	(anim.danger),
-				cond	(cond.time_end, 50000)
-				)
-			wait(30000)			
-
-			printf("c!")
-			flush()
-
-			action(
-				stalker1,
-			  	move	(move.standing, move.stand,move.line,patrol("way0001")),
-				sound	("scripts\\fight\\say_gde_on","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
-				anim	(anim.danger),
-				cond	(cond.sound_end, 20000)
-				)
-		wait(2000)
-			action(
-				stalker2,
-			  	move	(move.standing, move.walk,move.line,patrol("way0001")),
-				sound	("scripts\\fight\\say_on_skrivaetsya","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
-				anim	(anim.danger),
-				cond	(cond.sound_end, 20000)
-				)
-			wait(10000)			
+			sound_ti_pyuaniy:play_at_pos		(trader,trader:position(),0);
 			break
 		end
-		wait()			
+		wait(3000)			
 	end
 
-	while stalker1:action() and stalker2:action() do
-		if stalker1:see(actor) or stalker2:see(actor) then
-			printf("script 2!")
+	while true do
+		if is_actor_entered and actor.health > 0 then 
+			printf("entered")
 			flush()
-			stalker1:script	(false, script_01.script_name())
-			stalker1:script	(true,  script_01.script_name())
-			stalker2:script	(false, script_01.script_name())
-			stalker2:script	(true,  script_01.script_name())
-			action(
-				stalker1,
-			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
-				sound	("scripts\\see_actor\\ne_dvigatsya","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
-				look	(look.fire_point, actor),
-				anim	(anim.danger),
-				cond	(cond.time_end, 3000)
-			)
-			wait(2000)
-			action(
-				stalker1,
-			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
-				sound	("scripts\\see_actor\\kto_ti","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
-				look	(look.fire_point, actor),
-				anim	(anim.danger),
-				cond	(cond.time_end, 2000)
-			)
-			action(
-				stalker2,
-			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
-				look	(look.fire_point, actor),
-				anim	(anim.danger),
-				cond	(cond.time_end, 100000)
-			)
-			wait		(1500)			
+			sound_chto_s_toboy:play_at_pos		(trader,trader:position(),0);
 			break
 		end
-		wait()			
+		wait(3000)	
 	end
 
-	while stalker1:action() and stalker2:action() do
-	    wait	()
-
+	while true do
+		if is_actor_entered and actor.health > 0 then 
+			printf("entered")
+			flush()
+			sound_baran:play_at_pos		(trader,trader:position(),0);
+			break
+		end
+		wait(3000)
 	end
 
-	stalker1:script	(false, script_01.script_name())
-	stalker2:script	(false, script_01.script_name())
+	while true do
+		if is_actor_entered == false and actor.health > 0 then 
+			printf("exit")
+			flush()
+			sound_skuchno:play_at_pos		(trader,trader:position(),0);
+			break
+		end
+		wait(3000)
+	end
 
 	event:clear_callback(true)
 	event:clear_callback(false)
 
-	while true do
-		if actor.health <= 0 and stalker1.health > 0 then
-		wait(2000)			
-			sound_baran:play_at_pos		(stalker1,stalker1:position(),0);
-			break
-		end
-		wait()			
-	end
 end
 
