@@ -56,4 +56,7 @@ void CScriptEngine::init		()
 void CScriptEngine::run_string	(LPCSTR string_to_run)
 {
 	lua_dostring		(lua(),string_to_run);
+#ifdef _DEBUG
+	lua_setgcthreshold	(lua(),0);
+#endif
 }

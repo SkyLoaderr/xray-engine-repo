@@ -23,9 +23,8 @@ void COthelloClassicBoard::fill_moves		()
 
 	m_move_processor.current_position_moves().actual	(true);
 
-	if (!m_move_processor.current_position_moves().moves().empty()) {
+	if (!m_move_processor.current_position_moves().moves().empty())
 		return;
-	}
 
 #ifdef _DEBUG
 	m_move_processor.current_position_moves().actual(false);

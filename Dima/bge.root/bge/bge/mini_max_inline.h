@@ -16,6 +16,7 @@ IC	_minimax::mini_max					(board_type *board, evaluator_type *evaluator)
 {
 	m_board		= board;
 	m_evaluator	= evaluator;
+	m_counter	= 0;
 }
 
 TEMPLATE_SPECIALIZATION
@@ -25,6 +26,7 @@ IC	board_type &_minimax::board			() const
 	return		(*m_board);
 }
 
+TEMPLATE_SPECIALIZATION
 IC	evaluator_type &_minimax::evaluator	() const
 {
 	VERIFY		(m_evaluator);
@@ -32,29 +34,33 @@ IC	evaluator_type &_minimax::evaluator	() const
 }
 
 TEMPLATE_SPECIALIZATION
-IC	board::score_type _minimax::search	(int depth)
+IC	typename _minimax::result_type _minimax::search	(int depth)
 {
+	++m_counter;
+
 	if (board().terminal_position())
-		return						(board().score());
+		return					(board().score());
 
 	if (!depth)
-		return						(evaluator().evaluate(board()));
+		return					(evaluator().evaluate(board()));
 
-	evaluator_type::result_type		result = -evaluator_type::infinity, current;
+	result_type					result = -evaluator_type::infinity, current;
 
-	board_type::iterator			I = board().moves().begin();
-	board_type::iterator			E = board().moves().end();
+	if (m_counter == 27161)
+		__asm int 3;
+	board_type::move_iterator	I = board().moves().begin();
+	board_type::move_iterator	E = board().moves().end();
 	for ( ; I != E; ++I) {
-		board().move				(*I);
+		board().do_move			(*I);
 
-		current						= search(depth - 1);
+		current					= search(depth - 1);
 		if (current > result)
-			result					= current;
+			result				= current;
 
-		board().undo				();
+		board().undo_move		();
 	}
 
-	return							(result);
+	return						(result);
 }
 
 #undef TEMPLATE_SPECIALIZATION

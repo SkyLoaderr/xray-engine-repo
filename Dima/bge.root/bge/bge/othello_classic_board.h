@@ -31,8 +31,8 @@ public:
 	};
 
 public:
-	typedef u8 cell_type;
-	typedef s8 cell_index;
+	typedef u8	cell_type;
+	typedef s8	cell_index;
 
 public:
 	union CStackCell {
@@ -60,6 +60,7 @@ public:
 public:
 	typedef CMoveProcessor<cell_index,60,60>	move_processor;
 	typedef move_processor::move_container		position_moves;
+	typedef position_moves::iterator			move_iterator;
 
 private:
 	static const u8 flipping_directions[BOARD_SIZE];
