@@ -22,8 +22,16 @@ void CPhysicObject::SaveNetState(NET_Packet& P)
 
 	CKinematics* K	=PKinematics(Visual());
 	P.w_u8 (m_flags.get());
-	P.w_u64(K->LL_GetBonesVisible());
-	P.w_u16(K->LL_GetBoneRoot());
+	if(K)
+	{
+		P.w_u64(K->LL_GetBonesVisible());
+		P.w_u16(K->LL_GetBoneRoot());
+	}
+	else
+	{
+		P.w_u64(u64(-1));
+		P.w_u16(0);
+	}
 	u16 bones_number=PHGetSyncItemsNumber();
 	P.w_u16(bones_number);
 	for(u16 i=0;i<bones_number;i++)
@@ -39,8 +47,12 @@ void CPhysicObject::LoadNetState(NET_Packet& P)
 
 	CKinematics* K=PKinematics(Visual());
 	P.r_u8 (m_flags.flags);
-	K->LL_SetBonesVisible(P.r_u64());
-	K->LL_SetBoneRoot(P.r_u16());
+	if(K)
+	{
+		K->LL_SetBonesVisible(P.r_u64());
+		K->LL_SetBoneRoot(P.r_u16());
+	}
+
 	u16 bones_number=P.r_u16();
 	for(u16 i=0;i<bones_number;i++)
 	{
@@ -115,10 +127,11 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 				R_ASSERT2(*m_startup_anim,"no startup animation");
 				pSkeletonAnimated->PlayCycle(*m_startup_anim);
 			}
+			PKinematics(Visual())->Calculate();
 			break;
 		default: NODEFAULT; 
 	}
-PKinematics(Visual())->Calculate();
+//PKinematics(Visual())->Calculate();
 if(m_flags.test(CSE_ALifeObjectPhysic::flSavedData))
 {
 		PHNETSTATE_VECTOR& saved_bones=po->saved_bones;
@@ -488,7 +501,7 @@ void CPhysicObject::SetAutoRemove()
 {
 	b_removing=true;
 	m_unsplit_time=Device.dwTimeGlobal;
-	m_flags.set(CSE_ALifeObjectPhysic::flNotSave);
+	//m_flags.set(CSE_ALifeObjectPhysic::flNotSave);
 }
 //////////////////////////////////////////////////////////////////////////
 /*
