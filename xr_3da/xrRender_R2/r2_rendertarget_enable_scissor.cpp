@@ -76,7 +76,7 @@ BOOL CRenderTarget::enable_scissor		(light* L)		// true if intersects near plane
 		iVP.transform	(s_points[3],s_points_pp[3]);
 
 		// 4. check intersection of two triangles with (spatial, enclosing) sphere
-		bool	bIntersect	= tri_vs_sphere_intersect	(
+		BOOL	bIntersect	= tri_vs_sphere_intersect	(
 			L->spatial.center,L->spatial.radius,
 			s_points[0],s_points[1],s_points[2]
 			);

@@ -93,7 +93,7 @@ BOOL LineIntersection2D( D3DXVECTOR2* result, const D3DXVECTOR2* lineA, const D3
 	float y_diff = y[0] - y[1];
 
 	float s		= (x_diff - (dx[1]/dy[1])*y_diff) / ((dx[1]*dy[0]/dy[1])-dx[0]);
-	float t		= (x_diff + s*dx[0]) / dx[1];
+	// float t	= (x_diff + s*dx[0]) / dx[1];
 
 	*result		= lineA[0] + s*lineA[1];
 	return		TRUE;

@@ -21,12 +21,11 @@ extern XRCORE_API pauseMngr	g_pauseMngr;
 class XRCORE_API CTimer {
 private:
 	u64			qwStartTime;
-	float		fResult;
-
-	bool		bPause;
 	u64			qwPaused_time;
+	float		fResult;
+	bool		bPause;
 public:
-	CTimer						(bool bCanBePaused):qwPaused_time(0),bPause(false){if(bCanBePaused)g_pauseMngr.Register(this);}
+	CTimer						(bool bCanBePaused=false):qwPaused_time(0),bPause(false){if(bCanBePaused)g_pauseMngr.Register(this);}
 	~CTimer						()				{g_pauseMngr.UnRegister(this);}
 	IC void		Start			()		{	qwStartTime = CPU::GetCycleCount(); }
 	IC float	Stop			()		{	return (fResult = GetElapsed_sec()); }
