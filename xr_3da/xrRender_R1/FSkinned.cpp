@@ -146,26 +146,6 @@ struct	vertHW_2W
 //////////////////////////////////////////////////////////////////////
 // Body Part
 //////////////////////////////////////////////////////////////////////
-void CSkeletonX::AfterLoad	(CKinematics* parent, u16 child_idx)
-{
-	SetParent				(parent);
-	ChildIDX				= child_idx;
-}
-void CSkeletonX::_Copy		(CSkeletonX *B)
-{
-	Parent					= NULL;
-	ChildIDX				= B->ChildIDX;
-	Vertices1W				= B->Vertices1W;
-	Vertices2W				= B->Vertices2W;
-
-	// caution - overlapped (union)
-	cache_DiscardID			= B->cache_DiscardID;
-	cache_vCount			= B->cache_vCount;
-	cache_vOffset			= B->cache_vOffset;
-	RenderMode				= B->RenderMode;
-	RMS_boneid				= B->RMS_boneid;
-	RMS_bonecount			= B->RMS_bonecount;
-}
 void CSkeletonX_PM::Copy	(IRender_Visual *V) 
 {
 	inherited1::Copy		(V);
@@ -194,42 +174,6 @@ void CSkeletonX_PM::Render	(float LOD)
 void CSkeletonX_ST::Render	(float LOD) 
 {
 	_Render		(hGeom,vCount,0,dwPrimitives);
-}
-void CSkeletonX::_Render	(ref_geom& hGeom, u32 vCount, u32 iOffset, u32 pCount)
-{
-	switch (RenderMode)
-	{
-	case RM_SKINNING_SOFT:
-		_Render_soft		(hGeom,vCount,iOffset,pCount);
-		break;
-	case RM_SINGLE:	
-		{
-			Fmatrix	W;	W.mul_43	(RCache.xforms.m_w,Parent->LL_GetTransform_R	(u16(RMS_boneid)));
-			RCache.set_xform_world	(W);
-			RCache.set_Geometry		(hGeom);
-			RCache.Render			(D3DPT_TRIANGLELIST,0,0,vCount,iOffset,pCount);
-		}
-		break;
-	case RM_SKINNING_1B:
-	case RM_SKINNING_2B:
-		{
-			// transfer matrices
-			R_constant*				array	= RCache.get_c				(sbones_array);
-			u32						count	= RMS_bonecount;
-			for (u32 mid = 0; mid<count; mid++)	{
-				Fmatrix&	M				= Parent->LL_GetTransform_R				(u16(mid));
-				u32			id				= mid*3;
-				RCache.set_ca	(array,id+0,M._11,M._21,M._31,M._41);
-				RCache.set_ca	(array,id+1,M._12,M._22,M._32,M._42);
-				RCache.set_ca	(array,id+2,M._13,M._23,M._33,M._43);
-			}
-
-			// render
-			RCache.set_Geometry		(hGeom);
-			RCache.Render			(D3DPT_TRIANGLELIST,0,0,vCount,iOffset,pCount);
-		}
-		break;
-	}
 }
 void CSkeletonX::_Render_soft	(ref_geom& hGeom, u32 vCount, u32 iOffset, u32 pCount)
 {

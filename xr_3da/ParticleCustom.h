@@ -5,6 +5,9 @@
 class ENGINE_API	IParticleCustom		: public IRender_Visual
 {
 public:
+	// geometry-format
+	ref_geom		geom;
+public:
 	virtual 		~IParticleCustom	(){;}
 
     virtual void 	OnDeviceCreate		()=0;

@@ -172,8 +172,8 @@ void CParticleEffect::OnDeviceCreate()
 {
 	if (m_Def){
 		if (m_Def->m_Flags.is(CPEDef::dfSprite)){
-			hGeom.create	(FVF::F_LIT, RCache.Vertex.Buffer(), RCache.QuadIB);
-			if (m_Def) hShader = m_Def->m_CachedShader;
+			geom.create			(FVF::F_LIT, RCache.Vertex.Buffer(), RCache.QuadIB);
+			if (m_Def) shader	= m_Def->m_CachedShader;
 		}
 	}
 }
@@ -182,8 +182,8 @@ void CParticleEffect::OnDeviceDestroy()
 {
 	if (m_Def){
 		if (m_Def->m_Flags.is(CPEDef::dfSprite)){
-			hGeom.destroy		();
-			hShader.destroy		();
+			geom.destroy		();
+			shader.destroy		();
 		}    
 	}
 }
