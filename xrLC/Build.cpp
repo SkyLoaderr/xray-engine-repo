@@ -257,7 +257,7 @@ void CBuild::Run()
 
 	FPU::m24r();
 	Phase	("Merging geometry...");
-	MergeGeometry();
+	MergeGeometry	();
 	
 	FPU::m24r();
 	Phase	("Calculating vertex lighting...");

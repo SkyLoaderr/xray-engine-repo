@@ -10,13 +10,20 @@ volatile BOOL			bClose = FALSE;
 
 static char				status	[1024	]="";
 static char				phase	[256	]="";
-static char				phase_x	[256	]="";
 static float			progress = 0.0f;
 static vector<string>	strings;
 static DWORD			phase_start_time=0;
 static BOOL				bStatusChange	= FALSE;
 static BOOL				bPhaseChange	= FALSE;
 static DWORD			phase_total_time=0;
+
+static HWND hwLog		= 0;
+static HWND hwProgress	= 0;
+static HWND hwInfo		= 0;
+static HWND hwStage		= 0;
+static HWND hwTime		= 0;
+static HWND hwPText		= 0;
+static HWND hwPhaseTime	= 0;
 //************************* Log-thread data
 
 static BOOL CALLBACK logDlgProc( HWND hw, UINT msg, WPARAM wp, LPARAM lp )
@@ -75,12 +82,23 @@ void Progress		(const float F)
 void Phase			(const char *phase_name)
 {
 	EnterCriticalSection(&csLog);
+
+	// Replace phase name with TIME:Name 
+	char	tbuf		[512];
 	bPhaseChange		= TRUE;
 	phase_total_time	= timeGetTime()-phase_start_time;
+	sprintf				( tbuf,"%s : %s",make_time(phase_total_time/1000).c_str(),	phase);
+	SendMessage			( hwPhaseTime, LB_DELETESTRING, SendMessage(hwPhaseTime,LB_GETCOUNT,0,0)-1,0);
+	SendMessage			( hwPhaseTime, LB_ADDSTRING, 0, (LPARAM) tbuf);
+
+	// Start new phase
 	phase_start_time	= timeGetTime();
-	strcpy				(phase_x,phase);
-	strcpy				(phase,phase_name);
+	strcpy				(phase,  phase_name);
+	SetWindowText		( hwStage,		phase_name );
+	SendMessage			( hwPhaseTime,  LB_ADDSTRING, 0, (LPARAM) phase_name);
 	Progress			(0);
+
+	// Release focus
 	LeaveCriticalSection(&csLog);
 	Msg("\n* New phase started: %s",phase_name);
 }
@@ -138,13 +156,13 @@ void __cdecl logThread(void *dummy)
 		R_ASSERT(0);
 	};
 	SetWindowPos(logWindow,HWND_NOTOPMOST,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE|SWP_SHOWWINDOW);
-	HWND hwLog		= GetDlgItem(logWindow, IDC_LOG);
-	HWND hwProgress	= GetDlgItem(logWindow, IDC_PROGRESS);
-	HWND hwInfo		= GetDlgItem(logWindow, IDC_INFO);
-	HWND hwStage	= GetDlgItem(logWindow, IDC_STAGE);
-	HWND hwTime		= GetDlgItem(logWindow, IDC_TIMING);
-	HWND hwPText	= GetDlgItem(logWindow, IDC_P_TEXT);
-	HWND hwPhaseTime= GetDlgItem(logWindow, IDC_PHASE_TIME);
+	hwLog		= GetDlgItem(logWindow, IDC_LOG);
+	hwProgress	= GetDlgItem(logWindow, IDC_PROGRESS);
+	hwInfo		= GetDlgItem(logWindow, IDC_INFO);
+	hwStage		= GetDlgItem(logWindow, IDC_STAGE);
+	hwTime		= GetDlgItem(logWindow, IDC_TIMING);
+	hwPText		= GetDlgItem(logWindow, IDC_P_TEXT);
+	hwPhaseTime	= GetDlgItem(logWindow, IDC_PHASE_TIME);
 
     SendMessage(hwProgress, PBM_SETRANGE,	0, MAKELPARAM(0, 1000)); 
     SendMessage(hwProgress, PBM_SETPOS,		0, 0); 
@@ -206,14 +224,16 @@ void __cdecl logThread(void *dummy)
 			SetWindowText	( hwPText, tbuf );
 		}
 
+		/*
 		if (bPhaseChange) {
 			bWasChanges		= TRUE;
 			bPhaseChange	= FALSE;
 			SetWindowText	( hwStage,	phase );
 			sprintf			( tbuf,"%s : %s",make_time(phase_total_time/1000).c_str(),	phase_x);
 			SendMessage		( hwPhaseTime, LB_ADDSTRING, 0, (LPARAM) tbuf);
-//			LOut			( tbuf );
 		}
+		*/
+
 		if (bStatusChange) {
 			bWasChanges		= TRUE;
 			bStatusChange	= FALSE;
