@@ -285,6 +285,9 @@
 					<File
 						RelativePath=".\Config\gameplay\tasks_garbage.xml">
 					</File>
+					<File
+						RelativePath=".\config\gameplay\tasks_military.xml">
+					</File>
 				</Filter>
 				<Filter
 					Name="Infoportions"

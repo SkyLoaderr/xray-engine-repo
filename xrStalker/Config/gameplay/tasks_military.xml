@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding="windows-1251"?>
+
+<game_tasks_data>
+
+	<game_task id="storyline_eliminate_gunslinger">
+		<title>storyline_escape_eliminate_gunslinger</title>
+		<objective>
+			<text>storyline_escape_eliminate_gunslinger</text>
+			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<article>storyline_gunslinger</article>
+		</objective>
+		<objective>
+			<text>storyline_escape_find_gunslinger</text>
+			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>storyline_escape_eliminate_gunslinger</text>
+			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+	</game_task>
+
+</game_tasks_data>
