@@ -314,10 +314,11 @@ void LightPoint(CDB::COLLIDER* DB, CDB::MODEL* MDL, base_color_c &C, Fvector &P,
 				// Cos
 				Ldir.invert	(L->direction);
 				float D		= Ldir.dotproduct( N );
-				if( D <=0 ) continue;
+				if( D <-0.5f )	continue;	// allow some wrap
 
 				// Trace Light
-				float scale	=	L->energy*rayTrace(DB,MDL, *L,Pnew,Ldir,1000.f,skip,bUseFaceDisable);
+				Fvector		PMoved;	PMoved.mad	(Pnew,Ldir,0.01f);
+				float scale	=	L->energy*rayTrace(DB,MDL, *L,PMoved,Ldir,1000.f,skip,bUseFaceDisable);
 				C.hemi		+=	scale;
 			} else {
 				// Distance

@@ -41,6 +41,13 @@ struct b_BuildTexture : public b_texture
 	}
 };
 
+//////////////////////////////////////////////////////////////////////////
+// tesselator callbacks
+typedef	int		tesscb_estimator	(Face*		F);	// -1 = none, 0,1,2 = edge-number
+typedef void	tesscb_face			(Face*		F);	// new face
+typedef void	tesscb_vertex		(Vertex*	V);	// new vertex
+
+//////////////////////////////////////////////////////////////////////////
 class CBuild  
 {
 public:
@@ -80,7 +87,8 @@ public:
 	void	CorrectTJunctions		();
 
 	void	xrPhase_AdaptiveHT		();
-	void	SmoothVertColors		(int count);
+	void	u_Tesselate				(tesscb_estimator* E, tesscb_face* F, tesscb_vertex* V);
+	void	u_SmoothVertColors		(int count);
 
 	void	CalcNormals				();
 	void	xrPhase_TangentBasis	();
