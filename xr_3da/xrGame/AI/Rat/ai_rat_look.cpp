@@ -58,7 +58,7 @@ void CAI_Rat::feel_sound_new(CObject* who, int eType, Fvector& Position, float p
 	if (!g_Alive())
 		return;
 	
-	Msg("%.3f %.3f %.3f %8X [%7.2f,%7.2f,%7.2f] %s",power,ffGetStartVolume(ESoundTypes(eType)),power*ffGetStartVolume(ESoundTypes(eType)),eType,Position.x,Position.y,Position.z,who ? who->cName() : "world");
+	//Msg("%.3f %.3f %.3f %8X [%7.2f,%7.2f,%7.2f] %s",power,ffGetStartVolume(ESoundTypes(eType)),power*ffGetStartVolume(ESoundTypes(eType)),eType,Position.x,Position.y,Position.z,who ? who->cName() : "world");
 	power *= ffGetStartVolume(ESoundTypes(eType));
 
 	if (power >= 0.06f) {
