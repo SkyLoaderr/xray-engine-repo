@@ -43,10 +43,11 @@ public:
 		mcBack		= 0x0002,
 		mcLStrafe	= 0x0004,
 		mcRStrafe	= 0x0008,
-		mcJump		= 0x0010,
-		mcCrouch	= 0x0020,
-		mcAccel		= 0x0040,
-		mcTurn		= 0x0080,
+		mcCrouch	= 0x0010,
+		mcAccel		= 0x0020,
+		mcTurn		= 0x0040,
+		mcJump		= 0x0080,
+		mcFall		= 0x0100,
 
 		mcAnyMove	= (mcFwd|mcBack|mcLStrafe|mcRStrafe)
 	};

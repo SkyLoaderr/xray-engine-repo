@@ -97,7 +97,9 @@ void CActor::g_SetAnimation( DWORD mstate_rl )
 				M_legs = ST->jump_idle;
 			}else if (m_current_legs==ST->jump_idle){
 				M_legs = ST->jump_idle;
-			}else M_legs = ST->jump_begin;
+			}else{ 
+				M_legs = ST->jump_begin;
+			}
 		}
 		else if (mstate_rl&mcTurn)		M_legs = ST->legs_turn;
 		
