@@ -299,8 +299,8 @@ function add_to_binder(npc)
 	local properties  = {}
 
 	-- FIXME: тут будет talker
-	npc:add_sound([[script_replics\bandit_1\replics\bandit_ambush_]],
-			20, snd_type.talk, 2, 1, xr_sounds_id.zmey_talker_base)
+	--npc:add_sound([[script_replics\bandit_1\replics\bandit_ambush_]],
+	--		20, snd_type.talk, 2, 1, xr_sounds_id.zmey_talker_base)
 
 	local manager = npc:motivation_action_manager()
 
@@ -335,9 +335,9 @@ function set_talker(object, enable)
 	local char_ini = object:spawn_ini()
 	local st = xr_motivator.storage[object:id()].talker
 	if enable == nil then
-	    	if char_ini:section_exist ("guard") == true then
-        		if char_ini:line_exist("guard", "enabled") == true then
-                		st.enabled = char_ini:r_bool("guard", "enabled")
+	    	if char_ini:section_exist ("talker") == true then
+        		if char_ini:line_exist("talker", "enabled") == true then
+                		st.enabled = char_ini:r_bool("talker", "enabled")
 			else
 				st.enabled = false
 		        end
@@ -347,6 +347,7 @@ function set_talker(object, enable)
 	else
 		st.enabled = enable		
 	end	
+
 
 	xr_motivator.checkStorage(object)
 end
