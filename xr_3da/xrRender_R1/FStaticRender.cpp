@@ -352,7 +352,7 @@ void CRender::Calculate				()
 						vis_data		v_copy			= v_orig;
 						v_copy.box.xform				(renderable->renderable.xform);
 						BOOL			bVisible		= HOM.visible(v_copy);
-						v_orig.hom_accept_frame			= v_copy.hom_accept_frame;
+						v_orig.accept_frame				= v_copy.accept_frame;
 						v_orig.marker					= v_copy.marker;
 						v_orig.hom_frame				= v_copy.hom_frame;
 						v_orig.hom_tested				= v_copy.hom_tested;
