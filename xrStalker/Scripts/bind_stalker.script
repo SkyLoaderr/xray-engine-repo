@@ -105,17 +105,6 @@ function actor_binder:update(delta)
 	--' обновление рестрикторов, которые реагируют на актёра (убирание оружия, подсказки...)
 	bind_restrictor.actor_update(delta)
 
-	if  self.bCheckStart then
-			local console = get_console()
-			console:execute("dump_infos")
-	
-	local h = self.object:dont_has_info("storyline_actor_start")
-	if h then 
-		printf ("dont_has_info(storyline_actor_start) ==TRUE")
-	else
-		printf ("dont_has_info(storyline_actor_start) ==FALSE")
-	end
-	
 		printf("SET DEFAULT INFOS")		
 		if self.object:dont_has_info("storyline_actor_start") and
 		   ( (level.name() == "l01_escape") or (level.name() == "zmey_test1") )then
