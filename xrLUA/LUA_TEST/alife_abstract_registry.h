@@ -12,7 +12,7 @@
 #include "object_broker.h"
 
 template <typename _index_type, typename _data_type>
-class CALifeAbstractRegistry : public IPureALifeLSObject {
+class CALifeAbstractRegistry : public IPureSerializeObject {
 protected:
 	typedef xr_map<_index_type,_data_type>					OBJECT_REGISTRY;
 	typedef typename OBJECT_REGISTRY::iterator				iterator;

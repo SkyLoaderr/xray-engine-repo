@@ -15,7 +15,7 @@
 #	include "net_utils.h"
 #endif
 
-class CALifeEventPersonal : public IPureALifeLSObject {
+class CALifeEventPersonal : public IPureSerializeObject {
 public:
 	ALife::_EVENT_ID			m_tEventID;
 	ALife::_TIME_ID				m_tTimeID;

@@ -27,7 +27,7 @@ struct CRegistryHelperLoad {
 
 	IC	static void process(T1 *self, T2 p1)
 	{
-		do_load<boost::is_base_and_derived<IPureALifeLObject,Head>::value>(self,p1);
+		do_load<boost::is_base_and_derived<IPureLîadableObject,Head>::value>(self,p1);
 	}
 };
 
@@ -46,7 +46,7 @@ struct CRegistryHelperSave {
 
 	IC	static void process(T1 *self, T2 p1)
 	{
-		do_save<boost::is_base_and_derived<IPureALifeSObject,Head>::value>(self,p1);
+		do_save<boost::is_base_and_derived<IPureSavableObject,Head>::value>(self,p1);
 	}
 };
 

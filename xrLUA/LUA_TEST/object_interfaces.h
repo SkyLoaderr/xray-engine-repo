@@ -17,20 +17,25 @@ class NET_Packet;
 #	define xr_interface __interface
 #endif
 
-xr_interface IPureALifeLObject {
+xr_interface IPureDestroyableObject {
+public:
+	virtual void					destroy()											= 0;
+};
+
+xr_interface IPureLîadableObject {
 public:
 	virtual void					load(IReader	&tFileStream)						= 0;
 };
 
-xr_interface IPureALifeSObject {
+xr_interface IPureSavableObject {
 public:
 	virtual void					save(IWriter	&tMemoryStream)						= 0;
 };
 
-xr_interface IPureALifeLSObject : public IPureALifeLObject, public IPureALifeSObject {
+xr_interface IPureSerializeObject : public IPureLîadableObject, public IPureSavableObject {
 };
 
-xr_interface IPureServerObject : public IPureALifeLSObject {
+xr_interface IPureServerObject : public IPureSerializeObject {
 public:
 	virtual void					STATE_Write	(NET_Packet &tNetPacket)				= 0;
 	virtual void					STATE_Read	(NET_Packet &tNetPacket, u16 size)		= 0;

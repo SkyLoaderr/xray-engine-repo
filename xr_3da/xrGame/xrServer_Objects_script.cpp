@@ -17,13 +17,13 @@ using namespace luabind;
 void CPureServerObject::script_register(lua_State *L)
 {
 	module(L)[
-		class_<IPureALifeLObject>
+		class_<IPureLîadableObject>
 			("ipure_alife_load_object"),
-		class_<IPureALifeSObject>
+		class_<IPureSavableObject>
 			("ipure_alife_save_object"),
-		class_<IPureALifeLSObject,bases<IPureALifeLObject,IPureALifeSObject> >
+		class_<IPureSerializeObject,bases<IPureLîadableObject,IPureSavableObject> >
 			("ipure_alife_load_save_object"),
-		class_<IPureServerObject,IPureALifeLSObject>
+		class_<IPureServerObject,IPureSerializeObject>
 			("ipure_server_object"),
 		class_<CPureServerObject,IPureServerObject>
 			("cpure_server_object")

@@ -11,7 +11,7 @@
 #include "object_interfaces.h"
 #include "alife_space.h"
 
-class CALifeTask : public IPureALifeLSObject {
+class CALifeTask : public IPureSerializeObject {
 public:
 	ALife::_TASK_ID				m_tTaskID;
 	ALife::_TIME_ID				m_tTimeID;

@@ -13,7 +13,7 @@
 
 class CALifeEventGroup;
 
-class CALifeEvent : public IPureALifeLSObject {
+class CALifeEvent : public IPureSerializeObject {
 public:
 	ALife::_EVENT_ID		m_tEventID;
 	ALife::_TIME_ID			m_tTimeID;

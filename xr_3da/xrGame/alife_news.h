@@ -11,7 +11,7 @@
 #include "object_interfaces.h"
 #include "alife_space.h"
 
-class CALifeNews : public IPureALifeLSObject {
+class CALifeNews : public IPureSerializeObject {
 public:
 	ALife::_NEWS_ID			m_news_id;
 	ALife::_TIME_ID			m_game_time;
