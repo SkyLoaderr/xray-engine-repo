@@ -27,7 +27,7 @@ void xrServer::Process_event_ownership(NET_Packet& P, DPNID sender, u32 time, u1
 
 		// Rebuild parentness
 		e_entity->ID_Parent			= id_parent;
-		e_parent->chields.push_back	(id_entity);
+		e_parent->children.push_back(id_entity);
 
 		// Signal to everyone (including sender)
 		SendBroadcast		(0xffffffff,P,MODE);
