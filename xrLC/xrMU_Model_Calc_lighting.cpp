@@ -49,10 +49,10 @@ void xrMU_Model::calc_lighting	(xr_vector<base_color>& dest, Fmatrix& xform, CDB
 
 	// calc pure rotation matrix
 	Fmatrix Rxform,tmp,R;
-	R.set				(xform	);
-	R.translate_over	(0,0,0	);
-	tmp.transpose		(R		);
-	Rxform.invert		(tmp	);
+	R.set						(xform	);
+	R.translate_over			(0,0,0	);
+	tmp.transpose				(R		);
+	Rxform.invert				(tmp	);
 
 	// Perform lighting
 	CDB::COLLIDER				DB;
