@@ -12,11 +12,6 @@
 
 CScriptEngine::CScriptEngine	()
 {
-	string256				l_caLogFileName;
-	strconcat               (l_caLogFileName,Core.ApplicationName,"_",Core.UserName,"_lua.log");
-	FS.update_path          (l_caLogFileName,"$logs$",l_caLogFileName);
-	m_output				= FS.w_open(l_caLogFileName);
-
 	lua_setgcthreshold		(m_virtual_machine,64);
 }
 
@@ -24,7 +19,7 @@ CScriptEngine::~CScriptEngine			()
 {
 	while (!m_script_processors.empty())
 		remove_script_processor(m_script_processors.begin()->first);
-	FS.w_close				(m_output);
+	flush_log				();
 }
 
 void CScriptEngine::unload				()

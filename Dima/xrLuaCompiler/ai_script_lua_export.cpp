@@ -85,12 +85,18 @@ void LoadScriptModule(LPCSTR script_name)
 	ai().script_engine().add_file(script_name);
 }
 
+void FlushLogs()
+{
+	FlushLog();
+	ai().script_engine().flush_log();
+}
+
 void CScriptEngine::export_globals()
 {
 	function	(lua(),	"log",		LuaLog);
 
 #ifdef DEBUG
-	function	(lua(),	"flush",	FlushLog);
+	function	(lua(),	"flush",	FlushLogs);
 #else
 	function	(lua(),	"flush",	FlushLogFake);
 #endif

@@ -265,7 +265,8 @@ CCoverPoint	*CAI_Stalker::best_cover_point	(
 	direction.sub								(enemy_position,Position());
 
 	ai().cover_manager().covers().nearest		(Position(),radius,m_nearest);
-	float										best_value = flt_max;
+	float										best_value = 1000.f;
+	float										best_distance = 1000.f;
 	float										current_distance = self_position.distance_to(enemy_position);
 	CCoverPoint									*best_point = 0;
 	xr_vector<CCoverPoint*>::const_iterator	I = m_nearest.begin();
@@ -279,7 +280,16 @@ CCoverPoint	*CAI_Stalker::best_cover_point	(
 		float			enemy_distance = enemy_position.distance_to((*I)->position());
 		float			my_distance = self_position.distance_to((*I)->position());
 
-		if ((cover_value >= best_value) || (enemy_distance <= min_enemy_distance) || (my_distance >= max_enemy_distance))
+		if (enemy_distance <= min_enemy_distance)
+			continue;
+
+		if (my_distance >= max_enemy_distance)
+			continue;
+
+		if (my_distance >= max_enemy_distance)
+			continue;
+
+		if (my_distance*(cover_value + 1.f) > best_distance*(best_value + 1.f))
 			continue;
 
 		bool			choosed = false;
@@ -300,8 +310,9 @@ CCoverPoint	*CAI_Stalker::best_cover_point	(
 		}
 
 		if (choosed) {
-			best_value	= cover_value;
-			best_point	= *I;
+			best_value		= cover_value;
+			best_distance	= my_distance;
+			best_point		= *I;
 		}
 	}
 

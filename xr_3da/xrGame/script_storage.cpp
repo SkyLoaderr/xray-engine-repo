@@ -107,7 +107,7 @@ int __cdecl CScriptStorage::script_log	(ScriptStorage::ELuaMessageType tLuaMessa
 
 #ifdef ENGINE_BUILD
 #else
-	ai().script_engine().m_output->w_string(S2);
+	ai().script_engine().m_output.w_string(S2);
 #endif
 
 	va_end	(l_tMarker);
@@ -463,3 +463,12 @@ bool CScriptStorage::print_stack_level(CLuaVirtualMachine *L, int iStackLevel)
 	}
 	return		(true);
 }
+
+void CScriptStorage::flush_log()
+{
+	string256				log_file_name;
+	strconcat               (log_file_name,Core.ApplicationName,"_",Core.UserName,"_lua.log");
+	FS.update_path          (log_file_name,"$logs$",log_file_name);
+	m_output.save_to		(log_file_name);
+}
+

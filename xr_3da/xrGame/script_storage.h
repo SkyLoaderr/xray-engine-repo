@@ -15,7 +15,7 @@ using namespace ScriptStorage;
 
 class CScriptStorage {
 protected:
-	IWriter						*m_output;
+	CMemoryWriter				m_output;
 	lua_State					*m_virtual_machine;
 
 protected:
@@ -39,6 +39,7 @@ public:
 			bool				object						(LPCSTR	caNamespaceName,	LPCSTR	caIdentifier,		int		type);
 			luabind::object		name_space					(LPCSTR	namespace_name);
 	IC		CLuaVirtualMachine	*lua						();
+			void				flush_log					();
 };
 
 #include "script_storage_inline.h"
