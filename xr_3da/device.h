@@ -91,6 +91,9 @@ public:
 	void Begin			(void);
 	void End			(void);
 	void FrameMove		(void);
+	
+	void overdrawBegin	(void);
+	void overdrawEnd	(void);
 
 	// Mode control
 	void DumpFlags		(void);
