@@ -1032,3 +1032,31 @@ function get_actor_id()
 	if(level.actor() == nil) then return -1 end
 	return level.actor():id()
 end 
+-------------------------------------------------------------------------------------------
+function IsMonster (object)
+    local id = get_clsid (object)
+    if id == clsid.boar_s or
+       id == clsid.bloodsucker_s or 
+       id == clsid.dog_s or 
+       id == clsid.flesh_s or
+       id == clsid.pseudodog_s or 
+       id == clsid.burer_s or 
+       id == clsid.cat_s or
+       id == clsid.chimera_s or 
+       id == clsid.controller_s or 
+       id == clsid.fracture_s or 
+       id == clsid.poltergeist_s or 
+       id == clsid.gigant_s or 
+       id == clsid.zombie_s or 
+       id == clsid.snork_s then return true end
+    return false
+end
+-------------------------------------------------------------------------------------------
+function IsStalker (object)
+    local id = get_clsid (object)
+    if id == clsid.actor or 
+       id == clsid.soldier or 
+       id == clsid.stalker or 
+       id == clsid.script_stalker then return true end
+    return false
+end    

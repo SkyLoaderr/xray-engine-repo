@@ -10,7 +10,7 @@
 	purpose:	server object for mutants
 *********************************************************************/
 ---------------------------------------------------------------------
-class "se_monster" (cse_alife_monster_abstract)
+class "se_monster" (cse_alife_monster_base)
 --------------------
 function se_monster:__init (section) super (section)
 end

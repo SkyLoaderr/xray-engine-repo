@@ -760,29 +760,11 @@ function events:type(obj)
 	local otype = get_clsid(obj)
 	local type
 
-	if 	otype == clsid.actor or
-  	   	otype == clsid.soldier or
-	   	otype == clsid.stalker or
-	   	otype == clsid.trader
-	then
+	if 	IsStalker (obj) == true	then
 		type = "stalker"
-	elseif 	otype == clsid.crow or
-		otype == clsid.rat or
-		otype == clsid.rat_group or
-		otype == clsid.zombie or
-		otype == clsid.flesh or
-		otype == clsid.controller or
-		otype == clsid.bloodsucker or
-		otype == clsid.burer or
-		otype == clsid.chimera or
-		otype == clsid.boar or
-		otype == clsid.flesh_group or
-		otype == clsid.dog_red or
-		otype == clsid.dog_black or
-		otype == clsid.pseudo_gigant
-	then
+	elseif IsMonster (obj) == true then
 		type = "monstr"
-	elseif	otype == clsid.wpn_fn2000 or
+	elseif 	otype == clsid.wpn_fn2000 or
 		otype == clsid.wpn_ak74 or
 		otype == clsid.wpn_lr300 or
 		otype == clsid.wpn_hpsa or
@@ -875,24 +857,7 @@ function events:corpseType(obj)
 	return type
 end
 function events:monstr_power(obj)
-	local otype = get_clsid(obj)
-
-	if	otype == clsid.zombie or
-		otype == clsid.flesh or
-		otype == clsid.controller or
-		otype == clsid.bloodsucker or
-		otype == clsid.burer or
-		otype == clsid.chimera or
-		otype == clsid.boar or
-		otype == clsid.flesh_group or
-		otype == clsid.dog_red or
-		otype == clsid.dog_black or
-		otype == clsid.pseudo_gigant
-	then
-		return true
-	else
-		return false
-	end
+    return IsMonster (obj)
 end
 function events:item_power(obj)
 	local otype = get_clsid(obj)

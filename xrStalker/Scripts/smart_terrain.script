@@ -754,19 +754,19 @@ end
 function on_touch( self, obj )
 	if not monster_classes then
 		monster_classes = {
-			[clsid.bloodsucker   ] = "bloodsucker",
-			[clsid.boar          ] = "boar",
-			[clsid.burer         ] = "burer",
-			[clsid.cat           ] = "cat",
-			[clsid.chimera       ] = "chimera",
-			[clsid.controller    ] = "controller",
-			[clsid.dog_black     ] = "dog_black",
-			[clsid.dog_red       ] = "dog_red",
-			[clsid.flesh         ] = "flesh",
-			[clsid.fracture      ] = "fracture",
-			[clsid.poltergeist   ] = "poltergeist",
-			[clsid.pseudo_gigant ] = "pseudo_gigant",
-			[clsid.snork         ] = "snork"
+			[clsid.bloodsucker_s ] = "bloodsucker",
+			[clsid.boar_s        ] = "boar",
+			[clsid.burer_s       ] = "burer",
+			[clsid.cat_s         ] = "cat",
+			[clsid.chimera_s     ] = "chimera",
+			[clsid.controller_s  ] = "controller",
+			[clsid.pseudodog_s   ] = "dog_black",
+			[clsid.dog_s         ] = "dog_red",
+			[clsid.flesh_s       ] = "flesh",
+			[clsid.fracture_s    ] = "fracture",
+			[clsid.poltergeist_s ] = "poltergeist",
+			[clsid.pseudo_gigant_s] = "pseudo_gigant",
+			[clsid.snork_s       ] = "snork"
 		}		
 	end
 

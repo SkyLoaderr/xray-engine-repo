@@ -25,6 +25,7 @@ cs_module	("ce_switcher","se_switcher")
 c_module	("ui_main_menu")
 s_module	("smart_terrain")
 s_module	("se_stalker")
+s_module    ("se_monster")
 
 function register(object_factory)
 	cs_register	(
@@ -57,4 +58,19 @@ function register(object_factory)
 		"AI_STL_S",
 		"script_stalker"
 	)
+
+	cs_register	(object_factory, "CAI_Bloodsucker",	"se_monster.se_monster",    "SM_BLOOD",	"bloodsucker_s")
+	cs_register	(object_factory, "CAI_Boar",        "se_monster.se_monster",	"SM_BOARW",	"boar_s")
+	cs_register	(object_factory, "CAI_Dog",         "se_monster.se_monster",    "SM_DOG_S",	"dog_s")
+	cs_register	(object_factory, "CAI_Flesh",       "se_monster.se_monster",	"SM_FLESH",	"flesh_s")
+	cs_register	(object_factory, "CAI_PseudoDog",   "se_monster.se_monster",    "SM_P_DOG", "pseudodog_s")
+	cs_register	(object_factory, "CBurer",          "se_monster.se_monster",	"SM_BURER",	"burer_s")
+	cs_register	(object_factory, "CCat",            "se_monster.se_monster",	"SM_CAT_S",	"cat_s")
+	cs_register	(object_factory, "CChimera",        "se_monster.se_monster",	"SM_CHIMS",	"chimera_s")
+	cs_register	(object_factory, "CController",     "se_monster.se_monster",	"SM_CONTR",	"controller_s")
+	cs_register	(object_factory, "CFracture",       "se_monster.se_monster",	"SM_IZLOM",	"fracture_s")
+	cs_register	(object_factory, "CPoltergeist",    "se_monster.se_monster",	"SM_POLTR",	"poltergeist_s")
+	cs_register	(object_factory, "CPseudoGigant",   "se_monster.se_monster",	"SM_GIANT",	"gigant_s")
+	cs_register	(object_factory, "CZombie",         "se_monster.se_monster",	"SM_ZOMBI",	"zombie_s")
+	cs_register	(object_factory, "CSnork",          "se_monster.se_monster",	"SM_SNORK",	"snork_s")
 end
