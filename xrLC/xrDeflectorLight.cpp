@@ -557,7 +557,6 @@ void CDeflector::Save()
 	}
 
 	// DEBUG: Lines
-	/*
 	{
 		// 5x expand
 		b_texture		temp;
@@ -599,7 +598,6 @@ void CDeflector::Save()
 		p.maketga		(temp.name);
 		_FREE			(temp.pSurface);
 	}
-	*/
 	
 	// Borders correction
 	for (DWORD _y=0; _y<512; _y++)
