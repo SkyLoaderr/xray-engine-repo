@@ -98,8 +98,3 @@ float CAgentManager::shedule_Scale		()
 {
 	return						(.5f);
 }
-
-BOOL CAgentManager::shedule_Ready		()
-{
-	return						(!member().members().empty());
-}
