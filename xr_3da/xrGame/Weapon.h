@@ -6,8 +6,6 @@
 #define AFX_WEAPON_H__7C42AD7C_0EBD_4AD1_90DE_2F972BF538B9__INCLUDED_
 #pragma once
 
-#include "..\lightPPA.h"
-//#include "GameObject.h"
 #include "PhysicsShell.h"
 #include "weaponammo.h"
 
