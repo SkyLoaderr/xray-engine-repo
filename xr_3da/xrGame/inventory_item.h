@@ -42,9 +42,9 @@ public:
 	virtual bool	Action				(s32 cmd, u32 flags) {return false;}	// true если известная команда, иначе false
 
 	// вещь спрятано в инвентаре
-	virtual bool	IsHidden		()		{return true;}
+	virtual bool	IsHidden		()	const	{return true;}
 	//вещь убирается в инвентарь
-	virtual bool	IsHiding		()		{return false;}
+	virtual bool	IsHiding		()	const	{return false;}
 	//вызывается при завершении анимации
 	virtual void	OnAnimationEnd	()		{}
 	
@@ -66,7 +66,7 @@ public:
 			bool	DetachAll			();										// Разобрать иерархию объектов. Объект должен быть в рюкзаке
 			void	Drop				();										// Если объект в инвенторе, то он будет выброшен
 
-			u32		Cost				()	const	{return m_cost;}
+			u32		Cost				() const	{return m_cost;}
 			float	Weight				() const	{return m_weight;}		
 
 public:
@@ -76,15 +76,15 @@ public:
 	char			m_nameComplex[255];
 	bool			m_drop;
 
-	virtual int		GetGridWidth		() {return m_iGridWidth;}
-	virtual int		GetGridHeight		() {return m_iGridHeight;}
-	virtual int		GetXPos				() {return m_iXPos;}
-	virtual int		GetYPos				() {return m_iYPos;}
+	virtual int		GetGridWidth		() const {return m_iGridWidth;}
+	virtual int		GetGridHeight		() const {return m_iGridHeight;}
+	virtual int		GetXPos				() const {return m_iXPos;}
+	virtual int		GetYPos				() const {return m_iYPos;}
 
-			float	GetCondition		() {return m_fCondition;}
+			float	GetCondition		()  const {return m_fCondition;}
 			void	ChangeCondition		(float fDeltaCondition);
 
-			u32		GetSlot				()  const{return m_slot;}
+			u32		GetSlot				()  const {return m_slot;}
 			void	SetSlot				(u32 slot) {m_slot = slot;}
 
 			bool	Belt				() {return m_belt;}

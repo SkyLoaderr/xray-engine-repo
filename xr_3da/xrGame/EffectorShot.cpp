@@ -9,7 +9,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CEffectorShot::CEffectorShot	(float max_angle, float relax_speed) : CCameraEffector(cefShot,100000.f,TRUE)
+CEffectorShot::CEffectorShot	(float max_angle, float relax_speed) : CCameraEffector(eCEShot,100000.f,TRUE)
 {
 	fRelaxSpeed		= _abs(relax_speed);
 	fAngleCurrent	= -EPS_S;

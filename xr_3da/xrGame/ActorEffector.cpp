@@ -33,7 +33,7 @@ CActorEffector::~CActorEffector()
 		xr_delete(*it);
 }
 
-CCameraEffector* CActorEffector::GetEffector(EEffectorType type)	
+CCameraEffector* CActorEffector::GetEffector(ECameraEffectorType type)	
 { 
 	for (CameraEffectorIt it=m_Effectors.begin(); it!=m_Effectors.end(); it++ )
 		if ((*it)->GetType()==type) return *it;
@@ -47,7 +47,7 @@ CCameraEffector* CActorEffector::AddEffector(CCameraEffector* ef)
 	return m_Effectors.back();
 }
 
-void CActorEffector::RemoveEffector(EEffectorType type)
+void CActorEffector::RemoveEffector(ECameraEffectorType type)
 {
 	for (CameraEffectorIt it=m_Effectors.begin(); it!=m_Effectors.end(); it++ )
 		if ((*it)->GetType()==type)
@@ -147,11 +147,6 @@ void CActorEffector::Update(const Fvector& P, const Fvector& D, const Fvector& N
 
 void CActorEffector::ApplyDevice ()
 {
-	//C->vPosition.set	( vPosition		);
-	//C->vDirection.set	( vDirection	);
-	//C->vNormal.set		( vNormal		);
-	
-	//*/
 	// Device params
 	Device.mView.build_camera_dir(vPosition,vDirection,vNormal);
 
@@ -164,5 +159,4 @@ void CActorEffector::ApplyDevice ()
 	Device.fFOV					= fFov;
 	Device.fASPECT				= fAspect;
 	Device.mProject.build_projection(deg2rad(fFov*fAspect), fAspect, VIEWPORT_NEAR, fFar);
-	//*/
 }

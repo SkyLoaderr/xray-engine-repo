@@ -96,8 +96,6 @@ void CActor::IR_OnKeyboardPress(int cmd)
 	case kCAM_2:	cam_Set			(eacLookAt);				break;
 	case kCAM_3:	cam_Set			(eacFreeLook);				break;
 
-	case kWPN_FIRE:	g_fireStart		(); 						break;
-	case kWPN_ZOOM:	g_fire2Start	();							break;
 	case kTORCH:{ 
 		PIItem I = inventory().Get("device_torch",false); 
 		if (I){
@@ -164,10 +162,6 @@ void CActor::IR_OnKeyboardRelease(int cmd)
 		case kJUMP:		mstate_wishful &=~mcJump;		break;
 		case kCROUCH:	mstate_wishful &=~mcCrouch;		break;
 
-		case kWPN_FIRE:	g_fireEnd();					break;
-		case kWPN_ZOOM:	g_fire2End();					break;
-//		case kWPN_ZOOM:	Weapons->Zoom(FALSE);			break;
-
 		case kDROP:		if(GAME_PHASE_INPROGRESS == Game().phase) g_PerformDrop();				break;
 		}
 	}
@@ -224,8 +218,12 @@ void CActor::ActorUse()
 {
 	if(Level().IR_GetKeyState(DIK_LSHIFT)) return;
 
-	u16 element=BI_NONE;
-	CGameObject* object =pick_Object(element);	
+	Collide::rq_result& RQ = HUD().GetCurrentRayQuery();
+	CGameObject* object = dynamic_cast<CGameObject*>(RQ.O);
+	u16 element = BI_NONE;
+	if(object) 
+		element = (u16)RQ.element;
+
 	if(use_Vehicle(object)) return;
 	if(!m_PhysicMovementControl->PHCapture())
 		m_PhysicMovementControl->PHCaptureObject(object,element);

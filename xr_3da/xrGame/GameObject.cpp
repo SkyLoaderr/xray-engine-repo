@@ -528,7 +528,7 @@ void CGameObject::setup_physic_shell	()
 	m_pPhysicsShell->Activate	(XFORM(),0,XFORM());
 }
 
-bool CGameObject::NeedToDestroyObject()	
+bool CGameObject::NeedToDestroyObject()	const
 {
 	return false;
 }

@@ -2,9 +2,10 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "../CameraDefs.h"
+#include "CameraEffector.h"
 
 
-class CCameraEffector;
+
 DEFINE_VECTOR(CCameraEffector*,CameraEffectorVec,CameraEffectorIt);
 
 
@@ -42,8 +43,8 @@ public:
 
 
 	CCameraEffector*		AddEffector			(CCameraEffector* ef);
-	CCameraEffector*		GetEffector			(EEffectorType type);
-	void					RemoveEffector		(EEffectorType type);
+	CCameraEffector*		GetEffector			(ECameraEffectorType type);
+	void					RemoveEffector		(ECameraEffectorType type);
 
 	IC void					affected_Matrix		(Fmatrix& M)
 	{			

@@ -61,6 +61,7 @@ public:
 	{
 		u32		bJump	:1;
 		u32		bCrouch	:1;
+		u32		bFall	:1;
 		float	fVelocity;
 	};
 	
@@ -86,7 +87,7 @@ public:
 	virtual float			g_MaxHealth			()const	{ return m_fMaxHealthValue;	}
 
 	virtual BOOL			g_Alive				()const	{ return fEntityHealth>0; }
-	virtual BOOL			g_State				(SEntityState &/**state/**/) const	{return FALSE;}
+	virtual BOOL			g_State				(SEntityState&) const	{return FALSE;}
 	
 	virtual bool			AlreadyDie()			{return  0!=m_dwDeathTime?true:false;}
 	virtual ALife::_TIME_ID	GetDeathTime()			{return m_dwDeathTime;}

@@ -13,6 +13,9 @@
 #include "inventory.h"
 #include "xrserver_objects_alife_items.h"
 
+#include "ActorEffector.h"
+#include "EffectorZoomInertion.h"
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -657,12 +660,52 @@ bool CWeaponMagazined::Detach(const char* item_section_name)
 
 void CWeaponMagazined::InitAddons()
 {
+	//////////////////////////////////////////////////////////////////////////
+	// Прицел
+	if(IsScopeAttached())
+	{
+		if(m_eScopeStatus == ALife::eAddonAttachable)
+		{
+			m_sScopeName = pSettings->r_string(cNameSect(), "scope_name");
+			m_iScopeX	 = pSettings->r_s32(cNameSect(),"scope_x");
+			m_iScopeY	 = pSettings->r_s32(cNameSect(),"scope_y");
+
+			ref_str scope_tex_name;
+			scope_tex_name = pSettings->r_string(*m_sScopeName, "scope_texture");
+			m_fScopeZoomFactor = pSettings->r_float	(*m_sScopeName, "scope_zoom_factor");
+			if(m_UIScope.GetShader())
+				m_UIScope.GetShader().destroy();	
+			m_UIScope.Init(*scope_tex_name, "hud\\default", 0, 0, alNone);
+		}
+		else if(m_eScopeStatus == ALife::eAddonPermanent)
+		{
+			m_fScopeZoomFactor = pSettings->r_float	(cNameSect(), "scope_zoom_factor");
+			ref_str scope_tex_name;
+			scope_tex_name = pSettings->r_string(cNameSect(), "scope_texture");
+
+			if(m_UIScope.GetShader())
+				m_UIScope.GetShader().destroy();	
+			m_UIScope.Init(*scope_tex_name, "hud\\default", 0, 0, alNone);
+		}
+	}
+	else
+	{
+		if(m_UIScope.GetShader())
+			m_UIScope.GetShader().destroy();	
+		
+		if(IsZoomEnabled())
+			m_fScopeZoomFactor = pSettings->r_float	(cNameSect(), "scope_zoom_factor");
+	}
+
+	
+
+	//////////////////////////////////////////////////////////////////////////
+	// Глушитель
 	if(IsSilencerAttached() && SilencerAttachable())
 	{		
 		m_sFlameParticlesCurrent = m_sSilencerFlameParticles;
 		m_sSmokeParticlesCurrent = m_sSilencerSmokeParticles;
 		m_pSndShotCurrent = &sndSilencerShot;
-
 
 		//сила выстрела
 		iHitPower			= pSettings->r_s32		(cNameSect(),"silencer_hit_power"		);
@@ -732,4 +775,29 @@ void CWeaponMagazined::PlayAnimIdle()
 void CWeaponMagazined::PlayAnimShoot()
 {
 	m_pHUD->animPlay(mhud_shots[Random.randI(mhud_shots.size())],TRUE,this);
+}
+
+
+void CWeaponMagazined::OnZoomIn			()
+{
+	inherited::OnZoomIn();
+
+
+	CActor* pActor = dynamic_cast<CActor*>(H_Parent());
+	if(pActor)
+	{
+		CEffectorZoomInertion* S = dynamic_cast<CEffectorZoomInertion*>	(pActor->EffectorManager().GetEffector(eCEZoom));
+		if (!S)	
+			S = (CEffectorZoomInertion*)pActor->EffectorManager().AddEffector(xr_new<CEffectorZoomInertion> ());
+		R_ASSERT				(S);
+	}
+}
+void CWeaponMagazined::OnZoomOut		()
+{
+	inherited::OnZoomOut();
+
+	CActor* pActor = dynamic_cast<CActor*>(H_Parent());
+	if(pActor)
+		pActor->EffectorManager().RemoveEffector	(eCEZoom);
+
 }

@@ -30,10 +30,19 @@ CHUDCursor::CHUDCursor	()
 	hShader.create		("hud\\cursor","ui\\cursor");
 
 	RQ.set(NULL, 0.f, -1);
+
+	Load		();
+	m_bShowCrosshair = false;
 }
 
 CHUDCursor::~CHUDCursor	()
 {
+}
+
+
+void CHUDCursor::Load		()
+{
+	HUDCrosshair.Load();
 }
 
 IC u32 subst_alpha(u32 val, u8 a){ return u32(val&0x00FFFFFF)|u32(a<<24); }
@@ -42,12 +51,10 @@ void CHUDCursor::Render()
 {
 	Fvector		p1,p2,dir;
 
-	CObject*	O = g_pGameLevel->CurrentEntity();
+	CObject*	O = Level().CurrentEntity();
 	if (0==O)	return;
 	CEntity*	E = dynamic_cast<CEntity*>(O);
 	if (0==E)	return;
-
-//	int			cur_team = E->g_Team();
 
 	p1	= Device.vCameraPosition;
 	dir = Device.vCameraDirection;
@@ -55,15 +62,13 @@ void CHUDCursor::Render()
 	// Render cursor
 	float		dist=g_pGamePersistent->Environment.CurrentEnv.far_plane*0.99f;
 	
-	g_pGameLevel->CurrentEntity()->setEnabled(false);
+	Level().CurrentEntity()->setEnabled(false);
 	u32 C			= C_DEFAULT;
 
-	if (g_pGameLevel->ObjectSpace.RayPick( p1, dir, dist, Collide::rqtBoth, RQ )){
-		// if (RQ.O && (RQ.O->CLS_ID == CLSID_ENTITY) && (((CEntity*)RQ.O)->id_Team!=cur_team)) C = C_ON_ENEMY;
+	if (Level().ObjectSpace.RayPick( p1, dir, dist, Collide::rqtBoth, RQ ))
 		dist = RQ.range;
-	}
 
-	g_pGameLevel->CurrentEntity()->setEnabled(true);
+	Level().CurrentEntity()->setEnabled(true);
 
 	if ( dist<NEAR_LIM) dist=NEAR_LIM;
 	
@@ -106,31 +111,40 @@ void CHUDCursor::Render()
 				}
 				fuzzyShowInfo += SHOW_INFO_SPEED*Device.fTimeDelta;
 			}
-			//
 		}else{
 			fuzzyShowInfo -= HIDE_INFO_SPEED*Device.fTimeDelta;
 		}
 		clamp(fuzzyShowInfo,0.f,1.f);
 	}
-	// actual rendering
-	u32			vOffset;
-	FVF::TL*	pv		= (FVF::TL*)RCache.Vertex.Lock(4,hGeom.stride(),vOffset);
-	float			size= float(::Render->getTarget()->get_width()) * di_size;
-	float			w_2	= float(::Render->getTarget()->get_width())		/ 2;
-	float			h_2	= float(::Render->getTarget()->get_height())	/ 2;
-	
-	// Convert to screen coords
-	float cx        = (PT.p.x+1)*w_2;
-	float cy        = (PT.p.y+1)*h_2;
-	
-	pv->set(cx - size, cy + size, PT.p.z, PT.p.w, C, 0, 1); ++pv;
-	pv->set(cx - size, cy - size, PT.p.z, PT.p.w, C, 0, 0); ++pv;
-	pv->set(cx + size, cy + size, PT.p.z, PT.p.w, C, 1, 1); ++pv;
-	pv->set(cx + size, cy - size, PT.p.z, PT.p.w, C, 1, 0); ++pv;
-	
-	// unlock VB and Render it as triangle LIST
-	RCache.Vertex.Unlock(4,hGeom.stride());
-	RCache.set_Shader	(hShader);
-	RCache.set_Geometry	(hGeom);
-	RCache.Render		(D3DPT_TRIANGLELIST,vOffset,0,4,0,2);
+
+	//отрендерить кружочек или крестик
+	if(!m_bShowCrosshair)
+	{
+		// actual rendering
+		u32			vOffset;
+		FVF::TL*	pv		= (FVF::TL*)RCache.Vertex.Lock(4,hGeom.stride(),vOffset);
+		float			size= float(::Render->getTarget()->get_width()) * di_size;
+		float			w_2	= float(::Render->getTarget()->get_width())		/ 2;
+		float			h_2	= float(::Render->getTarget()->get_height())	/ 2;
+
+		// Convert to screen coords
+		float cx        = (PT.p.x+1)*w_2;
+		float cy        = (PT.p.y+1)*h_2;
+
+		pv->set(cx - size, cy + size, PT.p.z, PT.p.w, C, 0, 1); ++pv;
+		pv->set(cx - size, cy - size, PT.p.z, PT.p.w, C, 0, 0); ++pv;
+		pv->set(cx + size, cy + size, PT.p.z, PT.p.w, C, 1, 1); ++pv;
+		pv->set(cx + size, cy - size, PT.p.z, PT.p.w, C, 1, 0); ++pv;
+
+		// unlock VB and Render it as triangle LIST
+		RCache.Vertex.Unlock(4,hGeom.stride());
+		RCache.set_Shader	(hShader);
+		RCache.set_Geometry	(hGeom);
+		RCache.Render		(D3DPT_TRIANGLELIST,vOffset,0,4,0,2);
+	}
+	else
+	{
+		//отрендерить прицел
+		HUDCrosshair.OnRender		();
+	}
 }

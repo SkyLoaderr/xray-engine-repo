@@ -5,7 +5,6 @@
 #include "../CustomHUD.h"
 #include "HitMarker.h"
 #include "UI.h"
-#include "HUDCursor.h"
 
 // refs
 class CContextMenu;
@@ -22,7 +21,7 @@ private:
 	// hit marker
 	CHitMarker				HitMarker;
 	// hud cursor
-	CHUDCursor				HUDCursor;
+	CHUDCursor*				m_pHUDCursor;
 
 	float					fScale;
 public:
@@ -60,7 +59,7 @@ public:
 	virtual		void		Hit					(int idx){HitMarker.Hit(idx);}
 	
 	//текущий предмет на который смотрит HUD
-	Collide::rq_result&		GetCurrentRayQuery	() {return HUDCursor.RQ;}
+	Collide::rq_result&		GetCurrentRayQuery	();
 
 	virtual		void		OnDeviceCreate		();
 
@@ -78,6 +77,11 @@ public:
 	
 	void __cdecl 			outMessage			(u32 C, LPCSTR from, LPCSTR msg, ...);
 	void __cdecl 			outMessage			(u32 C, const ref_str& from, LPCSTR msg, ...);
+
+
+	//устанвка внешнего вида прицела в зависимости от текущей дисперсии
+	void					SetCrosshairDisp	(float disp);
+	void					ShowCrosshair		(bool show);
 };
 
 #endif // __XR_HUDMANAGER_H__

@@ -31,7 +31,7 @@ public:
 protected:
 	CWeaponRPG7Grenade *m_pGrenade;
 	Fvector *m_pGrenadePoint;
-	float	fMaxZoomFactor;
+
 	bool	m_hideGrenade;
 
 	ref_str	m_sGrenadeBoneName;

@@ -58,7 +58,7 @@ public:
 	IC void			SetHUDmode			(BOOL H)		{	hud_mode = H;								}
 	IC BOOL			GetHUDmode			()				{	return hud_mode;							}
 	
-	virtual bool	IsPending			()				{   return m_bPending;}
+	virtual bool	IsPending			()		const	{   return m_bPending;}
 	
 	//для предачи команд владельцем
 	virtual bool	Action				(s32 cmd, u32 flags);

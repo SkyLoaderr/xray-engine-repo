@@ -9,7 +9,6 @@ class CWeaponBinoculars: public CWeapon
 private:
 	typedef CWeapon inherited;
 protected:
-	float			fMaxZoomFactor;
 	float			fGyroSpeed;
 
 	// Media :: sounds
@@ -56,8 +55,8 @@ public:
 	virtual void	Hide			();
 	virtual void	Show			();
 	virtual float	GetZoomFactor	();
-	virtual void			Fire2Start			();
-	virtual void			Fire2End			();
+	virtual void	Fire2Start		();
+	virtual void	Fire2End		();
 
 	virtual const char* Name();
 	virtual bool Action(s32 cmd, u32 flags);

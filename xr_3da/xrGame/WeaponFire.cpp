@@ -24,41 +24,15 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 
 	CCartridge &l_cartridge = m_magazine.top();
 
-	// direct it by dispersion factor
-	Fvector dir;
-	//dir.random_dir(D,(fireDispersionBase+fireDispersion*fireDispersion_Current)*GetPrecision(),Random);
-	//dir.random_dir(D,(fireDispersion*fireDispersion_Current)*
-	//				  GetPrecision()*
-	//				  GetConditionDispersionFactor(),Random);
-	float fire_disp = fireDispersion*fireDispersion_Current*
-							GetPrecision();
-
-	// increase dispersion
-	fireDispersion_Current += fireDispersion_Inc;
-	clamp(fireDispersion_Current,0.f,1.f);
-
 	//повысить изношенность оружия с учетом влияния конкретного патрона
 	ChangeCondition(-conditionDecreasePerShot*l_cartridge.m_impair);
 
-
 	BOOL bResult = false;
-
 
 	for(int i = 0; i < l_cartridge.m_buckShot; ++i) 
 	{
-		//dir1.random_dir(dir, fireDispersionBase * l_cartridge.m_kDisp, Random);
-		//D = dir1;
-		//разброс учитывая коеффициент дисперсии патрона
-		float fire_disp_with_ammo = fire_disp+fireDispersionBase * l_cartridge.m_kDisp;
-
-/*		dir = D;
-		dir.x += RandNormal(0.f, fire_disp_with_ammo);
-		dir.y += RandNormal(0.f, fire_disp_with_ammo);
-		dir.z += RandNormal(0.f, fire_disp_with_ammo);*/
-
-		dir.random_dir(D, fire_disp_with_ammo, Random);
-		D = dir;
-
+		D.random_dir(D, GetFireDispersion(l_cartridge.m_kDisp), Random);
+		
 		//инициализипровать текущие параметры выстрела перед запуском RayPick
 		m_fCurrentHitPower	= float(iHitPower);
 		m_fCurrentHitImpulse = fHitImpulse;
@@ -318,45 +292,4 @@ void CWeapon::StopFlameParticles2	()
 void CWeapon::UpdateFlameParticles2	()
 {
 	UpdateParticles (m_pFlameParticles2, vLastFP2);
-}
-
-//////////////////////////////////////////////////////////////////////////
-// Для эффекта отдачи оружия
-void CWeapon::AddShotEffector		()
-{
-	CActor* pActor = dynamic_cast<CActor*>(H_Parent());
-	if(pActor)
-	{
-		CEffectorShot* S		= dynamic_cast<CEffectorShot*>	(pActor->EffectorManager().GetEffector(cefShot)); 
-		if (!S)	S				= (CEffectorShot*)pActor->EffectorManager().AddEffector(xr_new<CEffectorShot> (camMaxAngle,camRelaxSpeed));
-		R_ASSERT				(S);
-		S->Shot					(camDispersion);
-	}
-}
-
-void  CWeapon::RemoveShotEffector	()
-{
-	CActor* pActor = dynamic_cast<CActor*>(H_Parent());
-   	if(pActor)
-		pActor->EffectorManager().RemoveEffector	(cefShot);
-}
-
-const Fvector& CWeapon::GetRecoilDeltaAngle()
-{
-	CActor* pActor		= dynamic_cast<CActor*>(H_Parent());
-	
-	CEffectorShot* S = NULL;
-	if(pActor)
-		S = dynamic_cast<CEffectorShot*>(pActor->EffectorManager().GetEffector(cefShot)); 
-	
-	if(S)
-	{
-		S->GetDeltaAngle(m_vRecoilDeltaAngle);
-		return m_vRecoilDeltaAngle;
-	}
-	else
-	{
-		m_vRecoilDeltaAngle.set(0.f,0.f,0.f);
-		return m_vRecoilDeltaAngle;
-	}
 }

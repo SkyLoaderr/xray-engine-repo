@@ -8,7 +8,7 @@
 //////////////////////////////////////////////////////////////////////
 CWeaponBinoculars::CWeaponBinoculars() : CWeapon("BINOCULARS")
 {
-	fMaxZoomFactor		= 40.f;
+	m_fScopeZoomFactor	= 40.f;
 	fGyroSpeed			= 0.f;
 
 	m_eSoundShow		= ESoundTypes(SOUND_TYPE_ITEM_TAKING | SOUND_TYPE_ITEM_USING);
@@ -40,12 +40,10 @@ void CWeaponBinoculars::Load	(LPCSTR section)
 	ypr					= pSettings->r_fvector3(section,"orientation");
 	ypr.mul				(PI/180.f);
 
-	fMaxZoomFactor		= pSettings->r_float	(section,"max_zoom_factor");
+	m_fScopeZoomFactor	= pSettings->r_float	(section,"max_zoom_factor");
 
 	m_Offset.setHPB		(ypr.x,ypr.y,ypr.z);
 	m_Offset.translate_over(pos);
-
-	ShaderCreate		(hUIIcon,"hud\\default","");
 
 	LPCSTR hud_sect		= pSettings->r_string	(section,"hud");
 	m_pHUD->Load		(hud_sect);
@@ -163,8 +161,10 @@ void CWeaponBinoculars::Show	()
 
 float CWeaponBinoculars::GetZoomFactor()
 {
-	if (eZooming==STATE)	return	fMaxZoomFactor;
-	else					return	inherited::GetZoomFactor();
+	if (eZooming==STATE)	
+		return	m_fScopeZoomFactor;
+	else					
+		return	inherited::GetZoomFactor();
 }
 
 void CWeaponBinoculars::OnZoomIn()
@@ -253,13 +253,13 @@ void CWeaponBinoculars::switch2_Showing	()
 void CWeaponBinoculars::Fire2Start () {
 	inherited::Fire2Start();
 	OnZoomIn();
-	fZoomFactor = fMaxZoomFactor;
+	m_fZoomFactor = m_fScopeZoomFactor;
 }
 
 void CWeaponBinoculars::Fire2End () {
 	inherited::Fire2End();
 	OnZoomOut();
-	fZoomFactor = DEFAULT_FOV;
+	m_fZoomFactor = DEFAULT_FOV;
 }
 
 const char* CWeaponBinoculars::Name() {

@@ -1,12 +1,16 @@
 #include "stdafx.h"
 #include "EffectorBobbing.h"
-#include "Actor.h"
+
+
+#include "actor.h"
+#include "actor_defs.h"
+
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CEffectorBobbing::CEffectorBobbing() : CCameraEffector(cefBobbing,10000.f,FALSE)
+CEffectorBobbing::CEffectorBobbing() : CCameraEffector(eCEBobbing,10000.f,FALSE)
 {
 	fTime			= 0;
 	fReminderFactor	= 0;
@@ -30,7 +34,7 @@ void CEffectorBobbing::SetState(u32 mstate){
 BOOL CEffectorBobbing::Process		(Fvector &p, Fvector &d, Fvector &n, float& /**fFov/**/, float& /**fFar/**/, float& /**fAspect/**/)
 {
 	fTime			+= Device.fTimeDelta;
-	if (dwMState&CActor::EMoveCommand::mcAnyMove){
+	if (dwMState&ACTOR_DEFS::mcAnyMove){
 		if (fReminderFactor<1.f)	fReminderFactor += SPEED_REMINDER*Device.fTimeDelta;
 		else						fReminderFactor = 1.f;
 	}else{
@@ -47,7 +51,7 @@ BOOL CEffectorBobbing::Process		(Fvector &p, Fvector &d, Fvector &n, float& /**f
 		
 		// apply footstep bobbing effect
 		Fvector dangle;
-		float k		= ((dwMState&CActor::EMoveCommand::mcCrouch)?CROUCH_FACTOR:1.f);
+		float k		= ((dwMState& ACTOR_DEFS::mcCrouch)?CROUCH_FACTOR:1.f);
 		float A		= (CActor::isAccelerated(dwMState)?AMPLITUDE_RUN:AMPLITUDE_WALK)*k;
 		float ST	= ((CActor::isAccelerated(dwMState)?SPEED_RUN:SPEED_WALK)*fTime)*k;
 	

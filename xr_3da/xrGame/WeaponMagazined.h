@@ -105,6 +105,9 @@ public:
 	u32				m_queueSize, m_shotNum;
 	void			SetQueueSize	(u32 size) { m_queueSize = size; }
 
+	virtual void	OnZoomIn			();
+	virtual void	OnZoomOut			();
+
 protected:
 	virtual bool	AllowFireWhileWorking() {return false;}
 

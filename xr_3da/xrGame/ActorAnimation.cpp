@@ -65,7 +65,7 @@ void __stdcall CActor::VehicleHeadCallback(CBoneInstance* B)
 	B->mTransform.c		= c;
 }
 
-void CActor::SActorMotions::SActorState::STorsoWpn::Create(CSkeletonAnimated* K, LPCSTR base0, LPCSTR base1)
+void ACTOR_DEFS::SActorMotions::SActorState::STorsoWpn::Create(CSkeletonAnimated* K, LPCSTR base0, LPCSTR base1)
 {
 	char			buf[128];
 	aim				= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_aim_0"));
@@ -77,7 +77,7 @@ void CActor::SActorMotions::SActorState::STorsoWpn::Create(CSkeletonAnimated* K,
 	fire_idle		= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_attack_1"));
 	fire_end		= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_attack_2"));
 }
-void CActor::SActorMotions::SActorState::SAnimState::Create(CSkeletonAnimated* K, LPCSTR base0, LPCSTR base1)
+void ACTOR_DEFS::SActorMotions::SActorState::SAnimState::Create(CSkeletonAnimated* K, LPCSTR base0, LPCSTR base1)
 {
 	char			buf[128];
 	legs_fwd		= K->ID_Cycle(strconcat(buf,base0,base1,"_fwd_0"));
@@ -86,7 +86,7 @@ void CActor::SActorMotions::SActorState::SAnimState::Create(CSkeletonAnimated* K
 	legs_rs			= K->ID_Cycle(strconcat(buf,base0,base1,"_rs_0"));
 }
 
-void CActor::SActorMotions::SActorState::Create(CSkeletonAnimated* K, LPCSTR base)
+void ACTOR_DEFS::SActorMotions::SActorState::Create(CSkeletonAnimated* K, LPCSTR base)
 {
 	string128		buf,buf1;
 	legs_turn		= K->ID_Cycle(strconcat(buf,base,"_turn"));
@@ -114,7 +114,7 @@ void CActor::SActorMotions::SActorState::Create(CSkeletonAnimated* K, LPCSTR bas
 		m_damage[k]	= K->ID_FX(strconcat(buf,base,"_damage_",itoa(k,buf1,10)));
 }
 
-void CActor::SActorMotions::Create(CSkeletonAnimated* V)
+void ACTOR_DEFS::SActorMotions::Create(CSkeletonAnimated* V)
 {
 	m_steering_torso_left	= V->ID_Cycle_Safe("steering_torso_ls");
 	m_steering_torso_right	= V->ID_Cycle_Safe("steering_torso_rs");

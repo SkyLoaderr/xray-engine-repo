@@ -17,7 +17,6 @@ CUI::CUI(CHUDManager* p)
 {
 	HUD().pUI		= this;
 	UIZoneMap.Init	();
-	UIWeapon.Init	();
 	UIHealth.Init	();
 	UISquad.Init	();
 
@@ -145,10 +144,6 @@ bool CUI::Render()
 		if(m_bShowIndicators)
 			UIMainIngameWnd.Draw();
 #endif
-	//	UIZoneMap.Render();
-	//	UIWeapon.Render();
-	//	UIHealth.Render();
-
 		
 
 		//render cursor only when it visible

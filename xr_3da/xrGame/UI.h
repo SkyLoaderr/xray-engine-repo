@@ -4,7 +4,6 @@
 
 #include "UICursor.h"
 #include "UIZoneMap.h"
-#include "UIWeapon.h"
 #include "UIHealth.h"
 #include "UIGroup.h"
 #include "UIGameCustom.h"
@@ -66,7 +65,6 @@ DEFINE_SVECTOR(SUIMessage*,MAX_UIMESSAGES,UIMsgSVec,UIMsgIt);
 class CUI{
 	CUICursor			UICursor;
 	CUIZoneMap			UIZoneMap;
-	CUIWeapon			UIWeapon;
 	CUIHealth			UIHealth;
 	CUISquad			UISquad;
 

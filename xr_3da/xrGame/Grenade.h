@@ -42,9 +42,9 @@ public:
 	virtual void OnH_A_Chield() {inherited::OnH_A_Chield();}
 	virtual void OnH_B_Chield() {inherited::OnH_B_Chield();}
 
-	virtual bool IsPending() {return inherited::IsPending();}
-	virtual bool IsHidden()	 {return inherited::IsHidden();}
-	virtual bool IsHiding()	 {return inherited::IsHiding();}
+	virtual bool IsPending() const {return inherited::IsPending();}
+	virtual bool IsHidden()	 const {return inherited::IsHidden();}
+	virtual bool IsHiding()	 const {return inherited::IsHiding();}
 
 	virtual	void Hit(float P, Fvector &dir,	CObject* who, s16 element,
 					 Fvector position_in_object_space, float impulse, 

@@ -50,8 +50,6 @@ CWeapon::CWeapon(LPCSTR name)
 	m_WpnName			= name;
 	m_Offset.identity	();
 
-	hUIIcon				= 0;
-
 	vLastFP.set			(0,0,0);
 	vLastFP2.set		(0,0,0);
 	vLastFD.set			(0,0,0);
@@ -65,7 +63,7 @@ CWeapon::CWeapon(LPCSTR name)
 
 	eHandDependence		= hdNone;
 
-	fZoomFactor			= DEFAULT_FOV;
+	m_fZoomFactor			= DEFAULT_FOV;
 
 	m_pAmmo				= NULL;
 
@@ -82,8 +80,6 @@ CWeapon::CWeapon(LPCSTR name)
 CWeapon::~CWeapon		()
 {
 	::Render->light_destroy	(light_render);
-
-	hUIIcon.destroy		();
 }
 
 void CWeapon::Hit(float P, Fvector &dir,	
@@ -96,54 +92,6 @@ void CWeapon::Hit(float P, Fvector &dir,
 }
 
 
-
-void CWeapon::ShaderCreate	(ref_shader &dest, LPCSTR S, LPCSTR T)
-{
-	if	(dest)	return;
-	string256	name,temp;
-
-	// test 'WEAPONS' folder 
-	strconcat	(name,"weapons\\",GetName(),"\\",T);
-	if (FS.exist(temp,"$game_textures$",name,".dds"))	
-	{
-		dest.create(S,name); 
-		return;
-	}
-	strconcat	(name,"weapons\\generic\\",T);
-	if (FS.exist(temp,"$game_textures$",name,".dds"))	
-	{
-		dest.create(S,name); 
-		return;
-	}
-
-	// test 'UI' folder
-	strconcat	(name,"ui\\ui_hud_wpn_",GetName());
-	if (FS.exist(temp,"$game_textures$",name,".dds"))	
-	{
-		dest.create(S,name); 
-		return;
-	}
-	strcpy		(name,"ui\\ui_hud_wpn_generic");
-	if (FS.exist(temp,"$game_textures$",name,".dds"))	
-	{
-		dest.create(S,name); 
-		return;
-	}
-	Debug.fatal	("Can't find texture '%s' for weapon '%s'",T,GetName());
-}
-
-void CWeapon::ShaderDestroy	(ref_shader &dest)
-{
-	dest.destroy			();
-}
-
-float CWeapon::GetPrecision	()
-{
-	CInventoryOwner* pOwner	=	dynamic_cast<CInventoryOwner*>(H_Parent());
-	VERIFY			(pOwner);
-	float prec = pOwner->GetWeaponAccuracy()*GetConditionDispersionFactor();
-	return prec;
-}
 
 void CWeapon::UpdateXForm	()
 {
@@ -298,23 +246,29 @@ void CWeapon::Load		(LPCSTR section)
 
 	m_fStartBulletSpeed = pSettings->r_float	(section,"bullet_speed"		);
 
-	fireDispersionBase	= pSettings->r_float		(section,"fire_dispersion_base"	);	
-	fireDispersionBase	= deg2rad(fireDispersionBase);
+
+	////////////////////////////////////////////////////
+	// дисперсия стрельбы
+
+
+	//базовая дисперсия оружия
+	fireDispersionBase	= pSettings->r_float		(section,"fire_dispersion_base"	);
+	fireDispersionBase	= deg2rad					(fireDispersionBase);
 	
-	fireDispersion		= pSettings->r_float		(section,"fire_dispersion"	);		
-	fireDispersion		= deg2rad(fireDispersion);
-	fireDispersion_Inc	= pSettings->r_float		(section,"fire_dispersion_add"); 
-	fireDispersion_Dec	= pSettings->r_float		(section,"fire_dispersion_relax"); 
+
+	//подбрасывание камеры во время отдачи
+	camMaxAngle			= pSettings->r_float		(section,"cam_max_angle"	); 
+	camMaxAngle			= deg2rad					(camMaxAngle);
+	camRelaxSpeed		= pSettings->r_float		(section,"cam_relax_speed"	); 
+	camRelaxSpeed		= deg2rad					(camRelaxSpeed);
+	camDispersion		= pSettings->r_float		(section,"cam_dispersion"	); 
+	camDispersion		= deg2rad					(camDispersion);
+
+
 
 	fireDispersionConditionFactor = pSettings->r_float(section,"fire_dispersion_condition_factor"); 
 	misfireProbability			  = pSettings->r_float(section,"misfire_probability"); 
 	conditionDecreasePerShot	  = pSettings->r_float(section,"condition_shot_dec"); 
-
-	fireDispersion_Current	= 0;
-
-	camMaxAngle			= pSettings->r_float		(section,"cam_max_angle"	); camMaxAngle = deg2rad(camMaxAngle);
-	camRelaxSpeed		= pSettings->r_float		(section,"cam_relax_speed"	); camRelaxSpeed = deg2rad(camRelaxSpeed);
-	camDispersion		= pSettings->r_float		(section,"cam_dispersion"	); camDispersion = deg2rad(camDispersion);/**/
 
 	// tracer
 	tracerHeadSpeed		= pSettings->r_float		(section,"tracer_head_speed"	);
@@ -375,34 +329,16 @@ void CWeapon::Load		(LPCSTR section)
 	m_eSilencerStatus		 = (ALife::EWeaponAddonStatus)pSettings->r_s32(section,"silencer_status");
 	m_eGrenadeLauncherStatus = (ALife::EWeaponAddonStatus)pSettings->r_s32(section,"grenade_launcher_status");
 
+	m_bZoomEnabled = !!pSettings->r_bool(section,"zoom_enabled");
 
-
-	
 	if(m_eScopeStatus == ALife::eAddonAttachable)
 	{
 		m_sScopeName = pSettings->r_string(section,"scope_name");
 		m_iScopeX = pSettings->r_s32(section,"scope_x");
 		m_iScopeY = pSettings->r_s32(section,"scope_y");
-
-		ref_str scope_tex_name;
-		scope_tex_name = pSettings->r_string(*m_sScopeName, "scope_texture");
-
-		m_fScopeZoomFactor = pSettings->r_float	(*m_sScopeName, "scope_zoom_factor");
-		
-		m_UIScope.Init(*scope_tex_name, "hud\\default", 0, 0, alNone);
-	}
-	else if(m_eScopeStatus == ALife::eAddonPermanent)
-	{
-		m_fScopeZoomFactor = pSettings->r_float	(section, "scope_zoom_factor");
-		if (pSettings->line_exist(section, "scope_texture"))
-		{
-			ref_str scope_tex_name;
-			scope_tex_name = pSettings->r_string(section, "scope_texture");
-			m_UIScope.Init(*scope_tex_name, "hud\\default", 0, 0, alNone);
-		}
-
 	}
 
+    
 	if(m_eSilencerStatus == ALife::eAddonAttachable)
 	{
 		m_sSilencerName = pSettings->r_string(section,"silencer_name");
@@ -417,6 +353,8 @@ void CWeapon::Load		(LPCSTR section)
 		m_iGrenadeLauncherX = pSettings->r_s32(section,"grenade_launcher_x");
 		m_iGrenadeLauncherY = pSettings->r_s32(section,"grenade_launcher_y");
 	}
+
+	InitAddons();
 
 	//////////////////////////////////////
 	//время убирания оружия с уровня
@@ -466,8 +404,6 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 	//if(Local()) OnStateSwitch					(E->state);
 	//STATE = NEXT_STATE = E->state;
 
-	ShaderCreate				(hUIIcon,"hud\\default","");
-
 	UpdateAddonsVisibility();
 	InitAddons();
 
@@ -489,9 +425,6 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 void CWeapon::net_Destroy	()
 {
 	inherited::net_Destroy	();
-
-	hUIIcon.destroy			();
-
 
 	//удалить объекты партиклов
 	StopFlameParticles	();
@@ -611,10 +544,7 @@ void CWeapon::UpdateCL		()
 {
 	inherited::UpdateCL		();
 
-	//текущая дисперсия
 	float dt				= Device.fTimeDelta;
-	fireDispersion_Current	-=	fireDispersion_Dec*dt;
-	clamp					(fireDispersion_Current,0.f,1.f);
 
 	//подсветка от выстрела
 	if (m_bShotLight && light_time>0)		
@@ -736,7 +666,7 @@ bool CWeapon::Action(s32 cmd, u32 flags)
 			} 
             return true;
 		case kWPN_ZOOM:
-			if(IsScopeAttached())
+			if(IsZoomEnabled())
 			{
                 if(flags&CMD_START)
 					OnZoomIn();
@@ -744,7 +674,8 @@ bool CWeapon::Action(s32 cmd, u32 flags)
 					OnZoomOut();
 				return true;
 			} 
-			else return false;
+			else 
+				return false;
 	}
 	return false;
 }
@@ -846,12 +777,7 @@ int CWeapon::GetAmmoCurrent() const
 	return l_count;
 }
 
-
-float CWeapon::GetConditionDispersionFactor()
-{
-	return fireDispersionConditionFactor*GetCondition();
-}
-float CWeapon::GetConditionMisfireProbability()
+float CWeapon::GetConditionMisfireProbability() const
 {
 	return misfireProbability*(1.f-GetCondition());
 }
@@ -982,13 +908,13 @@ void CWeapon::InitAddons()
 void CWeapon::OnZoomIn()
 {
 	m_bZoomMode = true;
-	fZoomFactor = m_fScopeZoomFactor;
+	m_fZoomFactor = m_fScopeZoomFactor;
 }
 
 void CWeapon::OnZoomOut()
 {
 	m_bZoomMode = false;
-	fZoomFactor = DEFAULT_FOV;
+	m_fZoomFactor = DEFAULT_FOV;
 }
 CUIStaticItem* CWeapon::ZoomTexture()
 {

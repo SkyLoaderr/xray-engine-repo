@@ -54,7 +54,6 @@ protected:
 	Fvector					vFirePoint2;
 
 protected:
-	ref_shader				hUIIcon;
 									
 	int						iAmmoElapsed;		// ammo in magazine, currently
 	int						iMagazineSize;		// size (in bullets) of magazine
@@ -72,14 +71,12 @@ protected:
 	//направление и точка полета гильз
 	Fvector					vLastSP, vLastSD;
 
-	//рассеивание во время стрельбы
+	//максимальное расстояние стрельбы
 	float					fireDistance;
+	//рассеивание во время стрельбы
 	float					fireDispersionBase;
-	float					fireDispersion;
-	float					fireDispersion_Inc;
-	float					fireDispersion_Dec;
-	float					fireDispersion_Current;
-	//фактор увеличения дисперсии при максимальной изношености (в процентах)
+	//фактор увеличения дисперсии при максимальной изношености 
+	//(на сколько процентов увеличится дисперсия)
 	float					fireDispersionConditionFactor;
 	//вероятность осечки при максимальной изношености
 	float					misfireProbability;
@@ -109,8 +106,6 @@ protected:
 	//включение подсветки во время выстрела
 	bool					m_bShotLight;
 
-	float					fZoomFactor;
-
 	//возможность подключения различных аддонов
 	ALife::EWeaponAddonStatus	m_eScopeStatus;
 	ALife::EWeaponAddonStatus	m_eSilencerStatus;
@@ -125,16 +120,20 @@ protected:
 	int	m_iScopeX, m_iScopeY;
 	int	m_iSilencerX, m_iSilencerY;
 	int	m_iGrenadeLauncherX, m_iGrenadeLauncherY;
-	
+
+	//разрешение режима приближения
+	bool			m_bZoomEnabled;
+	//текущий фактор приближения
+	float			m_fZoomFactor;
 	//текстура для снайперского прицела, в режиме приближения
 	CUIStaticItem	m_UIScope;
 	//коэффициент увеличения прицела
 	float			m_fScopeZoomFactor;
-	//режим включенного приближения
+	//когда режим приближения включен
 	bool			m_bZoomMode;
 
 	//состояние подключенных аддонов
-	u8			m_flagsAddOnState;
+	u8				m_flagsAddOnState;
 
 	//время удаления оружия
 	ALife::_TIME_ID			m_dwWeaponRemoveTime;
@@ -154,10 +153,6 @@ protected:
 	//трассирование полета пули
 	virtual BOOL			FireTrace			(const Fvector& P, const Fvector& Peff,	Fvector& D);
 
-	// Utilities
-	void					ShaderCreate		(ref_shader&	dest, LPCSTR S, LPCSTR T);
-	void					ShaderDestroy		(ref_shader&	dest);
-
 public:
 
 	enum EWeaponStates {
@@ -175,9 +170,10 @@ public:
 
 	
 	//для режима приближения и снайперского прицела
+	IC bool					IsZoomEnabled		()	const	{return m_bZoomEnabled;}
 	virtual void			OnZoomIn			();
 	virtual void			OnZoomOut			();
-	virtual bool			IsZoomed			()			{return m_bZoomMode;}
+	virtual bool			IsZoomed			()	const	{return m_bZoomMode;}
 	CUIStaticItem*			ZoomTexture			();
 
 
@@ -258,25 +254,25 @@ public:
 	IC BOOL					IsValid				()	const		{	return iAmmoElapsed;						}
 	IC BOOL					IsVisible			()	const		{	return getVisible();						}	// Weapon change occur only after visibility change
 	IC BOOL					IsUpdating			()	const		{	return bWorking || m_bPending || getVisible();}	// Does weapon need's update?
-	virtual bool			IsHidden			()				{	return STATE == eHidden;}						// Does weapon is in hidden state
-	virtual bool			IsHiding			()				{	return STATE == eHiding;}
+	virtual bool			IsHidden			()	const		{	return STATE == eHidden;}						// Does weapon is in hidden state
+	virtual bool			IsHiding			()	const		{	return STATE == eHiding;}
 		
-	IC EHandDependence		HandDependence		()				{	return eHandDependence;}
-	virtual float			GetZoomFactor		()				{	return fZoomFactor;							}
+	IC EHandDependence		HandDependence		()	const		{	return eHandDependence;}
+	IC float				GetZoomFactor		()	const		{	return m_fZoomFactor;	}
 
-	//фактор дисперсии при стрельбе из оружия
-	float					GetPrecision		();
+	//текущая дисперсия (в радианах) оружия с учетом используемого патрона
+	float					GetFireDispersion	()					const;
+	float					GetFireDispersion	(float cartridge_k) const;
 
 	IC LPCSTR				GetName				()	const		{	return *m_WpnName;							}
 	IC int					GetAmmoElapsed		()	const		{	return /*int(m_magazine.size())*/iAmmoElapsed;						}
 	IC int					GetAmmoMagSize		()	const		{	return iMagazineSize;						}
 
 	//параметы оружия в зависимоти от его состояния исправности
-	float					GetConditionDispersionFactor	();
-	float					GetConditionMisfireProbability	();
+	float					GetConditionDispersionFactor	() const;
+	float					GetConditionMisfireProbability	() const;
 
 	int						GetAmmoCurrent		()  const;
-	IC ref_shader			GetUIIcon			()				{	return hUIIcon;								}
 	
 	void					animGet	(MotionSVec& lst, LPCSTR prefix);
 
@@ -312,9 +308,9 @@ public:
 	int	GetGrenadeLauncherX() {return m_iGrenadeLauncherX;}
 	int	GetGrenadeLauncherY() {return m_iGrenadeLauncherY;}
 
-	virtual const ref_str& GetGrenadeLauncherName() {return m_sGrenadeLauncherName;}
-	virtual const ref_str& GetScopeName()			{return  m_sScopeName;}
-	virtual const ref_str& GetSilencerName()		{return m_sSilencerName;}
+	virtual const ref_str& GetGrenadeLauncherName	()		{return m_sGrenadeLauncherName;}
+	virtual const ref_str& GetScopeName				()		{return  m_sScopeName;}
+	virtual const ref_str& GetSilencerName			()		{return m_sSilencerName;}
 
 	virtual LPCSTR	Name();
 

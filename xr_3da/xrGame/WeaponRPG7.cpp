@@ -23,7 +23,7 @@ CWeaponRPG7::~CWeaponRPG7(void)
 void CWeaponRPG7::Load	(LPCSTR section)
 {
 	inherited::Load			(section);
-	fMaxZoomFactor			= pSettings->r_float	(section,"max_zoom_factor");
+	m_fScopeZoomFactor		= pSettings->r_float	(section,"max_zoom_factor");
 
 	m_sGrenadeBoneName		= pSettings->r_string	(section,"grenade_bone");
 	m_sHudGrenadeBoneName	= pSettings->r_string	(hud_sect,"grenade_bone");
@@ -217,13 +217,13 @@ void CWeaponRPG7::Fire2Start ()
 {
 	inherited::Fire2Start();
 	OnZoomIn();
-	fZoomFactor = fMaxZoomFactor;
+	m_fZoomFactor = m_fScopeZoomFactor;
 }
 void CWeaponRPG7::Fire2End () 
 {
 	inherited::Fire2End();
 	OnZoomOut();
-	fZoomFactor = DEFAULT_FOV;
+	m_fZoomFactor = DEFAULT_FOV;
 }
 
 bool CWeaponRPG7::Action(s32 cmd, u32 flags) 

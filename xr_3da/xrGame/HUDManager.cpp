@@ -32,6 +32,9 @@ CHUDManager::CHUDManager()
 	pUI						= 0;
 	Device.seqDevCreate.Add	(this);
 	if (Device.bReady) OnDeviceCreate();
+
+
+	m_pHUDCursor = xr_new<CHUDCursor>();
 }
 //--------------------------------------------------------------------
 CHUDManager::~CHUDManager()
@@ -43,6 +46,7 @@ CHUDManager::~CHUDManager()
 	xr_delete			(pFontMedium);
 	xr_delete			(pFontDI);
 
+	xr_delete			(m_pHUDCursor);
 	xr_delete			(pFontHeaderEurope);
 	xr_delete			(pFontHeaderRussian);
 
@@ -184,7 +188,7 @@ void CHUDManager::Render_Direct	()
 		if(pUI && pUI->GetCursor() && pUI->GetCursor()->IsVisible())
 			pUI->GetCursor()->Render();
 	}
-	if (psHUD_Flags.test(HUD_CROSSHAIR) && !bAlready)	HUDCursor.Render();
+	if (psHUD_Flags.test(HUD_CROSSHAIR) && !bAlready)	m_pHUDCursor->Render();
 }
 
 //--------------------------------------------------------------------
@@ -225,4 +229,19 @@ void __cdecl CHUDManager::outMessage(u32 C, const ref_str& from, LPCSTR msg, ...
 
 	GetUI()->AddMessage	(*from,buffer,C);
 	Msg			("- %s: %s",from,buffer);
+}
+
+Collide::rq_result&	CHUDManager::GetCurrentRayQuery	() 
+{
+	return m_pHUDCursor->RQ;
+}
+
+void CHUDManager::SetCrosshairDisp	(float disp)
+{
+	m_pHUDCursor->HUDCrosshair.SetDispersion(disp);
+}
+
+void  CHUDManager::ShowCrosshair	(bool show)
+{
+	m_pHUDCursor->m_bShowCrosshair = show;
 }
