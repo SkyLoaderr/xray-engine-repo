@@ -38,7 +38,7 @@ CALifeSimulator::~CALifeSimulator		()
 
 void CALifeSimulator::setup_simulator	(CSE_ALifeObject *object)
 {
-	VERIFY2						(!object->m_alife_simulator,object->s_name_replace);
+//	VERIFY2						(!object->m_alife_simulator,object->s_name_replace);
 	object->m_alife_simulator	= this;
 }
 
