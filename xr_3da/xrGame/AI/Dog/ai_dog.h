@@ -301,12 +301,12 @@ class CAI_Dog : public CCustomMonster
 			u32 dwNewNode = AI_NodeID;
 			NodeCompressed *tpNewNode = AI_Node;
 			NodePosition	QueryPos;
-			Level().AI.PackPosition	(QueryPos,tTemp1);
-			if (!AI_NodeID || !Level().AI.u_InsideNode(*AI_Node,QueryPos)) {
-				dwNewNode = Level().AI.q_Node(AI_NodeID,tTemp1);
-				tpNewNode = Level().AI.Node(dwNewNode);
+			getAI().PackPosition	(QueryPos,tTemp1);
+			if (!AI_NodeID || !getAI().u_InsideNode(*AI_Node,QueryPos)) {
+				dwNewNode = getAI().q_Node(AI_NodeID,tTemp1);
+				tpNewNode = getAI().Node(dwNewNode);
 			}
-			return(!dwNewNode || !Level().AI.u_InsideNode(*tpNewNode,QueryPos));
+			return(!dwNewNode || !getAI().u_InsideNode(*tpNewNode,QueryPos));
 		};
 		
 		//////////////////////////

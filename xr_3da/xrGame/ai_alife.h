@@ -10,7 +10,6 @@
 
 #include "ai_alife_objects.h"
 #include "ai_alife_registries.h"
-#include "ai_alife_cross_table.h"
 
 #define ALIFE_SUPPORT_CONSOLE_COMMANDS
 
@@ -24,7 +23,6 @@ class CAI_ALife :
 	public CALifeGraphRegistry,
 	public CALifeTraderRegistry,
 	public CALifeScheduleRegistry,
-	public CALifeCrossTable,
 	public CSheduled,
 	public CRandom 
 {
@@ -38,7 +36,6 @@ private:
 	// buffer for union operations
 	TASK_VECTOR						m_tpBufferTaskIDs;
 	xrServer						*m_tpServer;
-	CAI_DDD							*m_tpAI_DDD;
 
 	// comnmon
 	void							vfUpdateDynamicData			(CALifeDynamicObject *tpALifeDynamicObject);

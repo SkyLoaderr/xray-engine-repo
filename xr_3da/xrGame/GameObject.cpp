@@ -6,6 +6,7 @@
 #include "GameObject.h"
 #include "..\fbasicvisual.h"
 #include "PhysicsShell.h"
+#include "ai_space.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -104,15 +105,15 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 
 	// AI-DB connectivity
 	Fvector				nPos	= vPosition;
-	int node			= Level().AI.q_LoadSearch(nPos);
+	int node			= getAI().q_LoadSearch(nPos);
 	if (node<0)			{
 		Msg					("! ERROR: AI node not found for object '%s'. (%f,%f,%f)",cName(),nPos.x,nPos.y,nPos.z);
 		AI_NodeID			= u32(-1);
 		AI_Node				= NULL;
 	} else {
 		AI_NodeID			= u32(node);
-		AI_Node				= Level().AI.Node(AI_NodeID);
-		Level().AI.ref_add  (AI_NodeID);
+		AI_Node				= getAI().Node(AI_NodeID);
+		getAI().ref_add  (AI_NodeID);
 	}
 
 	// Phantom
@@ -128,7 +129,7 @@ void CGameObject::Sector_Detect	()
 		// Use parent information
 		CGameObject* O	= dynamic_cast<CGameObject*>(H_Root());
 		VERIFY						(O);
-		CAI_Space&	AI				= Level().AI;
+		CAI_Space&	AI				= getAI();
 		AI.ref_dec					(AI_NodeID);
 		AI_NodeID					= O->AI_NodeID;
 		AI.ref_add					(AI_NodeID);
@@ -140,7 +141,7 @@ void CGameObject::Sector_Detect	()
 		{
 			Fvector		Pos	= pVisual->bv_Position;
 			Pos.add		(vPosition);
-			CAI_Space&	AI = Level().AI;
+			CAI_Space&	AI = getAI();
 
 			AI.ref_dec  (AI_NodeID);
 			AI_NodeID	= AI.q_Node	(AI_NodeID,vPosition);

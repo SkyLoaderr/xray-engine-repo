@@ -11,6 +11,7 @@
 #include "ai_alife_server_objects.h"
 #include "ai_alife_predicates.h"
 #include "ai_alife_a_star.h"
+//#include "ai_space.h"
 
 using namespace ALife;
 
@@ -220,11 +221,11 @@ public:
 				for ( ; I != E; I++)
 					(*I).clear			();
 			}
-			for (_GRAPH_ID j=0; j<(_GRAPH_ID)CALifeGraph::Header().dwVertexCount; j++)
-				m_tpTerrain[i][m_tpaGraph[j].tVertexTypes[i]].push_back(j);
+			for (_GRAPH_ID j=0; j<(_GRAPH_ID)getAI().GraphHeader().dwVertexCount; j++)
+				m_tpTerrain[i][getAI().m_tpaGraph[j].tVertexTypes[i]].push_back(j);
 		}
 
-		m_tpGraphObjects.resize		(CALifeGraph::Header().dwVertexCount);
+		m_tpGraphObjects.resize		(getAI().GraphHeader().dwVertexCount);
 		{
 			GRAPH_POINT_IT			I = m_tpGraphObjects.begin();
 			GRAPH_POINT_IT			E = m_tpGraphObjects.end();
@@ -242,7 +243,7 @@ public:
 		if (tpALifeDynamicObject->s_flags.is(M_SPAWN_OBJECT_ASPLAYER))
 			m_tpActor = tpALifeDynamicObject;
 		
-		u8 dwLevelID = m_tpaGraph[tpALifeDynamicObject->m_tGraphID].tLevelID;
+		u8 dwLevelID = getAI().m_tpaGraph[tpALifeDynamicObject->m_tGraphID].tLevelID;
 		
 		ALIFE_ENTITY_P_VECTOR_PAIR_IT I = m_tLevelMap.find(dwLevelID);
 		if (I == m_tLevelMap.end()) {
@@ -254,7 +255,7 @@ public:
 			(*I).second->push_back(tpALifeDynamicObject);
 		
 		if (m_tpActor && !m_tpCurrentLevel) {
-			I = m_tLevelMap.find(m_tpaGraph[m_tpActor->m_tGraphID].tLevelID);
+			I = m_tLevelMap.find(getAI().m_tpaGraph[m_tpActor->m_tGraphID].tLevelID);
 			R_ASSERT(I != m_tLevelMap.end());
 			m_tpCurrentLevel = (*I).second;
 		}

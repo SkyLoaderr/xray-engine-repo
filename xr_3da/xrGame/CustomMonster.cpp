@@ -8,6 +8,7 @@
 #include "xr_weapon_list.h"
 #include "customitem.h"
 #include "hudmanager.h"
+#include "ai_space.h"
 
 using namespace AI;
 
@@ -506,7 +507,7 @@ void CCustomMonster::OnRender()
 	if (this == Level().Teams[g_Team()].Squads[g_Squad()].Leader) {
 		CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 		for (unsigned i=0; i<Group.m_tpaSuspiciousNodes.size(); i++) {
-			Fvector tP0 = Level().AI.tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID);
+			Fvector tP0 = getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID);
 			tP0.y += .35f;
 			if (Group.m_tpaSuspiciousNodes[i].dwSearched == 0)		
 				Device.Primitive.dbg_DrawAABB(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(255,0,0));

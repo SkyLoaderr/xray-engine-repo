@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "ai_alife_graph.h"
+#include "ai_space.h"
 
 class CAI_Space;
 

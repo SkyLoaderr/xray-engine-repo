@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "ai_alife.h"
+#include "ai_space.h"
 using namespace AI;
 
 #ifdef ALIFE_SUPPORT_CONSOLE_COMMANDS
@@ -490,12 +491,12 @@ void CAI_ALife::vfSpawnPointInfo(_SPAWN_ID &tSpawnID)
 
 void CAI_ALife::vfGraphVertexInfo(_GRAPH_ID &tGraphID)
 {
-	SGraphVertex &tGraphVertex = m_tpaGraph[tGraphID];
+	CALifeGraph::SGraphVertex &tGraphVertex = getAI().m_tpaGraph[tGraphID];
 	Msg("%s->Graph vertex information :",cName());
 	Msg("* Level point                : [%7.2f][%7.2f][%7.2f]",tGraphVertex.tGlobalPoint.x,tGraphVertex.tGlobalPoint.y,tGraphVertex.tGlobalPoint.z);
 //	Msg("* Location m_tObjectID                : %d",tGraphVertex.tVertexType);
 	Msg("* Neighbours                 :");
-	SGraphEdge	*tpaEdges = (SGraphEdge *)((BYTE *)m_tpaGraph + tGraphVertex.dwEdgeOffset);
+	CALifeGraph::SGraphEdge	*tpaEdges = (CALifeGraph::SGraphEdge *)((BYTE *)getAI().m_tpaGraph + tGraphVertex.dwEdgeOffset);
 	for (int i=0; i<(int)tGraphVertex.tNeighbourCount; i++)
 		Msg("*   Vertex %d -> distance %7.2f",tpaEdges[i].dwVertexNumber, tpaEdges[i].fPathDistance);
 }

@@ -83,7 +83,7 @@ void CAISelectorBase::vfInit()
 {
 	m_fResult = 0.f;
 	m_tEnemySurroundDirection.set(0,0,0);
-	m_tCurrentPosition = Level().AI.tfGetNodeCenter(m_tpCurrentNode);
+	m_tCurrentPosition = getAI().tfGetNodeCenter(m_tpCurrentNode);
 	m_iAliveMemberCount = taMemberPositions.size();
 	m_fFireDispersionAngle = PI/10;
 }
@@ -338,10 +338,10 @@ void CAISelectorBase::vfAssignMemberPositionAndNode()
 {
 #ifdef DEST_POSITIONS
 	m_tCurrentMemberPosition = taDestMemberPositions[m_iCurrentMember];
-	m_tpCurrentMemberNode = Level().AI.Node(taDestMemberNodes[m_iCurrentMember]);
+	m_tpCurrentMemberNode = getAI().Node(taDestMemberNodes[m_iCurrentMember]);
 #else
 	m_tCurrentMemberPosition = taMemberPositions[m_iCurrentMember];
-	m_tpCurrentMemberNode = Level().AI.Node(taMemberNodes[m_iCurrentMember]);
+	m_tpCurrentMemberNode = getAI().Node(taMemberNodes[m_iCurrentMember]);
 #endif
 }
 

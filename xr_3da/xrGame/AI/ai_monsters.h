@@ -9,6 +9,8 @@
 #ifndef __XRAY_AI_MONSTERS__
 #define __XRAY_AI_MONSTERS__
 
+#include "..\\ai_space.h"
+
 #define MAGNITUDE_EPSILON 0.01
 #define CHECK_RESULT \
 	if (m_fResult > BestCost)\

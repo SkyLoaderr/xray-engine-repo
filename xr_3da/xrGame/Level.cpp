@@ -6,8 +6,8 @@
 #include "stdafx.h"
 #include "Level.h"
 #include "entity.h"
-#include "ai_funcs.h"
 #include "hudmanager.h"
+#include "ai_space.h"
 
 // events
 #include "..\fdemorecord.h"
@@ -48,7 +48,7 @@ CLevel::~CLevel()
 
 	if (ph_world)	ph_world->Destroy		();
 
-	xr_delete			(m_tpAI_DDD);
+//	xr_delete			(m_tpAI_DDD);
 	xr_delete			(ph_world);
 }
 
@@ -194,7 +194,7 @@ void CLevel::OnRender()
 //	ph_world->Render	();
 	if (bDebug)			{
 		ObjectSpace.dbgRender	();
-		AI.Render				();
+		getAI().Render			();
 	}
 }
 

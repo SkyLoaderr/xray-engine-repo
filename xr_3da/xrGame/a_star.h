@@ -10,6 +10,7 @@
 
 #include "a_star_template.h"
 #include "a_star_interfaces.h"
+#include "ai_space.h"
 
 class CAStar {
 private:

@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "..\\xrLevel.h"
 #include "ai_alife_space.h"
 
 #define GRAPH_NAME							"game.graph"
@@ -59,7 +60,12 @@ public:
 		Load								(fName);
 	};
 
-	IC const SGraphHeader&					Header()
+	virtual ~CALifeGraph					()
+	{
+		xr_delete							(m_tpGraphVFS);
+	};
+
+	IC const SGraphHeader&					GraphHeader()
 	{
 		return								(m_tGraphHeader);
 	};

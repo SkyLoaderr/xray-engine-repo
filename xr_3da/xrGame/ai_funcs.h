@@ -6,12 +6,7 @@
 //	Description : Pattern functions class
 ////////////////////////////////////////////////////////////////////////////
 
-#ifndef __AI_FUNCS__
-#define __AI_FUNCS__
-
-////////////////////////////////////////////////////////////////////////////
-// included headers
-////////////////////////////////////////////////////////////////////////////
+#pragma once
 
 #include "Entity.h"
 #include "xr_weapon_list.h"
@@ -102,7 +97,7 @@ public:
 
 					CPatternFunction();
 					CPatternFunction(LPCSTR caEFFileName, CAI_DDD *tpAI_DDD);
-					~CPatternFunction();
+	virtual			~CPatternFunction();
 
 	virtual	void	vfLoadEF(LPCSTR caEFFileName, CAI_DDD *tpAI_DDD);
 	virtual float	ffGetValue();
@@ -281,7 +276,8 @@ public:
 	CPatternFunction				pfDefendSuccessProbability;
 	CPatternFunction				pfCreatureEffectiveness;
 
-	void vfLoad() {	
+									CAI_DDD()
+	{	
 		fpaBaseFunctions[0] = &pfDistance;
 		
 		fpaBaseFunctions[21] = &pfPersonalHealth;
@@ -299,6 +295,8 @@ public:
 		pfDefendSuccessProbability.	vfLoadEF("common\\DefendSuccessProbability.dat",this);
 		pfCreatureEffectiveness.	vfLoadEF("common\\CreatureEffectiveness.dat",this);
 	}
-};
 
-#endif
+	virtual							~CAI_DDD()
+	{
+	};
+};

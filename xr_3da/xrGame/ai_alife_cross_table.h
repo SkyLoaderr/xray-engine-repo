@@ -45,9 +45,9 @@ public:
 		Load								(fName);
 	};
 
-	~CALifeCrossTable						()
+	virtual ~CALifeCrossTable				()
 	{
-		xr_delete							(m_tpCrossTableVFS);
+		Unload();
 	};
 
 	IC void Load							(const FILE_NAME &fName)
@@ -63,5 +63,11 @@ public:
 		R_ASSERT							(m_tpCrossTableVFS->FindChunk(CROSS_TABLE_CHUNK_DATA));
 		m_tpCrossTableVFS->OpenChunk		(CROSS_TABLE_CHUNK_DATA);
 		m_tpaCrossTable						= (SCrossTableCell*)m_tpCrossTableVFS->Pointer();
+	};
+
+	IC void Unload							()
+	{
+		xr_delete							(m_tpCrossTableVFS);
+		m_tpaCrossTable						= 0;
 	};
 };

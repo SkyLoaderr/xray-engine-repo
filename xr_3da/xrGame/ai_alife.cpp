@@ -8,20 +8,18 @@
 
 #include "stdafx.h"
 #include "ai_alife.h"
-#include "ai_funcs.h"
+#include "ai_space.h"
 
 CAI_ALife::CAI_ALife(xrServer *tpServer)
 {
 	m_tpServer			= tpServer;
 	m_bLoaded			= false;
 	m_tpActor			= 0;
-	m_tpAI_DDD			= 0;
 }
 
 CAI_ALife::~CAI_ALife()
 {
 	shedule_Unregister	();
-	xr_delete			(m_tpAI_DDD);
 }
 
 
@@ -97,7 +95,7 @@ void CAI_ALife::Load()
 {
 	Memory.mem_compact			();
 	u32							dwMemUsage = Memory.mem_usage();
-	Log							("* Loading ALife Simulator...");
+	pApp->LoadTitle				("Loading ALife Simulator...");
 	m_tALifeVersion				= ALIFE_VERSION;
 	m_tpActor					= 0;
 	m_tGameTime					= 0;
@@ -125,7 +123,7 @@ void CAI_ALife::Load()
 	}
 	tpStream					= Engine.FS.Open(caFileName);
 	R_ASSERT					(tpStream);
-	Log							("* Loading ALife Simulator...");
+	Log							("* Loading simulator...");
 	CALifeHeader::Load			(*tpStream);
 	CALifeGameTime::Load		(*tpStream);
 	Log							("* Loading objects...");
@@ -134,13 +132,8 @@ void CAI_ALife::Load()
 	CALifeEventRegistry::Load	(*tpStream);
 	Log							("* Loading tasks...");
 	CALifeTaskRegistry::Load	(*tpStream);
-	Log							("* Loading static data objects and building dynamic data objects...");
-	strconcat					(caFileName,::Path.Current,CROSS_TABLE_NAME);
-	CALifeCrossTable::Load		(caFileName);
+	Log							("* Building dynamic objects...");
 	vfUpdateDynamicData			();
-	Log							("* Loading evaluation functions...");
-	m_tpAI_DDD					= xr_new<CAI_DDD>();
-	m_tpAI_DDD->vfLoad			();
 	m_bLoaded					= true;
 	Msg							("* Loading ALife Simulator is successfully completed (%7.3f Mb)",float(Memory.mem_usage() - dwMemUsage)/1048576.0);
 }
@@ -184,7 +177,7 @@ void CAI_ALife::vfCreateNewTask(CALifeTrader *tpTrader)
 		if (tpALifeItem && !tpALifeItem->m_bAttached) {
 			CALifeTask					*tpTask = xr_new<CALifeTask>();
 			tpTask->m_tCustomerID		= tpTrader->m_tObjectID;
-			Memory.mem_copy				(tpTask->m_tLocationID,m_tpaGraph[tpALifeItem->m_tGraphID].tVertexTypes,LOCATION_TYPE_COUNT*sizeof(_LOCATION_ID));
+			Memory.mem_copy				(tpTask->m_tLocationID,getAI().m_tpaGraph[tpALifeItem->m_tGraphID].tVertexTypes,LOCATION_TYPE_COUNT*sizeof(_LOCATION_ID));
 			tpTask->m_tObjectID			= tpALifeItem->m_tObjectID;
 			tpTask->m_tTimeID			= tfGetGameTime();
 			tpTask->m_tTaskType			= eTaskTypeSearchForItemOL;
@@ -201,11 +194,11 @@ CALifeTrader* CAI_ALife::tpfGetNearestSuitableTrader(CALifeHuman *tpALifeHuman)
 	CALifeTrader *	tpBestTrader = 0;
 	TRADER_P_IT		I = m_tpTraders.begin();
 	TRADER_P_IT		E = m_tpTraders.end();
-	Fvector			&tGlobalPoint = m_tpaGraph[tpALifeHuman->m_tGraphID].tGlobalPoint;
+	Fvector			&tGlobalPoint = getAI().m_tpaGraph[tpALifeHuman->m_tGraphID].tGlobalPoint;
 	for ( ; I != E; I++) {
 		if ((*I)->m_tRank != tpALifeHuman->m_tRank)
 			break;
-		float fCurDistance = m_tpaGraph[(*I)->m_tGraphID].tGlobalPoint.distance_to(tGlobalPoint);
+		float fCurDistance = getAI().m_tpaGraph[(*I)->m_tGraphID].tGlobalPoint.distance_to(tGlobalPoint);
 		if (fCurDistance < fBestDistance) {
 			fBestDistance = fCurDistance;
 			tpBestTrader = *I;

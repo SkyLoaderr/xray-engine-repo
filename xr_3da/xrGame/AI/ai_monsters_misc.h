@@ -10,6 +10,7 @@
 #define __XRAY_AI_MONSTERS_MISC__
 
 #include "..\\ai_PathNodes.h"
+#include "..\\ai_space.h"
 #include "..\\Level.h"
 #include "..\\Entity.h"
 #include "..\\CustomMonster.h"
@@ -220,7 +221,7 @@ class CBaseFunction;
 		DUP.set(0,1,0);
 		pvDecompress(vNorm,tNode.plane);
 		Fplane PL; 
-		Level().AI.UnpackPosition(P0,tNode.p0);
+		getAI().UnpackPosition(P0,tNode.p0);
 		PL.build(P0,vNorm);
 		v.set(X,P0.y,Z);	
 		PL.intersectRayPoint(v,DUP,v1);	

@@ -312,8 +312,8 @@ void CAI_Soldier::OnFindAloneFire()
 					Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwSearched = 1;
 					Group.m_tpaSuspiciousGroups[Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwGroup] = 1;
 					vfInitSelector(SelectorPatrol,Squad,Leader);
-					SelectorPatrol.m_tpEnemyNode = Level().AI.Node(Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID);
-					SelectorPatrol.m_tEnemyPosition = Level().AI.tfGetNodeCenter(SelectorPatrol.m_tpEnemyNode);
+					SelectorPatrol.m_tpEnemyNode = getAI().Node(Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID);
+					SelectorPatrol.m_tEnemyPosition = getAI().tfGetNodeCenter(SelectorPatrol.m_tpEnemyNode);
 
  					if (AI_Path.bNeedRebuild)
 						vfBuildPathToDestinationPoint(0);
@@ -328,7 +328,7 @@ void CAI_Soldier::OnFindAloneFire()
 						}
 				}
 				else {
-					//if (!Group.m_tpaSuspiciousNodes.size() && (Level().AI.u_SqrDistance2Node(vPosition,tpSavedEnemyNode) > 1.f)) {
+					//if (!Group.m_tpaSuspiciousNodes.size() && (getAI().u_SqrDistance2Node(vPosition,tpSavedEnemyNode) > 1.f)) {
 					if (!Group.m_tpaSuspiciousNodes.size()) {
 						vfInitSelector(SelectorPatrol,Squad,Leader);
 
@@ -341,7 +341,7 @@ void CAI_Soldier::OnFindAloneFire()
 						if (AI_Path.bNeedRebuild) {
 							vfInitSelector(SelectorRetreat,Squad,Leader);
 							SelectorRetreat.m_tEnemyPosition = tpaDynamicObjects[iIndex].tMySavedPosition;
-							SelectorRetreat.m_tpEnemyNode = Level().AI.Node(tpaDynamicObjects[iIndex].dwMyNodeID);
+							SelectorRetreat.m_tpEnemyNode = getAI().Node(tpaDynamicObjects[iIndex].dwMyNodeID);
 							SelectorRetreat.m_tMyPosition = vPosition;
 							SelectorRetreat.m_tpMyNode = AI_Node;
 							vfBuildPathToDestinationPoint(0);
@@ -349,7 +349,7 @@ void CAI_Soldier::OnFindAloneFire()
 						else {
 							vfInitSelector(SelectorRetreat,Squad,Leader);
 							SelectorRetreat.m_tEnemyPosition = tpaDynamicObjects[iIndex].tMySavedPosition;
-							SelectorRetreat.m_tpEnemyNode = Level().AI.Node(tpaDynamicObjects[iIndex].dwMyNodeID);
+							SelectorRetreat.m_tpEnemyNode = getAI().Node(tpaDynamicObjects[iIndex].dwMyNodeID);
 							SelectorRetreat.m_tMyPosition = vPosition;
 							SelectorRetreat.m_tpMyNode = AI_Node;
 							vfSearchForBetterPosition(SelectorRetreat,Squad,Leader);
@@ -373,8 +373,8 @@ void CAI_Soldier::OnFindAloneFire()
 				}
 				if (m_iCurrentSuspiciousNodeIndex != -1) {
 					vfInitSelector(SelectorPatrol,Squad,Leader);
-					SelectorPatrol.m_tpEnemyNode = Level().AI.Node(Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID);
-					SelectorPatrol.m_tEnemyPosition = Level().AI.tfGetNodeCenter(SelectorPatrol.m_tpEnemyNode);
+					SelectorPatrol.m_tpEnemyNode = getAI().Node(Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID);
+					SelectorPatrol.m_tEnemyPosition = getAI().tfGetNodeCenter(SelectorPatrol.m_tpEnemyNode);
 
 					if (AI_Path.bNeedRebuild)
 						vfBuildPathToDestinationPoint(0);
@@ -1105,7 +1105,7 @@ void CAI_Soldier::OnTurnOver()
 		
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(bfCheckForDanger(),aiSoldierFight)
 
-	if (Level().AI.bfTooSmallAngle(r_torso_target.yaw,r_torso_current.yaw,PI_DIV_6)) {
+	if (getAI().bfTooSmallAngle(r_torso_target.yaw,r_torso_current.yaw,PI_DIV_6)) {
 		ESoldierStates eDummy = tStateStack.top();
 		tStateStack.pop();
 		m_ePreviousState = tStateStack.top();
@@ -1215,7 +1215,7 @@ void CAI_Soldier::OnPatrolReturn()
 	int iMemberIndex = ifGetMemberIndex();
 	int iPatrolPathIndex = (iMemberIndex + 1) % 3;
 
-//	if (Level().AI.bfInsideNode(AI_Node,m_tpPath->tpaVectors[iPatrolPathIndex][m_iCurrentPatrolIndex],Level().AI.Header().size*.5f) || ((m_tpPath->tpaVectors[iPatrolPathIndex][m_iCurrentPatrolIndex].distance_to(vPosition) < 5.f) && (AI_Path.fSpeed < EPS_L))) {
+//	if (getAI().bfInsideNode(AI_Node,m_tpPath->tpaVectors[iPatrolPathIndex][m_iCurrentPatrolIndex],getAI().Header().size*.5f) || ((m_tpPath->tpaVectors[iPatrolPathIndex][m_iCurrentPatrolIndex].distance_to(vPosition) < 5.f) && (AI_Path.fSpeed < EPS_L))) {
 //		if (m_tpPath->tpaVectors[iPatrolPathIndex][m_iCurrentPatrolIndex].distance_to(vPosition) < EPS_L) {
 //			ESoldierStates eDummy = tStateStack.top();
 //			tStateStack.pop();
@@ -1234,17 +1234,17 @@ void CAI_Soldier::OnPatrolReturn()
 //		}
 //	}
 //	else {
-	if ((Level().AI.bfInsideNode(AI_Node,m_tpPath->tpaVectors[iPatrolPathIndex][m_iCurrentPatrolIndex]) || ((m_tpPath->tpaVectors[iPatrolPathIndex][m_iCurrentPatrolIndex].distance_to(vPosition) < 5.f) && (AI_Path.fSpeed < EPS_L))) && (m_tpPath->tpaVectors[iPatrolPathIndex][m_iCurrentPatrolIndex].distance_to(vPosition) < EPS_L))
+	if ((getAI().bfInsideNode(AI_Node,m_tpPath->tpaVectors[iPatrolPathIndex][m_iCurrentPatrolIndex]) || ((m_tpPath->tpaVectors[iPatrolPathIndex][m_iCurrentPatrolIndex].distance_to(vPosition) < 5.f) && (AI_Path.fSpeed < EPS_L))) && (m_tpPath->tpaVectors[iPatrolPathIndex][m_iCurrentPatrolIndex].distance_to(vPosition) < EPS_L))
 		GO_TO_PREV_STATE_THIS_UPDATE
 	else {
-		u32 dwTemp = Level().AI.dwfCheckPositionInDirection(AI_NodeID,vPosition,m_tpPath->tpaVectors[iPatrolPathIndex][m_iCurrentPatrolIndex]);
+		u32 dwTemp = getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,m_tpPath->tpaVectors[iPatrolPathIndex][m_iCurrentPatrolIndex]);
 		if (dwTemp != u32(-1)) {
-			Level().AI.m_tpAStar->ffFindMinimalPath(AI_NodeID,AI_Path.DestNode = dwTemp,AI_Path);
+			getAI().m_tpAStar->ffFindMinimalPath(AI_NodeID,AI_Path.DestNode = dwTemp,AI_Path);
 			if (!AI_Path.Nodes.empty()) {
 				AI_Path.BuildTravelLine(Position());
 				AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P = m_tpPath->tpaVectors[iPatrolPathIndex][m_iCurrentPatrolIndex];
 //				for (int i=0; i<(int)AI_Path.TravelPath.size(); i++)
-//					if (Level().AI.bfInsideNode(Level().AI.Node(dwTemp),AI_Path.TravelPath[i].P,Level().AI.Header().size*.5f)) {
+//					if (getAI().bfInsideNode(getAI().Node(dwTemp),AI_Path.TravelPath[i].P,getAI().Header().size*.5f)) {
 //						AI_Path.TravelPath[i].P = m_tpPath->tpaVectors[iPatrolPathIndex][m_iCurrentPatrolIndex];
 //						AI_Path.TravelPath.resize(i);
 //						break;
@@ -1253,10 +1253,10 @@ void CAI_Soldier::OnPatrolReturn()
 		}
 		else
 			if (AI_Path.bNeedRebuild) {
-				Level().AI.m_tpAStar->ffFindMinimalPath(AI_NodeID,AI_Path.DestNode,AI_Path);
+				getAI().m_tpAStar->ffFindMinimalPath(AI_NodeID,AI_Path.DestNode,AI_Path);
 				if (AI_Path.Nodes.size() > 1) {
 					AI_Path.BuildTravelLine(Position());
-					if (Level().AI.bfInsideNode(Level().AI.Node(AI_Path.DestNode),m_tpPath->tpaVectors[iPatrolPathIndex][m_iCurrentPatrolIndex]))
+					if (getAI().bfInsideNode(getAI().Node(AI_Path.DestNode),m_tpPath->tpaVectors[iPatrolPathIndex][m_iCurrentPatrolIndex]))
 						AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P = m_tpPath->tpaVectors[iPatrolPathIndex][m_iCurrentPatrolIndex];
 				}
 				else {
@@ -1483,7 +1483,7 @@ void CAI_Soldier::OnPatrol()
 		SRotation tRotation;
 		mk_rotation(tTemp,tRotation);
 		r_torso_target.yaw = tRotation.yaw;
-		if (Level().AI.bfTooSmallAngle(r_torso_current.yaw,tRotation.yaw,EPS_L)) {
+		if (getAI().bfTooSmallAngle(r_torso_current.yaw,tRotation.yaw,EPS_L)) {
 			tStateStack.push(aiSoldierPatrolWait);
 			vfAddStateToList(aiSoldierPatrolWait);
 			SWITCH_TO_NEW_STATE(aiSoldierTurnOver);

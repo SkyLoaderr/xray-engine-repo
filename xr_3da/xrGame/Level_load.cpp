@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "HUDmanager.h"
 #include "LevelGameDef.h"
-#include "ai_funcs.h"
+#include "ai_space.h"
 
 void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 {
@@ -114,7 +114,7 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 	for (int i=0; i<(int)N; i++)
 		tpaPoints[i] = tpPatrolPath.tpaWayPoints[tpPatrolPath.tpaWayPointIndexes[i]].tWayPoint;
 
-	AI.vfCreateFastRealisticPath(tpaPoints,tpPatrolPath.tpaWayPoints[tpPatrolPath.tpaWayPointIndexes[0]].dwNodeID,tpaDeviations,tpPatrolPath.tpaVectors[0],tpaNodes,tpPatrolPath.dwType & PATH_LOOPED);
+	getAI().vfCreateFastRealisticPath(tpaPoints,tpPatrolPath.tpaWayPoints[tpPatrolPath.tpaWayPointIndexes[0]].dwNodeID,tpaDeviations,tpPatrolPath.tpaVectors[0],tpaNodes,tpPatrolPath.dwType & PATH_LOOPED);
 
 	// creating variations
 	if (!tpPatrolPath.tpaVectors[0].size()) {
@@ -124,7 +124,7 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 	tpPatrolPath.tpaVectors[1].resize(tpPatrolPath.tpaVectors[0].size());
 	tpPatrolPath.tpaVectors[2].resize(tpPatrolPath.tpaVectors[0].size());
 			
-	float fHalfSubnodeSize = AI.Header().size*.5f;
+	float fHalfSubnodeSize = getAI().Header().size*.5f;
 
 	vector<Fvector> &tpaVector0 = tpPatrolPath.tpaVectors[0];
 	u32 M = tpaVector0.size();
@@ -161,7 +161,7 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 			
 			tpaVector1[j].add(tTemp);
 
-			for (int m=k; (k < (int)tpaNodes.size()) && (!AI.bfInsideNode(AI.Node(tpaNodes[k]),tpaVector0[i])); k++) ;
+			for (int m=k; (k < (int)tpaNodes.size()) && (!getAI().bfInsideNode(getAI().Node(tpaNodes[k]),tpaVector0[i])); k++) ;
 
 			if (k >= (int)tpaNodes.size()) {
 				k = m;
@@ -173,9 +173,9 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 			u32 dwBestNode;
 			float fBestCost;
 			NodePosition tNodePosition;
-			AI.PackPosition(tNodePosition,tpaVector1[j]);
-			AI.q_Range_Bit_X(tpaNodes[k],tpaVector0[i],4*fHalfSubnodeSize,&tNodePosition,dwBestNode,fBestCost);
-			tpaVector1[j].y = AI.ffGetY(*(AI.Node(dwBestNode)),tpaVector1[j].x,tpaVector1[j].z);
+			getAI().PackPosition(tNodePosition,tpaVector1[j]);
+			getAI().q_Range_Bit_X(tpaNodes[k],tpaVector0[i],4*fHalfSubnodeSize,&tNodePosition,dwBestNode,fBestCost);
+			tpaVector1[j].y = getAI().ffGetY(*(getAI().Node(dwBestNode)),tpaVector1[j].x,tpaVector1[j].z);
 		}
 		if (tpaVector1[0].distance_to(tpaVector1[j - 1]) > EPS_L) {
 			tpaVector1.push_back(tpaVector1[0]);
@@ -190,8 +190,8 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 BOOL CLevel::Load_GameSpecific_Before()
 {
 	// AI space
-	pApp->LoadTitle	("Loading AI space...");
-	AI.Load			(Path.Current);
+	pApp->LoadTitle	("Loading AI objects...");
+	getAI().Load(Path.Current);
 
 	FILE_NAME		fn_game;
 	if (Engine.FS.Exist(fn_game, Path.Current, "level.game")) 
@@ -220,7 +220,7 @@ BOOL CLevel::Load_GameSpecific_Before()
 				for (int i=0; i<(int)dwCount; i++){
 					OBJ->Rvector(tPatrolPath.tpaWayPoints[i].tWayPoint);
 					tPatrolPath.tpaWayPoints[i].dwFlags = OBJ->Rdword();
-					tPatrolPath.tpaWayPoints[i].dwNodeID = AI.q_LoadSearch(tPatrolPath.tpaWayPoints[i].tWayPoint);
+					tPatrolPath.tpaWayPoints[i].dwNodeID = getAI().q_LoadSearch(tPatrolPath.tpaWayPoints[i].tWayPoint);
 				}
 
 				R_ASSERT(OBJ->FindChunk(WAYOBJECT_CHUNK_LINKS));
@@ -265,8 +265,8 @@ BOOL CLevel::Load_GameSpecific_Before()
 BOOL CLevel::Load_GameSpecific_After()
 {
 	// only for single...hmmm????
-	m_tpAI_DDD	= xr_new<CAI_DDD> ();
-	m_tpAI_DDD->vfLoad();
+//	m_tpAI_DDD	= xr_new<CAI_DDD> ();
+//	m_tpAI_DDD->vfLoad();
 
 	return TRUE;
 }

@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "..\\xrLevel.h"
 #include "ai_alife_interfaces.h"
 #include "ai_alife_templates.h"
 

@@ -11,11 +11,9 @@
 #include "group.h"
 #include "tracer.h"
 #include "rain.h"
-#include "ai_space.h"
 #include "ai_sounds.h"
 #include "net_queue.h"
 
-class CAI_DDD;
 class CHUDManager;
 
 #define DEFAULT_FOV 90.f
@@ -61,9 +59,9 @@ public:
 
 	xrServer*					Server;
 
-	CAI_DDD*					m_tpAI_DDD;
+//	CAI_DDD*					m_tpAI_DDD;
 
-	CAI_Space					AI;
+//	CAI_Space					AI;
 	vector<CTeam>				Teams;
 
 	CTracer						Tracers;

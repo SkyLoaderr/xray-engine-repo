@@ -20,7 +20,7 @@
 #define DISTANCE_TO_STEP				.85f
 
 bool CAI_Soldier::bfCheckPath(AI::NodePath &Path) {
-	CAI_Space &AI = Level().AI;
+	CAI_Space &AI = getAI();
 	for (int i=1; i<(int)Path.Nodes.size(); i++) 
 		if (AI.q_mark[Path.Nodes[i]])
 			return(false);
@@ -31,9 +31,9 @@ void CAI_Soldier::vfBuildPathToDestinationPoint(CAISelectorBase *S)
 {
 	// building a path from and to
 	if (S)
-		Level().AI.m_tpAStar->ffFindOptimalPath(AI_NodeID,AI_Path.DestNode,AI_Path,S->m_dwEnemyNode,S->fOptEnemyDistance);
+		getAI().m_tpAStar->ffFindOptimalPath(AI_NodeID,AI_Path.DestNode,AI_Path,S->m_dwEnemyNode,S->fOptEnemyDistance);
 	else
-		Level().AI.m_tpAStar->ffFindOptimalPath(AI_NodeID,AI_Path.DestNode,AI_Path);
+		getAI().m_tpAStar->ffFindOptimalPath(AI_NodeID,AI_Path.DestNode,AI_Path);
 	
 	if (AI_Path.Nodes.size() > 0) {
 		// if path is long enough then build travel line
@@ -139,9 +139,9 @@ void CAI_Soldier::vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, C
 		// selector evaluation function in the radius N meteres
 		float fOldCost;
 //		if (bLastSearch)
-//			Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost,dwTimeDifference);
+//			getAI().q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost,dwTimeDifference);
 //		else
-			Level().AI.q_Range_Bit(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
+			getAI().q_Range_Bit(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
 		// if search has found _new_ best node then 
 		if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
 			AI_Path.DestNode		= S.BestNode;
@@ -170,7 +170,7 @@ void CAI_Soldier::vfSearchForBetterPositionWTime(CAISelectorBase &S, CSquad &Squ
 	// search for the best node according to the 
 	// selector evaluation function in the radius N meteres
 	float fOldCost;
-	Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
+	getAI().q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
 	// if search has found _new_ best node then 
 	//if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
 	if ((AI_Path.DestNode != S.BestNode) && (S.BestCost < (fOldCost - S.fLaziness))){

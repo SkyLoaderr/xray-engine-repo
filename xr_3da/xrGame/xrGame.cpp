@@ -128,24 +128,24 @@ class CCC_ALifePath : public CConsoleCommand {
 public:
 	CCC_ALifePath(LPCSTR N) : CConsoleCommand(N)  { };
 	virtual void Execute(LPCSTR args) {
-		if (!Level().AI.bfCheckIfGraphLoaded())
+		if (!getAI().bfCheckIfGraphLoaded())
 			Msg("! there is no graph!");
 		else {
 			int id1=-1, id2=-1;
 			sscanf(args ,"%d %d",&id1,&id2);
 			if ((id1 != -1) && (id2 != -1))
-				if (_max(id1,id2) > (int)Level().AI.m_tpGraph->Header().dwVertexCount - 1)
-					Msg("! there are only %d vertexes!",Level().AI.m_tpGraph->Header().dwVertexCount);
+				if (_max(id1,id2) > (int)getAI().GraphHeader().dwVertexCount - 1)
+					Msg("! there are only %d vertexes!",getAI().GraphHeader().dwVertexCount);
 				else
 					if (min(id1,id2) < 0)
 						Msg("! invalid vertex number (%d)!",min(id1,id2));
 					else {
 						Sleep				(1);
 						u64 t1x = CPU::GetCycleCount();
-						float fValue = Level().AI.m_tpAStar->ffFindMinimalPath(id1,id2);
+						float fValue = getAI().m_tpAStar->ffFindMinimalPath(id1,id2);
 						u64 t2x = CPU::GetCycleCount();
 						t2x -= t1x;
-						Msg("* %7.2f[%d] : %11I64u cycles (%.3f microseconds)",fValue,Level().AI.m_tpAStar->m_tpaNodes.size(),t2x,CPU::cycles2microsec*t2x);
+						Msg("* %7.2f[%d] : %11I64u cycles (%.3f microseconds)",fValue,getAI().m_tpAStar->m_tpaNodes.size(),t2x,CPU::cycles2microsec*t2x);
 					}
 			else
 				Msg("! not enough parameters!");
@@ -374,10 +374,10 @@ public:
 	virtual void Execute(LPCSTR args) {
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
-			if (Level().AI.m_tpGraph) {
+			if (getAI().bfCheckIfGraphLoaded()) {
 				u32 id1 = u32(-1);
 				sscanf(args ,"%d",&id1);
-				if (id1 >= Level().AI.m_tpGraph->Header().dwVertexCount)
+				if (id1 >= getAI().GraphHeader().dwVertexCount)
 					Msg("Invalid task ID! (%d)",id1);
 				else {
 					ALife::_GRAPH_ID id = ALife::_GRAPH_ID(id1);

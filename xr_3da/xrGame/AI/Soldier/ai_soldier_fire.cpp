@@ -857,8 +857,8 @@ bool CAI_Soldier::bfCheckForDangerPlace()
 	NodeLink *taLinks = (NodeLink *)((BYTE *)AI_Node + sizeof(NodeCompressed));
 	int iCount = AI_Node->links;
 	for (int i=0; i<iCount; i++) {
-		tpNextNode = Level().AI.Node(Level().AI.UnpackLink(taLinks[i]));
- 		if (Level().AI.bfInsideNode(tpNextNode,AI_Path.TravelPath[AI_Path.TravelStart + 1].P)) {
+		tpNextNode = getAI().Node(getAI().UnpackLink(taLinks[i]));
+ 		if (getAI().bfInsideNode(tpNextNode,AI_Path.TravelPath[AI_Path.TravelStart + 1].P)) {
 			bOk = true;
 			break;
 		}
@@ -898,8 +898,8 @@ bool CAI_Soldier::bfSetLookToDangerPlace()
 	NodeLink *taLinks = (NodeLink *)((BYTE *)AI_Node + sizeof(NodeCompressed));
 	int iCount = AI_Node->links;
 	for (int i=0; i<iCount; i++) {
-		tpNextNode = Level().AI.Node(Level().AI.UnpackLink(taLinks[i]));
- 		if (Level().AI.bfInsideNode(tpNextNode,AI_Path.TravelPath[AI_Path.TravelStart + 1].P)) {
+		tpNextNode = getAI().Node(getAI().UnpackLink(taLinks[i]));
+ 		if (getAI().bfInsideNode(tpNextNode,AI_Path.TravelPath[AI_Path.TravelStart + 1].P)) {
 			bOk = true;
 			break;
 		}
@@ -944,7 +944,7 @@ void CAI_Soldier::vfFindAllSuspiciousNodes(u32 StartNode, Fvector tPointPosition
 	
 	BOOL bStop = FALSE;
 	
-	CAI_Space &AI = Level().AI;
+	CAI_Space &AI = getAI();
 	NodePosition QueryPos;
 	AI.PackPosition(QueryPos,BasePos);
 
@@ -1105,7 +1105,7 @@ void CAI_Soldier::vfClasterizeSuspiciousNodes(CGroup &Group)
 //	m_tpaSuspiciousPoints.resize(N);
 //	m_tpaSuspiciousForces.resize(N);
 //	for (int i=0; i<N; i++) {
-//		m_tpaSuspiciousPoints[i] = Level().AI.tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID);
+//		m_tpaSuspiciousPoints[i] = getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID);
 //		m_tpaSuspiciousForces[i].set(0,0,0);
 //	}
 //	float fK = .05f;
@@ -1143,7 +1143,7 @@ void CAI_Soldier::vfClasterizeSuspiciousNodes(CGroup &Group)
 		if (!Group.m_tpaSuspiciousNodes[i].dwGroup) 
 			Group.m_tpaSuspiciousNodes[i].dwGroup = iGroupCounter;
 		for (int j=0; j<(int)N; j++)
-			if (!Group.m_tpaSuspiciousNodes[j].dwGroup && (Level().AI.ffGetDistanceBetweenNodeCenters(Group.m_tpaSuspiciousNodes[j].dwNodeID,Group.m_tpaSuspiciousNodes[i].dwNodeID) < GROUP_RADIUS))
+			if (!Group.m_tpaSuspiciousNodes[j].dwGroup && (getAI().ffGetDistanceBetweenNodeCenters(Group.m_tpaSuspiciousNodes[j].dwNodeID,Group.m_tpaSuspiciousNodes[i].dwNodeID) < GROUP_RADIUS))
 				Group.m_tpaSuspiciousNodes[j].dwGroup = iGroupCounter;
 	}
 	for ( i=0; i<(int)N; i++)
@@ -1170,7 +1170,7 @@ int CAI_Soldier::ifGetSuspiciousAvailableNode(int iLastIndex, CGroup &Group)
 //				fMin = Group.m_tpaSuspiciousNodes[i].fCost;
 //				Index = i;
 //			}
-			if ((fCost = Level().AI.ffGetDistanceBetweenNodeCenters(Group.m_tpaSuspiciousNodes[i].dwNodeID,dwNodeID)) < fMin) {
+			if ((fCost = getAI().ffGetDistanceBetweenNodeCenters(Group.m_tpaSuspiciousNodes[i].dwNodeID,dwNodeID)) < fMin) {
 				fMin = fCost;
 				Index = i;
 			}
@@ -1189,7 +1189,7 @@ int CAI_Soldier::ifGetSuspiciousAvailableNode(int iLastIndex, CGroup &Group)
 			fMin = Group.m_tpaSuspiciousNodes[i].fCost;
 			Index = i;
 		}
-//		if ((fCost = Level().AI.ffGetDistanceBetweenNodeCenters(Group.m_tpaSuspiciousNodes[i].dwNodeID,dwNodeID)) < fMin) {
+//		if ((fCost = getAI().ffGetDistanceBetweenNodeCenters(Group.m_tpaSuspiciousNodes[i].dwNodeID,dwNodeID)) < fMin) {
 //			fMin = fCost;
 //			Index = i;
 //		}
@@ -1203,7 +1203,7 @@ int CAI_Soldier::ifGetSuspiciousAvailableNode(int iLastIndex, CGroup &Group)
 				fMin = Group.m_tpaSuspiciousNodes[i].fCost;
 				Index = i;
 			}
-//			if ((fCost = Level().AI.ffGetDistanceBetweenNodeCenters(Group.m_tpaSuspiciousNodes[i].dwNodeID,dwNodeID)) < fMin) {
+//			if ((fCost = getAI().ffGetDistanceBetweenNodeCenters(Group.m_tpaSuspiciousNodes[i].dwNodeID,dwNodeID)) < fMin) {
 //				fMin = fCost;
 //				Index = i;
 //			}
@@ -1239,7 +1239,7 @@ void CAI_Soldier::vfMarkVisibleNodes(CEntity *tpEntity)
 	if (!tpCustomMonster)
 		return;
 
-	CAI_Space &AI = Level().AI;
+	CAI_Space &AI = getAI();
 	Fvector tDirection;
 	float /**fFov = tpCustomMonster->ffGetFov()*PI/180.f, /**/fRange = tpCustomMonster->ffGetRange();
 	

@@ -171,8 +171,8 @@ void CAI_Soldier::SetLessCoverLook()
 		NodeLink *taLinks = (NodeLink *)((BYTE *)AI_Node + sizeof(NodeCompressed));
 		int iCount = AI_Node->links;
 		for (int i=0; i<iCount; i++) {
-			tpNextNode = Level().AI.Node(Level().AI.UnpackLink(taLinks[i]));
- 			if (Level().AI.bfInsideNode(tpNextNode,AI_Path.TravelPath[AI_Path.TravelStart + 1].P)) {
+			tpNextNode = getAI().Node(getAI().UnpackLink(taLinks[i]));
+ 			if (getAI().bfInsideNode(tpNextNode,AI_Path.TravelPath[AI_Path.TravelStart + 1].P)) {
 				bOk = true;
 				break;
 			}
@@ -598,10 +598,10 @@ bool CAI_Soldier::bfCheckForVisibility(int iTestNode, SRotation tMyRotation, boo
 //	bool bVisible = fAlpha <= fEyeFov/2.f + EPS_L;
 //	return(bVisible);
 
-	Fvector tDirection, tNodePosition = Level().AI.tfGetNodeCenter(iTestNode);
+	Fvector tDirection, tNodePosition = getAI().tfGetNodeCenter(iTestNode);
 	//float fEyeFov = ffGetFov()*PI/180.f, fEyeRange = ffGetRange();
 	float fEyeRange = ffGetRange();
-	NodeCompressed *tpNode = Level().AI.Node(iTestNode);
+	NodeCompressed *tpNode = getAI().Node(iTestNode);
 
 	tDirection.sub(vPosition,tNodePosition);
 	float fDistance = tDirection.magnitude();
@@ -646,7 +646,7 @@ bool CAI_Soldier::bfCheckForVisibility(int iTestNode, SRotation tMyRotation, boo
 //{
 //	SRotation tRotation;
 //	float fResult0 = 0.f, fResult1 = 0.f, fEyeFov = ffGetFov()*PI/180.f/2.f;
-//	Fvector tPosition = Level().AI.tfGetNodeCenter(dwNodeID), tDirection;
+//	Fvector tPosition = getAI().tfGetNodeCenter(dwNodeID), tDirection;
 //	
 ////	if (bIfRayPick) {
 ////		tDirection.sub(tPosition,vPosition);
@@ -696,7 +696,7 @@ bool CAI_Soldier::bfCheckForVisibility(int iTestNode, SRotation tMyRotation, boo
 //			tDirection.normalize_safe();
 //			mk_rotation(tDirection,tRotation);
 //			
-//			fResult0 = ffGetCoverInDirection(tRotation.yaw,Level().AI.Node(dwNodeID));
+//			fResult0 = ffGetCoverInDirection(tRotation.yaw,getAI().Node(dwNodeID));
 //			if (_min(fResult0,fResult1) > .8f) {
 //				//return(true);
 //				return(Level().ObjectSpace.RayTest(eye_matrix.c,tPosition,fDistance,FALSE) == TRUE);
@@ -715,12 +715,12 @@ bool CAI_Soldier::bfCheckForVisibility(int iTestNode, SRotation tMyRotation, boo
 bool CAI_Soldier::bfCheckForNodeVisibility(u32 dwNodeID, bool bIfRayPick)
 {
 	Fvector tDirection;
-	tDirection.sub(Level().AI.tfGetNodeCenter(dwNodeID),vPosition);
+	tDirection.sub(getAI().tfGetNodeCenter(dwNodeID),vPosition);
 	tDirection.normalize_safe();
 	SRotation tRotation;
 	mk_rotation(tDirection,tRotation);
-	if (Level().AI.bfTooSmallAngle(r_current.yaw,tRotation.yaw,eye_fov*PI/180.f/2.f))
-		return(Level().AI.bfCheckNodeInDirection(AI_NodeID,vPosition,dwNodeID));
+	if (getAI().bfTooSmallAngle(r_current.yaw,tRotation.yaw,eye_fov*PI/180.f/2.f))
+		return(getAI().bfCheckNodeInDirection(AI_NodeID,vPosition,dwNodeID));
 	else
 		return(false);
 }

@@ -8,7 +8,6 @@
 
 #include "stdafx.h"
 #include "LevelGameDef.h"
-#include "ai_space.h"
 #include "ai_pathnodes.h"
 
 using namespace AI;

@@ -34,7 +34,7 @@ IC void projectPoint(const Fplane& PL, Fvector& P)
 //******* PContour unpacking
 void	UnpackContour(CPathNodes::PContour& C, u32 ID)
 {
-	CAI_Space&	AI			= Level().AI;
+	CAI_Space&	AI			= getAI();
 	NodeCompressed* Node	= AI.Node(ID);
 	
 	// decompress positions
@@ -332,7 +332,7 @@ void CPathNodes::BuildTravelLine(const Fvector& current_pos)
 	TravelPath.push_back	(current);
 
 	// end point
-	CAI_Space&	AI			= Level().AI;
+	CAI_Space&	AI			= getAI();
 	Fvector		Last		= AI.tfGetNodeCenter(Nodes.back());
 
 	// segmentation

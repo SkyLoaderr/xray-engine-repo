@@ -145,7 +145,7 @@ void CAI_Zombie::Turn()
 	mRotate.setHPB(m_tHPB.x = -r_torso_current.yaw,m_tHPB.y,m_tHPB.z);
 	UpdateTransform();
 
-	CHECK_IF_GO_TO_PREV_STATE(Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw, PI_DIV_6))
+	CHECK_IF_GO_TO_PREV_STATE(getAI().bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw, PI_DIV_6))
 	
 	INIT_SQUAD_AND_LEADER
 	
@@ -303,7 +303,7 @@ void CAI_Zombie::AttackFire()
 	SRotation sTemp;
 	mk_rotation(tTemp,sTemp);
 	
-	CHECK_IF_GO_TO_NEW_STATE(!Level().AI.bfTooSmallAngle(r_torso_current.yaw,sTemp.yaw,m_fAttackAngle),aiZombieAttackRun)
+	CHECK_IF_GO_TO_NEW_STATE(!getAI().bfTooSmallAngle(r_torso_current.yaw,sTemp.yaw,m_fAttackAngle),aiZombieAttackRun)
 		
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 
@@ -357,7 +357,7 @@ void CAI_Zombie::AttackRun()
 	mk_rotation(tTemp,sTemp);
 
 	if (m_Enemy.Enemy->Position().distance_to(vPosition) <= m_fAttackDistance) {
-		if (Level().AI.bfTooSmallAngle(r_torso_target.yaw, sTemp.yaw,m_fAttackAngle)) {
+		if (getAI().bfTooSmallAngle(r_torso_target.yaw, sTemp.yaw,m_fAttackAngle)) {
 			GO_TO_NEW_STATE_THIS_UPDATE(aiZombieAttackFire);
 		}
 		else {
@@ -366,7 +366,7 @@ void CAI_Zombie::AttackRun()
 		}
 	}
 	else
-		CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,m_fAttackAngle),aiZombieTurn);
+		CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(!getAI().bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,m_fAttackAngle),aiZombieTurn);
 
 	INIT_SQUAD_AND_LEADER;
 	

@@ -7,7 +7,7 @@ class	Selector : public AI::NodeEstimator
 public:
 	virtual	float	Estimate(NodeCompressed* Node, float dist, BOOL& bStop)	// min - best, max - worse
 	{
-		if (Level().AI.u_InsideNode(*Node,*P)) { bStop = TRUE; return 0; }
+		if (getAI().u_InsideNode(*Node,*P)) { bStop = TRUE; return 0; }
 		else return	dist;
 	}
 	Selector(NodePosition*	_P) : P(_P) {};
@@ -26,7 +26,7 @@ void CAI_Space::q_Range_Bit(u32 StartNode, const Fvector& BasePos, float Range, 
 	NodeCompressed*	Base = m_nodes_ptr	[StartNode];
 	BestNode = StartNode;
 	BestCost = MAX_NODE_ESTIMATION_COST;
-	if (!(Level().AI.u_InsideNode(*Base,*QueryPosition))) {
+	if (!(u_InsideNode(*Base,*QueryPosition))) {
 		BestCost = u_SqrDistance2Node(BasePos,Base);
 		float range_sqr		= Range*Range;
 
@@ -54,7 +54,7 @@ void CAI_Space::q_Range_Bit(u32 StartNode, const Fvector& BasePos, float Range, 
 				q_stack.push_back	(Test);
 
 				// estimate
-				if (Level().AI.u_InsideNode(*T,*QueryPosition)) {
+				if (u_InsideNode(*T,*QueryPosition)) {
 					BestCost = 0.f;
 					BestNode = Test;
 				}
@@ -96,7 +96,7 @@ void CAI_Space::q_Range_Bit_X(u32 StartNode, const Fvector& BasePos, float Range
 	NodeCompressed*	Base = m_nodes_ptr	[StartNode];
 	BestNode = StartNode;
 	BestCost = MAX_NODE_ESTIMATION_COST;
-	if (!(Level().AI.u_InsideNode(*Base,*QueryPosition))) {
+	if (!(u_InsideNode(*Base,*QueryPosition))) {
 		BestCost = u_SqrDistance2Node(BasePos,Base);
 		float range_sqr		= Range*Range;
 
@@ -124,7 +124,7 @@ void CAI_Space::q_Range_Bit_X(u32 StartNode, const Fvector& BasePos, float Range
 				q_stack.push_back	(Test);
 
 				// estimate
-				if (Level().AI.u_InsideNode(*T,*QueryPosition)) {
+				if (u_InsideNode(*T,*QueryPosition)) {
 					BestCost = 0.f;
 					BestNode = Test;
 				}

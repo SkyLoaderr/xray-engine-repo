@@ -242,13 +242,13 @@ bool CAI_Rat::bfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForward)
 	u32 dwNewNode = AI_NodeID;
 	NodeCompressed *tpNewNode = AI_Node;
 	NodePosition	QueryPos;
-	Level().AI.PackPosition	(QueryPos,vPosition);
-	if (!AI_NodeID || !Level().AI.u_InsideNode(*AI_Node,QueryPos)) {
-		dwNewNode = Level().AI.q_Node(AI_NodeID,vPosition);
-		tpNewNode = Level().AI.Node(dwNewNode);
+	getAI().PackPosition	(QueryPos,vPosition);
+	if (!AI_NodeID || !getAI().u_InsideNode(*AI_Node,QueryPos)) {
+		dwNewNode = getAI().q_Node(AI_NodeID,vPosition);
+		tpNewNode = getAI().Node(dwNewNode);
 	}
-	if (dwNewNode && Level().AI.u_InsideNode(*tpNewNode,QueryPos)) {
-		vPosition.y = Level().AI.ffGetY(*tpNewNode,vPosition.x,vPosition.z);
+	if (dwNewNode && getAI().u_InsideNode(*tpNewNode,QueryPos)) {
+		vPosition.y = getAI().ffGetY(*tpNewNode,vPosition.x,vPosition.z);
 		m_tOldPosition.set(tSavedPosition);
 		m_bNoWay = false;
 	}
@@ -266,7 +266,7 @@ bool CAI_Rat::bfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForward)
 	UpdateTransform();
 
 	bool m_bResult = false;
-	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
+	if (!getAI().bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
 		m_fSpeed = .1f;
 		if (m_bNoWay)
 			if ((Level().timeServer() - m_dwLastRangeSearch > TIME_TO_RETURN) || (!m_dwLastRangeSearch)) {

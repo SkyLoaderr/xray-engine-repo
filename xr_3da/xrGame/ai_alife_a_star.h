@@ -10,11 +10,9 @@
 
 #include "a_star_template.h"
 #include "a_star_interfaces.h"
-#include "ai_alife_graph.h"
 
-class CALifeAStar : public CALifeGraph {
+class CALifeAStar {
 public:
-	typedef CALifeGraph inherited;
 	SNode													*m_tpHeap;
 	SIndexNode												*m_tpIndexes;
 	u32														m_dwAStarStaticCounter;
@@ -39,19 +37,15 @@ public:
 
 	virtual void							Init()
 	{
-		FILE_NAME							caFileName;
-		strconcat							(caFileName,::Path.GameData,GRAPH_NAME);
-		inherited::Load						(caFileName);
-
-		u32 S1								= (m_tGraphHeader.dwVertexCount + 2)*sizeof(SNode);
+		u32 S1								= (getAI().GraphHeader().dwVertexCount + 2)*sizeof(SNode);
 		m_tpHeap							= (SNode *)xr_malloc(S1);
 		ZeroMemory							(m_tpHeap,S1);
-		u32 S2								= m_tGraphHeader.dwVertexCount*sizeof(SIndexNode);
+		u32 S2								= getAI().GraphHeader().dwVertexCount*sizeof(SIndexNode);
 		m_tpIndexes							= (SIndexNode *)xr_malloc(S2);
 		ZeroMemory							(m_tpIndexes,S2);
 		Msg									("* ALife path-finding structures: %d K",(S1 + S2)/(1024));
-		m_tpGraphPath						= xr_new<CAStarSearch<CAIGraphShortestPathNode,SAIMapDataG> >   (m_tGraphHeader.dwVertexCount + 2);
-		m_tAIGraphData.tpGraph				= this;
+		m_tpGraphPath						= xr_new<CAStarSearch<CAIGraphShortestPathNode,SAIMapDataG> >   (getAI().GraphHeader().dwVertexCount + 2);
+		m_tAIGraphData.tpGraph				= &(getAI());
 	}
 
 	float									ffFindMinimalPath(u32 dwStartNode, u32 dwGoalNode)

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ai_space.h"
+
 class CCustomMonster;
 
 namespace AI

@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "ai_monsters_misc.h"
+#include "..\\ai_space.h"
 #include "..\\custommonster.h"
 #include "..\\actor.h"
 #include "..\\ai_funcs.h"
@@ -229,7 +230,7 @@ void vfGoToPointViaNodes(vector<CPathNodes::CTravelNode> &tpaPath, u32 dwCurNode
 	int iCount, iSavedIndex, iNodeIndex, i;
 	Fvector tTempPoint;
 	CPathNodes::CTravelNode tTravelNode;
-	CAI_Space &AI = Level().AI;
+	CAI_Space &AI = getAI();
 	CPathNodes::PSegment tSegment;
 
 	tpaPath.clear();
@@ -428,7 +429,7 @@ float ffCalcSquare(float fAngle, float fAngleOfView, NodeCompressed *tpNode)
 
 float ffCalcSquare(float fAngle, float fAngleOfView, u32 dwNodeID)
 {
-	return(ffCalcSquare(fAngle, fAngleOfView,Level().AI.Node(dwNodeID)));
+	return(ffCalcSquare(fAngle, fAngleOfView,getAI().Node(dwNodeID)));
 }
 
 float ffGetCoverInDirection(float fAngle, float b0, float b1, float b2, float b3)
@@ -483,7 +484,7 @@ float ffGetCoverInDirection(float fAngle, NodeCompressed *tpNode)
 
 float ffGetCoverInDirection(float fAngle, u32 dwNodeID)
 {
-	return(ffGetCoverInDirection(fAngle, Level().AI.Node(dwNodeID)));
+	return(ffGetCoverInDirection(fAngle, getAI().Node(dwNodeID)));
 }
 
 int ifFindNearestPatrolPoint(vector<Fvector> &tpaVector, const Fvector &tPosition)
@@ -501,13 +502,13 @@ bool bfGetActionSuccessProbability(EntityVec &Members, objVisible &VisibleEnemie
 {
 	int i = 0, j = 0, I = (int)Members.size(), J = (int)VisibleEnemies.size();
 	while ((i < I) && (j < J)) {
-		Level().m_tpAI_DDD->m_tpCurrentMember = dynamic_cast<CEntityAlive *>(Members[i]);
-		if (!(Level().m_tpAI_DDD->m_tpCurrentMember) || !(Level().m_tpAI_DDD->m_tpCurrentMember->g_Alive())) {
+		getAI().m_tpCurrentMember = dynamic_cast<CEntityAlive *>(Members[i]);
+		if (!(getAI().m_tpCurrentMember) || !(getAI().m_tpCurrentMember->g_Alive())) {
 			i++;
 			continue;
 		}
-		Level().m_tpAI_DDD->m_tpCurrentEnemy = dynamic_cast<CEntityAlive *>(VisibleEnemies[j].key);
-		if (!(Level().m_tpAI_DDD->m_tpCurrentEnemy) || !(Level().m_tpAI_DDD->m_tpCurrentEnemy->g_Alive())) {
+		getAI().m_tpCurrentEnemy = dynamic_cast<CEntityAlive *>(VisibleEnemies[j].key);
+		if (!(getAI().m_tpCurrentEnemy) || !(getAI().m_tpCurrentEnemy->g_Alive())) {
 			j++;
 			continue;
 		}
@@ -515,8 +516,8 @@ bool bfGetActionSuccessProbability(EntityVec &Members, objVisible &VisibleEnemie
 		if (fProbability > fMinProbability) {
 			fCurrentProbability = fProbability;
 			for (j++; (i < I) && (j < J); j++) {
-				Level().m_tpAI_DDD->m_tpCurrentEnemy = dynamic_cast<CEntityAlive *>(VisibleEnemies[j].key);
-				if (!(Level().m_tpAI_DDD->m_tpCurrentEnemy) || !(Level().m_tpAI_DDD->m_tpCurrentEnemy->g_Alive())) {
+				getAI().m_tpCurrentEnemy = dynamic_cast<CEntityAlive *>(VisibleEnemies[j].key);
+				if (!(getAI().m_tpCurrentEnemy) || !(getAI().m_tpCurrentEnemy->g_Alive())) {
 					j++;
 					continue;
 				}
@@ -532,8 +533,8 @@ bool bfGetActionSuccessProbability(EntityVec &Members, objVisible &VisibleEnemie
 		else {
 			fCurrentProbability = 1.0f - fProbability;
 			for (i++; (i < I) && (j < J); i++) {
-				Level().m_tpAI_DDD->m_tpCurrentMember = dynamic_cast<CEntityAlive *>(Members[i]);
-				if (!(Level().m_tpAI_DDD->m_tpCurrentMember) || !(Level().m_tpAI_DDD->m_tpCurrentMember->g_Alive())) {
+				getAI().m_tpCurrentMember = dynamic_cast<CEntityAlive *>(Members[i]);
+				if (!(getAI().m_tpCurrentMember) || !(getAI().m_tpCurrentMember->g_Alive())) {
 					i++;
 					continue;
 				}
@@ -581,14 +582,14 @@ u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability, u32 dwTeam, 
 	}
 
 	WRITE_QUERY_TO_LOG("\nNew query");
-	if (bfGetActionSuccessProbability(Members,VisibleEnemies,fMinProbability,Level().m_tpAI_DDD->pfAttackSuccessProbability)) {
+	if (bfGetActionSuccessProbability(Members,VisibleEnemies,fMinProbability,getAI().pfAttackSuccessProbability)) {
 		Group.m_dwLastActionTime = Level().timeServer();
 		Group.m_dwLastAction = 0;
 		WRITE_QUERY_TO_LOG("Attack");
 		return(a1);
 	}
 	else
-		if (bfGetActionSuccessProbability(Members,VisibleEnemies,fMinProbability,Level().m_tpAI_DDD->pfDefendSuccessProbability)) {
+		if (bfGetActionSuccessProbability(Members,VisibleEnemies,fMinProbability,getAI().pfDefendSuccessProbability)) {
 			Group.m_dwLastActionTime = Level().timeServer();
 			Group.m_dwLastAction = 1;
 			WRITE_QUERY_TO_LOG("Defend");

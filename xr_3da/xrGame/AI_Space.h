@@ -8,6 +8,9 @@
 
 #include "group.h"
 #include "..\xrLevel.h"
+#include "ai_funcs.h"
+#include "ai_alife_graph.h"
+#include "ai_alife_cross_table.h"
 
 namespace AI {
 	DEFINE_VECTOR	(u32,						DWORD_VECTOR,			DWORD_IT);
@@ -45,10 +48,9 @@ namespace AI {
 	#define	DEFAULT_ENEMY_VIEW_WEIGHT	100.f
 };
 
-class CALifeGraph;
 class CAStar;
 
-class CAI_Space	: public pureDeviceCreate, pureDeviceDestroy
+class CAI_Space	: public CALifeGraph, public CAI_DDD, public CALifeCrossTable, public pureDeviceCreate, pureDeviceDestroy
 {
 private:
 	// Initial data
@@ -61,29 +63,30 @@ private:
 	Shader*				sh_debug;
 
 public:
-	CALifeGraph			*m_tpGraph;
 	// Query
 	vector<bool>		q_mark_bit;		// temporal usage mark for queries
 	vector<bool>		q_mark_bit_x;		// temporal usage mark for queries
 	vector<BYTE>		q_mark;			// temporal usage mark for queries
 	vector<u32>			q_stack;
 	
-	CAI_Space		();
-	~CAI_Space		();
+						CAI_Space		();
+	virtual				~CAI_Space		();
 
-	void			Load			(LPCSTR name);
-	void			Render			();
+	void				Load			(LPCSTR name);
+	void				Unload			();
+	void				Render			();
 
-	u32				q_Node			(u32 PrevNode,  const Fvector& Pos, bool bShortSearch = false);
-	void			q_Range			(u32 StartNode, const Fvector& BasePos, float Range, AI::NodeEstimator& Estimator, float &fOldCost, u32 dwTimeDifference);
-	void			q_Range			(u32 StartNode, const Fvector& Pos,	float Range,	AI::NodeEstimator& Estimator, float &fOldCost);
-	void			q_Range_Bit		(u32 StartNode, const Fvector& Pos,	float Range,	AI::NodeEstimator& Estimator, float &fOldCost);
-	void			q_Range_Bit		(u32 StartNode, const Fvector& BasePos, float Range, NodePosition* QueryPosition, u32 &BestNode, float &BestCost);
-	void			q_Range_Bit_X	(u32 StartNode, const Fvector& BasePos, float Range, NodePosition* QueryPosition, u32 &BestNode, float &BestCost);
-	int				q_LoadSearch	(const Fvector& Pos);	// <0 - failure
+	u32					q_Node			(u32 PrevNode,  const Fvector& Pos, bool bShortSearch = false);
+	void				q_Range			(u32 StartNode, const Fvector& BasePos, float Range, AI::NodeEstimator& Estimator, float &fOldCost, u32 dwTimeDifference);
+	void				q_Range			(u32 StartNode, const Fvector& Pos,	float Range,	AI::NodeEstimator& Estimator, float &fOldCost);
+	void				q_Range_Bit		(u32 StartNode, const Fvector& Pos,	float Range,	AI::NodeEstimator& Estimator, float &fOldCost);
+	void				q_Range_Bit		(u32 StartNode, const Fvector& BasePos, float Range, NodePosition* QueryPosition, u32 &BestNode, float &BestCost);
+	void				q_Range_Bit_X	(u32 StartNode, const Fvector& BasePos, float Range, NodePosition* QueryPosition, u32 &BestNode, float &BestCost);
+	int					q_LoadSearch	(const Fvector& Pos);	// <0 - failure
 
-	IC	bool			bfCheckIfGraphLoaded()	{return(m_tpGraph != 0);}
-	IC	bool			bfCheckIfMapLoaded()	{return(vfs != 0);}
+	IC	bool			bfCheckIfMapLoaded()		{return(vfs != 0);}
+	IC	bool			bfCheckIfGraphLoaded()		{return(m_tpGraphVFS != 0);}
+	IC	bool			bfCheckIfCrossTableLoaded()	{return(m_tpCrossTableVFS != 0);}
 
 	// a* algorithm		interfaces
 	float				m_fSize2,m_fYSize2;
@@ -181,6 +184,14 @@ public:
 	// Device dependance
 	virtual void	OnDeviceCreate	();
 	virtual void	OnDeviceDestroy	();
+};
+
+static CAI_Space *tpAI_Space = 0;
+IC CAI_Space& getAI()
+{
+	if (!tpAI_Space)
+		 tpAI_Space = xr_new<CAI_Space>();
+	return(*tpAI_Space);
 };
 
 #endif // !defined(AFX_AI_SPACE_H__58DA6D1C_2A38_4242_8327_A4EDF2D8EC0C__INCLUDED_)

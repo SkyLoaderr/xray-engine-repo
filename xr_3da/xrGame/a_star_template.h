@@ -10,6 +10,8 @@
 
 #pragma once
 
+#include "ai_space.h"
+
 #define MAX_VALUE	10000000.f;
 
 #pragma pack(push,4)
