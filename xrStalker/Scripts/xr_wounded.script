@@ -217,7 +217,7 @@ end
 function action_idle:execute ()
     action_base.execute (self)
     if self.object:is_talking () == false then
-       xr_sound.sound_update(self.object, "help")
+       xr_sound.set_sound(self.object, "help")
     end   
     
     if device ():time_global () - self.send_time > 15000 then    
@@ -289,10 +289,10 @@ function action_help:execute ()
     
     if self.object:is_talking () == false then
        if self.object:active_sound_count() == 0 and self.first_sound == true then 
-	      xr_sound.sound_update(self.object, "help_see", true)
+	      xr_sound.set_sound(self.object, "help_see", true)
 	      self.first_sound = false
 	   else    
-	      xr_sound.sound_update(self.object, "help_see")
+	      xr_sound.set_sound(self.object, "help_see")
 	   end   
 	end   
 	
@@ -346,7 +346,7 @@ function action_stand:execute ()
     action_base.execute (self)
     
     if self.stage == 0 then
-       xr_sound.sound_update (self.object, "help_stalker_thanx", true)
+       xr_sound.set_sound (self.object, "help_stalker_thanx", true)
        return
     end
     
@@ -405,7 +405,7 @@ function action_enemy:execute ()
     end
 
 	if self.object:active_sound_count() == 0 then
-		xr_sound.sound_update(self.object, "help_see")		
+		xr_sound.set_sound(self.object, "help_see")		
 	end     
     
     if device ():time_global () - self.send_time > 15000 then    

@@ -63,9 +63,6 @@ function motivator_binder:reinit()
     --' Создание менеджера контроля положений тела
 	self.st.state_mgr = state_mgr.bind_manager(self.object)
 	
-    --' удар в морду
-    --xr_punch.add_to_binder (self.object)   
-
     --' Настройка схемы реакции
 	self.st.reactions = {
 		enabled = true,
@@ -80,20 +77,7 @@ function motivator_binder:reinit()
 		rules = {}
     }
     xr_reactions.add_to_binder(self.object, char_ini)
-    --' Настройка встречи
-    self.st.meet = {
-			Buyer = nil,
-            Seller = self.object,
-            begin_wait_to_see = { time = 300,
-                                begin = nil },
-            enabled = true,
-            over = false,
-            actor = nil,
-            noweap = false,			--' игнорируем наличие оружия у актора
-            distance = 15,			--' расстояние, в пределах которого мы реагируем
-            shoot_distance = 5		--' расстояние, в пределах которого мы стреляем
-        }  
-	xr_meet.add_to_binder(self.object, char_ini)
+
 	--' Компаньон
 	xr_assistance.add_to_binder(self.object)		
 //	--' помощник, мля !!!

@@ -302,6 +302,7 @@ function add_to_binder(object, char_ini)
 	properties["weapon"]		= xr_evaluators_id.stohe_meet_base + 2
 	properties["state_talk"]	= xr_evaluators_id.stohe_meet_base + 3
 	properties["need_exit"]		= xr_evaluators_id.stohe_meet_base + 4
+	properties["wound"]         = xr_evaluators_id.sidor_wounded_base + 1
 
 	operators["wait_trade"]			= xr_actions_id.stohe_meet_base + 1
 	operators["weapon"]				= xr_actions_id.stohe_meet_base + 2
@@ -319,6 +320,7 @@ function add_to_binder(object, char_ini)
 	local action = action_meet_wait (object:name(),"action_meet_wait", db.storage[object:id()].meet, char_ini)
 	action:add_precondition		(world_property(stalker_ids.property_alive, true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
+	action:add_precondition		(world_property(properties["wound"],		false))
 	action:add_precondition		(world_property(properties["contact"], 		true))
 	action:add_precondition		(world_property(properties["weapon"], 		false))
 	action:add_effect 			(world_property(properties["contact"], 		false))
@@ -327,6 +329,7 @@ function add_to_binder(object, char_ini)
 	action = action_weapon (object:name(),"action_weapon", db.storage[object:id()].meet)
 	action:add_precondition		(world_property(stalker_ids.property_alive, true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
+	action:add_precondition		(world_property(properties["wound"],		false))
 	action:add_precondition		(world_property(properties["contact"], 		true))
 	action:add_precondition		(world_property(properties["weapon"], 		true))
 	action:add_effect 		(world_property(properties["weapon"], 			false))
@@ -352,15 +355,6 @@ function add_to_binder(object, char_ini)
 	action = manager:action (xr_actions_id.alife)	
 	action:add_precondition		(world_property(properties["contact"],		false))
 	action:add_precondition		(world_property(properties["state_talk"],	false))
-
-    if char_ini ~= nil and char_ini:section_exist("meet") == true then
-        if char_ini:line_exist("meet", "enabled") == true then
-                db.storage[object:id()].meet.enabled = char_ini:r_bool("meet", "enabled")
-        end
-        if char_ini:line_exist("meet", "noweap") == true then
-                db.storage[object:id()].meet.noweap = char_ini:r_bool("meet", "noweap")
-        end
-    end
 end
 
 function override_meet(npc, flag)
@@ -427,6 +421,19 @@ function set_actor_dialogs(npc, ini, name, dialog_section)
 	end
 end
 
+------------
+function set_meet(object, ini, scheme, section)
+	local st = xr_logic.assign_storage_and_bind (object, ini, scheme, section)
+
+    st.Seller = object
+    st.begin_wait_to_see = { time = 300, begin = nil }
+    st.over = false
+    st.noweap = utils.cfg_get_bool(ini, section, "meet_notreat", object, false)
+	st.distance = 15   
+	st.shoot_distance = 5
+	
+    st.enabled = true -- added by Zmey
+end
 function disable_scheme(npc, scheme)
 	db.storage[npc:id()].actor_dialogs = nil
 	db.storage[npc:id()].actor_disable = nil
