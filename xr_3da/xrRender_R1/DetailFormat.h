@@ -88,6 +88,8 @@ struct DetailSlot					// was(4+4+3*4+2 = 22b), now(8+2*4=16b)
 	u64				c_b		:	4;	// 64	// rgb = 4.4.4
 	DetailPalette	palette [4];
 public:
+	enum			{	ID_Empty	= 0x3f	};
+public:
 	void			w_ybase		(float v)				{	s32	_v = iFloor((v + 200)/.2f);	clamp(_v,0,4095); y_base = _v;	}
 	float			r_ybase		()						{	return float(y_base)*.2f - 200.f;								}
 	void			w_yheight	(float v)				{	s32	_v = iFloor(v / .05f); clamp(_v,0,255); y_height = _v;		}
