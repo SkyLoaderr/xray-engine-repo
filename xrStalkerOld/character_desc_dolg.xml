@@ -32,7 +32,7 @@
 <!---------------------------DOLG REGULAR----------------------->
 	<specific_character id="dolg_regular_default1" team_default = "1">
 		<name>Cталкер группировки "Долг"</name>
-		<icon x="28" y="4"></icon>
+		<icon x="8" y="2"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
 
@@ -44,14 +44,14 @@
 		<rank>40</rank>
 		<reputation>20</reputation>
 
-		<visual>actors\dolg\stalker_do_mask</visual>
+		<visual>actors\dolg\stalker_do_antigas</visual>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
 			ammo_9x18_pmm = 1 \n
             ammo_9x18_fmj = 1\n
-			wpn_toz34 \n
-			ammo_12x70_buck = 1\n
+			wpn_spas12 \n
+			ammo_12x70_buck \n
 			device_torch \n
 		</supplies>
 
@@ -64,7 +64,7 @@
 
 	<specific_character id="dolg_regular_default2" team_default = "1">
 		<name>Сталкер группировки "Долг"</name>
-		<icon x="8" y="2"></icon>
+		<icon x="28" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
 
@@ -77,14 +77,15 @@
 		<rank>40</rank>
 		<reputation>20</reputation>
 
-		<visual>actors\dolg\stalker_do_antigas</visual>
+		<visual>actors\dolg\stalker_do_balon_8</visual>
 		<supplies>
 			[spawn] \n
             wpn_fort \n
 			ammo_9x18_pmm = 1 \n
             ammo_9x18_fmj = 1\n
-			wpn_mp5 \n
-			ammo_9x19_pbp = 1 \n
+			wpn_spas12 \n
+			ammo_12x76_zhekan \n
+			device_torch \n
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -93,6 +94,40 @@
 		<actor_dialog>gar_dolg_acces</actor_dialog>
 		<actor_dialog>gar_dolg_about</actor_dialog>	
 	</specific_character>
+
+	<specific_character id="dolg_regular_default3" team_default = "1">
+		<name>Сталкер группировки "Долг"</name>
+		<icon x="28" y="4"></icon>
+		<map_icon x="4" y="0"></map_icon>
+		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
+
+		<team>Dolg_regular</team>
+		
+		<class>Dolg_regular</class>
+		<community>dolg</community>
+
+		
+		<rank>40</rank>
+		<reputation>20</reputation>
+
+		<visual>actors\dolg\stalker_do_balon_80</visual>
+		<supplies>
+			[spawn] \n
+            wpn_fort \n
+			ammo_9x18_pmm = 1 \n
+            ammo_9x18_fmj = 1\n
+            wpn_spas12 \n
+			ammo_12x76_dart \n
+			device_torch \n
+		</supplies>
+
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+		<actor_dialog>gar_dolg_acces</actor_dialog>
+		<actor_dialog>gar_dolg_about</actor_dialog>	
+	</specific_character>
+
 <!---------------------------DOLG SNIPER---------------------->
 	<specific_character id="dolg_sniper_default1" team_default = "1">
 		<name>Сталкер группировки "Долг"</name>
