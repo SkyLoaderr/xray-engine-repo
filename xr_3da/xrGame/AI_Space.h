@@ -101,7 +101,6 @@ typedef struct tagSAIMapDataF {
 
 class CAIMapTemplateNode {
 public:
-	SAIMapData	tData;
 	float		x1;
 	float		y1;
 	float		z1;
