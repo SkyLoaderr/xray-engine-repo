@@ -199,7 +199,7 @@ bool CInventory::Take(CGameObject *pObj) {
 					return true;
 				} else*/
 				if(m_slots[l_pIItem->m_slot].m_pIItem->Attach(l_pIItem)) {
-					m_ruck.erase(find(m_ruck.begin(), m_ruck.end(), l_pIItem));
+					m_ruck.erase(std::find(m_ruck.begin(), m_ruck.end(), l_pIItem));
 					return true;
 				} else if(m_ruck.size() > m_maxRuck || !l_pIItem->m_ruck) {
 					if(Belt(l_pIItem)) return true;

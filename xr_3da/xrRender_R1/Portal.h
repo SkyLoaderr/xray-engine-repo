@@ -90,7 +90,7 @@ public:
 	{	tempObjects.push_back	(O); }
 	void					tempRemove	(CTempObject* O)
 	{
-		xr_vector<CTempObject*>::iterator I = find(tempObjects.begin(),tempObjects.end(),O);
+		xr_vector<CTempObject*>::iterator I = std::find(tempObjects.begin(),tempObjects.end(),O);
 		if (I!=tempObjects.end()) tempObjects.erase(I);
 	}
 
