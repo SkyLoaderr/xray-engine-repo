@@ -319,6 +319,61 @@ BOOL CHOM::visible		(Fbox& B)
 	return _visible		(B);
 }
 
+BOOL CHOM::visible		(vis_data& vis)
+{
+	if (Device.dwFrame<vis.frame_hom)	return TRUE;	// not at this time :)
+	if (0==m_pModel) {
+		vis.hom_frame	= u32	(-1);					// delay testing as much as possible
+		return TRUE;									// return - everything visible
+	}
+	
+	// Now, the test time comes
+	// 0. The object was hidden, and we must prove that each frame	- test		| frame-old, tested-new, hom_res = false;
+	// 1. The object was visible, but we must to re-check it		- test		| frame-new, tested-???, hom_res = true;
+	// 2. New object slides into view								- delay test| frame-old, tested-old, hom_res = ???;
+	u32 frame_current	= Device.dwFrame;
+	u32	frame_prev		= frame_current-1;
+	if (vis.frame<frame_prev)
+	{
+		// either [0] or [2]
+		if (vis.hom_tested<frame_prev)
+		{
+			// [2]
+			// assumming, that it will be rendered this frames, situation will be [1]
+			u32 delay		= ::Random.randI	(3,10);
+			vis.hom_result	= TRUE;
+			vis.hom_frame	= frame_current	+ delay;
+			vis.hom_tested	= frame_current + delay - 1;
+		} else {
+			// [0]
+			vis.hom_result	= _visible	(vis.box);
+
+			// (a) - visible, but last time it was hidden	- shedule to next frame
+			// (b) - invisible								- shedule to next frame
+
+			u32 delay		= 1;
+			vis.hom_frame	= frame_current + delay;
+			vis.hom_tested	= frame_current;
+		}
+	} else {
+		// [1]
+		vis.hom_result	= _visible	(vis.box);
+		if (vis.hom_result)
+		{
+			// visible	- delay next test
+			u32 delay		= ::Random.randI	(5,10);
+			vis.hom_frame	= frame_current + delay;
+			vis.hom_tested	= frame_current;
+		} else {
+			// hidden	- shedule to next frame
+			u32 delay		= 1;
+			vis.hom_frame	= frame_current + delay;
+			vis.hom_tested	= frame_current;
+		}
+	}
+	return vis.hom_result;
+}
+
 BOOL CHOM::visible		(sPoly& P)
 {
 	if (0==m_pModel)	return TRUE;

@@ -40,6 +40,7 @@ void		CRender::L_select			(Fvector &pos, float fRadius, vector<xrLIGHT*>& dest)
 
 void		CRender::flush				()					{ flush_Models();									}
 
+BOOL		CRender::occ_visible		(vis_data& P)		{ return HOM.visible(P);							}
 BOOL		CRender::occ_visible		(sPoly& P)			{ return HOM.visible(P);							}
 BOOL		CRender::occ_visible		(Fbox& P)			{ return HOM.visible(P);							}
 
@@ -636,7 +637,6 @@ void	CRender::Render		()
 	Device.Statistic.RenderDUMP_HUD.Begin	();
 	pCreator->pHUD->Render_Affected			();
 	Device.Statistic.RenderDUMP_HUD.End		();
-	HOM.Debug				();
 
 	// Patches
 	if (vecPatches.size())  {

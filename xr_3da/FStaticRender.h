@@ -141,8 +141,9 @@ public:
 	virtual void					model_Delete			(CVisual* &V);
 	
 	// Occlusion culling
-	virtual BOOL					occ_visible				(Fbox&	B);
-	virtual BOOL					occ_visible				(sPoly& P);
+	virtual BOOL					occ_visible				(vis_data&	V);
+	virtual BOOL					occ_visible				(Fbox&		B);
+	virtual BOOL					occ_visible				(sPoly&		P);
 	
 	// Main
 	virtual void					Calculate				();

@@ -90,8 +90,9 @@ public:
 	virtual void					model_Delete			(CVisual* &V)					= 0;
 
 	// Occlusion culling
-	virtual BOOL					occ_visible				(Fbox&	B)						= 0;
-	virtual BOOL					occ_visible				(sPoly& P)						= 0;
+	virtual BOOL					occ_visible				(vis_data&	V)					= 0;
+	virtual BOOL					occ_visible				(Fbox&		B)					= 0;
+	virtual BOOL					occ_visible				(sPoly&		P)					= 0;
 
 	// Main
 	virtual void					Calculate				()								= 0;
