@@ -262,7 +262,9 @@ void CApplication::LoadBegin()
 	ll_dwReference++;
 	if (1==ll_dwReference) {
 		ll_hVS		= Device.Shader._CreateVS	(FVF::F_TL);
-		ll_hLogo	= Device.Shader.Create		("font","ui\\logo",false);
+		ll_hLogo1	= Device.Shader.Create		("font","ui\\logo");
+		ll_hLogo2	= Device.Shader.Create		("font","ui\\ui_logo_nv");
+		ll_hLogo	= ll_hLogo1;
 	}
 }
 
@@ -270,12 +272,13 @@ void CApplication::LoadEnd()
 {
 	ll_dwReference--;
 	if (0==ll_dwReference) {
-		Device.Shader.Delete	(ll_hLogo);
+		Device.Shader.Delete	(ll_hLogo2);
+		Device.Shader.Delete	(ll_hLogo1);
 		Device.Shader._DeleteVS	(ll_hVS);
 	}
 }
 
-void CApplication::LoadTitle(char *S, char *S2)
+void CApplication::LoadTitle	(char *S, char *S2)
 {
 	VERIFY(ll_dwReference);
 
@@ -283,10 +286,10 @@ void CApplication::LoadTitle(char *S, char *S2)
 
 	// Draw logo
 	DWORD	Offset;
-	DWORD	C	= 0xffffffff;
-	DWORD	_w	= Device.dwWidth;
-	DWORD	_h	= Device.dwHeight;
-	FVF::TL* pv = (FVF::TL*) Device.Streams.Vertex.Lock(4,ll_hVS->dwStride,Offset);
+	DWORD	C						= 0xffffffff;
+	DWORD	_w						= Device.dwWidth;
+	DWORD	_h						= Device.dwHeight;
+	FVF::TL* pv						= (FVF::TL*) Device.Streams.Vertex.Lock(4,ll_hVS->dwStride,Offset);
 	pv->set(0, float(_h), 1, 1, C, 0, 1);			pv++;
 	pv->set(0, 0, 1, 1, C, 0, 0);					pv++;
 	pv->set(float(_w), float(_h), 1, 1, C, 1, 1);	pv++;
@@ -309,6 +312,12 @@ void CApplication::LoadTitle(char *S, char *S2)
 	pFont->OnRender();
 
 	Device.End	();
+}
+
+void CApplication::LoadSwitch()
+{
+	if (ll_hLogo == ll_hLogo1)	ll_hLogo = ll_hLogo2;
+	else						ll_hLogo = ll_hLogo1;
 }
 
 void CApplication::OnFrame( )
@@ -342,6 +351,7 @@ void CApplication::Level_Scan()
 		}
 	}
 }
+
 void CApplication::Level_Set(DWORD L)
 {
 	if (L>=Levels.size()) return;

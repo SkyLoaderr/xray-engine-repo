@@ -18,6 +18,8 @@ class ENGINE_API CApplication	:
 	
 private:
 	Shader*					ll_hLogo;
+	Shader*					ll_hLogo1;
+	Shader*					ll_hLogo2;
 	CVS*					ll_hVS;
 	DWORD					ll_dwReference;
 private:
@@ -40,6 +42,7 @@ public:
 	void					LoadBegin			();
 	void					LoadEnd				();
 	void					LoadTitle			(char* S, char *S2=NULL);
+	void					LoadSwitch			();
 
 	virtual	void			OnEvent				(EVENT E, DWORD P1, DWORD P2);
 
