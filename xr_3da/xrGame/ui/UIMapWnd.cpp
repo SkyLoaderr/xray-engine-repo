@@ -77,31 +77,31 @@ Irect CUICustomMap::ConvertRealToLocal  (const Fvector2& src)// meters->pixels (
 
 void CUICustomMap::FitToWidth	(u32 width)
 {
-	float k = m_BoundRect.width()/m_BoundRect.height();
-	int w = width;
-	int h = iFloor(k*width);
-	SetWndRect(0,0,w,h);
+	float k			= m_BoundRect.width()/m_BoundRect.height();
+	int w			= width;
+	int h			= iFloor(k*width);
+	SetWndRect		(0,0,w,h);
 	
-	m_zoom_factor = m_BoundRect.width()/w;
+	m_zoom_factor	= w/m_BoundRect.width();
 }
 
 void CUICustomMap::FitToHeight	(u32 height)
 {
-	float k = m_BoundRect.width()/m_BoundRect.height();
-	int h = height;
-	int w = iFloor(k*height);
-	SetWndRect(0,0,w,h);
+	float k			= m_BoundRect.width()/m_BoundRect.height();
+	int h			= height;
+	int w			= iFloor(k*height);
+	SetWndRect		(0,0,w,h);
 	
-	m_zoom_factor = m_BoundRect.height()/h;
+	m_zoom_factor	= h/m_BoundRect.height();
 }
 
 void CUICustomMap::OptimalFit(const Irect& r)
 {
-	float kBound	= m_BoundRect.width()/m_BoundRect.height();
-	if( kBound>0 )
-		FitToHeight(	r.height()	);
+	float k			= m_BoundRect.width()/m_BoundRect.height();
+	if ((m_BoundRect.height()/r.height())<(m_BoundRect.width()/r.width()))
+		FitToHeight	(r.height());
 	else
-		FitToWidth(		r.width()	);
+		FitToWidth	(r.width());
 
 }
 
@@ -339,8 +339,8 @@ void CUIMapWnd::SetActiveMap			(shared_str level_name)
 	m_UILevelFrame.BringToTop	(m_GlobalMap);
 
 	// set scroll range
-	m_UIMainScrollV.SetRange	(0,m_activeLevelMap->GetHeight()-m_UILevelFrame.GetHeight());
-	m_UIMainScrollH.SetRange	(0,m_activeLevelMap->GetWidth()-m_UILevelFrame.GetWidth());
+	m_UIMainScrollV.SetRange	(0,_max(m_activeLevelMap->GetHeight()-m_UILevelFrame.GetHeight(),0));
+	m_UIMainScrollH.SetRange	(0,_max(m_activeLevelMap->GetWidth()-m_UILevelFrame.GetWidth(),0));
 	m_UIMainScrollV.SetScrollPos(0);
 	m_UIMainScrollH.SetScrollPos(0);
 }
