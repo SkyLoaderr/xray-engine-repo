@@ -222,7 +222,6 @@ void CAI_Stalker::net_Destroy()
 	CInventoryOwner::net_Destroy		();
 	CScriptBinder::net_Destroy			();
 	m_pPhysics_support->in_NetDestroy	();
-	CSoundPlayer::Init					();
 
 	xr_delete							(m_ce_close);
 	xr_delete							(m_ce_far);

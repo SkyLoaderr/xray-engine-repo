@@ -14,22 +14,28 @@
 
 CSoundPlayer::CSoundPlayer			()
 {
-	Init				();
+	init							();
 }
 
 CSoundPlayer::~CSoundPlayer			()
 {
-	while (!m_sounds.empty())
-		remove			(m_sounds.begin()->first);
+	clear							();
 }
 
-void CSoundPlayer::Init				()
+void CSoundPlayer::clear			()
+{
+	while (!m_sounds.empty())
+		remove						(m_sounds.begin()->first);
+}
+
+void CSoundPlayer::init				()
 {
 	seed							(u32(CPU::GetCycleCount() & 0xffffffff));
 }
 
 void CSoundPlayer::reinit			()
 {
+	clear							();
 }
 
 void CSoundPlayer::reload			(LPCSTR section)

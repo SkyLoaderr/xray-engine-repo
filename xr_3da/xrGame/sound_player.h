@@ -105,14 +105,16 @@ private:
 			void	remove_inappropriate_sounds(u32 sound_mask);
 			void	update_playing_sounds	();
 			bool	check_sound_legacy		(u32 internal_type) const;
+			void	init					();
+
 public:
 					CSoundPlayer			();
 	virtual			~CSoundPlayer			();
-			void	Init					();
 	virtual	void	reinit					();
 	virtual	void	reload					(LPCSTR section);
 			u32		add						(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 priority, u32 mask, u32 internal_type, LPCSTR bone_name, LPCSTR head_anim = 0);
 			void	remove					(u32 internal_type);
+			void	clear					();
 			void	play					(u32 internal_type, u32 max_start_time = 0, u32 min_start_time = 0, u32 max_stop_time = 0, u32 min_stop_time = 0, u32 id = u32(-1));
 			void	update					(float time_delta);
 	IC		void	set_sound_mask			(u32 sound_mask);
