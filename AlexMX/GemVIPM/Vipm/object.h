@@ -7,6 +7,8 @@
  * below is included in the resulting source code, for example:
  * "Portions Copyright (C) Tom Forsyth, 2001"
  */
+#ifndef objectH
+#define objectH
 
 #include "TomsD3DLib.h"
 
@@ -39,18 +41,6 @@ extern int g_iMaxNumTrisDrawn;
 extern BOOL g_bOptimiseVertexOrder;
 extern BOOL g_bShowVIPMInfo;
 extern BOOL g_bUseFastButBadOptimise;
-
-
-// Set to 1 to allow the progress bars, or 0 if the libraries
-// are unavailable or something.
-#define ALLOW_PROGRESS_BARS 1
-
-
-#if ALLOW_PROGRESS_BARS
-extern HWND g_hWndApp;					// The main app window - app must fill this in.
-#endif
-
-
 
 struct STDVERTEX
 {
@@ -535,10 +525,4 @@ struct ObjectInstance
 
 };
 
-
-
-
-
-
-
-
+#endif // objectH

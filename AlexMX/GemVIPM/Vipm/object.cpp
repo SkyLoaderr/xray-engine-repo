@@ -26,68 +26,6 @@ BOOL g_bUseFastButBadOptimise = TRUE;
 int g_iSkiplistMinCollapsesPerLevel = 10;
 float g_fSkiplistMinCollapseFraction = 0.25f;
 
-#if ALLOW_PROGRESS_BARS
-HWND g_hProgress1 = NULL;		// Progress bar 1
-HWND g_hProgress2 = NULL;		// Progress bar 2.
-HWND g_hProgressWindow = NULL;	// Window that holds both bars.
-HWND g_hWndApp = NULL;			// The main app window.
-
-
-void CreateProgressBars ( void )
-{
-	return;
-	if ( g_hProgressWindow == NULL )
-	{
-		ASSERT ( g_hProgress1 == NULL );
-		ASSERT ( g_hProgress2 == NULL );
-		ASSERT ( g_hWndApp != NULL );
-
-		g_hProgressWindow =
-			CreateDialog ( (HINSTANCE)GetWindowLong( g_hWndApp, GWL_HINSTANCE ),
-							MAKEINTRESOURCE ( IDD_PROGRESS ),
-							g_hWndApp,
-							NULL );
-
-		ASSERT ( g_hProgressWindow != NULL );
-		DWORD dwError = GetLastError();
-
-		g_hProgress1 = GetDlgItem ( g_hProgressWindow, IDC_PROGRESS1 );
-		ASSERT ( g_hProgress1 != NULL );
-		g_hProgress2 = GetDlgItem ( g_hProgressWindow, IDC_PROGRESS2 );
-		ASSERT ( g_hProgress2 != NULL );
-
-		ShowWindow ( g_hProgressWindow, SW_SHOWNORMAL );
-	}
-}
-
-void BinProgressBars ( void )
-{
-	if ( g_hProgressWindow != NULL )
-	{
-		ASSERT ( g_hProgress1 != NULL );
-		ASSERT ( g_hProgress2 != NULL );
-
-		DestroyWindow ( g_hProgressWindow );
-
-		g_hProgressWindow = NULL;
-		g_hProgress1 = NULL;
-		g_hProgress2 = NULL;
-	}
-}
-
-
-#else //#if ALLOW_PROGRESS_BARS
-
-void CreateProgressBars ( void ){}
-void BinProgressBars ( void ) {}
-
-#endif //#else //#if ALLOW_PROGRESS_BARS
-
-
-
-
-
-
 char *VIPMTypeName ( VIPMTypeEnum type )
 {
 	switch ( type )
@@ -102,19 +40,12 @@ char *VIPMTypeName ( VIPMTypeEnum type )
 	}
 }
 
-
-
 // Call this to reorder the tris in this trilist to get good vertex-cache coherency.
 // *pwList is modified (but obviously not changed in size or memory location).
 void OptimiseVertexCoherencyTriList ( WORD *pwList, int iHowManyTris );
 
 // Finds the weighted average number of verts read when rendering this list.
 float GetNumVerticesLoadedTriList ( WORD *pwList, int iHowManyTris );
-
-// Tuning gubbins.
-void TuneValenceScores ( WORD *pwList, int iHowManyTris );
-
-
 
 Object::Object()
 {
@@ -1452,24 +1383,6 @@ void OMSlidingWindow::Update ( void )
 
 	int iMaxSlidingWindowLevel = iCurSlidingWindowLevel;
 
-
-#if ALLOW_PROGRESS_BARS
-	CreateProgressBars();
-	if ( g_hProgress1 != NULL )
-	{
-		// Set min to 0, max to whatever
-		SendMessage ( g_hProgress1, PBM_SETRANGE, 0, MAKELPARAM ( 0, iMaxSlidingWindowLevel + 1 ) ); 
-		// Set step increment to 1.
-		SendMessage ( g_hProgress1, PBM_SETSTEP, (WPARAM) 1, 0 ); 
-		// Start it at 0.
-		SendMessage ( g_hProgress1, PBM_SETPOS, 0, 0 ); 
-	}
-#else
-	ASSERT ( g_hProgress1 == NULL );
-#endif //#if ALLOW_PROGRESS_BARS
-
-
-    
 	while ( TRUE )
 	{
 		// Now we go through the collapses for this level, undoing them.
@@ -1636,23 +1549,6 @@ void OMSlidingWindow::Update ( void )
 		}
 		ASSERT ( iJustCheckingNumTris == iCurNumTris );
 
-
-#if 0
-		// Some tuning - uncoment this to tune for caches and things like that.
-		// Note! Never returns!
-		TuneValenceScores ( wTempIndices.Ptr(), iTempTriNum );
-#endif
-
-
-#if ALLOW_PROGRESS_BARS
-		if ( g_hProgress1 != NULL )
-		{
-			// Step one.
-			SendMessage ( g_hProgress1, PBM_STEPIT, 0, 0 );
-		}
-#endif
-
-
 		// Now try to order them as best you can.
 		if ( g_bOptimiseVertexOrder )
 		{
@@ -1662,9 +1558,6 @@ void OMSlidingWindow::Update ( void )
 		// And write them to the index list.
 		wIndices.CopyFrom ( iCurTriBinned * 3, wTempIndices, 0, 3 * iTempTriNum );
 		//memcpy ( wIndices.Item ( iCurTriBinned * 3 ), wTempIndices.Ptr(), sizeof(WORD) * 3 * iTempTriNum );
-
-
-
 
 		if ( pObj->pNextCollapse->ListNext() == NULL )
 		{
@@ -1686,12 +1579,6 @@ void OMSlidingWindow::Update ( void )
 
 	hres = pVB->Unlock();
 	ASSERT ( SUCCEEDED ( hres ) );
-
-
-#if ALLOW_PROGRESS_BARS
-	BinProgressBars();
-#endif
-
 
 	// And now check everything is OK.
 	ASSERT ( swrRecords.Size() == iNumCollapses + 1 );
@@ -3454,18 +3341,6 @@ float FindBestScore ( int iCountdown, float fCurrentScore, float fInputBestSoFar
 			TRACE ( "Countdown %i\n", iCountdown );
 #endif
 
-
-#if ALLOW_PROGRESS_BARS
-			if ( g_hProgress2 != NULL )
-			{
-				// Step one.
-				SendMessage ( g_hProgress2, PBM_STEPIT, 0, 0 );
-			}
-#endif
-
-
-			//ASSERT ( fScore < 1e9 );
-
 			//fNewBestScore = FindBestScore ( iCountdown - 1, fScore, 1e10, pwIndices + 3, iNumTris - 1, pwResult + 3 );
 			fNewBestScore = FindBestScore ( iCountdown - 1, fScore, 1e10, ppstCurTris + 1, iNumTris - 1, pwResult + 3 );
 
@@ -3538,25 +3413,6 @@ void OptimiseVertexCoherencyTriList ( WORD *pwList, int iHowManyTris )
 	// Find current score (probably rubbish).
 	float fCurrentScore = GetNumVerticesLoadedTriList ( pwList, iHowManyTris );
 #endif
-
-
-
-#if ALLOW_PROGRESS_BARS
-	if ( g_hProgress2 != NULL )
-	{
-		// Set min to 0, max to whatever
-		SendMessage ( g_hProgress2, PBM_SETRANGE, 0, MAKELPARAM ( 0, iHowManyTris ) ); 
-		// Set step increment to 1.
-		SendMessage ( g_hProgress2, PBM_SETSTEP, (WPARAM) 1, 0 ); 
-		// Start it at 0.
-		SendMessage ( g_hProgress2, PBM_SETPOS, 0, 0 ); 
-	}
-#else
-	ASSERT ( g_hProgress2 == NULL );
-#endif //#if ALLOW_PROGRESS_BARS
-
-
-
 
 	// First scan to find the biggest index.
 	WORD *pwIndex = pwList;
@@ -3683,113 +3539,3 @@ void OptimiseVertexCoherencyTriList ( WORD *pwList, int iHowManyTris )
 	OutputDebugString(aaa);
 	*/
 }
-
-
-// These let me see values in release builds.
-volatile float fDebugBestScore;
-volatile float fDebugPerturbMax;
-volatile int iHowManyTimesRoundTheLoop;
-float fValenceBoostBest[c_iMaxValenceBoost];
-float fValenceBoostVeryBest[c_iMaxValenceBoost];	// This will contain the "final" answer.
-
-
-
-// Fairly expensive, but allows you to tune the valence scores fairly easily - and you only need to do it once.
-// You need to use a pretty high-tri shape, otherwise the subtle differences won't be exposed -
-// it'll pretty quickly get the perfect caching (by chance if nothing else).
-void TuneValenceScores ( WORD *pwList, int iHowManyTris )
-{
-	WORD *pwMyIndex = new WORD [iHowManyTris*3];
-
-	CreateProgressBars();
-
-	memcpy ( pwMyIndex, pwList, iHowManyTris*3 * sizeof ( WORD ) );
-	OptimiseVertexCoherencyTriList ( pwMyIndex, iHowManyTris );
-	float fScoreBest = GetNumVerticesLoadedTriList ( pwMyIndex, iHowManyTris );
-
-	memcpy ( fValenceBoostBest, fValenceBoost, c_iMaxValenceBoost * sizeof ( fValenceBoostBest[0] ) );
-
-	DWORD dwNotVeryRandomAtAll = 0x34290875;
-
-	float fPerturbFactor = 0.5f;	// Pretty quick decay initially.
-	iHowManyTimesRoundTheLoop = 0;
-	while ( TRUE )
-	{
-		float fPerturbMax = 0.25f;
-		while ( TRUE )
-		{
-			memcpy ( pwMyIndex, pwList, iHowManyTris*3 * sizeof ( WORD ) );
-
-			// Perturb some of the scores a bit.
-			for ( int j = 0; j < 2; j++ )
-			{
-				dwNotVeryRandomAtAll += 0x426;
-				dwNotVeryRandomAtAll *= 0x91;
-				dwNotVeryRandomAtAll ^= dwNotVeryRandomAtAll >> 23;
-
-				// Pick a value.
-				int i = ( ( dwNotVeryRandomAtAll >> 20 ) % ( c_iMaxValenceBoost - 1 ) ) + 1;
-
-				dwNotVeryRandomAtAll += 0x94387;
-				dwNotVeryRandomAtAll *= 0x43;
-				dwNotVeryRandomAtAll ^= dwNotVeryRandomAtAll >> 21;
-
-				// And perturb it a bit.
-				float fPerturb = ( dwNotVeryRandomAtAll >> 15 ) / (float)( 1 << 16 ) - 1.0f;
-				fPerturb *= fPerturbMax;
-				fValenceBoost[i] += fPerturb;
-			}
-
-			OptimiseVertexCoherencyTriList ( pwMyIndex, iHowManyTris );
-
-			float fNewScore = GetNumVerticesLoadedTriList ( pwMyIndex, iHowManyTris );
-
-			if ( fScoreBest > fNewScore )
-			{
-				fScoreBest = fNewScore;
-				fDebugBestScore = fScoreBest;
-				memcpy ( fValenceBoostBest, fValenceBoost, c_iMaxValenceBoost * sizeof ( fValenceBoostBest[0] ) );
-			}
-			else
-			{
-				memcpy ( fValenceBoost, fValenceBoostBest, c_iMaxValenceBoost * sizeof ( fValenceBoostBest[0] ) );
-			}
-
-			// A tiny bit less perturbation next time.
-			fPerturbMax *= fPerturbFactor;
-			fDebugPerturbMax = fPerturbMax;
-			// ...and a sensible cutoff.
-			if ( fPerturbMax < 0.01f )
-			{
-				break;
-			}
-		}
-
-		// And then copy the best version to the "final" one.
-		memcpy ( fValenceBoost, fValenceBoostBest, c_iMaxValenceBoost * sizeof ( fValenceBoostBest[0] ) );
-
-
-		// And try again with less perturbation decay this time.
-		fPerturbFactor = ( fPerturbFactor + 1.0f ) * 0.5f;
-		// But store the very best version first.
-		memcpy ( fValenceBoostVeryBest, fValenceBoostBest, c_iMaxValenceBoost * sizeof ( fValenceBoostBest[0] ) );
-
-		iHowManyTimesRoundTheLoop++;
-		// NOTE! This loop never ends - it just keeps trying with less and less decay on the perturbation
-		// until you break out of it with the debugger (after leaving it going overnight or something).
-		// Running it wihtout the debugger there to stop it is a bit silly :-)
-	}
-
-
-	BinProgressBars();
-
-
-	delete[] pwMyIndex;
-
-}
-
-
-
-
-
-
