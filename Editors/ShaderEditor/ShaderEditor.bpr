@@ -5,12 +5,11 @@
     <VERSION value="BCB.06.00"/>
     <PROJECT value="x:\ShaderEditor.exe"/>
     <OBJFILES value="Intermediate\ShaderEditor.obj Intermediate\stdafx.obj 
-      Intermediate\FileSystem.obj Intermediate\D3DUtils.obj 
-      Intermediate\EditMesh.obj Intermediate\EditObjectImport.obj 
-      Intermediate\EditMeshIO.obj Intermediate\EditMeshModify.obj 
-      Intermediate\device.obj Intermediate\EditMeshRender.obj 
-      Intermediate\BottomBar.obj Intermediate\EditorPref.obj 
-      Intermediate\Splash.obj Intermediate\main.obj 
+      Intermediate\D3DUtils.obj Intermediate\EditMesh.obj 
+      Intermediate\EditObjectImport.obj Intermediate\EditMeshIO.obj 
+      Intermediate\EditMeshModify.obj Intermediate\device.obj 
+      Intermediate\EditMeshRender.obj Intermediate\BottomBar.obj 
+      Intermediate\EditorPref.obj Intermediate\Splash.obj Intermediate\main.obj 
       Intermediate\EditObjectIO.obj Intermediate\EditObjectMotions.obj 
       Intermediate\interp.obj Intermediate\Envelope.obj Intermediate\motion.obj 
       Intermediate\bone.obj Intermediate\ColorPicker.obj 
@@ -73,7 +72,7 @@
       Intermediate\CustomObjectMisc.obj Intermediate\du_box.obj 
       Intermediate\du_sphere.obj Intermediate\Blender_Palette.obj 
       Intermediate\ESound_Source.obj Intermediate\R_Backend_xform.obj 
-      Intermediate\Blender_Recorder_R2.obj"/>
+      Intermediate\Blender_Recorder_R2.obj Intermediate\du_cone.obj"/>
     <RESFILES value="ShaderEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -128,7 +127,6 @@
       <FILE FILENAME="resource.res" FORMNAME="" UNITNAME="resource" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="!.txt" FORMNAME="" UNITNAME="!" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="stdafx.cpp" FORMNAME="" UNITNAME="stdafx" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="editor\FileSystem.cpp" FORMNAME="" UNITNAME="FileSystem" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="editor\D3DUtils.cpp" FORMNAME="" UNITNAME="D3DUtils" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="editor\Fmesh.h" FORMNAME="" UNITNAME="Fmesh" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="editor\std_classes.h" FORMNAME="" UNITNAME="std_classes" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -266,6 +264,7 @@
       <FILE FILENAME="Editor\ESound_Source.cpp" FORMNAME="" UNITNAME="ESound_Source" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\R_Backend_xform.cpp" FORMNAME="" UNITNAME="R_Backend_xform.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Blenders\Blender_Recorder_R2.cpp" FORMNAME="" UNITNAME="Blender_Recorder_R2" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\du_cone.cpp" FORMNAME="" UNITNAME="du_cone" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
