@@ -119,7 +119,8 @@ bool CPhraseScript::Precondition	(const CGameObject* pSpeakerGO, LPCSTR dialog_i
 		if(!predicate_result){
 			if (psAI_Flags.test(aiDialogs))
 				Msg("dialog [%s] phrase[%d] rejected by script predicate",dialog_id,phrase_num);
-		} break;
+			break;
+		} 
 	}
 	return predicate_result;
 }
