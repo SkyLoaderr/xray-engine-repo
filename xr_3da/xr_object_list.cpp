@@ -44,10 +44,6 @@ CObject* CObjectList::LoadOne( CInifile *ini, const char* Name )
 	CObject* pObject	= (CObject*)NEW_INSTANCE(CLS);
 	pObject->Load		(ini,Name);
 	objects.push_back	(pObject);
-/*
-	if (pObject->dwMinUpdate)	sheduled.Register	(pObject);
-	else						continues.push_back	(pObject);
-*/
 	return pObject;
 }
 
@@ -77,13 +73,6 @@ CObject*	CObjectList::FindObjectByCLS_ID	( CLASS_ID cls )
 	else					return NULL;
 }
 
-DWORD		CObjectList::GetObjectCID( CObject* What )
-{
-	OBJ_IT O=find(objects.begin(),objects.end(),What);
-	VERIFY(O!=objects.end());
-	return O-objects.begin();
-}
-
 VOID CObjectList::DestroyObject	( CObject *pObject )
 {
 	if (0==pObject)	return;
@@ -103,6 +92,11 @@ VOID CObjectList::OnMove	( )
 	for (OBJ_IT O=objects.begin(); O!=objects.end(); O++) 
 		(*O)->UpdateCL();
 	Device.Statistic.UpdateClient.End		();
+}
+
+VOID CObjectList::net_Register	(CObject* O)
+{
+	map_NETID.insert(make_pair(O->net_ID,O));
 }
 
 VOID CObjectList::net_Export	(NET_Packet* Packet)
@@ -127,12 +121,8 @@ VOID CObjectList::net_Import	(NET_Packet* Packet)
 	}
 }
 
-CObject* CObjectList::net_Find	(DWORD ID)
+CObject* CObjectList::net_Find	(u32 ID)
 {
-	for (OBJ_IT O=objects.begin(); O!=objects.end(); O++) 
-	{
-		CObject* P = *O;
-		if (P->net_ID == ID)		return P;
-	}
-	return 0;
+	map<u32,CObject*>::iterator	it = map_NETID.find(ID);
+	return (it==map_NETID.end())?0:it->second;
 }

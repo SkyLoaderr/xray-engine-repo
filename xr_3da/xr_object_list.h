@@ -15,7 +15,7 @@ public:
 
 	// data
 	vector<CObject*>			objects;
-	map<u16,CObject*>			map_NETID;
+	map<u32,CObject*>			map_NETID;
 
 	CSheduler					sheduled;
 
@@ -34,10 +34,11 @@ public:
 	VOID						DestroyObject		( CObject* object );
 
 	VOID						OnMove				( );
-	
+
+	VOID						net_Register		(CObject* O);
 	VOID						net_Export			(NET_Packet* P);
 	VOID						net_Import			(NET_Packet* P);
-	CObject*					net_Find			(DWORD ID);
+	CObject*					net_Find			(u32 ID);
 };
 
 #endif //__XR_OBJECT_LIST_H__
