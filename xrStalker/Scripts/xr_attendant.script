@@ -141,11 +141,11 @@ function action_follow:execute ()
           self.object:set_path_type (game_object.level_path)
           self.object:set_dest_level_vertex_id (vid)
           if vdist > 20 then
-             state_mgr.set_state (self.object, st.animation_sprint)
+             state_mgr.set_state (self.object, self.st.animation_sprint)
           elseif vdist < 3 then
-             state_mgr.set_state (self.object, st.animation_move)
+             state_mgr.set_state (self.object, self.st.animation_move)
           elseif vdist > 5 then
-             state_mgr.set_state (self.object, st.animation_run)
+             state_mgr.set_state (self.object, self.st.animation_run)
           end   
        else
           self.state = 1
