@@ -77,7 +77,7 @@ function action_alive:execute()
 --	self.object:set_item				(object.idle,nil);
 
 	self.object:set_path_type			(game_object.game_path)
-	self.object:set_detail_path_type	(path.line)
+	self.object:set_detail_path_type	(move.line)
 	self.object:set_body_state			(move.standing)
 	self.object:set_movement_type		(move.walk)
 	self.object:set_mental_state		(anim.free)
