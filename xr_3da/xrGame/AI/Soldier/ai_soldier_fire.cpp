@@ -10,6 +10,8 @@
 #include "ai_soldier.h"
 #include "..\\..\\xr_weapon_list.h"
 
+#define	FIRE_SAFETY_ANGLE				PI/10
+
 bool CAI_Soldier::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint) 
 {
 	Fvector tMemberDirection;

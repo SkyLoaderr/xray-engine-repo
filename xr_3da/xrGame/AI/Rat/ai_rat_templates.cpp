@@ -12,6 +12,18 @@
 #include "..\\..\\..\\xr_trims.h"
 #include "..\\..\\xr_weapon_list.h"
 
+// macroses
+#define MIN_RANGE_SEARCH_TIME_INTERVAL	5000.f
+#define MAX_TIME_RANGE_SEARCH			10000.f
+#define	FIRE_ANGLE						PI/10
+#define	FIRE_SAFETY_ANGLE				PI/10
+#define	AMMO_NEED_RELOAD				6
+#define EYE_WEAPON_DELTA				(0*PI/30.f)
+#define MAX_PATROL_DISTANCE				6.f
+#define MIN_PATROL_DISTANCE				1.f
+#define MIN_COVER_MOVE					120
+#define MAX_NEIGHBOUR_COUNT				9
+
 bool CAI_Rat::bfCheckPath(AI::Path &Path) {
 	const vector<BYTE> &q_mark = Level().AI.tpfGetNodeMarks();
 	for (int i=1; i<Path.Nodes.size(); i++) 

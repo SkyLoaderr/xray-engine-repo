@@ -11,6 +11,10 @@
 #include "..\\..\\xr_weapon_list.h"
 #include "..\\..\\actor.h"
 
+#define	MAX_HEAD_TURN_ANGLE				(PI/3.f)
+#define MIN_SPINE_TURN_ANGLE			PI_DIV_6
+#define EYE_WEAPON_DELTA				(0*PI/30.f)
+
 bool CAI_Soldier::bfCheckForVisibility(CEntity* tpEntity)
 {
 	float fResult = 0.f;

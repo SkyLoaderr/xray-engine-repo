@@ -10,6 +10,9 @@
 #include "ai_rat.h"
 #include "..\\..\\xr_weapon_list.h"
 
+#define MIN_SPINE_TURN_ANGLE			PI_DIV_6
+#define	MAX_HEAD_TURN_ANGLE				(PI/3.f)
+
 bool CAI_Rat::bfCheckForVisibility(CEntity* tpEntity)
 {
 	float fResult = 0.f;
@@ -113,61 +116,6 @@ void CAI_Rat::SetLessCoverLook(NodeCompressed *tNode, bool bSpine)
 	}
 	//r_target.pitch = 0;
 	//r_torso_target.pitch = 0;
-}
-
-void CAI_Rat::SetSmartLook(NodeCompressed *tNode, Fvector &tEnemyDirection)
-{
-	Fvector tLeft;
-	Fvector tRight;
-	Fvector tFront;
-	Fvector tBack;
-	tLeft.set(-1,0,0);
-	tRight.set(1,0,0);
-	tFront.set(0,0,1);
-	tBack.set(0,0,-1);
-
-	tEnemyDirection.normalize();
-	
-	/**
-	float fCover = 0;
-	if ((tEnemyDirection.x < 0) && (tEnemyDirection.z > 0)) {
-		float fAlpha = acosf(tEnemyDirection.dotproduct(tFront));
-		fCover = cosf(fAlpha)*tNode->cover[0] + sinf(fAlpha)*tNode->cover[1];
-	}
-	else 
-		if ((tEnemyDirection.x > 0) && (tEnemyDirection.z > 0)) {
-			float fAlpha = acosf(tEnemyDirection.dotproduct(tFront));
-			fCover = cosf(fAlpha)*tNode->cover[1] + sinf(fAlpha)*tNode->cover[2];
-		}
-		else 
-			if ((tEnemyDirection.x > 0) && (tEnemyDirection.z < 0)) {
-				float fAlpha = acosf(tEnemyDirection.dotproduct(tBack));
-				fCover = cosf(fAlpha)*tNode->cover[3] + sinf(fAlpha)*tNode->cover[2];
-			}
-			else 
-				if ((tEnemyDirection.x < 0) && (tEnemyDirection.z < 0)) {
-					float fAlpha = acosf(tEnemyDirection.dotproduct(tBack));
-					fCover = cosf(fAlpha)*tNode->cover[3] + sinf(fAlpha)*tNode->cover[0];
-				}
-				
-				
-				//Msg("%8.2f",fCover);
-	if (fCover > -1.0f*255.f) {
-					/**/
-	//q_look.setup(AI::AIC_Look::Look, AI::t_Direction, &(tEnemyDirection), 1000);
-	mk_rotation(tEnemyDirection,r_torso_target);
-	r_target.yaw = r_torso_target.yaw;
-	ASSIGN_SPINE_BONE;
-	r_torso_target.yaw = r_torso_target.yaw - EYE_WEAPON_DELTA;
-	//r_target.pitch *= -1;
-	q_look.o_look_speed=8*_FB_look_speed;
-	/**
-	}
-	else {
-	SetLessCoverLook(tNode);
-	q_look.o_look_speed=8*_FB_look_speed;
-	}
-	/**/
 }
 
 void CAI_Rat::vfAimAtEnemy()

@@ -136,6 +136,12 @@
 			A -= PI_MUL_2;
 	
 	#define CUBE(x)	((x)*(x)*(x))
+	#define LEFT_NODE(Index)					((Index + 3) & 3)
+	#define RIGHT_NODE(Index)					((Index + 5) & 3)
+	#define NEXT_POINT(m_iCurrentPoint)			(m_iCurrentPoint) == tpaPatrolPoints.size() - 1 ? 0 : (m_iCurrentPoint) + 1
+	#define PREV_POINT(m_iCurrentPoint)			(m_iCurrentPoint) == 0 ? tpaPatrolPoints.size() - 1 : (m_iCurrentPoint) - 1
+	#define COMPUTE_DISTANCE_2D(t,p)			(sqrtf(_sqr((t).x - (p).x) + _sqr((t).z - (p).z)))
+	#define FN(i)								(float(tNode->cover[(i)])/255.f)
 
 	IC float ffGetY(NodeCompressed &tNode, float X, float Z)
 	{

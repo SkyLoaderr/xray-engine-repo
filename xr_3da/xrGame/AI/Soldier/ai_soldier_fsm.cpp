@@ -15,6 +15,8 @@
 #include "..\\..\\..\\3dsound.h"
 #include "..\\..\\..\\xr_trims.h"
 
+#define MAX_PATROL_DISTANCE				6.f
+#define MIN_PATROL_DISTANCE				1.f
 /**
 void CAI_Soldier::AttackFire()
 {

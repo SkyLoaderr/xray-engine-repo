@@ -31,26 +31,6 @@ class CAI_Rat : public CCustomMonster
 
 	protected:
 		
-		// macroses
-		#define MIN_RANGE_SEARCH_TIME_INTERVAL	15000.f
-		#define MAX_TIME_RANGE_SEARCH			150000.f
-		#define	FIRE_ANGLE						PI/10
-		#define	FIRE_SAFETY_ANGLE				PI/10
-		#define LEFT_NODE(Index)				((Index + 3) & 3)
-		#define RIGHT_NODE(Index)				((Index + 5) & 3)
-		#define FN(i)							(float(tNode->cover[(i)])/255.f)
-		#define	AMMO_NEED_RELOAD				6
-		#define	MAX_HEAD_TURN_ANGLE				(PI/3.f)
-		#define EYE_WEAPON_DELTA				(0*PI/30.f)
-		#define TORSO_ANGLE_DELTA				(PI/30.f)
-		#define NEXT_POINT(m_iCurrentPoint)		(m_iCurrentPoint) == tpaPatrolPoints.size() - 1 ? 0 : (m_iCurrentPoint) + 1
-		#define PREV_POINT(m_iCurrentPoint)		(m_iCurrentPoint) == 0 ? tpaPatrolPoints.size() - 1 : (m_iCurrentPoint) - 1
-		#define MAX_PATROL_DISTANCE				6.f
-		#define MIN_PATROL_DISTANCE				1.f
-		#define MIN_SPINE_TURN_ANGLE			PI_DIV_6
-		#define COMPUTE_DISTANCE_2D(t,p)		(sqrtf(_sqr((t).x - (p).x) + _sqr((t).z - (p).z)))
-		#define MIN_COVER_MOVE					120
-		#define MAX_NEIGHBOUR_COUNT				9
 		////////////////////////////////////////////////////////////////////////////
 		// normal animations
 		////////////////////////////////////////////////////////////////////////////
@@ -227,7 +207,6 @@ class CAI_Rat : public CCustomMonster
 		bool bfCheckPath(AI::Path &Path);
 		void SetLessCoverLook(NodeCompressed *tNode, bool bSpine = true);
 		void SetDirectionLook();
-		void SetSmartLook(NodeCompressed *tNode, Fvector &tEnemyDirection);
 		void vfInitSelector(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
 		void vfBuildPathToDestinationPoint(CRatSelectorAttack *S);
 		void vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
