@@ -105,6 +105,7 @@
 		<col def="S0">ISDotNetInstallerArgsRollback</col>
 		<row><td>ClientComponent</td><td>{87AE0266-9EA1-407F-BA65-55E48BF83141}</td><td>TARGETDIR</td><td>0</td><td/><td/><td>51729</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>DefaultComponent</td><td>{39DA26D8-0E02-494D-9EF3-984ED5D4B54C}</td><td>TARGETDIR</td><td>0</td><td/><td/><td>51729</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Files</td><td>{F5918788-2A11-4C76-9DA9-5B076469D650}</td><td>BINN</td><td>0</td><td/><td>xp_indexing.dll</td><td>51729</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ServerComponent</td><td>{5602AF85-FB21-4399-BCAD-C78BA5176006}</td><td>TARGETDIR</td><td>0</td><td/><td/><td>51729</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 	</table>
 
@@ -168,10 +169,13 @@
 		<col def="S255">ISDescription</col>
 		<col def="I4">ISAttributes</col>
 		<col def="S255">ISFolderName</col>
+		<row><td>BINN</td><td>MSSQL</td><td>Binn</td><td/><td>0</td><td/></row>
 		<row><td>COMMONFILES</td><td>PROGRAMFILES</td><td>Common Files</td><td/><td>0</td><td/></row>
 		<row><td>DesktopFolder</td><td/><td>Desktop</td><td/><td>3</td><td/></row>
 		<row><td>FOLDER_FONTS</td><td>WINDIR</td><td>Fonts Folder</td><td/><td>0</td><td/></row>
 		<row><td>ISRUNTIMETEXTSUBS</td><td/><td>Script-defined Folders</td><td/><td>0</td><td/></row>
+		<row><td>MICROSOFT_SQL_SERVER</td><td>COMMONFILES</td><td>Microsoft SQL Server</td><td/><td>0</td><td/></row>
+		<row><td>MSSQL</td><td>MICROSOFT_SQL_SERVER</td><td>MSSQL</td><td/><td>0</td><td/></row>
 		<row><td>PROGRAMFILES</td><td/><td>Program Files</td><td/><td>0</td><td/></row>
 		<row><td>ProgramMenuFolder</td><td/><td>Programs</td><td/><td>3</td><td/></row>
 		<row><td>SUPPORTDIR</td><td/><td>Support Folder</td><td/><td>0</td><td/></row>
@@ -180,6 +184,7 @@
 		<row><td>TARGETDIR</td><td/><td>Application Target Folder</td><td/><td>0</td><td/></row>
 		<row><td>WINDIR</td><td/><td>Windows</td><td/><td>0</td><td/></row>
 		<row><td>WINSYSDIR</td><td>WINDIR</td><td>Windows System</td><td/><td>0</td><td/></row>
+		<row><td>newfolder1</td><td>ProgramMenuFolder</td><td>SHELL_OBJECT_FOLDER</td><td/><td>1</td><td>newfolder1</td></row>
 	</table>
 
 	<table name="Feature">
@@ -208,6 +213,7 @@
 		<col key="yes" def="s72">Component_</col>
 		<row><td>{04C8817B-B642-4D55-9F46-A886BBAC94BE}</td><td>ServerComponent</td></row>
 		<row><td>{AA1539E9-95B9-4AF8-8084-FFDF23D57A6C}</td><td>ClientComponent</td></row>
+		<row><td>{AA1539E9-95B9-4AF8-8084-FFDF23D57A6C}</td><td>Files</td></row>
 		<row><td>{B7857EFB-765E-449F-A928-7ACA9C22FAFB}</td><td>DefaultComponent</td></row>
 	</table>
 
@@ -240,6 +246,7 @@
 		<row><td>trident.gif</td><td>ClientComponent</td><td>trident.gif</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\res\trident.gif</td><td>1</td><td/></row>
 		<row><td>updateclient.exe</td><td>ClientComponent</td><td>UpdateClient.exe</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\setup\UpdateClient.exe</td><td>1</td><td>NewSubFolder4</td></row>
 		<row><td>updateserver.exe</td><td>ServerComponent</td><td>UpdateServer.exe</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\setup\UpdateServer.exe</td><td>1</td><td>NewSubFolder5</td></row>
+		<row><td>xp_indexing.dll</td><td>Files</td><td>xp_indexing.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\res\xp_indexing.dll</td><td>1</td><td/></row>
 	</table>
 
 	<table name="Font">
@@ -272,6 +279,7 @@
 		<col def="S0">Miscellaneous</col>
 		<row><td>ClientComponent</td><td/><td/><td>_4102D33D_43D8_4F2E_8679_B894505F57A5_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>DefaultComponent</td><td/><td/><td>_907897D9_883B_47CF_B1B4_2D5FC092A6DC_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Files</td><td/><td/><td>_F86FEA21_3FB7_4270_BE17_399287B124BE_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ServerComponent</td><td/><td/><td>_40F7C334_2B6E_4108_918C_2807B036C7EA_FILTER</td><td/><td/><td/><td/></row>
 	</table>
 
@@ -737,6 +745,10 @@
 	<table name="ISShortcutComponents">
 		<col key="yes" def="s38">Shortcut_</col>
 		<col key="yes" def="s72">Component_</col>
+		<row><td>NewShortcut1</td><td>ClientComponent</td></row>
+		<row><td>NewShortcut11</td><td>ServerComponent</td></row>
+		<row><td>NewShortcut12</td><td>ServerComponent</td></row>
+		<row><td>NewShortcut13</td><td>DefaultComponent</td></row>
 	</table>
 
 	<table name="ISStorages">
@@ -799,6 +811,20 @@ HgRCBDwENQQ9BDAE
 		<row><td>IDS__DialogId_10203_ControlId_9</td><td>1049</td><td>'@1"!#P$-00]!#`$</td><td>6</td><td/><td>1981329227</td></row>
 		<row><td>ID_STRING1</td><td>1033</td><td>NewFeature1</td><td>0</td><td/><td>1981287670</td></row>
 		<row><td>ID_STRING1</td><td>1049</td><td>NewFeature1</td><td>0</td><td/><td>1981287670</td></row>
+		<row><td>ID_STRING2</td><td>1033</td><td>NewShortcut1</td><td>0</td><td/><td>1981284439</td></row>
+		<row><td>ID_STRING2</td><td>1049</td><td>NewShortcut1</td><td>0</td><td/><td>1981284439</td></row>
+		<row><td>ID_STRING3</td><td>1033</td><td>NewShortcut11</td><td>0</td><td/><td>1981309527</td></row>
+		<row><td>ID_STRING3</td><td>1049</td><td>NewShortcut11</td><td>0</td><td/><td>1981309527</td></row>
+		<row><td>ID_STRING4</td><td>1033</td><td>newfolder1</td><td>0</td><td/><td>1981303415</td></row>
+		<row><td>ID_STRING4</td><td>1049</td><td>newfolder1</td><td>0</td><td/><td>1981303415</td></row>
+		<row><td>ID_STRING5</td><td>1033</td><td>newfolder2</td><td>0</td><td/><td>1981342359</td></row>
+		<row><td>ID_STRING5</td><td>1049</td><td>newfolder2</td><td>0</td><td/><td>1981342359</td></row>
+		<row><td>ID_STRING6</td><td>1033</td><td>NewShortcut2</td><td>0</td><td/><td>1981297015</td></row>
+		<row><td>ID_STRING6</td><td>1049</td><td>xcvx</td><td>0</td><td/><td>1981297015</td></row>
+		<row><td>ID_STRING7</td><td>1033</td><td>NewShortcut12</td><td>0</td><td/><td>1981317815</td></row>
+		<row><td>ID_STRING7</td><td>1049</td><td>NewShortcut12</td><td>0</td><td/><td>1981317815</td></row>
+		<row><td>ID_STRING8</td><td>1033</td><td>NewShortcut13</td><td>0</td><td/><td>1981336279</td></row>
+		<row><td>ID_STRING8</td><td>1049</td><td>NewShortcut13</td><td>0</td><td/><td>1981336279</td></row>
 		<row><td>ID_ST_CLIENT_DESC</td><td>1033</td><td>Description</td><td>0</td><td/><td>1981290123</td></row>
 		<row><td>ID_ST_CLIENT_DESC</td><td>1049</td><td>'00P!"``.@0^!#P$/P1,!$X$0@0U!$`$(`!#!$$$0@0P!#T$,`0R!#L$.`0R!#`$-01"!$$$3P0@`$($/@0[!$P$.@0^!"``/P1`!#X$,P1`!#`$/`0\!#`$(``T!#L$3P0@`#\$0`0^!$$$/`0^!$($0`0P!"``*`!'!$($-00]!#@$3P0I`"``-`0P!#T$/01+!$4$+@``</td><td>76</td><td/><td>1981290123</td></row>
 		<row><td>ID_ST_CLIENT_NAME</td><td>1033</td><td>SetupType1</td><td>0</td><td/><td>1981324875</td></row>
@@ -807,10 +833,16 @@ HgRCBDwENQQ9BDAE
 		<row><td>ID_ST_CLIENT_SERVER_DESC</td><td>1049</td><td>'00P!"``.@0^!#P$/P1,!$X$0@0U!$`$(`!#!$$$0@0P!#T$,`0R!#L$.`0R!#`$-01"!$$$3P0@`$$$-01`!#($-01`!"``-`0P!#T$/01+!$4$+``@`#($(``Z!#X$0@0^!$`$/@0\!"``101`!#`$/00X!$($001/!"``.`0]!$0$/@1`!#P$,`1&amp;!#@$3P0L`"``.`0@`#\$0`0^!#,$0`0P!#P$/`0P!"``-`0[!$\$(``_!$`$/@1!!#P$/@1"!$`$,`0@`"@`1P1"!#4$/00X!$\$*0`@`#0$,`0]!#T$2P1%!"X`</td><td>117</td><td/><td>1981330987</td></row>
 		<row><td>ID_ST_CLIENT_SERVER_NAME</td><td>1033</td><td>SetupType1</td><td>0</td><td/><td>1981306411</td></row>
 		<row><td>ID_ST_CLIENT_SERVER_NAME</td><td>1049</td><td>&amp;@0[!#@$-00]!$($(``X!"``(00U!$`$,@0U!$`$(``T!#`$/00]!$L$100`</td><td>22</td><td/><td>1981306411</td></row>
+		<row><td>ID_ST_CLIENT_SHORTCUT_NAME</td><td>1033</td><td/><td>0</td><td/><td>1981307031</td></row>
+		<row><td>ID_ST_CLIENT_SHORTCUT_NAME</td><td>1049</td><td>&amp;@00!"$$(``Z!#L$.`0U!#T$0@0`</td><td>10</td><td/><td>1981317367</td></row>
+		<row><td>ID_ST_HELP_SHORTCUT_NAME</td><td>1033</td><td/><td>0</td><td/><td>1981343895</td></row>
+		<row><td>ID_ST_HELP_SHORTCUT_NAME</td><td>1049</td><td>%`0^!#H$0P0\!#4$/01"!#`$1@0X!$\$</td><td>12</td><td/><td>1981313783</td></row>
 		<row><td>ID_ST_SERVER_DESC</td><td>1033</td><td>Description</td><td>0</td><td/><td>1981329035</td></row>
 		<row><td>ID_ST_SERVER_DESC</td><td>1049</td><td>'00P!"``.@0^!#P$/P1,!$X$0@0U!$`$(`!#!$$$0@0P!#T$,`0R!#L$.`0R!#`$-01"!$$$3P0@`$($/@0[!$P$.@0^!"``000U!$`$,@0U!$`$(``T!#`$/00]!$L$100L`"``,@0@`#H$/@1"!#X$0`0^!#P$(`!%!$`$,`0]!#@$0@1!!$\$(``X!#T$1`0^!$`$/`0P!$8$.`1/!"``.`0@`#H$(``Z!#X$0@0^!$`$/@0\!$,$(``R!"``-`0P!#L$3`0]!#4$.01(!#4$/`0@`#$$0P0T!$,$0@0@`#\$/@0T!#H$.P1.!$&lt;$,`1"!$P$001/!"``/P1`!#X$,P1`!#`$/`0\!$L$(``T!#L$3P0@`#\$0`0^!$$$/`0^!$($0`0P!"``*`!'!$($-00]!#@$3P0I`"``-`0P!#T$/01+!$4$+@``</td><td>166</td><td/><td>1981329035</td></row>
 		<row><td>ID_ST_SERVER_NAME</td><td>1033</td><td>SetupType1</td><td>0</td><td/><td>1981308555</td></row>
 		<row><td>ID_ST_SERVER_NAME</td><td>1049</td><td>(00U!$`$,@0U!$`$(``T!#`$/00]!$L$100N````</td><td>14</td><td/><td>1981308555</td></row>
+		<row><td>ID_ST_UPDATE_SHORTCUT_NAME</td><td>1033</td><td/><td>0</td><td/><td>1981335735</td></row>
+		<row><td>ID_ST_UPDATE_SHORTCUT_NAME</td><td>1049</td><td>&amp;@00!"$$(``^!#$$/00^!#($.P0U!#T$.`0U!```</td><td>14</td><td/><td>1981295383</td></row>
 	</table>
 
 	<table name="ISVRoot">
@@ -850,6 +882,12 @@ HgRCBDwENQQ9BDAE
 		<col def="V0">Data</col>
 		<col def="S255">ISBuildSourcePath</col>
 		<col def="I2">ISIconIndex</col>
+		<row><td>NewShortcut11_867BB14B66E1432CBE7B35ADEBE68D68.exe</td><td/><td>&lt;TARGETDIR&gt;\MDISplit.ico</td><td/></row>
+		<row><td>NewShortcut12_867BB14B66E1432CBE7B35ADEBE68D68.exe</td><td/><td>&lt;TARGETDIR&gt;\MDISplit.ico</td><td/></row>
+		<row><td>NewShortcut13_867BB14B66E1432CBE7B35ADEBE68D68.chm</td><td/><td>&lt;TARGETDIR&gt;\MDISplit.ico</td><td/></row>
+		<row><td>NewShortcut1_867BB14B66E1432CBE7B35ADEBE68D68.exe</td><td/><td>&lt;TARGETDIR&gt;\MDISplit.ico</td><td/></row>
+		<row><td>NewShortcut2_867BB14B66E1432CBE7B35ADEBE68D68.exe</td><td/><td/><td/></row>
+		<row><td>NewShortcut2_867BB14B66E1432CBE7B35ADEBE68D68_1.exe</td><td/><td/><td/></row>
 	</table>
 
 	<table name="InstallShield">
@@ -1018,10 +1056,10 @@ JgASBEsEMQQ+BEAEPgRHBD0EMARPBA==
 		<col def="S0">Value</col>
 		<col def="s72">ISRegistrySet_</col>
 		<col def="I4">ISAttributes</col>
-		<row><td>Registry1</td><td>1</td><td>Software</td><td/><td/><td>&lt;Default&gt;</td><td>1</td></row>
-		<row><td>Registry2</td><td>1</td><td>Software\KASClient</td><td/><td/><td>&lt;Default&gt;</td><td>1</td></row>
-		<row><td>Registry3</td><td>1</td><td>Software\KASClient\Settings</td><td/><td/><td>&lt;Default&gt;</td><td>1</td></row>
-		<row><td>Registry4</td><td>1</td><td>Software\KASClient\Settings</td><td>installDir</td><td>&lt;TARGETDIR&gt;</td><td>&lt;Default&gt;</td><td>0</td></row>
+		<row><td>Registry5</td><td>-1</td><td>Software</td><td/><td/><td>&lt;Default&gt;</td><td>1</td></row>
+		<row><td>Registry6</td><td>-1</td><td>Software\KASClient</td><td/><td/><td>&lt;Default&gt;</td><td>1</td></row>
+		<row><td>Registry7</td><td>-1</td><td>Software\KASClient\Settings</td><td/><td/><td>&lt;Default&gt;</td><td>1</td></row>
+		<row><td>Registry8</td><td>-1</td><td>Software\KASClient\Settings</td><td>installDir</td><td>&lt;TARGETDIR&gt;</td><td>&lt;Default&gt;</td><td>0</td></row>
 	</table>
 
 	<table name="Shortcut">
@@ -1040,6 +1078,19 @@ JgASBEsEMQQ+BEAEPgRHBD0EMARPBA==
 		<col def="S255">ISComments</col>
 		<col def="S255">ISShortcutName</col>
 		<col def="I4">ISAttributes</col>
+		<row><td>NewShortcut1</td><td>DesktopFolder</td><td>##ID_ST_CLIENT_SHORTCUT_NAME##</td><td/><td>&lt;TARGETDIR&gt;\KAS.exe</td><td>111</td><td/><td/><td>NewShortcut1_867BB14B66E1432CBE7B35ADEBE68D68.exe</td><td/><td>1</td><td/><td/><td>NewShortcut1</td><td>18</td></row>
+		<row><td>NewShortcut10</td><td>DesktopFolder</td><td>NewShortcut10</td><td/><td>{AA1539E9-95B9-4AF8-8084-FFDF23D57A6C}</td><td/><td/><td/><td/><td/><td>1</td><td/><td/><td>NewShortcut10</td><td/></row>
+		<row><td>NewShortcut11</td><td>StartupFolder</td><td>##ID_ST_UPDATE_SHORTCUT_NAME##</td><td/><td>&lt;TARGETDIR&gt;\ClientUpdate.exe</td><td/><td/><td/><td>NewShortcut11_867BB14B66E1432CBE7B35ADEBE68D68.exe</td><td/><td>1</td><td/><td/><td>NewShortcut11</td><td>18</td></row>
+		<row><td>NewShortcut12</td><td>newfolder1</td><td>##ID_ST_UPDATE_SHORTCUT_NAME##</td><td/><td>&lt;TARGETDIR&gt;\ClientUpdate.exe</td><td/><td/><td/><td>NewShortcut12_867BB14B66E1432CBE7B35ADEBE68D68.exe</td><td/><td>1</td><td/><td/><td>NewShortcut12</td><td>18</td></row>
+		<row><td>NewShortcut13</td><td>newfolder1</td><td>##ID_ST_HELP_SHORTCUT_NAME##</td><td/><td>&lt;TARGETDIR&gt;\KAShelp.chm</td><td/><td/><td/><td>NewShortcut13_867BB14B66E1432CBE7B35ADEBE68D68.chm</td><td/><td>1</td><td/><td/><td>NewShortcut13</td><td>18</td></row>
+		<row><td>NewShortcut2</td><td>StartupFolder</td><td>##ID_STRING6##</td><td/><td>&lt;TARGETDIR&gt;\ClientUpdate.exe</td><td/><td/><td/><td/><td/><td>1</td><td/><td/><td>NewShortcut2</td><td>18</td></row>
+		<row><td>NewShortcut3</td><td>StartupFolder</td><td>NewShortcut3</td><td/><td>{04C8817B-B642-4D55-9F46-A886BBAC94BE}</td><td/><td/><td/><td/><td/><td>1</td><td/><td/><td>NewShortcut3</td><td/></row>
+		<row><td>NewShortcut4</td><td>StartupFolder</td><td>NewShortcut4</td><td/><td>{04C8817B-B642-4D55-9F46-A886BBAC94BE}</td><td/><td/><td/><td/><td/><td>1</td><td/><td/><td>NewShortcut4</td><td/></row>
+		<row><td>NewShortcut5</td><td>StartupFolder</td><td>NewShortcut5</td><td/><td>{AA1539E9-95B9-4AF8-8084-FFDF23D57A6C}</td><td/><td/><td/><td/><td/><td>1</td><td/><td/><td>NewShortcut5</td><td/></row>
+		<row><td>NewShortcut6</td><td>StartupFolder</td><td>NewShortcut6</td><td/><td>{04C8817B-B642-4D55-9F46-A886BBAC94BE}</td><td/><td/><td/><td/><td/><td>1</td><td/><td/><td>NewShortcut6</td><td/></row>
+		<row><td>NewShortcut7</td><td>DesktopFolder</td><td>NewShortcut7</td><td/><td>{04C8817B-B642-4D55-9F46-A886BBAC94BE}</td><td/><td/><td/><td/><td/><td>1</td><td/><td/><td>NewShortcut7</td><td/></row>
+		<row><td>NewShortcut8</td><td>StartupFolder</td><td>NewShortcut8</td><td/><td>{AA1539E9-95B9-4AF8-8084-FFDF23D57A6C}</td><td/><td/><td/><td/><td/><td>1</td><td/><td/><td>NewShortcut8</td><td/></row>
+		<row><td>NewShortcut9</td><td>DesktopFolder</td><td>NewShortcut9</td><td/><td>{AA1539E9-95B9-4AF8-8084-FFDF23D57A6C}</td><td/><td/><td/><td/><td/><td>1</td><td/><td/><td>NewShortcut9</td><td/></row>
 	</table>
 
 	<table name="TextStyle">
