@@ -377,6 +377,7 @@
         </phrase_list>
     </dialog>
     <dialog id="tutorial_wounded">
+    	<precondition>escape_dialog.wounded_need_help</precondition>
         <phrase_list>
             <phrase id="11">
                 <text>tutorial_wounded_11</text>

@@ -88,6 +88,12 @@ function trader_need_artefact(first_speaker, second_speaker)
 	return false
 end
 
+--' tutorial wounded in vagon
+function wounded_need_help(first_speaker, second_speaker)
+	local actor = level.actor()
+	return actor ~= nil and actor:dont_has_info( "tutorial_wounded_help" )
+end
+
 --' Barman needs military documents
 function trader_need_military_document(first_speaker, second_speaker)
 	local actor = level.actor()
