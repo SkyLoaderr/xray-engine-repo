@@ -1,0 +1,12 @@
+
+-- DELME: для тестов: {=test_condition_actor_near}
+function test_condition_actor_near(actor, npc)
+	if distance_between(actor, npc) <= 3 then
+		return true
+	end
+	return false
+end
+
+function talking(actor, npc)
+	return actor:is_talking()
+end
