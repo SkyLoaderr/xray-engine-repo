@@ -79,9 +79,9 @@ protected:
 	public:
 		CUIDragDropItemMP(): slotNum(0), sectionNum(0), bAddonsAvailable(false)
 		{
-			std::strcpy(m_strAddonTypeNames[0], "Scope");
-			std::strcpy(m_strAddonTypeNames[1], "Silencer");
-			std::strcpy(m_strAddonTypeNames[2], "Grenade Launcher");
+			std::strcpy(m_strAddonTypeNames[0], "Silencer");
+			std::strcpy(m_strAddonTypeNames[1], "Grenade Launcher");
+			std::strcpy(m_strAddonTypeNames[2], "Scope");
 		}
 		// Для слота
 		void SetSlot(u32 slot) { R_ASSERT(slot < 6); slotNum = slot; }
@@ -117,12 +117,12 @@ protected:
 
 		// У каждого оружия максимум 3 аддона. Будем считать, что в массиве они идут в таком поряке:
 		// Scope, Silencer, Grenade Launcher.
-		enum  AddonIDs { ID_SCOPE = 0, ID_SILENCER, ID_GRENADE_LAUNCHER };
+		enum  AddonIDs { ID_SILENCER = 0, ID_GRENADE_LAUNCHER, ID_SCOPE };
 		AddonInfo	m_AddonInfo[3];
 		// Если у вещи вообще нет аддонов, то поднимаем этот флажек, для ускорения проверок
 		bool		bAddonsAvailable;
 		// Список название типов аддонов
-		char		m_strAddonTypeNames[3][15];
+		char		m_strAddonTypeNames[3][25];
 		
 		void AttachDetachAddon(int iAddonIndex, bool bAttach = true);
 		// Переопределяем некоторые функции, которые нам нужны для коректной отрисовки оружия с аддонами
@@ -229,12 +229,12 @@ protected:
 
 	//описание возоможных дейстивий над предметами инвентаря
 	enum {BUY_ITEM_ACTION, CANCEL_BUYING_ACTION,
-		ATTACH_SCOPE_ADDON, 
 		ATTACH_SILENCER_ADDON,
 		ATTACH_GRENADE_LAUNCHER_ADDON,
-		DETACH_SCOPE_ADDON,
+		ATTACH_SCOPE_ADDON, 
 		DETACH_SILENCER_ADDON,
-		DETACH_GRENADE_LAUNCHER_ADDON};
+		DETACH_GRENADE_LAUNCHER_ADDON,
+		DETACH_SCOPE_ADDON};
 
 	//выбросить элемент
 	void DropItem();
@@ -324,7 +324,7 @@ public:
 	// Получить имя оружия по индексу, и номеру слота
 	const char *GetWeaponNameByIndex(u32 slotNum, u8 idx);
 	// Получить данные о аддонах к оружию. Младшие 3 бита, если установлены в 1 означают:
-	// 0 - Grenade Launcher, 1 - Silencer, 2 - Scope
+	// 2 - Silencer, 1 - Grenade Launcher, 0 - Scope
 	const u8 GetWeaponAddonInfoByIndex(u8 idx);
 	// Получить размер пояса в элементах
 	const u8 GetBeltSize();
