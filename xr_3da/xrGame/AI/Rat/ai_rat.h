@@ -262,7 +262,9 @@ public:
 	virtual DLL_Pure			*_construct				();
 
 public:
+	virtual CGameObject*		cast_game_object			()  {return this;};
 	virtual CInventoryItem*		cast_inventory_item			()	{return this;}
+	virtual CInventoryItem*		cast_eatable_item			()	{return this;}
 	virtual CEntityAlive*		cast_entity_alive			()	{return this;}
 	virtual CEntity*			cast_entity					()	{return this;}
 	virtual CPhysicsShellHolder*cast_physics_shell_holder	()	{return this;}
