@@ -5,6 +5,8 @@
 #include "SoundRender_Core.h"
 #include "SoundRender_Source.h"
 
+XRSOUND_API extern float			psSoundCull				;
+
 void CSoundRender_Emitter::update	(float dt)
 {
 	u32	dwTime			= SoundRender.Timer.GetElapsed_ms();

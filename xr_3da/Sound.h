@@ -35,16 +35,13 @@ XRSOUND_API extern float			psSoundVMaster			;
 XRSOUND_API extern float			psSoundVEffects			;
 XRSOUND_API extern float			psSoundVMusic			;
 XRSOUND_API extern float			psSoundRolloff			;
-XRSOUND_API extern float			psSoundDoppler			;
 XRSOUND_API extern float			psSoundOcclusionScale	;
-XRSOUND_API extern float			psSoundCull				;
 XRSOUND_API extern Flags32			psSoundFlags			;
 XRSOUND_API extern int				psSoundTargets			;
 XRSOUND_API extern int				psSoundCacheSizeMB		;
 
 // Flags
 enum {
-	ssWaveTrace			= (1ul<<0ul),	//!< Flag to control wave-tracing
 	ssHardware			= (1ul<<1ul),	//!< Use hardware mixing only
     ssFX				= (1ul<<2ul),	//!< Use effects
 	ss_forcedword		= u32(-1)

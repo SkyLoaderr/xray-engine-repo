@@ -103,7 +103,7 @@ void CSoundRender_Core::update	( const Fvector& P, const Fvector& D, const Fvect
 		//last_pos							= P;
 		Listener.vOrientFront.set			(D);
 		Listener.vOrientTop.set				(N);
-		Listener.fDopplerFactor				= psSoundDoppler;
+		Listener.fDopplerFactor				= EPS_S;
 		Listener.fRolloffFactor				= psSoundRolloff;
 		pListener->SetAllParameters			((DS3DLISTENER*)&Listener, DS3D_DEFERRED );
         

@@ -262,12 +262,14 @@ void game_sv_GameState::Create					(LPSTR &/**options/**/)
 			for (int id=0; O->find_chunk(id); ++id)
 			{
 				RPoint					R;
-				int						team;
+				u8						team;
+				u8						type;
 
 				O->r_fvector3			(R.P);
 				O->r_fvector3			(R.A);
-				team					= O->r_u32	();
-				VERIFY					(team>=0 && team<4);
+				team					= O->r_u8	();	VERIFY(team>=0 && team<4);
+				type					= O->r_u8	();
+				u16 res					= O->r_u16	();
 				rpoints[team].push_back	(R);
 			}
 			O->close();

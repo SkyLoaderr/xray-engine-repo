@@ -354,17 +354,12 @@ void CCC_Register()
 	CMD1(CCC_VID_Reset, "vid_reset"				);
 	
 	// Sound
-	CMD4(CCC_Float,		"snd_rolloff",			&psSoundRolloff,	EPS_S, 10);
-	CMD4(CCC_Float,		"snd_doppler",			&psSoundDoppler,	EPS_S, 10);
 	CMD2(CCC_Float,		"snd_volume_eff",		&psSoundVEffects);
 	CMD2(CCC_Float,		"snd_volume_music",		&psSoundVMusic);
 	CMD2(CCC_Float,		"snd_volume_master",	&psSoundVMaster);
-	CMD4(CCC_Float,		"snd_occlusion_scale",	&psSoundOcclusionScale, 0.f,1.f		);
-	CMD4(CCC_Float,		"snd_cull",				&psSoundCull,			0.01f,0.20f	);
 	CMD3(CCC_Token,		"snd_freq",				&psSoundFreq,		snd_freq_token		);
 	CMD3(CCC_Token,		"snd_model",			&psSoundModel,		snd_model_token		);
 	CMD1(CCC_SND_Restart,"snd_restart"			);
-	CMD3(CCC_Mask,		"snd_occlusion",		&psSoundFlags,		ssWaveTrace);
 	CMD3(CCC_Mask,		"snd_acceleration",		&psSoundFlags,		ssHardware);
 	CMD3(CCC_Mask,		"snd_fx",				&psSoundFlags,		ssFX);
 	CMD4(CCC_Integer,	"snd_targets",			&psSoundTargets,	4,24);
@@ -380,4 +375,7 @@ void CCC_Register()
 
 	// Physic
 	CMD4(CCC_Float,		"ph_gravity",			&psGravity,					1,	100);
+
+	psSoundRolloff			= pSettings->r_float	("sound","rolloff");		clamp(psSoundRolloff,			EPS_S,	10.f);
+	psSoundOcclusionScale	= pSettings->r_float	("sound","occlusion_scale");clamp(psSoundOcclusionScale,	0.f,	1.f);
 };
